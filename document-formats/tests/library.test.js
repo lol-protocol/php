@@ -23,6 +23,8 @@ const {
     escapeHtml, splitCSVLine, parseCSV, sizeSimilarity, FORMAT_CATALOG_FILES, loadFormatCatalogs,
     FormatConverter, FormatValidator, FormatBatchProcessor, DocumentGenerator,
     BookMarginManager, ScreenDeviceManager, SpecificationManager, LocalizationManager,
+    MM_PER_INCH, mmToInches, inchesToMm, fixed, fetchCSV, indexByName, closestNames, UnknownFormatError,
+    DocumentFormats, FormatLoader, FormatSearcher, FormatStatistics,
 } = require('../app/document-formats.js');
 
 const quiet = async (fn) => {
@@ -127,7 +129,7 @@ test('device loading reads every device file and filters by size and type', asyn
 
     const phone = phones[0];
     assert.equal(devices.getDevice(phone.device_name, 'phone'), phone);
-    assert.equal(devices.getDevice(phone.device_name, 'tablet'), undefined);
+    assert.equal(devices.getDevice(phone.device_name, 'tablet'), null);
 });
 
 test('every specification file loads through its configured path', async () => {
@@ -138,11 +140,66 @@ test('every specification file loads through its configured path', async () => {
     }
 });
 
+test('paper types can be looked up by name and filtered by category', async () => {
+    const specs = new SpecificationManager();
+    await specs.loadAllSpecifications();
+
+    const roneo = specs.getPaperType('Papel roneo');
+    assert.ok(roneo, 'Papel roneo should be in the catalog');
+    assert.equal(roneo.category, 'Writing/Printing');
+
+    const all = specs.getAllPaperTypes();
+    assert.ok(all.length >= 50, `only ${all.length} paper types`);
+
+    const decorative = specs.getPaperTypesByCategory('Decorative');
+    assert.ok(decorative.length > 0, 'no Decorative paper types found');
+    assert.ok(decorative.every(p => p.category === 'Decorative'));
+});
+
 test('the default language loads from app/translations', async () => {
     const i18n = new LocalizationManager();
     await quiet(() => i18n.init());
     assert.equal(i18n.getLanguage(), 'en');
     assert.notEqual(i18n.t('header.title'), 'header.title');
+});
+
+test('no language ever shows a blank label: empty or missing strings fall back to English', async () => {
+    const english = JSON.parse(fs.readFileSync(path.join(APP_DIR, 'translations', 'en.json'), 'utf8'));
+    const keys = [];
+    const walk = (tree, prefix) => Object.entries(tree).forEach(([k, v]) =>
+        typeof v === 'object' ? walk(v, `${prefix}${k}.`) : keys.push(`${prefix}${k}`));
+    walk(english, '');
+    assert.ok(keys.length > 50, `only ${keys.length} English strings`);
+
+    for (const file of fs.readdirSync(path.join(APP_DIR, 'translations'))) {
+        const code = file.replace(/\.json$/, '');
+        const i18n = new LocalizationManager();
+        await quiet(() => i18n.loadLanguage(code));
+        assert.equal(i18n.getLanguage(), code);
+        const blank = keys.filter(key => i18n.t(key) === '' || i18n.t(key) === key);
+        assert.deepEqual(blank, [], `${code}: these keys show nothing or the raw key`);
+    }
+});
+
+test('a translated string wins over English, and a missing key still returns the default', async () => {
+    const english = new LocalizationManager();
+    await quiet(() => english.loadLanguage('en'));
+    const spanish = new LocalizationManager();
+    await quiet(() => spanish.loadLanguage('es'));
+    assert.notEqual(spanish.t('header.title'), english.t('header.title'));
+    assert.equal(spanish.t('no.such.key', 'Default'), 'Default');
+    assert.equal(spanish.t('no.such.key'), 'no.such.key');
+});
+
+test('every translation file has exactly the keys of en.json', () => {
+    const flat = (tree, prefix = '') => Object.entries(tree).flatMap(([k, v]) =>
+        typeof v === 'object' ? flat(v, `${prefix}${k}.`) : [`${prefix}${k}`]);
+    const dir = path.join(APP_DIR, 'translations');
+    const expected = flat(JSON.parse(fs.readFileSync(path.join(dir, 'en.json'), 'utf8'))).sort();
+    for (const file of fs.readdirSync(dir)) {
+        const keys = flat(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'))).sort();
+        assert.deepEqual(keys, expected, `${file} does not have the same keys as en.json`);
+    }
 });
 
 test('sizeSimilarity ignores orientation', () => {
@@ -194,4 +251,179 @@ test('every catalog has the same columns in the same order', () => {
     for (const file of FORMAT_CATALOG_FILES) {
         assert.equal(headerOf(file), expected, `${file} has different columns`);
     }
+});
+
+test('inches and millimetres convert with one factor', () => {
+    assert.equal(MM_PER_INCH, 25.4);
+    assert.equal(mmToInches(25.4), 1);
+    assert.equal(fixed(inchesToMm(8.5)), '215.9');
+    assert.equal(fixed(21), '21.0');
+    assert.equal(fixed(1 / 3, 2), '0.33');
+});
+
+test('fetchCSV stops at a missing file instead of reading the error page as rows', async () => {
+    await assert.rejects(fetchCSV('../specs/does_not_exist.csv'), /HTTP 404 for \.\.\/specs\/does_not_exist\.csv/);
+    assert.ok((await fetchCSV('../specs/paper_types.csv')).length > 0);
+});
+
+test('a loader that cannot read its file logs it and keeps an empty list', async () => {
+    const error = console.error;
+    console.error = () => {};
+    try {
+        const loader = new FormatLoader('../formats/nope.csv');
+        assert.deepEqual(await loader.load(), []);
+    } finally { console.error = error; }
+});
+
+test('indexByName keeps the last row of a repeated name', () => {
+    const index = indexByName([{ format_name: 'A4', width_mm: 1 }, { format_name: 'A4', width_mm: 2 }]);
+    assert.equal(index.size, 1);
+    assert.equal(index.get('A4').width_mm, 2);
+});
+
+test('an unknown format name suggests the closest ones', () => {
+    const formats = ['A3', 'A4', 'A5', 'Letter', 'Legal'].map(format_name => ({ format_name }));
+    assert.deepEqual(closestNames('A44', formats.map(f => f.format_name)), ['A4', 'A3', 'A5']);
+
+    const error = new UnknownFormatError('A44', formats);
+    assert.equal(error.name, 'UnknownFormatError');
+    assert.equal(error.formatName, 'A44');
+    assert.deepEqual(error.suggestions, ['A4', 'A3', 'A5']);
+    assert.match(error.message, /^Format A44 not found \(did you mean A4, A3, A5\?\)$/);
+    assert.ok(error instanceof Error);
+
+    const generator = new DocumentGenerator(formats.map(f => ({ ...f, width_mm: 1, height_mm: 1 })));
+    for (const call of [() => generator.createTemplate('A44'), () => generator.generateHTML('A44'), () => generator.generatePrintCSS('A44')]) {
+        assert.throws(call, UnknownFormatError);
+    }
+    const check = new FormatValidator(formats).validateForPrinting('A44');
+    assert.equal(check.valid, false);
+    assert.deepEqual(check.suggestions, ['A4', 'A3', 'A5']);
+});
+
+test('a single thing that is not there is null, a list that is empty is []', async () => {
+    const { formats } = await loadFormatCatalogs();
+    assert.equal(new FormatConverter(formats).convert('A4', 'Nope'), null);
+    assert.deepEqual(new FormatConverter(formats).findEquivalents('Nope'), []);
+    assert.equal(new BookMarginManager([]).getMargins('Nope'), null);
+    assert.equal(new BookMarginManager([]).calculatePrintableArea('Nope', 1, 1), null);
+
+    const devices = new ScreenDeviceManager();
+    assert.equal(devices.getDevice('Nope'), null);
+    assert.equal(devices.getPixelDensity('Nope'), null);
+
+    const specs = new SpecificationManager();
+    await specs.loadAllSpecifications();
+    assert.equal(specs.getPaperType('Nope'), null);
+    assert.deepEqual(specs.getPaperTypesByCategory('Nope'), []);
+});
+
+test('rows handed out by SpecificationManager cannot be changed for the next caller', async () => {
+    const specs = new SpecificationManager();
+    await specs.loadAllSpecifications();
+    const row = specs.getAllPaperTypes()[0];
+    assert.throws(() => { 'use strict'; row.type_name = 'changed'; }, TypeError);
+    assert.throws(() => { 'use strict'; specs.getAllPaperTypes().push({}); }, TypeError);
+    const byCategory = specs.getPaperTypesByCategory(row.category);
+    assert.throws(() => { 'use strict'; byCategory.pop(); }, TypeError);
+    assert.equal(specs.getPaperTypesByCategory(row.category), byCategory, 'the second call is the cached one');
+});
+
+test('DocumentFormats.load wires every manager from one call', async () => {
+    const docs = await quiet(() => DocumentFormats.load());
+    assert.ok(docs.formats.length > 250);
+    assert.ok(docs.lastModified instanceof Date);
+    assert.ok(docs.converter.convert('Letter', 'A4'));
+    assert.ok(docs.specs.getAllPaperTypes().length > 0);
+    assert.ok(docs.margins.getMargins('Trade Paperback'));
+    assert.ok(docs.devices.monitors.length > 0);
+    assert.ok(docs.statistics.getStats().totalCountries > 20);
+    assert.ok(docs.searcher.search('A4').length > 0);
+
+    const light = await quiet(() => DocumentFormats.load({ only: [] }));
+    assert.equal(light.specs.getAllPaperTypes().length, 0, 'what is left out is not loaded');
+});
+
+test('data-translate values are read the same way by translateElement and translatePage', async () => {
+    assert.deepEqual(LocalizationManager.parseTranslateAttr('header.title'), [{ key: 'header.title', attr: null }]);
+    assert.deepEqual(LocalizationManager.parseTranslateAttr(' a.b | search.placeholder : placeholder '),
+        [{ key: 'a.b', attr: null }, { key: 'search.placeholder', attr: 'placeholder' }]);
+    assert.deepEqual(LocalizationManager.parseTranslateAttr(null), []);
+    assert.deepEqual(LocalizationManager.parseTranslateAttr('a||b'), [{ key: 'a', attr: null }, { key: 'b', attr: null }]);
+
+    const i18n = new LocalizationManager('../app/translations');
+    await i18n.init();
+    const fake = (value) => ({
+        value, text: '', attrs: {},
+        getAttribute() { return this.value; },
+        setAttribute(name, v) { this.attrs[name] = v; },
+        set textContent(v) { this.text = v; },
+        querySelectorAll: () => [],
+    });
+    const element = fake('header.title|search.placeholder:placeholder');
+    i18n.translateElement(element);
+    assert.equal(element.text, i18n.t('header.title'));
+    assert.equal(element.attrs.placeholder, i18n.t('search.placeholder'));
+
+    // translatePage goes through the same code, one frame later.
+    const page = fake('header.title|search.placeholder:placeholder');
+    globalThis.requestAnimationFrame = (callback) => callback();
+    globalThis.document = { querySelectorAll: () => [page] };
+    try {
+        i18n.translatePage();
+    } finally {
+        delete globalThis.requestAnimationFrame;
+        delete globalThis.document;
+    }
+    assert.equal(page.text, element.text);
+    assert.deepEqual(page.attrs, element.attrs);
+});
+
+test('recommended margins come from book_margins.csv for a book format, and are general otherwise', async () => {
+    const bookMargins = new BookMarginManager([]);
+    await bookMargins.load();
+    const generator = new DocumentGenerator([{ format_name: 'Trade Paperback', category: 'Book' }, { format_name: 'A4', category: 'Standard' }]);
+    assert.deepEqual(generator.getRecommendedMargins({ format_name: 'Trade Paperback' }), { top: 20, bottom: 20, left: 20, right: 20 },
+        'before the margins are set, the general ones');
+
+    generator.setBookMargins(bookMargins.getAllMargins());
+    // Trade Paperback in book_margins.csv: top 19, bottom 19, inner 16, outer 13.
+    assert.deepEqual(generator.getRecommendedMargins({ format_name: 'Trade Paperback' }), { top: 19, bottom: 19, left: 16, right: 13 });
+    assert.deepEqual(generator.getRecommendedMargins({ format_name: 'A4', category: 'Standard' }), { top: 20, bottom: 20, left: 20, right: 20 });
+    assert.deepEqual(generator.getRecommendedMargins({ format_name: 'X', category: 'Business' }), { top: 25, bottom: 25, left: 20, right: 20 });
+});
+
+test('validateForPrinting judges a format by its own recommended_dpi', async () => {
+    const specs = new SpecificationManager();
+    await specs.loadAllSpecifications();
+    const formats = ['A4', 'Business Card Standard', 'Nothing in the CSV'].map(format_name => ({ format_name }));
+    const validator = new FormatValidator(formats);
+
+    // Without the specs, everything is judged by 300.
+    assert.equal(validator.validateForPrinting('Business Card Standard', 300).recommended, true);
+
+    validator.setPrintSpecs(specs.specifications.get('technicalSpecifications'));
+    // A4 says 300-600; the business card says 600-1200.
+    const a4 = validator.validateForPrinting('A4', 300);
+    assert.deepEqual([a4.valid, a4.recommended, a4.recommendedDpi, a4.minimumDpi], [true, true, 300, 150]);
+    const card = validator.validateForPrinting('Business Card Standard', 300);
+    assert.deepEqual([card.valid, card.recommended, card.recommendedDpi, card.minimumDpi], [true, false, 600, 300]);
+    assert.equal(validator.validateForPrinting('Business Card Standard', 200).valid, false);
+    assert.equal(validator.validateForPrinting('Nothing in the CSV', 150).valid, true, 'a format with no row keeps the 300/150 limits');
+});
+
+test('search puts an exact name first and breaks ties alphabetically, whatever the file order', () => {
+    const row = (format_name, country = 'X') => ({ format_name, country, category: 'Paper', width_mm: 1, height_mm: 1 });
+    const names = (formats, query) => new FormatSearcher(formats).search(query).map(f => f.format_name);
+    const forward = [row('A4 Plus'), row('A4'), row('A4 Extra')];
+    assert.deepEqual(names(forward, 'a4'), ['A4', 'A4 Extra', 'A4 Plus']);
+    assert.deepEqual(names([...forward].reverse(), 'a4'), ['A4', 'A4 Extra', 'A4 Plus']);
+    // More matched terms still beat an exact name.
+    assert.deepEqual(names([row('A4'), row('A4 Extra', 'Extra')], 'a4 extra').slice(0, 1), ['A4 Extra']);
+});
+
+test('DocumentFormats.load sets the book margins and the print specs', async () => {
+    const docs = await quiet(() => DocumentFormats.load());
+    assert.equal(docs.generator.getRecommendedMargins({ format_name: 'Trade Paperback' }).left, 16);
+    assert.equal(docs.validator.validateForPrinting('Business Card Standard', 300).recommendedDpi, 600);
 });

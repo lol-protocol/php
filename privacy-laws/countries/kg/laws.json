@@ -1,0 +1,132 @@
+[
+  {
+    "country_code": "KG",
+    "country_name": "Kyrgyzstan",
+    "region": "asia_pacific",
+    "law_name": "Law No. 58 of 14 April 2008 on Personal Information",
+    "jurisdiction": "State Agency for Personal Data Protection",
+    "enactment_date": "2008-04-14",
+    "effective_date": "2008-04-18",
+    "scope": "Data subjects (individuals)",
+    "applies_to": "Holders (owners) and processors of personal data arrays",
+    "key_requirements": "Consent of the subject; mandatory registration of personal data arrays and holders with the State Agency; security of personal data",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "Not specified",
+    "enforcement_authority": "State Agency for Personal Data Protection (Personal Data Protection Agency)",
+    "penalties_range": "Administrative fines reported from May 2025, unverified (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "On state registration of death the subject gets 'deceased' status and data must be archived and stored (2022 amendment, Law No. 61); law replaced by Digital Code No. 178 from 5 Feb 2026",
+    "research_exemption": "",
+    "genetic_data": "No specific rule: law has no clear definition of sensitive personal data; genetic data not named (unconfirmed)",
+    "website_url": "https://reestr.dpa.gov.kg/en/npa/4",
+    "language": "Kyrgyz/Russian",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Last amendments seen 29 Nov 2021; EUI database says authority not yet established, conflicting with other sources",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "law_name": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/kg-law58",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "deceased_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=KG&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=KG",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "website_url",
+        "from": "https://dpa.gov.kg/en/npa/4",
+        "to": "https://reestr.dpa.gov.kg/en/npa/4"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific rule: law has no clear definition of sensitive personal data; genetic data not named (unconfirmed)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "On state registration of death the subject gets 'deceased' status and data must be archived and stored (2022 amendment, Law No. 61); law replaced by Digital Code No. 178 from 5 Feb 2026"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

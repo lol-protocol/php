@@ -1,0 +1,209 @@
+codigo,idioma_principal,indice_lectura,indice_pos,indice_pos_local,comentarios_pos
+AF,dari; pastún,1,5,5,Alfabetización muy baja
+AL,albanés,3,3,3,Alfabetización alta
+DE,alemán,5,5,5,Mercado editorial grande
+AD,catalán; español,3,5,5,Mercado pequeño
+AO,portugués,2,5,5,Alfabetización baja
+AG,inglés,4,5,5,Mercado editorial pequeño
+SA,árabe,3,5,5,
+DZ,árabe; francés,3,5,5,
+AR,español,4,5,5,
+AM,armenio; ruso; inglés,3,5,4,IP por ruso (mejor recurso listado).
+AU,inglés,5,5,5,
+AT,alemán,5,5,5,
+AZ,azerí; ruso,4,5,2,IP por ruso (mejor recurso listado).
+BS,inglés,4,5,5,
+BH,árabe; inglés,3,5,5,
+BD,bengalí,3,2,2,
+BB,inglés,4,5,5,
+BM,inglés,4,5,5,
+BY,ruso; bielorruso,4,5,5,
+BE,neerlandés; francés; alemán,5,5,5,
+BZ,inglés; español,3,5,5,
+BJ,francés,2,5,5,Alfabetización baja
+BT,dzongkha; inglés,2,5,1,IP por inglés (mejor recurso listado).
+BO,español; quechua; aimara,3,5,5,
+BA,bosnio; croata; serbio,3,4,4,
+BW,setsuana; inglés,3,5,3,IP por inglés (mejor recurso listado).
+BR,portugués,4,5,5,Mercado editorial amplio
+BN,malayo; inglés,4,5,4,IP por inglés (mejor recurso listado).
+BG,búlgaro,4,4,4,
+BF,moré; francés,1,5,3,IP por francés (mejor recurso listado). Alfabetización muy baja
+BI,kirundi; francés,2,5,1,"IP por francés (mejor recurso listado). Alfabetización baja, mercado editorial muy reducido"
+CV,portugués; criollo caboverdiano,3,5,5,
+KH,jemer; inglés,2,5,1,IP por inglés (mejor recurso listado).
+CM,francés; inglés,2,5,5,
+CA,inglés; francés,5,5,5,
+QA,árabe; inglés,3,5,5,
+TD,árabe chadiano; francés; árabe,1,5,1,IP por francés (mejor recurso listado). Alfabetización muy baja
+CZ,checo,4,5,5,
+CL,español,4,5,5,
+CN,chino (mandarín),4,4,4,La segmentación de palabras exige herramientas específicas
+CY,griego; turco; inglés,4,5,4,IP por turco (mejor recurso listado).
+CO,español,4,5,5,
+KM,shikomor; francés; árabe,2,5,1,IP por francés (mejor recurso listado).
+CG,lingala; francés,3,5,1,IP por francés (mejor recurso listado).
+KP,coreano,3,5,5,"El acceso a texto de Corea del Norte es un problema de IO, no de IP"
+KR,coreano,5,5,5,Mercado editorial grande
+CI,francés,2,5,5,
+CR,español,4,5,5,
+HR,croata,4,4,4,
+CU,español,4,5,5,
+CW,papiamento; neerlandés; inglés; español,3,5,1,IP por neerlandés (mejor recurso listado).
+DK,danés; inglés,5,5,4,IP por inglés (mejor recurso listado).
+DM,inglés; criollo dominiqués,3,5,5,
+EC,español; quechua,4,5,5,
+EG,árabe; árabe egipcio,3,5,5,
+SV,español,3,5,5,
+AE,árabe; inglés; urdu,3,5,5,
+ER,tigriña; árabe,2,5,1,IP por árabe (mejor recurso listado).
+SK,eslovaco,4,4,4,
+SI,esloveno,4,4,4,
+ES,español; catalán; gallego; euskera,4,5,5,
+SZ,inglés; suazi,3,5,5,
+US,inglés,5,5,5,
+EE,estonio; inglés,4,5,5,
+ET,amárico,2,3,3,
+FJ,fiyiano; inglés,4,5,1,IP por inglés (mejor recurso listado).
+PH,filipino; inglés,4,5,2,IP por inglés (mejor recurso listado).
+FI,finlandés; sueco,5,4,4,
+FR,francés,4,5,5,
+GA,francés,3,5,5,
+GM,mandinga; inglés,2,5,1,IP por inglés (mejor recurso listado).
+GE,georgiano,4,3,3,
+GH,twi; inglés,3,5,3,IP por inglés (mejor recurso listado).
+GI,inglés; español,4,5,5,
+GD,inglés,4,5,5,
+GR,griego,4,4,4,
+GL,groenlandés; danés,3,4,1,IP por danés (mejor recurso listado).
+GT,español; lenguas mayas,3,5,5,
+GG,inglés,4,5,5,
+GN,pular; francés; susu,1,5,1,IP por francés (mejor recurso listado). Alfabetización muy baja
+GQ,fang; español; francés,3,5,1,IP por español (mejor recurso listado).
+GW,portugués; criollo guineense,2,5,5,
+GY,inglés,3,5,5,
+HT,criollo haitiano; francés,2,5,3,IP por francés (mejor recurso listado).
+HN,español,3,5,5,
+HK,chino cantonés; inglés,4,5,3,IP por inglés (mejor recurso listado).
+HU,húngaro,4,3,3,
+IN,hindi; inglés; bengalí,3,5,4,IP por inglés (mejor recurso listado).
+ID,indonesio,3,4,4,
+IQ,árabe; kurdo,3,5,5,
+IR,persa,3,5,5,Mercado editorial grande
+IE,inglés; irlandés,5,5,5,
+IM,inglés,4,5,5,
+IS,islandés; inglés,5,5,5,
+FO,feroés; danés,4,4,3,IP por danés (mejor recurso listado).
+MH,marshalés; inglés,3,5,1,IP por inglés (mejor recurso listado).
+SB,pijin de las Salomón; inglés,3,5,1,IP por inglés (mejor recurso listado).
+IL,hebreo; árabe; inglés,4,5,4,IP por árabe (mejor recurso listado).
+IT,italiano,4,5,5,
+JM,inglés; criollo jamaiquino,4,5,5,
+JP,japonés,5,5,5,La segmentación de palabras exige herramientas específicas
+JE,inglés,4,5,5,
+JO,árabe; inglés,3,5,5,
+KZ,kazajo; ruso,4,5,3,IP por ruso (mejor recurso listado).
+KE,suajili; inglés,3,5,3,IP por inglés (mejor recurso listado).
+KG,kirguís; ruso,3,5,3,IP por ruso (mejor recurso listado).
+KI,gilbertés; inglés,3,5,1,IP por inglés (mejor recurso listado).
+XK,albanés; serbio,3,4,3,IP por serbio (mejor recurso listado).
+KW,árabe; inglés,3,5,5,
+LA,lao,3,1,1,
+LS,sesoto; inglés,3,5,1,IP por inglés (mejor recurso listado).
+LV,letón,4,4,4,
+LB,árabe; francés; inglés,3,5,5,
+LR,inglés,2,5,5,
+LY,árabe,3,5,5,
+LI,alemán,4,5,5,Mercado editorial pequeño
+LT,lituano,4,3,3,
+LU,francés; alemán; luxemburgués,4,5,5,
+MO,chino cantonés; portugués,4,5,3,IP por portugués (mejor recurso listado).
+MK,macedonio; albanés,4,3,2,IP por albanés (mejor recurso listado).
+MG,malgache; francés,2,5,1,IP por francés (mejor recurso listado).
+MY,malayo; inglés; chino,4,5,4,IP por inglés (mejor recurso listado).
+MW,chichewa; inglés,2,5,3,IP por inglés (mejor recurso listado).
+MV,dhivehi,4,1,1,
+ML,bambara; francés,1,5,3,IP por francés (mejor recurso listado). Alfabetización muy baja
+MT,maltés; inglés,4,5,3,IP por inglés (mejor recurso listado).
+MA,árabe; bereber; francés,2,5,5,
+MU,inglés; francés; criollo mauriciano,3,5,5,
+MR,árabe; árabe hasanía; francés,2,5,5,
+MX,español,4,5,5,
+FM,chuukés; inglés,3,5,1,IP por inglés (mejor recurso listado).
+MD,rumano; ruso,4,5,5,
+MC,francés,4,5,5,Mercado editorial pequeño
+MN,mongol; ruso,4,5,1,IP por ruso (mejor recurso listado).
+ME,montenegrino (serbocroata); serbio,3,4,4,
+MZ,portugués; emakhuwa,2,5,5,
+MM,birmano,3,1,1,
+NA,oshiwambo; inglés; afrikáans,3,5,1,IP por inglés (mejor recurso listado).
+NR,nauruano; inglés,3,5,1,IP por inglés (mejor recurso listado).
+NP,nepalí; inglés,2,5,2,IP por inglés (mejor recurso listado).
+NI,español,3,5,5,
+NE,hausa; francés; zarma,1,5,3,IP por francés (mejor recurso listado). Alfabetización muy baja
+NG,hausa; inglés; yoruba; igbo,2,5,3,IP por inglés (mejor recurso listado).
+NO,noruego; inglés,5,5,5,
+NZ,inglés; maorí,5,5,5,
+OM,árabe; inglés,3,5,5,
+NL,neerlandés; inglés,5,5,5,
+PK,urdu; punyabí; pastún; inglés,2,5,4,IP por inglés (mejor recurso listado).
+PW,palauano; inglés,3,5,1,IP por inglés (mejor recurso listado).
+PS,árabe; árabe palestino,3,5,5,
+PA,español,4,5,5,
+PG,tok pisin; inglés; hiri motu,2,5,1,IP por inglés (mejor recurso listado).
+PY,guaraní; español,3,5,2,IP por español (mejor recurso listado).
+PE,español; quechua,3,5,5,
+PL,polaco,3,5,5,
+PT,portugués,4,5,5,
+PR,español; inglés,3,5,5,El mercado editorial local es pequeño
+GB,inglés,5,5,5,
+CF,sango; francés,1,5,1,IP por francés (mejor recurso listado). Alfabetización muy baja
+CD,lingala; francés; suajili; kikongo,2,5,1,IP por francés (mejor recurso listado).
+DO,español,3,5,5,
+RE,francés; criollo reunionés,3,5,5,
+RW,kinyarwanda; inglés; francés,3,5,3,IP por inglés (mejor recurso listado).
+RO,rumano,4,5,5,
+RU,ruso,4,5,5,
+WS,samoano; inglés,3,5,1,IP por inglés (mejor recurso listado).
+KN,inglés,4,5,5,
+SM,italiano,4,5,5,Mercado editorial pequeño
+VC,inglés; criollo,3,5,5,
+LC,inglés; criollo santaluceño,3,5,5,
+ST,portugués; criollo santotomense,3,5,5,
+SN,wolof; francés,2,5,3,IP por francés (mejor recurso listado).
+RS,serbio,4,4,4,
+SC,inglés; francés; criollo seychellense,4,5,5,
+SL,inglés; krio,1,5,5,Alfabetización muy baja
+SG,inglés; chino; malayo; tamil,4,5,5,
+SY,árabe; árabe sirio,3,5,5,
+SO,somalí; árabe,2,5,1,IP por árabe (mejor recurso listado). Alfabetización baja
+LK,cingalés; tamil; inglés,4,5,2,IP por inglés (mejor recurso listado).
+ZA,zulú; inglés; afrikáans; xhosa,4,5,3,IP por inglés (mejor recurso listado).
+SD,árabe; árabe sudanés; inglés,2,5,5,
+SS,árabe juba; inglés,1,5,1,IP por inglés (mejor recurso listado). Alfabetización muy baja
+SE,sueco; inglés,5,5,4,IP por inglés (mejor recurso listado).
+CH,alemán; francés; italiano; romanche,5,5,5,
+SR,neerlandés; sranan tongo,3,5,5,
+TH,tailandés; inglés,4,5,3,IP por inglés (mejor recurso listado). La segmentación sin espacios exige herramientas
+TW,chino tradicional,5,4,4,La segmentación exige herramientas
+TZ,suajili; inglés,3,5,3,IP por inglés (mejor recurso listado).
+TJ,tayiko; ruso,4,5,1,IP por ruso (mejor recurso listado).
+TL,tetun; portugués,2,5,1,IP por portugués (mejor recurso listado).
+TG,ewé; francés; mina,2,5,3,IP por francés (mejor recurso listado).
+TO,tongano; inglés,3,5,1,IP por inglés (mejor recurso listado).
+TT,inglés,4,5,5,
+TN,árabe; árabe tunecino; francés,3,5,5,
+TM,turcomano; ruso,3,5,1,IP por ruso (mejor recurso listado).
+TR,turco,4,5,5,
+TV,tuvaluano; inglés,3,5,1,IP por inglés (mejor recurso listado).
+UA,ucraniano; ruso,4,5,4,IP por ruso (mejor recurso listado).
+UG,luganda; inglés; suajili,3,5,3,IP por inglés (mejor recurso listado).
+UY,español,4,5,5,
+UZ,uzbeko; ruso,4,5,3,IP por ruso (mejor recurso listado).
+VU,bislama; inglés; francés,3,5,1,IP por inglés (mejor recurso listado).
+VE,español,3,5,5,
+VN,vietnamita,4,3,3,La segmentación exige herramientas
+YE,árabe; árabe yemení,2,5,5,
+DJ,somalí; francés; árabe; afar,2,5,1,IP por francés (mejor recurso listado).
+ZM,bemba; inglés; nyanja,3,5,1,IP por inglés (mejor recurso listado).
+ZW,shona; inglés; ndebele,3,5,3,IP por inglés (mejor recurso listado).

@@ -1,0 +1,86 @@
+[
+  {
+    "country_code": "GE",
+    "country_name": "Georgia",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (Law No. 3144/2023)",
+    "jurisdiction": "Personal Data Protection Service",
+    "enactment_date": "2023-06-14",
+    "effective_date": "2024-03-01",
+    "scope": "Individuals in Georgia",
+    "applies_to": "Public & private controllers and processors",
+    "key_requirements": "Lawful basis & consent, data subject rights, DPO, impact assessment",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "No longer than necessary for the purpose",
+    "enforcement_authority": "State Audit Office of Georgia",
+    "penalties_range": "Up to GEL 20,000 fine",
+    "exemptions": "Purely personal or household use",
+    "deceased_data": "Law protects personal data of identified or identifiable persons including deceased persons (per secondary guide); heirs' rights and duration not confirmed (unconfirmed)",
+    "research_exemption": "Processing for academic, artistic or literary purposes excluded from scope; specific scientific/historical research article not confirmed (unconfirmed)",
+    "genetic_data": "Special category data includes genetic and biometric data used to uniquely identify a person",
+    "website_url": "https://www.dlapiperdataprotection.com/?t=law&c=GE",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
+    "notes": "Replaced 2011 law (GDPR-modelled); DPO/DPIA duties from 1 Jun 2024; other parts phased later",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://parliament.ge/en/print/news/antikoruftsiuli-biuro-da-personalur-monatsemta-datsvis-samsakhuri-2026-tslis-2-marts-gaukmdeba",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/georgia-273882423",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://matsne.gov.ge/en/document/view/5827307",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://matsne.gov.ge/en/document/view/5827307",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category data includes genetic and biometric data used to uniquely identify a person"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Processing for academic, artistic or literary purposes excluded from scope; specific scientific/historical research article not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Law protects personal data of identified or identifiable persons including deceased persons (per secondary guide); heirs' rights and duration not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "enforcement_authority",
+        "from": "Personal Data Protection Service of Georgia",
+        "to": "State Audit Office of Georgia"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

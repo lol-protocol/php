@@ -1,0 +1,72 @@
+[
+  {
+    "country_code": "NA",
+    "country_name": "Namibia",
+    "region": "middle_east_africa",
+    "law_name": "Copyright and Neighbouring Rights Protection Act, 1994 (Act No. 6 of 1994), as amended by the Business and Intellectual Property Authority Act 8 of 2016 (in force 16 Jan 2017; commenced 15 Mar 1996)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 6; Commons summary; state works 50 years from publication, s. 6(5); sound recordings 50 years)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (voluntary electronic copyright registration system launched 2026; unconfirmed)",
+    "enforcement_body": "Business and Intellectual Property Authority (BIPA)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/21262",
+    "notes": "Berne: Paris Act accession 1993 (WIPO notice). TRIPS per IFLA 2012. WCT/WPPT: signed 1996 only per IFLA 2012, accession not confirmed. Replacement Copyright and Related Rights Bill drafted, not yet tabled as of Feb 2026 (parliament.na). NASCAM is the music collecting society.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21262",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21262",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Namibia.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21262",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "registration_required": {
+        "url": "https://www.mondaq.com/copyright/1811230/namibia-makes-history-with-launch-of-electronic-copyright-registration-system",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21262",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

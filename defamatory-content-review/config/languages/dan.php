@@ -8,6 +8,20 @@ return [
         'nativeName' => 'Dansk', 'family' => 'germanic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'nazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nazister', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nynazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nynazister', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'dyr' => [
             ['word' => 'svin', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'gris', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -25,7 +39,7 @@ return [
             ['word' => 'tudse', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'kræ', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'kreatur', 'riskType' => 'animal', 'severity' => 'high'],
-            ['word' => 'svinehund', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'svinehund', 'riskType' => 'animal', 'severity' => 'high', 'targeted' => false],
             ['word' => 'slange', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'hyæne', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'parasit', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -49,7 +63,7 @@ return [
             ['word' => 'klaphat', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'fjollet', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'tosset', 'riskType' => 'intelectual', 'severity' => 'low'],
-            ['word' => 'skør', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'skør', 'riskType' => 'intelectual', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'fjog', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'dumrian', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'dumhoved', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -98,8 +112,8 @@ return [
             ['word' => 'vanskabt', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'lammet', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'handicappet', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'gal', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true],
-            ['word' => 'sindssyg', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'gal', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
+            ['word' => 'sindssyg', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
         ],
 
         'moral' => [

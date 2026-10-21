@@ -6,14 +6,34 @@ namespace App\Controllers\POS;
 
 use App\Controllers\BaseController;
 use App\Repositories\POS\OrdenRepository;
+use App\Support\AccessPolicy;
 
-/** /order/{id}/ — there is no login, so any order id is reachable by anyone with the link. */
+/**
+ * /{codigo}/ — 16 random digits (ordenes.codigo), never the order's row id.
+ * An order holds the shipping address and what was bought, so a link alone
+ * must not open it: only the owner, and the session that placed it (see
+ * CheckoutController::confirm()), can.
+ */
 class OrderController extends BaseController
 {
     private function render(array $params, string $view, callable $extra): string
     {
-        $repo = new OrdenRepository($this->db());
-        return $this->renderFound($params, $repo->find(...), $view, 'orden', $extra);
+        $mostrar = function () use ($params, $view, $extra): string {
+            $repo = new OrdenRepository($this->db());
+            // $extra gets the row id: items and events hang off it, not off the code.
+            return $this->renderFound($params, $repo->porCodigo(...), $view, 'orden',
+                static fn(int $codigo, array $orden): array => $extra((int)$orden['id']));
+        };
+
+        // The browser that placed the order may open it too; it holds the
+        // address, so no shared cache may keep the page.
+        $deEstaSesion = array_map('strval', $_SESSION[CheckoutController::SESION_ORDENES] ?? []);
+        if (in_array((string)($params['id'] ?? ''), $deEstaSesion, true)) {
+            AccessPolicy::marcarPrivada();
+            return $mostrar();
+        }
+
+        return $this->soloPropietario($mostrar);
     }
 
     public function show(array $params = []): string

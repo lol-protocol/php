@@ -124,6 +124,11 @@ Cada acción del usuario aparece como una tarjeta, en orden cronológico, con:
   escribir — no hace falta ningún botón, y queda ahí la próxima vez que
   entrés. Un símbolo chico al lado avisa cómo va: ⏳ mientras guarda, ✓ un
   par de segundos cuando terminó, ⚠ si falló (reintentá escribiendo de nuevo).
+  Las notas hablan de personas reales, así que pasan por un filtro: una nota
+  con insultos o amenazas no se guarda (⚠, y al pasar el mouse dice por qué),
+  y una que acusa a alguien de algo o menciona datos sensibles o personales
+  (salud, un RUT, un teléfono…) se guarda con un 👁, para que la releas.
+  Quién escribió cada nota y cuándo queda registrado.
 
 Al pie del flujo, **‹ Anterior** / **Siguiente ›** pasan de página cuando el
 usuario tiene muchas acciones (se muestran 20 por página).

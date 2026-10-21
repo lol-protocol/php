@@ -12,7 +12,7 @@ class SucesoController extends BaseController
 {
     public function show(array $params = []): string
     {
-        $repo = new SucesoRepository($this->db());
+        $repo = new SucesoRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/suceso/show', 'suceso',
             fn(int $id) => ['participantes' => $repo->participantes($id), 'registros' => $repo->registros($id)]);
     }

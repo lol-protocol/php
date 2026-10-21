@@ -2,20 +2,118 @@
   {
     "country_code": "MY",
     "country_name": "Malaysia",
+    "region": "asia_pacific",
     "law_name": "Personal Data Protection Act (PDPA)",
     "jurisdiction": "Malaysian DPA",
     "enactment_date": "2010-11-15",
     "effective_date": "2012-11-15",
     "scope": "Malaysian Residents",
     "applies_to": "Organizations in MY",
-    "key_requirements": "Consent & purpose limitation",
+    "key_requirements": "Appoint DPO (thresholds); notify breaches to Commissioner and data subjects; data portability; processor security duties",
     "data_categories": "Personal data",
     "retention_period": "Necessary period",
-    "enforcement_authority": "Malaysian Commissioner",
-    "penalties_range": "Up to MYR 300k fine",
+    "enforcement_authority": "Personal Data Protection Commissioner / Department of Personal Data Protection (JPDP)",
+    "penalties_range": "Up to RM1,000,000 fine and/or up to 3 years' imprisonment",
     "exemptions": "Government functions",
+    "deceased_data": "Not covered: 2024 Amendment Act excludes personal data of deceased individuals from scope (in force 1 Apr 2025)",
+    "research_exemption": "Exemption for data processed for statistics or research, results not identifying individuals (s. 45); further exemptions by Minister (s. 46) (unconfirmed)",
+    "genetic_data": "No specific rule: genetic data not named; biometric data added to sensitive personal data by 2024 amendment (explicit consent) (unconfirmed)",
     "website_url": "https://www.pdp.gov.my/",
     "language": "English/Malay",
-    "notes": "Southeast Asia region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Amended by PDP (Amendment) Act 2024, phased in during 2025 (DPO, breach notice, RM1M fines)",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "key_requirements": {
+        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://www.malaysia.gov.my/en/quick-links/protection-of-personal-data",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://www.americanlegalblogger.com/2025/01/new-horizons-in-data-protection-malaysias-personal-data-protection-amendment-act-2024/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.dfdl.com/insights/legal-and-tax-updates/malaysia-implementation-of-the-personal-data-protection-amendment-act-2024/",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://miea.com.my/sites/default/files/webmaster/Personal%20Data%20Protection%20Act%202010%20Act%20709_15Jun2016.pdf",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-bill-2024",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific rule: genetic data not named; biometric data added to sensitive personal data by 2024 amendment (explicit consent) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Exemption for data processed for statistics or research, results not identifying individuals (s. 45); further exemptions by Minister (s. 46) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: 2024 Amendment Act excludes personal data of deceased individuals from scope (in force 1 Apr 2025)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Amended by PDP (Amendment) Act 2024, phased in during 2025 (DPO, breach notice, RM1M fines)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Up to MYR 300k fine",
+        "to": "Up to RM1,000,000 fine and/or up to 3 years' imprisonment"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "Consent & purpose limitation",
+        "to": "Appoint DPO (thresholds); notify breaches to Commissioner and data subjects; data portability; processor security duties"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Malaysian Commissioner",
+        "to": "Personal Data Protection Commissioner / Department of Personal Data Protection (JPDP)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Southeast Asia region",
+        "to": ""
+      }
+    ]
   }
 ]

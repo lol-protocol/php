@@ -1,0 +1,75 @@
+[
+  {
+    "country_code": "NO",
+    "country_name": "Norway",
+    "region": "europe",
+    "law_name": "Personal Data Act (PDA)",
+    "jurisdiction": "Norwegian Data Protection Authority",
+    "enactment_date": "2018-06-15",
+    "effective_date": "2018-07-20",
+    "scope": "Individuals in Norway",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Incorporates GDPR via EEA Agreement, consent age 13, sensitive data rules",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Norwegian Data Protection Authority (Datatilsynet)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "deceased_data": "Not covered: no specific rules on deceased persons' data (government reply to ESA, 2019)",
+    "research_exemption": "Archiving, scientific/historical research and statistics without consent where public interest clearly outweighs harm, after consulting DPO; right of access may be restricted (section numbers not confirmed)",
+    "genetic_data": "Special category under art. 9 GDPR; no specific rules beyond GDPR; Datatilsynet guideline on genetic and biometric data",
+    "website_url": "https://www.linklaters.com/en/insights/data-protected/data-protected---norway",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "Act of 15 June 2018 no. 38; replaced 2000 Act; in force with EEA Decision 154/2018",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.stortinget.no/globalassets/pdf/eu_open/esa_svar_gdpr_03052019.pdf",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://whitecase.com/publications/article/gdpr-guide-national-implementation-norway",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://whitecase.com/publications/article/gdpr-guide-national-implementation-norway",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category under art. 9 GDPR; no specific rules beyond GDPR; Datatilsynet guideline on genetic and biometric data"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Archiving, scientific/historical research and statistics without consent where public interest clearly outweighs harm, after consulting DPO; right of access may be restricted (section numbers not confirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: no specific rules on deceased persons' data (government reply to ESA, 2019)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

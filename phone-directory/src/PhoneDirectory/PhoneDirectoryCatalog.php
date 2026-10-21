@@ -2,8 +2,22 @@
 
 namespace PhoneDirectory;
 
+/**
+ * @phpstan-type Directory array{
+ *     title: string,
+ *     year: int,
+ *     country: string,
+ *     zone: string,
+ *     city: string,
+ *     estimatedPages: int,
+ *     estimatedEntries: int,
+ *     archiveUrl: string,
+ *     format: string
+ * }
+ */
 class PhoneDirectoryCatalog
 {
+    /** @var array<string, Directory> */
     private array $directories = [];
 
     public function __construct()
@@ -210,16 +224,45 @@ class PhoneDirectoryCatalog
         ];
     }
 
+    /** @return array<string, Directory> */
     public function getAll(): array
     {
         return $this->directories;
     }
 
+    /** @return Directory|null */
     public function get(string $directoryId): ?array
     {
         return $this->directories[$directoryId] ?? null;
     }
 
+    /**
+     * The year a directory was published: the catalog's, or the one a directory id outside the
+     * catalog embeds, following the catalog's own "<country>_<year>_<place>" convention (e.g.
+     * "custom_1990_springfield"). Null when neither says.
+     *
+     * Not \b: an underscore is a "word" character too, so "custom_1990_x" has no word boundary
+     * around the digits at all; look for a 4-digit run not itself touching other digits instead.
+     */
+    public function yearOfDirectory(?string $directoryId): ?int
+    {
+        if ($directoryId === null || $directoryId === '') {
+            return null;
+        }
+
+        $catalogYear = $this->get($directoryId)['year'] ?? null;
+        if ($catalogYear !== null) {
+            return $catalogYear;
+        }
+
+        if (preg_match('/(?<!\d)(1[89]\d{2}|20\d{2})(?!\d)/', $directoryId, $m)) {
+            return (int) $m[1];
+        }
+
+        return null;
+    }
+
+    /** @return array<string, Directory> */
     public function getByCountry(string $countryCode): array
     {
         return array_filter(
@@ -228,6 +271,7 @@ class PhoneDirectoryCatalog
         );
     }
 
+    /** @return array<string, Directory> */
     public function getByYear(int $year): array
     {
         return array_filter(
@@ -236,6 +280,7 @@ class PhoneDirectoryCatalog
         );
     }
 
+    /** @return array<string, Directory> */
     public function getByYearRange(int $startYear, int $endYear): array
     {
         return array_filter(
@@ -244,6 +289,18 @@ class PhoneDirectoryCatalog
         );
     }
 
+    /**
+     * @return array{
+     *     totalDirectories: int,
+     *     totalCountries: int,
+     *     totalYears: int,
+     *     yearsSpan: array{earliest: int, latest: int},
+     *     totalPages: int,
+     *     totalEntries: int,
+     *     averagePagesPerDirectory: int,
+     *     averageEntriesPerDirectory: int
+     * }
+     */
     public function getStatistics(): array
     {
         $totalPages = array_sum(array_column($this->directories, 'estimatedPages'));
@@ -266,6 +323,7 @@ class PhoneDirectoryCatalog
         ];
     }
 
+    /** @return list<string> */
     public function getCountriesList(): array
     {
         $countries = array_unique(array_column($this->directories, 'country'));
@@ -273,6 +331,7 @@ class PhoneDirectoryCatalog
         return $countries;
     }
 
+    /** @return list<int> */
     public function getYearsList(): array
     {
         $years = array_unique(array_column($this->directories, 'year'));

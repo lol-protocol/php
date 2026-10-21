@@ -494,10 +494,13 @@ sudo ufw status
 ```
 
 ### Fail2Ban
-Lo instala y configura `07_A-install-fail2ban-autoupdates.sh` (jail de SSH: 1 h de baneo tras 5 fallos en 10 min).
+Lo instala y configura `07_A-install-fail2ban-autoupdates.sh`: jail de SSH (1 h de baneo tras 5 fallos en 10 min),
+jails de Nginx sobre los logs de todos los dominios (`nginx-botsearch`, `nginx-http-auth`, `nginx-bad-request`) y
+`recidive` (una semana fuera a quien ya fue baneado 3 veces en un día).
 ```bash
-sudo fail2ban-client status sshd                 # ver IPs baneadas
-sudo fail2ban-client set sshd unbanip <IP>       # desbanear una IP
+sudo fail2ban-client status                      # jails activos
+sudo fail2ban-client status sshd                 # ver IPs baneadas de un jail
+sudo fail2ban-client set sshd unbanip <IP>       # desbanear una IP (repetir en recidive si también está ahí)
 ```
 Protege contra intentos de acceso no autorizados.
 
@@ -600,8 +603,8 @@ Esto corre, en orden: `01-system-update.sh` (incluye activar UFW) →
 `02_A`..`02_F` + `02_J` (Java, PHP, Python, PostgreSQL, Nginx, Certbot,
 Webmin) → `03-configure-nginx-site.sh` → `04-setup-ssl.sh` →
 `05-deploy-landing-page.sh` → `07_A` (fail2ban + parches automáticos) →
-`07_B` (headers de seguridad) → `07_D` (logrotate por dominio) y, al final,
-`08-healthcheck.sh`.
+`07_B` (headers de seguridad) → `07_D` (logrotate por dominio) → `07_E` (gzip y
+cache de archivos en Nginx) y, al final, `08-healthcheck.sh`.
 
 **Extras opcionales, uno por uno:**
 ```bash

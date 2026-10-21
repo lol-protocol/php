@@ -2,10 +2,11 @@
   {
     "country_code": "ZA",
     "country_name": "South Africa",
+    "region": "middle_east_africa",
     "law_name": "Protection of Personal Information Act (POPIA)",
     "jurisdiction": "Information Regulator",
     "enactment_date": "2013-11-26",
-    "effective_date": "2021-07-01",
+    "effective_date": "2020-07-01",
     "scope": "South Africa Residents",
     "applies_to": "Public & private bodies",
     "key_requirements": "Conditions & consent",
@@ -14,8 +15,61 @@
     "enforcement_authority": "South Africa Information Regulator",
     "penalties_range": "Up to R10M or 10% revenue",
     "exemptions": "Government functions",
+    "deceased_data": "Not covered: personal information relates to an identifiable, living natural person or existing juristic person (s. 1)",
+    "research_exemption": "Further processing allowed for historical, statistical or research purposes if not published in identifiable form (s. 15(3)(e)); special information subject to s. 27",
+    "genetic_data": "Not named in s. 26; health and biometric information are special personal information (university guide lists DNA) (unconfirmed)",
     "website_url": "https://www.justice.gov.za/",
     "language": "English",
-    "notes": "Africa's comprehensive privacy law"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Africa's comprehensive privacy law",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "deceased_data": {
+        "url": "https://serr.co.za/understanding-the-popi-act-what-exactly-is-personal-information-and-the-processing-thereof",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://www.cliffedekkerhofmeyr.com/en/news/publications/2020/corporate/popi-bumper-special-alert-30-june-When-is-the-further-processing-of-personal-information-applicable.html",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.sun.ac.za/english/faculty/healthsciences/rdsd/doctoraloffice/Documents/Ethics/POPIA%20data%20management%20infographic.pdf",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Not named in s. 26; health and biometric information are special personal information (university guide lists DNA) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Further processing allowed for historical, statistical or research purposes if not published in identifiable form (s. 15(3)(e)); special information subject to s. 27"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: personal information relates to an identifiable, living natural person or existing juristic person (s. 1)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2021-07-01",
+        "to": "2020-07-01"
+      }
+    ]
   }
 ]

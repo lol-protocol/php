@@ -2,20 +2,96 @@
   {
     "country_code": "GB",
     "country_name": "United Kingdom",
+    "region": "europe",
     "law_name": "Data Protection Act 2018 (DPA 2018)",
     "jurisdiction": "UK ICO",
     "enactment_date": "2018-05-23",
-    "effective_date": "2018-05-23",
+    "effective_date": "2018-05-25",
     "scope": "UK Residents",
     "applies_to": "All organizations",
     "key_requirements": "GDPR-aligned requirements",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "UK Information Commissioner's Office",
+    "enforcement_authority": "Information Commission (successor to the Information Commissioner's Office under DUAA 2025 Part 6)",
     "penalties_range": "Up to £20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "Not covered: personal data means data on an identified or identifiable living individual (s. 3(2))",
+    "research_exemption": "Exemptions from access, rectification, restriction, objection for research/statistics (Sch. 2 para 27) and archiving in public interest (para 28), where rights would prejudice purposes",
+    "genetic_data": "Special category data (UK GDPR art. 9; defined art. 4(13)); needs art. 6 basis plus art. 9 condition, and DPA Sch. 1 condition where required",
     "website_url": "https://www.ico.org.uk/",
     "language": "English",
-    "notes": "GDPR principles + additional UK rules"
+    "frameworks": "EU-Adequacy/CoE-108",
+    "frameworks_not": "GDPR",
+    "notes": "Amended by Data (Use and Access) Act 2025; new ICO powers in force 2026-02-05 (SI 2026/82)",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://www.scl.org/data-use-and-access-act-2025-commencement-no-1-regulations-2025-made/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://digitalpolicyalert.org/event/37521-data-use-and-access-act-2025-commencement-no-6-and-transitional-and-saving-provisions-regulations-2026-including-data-protection-authority-governance-enter-into-force",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.legislation.gov.uk/ukpga/2018/12/section/3",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/the-research-provisions/exemptions/",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/special-category-data/what-is-special-category-data",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category data (UK GDPR art. 9; defined art. 4(13)); needs art. 6 basis plus art. 9 condition, and DPA Sch. 1 condition where required"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Exemptions from access, rectification, restriction, objection for research/statistics (Sch. 2 para 27) and archiving in public interest (para 28), where rights would prejudice purposes"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: personal data means data on an identified or identifiable living individual (s. 3(2))"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR principles + additional UK rules",
+        "to": "Amended by Data (Use and Access) Act 2025; new ICO powers in force 2026-02-05 (SI 2026/82)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "UK Information Commissioner's Office",
+        "to": "Information Commission (successor to the Information Commissioner's Office under DUAA 2025 Part 6)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2018-05-23",
+        "to": "2018-05-25"
+      }
+    ]
   }
 ]

@@ -1,0 +1,80 @@
+[
+  {
+    "country_code": "AM",
+    "country_name": "Armenia",
+    "region": "europe",
+    "law_name": "Law on Protection of Personal Data (HO-49-N)",
+    "jurisdiction": "Personal Data Protection Agency (Ministry of Justice)",
+    "enactment_date": "2015-05-18",
+    "effective_date": "2015-07-01",
+    "scope": "Individuals in Armenia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Lawful basis & consent, data subject rights, notify Agency of biometric or special-category processing",
+    "data_categories": "Personal data; special category data; biometric data",
+    "retention_period": "Art. 5(5): stored so as to exclude identification beyond period needed for purposes; Art. 9(2): consent-based data kept for period necessary or set in consent",
+    "enforcement_authority": "Personal Data Protection Agency of the Ministry of Justice",
+    "penalties_range": "Up to AMD 500,000",
+    "exemptions": "Purely personal or household use",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "No specific genetic-data rule found; special categories do not list genetic data, but biometric data covers biological characteristics and requires notifying the regulator (unconfirmed)",
+    "website_url": "https://translation-centre.am/pdf/Translat/HH_orenk/2015/HO-49-N_18052015_14062023_en.pdf",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
+    "notes": "Replaced 2002 law; EU-backed reform to align with GDPR is being drafted",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://translation-centre.am/pdf/Translat/HH_orenk/2015/HO-49-N_18052015_14062023_en.pdf",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://www.moj.am/storage/uploads/Personal_data_protection_law_ENG_OFFICIAL.pdf",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "penalties_range": {
+        "url": "https://www.moj.am/en/article/3965",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=AM&t=law",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific genetic-data rule found; special categories do not list genetic data, but biometric data covers biological characteristics and requires notifying the regulator (unconfirmed)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 5(5): stored so as to exclude identification beyond period needed for purposes; Art. 9(2): consent-based data kept for period necessary or set in consent"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Not specified",
+        "to": "Up to AMD 500,000"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

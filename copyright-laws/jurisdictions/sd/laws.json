@@ -1,0 +1,66 @@
+[
+  {
+    "country_code": "SD",
+    "country_name": "Sudan",
+    "region": "middle_east_africa",
+    "law_name": "Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act 2013, s. 10(1)(b), counted from 1 January after death, s. 10(3)); audiovisual: 50 years from making available; photographs/applied art: 25 years",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Specific exceptions (not fair use/fair dealing): education, quotation, news reporting, library photocopying (approx. Arts. 26-32; article range differs by source)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/19710",
+    "notes": "Adopted 7 Jan 2013; repeals 1996 Copyright Act and 2001 Literary and Artistic Works law. Full text not read.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/19710",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/19710",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "term_of_protection": {
+        "url": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Sudan",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/19710",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/19710",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "fair_use_exceptions": {
+        "url": "https://dti.eui.eu/database/page/36",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

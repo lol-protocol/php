@@ -2,17 +2,58 @@
   {
     "country_code": "CO",
     "country_name": "Colombia",
+    "region": "americas",
     "law_name": "Colombian Copyright Law (Law 23 of 1982)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 80 years",
     "author_rights": "Full economic rights",
     "moral_rights": "Moral rights (perpetual)",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Circumvention of effective TPMs & RMI rules (Law 1915/2018; Penal Code art. 272)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Colombian Copyright Office",
-    "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.mincultura.gov.co/"
+    "enforcement_body": "National Directorate of Copyright (DNDA - Dirección Nacional de Derecho de Autor)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.mincultura.gov.co/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://gpg-pdf.chambers.com/doing-business-in-2025/662",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Circumvention of effective TPMs & RMI rules (Law 1915/2018; Penal Code art. 272)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Colombian Copyright Office",
+        "to": "National Directorate of Copyright (DNDA - Dirección Nacional de Derecho de Autor)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright protection",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

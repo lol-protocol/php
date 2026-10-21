@@ -18,7 +18,7 @@ print_header "08" "Healthcheck${DOMAIN:+ de $DOMAIN}"
 
 echo "Servicios:"
 # Obligatorios: los instalan los pasos 02_B/02_D/02_E del flujo estandar.
-for svc in nginx php8.3-fpm postgresql; do
+for svc in nginx "$PHP_FPM_SERVICE" postgresql; do
     if systemctl is-active --quiet "$svc"; then ok "$svc activo"; else fail "$svc NO esta activo"; fi
 done
 # Opcionales: solo se revisan si estan instalados.

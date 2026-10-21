@@ -8,6 +8,18 @@ return [
         'nativeName' => 'Bahasa Indonesia', 'family' => 'austronesian', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'nazi', 'riskType' => 'moral', 'severity' => 'medium', 'nameCollision' => true, 'targeted' => true],
+            ['word' => 'neonazi', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'hewan' => [
             ['word' => 'babi', 'riskType' => 'animal', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'keledai', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -60,7 +72,7 @@ return [
             ['word' => 'cebol', 'riskType' => 'fisico', 'severity' => 'high'],
             ['word' => 'pendek', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'botak', 'riskType' => 'fisico', 'severity' => 'medium'],
-            ['word' => 'bau', 'riskType' => 'fisico', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'bau', 'riskType' => 'fisico', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'kotor', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'nenek tua', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'gembrot', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -83,7 +95,7 @@ return [
             ['word' => 'bisu', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'gagap', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'lumpuh', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'gila', 'riskType' => 'discapacidad', 'severity' => 'high', 'nameCollision' => true],
+            ['word' => 'gila', 'riskType' => 'discapacidad', 'severity' => 'high', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'sinting', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
         'moral' => [
@@ -130,12 +142,12 @@ return [
             ['word' => 'bedebah', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'kampret', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'jahanam', 'riskType' => 'moral', 'severity' => 'high'],
-            ['word' => 'sampah', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'sampah', 'riskType' => 'moral', 'severity' => 'high', 'ambiguous' => true],
         ],
         'gender' => [
             ['word' => 'banci', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'bencong', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'high', 'targeted' => true],
             ['word' => 'kemayu', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'pelacur', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'lonte', 'riskType' => 'genero', 'severity' => 'high'],
@@ -207,7 +219,7 @@ return [
             ['word' => 'kerasukan', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'setan', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'iblis', 'riskType' => 'religioso', 'severity' => 'medium'],
-            ['word' => 'penyihir', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'penyihir', 'riskType' => 'religioso', 'severity' => 'high', 'targeted' => true],
             ['word' => 'fanatik', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
     ],

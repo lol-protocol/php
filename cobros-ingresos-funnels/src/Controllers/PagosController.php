@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Database;
+use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\FiltroDePeriodo;
@@ -97,18 +98,12 @@ final class PagosController
 
                     if ($clienteElegido === null) {
                         return ['error' => 'Elegí un cliente válido.'];
-                    } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
-                        return ['error' => 'Completá todos los campos con un monto válido.'];
-                    } elseif (!self::metodoEsValido($metodo)) {
-                        return ['error' => 'Elegí un método de pago válido.'];
-                    } elseif (!Validacion::fechaEsValida($fechaPago)) {
-                        return ['error' => 'La fecha de pago no es válida.'];
+                    } elseif (($errorDeCampos = self::errorDeLosCampos($fechaPago, $metodo, $monto)) !== null) {
+                        return ['error' => $errorDeCampos];
                     } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
                         return ['error' => 'La boleta elegida no es válida para este cliente.'];
-                    } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
-                        return ['error' => 'La fecha de pago no puede ser anterior a la emisión de la boleta.'];
-                    } elseif ($boleta !== null && !self::montoNoSuperaElSaldo($monto, $boleta)) {
-                        return ['error' => 'El monto supera el saldo pendiente de la boleta.'];
+                    } elseif ($boleta !== null && ($errorContraLaBoleta = self::errorContraLaBoleta($fechaPago, $monto, $boleta)) !== null) {
+                        return ['error' => $errorContraLaBoleta];
                     }
 
                     // El saldo se valido en la moneda de la boleta: el pago tiene que
@@ -187,10 +182,15 @@ final class PagosController
         return $boleta !== null && (bool) $boleta['anulada'];
     }
 
-    /** Tolerancia de un centavo para poder pagar exactamente el saldo restante sin que el redondeo lo rechace. */
+    /**
+     * Un pago no puede pasarse del saldo, ni por un centavo. Se compara en
+     * centavos enteros (ver Dinero): el margen de un centavo que tenia antes
+     * evitaba que el ruido de la coma flotante rechazara pagar justo el saldo,
+     * pero dejaba cobrar un centavo de mas.
+     */
     public static function montoNoSuperaElSaldo(float $monto, array $boleta): bool
     {
-        return $monto <= (float) $boleta['saldo'] + 0.01;
+        return Dinero::centavos($monto) <= Dinero::centavos($boleta['saldo']);
     }
 
     /**
@@ -199,16 +199,67 @@ final class PagosController
      * los pagos vigentes de la boleta, este mismo pago incluido, asi que
      * hay que sumarle de vuelta $montoViejo antes de comparar contra el
      * monto nuevo (si no, el pago se estaria descontando a si mismo).
+     *
+     * Dejar el monto como estaba (o bajarlo) nunca se rechaza, ni en una boleta
+     * que ya estaba sobrecobrada, con saldo negativo: sin eso un pago de esa
+     * boleta no se podria editar ni para corregirle la fecha.
      */
     public static function montoNoSuperaElSaldoAlEditar(float $montoNuevo, array $boleta, float $montoViejo): bool
     {
-        return self::montoNoSuperaElSaldo($montoNuevo, ['saldo' => (float) $boleta['saldo'] + $montoViejo]);
+        $viejo = Dinero::centavos($montoViejo);
+
+        return Dinero::centavos($montoNuevo) <= max($viejo, Dinero::centavos($boleta['saldo']) + $viejo);
     }
 
     /** El metodo tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
     public static function metodoEsValido(string $metodo): bool
     {
         return array_key_exists($metodo, Etiquetas::metodosPago());
+    }
+
+    /**
+     * El primer error en los campos sueltos de un pago, o null si estan bien: los
+     * chequeos que comparten el alta y la edicion, con los mismos mensajes (antes
+     * escritos dos veces). Devuelve el mensaje y no un booleano porque el
+     * formulario lo muestra tal cual, igual que Validacion::primerTextoLargo().
+     */
+    public static function errorDeLosCampos(string $fechaPago, string $metodo, float $monto): ?string
+    {
+        if (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
+            return 'Completá todos los campos con un monto válido.';
+        }
+        if (!self::metodoEsValido($metodo)) {
+            return 'Elegí un método de pago válido.';
+        }
+        if (!Validacion::fechaEsValida($fechaPago)) {
+            return 'La fecha de pago no es válida.';
+        }
+
+        return null;
+    }
+
+    /**
+     * El primer error de un pago contra su boleta, o null: la fecha no puede ser
+     * anterior a la emision y el monto no puede pasarse del saldo. Al editar se
+     * pasa $montoViejo, lo que el pago ya tenia, porque el saldo de la boleta ya
+     * lo descuenta (ver montoNoSuperaElSaldoAlEditar()); al dar de alta, null.
+     *
+     * @param array<string, mixed> $boleta
+     */
+    public static function errorContraLaBoleta(string $fechaPago, float $monto, array $boleta, ?float $montoViejo = null): ?string
+    {
+        if (!self::fechaPagoEsValida($fechaPago, $boleta)) {
+            return 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
+        }
+
+        $cabe = $montoViejo === null
+            ? self::montoNoSuperaElSaldo($monto, $boleta)
+            : self::montoNoSuperaElSaldoAlEditar($monto, $boleta, $montoViejo);
+        if (!$cabe) {
+            return 'El monto supera el saldo pendiente de la boleta.';
+        }
+
+        return null;
     }
 
     public function editar(): void
@@ -254,16 +305,10 @@ final class PagosController
 
                 if ($pago['anulada'] || self::boletaAnuladaCongelaElPago($boleta)) {
                     return 'El pago o su boleta fueron anulados mientras lo editabas.';
-                } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
-                    return 'Completá todos los campos con un monto válido.';
-                } elseif (!self::metodoEsValido($metodo)) {
-                    return 'Elegí un método de pago válido.';
-                } elseif (!Validacion::fechaEsValida($fechaPago)) {
-                    return 'La fecha de pago no es válida.';
-                } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
-                    return 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
-                } elseif ($boleta !== null && !self::montoNoSuperaElSaldoAlEditar($monto, $boleta, (float) $pago['monto'])) {
-                    return 'El monto supera el saldo pendiente de la boleta.';
+                } elseif (($errorDeCampos = self::errorDeLosCampos($fechaPago, $metodo, $monto)) !== null) {
+                    return $errorDeCampos;
+                } elseif ($boleta !== null && ($errorContraLaBoleta = self::errorContraLaBoleta($fechaPago, $monto, $boleta, (float) $pago['monto'])) !== null) {
+                    return $errorContraLaBoleta;
                 }
 
                 $antes = dinero_en_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";

@@ -1,0 +1,78 @@
+[
+  {
+    "country_code": "CD",
+    "country_name": "DR Congo",
+    "region": "middle_east_africa",
+    "law_name": "Ordinance-Law No. 86-033 of 5 April 1986 on the Protection of Copyright and Neighbouring Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 74); photographs 25 years from first publication (Art. 77)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "SONECA - collective management body collecting and distributing royalties (Ministerial order 2007, based on arts. 68 and 111 of Ordonnance-loi 86-033)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://wipo.int/wipolex/en/details.jsp?id=7511",
+    "notes": "Law dates from 1986; implementing order 1994; no replacement found. Details from secondary summaries; WCT/WPPT status not checked.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://wipo.int/wipolex/en/details.jsp?id=7511",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://wipo.int/wipolex/en/details.jsp?id=7511",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Democratic_Republic_of_the_Congo.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://wipo.int/wipolex/en/details.jsp?id=7511",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://wipo.int/wipolex/en/details.jsp?id=7511",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Democratic_Republic_of_the_Congo.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "enforcement_body",
+        "from": "Society of Congolese Authors and Composers (SONECA) - collective management body (unconfirmed)",
+        "to": "SONECA - collective management body collecting and distributing royalties (Ministerial order 2007, based on arts. 68 and 111 of Ordonnance-loi 86-033)"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

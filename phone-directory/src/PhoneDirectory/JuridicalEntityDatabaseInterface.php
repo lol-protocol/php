@@ -4,39 +4,28 @@ namespace PhoneDirectory;
 
 use PhoneDirectory\Entity\JuridicalEntity;
 
-interface JuridicalEntityDatabaseInterface
+/**
+ * The database of businesses. The calls every directory database has (connect, insertBatch,
+ * findById, getAll...) are in DirectoryDatabaseInterface.
+ *
+ * @extends DirectoryDatabaseInterface<JuridicalEntity>
+ */
+interface JuridicalEntityDatabaseInterface extends DirectoryDatabaseInterface
 {
-    public function connect(): void;
-
-    public function disconnect(): void;
-
-    public function isConnected(): bool;
-
-    public function createTable(): void;
-
     public function insert(JuridicalEntity $entity): int;
 
-    public function insertBatch(array $entities): int;
-
-    public function findById(int $id): ?JuridicalEntity;
-
+    /** @return list<JuridicalEntity> */
     public function findByBusinessName(string $name): array;
 
-    public function findByStreet(string $street): array;
-
-    public function findByPhone(string $phone): ?JuridicalEntity;
-
+    /** @return list<JuridicalEntity> */
     public function findByBusinessType(string $type): array;
-
-    public function getAll(): array;
 
     public function update(JuridicalEntity $entity): bool;
 
-    public function delete(int $id): bool;
-
-    public function count(): int;
-
+    /**
+     * @param array{businessName?: string, street?: string, phone?: string, businessType?: string} $criteria
+     * @return list<JuridicalEntity>
+     * @throws \InvalidArgumentException If $criteria has a key other than those
+     */
     public function search(array $criteria): array;
-
-    public function clear(): bool;
 }

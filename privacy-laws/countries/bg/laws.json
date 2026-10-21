@@ -1,0 +1,134 @@
+[
+  {
+    "country_code": "BG",
+    "country_name": "Bulgaria",
+    "region": "europe",
+    "law_name": "Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",
+    "jurisdiction": "CPDP",
+    "enactment_date": "2019-02-26",
+    "effective_date": "2019-03-01",
+    "scope": "Data subjects (natural persons) in Bulgaria / processed by Bulgarian controllers",
+    "applies_to": "All public and private controllers and processors; must be read together with GDPR",
+    "key_requirements": "GDPR legal bases and data-subject rights; digital consent age 14; national rules on DPO, certification and CPDP supervision; breach notification under GDPR art. 33",
+    "data_categories": "Personal data; special categories of data; criminal-conviction data",
+    "retention_period": "No longer than necessary for the purposes (GDPR art. 5(1)(e)); PDPA adds national retention rules for some data",
+    "enforcement_authority": "Commission for Personal Data Protection (CPDP)",
+    "penalties_range": "Up to EUR 20M or 4% of turnover under GDPR art. 83; residual PDPA violations up to BGN 5,000 (doubled on repetition); largest fine to date about EUR 2.55M (National Revenue Agency 2019)",
+    "exemptions": "Journalism, academic and artistic expression, and archiving in the public interest (national rules under GDPR art. 85); household use; security and criminal-justice processing under separate regime (unconfirmed)",
+    "deceased_data": "Not covered by main rules, but art. 25f PDPA allows processing of deceased persons' data only on a legal basis with safeguards",
+    "research_exemption": "Further use for scientific or historical research and statistics allowed if permitted by EU or Bulgarian law, necessary and proportionate, with safeguards (GDPR art. 89)",
+    "genetic_data": "Special category under GDPR art. 9; explicit consent or another art. 9(2) ground required",
+    "website_url": "https://cpdp.bg",
+    "language": "Bulgarian",
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR applies directly (EU member); PDPA is the national implementing act. Amended again since 2019 (e.g. 2023); consolidated text not checked.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://cms.law/en/bgr/legal-updates/Bulgaria-implements-GDPR-into-Personal-Data-Protection-Act",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://linklaters.com/insights/data-protected/data-protected---bulgaria",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://linklaters.com/insights/data-protected/data-protected---bulgaria",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://cms.law/en/bgr/legal-updates/Bulgaria-implements-GDPR-into-Personal-Data-Protection-Act",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://linklaters.com/insights/data-protected/data-protected---bulgaria",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "retention_period": {
+        "url": "https://linklaters.com/insights/data-protected/data-protected---bulgaria",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.innovires.com/en/blog/gdpr-saotvetstvie.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://www.cipil.law.cam.ac.uk/node/294472",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "deceased_data": {
+        "url": "https://www.DataGuidance.com/notes/bulgaria-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://www.cipil.law.cam.ac.uk/node/294472",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://linklaters.com/insights/data-protected/data-protected---bulgaria",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "frameworks": {
+        "url": "https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

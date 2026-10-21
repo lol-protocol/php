@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_redo_amber" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_redo_amber_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#AEAEAE"/>
       <stop offset="1" stop-color="#878787"/>
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="48.3" cy="41.5" rx="8" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="48.28" cy="41.49" rx="8" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M44.1 35.8L45.1 37.2A4.6 4.6 0 0 0 52.5 31.7L51.4 30.3A4.6 4.6 0 0 0 44.1 35.8Z" fill="#4F4F4F"/><circle cx="47.7" cy="33" r="4.6" fill="url(#grad_action_redo_amber)"/></g>
+    <g><path d="M44.24 36.05L45.14 37.25A4.6 4.6 0 0 0 52.5 31.73L51.6 30.53A4.6 4.6 0 0 0 44.24 36.05Z" fill="#4F4F4F"/><circle cx="47.74" cy="33.05" r="4.6" fill="url(#grad_action_redo_amber_g)"/></g>
   </g>
   <g class="marks">
-    <path d="M14.3 33A17 17 0 0 1 47.7 33" fill="none" stroke="#878787" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14.26 33.05A17 17 0 0 1 47.74 33.05" fill="none" stroke="#878787" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

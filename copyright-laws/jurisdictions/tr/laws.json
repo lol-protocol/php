@@ -2,17 +2,63 @@
   {
     "country_code": "TR",
     "country_name": "Turkey",
+    "region": "europe",
     "law_name": "Law No. 5846",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Strong moral rights protection",
     "orphan_works": "Collective management required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Circumvention of technological measures is an offence (art. 72, extended to all works 2021)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Turkish Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.turkpatent.gov.tr/"
+    "enforcement_body": "Directorate General of Copyright - Ministry of Culture and Tourism (Telif Hakları Genel Müdürlüğü)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.turkpatent.gov.tr/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.morogluarseven.com/insights/ma-gazette-en/ma-gazette-edition-113-11-march-2022/the-scope-of-crime-of-circumventing-technological-measures-regarding-intellectual-and-artistic-works-is-extended/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/en/web/country-profiles/contact?code=TR",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Circumvention of technological measures is an offence (art. 72, extended to all works 2021)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Turkish Patent Office",
+        "to": "Directorate General of Copyright - Ministry of Culture and Tourism (Telif Hakları Genel Müdürlüğü)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright protection",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

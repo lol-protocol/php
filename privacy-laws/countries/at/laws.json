@@ -2,6 +2,7 @@
   {
     "country_code": "AT",
     "country_name": "Austria",
+    "region": "europe",
     "law_name": "Data Protection Act",
     "jurisdiction": "Austrian DPA (DSB)",
     "enactment_date": "2018-05-25",
@@ -11,11 +12,69 @@
     "key_requirements": "GDPR + Austrian provisions",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Austrian Authority",
+    "enforcement_authority": "Austrian Data Protection Authority (Datenschutzbehörde; DSB)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "Archiving, research, statistics without personal results may reuse public, lawfully collected or pseudonymised data; otherwise special law, consent or DPA authorisation (s. 7 DSG)",
+    "genetic_data": "GDPR art. 9 special category; for research under s. 7 requires important public interest and processing by persons bound by secrecy; Gene Technology Act also applies",
     "website_url": "https://www.dsb.at/",
     "language": "German",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "DSG (ex-DSG 2000) as amended; 2024 novelle added Parliamentary Data Protection Committee",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/austria-579009824",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://www.activemind.legal/law/at-research/",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.meduniwien.ac.at/web/en/biobank/allgemeine-information/information-fuer-forscherinnen/gesetzlicher-rahmen/",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "GDPR art. 9 special category; for research under s. 7 requires important public interest and processing by persons bound by secrecy; Gene Technology Act also applies"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Archiving, research, statistics without personal results may reuse public, lawfully collected or pseudonymised data; otherwise special law, consent or DPA authorisation (s. 7 DSG)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR implementation",
+        "to": "DSG (ex-DSG 2000) as amended; 2024 novelle added Parliamentary Data Protection Committee"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Austrian Authority",
+        "to": "Austrian Data Protection Authority (Datenschutzbehörde; DSB)"
+      }
+    ]
   }
 ]

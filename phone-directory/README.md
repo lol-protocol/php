@@ -2,6 +2,13 @@
 
 Un módulo para parsear guías telefónicas históricas en varios idiomas, extraer personas naturales y jurídicas con sus datos geográficos, y almacenarlas en una base de datos relacional (SQLite, MySQL/MariaDB o PostgreSQL) con fines genealógicos.
 
+> **Privacidad.** El catálogo llega hasta 1975: muchas de las personas de esas
+> guías viven, con su nombre, dirección y teléfono. **Por omisión, la base y el
+> enlazador solo devuelven entradas de guías de hace más de 92 años** (ver
+> [Privacidad: personas que podrían estar vivas](#privacidad-personas-que-podrían-estar-vivas));
+> para leer todo lo que hay guardado hay que pedirlo (`Privacy::forOwner()`).
+> El criterio general está en [`../PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md).
+
 ## Características
 
 - **Dos parsers**: `PhoneDirectoryParser` (inglés, un solo formato) y `MultiLanguagePhoneDirectoryParser` (detecta el idioma y separa personas de empresas)
@@ -173,6 +180,8 @@ $db->connect();
 $db->createTable(); // crea la tabla si no existe, y agrega columnas nuevas a una tabla ya existente
 ```
 
+El cuarto parámetro del constructor es quién pregunta (`Privacy`; ver más abajo). Sin él, la base se comporta como para un visitante: **no devuelve** las entradas que podrían ser de personas vivas. Para leer todo lo guardado: `new PhoneDirectoryPDODatabase($dsn, privacy: Privacy::forOwner())`.
+
 `createTable()` es segura de llamar repetidamente: en una base ya creada con una versión anterior de este módulo, agrega las columnas que falten (país, zona, ciudad, claves de búsqueda fonética, columnas de búsqueda sin acentos...) y recalcula esos valores para las filas existentes.
 
 ```php
@@ -185,6 +194,37 @@ $db->search(['name' => 'Smith', 'street' => 'Oak']);
 ```
 
 Las búsquedas por nombre y calle son insensibles a mayúsculas y a acentos, de manera consistente en las tres bases de datos soportadas (antes esto solo era cierto en MySQL, por su collation por defecto).
+
+`search()` acepta `name`, `street` y `phone` en la base de personas, y `businessName`, `street`, `phone` y `businessType` en la de empresas. Una clave que no conoce lanza `InvalidArgumentException` (con la lista de las válidas) en vez de ignorarla y devolver toda la tabla; un valor vacío (`''` o `null`) cuenta como «sin criterio», y `'0'` como un valor más.
+
+### Privacidad: personas que podrían estar vivas
+
+Una entrada de guía no trae fecha de nacimiento, pero sí la fecha de la guía, y quien figura en una guía de un año *Y* era adulto entonces: nació, como mucho, en *Y* − 18. Se presume viva a una persona durante 110 años desde su nacimiento (la misma línea que `url-routing/`), así que una entrada solo se puede mostrar cuando *Y* − 18 + 110 ya pasó. En 2026 eso es todo hasta la guía de 1933: **las guías de 1934 a 1975, la mitad reciente del catálogo, quedan ocultas.**
+
+```php
+use PhoneDirectory\Privacy;
+
+$visitante = Privacy::forVisitors();   // lo que se puede publicar (por omisión en todas partes)
+$propietario = Privacy::forOwner();    // todo lo guardado: para quien tiene la base
+
+$visitante->latestPublishableYear();   // 1933 (en 2026)
+$visitante->mayBeAlive($entry);        // true para una entrada de es_1975_national
+$visitante->filter($entries);          // solo las que se pueden mostrar, en su orden
+```
+
+Dónde se aplica:
+
+- **`PhoneDirectoryPDODatabase`**: `findById`, `findByName`, `findByStreet`, `findByPhone`, `findBySurnameSound`, `findBySourceDirectory`, `search` y `getAll`. Un número de teléfono reusado en una edición posterior sigue encontrando la entrada antigua. `count()` cuenta todo lo guardado, y `update()`, `delete()` y `clear()` no cambian: ocultar es sobre lo que se muestra, no sobre lo que se guarda.
+- **`PhoneDirectoryManagerV2`** y **`PhoneDirectoryManager`**: contestan con lo que su base puede mostrar.
+- **`RecordLinker`**: `new RecordLinker(privacy: …)`. Descarta antes de enlazar toda entrada que pueda ser de una persona viva, porque unir a una persona de dos ediciones arma un perfil (dónde vivía, y cuándo) que ninguna guía tenía por sí sola.
+- **`bin/phonedir`** usa la vista del propietario: quien corre el comando tiene la base. `--publico` muestra lo que vería un visitante (y lo dice al final), y `--hoy=AAAA-MM-DD` fija la fecha de referencia.
+
+Límites, a propósito:
+
+- **Una guía sin año conocido se oculta.** Sin fuente, o con un id fuera del catálogo que no trae un año de cuatro cifras (como `custom_1990_x`): no se sabe cuántos años tiene esa gente, y un error publica el teléfono de alguien que vive. `url-routing/` hace lo contrario con las personas sin fechas, porque ahí los datos son de antepasados.
+- **La edad mínima de 18 años es un supuesto.** Un abonado más joven (raro) quedaría fuera de lo que esta regla cubre.
+- **No hay forma de mostrar una entrada reciente individual** aunque se sepa que la persona falleció. Hacerlo pediría una marca por entrada, como `personas.viva` en `url-routing/`; hoy no existe.
+- **Las empresas (`JuridicalEntity`) no se filtran:** no son personas. Una razón social que lleva un nombre propio sí podría delatar a alguien.
 
 ### PersonName / SurnameKeys — búsqueda fonética
 Cada entrada guarda, junto con su apellido, dos claves fonéticas calculadas al insertarla: un código Soundex (sirve para cualquier idioma, encuentra variantes como Smith/Smyth) y una clave por idioma, basada en las reglas fonéticas específicas de cada uno, que encuentra confusiones que Soundex no ve (Valdez/Baldez en español). `findBySurnameSound()` busca por cualquiera de las dos.
@@ -228,7 +268,7 @@ $catalog->getStatistics();
 ### PhoneDirectoryManagerV2
 Coordinador de alto nivel que integra `MultiLanguagePhoneDirectoryParser` con dos bases de datos: una para personas naturales y otra para empresas.
 
-`PhoneDirectoryManager` (v1, solo inglés y solo personas naturales) sigue existiendo por compatibilidad, pero está marcado `@deprecated`.
+El `PhoneDirectoryManager` anterior (v1, solo inglés y solo personas naturales) ya no existe: `PhoneDirectoryManagerV2` hace lo mismo para las personas naturales y además maneja empresas.
 
 ## Uso Básico
 
@@ -308,6 +348,13 @@ php bin/phonedir help
 
 `--catalog=<id>` toma el país y ayuda a fijar el idioma de un directorio ya listado en el catálogo; para un archivo propio, se usan `--country` y `--source` en su lugar. Ver `php bin/phonedir help` para todas las opciones.
 
+`search` y `link` muestran todo lo guardado. Con `--publico` muestran solo lo que vería un visitante (sin las guías que pueden incluir personas vivas) y lo dicen al final:
+
+```bash
+php bin/phonedir search --name=garcia --publico --dsn=sqlite:madrid.sqlite
+php bin/phonedir link --sources=es_1930_madrid,es_1975_national --publico --dsn=sqlite:madrid.sqlite   # 0 enlaces: 1975 está oculta
+```
+
 ## Formato de Archivo TXT
 
 El parser acepta dos formatos, línea por línea, sin necesidad de indicarlo:
@@ -383,6 +430,14 @@ PHONEDIR_MYSQL_USER=usuario PHONEDIR_MYSQL_PASSWORD=contraseña \
 ./vendor/bin/phpunit
 ```
 
+El análisis estático (PHPStan, nivel 6; configuración en `phpstan.neon.dist`) también lo corre la CI, en PHP 8.1 a 8.4:
+
+```bash
+phpstan analyse
+```
+
+PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `composer global require phpstan/phpstan:^2.1`) y la CI lo trae con `shivammathur/setup-php`. Revisa `src/`, `bin/` (incluido `bin/phonedir`) y `examples/`, no los tests.
+
 Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`.
 
 ## API Completa
@@ -446,6 +501,7 @@ Para directorios telefónicos grandes:
 - El formato de una entrada por línea asume, sin coma, que el apellido va primero (la convención de este proyecto); un formato de nombre-primero sin coma no se reconoce
 - Un tratamiento (Mrs., Dr...) insertado en medio de un nombre sin coma, en el formato de una entrada por línea, no se separa correctamente
 - Con "viuda de" o "widow of", solo se guarda el tratamiento; el nombre del marido que sigue no se vuelve a separar en nombre/apellido
+- Ver «Privacidad: personas que podrían estar vivas» para lo que la base no devuelve por omisión y por qué
 - La detección automática de idioma es una heurística por palabras clave; con muy poco texto, o en un idioma no soportado, puede fallar (siempre se puede indicar el idioma explícitamente)
 
 ## Licencia

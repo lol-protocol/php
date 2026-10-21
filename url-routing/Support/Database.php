@@ -68,9 +68,18 @@ final class Database
             $pdo->exec('PRAGMA foreign_keys = ON');
             $pdo->exec('PRAGMA busy_timeout = 5000');
             $pdo->exec('PRAGMA journal_mode = WAL');
+            // PostgreSQL's TRANSLATE(), which SQLite lacks: the searches use it
+            // to ignore accents (Repository::sinAcentos()), so both engines run the same SQL.
+            $pdo->sqliteCreateFunction('translate', [self::class, 'traducir'], 3, \PDO::SQLITE_DETERMINISTIC);
         }
 
         return $this->pdo = $pdo;
+    }
+
+    /** TRANSLATE($texto, $de, $a): each character of $de becomes the one at the same place in $a. */
+    public static function traducir(?string $texto, string $de, string $a): ?string
+    {
+        return $texto === null ? null : strtr($texto, array_combine(mb_str_split($de), mb_str_split($a)));
     }
 
     public function driver(?\PDO $pdo = null): string

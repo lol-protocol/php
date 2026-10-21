@@ -31,6 +31,18 @@ class PlaceMatchStrategyTest extends TestCase
         $this->assertFalse($this->strategy->matches(['mx'], []));
     }
 
+    public function testOnlyATwoLetterCountryStartsAPlace(): void
+    {
+        $this->assertFalse($this->strategy->matches(['b'], $this->config), '1 letter: a system function');
+        $this->assertFalse($this->strategy->matches(['eng'], $this->config), '3 letters: a language');
+        $this->assertFalse($this->strategy->matches(['mexico'], $this->config), '4+ letters: text');
+    }
+
+    public function testRejectsASubdivisionLongerThanThreeLetters(): void
+    {
+        $this->assertNull($this->strategy->resolve(['mx', 'jalisco'], $this->config));
+    }
+
     public function testResolvesSingleLevelPlace(): void
     {
         $match = $this->strategy->resolve(['mx'], $this->config);
@@ -57,7 +69,7 @@ class PlaceMatchStrategyTest extends TestCase
 
     public function testRejectsMoreThanThreeLevels(): void
     {
-        $this->assertNull($this->strategy->resolve(['a', 'b', 'c', 'd'], $this->config));
+        $this->assertNull($this->strategy->resolve(['mx', 'jal', 'gdl', 'x'], $this->config));
     }
 
     public function testRejectsNonAlphaCode(): void

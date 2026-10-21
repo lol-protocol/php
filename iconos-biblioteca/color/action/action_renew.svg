@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="shadow">
-    <ellipse cx="32" cy="50.4" rx="14.7" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="32" cy="50.4" rx="14.72" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="marks">
-    <path d="M17.8 25.2A14 14 0 0 1 44.2 25.2" fill="none" stroke="#16A34A" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M44.2 34.8A14 14 0 0 1 17.8 34.8" fill="none" stroke="#16A34A" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17.84 25.21A14 14 0 0 1 44.16 25.21" fill="none" stroke="#16A34A" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44.16 34.79A14 14 0 0 1 17.84 34.79" fill="none" stroke="#16A34A" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

@@ -2,17 +2,79 @@
   {
     "country_code": "IL",
     "country_name": "Israel",
-    "law_name": "Israeli Copyright Law",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act, 5768-2007",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective management allowed",
-    "digital_protection": "Copyright compliance",
+    "digital_protection": "No specific provision (2007 Act has no anti-circumvention rules)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Israeli Patent Office",
+    "enforcement_body": "Ministry of Justice",
     "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.justice.gov.il/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.justice.gov.il/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://law.co.il/en/articles/2007/12/25/the_new_israeli_copyright_law_of_2007",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:CRT/Israel",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://www.law.co.il/en/news/2013/09/05/IL-Supreme-court-permits-access-control-circumvention/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_body": {
+        "url": "https://www.mondaq.com/copyright/777358/new-copyright-law-amendment",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years",
+        "to": "Author's life + 70 years"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Israeli Copyright Law",
+        "to": "Copyright Act, 5768-2007"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "No specific provision (2007 Act has no anti-circumvention rules)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Israeli Patent Office",
+        "to": "Ministry of Justice"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright compliance",
+        "to": "Not specified"
+      }
+    ]
   }
 ]

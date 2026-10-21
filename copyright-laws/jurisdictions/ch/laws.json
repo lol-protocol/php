@@ -2,6 +2,7 @@
   {
     "country_code": "CH",
     "country_name": "Switzerland",
+    "region": "europe",
     "law_name": "Copyright Law (LDA)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
@@ -12,7 +13,23 @@
     "fair_use_exceptions": "Education & private copying",
     "registration_required": "No",
     "enforcement_body": "Swiss State Secretariat for Education",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.sbfi.admin.ch/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.sbfi.admin.ch/",
+    "notes": "",
+    "pending_change": "Press publishers' right bill returned to the Federal Council by both chambers (2026)",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

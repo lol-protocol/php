@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Database;
+use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\FiltroDePeriodo;
@@ -26,11 +27,13 @@ final class BoletasController
     /**
      * Al editar una boleta, el monto no puede bajar de lo que ya se cobro
      * (dejaria un saldo negativo y la boleta se seguiria mostrando como
-     * "pagada" sin avisar que en realidad se sobrecobro).
+     * "pagada" sin avisar que en realidad se sobrecobro). Ni por un centavo:
+     * se compara en centavos enteros (ver Dinero), sin el margen de un centavo
+     * que antes hacia pasar un monto de 0.01 menos que lo cobrado.
      */
     public static function montoCubreLoYaCobrado(float $monto, array $boleta): bool
     {
-        return $monto >= (float) $boleta['pagado'] - 0.01;
+        return Dinero::centavos($monto) >= Dinero::centavos($boleta['pagado']);
     }
 
     /** Una boleta no puede vencer antes de haber sido emitida. */
@@ -47,6 +50,32 @@ final class BoletasController
     public static function emisionNoPosteriorAlPrimerPago(string $fechaEmision, array $boleta): bool
     {
         return $boleta['primer_pago'] === null || $fechaEmision <= $boleta['primer_pago'];
+    }
+
+    /**
+     * El primer error en los campos de una boleta, o null si estan bien. Son los
+     * chequeos que comparten el alta y la edicion, con los mismos mensajes: antes
+     * estaban escritos dos veces y un mensaje corregido en una podia quedar viejo
+     * en la otra. Devuelve el mensaje y no un booleano porque el formulario lo
+     * muestra tal cual, igual que Validacion::primerTextoLargo(); lo que es solo
+     * de la edicion (lo ya cobrado, el primer pago) lo chequea editar().
+     */
+    public static function errorDeLosCampos(string $concepto, float $monto, string $fechaEmision, string $fechaVencimiento): ?string
+    {
+        if (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
+            return 'Completá todos los campos con un monto válido.';
+        }
+        if (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
+            return $largo;
+        }
+        if (!Validacion::fechaEsValida($fechaEmision) || !Validacion::fechaEsValida($fechaVencimiento)) {
+            return 'La fecha de emisión o de vencimiento no es válida.';
+        }
+        if (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
+            return 'El vencimiento no puede ser anterior a la emisión.';
+        }
+
+        return null;
     }
 
     public function index(): void
@@ -110,14 +139,8 @@ final class BoletasController
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
             } elseif ($cliente === null) {
                 $error = 'Elegí un cliente válido.';
-            } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
-                $error = 'Completá todos los campos con un monto válido.';
-            } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
-                $error = $largo;
-            } elseif (!Validacion::fechaEsValida($fechaEmision) || !Validacion::fechaEsValida($fechaVencimiento)) {
-                $error = 'La fecha de emisión o de vencimiento no es válida.';
-            } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
-                $error = 'El vencimiento no puede ser anterior a la emisión.';
+            } elseif (($errorDeCampos = self::errorDeLosCampos($concepto, $monto, $fechaEmision, $fechaVencimiento)) !== null) {
+                $error = $errorDeCampos;
             } else {
                 $destino = EnvioUnico::ejecutar($token, static function () use ($clienteId, $concepto, $monto, $cliente, $fechaEmision, $fechaVencimiento): string {
                     $id = (new BoletaRepository())->crear([
@@ -185,14 +208,8 @@ final class BoletasController
 
                 if ($boleta === null || $boleta['anulada']) {
                     return 'La boleta fue anulada mientras la editabas.';
-                } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
-                    return 'Completá todos los campos con un monto válido.';
-                } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
-                    return $largo;
-                } elseif (!Validacion::fechaEsValida($fechaEmision) || !Validacion::fechaEsValida($fechaVencimiento)) {
-                    return 'La fecha de emisión o de vencimiento no es válida.';
-                } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
-                    return 'El vencimiento no puede ser anterior a la emisión.';
+                } elseif (($errorDeCampos = self::errorDeLosCampos($concepto, $monto, $fechaEmision, $fechaVencimiento)) !== null) {
+                    return $errorDeCampos;
                 } elseif (!self::montoCubreLoYaCobrado($monto, $boleta)) {
                     return 'El monto no puede ser menor a lo ya cobrado (' . dinero_en_moneda((float) $boleta['pagado'], $boleta['moneda_codigo']) . ').';
                 } elseif (!self::emisionNoPosteriorAlPrimerPago($fechaEmision, $boleta)) {
@@ -286,7 +303,7 @@ final class BoletasController
     private function emitirNotaDeCredito(array $boleta): void
     {
         $pagado = (float) $boleta['pagado'];
-        if ($pagado <= 0.01) {
+        if (Dinero::cuentaComoCero($pagado)) {
             return;
         }
 

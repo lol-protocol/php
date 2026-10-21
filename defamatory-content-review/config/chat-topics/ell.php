@@ -2,7 +2,13 @@
 
 /** Greek chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'ell', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'ell', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['σκύλλα'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['εσύ', 'είσαι', 'ρε', 'βρε', 'μωρή', 'μωρέ', 'βρωμιάρη', 'βρωμιάρα', 'χοντρέ', 'χοντρή', 'ηλίθιε', 'ηλίθια', 'παλιο', 'παλιό'],
+        'after' => ['είσαι', 'ρε'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'πορνό', 'riskType' => 'sexual', 'severity' => 'high'],

@@ -1,0 +1,82 @@
+[
+  {
+    "country_code": "LY",
+    "country_name": "Libya",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 9 of 1968 Issuing the Copyright Protection Law",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (commonly reported; 50 years from publication for posthumous works, Art. 22) (unconfirmed)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Yes (deposit of the work with the Copyright Protection Office within one month of publication (secondary source; unconfirmed)",
+    "enforcement_body": "Copyright Protection Office, Ministry of Culture (unconfirmed)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/234541",
+    "notes": "Law dated 16 March 1968 (Official Gazette No. 10 of 30/3/1968). Some sources cite Law No. 7 of 1984 as the current law (or as a deposit law); unresolved. Berne since 28 Sep 1976. WCT/WPPT/TRIPS status not found.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10149",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10149",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://webiis05.mondaq.com/marine-shipping/8111/summary-of-the-copyright-registration-system-in-libya",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10149",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10149",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "registration_required": {
+        "url": "https://webiis05.mondaq.com/marine-shipping/8111/summary-of-the-copyright-registration-system-in-libya",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://www.agip.com/Agip-Country-Service/de/100/C",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Libya.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

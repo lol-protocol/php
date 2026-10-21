@@ -1,0 +1,109 @@
+[
+  {
+    "country_code": "SO",
+    "country_name": "Somalia",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act 2023 (Law No. 005 of 2023)",
+    "jurisdiction": "Somalia Data Protection Authority (DPA)",
+    "enactment_date": "2023-03-21",
+    "effective_date": "2023-03-23",
+    "scope": "Data subjects in Somalia (unconfirmed)",
+    "applies_to": "Controllers and processors operating in Somalia; extra duties (DPO, impact assessments) for controllers of major importance",
+    "key_requirements": "Breach notification within 72 hours; DPO and DPIA for major-importance controllers; cross-border transfers only to adequate countries or with safeguards or consent (arts. 30-31); registration of controllers and processors",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Somalia Data Protection Authority (DPA)",
+    "penalties_range": "Authority may investigate and impose fines; amounts not found (unconfirmed)",
+    "exemptions": "Exemptions in art. 5(1)-(3) including personal or household use (unconfirmed)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Signing date reported as 20, 21 or 23 March 2023; Authority launched Feb 2024; Implementation Regulation, Guidance and ADR Procedure issued; Council of Ministers approved a public-data regulatory framework in early 2026; controller registration began May 2026",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.consentstack.io/regulations/so-dpa",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.consentstack.io/regulations/so-dpa",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.consentstack.io/regulations/so-dpa",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://cipit.strathmore.edu/ushering-in-a-new-dawn-for-data-protection-unpacking-the-somalia-data-protection-act-of-2023/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://digitalpolicyalert.org/change/8565-cross-border-data-transfer-regulation-in-data-protection-act-2023",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.consentstack.io/regulations/so-dpa",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://cipit.strathmore.edu/ushering-in-a-new-dawn-for-data-protection-unpacking-the-somalia-data-protection-act-of-2023/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -2,6 +2,7 @@
   {
     "country_code": "KR",
     "country_name": "South Korea",
+    "region": "asia_pacific",
     "law_name": "Personal Information Protection Act (PIPA)",
     "jurisdiction": "Korea Internet & Security Agency",
     "enactment_date": "2011-03-29",
@@ -12,10 +13,79 @@
     "data_categories": "Personal information",
     "retention_period": "Necessary period",
     "enforcement_authority": "KISA & Supervisory Authorities",
-    "penalties_range": "Up to ₩1B fine",
+    "penalties_range": "Up to 3% of total revenue; up to 10% for repeat intentional/grossly negligent violations, breaches affecting >=10m people, or ignoring PIPC orders",
     "exemptions": "Government security",
+    "deceased_data": "Not covered: personal information concerns living individuals (art. 2(1)); may protect bereaved family's data",
+    "research_exemption": "Pseudonymised data may be processed without consent for statistics, scientific research, public-interest archiving (art. 28-2); most rights excluded (art. 28-7)",
+    "genetic_data": "Sensitive information: DNA information from genetic testing (art. 23; Enforcement Decree art. 18); separate consent or legal basis required",
     "website_url": "https://www.kisa.or.kr/",
     "language": "Korean",
-    "notes": "East Asia comprehensive privacy law"
+    "frameworks": "EU-Adequacy/APEC-CBPR",
+    "frameworks_not": "GDPR/CoE-108",
+    "notes": "2026 amendment in force 2026-09-11: 10% revenue fines; CEO named ultimately responsible",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "penalties_range": {
+        "url": "https://www.mlex.com/mlex/articles/2450211",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=KR&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.nepla.ai/wiki/it-정보-방송통신/개인정보-위치정보-신용정보/-일문일답-사망자의-정보가-개인정보인가-0xr84xjgnq1w",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://www.opennetkorea.org/en/wp/3127",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://prighter.com/resources/laws/korean-pipa/enforcement-decree/articles/article-18",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive information: DNA information from genetic testing (art. 23; Enforcement Decree art. 18); separate consent or legal basis required"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Pseudonymised data may be processed without consent for statistics, scientific research, public-interest archiving (art. 28-2); most rights excluded (art. 28-7)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: personal information concerns living individuals (art. 2(1)); may protect bereaved family's data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "East Asia comprehensive privacy law",
+        "to": "2026 amendment in force 2026-09-11: 10% revenue fines; CEO named ultimately responsible"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Up to ₩1B fine",
+        "to": "Up to 3% of total revenue; up to 10% for repeat intentional/grossly negligent violations, breaches affecting >=10m people, or ignoring PIPC orders"
+      }
+    ]
   }
 ]

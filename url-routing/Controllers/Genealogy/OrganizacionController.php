@@ -12,20 +12,20 @@ class OrganizacionController extends BaseController
 {
     public function show(array $params = []): string
     {
-        $repo = new OrganizacionRepository($this->db());
+        $repo = new OrganizacionRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/organizacion/show', 'organizacion');
     }
 
     public function miembros(array $params = []): string
     {
-        $repo = new OrganizacionRepository($this->db());
+        $repo = new OrganizacionRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/organizacion/miembros', 'organizacion',
             fn(int $id) => ['miembros' => $repo->miembros($id)]);
     }
 
     public function registros(array $params = []): string
     {
-        $repo = new OrganizacionRepository($this->db());
+        $repo = new OrganizacionRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/organizacion/registros', 'organizacion',
             fn(int $id) => ['registros' => $repo->registros($id)]);
     }

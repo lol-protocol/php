@@ -17,6 +17,7 @@ require __DIR__ . '/../servidor-php/codigo/AlmacenAcciones.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenDatos.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenFiltros.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenNotas.php';
+require __DIR__ . '/../servidor-php/codigo/AlmacenRegistroNotas.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenConfiguracion.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenIntentosLogin.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenAdministradores.php';

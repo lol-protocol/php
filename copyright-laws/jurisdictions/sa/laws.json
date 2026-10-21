@@ -2,17 +2,125 @@
   {
     "country_code": "SA",
     "country_name": "Saudi Arabia",
-    "law_name": "Saudi Copyright Law",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Law 2026 (Royal Decree No. M/169)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years",
+    "term_of_protection": "Author's life + 50 years (art. 19 First(1)); anonymous/corporate works 50 years from publication; applied art and photographs 25 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights limited",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "TPM & rights-management info protected; circumvention an offence (2026 law art. 47)",
     "fair_use_exceptions": "Educational exceptions",
-    "registration_required": "No",
-    "enforcement_body": "Saudi Copyright Office",
-    "treaties_signatory": "Berne",
-    "linked_resources": "https://www.saip.gov.sa/"
+    "registration_required": "No (optional SAIP registration; gives rebuttable presumption of ownership)",
+    "enforcement_body": "Saudi Authority for Intellectual Property (SAIP)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://gowlingwlg.com/insights-resources/articles/2026/saudi-arabia-copyright-law-implementing-regulations",
+    "notes": "M/169 in force 2026-08-12 with SAIP Implementing Regs (2026-07-31); AI, platforms, higher penalties",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "law_name": {
+        "url": "https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://commons.wikipedia.com/wiki/Commons:CRT/Saudi_Arabia",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "digital_protection": {
+        "url": "https://amlak.net.sa/en/101083/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "registration_required": {
+        "url": "https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_body": {
+        "url": "https://gowlingwlg.com/en/insights-resources/articles/2026/saudi-arabia-copyright-law-2026",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://gowlingwlg.com/insights-resources/articles/2026/saudi-arabia-copyright-law-implementing-regulations",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (unconfirmed)",
+        "to": "Author's life + 50 years (art. 19 First(1)); anonymous/corporate works 50 years from publication; applied art and photographs 25 years"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "A new Copyright Law came into force on 12 Aug 2026; some matters are delegated to the Ministry of Culture",
+        "to": "M/169 in force 2026-08-12 with SAIP Implementing Regs (2026-07-31); AI, platforms, higher penalties"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "linked_resources",
+        "from": "https://www.saip.gov.sa/",
+        "to": "https://gowlingwlg.com/insights-resources/articles/2026/saudi-arabia-copyright-law-implementing-regulations"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "registration_required",
+        "from": "No",
+        "to": "No (optional SAIP registration; gives rebuttable presumption of ownership)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years",
+        "to": "Author's life + 50 years (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Saudi Copyright Law",
+        "to": "Copyright Law 2026 (Royal Decree No. M/169)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "TPM & rights-management info protected; circumvention an offence (2026 law art. 47)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "A new Copyright Law came into force on 12 Aug 2026; some matters are delegated to the Ministry of Culture"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Saudi Copyright Office",
+        "to": "Saudi Authority for Intellectual Property (SAIP)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright enforcement",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne",
+        "to": "Berne/TRIPS"
+      }
+    ]
   }
 ]

@@ -8,7 +8,7 @@ linea cortada = divorcio, discontinua = adopcion o parentesco parcial, punteada 
 import math
 
 from kit import badge, tile
-from lib import Block, Disc, Icon, RPoly, fmt
+from lib import Block, Disc, Icon, fmt
 
 def arc_pts(cx, cy, r, a0, a1, n=48):
     return [(cx + r * math.cos(math.radians(a0 + (a1 - a0) * i / n)),
@@ -29,6 +29,8 @@ ICONS = []
 KIND = {'m': 'sq', 'f': 'ci', 'u': 'di'}
 CHAIN = {1: dict(r=7.4, h=34), 2: dict(r=6.4, h=40), 3: dict(r=5.6, h=42)}
 SMALL = {3: 3.3}
+BIG_REL = {3: 6.6}  # en las cadenas de tres generaciones el familiar se dibuja mayor: cuadrado y circulo se separan mejor
+DENSE_REL = 6.8  # en los diagramas densos (nodos de 4,5) el familiar se dibuja mayor para que se vea su forma
 ROLE = {'self': 'ink', 'rel': 'orange', 'other': 'mist', 'rel2': 'amber'}
 
 
@@ -55,8 +57,8 @@ def node(ic, kind, x, y, role='other', r=6.0, d=None):
 class Scene:
     """Diagrama de parentesco: nodos en una rejilla (col, fila) y enlaces entre ellos."""
 
-    def __init__(self, stem, r=None, w=40.0, h=40.0):
-        self.stem, self.r, self.w, self.h = stem, r, w, h
+    def __init__(self, stem, r=None, w=40.0, h=40.0, mark=1.0):
+        self.stem, self.r, self.w, self.h, self.mark = stem, r, w, h, mark
         self.nodes, self.edges, self.decor = {}, [], []
 
     def n(self, name, kind, col, row, role='other', size=None):
@@ -120,15 +122,16 @@ class Scene:
         for mark, pts, pc, ps in marks:
             # marca sobre el tramo vertical final, entre el nudo y el hijo
             mx, my = pc[0], (pc[1] + (pts[-2][1] if len(pts) > 2 else ps[1])) / 2
+            k = self.mark
             if mark == 'ring':
-                ic.ring(mx, my, 3.6, tone='orange', ink='orange', w=2.4)
+                ic.ring(mx, my, 3.6 * k, tone='orange', ink='orange', w=2.4 * k ** 0.5)
             elif mark == 'arrow':
-                ic.poly([(mx - 3.4, my - 2), (mx, my + 2.2), (mx + 3.4, my - 2)], tone='orange', ink='orange', w=2.6)
+                ic.poly([(mx - 3.4 * k, my - 2 * k), (mx, my + 2.2 * k), (mx + 3.4 * k, my - 2 * k)], tone='orange', ink='orange', w=2.6 * k ** 0.5)
             elif mark == 'dot':
-                ic.dot(mx, my, 3.4, tone='orange', ink='orange')
+                ic.dot(mx, my, 3.0 * k, tone='orange', ink='orange')
             elif mark == 'square':
-                ic.poly([(mx - 3.2, my - 3.2), (mx + 3.2, my - 3.2), (mx + 3.2, my + 3.2), (mx - 3.2, my + 3.2)], True,
-                        tone='orange', ink='orange', w=2.2)
+                ic.poly([(mx - 3.6 * k, my - 3.6 * k), (mx + 3.6 * k, my - 3.6 * k), (mx + 3.6 * k, my + 3.6 * k), (mx - 3.6 * k, my + 3.6 * k)], True,
+                        filled=True, tone='orange', ink='orange', w=2.2)
         for fn in self.decor:
             fn(ic, pos, r)
         return ic
@@ -146,7 +149,7 @@ def done(sc):
 def ancestor(stem, k, gender, side=None):
     if side is None:
         s = scene(stem, **CHAIN[k])
-        s.n('rel', gender, 0, 0, 'rel')
+        s.n('rel', gender, 0, 0, 'rel', size=BIG_REL.get(k))
         for i in range(1, k):
             s.n(f'm{i}', 'u', 0, i, size=SMALL.get(k))
         s.n('me', 'f', 0, k, 'self')
@@ -168,7 +171,7 @@ def descendant(stem, k, gender):
     for i in range(1, k):
         s.n(f'm{i}', 'u', 0, i, size=SMALL.get(k)).desc(prev, f'm{i}')
         prev = f'm{i}'
-    s.n('rel', gender, 0, k, 'rel').desc(prev, 'rel')
+    s.n('rel', gender, 0, k, 'rel', size=BIG_REL.get(k)).desc(prev, 'rel')
     return done(s)
 
 
@@ -184,7 +187,7 @@ def collateral(stem, u, d, gender):
     for i in range(1, d):
         s.n(f'r{i}', 'u', 1, i).desc(prev, f'r{i}')
         prev = f'r{i}'
-    s.n('rel', gender, 1, d, 'rel').desc(prev, 'rel')
+    s.n('rel', gender, 1, d, 'rel', size=DENSE_REL if max(u, d) > 2 else None).desc(prev, 'rel')
     return done(s)
 
 
@@ -242,6 +245,7 @@ for suffix, gender in (('stepbrother', 'm'), ('stepsister', 'f')):
     done(s)
 
 # adopcion, acogida, padrinos, tutela
+MARK = 1.5
 for stem, gender, up, style, mark in (
     ('person_adoptive_father', 'm', True, 'dashed', 'dot'), ('person_adoptive_mother', 'f', True, 'dashed', 'dot'),
     ('person_adopted_son', 'm', False, 'dashed', 'dot'), ('person_adopted_daughter', 'f', False, 'dashed', 'dot'),
@@ -251,7 +255,7 @@ for stem, gender, up, style, mark in (
     ('person_godson', 'm', False, 'line', 'ring'), ('person_goddaughter', 'f', False, 'line', 'ring'),
     ('person_guardian', 'u', True, 'line', 'arrow'), ('person_ward', 'u', False, 'line', 'arrow'),
 ):
-    s = scene(stem, r=6.8, h=36)
+    s = scene(stem, r=6.8, h=40, mark=MARK)
     if up:
         s.n('rel', gender, 0, 0, 'rel').n('me', 'f', 0, 1, 'self').desc('rel', 'me', style, mark)
     else:
@@ -362,12 +366,12 @@ ic.link([(15, 30), (47, 30)], w=6.4, hue='red')
 node(ic, 'di', 15, 30, 'rel', r=7.4, d=3)
 node(ic, 'di', 47, 30, 'rel', r=7.4, d=3)
 
-s = scene('relationship_adoption')
+s = scene('relationship_adoption', mark=1.3)
 s.n('a', 'm', 0, 0).n('b', 'f', 2, 0).n('c', 'u', 1, 1, 'rel')
 s.couple('a', 'b').desc(('a', 'b'), 'c', 'dashed', 'dot')
 done(s)
 
-s = scene('relationship_fostering')
+s = scene('relationship_fostering', mark=1.3)
 s.n('a', 'm', 0, 0).n('b', 'f', 2, 0).n('c', 'u', 1, 1, 'rel')
 s.couple('a', 'b').desc(('a', 'b'), 'c', 'dotted', 'square')
 done(s)
@@ -376,7 +380,7 @@ s = scene('relationship_guardianship')
 s.n('a', 'u', 0, 0, 'rel').n('b', 'u', 0, 1, 'rel2').desc('a', 'b', 'line', 'arrow')
 done(s)
 
-s = scene('relationship_godparenthood')
+s = scene('relationship_godparenthood', mark=1.3)
 s.n('a', 'm', 0, 0).n('b', 'f', 2, 0).n('c', 'u', 1, 1, 'rel').couple('a', 'b', 'line').desc(('a', 'b'), 'c', 'line', 'ring')
 done(s)
 
@@ -662,8 +666,7 @@ ic.solid(Disc(43, 30, 6), 'violet', d=2.4)
 
 def _turn(stem, back):
     ic = new(stem)
-    a0, a1 = (190, 350) if back else (190, 350)
-    ic.arc(31, 36, 17, a0, a1, tone='amber', ink='amber', w=4.4)
+    ic.arc(31, 36, 17, 190, 350, tone='amber', ink='amber', w=4.4)
     x, y = pt_on(31, 36, 17, 190 if back else 350)
     ic.solid(Disc(x, y, 4.6), 'amber', d=1.8)
 

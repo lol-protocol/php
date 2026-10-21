@@ -2,6 +2,7 @@
   {
     "country_code": "TH",
     "country_name": "Thailand",
+    "region": "asia_pacific",
     "law_name": "Copyright Act B.E. 2537 (1994)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
@@ -12,7 +13,23 @@
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
     "enforcement_body": "Department of Intellectual Property",
-    "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.ipthailand.go.th/"
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.ipthailand.go.th/",
+    "notes": "",
+    "pending_change": "Draft amendment (RCEP/WPPT) had a public hearing in Jun 2025; not enacted",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS",
+        "to": "Berne/TRIPS/WCT"
+      }
+    ]
   }
 ]

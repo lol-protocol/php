@@ -8,8 +8,8 @@ Identidad visual de Marcalibros, los marcadores de lectura que usan el lector y 
 |--------------|-----------------------------------------------------------------------|
 | `svg/`       | Iconos de 24×24 y estados vacíos de 64×64, en SVG                     |
 | `images/`    | Paisajes en JPG: 1920×1080 para cabeceras y 1200×630 para vistas previas |
-| `catalog/`   | 1000 marcalibros predefinidos: SVG, vistas previas JPG de 700×100, manifiesto y taxonomía |
-| `generator/` | Scripts que generan el catálogo y los paisajes. `motivos.py` y `motivos_texto.py` definen los 80 motivos visuales (4 por categoría) |
+| `catalog/`   | 1350 marcalibros predefinidos: SVG, vistas previas JPG de 700×100, manifiesto y taxonomía. Los PNG se generan aparte y no se guardan en git |
+| `generator/` | Scripts que generan el catálogo, los paisajes y los PNG. `motivos.py`, `motivos_texto.py` y `motivos_ampliacion.py` definen los 108 motivos visuales (4 por categoría) |
 | `php/`       | Módulo PHP para que cada usuario cree su marcalibro con una imagen de la biblioteca o subiendo la suya. Ver `php/README.md` |
 | `app/`       | Aplicación web independiente, sin cuentas: catálogo para explorar y descargar, y creación de marcalibros propios con recorte 7:1. Ver `app/README.md` |
 
@@ -17,16 +17,25 @@ El archivo `brand-tokens.md` define la paleta, los contrastes y los trazos. Todo
 
 ## El catálogo
 
-Son **20 categorías con 50 marcalibros cada una: 1000 en total.** Diez son movimientos literarios (Romanticismo, Realismo, Naturalismo, Modernismo, Vanguardias, Gótico, Barroco, Clasicismo, Simbolismo y Realismo mágico) y diez son tipos de texto (manuales, libros sagrados, leyes, cartas, diarios, tratados científicos, recetas, filosofía, teatro y viajes). La lista completa, los motivos y las notas para revisarla están en `catalog/taxonomia.md`.
+Son **27 categorías con 50 marcalibros cada una: 1350 en total.** Once son movimientos literarios (Romanticismo, Realismo, Naturalismo, Modernismo hispanoamericano, Modernismo anglosajón, Vanguardias, Gótico, Barroco, Clasicismo, Simbolismo y Realismo mágico) y dieciséis son tipos de texto (manuales, libros sagrados, leyes, cartas, diarios, tratados científicos, recetas, filosofía, teatro, viajes, cuentos y leyendas, poesía, historia, periodismo, diccionarios y enciclopedias, y discursos). La lista completa, los motivos y las notas para revisarla están en `catalog/taxonomia.md`.
 
 ## Generar el catálogo y los paisajes
 
 Requiere Python 3 con Pillow y numpy.
 
 ```bash
-python3 generator/generar_marcalibros.py                        # 1000 marcalibros (50 por categoría)
+python3 generator/generar_marcalibros.py                        # 1350 marcalibros (50 por categoría)
 python3 generator/generar_marcalibros.py --por-categoria 10     # 200 marcalibros, para pruebas rápidas
 ```
+
+Las versiones PNG (1400×200 y 2800×400) no se guardan en el repositorio, porque ocuparían unos 80 MB: se generan desde las mismas figuras con
+
+```bash
+python3 generator/exportar_png.py                  # todas, en catalog/png/ (unos 4 minutos)
+python3 generator/exportar_png.py --faltantes      # solo las que falten, por ejemplo después de sumar categorías
+```
+
+La aplicación ofrece la descarga en PNG de cada marcalibro que tenga sus dos archivos en `catalog/png/`.
 
 El generador es determinista: la misma ejecución produce los mismos archivos. Cada marcalibro se define una sola vez y de esa definición salen su SVG y su vista previa JPG.
 
@@ -64,8 +73,4 @@ Detalles de configuración, seguridad y despliegue en `app/README.md`.
 
 ## Pendiente
 
-- Confirmar la taxonomía en `catalog/taxonomia.md`: los 10 movimientos y autores, y sobre todo los 10 tipos de texto, que son una propuesta nueva.
 - Integrar la aplicación (o solo el módulo PHP) en Plataforma POS cuando se decida: falta saber dónde vive Plataforma POS, y cómo se identificará a las personas (hoy el enlace es la única llave).
-- Ejecutar las pruebas de `php/` y `app/` con PHPUnit real y el análisis con PHPStan (nivel 6), y generar los `composer.lock`. Packagist no era accesible desde el entorno donde se escribió el código, así que las pruebas (95 del módulo y 121 de la aplicación) solo se han ejecutado con un ejecutor propio mínimo, y PHPStan no se ha corrido.
-- Agregar un workflow de CI para `php/` y `app/`, con filtro de rutas como los de los otros proyectos del repositorio.
-- Ajustar la tipografía final: Source Serif 4 e Inter están declaradas pero no incluidas en la aplicación.

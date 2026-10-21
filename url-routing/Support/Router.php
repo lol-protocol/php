@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Support;
 
-use App\Routing\LiteralMatchStrategy;
-use App\Routing\OrderMatchStrategy;
+use App\Routing\ArchivoMatchStrategy;
 use App\Routing\ReservedMatchStrategy;
 use App\Routing\ByLengthMatchStrategy;
 use App\Routing\PlaceMatchStrategy;
@@ -17,7 +16,13 @@ use App\Routing\ConfigValidator;
  *
  *   - all digits  -> digit count selects the resource type
  *   - all letters -> place hierarchy (pais/region/ciudad)
- *   - exact word  -> a literal or reserved system path
+ *   - exact match -> a reserved system path (/0/, POS's /c/ and /p/)
+ *   - a file name -> robots.txt, sitemaps (see `archivos`)
+ *
+ * Every page has one canonical URL: lowercase, single slashes, ending
+ * in "/" (a file name ends in its extension instead). A GET for any
+ * other spelling is a 301 to it, and so is a path listed in a site's
+ * `redirect` map (URLs that moved).
  *
  * A second numeric segment, when present, selects a sub-action on
  * the matched resource. An action segment that doesn't map to
@@ -51,12 +56,51 @@ class Router
     protected function initializeStrategies(): void
     {
         $this->strategies = [
+            new ArchivoMatchStrategy(),       // File names (/robots.txt): before the others, a dot fits no other shape
             new ByLengthMatchStrategy(),      // Most common (numeric IDs: /1234/)
             new PlaceMatchStrategy(),          // Common (places: /mx/jalisco/)
-            new LiteralMatchStrategy(),        // Less common (exact paths)
-            new OrderMatchStrategy(),          // Specific (/order/)
-            new ReservedMatchStrategy(),       // Edge case (/0/)
+            new ReservedMatchStrategy(),       // System paths (/0/, /c/)
         ];
+    }
+
+    /**
+     * The canonical spelling of $uri (query string kept), or null when $uri
+     * already is canonical, or is something no redirect should point at.
+     * Only plain URL characters get a redirect: a "\" in a Location can read
+     * as "//" to a browser, which would send it to another host.
+     */
+    public static function canonica(string $uri): ?string
+    {
+        $corte = strpos($uri, '?');
+        $ruta = $corte === false ? $uri : substr($uri, 0, $corte);
+        $query = $corte === false ? '' : substr($uri, $corte);
+
+        $segmentos = array_values(array_filter(explode('/', $ruta), static fn(string $s): bool => $s !== ''));
+        foreach ($segmentos as $segmento) {
+            if (preg_match('/^[A-Za-z0-9._~%-]+$/', $segmento) !== 1) {
+                return null;
+            }
+        }
+
+        $canonica = '/' . strtolower(implode('/', $segmentos));
+        if ($segmentos !== [] && !str_contains(end($segmentos), '.')) {
+            $canonica .= '/';
+        }
+
+        return $canonica === $ruta ? null : $canonica . ($query === '?' ? '' : $query);
+    }
+
+    /** Where this request's path moved to, per the site's `redirect` map; null when it didn't. */
+    private function movida(): ?string
+    {
+        $destino = $this->config['redirect'][implode('/', $this->segments)] ?? null;
+        if ($destino === null) {
+            return null;
+        }
+
+        $uri = $_SERVER['REQUEST_URI'] ?? '/';
+        $corte = strpos($uri, '?');
+        return $destino . ($corte === false ? '' : substr($uri, $corte));
     }
 
     protected function parseSegments(string $uri): array
@@ -95,6 +139,16 @@ class Router
 
     public function dispatch(): string
     {
+        // Only GET/HEAD: a 301 turns a POST into a GET and would drop its body.
+        if (in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
+            $destino = $this->movida() ?? self::canonica($_SERVER['REQUEST_URI'] ?? '/');
+            if ($destino !== null) {
+                http_response_code(301);
+                header("Location: {$destino}");
+                return '';
+            }
+        }
+
         $match = $this->resolve();
 
         if (!$match) {
@@ -151,7 +205,67 @@ class Router
     protected function handleNotFound(): string
     {
         http_response_code(404);
-        return '<h1>404 - Pagina no encontrada</h1>';
+        $pista = $this->pista();
+
+        return '<h1>404 - Página no encontrada</h1>' . ($pista === null ? '' : "\n<p>{$pista}</p>");
+    }
+
+    /**
+     * Why this path matches nothing, read from its shape and the route config
+     * alone (HTML, already escaped). It never looks at the database: a hint
+     * must not tell a missing id from a private one.
+     */
+    private function pista(): ?string
+    {
+        $primero = $this->segments[0] ?? '';
+        $porLargo = $this->config['by_length'] ?? [];
+
+        if (ctype_digit($primero)) {
+            $entrada = $porLargo[strlen($primero)] ?? null;
+            if ($entrada === null) {
+                return $this->pistaDeLargo($primero, $porLargo);
+            }
+
+            $acciones = $entrada['actions'] ?? [];
+            $lista = implode(', ', array_map(
+                static fn(int $codigo, string $metodo): string => "{$codigo} {$metodo}",
+                array_keys($acciones),
+                $acciones
+            ));
+            $tipo = htmlspecialchars($entrada['type']);
+
+            return count($this->segments) > 2 || $acciones === []
+                ? "Una URL de {$tipo} admite " . ($acciones === [] ? 'solo el id, sin acciones.' : "una sola acción: {$lista}.")
+                : "{$tipo} no tiene esa acción. Sus acciones: {$lista}.";
+        }
+
+        return match (true) {
+            isset($this->config['place']) && preg_match('/^[a-z]{2}$/', $primero) === 1
+                => 'Un lugar es país (2 letras), región y ciudad (1-3 letras cada una), y como mucho una acción: /mx/jal/gdl/1/.',
+            preg_match('/^[a-z]{3}$/', $primero) === 1
+                => 'Un código de 3 letras es un idioma, y el idioma va en el subdominio (eng.…, spa.…), no en la ruta.',
+            preg_match('/^[a-z]{4,}$/', $primero) === 1
+                => 'Las URLs de este sitio no llevan palabras. Para buscar, usa el buscador.',
+            preg_match('/^[a-z]$/', $primero) === 1 => 'No existe esa función.',
+            default => null,
+        };
+    }
+
+    /** An id whose digit count no type uses: say so, and which padded ids it could have meant. */
+    private function pistaDeLargo(string $id, array $porLargo): string
+    {
+        $largo = strlen($id);
+        $opciones = [];
+        foreach ($porLargo as $ancho => $entrada) {
+            // A random code (an order's) padded from a guess is never the right one: don't suggest it.
+            if ($ancho > $largo && ($entrada['sugerir'] ?? true)) {
+                $url = '/' . str_pad($id, $ancho, '0', STR_PAD_LEFT) . '/';
+                $opciones[] = '<a href="' . $url . '">' . $url . '</a> (' . htmlspecialchars($entrada['type']) . ')';
+            }
+        }
+
+        $texto = "Ningún tipo usa {$largo} dígitos: cada tipo tiene un ancho fijo, con ceros a la izquierda.";
+        return $opciones === [] ? $texto : $texto . ' ¿Quisiste decir ' . implode(', ', $opciones) . '?';
     }
 
     /**

@@ -1,0 +1,70 @@
+[
+  {
+    "country_code": "BN",
+    "country_name": "Brunei",
+    "region": "asia_pacific",
+    "law_name": "Emergency (Copyright) Order, 1999",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity (false-attribution right: 20 years after death)",
+    "orphan_works": "Unpublished anonymous works: designated authority may act for unknown author (s. 173)",
+    "digital_protection": "s.203(2): making/importing devices to circumvent copy-protection and removing/altering electronic RMI unlawful; s.203A offence, fine up to $250,000 or 3 yrs",
+    "fair_use_exceptions": "Fair dealing exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Attorney General's Chambers (International Affairs Division)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/481",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "orphan_works": {
+        "url": "https://www.wipo.int/tk/en/databases/tklaws/articles/article_0120.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://www.aseanip.org/docs/default-source/asean-ip-publications/asean-ipr-enforcement-handbook_with-isbn-and-logo-final.pdf?sfvrsn=ebda9515_1",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+        "to": "s.203(2): making/importing devices to circumvent copy-protection and removing/altering electronic RMI unlawful; s.203A offence, fine up to $250,000 or 3 yrs"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "Unpublished anonymous works: designated authority may act for unknown author (s. 173)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

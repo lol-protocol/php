@@ -1,0 +1,97 @@
+[
+  {
+    "country_code": "BW",
+    "country_name": "Botswana",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act 2024 (DPA)",
+    "jurisdiction": "Information and Data Protection Commission",
+    "enactment_date": "2024-10-29",
+    "effective_date": "2025-01-14",
+    "scope": "Individuals in Botswana",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Consent, purpose limitation, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "s.23 storage limitation: identifiable no longer than necessary for purpose; longer for public-interest archiving, research or statistics with safeguards",
+    "enforcement_authority": "Information and Data Protection Commission",
+    "penalties_range": "Up to BWP 50M fine and/or imprisonment",
+    "exemptions": "National security; household use",
+    "deceased_data": "",
+    "research_exemption": "Part VII: processing for archiving, research or statistical purposes (cl. 35 of 2024 Bill); data subject may object unless public interest",
+    "genetic_data": "Specific conditions for processing genetic and biometric personal data (s. 25, per secondary source) (unconfirmed)",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=BW&t=law",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Replaced 2018 Act (never operative); start date disputed: 2024-10-29 vs 2025-01-14",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://misa.org/blog/new-botswana-data-protection-act-progressive-step-to-a-more-secure-digital-environment/",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "effective_date": {
+        "url": "https://www.michalsons.com/blog/botswanas-data-protection-act-grace-period-extended/60775",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://www.studocu.com/row/document/university-of-botswana/intellectual-property-i/data-protection-act-2024-botswana-government-gazette-a137/143960215",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://www.michalsons.com/wp-content/uploads/2025/02/Botswana-Data-Protection-Bill-2024.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://compliance.theartofservice.com/controls/botswana-data-protection-act-2024/bw-dpa-s25",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Specific conditions for processing genetic and biometric personal data (s. 25, per secondary source) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Part VII: processing for archiving, research or statistical purposes (cl. 35 of 2024 Bill); data subject may object unless public interest"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "s.23 storage limitation: identifiable no longer than necessary for purpose; longer for public-interest archiving, research or statistics with safeguards"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "effective_date",
+        "from": "2024-10-29",
+        "to": "2025-01-14"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "enactment_date",
+        "from": "2024-08-19",
+        "to": "2024-10-29"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

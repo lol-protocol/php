@@ -15,9 +15,9 @@
     <path d="M15 31L47 48" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M8.6 35.8L10.4 38.2A8 8 0 0 0 23.2 28.6L21.4 26.2A8 8 0 0 0 8.6 35.8Z" fill="#0D5F2B"/><circle cx="15" cy="31" r="8" fill="url(#grad_action_share_green)"/></g>
-    <g><path d="M43.3 16.8L44.5 18.4A4.6 4.6 0 0 0 51.9 12.8L50.7 11.2A4.6 4.6 0 0 0 43.3 16.8Z" fill="#0D5F2B"/><circle cx="47" cy="14" r="4.6" fill="url(#grad_action_share_green)"/></g>
-    <g><path d="M47.3 33.8L48.5 35.4A4.6 4.6 0 0 0 55.9 29.8L54.7 28.2A4.6 4.6 0 0 0 47.3 33.8Z" fill="#0D5F2B"/><circle cx="51" cy="31" r="4.6" fill="url(#grad_action_share_green)"/></g>
-    <g><path d="M43.3 50.8L44.5 52.4A4.6 4.6 0 0 0 51.9 46.8L50.7 45.2A4.6 4.6 0 0 0 43.3 50.8Z" fill="#0D5F2B"/><circle cx="47" cy="48" r="4.6" fill="url(#grad_action_share_green)"/></g>
+    <g><path d="M8.78 36.04L10.4 38.2A8 8 0 0 0 23.2 28.6L21.58 26.44A8 8 0 0 0 8.78 36.04Z" fill="#0D5F2B"/><circle cx="15" cy="31" r="8" fill="url(#grad_action_share_green)"/></g>
+    <g><path d="M43.5 17L44.52 18.36A4.6 4.6 0 0 0 51.88 12.84L50.86 11.48A4.6 4.6 0 0 0 43.5 17Z" fill="#0D5F2B"/><circle cx="47" cy="14" r="4.6" fill="url(#grad_action_share_green)"/></g>
+    <g><path d="M47.5 34L48.52 35.36A4.6 4.6 0 0 0 55.88 29.84L54.86 28.48A4.6 4.6 0 0 0 47.5 34Z" fill="#0D5F2B"/><circle cx="51" cy="31" r="4.6" fill="url(#grad_action_share_green)"/></g>
+    <g><path d="M43.5 51L44.52 52.36A4.6 4.6 0 0 0 51.88 46.84L50.86 45.48A4.6 4.6 0 0 0 43.5 51Z" fill="#0D5F2B"/><circle cx="47" cy="48" r="4.6" fill="url(#grad_action_share_green)"/></g>
   </g>
 </svg>

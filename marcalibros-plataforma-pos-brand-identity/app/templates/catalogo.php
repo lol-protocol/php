@@ -3,7 +3,11 @@
  * @var list<array{category: array<string, mixed>, items: list<array<string, string>>}> $groups
  * @var array<string, list<array<string, mixed>>> $families
  * @var array<string, mixed>|null $current
- * @var list<string> $motifs
+ * @var string|null $heading Título de la lista (categoría o resultados de un filtro); null en la portada.
+ * @var string|null $lead
+ * @var array{motivo: string|null, color: string|null} $filters
+ * @var array<string, array<string, string>> $motifOptions Motivos agrupados por categoría.
+ * @var array<string, string> $colorOptions color => nombre para mostrar
  * @var list<array<string, string>> $items
  * @var int $page
  * @var int $pages
@@ -13,9 +17,9 @@
  * @var string|null $notice
  */
 $familyTitles = ['movimiento literario' => 'Movimientos literarios', 'tipo de texto' => 'Tipos de texto'];
-$familySingular = ['movimiento literario' => 'de este movimiento literario', 'tipo de texto' => 'para este tipo de texto'];
 $slug = $current === null ? null : (string) $current['slug'];
-$pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'pagina' => $n > 1 ? $n : null]);
+$filtering = $filters['motivo'] !== null || $filters['color'] !== null;
+$pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'motivo' => $filters['motivo'], 'color' => $filters['color'], 'pagina' => $n > 1 ? $n : null]);
 ?>
 <div class="envoltura catalogo">
   <aside class="indice">
@@ -23,13 +27,13 @@ $pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'pagina
       <summary>Categorías</summary>
       <nav aria-label="Categorías">
         <ul class="indice__lista">
-          <li><a href="/"<?= $slug === null ? ' aria-current="page"' : '' ?>><span>Todas</span><span class="puntos" aria-hidden="true"></span><span class="cuenta"><?= (int) $catalogTotal ?></span></a></li>
+          <li><a href="/"<?= $slug === null && !$filtering ? ' aria-current="page"' : '' ?>><span>Todas</span><span class="puntos" aria-hidden="true"></span><span class="cuenta"><?= (int) $catalogTotal ?></span></a></li>
         </ul>
 <?php foreach ($families as $family => $categories): ?>
         <h2 class="indice__grupo"><?= $this->e($familyTitles[$family] ?? ucfirst($family)) ?></h2>
         <ul class="indice__lista">
 <?php foreach ($categories as $category): ?>
-          <li><a href="<?= $this->e($this->url('/', ['categoria' => (string) $category['slug']])) ?>"<?= $slug === $category['slug'] ? ' aria-current="page"' : '' ?>><span><?= $this->e((string) $category['nombre']) ?></span><span class="puntos" aria-hidden="true"></span><span class="cuenta"><?= (int) $category['total'] ?></span></a></li>
+          <li><a href="<?= $this->e($this->url('/', ['categoria' => (string) $category['slug']])) ?>"<?= $slug === $category['slug'] && !$filtering ? ' aria-current="page"' : '' ?>><span><?= $this->e((string) $category['nombre']) ?></span><span class="puntos" aria-hidden="true"></span><span class="cuenta"><?= (int) $category['total'] ?></span></a></li>
 <?php endforeach ?>
         </ul>
 <?php endforeach ?>
@@ -42,7 +46,41 @@ $pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'pagina
     <p class="aviso" role="status"><?= $this->e($notice) ?></p>
 <?php endif ?>
 
-<?php if ($current === null): ?>
+    <form class="filtro" method="get" action="/" role="search" aria-label="Buscar marcalibros">
+<?php if ($slug !== null): ?>
+      <input type="hidden" name="categoria" value="<?= $this->e($slug) ?>">
+<?php endif ?>
+      <p class="filtro__campo">
+        <label for="filtro-motivo">Motivo</label>
+        <select id="filtro-motivo" name="motivo">
+          <option value="">Todos</option>
+<?php foreach ($motifOptions as $categoryName => $options): ?>
+          <optgroup label="<?= $this->e($categoryName) ?>">
+<?php foreach ($options as $value => $name): ?>
+            <option value="<?= $this->e($value) ?>"<?= $filters['motivo'] === $value ? ' selected' : '' ?>><?= $this->e($name) ?></option>
+<?php endforeach ?>
+          </optgroup>
+<?php endforeach ?>
+        </select>
+      </p>
+      <p class="filtro__campo">
+        <label for="filtro-color">Color</label>
+        <select id="filtro-color" name="color">
+          <option value="">Todos</option>
+<?php foreach ($colorOptions as $value => $name): ?>
+          <option value="<?= $this->e($value) ?>"<?= $filters['color'] === $value ? ' selected' : '' ?>><?= $this->e($name) ?></option>
+<?php endforeach ?>
+        </select>
+      </p>
+      <p class="filtro__acciones">
+        <button class="boton" type="submit">Filtrar<?= $slug !== null ? '<span class="solo-lectores"> en ' . $this->e((string) $current['nombre']) . '</span>' : '' ?></button>
+<?php if ($filtering): ?>
+        <a href="<?= $this->e($this->url('/', ['categoria' => $slug])) ?>">Quitar filtros</a>
+<?php endif ?>
+      </p>
+    </form>
+
+<?php if ($heading === null): ?>
     <header class="encabezado">
       <h1>Elige un marcalibro</h1>
       <p class="lead"><?= (int) $total ?> diseños en <?= (int) $categoryCount ?> categorías. Descarga el que te guste en SVG o crea uno con tu propia imagen.</p>
@@ -74,12 +112,16 @@ $pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'pagina
 
 <?php else: ?>
     <header class="encabezado">
-      <h1><?= $this->e((string) $current['nombre']) ?></h1>
-      <p class="lead"><?= (int) $total ?> marcalibros <?= $this->e($familySingular[(string) $current['familia']] ?? '') ?>. Motivos: <?= $this->e(implode(', ', array_map('mb_strtolower', $motifs))) ?>.</p>
+      <h1><?= $this->e($heading) ?></h1>
+      <p class="lead"><?= $this->e((string) $lead) ?></p>
+<?php if ($items !== []): ?>
+      <p class="ayuda"><a href="<?= $this->e($this->url('/imprimir', ['categoria' => $slug, 'motivo' => $filters['motivo'], 'color' => $filters['color'], 'pagina' => $page > 1 ? $page : null])) ?>">Imprimir esta página</a>, en tamaño real y con guías de corte.</p>
+<?php endif ?>
     </header>
 
+<?php if ($items !== [] || !$filtering): ?>
     <ul class="rejilla">
-<?php if ($page === 1): ?>
+<?php if ($page === 1 && !$filtering): ?>
       <li class="celda celda--nueva">
         <a href="/crear">
           <span class="tira tira--nueva"><span>Crea el tuyo</span></span>
@@ -96,9 +138,10 @@ $pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'pagina
       </li>
 <?php endforeach ?>
     </ul>
+<?php endif ?>
 
 <?php if ($pages > 1): ?>
-    <nav class="paginas" aria-label="Páginas de <?= $this->e((string) $current['nombre']) ?>">
+    <nav class="paginas" aria-label="Páginas de <?= $this->e($heading) ?>">
 <?php if ($page > 1): ?>
       <a rel="prev" href="<?= $this->e($pageUrl($page - 1)) ?>">Anterior</a>
 <?php else: ?>

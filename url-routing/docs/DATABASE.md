@@ -82,15 +82,38 @@ php bin/migrate.php pos --seed         # aplica y carga datos de demostración (
 - **Las fechas de una persona salen de sus sucesos.** Nacimiento y defunción
   son sucesos (`sucesos` + `suceso_participantes`), no columnas duplicadas en
   `personas` que podrían contradecirse.
+- **Si una persona vive se deduce de esas mismas fechas** (sin defunción y
+  nacida hace menos de 110 años) y `personas.viva` (nullable) lo corrige en
+  cualquier sentido; se usa para ocultarla a quien no es el propietario
+  (ver [`ACCESO.md`](./ACCESO.md)). No hay una columna «vive» calculada: se
+  decide al consultar, con las consultas de `Support/Privacidad.php`.
 - **Padre y madre viven en `personas`** (`padre_id`, `madre_id`), así la
   ascendencia y la descendencia son una sola consulta `WITH RECURSIVE`, con un
   tope de generaciones que además protege de ciclos en datos mal cargados.
 - **Los lugares se identifican por su ruta de códigos** (`mx/jal/gdl`), que es
   exactamente la URL; consultar un lugar incluye todo lo que está debajo.
+- **Los listados `/b/…` se leen en el orden de un índice.** Cada página muestra
+  50 filas en un orden fijo (personas por apellidos y nombres; sucesos y
+  registros por fecha). `004_indices_de_listados.sql` crea un índice en
+  exactamente ese orden, para que la base lea en orden y se detenga en las
+  primeras 50 filas que cumplen el filtro de privacidad, en vez de ordenar la
+  tabla entera. `personas_apellidos_idx` (de `001`) queda como prefijo del
+  nuevo y podría quitarse; no se quita para que la migración solo agregue.
 - **El dinero se guarda en centavos enteros** (`INTEGER`), nunca en coma flotante.
 - **Las líneas de una orden copian nombre y precio** del producto al momento de
   la compra: la orden debe seguir mostrando lo que se pagó aunque el producto
   cambie después.
+- **La dirección de envío se copia a la orden y no se borra sola.**
+  `ordenes.direccion_envio` guarda la dirección tal como se usó, por la misma
+  razón que las líneas copian el precio: la orden, la boleta y una garantía o
+  devolución tienen que mostrar adónde se mandó. Se conserva mientras exista la
+  orden, sin purga automática: lo decidió la persona a cargo, así que no se
+  agrega un borrado por plazo sin consultarlo. La libreta `direcciones` es del
+  cliente y dura lo que el cliente quiera.
+  Desde el 1 de diciembre de 2026 rige la Ley 21.719 (ver
+  `privacy-laws/countries/cl/`): el titular puede pedir acceso o supresión, y la
+  política de privacidad del POS tiene que decir que estas direcciones se
+  guardan mientras exista la orden y por qué.
 
 ## Tests
 
@@ -108,9 +131,24 @@ TEST_PG_USER=routing_test TEST_PG_PASSWORD=routing_test \
 
 ## Limitaciones conocidas
 
-- La búsqueda usa `LOWER(...) LIKE`: en SQLite, `LOWER` solo pasa a minúsculas
-  ASCII, así que buscar «álvarez» no encuentra «Álvarez» (en PostgreSQL sí).
+- Un cliente no puede borrar sus direcciones ni su cuenta desde el sitio: la
+  vista `/0/4/` sólo las lista. Un pedido de supresión (Ley 21.719) se atiende
+  a mano en la base: se borran sus filas de `direcciones` y, si no hay una
+  obligación legal de conservarla, la `direccion_envio` de sus órdenes se
+  reemplaza por `NULL` (la columna lo admite; la orden y sus líneas quedan).
+
+- La búsqueda ignora mayúsculas y acentos (`Repository::sinAcentos()`): compara
+  `TRANSLATE(LOWER(columna), 'áéí…', 'aei…') LIKE ?` contra el texto normalizado
+  igual, así que «garcia» encuentra «García» y «ÁLVAREZ» encuentra «Álvarez».
+  `TRANSLATE` es de PostgreSQL; en SQLite, `Database` registra una función
+  equivalente al conectar, así que el SQL es el mismo en los dos motores.
   Para búsqueda seria en genealogía conviene `pg_trgm` o búsqueda de texto
   completo en PostgreSQL, en una migración específica de ese motor.
 - `LIKE '%texto%'` no usa índices; con millones de personas hará falta un
-  índice de trigramas (PostgreSQL) o una tabla de búsqueda aparte.
+  índice de trigramas (PostgreSQL) o una tabla de búsqueda aparte. Con texto, la
+  búsqueda recorre en orden hasta juntar 50 coincidencias: una palabra frecuente
+  termina enseguida, una rara las busca en todo el catálogo.
+- La búsqueda de sucesos en PostgreSQL no siempre usa el índice de
+  `sucesos_fecha_idx`: el plan depende del tamaño de las tablas y de sus
+  estadísticas (con 20.000 personas lee la tabla entera; con 80.000 lo usa para
+  el visitante). Las listas de un lugar no cambiaron.

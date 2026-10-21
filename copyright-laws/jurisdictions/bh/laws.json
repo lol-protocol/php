@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "BH",
+    "country_name": "Bahrain",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 22 of 2006 on the Protection of Copyright and Neighboring Rights (as amended up to Law No. 5 of 2014)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic rights",
+    "moral_rights": "Art. 5: perpetual, imprescriptible and inalienable rights of attribution, anonymity/pseudonym and integrity (bar distortion harming honour/reputation)",
+    "orphan_works": "Not specified",
+    "digital_protection": "TPM provisions adopted under US FTA (IIPA flags compliance gaps) (unconfirmed)",
+    "fair_use_exceptions": "Art. 19(1) single private copy subject to three-step test; Art. 20(1) quotation for legitimate purpose; Art. 20(2) teaching illustration by non-profit bodies",
+    "registration_required": "No (voluntary registration with the Copyright Protection Office)",
+    "enforcement_body": "Copyright Protection Office, Ministry of Information",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/19867",
+    "notes": "Term: some sources give life + 50 (probably the superseded 1993 law); recent summaries give life + 70",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bh/bh030en.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://www.iipa.org/files/uploads/2017/12/2007SPEC301BAHRAIN.pdf",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Art. 19(1) single private copy subject to three-step test; Art. 20(1) quotation for legitimate purpose; Art. 20(2) teaching illustration by non-profit bodies"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Art. 5: perpetual, imprescriptible and inalienable rights of attribution, anonymity/pseudonym and integrity (bar distortion harming honour/reputation)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "TPM provisions adopted under US FTA (IIPA flags compliance gaps) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-09",
+        "field": "term_of_protection",
+        "from": "Author's life + 70 years (some sources say life + 50 years)",
+        "to": "Author's life + 70 years"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/WCT/WPPT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -6,6 +6,8 @@
  * @var list<string> $scripts
  * @var string       $section
  * @var string       $description
+ * @var array{title: string, description: string, url: string, image: string, width: int, height: int}|null $share
+ * @var string|null  $publicUrl      Dirección pública del sitio (MARCALIBROS_PUBLIC_URL), si se configuró.
  * @var int|null     $retentionDays  Lo aporta View como dato compartido.
  */
 $nav = ['catalogo' => ['/', 'Catálogo'], 'crear' => ['/crear', 'Crear el mío']];
@@ -22,7 +24,21 @@ $nav = ['catalogo' => ['/', 'Catálogo'], 'crear' => ['/crear', 'Crear el mío']
 <?php if ($private): ?>
 <meta name="robots" content="noindex, nofollow">
 <?php endif ?>
-<meta name="color-scheme" content="light">
+<?php if ($share !== null && !$private): ?>
+<meta property="og:site_name" content="Marcalibros">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="<?= $this->e($share['title']) ?>">
+<meta property="og:description" content="<?= $this->e($share['description']) ?>">
+<?php if (isset($publicUrl)): ?>
+<meta property="og:url" content="<?= $this->e($publicUrl . $share['url']) ?>">
+<meta property="og:image" content="<?= $this->e($publicUrl . $share['image']) ?>">
+<meta property="og:image:width" content="<?= (int) $share['width'] ?>">
+<meta property="og:image:height" content="<?= (int) $share['height'] ?>">
+<meta name="twitter:card" content="summary_large_image">
+<?php endif ?>
+<?php endif ?>
+<meta name="color-scheme" content="light dark">
 <link rel="icon" href="/marca.svg" type="image/svg+xml">
 <link rel="stylesheet" href="<?= $this->e($this->asset('app.css')) ?>">
 </head>

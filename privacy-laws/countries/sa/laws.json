@@ -2,20 +2,113 @@
   {
     "country_code": "SA",
     "country_name": "Saudi Arabia",
+    "region": "middle_east_africa",
     "law_name": "Personal Data Protection Law",
     "jurisdiction": "PDPL Authority",
-    "enactment_date": "2021-12-21",
-    "effective_date": "2023-09-23",
+    "enactment_date": "2021-09-16",
+    "effective_date": "2023-09-14",
     "scope": "Saudi Residents",
     "applies_to": "All entities",
     "key_requirements": "Consent & transparency",
     "data_categories": "Personal data",
     "retention_period": "Necessary period",
     "enforcement_authority": "Saudi PDPL Authority",
-    "penalties_range": "Fines & compliance orders",
+    "penalties_range": "Up to SAR 5M (doubled for repeat); sensitive-data disclosure: up to SAR 3M and 2 years prison",
     "exemptions": "Government functions",
-    "website_url": "https://www.pdpl.gov.sa/",
+    "deceased_data": "Covered: definition of personal data includes a deceased person's data if it can identify them or a family member (art. 1)",
+    "research_exemption": "Collection/processing for scientific, research or statistical purposes without consent if data is non-identifying, identifiers destroyed, or required by law (art. 27; Impl. Regs art. 30)",
+    "genetic_data": "Sensitive data (genetic information listed): explicit consent or specific legal exception required; legitimate interest not available",
+    "website_url": "https://sdaia.gov.sa/",
     "language": "Arabic/English",
-    "notes": "Middle East region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "enactment_date": {
+        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/saudi-arabia-new-amendments-have-been-introduced-to-the-personal-data-protection-law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://akingump.com/en/insights/alerts/kingdom-of-saudi-arabia-approves-amendments-to-personal-data-protection-law-and-confirms-september-2023-effective-date",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=SA&t=law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.hsfkramer.com/insights/2023-11/saudi-arabias-personal-data-protection-law-%E2%80%93-what-you-need-to-know",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://myctrl.tools/frameworks/sa-pdpl/article-27",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.hsfkramer.com/insights/2023-11/saudi-arabias-personal-data-protection-law-%E2%80%93-what-you-need-to-know",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data (genetic information listed): explicit consent or specific legal exception required; legitimate interest not available"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Collection/processing for scientific, research or statistical purposes without consent if data is non-identifying, identifiers destroyed, or required by law (art. 27; Impl. Regs art. 30)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Covered: definition of personal data includes a deceased person's data if it can identify them or a family member (art. 1)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2023-09-23",
+        "to": "2023-09-14"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2021-12-21",
+        "to": "2021-09-16"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Fines & compliance orders",
+        "to": "Up to SAR 5M (doubled for repeat); sensitive-data disclosure: up to SAR 3M and 2 years prison"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Middle East region",
+        "to": ""
+      },
+      {
+        "date": "2026-10-11",
+        "field": "website_url",
+        "from": "https://www.pdpl.gov.sa/",
+        "to": "https://sdaia.gov.sa/"
+      }
+    ]
   }
 ]

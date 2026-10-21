@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array<string, string> $item
+ * @var bool $hasPng Si se generaron sus PNG (generator/exportar_png.py).
  * @var list<string> $colors
  * @var list<string> $authors
  * @var string|null $previous
@@ -35,9 +36,13 @@ $backUrl = $this->url('/', ['categoria' => $item['categorySlug'], 'pagina' => $l
 
     <section aria-labelledby="descarga">
       <h2 id="descarga">Descargar</h2>
-      <p>Archivo SVG: se ve nítido a cualquier tamaño, y pesa menos de 10 KB. La proporción es 7:1 (1400 × 200 px de base).</p>
+      <p>Archivo SVG: se ve nítido a cualquier tamaño, y pesa menos de 10 KB. La proporción es 7:1 (1400 × 200 px de base).<?= $hasPng ? ' También en PNG, para programas que no abren SVG.' : '' ?></p>
       <p class="acciones">
         <a class="boton" href="/catalogo/<?= $this->e($item['id']) ?>.svg?descargar=1" download>Descargar SVG</a>
+<?php if ($hasPng): ?>
+        <a class="boton boton--claro" href="/catalogo/<?= $this->e($item['id']) ?>.png?descargar=1" download>PNG 1400 × 200</a>
+        <a class="boton boton--claro" href="/catalogo/<?= $this->e($item['id']) ?>@2x.png?descargar=1" download>PNG 2800 × 400</a>
+<?php endif ?>
         <a class="boton boton--claro" href="/crear">Crear uno con mi imagen</a>
       </p>
     </section>

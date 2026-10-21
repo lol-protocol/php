@@ -71,6 +71,52 @@ final class CatalogTest extends ImageTestCase
         $this->assertSame([], $this->catalog->byCategory('no-existe'));
     }
 
+    public function testSearchCombinesCategoryMotifAndColor(): void
+    {
+        $this->assertSame($this->catalog->all(), $this->catalog->search());
+        $this->assertSame($this->catalog->byCategory('leyes'), $this->catalog->search('leyes'));
+
+        $lighthouses = $this->catalog->search(null, 'faro');
+        $this->assertNotEmpty($lighthouses);
+        foreach ($lighthouses as $entry) {
+            $this->assertSame('faro', $entry['motivo']);
+        }
+
+        $ochre = $this->catalog->search('poesia', null, '#c98b3a');
+        $this->assertNotEmpty($ochre);
+        foreach ($ochre as $entry) {
+            $this->assertSame('poesia', $entry['categoria_slug']);
+            $this->assertContains('#C98B3A', array_merge([$entry['fondo']], $entry['colores']));
+        }
+        $this->assertLessThan(count($this->catalog->byCategory('poesia')), count($ochre));
+        $this->assertSame([], $this->catalog->search('teatro', 'torres'));
+    }
+
+    public function testListsEveryMotifWithItsName(): void
+    {
+        $motifs = $this->catalog->motifs();
+        $this->assertCount(108, $motifs, '27 categorías con 4 motivos cada una.');
+        $this->assertSame('Pájaros en el cable', $motifs['pajaros_en_cable']);
+        $this->assertTrue($this->catalog->hasMotif('faro'));
+        $this->assertFalse($this->catalog->hasMotif('no_existe'));
+    }
+
+    public function testModernismIsSplitAndKeepsItsOldSlug(): void
+    {
+        $this->assertSame('Modernismo hispanoamericano', $this->catalog->get('mb-modernismo-01')['categoria']);
+        $this->assertSame('Modernismo anglosajón', $this->catalog->get('mb-modernismo-anglosajon-01')['categoria']);
+        $this->assertContains('Rubén Darío', $this->catalog->get('mb-modernismo-01')['autores_inspiracion']);
+        $this->assertContains('Virginia Woolf', $this->catalog->get('mb-modernismo-anglosajon-01')['autores_inspiracion']);
+    }
+
+    public function testHasTheNewTextTypes(): void
+    {
+        foreach (['cuentos', 'poesia', 'historia', 'periodismo', 'diccionarios', 'discursos'] as $slug) {
+            $this->assertCount(50, $this->catalog->byCategory($slug), $slug);
+        }
+        $this->assertSame(1350, $this->catalog->count());
+    }
+
     public function testKeepsMagicalRealismAmongTheCategories(): void
     {
         $this->assertTrue($this->catalog->hasCategory('realismo-magico'));

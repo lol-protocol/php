@@ -1,0 +1,91 @@
+[
+  {
+    "country_code": "RW",
+    "country_name": "Rwanda",
+    "region": "middle_east_africa",
+    "law_name": "Law Relating to the Protection of Personal Data and Privacy (Law No. 058/2021)",
+    "jurisdiction": "National Cyber Security Authority (NCSA)",
+    "enactment_date": "2021-10-13",
+    "effective_date": "2021-10-15",
+    "scope": "Individuals in Rwanda",
+    "applies_to": "Public & private controllers and processors",
+    "key_requirements": "Lawful processing principles, DPO and impact assessments, breach notification, cross-border transfer rules",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Art. 52: keep data until processing purposes are fulfilled; longer if authorised by law, required by contract or consent; retention schedule required",
+    "enforcement_authority": "National Cyber Security Authority (NCSA)",
+    "penalties_range": "Admin fine RWF 2M-5M or 1% global turnover; criminal fines up to 5% of turnover; up to 7 years' imprisonment",
+    "exemptions": "National security; household use",
+    "deceased_data": "Data subject may designate an heir to personal data by will; heir gets full or restricted rights over processing after death (data not subject to succession); article not confirmed",
+    "research_exemption": "Research purposes are a lawful basis for processing, subject to authorisation by the relevant institution; specific article not confirmed",
+    "genetic_data": "Sensitive personal data includes genetic information (art. 3(2)); stricter conditions for processing sensitive data",
+    "website_url": "https://hoganlovells.com/en/publications/key-features-of-the-new-rwandan-data-protection-law",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Two-year transition for existing controllers ended 15 Oct 2023",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/news/rwanda-data-protection-law-published-official-gazette",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://dpo.gov.rw/faqs",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://hoganlovells.com/en/publications/key-features-of-the-new-rwandan-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://www.dlapiperdataprotection.com/?c=RW&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=RW&t=law",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic information (art. 3(2)); stricter conditions for processing sensitive data"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Research purposes are a lawful basis for processing, subject to authorisation by the relevant institution; specific article not confirmed"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Data subject may designate an heir to personal data by will; heir gets full or restricted rights over processing after death (data not subject to succession); article not confirmed"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 52: keep data until processing purposes are fulfilled; longer if authorised by law, required by contract or consent; retention schedule required"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -1,0 +1,75 @@
+[
+  {
+    "country_code": "CY",
+    "country_name": "Cyprus",
+    "region": "europe",
+    "law_name": "Law Providing for the Protection of Natural Persons with regard to the Processing of Personal Data and for the Free Movement of such Data (Law 125(I)/2018)",
+    "jurisdiction": "Commissioner for Personal Data Protection",
+    "enactment_date": "2018-07-31",
+    "effective_date": "2018-07-31",
+    "scope": "Individuals in Cyprus",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, lawful basis and data subject rights, Commissioner's powers",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Office of the Commissioner for Personal Data Protection",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "deceased_data": "No additional national rules on deceased persons' data; GDPR treated as not applying to them",
+    "research_exemption": "Section 31: safeguards for processing for archiving in the public interest, scientific or historical research and statistics (GDPR art. 89) (unconfirmed)",
+    "genetic_data": "Genetic data defined as inherited or acquired genetic characteristics; processing genetic and biometric data for health and life insurance prohibited unless based on consent",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=CY&t=law",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "Repealed Law 138(I)/2001; dated by Government Gazette publication on 31 July 2018",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-cyprus",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://www.offlist.me/what-is-cyprus-law-125-2018",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.harriskyriakides.law/insights/news/cyprus-data-protection-law-125-i-2018/",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data defined as inherited or acquired genetic characteristics; processing genetic and biometric data for health and life insurance prohibited unless based on consent"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Section 31: safeguards for processing for archiving in the public interest, scientific or historical research and statistics (GDPR art. 89) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No additional national rules on deceased persons' data; GDPR treated as not applying to them"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

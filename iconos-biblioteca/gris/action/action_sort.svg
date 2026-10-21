@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_sort_indigo" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_sort_indigo_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8F8F8F"/>
       <stop offset="1" stop-color="#5B5B5B"/>
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.1" cy="47" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="32.1" cy="46.96" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M7.4 37.2L9.3 39.8A12 12 0 0 0 28.5 25.4L26.6 22.8A12 12 0 0 0 7.4 37.2Z" fill="#353535"/><circle cx="17" cy="30" r="12" fill="url(#grad_action_sort_indigo)"/></g>
-    <g><path d="M34 34.5L35.6 36.6A7.5 7.5 0 0 0 47.6 27.6L46 25.5A7.5 7.5 0 0 0 34 34.5Z" fill="#353535"/><circle cx="40" cy="30" r="7.5" fill="url(#grad_action_sort_indigo)"/></g>
-    <g><path d="M50.8 32.4L52 34A4 4 0 0 0 58.4 29.2L57.2 27.6A4 4 0 0 0 50.8 32.4Z" fill="#353535"/><circle cx="54" cy="30" r="4" fill="url(#grad_action_sort_indigo)"/></g>
+    <g><path d="M7.58 37.44L9.32 39.76A12 12 0 0 0 28.52 25.36L26.78 23.04A12 12 0 0 0 7.58 37.44Z" fill="#353535"/><circle cx="17" cy="30" r="12" fill="url(#grad_action_sort_indigo_g)"/></g>
+    <g><path d="M34.18 34.74L35.56 36.58A7.5 7.5 0 0 0 47.56 27.58L46.18 25.74A7.5 7.5 0 0 0 34.18 34.74Z" fill="#353535"/><circle cx="40" cy="30" r="7.5" fill="url(#grad_action_sort_indigo_g)"/></g>
+    <g><path d="M50.98 32.64L52 34A4 4 0 0 0 58.4 29.2L57.38 27.84A4 4 0 0 0 50.98 32.64Z" fill="#353535"/><circle cx="54" cy="30" r="4" fill="url(#grad_action_sort_indigo_g)"/></g>
   </g>
 </svg>

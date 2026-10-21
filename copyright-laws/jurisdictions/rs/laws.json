@@ -1,0 +1,59 @@
+[
+  {
+    "country_code": "RS",
+    "country_name": "Serbia",
+    "region": "europe",
+    "law_name": "Law on Copyright and Related Rights (Official Gazette of RS No. 104/2009, as amended to 66/2019)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous/pseudonymous works: 70 years from lawful publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Attribution & integrity (heirs may assert after death)",
+    "orphan_works": "Provisions on anonymous and orphan works (2026 draft law would align with Directive 2012/28/EU)",
+    "digital_protection": "Technological protection measures; holders must enable lawful uses (2012 amendments)",
+    "fair_use_exceptions": "Closed list: private non-commercial copying, quotation, teaching, libraries, news reporting",
+    "registration_required": "No (voluntary recording and deposit with IP Office)",
+    "enforcement_body": "Intellectual Property Office of the Republic of Serbia (Copyright and Related Rights Department)",
+    "treaties_signatory": "Berne/WCT/WPPT",
+    "treaties_not_party": "TRIPS",
+    "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/19376",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://petosevic.com/node/1436",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list: private non-commercial copying, quotation, teaching, libraries, news reporting"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Technological protection measures; holders must enable lawful uses (2012 amendments)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

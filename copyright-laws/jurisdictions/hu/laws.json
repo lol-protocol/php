@@ -2,17 +2,52 @@
   {
     "country_code": "HU",
     "country_name": "Hungary",
+    "region": "europe",
     "law_name": "Hungarian Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective management required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Hungarian Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.hipo.hu/"
+    "enforcement_body": "Hungarian Intellectual Property Office (HIPO / SZTNH)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.hipo.hu/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://sztnh.gov.hu/en/home/about-us",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Hungarian Patent Office",
+        "to": "Hungarian Intellectual Property Office (HIPO / SZTNH)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright protection",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

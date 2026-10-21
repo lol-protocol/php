@@ -2,20 +2,101 @@
   {
     "country_code": "CZ",
     "country_name": "Czech Republic",
-    "law_name": "Act on Protection of Personal Data",
+    "region": "europe",
+    "law_name": "Act No. 110/2019 Coll. on the Processing of Personal Data",
     "jurisdiction": "Office for Personal Data Protection",
     "enactment_date": "2019-02-01",
-    "effective_date": "2021-01-01",
+    "effective_date": "2019-04-24",
     "scope": "Czech Residents",
     "applies_to": "All entities",
     "key_requirements": "GDPR compliance + amendments",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Czech DPA",
+    "enforcement_authority": "Office for Personal Data Protection (ÚOOÚ)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "No Czech-specific rule found; GDPR (recitals 27, 160) does not apply to deceased persons (unconfirmed)",
+    "research_exemption": "Section 16 sets conditions for processing (incl. art. 9(1) special categories) for scientific/historical research and statistics, with safeguards",
+    "genetic_data": "Special category (art. 9(1) GDPR); may be processed for research under Section 16 conditions; no other specific rule found (unconfirmed)",
     "website_url": "https://www.uoou.cz/",
     "language": "Czech",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "law_name": {
+        "url": "https://www.mondaq.com/data-protection/806016/gdpr-adaptation-legislation-becomes-effective",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.mondaq.com/data-protection/806016/gdpr-adaptation-legislation-becomes-effective",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://gdpr-text.com/cs/read/recital-160/",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://karolinum.cz/data/clanek/7625/AUC_HUCP_1_2019_06_Novak_a_spol.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://karolinum.cz/data/clanek/7625/AUC_HUCP_1_2019_06_Novak_a_spol.pdf",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (art. 9(1) GDPR); may be processed for research under Section 16 conditions; no other specific rule found (unconfirmed)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Section 16 sets conditions for processing (incl. art. 9(1) special categories) for scientific/historical research and statistics, with safeguards"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No Czech-specific rule found; GDPR (recitals 27, 160) does not apply to deceased persons (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2021-01-01",
+        "to": "2019-04-24"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Act on Protection of Personal Data",
+        "to": "Act No. 110/2019 Coll. on the Processing of Personal Data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Czech DPA",
+        "to": "Office for Personal Data Protection (ÚOOÚ)"
+      }
+    ]
   }
 ]

@@ -2,10 +2,11 @@
   {
     "country_code": "IT",
     "country_name": "Italy",
-    "law_name": "Data Protection Code (Codice Della Privacy)",
+    "region": "europe",
+    "law_name": "Personal Data Protection Code (Legislative Decree 196/2003, Codice privacy)",
     "jurisdiction": "Garante Per La Protezione",
     "enactment_date": "2003-06-30",
-    "effective_date": "2003-12-01",
+    "effective_date": "2004-01-01",
     "scope": "Italian Residents",
     "applies_to": "Public & private sector",
     "key_requirements": "GDPR + Italian law",
@@ -14,8 +15,83 @@
     "enforcement_authority": "Garante (Italian Authority)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "GDPR rights (arts. 15-22) exercisable by persons with own interest, agent or family reasons unless deceased forbade in writing (art. 2-terdecies)",
+    "research_exemption": "Medical/biomedical/epidemiological research without consent with ethics committee opinion and Garante safeguards (art. 110, amended 2024; Garante provv. 298/2024)",
+    "genetic_data": "Processing only with Garante safeguard measures, renewed at least every two years (art. 2-septies; provv. 146/2019 annex 4)",
     "website_url": "https://www.garanteprivacy.it/",
     "language": "Italian",
-    "notes": "GDPR + Italian amendments"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "D.lgs. 196/2003 as amended by D.lgs. 101/2018 (GDPR adaptation, in force 2018-09-19)",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "effective_date": {
+        "url": "https://www.studiocataldi.it/normativa/codice-della-privacy/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.diritto.it/codice-protezione-dati-personali-privacy-gdpr/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://brocardi.it/codice-della-privacy/parte-i/titolo-i/capo-iii/art2terdecies.html",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://dirittobancario.it/wp-content/uploads/2024/06/Provvedimento-Garante-Privacy-9-maggio-2024-n.-298-estratto-della-Gazzetta-Ufficiale.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://brocardi.it/codice-della-privacy/parte-i/titolo-i/capo-ii/art2septies.html",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Processing only with Garante safeguard measures, renewed at least every two years (art. 2-septies; provv. 146/2019 annex 4)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Medical/biomedical/epidemiological research without consent with ethics committee opinion and Garante safeguards (art. 110, amended 2024; Garante provv. 298/2024)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "GDPR rights (arts. 15-22) exercisable by persons with own interest, agent or family reasons unless deceased forbade in writing (art. 2-terdecies)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR + Italian amendments",
+        "to": "D.lgs. 196/2003 as amended by D.lgs. 101/2018 (GDPR adaptation, in force 2018-09-19)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2003-12-01",
+        "to": "2004-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Code (Codice Della Privacy)",
+        "to": "Personal Data Protection Code (Legislative Decree 196/2003, Codice privacy)"
+      }
+    ]
   }
 ]

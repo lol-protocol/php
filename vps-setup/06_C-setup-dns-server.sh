@@ -32,8 +32,13 @@ echo "Resolviendo IP del servidor secundario de OVH..."
 OVH_SECONDARY_IP=$(dig +short -t A "$OVH_SECONDARY" 2>/dev/null | head -1)
 
 if [ -z "$OVH_SECONDARY_IP" ]; then
-    echo "ADVERTENCIA: No se pudo resolver $OVH_SECONDARY. Instala 'dnsutils' primero:"
-    echo "  sudo apt-get install -y dnsutils"
+    if ! command -v dig > /dev/null; then
+        echo "ERROR: falta el comando 'dig'. Instalalo con: sudo apt-get install -y dnsutils"
+    else
+        # dig esta, pero no hubo respuesta: es un problema de red/DNS o del nombre, no de paquetes
+        echo "ERROR: no se pudo resolver $OVH_SECONDARY. Revisa la conexion del servidor"
+        echo "(prueba: dig +short $OVH_SECONDARY) y que el nombre del secundario sea correcto (argumento 3)."
+    fi
     exit 1
 fi
 
@@ -128,8 +133,11 @@ echo "[4/4] Validando configuración..."
 sudo named-checkconf
 sudo named-checkzone $DOMAIN /etc/bind/zones/db.$DOMAIN
 
-sudo systemctl restart bind9
-sudo systemctl enable bind9   # arranca automaticamente si el VPS se reinicia
+# La unidad se llama "named" en Ubuntu 24.04; "bind9" es solo un ALIAS, y systemd se niega a
+# hacer "enable" sobre un alias ("Refusing to operate on alias name"): con bind9 el script
+# fallaba al final aunque BIND ya estuviera sirviendo la zona (visto en la prueba e2e real).
+sudo systemctl restart named
+sudo systemctl enable named   # arranca automaticamente si el VPS se reinicia
 
 # El puerto 53 (DNS) usa tanto TCP como UDP -- UDP para consultas normales,
 # TCP para respuestas grandes y para las transferencias de zona (AXFR).

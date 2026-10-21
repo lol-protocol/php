@@ -1,0 +1,104 @@
+[
+  {
+    "country_code": "ML",
+    "country_name": "Mali",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017)",
+    "jurisdiction": "APDP",
+    "enactment_date": "2013-05-21",
+    "effective_date": "2013-05-21",
+    "scope": "Data subjects in Mali (unconfirmed)",
+    "applies_to": "State, local authorities, public bodies, and private natural and legal persons processing data wholly or partly in Mali",
+    "key_requirements": "Free right of access; rights to correct, update, block or delete inaccurate or unlawfully kept data; objection right including before first use for third-party prospecting; controller responds within 30 days; APDP approves transfers",
+    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Authority (APDP)",
+    "penalties_range": "APDP: warnings, formal notices, injunctions, withdrawal of approval; courts: fines of about CFA 2.5 million to 20 million plus imprisonment; obstructing APDP inspections CFA 5 million to 20 million (art. 65(7) as amended). 2025 fine of CFA 5 million on a clinic for undeclared CCTV",
+    "exemptions": "Purely personal or domestic activity, unless data are systematically shared with third parties for dissemination (unconfirmed)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.DataGuidance.com/jurisdiction/mali",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "DataGuidance dates the law 23 May 2013; APDP began operating only in 2016; no official English translation; ConsentStack page contains an ARTCI error and was not used; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.DataGuidance.com/jurisdiction/mali",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.DataGuidance.com/jurisdiction/mali",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.DataGuidance.com/jurisdiction/mali",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.DataGuidance.com/jurisdiction/mali",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://dataprotection.africa/?p=1335",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://dataprotection.africa/?p=1335",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.DataGuidance.com/jurisdiction/mali",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.DataGuidance.com/jurisdiction/mali",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/1026-mali-lautorite-de-protection-des-donnees-a-caractere-personnel-inflige-une-sanction-pecuniaire-a-la-societe-aminata-konate-sarl-sak",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://dataprotection.africa/?p=1335",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

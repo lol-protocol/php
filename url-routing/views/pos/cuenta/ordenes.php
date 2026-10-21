@@ -9,7 +9,7 @@
     <tbody>
 <?php foreach ($ordenes as $o): ?>
         <tr>
-            <td><a href="/order/<?= esc($o['id']) ?>/"><?= esc($o['id']) ?></a></td>
+            <td><?php if ($o['codigo'] !== null): ?><a href="<?= esc(enlace('orden', $o['codigo'])) ?>"><?= esc($o['codigo']) ?></a><?php else: ?><?= esc($o['id']) ?><?php endif; ?></td>
             <td><?= esc(fecha((string)$o['creada_en'])) ?></td>
             <td><?= esc(Etiquetas::estadoOrden($o['estado'])) ?></td>
             <td class="num"><?= esc(dinero($o['total_centavos'], $o['moneda'])) ?></td>

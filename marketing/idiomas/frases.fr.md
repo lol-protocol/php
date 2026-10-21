@@ -21,7 +21,7 @@
 - Le fil qui nous unit.
 
 ## Texte long (manifeste)
-Tous les êtres humains qui ont foulé cette terre avant nous ont eu des rêves, des amours, des peurs, des projets, et des personnes qu'ils ne voulaient pas perdre. Ils ont été des enfants qui imaginaient leur avenir ; puis ils ont grandi, se sont battus pour quelque chose, ont aimé quelqu'un… mais un jour, ils sont devenus un souvenir.
+Tous les êtres humains qui ont foulé cette terre avant nous ont eu des rêves, des amours, des peurs, des projets, et des personnes qu'ils ne voulaient pas perdre. Ils ont été des enfants qui imaginaient leur avenir ; puis ils ont grandi, se sont battus pour quelque chose, ont aimé quelqu'un… mais un jour, ils sont devenus un souvenir.
 
 Des milliers d'années ont passé, des millions d'histoires, et le temps ne s'est jamais arrêté pour personne.
 
@@ -36,12 +36,12 @@ C'est peut-être pour cela que la vie ne tient pas à la durée dont nous dispos
 - Retrouvez les souvenirs que le temps a cherché à effacer.
 
 ## Héritage familial
-- Le plus bel héritage ne se transmet pas : il se raconte.
+- Le plus bel héritage ne se transmet pas : il se raconte.
 - Ce dont vous vous souvenez aujourd'hui sera l'héritage de demain.
-- Chaque génération est un chapitre ; c'est vous qui décidez comment raconter le vôtre.
-- Laissez plus qu'un nom : laissez une histoire.
+- Chaque génération est un chapitre ; c'est vous qui décidez comment raconter le vôtre.
+- Laissez plus qu'un nom : laissez une histoire.
 - Vos petits-enfants méritent de connaître ceux qui ont rêvé avant eux.
-- Une photo, un nom, une date : de petites pièces d'un immense héritage.
+- Une photo, un nom, une date : de petites pièces d'un immense héritage.
 - Préserver la mémoire familiale est un acte d'amour.
 - Ceux qui sont partis vivent dans les histoires que nous continuons de raconter.
 - Nous sommes le maillon entre ceux qui ont été et ceux qui seront.
@@ -59,17 +59,17 @@ C'est peut-être pour cela que la vie ne tient pas à la durée dont nous dispos
 ## Réseaux sociaux
 
 ### Phrases
-- 🌳 Savez-vous comment s'appelait votre arrière-grand-mère ?
+- 🌳 Savez-vous comment s'appelait votre arrière-grand-mère ?
 - 📜 Un vieux document peut tout changer.
 - 👪 Aujourd'hui est un bon jour pour appeler un proche et lui poser la question.
 - 🔎 Un nom de famille, mille histoires.
-- 🌱 Tout arbre commence par une racine. Avez-vous déjà trouvé la vôtre ?
+- 🌱 Tout arbre commence par une racine. Avez-vous déjà trouvé la vôtre ?
 - 📸 Cette vieille photo au fond du tiroir est un trésor. Partagez-la avec votre famille.
 - 🧓 Demandez dès aujourd'hui à votre grand-père comment était son enfance. Ces histoires méritent d'être conservées.
-- 🗓️ Il y a 100 ans, quelqu'un de votre famille rêvait de son avenir. Savez-vous qui c'était ?
+- 🗓️ Il y a 100 ans, quelqu'un de votre famille rêvait de son avenir. Savez-vous qui c'était ?
 - 💌 Les lettres d'hier sont l'histoire de demain.
 - 🧬 Vous portez en vous des centaines d'ancêtres. Faites leur connaissance.
-- 🏡 De quel village étaient vos grands-parents ? Commencez à le chercher.
+- 🏡 De quel village étaient vos grands-parents ? Commencez à le chercher.
 - ✨ Chaque nom de votre arbre est une histoire encore vivante.
 - 👨‍👩‍👧‍👦 Réunissez votre famille et rassemblez ses histoires. Nous les conservons.
 - 📖 Votre nom de famille a une origine. Découvrez-la dès aujourd'hui.
@@ -81,10 +81,10 @@ C'est peut-être pour cela que la vie ne tient pas à la durée dont nous dispos
 ## E-mail
 
 ### Objets
-- Votre famille a une histoire. La connaissez-vous ?
+- Votre famille a une histoire. La connaissez-vous ?
 - Votre arbre généalogique vous attend
 - Une vieille photo peut tout changer
-- Commencez dès aujourd'hui : votre premier pas est à un clic
+- Commencez dès aujourd'hui : votre premier pas est à un clic
 - Vos racines, plus proches que vous ne le pensez
 - Invitez votre famille à construire son histoire ensemble
 - Votre arbre cache peut-être des pistes à découvrir

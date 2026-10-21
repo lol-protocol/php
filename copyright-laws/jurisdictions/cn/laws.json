@@ -2,6 +2,7 @@
   {
     "country_code": "CN",
     "country_name": "China",
+    "region": "asia_pacific",
     "law_name": "Copyright Law (2020 Amendment)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
@@ -12,7 +13,29 @@
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
     "enforcement_body": "National Copyright Administration",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.nca.moj.gov.cn/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.ncac.gov.cn/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-11",
+        "field": "linked_resources",
+        "from": "https://www.nca.moj.gov.cn/",
+        "to": "https://www.ncac.gov.cn/"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

@@ -24,13 +24,14 @@ final class View
 
     /**
      * @param array<string, mixed> $data
-     * @param array{private?: bool, scripts?: list<string>, section?: string, description?: string} $options
-     *        private: página que no debe indexarse; scripts: archivos de public/assets/; section: pestaña activa del menú.
+     * @param array{private?: bool, scripts?: list<string>, section?: string, description?: string, share?: array<string, string|int>|null} $options
+     *        private: página que no debe indexarse; scripts: archivos de public/assets/; section: pestaña activa del menú;
+     *        share: datos de la vista previa al compartir el enlace (Open Graph).
      */
     public function page(string $template, array $data, string $title, array $options = []): string
     {
         $content = $this->render($template, $data);
-        return $this->render('layout', $options + ['content' => $content, 'title' => $title, 'private' => false, 'scripts' => [], 'section' => '', 'description' => '']);
+        return $this->render('layout', $options + ['content' => $content, 'title' => $title, 'private' => false, 'scripts' => [], 'section' => '', 'description' => '', 'share' => null]);
     }
 
     /** @param array<string, mixed> $data */

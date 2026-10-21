@@ -1,0 +1,197 @@
+code,field,value,conf,source
+US-DE,law_name,"Delaware Personal Data Privacy Act (HB 154, 6 Del. C. ch. 12D)",medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,jurisdiction,Delaware Department of Justice (Attorney General),medium,https://www.dwt.com/blogs/privacy--security-law-blog/2023/09/delaware-personal-data-privacy-act-enacted
+US-DE,enactment_date,2023-09-11,medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,effective_date,2025-01-01,medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,scope,Residents of the state (consumers acting in an individual or household context),medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,applies_to,"Persons doing business in Delaware or targeting Delaware residents that control/process data of 35,000+ consumers, or 10,000+ consumers with over 20% of revenue from sale of personal data",medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,key_requirements,"Consumer rights to access, correct, delete, port, and opt out of targeted advertising, sale and profiling; consent for sensitive data; data protection assessments; 60-day cure period lapsed 2025-12-31 (discretionary since 2026-01-01)",medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,data_categories,"Personal data; sensitive data (incl. genetic data and biometric data, known child data, precise geolocation)",medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,retention_period,UNKNOWN,low,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,enforcement_authority,"Delaware Department of Justice, Consumer Protection Unit",medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,penalties_range,"No fixed penalty in the Act; violation is an unlawful practice under Delaware consumer protection law (reported up to USD 10,000 per willful violation); no private right of action",medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,exemptions,"Government bodies, HIPAA entities and PHI, GLBA financial institutions, clinical research under Common Rule/ICH, deidentified and publicly available data",medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,website_url,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware,medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,language,English,medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,notes,HB 380 (2026) to lower thresholds passed the House 2026-05-21; pending in Senate per secondary source,medium,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,deceased_data,UNKNOWN,low,https://www.bakerdonelson.com/consumer-data-privacy-law-guide-delaware
+US-DE,research_exemption,Clinical research already subject to Common Rule or ICH standards is exempt (secondary source),medium,https://www.didomi.io/blog/delaware-personal-data-privacy-act-dpdpa
+US-DE,genetic_data,Genetic data is defined separately and is sensitive data requiring consent,medium,https://www.didomi.io/blog/delaware-personal-data-privacy-act-dpdpa
+US-NJ,law_name,"New Jersey Data Privacy Act (P.L. 2023, c.266, S332; N.J.S.A. 56:8-166.4 et seq.)",medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,jurisdiction,New Jersey Attorney General (Division of Consumer Affairs),medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,enactment_date,2024-01-16,medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,effective_date,2025-01-15,medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,scope,Residents of the state (consumers acting in an individual or household context),medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,applies_to,"Controllers doing business in NJ or targeting NJ residents that process data of 100,000+ consumers, or 25,000+ consumers and derive revenue from sale of personal data",medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,key_requirements,"Consumer rights to access, correct, delete, port and opt out; consent for sensitive data; data protection assessments; 30-day cure period sunset 2026-07-15",medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,data_categories,Personal data; sensitive data (incl. genetic or biometric data processed for identification),medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,retention_period,UNKNOWN,low,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,enforcement_authority,New Jersey Attorney General,medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,penalties_range,"Up to USD 10,000 per first violation and USD 20,000 per subsequent violation under the NJ Consumer Fraud Act; no private right of action",medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,exemptions,"GLBA financial institutions, HIPAA, certain data types; internal research to develop or improve products is a permitted use",medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,website_url,https://blog.galalaw.com/post/102ixgv/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that,medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,language,English,medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,notes,Assembly Bill 5017 (2024-25 session) would amend the Act; status not confirmed,medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,deceased_data,UNKNOWN,low,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,research_exemption,Only a general internal-research use carve-out found; no genetic-specific research exemption found,medium,https://www.mondaq.com/unitedstates/privacy-protection/1415826/the-garden-state-has-a-new-privacy-law-you-got-a-problem-with-that
+US-NJ,genetic_data,Genetic or biometric data processed to identify a person is sensitive data requiring consent,medium,https://www.mondaq.com/unitedstates/privacy-protection/1416962/new-jersey-new-privacy-law
+US-NH,law_name,"New Hampshire Privacy Act (SB 255, RSA 507-H)",medium,https://privacylawmap.com/states/new-hampshire
+US-NH,jurisdiction,New Hampshire Department of Justice (Attorney General),medium,https://usercentrics.com/knowledge-hub/new-hampshire-privacy-act-nhdpa/
+US-NH,enactment_date,2024-03-06,medium,https://getterms.io/blog/new-hampshires-senate-bill-sb-255
+US-NH,effective_date,2025-01-01,medium,https://privacylawmap.com/states/new-hampshire
+US-NH,scope,Residents of the state (consumers acting in an individual or household context),medium,https://privacylawmap.com/states/new-hampshire
+US-NH,applies_to,"Controllers doing business in NH or targeting NH residents above consumer-count thresholds (sources conflict: 35,000 consumers, or 10,000 with over 25% of revenue from sale of data)",medium,https://privacylawmap.com/states/new-hampshire
+US-NH,key_requirements,"Consumer rights to access, correct, delete, port and opt out; consent for sensitive data; data protection assessments; mandatory cure period ended 2026-01-01, now AG discretion",medium,https://privacylawmap.com/states/new-hampshire
+US-NH,data_categories,Personal data; sensitive data,medium,https://privacylawmap.com/states/new-hampshire
+US-NH,retention_period,UNKNOWN,low,https://privacylawmap.com/states/new-hampshire
+US-NH,enforcement_authority,New Hampshire Attorney General,medium,https://privacylawmap.com/states/new-hampshire
+US-NH,penalties_range,"Up to USD 10,000 per violation as unfair or deceptive practice under RSA 358-A; no private right of action",medium,https://privacylawmap.com/states/new-hampshire
+US-NH,exemptions,"GLBA financial institutions, HIPAA entities, nonprofits, higher education, FERPA/FCRA/DPPA/Farm Credit Act data",medium,https://privacylawmap.com/states/new-hampshire
+US-NH,website_url,https://gc.nh.gov/rsa/html/LII/507-H/507-H-1.htm,medium,https://privacylawmap.com/states/new-hampshire
+US-NH,language,English,medium,https://privacylawmap.com/states/new-hampshire
+US-NH,notes,Thresholds conflict between sources; verify against RSA 507-H,medium,https://privacylawmap.com/states/new-hampshire
+US-NH,deceased_data,UNKNOWN,low,https://privacylawmap.com/states/new-hampshire
+US-NH,research_exemption,UNKNOWN,low,https://privacylawmap.com/states/new-hampshire
+US-NH,genetic_data,Genetic or biometric data is sensitive data (consent required) when processed to uniquely identify an individual,medium,https://ccianet.org/wp-content/uploads/2024/03/CCIA-Summary-New-Hampshire-Data-Privacy-Law.pdf
+US-KY,law_name,"Kentucky Consumer Data Privacy Act (HB 15, 2024 Regular Session)",medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,jurisdiction,Kentucky Attorney General,medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,enactment_date,2024-04-04,medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,effective_date,2026-01-01,medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,scope,Residents of the state (consumers acting in an individual or household context),medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,applies_to,"Persons doing business in KY or targeting KY residents that control/process data of 100,000+ consumers, or 25,000+ consumers and over 50% of revenue from sale of personal data",medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,key_requirements,"Consumer rights to access, correct, delete, port and opt out; consent for sensitive data; data protection assessments; 30-day cure period (does not sunset)",medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,data_categories,Personal data; sensitive data,medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,retention_period,UNKNOWN,low,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,enforcement_authority,Kentucky Attorney General,medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,penalties_range,"Up to USD 7,500 per violation; penalties go to a consumer privacy fund; no private right of action",medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,exemptions,"State agencies and political subdivisions, HIPAA entities, GLBA financial institutions, nonprofits, higher education",medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,website_url,https://apps.legislature.ky.gov/recorddocuments/note/24RS/hb15/FN.pdf,medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,language,English,medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,notes,Some sources call it the Kentucky Consumer Data Protection Act,medium,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,deceased_data,UNKNOWN,low,https://privacymatters.dlapiper.com/2024/04/us-kentucky-legislature-passes-comprehensive-state-privacy-law/
+US-KY,research_exemption,Research data reportedly exempt (low-reliability summary; check KRS 367.3611 et seq.),medium,https://clym.io/regulations/kentucky-consumer-data-protection-act-kcdpa
+US-KY,genetic_data,Genetic or biometric data is sensitive data (consent required) when processed to uniquely identify a specific person,medium,https://ccianet.org/wp-content/uploads/2024/06/CCIA-Summary-Kentucky-Consumer-Data-Protection-Act.pdf
+US-NE,law_name,Nebraska Data Privacy Act (LB 1074),medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,jurisdiction,Nebraska Attorney General,medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,enactment_date,2024-04-17,medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,effective_date,2025-01-01,medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,scope,Residents of the state (consumers acting in an individual or household context),medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,applies_to,Persons doing business in NE that process personal data and are not small businesses under the federal Small Business Act; small businesses may not sell sensitive data without consent,medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,key_requirements,"Consumer rights to access, correct, delete, port and opt out; consent for sensitive data; data protection assessments; 30-day cure period (does not sunset)",medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,data_categories,Personal data; sensitive data,medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,retention_period,UNKNOWN,low,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,enforcement_authority,Nebraska Attorney General,medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,penalties_range,"Up to USD 7,500 per violation not cured within 30 days; injunctive relief and fees; no private right of action",medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,exemptions,"GLBA financial institutions, HIPAA, small businesses (except sensitive data sale), federal research-law data",medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,website_url,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law,medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,language,English,medium,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,deceased_data,UNKNOWN,low,https://www.whitecase.com/insight-alert/nebraska-enacts-comprehensive-data-privacy-law
+US-NE,research_exemption,Data collected under federal research laws such as the Common Rule is exempt (secondary source),medium,https://rmaintl.org/member-alert-nebraska-enacts-comprehensive-consumer-data-privacy-law-with-glba-exemptions/
+US-NE,genetic_data,Sensitive data only when processed to uniquely identify an individual; consent required,medium,https://usercentrics.com/knowledge-hub/nebraska-data-privacy-act-ndpa/
+US-MD,law_name,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,jurisdiction,Maryland Attorney General (Consumer Protection Division),medium,https://oag.maryland.gov/resources-info/Pages/data-privacy.aspx
+US-MD,enactment_date,2024-05-09,medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,effective_date,2025-10-01,medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,scope,Residents of the state (consumers acting in an individual or household context),medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,applies_to,"Persons doing business in MD or targeting MD residents that handle data of 35,000+ consumers, or 10,000+ consumers with over 20% of revenue from sale of personal data",medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,key_requirements,"Data minimization (collection limited to what is reasonably necessary; sensitive data only when strictly necessary); ban on sale of sensitive data; consumer rights to access, correct, delete, port and opt out",medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,data_categories,Personal data; sensitive data (incl. genetic and biometric data); minors data,medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,retention_period,UNKNOWN,low,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,enforcement_authority,"Maryland Attorney General, Consumer Protection Division",medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,penalties_range,"Up to USD 10,000 per violation and USD 25,000 per repeated violation under the Maryland Consumer Protection Act; misdemeanor fine up to USD 1,000 or 1 year prison reported; no private right of action",medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,exemptions,"GLBA financial institutions, HIPAA entities, registered national securities associations",medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,website_url,https://oag.maryland.gov/resources-info/Pages/data-privacy.aspx,medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,language,English,medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,notes,"Law took effect 2025-10-01 but applies to processing from 2026-04-01; cure period (60 days, if AG finds cure possible) sunsets 2027-04-01",medium,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,deceased_data,UNKNOWN,low,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,research_exemption,UNKNOWN,low,https://www.manatt.com/insights/newsletters/privacy-and-data-security/now-in-effect-maryland-law-raises-bar-on-sensitive-data-data-minimization-and-children-s-privacy
+US-MD,genetic_data,"Any genetic or biometric data is sensitive data, regardless of identification purpose; processing only if strictly necessary and sale is banned even with consent",medium,https://oag.maryland.gov/resources-info/Pages/data-privacy.aspx
+US-MN,law_name,"Minnesota Consumer Data Privacy Act (HF 4757, Minn. Stat. ch. 325M, secs. 325M.10-325M.21)",medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,jurisdiction,Minnesota Attorney General,medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,enactment_date,2024-05-24,medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,effective_date,2025-07-31,medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,scope,Residents of the state (consumers acting in an individual or household context),medium,https://www.revisor.mn.gov/statutes/2024/cite/325M.12
+US-MN,applies_to,"Entities doing business in MN or targeting MN residents that process data of 100,000+ consumers, or 25,000+ consumers and over 25% of revenue from sale of personal data; small businesses exempt",medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,key_requirements,"Consumer rights to access, correct, delete, port and opt out; opt-in consent for sensitive data; data protection assessments",medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,data_categories,Personal data; sensitive data,medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,retention_period,UNKNOWN,low,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,enforcement_authority,Minnesota Attorney General,medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,penalties_range,"Civil penalties up to USD 7,500 per violation; no private right of action",medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,exemptions,"Banks and credit unions, GLBA data, small businesses (SBA), payment-only transactions (sec. 325M.12)",medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,website_url,https://www.revisor.mn.gov/statutes/2024/cite/325M.12,medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,language,English,medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,notes,Clifford Chance dates enactment 2024-05-19 (legislature adoption); Walz signature 2024-05-24. HF 2700 (2025) would add consumer health data; in committee,medium,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,deceased_data,UNKNOWN,low,https://findbiometrics.com/minnesota-gets-its-own-comprehensive-data-privacy-act
+US-MN,research_exemption,"Internal research to develop or improve products is a permitted purpose (sec. 325M.19); federal human-subjects research entities exempt in the separate genetic law, sec. 325F.995",medium,https://www.revisor.mn.gov/statutes/2024/cite/325M.12
+US-MN,genetic_data,Sensitive data when processed to uniquely identify an individual (consent required); separate Genetic Information Privacy Act at Minn. Stat. 325F.995,medium,https://ccianet.org/wp-content/uploads/2024/06/CCIA-Summary-Minnesota-Consumer-Data-Privacy-Act.pdf
+US-RI,law_name,"Rhode Island Data Transparency and Privacy Protection Act (H 7787, R.I. Gen. Laws ch. 6-48.1)",medium,https://www.datagrail.io/?p=13308
+US-RI,jurisdiction,Rhode Island Attorney General,medium,https://www.datagrail.io/?p=13308
+US-RI,enactment_date,2024-06-28,low,https://jonesday.com/ja/insights/2024/07/rhode-island-adopts-comprehensive-data-privacy-law
+US-RI,effective_date,2026-01-01,medium,https://www.datagrail.io/?p=13308
+US-RI,scope,Residents of the state (consumers acting in an individual or household context),medium,https://www.datagrail.io/?p=13308
+US-RI,applies_to,"Persons doing business in RI or targeting RI residents that process data of 35,000+ consumers, or 10,000+ consumers and over 20% of revenue from sale of personal data; commercial websites and ISPs have disclosure duties",medium,https://www.datagrail.io/?p=13308
+US-RI,key_requirements,"Consumer rights to access, correct, delete, port and opt out; consent for sensitive data; privacy notice naming third parties; most sources report no cure period",medium,https://www.datagrail.io/?p=13308
+US-RI,data_categories,Personal data; sensitive data,medium,https://www.datagrail.io/?p=13308
+US-RI,retention_period,UNKNOWN,low,https://www.datagrail.io/?p=13308
+US-RI,enforcement_authority,Rhode Island Attorney General,medium,https://www.datagrail.io/?p=13308
+US-RI,penalties_range,"Up to USD 10,000 per violation as deceptive trade practice (sources conflict; one lists USD 100-500); no private right of action",medium,https://www.datagrail.io/?p=13308
+US-RI,exemptions,"GLBA, HIPAA and other data-level exemptions including research data",medium,https://www.datagrail.io/?p=13308
+US-RI,website_url,https://www.datagrail.io/?p=13308,medium,https://www.datagrail.io/?p=13308
+US-RI,language,English,medium,https://www.datagrail.io/?p=13308
+US-RI,notes,Enactment date disputed: one source says bill became law without governor signature (transmitted 2024-06-25); cure period sources conflict,medium,https://www.datagrail.io/?p=13308
+US-RI,deceased_data,UNKNOWN,low,https://www.datagrail.io/?p=13308
+US-RI,research_exemption,Data-level exemption for research data (scope not confirmed),medium,https://captaincompliance.com/education/rhode-island-data-transparency-and-privacy-protection-act-ridtppa/
+US-RI,genetic_data,Sensitive data requiring opt-in consent only when processed for identification,medium,https://privacylawmap.com/states/rhode-island
+US-IL-BIPA,law_name,Biometric Information Privacy Act (740 ILCS 14; Public Act 95-994),medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,jurisdiction,Private right of action in Illinois state circuit court or federal court (740 ILCS 14/20); no regulator,medium,https://ilga.gov/legislation/ilcs/ilcs3.asp?ActID=3004
+US-IL-BIPA,enactment_date,2008-10-03,medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,effective_date,2008-10-03,low,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,scope,Individuals whose biometric identifiers or information are collected by private entities in Illinois,medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,applies_to,Private entities (not state/local government or Illinois courts),medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,key_requirements,Written informed consent before collecting biometric data; published retention schedule and destruction guidelines (destroy at end of purpose or within 3 years of last interaction); no sale or profit from biometric data,medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,data_categories,"Biometric identifiers (retina/iris scan, fingerprint, voiceprint, hand or face geometry scan) and biometric information",medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,retention_period,"Destroy when initial purpose is satisfied or within 3 years of last interaction, whichever is first (sec. 15(a))",medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,enforcement_authority,"Aggrieved individuals via courts (private right of action, sec. 20)",medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,penalties_range,"Liquidated damages USD 1,000 per negligent violation or USD 5,000 per intentional/reckless violation, or actual damages, plus fees; since Public Act 103-0769 (2024-08-02) counted once per person, not per scan",medium,https://www.thompsonhine.com/insights/illinois-legislature-amends-bipa-to-limit-damages-and-expand-consent-options/
+US-IL-BIPA,exemptions,"Government agencies and Illinois courts; photographs, signatures, human biological samples used for valid scientific testing or screening, demographic data, physical descriptions",medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,website_url,https://ilga.gov/legislation/ilcs/ilcs3.asp?ActID=3004,medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,language,English,medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,notes,Effective date assumed equal to approval date; no express effective-date text seen. Amended by P.A. 103-0769 (2024-08-02),medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,deceased_data,UNKNOWN,low,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,research_exemption,Human biological samples used for valid scientific testing or screening are excluded from biometric identifiers (sec. 10),medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-BIPA,genetic_data,Not biometric identifiers when from biological samples for scientific testing; genetic testing is governed by the separate GIPA (410 ILCS 513),medium,https://law.justia.com/codes/illinois/2010/chapter740/3004.html
+US-IL-GIPA,law_name,Genetic Information Privacy Act (410 ILCS 513; originally Public Act 90-25),medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,jurisdiction,Private right of action in Illinois circuit or federal court (410 ILCS 513/40); no regulator,medium,https://www.ilga.gov/ftp/ILCS/Ch%200410/Act%200513/041005130K40.html
+US-IL-GIPA,enactment_date,UNKNOWN,low,https://lig.ilga.gov/legislation/publicacts/pubact90/acts/90-0025.html
+US-IL-GIPA,effective_date,1998-01-01,medium,https://www.ilga.gov/ftp/ILCS/Ch%200410/Act%200513/041005130F.html
+US-IL-GIPA,scope,"Persons whose genetic testing information is held by employers, insurers and others in Illinois",medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,applies_to,"Employers, insurers, health care providers and other entities holding genetic testing information",medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,key_requirements,"Employers may not solicit, request or require genetic information as a condition of employment (sec. 25(c)(1)); disclosure of test subject identity or results restricted (sec. 30); consent for testing/disclosure",medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,data_categories,Genetic testing information; family medical history,medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,retention_period,UNKNOWN,low,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,enforcement_authority,"Aggrieved individuals via courts (private right of action, sec. 40)",medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,penalties_range,"Greater of actual damages or liquidated damages of USD 2,500 (negligent) or USD 15,000 (intentional/reckless), plus fees, costs and injunctive relief",medium,https://www.ilga.gov/ftp/ILCS/Ch%200410/Act%200513/041005130K40.html
+US-IL-GIPA,exemptions,UNKNOWN,low,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,website_url,https://www.ilga.gov/ftp/ILCS/Ch%200410/Act%200513/041005130F.html,medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,language,English,medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,notes,"Original act P.A. 90-25 (enrolled HB 8, 90th GA; 1997 approval date not found in results); amended by P.A. 95-0927, P.A. 98-1046 (2015) and P.A. 104-0642 (biomarker testing, date not seen)",medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,deceased_data,UNKNOWN,low,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,research_exemption,UNKNOWN,low,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-IL-GIPA,genetic_data,Entire act governs genetic testing information; employer solicitation barred; class-action exposure after 2023,medium,https://www.kslaw.com/insights/articles/is-illinois-gipa-the-next-bipa
+US-WA,law_name,"My Health My Data Act (HB 1155, RCW ch. 19.373)",medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,jurisdiction,Washington Attorney General; also private right of action via Consumer Protection Act (RCW 19.86),medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,enactment_date,2023-04-27,medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,effective_date,2024-03-31,medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,scope,Washington consumers and persons whose consumer health data is collected in Washington,medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,applies_to,Regulated entities doing business in WA or targeting WA consumers; small businesses from 2024-06-30,medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,key_requirements,Consumer health data privacy policy; consent for collection and sharing; separate valid authorization for sale; rights of access and deletion; geofencing ban near health facilities,medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,data_categories,Consumer health data (incl. biometric and genetic data),medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,retention_period,UNKNOWN,low,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,enforcement_authority,Washington Attorney General and private plaintiffs under the Consumer Protection Act,medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,penalties_range,"AG civil penalty up to USD 7,500 per violation (RCW 19.86.140); private treble damages up to USD 25,000 plus fees; violation is per se CPA violation",medium,https://www.morganlewis.com/de/pubs/2023/07/the-broad-reach-of-washington-states-my-health-my-data-act
+US-WA,exemptions,"HIPAA PHI, chapter 70.02 RCW records, Common Rule data, 42 CFR Part 2, deidentified data (RCW 19.373.100)",medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,language,English,medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,notes,Private right of action; first lawsuit filed Feb 2025 per Orrick,medium,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,deceased_data,UNKNOWN,low,https://www.bakerlaw.com/insights/examining-the-private-right-of-action-in-washingtons-my-health-my-data-act
+US-WA,research_exemption,"Personal information used for public or peer-reviewed scientific, historical or statistical research in the public interest is not consumer health data; research exemptions in RCW 19.373.100",medium,https://www.cov.com/en/news-and-insights/insights/2023/06/washingtons-my-health-my-data-act-application-to-research-activities
+US-WA,genetic_data,Genetic and biometric data are expressly consumer health data (full definition text not seen),medium,https://terms.law/washington-my-health-my-data/

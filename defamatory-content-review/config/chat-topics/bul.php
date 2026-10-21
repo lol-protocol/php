@@ -2,7 +2,12 @@
 
 /** Bulgarian chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'bul', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'bul', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ти', 'ти си', 'вие', 'тоя', 'тая', 'този', 'тази', 'такъв', 'такава', 'мръсен', 'мръсна', 'тъп', 'тъпа', 'дебел', 'дебела'],
+        'after' => ['такъв', 'такава', 'ти', 'мръсен', 'мръсна'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'порно', 'riskType' => 'sexual', 'severity' => 'high'],
@@ -14,7 +19,6 @@ return [
             ['word' => 'пенис', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'вагина', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'цици', 'riskType' => 'sexual', 'severity' => 'medium'],
-            ['word' => 'гол', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'голи снимки', 'riskType' => 'sexual', 'severity' => 'high'],
             ['word' => 'секс', 'riskType' => 'sexual', 'severity' => 'low'],
             ['word' => 'изнасилване', 'riskType' => 'sexual', 'severity' => 'high'],
@@ -37,6 +41,7 @@ return [
             ['word' => 'свещена война', 'riskType' => 'belico', 'severity' => 'high'],
         ],
         'ambiguous' => [
+            ['word' => 'гол', 'riskType' => 'sexual', 'severity' => 'medium'], // también «gol» (fútbol)
             ['word' => 'бомба', 'riskType' => 'belico', 'severity' => 'medium'],
             ['word' => 'чукам', 'riskType' => 'sexual', 'severity' => 'medium'],
         ],

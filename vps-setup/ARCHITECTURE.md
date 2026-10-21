@@ -15,15 +15,15 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 ## 🌐 Dominios Configurados
 
 **`initech.fun`** es el dominio real, comprado y con la landing page ya
-desplegada — es el que usan por defecto todos los scripts de `vps-setup/`
-(`initech.fun` es el valor default de `$DOMAIN` en cada script) y el que
-referencia `landing-page/index.html`.
+desplegada, y el que referencia `landing-page/index.html`. Los scripts de
+`vps-setup/` no usan ningún dominio por defecto: hay que pasárselo siempre
+(sin argumento muestran el uso y salen con código 2).
 
 Los demás dominios de esta tabla (`conce.com`, `initech.cl`,
 `contrastocolor.ink`, `wikipedia.cl`) son **ejemplos ilustrativos** de cómo
 extender esta misma arquitectura a un segundo/tercer/cuarto dominio en el
-mismo VPS (documentados en detalle en [DOMAINS.md](DOMAINS.md)) — todavía no
-están registrados ni configurados.
+mismo VPS — todavía no están registrados ni configurados. Cómo agregar uno
+(con `10_A-add-domain.sh`) está en [DOMAINS.md](DOMAINS.md).
 
 | Dominio | Tipo | Propósito | Status |
 |---------|------|----------|--------|
@@ -172,7 +172,8 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
   `Content-Security-Policy` (hay que ajustarla a cada sitio).
 
 ### Firewall y endurecimiento
-- ✅ fail2ban con jail de SSH (por `07_A`): banea 1h tras 5 intentos fallidos en 10 min
+- ✅ fail2ban (por `07_A`): SSH (1 h de baneo tras 5 fallos en 10 min), Nginx en los logs de todos los dominios (bots que barren rutas, fuerza bruta a `auth_basic`, peticiones malformadas) y `recidive` (una semana a quien reincide)
+- ✅ SSH con `ufw limit` (`01`): bloquea a una IP que abre más de 6 conexiones en 30 s
 - ✅ Parches de seguridad automáticos (`unattended-upgrades`, por `07_A`); no reinicia el servidor solo
 - ✅ UFW habilitado (por `01-system-update.sh`, con SSH permitido antes de activarlo)
 - ✅ Puertos abiertos: 22 (SSH), 80 y 443 (HTTP/HTTPS, vía el perfil `Nginx Full` de UFW que abre `02_E`)

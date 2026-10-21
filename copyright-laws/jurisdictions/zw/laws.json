@@ -1,0 +1,64 @@
+[
+  {
+    "country_code": "ZW",
+    "country_name": "Zimbabwe",
+    "region": "middle_east_africa",
+    "law_name": "Copyright and Neighbouring Rights Act [Chapter 26:05]",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (audiovisual and collective works, photographs and computer programs: 50 years from end of year of lawful public availability)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Non-transmissible",
+    "orphan_works": "Not specified",
+    "digital_protection": "s.129 devices designed to circumvent copy-protection; s.130 offence of removing rights-management information",
+    "fair_use_exceptions": "Fair dealing (private use, research, criticism, review, news reporting)",
+    "registration_required": "No (assignments may be recorded in the Copyright Register)",
+    "enforcement_body": "Companies and Intellectual Property Office of Zimbabwe (CIPZ), Ministry of Justice, Legal and Parliamentary Affairs",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://aripo.org/storage/resources-member-state-laws/1730129699_zw020en-compressed.pdf",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://zimlii.org/akn/zw/act/2000/11/eng@2004-09-10/source.pdf",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.uz.ac.zw/images/library/Copyright_Guideline_eLearning.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "s.129 devices designed to circumvent copy-protection; s.130 offence of removing rights-management information"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Fair dealing (private use, research, criticism, review, news reporting)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

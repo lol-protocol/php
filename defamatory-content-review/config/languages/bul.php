@@ -8,6 +8,21 @@ return [
         'nativeName' => 'Български', 'family' => 'slavic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'нацист', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'нацистка', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'нацисти', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'неонацист', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'зиг хайл', 'riskType' => 'etnico', 'severity' => 'high'],
+        ],
         'zhivotno' => [
             ['word' => 'свиня', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'прасе', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -120,7 +135,7 @@ return [
             ['word' => 'ням', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'заекващ', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'парализиран', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'луд', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'луд', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'недъгав', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'откачен', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'умствено изостанал', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -134,7 +149,7 @@ return [
             ['word' => 'глуха', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'заекваща', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'парализирана', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'луда', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'луда', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'недъгава', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'откачена', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],

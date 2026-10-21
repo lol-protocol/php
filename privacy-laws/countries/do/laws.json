@@ -1,0 +1,69 @@
+[
+  {
+    "country_code": "DO",
+    "country_name": "Dominican Republic",
+    "region": "americas",
+    "law_name": "Law on Comprehensive Protection of Personal Data (Law No. 172-13)",
+    "jurisdiction": "Courts (habeas data); Superintendency of Banks for credit data",
+    "enactment_date": "2013-12-13",
+    "effective_date": "2013-12-15",
+    "scope": "Individuals (data subjects)",
+    "applies_to": "Public & private entities holding personal data files",
+    "key_requirements": "Lawful & fair processing, consent, data security, habeas data rights (update, rectify, delete)",
+    "data_categories": "Personal data; sensitive data; credit data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "No dedicated authority yet",
+    "penalties_range": "Up to 100x national minimum wage fine; prison 6 months-2 years",
+    "exemptions": "Art. 3 excludes: files kept by individuals for exclusively personal/domestic activities; intelligence and investigation agency files; data of deceased persons",
+    "deceased_data": "Not covered: files of deceased persons excluded from the law's scope (art. 3)",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=DO&t=law",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Judicial habeas data enforcement; amendment bill (post TC/0484/16) not confirmed enacted",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://do.vlex.com/vid/legislacion-dominicana-proteccion-datos-916588345",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "exemptions": {
+        "url": "https://www.studocu.com/latam/document/instituto-nacional-de-formacion-tecnico-profesional/historia-social-dominicana/ley-172-13-sobre-proteccion-de-datos-personales-de-fecha-13-de-diciembre-de-2013/72459014",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://phlaw.com/ley-172-13-sobre-proteccion-de-datos-personales/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: files of deceased persons excluded from the law's scope (art. 3)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "exemptions",
+        "from": "Not specified",
+        "to": "Art. 3 excludes: files kept by individuals for exclusively personal/domestic activities; intelligence and investigation agency files; data of deceased persons"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

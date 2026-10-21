@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f5595448fdd81a5e8b0fd1038930e3d",
+    "content-hash": "031720c68b8ef5fe34e0253ca170ecfd",
     "packages": [
         {
             "name": "lol-protocol/defamatory-content-review",
-            "version": "4.3.0",
+            "version": "5.0.0",
             "dist": {
                 "type": "path",
                 "url": "../defamatory-content-review",
-                "reference": "6b657ade743bed8ade025c11921cf683a68c6428"
+                "reference": "f29b776291dbe98a04a440a1833de9427cd9ea3d"
             },
             "require": {
                 "php": ">=8.1"
@@ -23,7 +23,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "DefamatoryContentReview\\": "src/DefamatoryContentReview/"
+                    "DefamatoryContentReview\\": "src/"
                 }
             },
             "autoload-dev": {

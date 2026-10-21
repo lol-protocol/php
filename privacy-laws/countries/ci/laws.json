@@ -1,0 +1,80 @@
+[
+  {
+    "country_code": "CI",
+    "country_name": "Côte d'Ivoire",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (Law No. 2013-450)",
+    "jurisdiction": "ARTCI",
+    "enactment_date": "2013-06-19",
+    "effective_date": "2013-06-19",
+    "scope": "Individuals in Côte d'Ivoire",
+    "applies_to": "Public & private data controllers",
+    "key_requirements": "Consent, prior authorisation for sensitive data, cross-border transfer limits",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Art. 16: data kept only for a period not exceeding that necessary for collection/processing purposes; ARTCI sets case-specific periods in decisions",
+    "enforcement_authority": "Autorité de régulation des télécommunications/TIC de Côte d'Ivoire (ARTCI)",
+    "penalties_range": "Up to XOF 10M (repeat within 5 years: up to XOF 100M or 5% of pre-tax turnover) (unconfirmed)",
+    "exemptions": "National security; household use",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "Genetic and biometric data treated as sensitive data needing special precautions; biometric/DNA processing requires prior ARTCI authorisation (art. 7)",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=CI&t=law",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Entry-into-force day unconfirmed (set to enactment date); ARTCI is designated data protection authority",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://digitalmag.ci/protection-des-donnees-a-caractere-personnel-lartci-alerte-les-responsables-de-traitement-et-les-correspondants/?amp=1",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://www.village-justice.com/articles/biometrie-donnees-personnelles-quelles-exigences-legales-pour-les-entreprises,50642.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/ci-law2013450",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      },
+      "genetic_data": {
+        "url": "https://www.digitalbusiness.africa/ce-quil-faut-savoir-du-cadre-reglementaire-de-la-biometrie-en-cote-divoire/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic and biometric data treated as sensitive data needing special precautions; biometric/DNA processing requires prior ARTCI authorisation (art. 7)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 16: data kept only for a period not exceeding that necessary for collection/processing purposes; ARTCI sets case-specific periods in decisions"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Not specified",
+        "to": "Up to XOF 10M (repeat within 5 years: up to XOF 100M or 5% of pre-tax turnover) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

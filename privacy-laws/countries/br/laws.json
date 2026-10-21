@@ -2,20 +2,96 @@
   {
     "country_code": "BR",
     "country_name": "Brazil",
+    "region": "americas",
     "law_name": "Lei Geral de Proteção de Dados Pessoais (LGPD)",
     "jurisdiction": "Agência Nacional",
     "enactment_date": "2018-08-14",
-    "effective_date": "2020-09-28",
+    "effective_date": "2020-09-18",
     "scope": "Brazilian Residents & Businesses",
     "applies_to": "All companies processing Brazilian data",
     "key_requirements": "Lawful basis & consent",
     "data_categories": "Sensitive personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "National Data Protection Authority",
+    "enforcement_authority": "Agencia Nacional de Protecao de Dados (ANPD) - regulatory agency under Lei 15.352/2026",
     "penalties_range": "Up to 50M BRL or 2% revenue",
     "exemptions": "Public safety exceptions",
+    "deceased_data": "Not covered: ANPD Nota Tecnica 3/2023/CGF holds LGPD does not apply to deceased persons (Civil Code art. 6); protection via succession/personality rights",
+    "research_exemption": "Studies by research body without consent, anonymised where possible (art. 7 IV; sensitive data art. 11 II c); public-health studies (art. 13); academic use partly excluded (art. 4 II b)",
+    "genetic_data": "Sensitive personal data when linked to a natural person (art. 5 II); processing only on art. 11 bases",
     "website_url": "https://www.gov.br/cidadania/pt-br/acesso-a-informacao/lgpd",
     "language": "Portuguese",
-    "notes": "South America's GDPR equivalent"
+    "frameworks": "EU-Adequacy",
+    "frameworks_not": "GDPR/CoE-108",
+    "notes": "Lei 15.352 of 2026-02-25 made ANPD an autonomous regulatory agency; also enforces ECA Digital",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://lefosse.com/noticias/anpd-se-torna-agencia-reguladora-e-reforca-sua-capacidade-fiscalizatoria-regulatoria-e-institucional/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.legisweb.com.br/legislacao/?id=491391",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.gov.br/anpd/pt-br/assuntos/noticias/NotaTecnica3CGF.ANPD.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://www.aurum.com.br/blog/lgpd-comentada/art-11-a-13-lgpd/",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://confidata.com.br/blog/dados-sensiveis-lgpd-bases-legais-cuidados",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data when linked to a natural person (art. 5 II); processing only on art. 11 bases"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Studies by research body without consent, anonymised where possible (art. 7 IV; sensitive data art. 11 II c); public-health studies (art. 13); academic use partly excluded (art. 4 II b)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: ANPD Nota Tecnica 3/2023/CGF holds LGPD does not apply to deceased persons (Civil Code art. 6); protection via succession/personality rights"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "South America's GDPR equivalent",
+        "to": "Lei 15.352 of 2026-02-25 made ANPD an autonomous regulatory agency; also enforces ECA Digital"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "National Data Protection Authority",
+        "to": "Agencia Nacional de Protecao de Dados (ANPD) - regulatory agency under Lei 15.352/2026"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2020-09-28",
+        "to": "2020-09-18"
+      }
+    ]
   }
 ]

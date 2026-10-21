@@ -2,20 +2,101 @@
   {
     "country_code": "GR",
     "country_name": "Greece",
-    "law_name": "Data Protection Law (Law 4818/2021)",
+    "region": "europe",
+    "law_name": "Law 4624/2019 (Data Protection Law implementing GDPR)",
     "jurisdiction": "Hellenic Data Protection Authority",
-    "enactment_date": "2021-04-01",
-    "effective_date": "2021-04-01",
+    "enactment_date": "2019-08-29",
+    "effective_date": "2019-08-29",
     "scope": "Greek Residents",
     "applies_to": "All organizations",
     "key_requirements": "GDPR implementation",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Greek DPA",
+    "enforcement_authority": "Hellenic Data Protection Authority (HDPA)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "Processing for scientific/historical research and statistics allowed without consent with safeguards (anonymisation where possible); GDPR arts. 15, 16, 18, 21 restricted as needed (art. 30)",
+    "genetic_data": "GDPR art. 9 special category; processing of genetic data for health and life insurance expressly prohibited, even with consent (art. 23)",
     "website_url": "https://www.dpa.gr/",
     "language": "Greek",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://dpa.gr/sites/default/files/2020-08/LAW 4624_2019_EN_TRANSLATED BY THE HDPA.PDF",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.pwc.com/gr/en/media-centre/tax-legal-news/Legal%20Flash%20-%20GDPR_eng.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.privacylaws.com/reports-gateway/articles/int163/int163greece/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://www.activemind.legal/law/gr-research/",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://edri.org/our-work/greece-new-data-protection-law-raises-concerns/",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "GDPR art. 9 special category; processing of genetic data for health and life insurance expressly prohibited, even with consent (art. 23)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Processing for scientific/historical research and statistics allowed without consent with safeguards (anonymisation where possible); GDPR arts. 15, 16, 18, 21 restricted as needed (art. 30)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2021-04-01",
+        "to": "2019-08-29"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2021-04-01",
+        "to": "2019-08-29"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law (Law 4818/2021)",
+        "to": "Law 4624/2019 (Data Protection Law implementing GDPR)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Greek DPA",
+        "to": "Hellenic Data Protection Authority (HDPA)"
+      }
+    ]
   }
 ]

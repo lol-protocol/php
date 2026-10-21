@@ -26,7 +26,7 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     [ "$status" -eq 0 ]
     [ "$(steps_run | head -1)" = "01-system-update.sh" ]
     [ "$(steps_run | tail -1)" = "08-healthcheck.sh" ]
-    [ "$(steps_run | wc -l)" -eq 16 ]
+    [ "$(steps_run | wc -l)" -eq 15 ]
     [[ "$output" == *"SETUP COMPLETADO"* ]]
 }
 
@@ -38,7 +38,7 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
 }
 
 @test "la IP se consulta UNA vez y los hijos la heredan; el resumen la usa" {
-    ia ejemplo.com a@ejemplo.com --yes
+    ia ejemplo.com a@ejemplo.com --yes --with-webmin
     [ "$(cat "$BATS_TEST_TMPDIR/ip_en_hijo")" = "203.0.113.9" ]
     [ "$(wc -l < "$BATS_TEST_TMPDIR/ifconfig.calls")" -eq 1 ]
     [[ "$output" == *"https://203.0.113.9:10000"* ]]
@@ -54,9 +54,9 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
 
 @test "el contador [N/TOTAL] queda alineado para pasos de 1 y 2 cifras" {
     ia ejemplo.com --dry-run
-    [[ "$output" == *"║ [1/15] 01-system-update.sh"* ]]
-    [[ "$output" == *"║ [10/15] 04-setup-ssl.sh"* ]]
-    ancho=$(echo "$output" | grep -E '^║ \[(1|10)/15\]' | python3 -c "import sys; print({len(l.rstrip('\n')) for l in sys.stdin})")
+    [[ "$output" == *"║ [1/14] 01-system-update.sh"* ]]
+    [[ "$output" == *"║ [10/14] 05-deploy-landing-page.sh"* ]]
+    ancho=$(echo "$output" | grep -E '^║ \[(1|10)/14\]' | python3 -c "import sys; print({len(l.rstrip('\n')) for l in sys.stdin})")
     [ "$ancho" = "{62}" ]
 }
 
@@ -87,7 +87,7 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     : > "$RUN_LOG"
     ia ejemplo.com a@ejemplo.com --yes
     steps_run | grep -q "01-system-update.sh"
-    [ "$(steps_run | wc -l)" -eq 16 ]
+    [ "$(steps_run | wc -l)" -eq 15 ]
 }
 
 @test "el estado de un dominio no afecta a otro" {
@@ -105,7 +105,7 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
 @test "reiniciar un dominio NO borra el estado de otro cuyo nombre lo contiene (initech.fun vs www.initech.fun)" {
     ia www.initech.fun --yes
     ia initech.fun --yes
-    [ "$(grep -c '^www.initech.fun'$'\t' "$INSTALL_STATE_FILE")" -eq 15 ]
+    [ "$(grep -c '^www.initech.fun'$'\t' "$INSTALL_STATE_FILE")" -eq 14 ]
 }
 
 @test "deja un log de la corrida y, si un paso falla, dice donde esta" {
@@ -119,4 +119,51 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
 @test "--dry-run no crea log" {
     ia ejemplo.com --dry-run
     ! ls "$(dirname "$INSTALL_STATE_FILE")"/install-all-*.log 2>/dev/null
+}
+
+@test "si el healthcheck falla, el final NO dice 'EXITOSAMENTE' (antes escondia las [FALLA])" {
+    FAIL_STEP=08-healthcheck.sh ia ejemplo.com a@ejemplo.com --yes
+    [ "$status" -eq 0 ]
+    [[ "$output" != *"COMPLETADO EXITOSAMENTE"* ]]
+    [[ "$output" == *"COMPLETADO CON FALLAS EN EL HEALTHCHECK"* ]]
+    ia ejemplo.com a@ejemplo.com --yes
+    [[ "$output" == *"COMPLETADO EXITOSAMENTE"* ]]
+}
+
+@test "solo da +x a los pasos numerados: lib.sh no cambia de modo (el checkout queda limpio)" {
+    chmod 644 "$FAKE/lib.sh"
+    ia ejemplo.com a@ejemplo.com --yes
+    [ "$(stat -c %a "$FAKE/lib.sh")" = "644" ]
+}
+
+@test "Webmin solo con --with-webmin; sin el flag el resumen dice como instalarlo" {
+    ia ejemplo.com a@ejemplo.com --yes
+    ! steps_run | grep -q 02_J
+    [[ "$output" == *"Webmin no se instalo"* ]]; [[ "$output" != *":10000"* ]]
+    : > "$RUN_LOG"
+    ia ejemplo.com a@ejemplo.com --yes --with-webmin
+    [ "$(steps_run | grep -n 02_J | cut -d: -f1)" -eq 8 ]       # tras 02_F y antes de 03
+    [[ "$output" == *":10000"* ]]
+}
+
+@test "--skip-ssl no corre 04 y el resumen dice como pedir el certificado despues" {
+    ia ejemplo.com a@ejemplo.com --yes --skip-ssl
+    [ "$status" -eq 0 ]
+    ! steps_run | grep -q 04-setup-ssl
+    steps_run | grep -q 05-deploy-landing-page
+    [[ "$output" == *"./04-setup-ssl.sh ejemplo.com a@ejemplo.com"* ]]
+    ! grep -q 04-setup-ssl "$INSTALL_STATE_FILE"     # no queda como "hecho": --resume sin el flag lo correra
+}
+
+@test "una sola corrida a la vez: con el candado tomado, otra corrida sale con error sin hacer nada" {
+    mkdir -p "$(dirname "$INSTALL_STATE_FILE")"
+    ( flock 9; sleep 5 ) 9> "$INSTALL_STATE_FILE.lock" &
+    sleep 0.5
+    ia ejemplo.com a@ejemplo.com --yes
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"ya hay otra corrida de install-all.sh en curso"* ]]
+    [ ! -s "$RUN_LOG" ]
+    wait
+    ia ejemplo.com a@ejemplo.com --yes      # liberado el candado, corre normal
+    [ "$status" -eq 0 ]
 }

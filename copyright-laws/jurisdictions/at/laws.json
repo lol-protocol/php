@@ -2,17 +2,52 @@
   {
     "country_code": "AT",
     "country_name": "Austria",
+    "region": "europe",
     "law_name": "Austrian Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights",
     "moral_rights": "Strong moral rights",
     "orphan_works": "Collective management required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Austrian Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.patentamt.at/"
+    "enforcement_body": "Federal Ministry of Justice (BMJ)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.patentamt.at/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://www.urheberrecht.org/events/20190503_Auinger.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Austrian Patent Office",
+        "to": "Federal Ministry of Justice (BMJ)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright enforcement",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

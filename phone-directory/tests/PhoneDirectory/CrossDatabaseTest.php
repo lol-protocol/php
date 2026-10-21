@@ -8,6 +8,7 @@ use PhoneDirectory\Entity\JuridicalEntity;
 use PhoneDirectory\JuridicalEntityPDODatabase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\Privacy;
 
 /**
  * Runs against SQLite always, and against PostgreSQL / MySQL when these are set:
@@ -53,7 +54,7 @@ class CrossDatabaseTest extends TestCase
     public function testEntryRoundTripWithHistoricalDate(string $dsn, ?string $user, ?string $password): void
     {
         $this->rawConnection($dsn, $user, $password);
-        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password, Privacy::forOwner());
         $database->createTable();
         $database->createTable();
 
@@ -94,7 +95,7 @@ class CrossDatabaseTest extends TestCase
     public function testSearchIsCaseInsensitiveAndLiteral(string $dsn, ?string $user, ?string $password): void
     {
         $this->rawConnection($dsn, $user, $password);
-        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password, Privacy::forOwner());
         $database->createTable();
         $database->insert(new PhoneDirectoryEntry('GARCÍA LÓPEZ, José', 'ES', 'Calle Mayor 12'));
         $database->insert(new PhoneDirectoryEntry('SMITH, John', 'US', '1 Oak_Avenue'));
@@ -106,6 +107,23 @@ class CrossDatabaseTest extends TestCase
         $this->assertCount(2, $database->findByStreet('oak'));
         $this->assertCount(0, $database->findByName('%'));
         $this->assertCount(1, $database->search(['name' => 'jones', 'street' => 'oak avenue']));
+        $database->disconnect();
+    }
+
+    #[DataProvider('databases')]
+    public function testSearchForPhoneZeroMatchesOnlyThatPhone(string $dsn, ?string $user, ?string $password): void
+    {
+        $this->rawConnection($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password, Privacy::forOwner());
+        $database->createTable();
+        $database->insert(new PhoneDirectoryEntry('SMITH, John', 'US', '1 Oak Avenue', '555-0100'));
+        $database->insert(new PhoneDirectoryEntry('JONES, Ann', 'US', '2 Oak Avenue', '0'));
+
+        // '0' used to count as "no criterion" (empty('0') is true) and returned both rows.
+        $found = $database->search(['phone' => '0']);
+
+        $this->assertCount(1, $found);
+        $this->assertSame('JONES, Ann', $found[0]->getRawName());
         $database->disconnect();
     }
 
@@ -125,7 +143,7 @@ class CrossDatabaseTest extends TestCase
         $pdo->exec("INSERT INTO phone_directory (full_name, street) VALUES ('John Smith', '123 Main Street')");
         $pdo = null;
 
-        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password, Privacy::forOwner());
         $database->createTable();
         $database->createTable();
 
@@ -173,7 +191,7 @@ class CrossDatabaseTest extends TestCase
     public function testSurnameSoundSearch(string $dsn, ?string $user, ?string $password): void
     {
         $this->rawConnection($dsn, $user, $password);
-        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password, Privacy::forOwner());
         $database->createTable();
         $database->insert(new PhoneDirectoryEntry(fullName: 'Juan Valdez Ruiz', countryCode: 'MX', street: 'Calle Hidalgo 4', language: 'es'));
         $database->insert(new PhoneDirectoryEntry(fullName: 'Ana Baldez Soto', countryCode: 'MX', street: 'Calle Juárez 9', language: 'es'));
@@ -188,7 +206,7 @@ class CrossDatabaseTest extends TestCase
     public function testAccentInsensitiveSearchIsConsistentAcrossDatabases(string $dsn, ?string $user, ?string $password): void
     {
         $this->rawConnection($dsn, $user, $password);
-        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password, Privacy::forOwner());
         $database->createTable();
         $database->insert(new PhoneDirectoryEntry('GARCÍA LÓPEZ, José', 'ES', 'Calle Mayor 12'));
 

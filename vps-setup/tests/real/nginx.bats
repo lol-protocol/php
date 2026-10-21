@@ -12,6 +12,7 @@ setup() { setup_real; }
 
 teardown() {
     nginx_down
+    rm -f /etc/php/*/fpm/conf.d/90-vps-setup-uploads.ini
     rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/server-tokens.conf /etc/nginx/conf.d/performance.conf /etc/nginx/conf.d/00-default-server.conf /etc/nginx/conf.d/bats-real-*.conf
     for n in $D1 $D2 $D3 $APP; do rm -f "/etc/nginx/sites-enabled/$n" "/etc/nginx/sites-available/$n"; done
     rm -rf "/var/www/landing-page/$D1" "/var/www/$APP" "/var/log/nginx/$D1" "/var/log/nginx/$D2" "/var/log/nginx/$D3"
@@ -36,6 +37,10 @@ teardown() {
     echo "$output" | grep -qi '^X-Frame-Options:'
     run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D1" http://127.0.0.1/.htaccess
     [ "$output" = "403" ]
+    # un .php en la landing ni se ejecuta ni se sirve su codigo: 404
+    echo '<?php echo "EJECUTADO"; // clave=secreta' > /var/www/landing-page/$D1/t.php
+    run curl -s -w ' %{http_code}' -H "Host: $D1" http://127.0.0.1/t.php
+    [[ "$output" == *" 404" ]]; [[ "$output" != *"clave"* ]]
 }
 
 @test "03 no deja el vhost anidado: index.html esta en la raiz del dominio (deploy_files real)" {

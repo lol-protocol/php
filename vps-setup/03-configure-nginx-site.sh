@@ -48,6 +48,10 @@ server {
     # Sitio estatico: SIN bloque PHP a proposito. Con uno, cualquier .php que terminara en
     # esta carpeta (un archivo subido por error, una copia de otra app) se EJECUTARIA.
     # Las apps PHP van en su propio dominio con 06_A-setup-php-app.sh.
+    # Y un .php tampoco se sirve como texto (expondria su codigo, con posibles claves): 404.
+    location ~ \.php\$ {
+        return 404;
+    }
 
     # Bloquea el acceso a archivos ocultos tipo .htaccess/.htpasswd
     location ~ /\.ht {

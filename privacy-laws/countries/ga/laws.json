@@ -1,0 +1,104 @@
+[
+  {
+    "country_code": "GA",
+    "country_name": "Gabon",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023",
+    "jurisdiction": "Authority for the Protection of Personal Data and Privacy (APDPVP)",
+    "enactment_date": "2023-07-12",
+    "effective_date": "2023-07-15",
+    "scope": "Data subjects whose personal data is processed in Gabon",
+    "applies_to": "All public and private entities processing personal data",
+    "key_requirements": "Declaration/authorisation to the authority; data subject rights of access, correction, erasure and objection (one month to respond); special measures for children's data",
+    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Authority for the Protection of Personal Data and Privacy (APDPVP)",
+    "penalties_range": "Reported fines of CFA 1 million to 100 million (rising for repeat violations), suspension of processing and criminal penalties; secondary sources (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Amends Law 001/2011; some sources date the 2023 law 9 July 2023; published in Journal Officiel 15 July 2023; Ordinance 00002/PR/2020 also amended the 2011 law; former regulator CNPDCP replaced by APDPVP.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "applies_to": {
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "key_requirements": {
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "data_categories": {
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

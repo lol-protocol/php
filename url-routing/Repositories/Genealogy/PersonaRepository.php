@@ -6,36 +6,86 @@ namespace App\Repositories\Genealogy;
 
 use App\Repositories\Repository;
 
+/**
+ * Every persona that leaves this class has been through Privacidad: for a
+ * request that may not see living people, a living persona comes back with its
+ * name, dates and place replaced, flagged `oculta`. Queries read personas from
+ * $this->privacidad->personas(), never from the table, so none can forget.
+ */
 final class PersonaRepository extends Repository
 {
     /** Generations walked by ascendencia/descendencia; also a cycle guard. */
     public const MAX_GENERACIONES = 8;
 
+    /** The persona's own birth or death as a subquery: $campo of her earliest $tipo event, for the persona aliased p. */
+    private function evento(string $campo, string $tipo): string
+    {
+        return $this->privacidad->sqlEventoDe('p', $tipo, $campo);
+    }
+
     /** Birth and death come from the persona's events, the single source of truth for dates. */
-    private const RESUMEN = "p.id, p.nombres, p.apellidos, p.sexo,
-        (SELECT s.fecha FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id
-          WHERE sp.persona_id = p.id AND s.tipo = 'nacimiento' ORDER BY s.fecha LIMIT 1) AS nacimiento,
-        (SELECT s.fecha FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id
-          WHERE sp.persona_id = p.id AND s.tipo = 'defuncion' ORDER BY s.fecha LIMIT 1) AS defuncion";
+    private function resumen(): string
+    {
+        return 'p.id, p.nombres, p.apellidos, p.sexo, p.oculta, '
+            . $this->privacidad->siVisible($this->evento('fecha', 'nacimiento')) . ' AS nacimiento, '
+            . $this->privacidad->siVisible($this->evento('fecha', 'defuncion')) . ' AS defuncion';
+    }
+
+    /** @param array<string, mixed> $fila */
+    private static function normalizar(array $fila): array
+    {
+        // SQLite returns 0/1 where PostgreSQL returns a real boolean.
+        $fila['oculta'] = (bool)$fila['oculta'];
+
+        return $fila;
+    }
 
     public function find(int $id): ?array
     {
-        return $this->db->fetchOne(
-            'SELECT ' . self::RESUMEN . ",
-                    (SELECT s.lugar_ruta FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id
-                      WHERE sp.persona_id = p.id AND s.tipo = 'nacimiento' ORDER BY s.fecha LIMIT 1) AS lugar_nacimiento,
+        $fila = $this->db->fetchOne(
+            'SELECT ' . $this->resumen() . ', '
+                . $this->privacidad->siVisible($this->evento('lugar_ruta', 'nacimiento')) . " AS lugar_nacimiento,
                     p.padre_id, p.madre_id, p.grupo_id, g.apellido AS grupo_apellido
-               FROM personas p
+               FROM {$this->privacidad->personas()} p
                LEFT JOIN grupos g ON g.id = p.grupo_id
               WHERE p.id = ?",
             [$id]
         );
+
+        return $fila === null ? null : self::normalizar($fila);
+    }
+
+    /** The persona an id that was merged away now points to (see persona_alias); null if it isn't an alias. */
+    public function aliasDe(int $id): ?int
+    {
+        $destino = $this->db->fetchValue('SELECT persona_id FROM persona_alias WHERE id = ?', [$id]);
+
+        return $destino === null ? null : (int)$destino;
+    }
+
+    /**
+     * personas.viva as stored: true = alive, false = dead, null = deduce it from
+     * the dates (see Privacidad). Null as well when there is no such persona.
+     */
+    public function marcaViva(int $id): ?bool
+    {
+        // fetchOne, not fetchValue: PostgreSQL's `false` would come back from fetchValue as "no row".
+        $fila = $this->db->fetchOne('SELECT viva FROM personas WHERE id = ?', [$id]);
+
+        return $fila === null || $fila['viva'] === null ? null : (bool)$fila['viva'];
+    }
+
+    /** Sets personas.viva (null = deduce it again). Returns whether the persona exists. */
+    public function fijarViva(int $id, ?bool $viva): bool
+    {
+        return $this->db->execute('UPDATE personas SET viva = ? WHERE id = ?', [$viva, $id]) > 0;
     }
 
     /** @return list<array> ancestors with their generation (1 = parents) */
     public function ascendencia(int $id, int $maxGeneraciones = self::MAX_GENERACIONES): array
     {
-        return $this->db->fetchAll(
+        // The walk itself uses the real table: hidden ancestors keep their place in the tree.
+        return array_map(self::normalizar(...), $this->db->fetchAll(
             'WITH RECURSIVE ancestros (id, generacion) AS (
                  SELECT p.id, 1
                    FROM personas h JOIN personas p ON p.id IN (h.padre_id, h.madre_id)
@@ -47,18 +97,18 @@ final class PersonaRepository extends Repository
                    JOIN personas p ON p.id IN (h.padre_id, h.madre_id)
                   WHERE a.generacion < ?
              )
-             SELECT a.generacion, ' . self::RESUMEN . '
+             SELECT a.generacion, ' . $this->resumen() . "
                FROM (SELECT id, MIN(generacion) AS generacion FROM ancestros GROUP BY id) a
-               JOIN personas p ON p.id = a.id
-              ORDER BY a.generacion, p.sexo DESC, p.id',
+               JOIN {$this->privacidad->personas()} p ON p.id = a.id
+              ORDER BY a.generacion, p.oculta, p.sexo DESC, p.id",
             [$id, $maxGeneraciones]
-        );
+        ));
     }
 
     /** @return list<array> descendants with their generation (1 = children) */
     public function descendencia(int $id, int $maxGeneraciones = self::MAX_GENERACIONES): array
     {
-        return $this->db->fetchAll(
+        return array_map(self::normalizar(...), $this->db->fetchAll(
             'WITH RECURSIVE descendientes (id, generacion) AS (
                  SELECT p.id, 1 FROM personas p WHERE ? IN (p.padre_id, p.madre_id)
                  UNION ALL
@@ -67,12 +117,12 @@ final class PersonaRepository extends Repository
                    JOIN personas p ON d.id IN (p.padre_id, p.madre_id)
                   WHERE d.generacion < ?
              )
-             SELECT d.generacion, ' . self::RESUMEN . '
+             SELECT d.generacion, ' . $this->resumen() . "
                FROM (SELECT id, MIN(generacion) AS generacion FROM descendientes GROUP BY id) d
-               JOIN personas p ON p.id = d.id
-              ORDER BY d.generacion, nacimiento, p.id',
+               JOIN {$this->privacidad->personas()} p ON p.id = d.id
+              ORDER BY d.generacion, p.oculta, nacimiento, p.id",
             [$id, $maxGeneraciones]
-        );
+        ));
     }
 
     /**
@@ -83,8 +133,8 @@ final class PersonaRepository extends Repository
      */
     public function vinculos(int $id): array
     {
-        return $this->db->fetchAll(
-            "SELECT r.relacion, " . self::RESUMEN . "
+        return array_map(self::normalizar(...), $this->db->fetchAll(
+            'SELECT r.relacion, ' . $this->resumen() . "
                FROM (
                    SELECT 'padre' AS relacion, h.padre_id AS id FROM personas h WHERE h.id = ? AND h.padre_id IS NOT NULL
                    UNION ALL
@@ -101,46 +151,70 @@ final class PersonaRepository extends Repository
                    UNION ALL
                    SELECT v.tipo, v.persona_a FROM vinculos v WHERE v.persona_b = ?
                ) r
-               JOIN personas p ON p.id = r.id
+               JOIN {$this->privacidad->personas()} p ON p.id = r.id
               ORDER BY CASE r.relacion WHEN 'padre' THEN 1 WHEN 'madre' THEN 2 WHEN 'conyuge' THEN 3
                                        WHEN 'hermano' THEN 4 WHEN 'hijo' THEN 5 ELSE 6 END,
-                       nacimiento, p.id",
+                       p.oculta, nacimiento, p.id",
             [$id, $id, $id, $id, $id, $id]
-        );
+        ));
     }
 
-    /** @return list<array> the persona's events in date order */
+    /**
+     * The persona's events in date order. An event with a living participant
+     * is left out (see Privacidad::sucesos()).
+     *
+     * @return list<array>
+     */
     public function cronologia(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT s.id, s.tipo, s.fecha, s.descripcion, sp.rol, s.lugar_ruta, l.nombre AS lugar_nombre
+            "SELECT s.id, s.tipo, s.fecha, s.descripcion, sp.rol, s.lugar_ruta, l.nombre AS lugar_nombre
                FROM suceso_participantes sp
-               JOIN sucesos s ON s.id = sp.suceso_id
+               JOIN {$this->privacidad->sucesos()} s ON s.id = sp.suceso_id
                LEFT JOIN lugares l ON l.ruta = s.lugar_ruta
               WHERE sp.persona_id = ?
-              ORDER BY s.fecha, s.id',
+              ORDER BY s.fecha, s.id",
             [$id]
         );
     }
 
-    /** @return list<array> */
+    /**
+     * Living people never turn up here: matching them by name, even with their
+     * name hidden in the result, would let anyone test whether a given living
+     * person exists.
+     *
+     * @return list<array>
+     */
     public function buscar(string $texto, int $limit = 50, int $offset = 0): array
     {
-        return $this->db->fetchAll(
-            'SELECT ' . self::RESUMEN . "
-               FROM personas p
-              WHERE LOWER(p.nombres || ' ' || p.apellidos)" . self::LIKE_ESCAPED . "
-              ORDER BY p.apellidos, p.nombres, p.id" . self::page($limit, $offset),
+        // The page is picked on the real table, in the order of personas_orden_idx and asking whether each
+        // persona may be seen only for the rows it reaches, and only then are those rows masked and
+        // described. Going through personas() for every row, as this did, computed `oculta` for the whole
+        // catalog before it could sort and cut: 1.1 s with 20,000 personas on SQLite and 4.6 s on PostgreSQL,
+        // growing with the catalog. What a visitor sees is the same: a hidden persona is not in a search,
+        // and the ones that are have the same names the real table has.
+        $privacidad = $this->privacidad->porFila();
+
+        return array_map(self::normalizar(...), $this->db->fetchAll(
+            'SELECT ' . $this->resumen() . "
+               FROM {$privacidad->personas()} p
+              WHERE p.id IN (SELECT q.id FROM personas q
+                              WHERE " . self::sinAcentos("q.nombres || ' ' || q.apellidos") . self::LIKE_ESCAPED . '
+                                AND ' . $privacidad->sqlVisible('q') . '
+                              ORDER BY q.apellidos, q.nombres, q.id' . self::page($limit, $offset) . ')
+              ORDER BY p.apellidos, p.nombres, p.id',
             [self::patron($texto)]
-        );
+        ));
     }
 
     /** @return list<array> personas contributed by a user */
     public function aportadasPor(int $usuarioId): array
     {
-        return $this->db->fetchAll(
-            'SELECT ' . self::RESUMEN . ' FROM personas p WHERE p.aportado_por = ? ORDER BY p.creado_en DESC, p.id',
+        return array_map(self::normalizar(...), $this->db->fetchAll(
+            'SELECT ' . $this->resumen() . "
+               FROM {$this->privacidad->personas()} p
+              WHERE p.aportado_por = ? ORDER BY p.creado_en DESC, p.id",
             [$usuarioId]
-        );
+        ));
     }
 }

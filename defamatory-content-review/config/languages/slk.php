@@ -8,6 +8,21 @@ return [
         'nativeName' => 'Slovenčina', 'family' => 'slavic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'nacistka', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nacista', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nacisti', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonacista', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonacisti', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'zviera' => [
             ['word' => 'prasa', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'sviňa', 'riskType' => 'animal', 'severity' => 'high'],
@@ -127,7 +142,7 @@ return [
             ['word' => 'zajakavý', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'ochrnutý', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'blázon', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'šialený', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'šialený', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'nemocný', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'zmrzačený', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'postihnutý', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -142,7 +157,7 @@ return [
             ['word' => 'nemá', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'zajakavá', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'ochrnutá', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'šialená', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'šialená', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'nemocná', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'zmrzačená', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'postihnutá', 'riskType' => 'discapacidad', 'severity' => 'high'],

@@ -1,0 +1,94 @@
+[
+  {
+    "country_code": "MR",
+    "country_name": "Mauritania",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data",
+    "jurisdiction": "APD",
+    "enactment_date": "2017-07-22",
+    "effective_date": "2017-07-22",
+    "scope": "Data subjects in Mauritania (unconfirmed)",
+    "applies_to": "Natural persons, the State, local authorities and public or private legal persons, including controllers established or using processing means in Mauritania",
+    "key_requirements": "Access requests (arts 53-58), objection (art. 59), rectification and deletion (arts 61-63) with a one-month controller response; breach notification duties reported",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Authority (APD), created by art. 64; constituted in February 2022 (decree 2022-013)",
+    "penalties_range": "Not specified",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://dti.eui.eu/database/page/157",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Published in Journal officiel no. 1400 of 15 November 2017; APD internal rules dated 23 Oct 2023; Malabo ratification claims conflict (9 May 2023 vs 15th ratifier), not used; old DataGuidance entry calling the law a bill is outdated; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://dti.eui.eu/database/page/157",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://dti.eui.eu/database/page/157",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://dti.eui.eu/database/page/157",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://dti.eui.eu/database/page/157",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.offlist.me/what-is-mauritania-law-2017-020",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.offlist.me/what-is-mauritania-law-2017-020",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://dti.eui.eu/database/page/157",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.offlist.me/what-is-mauritania-law-2017-020",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

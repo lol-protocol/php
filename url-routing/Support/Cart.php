@@ -12,6 +12,9 @@ final class Cart
 {
     private const MAX_CANTIDAD = 99;
 
+    /** Distinct SKU lines; a cart with lots of different products stops growing instead of becoming unusable. */
+    public const MAX_LINEAS = 20;
+
     /** @return array<string, int> sku => cantidad */
     public function items(): array
     {
@@ -33,15 +36,64 @@ final class Cart
         return $this->items()[$sku] ?? 0;
     }
 
-    /** Sets the absolute quantity for a SKU; 0 or less removes it. */
-    public function actualizar(string $sku, int $cantidad): void
+    /**
+     * Sets the absolute quantity for a SKU; 0 or less removes it.
+     * Returns false, without changing anything, if this would add a new line
+     * past MAX_LINEAS (updating an existing line is always allowed).
+     */
+    public function actualizar(string $sku, int $cantidad): bool
     {
         if ($cantidad <= 0) {
             $this->quitar($sku);
-            return;
+            return true;
+        }
+
+        if (!isset($_SESSION['carrito'][$sku]) && count($this->items()) >= self::MAX_LINEAS) {
+            return false;
         }
 
         $_SESSION['carrito'][$sku] = min($cantidad, self::MAX_CANTIDAD);
+        return true;
+    }
+
+    /**
+     * The cart checked against the catalog ($variantes: sku => variant row, as
+     * ProductoRepository::variantesPorSkus() returns them): a line whose
+     * product was removed or deactivated leaves the cart, and one above the
+     * current stock is cut down to it (and kept that way). Returns the lines
+     * that can be bought, each variant row plus `cantidad` and
+     * `subtotal_centavos`, and one total per currency: adding centavos of
+     * different currencies is meaningless.
+     *
+     * @param array<string, array> $variantes
+     * @return array{list<array>, array<string, int>} [lineas, totales]
+     */
+    public function revisar(array $variantes): array
+    {
+        $lineas = [];
+        $totales = [];
+
+        foreach ($this->items() as $sku => $cantidad) {
+            $variante = $variantes[$sku] ?? null;
+            if ($variante === null || !$variante['activo']) {
+                $this->quitar($sku);
+                continue;
+            }
+
+            if ($cantidad > $variante['stock']) {
+                $this->actualizar($sku, (int)$variante['stock']);
+                $cantidad = $this->cantidadDe($sku);
+                if ($cantidad === 0) {
+                    continue;
+                }
+            }
+
+            $subtotal = $variante['precio_centavos'] * $cantidad;
+            $totales[$variante['moneda']] = ($totales[$variante['moneda']] ?? 0) + $subtotal;
+            $lineas[] = ['cantidad' => $cantidad, 'subtotal_centavos' => $subtotal] + $variante;
+        }
+
+        return [$lineas, $totales];
     }
 
     public function quitar(string $sku): void

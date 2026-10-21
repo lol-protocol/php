@@ -2,7 +2,14 @@
 
 /** Romanian chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'ron', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'ron', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['mutt'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ești', 'esti', 'tu', 'voi', 'sunteți', 'sunteti', 'ce', 'ăsta', 'asta', 'ăla', 'aia', 'împuțit', 'nenorocit', 'nenorocitule', 'fir-ai'],
+        'after' => ['ce ești', 'împuțit', 'împuțită', 'nenorocit'],
+    ],
+    'everyday' => ['muta'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

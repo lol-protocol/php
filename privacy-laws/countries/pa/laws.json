@@ -1,0 +1,91 @@
+[
+  {
+    "country_code": "PA",
+    "country_name": "Panama",
+    "region": "americas",
+    "law_name": "Personal Data Protection Law (Law No. 81 of 2019)",
+    "jurisdiction": "ANTAI - National Authority for Transparency and Access to Information",
+    "enactment_date": "2019-03-26",
+    "effective_date": "2021-03-29",
+    "scope": "Individuals (nationals & foreigners) whose data is held in Panama",
+    "applies_to": "Controllers domiciled in Panama or with databases located in Panama",
+    "key_requirements": "Consent, purpose limitation, data subject rights (ARCO & portability), international transfer rules",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Retention tied to purpose; data may not be transferred 7 years after legal retention obligation ends unless subject requests (article not confirmed)",
+    "enforcement_authority": "National Authority for Transparency and Access to Information (ANTAI)",
+    "penalties_range": "Up to USD 10,000 fine (B/.1,000-10,000); database registry closure or suspension of processing",
+    "exemptions": "Processing outside Panama (e.g. foreign-hosted cloud)",
+    "deceased_data": "Not confirmed in statute; academic commentary frames ARCO rights as belonging to living persons (unconfirmed)",
+    "research_exemption": "",
+    "genetic_data": "Genetic data treated as sensitive data (regulator ANTAI guidance); reinforced security and explicit consent rules for sensitive data",
+    "website_url": "https://www.organojudicial.gob.pa/uploads/blogs.dir/28/2026/06/913/la-proteccion-de-datos-personales-en-la-republica-de-panama.pdf",
+    "language": "Spanish",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Regulated by Executive Decree 285 of 2021; 2022 reform proposals not confirmed enacted",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.antai.gob.pa/wp-content/uploads/2020/11/ANTAI-remitira-al-Ministerio-Publico-caso-de-venta-de-base-de-datos.pdf",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://www.superbancos.gob.pa/documentos/presentaciones/XX-Jornada-Actualizacion-Bancaria-2022/Prot_Datos_Personales.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "penalties_range": {
+        "url": "https://www.rsm.global/panama/es/node/62",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://revistas.up.ac.pa/index.php/anuario_derecho/article/download/3451/2951/5691",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.antai.gob.pa/wp-content/uploads/2024/01/GUIA-SECTOR-PRIVADO-1.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data treated as sensitive data (regulator ANTAI guidance); reinforced security and explicit consent rules for sensitive data"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not confirmed in statute; academic commentary frames ARCO rights as belonging to living persons (unconfirmed)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "penalties_range",
+        "from": "Up to USD 10;000 fine; database closure or suspension",
+        "to": "Up to USD 10,000 fine (B/.1,000-10,000); database registry closure or suspension of processing"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Retention tied to purpose; data may not be transferred 7 years after legal retention obligation ends unless subject requests (article not confirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

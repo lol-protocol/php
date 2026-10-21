@@ -2,20 +2,135 @@
   {
     "country_code": "CL",
     "country_name": "Chile",
-    "law_name": "Law for the Protection of Private Life (Ley 19.628)",
-    "jurisdiction": "Subderretaría del Interior",
-    "enactment_date": "1999-08-19",
-    "effective_date": "1999-10-01",
+    "region": "americas",
+    "law_name": "Law No. 21.719 on the Protection and Processing of Personal Data",
+    "jurisdiction": "Agencia de Protección de Datos Personales",
+    "enactment_date": "2024-12-13",
+    "effective_date": "2026-12-01",
     "scope": "Chilean Residents",
     "applies_to": "All organizations",
-    "key_requirements": "Lawful collection & consent",
+    "key_requirements": "Legal bases beyond consent (contract, legitimate interest); portability; breach notification; DPO/compliance model",
     "data_categories": "Personal data",
     "retention_period": "5 years",
-    "enforcement_authority": "Undersecretary of Interior",
-    "penalties_range": "Fines up to USD 20k",
+    "enforcement_authority": "Personal Data Protection Agency (Agencia de Protección de Datos Personales)",
+    "penalties_range": "Up to 20,000 UTM (~USD 1.3M) for very serious infringements",
     "exemptions": "Government functions",
-    "website_url": "https://www.interior.gob.cl/",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=CL&t=law",
     "language": "Spanish",
-    "notes": "South America region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Law 21.719 rewrites Ley 19.628, creates new agency; in force 2026-12-01",
+    "pending_change": "Law 21.719 takes effect and replaces Law 19.628, which applies until then",
+    "pending_date": "2026-12-01",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.az.cl/en/executive-published-new-personal-data-law-in-chile/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "jurisdiction": {
+        "url": "https://www.az.cl/en/executive-published-new-personal-data-law-in-chile/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.clydeco.com/en/insights/2025/02/chile-new-data-protection-cybersec-legislation",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/chile",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?c=CL&t=law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://www.az.cl/en/executive-published-new-personal-data-law-in-chile/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://lawwwing.com/en/the-new-era-of-data-protection-in-chile-what-changes-with-law-21-719/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/chile",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Law 21.719 rewrites Ley 19.628, creates new agency; in force 2026-12-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "website_url",
+        "from": "https://www.interior.gob.cl/",
+        "to": "https://www.dlapiperdataprotection.com/?c=CL&t=law"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Fines up to USD 20k",
+        "to": "Up to 20,000 UTM (~USD 1.3M) for very serious infringements"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Undersecretary of Interior",
+        "to": "Personal Data Protection Agency (Agencia de Protección de Datos Personales)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "Lawful collection & consent",
+        "to": "Legal bases beyond consent (contract, legitimate interest); portability; breach notification; DPO/compliance model"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "1999-10-01",
+        "to": "2026-12-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "1999-08-19",
+        "to": "2024-12-13"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "jurisdiction",
+        "from": "Subderretaría del Interior",
+        "to": "Agencia de Protección de Datos Personales"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Law for the Protection of Private Life (Ley 19.628)",
+        "to": "Law No. 21.719 on the Protection and Processing of Personal Data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "South America region",
+        "to": ""
+      }
+    ]
   }
 ]

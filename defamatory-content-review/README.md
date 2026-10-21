@@ -1,6 +1,6 @@
 # Módulo de Revisión de Contenido Difamatorio
 
-[![Tests](https://github.com/lol-protocol/php/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/lol-protocol/php/actions/workflows/tests.yml)
+[![Tests](https://github.com/lol-protocol/php/actions/workflows/pruebas-defamatory-content-review.yml/badge.svg?branch=master)](https://github.com/lol-protocol/php/actions/workflows/pruebas-defamatory-content-review.yml)
 
 Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
@@ -14,6 +14,16 @@ apellidos de personas, para plataformas de información genealógica.
 - **Detección de fusión fonética** — «Elba Gina» → «el vagina», «Felipe Lotas»
   → «Feli-pelotas»: nombre y apellido, ninguno ofensivo por separado, que al
   leerse seguidos componen otra palabra.
+- **Chat y textos libres**: insultos, amenazas, contenido sexual,
+  **acusaciones contra personas** («Fulano estafó a mi familia», «fue
+  condenado», «tiene sida»), **datos sensibles** de un tercero (salud,
+  orientación sexual, religión, origen, filiación, deudas) y **datos
+  personales** (RUT, teléfono, correo, dirección), que van a revisión humana.
+
+Por qué existe esta librería: [`docs/ORIGEN.md`](docs/ORIGEN.md). Qué protege y
+qué no, y qué tiene que hacer la plataforma por fuera del código:
+[`docs/RIESGOS.md`](docs/RIESGOS.md). Por qué la privacidad y la honra importan
+en todo el proyecto: [`../PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md).
 
 ---
 
@@ -23,7 +33,9 @@ apellidos de personas, para plataformas de información genealógica.
 composer install
 ```
 
-Requiere PHP >= 8.1 y la extensión `mbstring`.
+Requiere PHP >= 8.1 y la extensión `mbstring`. La extensión `intl` es opcional:
+sin ella el japonés, el cantonés y el tailandés sólo se reconocen por palabra
+suelta (ver «Idiomas sin espacios»).
 
 ## Uso
 
@@ -247,6 +259,16 @@ FusionSupport::isSupported('ara');                                      // false
 
 ### Evasión cubierta y no cubierta
 
+- **Separadores y símbolos de hacker** («p~u~t~a», «p|u|t|a», «p - u - t - a»,
+  «p|_|ta», «1d!0t4», «€stúpido», «N.4.Z.|»): cubiertos. `WholeWords` lee cada
+  palabra entera sin separadores o con las letras que dibujan los símbolos
+  (`HackerSpelling`); `SpacedLetters` une rachas de caracteres sueltos separados
+  por espacios o símbolos («N 4 Z 1»). «¡hola!», «1 2 3 4», «c/u» o «págs. 14-88»
+  no se tocan (`SymbolEvasionTest`).
+- **Disfraces de Unicode** («рuta» con «р» cirílica, «pu​ta» con un espacio de
+  ancho cero, «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta»): cubiertos, también en nombres.
+  `EvasionCleaner` corre dentro de `WordList::normalize()`, así que vale para
+  `validateName()` y para el chat (`UnicodeEvasionTest`).
 - **Transliteración numérica** ("c3rda", "v4g1na"): cubierta. `WordList::normalize()`
   sustituye los dígitos/símbolos de un solo carácter más comunes
   (`0→o 1→i 3→e 4→a 5→s 7→t 8→b @→a $→s`) antes de comparar, y los 17
@@ -330,10 +352,22 @@ Un test de integridad (`DictionaryIntegrityTest`) exige que todo idioma
 declarado `moderate` tenga ≥120 términos y `comprehensive` ≥200: subir el
 nivel es responder por un mínimo verificable, no una etiqueta.
 
-Los idiomas sin separación por espacios (`jpn`, `yue`, `tha`) declaran
-`requiresTokenizer`: para texto libre necesitan un segmentador externo
-(MeCab, jieba) antes de consultar el diccionario. Para nombres ya separados en
-campos no hace falta.
+### Idiomas sin espacios
+
+El japonés, el cantonés y el tailandés (`requiresTokenizer`) no separan las
+palabras con espacios. Con la extensión `intl`, `WordSegmenter` parte esos
+tramos con el segmentador de ICU antes de buscar, así que «お前はバカだ»
+encuentra «バカ» y «バカンス» no. Las palabras cortadas en varias piezas se
+vuelven a unir («仆|街» → «仆街»), y la censura tapa sólo la palabra. Sin
+`intl` cada tramo sin espacios es una sola palabra, como antes. Para nombres ya
+separados en campos no cambia nada: el corpus de nombres reales sigue sin
+marcas.
+
+Buscar dentro de la frase hizo visibles palabras cotidianas del diccionario
+(«牛» en «牛丼», «ลา» en «ลาก่อน», «adiós»): se marcaron `ambiguous` (el chat
+las ignora, los nombres no). Medido con las 20.000 palabras más frecuentes de
+OpenSubtitles por idioma; `บ้า`, `แขก`, `おし` y `魔女` quedan para revisión
+nativa (discapacidad, étnico y religioso no se tocan sin ella).
 
 ---
 
@@ -439,7 +473,7 @@ Nada de eso está fijo en `DefamatoryContentReviewer`: vive en un objeto
 siempre — no pasar ninguno es idéntico a antes de que esta clase existiera.
 
 ```php
-use DefamatoryContentReview\ScoringPolicy;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
 
 // Pesos por severidad, por defecto none=0 / low=1 / medium=2 / high=3.
 $propia = ScoringPolicy::default()->withSeverityWeights([
@@ -498,7 +532,7 @@ Además de nombres, se puede revisar una línea libre (un mensaje de chat) y
 saber si hay que censurarla y por qué:
 
 ```php
-use DefamatoryContentReview\ChatLineReviewer;
+use DefamatoryContentReview\Chat\ChatLineReviewer;
 
 $chat = ChatLineReviewer::create(__DIR__ . '/config', 'spa');
 $result = $chat->review('Eres un idiota, mándame nudes');
@@ -520,16 +554,54 @@ Tipos de contenido:
 | `burlesco` | Términos `burlesco` de ese mismo diccionario |
 | `sexual` | `config/chat-topics/<código>.php` |
 | `belico` | `config/chat-topics/<código>.php`: guerra, violencia, **amenazas** e incitación a matar |
+| `privado` | `PersonalData`, en cualquier idioma: RUT válido, correo, teléfono o dirección de alguien. Siempre a revisión |
 
 El término más grave decide: `high` bloquea, `medium` va a revisión y `low`
 sólo se informa (por ejemplo «mi abuelo luchó en la guerra» se aprueba pero
 queda marcado como `belico`). Un término que también es apellido
 (`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión,
 igual que con los nombres. Los 33 idiomas tienen lista de temas; las de
-español e inglés son las completas (ver «Lo que no cubre» para las demás).
+español e inglés son las completas, y portugués, italiano y francés también
+generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 
 ### Qué entiende
 
+- **Acusaciones contra una persona.** Difamar no es sólo insultar: «Fulano
+  estafó a mi familia», «Mengano fue condenado por violación», «es narco»,
+  «tiene sida», «le pone los cuernos a su señora», «funen a ese tipo». No
+  traen palabrotas y son lo que más daña en una plataforma de genealogía (ver
+  [`docs/ORIGEN.md`](docs/ORIGEN.md)). Los patrones de `config/chat-topics/`
+  las marcan como `difamatorio`, con etiquetas como `acusación de delito`,
+  `dato sensible (salud)`, `vida privada` o `funa o escrache`. Siempre van a
+  **revisión**, nunca se bloquean ni se aprueban solas: pueden ser ciertas, y
+  eso lo decide una persona con una fuente a la vista. «El robo del banco fue
+  en 1920» y «murió de cáncer» no se marcan. Español e inglés tienen los
+  patrones completos; portugués, francés, italiano y alemán, los básicos
+  (delito, condena, salud, vida privada, orientación sexual), sin revisión
+  nativa todavía. Los otros 27 idiomas sólo detectan insultos.
+- **Datos sensibles de un tercero, aunque sean ciertos** (Ley 19.628):
+  orientación sexual («era homosexual»), filiación («es hijo ilegítimo»,
+  «fue adoptada»), salud y suicidio, religión, origen étnico y opinión
+  política («la familia era judía», «Fulano es mapuche», «es comunista»),
+  antecedentes penales y deudas («está en DICOM»). Van a revisión: en
+  genealogía son frecuentes, y quien revisa decide si se publican.
+- **Datos personales, en cualquier idioma** (`PersonalData`, tipo `privado`):
+  un RUT con dígito verificador válido, un correo, un teléfono con prefijo o
+  anunciado («fono», «llámalo al») y una dirección anunciada («vive en la
+  calle…»). Van a revisión y salen tapados en el texto censurado; las fechas
+  («1939-1945») no se confunden con teléfonos.
+- **Siglas y consignas de odio, en los 33 idiomas.** «nazi» en la forma de cada
+  idioma («nazist», «natsi», «нацист», «ναζί», «נאצי», «نازي»…), «facho», «KKK»,
+  «ACAB», «sieg heil», «heil hitler», «white power», «14/88», también camufladas
+  («N.A.Z.I», «N.4.Z.|», «S1eg H3il»). En japonés, coreano, cantonés y
+  tailandés sólo las consignas. «Nazi» sólo cuenta dirigido a alguien («eres un
+  nazi»): la historia familiar habla de los nazis («mi abuelo luchó contra los
+  nazis») y eso se aprueba; las consignas cuentan siempre (`HateTermsTest`).
+- **Disfraces de Unicode y asteriscos.** «рuta» con «р» cirílica, «pu​ta» con
+  un espacio de ancho cero, «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta» se leen como «puta»
+  (`EvasionCleaner`, también al validar nombres). «p*ta», «m*erda»: cada
+  asterisco vale por una letra y, si completa un término, va a revisión
+  (`MaskedTerms`); «5*3» o «**importante**» no se tocan.
 - **Plurales, géneros y conjugaciones.** «desnudas», «masturbándose»,
   «fóllame», «bombardearon», «they massacred» se detectan aunque la lista
   sólo diga «desnudo», «masturbar», «follar», «bombardear» o «massacre»
@@ -541,8 +613,11 @@ español e inglés son las completas (ver «Lo que no cubre» para las demás).
 - **Letras sueltas.** «p u t a» y «vamos a f o l l a r» se leen como «puta» y
   «follar»: se unen las rachas de 3 o más letras separadas por espacios, y
   se prueba también sin las letras que son palabras («a», «y», «o»…) en los
-  extremos. Los separadores intercalados («p-u-t-a», «p.u.t.a») y el leet
-  («p0rn0») ya los cubría el diccionario.
+  extremos. Si la racha junta varias palabras («h o l a p u t a», «p u t a p u t a»),
+  se buscan también los términos de 4 letras o más dentro de ella
+  (`SpacedRunTerms`), pero eso sólo manda a revisión (`spaced => inside`).
+  Los separadores intercalados («p-u-t-a», «p.u.t.a») y el leet («p0rn0») ya
+  los cubría el diccionario.
 - **Letras repetidas.** «puuuuta», «mmmierda», «te voy a mataaaar». Cada racha
   de letras iguales se lee como 1 letra o como 2, sin tocar el texto: «follarr»
   es «follar» (con sus dos «l»), no «folar». Tres o más iguales seguidas no
@@ -550,15 +625,57 @@ español e inglés son las completas (ver «Lo que no cubre» para las demás).
   dos sí pueden ser legítimas («calle», «Pratt», «looser»), así que lo que
   sólo se encuentra reduciendo dobles («puuta») baja a `review`. El hallazgo
   conserva el texto como se escribió y trae `repeat`: `elongated` o `doubled`.
-  Las amenazas (`patterns`) aceptan letras repetidas con su severidad. Sólo
-  se activa en los idiomas con `meta.collapseRepeats` (español e inglés): en
-  otros —italiano, finés…— la doble letra es parte de la palabra.
+  Las amenazas (`patterns`) aceptan letras repetidas con su severidad. Las
+  rachas de 3 o más se leen en todos los idiomas («cazzzo», «Arschloooch»,
+  «сууука»): medido contra las 50 000 palabras más frecuentes de 26 idiomas,
+  no añade ningún falso positivo. Reducir las dobles sólo se activa con
+  `meta.collapseRepeats => true`: español, inglés y otros 18 idiomas donde la
+  misma medición casi no cambia nada (portugués, alemán, ruso, polaco, turco,
+  árabe…; lo que apareció, como «Pollack» o «sesaat», va a `legit`). En italiano,
+  francés, neerlandés, noruego, finés, islandés y hebreo la doble letra es parte
+  de la palabra («anno» → «ano», «penne» → «pene»), y ahí no se reduce.
 - **Palabras ambiguas.** «vamos a coger el bus», «está de bomba la fiesta»,
   «techo de paja» no son contenido sexual ni bélico: esas palabras sólo
   cuentan si la misma línea trae algo firme (`medium` o `high`) del mismo
   tipo («quiero coger, mándame nudes»). No es lo mismo que `'ambiguous' => true`
   en una entrada de `config/languages/` («leche», «яйца»): esa marca se ignora
   siempre en el chat, y `validateName()` no la mira.
+- **Sólo si va dirigido a alguien.** Los animales y la discapacidad («cerdo»,
+  «rata», «cojo») y las entradas `'targeted' => true` (identidad: «Jude»,
+  «homo»; brujería: «bruja»; palabrotas suaves: «чёрт», «cholera») sólo
+  cuentan cuando apuntan a una persona. «Eres un cerdo», «Juan es un cerdo»,
+  «esa rata», «seu porco», «du Schwein», «ты свинья», «dasar babi», «aso ka»
+  van a revisión; «comí cerdo», «vi una rata en la cocina», «mi abuelo es
+  cojo», «das Schwein im Stall» se aprueban: el hallazgo queda en `low` con
+  `context => untargeted`. Cuenta como dirigido si hay una marca del idioma
+  hasta 3 palabras antes («eres», «es un», «ese», «maldito», «you», «seu»,
+  «espèce de», «ты», «يا») o después («de mierda», «ka», «lan»); si la línea
+  es sólo el término («¡cerdo!»); o si la línea ya trae otro insulto firme.
+  Las frases de varias palabras («hijo de perra») y los compuestos marcados
+  `'targeted' => false` («svinehund») cuentan siempre. Las marcas están en la
+  clave `targeted` de 29 idiomas; japonés, coreano, cantonés y tailandés, sin
+  espacios entre palabras, siguen como antes. Ver `TargetContext`.
+  Una entrada con `'whenTargeted' => 'high'` sube a esa severidad cuando va
+  dirigida: «cerda» también es apellido (Cerda) y sola no pasa de revisión,
+  pero «eres una cerda» se bloquea (`context => targeted`).
+- **Signos pegados a la palabra.** «puta!», «¿idiota?», «(rata)», ««imbécil»»
+  se leen igual que sin signos (antes «idiota!» se aprobaba).
+
+### Palabras de cada país
+
+El idioma es uno solo (`spa`, siempre en tres letras): lo que es insulto en un
+país hispanohablante está en el español base, aunque en otro no lo sea. Cuando
+dos países chocan, se elige la regla que sirve a los dos:
+
+- «puto» (insulto homófobo en México y Argentina, intensificador en España) es
+  `targeted`: «eres un puto» o «¡puto!» se bloquean, «los putos deberes» pasa.
+- «joto» (México) y «trolo» (Argentina) se bloquean siempre.
+- «coger», «concha», «pija» y «pico» son vulgares en unos países y cotidianos en
+  otros («coger el bus», «una concha de mar», «una pija», «las tres y pico»):
+  están en `ambiguous` y sólo cuentan si la línea trae otra palabra sexual.
+- «polla» sigue bloqueándose, aunque en Chile también sea la lotería.
+
+`RegionalWordsTest` fija estos casos.
 
 ### Ampliar las listas de chat
 
@@ -566,20 +683,61 @@ español e inglés son las completas (ver «Lo que no cubre» para las demás).
 
 | Campo | Qué hace |
 |---|---|
-| `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame») en español e inglés. Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
+| `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame», «matá-lo», «ammazzarti», «baise-moi») en español, inglés, portugués, italiano y francés (`TopicInflector`; los verbos romances comparten `RomanceVerbs`). Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
+| `'by' => ['f' => 'high', 'm.pl' => 'none']` | Severidad por forma: la ofensa no es simétrica («cerdo» suena mal, «cerda» horrible; «zorros» son animales). Rasgos: `sg`, `pl`, `m`, `f`, `m.sg`, `m.pl`, `f.sg`, `f.pl`; gana el más específico, y `none` deja fuera esa forma. Los diminutivos (`dim`, `dim.f`, `dim.pl`…) sólo se generan si `by` los pide, porque cambian el tono en cualquier dirección: «putita» degrada más, «cerdita» es cariñoso (`'by' => ['dim' => 'high']`; reglas en español y portugués, en italiano y francés van en `also`). Una forma que ya está escrita como entrada propia no se genera (lo escrito manda), y las generadas no heredan `nameCollision`. |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
-| meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
-| `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsConfigTest` verifica que cada una siga haciendo falta. |
+| meta `'collapseRepeats' => true` | Lee también las palabras con letras dobles reducidas («puuta»); las de 3 o más («puuuta») se leen siempre, salvo con `false`. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
+| `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
+| `'targeted' => ['types' => [...], 'before' => [...], 'after' => [...]]` | Qué riskTypes sólo cuentan dirigidos a alguien (`animal`, `discapacidad`) y las marcas del idioma que lo indican, antes o después del término (hasta 3 palabras). En un diccionario, `'targeted' => true` suma una entrada suelta a la regla y `'targeted' => false` la saca. `TargetMarkersConfigTest` verifica el formato. |
+| `'everyday' => [...]` | Palabras cotidianas que sin tildes coinciden con un término: «possède» → «possédé», «katıl» (únete) → «katil» (asesino), «moc» (mucho) → «moč». Escritas exactamente así (da igual la mayúscula) no se buscan en el chat; «katil» sin tilde sigue marcándose. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
 | `'patterns'` | Frases con forma: expresión regular sin delimitadores contra el texto plegado (minúsculas, sin tildes ni puntuación, leet resuelto), con `riskType`, `severity` y `label`. |
 
 `ChatTopicsConfigTest` verifica que las entradas estén bien formadas, que
 todos los patrones compilen y que ninguna forma caiga en dos categorías, y
-`ChatLineDetectionTest` corre `tests/fixtures/chat-lines.php`: añade ahí una
+`ChatLineDetectionTest` corre `tests/fixtures/chat-lines-detection.php`: añade ahí una
 línea que debe marcarse y otra parecida que no. Una palabra que ya está en el
 diccionario de insultos del idioma se marca igual como `difamatorio`; en
 `chat-topics/` sólo hace falta si además debe llevar la etiqueta `sexual` o
 `belico`.
+
+### Medir falsos positivos
+
+Un insulto rara vez está entre las palabras más usadas de un idioma; una palabra
+cotidiana que el chat confunde con uno, sí. `bin/false-positives.php` pasa por
+`ChatLineReviewer` las 50.000 palabras más usadas de un idioma (listas de
+[FrequencyWords](https://github.com/hermitdave/FrequencyWords), subtítulos de
+OpenSubtitles) y lista las que censuraría:
+
+```bash
+php bin/false-positives.php dan da_50k.txt > dan.csv   # rango,palabra,decision,tipos,termino
+```
+
+Medido en los 32 idiomas con lista, lo que se encontró y cómo se corrigió:
+
+- **Letras propias del alfabeto que el plegado de tildes fusionaba**: danés y
+  noruego «høre» (oír) → «hore», «når» (cuando) → «nar»; sueco «höra» → «hora»,
+  «rätta» (corregir) → «råtta»; finés «tai» (o, la 56.ª palabra más usada) →
+  «täi» (piojo); vietnamita «dài» (largo) → «dái», «đeo» (llevar puesto) → «đéo».
+  En esos 5 idiomas `AccentFolding` ya no pliega esas letras (`æ ø å`, `å ä ö`,
+  y las vocales con tono y `đ` del vietnamita).
+- **Palabras sueltas que sin tildes son un término**: «moc», «katıl», «possède»,
+  «demeure», «sértés»… van a `everyday` (ver la tabla de arriba).
+- **Términos que ante todo son palabras cotidianas**: «crazy», «verrückt»,
+  «fou», «louco», «preto», «kanker» (también «cáncer»), «أمي» (mi madre)… llevan
+  `'ambiguous' => true` en el diccionario: el chat los ignora y los nombres no.
+  Se marcaron 78 entradas en 29 idiomas.
+
+Resultado: de 5.368 a 5.159 palabras frecuentes censuradas, y entre las 1.000
+más usadas de cada idioma, de 213 a 166 —casi todas insultos y palabrotas
+reales («merde», «faen», «kurwa»), que en subtítulos son frecuentes—. Lo que
+queda por decidir se lista en `review/`.
+
+`bin/review-sheets.php` arma con eso una **planilla por idioma para revisión
+nativa** (`review/<código>.csv`): cada término con su categoría, severidad,
+marcas, rango de frecuencia y lo que decide hoy el chat; las excepciones; y las
+palabras frecuentes que se censurarían sin ser un término. El revisor llena
+`correcto` y `comentario`. Ver [`review/README.md`](review/README.md).
 
 ### Validación en el front (`js/limit-repeated-letters.js`)
 
@@ -614,6 +772,90 @@ necesita, pásalos en `keep`: `{ keep: [/\b[IVXLCDM]{3,}\b/, /\bwww\b/i] }`.
 `node --test 'js/tests/*.test.js'`. El tope del front no sustituye al del
 servidor: quien se salte el front sigue siendo leído.
 
+### Endpoint HTTP y demo (`public/`)
+
+`public/moderar.php` expone `ChatLineReviewer` como endpoint JSON, sin
+framework. Publica sólo esa carpeta en el servidor web: `config/`, `src/` y
+`vendor/` quedan fuera.
+
+```http
+POST /moderar.php
+Content-Type: application/json
+
+{"text": "te voy a matar, puta", "language": "spa"}
+```
+
+```json
+{"language": "spa", "checkedLanguages": ["spa", "eng"], "decision": "reject", "censor": true,
+ "contentTypes": ["difamatorio", "belico"], "censored": "**************, ****",
+ "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "contentTypes": ["difamatorio"], "severity": "high"},
+             {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "contentTypes": ["belico"], "severity": "high"}]}
+```
+
+`language` es opcional (`spa` por defecto) y acepta el código de tres letras o
+el de dos (`es`). Como lo elige quien escribe, el texto se revisa además en los
+idiomas de la plataforma (`spa` y `eng`, tercer argumento de
+`ModerationEndpoint`) y manda la decisión más grave: mandar un insulto en
+español como `"eng"` no lo cuela. `checkedLanguages` dice en cuáles se revisó. Cada hallazgo sale una vez
+por aparición: «follar», que es insulto y contenido sexual, trae los dos en
+`contentTypes` (y el primero en `contentType`). Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
+`Content-Type: application/json` (415), cuerpo de hasta 64 KB (413), JSON en
+UTF-8 con `text` string (400), texto de hasta 10.000 caracteres (413) e idioma
+soportado (400). Un texto de más de 2.000 caracteres (una biografía, una nota)
+se revisa por partes (`LongText`): párrafos enteros, separados por una línea en
+blanco y juntos mientras quepan, y un párrafo muy largo por oraciones, cortando en un espacio de
+cualquier tipo; la costura de cada corte se revisa también, para que una frase
+que cae sobre él («heil hitler») no quede repartida. Manda la parte más grave y
+los hallazgos de todas salen juntos. Los errores responden
+`{"error": {"code": "texto_demasiado_largo", "message": "…"}}`; un fallo
+interno, un 500 genérico (`error_interno`) sin rutas ni trazas, con el detalle
+en el log de PHP. La lógica vive
+en `ModerationEndpoint`, que no toca superglobales: para montarlo en otro
+framework, pásale el método y el cuerpo y emite el `status`, `headers` y
+`body` que devuelve.
+
+**Antes de publicarlo.** El endpoint no guarda los textos que revisa (sólo la cuenta de peticiones, ver abajo), y no
+envía cabeceras CORS: una página de otro origen no puede leer sus respuestas,
+y exigir `application/json` impide que se lo mande como formulario simple.
+Las respuestas llevan `Cache-Control: no-store`, `nosniff` y
+`Content-Security-Policy: default-src 'none'`. `public/moderar.php` limita las peticiones
+por IP: 30 por minuto (`MODERAR_POR_MINUTO`; `0` lo apaga), y al pasarse
+responde 429 con `Retry-After` (`demasiadas_peticiones`). Lleva la cuenta en
+`MODERAR_LIMITES_DIR` (por omisión, una carpeta en el directorio temporal),
+con la IP guardada como HMAC y no en claro. Detrás de un proxy propio que
+escriba `X-Forwarded-For`, `MODERAR_CONFIAR_X_FORWARDED_FOR=1` usa su último
+valor. Conviene limitar también en el servidor web: revisar un texto de 10.000
+caracteres en los tres idiomas cuesta unos 250 ms de CPU (una línea corta,
+unos 50 ms). Las letras sueltas tienen un tope por línea: pasado ese tope, el
+texto va a revisión sin buscar dentro de él, que costaría segundos. Aun así,
+sin límite basta un bucle para ocupar los workers. Con nginx:
+
+```nginx
+limit_req_zone $binary_remote_addr zone=moderar:10m rate=10r/s;
+
+location = /moderar.php {
+    limit_req zone=moderar burst=20 nodelay;
+    client_max_body_size 16k;
+    # fastcgi_pass … como el resto de PHP
+}
+```
+
+Si el chat tiene usuarios autenticados, conviene limitar por usuario y no por
+IP. El endpoint tampoco registra el texto revisado: si hace falta auditar,
+mejor guardar la decisión que el mensaje.
+
+La demo junta las dos capas —el tope de letras repetidas del front y la
+decisión del servidor— en una página de chat:
+
+```bash
+php -S localhost:8000 public/router.php   # http://localhost:8000/
+```
+
+`public/router.php` es sólo para desarrollo: sirve la página, el endpoint
+(`/moderar`) y el JS, y responde 404 a todo lo demás. `ModerationEndpointTest`
+cubre la lógica y los límites, y `ModerationServerTest` levanta el router con
+`php -S` y lo prueba de punta a punta.
+
 ### Lo que no cubre
 
 Son listas de arranque, sin revisión de hablantes nativos, y un filtro de
@@ -627,15 +869,37 @@ palabras no entiende contexto:
   («Pratt» → «prat» lo estaba) llega a `review`, nunca a `reject`.
 - Un nombre que coincide con un insulto del diccionario («Dick») se marca
   igual; sólo los que declaran `nameCollision` bajan a revisión.
+- Una palabra de `everyday` se deja pasar escrita así aunque quien la escribe
+  quiera decir el insulto sin tilde («t'es demeure»): se eligió el uso
+  cotidiano, que es mucho más frecuente. La medición de falsos positivos es
+  por palabra suelta, no por frase: no ve los que sólo aparecen en contexto.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
+- Los diccionarios de insultos (`config/languages/`) sólo generan formas en
+  las entradas que declaran `forms` (como «cerdo», «puta», «zorra», «perra»
+  en español; también los plurales de los insultos sexualizados en portugués,
+  italiano y francés), y lo generado sin `by` llega como mucho a revisión: nadie
+  decidió todavía cuánto ofende esa forma. El resto no genera nada: «idiots»
+  sólo se detecta porque está escrito. El inglés
+  tiene los plurales de sus insultos claros; en los demás idiomas, el plural
+  de un insulto que no esté en la lista pasa en el chat. Las listas de temas
+  sí los generan (`forms`) en español, inglés, portugués, italiano y francés.
+- Letras sueltas que juntan dos palabras («h o l a p u t a») sólo llegan a
+  revisión, nunca a bloqueo: lo encontrado dentro de una racha más larga
+  podría ser una palabra deletreada que lo contiene («c o m p u t a d o r a»;
+  medido: el 0,7 % de las palabras frecuentes de español e inglés,
+  deletreadas, irían a revisión).
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
-  por tema, más `ambiguous`). Las amenazas con forma (`patterns`) sólo están en
+  por tema, más `ambiguous`). Portugués, italiano y francés ya generan sus
+  formas regulares; alemán, neerlandés y turco, los plurales y la declinación
+  del adjetivo («Huren», «dumme», «kutten», «domme», «orospular»: ver
+  `GermanInflection`, `DutchInflection`, `TurkishInflection`; en alemán y
+  neerlandés el adjetivo declinado lleva el rasgo `infl`); los otros 25 no. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
-  No tienen plurales, géneros ni conjugaciones automáticos —sólo la forma base
-  y las que se añadan a mano con `also`—, ni `collapseRepeats`, y se escribieron
-  sin revisión nativa. En japonés, cantonés y tailandés, que no separan las
-  palabras con espacios, sólo se reconoce la palabra suelta (no dentro de una
-  frase) hasta que haya un segmentador. `ChatTopicsCoverageTest` fija una línea
+  Esos 25 no tienen plurales, géneros ni conjugaciones automáticos —sólo la
+  forma base y las que se añadan a mano con `also`—, y se escribieron
+  sin revisión nativa. En japonés, cantonés y tailandés hace falta la
+  extensión `intl` para encontrar palabras dentro de una frase (ver «Idiomas
+  sin espacios»). `ChatTopicsCoverageTest` fija una línea
   sexual, una amenaza y una cotidiana por idioma.
 
 ## API
@@ -751,7 +1015,7 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 
 ### `WordList`
 
-`search()`, `findInText()` (detecta frases de hasta 3 palabras),
+`search()`, `findInText()` (detecta frases de hasta 5 palabras),
 `getByRiskType()`, `getByCategory()`, `getBySeverity()`, `getNameCollisions()`,
 `getStatistics()`, `requiresTokenizer()`, `getCoverage()`,
 `supportsPhoneticFolding()`, `fold()`, `searchPhoneticExact()`,
@@ -771,62 +1035,97 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 ## Estructura
 
 ```
-src/DefamatoryContentReview/
-├── DefamatoryContentReviewer.php   Facade: construcción y validación en el idioma principal
+src/                                Namespace DefamatoryContentReview\ (cada carpeta es un subnamespace)
+├── DefamatoryContentReviewer.php   Fachada: construcción y validación en el idioma principal
 ├── NameEvaluator.php               Coincidencias literales y fusión fonética (interno)
-├── RiskReportBuilder.php           Arma getDetailedReport() (interno)
-├── LanguageAccess.php              Diccionarios y cobertura — $reviewer->languages()
-├── RelatedLanguageValidator.php    Validación entre idiomas emparentados — $reviewer->related()
-├── LanguageRegistry.php            Identidad de idiomas (códigos, alias, familias)
-├── LanguageAffinity.php            Afinidad léxica — colaborador de LanguageRegistry
-├── WordList.php                    Diccionario: carga, normalización, búsqueda
-├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
-├── WordListScanner.php             Búsqueda de términos en texto — colaborador de WordList
-├── AccentFolding.php               Plegado de diacríticos compartido por WordList
-├── ScriptFolding.php               Variantes estándar de griego, cirílico, árabe y hebreo
-├── ScoringPolicy.php               Orquesta pesos/bandas/decisión (configurable)
-├── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
-├── SpanishPhoneticFolder.php       Plegado fonético del español
-├── PortuguesePhoneticFolder.php    Plegado fonético del portugués
-├── ItalianPhoneticFolder.php       Plegado fonético del italiano
-├── FrenchPhoneticFolder.php        Plegado fonético del francés
-├── GermanPhoneticFolder.php        Plegado fonético del alemán
-├── Czech…RomanianPhoneticFolder.php  Los otros 12 idiomas latinos (ver tabla arriba)
-├── AccentOnlyPhoneticFolding.php   Wiring compartido por los folders sin reglas propias además de acentos
-├── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica compartida por los folders
-├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
-├── FusionSupport.php               Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
-├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
-├── ChatLineReviewer.php            Revisión de mensajes de chat — ver «Revisar mensajes de chat»
-├── ChatLineResult.php              Decisión, tipos de contenido y línea censurada de un mensaje
-├── ChatTopics.php                  Lista de temas de un idioma (palabras, ambiguas y patrones) — interno
-├── SpacedLetters.php               Letras sueltas («p u t a») unidas en una palabra — interno
-├── RepeatedLetters.php             Letras repetidas («puuuta»): búsqueda tolerante y `legit` — interno
-├── RepeatedReadings.php            Cada racha leída como 1 letra o como 2 — interno
-├── ChatMatches.php / ChatPatternMatcher.php   Operaciones sobre los hallazgos y frases con forma — internos
-├── TopicInflector.php              Expande `forms` en plurales, géneros y conjugaciones — interno
-├── TopicInflection.php             Contrato por idioma: SpanishInflection (+ SpanishVerbs) y EnglishInflection
-├── ValidationResult.php            Resultado con trazabilidad por idioma y método
-├── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
-└── TermExplanation.php             Frase legible de por qué se marcó cada término
+├── Language/
+│   ├── LanguageRegistry.php        Identidad de idiomas (códigos, alias, familias)
+│   ├── LanguageAffinity.php        Afinidad léxica — colaborador de LanguageRegistry
+│   ├── LanguageAccess.php          Diccionarios y cobertura — $reviewer->languages()
+│   └── RelatedLanguageValidator.php  Validación entre idiomas emparentados — $reviewer->related()
+├── Dictionary/
+│   ├── WordList.php                Diccionario: carga, normalización, búsqueda
+│   ├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
+│   ├── WordListScanner.php         Búsqueda de términos en texto
+│   ├── WholeWords.php              Segundo paso: la palabra entera sin separadores o leída con símbolos de hacker
+│   └── WordSegmenter.php           Parte en palabras el japonés, cantonés y tailandés (ICU, ext-intl)
+├── Normalization/
+│   ├── AccentFolding.php           Plegado de diacríticos
+│   ├── EvasionCleaner.php          Deshace disfraces de Unicode: cirílico camuflado, invisibles, ancho completo, emoji
+│   ├── HackerSpelling.php          Lecturas de una palabra con símbolos: «p|_|ta», «1d!0t4», «N.4.Z.|»
+│   ├── ScriptFolding.php           Variantes estándar de griego, cirílico, árabe y hebreo
+│   └── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica («c3rda»)
+├── Phonetic/
+│   ├── PhoneticFolderRegistry.php  Qué idioma usa qué folder
+│   ├── AbstractPhoneticFolder.php / CommonPhoneticAccents.php   Base compartida de los folders
+│   ├── FusionSupport.php           Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
+│   ├── PhoneticFusionDetector.php  Fusión nombre+apellido y variantes ortográficas
+│   └── Folders/                    Spanish…TurkishPhoneticFolder.php: 17 idiomas (ver tabla arriba)
+├── Scoring/
+│   ├── ScoringPolicy.php           Orquesta pesos/bandas/decisión (configurable)
+│   └── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
+├── Report/
+│   ├── ValidationResult.php        Resultado con trazabilidad por idioma y método
+│   ├── FlaggedTermCollection.php   Términos marcados y sus consultas — colaborador de ValidationResult
+│   ├── TermExplanation.php         Frase legible de por qué se marcó cada término
+│   └── RiskReportBuilder.php       Arma getDetailedReport() (interno)
+├── Review/                         Planillas de revisión nativa → config/ (bin/apply-review.php)
+│   ├── ReviewSheet.php             Respuestas del revisor → cambios
+│   ├── ReviewApplier.php           Cambios → texto nuevo de cada archivo, con chequeo de planilla vieja
+│   └── ConfigEditor.php            Edita una entrada o lista sin reescribir el archivo
+├── Http/
+│   └── ModerationEndpoint.php      Endpoint JSON del chat, sin superglobales — lo usa public/moderar.php
+└── Chat/
+    ├── ChatLineReviewer.php        Revisión de mensajes de chat — ver «Revisar mensajes de chat»
+    ├── ChatLineResult.php          Decisión, tipos de contenido y línea censurada de un mensaje
+    ├── ChatTopics.php              Lista de temas de un idioma (palabras, ambiguas y patrones) — interno
+    ├── ChatMatches.php / ChatPatternMatcher.php   Operaciones sobre los hallazgos y frases con forma — internos
+    ├── SpacedLetters.php           Letras sueltas («p u t a») unidas en una palabra — interno
+    ├── SpacedRunTerms.php          Términos dentro de una racha más larga («h o l a p u t a») — interno
+    ├── RepeatedLetters.php / RepeatedReadings.php   Letras repetidas («puuuta»), leídas como 1 o 2 — internos
+    ├── EverydayWords.php           Tapa las palabras de `everyday` antes de buscar — interno
+    ├── TargetContext.php / TargetWindow.php   Sólo cuenta si va dirigido a alguien («eres un cerdo») — internos
+    ├── MaskedTerms.php             Insultos con asteriscos («p*ta») — interno
+    ├── CombinedReview.php          La misma línea en varios idiomas: manda la decisión más grave
+    └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection;
+                                    Spanish/Portuguese/Italian/French/EnglishInflection,
+                                    y la conjugación romance común en RomanceVerbs (+ *Verbs);
+                                    FormSeverity (severidad por forma, `by`) y Diminutives
+
+docs/
+├── ORIGEN.md                       Por qué existe esta librería
+└── RIESGOS.md                      Qué protege, qué no, y qué tiene que hacer la plataforma
 
 config/
-├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns), uno por idioma
-├── risk-categories.php             Los 11 tipos de riesgo
+├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns, acusaciones), uno por idioma
+├── supported-languages.php         Catálogo ISO 639-3 + alias 639-1
 ├── language-families.php           Familias y afinidades
-└── languages/
-    ├── supported-languages.php     Catálogo ISO 639-3 + alias 639-1
-    └── spa.php eng.php por.php …   33 diccionarios
+├── risk-categories.php             Los 11 tipos de riesgo
+└── languages/                      33 diccionarios: spa.php eng.php por.php …
 
 js/
 ├── limit-repeated-letters.js       Tope de letras iguales seguidas para el front (máx. 2) — sin dependencias
 ├── example.html                    Página de prueba
 └── tests/                          node --test
 
-tests/
-└── fixtures/common-names.php       Nombres reales comunes por idioma (falsos positivos y benchmark)
+tests/                              Misma división que src/ (namespace Tests\…)
+├── Chat/ Dictionary/ Http/ Language/ Normalization/ Phonetic/ Report/ Review/ Scoring/
+├── PrimaryLanguageValidationTest.php  ExamplesRunTest.php  FileSizeLimitTest.php
+└── fixtures/
+    ├── common-names.php            Nombres reales comunes por idioma (falsos positivos y benchmark)
+    ├── chat-lines-detection.php    Líneas de chat que deben marcarse y que no (ChatLineDetectionTest)
+    └── chat-lines-coverage.php     Una línea sexual, una amenaza y una cotidiana por idioma (ChatTopicsCoverageTest)
 examples/                           Ejecutados por ExamplesRunTest
+public/
+├── moderar.php                     Endpoint JSON de moderación de chat (ModerationEndpoint)
+├── router.php                      Servidor de la demo: php -S localhost:8000 public/router.php
+└── demo.html                       Chat de prueba: tope de letras del front + decisión del servidor
 bin/benchmark.php                   Nombres validados por segundo, por idioma
+bin/false-positives.php             Palabras frecuentes de un idioma que el chat censuraría
+bin/review-sheets.php               Planilla CSV de revisión nativa de un idioma
+bin/apply-review.php                Aplica a config/ una planilla revisada (plan; --apply escribe)
+review/                             Planillas generadas, una por idioma (ver review/README.md)
+_Garbage/                           Obsoleto, conservado sin borrar (ver su README)
 ```
 
 Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas
@@ -857,7 +1156,7 @@ return [
 ];
 ```
 
-2. Registrarlo en `config/languages/supported-languages.php`.
+2. Registrarlo en `config/supported-languages.php`.
 3. Añadirlo a su familia y declarar afinidades en `config/language-families.php`.
 
 Los tests verifican automáticamente que todo idioma registrado tenga
@@ -892,7 +1191,7 @@ una regla nueva marca un linaje real, falla ahí.
 
 ## Limitaciones
 
-- La detección literal es por término completo o frase de hasta tres palabras;
+- La detección literal es por término completo o frase de hasta cinco palabras;
   no encuentra palabras incrustadas dentro de una sola palabra sin cruce de
   frontera (ver la sección de fusión fonética más arriba). La transliteración
   numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no
@@ -912,7 +1211,7 @@ una regla nueva marca un linaje real, falla ahí.
   producción — es una base verificable, no una traducción exhaustiva.
 - El árabe dialectal y las variedades regionales del chino no están cubiertos.
 - La distancia de edición («Cerrda») no está cubierta: ver el docblock de
-  `EvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
+  `StructuralEvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
 - Las afinidades son aproximaciones, no medidas.
 - El módulo no decide por la plataforma: `decide()` propone, y los casos
   `review` requieren persona.

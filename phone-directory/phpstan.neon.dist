@@ -1,0 +1,16 @@
+# Analisis estatico: phpstan analyse. Lo corre la CI en PHP 8.1 a 8.4.
+#
+# Nivel 6, como defamatory-content-review: tipos de parametros, retornos y propiedades, y que los
+# arrays digan de que son (PHPDoc array<...>, list<...>, array{...}). Entran el modulo (src), el
+# CLI y los ejemplos; bin/phonedir no termina en .php, por eso va nombrado. Los tests no entran:
+# PHPUnit les da ruido (assertIsArray sobre algo que ya se sabe que es array, etc.).
+#
+# Mismo nivel y criterio que defamatory-content-review/phpstan.neon.dist (ver ese archivo); si
+# cambia uno, revisar si el otro deberia cambiar tambien.
+parameters:
+    level: 6
+    paths:
+        - src
+        - bin
+        - bin/phonedir
+        - examples

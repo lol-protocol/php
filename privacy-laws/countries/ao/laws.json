@@ -1,0 +1,69 @@
+[
+  {
+    "country_code": "AO",
+    "country_name": "Angola",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (Law No. 22/11)",
+    "jurisdiction": "Agência de Proteção de Dados (APD)",
+    "enactment_date": "2011-06-17",
+    "effective_date": "2011-06-17",
+    "scope": "Individuals in Angola",
+    "applies_to": "Public & private & cooperative sector entities",
+    "key_requirements": "APD registration and authorisation, consent, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Art. 11: principle of duration of retention period - data kept only for period necessary for processing purposes",
+    "enforcement_authority": "Agência de Proteção de Dados (APD)",
+    "penalties_range": "Up to USD 150000 fine",
+    "exemptions": "National security; household use",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "Sensitive data include health and sex life data including genetic data; specific requirements for sensitive data (arts. 13-14)",
+    "website_url": "https://lex.ao/docs/assembleia-nacional/2011/lei-n-o-22-11-de-17-de-junho/",
+    "language": "Portuguese",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Entry-into-force day unconfirmed (set to law date); APD operating since Oct 2019; revision still draft",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.offlist.me/what-is-angola-law-22-11",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://angolex.com/paginas/leis/lei-de-protecao-de-dados-pessoais.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=AO&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data include health and sex life data including genetic data; specific requirements for sensitive data (arts. 13-14)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 11: principle of duration of retention period - data kept only for period necessary for processing purposes"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

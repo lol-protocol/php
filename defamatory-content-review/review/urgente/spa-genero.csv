@@ -1,0 +1,23 @@
+seccion,termino,origen,categoria,riskType,severidad,marcas,rango,decision_chat,correcto,comentario,pregunta,ejemplos
+forma,cerdos,diccionario,animal,animal,medium,forma:m.pl de:cerdo,,,sí,confirmado,¿«sois unos cerdos» ofende igual que «eres un cerdo»? (hoy medium = revisión),sois unos cerdos → review · malditos cerdos → review
+forma,cerdas,diccionario,animal,animal,high,forma:f.pl de:cerdo,,,sí,confirmado,El femenino sexualizado: hoy high (se bloquea). ¿Correcto?,sois unas cerdas → reject
+forma,guarros,diccionario,animal,animal,medium,forma:m.pl de:guarro,,,sí,confirmado,Como «cerdos»: hoy medium.,sois unos guarros → review
+forma,guarras,diccionario,animal,animal,high,forma:f.pl de:guarro,,,sí,confirmado,Como «cerdas»: hoy high.,sois unas guarras → reject
+forma,putas,diccionario,genero,genero,high,forma:pl de:puta,,,sí,confirmado,Plural con la misma severidad que «puta» (high). ¿Correcto?,sois unas putas → reject · hijos de putas → reject
+forma,zorras,diccionario,genero,genero,high,forma:pl de:zorra,,,sí,confirmado,Igual que «putas».,malditas zorras → reject
+forma,perras,diccionario,genero,genero,high,forma:pl de:perra,,,sí,confirmado,Igual que «putas».,sois unas perras → reject
+término,cerda,diccionario,animal,animal,medium,nameCollision,,,sí,aplicado: dirigida se bloquea (whenTargeted),También es apellido (Cerda): «eres una cerda» no pasa de revisión. ¿Debería bloquearse cuando va claramente dirigido? Responde en comentario.,eres una cerda → review · María Cerda → approve
+término,vaca,diccionario,animal,animal,medium,nameCollision,,,sí,aplicado: dirigida se bloquea (whenTargeted),Dicho a una mujer suele ser «gorda». ¿Más grave (high)?,eres una vaca → review · la vaca da leche → approve
+término,mona,diccionario,animal,animal,medium,nameCollision,,,sí,confirmado,En España «mona» es «guapa». ¿Marcar ambiguous (el chat la ignora)?,qué mona estás → approve · eres una mona → review
+término,gallina,diccionario,animal,animal,medium,,,,sí,confirmado,«Cobarde». ¿Severidad correcta?,eres un gallina → review
+término,marrana,diccionario,animal,animal,medium,,,,sí,aplicado: dirigida se bloquea (whenTargeted),¿Más grave que «marrano» (como cerda/cerdo)?,eres una marrana → review · eres un marrano → review
+término,gorda,diccionario,fisico,fisico,low,,,,sí,"aplicado: dirigida va a revisión (targeted, whenTargeted medium)",¿«gorda» ofende más que «gordo»? Hoy los dos low.,eres una gorda → approve · eres un gordo → approve
+término,golfa,diccionario,genero,genero,high,,,,sí,confirmado,"«golfo» (pícaro, casi cariñoso) no está; «golfa» es high. ¿Correcto así?",eres una golfa → reject · eres un golfo → approve
+término,cojones,diccionario,ordinario,ordinario,high,,,,sí,aplicado: low,"«¡cojones!» es una interjección muy común y hoy se bloquea. ¿Bajar a low, o marcarla ambiguous?",¡cojones! → reject · tiene cojones la cosa → reject · me toca los cojones → reject
+término,bruja,diccionario,religioso,religioso,high,targeted,,,sí,confirmado,"Ya es asimétrico: brujo medium, bruja high. ¿Correcto?",eres una bruja → reject · eres un brujo → review
+término,pendejo,diccionario,ordinario,ordinario,high,,,,sí,aplicado: se añade «pendeja» high,«pendeja» no está. ¿Mismo nivel?,eres un pendejo → reject · eres una pendeja → approve
+propuesta,lagarta,diccionario,,,,no está en el diccionario,,,sí,"aplicado: añadida, medium",¿Añadir? ¿Con qué severidad?,eres una lagarta → approve
+propuesta,pájara,diccionario,,,,no está en el diccionario,,,sí,"aplicado: añadida, low",¿Añadir? ¿Con qué severidad?,menuda pájara → approve
+propuesta,puto,diccionario,,,,no está en el diccionario,,,sí,"aplicado: añadido high, targeted («los putos deberes» pasa)","En España suele ser intensificador («los putos deberes»); en México, insulto homófobo. ¿Añadir y con qué severidad?",los putos deberes → approve · eres un puto → approve
+propuesta,putita,diccionario,,,,no está en el diccionario,,,sí,"aplicado: diminutivo de «puta», high",Diminutivo: ¿más degradante que «puta»?,eres una putita → approve
+propuesta,cerdita,diccionario,,,,no está en el diccionario,,,sí,aplicado: queda fuera (sin diminutivo en «cerdo»),Diminutivo cariñoso («mi cerdita»): ¿dejarlo fuera?,eres una cerdita → approve

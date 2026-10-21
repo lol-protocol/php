@@ -2,10 +2,11 @@
   {
     "country_code": "AU",
     "country_name": "Australia",
+    "region": "asia_pacific",
     "law_name": "Privacy Act 1988",
     "jurisdiction": "Office of the Australian Information Commissioner",
-    "enactment_date": "1988-12-21",
-    "effective_date": "1989-06-21",
+    "enactment_date": "1988-12-14",
+    "effective_date": "1989-01-01",
     "scope": "Australian Residents",
     "applies_to": "All organizations",
     "key_requirements": "Australian Privacy Principles",
@@ -14,8 +15,83 @@
     "enforcement_authority": "Australian Information Commissioner",
     "penalties_range": "Up to AUD $50M",
     "exemptions": "Government agencies",
+    "deceased_data": "Not covered: the Privacy Act does not apply to personal information of a deceased individual",
+    "research_exemption": "Medical/health research without consent under NHMRC guidelines approved under ss. 95 (agencies) and 95A (organisations)",
+    "genetic_data": "Genetic information is 'sensitive information' (s. 6) with higher protection",
     "website_url": "https://www.oaic.gov.au/",
     "language": "English",
-    "notes": "13 Australian Privacy Principles"
+    "frameworks": "APEC-CBPR",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Amended by POLA Act 2024 (statutory privacy tort, ADM transparency); Tranche 2 bill in consultation",
+    "pending_change": "Tranche 2 reform: Privacy Amendment (Personal Data Protection) Bill 2026 exposure draft released 31 Aug 2026; not law",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "effective_date": {
+        "url": "https://legislation.gov.au/C2004A03712/asmade/1988-12-14/text/original/pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://mccullough.com.au/2026/08/31/privacy-act-reforms-tranche-2-proposals/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.oaic.gov.au/privacy/privacy-complaints/what-you-can-complain-about",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://nhmrc.gov.au/about-us/publications/guidelines-approved-under-section-95a-privacy-act-1988",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.oaic.gov.au/privacy/your-privacy-rights/your-personal-information/what-is-personal-information",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic information is 'sensitive information' (s. 6) with higher protection"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Medical/health research without consent under NHMRC guidelines approved under ss. 95 (agencies) and 95A (organisations)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: the Privacy Act does not apply to personal information of a deceased individual"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "13 Australian Privacy Principles",
+        "to": "Amended by POLA Act 2024 (statutory privacy tort, ADM transparency); Tranche 2 bill in consultation"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "1989-06-21",
+        "to": "1989-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "1988-12-21",
+        "to": "1988-12-14"
+      }
+    ]
   }
 ]

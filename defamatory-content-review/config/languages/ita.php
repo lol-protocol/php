@@ -15,8 +15,22 @@ return [
     ],
 
     'words' => [
+        // Odio y extremismo: «nazi» sólo cuenta dirigido a alguien («eres un nazi»), no en la
+        // historia («mi abuelo luchó contra los nazis»); las consignas cuentan siempre.
+        'odio' => [
+            ['word' => 'nazi', 'riskType' => 'moral', 'severity' => 'medium', 'nameCollision' => true, 'targeted' => true],
+            ['word' => 'nazis', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonazi', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonazis', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'animale' => [
-            ['word' => 'porco', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'porco', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'forms' => 'adj', 'by' => ['f' => 'high']],
             ['word' => 'porca', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'maiale', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'scrofa', 'riskType' => 'animal', 'severity' => 'high'],
@@ -83,7 +97,7 @@ return [
 
         'fisico' => [
             ['word' => 'brutto', 'riskType' => 'fisico', 'severity' => 'low'],
-            ['word' => 'orribile', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'orribile', 'riskType' => 'fisico', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'orrendo', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'ripugnante', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'schifoso', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -140,8 +154,8 @@ return [
             ['word' => 'paralitico', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'invalido', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'handicappato', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'pazzo', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'matto', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'pazzo', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
+            ['word' => 'matto', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'demente', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'storpia', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'zoppa', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -157,7 +171,7 @@ return [
             ['word' => 'paralitica', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'invalida', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'handicappata', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'pazza', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'pazza', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'matta', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
 
@@ -233,11 +247,11 @@ return [
             ['word' => 'effeminato', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'lesbica', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'camionista', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'puttana', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'troia', 'riskType' => 'genero', 'severity' => 'high', 'nameCollision' => true],
-            ['word' => 'zoccola', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'mignotta', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'baldracca', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'puttana', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ['word' => 'troia', 'riskType' => 'genero', 'severity' => 'high', 'nameCollision' => true, 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ['word' => 'zoccola', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ['word' => 'mignotta', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ['word' => 'baldracca', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
             ['word' => 'meretrice', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'prostituta', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'zitella', 'riskType' => 'genero', 'severity' => 'medium'],

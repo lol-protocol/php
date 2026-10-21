@@ -30,6 +30,11 @@ return [
             ['word' => 'ตัดหัว', 'riskType' => 'belico', 'severity' => 'high'],
             ['word' => 'ฆ่ามึง', 'riskType' => 'belico', 'severity' => 'high'],
             ['word' => 'จะฆ่า', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'จะฆ่าคุณ', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'จะฆ่าแก', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'จะฆ่าเธอ', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'จะฆ่านาย', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'จะฆ่ามึง', 'riskType' => 'belico', 'severity' => 'high'],
         ],
         'ambiguous' => [
             ['word' => 'ระเบิด', 'riskType' => 'belico', 'severity' => 'medium'],

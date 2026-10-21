@@ -2,17 +2,120 @@
   {
     "country_code": "AE",
     "country_name": "United Arab Emirates",
-    "law_name": "Federal Law No. 7/2002",
+    "region": "middle_east_africa",
+    "law_name": "Federal Decree-Law No. 38 of 2021 on Copyright and Neighbouring Rights",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Dealing in TPM-circumvention devices criminalised (Decree-Law 38/2021, replaced Law 7/2002)",
     "fair_use_exceptions": "Educational exceptions",
-    "registration_required": "No",
-    "enforcement_body": "UAE IP Office",
-    "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.moir.gov.ae/"
+    "registration_required": "No (protection automatic on creation; optional registration/deposit with Ministry of Economy as evidence; Decree-Law 38/2021, Cabinet Decision 47/2022)",
+    "enforcement_body": "Ministry of Economy (Copyright Department)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://uaelegislation.gov.ae/en/legislations/1534/download",
+    "notes": "Decree-Law 38/2021 (eff. 2022-01-02) repealed Law 7/2002; Executive Regulation issued by MoE",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "law_name": {
+        "url": "https://uaelegislation.gov.ae/en/legislations/1534/download",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://www.agip.com/Agip-Country-Service/en/10/c/1",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://arab-digital-economy.org/?p=28026",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "registration_required": {
+        "url": "https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/600/",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "enforcement_body": {
+        "url": "https://www.wam.ae/en/article/hszrezo1-ministry-economy-reviews-executive-regulation",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "registration_required",
+        "from": "No (voluntary deposit with Ministry of Economy) (unconfirmed)",
+        "to": "No (protection automatic on creation; optional registration/deposit with Ministry of Economy as evidence; Decree-Law 38/2021, Cabinet Decision 47/2022)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Federal Law No. 7/2002 was replaced by Federal Decree-Law No. 38 of 2021 on copyright",
+        "to": "Decree-Law 38/2021 (eff. 2022-01-02) repealed Law 7/2002; Executive Regulation issued by MoE"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "linked_resources",
+        "from": "https://www.moec.gov.ae/",
+        "to": "https://uaelegislation.gov.ae/en/legislations/1534/download"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "UAE IP Office",
+        "to": "Ministry of Economy (Copyright Department)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "registration_required",
+        "from": "No",
+        "to": "No (voluntary deposit with Ministry of Economy) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Federal Law No. 7/2002",
+        "to": "Federal Decree-Law No. 38 of 2021 on Copyright and Neighbouring Rights"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Federal Law No. 7/2002 was replaced by Federal Decree-Law No. 38 of 2021 on copyright"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Dealing in TPM-circumvention devices criminalised (Decree-Law 38/2021, replaced Law 7/2002)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright protection",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "linked_resources",
+        "from": "https://www.moir.gov.ae/",
+        "to": "https://www.moec.gov.ae/"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

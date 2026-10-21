@@ -52,6 +52,22 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
         ]);
     }
 
+    private static function montoDelPago(int $id): float
+    {
+        $pago = (new PagoRepository())->porId($id);
+        self::assertNotNull($pago);
+
+        return (float) $pago['monto'];
+    }
+
+    private static function montoDeLaBoleta(int $id): float
+    {
+        $boleta = (new BoletaRepository())->porId($id);
+        self::assertNotNull($boleta);
+
+        return (float) $boleta['monto'];
+    }
+
     private static function borrarBoletaConTodo(int $id): void
     {
         $db = Database::connection();
@@ -229,6 +245,79 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
         self::assertMatchesRegularExpression('/name="fecha_pago"[^>]*value="2020-03-05"/', $cuerpo);
         self::assertMatchesRegularExpression('/<option value="tarjeta"\s+selected/', $cuerpo);
         self::assertSame(0, self::contar('SELECT COUNT(*) FROM pagos WHERE boleta_id = :id', [':id' => $boletaId]));
+    }
+
+    /**
+     * Los montos se comparan en centavos enteros, sin margen: pagar justo el
+     * saldo pasa, y pasarse por un centavo se rechaza (antes se cobraba y la
+     * boleta quedaba con saldo negativo).
+     */
+    public function testUnPagoSeAceptaPorElSaldoExactoYSeRechazaPorUnCentavoDeMas(): void
+    {
+        $boletaId = $this->boletaDePrueba(); // 1000.00
+        $csrf = self::campoOculto($this->get('page=pago-nuevo&cliente_id=' . self::CLIENTE)['cuerpo'], 'csrf_token');
+        $pagar = function (string $monto) use ($boletaId, $csrf): array {
+            // Un formulario por envio, cada uno con su token, como lo haria el navegador.
+            $token = self::campoOculto($this->get('page=pago-nuevo&cliente_id=' . self::CLIENTE)['cuerpo'], EnvioUnico::CAMPO);
+            $this->olvidarToken($token);
+
+            return $this->post('page=pago-nuevo&cliente_id=' . self::CLIENTE, [
+                'csrf_token' => $csrf, EnvioUnico::CAMPO => $token, 'cliente_id' => self::CLIENTE,
+                'boleta_id' => $boletaId, 'monto' => $monto, 'fecha_pago' => '2020-01-20', 'metodo' => 'tarjeta',
+            ]);
+        };
+
+        $deMas = $pagar('1000.01');
+        $this->assertStatus(200, $deMas);
+        self::assertStringContainsString('El monto supera el saldo pendiente de la boleta.', $deMas['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM pagos WHERE boleta_id = :id', [':id' => $boletaId]));
+
+        $this->assertStatus(302, $pagar('1000.00'));
+        self::assertSame(1, self::contar('SELECT COUNT(*) FROM pagos WHERE boleta_id = :id', [':id' => $boletaId]));
+        $boleta = (new BoletaRepository())->porId($boletaId);
+        self::assertNotNull($boleta);
+        self::assertSame(0.0, $boleta['saldo'], 'la boleta quedo saldada, sin un centavo de sobra ni de menos');
+    }
+
+    public function testEditarUnPagoSeAceptaPorElTotalDisponibleYSeRechazaPorUnCentavoDeMas(): void
+    {
+        $boletaId = $this->boletaDePrueba(); // 1000.00
+        $pagoId = $this->pagoDePrueba($boletaId); // 100.00: la boleta queda con 900.00 de saldo, o sea 1000.00 disponibles para este pago
+        $csrf = self::campoOculto($this->get("page=pago-editar&id={$pagoId}")['cuerpo'], 'csrf_token');
+        $editar = fn (string $monto): array => $this->post("page=pago-editar&id={$pagoId}", [
+            'csrf_token' => $csrf, 'monto' => $monto, 'fecha_pago' => '2020-01-15', 'metodo' => 'tarjeta',
+        ]);
+
+        $deMas = $editar('1000.01');
+        $this->assertStatus(200, $deMas);
+        self::assertStringContainsString('El monto supera el saldo pendiente de la boleta.', $deMas['cuerpo']);
+        self::assertSame(100.0, self::montoDelPago($pagoId), 'el pago quedo como estaba');
+
+        $this->assertStatus(302, $editar('1000.00'));
+        self::assertSame(1000.0, self::montoDelPago($pagoId));
+    }
+
+    /** Editar el monto de una boleta tampoco puede dejarlo ni un centavo por debajo de lo ya cobrado. */
+    public function testEditarElMontoDeUnaBoletaNoPuedeBajarDeLoCobradoNiPorUnCentavo(): void
+    {
+        $boletaId = $this->boletaDePrueba(); // 1000.00
+        $this->pagoDePrueba($boletaId); // 100.00 cobrados
+        $csrf = self::campoOculto($this->get("page=boleta-editar&id={$boletaId}")['cuerpo'], 'csrf_token');
+        $editar = fn (string $monto): array => $this->post("page=boleta-editar&id={$boletaId}", [
+            'csrf_token' => $csrf, 'concepto' => 'Boleta editada', 'monto' => $monto,
+            'fecha_emision' => '2020-01-01', 'fecha_vencimiento' => '2020-02-01',
+        ]);
+
+        $deMenos = $editar('99.99');
+        $this->assertStatus(200, $deMenos);
+        self::assertStringContainsString('El monto no puede ser menor a lo ya cobrado', $deMenos['cuerpo']);
+        self::assertSame(1000.0, self::montoDeLaBoleta($boletaId), 'la boleta quedo como estaba');
+
+        $this->assertStatus(302, $editar('100.00'));
+        self::assertSame(100.0, self::montoDeLaBoleta($boletaId));
+        $boleta = (new BoletaRepository())->porId($boletaId);
+        self::assertNotNull($boleta);
+        self::assertSame(0.0, $boleta['saldo']);
     }
 
     /**
@@ -830,5 +919,34 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
         $this->assertStatus(200, $edicion);
         self::assertStringContainsString($mensaje, $edicion['cuerpo']);
         self::assertSame(0, self::contar('SELECT COUNT(*) FROM boletas WHERE id = :id AND concepto = :c', [':id' => $boletaId, ':c' => $demasiado]));
+    }
+
+    /**
+     * El campo del monto lleva en el HTML los mismos limites que aplica el servidor (de un centavo a
+     * Validacion::MONTO_MAXIMO, de a centavos) en las cuatro pantallas que lo tienen: el navegador
+     * rechaza un monto fuera de rango antes de enviarlo, como ya hace maxlength con los textos. Sin
+     * max, un 1e20 solo se rechazaba despues del envio.
+     */
+    public function testElCampoDelMontoLlevaLosLimitesDelServidorEnLasCuatroPantallas(): void
+    {
+        $boletaId = $this->boletaDePrueba();
+        $pagoId = $this->pagoDePrueba($boletaId);
+
+        $pantallas = [
+            'alta de boleta' => 'page=boleta-nueva',
+            'edicion de boleta' => "page=boleta-editar&id={$boletaId}",
+            'alta de pago' => 'page=pago-nuevo&cliente_id=' . self::CLIENTE, // el monto aparece al elegir el cliente
+            'edicion de pago' => "page=pago-editar&id={$pagoId}",
+        ];
+        foreach ($pantallas as $nombre => $query) {
+            $respuesta = $this->get($query);
+
+            $this->assertStatus(200, $respuesta, $nombre);
+            self::assertMatchesRegularExpression(
+                '/<input type="number" name="monto" id="monto" required min="0\.01" max="999999999999\.99" step="0\.01" value="[^"]*">/',
+                $respuesta['cuerpo'],
+                $nombre
+            );
+        }
     }
 }

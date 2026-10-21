@@ -1,7 +1,8 @@
 #!/bin/bash
 # Quita un dominio del servidor SIN borrar nada: archiva (mueve) su vhost, su sitio y sus logs.
 # Uso: ./10_B-remove-domain.sh <dominio> [--app NOMBRE] [--yes] [--dry-run]
-#   --app      tambien archiva /var/www/NOMBRE y la unidad systemd NOMBRE (apps php/python)
+#   --app      tambien archiva /var/www/NOMBRE y la unidad systemd NOMBRE (apps php/python);
+#              si se omite, se toma de la marca del vhost que dejan 06_A/06_B
 #   --yes      no pide confirmacion
 #   --dry-run  muestra que se archivaria sin tocar nada
 # Todo va a $REMOVED_DIR/<dominio>-<fecha>/ (por defecto /var/backups/vps-setup/removed).
@@ -24,7 +25,7 @@ while [ $# -gt 0 ]; do
         --app) [ $# -ge 2 ] || { echo "Falta el valor de --app"; exit 2; }; APP=$2; shift 2 ;;
         --yes|-y) YES=1; shift ;;
         --dry-run) DRY_RUN=1; shift ;;
-        -h|--help) sed -n '2,9p' "$0"; exit 0 ;;
+        -h|--help) sed -n '2,10p' "$0"; exit 0 ;;
         -*) echo "Opcion desconocida: $1 (usa --help)"; exit 2 ;;
         *) [ -z "$DOMAIN" ] || { echo "Solo se admite un dominio (sobra: $1)"; exit 2; }
            DOMAIN=$1; shift ;;
@@ -32,10 +33,16 @@ while [ $# -gt 0 ]; do
 done
 [ -n "$DOMAIN" ] || { echo "Uso: $0 <dominio> [--app NOMBRE] [--yes] [--dry-run]"; exit 2; }
 require_valid domain "$DOMAIN" "El dominio"
+VHOST="$NGINX_DIR/sites-available/$DOMAIN"
+# Sin --app, la app se toma de la marca que 06_A/06_B dejan en la primera linea del vhost: si no,
+# quitar el dominio dejaria atras /var/www/<app> y su servicio (gunicorn seguiria ocupando su puerto).
+if [ -z "$APP" ] && [ -f "$VHOST" ]; then
+    APP=$(sed -n '1s/^# vps-setup: 06_[AB]-[a-z]* \([^ ]*\)$/\1/p' "$VHOST")
+    [ -z "$APP" ] || echo "App detectada en el vhost: $APP (como si se hubiera pasado --app $APP)"
+fi
 [ -z "$APP" ] || require_valid name "$APP" "--app"
 
 DEST="$REMOVED_DIR/$DOMAIN-$(date +%Y%m%d-%H%M%S)"
-VHOST="$NGINX_DIR/sites-available/$DOMAIN"
 LINK="$NGINX_DIR/sites-enabled/$DOMAIN"
 # Versiones anteriores de 06_A y 06_B nombraban el vhost como la APP (hoy usan el dominio): con --app
 # se desactiva tambien ese, por si quedo alguno asi, o el sitio seguiria publicado.

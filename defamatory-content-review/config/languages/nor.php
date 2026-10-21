@@ -8,6 +8,20 @@ return [
         'nativeName' => 'Norsk', 'family' => 'germanic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'nazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nazister', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nynazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nynazister', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'dyr' => [
             ['word' => 'svin', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'gris', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -25,7 +39,7 @@ return [
             ['word' => 'padde', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'kryp', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'kreatur', 'riskType' => 'animal', 'severity' => 'high'],
-            ['word' => 'svinehund', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'svinehund', 'riskType' => 'animal', 'severity' => 'high', 'targeted' => false],
             ['word' => 'slange', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'hyene', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'parasitt', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -48,7 +62,7 @@ return [
             ['word' => 'tulling', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'dust', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'teit', 'riskType' => 'intelectual', 'severity' => 'low'],
-            ['word' => 'sprø', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'sprø', 'riskType' => 'intelectual', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'dumskalle', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'tåpe', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'hjernedød', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -96,7 +110,7 @@ return [
             ['word' => 'vanskapt', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'lam', 'riskType' => 'discapacidad', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'handikappet', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'gal', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'gal', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'sinnssyk', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
 
@@ -221,7 +235,7 @@ return [
             ['word' => 'vantro', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'hedning', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'gudløs', 'riskType' => 'religioso', 'severity' => 'medium'],
-            ['word' => 'besatt', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'besatt', 'riskType' => 'religioso', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'satanisk', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'djevel', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'heks', 'riskType' => 'religioso', 'severity' => 'high'],

@@ -73,7 +73,10 @@
             "technical_specs": {
               "weight_gsm": "60-300",
               "recommended_dpi": "300-600",
-              "finish_types": ["Matte", "Glossy"],
+              "finish_types": [
+                "Matte",
+                "Glossy"
+              ],
               "special_notes": "Standard office paper 80-90 gsm"
             }
           }
@@ -98,7 +101,7 @@
               "format_id": 1,
               "format_name": "A4",
               "country": "International",
-              "relevance_score": 1.0
+              "relevance_score": 1
             }
           ]
         }
@@ -202,7 +205,142 @@
               "weight_name": "20 lb Bond",
               "gsm": 75,
               "lb_bond": 20,
-              "typical_use": "Standard printer paper"
+              "lb_text": 50.7,
+              "lb_cover": 27.7,
+              "weight_type": "Bond",
+              "typical_use": "Standard printer and copier paper"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "List Paper Types",
+      "method": "GET",
+      "path": "/paper-types",
+      "parameters": {
+        "category": "string (optional) - Filter by category (Writing/Printing, Coated, Cardstock, Decorative, Recycled, Specialty, Technical, Photo, Packaging)",
+        "finish": "string (optional) - Filter by finish, one of the /finishes names (e.g., 'Matte', 'Glossy')",
+        "color": "string (optional) - Words contained in the color (e.g., 'white', 'kraft')",
+        "min_gsm": "integer (optional) - Only types whose weight range reaches at least this gsm",
+        "max_gsm": "integer (optional) - Only types whose weight range starts at or below this gsm",
+        "search": "string (optional) - Words in the Spanish or English name, the common use or the notes",
+        "page": "integer (optional) - Pagination page number (default: 1)",
+        "limit": "integer (optional) - Results per page (default: 20, max: 100)"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "data": [
+            {
+              "paper_type_id": 4,
+              "type_name": "Papel roneo",
+              "type_name_en": "Roneo paper",
+              "category": "Writing/Printing",
+              "color": "Off-white",
+              "texture": "Smooth",
+              "finish": "Uncoated",
+              "weight_gsm_min": 40,
+              "weight_gsm_max": 55,
+              "common_use": "Low-cost copies and school handouts",
+              "notes": "Regional Latin American term for the thin mimeograph-era duplicator paper; still used loosely for low-grammage bond"
+            }
+          ],
+          "pagination": {
+            "current_page": 1,
+            "total_pages": 3,
+            "total_results": 50,
+            "results_per_page": 20
+          }
+        }
+      }
+    },
+    {
+      "name": "Get Paper Type",
+      "method": "GET",
+      "path": "/paper-types/{paper_type_id}",
+      "parameters": {
+        "paper_type_id": "integer (required) - Paper type ID"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "data": {
+            "paper_type_id": 29,
+            "type_name": "Papel térmico",
+            "type_name_en": "Thermal paper",
+            "category": "Technical",
+            "color": "White",
+            "texture": "Smooth",
+            "finish": "Thermal",
+            "weight_gsm_min": 48,
+            "weight_gsm_max": 60,
+            "common_use": "Receipts and fax machines",
+            "notes": "Darkens with heat instead of ink"
+          },
+          "products": [
+            {
+              "product_name": "Receipt",
+              "uses": "Point of Sale"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "List Paper Types for a Format",
+      "method": "GET",
+      "path": "/formats/{format_id}/paper-types",
+      "parameters": {
+        "format_id": "integer (required) - Format ID",
+        "category": "string (optional) - Filter by paper type category",
+        "finish": "string (optional) - Filter by finish"
+      },
+      "description": "Any paper type can be printed at any sheet size, so this is a filter, not a compatibility list: when the format has a technical_specifications row, only the types whose gsm range overlaps its recommended weight range are returned; otherwise every type is returned and weight_filter_applied is false.",
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "format": {
+            "format_id": 1,
+            "format_name": "A4"
+          },
+          "weight_filter_applied": true,
+          "recommended_weight_gsm": {
+            "min": 60,
+            "max": 300
+          },
+          "data": [
+            {
+              "paper_type_id": 2,
+              "type_name": "Papel bond",
+              "type_name_en": "Bond",
+              "category": "Writing/Printing",
+              "finish": "Uncoated",
+              "weight_gsm_min": 60,
+              "weight_gsm_max": 90
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "List Finishes",
+      "method": "GET",
+      "path": "/finishes",
+      "parameters": {},
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "finishes": [
+            {
+              "finish_id": 1,
+              "finish_name": "Uncoated",
+              "description": "Natural paper surface with no coating; absorbs ink and takes pen and pencil well",
+              "best_for": "Writing; forms; offset text; books"
             }
           ]
         }

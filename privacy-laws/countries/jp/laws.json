@@ -2,10 +2,11 @@
   {
     "country_code": "JP",
     "country_name": "Japan",
+    "region": "asia_pacific",
     "law_name": "Act on Protection of Personal Information (APPI)",
     "jurisdiction": "Personal Information Protection Commission",
-    "enactment_date": "2017-05-30",
-    "effective_date": "2020-04-01",
+    "enactment_date": "2003-05-30",
+    "effective_date": "2005-04-01",
     "scope": "Japanese Residents",
     "applies_to": "Business operators",
     "key_requirements": "Lawful purpose notice",
@@ -14,8 +15,78 @@
     "enforcement_authority": "Personal Information Protection Commission",
     "penalties_range": "Up to ¥1M penalty",
     "exemptions": "Public institutions",
+    "deceased_data": "Not covered: personal information is information relating to a living individual (art. 2(1))",
+    "research_exemption": "Since 2022 amendment (effective 1 Apr 2022) academic research institutions get per-obligation exceptions instead of a blanket exemption",
+    "genetic_data": "Genomic data can be personal information (individual identification code, art. 2(2)); not confirmed as special care-required (art. 2(3)) (unconfirmed)",
     "website_url": "https://www.ppc.go.jp/",
     "language": "Japanese",
-    "notes": "Asia's comprehensive privacy law"
+    "frameworks": "EU-Adequacy/APEC-CBPR",
+    "frameworks_not": "GDPR/CoE-108",
+    "notes": "2026 amendment adds administrative fines; effective date by cabinet order (<=2 yrs)",
+    "pending_change": "Amendment Act No. 56 of 2026 (administrative fines) promulgated 17 Jul 2026; not yet in force",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "notes": {
+        "url": "https://www.aoshearman.com/en/insights/ao-shearman-on-data/amendments-to-the-act-on-the-protection-of-personal-information-promulgated",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.lexmundi.com/guides/global-data-privacy-guide/jurisdictions/asia-pacific/japan",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://ca.hoganlovells.com/en/publications/data-privacy-laws-and-regulations-in-japan-recent-amendments-to-the-act-on-the-protection-of-personal-information-appi",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://nature.com/articles/s10038-017-0409-4.pdf",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genomic data can be personal information (individual identification code, art. 2(2)); not confirmed as special care-required (art. 2(3)) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Since 2022 amendment (effective 1 Apr 2022) academic research institutions get per-obligation exceptions instead of a blanket exemption"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: personal information is information relating to a living individual (art. 2(1))"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Asia's comprehensive privacy law",
+        "to": "2026 amendment adds administrative fines; effective date by cabinet order (<=2 yrs)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2020-04-01",
+        "to": "2005-04-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2017-05-30",
+        "to": "2003-05-30"
+      }
+    ]
   }
 ]

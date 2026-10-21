@@ -1,0 +1,64 @@
+[
+  {
+    "country_code": "RW",
+    "country_name": "Rwanda",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 055/2024 of 20/06/2024 on the Protection of Intellectual Property",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Law 055/2024 introduces mechanisms for use of orphan works (owners cannot be located); article number not confirmed",
+    "digital_protection": "Prohibits circumventing effective technical measures; copyright-management info protected",
+    "fair_use_exceptions": "Statutory exceptions (private copying, quotation, library reproduction, judicial use, accessible-format copies)",
+    "registration_required": "No (registration available with the Registrar General)",
+    "enforcement_body": "Rwanda Development Board (Office of the Registrar General)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/22672",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "orphan_works": {
+        "url": "https://www.ensafrica.com/news/detail/9073/key-changes-introduced-by-rwandas-new-intelle",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://spoor.com/rwanda-new-ip-legislation/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "Law 055/2024 introduces mechanisms for use of orphan works (owners cannot be located); article number not confirmed"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Prohibits circumventing effective technical measures; copyright-management info protected"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

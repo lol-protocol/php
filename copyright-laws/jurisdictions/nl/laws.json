@@ -2,17 +2,52 @@
   {
     "country_code": "NL",
     "country_name": "Netherlands",
+    "region": "europe",
     "law_name": "Copyright Act (Auteurswet)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years (EU harmonized)",
     "author_rights": "Reproduction & public communication",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Orphan works license available",
-    "digital_protection": "Copyright compliance",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exemptions",
     "registration_required": "No",
-    "enforcement_body": "Netherlands Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.minjust.nl/"
+    "enforcement_body": "Ministry of Justice and Security (Ministerie van Justitie en Veiligheid)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.minjust.nl/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://internetconsultatie.nl/acr2/document/8899",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Netherlands Patent Office",
+        "to": "Ministry of Justice and Security (Ministerie van Justitie en Veiligheid)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright compliance",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

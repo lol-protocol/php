@@ -1,0 +1,137 @@
+[
+  {
+    "country_code": "MN",
+    "country_name": "Mongolia",
+    "region": "asia_pacific",
+    "law_name": "Law on Personal Data Protection (2021)",
+    "jurisdiction": "National Human Rights Commission of Mongolia",
+    "enactment_date": "2021-12-17",
+    "effective_date": "2022-05-01",
+    "scope": "Data subjects (individuals)",
+    "applies_to": "Individuals, legal entities and organizations collecting or processing personal data in Mongolia, including representative offices and permanent establishments",
+    "key_requirements": "Consent for processing; transfers abroad require data-subject consent unless law or treaty allows; security measures",
+    "data_categories": "Personal data; sensitive personal data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Human Rights Commission of Mongolia (NHRCM)",
+    "penalties_range": "Fines of MNT 500,000 to MNT 20,000,000 (single compliance-site source) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "Data of a deceased person processed with written consent of family member, legal representative or will; no consent needed for sensitive data 70 years after death (article unverified)",
+    "research_exemption": "Use allowed for historical, scientific, artistic and literary works, and for open data and statistics where the person cannot be identified (article unverified) (unconfirmed)",
+    "genetic_data": "Genetic data is sensitive personal data (art. 4.1.12); stricter requirements and separate Regulation on processing sensitive, biometric and genetic data",
+    "website_url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+    "language": "Mongolian",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Replaced the 1995 Law on Personal Secrecy; sources differ on regulator",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "law_name": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "deceased_data": {
+        "url": "https://webiis06.mondaq.com/data-protection/1181270/new-law-on-protection-of-personal-data-in-mongolia",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://webiis06.mondaq.com/data-protection/1181270/new-law-on-protection-of-personal-data-in-mongolia",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://pwc.com/mn/en/services/legal_mn/legal-articles/legal_insights_feb_24_2025.html",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data is sensitive personal data (art. 4.1.12); stricter requirements and separate Regulation on processing sensitive, biometric and genetic data"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Use allowed for historical, scientific, artistic and literary works, and for open data and statistics where the person cannot be identified (article unverified) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Data of a deceased person processed with written consent of family member, legal representative or will; no consent needed for sensitive data 70 years after death (article unverified)"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -149,21 +149,35 @@ esac'
 }
 
 # ---- 07_A: fail2ban + parches ----
-@test "07_A: jail solo de SSH con backend systemd, sin jails de nginx" {
+@test "07_A: sshd (systemd), reincidentes y jails de nginx que cubren los logs POR DOMINIO" {
     export FAIL2BAN_JAIL="$BATS_TEST_TMPDIR/jail.local" APT_AUTO_CONF="$BATS_TEST_TMPDIR/20auto"
+    export NGINX_LOG_DIR="$BATS_TEST_TMPDIR/nginxlog"; mkdir -p "$NGINX_LOG_DIR"
     run bash "$VPS_DIR/07_A-install-fail2ban-autoupdates.sh"
     [ "$status" -eq 0 ]
     grep -q "^\[sshd\]" "$FAIL2BAN_JAIL"
     grep -q "^backend = systemd" "$FAIL2BAN_JAIL"
-    grep -q "^enabled = true" "$FAIL2BAN_JAIL"
-    ! grep -q "nginx" "$FAIL2BAN_JAIL"
+    grep -q "^\[recidive\]" "$FAIL2BAN_JAIL" && grep -q "^bantime  = 1w" "$FAIL2BAN_JAIL"
+    for j in nginx-botsearch nginx-http-auth nginx-bad-request; do grep -q "^\[$j\]" "$FAIL2BAN_JAIL"; done
+    grep -q "$NGINX_LOG_DIR/\*/error.log" "$FAIL2BAN_JAIL"     # glob: todos los dominios
+    grep -q "^logpath  = $NGINX_LOG_DIR/error.log" "$FAIL2BAN_JAIL"   # y uno que siempre existe
+    [ -f "$NGINX_LOG_DIR/error.log" ] && [ -f "$NGINX_LOG_DIR/access.log" ]
     grep -q 'Unattended-Upgrade "1"' "$APT_AUTO_CONF"
     grep -q "apt-get install -y fail2ban unattended-upgrades python3-systemd" "$SUDO_LOG"
     grep -q "systemctl restart fail2ban" "$SUDO_LOG"
 }
 
+@test "07_A sin Nginx instalado: solo sshd y reincidentes (un logpath inexistente impediria arrancar)" {
+    export FAIL2BAN_JAIL="$BATS_TEST_TMPDIR/jail.local" APT_AUTO_CONF="$BATS_TEST_TMPDIR/20auto"
+    export NGINX_LOG_DIR="$BATS_TEST_TMPDIR/no-existe"
+    run bash "$VPS_DIR/07_A-install-fail2ban-autoupdates.sh"
+    [ "$status" -eq 0 ]
+    ! grep -q nginx "$FAIL2BAN_JAIL"
+    grep -q "^\[recidive\]" "$FAIL2BAN_JAIL"
+}
+
 @test "07_A espera a fail2ban (ping) antes de consultar el jail y no aborta si tarda" {
     export FAIL2BAN_JAIL="$BATS_TEST_TMPDIR/jail.local" APT_AUTO_CONF="$BATS_TEST_TMPDIR/20auto"
+    export NGINX_LOG_DIR="$BATS_TEST_TMPDIR/nginxlog"; mkdir -p "$NGINX_LOG_DIR"
     run bash "$VPS_DIR/07_A-install-fail2ban-autoupdates.sh"
     ping=$(grep -n "fail2ban-client ping" "$SUDO_LOG" | head -1 | cut -d: -f1)
     stat=$(grep -n "fail2ban-client status sshd" "$SUDO_LOG" | head -1 | cut -d: -f1)
@@ -205,6 +219,7 @@ esac'
 
 @test "02_J WEBMIN_ALLOW_FROM restringe el puerto 10000 a esa IP; sin ella avisa que queda abierto" {
     setup_stubs; setup_system_stubs; export SUDO_EXEC=0
+    make_stub apt-cache 'exit 0'
     WEBMIN_ALLOW_FROM=203.0.113.5 run bash "$VPS_DIR/02_J-install-webmin.sh"
     [ "$status" -eq 0 ]
     grep -q "ufw allow from 203.0.113.5 to any port 10000 proto tcp" "$SUDO_LOG"
@@ -222,6 +237,7 @@ esac'
     WEBMIN_ALLOW_FROM='1.2.3.4; rm -rf /' run bash "$VPS_DIR/02_J-install-webmin.sh"
     [ "$status" -eq 2 ]
     ! grep -q "ufw allow" "$SUDO_LOG"
+    ! grep -q "apt-get install" "$SUDO_LOG"     # ni siquiera llega a instalar
 }
 
 # ---- 07_E: rendimiento ----
@@ -246,10 +262,47 @@ esac'
 @test "01 configura apt (espera el lock, conserva tus configs) y needrestart automatico" {
     export APT_TUNING_CONF="$BATS_TEST_TMPDIR/90-vps-setup" NEEDRESTART_DIR="$BATS_TEST_TMPDIR/needrestart/conf.d"
     mkdir -p "$BATS_TEST_TMPDIR/needrestart"
+    printf 'ID=ubuntu\nVERSION_ID="24.04"\n' > "$BATS_TEST_TMPDIR/os-release"; export OS_RELEASE="$BATS_TEST_TMPDIR/os-release"
     make_stub lsb_release 'echo "Description:	Ubuntu 24.04"'
     run bash "$VPS_DIR/01-system-update.sh"
     [ "$status" -eq 0 ]
     grep -q 'DPkg::Lock::Timeout "300";' "$APT_TUNING_CONF"
     grep -q -- '--force-confold' "$APT_TUNING_CONF"
     grep -qF "\$nrconf{restart} = 'a';" "$NEEDRESTART_DIR/50-vps-setup.conf"
+    grep -q "^ufw limit OpenSSH" "$SUDO_LOG"          # SSH con limite de conexiones, no solo "allow"
+    ! grep -q "^ufw allow OpenSSH" "$SUDO_LOG"
+}
+
+@test "02_J llama al instalador de Webmin con --force (sin la pregunta y/N que bloquea por ssh -t)" {
+    setup_stubs; setup_system_stubs; export SUDO_EXEC=0
+    make_stub apt-cache 'exit 0'
+    run bash "$VPS_DIR/02_J-install-webmin.sh" < /dev/null
+    [ "$status" -eq 0 ]
+    grep -qE '^sh .*/setup-repos\.sh --force$' "$SUDO_LOG"
+}
+
+@test "02_J falla CLARO si el repo de Webmin no quedo configurado (el instalador sale 0 aunque falle)" {
+    setup_stubs; setup_system_stubs; export SUDO_EXEC=0
+    make_stub apt-cache 'exit 100'      # 'webmin' no aparece en apt
+    run bash "$VPS_DIR/02_J-install-webmin.sh" < /dev/null
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"repositorio de Webmin no quedo configurado"* ]]
+    ! grep -q "apt-get install -y --install-recommends webmin" "$SUDO_LOG"
+    ! grep -q "ufw allow" "$SUDO_LOG"
+}
+
+# ---- 01: solo Ubuntu 24.04 ----
+@test "01 se niega a correr en otra version de Ubuntu (26.04 trae PHP 8.5: php8.3-* no existe) salvo ALLOW_UNSUPPORTED_OS=1" {
+    printf 'ID=ubuntu\nVERSION_ID="26.04"\n' > "$BATS_TEST_TMPDIR/os-release"
+    export OS_RELEASE="$BATS_TEST_TMPDIR/os-release" APT_TUNING_CONF="$BATS_TEST_TMPDIR/90" NEEDRESTART_DIR="$BATS_TEST_TMPDIR/nr/conf.d"
+    make_stub lsb_release 'echo "Description:	Ubuntu"'
+    run bash "$VPS_DIR/01-system-update.sh"
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"ubuntu 26.04"* ]] && [[ "$output" == *"Ubuntu 24.04"* ]]
+    [ ! -s "$SUDO_LOG" ]                 # no toco nada
+    ALLOW_UNSUPPORTED_OS=1 run bash "$VPS_DIR/01-system-update.sh"
+    [ "$status" -eq 0 ]
+    printf 'ID=ubuntu\nVERSION_ID="24.04"\n' > "$OS_RELEASE"
+    : > "$SUDO_LOG"; run bash "$VPS_DIR/01-system-update.sh"
+    [ "$status" -eq 0 ]
 }

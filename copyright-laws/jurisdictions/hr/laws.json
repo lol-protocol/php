@@ -1,0 +1,53 @@
+[
+  {
+    "country_code": "HR",
+    "country_name": "Croatia",
+    "region": "europe",
+    "law_name": "Copyright and Related Rights Act (Official Gazette NN 111/2021)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous works: 70 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "First disclosure, paternity, integrity & revocation",
+    "orphan_works": "Directive 2012/28/EU implementation (diligent search by cultural institutions)",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
+    "fair_use_exceptions": "Closed list of exceptions (InfoSoc Directive art. 5; DSM Directive 2019/790: text and data mining, teaching, preservation)",
+    "registration_required": "No",
+    "enforcement_body": "State Intellectual Property Office (DZIV)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=15476",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of exceptions (InfoSoc Directive art. 5; DSM Directive 2019/790: text and data mining, teaching, preservation)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

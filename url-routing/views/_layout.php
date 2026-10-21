@@ -1,18 +1,49 @@
 <?php
+
+use App\Support\Flash;
+use App\Support\HostParser;
+
 /**
  * Page shell shared by both sites. Each view renders its body into $content
  * and sets $title; the per-site layout (genealogy/_layout.php,
  * pos/_layout.php) adds $sitio and $tiposBusqueda and includes this file.
+ * A view may set $noindex to keep its page out of search engines, $migas
+ * (list of [name, path], the last one null: the page itself) for the
+ * breadcrumbs, and $estructurado, a schema.org object (Person, Product...)
+ * for search engines. Both go out as JSON-LD too.
  */
 $lang = get_locale() === 'eng' ? 'en' : 'es';
-$qActual = is_string($_GET['q'] ?? null) ? $_GET['q'] : '';
-$tActual = is_string($_GET['t'] ?? null) ? $_GET['t'] : (string)array_key_first($tiposBusqueda);
+$flash = (new Flash())->consumir();
+// On a search page (/b/...), the box shows that search.
+$qActual = isset($query) && is_string($query) ? $query : '';
+$tActual = isset($digitos) ? (string)$digitos : (string)array_key_first($tiposBusqueda);
 ?><!DOCTYPE html>
 <html lang="<?= esc($lang) ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= esc($title) ?> · <?= esc($sitio) ?></title>
+<?php if (!empty($noindex)): ?>
+    <meta name="robots" content="noindex">
+<?php endif; ?>
+<?php $ruta = (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?'); ?>
+    <link rel="canonical" href="<?= esc(HostParser::origen() . $ruta) ?>">
+<?php foreach (HostParser::alternos($ruta) as $hreflang => $url): ?>
+    <link rel="alternate" hreflang="<?= esc($hreflang) ?>" href="<?= esc($url) ?>">
+<?php endforeach; ?>
+<?php
+$jsonLd = isset($estructurado) && is_array($estructurado) ? [['@context' => 'https://schema.org'] + $estructurado] : [];
+if (!empty($migas)) {
+    $elementos = [];
+    foreach (array_merge([['Inicio', '/']], $migas) as $i => [$nombre, $url]) {
+        $elementos[] = ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $nombre, 'item' => HostParser::origen() . ($url ?? $ruta)];
+    }
+    $jsonLd[] = ['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => $elementos];
+}
+// JSON_HEX_TAG: a "</script>" inside a name can't close the tag.
+foreach ($jsonLd as $objeto): ?>
+    <script type="application/ld+json"><?= json_encode($objeto, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
+<?php endforeach; ?>
     <style>
         :root { --fg: #1c1c1e; --muted: #6b6b70; --bg: #fff; --line: #e3e3e6; --accent: #2457c5; --soft: #f5f6f8; }
         @media (prefers-color-scheme: dark) {
@@ -73,6 +104,15 @@ $tActual = is_string($_GET['t'] ?? null) ? $_GET['t'] : (string)array_key_first(
     </div>
 </header>
 <main>
+<?php if (!empty($migas)): ?>
+<nav class="meta" aria-label="Migas de pan">
+    <a href="/">Inicio</a><?php foreach ($migas as [$nombre, $url]): ?> › <?php if ($url === null): ?><span aria-current="page"><?= esc($nombre) ?></span><?php else: ?><a href="<?= esc($url) ?>"><?= esc($nombre) ?></a><?php endif; ?><?php endforeach; ?>
+
+</nav>
+<?php endif; ?>
+<?php if ($flash !== null): ?>
+<p class="aviso"><?= esc($flash) ?></p>
+<?php endif; ?>
 <?= $content ?>
 </main>
 </body>

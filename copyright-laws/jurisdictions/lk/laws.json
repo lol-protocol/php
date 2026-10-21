@@ -1,0 +1,53 @@
+[
+  {
+    "country_code": "LK",
+    "country_name": "Sri Lanka",
+    "region": "asia_pacific",
+    "law_name": "Intellectual Property Act No. 36 of 2003",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (collective & audiovisual works: 70 years from first publication; applied art: 25 years)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "s.23: making/importing devices to circumvent copy-protection and decoding encrypted programmes is unlawful, damages under s.22; no RMI provision found",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No",
+    "enforcement_body": "National Intellectual Property Office of Sri Lanka (NIPO)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/es/text/597541",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.nipo.gov.lk/web/images/pdf_downloads/Intellectual_Property_Act_No_36_of_2003.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "s.23: making/importing devices to circumvent copy-protection and decoding encrypted programmes is unlawful, damages under s.22; no RMI provision found"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

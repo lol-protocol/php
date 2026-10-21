@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_genre_chronicle_brown" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_genre_chronicle_brown_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9B9B9B"/>
       <stop offset="1" stop-color="#6B6B6B"/>
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.8" cy="56.2" rx="20.1" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M11 18L11.3 15.7L12.2 13.5L13.6 11.6L15.5 10.2L17.7 9.3L20 9L42 9L44.3 9.3L46.5 10.2L48.4 11.6L49.8 13.5L53.4 18.3L54.3 20.5L54.6 22.8L54.6 44.8L54.3 47.1L53.4 49.3L52 51.2L50.1 52.6L47.9 53.5L45.6 53.8L23.6 53.8L21.3 53.5L19.1 52.6L17.2 51.2L15.8 49.3L12.2 44.5L11.3 42.3L11 40Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_chronicle_brown)"/></g>
+    <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_chronicle_brown_g)"/></g>
   </g>
   <g class="marks">
     <path d="M19 17.5L42 17.5L42 40.5L19 40.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M30.5 23.1A5.9 5.9 0 0 0 30.5 34.9Z" fill="#FFFFFF"/>
+    <path d="M30.5 23.08A5.92 5.92 0 0 0 30.5 34.92Z" fill="#FFFFFF"/>
   </g>
 </svg>

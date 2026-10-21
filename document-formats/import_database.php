@@ -12,8 +12,9 @@
  *
  * Filled: countries, format_categories, document_formats,
  * format_conversions, technical_specifications, printing_margins,
- * country_compatibility, standard_references. No CSV feeds the supplier,
- * price, paper-weight, finish or variant tables, so they stay empty.
+ * country_compatibility, standard_references, paper_types,
+ * product_specifications, finish_types, paper_weight_standards. No CSV
+ * feeds the supplier, price or variant tables, so they stay empty.
  */
 
 const DATA = __DIR__;
@@ -95,6 +96,23 @@ function equivalenceLevel(int $percent): string
     };
 }
 
+/**
+ * Loads one CSV into one table: prepares $sql once, runs it with the values $values($row)
+ * returns for every row (null skips the row) and counts the rows inserted under $report[$table].
+ */
+function insertCsv(PDO $db, array &$report, string $table, string $file, string $sql, callable $values): void
+{
+    $insert = $db->prepare($sql);
+    $report[$table] = 0;
+    foreach (readCsv($file) as $row) {
+        if (($params = $values($row)) === null) {
+            continue;
+        }
+        $insert->execute($params);
+        $report[$table]++;
+    }
+}
+
 function connect(): PDO
 {
     $dsn = getenv('DB_DSN') ?: throw new RuntimeException('Set DB_DSN, e.g. mysql:host=127.0.0.1;dbname=formats;charset=utf8mb4');
@@ -120,6 +138,10 @@ function import(PDO $db): array
     // Rows this script owns; deleting formats cascades to their dependents.
     $db->exec('DELETE FROM country_compatibility');
     $db->exec('DELETE FROM document_formats');
+    $db->exec('DELETE FROM product_specifications');
+    $db->exec('DELETE FROM paper_types');
+    $db->exec('DELETE FROM finish_types');
+    $db->exec('DELETE FROM paper_weight_standards');
 
     // Countries: upsert on the ISO code, so the schema's sample rows are updated, not duplicated.
     $upsertCountry = $db->prepare(
@@ -178,72 +200,99 @@ function import(PDO $db): array
     };
 
     // Conversions from the equivalence matrix.
-    $insertConversion = $db->prepare(
+    insertCsv($db, $report, 'format_conversions', 'specs/format_equivalence_matrix.csv',
         'INSERT INTO format_conversions (from_format_id, to_format_id, equivalence_percentage, equivalence_level, conversion_notes)
-         VALUES (?, ?, ?, ?, ?)'
-    );
-    $report['format_conversions'] = 0;
-    foreach (readCsv('specs/format_equivalence_matrix.csv') as $pair) {
-        $from = $formatId($pair['source_format'], 'format_equivalence_matrix');
-        $to = $formatId($pair['target_format'], 'format_equivalence_matrix');
-        if ($from === null || $to === null) {
-            continue;
-        }
-        $percent = (int) $pair['similarity_percent'];
-        $insertConversion->execute([$from, $to, $percent, equivalenceLevel($percent), "{$pair['compatibility_level']}: {$pair['notes']}"]);
-        $report['format_conversions']++;
-    }
+         VALUES (?, ?, ?, ?, ?)',
+        function (array $pair) use ($formatId): ?array {
+            $from = $formatId($pair['source_format'], 'format_equivalence_matrix');
+            $to = $formatId($pair['target_format'], 'format_equivalence_matrix');
+            if ($from === null || $to === null) {
+                return null;
+            }
+            $percent = (int) $pair['similarity_percent'];
+            return [$from, $to, $percent, equivalenceLevel($percent), "{$pair['compatibility_level']}: {$pair['notes']}"];
+        });
 
     // Paper weight, DPI and finish per format.
-    $insertSpec = $db->prepare(
+    insertCsv($db, $report, 'technical_specifications', 'specs/technical_specifications.csv',
         'INSERT INTO technical_specifications (format_id, weight_gsm_min, weight_gsm_max, recommended_dpi, finish_type, special_notes)
-         VALUES (?, ?, ?, ?, ?, ?)'
-    );
-    $report['technical_specifications'] = 0;
-    foreach (readCsv('specs/technical_specifications.csv') as $spec) {
-        if (($format = $formatId($spec['format_name'], 'technical_specifications')) === null) {
-            continue;
-        }
-        [$gsmMin, $gsmMax] = rangeOf($spec['weight_gsm_range']);
-        [$dpi] = rangeOf($spec['recommended_dpi']);
-        $notes = implode('. ', array_filter([nullIfEmpty($spec['uses']), nullIfEmpty($spec['notes'])]));
-        $insertSpec->execute([$format, $gsmMin, $gsmMax, $dpi, nullIfEmpty($spec['finish_type']), $notes ?: null]);
-        $report['technical_specifications']++;
-    }
+         VALUES (?, ?, ?, ?, ?, ?)',
+        function (array $spec) use ($formatId): ?array {
+            if (($format = $formatId($spec['format_name'], 'technical_specifications')) === null) {
+                return null;
+            }
+            [$gsmMin, $gsmMax] = rangeOf($spec['weight_gsm_range']);
+            [$dpi] = rangeOf($spec['recommended_dpi']);
+            $notes = implode('. ', array_filter([nullIfEmpty($spec['uses']), nullIfEmpty($spec['notes'])]));
+            return [$format, $gsmMin, $gsmMax, $dpi, nullIfEmpty($spec['finish_type']), $notes ?: null];
+        });
+
+    // Named paper stock (color, texture, finish); independent of document_formats.
+    insertCsv($db, $report, 'paper_types', 'specs/paper_types.csv',
+        'INSERT INTO paper_types (type_name, type_name_en, category, color, texture, finish,
+             weight_gsm_min, weight_gsm_max, common_use, notes)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        function (array $paperType): array {
+            [$gsmMin, $gsmMax] = rangeOf($paperType['weight_gsm_range']);
+            return [
+                $paperType['type_name'], $paperType['type_name_en'], $paperType['category'],
+                $paperType['color'], $paperType['texture'], $paperType['finish'],
+                $gsmMin, $gsmMax, $paperType['common_use'], nullIfEmpty($paperType['notes']),
+            ];
+        });
+
+    // Products that are not sheet sizes, linked to the paper stock they are usually printed on.
+    $paperTypeIds = $db->query('SELECT type_name, paper_type_id FROM paper_types')->fetchAll(PDO::FETCH_KEY_PAIR);
+    insertCsv($db, $report, 'product_specifications', 'specs/product_specifications.csv',
+        'INSERT INTO product_specifications (product_name, typical_size_mm, weight_gsm_min, weight_gsm_max,
+             recommended_dpi, finish_type, uses, notes, paper_type_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        function (array $product) use ($paperTypeIds): array {
+            $paperType = nullIfEmpty($product['paper_type']);
+            if ($paperType !== null && !isset($paperTypeIds[$paperType])) {
+                throw new RuntimeException("product_specifications: unknown paper type \"{$paperType}\"");
+            }
+            [$gsmMin, $gsmMax] = rangeOf($product['weight_gsm_range']);
+            [$dpi] = rangeOf($product['recommended_dpi']);
+            return [
+                $product['product_name'], nullIfEmpty($product['typical_size_mm']), $gsmMin, $gsmMax, $dpi,
+                nullIfEmpty($product['finish_type']), nullIfEmpty($product['uses']), nullIfEmpty($product['notes']),
+                $paperType === null ? null : $paperTypeIds[$paperType],
+            ];
+        });
+
+    // Finish vocabulary and the standard paper weights (gsm with its lb equivalents).
+    insertCsv($db, $report, 'finish_types', 'specs/finish_types.csv',
+        'INSERT INTO finish_types (finish_name, description, best_for) VALUES (?, ?, ?)',
+        fn (array $finish): array => [$finish['finish_name'], $finish['description'], $finish['best_for']]);
+    insertCsv($db, $report, 'paper_weight_standards', 'specs/paper_weight_standards.csv',
+        'INSERT INTO paper_weight_standards (weight_name, gsm, lb_bond, lb_text, lb_cover, weight_type, typical_use)
+         VALUES (?, ?, ?, ?, ?, ?, ?)',
+        fn (array $weight): array => [$weight['weight_name'], $weight['gsm'], $weight['lb_bond'], $weight['lb_text'],
+            $weight['lb_cover'], $weight['weight_type'], nullIfEmpty($weight['typical_use'])]);
 
     // Book margins; inner/outer are stored as left/right of a recto page.
-    $insertMargin = $db->prepare(
+    insertCsv($db, $report, 'printing_margins', 'formats/book_margins.csv',
         "INSERT INTO printing_margins (format_id, top_mm, bottom_mm, left_mm, right_mm, margin_type, description)
-         VALUES (?, ?, ?, ?, ?, 'Print', ?)"
-    );
-    $report['printing_margins'] = 0;
-    foreach (readCsv('formats/book_margins.csv') as $margin) {
-        if (($format = $formatId($margin['book_format'], 'book_margins')) === null) {
-            continue;
-        }
-        $insertMargin->execute([$format, $margin['top_mm'], $margin['bottom_mm'], $margin['inner_mm'], $margin['outer_mm'],
-            nullIfEmpty($margin['notes'])]);
-        $report['printing_margins']++;
-    }
+         VALUES (?, ?, ?, ?, ?, 'Print', ?)",
+        fn (array $margin): ?array => ($format = $formatId($margin['book_format'], 'book_margins')) === null ? null
+            : [$format, $margin['top_mm'], $margin['bottom_mm'], $margin['inner_mm'], $margin['outer_mm'], nullIfEmpty($margin['notes'])]);
 
     // Per-country compatibility notes. "Carta/Oficio" lists alternatives; the first is primary.
-    $insertCompatibility = $db->prepare(
+    insertCsv($db, $report, 'country_compatibility', 'countries/country_compatibility_guide.csv',
         'INSERT INTO country_compatibility (country_id, primary_format_id, measurement_system, recommended_export_format, challenges, adoption_notes)
-         VALUES (?, ?, ?, ?, ?, ?)'
-    );
-    $report['country_compatibility'] = 0;
-    foreach (readCsv('countries/country_compatibility_guide.csv') as $guide) {
-        if (($country = $countryId($guide['country'])) === null) {
-            $report['skipped'][] = "country_compatibility_guide: unknown country \"{$guide['country']}\"";
-            continue;
-        }
-        $primary = explode('/', $guide['primary_format'])[0];
-        $insertCompatibility->execute([$country, $formatIds[$primary] ?? null, $guide['measurement_system'],
-            nullIfEmpty($guide['recommended_for_export']), nullIfEmpty($guide['challenges']), nullIfEmpty($guide['notes'])]);
-        $report['country_compatibility']++;
-    }
+         VALUES (?, ?, ?, ?, ?, ?)',
+        function (array $guide) use ($countryId, $formatIds, &$report): ?array {
+            if (($country = $countryId($guide['country'])) === null) {
+                $report['skipped'][] = "country_compatibility_guide: unknown country \"{$guide['country']}\"";
+                return null;
+            }
+            $primary = explode('/', $guide['primary_format'])[0];
+            return [$country, $formatIds[$primary] ?? null, $guide['measurement_system'],
+                nullIfEmpty($guide['recommended_for_export']), nullIfEmpty($guide['challenges']), nullIfEmpty($guide['notes'])];
+        });
 
-    // One row per standard a format belongs to (ISO 216, ANSI, JIS, GB/T, DIN 476).
+    // One row per standard a format belongs to (ISO, ANSI, JIS, GB/T, DIN).
     $insertReference = $db->prepare(
         'INSERT INTO standard_references (format_id, standard_name, standard_code, issuing_body, year_published)
          VALUES (?, ?, ?, ?, ?)'

@@ -1,0 +1,64 @@
+[
+  {
+    "country_code": "BA",
+    "country_name": "Bosnia and Herzegovina",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (DPL)",
+    "jurisdiction": "Personal Data Protection Agency in Bosnia and Herzegovina",
+    "enactment_date": "2025-01-30",
+    "effective_date": "2025-10-04",
+    "scope": "Individuals in Bosnia and Herzegovina",
+    "applies_to": "Public & private controllers and processors (incl. foreign firms targeting residents)",
+    "key_requirements": "Lawful basis & consent, data subject rights, 72-hour breach notification, video surveillance & biometrics limits",
+    "data_categories": "Personal data; special categories incl. biometric data",
+    "retention_period": "No longer than necessary for the purpose",
+    "enforcement_authority": "Personal Data Protection Agency in Bosnia and Herzegovina (AZLP)",
+    "penalties_range": "Up to BAM 40M or 4% global turnover",
+    "exemptions": "Purely personal or household use",
+    "deceased_data": "",
+    "research_exemption": "New 2025 law (Sl. glasnik BiH 12/25) contains special rules for academic and research activities; articles not confirmed (unconfirmed)",
+    "genetic_data": "Defined (inherited or acquired genetic characteristics from biological sample analysis) and listed as special category, new concept in 2025 law",
+    "website_url": "https://www.dlapiperdataprotection.com/index.html?c=BA&t=law",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
+    "notes": "Replaced 2006 law (49/06); in force 8 Mar 2025; 2-year transition for existing processing",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "research_exemption": {
+        "url": "https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/bosnia-herzegovina-1577071960",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://bhas.gov.ba/data/Dokumenti/pdf/Zakon_o_zastiti_licnih_podataka_12-25_BS.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Defined (inherited or acquired genetic characteristics from biological sample analysis) and listed as special category, new concept in 2025 law"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "New 2025 law (Sl. glasnik BiH 12/25) contains special rules for academic and research activities; articles not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

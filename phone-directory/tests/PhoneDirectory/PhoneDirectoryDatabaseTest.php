@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\JuridicalEntityPDODatabase;
+use PhoneDirectory\Privacy;
 
 class PhoneDirectoryDatabaseTest extends TestCase
 {
@@ -13,7 +14,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->database = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $this->database = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $this->database->connect();
         $this->database->createTable();
     }
@@ -31,7 +32,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
     public function testCreateTable(): void
     {
         $this->database->disconnect();
-        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
         $db->createTable();
         $this->assertTrue($db->isConnected());
@@ -199,6 +200,37 @@ class PhoneDirectoryDatabaseTest extends TestCase
         $this->assertCount(1, $results);
     }
 
+    public function testSearchRejectsCriteriaItDoesNotKnow(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry('HARRIS, Christine', 'US', '456 Laurel Avenue'));
+
+        // A typo, or the key of the juridical database, used to be ignored: nothing was filtered and
+        // search() returned every row.
+        foreach (['nmae', 'businessName'] as $key) {
+            try {
+                $this->database->search([$key => 'Harris']);
+                $this->fail("search() accepted the unknown criterion '{$key}'");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString($key, $e->getMessage());
+                $this->assertStringContainsString('name, street, phone', $e->getMessage());
+            }
+        }
+    }
+
+    public function testSearchTreatsEmptyValuesAsNoCriterionButZeroAsAValue(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry('HARRIS, Christine', 'US', '456 Laurel Avenue', '555-890-1234'));
+        $this->database->insert(new PhoneDirectoryEntry('MARTIN, Michael', 'US', '789 Magnolia Avenue', '0'));
+
+        $this->assertCount(2, $this->database->search(['name' => '']));
+        $this->assertCount(2, $this->database->search(['name' => null]));
+
+        // empty('0') is true in PHP: a criterion of '0' used to be dropped and matched everything.
+        $found = $this->database->search(['phone' => '0']);
+        $this->assertCount(1, $found);
+        $this->assertSame('MARTIN, Michael', $found[0]->getRawName());
+    }
+
     public function testClearDatabase(): void
     {
         $entry1 = new PhoneDirectoryEntry('ANDERSON, John', 'US', '123 Main Street');
@@ -297,7 +329,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
             $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('John Smith', '123 Main Street')");
             $legacy = null;
 
-            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}", privacy: Privacy::forOwner());
             $database->createTable();
             $database->createTable();
 
@@ -339,7 +371,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
     {
         $file = tempnam(sys_get_temp_dir(), 'phonedir_');
         try {
-            $natural = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $natural = new PhoneDirectoryPDODatabase("sqlite:{$file}", privacy: Privacy::forOwner());
             $natural->createTable();
             $juridical = new JuridicalEntityPDODatabase("sqlite:{$file}");
             $juridical->createTable();
@@ -416,7 +448,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
             $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('John Smyth', '123 Main Street')");
             $legacy = null;
 
-            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}", privacy: Privacy::forOwner());
             $database->createTable();
 
             $this->assertEquals(['Smyth, John'], $this->surnames($database->findBySurnameSound('Smith')));
@@ -462,7 +494,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
             $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('José García', '123 Main Street')");
             $legacy = null;
 
-            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}", privacy: Privacy::forOwner());
             $database->createTable();
 
             $this->assertCount(1, $database->findByName('garcia'));

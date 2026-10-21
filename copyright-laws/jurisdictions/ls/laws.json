@@ -1,0 +1,51 @@
+[
+  {
+    "country_code": "LS",
+    "country_name": "Lesotho",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Order No. 13 of 1989; Copyright Regulations 2015 (LN 139 of 2015)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Copyright Order 1989, Order No. 13 of 1989, s. 13(1); joint works s. 13(2)); photographs/applied art: creation + 25 years; anonymous: publication + 50 years",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://lesotholii.org/akn/ls/act/ln/2015/139",
+    "notes": "No 2023 Copyright and Neighbouring Rights Act found; a Jan/Mar 2025 report says the 1989 Order is outdated and new legislation is needed. Treaties and term not found.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Lesotho.html",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "protection_type": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Lesotho.html",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:FOP_Lesotho",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

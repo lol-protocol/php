@@ -1,0 +1,58 @@
+[
+  {
+    "country_code": "ET",
+    "country_name": "Ethiopia",
+    "region": "middle_east_africa",
+    "law_name": "Copyright and Neighboring Rights Protection Proclamation No. 410/2004 (as amended by Proclamation No. 872/2014)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (posthumous works: 50 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Attribution & integrity (against distortion/mutilation) (unconfirmed)",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Arts. 9-19 limitations: quotation (fair practice), Art. 11 teaching, Art. 12 libraries/archives; no specific print-disability exception",
+    "registration_required": "No (registration regime under Regulation No. 305/2014; voluntary status not confirmed)",
+    "enforcement_body": "Ethiopian Intellectual Property Office",
+    "treaties_signatory": "",
+    "treaties_not_party": "Berne/TRIPS",
+    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=5306",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://www.scribd.com/document/877337484/IIP-Assignment",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.abyssinialaw.com/blog/fair-practice-under-copyright-law-of-ethiopia",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Arts. 9-19 limitations: quotation (fair practice), Art. 11 teaching, Art. 12 libraries/archives; no specific print-disability exception"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Attribution & integrity (against distortion/mutilation) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -5,13 +5,17 @@ Cada marcalibro se define como una lista de figuras (ver `motivos.py`). Esa
 misma lista se escribe como SVG y se rasteriza como vista previa JPG, así
 ambas versiones siempre coinciden.
 
-Hay 20 categorías: 10 movimientos literarios y 10 tipos de texto. Cada una tiene
-4 motivos visuales y se reparte en variantes (50 por categoría dan 1000
-marcalibros).
+Hay 27 categorías: 11 movimientos literarios y 16 tipos de texto. Cada una tiene
+4 motivos visuales y se reparte en variantes (50 por categoría dan 1350
+marcalibros). Cada variante depende solo de su categoría y su número, así que
+agregar categorías no cambia las que ya existen.
 
 Uso:
-    python3 generator/generar_marcalibros.py                      # 1000 marcalibros
-    python3 generator/generar_marcalibros.py --por-categoria 10   # 200 marcalibros
+    python3 generator/generar_marcalibros.py                      # 1350 marcalibros
+    python3 generator/generar_marcalibros.py --por-categoria 10   # 270 marcalibros
+
+Las versiones PNG no se guardan en el repositorio: se generan con
+`generator/exportar_png.py`.
 
 El script termina con error si algún SVG pesa más de 10 KB o si dos marcalibros
 salen idénticos.
@@ -29,10 +33,12 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from motivos import MOTIVOS as MOTIVOS_LITERARIOS, H, W, espejar
+from motivos_ampliacion import MOTIVOS_AMPLIACION
 from motivos_texto import MOTIVOS_TEXTO
 
-assert not set(MOTIVOS_LITERARIOS) & set(MOTIVOS_TEXTO), "un motivo está definido dos veces"
-MOTIVOS = {**MOTIVOS_LITERARIOS, **MOTIVOS_TEXTO}
+_todos = [MOTIVOS_LITERARIOS, MOTIVOS_TEXTO, MOTIVOS_AMPLIACION]
+assert sum(map(len, _todos)) == len(set().union(*_todos)), "un motivo está definido dos veces"
+MOTIVOS = {**MOTIVOS_LITERARIOS, **MOTIVOS_TEXTO, **MOTIVOS_AMPLIACION}
 
 SUPERSAMPLE = 4           # se rasteriza al cuádruple del tamaño de la vista previa y se reduce
 VISTA_PREVIA = (700, 100)  # la mitad del lienzo: basta para galerías y pesa unos 11 KB
@@ -61,9 +67,13 @@ CATEGORIAS = [
     {"slug": "naturalismo", "nombre": "Naturalismo", "familia": MOVIMIENTO,
      "motivos": ["bosque", "juncos", "trigo", "rio"],
      "autores": ["Émile Zola", "Guy de Maupassant", "Horacio Quiroga"]},
-    {"slug": "modernismo", "nombre": "Modernismo", "familia": MOVIMIENTO,
+    # El slug "modernismo" se conserva para que los enlaces de antes sigan sirviendo.
+    {"slug": "modernismo", "nombre": "Modernismo hispanoamericano", "familia": MOVIMIENTO,
      "motivos": ["ondas", "ondas_concentricas", "nouveau", "mosaico"],
-     "autores": ["Rubén Darío", "Virginia Woolf", "James Joyce"]},
+     "autores": ["Rubén Darío", "José Martí", "Leopoldo Lugones"]},
+    {"slug": "modernismo-anglosajon", "nombre": "Modernismo anglosajón", "familia": MOVIMIENTO,
+     "motivos": ["faro", "relojes", "tierra_baldia", "fragmentos"],
+     "autores": ["Virginia Woolf", "James Joyce", "T. S. Eliot"]},
     {"slug": "vanguardias", "nombre": "Vanguardias", "familia": MOVIMIENTO,
      "motivos": ["geometria", "constructivista", "caligrama", "collage"],
      "autores": ["Guillaume Apollinaire", "Vicente Huidobro", "Tristan Tzara"]},
@@ -103,10 +113,23 @@ CATEGORIAS = [
      "motivos": ["cortinas", "mascaras", "focos", "platea"]},
     {"slug": "viajes", "nombre": "Viajes y crónicas", "familia": TIPO_TEXTO,
      "motivos": ["brujula", "mapa_y_ruta", "veleros", "cordillera"]},
+    {"slug": "cuentos", "nombre": "Cuentos y leyendas", "familia": TIPO_TEXTO,
+     "motivos": ["castillo", "hongos", "llaves", "coronas"]},
+    {"slug": "poesia", "nombre": "Poesía", "familia": TIPO_TEXTO,
+     "motivos": ["versos", "pajaros_en_cable", "petalos", "lira"]},
+    {"slug": "historia", "nombre": "Historia", "familia": TIPO_TEXTO,
+     "motivos": ["linea_de_tiempo", "piramides", "monedas", "reloj_de_arena"]},
+    {"slug": "periodismo", "nombre": "Periodismo", "familia": TIPO_TEXTO,
+     "motivos": ["columnas_de_periodico", "titulares", "microfonos", "teclas"]},
+    {"slug": "diccionarios", "nombre": "Diccionarios y enciclopedias", "familia": TIPO_TEXTO,
+     "motivos": ["lomos_de_libros", "pestanas_indice", "lupas", "fichero"]},
+    {"slug": "discursos", "nombre": "Discursos", "familia": TIPO_TEXTO,
+     "motivos": ["atril", "ondas_de_voz", "multitud", "megafonos"]},
 ]
 
 # Motivos con sentido de lectura (texto, letra manuscrita, sellos en una esquina): no se reflejan.
-SIN_ESPEJO = {"plumas", "articulos", "sobres", "rollos"}
+SIN_ESPEJO = {"plumas", "articulos", "sobres", "rollos",
+              "versos", "linea_de_tiempo", "columnas_de_periodico", "titulares", "pestanas_indice", "lupas"}
 
 # Nombre de cada motivo tal como se muestra a las personas.
 NOMBRES_MOTIVO = {
@@ -130,6 +153,13 @@ NOMBRES_MOTIVO = {
     "laberinto": "Laberinto", "esfera_armilar": "Esfera armilar", "puertas": "Puertas", "red_de_ideas": "Red de ideas",
     "cortinas": "Cortinas", "mascaras": "Máscaras", "focos": "Focos", "platea": "Platea",
     "brujula": "Brújula", "mapa_y_ruta": "Mapa y ruta", "veleros": "Veleros", "cordillera": "Cordillera",
+    "faro": "Faro", "relojes": "Relojes", "tierra_baldia": "Tierra baldía", "fragmentos": "Fragmentos",
+    "castillo": "Castillo", "hongos": "Hongos", "llaves": "Llaves", "coronas": "Coronas",
+    "versos": "Versos", "pajaros_en_cable": "Pájaros en el cable", "petalos": "Pétalos", "lira": "Lira",
+    "linea_de_tiempo": "Línea de tiempo", "piramides": "Pirámides", "monedas": "Monedas", "reloj_de_arena": "Reloj de arena",
+    "columnas_de_periodico": "Columnas de periódico", "titulares": "Titulares", "microfonos": "Micrófonos", "teclas": "Teclas",
+    "lomos_de_libros": "Lomos de libros", "pestanas_indice": "Pestañas de índice", "lupas": "Lupas", "fichero": "Fichero",
+    "atril": "Atril", "ondas_de_voz": "Ondas de voz", "multitud": "Multitud", "megafonos": "Megáfonos",
 }
 assert set(NOMBRES_MOTIVO) == set(MOTIVOS), "cada motivo necesita su nombre (y solo los motivos existentes)"
 assert all(m in MOTIVOS for c in CATEGORIAS for m in c["motivos"]), "una categoría usa un motivo que no existe"
@@ -221,8 +251,12 @@ def svg_marcalibro(grupos, titulo):
             f'<title>{html.escape(titulo)}</title>\n{cuerpo}\n</svg>\n')
 
 
-def jpg_marcalibro(grupos, ruta):
-    s = SUPERSAMPLE * VISTA_PREVIA[0] / W      # escala de dibujo respecto del lienzo de 1400 x 200
+def rasterizar(grupos, ancho_final, supersample=SUPERSAMPLE):
+    """Dibuja las figuras en una imagen de `ancho_final` px (alto proporcional, 7:1).
+
+    Se dibuja a `supersample` veces el tamaño final y se reduce, para suavizar los bordes.
+    """
+    s = supersample * ancho_final / W          # escala de dibujo respecto del lienzo de 1400 x 200
     img = Image.new("RGB", (round(W * s), round(H * s)), RGB["papel"])
     d = ImageDraw.Draw(img)
     for tipo, items, color, grosor in grupos:
@@ -249,8 +283,11 @@ def jpg_marcalibro(grupos, ruta):
                 for x, y in (pts[0], pts[-1]):   # extremos redondeados, como en el SVG
                     rr = grosor * s / 2
                     d.ellipse([x * s - rr, y * s - rr, x * s + rr, y * s + rr], fill=col)
-    img = img.resize(VISTA_PREVIA, Image.Resampling.LANCZOS)
-    img.save(ruta, "JPEG", quality=CALIDAD_JPG, optimize=True)
+    return img.resize((ancho_final, round(ancho_final * H / W)), Image.Resampling.LANCZOS)
+
+
+def jpg_marcalibro(grupos, ruta):
+    rasterizar(grupos, VISTA_PREVIA[0]).save(ruta, "JPEG", quality=CALIDAD_JPG, optimize=True)
 
 
 def figuras_variante(cat, i):
@@ -386,7 +423,7 @@ def generar_paisajes(raiz):
 def main():
     ap = argparse.ArgumentParser(description="Genera marcalibros y paisajes de la marca.")
     ap.add_argument("--por-categoria", type=int, default=50,
-                    help=f"variantes por categoría (hay {len(CATEGORIAS)}: 50 da 1000 marcalibros)")
+                    help=f"variantes por categoría (hay {len(CATEGORIAS)}: 50 da {50 * len(CATEGORIAS)} marcalibros)")
     args = ap.parse_args()
     if args.por_categoria < 1:
         ap.error("--por-categoria debe ser 1 o más")

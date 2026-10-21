@@ -2,7 +2,8 @@
   {
     "country_code": "ES",
     "country_name": "Spain",
-    "law_name": "Spanish Copyright Act (Law 23/2006)",
+    "region": "europe",
+    "law_name": "Royal Legislative Decree 1/1996 (TRLPI)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights protected",
@@ -12,7 +13,29 @@
     "fair_use_exceptions": "Educational fair use",
     "registration_required": "No",
     "enforcement_body": "Spanish Patent and Trademark Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.oepm.es/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.oepm.es/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Spanish Copyright Act (Law 23/2006)",
+        "to": "Royal Legislative Decree 1/1996 (TRLPI)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

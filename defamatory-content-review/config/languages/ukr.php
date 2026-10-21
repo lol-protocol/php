@@ -8,6 +8,24 @@ return [
         'nativeName' => 'Українська', 'family' => 'slavic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'нацисте', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'нацист', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'нацистка', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'нацисти', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'неонацист', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'неонацисти', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'зіг хайль', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'хайль гітлер', 'riskType' => 'etnico', 'severity' => 'high'],
+        ],
         'tvaryna' => [
             ['word' => 'свиня', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'кабан', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
@@ -117,7 +135,7 @@ return [
             ['word' => 'заїка', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'спотворений', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'паралізований', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'божевільний', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'божевільний', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'інвалідка', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'кульгава', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'безрука', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -129,7 +147,7 @@ return [
             ['word' => 'німа', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'спотворена', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'паралізована', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'божевільна', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'божевільна', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
         ],
 
         'moral' => [
@@ -227,7 +245,7 @@ return [
             ['word' => 'їбати', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'мудак', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'козел', 'riskType' => 'ordinario', 'severity' => 'high', 'nameCollision' => true],
-            ['word' => 'чорт', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'чорт', 'riskType' => 'ordinario', 'severity' => 'medium', 'targeted' => true],
             ['word' => 'срака', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'срати', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'дрочити', 'riskType' => 'ordinario', 'severity' => 'high'],

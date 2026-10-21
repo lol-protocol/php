@@ -1,0 +1,75 @@
+[
+  {
+    "country_code": "EE",
+    "country_name": "Estonia",
+    "region": "europe",
+    "law_name": "Personal Data Protection Act (PDPA)",
+    "jurisdiction": "Data Protection Inspectorate",
+    "enactment_date": "2018-12-12",
+    "effective_date": "2019-01-15",
+    "scope": "Individuals in Estonia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, national derogations, Law Enforcement Directive rules, supervisory powers",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Data Protection Inspectorate (Andmekaitse Inspektsioon)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "deceased_data": "Protected: data subject's consent valid for life and 10 years after death (20 if minor); otherwise heirs' consent needed (§ 9)",
+    "research_exemption": "Scientific/historical research and official statistics without consent, mainly pseudonymised, with safeguards (§ 6)",
+    "genetic_data": "Special category under art. 9 GDPR; gene donor data governed by Human Genes Research Act (IGUS), § 9 PDPA not applied to deceased gene donors (IGUS § 1(5))",
+    "website_url": "https://www.riigiteataja.ee/akt/112072025014.pdf",
+    "language": "Estonian",
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "Fines via misdemeanour procedure; Nov 2023 Penal Code change lifted the earlier cap",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-estonia",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://www.ravimiamet.ee/sites/default/files/documents/2024-09/Isikuandmete%20kasutamine%20teadusuuringutes_uus.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.oiguskantsler.ee/sites/default/files/2026-04/Surnud%20geenidoonori%20andmete%20avaldamine%20ja%20valjastamine.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category under art. 9 GDPR; gene donor data governed by Human Genes Research Act (IGUS), § 9 PDPA not applied to deceased gene donors (IGUS § 1(5))"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Scientific/historical research and official statistics without consent, mainly pseudonymised, with safeguards (§ 6)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Protected: data subject's consent valid for life and 10 years after death (20 if minor); otherwise heirs' consent needed (§ 9)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

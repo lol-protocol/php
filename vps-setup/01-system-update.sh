@@ -5,6 +5,18 @@ source "$(dirname "$0")/lib.sh"
 
 print_header "01" "Actualizacion del Sistema"
 
+# Estos scripts estan hechos para Ubuntu 24.04: instalan php8.3-*, PostgreSQL 16, etc. En otra
+# version esos paquetes no existen (Ubuntu 26.04 trae PHP 8.5) y la instalacion fallaria a mitad
+# de camino. Se comprueba ANTES de tocar nada. ALLOW_UNSUPPORTED_OS=1 lo salta (bajo tu riesgo).
+OS_RELEASE=${OS_RELEASE:-/etc/os-release}
+# shellcheck disable=SC1090
+OS_ID=$(. "$OS_RELEASE" 2>/dev/null; echo "${ID:-?} ${VERSION_ID:-?}")
+if [ "$OS_ID" != "ubuntu 24.04" ] && [ "${ALLOW_UNSUPPORTED_OS:-0}" != 1 ]; then
+    echo "ERROR: sistema no soportado ($OS_ID). Estos scripts requieren Ubuntu 24.04 LTS."
+    echo "Al crear el VPS elige la imagen Ubuntu 24.04 (o usa ALLOW_UNSUPPORTED_OS=1 bajo tu riesgo)."
+    exit 1
+fi
+
 # Ajustes de apt para que una instalacion larga (sobre todo por ssh -t, como remote-run.sh) no se
 # quede colgada ni a medias:
 #   Lock::Timeout   recien arrancado el VPS, unattended-upgrades suele tener el lock de apt unos
@@ -47,7 +59,10 @@ sudo apt-get install -y curl wget git build-essential software-properties-common
 # entrar salvo por la consola de rescate del proveedor). Por eso el orden
 # aqui es estricto: primero permitir SSH, RECIEN DESPUES activar.
 echo "Configurando firewall (UFW)..."
-sudo ufw allow OpenSSH                # Permite SSH (puerto 22) ANTES de activar -- ver advertencia arriba
+# "limit" en vez de "allow": permite SSH pero bloquea una IP que abre mas de 6 conexiones en 30 s
+# (fuerza bruta), antes incluso de que actue fail2ban. Ojo si automatizas muchas conexiones
+# seguidas desde tu IP (remote-run.sh abre 2 por ejecucion).
+sudo ufw limit OpenSSH                # Permite SSH (puerto 22) ANTES de activar -- ver advertencia arriba
 sudo ufw --force enable               # --force evita que quede esperando confirmacion interactiva "y/n"
 
 echo ""

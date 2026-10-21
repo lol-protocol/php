@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "MD",
+    "country_name": "Moldova",
+    "region": "europe",
+    "law_name": "Law No. 230 of 28 July 2022 on Copyright and Related Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Non-waivable, non-assignable & imprescriptible",
+    "orphan_works": "2023 amendments (partial transposition of Directive 2012/28/EU; diligent search by cultural institutions, compensation via collective management)",
+    "digital_protection": "Chapter X protects technical measures and RMI: effective TPMs (access codes, encryption, copy control) protected; art. 60 bans removing/altering electronic RMI",
+    "fair_use_exceptions": "Closed list of specific exceptions; three-step test included as a general provision (per WIPO limitations questionnaire)",
+    "registration_required": "No",
+    "enforcement_body": "State Agency on Intellectual Property (AGEPI)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://agepi.gov.md/en/node/16704",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.legis.md/cautare/getResults?doc_id=133204&lang=ro",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.org/export/sites/www/copyright/en/docs/limitations/md.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "fair_use_exceptions",
+        "from": "Closed list of specific exceptions subject to three-step test (unconfirmed)",
+        "to": "Closed list of specific exceptions; three-step test included as a general provision (per WIPO limitations questionnaire)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+        "to": "Chapter X protects technical measures and RMI: effective TPMs (access codes, encryption, copy control) protected; art. 60 bans removing/altering electronic RMI"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of specific exceptions subject to three-step test (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -31,6 +31,10 @@ INSERT INTO personas (id, nombres, apellidos, sexo, padre_id, madre_id, grupo_id
     (6128473105, 'Juan', 'García Hernández', 'M', 6128473103, 6128473104, 582317, 1),
     (6128473106, 'Rosa', 'García Hernández', 'F', 6128473103, 6128473104, 582317, 1);
 
+-- Fallecido y presente solo en la colección privada «Borrador de Luis»: un visitante no debe verlo.
+INSERT INTO personas (id, nombres, apellidos, sexo, padre_id, madre_id, grupo_id, aportado_por) VALUES
+    (6128473110, 'Manuel', 'Ruiz Cano', 'M', NULL, NULL, NULL, 2);
+
 INSERT INTO personas (id, nombres, apellidos, sexo, padre_id, madre_id, grupo_id, aportado_por) VALUES
     (6128473108, 'Carlos', 'García Martínez', 'M', 6128473105, 6128473107, 582317, 2),
     (6128473109, 'Lucía', 'García Martínez', 'F', 6128473105, 6128473107, 582317, 2);
@@ -39,7 +43,8 @@ INSERT INTO vinculos (persona_a, persona_b, tipo) VALUES
     (6128473101, 6128473102, 'conyuge'),
     (6128473103, 6128473104, 'conyuge'),
     (6128473105, 6128473107, 'conyuge'),
-    (6128473106, 6128473108, 'padrino');
+    (6128473106, 6128473108, 'padrino'),
+    (6128473110, 6128473103, 'padrino');
 
 INSERT INTO sucesos (id, tipo, fecha, lugar_ruta, descripcion) VALUES
     (412000001, 'nacimiento', '1868-05-12', 'es/ast/ovi', NULL),
@@ -54,7 +59,10 @@ INSERT INTO sucesos (id, tipo, fecha, lugar_ruta, descripcion) VALUES
     (412000010, 'nacimiento', '1952-03-22', 'mx/jal/gdl', NULL),
     (412000011, 'nacimiento', '1955-08-09', 'mx/jal/gdl', NULL),
     (412000012, 'defuncion', '1941-10-05', 'es/ast/ovi', NULL),
-    (412000013, 'defuncion', '1977-01-18', 'mx/jal/gdl', NULL);
+    (412000013, 'defuncion', '1977-01-18', 'mx/jal/gdl', NULL),
+    (412000014, 'nacimiento', '1870-03-04', 'es/ast/ovi', NULL),
+    (412000015, 'defuncion', '1944-08-19', 'es/ast/ovi', NULL),
+    (412000016, 'migracion', '1921-05-10', 'es/ast/ovi', 'Viaja a Oviedo a despedir a su padrino.');
 
 INSERT INTO suceso_participantes (suceso_id, persona_id, rol) VALUES
     (412000001, 6128473101, 'principal'),
@@ -70,7 +78,11 @@ INSERT INTO suceso_participantes (suceso_id, persona_id, rol) VALUES
     (412000010, 6128473108, 'principal'),
     (412000011, 6128473109, 'principal'),
     (412000012, 6128473101, 'principal'),
-    (412000013, 6128473103, 'principal');
+    (412000013, 6128473103, 'principal'),
+    (412000014, 6128473110, 'principal'),
+    (412000015, 6128473110, 'principal'),
+    (412000016, 6128473103, 'principal'),
+    (412000016, 6128473110, 'acompañante');
 
 INSERT INTO organizaciones (id, nombre, tipo, lugar_ruta) VALUES
     (10231, 'Archivo Histórico de Jalisco', 'archivo', 'mx/jal/gdl'),
@@ -79,7 +91,8 @@ INSERT INTO organizaciones (id, nombre, tipo, lugar_ruta) VALUES
 
 INSERT INTO organizacion_miembros (organizacion_id, persona_id, rol, desde, hasta) VALUES
     (10232, 6128473105, 'feligrés', '1925-02-21', NULL),
-    (10232, 6128473107, 'feligrés', '1950-01-01', NULL);
+    (10232, 6128473107, 'feligrés', '1950-01-01', NULL),
+    (10232, 6128473110, 'feligrés', '1900-01-01', '1944-08-19');
 
 INSERT INTO registros (id, titulo, tipo, fecha, lugar_ruta, organizacion_id, fuente, url, aportado_por) VALUES
     (81372001, 'Acta de bautizo de Juan García Hernández', 'acta', '1925-02-21', 'mx/jal/gdl', 10232,
@@ -87,12 +100,15 @@ INSERT INTO registros (id, titulo, tipo, fecha, lugar_ruta, organizacion_id, fue
     (81372002, 'Acta de matrimonio de Antonio García y Carmen Hernández', 'acta', '1923-06-16', 'mx/jal/gdl', 10231,
      'Registro Civil de Guadalajara, libro 14, acta 205', NULL, 1),
     (81372003, 'Partida de nacimiento de Antonio García Fernández', 'acta', '1898-01-22', 'es/ast/ovi', 10233,
-     'Registro Civil de Oviedo, tomo 87, folio 41', NULL, 1);
+     'Registro Civil de Oviedo, tomo 87, folio 41', NULL, 1),
+    (81372004, 'Acta de defunción de Manuel Ruiz Cano', 'acta', '1944-08-20', 'es/ast/ovi', 10233,
+     'Registro Civil de Oviedo, tomo 112, folio 9', NULL, 2);
 
 INSERT INTO registro_sucesos (registro_id, suceso_id) VALUES
     (81372001, 412000007),
     (81372002, 412000006),
-    (81372003, 412000003);
+    (81372003, 412000003),
+    (81372004, 412000015);
 
 INSERT INTO colecciones (id, nombre, descripcion, usuario_id, publica) VALUES
     (1048293, 'Familia García', 'De Oviedo a Guadalajara, cuatro generaciones.', 1, TRUE),
@@ -102,4 +118,8 @@ INSERT INTO coleccion_personas (coleccion_id, persona_id) VALUES
     (1048293, 6128473101), (1048293, 6128473102), (1048293, 6128473103),
     (1048293, 6128473104), (1048293, 6128473105), (1048293, 6128473106),
     (1048293, 6128473107), (1048293, 6128473108), (1048293, 6128473109),
-    (1048294, 6128473105), (1048294, 6128473107);
+    (1048294, 6128473105), (1048294, 6128473107), (1048294, 6128473110);
+
+-- Un duplicado de Juan García Hernández que se fusionó con él: su id viejo redirige.
+INSERT INTO persona_alias (id, persona_id) VALUES
+    (6128473188, 6128473105);

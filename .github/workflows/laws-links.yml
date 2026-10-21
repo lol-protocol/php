@@ -1,0 +1,161 @@
+name: Leyes - enlaces de referencia
+
+# Weekly check that the reference URLs of both datasets still answer.
+# A broken link fails the job; the summary lists every problem. On the weekly run (or by hand) one open
+# issue also lists them, so the red check reaches a person: it is updated while links stay broken and
+# closed when they answer again.
+# On a PR that changes the data (master CSV or field_sources.csv), only the jurisdictions whose rows
+# the PR adds or changes are checked (--only=…): a new broken link is caught before it reaches master,
+# and an old one elsewhere does not block an unrelated PR.
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+  # Also when the check itself changes. Only master and PRs: without the branch filter, any branch that
+  # merged master re-ran it on push and its red result showed up on unrelated PRs.
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/laws-links.yml'
+      - 'privacy-laws/scripts/check-links.js'
+      - 'copyright-laws/scripts/check-links.js'
+  pull_request:
+    paths:
+      - '.github/workflows/laws-links.yml'
+      - 'privacy-laws/scripts/check-links.js'
+      - 'copyright-laws/scripts/check-links.js'
+      - 'privacy-laws/countries/privacy_laws_master.csv'
+      - 'privacy-laws/countries/field_sources.csv'
+      - 'copyright-laws/jurisdictions/copyright_laws_master.csv'
+      - 'copyright-laws/jurisdictions/field_sources.csv'
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: enlaces ${{ matrix.module }}
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [privacy-laws, copyright-laws]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # the PR scope below compares with the base branch
+
+      # Full check on schedule, by hand, on master, and on a PR that changes the check itself.
+      # On a PR that only changes data: the jurisdictions of the added or changed CSV rows (their first
+      # column is the country code), or nothing at all if this module's data did not change.
+      - name: Decide what to check
+        id: scope
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then exit 0; fi
+          base="origin/${{ github.base_ref }}"
+          if git diff --name-only "$base"...HEAD | grep -qxE '\.github/workflows/laws-links\.yml|(privacy|copyright)-laws/scripts/check-links\.js'; then
+            exit 0
+          fi
+          codes=$(git diff -U0 "$base"...HEAD -- */*_master.csv */field_sources.csv \
+            | sed -nE 's/^\+"?([A-Z]{2})"?,.*/\1/p' | sort -u | tr 'A-Z' 'a-z' | paste -sd, -)
+          if [ -z "$codes" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "${{ matrix.module }}: this PR adds or changes no rows, nothing to check." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "only=--only=$codes" >> "$GITHUB_OUTPUT"
+            echo "${{ matrix.module }}: checking only the jurisdictions this PR touches: $codes" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Set up Node.js 22
+        if: steps.scope.outputs.skip != 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        if: steps.scope.outputs.skip != 'true'
+        run: npm ci --no-audit --no-fund
+
+      - name: Check reference links
+        if: steps.scope.outputs.skip != 'true'
+        run: npm run check:links -- --json=links-report.json ${{ steps.scope.outputs.only }}
+
+      # One annotation per broken link, so the failing URLs show on the check (and through the API)
+      # without downloading the artifact. Workflow commands need %, \r and \n escaped.
+      - name: Annotate broken links
+        if: always() && hashFiles(format('{0}/links-report.json', matrix.module)) != ''
+        run: |
+          jq -r '.results[] | select(.status == "broken")
+            | "\(.url) -> \(.detail) [\(.laws | join("; "))]"
+            | gsub("%"; "%25") | gsub("\r"; "%0D") | gsub("\n"; "%0A")
+            | "::error title=Enlace roto::\(.)"' links-report.json
+
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: links-report-${{ matrix.module }}
+          path: ${{ matrix.module }}/links-report.json
+          if-no-files-found: ignore
+
+  issue:
+    name: aviso de enlaces rotos
+    needs: links
+    if: always() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TITLE: Enlaces de referencia rotos (leyes)
+      RESULT: ${{ needs.links.result }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+    steps:
+      - name: Download the reports
+        if: needs.links.result != 'success'
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          pattern: links-report-*
+          path: reports
+
+      # The issue is found by its exact title. A run that failed before writing a report (npm ci, a
+      # runner loss) still opens it, with a link to the run instead of the list.
+      - name: Open, update or close the issue
+        run: |
+          number=$(gh issue list --state open --search "$TITLE in:title" --json number,title \
+            --jq '[.[] | select(.title == env.TITLE)][0].number // empty')
+          if [ "$RESULT" = success ]; then
+            if [ -n "$number" ]; then
+              gh issue close "$number" --comment "Todos los enlaces responden otra vez ([corrida]($RUN_URL))."
+            fi
+            exit 0
+          fi
+          {
+            echo "El verificador de enlaces ([corrida]($RUN_URL)) encontró enlaces rotos."
+            echo
+            for report in reports/*/links-report.json; do
+              [ -f "$report" ] || continue
+              module=$(basename "$(dirname "$report")" | sed 's/^links-report-//')
+              jq -r --arg module "$module" '[.results[] | select(.status == "broken")]
+                | if length == 0 then empty
+                  else "### \($module)", "", (.[] | "- <\(.url)>: \(.detail)  \n  \(.laws | join("; "))"), ""
+                  end' "$report"
+            done
+          } > body.md
+          if ! grep -q '^###' body.md; then
+            printf '\nNo hay informe con la lista (el job falló antes de escribirlo): abre la corrida.\n' >> body.md
+          fi
+          printf '\nPara arreglar un enlace: reemplázalo en `field_sources.csv` (o `website_url` en el CSV maestro) por una página oficial que sí abras, y corre `npm run changes` y `npm run build`. Un 403, un 5xx o un timeout solo avisan, no rompen.\n' >> body.md
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file body.md
+          else
+            gh issue create --title "$TITLE" --body-file body.md
+          fi

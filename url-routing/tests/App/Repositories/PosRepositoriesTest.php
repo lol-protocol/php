@@ -6,6 +6,8 @@ namespace Tests\App\Repositories;
 
 use App\Repositories\POS\CatalogoRepository;
 use App\Repositories\POS\OrdenRepository;
+use App\Repositories\POS\SitemapRepository;
+use App\Repositories\POS\SinStock;
 use App\Repositories\POS\ProductoRepository;
 use App\Repositories\UsuarioRepository;
 use App\Support\Database;
@@ -138,6 +140,73 @@ class PosRepositoriesTest extends TestCase
 
         $this->assertSame(['pagada', 'enviada'], array_column($repo->eventos(8137204719000), 'estado'));
         $this->assertSame([8137204719000], self::ids($repo->deUsuario(1)));
+        $this->assertSame([4821937065182734], array_map('intval', array_column($repo->deUsuario(1), 'codigo')));
+    }
+
+    #[DataProvider('drivers')]
+    public function testProductSearchIgnoresAccentsAndCase(string $driver): void
+    {
+        $repo = new ProductoRepository($this->db($driver));
+
+        foreach (['basica', 'BÁSICA', 'Basica'] as $texto) {
+            $this->assertContains('Camiseta básica', array_column($repo->buscar($texto), 'nombre'), $texto);
+        }
+    }
+
+    #[DataProvider('drivers')]
+    public function testCrearPlacesTheOrderAndTakesTheStock(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'pos', seed: true);
+        $repo = new OrdenRepository($db);
+
+        $orden = $repo->crear(['CAM-AZ-M' => 2, 'GOR-AZ' => 1], 'Calle Prueba 123, Ciudad', 1);
+
+        $this->assertMatchesRegularExpression('/^[1-9]\d{15}$/', $orden['codigo']);
+        $guardada = $repo->porCodigo((int)$orden['codigo']);
+        $this->assertSame('pendiente', $guardada['estado']);
+        $this->assertSame(2 * 19900 + 24900, (int)$guardada['total_centavos']);
+        $this->assertSame(['CAM-AZ-M', 'GOR-AZ'], array_column($repo->items($orden['id']), 'sku'));
+        $this->assertSame(['pendiente'], array_column($repo->eventos($orden['id']), 'estado'));
+        $this->assertSame(28, (int)$db->fetchValue("SELECT stock FROM variantes WHERE sku = 'CAM-AZ-M'"));
+    }
+
+    #[DataProvider('drivers')]
+    public function testCrearChangesNothingWhenALineIsOutOfStock(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'pos', seed: true);
+        $ordenes = (int)$db->fetchValue('SELECT COUNT(*) FROM ordenes');
+
+        try {
+            // The first line could be sold; the second can't, so neither is.
+            (new OrdenRepository($db))->crear(['CAM-AZ-M' => 2, 'SUD-AZ-L' => 4], 'Calle Prueba 123, Ciudad', 1);
+            $this->fail('SUD-AZ-L has 3 in stock');
+        } catch (SinStock $e) {
+            $this->assertStringContainsString('Azul marino / L', $e->nombre);
+        }
+
+        $this->assertSame(30, (int)$db->fetchValue("SELECT stock FROM variantes WHERE sku = 'CAM-AZ-M'"), 'rolled back');
+        $this->assertSame($ordenes, (int)$db->fetchValue('SELECT COUNT(*) FROM ordenes'));
+    }
+
+    #[DataProvider('drivers')]
+    public function testSitemapListsProductsOnSaleAndNoOrders(string $driver): void
+    {
+        $repo = new SitemapRepository($this->db($driver));
+
+        $this->assertSame(['8', '7', '6', '5', '4'], $repo->tipos());
+        $productos = $repo->claves('8', 1);
+        $this->assertContains('81372047', $productos);
+        $this->assertNotContains('81372050', $productos, 'discontinued');
+        $this->assertSame(count($productos), $repo->cuantas('8'));
+    }
+
+    #[DataProvider('drivers')]
+    public function testOrdenPorCodigoUsesThePublicCodeNotTheRowId(string $driver): void
+    {
+        $repo = new OrdenRepository($this->db($driver));
+
+        $this->assertSame(8137204719000, (int)$repo->porCodigo(4821937065182734)['id']);
+        $this->assertNull($repo->porCodigo(8137204719000), 'a row id is not a code');
     }
 
     #[DataProvider('drivers')]

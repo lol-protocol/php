@@ -1,0 +1,87 @@
+[
+  {
+    "country_code": "TG",
+    "country_name": "Togo",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 91-12 of 10 June 1991 on the Protection of Copyright, Folklore and Related Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (per Commons summary; folklore protected without time limit) (unconfirmed)",
+    "author_rights": "Economic rights (patrimonial attributes; art. 3 also recognises intellectual and moral attributes)",
+    "moral_rights": "Moral rights recognized (art. 3); details not seen (unconfirmed)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "UNKNOWN (law predates ICT; reform bill under preparation per BUTODRA 2022) (unconfirmed)",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Togolese Copyright Office (Bureau togolais du droit d'auteur, BUTODRA)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8506",
+    "notes": "National law applies alongside OAPI/Bangui membership (revised Bangui ratified by Law 2001-013). WCT and WPPT in force 21 May 2003 (WIPO). Berne/TRIPS from EU IP helpdesk fiche only. Implementing decree 91-199 organises BUTODRA. A new copyright bill was announced in 2022; adoption not confirmed. Law 2016-012 concerns artist status, not copyright.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Togo.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8506",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "digital_protection": {
+        "url": "https://butodra.tg/organisation/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://butodra.tg/organisation/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://intellectual-property-helpdesk.ec.europa.eu/system/files/2022-12/Africa_IP-Country-Fiche_Togo.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "EC",
+    "country_name": "Ecuador",
+    "region": "americas",
+    "law_name": "Organic Code of the Social Economy of Knowledge, Creativity and Innovation (COESCCI)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Yes: orphan works regime; COESCCI regulation (SENESCYT-2020-077) requires diligent good-faith search; SENADI keeps orphan works notification register",
+    "digital_protection": "Rights holders may implement TPMs controlling access and use; unauthorised circumvention is prohibited and sanctioned (per Lipszyc); COESCCI article no. unverified",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Servicio Nacional de Derechos Intelectuales (SENADI)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.derechosintelectuales.gob.ec/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/20757",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://www.revistajuridicaonline.com/wp-content/uploads/2009/07/3-la_protecc_juridica.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "digital_protection",
+        "from": "Rights holders may implement TPMs; circumvention prohibited (unconfirmed)",
+        "to": "Rights holders may implement TPMs controlling access and use; unauthorised circumvention is prohibited and sanctioned (per Lipszyc); COESCCI article no. unverified"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "Yes: orphan works regime; COESCCI regulation (SENESCYT-2020-077) requires diligent good-faith search; SENADI keeps orphan works notification register"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Rights holders may implement TPMs; circumvention prohibited (unconfirmed)"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "linked_resources",
+        "from": "https://www.gob.ec/regulaciones/codigo-organico-economia-social-conocimientos-creatividad-innovacion",
+        "to": "https://www.derechosintelectuales.gob.ec/"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

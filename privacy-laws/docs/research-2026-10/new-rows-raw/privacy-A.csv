@@ -1,0 +1,101 @@
+code,field,value,conf,source
+BG,law_name,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",medium,https://cms.law/en/bgr/legal-updates/Bulgaria-implements-GDPR-into-Personal-Data-Protection-Act
+BG,jurisdiction,CPDP,high,https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/
+BG,enactment_date,2019-02-26,low,https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/
+BG,effective_date,2019-03-01,medium,https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/
+BG,scope,Data subjects (natural persons) in Bulgaria / processed by Bulgarian controllers,medium,https://linklaters.com/insights/data-protected/data-protected---bulgaria
+BG,applies_to,"All public and private controllers and processors; must be read together with GDPR",medium,https://linklaters.com/insights/data-protected/data-protected---bulgaria
+BG,key_requirements,"GDPR legal bases and data-subject rights; digital consent age 14; national rules on DPO, certification and CPDP supervision; breach notification under GDPR art. 33",medium,https://cms.law/en/bgr/legal-updates/Bulgaria-implements-GDPR-into-Personal-Data-Protection-Act
+BG,data_categories,Personal data; special categories of data; criminal-conviction data,medium,https://linklaters.com/insights/data-protected/data-protected---bulgaria
+BG,retention_period,"No longer than necessary for the purposes (GDPR art. 5(1)(e)); PDPA adds national retention rules for some data",medium,https://linklaters.com/insights/data-protected/data-protected---bulgaria
+BG,enforcement_authority,Commission for Personal Data Protection (CPDP),high,https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/
+BG,penalties_range,"Up to EUR 20M or 4% of turnover under GDPR art. 83; residual PDPA violations up to BGN 5,000 (doubled on repetition); largest fine to date about EUR 2.55M (National Revenue Agency 2019)",medium,https://www.innovires.com/en/blog/gdpr-saotvetstvie.html
+BG,exemptions,"Journalism, academic and artistic expression, and archiving in the public interest (national rules under GDPR art. 85); household use; security and criminal-justice processing under separate regime",low,https://www.cipil.law.cam.ac.uk/node/294472
+BG,website_url,https://cpdp.bg,medium,https://edlaw.eduverse.com/docs/jurisdiction/nat/bg/zzld
+BG,language,Bulgarian,high,https://edlaw.eduverse.com/docs/jurisdiction/nat/bg/zzld
+BG,frameworks,GDPR/CoE-108,medium,https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/
+BG,notes,"GDPR applies directly (EU member); PDPA is the national implementing act. Amended again since 2019 (e.g. 2023); consolidated text not checked.",medium,https://www.DataGuidance.com/notes/bulgaria-data-protection-overview
+BG,deceased_data,"Not covered by main rules, but art. 25f PDPA allows processing of deceased persons' data only on a legal basis with safeguards",medium,https://www.DataGuidance.com/notes/bulgaria-data-protection-overview
+BG,research_exemption,"Further use for scientific or historical research and statistics allowed if permitted by EU or Bulgarian law, necessary and proportionate, with safeguards (GDPR art. 89)",medium,https://www.cipil.law.cam.ac.uk/node/294472
+BG,genetic_data,"Special category under GDPR art. 9; explicit consent or another art. 9(2) ground required",medium,https://linklaters.com/insights/data-protected/data-protected---bulgaria
+TN,law_name,"Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data",high,https://www.dlapiperdataprotection.com/?t=law&c=TN
+TN,jurisdiction,INPDP,high,https://www.dlapiperdataprotection.com/?t=law&c=TN
+TN,enactment_date,2004-07-27,high,https://www.dlapiperdataprotection.com/?t=law&c=TN
+TN,effective_date,2004-07-27,low,https://legislation-securite.tn/wp-content/uploads/sites/5/2023/11/Loi-n°-2004-63-du-27-Juillet-2004-Fr.pdf
+TN,scope,Natural persons whose personal data is processed in Tunisia,medium,https://bkassocies.tn/en/practical-guide-application-of-tunisian-legislation-on-personal-data-protection/
+TN,applies_to,All public and private controllers and processors,medium,https://bkassocies.tn/en/practical-guide-application-of-tunisian-legislation-on-personal-data-protection/
+TN,key_requirements,"Express written consent subject to exceptions (art. 27 on capacity); prior declaration or INPDP authorization for sensitive data and cross-border transfers; data-subject rights of access, rectification and objection",medium,https://bkassocies.tn/en/practical-guide-application-of-tunisian-legislation-on-personal-data-protection/
+TN,data_categories,"Personal data; sensitive data (racial and genetic origin, religious beliefs, political/philosophical/trade-union affiliation, health) (arts. 5 and 14)",medium,https://www.DataGuidance.com/notes/tunisia-data-protection-overview
+TN,retention_period,UNKNOWN,low,
+TN,enforcement_authority,National Authority for the Protection of Personal Data (INPDP),high,https://www.dlapiperdataprotection.com/?t=law&c=TN
+TN,penalties_range,"Criminal sanctions; e.g. failure to meet prior notification duties: 1 year imprisonment and TND 5,000 fine; some offences up to 2 years (sources vary)",low,https://www.dlapiperdataprotection.com/?t=law&c=TN
+TN,exemptions,"UNKNOWN (public security and defence processing has special rules; art. 14 exceptions not verified)",low,
+TN,website_url,https://legislation-securite.tn/wp-content/uploads/sites/5/2023/11/Loi-n°-2004-63-du-27-Juillet-2004-Fr.pdf,high,https://legislation-securite.tn/wp-content/uploads/sites/5/2023/11/Loi-n°-2004-63-du-27-Juillet-2004-Fr.pdf
+TN,language,French/Arabic,medium,https://legislation-securite.tn/wp-content/uploads/sites/5/2023/11/Loi-n°-2004-63-du-27-Juillet-2004-Fr.pdf
+TN,frameworks,CoE-108,low,
+TN,notes,"Replacement bill (Proposal Organic Law No. 095/2025, deposited July 2025) was still before committees at last check; not law. Frameworks value from background knowledge, not from a result seen.",medium,https://globallawexperts.com/tunisia-moves-replace-its-twentyyearold-data/
+TN,deceased_data,UNKNOWN,low,
+TN,research_exemption,UNKNOWN,low,
+TN,genetic_data,"Genetic origin is sensitive data; processing generally prohibited unless an exception or INPDP authorization applies (arts. 14 and 5)",medium,https://www.DataGuidance.com/notes/tunisia-data-protection-overview
+DZ,law_name,"Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025",medium,https://www.dlapiperdataprotection.com/index.html?c=DZ&t=law
+DZ,jurisdiction,ANPDP,high,https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/
+DZ,enactment_date,2018-06-10,high,https://www.dlapiperdataprotection.com/index.html?c=DZ&t=law
+DZ,effective_date,2023-08-10,medium,https://consentstack.io/regulations/dz-law1807
+DZ,scope,Natural persons whose data is processed in Algeria,medium,https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/
+DZ,applies_to,"Public and private operators in Algeria, including foreign operators using automated means located in Algeria",medium,https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/
+DZ,key_requirements,"Explicit consent before collection; ANPDP declaration or authorization for certain processing; transfers abroad need ANPDP authorization and adequate protection (art. 44-45)",medium,https://www.dlapiperdataprotection.com/?c=DZ&t=law
+DZ,data_categories,Personal data; sensitive data (art. 9),low,https://www.dlapiperdataprotection.com/?c=DZ&t=law
+DZ,retention_period,UNKNOWN,low,
+DZ,enforcement_authority,National Authority for the Protection of Personal Data (ANPDP),high,https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/
+DZ,penalties_range,"Criminal: up to 5 years imprisonment and fines up to DZD 500,000 (some sources DZD 20,000-1,000,000)",medium,https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/
+DZ,exemptions,"Art. 45 derogations from transfer rules; state security and criminal-justice processing (not verified in detail)",low,https://www.dlapiperdataprotection.com/?c=DZ&t=law
+DZ,website_url,https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/,medium,https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/
+DZ,language,Arabic/French,medium,https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/
+DZ,frameworks,UNKNOWN,low,
+DZ,notes,"Law 25-11 of 2025 reportedly adds DPO and DPIA duties; only one vendor page says so, unconfirmed. Main obligations enforceable from 2023 when ANPDP was set up.",low,https://www.cookieyes.com/blog/algeria-data-protection-law/
+DZ,deceased_data,UNKNOWN,low,
+DZ,research_exemption,UNKNOWN,low,
+DZ,genetic_data,"Likely sensitive data under art. 9 (not verified)",low,https://www.dlapiperdataprotection.com/?c=DZ&t=law
+KW,status,"NOLAW: only a sectoral CITRA regulation (Data Privacy Protection Regulation No. 26 of 2024, replacing No. 42 of 2021) binding communications and IT service providers; no general statute",medium,https://tamimi.com/news/kuwaits-communication-and-information-technology-regulator-has-issued-a-data-protection-regulation-for-service-providers
+LB,law_name,"Law No. 81 of 2018 on Electronic Transactions and Personal Data",medium,https://alp.unescwa.org/legislations/law-81-2018-electronic-transactions-and-personal-data
+LB,jurisdiction,Ministry of Economy and Trade,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=LB
+LB,enactment_date,2018-10-10,medium,https://regulations.clym.io/law-no.-81-on-electronic-transactions-and-personal-data-lebanon?hsLang=en
+LB,effective_date,2019-03-31,medium,https://regulations.clym.io/law-no.-81-on-electronic-transactions-and-personal-data-lebanon?hsLang=en
+LB,scope,Individuals whose personal data is processed,low,https://www.consentstack.io/regulations/lb-law81
+LB,applies_to,Controllers processing personal data (chiefly electronically),low,https://www.consentstack.io/regulations/lb-law81
+LB,key_requirements,"Consent or other legal basis, purpose limitation, security; licence or authorization from the Ministry of Economy and Trade for processing certain data categories",low,https://regulations.clym.io/law-no.-81-on-electronic-transactions-and-personal-data-lebanon?hsLang=en
+LB,data_categories,Personal data; sensitive data requiring licence,low,https://regulations.clym.io/law-no.-81-on-electronic-transactions-and-personal-data-lebanon?hsLang=en
+LB,retention_period,Storage limitation principle (no article found),low,https://www.consentstack.io/regulations/lb-law81
+LB,enforcement_authority,"Ministry of Economy and Trade (no dedicated authority; some sources name Ministry of Telecommunications / TRA)",low,https://www.consentstack.io/regulations/lb-law81
+LB,penalties_range,UNKNOWN,low,
+LB,exemptions,UNKNOWN,low,
+LB,website_url,https://alp.unescwa.org/legislations/law-81-2018-electronic-transactions-and-personal-data,medium,https://alp.unescwa.org/legislations/law-81-2018-electronic-transactions-and-personal-data
+LB,language,Arabic,medium,https://alp.unescwa.org/legislations/law-81-2018-electronic-transactions-and-personal-data
+LB,frameworks,,low,
+LB,notes,"Mixed e-commerce/e-signature law with a personal data chapter; no independent DPA; sources conflict on regulator.",low,https://www.consentstack.io/regulations/lb-law81
+LB,deceased_data,UNKNOWN,low,
+LB,research_exemption,UNKNOWN,low,
+LB,genetic_data,UNKNOWN,low,
+PS,status,"NOLAW: no comprehensive data protection law enacted; a draft law/decree (2022 third reading; 2025 consultation text) remains unadopted",medium,https://www.offlist.me/what-is-state-of-palestine-data-protection-law
+IQ,status,"NOLAW: no specific data protection law or regulator; courts apply Civil Code (1951) and Penal Code (1969)",medium,https://gpg-pdf.chambers.com/doing-business-in-2025/365
+IR,status,"NOLAW: Personal Data Protection Bill still unpassed (drafts since 2017/2018); only scattered rules such as the 2009 Cybercrime Law",medium,https://www.dataguidance.com/jurisdiction/iran
+SY,law_name,"Law No. 12 of 2024 on the Protection of Electronic Personal Data",low,https://www.mofo.com/privacy-library/syria
+SY,jurisdiction,UNKNOWN,low,
+SY,enactment_date,UNKNOWN,low,
+SY,effective_date,2025-01-01,low,https://www.mofo.com/privacy-library/syria
+SY,scope,Individuals whose electronic personal data is processed,low,https://www.mofo.com/privacy-library/syria
+SY,applies_to,Controllers and processors of electronic personal data,low,https://www.mofo.com/privacy-library/syria
+SY,key_requirements,"Rights of access, correction, erasure and objection; controller must respond within 7 working days and complaints are decided within 30 days",low,https://www.mofo.com/privacy-library/syria
+SY,data_categories,Electronic personal data,low,https://www.mofo.com/privacy-library/syria
+SY,retention_period,UNKNOWN,low,
+SY,enforcement_authority,UNKNOWN (no operational authority found),low,https://www.mofo.com/privacy-library/syria
+SY,penalties_range,"Reportedly fines up to SYP 12 million and imprisonment up to 3 years (single secondary source)",low,https://www.mofo.com/privacy-library/syria
+SY,exemptions,UNKNOWN,low,
+SY,website_url,https://www.mofo.com/privacy-library/syria,low,https://www.mofo.com/privacy-library/syria
+SY,language,Arabic,medium,https://www.mofo.com/privacy-library/syria
+SY,frameworks,,low,
+SY,notes,"Issued under the former government shortly before its fall in Dec 2024; current enforceability uncertain and the law reportedly under review (2026). Year (2024 vs 2022) rests on secondary sources.",low,https://www.mofo.com/privacy-library/syria
+SY,deceased_data,UNKNOWN,low,
+SY,research_exemption,UNKNOWN,low,
+SY,genetic_data,UNKNOWN,low,
+LY,status,"NOLAW: no general data protection law or authority; only Law No. 6 of 2022 on electronic transactions (chapter 7) and Law No. 5 of 2022 on cybercrime",high,https://www.dlapiperdataprotection.com/?c=LY&t=law

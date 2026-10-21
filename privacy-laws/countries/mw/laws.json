@@ -1,0 +1,131 @@
+[
+  {
+    "country_code": "MW",
+    "country_name": "Malawi",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act 2024",
+    "jurisdiction": "Malawi Communications Regulatory Authority (MACRA)",
+    "enactment_date": "2024-01-31",
+    "effective_date": "2024-06-03",
+    "scope": "Data subjects in Malawi",
+    "applies_to": "Controllers and processors in Malawi and foreign entities offering goods or services to, or monitoring, individuals in Malawi",
+    "key_requirements": "Lawful bases and consent; data subject rights (access/portability within 30 days, rectification within 14 days, erasure); 72-hour breach notification to authority and data subjects; cross-border transfer conditions; registration for controllers of significant importance",
+    "data_categories": "Personal data; sensitive personal data (biometric, race or ethnic origin, religion, health status, political opinions)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Malawi Communications Regulatory Authority (MACRA)",
+    "penalties_range": "Reported fines up to MWK 5,000,000 and/or 12 months imprisonment (unverified vendor source) (unconfirmed)",
+    "exemptions": "Processing solely for personal or household purposes; mere transmission of data through Malawi",
+    "deceased_data": "",
+    "research_exemption": "Sensitive personal data may be processed for research or statistics among other grounds (s. 16); no confirmed general archiving/research exemption (unconfirmed)",
+    "genetic_data": "Genetic identity named in definition of personal data (s. 2); inclusion in sensitive personal data list not confirmed (unconfirmed)",
+    "website_url": "https://www.macra.mw",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Assent date conflicting (31 Jan vs 1 Feb 2024); gazetted Feb 2024; commencement by Government Notice No. 40 of 2024; significant-importance entities must comply within 6 months, others within 24 months",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "law_name": {
+        "url": "https://cdh-malawi.com/wp-content/uploads/2025/09/Data-Protection-Act-2024.pdf",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.techhiveadvisory.africa/insights/malawis-data-protection-act-aligning-to-the-new-regulatory-framework",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://digmap.pppc.mw/data-protection-bill-assented/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.techhiveadvisory.africa/insights/malawis-data-protection-act-aligning-to-the-new-regulatory-framework",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.techhiveadvisory.africa/insights/malawis-data-protection-act-aligning-to-the-new-regulatory-framework",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://digmap.pppc.mw/pppc-touts-data-protection-act-2024/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.techhiveadvisory.africa/insights/malawis-data-protection-act-aligning-to-the-new-regulatory-framework",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/mw-dpa",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://cdh-malawi.com/wp-content/uploads/2025/09/Data-Protection-Act-2024.pdf",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic identity named in definition of personal data (s. 2); inclusion in sensitive personal data list not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Sensitive personal data may be processed for research or statistics among other grounds (s. 16); no confirmed general archiving/research exemption (unconfirmed)"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

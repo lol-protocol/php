@@ -1,0 +1,75 @@
+[
+  {
+    "country_code": "LI",
+    "country_name": "Liechtenstein",
+    "region": "europe",
+    "law_name": "Data Protection Act (DSG)",
+    "jurisdiction": "Data Protection Authority",
+    "enactment_date": "2018-10-04",
+    "effective_date": "2019-01-01",
+    "scope": "Individuals in Liechtenstein",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Aligns national law with GDPR, data subject rights, supervisory powers",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Data Protection Authority (Datenschutzstelle)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "deceased_data": "No specific national rules on deceased persons' data (GDPR recital 27: living persons only); professional secrecy still applies",
+    "research_exemption": "Scientific/historical research and statistics: special categories without consent and limits on GDPR arts. 15, 16, 18, 21 rights (art. 27 DSG); public-interest archiving rules; art. 89 GDPR",
+    "genetic_data": "Special category under art. 9 GDPR (applies via EEA); DSG art. 27 allows processing for research without consent under conditions",
+    "website_url": "https://www.linklaters.com/insights/data-protected/data-protected---liechtenstein",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "LGBl. 2018 No. 272; fully revised prior law; GDPR applies in EEA since 20 July 2018",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "deceased_data": {
+        "url": "https://whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-liechtenstein",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://www.gesetze.li/konso/pdf/2018272000?version=2",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.gesetze.li/konso/pdf/2018272000?version=2",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category under art. 9 GDPR (applies via EEA); DSG art. 27 allows processing for research without consent under conditions"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Scientific/historical research and statistics: special categories without consent and limits on GDPR arts. 15, 16, 18, 21 rights (art. 27 DSG); public-interest archiving rules; art. 89 GDPR"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No specific national rules on deceased persons' data (GDPR recital 27: living persons only); professional secrecy still applies"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

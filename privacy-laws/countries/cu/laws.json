@@ -1,0 +1,114 @@
+[
+  {
+    "country_code": "CU",
+    "country_name": "Cuba",
+    "region": "americas",
+    "law_name": "Law No. 149 of 2022 on Personal Data Protection (Ley 149 De Protección de Datos Personales)",
+    "jurisdiction": "Ministry of Justice (MINJUS)",
+    "enactment_date": "2022-08-25",
+    "effective_date": "2023-02-21",
+    "scope": "Natural persons (data subjects) regarding their personal data",
+    "applies_to": "Public and private bodies and natural/legal persons that process personal data",
+    "key_requirements": "12 data protection principles; consent (express or tacit) with exceptions; data owner rights; security; cross-border transfers authorised by public bodies",
+    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "retention_period": "Default five years where no specific legal rule applies (article not found)",
+    "enforcement_authority": "Ministry of Justice (MINJUS); no new dedicated authority created (older DLA Piper entry names the Ministry of Communications)",
+    "penalties_range": "Fines reportedly up to CUP 20,000 (single secondary mention; unverified) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "Law reportedly addresses personal data of deceased persons (article and duration not found) (unconfirmed)",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.mincom.gob.cu/es/print/5823",
+    "language": "Spanish",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Approved by National Assembly 2022-05-14; published Gaceta Oficial Ordinaria No. 90 of 2022-08-25; entered into force 180 days later with its Regulation; Ministry of Communications Resolution 58/2022 covers electronic data security",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.mincom.gob.cu/es/print/5823",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/jurisdiction/cuba",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.mincom.gob.cu/es/print/5823",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.dataguidance.com/jurisdiction/cuba",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.mincom.gob.cu/es/print/5823",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.dataguidance.com/jurisdiction/cuba",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dataguidance.com/jurisdiction/cuba",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.globalcompliancenews.com/2022/09/15/cuba-new-personal-data-protection-law-1509",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "retention_period": {
+        "url": "https://www.dataguidance.com/jurisdiction/cuba",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/jurisdiction/cuba",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.globalcompliancenews.com/2022/09/15/cuba-new-personal-data-protection-law-1509",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "deceased_data": {
+        "url": "https://caseguard.com/articles/cuba-passes-new-comprehensive-data-privacy-law/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

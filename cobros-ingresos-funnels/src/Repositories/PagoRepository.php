@@ -8,7 +8,11 @@ use App\Database;
 use App\Paginacion;
 use PDO;
 
-/** CRUD de pagos. El reporting de cobros vive en IngresosYCobrosRepository. */
+/**
+ * CRUD de pagos. El reporting de cobros vive en IngresosYCobrosRepository.
+ *
+ * @phpstan-import-type Pagina from Paginacion
+ */
 final class PagoRepository
 {
     use Anulable;
@@ -83,7 +87,7 @@ final class PagoRepository
      * Listado paginado para la pantalla de Pagos. Incluye los anulados
      * (marcados) para no perder el rastro de la correccion.
      *
-     * @return array{filas: array, total: int, totalPaginas: int, pagina: int}
+     * @return Pagina
      */
     public function listado(string $desde, string $hasta, ?string $cliente = null, int $pagina = 1): array
     {
@@ -94,36 +98,16 @@ final class PagoRepository
             $params[':cliente'] = '%' . $cliente . '%';
         }
 
-        $stmtTotal = $this->db->prepare(
-            "SELECT COUNT(*) FROM pagos p JOIN clientes c ON c.id = p.cliente_id
-             WHERE p.fecha_pago BETWEEN :desde AND :hasta{$filtroCliente}"
+        return Paginacion::consultar(
+            $this->db,
+            columnas: 'p.id, p.monto, p.moneda_codigo, p.fecha_pago, p.metodo, p.boleta_id, p.anulada,
+                    c.id AS cliente_id, c.nombre AS cliente',
+            desde: "pagos p JOIN clientes c ON c.id = p.cliente_id
+             WHERE p.fecha_pago BETWEEN :desde AND :hasta{$filtroCliente}",
+            orden: 'p.fecha_pago DESC, p.id DESC',
+            params: $params,
+            pagina: $pagina,
         );
-        $stmtTotal->execute($params);
-        $total = (int) $stmtTotal->fetchColumn();
-        $pagina = Paginacion::acotar($pagina, $total);
-
-        $stmt = $this->db->prepare(
-            "SELECT p.id, p.monto, p.moneda_codigo, p.fecha_pago, p.metodo, p.boleta_id, p.anulada,
-                    c.id AS cliente_id, c.nombre AS cliente
-             FROM pagos p
-             JOIN clientes c ON c.id = p.cliente_id
-             WHERE p.fecha_pago BETWEEN :desde AND :hasta{$filtroCliente}
-             ORDER BY p.fecha_pago DESC, p.id DESC
-             LIMIT :limite OFFSET :offset"
-        );
-        foreach ($params as $clave => $valor) {
-            $stmt->bindValue($clave, $valor);
-        }
-        $stmt->bindValue(':limite', Paginacion::POR_PAGINA, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', Paginacion::offset($pagina), PDO::PARAM_INT);
-        $stmt->execute();
-
-        return [
-            'filas' => $stmt->fetchAll(),
-            'total' => $total,
-            'totalPaginas' => Paginacion::totalPaginas($total),
-            'pagina' => $pagina,
-        ];
     }
 
     /**

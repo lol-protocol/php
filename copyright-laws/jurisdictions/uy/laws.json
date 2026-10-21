@@ -1,0 +1,64 @@
+[
+  {
+    "country_code": "UY",
+    "country_name": "Uruguay",
+    "region": "americas",
+    "law_name": "Copyright Law (Law No. 9.739)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "No specific orphan works provision (WIPO LatAm study: unregulated in region except Ecuador); 2016 bill proposed one, not enacted",
+    "digital_protection": "Anti-circumvention of TPMs provided (exceptions in Decree 295/2017)",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Consejo de Derechos de Autor (Ministry of Education and Culture)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/21441",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "orphan_works": {
+        "url": "https://www.wipo.int/export/sites/www/ip-development/en/agenda/docs/2_part_2_legal_study_es.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://impo.com.uy/bases/decretos/295-2017/10",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "No specific orphan works provision (WIPO LatAm study: unregulated in region except Ecuador); 2016 bill proposed one, not enacted"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Anti-circumvention of TPMs provided (exceptions in Decree 295/2017)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

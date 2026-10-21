@@ -36,7 +36,7 @@ class LugarController extends BaseController
             return $error;
         }
 
-        $repo = new LugarRepository($this->db());
+        $repo = new LugarRepository($this->db(), $this->privacidad());
         $lugar = $repo->find($ruta);
         if ($lugar === null) {
             return $this->handleNotFound();

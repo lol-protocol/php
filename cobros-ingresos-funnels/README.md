@@ -74,13 +74,13 @@ export APP_ENV=dev
 psql -h $DB_HOST -U postgres -c "CREATE ROLE $DB_USER LOGIN PASSWORD '$DB_PASSWORD';"
 psql -h $DB_HOST -U postgres -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 
-php database/recrear_con_datos_de_ejemplo.php      # arma el esquema con las migraciones y carga datos de ejemplo
+php bin/recrear_con_datos_de_ejemplo.php      # arma el esquema con las migraciones y carga datos de ejemplo
 php -S localhost:8000 -t public   # solo para desarrollo, ver "Despliegue en producción"
 ```
 
 Abrí `http://localhost:8000` — te va a mostrar el Dashboard directo, sin login.
 
-Volver a correr `php database/recrear_con_datos_de_ejemplo.php` en cualquier momento borra la base, la
+Volver a correr `php bin/recrear_con_datos_de_ejemplo.php` en cualquier momento borra la base, la
 reconstruye con las migraciones de `database/migraciones/` y regenera los datos de
 ejemplo desde cero (es reproducible: usa una semilla fija, así que el mismo día da
 siempre los mismos datos; las fechas son relativas a hoy). Por eso solo corre con
@@ -140,6 +140,26 @@ server {
 }
 ```
 
+En vez de la contraseña (o además), se puede limitar por red: dentro del `server`,
+`allow 203.0.113.10; allow 10.8.0.0/24; deny all;` deja entrar solo a esas direcciones
+(la oficina, la VPN). Cualquiera de las dos cosas tiene que estar puesta **en todo el
+`server`**, no solo en `location /`: así cubre también `/assets/` y cualquier ruta nueva.
+
+**Comprobar que quedó bien puesto**, desde afuera y sin credenciales:
+
+```bash
+php bin/comprobar_acceso.php https://tu-dominio.com     # o: composer acceso -- https://tu-dominio.com
+```
+
+Pide siete pantallas con datos sin mandar ninguna credencial. Termina con `0` y dice
+`PROTEGIDO` si todas contestan 401 o 403; con `1` y `ABIERTO` si alguna contesta (hay
+que corregir el servidor antes de usar el panel con datos reales); con `2` si no puede
+afirmar nada (una redirección —probá con la dirección a la que redirige, casi siempre
+la https—, un 404, un 500, o que no pueda conectar). Si el acceso se limita por IP, hay
+que correrlo desde una dirección que **no** esté permitida: desde una permitida el
+panel contesta y parece abierto. Conviene repetirlo después de cada cambio en la
+configuración del servidor web. No necesita la base de datos.
+
 Con TLS terminado en nginx, la app detecta HTTPS solo si nginx manda
 `X-Forwarded-Proto: https` en el `fastcgi_param` (agregalo si no está ya en tu
 `fastcgi_params`) — de eso depende que la cookie de sesión salga con `Secure`
@@ -155,7 +175,7 @@ Todo se lee de variables de entorno (con PHP-FPM, `env[...]` en el pool):
 | `DB_HOST`, `DB_PORT` | no (`127.0.0.1`, `5432`) | |
 | `DB_PERSISTENT` | no (`1` en la web) | Si la conexión a Postgres se reutiliza entre peticiones (ahorra entre 10 y 20 ms por petición; en CLI nunca es persistente). Poné `0` detrás de un pooler como PgBouncer, o si hay más procesos de PHP-FPM que `max_connections` en Postgres: cada proceso guarda su conexión abierta, así que `pm.max_children` no debería superarlo. |
 | `APP_TIMEZONE` | no (`UTC`) | La zona horaria del negocio, en formato IANA (ej. `America/Argentina/Buenos_Aires`). Define qué día es "hoy" para vencimientos, rangos de fechas y notas de crédito, y se aplica a PHP y a Postgres por igual. |
-| `TASAS_URL` | no (`https://open.er-api.com/v6/latest/USD`) | Solo para `database/actualizar_tasas.php`: de dónde baja las tasas de cambio (tiene que ser https). Ver «Tasas de cambio». |
+| `TASAS_URL` | no (`https://open.er-api.com/v6/latest/USD`) | Solo para `bin/actualizar_tasas.php`: de dónde baja las tasas de cambio (tiene que ser https). Ver «Tasas de cambio». |
 | `TASAS_FUENTE` | no (el host de `TASAS_URL`) | Solo para ese comando: cómo se llama la fuente en las pantallas y en la auditoría. |
 | `APP_ENV` | no | Solo `dev`, en desarrollo. En producción no se define. |
 
@@ -167,9 +187,27 @@ migración `005` las carga con valores de ejemplo, y mientras sigan así esas cu
 pantallas lo avisan arriba. Para cargar las reales:
 
 ```bash
-php database/actualizar_tasas.php             # baja las tasas y las guarda
-php database/actualizar_tasas.php --simular   # dice qué cambiaría, sin guardar nada
+php bin/actualizar_tasas.php             # baja las tasas y las guarda
+php bin/actualizar_tasas.php --simular   # dice qué cambiaría, sin guardar nada
 ```
+
+**Primera puesta en marcha, en el servidor:**
+
+1. `php bin/migrar.php` (las migraciones no borran datos).
+2. `php bin/actualizar_tasas.php --simular`. Lee lo que traería la fuente y no guarda
+   nada: dice cuántas monedas actualizaría, las que la fuente no trae, las que rechaza y,
+   en la primera carga, cuántas boletas, pagos y notas de crédito pasarían de la tasa de
+   ejemplo a la real (por moneda).
+3. Si eso es razonable, la misma orden sin `--simular`, y después abrí el Dashboard: el
+   aviso de tasas de ejemplo tiene que haber desaparecido (queda la fecha y la fuente).
+4. Agregá el cron (más abajo). Si algo falla, el comando termina con error sin escribir
+   nada, y el mensaje dice qué (la dirección que muestra es solo el servidor, nunca la
+   clave).
+
+Si el servidor no tiene salida a internet, o la fuente no es la de siempre,
+`--archivo=tasas.json` lee el mismo formato de un archivo. La descarga usa el
+`allow_url_fopen` de PHP (viene activado por defecto) y la verificación de certificados
+del sistema; si falla por eso, el mensaje lo dice.
 
 Baja las tasas de `TASAS_URL` (por defecto `https://open.er-api.com/v6/latest/USD`, de
 ExchangeRate-API: gratis, sin clave, unas 160 monedas, una actualización por día;
@@ -178,7 +216,7 @@ pantalla), valida lo que llegó y lo guarda en una transacción, con una entrada
 auditoría. Está pensado para cron, una vez por día:
 
 ```
-15 6 * * *  cd /ruta/al/proyecto && php database/actualizar_tasas.php >/dev/null
+15 6 * * *  cd /ruta/al/proyecto && php bin/actualizar_tasas.php >/dev/null
 ```
 
 (`>/dev/null` deja pasar solo la salida de errores, que es la que cron manda por mail:
@@ -227,16 +265,71 @@ pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
   tasa exacta de cada fecha, falta una tabla de cotizaciones por día (y una importación
   que las use: las filas aceptan una tasa explícita).
 
+### Respaldos
+
+Con `boletas`, `pagos` y clientes reales adentro, la base no se puede perder. El respaldo es
+un comando pensado para cron, una vez por día:
+
+```bash
+php bin/respaldar.php                           # o: composer respaldar
+php bin/respaldar.php --carpeta=/var/backups/cobros --dias=30
+```
+
+```
+30 3 * * *  cd /ruta/al/proyecto && php bin/respaldar.php >/dev/null
+```
+
+(`>/dev/null` deja pasar solo la salida de errores, que es la que cron manda por mail.) Hace un
+`pg_dump -Fc` (el formato propio de Postgres, comprimido) en `RESPALDOS_CARPETA` (por defecto,
+`respaldos/` del proyecto, que git ignora; conviene una carpeta fuera del proyecto) con el
+nombre `base-AAAAMMDD-HHMMSS.dump` (hora UTC). Usa las mismas `DB_*` que la app, y necesita el
+cliente de PostgreSQL (`pg_dump` y `pg_restore`, de una versión igual o mayor que la del
+servidor; si no están en el `PATH`, `PG_DUMP` y `PG_RESTORE` dicen dónde).
+
+Se cuida de lo que sale mal en silencio:
+
+- El archivo se escribe como `.parcial` y recién se renombra cuando `pg_restore --list` lo
+  puede leer y trae datos de tablas. Un fallo no deja un archivo a medias que parezca un
+  respaldo; el comando termina con error (y cron manda el mail).
+- Los respaldos viejos (más de `--dias`, 14 por defecto) se borran **solo después de un
+  respaldo nuevo bueno**: si `pg_dump` falla durante semanas, no se van comiendo los anteriores.
+  Solo se borran archivos con este nombre y de esta misma base, nunca un enlace ni algo de otra
+  base.
+- Si el respaldo nuevo pesa menos de la mitad que el anterior, el comando lo avisa por la
+  salida de errores: puede ser una base vacía o dañada que se está «respaldando» bien.
+- La carpeta queda en `0700` y los archivos en `0600` (tienen todos los datos), y la clave viaja
+  en el entorno de `pg_dump`, no en su línea de comandos ni en ningún mensaje.
+
+**Esto no alcanza solo:** un respaldo en el mismo servidor no sirve si el servidor se pierde. Hay
+que copiar la carpeta a **otra máquina o a otro disco**, por ejemplo con otro cron que corra un
+poco después (`rsync -a --ignore-existing /var/backups/cobros/ usuario@otra-maquina:/copias/cobros/`)
+o con el almacenamiento externo que ya uses. Y un respaldo que nunca se restauró no es un respaldo:
+probalo de vez en cuando.
+
+**Restaurar** (probado: en una base nueva quedan los mismos datos, las 11 migraciones anotadas, los
+triggers, `migrar.php` dice «La base ya estaba al día» y las pantallas cargan):
+
+```bash
+# como superusuario de Postgres:
+createdb -O cobros_app cobros_restaurada
+# con el usuario de la app:
+pg_restore --no-owner --host=127.0.0.1 --username=cobros_app --dbname=cobros_restaurada ARCHIVO.dump
+```
+
+Después se apunta la app a esa base (`DB_NAME`) o se la renombra por la original, con la app parada.
+El respaldo no lleva dueños ni permisos (`--no-owner --no-privileges`): los objetos quedan a nombre
+de quien restaura.
+
 ### Esquema de la base
 
-En cada despliegue: `php database/migrar.php` (o `composer migrar`). Aplica en orden
+En cada despliegue: `php bin/migrar.php` (o `composer migrar`). Aplica en orden
 las migraciones de `database/migraciones/` que la base todavía no tenga (quedan
 anotadas en `migraciones_aplicadas`) y no hace nada si ya está al día. Nunca borra
 datos. `recrear_con_datos_de_ejemplo.php`, en cambio, es solo para desarrollo: borra todo, y sin
 `APP_ENV=dev` se niega a correr.
 
 Si la base se creó antes de que existieran las migraciones (con el viejo
-`database/schema.sql`), la primera vez corré `php database/migrar.php --baseline`:
+`database/schema.sql`), la primera vez corré `php bin/migrar.php --baseline`:
 marca la migración inicial como aplicada sin ejecutarla (esas tablas ya existen) y
 aplica las demás.
 
@@ -246,7 +339,7 @@ alta clientes sin ningún paso aparte. Una base migrada antes de la `005`, que q
 sin catálogo, lo recibe en la siguiente corrida de `migrar.php`; y aplicarla sobre
 una base que ya lo tiene no pisa nada. Las `tasa_a_usd` que carga son de ejemplo:
 antes de confiar en los reportes consolidados en USD hay que cargar las reales con
-`php database/actualizar_tasas.php` (ver «Tasas de cambio»).
+`php bin/actualizar_tasas.php` (ver «Tasas de cambio»).
 
 **Mayoría de edad.** La base rechaza a un cliente que no haya cumplido la edad de
 mayoría de **su país**, tanto al crearlo como al cambiarle la fecha de nacimiento o
@@ -286,9 +379,8 @@ Dos cosas que la app ya resuelve por su cuenta pero vale saber:
   excepción no capturada a `error_log()` — nunca a la respuesta. Dónde
   termina ese log depende de tu `php.ini`/pool de FPM (`error_log` de PHP);
   configuralo a un archivo real en producción en vez del default.
-- **Backups**: no hay nada automatizado acá — es un `pg_dump` de la base
-  como cualquier otra base de Postgres. Con `boletas`/`pagos`/`clientes`
-  reales adentro, un backup periódico deja de ser opcional.
+- **Backups**: `bin/respaldar.php`, con cron, rotación y comprobación del archivo
+  (ver «Respaldos»). Falta, y es cosa del servidor, copiarlos a otra máquina.
 
 ## Tests y análisis estático
 
@@ -343,6 +435,11 @@ src/
   Config.php           variables de entorno: obligatorias fuera de desarrollo,
                         zona horaria IANA validada, testeado
   Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
+  Respaldo/             RespaldoDeLaBase: el pg_dump con comprobación y rotación
+                        (bin/respaldar.php), testeado con pg_dump de verdad
+  Acceso/               ComprobadorDeAcceso: pide el panel sin credenciales y dice si
+                        el servidor web lo protege (bin/comprobar_acceso.php),
+                        testeado con un php -S que hace de panel
   Tasas/                las tasas de cambio reales: RespuestaDeTasas lee el JSON
                         de una fuente, DescargaDeTasas lo baja (solo https, sin
                         redirecciones) y ActualizadorDeTasas valida y guarda;
@@ -350,6 +447,8 @@ src/
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
+  Dinero.php            montos en centavos enteros, para compararlos sin el ruido de
+                        la coma flotante (testeado)
   MayoriaDeEdad.php     la regla de que no se admiten clientes que no hayan cumplido
                         la edad de mayoría de su país (años cumplidos, como age()
                         de Postgres) y el tope del campo de fecha de nacimiento del
@@ -358,7 +457,9 @@ src/
   Etiquetas.php         traduce estado de boleta/metodo de pago/canal a su
                         etiqueta en español, en un solo lugar para no repetir
                         el mismo array en cada vista que los muestra, testeado
-  Paginacion.php        helper de paginación (página/offset/total, testeado)
+  Paginacion.php        helper de paginación (página/offset/total, testeado) y
+                        consultar(), el esqueleto único de los listados paginados
+                        (contar, acotar la página, traer solo esa), testeado
   Csrf.php              token CSRF por sesión propia (no depende de ningún login),
                         verificado en Router (testeado)
   ConexionSegura.php    detecta HTTPS (directo o detras de proxy), testeado
@@ -381,7 +482,7 @@ src/
   Repositories/NotaCreditoRepository.php  devoluciones emitidas al anular
                         una boleta ya cobrada, y su total por rango/mes en
                         USD para netear los cobros de los reportes
-  Repositories/RangoEdad.php  el tramo de edad (Menor de 18, 18-24, 25-34, ...)
+  RangoEdad.php         el tramo de edad (Menor de 18, 18-24, 25-34, ...)
                         como expresion SQL, con age(); lo comparten
                         segmentacion y funnel. Una fecha de nacimiento
                         posterior a hoy sale como "Fecha inválida"
@@ -401,7 +502,12 @@ database/
                         catálogo, 006 y 008 = índices, 007 = mayoría de edad,
                         009 = origen de las tasas de cambio, 010 = mayoría de
                         edad de cada país, 011 = la tasa de cambio de cada día)
+bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
+  respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
+                        por día; ver «Respaldos»)
+  comprobar_acceso.php   comprueba desde afuera que el panel pide credenciales
+                        (ver «Antes de exponerlo»)
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
                         vez por día)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
@@ -425,7 +531,7 @@ views/                  plantillas PHP: una carpeta por sección o entidad (dash
 tests/
   Unit/                 sin base de datos (calculo de estado, filtros, funciones de vista,
                         paginación, CSRF, router, headers de seguridad, deteccion
-                        de HTTPS)
+                        de HTTPS, el comprobador de acceso)
   Integration/           contra la base real, casi todos en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
                         auditoría, zona horaria, conexión persistente, que una
@@ -437,8 +543,9 @@ tests/
                         coincidan en quién es mayor de edad en cada país, que las
                         tasas de cambio se actualicen con sus reglas de seguridad
                         (y el comando que corre cron), que cada fila guarde la tasa
-                        de su día y los totales la usen, y que los datos de ejemplo
-                        del seed cumplan las reglas de la app)
+                        de su día y los totales la usen, que el respaldo con
+                        pg_dump salga, se pueda leer y rote bien, y que los datos
+                        de ejemplo del seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -449,7 +556,7 @@ phpstan.neon            configuracion del analisis estatico
   `tasa_a_usd` — cuánto vale 1 unidad de esa moneda en USD, para consolidar
   reportes). La migración `005` carga el catálogo (198 países y 146 monedas) con
   tasas de ejemplo, no el seed: una base de producción lo tiene apenas se migra (ver
-  "Esquema de la base"). `database/actualizar_tasas.php` las reemplaza por las reales
+  "Esquema de la base"). `bin/actualizar_tasas.php` las reemplaza por las reales
   y deja en `tasa_actualizada_en` y `tasa_fuente` desde cuándo y de dónde (`NULL` es
   una tasa de ejemplo; ver «Tasas de cambio»). Cada país trae también
   `mayoria_de_edad` (migración `010`, ver «Mayoría de edad»).
@@ -513,6 +620,27 @@ en USD, con la tasa que cada fila guardó al crearse (la cartera pendiente, con 
 hoy; ver «La tasa de cada día»); las tablas de detalle (boletas, pagos, ficha de
 cliente) muestran el monto en su moneda original.
 
+**Dinero.** La base guarda los montos como `NUMERIC(14, 2)`, exactos. En PHP viajan
+como `float`, que arrastra ruido (`0.1 + 0.2` da `0.30000000000000004`), así que las
+validaciones que comparan montos de una boleta o de un pago
+(`BoletasController::montoCubreLoYaCobrado` y `PagosController::montoNoSuperaElSaldo`,
+con su versión al editar un pago) los pasan a centavos enteros con
+`App\Dinero::centavos()` y comparan ahí, sin margen: un pago no puede pasarse del saldo
+ni por un centavo, y el monto de una boleta no puede quedar un centavo por debajo de lo
+ya cobrado.
+
+Otra cosa es la regla deliberada de que **un centavo o menos cuenta como cero**, para que
+un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con saldo de
+0,01 o menos es `pagada` (`EstadoBoleta`, y en SQL `BoletaRepository::ESTADO_SQL`), no se
+ofrece en el selector del formulario de pagos, la cartera por antigüedad no cuenta saldos
+de 0,01 USD o menos, y anular una boleta con 0,01 o menos cobrado no emite nota de crédito.
+Ese 0,01 está escrito en un solo lugar, `Dinero::UN_CENTAVO` (y `Dinero::cuentaComoCero()` para
+compararlo): lo leen el PHP, las consultas SQL y las vistas. Es también el monto mínimo que
+acepta `Validacion::montoEnRango()`, y el HTML de los cuatro formularios de monto (alta y
+edición de boletas y de pagos) sale de `campo_monto()`, que le pone `min`, `max` y `step` desde
+`Dinero::UN_CENTAVO` y `Validacion::MONTO_MAXIMO`: el navegador rechaza un monto fuera de rango
+antes de enviarlo, y el servidor lo vuelve a validar.
+
 ## Notas de diseño
 
 - Sin JavaScript ni librerías de gráficos externas: los mini-gráficos son SVG
@@ -525,7 +653,9 @@ cliente) muestran el monto en su moneda original.
   del funnel y las cohortes, y colores de estado reservados para la antigüedad de cartera.
 - Modo oscuro automático vía `prefers-color-scheme`.
 - Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL, también en
-  Boletas con filtro de estado. Auditoría es la excepción: pagina por cursor
+  Boletas con filtro de estado. Boletas, pagos y clientes la arman con
+  `Paginacion::consultar()`: cada repositorio dice las columnas, las tablas y los filtros,
+  y la cuenta, la página acotada y el `LIMIT`/`OFFSET` salen de ahí. Auditoría es la excepción: pagina por cursor
   (`?antes=`/`?despues=` con el `creado_en` y el `id` de la fila donde quedó), porque
   es la única tabla que solo crece y `OFFSET` más `COUNT(*)` crecían en línea recta
   con ella. Con 2 millones de entradas la página del fondo pasó de 1,7 s a 2 ms, y

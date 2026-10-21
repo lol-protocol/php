@@ -1,6 +1,7 @@
 flowchart LR
     seg["Primer segmento\n(solo digitos)"]
 
+    seg -->|16 digitos| orden["orden (codigo aleatorio)\nOrderController\n1 factura · 2 seguimiento · 3 devolucion"]
     seg -->|8 digitos| producto["producto\nProductoController\n1 variantes · 2 atributos"]
     seg -->|7 digitos| coleccion["coleccion\nColeccionController\n(sin acciones)"]
     seg -->|6 digitos| etiqueta["etiqueta\nEtiquetaController\n1 productos"]
@@ -8,9 +9,8 @@ flowchart LR
     seg -->|4 digitos| grupo["grupo\nGrupoController\n(sin acciones)"]
     seg -.->|1-3 digitos| libre["(libre — headroom\npara tipos futuros)"]
 
-    literal["Ruta literal\n(excepcion: ingles, sin guiones)"] --> cart["cart\nCartController"]
-    literal --> checkout["checkout\nCheckoutController\nindex · shipping · payment · confirm"]
-    literal --> order["order/{id}\nOrderController\n1 invoice · 2 track · 3 devolucion"]
-
-    reservado["Ruta exacta"] -->|vacio, con ?t= y ?q=| home["HomeController\nlistado / busqueda"]
+    reservado["Segmento reservado"] -->|vacio| home["HomeController\ninicio"]
+    reservado -->|'b'| busqueda["HomeController::buscar\n/b/{digitos}/[{texto}/][{pagina}/]"]
     reservado -->|'0'| cuenta["CuentaController\n1 perfil · 2 ordenes\n3 deseos · 4 direcciones\n5 preferencias"]
+    reservado -->|'c'| cart["CartController (carrito)\n1 agregar · 2 actualizar\n3 quitar · 4 vaciar (POST)"]
+    reservado -->|'p'| checkout["CheckoutController (pago)\n1 envio · 2 pago · 3 confirmar"]

@@ -1,14 +1,16 @@
 # Marcalibros — aplicación web
 
-Aplicación independiente para elegir un marcalibro del catálogo (1000 diseños) o crear uno propio con una imagen. **No tiene cuentas ni inicio de sesión** y no está conectada a Plataforma POS: se puede probar y desplegar sola. La integración queda para después.
+Aplicación independiente para elegir un marcalibro del catálogo (1350 diseños) o crear uno propio con una imagen. **No tiene cuentas ni inicio de sesión** y no está conectada a Plataforma POS: se puede probar y desplegar sola. La integración queda para después.
 
 ## Qué hace
 
 | Pantalla | Dirección | Qué se puede hacer |
 |---|---|---|
-| Catálogo | `/` | Ver muestras de las 20 categorías (10 movimientos literarios y 10 tipos de texto) |
+| Catálogo | `/` | Ver muestras de las 27 categorías (11 movimientos literarios y 16 tipos de texto) |
+| Filtro | `/?motivo=faro&color=ocre` | Buscar por motivo y por color de la paleta, en todo el catálogo o dentro de una categoría |
+| Imprimir | `/imprimir?categoria=leyes` | Hoja A4 con los marcalibros de esa página del catálogo (mismos filtros y paginación), en tamaño real (18 cm) y con guías de corte; también sirve para guardar un PDF |
 | Categoría | `/?categoria=leyes` | Recorrer los 50 marcalibros de una categoría, de a 25 por página |
-| Detalle | `/marcalibro/mb-leyes-07` | Ver uno grande, sus colores, y descargarlo en SVG |
+| Detalle | `/marcalibro/mb-leyes-07` | Ver uno grande, sus colores, y descargarlo en SVG, o en PNG si se generaron (`generator/exportar_png.py`) |
 | Crear | `/crear` | Subir una imagen o elegir un paisaje de la marca, encuadrar en 7:1 y ponerle nombre |
 | Mío | `/mio/mp-…` | Ver y descargar el marcalibro creado (1400×200 y 2800×400), copiar su enlace o borrarlo |
 
@@ -17,7 +19,7 @@ Sin JavaScript todo sigue funcionando, salvo mover el marco: el marcalibro se re
 ## Requisitos
 
 - PHP 8.1 o superior con las extensiones `gd` (con WebP), `fileinfo` y `mbstring`. `exif` es recomendable: sin ella las fotos del celular pueden quedar de lado.
-- No necesita base de datos ni paquetes externos para funcionar.
+- No necesita base de datos ni paquetes externos para funcionar. Sí necesita la carpeta `defamatory-content-review/` del monorepo junto a `marcalibros-plataforma-pos-brand-identity/`: revisa el texto de cada marcalibro. Al desplegar, copia las dos.
 
 ## Probarla en tu máquina
 
@@ -42,6 +44,7 @@ Se hace con variables de entorno. Todas son opcionales.
 | `MARCALIBROS_CREATES_PER_HOUR` | `10` | Intentos de crear por hora y por dirección IP (los fallidos también cuentan) |
 | `MARCALIBROS_MAX_STORED` | `5000` | Tope de marcalibros guardados a la vez; al llegar, no se aceptan más |
 | `MARCALIBROS_TRUST_FORWARDED_FOR` | apagado | Con `1`, la IP de cada persona es la última de `X-Forwarded-For`. Solo detrás de un proxy propio que la ponga |
+| `MARCALIBROS_PUBLIC_URL` | sin valor | Esquema y dominio del sitio (`https://marcalibros.example.com`). Con él, los enlaces compartidos muestran imagen de vista previa (Open Graph). Sin él, solo título y descripción |
 
 ## Cómo se protege sin cuentas
 
@@ -56,10 +59,13 @@ No hay sesión ni cookies, así que no hay nada que un tercero pueda hacer "en n
 - **Se rechazan las peticiones `POST` de otros sitios** (`Sec-Fetch-Site: cross-site`). No hay token CSRF porque no hay sesión que proteger: lo peor que haría una página ajena es crear un marcalibro que nadie verá y gastar intentos del límite de esa persona. Los navegadores actuales ya lo impiden con esa cabecera.
 - **CSP estricta**: `default-src 'none'`, solo scripts y estilos de este mismo sitio, sin código ni estilos en línea (una prueba lo vigila), sin `connect-src`, sin marcos.
 - Los identificadores y nombres de archivo que llegan en la dirección se comprueban contra el manifiesto o contra el formato exacto antes de tocar el disco.
+- **El texto del marcalibro pasa por `defamatory-content-review`** (`src/LabelPolicy.php`), en español e inglés. El marcalibro se comparte por enlace desde nuestro dominio: un «Fulano es un estafador» sería una difamación publicada por la plataforma (ver `PRIVACIDAD-Y-HONRA.md` en la raíz del repositorio). Como aquí nadie revisa a mano, no se aceptan insultos, acusaciones, datos sensibles ni datos personales (RUT, teléfono, correo, dirección): la persona ve un aviso y puede escribir otro texto.
 
-Lo que **no** hace: HTTPS ni `Strict-Transport-Security` (eso lo ponen el servidor web o el proxy), ni comprobar que la imagen subida sea apropiada.
+Lo que **no** hace: HTTPS ni `Strict-Transport-Security` (eso lo ponen el servidor web o el proxy), ni comprobar que la imagen subida sea apropiada: una foto con texto escrito no pasa por el filtro.
 
 ## Despliegue
+
+La aplicación corre en **un solo VPS**, y por eso guarda los marcalibros creados en el disco local (`MARCALIBROS_STORAGE`). **No hay copias de seguridad, a propósito:** los marcalibros creados se borran solos a los `MARCALIBROS_RETENTION_DAYS` días y quien pierda uno puede crear otro; el catálogo y los PNG se regeneran con los scripts de `generator/`. Si algún día corre en más de un servidor, el disco local deja de servir: habría que llevar el almacenamiento a algo compartido.
 
 Dirige todo lo que no sea un archivo de `public/assets/` a `public/index.php`. Ejemplo para nginx con php-fpm:
 
@@ -81,6 +87,16 @@ En `php.ini` (o el pool de php-fpm): `upload_max_filesize = 5M` y `post_max_size
 
 Detrás de un proxy, activa `MARCALIBROS_TRUST_FORWARDED_FOR=1` solo si el proxy sobrescribe `X-Forwarded-For`; si no, todos los visitantes parecerán tener la IP del proxy y compartirán el mismo límite.
 
+### PNG del catálogo
+
+Después de cada despliegue que cambie el catálogo, genera los PNG que falten (necesita Python 3 con Pillow y numpy, ver `generator/requirements.txt`):
+
+```bash
+cd /srv/marcalibros && python3 generator/exportar_png.py --faltantes
+```
+
+Sin ellos la aplicación funciona igual: solo no ofrece la descarga en PNG.
+
 ### Limpieza diaria
 
 ```cron
@@ -97,7 +113,7 @@ composer install
 phpstan analyse        # nivel 6
 ```
 
-Las pruebas armen la aplicación con el catálogo real y una carpeta temporal; no necesitan servidor. Incluyen: rutas y cabeceras, las 1000 SVG, subida y recorte (con los valores de zoom y posición aplicados de verdad), rechazos, límite de intentos, tope de almacenamiento, borrado, escape de HTML, y que ninguna plantilla emita estilos o scripts en línea.
+Las pruebas armen la aplicación con el catálogo real y una carpeta temporal; no necesitan servidor. Incluyen: rutas y cabeceras, las 1350 SVG, el filtro por motivo y color, los PNG y las etiquetas para compartir, subida y recorte (con los valores de zoom y posición aplicados de verdad), rechazos, límite de intentos, tope de almacenamiento, borrado, escape de HTML, y que ninguna plantilla emita estilos o scripts en línea.
 
 ## Estructura
 
@@ -115,6 +131,4 @@ app/
 
 ## Pendiente
 
-- Las fuentes de la marca (Source Serif 4 e Inter) están declaradas pero no incluidas: sin ellas se usan Georgia y la fuente del sistema. Para incluirlas hay que agregar `font-src 'self'` a la CSP.
-- Sin modo oscuro.
-- El almacenamiento es disco local: sirve para un solo servidor.
+- La integración con Plataforma POS, que se dejó para después (ver el `README.md` de la carpeta superior).

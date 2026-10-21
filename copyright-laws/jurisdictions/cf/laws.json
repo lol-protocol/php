@@ -1,0 +1,83 @@
+[
+  {
+    "country_code": "CF",
+    "country_name": "Central African Republic",
+    "region": "middle_east_africa",
+    "law_name": "Bangui Agreement (revised 1999), Annex VII on Copyright and Cultural Heritage, applied as national law; national Ordinance No. 85.002 of 5 January 1985 on Copyrights also cited",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (per secondary Wikimedia Commons summary; Annex VII article not seen) (unconfirmed)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Limitations to economic rights in Annex VII, Chapter IV (articles not seen) (unconfirmed)",
+    "registration_required": "Not specified",
+    "enforcement_body": "UNKNOWN (Bureau Centrafricain du Droit d'Auteur, BCDA, not confirmed by any result) (unconfirmed)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "",
+    "notes": "Berne member since 3 Sep 1977, Bangui Agreement since 8 Feb 1982, WTO since 31 May 1995 (Commons). WCT/WPPT not checked: no list seen. Not verified against primary text.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.adams.africa/?p=3496",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Central_African_Republic.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Central_African_Republic.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Central_African_Republic.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.adams.africa/?p=3496",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Central_African_Republic.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Central_African_Republic.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "linked_resources",
+        "from": "https://www.wipo.int/wipolex/en/details.jsp?id=644",
+        "to": ""
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

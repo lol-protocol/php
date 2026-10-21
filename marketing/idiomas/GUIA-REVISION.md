@@ -38,10 +38,15 @@ No hace falta enviar las frases que quedaron fuera por depender del producto (co
 
 ## Pendientes conocidos
 
-- **Francés, tipografía.** Hay 11 espacios normales antes de `?`, `!`, `:` y `;`. Lo correcto es un espacio fino insécable. Que lo decida quien revise el francés.
-- **Marca en alfabetos no latinos** (`ru`, `ar`, `he`, `ja`, `ko`, `zh-Hans`, `hi`). Cuando exista el nombre, decidir si se translitera o se deja en alfabeto latino; se configura por idioma en `marca_por_idioma` de `../config.json` (ver `../README.md`).
+- **Francés, tipografía.** Ya se aplicó la norma: espacio fino insécable (U+202F) antes de `?`, `!` y `;`, y espacio insécable (U+00A0) antes de `:` (11 casos). Quien revise el francés debe confirmarlo; si algún canal muestra mal el U+202F, se puede sustituir por U+00A0.
+- **Marca en alfabetos no latinos** (`ru`, `ar`, `he`, `ja`, `ko`, `zh-Hans`, `hi`). La marca es `conce.com`, una dirección web, y se dejó en alfabeto latino en todos los idiomas. Se comprobó cómo queda en la despedida del correo: en `ar` y `he` el punto final cae en el extremo izquierdo, que es lo correcto de derecha a izquierda, aunque junto a «conce.com» puede parecer un punto inicial; en `ja` y `zh-Hans` el nombre queda pegado al texto («conce.comチーム», «conce.com团队»). Quien revise cada idioma confirma si prefiere otra forma, que se configura en `marca_por_idioma` de `../config.json` (ver `../README.md`).
+- **Alemán: «Ihr conce.com-Team».** Un nombre con punto dentro de un compuesto con guion resulta raro; quien revise el alemán puede preferir «Ihr Team von conce.com».
 - **Concordancia con `[Nombre]` y `[Marca]`** en idiomas con casos o género (`ru`, `pl`, `tr`, `ar`, `hi`): comprobar que la frase funciona con cualquier nombre.
-- **Hashtags.** Comprobar que existen y se usan en cada red.
+- **Hashtags.** Los 64 (4 por idioma) tienen formato válido: solo letras, números y guion bajo, en NFC, sin repetidos ni mezcla de escrituras. Lo que **no** se pudo comprobar desde aquí es su uso real en cada red; eso lo debe ver quien revise cada idioma, buscándolos en la propia red. Lo que sí se encontró:
+  - Los más genéricos (`#Roots`, `#Legacy`, `#Raíces`, `#Legado`…) se comparten con otros temas; el que de verdad identifica el tema es el de genealogía (`#Genealogy`, `#Genealogía`…).
+  - En inglés, `#Genealogy` y `#FamilyHistory` son las etiquetas establecidas; `#MyFamilyHistory` no aparece como habitual. Considerar `#FamilyHistory`.
+  - Ambigüedades por idioma: `ko` `#족보` significa también el material de estudio de exámenes universitarios; `it` `#Eredità` es además el nombre de un concurso muy conocido de Rai 1 («L'Eredità») y suele referirse a herencias de dinero; en `fr` `#Héritage`, `nl` `#Erfenis`, `tr` `#Miras` y `ar` `#الإرث` predomina el sentido de herencia legal o económica sobre el de legado familiar.
+  - Sin tilde es otro hashtag en casi todas las redes (`#Genealogía` y `#Genealogia`, `#Raíces` y `#Raices`): decidir cuál se usa y ser consistente.
 
 ## Al recibir la revisión
 

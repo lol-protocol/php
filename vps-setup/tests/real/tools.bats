@@ -80,26 +80,34 @@ run_06c() { run bash "$VPS_DIR/06_C-setup-dns-server.sh" $ZD 203.0.113.7 sdns2.o
     run named-checkconf; [ "$status" -eq 0 ]
 }
 
+# Quien escucha en el puerto UDP $1 (direccion y proceso), en una sola linea; vacio si nadie.
+quien_escucha_udp() { ss -lnup 2>/dev/null | awk -v p=":$1\$" '$4 ~ p {print $4 " " $6}' | paste -sd';' -; }
+
 @test "06_C: un named REAL responde con los registros y RECHAZA la transferencia de zona desde otra IP" {
     command -v named > /dev/null || skip "falta bind9"
-    ss -lnu 2>/dev/null | grep -qE ':53\s' && skip "el puerto 53 ya esta en uso"
+    # named escucha en un puerto alto, no en el 53: lo que se prueba es su configuracion y su zona, no el
+    # puerto, y el 53 lo puede ocupar cualquier cosa del equipo (systemd-resolved, un named del paquete...).
+    # Una vez, en ~100 ejecuciones de CI, algo lo tenia ocupado y el test se salto sin que se supiera quien.
+    local puerto=5300 ocupante
+    ocupante=$(quien_escucha_udp "$puerto")
+    [ -z "$ocupante" ] || skip "el puerto $puerto ya esta en uso: $ocupante"
     dns_stubs; mkdir -p /etc/bind; touch /etc/bind/named.conf.local; cp /etc/bind/named.conf.local "$BATS_TEST_TMPDIR/named.conf.local.orig"
     cp /etc/bind/named.conf.options "$BATS_TEST_TMPDIR/named.conf.options.orig"
     run_06c; [ "$status" -eq 0 ]
     grep -q 'recursion no;' /etc/bind/named.conf.options
     named-checkconf
     mkdir -p /var/cache/bind /run/named; chown bind:bind /var/cache/bind /run/named 2>/dev/null || true
-    named -u bind -c /etc/bind/named.conf
+    named -u bind -p "$puerto" -c /etc/bind/named.conf
     touch "$BATS_TEST_TMPDIR/named.up"
-    for _ in $(seq 1 25); do /usr/bin/dig @127.0.0.1 +short +time=1 +tries=1 $ZD A 2>/dev/null | grep -q . && break; sleep 0.4; done
-    run /usr/bin/dig @127.0.0.1 +short $ZD A;          [ "$output" = "203.0.113.7" ]
-    run /usr/bin/dig @127.0.0.1 +short www.$ZD A;      [ "$output" = "203.0.113.7" ]
-    run /usr/bin/dig @127.0.0.1 +short $ZD CAA;        [[ "$output" == *'0 issue "letsencrypt.org"'* ]]
-    run /usr/bin/dig @127.0.0.1 +short $ZD NS;         [[ "$output" == *"ns1.$ZD."* ]]; [[ "$output" == *"sdns2.ovh.ca."* ]]
+    for _ in $(seq 1 25); do /usr/bin/dig -p "$puerto" @127.0.0.1 +short +time=1 +tries=1 $ZD A 2>/dev/null | grep -q . && break; sleep 0.4; done
+    run /usr/bin/dig -p "$puerto" @127.0.0.1 +short $ZD A;          [ "$output" = "203.0.113.7" ]
+    run /usr/bin/dig -p "$puerto" @127.0.0.1 +short www.$ZD A;      [ "$output" = "203.0.113.7" ]
+    run /usr/bin/dig -p "$puerto" @127.0.0.1 +short $ZD CAA;        [[ "$output" == *'0 issue "letsencrypt.org"'* ]]
+    run /usr/bin/dig -p "$puerto" @127.0.0.1 +short $ZD NS;         [[ "$output" == *"ns1.$ZD."* ]]; [[ "$output" == *"sdns2.ovh.ca."* ]]
     # servidor solo autoritativo: no resuelve nombres ajenos (no es un resolvedor abierto)
-    run /usr/bin/dig @127.0.0.1 +time=2 +tries=1 example.org A
+    run /usr/bin/dig -p "$puerto" @127.0.0.1 +time=2 +tries=1 example.org A
     [[ "$output" == *"REFUSED"* ]]
-    run /usr/bin/dig @127.0.0.1 $ZD AXFR               # allow-transfer solo para la IP de OVH
+    run /usr/bin/dig -p "$puerto" @127.0.0.1 $ZD AXFR               # allow-transfer solo para la IP de OVH
     [[ "$output" == *"Transfer failed"* ]] || [[ "$output" == *"REFUSED"* ]]
 }
 
@@ -132,6 +140,9 @@ exec "$@"'
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     run fail2ban-client -d
     echo "$output" | grep -q "'add', 'sshd', 'systemd'"
+    for j in recidive nginx-botsearch nginx-http-auth nginx-bad-request; do
+        echo "$output" | grep -q "'add', '$j'" || { echo "falta el jail $j"; return 1; }
+    done
 }
 
 @test "07_A: apt-config REAL lee las actualizaciones automaticas activadas" {

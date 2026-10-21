@@ -2,6 +2,7 @@
   {
     "country_code": "US",
     "country_name": "United States",
+    "region": "americas",
     "law_name": "Copyright Act (17 USC)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years or 95 years (works for hire)",
@@ -12,7 +13,23 @@
     "fair_use_exceptions": "Fair use doctrine",
     "registration_required": "No (but beneficial)",
     "enforcement_body": "U.S. Copyright Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.copyright.gov/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.copyright.gov/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

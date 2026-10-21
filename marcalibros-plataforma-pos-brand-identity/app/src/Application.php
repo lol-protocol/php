@@ -27,7 +27,7 @@ final class Application
     private const RATE_WINDOW = 3600;
 
     private const SECURITY_HEADERS = [
-        'Content-Security-Policy' => "default-src 'none'; img-src 'self' blob:; style-src 'self'; script-src 'self'; "
+        'Content-Security-Policy' => "default-src 'none'; img-src 'self' blob:; font-src 'self'; style-src 'self'; script-src 'self'; "
             . "connect-src 'none'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
         'X-Content-Type-Options' => 'nosniff',
         'X-Frame-Options' => 'DENY',
@@ -37,6 +37,12 @@ final class Application
     ];
 
     private const LANDSCAPE_NAMES = ['amanecer' => 'Amanecer', 'bosque' => 'Bosque', 'costa' => 'Costa', 'montana' => 'Montaña'];
+
+    /** Colores de la paleta por los que se puede filtrar el catálogo (brand-tokens.md). */
+    private const PALETTE = ['tinta' => '#1E2A38', 'papel' => '#F4EEE1', 'ocre' => '#C98B3A', 'verde' => '#3E5C4A', 'niebla' => '#7A9CB0'];
+
+    /** Imagen para compartir la portada: un paisaje de la marca ya en 1200 x 630. */
+    private const SHARE_IMAGE = 'paisaje-bosque-1200x630.jpg';
 
     /**
      * @param \Closure(): int         $clock          Hora actual (se cambia en las pruebas).
@@ -55,6 +61,7 @@ final class Application
         private readonly \Closure $clock,
         private readonly \Closure $isUploadedFile,
         private readonly int $serverUploadLimit = PHP_INT_MAX,
+        private readonly LabelPolicy $labels = new LabelPolicy(),
     ) {
     }
 
@@ -71,7 +78,7 @@ final class Application
             new BookmarkMaker($bookmarks, $library, $limits),
             new BookmarkStore($bookmarks),
             new RateLimiter($config->storageDirectory . '/intentos'),
-            new View($appDirectory . '/templates', ['retentionDays' => $config->retentionDays]),
+            new View($appDirectory . '/templates', ['retentionDays' => $config->retentionDays, 'publicUrl' => $config->publicUrl]),
             $limits,
             static fn (): int => time(),
             static fn (string $path): bool => is_uploaded_file($path),
@@ -128,11 +135,20 @@ final class Application
                 default => $this->notAllowed('GET, HEAD, POST'),
             };
         }
+        if ($path === '/imprimir') {
+            return $method === 'GET' ? $this->printPage($request) : $this->notAllowed('GET, HEAD');
+        }
         if (preg_match('#^/marcalibro/([a-z0-9-]+)\z#', $path, $m) === 1) {
             return $method === 'GET' ? $this->detailPage($m[1]) : $this->notAllowed('GET, HEAD');
         }
         if (preg_match('#^/catalogo/([a-z0-9-]+)\.svg\z#', $path, $m) === 1) {
             return $method === 'GET' ? $this->catalogSvg($request, $m[1]) : $this->notAllowed('GET, HEAD');
+        }
+        if (preg_match('#^/catalogo/([a-z0-9-]+)(@2x)?\.png\z#', $path, $m) === 1) {
+            return $method === 'GET' ? $this->catalogPng($request, $m[1], ($m[2] ?? '') === '@2x') : $this->notAllowed('GET, HEAD');
+        }
+        if (preg_match('#^/catalogo/([a-z0-9-]+)\.jpg\z#', $path, $m) === 1) {
+            return $method === 'GET' ? $this->catalogPreview($request, $m[1]) : $this->notAllowed('GET, HEAD');
         }
         if (preg_match('#^/paisajes/([a-z0-9.-]+)\z#', $path, $m) === 1) {
             return $method === 'GET' ? $this->landscape($request, $m[1]) : $this->notAllowed('GET, HEAD');
@@ -157,12 +173,41 @@ final class Application
 
     // --------------------------------------------------------------- catálogo
 
-    private function catalogPage(Request $request): Response
+    /**
+     * Lee y valida categoría, motivo y color de la dirección. Devuelve la página de error si alguno no es válido.
+     *
+     * @return array{slug: ?string, motif: ?string, color: ?string}|Response
+     */
+    private function parseFilters(Request $request): array|Response
     {
         $slug = $request->param('categoria');
         if (isset($request->query['categoria']) && ($slug === null || !$this->catalog->hasCategory($slug))) {
             return $this->notFound('No encontramos esa categoría.');
         }
+        foreach (['motivo', 'color'] as $name) {
+            if (isset($request->query[$name]) && !is_string($request->query[$name])) {
+                return $this->notFound('Ese filtro no es válido.');
+            }
+        }
+        // Los filtros vienen de un formulario: "Todos" llega como valor vacío y no filtra.
+        $motif = $this->optionalParam($request, 'motivo');
+        if ($motif !== null && !$this->catalog->hasMotif($motif)) {
+            return $this->notFound('No encontramos ese motivo.');
+        }
+        $color = $this->optionalParam($request, 'color');
+        if ($color !== null && !isset(self::PALETTE[$color])) {
+            return $this->notFound('No encontramos ese color.');
+        }
+        return ['slug' => $slug, 'motif' => $motif, 'color' => $color];
+    }
+
+    private function catalogPage(Request $request): Response
+    {
+        $filters = $this->parseFilters($request);
+        if ($filters instanceof Response) {
+            return $filters;
+        }
+        ['slug' => $slug, 'motif' => $motif, 'color' => $color] = $filters;
 
         $families = [];
         foreach ($this->catalog->categories() as $category) {
@@ -170,49 +215,151 @@ final class Application
         }
         $notice = $request->param('aviso') === 'borrado' ? 'Se eliminó tu marcalibro.' : null;
         $options = ['scripts' => ['catalogo.js'], 'section' => 'catalogo'];
+        $shared = [
+            'families' => $families,
+            'catalogTotal' => $this->catalog->count(),
+            'categoryCount' => count($this->catalog->categories()),
+            'notice' => $notice,
+            'filters' => ['motivo' => $motif, 'color' => $color],
+            'motifOptions' => $this->motifOptions(),
+            'colorOptions' => array_map(fn (string $hex): string => $this->view->colorName($hex), self::PALETTE),
+        ];
 
-        if ($slug === null) {
-            // Portada: unas muestras de cada categoría, para recorrerlas todas sin pasar 20 páginas.
+        if ($slug === null && $motif === null && $color === null) {
+            // Portada: unas muestras de cada categoría, para recorrerlas todas sin pasar por cada página.
             $groups = [];
             foreach ($this->catalog->categories() as $category) {
                 $sample = array_slice($this->catalog->byCategory((string) $category['slug']), 0, self::SAMPLE_PER_CATEGORY);
                 $groups[] = ['category' => $category, 'items' => array_map($this->presentEntry(...), $sample)];
             }
-            return Response::html($this->view->page('catalogo', [
+            $description = 'Marcalibros para descargar: ' . $this->catalog->count() . ' diseños de movimientos literarios y tipos de texto, o crea el tuyo con tu imagen.';
+            return Response::html($this->view->page('catalogo', $shared + [
                 'groups' => $groups,
-                'families' => $families,
                 'current' => null,
-                'motifs' => [],
+                'heading' => null,
+                'lead' => null,
                 'items' => [],
                 'page' => 1,
                 'pages' => 1,
                 'total' => $this->catalog->count(),
-                'catalogTotal' => $this->catalog->count(),
-                'categoryCount' => count($this->catalog->categories()),
-                'notice' => $notice,
-            ], 'Marcalibros', $options + ['description' => 'Marcalibros para descargar: ' . $this->catalog->count() . ' diseños de movimientos literarios y tipos de texto, o crea el tuyo con tu imagen.']));
+            ], 'Marcalibros', $options + ['description' => $description, 'share' => $this->share('Marcalibros', $description, '/', '/paisajes/' . self::SHARE_IMAGE, 1200, 630)]));
         }
 
-        $all = $this->catalog->byCategory($slug);
+        $all = $this->catalog->search($slug, $motif, $color === null ? null : self::PALETTE[$color]);
         $pages = max(1, (int) ceil(count($all) / self::PER_PAGE));
         $requested = $request->param('pagina');
         $page = $requested !== null && ctype_digit($requested) ? max(1, min($pages, (int) $requested)) : 1;
         $items = array_map($this->presentEntry(...), array_slice($all, ($page - 1) * self::PER_PAGE, self::PER_PAGE));
-        $current = $this->categoryBySlug($slug);
+        $current = $slug === null ? null : $this->categoryBySlug($slug);
+        [$heading, $lead] = $this->listingText($current, $motif, $color, count($all));
 
-        return Response::html($this->view->page('catalogo', [
+        return Response::html($this->view->page('catalogo', $shared + [
             'groups' => [],
-            'families' => $families,
             'current' => $current,
-            'motifs' => array_map(fn ($motif): string => $this->catalog->motifName((string) $motif), $current['motivos'] ?? []),
+            'heading' => $heading,
+            'lead' => $lead,
             'items' => $items,
             'page' => $page,
             'pages' => $pages,
             'total' => count($all),
-            'catalogTotal' => $this->catalog->count(),
-            'categoryCount' => count($this->catalog->categories()),
-            'notice' => $notice,
-        ], ($current['nombre'] ?? 'Catálogo') . ' · Marcalibros', $options));
+        ], $heading . ' · Marcalibros', $options + ['share' => $this->share($heading . ' · Marcalibros', $lead, $this->view->url('/', ['categoria' => $slug, 'motivo' => $motif, 'color' => $color]), '/paisajes/' . self::SHARE_IMAGE, 1200, 630)]));
+    }
+
+    /**
+     * Hoja para imprimir: los mismos marcalibros que muestra la página del catálogo con esos filtros
+     * (mismo orden y misma paginación), uno bajo otro y en tamaño real, con guías de corte.
+     */
+    private function printPage(Request $request): Response
+    {
+        $filters = $this->parseFilters($request);
+        if ($filters instanceof Response) {
+            return $filters;
+        }
+        ['slug' => $slug, 'motif' => $motif, 'color' => $color] = $filters;
+
+        $all = $this->catalog->search($slug, $motif, $color === null ? null : self::PALETTE[$color]);
+        $pages = max(1, (int) ceil(count($all) / self::PER_PAGE));
+        $requested = $request->param('pagina');
+        $page = $requested !== null && ctype_digit($requested) ? max(1, min($pages, (int) $requested)) : 1;
+        $items = array_map($this->presentEntry(...), array_slice($all, ($page - 1) * self::PER_PAGE, self::PER_PAGE));
+        $current = $slug === null ? null : $this->categoryBySlug($slug);
+        $filtering = $motif !== null || $color !== null;
+        $title = $current !== null ? (string) $current['nombre'] : ($filtering ? 'Resultados' : 'Todos los marcalibros');
+        $query = ['categoria' => $slug, 'motivo' => $motif, 'color' => $color];
+
+        return Response::html($this->view->page('imprimir', [
+            'items' => $items,
+            'heading' => $title,
+            'total' => count($all),
+            'page' => $page,
+            'pages' => $pages,
+            'backUrl' => $this->view->url('/', $query + ['pagina' => $page > 1 ? $page : null]),
+            'pageUrl' => fn (int $n): string => $this->view->url('/imprimir', $query + ['pagina' => $n > 1 ? $n : null]),
+        ], 'Imprimir · ' . $title, ['private' => true, 'scripts' => ['imprimir.js'], 'section' => 'catalogo']));
+    }
+
+    private function optionalParam(Request $request, string $name): ?string
+    {
+        $value = $request->param($name);
+        return $value === null || $value === '' ? null : $value;
+    }
+
+    /**
+     * Título y bajada de una lista de marcalibros (una categoría, o el resultado de un filtro).
+     *
+     * @param array<string, mixed>|null $category
+     * @return array{string, string}
+     */
+    private function listingText(?array $category, ?string $motif, ?string $color, int $count): array
+    {
+        $familySingular = ['movimiento literario' => 'de este movimiento literario', 'tipo de texto' => 'para este tipo de texto'];
+        if ($motif === null && $color === null && $category !== null) {
+            $motifs = array_map(fn ($m): string => mb_strtolower($this->catalog->motifName((string) $m)), $category['motivos'] ?? []);
+            return [(string) $category['nombre'], $count . ' marcalibros ' . ($familySingular[(string) $category['familia']] ?? '') . '. Motivos: ' . implode(', ', $motifs) . '.'];
+        }
+        $parts = [];
+        if ($motif !== null) {
+            $parts[] = 'con el motivo «' . $this->catalog->motifName($motif) . '»';
+        }
+        if ($color !== null) {
+            $parts[] = 'que usan el color ' . mb_strtolower($this->view->colorName(self::PALETTE[$color]));
+        }
+        if ($category !== null) {
+            $parts[] = 'en ' . $category['nombre'];
+        }
+        $found = match ($count) {
+            0 => 'No hay marcalibros',
+            1 => 'Un marcalibro',
+            default => $count . ' marcalibros',
+        };
+        return [$category === null ? 'Resultados' : (string) $category['nombre'], $found . ' ' . implode(' ', $parts) . '.'];
+    }
+
+    /**
+     * Motivos para el filtro, agrupados por categoría y en el orden del catálogo.
+     *
+     * @return array<string, array<string, string>>
+     */
+    private function motifOptions(): array
+    {
+        $groups = [];
+        foreach ($this->catalog->categories() as $category) {
+            foreach ($category['motivos'] ?? [] as $motif) {
+                $groups[(string) $category['nombre']][(string) $motif] = $this->catalog->motifName((string) $motif);
+            }
+        }
+        return $groups;
+    }
+
+    /**
+     * Datos para la vista previa al compartir un enlace (Open Graph). Las direcciones son relativas;
+     * la plantilla las vuelve absolutas solo si se configuró MARCALIBROS_PUBLIC_URL.
+     *
+     * @return array{title: string, description: string, url: string, image: string, width: int, height: int}
+     */
+    private function share(string $title, string $description, string $url, string $image, int $width, int $height): array
+    {
+        return ['title' => $title, 'description' => $description, 'url' => $url, 'image' => $image, 'width' => $width, 'height' => $height];
     }
 
     private function detailPage(string $id): Response
@@ -226,8 +373,15 @@ final class Application
         $position = (int) array_search($id, $siblings, true);
 
         $item = $this->presentEntry($entry);
+        $hasPng = is_file($this->pngPath($id, false)) && is_file($this->pngPath($id, true));
+        $title = $item['motif'] . ' · ' . $item['category'];
+        $description = 'Marcalibro de ' . $item['category'] . ' con el motivo «' . $item['motif'] . '», para descargar en SVG' . ($hasPng ? ' o PNG' : '') . '.';
+        $share = $hasPng
+            ? $this->share($title, $description, "/marcalibro/$id", "/catalogo/$id.png", 1400, 200)
+            : $this->share($title, $description, "/marcalibro/$id", "/catalogo/$id.jpg", 700, 100);
         return Response::html($this->view->page('detalle', [
             'item' => $item,
+            'hasPng' => $hasPng,
             'colors' => array_values(array_unique(array_merge([(string) $entry['fondo']], array_map('strval', $entry['colores'])))),
             'authors' => array_map('strval', $entry['autores_inspiracion'] ?? []),
             'previous' => $position > 0 ? $siblings[$position - 1] : null,
@@ -235,10 +389,13 @@ final class Application
             'position' => $position + 1,
             'inCategory' => count($siblings),
             'listPage' => intdiv($position, self::PER_PAGE) + 1,
-        ], $item['motif'] . ' · ' . $item['category'], ['section' => 'catalogo']));
+        ], $title, ['section' => 'catalogo', 'description' => $description, 'share' => $share]));
     }
 
-    /** @param array<string, mixed> $entry */
+    /**
+     * @param array<string, mixed> $entry
+     * @return array<string, mixed>
+     */
     private function presentEntry(array $entry): array
     {
         $motif = $this->catalog->motifName((string) $entry['motivo']);
@@ -274,6 +431,34 @@ final class Application
             $headers['Content-Disposition'] = 'attachment; filename="' . $id . '.svg"';
         }
         return $this->staticFile($request, $path, 'image/svg+xml', $headers);
+    }
+
+    private function pngPath(string $id, bool $double): string
+    {
+        // El id ya se comprobó contra el manifiesto: nunca llega aquí un texto de la persona sin validar.
+        return $this->config->projectRoot . '/catalog/png/' . $id . ($double ? '@2x' : '') . '.png';
+    }
+
+    /** PNG generado con generator/exportar_png.py; si no se generó, no existe (404). */
+    private function catalogPng(Request $request, string $id, bool $double): Response
+    {
+        if (!$this->catalog->has($id)) {
+            return $this->notFound();
+        }
+        $headers = [];
+        if ($request->param('descargar') === '1') {
+            $headers['Content-Disposition'] = 'attachment; filename="' . $id . ($double ? '@2x' : '') . '.png"';
+        }
+        return $this->staticFile($request, $this->pngPath($id, $double), 'image/png', $headers);
+    }
+
+    /** Vista previa JPG de 700 x 100 (la que se usa para compartir si no hay PNG). */
+    private function catalogPreview(Request $request, string $id): Response
+    {
+        if (!$this->catalog->has($id)) {
+            return $this->notFound();
+        }
+        return $this->staticFile($request, $this->config->projectRoot . '/' . $this->catalog->get($id)['vista_previa'], 'image/jpeg');
     }
 
     private function landscape(Request $request, string $name): Response
@@ -343,6 +528,9 @@ final class Application
         try {
             $crop = CropSettings::fromArray($request->post);
             $label = $request->field('nombre');
+            if (($problem = $this->labels->problem($label)) !== null) {
+                return $this->renderCreate($values, $problem, 422);
+            }
             // Si el campo viene pero no es texto (por ejemplo "fuente[]"), no se adivina: se rechaza.
             $source = array_key_exists('fuente', $request->post) ? ($request->field('fuente') ?? '') : 'subida';
 
@@ -374,7 +562,7 @@ final class Application
         if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
             throw new BookmarkRejectedException(RejectionReason::TooLarge);
         }
-        if ($error !== UPLOAD_ERR_OK || $file === null) {
+        if ($error !== UPLOAD_ERR_OK) {
             throw new BookmarkRejectedException(RejectionReason::Unreadable);
         }
         // Solo se procesa lo que PHP recibió como subida: nunca una ruta que mande la persona.

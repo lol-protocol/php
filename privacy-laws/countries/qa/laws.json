@@ -1,0 +1,64 @@
+[
+  {
+    "country_code": "QA",
+    "country_name": "Qatar",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Privacy Protection Law (PDPPL)",
+    "jurisdiction": "National Cyber Security Agency (NCSA)",
+    "enactment_date": "2016-11-03",
+    "effective_date": "2016-12-29",
+    "scope": "Individuals in Qatar",
+    "applies_to": "Public & private organizations (QFC has separate rules)",
+    "key_requirements": "Consent or legitimate purpose, data subject rights, breach notification, permit for special-nature data",
+    "data_categories": "Personal data; special-nature data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Cyber Governance and Assurance Affairs within the National Cyber Security Agency (NCSA)",
+    "penalties_range": "Up to QAR 5M fine",
+    "exemptions": "Personal or family use; official statistics",
+    "deceased_data": "",
+    "research_exemption": "Processing for statistical and research purposes listed among exemptions (article not confirmed); art. 18 exempts government processing for security/public interest (unconfirmed)",
+    "genetic_data": "No specific genetic rule; special-nature data (art. 16: race, health, physical/psychological condition, etc.) needs permit; Minister may add categories",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=QA&t=law",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Law No. 13 of 2016; compliance period extended to 29 Jan 2018; QFC has own regime",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "research_exemption": {
+        "url": "https://www.clym.io/regulations/law-no13-of-2016-qatar",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.mondaq.com/Article/664862",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific genetic rule; special-nature data (art. 16: race, health, physical/psychological condition, etc.) needs permit; Minister may add categories"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Processing for statistical and research purposes listed among exemptions (article not confirmed); art. 18 exempts government processing for security/public interest (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

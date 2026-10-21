@@ -5,10 +5,10 @@ Un icono se define una sola vez (solidos con extrusion, enlaces y marcas) y se
 renderiza en tres variantes: color, lineas y gris.
 """
 import math
-from pathlib import Path
 
-VARIANTS = ('color', 'lineas', 'gris')
+from catalogo import VARIANTS
 LIGHT = (0.6, 0.8)  # direccion de la extrusion: abajo a la derecha
+INSET = 0.3  # cuanto se mete el borde trasero de la extrusion bajo la cara frontal (ver exact_sweep)
 
 BASE = {
     'mist': '#CBD5E1', 'slate': '#94A3B8', 'ink': '#475569', 'night': '#1E293B',
@@ -22,10 +22,8 @@ SHADOW = '#0F172A'
 
 # ---------------------------------------------------------------- numeros y color
 def fmt(v):
-    s = f'{v:.1f}'
-    if s.endswith('.0'):
-        s = s[:-2]
-    return '0' if s == '-0' else s
+    s = f'{v:.2f}'.rstrip('0').rstrip('.')
+    return '0' if s in ('-0', '') else s
 
 
 def pt(p):
@@ -90,28 +88,11 @@ def circle_path(x, y, r):
     return f'M{fmt(x - r)} {fmt(y)}a{fmt(r)} {fmt(r)} 0 1 0 {fmt(2 * r)} 0a{fmt(r)} {fmt(r)} 0 1 0 {fmt(-2 * r)} 0Z'
 
 
-def ellipse_path(x, y, rx, ry, rot=0):
-    c, s = math.cos(math.radians(rot)), math.sin(math.radians(rot))
-    a = (x - rx * c, y - rx * s)
-    b = (x + rx * c, y + rx * s)
-    return (f'M{pt(a)}A{fmt(rx)} {fmt(ry)} {fmt(rot)} 1 0 {pt(b)}'
-            f'A{fmt(rx)} {fmt(ry)} {fmt(rot)} 1 0 {pt(a)}Z')
-
-
 def arc_path(x, y, r, a0, a1):
     p0 = (x + r * math.cos(math.radians(a0)), y + r * math.sin(math.radians(a0)))
     p1 = (x + r * math.cos(math.radians(a1)), y + r * math.sin(math.radians(a1)))
     large = 1 if (a1 - a0) % 360 > 180 else 0
     return f'M{pt(p0)}A{fmt(r)} {fmt(r)} 0 {large} 1 {pt(p1)}'
-
-
-def star_points(x, y, R, n=5, inner=0.46, rot=-90):
-    out = []
-    for i in range(2 * n):
-        rad = R if i % 2 == 0 else R * inner
-        a = math.radians(rot + i * 180 / n)
-        out.append((x + rad * math.cos(a), y + rad * math.sin(a)))
-    return out
 
 
 # ---------------------------------------------------------------- formas
@@ -127,10 +108,116 @@ def in_convex(poly, p):
     return True
 
 
+def _arc_ends(c, r, a0, a1):
+    return ((c[0] + r * math.cos(a0), c[1] + r * math.sin(a0)),
+            (c[0] + r * math.cos(a1), c[1] + r * math.sin(a1)))
+
+
+def _ends(el):
+    return (el[1], el[2]) if el[0] == 'L' else _arc_ends(*el[1:])
+
+
+def _split_arc(c, r, a0, a1, phi):
+    """Parte un arco donde su normal es perpendicular a la extrusión: ahí la pared cambia de cara."""
+    ts = [0.0, 1.0]
+    for target in (phi + math.pi / 2, phi - math.pi / 2):
+        for k in range(-3, 4):
+            t = (target + 2 * math.pi * k - a0) / (a1 - a0)
+            if 1e-9 < t < 1 - 1e-9:
+                ts.append(t)
+    ts = sorted(set(round(t, 9) for t in ts))
+    return [('A', c, r, a0 + (a1 - a0) * u, a0 + (a1 - a0) * v) for u, v in zip(ts, ts[1:])]
+
+
+def _faces_light(el, e):
+    """True si el tramo mira hacia donde se extruye (su normal exterior tiene componente a favor de e)."""
+    if el[0] == 'L':
+        n = el[3]
+    else:
+        mid = (el[3] + el[4]) / 2
+        n = (math.cos(mid), math.sin(mid))
+    return n[0] * e[0] + n[1] * e[1] > 1e-9
+
+
+def _emit(el, dx, dy):
+    end = _ends(el)[1]
+    end = (end[0] + dx, end[1] + dy)
+    if el[0] == 'L':
+        return f'L{pt(end)}'
+    r = fmt(el[2])
+    return f'A{r} {r} 0 {1 if abs(el[4] - el[3]) > math.pi else 0} {1 if el[4] > el[3] else 0} {pt(end)}'
+
+
+def exact_sweep(outline, ex, ey, inset=0.0):
+    """Contorno de una forma convexa arrastrada (ex, ey), con las mismas líneas y arcos de la forma.
+
+    outline: tramos en orden, ('L', p, q, normal_exterior) o ('A', centro, radio, a0, a1). El contorno
+    resultante sigue el original en la parte que mira contra la extrusión, la copia desplazada en la que mira
+    a favor, y dos tramos paralelos a (ex, ey) que las unen. None si la forma no es convexa.
+
+    inset: cuánto se adelanta, a lo largo de la extrusión, la parte que sigue al contorno original. Así ese
+    borde queda tapado por la cara frontal y no asoma como una línea fina en su borde antialiasado.
+    """
+    phi = math.atan2(ey, ex)
+    length = math.hypot(ex, ey)
+    ox, oy = (ex / length * inset, ey / length * inset) if length else (0.0, 0.0)
+    pieces = []
+    for el in outline:
+        pieces += _split_arc(*el[1:], phi) if el[0] == 'A' else [el]
+    flags = [_faces_light(p, (ex, ey)) for p in pieces]
+    start = next((i for i, f in enumerate(flags) if f and not flags[i - 1]), None)
+    if start is None:
+        return None
+    pieces, flags = pieces[start:] + pieces[:start], flags[start:] + flags[:start]
+    k = flags.index(False)
+    if not all(flags[:k]) or any(flags[k:]):
+        return None
+    first = _ends(pieces[0])[0]
+    d = f'M{pt((first[0] + ex, first[1] + ey))}'
+    d += ''.join(_emit(p, ex, ey) for p in pieces[:k])
+    last = _ends(pieces[k - 1])[1]
+    d += f'L{pt((last[0] + ox, last[1] + oy))}'
+    d += ''.join(_emit(p, ox, oy) for p in pieces[k:])
+    return d + 'Z'
+
+
+def _outline_from(corners, orient):
+    """Une las esquinas [(inicio, fin, arco o None)] con rectas. orient: +1 si el recorrido gira a la derecha."""
+    out = []
+    for i, (_, end, arc) in enumerate(corners):
+        if arc:
+            out.append(('A',) + arc)
+        nxt = corners[(i + 1) % len(corners)][0]
+        dx, dy = nxt[0] - end[0], nxt[1] - end[1]
+        length = math.hypot(dx, dy)
+        if length > 1e-9:
+            out.append(('L', end, nxt, (orient * dy / length, -orient * dx / length)))
+    return out
+
+
 class Shape:
     convex = True
+    rot = 0
 
-    def sweep(self, ex, ey):
+    def light_axis(self):
+        """Eje del degradado de la cara en unidades de su caja: de arriba a la izquierda a abajo a la derecha.
+
+        Una forma girada arrastra su degradado al girar, y un rombo quedaba iluminado de arriba a abajo mientras
+        discos y cuadrados lo estaban en diagonal: el eje se gira de vuelta para que la luz sea la misma."""
+        phi = math.radians(45 - self.rot)
+        c, s = math.cos(phi), math.sin(phi)
+        half = 0.5 / max(abs(c), abs(s))
+        return (0.5 - half * c, 0.5 - half * s, 0.5 + half * c, 0.5 + half * s)
+
+    def outline(self):
+        """Tramos exactos del contorno (ver exact_sweep), o None si la forma no los da."""
+        return None
+
+    def sweep(self, ex, ey, inset=0.0):
+        outline = self.outline()
+        d = exact_sweep(outline, ex, ey, inset) if outline else None
+        if d:
+            return d
         pts = self.pts()
         return poly_path(hull(pts + [(x + ex, y + ey) for x, y in pts]))
 
@@ -146,17 +233,18 @@ class Disc(Shape):
     def front(self, attrs):
         return f'<circle cx="{fmt(self.cx)}" cy="{fmt(self.cy)}" r="{fmt(self.r)}" {attrs}/>'
 
-    def sweep(self, ex, ey):
+    def sweep(self, ex, ey, inset=0.0):
         length = math.hypot(ex, ey)
         if length < 1e-6:
             return None
         ux, uy = ex / length, ey / length
         nx, ny = -uy, ux
         r = self.r
-        a = (self.cx + r * nx, self.cy + r * ny)
-        b = (a[0] + ex, a[1] + ey)
+        x0, y0 = self.cx + ux * inset, self.cy + uy * inset
+        a = (x0 + r * nx, y0 + r * ny)
+        b = (self.cx + ex + r * nx, self.cy + ey + r * ny)
         c = (self.cx + ex - r * nx, self.cy + ey - r * ny)
-        d = (self.cx - r * nx, self.cy - r * ny)
+        d = (x0 - r * nx, y0 - r * ny)
         rr = fmt(r)
         return f'M{pt(a)}L{pt(b)}A{rr} {rr} 0 0 0 {pt(c)}L{pt(d)}A{rr} {rr} 0 0 0 {pt(a)}Z'
 
@@ -187,6 +275,22 @@ class Block(Shape):
                 out.append((cx + r * math.cos(a), cy + r * math.sin(a)))
         return [self._rot(p) for p in out]
 
+    def outline(self):
+        r = min(self.r, self.w / 2, self.h / 2)
+        x0, y0, w, h = self.x, self.y, self.w, self.h
+        corners = []
+        for cx, cy, deg in ((x0 + r, y0 + r, 180), (x0 + w - r, y0 + r, 270),
+                            (x0 + w - r, y0 + h - r, 0), (x0 + r, y0 + h - r, 90)):
+            c = self._rot((cx, cy))
+            if r < 1e-9:
+                corners.append((c, c, None))
+                continue
+            a0 = math.radians(deg + self.rot)
+            arc = (c, r, a0, a0 + math.pi / 2)
+            start, end = _arc_ends(*arc)
+            corners.append((start, end, arc))
+        return _outline_from(corners, 1)
+
     def front(self, attrs):
         r = min(self.r, self.w / 2, self.h / 2)
         tr = ''
@@ -205,9 +309,9 @@ class RPoly(Shape):
         self.corners = self._corners()
         self.convex = len(hull(self.p)) == len(self.p)
 
-    def sweep(self, ex, ey):
+    def sweep(self, ex, ey, inset=0.0):
         if self.convex:
-            return super().sweep(ex, ey)
+            return super().sweep(ex, ey, inset)
         return RPoly([(x + ex, y + ey) for x, y in self.p], self.r).path()
 
     def _corners(self):
@@ -232,9 +336,23 @@ class RPoly(Shape):
             out.append((s, e, c, r_eff, 1 if cross > 0 else 0))
         return out
 
+    def outline(self):
+        if not self.convex:
+            return None
+        area = sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(self.p, self.p[1:] + self.p[:1]))
+        corners = []
+        for s, e, c, r, _ in self.corners:
+            if not r:
+                corners.append((s, e, None))
+                continue
+            a0 = math.atan2(s[1] - c[1], s[0] - c[0])
+            da = (math.atan2(e[1] - c[1], e[0] - c[0]) - a0 + math.pi) % (2 * math.pi) - math.pi
+            corners.append((s, e, (c, r, a0, a0 + da)))
+        return _outline_from(corners, 1 if area > 0 else -1)
+
     def path(self):
         d = ''
-        for i, (s, e, c, r, sweep) in enumerate(self.corners):
+        for i, (s, e, _, r, sweep) in enumerate(self.corners):
             d += ('M' if i == 0 else 'L') + pt(s)
             if r:
                 d += f'A{fmt(r)} {fmt(r)} 0 0 {sweep} {pt(e)}'
@@ -242,7 +360,7 @@ class RPoly(Shape):
 
     def pts(self, k=6):
         out = []
-        for s, e, c, r, sweep in self.corners:
+        for s, e, c, r, _ in self.corners:
             if not r:
                 out.append(s)
                 continue
@@ -270,7 +388,9 @@ class Icon:
         return self
 
     def link(self, pts, style='line', hue='slate', w=2.6):
-        self.links.append(dict(pts=[(float(x), float(y)) for x, y in pts], style=style, hue=hue, w=w))
+        pts = [(float(x), float(y)) for x, y in pts]
+        distinct = [p for i, p in enumerate(pts) if i == 0 or p != pts[i - 1]]  # un punto repetido no dibuja nada
+        self.links.append(dict(pts=distinct if len(distinct) > 1 else pts, style=style, hue=hue, w=w))
         return self
 
     def mark(self, d, filled=False, tone='white', ink='ink', w=2.4, op=1.0, dash=None):
@@ -316,17 +436,6 @@ class Icon:
              f'L{fmt(x2 - ux * h - px * h * 0.8)} {fmt(y2 - uy * h - py * h * 0.8)}')
         return self.mark(d, **kw)
 
-    def star(self, x, y, R, n=5, inner=0.46, rot=-90, **kw):
-        return self.mark(poly_path(star_points(x, y, R, n, inner, rot)), filled=True, **kw)
-
-    def spark(self, x, y, R, **kw):
-        k = R * 0.2
-        d = (f'M{fmt(x)} {fmt(y - R)}Q{fmt(x + k)} {fmt(y - k)} {fmt(x + R)} {fmt(y)}'
-             f'Q{fmt(x + k)} {fmt(y + k)} {fmt(x)} {fmt(y + R)}'
-             f'Q{fmt(x - k)} {fmt(y + k)} {fmt(x - R)} {fmt(y)}'
-             f'Q{fmt(x - k)} {fmt(y - k)} {fmt(x)} {fmt(y - R)}Z')
-        return self.mark(d, filled=True, **kw)
-
     # ----- render
     def _bbox(self):
         xs, ys = [], []
@@ -340,11 +449,11 @@ class Icon:
     def render(self, variant):
         assert variant in VARIANTS
         lin = variant == 'lineas'
-        col = (lambda c: gray(c)) if variant == 'gris' else (lambda c: c)
+        col = gray if variant == 'gris' else (lambda c: c)
         grads, out_shadow, out_links, out_solids, out_marks = {}, [], [], [], []
 
         if not lin:
-            x0, y0, x1, y1 = self._bbox()
+            x0, _, x1, y1 = self._bbox()
             cx, cy = (x0 + x1) / 2, min(y1 + 2.4, 59.5)
             rx = max(8.0, min(22.0, (x1 - x0) * 0.46))
             out_shadow.append(f'<ellipse cx="{fmt(cx)}" cy="{fmt(cy)}" rx="{fmt(rx)}" ry="2.6" fill="{col(SHADOW)}" opacity="0.14"/>')
@@ -355,7 +464,7 @@ class Icon:
         for s in self.solids:
             hi, base, dark = tones(s['hue'])
             ex, ey = LIGHT[0] * s['d'], LIGHT[1] * s['d']
-            sweep = s['shape'].sweep(ex, ey) if s['d'] > 0 else None
+            sweep = s['shape'].sweep(ex, ey, 0.0 if lin else min(INSET, math.hypot(ex, ey) / 3)) if s['d'] > 0 else None
             parts = []
             if lin:
                 if sweep and s['shape'].convex:
@@ -365,8 +474,9 @@ class Icon:
                 if sweep:
                     dfill = tones(s['depth'])[1] if s['depth'] else dark
                     parts.append(f'<path d="{sweep}" fill="{col(dfill)}"/>')
-                gid = f'grad_{self.stem}_{s["hue"]}'
-                grads[gid] = (col(hi), col(base))
+                turn = f'_r{fmt(s["shape"].rot)}'.replace('-', 'm').replace('.', 'p') if s['shape'].rot else ''
+                gid = f'grad_{self.stem}_{s["hue"]}{turn}{"_g" if variant == "gris" else ""}'
+                grads[gid] = (col(hi), col(base), s['shape'].light_axis())
                 op = f' opacity="{fmt(s["op"])}"' if s['op'] != 1 else ''
                 parts.append(s['shape'].front(f'fill="url(#{gid})"{op}'))
             out_solids.append('<g>' + ''.join(parts) + '</g>')
@@ -378,8 +488,9 @@ class Icon:
                  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">']
         if grads:
             lines.append('  <defs>')
-            for gid, (c0, c1) in grads.items():
-                lines += [f'    <linearGradient id="{gid}" x1="0" y1="0" x2="1" y2="1">',
+            for gid, (c0, c1, axis) in grads.items():
+                x1, y1, x2, y2 = (fmt(v) for v in axis)
+                lines += [f'    <linearGradient id="{gid}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}">',
                           f'      <stop offset="0" stop-color="{c0}"/>',
                           f'      <stop offset="1" stop-color="{c1}"/>',
                           '    </linearGradient>']
@@ -441,7 +552,7 @@ class Icon:
         return out
 
     def _render_link(self, ln, variant, col):
-        hi, base, dark = tones(ln['hue'])
+        _, base, dark = tones(ln['hue'])
         lin = variant == 'lineas'
         c = dark if lin else col(base)
         w, p, style = ln['w'], ln['pts'], ln['style']
@@ -506,9 +617,3 @@ class Icon:
             attrs += f' opacity="{fmt(m["op"])}"'
         return f'<path d="{m["d"]}" {attrs}/>'
 
-
-def write(icon, root, folder):
-    for v in VARIANTS:
-        p = Path(root) / v / folder / f'{icon.stem}.svg'
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(icon.render(v), encoding='utf-8')

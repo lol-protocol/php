@@ -1,0 +1,121 @@
+[
+  {
+    "country_code": "BD",
+    "country_name": "Bangladesh",
+    "region": "asia_pacific",
+    "law_name": "Personal Data Protection Ordinance, 2025 (Ordinance No. 61 of 2025)",
+    "jurisdiction": "National Data Governance Authority",
+    "enactment_date": "2025-11-06",
+    "effective_date": "2025-11-06",
+    "scope": "Data subjects (individuals) whose personal data is processed",
+    "applies_to": "Controllers and processors of personal data (unconfirmed)",
+    "key_requirements": "Explicit consent before collection, storage, transfer or use of personal data; data-subject ownership/rights; administrative fines, compensation and criminal penalties for violations",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Data Governance Authority",
+    "penalties_range": "Administrative fines, compensation and criminal penalties; amounts not confirmed (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "Exemptions for statistical research (also crime prevention, journalism etc.) subject to proportionate safeguards for data subjects (Chs. V-VI); section numbers unverified",
+    "genetic_data": "Genetic information listed as sensitive personal data with enhanced protection",
+    "website_url": "https://www.tbsnews.net/node/1281356",
+    "language": "Bengali/English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Issued as an ordinance by the interim government; some sections reportedly take effect 18 months after gazette notification (Daily Star); parliamentary ratification unconfirmed; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic information listed as sensitive personal data with enhanced protection"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Exemptions for statistical research (also crime prevention, journalism etc.) subject to proportionate safeguards for data subjects (Chs. V-VI); section numbers unverified"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

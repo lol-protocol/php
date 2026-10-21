@@ -8,6 +8,20 @@ return [
         'nativeName' => 'Svenska', 'family' => 'germanic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'nazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nazister', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nynazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nynazister', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'djur' => [
             ['word' => 'svin', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'gris', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -28,7 +42,7 @@ return [
             ['word' => 'kackerlacka', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'parasit', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'hyena', 'riskType' => 'animal', 'severity' => 'medium'],
-            ['word' => 'svinhund', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'svinhund', 'riskType' => 'animal', 'severity' => 'high', 'targeted' => false],
         ],
 
         'forstand' => [
@@ -45,7 +59,7 @@ return [
             ['word' => 'tönt', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'analfabet', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'obildad', 'riskType' => 'intelectual', 'severity' => 'medium'],
-            ['word' => 'tokig', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'tokig', 'riskType' => 'intelectual', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'knäpp', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'dumskalle', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'fjant', 'riskType' => 'intelectual', 'severity' => 'low'],
@@ -105,7 +119,7 @@ return [
             ['word' => 'vanskapt', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'förlamad', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'handikappad', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'galen', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'galen', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'vansinnig', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
 
@@ -127,7 +141,7 @@ return [
             ['word' => 'girigbuk', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'snål', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'självisk', 'riskType' => 'moral', 'severity' => 'low'],
-            ['word' => 'grym', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'grym', 'riskType' => 'moral', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'sadist', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'tyrann', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'våldtäktsman', 'riskType' => 'moral', 'severity' => 'high'],
@@ -188,7 +202,7 @@ return [
             ['word' => 'pungkulor', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'knulla', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'runka', 'riskType' => 'ordinario', 'severity' => 'high'],
-            ['word' => 'fan', 'riskType' => 'ordinario', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'fan', 'riskType' => 'ordinario', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'helvete', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'jävla', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'skitsnack', 'riskType' => 'ordinario', 'severity' => 'medium'],
@@ -233,7 +247,7 @@ return [
             ['word' => 'svartskalle', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'zigenare', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'snedögd', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'jude', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'jude', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true, 'targeted' => true],
             ['word' => 'utlänning', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
 
@@ -243,7 +257,7 @@ return [
             ['word' => 'otrogen', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'hedning', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'gudlös', 'riskType' => 'religioso', 'severity' => 'medium'],
-            ['word' => 'besatt', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'besatt', 'riskType' => 'religioso', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'satanisk', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'djävul', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'häxa', 'riskType' => 'religioso', 'severity' => 'high'],

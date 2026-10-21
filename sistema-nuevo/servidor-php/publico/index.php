@@ -9,6 +9,8 @@ require __DIR__ . '/../codigo/AlmacenAlertas.php';
 require __DIR__ . '/../codigo/AlmacenConfiguracion.php';
 require __DIR__ . '/../codigo/AlmacenFiltros.php';
 require __DIR__ . '/../codigo/AlmacenNotas.php';
+require __DIR__ . '/../codigo/AlmacenRegistroNotas.php';
+require __DIR__ . '/../codigo/FiltroNotas.php';
 require __DIR__ . '/../codigo/AlmacenKpis.php';
 require __DIR__ . '/../codigo/AlmacenIntentosLogin.php';
 require __DIR__ . '/../codigo/AlmacenAdministradores.php';

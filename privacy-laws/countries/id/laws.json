@@ -2,7 +2,8 @@
   {
     "country_code": "ID",
     "country_name": "Indonesia",
-    "law_name": "Law No. 27 of 2022 (PDP)",
+    "region": "asia_pacific",
+    "law_name": "Law No. 27 of 2022 on Personal Data Protection (UU PDP)",
     "jurisdiction": "Ministry of Communication & IT",
     "enactment_date": "2022-10-17",
     "effective_date": "2024-10-17",
@@ -11,11 +12,103 @@
     "key_requirements": "Consent & transparency",
     "data_categories": "Personal data",
     "retention_period": "2 years retention",
-    "enforcement_authority": "Indonesian DPA",
+    "enforcement_authority": "Ministry of Communication and Digital Affairs (Komdigi)",
     "penalties_range": "Up to IDR 5B fine",
     "exemptions": "Government functions",
-    "website_url": "https://www.digitaltalenta.kemkominfo.go.id/",
+    "deceased_data": "Not explicitly regulated: law focuses on living data subjects; no provision on deceased persons or heirs",
+    "research_exemption": "Certain data subject rights exempted for scientific research purposes (art. 15(1)(e)); safeguards not detailed",
+    "genetic_data": "Specific (sensitive) personal data incl. genetic, biometric and health data (art. 4(2)); stricter safeguards",
+    "website_url": "https://jdih.komdigi.go.id/",
     "language": "Indonesian",
-    "notes": "Southeast Asia region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Implementing GR 33/2026 effective 2027-01-16; DPA not yet formed (Mar 2026)",
+    "pending_change": "Implementing regulation PP 33/2026 takes effect (promulgated 16 Jul 2026)",
+    "pending_date": "2027-01-16",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/?c=ID&t=law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://www.hbtlaw.com/insights/2026-08/indonesia-personal-data-protection-and-cybersecurity-quarterly-update-august-2026",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.rsm.global/indonesia/en/node/439",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://fh.unair.ac.id/proceedings/index.php/aicoll/article/view/16",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://journal.unpar.ac.id/index.php/veritas/article/download/9808/4988/35762",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.nishimura.com/sites/default/files/images/en_newsletter_221228_asia_data_protection.pdf",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Specific (sensitive) personal data incl. genetic, biometric and health data (art. 4(2)); stricter safeguards"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Certain data subject rights exempted for scientific research purposes (art. 15(1)(e)); safeguards not detailed"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not explicitly regulated: law focuses on living data subjects; no provision on deceased persons or heirs"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Implementing GR 33/2026 effective 2027-01-16; DPA not yet formed (Mar 2026)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Law No. 27 of 2022 (PDP)",
+        "to": "Law No. 27 of 2022 on Personal Data Protection (UU PDP)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Indonesian DPA",
+        "to": "Ministry of Communication and Digital Affairs (Komdigi)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Southeast Asia region",
+        "to": ""
+      },
+      {
+        "date": "2026-10-11",
+        "field": "website_url",
+        "from": "https://www.digitaltalenta.kemkominfo.go.id/",
+        "to": "https://jdih.komdigi.go.id/"
+      }
+    ]
   }
 ]

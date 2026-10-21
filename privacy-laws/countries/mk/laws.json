@@ -1,0 +1,69 @@
+[
+  {
+    "country_code": "MK",
+    "country_name": "North Macedonia",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (LPDP)",
+    "jurisdiction": "Agency for Personal Data Protection",
+    "enactment_date": "2020-02-16",
+    "effective_date": "2021-08-24",
+    "scope": "Individuals in North Macedonia",
+    "applies_to": "Public & private controllers and processors established in North Macedonia",
+    "key_requirements": "GDPR-style lawful basis & consent, data subject rights, DPO, direct marketing only with consent",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "No longer than necessary for the purpose",
+    "enforcement_authority": "Agency for Personal Data Protection (AZLP)",
+    "penalties_range": "Up to 4% of annual turnover (2% for lesser breaches)",
+    "exemptions": "Purely personal or household use",
+    "deceased_data": "Personal data of deceased persons listed among categories given heightened protection under LPDP; duration and article not confirmed (unconfirmed)",
+    "research_exemption": "",
+    "genetic_data": "Defined (art. 4(13)) and treated as special category; processing prohibited unless an exception applies (GDPR-aligned)",
+    "website_url": "https://azlp.mk/en/?p=12026",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
+    "notes": "Replaced 2005 law; GDPR-modelled; in force 24 Feb 2020; full application 24 Aug 2021",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.karanovicpartners.com/news/in-the-data-protection-crosshairs-new-legislation-in-north-macedonia/",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/north-macedonia-105653342",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=MK&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Defined (art. 4(13)) and treated as special category; processing prohibited unless an exception applies (GDPR-aligned)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Personal data of deceased persons listed among categories given heightened protection under LPDP; duration and article not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -10,20 +10,21 @@ class FileSizeLimitTest extends TestCase
 {
     private const MAX_LINES = 100;
 
+    /** @return array<string,array{string}> Recorre subcarpetas: un archivo movido a src/Chat/ o tests/Chat/ sigue vigilado. Los datos de tests/fixtures/ quedan fuera. */
     public static function logicFiles(): array
     {
         $root = dirname(__DIR__);
-        $files = array_merge(
-            glob($root . '/src/DefamatoryContentReview/*.php'),
-            glob($root . '/tests/*.php'),
-            glob($root . '/examples/*.php'),
-            glob($root . '/bin/*.php')
-        );
-
         $cases = [];
-        foreach ($files as $file) {
-            $cases[substr($file, strlen($root) + 1)] = [$file];
+        foreach (['src', 'tests', 'examples', 'bin'] as $dir) {
+            $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator("{$root}/{$dir}", \FilesystemIterator::SKIP_DOTS));
+            foreach ($files as $file) {
+                $path = substr($file->getPathname(), strlen($root) + 1);
+                if ($file->getExtension() === 'php' && !str_starts_with($path, 'tests/fixtures/')) {
+                    $cases[$path] = [$file->getPathname()];
+                }
+            }
         }
+        ksort($cases);
 
         return $cases;
     }

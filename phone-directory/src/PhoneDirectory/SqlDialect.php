@@ -9,6 +9,8 @@ use PhoneDirectory\Exception\DatabaseException;
  *
  * Columns are declared with a logical type (id, string, text, int, country, datetime)
  * followed by optional modifiers, e.g. ['string', 'NOT NULL'].
+ *
+ * @phpstan-type ColumnSpec array{0: string, 1?: string}
  */
 final class SqlDialect
 {
@@ -73,6 +75,10 @@ final class SqlDialect
 
     /**
      * Creates the table if needed, adds any of $addedColumns an existing table lacks, and builds the indexes.
+     *
+     * @param array<string, ColumnSpec> $baseColumns
+     * @param array<string, ColumnSpec> $addedColumns
+     * @param list<string> $indexedColumns
      */
     public function ensureTable(string $table, array $baseColumns, array $addedColumns, array $indexedColumns): void
     {
@@ -107,6 +113,7 @@ final class SqlDialect
         return '%' . strtr(mb_strtolower($text, 'UTF-8'), ['!' => '!!', '%' => '!%', '_' => '!_']) . '%';
     }
 
+    /** @param ColumnSpec $spec */
     private function columnDefinition(array $spec): string
     {
         [$type, $modifiers] = $spec + [1 => ''];
@@ -116,6 +123,7 @@ final class SqlDialect
         return trim("{$sqlType} {$modifiers}");
     }
 
+    /** @return list<string> */
     private function existingColumns(string $table): array
     {
         $stmt = $this->pdo->query("SELECT * FROM {$table} LIMIT 0");

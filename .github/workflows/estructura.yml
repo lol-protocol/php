@@ -1,0 +1,89 @@
+name: Estructura del repo
+
+# Corre siempre, sin filtro de rutas, a proposito: agregar o renombrar una carpeta de
+# proyecto en la raiz no toca ningun archivo que un filtro pudiera nombrar de antemano, y
+# mover un script dentro de cualquier proyecto puede dejar mal una ruta de CLAUDE.md.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  readme-projects:
+    name: README raíz lista todas las carpetas de proyecto
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Cada carpeta de proyecto en la raíz del repo debe tener una fila en la
+      # tabla de README.md (un link "](<carpeta>/..."); si no, la tabla quedó
+      # desincronizada tras agregar o renombrar un proyecto.
+      - name: Comparar carpetas reales contra la tabla del README
+        run: |
+          faltantes=""
+          for d in */; do
+            d="${d%/}"
+            grep -q "](${d}/" README.md || faltantes="$faltantes $d"
+          done
+          if [ -n "$faltantes" ]; then
+            echo "::error::Carpetas sin fila en la tabla de README.md:$faltantes"
+            exit 1
+          fi
+
+  readme-workflows:
+    name: README raíz nombra los workflows que hay
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Cada archivo de .github/workflows/ debe nombrarse entre comillas invertidas en
+      # README.md (seccion CI/CD), y cada *.yml que README.md nombra debe existir ahi; si no,
+      # el README quedo desactualizado tras agregar, renombrar o quitar un workflow.
+      - name: Comparar workflows reales contra el README
+        run: |
+          shopt -s nullglob
+          sin_readme=""
+          for f in .github/workflows/*.yml .github/workflows/*.yaml; do
+            n="${f##*/}"
+            grep -qF "\`$n\`" README.md || sin_readme="$sin_readme $n"
+          done
+          sin_archivo=""
+          for n in $(grep -oE '`[A-Za-z0-9_.-]+\.ya?ml`' README.md | tr -d '`' | sort -u); do
+            [ -f ".github/workflows/$n" ] || sin_archivo="$sin_archivo $n"
+          done
+          if [ -n "$sin_readme" ]; then
+            echo "::error::Workflows sin mencion en README.md (seccion CI/CD):$sin_readme"
+          fi
+          if [ -n "$sin_archivo" ]; then
+            echo "::error::README.md nombra workflows que no existen en .github/workflows/:$sin_archivo"
+          fi
+          if [ -n "$sin_readme$sin_archivo" ]; then
+            exit 1
+          fi
+
+  claude-md-rutas:
+    name: CLAUDE.md cita rutas que existen
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # CLAUDE.md manda a correr scripts por su ruta (php bin/..., ./pruebas/...). Si uno se
+      # mueve y el texto no se entera, la proxima sesion copia un comando que ya no existe.
+      # Que comprueba y como probarlo: el docstring del script.
+      - name: Comprobar que las rutas que cita CLAUDE.md existen
+        run: python3 .github/scripts/comprobar-rutas-de-claude-md.py

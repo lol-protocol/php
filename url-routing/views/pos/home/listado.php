@@ -2,7 +2,7 @@
 <?php
 $nombres = ['producto' => 'Productos', 'coleccion' => 'Colecciones', 'etiqueta' => 'Etiquetas',
     'atributo' => 'Atributos', 'grupo' => 'Categorías'];
-$pagina_url = static fn(int $p): string => '/?' . http_build_query(['t' => $digitos, 'q' => $query, 'p' => $p]);
+$pagina_url = static fn(int $p): string => busqueda($digitos, $query, $p);
 ?>
 <h1><?= esc($nombres[$tipo] ?? ucfirst($tipo)) ?></h1>
 <p class="sub"><?= $query !== '' ? 'Resultados para «' . esc($query) . '»' : 'Todos' ?><?= $pagina > 1 ? ' · página ' . $pagina : '' ?></p>

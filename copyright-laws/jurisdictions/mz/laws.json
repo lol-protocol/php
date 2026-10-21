@@ -1,0 +1,83 @@
+[
+  {
+    "country_code": "MZ",
+    "country_name": "Mozambique",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 9/2022 of 29 June 2022 on Copyright and Related Rights (repeals Law No. 4/2001)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years; 50 years for computer programs and phonograms/videograms",
+    "author_rights": "Economic rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (registration is not required for protection but creates a presumption of ownership)",
+    "enforcement_body": "National Institute of Cultural and Creative Industries (INICC, IP) - optional registration of works under Law 9/2022",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://wipo.int/wipolex/en/legislation/details/21426",
+    "notes": "In force 90 days after publication on 29 June 2022 (about 26 Sep 2022). Replaced Law 4/2001; term for the 2001 law was also life + 70.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://wipo.int/wipolex/en/legislation/details/21426",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://wipo.int/wipolex/en/legislation/details/21426",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://www.adams.africa/intellectual-property/new-mozambique-copyright-act-2/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://wipo.int/wipolex/en/legislation/details/21426",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://wipo.int/wipolex/en/legislation/details/21426",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "registration_required": {
+        "url": "https://spoor.com/mozambique-new-copyright-act/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://inventa.com/en/news/article/793/new-mozambican-copyright-law-comes-into-force",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "enforcement_body",
+        "from": "National Institute of Cultural and Creative Industries, IP (INICC, IP) (unconfirmed)",
+        "to": "National Institute of Cultural and Creative Industries (INICC, IP) - optional registration of works under Law 9/2022"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

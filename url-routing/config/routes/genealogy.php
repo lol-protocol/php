@@ -26,6 +26,7 @@ return [
                 2 => 'descendencia',
                 3 => 'vinculos',
                 4 => 'cronologia',
+                5 => 'viva',
             ],
         ],
         9 => [
@@ -75,10 +76,19 @@ return [
         ],
     ],
 
+    // For crawlers: what may be indexed, and every page a visitor may see.
+    'archivos' => [
+        'robots.txt' => ['controller' => 'Genealogy\ArchivosController', 'method' => 'robots'],
+        'sitemap.xml' => ['controller' => 'Genealogy\ArchivosController', 'method' => 'indice'],
+        'sitemap' => ['controller' => 'Genealogy\ArchivosController', 'method' => 'parte'],
+    ],
+
     // Lengths 1-4 are deliberately unused below organizacion (5) — headroom
     // for future low-cardinality types without renumbering anything above.
     'reserved' => [
         '' => ['controller' => 'Genealogy\HomeController', 'method' => 'index'],
+        // Search: /b/{digit width of the type}/[{text}/][{page}/].
+        'b' => ['controller' => 'Genealogy\HomeController', 'method' => 'buscar', 'ruta' => 3],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'Genealogy\CuentaController',
             'method' => 'index',

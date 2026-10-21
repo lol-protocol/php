@@ -1,0 +1,75 @@
+[
+  {
+    "country_code": "HR",
+    "country_name": "Croatia",
+    "region": "europe",
+    "law_name": "Act on the Implementation of the General Data Protection Regulation (AIGDPR)",
+    "jurisdiction": "Croatian Personal Data Protection Agency",
+    "enactment_date": "2018-04-27",
+    "effective_date": "2018-05-25",
+    "scope": "Individuals in Croatia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, supervisory authority rules, video surveillance and biometric data rules",
+    "data_categories": "Personal data; sensitive data (incl. genetic & biometric)",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Croatian Personal Data Protection Agency (AZOP)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "deceased_data": "No specific rules on deceased persons' data; GDPR (recital 27) covers living persons only",
+    "research_exemption": "Act contains specific provisions on processing for statistical purposes; otherwise GDPR art. 89 safeguards for research and archiving apply (unconfirmed)",
+    "genetic_data": "Special category (art. 9 GDPR); processing genetic data to calculate disease risk for life insurance or endowment contracts banned even with explicit consent",
+    "website_url": "https://iapp.org/news/a/croatian-gdpr-implementation-law-main-features-and-unanswered-questions",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "Replaced the earlier national data protection act; published in Narodne novine 42/2018",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-croatia",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://iapp.org/news/a/croatian-gdpr-implementation-law-main-features-and-unanswered-questions",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://iapp.org/news/a/croatian-gdpr-implementation-law-main-features-and-unanswered-questions",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (art. 9 GDPR); processing genetic data to calculate disease risk for life insurance or endowment contracts banned even with explicit consent"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Act contains specific provisions on processing for statistical purposes; otherwise GDPR art. 89 safeguards for research and archiving apply (unconfirmed)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No specific rules on deceased persons' data; GDPR (recital 27) covers living persons only"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

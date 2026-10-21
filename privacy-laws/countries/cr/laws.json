@@ -1,0 +1,81 @@
+[
+  {
+    "country_code": "CR",
+    "country_name": "Costa Rica",
+    "region": "americas",
+    "law_name": "Law on the Protection of Individuals regarding the Processing of their Personal Data (Law No. 8968)",
+    "jurisdiction": "PRODHAB (Agencia de Protección de Datos de los Habitantes)",
+    "enactment_date": "2011-07-07",
+    "effective_date": "2011-09-05",
+    "scope": "Individuals regardless of nationality or residence",
+    "applies_to": "Public & private database controllers",
+    "key_requirements": "Informed consent, data subject rights, database registration with PRODHAB",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Art. 6: no longer than necessary for purpose; data that may affect subject not kept over 10 years unless special law; longer storage must be dissociated",
+    "enforcement_authority": "Agencia de Protección de Datos de los Habitantes (PRODHAB)",
+    "penalties_range": "Up to 30 base salaries (salarios base) fine",
+    "exemptions": "Internal/personal/household databases (unless traded)",
+    "deceased_data": "",
+    "research_exemption": "Regulation (Decree 37554-JP, art. 2(o)) defines scientific research as processing non-sensitive data or sensitive data that is not identifiable; law's research article not confirmed (unconfirmed)",
+    "genetic_data": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9) (unconfirmed)",
+    "website_url": "https://www.sutel.go.cr/sites/default/files/normativas/ley_proteccion_de_la_persona_frente_al_tratamiento_de_sus_ley_8968.pdf",
+    "language": "Spanish",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Regulation: Decree 37554-JP; reform bill 23097 not confirmed enacted",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.sutel.go.cr/sites/default/files/normativas/ley_proteccion_de_la_persona_frente_al_tratamiento_de_sus_ley_8968.pdf",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://rm.coe.int/t-pd-2020-08rev-evaluation-of-the-republic-of-costa-rica-for-accession/1680a2cfbc",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://www.tse.go.cr/pdf/normativa/reglamentoleyproteccionpersona.pdf",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9)",
+        "to": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Regulation (Decree 37554-JP, art. 2(o)) defines scientific research as processing non-sensitive data or sensitive data that is not identifiable; law's research article not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 6: no longer than necessary for purpose; data that may affect subject not kept over 10 years unless special law; longer storage must be dissociated"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

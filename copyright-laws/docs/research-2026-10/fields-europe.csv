@@ -1,0 +1,38 @@
+code,field,value,conf,source
+RU,digital_protection,"Technical protection measures & rights-management information (Civil Code arts. 1299-1300)",medium,https://merlin.obs.coe.int/article/3163
+TR,digital_protection,"Circumvention of technological measures is an offence (art. 72, extended to all works 2021)",high,https://www.morogluarseven.com/insights/ma-gazette-en/ma-gazette-edition-113-11-march-2022/the-scope-of-crime-of-circumventing-technological-measures-regarding-intellectual-and-artistic-works-is-extended/
+RS,fair_use_exceptions,"Closed list: private non-commercial copying, quotation, teaching, libraries, news reporting",medium,https://wipo.int/export/sites/www/copyright/en/docs/limitations/rs.pdf
+IS,fair_use_exceptions,"Closed list: private copying, quotation (art. 14), libraries/archives/education (art. 12)",high,https://wipo.int/export/sites/www/copyright/en/docs/limitations/is.pdf
+RS,digital_protection,"Technological protection measures; holders must enable lawful uses (2012 amendments)",medium,https://petosevic.com/node/1436
+AL,moral_rights,"Paternity & integrity (perpetual, inalienable, non-waivable)",medium,https://www.mondaq.com/Article/491146
+MK,moral_rights,"Authorship, first disclosure, integrity & withdrawal",medium,https://gratanet.com/publications/protection-of-copyright-in-the-digital-environment-in-north-macedonia
+MK,digital_protection,"Technological protection measures & rights-management information",medium,https://gratanet.com/publications/protection-of-copyright-in-the-digital-environment-in-north-macedonia
+BA,digital_protection,"Protection against circumvention of technological measures (2010 Act)",medium,https://merlin.obs.coe.int/article/5428
+AM,fair_use_exceptions,"Closed list of free uses with attribution (art. 22): quotation, criticism, education, research",medium,https://wipo.int/export/sites/www/copyright/en/docs/limitations/am.pdf
+GE,fair_use_exceptions,"Closed list: personal copying (art. 21), quotation, criticism, teaching extracts (art. 23)",high,https://www.wipo.int/wipolex/en/text/481370
+MD,fair_use_exceptions,"Closed list of specific exceptions subject to three-step test",low,https://www.wipo.org/export/sites/www/copyright/en/docs/limitations/md.pdf
+AZ,moral_rights,"Personal rights incl. authorship & disclosure (art. 14.1)",medium,https://ferenda.lagen.nu/dom/echr/001-218927
+ME,fair_use_exceptions,"Closed list of free uses incl. TDM (2024), parody/pastiche, accessible-format copies",medium,https://bdkadvokati.com/montenegro-amends-the-copyright-act-to-catch-up-with-advances-in-the-digital-era
+NO,orphan_works,"Orphan works (hitteverk): libraries, archives, museums, PSBs may use after diligent search",medium,https://stortinget.no/no/Saker-og-publikasjoner/Vedtak/Beslutninger/Lovvedtak/2014-2015/vedtak-201415-098/
+MK,fair_use_exceptions,"Closed list of free uses incl. private copying with equitable remuneration",low,https://britishcopyright.org/macedonia_country_report
+ME,moral_rights,"Moral rights not transferable by contract",medium,https://wipo.int/documents/d/copyright/docs-en-registration-replies-montenegro.pdf
+BY,fair_use_exceptions,"Closed list: personal copying (arts. 18), free uses (art. 19), library/teaching reprography (art. 20)",low,https://www.wipo.int/wipolex/fr/legislation/details/22302
+BA,moral_rights,"Personal (moral) rights incl. right of repentance/withdrawal",medium,https://godisnjak.pravni.ues.rs.ba/st%202010%20en/The%20right%20of%20repentance%20in%20the%20light%20of%20new%20Copyright%20law%20in%20Bosnia%20and%20Herzegovina.aspx
+IS,orphan_works,UNKNOWN,low,
+IS,digital_protection,UNKNOWN,low,
+AL,digital_protection,UNKNOWN,low,
+AL,fair_use_exceptions,UNKNOWN,low,
+MK,orphan_works,UNKNOWN,low,
+BA,orphan_works,UNKNOWN,low,
+BA,fair_use_exceptions,UNKNOWN,low,
+ME,digital_protection,UNKNOWN,low,
+MD,digital_protection,UNKNOWN,low,
+GE,orphan_works,UNKNOWN,low,
+GE,digital_protection,UNKNOWN,low,
+AM,orphan_works,UNKNOWN,low,
+AM,digital_protection,UNKNOWN,low,
+AZ,orphan_works,UNKNOWN,low,
+AZ,digital_protection,UNKNOWN,low,
+AZ,fair_use_exceptions,UNKNOWN,low,
+BY,orphan_works,UNKNOWN,low,
+BY,digital_protection,UNKNOWN,low,

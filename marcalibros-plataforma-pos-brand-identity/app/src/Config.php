@@ -18,9 +18,18 @@ final class Config
         public readonly int $maxStored = 5000,
         /** Usar la última dirección de X-Forwarded-For. Solo detrás de un proxy propio que la ponga. */
         public readonly bool $trustForwardedFor = false,
+        /**
+         * Dirección pública del sitio, sin barra final ("https://marcalibros.example.com"). Hace falta
+         * para que las vistas previas al compartir un enlace lleven imagen: esas etiquetas exigen
+         * direcciones absolutas, y no se arman con la cabecera Host, que la puede escribir cualquiera.
+         */
+        public readonly ?string $publicUrl = null,
     ) {
         if ($retentionDays < 1 || $createsPerHour < 1 || $maxStored < 1) {
             throw new \InvalidArgumentException('Los días de conservación, los intentos por hora y el tope deben ser 1 o más.');
+        }
+        if ($publicUrl !== null && preg_match('#^https?://[a-z0-9.-]+(:[0-9]{1,5})?\z#i', $publicUrl) !== 1) {
+            throw new \InvalidArgumentException('MARCALIBROS_PUBLIC_URL debe ser solo el esquema y el dominio, como https://marcalibros.example.com.');
         }
     }
 
@@ -48,6 +57,9 @@ final class Config
             createsPerHour: $int('MARCALIBROS_CREATES_PER_HOUR', 10),
             maxStored: $int('MARCALIBROS_MAX_STORED', 5000),
             trustForwardedFor: ($env['MARCALIBROS_TRUST_FORWARDED_FOR'] ?? false) === '1',
+            publicUrl: is_string($env['MARCALIBROS_PUBLIC_URL'] ?? false) && $env['MARCALIBROS_PUBLIC_URL'] !== ''
+                ? rtrim($env['MARCALIBROS_PUBLIC_URL'], '/')
+                : null,
         );
     }
 }

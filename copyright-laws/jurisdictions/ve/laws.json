@@ -1,0 +1,59 @@
+[
+  {
+    "country_code": "VE",
+    "country_name": "Venezuela",
+    "region": "americas",
+    "law_name": "Law on Copyright of 1993",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 60 years (anonymous & pseudonymous works: 60 years from publication; audiovisual works & software: 60 years from first publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Unauthorised circumvention of TPMs treated as a computer crime (Special Law on Computer Crimes 2001), per Lipszyc; no TPM article found in the copyright law",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Servicio Autónomo de la Propiedad Intelectual (SAPI)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/zh/legislation/details/3989",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.revistajuridicaonline.com/wp-content/uploads/2009/07/3-la_protecc_juridica.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "digital_protection",
+        "from": "None in copyright law; circumvention handled by Special Law on Computer Crimes (unconfirmed)",
+        "to": "Unauthorised circumvention of TPMs treated as a computer crime (Special Law on Computer Crimes 2001), per Lipszyc; no TPM article found in the copyright law"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "None in copyright law; circumvention handled by Special Law on Computer Crimes (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

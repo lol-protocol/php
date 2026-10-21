@@ -142,3 +142,79 @@ setup() {
     run bash "$VPS_DIR/10_A-add-domain.sh" blog.ejemplo.com --type python --port 99 --dry-run
     [ "$status" -eq 2 ]
 }
+
+# ---- 06_C: mensaje cuando no resuelve el secundario ----
+@test "06_C: si dig esta pero no resuelve, NO pide instalar dnsutils (era engañoso)" {
+    make_stub dig 'exit 0'               # dig instalado, sin respuesta
+    run bash "$VPS_DIR/06_C-setup-dns-server.sh" ejemplo.com 203.0.113.7 < /dev/null
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"no se pudo resolver sdns2.ovh.ca"* ]]
+    [[ "$output" != *"apt-get install -y dnsutils"* ]]
+}
+
+# ---- subidas, timeouts y version de PHP ----
+# sudo que ejecuta de verdad lo que escribe en las rutas temporales y simula lo demas
+sudo_tmp() { make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in -u|systemctl|nginx|chown|ufw|fail2ban-client) exit 0;; esac; for a in "$@"; do case "$a" in /var/*|/etc/*) exit 0;; esac; done; exec "$@"'; }
+
+@test "06_B: limite de subida y timeouts en Nginx, y gunicorn con el mismo timeout" {
+    export NOPORT=8001; sudo_tmp
+    MAX_UPLOAD=50M PROXY_TIMEOUT=5m run bash "$VPS_DIR/06_B-setup-python-app.sh" blog blog.ejemplo.com 8001
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    v="$NGINX_DIR/sites-available/blog.ejemplo.com"
+    grep -q 'client_max_body_size 50M;' "$v"
+    grep -q 'proxy_read_timeout 5m;' "$v" && grep -q 'proxy_connect_timeout 10s;' "$v"
+    grep -q -- '--timeout 300 --bind' "$SYSTEMD_DIR/blog.service"     # 5m = 300 s
+}
+
+@test "06_D: limite de subida y timeouts tambien en el proxy a Tomcat" {
+    sudo_tmp; make_stub systemctl 'exit 0'
+    run bash "$VPS_DIR/06_D-setup-tomcat-app.sh" java.ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    v="$NGINX_DIR/sites-available/java.ejemplo.com"
+    grep -q 'client_max_body_size 20M;' "$v" && grep -q 'proxy_read_timeout 120s;' "$v"
+}
+
+@test "06_A: limite en Nginx y en PHP; el de PHP es global y solo SUBE (no achica el de otra app)" {
+    sudo_tmp; export PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90-uploads.ini" WWW_DIR="$BATS_TEST_TMPDIR/www"
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q 'client_max_body_size 20M;' "$NGINX_DIR/sites-available/tienda.ejemplo.com"
+    grep -q 'fastcgi_pass unix:/run/php/php8.3-fpm.sock;' "$NGINX_DIR/sites-available/tienda.ejemplo.com"
+    grep -qx 'upload_max_filesize = 20M' "$PHP_UPLOAD_INI" && grep -qx 'post_max_size = 20M' "$PHP_UPLOAD_INI"
+    grep -q "systemctl reload php8.3-fpm" "$SUDO_LOG"
+    MAX_UPLOAD=1G run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    grep -qx 'upload_max_filesize = 1G' "$PHP_UPLOAD_INI"
+    : > "$SUDO_LOG"
+    MAX_UPLOAD=5M run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    grep -qx 'upload_max_filesize = 1G' "$PHP_UPLOAD_INI"            # no se achica
+    ! grep -q "reload php8.3-fpm" "$SUDO_LOG"
+    grep -q 'client_max_body_size 5M;' "$NGINX_DIR/sites-available/tienda.ejemplo.com"   # el del sitio si
+}
+
+@test "MAX_UPLOAD / PROXY_TIMEOUT invalidos se rechazan antes de tocar nada" {
+    MAX_UPLOAD='20M; return 200' run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    [ "$status" -eq 2 ]
+    PROXY_TIMEOUT='0' run bash "$VPS_DIR/06_B-setup-python-app.sh" blog blog.ejemplo.com 8001
+    [ "$status" -eq 2 ]
+    [ ! -s "$SUDO_LOG" ]
+}
+
+@test "PHP_VERSION de lib.sh manda en los paquetes de 02_B y en el servicio que revisa el healthcheck" {
+    PHP_VERSION=8.4 run bash "$VPS_DIR/02_B-install-php.sh"
+    grep -q "apt-get install -y php8.4 php8.4-fpm php8.4-cli" "$SUDO_LOG"
+    ! grep -q "php8.3" "$SUDO_LOG"
+    grep -q 'PHP_FPM_SERVICE' "$VPS_DIR/08-healthcheck.sh"
+    ! grep -n 'php8\.3' "$VPS_DIR"/0[2-9]*.sh "$VPS_DIR"/09_A*.sh | grep -v ':[0-9]*:#'   # solo en comentarios
+}
+
+# ---- 04: el simulacro de renovacion ----
+@test "04: simulacro de renovacion solo de ESTE certificado, y si falla no tumba el script" {
+    run bash "$VPS_DIR/04-setup-ssl.sh" ejemplo.com < /dev/null
+    [ "$status" -eq 0 ]
+    grep -q "certbot renew --dry-run --cert-name ejemplo.com" "$SUDO_LOG"
+    make_stub sudo 'echo "$*" >> "$SUDO_LOG"; [ "$1 $2" = "certbot renew" ] && exit 1; [ "$1 $2" = "ufw status" ] && echo "Status: active"; exit 0'
+    run bash "$VPS_DIR/04-setup-ssl.sh" ejemplo.com < /dev/null
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"El certificado YA esta instalado"* ]]
+    grep -q "systemctl reload nginx" "$SUDO_LOG"
+}

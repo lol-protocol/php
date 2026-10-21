@@ -1,0 +1,131 @@
+[
+  {
+    "country_code": "GM",
+    "country_name": "Gambia",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection and Privacy Act 2025",
+    "jurisdiction": "Information Commission (designated National Data Protection Commission)",
+    "enactment_date": "2025-11-07",
+    "effective_date": "2025-11-07",
+    "scope": "Data subjects in The Gambia (extraterritorial: foreign controllers processing data of people in The Gambia)",
+    "applies_to": "All public and private controllers and processors; excludes purely personal/household activity and anonymous data",
+    "key_requirements": "Lawful processing and accountability without prior registration; breach notification to the Commission within 72 hours; impact assessments for high-risk processing (unconfirmed)",
+    "data_categories": "Personal data; special categories of personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Information Commission",
+    "penalties_range": "Reported administrative fines up to 4% of global turnover for serious violations; criminal penalties up to 10 years for selling personal data (sources conflict, unverified) (unconfirmed)",
+    "exemptions": "Purely personal or household activity; anonymous data",
+    "deceased_data": "",
+    "research_exemption": "Specific basis for processing for archiving in the public interest, scientific, historical or statistical purposes, subject to safeguards (section number not confirmed)",
+    "genetic_data": "Special category (2024 Bill s. 3 definition); processing prohibited unless an exception with safeguards applies (s. 6); enacted 2025 numbering may differ",
+    "website_url": "https://assembly.gm/documents/364",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Passed unanimously by National Assembly 29 September 2025; assent reported 7 November 2025 by secondary sources only; no commencement order or gazette found.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-21",
+    "sources": {
+      "law_name": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://law.ungovr.org/ai/gm",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://law.ungovr.org/ai/gm",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.consentstack.io/regulations/gm-pdpp",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.consentstack.io/regulations/gm-pdpp",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://assembly.gm/documents/364",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://law.ungovr.org/ai/gm",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/gm-pdpp",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://assembly.gm/documents/364/download",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (2024 Bill s. 3 definition); processing prohibited unless an exception with safeguards applies (s. 6); enacted 2025 numbering may differ"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Specific basis for processing for archiving in the public interest, scientific, historical or statistical purposes, subject to safeguards (section number not confirmed)"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -5,6 +5,7 @@ import { guardarNotaConDebounce } from "./notas.js";
 const ESTADO_NOTA = {
   guardando: { text: "⏳", cls: "note-status--pending" },
   guardado: { text: "✓", cls: "note-status--ok" },
+  revisar: { text: "👁", cls: "note-status--review" },
   error: { text: "⚠", cls: "note-status--error" },
 };
 
@@ -12,6 +13,7 @@ export function buildNoteBlock(item) {
   const textarea = el("textarea", {
     class: "note-textarea",
     rows: "2",
+    maxlength: "5000", // el mismo tope que NOTA_MAX_CARACTERES en servidor-php/codigo/api/notas.php
     placeholder: t("note_placeholder"),
     "data-accion-id": item.id,
   });
@@ -22,11 +24,11 @@ export function buildNoteBlock(item) {
 
   textarea.addEventListener("input", () => {
     clearTimeout(ocultarTimer);
-    guardarNotaConDebounce(item.id, textarea.value, (estado) => {
+    guardarNotaConDebounce(item.id, textarea.value, (estado, detalle) => {
       const { text, cls } = ESTADO_NOTA[estado];
       status.textContent = text;
       status.className = `note-status ${cls}`;
-      status.title = t(`note_status_${estado}`);
+      status.title = estado === "revisar" ? t("note_status_revisar", { motivos: detalle }) : detalle || t(`note_status_${estado}`);
       if (estado === "guardado") {
         ocultarTimer = setTimeout(() => { status.textContent = ""; status.title = ""; }, 2000);
       }

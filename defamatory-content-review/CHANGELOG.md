@@ -4,6 +4,333 @@
 
 ### Añadido
 
+- **`public/moderar.php` limita las peticiones por IP** (`Http\RateLimiter`):
+  30 por minuto por omisión (`MODERAR_POR_MINUTO`, `0` lo apaga); al pasarse,
+  429 con `Retry-After`. La IP se guarda como HMAC con una clave del servidor.
+  Antes el README sólo recomendaba hacerlo en nginx. `RateLimiterTest`.
+- **README al día**: datos sensibles, datos personales (`privado`) y
+  acusaciones en seis idiomas, que ya estaban en el código pero no en el README.
+- **Textos largos en el endpoint**: `text` acepta hasta 10.000 caracteres (antes
+  2.000) y el cuerpo, hasta 64 KB. Lo que pasa de 2.000 se revisa por partes
+  (`LongText`): por párrafos y, si uno es muy largo, por oraciones. Manda la
+  parte más grave. Un texto corto se sigue revisando entero («pu⏎ta» se sigue
+  viendo). `LongTextTest`.
+- **Acusaciones y datos sensibles en portugués, francés, italiano y alemán**:
+  delito («roubou dinheiro», «a été condamné», «è un ladro», «hat Geld
+  gestohlen»), salud, vida privada y orientación sexual van a revisión, como en
+  español e inglés. Son los patrones básicos, sin revisión nativa; «pão e café»,
+  «l'oiseau a volé haut» o «er hat Recht» se siguen aprobando.
+  `AccusationPatternsEuropeanTest`.
+- **Religión, origen étnico y opinión política de alguien** (español e inglés):
+  «la familia era judía», «Fulano es mapuche», «su abuelo era de origen árabe»,
+  «Fulano es comunista», «he's a republican» van a revisión. Son datos sensibles
+  aunque sean ciertos; en genealogía son frecuentes, por eso no se bloquean.
+  «el vino es negro», «la iglesia evangélica de Concepción» o «el partido
+  comunista» se siguen aprobando. `SensitiveDataPatternsTest`.
+
+### Cambiado
+
+- **Tope de letras sueltas por línea** (`SpacedRunTerms`): más de 120 letras
+  deletreadas en una línea van a revisión como «texto deletreado», sin buscar
+  insultos dentro. Buscar adentro costaba hasta 1 s por cada 2.000 caracteres;
+  ahora un texto adversario de 10.000 caracteres se revisa en unos 100 ms.
+
+### Arreglado
+
+- **Lo que caía sobre un corte de un texto largo se aprobaba** (`LongText`).
+  Por dos huecos: el corte sólo se hacía en el espacio ASCII, así que con
+  saltos de línea, tabuladores o espacios no separables entre palabras partía
+  a la fuerza el insulto que cayera en el carácter 2.000 («pu | ta»); y aun
+  cortando en un espacio, una frase cuyas palabras sueltas son inocentes
+  («heil hitler», «white power», «concha de tu madre») quedaba repartida en
+  dos partes. Ahora se corta en el último espacio de cualquier tipo, y la
+  costura de cada corte —200 caracteres de cada lado, `LongTextSeam`— se
+  revisa también; de ella sólo se suma lo que ninguna de sus dos mitades
+  tiene por separado, para no contar dos veces lo que ya halló cada parte.
+  Para que las costuras sean pocas, los párrafos seguidos comparten parte
+  mientras quepan en 2.000 caracteres (antes cada párrafo era una parte), y
+  una costura sin hallazgos no revisa sus mitades. Cuesta algo más: una
+  biografía de 10.000 caracteres pasa de unos 310 a unos 480 ms, y el texto
+  deletreado más adversario, de 20 a 170 ms. `LongTextCutsTest`.
+
+## [5.0.0] - 2026-10-15
+
+Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»).
+
+### Cambiado (incompatible)
+
+- **Las clases se agrupan en subnamespaces**, uno por carpeta de `src/`. El
+  nombre de cada clase no cambia; sólo su `use`:
+
+  | Antes (`DefamatoryContentReview\…`) | Ahora (`DefamatoryContentReview\…`) |
+  |---|---|
+  | `DefamatoryContentReviewer`, `NameEvaluator` | sin cambio |
+  | `LanguageRegistry`, `LanguageAffinity`, `LanguageAccess`, `RelatedLanguageValidator` | `Language\…` |
+  | `WordList`, `WordListIndex`, `WordListPhonetics`, `WordListScanner` | `Dictionary\…` |
+  | `AccentFolding`, `ScriptFolding`, `Leetspeak`, `LeetspeakFolding` | `Normalization\…` |
+  | `PhoneticFolderRegistry`, `AbstractPhoneticFolder`, `CommonPhoneticAccents`, `FusionSupport`, `PhoneticFusionDetector` | `Phonetic\…` |
+  | `SpanishPhoneticFolder` … `TurkishPhoneticFolder` (17) | `Phonetic\Folders\…` |
+  | `ScoringPolicy`, `ScoringWeights`, `SeverityBands`, `DecisionTable` | `Scoring\…` |
+  | `ValidationResult`, `FlaggedTermCollection`, `TermExplanation`, `RiskReportBuilder` | `Report\…` |
+  | `ChatLineReviewer`, `ChatLineResult`, `ChatTopics`, `ChatMatches`, `ChatPatternMatcher`, `SpacedLetters`, `RepeatedLetters`, `RepeatedReadings` | `Chat\…` |
+  | `TopicInflector`, `TopicInflection`, `SpanishInflection`, `SpanishVerbs`, `EnglishInflection` | `Chat\Inflection\…` |
+
+  Las clases nuevas de esta versión van en `Chat\EverydayWords` y
+  `Http\ModerationEndpoint`. Para migrar basta cambiar los `use` (por ejemplo
+  `use DefamatoryContentReview\Chat\ChatLineReviewer;`). `phone-directory`
+  ya está migrado y pide `^5.0`.
+- **Se quita el alias deprecado `PhoneticFolder`** (nombre anterior a 4.3.0
+  de `SpanishPhoneticFolder`): su ruta vieja deja de existir con los
+  subnamespaces. Usar `Phonetic\Folders\SpanishPhoneticFolder`.
+- **`config/languages/supported-languages.php` pasa a
+  `config/supported-languages.php`**, junto a `language-families.php` y
+  `risk-categories.php`: `languages/` queda sólo con los diccionarios. Quien
+  use su propia copia de `config/` debe mover ese archivo.
+- PSR-4 apunta a `src/` (antes `src/DefamatoryContentReview/`, que repetía
+  el nombre del namespace).
+- `tests/` sigue la misma división (`tests/Chat/`, `tests/Phonetic/`…, con
+  namespace `Tests\<Carpeta>`). `EdgeCasesValidationTest` pasa a
+  `Language/LanguageAffinityFormatTest`, `TopicInflectionTest` a
+  `Chat/Inflection/InflectedFormsTest`, y las fixtures `chat-lines.php` y
+  `chat-topics-lines.php` a `chat-lines-detection.php` y
+  `chat-lines-coverage.php`, por el test que las usa. `FileSizeLimitTest` recorre subcarpetas.
+
+### Añadido
+
+- **Palabras de varios países en el español base** (el idioma sigue siendo
+  `spa`, sin variantes por país): «puto» (`targeted`: «eres un puto» se bloquea,
+  «los putos deberes» pasa), «joto» y «trolo» se bloquean; «pija» y «pico» se
+  suman a «coger» y «concha» en `ambiguous`, porque en otros países son
+  cotidianas. `RegionalWordsTest`.
+- **Respuestas de `review/urgente/spa-genero.csv`**: «vaca» y «marrana»
+  dirigidas se bloquean, como «cerda»; «gorda» dirigida va a revisión (antes sólo
+  se informaba); «¡cojones!» baja a `low`, porque es una exclamación común; se añaden
+  «pendeja» (high), «lagarta» (medium) y «pájara» (low). El resto se confirma
+  como estaba.
+- **`'whenTargeted' => 'high'`** en una entrada: sube a esa severidad cuando va
+  dirigida (`TargetContext`, `context => targeted`). «cerda» la usa: sola sigue en
+  revisión porque también es apellido, pero «eres una cerda» se bloquea y «María
+  Cerda» se aprueba.
+- **Letras repetidas en todos los idiomas.** Las rachas de 3 o más («cazzzo»,
+  «Arschloooch», «сууука») se leen siempre: contra las 50 000 palabras más
+  frecuentes de 26 idiomas, ningún falso positivo nuevo. Reducir las dobles
+  («puuta», a revisión) pasa de español e inglés a 18 idiomas más (portugués,
+  alemán, ruso, polaco, turco, árabe, sueco, danés, rumano, indonesio, checo,
+  eslovaco, húngaro, búlgaro, ucraniano, griego, coreano, vietnamita), donde la
+  misma medición casi no cambia; lo legítimo que apareció («Pollack», «Scott»,
+  «sesaat», «للعين») va a `legit`. Italiano, francés, neerlandés, noruego, finés,
+  islandés y hebreo no reducen dobles: ahí son parte de la palabra («anno» →
+  «ano», «penne» → «pene»). `meta.collapseRepeats` acepta ahora `true`, el
+  valor por defecto (sólo rachas de 3 o más) o `false`.
+- **Plurales y declinación en alemán, neerlandés y turco** (`GermanInflection`,
+  `DutchInflection`, `TurkishInflection`): «Huren», «Idioten», «dumme/dummer…»,
+  «kutten», «apen», «domme», «orospular», «salaklar». En alemán y neerlandés el
+  adjetivo declinado lleva el rasgo `infl`. `forms` en 470 entradas, fuera de
+  etnia, religión y discapacidad y sin las que chocan con palabras comunes
+  («pik» → «pikken», «nicht» → «nichten»); lo generado llega como mucho a
+  revisión. Las formas nuevas que aparecen en las listas de frecuencia son
+  todas declinaciones de términos que ya se detectaban.
+
+- **Diminutivos y plurales de insultos sexualizados en portugués, italiano
+  y francés** (#91). `Diminutives` genera los diminutivos regulares del
+  español (-ito/-ita, -cito/-cita) y del portugués (-inho/-inha,
+  -zinho/-zinha) con sus rasgos (`dim.sg`, `dim.f.pl`…). Cambian el tono en
+  cualquier dirección («putita» degrada más, «cerdita» es cariñoso), así
+  que sólo se generan si `by` lo pide con una clave `dim`. Español: putita,
+  zorrita. Portugués: putas, putinha, vagabundas, rameiras. Italiano:
+  puttane, troie, zoccole, mignotte, baldracche y el femenino de `porco`.
+  Francés: putes, putains, salopes, garces, catins. Quedan fuera los
+  plurales con otro uso cotidiano (piranhas, galinhas, vacche, traînées).
+  `PortugueseInflection` reconoce «-ão» con tilde («ladrões»). Medido con
+  las 50.000 palabras más frecuentes de cada idioma: cambian exactamente
+  las formas declaradas. Las planillas de revisión traen ahora también las
+  filas de diminutivo (`forma:dim.sg de:puta`), y `SheetVocabulary` acepta
+  esas etiquetas al aplicarlas (antes sólo admitía rasgos de un punto, así
+  que una respuesta sobre «putitas» se habría rechazado). Planillas de spa,
+  por, ita y fra regeneradas.
+
+- **Frases con forma deletreadas**: «t e v o y a m a t a r», «i w i l l k i l l y o u»
+  se bloquean como la amenaza escrita normal (`SpacedRunTerms`).
+- **Más evasión**: letras encerradas («p⃝u⃝t⃝a⃝», «p⃣u⃣t⃣a⃣»), letras parecidas del
+  alfabeto fonético, armenio y cherokee («putɑ», «idiօta», «ᏢUTA») y «+» por «t» («pu+a»).
+- **Más acusaciones y datos sensibles** (español e inglés): a una familia entera
+  («los Pérez son unos ladrones», «esa familia es de delincuentes»), antecedentes
+  penales, deudas («está en DICOM», «no paga la pensión»), enfermedades («tiene
+  cáncer»), aborto y vida privada («se acuesta con su secretaria», «tiene otra familia»).
+- **Marcalibros revisa el texto de cada marcalibro** con esta librería
+  (`marcalibros-plataforma-pos-brand-identity/app/src/LabelPolicy.php`): se comparte
+  por enlace desde el dominio de la plataforma. Lo que no se aprueba no se guarda.
+- **Datos personales en el chat** (tipo `privado`, `PersonalData`): un RUT con
+  dígito verificador válido, un correo, un teléfono con prefijo o anunciado
+  («fono», «llámalo al») y una dirección anunciada («vive en la calle…») van
+  a revisión, en cualquier idioma. Las fechas («1939-1945») no. `PersonalDataTest`.
+- **Más datos sensibles y vida privada** (español e inglés): orientación sexual
+  («era homosexual», «salió del clóset»), filiación («es hijo ilegítimo», «fue
+  adoptada», «no es hijo de»), suicidio, violencia en la familia («le pega a su
+  señora») e internación psiquiátrica. Van a revisión. `SensitiveDataPatternsTest`.
+- **Letras tachadas, subrayadas, zalgo, con punto y versalitas**: «p̶u̶t̶a̶»,
+  «ṗụṭạ», «ᴘᴜᴛᴀ» (`StyledLetters`; `AccentFolding` lleva el latín extendido
+  adicional a su letra base, salvo en vietnamita). `MarkEvasionTest`.
+- **Evasión con la forma del texto** (`LayoutEvasionTest`):
+  - frases del diccionario escritas pegadas: «hijodeputa», «putamadre», «siegheil»;
+  - sílabas sueltas: «hi jo de pu ta», «pu   ta», «pu» y «ta» en dos líneas. Con
+    sólo dos trozos separados por un espacio no se unen: «la mer de Chine» no es «merde»;
+  - letras sueltas separadas por saltos de línea («p⏎u⏎t⏎a»);
+  - etiquetas y entidades HTML («pu<b></b>ta», «pu&#116;a»);
+  - letras en cuadros e indicadores regionales («🅿🆄🆃🅰», «🇵🇺🇹🇦»);
+  - texto forzado de derecha a izquierda («\u202Eatup» se ve «puta») y texto
+    cabeza abajo («ɐʇnd», `UpsideDown`);
+  - la «İ» turca: «İBNE» en minúsculas dejaba un punto combinante.
+
+  El chat hace una segunda pasada con la línea entera limpia, que sólo suma lo
+  que la primera no vio: así el texto censurado sigue siendo el que se escribió.
+- **Insultos de otros países hispanohablantes** (categoría `latinoamericanos`):
+  «careverga», «gonorrea» (sólo dirigido), «conchatumadre», «mamaguevo»,
+  «comemierda», «chinga tu madre», «cojudo», «forro» (sólo dirigido)…
+- **Siglas y consignas de odio en los 33 idiomas**: «nazi» en la forma de
+  cada idioma («nazist», «natsi», «náci», «нацист», «ναζί», «נאצי», «نازي»,
+  «नाज़ी», «phát xít», «mnazi»…, con vocativos como «nazisto» o «nazisin»),
+  «neonazi», «KKK», «ACAB», «sieg heil», «heil hitler», «white power», «14/88»,
+  consignas locales («зиг хайль», «biała siła», «witte macht»), y «facho»,
+  «poder blanco», «poder branco». En japonés, coreano, cantonés y tailandés
+  sólo las consignas: sin espacios no se sabe si «nazi» va dirigido a alguien.
+  «Nazi» y «Náci» (hipocorístico húngaro de Ignác) llevan `nameCollision`. «Nazi» lleva `targeted`: «eres un
+  nazi» va a revisión, «mi abuelo luchó contra los nazis» se aprueba. «14 88»
+  con espacio o guion no se marca: es un rango de páginas en una cita.
+  `HateTermsTest`. `EthnicTermsTrackingTest` deja de contar las frases (una
+  consigna no es un apellido) y su umbral baja de 195 a 165.
+- **Separadores y símbolos de hacker**: «p~u~t~a», «p|u|t|a», «p(u)t(a)»,
+  «p|_|ta», «1d!0t4», «€stúpido», «N.4.Z.|» (`HackerSpelling` en el nuevo paso
+  `WholeWords` de `WordListScanner`), y rachas de caracteres sueltos separados
+  por espacios o símbolos: «p - u - t - a», «N 4 Z 1», «N. A. Z. I»
+  (`SpacedLetters`). «!» y «|» sólo se leen como letras dentro de una palabra.
+  `SymbolEvasionTest`.
+
+- **Acusaciones contra una persona en el chat** (español e inglés): «Fulano
+  estafó a mi familia», «fue condenado por…», «es narco», «tiene sida», «le pone
+  los cuernos», «funen a ese tipo». Antes se aprobaban: no traen palabrotas.
+  Ahora son `difamatorio` con etiqueta `acusación de delito`, `dato sensible
+  (salud)`, `vida privada` o `funa o escrache`, y van siempre a revisión humana
+  (pueden ser ciertas). `AccusationPatternsTest`.
+- **Chilenismos** en el diccionario español: «conchetumare», «concha de tu
+  madre», «culiao», «aweonao», «saco de wea», «maraco», «flaite»… «weón»,
+  «huevón», «boludo» y «ctm» también son trato de confianza o exclamación: en
+  el chat sólo cuentan dirigidos a alguien («eres un weón» sí, «hola weón» no),
+  y «huevón» y «boludo» bajan de `high` a `medium`. `ChileanVocabularyTest`.
+- **`EvasionCleaner`**: letras cirílicas o griegas camufladas («рuta»), espacios
+  de ancho cero, guion blando, ancho completo («ｐｕｔａ»), negrita matemática
+  («𝐩𝐮𝐭𝐚»), emoji en medio («pu🙂ta») y selectores de variante ya no esconden
+  un insulto, ni en el chat ni en los nombres. `UnicodeEvasionTest`.
+- **`MaskedTerms`**: «p*ta», «m*erda», «c*brón» van a revisión. `MaskedTermsTest`.
+- **`docs/ORIGEN.md`** (por qué existe la librería) y **`docs/RIESGOS.md`**
+  (qué cubre, qué no y qué tiene que hacer la plataforma, con el marco legal
+  chileno a título orientativo).
+- **Severidad por forma: el plural y el femenino no ofenden lo mismo.**
+  «Cerdo» suena mal y «cerda» horrible; «zorros» son animales; «¡cojones!»
+  es una interjección. Hasta ahora, de los pares masculino/femenino de los
+  diccionarios, 166 de 168 tenían la misma severidad en español (96/97 en
+  portugués, 80/81 en italiano, 48/48 en francés), y las listas de chat
+  copiaban la severidad de la base a todas sus formas. Ahora:
+  - cada forma generada lleva sus rasgos (`m.sg`, `f.pl`, `sg`, `pl`…) y
+    la entrada le da su severidad con `by` (`FormSeverity`; gana el más
+    específico, `none` la deja fuera);
+  - lo escrito manda: una forma que ya es entrada propia no se genera;
+  - las formas generadas no heredan `nameCollision` («Cerda» es apellido,
+    «cerdas» no);
+  - los diccionarios también aceptan `forms`, y lo generado sin `by` llega
+    como mucho a `medium`: lo que nadie revisó lo ve una persona.
+  En español: «cerdas» y «guarras» se bloquean y «cerdos»/«guarros» van a
+  revisión; «putas», «zorras», «perras» ya no pasan limpias. Medido con las
+  50.000 palabras más frecuentes: cambian exactamente esas cinco. Las
+  planillas de revisión traen una fila por forma (`forma`), y
+  `apply-review.php` escribe la respuesta en el `by` de la entrada
+  (`FormEditor`). `review/urgente/spa-genero.csv`: 22 decisiones de género
+  y número para un hablante nativo. `AsymmetricFormsTest`, `FormReviewTest`.
+
+- **En el chat, animales, discapacidad, identidad, brujería y palabrotas suaves
+  sólo cuentan dirigidos a alguien** (`TargetContext`): «eres un cerdo», «seu
+  porco», «ты свинья» van a revisión; «comí cerdo», «das Schwein im Stall»,
+  «mi abuelo es cojo» se aprueban, con el hallazgo en `low` y `context =>
+  untargeted`. Marcas por idioma en la clave `targeted` de 29 listas de temas;
+  `'targeted' => true|false` en una entrada del diccionario la suma o la saca
+  de la regla. Una palabra sola, las frases de varias palabras («hijo de
+  perra») y las líneas con otro insulto firme cuentan como antes. Medido con las
+  listas de frecuencia: 28 palabras frecuentes dejan de censurarse («porco-espinho»,
+  «hot-dog», «mù-tạt», «membabi-buta»…) y ninguna palabra sola cambia de decisión.
+  Resuelve las cinco decisiones de criterio que CONTRIBUTING dejaba abiertas.
+
+- **Diccionario inglés: plurales y formas coloquiales** (46 entradas):
+  «bastards», «idiots», «bitches», «cunts», «retards»… y «fuckin»,
+  «motherfucking», «cocksucker», «dumbass», «dipshit», «bullshit»,
+  «son of a bitch», cada una con la categoría y severidad de su forma base
+  (`dicks` con `nameCollision`, como `dick`). Los plurales pasaban limpios
+  en el chat porque los diccionarios no generan formas. Medido con las
+  50.000 palabras más frecuentes: las 41 nuevas que se censuran son
+  exactamente esas; ninguna palabra cotidiana. Quedan fuera las que tienen
+  otro uso común («pricks», «pussies», «jerky»).
+
+- **`บ้า` (tailandés, «loco»), cambio provisional hasta la revisión
+  nativa.** Era el 45 % de las palabras frecuentes que el chat censuraba,
+  casi todas exclamaciones («บ้าจริง», «maldita sea»): el chat lo ignora
+  suelto (`ambiguous`) y sus apelativos (`ไอ้บ้า`, y nuevos `คนบ้า`,
+  `ยัยบ้า`, `อีบ้า`, `นังบ้า`, `medium`) siguen yendo a revisión. Las 20.000
+  palabras más frecuentes censuradas pasan de 212 a 126. `validateName()`
+  no cambia. Planillas cortas en `review/urgente/` (tha: `บ้า`, sus
+  apelativos y `แขก`; jpn: `魔女`, `おし`) con la pregunta concreta y frases
+  reales; `apply-review.php` acepta ahora `sin ambiguous` para revertirlo.
+
+- **Letras sueltas que juntan varias palabras** («h o l a p u t a»,
+  «p u t a p u t a», «p u t a m a d r e»): antes la racha se unía entera y,
+  al no ser una palabra del diccionario, se aprobaba. `SpacedRunTerms`
+  busca dentro de la racha los términos de 4 letras o más (sin solaparse,
+  de más largo a más corto) y los manda a revisión, nunca a bloqueo,
+  porque una palabra deletreada puede contener un insulto («c o m p u t a d o
+  r a»): medido, el 0,7 % de las palabras frecuentes de español e inglés.
+  La racha que es entera un insulto sigue bloqueando. `SpacedRunTermsTest`.
+
+- **`bin/apply-review.php`: de la planilla revisada a `config/`.** Lee una
+  planilla de `review/` llenada por un hablante nativo y aplica sus
+  respuestas: quitar un término, cambiarle la severidad, marcarlo
+  `ambiguous`/`nameCollision`, mandar una palabra frecuente a `everyday` o
+  sacar una excepción. Sin `--apply` sólo muestra el plan. Edita únicamente
+  la línea de cada entrada (`Review\ConfigEditor`), y no aplica nada si
+  hay respuestas que no entiende o si la planilla es más vieja que
+  `config/`. Patrones y comentarios quedan listados para hacerlos a mano.
+  Las planillas de jpn, tha, yue, por, ita y fra se regeneraron con la
+  segmentación y la inflexión nuevas; `หมู` («cerdo», también «carne de
+  cerdo») pasa a `ambiguous`. `ConfigEditorTest`, `ReviewSheetTest`.
+
+- **Plurales, géneros y conjugación en portugués, italiano y francés**
+  (`PortugueseInflection`, `ItalianInflection`, `FrenchInflection`). La
+  mecánica de conjugación por tablas pasa a `RomanceVerbs`, que comparten
+  con `SpanishVerbs` (sin cambio de comportamiento en español). Incluyen los
+  cambios de ortografía regulares (ficar→fique, cercare→cerchi,
+  manger→mangeons) y los pronombres pegados («matá-lo», «ammazzarti»,
+  «baise-moi»). Sus listas de chat declaran `forms` como la española.
+  Medido con las 50.000 palabras más frecuentes de OpenSubtitles: las que
+  se censurarían pasan de 220 a 235 (por), de 208 a 242 (ita) y de 251 a
+  284 (fra), casi todas formas reales («massacraram», «stuprata», «égorgé»).
+  Las cinco que eran palabras cotidianas van a `everyday`: «violent»,
+  «violons», «viola», «fucili», «pôr-nos». `RomanceInflectionTest`.
+
+- **Japonés, cantonés y tailandés se buscan dentro de la frase**
+  (`Dictionary\WordSegmenter`, extensión `intl` opcional). ICU parte los
+  tramos sin espacios en palabras («お前はバカだ» → お前 | は | バカ | だ) y
+  las piezas contiguas se vuelven a unir en las ventanas de búsqueda
+  («仆|街» → «仆街»). Antes sólo se reconocía la palabra suelta. La censura
+  ya no exige frontera de palabra junto a esas escrituras. Sin `intl` el
+  comportamiento es el de antes. La CI instala `intl`.
+  Medido con las 20.000 palabras más frecuentes de OpenSubtitles: las que
+  se censurarían pasan de 36 a 60 (jpn), de 49 a 212 (tha) y de 60 a 62
+  (yue), casi todas insultos y amenazas reales que antes no se veían
+  («ฉันจะฆ่าคุณ», «くそ野郎»). Los falsos positivos que aparecieron eran
+  palabras cotidianas del diccionario dentro de otras («牛» en «牛丼», «ลา»
+  en «ลาก่อน», «สัตว์» en «สวนสัตว์»): 18 entradas pasan a `ambiguous` y se
+  añade «ไอ้เลว» para que «ไม่เลว» («no está mal») deje de marcarse.
+  Quedan para revisión nativa `บ้า` (88 de las 212, «loco»), `แขก`, `おし`
+  y `魔女`, de categorías que no se tocan sin ella. Amenazas directas en
+  tailandés («จะฆ่าคุณ»…) como frases `high`. `WordSegmenterTest`.
+
 - **Listas de temas de chat en los 33 idiomas** (`config/chat-topics/`):
   `sexual`, `belico`, `ambiguous` y, en 18 idiomas de alfabeto latino y
   cirílico, `patterns` de amenaza y de amenaza de violación (fra, ita, por,
@@ -78,8 +405,102 @@
   más sin que un hablante nativo lo confirme. Verificado en cada idioma
   contra nombres reales comunes (`Hans Müller`, `John Smith`, `Jean
   Dupont`, `Giuseppe Russo`, `João Silva`, etc.) sin falsos positivos.
+- **Medición de falsos positivos del chat** contra las 50.000 palabras más
+  usadas de 32 idiomas (`bin/false-positives.php`, listas de FrequencyWords) y
+  **planillas de revisión nativa** por idioma (`bin/review-sheets.php` →
+  `review/<código>.csv`): cada término con categoría, severidad, marcas, rango
+  de frecuencia y decisión actual del chat, más las palabras frecuentes que se
+  censurarían sin ser un término. Ver `review/README.md`.
+- **Endpoint HTTP de moderación** (`public/moderar.php` + `ModerationEndpoint`):
+  `POST {"text", "language"}` → decisión, tipos de contenido, línea censurada y
+  términos encontrados, en JSON. Límites de entrada (sólo POST, 16 KB de cuerpo,
+  2.000 caracteres, idioma soportado) con códigos de error propios. Más una
+  **demo** (`php -S localhost:8000 public/router.php`) que junta el tope de
+  letras repetidas del front con la decisión del servidor.
+  `ModerationEndpointTest` y `ModerationServerTest` (con `php -S`).
+- **Clave `everyday` en `config/chat-topics/`**: palabras cotidianas que sin
+  tildes coinciden con un término («moc» → «moč», «katıl» → «katil», «possède»
+  → «possédé», «santa» → «sánta») y que, escritas así, el chat no busca
+  (`EverydayWords`). 21 palabras en 9 idiomas; `ChatTopicsExemptionsTest`
+  verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Hallazgos duplicados por letras sueltas**: en «p u t a, eres una puta» la
+  «puta» escrita normal también se rotulaba como deletreada, y salían tres
+  hallazgos (uno «p u ta»). `ChatMatches::restore` devuelve el texto deletreado
+  sólo tantas veces como rachas se unieron, y sólo a palabras enteras.
+- **El endpoint mostraba dos veces una palabra que es de dos tipos**: «follar»
+  (insulto y contenido sexual) salía una vez por tipo. Ahora sale una por
+  aparición, con `contentTypes` (y el primero en `contentType`, como antes).
+
+- **Un byte UTF-8 inválido aprobaba la línea entera**: «eres una puta \xff»
+  hacía fallar todas las expresiones regulares y no se encontraba nada. Lo mismo
+  con los nombres. Ahora el texto pasa por `mb_scrub` antes de revisarse.
+- **La fusión de nombre y apellido se evadía con Unicode**: «Elba Gіna» (con
+  «і» cirílica), un espacio de ancho cero o letras de ancho completo dejaban
+  pasar «el vagina». `NameEvaluator::applyPhoneticChecks()` limpia nombre y
+  apellido con `EvasionCleaner` antes de buscar fusiones.
+- `PRIVACIDAD-Y-HONRA.md` en la raíz del repositorio: por qué la privacidad y
+  la honra son la condición del proyecto, qué está resuelto y los cabos sueltos
+  (`url-routing` sin filtro cuando haya escritura, personas vivas en
+  `phone-directory`, denuncia y registro). Enlazado desde los README.
+
+- **Un insulto se colaba eligiendo otro idioma**: el endpoint revisaba sólo el
+  `language` que manda quien escribe, así que «Fulano es un estafador, hijo de
+  puta» con `"eng"` se aprobaba. Ahora revisa además los idiomas de la
+  plataforma (`spa` y `eng` por defecto) y responde `checkedLanguages`
+  (`CombinedReview`, `ModerationLanguagesTest`).
+- **Entradas que nunca se detectaban enteras**: las de más de 3 palabras
+  («concha de tu madre», «son of a bitch», «walang utang na loob») y las de
+  guion («lèche-cul», «puxa-saco», de las que sólo se veía «cul» o «saco»).
+  `WordListScanner` busca frases de hasta 5 palabras y, en una palabra con
+  guion, la palabra entera gana a su parte. `DictionarySelfDetectionTest` exige
+  que cada entrada de los 33 diccionarios se encuentre a sí misma.
+
+- **Un insulto pegado a un signo no se detectaba**: «puta!», «idiota?»,
+  «¡idiota!», «(rata)» y ««imbécil»» se aprobaban, porque `WordListScanner`
+  sólo cortaba palabras en espacios, guiones, puntos y comas. Ahora también en
+  `! ¡ ? ¿ ; : " “ ” „ « » ( ) [ ] { } …`.
+
+- **Acentos escritos aparte esquivaban el diccionario.** «pu» + «́» + «ta»
+  (la «ú» descompuesta que dejan algunos teclados y el copiar y pegar)
+  pasaba como «púta» sin plegar: se aprobaba en el chat y en
+  `validateName()`. `AccentFolding` compone el texto (NFC, con `intl`; sin
+  ella quita las marcas que siguen a una letra latina) antes de plegar.
+  Los nombres reales escritos así («José García») siguen siendo válidos.
+- **Vocales que son marcas combinantes** (tailandés, hindi, árabe
+  vocalizado): la censura podía tapar media palabra («सूअरों» → «****ों»)
+  porque la frontera de palabra no las contaba como parte de ella;
+  `everyday` no tapaba esas palabras; `ChatPatternMatcher::fold()` las
+  cambiaba por espacios, así que un patrón en hindi nunca habría
+  coincidido; y las letras sueltas no las admitían. Ahora todas cuentan
+  `\p{M}` como parte de la palabra. `CombiningMarksTest`.
+
+- **Endpoint de moderación: revisión de seguridad.** `public/moderar.php`
+  ya no puede mostrar rutas ni trazas: desactiva `display_errors` y ante un
+  fallo responde un 500 genérico (`error_interno`) y deja el detalle en el
+  log. Exige `Content-Type: application/json` (415 si no), así una página
+  de otro origen no puede mandarlo como formulario simple, y añade
+  `Content-Security-Policy: default-src 'none'`. Medido el coste por
+  petición en el peor caso (2.000 caracteres de letras sueltas, repetidas,
+  japonés, tailandés): ≤ 45 ms. El README explica cómo limitar peticiones
+  en nginx, que es lo que el endpoint no puede hacer solo.
+
+- **Falsos positivos del chat en palabras muy usadas**, encontrados con la
+  medición de arriba: de 5.368 a 5.159 palabras frecuentes censuradas, y de 213
+  a 166 entre las 1.000 más usadas de cada idioma.
+  - `AccentFolding` ya no pliega las letras propias del alfabeto en danés y
+    noruego (`æ ø å`), sueco y finés (`å ä ö`) ni vietnamita (vocales con tono
+    y `đ`): «høre» (oír) se leía «hore», «når» (cuando) «nar», «höra» «hora»,
+    «tai» (o) «täi» (piojo), «dài» (largo) «dái». Contrapartida: «hore» escrito
+    «høre» ya no se marca.
+  - `'ambiguous' => true` en 78 términos de 29 diccionarios que ante todo son
+    palabras cotidianas: «crazy», «verrückt», «fou», «louco», «preto», «negro»,
+    «kanker» (también «cáncer»), «أمي» (mi madre), «หนู» (ratón; «yo» al hablar
+    una mujer)… El chat los ignora; `validateName()` los sigue marcando.
+  - búlgaro «гол» (desnudo) pasa a `ambiguous` en los temas de chat: también
+    es «gol».
 
 - **`ChatPatternMatcher::fold()` borraba todo lo que no fuera `[a-z0-9]`**,
   así que ningún patrón en cirílico, griego, árabe, hebreo, CJK, etc. podía
@@ -148,9 +569,27 @@
 - Tabla de rangos de términos del README desactualizada tras las últimas
   ampliaciones: decía `comprehensive: 200–418` (real: 282–601, español tiene
   601) y `moderate: 120–160` (real: 120–245, varios idiomas la superan).
+- **Una planilla de `review/` ya no puede escribir en `config/` nada que no
+  sea un dato**: `bin/apply-review.php` pasaba al archivo, sin validar, la lista
+  de una fila `excepción` (`categoria`) y la etiqueta de una fila `forma`, y
+  después leía el resultado con `require`, también en la vista previa. Ahora
+  `categoria` sólo admite `everyday` y `legit`; la etiqueta, sólo rasgos como
+  `pl` o `f.pl`; `ConfigEditor::editList` y `FormEditor::setBy` rechazan lo que
+  no sea un nombre o una severidad conocida; y el resultado se comprueba con el
+  tokenizador (`Review\ConfigData`, una lista de lo permitido que cumplen los 69
+  archivos de `config/`) antes de evaluarlo. Las palabras ya se escapaban.
 
 ### Cambiado
 
+- **`nameCollision` en 30 apellidos y nombres frecuentes**, elegidos con datos
+  de frecuencia y no a ojo: los apellidos ingleses con 1.000 personas o más en
+  el censo de EE. UU. de 2010 (Outlaw, Coward, Dyke, Leech…) y los españoles
+  entre los 8.000 más frecuentes (Chaparro, Payo, Cansino, Rufián, Bastardo…),
+  más Mona e India. Se siguen detectando, pero ya no se rechazan solos ni
+  bloquean un saludo en el chat. Por debajo de esos umbrales no se marcan: cada
+  marca baja también el insulto a revisión. Ver `FrequentSurnameCollisionTest`.
+  Los ejemplos y tests que usaban «Luis Bastardo» como insulto grave que se
+  rechaza pasan a «Luis Gilipollas».
 - Se restauró `_Garbage/`, borrado en 4.3.0: la decisión es conservar como
   referencia lo obsoleto en vez de borrarlo. Su README explica por qué
   ninguno de esos archivos debe reconectarse al motor.

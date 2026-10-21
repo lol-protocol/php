@@ -2,7 +2,13 @@
 
 /** Swedish chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'swe', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'swe', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['mess'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['du', 'du är', 'din', 'ditt', 'dina', 'ni', 'jävla', 'satans', 'fula', 'feta', 'dumma', 'äckliga', 'era'],
+        'after' => ['där'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porr', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['porren', 'porrfilm', 'porrfilmer']],

@@ -2,7 +2,13 @@
 
 /** Slovak chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'slk', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'slk', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ty', 'si', 'ste', 'vy', 'ten', 'ta', 'debilný', 'debilná', 'zasraný', 'zasraná', 'starý', 'stará', 'hnusný', 'hnusná'],
+        'after' => ['ty', 'jeden', 'jedna', 'si'],
+    ],
+    'everyday' => ['moc', 'nemá'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

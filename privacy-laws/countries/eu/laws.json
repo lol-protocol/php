@@ -2,6 +2,7 @@
   {
     "country_code": "EU",
     "country_name": "European Union",
+    "region": "europe",
     "law_name": "General Data Protection Regulation (GDPR)",
     "jurisdiction": "European Commission",
     "enactment_date": "2016-04-27",
@@ -14,8 +15,55 @@
     "enforcement_authority": "European Data Protection Board & National DPAs",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "Not covered: GDPR does not apply to deceased persons' data; Member States may set rules (recital 27)",
+    "research_exemption": "Archiving, scientific/historical research and statistics: safeguards incl. minimisation/pseudonymisation; Union/national derogations from rights (art. 89; also arts. 5(1)(b), 14(5)(b), 17(3)(d))",
+    "genetic_data": "Special category: processing prohibited unless an art. 9(2) basis applies (e.g. explicit consent, 9(2)(a)); Member States may add conditions (art. 9(4))",
     "website_url": "https://gdpr-info.eu/",
     "language": "English",
-    "notes": "Extraterritorial applicability"
+    "frameworks": "GDPR",
+    "frameworks_not": "",
+    "notes": "Extraterritorial applicability",
+    "pending_change": "Digital Omnibus: GDPR amendments proposed by the Commission on 19 Nov 2025; not adopted",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "deceased_data": {
+        "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://gdpr-info.eu/art-89-gdpr/",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://gdpr-info.eu/art-9-gdpr/",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category: processing prohibited unless an art. 9(2) basis applies (e.g. explicit consent, 9(2)(a)); Member States may add conditions (art. 9(4))"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Archiving, scientific/historical research and statistics: safeguards incl. minimisation/pseudonymisation; Union/national derogations from rights (art. 89; also arts. 5(1)(b), 14(5)(b), 17(3)(d))"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: GDPR does not apply to deceased persons' data; Member States may set rules (recital 27)"
+      }
+    ]
   }
 ]

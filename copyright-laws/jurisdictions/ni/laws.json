@@ -1,0 +1,91 @@
+[
+  {
+    "country_code": "NI",
+    "country_name": "Nicaragua",
+    "region": "americas",
+    "law_name": "Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (terms run to end of calendar year; anonymous works 70 years from disclosure; article not seen)",
+    "author_rights": "Economic rights and moral rights",
+    "moral_rights": "Moral rights recognized (articles and duration not seen) (unconfirmed)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "UNKNOWN (Law 577 of 2006 implemented CAFTA-DR obligations; TPM/RMI articles not seen) (unconfirmed)",
+    "fair_use_exceptions": "Specific exceptions incl. library exceptions (limited application per IFLA); article numbers not seen (unconfirmed)",
+    "registration_required": "No (protection from creation; registration optional per Regulation, Decree 22-2000)",
+    "enforcement_body": "National Office of Copyright and Related Rights, Intellectual Property Registry (RPI) of the Ministry of Development, Industry and Trade (MIFIC)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/21425",
+    "notes": "Berne in force 23 Aug 2000 (Notification 218); WCT accession deposited 6 Dec 2002, in force 6 Mar 2003 (WCT Notification 41); WPPT in force 6 Mar 2003; WTO member since 3 Sep 1995. Implementing Regulation Decree 22-2000. Full text not read; WebSearch budget ran out before exceptions/TPM articles were found.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21425",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21425",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:CRT/Nicaragua",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "author_rights": {
+        "url": "https://revistas.csuca.org/Record/REVDERECHO322/Details",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "moral_rights": {
+        "url": "https://revistas.csuca.org/Record/REVDERECHO322/Details",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21425",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "digital_protection": {
+        "url": "https://www.wipo.int/wipolex/en/text/497150",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "fair_use_exceptions": {
+        "url": "https://repository.ifla.org/handle/20.500.14598/5817",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "registration_required": {
+        "url": "https://nicaragua.justia.com/nacionales/decretos-ejecutivos/reglamento-de-la-ley-de-derechos-de-autor-y-conexos-may-5-2000/gdoc",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/edocs/mdocs/lac/es/ompi_jpi_jda_gdl_04/ompi_jpi_jda_gdl_04_1_ni.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "treaties_signatory": {
+        "url": "https://wipo.int/wipolex/en/treaties/notifications/details/treaty_wppt_41",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

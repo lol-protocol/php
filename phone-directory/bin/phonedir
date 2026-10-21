@@ -12,6 +12,7 @@ use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\JuridicalEntityPDODatabase;
+use PhoneDirectory\Privacy;
 use PhoneDirectory\RecordLinker;
 
 /**
@@ -20,7 +21,10 @@ use PhoneDirectory\RecordLinker;
  * editions -- everything the README shows as PHP snippets, without writing PHP.
  */
 
-/** @return array{command: ?string, args: string[], options: array<string,string|true>} */
+/**
+ * @param list<string> $argv
+ * @return array{command: ?string, args: string[], options: array<string,string|true>}
+ */
 function parseArgv(array $argv): array
 {
     array_shift($argv); // script path
@@ -45,6 +49,7 @@ function parseArgv(array $argv): array
     return ['command' => $command, 'args' => $args, 'options' => $options];
 }
 
+/** @param array<string, string|true> $options */
 function option(array $options, string $key, ?string $default = null): ?string
 {
     $value = $options[$key] ?? $default;
@@ -76,6 +81,10 @@ function printHelp(): void
       --dsn=<dsn>          Cadena de conexión PDO (por defecto: sqlite:phonedirectory.sqlite)
       --user=<usuario>     Usuario de la base de datos (MySQL/PostgreSQL)
       --password=<clave>   Contraseña de la base de datos (MySQL/PostgreSQL)
+      --publico            Muestra solo lo que vería un visitante: sin las personas que podrían estar vivas
+                           (guías de 92 años o menos). Por defecto se ve todo: quien corre este comando
+                           tiene la base. Pensado para comprobar qué saldría si se publicara
+      --hoy=<AAAA-MM-DD>   Fecha de referencia de --publico (por defecto: hoy)
 
     import:
       --catalog=<id>       Toma país e idioma de un directorio del catálogo (ver 'catalog list')
@@ -96,6 +105,42 @@ function printHelp(): void
     TXT;
 }
 
+/**
+ * Who is asking. The command line belongs to whoever holds the database, so it sees everything unless
+ * --publico asks for the visitor's view (see Privacy).
+ *
+ * @param array<string, string|true> $options
+ */
+function privacyFrom(array $options): Privacy
+{
+    if (!isset($options['publico'])) {
+        return Privacy::forOwner();
+    }
+
+    $hoy = option($options, 'hoy');
+    if ($hoy === null) {
+        return Privacy::forVisitors();
+    }
+
+    $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $hoy);
+    if ($date === false || $date->format('Y-m-d') !== $hoy) {
+        fail("--hoy debe ser una fecha AAAA-MM-DD, no \"{$hoy}\"");
+    }
+
+    return Privacy::forVisitors($date);
+}
+
+/** The line that says a result is the visitor's view, or '' when it is the owner's. */
+function publicViewNote(Privacy $privacy): string
+{
+    if (!$privacy->hidesLiving()) {
+        return '';
+    }
+
+    return "(Vista pública: solo guías hasta {$privacy->latestPublishableYear()}; las demás pueden incluir personas vivas.)\n";
+}
+
+/** @param array<string, string|true> $options */
 function buildManager(array $options, ?MultiLanguagePhoneDirectoryParser $parser = null): PhoneDirectoryManagerV2
 {
     $dsn = option($options, 'dsn', 'sqlite:phonedirectory.sqlite');
@@ -104,7 +149,7 @@ function buildManager(array $options, ?MultiLanguagePhoneDirectoryParser $parser
 
     return new PhoneDirectoryManagerV2(
         parser: $parser,
-        naturalDatabase: new PhoneDirectoryPDODatabase($dsn, $user, $password),
+        naturalDatabase: new PhoneDirectoryPDODatabase($dsn, $user, $password, privacyFrom($options)),
         juridicalDatabase: new JuridicalEntityPDODatabase($dsn, $user, $password)
     );
 }
@@ -124,6 +169,10 @@ function formatJuridical(JuridicalEntity $entity): string
     return "  [empresa]  {$entity->getBusinessName()} | {$entity->getStreet()}, {$entity->getCountryCode()}{$phone}";
 }
 
+/**
+ * @param list<string> $args
+ * @param array<string, string|true> $options
+ */
 function commandImport(array $args, array $options): int
 {
     $file = $args[0] ?? fail('uso: phonedir import <archivo> [opciones]');
@@ -164,6 +213,7 @@ function commandImport(array $args, array $options): int
     return 0;
 }
 
+/** @param array<string, string|true> $options */
 function commandSearch(array $options): int
 {
     $manager = buildManager($options);
@@ -201,10 +251,12 @@ function commandSearch(array $options): int
     }
 
     echo "\n{$count} resultado(s)\n";
+    echo publicViewNote(privacyFrom($options));
 
     return 0;
 }
 
+/** @param array<string, string|true> $options */
 function commandStats(array $options): int
 {
     $stats = buildManager($options)->getStatistics();
@@ -217,6 +269,7 @@ function commandStats(array $options): int
     return 0;
 }
 
+/** @param array<string, string|true> $options */
 function commandLink(array $options): int
 {
     $sourcesOption = option($options, 'sources');
@@ -235,7 +288,7 @@ function commandLink(array $options): int
     }
 
     $minScore = (float) option($options, 'min-score', '0.5');
-    $links = (new RecordLinker(minimumScore: $minScore))->link($entries);
+    $links = (new RecordLinker(minimumScore: $minScore, privacy: privacyFrom($options)))->link($entries);
 
     foreach ($links as $link) {
         $evidence = implode(', ', $link->evidence);
@@ -251,10 +304,15 @@ function commandLink(array $options): int
     }
 
     echo "\n" . count($links) . " enlace(s) propuesto(s)\n";
+    echo publicViewNote(privacyFrom($options));
 
     return 0;
 }
 
+/**
+ * @param list<string> $args
+ * @param array<string, string|true> $options
+ */
 function commandCatalog(array $args, array $options): int
 {
     $catalog = new PhoneDirectoryCatalog();

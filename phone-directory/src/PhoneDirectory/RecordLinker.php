@@ -2,7 +2,7 @@
 
 namespace PhoneDirectory;
 
-use DefamatoryContentReview\AccentFolding;
+use DefamatoryContentReview\Normalization\AccentFolding;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\Exception\InvalidEncodingException;
 
@@ -29,11 +29,19 @@ final class RecordLinker
 
     private PhoneDirectoryCatalog $catalog;
     private float $minimumScore;
+    private Privacy $privacy;
 
-    public function __construct(?PhoneDirectoryCatalog $catalog = null, float $minimumScore = 0.5)
+    /**
+     * @param Privacy|null $privacy who is asking: by default a visitor, for whom a link never involves an
+     *        entry that may be a living person. Joining a person's entries from two editions builds a
+     *        profile (where they lived, and when) that neither directory had by itself, so it is held to
+     *        the same rule as the entries. Pass Privacy::forOwner() to link everything.
+     */
+    public function __construct(?PhoneDirectoryCatalog $catalog = null, float $minimumScore = 0.5, ?Privacy $privacy = null)
     {
         $this->catalog = $catalog ?? new PhoneDirectoryCatalog();
         $this->minimumScore = $minimumScore;
+        $this->privacy = $privacy ?? Privacy::forVisitors(catalog: $this->catalog);
     }
 
     /**
@@ -43,7 +51,7 @@ final class RecordLinker
     public function link(array $entries): array
     {
         $blocks = [];
-        foreach ($entries as $entry) {
+        foreach ($this->privacy->filter($entries) as $entry) {
             $surnameKey = SurnameKeys::soundex($entry->getPersonName()->getSurnameRoot());
             $givenName = $this->normalize($entry->getFirstName());
             if ($surnameKey === null || $givenName === '' || $entry->getSourceDirectoryId() === null) {
@@ -126,25 +134,9 @@ final class RecordLinker
 
     private function year(PhoneDirectoryEntry $entry): int
     {
-        $dirId = $entry->getSourceDirectoryId();
-
-        $catalogYear = $this->catalog->get($dirId)['year'] ?? null;
-        if ($catalogYear !== null) {
-            return $catalogYear;
-        }
-
-        // A directory id outside the built-in catalog often still embeds a year, following the
-        // catalog's own "<country>_<year>_<place>" convention (e.g. "custom_1990_springfield");
-        // use it so links between non-catalog directories are still ordered chronologically.
-        // Not \b: an underscore is a "word" character too, so "custom_1990_x" has no word boundary
-        // around the digits at all; look for a 4-digit run not itself touching other digits instead.
-        if ($dirId && preg_match('/(?<!\d)(1[89]\d{2}|20\d{2})(?!\d)/', $dirId, $m)) {
-            return (int) $m[1];
-        }
-
         // Genuinely unknown: fall back to whichever entry was given to link() first, rather than
         // claiming a chronology we don't have.
-        return PHP_INT_MAX;
+        return $this->catalog->yearOfDirectory($entry->getSourceDirectoryId()) ?? PHP_INT_MAX;
     }
 
     private function normalize(?string $text): string

@@ -8,6 +8,8 @@ require_arg "$DOMAIN" "$0 <dominio> [context-path]   (ej. $0 app.initech.fun mia
 CONTEXT_PATH=${2:-""}
 require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 require_valid context_path "$CONTEXT_PATH" "El context path (argumento 2)"
+require_valid size "$MAX_UPLOAD" "MAX_UPLOAD"
+require_valid duration "$PROXY_TIMEOUT" "PROXY_TIMEOUT"
 
 print_header "06_D" "Configurando Nginx -> Tomcat (Dominio: $DOMAIN, Context path: /${CONTEXT_PATH})"
 
@@ -53,9 +55,13 @@ server {
     access_log /var/log/nginx/$DOMAIN/access.log;
     error_log /var/log/nginx/$DOMAIN/error.log;
 
+    client_max_body_size $MAX_UPLOAD;   # subidas (MAX_UPLOAD, 20M por defecto); sin esto, 1 MB
 $MANAGER_BLOCK
     location / {
         proxy_pass $PROXY_TARGET;
+        proxy_connect_timeout 10s;          # Tomcat es local: si no acepta en 10 s, esta caido
+        proxy_send_timeout $PROXY_TIMEOUT;
+        proxy_read_timeout $PROXY_TIMEOUT;  # cuanto puede tardar la app en responder (PROXY_TIMEOUT)
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;

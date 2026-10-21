@@ -2,20 +2,225 @@
   {
     "country_code": "NG",
     "country_name": "Nigeria",
-    "law_name": "Nigeria Data Protection Regulation (NDPR)",
-    "jurisdiction": "National Information Technology Development Agency",
-    "enactment_date": "2019-01-25",
-    "effective_date": "2019-01-25",
-    "scope": "Nigerian Residents",
-    "applies_to": "All organizations",
-    "key_requirements": "Lawful processing & consent",
-    "data_categories": "Personal data",
-    "retention_period": "Necessary period",
-    "enforcement_authority": "NITDA",
-    "penalties_range": "Fines & sanctions",
-    "exemptions": "Government functions",
-    "website_url": "https://www.nitda.gov.ng/",
+    "region": "middle_east_africa",
+    "law_name": "Nigeria Data Protection Act 2023 (NDPA)",
+    "jurisdiction": "NDPC",
+    "enactment_date": "2023-06-12",
+    "effective_date": "2023-06-12",
+    "scope": "Processing of personal data in Nigeria or of data subjects in Nigeria, incl. foreign controllers",
+    "applies_to": "Data controllers and processors; those of major importance must register with NDPC and appoint a DPO",
+    "key_requirements": "Section 24 processing principles; lawful basis/consent; breach notice to NDPC within 72 hours; registration of major-importance controllers",
+    "data_categories": "Personal data and sensitive personal data (extendable by NDPC directive)",
+    "retention_period": "Storage limitation principle (s.24); no fixed period found",
+    "enforcement_authority": "Nigeria Data Protection Commission",
+    "penalties_range": "Up to the higher of NGN 10M or 2% of annual gross revenue (major importance); NGN 2M or 2% for others",
+    "exemptions": "Criminal investigation/prosecution, national public health emergencies, national security by competent authorities",
+    "deceased_data": "Not settled: 'data subject' (s. 65) does not say whether deceased persons are covered; commentators note the gap (cf. CCB v Nwankwo 2018)",
+    "research_exemption": "Research/archiving not listed among s. 3 exemptions in commentary; partial public-interest exemption for journalism, education, artistic and literary purposes (s. 3); Commission may add exemptions by regulation",
+    "genetic_data": "Sensitive personal data includes genetic and biometric data (s. 65); higher standard of care for processing (s. 30)",
+    "website_url": "https://fpf.org/blog/nigerias-new-data-protection-act-explained/",
     "language": "English",
-    "notes": "Africa region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Replaces NDPR 2019; commenced on signing; GAID 2025 directive effective 2025-09-19",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://kpmg.com/ng/en/insights/2023/06/president-signs-the-nigerian-data-protection-bill--2023-into-law.html",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "jurisdiction": {
+        "url": "https://pwc.com/ng/en/assets/pdf/regulatory-alert-august-2023.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://kpmg.com/ng/en/insights/2023/06/president-signs-the-nigerian-data-protection-bill--2023-into-law.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://fpf.org/blog/nigerias-new-data-protection-act-explained/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "scope": {
+        "url": "https://www.clym.io/regulations/nigeria-data-protection-act-ndpa",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "applies_to": {
+        "url": "https://www.mondaq.com/nigeria/privacy-protection/1389752/a-review-of-the-nigeria-data-protection-act-2023",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "retention_period": {
+        "url": "https://www.mondaq.com/nigeria/data-protection/1366934/the-nigerias-data-protection-act-2023-a-look-at-key-provisions",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://pwc.com/ng/en/assets/pdf/regulatory-alert-august-2023.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://www.templars-law.com/app/uploads/2023/11/Navigating-the-Enforcement-Framework-under-the-Data-Protection-Act-2023.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "exemptions": {
+        "url": "https://pwc.com/ng/en/assets/pdf/regulatory-alert-august-2023.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.afriwise.com/blog/www-afriwise-com-blog-the-nigeria-data-protection-act-general-application-and-implementation-directive-2025-becomes-effective-today",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.itedgenews.africa/transitioning-from-ndpr-to-ndpa-some-good-bad-and-ugly-provisions-of-the-newly-enacted-nigeria-data-protection-act-2023",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://mondaq.com/nigeria/privacy-protection/1508626/an-overview-of-the-exemptions-and-derogations-on-data-privacy-rights-in-nigeria",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.mondaq.com/nigeria/data-protection/1366934/the-nigerias-data-protection-act-2023-a-look-at-key-provisions",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic and biometric data (s. 65); higher standard of care for processing (s. 30)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Research/archiving not listed among s. 3 exemptions in commentary; partial public-interest exemption for journalism, education, artistic and literary purposes (s. 3); Commission may add exemptions by regulation"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not settled: 'data subject' (s. 65) does not say whether deceased persons are covered; commentators note the gap (cf. CCB v Nwankwo 2018)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "The Nigeria Data Protection Act 2023 created the NDPC, which now enforces data protection (the NDPR was issued by NITDA)",
+        "to": "Replaces NDPR 2019; commenced on signing; GAID 2025 directive effective 2025-09-19"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "website_url",
+        "from": "https://www.nitda.gov.ng/",
+        "to": "https://fpf.org/blog/nigerias-new-data-protection-act-explained/"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "exemptions",
+        "from": "Government functions",
+        "to": "Criminal investigation/prosecution, national public health emergencies, national security by competent authorities"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Fines & sanctions",
+        "to": "Up to the higher of NGN 10M or 2% of annual gross revenue (major importance); NGN 2M or 2% for others"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Nigeria Data Protection Commission (NDPC)",
+        "to": "Nigeria Data Protection Commission"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "retention_period",
+        "from": "Necessary period",
+        "to": "Storage limitation principle (s.24); no fixed period found"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "data_categories",
+        "from": "Personal data",
+        "to": "Personal data and sensitive personal data (extendable by NDPC directive)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "Lawful processing & consent",
+        "to": "Section 24 processing principles; lawful basis/consent; breach notice to NDPC within 72 hours; registration of major-importance controllers"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "applies_to",
+        "from": "All organizations",
+        "to": "Data controllers and processors; those of major importance must register with NDPC and appoint a DPO"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "scope",
+        "from": "Nigerian Residents",
+        "to": "Processing of personal data in Nigeria or of data subjects in Nigeria, incl. foreign controllers"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2019-01-25",
+        "to": "2023-06-12"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2019-01-25",
+        "to": "2023-06-12"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "jurisdiction",
+        "from": "National Information Technology Development Agency",
+        "to": "NDPC"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Nigeria Data Protection Regulation (NDPR)",
+        "to": "Nigeria Data Protection Act 2023 (NDPA)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "The Nigeria Data Protection Act 2023 created the NDPC, which now enforces data protection (the NDPR was issued by NITDA)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "NITDA",
+        "to": "Nigeria Data Protection Commission (NDPC)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Africa region",
+        "to": ""
+      }
+    ]
   }
 ]

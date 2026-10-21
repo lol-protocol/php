@@ -5,15 +5,21 @@ declare(strict_types=1);
 namespace App\Repositories\Genealogy;
 
 use App\Repositories\Repository;
+use App\Support\Privacidad;
 
 final class GrupoRepository extends Repository
 {
+    /**
+     * A living persona's surname group is hidden (see Privacidad::personas()),
+     * so living people count in no group, appear in no group's network and
+     * weigh in no group's birthplaces.
+     */
     public function find(int $id): ?array
     {
         return $this->db->fetchOne(
-            'SELECT g.id, g.apellido, g.origen, g.descripcion,
-                    (SELECT COUNT(*) FROM personas p WHERE p.grupo_id = g.id) AS total_personas
-               FROM grupos g WHERE g.id = ?',
+            "SELECT g.id, g.apellido, g.origen, g.descripcion,
+                    (SELECT COUNT(*) FROM {$this->privacidad->personas()} p WHERE p.grupo_id = g.id) AS total_personas
+               FROM grupos g WHERE g.id = ?",
             [$id]
         );
     }
@@ -22,15 +28,16 @@ final class GrupoRepository extends Repository
     public function red(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id
-               FROM personas p WHERE p.grupo_id = ?
-              ORDER BY p.apellidos, p.nombres, p.id',
+            "SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id
+               FROM {$this->privacidad->personas()} p WHERE p.grupo_id = ?
+              ORDER BY p.apellidos, p.nombres, p.id",
             [$id]
         );
     }
 
     /**
-     * Where the surname's bearers were born, counted per place.
+     * Where the surname's bearers were born, counted per place. A birth with a
+     * living participant counts nowhere (see Privacidad::sucesos()).
      *
      * @return list<array{lugar_ruta: string, lugar_nombre: string, total: int}>
      */
@@ -38,9 +45,9 @@ final class GrupoRepository extends Repository
     {
         return $this->db->fetchAll(
             "SELECT s.lugar_ruta, l.nombre AS lugar_nombre, COUNT(DISTINCT p.id) AS total
-               FROM personas p
-               JOIN suceso_participantes sp ON sp.persona_id = p.id
-               JOIN sucesos s ON s.id = sp.suceso_id AND s.tipo = 'nacimiento'
+               FROM {$this->privacidad->personas()} p
+               JOIN suceso_participantes sp ON sp.persona_id = p.id AND sp.rol = '" . Privacidad::ROL_PRINCIPAL . "'
+               JOIN {$this->privacidad->sucesos()} s ON s.id = sp.suceso_id AND s.tipo = 'nacimiento'
                JOIN lugares l ON l.ruta = s.lugar_ruta
               WHERE p.grupo_id = ?
               GROUP BY s.lugar_ruta, l.nombre
@@ -53,7 +60,7 @@ final class GrupoRepository extends Repository
     public function buscar(string $texto, int $limit = 50, int $offset = 0): array
     {
         return $this->db->fetchAll(
-            'SELECT id, apellido FROM grupos WHERE LOWER(apellido)' . self::LIKE_ESCAPED . ' ORDER BY apellido, id'
+            'SELECT id, apellido FROM grupos WHERE ' . self::sinAcentos('apellido') . self::LIKE_ESCAPED . ' ORDER BY apellido, id'
                 . self::page($limit, $offset),
             [self::patron($texto)]
         );

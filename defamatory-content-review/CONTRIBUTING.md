@@ -83,11 +83,42 @@ Al revisar un idioma, amplía también su entrada en
    error. `DictionaryIntegrityTest::testNoLanguageHasTheSameWordInTwoCategories()`
    lo detecta, pero es mejor no depender de eso.
 
+## Revisar el chat con las planillas de `review/`
+
+`review/<código>.csv` es la forma más rápida de revisar un idioma sin leer PHP:
+una fila por término del diccionario y de los temas de chat, con su rango entre
+las 50.000 palabras más usadas del idioma y lo que decide hoy el chat, más las
+palabras frecuentes que el chat censuraría sin ser un término (las candidatas a
+falso positivo). Llená `correcto` y `comentario` y devolvé la planilla, o abrí un
+PR con los cambios. Qué significa cada columna y cómo se traduce cada corrección
+a la configuración (quitar, `ambiguous`, `everyday`) está en
+[`review/README.md`](review/README.md).
+
+Antes de mandar un idioma a revisar, regenerá su planilla con
+`bin/review-sheets.php` para que refleje el diccionario actual.
+
+Las decisiones que la medición dejó abiertas —discapacidad, animales,
+identidad, brujería y palabrotas suaves— se resolvieron con un mismo criterio:
+**sólo cuentan dirigidas a alguien** («eres un cerdo» sí, «comí cerdo» no; ver
+«Sólo si va dirigido a alguien» en el README). Lo que más ayuda revisar como
+hablante nativo:
+
+- las marcas de la clave `targeted` de `config/chat-topics/<código>.php`: ¿falta
+  alguna forma de dirigirse a alguien («vos», «ustedes», un vocativo)? ¿sobra
+  alguna que aparezca en frases neutras?
+- las entradas de identidad, brujería o palabrotas suaves de tu idioma que
+  deberían llevar `'targeted' => true` (en la planilla: `targeted` en
+  `correcto`), y los compuestos que son insulto siempre y deberían llevar
+  `'targeted' => false`;
+- japonés, coreano, cantonés y tailandés no tienen marcas (no separan las
+  palabras con espacios): «ทอม» (también el nombre Tom), «魔女» y «บ้า» siguen
+  pendientes en `review/urgente/`.
+
 ## Subir de nivel de cobertura
 
 `meta.coverage` de cada archivo de idioma es la única fuente de verdad — no
 se declara en ningún otro lado (ver el aviso al principio de
-`config/languages/supported-languages.php` si hace falta el porqué). Los
+`config/supported-languages.php` si hace falta el porqué). Los
 niveles y sus mínimos de palabras, verificados por
 `DictionaryIntegrityTest::testWordCountMatchesDeclaredCoverageLevel()`:
 

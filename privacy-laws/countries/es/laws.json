@@ -2,10 +2,11 @@
   {
     "country_code": "ES",
     "country_name": "Spain",
+    "region": "europe",
     "law_name": "Organic Law 3/2018 (LOPDGDD)",
     "jurisdiction": "Spanish Data Protection Authority",
     "enactment_date": "2018-12-05",
-    "effective_date": "2019-01-01",
+    "effective_date": "2018-12-07",
     "scope": "Spanish Residents",
     "applies_to": "All entities",
     "key_requirements": "GDPR implementation",
@@ -14,8 +15,61 @@
     "enforcement_authority": "AEPD (Spanish Authority)",
     "penalties_range": "Up to €10M or 3% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "Law excludes deceased, but relatives and heirs may request access, rectification, erasure unless prohibited by deceased (art. 3)",
+    "research_exemption": "Health and genetic data research under DA 17 (incl. pseudonymised reuse); public statistics (art. 25); art. 89 GDPR safeguards",
+    "genetic_data": "Health and genetic data processing covered by GDPR art. 9.2 g-j under laws listed in DA 17 (e.g. Ley 14/2007)",
     "website_url": "https://www.aepd.es/",
     "language": "Spanish",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "deceased_data": {
+        "url": "https://protecciondatos-lopd.com/empresas/datos-personales-persona-fallecida/",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://www.aepd.es/documento/2019-0101.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.aepd.es/documento/2019-0101.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Health and genetic data processing covered by GDPR art. 9.2 g-j under laws listed in DA 17 (e.g. Ley 14/2007)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Health and genetic data research under DA 17 (incl. pseudonymised reuse); public statistics (art. 25); art. 89 GDPR safeguards"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Law excludes deceased, but relatives and heirs may request access, rectification, erasure unless prohibited by deceased (art. 3)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2019-01-01",
+        "to": "2018-12-07"
+      }
+    ]
   }
 ]

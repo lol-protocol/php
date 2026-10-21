@@ -3,6 +3,11 @@
 /** Dutch chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'nld', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['jij', 'jou', 'je bent', 'ben je', 'jullie', 'vuile', 'vieze', 'stomme', 'vuil', 'wat een', 'vette', 'dikke', 'kut'],
+        'after' => ['dat je bent'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],
@@ -14,7 +19,7 @@ return [
             ['word' => 'vagina', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'tieten', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'borsten', 'riskType' => 'sexual', 'severity' => 'medium'],
-            ['word' => 'naakt', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'naakt', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'adj'],
             ['word' => 'nudes', 'riskType' => 'sexual', 'severity' => 'high'],
             ['word' => 'naaktfoto', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['naaktfotos']],
             ['word' => 'seks', 'riskType' => 'sexual', 'severity' => 'low'],
@@ -26,12 +31,12 @@ return [
         'belico' => [
             ['word' => 'oorlog', 'riskType' => 'belico', 'severity' => 'low'],
             ['word' => 'bombardement', 'riskType' => 'belico', 'severity' => 'medium'],
-            ['word' => 'raket', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'raket', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'genocide', 'riskType' => 'belico', 'severity' => 'high'],
             ['word' => 'volkerenmoord', 'riskType' => 'belico', 'severity' => 'high'],
             ['word' => 'bloedbad', 'riskType' => 'belico', 'severity' => 'high'],
             ['word' => 'uitroeien', 'riskType' => 'belico', 'severity' => 'high'],
-            ['word' => 'terrorist', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'terrorist', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'aanslag', 'riskType' => 'belico', 'severity' => 'medium'],
             ['word' => 'invasie', 'riskType' => 'belico', 'severity' => 'low'],
             ['word' => 'leger', 'riskType' => 'belico', 'severity' => 'low'],
@@ -41,7 +46,7 @@ return [
             ['word' => 'heilige oorlog', 'riskType' => 'belico', 'severity' => 'high'],
         ],
         'ambiguous' => [
-            ['word' => 'bom', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'bom', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
         ],
     ],
     'patterns' => [

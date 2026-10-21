@@ -17,6 +17,16 @@
                     "lol-protocol/marcalibros-propios": "1.0.0"
                 }
             }
+        },
+        {
+            "type": "path",
+            "url": "../../defamatory-content-review",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "lol-protocol/defamatory-content-review": "5.0.0"
+                }
+            }
         }
     ],
     "require": {
@@ -24,13 +34,15 @@
         "ext-fileinfo": "*",
         "ext-gd": "*",
         "ext-mbstring": "*",
-        "lol-protocol/marcalibros-propios": "^1.0"
+        "lol-protocol/marcalibros-propios": "^1.0",
+        "lol-protocol/defamatory-content-review": "^5.0"
     },
     "suggest": {
         "ext-exif": "Permite corregir la orientación de las fotos tomadas con el celular"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0"
+        "phpunit/phpunit": "^10.0",
+        "phpstan/phpstan": "^2.0"
     },
     "autoload": {
         "psr-4": {

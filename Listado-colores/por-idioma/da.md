@@ -1,0 +1,215 @@
+# Colores con nombre en Danés (`da`)
+
+Generado por `generar-tabla.py` a partir de `colores.csv` y `significados-idiomas.csv`. No editar a mano.
+
+Las traducciones son propuestas y no están revisadas por hablantes nativos.
+Alias: otros colores CSS con exactamente el mismo hex (`gray` y `grey`; `aqua` y `cyan`; `fuchsia` y `magenta`).
+Base: en qué se apoya cada significado (ver [referencias](../referencias.md) y el README). «Hay estudios» indica que existen estudios sobre ese color, no que el texto resuma sus resultados; «derivado» quiere decir que lo extrapoló el autor.
+Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README.md).
+
+| Inglés | Nombre | Hex | Alias | Significado psicológico | Significado místico | Base psicológica | Base mística |
+|---|---|---|---|---|---|---|---|
+| `aliceblue` | aliceblå | `#F0F8FF` |  | Ro, friskhed og renhed; en følelse af lethed og rummelighed. | Himmelsk renhed og sindsro; knyttet til den klare himmel og klar kommunikation. | derivado | derivado |
+| `antiquewhite` | antikhvid | `#FAEBD7` |  | Nostalgi, tradition og blød varme; leder tanken hen på det vintage. | Erindring og visdom fra fortiden; ældet renhed og ældgamle cyklusser. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Friskhed, klarhed, energi og følelsen af rent vand. | Levende vand og rensning; intuitionens strøm og kommunikationen med det subtile. | derivado | derivado |
+| `aquamarine` | akvamarin | `#7FFFD4` |  | Afslappende friskhed, ro og let optimisme. | Sømændenes sten: beskyttelse på rejser, mod og følelsesmæssig klarhed. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
+| `azure` | azurblå | `#F0FFFF` |  | Klar himmel, åbenhed, frihed og sindsro. | Åndelig højde og himlens renhed; det himmelske og det åbne sind. | derivado | derivado |
+| `beige` | beige | `#F5F5DC` |  | Neutralitet, enkelhed, stabilitet og diskretion. | Jord og ydmyghed; balance uden yderligheder, hverdagen og rodfæstethed. | derivado | derivado |
+| `bisque` | biskuit | `#FFE4C4` |  | Blød varme, nærhed og en hjemlig følelse. | Overflod og næring; gæstfrihed og enkle glæder. | derivado | derivado |
+| `black` | sort | `#000000` |  | Elegance, magt, formalitet og mystik; sorg i mange kulturer. | Oprindelig tomhed, nat og det skjulte; beskyttelse og forvandling (den alkymistiske nigredo). | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [hupka1997](../referencias.md#hupka1997), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición ([abraham1998](../referencias.md#abraham1998)) |
+| `blanchedalmond` | mandelhvid | `#FFEBCD` |  | Blødhed, sødme og sart varme. | Ren sødme og enkelhed; beskedne gaver og omsorg. | derivado | derivado |
+| `blue` | blå | `#0000FF` |  | Tillid, ro, stabilitet, rationalitet og professionalisme. | Sandhed og det åndelige; himmel og hav. I flere traditioner beskytter den mod det onde øje. | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición ([wiki-nazar](../referencias.md#wiki-nazar)) |
+| `blueviolet` | blåviolet | `#8A2BE2` |  | Kreativitet, ambition og individualitet; et intenst gemyt. | Intuition og forbindelse til det psykiske; bro mellem det jordiske sind og det åndelige. | derivado | derivado |
+| `brown` | brun | `#A52A2A` |  | Stabilitet, tryghed, robusthed og pålidelighed. | Jord, rodfæstethed og tålmodighed; forbindelse til hjemmet og det materielle. | hay estudios ([berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | derivado |
+| `burlywood` | træbrun | `#DEB887` |  | Jordnær varme, komfort og naturlighed. | Træ og bearbejdet natur; vækstens kredsløb og jordens tålmodighed. | derivado | derivado |
+| `cadetblue` | kadetblå | `#5F9EA0` |  | Ro, sindsro, balance og nøgternhed. | Hav og sindsro; stille disciplin og klar tanke. | derivado | derivado |
+| `chartreuse` | chartreuse | `#7FFF00` |  | Energi, vitalitet, nyhed og et iøjnefaldende strejf; også rastløshed. | Fornyelse og forår; ungdom, vækst og livsenergi. | derivado | derivado |
+| `chocolate` | chokolade | `#D2691E` |  | Varme, nydelse, komfort og en følelse af hjem. | Overflod og jordisk nydelse; frugtbar jord og afdæmpet sanselighed. | derivado | derivado |
+| `coral` | koral | `#FF7F50` |  | Hjertelighed, glæde, social varme og optimisme. | Havliv og beskyttelse; i middelhavstraditionen en amulet mod det onde øje. | derivado | tradición ([elworthy1895](../referencias.md#elworthy1895)) |
+| `cornflowerblue` | kornblåt | `#6495ED` |  | Venlighed, tillid, sindsro og åbenhed. | Troskab og oprigtig kommunikation; stille åndelighed. | derivado | derivado |
+| `cornsilk` | majssilke | `#FFF8DC` |  | Blødhed, varme, uskyld og enkelhed. | Høst og landets ømhed; ydmyg overflod og renhed. | derivado | derivado |
+| `crimson` | karmosinrød | `#DC143C` |  | Lidenskab, intensitet, mod, hast og magt. | Blod, liv og ofring; livskraft og lidenskabelig kærlighed, også advarsel. | derivado | derivado |
+| `cyan` | cyan | `#00FFFF` | `aqua` | Friskhed, klarhed, ro og kommunikation; forbundet med det digitale og moderne. | Vand og rensning; mental klarhed og kommunikationens strøm. | derivado | derivado |
+| `darkblue` | mørkeblå | `#00008B` |  | Dybde, alvor, pålidelighed og autoritet. | Dyb nat og visdom; det ubevidste og selvransagelse. | derivado | derivado |
+| `darkcyan` | mørk cyan | `#008B8B` |  | Dyb ro, balance og nøgternhed. | Dybt vand og healing; balance mellem sind og følelser. | derivado | derivado |
+| `darkgoldenrod` | mørk guldris | `#B8860B` |  | Gammel rigdom, modenhed og nøgtern prestige. | Ældet guld: erhvervet visdom, høst og jordisk magt. | derivado | derivado |
+| `darkgray` | mørkegrå | `#A9A9A9` | `darkgrey` | Alvor, neutralitet, følelsesmæssig afstand og konservatisme. | Neutralitet og overgang; det ubestemte mellem lys og skygge. | derivado | derivado |
+| `darkgreen` | mørkegrøn | `#006400` |  | Stabilitet, tryghed, dyb natur og tradition. | Planteliv og skjult fornyelse; stille vækst og frugtbarhed. | derivado | derivado |
+| `darkgrey` | mørkegrå | `#A9A9A9` | `darkgray` | Alvor, neutralitet, følelsesmæssig afstand og konservatisme. | Neutralitet og overgang; det ubestemte mellem lys og skygge. | derivado | derivado |
+| `darkkhaki` | mørk khaki | `#BDB76B` |  | Nøgternhed, besindighed og beskedenhed; nogle gange apati eller passivitet. | Tør jord og tålmodighed; ydmyghed over for kredsløbene. | derivado | derivado |
+| `darkmagenta` | mørkemagenta | `#8B008B` |  | Mystik, raffinement, intens kreativitet og behersket lidenskab. | Transmutation og magi; bånd mellem begær og ånd. | derivado | derivado |
+| `darkolivegreen` | mørk olivengrøn | `#556B2F` |  | Ro, natur, stabilitet og diskretion. | Skovenes fred og lang levetid; jordens visdom og stilhed. | derivado | derivado |
+| `darkorange` | mørk orange | `#FF8C00` |  | Varm energi, begejstring og kreativitet med kraft. | Tæmmet ild og høst; livskraft og drivkraft til handling. | derivado | derivado |
+| `darkorchid` | mørk orkidé | `#9932CC` |  | Mystik, åndelighed, kreativitet og raffineret ambition. | Skjult visdom og forvandling; bånd til det hellige. | derivado | derivado |
+| `darkred` | mørkerød | `#8B0000` |  | Intensitet, alvor og behersket magt; også fare eller spænding. | Blod og livskraft; ofring, lidenskab og autoritet. | derivado | derivado |
+| `darksalmon` | mørk laksefarve | `#E9967A` |  | Blød varme, følsomhed og afdæmpet modtagelse. | Nedgående sol: overgang og afskedens sødme. | derivado | derivado |
+| `darkseagreen` | mørk havgrøn | `#8FBC8F` |  | Naturlig ro, balance, enkelhed og velvære. | Hav og skov; stille vækst, balance og tålmodighed. | derivado | derivado |
+| `darkslateblue` | mørk skiferblå | `#483D8B` |  | Introspektion, visdom, alvor og tilbageholdenhed. | Dyb tænkning, intuition og visioner; kontemplativ åndelighed. | derivado | derivado |
+| `darkslategray` | mørk skifergrå | `#2F4F4F` | `darkslategrey` | Nøgternhed, tilbageholdenhed, tryghed og forsigtighed. | Sten og bjerg; det skjulte og beskyttelsen af det, der ligger indeni. | derivado | derivado |
+| `darkslategrey` | mørk skifergrå | `#2F4F4F` | `darkslategray` | Nøgternhed, tilbageholdenhed, tryghed og forsigtighed. | Sten og bjerg; det skjulte og beskyttelsen af det, der ligger indeni. | derivado | derivado |
+| `darkturquoise` | mørk turkis | `#00CED1` |  | Balance mellem ro og energi; klar kommunikation. | Vand og himmel; healing, beskyttelse og sindets renhed. | derivado | derivado |
+| `darkviolet` | mørkeviolet | `#9400D3` |  | Mystik, luksus, kreativitet og intens ambition. | Åndelighed, magi og det transcendente; indre forvandling. | derivado | derivado |
+| `deeppink` | dyb pink | `#FF1493` |  | Intens lidenskab, hengivenhed, ungdommelig energi og dristighed. | Kærlighed og livsbegær; lidenskabelig ømhed. | derivado | derivado |
+| `deepskyblue` | dyb himmelblå | `#00BFFF` |  | Vitalitet, frihed, tillid og rolig energi. | Himmel og dybt vand; åbenhed, inspiration og kommunikation med det høje. | derivado | derivado |
+| `dimgray` | dæmpet grå | `#696969` | `dimgrey` | Melankoli, neutralitet, tilbageholdenhed og nøgternhed. | Tåge og overgang; det uåbenbarede og tidens gang. | derivado | derivado |
+| `dimgrey` | dæmpet grå | `#696969` | `dimgray` | Melankoli, neutralitet, tilbageholdenhed og nøgternhed. | Tåge og overgang; det uåbenbarede og tidens gang. | derivado | derivado |
+| `dodgerblue` | dodgerblå | `#1E90FF` |  | Tillid, dynamik, modernitet og energi. | Klar himmel og kommunikation; budbringer, klarhed og handling. | derivado | derivado |
+| `firebrick` | ildrød | `#B22222` |  | Styrke, beslutsomhed, intens varme og spænding. | Smedjens og arnens ild; slid, ofring og arbejde. | derivado | derivado |
+| `floralwhite` | blomsterhvid | `#FFFAF0` |  | Blødhed, sarthed, renhed og lethed. | Hvid blomst: uskyld, begyndelser og forårets velsignelse. | derivado | derivado |
+| `forestgreen` | skovgrøn | `#228B22` |  | Natur, balance, sundhed, ro og vækst. | Hellig skov: liv, fornyelse og forbindelse til jorden. | derivado | derivado |
+| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Dristighed, kreativitet, excentricitet og legende energi. | Forvandling og magi; bånd mellem det materielle og det åndelige. | derivado | derivado |
+| `gainsboro` | gainsboro-grå | `#DCDCDC` |  | Elegant neutralitet, renhed og ro. | En mellemtilstand af balance uden byrde. | derivado | derivado |
+| `ghostwhite` | spøgelseshvid | `#F8F8FF` |  | Lethed, subtil mystik og lysende kølighed. | Det æteriske og spøgelsesagtige; en subtil tilstedeværelse mellem to verdener. | derivado | derivado |
+| `gold` | guld | `#FFD700` |  | Succes, rigdom, prestige, optimisme og varme. | Sol og fuldkommenhed; oplysning, magt, visdom og det guddommelige i mange traditioner. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
+| `goldenrod` | guldris | `#DAA520` |  | Varm rigdom, tillid og venlig prestige. | Høst og overflod; opnået visdom og arbejdets frugt. | derivado | derivado |
+| `gray` | grå | `#808080` | `grey` | Neutralitet, balance, alvor og tvetydighed; også melankoli. | Overgang mellem lys og skygge; mægling, eftertanke og det mellemliggende. | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | derivado |
+| `green` | grøn | `#008000` |  | Natur, balance, vækst, sundhed og ro; også håb. | Liv, fornyelse og healing; i chakratraditionen forbundet med hjertet (anahata). | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `greenyellow` | grønngul | `#ADFF2F` |  | Frisk energi, ungdom, vitalitet og nyhed. | Forår og spire; begyndelse, vitalitet og vækst. | derivado | derivado |
+| `grey` | grå | `#808080` | `gray` | Neutralitet, balance, alvor og tvetydighed; også melankoli. | Overgang mellem lys og skygge; mægling, eftertanke og det mellemliggende. | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | derivado |
+| `honeydew` | honningdug | `#F0FFF0` |  | Blød friskhed, lethed, renhed og ro. | Hellig morgendug; velsignelse, fornyelse og renhed. | derivado | derivado |
+| `hotpink` | varm pink | `#FF69B4` |  | Glæde, leg, ømhed og kærlig energi. | Hjertets kærlighed; ømhed, hengivenhed og livsglæde. | derivado | derivado |
+| `indianred` | indisk rød | `#CD5C5C` |  | Behersket spænding, intens varme, følelsesmæssig tilknytning og beskyttelse. | Blod og okkerjord; forfædrenes styrke og hjemmets beskyttelse. | derivado | derivado |
+| `indigo` | indigo | `#4B0082` |  | Introspektion, mystik, visdom og stille ambition. | I chakratraditionen forbundet med det tredje øje (ajna): intuition og indre syn. | derivado | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `ivory` | elfenben | `#FFFFF0` |  | Renhed, elegance, ro og blødhed. | Renhed og tid: det ædle, det varige og det hellige. | derivado | derivado |
+| `khaki` | khaki | `#F0E68C` |  | Enkelhed, besindighed, neutralitet og praktisk sans. | Tør jord og tålmodighed; det enkle liv og balancen. | derivado | derivado |
+| `lavender` | lavendel | `#E6E6FA` |  | Ro, blødhed, nostalgi, sarthed og velvære. | Rensning og beskyttelse; søvn, fred og det subtile åndelige. | derivado | derivado |
+| `lavenderblush` | lavendelrosa | `#FFF0F5` |  | Sarthed, ømhed, romantik og blødhed. | Kærlig renhed; begyndelsernes sødme. | derivado | derivado |
+| `lawngreen` | plænegrøn | `#7CFC00` |  | Friskhed, vitalitet, optimisme og ungdom. | Forår og grønne marker; spirende liv og fornyelse. | derivado | derivado |
+| `lemonchiffon` | citronchiffon | `#FFFACD` |  | Blød glæde, friskhed og venlig optimisme. | Morgensolens lys; klarhed og venlig begyndelse. | derivado | derivado |
+| `lightblue` | lyseblå | `#ADD8E6` |  | Ro, sindsro, tillid og lethed. | Himmel og vand i hvile; fred, drømme og klarhed. | derivado | derivado |
+| `lightcoral` | lyskoral | `#F08080` |  | Blød varme, hengivenhed, nærhed og følsomhed. | Kærlighed og beskyttelse; havets milde livskraft. | derivado | derivado |
+| `lightcyan` | lyscyan | `#E0FFFF` |  | Let friskhed, klarhed og ro. | Klart vand og ren luft; tankens renhed. | derivado | derivado |
+| `lightgoldenrodyellow` | lysgul guldris | `#FAFAD2` |  | Lysende blødhed, rolig optimisme og varme. | Blødt gyldent lys; mild oplysning og velsignelser. | derivado | derivado |
+| `lightgray` | lysegrå | `#D3D3D3` | `lightgrey` | Neutralitet, ro, renhed og plads til at trække vejret. | Overgang mellem det synlige og det usynlige; det mellemliggende. | derivado | derivado |
+| `lightgreen` | lysegrøn | `#90EE90` |  | Ro, friskhed, fornyelse og velvære. | Spire og håb; øm vækst og mild healing. | derivado | derivado |
+| `lightgrey` | lysegrå | `#D3D3D3` | `lightgray` | Neutralitet, ro, renhed og plads til at trække vejret. | Overgang mellem det synlige og det usynlige; det mellemliggende. | derivado | derivado |
+| `lightpink` | lyserød | `#FFB6C1` |  | Ømhed, sødme, uskyld og blød hengivenhed. | Sart kærlighed og renhed; romantiske begyndelser. | derivado | derivado |
+| `lightsalmon` | lyslaks | `#FFA07A` |  | Glad varme, nærhed og venlig energi. | Morgensol; venlighed og gavmildhed. | derivado | derivado |
+| `lightseagreen` | lys havgrøn | `#20B2AA` |  | Ro, balance, friskhed og kommunikation. | Hav og healing; balance mellem følelse og sind. | derivado | derivado |
+| `lightskyblue` | lyshimmelblå | `#87CEFA` |  | Lethed, frihed, sindsro og optimisme. | Åben himmel; inspiration, fred og høje stræbsomheder. | derivado | derivado |
+| `lightslategray` | lys skifergrå | `#778899` | `lightslategrey` | Neutralitet, eftertænksom ro og nøgternhed. | Overgang mellem lys og nat; eftertanke og tålmodighed. | derivado | derivado |
+| `lightslategrey` | lys skifergrå | `#778899` | `lightslategray` | Neutralitet, eftertænksom ro og nøgternhed. | Overgang mellem lys og nat; eftertanke og tålmodighed. | derivado | derivado |
+| `lightsteelblue` | lysestålblå | `#B0C4DE` |  | Ro, nøgternhed, tillid og elegance. | Metal og himmel; rolig disciplin og klarhed. | derivado | derivado |
+| `lightyellow` | lysegul | `#FFFFE0` |  | Blødt lys, optimisme, klarhed og lethed. | Daggryets lys; begyndelse, oplysning og blid viden. | derivado | derivado |
+| `lime` | lime | `#00FF00` |  | Energi, friskhed, vitalitet og aktivitet; nogle gange et advarselssignal. | Spire og vækst; fornyelse og livskraft. | derivado | derivado |
+| `limegreen` | limegrøn | `#32CD32` |  | Energi, ungdom, optimisme og dynamik. | Spirende liv; fornyelse, sundhed og forår. | derivado | derivado |
+| `linen` | lærred | `#FAF0E6` |  | Enkelhed, ro, naturlighed og blød renhed. | Hør fra templerne og de hellige klæder; renhed og ydmyghed. | derivado | tradición |
+| `magenta` | magenta | `#FF00FF` | `fuchsia` | Kreativitet, dristighed, intensitet og vibrerende energi. | Forvandling og åndelighed; forbindelse mellem det materielle og det subtile. | derivado | derivado |
+| `maroon` | kastanjebrun | `#800000` |  | Alvor, magt, tradition, elegance og behersket lidenskab. | Blod og jord; vitalitet, ofring og rodfæstethed. | derivado | derivado |
+| `mediumaquamarine` | mellemakvamarin | `#66CDAA` |  | Ro, friskhed, harmoni og velvære. | Helende vand; balance og følelsernes flow. | derivado | derivado |
+| `mediumblue` | mellemblå | `#0000CD` |  | Tillid, sindsro, dybde og alvor. | Stjerneklar nat og sandhed; introspektion og vejledning. | derivado | derivado |
+| `mediumorchid` | mellemorkidé | `#BA55D3` |  | Kreativitet, følsomhed, elegance og mystik. | Åndelighed og forvandling; intuition og skjult visdom. | derivado | derivado |
+| `mediumpurple` | mellempurpur | `#9370DB` |  | Kreativitet, følsomhed, raffinement og ro. | Åndeligt kongedømme og syn; intuition og forbindelse til det subtile. | derivado | derivado |
+| `mediumseagreen` | mellemhavgrøn | `#3CB371` |  | Ro, balance, velvære og vækst. | Hav og fornyelse; harmoni, frugtbarhed og healing. | derivado | derivado |
+| `mediumslateblue` | mellemskiferblå | `#7B68EE` |  | Kreativitet, fantasi, frihed og mental lethed. | Inspiration og syn; forbindelse til det himmelske. | derivado | derivado |
+| `mediumspringgreen` | mellemforårsgrøn | `#00FA9A` |  | Friskhed, vitalitet, optimisme og fornyelse. | Forår og vækst; nyt liv og håb. | derivado | derivado |
+| `mediumturquoise` | mellemturkis | `#48D1CC` |  | Ro, klarhed, friskhed og kommunikation. | Vand og himmel; beskyttelse, healing og renhed. | derivado | derivado |
+| `mediumvioletred` | mellemviolet rød | `#C71585` |  | Lidenskab, intensitet, lidenskabelig ømhed og ambition. | Begær og vitalitet; intens kærlighed og følelsesmæssig styrke. | derivado | derivado |
+| `midnightblue` | midnatblå | `#191970` |  | Dybde, alvor, mystik og tillid. | Nat, drøm og skjult viden; introspektion og det ukendte. | derivado | derivado |
+| `mintcream` | mintcreme | `#F5FFFA` |  | Blød friskhed, renhed, ro og renlighed. | Mynte: rensning, fornyelse og mental klarhed. | derivado | derivado |
+| `mistyrose` | tågerosa | `#FFE4E1` |  | Sarthed, nostalgi, blødhed og romantik. | Tåget daggry; drøm, erindring og det, der falmer. | derivado | derivado |
+| `moccasin` | mokkasin | `#FFE4B5` |  | Blød varme, enkelhed, komfort og venlighed. | Jord og sti; rejse, ydmyghed og hjem. | derivado | derivado |
+| `navajowhite` | navajohvid | `#FFDEAD` |  | Jordnær varme, enkelhed og komfort. | Sand og høst; enkelhed og ydmyg overflod. | derivado | derivado |
+| `navy` | marineblå | `#000080` |  | Autoritet, tillid, alvor og professionalisme. | Dybt hav og nat; disciplin, visdom og loyalitet. | derivado | derivado |
+| `oldlace` | gammel blonde | `#FDF5E6` |  | Nostalgi, sarthed, varme og tradition. | Erindring og ømhed fra det gamle; ældet renhed og omsorg. | derivado | derivado |
+| `olive` | oliven | `#808000` |  | Fred, natur, mådehold og stabilitet; også træthed. | Oliventræ: fred, visdom, stille sejr og frugtbarhed. | derivado | tradición |
+| `olivedrab` | oliven drab | `#6B8E23` |  | Natur, praktisk sans, stabilitet og nøgternhed. | Land og vild natur; vedholdenhed og rodfæstethed. | derivado | derivado |
+| `orange` | orange | `#FFA500` |  | Begejstring, kreativitet, varme, energi og omgængelighed. | I chakratraditionen forbundet med sakralchakraet: vitalitet, kreativitet og nydelse. | hay estudios ([berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `orangered` | orangerød | `#FF4500` |  | Intens energi, drive, begejstring og hast. | Ild og glød; handling, mod og forvandling. | derivado | derivado |
+| `orchid` | orkidé | `#DA70D6` |  | Elegance, følsomhed, romantik og kreativitet. | Skønhed og forvandling; raffineret åndelighed. | derivado | derivado |
+| `palegoldenrod` | blegguldris | `#EEE8AA` |  | Blødhed, sindsro, varme og rolig optimisme. | Høstens lys; mild overflod og velsignelse. | derivado | derivado |
+| `palegreen` | blegegrøn | `#98FB98` |  | Ro, friskhed, fornyelse og velvære. | Øm spire; håb, healing og blid vækst. | derivado | derivado |
+| `paleturquoise` | blegturkis | `#AFEEEE` |  | Ro, lethed, friskhed og klarhed. | Stille vand og himmel; renhed, healing og fred. | derivado | derivado |
+| `palevioletred` | blegviolet rød | `#DB7093` |  | Ømhed, hengivenhed, følsomhed og nostalgi. | Sart kærlighed; følsomhed og følelsesmæssige bånd. | derivado | derivado |
+| `papayawhip` | papajacreme | `#FFEFD5` |  | Blød varme, sødme, komfort og tropisk glæde. | Solens frugt og overflod; gæstfrihed og enkel nydelse. | derivado | derivado |
+| `peachpuff` | fersken | `#FFDAB9` |  | Varme, ømhed, nærhed og velvære. | I Kina symboliserer fersknen lang levetid og udødelighed; sødme og held. | derivado | tradición ([wiki-peaches](../referencias.md#wiki-peaches)) |
+| `peru` | peru | `#CD853F` |  | Jordnær varme, tillid, rodfæstethed og stabilitet. | Jord og høst; rodfæstethed, arbejde og overflod. | derivado | derivado |
+| `pink` | lyserød | `#FFC0CB` |  | Ømhed, sødme, romantik, ro og hengivenhed. | Kærlighed, medfølelse og renhed; åbent hjerte. | hay estudios ([berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | derivado |
+| `plum` | blomme | `#DDA0DD` |  | Raffinement, sarthed, kreativitet og nostalgi. | Efterårsfrugt og overflod; moden sødme, visdom og raffineret kærlighed. | derivado | derivado |
+| `powderblue` | pudderblå | `#B0E0E6` |  | Ro, sarthed, renhed og sindsro. | Blød himmel og klart vand; fred, renhed og drømme. | derivado | derivado |
+| `purple` | lilla | `#800080` |  | Kongedømme, luksus, åndelighed, kreativitet og mystik. | Kongedømme og det åndelige; i nogle traditioner forbundet med kronechakraet: forbindelse med det guddommelige. | hay estudios ([berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `rebeccapurple` | Rebecca-lilla | `#663399` |  | Kreativitet, dybde, mystik og behersket elegance. | Dyb åndelighed; visdom, meditation og det usynliges tærskel. | derivado | derivado |
+| `red` | rød | `#FF0000` |  | Lidenskab, energi, hast, fare og handling. | I chakratraditionen er det første (rod) rødt: rodfæstethed, overlevelse og vitalitet. | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [hupka1997](../referencias.md#hupka1997), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `rosybrown` | rosabrun | `#BC8F8F` |  | Blød varme, nostalgi, følsomhed og enkelhed. | Jord og rolig kærlighed; hverdagens ømhed. | derivado | derivado |
+| `royalblue` | kongeblå | `#4169E1` |  | Autoritet, tillid, loyalitet, prestige og sindsro. | Kongedømme og loyalitet; retfærdighed, visdom og værdighed. | derivado | derivado |
+| `saddlebrown` | sadelbrun | `#8B4513` |  | Robusthed, tradition, komfort og rodfæstethed. | Frugtbar jord og arbejde; hjem, stabilitet og modstandskraft. | derivado | derivado |
+| `salmon` | laks | `#FA8072` |  | Varme, nærhed, glæde og følsomhed. | Sol og hav; vitalitet, hengivenhed og overgang. | derivado | derivado |
+| `sandybrown` | sandbrun | `#F4A460` |  | Varme, hjertelighed, naturlighed og ro. | Ørken og sand; tålmodighed, tid og forvandling. | derivado | derivado |
+| `seagreen` | havgrøn | `#2E8B57` |  | Ro, balance, natur og stabilitet. | Hav og liv; healing, overflod og fornyelse. | derivado | derivado |
+| `seashell` | skal | `#FFF5EE` |  | Blødhed, renhed, sarthed og ro. | Konkylie: symbol på fødsel og frugtbarhed (Venus, der stiger op af havet) og på beskyttelse. | derivado | tradición |
+| `sienna` | sienna | `#A0522D` |  | Jord, rodfæstethed, robust varme og pålidelighed. | Rød jord og forfædrenes styrke; rodfæstethed, frugtbarhed og rødder. | derivado | derivado |
+| `silver` | sølv | `#C0C0C0` |  | Modernitet, raffinement, elegant neutralitet og prestige. | Måne og genspejling; i alkymien svarer sølv til Månen: intuition og forandring. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
+| `skyblue` | himmelblå | `#87CEEB` |  | Ro, åbenhed, frihed og friskhed. | Himmel og luft; inspiration, fred og ophøjelse. | derivado | derivado |
+| `slateblue` | skiferblå | `#6A5ACD` |  | Kreativitet, fantasi, mystik og sindsro. | Syn og åndelighed; intuition og forbindelse til det ophøjede. | derivado | derivado |
+| `slategray` | skifergrå | `#708090` | `slategrey` | Neutralitet, alvor, nøgternhed og ro. | Sten og tid; fasthed, tålmodighed og det stabile. | derivado | derivado |
+| `slategrey` | skifergrå | `#708090` | `slategray` | Neutralitet, alvor, nøgternhed og ro. | Sten og tid; fasthed, tålmodighed og det stabile. | derivado | derivado |
+| `snow` | sne | `#FFFAFA` |  | Renhed, renlighed, ro og kulde. | Absolut renhed, stilhed og vinterens fornyelse. | derivado | derivado |
+| `springgreen` | forårsgrøn | `#00FF7F` |  | Friskhed, vitalitet, optimisme og fornyelse. | Forår: spire, begyndelse og håb. | derivado | derivado |
+| `steelblue` | stålblå | `#4682B4` |  | Tillid, disciplin, styrke og stabilitet. | Metal og himmel; standhaftighed, beslutsomhed og klarhed. | derivado | derivado |
+| `tan` | solbrun | `#D2B48C` |  | Jordnær varme, enkelhed, naturlighed og komfort. | Jord og sol; rodfæstethed, omsorg og hverdagen. | derivado | derivado |
+| `teal` | blågrøn | `#008080` |  | Balance, ro, professionalisme og kreativitet. | Vand og himmel; balance mellem følelse og fornuft, healing og fred. | derivado | derivado |
+| `thistle` | tidsel | `#D8BFD8` |  | Blødhed, nostalgi, sarthed og ro. | Beskyttelsesplante; forsvar og sødme. | derivado | tradición |
+| `tomato` | tomat | `#FF6347` |  | Energi, varme, lidenskab, appetit og årvågenhed. | Solens og livets frugt; vitalitet, kærlighed og gavmildhed. | derivado | derivado |
+| `turquoise` | turkis | `#40E0D0` |  | Ro, klarhed, friskhed og kommunikation. | Beskyttelses- og helingssten; den rejsendes amulet og vejviser mod det onde. | hay estudios ([jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición ([kunz1913](../referencias.md#kunz1913)) |
+| `violet` | violet | `#EE82EE` |  | Kreativitet, åndelighed, mystik og følsomhed. | I chakratraditionen forbundet med kronechakraet: forbindelse med det transcendente. | derivado | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `wheat` | hvede | `#F5DEB3` |  | Enkelhed, varme, rolig overflod og komfort. | Høst og brød; frugtbarhed, overflod og taknemmelighed. | derivado | derivado |
+| `white` | hvid | `#FFFFFF` |  | Renhed, renlighed, fred, uskyld og begyndelser; sorg i andre kulturer. | Renhed, lys og det hellige; genfødsel og forening med det guddommelige (den alkymistiske albedo). | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición ([abraham1998](../referencias.md#abraham1998)) |
+| `whitesmoke` | røgvhid | `#F5F5F5` |  | Blød neutralitet, renhed, ro og enkelhed. | Subtil røg: det uhåndgribelige, overgangen og bønnen, der stiger. | derivado | derivado |
+| `yellow` | gul | `#FFFF00` |  | Glæde, optimisme, energi, mental klarhed og opmærksomhed; også forsigtighed. | I chakratraditionen forbundet med solar plexus: oplysning, vilje og viden. | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `yellowgreen` | gulgrøn | `#9ACD32` |  | Friskhed, vitalitet, ungdom og ro. | Forår og vækst; nyt liv og fornyelse. | derivado | derivado |
+
+## Matices culturales (Danés)
+
+Ámbitos asociados a este idioma: Occidente (Europa y Norteamérica). Un idioma no equivale a una cultura, y dentro de cada ámbito hay variación entre regiones, épocas y generaciones. Los matices están en español y la cobertura es parcial.
+
+| Color | Ámbito | Matiz | Solidez | Fuentes |
+|---|---|---|---|---|
+| `black` | Occidente (Europa y Norteamérica) | Pastoureau lo estudia como color de la oscuridad y la muerte, de la virtud monástica y de la corte y la realeza en la Edad Media, y repasa los cambios que traen Newton y el Romanticismo. | media | [pastoureau2008](../referencias.md#pastoureau2008) |
+| `blue` | Occidente (Europa y Norteamérica) | Es el color que más europeos y estadounidenses citan como favorito. Pastoureau lo sigue desde el desprecio de los griegos antiguos hasta su asociación con la Virgen María y su ascenso como color real en el siglo XII. | alta | [pastoureau2001](../referencias.md#pastoureau2001) |
+| `pink` | Occidente (Europa y Norteamérica) | La asociación del rosa con las niñas es reciente y cambiante: a finales del siglo XIX algunas fuentes aún recomendaban rosa para niños y azul para niñas, y el patrón actual se consolidó en el siglo XX sin un momento único (Paoletti, sobre Estados Unidos). | alta | [paoletti2012](../referencias.md#paoletti2012) |
+| `purple` | Occidente (Europa y Norteamérica) | Color del poder y la realeza: el púrpura de Tiro, carísimo por los miles de moluscos necesarios para un gramo, estaba reservado a los emperadores romanos y bizantinos («ponerse la púrpura» significa llegar a emperador). | media | [wiki-tyrian-purple](../referencias.md#wiki-tyrian-purple) |
+| `white` | Occidente (Europa y Norteamérica) | Pureza y bodas: el vestido de novia blanco se asocia a la boda de la reina Victoria (1840), aunque ya ganaba terreno antes y, según una de las fuentes, para la mayoría de la gente no se generalizó hasta el siglo XX. Antes se usaban vestidos de colores y el blanco también se vinculaba al luto. | media | [smithsonian-victoria](../referencias.md#smithsonian-victoria), [wiki-victoria](../referencias.md#wiki-victoria) |
+
+## Léxico básico en Danés
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | hvid | hvidt (n), hvide (pl) |  |  |
+| `black` | `#000000` | sort | sorte (pl) |  |  |
+| `red` | `#FF0000` | rød | rødt (n), røde (pl) |  |  |
+| `green` | `#008000` | grøn | grønt (n), grønne (pl) |  |  |
+| `yellow` | `#FFFF00` | gul | gult (n), gule (pl) |  |  |
+| `blue` | `#0000FF` | blå |  |  |  |
+| `brown` | `#A52A2A` | brun | brunt (n), brune (pl) |  |  |
+| `purple` | `#800080` | lilla |  | violet |  |
+| `pink` | `#FFC0CB` | lyserød | lyserødt (n), lyserøde (pl) | pink |  |
+| `orange` | `#FFA500` | orange |  |  |  |
+| `gray` | `#808080` | grå |  |  |  |
+| `lightblue` | `#ADD8E6` | lyseblå |  |  |  |
+| `darkblue` | `#00008B` | mørkeblå |  |  |  |
+| `lightgreen` | `#90EE90` | lysegrøn | lysegrønt (n), lysegrønne (pl) |  |  |
+| `darkgreen` | `#006400` | mørkegrøn | mørkegrønt (n), mørkegrønne (pl) |  |  |
+| `skyblue` | `#87CEEB` | himmelblå |  |  |  |
+| `turquoise` | `#40E0D0` | turkis |  |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | guld |  | gylden |  |
+| `silver` | `#C0C0C0` | sølv |  | sølvfarvet |  |
+| `violet` | `#EE82EE` | violet |  |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | lavendel |  |  |  |
+| `maroon` | `#800000` | rødbrun | rødbrunt (n), rødbrune (pl) | kastanjebrun |  |
+| `olive` | `#808000` | olivengrøn | olivengrønt (n), olivengrønne (pl) |  |  |
+| `navy` | `#000080` | marineblå |  |  |  |
+| `cyan` | `#00FFFF` | cyan |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | laksefarvet |  |  |  |
+| `coral` | `#FF7F50` | koral |  | koralrød |  |
+| `crimson` | `#DC143C` | karmosinrød | karmosinrødt (n), karmosinrøde (pl) |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | limegrøn | limegrønt (n), limegrønne (pl) |  |  |
+| `burgundy` | `#900020` | bordeaux |  | vinrød |  |
+| `cream` | `#FFFFC2` | cremefarvet |  | creme |  |
+| `scarlet` | `#FF2400` | skarlagenrød | skarlagenrødt (n), skarlagenrøde (pl) |  |  |
+| `amber` | `#FFBF00` | rav |  | ravfarvet |  |

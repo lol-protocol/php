@@ -8,6 +8,20 @@ return [
         'nativeName' => 'Română', 'family' => 'romance', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'nazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nazistă', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'naziști', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'animal' => [
             ['word' => 'porc', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'scroafă', 'riskType' => 'animal', 'severity' => 'high'],
@@ -114,7 +128,7 @@ return [
             ['word' => 'pitic', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'diform', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'paralitic', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'nebun', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'nebun', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'schiloadă', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'oloagă', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'șchioapă', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -124,7 +138,7 @@ return [
             ['word' => 'pitică', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'diformă', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'paralitică', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'nebună', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'nebună', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
         ],
 
         'moral' => [
@@ -264,10 +278,10 @@ return [
             ['word' => 'cioară', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'bozgor', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'jidan', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'negru', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'negru', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'corcitură', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'țigancă', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'neagră', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'neagră', 'riskType' => 'etnico', 'severity' => 'medium', 'ambiguous' => true],
         ],
 
         'religios' => [

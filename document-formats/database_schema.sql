@@ -81,6 +81,52 @@ CREATE TABLE technical_specifications (
 );
 
 -- =====================================================================
+-- PAPER TYPES TABLE
+-- =====================================================================
+-- Named paper stock (color, texture, finish), independent of sheet size:
+-- any format can in principle be printed on any of these.
+CREATE TABLE paper_types (
+    paper_type_id INT PRIMARY KEY AUTO_INCREMENT,
+    type_name VARCHAR(100) NOT NULL UNIQUE,
+    type_name_en VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    color VARCHAR(100) NOT NULL,
+    texture VARCHAR(100) NOT NULL,
+    finish VARCHAR(100) NOT NULL,
+    weight_gsm_min INT NOT NULL,
+    weight_gsm_max INT NOT NULL,
+    common_use VARCHAR(200) NOT NULL,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_category (category)
+);
+
+-- =====================================================================
+-- PRODUCT SPECIFICATIONS TABLE
+-- =====================================================================
+-- Weight, DPI and finish for printed products ("Brochure", "Receipt",
+-- "Sticker") that are not sheet sizes, so they cannot hang off
+-- document_formats the way technical_specifications does. paper_type_id
+-- points at the paper stock the product is normally printed on, when one
+-- is clear; finish_type uses the finish_types vocabulary, with "A/B"
+-- meaning either.
+CREATE TABLE product_specifications (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_name VARCHAR(100) NOT NULL UNIQUE,
+    typical_size_mm VARCHAR(50),
+    weight_gsm_min INT,
+    weight_gsm_max INT,
+    recommended_dpi INT,
+    finish_type VARCHAR(100),
+    uses VARCHAR(200),
+    notes TEXT,
+    paper_type_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (paper_type_id) REFERENCES paper_types(paper_type_id) ON DELETE SET NULL,
+    INDEX idx_paper_type (paper_type_id)
+);
+
+-- =====================================================================
 -- FORMAT CONVERSIONS TABLE
 -- =====================================================================
 CREATE TABLE format_conversions (
@@ -277,6 +323,24 @@ JOIN document_formats df1 ON fc.from_format_id = df1.format_id
 JOIN document_formats df2 ON fc.to_format_id = df2.format_id
 JOIN countries c1 ON df1.country_id = c1.country_id
 JOIN countries c2 ON df2.country_id = c2.country_id;
+
+-- View: Products with the paper stock they are usually printed on (a product with no paper type is kept)
+CREATE VIEW v_products_with_paper AS
+SELECT
+    ps.product_name,
+    ps.typical_size_mm,
+    ps.weight_gsm_min AS product_gsm_min,
+    ps.weight_gsm_max AS product_gsm_max,
+    ps.recommended_dpi,
+    ps.finish_type AS product_finish,
+    pt.type_name AS paper_type,
+    pt.type_name_en AS paper_type_en,
+    pt.weight_gsm_min AS paper_gsm_min,
+    pt.weight_gsm_max AS paper_gsm_max,
+    pt.finish AS paper_finish
+FROM product_specifications ps
+LEFT JOIN paper_types pt ON ps.paper_type_id = pt.paper_type_id
+ORDER BY ps.product_name;
 
 -- =====================================================================
 -- INDEXES FOR PERFORMANCE

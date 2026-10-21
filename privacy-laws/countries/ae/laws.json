@@ -2,20 +2,112 @@
   {
     "country_code": "AE",
     "country_name": "United Arab Emirates",
-    "law_name": "Federal Law No. 45/2021",
+    "region": "middle_east_africa",
+    "law_name": "Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data",
     "jurisdiction": "DPA Authority",
-    "enactment_date": "2021-11-02",
-    "effective_date": "2022-01-01",
+    "enactment_date": "2021-09-20",
+    "effective_date": "2022-01-02",
     "scope": "UAE Residents",
     "applies_to": "All organizations",
     "key_requirements": "Lawful processing",
     "data_categories": "Personal data",
     "retention_period": "Necessary period",
-    "enforcement_authority": "UAE DPA",
+    "enforcement_authority": "UAE Data Office",
     "penalties_range": "Fines up to AED 500k",
     "exemptions": "Government functions",
+    "deceased_data": "Unclear: law defines personal data by reference to a natural person and does not say whether data of deceased persons remain covered",
+    "research_exemption": "Consent not required for processing for archival purposes or scientific, historical and statistical studies under applicable UAE law (art. 4)",
+    "genetic_data": "Sensitive personal data includes genetic data/condition (art. 1); enhanced protection, consent or art. 4 exception required",
     "website_url": "https://www.dpa.ae/",
     "language": "Arabic/English",
-    "notes": "UAE privacy law"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "UAE privacy law",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-17",
+    "sources": {
+      "law_name": {
+        "url": "https://tamimi.com/news/uaes-new-federal-data-protection-law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.DataGuidance.com/jurisdiction/uae-federal",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.clydeco.com/en/insights/2021/11/uae-issues-landmark-personal-data-protection-law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://securiti.ai/uae-personal-data-protection-law/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://cms.law/en/are/legal-updates/UAE-legal-reforms-new-UAE-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://resourcehub.bakermckenzie.com/en/resources/global-data-and-cyber-handbook/emea/uae/topics/legal-bases-for-processing-of-personal-data",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.mondaq.com/data-protection/1389892/an-overview-of-the-uae-personal-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic data/condition (art. 1); enhanced protection, consent or art. 4 exception required"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Consent not required for processing for archival purposes or scientific, historical and statistical studies under applicable UAE law (art. 4)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Unclear: law defines personal data by reference to a natural person and does not say whether data of deceased persons remain covered"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2022-01-01",
+        "to": "2022-01-02"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2021-11-02",
+        "to": "2021-09-20"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Federal Law No. 45/2021",
+        "to": "Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "UAE DPA",
+        "to": "UAE Data Office"
+      }
+    ]
   }
 ]

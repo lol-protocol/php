@@ -14,6 +14,20 @@ return [
         'nativeName' => 'العربية', 'family' => 'semitic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'نازي', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'نازية', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'نازيون', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'نازيين', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'hayawan' => [
             ['word' => 'خنزير', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'حمار', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -44,7 +58,7 @@ return [
             ['word' => 'معتوه', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'متخلف', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'جاهل', 'riskType' => 'intelectual', 'severity' => 'medium'],
-            ['word' => 'أمي', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'أمي', 'riskType' => 'intelectual', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'بليد', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ساذج', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'قليل الفهم', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -106,7 +120,7 @@ return [
             ['word' => 'أخرس', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'ألثغ', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'مشلول', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'مجنون', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'مجنون', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'معاق', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'عرجاء', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'مقعدة', 'riskType' => 'discapacidad', 'severity' => 'high'],

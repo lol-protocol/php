@@ -1,0 +1,59 @@
+[
+  {
+    "country_code": "PY",
+    "country_name": "Paraguay",
+    "region": "americas",
+    "law_name": "Law No. 1328/98 on Copyright and Related Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Art. 165: civil actions vs devices/services circumventing encryption or technical protection; Penal Code art. 184a (Law 3440/2008) punishes TPM circumvention",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Dirección Nacional de Propiedad Intelectual (DINAPI)",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/3557",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "http://www.sice.oas.org/int_prop/nat_leg/Paraguay/L132898c.asp",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+        "to": "Art. 165: civil actions vs devices/services circumventing encryption or technical protection; Penal Code art. 184a (Law 3440/2008) punishes TPM circumvention"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
