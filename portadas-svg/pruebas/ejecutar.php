@@ -503,6 +503,31 @@ $pruebas = [
         verdadero($apretados === [], "subtítulo demasiado cerca del título:\n  " . implode("\n  ", $apretados));
     },
 
+    'Libro pone límites a las medidas y el error nombra el campo' => function (): void {
+        $fueraDeLimites = [
+            [['formato' => ['ancho_mm' => 5000]], 'ancho_mm'],
+            [['formato' => ['alto_mm' => 5000]], 'alto_mm'],
+            [['sangrado_mm' => 50], 'sangrado_mm'],
+            [['solapas_mm' => 200], 'solapas_mm'], // más anchas que la portada (135 mm)
+            [['lomo_mm' => 1000], 'lomo_mm'],
+            [['paginas' => 100000], 'paginas'], // un lomo calculado de 5 m
+            [['grosor_hoja_mm' => 5], 'grosor_hoja_mm'],
+        ];
+        foreach ($fueraDeLimites as [$cambios, $campo]) {
+            try {
+                libroDeEjemplo($cambios);
+            } catch (InvalidArgumentException $error) {
+                verdadero(str_contains($error->getMessage(), $campo), "el error no nombra '$campo': " . $error->getMessage());
+                continue;
+            }
+            throw new RuntimeException("se aceptó un valor fuera de límites: $campo");
+        }
+
+        // Justo en el límite sigue siendo válido.
+        libroDeEjemplo(['formato' => ['ancho_mm' => 500, 'alto_mm' => 500], 'sangrado_mm' => 10, 'solapas_mm' => 500, 'lomo_mm' => 150]);
+        libroDeEjemplo(['grosor_hoja_mm' => 0.5, 'paginas' => 300]);
+    },
+
     'Escribir de nuevo quita las piezas que ya no tocan' => function (): void {
         $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
         Generador::escribir(libroDeEjemplo(['solapas_mm' => 90]), $dir);

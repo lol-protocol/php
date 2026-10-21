@@ -54,11 +54,11 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `editorial`, `coleccion` | vacío | Pie de la portada y de la contratapa. |
 | `isbn` | vacío | Se escribe sobre el hueco del código de barras. |
 | `paginas` | — | Para calcular el lomo. Obligatorio si no das `lomo_mm`. |
-| `lomo_mm` | calculado | Lomo fijo, en mm. |
-| `grosor_hoja_mm` | `0.1` | Grosor de una hoja (dos páginas). |
-| `formato.ancho_mm`, `formato.alto_mm` | `135` y `210` | Medida de corte. |
-| `sangrado_mm` | `3` | Sangrado en cada borde exterior. |
-| `solapas_mm` | `0` | Ancho de cada solapa. `0` no pone sobrelomo; si no es `0`, mínimo 40. |
+| `lomo_mm` | calculado | Lomo fijo, en mm. Hasta 150. |
+| `grosor_hoja_mm` | `0.1` | Grosor de una hoja (dos páginas), entre 0,02 y 0,5 mm. |
+| `formato.ancho_mm`, `formato.alto_mm` | `135` y `210` | Medida de corte, entre 50 y 500 mm. |
+| `sangrado_mm` | `3` | Sangrado en cada borde exterior, hasta 10 mm. |
+| `solapas_mm` | `0` | Ancho de cada solapa. `0` no pone sobrelomo; si no es `0`, mínimo 40 y no más ancho que la portada. |
 | `plantilla` | `clasica` | `clasica` o `sobria`. |
 | `colores.fondo`, `colores.texto`, `colores.acento` | los de la plantilla | Colores en `#rrggbb`. |
 | `degradado` | sin degradado | Degradado del fondo de toda la cubierta. Ver «Degradados». |
@@ -68,6 +68,8 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `solapa_portada` | vacío | Texto de la solapa interior de la portada (solo con solapas). |
 
 El de `ejemplos/platon-apologia.json` usa casi todos los campos; el de Sun Tzu, solo los básicos.
+
+Las medidas fuera de esos límites se rechazan con un error que nombra el campo: casi siempre es un error de unidades (centímetros o pulgadas en vez de milímetros).
 
 Los caracteres de control de un texto pegado se limpian al escribir el SVG: el salto de página que trae un PDF se lee como espacio y los demás se quitan, porque XML no los admite.
 

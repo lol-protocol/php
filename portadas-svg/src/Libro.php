@@ -11,6 +11,19 @@ namespace PortadasSvg;
  */
 final class Libro
 {
+    /**
+     * Límites de las medidas, en mm. Pasarse de ahí casi seguro es un error de unidades (centímetros o
+     * pulgadas en vez de milímetros), y es mejor avisar antes de dibujar un lomo de cinco metros.
+     */
+    private const LADO_MINIMO = 50.0;
+    private const LADO_MAXIMO = 500.0;
+    private const SANGRADO_MAXIMO = 10.0;
+    private const SOLAPA_MINIMA = 40.0;
+    private const LOMO_MAXIMO = 150.0;
+    /** Grosor de una hoja de papel, en mm. */
+    private const GROSOR_MINIMO = 0.02;
+    private const GROSOR_MAXIMO = 0.5;
+
     /** @param array{fondo: string, texto: string, acento: string} $colores */
     private function __construct(
         public readonly string $id,
@@ -71,20 +84,26 @@ final class Libro
             : null;
 
         $formato = self::objeto($datos, 'formato');
-        $ancho = self::numero($formato, 'ancho_mm', 135.0, 50.0);
-        $alto = self::numero($formato, 'alto_mm', 210.0, 50.0);
-        $sangrado = self::numero($datos, 'sangrado_mm', 3.0, 0.0);
+        $ancho = self::numero($formato, 'ancho_mm', 135.0, self::LADO_MINIMO, self::LADO_MAXIMO);
+        $alto = self::numero($formato, 'alto_mm', 210.0, self::LADO_MINIMO, self::LADO_MAXIMO);
+        $sangrado = self::numero($datos, 'sangrado_mm', 3.0, 0.0, self::SANGRADO_MAXIMO);
 
         $solapas = self::numero($datos, 'solapas_mm', 0.0, 0.0);
-        if ($solapas > 0.0 && $solapas < 40.0) {
-            throw new \InvalidArgumentException("$id: 'solapas_mm' debe ser 0 (sin solapas) o 40 o más.");
+        if ($solapas > 0.0 && $solapas < self::SOLAPA_MINIMA) {
+            throw new \InvalidArgumentException("$id: 'solapas_mm' debe ser 0 (sin solapas) o " . self::SOLAPA_MINIMA . ' o más.');
+        }
+        if ($solapas > $ancho) {
+            throw new \InvalidArgumentException("$id: 'solapas_mm' ($solapas mm) no puede ser mayor que el ancho de la portada ($ancho mm).");
         }
 
         if (isset($datos['lomo_mm'])) {
-            $lomo = self::numero($datos, 'lomo_mm', null, 0.0);
+            $lomo = self::numero($datos, 'lomo_mm', null, 0.0, self::LOMO_MAXIMO);
         } else {
-            $grosor = self::numero($datos, 'grosor_hoja_mm', 0.1, 0.02);
+            $grosor = self::numero($datos, 'grosor_hoja_mm', 0.1, self::GROSOR_MINIMO, self::GROSOR_MAXIMO);
             $lomo = ceil(self::numero($datos, 'paginas', null, 2.0) / 2) * $grosor;
+            if ($lomo > self::LOMO_MAXIMO) {
+                throw new \InvalidArgumentException("$id: con esas 'paginas' y ese 'grosor_hoja_mm' el lomo sale de " . round($lomo, 1) . ' mm, y el máximo es ' . self::LOMO_MAXIMO . " mm. Revisa los dos campos o da 'lomo_mm'.");
+            }
         }
 
         $direccion = self::cadena($datos, 'lomo_direccion', 'arriba-abajo');
@@ -128,15 +147,17 @@ final class Libro
     }
 
     /**
-     * Número mayor o igual que `$minimo`. Con `$defecto` null, el campo es obligatorio.
+     * Número entre `$minimo` y `$maximo` (sin tope si es null). Con `$defecto` null, el campo es obligatorio.
      *
      * @param array<string, mixed> $datos
      */
-    private static function numero(array $datos, string $campo, ?float $defecto, float $minimo): float
+    private static function numero(array $datos, string $campo, ?float $defecto, float $minimo, ?float $maximo = null): float
     {
         $valor = $datos[$campo] ?? $defecto;
-        if ((!is_int($valor) && !is_float($valor)) || $valor < $minimo) {
-            throw new \InvalidArgumentException("'$campo' debe ser un número mayor o igual que $minimo.");
+        if ((!is_int($valor) && !is_float($valor)) || $valor < $minimo || ($maximo !== null && $valor > $maximo)) {
+            throw new \InvalidArgumentException($maximo === null
+                ? "'$campo' debe ser un número mayor o igual que $minimo."
+                : "'$campo' debe ser un número entre $minimo y $maximo.");
         }
 
         return (float) $valor;
