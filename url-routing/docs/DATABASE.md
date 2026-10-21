@@ -103,6 +103,17 @@ php bin/migrate.php pos --seed         # aplica y carga datos de demostración (
 - **Las líneas de una orden copian nombre y precio** del producto al momento de
   la compra: la orden debe seguir mostrando lo que se pagó aunque el producto
   cambie después.
+- **La dirección de envío se copia a la orden y no se borra sola.**
+  `ordenes.direccion_envio` guarda la dirección tal como se usó, por la misma
+  razón que las líneas copian el precio: la orden, la boleta y una garantía o
+  devolución tienen que mostrar adónde se mandó. Se conserva mientras exista la
+  orden, sin purga automática: lo decidió la persona a cargo, así que no se
+  agrega un borrado por plazo sin consultarlo. La libreta `direcciones` es del
+  cliente y dura lo que el cliente quiera.
+  Desde el 1 de diciembre de 2026 rige la Ley 21.719 (ver
+  `privacy-laws/countries/cl/`): el titular puede pedir acceso o supresión, y la
+  política de privacidad del POS tiene que decir que estas direcciones se
+  guardan mientras exista la orden y por qué.
 
 ## Tests
 
@@ -119,6 +130,12 @@ TEST_PG_USER=routing_test TEST_PG_PASSWORD=routing_test \
 ```
 
 ## Limitaciones conocidas
+
+- Un cliente no puede borrar sus direcciones ni su cuenta desde el sitio: la
+  vista `/0/4/` sólo las lista. Un pedido de supresión (Ley 21.719) se atiende
+  a mano en la base: se borran sus filas de `direcciones` y, si no hay una
+  obligación legal de conservarla, la `direccion_envio` de sus órdenes se
+  reemplaza por `NULL` (la columna lo admite; la orden y sus líneas quedan).
 
 - La búsqueda ignora mayúsculas y acentos (`Repository::sinAcentos()`): compara
   `TRANSLATE(LOWER(columna), 'áéí…', 'aei…') LIKE ?` contra el texto normalizado
