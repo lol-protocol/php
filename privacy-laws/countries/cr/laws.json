@@ -17,7 +17,7 @@
     "exemptions": "Internal/personal/household databases (unless traded)",
     "deceased_data": "",
     "research_exemption": "Regulation (Decree 37554-JP, art. 2(o)) defines scientific research as processing non-sensitive data or sensitive data that is not identifiable; law's research article not confirmed (unconfirmed)",
-    "genetic_data": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9)",
+    "genetic_data": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9) (unconfirmed)",
     "website_url": "https://www.sutel.go.cr/sites/default/files/normativas/ley_proteccion_de_la_persona_frente_al_tratamiento_de_sus_ley_8968.pdf",
     "language": "Spanish",
     "frameworks": "",
@@ -43,14 +43,15 @@
         "url": "https://www.tse.go.cr/pdf/normativa/reglamentoleyproteccionpersona.pdf",
         "confidence": "low",
         "checked": "2026-10-21"
-      },
-      "genetic_data": {
-        "url": "https://bioethics.miami.edu/international/pan-american-bioethics-initiative/latam-privacy/costa-rica/index.html",
-        "confidence": "medium",
-        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9)",
+        "to": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9) (unconfirmed)"
+      },
       {
         "date": "2026-10-21",
         "field": "genetic_data",
