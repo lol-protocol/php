@@ -51,8 +51,9 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 | `Listado-paises/` | `python3 generar_tabla.py --comprobar` (valida `paises.csv`, `paises_pos.csv` y `niveles_lenguas.csv`, y que `tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` estén al día) y `python3 -m unittest pruebas` |
 | `signos-zodiacales/` | `python3 generar.py --comprobar` (valida `datos/signos.json` — los 30 idiomas, las estrellas de cada constelación — y que `constelaciones/*.svg` y `signos-por-idioma.md` estén al día) |
 | `portadas-svg/` | `php pruebas/ejecutar.php` y `php bin/generar.php --comprobar` (que `ejemplos/salida/` esté al día con los JSON de `ejemplos/`) |
+| `privacy-laws/`, `copyright-laws/` | `npm ci && npm test`, `npm run validate` y `npm run build:check`; si tocas el CSV maestro, `npm run changes` y, antes de empujar, `npm run changes -- --check --since=origin/master` (la CI corre además PHP 8.1 y 8.4, y las pruebas de navegador con `npm run test:e2e`, que necesitan Chromium). `npm run check:links` revisa los enlaces de referencia, pero desde el contenedor de la nube no llega a esos sitios: lo corre `laws-links.yml` (también a mano con `workflow_dispatch`) |
 
-El resto de proyectos (`privacy-laws/`, `copyright-laws/`, `marketing/`, `marcalibros-plataforma-pos-brand-identity/`, `psychology-and-marketing/`, `landing-page/`): mira su README y los jobs de `.github/workflows/`.
+El resto de proyectos (`marketing/`, `marcalibros-plataforma-pos-brand-identity/`, `psychology-and-marketing/`, `landing-page/`): mira su README y los jobs de `.github/workflows/`.
 
 La convención del repo para «generar y comprobar que lo committeado sigue al día» es el flag `--comprobar` (`Listado-colores/`, `Listado-paises/`). `iconos-tools/` lo resuelve distinto a propósito: `build.py` (escribe) y `validate.py` (comprueba las reglas) quedan separados porque `build.py` también sirve solo para regenerar tras cambiar el generador, no solo para validar en CI.
 
