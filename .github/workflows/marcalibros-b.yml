@@ -49,7 +49,10 @@ jobs:
             marcalibros_b/generator/requirements-dev.txt
 
       - name: Instalar dependencias
-        run: pip install -r generator/requirements.txt -r generator/requirements-dev.txt
+        run: |
+          pip install -r generator/requirements.txt -r generator/requirements-dev.txt
+          pip freeze | grep -i -E '^(pillow|numpy|pyyaml|fonttools)=='
+          python -c "import platform; print(platform.python_version(), platform.platform())"
 
       # El QA rasteriza cada SVG con Chromium real; sin el, el build falla a proposito.
       - uses: browser-actions/setup-chrome@v1

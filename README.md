@@ -19,6 +19,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
 | [`iconos-genealogia/` y `iconos-biblioteca/`](ICONOS_README.md) | Dos sets de iconos SVG abstractos en 2.5D, sin texto: árbol genealógico (172 iconos) y biblioteca virtual (161), cada uno en 3 variantes. Galería en `galeria-iconos.html`, generador y validador en `iconos-tools/`. |
 | [`marcalibros-plataforma-pos-brand-identity/`](marcalibros-plataforma-pos-brand-identity/) | Identidad de marca de Marcalibros (marcadores de lectura) para Plataforma POS: tokens de marca, iconos SVG, 1000 marcalibros (10 movimientos literarios y 10 tipos de texto) con su vista previa JPG, paisajes JPG, el generador en Python, un módulo PHP para crear marcalibros propios a partir de imágenes subidas y una aplicación web independiente, sin cuentas, para explorarlos y crearlos. Sin CI. |
+| [`marcalibros_b/`](marcalibros_b/) | Marcalibros (marcadores de lectura verticales 1:7) para Plataforma POS: 1000 piezas generadas (10 movimientos literarios), generador determinista en Python con QA, línea de marca (logos, iconos, cabeceras), modelo de datos del lector y editor de usuario con subidas seguras. El catálogo completo lo publica la CI como artefacto. |
 
 Cada carpeta tiene su propio README con instrucciones de instalación y uso, salvo los sets de
 iconos (`iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/`), documentados juntos en
@@ -70,7 +71,7 @@ proyecto.
 - `web-animations`: prueba de humo de las animaciones.
 - `legal-data`: pruebas de `privacy-laws/` y `copyright-laws/` (los CSV maestros, los archivos por país, el lector de CSV de la interfaz y que el README diga lo que hay) y la sintaxis de su API y su importador.
 
-`sistema-nuevo/`, `vps-setup/` y `cobros-ingresos-funnels/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml` y `pruebas-cobros-ingresos-funnels.yml`).
+`sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros_b/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `marcalibros-b.yml`). Este último genera los 1000 marcalibros, pasa las pruebas y sube el catálogo como artefacto `marcalibros-catalogo`.
 
 ## Licencia
 
