@@ -170,9 +170,9 @@ can't use a finish that isn't in the list.
 
 `specs/paper_type_translations.csv` adds the same 50 names in the other 28
 languages the demo's `app/translations/` covers (one column per language
-code, joined on `type_name`). It's reference data, not wired into the demo
-or the database — nothing in this project reads `app/translations/` to
-pick a display language either (see "Demo" below). Unlike the sheet-size
+code, joined on `type_name`). The demo reads it to show each paper type
+in the language chosen in its selector (see "Demo" below); it isn't in the
+database. Unlike the sheet-size
 names, which are real international/national standards, most of these
 paper names are translated by machine, not by a native speaker of each
 language, and two (`Papel roneo`, `Papel chambril`) are Latin American
@@ -220,6 +220,29 @@ await loader.load();
 const converter = new FormatConverter(loader.formats);
 converter.findEquivalents('A4', 90);
 ```
+
+`DocumentFormats.load()` does the wiring in one call: it loads every catalog and
+returns an object with `formats`, `searcher`, `converter`, `generator`, `validator`,
+`statistics`, `batch`, `specs`, `margins` and `devices` already connected
+(`DocumentFormats.load({only: ['specs']})` skips what you don't need).
+
+```javascript
+const docs = await DocumentFormats.load();
+docs.converter.convert('Letter', 'A4');
+docs.specs.getPaperType('Papel bond');
+```
+
+Conventions the classes follow:
+
+- **One thing that isn't there is `null`** (`getMargins`, `getDevice`, `getPaperType`, `convert`);
+  **a list with nothing in it is `[]`**.
+- **`DocumentGenerator` throws `UnknownFormatError`** for a format that isn't in the catalog; its
+  `suggestions` holds the three closest names (`A44` suggests `A4`). `FormatValidator.validateForPrinting`
+  reports the same suggestions in its result instead of throwing.
+- **A file that can't be read** (404, server error) is reported with its path and status, not read as rows.
+- **Rows from `SpecificationManager` are frozen**: they are shared by every caller.
+- **Units**: `MM_PER_INCH`, `mmToInches()` and `inchesToMm()` are the one place for the factor;
+  reports keep their fixed decimals as text (`"21.0"`), through `fixed()`.
 
 See `docs/Tutorials.md` for step-by-step examples and
 `docs/frontend_implementation_guide.md` for UI patterns.
@@ -278,12 +301,29 @@ comparison table, a converter that shows how similar two sizes are, and a
 Paper Types tab (the 50 rows of `specs/paper_types.csv`) that can combine
 a chosen size with every paper type at once.
 
-`app/translations/` holds UI strings in 30 languages for
-`LocalizationManager` in `document-formats.js`. The demo doesn't use them (it
-is in English); they are for pages built with the library. German, English,
-Spanish, French, Japanese and Chinese have every string; the other 24
-translate the title, the tabs and the unit names (10 of 88 strings) and show
-English for the rest. See `docs/Localization.md`.
+The language selector in the corner of the page offers the 30 languages of
+`app/translations/` and starts in the browser's language when the demo has
+it; the choice is remembered. It changes the tabs, labels, filters, card
+and table captions and messages, the `lang` and text direction of the page
+(Arabic reads right to left), and the name of every paper type, which comes
+from `specs/paper_type_translations.csv`. What stays in English is data
+(colors, textures, categories, notes, country names) and the body of the
+About tab.
+
+German, English, Spanish, French, Japanese and Chinese have every UI string;
+the other 24 translate the title, the tabs and the unit names and show
+English for the rest, marked `lang="en"` so a screen reader doesn't read it
+with the wrong voice. Only strings written in the HTML are marked: the card
+captions JavaScript draws are not. See `docs/Localization.md`.
+
+The page follows the WAI-ARIA tabs pattern (arrow keys, Home and End move
+between tabs; in a right-to-left language the arrows are reversed), every
+field has a label, the page has `header`, `main` and `footer`, and the result
+count is announced when you filter. Colors meet WCAG AA contrast in light
+and dark mode, and animations stop under `prefers-reduced-motion`. It was
+checked with `axe-core` in Chromium on all five tabs, in light and dark mode
+and in six languages, with no violations; `tests/demo.test.js` guards the
+parts that can be checked without a browser (labels, tabs, translation keys).
 
 ## Tests
 
