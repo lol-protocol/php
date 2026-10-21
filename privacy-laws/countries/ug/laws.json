@@ -16,8 +16,8 @@
     "penalties_range": "Up to 245 currency points or 2% of annual gross turnover (corporations); up to 10 years' imprisonment",
     "exemptions": "National security; household use",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Further processing allowed for historical, statistical or research purposes if within original purpose and not published in identifiable form (s. 17, numbering to verify)",
+    "genetic_data": "No specific rule: special personal data (s. 9) covers beliefs, political opinion, sexual life, financial info, health/medical records; genetic data not listed",
     "website_url": "https://ulii.org/en/akn/ug/act/2019/9/eng@2019-05-03",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.ulii.org/akn/ug/act/2019/9",
@@ -43,9 +43,31 @@
         "url": "https://monitor.co.ug/uganda/news/national/does-uber-s-exit-put-personal-data-at-risk--5626822",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://ulii.org/akn/ug/act/2019/9/eng@2019-05-03/source",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.ulii.org/akn/ug/act/2019/9",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific rule: special personal data (s. 9) covers beliefs, political opinion, sexual life, financial info, health/medical records; genetic data not listed"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Further processing allowed for historical, statistical or research purposes if within original purpose and not published in identifiable form (s. 17, numbering to verify)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

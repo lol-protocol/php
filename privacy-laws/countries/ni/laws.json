@@ -16,7 +16,7 @@
     "penalties_range": "Art. 46: sanctions are warning, temporary suspension of operations, temporary/permanent closure or cancellation of files; law sets no fixed fine amounts",
     "exemptions": "Per secondary summary: personal use for private activities; State security/defence agencies handling data for national security (articles not confirmed) (unconfirmed)",
     "deceased_data": "",
-    "research_exemption": "",
+    "research_exemption": "Sensitive data may be used for statistical or scientific purposes when the data subject cannot be identified (article not confirmed) (unconfirmed)",
     "genetic_data": "",
     "website_url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
     "language": "Spanish",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
@@ -38,9 +38,20 @@
         "url": "https://www.clym.io/regulations/law-no-787-on-personal-data-protection-nicaragua",
         "confidence": "low",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://bioethics.miami.edu/international/pan-american-bioethics-initiative/latam-privacy/nicaragua/index.html",
+        "confidence": "low",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Sensitive data may be used for statistical or scientific purposes when the data subject cannot be identified (article not confirmed) (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "exemptions",

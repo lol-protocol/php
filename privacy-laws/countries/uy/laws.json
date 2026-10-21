@@ -15,9 +15,9 @@
     "enforcement_authority": "Regulatory and Control Unit for Personal Data (URCDP) within AGESIC",
     "penalties_range": "Up to 500,000 Indexed Units (UI) fine",
     "exemptions": "Personal/domestic use; public security, defence & State security",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Heirs: right of access to a deceased person's data exercised by any universal successor, proven by declaratoria de herederos (art. 14)",
+    "research_exemption": "Sensitive data may be processed for statistical or scientific purposes when dissociated from data subjects (art. 18)",
+    "genetic_data": "No express genetic-data rule; genetic information treated as health data, a sensitive category requiring express written consent (arts. 4(E), 18)",
     "website_url": "https://www.bps.gub.uy/bps/file/10816/25/ley-18.331---habeas-data.pdf",
     "language": "Spanish",
     "frameworks": "EU-Adequacy/CoE-108",
@@ -27,15 +27,48 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.gub.uy/unidad-reguladora-control-datos-personales/comunicacion/noticias/dia-internacional-proteccion-datos-personales-1",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://www.gub.uy/unidad-reguladora-control-datos-personales/institucional/normativa/dictamen-n-5025-consulta",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://www.impo.com.uy/bases/leyes/18331-2008/18",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.opp.gub.uy/sites/default/files/inline-files/1LOSDATOSPERSONALESYSUPROTECCION.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No express genetic-data rule; genetic information treated as health data, a sensitive category requiring express written consent (arts. 4(E), 18)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Sensitive data may be processed for statistical or scientific purposes when dissociated from data subjects (art. 18)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Heirs: right of access to a deceased person's data exercised by any universal successor, proven by declaratoria de herederos (art. 14)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

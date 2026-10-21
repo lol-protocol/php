@@ -17,7 +17,7 @@
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic identity named in definition of personal data (art. 5); sensitive-data treatment not confirmed (unconfirmed)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=CM&t=law",
     "language": "French/English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-21",
     "sources": {
       "law_name": {
         "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/",
@@ -78,9 +78,20 @@
         "url": "https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape",
         "confidence": "low",
         "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://lexafrica.com/2025/10/cameroon-data-protection-law-compliance/",
+        "confidence": "low",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic identity named in definition of personal data (art. 5); sensitive-data treatment not confirmed (unconfirmed)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

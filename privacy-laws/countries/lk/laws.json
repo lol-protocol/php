@@ -15,9 +15,9 @@
     "enforcement_authority": "Data Protection Authority of Sri Lanka",
     "penalties_range": "Up to LKR 10M per non-compliance (doubled for repeats)",
     "exemptions": "Personal or household use; national security",
-    "deceased_data": "",
+    "deceased_data": "Covered: data subject is an identifiable natural person alive or deceased (s. 56); heirs reportedly may exercise rights for 10 years after death (s. 17(5)(d), unverified)",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Special category: genetic data included in special categories of personal data (s. 56), stricter processing conditions",
     "website_url": "https://dpa.gov.lk/Background.php",
     "language": "English",
     "frameworks": "",
@@ -27,9 +27,32 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
-    "sources": {},
+    "last_checked": "2026-10-21",
+    "sources": {
+      "deceased_data": {
+        "url": "https://dpa.gov.lk/newsappeals.php",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=LK&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category: genetic data included in special categories of personal data (s. 56), stricter processing conditions"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Covered: data subject is an identifiable natural person alive or deceased (s. 56); heirs reportedly may exercise rights for 10 years after death (s. 17(5)(d), unverified)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

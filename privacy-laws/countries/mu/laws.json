@@ -15,9 +15,9 @@
     "enforcement_authority": "Data Protection Office (Data Protection Commissioner)",
     "penalties_range": "Up to MUR 200000 fine and/or 5 years' imprisonment",
     "exemptions": "National security; household use",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not covered: data subject defined as a living identified or identifiable individual (s. 2)",
+    "research_exemption": "Processing for historical, statistical or scientific research exempt where security and organisational measures protect data subjects' rights (s. 44)",
+    "genetic_data": "Special category: genetic data or biometric data uniquely identifying a person (s. 2); processing restricted to listed conditions",
     "website_url": "https://www.fscmauritius.org/media/ikoldflp/the-data-protection-act-2017.pdf",
     "language": "English",
     "frameworks": "CoE-108",
@@ -27,15 +27,48 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.fscmauritius.org/media/ikoldflp/the-data-protection-act-2017.pdf",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=MU&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://www.applebyglobal.com/publications/data-protection-guide-mauritius/",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.fscmauritius.org/media/ikoldflp/the-data-protection-act-2017.pdf",
+        "confidence": "high",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category: genetic data or biometric data uniquely identifying a person (s. 2); processing restricted to listed conditions"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Processing for historical, statistical or scientific research exempt where security and organisational measures protect data subjects' rights (s. 44)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: data subject defined as a living identified or identifiable individual (s. 2)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

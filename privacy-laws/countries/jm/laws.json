@@ -15,9 +15,9 @@
     "enforcement_authority": "Office of the Information Commissioner (OIC)",
     "penalties_range": "Up to 4% of annual gross worldwide turnover (bodies corporate)",
     "exemptions": "Domestic use; national security; journalism & artistic purposes",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Protected until 30 years after death: personal data includes data on individuals deceased for less than 30 years (s. 2)",
+    "research_exemption": "Exemption for processing for research, statistical and historical purposes where results do not identify individuals (Part V exemptions; section not confirmed) (unconfirmed)",
+    "genetic_data": "Sensitive personal data includes genetic data and biometric data; stricter processing conditions apply",
     "website_url": "https://www.dataguidance.com/notes/jamaica-data-protection-overview",
     "language": "English",
     "frameworks": "",
@@ -27,9 +27,43 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
-    "sources": {},
+    "last_checked": "2026-10-21",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.lexmundi.com/guides/global-data-privacy-guide/jurisdictions/latin-america-caribbean/jamaica",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://clym.io/regulations/jamaica-data-protection-act-2020?hsLang=en",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.lexmundi.com/guides/global-data-privacy-guide/jurisdictions/latin-america-caribbean/jamaica",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic data and biometric data; stricter processing conditions apply"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Exemption for processing for research, statistical and historical purposes where results do not identify individuals (Part V exemptions; section not confirmed) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Protected until 30 years after death: personal data includes data on individuals deceased for less than 30 years (s. 2)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

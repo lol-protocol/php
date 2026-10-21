@@ -17,7 +17,7 @@
     "exemptions": "Personal/household use; defence, security & criminal investigation",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic data defined in the law (inherited or acquired genetic characteristics) and classed as sensitive data",
     "website_url": "https://www.bacn.gov.py/leyes-paraguayas/12924/ley-n-7593-2025-de-protecci-n-de-datos-personales-en-la-rep-blica-del-paraguay",
     "language": "Spanish",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.clym.io/regulations/law-no-7593-paraguay",
@@ -38,9 +38,20 @@
         "url": "https://www.kiteworks.com/sites/default/files/resources/kiteworks-brief-enables-support-for-paraguays-personal-data-protection-law.pdf",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "genetic_data": {
+        "url": "https://www.abc.com.py/nacionales/2026/03/20/ley-de-datos-personales-en-paraguay-desde-cuando-entra-en-vigencia-y-que-cambia-para-los-ciudadanos/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data defined in the law (inherited or acquired genetic characteristics) and classed as sensitive data"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

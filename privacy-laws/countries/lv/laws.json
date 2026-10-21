@@ -15,9 +15,9 @@
     "enforcement_authority": "Data State Inspectorate (Datu valsts inspekcija)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Household use; national security",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Data of deceased protected only where it could relate to or affect living persons; health data stays confidential after death (Law On the Rights of Patients); no fixed term found",
+    "research_exemption": "Derogations for scientific/historical research, statistics and public-interest archiving (national documentary heritage): some data subject rights limited (art. 89 GDPR); article number not confirmed",
+    "genetic_data": "Special category (art. 9 GDPR); Human Genome Research Law requires written consent of gene donors for genetic research and genome database",
     "website_url": "https://www.dlapiperdataprotection.com/index.html?c=LV&t=law",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
@@ -27,9 +27,43 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
-    "sources": {},
+    "last_checked": "2026-10-21",
+    "sources": {
+      "deceased_data": {
+        "url": "https://whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-latvia",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://whitecase.com/publications/article/gdpr-guide-national-implementation-latvia",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-latvia",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (art. 9 GDPR); Human Genome Research Law requires written consent of gene donors for genetic research and genome database"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Derogations for scientific/historical research, statistics and public-interest archiving (national documentary heritage): some data subject rights limited (art. 89 GDPR); article number not confirmed"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Data of deceased protected only where it could relate to or affect living persons; health data stays confidential after death (Law On the Rights of Patients); no fixed term found"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

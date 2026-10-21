@@ -16,8 +16,8 @@
     "penalties_range": "Reported administrative fines up to 4% of global turnover for serious violations; criminal penalties up to 10 years for selling personal data (sources conflict, unverified) (unconfirmed)",
     "exemptions": "Purely personal or household activity; anonymous data",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Specific basis for processing for archiving in the public interest, scientific, historical or statistical purposes, subject to safeguards (section number not confirmed)",
+    "genetic_data": "Special category (2024 Bill s. 3 definition); processing prohibited unless an exception with safeguards applies (s. 6); enacted 2025 numbering may differ",
     "website_url": "https://assembly.gm/documents/364",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-21",
     "sources": {
       "law_name": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
@@ -83,9 +83,31 @@
         "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
         "confidence": "medium",
         "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://assembly.gm/documents/364/download",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (2024 Bill s. 3 definition); processing prohibited unless an exception with safeguards applies (s. 6); enacted 2025 numbering may differ"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Specific basis for processing for archiving in the public interest, scientific, historical or statistical purposes, subject to safeguards (section number not confirmed)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

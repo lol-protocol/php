@@ -17,7 +17,7 @@
     "exemptions": "Personal or household use; national security & defense; crime prevention; journalistic/literary/artistic activities",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Sensitive data includes health data including genetic data (article not confirmed); stricter sensitive-data regime applies",
     "website_url": "https://cms.law/fr/mar/legal-updates/flash-info-maroc-etat-des-lieux-de-la-protection-des-donnees-a-caractere-personnel-au-maroc-loi-n-09-08",
     "language": "French",
     "frameworks": "CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-08",
+    "last_checked": "2026-10-21",
     "sources": {
       "retention_period": {
         "url": "https://rm.coe.int/16806fdcba",
@@ -38,9 +38,20 @@
         "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/morocco",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "genetic_data": {
+        "url": "https://www.gide.com/sites/default/files/gidecuatrecasascasablanca_protectiondonneespersonnellesmaroc_22fev2017_0.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data includes health data including genetic data (article not confirmed); stricter sensitive-data regime applies"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

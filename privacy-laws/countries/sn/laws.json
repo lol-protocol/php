@@ -16,8 +16,8 @@
     "penalties_range": "CDP fines of XOF 1M to 100M; up to 7 years' imprisonment (Penal Code)",
     "exemptions": "National security; household use",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Processing for historical, statistical or scientific purposes recognised; implementing Decree 2008-721 defines and regulates it; exact law article not confirmed (unconfirmed)",
+    "genetic_data": "Genetic data defined (hereditary characteristics) and listed as sensitive; processing prohibited save exceptions such as consent or data made public (art. 40)",
     "website_url": "https://www.vie-publique.sn/documents/438/loi-protection-donnees-a-caractere-personnel",
     "language": "French",
     "frameworks": "CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://osiris.sn/loi-no-2008-12-du-25-janvier-2008-sur-la-protection-des-donnees-a-caractere.html",
@@ -38,9 +38,31 @@
         "url": "https://www.memoireonline.com/12/21/12572/m_L-encadrement-juridique-de-la-prospection-directe-dans-les-transactions-lectroniques11.html",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://osiris.sn/Decret-no-2008-721-du-30-juin-2008.html",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.privacyinternational.org/sites/default/files/2017-12/SenegalUPR_2013.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data defined (hereditary characteristics) and listed as sensitive; processing prohibited save exceptions such as consent or data made public (art. 40)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Processing for historical, statistical or scientific purposes recognised; implementing Decree 2008-721 defines and regulates it; exact law article not confirmed (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

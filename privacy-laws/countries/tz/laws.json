@@ -16,8 +16,8 @@
     "penalties_range": "Up to TZS 20M (individuals) or TZS 5B (corporations)",
     "exemptions": "National security; household use",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "No research/historical/statistical exemption found: s. 58 exemptions cover other laws, court orders, national/public security, crime and tax; Minister may add more",
+    "genetic_data": "Sensitive personal data includes genetic and biometric data; stricter processing conditions apply",
     "website_url": "https://dlapiperdataprotection.com/?c=TZ&t=law",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://fpf.org/blog/tanzanias-personal-information-protection-act-overview-key-takeaways-and-context/",
@@ -38,9 +38,31 @@
         "url": "https://dlapiperdataprotection.com/?c=TZ&t=law",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://fpf.org/blog/tanzanias-personal-information-protection-act-overview-key-takeaways-and-context/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=TZ",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic and biometric data; stricter processing conditions apply"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "No research/historical/statistical exemption found: s. 58 exemptions cover other laws, court orders, national/public security, crime and tax; Minister may add more"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

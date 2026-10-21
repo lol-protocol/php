@@ -17,7 +17,7 @@
     "exemptions": "Household use; national security & defence; operational-investigative work",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic personal data is 'special personal data' (with biometric, health, etc.), subject to stricter processing conditions",
     "website_url": "https://petosevic.com/node/4541",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "retention_period": {
         "url": "https://cpd.by/en/national-regulation/the-belarusian-data-protection-act/",
@@ -38,9 +38,20 @@
         "url": "https://gomelisp.gov.by/otvetstvennost-za-narushenie-zakona-o-personalnyh-dannyh-chto-grozit-narushitelyam/?print=pdf",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BY",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic personal data is 'special personal data' (with biometric, health, etc.), subject to stricter processing conditions"
+      },
       {
         "date": "2026-10-15",
         "field": "penalties_range",

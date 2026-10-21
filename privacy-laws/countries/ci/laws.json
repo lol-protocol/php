@@ -17,7 +17,7 @@
     "exemptions": "National security; household use",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic and biometric data treated as sensitive data needing special precautions; biometric/DNA processing requires prior ARTCI authorisation (art. 7)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=CI&t=law",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://digitalmag.ci/protection-des-donnees-a-caractere-personnel-lartci-alerte-les-responsables-de-traitement-et-les-correspondants/?amp=1",
@@ -43,9 +43,20 @@
         "url": "https://www.consentstack.io/regulations/ci-law2013450",
         "confidence": "low",
         "checked": "2026-10-14"
+      },
+      "genetic_data": {
+        "url": "https://www.digitalbusiness.africa/ce-quil-faut-savoir-du-cadre-reglementaire-de-la-biometrie-en-cote-divoire/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic and biometric data treated as sensitive data needing special precautions; biometric/DNA processing requires prior ARTCI authorisation (art. 7)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

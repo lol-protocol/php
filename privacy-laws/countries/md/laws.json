@@ -15,9 +15,9 @@
     "enforcement_authority": "National Center for Personal Data Protection (CNPDCP)",
     "penalties_range": "Up to MDL 2M or 2% turnover",
     "exemptions": "Household use; crime-prevention processing under Law 160/2026",
-    "deceased_data": "",
+    "deceased_data": "Processing of data of deceased persons outside the law's scope unless the law provides otherwise (per secondary summary) (unconfirmed)",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic identity named in definition of identifiable person (GDPR-aligned); specific special-category article not confirmed (unconfirmed)",
     "website_url": "https://datepersonale.md/en/national-conference-new-era-of-data-protection-implementation-of-gdpr/",
     "language": "English",
     "frameworks": "CoE-108",
@@ -27,15 +27,37 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.dlapiperdataprotection.com/?c=MD&t=law",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://www.clym.io/regulations/law-no-195-2024-republic-of-moldova",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.clym.io/regulations/law-no-195-2024-republic-of-moldova",
+        "confidence": "low",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic identity named in definition of identifiable person (GDPR-aligned); specific special-category article not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Processing of data of deceased persons outside the law's scope unless the law provides otherwise (per secondary summary) (unconfirmed)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

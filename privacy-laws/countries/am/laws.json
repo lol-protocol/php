@@ -17,7 +17,7 @@
     "exemptions": "Purely personal or household use",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "No specific genetic-data rule found; special categories do not list genetic data, but biometric data covers biological characteristics and requires notifying the regulator (unconfirmed)",
     "website_url": "https://translation-centre.am/pdf/Translat/HH_orenk/2015/HO-49-N_18052015_14062023_en.pdf",
     "language": "English",
     "frameworks": "CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://translation-centre.am/pdf/Translat/HH_orenk/2015/HO-49-N_18052015_14062023_en.pdf",
@@ -43,9 +43,20 @@
         "url": "https://www.moj.am/en/article/3965",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=AM&t=law",
+        "confidence": "low",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific genetic-data rule found; special categories do not list genetic data, but biometric data covers biological characteristics and requires notifying the regulator (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

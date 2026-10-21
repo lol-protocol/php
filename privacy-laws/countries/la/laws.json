@@ -16,8 +16,8 @@
     "penalties_range": "UNKNOWN; unverified claim of 10% turnover penalties from 2021 amendments (unconfirmed)",
     "exemptions": "Not specified",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Public-interest processing exemption incl. research and statistical reporting under legal authorization (secondary summary; article unverified) (unconfirmed)",
+    "genetic_data": "No specific rule: genetic data not named; health records listed as 'specific data' requiring data owner authorization",
     "website_url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
     "language": "Lao",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-21",
     "sources": {
       "law_name": {
         "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
@@ -73,9 +73,31 @@
         "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
         "confidence": "low",
         "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://regulations.clym.io/e-data-protection-law-no-25-na-laos",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://ogletree.com/international-employment-update/articles/july-2020/laos/2020-06-08/lao-pdr-introduces-law-to-protect-employees-personal-electronic-data",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific rule: genetic data not named; health records listed as 'specific data' requiring data owner authorization"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Public-interest processing exemption incl. research and statistical reporting under legal authorization (secondary summary; article unverified) (unconfirmed)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
