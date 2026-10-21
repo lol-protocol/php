@@ -2,15 +2,12 @@
 
 namespace PhoneDirectory\Database;
 
-use DefamatoryContentReview\Normalization\AccentFolding;
 use PhoneDirectory\Exception\InvalidEncodingException;
 use PhoneDirectory\SqlDialect;
 use PhoneDirectory\TextFolding;
 
 abstract class AbstractPDODatabase
 {
-    use SearchableDatabase;
-
     protected ?\PDO $pdo = null;
     protected ?SqlDialect $dialect = null;
     protected string $dsn;

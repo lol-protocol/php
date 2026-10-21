@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="135mm" height="216mm" viewBox="93 0 135 216">
+<title>Apología de Sócrates · Contratapa</title>
+<defs>
+<radialGradient id="fondo-degradado" gradientUnits="userSpaceOnUse" cx="230.8" cy="108" r="254.819"><stop offset="0" stop-color="#f7f0de"/>
+<stop offset="1" stop-color="#dcc69a"/>
+</radialGradient>
+</defs>
+<rect x="93" y="0" width="135" height="216" fill="url(#fondo-degradado)"/>
+<line x1="109" y1="25" x2="121" y2="25" stroke="#7a2e1f" stroke-width="0.8"/>
+<text x="109" y="40.36" font-family="Georgia, &apos;Times New Roman&apos;, serif" font-size="4.2" text-anchor="start" fill="#2a1f17"><tspan x="109" dy="0">En el año 399 a. C., Sócrates comparece ante un</tspan>
+<tspan x="109" dy="5.67">jurado de ciudadanos atenienses acusado de</tspan>
+<tspan x="109" dy="5.67">impiedad y de corromper a la juventud.</tspan>
+<tspan x="109" dy="5.67"> </tspan>
+<tspan x="109" dy="5.67">Este texto recoge, según lo recuerda Platón, la</tspan>
+<tspan x="109" dy="5.67">defensa que pronunció ante ellos y su negativa a</tspan>
+<tspan x="109" dy="5.67">dejar de filosofar aunque con ello salvara la</tspan>
+<tspan x="109" dy="5.67">vida.</tspan>
+</text>
+<text x="109" y="201" font-family="Georgia, &apos;Times New Roman&apos;, serif" font-size="3.2" text-anchor="start" fill="#2a1f17"><tspan x="109" dy="0">Edición de ejemplo · Clásicos</tspan>
+</text>
+<rect x="170" y="175" width="42" height="26" fill="#ffffff"/>
+</svg>

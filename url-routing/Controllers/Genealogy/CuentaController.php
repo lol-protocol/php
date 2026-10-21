@@ -11,7 +11,7 @@ use App\Repositories\Genealogy\RegistroRepository;
 use App\Repositories\UsuarioRepository;
 
 /**
- * Account area (/0/) — there is no login, so this is a fixed account
+ * Account area (/0/) — there are no user accounts, so this is a fixed account
  * (DEFAULT_USER_ID), not a per-session one. It shows that user's e-mail and
  * contributions, so only the owner may open it, and this is
  * where the owner logs in: anyone else is asked for the token (401).

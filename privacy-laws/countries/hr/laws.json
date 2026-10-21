@@ -15,9 +15,9 @@
     "enforcement_authority": "Croatian Personal Data Protection Agency (AZOP)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Household use; national security",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "No specific rules on deceased persons' data; GDPR (recital 27) covers living persons only",
+    "research_exemption": "Act contains specific provisions on processing for statistical purposes; otherwise GDPR art. 89 safeguards for research and archiving apply (unconfirmed)",
+    "genetic_data": "Special category (art. 9 GDPR); processing genetic data to calculate disease risk for life insurance or endowment contracts banned even with explicit consent",
     "website_url": "https://iapp.org/news/a/croatian-gdpr-implementation-law-main-features-and-unanswered-questions",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
@@ -27,9 +27,43 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
-    "sources": {},
+    "last_checked": "2026-10-18",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-croatia",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://iapp.org/news/a/croatian-gdpr-implementation-law-main-features-and-unanswered-questions",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://iapp.org/news/a/croatian-gdpr-implementation-law-main-features-and-unanswered-questions",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (art. 9 GDPR); processing genetic data to calculate disease risk for life insurance or endowment contracts banned even with explicit consent"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Act contains specific provisions on processing for statistical purposes; otherwise GDPR art. 89 safeguards for research and archiving apply (unconfirmed)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No specific rules on deceased persons' data; GDPR (recital 27) covers living persons only"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

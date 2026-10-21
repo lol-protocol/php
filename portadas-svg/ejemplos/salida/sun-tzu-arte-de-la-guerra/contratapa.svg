@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="138mm" height="216mm" viewBox="0 0 138 216">
+<title>El arte de la guerra · Contratapa</title>
+<defs>
+<linearGradient id="fondo-degradado" gradientUnits="userSpaceOnUse" x1="0" y1="108" x2="280.8" y2="108"><stop offset="0" stop-color="#1c1f24"/>
+<stop offset="1" stop-color="#111316"/>
+</linearGradient>
+</defs>
+<rect x="0" y="0" width="138" height="216" fill="url(#fondo-degradado)"/>
+<line x1="19" y1="25" x2="31" y2="25" stroke="#c8a24a" stroke-width="0.8"/>
+<text x="19" y="40.36" font-family="&apos;Helvetica Neue&apos;, Helvetica, Arial, sans-serif" font-size="4.2" text-anchor="start" fill="#f2efe6"><tspan x="19" dy="0">Tratado militar chino atribuido al general</tspan>
+<tspan x="19" dy="5.67">Sun Tzu, que según la tradición lo escribió</tspan>
+<tspan x="19" dy="5.67">hace unos 2.500 años.</tspan>
+<tspan x="19" dy="5.67"> </tspan>
+<tspan x="19" dy="5.67">Sus trece capítulos hablan de cálculo,</tspan>
+<tspan x="19" dy="5.67">engaño, espionaje y de la mejor victoria: la</tspan>
+<tspan x="19" dy="5.67">que se obtiene sin combatir.</tspan>
+</text>
+<text x="19" y="201" font-family="&apos;Helvetica Neue&apos;, Helvetica, Arial, sans-serif" font-size="3.2" text-anchor="start" fill="#f2efe6"><tspan x="19" dy="0">Edición de ejemplo · Clásicos</tspan>
+</text>
+<rect x="80" y="175" width="42" height="26" fill="#ffffff"/>
+</svg>

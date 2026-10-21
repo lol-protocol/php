@@ -6,6 +6,8 @@ if (!container) {
     throw new Error('Animation setup failed: #particleContainer not found');
 }
 
+// Only what is its own: how a particle is born. Gravity, bouncing and drawing come from PhysicsObject,
+// whose x, y are the centre of the circle.
 class Particle extends PhysicsObject {
     constructor() {
         const size = Math.random() * 20 + 5;
@@ -24,29 +26,6 @@ class Particle extends PhysicsObject {
             bounceCoeff: 0.8,
             bounds: { width: window.innerWidth, height: window.innerHeight }
         });
-    }
-
-    update() {
-        this.vy += Physics.gravity;
-        this.x += this.vx;
-        this.y += this.vy;
-        this.checkBounds();
-        this.render();
-    }
-
-    checkBounds() {
-        if (this.y + this.radius > this.bounds.height) {
-            this.y = this.bounds.height - this.radius;
-            this.vy *= -this.bounceCoeff;
-        }
-        if (this.x < 0 || this.x + this.radius > this.bounds.width) {
-            this.vx *= -1;
-        }
-    }
-
-    render() {
-        this.element.style.left = this.x + 'px';
-        this.element.style.top = this.y + 'px';
     }
 }
 

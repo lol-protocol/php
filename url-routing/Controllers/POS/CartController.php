@@ -8,7 +8,7 @@ use App\Controllers\BaseController;
 use App\Repositories\POS\ProductoRepository;
 use App\Support\Cart;
 
-/** /c/ — the cart lives in the session: there's no login, so it's tied to the browser, not an account. */
+/** /c/ — the cart lives in the session: there are no user accounts, so it's tied to the browser, not an account. */
 class CartController extends BaseController
 {
     private function carrito(): Cart

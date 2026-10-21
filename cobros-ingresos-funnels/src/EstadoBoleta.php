@@ -24,7 +24,7 @@ final class EstadoBoleta
 
         $estado = match (true) {
             $anulada => 'anulada',
-            $saldo <= 0.01 => 'pagada',
+            Dinero::cuentaComoCero($saldo) => 'pagada',
             $fechaVencimiento < $hoy => 'vencida',
             $pagado > 0 => 'parcial',
             default => 'pendiente',

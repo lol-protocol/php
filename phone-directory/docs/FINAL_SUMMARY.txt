@@ -61,6 +61,5 @@ PENDIENTES
 ----------
 - parseFile() acumula todas las entradas en memoria: los archivos muy grandes hay que
   partirlos antes de importarlos.
-- Config/ParserConfig y Logger/* existen pero no están conectados a nada.
-- Manager/PhoneDirectoryManager (v1) está obsoleto; usar PhoneDirectoryManagerV2.
+- Config/ParserConfig existe pero no está conectado a nada.
 - Los ports a Python y Java no clasifican empresas ni tienen RecordLinker.

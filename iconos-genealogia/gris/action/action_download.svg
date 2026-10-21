@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_download_blue" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_download_blue_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#939393"/>
       <stop offset="1" stop-color="#606060"/>
     </linearGradient>
-    <linearGradient id="grad_action_download_ink" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_download_ink_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8A8A8A"/>
       <stop offset="1" stop-color="#535353"/>
     </linearGradient>
@@ -14,8 +14,8 @@
     <ellipse cx="32.9" cy="54.8" rx="20.15" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M25.58 28.44L26.96 30.28A7 7 0 0 0 38.16 21.88L36.78 20.04A7 7 0 0 0 25.58 28.44Z" fill="#373737"/><circle cx="31" cy="24" r="7" fill="url(#grad_action_download_blue)"/></g>
-    <g><path d="M54 46A4 4 0 0 1 54.8 48.4A4 4 0 0 1 50.8 52.4L16.8 52.4A4 4 0 0 1 13.6 50.8L11.98 48.64A4 4 0 0 1 11.18 46.24A4 4 0 0 1 15.18 42.24L49.18 42.24A4 4 0 0 1 52.38 43.84Z" fill="#303030"/><rect x="11" y="42" width="42" height="8" rx="4" fill="url(#grad_action_download_ink)"/></g>
+    <g><path d="M25.58 28.44L26.96 30.28A7 7 0 0 0 38.16 21.88L36.78 20.04A7 7 0 0 0 25.58 28.44Z" fill="#373737"/><circle cx="31" cy="24" r="7" fill="url(#grad_action_download_blue_g)"/></g>
+    <g><path d="M54 46A4 4 0 0 1 54.8 48.4A4 4 0 0 1 50.8 52.4L16.8 52.4A4 4 0 0 1 13.6 50.8L11.98 48.64A4 4 0 0 1 11.18 46.24A4 4 0 0 1 15.18 42.24L49.18 42.24A4 4 0 0 1 52.38 43.84Z" fill="#303030"/><rect x="11" y="42" width="42" height="8" rx="4" fill="url(#grad_action_download_ink_g)"/></g>
   </g>
   <g class="marks">
     <path d="M23.5 7v4M31 5v4M38.5 7v4" fill="none" stroke="#606060" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>

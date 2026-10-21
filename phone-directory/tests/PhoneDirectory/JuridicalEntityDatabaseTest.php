@@ -222,6 +222,33 @@ class JuridicalEntityDatabaseTest extends TestCase
         $this->assertCount(2, $this->database->search([]));
     }
 
+    public function testSearchRejectsCriteriaItDoesNotKnow(): void
+    {
+        $this->database->insert(new JuridicalEntity(businessName: 'Farmacia Central', street: '456 Laurel Avenue'));
+
+        // 'name' is the person database's key; here it is 'businessName'. It used to be ignored and
+        // search() returned every row.
+        try {
+            $this->database->search(['name' => 'Farmacia']);
+            $this->fail("search() accepted the unknown criterion 'name'");
+        } catch (\InvalidArgumentException $e) {
+            $this->assertStringContainsString('name', $e->getMessage());
+            $this->assertStringContainsString('businessName, street, phone, businessType', $e->getMessage());
+        }
+    }
+
+    public function testSearchTreatsEmptyValuesAsNoCriterionButZeroAsAValue(): void
+    {
+        $this->database->insert(new JuridicalEntity(businessName: 'Farmacia Central', street: '456 Laurel Avenue', phoneNumber: '555-890-1234'));
+        $this->database->insert(new JuridicalEntity(businessName: 'Hotel Plaza', street: '789 Magnolia Avenue', phoneNumber: '0'));
+
+        $this->assertCount(2, $this->database->search(['businessName' => '']));
+
+        $found = $this->database->search(['phone' => '0']);
+        $this->assertCount(1, $found);
+        $this->assertSame('Hotel Plaza', $found[0]->getBusinessName());
+    }
+
     public function testClearDatabase(): void
     {
         $this->database->insert(new JuridicalEntity(businessName: 'Alpha Corp', street: '1 A St'));

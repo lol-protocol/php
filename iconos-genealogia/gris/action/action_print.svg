@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_print_slate" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_print_slate_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#BFBFBF"/>
       <stop offset="1" stop-color="#A1A1A1"/>
     </linearGradient>
@@ -10,8 +10,8 @@
     <ellipse cx="32" cy="52.4" rx="16.56" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><rect x="24" y="24" width="26" height="26" rx="6" fill="url(#grad_action_print_slate)" opacity="0.35"/></g>
-    <g><rect x="19" y="19" width="26" height="26" rx="6" fill="url(#grad_action_print_slate)" opacity="0.6"/></g>
-    <g><path d="M40.9 19.2A6 6 0 0 1 42.1 22.8L42.1 36.8A6 6 0 0 1 36.1 42.8L22.1 42.8A6 6 0 0 1 17.3 40.4L15.38 37.84A6 6 0 0 1 14.18 34.24L14.18 20.24A6 6 0 0 1 20.18 14.24L34.18 14.24A6 6 0 0 1 38.98 16.64Z" fill="#5E5E5E"/><rect x="14" y="14" width="26" height="26" rx="6" fill="url(#grad_action_print_slate)"/></g>
+    <g><rect x="24" y="24" width="26" height="26" rx="6" fill="url(#grad_action_print_slate_g)" opacity="0.35"/></g>
+    <g><rect x="19" y="19" width="26" height="26" rx="6" fill="url(#grad_action_print_slate_g)" opacity="0.6"/></g>
+    <g><path d="M40.9 19.2A6 6 0 0 1 42.1 22.8L42.1 36.8A6 6 0 0 1 36.1 42.8L22.1 42.8A6 6 0 0 1 17.3 40.4L15.38 37.84A6 6 0 0 1 14.18 34.24L14.18 20.24A6 6 0 0 1 20.18 14.24L34.18 14.24A6 6 0 0 1 38.98 16.64Z" fill="#5E5E5E"/><rect x="14" y="14" width="26" height="26" rx="6" fill="url(#grad_action_print_slate_g)"/></g>
   </g>
 </svg>

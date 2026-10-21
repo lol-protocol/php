@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="5.6mm" height="216mm" viewBox="228 0 5.6 216">
+<title>Apología de Sócrates · Lomo</title>
+<defs>
+<radialGradient id="fondo-degradado" gradientUnits="userSpaceOnUse" cx="230.8" cy="108" r="254.819"><stop offset="0" stop-color="#f7f0de"/>
+<stop offset="1" stop-color="#dcc69a"/>
+</radialGradient>
+</defs>
+<rect x="228" y="0" width="5.6" height="216" fill="url(#fondo-degradado)"/>
+<rect x="228" y="0" width="5.6" height="216" fill="url(#fondo-degradado)"/>
+<text transform="translate(229.624 108) rotate(90)" font-family="Georgia, &apos;Times New Roman&apos;, serif" font-size="3.36" text-anchor="middle" fill="#2a1f17">Apología de Sócrates · Platón</text>
+</svg>

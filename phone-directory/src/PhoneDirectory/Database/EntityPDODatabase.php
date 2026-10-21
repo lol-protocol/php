@@ -14,9 +14,6 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
 {
     abstract protected function getTableName(): string;
 
-    /** @deprecated Never called; use ensureConnection(). */
-    abstract protected function ensureConnected(): void;
-
     /**
      * @param Row $row
      * @return TEntity
@@ -64,13 +61,6 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         }
 
         return $count;
-    }
-
-    /** @deprecated Never called. Despite its name it does not open a transaction. */
-    protected function updateWithTransaction(callable $updateFn): bool
-    {
-        $this->ensureConnection();
-        return $updateFn();
     }
 
     /** @return Row|null */
@@ -212,22 +202,38 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
      * 'contains' uses the dialect's substring match instead of equality; 'fold' applies accent/case
      * folding to the value before comparing it against a *_folded column.
      *
+     * A key that is not in $fieldMap throws. It used to be ignored, so a typo (['nmae' => 'García']), or
+     * the person database's 'name' sent to the juridical one (which calls it 'businessName'), matched
+     * nothing and search() quietly returned every row. A value of '' (or null) means "no criterion" and
+     * is skipped; '0' is a value like any other.
+     *
      * @param array<string, string> $criteria
      * @param array<string, array{column: string, contains?: bool, fold?: bool}> $fieldMap
      * @return array{0: string[], 1: array<string, mixed>} [$whereClauses, $params]
+     * @throws \InvalidArgumentException If $criteria has a key that is not in $fieldMap
      */
     protected function buildSearchWhere(array $criteria, array $fieldMap): array
     {
+        $unknown = array_diff(array_keys($criteria), array_keys($fieldMap));
+        if ($unknown !== []) {
+            throw new \InvalidArgumentException(sprintf(
+                DatabaseConstants::ERROR_UNKNOWN_SEARCH_CRITERIA,
+                implode(', ', $unknown),
+                implode(', ', array_keys($fieldMap))
+            ));
+        }
+
         $where = [];
         $params = [];
 
         foreach ($fieldMap as $criteriaKey => $spec) {
-            if (empty($criteria[$criteriaKey])) {
+            $criterion = $criteria[$criteriaKey] ?? '';
+            if ($criterion === '') {
                 continue;
             }
 
             $placeholder = ':' . $criteriaKey;
-            $value = ($spec['fold'] ?? false) ? $this->fold($criteria[$criteriaKey]) : $criteria[$criteriaKey];
+            $value = ($spec['fold'] ?? false) ? $this->fold($criterion) : $criterion;
 
             if ($spec['contains'] ?? false) {
                 $where[] = $this->dialect->containsCondition($spec['column'], $placeholder);

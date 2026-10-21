@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_preview_indigo" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_preview_indigo_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8F8F8F"/>
       <stop offset="1" stop-color="#5B5B5B"/>
     </linearGradient>
-    <linearGradient id="grad_action_preview_mist" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_preview_mist_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#E1E1E1"/>
       <stop offset="1" stop-color="#D3D3D3"/>
     </linearGradient>
@@ -14,7 +14,7 @@
     <ellipse cx="31.9" cy="58.8" rx="21.99" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M28.98 34.64L30.6 36.8A14 14 0 0 0 53 20L51.38 17.84A14 14 0 0 0 28.98 34.64Z" fill="#353535"/><circle cx="40" cy="26" r="14" fill="url(#grad_action_preview_indigo)"/></g>
-    <g><path d="M40.6 32.8A6 6 0 0 1 41.8 36.4L41.8 50.4A6 6 0 0 1 35.8 56.4L15.8 56.4A6 6 0 0 1 11 54L9.38 51.84A6 6 0 0 1 8.18 48.24L8.18 34.24A6 6 0 0 1 14.18 28.24L34.18 28.24A6 6 0 0 1 38.98 30.64Z" fill="#7B7B7B"/><rect x="8" y="28" width="32" height="26" rx="6" fill="url(#grad_action_preview_mist)" opacity="0.85"/></g>
+    <g><path d="M28.98 34.64L30.6 36.8A14 14 0 0 0 53 20L51.38 17.84A14 14 0 0 0 28.98 34.64Z" fill="#353535"/><circle cx="40" cy="26" r="14" fill="url(#grad_action_preview_indigo_g)"/></g>
+    <g><path d="M40.6 32.8A6 6 0 0 1 41.8 36.4L41.8 50.4A6 6 0 0 1 35.8 56.4L15.8 56.4A6 6 0 0 1 11 54L9.38 51.84A6 6 0 0 1 8.18 48.24L8.18 34.24A6 6 0 0 1 14.18 28.24L34.18 28.24A6 6 0 0 1 38.98 30.64Z" fill="#7B7B7B"/><rect x="8" y="28" width="32" height="26" rx="6" fill="url(#grad_action_preview_mist_g)" opacity="0.85"/></g>
   </g>
 </svg>

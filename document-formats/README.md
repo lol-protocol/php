@@ -20,13 +20,26 @@ document-formats/
 ├── tests/         Node tests (library, CSV data) and the database check
 ├── database_schema.sql
 ├── import_database.php   Loads the CSV files into database_schema.sql
-└── api_reference.json
+├── api_reference.json
+└── generate_api_examples.js   Keeps the API examples equal to the CSV rows they show
 ```
 
 File names use mixed case (`Tutorials.md`, `Localization.md`), except the
 standard convention names the rest of the repo also uses as-is (`README.md`,
 `LICENSE`, `CHANGELOG.md`). This has flipped back and forth across a few
 PRs — it's a deliberate choice, not an oversight, so please keep it this way.
+
+## Documentation
+
+Which guide to open:
+
+| Guide | Read it to |
+|---|---|
+| This README | Know what the files are, load them from JavaScript or SQL, run the demo and the tests |
+| `docs/Tutorials.md` | Build something small step by step: a format selector, a comparison tool, a PHP endpoint, Python analysis |
+| `docs/frontend_implementation_guide.md` | Reuse ready-made HTML and JavaScript components and the UI patterns around them |
+| `docs/Localization.md` | Translate the interface, add a language, use `LocalizationManager` |
+| `api_reference.json` | See the REST endpoints the database would serve (the examples are generated from the CSV files) |
 
 ## Data files
 
@@ -83,7 +96,8 @@ with the resolution and the screen size.
 |---|---|---|
 | `iso_216_series.csv` | 33 | ISO 216 A0–A10, B0–B10, C0–C10 |
 | `standards_reference.csv` | 33 | ISO, ANSI, JIS, GB/T and DIN standard numbers per format |
-| `technical_specifications.csv` | 33 | Paper weight (gsm), recommended DPI, finishes |
+| `technical_specifications.csv` | 11 | Paper weight (gsm), recommended DPI and finish for each sheet size that has one |
+| `product_specifications.csv` | 22 | The same for printed products that are not a sheet size (Brochure, Receipt, Sticker…), each linked to its usual paper type when one is clear |
 | `format_equivalence_matrix.csv` | 34 | How close two formats are, and whether one folds, trims or fits into the other (see below) |
 | `fold_compatibility.csv` | 20 | Which formats fold into which (A4 → A5, Letter → half-letter…) |
 | `binding_styles.csv` | 15 | Binding methods with cost factor, durability and page range |
@@ -92,6 +106,8 @@ with the resolution and the screen size.
 | `wcag_contrast.csv` | 29 | WCAG AA/AAA contrast ratios per UI element |
 | `regional_compatibility.csv` | 29 | Primary, secondary and legal standards per region |
 | `paper_types.csv` | 50 | Named paper stock — color, texture, finish and weight — independent of sheet size (see below) |
+| `finish_types.csv` | 13 | The finish vocabulary (Uncoated, Matte, Glossy, Thermal…) every `finish` and `finish_type` column draws from |
+| `paper_weight_standards.csv` | 12 | Standard paper weights: gsm with its bond, text and cover pound equivalents |
 | `paper_type_translations.csv` | 50 | `paper_types.csv` names in the 28 languages the demo doesn't cover with `type_name`/`type_name_en` |
 
 ## Columns
@@ -142,11 +158,21 @@ Spanish is spoken), `type_name_en`, `category`, `color`, `texture`,
 typical, not a spec any mill is bound to — paper names and grammages vary
 by manufacturer and region more than ISO sheet sizes do.
 
+`finish` holds one term of `finish_types.csv`; what makes a particular
+paper special ("coated one side", "with watermark") goes in `notes`. The
+`finish_type` of `technical_specifications.csv` and
+`product_specifications.csv` uses the same terms, and `A/B` means either
+(`Matte/Glossy`). `paper_weight_standards.csv` converts between gsm and the
+US basis weights: the pound column that names the row ("20 lb Bond") is the
+nominal figure, the other two are computed from the gsm (bond 17×22", text
+25×38", cover 20×26"). A test checks all of this, so a new paper type
+can't use a finish that isn't in the list.
+
 `specs/paper_type_translations.csv` adds the same 50 names in the other 28
 languages the demo's `app/translations/` covers (one column per language
-code, joined on `type_name`). It's reference data, not wired into the demo
-or the database — nothing in this project reads `app/translations/` to
-pick a display language either (see "Demo" below). Unlike the sheet-size
+code, joined on `type_name`). The demo reads it to show each paper type
+in the language chosen in its selector (see "Demo" below); it isn't in the
+database. Unlike the sheet-size
 names, which are real international/national standards, most of these
 paper names are translated by machine, not by a native speaker of each
 language, and two (`Papel roneo`, `Papel chambril`) are Latin American
@@ -195,12 +221,35 @@ const converter = new FormatConverter(loader.formats);
 converter.findEquivalents('A4', 90);
 ```
 
+`DocumentFormats.load()` does the wiring in one call: it loads every catalog and
+returns an object with `formats`, `searcher`, `converter`, `generator`, `validator`,
+`statistics`, `batch`, `specs`, `margins` and `devices` already connected
+(`DocumentFormats.load({only: ['specs']})` skips what you don't need).
+
+```javascript
+const docs = await DocumentFormats.load();
+docs.converter.convert('Letter', 'A4');
+docs.specs.getPaperType('Papel bond');
+```
+
+Conventions the classes follow:
+
+- **One thing that isn't there is `null`** (`getMargins`, `getDevice`, `getPaperType`, `convert`);
+  **a list with nothing in it is `[]`**.
+- **`DocumentGenerator` throws `UnknownFormatError`** for a format that isn't in the catalog; its
+  `suggestions` holds the three closest names (`A44` suggests `A4`). `FormatValidator.validateForPrinting`
+  reports the same suggestions in its result instead of throwing.
+- **A file that can't be read** (404, server error) is reported with its path and status, not read as rows.
+- **Rows from `SpecificationManager` are frozen**: they are shared by every caller.
+- **Units**: `MM_PER_INCH`, `mmToInches()` and `inchesToMm()` are the one place for the factor;
+  reports keep their fixed decimals as text (`"21.0"`), through `fixed()`.
+
 See `docs/Tutorials.md` for step-by-step examples and
 `docs/frontend_implementation_guide.md` for UI patterns.
 
 ### As a database
 
-`database_schema.sql` defines 15 MySQL/MariaDB tables and three views
+`database_schema.sql` defines 16 MySQL/MariaDB tables and three views
 (`v_formats_detailed`, `v_formats_by_measurement`, `v_format_equivalents`).
 `import_database.php` creates them and loads the CSV files:
 
@@ -213,12 +262,14 @@ php document-formats/import_database.php                   # later: reloads the 
 It fills countries (plus two regions, International `XI` and Europe `XE`,
 since every format needs a country), categories, `document_formats`, the
 conversions from the equivalence matrix, technical specifications, book
-margins, per-country compatibility, standard references and `paper_types`
-(unrelated to `document_formats` — it has no format or country column).
-Rows that name something other than a format, such as a product type
-("Vinyl Banner") or a book genre ("Poetry"), are skipped and listed. The
-supplier, price, paper-weight-standards, finish and variant tables have no
-CSV behind them and stay empty. Tested on MySQL 8.0 and MariaDB 10.11.
+margins, per-country compatibility and standard references. It also fills
+the tables that have no format or country behind them: `paper_types`,
+`finish_types`, `paper_weight_standards` and `product_specifications`
+(which points at `paper_types` when a product has a usual paper). Book
+margin rows that name a genre ("Poetry") instead of a format are skipped
+and listed. The `format_suppliers`, `format_prices` and `format_variants`
+tables are reserved: no CSV feeds them, so they stay empty on purpose.
+Tested on MySQL 8.0 and MariaDB 10.11.
 
 ```sql
 SELECT df1.format_name AS from_fmt, df2.format_name AS to_fmt, fc.equivalence_percentage
@@ -250,12 +301,29 @@ comparison table, a converter that shows how similar two sizes are, and a
 Paper Types tab (the 50 rows of `specs/paper_types.csv`) that can combine
 a chosen size with every paper type at once.
 
-`app/translations/` holds UI strings in 30 languages for
-`LocalizationManager` in `document-formats.js`. The demo doesn't use them (it
-is in English); they are for pages built with the library. German, English,
-Spanish, French, Japanese and Chinese have every string; the other 24
-translate the title, the tabs and the unit names (10 of 88 strings) and show
-English for the rest. See `docs/Localization.md`.
+The language selector in the corner of the page offers the 30 languages of
+`app/translations/` and starts in the browser's language when the demo has
+it; the choice is remembered. It changes the tabs, labels, filters, card
+and table captions and messages, the `lang` and text direction of the page
+(Arabic reads right to left), and the name of every paper type, which comes
+from `specs/paper_type_translations.csv`. What stays in English is data
+(colors, textures, categories, notes, country names) and the body of the
+About tab.
+
+German, English, Spanish, French, Japanese and Chinese have every UI string;
+the other 24 translate the title, the tabs and the unit names and show
+English for the rest, marked `lang="en"` so a screen reader doesn't read it
+with the wrong voice. Only strings written in the HTML are marked: the card
+captions JavaScript draws are not. See `docs/Localization.md`.
+
+The page follows the WAI-ARIA tabs pattern (arrow keys, Home and End move
+between tabs; in a right-to-left language the arrows are reversed), every
+field has a label, the page has `header`, `main` and `footer`, and the result
+count is announced when you filter. Colors meet WCAG AA contrast in light
+and dark mode, and animations stop under `prefers-reduced-motion`. It was
+checked with `axe-core` in Chromium on all five tabs, in light and dark mode
+and in six languages, with no violations; `tests/demo.test.js` guards the
+parts that can be checked without a browser (labels, tabs, translation keys).
 
 ## Tests
 
@@ -269,6 +337,15 @@ also imports everything into MySQL 8 and checks it with
 the CSV parser, HTML escaping, the loaders and converters in `document-formats.js`,
 and checks every CSV file for rows with the wrong number of fields (usually
 an unquoted comma), duplicate entries, and mm/inch values that disagree.
+
+Three more tests keep the pieces in step:
+
+- `tests/coherence.test.js` checks that the importer reads every column of every CSV it loads
+  (the ones it leaves out are listed with a reason), that its `INSERT`s only name columns of
+  `database_schema.sql`, and that the examples in `api_reference.json` equal their CSV rows.
+  If a CSV changes, run `node generate_api_examples.js` to refresh them.
+- `tests/docs.test.js` checks that every JavaScript example in this README and in `docs/` is valid
+  JavaScript and only calls methods the library has. It doesn't run them.
 
 ## Notes on the standards
 

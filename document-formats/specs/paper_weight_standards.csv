@@ -1,0 +1,13 @@
+weight_name,gsm,lb_bond,lb_text,lb_cover,weight_type,typical_use
+16 lb Bond,60,16.0,40.5,22.2,Bond,Drafts and economy copy paper
+20 lb Bond,75,20.0,50.7,27.7,Bond,Standard printer and copier paper
+24 lb Bond,90,24.0,60.8,33.3,Bond,Letterhead and premium laser or inkjet paper
+28 lb Bond,105,28.0,70.9,38.8,Bond,Presentations and premium letterhead
+32 lb Bond,120,32.0,81.1,44.4,Bond,Resumes and double-sided documents
+80 lb Text,118,31.4,80.0,43.6,Text,Booklet pages and flyers
+100 lb Text,148,39.4,100.0,54.7,Text,Brochures and menus
+65 lb Cover,176,46.8,118.9,65.0,Cover,Light covers and folders
+80 lb Cover,216,57.5,145.9,80.0,Cover,Covers and postcards
+100 lb Cover,270,71.8,182.4,100.0,Cardstock,Business cards and heavy postcards
+110 lb Cover,297,79.0,200.7,110.0,Cardstock,Cards and presentation covers
+130 lb Cover,352,93.6,237.8,130.0,Cardstock,Rigid cards and tags

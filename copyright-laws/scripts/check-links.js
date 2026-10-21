@@ -11,7 +11,8 @@
 // Warnings do not fail the run: 401/403/429 ("bots not welcome"), 5xx that persist after one
 // retry (a server error or a firewall turning away cloud runners says nothing about whether
 // the page is gone), timeouts and temporary DNS failures (many government sites throttle or
-// geo-block cloud runners) and an incomplete certificate chain (browsers repair it, Node does not).
+// geo-block cloud runners), an incomplete certificate chain (browsers repair it, Node does not) and
+// a redirect loop (a cookie wall: the site sets a cookie and redirects, browsers keep it, fetch does not).
 // With GITHUB_STEP_SUMMARY set (GitHub Actions) a Markdown summary is appended to it.
 import { appendFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -24,7 +25,7 @@ const SOFT = new Set([401, 403, 429]);
 
 /** @returns {{status: "ok"|"warning"|"broken", code: number|null, detail: string, finalUrl: string}} */
 // Network failures that say little about whether the page is gone.
-const SOFT_ERRORS = /timeout|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|UND_ERR_SOCKET|ECONNRESET|EAI_AGAIN|UNABLE_TO_VERIFY_LEAF_SIGNATURE|UNABLE_TO_GET_ISSUER_CERT/;
+const SOFT_ERRORS = /timeout|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|UND_ERR_SOCKET|ECONNRESET|EAI_AGAIN|UNABLE_TO_VERIFY_LEAF_SIGNATURE|UNABLE_TO_GET_ISSUER_CERT|redirect count exceeded/;
 
 export function classify(code, error, finalUrl) {
   if (error && SOFT_ERRORS.test(error)) return { status: "warning", code: null, detail: `${error} (may work in a browser)`, finalUrl };

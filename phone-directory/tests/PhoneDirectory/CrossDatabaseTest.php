@@ -111,6 +111,23 @@ class CrossDatabaseTest extends TestCase
     }
 
     #[DataProvider('databases')]
+    public function testSearchForPhoneZeroMatchesOnlyThatPhone(string $dsn, ?string $user, ?string $password): void
+    {
+        $this->rawConnection($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password, Privacy::forOwner());
+        $database->createTable();
+        $database->insert(new PhoneDirectoryEntry('SMITH, John', 'US', '1 Oak Avenue', '555-0100'));
+        $database->insert(new PhoneDirectoryEntry('JONES, Ann', 'US', '2 Oak Avenue', '0'));
+
+        // '0' used to count as "no criterion" (empty('0') is true) and returned both rows.
+        $found = $database->search(['phone' => '0']);
+
+        $this->assertCount(1, $found);
+        $this->assertSame('JONES, Ann', $found[0]->getRawName());
+        $database->disconnect();
+    }
+
+    #[DataProvider('databases')]
     public function testLegacyTableIsMigrated(string $dsn, ?string $user, ?string $password): void
     {
         $pdo = $this->rawConnection($dsn, $user, $password);

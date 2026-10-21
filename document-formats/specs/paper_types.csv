@@ -10,9 +10,9 @@ Papel opalina blanca,Opaline cardstock,Cardstock,White,Smooth,Uncoated,180-250,P
 Papel opalina de color,Colored opaline,Cardstock,Assorted,Smooth,Uncoated,180-250,Invitations and crafts,Dyed-pulp version of white opaline
 Papel couché brillante,Gloss coated paper,Coated,White,Smooth,Glossy,90-300,Magazines and catalogs,Mineral coating sharpens photo reproduction
 Papel couché mate,Matte coated paper,Coated,White,Smooth,Matte,90-300,Catalogs and brochures,Same coating as gloss couché with a matte finish
-Papel couché one side (C1S),One-side coated paper,Coated,White,Smooth one side,Glossy one side,170-300,Labels and posters,Coated front only; the back stays uncoated for gluing or writing
-Papel couché dúplex,Duplex board,Coated,White front and grey back,Smooth,Coated one side,250-400,Packaging boxes,Grey recycled back ply keeps cost down
-Papel ilustración,Illustration board,Coated,White,Smooth,Coated one side,170-300,Posters and book covers,Heavier one-side-coated stock
+Papel couché one side (C1S),One-side coated paper,Coated,White,Smooth one side,Glossy,170-300,Labels and posters,Coated front only; the back stays uncoated for gluing or writing
+Papel couché dúplex,Duplex board,Coated,White front and grey back,Smooth,Coated,250-400,Packaging boxes,Grey recycled back ply keeps cost down
+Papel ilustración,Illustration board,Coated,White,Smooth,Coated,170-300,Posters and book covers,Heavier one-side-coated stock
 Papel offset ahuesado (marfil),Cream offset paper,Writing/Printing,Ivory or cream,Smooth,Uncoated,70-120,Novels and long-form books,Warmer tone reduces eye strain in long reading
 Cartulina sulfatada (SBS),Solid bleached sulfate board,Cardstock,White,Smooth,Coated,200-400,Folding cartons and tags,Food-safe packaging board
 Cartulina Tango/perlada,Pearlized cardstock,Decorative,Pastel with pearl sheen,Smooth with shimmer,Pearlescent,250-300,Invitations and gift packaging,Mica coating gives the pearl shine
@@ -25,16 +25,16 @@ Papel vegetal (pergamino),Tracing/parchment paper,Specialty,Translucent,Smooth,U
 Papel vitela,Vellum,Specialty,Translucent white or color,Smooth,Uncoated,90-120,Overlays and wedding invitations,Lighter and glossier than vegetal paper
 Papel lino (textura hilo),Linen finish,Decorative,White or cream,Embossed linen weave,Uncoated,100-250,Certificates and business cards,An embossing roller presses a fabric-like weave into the sheet
 Papel chambril,Chambril cardstock,Decorative,White or ivory,Fine diagonal line pattern,Uncoated,180-240,Diplomas and certificates,Regional Latin American cardstock named after the chambray weave it imitates
-Papel autocopiativo (NCR),Carbonless (NCR) paper,Technical,White; pink; yellow per copy,Smooth,Coated reactive layer,53-56,Multi-copy forms and invoices,Microcapsules transfer the image under pressure without carbon
+Papel autocopiativo (NCR),Carbonless (NCR) paper,Technical,White; pink; yellow per copy,Smooth,Carbonless,53-56,Multi-copy forms and invoices,Microcapsules transfer the image under pressure without carbon
 Papel carbón,Carbon paper,Technical,Black or blue coated,Smooth,Coated,40-50,Manual duplicate forms,Mostly replaced by carbonless paper
-Papel térmico,Thermal paper,Technical,White,Smooth,Thermal-reactive coating,48-60,Receipts and fax machines,Darkens with heat instead of ink
+Papel térmico,Thermal paper,Technical,White,Smooth,Thermal,48-60,Receipts and fax machines,Darkens with heat instead of ink
 Papel periódico (diario),Newsprint,Writing/Printing,Grayish,Rough,Uncoated,40-52,Newspapers and inserts,High mechanical-pulp content ages and yellows fast
 Papel fotográfico brillante,Glossy photo paper,Photo,White,Smooth,Glossy,180-260,Photo prints,Resin coating holds inkjet dye sharp
 Papel fotográfico mate,Matte photo paper,Photo,White,Smooth,Matte,180-230,Photo prints and portfolios,Less glare than glossy photo stock
-Papel adhesivo (etiqueta),Self-adhesive label paper,Packaging,White or transparent,Smooth,Adhesive backed,70-150,Labels and stickers,A silicone liner protects the adhesive until use
+Papel adhesivo (etiqueta),Self-adhesive label paper,Packaging,White or transparent,Smooth,Adhesive,70-150,Labels and stickers,A silicone liner protects the adhesive until use
 Papel sintético (Tyvek),Synthetic paper,Specialty,White,Smooth,Waterproof,55-150,Outdoor signage and tags,Spun-bonded plastic fiber resists tearing and water
-Papel metalizado dorado,Gold metallic paper,Decorative,Gold,Smooth,Reflective metallic,100-150,Packaging and labels,Metallic foil or pigment laminated to the base sheet
-Papel metalizado plateado,Silver metallic paper,Decorative,Silver,Smooth,Reflective metallic,100-150,Packaging and labels,Same process as gold metallic in a silver tone
+Papel metalizado dorado,Gold metallic paper,Decorative,Gold,Smooth,Metallic,100-150,Packaging and labels,Metallic foil or pigment laminated to the base sheet
+Papel metalizado plateado,Silver metallic paper,Decorative,Silver,Smooth,Metallic,100-150,Packaging and labels,Same process as gold metallic in a silver tone
 Papel perlado (nácar),Pearlescent paper,Decorative,Pastel with nacre sheen,Smooth with shimmer,Pearlescent,120-250,Invitations and packaging,A mica-based coating gives the nacre shimmer
 Papel glassine,Glassine,Specialty,Translucent,Smooth,Glazed,30-50,Interleaving and food wrap,Supercalendering collapses the fibers into a grease-resistant sheet
 Papel acuarela grano grueso,Rough watercolor paper,Specialty,White or natural,Coarse grain,Uncoated,200-300,Watercolor painting,The coarse grain holds more pigment and water
@@ -43,9 +43,9 @@ Papel canson texturizado,Canson textured paper,Decorative,Assorted,Fine grain,Un
 Cartón gris,Grey board (chipboard),Packaging,Grey,Rough,Uncoated,400-2000,Book covers and box cores,Made from recycled waste paper pressed into thick board
 Cartón corrugado,Corrugated board,Packaging,Brown,Fluted,Uncoated,120-900,Shipping boxes,A fluted inner layer gives cushioning and stacking strength
 Papel manila,Manila paper,Writing/Printing,Tan,Smooth,Uncoated,70-150,Folders and envelopes,Named after the manila hemp originally used in its pulp
-Papel esmaltado (Kromekote),Cast-coated paper,Coated,White,Smooth,High gloss one side,200-300,Premium labels and covers,Cast-coating against a polished drum gives a mirror gloss
+Papel esmaltado (Kromekote),Cast-coated paper,Coated,White,Smooth,High gloss,200-300,Premium labels and covers,Cast-coating against a polished drum gives a mirror gloss
 Papel membrete,Letterhead stock,Writing/Printing,White or cream,Smooth,Uncoated,90-120,Corporate letterhead,Heavier than standard bond so print shows through less
-Papel de seguridad,Security paper,Technical,White,Smooth,Uncoated with watermark or fibers,90-120,Certificates and checks,A watermark or embedded fibers deter counterfeiting
+Papel de seguridad,Security paper,Technical,White,Smooth,Uncoated,90-120,Certificates and checks,A watermark or embedded fibers deter counterfeiting
 Papel seda (tissue),Tissue paper,Decorative,Assorted,Smooth,Uncoated,17-30,Gift wrap and packing,Very low grammage keeps it soft and translucent
 Papel crepé,Crepe paper,Decorative,Assorted,Crinkled,Uncoated,20-40,Party decorations and streamers,Mechanical crimping gives it the stretch and crinkle
 Papel washi,Washi (Japanese paper),Decorative,Natural fiber tones,Soft fibrous,Uncoated,20-80,Origami and crafts,Traditional long-fiber paper from kozo mitsumata or gampi plants

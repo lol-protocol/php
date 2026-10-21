@@ -15,9 +15,9 @@
     "enforcement_authority": "Ministry of Communication and Digital Affairs (Komdigi)",
     "penalties_range": "Up to IDR 5B fine",
     "exemptions": "Government functions",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not explicitly regulated: law focuses on living data subjects; no provision on deceased persons or heirs",
+    "research_exemption": "Certain data subject rights exempted for scientific research purposes (art. 15(1)(e)); safeguards not detailed",
+    "genetic_data": "Specific (sensitive) personal data incl. genetic, biometric and health data (art. 4(2)); stricter safeguards",
     "website_url": "https://jdih.komdigi.go.id/",
     "language": "Indonesian",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "2027-01-16",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/?c=ID&t=law",
@@ -43,9 +43,42 @@
         "url": "https://www.rsm.global/indonesia/en/node/439",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://fh.unair.ac.id/proceedings/index.php/aicoll/article/view/16",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://journal.unpar.ac.id/index.php/veritas/article/download/9808/4988/35762",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.nishimura.com/sites/default/files/images/en_newsletter_221228_asia_data_protection.pdf",
+        "confidence": "high",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Specific (sensitive) personal data incl. genetic, biometric and health data (art. 4(2)); stricter safeguards"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Certain data subject rights exempted for scientific research purposes (art. 15(1)(e)); safeguards not detailed"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not explicitly regulated: law focuses on living data subjects; no provision on deceased persons or heirs"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_collapse_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_collapse_orange_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#A5A5A5"/>
       <stop offset="1" stop-color="#7B7B7B"/>
     </linearGradient>
@@ -10,10 +10,10 @@
     <ellipse cx="31.54" cy="49.14" rx="14.57" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M16.64 21.02L17.54 22.22A3.8 3.8 0 0 0 23.62 17.66L22.72 16.46A3.8 3.8 0 0 0 16.64 21.02Z" fill="#474747"/><circle cx="19.5" cy="18.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
-    <g><path d="M39.64 21.02L40.54 22.22A3.8 3.8 0 0 0 46.62 17.66L45.72 16.46A3.8 3.8 0 0 0 39.64 21.02Z" fill="#474747"/><circle cx="42.5" cy="18.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
-    <g><path d="M16.64 44.02L17.54 45.22A3.8 3.8 0 0 0 23.62 40.66L22.72 39.46A3.8 3.8 0 0 0 16.64 44.02Z" fill="#474747"/><circle cx="19.5" cy="41.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
-    <g><path d="M39.64 44.02L40.54 45.22A3.8 3.8 0 0 0 46.62 40.66L45.72 39.46A3.8 3.8 0 0 0 39.64 44.02Z" fill="#474747"/><circle cx="42.5" cy="41.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
-    <g><path d="M25.18 34.74L26.68 36.74A7.5 7.5 0 0 0 38.68 27.74L37.18 25.74A7.5 7.5 0 0 0 25.18 34.74Z" fill="#474747"/><circle cx="31" cy="30" r="7.5" fill="url(#grad_action_collapse_orange)"/></g>
+    <g><path d="M16.64 21.02L17.54 22.22A3.8 3.8 0 0 0 23.62 17.66L22.72 16.46A3.8 3.8 0 0 0 16.64 21.02Z" fill="#474747"/><circle cx="19.5" cy="18.5" r="3.8" fill="url(#grad_action_collapse_orange_g)"/></g>
+    <g><path d="M39.64 21.02L40.54 22.22A3.8 3.8 0 0 0 46.62 17.66L45.72 16.46A3.8 3.8 0 0 0 39.64 21.02Z" fill="#474747"/><circle cx="42.5" cy="18.5" r="3.8" fill="url(#grad_action_collapse_orange_g)"/></g>
+    <g><path d="M16.64 44.02L17.54 45.22A3.8 3.8 0 0 0 23.62 40.66L22.72 39.46A3.8 3.8 0 0 0 16.64 44.02Z" fill="#474747"/><circle cx="19.5" cy="41.5" r="3.8" fill="url(#grad_action_collapse_orange_g)"/></g>
+    <g><path d="M39.64 44.02L40.54 45.22A3.8 3.8 0 0 0 46.62 40.66L45.72 39.46A3.8 3.8 0 0 0 39.64 44.02Z" fill="#474747"/><circle cx="42.5" cy="41.5" r="3.8" fill="url(#grad_action_collapse_orange_g)"/></g>
+    <g><path d="M25.18 34.74L26.68 36.74A7.5 7.5 0 0 0 38.68 27.74L37.18 25.74A7.5 7.5 0 0 0 25.18 34.74Z" fill="#474747"/><circle cx="31" cy="30" r="7.5" fill="url(#grad_action_collapse_orange_g)"/></g>
   </g>
 </svg>

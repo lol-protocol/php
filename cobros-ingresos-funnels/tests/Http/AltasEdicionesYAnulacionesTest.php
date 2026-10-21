@@ -920,4 +920,33 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
         self::assertStringContainsString($mensaje, $edicion['cuerpo']);
         self::assertSame(0, self::contar('SELECT COUNT(*) FROM boletas WHERE id = :id AND concepto = :c', [':id' => $boletaId, ':c' => $demasiado]));
     }
+
+    /**
+     * El campo del monto lleva en el HTML los mismos limites que aplica el servidor (de un centavo a
+     * Validacion::MONTO_MAXIMO, de a centavos) en las cuatro pantallas que lo tienen: el navegador
+     * rechaza un monto fuera de rango antes de enviarlo, como ya hace maxlength con los textos. Sin
+     * max, un 1e20 solo se rechazaba despues del envio.
+     */
+    public function testElCampoDelMontoLlevaLosLimitesDelServidorEnLasCuatroPantallas(): void
+    {
+        $boletaId = $this->boletaDePrueba();
+        $pagoId = $this->pagoDePrueba($boletaId);
+
+        $pantallas = [
+            'alta de boleta' => 'page=boleta-nueva',
+            'edicion de boleta' => "page=boleta-editar&id={$boletaId}",
+            'alta de pago' => 'page=pago-nuevo&cliente_id=' . self::CLIENTE, // el monto aparece al elegir el cliente
+            'edicion de pago' => "page=pago-editar&id={$pagoId}",
+        ];
+        foreach ($pantallas as $nombre => $query) {
+            $respuesta = $this->get($query);
+
+            $this->assertStatus(200, $respuesta, $nombre);
+            self::assertMatchesRegularExpression(
+                '/<input type="number" name="monto" id="monto" required min="0\.01" max="999999999999\.99" step="0\.01" value="[^"]*">/',
+                $respuesta['cuerpo'],
+                $nombre
+            );
+        }
+    }
 }

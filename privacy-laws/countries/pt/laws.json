@@ -15,9 +15,9 @@
     "enforcement_authority": "National Data Protection Commission (CNPD)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Special-category, private life, image and communications data of deceased protected; designated person or heirs may exercise access, rectification, erasure; deceased may forbid (art. 17)",
+    "research_exemption": "Scientific/historical research must respect minimisation and anonymise or pseudonymise where possible (art. 31 per secondary sources; article not confirmed); GDPR art. 89 derogations (unconfirmed)",
+    "genetic_data": "GDPR art. 9 special category; Law 12/2005 governs genetic information and biological samples for testing/research; health info of living or deceased only for care and health research",
     "website_url": "https://www.cnpd.pt/",
     "language": "Portuguese",
     "frameworks": "GDPR/CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://www.vda.pt/xms/files/05_Publicacoes/2019/Flashes_Newsletters/Flash_VdA_-_Publicacao_da_Lei_de_Execucao_do_RGPD_na_ordem_Juridica_Nacional.pdf",
@@ -48,9 +48,42 @@
         "url": "https://edpb.europa.eu/about-edpb/our-members_en",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.vda.pt/xms/files/05_Publicacoes/2020/Livros_e_Artigos/Portuguese_Implementation_of_the_GDPR_MPC_IAB_MLG.pdf",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://caseguard.com/articles/legislacion-sobre-proteccion-de-datos-en-portugal/",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://diariodarepublica.pt/dr/detalhe/lei/12-2005-624463",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "GDPR art. 9 special category; Law 12/2005 governs genetic information and biological samples for testing/research; health info of living or deceased only for care and health research"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Scientific/historical research must respect minimisation and anonymise or pseudonymise where possible (art. 31 per secondary sources; article not confirmed); GDPR art. 89 derogations (unconfirmed)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Special-category, private life, image and communications data of deceased protected; designated person or heirs may exercise access, rectification, erasure; deceased may forbid (art. 17)"
+      },
       {
         "date": "2026-10-14",
         "field": "effective_date",

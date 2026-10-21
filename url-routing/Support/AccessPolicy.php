@@ -150,28 +150,48 @@ final class AccessPolicy
     }
 
     /**
-     * Remembers an owner who just proved who they are, and keeps an existing
-     * session alive. Call it when esPropietario() was true. A new session gets
-     * a fresh id so one planted before logging in cannot be reused.
+     * Counts this request as activity of the owner's session, when it holds a valid one: the hour
+     * without activity (INACTIVIDAD_MAXIMA) runs from the last request, not from the last private
+     * page. Returns whether it did. It never opens a session: that is recordar()'s job, for a request
+     * that has just proved who it is. Call it from any page that recognises the owner, public or not;
+     * without it, browsing only public pages let the session expire with no warning.
      */
-    public static function recordar(): void
+    public static function renovar(): bool
     {
         $token = self::token();
         if (!self::tokenValido($token) || session_status() !== PHP_SESSION_ACTIVE) {
-            return;
+            return false;
         }
 
         $ahora = time();
-        if (self::sesionValida($_SESSION, $token, $ahora)) {
-            $_SESSION[self::CLAVE_SESION]['ultima'] = $ahora;
+        if (!self::sesionValida($_SESSION, $token, $ahora)) {
+            return false;
+        }
+
+        $_SESSION[self::CLAVE_SESION]['ultima'] = $ahora;
+
+        return true;
+    }
+
+    /**
+     * Remembers an owner who just proved who they are, and keeps an existing
+     * session alive (see renovar()). Call it when esPropietario() was true. A
+     * new session gets a fresh id so one planted before logging in cannot be
+     * reused.
+     */
+    public static function recordar(): void
+    {
+        if (self::renovar()) {
             return;
         }
 
-        if (!self::traeCredenciales()) {
+        $token = self::token();
+        if (!self::tokenValido($token) || session_status() !== PHP_SESSION_ACTIVE || !self::traeCredenciales()) {
             return;
         }
 
         SessionManager::getInstance()->regenerateId();
+        $ahora = time();
         $_SESSION[self::CLAVE_SESION] = ['marca' => self::marcaDeSesion($token), 'inicio' => $ahora, 'ultima' => $ahora];
     }
 

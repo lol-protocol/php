@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 /** Endpoint: /api/notes. Notas libres del admin sobre una acción puntual. */
 
+/** Largo máximo de una nota, en caracteres. La interfaz pone el mismo tope en el textarea (nota-bloque.js). */
+const NOTA_MAX_CARACTERES = 5000;
+
+function nota_demasiado_larga(string $texto): bool
+{
+    return mb_strlen(trim($texto)) > NOTA_MAX_CARACTERES;
+}
+
 function api_notas(): void
 {
     if (!api_exigir_metodo('POST') || !api_exigir_csrf()) {
@@ -16,6 +24,10 @@ function api_notas(): void
 
     if ($accionId === '') {
         api_error(400, 'accion_id_requerido', 'accion_id es requerido');
+        return;
+    }
+    if (nota_demasiado_larga($texto)) {
+        api_error(400, 'nota_demasiado_larga', 'la nota supera ' . NOTA_MAX_CARACTERES . ' caracteres');
         return;
     }
 

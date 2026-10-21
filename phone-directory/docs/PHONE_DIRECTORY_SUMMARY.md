@@ -55,7 +55,6 @@ Todas bajo el namespace `PhoneDirectory\` en `src/PhoneDirectory/`.
 | `Database/EntityPDODatabase` | Base común: CRUD, lotes transaccionales, búsquedas, backfill |
 | `SqlDialect` | Diferencias entre SQLite, MySQL/MariaDB y PostgreSQL |
 | `Manager/PhoneDirectoryManagerV2` | Fachada para procesar archivos y consultar ambos tipos de entidad |
-| `Manager/PhoneDirectoryManager` | Versión anterior, solo personas naturales (`@deprecated`) |
 | `SurnameKeys` | Soundex y clave fonética por idioma del apellido |
 | `RecordLinker`, `RecordLink` | Propone qué entradas de distintos directorios son la misma persona |
 | `PhoneDirectoryCatalog` | Catálogo de 16 directorios históricos (1878–1975, 10 países) |
@@ -63,7 +62,7 @@ Todas bajo el namespace `PhoneDirectory\` en `src/PhoneDirectory/`.
 | `Validation/InputValidator` | Validación compartida de código de país y campos obligatorios |
 | `Exception/*` | `DatabaseException`, `InvalidCountryCodeException`, `InvalidEncodingException`, `InvalidLanguageException` |
 
-`Config/ParserConfig` y `Logger/*` existen, pero hoy nada los usa.
+`Config/ParserConfig` existe, pero hoy nada lo usa.
 
 ---
 
@@ -205,7 +204,7 @@ composer install
   parseadas se acumulan.
 - La clasificación de empresas se basa en una lista de palabras por idioma; un nombre de persona que coincida
   con una de ellas se clasificará como empresa.
-- `Config/ParserConfig` y `Logger/*` no están conectados a nada todavía.
+- `Config/ParserConfig` no está conectado a nada todavía.
 
 ## Requisitos
 

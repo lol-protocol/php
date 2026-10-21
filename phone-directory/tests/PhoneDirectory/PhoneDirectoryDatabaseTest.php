@@ -200,6 +200,37 @@ class PhoneDirectoryDatabaseTest extends TestCase
         $this->assertCount(1, $results);
     }
 
+    public function testSearchRejectsCriteriaItDoesNotKnow(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry('HARRIS, Christine', 'US', '456 Laurel Avenue'));
+
+        // A typo, or the key of the juridical database, used to be ignored: nothing was filtered and
+        // search() returned every row.
+        foreach (['nmae', 'businessName'] as $key) {
+            try {
+                $this->database->search([$key => 'Harris']);
+                $this->fail("search() accepted the unknown criterion '{$key}'");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString($key, $e->getMessage());
+                $this->assertStringContainsString('name, street, phone', $e->getMessage());
+            }
+        }
+    }
+
+    public function testSearchTreatsEmptyValuesAsNoCriterionButZeroAsAValue(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry('HARRIS, Christine', 'US', '456 Laurel Avenue', '555-890-1234'));
+        $this->database->insert(new PhoneDirectoryEntry('MARTIN, Michael', 'US', '789 Magnolia Avenue', '0'));
+
+        $this->assertCount(2, $this->database->search(['name' => '']));
+        $this->assertCount(2, $this->database->search(['name' => null]));
+
+        // empty('0') is true in PHP: a criterion of '0' used to be dropped and matched everything.
+        $found = $this->database->search(['phone' => '0']);
+        $this->assertCount(1, $found);
+        $this->assertSame('MARTIN, Michael', $found[0]->getRawName());
+    }
+
     public function testClearDatabase(): void
     {
         $entry1 = new PhoneDirectoryEntry('ANDERSON, John', 'US', '123 Main Street');

@@ -1,8 +1,11 @@
 name: Leyes (privacidad y copyright)
 
 on:
+  # Solo master: sin el filtro de rama, cualquier rama que fusionara master (y trajera con eso
+  # un cambio en estas carpetas) volvía a correr esto entero y el resultado quedaba pegado a su
+  # PR, aunque no la tocara. Mismo problema que #118 ya corrigió en laws-links.yml.
   push:
-    branches: ['**']
+    branches: [master]
     paths:
       - 'privacy-laws/**'
       - 'copyright-laws/**'
