@@ -20,13 +20,26 @@ document-formats/
 ├── tests/         Node tests (library, CSV data) and the database check
 ├── database_schema.sql
 ├── import_database.php   Loads the CSV files into database_schema.sql
-└── api_reference.json
+├── api_reference.json
+└── generate_api_examples.js   Keeps the API examples equal to the CSV rows they show
 ```
 
 File names use mixed case (`Tutorials.md`, `Localization.md`), except the
 standard convention names the rest of the repo also uses as-is (`README.md`,
 `LICENSE`, `CHANGELOG.md`). This has flipped back and forth across a few
 PRs — it's a deliberate choice, not an oversight, so please keep it this way.
+
+## Documentation
+
+Which guide to open:
+
+| Guide | Read it to |
+|---|---|
+| This README | Know what the files are, load them from JavaScript or SQL, run the demo and the tests |
+| `docs/Tutorials.md` | Build something small step by step: a format selector, a comparison tool, a PHP endpoint, Python analysis |
+| `docs/frontend_implementation_guide.md` | Reuse ready-made HTML and JavaScript components and the UI patterns around them |
+| `docs/Localization.md` | Translate the interface, add a language, use `LocalizationManager` |
+| `api_reference.json` | See the REST endpoints the database would serve (the examples are generated from the CSV files) |
 
 ## Data files
 
@@ -324,6 +337,15 @@ also imports everything into MySQL 8 and checks it with
 the CSV parser, HTML escaping, the loaders and converters in `document-formats.js`,
 and checks every CSV file for rows with the wrong number of fields (usually
 an unquoted comma), duplicate entries, and mm/inch values that disagree.
+
+Three more tests keep the pieces in step:
+
+- `tests/coherence.test.js` checks that the importer reads every column of every CSV it loads
+  (the ones it leaves out are listed with a reason), that its `INSERT`s only name columns of
+  `database_schema.sql`, and that the examples in `api_reference.json` equal their CSV rows.
+  If a CSV changes, run `node generate_api_examples.js` to refresh them.
+- `tests/docs.test.js` checks that every JavaScript example in this README and in `docs/` is valid
+  JavaScript and only calls methods the library has. It doesn't run them.
 
 ## Notes on the standards
 

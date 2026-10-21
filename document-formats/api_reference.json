@@ -73,7 +73,10 @@
             "technical_specs": {
               "weight_gsm": "60-300",
               "recommended_dpi": "300-600",
-              "finish_types": ["Matte", "Glossy"],
+              "finish_types": [
+                "Matte",
+                "Glossy"
+              ],
               "special_notes": "Standard office paper 80-90 gsm"
             }
           }
@@ -98,7 +101,7 @@
               "format_id": 1,
               "format_name": "A4",
               "country": "International",
-              "relevance_score": 1.0
+              "relevance_score": 1
             }
           ]
         }
