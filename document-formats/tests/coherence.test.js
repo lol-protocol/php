@@ -175,3 +175,12 @@ test('every INSERT of import_database.php names columns that exist in database_s
         assert.deepEqual(missing, [], `${table}: columns the schema does not have`);
     }
 });
+
+test('the PHP importer and the JavaScript library load the same catalog files, in the same order', () => {
+    const php = read('import_database.php');
+    const list = php.match(/const CATALOGS = \[([\s\S]*?)\];/)[1];
+    const importer = [...list.matchAll(/'([^']+\.csv)'/g)].map(m => m[1]);
+    const library = FORMAT_CATALOG_FILES.map(file => file.replace(/^\.\.\//, ''));
+    assert.ok(importer.length >= 15);
+    assert.deepEqual(importer, library, 'CATALOGS (import_database.php) and FORMAT_CATALOG_FILES (app/document-formats.js) differ');
+});

@@ -8,7 +8,9 @@
 // UTILITIES: Optimization Helpers
 // ============================================
 
-// Memoization decorator for expensive calculations
+// Memoization decorator for expensive calculations. The caches built with it have no limit,
+// and that is fine at this size: asking for the similarity of every pair of the ~200 format
+// names (the worst case, 20,000 pairs) holds about 2 MB; a normal session holds a few KB.
 const memoize = (fn, keyFn = (...args) => JSON.stringify(args)) => {
     const cache = new Map();
     return (...args) => {
@@ -301,8 +303,16 @@ class FormatSearcher {
             });
         });
 
+        // Most matched terms first; among equals, an exact name match, then alphabetical,
+        // so the order doesn't depend on the order of the CSV files.
+        const wanted = query.trim().toLowerCase();
+        const name = (idx) => this.formats[idx].format_name;
         return Array.from(results.entries())
-            .sort((a, b) => b[1] - a[1])
+            .sort(([aIdx, aHits], [bIdx, bHits]) =>
+                bHits - aHits ||
+                (name(bIdx).toLowerCase() === wanted) - (name(aIdx).toLowerCase() === wanted) ||
+                name(aIdx).localeCompare(name(bIdx)) ||
+                aIdx - bIdx)
             .map(([idx]) => this.formats[idx])
             .filter(Boolean);
     }
@@ -470,7 +480,19 @@ class DocumentGenerator {
         };
     }
 
+    // Book margins (formats/book_margins.csv rows), by book format. Left is the inner margin
+    // and right the outer one, as the database import stores them. Formats that have a row
+    // use it; the others get the general margins below.
+    setBookMargins(rows) {
+        this.bookMargins = new Map(rows.map(row => [row.book_format, row]));
+    }
+
     getRecommendedMargins(format) {
+        const book = this.bookMargins?.get(format.format_name);
+        if (book) {
+            return {top: book.top_mm, bottom: book.bottom_mm, left: book.inner_mm, right: book.outer_mm};
+        }
+
         const margins = {
             top: 20,
             bottom: 20,
@@ -582,18 +604,31 @@ class FormatValidator {
         };
     }
 
+    // Rows of specs/technical_specifications.csv. A format with a row is judged by its own
+    // recommended_dpi ("600-1200" -> 600 is the recommended minimum); the others by 300.
+    setPrintSpecs(rows) {
+        this.printSpecs = new Map(rows.map(row => [row.format_name, row]));
+    }
+
+    _dpiLimits(formatName) {
+        const recommended = Number(String(this.printSpecs?.get(formatName)?.recommended_dpi ?? '').split('-')[0]) || 300;
+        // Acceptable is half the recommended: 150 for 300 dpi, 300 for 600.
+        return {minDpi: recommended / 2, recommendedDpi: recommended};
+    }
+
     validateForPrinting(formatName, dpi = 300) {
         if (!this.byName.has(formatName)) {
             const error = new UnknownFormatError(formatName, this.formats);
             return { valid: false, message: error.message, suggestions: error.suggestions };
         }
 
-        const minDpi = 150;
-        const recommendedDpi = 300;
+        const {minDpi, recommendedDpi} = this._dpiLimits(formatName);
 
         return {
             valid: dpi >= minDpi,
             recommended: dpi >= recommendedDpi,
+            minimumDpi: minDpi,
+            recommendedDpi,
             message: dpi >= recommendedDpi
                 ? 'Excellent DPI for printing'
                 : dpi >= minDpi
@@ -881,20 +916,26 @@ class LocalizationManager {
         return this.translate(key, defaultValue);
     }
 
-    translateElement(element) {
-        const translateAttr = element.getAttribute('data-translate');
-        if (translateAttr) {
-            const parts = translateAttr.split('|');
-            parts.forEach(part => {
-                const [key, attr] = part.split(':');
-                const translated = this.translate(key.trim());
-                if (attr) {
-                    element.setAttribute(attr.trim(), translated);
-                } else {
-                    element.textContent = translated;
-                }
-            });
+    // "header.title|search.placeholder:placeholder" -> [{key: 'header.title', attr: null},
+    // {key: 'search.placeholder', attr: 'placeholder'}]. No attr means the element's text.
+    static parseTranslateAttr(value) {
+        return String(value ?? '').split('|').filter(part => part.trim()).map(part => {
+            const [key, attr] = part.split(':');
+            return {key: key.trim(), attr: attr?.trim() || null};
+        });
+    }
+
+    // Sets the text or attribute of one element for each key it names.
+    _apply(element, value) {
+        for (const {key, attr} of LocalizationManager.parseTranslateAttr(value)) {
+            const translated = this.translate(key);
+            if (attr) element.setAttribute(attr, translated);
+            else element.textContent = translated;
         }
+    }
+
+    translateElement(element) {
+        this._apply(element, element.getAttribute('data-translate'));
 
         element.querySelectorAll('[data-translate]').forEach(el => this.translateElement(el));
     }
@@ -905,30 +946,9 @@ class LocalizationManager {
             return;
         }
 
+        // One frame, so a page with many strings repaints once.
         requestAnimationFrame(() => {
-            const elements = document.querySelectorAll('[data-translate]');
-            const updates = [];
-
-            elements.forEach(el => {
-                const attr = el.getAttribute('data-translate');
-                if (!attr) return;
-                const translations = {};
-                attr.split('|').forEach(part => {
-                    const [key, targetAttr] = part.split(':');
-                    translations[targetAttr || 'text'] = this.translate(key.trim());
-                });
-                updates.push({element: el, translations});
-            });
-
-            updates.forEach(({element, translations}) => {
-                Object.entries(translations).forEach(([attr, value]) => {
-                    if (attr === 'text') {
-                        element.textContent = value;
-                    } else {
-                        element.setAttribute(attr, value);
-                    }
-                });
-            });
+            document.querySelectorAll('[data-translate]').forEach(el => this._apply(el, el.getAttribute('data-translate')));
         });
     }
 
@@ -1124,6 +1144,7 @@ class SpecificationManager {
         formatEquivalence: { file: '../specs/format_equivalence_matrix.csv', key: 'source_format' },
         regionalCompatibility: { file: '../specs/regional_compatibility.csv', key: 'region' },
         standardsReference: { file: '../specs/standards_reference.csv', key: 'format_name' },
+        technicalSpecifications: { file: '../specs/technical_specifications.csv', key: 'format_name' },
         paperTypes: { file: '../specs/paper_types.csv', key: 'type_name' },
         paperTypeTranslations: { file: '../specs/paper_type_translations.csv', key: 'type_name' }
     };
@@ -1230,6 +1251,8 @@ class DocumentFormats {
         if (only.includes('margins')) loads.push(docs.margins.load());
         if (only.includes('devices')) loads.push(docs.devices.loadAllDevices());
         await Promise.all(loads);
+        if (only.includes('margins')) docs.generator.setBookMargins(docs.margins.getAllMargins());
+        if (only.includes('specs')) docs.validator.setPrintSpecs(docs.specs.specifications.get('technicalSpecifications') ?? []);
         return docs;
     }
 

@@ -343,3 +343,87 @@ test('DocumentFormats.load wires every manager from one call', async () => {
     const light = await quiet(() => DocumentFormats.load({ only: [] }));
     assert.equal(light.specs.getAllPaperTypes().length, 0, 'what is left out is not loaded');
 });
+
+test('data-translate values are read the same way by translateElement and translatePage', async () => {
+    assert.deepEqual(LocalizationManager.parseTranslateAttr('header.title'), [{ key: 'header.title', attr: null }]);
+    assert.deepEqual(LocalizationManager.parseTranslateAttr(' a.b | search.placeholder : placeholder '),
+        [{ key: 'a.b', attr: null }, { key: 'search.placeholder', attr: 'placeholder' }]);
+    assert.deepEqual(LocalizationManager.parseTranslateAttr(null), []);
+    assert.deepEqual(LocalizationManager.parseTranslateAttr('a||b'), [{ key: 'a', attr: null }, { key: 'b', attr: null }]);
+
+    const i18n = new LocalizationManager('../app/translations');
+    await i18n.init();
+    const fake = (value) => ({
+        value, text: '', attrs: {},
+        getAttribute() { return this.value; },
+        setAttribute(name, v) { this.attrs[name] = v; },
+        set textContent(v) { this.text = v; },
+        querySelectorAll: () => [],
+    });
+    const element = fake('header.title|search.placeholder:placeholder');
+    i18n.translateElement(element);
+    assert.equal(element.text, i18n.t('header.title'));
+    assert.equal(element.attrs.placeholder, i18n.t('search.placeholder'));
+
+    // translatePage goes through the same code, one frame later.
+    const page = fake('header.title|search.placeholder:placeholder');
+    globalThis.requestAnimationFrame = (callback) => callback();
+    globalThis.document = { querySelectorAll: () => [page] };
+    try {
+        i18n.translatePage();
+    } finally {
+        delete globalThis.requestAnimationFrame;
+        delete globalThis.document;
+    }
+    assert.equal(page.text, element.text);
+    assert.deepEqual(page.attrs, element.attrs);
+});
+
+test('recommended margins come from book_margins.csv for a book format, and are general otherwise', async () => {
+    const bookMargins = new BookMarginManager([]);
+    await bookMargins.load();
+    const generator = new DocumentGenerator([{ format_name: 'Trade Paperback', category: 'Book' }, { format_name: 'A4', category: 'Standard' }]);
+    assert.deepEqual(generator.getRecommendedMargins({ format_name: 'Trade Paperback' }), { top: 20, bottom: 20, left: 20, right: 20 },
+        'before the margins are set, the general ones');
+
+    generator.setBookMargins(bookMargins.getAllMargins());
+    // Trade Paperback in book_margins.csv: top 19, bottom 19, inner 16, outer 13.
+    assert.deepEqual(generator.getRecommendedMargins({ format_name: 'Trade Paperback' }), { top: 19, bottom: 19, left: 16, right: 13 });
+    assert.deepEqual(generator.getRecommendedMargins({ format_name: 'A4', category: 'Standard' }), { top: 20, bottom: 20, left: 20, right: 20 });
+    assert.deepEqual(generator.getRecommendedMargins({ format_name: 'X', category: 'Business' }), { top: 25, bottom: 25, left: 20, right: 20 });
+});
+
+test('validateForPrinting judges a format by its own recommended_dpi', async () => {
+    const specs = new SpecificationManager();
+    await specs.loadAllSpecifications();
+    const formats = ['A4', 'Business Card Standard', 'Nothing in the CSV'].map(format_name => ({ format_name }));
+    const validator = new FormatValidator(formats);
+
+    // Without the specs, everything is judged by 300.
+    assert.equal(validator.validateForPrinting('Business Card Standard', 300).recommended, true);
+
+    validator.setPrintSpecs(specs.specifications.get('technicalSpecifications'));
+    // A4 says 300-600; the business card says 600-1200.
+    const a4 = validator.validateForPrinting('A4', 300);
+    assert.deepEqual([a4.valid, a4.recommended, a4.recommendedDpi, a4.minimumDpi], [true, true, 300, 150]);
+    const card = validator.validateForPrinting('Business Card Standard', 300);
+    assert.deepEqual([card.valid, card.recommended, card.recommendedDpi, card.minimumDpi], [true, false, 600, 300]);
+    assert.equal(validator.validateForPrinting('Business Card Standard', 200).valid, false);
+    assert.equal(validator.validateForPrinting('Nothing in the CSV', 150).valid, true, 'a format with no row keeps the 300/150 limits');
+});
+
+test('search puts an exact name first and breaks ties alphabetically, whatever the file order', () => {
+    const row = (format_name, country = 'X') => ({ format_name, country, category: 'Paper', width_mm: 1, height_mm: 1 });
+    const names = (formats, query) => new FormatSearcher(formats).search(query).map(f => f.format_name);
+    const forward = [row('A4 Plus'), row('A4'), row('A4 Extra')];
+    assert.deepEqual(names(forward, 'a4'), ['A4', 'A4 Extra', 'A4 Plus']);
+    assert.deepEqual(names([...forward].reverse(), 'a4'), ['A4', 'A4 Extra', 'A4 Plus']);
+    // More matched terms still beat an exact name.
+    assert.deepEqual(names([row('A4'), row('A4 Extra', 'Extra')], 'a4 extra').slice(0, 1), ['A4 Extra']);
+});
+
+test('DocumentFormats.load sets the book margins and the print specs', async () => {
+    const docs = await quiet(() => DocumentFormats.load());
+    assert.equal(docs.generator.getRecommendedMargins({ format_name: 'Trade Paperback' }).left, 16);
+    assert.equal(docs.validator.validateForPrinting('Business Card Standard', 300).recommendedDpi, 600);
+});

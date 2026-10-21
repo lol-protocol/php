@@ -88,4 +88,12 @@ check($count('SELECT COUNT(*) FROM paper_weight_standards') === count(readCsv('s
     'one paper_weight_standards row per CSV row');
 check($count("SELECT gsm FROM paper_weight_standards WHERE weight_name = '20 lb Bond'") === 75, '20 lb Bond is 75 gsm');
 
+// The view keeps every product, with its paper type when it has one.
+$products = readCsv('specs/product_specifications.csv');
+check($count('SELECT COUNT(*) FROM v_products_with_paper') === count($products), 'v_products_with_paper lists every product');
+check($count('SELECT COUNT(*) FROM v_products_with_paper WHERE paper_type IS NOT NULL') === count(array_filter($products, fn ($p) => $p['paper_type'] !== '')),
+    'v_products_with_paper has a paper type for each product that names one');
+check($count("SELECT COUNT(*) FROM v_products_with_paper WHERE product_name = 'Receipt' AND paper_type = 'Papel térmico' AND paper_type_en = 'Thermal paper'") === 1,
+    'Receipt -> Papel térmico / Thermal paper in the view');
+
 exit($failures === 0 ? 0 : 1);
