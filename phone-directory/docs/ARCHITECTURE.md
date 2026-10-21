@@ -140,11 +140,26 @@ classDiagram
         +reset(): void
     }
 
-    class PhoneDirectoryDatabaseInterface {
+    class DirectoryDatabaseInterface {
         <<interface>>
         +connect(): void
+        +disconnect(): void
+        +isConnected(): bool
+        +createTable(): void
+        +insertBatch(array): int
+        +findById(int): ?TEntity
+        +findByStreet(string): array
+        +findByPhone(string): ?TEntity
+        +getAll(): array
+        +delete(int): bool
+        +count(): int
+        +clear(): bool
+    }
+
+    class PhoneDirectoryDatabaseInterface {
+        <<interface>>
         +insert(PhoneDirectoryEntry): int
-        +findById(int): ?PhoneDirectoryEntry
+        +update(PhoneDirectoryEntry): bool
         +findByName(string): array
         +findBySurnameSound(string, ?string): array
         +findBySourceDirectory(string): array
@@ -169,6 +184,7 @@ classDiagram
 
     PhoneDirectoryEntry *-- PersonName
     PhoneDirectoryEntry *-- GeoLocation
+    DirectoryDatabaseInterface <|-- PhoneDirectoryDatabaseInterface : TEntity = PhoneDirectoryEntry
     PhoneDirectoryDatabaseInterface <|.. PhoneDirectoryPDODatabase
     PhoneDirectoryParser -->|crea| PhoneDirectoryEntry
     PhoneDirectoryPDODatabase -->|almacena| PhoneDirectoryEntry
@@ -201,11 +217,14 @@ classDiagram
         +getSourceLine(): ?int
     }
 
+    class DirectoryDatabaseInterface {
+        <<interface>>
+    }
+
     class JuridicalEntityDatabaseInterface {
         <<interface>>
-        +connect(): void
         +insert(JuridicalEntity): int
-        +findById(int): ?JuridicalEntity
+        +update(JuridicalEntity): bool
         +findByBusinessName(string): array
         +findByBusinessType(string): array
         +search(array): array
@@ -226,6 +245,7 @@ classDiagram
         +findByBusinessType(string): array
     }
 
+    DirectoryDatabaseInterface <|-- JuridicalEntityDatabaseInterface : TEntity = JuridicalEntity
     JuridicalEntityDatabaseInterface <|.. JuridicalEntityPDODatabase
     JuridicalEntityPDODatabase -->|almacena| JuridicalEntity
 ```
