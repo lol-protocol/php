@@ -139,7 +139,7 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 
 ```
 bin/generar.php          línea de comandos
-src/                     Libro, Medidas, Texto, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
+src/                     Libro (con Formato y Textos), Medidas, Texto, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
 ejemplos/*.json          libros de ejemplo
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
 pruebas/ejecutar.php     pruebas unitarias, sin dependencias

@@ -14,26 +14,12 @@ final class Libro
     /** @param array{fondo: string, texto: string, acento: string} $colores */
     private function __construct(
         public readonly string $id,
-        public readonly string $titulo,
-        public readonly string $subtitulo,
-        public readonly string $autor,
-        public readonly string $traductor,
-        public readonly string $editorial,
-        public readonly string $coleccion,
-        public readonly string $isbn,
-        public readonly string $contratapa,
-        public readonly string $solapaContratapa,
-        public readonly string $solapaPortada,
+        public readonly Textos $textos,
+        public readonly Formato $formato,
         public readonly string $plantilla,
         public readonly array $colores,
         /** Degradado del fondo, o null si el fondo es un color sólido. */
         public readonly ?Degradado $degradado,
-        /** Corte, sangrado, solapas y lomo, en mm. */
-        public readonly float $anchoMm,
-        public readonly float $altoMm,
-        public readonly float $sangradoMm,
-        public readonly float $solapasMm,
-        public readonly float $lomoMm,
         public readonly string $lomoDireccion,
     ) {
     }
@@ -106,8 +92,7 @@ final class Libro
             throw new \InvalidArgumentException("$id: 'lomo_direccion' debe ser arriba-abajo o abajo-arriba.");
         }
 
-        return new self(
-            id: $id,
+        $textos = new Textos(
             titulo: $titulo,
             subtitulo: self::cadena($datos, 'subtitulo'),
             autor: $autor,
@@ -118,14 +103,15 @@ final class Libro
             contratapa: self::cadena($datos, 'contratapa'),
             solapaContratapa: self::cadena($datos, 'solapa_contratapa'),
             solapaPortada: self::cadena($datos, 'solapa_portada'),
+        );
+
+        return new self(
+            id: $id,
+            textos: $textos,
+            formato: new Formato(ancho: $ancho, alto: $alto, sangrado: $sangrado, solapas: $solapas, lomo: $lomo),
             plantilla: $plantilla,
             colores: $colores,
             degradado: $degradado,
-            anchoMm: $ancho,
-            altoMm: $alto,
-            sangradoMm: $sangrado,
-            solapasMm: $solapas,
-            lomoMm: $lomo,
             lomoDireccion: $direccion,
         );
     }

@@ -154,7 +154,7 @@ function panelDe(Medidas $medidas, array $caja, Libro $libro): ?Rectangulo
 {
     $centro = ($caja['x0'] + $caja['x1']) / 2;
     $nombres = ['contratapa', 'lomo', 'portada'];
-    if ($libro->solapasMm > 0) {
+    if ($libro->formato->solapas > 0) {
         $nombres[] = 'solapa-contratapa';
         $nombres[] = 'solapa-portada';
     }
@@ -369,7 +369,7 @@ $pruebas = [
             foreach (cajasDeTexto($plantilla->dibujar($libro, $medidas), $plantilla) as $caja) {
                 $panel = panelDe($medidas, $caja, $libro);
                 if ($panel === null || !dentro($caja, $panel)) {
-                    $fuera[] = "{$libro->plantilla}, solapas {$libro->solapasMm}, lomo {$libro->lomoMm} mm: «{$caja['texto']}»";
+                    $fuera[] = "{$libro->plantilla}, solapas {$libro->formato->solapas}, lomo {$libro->formato->lomo} mm: «{$caja['texto']}»";
                 }
             }
         }
