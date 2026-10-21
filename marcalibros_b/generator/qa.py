@@ -169,9 +169,12 @@ def validar_frases(datos, soporta):
     for mov, lista in datos["movimientos"].items():
         for q in lista:
             donde = f"{mov}: «{q['texto'][:32]}»"
-            if q["muerte"] > MUERTE_MAXIMA:
+            if q.get("original"):  # texto propio del proyecto: no cita a nadie
+                if q["autor"] != "Marcalibros" or q["estado"] != "original":
+                    problemas.append(f"{donde}: una frase original debe ser de «Marcalibros» y estado «original»")
+            elif q["muerte"] > MUERTE_MAXIMA:
                 problemas.append(f"{donde}: {q['autor']} murió en {q['muerte']}; sigue con derechos")
-            if q["estado"] not in ("sin_verificar", "verificada"):
+            if q["estado"] not in ("sin_verificar", "verificada", "original"):
                 problemas.append(f"{donde}: estado inválido {q['estado']!r}")
             falta = sorted({c for c in q["texto"] + q["autor"] + "—" if not soporta(c)})
             if falta:

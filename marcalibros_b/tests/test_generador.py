@@ -198,16 +198,22 @@ def test_una_autoria_con_derechos_se_rechaza():
 
 def test_reparto_de_frases_es_reproducible_y_ronda_la_mitad():
     frases = build.cargar_frases()
-    ids = [f"{m['id']}-{a['id']}-{v:02d}" for m in CONFIG["movimientos"] for a in m["autores"] for v in range(1, 11)
-           if m["id"] != "realismo-magico"]
+    ids = [f"{m['id']}-{a['id']}-{v:02d}" for m in CONFIG["movimientos"] for a in m["autores"] for v in range(1, 11)]
     primera = [build.elegir_frase(i, i.split("-")[0], frases) is not None for i in ids]
     assert primera == [build.elegir_frase(i, i.split("-")[0], frases) is not None for i in ids]
     assert 0.4 < sum(primera) / len(primera) < 0.6
 
 
-def test_realismo_magico_no_lleva_frases():
+def test_realismo_magico_solo_lleva_frases_originales():
+    import texto
+    from qa import validar_frases
     frases = build.cargar_frases()
-    assert all(build.elegir_frase(f"realismo-magico-x-{v:02d}", "realismo-magico", frases) is None for v in range(1, 50))
+    lista = frases["movimientos"]["realismo-magico"]
+    assert len(lista) >= 12 and all(q["original"] and q["autor"] == "Marcalibros" for q in lista)
+    assert validar_frases(frases, texto.soporta) == []
+    # una «original» que cite a un autor real se rechaza
+    mala = {"movimientos": {"x": [{"texto": "hola", "autor": "Gabriel García Márquez", "obra": "o", "idioma": "es", "original": True, "estado": "original"}]}}
+    assert validar_frases(mala, texto.soporta)
 
 
 def test_las_piezas_con_frase_la_llevan_dibujada():
