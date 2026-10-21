@@ -57,8 +57,8 @@ final class Texto
         $maximas = max(1, (int) floor($alto / ($tamanoMin * $interlineado)));
         if (count($lineas) > $maximas) {
             $lineas = array_slice($lineas, 0, $maximas);
-            $ultima = count($lineas) - 1;
-            $lineas[$ultima] = rtrim(mb_substr($lineas[$ultima], 0, -1)) . '…';
+            $ultima = (string) array_pop($lineas);
+            $lineas[] = rtrim(mb_substr($ultima, 0, -1)) . '…';
         }
 
         return ['tamano' => $tamanoMin, 'lineas' => $lineas];

@@ -54,12 +54,21 @@ function lanza(string $clase, callable $cuerpo): void
     throw new RuntimeException("no lanzó $clase");
 }
 
+/**
+ * Libro mínimo válido, con los cambios que pida cada prueba.
+ *
+ * @param array<string, mixed> $cambios
+ */
 function libroDeEjemplo(array $cambios = []): Libro
 {
     return Libro::desdeArray('prueba', $cambios + ['titulo' => 'Título de prueba', 'autor' => 'Autor de prueba', 'paginas' => 112]);
 }
 
-/** Libro con todos los textos largos, para forzar los ajustes. */
+/**
+ * Libro con todos los textos largos, para forzar los ajustes.
+ *
+ * @param array<string, mixed> $extra
+ */
 function libroLargo(string $plantilla, float $solapas, array $extra = []): Libro
 {
     return Libro::desdeArray('largo', $extra + [
@@ -102,7 +111,9 @@ function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
         $espaciado = (float) $elemento->getAttribute('letter-spacing');
 
         if ($elemento->getAttribute('transform') !== '') {
-            preg_match('/translate\((-?[\d.]+) (-?[\d.]+)\) rotate\((-?\d+)\)/', $elemento->getAttribute('transform'), $giro);
+            if (preg_match('/translate\((-?[\d.]+) (-?[\d.]+)\) rotate\((-?\d+)\)/', $elemento->getAttribute('transform'), $giro) !== 1) {
+                throw new RuntimeException('el transform del lomo no tiene el formato esperado: ' . $elemento->getAttribute('transform'));
+            }
             $x = (float) $giro[1];
             $y = (float) $giro[2];
             $largo = anchoEstimado($elemento->textContent, $tamano, $espaciado, $plantilla);
@@ -151,7 +162,11 @@ function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
     return $cajas;
 }
 
-/** Panel de corte donde cae el centro horizontal de una caja, o null si no cae en ninguno. */
+/**
+ * Panel de corte donde cae el centro horizontal de una caja, o null si no cae en ninguno.
+ *
+ * @param array{x0: float, x1: float, y0: float, y1: float} $caja
+ */
 function panelDe(Medidas $medidas, array $caja, Libro $libro): ?Rectangulo
 {
     $centro = ($caja['x0'] + $caja['x1']) / 2;
@@ -170,7 +185,11 @@ function panelDe(Medidas $medidas, array $caja, Libro $libro): ?Rectangulo
     return null;
 }
 
-/** Si la caja cabe entera dentro del panel de corte. */
+/**
+ * Si la caja cabe entera dentro del panel de corte.
+ *
+ * @param array{x0: float, x1: float, y0: float, y1: float} $caja
+ */
 function dentro(array $caja, Rectangulo $panel): bool
 {
     return $caja['x0'] >= $panel->x - 1e-6 && $caja['x1'] <= $panel->x + $panel->ancho + 1e-6
@@ -258,6 +277,38 @@ function adornos(string $cuerpo): array
 function seSolapan(array $a, array $b): bool
 {
     return $a['x0'] < $b['x1'] && $b['x0'] < $a['x1'] && $a['y0'] < $b['y1'] && $b['y0'] < $a['y1'];
+}
+
+/**
+ * Corre el CLI con estos argumentos y devuelve el código de salida, lo impreso y los errores. Un aviso
+ * de PHP se vuelve excepción, para que no se cuele sin que lo vea la prueba.
+ *
+ * @param list<string> $argumentos
+ * @return array{int, string, string}
+ */
+function correrCli(array $argumentos): array
+{
+    $salida = '';
+    $errores = '';
+    set_error_handler(static function (int $nivel, string $mensaje): never {
+        throw new ErrorException($mensaje);
+    });
+    try {
+        $codigo = Cli::ejecutar(
+            $argumentos,
+            dirname(__DIR__),
+            static function (string $texto) use (&$salida): void {
+                $salida .= $texto;
+            },
+            static function (string $texto) use (&$errores): void {
+                $errores .= $texto;
+            },
+        );
+    } finally {
+        restore_error_handler();
+    }
+
+    return [$codigo, $salida, $errores];
 }
 
 $pruebas = [
@@ -423,6 +474,9 @@ $pruebas = [
         $archivos = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(dirname(__DIR__), FilesystemIterator::SKIP_DOTS));
         $prohibidos = [];
         foreach ($archivos as $archivo) {
+            if (!$archivo instanceof SplFileInfo) {
+                continue;
+            }
             if (in_array(strtolower($archivo->getExtension()), ['html', 'htm', 'js', 'mjs', 'cjs'], true)) {
                 $prohibidos[] = $archivo->getPathname();
             }
@@ -493,7 +547,9 @@ $pruebas = [
                         $tituloCaja = $caja;
                     }
                 }
-                verdadero($tituloCaja !== null && $subtituloCaja !== null, "no se encontró el título o el subtítulo de «{$titulo}»");
+                if ($tituloCaja === null || $subtituloCaja === null) {
+                    throw new RuntimeException("no se encontró el título o el subtítulo de «{$titulo}»");
+                }
                 $espacio = $subtituloCaja['y0'] - $tituloCaja['y1'];
                 if ($espacio < 0.3 * $tituloCaja['tamano'] - 1e-6) {
                     $apretados[] = sprintf('%s, «%s»: %.1f mm bajo un título de %.1f mm', $plantilla, $titulo, $espacio, $tituloCaja['tamano']);
@@ -537,6 +593,21 @@ $pruebas = [
         verdadero(!is_file("$dir/sobrelomo.svg"), 'sigue en la carpeta el sobrelomo de la escritura anterior');
         verdadero(!str_contains((string) file_get_contents("$dir/medidas.txt"), 'sobrelomo.svg'), 'medidas.txt sigue listando el sobrelomo');
         Archivos::borrarDirectorio($dir);
+    },
+
+    'Un JSON que es una lista o un valor suelto no se acepta como libro' => function (): void {
+        foreach (['[1, 2, 3]', '"texto"', '42'] as $contenido) {
+            $ruta = sys_get_temp_dir() . '/portadas-svg-lista-' . bin2hex(random_bytes(4)) . '.json';
+            file_put_contents($ruta, $contenido);
+            try {
+                Libro::desdeArchivo($ruta);
+                throw new RuntimeException("se aceptó $contenido como libro");
+            } catch (InvalidArgumentException $error) {
+                verdadero(str_contains($error->getMessage(), 'debe ser un objeto'), 'el mensaje no explica que debe ser un objeto: ' . $error->getMessage());
+            } finally {
+                unlink($ruta);
+            }
+        }
     },
 
     'Un JSON roto nombra el archivo que falla' => function (): void {
@@ -602,44 +673,19 @@ $pruebas = [
     },
 
     'El CLI explica el uso y rechaza lo que no entiende' => function (): void {
-        $correr = static function (array $argumentos): array {
-            $salida = '';
-            $errores = '';
-            // Un aviso de PHP se vuelve excepción para que no se cuele sin que lo vea la prueba.
-            set_error_handler(static function (int $nivel, string $mensaje): never {
-                throw new ErrorException($mensaje);
-            });
-            try {
-                $codigo = Cli::ejecutar(
-                    $argumentos,
-                    dirname(__DIR__),
-                    static function (string $texto) use (&$salida): void {
-                        $salida .= $texto;
-                    },
-                    static function (string $texto) use (&$errores): void {
-                        $errores .= $texto;
-                    },
-                );
-            } finally {
-                restore_error_handler();
-            }
-
-            return [$codigo, $salida, $errores];
-        };
-
-        [$codigo, $salida] = $correr(['--help']);
+        [$codigo, $salida] = correrCli(['--help']);
         igual(0, $codigo);
         verdadero(str_contains($salida, 'Uso:'), '--help no imprime el uso');
 
-        [$codigo, , $errores] = $correr(['--nada']);
+        [$codigo, , $errores] = correrCli(['--nada']);
         igual(2, $codigo);
         verdadero(str_contains($errores, '--nada'), 'el error no nombra la opción desconocida');
 
-        igual(2, $correr(['--salida='])[0]);
-        igual(2, $correr([])[0]);
-        igual(2, $correr(['--comprobar', 'libro.json'])[0]);
+        igual(2, correrCli(['--salida='])[0]);
+        igual(2, correrCli([])[0]);
+        igual(2, correrCli(['--comprobar', 'libro.json'])[0]);
 
-        [$codigo, , $errores] = $correr(['/no/existe.json']);
+        [$codigo, , $errores] = correrCli(['/no/existe.json']);
         igual(1, $codigo);
         verdadero(str_contains($errores, '/no/existe.json'), 'el error no nombra el archivo');
         verdadero(!str_contains($errores, 'Failed to open'), 'se coló un aviso de PHP');

@@ -51,11 +51,12 @@ final class Libro
         } catch (\JsonException $error) {
             throw new \InvalidArgumentException("$ruta: el JSON no es válido (" . $error->getMessage() . '). Revisa comas, comillas y llaves.');
         }
-        if (!is_array($datos)) {
-            throw new \InvalidArgumentException("$ruta: el JSON debe ser un objeto.");
+        // Un objeto vacío ({}) también sale como [], así que solo se rechazan las listas con algo dentro.
+        if (!is_array($datos) || ($datos !== [] && array_is_list($datos))) {
+            throw new \InvalidArgumentException("$ruta: el JSON debe ser un objeto con los datos del libro, no una lista ni un valor suelto.");
         }
 
-        return self::desdeArray(pathinfo($ruta, PATHINFO_FILENAME), $datos);
+        return self::desdeArray(pathinfo($ruta, PATHINFO_FILENAME), self::clavesDeTexto($datos));
     }
 
     /** @param array<string, mixed> $datos */
@@ -174,6 +175,22 @@ final class Libro
             throw new \InvalidArgumentException("'$campo' debe ser un objeto JSON.");
         }
 
-        return $valor;
+        return self::clavesDeTexto($valor);
+    }
+
+    /**
+     * Un objeto JSON con claves numéricas ("1": ...) sale de json_decode con claves enteras: se pasan a texto.
+     *
+     * @param array<mixed> $datos
+     * @return array<string, mixed>
+     */
+    private static function clavesDeTexto(array $datos): array
+    {
+        $resultado = [];
+        foreach ($datos as $clave => $valor) {
+            $resultado[(string) $clave] = $valor;
+        }
+
+        return $resultado;
     }
 }
