@@ -122,5 +122,5 @@ los tribunales de [CIUDAD]. **⚖️**
 | Datos del responsable, correo, domicilio, ciudad | Decisión de la persona a cargo |
 | Plazos (retiro, respuesta, conservación del registro, aviso de cambios) | Abogado |
 | Política de privacidad | Abogado, a partir de la sección 7 |
-| El botón «Pedir retiro» y el registro de publicaciones | Código: cabo suelto 4 de `PRIVACIDAD-Y-HONRA.md`. Mientras no existan, las secciones 5 y 6 prometen algo que el sitio no hace |
+| El botón «Pedir retiro» y el registro de publicaciones | Hecho en `url-routing/` (`/r/{id}/` y `/0/3/`, ver su `docs/ACCESO.md`). Falta que el propietario reciba un aviso de cada pedido nuevo, para cumplir el plazo de la sección 5 |
 | Que todo texto libre pase por el filtro | Código: cabo suelto 1 de `PRIVACIDAD-Y-HONRA.md` |

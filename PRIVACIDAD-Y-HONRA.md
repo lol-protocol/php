@@ -95,11 +95,16 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
 3. **Textos largos.** Resuelto: el endpoint de moderación acepta hasta 10.000
    caracteres y revisa por párrafos lo que pasa de 2.000 (`LongText`). Un texto
    más largo que eso hay que mandarlo en varias partes.
-4. **Denuncia, retiro y registro.** Hace falta un botón para pedir el retiro de
-   un contenido sin crear cuenta y un plazo de respuesta (por ejemplo, ocultar
-   en 24 horas mientras se revisa). También hace falta un registro de quién
-   publicó qué y quién lo revisó. Sin registro no hay cómo responder a un reclamo
-   como el que cerró el proyecto anterior.
+4. **Denuncia, retiro y registro.** En `url-routing/`, cada página pública de
+   genealogía lleva «Pedir el retiro de esta página» (`/r/{id}/`, sin cuenta).
+   El propietario decide en `/0/3/` si la oculta mientras revisa, la retira o
+   rechaza el pedido, y cada paso queda registrado con fecha y nota (ver
+   [`url-routing/docs/ACCESO.md`](url-routing/docs/ACCESO.md)). En
+   `sistema-nuevo/`, las notas del panel pasan por el filtro y cada guardado
+   queda en un registro (quién, cuándo y qué decidió el filtro). Falta: avisar al
+   propietario de un pedido nuevo y vigilar el plazo de respuesta (por ejemplo,
+   ocultar en 24 horas mientras se revisa), y que una página retirada deje de
+   nombrarse en las demás.
 5. **Términos de uso** que prohíban imputar hechos a terceros y publicar sus datos
    sensibles, y que digan qué pasa con quien lo haga. Hay un borrador en
    [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md), con lo que falta decidir marcado
