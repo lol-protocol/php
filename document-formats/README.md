@@ -94,7 +94,7 @@ with the resolution and the screen size.
 
 | File | Rows | Contents |
 |---|---|---|
-| `iso_216_series.csv` | 33 | ISO 216 A0–A10, B0–B10, C0–C10 |
+| `iso_216_series.csv` | 33 | ISO A0–A10 and B0–B10 (ISO 216) and C0–C10 (envelopes, ISO 269) |
 | `standards_reference.csv` | 33 | ISO, ANSI, JIS, GB/T and DIN standard numbers per format |
 | `technical_specifications.csv` | 11 | Paper weight (gsm), recommended DPI and finish for each sheet size that has one |
 | `product_specifications.csv` | 22 | The same for printed products that are not a sheet size (Brochure, Receipt, Sticker…), each linked to its usual paper type when one is clear |
@@ -269,7 +269,7 @@ the tables that have no format or country behind them: `paper_types`,
 margin rows that name a genre ("Poetry") instead of a format are skipped
 and listed. The `format_suppliers`, `format_prices` and `format_variants`
 tables are reserved: no CSV feeds them, so they stay empty on purpose.
-Tested on MySQL 8.0 and MariaDB 10.11.
+Tested on MySQL 8.0 and MariaDB 10.11 (the CI imports into both).
 
 ```sql
 SELECT df1.format_name AS from_fmt, df2.format_name AS to_fmt, fc.equivalence_percentage
@@ -349,7 +349,7 @@ Three more tests keep the pieces in step:
 
 ## Notes on the standards
 
-- **ISO 216** (A, B, C series) is used in most countries. A4 is 210×297 mm;
+- **ISO 216** (A and B series; the C series for envelopes is ISO 269) is used in most countries. A4 is 210×297 mm;
   every A size has a 1:√2 aspect ratio, so halving one gives the next.
 - **USA** uses Letter (8.5×11") and Legal (8.5×14"); envelopes are numbered
   (#10, #6¾…).
