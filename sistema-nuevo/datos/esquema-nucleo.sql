@@ -5,6 +5,7 @@
 -- (CASCADE ahí solo elimina la FK dependiente, no la tabla), así que necesita
 -- su propio DROP explícito para que las corridas sucesivas no fallen.
 DROP TABLE IF EXISTS notas_acciones CASCADE;
+DROP TABLE IF EXISTS registro_notas;
 
 CREATE TABLE usuarios (
     id          CHAR(4) PRIMARY KEY, -- 'u001'
@@ -62,3 +63,20 @@ CREATE TABLE notas_acciones (
     texto TEXT NOT NULL DEFAULT '',
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Cada guardado de una nota (también los rechazados y los borrados): quién, cuándo y qué
+-- decidió el filtro (servidor-php/codigo/AlmacenRegistroNotas.php). Sin el texto: su largo
+-- y su huella SHA-256. Sin FK a acciones: el registro tiene que quedar aunque se borre la
+-- nota o la acción (por eso se dropea arriba, aparte).
+CREATE TABLE registro_notas (
+    id            SERIAL PRIMARY KEY,
+    accion_id     CHAR(6) NOT NULL,
+    administrador VARCHAR(60) NOT NULL,
+    decision      VARCHAR(10) NOT NULL CHECK (decision IN ('aprobada', 'revisar', 'rechazada', 'borrada')),
+    motivos       TEXT NOT NULL DEFAULT '',
+    largo         INTEGER NOT NULL CHECK (largo >= 0),
+    huella        CHAR(64) NOT NULL,
+    creado_en     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_registro_notas_accion ON registro_notas (accion_id);

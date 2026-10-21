@@ -21,7 +21,9 @@ técnica/arquitectura.
 
 Tres componentes, cada uno en su propia carpeta, sin dependencias externas más allá
 del JDK/PHP/PostgreSQL/navegador (las pruebas automatizadas usan además Node, ya
-instalado, sin sumar paquetes nuevos — ver "Pruebas automatizadas" más abajo).
+instalado, sin sumar paquetes nuevos — ver "Pruebas automatizadas" más abajo). La
+excepción es el filtro de las notas: usa la librería de `../defamatory-content-review`,
+de este mismo repositorio, cargando sus clases directamente (sin Composer).
 Nombres en español simple; se mantienen en inglés los nombres de lenguaje
 (php/java/css/js) y las convenciones estándar que el propio tooling espera
 literalmente (`index.php`, `README.md`, `public/`→`publico/` es la excepción que sí
@@ -80,6 +82,8 @@ sistema-nuevo/
 │       ├── AlmacenFiltros.php         CRUD de combinaciones de filtro guardadas
 │       ├── AlmacenKpis.php            Métricas agregadas del dashboard inicial
 │       ├── AlmacenNotas.php           Notas por acción (guardar es upsert, texto vacío borra)
+│       ├── AlmacenRegistroNotas.php   Registro de cada guardado de nota (quién, cuándo, qué decidió el filtro)
+│       ├── FiltroNotas.php            Pasa una nota por el filtro de ../defamatory-content-review
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
 │       ├── Universo.php               Contra quién se compara: países, edad, género y el usuario excluido
 │       ├── autenticacion.php          Sesión + CSRF (login/logout, un solo usuario)
@@ -329,8 +333,36 @@ responde 400 `nota_demasiado_larga`. Para evitar N+1 requests, la nota viaja com
 (`LEFT JOIN notas_acciones`) en la misma consulta paginada de
 `AlmacenAcciones->pagina()`, no en una llamada aparte por tarjeta. Un indicador
 chico al lado del textarea muestra el estado del guardado (⏳ guardando, ✓
-guardado — se oculta solo a los 2s —, ⚠ error) para que quede claro si se
+guardado — se oculta solo a los 2s —, ⚠ error, 👁 guardada pero hay que revisarla) para que quede claro si se
 perdió o no lo que se escribió.
+
+### Filtro y registro de las notas
+
+Una nota habla de un usuario real, así que antes de guardarse pasa por el filtro de
+[`../defamatory-content-review`](../defamatory-content-review/README.md)
+(`codigo/FiltroNotas.php`), igual que su endpoint de moderación: en español y en inglés
+a la vez, y por párrafos si pasa de 2000 caracteres. Según lo que decide:
+
+- **Insultos o amenazas** (`reject`): no se guarda; la API responde
+  `422 nota_rechazada` y el ⚠ lo dice al pasar el mouse.
+- **Una acusación, un dato sensible o un dato personal** (`review`: «estafó», «estuvo
+  preso», salud, orientación sexual, un RUT, un teléfono…): se guarda, y el indicador
+  queda en 👁 con los motivos («acusación de delito», «dato personal (RUT)»). No se
+  borra solo: es para que quien la escribió la relea.
+- **Lo demás** (`approve`): se guarda como siempre.
+
+Cada guardado, también los rechazados y los borrados, queda en `registro_notas`
+(`codigo/AlmacenRegistroNotas.php`): la acción, el admin que la escribió, cuándo, la
+decisión (`aprobada`, `revisar`, `rechazada`, `borrada`) y los motivos. No guarda el
+texto, sino su largo y su huella SHA-256, que alcanza para comprobar si un texto dado
+es el que se escribió sin repetir en otra tabla lo que se dijo de un usuario. No tiene
+FK a `acciones`, para que el registro quede aunque se borre la nota. Por ahora no hay
+pantalla para leerlo: se consulta en la base.
+
+La librería se busca en la carpeta hermana del repositorio, o en
+`FILTRO_DIFAMACION_DIR`. Si no está, ninguna nota se guarda (`503`) en vez de guardarse
+sin revisar. Los motivos están en español, como los da la librería, también con la
+interfaz en inglés.
 
 ## Alertas proactivas
 
@@ -778,7 +810,11 @@ interfaz traduce (ver "Idioma de la interfaz"): `no_autenticado` (401),
   filtro guardadas (`{nombre, scope, age_min, age_max, gender, tipo_accion}`).
   **Requiere sesión.**
 - `POST /api/notes` — `{"accion_id": "...", "texto": "..."}`, guarda o (si `texto`
-  queda vacío tras `trim()`) borra la nota de una acción. **Requiere sesión.**
+  queda vacío tras `trim()`) borra la nota de una acción. Antes de guardar la pasa por
+  el filtro (ver «Filtro y registro de las notas»): `422 nota_rechazada` con `motivos`
+  si tiene insultos o amenazas (no se guarda), `200` con `revisar: true` y `motivos` si
+  hay que revisarla, `503 filtro_no_disponible` si no encuentra la librería.
+  **Requiere sesión.**
 - `GET /api/kpis` — `{total_users, total_actions, total_spend_usd, last_action_at,
   active_alerts_users, top_action_types, top_countries}`, agregado de todo el
   sistema. **Requiere sesión.**
