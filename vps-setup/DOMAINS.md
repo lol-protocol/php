@@ -30,6 +30,7 @@ existe pero se hizo a mano (sin marca).
 | App PHP | `06_A <app> <dominio>` | `/var/www/<app>/` | PHP-FPM 8.3 (`/run/php/php8.3-fpm.sock`) |
 | App Python | `06_B <app> <dominio> [puerto]` | `/var/www/<app>/` con su `venv/` | servicio systemd `<app>` (gunicorn en `127.0.0.1:<puerto>`) |
 | App Java | `06_D <dominio> [context]` | `.war` en `/var/lib/tomcat10/webapps/` | Tomcat en `127.0.0.1:8080`; `/manager` da 404 si la app va en la raíz |
+| Marcalibros | `06_E <dominio> [--png]` | `/var/www/marcalibros/` (código) y `/var/lib/marcalibros` (datos) | PHP-FPM; limpieza diaria en `/etc/cron.d/marcalibros`; `10_A --type marcalibros` |
 
 Los logs de cada dominio van en `/var/log/nginx/<dominio>/{access,error}.log` y rotan a diario
 (`07_D`). Los headers de seguridad, gzip y el vhost por defecto (que corta peticiones por IP o con un
@@ -38,7 +39,7 @@ Host ajeno) son globales, en `/etc/nginx/conf.d/` (`07_B`, `07_E`): valen para t
 Cada app Python necesita **su propio puerto** (por defecto 8000). `06_B` rechaza uno que ya use otra
 app o en el que algo ya escuche.
 
-Las apps (`06_A`, `06_B`, `06_D`) aceptan peticiones de hasta `MAX_UPLOAD` (20M por defecto; sin esto Nginx
+Las apps (`06_A`, `06_B`, `06_D`; `06_E` usa 6M) aceptan peticiones de hasta `MAX_UPLOAD` (20M por defecto; sin esto Nginx
 corta en 1 MB con un 413) y, las de proxy, esperan a la app hasta `PROXY_TIMEOUT` (120s). Se pasan como
 variables: `MAX_UPLOAD=100M ./10_A-add-domain.sh fotos.com --type php --name fotos`.
 
@@ -49,10 +50,11 @@ variables: `MAX_UPLOAD=100M ./10_A-add-domain.sh fotos.com --type php --name fot
 ./10_A-add-domain.sh tienda.nuevo.com --type php --name tienda --ssl         # app PHP
 ./10_A-add-domain.sh api.nuevo.com --type python --name api --port 8001      # app Python, SSL después
 ./10_A-add-domain.sh java.nuevo.com --type tomcat --context miapp            # app Java
+./10_A-add-domain.sh marcalibros.nuevo.com --type marcalibros --ssl          # Marcalibros
 ./10_A-add-domain.sh nuevo.com --dry-run                                     # muestra los pasos sin ejecutarlos
 ```
 
-Encadena el script del tipo (`03`, `06_A`, `06_B` o `06_D`), luego `04` si pasas `--ssl` y por último
+Encadena el script del tipo (`03`, `06_A`, `06_B`, `06_D` o `06_E`), luego `04` si pasas `--ssl` y por último
 el healthcheck (`08`). Sin `--name`, la app se llama como el dominio con `-` en vez de `.`.
 **Antes de `--ssl`, el DNS ya debe apuntar al VPS** (ver abajo); si no, deja el `--ssl` y corre `04` después.
 

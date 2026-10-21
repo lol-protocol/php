@@ -68,19 +68,8 @@ server {
 }
 EOFNGINX
 
-# PHP tiene sus propios limites (upload_max_filesize 2M y post_max_size 8M por defecto): con solo
-# subir el de Nginx, PHP seguiria descartando el archivo. Es un ajuste GLOBAL de PHP-FPM (todas las
-# apps comparten el pool); el limite de cada sitio lo pone su client_max_body_size en Nginx. Si ya
-# habia uno mas grande (de otra app), se conserva.
-PHP_UPLOAD_INI=${PHP_UPLOAD_INI:-/etc/php/$PHP_VERSION/fpm/conf.d/90-vps-setup-uploads.ini}
-to_bytes() { local n=${1%?}; case "${1: -1}" in K) echo $((n*1024));; M) echo $((n*1024**2));; G) echo $((n*1024**3));; esac; }
-CURRENT=$(sed -n 's/^upload_max_filesize *= *//p' "$PHP_UPLOAD_INI" 2>/dev/null || true)   # aun no existe: vacio
-if [ ! -d "$(dirname "$PHP_UPLOAD_INI")" ]; then
-    echo "AVISO: no existe $(dirname "$PHP_UPLOAD_INI") (¿falta 02_B-install-php.sh?): no se ajusto el limite de subida de PHP."
-elif [ -z "$CURRENT" ] || [ "$(to_bytes "$MAX_UPLOAD")" -gt "$(to_bytes "$CURRENT")" ]; then
-    printf 'upload_max_filesize = %s\npost_max_size = %s\n' "$MAX_UPLOAD" "$MAX_UPLOAD" | sudo tee "$PHP_UPLOAD_INI" > /dev/null
-    sudo systemctl reload "$PHP_FPM_SERVICE"
-fi
+# PHP tiene sus propios limites aparte de los de Nginx (ver lib.sh).
+raise_php_upload_limit "$MAX_UPLOAD"
 
 # Activa el sitio, lo valida con nginx -t (si falla, lo desactiva) y recarga Nginx
 enable_nginx_site "$DOMAIN"

@@ -1,7 +1,8 @@
 #!/bin/bash
 # Ejecuta un script de vps-setup/ en el VPS desde TU equipo, por SSH (solo llave).
 # Sube vps-setup/ y landing-page/ (con tar, sin necesitar rsync en el VPS) y corre
-# el script con ssh -t, asi los prompts interactivos funcionan.
+# el script con ssh -t, asi los prompts interactivos funcionan. Para Marcalibros (06_E, o 10_A con
+# --type marcalibros) sube ademas el codigo de la app y de defamatory-content-review.
 #
 # Uso:  ./remote-run.sh [--dry-run] <script.sh> [argumentos...]
 # Ej.:  ./remote-run.sh install-all.sh initech.fun admin@initech.fun --yes
@@ -49,15 +50,24 @@ TARGET="$VPS_USER@$VPS_HOST"
 printf -v REMOTE_ARGS ' %q' "$@"
 REMOTE_CMD="cd $REMOTE_DIR/vps-setup && chmod +x ./*.sh && ./$SCRIPT$REMOTE_ARGS"
 
+# Carpetas que se suben: 06_E copia la app desde el monorepo, asi que tiene que estar en el VPS.
+SUBIR=(vps-setup landing-page)
+EXCLUIR=(--exclude='vps-setup/vps.env' --exclude='vps-setup/tests')
+if [[ "$SCRIPT" == 06_E-* ]] || { [[ "$SCRIPT" == 10_A-* ]] && [[ " $* " == *" marcalibros "* ]]; }; then
+    SUBIR+=(marcalibros-plataforma-pos-brand-identity defamatory-content-review)
+    EXCLUIR+=(--exclude='*/vendor' --exclude='*/node_modules' --exclude='*/.phpunit.cache' --exclude='*/catalog/png'
+              --exclude='*/tests' --exclude='*/e2e' --exclude='defamatory-content-review/_Garbage' --exclude='*/.git')
+fi
+
 if [ "$DRY_RUN" -eq 1 ]; then
-    echo "[dry-run] tar -C <repo> -czf - vps-setup landing-page | ssh ${SSH_OPTS[*]} $TARGET 'mkdir -p $REMOTE_DIR && tar -xzf - -C $REMOTE_DIR'"
+    echo "[dry-run] tar -C <repo> -czf - ${SUBIR[*]} | ssh ${SSH_OPTS[*]} $TARGET 'mkdir -p $REMOTE_DIR && tar -xzf - -C $REMOTE_DIR'"
     echo "[dry-run] ssh -t ${SSH_OPTS[*]} $TARGET '$REMOTE_CMD'"
     exit 0
 fi
 
 echo "Subiendo scripts a $TARGET:~/$REMOTE_DIR ..."
-tar -C "$HERE/.." --exclude='vps-setup/vps.env' --exclude='vps-setup/tests' -czf - vps-setup landing-page \
-    | ssh "${SSH_OPTS[@]}" "$TARGET" "mkdir -p $REMOTE_DIR && rm -rf $REMOTE_DIR/vps-setup $REMOTE_DIR/landing-page && tar -xzf - -C $REMOTE_DIR"
+tar -C "$HERE/.." "${EXCLUIR[@]}" -czf - "${SUBIR[@]}" \
+    | ssh "${SSH_OPTS[@]}" "$TARGET" "mkdir -p $REMOTE_DIR && rm -rf ${SUBIR[*]/#/$REMOTE_DIR/} && tar -xzf - -C $REMOTE_DIR"
 
 echo "Ejecutando $SCRIPT en el VPS ..."
 ssh -t "${SSH_OPTS[@]}" "$TARGET" "$REMOTE_CMD"

@@ -6,7 +6,7 @@ setup() {
     FAKE="$BATS_TEST_TMPDIR/fake"; mkdir -p "$FAKE"
     cp "$VPS_DIR/10_A-add-domain.sh" "$VPS_DIR/10_B-remove-domain.sh" "$VPS_DIR/lib.sh" "$FAKE/"
     export RUN_LOG="$BATS_TEST_TMPDIR/run.log"; : > "$RUN_LOG"
-    for s in 03-configure-nginx-site 04-setup-ssl 06_A-setup-php-app 06_B-setup-python-app 06_D-setup-tomcat-app 08-healthcheck; do
+    for s in 03-configure-nginx-site 04-setup-ssl 06_A-setup-php-app 06_B-setup-python-app 06_D-setup-tomcat-app 06_E-setup-marcalibros-app 08-healthcheck; do
         printf '#!/bin/bash\necho "$(basename "$0") $*" >> "$RUN_LOG"\n[ "$FAIL_STEP" = "$(basename "$0")" ] && exit 1\nexit 0\n' > "$FAKE/$s.sh"
     done
     chmod +x "$FAKE"/*.sh
