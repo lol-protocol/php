@@ -40,12 +40,22 @@ jobs:
         run: node --test 'document-formats/tests/*.test.js'
 
   document-formats-database:
-    name: document-formats (MySQL import)
+    name: document-formats (${{ matrix.name }} import)
     runs-on: ubuntu-24.04
+
+    # El README promete las dos bases: MySQL 8.0 y MariaDB 10.11.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: MySQL
+            image: mysql:8.0
+          - name: MariaDB
+            image: mariadb:10.11
 
     services:
       mysql:
-        image: mysql:8.0
+        image: ${{ matrix.image }}
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: formats

@@ -292,7 +292,7 @@ function import(PDO $db): array
                 nullIfEmpty($guide['recommended_for_export']), nullIfEmpty($guide['challenges']), nullIfEmpty($guide['notes'])];
         });
 
-    // One row per standard a format belongs to (ISO 216, ANSI, JIS, GB/T, DIN 476).
+    // One row per standard a format belongs to (ISO, ANSI, JIS, GB/T, DIN).
     $insertReference = $db->prepare(
         'INSERT INTO standard_references (format_id, standard_name, standard_code, issuing_body, year_published)
          VALUES (?, ?, ?, ?, ?)'
