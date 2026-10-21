@@ -15,9 +15,9 @@
     "enforcement_authority": "National Authority for Transparency and Access to Information (ANTAI)",
     "penalties_range": "Up to USD 10,000 fine (B/.1,000-10,000); database registry closure or suspension of processing",
     "exemptions": "Processing outside Panama (e.g. foreign-hosted cloud)",
-    "deceased_data": "",
+    "deceased_data": "Not confirmed in statute; academic commentary frames ARCO rights as belonging to living persons (unconfirmed)",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic data treated as sensitive data (regulator ANTAI guidance); reinforced security and explicit consent rules for sensitive data",
     "website_url": "https://www.organojudicial.gob.pa/uploads/blogs.dir/28/2026/06/913/la-proteccion-de-datos-personales-en-la-republica-de-panama.pdf",
     "language": "Spanish",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.antai.gob.pa/wp-content/uploads/2020/11/ANTAI-remitira-al-Ministerio-Publico-caso-de-venta-de-base-de-datos.pdf",
@@ -43,9 +43,31 @@
         "url": "https://www.rsm.global/panama/es/node/62",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://revistas.up.ac.pa/index.php/anuario_derecho/article/download/3451/2951/5691",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.antai.gob.pa/wp-content/uploads/2024/01/GUIA-SECTOR-PRIVADO-1.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data treated as sensitive data (regulator ANTAI guidance); reinforced security and explicit consent rules for sensitive data"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not confirmed in statute; academic commentary frames ARCO rights as belonging to living persons (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "penalties_range",

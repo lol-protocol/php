@@ -17,7 +17,7 @@
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Sensitive data: definition includes genetic, biometric and health data (definitions article; number not confirmed)",
     "website_url": "https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf",
     "language": "French",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-21",
     "sources": {
       "law_name": {
         "url": "https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf",
@@ -78,9 +78,20 @@
         "url": "https://www.sidwaya.info/protection-des-donnees-a-caractere-personnel-une-nouvelle-loi-pour-renforcer-le-cadre-legal/",
         "confidence": "medium",
         "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data: definition includes genetic, biometric and health data (definitions article; number not confirmed)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

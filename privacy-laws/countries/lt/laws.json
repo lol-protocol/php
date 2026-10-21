@@ -15,9 +15,9 @@
     "enforcement_authority": "State Data Protection Inspectorate (Valstybinė duomenų apsaugos inspekcija)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Household use; journalistic processing (separate supervisor)",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "No specific rules in the data protection law (pre-2018 text excluded deceased persons); privacy of the deceased protected by the Civil Code (consent of spouse, children or parents)",
+    "research_exemption": "Relies on GDPR art. 89 safeguards and derogations for archiving, research and statistics; national derogation article not confirmed (unconfirmed)",
+    "genetic_data": "Special category under art. 9 GDPR; no specific national rule found in the Law (unconfirmed)",
     "website_url": "https://vdai.lrv.lt/en/legislation/",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
@@ -27,9 +27,43 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-08",
-    "sources": {},
+    "last_checked": "2026-10-21",
+    "sources": {
+      "deceased_data": {
+        "url": "https://walless.com/news/life-after-death-what-rules-apply-to-data-on-deceased-persons",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://gdpr-text.com/lt/read/article-89/",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://epublications.vu.lt/object/elaba:175679387/175679387.pdf",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category under art. 9 GDPR; no specific national rule found in the Law (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Relies on GDPR art. 89 safeguards and derogations for archiving, research and statistics; national derogation article not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No specific rules in the data protection law (pre-2018 text excluded deceased persons); privacy of the deceased protected by the Civil Code (consent of spouse, children or parents)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

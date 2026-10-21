@@ -17,7 +17,7 @@
     "exemptions": "National security; household use",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic information listed as sensitive personal data (per 2021 draft; final art. 2 wording unverified); ECA may add sensitive categories (unconfirmed)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=ET&t=law",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.michalsons.com/blog/the-ethiopian-data-protection-law/75488",
@@ -38,9 +38,20 @@
         "url": "https://www.metaappz.com/References/ethiopian_laws/federal/pr_1321_2024/en/txt",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "genetic_data": {
+        "url": "https://capitalethiopia.com/2021/09/28/first-structured-personal-data-protection-proclamation-in-the-making/",
+        "confidence": "low",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic information listed as sensitive personal data (per 2021 draft; final art. 2 wording unverified); ECA may add sensitive categories (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

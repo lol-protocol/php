@@ -16,8 +16,8 @@
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Household use; national security",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Archiving, scientific/historical research and statistics: GDPR arts. 15-16, 18 and 21 rights do not apply where they would seriously impair the purpose, with safeguards (pseudonymisation, minimisation)",
+    "genetic_data": "Special category under art. 9 GDPR; no specific genetic rule found; health data for insurance under S.L. 586.10 (art. 9(2)(g) substantial public interest) (unconfirmed)",
     "website_url": "https://idpc.org.mt/our-office/legislation/",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
@@ -27,9 +27,32 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
-    "sources": {},
+    "last_checked": "2026-10-21",
+    "sources": {
+      "research_exemption": {
+        "url": "https://whitecase.com/publications/article/gdpr-guide-national-implementation-malta",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://ganado.com/health-data-processed-for-insurance-purposes-amendments-to-the-subsidiary-legislation-586-10/",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category under art. 9 GDPR; no specific genetic rule found; health data for insurance under S.L. 586.10 (art. 9(2)(g) substantial public interest) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Archiving, scientific/historical research and statistics: GDPR arts. 15-16, 18 and 21 rights do not apply where they would seriously impair the purpose, with safeguards (pseudonymisation, minimisation)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

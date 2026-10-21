@@ -16,8 +16,8 @@
     "penalties_range": "Reported fines up to MWK 5,000,000 and/or 12 months imprisonment (unverified vendor source) (unconfirmed)",
     "exemptions": "Processing solely for personal or household purposes; mere transmission of data through Malawi",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Sensitive personal data may be processed for research or statistics among other grounds (s. 16); no confirmed general archiving/research exemption (unconfirmed)",
+    "genetic_data": "Genetic identity named in definition of personal data (s. 2); inclusion in sensitive personal data list not confirmed (unconfirmed)",
     "website_url": "https://www.macra.mw",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-21",
     "sources": {
       "law_name": {
         "url": "https://cdh-malawi.com/wp-content/uploads/2025/09/Data-Protection-Act-2024.pdf",
@@ -83,9 +83,31 @@
         "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
         "confidence": "medium",
         "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://cdh-malawi.com/wp-content/uploads/2025/09/Data-Protection-Act-2024.pdf",
+        "confidence": "low",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic identity named in definition of personal data (s. 2); inclusion in sensitive personal data list not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Sensitive personal data may be processed for research or statistics among other grounds (s. 16); no confirmed general archiving/research exemption (unconfirmed)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

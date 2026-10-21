@@ -15,9 +15,9 @@
     "enforcement_authority": "Superintendency of Personal Data Protection (Superintendencia de Protección de Datos Personales)",
     "penalties_range": "Up to 1% of prior-year annual turnover (private sector)",
     "exemptions": "Domestic use; journalism; national security",
-    "deceased_data": "",
+    "deceased_data": "Law does not apply to deceased persons (art. 2), without prejudice to art. 28 which provides an exception; content of art. 28 not confirmed",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic data defined and treated as sensitive data with reinforced protection (with health and biometric data)",
     "website_url": "https://nmslaw.com.ec/blog/2023/04/05/lopdp-ecuador/",
     "language": "Spanish",
     "frameworks": "",
@@ -27,15 +27,37 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://nmslaw.com.ec/blog/2023/06/21/regimen-sancionatorio-lopdp/",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://www.lexis.com.ec/blog/otros/sobre-la-ley-de-proteccion-de-datos-personales-lopdp",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://derechoecuador.com/proteccion-de-datos-personales-en-ecuador-mito-o-realidad/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data defined and treated as sensitive data with reinforced protection (with health and biometric data)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Law does not apply to deceased persons (art. 2), without prejudice to art. 28 which provides an exception; content of art. 28 not confirmed"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

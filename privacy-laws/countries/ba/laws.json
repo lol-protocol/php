@@ -16,8 +16,8 @@
     "penalties_range": "Up to BAM 40M or 4% global turnover",
     "exemptions": "Purely personal or household use",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "New 2025 law (Sl. glasnik BiH 12/25) contains special rules for academic and research activities; articles not confirmed (unconfirmed)",
+    "genetic_data": "Defined (inherited or acquired genetic characteristics from biological sample analysis) and listed as special category, new concept in 2025 law",
     "website_url": "https://www.dlapiperdataprotection.com/index.html?c=BA&t=law",
     "language": "English",
     "frameworks": "CoE-108",
@@ -27,9 +27,32 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
-    "sources": {},
+    "last_checked": "2026-10-21",
+    "sources": {
+      "research_exemption": {
+        "url": "https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/bosnia-herzegovina-1577071960",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://bhas.gov.ba/data/Dokumenti/pdf/Zakon_o_zastiti_licnih_podataka_12-25_BS.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Defined (inherited or acquired genetic characteristics from biological sample analysis) and listed as special category, new concept in 2025 law"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "New 2025 law (Sl. glasnik BiH 12/25) contains special rules for academic and research activities; articles not confirmed (unconfirmed)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

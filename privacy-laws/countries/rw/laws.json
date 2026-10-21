@@ -15,9 +15,9 @@
     "enforcement_authority": "National Cyber Security Authority (NCSA)",
     "penalties_range": "Admin fine RWF 2M-5M or 1% global turnover; criminal fines up to 5% of turnover; up to 7 years' imprisonment",
     "exemptions": "National security; household use",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Data subject may designate an heir to personal data by will; heir gets full or restricted rights over processing after death (data not subject to succession); article not confirmed",
+    "research_exemption": "Research purposes are a lawful basis for processing, subject to authorisation by the relevant institution; specific article not confirmed",
+    "genetic_data": "Sensitive personal data includes genetic information (art. 3(2)); stricter conditions for processing sensitive data",
     "website_url": "https://hoganlovells.com/en/publications/key-features-of-the-new-rwandan-data-protection-law",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.dataguidance.com/news/rwanda-data-protection-law-published-official-gazette",
@@ -38,9 +38,42 @@
         "url": "https://dpo.gov.rw/faqs",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://hoganlovells.com/en/publications/key-features-of-the-new-rwandan-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://www.dlapiperdataprotection.com/?c=RW&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=RW&t=law",
+        "confidence": "high",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic information (art. 3(2)); stricter conditions for processing sensitive data"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Research purposes are a lawful basis for processing, subject to authorisation by the relevant institution; specific article not confirmed"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Data subject may designate an heir to personal data by will; heir gets full or restricted rights over processing after death (data not subject to succession); article not confirmed"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

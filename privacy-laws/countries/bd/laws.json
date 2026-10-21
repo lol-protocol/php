@@ -16,8 +16,8 @@
     "penalties_range": "Administrative fines, compensation and criminal penalties; amounts not confirmed (unconfirmed)",
     "exemptions": "Not specified",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Exemptions for statistical research (also crime prevention, journalism etc.) subject to proportionate safeguards for data subjects (Chs. V-VI); section numbers unverified",
+    "genetic_data": "Genetic information listed as sensitive personal data with enhanced protection",
     "website_url": "https://www.tbsnews.net/node/1281356",
     "language": "Bengali/English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-21",
     "sources": {
       "law_name": {
         "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
@@ -73,9 +73,31 @@
         "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
         "confidence": "low",
         "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic information listed as sensitive personal data with enhanced protection"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Exemptions for statistical research (also crime prevention, journalism etc.) subject to proportionate safeguards for data subjects (Chs. V-VI); section numbers unverified"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

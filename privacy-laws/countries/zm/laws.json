@@ -17,7 +17,7 @@
     "exemptions": "National security; household use",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Sensitive personal data includes genetic and biometric data (s. 2); genetic identity also within personal data definition; sensitive data requires stricter conditions",
     "website_url": "https://zambialii.org/akn/zm/act/2021/3/eng@2021-03-24",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://zambialii.org/akn/zm/act/2021/3/eng@2021-03-24",
@@ -38,9 +38,20 @@
         "url": "https://bowmanslaw.com/insights/zambia-employers-obligations-under-the-data-protection-act/",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=ZM&t=law",
+        "confidence": "high",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic and biometric data (s. 2); genetic identity also within personal data definition; sensitive data requires stricter conditions"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

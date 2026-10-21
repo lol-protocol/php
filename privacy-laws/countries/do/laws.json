@@ -15,7 +15,7 @@
     "enforcement_authority": "No dedicated authority yet",
     "penalties_range": "Up to 100x national minimum wage fine; prison 6 months-2 years",
     "exemptions": "Art. 3 excludes: files kept by individuals for exclusively personal/domestic activities; intelligence and investigation agency files; data of deceased persons",
-    "deceased_data": "",
+    "deceased_data": "Not covered: files of deceased persons excluded from the law's scope (art. 3)",
     "research_exemption": "",
     "genetic_data": "",
     "website_url": "https://www.dlapiperdataprotection.com/?c=DO&t=law",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://do.vlex.com/vid/legislacion-dominicana-proteccion-datos-916588345",
@@ -38,9 +38,20 @@
         "url": "https://www.studocu.com/latam/document/instituto-nacional-de-formacion-tecnico-profesional/historia-social-dominicana/ley-172-13-sobre-proteccion-de-datos-personales-de-fecha-13-de-diciembre-de-2013/72459014",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://phlaw.com/ley-172-13-sobre-proteccion-de-datos-personales/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: files of deceased persons excluded from the law's scope (art. 3)"
+      },
       {
         "date": "2026-10-15",
         "field": "exemptions",

@@ -15,9 +15,9 @@
     "enforcement_authority": "Office for Personal Data Protection of the Slovak Republic",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Household use; national security",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Protected, no time limit found: where consent is needed, a close person (relative/spouse) may give it, invalid if any close person objects in writing (special situations, § 78)",
+    "research_exemption": "Archiving, scientific/historical research and statistics handled under special processing situations (§ 78) with art. 89 GDPR safeguards; exact wording not confirmed (unconfirmed)",
+    "genetic_data": "Genetic, biometric and health data may be processed only where a specific law or international treaty provides (art. 9(4) GDPR option); no specific genetic-data or biobank law",
     "website_url": "https://dataprotection.gov.sk/files/personal-data-sample/2019_10_03_act_18_2018_on_personal_data_protection_and_amending_and_supplementing_certain_acts.pdf",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
@@ -27,9 +27,43 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
-    "sources": {},
+    "last_checked": "2026-10-21",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-slovakia",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://www.lewik.org/term/23893/stvrta-cast-osobitne-situacie-zakonneho-spracuvania-osobnych-udajov-zakon-o-ochrane-osobnych-udajov-18-2018/",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-slovakia",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic, biometric and health data may be processed only where a specific law or international treaty provides (art. 9(4) GDPR option); no specific genetic-data or biobank law"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Archiving, scientific/historical research and statistics handled under special processing situations (§ 78) with art. 89 GDPR safeguards; exact wording not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Protected, no time limit found: where consent is needed, a close person (relative/spouse) may give it, invalid if any close person objects in writing (special situations, § 78)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

@@ -17,7 +17,7 @@
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Sensitive data: processing of genetic data, biometric and health data prohibited in principle, subject to exceptions (art. 394)",
     "website_url": "https://sgg.gouv.bj/doc/loi-2017-20/download",
     "language": "French",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-21",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law",
@@ -73,9 +73,20 @@
         "url": "https://www.consentstack.io/regulations/bj-code-numerique",
         "confidence": "low",
         "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BJ&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data: processing of genetic data, biometric and health data prohibited in principle, subject to exceptions (art. 394)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

@@ -16,8 +16,8 @@
     "penalties_range": "Administrative fines up to 50 base values; criminal liability for repeat offences",
     "exemptions": "Household use; state secrets; defence & national security information",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Archival documents listed among exclusions from the law's scope (art. 3); no specific scientific/statistical research exemption found (unconfirmed)",
+    "genetic_data": "Biometric and genetic data subject to more stringent requirements (art. 7 on biometric and genetic data)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=UZ&t=law",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "retention_period": {
         "url": "https://www.ziraatbank.uz/OnpersonaldataLAWOFTHEREPUBLICOFUZBEKISTANEn.pdf",
@@ -38,9 +38,31 @@
         "url": "https://gov.uz/en/dpm",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://president.uz/ru/lists/view/3020",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.mondaq.com/data-protection/828474/uzbekistan-enacts-first-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Biometric and genetic data subject to more stringent requirements (art. 7 on biometric and genetic data)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Archival documents listed among exclusions from the law's scope (art. 3); no specific scientific/statistical research exemption found (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "enforcement_authority",

@@ -16,8 +16,8 @@
     "penalties_range": "Up to ALL 2 billion or 4% global turnover",
     "exemptions": "Household use; law-enforcement processing under separate rules",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Storage limitation exception for archiving in public interest, scientific/historical research and statistics with appropriate technical and organisational measures (art. 6)",
+    "genetic_data": "Genetic data defined (art. 5(25)) and classified as sensitive data, a novelty of the 2024 law (art. 5)",
     "website_url": "https://idp.al/en/2025/06/17/the-commissioners-office-in-konfindustria-albania-discussions-on-the-new-law-of-personal-data-protection/",
     "language": "English",
     "frameworks": "CoE-108",
@@ -27,15 +27,37 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.karanovicpartners.com/news/albanian-parliament-finally-approves-new-data-protection-law-fully-aligned-with-eu-standards/",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://kpmg.com/al/en/insights/2025/02/new-law-on--personal-data-protection-.html",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://kpmg.com/al/en/insights/2025/02/new-law-on--personal-data-protection-.html",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data defined (art. 5(25)) and classified as sensitive data, a novelty of the 2024 law (art. 5)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Storage limitation exception for archiving in public interest, scientific/historical research and statistics with appropriate technical and organisational measures (art. 6)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

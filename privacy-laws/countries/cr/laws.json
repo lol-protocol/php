@@ -16,8 +16,8 @@
     "penalties_range": "Up to 30 base salaries (salarios base) fine",
     "exemptions": "Internal/personal/household databases (unless traded)",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Regulation (Decree 37554-JP, art. 2(o)) defines scientific research as processing non-sensitive data or sensitive data that is not identifiable; law's research article not confirmed (unconfirmed)",
+    "genetic_data": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9) (unconfirmed)",
     "website_url": "https://www.sutel.go.cr/sites/default/files/normativas/ley_proteccion_de_la_persona_frente_al_tratamiento_de_sus_ley_8968.pdf",
     "language": "Spanish",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "enactment_date": {
         "url": "https://www.sutel.go.cr/sites/default/files/normativas/ley_proteccion_de_la_persona_frente_al_tratamiento_de_sus_ley_8968.pdf",
@@ -38,9 +38,32 @@
         "url": "https://rm.coe.int/t-pd-2020-08rev-evaluation-of-the-republic-of-costa-rica-for-accession/1680a2cfbc",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://www.tse.go.cr/pdf/normativa/reglamentoleyproteccionpersona.pdf",
+        "confidence": "low",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9)",
+        "to": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data under art. 3 includes biomedical or genetic information; processing of sensitive data restricted (art. 9)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Regulation (Decree 37554-JP, art. 2(o)) defines scientific research as processing non-sensitive data or sensitive data that is not identifiable; law's research article not confirmed (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

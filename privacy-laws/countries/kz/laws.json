@@ -15,9 +15,9 @@
     "enforcement_authority": "Ministry of Digital Development, Innovation and Aerospace Industry (MDDIAI)",
     "penalties_range": "Administrative fines under the Code of Administrative Offences in MCI units (reported 100-10,000 MCI); criminal liability including imprisonment up to 5 years (unconfirmed)",
     "exemptions": "Not specified",
-    "deceased_data": "",
+    "deceased_data": "Processing of data of a deceased (or court-declared missing/dead) subject carried out per Kazakh legislation (Regulations on collection/processing of personal data); heirs' role unverified",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "No specific rule in Law 94-V (biometric data defined, art. 1); genomic information governed by separate Law No. 40-VI of 2016 on dactyloscopic and genomic registration",
     "website_url": "https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026",
     "language": "Kazakh/Russian",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-21",
     "sources": {
       "law_name": {
         "url": "https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026",
@@ -78,9 +78,31 @@
         "url": "https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026",
         "confidence": "low",
         "checked": "2026-10-16"
+      },
+      "deceased_data": {
+        "url": "https://adilet.zan.kz/eng/docs/V2000021498",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://adilet.zan.kz/eng/docs/Z1600000040/download",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific rule in Law 94-V (biometric data defined, art. 1); genomic information governed by separate Law No. 40-VI of 2016 on dactyloscopic and genomic registration"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Processing of data of a deceased (or court-declared missing/dead) subject carried out per Kazakh legislation (Regulations on collection/processing of personal data); heirs' role unverified"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

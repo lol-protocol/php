@@ -15,9 +15,9 @@
     "enforcement_authority": "Industry central competent authorities (PDPC not yet established)",
     "penalties_range": "Up to NT$1M fine and 5 years prison; admin fines up to NT$500k",
     "exemptions": "Personal or household activities; statutory duties",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not covered: living natural persons only (Ministry of Justice interpretation 10503502210, 2016); data of living relatives in records of the dead still protected",
+    "research_exemption": "Government agencies and academic institutions may process data for statistics or academic research (healthcare, public health, crime prevention) if de-identified (arts. 6(1)(4), 16, 19, 20)",
+    "genetic_data": "Special category: genetic data among the sensitive categories of art. 6, processing prohibited unless a listed exception applies",
     "website_url": "https://law.moj.gov.tw/Eng/LawClass/LawAll.aspx?PCode=I0050021",
     "language": "English",
     "frameworks": "APEC-CBPR",
@@ -27,15 +27,48 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
+    "last_checked": "2026-10-21",
     "sources": {
       "retention_period": {
         "url": "https://laws.gov.taipei/Law/Interpretation/Content/FE283339",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://laws.gov.taipei/law/Interpretation/Content/FE288572",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://winklerpartners.com/amendments-to-taiwan-data-protection-law-take-effect/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://winklerpartners.com/amendments-to-taiwan-data-protection-law-take-effect/",
+        "confidence": "high",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category: genetic data among the sensitive categories of art. 6, processing prohibited unless a listed exception applies"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Government agencies and academic institutions may process data for statistics or academic research (healthcare, public health, crime prevention) if de-identified (arts. 6(1)(4), 16, 19, 20)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: living natural persons only (Ministry of Justice interpretation 10503502210, 2016); data of living relatives in records of the dead still protected"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

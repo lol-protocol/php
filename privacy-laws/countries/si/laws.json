@@ -15,9 +15,9 @@
     "enforcement_authority": "Information Commissioner of the Republic of Slovenia (Informacijski pooblaščenec)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Household use; national security",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Protected for 20 years after death (art. 9): released only to users authorised by law or with legal interest; spouse, partner, children, parents or heirs on request unless deceased forbade it",
+    "research_exemption": "Further processing for research, incl. special categories, allowed without new legal basis under conditions; public bodies publish transfers to researchers (arts. 68-70)",
+    "genetic_data": "Special category under art. 9 GDPR; no specific ZVOP-2 genetic rule found; research processing of special categories under arts. 68-70 (unconfirmed)",
     "website_url": "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2022-01-4187/zakon-o-varstvu-osebnih-podatkov-zvop-2",
     "language": "Slovenian",
     "frameworks": "GDPR/CoE-108",
@@ -27,9 +27,43 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-08",
-    "sources": {},
+    "last_checked": "2026-10-21",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.racunovodstvo.net/zakonodaja/zvop-1/9-clen",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://www.uni-lj.si/assets/Sluzba-za-doktorski-studij/Ravnanje-z-raziskovalnimi-podatki/Dogodek-Obdelava-osebnih-podatkov-v-raziskovalne-namene-16-maj-2023/Predstavitev-2-Alenka-Jerse.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://www.uni-lj.si/assets/Sluzba-za-doktorski-studij/Ravnanje-z-raziskovalnimi-podatki/Dogodek-Obdelava-osebnih-podatkov-v-raziskovalne-namene-16-maj-2023/Predstavitev-2-Alenka-Jerse.pdf",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category under art. 9 GDPR; no specific ZVOP-2 genetic rule found; research processing of special categories under arts. 68-70 (unconfirmed)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Further processing for research, incl. special categories, allowed without new legal basis under conditions; public bodies publish transfers to researchers (arts. 68-70)"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Protected for 20 years after death (art. 9): released only to users authorised by law or with legal interest; spouse, partner, children, parents or heirs on request unless deceased forbade it"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

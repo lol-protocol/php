@@ -16,8 +16,8 @@
     "penalties_range": "Fine up to level 11 and/or up to 7 years' imprisonment",
     "exemptions": "National security; household use",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Processing of sensitive data permitted where necessary for scientific research, under conditions specified by the Authority (s. 11); no general archiving/genealogy exemption found",
+    "genetic_data": "Genetic data (from DNA analysis) has its own provision: s. 12 'Genetic data, biometric sensitive data and health data' with heightened safeguards",
     "website_url": "https://www.dlapiperdataprotection.com/?c=ZW&t=law",
     "language": "English",
     "frameworks": "",
@@ -27,15 +27,37 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-21",
     "sources": {
       "retention_period": {
         "url": "https://zimlii.org/akn/zw/act/2021/5/eng@2022-03-11/source.pdf",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://www.dlapiperdataprotection.com/?c=ZW&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://zimlii.org/akn/zw/act/2021/5/eng@2022-03-11",
+        "confidence": "medium",
+        "checked": "2026-10-21"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-21",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data (from DNA analysis) has its own provision: s. 12 'Genetic data, biometric sensitive data and health data' with heightened safeguards"
+      },
+      {
+        "date": "2026-10-21",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Processing of sensitive data permitted where necessary for scientific research, under conditions specified by the Authority (s. 11); no general archiving/genealogy exemption found"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",
