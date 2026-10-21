@@ -235,3 +235,10 @@ Los 100 JPG se generan también a 400×2800 en `catalog/jpg2x/` (misma escena, `
 
 ### Revisión de código del editor y el modelo (corregida)
 Hallazgos tratados: fotos de móvil MPO ya se aceptan (primera imagen); si ningún tono ni velo llega a 4,5:1 el render lanza `ErrorEditor` en vez de pintar texto ilegible; `usuario` es obligatorio en `ruta` y `renderizar_receta` (no hay lectura sin comprobar propietario); índice de subidas con bloqueo `flock` y escritura atómica (cuota a prueba de subidas simultáneas); el id del diseño debe corresponder a su origen y a su pieza siempre (también sin `piezas`), así no se puede suplantar un `cat:`; los recortes se miden sobre la imagen guardada (`AlmacenSubidas.dimensiones`); el texto usa la franja de la escena (`esc.franja`) con la fija como respaldo, se centra bien sin autor y se rechaza si no cabe; PNG de 16 bits se normaliza; se quitó el `MAX_IMAGE_PIXELS` global. No se tocó el generador del catálogo: la caché sigue válida.
+
+
+## Decisiones de octubre (2.ª ronda)
+- **Realismo mágico:** 14 frases originales breves (`original: true`, autor «Marcalibros», estado `original`); no citan a ningún autor real. 60 de sus 100 piezas llevan frase; en total, 513 de 1000. Sustituye a la decisión pendiente de «sin frase o prestadas».
+- **Gutenberg:** se amplía la red del entorno (el usuario debe permitir `gutenberg.org` y `gutendex.com`) y se ejecuta `verificar_gutenberg.py`. Pendiente de que se cambie la configuración.
+- **CI:** se probará abriendo un PR (pendiente de que el usuario lo pida expresamente).
+- **Contenido de memoria:** revisión solo de lo dudoso: ver `REVISION-DUDAS.md`.

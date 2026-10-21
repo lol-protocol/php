@@ -23662,8 +23662,13 @@
       "contraste_texto": 6.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "e7af7d90d775f72c74f9b4b47fdac6484d5a56986025f8a05be13185e20e48f8"
+      "frase": {
+        "texto": "Esa tarde, hasta las sombras llegaron tarde",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "b78595d07b651ba5da9ec14391446043de540675ff680b9763ffe01249a384ec"
     },
     {
       "id": "realismo-magico-allende-04",
@@ -23699,8 +23704,13 @@
       "contraste_texto": 5.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "e1090c153a3103cdaf6310d9f006c10c8b77b58efb408c40c6507ca2a8e875f0"
+      "frase": {
+        "texto": "La abuela hablaba con los muertos y ellos le contestaban",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "392f4a27ea42e791ee1fb0dedb84b1693306eaf3570dacbdf4e0479235e0a800"
     },
     {
       "id": "realismo-magico-allende-05",
@@ -23736,8 +23746,13 @@
       "contraste_texto": 5.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "899f98486267d642adc783d96e319398b82f212a2050fbf0907e89dc64812fd0"
+      "frase": {
+        "texto": "Los gallos cantaban a medianoche para despertar los sueños",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "2d569d2cbf10a16024a0b6133514350c01e55a03d908c174c5846583242a8143"
     },
     {
       "id": "realismo-magico-allende-06",
@@ -23773,8 +23788,13 @@
       "contraste_texto": 4.8,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "4d2886710b54a1b234440e664eb27b0290676adfa7cba9e41503e218c0e206d2"
+      "frase": {
+        "texto": "La luna se detuvo a escuchar la historia",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "4bcf9f7223ec341139571d8dc443a1593d0cb7d16cfa7571cd0669dd007d1885"
     },
     {
       "id": "realismo-magico-allende-07",
@@ -23810,8 +23830,13 @@
       "contraste_texto": 13.7,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "6496e849b021273bf13dc2a543afed7e3b8971617eb6cbce573e9eb88bd949a2"
+      "frase": {
+        "texto": "El río subía cada noche a buscar su nombre",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "6fbff537df524a8a624e99501840a35fface23c638cf03a7c47b77f372b058cc"
     },
     {
       "id": "realismo-magico-allende-08",
@@ -23961,9 +23986,14 @@
       "contraste_texto": 4.9,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256_2x": "8d52bb6d5746170859d42e38d8d39e7aa3045bc0f22645ecc8bca3abbbc3a6ee",
-      "sha256": "3c2cf0072d472d7650f64fb7aefb8e44b51e002a468398af314ac5f3233ed5b6"
+      "frase": {
+        "texto": "Los árboles recordaban a los que se fueron",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256_2x": "74172df1f6e6d979819b500970814b176563aa0f7fd288ab44fb7db063b3d308",
+      "sha256": "3b4be0f4d214dcc1be5a35846720bb1a1921972fe33fcc006531c4254204f06c"
     },
     {
       "id": "realismo-magico-amado-02",
@@ -23999,8 +24029,13 @@
       "contraste_texto": 4.7,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "a89fbbf7b97a85ba954e75c86021619585783c897b431e9838a47d8b9a7360ba"
+      "frase": {
+        "texto": "La abuela hablaba con los muertos y ellos le contestaban",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "e5c3b566949a0886e325846f02a71344fa4e7b8e44c63b512cfc9b963cbeb4c8"
     },
     {
       "id": "realismo-magico-amado-03",
@@ -24036,8 +24071,13 @@
       "contraste_texto": 4.7,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "c78406cda0019088cdd69fa831263e65b19cb4971ed9ebc795fb2b0a7d6e7963"
+      "frase": {
+        "texto": "La memoria tenía puerta propia y la dejaban abierta",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "83f1493a527d012ca5a4d23abb78ef285056ea58410227c16e4bb460942a2a67"
     },
     {
       "id": "realismo-magico-amado-04",
@@ -24183,8 +24223,13 @@
       "contraste_texto": 6.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "8a227a6fb8df0a5524eca93077f79b84d3f836f68e8c84f1daa2232c92b84f76"
+      "frase": {
+        "texto": "Los gallos cantaban a medianoche para despertar los sueños",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "02e4fa4fbd43e343a0c6c043d6ebe7e51822710d34d6fb809fafacafb9e79997"
     },
     {
       "id": "realismo-magico-amado-08",
@@ -24220,8 +24265,13 @@
       "contraste_texto": 7.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "266fec5ac48ba4696f3311eab85909a3c173320ce53aaf8591f962fb576aea58"
+      "frase": {
+        "texto": "La luna se detuvo a escuchar la historia",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "ec7be9519de8885678f3ddcce292927495cd96118a280834a1e30778336b3516"
     },
     {
       "id": "realismo-magico-amado-09",
@@ -24257,8 +24307,13 @@
       "contraste_texto": 14.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "53fe8ccbe8f1d6da35aa82e9e0389f4bf6c9d21ebe24ff577e94acd24de94b98"
+      "frase": {
+        "texto": "Llovió flores toda la tarde y nadie se sorprendió",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "569fd6edcf34afbd3db9d37f9c8e9cac688eeedfcb0a2d6486cec27a7ed9f35e"
     },
     {
       "id": "realismo-magico-amado-10",
@@ -24294,8 +24349,13 @@
       "contraste_texto": 13.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "683cc843d0252fd1d4b6dae2727738337824977d7b1a9acd2ebae80d1b045ff6"
+      "frase": {
+        "texto": "Llovió flores toda la tarde y nadie se sorprendió",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "4db57800149106d79c73aec16f8203abc48706284f0b59dc738b158e61d94170"
     },
     {
       "id": "realismo-magico-asturias-01",
@@ -24372,8 +24432,13 @@
       "contraste_texto": 6.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "f9eb55a9958f044f691cba5a3f8377a80afa9b5e2fae7fe851933977b694094b"
+      "frase": {
+        "texto": "Una niña cosió el atardecer a su vestido",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "fb38bbf6025c9f34b1fb6deae37289960b61369dc68e1d24a4656ede0fc0ca2a"
     },
     {
       "id": "realismo-magico-asturias-03",
@@ -24445,8 +24510,13 @@
       "contraste_texto": 13.1,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "aa7a5a508890511e29cdce786f18ad2f867283098856300f22475720488acf01"
+      "frase": {
+        "texto": "Los árboles recordaban a los que se fueron",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "62e7fe246042eec872b91e543989660d4ddaf361cb6b7b7ea33e29625197300a"
     },
     {
       "id": "realismo-magico-asturias-05",
@@ -24482,8 +24552,13 @@
       "contraste_texto": 14.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "d6e87e0e7d458007dac6cba5d382473e142acb5d4f9ca1514ea55bbdeeedc206"
+      "frase": {
+        "texto": "Los árboles recordaban a los que se fueron",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "782feee6c75236e3d945a22e8e138dedc6073268dd4b6a1fa16c3d7e5371c24d"
     },
     {
       "id": "realismo-magico-asturias-06",
@@ -24630,8 +24705,13 @@
       "contraste_texto": 6.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "042ddec7c1d29a5032437b90710abef137d90e602e8cb7d16888c77f3754dd88"
+      "frase": {
+        "texto": "El mar le prestó una canción al pueblo",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "7c905e8c85deed836a60a712e4902f43483df809cfc1d497e15a15470ba3bf31"
     },
     {
       "id": "realismo-magico-asturias-10",
@@ -24707,9 +24787,14 @@
       "contraste_texto": 4.6,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256_2x": "0a118a415bccb0cc1fa8612727e7c9dd86d104c673b86a016316ebb64292fde7",
-      "sha256": "5b9883eabbad5fa42609c68c1c1988e9021b056cdca419d43d07eed7ceaa19a8"
+      "frase": {
+        "texto": "La luna se detuvo a escuchar la historia",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256_2x": "bef169826b54a5253f4d00f65d395414779d83b1f34f26f5f31ef49a17198085",
+      "sha256": "dd4ef672c17c80dd1719c062dff18d43935b3db793378e91cdca8568457dfb74"
     },
     {
       "id": "realismo-magico-belli-02",
@@ -24745,8 +24830,13 @@
       "contraste_texto": 4.6,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "c20d19fb997f0326b37d52c7a4ebf1ea4b7f475416fd85ce200f2b2f0c594a56"
+      "frase": {
+        "texto": "Una niña cosió el atardecer a su vestido",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "8fd9279ce7b0acbf04304f4ec2dac1e9239b2c242ad6724b8ef615641c1b82eb"
     },
     {
       "id": "realismo-magico-belli-03",
@@ -24782,8 +24872,13 @@
       "contraste_texto": 4.7,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "ba926a0cfffee806d5e79f1b4937f3b0e5277b0b4dba59fc130c47aed244b498"
+      "frase": {
+        "texto": "La luna se detuvo a escuchar la historia",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "ae35b741974be602a7f923ae314ca751fdb855e902540f7170e70b1d63dc1cea"
     },
     {
       "id": "realismo-magico-belli-04",
@@ -24856,8 +24951,13 @@
       "contraste_texto": 4.8,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "a3fb0a50bba7e5b33ad49c9232b595d446a6909b8fe0b330dfaf210d84f14d95"
+      "frase": {
+        "texto": "Los gallos cantaban a medianoche para despertar los sueños",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "d6027b68513f9859c180e7361c88abb75c8aea2206dae1e8cff322553b006042"
     },
     {
       "id": "realismo-magico-belli-06",
@@ -24929,8 +25029,13 @@
       "contraste_texto": 7.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "b1ca21e074ae2a181678ad821aa6b62937a495ec540d2713740cfecfa1e8e3cc"
+      "frase": {
+        "texto": "Allí lo imposible se tomaba con café",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "8af64c1fbb5d51f5611ac6f75aa2fce8b5255d37156cd90e5ed0d92e843485d4"
     },
     {
       "id": "realismo-magico-belli-08",
@@ -24966,8 +25071,13 @@
       "contraste_texto": 9.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "d2fcb2bb5cfddfac1d6d6a52c9d76f9d2343f811d43d0b50cca24469bda84639"
+      "frase": {
+        "texto": "La abuela hablaba con los muertos y ellos le contestaban",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "178415318757bf4b7a5c59c14203fab0a4a722dcf22ae09598ac9d5fba29e21f"
     },
     {
       "id": "realismo-magico-belli-09",
@@ -25003,8 +25113,13 @@
       "contraste_texto": 4.9,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "53a0361d7ca2b155237dfedaa7ccd97f3a85de6d50cdbcf5f883a4ed4419231d"
+      "frase": {
+        "texto": "El viento traía cartas que nadie había escrito",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "db5f625c58da95de6d9f4cd2fee3fad49dd85e2663e22d98a3002adc8f3e73a9"
     },
     {
       "id": "realismo-magico-belli-10",
@@ -25040,8 +25155,13 @@
       "contraste_texto": 9.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "49299726a09fa98a09d1e8697ef5382c7c51fa6bf9d21b89165fb03536d77782"
+      "frase": {
+        "texto": "En ese pueblo, los relojes olvidaban la hora",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "d57abde00e084bf84f231bea6c00dda671e96b7b5d7a0a427ea685dd2cc5b418"
     },
     {
       "id": "realismo-magico-carpentier-01",
@@ -25080,9 +25200,14 @@
       "contraste_texto": 13.7,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256_2x": "c6c6105da767d337d99c7e0a1961e6eb3da06c4e60e660b4da9dacaf35b8f174",
-      "sha256": "00515d6100434cd98189b05993ed8d9b198580ad10552617e98241631070b1f5"
+      "frase": {
+        "texto": "La memoria tenía puerta propia y la dejaban abierta",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256_2x": "cc14fc3825b94cc4a1de56c8816d2770ed55b764b2a0e21b24ca02ac34522f16",
+      "sha256": "3a4ae74da202b1ca5394447a48860b2f3afd7e084facb51ec901a6350dd0f272"
     },
     {
       "id": "realismo-magico-carpentier-02",
@@ -25118,8 +25243,13 @@
       "contraste_texto": 5.2,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "b0bbfd262b0ccbb408c892999d29b6dfba3588c277d768fc1dbdcaf1166dd3fe"
+      "frase": {
+        "texto": "El río subía cada noche a buscar su nombre",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "65625a2ed228cd881fbf3b5499e700c803322b0576ff17b37bb99ec22077be93"
     },
     {
       "id": "realismo-magico-carpentier-03",
@@ -25155,8 +25285,13 @@
       "contraste_texto": 5.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "3d1d1e4dff23de36ad0dcadf6e46fa3d45f04f8b48558ce82e97bb00231004f6"
+      "frase": {
+        "texto": "La abuela hablaba con los muertos y ellos le contestaban",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "7622d27efde44fcefedb53d9615400d77c7e4ba9ad98a92efccc1adc22cf5d70"
     },
     {
       "id": "realismo-magico-carpentier-04",
@@ -25229,8 +25364,13 @@
       "contraste_texto": 5.3,
       "velo": 0.0,
       "calma_cielo": 0.2,
-      "frase": null,
-      "sha256": "048017f6db0d6995444c7868371f819f1d99664f3bdc1f40c3c5e952b2b27817"
+      "frase": {
+        "texto": "Cada casa guardaba un secreto del tamaño de un pájaro",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "98eb07bba87d40102e8e1a07458e11efc524ddca3855471ef7f7db39f7b78d2b"
     },
     {
       "id": "realismo-magico-carpentier-06",
@@ -25303,8 +25443,13 @@
       "contraste_texto": 4.6,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "c549384278a0fb10de232128c5a9aca3c52f8f0f86fedb8bcac0f4e7b1d95dd5"
+      "frase": {
+        "texto": "El mar le prestó una canción al pueblo",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "183baa0d8af8d1ec838a87818e8c8516db4884cada6c3ccef2c874f798fcc080"
     },
     {
       "id": "realismo-magico-carpentier-08",
@@ -25340,8 +25485,13 @@
       "contraste_texto": 9.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "ed95d21e90f9290287f2ad822554349fe5e002fa3c88d1988603eaf515cd01e5"
+      "frase": {
+        "texto": "El río subía cada noche a buscar su nombre",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "96c50f8df0f02e22aad5dcf473c04623a8f6e6303a96f048fb5ac728e8232e59"
     },
     {
       "id": "realismo-magico-carpentier-09",
@@ -25377,8 +25527,13 @@
       "contraste_texto": 5.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "4048d7130a6e740693c5fd3270a356cf54be78eadccbe8b522662767f524b0de"
+      "frase": {
+        "texto": "El río subía cada noche a buscar su nombre",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "58ac1da6ccf65c1d44a3c62dc95ccc64ee684ada197be0629f2801b7416fb3bf"
     },
     {
       "id": "realismo-magico-carpentier-10",
@@ -25492,8 +25647,13 @@
       "contraste_texto": 4.8,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "51061bb800e1f3ea7d8ca04ff186a34c482dfbbefdfd4deff1a11e35467f3d6c"
+      "frase": {
+        "texto": "Los gallos cantaban a medianoche para despertar los sueños",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "13b32a3dce9680636257a95efd569829ed0184a1a0e54ab2285ed96ac5442b1c"
     },
     {
       "id": "realismo-magico-esquivel-03",
@@ -25566,8 +25726,13 @@
       "contraste_texto": 6.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "3ebd5fe3f57001f70e052e30663bb40a0e9bbcedf9fcb7fcecf668c48b8c3c16"
+      "frase": {
+        "texto": "El río subía cada noche a buscar su nombre",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "29287cd517e7c7b703545abc931f868aa2472d86d5142fa605cced6114f67c6c"
     },
     {
       "id": "realismo-magico-esquivel-05",
@@ -25603,8 +25768,13 @@
       "contraste_texto": 5.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "7cc67b800b1d83ca00b81ec90a803acdd275a5a950c4abe1b919a12eed29c9a9"
+      "frase": {
+        "texto": "Llovió flores toda la tarde y nadie se sorprendió",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "4cd62cbaa9e0a126ce9d5b0dbdc8cd04c1026347bb0269eea32d10db3dbcf5a0"
     },
     {
       "id": "realismo-magico-esquivel-06",
@@ -25640,8 +25810,13 @@
       "contraste_texto": 14.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "16b3364fc240385d63199461476bc6ffa96617176ab9d363720229868b819c55"
+      "frase": {
+        "texto": "Los gallos cantaban a medianoche para despertar los sueños",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "44d5a3b95b66e9046026f7819bf39edebf0e80447b3220fc3384786ebc7d27b7"
     },
     {
       "id": "realismo-magico-esquivel-07",
@@ -25751,8 +25926,13 @@
       "contraste_texto": 4.8,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "d3cb4dfcab40a248bee71f728a550babf625cca674b64be48485be0a514ccedf"
+      "frase": {
+        "texto": "Los árboles recordaban a los que se fueron",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "6894722656b7cecf7821f7382b19ba792e19f1c61b54ad4b46bab15fa809e103"
     },
     {
       "id": "realismo-magico-esquivel-10",
@@ -25788,8 +25968,13 @@
       "contraste_texto": 9.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "e898a4aebb983905e0c2aa29ceb6b68de80646117142deb5b27f117591aad745"
+      "frase": {
+        "texto": "Allí lo imposible se tomaba con café",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "d5e5dfab9642dd3919ecb91e172a1b79a36509f5176d235b23213c4d3397f97d"
     },
     {
       "id": "realismo-magico-garcia-marquez-01",
@@ -25903,8 +26088,13 @@
       "contraste_texto": 5.4,
       "velo": 0.0,
       "calma_cielo": 0.2,
-      "frase": null,
-      "sha256": "846ca915c97dd15fee80f0ee57ffd20b96f2faf2a138613ccc2ab74e25d3b9f0"
+      "frase": {
+        "texto": "Una niña cosió el atardecer a su vestido",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "1680c9ad5ae9d3c1ac13e7208352470e0df8082fc7d5447e504d58cd0ada356c"
     },
     {
       "id": "realismo-magico-garcia-marquez-04",
@@ -25940,8 +26130,13 @@
       "contraste_texto": 4.6,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "498c5e206c95db338b8aa2e0bd3e6c3f121d2de2f5a3b42f9643186693f7e26b"
+      "frase": {
+        "texto": "El mar le prestó una canción al pueblo",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "900742a5ffee8b1941b1b988e8165847c124915b2791be17c8391db822092f04"
     },
     {
       "id": "realismo-magico-garcia-marquez-05",
@@ -25977,8 +26172,13 @@
       "contraste_texto": 4.9,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "4e6ee7477757b56e14a42b766514658ed9b987ddad5ec4b92b3e2363a4141049"
+      "frase": {
+        "texto": "El río subía cada noche a buscar su nombre",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "b499454bdb054eb4f91f32c318cb32c9508be47cf515f06130d5ce77e48bd04a"
     },
     {
       "id": "realismo-magico-garcia-marquez-06",
@@ -26014,8 +26214,13 @@
       "contraste_texto": 4.6,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "841e2290dd99011dafc4ea29b0dace163c6ee7d52178b459cade947b2b6b976c"
+      "frase": {
+        "texto": "El mar le prestó una canción al pueblo",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "8acf97c14055cb91150f86b21e9b17f219c618b04c9f679766aacb125283e33b"
     },
     {
       "id": "realismo-magico-garcia-marquez-07",
@@ -26088,8 +26293,13 @@
       "contraste_texto": 5.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "684a80483561f8e3b4c1be560d87f6a3d3747993b4e4beec5929988681627bac"
+      "frase": {
+        "texto": "La abuela hablaba con los muertos y ellos le contestaban",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "6a403c25fe2d4d3744c7de4a0941ef7f4c960720e1c9b63329fb8cc752df8468"
     },
     {
       "id": "realismo-magico-garcia-marquez-09",
@@ -26125,8 +26335,13 @@
       "contraste_texto": 4.9,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "4ef66da443719040964ac03e67e51b24d25c69f275796d814d477e63d4a32690"
+      "frase": {
+        "texto": "La abuela hablaba con los muertos y ellos le contestaban",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "77e3a54341825ac1f760f6948b613a7b12b7736579dc77e89d317c5d58b774b5"
     },
     {
       "id": "realismo-magico-garcia-marquez-10",
@@ -26202,9 +26417,14 @@
       "contraste_texto": 5.3,
       "velo": 0.0,
       "calma_cielo": 0.2,
-      "frase": null,
-      "sha256_2x": "c6d93fec5c00e12ec0105268c8d6b8e699fc07e73d0abbc7f1b8cfccbd6702ca",
-      "sha256": "d1e61c7d090878a14210c0a390239155ea402e37409ecdaa163ebceb2591505a"
+      "frase": {
+        "texto": "El mar le prestó una canción al pueblo",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256_2x": "d14143b61812ef57a5d17bf295a1f4185ebe23cbbc727af9bfc624b860f74b3c",
+      "sha256": "e59d1b8ffbb95c0d013276848a2ce206da39a441e3f866c0ff05bc48ed4bb6bf"
     },
     {
       "id": "realismo-magico-garro-02",
@@ -26277,8 +26497,13 @@
       "contraste_texto": 6.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "a83e8d47abe8602095c8de63dfc269644d2de7c40f0a7cab48014505ef2396d2"
+      "frase": {
+        "texto": "La abuela hablaba con los muertos y ellos le contestaban",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "e00e3c565428c494b8861df163192efc41446b79ff0837b91d1edb0c27842683"
     },
     {
       "id": "realismo-magico-garro-04",
@@ -26314,8 +26539,13 @@
       "contraste_texto": 4.8,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "141b9a3a2088d5debbcb623c85820ba59d8909eb642c103d4f165e8c8b7d84c3"
+      "frase": {
+        "texto": "En ese pueblo, los relojes olvidaban la hora",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "ab713b7506e59b034c1daa751cfb8d6dae1b1ced57e9e8868bcc934dc120dd34"
     },
     {
       "id": "realismo-magico-garro-05",
@@ -26388,8 +26618,13 @@
       "contraste_texto": 12.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "8a89fe86fa7a83f3487d45d34f47d6775e1a183c7e44d73ee61b28f896ee1b3b"
+      "frase": {
+        "texto": "Esa tarde, hasta las sombras llegaron tarde",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "3518ae5c6db23d1e3907bec57dbc84c46a64f6faa410a6c6a9901187206bd477"
     },
     {
       "id": "realismo-magico-garro-07",
@@ -26575,9 +26810,14 @@
       "contraste_texto": 12.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256_2x": "22996fcf1c169749614f51c6095891b8345177b7ff402a28b3ca73a3b949cad1",
-      "sha256": "e487dbaa7bb196d7d8e7b47faa08267248fb0677db2dea021255d6a238187397"
+      "frase": {
+        "texto": "Allí lo imposible se tomaba con café",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256_2x": "11132f8164b4de5fbf36e2fd3478f3e8bea07f2b08bd3464e3c16432c8cc1658",
+      "sha256": "98cd28329cc92f82e54581a27bc4e151e60da76965a220141a7d370d06a7353d"
     },
     {
       "id": "realismo-magico-rulfo-02",
@@ -26650,8 +26890,13 @@
       "contraste_texto": 6.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "4308de9ebc540563445870258cd57def1df8b5878d13619c29bb025f31c40650"
+      "frase": {
+        "texto": "La luna se detuvo a escuchar la historia",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "f202431d20bed5fd8f78bd15911a3a5d93ce38037c296b97499226541aa1cf55"
     },
     {
       "id": "realismo-magico-rulfo-04",
@@ -26687,8 +26932,13 @@
       "contraste_texto": 6.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "c5e9acbf4a8f0f986920a1da1c984996a06bf2c33ad6fb737582f336efe411fa"
+      "frase": {
+        "texto": "Allí lo imposible se tomaba con café",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "afb1d659b3718de9d7e8773afc39fea30a19da5e945f388f11bbc5daf5e4b499"
     },
     {
       "id": "realismo-magico-rulfo-05",
@@ -26724,8 +26974,13 @@
       "contraste_texto": 13.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "9b29ee430df3a246229e00871ba1577d932e5d2f746647071e7e84a315feccd0"
+      "frase": {
+        "texto": "Cada casa guardaba un secreto del tamaño de un pájaro",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "7b66af842419ba50acfc0e1cfca087aaa577e8f6d1e8f10f9af65cd39d6828f9"
     },
     {
       "id": "realismo-magico-rulfo-06",
@@ -26798,8 +27053,13 @@
       "contraste_texto": 7.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "8e45a1d215a7c517e8ce7dfcd402821f2f2f6ae1bb7b9cad749a6144c53b512e"
+      "frase": {
+        "texto": "Allí lo imposible se tomaba con café",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "12c177e9f6a67a403def55ae842fe987c11c8fa0ccadc8216d04091147fe8cea"
     },
     {
       "id": "realismo-magico-rulfo-08",
@@ -26949,9 +27209,14 @@
       "contraste_texto": 13.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256_2x": "d57876cafa009317cc08826b0dcfd726569f3f453bc51d32b72ef1b70b35704a",
-      "sha256": "8e354207098311f83b63bb42bd4a5287010f116c77c23bb70ab6a9ae03ed9206"
+      "frase": {
+        "texto": "Llovió flores toda la tarde y nadie se sorprendió",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256_2x": "4d70655ba28f8f5615d469b1e8ca35a3122b5f7b681571684d2cdde76172fa4f",
+      "sha256": "728cda39327fc36d898f45c03c1c7a7126be71e4192b6e5119afa822facce24c"
     },
     {
       "id": "realismo-magico-uslar-pietri-02",
@@ -27024,8 +27289,13 @@
       "contraste_texto": 5.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "b9654b335ede69e3a3734b07a424ae956f7a4df7275538d84c5a6cae4046a01f"
+      "frase": {
+        "texto": "La abuela hablaba con los muertos y ellos le contestaban",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "e916587052e03f8b7cd1804693aaa84699c138e58c76d374447b7a5014860e8b"
     },
     {
       "id": "realismo-magico-uslar-pietri-04",
@@ -27061,8 +27331,13 @@
       "contraste_texto": 4.6,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "d156ba59df083bee16cbde779d1f4e0841e47ba2a46cd4dee2b605b1e406de62"
+      "frase": {
+        "texto": "Los árboles recordaban a los que se fueron",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "ed3c82c8b564a9dd428dc71c8c15c5589776f3ff4aa9f1f1d58667e810740246"
     },
     {
       "id": "realismo-magico-uslar-pietri-05",
@@ -27098,8 +27373,13 @@
       "contraste_texto": 12.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "7c7af688b2968eb0f96c60bedef860e0e6c57ba4efec06b0051a131a7f844a5c"
+      "frase": {
+        "texto": "Una niña cosió el atardecer a su vestido",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "850bdebd6237b7395b1ba2bc3a5a416156aa212e252c1aea97dd8d302f2e58a6"
     },
     {
       "id": "realismo-magico-uslar-pietri-06",
@@ -27135,8 +27415,13 @@
       "contraste_texto": 5.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "22a954704fcb29b54cca8b2546e2ee6c398867d0a50a0cb367655dfe1249e153"
+      "frase": {
+        "texto": "Los árboles recordaban a los que se fueron",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "1040be8aa3e03b49b9a21d61e1cb313195807cd5f551817034fbb13af2be92e9"
     },
     {
       "id": "realismo-magico-uslar-pietri-07",
@@ -27209,8 +27494,13 @@
       "contraste_texto": 13.1,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "409be863dd7e901553b42f44cb0697b4060520e64711b09067c6ca82d0231960"
+      "frase": {
+        "texto": "Los gallos cantaban a medianoche para despertar los sueños",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "c7e51ce34a5c4b19d84ca79d8829df97e0f5fd01a2e46bcdb36e7bd0c6f1c9de"
     },
     {
       "id": "realismo-magico-uslar-pietri-09",
@@ -27246,8 +27536,13 @@
       "contraste_texto": 6.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "frase": null,
-      "sha256": "b957902c04becbebe3410f115730f3a86db872c066f6fd1039a27f916bfd44cb"
+      "frase": {
+        "texto": "Esa tarde, hasta las sombras llegaron tarde",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "82d8b7878386fd3d6511d168ef92196a1edce3833ea70bb79cd81d1b14e7c071"
     },
     {
       "id": "realismo-magico-uslar-pietri-10",
@@ -27283,8 +27578,13 @@
       "contraste_texto": 4.6,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "frase": null,
-      "sha256": "44d4200946d7f79aff6d55bf6533c929fc39775e18c0ceef09a028022b068c76"
+      "frase": {
+        "texto": "La memoria tenía puerta propia y la dejaban abierta",
+        "autor": "Marcalibros",
+        "obra": "texto original",
+        "idioma": "es"
+      },
+      "sha256": "06098d62972e3444b2888aa1721d479a23f18b053cc670ada1bddf315eaf56e2"
     },
     {
       "id": "realismo-tolstoi-01",
