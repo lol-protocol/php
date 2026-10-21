@@ -161,6 +161,20 @@ test('the standards reference only names catalog formats', () => {
     });
 });
 
+test('the standards reference cites standards that exist', () => {
+    parseCSV(read('specs/standards_reference.csv')).forEach((row, i) => {
+        const where = `line ${i + 2} (${row.format_name})`;
+        // ISO 216:2007 is a single document for the A and B series: it has no parts, and the C series
+        // (envelopes) is ISO 269.
+        assert.ok(!/^ISO 216-/.test(row.iso_number), `${where}: ISO 216 has no parts`);
+        if (/^C\d+$/.test(row.format_name)) {
+            assert.ok(!/^ISO 216/.test(row.iso_number), `${where}: the C series is ISO 269, not ISO 216`);
+        }
+        // DIN 476 has two parts: 1 (A and B, withdrawn in 2002 for DIN EN ISO 216) and 2 (C series).
+        assert.ok(!/^DIN 476-(?![12]$)/.test(row.din_number), `${where}: DIN 476 has only parts 1 and 2`);
+    });
+});
+
 test('every master-file row copies a row from another catalog', () => {
     const sizes = catalog();
     parseCSV(read('formats/all_formats_master.csv')).forEach((row, i) => {
