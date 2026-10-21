@@ -218,3 +218,50 @@ sudo_tmp() { make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in -u|systemctl
     [[ "$output" == *"El certificado YA esta instalado"* ]]
     grep -q "systemctl reload nginx" "$SUDO_LOG"
 }
+
+# ---- 06_A / 06_B no pisan el codigo de la app al re-correrse ----
+@test "app_has_code: carpeta inexistente, vacia o solo con venv/ = sin codigo; con cualquier otro archivo = con codigo" {
+    source "$VPS_DIR/lib.sh"
+    ! app_has_code "$BATS_TEST_TMPDIR/no-existe"
+    mkdir -p "$BATS_TEST_TMPDIR/a/venv/bin"; ! app_has_code "$BATS_TEST_TMPDIR/a"
+    touch "$BATS_TEST_TMPDIR/a/.env"; app_has_code "$BATS_TEST_TMPDIR/a"
+    mkdir -p "$BATS_TEST_TMPDIR/b/public"; app_has_code "$BATS_TEST_TMPDIR/b"      # layout tipo Laravel
+}
+
+@test "06_A: la primera vez crea la pagina de prueba; al re-correr con tu codigo NO la reemplaza" {
+    export WWW_DIR="$BATS_TEST_TMPDIR/www" PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90.ini"; sudo_tmp
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q "PHP-FPM + Nginx funcionando" "$WWW_DIR/tienda/index.php"
+    echo '<?php echo "MI APP";' > "$WWW_DIR/tienda/index.php"
+    echo 'SECRETO=1' > "$WWW_DIR/tienda/.env"
+    MAX_UPLOAD=50M run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [[ "$output" == *"se conserva tu codigo"* ]]
+    [ "$(cat "$WWW_DIR/tienda/index.php")" = '<?php echo "MI APP";' ]       # intacto
+    [ "$(cat "$WWW_DIR/tienda/.env")" = 'SECRETO=1' ]
+    grep -q 'client_max_body_size 50M;' "$NGINX_DIR/sites-available/tienda.ejemplo.com"   # y el cambio de config si se aplico
+}
+
+@test "06_A: sobre una app con codigo no hace chown -R (cambiaria dueno/permisos de todos sus archivos)" {
+    export WWW_DIR="$BATS_TEST_TMPDIR/www" PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90.ini"; sudo_tmp
+    mkdir -p "$WWW_DIR/tienda"; echo x > "$WWW_DIR/tienda/index.php"
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    ! grep -q "chown -R www-data:www-data $WWW_DIR/tienda" "$SUDO_LOG"
+    grep -q "chown www-data:www-data $WWW_DIR/tienda$" "$SUDO_LOG"
+}
+
+@test "06_B: la primera vez crea app.py; al re-correr (p. ej. otro puerto) conserva tu codigo y actualiza servicio y proxy" {
+    export WWW_DIR="$BATS_TEST_TMPDIR/www" NOPORT="8001 8002"; sudo_tmp
+    run bash "$VPS_DIR/06_B-setup-python-app.sh" blog blog.ejemplo.com 8001
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q "Hello from Python App" "$WWW_DIR/blog/app.py"
+    echo 'print("MI APP")' > "$WWW_DIR/blog/app.py"
+    run bash "$VPS_DIR/06_B-setup-python-app.sh" blog blog.ejemplo.com 8002
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [[ "$output" == *"se conserva tu codigo"* ]]
+    [ "$(cat "$WWW_DIR/blog/app.py")" = 'print("MI APP")' ]
+    grep -q -- '--bind 127.0.0.1:8002 app:app' "$SYSTEMD_DIR/blog.service"                # el puerto nuevo si
+    grep -q 'proxy_pass http://127.0.0.1:8002;' "$NGINX_DIR/sites-available/blog.ejemplo.com"
+}

@@ -15,7 +15,8 @@ require_valid port "$PORT" "El puerto (argumento 3)"
 require_valid size "$MAX_UPLOAD" "MAX_UPLOAD"
 require_valid duration "$PROXY_TIMEOUT" "PROXY_TIMEOUT"
 SYSTEMD_DIR=${SYSTEMD_DIR:-/etc/systemd/system}
-APP_PATH="/var/www/$APP_NAME"
+WWW_DIR=${WWW_DIR:-/var/www}   # reemplazable en los tests (igual que en 10_B)
+APP_PATH="$WWW_DIR/$APP_NAME"
 VENV_PATH="$APP_PATH/venv"
 
 print_header "06_B" "Configurando Aplicacion Python: $APP_NAME (Dominio: $DOMAIN, puerto $PORT)"
@@ -44,8 +45,13 @@ sudo -u www-data python3 -m venv $VENV_PATH
 
 # App Flask de ejemplo, solo para confirmar que el reverse proxy y el servicio
 # systemd funcionan antes de subir el codigo real
-echo "Creando aplicación ejemplo (Flask)..."
-sudo tee $APP_PATH/app.py > /dev/null <<EOF   # sin comillas: se sustituye $PORT (el resto no tiene $)
+if app_has_code "$APP_PATH"; then
+    # Re-correr este script (cambiar el puerto, el dominio...) NO debe reemplazar tu codigo. Ojo: si
+    # tu app escucha en un puerto fijo propio, ajustalo tu a mano; el servicio usa el que pasaste.
+    echo "$APP_PATH ya tiene archivos: se conserva tu codigo (no se crea la aplicacion de ejemplo)."
+else
+    echo "Creando aplicación ejemplo (Flask)..."
+    sudo tee "$APP_PATH/app.py" > /dev/null <<EOF
 from flask import Flask
 app = Flask(__name__)
 
@@ -56,6 +62,7 @@ def hello():
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=$PORT)
 EOF
+fi
 
 # gunicorn: servidor WSGI de produccion para apps Flask/Django -- el
 # "app.run()" de arriba es solo para desarrollo, no se usa en produccion
