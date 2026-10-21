@@ -26,8 +26,12 @@ abstract class Plantilla
     protected const MARGEN = 16.0;
     /** Distancia entre líneas, en múltiplos del tamaño de letra. */
     protected const INTERLINEADO = 1.35;
-    /** Parte de una letra que queda sobre la línea base, en múltiplos del tamaño de letra. */
+    /** Parte de una letra que queda sobre la línea base y parte que baja de ella, en múltiplos del tamaño de letra. */
     protected const ASCENDENTE = 0.8;
+    protected const DESCENDENTE = 0.2;
+    /** Subtítulo: espacio libre mínimo bajo el título, y fracción del tamaño del título que se deja libre. */
+    protected const SUBTITULO_ESPACIO_MIN = 3.0;
+    protected const SUBTITULO_ESPACIO = 0.35;
 
     /** Contratapa: raya de acento (distancia al borde superior del corte, largo y grosor). */
     protected const CONTRATAPA_RAYA_Y = 22.0;
@@ -264,6 +268,18 @@ abstract class Plantilla
         $visible = ($lineas - 1) * $tamano * self::INTERLINEADO + $tamano;
 
         return $y + ($alto - $visible) / 2 + $tamano * self::ASCENDENTE;
+    }
+
+    /**
+     * Línea base del subtítulo. Bajo la última línea del título deja un espacio libre proporcional al
+     * tamaño del título, además de lo que el título baja de su línea base y lo que el subtítulo sube
+     * sobre la suya: así un título grande no queda pegado al subtítulo.
+     */
+    protected function bajoElTitulo(float $baseTitulo, float $tamanoTitulo, float $tamanoSubtitulo): float
+    {
+        $libre = max(self::SUBTITULO_ESPACIO_MIN, $tamanoTitulo * self::SUBTITULO_ESPACIO);
+
+        return $baseTitulo + $tamanoTitulo * self::DESCENDENTE + $libre + $tamanoSubtitulo * self::ASCENDENTE;
     }
 
     /** @param array<string, float|int|string> $estilo */

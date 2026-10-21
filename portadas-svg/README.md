@@ -131,7 +131,7 @@ php pruebas/ejecutar.php          # pruebas unitarias
 php bin/generar.php --comprobar   # ejemplos/salida/ coincide con lo que genera el código
 ```
 
-La prueba de geometría comprueba que ningún texto se salga de su panel, con las mismas estimaciones de ancho que usan las plantillas. No mide la fuente real: eso lo hace la vista previa.
+Las pruebas de geometría comprueban, con textos largos y cortos y en las dos plantillas, que ningún texto se salga de su panel, que no se pise con otro texto ni con los adornos (rombo, reglas, hueco del código de barras), y que el subtítulo deje bajo el título un espacio proporcional a su tamaño. Usan las mismas estimaciones de ancho que las plantillas, así que no miden la fuente real: eso lo hace la vista previa.
 
 Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos/*.json --salida=ejemplos/salida`. El workflow `pruebas-portadas-svg.yml` corre las dos comprobaciones cuando cambia esta carpeta.
 

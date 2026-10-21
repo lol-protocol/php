@@ -23,11 +23,10 @@ final class Clasica extends Plantilla
     private const TITULO_ALTO = 0.36;
     private const TITULO_TAMANO_MAX = 13.0;
     private const TITULO_TAMANO_MIN = 7.0;
-    /** Subtítulo: alto disponible, tamaño y separación bajo la última línea del título. */
+    /** Subtítulo: alto disponible y tamaño. */
     private const SUBTITULO_ALTO = 16.0;
     private const SUBTITULO_TAMANO_MAX = 5.0;
     private const SUBTITULO_TAMANO_MIN = 3.2;
-    private const SUBTITULO_SEPARACION = 9.0;
     /** Ornamento: altura (fracción del alto), tramos de línea a cada lado del rombo (desde, hasta, grosor) y radio del rombo. */
     private const ORNAMENTO_Y = 0.6;
     private const ORNAMENTO_LINEA_DESDE = 4.0;
@@ -70,7 +69,7 @@ final class Clasica extends Plantilla
 
         if ($libro->textos->subtitulo !== '') {
             $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->factorPara($libro->textos->subtitulo), self::INTERLINEADO);
-            $svg .= $this->parrafo($subtitulo['lineas'], $cx, $fin + self::SUBTITULO_SEPARACION, $subtitulo['tamano'], 'middle', $colores['texto'], ['font-style' => 'italic']);
+            $svg .= $this->parrafo($subtitulo['lineas'], $cx, $this->bajoElTitulo($fin, $titulo['tamano'], $subtitulo['tamano']), $subtitulo['tamano'], 'middle', $colores['texto'], ['font-style' => 'italic']);
         }
 
         $ornamento = $panel->y + $panel->alto * self::ORNAMENTO_Y;

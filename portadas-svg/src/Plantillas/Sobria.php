@@ -21,11 +21,10 @@ final class Sobria extends Plantilla
     private const TITULO_ALTO = 0.42;
     private const TITULO_TAMANO_MAX = 16.0;
     private const TITULO_TAMANO_MIN = 8.0;
-    /** Subtítulo: alto disponible, tamaño y separación bajo la última línea del título. */
+    /** Subtítulo: alto disponible y tamaño. */
     private const SUBTITULO_ALTO = 20.0;
     private const SUBTITULO_TAMANO_MAX = 5.0;
     private const SUBTITULO_TAMANO_MIN = 3.2;
-    private const SUBTITULO_SEPARACION = 9.0;
     /** Autor: distancia de su línea base al margen inferior, tamaño y espaciado entre letras. */
     private const AUTOR_ARRIBA_DEL_MARGEN = 12.0;
     private const AUTOR_TAMANO_MAX = 5.2;
@@ -77,7 +76,7 @@ final class Sobria extends Plantilla
 
         if ($libro->textos->subtitulo !== '') {
             $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->factorPara($libro->textos->subtitulo), self::INTERLINEADO);
-            $svg .= $this->parrafo($subtitulo['lineas'], $x, $fin + self::SUBTITULO_SEPARACION, $subtitulo['tamano'], 'start', $colores['acento']);
+            $svg .= $this->parrafo($subtitulo['lineas'], $x, $this->bajoElTitulo($fin, $titulo['tamano'], $subtitulo['tamano']), $subtitulo['tamano'], 'start', $colores['acento']);
         }
 
         // Abajo: una regla de acento, el autor en mayúsculas espaciadas, el traductor y la editorial.

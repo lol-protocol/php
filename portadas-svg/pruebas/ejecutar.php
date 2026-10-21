@@ -89,7 +89,7 @@ function anchoEstimado(string $texto, float $tamano, float $espaciado, Plantilla
  * Caja estimada de cada bloque de texto del dibujo. Un bloque es un `<text>`: sus líneas son los `tspan`.
  * El lomo, girado, es una sola línea en vertical.
  *
- * @return list<array{texto: string, x0: float, x1: float, y0: float, y1: float}>
+ * @return list<array{texto: string, tamano: float, girado: bool, x0: float, x1: float, y0: float, y1: float}>
  */
 function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
 {
@@ -110,6 +110,8 @@ function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
             $hacia = (int) $giro[3] === 90 ? 0.8 : 0.2;
             $cajas[] = [
                 'texto' => $elemento->textContent,
+                'tamano' => $tamano,
+                'girado' => true,
                 'x0' => $x - (1 - $hacia) * $tamano,
                 'x1' => $x + $hacia * $tamano,
                 'y0' => $y - $largo / 2,
@@ -120,7 +122,7 @@ function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
 
         $anclaje = $elemento->getAttribute('text-anchor') ?: 'start';
         $base = (float) $elemento->getAttribute('y');
-        $caja = ['texto' => [], 'x0' => INF, 'x1' => -INF, 'y0' => INF, 'y1' => -INF];
+        $caja = ['texto' => [], 'tamano' => $tamano, 'girado' => false, 'x0' => INF, 'x1' => -INF, 'y0' => INF, 'y1' => -INF];
         foreach ($elemento->getElementsByTagName('tspan') as $tspan) {
             $base += (float) $tspan->getAttribute('dy');
             $texto = str_replace("\u{00A0}", '', $tspan->textContent);
@@ -173,6 +175,89 @@ function dentro(array $caja, Rectangulo $panel): bool
 {
     return $caja['x0'] >= $panel->x - 1e-6 && $caja['x1'] <= $panel->x + $panel->ancho + 1e-6
         && $caja['y0'] >= $panel->y - 1e-6 && $caja['y1'] <= $panel->y + $panel->alto + 1e-6;
+}
+
+/**
+ * Los libros con los que se comprueba la disposición: el de textos largos en las dos plantillas, con y sin
+ * solapas y con un lomo muy estrecho; los mismos con un título muy corto, y los ejemplos del repositorio.
+ *
+ * @return list<Libro>
+ */
+function librosParaGeometria(): array
+{
+    $libros = [];
+    foreach (['clasica', 'sobria'] as $plantilla) {
+        foreach ([0.0, 90.0] as $solapas) {
+            $libros[] = libroLargo($plantilla, $solapas);
+            $libros[] = libroLargo($plantilla, $solapas, ['lomo_mm' => 3.2]);
+            $libros[] = libroLargo($plantilla, $solapas, ['titulo' => 'Hola']);
+        }
+    }
+    foreach (glob(__DIR__ . '/../ejemplos/*.json') ?: [] as $ruta) {
+        $libros[] = Libro::desdeArchivo($ruta);
+    }
+
+    return $libros;
+}
+
+/**
+ * Adornos que el texto no debe pisar: líneas, polígonos, rectángulos pequeños (barras y reglas de
+ * acento, de 3 mm de alto o menos) y el hueco blanco del código de barras. Los marcos y los fondos
+ * son contenedores y no cuentan.
+ *
+ * @return list<array{texto: string, x0: float, x1: float, y0: float, y1: float}>
+ */
+function adornos(string $cuerpo): array
+{
+    $doc = new DOMDocument();
+    verdadero($doc->loadXML('<svg xmlns="http://www.w3.org/2000/svg">' . $cuerpo . '</svg>'), 'el dibujo no es XML válido');
+
+    $adornos = [];
+    foreach ($doc->getElementsByTagName('line') as $linea) {
+        $mitad = (float) $linea->getAttribute('stroke-width') / 2;
+        $x = [(float) $linea->getAttribute('x1'), (float) $linea->getAttribute('x2')];
+        $y = [(float) $linea->getAttribute('y1'), (float) $linea->getAttribute('y2')];
+        $adornos[] = ['texto' => 'una línea', 'x0' => min($x) - $mitad, 'x1' => max($x) + $mitad, 'y0' => min($y) - $mitad, 'y1' => max($y) + $mitad];
+    }
+    foreach ($doc->getElementsByTagName('polygon') as $poligono) {
+        $x = [];
+        $y = [];
+        foreach (explode(' ', $poligono->getAttribute('points')) as $punto) {
+            [$px, $py] = explode(',', $punto);
+            $x[] = (float) $px;
+            $y[] = (float) $py;
+        }
+        $adornos[] = ['texto' => 'un ornamento', 'x0' => min($x), 'x1' => max($x), 'y0' => min($y), 'y1' => max($y)];
+    }
+    foreach ($doc->getElementsByTagName('rect') as $rectangulo) {
+        $relleno = $rectangulo->getAttribute('fill');
+        $alto = (float) $rectangulo->getAttribute('height');
+        $esCodigo = $relleno === '#ffffff' && $alto <= 30.0;
+        if ($esCodigo || ($relleno !== 'none' && $alto <= 3.0)) {
+            $x = (float) $rectangulo->getAttribute('x');
+            $y = (float) $rectangulo->getAttribute('y');
+            $adornos[] = [
+                'texto' => $esCodigo ? 'el hueco del código de barras' : 'una regla',
+                'x0' => $x,
+                'x1' => $x + (float) $rectangulo->getAttribute('width'),
+                'y0' => $y,
+                'y1' => $y + $alto,
+            ];
+        }
+    }
+
+    return $adornos;
+}
+
+/**
+ * Si dos cajas se montan una sobre otra. Que se toquen por el borde no cuenta.
+ *
+ * @param array{x0: float, x1: float, y0: float, y1: float} $a
+ * @param array{x0: float, x1: float, y0: float, y1: float} $b
+ */
+function seSolapan(array $a, array $b): bool
+{
+    return $a['x0'] < $b['x1'] && $b['x0'] < $a['x1'] && $a['y0'] < $b['y1'] && $b['y0'] < $a['y1'];
 }
 
 $pruebas = [
@@ -351,19 +436,8 @@ $pruebas = [
     },
 
     'Ningún texto se sale de su panel, con textos largos y en las dos plantillas' => function (): void {
-        $libros = [];
-        foreach (['clasica', 'sobria'] as $plantilla) {
-            foreach ([0.0, 90.0] as $solapas) {
-                $libros[] = libroLargo($plantilla, $solapas);
-                $libros[] = libroLargo($plantilla, $solapas, ['lomo_mm' => 3.2]);
-            }
-        }
-        foreach (glob(__DIR__ . '/../ejemplos/*.json') ?: [] as $ruta) {
-            $libros[] = Libro::desdeArchivo($ruta);
-        }
-
         $fuera = [];
-        foreach ($libros as $libro) {
+        foreach (librosParaGeometria() as $libro) {
             $plantilla = Plantilla::crear($libro->plantilla);
             $medidas = new Medidas($libro);
             foreach (cajasDeTexto($plantilla->dibujar($libro, $medidas), $plantilla) as $caja) {
@@ -374,6 +448,59 @@ $pruebas = [
             }
         }
         verdadero($fuera === [], "textos fuera de su panel:\n  " . implode("\n  ", array_slice($fuera, 0, 8)));
+    },
+
+    'Ningún texto se pisa con otro texto ni con los adornos' => function (): void {
+        $pisan = [];
+        foreach (librosParaGeometria() as $libro) {
+            $plantilla = Plantilla::crear($libro->plantilla);
+            $cuerpo = $plantilla->dibujar($libro, new Medidas($libro));
+            $cajas = cajasDeTexto($cuerpo, $plantilla);
+            $adornos = adornos($cuerpo);
+            foreach ($cajas as $indice => $caja) {
+                $donde = "{$libro->plantilla}, solapas {$libro->formato->solapas}, título «{$libro->textos->titulo}»";
+                foreach (array_slice($cajas, $indice + 1) as $otra) {
+                    if (seSolapan($caja, $otra)) {
+                        $pisan[] = "$donde: «{$caja['texto']}» con «{$otra['texto']}»";
+                    }
+                }
+                foreach ($adornos as $adorno) {
+                    if (seSolapan($caja, $adorno)) {
+                        $pisan[] = "$donde: «{$caja['texto']}» con {$adorno['texto']}";
+                    }
+                }
+            }
+        }
+        verdadero($pisan === [], "textos que se pisan:\n  " . implode("\n  ", array_slice($pisan, 0, 8)));
+    },
+
+    'El subtítulo deja bajo el título un espacio proporcional a su tamaño' => function (): void {
+        $apretados = [];
+        foreach (['clasica', 'sobria'] as $plantilla) {
+            foreach (['Hola', 'Apología de Sócrates', 'Diálogos de Platón sobre la justicia, el alma, el amor y la ciudad ideal, con notas'] as $titulo) {
+                $libro = libroDeEjemplo(['plantilla' => $plantilla, 'titulo' => $titulo, 'subtitulo' => 'SUBTITULO-PRUEBA']);
+                $plantillaObjeto = Plantilla::crear($plantilla);
+                $cajas = array_filter(
+                    cajasDeTexto($plantillaObjeto->dibujar($libro, new Medidas($libro), 'portada'), $plantillaObjeto),
+                    static fn (array $caja): bool => !$caja['girado'],
+                );
+                $tituloCaja = null;
+                $subtituloCaja = null;
+                foreach ($cajas as $caja) {
+                    if (str_contains($caja['texto'], 'SUBTITULO-PRUEBA')) {
+                        $subtituloCaja = $caja;
+                    } elseif (str_contains($caja['texto'], explode(' ', $titulo)[0])) {
+                        $tituloCaja = $caja;
+                    }
+                }
+                verdadero($tituloCaja !== null && $subtituloCaja !== null, "no se encontró el título o el subtítulo de «{$titulo}»");
+                $espacio = $subtituloCaja['y0'] - $tituloCaja['y1'];
+                if ($espacio < 0.3 * $tituloCaja['tamano'] - 1e-6) {
+                    $apretados[] = sprintf('%s, «%s»: %.1f mm bajo un título de %.1f mm', $plantilla, $titulo, $espacio, $tituloCaja['tamano']);
+                }
+            }
+        }
+        verdadero($apretados === [], "subtítulo demasiado cerca del título:\n  " . implode("\n  ", $apretados));
     },
 
     'Escribir de nuevo quita las piezas que ya no tocan' => function (): void {
