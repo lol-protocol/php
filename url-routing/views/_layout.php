@@ -10,7 +10,8 @@ use App\Support\HostParser;
  * A view may set $noindex to keep its page out of search engines, $migas
  * (list of [name, path], the last one null: the page itself) for the
  * breadcrumbs, and $estructurado, a schema.org object (Person, Product...)
- * for search engines. Both go out as JSON-LD too.
+ * for search engines. Both go out as JSON-LD too. A site layout may set
+ * $pedirRetiro, the URL to ask for the page to be withdrawn, shown at the foot.
  */
 $lang = get_locale() === 'eng' ? 'en' : 'es';
 $flash = (new Flash())->consumir();
@@ -82,6 +83,7 @@ foreach ($jsonLd as $objeto): ?>
         ul.arbol, ul.arbol ul { list-style: none; margin: 0; padding-left: 1.25rem; border-left: 1px solid var(--line); }
         ul.arbol { padding-left: 0; border: 0; }
         ul.arbol li { padding: .2rem 0; }
+        footer.pie { max-width: 60rem; margin: 0 auto; padding: 0 1rem 2rem; }
     </style>
 </head>
 <body>
@@ -115,5 +117,8 @@ foreach ($jsonLd as $objeto): ?>
 <?php endif; ?>
 <?= $content ?>
 </main>
+<?php if (!empty($pedirRetiro)): ?>
+<footer class="pie meta"><a href="<?= esc($pedirRetiro) ?>" rel="nofollow">Pedir el retiro de esta página</a></footer>
+<?php endif; ?>
 </body>
 </html>
