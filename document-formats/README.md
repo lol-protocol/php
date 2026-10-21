@@ -15,7 +15,7 @@ document-formats/
 ├── formats/       Formats grouped by document type
 ├── devices/       Screen sizes and resolutions
 ├── specs/         Standards, production and accessibility specs
-├── app/           Interactive demo (index.html), JS library (document-formats.js), translations/
+├── app/           Interactive demo (index.html), JS library (document-formats.js), tabs.js, url-state.js, translations/
 ├── docs/          Tutorials, frontend guide, localization guide
 ├── tests/         Node tests (library, CSV data) and the database check
 ├── database_schema.sql
@@ -308,13 +308,22 @@ and table captions and messages, the `lang` and text direction of the page
 (Arabic reads right to left), and the name of every paper type, which comes
 from `specs/paper_type_translations.csv`. What stays in English is data
 (colors, textures, categories, notes, country names) and the body of the
-About tab.
+About tab; those texts are marked `lang="en"`, and the names of the paper
+types carry the language they are shown in.
 
 German, English, Spanish, French, Japanese and Chinese have every UI string;
 the other 24 translate the title, the tabs and the unit names and show
 English for the rest, marked `lang="en"` so a screen reader doesn't read it
-with the wrong voice. Only strings written in the HTML are marked: the card
-captions JavaScript draws are not. See `docs/Localization.md`.
+with the wrong voice (the strings written in the HTML, the captions of the
+cards JavaScript draws, and the count announced when you filter). See
+`docs/Localization.md`.
+
+The address keeps what you are looking at, so you can share it:
+`app/index.html#tab=converter&from=A4&to=Letter`. It holds the tab, the
+language (unless English), the search boxes and the filters (`url-state.js`
+lists the keys). The **Download CSV** button saves the formats on screen, with
+the same columns as the catalogs plus `region`, in UTF-8 with a byte order mark so a
+spreadsheet reads accents correctly.
 
 The page follows the WAI-ARIA tabs pattern (arrow keys, Home and End move
 between tabs; in a right-to-left language the arrows are reversed), every
@@ -323,7 +332,8 @@ count is announced when you filter. Colors meet WCAG AA contrast in light
 and dark mode, and animations stop under `prefers-reduced-motion`. It was
 checked with `axe-core` in Chromium on all five tabs, in light and dark mode
 and in six languages, with no violations; `tests/demo.test.js` guards the
-parts that can be checked without a browser (labels, tabs, translation keys).
+parts that can be checked without a browser (labels, tabs, translation keys);
+`tests/tabs.test.js` covers the tab keys (`tabs.js`) and the address state.
 
 ## Tests
 

@@ -146,7 +146,12 @@
     "similarity": "サイズの類似度: {percent}%",
     "resultsFormats": "{count} 件の形式が見つかりました",
     "resultsPaperTypes": "{count} 件の紙の種類が見つかりました",
-    "noPaperTypes": "条件に一致する紙の種類は見つかりませんでした。"
+    "noPaperTypes": "条件に一致する紙の種類は見つかりませんでした。",
+    "loadError": "CSVファイルを読み込めませんでした（{message}）。",
+    "loadErrorHelp": "ダブルクリックで開いたページでは、ブラウザーがローカルファイルの読み込みを禁止します。代わりにフォルダーを配信してください。{folder} で {command} を実行し、{address} を開きます。",
+    "updatedUnknown": "不明（サーバーが Last-Modified ヘッダーを送信しませんでした）",
+    "download": "CSVをダウンロード",
+    "csvFilename": "document-formats"
   },
   "paperTypes": {
     "searchPlaceholder": "紙の種類を検索...",

@@ -146,7 +146,12 @@
     "similarity": "Size similarity: {percent}%",
     "resultsFormats": "{count} formats found",
     "resultsPaperTypes": "{count} paper types found",
-    "noPaperTypes": "No paper types found matching your criteria."
+    "noPaperTypes": "No paper types found matching your criteria.",
+    "loadError": "Couldn't load the CSV files ({message}).",
+    "loadErrorHelp": "Browsers block reading local files from a page opened with a double click. Serve the folder instead: run {command} in {folder} and open {address}.",
+    "updatedUnknown": "unknown (server sent no Last-Modified header)",
+    "download": "Download CSV",
+    "csvFilename": "document-formats"
   },
   "paperTypes": {
     "searchPlaceholder": "Search paper types...",

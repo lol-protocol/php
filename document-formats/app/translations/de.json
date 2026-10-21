@@ -146,7 +146,12 @@
     "similarity": "Größenähnlichkeit: {percent}%",
     "resultsFormats": "{count} Formate gefunden",
     "resultsPaperTypes": "{count} Papiersorten gefunden",
-    "noPaperTypes": "Keine Papiersorten gefunden, die den Kriterien entsprechen."
+    "noPaperTypes": "Keine Papiersorten gefunden, die den Kriterien entsprechen.",
+    "loadError": "Die CSV-Dateien konnten nicht geladen werden ({message}).",
+    "loadErrorHelp": "Browser blockieren das Lesen lokaler Dateien auf einer per Doppelklick geöffneten Seite. Stellen Sie den Ordner stattdessen bereit: Führen Sie {command} in {folder} aus und öffnen Sie {address}.",
+    "updatedUnknown": "unbekannt (der Server hat keinen Last-Modified-Header gesendet)",
+    "download": "CSV herunterladen",
+    "csvFilename": "dokumentformate"
   },
   "paperTypes": {
     "searchPlaceholder": "Papiersorten suchen...",
