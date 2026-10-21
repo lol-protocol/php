@@ -324,6 +324,24 @@ JOIN document_formats df2 ON fc.to_format_id = df2.format_id
 JOIN countries c1 ON df1.country_id = c1.country_id
 JOIN countries c2 ON df2.country_id = c2.country_id;
 
+-- View: Products with the paper stock they are usually printed on (a product with no paper type is kept)
+CREATE VIEW v_products_with_paper AS
+SELECT
+    ps.product_name,
+    ps.typical_size_mm,
+    ps.weight_gsm_min AS product_gsm_min,
+    ps.weight_gsm_max AS product_gsm_max,
+    ps.recommended_dpi,
+    ps.finish_type AS product_finish,
+    pt.type_name AS paper_type,
+    pt.type_name_en AS paper_type_en,
+    pt.weight_gsm_min AS paper_gsm_min,
+    pt.weight_gsm_max AS paper_gsm_max,
+    pt.finish AS paper_finish
+FROM product_specifications ps
+LEFT JOIN paper_types pt ON ps.paper_type_id = pt.paper_type_id
+ORDER BY ps.product_name;
+
 -- =====================================================================
 -- INDEXES FOR PERFORMANCE
 -- =====================================================================

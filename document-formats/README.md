@@ -240,6 +240,12 @@ Conventions the classes follow:
   `suggestions` holds the three closest names (`A44` suggests `A4`). `FormatValidator.validateForPrinting`
   reports the same suggestions in its result instead of throwing.
 - **A file that can't be read** (404, server error) is reported with its path and status, not read as rows.
+- **Margins and print limits follow the data when it is loaded.** `DocumentFormats.load()` gives the generator
+  `formats/book_margins.csv` (`getRecommendedMargins('Trade Paperback')` uses its row) and the validator
+  `specs/technical_specifications.csv` (`validateForPrinting` judges a format by its own `recommended_dpi`:
+  the low end is the recommended DPI and half of it the minimum). Without them, the general 20 mm margins and
+  300/150 DPI apply.
+- **`search()` breaks ties** by exact name first, then alphabetically, so the order doesn't depend on the CSV files.
 - **Rows from `SpecificationManager` are frozen**: they are shared by every caller.
 - **Units**: `MM_PER_INCH`, `mmToInches()` and `inchesToMm()` are the one place for the factor;
   reports keep their fixed decimals as text (`"21.0"`), through `fixed()`.
@@ -249,8 +255,9 @@ See `docs/Tutorials.md` for step-by-step examples and
 
 ### As a database
 
-`database_schema.sql` defines 16 MySQL/MariaDB tables and three views
-(`v_formats_detailed`, `v_formats_by_measurement`, `v_format_equivalents`).
+`database_schema.sql` defines 16 MySQL/MariaDB tables and four views
+(`v_formats_detailed`, `v_formats_by_measurement`, `v_format_equivalents`,
+`v_products_with_paper`, which pairs each product with its usual paper stock).
 `import_database.php` creates them and loads the CSV files:
 
 ```bash
