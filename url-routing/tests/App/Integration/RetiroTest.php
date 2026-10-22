@@ -138,6 +138,27 @@ class RetiroTest extends TestCase
         $this->assertSame(404, $this->pedir('/81372001/')[0], 'still a 404, not a 410 that confirms it exists');
     }
 
+    public function testAWithdrawnPersonaIsNamedNowhereElseForAVisitor(): void
+    {
+        $db = $this->db();
+        $repo = new \App\Repositories\Genealogy\RetiroRepository($db);
+        // José (6128473101) is Antonio's father, and Antonio's ascendencia page lists him by name.
+        $antes = $this->pedir('/6128473103/1/')[1];
+        $this->assertStringContainsString('José García Álvarez', $antes, 'precondition');
+
+        $numero = $repo->crear('persona', 6128473101, 'familiar', 'x', 'd@example.com');
+        $repo->decidir($numero, 'retirar', null);
+        $despues = $this->pedir('/6128473103/1/')[1];
+        $this->assertStringNotContainsString('José', $despues, 'masked in the tree of his son');
+        $this->assertStringContainsString('Persona privada', $despues);
+        $this->assertStringNotContainsString('José García Álvarez', $this->pedir('/6128473101/2/')[1] . $this->pedir('/582317/')[1] . $this->pedir('/b/10/')[1]);
+        $this->assertSame(410, $this->pedir('/6128473101/')[0]);
+        $this->assertStringContainsString('José García Álvarez', $this->pedir('/6128473103/1/', propietario: true)[1], 'the owner still sees him');
+
+        $repo->decidir($numero, 'rechazar', null);
+        $this->assertStringContainsString('José García Álvarez', $this->pedir('/6128473103/1/')[1], 'rejected: named again');
+    }
+
     public function testTheOwnerHidesWithdrawsOrRejectsAndEveryStepIsRecorded(): void
     {
         $numero = (new \App\Repositories\Genealogy\RetiroRepository($this->db()))->crear('registro', 81372002, 'terminos', 'Copia un acta ajena.', 'b@example.com');

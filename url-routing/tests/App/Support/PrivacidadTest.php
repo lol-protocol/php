@@ -196,12 +196,13 @@ class PrivacidadTest extends TestCase
         $this->assertStringContainsString('x_pc.publica', $sql);
     }
 
-    public function testHiddenMeansAliveOrPrivate(): void
+    public function testHiddenMeansAliveOrPrivateOrWithdrawn(): void
     {
         $visita = Privacidad::publica(new \DateTimeImmutable('2026-10-09'));
         $sql = $visita->sqlOculta('x');
 
-        $this->assertSame('(' . $visita->sqlViva('x') . ' OR ' . $visita->sqlPrivada('x') . ')', $sql);
+        $this->assertSame('(' . $visita->sqlViva('x') . ' OR ' . $visita->sqlPrivada('x') . ' OR ' . Privacidad::sqlRetirada('x') . ')', $sql);
+        $this->assertStringContainsString("rr.tipo = 'persona' AND rr.recurso_id = x.id AND rr.estado IN ('oculto', 'retirado')", Privacidad::sqlRetirada('x'));
     }
 
     public function testTheVisitorsPersonasNameTheTwoKindsOfMaskApart(): void
@@ -212,7 +213,7 @@ class PrivacidadTest extends TestCase
         $this->assertSame('Persona privada', Privacidad::NOMBRE_PRIVADO);
         $this->assertStringContainsString("'" . Privacidad::NOMBRE_OCULTO . "'", $sql);
         $this->assertStringContainsString("'" . Privacidad::NOMBRE_PRIVADO . "'", $sql);
-        $this->assertStringContainsString('x.viva_presunta OR x.privada', $sql);
+        $this->assertStringContainsString('x.viva_presunta OR x.privada OR x.retirada', $sql);
     }
 
     /** Events and records are filtered by the same notion of hidden, not by "alive" alone. */
