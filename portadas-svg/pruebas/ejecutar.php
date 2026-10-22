@@ -10,6 +10,7 @@ require __DIR__ . '/../src/autocarga.php';
 
 use PortadasSvg\Anchos;
 use PortadasSvg\Archivos;
+use PortadasSvg\Catalogo;
 use PortadasSvg\Cli;
 use PortadasSvg\Color;
 use PortadasSvg\Degradado;
@@ -17,7 +18,9 @@ use PortadasSvg\FactorFijo;
 use PortadasSvg\Fuentes;
 use PortadasSvg\Generador;
 use PortadasSvg\Libro;
+use PortadasSvg\Lista;
 use PortadasSvg\Medidas;
+use PortadasSvg\Nombres;
 use PortadasSvg\Plantilla;
 use PortadasSvg\Rectangulo;
 use PortadasSvg\Svg;
@@ -824,6 +827,220 @@ $pruebas = [
         // Con una sola línea, o sin pedir el reparto, no cambia nada.
         igual(['Hola'], Texto::ajustar('Hola', 14.0, 10.0, 1.0, 1.0, $medida, 1.35, true)['lineas']);
         igual(['El arte de la', 'guerra'], Texto::ajustar('El arte de la guerra', 14.0, 10.0, 1.0, 1.0, $medida, 1.35)['lineas']);
+    },
+
+    'Nombres compara sin tildes ni mayúsculas y saca nombres de carpeta' => function (): void {
+        igual('filosofia y ensayo', Nombres::plegar("  Filosofía   Y\tEnsayo "));
+        igual('lukasz', Nombres::plegar('Łukasz'));
+        igual('e', Nombres::plegar("e\u{0301}")); // e + tilde suelta, como lo escribe Excel en Mac
+        igual('gustavo-adolfo-becquer-rimas-y-leyendas', Nombres::slug('Gustavo Adolfo Bécquer — Rimas y leyendas'));
+        igual('', Nombres::slug('道德經'));
+        igual('', Nombres::slug(' ¿¡ '));
+        // Largo máximo: se corta en un guion, no a media palabra.
+        $largo = Nombres::slug(str_repeat('palabra ', 30), 20);
+        igual('palabra-palabra', $largo);
+        igual('abcdefghij', Nombres::slug('abcdefghijklmnop', 10));
+    },
+
+    'El catálogo encuentra una categoría o tradición por slug o por nombre' => function (): void {
+        igual('filosofia', Catalogo::categoria('Filosofía y ensayo')['slug']);
+        igual('filosofia', Catalogo::categoria('FILOSOFIA')['slug']);
+        igual('tipo de texto', Catalogo::categoria('filosofia')['familia']);
+        igual('movimiento literario', Catalogo::categoria('Realismo mágico')['familia']);
+        igual('arabe', Catalogo::tradicion('Árabe')['slug']);
+        igual('medieval europea', Catalogo::tradicion('medieval')['nombre']);
+        igual(27, count(Catalogo::categorias()));
+        igual(count(Catalogo::tradiciones()), count(array_unique(array_column(Catalogo::tradiciones(), 'slug'))));
+
+        try {
+            Catalogo::tradicion('marciana');
+            throw new RuntimeException('no lanzó');
+        } catch (InvalidArgumentException $error) {
+            verdadero(str_contains($error->getMessage(), '«marciana»') && str_contains($error->getMessage(), 'griega, romana'), 'el error no nombra lo que falló ni da opciones: ' . $error->getMessage());
+        }
+    },
+
+    'Sin época, tradición, categoría ni cita no se arma ficha' => function (): void {
+        $libro = libroDeEjemplo();
+        igual('', $libro->textos->contratapa);
+        igual('', $libro->textos->solapaPortada);
+        igual('', $libro->textos->solapaContratapa);
+        igual(null, $libro->tradicion);
+        igual(null, $libro->categoria);
+    },
+
+    'Con tradición y categoría, la contratapa y las solapas se arman con los datos' => function (): void {
+        $libro = libroDeEjemplo([
+            'titulo' => '¿Qué es la filosofía?', 'subtitulo' => 'Una introducción', 'autor' => 'Autor de prueba', 'traductor' => 'Traductora X',
+            'epoca' => 'siglo II', 'tradicion' => 'Romana', 'categoria' => 'Filosofía y ensayo', 'cita' => 'Una frase.', 'paginas' => 224,
+        ]);
+        igual('romana', $libro->tradicion);
+        igual('filosofia', $libro->categoria);
+        igual(
+            "«Una frase.»\n\n«¿Qué es la filosofía?: Una introducción» es una obra de Autor de prueba (siglo II), de la tradición romana.\n\nTipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.",
+            $libro->textos->contratapa,
+        );
+        igual("Tipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.", $libro->textos->solapaPortada);
+        igual("Autor de prueba (siglo II).\n\nTradición romana.", $libro->textos->solapaContratapa);
+
+        // Sin nada más que la tradición, solo lo que se sabe.
+        $minimo = libroDeEjemplo(['tradicion' => 'china']);
+        igual('«Título de prueba» es una obra de Autor de prueba, de la tradición china.' . "\n\n112 páginas.", $minimo->textos->contratapa);
+    },
+
+    'Un texto escrito a mano manda sobre la ficha' => function (): void {
+        $libro = libroDeEjemplo(['tradicion' => 'china', 'contratapa' => 'Mi sinopsis.', 'solapa_portada' => 'Mi solapa.']);
+        igual('Mi sinopsis.', $libro->textos->contratapa);
+        igual('Mi solapa.', $libro->textos->solapaPortada);
+        verdadero(str_contains($libro->textos->solapaContratapa, 'Tradición china.'), 'lo que no se escribió sí se arma');
+        // Aunque sea vacío: quien escribe "contratapa": "" no quiere texto.
+        igual('', libroDeEjemplo(['tradicion' => 'china', 'contratapa' => ''])->textos->contratapa);
+    },
+
+    'Una tradición o una categoría que no existe se rechaza nombrando el campo' => function (): void {
+        foreach (['tradicion', 'categoria'] as $campo) {
+            try {
+                libroDeEjemplo([$campo => 'inventada']);
+                throw new RuntimeException('no lanzó');
+            } catch (InvalidArgumentException $error) {
+                verdadero(str_contains($error->getMessage(), "'$campo'") && str_contains($error->getMessage(), 'prueba') && str_contains($error->getMessage(), '«inventada»'), $error->getMessage());
+            }
+        }
+        lanza(InvalidArgumentException::class, fn () => libroDeEjemplo(['tradicion' => 5]));
+    },
+
+    'Los avisos dicen qué letras no cubren las fuentes' => function (): void {
+        igual([], Generador::avisos(libroDeEjemplo(['titulo' => 'Ñandú: ¿cómo? ¡Ásí! «Ü»'])));
+        $avisos = Generador::avisos(libroDeEjemplo(['titulo' => 'Łódź', 'autor' => 'Şahin', 'contratapa' => 'Ok']));
+        igual(2, count($avisos));
+        verdadero(str_contains($avisos[0], 'El título') && str_contains($avisos[0], 'Ł'), $avisos[0]);
+        verdadero(str_contains($avisos[1], 'El autor') && str_contains($avisos[1], 'Ş'), $avisos[1]);
+    },
+
+    'La lista de ejemplo se lee y cada fila sale con su ficha' => function (): void {
+        $libros = Lista::leer(__DIR__ . '/../ejemplos/lista.csv');
+        igual(
+            ['marco-aurelio-meditaciones', 'lao-tse-tao-te-king', 'anonimo-cantar-de-mio-cid', 'anonimo-las-mil-y-una-noches', 'gustavo-adolfo-becquer-rimas-y-leyendas'],
+            array_map(static fn (Libro $libro): string => $libro->id, $libros),
+        );
+        igual('romana', $libros[0]->tradicion);
+        igual('filosofia', $libros[0]->categoria);
+        igual('cuentos', $libros[3]->categoria); // escrita por su nombre, con mayúsculas y espacios
+        igual('arabe', $libros[3]->tradicion); // escrita con tilde
+        verdadero(str_contains($libros[0]->textos->contratapa, '«Lo que no conviene a la colmena, no conviene a la abeja.»'), 'falta la cita');
+        verdadero(str_contains($libros[1]->textos->contratapa, 'tradición china'), 'falta la tradición');
+        verdadero(!str_contains($libros[1]->textos->contratapa, '«»'), 'cita vacía');
+    },
+
+    'La lista acepta ; o tabulador, BOM, encabezados con tilde y celdas con saltos de línea' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        $contenido = "\xEF\xBB\xBF" . "Título;Autor;Páginas;Época;Colección;Contratapa;Fondo\r\n"
+            . "\"Uno; y dos\";Ana;100;;;\"Primer párrafo.\r\n\r\nSegundo.\";#112233\r\n"
+            . "\r\n"
+            . ";;;;;;\r\n"
+            . "Dos;Beto;50;;;;\r\n";
+        file_put_contents("$dir/lista.csv", $contenido);
+        $libros = Lista::leer("$dir/lista.csv");
+        igual(['ana-uno-y-dos', 'beto-dos'], array_map(static fn (Libro $libro): string => $libro->id, $libros));
+        igual('Uno; y dos', $libros[0]->textos->titulo);
+        igual("Primer párrafo.\n\nSegundo.", $libros[0]->textos->contratapa);
+        igual('#112233', $libros[0]->colores['fondo']);
+        aproximado(5.0, $libros[0]->formato->lomo); // 100 páginas: 50 hojas de 0,1 mm
+        aproximado(2.5, $libros[1]->formato->lomo); // 50 páginas: 25 hojas
+        file_put_contents("$dir/tab.csv", "titulo\tautor\tpaginas\nUno\tAna\t10\n");
+        igual('Uno', Lista::leer("$dir/tab.csv")[0]->textos->titulo);
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'La lista da todos los errores juntos, con el número de fila' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        file_put_contents("$dir/lista.csv", implode("\n", [
+            'titulo,autor,paginas,tradicion,categoria,id',
+            'Bien,Ana,100,griega,poesia,',            // fila 2: bien
+            'Sin autor,,100,,,',                      // fila 3
+            'Mala tradición,Ana,100,marciana,,',      // fila 4
+            'Páginas raras,Ana,cien,,,',              // fila 5
+            'Mala categoría,Ana,100,,fantasia,',      // fila 6
+            'Id con mayúscula,Ana,100,,,Mi Libro',    // fila 7
+            'Bien,Ana,100,,,',                        // fila 8: mismo nombre que la fila 2
+            'Demasiadas,Ana,100,,,,sobra',            // fila 9
+        ]) . "\n");
+        try {
+            Lista::leer("$dir/lista.csv");
+            throw new RuntimeException('no lanzó');
+        } catch (InvalidArgumentException $error) {
+            $mensaje = $error->getMessage();
+            verdadero(str_contains($mensaje, '7 filas con errores'), $mensaje);
+            foreach ([
+                "fila 3 («Sin autor»): 'titulo' y 'autor' son obligatorios",
+                "fila 4 («Mala tradición»): 'tradicion': la tradición «marciana» no existe",
+                "fila 5 («Páginas raras»): 'paginas' debe ser un número entero, no «cien»",
+                "fila 6 («Mala categoría»): 'categoria': la categoría «fantasia» no existe",
+                "fila 7 («Id con mayúscula»): 'id' debe llevar solo letras minúsculas",
+                "fila 8 («Bien»): el id 'ana-bien' ya lo usa la fila 2",
+                "fila 9 («Demasiadas»): tiene más celdas que columnas",
+            ] as $esperado) {
+                verdadero(str_contains($mensaje, $esperado), "falta «{$esperado}» en:\n$mensaje");
+            }
+            verdadero(!str_contains($mensaje, 'fila 2 ('), 'la fila buena no debe salir como error');
+        }
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'La lista rechaza un archivo que no sirve' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        $caso = static function (string $contenido, string $esperado) use ($dir): void {
+            file_put_contents("$dir/lista.csv", $contenido);
+            try {
+                Lista::leer("$dir/lista.csv");
+                throw new RuntimeException("no lanzó con «{$contenido}»");
+            } catch (InvalidArgumentException $error) {
+                verdadero(str_contains($error->getMessage(), $esperado), "esperado «{$esperado}» en: " . $error->getMessage());
+            }
+        };
+        $caso("titulo,autor,tradicioon\nA,B,griega\n", 'columnas que no conozco: «tradicioon»');
+        $caso("titulo,titulo,autor\nA,B,C\n", "la columna 'titulo' está repetida");
+        $caso("titulo,paginas\nA,10\n", "falta la columna 'autor'");
+        $caso("titulo,autor,paginas\n", 'no tiene ningún libro');
+        $caso('', "falta la columna 'titulo'");
+        $caso("titulo,autor\nCaf\xE9,B\n", 'no está en UTF-8');
+        lanza(InvalidArgumentException::class, fn () => Lista::leer("$dir/no-existe.csv"));
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'El CLI genera una lista CSV, avisa de las letras sin cubrir y no escribe nada si hay errores' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        file_put_contents("$dir/buena.csv", "titulo,autor,paginas,tradicion\nŁódź,Ana,100,griega\nDos,Beto,50,\n");
+        file_put_contents("$dir/mala.csv", "titulo,autor,paginas,tradicion\nUno,Ana,100,griega\nDos,,50,\n");
+
+        [$codigo, $salida, $errores] = correrCli(["--lista=$dir/buena.csv", "--salida=$dir/salida"]);
+        igual(0, $codigo);
+        igual(['ana-lodz', 'beto-dos'], array_map('basename', glob("$dir/salida/*") ?: []));
+        verdadero(is_file("$dir/salida/ana-lodz/portada.svg"), 'falta la portada');
+        verdadero(str_contains($errores, 'Aviso, ana-lodz: El título lleva letras que la fuente no tiene (Ł'), $errores);
+
+        // Una fila mala: ninguna carpeta se escribe, ni la de la fila buena.
+        [$codigo, , $errores] = correrCli(["--lista=$dir/mala.csv", "--salida=$dir/otra"]);
+        igual(1, $codigo);
+        verdadero(str_contains($errores, 'fila 3'), $errores);
+        verdadero(!is_dir("$dir/otra"), 'escribió algo con errores en la lista');
+
+        // Un libro de la lista y otro de un JSON con el mismo nombre de carpeta se rechazan.
+        file_put_contents("$dir/ana-lodz.json", '{"titulo":"X","autor":"Y","paginas":10}');
+        [$codigo, , $errores] = correrCli(["--lista=$dir/buena.csv", "$dir/ana-lodz.json", "--salida=$dir/tercera"]);
+        igual(1, $codigo);
+        verdadero(str_contains($errores, "se llaman igual ('ana-lodz')"), $errores);
+        verdadero(!is_dir("$dir/tercera"), 'escribió algo con un nombre repetido');
+
+        [$codigo, , $errores] = correrCli(['--lista=']);
+        igual(2, $codigo);
+        [$codigo] = correrCli(['--comprobar', "--lista=$dir/buena.csv"]);
+        igual(2, $codigo);
+        Archivos::borrarDirectorio($dir);
     },
 
     'Los libros de ejemplo se cargan' => function (): void {

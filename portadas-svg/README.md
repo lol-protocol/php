@@ -40,6 +40,12 @@ php bin/generar.php libro1.json libro2.json --salida=/ruta/de/salida
 
 Cada libro escribe en una carpeta con el nombre de su archivo JSON, así que dos archivos con el mismo nombre se rechazan antes de escribir nada. `php bin/generar.php --help` muestra el uso.
 
+Para cientos de libros, una lista en CSV (ver «Lista de libros»):
+
+```bash
+php bin/generar.php --lista=ejemplos/lista.csv --salida=/ruta/de/salida
+```
+
 Cada pieza usa las coordenadas de la cubierta completa, pero lleva solo su parte del dibujo: una pieza suelta coincide exactamente con su parte de la cubierta y no arrastra los otros paneles.
 
 ## El JSON de un libro
@@ -64,15 +70,83 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `colores.fondo`, `colores.texto`, `colores.acento` | los de la plantilla | Colores en `#rrggbb`. |
 | `degradado` | sin degradado | Degradado del fondo de toda la cubierta. Ver «Degradados». |
 | `lomo_direccion` | `arriba-abajo` | Sentido del texto del lomo: `arriba-abajo` o `abajo-arriba`. |
-| `contratapa` | vacío | Texto de la contratapa. Los párrafos van separados por una línea en blanco. |
-| `solapa_contratapa` | vacío | Texto de la solapa interior de la contratapa (solo con solapas). |
-| `solapa_portada` | vacío | Texto de la solapa interior de la portada (solo con solapas). |
+| `epoca` | vacío | Época del autor o de la obra, en texto libre (`siglo II`, `399 a. C.`). Solo para la ficha. |
+| `tradicion` | vacío | Tradición cultural: una de la lista de «Clasificación». |
+| `categoria` | vacío | Categoría de Marcalibros: una de la lista de «Clasificación». |
+| `cita` | vacío | Una frase breve de la propia obra, para abrir la contratapa. |
+| `contratapa` | la ficha | Texto de la contratapa. Los párrafos van separados por una línea en blanco. |
+| `solapa_contratapa` | la ficha | Texto de la solapa interior de la contratapa (solo con solapas). |
+| `solapa_portada` | la ficha | Texto de la solapa interior de la portada (solo con solapas). |
 
-El de `ejemplos/platon-apologia.json` usa casi todos los campos; el de Sun Tzu, solo los básicos.
+El de `ejemplos/platon-apologia.json` usa casi todos los campos; el de Sun Tzu, solo los básicos y la clasificación.
 
 Las medidas fuera de esos límites se rechazan con un error que nombra el campo: casi siempre es un error de unidades (centímetros o pulgadas en vez de milímetros).
 
 Los caracteres de control de un texto pegado se limpian al escribir el SVG: el salto de página que trae un PDF se lee como espacio y los demás se quitan, porque XML no los admite.
+
+## Clasificación y ficha
+
+Cada libro puede llevar dos clasificaciones, que se escriben por su identificador o por su nombre, con o sin tildes y mayúsculas (`filosofia`, `Filosofía y ensayo` y `FILOSOFIA` son lo mismo):
+
+- **`tradicion`**: la tradición cultural del texto. Las que hay están en `datos/tradiciones.json`: griega, romana, egipcia, mesopotámica, hebrea, persa, árabe, india, china, japonesa, celta, nórdica, medieval, renacentista, precolombina y moderna.
+- **`categoria`**: la categoría de Marcalibros, un movimiento literario o un tipo de texto. Las 27 están en `datos/categorias.json`, copiadas de `marcalibros-plataforma-pos-brand-identity/catalog/` para que este proyecto no dependa de esa carpeta: si allí cambian las categorías, se actualiza el archivo a mano.
+
+Un identificador que no existe se rechaza con la lista de los que sí.
+
+### La ficha de la contratapa y las solapas
+
+Si el libro trae `epoca`, `tradicion`, `categoria` o `cita`, y no trae los textos escritos a mano, la contratapa y las solapas se arman con esos datos. **No hay sinopsis inventada**: la ficha solo dice lo que ya está en los datos. Por ejemplo, la contratapa de *Meditaciones* sale así:
+
+```
+«Lo que no conviene a la colmena, no conviene a la abeja.»
+
+«Meditaciones» es una obra de Marco Aurelio (siglo II), de la tradición romana.
+
+Tipo de texto: Filosofía y ensayo.
+
+224 páginas.
+```
+
+- **Contratapa**: la cita (si hay), qué obra es y de quién, la clasificación, la traducción y la extensión.
+- **Solapa de la portada**: la clasificación, la traducción y la extensión.
+- **Solapa de la contratapa**: el autor, su época y la tradición.
+
+Lo escrito a mano manda: si el libro trae `contratapa`, `solapa_portada` o `solapa_contratapa`, ese texto se usa tal cual, aunque sea vacío (`"contratapa": ""` deja la contratapa sin texto). Sin ninguno de los cuatro datos, no se arma nada.
+
+## Lista de libros
+
+Para muchos libros, una fila de un CSV por libro, en UTF-8 (en Excel o LibreOffice: «CSV UTF-8»). El separador puede ser coma, punto y coma o tabulador. La primera fila son los encabezados, que no distinguen mayúsculas ni tildes (`Título` y `titulo` son lo mismo) y pueden ir en cualquier orden. Una celda vacía es no dar el dato.
+
+```csv
+titulo,subtitulo,autor,epoca,tradicion,categoria,paginas,cita,editorial,coleccion
+Meditaciones,,Marco Aurelio,siglo II,romana,filosofia,224,"Lo que no conviene a la colmena, no conviene a la abeja.",Edición de ejemplo,Clásicos
+Tao Te King,,Lao Tsé,siglo IV a. C.,china,libros-sagrados,96,,Edición de ejemplo,Clásicos
+```
+
+| Columna | Qué es |
+|---|---|
+| `titulo`, `autor` | Obligatorias: tienen que estar en los encabezados y llenas en cada fila. |
+| `paginas` | Número entero. Obligatoria salvo que la fila dé `lomo_mm`. |
+| `id` | Nombre de la carpeta del libro: minúsculas sin tilde, cifras y guiones. Si falta, sale del autor y el título (`marco-aurelio-meditaciones`). |
+| `subtitulo`, `traductor`, `editorial`, `coleccion`, `isbn` | Como en el JSON. |
+| `epoca`, `tradicion`, `categoria`, `cita` | Ver «Clasificación y ficha». |
+| `contratapa`, `solapa_portada`, `solapa_contratapa` | Texto a mano; manda sobre la ficha. Un salto de línea doble separa párrafos. |
+| `plantilla`, `solapas_mm`, `lomo_mm` | Como en el JSON (los mm admiten punto o coma decimal). |
+| `fondo`, `texto`, `acento` | Colores `#rrggbb`. |
+
+El resto de campos del JSON (`formato`, `sangrado_mm`, `degradado`…) no están en la lista: valen los de siempre, y un libro que los necesite se escribe en JSON.
+
+Cada fila pasa por los mismos controles que un JSON. Si alguna falla, el error nombra la fila (como se ve en la hoja de cálculo) y el título, se dan todas juntas y no se escribe ningún libro, para corregir la lista de una vez:
+
+```
+lista.csv: 2 filas con errores:
+  fila 4 («Mala tradición»): 'tradicion': la tradición «marciana» no existe; usa una de: griega, romana, …
+  fila 9 («Sin autor»): 'titulo' y 'autor' son obligatorios.
+```
+
+Una columna que no se conoce (un `tradicioon` mal escrito) también se rechaza, en vez de ignorarla en silencio.
+
+Con 300 libros, el generador tarda medio segundo y escribe unos 85 MB (cada SVG lleva sus fuentes). Si un título o un texto lleva letras que las fuentes no cubren, el generador lo avisa por libro y sigue.
 
 ## Medidas
 
@@ -162,11 +236,14 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 
 ```
 bin/generar.php          línea de comandos
-src/                     Libro (con Formato y Textos), Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
+src/                     Libro (con Formato y Textos), Lista (CSV), Catalogo, Ficha, Nombres, Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
 fuentes/                 fuentes woff2 que se incrustan en los SVG, con sus licencias
 datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
+datos/categorias.json    las 27 categorías de Marcalibros
+datos/tradiciones.json   las tradiciones culturales
 herramientas/            medir-fuentes.py, que genera datos/anchos.json
 ejemplos/*.json          libros de ejemplo
+ejemplos/lista.csv       lista de ejemplo, con la ficha armada a partir de los datos
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
 pruebas/ejecutar.php     pruebas unitarias, sin dependencias
 ```

@@ -34,6 +34,10 @@ final class Libro
         /** Degradado del fondo, o null si el fondo es un color sólido. */
         public readonly ?Degradado $degradado,
         public readonly string $lomoDireccion,
+        /** Tradición cultural (slug de datos/tradiciones.json), o null si no se dio. */
+        public readonly ?string $tradicion,
+        /** Categoría de Marcalibros (slug de datos/categorias.json), o null si no se dio. */
+        public readonly ?string $categoria,
     ) {
     }
 
@@ -112,17 +116,27 @@ final class Libro
             throw new \InvalidArgumentException("$id: 'lomo_direccion' debe ser arriba-abajo o abajo-arriba.");
         }
 
+        $tradicion = self::clasificacion($id, $datos, 'tradicion', Catalogo::tradicion(...));
+        $categoria = self::clasificacion($id, $datos, 'categoria', Catalogo::categoria(...));
+
+        $subtitulo = self::cadena($datos, 'subtitulo');
+        $traductor = self::cadena($datos, 'traductor');
+        $paginas = isset($datos['paginas']) && (is_int($datos['paginas']) || is_float($datos['paginas'])) ? (int) $datos['paginas'] : null;
+        $ficha = new Ficha($titulo, $subtitulo, $autor, $traductor, self::cadena($datos, 'epoca'), self::cadena($datos, 'cita'), $tradicion, $categoria, $paginas);
+
+        // Lo que se escribe a mano manda; la ficha rellena solo lo que quedó vacío, y solo si hay datos con
+        // los que armarla.
         $textos = new Textos(
             titulo: $titulo,
-            subtitulo: self::cadena($datos, 'subtitulo'),
+            subtitulo: $subtitulo,
             autor: $autor,
-            traductor: self::cadena($datos, 'traductor'),
+            traductor: $traductor,
             editorial: self::cadena($datos, 'editorial'),
             coleccion: self::cadena($datos, 'coleccion'),
             isbn: self::cadena($datos, 'isbn'),
-            contratapa: self::cadena($datos, 'contratapa'),
-            solapaContratapa: self::cadena($datos, 'solapa_contratapa'),
-            solapaPortada: self::cadena($datos, 'solapa_portada'),
+            contratapa: self::cadena($datos, 'contratapa', $ficha->hayDatos() ? $ficha->contratapa() : ''),
+            solapaContratapa: self::cadena($datos, 'solapa_contratapa', $ficha->hayDatos() ? $ficha->solapaContratapa() : ''),
+            solapaPortada: self::cadena($datos, 'solapa_portada', $ficha->hayDatos() ? $ficha->solapaPortada() : ''),
         );
 
         return new self(
@@ -133,7 +147,30 @@ final class Libro
             colores: $colores,
             degradado: $degradado,
             lomoDireccion: $direccion,
+            tradicion: $tradicion['slug'] ?? null,
+            categoria: $categoria['slug'] ?? null,
         );
+    }
+
+    /**
+     * Busca en un catálogo lo que el libro dice en `$campo`, o null si no dice nada.
+     *
+     * @template T of array{slug: string, nombre: string}
+     * @param array<string, mixed> $datos
+     * @param callable(string): T $buscar
+     * @return T|null
+     */
+    private static function clasificacion(string $id, array $datos, string $campo, callable $buscar): ?array
+    {
+        $clave = self::cadena($datos, $campo);
+        if ($clave === '') {
+            return null;
+        }
+        try {
+            return $buscar($clave);
+        } catch (\InvalidArgumentException $error) {
+            throw new \InvalidArgumentException("$id: '$campo': " . $error->getMessage());
+        }
     }
 
     /** @param array<string, mixed> $datos */

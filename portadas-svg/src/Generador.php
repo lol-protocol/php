@@ -49,6 +49,32 @@ final class Generador
     }
 
     /**
+     * Letras de los textos del libro que las fuentes incrustadas no tienen (ver Fuentes): en el visor se
+     * dibujan con otra fuente, y el ajuste del texto las mide con un ancho medio.
+     *
+     * @return list<string> un aviso por texto afectado
+     */
+    public static function avisos(Libro $libro): array
+    {
+        $medida = Plantilla::crear($libro->plantilla)->medidaDe();
+        $t = $libro->textos;
+        $textos = [
+            'El título' => $t->titulo, 'El subtítulo' => $t->subtitulo, 'El autor' => mb_strtoupper($t->autor), 'El traductor' => $t->traductor,
+            'La editorial' => $t->editorial, 'La colección' => $t->coleccion, 'La contratapa' => $t->contratapa,
+            'La solapa de la contratapa' => $t->solapaContratapa, 'La solapa de la portada' => $t->solapaPortada,
+        ];
+        $avisos = [];
+        foreach ($textos as $nombre => $texto) {
+            $faltan = $medida->noCubiertas($texto);
+            if ($faltan !== '') {
+                $avisos[] = "$nombre lleva letras que la fuente no tiene ($faltan); se verán con otra fuente.";
+            }
+        }
+
+        return $avisos;
+    }
+
+    /**
      * El sobrelomo ya incluye la cubierta completa y sus solapas, así que con solapas no se escribe la
      * cubierta completa, y sin solapas no hay sobrelomo.
      *
