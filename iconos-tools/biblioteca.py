@@ -46,7 +46,7 @@ volume(ic, 'teal', 17, 10, 28, 38, d=2)
 ic.mark('M22 14Q26 29 22 44', w=2, op=0.55)
 
 ic = new('book_pocket')
-ic.poly([(10, 6), (40, 6), (40, 50), (10, 50)], True, tone='slate', ink='slate', w=2, dash='3 3.5')
+ic.poly([(10, 6), (40, 6), (40, 50), (10, 50)], True, tone='slate', ink='slate', w=2, dash='3 3.5', behind=True)
 volume(ic, 'orange', 26, 25, 20, 26, d=3.2, r=4)
 
 ic = new('book_boxset')

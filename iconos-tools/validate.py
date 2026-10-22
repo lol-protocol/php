@@ -38,7 +38,7 @@ def local(tag):
 
 def signature(root):
     """(solidos, marcas): lo que debe coincidir entre variantes. La sombra solo existe en color y gris, y un
-    enlace puede quedar oculto del todo en lineas por quedar tapado por los nodos."""
+    enlace o una marca de la capa back pueden quedar ocultos del todo en lineas por quedar tapados por un volumen."""
     groups = {g.get('class'): g for g in root if local(g.tag) == 'g'}
     solids = groups.get('solids')
     marks = groups.get('marks')

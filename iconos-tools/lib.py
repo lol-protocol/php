@@ -393,12 +393,15 @@ class Icon:
         self.links.append(dict(pts=distinct if len(distinct) > 1 else pts, style=style, hue=hue, w=w))
         return self
 
-    def mark(self, d, filled=False, tone='white', ink='ink', w=2.4, op=1.0, dash=None):
-        self.marks.append(dict(d=d, filled=filled, tone=tone, ink=ink, w=w, op=op, dash=dash))
+    def mark(self, d, filled=False, tone='white', ink='ink', w=2.4, op=1.0, dash=None, behind=False, pts=None):
+        """behind: la marca va detrás de los volúmenes (un contorno de referencia, no un detalle sobre uno).
+        pts: sus puntos, si es una polilínea, para ocultar en lineas lo que tapa un volumen."""
+        self.marks.append(dict(d=d, filled=filled, tone=tone, ink=ink, w=w, op=op, dash=dash, behind=behind, pts=pts))
         return self
 
     def poly(self, points, close=False, **kw):
-        return self.mark('M' + 'L'.join(pt(p) for p in points) + ('Z' if close else ''), **kw)
+        pts = [(float(x), float(y)) for x, y in points]
+        return self.mark('M' + 'L'.join(pt(p) for p in pts) + ('Z' if close else ''), pts=pts + pts[:1] if close else pts, **kw)
 
     def dot(self, x, y, r, **kw):
         return self.mark(circle_path(x, y, r), filled=True, **kw)
@@ -450,7 +453,7 @@ class Icon:
         assert variant in VARIANTS
         lin = variant == 'lineas'
         col = gray if variant == 'gris' else (lambda c: c)
-        grads, out_shadow, out_links, out_solids, out_marks = {}, [], [], [], []
+        grads, out_shadow, out_back, out_links, out_solids, out_marks = {}, [], [], [], [], []
 
         if not lin:
             x0, _, x1, y1 = self._bbox()
@@ -481,8 +484,16 @@ class Icon:
                 parts.append(s['shape'].front(f'fill="url(#{gid})"{op}'))
             out_solids.append('<g>' + ''.join(parts) + '</g>')
 
+        sil = self._silhouettes() if lin and any(m['behind'] for m in self.marks) else []
         for m in self.marks:
-            out_marks.append(self._render_mark(m, lin, col))
+            if not m['behind']:
+                out_marks.append(self._render_mark(m, lin, col))
+                continue
+            d = m['d']
+            if lin and m['pts']:  # sin relleno, un volumen no tapa lo que tiene detrás: se oculta como en los enlaces
+                d = ''.join('M' + 'L'.join(pt(q) for q in pl) for pl in self._trim(m['pts'], sil))
+            if d:
+                out_back.append(self._render_mark(m, lin, col, d))
 
         lines = ['<?xml version="1.0" encoding="UTF-8"?>',
                  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">']
@@ -495,7 +506,7 @@ class Icon:
                           f'      <stop offset="1" stop-color="{c1}"/>',
                           '    </linearGradient>']
             lines.append('  </defs>')
-        for cls, items in (('shadow', out_shadow), ('links', out_links), ('solids', out_solids), ('marks', out_marks)):
+        for cls, items in (('shadow', out_shadow), ('back', out_back), ('links', out_links), ('solids', out_solids), ('marks', out_marks)):
             if items:
                 lines.append(f'  <g class="{cls}">')
                 lines += [f'    {i}' for i in items]
@@ -593,7 +604,7 @@ class Icon:
             return [f'<path d="{d}" {common} stroke-width="{fmt(w)}"/>']
         raise ValueError(style)
 
-    def _render_mark(self, m, lin, col):
+    def _render_mark(self, m, lin, col, d=None):
         if lin:
             hue = m['tone'] if m['tone'] in BASE else m['ink']
             w = 1.8 if m['filled'] else max(1.8, min(m['w'], 2.2))
@@ -615,5 +626,5 @@ class Icon:
             attrs += f' stroke-dasharray="{m["dash"]}"'
         if m['op'] != 1:
             attrs += f' opacity="{fmt(m["op"])}"'
-        return f'<path d="{m["d"]}" {attrs}/>'
+        return f'<path d="{d or m["d"]}" {attrs}/>'
 
