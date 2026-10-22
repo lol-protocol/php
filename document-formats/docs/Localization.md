@@ -7,7 +7,7 @@ The Document Formats Database includes a multi-language localization system with
 The system supports the following 30 languages. **Six are complete** (English, Spanish,
 French, German, Chinese and Japanese). The other 24 translate only the page title, the tabs
 and the unit names (`header.*`, `tabs.*` except `tabs.paperTypes`, `format.millimeters`,
-`format.inches`: 10 of the 135 strings); any string a language leaves empty or lacks is shown in English.
+`format.inches`: 10 of the 145 strings); any string a language leaves empty or lacks is shown in English.
 
 - **English** (en) - English
 - **Spanish** (es) - Español
@@ -334,8 +334,7 @@ function translateFormat(format) {
 
 ```javascript
 // Get different strings based on language
-const isRTL = ['ar', 'he', 'fa'].includes(i18n.getLanguage());
-document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+document.documentElement.dir = LocalizationManager.isRtl(i18n.getLanguage()) ? 'rtl' : 'ltr';
 ```
 
 ### Pluralization
@@ -391,9 +390,9 @@ The system includes accessibility features:
 Example:
 
 ```javascript
-const isRTL = ['ar', 'he', 'fa', 'ur'].includes(i18n.getLanguage());
+// LocalizationManager.RTL_LANGUAGES lists ar, he, fa and ur; only Arabic has a translation file so far.
 document.documentElement.lang = i18n.getLanguage();
-document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+document.documentElement.dir = LocalizationManager.isRtl(i18n.getLanguage()) ? 'rtl' : 'ltr';
 ```
 
 ## Troubleshooting
@@ -481,9 +480,9 @@ localStorage.removeItem('preferredLanguage');
 ## Statistics
 
 - **Languages**: 30
-- **Strings per language**: 135
+- **Strings per language**: 145
 - **Fully translated**: 6 (English, Spanish, French, German, Chinese, Japanese)
-- **Partly translated**: 24, with 10 of the 135 strings
+- **Partly translated**: 24, with 10 of the 145 strings
 
 `tests/demo.test.js` recomputes these numbers from the translation files and fails if this section is out of date.
 

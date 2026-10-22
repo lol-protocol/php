@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { parseCSV, FORMAT_CATALOG_FILES } = require('../app/document-formats.js');
+const { parseCSV, FORMAT_CATALOG_FILES, COUNTRIES_FILE } = require('../app/document-formats.js');
 
 const ROOT = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
@@ -183,4 +183,17 @@ test('the PHP importer and the JavaScript library load the same catalog files, i
     const library = FORMAT_CATALOG_FILES.map(file => file.replace(/^\.\.\//, ''));
     assert.ok(importer.length >= 15);
     assert.deepEqual(importer, library, 'CATALOGS (import_database.php) and FORMAT_CATALOG_FILES (app/document-formats.js) differ');
+});
+
+test('the PHP importer reads the same countries file as the JavaScript library', () => {
+    const file = COUNTRIES_FILE.replace(/^\.\.\//, '');
+    assert.ok(read('import_database.php').includes(`'${file}'`), `${file} is not read by import_database.php`);
+    assert.ok(fs.existsSync(path.join(ROOT, file)));
+});
+
+test('.nvmrc names the Node version the CI workflow uses', () => {
+    const workflow = fs.readFileSync(path.join(ROOT, '..', '.github', 'workflows', 'pruebas-document-formats.yml'), 'utf8');
+    const ci = workflow.match(/node-version: '(\d+)'/)?.[1];
+    assert.ok(ci, 'node-version not found in the workflow');
+    assert.equal(read('.nvmrc').trim(), ci);
 });

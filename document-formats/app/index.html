@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse, search and compare paper and document formats by country, with sizes in millimetres and inches, paper types and conversions.">
+    <meta name="color-scheme" content="light dark">
     <title>Document Formats Database - Interactive Browser</title>
     <link rel="icon" href="data:,">
     <style>
@@ -297,6 +299,7 @@
         }
 
         .format-preview svg {
+            height: 120px;
             max-width: 100%;
             max-height: 100%;
         }
@@ -411,6 +414,7 @@
         }
 
         .equivalence-fill {
+            width: 0;
             height: 100%;
             background: linear-gradient(90deg, #047857 0%, var(--primary) 100%);
             display: flex;
@@ -528,6 +532,28 @@
             }
         }
 
+        .span-all { grid-column: 1 / -1; }
+        .table-scroll { overflow-x: auto; }
+        .paper-combined { margin-bottom: 20px; }
+        .similarity-note { font-size: 14px; color: var(--text-light); }
+        .paper-notes { margin-top: 10px; font-size: 13px; color: var(--text-light); }
+        .about-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        .about-list { margin: 15px 0; padding-inline-start: 20px; }
+        .about-note { margin-top: 15px; color: var(--text-light); }
+
+        /* On paper: the results only, in black on white. */
+        @media print {
+            .skip-link, .language-picker, .tabs, .controls, .stats, .footer { display: none; }
+            body { background: white; color: black; }
+            .header { background: none; color: black; box-shadow: none; padding: 0 0 12px; }
+            .format-card, .about-card { box-shadow: none; border: 1px solid #999; break-inside: avoid; }
+        }
+
         @media (max-width: 768px) {
             .language-picker {
                 position: static;
@@ -641,12 +667,12 @@
         <div id="comparison" class="tab-content" role="tabpanel" aria-labelledby="tab-comparison">
             <h2 class="sr-only" data-translate="tabs.comparison">Comparison</h2>
             <div class="controls">
-                <div class="control-group" style="grid-column: 1 / -1;">
+                <div class="control-group span-all">
                     <label for="compare-search" data-translate="demo.compareLabel">Compare Formats</label>
                     <input type="text" id="compare-search" placeholder="Type format names to compare..." data-translate="demo.comparePlaceholder:placeholder">
                 </div>
             </div>
-            <div style="overflow-x: auto;">
+            <div class="table-scroll">
                 <table class="comparison-table" id="comparison-table">
                     <thead>
                         <tr>
@@ -684,7 +710,7 @@
                 <div class="conversion-result" id="conversion-result">
                     <div id="conversion-info"></div>
                     <div class="equivalence-bar" aria-hidden="true">
-                        <div class="equivalence-fill" id="equivalence-fill" style="width: 0%"></div>
+                        <div class="equivalence-fill" id="equivalence-fill"></div>
                     </div>
                 </div>
             </div>
@@ -712,9 +738,9 @@
                 </div>
             </div>
 
-            <div id="paper-combined-section" style="display: none; margin-bottom: 20px;">
+            <div id="paper-combined-section" class="paper-combined" hidden>
                 <h3 id="paper-combined-title"></h3>
-                <div style="overflow-x: auto;">
+                <div class="table-scroll">
                     <table class="comparison-table">
                         <thead>
                             <tr>
@@ -734,26 +760,26 @@
 
         <!-- About Tab -->
         <div id="about" class="tab-content" role="tabpanel" aria-labelledby="tab-about">
-            <div style="background: var(--card-bg); padding: 25px; border-radius: 8px; box-shadow: var(--shadow);">
-                <h2>About This Database</h2>
-                <p>This comprehensive document format database includes:</p>
-                <ul style="margin: 15px 0; padding-inline-start: 20px;">
-                    <li><strong id="about-formats">…</strong> formats across multiple categories</li>
-                    <li><strong id="about-countries">…</strong> countries and regions with local and international standards</li>
-                    <li><strong>Dual measurements</strong> in both metric and imperial units</li>
-                    <li><strong>Technical specifications</strong> for printing and design</li>
-                    <li><strong>Format conversions</strong> showing international equivalents</li>
+            <div class="about-card">
+                <h2 data-translate="demo.aboutTitle">About This Database</h2>
+                <p data-translate="demo.aboutIntro">This comprehensive document format database includes:</p>
+                <ul class="about-list">
+                    <li id="about-formats">…</li>
+                    <li id="about-countries">…</li>
+                    <li data-translate="demo.aboutDual">Dual measurements in both metric and imperial units</li>
+                    <li data-translate="demo.aboutSpecs">Technical specifications for printing and design</li>
+                    <li data-translate="demo.aboutConversions">Format conversions showing international equivalents</li>
                 </ul>
-                <p style="margin-top: 15px; color: var(--text-light);">
-                    Data sourced from ISO 216, ANSI, JIS, and GB/T standards.
-                    Last updated: <span id="about-updated">…</span>
+                <p class="about-note">
+                    <span data-translate="demo.aboutSources">Data sourced from ISO 216, ANSI, JIS, and GB/T standards.</span>
+                    <span data-translate="demo.aboutUpdated">Last updated:</span> <span id="about-updated">…</span>
                 </p>
             </div>
         </div>
     </main>
 
     <footer class="footer">
-        <p>Document Formats Database v2.0 | Built with HTML5, CSS3, and JavaScript</p>
+        <p data-translate="demo.footer">Document Formats Database v2.0 | Built with HTML5, CSS3, and JavaScript</p>
     </footer>
 
     <script src="document-formats.js"></script>
@@ -762,7 +788,6 @@
     <script>
         const i18n = new LocalizationManager();
         const tr = (key, values) => formatMessage(i18n.t(key), values);
-        const RTL_LANGUAGES = new Set(['ar']);
         // Text that tr() had to take from English because the language lacks it: it must be
         // marked, or a screen reader would read it with the voice of the page's language.
         const fallbackLang = (key) =>
@@ -982,7 +1007,7 @@
                 const label = escapeHtml(tr('demo.proportions', {name: format.format_name}));
 
                 return `
-                    <svg viewBox="0 0 ${w} ${h}" style="height: 120px; max-width: 100%;" role="img" aria-label="${label}">
+                    <svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">
                         <rect x="1" y="1" width="${w - 2}" height="${h - 2}"
                               fill="white" stroke="#999" stroke-width="1"/>
                     </svg>
@@ -1028,7 +1053,7 @@
                 document.getElementById('conversion-info').innerHTML = `
                     <p><strong>${escapeHtml(fromName)}</strong> (${escapeHtml(conversion.fromSize.mm)} mm)
                         → <strong>${escapeHtml(toName)}</strong> (${escapeHtml(conversion.toSize.mm)} mm)</p>
-                    <p style="font-size: 14px; color: var(--text-light);">
+                    <p class="similarity-note">
                         ${escapeHtml(tr('demo.similarity', {percent: conversion.similarity}))}
                     </p>
                 `;
@@ -1145,7 +1170,7 @@
                             ${row(tr('paperTypes.weight'), p.weight_gsm_range, '', 'paperTypes.weight')}
                             ${row(tr('paperTypes.commonUse'), p.common_use, dataLang(), 'paperTypes.commonUse')}
                         </div>
-                        <p style="margin-top: 10px; font-size: 13px; color: var(--text-light);"${dataLang()}>${escapeHtml(p.notes)}</p>
+                        <p class="paper-notes"${dataLang()}>${escapeHtml(p.notes)}</p>
                     </div>`;
             }
 
@@ -1154,7 +1179,7 @@
                 const formatName = sizeSelect.value;
 
                 if (!formatName) {
-                    combinedSection.style.display = 'none';
+                    combinedSection.hidden = true;
                     return;
                 }
 
@@ -1170,7 +1195,7 @@
                         <td>${escapeHtml(p.weight_gsm_range)}</td>
                     </tr>
                 `).join('');
-                combinedSection.style.display = '';
+                combinedSection.hidden = false;
             }
 
             refresh() {
@@ -1191,6 +1216,7 @@
             let paperBrowser = null;
             let lastModified = null;
             let loadError = null;
+            let formats = null;
             let restoring = true;   // until the URL's state is applied, the URL is not rewritten
             const languageSelect = document.getElementById('language-select');
             const container = document.getElementById('formats-container');
@@ -1226,6 +1252,17 @@
                 else updated.removeAttribute('lang');
             };
 
+            // The two lines of the About tab that carry a number: {count} sits where the language wants it.
+            const showAboutCounts = () => {
+                const counts = {aboutFormats: formats?.length, aboutCountries: formatBrowser?.statistics.getStats().totalCountries};
+                for (const [key, value] of Object.entries(counts)) {
+                    const item = document.getElementById(key === 'aboutFormats' ? 'about-formats' : 'about-countries');
+                    item.innerHTML = formatMessage(escapeHtml(i18n.t(`demo.${key}`)), {count: `<strong>${value ?? '…'}</strong>`});
+                    if (fallbackLang(`demo.${key}`)) item.lang = 'en';
+                    else item.removeAttribute('lang');
+                }
+            };
+
             const showLoadError = () => {
                 const code = (text) => `<code>${escapeHtml(text)}</code>`;
                 container.innerHTML = `
@@ -1246,7 +1283,7 @@
             const applyLanguage = () => {
                 const lang = i18n.getLanguage();
                 document.documentElement.lang = lang;
-                document.documentElement.dir = RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr';
+                document.documentElement.dir = LocalizationManager.isRtl(lang) ? 'rtl' : 'ltr';
                 document.title = tr('demo.title');
                 i18n.translateElement(document.body);
                 // A string the language lacks shows in English: say so, or a screen reader
@@ -1261,6 +1298,7 @@
                 formatBrowser?.refresh();
                 paperBrowser?.refresh();
                 if (formatBrowser) showUpdated();
+                showAboutCounts();
                 saveState();
             };
 
@@ -1289,7 +1327,6 @@
 
             container.innerHTML = `<p class="no-results">${escapeHtml(tr('messages.loading'))}</p>`;
 
-            let formats;
             try {
                 ({formats, lastModified} = await loadFormatCatalogs());
             } catch (error) {
@@ -1299,8 +1336,7 @@
             }
 
             formatBrowser = new FormatBrowser(formats);
-            document.getElementById('about-formats').textContent = formats.length;
-            document.getElementById('about-countries').textContent = formatBrowser.statistics.getStats().totalCountries;
+            showAboutCounts();
             showUpdated();
 
             const specs = new SpecificationManager();
