@@ -62,13 +62,13 @@ final class Clasica extends Plantilla
         $svg .= $this->rectangulo(new Rectangulo($panel->x + $interior, $panel->y + $interior, $panel->ancho - 2 * $interior, $panel->alto - 2 * $interior), ['fill' => 'none', 'stroke' => $colores['acento'], 'stroke-width' => self::MARCO_INTERIOR_GROSOR]);
 
         $zonaAlto = $panel->alto * self::TITULO_ALTO;
-        $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $zonaAlto, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->factorPara($libro->textos->titulo), self::INTERLINEADO);
+        $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $zonaAlto, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO, true);
         $y = $this->baseline($panel->y + $panel->alto * self::TITULO_Y, $zonaAlto, count($titulo['lineas']), $titulo['tamano']);
         $svg .= $this->parrafo($titulo['lineas'], $cx, $y, $titulo['tamano'], 'middle', $colores['texto']);
         $fin = $y + (count($titulo['lineas']) - 1) * $titulo['tamano'] * self::INTERLINEADO;
 
         if ($libro->textos->subtitulo !== '') {
-            $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->factorPara($libro->textos->subtitulo), self::INTERLINEADO);
+            $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->medidaDe(['font-style' => 'italic']), self::INTERLINEADO, true);
             $svg .= $this->parrafo($subtitulo['lineas'], $cx, $this->bajoElTitulo($fin, $titulo['tamano'], $subtitulo['tamano']), $subtitulo['tamano'], 'middle', $colores['texto'], ['font-style' => 'italic']);
         }
 

@@ -46,14 +46,9 @@ final class Sobria extends Plantilla
         return ['fondo' => '#1c1f24', 'texto' => '#f2efe6', 'acento' => '#c8a24a'];
     }
 
-    protected function fuente(): string
+    public function familia(): string
     {
-        return "'Helvetica Neue', Helvetica, Arial, sans-serif";
-    }
-
-    protected function factorAncho(): float
-    {
-        return 0.55;
+        return 'sans';
     }
 
     protected function coloresLomo(Libro $libro): array
@@ -69,13 +64,13 @@ final class Sobria extends Plantilla
 
         $svg = $this->rectangulo(new Rectangulo($x, $panel->y + self::BARRA_Y, self::BARRA_ANCHO, self::BARRA_ALTO), ['fill' => $colores['acento']]);
 
-        $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $panel->alto * self::TITULO_ALTO, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->factorPara($libro->textos->titulo), self::INTERLINEADO);
+        $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $panel->alto * self::TITULO_ALTO, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->medidaDe(['font-weight' => 'bold']), self::INTERLINEADO, true);
         $y = $panel->y + self::TITULO_Y + $titulo['tamano'] * self::ASCENDENTE;
         $svg .= $this->parrafo($titulo['lineas'], $x, $y, $titulo['tamano'], 'start', $colores['texto'], ['font-weight' => 'bold']);
         $fin = $y + (count($titulo['lineas']) - 1) * $titulo['tamano'] * self::INTERLINEADO;
 
         if ($libro->textos->subtitulo !== '') {
-            $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->factorPara($libro->textos->subtitulo), self::INTERLINEADO);
+            $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO, true);
             $svg .= $this->parrafo($subtitulo['lineas'], $x, $this->bajoElTitulo($fin, $titulo['tamano'], $subtitulo['tamano']), $subtitulo['tamano'], 'start', $colores['acento']);
         }
 

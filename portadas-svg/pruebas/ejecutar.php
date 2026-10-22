@@ -8,10 +8,13 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/autocarga.php';
 
+use PortadasSvg\Anchos;
 use PortadasSvg\Archivos;
 use PortadasSvg\Cli;
 use PortadasSvg\Color;
 use PortadasSvg\Degradado;
+use PortadasSvg\FactorFijo;
+use PortadasSvg\Fuentes;
 use PortadasSvg\Generador;
 use PortadasSvg\Libro;
 use PortadasSvg\Medidas;
@@ -88,10 +91,32 @@ function libroLargo(string $plantilla, float $solapas, array $extra = []): Libro
     ]);
 }
 
-/** Ancho estimado de una línea, con las mismas estimaciones que usan las plantillas. */
-function anchoEstimado(string $texto, float $tamano, float $espaciado, Plantilla $plantilla): float
+/**
+ * Ancho estimado de una línea con la tabla de anchos de la cara con que se pinta, la misma que usan
+ * las plantillas. `$extra` son los atributos font-style y font-weight del texto.
+ *
+ * @param array<string, float|int|string> $extra
+ */
+function anchoEstimado(string $texto, float $tamano, float $espaciado, Plantilla $plantilla, array $extra = []): float
 {
-    return mb_strlen($texto) * ($tamano * $plantilla->factorPara($texto) + $espaciado);
+    return $plantilla->medidaDe($extra)->em($texto) * $tamano + $espaciado * mb_strlen($texto);
+}
+
+/**
+ * Los atributos de cara tipográfica de un `<text>`, en la forma que entiende `Plantilla::medidaDe`.
+ *
+ * @return array<string, string>
+ */
+function caraDe(DOMElement $elemento): array
+{
+    $cara = [];
+    foreach (['font-style', 'font-weight'] as $atributo) {
+        if ($elemento->getAttribute($atributo) !== '') {
+            $cara[$atributo] = $elemento->getAttribute($atributo);
+        }
+    }
+
+    return $cara;
 }
 
 /**
@@ -116,7 +141,7 @@ function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
             }
             $x = (float) $giro[1];
             $y = (float) $giro[2];
-            $largo = anchoEstimado($elemento->textContent, $tamano, $espaciado, $plantilla);
+            $largo = anchoEstimado($elemento->textContent, $tamano, $espaciado, $plantilla, caraDe($elemento));
             // Con rotate(90) las letras crecen hacia +x; con rotate(-90), hacia -x.
             $hacia = (int) $giro[3] === 90 ? 0.8 : 0.2;
             $cajas[] = [
@@ -141,7 +166,7 @@ function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
                 continue;
             }
             $x = (float) $tspan->getAttribute('x');
-            $ancho = anchoEstimado($texto, $tamano, $espaciado, $plantilla);
+            $ancho = anchoEstimado($texto, $tamano, $espaciado, $plantilla, caraDe($elemento));
             [$izquierda, $derecha] = match ($anclaje) {
                 'middle' => [$x - $ancho / 2, $x + $ancho / 2],
                 'end' => [$x - $ancho, $x],
@@ -324,9 +349,9 @@ $pruebas = [
     },
 
     'Texto::envolver parte por palabras y respeta los párrafos' => function (): void {
-        igual(['uno', 'dos', 'tres'], Texto::envolver('uno dos tres', 5.0, 1.0, 1.0));
-        igual(['a b', '', 'c'], Texto::envolver("a b\n\nc", 20.0, 1.0, 1.0));
-        igual([], Texto::envolver('', 20.0, 1.0, 1.0));
+        igual(['uno', 'dos', 'tres'], Texto::envolver('uno dos tres', 5.0, 1.0, new FactorFijo(1.0)));
+        igual(['a b', '', 'c'], Texto::envolver("a b\n\nc", 20.0, 1.0, new FactorFijo(1.0)));
+        igual([], Texto::envolver('', 20.0, 1.0, new FactorFijo(1.0)));
     },
 
     'Svg::lineas conserva las líneas en blanco con un espacio de no ruptura' => function (): void {
@@ -334,26 +359,26 @@ $pruebas = [
     },
 
     'Texto::envolver corta las palabras más largas que la línea' => function (): void {
-        igual(['abc', 'def', 'gh'], Texto::envolver('abcdefgh', 3.0, 1.0, 1.0));
+        igual(['abc', 'def', 'gh'], Texto::envolver('abcdefgh', 3.0, 1.0, new FactorFijo(1.0)));
     },
 
     'Texto::ajustar baja el tamaño hasta que el texto cabe' => function (): void {
         // Una línea de «hola» a 7,4 mm ocupa 7,4 × 1,35 = 9,99 mm; a 7,6 mm ocuparía 10,26 mm.
-        $ajuste = Texto::ajustar('hola', 100.0, 10.0, 10.0, 5.0, 0.5, 1.35);
+        $ajuste = Texto::ajustar('hola', 100.0, 10.0, 10.0, 5.0, new FactorFijo(0.5), 1.35);
         aproximado(7.4, $ajuste['tamano']);
         igual(['hola'], $ajuste['lineas']);
     },
 
     'Texto::ajustar recorta con «…» si ni al mínimo cabe' => function (): void {
-        $ajuste = Texto::ajustar('uno dos tres cuatro cinco seis', 5.0, 1.0, 1.0, 1.0, 1.0, 1.35);
+        $ajuste = Texto::ajustar('uno dos tres cuatro cinco seis', 5.0, 1.0, 1.0, 1.0, new FactorFijo(1.0), 1.35);
         aproximado(1.0, $ajuste['tamano']);
-        igual(['un…'], $ajuste['lineas']);
+        igual(['uno…'], $ajuste['lineas']);
     },
 
     'Texto::unaLinea reduce el tamaño o recorta' => function (): void {
-        aproximado(4.0, Texto::unaLinea('Ana', 100.0, 4.0, 2.0, 0.5)['tamano']);
+        aproximado(4.0, Texto::unaLinea('Ana', 100.0, 4.0, 2.0, new FactorFijo(0.5))['tamano']);
 
-        $largo = Texto::unaLinea(str_repeat('a', 100), 10.0, 4.0, 2.0, 0.5);
+        $largo = Texto::unaLinea(str_repeat('a', 100), 10.0, 4.0, 2.0, new FactorFijo(0.5));
         aproximado(2.0, $largo['tamano']);
         igual(str_repeat('a', 9) . '…', $largo['texto']);
     },
@@ -486,7 +511,7 @@ $pruebas = [
 
     'Texto::unaLinea descuenta el espaciado entre letras' => function (): void {
         // Cuatro letras con 1 mm de espaciado en 10 mm: a tamaño 1,5 cada letra ocupa 1,5 + 1 = 2,5 mm.
-        aproximado(1.5, Texto::unaLinea('ABCD', 10.0, 4.0, 1.0, 1.0, 1.0)['tamano']);
+        aproximado(1.5, Texto::unaLinea('ABCD', 10.0, 4.0, 1.0, new FactorFijo(1.0), 1.0)['tamano']);
     },
 
     'Ningún texto se sale de su panel, con textos largos y en las dos plantillas' => function (): void {
@@ -723,6 +748,82 @@ $pruebas = [
 
         igual(0, $codigo);
         igual($antes, count(glob(sys_get_temp_dir() . '/portadas-svg-*') ?: []));
+    },
+
+    'La tabla de anchos coincide con las medidas de un navegador' => function (): void {
+        // Anchos en em medidos con Chromium (canvas.measureText a 1000 px, con kerning) usando los mismos
+        // archivos de fuentes/. Son la referencia independiente de la tabla. La tabla ignora el kerning, que solo
+        // acorta, así que nunca debe quedar por debajo de lo medido y se pasa como mucho un 4,5 %.
+        $medidos = [
+            ['serif', 'normal', 400, 'Apología de Sócrates', 9.806],
+            ['serif', 'normal', 400, 'En el año 399 a. C., Sócrates comparece ante un jurado de ciudadanos atenienses acusado de impiedad y de corromper a la juventud.', 62.417],
+            ['serif', 'normal', 400, 'Diálogos de Platón sobre la justicia, el alma, el amor y la ciudad ideal', 32.570],
+            ['serif', 'normal', 400, 'MARCO TULIO CICERÓN AURELIANO DE LA ACADEMIA', 26.632],
+            ['serif', 'normal', 400, 'Edición de ejemplo · Clásicos', 13.761],
+            ['serif', 'normal', 400, 'Wagner y Valdés: AVATAR Tipo', 14.532],
+            ['serif', 'italic', 400, 'Defensa ante el jurado de Atenas', 14.088],
+            ['serif', 'italic', 400, 'Traducción de Patricio de Azcárate', 15.213],
+            ['sans', 'normal', 400, 'Tratado militar chino atribuido al general Sun Tzu, que según la tradición lo escribió', 39.367],
+            ['sans', 'normal', 400, 'SUN TZU', 4.439],
+            ['sans', 'normal', 400, 'Edición de ejemplo · Clásicos', 13.809],
+            ['sans', 'normal', 700, 'El arte de la guerra', 9.101],
+            ['sans', 'normal', 700, 'Diálogos de Platón sobre la justicia', 16.930],
+        ];
+        $mal = [];
+        foreach ($medidos as [$familia, $estilo, $peso, $texto, $navegador]) {
+            $tabla = Anchos::de($familia, $estilo, $peso)->em($texto);
+            if ($tabla < $navegador * 0.999 || $tabla > $navegador * 1.045) {
+                $mal[] = sprintf('%s/%s/%d «%s»: tabla %.3f, navegador %.3f', $familia, $estilo, $peso, mb_substr($texto, 0, 30), $tabla, $navegador);
+            }
+        }
+        verdadero($mal === [], "la tabla se aleja del navegador:\n  " . implode("\n  ", $mal));
+    },
+
+    'Anchos rechaza una cara que no está en la tabla y avisa de las letras que la fuente no tiene' => function (): void {
+        lanza(RuntimeException::class, fn () => Anchos::de('serif', 'normal', 700));
+        lanza(RuntimeException::class, fn () => Anchos::de('script', 'normal', 400));
+
+        $serif = Anchos::de('serif', 'normal', 400);
+        igual('Ł', $serif->noCubiertas('Łukasz ñ áé'));
+        igual('', $serif->noCubiertas('Apología de Sócrates, «ñandú» — ¿sí?'));
+        // Una letra que la fuente no tiene cuenta como la media de las minúsculas, no como cero.
+        aproximado(0.551, $serif->em('Ł'));
+    },
+
+    'Cada pieza incrusta solo las fuentes que usa' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        $textos = ['subtitulo' => 'Con cursiva', 'contratapa' => 'Un texto de contratapa.', 'editorial' => 'Editorial de prueba'];
+        Generador::escribir(libroDeEjemplo($textos), "$dir/clasica");
+        Generador::escribir(libroDeEjemplo(['plantilla' => 'sobria'] + $textos), "$dir/sobria");
+        $caras = static fn (string $ruta): int => substr_count((string) file_get_contents($ruta), '@font-face');
+
+        igual(2, $caras("$dir/clasica/portada.svg")); // normal y cursiva
+        igual(1, $caras("$dir/clasica/lomo.svg")); // el lomo no usa cursiva
+        igual(1, $caras("$dir/clasica/contratapa.svg"));
+        verdadero(!str_contains((string) file_get_contents("$dir/clasica/lomo.svg"), 'font-style:italic'), 'el lomo lleva la cursiva sin usarla');
+        verdadero(!str_contains((string) file_get_contents("$dir/sobria/portada.svg"), 'Source Serif'), 'la sobria lleva la serif');
+        verdadero(str_contains((string) file_get_contents("$dir/sobria/portada.svg"), "font-family:'Inter'"), 'la sobria no incrusta Inter');
+
+        // Lo incrustado es de verdad un archivo woff2, no un texto cualquiera en base64.
+        verdadero(preg_match('/base64,([A-Za-z0-9+\/=]+)\)/', (string) file_get_contents("$dir/clasica/lomo.svg"), $datos) === 1, 'no hay datos en base64');
+        igual('wOF2', substr((string) base64_decode($datos[1] ?? '', true), 0, 4));
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'Fuentes rechaza una familia o un estilo que no tiene' => function (): void {
+        lanza(InvalidArgumentException::class, fn () => Fuentes::pila('script'));
+        lanza(InvalidArgumentException::class, fn () => Fuentes::estilo(['sans|italic' => ['sans', 'italic']]));
+        igual('', Fuentes::estilo([]));
+    },
+
+    'El título se reparte en líneas parejas sin cambiar cuántas son' => function (): void {
+        // Llenando cada línea hasta el borde saldría «El arte de la» y «guerra».
+        $medida = new FactorFijo(1.0);
+        igual(['El arte de la', 'guerra'], Texto::envolver('El arte de la guerra', 14.0, 1.0, $medida));
+        igual(['El arte de', 'la guerra'], Texto::ajustar('El arte de la guerra', 14.0, 10.0, 1.0, 1.0, $medida, 1.35, true)['lineas']);
+        // Con una sola línea, o sin pedir el reparto, no cambia nada.
+        igual(['Hola'], Texto::ajustar('Hola', 14.0, 10.0, 1.0, 1.0, $medida, 1.35, true)['lineas']);
+        igual(['El arte de la', 'guerra'], Texto::ajustar('El arte de la guerra', 14.0, 10.0, 1.0, 1.0, $medida, 1.35)['lineas']);
     },
 
     'Los libros de ejemplo se cargan' => function (): void {

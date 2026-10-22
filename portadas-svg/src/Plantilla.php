@@ -19,6 +19,9 @@ use PortadasSvg\Plantillas\Sobria;
  *
  * Las medidas de la disposición van como constantes, en mm salvo que se diga otra cosa. Los tamaños de
  * letra son pares MAX/MIN: el texto empieza en el máximo y baja hasta el mínimo si no cabe.
+ *
+ * El texto se mide con la tabla de anchos de la fuente que se incrusta (ver Fuentes y Anchos), y cada
+ * pieza lleva incrustadas solo las caras tipográficas que dibuja.
  */
 abstract class Plantilla
 {
@@ -68,6 +71,13 @@ abstract class Plantilla
     protected const LOMO_TAMANO_ANCHO = 0.6;
     protected const LOMO_CENTRADO = 0.35;
 
+    /**
+     * Caras tipográficas que ha dibujado la pieza en curso: [familia, estilo]. Se vacía en cada `dibujar`.
+     *
+     * @var array<string, array{0: string, 1: string}>
+     */
+    private array $usadas = [];
+
     /** @return array<string, class-string<Plantilla>> */
     public static function disponibles(): array
     {
@@ -93,11 +103,11 @@ abstract class Plantilla
      */
     public function dibujar(Libro $libro, Medidas $medidas, string $vista = 'sobrelomo'): string
     {
-        $svg = $libro->degradado?->defs($medidas->lienzo()) ?? '';
-        $svg .= $this->rectangulo($medidas->vista($vista), ['fill' => $this->relleno($libro)]);
+        $this->usadas = [];
+        $paneles = '';
         foreach ($medidas->paneles($vista) as $panel) {
             $zona = $medidas->pieza($panel);
-            $svg .= match ($panel) {
+            $paneles .= match ($panel) {
                 'portada' => $this->portada($libro, $zona),
                 'contratapa' => $this->contratapa($libro, $zona),
                 'lomo' => $this->lomo($libro, $zona),
@@ -107,31 +117,59 @@ abstract class Plantilla
             };
         }
 
-        return $svg;
+        return ($libro->degradado?->defs($medidas->lienzo()) ?? '')
+            . Fuentes::estilo($this->usadas)
+            . $this->rectangulo($medidas->vista($vista), ['fill' => $this->relleno($libro)])
+            . $paneles;
     }
 
     /** Dibuja la portada dentro de su panel de corte. */
     abstract protected function portada(Libro $libro, Rectangulo $panel): string;
 
-    /** Fuente CSS del texto. */
-    protected function fuente(): string
+    /** Familia tipográfica de la plantilla: `serif` o `sans` (ver Fuentes). */
+    public function familia(): string
     {
-        return "Georgia, 'Times New Roman', serif";
-    }
-
-    /** Ancho medio de una letra, en múltiplos del tamaño de letra. Aproximado: cada fuente lo cambia. */
-    protected function factorAncho(): float
-    {
-        return 0.5;
+        return 'serif';
     }
 
     /**
-     * Ancho medio estimado para un texto. Las mayúsculas son más anchas que las minúsculas, así que un
-     * texto en mayúsculas usa un factor mayor. Es una aproximación, como `factorAncho()`.
+     * Medida de la cara con la que se escribe un texto, según sus atributos `font-style` y `font-weight`.
+     * Es la misma cara que se incrusta y que se pinta, así que lo que se mide es lo que se ve.
+     *
+     * @param array<string, float|int|string> $extra
      */
-    public function factorPara(string $texto): float
+    public function medidaDe(array $extra = []): MedidaFuente
     {
-        return mb_strtoupper($texto) === $texto ? $this->factorAncho() * 1.4 : $this->factorAncho();
+        return Anchos::de($this->familia(), self::estiloDe($extra), self::pesoDe($extra));
+    }
+
+    /** @param array<string, float|int|string> $extra */
+    private static function estiloDe(array $extra): string
+    {
+        return ($extra['font-style'] ?? 'normal') === 'italic' ? 'italic' : 'normal';
+    }
+
+    /** @param array<string, float|int|string> $extra */
+    private static function pesoDe(array $extra): int
+    {
+        $peso = $extra['font-weight'] ?? 400;
+
+        return match ($peso) {
+            'normal' => 400,
+            'bold' => 700,
+            default => (int) $peso,
+        };
+    }
+
+    /**
+     * Anota que se va a pintar texto con esta cara, para incrustar su fuente.
+     *
+     * @param array<string, float|int|string> $extra
+     */
+    private function usar(array $extra): void
+    {
+        $estilo = self::estiloDe($extra);
+        $this->usadas[$this->familia() . '/' . $estilo] = [$this->familia(), $estilo];
     }
 
     /**
@@ -161,7 +199,7 @@ abstract class Plantilla
 
         $svg = $this->linea($x, $panel->y + self::CONTRATAPA_RAYA_Y, $x + self::CONTRATAPA_RAYA_LARGO, $panel->y + self::CONTRATAPA_RAYA_Y, $colores['acento'], self::CONTRATAPA_RAYA_GROSOR);
         if ($libro->textos->contratapa !== '') {
-            $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $panel->alto * self::CONTRATAPA_TEXTO_ALTO, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->factorPara($libro->textos->contratapa), self::INTERLINEADO);
+            $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $panel->alto * self::CONTRATAPA_TEXTO_ALTO, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
             $svg .= $this->parrafo($texto['lineas'], $x, $panel->y + self::CONTRATAPA_TEXTO_Y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
         }
 
@@ -189,7 +227,7 @@ abstract class Plantilla
 
         $largo = $panel->alto - 2 * self::MARGEN;
         $completo = $libro->textos->titulo . ' · ' . $libro->textos->autor;
-        $texto = Texto::unaLinea($completo, $largo, min(self::LOMO_TAMANO_MAX, $panel->ancho * self::LOMO_TAMANO_ANCHO), self::LOMO_TAMANO_MIN, $this->factorPara($completo));
+        $texto = Texto::unaLinea($completo, $largo, min(self::LOMO_TAMANO_MAX, $panel->ancho * self::LOMO_TAMANO_ANCHO), self::LOMO_TAMANO_MIN, $this->medidaDe());
 
         // El texto va girado 90°. Al girarlo, la línea base queda en x y las letras crecen hacia un lado
         // u otro según el sentido; se corre x para que el texto quede centrado en el lomo.
@@ -197,9 +235,11 @@ abstract class Plantilla
         $x = $panel->x + $panel->ancho / 2 - $sentido * self::LOMO_CENTRADO * $texto['tamano'];
         $y = $panel->y + $panel->alto / 2;
 
+        $this->usar([]);
+
         return $svg . Svg::elemento('text', [
             'transform' => 'translate(' . Svg::n($x) . ' ' . Svg::n($y) . ') rotate(' . (90 * $sentido) . ')',
-            'font-family' => $this->fuente(),
+            'font-family' => Fuentes::pila($this->familia()),
             'font-size' => $texto['tamano'],
             'text-anchor' => 'middle',
             'fill' => $colores['texto'],
@@ -214,7 +254,7 @@ abstract class Plantilla
         }
 
         $margen = self::SOLAPA_MARGEN;
-        $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, self::SOLAPA_TAMANO_MAX, self::SOLAPA_TAMANO_MIN, $this->factorPara($texto), self::INTERLINEADO);
+        $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, self::SOLAPA_TAMANO_MAX, self::SOLAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
 
         return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * self::ASCENDENTE, $ajuste['tamano'], 'start', $libro->colores['texto']);
     }
@@ -236,7 +276,7 @@ abstract class Plantilla
     protected function rotulo(string $texto, float $x, float $y, float $ancho, float $tamanoMax, float $tamanoMin, string $anclaje, string $color, array $extra = []): string
     {
         $espaciado = (float) ($extra['letter-spacing'] ?? 0.0);
-        $ajuste = Texto::unaLinea($texto, $ancho, $tamanoMax, $tamanoMin, $this->factorPara($texto), $espaciado);
+        $ajuste = Texto::unaLinea($texto, $ancho, $tamanoMax, $tamanoMin, $this->medidaDe($extra), $espaciado);
 
         return $this->parrafo([$ajuste['texto']], $x, $y, $ajuste['tamano'], $anclaje, $color, $extra);
     }
@@ -249,10 +289,12 @@ abstract class Plantilla
      */
     protected function parrafo(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra = []): string
     {
+        $this->usar($extra);
+
         return Svg::elemento('text', [
             'x' => $x,
             'y' => $y,
-            'font-family' => $this->fuente(),
+            'font-family' => Fuentes::pila($this->familia()),
             'font-size' => $tamano,
             'text-anchor' => $anclaje,
             'fill' => $color,

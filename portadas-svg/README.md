@@ -8,7 +8,8 @@ Cada libro es un JSON con sus datos. El generador escribe un SVG por pieza, con 
 
 - PHP 8.3 o más, con la extensión `mbstring` (las pruebas usan además `dom`). `composer.json` declara esos requisitos y dos atajos (`composer test` y `composer comprobar`).
 - Sin dependencias: no hace falta `composer install`.
-- Para ver o convertir los SVG: cualquier navegador, Inkscape o `rsvg-convert`.
+- Para ver o convertir los SVG: cualquier navegador, Inkscape o `rsvg-convert`. Las fuentes van dentro del SVG, así que se ven igual en todos.
+- Solo para volver a medir las fuentes (casi nunca): Python 3 con `fonttools` y `brotli`. Ver «Fuentes».
 - El proyecto es solo PHP y SVG: no tiene HTML ni JavaScript, y una prueba lo comprueba.
 
 ## Uso
@@ -27,9 +28,9 @@ Escribe en `salida/platon-apologia/`:
 | `lomo.svg` | Lomo, con sangrado arriba y abajo. |
 | `cubierta-completa.svg` | Solo sin solapas: contratapa, lomo y portada en una pieza, para rústica o tapa dura. |
 | `sobrelomo.svg` | Solo con solapas (`solapas_mm`): la cubierta completa más las solapas. Sustituye a `cubierta-completa.svg`. |
+| `medidas.txt` | Medidas de corte y tamaño de cada archivo, para la imprenta. |
 
 Cada libro sale con cuatro SVG: portada, contratapa, lomo y la cubierta, que es el sobrelomo si tiene solapas y la cubierta completa si no.
-| `medidas.txt` | Medidas de corte y tamaño de cada archivo, para la imprenta. |
 
 Para varios libros a la vez, o para escribir en otra carpeta:
 
@@ -110,12 +111,31 @@ Un `"degradado": {}` vacío equivale a un degradado `auto` lineal de arriba abaj
 - **`clasica`**: fondo crema, marco doble, título centrado en serif, un rombo como ornamento y el autor en mayúsculas espaciadas.
 - **`sobria`**: fondo oscuro, sans, título a la izquierda, regla de color de acento y lomo en ese mismo color.
 
-Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plantilla`. Tiene que implementar `coloresPorDefecto()` y `portada()`, y puede redefinir `fuente()`, `factorAncho()` y `coloresLomo()`. Después regístrala en `Plantilla::disponibles()`. La contratapa, el lomo y las solapas se heredan.
+Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plantilla`. Tiene que implementar `coloresPorDefecto()` y `portada()`, y puede redefinir `familia()` (`serif` por defecto, o `sans`) y `coloresLomo()`. Para medir un texto antes de colocarlo, usa `$this->medidaDe()`, con los atributos de estilo del texto si no es el normal (`['font-style' => 'italic']`, `['font-weight' => 'bold']`). Después regístrala en `Plantilla::disponibles()`. La contratapa, el lomo y las solapas se heredan.
+
+## Fuentes
+
+Los SVG llevan sus fuentes dentro, como `@font-face` con el archivo `woff2` en base64, así que no dependen de lo que tenga instalado quien los abra. Son libres (licencia OFL, con su texto en `fuentes/`):
+
+| Familia | Quién la usa | Archivos |
+|---|---|---|
+| Source Serif 4 | `clasica` (normal y cursiva) | `fuentes/source-serif-4-latin-wght-*.woff2` |
+| Inter | `sobria` (normal y negrita) | `fuentes/inter-latin-wght-normal.woff2` |
+
+Cada pieza incrusta solo las caras que dibuja: el lomo de una portada con subtítulo en cursiva no lleva la cursiva. Por eso un SVG pesa entre 65 y 140 KB, casi todo fuentes.
+
+Las fuentes son el subconjunto latino: cubren español, francés, italiano, portugués, alemán y los idiomas del latín básico, pero **no** `ł`, `ş`, `č`, `ă`, `ő` ni otras letras del este y el centro de Europa, ni griego o cirílico. Esas letras salen con la fuente de reserva del visor. `MedidaFuente::noCubiertas()` dice cuáles faltan en un texto.
+
+### El ancho del texto
+
+El ajuste de títulos, subtítulos, rótulos y párrafos mide el texto con los anchos reales de cada letra, que están en `datos/anchos.json`. No tiene en cuenta el kerning, que casi siempre acorta un poco la línea, así que mide igual o algo más que un navegador (hasta un 4 % más en los textos probados) y un texto que cabe en la estimación cabe también al dibujarlo. Los títulos se reparten en líneas parejas, sin dejar una palabra suelta en la última.
+
+`datos/anchos.json` se genera con `herramientas/medir-fuentes.py` (`pip install fonttools brotli`). Solo hay que volver a correrla si cambian las fuentes de `fuentes/` o los pesos que usan las plantillas; una prueba compara la tabla con las medidas de un navegador.
 
 ## Antes de imprimir
 
-- **Fuentes.** Los SVG piden fuentes instaladas (Georgia, Helvetica…), y Georgia o Helvetica no son libres para incrustar. Para imprimir, convierte el texto a trazos en Inkscape (Trayecto → Objeto a trazado) o usa fuentes libres (licencia OFL, como EB Garamond o Libre Baskerville) incrustadas.
-- **Ajuste del texto.** El ajuste usa un ancho medio de letra aproximado, sin medir la fuente. Mira siempre la vista previa con la fuente real. Si un texto no cabe ni al tamaño mínimo, se recorta con «…»: acórtalo en el JSON en vez de dejar que se recorte.
+- **Fuentes.** Van incrustadas (ver «Fuentes»). Algunas imprentas piden el texto convertido a trazos: en Inkscape, Trayecto → Objeto a trazado.
+- **Ajuste del texto.** Mira siempre la vista previa. Si un texto no cabe ni al tamaño mínimo, se recorta con «…»: acórtalo en el JSON en vez de dejar que se recorte.
 - **Degradados al imprimir.** Las impresoras los convierten a CMYK, y eso puede cambiar tonos o mostrar bandas en degradados suaves. Pide prueba de color al impresor.
 - **Vista previa en imagen.** `rsvg-convert -w 2000 portada.svg -o portada.png`, Inkscape o Chromium. Los SVG están en milímetros.
 - **Código de barras.** El rectángulo blanco de la contratapa es un hueco reservado para el EAN-13 del ISBN. Este sistema no genera el código: lo pone quien imprime.
@@ -134,7 +154,7 @@ php bin/generar.php --comprobar   # ejemplos/salida/ coincide con lo que genera 
 phpstan analyse --no-progress     # análisis estático, nivel máximo (phpstan.neon.dist)
 ```
 
-Las pruebas de geometría comprueban, con textos largos y cortos y en las dos plantillas, que ningún texto se salga de su panel, que no se pise con otro texto ni con los adornos (rombo, reglas, hueco del código de barras), y que el subtítulo deje bajo el título un espacio proporcional a su tamaño. Usan las mismas estimaciones de ancho que las plantillas, así que no miden la fuente real: eso lo hace la vista previa.
+Las pruebas de geometría comprueban, con textos largos y cortos y en las dos plantillas, que ningún texto se salga de su panel, que no se pise con otro texto ni con los adornos (rombo, reglas, hueco del código de barras), y que el subtítulo deje bajo el título un espacio proporcional a su tamaño. Miden con la misma tabla de anchos que las plantillas, que no tiene kerning: la vista previa en un navegador es la prueba final.
 
 Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos/*.json --salida=ejemplos/salida`. El workflow `pruebas-portadas-svg.yml` corre las pruebas, la comprobación de los ejemplos, PHPStan 2.1 y `composer validate` cuando cambia esta carpeta.
 
@@ -142,7 +162,10 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 
 ```
 bin/generar.php          línea de comandos
-src/                     Libro (con Formato y Textos), Medidas, Texto, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
+src/                     Libro (con Formato y Textos), Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
+fuentes/                 fuentes woff2 que se incrustan en los SVG, con sus licencias
+datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
+herramientas/            medir-fuentes.py, que genera datos/anchos.json
 ejemplos/*.json          libros de ejemplo
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
 pruebas/ejecutar.php     pruebas unitarias, sin dependencias
@@ -150,6 +173,7 @@ pruebas/ejecutar.php     pruebas unitarias, sin dependencias
 
 ## Limitaciones
 
-- El ajuste de texto no mide fuentes reales; puede quedar algo más ancho o más estrecho que en la vista previa.
+- El ajuste de texto mide con anchos reales pero sin kerning: las líneas pueden quedar hasta un 4 % más cortas de lo posible. Las letras que las fuentes no cubren (ver «Fuentes») se miden con un ancho medio.
+- Cada SVG pesa entre 65 y 140 KB por las fuentes incrustadas.
 - No genera el código de barras ni el PDF para imprenta; se obtiene desde los SVG con una herramienta externa.
 - Solo hay dos plantillas.
