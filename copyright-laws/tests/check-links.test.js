@@ -20,7 +20,7 @@ test("status codes are classified: bot walls and server errors warn, dead pages 
   for (const code of [400, 404, 410]) assert.equal(classify(code, null, "u").status, "broken", String(code));
   assert.equal(classify(null, "getaddrinfo ENOTFOUND", "u").status, "broken");
   assert.equal(classify(null, "fetch failed (CERT_HAS_EXPIRED)", "u").status, "broken");
-  for (const soft of ["timeout after 15 s", "fetch failed (UND_ERR_CONNECT_TIMEOUT)", "fetch failed (UNABLE_TO_VERIFY_LEAF_SIGNATURE)", "fetch failed (ECONNRESET)", "fetch failed (EAI_AGAIN)", "fetch failed (redirect count exceeded)"]) {
+  for (const soft of ["timeout after 15 s", "fetch failed (UND_ERR_CONNECT_TIMEOUT)", "fetch failed (UNABLE_TO_VERIFY_LEAF_SIGNATURE)", "fetch failed (ECONNRESET)", "fetch failed (EAI_AGAIN)", "fetch failed (redirect count exceeded)", "fetch failed (ERR_SSL_SSL/TLS_ALERT_HANDSHAKE_FAILURE)"]) {
     assert.equal(classify(null, soft, "u").status, "warning", soft);
   }
 });
