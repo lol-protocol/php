@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
      aria-labelledby="t-cancer d-cancer">
   <title id="t-cancer">Constelación de Cáncer</title>
-  <desc id="d-cancer">Esquema de la constelación, no a escala.</desc>
+  <desc id="d-cancer">Esquema de la constelación con su figura, no a escala.</desc>
   <defs>
     <radialGradient id="fondo-cancer" cx="50%" cy="42%" r="70%">
       <stop offset="0" stop-color="#1c2656"/>
@@ -61,29 +61,41 @@
     <circle cx="77.8" cy="98.9" r="0.55" fill-opacity="0.78"/>
     <circle cx="169.9" cy="45.0" r="0.61" fill-opacity="0.38"/>
   </g>
-  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">
-    <line x1="80" y1="85" x2="120" y2="85"/>
-    <line x1="80" y1="85" x2="100" y2="100"/>
-    <line x1="120" y1="85" x2="100" y2="100"/>
-    <line x1="100" y1="100" x2="100" y2="120"/>
-    <line x1="80" y1="85" x2="70" y2="65"/>
-    <line x1="120" y1="85" x2="130" y2="65"/>
-    <line x1="100" y1="100" x2="55" y2="105"/>
-    <line x1="100" y1="100" x2="145" y2="105"/>
-    <line x1="100" y1="120" x2="85" y2="140"/>
-    <line x1="100" y1="120" x2="115" y2="140"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M62 112 C62 88 138 88 138 112 C138 134 62 134 62 112 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M72 94 C60 80 56 66 62 54"/>
+    <path d="M62 54 C50 52 44 60 48 70 C52 66 58 66 62 62"/>
+    <path d="M128 94 C140 80 144 66 138 54"/>
+    <path d="M138 54 C150 52 156 60 152 70 C148 66 142 66 138 62"/>
+    <path d="M64 112 L40 118 L32 134"/>
+    <path d="M66 124 L46 138 L42 154"/>
+    <path d="M76 132 L62 150 L62 164"/>
+    <path d="M136 112 L160 118 L168 134"/>
+    <path d="M134 124 L154 138 L158 154"/>
+    <path d="M124 132 L138 150 L138 164"/>
+    <path d="M90 92 L88 82"/>
+    <path d="M110 92 L112 82"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="48" y1="70" x2="100" y2="100"/>
+    <line x1="152" y1="70" x2="100" y2="100"/>
+    <line x1="100" y1="100" x2="80" y2="128"/>
+    <line x1="100" y1="100" x2="120" y2="128"/>
+    <line x1="80" y1="128" x2="32" y2="134"/>
+    <line x1="120" y1="128" x2="168" y2="134"/>
+    <line x1="80" y1="128" x2="62" y2="164"/>
+    <line x1="120" y1="128" x2="138" y2="164"/>
   </g>
   <g fill="#ffffff" filter="url(#brillo-cancer)">
-    <circle cx="100" cy="100" r="2.8"/>
-    <circle cx="80" cy="85" r="2.4"/>
-    <circle cx="120" cy="85" r="1.6"/>
-    <circle cx="100" cy="120" r="2.4"/>
-    <circle cx="70" cy="65" r="2.4"/>
-    <circle cx="130" cy="65" r="2.0"/>
-    <circle cx="55" cy="105" r="2.4"/>
-    <circle cx="145" cy="105" r="2.4"/>
-    <circle cx="85" cy="140" r="1.6"/>
-    <circle cx="115" cy="140" r="2.4"/>
+    <circle cx="48" cy="70" r="2.8"/>
+    <circle cx="152" cy="70" r="2.4"/>
+    <circle cx="100" cy="100" r="1.6"/>
+    <circle cx="80" cy="128" r="2.4"/>
+    <circle cx="120" cy="128" r="2.4"/>
+    <circle cx="32" cy="134" r="2.0"/>
+    <circle cx="168" cy="134" r="2.4"/>
+    <circle cx="62" cy="164" r="2.4"/>
+    <circle cx="138" cy="164" r="1.6"/>
   </g>
   <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">CÁNCER</text>
 </svg>

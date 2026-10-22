@@ -31,10 +31,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # Valida datos/signos.json (los 30 idiomas en cada nombre y descripcion, y que las
-      # lineas de cada constelacion apunten a estrellas que existan) y falla si algun SVG de
-      # constelaciones/ o signos-por-idioma.md no coincide con lo que genera ese JSON.
-      # Solo usa la biblioteca estandar de Python.
+      # Valida datos/signos.json (los 30 idiomas en nombres, descripciones y terminos; elemento,
+      # modalidad y ciclo chino; lineas y estrellas de cada constelacion) y falla si algun SVG de
+      # constelaciones/ o alguna ficha de por-idioma/ no coincide con lo que genera ese JSON, o si
+      # sobra un archivo que ya no se genera. Solo usa la biblioteca estandar de Python.
       - name: Comprobar datos y archivos generados
         working-directory: signos-zodiacales
         run: python3 generar.py --comprobar
+
+      # Coherencia de los datos (fechas sin huecos ni solapes, ciclo de anos chino, elementos),
+      # que validar() atrape datos rotos y que los SVG sean validos y sin scripts.
+      - name: Pruebas
+        working-directory: signos-zodiacales
+        run: python3 -m unittest -v pruebas

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Genera las constelaciones SVG y la tabla por idioma desde datos/signos.json.
+"""Genera las constelaciones SVG y las fichas por idioma desde datos/signos.json.
 
 Uso:
-  python3 generar.py              escribe constelaciones/*.svg y signos-por-idioma.md
+  python3 generar.py              escribe constelaciones/*.svg y por-idioma/*.md
   python3 generar.py --comprobar  falla si lo committeado no está al día
 """
 import json
@@ -14,7 +14,7 @@ from xml.etree import ElementTree
 RAIZ = Path(__file__).resolve().parent
 DATOS = RAIZ / "datos" / "signos.json"
 SALIDA_SVG = RAIZ / "constelaciones"
-SALIDA_MD = RAIZ / "signos-por-idioma.md"
+SALIDA_MD = RAIZ / "por-idioma"
 
 IDIOMAS = {
     "es": "Español", "en": "English", "pt": "Português", "fr": "Français",
@@ -29,20 +29,73 @@ IDIOMAS = {
 
 GRUPOS = {"occidental": "Zodiaco occidental", "chino": "Horóscopo chino"}
 
+ELEMENTOS_OCCIDENTALES = {"fuego", "tierra", "aire", "agua"}
+ELEMENTOS_CHINOS = {"madera", "fuego", "tierra", "metal", "agua"}
+MODALIDADES = {"cardinal", "fijo", "mutable"}
+POLARIDADES = {"yang", "yin"}
 
-def cargar():
-    with DATOS.open(encoding="utf-8") as f:
-        signos = json.load(f)["signos"]
-    for s in signos:
-        for campo in ("nombres", "descripciones"):
-            if set(s[campo]) != set(IDIOMAS):
-                sys.exit(f"{s['id']}: {campo} no tiene exactamente los 30 idiomas")
+
+def validar(datos):
+    """Devuelve la lista de problemas de datos/signos.json (vacía si está bien)."""
+    errores = []
+    esperados_idiomas = set(IDIOMAS)
+
+    terminos = datos.get("terminos", {})
+    necesarios = ELEMENTOS_OCCIDENTALES | ELEMENTOS_CHINOS | MODALIDADES | POLARIDADES
+    for t in sorted(necesarios):
+        if set(terminos.get(t, {})) != esperados_idiomas:
+            errores.append(f"terminos/{t}: no tiene exactamente los {len(IDIOMAS)} idiomas")
+
+    ids = [s["id"] for s in datos["signos"]]
+    if len(ids) != len(set(ids)):
+        errores.append("hay ids de signo repetidos")
+
+    for s in datos["signos"]:
+        sid = s["id"]
+        for campo in ("nombres", "descripciones", "descripciones_largas"):
+            if set(s.get(campo, {})) != esperados_idiomas:
+                errores.append(f"{sid}: {campo} no tiene exactamente los {len(IDIOMAS)} idiomas")
+            elif any(not texto.strip() for texto in s[campo].values()):
+                errores.append(f"{sid}: {campo} tiene un texto vacío")
         if s["tipo"] == "occidental":
+            if s.get("elemento") not in ELEMENTOS_OCCIDENTALES:
+                errores.append(f"{sid}: elemento occidental no válido")
+            if s.get("modalidad") not in MODALIDADES:
+                errores.append(f"{sid}: modalidad no válida")
+            if not s.get("fechas"):
+                errores.append(f"{sid}: falta fechas")
+        elif s["tipo"] == "chino":
+            if s.get("elemento") not in ELEMENTOS_CHINOS:
+                errores.append(f"{sid}: elemento chino no válido")
+            if s.get("polaridad") not in POLARIDADES:
+                errores.append(f"{sid}: polaridad no válida")
+            if not s.get("rama"):
+                errores.append(f"{sid}: falta rama")
+            anios = s.get("anios", [])
+            if not anios or any(b - a != 12 for a, b in zip(anios, anios[1:])):
+                errores.append(f"{sid}: los años deben seguir el ciclo de 12")
+        else:
+            errores.append(f"{sid}: tipo desconocido {s['tipo']!r}")
+        if "constelacion" in s:
             estrellas = s["constelacion"]["estrellas"]
             for a, b in s["constelacion"]["lineas"]:
                 if not (0 <= a < len(estrellas) and 0 <= b < len(estrellas)):
-                    sys.exit(f"{s['id']}: una línea apunta a una estrella que no existe")
-    return signos
+                    errores.append(f"{sid}: una línea apunta a una estrella que no existe")
+            for x, y in estrellas:
+                if not (0 <= x <= 200 and 0 <= y <= 200):
+                    errores.append(f"{sid}: una estrella cae fuera del cuadro de 200×200")
+            if not s.get("figura") or any(not d.strip() for d in s["figura"]):
+                errores.append(f"{sid}: falta la figura (lista de trazos) o tiene un trazo vacío")
+    return errores
+
+
+def cargar():
+    with DATOS.open(encoding="utf-8") as f:
+        datos = json.load(f)
+    errores = validar(datos)
+    if errores:
+        sys.exit("datos/signos.json no es válido:\n  " + "\n  ".join(errores))
+    return datos
 
 
 def svg_de(signo):
@@ -56,11 +109,17 @@ def svg_de(signo):
         for _ in range(45)
     ]
     radios = [2.8] + [azar.choice([1.6, 2.0, 2.4]) for _ in estrellas[1:]]
+    if signo["tipo"] == "occidental":
+        titulo = f"Constelación de {nombre}"
+        descripcion = "Esquema de la constelación con su figura, no a escala."
+    else:
+        titulo = f"Figura estelar: {nombre}"
+        descripcion = "Figura de estrellas inventada; el horóscopo chino no tiene constelaciones astronómicas."
     partes = [
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"',
         f'     aria-labelledby="t-{ident} d-{ident}">',
-        f'  <title id="t-{ident}">Constelación de {nombre}</title>',
-        f'  <desc id="d-{ident}">Esquema de la constelación, no a escala.</desc>',
+        f'  <title id="t-{ident}">{titulo}</title>',
+        f'  <desc id="d-{ident}">{descripcion}</desc>',
         "  <defs>",
         f'    <radialGradient id="fondo-{ident}" cx="50%" cy="42%" r="70%">',
         '      <stop offset="0" stop-color="#1c2656"/>',
@@ -78,7 +137,17 @@ def svg_de(signo):
     for x, y, r, o in fondo:
         partes.append(f'    <circle cx="{x:.1f}" cy="{y:.1f}" r="{r:.2f}" fill-opacity="{o:.2f}"/>')
     partes.append("  </g>")
-    partes.append('  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">')
+    if signo.get("figura"):
+        partes.append(
+            '  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" '
+            'stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">'
+        )
+        for d in signo["figura"]:
+            # Solo los trazos cerrados (terminan en Z) llevan relleno; uno abierto se rellenaría en cuña.
+            relleno = ' fill="#e6c98b" fill-opacity="0.07"' if d.strip().endswith("Z") else ""
+            partes.append(f'    <path d="{d}"{relleno}/>')
+        partes.append("  </g>")
+    partes.append('  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">')
     for a, b in signo["constelacion"]["lineas"]:
         (x1, y1), (x2, y2) = estrellas[a], estrellas[b]
         partes.append(f'    <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}"/>')
@@ -95,30 +164,75 @@ def svg_de(signo):
     return "\n".join(partes) + "\n"
 
 
-def markdown_de(signos):
+def rasgos(signo, terminos, codigo):
+    """Línea de rasgos de un signo en un idioma, separada por «·»."""
+    t = lambda clave: terminos[clave][codigo]  # noqa: E731
+    if signo["tipo"] == "occidental":
+        return f"{signo['fechas']} · {t(signo['elemento'])} · {t(signo['modalidad'])}"
+    anios = ", ".join(str(a) for a in signo["anios"])
+    return f"{signo['rama']} · {t(signo['elemento'])} · {t(signo['polaridad'])} · {anios}"
+
+
+def ficha_de(signos, terminos, codigo):
     lineas = [
-        "# Signos del zodiaco y del horóscopo chino en 30 idiomas",
+        f"# {IDIOMAS[codigo]} (`{codigo}`)",
         "",
         "> Generado por `generar.py` desde `datos/signos.json`. No editar a mano.",
         "",
     ]
-    for codigo, nombre_idioma in IDIOMAS.items():
-        lineas += [f"## {nombre_idioma} (`{codigo}`)", ""]
-        for tipo, titulo in GRUPOS.items():
-            lineas += [f"### {titulo}", "", "| Signo | Descripción |", "| --- | --- |"]
-            for s in signos:
-                if s["tipo"] == tipo:
-                    lineas.append(f"| {s['nombres'][codigo]} | {s['descripciones'][codigo]} |")
-            lineas.append("")
+    for tipo, titulo in GRUPOS.items():
+        lineas += [f"## {titulo}", ""]
+        for s in signos:
+            if s["tipo"] != tipo:
+                continue
+            lineas += [
+                f"### {s['nombres'][codigo]}",
+                "",
+                f"*{rasgos(s, terminos, codigo)}*",
+                "",
+                s["descripciones"][codigo],
+                "",
+                s["descripciones_largas"][codigo],
+                "",
+            ]
     return "\n".join(lineas)
 
 
-def esperados(signos):
-    archivos = {SALIDA_MD: markdown_de(signos)}
+def indice_de():
+    lineas = [
+        "# Fichas por idioma",
+        "",
+        "> Generado por `generar.py` desde `datos/signos.json`. No editar a mano.",
+        "",
+        "| Idioma | Código | Ficha |",
+        "| --- | --- | --- |",
+    ]
+    for codigo, nombre in IDIOMAS.items():
+        lineas.append(f"| {nombre} | `{codigo}` | [{codigo}.md]({codigo}.md) |")
+    lineas.append("")
+    return "\n".join(lineas)
+
+
+def esperados(datos):
+    signos, terminos = datos["signos"], datos["terminos"]
+    archivos = {SALIDA_MD / "README.md": indice_de()}
+    for codigo in IDIOMAS:
+        archivos[SALIDA_MD / f"{codigo}.md"] = ficha_de(signos, terminos, codigo)
     for s in signos:
-        if s["tipo"] == "occidental":
+        if "constelacion" in s:
             archivos[SALIDA_SVG / f"{s['id']}.svg"] = svg_de(s)
     return archivos
+
+
+def sobrantes(archivos):
+    """Archivos de las carpetas generadas que ya nadie genera."""
+    return sorted(
+        str(p.relative_to(RAIZ))
+        for carpeta in (SALIDA_SVG, SALIDA_MD)
+        if carpeta.exists()
+        for p in carpeta.iterdir()
+        if p.is_file() and p not in archivos
+    )
 
 
 def main():
@@ -132,14 +246,21 @@ def main():
             for ruta, texto in archivos.items()
             if not ruta.exists() or ruta.read_text(encoding="utf-8") != texto
         ]
-        if malos:
-            print("Desactualizados (ejecuta python3 generar.py):")
-            for ruta in malos:
-                print(f"  {ruta}")
+        sobra = sobrantes(archivos)
+        if malos or sobra:
+            if malos:
+                print("Desactualizados (ejecuta python3 generar.py):")
+                for ruta in malos:
+                    print(f"  {ruta}")
+            if sobra:
+                print("Sobran (ya no los genera generar.py; bórralos):")
+                for ruta in sobra:
+                    print(f"  {ruta}")
             return 1
         print("Todo al día.")
         return 0
     SALIDA_SVG.mkdir(exist_ok=True)
+    SALIDA_MD.mkdir(exist_ok=True)
     for ruta, texto in archivos.items():
         ruta.write_text(texto, encoding="utf-8")
     print(f"Escritos {len(archivos)} archivos.")

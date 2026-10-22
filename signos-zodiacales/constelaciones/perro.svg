@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
+     aria-labelledby="t-perro d-perro">
+  <title id="t-perro">Figura estelar: Perro</title>
+  <desc id="d-perro">Figura de estrellas inventada; el horóscopo chino no tiene constelaciones astronómicas.</desc>
+  <defs>
+    <radialGradient id="fondo-perro" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-perro" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-perro)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <g fill="#ffffff">
+    <circle cx="191.2" cy="126.0" r="0.92" fill-opacity="0.28"/>
+    <circle cx="186.2" cy="122.8" r="0.85" fill-opacity="0.45"/>
+    <circle cx="108.6" cy="57.1" r="0.69" fill-opacity="0.32"/>
+    <circle cx="180.6" cy="63.2" r="0.71" fill-opacity="0.63"/>
+    <circle cx="49.8" cy="27.0" r="0.91" fill-opacity="0.26"/>
+    <circle cx="41.9" cy="134.5" r="0.54" fill-opacity="0.48"/>
+    <circle cx="162.8" cy="92.4" r="0.45" fill-opacity="0.45"/>
+    <circle cx="71.2" cy="165.3" r="0.41" fill-opacity="0.41"/>
+    <circle cx="53.5" cy="45.3" r="1.06" fill-opacity="0.38"/>
+    <circle cx="156.9" cy="135.5" r="1.07" fill-opacity="0.38"/>
+    <circle cx="29.2" cy="81.0" r="0.71" fill-opacity="0.79"/>
+    <circle cx="56.3" cy="85.4" r="0.55" fill-opacity="0.29"/>
+    <circle cx="107.7" cy="147.9" r="0.90" fill-opacity="0.56"/>
+    <circle cx="46.8" cy="161.1" r="0.95" fill-opacity="0.52"/>
+    <circle cx="51.4" cy="116.9" r="0.86" fill-opacity="0.58"/>
+    <circle cx="87.5" cy="101.4" r="0.97" fill-opacity="0.33"/>
+    <circle cx="70.2" cy="161.1" r="0.53" fill-opacity="0.79"/>
+    <circle cx="15.2" cy="86.6" r="0.71" fill-opacity="0.61"/>
+    <circle cx="62.9" cy="61.1" r="0.93" fill-opacity="0.46"/>
+    <circle cx="52.4" cy="90.8" r="0.84" fill-opacity="0.46"/>
+    <circle cx="32.6" cy="130.8" r="0.88" fill-opacity="0.69"/>
+    <circle cx="44.5" cy="25.1" r="0.59" fill-opacity="0.64"/>
+    <circle cx="151.4" cy="157.2" r="0.44" fill-opacity="0.43"/>
+    <circle cx="97.2" cy="65.2" r="1.04" fill-opacity="0.68"/>
+    <circle cx="40.5" cy="116.6" r="0.47" fill-opacity="0.36"/>
+    <circle cx="99.1" cy="127.9" r="1.07" fill-opacity="0.78"/>
+    <circle cx="33.0" cy="44.8" r="0.94" fill-opacity="0.25"/>
+    <circle cx="141.3" cy="94.4" r="0.70" fill-opacity="0.59"/>
+    <circle cx="183.8" cy="10.7" r="0.56" fill-opacity="0.47"/>
+    <circle cx="187.0" cy="61.4" r="0.78" fill-opacity="0.50"/>
+    <circle cx="110.8" cy="122.4" r="0.60" fill-opacity="0.76"/>
+    <circle cx="25.1" cy="104.9" r="0.57" fill-opacity="0.80"/>
+    <circle cx="60.9" cy="116.8" r="0.48" fill-opacity="0.42"/>
+    <circle cx="12.1" cy="146.0" r="0.53" fill-opacity="0.42"/>
+    <circle cx="78.6" cy="141.1" r="0.89" fill-opacity="0.57"/>
+    <circle cx="35.4" cy="106.3" r="0.55" fill-opacity="0.57"/>
+    <circle cx="114.8" cy="20.7" r="0.99" fill-opacity="0.27"/>
+    <circle cx="100.3" cy="43.0" r="0.72" fill-opacity="0.32"/>
+    <circle cx="68.1" cy="9.0" r="0.85" fill-opacity="0.52"/>
+    <circle cx="164.9" cy="107.1" r="0.83" fill-opacity="0.76"/>
+    <circle cx="76.1" cy="79.6" r="0.81" fill-opacity="0.32"/>
+    <circle cx="43.1" cy="42.3" r="0.45" fill-opacity="0.74"/>
+    <circle cx="9.6" cy="57.2" r="0.79" fill-opacity="0.39"/>
+    <circle cx="103.9" cy="74.4" r="0.89" fill-opacity="0.67"/>
+    <circle cx="181.9" cy="130.7" r="0.81" fill-opacity="0.50"/>
+  </g>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 94 C36 84 42 72 54 70 C66 68 76 76 76 88 C76 98 68 106 58 106 C50 106 44 102 40 94 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M40 94 L28 98 C26 104 32 108 40 106"/>
+    <path d="M58 70 C50 66 46 78 52 90"/>
+    <path d="M76 88 C96 82 136 84 154 94 C166 102 166 120 156 128 L154 158 L144 158 L142 136 C124 140 102 140 92 136 L90 158 L80 158 L78 112"/>
+    <path d="M160 96 C172 84 180 76 184 64"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="28" y1="98" x2="58" y2="70"/>
+    <line x1="58" y1="70" x2="76" y2="88"/>
+    <line x1="76" y1="88" x2="110" y2="84"/>
+    <line x1="110" y1="84" x2="156" y2="94"/>
+    <line x1="156" y1="94" x2="184" y2="64"/>
+    <line x1="156" y1="94" x2="154" y2="158"/>
+    <line x1="154" y1="158" x2="80" y2="158"/>
+    <line x1="80" y1="158" x2="76" y2="88"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-perro)">
+    <circle cx="28" cy="98" r="2.8"/>
+    <circle cx="58" cy="70" r="1.6"/>
+    <circle cx="76" cy="88" r="2.4"/>
+    <circle cx="110" cy="84" r="1.6"/>
+    <circle cx="156" cy="94" r="2.0"/>
+    <circle cx="184" cy="64" r="2.4"/>
+    <circle cx="154" cy="158" r="2.4"/>
+    <circle cx="80" cy="158" r="1.6"/>
+  </g>
+  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">PERRO</text>
+</svg>

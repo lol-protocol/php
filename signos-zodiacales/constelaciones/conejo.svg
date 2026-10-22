@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
+     aria-labelledby="t-conejo d-conejo">
+  <title id="t-conejo">Figura estelar: Conejo</title>
+  <desc id="d-conejo">Figura de estrellas inventada; el horóscopo chino no tiene constelaciones astronómicas.</desc>
+  <defs>
+    <radialGradient id="fondo-conejo" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-conejo" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-conejo)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <g fill="#ffffff">
+    <circle cx="43.2" cy="12.0" r="0.51" fill-opacity="0.49"/>
+    <circle cx="123.9" cy="56.8" r="0.64" fill-opacity="0.71"/>
+    <circle cx="67.5" cy="94.5" r="0.65" fill-opacity="0.49"/>
+    <circle cx="182.3" cy="130.5" r="0.85" fill-opacity="0.27"/>
+    <circle cx="119.1" cy="34.1" r="0.69" fill-opacity="0.37"/>
+    <circle cx="33.9" cy="142.8" r="0.44" fill-opacity="0.73"/>
+    <circle cx="35.9" cy="11.1" r="1.05" fill-opacity="0.46"/>
+    <circle cx="173.0" cy="163.3" r="0.98" fill-opacity="0.76"/>
+    <circle cx="79.6" cy="59.3" r="0.56" fill-opacity="0.73"/>
+    <circle cx="166.5" cy="30.0" r="1.03" fill-opacity="0.42"/>
+    <circle cx="78.5" cy="144.3" r="0.50" fill-opacity="0.56"/>
+    <circle cx="64.8" cy="73.1" r="0.50" fill-opacity="0.68"/>
+    <circle cx="52.3" cy="32.9" r="0.80" fill-opacity="0.34"/>
+    <circle cx="179.4" cy="83.3" r="0.86" fill-opacity="0.64"/>
+    <circle cx="83.3" cy="26.1" r="0.70" fill-opacity="0.76"/>
+    <circle cx="42.7" cy="87.4" r="0.88" fill-opacity="0.48"/>
+    <circle cx="84.3" cy="53.8" r="0.40" fill-opacity="0.57"/>
+    <circle cx="18.2" cy="89.7" r="0.83" fill-opacity="0.63"/>
+    <circle cx="183.7" cy="116.4" r="0.42" fill-opacity="0.44"/>
+    <circle cx="67.4" cy="84.6" r="0.93" fill-opacity="0.56"/>
+    <circle cx="66.0" cy="16.1" r="1.04" fill-opacity="0.52"/>
+    <circle cx="114.6" cy="36.0" r="0.92" fill-opacity="0.60"/>
+    <circle cx="170.6" cy="139.6" r="0.50" fill-opacity="0.31"/>
+    <circle cx="153.2" cy="142.6" r="0.53" fill-opacity="0.32"/>
+    <circle cx="153.3" cy="31.0" r="0.42" fill-opacity="0.70"/>
+    <circle cx="17.7" cy="85.0" r="0.87" fill-opacity="0.34"/>
+    <circle cx="144.1" cy="60.0" r="0.83" fill-opacity="0.72"/>
+    <circle cx="183.8" cy="166.9" r="1.01" fill-opacity="0.37"/>
+    <circle cx="109.9" cy="39.1" r="0.60" fill-opacity="0.69"/>
+    <circle cx="9.0" cy="30.6" r="0.92" fill-opacity="0.61"/>
+    <circle cx="155.4" cy="53.7" r="0.73" fill-opacity="0.33"/>
+    <circle cx="9.9" cy="149.4" r="1.03" fill-opacity="0.51"/>
+    <circle cx="157.4" cy="142.3" r="1.01" fill-opacity="0.34"/>
+    <circle cx="97.7" cy="25.3" r="0.68" fill-opacity="0.46"/>
+    <circle cx="65.3" cy="162.5" r="0.99" fill-opacity="0.29"/>
+    <circle cx="138.6" cy="76.1" r="0.70" fill-opacity="0.44"/>
+    <circle cx="191.8" cy="166.8" r="0.73" fill-opacity="0.68"/>
+    <circle cx="105.7" cy="92.7" r="0.55" fill-opacity="0.74"/>
+    <circle cx="171.3" cy="123.4" r="0.73" fill-opacity="0.46"/>
+    <circle cx="154.7" cy="48.0" r="0.67" fill-opacity="0.80"/>
+    <circle cx="126.9" cy="154.9" r="1.05" fill-opacity="0.36"/>
+    <circle cx="92.8" cy="114.3" r="0.65" fill-opacity="0.69"/>
+    <circle cx="158.0" cy="150.9" r="0.53" fill-opacity="0.64"/>
+    <circle cx="32.1" cy="56.1" r="0.46" fill-opacity="0.48"/>
+    <circle cx="165.4" cy="156.3" r="0.99" fill-opacity="0.70"/>
+  </g>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 100 C46 90 52 80 62 78 C72 78 80 86 80 96 C80 106 72 112 62 112 C54 112 50 108 50 100 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M58 80 C50 56 56 36 66 34 C72 44 70 64 68 78"/>
+    <path d="M68 80 C70 58 80 42 90 44 C92 56 84 72 76 84"/>
+    <path d="M80 100 C100 92 140 96 152 120 C160 138 150 154 130 156 L66 156 C56 156 52 148 60 140 C68 132 76 124 76 112"/>
+    <path d="M150 128 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0"/>
+    <path d="M62 150 L48 154"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="50" y1="100" x2="66" y2="34"/>
+    <line x1="66" y1="34" x2="90" y2="44"/>
+    <line x1="90" y1="44" x2="80" y2="96"/>
+    <line x1="80" y1="96" x2="140" y2="100"/>
+    <line x1="140" y1="100" x2="160" y2="128"/>
+    <line x1="160" y1="128" x2="130" y2="156"/>
+    <line x1="130" y1="156" x2="60" y2="156"/>
+    <line x1="60" y1="156" x2="50" y2="100"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-conejo)">
+    <circle cx="50" cy="100" r="2.8"/>
+    <circle cx="66" cy="34" r="2.0"/>
+    <circle cx="90" cy="44" r="2.4"/>
+    <circle cx="80" cy="96" r="1.6"/>
+    <circle cx="140" cy="100" r="2.4"/>
+    <circle cx="160" cy="128" r="2.0"/>
+    <circle cx="130" cy="156" r="2.4"/>
+    <circle cx="60" cy="156" r="2.0"/>
+  </g>
+  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">CONEJO</text>
+</svg>

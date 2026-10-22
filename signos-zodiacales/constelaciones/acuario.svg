@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
      aria-labelledby="t-acuario d-acuario">
   <title id="t-acuario">Constelación de Acuario</title>
-  <desc id="d-acuario">Esquema de la constelación, no a escala.</desc>
+  <desc id="d-acuario">Esquema de la constelación con su figura, no a escala.</desc>
   <defs>
     <radialGradient id="fondo-acuario" cx="50%" cy="42%" r="70%">
       <stop offset="0" stop-color="#1c2656"/>
@@ -61,31 +61,34 @@
     <circle cx="131.4" cy="20.5" r="0.52" fill-opacity="0.63"/>
     <circle cx="83.6" cy="77.1" r="0.45" fill-opacity="0.63"/>
   </g>
-  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">
-    <line x1="25" y1="70" x2="55" y2="55"/>
-    <line x1="55" y1="55" x2="85" y2="75"/>
-    <line x1="85" y1="75" x2="115" y2="55"/>
-    <line x1="115" y1="55" x2="145" y2="75"/>
-    <line x1="145" y1="75" x2="175" y2="55"/>
-    <line x1="25" y1="120" x2="55" y2="105"/>
-    <line x1="55" y1="105" x2="85" y2="125"/>
-    <line x1="85" y1="125" x2="115" y2="105"/>
-    <line x1="115" y1="105" x2="145" y2="125"/>
-    <line x1="145" y1="125" x2="175" y2="105"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M54 46 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0"/>
+    <path d="M62 56 C50 62 46 84 46 110 L36 160 M62 56 C74 62 78 84 76 110 L88 160"/>
+    <path d="M68 70 L96 84"/>
+    <path d="M92 80 C90 100 106 108 120 96 C122 84 112 74 100 76 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M118 100 C130 108 120 122 134 130 C148 138 138 150 152 156"/>
+    <path d="M122 94 C138 102 130 118 146 126"/>
+    <path d="M100 150 C110 144 118 156 128 150 C138 144 146 156 156 150 C166 144 172 154 178 150"/>
+    <path d="M92 164 C102 158 110 170 120 164 C130 158 138 170 148 164 C158 158 166 168 172 164"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="62" y1="46" x2="62" y2="108"/>
+    <line x1="62" y1="108" x2="36" y2="160"/>
+    <line x1="62" y1="108" x2="88" y2="160"/>
+    <line x1="62" y1="46" x2="108" y2="80"/>
+    <line x1="108" y1="80" x2="106" y2="98"/>
+    <line x1="106" y1="98" x2="134" y2="130"/>
+    <line x1="134" y1="130" x2="152" y2="156"/>
   </g>
   <g fill="#ffffff" filter="url(#brillo-acuario)">
-    <circle cx="25" cy="70" r="2.8"/>
-    <circle cx="55" cy="55" r="2.0"/>
-    <circle cx="85" cy="75" r="2.0"/>
-    <circle cx="115" cy="55" r="1.6"/>
-    <circle cx="145" cy="75" r="2.0"/>
-    <circle cx="175" cy="55" r="2.0"/>
-    <circle cx="25" cy="120" r="2.0"/>
-    <circle cx="55" cy="105" r="2.0"/>
-    <circle cx="85" cy="125" r="1.6"/>
-    <circle cx="115" cy="105" r="2.4"/>
-    <circle cx="145" cy="125" r="1.6"/>
-    <circle cx="175" cy="105" r="1.6"/>
+    <circle cx="62" cy="46" r="2.8"/>
+    <circle cx="108" cy="80" r="2.0"/>
+    <circle cx="106" cy="98" r="2.0"/>
+    <circle cx="134" cy="130" r="1.6"/>
+    <circle cx="152" cy="156" r="2.0"/>
+    <circle cx="36" cy="160" r="2.0"/>
+    <circle cx="88" cy="160" r="2.0"/>
+    <circle cx="62" cy="108" r="2.0"/>
   </g>
   <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">ACUARIO</text>
 </svg>

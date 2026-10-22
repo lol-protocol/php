@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
      aria-labelledby="t-capricornio d-capricornio">
   <title id="t-capricornio">Constelación de Capricornio</title>
-  <desc id="d-capricornio">Esquema de la constelación, no a escala.</desc>
+  <desc id="d-capricornio">Esquema de la constelación con su figura, no a escala.</desc>
   <defs>
     <radialGradient id="fondo-capricornio" cx="50%" cy="42%" r="70%">
       <stop offset="0" stop-color="#1c2656"/>
@@ -61,27 +61,32 @@
     <circle cx="121.6" cy="155.0" r="0.71" fill-opacity="0.27"/>
     <circle cx="40.3" cy="146.2" r="0.86" fill-opacity="0.51"/>
   </g>
-  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">
-    <line x1="30" y1="60" x2="70" y2="50"/>
-    <line x1="70" y1="50" x2="100" y2="80"/>
-    <line x1="100" y1="80" x2="130" y2="70"/>
-    <line x1="130" y1="70" x2="160" y2="100"/>
-    <line x1="160" y1="100" x2="150" y2="140"/>
-    <line x1="150" y1="140" x2="110" y2="150"/>
-    <line x1="110" y1="150" x2="70" y2="120"/>
-    <line x1="70" y1="120" x2="100" y2="110"/>
-    <line x1="100" y1="110" x2="100" y2="80"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M34 72 C28 82 30 96 42 100 C52 102 60 94 60 84 C60 76 52 68 44 66 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M46 66 C40 50 52 38 64 40 C58 46 56 54 54 64"/>
+    <path d="M56 92 C70 102 90 106 108 102 C130 98 150 102 152 122 C154 142 132 152 112 148 C96 144 88 132 96 120"/>
+    <path d="M152 122 C164 128 176 122 178 108 C170 110 164 108 160 102"/>
+    <path d="M178 108 L188 100 M178 108 L188 116"/>
+    <path d="M62 98 C58 110 64 120 74 120"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="34" y1="72" x2="60" y2="84"/>
+    <line x1="54" y1="40" x2="60" y2="84"/>
+    <line x1="60" y1="84" x2="108" y2="102"/>
+    <line x1="108" y1="102" x2="152" y2="122"/>
+    <line x1="152" y1="122" x2="112" y2="148"/>
+    <line x1="152" y1="122" x2="178" y2="108"/>
+    <line x1="178" y1="108" x2="188" y2="100"/>
   </g>
   <g fill="#ffffff" filter="url(#brillo-capricornio)">
-    <circle cx="30" cy="60" r="2.8"/>
-    <circle cx="70" cy="50" r="2.4"/>
-    <circle cx="100" cy="80" r="2.0"/>
-    <circle cx="130" cy="70" r="1.6"/>
-    <circle cx="160" cy="100" r="2.4"/>
-    <circle cx="150" cy="140" r="2.0"/>
-    <circle cx="110" cy="150" r="2.0"/>
-    <circle cx="70" cy="120" r="2.4"/>
-    <circle cx="100" cy="110" r="1.6"/>
+    <circle cx="34" cy="72" r="2.8"/>
+    <circle cx="54" cy="40" r="2.4"/>
+    <circle cx="60" cy="84" r="2.0"/>
+    <circle cx="108" cy="102" r="1.6"/>
+    <circle cx="152" cy="122" r="2.4"/>
+    <circle cx="112" cy="148" r="2.0"/>
+    <circle cx="188" cy="100" r="2.0"/>
+    <circle cx="178" cy="108" r="2.4"/>
   </g>
   <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">CAPRICORNIO</text>
 </svg>

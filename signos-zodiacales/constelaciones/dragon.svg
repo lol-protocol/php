@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
+     aria-labelledby="t-dragon d-dragon">
+  <title id="t-dragon">Figura estelar: Dragón</title>
+  <desc id="d-dragon">Figura de estrellas inventada; el horóscopo chino no tiene constelaciones astronómicas.</desc>
+  <defs>
+    <radialGradient id="fondo-dragon" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-dragon" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-dragon)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <g fill="#ffffff">
+    <circle cx="55.2" cy="143.5" r="0.49" fill-opacity="0.34"/>
+    <circle cx="160.2" cy="153.8" r="1.05" fill-opacity="0.38"/>
+    <circle cx="31.4" cy="93.9" r="0.52" fill-opacity="0.39"/>
+    <circle cx="131.9" cy="112.4" r="1.03" fill-opacity="0.26"/>
+    <circle cx="191.3" cy="144.7" r="0.61" fill-opacity="0.47"/>
+    <circle cx="84.2" cy="136.4" r="0.85" fill-opacity="0.36"/>
+    <circle cx="20.6" cy="65.0" r="0.93" fill-opacity="0.31"/>
+    <circle cx="133.6" cy="112.7" r="1.04" fill-opacity="0.37"/>
+    <circle cx="50.7" cy="106.5" r="0.52" fill-opacity="0.33"/>
+    <circle cx="37.5" cy="109.0" r="0.70" fill-opacity="0.55"/>
+    <circle cx="171.0" cy="23.4" r="0.94" fill-opacity="0.71"/>
+    <circle cx="23.5" cy="35.3" r="0.86" fill-opacity="0.32"/>
+    <circle cx="189.8" cy="137.4" r="0.76" fill-opacity="0.33"/>
+    <circle cx="100.6" cy="56.6" r="1.05" fill-opacity="0.28"/>
+    <circle cx="8.7" cy="92.9" r="0.87" fill-opacity="0.76"/>
+    <circle cx="110.4" cy="73.3" r="1.00" fill-opacity="0.53"/>
+    <circle cx="80.1" cy="57.4" r="0.64" fill-opacity="0.36"/>
+    <circle cx="183.8" cy="52.5" r="0.92" fill-opacity="0.29"/>
+    <circle cx="115.6" cy="90.1" r="0.90" fill-opacity="0.71"/>
+    <circle cx="121.4" cy="140.7" r="0.99" fill-opacity="0.78"/>
+    <circle cx="12.8" cy="106.6" r="0.75" fill-opacity="0.79"/>
+    <circle cx="59.3" cy="157.8" r="0.58" fill-opacity="0.30"/>
+    <circle cx="189.2" cy="73.4" r="0.88" fill-opacity="0.30"/>
+    <circle cx="131.8" cy="78.0" r="1.08" fill-opacity="0.45"/>
+    <circle cx="147.4" cy="149.1" r="0.87" fill-opacity="0.76"/>
+    <circle cx="59.7" cy="142.8" r="0.45" fill-opacity="0.63"/>
+    <circle cx="10.8" cy="154.2" r="1.02" fill-opacity="0.48"/>
+    <circle cx="13.7" cy="93.8" r="1.08" fill-opacity="0.34"/>
+    <circle cx="155.1" cy="124.4" r="0.61" fill-opacity="0.58"/>
+    <circle cx="158.7" cy="109.0" r="0.92" fill-opacity="0.79"/>
+    <circle cx="146.4" cy="107.5" r="0.59" fill-opacity="0.69"/>
+    <circle cx="181.7" cy="77.4" r="0.66" fill-opacity="0.34"/>
+    <circle cx="83.1" cy="86.1" r="0.94" fill-opacity="0.51"/>
+    <circle cx="184.8" cy="134.8" r="0.56" fill-opacity="0.65"/>
+    <circle cx="144.3" cy="47.8" r="0.92" fill-opacity="0.36"/>
+    <circle cx="90.4" cy="93.8" r="0.95" fill-opacity="0.76"/>
+    <circle cx="17.4" cy="130.5" r="1.08" fill-opacity="0.41"/>
+    <circle cx="154.0" cy="15.9" r="1.05" fill-opacity="0.72"/>
+    <circle cx="162.5" cy="14.9" r="0.93" fill-opacity="0.57"/>
+    <circle cx="153.0" cy="126.8" r="0.95" fill-opacity="0.32"/>
+    <circle cx="71.5" cy="26.2" r="1.08" fill-opacity="0.62"/>
+    <circle cx="177.8" cy="162.3" r="0.79" fill-opacity="0.80"/>
+    <circle cx="105.4" cy="119.9" r="0.66" fill-opacity="0.48"/>
+    <circle cx="40.6" cy="145.7" r="0.58" fill-opacity="0.38"/>
+    <circle cx="134.4" cy="86.7" r="0.84" fill-opacity="0.79"/>
+  </g>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M36 144 C70 154 94 146 96 128 C98 112 68 108 72 90 C76 70 118 72 126 62"/>
+    <path d="M36 158 C74 168 110 158 110 128 C110 108 86 106 90 94 C94 82 134 86 140 66"/>
+    <path d="M36 144 L36 158"/>
+    <path d="M36 151 C26 146 20 150 18 158"/>
+    <path d="M36 151 C28 156 28 164 34 168"/>
+    <path d="M114 52 a12 12 0 1 0 24 0 a12 12 0 1 0 -24 0"/>
+    <path d="M114 52 C104 50 98 54 98 60 C102 64 110 62 116 60"/>
+    <path d="M120 41 C116 30 120 22 130 20"/>
+    <path d="M130 42 C134 32 142 28 150 30"/>
+    <path d="M102 56 C90 52 78 56 72 64"/>
+    <path d="M102 60 C92 66 88 74 90 82"/>
+    <path d="M138 48 C148 46 154 52 156 60"/>
+    <path d="M96 126 L88 138 M96 126 L96 140 M96 126 L104 138"/>
+    <path d="M84 94 L76 104 M84 94 L84 108 M84 94 L92 104"/>
+    <path d="M74 100 L68 94 L76 94"/>
+    <path d="M104 74 L100 66 L110 68"/>
+    <path d="M98 138 L100 146 L108 140"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="98" y1="58" x2="126" y2="52"/>
+    <line x1="126" y1="52" x2="130" y2="20"/>
+    <line x1="126" y1="52" x2="150" y2="30"/>
+    <line x1="126" y1="52" x2="132" y2="76"/>
+    <line x1="132" y1="76" x2="82" y2="92"/>
+    <line x1="82" y1="92" x2="100" y2="126"/>
+    <line x1="100" y1="126" x2="36" y2="151"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-dragon)">
+    <circle cx="98" cy="58" r="2.8"/>
+    <circle cx="126" cy="52" r="2.4"/>
+    <circle cx="130" cy="20" r="2.4"/>
+    <circle cx="150" cy="30" r="2.4"/>
+    <circle cx="132" cy="76" r="2.0"/>
+    <circle cx="82" cy="92" r="1.6"/>
+    <circle cx="100" cy="126" r="1.6"/>
+    <circle cx="36" cy="151" r="2.0"/>
+  </g>
+  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">DRAGÓN</text>
+</svg>
