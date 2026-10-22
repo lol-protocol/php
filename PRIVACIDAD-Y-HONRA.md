@@ -103,8 +103,9 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    `sistema-nuevo/`, las notas del panel pasan por el filtro y cada guardado
    queda en un registro (quién, cuándo y qué decidió el filtro). Falta: avisar al
    propietario de un pedido nuevo y vigilar el plazo de respuesta (por ejemplo,
-   ocultar en 24 horas mientras se revisa), y que una página retirada deje de
-   nombrarse en las demás.
+   ocultar en 24 horas mientras se revisa). Una persona retirada ya no se nombra
+   en las demás páginas; un apellido, una organización o una colección retirados
+   sí siguen nombrados donde los enlaza una persona.
 5. **Términos de uso** que prohíban imputar hechos a terceros y publicar sus datos
    sensibles, y que digan qué pasa con quien lo haga. Hay un borrador en
    [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md), con lo que falta decidir marcado
