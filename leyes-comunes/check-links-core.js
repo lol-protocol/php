@@ -10,7 +10,10 @@
 // retry (a server error or a firewall turning away cloud runners says nothing about whether
 // the page is gone), timeouts and temporary DNS failures (many government sites throttle or
 // geo-block cloud runners), an incomplete certificate chain (browsers repair it, Node does not) and
-// a redirect loop (a cookie wall: the site sets a cookie and redirects, browsers keep it, fetch does not).
+// a redirect loop (a cookie wall: the site sets a cookie and redirects, browsers keep it, fetch does not)
+// and a TLS handshake the server refuses (it answers, but not to Node's TLS settings or to a cloud runner;
+// a dead host fails earlier, in DNS or with a refused connection). An expired or wrong certificate is
+// still broken.
 // With GITHUB_STEP_SUMMARY set (GitHub Actions) a Markdown summary is appended to it.
 import { appendFileSync, writeFileSync } from "node:fs";
 
@@ -18,7 +21,7 @@ const SOFT = new Set([401, 403, 429]);
 
 /** @returns {{status: "ok"|"warning"|"broken", code: number|null, detail: string, finalUrl: string}} */
 // Network failures that say little about whether the page is gone.
-const SOFT_ERRORS = /timeout|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|UND_ERR_SOCKET|ECONNRESET|EAI_AGAIN|UNABLE_TO_VERIFY_LEAF_SIGNATURE|UNABLE_TO_GET_ISSUER_CERT|redirect count exceeded/;
+const SOFT_ERRORS = /timeout|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|UND_ERR_SOCKET|ECONNRESET|EAI_AGAIN|UNABLE_TO_VERIFY_LEAF_SIGNATURE|UNABLE_TO_GET_ISSUER_CERT|redirect count exceeded|TLS_ALERT_HANDSHAKE_FAILURE/;
 
 export function classify(code, error, finalUrl) {
   if (error && SOFT_ERRORS.test(error)) return { status: "warning", code: null, detail: `${error} (may work in a browser)`, finalUrl };
