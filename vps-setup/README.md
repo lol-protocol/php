@@ -157,6 +157,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 06_B | `06_B-setup-python-app.sh <app> <dominio> [puerto]` | *(Opcional)* Configura una app Python (Flask + Gunicorn). Cada app necesita su propio puerto local (por defecto 8000): el script rechaza uno que ya use otra app. Como en `06_A`, re-correrlo no pisa tu `app.py`: solo actualiza el servicio y el proxy. `MAX_UPLOAD` (20M) y `PROXY_TIMEOUT` (120s, igual en Nginx y gunicorn) son configurables |
 | 06_C | `06_C-setup-dns-server.sh <dominio> [ip]` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`), con registro CAA (solo Let's Encrypt) y AAAA si das `VPS_IP6=`. Sin IP usa la pública detectada — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
 | 06_D | `06_D-setup-tomcat-app.sh <dominio> [context]` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho. Admite `MAX_UPLOAD` y `PROXY_TIMEOUT` como 06_B |
+| 06_E | `06_E-setup-marcalibros-app.sh <dominio> [--png] [--repo DIR]` | *(Opcional)* Instala la app Marcalibros (`marcalibros-plataforma-pos-brand-identity/app`) copiando el código del monorepo a `/var/www/marcalibros/` (de root, con intercambio de carpeta en un paso), sus datos en `/var/lib/marcalibros` (solo `www-data`), un vhost que manda todo a `public/index.php` y la limpieza diaria en `/etc/cron.d/marcalibros`. Re-correrlo actualiza el código y conserva datos y PNG. `--png` genera los PNG del catálogo (necesita Pillow y numpy). `MAX_UPLOAD` es 6M; `MARCALIBROS_RETENTION_DAYS` fija los días de conservación. Solo admite un dominio |
 | 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat, `--ssl` y `--port` opcionales) encadenando los scripts anteriores |
 | 10_B | `10_B-remove-domain.sh` | Quita un dominio **archivando** (no borrando) su vhost, sitio y logs |
 | — | `remote-run.sh` | Desde TU equipo: sube `vps-setup/` por SSH (solo llave) y ejecuta un script en el VPS. Config en `vps.env` (ver `vps.env.example`) |
@@ -219,7 +220,7 @@ mano. Lo único que no puede probar es emitir el certificado (necesita DNS públ
 ./10_B-remove-domain.sh nuevo.com [--app tienda] [--yes] [--dry-run]
 ```
 
-`10_A` encadena los scripts 03/06_A/06_B/06_D, opcionalmente 04 (`--ssl`, el DNS ya debe apuntar al VPS) y 08.
+`10_A` encadena los scripts 03/06_A/06_B/06_D/06_E, opcionalmente 04 (`--ssl`, el DNS ya debe apuntar al VPS) y 08.
 `10_B` **no borra nada**: mueve el vhost, el sitio, los logs (y con `--app` la app y su unidad systemd) a
 `/var/backups/vps-setup/removed/<dominio>-<fecha>/`, comprueba `nginx -t` antes de archivar (si falla, restaura el
 sitio) y al final indica cómo quitar el certificado y la zona DNS, que no toca. En apps php/python también
@@ -236,7 +237,7 @@ sin argumentos muestran el uso y salen con código 2.
 
 | Variable | Por defecto | Para qué |
 |----------|-------------|----------|
-| `MAX_UPLOAD` | `20M` | Tamaño máximo de una petición/subida en las apps (`06_A`, `06_B`, `06_D`, y `10_A` que los llama). En PHP el límite es global y solo sube |
+| `MAX_UPLOAD` | `20M` | Tamaño máximo de una petición/subida en las apps (`06_A`, `06_B`, `06_D`, y `10_A` que los llama; `06_E` usa 6M). En PHP el límite es global y solo sube |
 | `PROXY_TIMEOUT` | `120s` | Cuánto espera Nginx a una app Python/Tomcat (y el `--timeout` de gunicorn) |
 | `PHP_VERSION` | `8.3` | Versión de PHP del stack, fijada en un solo lugar (`lib.sh`) |
 
@@ -302,6 +303,7 @@ ls -la /var/www/landing-page/tudominio.com/
 ./06_A-setup-php-app.sh mi-app dominio.com      # App PHP
 ./06_B-setup-python-app.sh mi-app dominio.com   # App Python
 ./06_D-setup-tomcat-app.sh dominio.com mi-app   # App Java (Tomcat) detrás de Nginx
+./06_E-setup-marcalibros-app.sh dominio.com     # Marcalibros (necesita el monorepo completo)
 ```
 
 Más documentación: ver el [mapa de la documentación](#-mapa-de-la-documentación) al inicio.

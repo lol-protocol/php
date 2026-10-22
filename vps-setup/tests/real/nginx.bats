@@ -14,6 +14,7 @@ teardown() {
     nginx_down
     rm -f /etc/php/*/fpm/conf.d/90-vps-setup-uploads.ini
     rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/server-tokens.conf /etc/nginx/conf.d/performance.conf /etc/nginx/conf.d/00-default-server.conf /etc/nginx/conf.d/bats-real-*.conf
+    rm -rf /var/www/marcalibros /var/www/marcalibros.nuevo /var/www/marcalibros.anterior /var/lib/marcalibros /etc/cron.d/marcalibros
     for n in $D1 $D2 $D3 $APP; do rm -f "/etc/nginx/sites-enabled/$n" "/etc/nginx/sites-available/$n"; done
     rm -rf "/var/www/landing-page/$D1" "/var/www/$APP" "/var/log/nginx/$D1" "/var/log/nginx/$D2" "/var/log/nginx/$D3"
     sed -i "/$D1/d" /etc/hosts 2>/dev/null || true
@@ -48,6 +49,18 @@ teardown() {
     [ -f "/var/www/landing-page/$D1/index.html" ]
     [ ! -e "/var/www/landing-page/$D1/landing-page" ]
     [ "$(stat -c %a "/var/www/landing-page/$D1/index.html")" = "644" ]
+}
+
+@test "06_E: el vhost de Marcalibros pasa nginx -t real y deja el codigo, los datos y el cron" {
+    # php no esta instalado en el runner: solo hace falta que diga que tiene lo que la app pide
+    make_stub php 'case "$1" in -m) printf "gd\nmbstring\nfileinfo\nexif\nzlib\n";; esac'
+    run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" $D2
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q "root /var/www/marcalibros/marcalibros-plataforma-pos-brand-identity/app/public;" /etc/nginx/sites-available/$D2
+    [ -f /var/www/marcalibros/marcalibros-plataforma-pos-brand-identity/app/public/index.php ]
+    [ -d /var/lib/marcalibros ] && [ -f /etc/cron.d/marcalibros ]
+    run nginx -t
+    [ "$status" -eq 0 ]
 }
 
 @test "06_A: el vhost PHP pasa nginx -t real" {

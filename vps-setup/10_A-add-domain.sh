@@ -1,8 +1,8 @@
 #!/bin/bash
 # Agrega un dominio nuevo a un VPS ya instalado, encadenando los scripts existentes.
-# Uso: ./10_A-add-domain.sh <dominio> [--type landing|php|python|tomcat] [--name APP]
+# Uso: ./10_A-add-domain.sh <dominio> [--type landing|php|python|tomcat|marcalibros] [--name APP]
 #                           [--context RUTA] [--port N] [--ssl] [--email EMAIL] [--dry-run]
-#   --type     tipo de sitio (por defecto landing): 03 | 06_A | 06_B | 06_D
+#   --type     tipo de sitio (por defecto landing): 03 | 06_A | 06_B | 06_D | 06_E
 #   --name     nombre de la app (php/python); por defecto el dominio con "-" en vez de "."
 #   --context  context path de Tomcat (solo --type tomcat; vacio = raiz)
 #   --port     puerto local de gunicorn (solo --type python; por defecto 8000, uno por app)
@@ -36,7 +36,7 @@ done
 
 [ -n "$DOMAIN" ] || { echo "Uso: $0 <dominio> [opciones] (--help)"; exit 2; }
 require_valid domain "$DOMAIN" "El dominio"
-case "$TYPE" in landing|php|python|tomcat) ;; *) echo "--type debe ser landing, php, python o tomcat (recibido: $TYPE)"; exit 2 ;; esac
+case "$TYPE" in landing|php|python|tomcat|marcalibros) ;; *) echo "--type debe ser landing, php, python, tomcat o marcalibros (recibido: $TYPE)"; exit 2 ;; esac
 [ -n "$NAME" ] || NAME=${DOMAIN//./-}
 EMAIL=${EMAIL:-"admin@$DOMAIN"}
 if [ "$TYPE" = php ] || [ "$TYPE" = python ]; then require_valid name "$NAME" "--name"; fi
@@ -52,6 +52,7 @@ case "$TYPE" in
     php)     SITE_CMD=(./06_A-setup-php-app.sh "$NAME" "$DOMAIN") ;;
     python)  SITE_CMD=(./06_B-setup-python-app.sh "$NAME" "$DOMAIN" ${PORT:+"$PORT"}) ;;
     tomcat)  SITE_CMD=(./06_D-setup-tomcat-app.sh "$DOMAIN" "$CONTEXT") ;;
+    marcalibros) SITE_CMD=(./06_E-setup-marcalibros-app.sh "$DOMAIN") ;;
 esac
 
 run() {
@@ -79,4 +80,5 @@ fi
 # (/var/www/<app>) y su servicio systemd, que no llevan el nombre del dominio.
 REMOVE_CMD="./10_B-remove-domain.sh $DOMAIN"
 if [ "$TYPE" = php ] || [ "$TYPE" = python ]; then REMOVE_CMD+=" --app $NAME"; fi
+if [ "$TYPE" = marcalibros ]; then REMOVE_CMD+=" --app marcalibros"; fi
 echo "✓ Dominio $DOMAIN agregado. Para quitarlo: $REMOVE_CMD"

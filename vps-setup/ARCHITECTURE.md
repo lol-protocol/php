@@ -183,6 +183,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - ✅ Tomcat solo en `127.0.0.1:8080`; con la app en la raíz, Nginx devuelve 404 para `/manager` y `/host-manager` (`06_D`)
 - ✅ BIND (si se usa) es solo autoritativo, sin recursión, y solo transfiere la zona a OVH (`06_C`)
 - ✅ Apps Python bajo systemd con `NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=full`, `ProtectHome` (`06_B`)
+- ✅ Marcalibros (`06_E`): el código es de root (la app no puede reescribirse), los datos van fuera de la carpeta web en `/var/lib/marcalibros` (750, `www-data`) y Nginx solo expone `public/`
 - ⚠️ Webmin (puerto 10000) queda abierto a internet salvo que uses `WEBMIN_ALLOW_FROM=<tu IP>` al instalarlo (`02_J`)
 - ⚠️ Las apps comparten el usuario `www-data` (sin aislamiento entre apps); ver "Límites conocidos" en el README
 
