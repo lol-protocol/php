@@ -16,15 +16,57 @@ use PortadasSvg\Plantillas\Sobria;
  *
  * Una plantilla concreta implementa `portada()` y `coloresPorDefecto()`. Puede cambiar también la
  * fuente, el ancho medio de letra y los colores del lomo.
+ *
+ * Las medidas de la disposición van como constantes, en mm salvo que se diga otra cosa. Los tamaños de
+ * letra son pares MAX/MIN: el texto empieza en el máximo y baja hasta el mínimo si no cabe.
  */
 abstract class Plantilla
 {
-    /** Espacio entre el borde del corte y el texto, en mm. */
+    /** Espacio entre el borde del corte y el texto. */
     protected const MARGEN = 16.0;
     /** Distancia entre líneas, en múltiplos del tamaño de letra. */
     protected const INTERLINEADO = 1.35;
-    /** Ancho del lomo a partir del cual se escribe texto en él, en mm. */
+    /** Parte de una letra que queda sobre la línea base y parte que baja de ella, en múltiplos del tamaño de letra. */
+    protected const ASCENDENTE = 0.8;
+    protected const DESCENDENTE = 0.2;
+    /** Subtítulo: espacio libre mínimo bajo el título, y fracción del tamaño del título que se deja libre. */
+    protected const SUBTITULO_ESPACIO_MIN = 3.0;
+    protected const SUBTITULO_ESPACIO = 0.35;
+
+    /** Contratapa: raya de acento (distancia al borde superior del corte, largo y grosor). */
+    protected const CONTRATAPA_RAYA_Y = 22.0;
+    protected const CONTRATAPA_RAYA_LARGO = 12.0;
+    protected const CONTRATAPA_RAYA_GROSOR = 0.8;
+    /** Contratapa: dónde empieza el texto desde el borde superior, qué fracción del alto puede ocupar y su tamaño. */
+    protected const CONTRATAPA_TEXTO_Y = 34.0;
+    protected const CONTRATAPA_TEXTO_ALTO = 0.5;
+    protected const CONTRATAPA_TAMANO_MAX = 4.2;
+    protected const CONTRATAPA_TAMANO_MIN = 2.8;
+    /** Pie con editorial y colección: distancia de su línea base al borde inferior del corte, y tamaño. */
+    protected const PIE_Y = 12.0;
+    protected const PIE_TAMANO_MAX = 3.2;
+    protected const PIE_TAMANO_MIN = 2.4;
+    /** Hueco del código de barras: ancho, alto, distancia de su borde superior al borde inferior del corte, y espacio libre hasta el pie. */
+    protected const CODIGO_ANCHO = 42.0;
+    protected const CODIGO_ALTO = 26.0;
+    protected const CODIGO_Y = 38.0;
+    protected const CODIGO_SEPARACION = 4.0;
+    /** ISBN: separación sobre el hueco del código y tamaño. */
+    protected const ISBN_SEPARACION = 3.0;
+    protected const ISBN_TAMANO_MAX = 2.8;
+    protected const ISBN_TAMANO_MIN = 2.0;
+
+    /** Solapas: margen interior y tamaño del texto. */
+    protected const SOLAPA_MARGEN = 10.0;
+    protected const SOLAPA_TAMANO_MAX = 4.0;
+    protected const SOLAPA_TAMANO_MIN = 2.8;
+
+    /** Lomo: ancho a partir del cual lleva texto, tamaño del texto (el máximo es también una fracción del ancho) y centrado. */
     protected const LOMO_MINIMO = 3.0;
+    protected const LOMO_TAMANO_MAX = 4.5;
+    protected const LOMO_TAMANO_MIN = 2.2;
+    protected const LOMO_TAMANO_ANCHO = 0.6;
+    protected const LOMO_CENTRADO = 0.35;
 
     /** @return array<string, class-string<Plantilla>> */
     public static function disponibles(): array
@@ -59,8 +101,9 @@ abstract class Plantilla
                 'portada' => $this->portada($libro, $zona),
                 'contratapa' => $this->contratapa($libro, $zona),
                 'lomo' => $this->lomo($libro, $zona),
-                'solapa-contratapa' => $this->solapa($libro->solapaContratapa, $libro, $zona),
-                'solapa-portada' => $this->solapa($libro->solapaPortada, $libro, $zona),
+                'solapa-contratapa' => $this->solapa($libro->textos->solapaContratapa, $libro, $zona),
+                'solapa-portada' => $this->solapa($libro->textos->solapaPortada, $libro, $zona),
+                default => throw new \LogicException("Panel sin dibujar: '$panel'."),
             };
         }
 
@@ -116,19 +159,19 @@ abstract class Plantilla
         $x = $panel->x + self::MARGEN;
         $ancho = $panel->ancho - 2 * self::MARGEN;
 
-        $svg = $this->linea($x, $panel->y + 22, $x + 12, $panel->y + 22, $colores['acento'], 0.8);
-        if ($libro->contratapa !== '') {
-            $texto = Texto::ajustar($libro->contratapa, $ancho, $panel->alto * 0.5, 4.2, 2.8, $this->factorPara($libro->contratapa), self::INTERLINEADO);
-            $svg .= $this->parrafo($texto['lineas'], $x, $panel->y + 34 + $texto['tamano'] * 0.8, $texto['tamano'], 'start', $colores['texto']);
+        $svg = $this->linea($x, $panel->y + self::CONTRATAPA_RAYA_Y, $x + self::CONTRATAPA_RAYA_LARGO, $panel->y + self::CONTRATAPA_RAYA_Y, $colores['acento'], self::CONTRATAPA_RAYA_GROSOR);
+        if ($libro->textos->contratapa !== '') {
+            $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $panel->alto * self::CONTRATAPA_TEXTO_ALTO, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->factorPara($libro->textos->contratapa), self::INTERLINEADO);
+            $svg .= $this->parrafo($texto['lineas'], $x, $panel->y + self::CONTRATAPA_TEXTO_Y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
         }
 
         // Hueco en blanco para el código de barras del ISBN: el código lo pone quien imprime. El pie
-        // llega hasta el hueco y deja 4 mm libres antes de él.
-        $caja = new Rectangulo($panel->x + $panel->ancho - self::MARGEN - 42, $panel->y + $panel->alto - 38, 42, 26);
-        $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - 12, 'start', $ancho - 46);
+        // llega hasta el hueco y deja un espacio libre antes de él.
+        $caja = new Rectangulo($panel->x + $panel->ancho - self::MARGEN - self::CODIGO_ANCHO, $panel->y + $panel->alto - self::CODIGO_Y, self::CODIGO_ANCHO, self::CODIGO_ALTO);
+        $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - self::PIE_Y, 'start', $ancho - self::CODIGO_ANCHO - self::CODIGO_SEPARACION);
         $svg .= $this->rectangulo($caja, ['fill' => '#ffffff']);
-        if ($libro->isbn !== '') {
-            $svg .= $this->rotulo('ISBN ' . $libro->isbn, $caja->x + 42, $caja->y - 3, 42, 2.8, 2.0, 'end', $colores['texto']);
+        if ($libro->textos->isbn !== '') {
+            $svg .= $this->rotulo('ISBN ' . $libro->textos->isbn, $caja->x + self::CODIGO_ANCHO, $caja->y - self::ISBN_SEPARACION, self::CODIGO_ANCHO, self::ISBN_TAMANO_MAX, self::ISBN_TAMANO_MIN, 'end', $colores['texto']);
         }
 
         return $svg;
@@ -138,20 +181,20 @@ abstract class Plantilla
     {
         $colores = $this->coloresLomo($libro);
         // El lomo no tiene borde exterior, así que su color llega también al sangrado de arriba y de abajo.
-        $fondo = new Rectangulo($panel->x, 0.0, $panel->ancho, $panel->alto + 2 * $libro->sangradoMm);
+        $fondo = new Rectangulo($panel->x, 0.0, $panel->ancho, $panel->alto + 2 * $libro->formato->sangrado);
         $svg = $this->rectangulo($fondo, ['fill' => $colores['fondo']]);
         if ($panel->ancho < self::LOMO_MINIMO) {
             return $svg;
         }
 
         $largo = $panel->alto - 2 * self::MARGEN;
-        $completo = $libro->titulo . ' · ' . $libro->autor;
-        $texto = Texto::unaLinea($completo, $largo, min(4.5, $panel->ancho * 0.6), 2.2, $this->factorPara($completo));
+        $completo = $libro->textos->titulo . ' · ' . $libro->textos->autor;
+        $texto = Texto::unaLinea($completo, $largo, min(self::LOMO_TAMANO_MAX, $panel->ancho * self::LOMO_TAMANO_ANCHO), self::LOMO_TAMANO_MIN, $this->factorPara($completo));
 
         // El texto va girado 90°. Al girarlo, la línea base queda en x y las letras crecen hacia un lado
         // u otro según el sentido; se corre x para que el texto quede centrado en el lomo.
         $sentido = $libro->lomoDireccion === 'abajo-arriba' ? -1 : 1;
-        $x = $panel->x + $panel->ancho / 2 - $sentido * 0.35 * $texto['tamano'];
+        $x = $panel->x + $panel->ancho / 2 - $sentido * self::LOMO_CENTRADO * $texto['tamano'];
         $y = $panel->y + $panel->alto / 2;
 
         return $svg . Svg::elemento('text', [
@@ -170,18 +213,18 @@ abstract class Plantilla
             return '';
         }
 
-        $margen = 10.0;
-        $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, 4.0, 2.8, $this->factorPara($texto), self::INTERLINEADO);
+        $margen = self::SOLAPA_MARGEN;
+        $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, self::SOLAPA_TAMANO_MAX, self::SOLAPA_TAMANO_MIN, $this->factorPara($texto), self::INTERLINEADO);
 
-        return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * 0.8, $ajuste['tamano'], 'start', $libro->colores['texto']);
+        return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * self::ASCENDENTE, $ajuste['tamano'], 'start', $libro->colores['texto']);
     }
 
     /** Pie con editorial y colección, si hay alguna, en una sola línea que cabe en `ancho`. */
     protected function editorial(Libro $libro, float $x, float $y, string $anclaje, float $ancho): string
     {
-        $pie = implode(' · ', array_filter([$libro->editorial, $libro->coleccion], static fn (string $dato): bool => $dato !== ''));
+        $pie = implode(' · ', array_filter([$libro->textos->editorial, $libro->textos->coleccion], static fn (string $dato): bool => $dato !== ''));
 
-        return $pie === '' ? '' : $this->rotulo($pie, $x, $y, $ancho, 3.2, 2.4, $anclaje, $libro->colores['texto']);
+        return $pie === '' ? '' : $this->rotulo($pie, $x, $y, $ancho, self::PIE_TAMANO_MAX, self::PIE_TAMANO_MIN, $anclaje, $libro->colores['texto']);
     }
 
     /**
@@ -224,7 +267,19 @@ abstract class Plantilla
     {
         $visible = ($lineas - 1) * $tamano * self::INTERLINEADO + $tamano;
 
-        return $y + ($alto - $visible) / 2 + $tamano * 0.8;
+        return $y + ($alto - $visible) / 2 + $tamano * self::ASCENDENTE;
+    }
+
+    /**
+     * Línea base del subtítulo. Bajo la última línea del título deja un espacio libre proporcional al
+     * tamaño del título, además de lo que el título baja de su línea base y lo que el subtítulo sube
+     * sobre la suya: así un título grande no queda pegado al subtítulo.
+     */
+    protected function bajoElTitulo(float $baseTitulo, float $tamanoTitulo, float $tamanoSubtitulo): float
+    {
+        $libre = max(self::SUBTITULO_ESPACIO_MIN, $tamanoTitulo * self::SUBTITULO_ESPACIO);
+
+        return $baseTitulo + $tamanoTitulo * self::DESCENDENTE + $libre + $tamanoSubtitulo * self::ASCENDENTE;
     }
 
     /** @param array<string, float|int|string> $estilo */

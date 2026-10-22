@@ -10,11 +10,15 @@ final class Archivos
     /** Borra una carpeta con todo lo que tiene dentro. */
     public static function borrarDirectorio(string $directorio): void
     {
-        foreach (new \FilesystemIterator($directorio) as $elemento) {
-            if ($elemento->isDir() && !$elemento->isLink()) {
-                self::borrarDirectorio($elemento->getPathname());
+        foreach (scandir($directorio) ?: [] as $nombre) {
+            if ($nombre === '.' || $nombre === '..') {
+                continue;
+            }
+            $ruta = "$directorio/$nombre";
+            if (is_dir($ruta) && !is_link($ruta)) {
+                self::borrarDirectorio($ruta);
             } else {
-                unlink($elemento->getPathname());
+                unlink($ruta);
             }
         }
         rmdir($directorio);

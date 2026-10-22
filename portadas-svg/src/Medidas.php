@@ -19,8 +19,8 @@ final class Medidas
 
     public function __construct(private readonly Libro $libro)
     {
-        $this->anchoTotal = 2 * $libro->sangradoMm + 2 * $libro->solapasMm + 2 * $libro->anchoMm + $libro->lomoMm;
-        $this->altoTotal = $libro->altoMm + 2 * $libro->sangradoMm;
+        $this->anchoTotal = 2 * $libro->formato->sangrado + 2 * $libro->formato->solapas + 2 * $libro->formato->ancho + $libro->formato->lomo;
+        $this->altoTotal = $libro->formato->alto + 2 * $libro->formato->sangrado;
     }
 
     /** Todo el lienzo de la cubierta completa, con sangrado. */
@@ -33,11 +33,11 @@ final class Medidas
     public function pieza(string $nombre): Rectangulo
     {
         $libro = $this->libro;
-        $b = $libro->sangradoMm;
-        $f = $libro->solapasMm;
-        $a = $libro->anchoMm;
-        $s = $libro->lomoMm;
-        $alto = $libro->altoMm;
+        $b = $libro->formato->sangrado;
+        $f = $libro->formato->solapas;
+        $a = $libro->formato->ancho;
+        $s = $libro->formato->lomo;
+        $alto = $libro->formato->alto;
 
         return match ($nombre) {
             'solapa-contratapa' => new Rectangulo($b, $b, $f, $alto),
@@ -61,7 +61,7 @@ final class Medidas
             'contratapa' => ['contratapa'],
             'lomo' => ['lomo'],
             'cubierta' => ['contratapa', 'lomo', 'portada'],
-            'sobrelomo' => $this->libro->solapasMm > 0
+            'sobrelomo' => $this->libro->formato->solapas > 0
                 ? ['solapa-contratapa', 'contratapa', 'lomo', 'portada', 'solapa-portada']
                 : ['contratapa', 'lomo', 'portada'],
             default => throw new \InvalidArgumentException("Vista desconocida: '$vista'."),
@@ -74,9 +74,9 @@ final class Medidas
      */
     public function vista(string $nombre): Rectangulo
     {
-        $sinSolapas = $this->libro->solapasMm === 0.0;
-        $b = $this->libro->sangradoMm;
-        $a = $this->libro->anchoMm;
+        $sinSolapas = $this->libro->formato->solapas === 0.0;
+        $b = $this->libro->formato->sangrado;
+        $a = $this->libro->formato->ancho;
         $contratapa = $this->pieza('contratapa')->x;
         $lomo = $this->pieza('lomo')->x;
         $portada = $this->pieza('portada')->x;
