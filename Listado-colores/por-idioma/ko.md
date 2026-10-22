@@ -81,7 +81,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `lightcyan` | 연한 시안 | `#E0FFFF` |  | 가벼운 상쾌함, 명료함, 차분함. | 맑은 물과 깨끗한 공기; 생각의 순수함. | derivado | derivado |
 | `lightgoldenrodyellow` | 연한 골든로드 옐로 | `#FAFAD2` |  | 빛나는 부드러움, 조용한 낙관, 따뜻함. | 부드러운 황금빛; 온화한 깨달음과 축복. | derivado | derivado |
 | `lightgray` | 연한 회색 | `#D3D3D3` | `lightgrey` | 중립, 차분함, 청결함, 숨 쉴 여백. | 보이는 것과 보이지 않는 것 사이의 이행; 중간에 있는 것. | derivado | derivado |
-| `lightgreen` | 연두 | `#90EE90` |  | 차분함, 상쾌함, 갱신, 안녕. | 새싹과 희망; 여린 성장과 부드러운 치유. | derivado | derivado |
+| `lightgreen` | 연초록 | `#90EE90` |  | 차분함, 상쾌함, 갱신, 안녕. | 새싹과 희망; 여린 성장과 부드러운 치유. | derivado | derivado |
 | `lightgrey` | 연한 회색 | `#D3D3D3` | `lightgray` | 중립, 차분함, 청결함, 숨 쉴 여백. | 보이는 것과 보이지 않는 것 사이의 이행; 중간에 있는 것. | derivado | derivado |
 | `lightpink` | 연분홍 | `#FFB6C1` |  | 다정함, 달콤함, 순수함, 부드러운 애정. | 섬세한 사랑과 순수; 낭만적인 시작. | derivado | derivado |
 | `lightsalmon` | 연한 연어색 | `#FFA07A` |  | 밝은 따뜻함, 친근함, 온화한 에너지. | 아침 해; 친절함과 너그러움. | derivado | derivado |

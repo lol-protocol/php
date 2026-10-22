@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "idiomas": [
     "en",
     "es",
@@ -36,7 +36,7 @@
     {
       "archivo": "colores.csv",
       "filas": 148,
-      "sha256": "8b28fb9a20112a2d1d7f63d029b82f2dc828ee303370f9fcebb1ad2e31ca868c"
+      "sha256": "18a73a729e5d07bcc5d76016f601457a462f00290c4d0cc484cee1cce132c2a6"
     },
     {
       "archivo": "significados-idiomas.csv",
@@ -73,7 +73,7 @@
     {
       "archivo": "exportes/colores.jsonl",
       "filas": 148,
-      "sha256": "6f478a254b789c1a3a12ecfc1c9fe5590c3ade723b88c0c05a36ef3e9e0f662b"
+      "sha256": "61271d0eb443f6c4fca6269065b06889956b5a085764e9e335c7dd81b359d322"
     },
     {
       "archivo": "exportes/gazetteer.tsv",
@@ -88,7 +88,7 @@
         "rasgos",
         "forma_normalizada"
       ],
-      "sha256": "e152d868c629d3a16870e8f081e222d37fe77571a6c042ac150520a0ae3215d2"
+      "sha256": "b25406b077bd914fed9d20f3617a81b04e7d207045f17887f432e7515316dabf"
     }
   ]
 }

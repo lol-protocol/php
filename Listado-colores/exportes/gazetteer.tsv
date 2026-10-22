@@ -1188,7 +1188,6 @@ fekete	hu	lexico	lema	black	#000000		fekete
 felroze	nl	css	nombre	hotpink	#FF69B4		felroze
 fersken	da	css	nombre	peachpuff	#FFDAB9		fersken
 Feuerziegel	de	css	nombre	firebrick	#B22222		feuerziegel
-fialová	cs	css	nombre	purple	#800080		fialova
 fialová	cs	css	nombre	violet	#EE82EE		fialova
 fialová	cs	lexico	flexion	purple	#800080	Gender=Fem;Number=Sing	fialova
 fialová	cs	lexico	flexion	purple	#800080	Gender=Neut;Number=Plur	fialova
@@ -1208,7 +1207,6 @@ fioletowa	pl	lexico	flexion	purple	#800080	Gender=Fem;Number=Sing	fioletowa
 fioletowe	pl	lexico	flexion	purple	#800080	Gender=Neut;Number=Sing	fioletowe
 fioletowe	pl	lexico	flexion	purple	#800080	Number=Plur	fioletowe
 fioletowi	pl	lexico	flexion	purple	#800080	Number=Plur;Animacy=Anim	fioletowi
-fioletowy	pl	css	nombre	purple	#800080		fioletowy
 fioletowy	pl	css	nombre	violet	#EE82EE		fioletowy
 fioletowy	pl	lexico	lema	purple	#800080		fioletowy
 fiołkowa	pl	lexico	flexion	violet	#EE82EE	Gender=Fem;Number=Sing	fiolkowa
@@ -2040,6 +2038,7 @@ lachsfarbenes	de	lexico	flexion	salmon	#FA8072	Terminacion=-es	lachsfarbenes
 lacivert	tr	css	nombre	navy	#000080		lacivert
 lacivert	tr	lexico	lema	navy	#000080		lacivert
 ladrillo	es	css	nombre	firebrick	#B22222		ladrillo
+laivastonsininen	fi	css	nombre	navy	#000080		laivastonsininen
 laivastonsininen	fi	lexico	lema	navy	#000080		laivastonsininen
 laivastonsiniset	fi	lexico	flexion	navy	#000080	Number=Plur	laivastonsiniset
 laks	da	css	nombre	salmon	#FA8072		laks
@@ -2326,6 +2325,7 @@ lozi nyeupe	sw	css	nombre	blanchedalmond	#FFEBCD		lozi nyeupe
 lumi	fi	css	nombre	snow	#FFFAFA		lumi
 luumu	fi	css	nombre	plum	#DDA0DD		luumu
 lys havgrøn	da	css	nombre	lightseagreen	#20B2AA		lys havgron
+lys lyserød	da	css	nombre	lightpink	#FFB6C1		lys lyserod
 lys skifergrå	da	css	nombre	lightslategray	#778899		lys skifergra
 lys skifergrå	da	css	nombre	lightslategrey	#778899		lys skifergra
 lyscyan	da	css	nombre	lightcyan	#E0FFFF		lyscyan
@@ -2338,7 +2338,6 @@ lysegrøn	da	lexico	lema	lightgreen	#90EE90		lysegron
 lysegrønne	da	lexico	flexion	lightgreen	#90EE90	Number=Plur	lysegronne
 lysegrønt	da	lexico	flexion	lightgreen	#90EE90	Gender=Neut;Number=Sing	lysegront
 lysegul	da	css	nombre	lightyellow	#FFFFE0		lysegul
-lyserød	da	css	nombre	lightpink	#FFB6C1		lyserod
 lyserød	da	css	nombre	pink	#FFC0CB		lyserod
 lyserød	da	lexico	lema	pink	#FFC0CB		lyserod
 lyserøde	da	lexico	flexion	pink	#FFC0CB	Number=Plur	lyserode
@@ -2526,8 +2525,8 @@ merah muda	id	css	nombre	pink	#FFC0CB		merah muda
 merah muda	id	lexico	lema	pink	#FFC0CB		merah muda
 merah muda lavender	id	css	nombre	lavenderblush	#FFF0F5		merah muda lavender
 merah muda muda	id	css	nombre	lightpink	#FFB6C1		merah muda muda
+merah padam	id	css	nombre	crimson	#DC143C		merah padam
 merah padam	id	lexico	lema	crimson	#DC143C		merah padam
-merah tua	id	css	nombre	crimson	#DC143C		merah tua
 merah tua	id	css	nombre	darkred	#8B0000		merah tua
 merah violet pucat	id	css	nombre	palevioletred	#DB7093		merah violet pucat
 merah violet sedang	id	css	nombre	mediumvioletred	#C71585		merah violet sedang
@@ -3094,12 +3093,14 @@ Purpur	de	css	nombre	purple	#800080		purpur
 purpur	sv	lexico	sinonimo	purple	#800080		purpur
 purpuriu mediu	ro	css	nombre	mediumpurple	#9370DB		purpuriu mediu
 purpurová	cs	css	nombre	magenta	#FF00FF		purpurova
+purpurová	cs	css	nombre	purple	#800080		purpurova
 purpurová	cs	lexico	flexion	magenta	#FF00FF	Gender=Fem;Number=Sing	purpurova
 purpurová	cs	lexico	flexion	magenta	#FF00FF	Gender=Neut;Number=Plur	purpurova
 purpurové	cs	lexico	flexion	magenta	#FF00FF	Gender=Neut;Number=Sing	purpurove
 purpurové	cs	lexico	flexion	magenta	#FF00FF	Number=Plur	purpurove
 purpuroví	cs	lexico	flexion	magenta	#FF00FF	Number=Plur;Animacy=Anim	purpurovi
 purpurový	cs	lexico	lema	magenta	#FF00FF		purpurovy
+purpurowy	pl	css	nombre	purple	#800080		purpurowy
 putih	id	css	nombre	white	#FFFFFF		putih
 putih	id	lexico	lema	white	#FFFFFF		putih
 putih antik	id	css	nombre	antiquewhite	#FAEBD7		putih antik
@@ -3713,7 +3714,6 @@ tummanharmaa	fi	css	nombre	darkgray	#A9A9A9		tummanharmaa
 tummanharmaa	fi	css	nombre	darkgrey	#A9A9A9		tummanharmaa
 tummanpunainen	fi	css	nombre	darkred	#8B0000		tummanpunainen
 tummansininen	fi	css	nombre	darkblue	#00008B		tummansininen
-tummansininen	fi	css	nombre	navy	#000080		tummansininen
 tummansininen	fi	lexico	lema	darkblue	#00008B		tummansininen
 tummansiniset	fi	lexico	flexion	darkblue	#00008B	Number=Plur	tummansiniset
 tummanvihreä	fi	css	nombre	darkgreen	#006400		tummanvihrea
@@ -4165,6 +4165,7 @@ xanh da trời đậm	vi	css	nombre	deepskyblue	#00BFFF		xanh da troi dam
 xanh Dodger	vi	css	nombre	dodgerblue	#1E90FF		xanh dodger
 xanh dương	vi	css	nombre	blue	#0000FF		xanh duong
 xanh dương	vi	lexico	lema	blue	#0000FF		xanh duong
+xanh dương nhạt	vi	css	nombre	lightblue	#ADD8E6		xanh duong nhat
 xanh dương vừa	vi	css	nombre	mediumblue	#0000CD		xanh duong vua
 xanh dương đậm	vi	css	nombre	darkblue	#00008B		xanh duong dam
 xanh hoa cúc	vi	css	nombre	cornflowerblue	#6495ED		xanh hoa cuc
@@ -4175,7 +4176,9 @@ xanh lam	vi	lexico	sinonimo	blue	#0000FF		xanh lam
 xanh lá	vi	css	nombre	green	#008000		xanh la
 xanh lá	vi	lexico	sinonimo	green	#008000		xanh la
 xanh lá cây	vi	lexico	lema	green	#008000		xanh la cay
+xanh lá nhạt	vi	css	nombre	lightgreen	#90EE90		xanh la nhat
 xanh lá nhạt	vi	lexico	lema	lightgreen	#90EE90		xanh la nhat
+xanh lá non	vi	css	nombre	palegreen	#98FB98		xanh la non
 xanh lá đậm	vi	css	nombre	darkgreen	#006400		xanh la dam
 xanh lá đậm	vi	lexico	lema	darkgreen	#006400		xanh la dam
 xanh lơ	vi	css	nombre	cyan	#00FFFF		xanh lo
@@ -4186,9 +4189,6 @@ xanh lục	vi	lexico	sinonimo	green	#008000		xanh luc
 xanh mòng két	vi	css	nombre	teal	#008080		xanh mong ket
 xanh navy	vi	lexico	lema	navy	#000080		xanh navy
 xanh ngọc	vi	lexico	sinonimo	turquoise	#40E0D0		xanh ngoc
-xanh nhạt	vi	css	nombre	lightblue	#ADD8E6		xanh nhat
-xanh nhạt	vi	css	nombre	lightgreen	#90EE90		xanh nhat
-xanh nhạt	vi	css	nombre	palegreen	#98FB98		xanh nhat
 xanh nhạt	vi	lexico	lema	lightblue	#ADD8E6		xanh nhat
 xanh nửa đêm	vi	css	nombre	midnightblue	#191970		xanh nua dem
 xanh rừng	vi	css	nombre	forestgreen	#228B22		xanh rung
@@ -4675,7 +4675,6 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 бисквитный	ru	css	nombre	bisque	#FFE4C4		бисквитный
 блакитна	uk	lexico	flexion	lightblue	#ADD8E6	Gender=Fem;Number=Sing	блакитна
 блакитне	uk	lexico	flexion	lightblue	#ADD8E6	Gender=Neut;Number=Sing	блакитне
-блакитний	uk	css	nombre	cyan	#00FFFF		блакитний
 блакитний	uk	css	nombre	lightblue	#ADD8E6		блакитний
 блакитний	uk	lexico	lema	lightblue	#ADD8E6		блакитний
 блакитні	uk	lexico	flexion	lightblue	#ADD8E6	Number=Plur	блакитні
@@ -4735,7 +4734,6 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 глубокое небо	ru	css	nombre	deepskyblue	#00BFFF		глубокое небо
 голубая	ru	lexico	flexion	lightblue	#ADD8E6	Gender=Fem;Number=Sing	голубая
 голубое	ru	lexico	flexion	lightblue	#ADD8E6	Gender=Neut;Number=Sing	голубое
-голубой	ru	css	nombre	cyan	#00FFFF		голубой
 голубой	ru	css	nombre	lightblue	#ADD8E6		голубой
 голубой	ru	lexico	lema	lightblue	#ADD8E6		голубой
 голубые	ru	lexico	flexion	lightblue	#ADD8E6	Number=Plur	голубые
@@ -5163,6 +5161,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 хакі	uk	lexico	lema	khaki	#F0E68C		хакі
 цветочно-белый	ru	css	nombre	floralwhite	#FFFAF0		цветочно белый
 цегляний	uk	css	nombre	firebrick	#B22222		цегляний
+циан	ru	css	nombre	cyan	#00FFFF		циан
+ціан	uk	css	nombre	cyan	#00FFFF		ціан
 червона	uk	lexico	flexion	red	#FF0000	Gender=Fem;Number=Sing	червона
 червоне	uk	lexico	flexion	red	#FF0000	Gender=Neut;Number=Sing	червоне
 червоний	uk	css	nombre	red	#FF0000		червоний
@@ -5475,7 +5475,6 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 أخضر ليموني	ar	css	nombre	limegreen	#32CD32		أخضر ليموني
 أخضر مصفر	ar	css	nombre	greenyellow	#ADFF2F		أخضر مصفر
 أخضر مصفر	ar	css	nombre	yellowgreen	#9ACD32		أخضر مصفر
-أرجواني	ar	css	nombre	magenta	#FF00FF		أرجواني
 أرجواني	ar	css	nombre	purple	#800080		أرجواني
 أرجواني	ar	lexico	sinonimo	purple	#800080		أرجواني
 أرجواني داكن	ar	css	nombre	darkmagenta	#8B008B		أرجواني داكن
@@ -5783,6 +5782,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 ليمونية	ar	lexico	flexion	lime	#00FF00	Gender=Fem;Number=Sing	ليمونية
 لیمویی	fa	css	nombre	lime	#00FF00		لیمویی
 لیمویی	fa	lexico	lema	lime	#00FF00		لیمویی
+ماجنتا	ar	css	nombre	magenta	#FF00FF		ماجنتا
 ماجنتا	ar	lexico	lema	magenta	#FF00FF		ماجنتا
 مرجاني	ar	css	nombre	coral	#FF7F50		مرجاني
 مرجاني	ar	lexico	lema	coral	#FF7F50		مرجاني
@@ -5861,16 +5861,16 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 गहरा नीला	hi	lexico	lema	darkblue	#00008B		गहरा नीला
 गहरा फ़िरोज़ी	hi	css	nombre	darkturquoise	#00CED1		गहरा फ़िरोज़ी
 गहरा बैंगनी	hi	css	nombre	darkviolet	#9400D3		गहरा बैंगनी
-गहरा भूरा	hi	css	nombre	darkgray	#A9A9A9		गहरा भूरा
-गहरा भूरा	hi	css	nombre	darkgrey	#A9A9A9		गहरा भूरा
 गहरा मैजेंटा	hi	css	nombre	darkmagenta	#8B008B		गहरा मैजेंटा
 गहरा लाल	hi	css	nombre	darkred	#8B0000		गहरा लाल
 गहरा समुद्री हरा	hi	css	nombre	darkseagreen	#8FBC8F		गहरा समुद्री हरा
 गहरा सायन	hi	css	nombre	darkcyan	#008B8B		गहरा सायन
 गहरा सैल्मन	hi	css	nombre	darksalmon	#E9967A		गहरा सैल्मन
+गहरा स्लेट धूसर	hi	css	nombre	darkslategray	#2F4F4F		गहरा स्लेट धूसर
+गहरा स्लेट धूसर	hi	css	nombre	darkslategrey	#2F4F4F		गहरा स्लेट धूसर
 गहरा स्लेट नीला	hi	css	nombre	darkslateblue	#483D8B		गहरा स्लेट नीला
-गहरा स्लेट भूरा	hi	css	nombre	darkslategray	#2F4F4F		गहरा स्लेट भूरा
-गहरा स्लेट भूरा	hi	css	nombre	darkslategrey	#2F4F4F		गहरा स्लेट भूरा
+गहरा स्लेटी	hi	css	nombre	darkgray	#A9A9A9		गहरा स्लेटी
+गहरा स्लेटी	hi	css	nombre	darkgrey	#A9A9A9		गहरा स्लेटी
 गहरा हरा	hi	css	nombre	darkgreen	#006400		गहरा हरा
 गहरा हरा	hi	lexico	lema	darkgreen	#006400		गहरा हरा
 गुलाबी	hi	css	nombre	pink	#FFC0CB		गुलाबी
@@ -5894,8 +5894,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 डॉजर नीला	hi	css	nombre	dodgerblue	#1E90FF		डॉजर नीला
 थिसल	hi	css	nombre	thistle	#D8BFD8		थिसल
 धुंधला गुलाबी	hi	css	nombre	mistyrose	#FFE4E1		धुंधला गुलाबी
-धुंधला भूरा	hi	css	nombre	dimgray	#696969		धुंधला भूरा
-धुंधला भूरा	hi	css	nombre	dimgrey	#696969		धुंधला भूरा
+धुंधला स्लेटी	hi	css	nombre	dimgray	#696969		धुंधला स्लेटी
+धुंधला स्लेटी	hi	css	nombre	dimgrey	#696969		धुंधला स्लेटी
 धुआँ सफ़ेद	hi	css	nombre	whitesmoke	#F5F5F5		धुआँ सफ़ेद
 धूसर	hi	lexico	sinonimo	gray	#808080		धूसर
 नारंगी	hi	css	nombre	orange	#FFA500		नारंगी
@@ -5942,8 +5942,6 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 भारतीय लाल	hi	css	nombre	indianred	#CD5C5C		भारतीय लाल
 भूत जैसा सफ़ेद	hi	css	nombre	ghostwhite	#F8F8FF		भूत जैसा सफ़ेद
 भूरा	hi	css	nombre	brown	#A52A2A		भूरा
-भूरा	hi	css	nombre	gray	#808080		भूरा
-भूरा	hi	css	nombre	grey	#808080		भूरा
 भूरा	hi	lexico	lema	brown	#A52A2A		भूरा
 भूरी	hi	lexico	flexion	brown	#A52A2A	Gender=Fem;Number=Sing	भूरी
 भूरे	hi	lexico	flexion	brown	#A52A2A	Gender=Masc;Number=Plur	भूरे
@@ -5999,9 +5997,11 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 सैल्मन	hi	css	nombre	salmon	#FA8072		सैल्मन
 सैल्मन	hi	lexico	lema	salmon	#FA8072		सैल्मन
 स्टील नीला	hi	css	nombre	steelblue	#4682B4		स्टील नीला
+स्लेट धूसर	hi	css	nombre	slategray	#708090		स्लेट धूसर
+स्लेट धूसर	hi	css	nombre	slategrey	#708090		स्लेट धूसर
 स्लेट नीला	hi	css	nombre	slateblue	#6A5ACD		स्लेट नीला
-स्लेट भूरा	hi	css	nombre	slategray	#708090		स्लेट भूरा
-स्लेट भूरा	hi	css	nombre	slategrey	#708090		स्लेट भूरा
+स्लेटी	hi	css	nombre	gray	#808080		स्लेटी
+स्लेटी	hi	css	nombre	grey	#808080		स्लेटी
 स्लेटी	hi	lexico	lema	gray	#808080		स्लेटी
 हरा	hi	css	nombre	green	#008000		हरा
 हरा	hi	lexico	lema	green	#008000		हरा
@@ -6016,16 +6016,16 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 हल्का पीला	hi	css	nombre	lightyellow	#FFFFE0		हल्का पीला
 हल्का फ़िरोज़ी	hi	css	nombre	paleturquoise	#AFEEEE		हल्का फ़िरोज़ी
 हल्का बैंगनी लाल	hi	css	nombre	palevioletred	#DB7093		हल्का बैंगनी लाल
-हल्का भूरा	hi	css	nombre	lightgray	#D3D3D3		हल्का भूरा
-हल्का भूरा	hi	css	nombre	lightgrey	#D3D3D3		हल्का भूरा
 हल्का मूंगा	hi	css	nombre	lightcoral	#F08080		हल्का मूंगा
 हल्का समुद्री हरा	hi	css	nombre	lightseagreen	#20B2AA		हल्का समुद्री हरा
 हल्का सायन	hi	css	nombre	lightcyan	#E0FFFF		हल्का सायन
 हल्का सुनहरा पीला	hi	css	nombre	lightgoldenrodyellow	#FAFAD2		हल्का सुनहरा पीला
 हल्का सैल्मन	hi	css	nombre	lightsalmon	#FFA07A		हल्का सैल्मन
 हल्का स्टील नीला	hi	css	nombre	lightsteelblue	#B0C4DE		हल्का स्टील नीला
-हल्का स्लेट भूरा	hi	css	nombre	lightslategray	#778899		हल्का स्लेट भूरा
-हल्का स्लेट भूरा	hi	css	nombre	lightslategrey	#778899		हल्का स्लेट भूरा
+हल्का स्लेट धूसर	hi	css	nombre	lightslategray	#778899		हल्का स्लेट धूसर
+हल्का स्लेट धूसर	hi	css	nombre	lightslategrey	#778899		हल्का स्लेट धूसर
+हल्का स्लेटी	hi	css	nombre	lightgray	#D3D3D3		हल्का स्लेटी
+हल्का स्लेटी	hi	css	nombre	lightgrey	#D3D3D3		हल्का स्लेटी
 हल्का हरा	hi	css	nombre	lightgreen	#90EE90		हल्का हरा
 हल्का हरा	hi	css	nombre	palegreen	#98FB98		हल्का हरा
 हल्का हरा	hi	lexico	lema	lightgreen	#90EE90		हल्का हरा
@@ -6681,7 +6681,6 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 深紅	ja	lexico	lema	crimson	#DC143C		深紅
 深紫罗兰	zh	css	nombre	darkviolet	#9400D3		深紫罗兰
 深緑	ja	lexico	lema	darkgreen	#006400		深緑
-深红色	zh	css	nombre	crimson	#DC143C		深红色
 深红色	zh	css	nombre	darkred	#8B0000		深红色
 深红色	zh	lexico	lema	crimson	#DC143C		深红色
 深绿松石色	zh	css	nombre	darkturquoise	#00CED1		深绿松石色
@@ -6775,6 +6774,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 红色	zh	lexico	lema	red	#FF0000		红色
 纳瓦霍白	zh	css	nombre	navajowhite	#FFDEAD		纳瓦霍白
 绯红	zh	lexico	sinonimo	crimson	#DC143C		绯红
+绯红色	zh	css	nombre	crimson	#DC143C		绯红色
 绿	zh	lexico	sinonimo	green	#008000		绿
 绿松石色	zh	css	nombre	turquoise	#40E0D0		绿松石色
 绿松石色	zh	lexico	lema	turquoise	#40E0D0		绿松石色
@@ -6951,13 +6951,13 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty
 엉겅퀴	ko	css	nombre	thistle	#D8BFD8		엉겅퀴
 연기 흰색	ko	css	nombre	whitesmoke	#F5F5F5		연기 흰색
 연노랑	ko	css	nombre	lightyellow	#FFFFE0		연노랑
-연두	ko	css	nombre	lightgreen	#90EE90		연두
 연두	ko	css	nombre	yellowgreen	#9ACD32		연두
 연두색	ko	css	nombre	greenyellow	#ADFF2F		연두색
 연두색	ko	lexico	lema	lightgreen	#90EE90		연두색
 연분홍	ko	css	nombre	lightpink	#FFB6C1		연분홍
 연어색	ko	css	nombre	salmon	#FA8072		연어색
 연어색	ko	lexico	lema	salmon	#FA8072		연어색
+연초록	ko	css	nombre	lightgreen	#90EE90		연초록
 연하늘	ko	css	nombre	lightblue	#ADD8E6		연하늘
 연한 골든로드	ko	css	nombre	palegoldenrod	#EEE8AA		연한 골든로드
 연한 골든로드 옐로	ko	css	nombre	lightgoldenrodyellow	#FAFAD2		연한 골든로드 옐로

@@ -1274,8 +1274,15 @@ class Programa(unittest.TestCase):
         self.assertEqual(codigo, 1)
         self.assertIn("exportes/manifiesto.json", error)
 
+    def poner_changelog(self, texto):
+        """Un CHANGELOG propio: estas pruebas no dependen de lo que diga el real."""
+        (self.carpeta / "CHANGELOG.md").write_text(texto, encoding="utf-8")
+
     def test_la_version_del_manifiesto_sale_del_changelog(self):
-        self.reescribir("CHANGELOG.md", lambda t: t.replace("## 1.0.0 - 2026-10-19", "## 1.1.0 - 2026-10-20\n\nUn cambio.\n\n## 1.0.0 - 2026-10-19", 1))
+        self.poner_changelog("# Cambios\n\n## 1.0.0 - 2026-01-01\n\nPrimera.\n")
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertEqual(json.loads((self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))["version"], "1.0.0")
+        self.poner_changelog("# Cambios\n\n## 1.1.0 - 2026-02-01\n\nUn cambio.\n\n## 1.0.0 - 2026-01-01\n\nPrimera.\n")
         codigo, _, error = ejecutar(self.carpeta, "--comprobar")
         self.assertEqual(codigo, 1)
         self.assertIn("No coinciden con los CSV: exportes/manifiesto.json.", error, "solo el manifiesto cambia con la versión")
@@ -1291,7 +1298,7 @@ class Programa(unittest.TestCase):
 
     def test_un_changelog_invalido_es_un_error_y_no_toca_nada(self):
         antes = self.estado()
-        self.reescribir("CHANGELOG.md", lambda t: t.replace("## 1.0.0 - 2026-10-19", "## 1.0 - 2026-10-19", 1))
+        self.poner_changelog("# Cambios\n\n## 1.0 - 2026-01-01\n\nPrimera.\n")
         antes["CHANGELOG.md"] = (self.carpeta / "CHANGELOG.md").read_bytes()
         codigo, _, error = ejecutar(self.carpeta)
         self.assertEqual(codigo, 1)

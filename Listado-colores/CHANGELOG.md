@@ -10,6 +10,21 @@ Cuándo subir cada número es decisión de quien cambia los datos; el generador 
 
 Cada entrada empieza por `## X.Y.Z - AAAA-MM-DD`, va de la más reciente a la más antigua y dice qué cambió. `generar-tabla.py` comprueba el formato.
 
+## 1.1.0 - 2026-10-22
+
+- **Traducciones de nombres corregidas** en `colores.csv`: 27 celdas de 23 colores en 12 idiomas, para que dos colores CSS de hex distinto dejen de llamarse igual. Los nombres CSS repetidos entre colores de distinto hex pasan de 40 a 29. Se cambia el nombre que peor encaja de cada par, no los dos, y solo donde había un nombre distinto de uso corriente:
+  - Hindi: la familia de los grises se llamaba `भूरा` («marrón», que es `brown`), en contradicción con el léxico del propio proyecto. Ahora usa `स्लेटी` (el lema del léxico) y, con «slate», `धूसर` (14 colores).
+  - Ruso `cyan`: `голубой` → `циан` (`голубой` es «azul claro», `lightblue`). Ucraniano `cyan`: `блакитний` → `ціан`.
+  - Finés `navy`: `tummansininen` → `laivastonsininen` (`tummansininen` queda en `darkblue`).
+  - Árabe `magenta`: `أرجواني` → `ماجنتا` (`أرجواني` queda en `purple`).
+  - Chino `crimson`: `深红色` → `绯红色` (`深红色` queda en `darkred`).
+  - Coreano `lightgreen`: `연두` → `연초록` (`연두` queda en `yellowgreen`).
+  - Vietnamita: `lightblue`, `lightgreen` y `palegreen` se llamaban `xanh nhạt`; ahora `xanh dương nhạt`, `xanh lá nhạt` y `xanh lá non`.
+  - Indonesio `crimson`: `merah tua` → `merah padam` (como en el léxico; `merah tua` queda en `darkred`).
+  - Danés `lightpink`: `lyserød` → `lys lyserød` (`lyserød` queda en `pink`).
+  - Polaco `purple`: `fioletowy` → `purpurowy`; checo `purple`: `fialová` → `purpurová` (`fioletowy` y `fialová` quedan en `violet`).
+- Son propuestas de un asistente de IA, sin revisión de hablantes nativos. Las 29 colisiones que quedan son sobre todo lenguas que no distinguen los dos colores (púrpura y violeta en hebreo, persa, bengalí, suajili…) o casos en los que no había un nombre distinto del que estuviera seguro; no se tocan sin un hablante nativo.
+
 ## 1.0.0 - 2026-10-19
 
 Primera versión numerada. Antes no hubo versiones: los cambios anteriores están en el historial de git.

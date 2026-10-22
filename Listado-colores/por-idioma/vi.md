@@ -76,12 +76,12 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `lavenderblush` | hồng oải hương | `#FFF0F5` |  | Tinh tế, dịu dàng, lãng mạn và mềm mại. | Sự thuần khiết đầy yêu thương; vị ngọt của những khởi đầu. | derivado | derivado |
 | `lawngreen` | xanh cỏ | `#7CFC00` |  | Tươi mát, sức sống, lạc quan và tuổi trẻ. | Mùa xuân và đồng cỏ xanh; sự sống nảy mầm và đổi mới. | derivado | derivado |
 | `lemonchiffon` | voan chanh | `#FFFACD` |  | Niềm vui dịu nhẹ, tươi mát và lạc quan hiền hòa. | Ánh nắng ban mai; sự sáng rõ và khởi đầu dễ chịu. | derivado | derivado |
-| `lightblue` | xanh nhạt | `#ADD8E6` |  | Bình tĩnh, thanh thản, tin cậy và nhẹ nhàng. | Bầu trời và nước yên ả; hòa bình, giấc mơ và sự sáng rõ. | derivado | derivado |
+| `lightblue` | xanh dương nhạt | `#ADD8E6` |  | Bình tĩnh, thanh thản, tin cậy và nhẹ nhàng. | Bầu trời và nước yên ả; hòa bình, giấc mơ và sự sáng rõ. | derivado | derivado |
 | `lightcoral` | san hô nhạt | `#F08080` |  | Ấm áp dịu nhẹ, trìu mến, gần gũi và nhạy cảm. | Tình yêu và sự bảo vệ; sinh lực dịu dàng của biển. | derivado | derivado |
 | `lightcyan` | xanh lơ nhạt | `#E0FFFF` |  | Tươi mát nhẹ nhàng, trong trẻo và bình tĩnh. | Nước trong và không khí tinh khiết; sự thuần khiết của tư tưởng. | derivado | derivado |
 | `lightgoldenrodyellow` | vàng cây thanh tú nhạt | `#FAFAD2` |  | Mềm mại rạng rỡ, lạc quan điềm tĩnh và ấm áp. | Ánh vàng dịu; sự giác ngộ hiền hòa và phúc lành. | derivado | derivado |
 | `lightgray` | xám nhạt | `#D3D3D3` | `lightgrey` | Trung lập, bình tĩnh, sạch sẽ và khoảng trống để thở. | Sự chuyển tiếp giữa điều thấy được và không thấy được; điều ở giữa. | derivado | derivado |
-| `lightgreen` | xanh nhạt | `#90EE90` |  | Bình tĩnh, tươi mát, đổi mới và khỏe khoắn. | Chồi non và hy vọng; sinh trưởng non tơ và chữa lành nhẹ nhàng. | derivado | derivado |
+| `lightgreen` | xanh lá nhạt | `#90EE90` |  | Bình tĩnh, tươi mát, đổi mới và khỏe khoắn. | Chồi non và hy vọng; sinh trưởng non tơ và chữa lành nhẹ nhàng. | derivado | derivado |
 | `lightgrey` | xám nhạt | `#D3D3D3` | `lightgray` | Trung lập, bình tĩnh, sạch sẽ và khoảng trống để thở. | Sự chuyển tiếp giữa điều thấy được và không thấy được; điều ở giữa. | derivado | derivado |
 | `lightpink` | hồng nhạt | `#FFB6C1` |  | Dịu dàng, ngọt ngào, ngây thơ và trìu mến nhẹ nhàng. | Tình yêu tinh tế và sự thuần khiết; những khởi đầu lãng mạn. | derivado | derivado |
 | `lightsalmon` | cá hồi nhạt | `#FFA07A` |  | Ấm áp vui tươi, gần gũi và năng lượng hiền hòa. | Mặt trời buổi sáng; sự hòa nhã và rộng lượng. | derivado | derivado |
@@ -118,7 +118,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `orangered` | đỏ cam | `#FF4500` |  | Năng lượng mạnh, sức đẩy, nhiệt huyết và khẩn thiết. | Lửa và sự hừng hực; hành động, dũng khí và chuyển hóa. | derivado | derivado |
 | `orchid` | hoa lan | `#DA70D6` |  | Thanh lịch, nhạy cảm, lãng mạn và sáng tạo. | Vẻ đẹp và chuyển hóa; đời sống tinh thần tinh luyện. | derivado | derivado |
 | `palegoldenrod` | cây thanh tú nhạt | `#EEE8AA` |  | Mềm mại, thanh thản, ấm áp và lạc quan điềm tĩnh. | Ánh sáng mùa gặt; sự dồi dào hiền hòa và phúc lành. | derivado | derivado |
-| `palegreen` | xanh nhạt | `#98FB98` |  | Bình tĩnh, tươi mát, đổi mới và khỏe khoắn. | Chồi non mềm mại; hy vọng, chữa lành và sinh trưởng nhẹ nhàng. | derivado | derivado |
+| `palegreen` | xanh lá non | `#98FB98` |  | Bình tĩnh, tươi mát, đổi mới và khỏe khoắn. | Chồi non mềm mại; hy vọng, chữa lành và sinh trưởng nhẹ nhàng. | derivado | derivado |
 | `paleturquoise` | ngọc lam nhạt | `#AFEEEE` |  | Bình tĩnh, nhẹ nhàng, tươi mát và sáng rõ. | Nước và bầu trời yên ả; thuần khiết, chữa lành và hòa bình. | derivado | derivado |
 | `palevioletred` | đỏ tím nhạt | `#DB7093` |  | Dịu dàng, trìu mến, nhạy cảm và hoài niệm. | Tình yêu tinh tế; sự nhạy cảm và những mối dây tình cảm. | derivado | derivado |
 | `papayawhip` | kem đu đủ | `#FFEFD5` |  | Ấm áp dịu nhẹ, ngọt ngào, thoải mái và niềm vui nhiệt đới. | Trái cây của mặt trời và sự dồi dào; lòng hiếu khách và lạc thú giản đơn. | derivado | derivado |

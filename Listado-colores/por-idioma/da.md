@@ -83,7 +83,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `lightgray` | lysegrå | `#D3D3D3` | `lightgrey` | Neutralitet, ro, renhed og plads til at trække vejret. | Overgang mellem det synlige og det usynlige; det mellemliggende. | derivado | derivado |
 | `lightgreen` | lysegrøn | `#90EE90` |  | Ro, friskhed, fornyelse og velvære. | Spire og håb; øm vækst og mild healing. | derivado | derivado |
 | `lightgrey` | lysegrå | `#D3D3D3` | `lightgray` | Neutralitet, ro, renhed og plads til at trække vejret. | Overgang mellem det synlige og det usynlige; det mellemliggende. | derivado | derivado |
-| `lightpink` | lyserød | `#FFB6C1` |  | Ømhed, sødme, uskyld og blød hengivenhed. | Sart kærlighed og renhed; romantiske begyndelser. | derivado | derivado |
+| `lightpink` | lys lyserød | `#FFB6C1` |  | Ømhed, sødme, uskyld og blød hengivenhed. | Sart kærlighed og renhed; romantiske begyndelser. | derivado | derivado |
 | `lightsalmon` | lyslaks | `#FFA07A` |  | Glad varme, nærhed og venlig energi. | Morgensol; venlighed og gavmildhed. | derivado | derivado |
 | `lightseagreen` | lys havgrøn | `#20B2AA` |  | Ro, balance, friskhed og kommunikation. | Hav og healing; balance mellem følelse og sind. | derivado | derivado |
 | `lightskyblue` | lyshimmelblå | `#87CEFA` |  | Lethed, frihed, sindsro og optimisme. | Åben himmel; inspiration, fred og høje stræbsomheder. | derivado | derivado |
