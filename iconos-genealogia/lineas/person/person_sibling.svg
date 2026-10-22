@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="links">
-    <path d="M31 22.5L31 30.5L17 30.5L17 38.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M31 22.5L31 30.5L45 30.5L45 39.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 22.5L31 30.5L17 30.5L17 38.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 22.5L31 30.5L45 30.5L45 39.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
     <g><path d="M40.1 15A1.76 1.76 0 0 1 39.93 17.3L34.16 23.07A1.76 1.76 0 0 1 31.68 23.07L25.91 17.3A1.76 1.76 0 0 1 25.74 17.12L23.82 14.56A1.76 1.76 0 0 1 23.99 12.26L29.76 6.49A1.76 1.76 0 0 1 32.24 6.49L38.01 12.26A1.76 1.76 0 0 1 38.18 12.44Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="25.16" y="7.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 31 13.5)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>

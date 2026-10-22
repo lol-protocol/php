@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="links">
-    <path d="M34 8.6L37.25 8.6M34 12.4L37.25 12.4" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.61"/>
-    <path d="M35 10.5L35 20.5L19 20.5L19 25.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M35 10.5L35 20.5L51 20.5L51 25.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M19 36.75L19 40.5L11 40.5L11 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M19 36.75L19 40.5L27 40.5L27 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M51 36.75L51 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M34 8.6L37.25 8.6M34 12.4L37.25 12.4" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.8"/>
+    <path d="M35 10.5L35 20.5L19 20.5L19 25.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M35 10.5L35 20.5L51 20.5L51 25.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M19 36.75L19 40.5L11 40.5L11 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M19 36.75L19 40.5L27 40.5L27 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M51 36.75L51 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
     <g><path d="M33.48 7.54A1.63 1.63 0 0 1 33.81 8.52L33.81 16.14A1.63 1.63 0 0 1 32.18 17.77L24.56 17.77A1.63 1.63 0 0 1 23.26 17.12L21.89 15.29A1.63 1.63 0 0 1 21.56 14.31L21.56 6.69A1.63 1.63 0 0 1 23.19 5.06L30.81 5.06A1.63 1.63 0 0 1 32.11 5.71Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="21.56" y="5.06" width="10.88" height="10.88" rx="1.63" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>

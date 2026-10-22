@@ -9,6 +9,8 @@ import math
 from catalogo import VARIANTS
 LIGHT = (0.6, 0.8)  # direccion de la extrusion: abajo a la derecha
 INSET = 0.3  # cuanto se mete el borde trasero de la extrusion bajo la cara frontal (ver exact_sweep)
+LINE_MIN, LINE_MAX = 1.8, 2.2  # grosor en lineas: el contorno de un volumen es LINE_MIN; marcas y enlaces, entre los dos
+BAR = 2.8  # un enlace mas grueso es una barra a proposito (relationship_blood_bond, action_connect): no se normaliza
 GRAY_GAP = 20  # minimo de gris (de 255) entre dos volumenes de tonos distintos que se tocan, en la variante gris
 
 BASE = {
@@ -510,8 +512,8 @@ class Icon:
             parts = []
             if lin:
                 if sweep and s['shape'].convex:
-                    parts.append(f'<path d="{sweep}" fill="none" stroke="{dark}" stroke-width="1.8" stroke-linejoin="round"/>')
-                parts.append(s['shape'].front(f'fill="none" stroke="{dark}" stroke-width="1.8" stroke-linejoin="round"'))
+                    parts.append(f'<path d="{sweep}" fill="none" stroke="{dark}" stroke-width="{fmt(LINE_MIN)}" stroke-linejoin="round"/>')
+                parts.append(s['shape'].front(f'fill="none" stroke="{dark}" stroke-width="{fmt(LINE_MIN)}" stroke-linejoin="round"'))
             else:
                 if sweep:
                     dfill = tones(s['depth'])[1] if s['depth'] else dark
@@ -607,6 +609,8 @@ class Icon:
         lin = variant == 'lineas'
         c = dark if lin else col(base)
         w, p, style = ln['w'], ln['pts'], ln['style']
+        if lin and w <= BAR:  # en lineas los enlaces pesaban 2,6 y los contornos 1,8: todo trazo normal entre los dos
+            w = max(LINE_MIN, min(w, LINE_MAX))
         cap = 'butt' if lin and style != 'dotted' else 'round'
         common = f'fill="none" stroke="{c}" stroke-linecap="{cap}" stroke-linejoin="round"'
         sil = self._silhouettes() if lin else []
@@ -629,7 +633,7 @@ class Icon:
             d = ''
             for s in (-off, off):
                 d += d_of(polys([(a[0] + nx * s, a[1] + ny * s), (b[0] + nx * s, b[1] + ny * s)]))
-            return [f'<path d="{d}" {common} stroke-width="{fmt(w * 0.62)}"/>'] if d else []
+            return [f'<path d="{d}" {common} stroke-width="{fmt(LINE_MIN if lin else round(w * 0.62, 1))}"/>'] if d else []
         if style == 'cut':
             mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
             g = 4.8
@@ -647,7 +651,7 @@ class Icon:
     def _render_mark(self, m, lin, col, d=None):
         if lin:
             hue = m['tone'] if m['tone'] in BASE else m['ink']
-            w = 1.8 if m['filled'] else max(1.8, min(m['w'], 2.2))
+            w = LINE_MIN if m['filled'] else max(LINE_MIN, min(m['w'], LINE_MAX))
             attrs = (f'fill="none" stroke="{tones(hue)[2]}" stroke-width="{fmt(w)}" '
                      'stroke-linecap="round" stroke-linejoin="round"')
         else:

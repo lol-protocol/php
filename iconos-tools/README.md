@@ -63,7 +63,7 @@ en `ACEPTADOS` (hoy está vacío).
 
 Cada sólido es su cara frontal más una pared extruida hacia abajo y a la derecha (`LIGHT` en `lib.py`).
 La pared se dibuja con las mismas rectas y arcos de la forma (`exact_sweep`), no con un polígono que
-la aproxime: se ve igual de suave a 16 px que a 512 px. Cuatro detalles:
+la aproxime: se ve igual de suave a 16 px que a 512 px. Cinco detalles:
 
 - El degradado de la cara va de arriba a la izquierda a abajo a la derecha. En
   una forma girada (los rombos) se gira de vuelta (`light_axis`), porque si no
@@ -77,6 +77,9 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Cuatro detalles:
   los tonos de la paleta se reparten bien en color pero siete caen en 11 niveles de gris, y sin esto
   `book_index` o `ui_collection` quedaban como un solo bloque. Cede el volumen de delante
   (`_gray_shifts`); su degradado lleva el desplazamiento en el id (`..._g_p15`).
+- En `lineas`, todo trazo normal pesa entre `LINE_MIN` (1,8, el contorno de un volumen) y `LINE_MAX` (2,2): antes
+  los enlaces pesaban 2,6 y destacaban más que los objetos que unen. Las barras a propósito (`BAR`: el vínculo
+  de sangre, `action_connect`) conservan su grosor. Un enlace doble de color y gris pesa 1,6, no 1,61.
 - Las coordenadas llevan dos decimales (`fmt`). Con uno, el redondeo de los extremos de un arco
   de 1,5 de radio se notaba al ampliar.
 

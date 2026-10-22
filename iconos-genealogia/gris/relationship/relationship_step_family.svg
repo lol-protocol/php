@@ -14,7 +14,7 @@
     <ellipse cx="31.86" cy="58.59" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="links">
-    <path d="M11 11.6L51 11.6M11 15.4L51 15.4" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.61"/>
+    <path d="M11 11.6L51 11.6M11 15.4L51 15.4" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
     <path d="M11 13.5L11 47.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
     <path d="M51 13.5L51 47.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
     <path d="M11 47.5L51 47.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" stroke-dasharray="4 4.5"/>
