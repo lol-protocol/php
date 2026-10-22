@@ -15,16 +15,26 @@ namespace PortadasSvg;
  */
 final class Catalogo
 {
-    /** @var list<array{slug: string, nombre: string, familia: string}>|null */
+    /** @var list<array{slug: string, nombre: string, familia: string, tono: int}>|null */
     private static ?array $categorias = null;
     /** @var list<array{slug: string, nombre: string}>|null */
     private static ?array $tradiciones = null;
 
-    /** @return list<array{slug: string, nombre: string, familia: string}> */
+    /**
+     * Cada categoría trae su `familia` (movimiento literario o tipo de texto) y un `tono` de 0 a 360° que
+     * da el color de sus libros.
+     *
+     * @return list<array{slug: string, nombre: string, familia: string, tono: int}>
+     */
     public static function categorias(): array
     {
         return self::$categorias ??= array_map(
-            static fn (array $fila): array => ['slug' => $fila['slug'], 'nombre' => $fila['nombre'], 'familia' => $fila['familia'] ?? throw new \RuntimeException('datos/categorias.json: falta la familia de ' . $fila['slug'] . '.')],
+            static fn (array $fila): array => [
+                'slug' => $fila['slug'],
+                'nombre' => $fila['nombre'],
+                'familia' => $fila['familia'] ?? throw new \RuntimeException('datos/categorias.json: falta la familia de ' . $fila['slug'] . '.'),
+                'tono' => $fila['tono'] ?? throw new \RuntimeException('datos/categorias.json: falta el tono (0 a 360) de ' . $fila['slug'] . '.'),
+            ],
             self::leer('categorias'),
         );
     }
@@ -38,7 +48,7 @@ final class Catalogo
         );
     }
 
-    /** @return array{slug: string, nombre: string, familia: string} */
+    /** @return array{slug: string, nombre: string, familia: string, tono: int} */
     public static function categoria(string $clave): array
     {
         return self::buscar(self::categorias(), $clave, 'categoría');
@@ -67,7 +77,7 @@ final class Catalogo
         throw new \InvalidArgumentException("la $que «{$clave}» no existe; usa una de: " . implode(', ', array_column($opciones, 'slug')) . '.');
     }
 
-    /** @return list<array{slug: string, nombre: string, familia?: string}> */
+    /** @return list<array{slug: string, nombre: string, familia?: string, tono?: int}> */
     private static function leer(string $nombre): array
     {
         $ruta = __DIR__ . "/../datos/$nombre.json";
@@ -88,7 +98,13 @@ final class Catalogo
                 throw new \RuntimeException("datos/$nombre.json: cada elemento necesita un 'slug' único (a-z, cifras y guiones) y un 'nombre'.");
             }
             $vistos[$fila['slug']] = true;
-            $resultado[] = ['slug' => $fila['slug'], 'nombre' => $fila['nombre']] + (is_string($fila['familia'] ?? null) ? ['familia' => $fila['familia']] : []);
+            $tono = $fila['tono'] ?? null;
+            if ($tono !== null && (!is_int($tono) || $tono < 0 || $tono > 360)) {
+                throw new \RuntimeException("datos/$nombre.json: el tono de '{$fila['slug']}' debe ser un entero de 0 a 360.");
+            }
+            $resultado[] = ['slug' => $fila['slug'], 'nombre' => $fila['nombre']]
+                + (is_string($fila['familia'] ?? null) ? ['familia' => $fila['familia']] : [])
+                + ($tono === null ? [] : ['tono' => $tono]);
         }
 
         return $resultado;

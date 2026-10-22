@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PortadasSvg;
 
+use PortadasSvg\Adornos\Adorno;
 use PortadasSvg\Plantillas\Clasica;
 use PortadasSvg\Plantillas\Sobria;
 
@@ -40,6 +41,10 @@ abstract class Plantilla
     protected const CONTRATAPA_RAYA_Y = 22.0;
     protected const CONTRATAPA_RAYA_LARGO = 12.0;
     protected const CONTRATAPA_RAYA_GROSOR = 0.8;
+    /** Contratapa: friso del adorno de la tradición, que sustituye a la raya (distancia al borde superior, ancho y alto). */
+    protected const CONTRATAPA_FRISO_Y = 17.0;
+    protected const CONTRATAPA_FRISO_ANCHO = 36.0;
+    protected const CONTRATAPA_FRISO_ALTO = 6.0;
     /** Contratapa: dónde empieza el texto desde el borde superior, qué fracción del alto puede ocupar y su tamaño. */
     protected const CONTRATAPA_TEXTO_Y = 34.0;
     protected const CONTRATAPA_TEXTO_ALTO = 0.5;
@@ -96,6 +101,20 @@ abstract class Plantilla
 
     /** @return array{fondo: string, texto: string, acento: string} */
     abstract public function coloresPorDefecto(): array;
+
+    /**
+     * Los colores de la plantilla para un libro de la categoría que tiene ese tono (0–360°, ver
+     * Catalogo): el mismo estilo de siempre, teñido de ese color.
+     *
+     * @return array{fondo: string, texto: string, acento: string}
+     */
+    abstract public function paleta(float $tono): array;
+
+    /** Adorno de la tradición del libro. */
+    protected function adorno(Libro $libro): Adorno
+    {
+        return Adorno::de($libro->tradicion);
+    }
 
     /**
      * Dibuja una vista (ver Medidas::vista): el fondo de esa zona y solo los paneles que caen en ella.
@@ -197,7 +216,11 @@ abstract class Plantilla
         $x = $panel->x + self::MARGEN;
         $ancho = $panel->ancho - 2 * self::MARGEN;
 
-        $svg = $this->linea($x, $panel->y + self::CONTRATAPA_RAYA_Y, $x + self::CONTRATAPA_RAYA_LARGO, $panel->y + self::CONTRATAPA_RAYA_Y, $colores['acento'], self::CONTRATAPA_RAYA_GROSOR);
+        // Arriba, el friso de la tradición; si no tiene, una raya de acento.
+        $svg = $this->adorno($libro)->friso(new Rectangulo($x, $panel->y + self::CONTRATAPA_FRISO_Y, self::CONTRATAPA_FRISO_ANCHO, self::CONTRATAPA_FRISO_ALTO), $colores['acento']);
+        if ($svg === '') {
+            $svg = $this->linea($x, $panel->y + self::CONTRATAPA_RAYA_Y, $x + self::CONTRATAPA_RAYA_LARGO, $panel->y + self::CONTRATAPA_RAYA_Y, $colores['acento'], self::CONTRATAPA_RAYA_GROSOR);
+        }
         if ($libro->textos->contratapa !== '') {
             $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $panel->alto * self::CONTRATAPA_TEXTO_ALTO, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
             $svg .= $this->parrafo($texto['lineas'], $x, $panel->y + self::CONTRATAPA_TEXTO_Y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);

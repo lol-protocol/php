@@ -73,7 +73,10 @@ final class Libro
         }
 
         $plantilla = self::cadena($datos, 'plantilla', 'clasica');
-        $colores = Plantilla::crear($plantilla)->coloresPorDefecto();
+        $tradicion = self::clasificacion($id, $datos, 'tradicion', Catalogo::tradicion(...));
+        $categoria = self::clasificacion($id, $datos, 'categoria', Catalogo::categoria(...));
+        // Sin colores propios, los de la categoría; sin categoría, los de la plantilla.
+        $colores = $categoria === null ? Plantilla::crear($plantilla)->coloresPorDefecto() : Plantilla::crear($plantilla)->paleta($categoria['tono']);
         foreach (self::objeto($datos, 'colores') as $rol => $color) {
             if (!array_key_exists($rol, $colores)) {
                 throw new \InvalidArgumentException("$id: el color '$rol' no existe; usa fondo, texto o acento.");
@@ -115,9 +118,6 @@ final class Libro
         if (!in_array($direccion, ['arriba-abajo', 'abajo-arriba'], true)) {
             throw new \InvalidArgumentException("$id: 'lomo_direccion' debe ser arriba-abajo o abajo-arriba.");
         }
-
-        $tradicion = self::clasificacion($id, $datos, 'tradicion', Catalogo::tradicion(...));
-        $categoria = self::clasificacion($id, $datos, 'categoria', Catalogo::categoria(...));
 
         $subtitulo = self::cadena($datos, 'subtitulo');
         $traductor = self::cadena($datos, 'traductor');

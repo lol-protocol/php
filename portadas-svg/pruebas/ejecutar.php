@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/autocarga.php';
 
+use PortadasSvg\Adornos\Adorno;
+use PortadasSvg\Adornos\Generico;
 use PortadasSvg\Anchos;
 use PortadasSvg\Archivos;
 use PortadasSvg\Catalogo;
@@ -235,9 +237,13 @@ function librosParaGeometria(): array
     $libros = [];
     foreach (['clasica', 'sobria'] as $plantilla) {
         foreach ([0.0, 90.0] as $solapas) {
-            $libros[] = libroLargo($plantilla, $solapas);
-            $libros[] = libroLargo($plantilla, $solapas, ['lomo_mm' => 3.2]);
-            $libros[] = libroLargo($plantilla, $solapas, ['titulo' => 'Hola']);
+            // Sin tradición y con cada una de las que tienen adorno propio.
+            foreach ([null, 'griega', 'china', 'arabe', 'medieval'] as $tradicion) {
+                $propios = $tradicion === null ? [] : ['tradicion' => $tradicion];
+                $libros[] = libroLargo($plantilla, $solapas, $propios);
+                $libros[] = libroLargo($plantilla, $solapas, ['lomo_mm' => 3.2] + $propios);
+                $libros[] = libroLargo($plantilla, $solapas, ['titulo' => 'Hola'] + $propios);
+            }
         }
     }
     foreach (glob(__DIR__ . '/../ejemplos/*.json') ?: [] as $ruta) {
@@ -266,15 +272,25 @@ function adornos(string $cuerpo): array
         $y = [(float) $linea->getAttribute('y1'), (float) $linea->getAttribute('y2')];
         $adornos[] = ['texto' => 'una línea', 'x0' => min($x) - $mitad, 'x1' => max($x) + $mitad, 'y0' => min($y) - $mitad, 'y1' => max($y) + $mitad];
     }
-    foreach ($doc->getElementsByTagName('polygon') as $poligono) {
-        $x = [];
-        $y = [];
-        foreach (explode(' ', $poligono->getAttribute('points')) as $punto) {
-            [$px, $py] = explode(',', $punto);
-            $x[] = (float) $px;
-            $y[] = (float) $py;
+    foreach (['polygon', 'polyline'] as $etiqueta) {
+        foreach ($doc->getElementsByTagName($etiqueta) as $poligono) {
+            $mitad = (float) $poligono->getAttribute('stroke-width') / 2;
+            $x = [];
+            $y = [];
+            foreach (explode(' ', $poligono->getAttribute('points')) as $punto) {
+                [$px, $py] = explode(',', $punto);
+                $x[] = (float) $px;
+                $y[] = (float) $py;
+            }
+            $adornos[] = ['texto' => 'un ornamento', 'x0' => min($x) - $mitad, 'x1' => max($x) + $mitad, 'y0' => min($y) - $mitad, 'y1' => max($y) + $mitad];
         }
-        $adornos[] = ['texto' => 'un ornamento', 'x0' => min($x), 'x1' => max($x), 'y0' => min($y), 'y1' => max($y)];
+    }
+    foreach ($doc->getElementsByTagName('circle') as $circulo) {
+        $mitad = (float) $circulo->getAttribute('stroke-width') / 2;
+        $cx = (float) $circulo->getAttribute('cx');
+        $cy = (float) $circulo->getAttribute('cy');
+        $r = (float) $circulo->getAttribute('r') + $mitad;
+        $adornos[] = ['texto' => 'un ornamento', 'x0' => $cx - $r, 'x1' => $cx + $r, 'y0' => $cy - $r, 'y1' => $cy + $r];
     }
     foreach ($doc->getElementsByTagName('rect') as $rectangulo) {
         $relleno = $rectangulo->getAttribute('fill');
@@ -1041,6 +1057,95 @@ $pruebas = [
         [$codigo] = correrCli(['--comprobar', "--lista=$dir/buena.csv"]);
         igual(2, $codigo);
         Archivos::borrarDirectorio($dir);
+    },
+
+    'Los adornos caben en la zona que se les da, sea cual sea' => function (): void {
+        $fuera = [];
+        foreach (['griega', 'china', 'arabe', 'medieval'] as $tradicion) {
+            $adorno = Adorno::de($tradicion);
+            foreach ([[36.0, 6.0], [36.0, 4.0], [99.0, 5.0], [17.3, 4.0], [4.0, 5.0]] as [$ancho, $alto]) {
+                $zona = new Rectangulo(10.0, 20.0, $ancho, $alto);
+                $dibujo = $adorno->friso($zona, '#000000');
+                verdadero($dibujo !== '', "$tradicion no dibuja friso");
+                foreach (adornos($dibujo) as $caja) {
+                    // Un grosor de tolerancia: los trazos son líneas con ancho y no cuentan como relleno.
+                    if ($caja['x0'] < $zona->x - 0.5 || $caja['x1'] > $zona->x + $ancho + 0.5 || $caja['y0'] < $zona->y - 0.5 || $caja['y1'] > $zona->y + $alto + 0.5) {
+                        $fuera[] = sprintf('friso %s %gx%g: x %.2f–%.2f, y %.2f–%.2f', $tradicion, $ancho, $alto, $caja['x0'], $caja['x1'], $caja['y0'], $caja['y1']);
+                        break;
+                    }
+                }
+            }
+            foreach ([2.0, 4.4, 9.0] as $radio) {
+                foreach (adornos($adorno->emblema(50.0, 60.0, $radio, '#000000')) as $caja) {
+                    if ($caja['x0'] < 50.0 - $radio - 0.3 || $caja['x1'] > 50.0 + $radio + 0.3 || $caja['y0'] < 60.0 - $radio - 0.3 || $caja['y1'] > 60.0 + $radio + 0.3) {
+                        $fuera[] = sprintf('emblema %s de radio %g: x %.2f–%.2f, y %.2f–%.2f', $tradicion, $radio, $caja['x0'], $caja['x1'], $caja['y0'], $caja['y1']);
+                        break;
+                    }
+                }
+            }
+        }
+        verdadero($fuera === [], "adornos fuera de su zona:\n  " . implode("\n  ", $fuera));
+    },
+
+    'Sin adorno propio, la plantilla conserva su rombo y su raya' => function (): void {
+        igual(Generico::class, Adorno::de(null)::class);
+        igual(Generico::class, Adorno::de('inventada')::class);
+        igual('', Adorno::de(null)->friso(new Rectangulo(0.0, 0.0, 36.0, 6.0), '#000000'));
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        Generador::escribir(libroDeEjemplo(), "$dir/sin");
+        Generador::escribir(libroDeEjemplo(['tradicion' => 'griega']), "$dir/con");
+        $sin = (string) file_get_contents("$dir/sin/contratapa.svg");
+        $con = (string) file_get_contents("$dir/con/contratapa.svg");
+        verdadero(str_contains($sin, '<line') && !str_contains($sin, '<polyline'), 'sin tradición, la contratapa lleva su raya');
+        verdadero(str_contains($con, '<polyline') && !str_contains($con, '<line'), 'con tradición, el friso sustituye a la raya');
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'La categoría da el color del libro, y los colores propios mandan' => function (): void {
+        igual('#ff0000', Color::hsl(0.0, 1.0, 0.5));
+        igual('#00ff00', Color::hsl(120.0, 1.0, 0.5));
+        igual('#0000ff', Color::hsl(-120.0, 1.0, 0.5));
+        igual('#808080', Color::hsl(200.0, 0.0, 0.5));
+
+        $sin = libroDeEjemplo();
+        $con = libroDeEjemplo(['categoria' => 'filosofia']);
+        $propios = libroDeEjemplo(['categoria' => 'filosofia', 'colores' => ['fondo' => '#112233']]);
+        verdadero($sin->colores !== $con->colores, 'la categoría no cambia los colores');
+        igual('#112233', $propios->colores['fondo']);
+        igual($con->colores['acento'], $propios->colores['acento']);
+        igual($con->colores, libroDeEjemplo(['categoria' => 'Filosofía y ensayo'])->colores);
+        // Las dos plantillas dan colores distintos para una misma categoría: una clara y una oscura.
+        verdadero(Color::esClaro($con->colores['fondo']) && !Color::esClaro(libroDeEjemplo(['categoria' => 'filosofia', 'plantilla' => 'sobria'])->colores['fondo']), 'la clásica es clara y la sobria oscura');
+    },
+
+    'Los colores de cada categoría se leen: texto y acento tienen contraste con el fondo' => function (): void {
+        $luz = static function (string $hex): float {
+            $canal = static fn (int $c): float => ($c /= 255) <= 0.03928 ? $c / 12.92 : (($c + 0.055) / 1.055) ** 2.4;
+            [$r, $g, $b] = Color::rgb($hex);
+
+            return 0.2126 * $canal($r) + 0.7152 * $canal($g) + 0.0722 * $canal($b);
+        };
+        $contraste = static function (string $a, string $b) use ($luz): float {
+            [$mas, $menos] = $luz($a) >= $luz($b) ? [$luz($a), $luz($b)] : [$luz($b), $luz($a)];
+
+            return ($mas + 0.05) / ($menos + 0.05);
+        };
+
+        $mal = [];
+        foreach (Catalogo::categorias() as $categoria) {
+            foreach (['clasica', 'sobria'] as $plantilla) {
+                $colores = Plantilla::crear($plantilla)->paleta((float) $categoria['tono']);
+                $texto = $contraste($colores['texto'], $colores['fondo']);
+                $acento = $contraste($colores['acento'], $colores['fondo']);
+                if ($texto < 7.0) {
+                    $mal[] = sprintf('%s %s: texto %.1f:1', $categoria['slug'], $plantilla, $texto);
+                }
+                if ($acento < 3.0) {
+                    $mal[] = sprintf('%s %s: acento %.1f:1', $categoria['slug'], $plantilla, $acento);
+                }
+            }
+        }
+        verdadero($mal === [], "contraste insuficiente:\n  " . implode("\n  ", $mal));
     },
 
     'Los libros de ejemplo se cargan' => function (): void {

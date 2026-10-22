@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PortadasSvg\Plantillas;
 
+use PortadasSvg\Color;
 use PortadasSvg\Libro;
 use PortadasSvg\Plantilla;
 use PortadasSvg\Rectangulo;
@@ -16,6 +17,9 @@ final class Sobria extends Plantilla
     private const BARRA_Y = 14.0;
     private const BARRA_ANCHO = 18.0;
     private const BARRA_ALTO = 2.4;
+    /** Friso del adorno de la tradición, que sustituye a la barra: ancho y alto. */
+    private const FRISO_ANCHO = 54.0;
+    private const FRISO_ALTO = 5.0;
     /** Título: distancia al borde superior del corte, alto disponible (fracción del alto) y tamaño. */
     private const TITULO_Y = 30.0;
     private const TITULO_ALTO = 0.42;
@@ -46,6 +50,11 @@ final class Sobria extends Plantilla
         return ['fondo' => '#1c1f24', 'texto' => '#f2efe6', 'acento' => '#c8a24a'];
     }
 
+    public function paleta(float $tono): array
+    {
+        return ['fondo' => Color::hsl($tono, 0.25, 0.12), 'texto' => Color::hsl($tono, 0.30, 0.94), 'acento' => Color::hsl($tono, 0.55, 0.62)];
+    }
+
     public function familia(): string
     {
         return 'sans';
@@ -62,7 +71,11 @@ final class Sobria extends Plantilla
         $x = $panel->x + self::MARGEN;
         $ancho = $panel->ancho - 2 * self::MARGEN;
 
-        $svg = $this->rectangulo(new Rectangulo($x, $panel->y + self::BARRA_Y, self::BARRA_ANCHO, self::BARRA_ALTO), ['fill' => $colores['acento']]);
+        // Arriba, el friso de la tradición; si no tiene, una barra de acento.
+        $svg = $this->adorno($libro)->friso(new Rectangulo($x, $panel->y + self::BARRA_Y, self::FRISO_ANCHO, self::FRISO_ALTO), $colores['acento']);
+        if ($svg === '') {
+            $svg = $this->rectangulo(new Rectangulo($x, $panel->y + self::BARRA_Y, self::BARRA_ANCHO, self::BARRA_ALTO), ['fill' => $colores['acento']]);
+        }
 
         $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $panel->alto * self::TITULO_ALTO, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->medidaDe(['font-weight' => 'bold']), self::INTERLINEADO, true);
         $y = $panel->y + self::TITULO_Y + $titulo['tamano'] * self::ASCENDENTE;

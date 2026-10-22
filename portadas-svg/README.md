@@ -93,6 +93,23 @@ Cada libro puede llevar dos clasificaciones, que se escriben por su identificado
 
 Un identificador que no existe se rechaza con la lista de los que sí.
 
+### Adornos por tradición
+
+La `tradicion` decide el adorno de la cubierta: un **friso** (una franja que se repite) arriba de la portada y de la contratapa, y un **emblema** en el centro de la portada de la plantilla clásica. Son solo líneas y círculos en el color de acento, sin imágenes.
+
+| Tradición | Friso | Emblema |
+|---|---|---|
+| `griega` | meandro (espirales cuadradas unidas por una línea de base) | espiral cuadrada dentro de un marco |
+| `china` | nubes en espiral (arcos concéntricos) | disco *bi*: círculos con un cuadrado girado |
+| `arabe` | estrellas de ocho puntas unidas por rombos, entre dos filetes | estrella de ocho puntas con círculo y octógono |
+| `medieval` | entrelazado de dos ondas | cuadrilóbulo gótico |
+
+Las demás tradiciones de la lista aún no tienen adorno propio y usan el de siempre: el rombo con dos líneas, y una raya o una barra de acento donde iría el friso. Para añadir uno, crea `src/Adornos/Nombre.php` que extienda `Adorno` (con `friso()` y `emblema()`), y regístralo en `Adorno::de()`. Una prueba comprueba que ningún adorno se salga de su zona ni pise un texto.
+
+### Colores por categoría
+
+Cada categoría tiene un `tono` (0–360°) en `datos/categorias.json`, repartidos con el ángulo áureo para que las 27 se distingan. Si el libro no da `colores`, la plantilla se tiñe de ese tono: la clásica con fondo claro, la sobria con fondo oscuro, y en las dos el acento del mismo tono. Así los libros de una categoría se parecen entre sí. Los `colores` del libro mandan sobre los de la categoría, color por color. Una prueba comprueba que, en las 27 categorías y las dos plantillas, el texto tenga contraste 7:1 con el fondo y el acento 3:1.
+
 ### La ficha de la contratapa y las solapas
 
 Si el libro trae `epoca`, `tradicion`, `categoria` o `cita`, y no trae los textos escritos a mano, la contratapa y las solapas se arman con esos datos. **No hay sinopsis inventada**: la ficha solo dice lo que ya está en los datos. Por ejemplo, la contratapa de *Meditaciones* sale así:
@@ -182,10 +199,10 @@ Un `"degradado": {}` vacío equivale a un degradado `auto` lineal de arriba abaj
 
 ## Plantillas
 
-- **`clasica`**: fondo crema, marco doble, título centrado en serif, un rombo como ornamento y el autor en mayúsculas espaciadas.
-- **`sobria`**: fondo oscuro, sans, título a la izquierda, regla de color de acento y lomo en ese mismo color.
+- **`clasica`**: fondo crema, marco doble, título centrado en serif, el adorno de la tradición (o un rombo) y el autor en mayúsculas espaciadas.
+- **`sobria`**: fondo oscuro, sans, título a la izquierda, friso o barra de color de acento y lomo en ese mismo color.
 
-Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plantilla`. Tiene que implementar `coloresPorDefecto()` y `portada()`, y puede redefinir `familia()` (`serif` por defecto, o `sans`) y `coloresLomo()`. Para medir un texto antes de colocarlo, usa `$this->medidaDe()`, con los atributos de estilo del texto si no es el normal (`['font-style' => 'italic']`, `['font-weight' => 'bold']`). Después regístrala en `Plantilla::disponibles()`. La contratapa, el lomo y las solapas se heredan.
+Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plantilla`. Tiene que implementar `coloresPorDefecto()`, `paleta()` (sus colores teñidos de un tono) y `portada()`, y puede redefinir `familia()` (`serif` por defecto, o `sans`) y `coloresLomo()`. Para medir un texto antes de colocarlo, usa `$this->medidaDe()`, con los atributos de estilo del texto si no es el normal (`['font-style' => 'italic']`, `['font-weight' => 'bold']`). Después regístrala en `Plantilla::disponibles()`. La contratapa, el lomo y las solapas se heredan.
 
 ## Fuentes
 
@@ -236,6 +253,7 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 
 ```
 bin/generar.php          línea de comandos
+src/Adornos/             un adorno por tradición (Griega, China, Arabe, Medieval) y el Generico
 src/                     Libro (con Formato y Textos), Lista (CSV), Catalogo, Ficha, Nombres, Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
 fuentes/                 fuentes woff2 que se incrustan en los SVG, con sus licencias
 datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
@@ -253,4 +271,4 @@ pruebas/ejecutar.php     pruebas unitarias, sin dependencias
 - El ajuste de texto mide con anchos reales pero sin kerning: las líneas pueden quedar hasta un 4 % más cortas de lo posible. Las letras que las fuentes no cubren (ver «Fuentes») se miden con un ancho medio.
 - Cada SVG pesa entre 65 y 140 KB por las fuentes incrustadas.
 - No genera el código de barras ni el PDF para imprenta; se obtiene desde los SVG con una herramienta externa.
-- Solo hay dos plantillas.
+- Solo hay dos plantillas, y solo cuatro tradiciones con adorno propio (de 16).
