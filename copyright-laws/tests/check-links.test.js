@@ -112,6 +112,12 @@ test("the CLI checks every URL of the CSV, reports and fails only on broken link
   assert.equal(spawnSync(process.execPath, [join(root, "scripts", "check-links.js"), "--nope"], { encoding: "utf-8" }).status, 2);
 });
 
+test("a page that redirects forever (a cookie wall) only warns, with the wording Node really produces", { skip }, async () => {
+  const result = await checkUrl(`${server.url}/loop`, { timeoutMs: 5000 });
+  assert.match(result.detail, /redirect count exceeded/);
+  assert.equal(result.status, "warning");
+});
+
 test("per-value sources are checked too, labelled with the value they back", () => {
   const template = loadMaster().records[0];
   const records = [
