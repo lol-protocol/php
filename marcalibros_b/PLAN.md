@@ -242,3 +242,6 @@ Hallazgos tratados: fotos de móvil MPO ya se aceptan (primera imagen); si ning�
 - **Gutenberg:** se amplía la red del entorno (el usuario debe permitir `gutenberg.org` y `gutendex.com`) y se ejecuta `verificar_gutenberg.py`. Pendiente de que se cambie la configuración.
 - **CI:** se probará abriendo un PR (pendiente de que el usuario lo pida expresamente).
 - **Contenido de memoria:** revisión solo de lo dudoso: ver `REVISION-DUDAS.md`.
+
+## Gutenberg a mano (hecho, a la espera de que se rellene)
+Sin red desde el entorno, la verificación la hace una persona: `python generator/gutenberg_manual.py lista` escribe `REVISION-GUTENBERG.csv` (100 filas de autor y 1000 de obra, con enlace de búsqueda a gutenberg.org); se rellenan `estado` (`verificado` | `no_disponible`) e `id`; `python generator/gutenberg_manual.py aplicar REVISION-GUTENBERG.csv` valida las filas y edita solo esos bloques de `taxonomia.yaml`. Después reconstruir (`build.py --all`). Probable `no_disponible`: los autores del Realismo mágico.
