@@ -11,6 +11,9 @@ qué iconos tiene cada uno y cómo usarlos) y la galería compartida
   color, variantes).
 - `lib.py` / `kit.py`: piezas comunes a ambos sets (primitivas SVG, paleta,
   composición).
+- `comunes.py`: los iconos que se llaman igual en los dos sets (`ui_profile`,
+  `ui_menu`, `action_filter`...), definidos una vez y que los dos sets incluyen,
+  para que no se separen.
 - `catalogo.py`: lo que comparten el generador y el validador (variantes,
   prefijos que admite cada set y etiqueta de cada prefijo en la galería).
 - `build.py`: escribe los dos sets y `galeria-iconos.html` a partir de las
@@ -46,7 +49,8 @@ ids repetidos (tampoco entre variantes) ni iconos idénticos; que cada `url(#id)
 y todo id lo use algo; que ningún trazo, círculo ni rectángulo sin girar quede
 a menos de 1 unidad del borde del lienzo (cuenta también lo que un arco abulta
 entre sus extremos); y que todo prefijo de `catalogo.PREFIXES` tenga etiqueta
-en `catalogo.GROUPS`.
+en `catalogo.GROUPS`; y que un nombre que esté en los dos sets sea idéntico en
+ambos (si no, va en `comunes.py`).
 
 `similares.py` dibuja la variante `gris` de cada icono a 24x24 y compara
 todos los pares de un mismo set; falla si dos se diferencian en menos de 0,8

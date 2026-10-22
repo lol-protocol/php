@@ -10,6 +10,7 @@ lienzo (a más de 1 unidad del borde) y ningún icono repetido.
 """
 import collections
 import hashlib
+import itertools
 import math
 import re
 import sys
@@ -181,6 +182,7 @@ def check_file(path, rel, variant, text):
 
 
 def main():
+    by_name = {}  # carpeta -> nombre -> variante -> texto, para comparar los iconos que se llaman igual en dos sets
     for prefix in sorted({p for prefixes in PREFIXES.values() for p in prefixes} - set(GROUPS)):
         fail(f'catalogo.GROUPS: falta la etiqueta del prefijo {prefix}')
     for folder, prefixes in PREFIXES.items():
@@ -195,6 +197,7 @@ def main():
         if not (files['color'] == files['lineas'] == files['gris']):
             fail(f'{folder}: las tres variantes no tienen los mismos archivos')
         seen_ids, seen_shapes = {}, {}
+        by_name[folder] = {}
         for rel in sorted(files['color']):
             sub, _, name = rel.partition('/')
             stem = name[:-4]
@@ -211,6 +214,7 @@ def main():
             roots = {}
             for v in VARIANTS:
                 text = (base / v / rel).read_text(encoding='utf-8')
+                by_name[folder].setdefault(stem, {})[v] = text
                 roots[v] = check_file(base / v / rel, f'{folder}/{v}/{rel}', v, text)
                 if v == 'gris':
                     digest = hashlib.md5(re.sub(r'grad_[a-z0-9_]+', 'g', text).encode()).hexdigest()
@@ -229,6 +233,10 @@ def main():
                             seen_ids[e.get('id')] = f'{v}/{rel}'
         by_prefix = collections.Counter(Path(r).name.split('_')[0] for r in files['color'])
         print(f'{folder}: {len(files["color"])} iconos x {len(VARIANTS)} variantes {dict(sorted(by_prefix.items()))}')
+    for first, second in itertools.combinations(by_name, 2):
+        for stem in sorted(set(by_name[first]) & set(by_name[second])):
+            if by_name[first][stem] != by_name[second][stem]:
+                fail(f'{stem}: se llama igual en {first} y {second} pero se dibuja distinto (definirlo en comunes.py)')
     if failures:
         print(f'\n{len(failures)} fallos:')
         for f in failures[:60]:
