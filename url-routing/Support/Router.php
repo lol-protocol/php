@@ -186,6 +186,15 @@ class Router
         }
 
         try {
+            // A page withdrawn after a pedido de retiro, with all its actions: see Retiros.
+            if (($this->config['retiros'] ?? false) && isset($match['params']['id'])) {
+                $id = (string)$match['params']['id'];
+                $retirada = Retiros::bloqueo($this->typeForLength(strlen($id)), (int)$id);
+                if ($retirada !== null) {
+                    return $retirada;
+                }
+            }
+
             $controller = new $fullClass();
             $method = $match['method'];
 

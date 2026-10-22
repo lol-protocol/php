@@ -36,7 +36,7 @@ class MigratorTest extends TestCase
 
             $this->assertSame([], $migrator->migrate(), "{$site}: nothing pending after the first run");
             $esperadas = $site === 'genealogy'
-                ? ['genealogy/001_esquema_inicial', 'genealogy/002_personas_viva', 'genealogy/003_persona_alias', 'genealogy/004_indices_de_listados']
+                ? ['genealogy/001_esquema_inicial', 'genealogy/002_personas_viva', 'genealogy/003_persona_alias', 'genealogy/004_indices_de_listados', 'genealogy/005_pedidos_retiro']
                 : ['pos/001_esquema_inicial', 'pos/002_ordenes_codigo'];
             $this->assertSame($esperadas, array_column($db->fetchAll('SELECT version FROM schema_migrations ORDER BY version'), 'version'));
         }
