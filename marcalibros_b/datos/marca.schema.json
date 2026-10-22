@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "marca.schema.json",
+  "title": "Marca en un texto",
+  "description": "Un punto de lectura guardado por el usuario en un texto. Referencia al diseño solo por id: cambiar o borrar un diseño nunca toca las marcas, y una marca nunca contiene datos del diseño.",
+  "type": "object",
+  "required": ["id", "version", "usuario", "texto", "posicion", "diseno", "creada"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "version": {"const": 1},
+    "usuario": {"type": "string", "minLength": 1, "maxLength": 64},
+    "texto": {
+      "type": "object",
+      "required": ["fuente", "id", "huella"],
+      "additionalProperties": false,
+      "properties": {
+        "fuente": {"enum": ["gutenberg", "subido"]},
+        "id": {"type": "string", "pattern": "^[0-9]{1,7}$|^[0-9a-f]{32}$", "description": "id de Gutenberg (solo dígitos) o de un texto subido"},
+        "huella": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "sha256 del texto normalizado (NFC, saltos \\n) sobre el que se midieron las posiciones"}
+      }
+    },
+    "posicion": {
+      "type": "object",
+      "required": ["inicio", "fin"],
+      "additionalProperties": false,
+      "description": "Rango en puntos de código Unicode del texto normalizado; fin exclusivo. Un marcalibros puro (sin selección) usa inicio = fin.",
+      "properties": {
+        "inicio": {"type": "integer", "minimum": 0},
+        "fin": {"type": "integer", "minimum": 0},
+        "ancla": {
+          "type": "object",
+          "required": ["antes", "despues"],
+          "additionalProperties": false,
+          "description": "Contexto para recolocar la marca si cambia la huella del texto (otra edición).",
+          "properties": {"antes": {"type": "string", "maxLength": 48}, "despues": {"type": "string", "maxLength": 48}}
+        }
+      }
+    },
+    "etiqueta": {"type": "string", "maxLength": 80, "description": "nombre libre de la marca; es texto, nunca HTML"},
+    "diseno": {"type": "string", "pattern": "^(cat:[a-z0-9-]+-[0-9]{2}|usr:[0-9a-f]{32})$"},
+    "creada": {"type": "string", "format": "date-time"},
+    "actualizada": {"type": "string", "format": "date-time"}
+  }
+}

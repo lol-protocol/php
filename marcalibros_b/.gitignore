@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+
+# El catálogo completo es salida del generador y se publica como artefacto de CI
+# (.github/workflows/marcalibros-b.yml). En git quedan la taxonomía, el generador,
+# el manifest y unas pocas muestras en catalog/muestras/.
+catalog/svg/
+catalog/jpg/
+catalog/jpg2x/
+catalog/revision/
+
+# Caché de la compilación incremental (se restaura en CI con actions/cache)
+catalog/.cache/
