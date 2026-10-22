@@ -105,7 +105,8 @@ que prometen las secciones 5 y 6 del borrador de
   decide con una nota: **ocultar mientras revisa**, **retirar** o **rechazar**.
   Las dos primeras dejan la página en 410 para quien no es el propietario, con
   todas sus acciones (el chequeo está en el router, antes del controlador:
-  `Support/Retiros.php`), y la sacan del sitemap. Rechazar la vuelve a mostrar,
+  `Support/Retiros.php`), y la sacan del sitemap y de la búsqueda (`/b/`) de los
+  visitantes. La cola dice cuántos días lleva esperando cada pedido pendiente. Rechazar la vuelve a mostrar,
   salvo que otro pedido la mantenga oculta.
 - **Sólo se pide sobre lo que un visitante ve.** Un suceso o un registro que
   delataría a una persona viva, o una colección privada, ya son un 404 para él:
@@ -120,8 +121,7 @@ que prometen las secciones 5 y 6 del borrador de
 - **Lo que falta.** No avisa al propietario de un pedido nuevo (hay que mirar
   `/0/3/`), no le escribe a quien lo pidió (el propietario responde por correo,
   por su cuenta) y no vigila el plazo de respuesta. Una página retirada se sigue
-  nombrando en otras: la persona en la familia de sus parientes, en la búsqueda o
-  en un árbol. Para retirarla de verdad hay que corregir o borrar los datos.
+  nombrando en otras: la persona en la familia de sus parientes o en un árbol. Para retirarla de verdad hay que corregir o borrar los datos.
 
 ## Lo que esto NO cubre
 

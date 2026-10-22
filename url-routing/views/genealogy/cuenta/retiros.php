@@ -15,7 +15,9 @@ retirada» a quien no es el propietario; tú la sigues viendo. Cada decisión qu
 <?php endif; ?>
 <?php foreach ($pedidos as $p): ?>
 <section>
-    <h2>Pedido n.º <?= esc($p['id']) ?> · <?= esc($estados[$p['estado']] ?? $p['estado']) ?></h2>
+<?php $dias = intdiv(time() - (int)strtotime((string)$p['creado_en']), 86400); ?>
+    <h2>Pedido n.º <?= esc($p['id']) ?> · <?= esc($estados[$p['estado']] ?? $p['estado']) ?><?php if ($p['estado'] === 'pendiente'): ?>
+        <span class="meta">· <?= $dias === 0 ? 'llegó hoy' : ($dias === 1 ? 'espera hace 1 día' : 'espera hace ' . $dias . ' días') ?></span><?php endif; ?></h2>
     <dl class="ficha">
         <dt>Página</dt><dd><a href="<?= esc(enlace($p['tipo'], $p['recurso_id'])) ?>"><?= esc(enlace($p['tipo'], $p['recurso_id'])) ?></a></dd>
         <dt>Motivo</dt><dd><?= esc(RetiroRepository::MOTIVOS[$p['motivo']] ?? $p['motivo']) ?></dd>
