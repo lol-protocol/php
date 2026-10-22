@@ -57,6 +57,31 @@ class RetiroRepositoryTest extends TestCase
     }
 
     #[DataProvider('drivers')]
+    public function testAWithdrawnPageLeavesAVisitorsSearchButNotTheOwners(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $ids = static fn(array $filas): array => array_map('intval', array_column($filas, 'id'));
+        $visitante = static fn(string $clase) => new $clase($db, Privacidad::publica());
+        $propietario = static fn(string $clase) => new $clase($db, Privacidad::propietario());
+
+        $casos = [
+            ['persona', 6128473101, \App\Repositories\Genealogy\PersonaRepository::class, 'josé'],
+            ['grupo', 582317, \App\Repositories\Genealogy\GrupoRepository::class, 'garcía'],
+            ['registro', 81372002, \App\Repositories\Genealogy\RegistroRepository::class, 'matrimonio'],
+            ['organizacion', 10232, \App\Repositories\Genealogy\OrganizacionRepository::class, ''],
+            ['coleccion', 1048293, \App\Repositories\Genealogy\ColeccionRepository::class, ''],
+            ['suceso', 412000006, \App\Repositories\Genealogy\SucesoRepository::class, 'matrimonio'],
+        ];
+        foreach ($casos as [$tipo, $id, $clase, $texto]) {
+            $this->assertContains($id, $ids($visitante($clase)->buscar($texto)), "{$tipo}: precondition");
+            $repo->decidir($repo->crear($tipo, $id, 'otro', 'x', 'c@example.com'), 'ocultar', null);
+            $this->assertNotContains($id, $ids($visitante($clase)->buscar($texto)), "{$tipo}: out of a visitor's search");
+            $this->assertContains($id, $ids($propietario($clase)->buscar($texto)), "{$tipo}: the owner still finds it");
+        }
+    }
+
+    #[DataProvider('drivers')]
     public function testAWithdrawnPageLeavesTheSitemap(string $driver): void
     {
         $db = TestDatabases::fresh($driver, 'genealogy', seed: true);

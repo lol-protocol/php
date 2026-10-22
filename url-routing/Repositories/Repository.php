@@ -46,6 +46,15 @@ abstract class Repository
     }
 
     /**
+     * SQL: " AND NOT …" leaving out the $tipo rows (id in $columna) withdrawn after a pedido de retiro,
+     * for a visitor's search; '' for the owner, who still sees them (see RetiroRepository).
+     */
+    protected function sinRetiradas(string $tipo, string $columna): string
+    {
+        return $this->privacidad->ocultaVivas() ? ' AND NOT ' . Genealogy\RetiroRepository::sqlRetirado($tipo, $columna) : '';
+    }
+
+    /**
      * LIMIT/OFFSET are interpolated rather than bound: some drivers type a
      * bound LIMIT as text. Casting to int here is what makes that safe.
      */
