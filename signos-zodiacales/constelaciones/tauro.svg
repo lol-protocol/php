@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
      aria-labelledby="t-tauro d-tauro">
   <title id="t-tauro">Constelación de Tauro</title>
-  <desc id="d-tauro">Esquema de la constelación, no a escala.</desc>
+  <desc id="d-tauro">Esquema de la constelación con su figura, no a escala.</desc>
   <defs>
     <radialGradient id="fondo-tauro" cx="50%" cy="42%" r="70%">
       <stop offset="0" stop-color="#1c2656"/>
@@ -61,22 +61,36 @@
     <circle cx="108.8" cy="101.5" r="0.64" fill-opacity="0.62"/>
     <circle cx="23.1" cy="67.4" r="0.49" fill-opacity="0.49"/>
   </g>
-  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">
-    <line x1="40" y1="70" x2="70" y2="95"/>
-    <line x1="70" y1="95" x2="100" y2="115"/>
-    <line x1="100" y1="115" x2="75" y2="140"/>
-    <line x1="100" y1="115" x2="120" y2="135"/>
-    <line x1="120" y1="135" x2="130" y2="100"/>
-    <line x1="130" y1="100" x2="160" y2="70"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M84 100 C60 104 38 92 32 62 C48 78 66 82 82 88"/>
+    <path d="M116 100 C140 104 162 92 168 62 C152 78 134 82 118 88"/>
+    <path d="M82 92 C80 120 84 140 100 150 C116 140 120 120 118 92 C112 86 88 86 82 92 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M82 106 L64 114 C66 108 70 104 78 100"/>
+    <path d="M118 106 L136 114 C134 108 130 104 122 100"/>
+    <path d="M92 142 C94 150 106 150 108 142"/>
+    <path d="M90 112 L96 114"/>
+    <path d="M104 114 L110 112"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="32" y1="62" x2="84" y2="100"/>
+    <line x1="84" y1="100" x2="100" y2="120"/>
+    <line x1="100" y1="120" x2="116" y2="100"/>
+    <line x1="116" y1="100" x2="168" y2="62"/>
+    <line x1="84" y1="100" x2="100" y2="150"/>
+    <line x1="116" y1="100" x2="100" y2="150"/>
   </g>
   <g fill="#ffffff" filter="url(#brillo-tauro)">
-    <circle cx="40" cy="70" r="2.8"/>
-    <circle cx="70" cy="95" r="1.6"/>
-    <circle cx="100" cy="115" r="2.4"/>
-    <circle cx="75" cy="140" r="2.4"/>
-    <circle cx="120" cy="135" r="1.6"/>
-    <circle cx="130" cy="100" r="2.4"/>
-    <circle cx="160" cy="70" r="2.4"/>
+    <circle cx="32" cy="62" r="2.8"/>
+    <circle cx="84" cy="100" r="1.6"/>
+    <circle cx="116" cy="100" r="2.4"/>
+    <circle cx="168" cy="62" r="2.4"/>
+    <circle cx="100" cy="150" r="1.6"/>
+    <circle cx="100" cy="120" r="2.4"/>
+    <circle cx="150" cy="38" r="2.4"/>
+    <circle cx="156" cy="42" r="1.6"/>
+    <circle cx="152" cy="48" r="2.4"/>
+    <circle cx="158" cy="50" r="2.4"/>
+    <circle cx="146" cy="46" r="1.6"/>
   </g>
   <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">TAURO</text>
 </svg>

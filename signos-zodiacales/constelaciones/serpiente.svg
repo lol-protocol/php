@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
+     aria-labelledby="t-serpiente d-serpiente">
+  <title id="t-serpiente">Figura estelar: Serpiente</title>
+  <desc id="d-serpiente">Figura de estrellas inventada; el horóscopo chino no tiene constelaciones astronómicas.</desc>
+  <defs>
+    <radialGradient id="fondo-serpiente" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-serpiente" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-serpiente)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <g fill="#ffffff">
+    <circle cx="110.7" cy="158.7" r="0.58" fill-opacity="0.37"/>
+    <circle cx="109.5" cy="102.5" r="0.57" fill-opacity="0.48"/>
+    <circle cx="166.2" cy="86.0" r="0.50" fill-opacity="0.39"/>
+    <circle cx="131.0" cy="10.1" r="0.97" fill-opacity="0.78"/>
+    <circle cx="107.7" cy="128.6" r="0.60" fill-opacity="0.48"/>
+    <circle cx="44.5" cy="65.9" r="0.94" fill-opacity="0.77"/>
+    <circle cx="61.3" cy="73.9" r="0.80" fill-opacity="0.78"/>
+    <circle cx="30.5" cy="81.8" r="0.93" fill-opacity="0.29"/>
+    <circle cx="65.6" cy="94.0" r="0.83" fill-opacity="0.56"/>
+    <circle cx="66.1" cy="53.9" r="0.80" fill-opacity="0.55"/>
+    <circle cx="168.2" cy="97.5" r="0.92" fill-opacity="0.46"/>
+    <circle cx="137.7" cy="46.3" r="0.46" fill-opacity="0.56"/>
+    <circle cx="89.2" cy="134.8" r="0.71" fill-opacity="0.62"/>
+    <circle cx="166.3" cy="137.3" r="0.76" fill-opacity="0.74"/>
+    <circle cx="58.4" cy="23.4" r="0.94" fill-opacity="0.64"/>
+    <circle cx="142.2" cy="18.5" r="0.61" fill-opacity="0.58"/>
+    <circle cx="36.6" cy="159.1" r="1.04" fill-opacity="0.76"/>
+    <circle cx="144.4" cy="8.6" r="0.90" fill-opacity="0.76"/>
+    <circle cx="96.8" cy="23.1" r="0.56" fill-opacity="0.42"/>
+    <circle cx="16.4" cy="95.6" r="0.75" fill-opacity="0.26"/>
+    <circle cx="89.1" cy="43.3" r="1.02" fill-opacity="0.40"/>
+    <circle cx="112.7" cy="52.7" r="0.48" fill-opacity="0.53"/>
+    <circle cx="113.4" cy="8.6" r="0.58" fill-opacity="0.61"/>
+    <circle cx="30.5" cy="36.6" r="0.53" fill-opacity="0.73"/>
+    <circle cx="96.0" cy="160.2" r="0.87" fill-opacity="0.52"/>
+    <circle cx="70.2" cy="50.8" r="1.00" fill-opacity="0.42"/>
+    <circle cx="70.4" cy="129.9" r="0.60" fill-opacity="0.31"/>
+    <circle cx="82.5" cy="134.9" r="0.95" fill-opacity="0.68"/>
+    <circle cx="172.6" cy="145.2" r="0.47" fill-opacity="0.65"/>
+    <circle cx="125.5" cy="74.6" r="0.63" fill-opacity="0.57"/>
+    <circle cx="64.7" cy="108.3" r="0.97" fill-opacity="0.31"/>
+    <circle cx="186.2" cy="148.8" r="0.77" fill-opacity="0.65"/>
+    <circle cx="172.2" cy="20.0" r="0.69" fill-opacity="0.62"/>
+    <circle cx="103.7" cy="38.3" r="1.10" fill-opacity="0.53"/>
+    <circle cx="144.0" cy="93.0" r="0.51" fill-opacity="0.68"/>
+    <circle cx="32.1" cy="67.9" r="0.92" fill-opacity="0.41"/>
+    <circle cx="42.0" cy="142.3" r="0.93" fill-opacity="0.50"/>
+    <circle cx="152.2" cy="167.8" r="0.64" fill-opacity="0.58"/>
+    <circle cx="141.8" cy="58.8" r="0.71" fill-opacity="0.78"/>
+    <circle cx="139.4" cy="116.2" r="1.08" fill-opacity="0.38"/>
+    <circle cx="59.5" cy="30.2" r="1.02" fill-opacity="0.51"/>
+    <circle cx="152.9" cy="39.8" r="0.98" fill-opacity="0.66"/>
+    <circle cx="132.3" cy="141.0" r="0.91" fill-opacity="0.45"/>
+    <circle cx="151.7" cy="60.4" r="0.90" fill-opacity="0.55"/>
+    <circle cx="21.5" cy="116.7" r="0.41" fill-opacity="0.49"/>
+  </g>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M36 144 C70 154 94 146 96 128 C98 112 68 108 72 90 C76 70 118 72 126 58 C128 54 128 50 124 46"/>
+    <path d="M36 158 C74 168 110 158 110 128 C110 108 86 106 90 94 C94 82 134 86 140 62 C142 54 142 48 138 44"/>
+    <path d="M36 144 L36 158"/>
+    <path d="M124 46 C122 38 130 32 138 36 C142 40 142 46 138 44"/>
+    <path d="M134 34 L134 24 L128 18"/>
+    <path d="M134 24 L140 18"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="134" y1="22" x2="132" y2="38"/>
+    <line x1="132" y1="38" x2="130" y2="62"/>
+    <line x1="130" y1="62" x2="84" y2="84"/>
+    <line x1="84" y1="84" x2="82" y2="104"/>
+    <line x1="82" y1="104" x2="103" y2="128"/>
+    <line x1="103" y1="128" x2="74" y2="152"/>
+    <line x1="74" y1="152" x2="36" y2="151"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-serpiente)">
+    <circle cx="134" cy="22" r="2.8"/>
+    <circle cx="132" cy="38" r="1.6"/>
+    <circle cx="130" cy="62" r="1.6"/>
+    <circle cx="84" cy="84" r="2.4"/>
+    <circle cx="82" cy="104" r="2.0"/>
+    <circle cx="103" cy="128" r="2.0"/>
+    <circle cx="74" cy="152" r="2.0"/>
+    <circle cx="36" cy="151" r="1.6"/>
+  </g>
+  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">SERPIENTE</text>
+</svg>

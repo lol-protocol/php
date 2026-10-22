@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
+     aria-labelledby="t-gallo d-gallo">
+  <title id="t-gallo">Figura estelar: Gallo</title>
+  <desc id="d-gallo">Figura de estrellas inventada; el horóscopo chino no tiene constelaciones astronómicas.</desc>
+  <defs>
+    <radialGradient id="fondo-gallo" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-gallo" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-gallo)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <g fill="#ffffff">
+    <circle cx="137.0" cy="21.7" r="0.88" fill-opacity="0.48"/>
+    <circle cx="44.5" cy="131.0" r="0.54" fill-opacity="0.38"/>
+    <circle cx="44.8" cy="25.8" r="0.70" fill-opacity="0.70"/>
+    <circle cx="33.0" cy="11.4" r="0.92" fill-opacity="0.39"/>
+    <circle cx="64.9" cy="160.5" r="0.99" fill-opacity="0.65"/>
+    <circle cx="157.7" cy="93.0" r="0.64" fill-opacity="0.28"/>
+    <circle cx="131.4" cy="35.1" r="0.75" fill-opacity="0.30"/>
+    <circle cx="113.1" cy="149.7" r="0.93" fill-opacity="0.33"/>
+    <circle cx="171.1" cy="9.8" r="0.41" fill-opacity="0.49"/>
+    <circle cx="151.7" cy="68.1" r="0.56" fill-opacity="0.49"/>
+    <circle cx="128.9" cy="103.7" r="0.61" fill-opacity="0.48"/>
+    <circle cx="165.3" cy="134.1" r="0.69" fill-opacity="0.47"/>
+    <circle cx="107.9" cy="80.3" r="0.49" fill-opacity="0.29"/>
+    <circle cx="27.5" cy="40.9" r="0.58" fill-opacity="0.60"/>
+    <circle cx="146.3" cy="45.3" r="0.63" fill-opacity="0.34"/>
+    <circle cx="147.1" cy="83.2" r="0.45" fill-opacity="0.45"/>
+    <circle cx="64.5" cy="118.3" r="0.91" fill-opacity="0.47"/>
+    <circle cx="147.7" cy="40.8" r="1.00" fill-opacity="0.67"/>
+    <circle cx="187.1" cy="136.2" r="0.48" fill-opacity="0.29"/>
+    <circle cx="19.5" cy="159.6" r="0.57" fill-opacity="0.49"/>
+    <circle cx="31.4" cy="142.9" r="0.98" fill-opacity="0.49"/>
+    <circle cx="26.5" cy="109.7" r="0.94" fill-opacity="0.64"/>
+    <circle cx="39.9" cy="47.2" r="0.80" fill-opacity="0.43"/>
+    <circle cx="177.7" cy="18.0" r="0.44" fill-opacity="0.37"/>
+    <circle cx="187.7" cy="24.4" r="0.99" fill-opacity="0.58"/>
+    <circle cx="189.2" cy="162.2" r="0.74" fill-opacity="0.73"/>
+    <circle cx="188.4" cy="10.9" r="1.07" fill-opacity="0.73"/>
+    <circle cx="180.5" cy="136.3" r="0.49" fill-opacity="0.38"/>
+    <circle cx="71.5" cy="127.7" r="0.55" fill-opacity="0.35"/>
+    <circle cx="79.0" cy="141.6" r="0.72" fill-opacity="0.61"/>
+    <circle cx="109.3" cy="8.5" r="1.04" fill-opacity="0.36"/>
+    <circle cx="49.7" cy="20.0" r="0.80" fill-opacity="0.38"/>
+    <circle cx="65.9" cy="15.8" r="0.91" fill-opacity="0.60"/>
+    <circle cx="110.9" cy="96.5" r="0.78" fill-opacity="0.28"/>
+    <circle cx="63.6" cy="167.5" r="0.55" fill-opacity="0.71"/>
+    <circle cx="175.7" cy="77.5" r="0.92" fill-opacity="0.35"/>
+    <circle cx="61.7" cy="48.1" r="1.06" fill-opacity="0.71"/>
+    <circle cx="131.6" cy="160.4" r="0.76" fill-opacity="0.69"/>
+    <circle cx="38.1" cy="93.8" r="0.93" fill-opacity="0.26"/>
+    <circle cx="92.8" cy="89.5" r="0.65" fill-opacity="0.45"/>
+    <circle cx="75.3" cy="41.8" r="1.00" fill-opacity="0.64"/>
+    <circle cx="10.9" cy="25.8" r="0.94" fill-opacity="0.42"/>
+    <circle cx="63.0" cy="103.8" r="0.41" fill-opacity="0.44"/>
+    <circle cx="181.7" cy="112.1" r="0.65" fill-opacity="0.47"/>
+    <circle cx="180.9" cy="152.6" r="0.51" fill-opacity="0.75"/>
+  </g>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M52 62 C46 56 48 46 56 44 C64 42 70 48 70 56 C70 64 62 68 52 62 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M54 44 C52 36 58 34 60 40 C62 34 68 36 66 44"/>
+    <path d="M52 60 L40 62 L52 66"/>
+    <path d="M54 66 C52 74 56 78 60 74"/>
+    <path d="M64 68 C70 90 66 112 84 128 C100 142 134 138 148 122 C156 112 156 96 150 86 C134 84 108 82 90 76 C80 72 70 70 64 68 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M150 90 C166 70 186 62 188 44"/>
+    <path d="M148 98 C168 88 188 84 190 66"/>
+    <path d="M148 106 C166 104 184 108 188 94"/>
+    <path d="M100 138 L98 162 M96 162 L86 162"/>
+    <path d="M118 140 L120 162 M122 162 L132 162"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="40" y1="62" x2="60" y2="36"/>
+    <line x1="60" y1="36" x2="100" y2="78"/>
+    <line x1="100" y1="78" x2="150" y2="88"/>
+    <line x1="150" y1="88" x2="188" y2="44"/>
+    <line x1="150" y1="88" x2="148" y2="122"/>
+    <line x1="148" y1="122" x2="120" y2="162"/>
+    <line x1="120" y1="162" x2="98" y2="162"/>
+    <line x1="40" y1="62" x2="58" y2="76"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-gallo)">
+    <circle cx="40" cy="62" r="2.8"/>
+    <circle cx="60" cy="36" r="1.6"/>
+    <circle cx="100" cy="78" r="2.0"/>
+    <circle cx="150" cy="88" r="1.6"/>
+    <circle cx="188" cy="44" r="2.0"/>
+    <circle cx="148" cy="122" r="1.6"/>
+    <circle cx="120" cy="162" r="2.0"/>
+    <circle cx="98" cy="162" r="2.4"/>
+    <circle cx="58" cy="76" r="2.0"/>
+  </g>
+  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">GALLO</text>
+</svg>

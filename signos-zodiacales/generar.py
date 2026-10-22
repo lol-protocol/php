@@ -81,6 +81,11 @@ def validar(datos):
             for a, b in s["constelacion"]["lineas"]:
                 if not (0 <= a < len(estrellas) and 0 <= b < len(estrellas)):
                     errores.append(f"{sid}: una línea apunta a una estrella que no existe")
+            for x, y in estrellas:
+                if not (0 <= x <= 200 and 0 <= y <= 200):
+                    errores.append(f"{sid}: una estrella cae fuera del cuadro de 200×200")
+            if not s.get("figura") or any(not d.strip() for d in s["figura"]):
+                errores.append(f"{sid}: falta la figura (lista de trazos) o tiene un trazo vacío")
     return errores
 
 
@@ -104,11 +109,17 @@ def svg_de(signo):
         for _ in range(45)
     ]
     radios = [2.8] + [azar.choice([1.6, 2.0, 2.4]) for _ in estrellas[1:]]
+    if signo["tipo"] == "occidental":
+        titulo = f"Constelación de {nombre}"
+        descripcion = "Esquema de la constelación con su figura, no a escala."
+    else:
+        titulo = f"Figura estelar: {nombre}"
+        descripcion = "Figura de estrellas inventada; el horóscopo chino no tiene constelaciones astronómicas."
     partes = [
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"',
         f'     aria-labelledby="t-{ident} d-{ident}">',
-        f'  <title id="t-{ident}">Constelación de {nombre}</title>',
-        f'  <desc id="d-{ident}">Esquema de la constelación, no a escala.</desc>',
+        f'  <title id="t-{ident}">{titulo}</title>',
+        f'  <desc id="d-{ident}">{descripcion}</desc>',
         "  <defs>",
         f'    <radialGradient id="fondo-{ident}" cx="50%" cy="42%" r="70%">',
         '      <stop offset="0" stop-color="#1c2656"/>',
@@ -126,7 +137,17 @@ def svg_de(signo):
     for x, y, r, o in fondo:
         partes.append(f'    <circle cx="{x:.1f}" cy="{y:.1f}" r="{r:.2f}" fill-opacity="{o:.2f}"/>')
     partes.append("  </g>")
-    partes.append('  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">')
+    if signo.get("figura"):
+        partes.append(
+            '  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" '
+            'stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">'
+        )
+        for d in signo["figura"]:
+            # Solo los trazos cerrados (terminan en Z) llevan relleno; uno abierto se rellenaría en cuña.
+            relleno = ' fill="#e6c98b" fill-opacity="0.07"' if d.strip().endswith("Z") else ""
+            partes.append(f'    <path d="{d}"{relleno}/>')
+        partes.append("  </g>")
+    partes.append('  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">')
     for a, b in signo["constelacion"]["lineas"]:
         (x1, y1), (x2, y2) = estrellas[a], estrellas[b]
         partes.append(f'    <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}"/>')

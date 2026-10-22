@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
      aria-labelledby="t-leo d-leo">
   <title id="t-leo">Constelación de Leo</title>
-  <desc id="d-leo">Esquema de la constelación, no a escala.</desc>
+  <desc id="d-leo">Esquema de la constelación con su figura, no a escala.</desc>
   <defs>
     <radialGradient id="fondo-leo" cx="50%" cy="42%" r="70%">
       <stop offset="0" stop-color="#1c2656"/>
@@ -61,25 +61,34 @@
     <circle cx="41.6" cy="117.7" r="0.55" fill-opacity="0.74"/>
     <circle cx="165.3" cy="160.6" r="0.88" fill-opacity="0.62"/>
   </g>
-  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">
-    <line x1="40" y1="60" x2="60" y2="45"/>
-    <line x1="60" y1="45" x2="85" y2="50"/>
-    <line x1="85" y1="50" x2="95" y2="70"/>
-    <line x1="95" y1="70" x2="80" y2="85"/>
-    <line x1="80" y1="85" x2="140" y2="105"/>
-    <line x1="140" y1="105" x2="175" y2="85"/>
-    <line x1="140" y1="105" x2="120" y2="140"/>
-    <line x1="120" y1="140" x2="80" y2="85"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M62 56 C82 54 96 70 94 90 C92 110 76 120 60 116 C42 112 34 96 38 80 C42 64 50 58 62 56 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M52 76 C58 70 70 72 72 82 C74 92 66 100 56 98 C48 96 46 82 52 76 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M92 82 C116 76 146 78 164 90 C172 98 170 110 164 118 C150 124 120 124 96 114"/>
+    <path d="M96 114 L92 156"/>
+    <path d="M108 120 L108 156"/>
+    <path d="M146 122 L144 156"/>
+    <path d="M160 120 L164 156"/>
+    <path d="M170 96 C182 84 184 66 174 58 M174 58 L172 52 M174 58 L180 56"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="44" y1="84" x2="62" y2="56"/>
+    <line x1="62" y1="56" x2="94" y2="90"/>
+    <line x1="94" y1="90" x2="164" y2="88"/>
+    <line x1="164" y1="88" x2="176" y2="58"/>
+    <line x1="94" y1="90" x2="96" y2="114"/>
+    <line x1="96" y1="114" x2="92" y2="156"/>
+    <line x1="164" y1="88" x2="162" y2="156"/>
   </g>
   <g fill="#ffffff" filter="url(#brillo-leo)">
-    <circle cx="40" cy="60" r="2.8"/>
-    <circle cx="60" cy="45" r="2.0"/>
-    <circle cx="85" cy="50" r="1.6"/>
-    <circle cx="95" cy="70" r="1.6"/>
-    <circle cx="80" cy="85" r="2.4"/>
-    <circle cx="140" cy="105" r="2.0"/>
-    <circle cx="175" cy="85" r="2.0"/>
-    <circle cx="120" cy="140" r="1.6"/>
+    <circle cx="44" cy="84" r="2.8"/>
+    <circle cx="62" cy="56" r="2.0"/>
+    <circle cx="94" cy="90" r="1.6"/>
+    <circle cx="164" cy="88" r="1.6"/>
+    <circle cx="176" cy="58" r="2.4"/>
+    <circle cx="92" cy="156" r="2.0"/>
+    <circle cx="162" cy="156" r="2.0"/>
+    <circle cx="96" cy="114" r="1.6"/>
   </g>
   <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">LEO</text>
 </svg>
