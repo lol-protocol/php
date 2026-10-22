@@ -60,7 +60,8 @@ final class GrupoRepository extends Repository
     public function buscar(string $texto, int $limit = 50, int $offset = 0): array
     {
         return $this->db->fetchAll(
-            'SELECT id, apellido FROM grupos WHERE ' . self::sinAcentos('apellido') . self::LIKE_ESCAPED . ' ORDER BY apellido, id'
+            'SELECT id, apellido FROM grupos WHERE ' . self::sinAcentos('apellido') . self::LIKE_ESCAPED
+                . $this->sinRetiradas('grupo', 'grupos.id') . ' ORDER BY apellido, id'
                 . self::page($limit, $offset),
             [self::patron($texto)]
         );

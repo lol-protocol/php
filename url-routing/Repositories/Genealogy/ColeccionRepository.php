@@ -93,7 +93,7 @@ final class ColeccionRepository extends Repository
     {
         return $this->db->fetchAll(
             'SELECT id, nombre FROM colecciones WHERE ' . self::sinAcentos('nombre') . self::LIKE_ESCAPED
-                . ($incluirPrivadas ? '' : ' AND publica') . ' ORDER BY nombre, id'
+                . ($incluirPrivadas ? '' : ' AND publica') . $this->sinRetiradas('coleccion', 'colecciones.id') . ' ORDER BY nombre, id'
                 . self::page($limit, $offset),
             [self::patron($texto)]
         );

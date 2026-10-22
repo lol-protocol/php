@@ -147,7 +147,9 @@ class RetiroTest extends TestCase
         $decidir = fn(string $decision, string $nota = '') => $this->pedir('/0/3/', 'POST',
             ['csrf_token' => $token, 'pedido' => (string)$numero, 'decision' => $decision, 'nota' => $nota], $sid, true)[0];
 
-        $this->assertStringContainsString('Copia un acta ajena.', $this->pedir('/0/3/', propietario: true)[1]);
+        $cola = $this->pedir('/0/3/', propietario: true)[1];
+        $this->assertStringContainsString('Copia un acta ajena.', $cola);
+        $this->assertStringContainsString('llegó hoy', $cola, 'how long a pending pedido has waited');
         $this->assertSame(400, $decidir('borrar'), 'unknown decision');
         $this->assertSame(404, $this->pedir('/0/3/', 'POST', ['csrf_token' => $token, 'pedido' => '999999', 'decision' => 'ocultar'], $sid, true)[0]);
 
