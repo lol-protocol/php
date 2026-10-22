@@ -2,12 +2,12 @@
 # Quita un dominio del servidor SIN borrar nada: archiva (mueve) su vhost, su sitio y sus logs.
 # Uso: ./10_B-remove-domain.sh <dominio> [--app NOMBRE] [--yes] [--dry-run]
 #   --app      tambien archiva /var/www/NOMBRE y la unidad systemd NOMBRE (apps php/python);
-#              si se omite, se toma de la marca del vhost que dejan 06_A/06_B
+#              si se omite, se toma de la marca del vhost que dejan 06_A/06_B/06_E
 #   --yes      no pide confirmacion
 #   --dry-run  muestra que se archivaria sin tocar nada
 # Todo va a $REMOVED_DIR/<dominio>-<fecha>/ (por defecto /var/backups/vps-setup/removed).
 # NO toca el certificado de Let's Encrypt ni la zona DNS: al final se indican los comandos.
-# Rutas reemplazables para pruebas: NGINX_DIR, WWW_DIR, NGINX_LOG_DIR, SYSTEMD_DIR, REMOVED_DIR.
+# Rutas reemplazables para pruebas: NGINX_DIR, WWW_DIR, NGINX_LOG_DIR, SYSTEMD_DIR, REMOVED_DIR, CRON_DIR.
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -18,6 +18,7 @@ WWW_DIR=${WWW_DIR:-/var/www}
 NGINX_LOG_DIR=${NGINX_LOG_DIR:-/var/log/nginx}
 SYSTEMD_DIR=${SYSTEMD_DIR:-/etc/systemd/system}
 REMOVED_DIR=${REMOVED_DIR:-/var/backups/vps-setup/removed}
+CRON_DIR=${CRON_DIR:-/etc/cron.d}
 
 DOMAIN="" APP="" YES=0 DRY_RUN=0
 while [ $# -gt 0 ]; do
@@ -37,7 +38,7 @@ VHOST="$NGINX_DIR/sites-available/$DOMAIN"
 # Sin --app, la app se toma de la marca que 06_A/06_B dejan en la primera linea del vhost: si no,
 # quitar el dominio dejaria atras /var/www/<app> y su servicio (gunicorn seguiria ocupando su puerto).
 if [ -z "$APP" ] && [ -f "$VHOST" ]; then
-    APP=$(sed -n '1s/^# vps-setup: 06_[AB]-[a-z]* \([^ ]*\)$/\1/p' "$VHOST")
+    APP=$(sed -n '1s/^# vps-setup: 06_[ABE]-[a-z]* \([^ ]*\)$/\1/p' "$VHOST")
     [ -z "$APP" ] || echo "App detectada en el vhost: $APP (como si se hubiera pasado --app $APP)"
 fi
 [ -z "$APP" ] || require_valid name "$APP" "--app"
@@ -58,6 +59,10 @@ if [ -n "$APP" ]; then
     add_item "$NGINX_DIR/sites-available/$APP" "sites-available/$APP"
     add_item "$WWW_DIR/$APP" "www/$APP"
     add_item "$SYSTEMD_DIR/$APP.service" "systemd/$APP.service"
+    # Marcalibros (06_E) deja ademas su limpieza diaria en cron.d.
+    if [ "$APP" = marcalibros ] && grep -qF '# vps-setup: 06_E-marcalibros' "$CRON_DIR/marcalibros" 2>/dev/null; then
+        add_item "$CRON_DIR/marcalibros" "cron/marcalibros"
+    fi
 fi
 
 print_header "10_B" "Quitar dominio $DOMAIN (archivar, no borrar)"
@@ -124,5 +129,6 @@ sudo systemctl reload nginx
 echo ""
 echo "✓ $DOMAIN archivado en $DEST (para restaurarlo, mueve las carpetas de vuelta y reactiva el enlace en sites-enabled)."
 echo "Quedan a mano (no se tocaron):"
+[ "$APP" != marcalibros ] || echo "  - Marcalibros:  los marcalibros creados siguen en /var/lib/marcalibros (caducan solos; borralos a mano si quieres)"
 echo "  - Certificado:  sudo certbot delete --cert-name $DOMAIN"
 echo "  - Zona DNS:     si usas BIND (06_C), quita la zona de /etc/bind/named.conf.local; si no, borra los registros en tu registrador"

@@ -151,7 +151,17 @@
     "loadErrorHelp": "ダブルクリックで開いたページでは、ブラウザーがローカルファイルの読み込みを禁止します。代わりにフォルダーを配信してください。{folder} で {command} を実行し、{address} を開きます。",
     "updatedUnknown": "不明（サーバーが Last-Modified ヘッダーを送信しませんでした）",
     "download": "CSVをダウンロード",
-    "csvFilename": "document-formats"
+    "csvFilename": "document-formats",
+    "aboutTitle": "このデータベースについて",
+    "aboutIntro": "この包括的なドキュメント形式データベースには、次の内容が含まれます。",
+    "aboutFormats": "複数のカテゴリにまたがる {count} 件の形式",
+    "aboutCountries": "地域規格と国際規格を持つ {count} の国と地域",
+    "aboutDual": "メートル法とヤード・ポンド法の両方の寸法",
+    "aboutSpecs": "印刷とデザインのための技術仕様",
+    "aboutConversions": "国際的な同等サイズを示す形式変換",
+    "aboutSources": "データの出典: ISO 216、ANSI、JIS、GB/T 規格。",
+    "aboutUpdated": "最終更新:",
+    "footer": "ドキュメント形式データベース v2.0 | HTML5、CSS3、JavaScript で構築"
   },
   "paperTypes": {
     "searchPlaceholder": "紙の種類を検索...",

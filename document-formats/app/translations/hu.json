@@ -151,7 +151,17 @@
     "loadErrorHelp": "",
     "updatedUnknown": "",
     "download": "",
-    "csvFilename": ""
+    "csvFilename": "",
+    "aboutTitle": "",
+    "aboutIntro": "",
+    "aboutFormats": "",
+    "aboutCountries": "",
+    "aboutDual": "",
+    "aboutSpecs": "",
+    "aboutConversions": "",
+    "aboutSources": "",
+    "aboutUpdated": "",
+    "footer": ""
   },
   "paperTypes": {
     "searchPlaceholder": "",

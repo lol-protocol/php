@@ -200,7 +200,7 @@ final class PersonaRepository extends Repository
                FROM {$privacidad->personas()} p
               WHERE p.id IN (SELECT q.id FROM personas q
                               WHERE " . self::sinAcentos("q.nombres || ' ' || q.apellidos") . self::LIKE_ESCAPED . '
-                                AND ' . $privacidad->sqlVisible('q') . '
+                                AND ' . $privacidad->sqlVisible('q') . $this->sinRetiradas('persona', 'q.id') . '
                               ORDER BY q.apellidos, q.nombres, q.id' . self::page($limit, $offset) . ')
               ORDER BY p.apellidos, p.nombres, p.id',
             [self::patron($texto)]

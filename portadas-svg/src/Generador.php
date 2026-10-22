@@ -32,7 +32,7 @@ final class Generador
         $contenidos = [];
         foreach (self::piezas($libro) as $archivo => [$vista, $nombre]) {
             $cuerpo = $plantilla->dibujar($libro, $medidas, $vista);
-            $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->titulo} · $nombre", $cuerpo);
+            $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->textos->titulo} · $nombre", $cuerpo);
         }
         $contenidos['medidas.txt'] = self::resumen($libro, $medidas);
 
@@ -56,7 +56,7 @@ final class Generador
      */
     private static function piezas(Libro $libro): array
     {
-        $excluida = $libro->solapasMm > 0 ? 'cubierta-completa.svg' : 'sobrelomo.svg';
+        $excluida = $libro->formato->solapas > 0 ? 'cubierta-completa.svg' : 'sobrelomo.svg';
 
         return array_diff_key(self::PIEZAS, [$excluida => true]);
     }
@@ -78,11 +78,11 @@ final class Generador
     private static function resumen(Libro $libro, Medidas $medidas): string
     {
         $lineas = [
-            "Libro: {$libro->titulo} — {$libro->autor}",
-            'Corte: ' . self::fmt($libro->anchoMm) . ' × ' . self::fmt($libro->altoMm) . ' mm',
-            'Sangrado: ' . self::fmt($libro->sangradoMm) . ' mm en cada borde exterior',
-            'Lomo: ' . self::fmt($libro->lomoMm) . ' mm (confírmalo con la imprenta: depende del papel)',
-            $libro->solapasMm > 0 ? 'Solapas: ' . self::fmt($libro->solapasMm) . ' mm' : 'Sin solapas',
+            "Libro: {$libro->textos->titulo} — {$libro->textos->autor}",
+            'Corte: ' . self::fmt($libro->formato->ancho) . ' × ' . self::fmt($libro->formato->alto) . ' mm',
+            'Sangrado: ' . self::fmt($libro->formato->sangrado) . ' mm en cada borde exterior',
+            'Lomo: ' . self::fmt($libro->formato->lomo) . ' mm (confírmalo con la imprenta: depende del papel)',
+            $libro->formato->solapas > 0 ? 'Solapas: ' . self::fmt($libro->formato->solapas) . ' mm' : 'Sin solapas',
             ...($libro->degradado === null ? [] : ['Fondo: ' . $libro->degradado->descripcion()]),
             '',
             'Tamaño de cada archivo, con sangrado (ancho × alto):',

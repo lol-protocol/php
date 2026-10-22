@@ -151,7 +151,17 @@
     "loadErrorHelp": "Browsers block reading local files from a page opened with a double click. Serve the folder instead: run {command} in {folder} and open {address}.",
     "updatedUnknown": "unknown (server sent no Last-Modified header)",
     "download": "Download CSV",
-    "csvFilename": "document-formats"
+    "csvFilename": "document-formats",
+    "aboutTitle": "About This Database",
+    "aboutIntro": "This comprehensive document format database includes:",
+    "aboutFormats": "{count} formats across multiple categories",
+    "aboutCountries": "{count} countries and regions with local and international standards",
+    "aboutDual": "Dual measurements in both metric and imperial units",
+    "aboutSpecs": "Technical specifications for printing and design",
+    "aboutConversions": "Format conversions showing international equivalents",
+    "aboutSources": "Data sourced from ISO 216, ANSI, JIS, and GB/T standards.",
+    "aboutUpdated": "Last updated:",
+    "footer": "Document Formats Database v2.0 | Built with HTML5, CSS3, and JavaScript"
   },
   "paperTypes": {
     "searchPlaceholder": "Search paper types...",

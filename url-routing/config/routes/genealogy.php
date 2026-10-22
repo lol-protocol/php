@@ -89,13 +89,19 @@ return [
         '' => ['controller' => 'Genealogy\HomeController', 'method' => 'index'],
         // Search: /b/{digit width of the type}/[{text}/][{page}/].
         'b' => ['controller' => 'Genealogy\HomeController', 'method' => 'buscar', 'ruta' => 3],
+        // Asking to withdraw a page: /r/{id}/, open to anyone (see RetiroController).
+        'r' => ['controller' => 'Genealogy\RetiroController', 'method' => 'pedir', 'ruta' => 1],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'Genealogy\CuentaController',
             'method' => 'index',
             'actions' => [
                 1 => 'colecciones',
                 2 => 'aportes',
+                3 => 'retiros',
             ],
         ],
     ],
+
+    // A page with a pedido de retiro the owner hid or withdrew answers 410 to visitors (Support/Retiros.php).
+    'retiros' => true,
 ];

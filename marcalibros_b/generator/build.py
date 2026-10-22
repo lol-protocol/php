@@ -1,0 +1,582 @@
+#!/usr/bin/env python3
+"""Genera los marcalibros a partir de catalog/taxonomia.yaml.
+
+Uso, desde la raíz del repo:
+    python generator/build.py --all
+    python generator/build.py --movimiento romanticismo
+
+Reglas de formato:
+- Cada marcalibro sale en un solo formato.
+- La variante 01 de cada autor es JPG (paisaje rasterizado con grano).
+- El resto son SVG.
+"""
+import argparse
+import base64
+from functools import lru_cache
+import hashlib
+import json
+import os
+import random
+import shutil
+import subprocess
+import tempfile
+from pathlib import Path
+
+import numpy as np
+import yaml
+from PIL import Image
+
+from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
+import texto as tx
+from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_DUPLICADO, hoja_de_contacto,
+                hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, pixeles_de_motivo, validar_jpg,
+                validar_frases, validar_svg, validar_taxonomia)
+from render_raster import a_imagen
+from render_svg import a_svg
+from scene import ALTO, ANCHO
+
+VERSION_GENERADOR = "0.8.0"
+MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
+RAIZ = Path(__file__).resolve().parent.parent
+CATALOGO = RAIZ / "catalog"
+ESCALA_REVISION = 0.4  # tamaño de las vistas guardadas en caché para las hojas de contacto
+RESUMEN = {}  # recuento de la última ejecución (reutilizadas / rehechas), para los tests
+MAX_DIF_CHROMIUM = 3.0  # diferencia media tolerada entre Chromium y el renderer raster
+DENSIDAD_ALTA = 2  # los JPG se entregan también a 400×2800
+GRANO_JPG = 0.018  # textura suave: sin grano, la variante JPG se confunde con las SVG
+
+
+def semilla(movimiento, autor, variante, intento=0):
+    clave = f"{movimiento}/{autor}/{variante:02d}"
+    if intento:
+        clave += f"#{intento}"
+    return int(hashlib.sha256(clave.encode("utf-8")).hexdigest()[:12], 16)
+
+
+def cargar_animos():
+    return yaml.safe_load((CATALOGO / "animos.yaml").read_text(encoding="utf-8"))["animos"]
+
+
+def recorrer(config, movimiento=None):
+    for mov in config["movimientos"]:
+        if movimiento and mov["id"] != movimiento:
+            continue
+        for autor in mov["autores"]:
+            for v in range(1, len(autor.get("obras", [])) + 1):
+                yield mov, autor, v
+
+
+def asignar_combinaciones(mov, animos):
+    """{(autor_id, variante): (arquetipo, paleta)} para todo un movimiento.
+    La paleta sale del ánimo de la obra y el arquetipo de su `escena` (o, si no la
+    fija, de una ordenación determinista). Se evita repetir el par arquetipo×paleta
+    dentro de un autor (obligatorio si hay hueco) y se prefiere el menos usado
+    del movimiento, para que obras de distintos autores no salgan casi iguales."""
+    uso, resultado = {}, {}
+    for autor in mov["autores"]:
+        propios = set()
+        for v, obra in enumerate(autor.get("obras", []), 1):
+            escenas = [obra["escena"]] if obra.get("escena") else list(NOMBRES_ARQUETIPOS)
+            if not obra.get("escena"):
+                random.Random(f"{mov['id']}/{autor['id']}/{obra['id']}").shuffle(escenas)
+            paletas = list(animos[obra["animo"]])
+            giro = int(hashlib.sha256(f"{mov['id']}/{autor['id']}/{obra['id']}".encode()).hexdigest()[:6], 16) % len(paletas)
+            paletas = paletas[giro:] + paletas[:giro]  # rota para que no todas empiecen por la misma
+            pares = [(a, p) for a in escenas for p in paletas]
+            libres = [par for par in pares if par not in propios] or pares
+            elegido = min(libres, key=lambda par: uso.get(par, 0))  # min es estable: gana el primero
+            uso[elegido] = uso.get(elegido, 0) + 1
+            propios.add(elegido)
+            resultado[(autor["id"], v)] = elegido
+    return resultado
+
+
+_ASIGNACIONES = {}
+
+
+def combinacion(mov, autor, v, animos):
+    """Par (arquetipo, paleta) de la variante v, con la asignación del movimiento en caché
+    (se recalcula solo si cambian sus obras o los ánimos)."""
+    firma = (mov["id"], tuple((a["id"], tuple((o["id"], o["animo"], o.get("escena")) for o in a.get("obras", [])))
+                              for a in mov["autores"]),
+             tuple(sorted((k, tuple(p)) for k, p in animos.items())))
+    if firma not in _ASIGNACIONES:
+        _ASIGNACIONES[firma] = asignar_combinaciones(mov, animos)
+    return _ASIGNACIONES[firma][(autor["id"], v)]
+
+
+def construir(config, mov, autor, v, intento=0, animos=None, ocultar_motivo=False):
+    s = semilla(mov["id"], autor["id"], v, intento)
+    arquetipo, paleta = combinacion(mov, autor, v, animos)
+    obra = autor["obras"][v - 1]
+    motivo = obra["motivo"]
+    formato = "jpg" if v == config["variante_jpg"] else "svg"
+    grano = GRANO_JPG if formato == "jpg" else 0.0
+    esc = CONSTRUCTORES[mov["id"]](s, paleta, motivo, grano, arquetipo, ocultar_motivo)
+    ident = f"{mov['id']}-{autor['id']}-{v:02d}"
+    entrada = {
+        "id": ident,
+        "movimiento": mov["id"],
+        "autor": autor["nombre"],
+        "autor_id": autor["id"],
+        "epoca": autor["epoca"],
+        "region": autor["region"],
+        "variante": v,
+        "obra_id": obra["id"],
+        "obra": obra["titulo"],
+        "animo": obra["animo"],
+        "gutenberg_id": obra["gutenberg"]["id"],
+        "gutenberg_estado": obra["gutenberg"]["estado"],
+        "formato": formato,
+        "motivo": motivo,
+        "paleta": paleta,
+        "arquetipo": arquetipo,
+        "intento": intento,
+        "semilla": s,
+        "ancho": ANCHO,
+        "alto": ALTO,
+        "archivo": f"catalog/{formato}/{ident}.{formato}",
+        "version_generador": VERSION_GENERADOR,
+    }
+    if formato == "jpg":
+        entrada["archivo_2x"] = f"catalog/jpg2x/{ident}.jpg"
+        entrada["ancho_2x"], entrada["alto_2x"] = ANCHO * DENSIDAD_ALTA, ALTO * DENSIDAD_ALTA
+    return entrada, esc
+
+
+def escribir(entrada, esc):
+    ruta = RAIZ / entrada["archivo"]
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    if entrada["formato"] == "svg":
+        ruta.write_text(a_svg(esc), encoding="utf-8")
+    else:
+        a_imagen(esc).save(ruta, "JPEG", quality=85, optimize=True)
+        # alta densidad: la misma escena dibujada a 400×2800 (los SVG no lo necesitan: son vectoriales)
+        ruta2 = RAIZ / entrada["archivo_2x"]
+        ruta2.parent.mkdir(parents=True, exist_ok=True)
+        a_imagen(esc, DENSIDAD_ALTA).save(ruta2, "JPEG", quality=85, optimize=True)
+        entrada["sha256_2x"] = hashlib.sha256(ruta2.read_bytes()).hexdigest()
+    entrada["sha256"] = hashlib.sha256(ruta.read_bytes()).hexdigest()
+    return ruta
+
+
+def chromium():
+    """Ruta del binario de Chromium: variable CHROMIUM o los nombres habituales."""
+    candidatos = [os.environ.get("CHROMIUM"), "/opt/pw-browsers/chromium"]
+    candidatos += [shutil.which(n) for n in ("chromium", "chromium-browser", "google-chrome", "chrome")]
+    return next((c for c in candidatos if c and Path(c).exists()), None)
+
+
+def rasterizar_svg(ruta):
+    """Rasteriza el SVG real con Chromium headless a ANCHO×ALTO exactos."""
+    binario = chromium()
+    if not binario:
+        raise RuntimeError("no se encontró Chromium (define la variable CHROMIUM)")
+    # El viewport headless es más bajo que --window-size: se pide una ventana mayor
+    # y se recorta. El SVG se carga como <img>, igual que lo servirá el lector.
+    with tempfile.TemporaryDirectory() as tmp:
+        salida = Path(tmp) / "r.png"
+        pagina = Path(tmp) / "p.html"
+        pagina.write_text(
+            '<!doctype html><body style="margin:0;background:#f0f">'
+            f'<img src="{ruta.resolve().as_uri()}" width="{ANCHO}" height="{ALTO}" style="display:block">',
+            encoding="utf-8")
+        subprocess.run(
+            [binario, "--headless", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
+             f"--window-size={ANCHO},{ALTO + 300}", f"--screenshot={salida}", pagina.as_uri()],
+            capture_output=True, check=True, timeout=60,
+        )
+        img = Image.open(salida).convert("RGB").crop((0, 0, ANCHO, ALTO))
+    if img.size != (ANCHO, ALTO):
+        raise RuntimeError(f"Chromium devolvió {img.size}, esperado {(ANCHO, ALTO)}")
+    return img
+
+
+def imagen_para_revision(entrada, esc, ruta):
+    """JPG: se abre el archivo tal cual. SVG: se rasteriza con Chromium (QA fijo).
+    Si Chromium no está, el build falla: el renderer raster ya no sirve de respaldo
+    silencioso porque no verifica el archivo SVG real."""
+    if entrada["formato"] == "jpg":
+        return Image.open(ruta).convert("RGB"), "archivo"
+    img = rasterizar_svg(ruta)
+    # El SVG real debe parecerse al renderer raster; si no, algo diverge.
+    dif = float(np.abs(np.asarray(img, float) - np.asarray(a_imagen(esc).convert("RGB"), float)).mean())
+    if dif > MAX_DIF_CHROMIUM:
+        raise RuntimeError(f"{entrada['id']}: SVG y renderer raster difieren {dif:.1f}/255")
+    return img, f"svg vía Chromium (dif. {dif:.1f})"
+
+
+def _recorte_franja(esc, margen=10):
+    """Miniatura de la franja de texto, sin las esquinas redondeadas del velo."""
+    f = ESCALA_MINIATURA
+    x0, y0, x1, y1 = esc.franja
+    return a_imagen(esc, ESCALA_MINIATURA).crop(
+        (round((x0 + margen) * f), round((y0 + margen) * f), round((x1 - margen) * f), round((y1 - margen) * f)))
+
+
+TRANSICION_CALMA = 80  # px que tarda el cielo en volver a su color fuera de la franja
+INTENSIDADES_CALMA = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
+
+
+def _hex(rgb):
+    return "#" + "".join(f"{max(0, min(255, round(v))):02X}" for v in rgb)
+
+
+def _color_en(prim, y):
+    """Color del degradado del cielo a la altura y (sin paradas)."""
+    t = y / ALTO
+    a = np.array([int(prim["arriba"][i:i + 2], 16) for i in (1, 3, 5)], float)
+    z = np.array([int(prim["abajo"][i:i + 2], 16) for i in (1, 3, 5)], float)
+    return a + (z - a) * t
+
+
+def _calmar_cielo(esc, k, tono):
+    """Lleva el cielo de la franja hacia el negro (texto claro) o el blanco (texto oscuro)
+    en una proporción k, con transiciones suaves arriba y abajo: el cielo «se calma» en la
+    zona de lectura en vez de taparse con un recuadro."""
+    prim = next(q for q in esc.primitivas if q["tipo"] == "degradado")
+    _, y0, _, y1 = esc.franja
+    extremo = np.zeros(3) if tono == "claro" else np.full(3, 255.0)
+    paradas = []
+    for y, calma in ((y0 - TRANSICION_CALMA, False), (y0, True), (y1, True), (y1 + TRANSICION_CALMA, False)):
+        y = min(max(y, 1), ALTO - 1)
+        base = _color_en(prim, y)
+        paradas.append((round(y / ALTO, 4), _hex(base + (extremo - base) * k if calma else base)))
+    prim["paradas"] = paradas
+
+
+def reservar_texto(esc):
+    """Elige el tono de texto de la franja. Si ninguno llega al contraste mínimo, primero
+    calma el cielo en la franja (lo oscurece o aclara con transiciones suaves); solo si eso
+    no basta, hornea un velo translúcido dentro de la franja.
+    Devuelve (tono, contraste, opacidad_del_velo, calma)."""
+    tono, ratio = mejor_texto(_recorte_franja(esc))
+    if ratio >= MIN_CONTRASTE_TEXTO:
+        return tono, ratio, 0.0, 0.0
+    prim = next(q for q in esc.primitivas if q["tipo"] == "degradado")
+    for k in INTENSIDADES_CALMA:
+        pruebas = []
+        for t in TONOS_TEXTO:
+            _calmar_cielo(esc, k, t)
+            pruebas.append((contraste_texto(_recorte_franja(esc), t), t))
+        r, t = max(pruebas)
+        if r >= MIN_CONTRASTE_TEXTO:
+            _calmar_cielo(esc, k, t)
+            return t, r, 0.0, k
+    prim.pop("paradas", None)  # el problema no es el cielo (hay elementos en la franja): velo
+    x0, y0, x1, y1 = esc.franja
+    contrario = {"claro": "oscuro", "oscuro": "claro"}
+    for op in OPACIDADES_VELO:
+        pruebas = []
+        for t in TONOS_TEXTO:
+            esc.velo(x0, y0, x1, y1, TONOS_TEXTO[contrario[t]], op)
+            pruebas.append((contraste_texto(_recorte_franja(esc), t), t))
+            esc.primitivas.pop()
+        r, t = max(pruebas)
+        if r >= MIN_CONTRASTE_TEXTO or op == OPACIDADES_VELO[-1]:  # el último se acepta aunque no llegue
+            esc.velo(x0, y0, x1, y1, TONOS_TEXTO[contrario[t]], op)
+            return t, r, op, 0.0
+
+
+@lru_cache(maxsize=1)
+def cargar_frases():
+    return yaml.safe_load((CATALOGO / "frases.yaml").read_text(encoding="utf-8"))
+
+
+def _fraccion(clave):
+    """Número en [0, 1) derivado de una cadena: reparto al azar pero reproducible."""
+    return int(hashlib.sha256(clave.encode("utf-8")).hexdigest()[:8], 16) / 2 ** 32
+
+
+def elegir_frase(ident, movimiento, frases):
+    """Frase de la pieza o None. Unas `proporcion_con_frase` de las piezas llevan una; la elige
+    entre las del movimiento (y las de los movimientos que éste comparte: `usa_tambien`)."""
+    reparto = frases["reparto"]
+    pool = list(frases["movimientos"].get(movimiento, []))
+    for otro in reparto.get("usa_tambien", {}).get(movimiento, []):
+        pool += frases["movimientos"].get(otro, [])
+    if not pool or _fraccion("frase/" + ident) >= reparto["proporcion_con_frase"]:
+        return None
+    return pool[int(_fraccion("frase-n/" + ident) * len(pool))]
+
+
+SIN_COMPROBAR_VISIBILIDAD = {"ninguno", "luna"}  # sin motivo, o la luna: siempre grande
+
+
+def elegir_pieza(config, mov, autor, v, animos, previas):
+    """Primera semilla (intento 0, 1, 2…) cuya pieza no se parezca a las `previas` y cuyo
+    motivo se vea en miniatura. Devuelve (entrada, escena, huella, intento, problema);
+    `problema` es None si salió bien."""
+    problema = None
+    for intento in range(MAX_INTENTOS + 1):
+        entrada, esc = construir(config, mov, autor, v, intento, animos)
+        h = huella_visual(a_imagen(esc)).astype(np.float32).astype(float)  # igual que la que guarda la caché
+        parecido = parecido_a(h, previas)
+        if parecido is not None:
+            problema = f"sigue casi idéntico a {parecido[0]}"
+            continue
+        if entrada["motivo"] not in SIN_COMPROBAR_VISIBILIDAD:
+            _, sin = construir(config, mov, autor, v, intento, animos, ocultar_motivo=True)
+            px = pixeles_de_motivo(a_imagen(esc, ESCALA_MINIATURA), a_imagen(sin, ESCALA_MINIATURA))
+            if px < MIN_PIXELES_MOTIVO:
+                problema = f"el motivo '{entrada['motivo']}' casi no se ve en miniatura ({px} px)"
+                continue
+            entrada["pixeles_motivo"] = px
+        if esc.franja is None:
+            problema = "no queda hueco para la franja de texto"
+            continue
+        texto, ratio, velo, calma = reservar_texto(esc)  # la calma y el velo forman parte de la pieza
+        entrada["franja"] = list(esc.franja)
+        entrada["texto_recomendado"], entrada["contraste_texto"], entrada["velo"] = texto, round(ratio, 1), velo
+        entrada["calma_cielo"] = calma
+        frase = elegir_frase(entrada["id"], mov["id"], cargar_frases())
+        if frase:
+            bloques, _ = tx.componer(frase["texto"], frase["autor"], esc.franja)
+            esc.texto(bloques, TONOS_TEXTO[texto])
+        entrada["frase"] = ({k: frase[k] for k in ("texto", "autor", "obra", "idioma")} if frase else None)
+        return entrada, esc, h, intento, None
+    return entrada, esc, h, intento, problema
+
+
+def copiar_muestras(generados, rutas, por_movimiento=3):
+    """Copia unas pocas piezas (las primeras del primer autor de cada movimiento) a
+    catalog/muestras/, que sí se versiona: el catálogo completo va como artefacto de CI."""
+    for mov_id in sorted({e["movimiento"] for e in generados}):
+        destino = CATALOGO / "muestras" / mov_id
+        destino.mkdir(parents=True, exist_ok=True)
+        for viejo in destino.glob("*"):
+            viejo.unlink()
+        propias = [e for e in generados if e["movimiento"] == mov_id]
+        primero = propias[0]["autor_id"]
+        for e in [x for x in propias if x["autor_id"] == primero][:por_movimiento]:
+            shutil.copy2(rutas[e["id"]], destino / rutas[e["id"]].name)
+
+
+# --- Compilación incremental -------------------------------------------------------------
+# El resultado de una pieza depende de (1) su configuración en la taxonomía, (2) el código
+# del generador y (3) las huellas de las piezas anteriores de su movimiento, porque la
+# detección de duplicados las compara. La clave de caché reúne las tres cosas: si coincide
+# y los archivos siguen ahí, la pieza se reutiliza sin dibujarla ni pasar por Chromium.
+
+def hash_generador():
+    """Hash del código del generador, su fuente y los catálogos que lo parametrizan."""
+    h = hashlib.sha256()
+    for ruta in (sorted((RAIZ / "generator").glob("*.py")) + sorted((RAIZ / "generator" / "fuentes").glob("*.ttf"))
+                 + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml", CATALOGO / "frases.yaml"]):
+        h.update(ruta.name.encode() + b"\0" + ruta.read_bytes() + b"\0")
+    return h.hexdigest()
+
+
+def _huella_a_texto(h):
+    return base64.b64encode(np.asarray(h, dtype=np.float32).tobytes()).decode()
+
+
+def _huella_de_texto(t):
+    return np.frombuffer(base64.b64decode(t), dtype=np.float32).astype(float)
+
+
+def hash_previas(previas):
+    h = hashlib.sha256()
+    for ident in sorted(previas):
+        h.update(ident.encode() + b"\0" + np.asarray(previas[ident], dtype=np.float32).tobytes())
+    return h.hexdigest()
+
+
+def clave_pieza(gen, config, mov, autor, v, animos, previas):
+    datos = {
+        "gen": gen, "mov": mov["id"], "v": v, "obra": autor["obras"][v - 1],
+        "autor": {k: autor[k] for k in ("id", "nombre", "epoca", "region")},
+        "par": combinacion(mov, autor, v, animos), "variante_jpg": config["variante_jpg"],
+        "previas": hash_previas(previas),
+    }
+    return hashlib.sha256(json.dumps(datos, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+
+def _rutas_cache(ident):
+    return CATALOGO / ".cache" / "mini" / f"{ident}.png", CATALOGO / ".cache" / "rev" / f"{ident}.png"
+
+
+def cargar_cache():
+    ruta = CATALOGO / ".cache" / "piezas.json"
+    return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else {}
+
+
+def guardar_cache(cache):
+    ruta = CATALOGO / ".cache" / "piezas.json"
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    ruta.write_text(json.dumps(cache, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def _reutilizable(hit, clave):
+    """La entrada de caché sirve si su clave coincide y los archivos que guardó siguen intactos."""
+    if not hit or hit["clave"] != clave:
+        return False
+    ruta = RAIZ / hit["entrada"]["archivo"]
+    mini, rev = _rutas_cache(hit["entrada"]["id"])
+    if hit["entrada"]["formato"] == "jpg":
+        ruta2 = RAIZ / hit["entrada"].get("archivo_2x", "")
+        if not ruta2.is_file() or hashlib.sha256(ruta2.read_bytes()).hexdigest() != hit["entrada"].get("sha256_2x"):
+            return False
+    return (ruta.exists() and mini.exists() and rev.exists()
+            and hashlib.sha256(ruta.read_bytes()).hexdigest() == hit["entrada"]["sha256"])
+
+
+def _movimiento_de(nombre_archivo, ids_movimientos):
+    """Movimiento al que pertenece un archivo: el id más largo que lo prefija (así
+    «realismo» no se come los archivos de «realismo-magico»)."""
+    candidatos = [m for m in ids_movimientos if nombre_archivo.startswith(m + "-")]
+    return max(candidatos, key=len) if candidatos else None
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description="Genera marcalibros desde la taxonomía.")
+    ap.add_argument("--all", action="store_true", help="genera todos los movimientos")
+    ap.add_argument("--movimiento", help="genera solo un movimiento, por id")
+    ap.add_argument("--forzar", action="store_true", help="ignora la caché y rehace todas las piezas")
+    args = ap.parse_args(argv)
+    if not args.all and not args.movimiento:
+        ap.error("indica --all o --movimiento <id>")
+
+    config = yaml.safe_load((CATALOGO / "taxonomia.yaml").read_text(encoding="utf-8"))
+    motivos = yaml.safe_load((CATALOGO / "motivos.yaml").read_text(encoding="utf-8"))
+    animos = cargar_animos()
+    problemas = validar_taxonomia(config, motivos, animos, set(NOMBRES_ARQUETIPOS), PALETAS)
+    problemas += [f"frases: {p}" for p in validar_frases(cargar_frases(), tx.soporta)]
+    for p in problemas:
+        print(f"  ✗ taxonomía: {p}")
+    if problemas:
+        return 1
+    filtro = None if args.all else args.movimiento
+
+    gen = hash_generador()
+    cache = {} if args.forzar else cargar_cache()
+    nueva_cache = {}
+    generados, rutas, huellas = [], {}, {}
+    miniaturas, revisiones, rehechas = {}, {}, []
+    fallos = 0
+    avisos_texto, con_velo = [], []
+    for mov, autor, v in recorrer(config, filtro):
+        ident = f"{mov['id']}-{autor['id']}-{v:02d}"
+        # Los duplicados se comparan dentro de cada movimiento, así el resultado
+        # no depende de qué movimientos se generen en la misma ejecución.
+        previas = {k: h for k, h in huellas.items() if k.startswith(mov["id"] + "-")}
+        clave = clave_pieza(gen, config, mov, autor, v, animos, previas)
+        hit = cache.get(ident)
+        mini_ruta, rev_ruta = _rutas_cache(ident)
+        if _reutilizable(hit, clave):
+            entrada, h = hit["entrada"], _huella_de_texto(hit["huella"])
+            miniaturas[ident], revisiones[ident] = Image.open(mini_ruta).copy(), Image.open(rev_ruta).copy()
+            rutas[ident] = RAIZ / entrada["archivo"]
+        else:
+            entrada, esc, h, intento, problema = elegir_pieza(config, mov, autor, v, animos, previas)
+            if problema:
+                fallos += 1
+                print(f"  ✗ {ident}: {problema} tras {MAX_INTENTOS} reintentos de semilla")
+            if intento:
+                print(f"  ↻ {ident}: semilla cambiada {intento}× (duplicado visual, motivo invisible o sin hueco para el texto)")
+            rutas[ident] = escribir(entrada, esc)
+            miniaturas[ident] = a_imagen(esc, ESCALA_MINIATURA)
+            img, _ = imagen_para_revision(entrada, esc, rutas[ident])  # QA con Chromium: solo lo rehecho
+            revisiones[ident] = img.resize((round(ANCHO * ESCALA_REVISION), round(ALTO * ESCALA_REVISION)),
+                                           Image.Resampling.LANCZOS)
+            mini_ruta.parent.mkdir(parents=True, exist_ok=True)
+            rev_ruta.parent.mkdir(parents=True, exist_ok=True)
+            miniaturas[ident].save(mini_ruta)
+            revisiones[ident].save(rev_ruta)
+            rehechas.append(ident)
+            if len(rehechas) % 25 == 0:  # guardado periódico: una interrupción no pierde lo hecho
+                guardar_cache({**{k: v for k, v in cache.items() if k not in nueva_cache}, **nueva_cache,
+                               ident: {"clave": clave, "huella": _huella_a_texto(h), "entrada": entrada}})
+        if entrada["contraste_texto"] < MIN_CONTRASTE_TEXTO:
+            avisos_texto.append(f"{ident}: franja a {entrada['contraste_texto']}:1 incluso con velo {entrada['velo']}")
+        if entrada["velo"]:
+            con_velo.append(ident)
+        huellas[ident] = h
+        generados.append(entrada)
+        nueva_cache[ident] = {"clave": clave, "huella": _huella_a_texto(h), "entrada": entrada}
+
+    if not generados:
+        ap.error(f"no hay movimientos con id '{args.movimiento}'")
+
+    # El manifest conserva los movimientos que no se regeneraron.
+    manifiesto = CATALOGO / "manifest.json"
+    previas_manifest = []
+    if manifiesto.exists():
+        previas_manifest = json.loads(manifiesto.read_text(encoding="utf-8"))["entradas"]
+    rehechos = {e["movimiento"] for e in generados}
+    entradas = sorted(
+        [e for e in previas_manifest if e["movimiento"] not in rehechos] + generados,
+        key=lambda e: e["id"],
+    )
+    manifiesto.write_text(
+        json.dumps({"version_generador": VERSION_GENERADOR, "total": len(entradas), "entradas": entradas},
+                   ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    # Caché: se conservan los demás movimientos y se sustituyen los regenerados.
+    for ident, hit in cache.items():
+        if hit["entrada"]["movimiento"] not in rehechos:
+            nueva_cache.setdefault(ident, hit)
+    guardar_cache(nueva_cache)
+
+    # Archivos huérfanos (obras quitadas de la taxonomía) de los movimientos regenerados
+    ids_movimientos = [m["id"] for m in config["movimientos"]]
+    vigentes = {e["id"] for e in generados}
+    for sub in ("svg", "jpg", "jpg2x"):
+        for f in sorted((CATALOGO / sub).glob("*")) if (CATALOGO / sub).exists() else []:
+            if _movimiento_de(f.stem, ids_movimientos) in rehechos and f.stem not in vigentes:
+                f.unlink()
+                print(f"  - huérfano eliminado: {f.relative_to(RAIZ)}")
+
+    # Validaciones de los archivos (todos, también los reutilizados: es barato)
+    errores = 0
+    for e in generados:
+        ruta = rutas[e["id"]]
+        for problema in (validar_svg(ruta) if e["formato"] == "svg" else validar_jpg(ruta)):
+            errores += 1
+            print(f"  ✗ {e['id']}: {problema}")
+        if e["formato"] == "jpg":
+            for problema in validar_jpg(RAIZ / e["archivo_2x"], DENSIDAD_ALTA):
+                errores += 1
+                print(f"  ✗ {e['id']} (2x): {problema}")
+    errores += fallos
+
+    # Hojas de contacto (una por autor) y de miniaturas (una por movimiento): solo si cambió algo
+    por_autor = {}
+    for e in generados:
+        por_autor.setdefault((e["movimiento"], e["autor_id"]), []).append(e)
+    hojas_hechas = 0
+    for (mov_id, autor_id), grupo in sorted(por_autor.items()):
+        hoja = CATALOGO / "revision" / f"hoja-{mov_id}-{autor_id}.jpg"
+        if hoja.exists() and not any(e["id"] in rehechas for e in grupo):
+            continue
+        hoja_de_contacto([(f"{e['obra']}  [{e['formato']}]", revisiones[e["id"]]) for e in grupo], hoja)
+        hojas_hechas += 1
+    for mov_id in sorted(rehechos):
+        propias = [e for e in generados if e["movimiento"] == mov_id]
+        hoja = CATALOGO / "revision" / f"miniaturas-{mov_id}.jpg"
+        if hoja.exists() and not any(e["id"] in rehechas for e in propias):
+            continue
+        hoja_de_miniaturas([(f"{e['autor_id'][:3]}{e['variante']:02d}", miniaturas[e["id"]]) for e in propias], hoja)
+        hojas_hechas += 1
+
+    copiar_muestras(generados, rutas)
+
+    RESUMEN.clear()
+    RESUMEN.update(reutilizadas=len(generados) - len(rehechas), rehechas=len(rehechas), ids_rehechas=list(rehechas),
+                   hojas=hojas_hechas)
+    calmadas = sum(1 for e in generados if e.get("calma_cielo"))
+    print(f"  franja de texto: {len(generados) - len(con_velo) - calmadas} piezas la leen tal cual, "
+          f"{calmadas} con el cielo calmado en la franja y {len(con_velo)} con velo")
+    for aviso in avisos_texto:
+        print(f"  ⚠ {aviso}")
+    jpg = sum(1 for e in generados if e["formato"] == "jpg")
+    print(f"\nGenerados: {len(generados)} (jpg: {jpg}, svg: {len(generados) - jpg}): "
+          f"{len(rehechas)} rehechas, {len(generados) - len(rehechas)} reutilizadas de la caché, {hojas_hechas} hojas. "
+          f"Errores de validación: {errores}. Manifest total: {len(entradas)}.")
+    return 1 if errores else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

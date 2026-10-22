@@ -151,7 +151,17 @@
     "loadErrorHelp": "Los navegadores bloquean la lectura de archivos locales en una página abierta con doble clic. Sirve la carpeta: ejecuta {command} en {folder} y abre {address}.",
     "updatedUnknown": "desconocida (el servidor no envió el encabezado Last-Modified)",
     "download": "Descargar CSV",
-    "csvFilename": "formatos-de-documento"
+    "csvFilename": "formatos-de-documento",
+    "aboutTitle": "Acerca de esta base de datos",
+    "aboutIntro": "Esta completa base de datos de formatos de documento incluye:",
+    "aboutFormats": "{count} formatos en varias categorías",
+    "aboutCountries": "{count} países y regiones con estándares locales e internacionales",
+    "aboutDual": "Medidas duales en unidades métricas e imperiales",
+    "aboutSpecs": "Especificaciones técnicas para impresión y diseño",
+    "aboutConversions": "Conversiones de formato con equivalencias internacionales",
+    "aboutSources": "Datos tomados de las normas ISO 216, ANSI, JIS y GB/T.",
+    "aboutUpdated": "Última actualización:",
+    "footer": "Base de datos de formatos de documento v2.0 | Hecha con HTML5, CSS3 y JavaScript"
   },
   "paperTypes": {
     "searchPlaceholder": "Buscar tipos de papel...",

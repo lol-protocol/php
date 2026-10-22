@@ -54,7 +54,7 @@ final class RegistroRepository extends Repository
     {
         return $this->db->fetchAll(
             "SELECT r.id, r.titulo, r.tipo, r.fecha FROM {$this->privacidad->registros()} r
-              WHERE " . self::sinAcentos('r.titulo') . self::LIKE_ESCAPED . ' ORDER BY r.fecha, r.id'
+              WHERE " . self::sinAcentos('r.titulo') . self::LIKE_ESCAPED . $this->sinRetiradas('registro', 'r.id') . ' ORDER BY r.fecha, r.id'
                 . self::page($limit, $offset),
             [self::patron($texto)]
         );

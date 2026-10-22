@@ -53,13 +53,15 @@ final class Degradado
         } elseif (!is_array($colores) || count($colores) < 2 || count($colores) > 6) {
             throw new \InvalidArgumentException('degradado.colores debe ser «auto» o una lista de 2 a 6 colores.');
         }
+        $lista = [];
         foreach ($colores as $color) {
             if (!is_string($color) || !Color::valido($color)) {
                 throw new \InvalidArgumentException('degradado.colores: cada color debe ser #rrggbb.');
             }
+            $lista[] = $color;
         }
 
-        return new self($tipo, (float) $angulo, array_values($colores));
+        return new self($tipo, (float) $angulo, $lista);
     }
 
     /** Elemento `<defs>` con el degradado, para el lienzo dado. */
