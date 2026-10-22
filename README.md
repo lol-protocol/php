@@ -15,6 +15,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`document-formats/`](document-formats/) | Base de datos de formatos de documento y papel por país. |
 | [`privacy-laws/`](privacy-laws/) | Base de datos de leyes de privacidad por país, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
 | [`copyright-laws/`](copyright-laws/) | Base de datos de leyes de derechos de autor por jurisdicción, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
+| [`leyes-comunes/`](leyes-comunes/) | Núcleo compartido del verificador de enlaces de referencia de `privacy-laws/` y `copyright-laws/`: ninguno de los dos depende del otro, los dos dependen de esta carpeta. |
 | [`marketing/`](marketing/) | Frases y textos de marketing para un proyecto de genealogía: lemas, eslóganes, redes sociales y correo. |
 | [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |
 | [`psychology-and-marketing/`](psychology-and-marketing/) | Guía de psicología humana y neuromarketing ético para diseñar productos sin violar la privacidad del usuario. Solo documentos, sin código ni CI. |
@@ -35,9 +36,10 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 Cada carpeta tiene su propio README con instrucciones de instalación y uso. La mayoría tiene
 también su propio código y tests; `landing-page/` es un solo archivo; `psychology-and-marketing/`
 es solo texto; `marketing/` es texto e imágenes con dos scripts PHP sueltos (`render.php` e
-`iconos/vista-previa.php`), sin tests ni CI; y los sets de iconos son SVG más el
-generador/validador de `iconos-tools/` (ver "CI/CD" más abajo). La única dependencia entre
-proyectos es:
+`iconos/vista-previa.php`), sin tests ni CI; los sets de iconos son SVG más el
+generador/validador de `iconos-tools/` (ver "CI/CD" más abajo); y `privacy-laws/` y
+`copyright-laws/` comparten el núcleo de su verificador de enlaces en `leyes-comunes/`, sin que
+uno dependa del otro. La única dependencia entre proyectos es:
 **`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
 acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer
 (`lol-protocol/defamatory-content-review`, repositorio `path` a `../defamatory-content-review`),
