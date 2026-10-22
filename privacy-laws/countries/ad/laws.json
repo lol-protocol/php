@@ -1,0 +1,102 @@
+[
+  {
+    "country_code": "AD",
+    "country_name": "Andorra",
+    "region": "europe",
+    "law_name": "Qualified Law 29/2021 of 28 October on the Protection of Personal Data",
+    "jurisdiction": "Andorran Data Protection Agency (APDA)",
+    "enactment_date": "2021-10-28",
+    "effective_date": "2022-05-17",
+    "scope": "Data subjects whose data is processed in Andorra or by non-domiciled controllers using means there",
+    "applies_to": "All public and private controllers and processors; foreign controllers must designate a representative",
+    "key_requirements": "GDPR-aligned legal bases and data-subject rights; accountability; independent supervisory agency (art. 46)",
+    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Andorran Data Protection Agency (Agencia Andorrana de Proteccio de Dades - APDA)",
+    "penalties_range": "Administrative fines reportedly up to EUR 100,000 depending on severity (single compliance-site claim; statute not seen) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "Deceased persons listed among excluded data categories by one source, with unspecified exceptions (unconfirmed)",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.apda.ad",
+    "language": "Catalan",
+    "frameworks": "EU-Adequacy/CoE-108",
+    "frameworks_not": "",
+    "notes": "74 articles, 7 chapters, published in BOPA 2021-11-17, replaced Law 15/2003; implementing Decree 391/2022. EU adequacy decision dated 2010-10-19. Party to Convention 108+ (ratified 2022-10-18).",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.apda.ad/assets/pdf/agency/Decret_391-2022",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://www.apda.ad/assets/pdf/agency/Decret_368-2022_del_14-9-2022_d_aprovacio_del_Reglament_de_l_Agencia_Andorrana_de_Proteccio_de_Dades.pdf",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://cuatrecasas.com/en/spain/article/international-andorra-passes-its-new-data-protection-act",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "effective_date": {
+        "url": "https://commission.europa.eu/document/download/f8229eb2-1a36-4cf5-a099-1cd001664bff_en",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://www.clym.io/regulations/qualified-personal-data-protection-law-lqpd-andorra",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "applies_to": {
+        "url": "https://www.clym.io/regulations/qualified-personal-data-protection-law-lqpd-andorra",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "key_requirements": {
+        "url": "https://commission.europa.eu/document/download/f8229eb2-1a36-4cf5-a099-1cd001664bff_en",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "data_categories": {
+        "url": "https://www.cookieyes.com/blog/andorra-personal-data-protection-law/",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://www.apda.ad/assets/pdf/agency/Decret_368-2022_del_14-9-2022_d_aprovacio_del_Reglament_de_l_Agencia_Andorrana_de_Proteccio_de_Dades.pdf",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://www.clym.io/regulations/qualified-personal-data-protection-law-lqpd-andorra",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "deceased_data": {
+        "url": "https://www.cookieyes.com/blog/andorra-personal-data-protection-law/",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "frameworks": {
+        "url": "https://www.coe.int/web/data-protection/-/with-andorra-20-ratifications-for-convention-108-",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

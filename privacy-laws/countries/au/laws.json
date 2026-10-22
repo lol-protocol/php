@@ -34,11 +34,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://mccullough.com.au/2026/08/31/privacy-act-reforms-tranche-2-proposals/",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.oaic.gov.au/privacy/privacy-complaints/what-you-can-complain-about",
         "confidence": "high",
@@ -53,6 +48,11 @@
         "url": "https://www.oaic.gov.au/privacy/your-privacy-rights/your-personal-information/what-is-personal-information",
         "confidence": "high",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://mccullough.com.au/2026/08/31/privacy-act-reforms-tranche-2-proposals/",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

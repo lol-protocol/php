@@ -29,6 +29,21 @@
     "confidence": "medium",
     "last_checked": "2026-10-21",
     "sources": {
+      "deceased_data": {
+        "url": "https://webiis06.mondaq.com/data-protection/1181270/new-law-on-protection-of-personal-data-in-mongolia",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "research_exemption": {
+        "url": "https://webiis06.mondaq.com/data-protection/1181270/new-law-on-protection-of-personal-data-in-mongolia",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://pwc.com/mn/en/services/legal_mn/legal-articles/legal_insights_feb_24_2025.html",
+        "confidence": "high",
+        "checked": "2026-10-21"
+      },
       "law_name": {
         "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
         "confidence": "medium",
@@ -78,21 +93,6 @@
         "url": "https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html",
         "confidence": "low",
         "checked": "2026-10-16"
-      },
-      "deceased_data": {
-        "url": "https://webiis06.mondaq.com/data-protection/1181270/new-law-on-protection-of-personal-data-in-mongolia",
-        "confidence": "medium",
-        "checked": "2026-10-21"
-      },
-      "research_exemption": {
-        "url": "https://webiis06.mondaq.com/data-protection/1181270/new-law-on-protection-of-personal-data-in-mongolia",
-        "confidence": "low",
-        "checked": "2026-10-21"
-      },
-      "genetic_data": {
-        "url": "https://pwc.com/mn/en/services/legal_mn/legal-articles/legal_insights_feb_24_2025.html",
-        "confidence": "high",
-        "checked": "2026-10-21"
       }
     },
     "changes": [

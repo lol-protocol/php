@@ -79,11 +79,6 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.afriwise.com/blog/www-afriwise-com-blog-the-nigeria-data-protection-act-general-application-and-implementation-directive-2025-becomes-effective-today",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.itedgenews.africa/transitioning-from-ndpr-to-ndpa-some-good-bad-and-ugly-provisions-of-the-newly-enacted-nigeria-data-protection-act-2023",
         "confidence": "medium",
@@ -98,6 +93,11 @@
         "url": "https://www.mondaq.com/nigeria/data-protection/1366934/the-nigerias-data-protection-act-2023-a-look-at-key-provisions",
         "confidence": "high",
         "checked": "2026-10-18"
+      },
+      "notes": {
+        "url": "https://www.afriwise.com/blog/www-afriwise-com-blog-the-nigeria-data-protection-act-general-application-and-implementation-directive-2025-becomes-effective-today",
+        "confidence": "medium",
+        "checked": "2026-10-14"
       }
     },
     "changes": [
