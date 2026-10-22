@@ -63,7 +63,7 @@ en `ACEPTADOS` (hoy está vacío).
 
 Cada sólido es su cara frontal más una pared extruida hacia abajo y a la derecha (`LIGHT` en `lib.py`).
 La pared se dibuja con las mismas rectas y arcos de la forma (`exact_sweep`), no con un polígono que
-la aproxime: se ve igual de suave a 16 px que a 512 px. Tres detalles:
+la aproxime: se ve igual de suave a 16 px que a 512 px. Cuatro detalles:
 
 - El degradado de la cara va de arriba a la izquierda a abajo a la derecha. En
   una forma girada (los rombos) se gira de vuelta (`light_axis`), porque si no
@@ -73,6 +73,10 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Tres detalles:
 - El borde trasero de la pared se adelanta `INSET` (0,3) a lo largo de la extrusión para que quede
   tapado por la cara frontal. Sin eso asoma una línea gris fina en el borde antialiasado de la cara.
   En `lineas` no se aplica: ahí la pared es un trazo y su borde trasero coincide con el de la cara.
+- En `gris`, dos volúmenes que se tocan y son de tonos distintos se separan al menos `GRAY_GAP` (20 de 255):
+  los tonos de la paleta se reparten bien en color pero siete caen en 11 niveles de gris, y sin esto
+  `book_index` o `ui_collection` quedaban como un solo bloque. Cede el volumen de delante
+  (`_gray_shifts`); su degradado lleva el desplazamiento en el id (`..._g_p15`).
 - Las coordenadas llevan dos decimales (`fmt`). Con uno, el redondeo de los extremos de un arco
   de 1,5 de radio se notaba al ampliar.
 

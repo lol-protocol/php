@@ -9,6 +9,7 @@ import math
 from catalogo import VARIANTS
 LIGHT = (0.6, 0.8)  # direccion de la extrusion: abajo a la derecha
 INSET = 0.3  # cuanto se mete el borde trasero de la extrusion bajo la cara frontal (ver exact_sweep)
+GRAY_GAP = 20  # minimo de gris (de 255) entre dos volumenes de tonos distintos que se tocan, en la variante gris
 
 BASE = {
     'mist': '#CBD5E1', 'slate': '#94A3B8', 'ink': '#475569', 'night': '#1E293B',
@@ -43,9 +44,13 @@ def mix(a, b, t):
     return _hex(tuple(x + (y - x) * t for x, y in zip(_rgb(a), _rgb(b))))
 
 
-def gray(c):
+def gray_level(c):
     r, g, b = _rgb(c)
-    y = round(0.299 * r + 0.587 * g + 0.114 * b)
+    return round(0.299 * r + 0.587 * g + 0.114 * b)
+
+
+def gray(c, shift=0):
+    y = max(0, min(255, gray_level(c) + shift))
     return '#%02X%02X%02X' % (y, y, y)
 
 
@@ -440,6 +445,38 @@ class Icon:
         return self.mark(d, **kw)
 
     # ----- render
+    @staticmethod
+    def _box(s):
+        """Caja del volumen con su extrusion, algo ensanchada para que cuenten los que solo se rozan."""
+        ex, ey = LIGHT[0] * s['d'], LIGHT[1] * s['d']
+        pts = s['shape'].pts()
+        xs = [p[0] for p in pts] + [p[0] + ex for p in pts]
+        ys = [p[1] for p in pts] + [p[1] + ey for p in pts]
+        return min(xs) - 0.5, min(ys) - 0.5, max(xs) + 0.5, max(ys) + 0.5
+
+    def _gray_shifts(self):
+        """Cuanto aclarar u oscurecer cada volumen en la variante gris para que no se funda con otro que toca.
+
+        Los tonos de la paleta se reparten bien en color pero mal en luminosidad: siete caen en 11 niveles de gris.
+        Dos volumenes que se tocan y son de tonos distintos se separan al menos GRAY_GAP; cede el de delante."""
+        shifts, grays, boxes = [], [], []
+        for s in self.solids:
+            level, box = gray_level(BASE[s['hue']]), self._box(s)
+            others = [grays[j] for j, o in enumerate(self.solids[:len(grays)])
+                      if o['hue'] != s['hue'] and not (box[2] <= boxes[j][0] or boxes[j][2] <= box[0] or box[3] <= boxes[j][1] or boxes[j][3] <= box[1])]
+            shift = 0
+            if others and min(abs(level - g) for g in others) < GRAY_GAP:
+                away = 1 if level >= min(others, key=lambda g: abs(level - g)) else -1  # alejarse del vecino mas cercano
+                for k in range(1, 256):
+                    ok = [c for c in (away * k, -away * k) if 30 <= level + c <= 215 and all(abs(level + c - g) >= GRAY_GAP for g in others)]
+                    if ok:
+                        shift = ok[0]
+                        break
+            shifts.append(shift)
+            grays.append(level + shift)
+            boxes.append(box)
+        return shifts
+
     def _bbox(self):
         xs, ys = [], []
         for s in self.solids:
@@ -464,9 +501,11 @@ class Icon:
         for ln in self.links:
             out_links += self._render_link(ln, variant, col)
 
-        for s in self.solids:
+        shifts = self._gray_shifts() if variant == 'gris' else [0] * len(self.solids)
+        for s, shift in zip(self.solids, shifts):
             hi, base, dark = tones(s['hue'])
             ex, ey = LIGHT[0] * s['d'], LIGHT[1] * s['d']
+            tint = (lambda c, k=shift: gray(c, k)) if variant == 'gris' else col
             sweep = s['shape'].sweep(ex, ey, 0.0 if lin else min(INSET, math.hypot(ex, ey) / 3)) if s['d'] > 0 else None
             parts = []
             if lin:
@@ -476,10 +515,11 @@ class Icon:
             else:
                 if sweep:
                     dfill = tones(s['depth'])[1] if s['depth'] else dark
-                    parts.append(f'<path d="{sweep}" fill="{col(dfill)}"/>')
+                    parts.append(f'<path d="{sweep}" fill="{tint(dfill)}"/>')
                 turn = f'_r{fmt(s["shape"].rot)}'.replace('-', 'm').replace('.', 'p') if s['shape'].rot else ''
-                gid = f'grad_{self.stem}_{s["hue"]}{turn}{"_g" if variant == "gris" else ""}'
-                grads[gid] = (col(hi), col(base), s['shape'].light_axis())
+                moved = f'_{"m" if shift < 0 else "p"}{abs(shift)}' if shift else ''
+                gid = f'grad_{self.stem}_{s["hue"]}{turn}{"_g" if variant == "gris" else ""}{moved}'
+                grads[gid] = (tint(hi), tint(base), s['shape'].light_axis())
                 op = f' opacity="{fmt(s["op"])}"' if s['op'] != 1 else ''
                 parts.append(s['shape'].front(f'fill="url(#{gid})"{op}'))
             out_solids.append('<g>' + ''.join(parts) + '</g>')
