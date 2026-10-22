@@ -45,21 +45,21 @@ final class RetiroRepository extends Repository
     }
 
     /**
-     * Whether a visitor reaches the page, as the rest of the site decides it (Privacidad): an event or a
-     * record that would give a living person away and a private colección are not there for a visitor,
-     * so they can't be reported, and a pedido on one doesn't turn its 404 into a 410 that confirms it
-     * exists. A living persona's page is there (it shows only «Persona viva»).
+     * Whether a visitor would reach the page if it had no pedido de retiro, as the rest of the site decides
+     * it (Privacidad): an event or a record that would give a living person away and a private colección
+     * are not there for a visitor, so they can't be reported, and a pedido on one doesn't turn its 404 into
+     * a 410 that confirms it exists. A living persona's page is there (it shows only «Persona viva»).
      */
     public function existe(string $tipo, int $id): bool
     {
         $desde = match ($tipo) {
-            'suceso' => $this->privacidad->sucesos() . ' x',
-            'registro' => $this->privacidad->registros() . ' x',
-            'coleccion' => '(SELECT id FROM colecciones WHERE publica) x',
-            default => isset(self::TABLAS[$tipo]) ? self::TABLAS[$tipo] . ' x' : null,
+            'suceso' => 'sucesos x WHERE ' . $this->privacidad->sqlSucesoVisible('x'),
+            'registro' => 'registros x WHERE ' . $this->privacidad->sqlRegistroVisible('x'),
+            'coleccion' => 'colecciones x WHERE x.publica',
+            default => isset(self::TABLAS[$tipo]) ? self::TABLAS[$tipo] . ' x WHERE TRUE' : null,
         };
 
-        return $desde !== null && $this->db->fetchValue("SELECT 1 FROM {$desde} WHERE x.id = ?", [$id]) !== null;
+        return $desde !== null && $this->db->fetchValue("SELECT 1 FROM {$desde} AND x.id = ?", [$id]) !== null;
     }
 
     public function retirado(string $tipo, int $id): bool

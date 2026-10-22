@@ -150,10 +150,21 @@ final class Privacidad
             ) . ')';
     }
 
-    /** SQL boolean: the persona aliased $q is hidden from a visitor, whether she may be alive or is only private. */
+    /**
+     * SQL boolean: the persona aliased $q is hidden from a visitor, whether she may be alive, is only
+     * private, or was withdrawn after a pedido de retiro (see sqlRetirada()).
+     */
     public function sqlOculta(string $q): string
     {
-        return '(' . $this->sqlViva($q) . ' OR ' . $this->sqlPrivada($q) . ')';
+        return '(' . $this->sqlViva($q) . ' OR ' . $this->sqlPrivada($q) . ' OR ' . self::sqlRetirada($q) . ')';
+    }
+
+    /** SQL boolean: the persona aliased $q has a pedido de retiro that hides or withdraws her. */
+    public static function sqlRetirada(string $q): string
+    {
+        self::alias($q);
+
+        return \App\Repositories\Genealogy\RetiroRepository::sqlRetirado('persona', "{$q}.id");
     }
 
     /**
@@ -182,6 +193,7 @@ final class Privacidad
 
         $viva = $this->sqlViva('q');
         $privada = $this->sqlPrivada('q');
+        $retirada = self::sqlRetirada('q');
 
         return "(SELECT b.id,
                 CASE WHEN b.oculta THEN CASE WHEN b.viva_presunta THEN '" . self::NOMBRE_OCULTO . "' ELSE '" . self::NOMBRE_PRIVADO . "' END
@@ -193,8 +205,8 @@ final class Privacidad
                 CASE WHEN b.oculta THEN NULL ELSE b.aportado_por END AS aportado_por,
                 CASE WHEN b.oculta THEN NULL ELSE b.creado_en END AS creado_en,
                 b.oculta
-           FROM (SELECT x.*, (x.viva_presunta OR x.privada) AS oculta
-                   FROM (SELECT q.*, {$viva} AS viva_presunta, {$privada} AS privada FROM personas q) x) b)";
+           FROM (SELECT x.*, (x.viva_presunta OR x.privada OR x.retirada) AS oculta
+                   FROM (SELECT q.*, {$viva} AS viva_presunta, {$privada} AS privada, {$retirada} AS retirada FROM personas q) x) b)";
     }
 
     /** sucesos, without any event that has a hidden participant. */
@@ -204,7 +216,8 @@ final class Privacidad
             return 'sucesos';
         }
 
-        return '(SELECT e.* FROM sucesos e WHERE ' . $this->sqlSucesoVisible('e') . ')';
+        return '(SELECT e.* FROM sucesos e WHERE ' . $this->sqlSucesoVisible('e') . ' AND NOT '
+            . \App\Repositories\Genealogy\RetiroRepository::sqlRetirado('suceso', 'e.id') . ')';
     }
 
     /**
@@ -230,10 +243,26 @@ final class Privacidad
             return 'registros';
         }
 
-        return '(SELECT g.* FROM registros g WHERE NOT EXISTS ('
-            . 'SELECT 1 FROM registro_sucesos gs JOIN suceso_participantes gp ON gp.suceso_id = gs.suceso_id'
-            . ' JOIN personas gq ON gq.id = gp.persona_id'
-            . ' WHERE gs.registro_id = g.id AND ' . $this->sqlOculta('gq') . '))';
+        return '(SELECT g.* FROM registros g WHERE ' . $this->sqlRegistroVisible('g') . ' AND NOT '
+            . \App\Repositories\Genealogy\RetiroRepository::sqlRetirado('registro', 'g.id') . ')';
+    }
+
+    /**
+     * SQL boolean: the record aliased $q documents no event with a hidden participant (registros() is
+     * those that also have no pedido de retiro of their own).
+     */
+    public function sqlRegistroVisible(string $q): string
+    {
+        self::alias($q);
+
+        if (!$this->ocultaVivas) {
+            return 'TRUE';
+        }
+
+        return 'NOT EXISTS ('
+            . "SELECT 1 FROM registro_sucesos {$q}_rs JOIN suceso_participantes {$q}_rp ON {$q}_rp.suceso_id = {$q}_rs.suceso_id"
+            . " JOIN personas {$q}_rq ON {$q}_rq.id = {$q}_rp.persona_id"
+            . " WHERE {$q}_rs.registro_id = {$q}.id AND " . $this->sqlOculta("{$q}_rq") . ')';
     }
 
     /**

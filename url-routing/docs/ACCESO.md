@@ -118,10 +118,13 @@ que prometen las secciones 5 y 6 del borrador de
   con fecha y nota: recibido, oculto, retirado, rechazado. Esas filas sólo se
   agregan, nunca se cambian. El log de la aplicación anota el número de pedido y
   la página, nunca quién lo pidió ni qué escribió.
+- **Se deja de nombrar en las demás páginas.** Una persona oculta o retirada pasa a ser, para el visitante, una «Persona privada» en todas las páginas que la nombran (la familia de sus parientes, los árboles, los listados y el GEDCOM): `Privacidad` la trata como a una persona oculta por privacidad (`sqlRetirada()`). Los sucesos en los que participa dejan de verse, y con ellos los registros que los documentan, como pasa con una persona viva. Un suceso o un registro retirado sale también de las listas que lo nombran (`sucesos()` y `registros()`). El propietario lo ve todo.
 - **Lo que falta.** No avisa al propietario de un pedido nuevo (hay que mirar
   `/0/3/`), no le escribe a quien lo pidió (el propietario responde por correo,
-  por su cuenta) y no vigila el plazo de respuesta. Una página retirada se sigue
-  nombrando en otras: la persona en la familia de sus parientes o en un árbol. Para retirarla de verdad hay que corregir o borrar los datos.
+  por su cuenta) y no vigila el plazo de respuesta. Retirar una página
+  no borra los datos: para eso hay que corregirlos o borrarlos. Un apellido, una
+  organización o una colección retirados sí salen de la búsqueda y del sitemap, pero
+  siguen nombrados donde los enlaza una persona.
 
 ## Lo que esto NO cubre
 

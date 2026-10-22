@@ -82,6 +82,24 @@ class RetiroRepositoryTest extends TestCase
     }
 
     #[DataProvider('drivers')]
+    public function testAWithdrawnPersonaIsMaskedAndHerEventsAndRecordsLeaveTheVisitorsView(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $visitante = Privacidad::publica();
+        $personas = static fn() => $db->fetchAll('SELECT id, nombres, oculta FROM ' . $visitante->personas() . ' p WHERE id = 6128473101');
+
+        $this->assertSame('José', $personas()[0]['nombres'], 'precondition');
+        $suceso = (int)$db->fetchValue('SELECT suceso_id FROM suceso_participantes WHERE persona_id = 6128473101 LIMIT 1');
+        $this->assertNotNull($db->fetchValue('SELECT 1 FROM ' . $visitante->sucesos() . ' e WHERE e.id = ?', [$suceso]), 'precondition: the event is visible');
+
+        $repo->decidir($repo->crear('persona', 6128473101, 'familiar', 'x', 'c@example.com'), 'retirar', null);
+        $this->assertSame('Persona privada', $personas()[0]['nombres']);
+        $this->assertNull($db->fetchValue('SELECT 1 FROM ' . $visitante->sucesos() . ' e WHERE e.id = ?', [$suceso]), 'her events go too');
+        $this->assertNotNull($db->fetchValue('SELECT 1 FROM ' . Privacidad::propietario()->sucesos() . ' e WHERE e.id = ?', [$suceso]));
+    }
+
+    #[DataProvider('drivers')]
     public function testAWithdrawnPageLeavesTheSitemap(string $driver): void
     {
         $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
