@@ -9,11 +9,13 @@ on:
     paths:
       - 'privacy-laws/**'
       - 'copyright-laws/**'
+      - 'leyes-comunes/**'
       - '.github/workflows/laws-modules.yml'
   pull_request:
     paths:
       - 'privacy-laws/**'
       - 'copyright-laws/**'
+      - 'leyes-comunes/**'
       - '.github/workflows/laws-modules.yml'
 
 permissions:

@@ -19,11 +19,13 @@ on:
       - '.github/workflows/laws-links.yml'
       - 'privacy-laws/scripts/check-links.js'
       - 'copyright-laws/scripts/check-links.js'
+      - 'leyes-comunes/check-links-core.js'
   pull_request:
     paths:
       - '.github/workflows/laws-links.yml'
       - 'privacy-laws/scripts/check-links.js'
       - 'copyright-laws/scripts/check-links.js'
+      - 'leyes-comunes/check-links-core.js'
       - 'privacy-laws/countries/privacy_laws_master.csv'
       - 'privacy-laws/countries/field_sources.csv'
       - 'copyright-laws/jurisdictions/copyright_laws_master.csv'
@@ -50,7 +52,8 @@ jobs:
         with:
           fetch-depth: 0 # the PR scope below compares with the base branch
 
-      # Full check on schedule, by hand, on master, and on a PR that changes the check itself.
+      # Full check on schedule, by hand, on master, and on a PR that changes the check itself (this workflow,
+      # either module's check-links.js or the shared core in leyes-comunes/).
       # On a PR that only changes data: the jurisdictions of the added or changed CSV rows (their first
       # column is the country code), or nothing at all if this module's data did not change.
       - name: Decide what to check
@@ -58,7 +61,7 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" != "pull_request" ]; then exit 0; fi
           base="origin/${{ github.base_ref }}"
-          if git diff --name-only "$base"...HEAD | grep -qxE '\.github/workflows/laws-links\.yml|(privacy|copyright)-laws/scripts/check-links\.js'; then
+          if git diff --name-only "$base"...HEAD | grep -qxE '\.github/workflows/laws-links\.yml|(privacy|copyright)-laws/scripts/check-links\.js|leyes-comunes/check-links-core\.js'; then
             exit 0
           fi
           codes=$(git diff -U0 "$base"...HEAD -- */*_master.csv */field_sources.csv \
