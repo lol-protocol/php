@@ -66,7 +66,7 @@ test('the languages with every string translated also have the new demo strings'
 test('placeholders such as {count} survive translation', () => {
     const placeholders = (text) => [...String(text).matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort();
     const keys = ['demo.proportions', 'demo.similarity', 'demo.resultsFormats', 'demo.resultsPaperTypes', 'paperTypes.combinedTitle',
-        'demo.loadError', 'demo.loadErrorHelp'];
+        'demo.loadError', 'demo.loadErrorHelp', 'demo.aboutFormats', 'demo.aboutCountries'];
     for (const lang of ['de', 'es', 'fr', 'ja', 'zh']) {
         const tree = JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'));
         for (const key of keys) {
@@ -143,4 +143,18 @@ test('the name of the downloaded CSV is plain ASCII, so every browser and file s
         const name = lookup(tree, 'demo.csvFilename');
         if (name !== '') assert.match(name, /^[a-z0-9-]+$/, `${lang}: "${name}"`);
     }
+});
+
+test('the About lines that carry a number have the {count} placeholder in every language that translates them', () => {
+    for (const lang of LANGUAGES) {
+        const tree = JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'));
+        for (const key of ['demo.aboutFormats', 'demo.aboutCountries']) {
+            const text = lookup(tree, key);
+            if (text !== '') assert.ok(text.includes('{count}'), `${lang} ${key}`);
+        }
+    }
+});
+
+test('the page keeps no style attributes, so a strict content security policy could forbid inline styles', () => {
+    assert.deepEqual(html.match(/\sstyle="/g) ?? [], []);
 });

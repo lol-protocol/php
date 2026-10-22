@@ -1,0 +1,35 @@
+# Changelog
+
+What changed in `document-formats/`, newest first. Each entry names the pull request that
+carries the details. Dates are those of the merge.
+
+## 2026-10-22
+
+- Quick wins: the About tab and the footer of the demo are translated (10 new strings, 145
+  per language); the page has no inline `style` attributes, a print stylesheet and
+  `description` / `color-scheme` meta tags; `LocalizationManager.isRtl()` replaces the lists of
+  right-to-left languages; `COUNTRIES_FILE` names the countries file once; statistics of an
+  empty catalog are zeros instead of `NaN`; `FormatLoader` no longer writes to the console.
+  `.nvmrc` pins Node 22, the version CI uses.
+
+## 2026-10-21
+
+- Demo: `Tabs` class (`app/tabs.js`), state in the address (`app/url-state.js`), a button that
+  downloads the formats on screen as CSV, `lang` marks on what JavaScript draws (#190).
+- Library: book margins and per-format DPI come from the CSV files, `search()` breaks ties
+  deterministically, the `v_products_with_paper` view (#189).
+- Standards references verified; MariaDB 10.11 is exercised by CI (#187).
+
+## 2026-10-20
+
+- Importer without repeated loops, API examples generated from the CSV files
+  (`generate_api_examples.js`), tests for the code in the documentation (#180).
+- Demo accessible (landmarks, tabs pattern, labels, contrast, RTL) and available in 30
+  languages, with the paper type names translated (#148).
+- Finish vocabulary, standard paper weights, product specifications and coherence tests (#147).
+
+## 2026-10-17 and earlier
+
+- Names of the 50 paper types in 28 more languages (#116).
+- Catalog of 50 paper types with color and texture (#99).
+- Data corrections and coherence tests for devices, formats and the README (2026-10-14).

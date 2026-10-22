@@ -151,7 +151,17 @@
     "loadErrorHelp": "Browser blockieren das Lesen lokaler Dateien auf einer per Doppelklick geöffneten Seite. Stellen Sie den Ordner stattdessen bereit: Führen Sie {command} in {folder} aus und öffnen Sie {address}.",
     "updatedUnknown": "unbekannt (der Server hat keinen Last-Modified-Header gesendet)",
     "download": "CSV herunterladen",
-    "csvFilename": "dokumentformate"
+    "csvFilename": "dokumentformate",
+    "aboutTitle": "Über diese Datenbank",
+    "aboutIntro": "Diese umfassende Datenbank für Dokumentformate enthält:",
+    "aboutFormats": "{count} Formate in mehreren Kategorien",
+    "aboutCountries": "{count} Länder und Regionen mit lokalen und internationalen Normen",
+    "aboutDual": "Doppelte Maßangaben in metrischen und imperialen Einheiten",
+    "aboutSpecs": "Technische Angaben für Druck und Gestaltung",
+    "aboutConversions": "Formatumrechnungen mit internationalen Entsprechungen",
+    "aboutSources": "Daten nach den Normen ISO 216, ANSI, JIS und GB/T.",
+    "aboutUpdated": "Zuletzt aktualisiert:",
+    "footer": "Datenbank für Dokumentformate v2.0 | Erstellt mit HTML5, CSS3 und JavaScript"
   },
   "paperTypes": {
     "searchPlaceholder": "Papiersorten suchen...",

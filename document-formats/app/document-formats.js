@@ -172,7 +172,6 @@ class FormatLoader {
     async load() {
         try {
             this.formats = await fetchCSV(this.csvUrl);
-            console.log(`Loaded ${this.formats.length} formats`);
         } catch (error) {
             console.error('Error loading formats:', error);
         }
@@ -209,6 +208,9 @@ const FORMAT_CATALOG_FILES = [
 // differently, and has no entry at all for two catalog "country" values
 // that aren't really a single country: ISO 216 sizes are used worldwide,
 // and the European catalog names the region rather than a member state.
+// The country and region list the catalogs' countries are looked up in.
+const COUNTRIES_FILE = '../countries/countries_200_complete.csv';
+
 const REGION_COUNTRY_ALIASES = { USA: 'United States', UK: 'United Kingdom', UAE: 'United Arab Emirates' };
 const REGION_OVERRIDES = { International: 'International', Europe: 'Europe' };
 
@@ -219,7 +221,7 @@ const REGION_OVERRIDES = { International: 'International', Europe: 'Europe' };
 const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
     const [catalogResponses, countriesResponse] = await Promise.all([
         Promise.all(files.map(file => fetchOk(file))),
-        fetchOk('../countries/countries_200_complete.csv')
+        fetchOk(COUNTRIES_FILE)
     ]);
 
     const lastModified = [...catalogResponses, countriesResponse]
@@ -677,6 +679,7 @@ class FormatStatistics {
         const countries = new Set();
         const categories = new Set();
         const types = new Set();
+        const count = this.formats.length;
         let sumWidth = 0, sumHeight = 0;
         let largestFormat = null, smallestFormat = null;
         let maxArea = 0, minArea = Infinity;
@@ -701,8 +704,8 @@ class FormatStatistics {
             totalCountries: countries.size,
             totalCategories: categories.size,
             totalTypes: types.size,
-            averageWidth: fixed(sumWidth / this.formats.length),
-            averageHeight: fixed(sumHeight / this.formats.length),
+            averageWidth: fixed(count ? sumWidth / count : 0),
+            averageHeight: fixed(count ? sumHeight / count : 0),
             largestFormat,
             smallestFormat
         };
@@ -821,6 +824,14 @@ class LocalizationManager {
         'ro': 'Română', 'bg': 'Български', 'sr': 'Српски', 'hr': 'Hrvatski',
         'sk': 'Slovenčina', 'uk': 'Українська'
     };
+
+    // Languages written right to left. Only Arabic has a translation file today; the others
+    // are listed so that adding one needs no change here.
+    static RTL_LANGUAGES = new Set(['ar', 'he', 'fa', 'ur']);
+
+    static isRtl(langCode) {
+        return LocalizationManager.RTL_LANGUAGES.has(langCode);
+    }
 
     constructor(translationsPath = 'translations') {
         this.translationsPath = translationsPath;
@@ -1304,6 +1315,7 @@ if (typeof module !== 'undefined' && module.exports) {
         paperTypeName,
         formatMessage,
         FORMAT_CATALOG_FILES,
+        COUNTRIES_FILE,
         loadFormatCatalogs,
         splitCSVLine,
         parseCSV,
