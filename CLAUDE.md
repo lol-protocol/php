@@ -1,6 +1,6 @@
 # lol-protocol/php — reglas para quien trabaje en este repositorio
 
-Es un monorepo de proyectos independientes, cada uno en su carpeta. La lista y lo que hace cada uno está en `README.md`: no la repitas aquí. Cada proyecto tiene su propio `README.md` con instalación y uso, y algunos un `CLAUDE.md` propio (hoy `marcalibros-plataforma-pos-brand-identity/`): léelo antes de tocar esa carpeta; si choca con este archivo, manda el de la carpeta.
+Es un monorepo de proyectos independientes, cada uno en su carpeta. La lista y lo que hace cada uno está en `README.md`: no la repitas aquí. Cada proyecto tiene su propio `README.md` con instalación y uso, y algunos un `CLAUDE.md` propio (hoy `marcalibros-plataforma-pos-brand-identity/` y `marcalibros_b/`): léelo antes de tocar esa carpeta; si choca con este archivo, manda el de la carpeta.
 
 La persona que encarga el trabajo escribe en español: responde y documenta en español, salvo en un proyecto que ya esté escrito en otro idioma.
 
@@ -51,7 +51,8 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 | `Listado-paises/` | `python3 generar_tabla.py --comprobar` (valida `paises.csv`, `paises_pos.csv` y `niveles_lenguas.csv`, y que `tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` estén al día) y `python3 -m unittest pruebas` |
 | `signos-zodiacales/` | `python3 generar.py --comprobar` (valida `datos/signos.json` — los 30 idiomas, las estrellas de cada constelación — y que `constelaciones/*.svg` y `signos-por-idioma.md` estén al día) |
 | `portadas-svg/` | `php pruebas/ejecutar.php` y `php bin/generar.php --comprobar` (que `ejemplos/salida/` esté al día con los JSON de `ejemplos/`) |
-| `privacy-laws/`, `copyright-laws/` | `npm ci && npm test`, `npm run validate` y `npm run build:check`; si tocas el CSV maestro, `npm run changes` y, antes de empujar, `npm run changes -- --check --since=origin/master` (la CI corre además PHP 8.1 y 8.4, y las pruebas de navegador con `npm run test:e2e`, que necesitan Chromium). `npm run check:links` revisa los enlaces de referencia, pero desde el contenedor de la nube no llega a esos sitios: lo corre `.github/workflows/laws-links.yml` (también a mano con `workflow_dispatch`) |
+| `privacy-laws/`, `copyright-laws/` | `npm ci && npm test`, `npm run validate` y `npm run build:check`; si tocas el CSV maestro, `npm run changes` y, antes de empujar, `npm run changes -- --check --since=origin/master` (la CI corre además PHP 8.1 y 8.4, y las pruebas de navegador con `npm run test:e2e`, que necesitan Chromium). `npm run check:links` revisa los enlaces de referencia, pero desde el contenedor de la nube no llega a esos sitios: lo corre `.github/workflows/laws-links.yml` (también a mano con `workflow_dispatch`). `leyes-comunes/` (el núcleo compartido del verificador de enlaces) no tiene pruebas propias: lo prueban las de estos dos |
+| `marcalibros_b/` | `pip install -r generator/requirements.txt -r generator/requirements-dev.txt`, `python generator/build.py --all` y `python -m pytest -q tests` (necesita Chromium real para el QA — variable `CHROMIUM` o `/opt/pw-browsers/chromium`; Python 3.13). La CI sube el catálogo completo como artefacto |
 
 El resto de proyectos (`marketing/`, `marcalibros-plataforma-pos-brand-identity/`, `psychology-and-marketing/`, `landing-page/`): mira su README y los jobs de `.github/workflows/`.
 
