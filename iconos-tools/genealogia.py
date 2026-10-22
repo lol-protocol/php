@@ -225,6 +225,7 @@ for suffix, u, d, gender in (
     ('nephew', 1, 2, 'm'), ('niece', 1, 2, 'f'), ('great_nephew', 1, 3, 'm'), ('great_niece', 1, 3, 'f'),
     ('cousin', 2, 2, 'm'), ('cousin_f', 2, 2, 'f'), ('second_cousin', 3, 3, 'm'), ('second_cousin_f', 3, 3, 'f'),
     ('cousin_once_removed', 2, 3, 'm'), ('cousin_once_removed_f', 2, 3, 'f'),
+    ('cousin_u', 2, 2, 'u'), ('second_cousin_u', 3, 3, 'u'), ('cousin_once_removed_u', 2, 3, 'u'),
 ):
     collateral(f'person_{suffix}', u, d, gender)
 
