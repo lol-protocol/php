@@ -1,6 +1,6 @@
 # Listado de colores con nombre y su significado
 
-Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene ocho archivos de datos con alcances distintos (más los exportes para PLN, ver «Exportes»):
+Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene ocho archivos de datos con alcances distintos (más los exportes para PLN, ver «Exportes», y el registro de revisiones de hablantes nativos, ver «Revisión por hablantes nativos»):
 
 | Archivo | Qué contiene | Idiomas | Significados |
 |---|---|---|---|
@@ -13,7 +13,7 @@ Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: l
 | `referencias.csv` | Las 35 fuentes que citan `evidencia.csv` y `significados-culturales.csv`, con cuánto se pudo comprobar de cada una | — | — |
 | `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names`, y el color CSS más cercano a cada uno | 1: inglés (con algunos nombres en otros idiomas) | No tiene propios; se pueden heredar del color CSS más cercano (ver «Color CSS más cercano») |
 
-Cada color de los 148 se puede leer en cualquiera de los 30 idiomas (nombre, hex y los dos significados) en `por-idioma/<código>.md`; `colores-por-idioma.md` es el índice de esas páginas. Del resto se generan los exportes para PLN (`exportes/`, con una forma normalizada de cada nombre), dos informes (`ambiguedad.md` y `auditoria-nombres.md`), `categorias.md` (las categorías gramaticales, por idioma) y la versión de los datos (`CHANGELOG.md` y `exportes/manifiesto.json`): ver «Exportes», «Ambigüedad», «Categorías gramaticales», «Auditoría de los nombres completos» y «Versión de los datos y manifiesto».
+Cada color de los 148 se puede leer en cualquiera de los 30 idiomas (nombre, hex y los dos significados) en `por-idioma/<código>.md`; `colores-por-idioma.md` es el índice de esas páginas. Del resto se generan los exportes para PLN (`exportes/`, con una forma normalizada de cada nombre), dos informes (`ambiguedad.md` y `auditoria-nombres.md`), `categorias.md` (las categorías gramaticales, por idioma), `revisiones.md` y `visor-revision.html` (la revisión por hablantes nativos) y la versión de los datos (`CHANGELOG.md` y `exportes/manifiesto.json`): ver «Exportes», «Ambigüedad», «Categorías gramaticales», «Revisión por hablantes nativos», «Auditoría de los nombres completos» y «Versión de los datos y manifiesto».
 
 ## Idiomas
 
@@ -178,6 +178,22 @@ Límites:
 - Hay casos discutibles. Un sustantivo que modifica a otro (`a linen shirt`) puede etiquetarse `NOUN` o `ADJ` según el criterio de cada corpus; los ejemplos de `ADJ` en inglés usan la palabra como color en una posición clara (`painted the walls linen`).
 - Lo escribió un asistente de IA y ningún hablante nativo lo ha revisado: úsalo como punto de partida, no como corpus anotado.
 
+## Revisión por hablantes nativos
+
+Casi todo el contenido (traducciones de nombres, significados, léxico y categorías gramaticales) lo escribió un asistente de IA, y **ningún hablante nativo lo ha revisado todavía**. `revisiones.csv` es el registro de quién ha revisado qué; empieza vacío, y `revisiones.md` (generado) dice cuánto está cubierto por idioma y qué correcciones o dudas quedan pendientes.
+
+Para revisar:
+
+1. Abre `visor-revision.html` en un navegador (un solo archivo, sin servidor ni conexión; nada sale de tu navegador). Elige tu idioma y qué revisas: nombres, significados, léxico básico o categorías gramaticales (estas dos últimas solo en inglés y español).
+2. Marca cada elemento `correcto`, `corregir` o `dudoso`, y escribe una nota si corriges o dudas (qué cambiar, o de qué dudas). Pon tu nombre o alias y la fecha. El visor recuerda tus marcas en ese navegador y puedes parar y seguir otro día.
+3. Copia las filas que genera el visor (o descarga el CSV) y añádelas al final de `revisiones.csv`, en un PR o pasándoselas a quien mantiene el proyecto; después ejecuta `python3 generar-tabla.py` para regenerar el informe. El orden de las filas no importa.
+4. Quien mantiene el proyecto aplica las correcciones a los CSV de datos (anotándolas en `CHANGELOG.md`) y cambia esas filas de `corregir` a `corregido`.
+
+- **Columnas.** `idioma`, `alcance` (`nombres`, `significados`, `lexico` o `categorias`), `elemento` (el id del color CSS en `nombres` y `significados`; el concepto del léxico en `lexico` y `categorias`), `veredicto` (`correcto`, `corregir`, `corregido` o `dudoso`), `revisor`, `fecha` (AAAA-MM-DD) y `nota`.
+- **Reglas.** Idioma y elemento conocidos (`categorias` solo en los idiomas que tienen `categorias.csv`); revisor y fecha obligatorios; nota obligatoria con `corregir` y `dudoso`; una fila por revisor y elemento (si vuelves a revisar, edita tu fila: el historial queda en git).
+- **Qué no hace.** No comprueba quién es el revisor ni su relación con el idioma: si quieres dejar constancia (lengua materna, nivel), ponla en `revisor` o en la nota. Un `correcto` es el juicio de una persona, no una garantía. `revisiones.csv` no entra en `exportes/manifiesto.json`: es el registro de la revisión de los datos, no parte de los datos.
+- **El visor.** Lo genera `generar-tabla.py` a partir de `visor-plantilla.html` (a mano) y los CSV; `--comprobar` falla si no está al día. Se probó en Chromium con Playwright (carga, cambio de idioma y alcance, marcas, filtro, filas con comas y comillas, copiar, descargar, recordar tras recargar, borrar, pantalla de móvil y modo oscuro; el CSV que descarga pasa el validador). No se probó en otros navegadores ni con lectores de pantalla. `pruebas.py` comprueba que lleva los datos, que no carga nada externo y, si hay `node`, que su JavaScript es válido.
+
 ## Auditoría de los nombres completos
 
 Los 31.935 nombres de `nombres-completos.csv` no se han verificado uno a uno contra otra fuente. `auditoria-nombres.md` (generado) no lo arregla, pero revisa automáticamente lo que sí se puede comprobar sin una fuente, y **marca casos sospechosos sin corregir nada**: el generador sigue aceptando el archivo.
@@ -235,6 +251,11 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 - `categorias.csv`: categorías gramaticales de las palabras de color (ver «Categorías gramaticales»). Columnas: `idioma`, `concepto`, `forma`, `categoria`, `ocurrencia`, `ejemplo`. Filas ordenadas por idioma, concepto (los colores CSS primero, luego los del léxico) y categoría (`ADJ`, `NOUN`, `PROPN`, `VERB`).
 - `categorias.md`: las mismas categorías por idioma, con un resumen. Generado.
 - `categorias.py`: valida `categorias.csv` y genera ese informe. Lo importa `generar-tabla.py`.
+- `revisiones.csv`: registro de las revisiones de hablantes nativos (ver «Revisión por hablantes nativos»). Columnas: `idioma`, `alcance`, `elemento`, `veredicto`, `revisor`, `fecha`, `nota`. Empieza vacío; las filas pueden ir en cualquier orden.
+- `revisiones.md`: cobertura de la revisión por idioma y pendientes. Generado.
+- `visor-plantilla.html`: la página del visor, con una marca donde el generador pone los datos. Se edita a mano.
+- `visor-revision.html`: el visor para revisar, con los datos dentro. Generado.
+- `revision.py`: valida `revisiones.csv`, genera el informe y el visor. Lo importa `generar-tabla.py`.
 - `referencias.csv`: fuentes. Columnas: `id`, `tipo` (`articulo`, `libro`, `web`), `cita`, `url`, `verificacion` (`resumen`, `pagina`, `existencia`). Con él se genera `referencias.md`, donde cada fuente tiene un ancla.
 - `significados-idiomas.csv`: los significados en los otros 29 idiomas. Columnas: `idioma`, `nombre_ingles`, `significado_psicologico`, `significado_mistico`. Una fila por color e idioma, ordenadas por `nombre_ingles` y, dentro de cada color, por el orden de idiomas de `generar-tabla.py`. Los pares que en `colores.csv` tienen el mismo texto en español (como `gray` y `grey`) tienen también el mismo texto traducido.
 - `por-idioma/<código>.md`: una página por idioma con el nombre, el hex, los alias, los dos significados y su base para los 148 colores, los matices culturales asociados al idioma y la tabla de su léxico básico. Generado.
@@ -252,7 +273,7 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 - `CHANGELOG.md`: registro de cambios de los datos, con su versión (ver «Versión de los datos y manifiesto»). Se edita a mano.
 - `exportes/manifiesto.json`: versión, filas y sumas SHA-256 de los CSV y de los exportes. Generado.
 - `manifiesto.py`: valida `CHANGELOG.md` y arma el manifiesto. Lo importa `generar-tabla.py`.
-- `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md`, `categorias.md` y `exportes/`.
+- `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md`, `categorias.md`, `revisiones.md`, `visor-revision.html` y `exportes/`.
 - `pruebas.py`: pruebas del generador (`unittest`, solo biblioteca estándar). Ver «Pruebas» en «Uso».
 - `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.
 - `README.md`: este documento. La tabla va entre dos líneas que son marcadores HTML de inicio y fin (`tabla:inicio` y `tabla:fin`); no la edites a mano.
@@ -288,6 +309,7 @@ Reglas para editar los CSV (el generador las comprueba):
 - `evidencia.csv`: una fila por color de `colores.csv`, en su orden; bases válidas; referencias ordenadas y existentes; los colores con estudios, exactamente los 13 indicados; los significados derivados no llevan referencias; la tradición moderna cita `leland2016`.
 - `significados-culturales.csv`: color de `colores.csv` y ámbito conocido; matiz sin `|` ni saltos de línea; solidez `alta`, `media` o `baja`; al menos una referencia existente; ordenado por color y ámbito.
 - `categorias.csv`: idioma y concepto conocidos; `forma` igual a la del color CSS (inglés) o a la del lema del léxico; una sola palabra; `categoria` una de `ADJ`, `NOUN`, `PROPN`, `VERB`; `ocurrencia` igual a la forma con a lo sumo cuatro letras más (`PROPN` con mayúscula inicial); `ejemplo` sin `|` ni saltos, terminado en `.`, `!` o `?`, y con la `ocurrencia` como palabra entera; una fila por idioma, concepto y categoría; todas las palabras de una sola palabra de cada idioma presente; ordenadas.
+- `revisiones.csv`: idioma, alcance y elemento conocidos (`categorias` solo donde hay datos); veredicto `correcto`, `corregir`, `corregido` o `dudoso`; revisor sin espacios sobrantes; fecha `AAAA-MM-DD` que exista; nota sin espacios sobrantes ni saltos, y obligatoria con `corregir` y `dudoso`; una fila por idioma, alcance, elemento y revisor. Sin orden obligatorio.
 - `referencias.csv`: id único y ordenado; tipo y verificación conocidos; una página web lleva url `https://`; ninguna referencia sin usar.
 - `significados-idiomas.csv`: un par de significados por cada color de `colores.csv` y cada idioma (todos menos `es`), sin repetidos; ningún campo vacío, con `|` ni con saltos de línea; ningún significado igual al texto en español (sin traducir). Si cambias un significado en `colores.csv`, actualiza también sus 29 traducciones.
 - `nombres-completos.csv`: nombre único sin distinguir mayúsculas; `hex` en `#RRGGBB`; `curada` vacía o `x`; filas ordenadas por nombre sin distinguir mayúsculas; ningún nombre con `|`, comas, comillas ni saltos de línea. Las tres primeras columnas se generaron una vez desde la fuente; `css_cercano`, `delta_e` y `cercania` las reescribe el generador y `--comprobar` falla si no coinciden con lo que calcula.

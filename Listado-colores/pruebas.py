@@ -22,6 +22,7 @@ import json
 import re
 import shutil
 import sqlite3
+import subprocess
 import sys
 import tempfile
 import unicodedata
@@ -39,6 +40,7 @@ import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
 import normalizacion  # noqa: E402
+import revision  # noqa: E402
 
 # El generador se llama generar-tabla.py (con guion): no se puede importar con `import`.
 _especificacion = importlib.util.spec_from_file_location("generar_tabla", AQUI / "generar-tabla.py")
@@ -46,7 +48,8 @@ gt = importlib.util.module_from_spec(_especificacion)
 _especificacion.loader.exec_module(gt)
 
 ARCHIVOS_DE_ENTRADA = ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
-                       "significados-culturales.csv", "categorias.csv", "referencias.csv", "CHANGELOG.md", "README.md"]
+                       "significados-culturales.csv", "categorias.csv", "referencias.csv", "revisiones.csv", "visor-plantilla.html",
+                       "CHANGELOG.md", "README.md"]
 REAL = {}  # los CSV reales, leídos una vez; cada prueba trabaja con copias (ver real())
 BASE = {}  # la carpeta temporal con el proyecto reducido ya generado
 
@@ -60,6 +63,7 @@ def setUpModule():
     REAL["evidencia"] = gt.leer(gt.EVIDENCIA, gt.COLUMNAS_EVIDENCIA)
     REAL["culturales"] = gt.leer(gt.CULTURALES, gt.COLUMNAS_CULTURALES)
     REAL["categorias"] = gt.leer(gt.CATEGORIAS, categorias.COLUMNAS)
+    REAL["revisiones"] = gt.leer(gt.REVISIONES, revision.COLUMNAS)
     BASE["temporal"] = tempfile.TemporaryDirectory()
     BASE["carpeta"] = Path(BASE["temporal"].name)
     preparar_proyecto_reducido(BASE["carpeta"])
@@ -100,7 +104,9 @@ def rutas_para(carpeta):
         "SIGNIFICADOS": carpeta / "significados-idiomas.csv", "LEXICO": carpeta / "lexico-basico.csv",
         "REFERENCIAS": carpeta / "referencias.csv", "EVIDENCIA": carpeta / "evidencia.csv",
         "CULTURALES": carpeta / "significados-culturales.csv", "CATEGORIAS": carpeta / "categorias.csv",
-        "CATEGORIAS_MD": carpeta / "categorias.md", "REFS_MD": carpeta / "referencias.md",
+        "CATEGORIAS_MD": carpeta / "categorias.md", "REVISIONES": carpeta / "revisiones.csv",
+        "REVISIONES_MD": carpeta / "revisiones.md", "VISOR_PLANTILLA": carpeta / "visor-plantilla.html",
+        "VISOR": carpeta / "visor-revision.html", "REFS_MD": carpeta / "referencias.md",
         "AMBIGUEDAD": carpeta / "ambiguedad.md", "AUDITORIA": carpeta / "auditoria-nombres.md", "CHANGELOG": carpeta / "CHANGELOG.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
         "INDICE": carpeta / "colores-por-idioma.md", "DIR_IDIOMAS": carpeta / "por-idioma",
     }
@@ -128,6 +134,12 @@ def primera(filas, **criterios):
     return next(i for i, f in enumerate(filas) if all(f[campo] == valor for campo, valor in criterios.items()))
 
 
+def universo_revisable(**cambios):
+    """Lo que se puede revisar según los CSV reales (o con alguno cambiado)."""
+    datos = {"idiomas": gt.IDIOMAS, "anotada": real("anotada"), "lexico": real("lexico"), "categorias": real("categorias")}
+    return revision.universo({**datos, **cambios})
+
+
 class PruebaConErrores(unittest.TestCase):
     def assertSoloError(self, errores, fragmento):
         self.assertEqual(len(errores), 1, errores)
@@ -150,6 +162,7 @@ class DatosReales(unittest.TestCase):
         gt.validar_evidencia(real("evidencia"), real("anotada"), ids, errores, usadas)
         gt.validar_culturales(real("culturales"), real("anotada"), ids, errores, usadas)
         categorias.validar(real("categorias"), real("anotada"), real("lexico"), [c for c, _ in gt.IDIOMAS], gt.CONCEPTOS, errores)
+        revision.validar(real("revisiones"), universo_revisable(), [c for c, _ in gt.IDIOMAS], errores)
         self.assertEqual(errores, [])
         self.assertEqual(usadas, ids, "ninguna referencia sin usar")
 
@@ -708,6 +721,173 @@ class Categorias(PruebaConErrores):
         self.assertIn("Una &#124; barra.", categorias.informe(filas, gt.IDIOMAS))
 
 
+FILA_REVISADA = {"idioma": "es", "alcance": "nombres", "elemento": "aliceblue", "veredicto": "correcto",
+                 "revisor": "Ana", "fecha": "2026-10-23", "nota": ""}
+
+
+class Revision(PruebaConErrores):
+    def validar(self, filas, **cambios):
+        errores = []
+        revision.validar(filas, universo_revisable(**cambios), [c for c, _ in gt.IDIOMAS], errores)
+        return errores
+
+    def fila(self, **campos):
+        return {**FILA_REVISADA, **campos}
+
+    def test_el_registro_real_empieza_vacio(self):
+        self.assertEqual(REAL["revisiones"], [], "nadie ha revisado nada todavía: si cambia, actualiza README y revisiones.md")
+
+    def test_lo_que_se_puede_revisar(self):
+        universo = universo_revisable()
+        for codigo, _ in gt.IDIOMAS:
+            self.assertEqual(len(universo[(codigo, "nombres")]), 148)
+            self.assertEqual(universo[(codigo, "significados")], universo[(codigo, "nombres")])
+            conceptos = list(dict.fromkeys(f["concepto"] for f in REAL["lexico"] if f["idioma"] == codigo))
+            self.assertEqual(universo[(codigo, "lexico")], conceptos)
+        self.assertEqual({i for i, a in universo if a == "categorias"}, {"en", "es"})
+        self.assertEqual(len(universo[("en", "categorias")]), 61)
+        self.assertEqual(len(universo[("es", "categorias")]), 32)
+        self.assertNotIn(("fr", "categorias"), universo)
+
+    def test_una_fila_valida_y_el_orden_no_importa(self):
+        filas = [self.fila(), self.fila(elemento="red", veredicto="corregir", nota="mejor «rojo»"),
+                 self.fila(idioma="en", elemento="blue"), self.fila(alcance="lexico", elemento="white"),
+                 self.fila(alcance="categorias", elemento="lilac", idioma="en"), self.fila(revisor="Luis")]
+        self.assertEqual(self.validar(filas), [])
+        self.assertEqual(self.validar(filas[::-1]), [])
+
+    def test_idioma_alcance_o_elemento_desconocidos(self):
+        self.assertSoloError(self.validar([self.fila(idioma="xx")]), "idioma desconocido 'xx'")
+        self.assertSoloError(self.validar([self.fila(alcance="todo")]), "alcance desconocido 'todo'")
+        self.assertSoloError(self.validar([self.fila(elemento="nocolor")]), "'nocolor' no es un elemento de nombres en es")
+        # El léxico solo tiene conceptos propios: un color CSS que no está en él no vale.
+        self.assertSoloError(self.validar([self.fila(alcance="lexico", elemento="aliceblue")]),
+                             "'aliceblue' no es un elemento de lexico en es")
+
+    def test_categorias_solo_en_los_idiomas_que_las_tienen(self):
+        self.assertSoloError(self.validar([self.fila(alcance="categorias", idioma="fr", elemento="white")]),
+                             "categorias no tiene datos en fr")
+
+    def test_veredicto_desconocido(self):
+        self.assertSoloError(self.validar([self.fila(veredicto="quizá")]), "veredicto desconocido 'quizá'")
+
+    def test_el_revisor_no_puede_estar_vacio_ni_llevar_espacios_o_saltos(self):
+        for revisor in ("", " ", " Ana", "Ana ", "A\nna"):
+            self.assertSoloError(self.validar([self.fila(revisor=revisor)]), "revisor vacío")
+
+    def test_la_fecha_es_aaaa_mm_dd_y_existe(self):
+        for fecha in ("", "23/10/2026", "2026-1-5", "2026-10-23T10:00", "hoy"):
+            self.assertSoloError(self.validar([self.fila(fecha=fecha)]), "la fecha debe ser AAAA-MM-DD")
+        self.assertSoloError(self.validar([self.fila(fecha="2026-02-30")]), "fecha que no existe")
+        self.assertEqual(self.validar([self.fila(fecha="2028-02-29")]), [], "29 de febrero de un año bisiesto")
+
+    def test_la_nota_no_lleva_espacios_sobrantes_ni_saltos(self):
+        for nota in (" x", "x ", "x\ny"):
+            self.assertSoloError(self.validar([self.fila(nota=nota)]), "nota con espacios sobrantes")
+
+    def test_corregir_y_dudoso_necesitan_nota_y_correcto_y_corregido_no(self):
+        for veredicto in ("corregir", "dudoso"):
+            self.assertSoloError(self.validar([self.fila(veredicto=veredicto)]), "necesita una nota")
+            self.assertEqual(self.validar([self.fila(veredicto=veredicto, nota="algo")]), [])
+        for veredicto in ("correcto", "corregido"):
+            self.assertEqual(self.validar([self.fila(veredicto=veredicto)]), [])
+
+    def test_una_fila_por_revisor_y_elemento(self):
+        self.assertSoloError(self.validar([self.fila(), self.fila(veredicto="dudoso", nota="x")]),
+                             "Ana ya revisó nombres/aliceblue en es")
+        self.assertEqual(self.validar([self.fila(), self.fila(revisor="Luis")]), [], "otro revisor: vale")
+        self.assertEqual(self.validar([self.fila(), self.fila(idioma="fr")]), [], "otro idioma: vale")
+        self.assertEqual(self.validar([self.fila(), self.fila(alcance="significados")]), [], "otro alcance: vale")
+
+    def test_el_informe_sin_filas(self):
+        texto = revision.informe([], universo_revisable(), gt.IDIOMAS)
+        total = sum(len(v) for v in universo_revisable().values())
+        self.assertIn(f"**Estado: ningún elemento revisado todavía (0 de {total}).**", texto)
+        self.assertIn("| Español (`es`) | 0 de 148 | 0 de 148 | 0 de 38 | 0 de 32 |", texto)
+        self.assertIn("| Francés (`fr`) | 0 de 148 | 0 de 148 | 0 de 38 | — |", texto)
+        self.assertIn("| `correcto` | 0 |", texto)
+        self.assertIn("No hay correcciones propuestas ni dudas por atender.", texto)
+
+    def test_el_informe_con_filas(self):
+        filas = [self.fila(), self.fila(revisor="Luis"),  # dos revisores del mismo elemento cuentan un elemento
+                 self.fila(elemento="red", veredicto="corregir", nota="mejor | «rojo»", revisor="Zoe"),
+                 self.fila(idioma="en", alcance="categorias", elemento="lilac", veredicto="dudoso", nota="¿verbo?", revisor="Ana"),
+                 self.fila(elemento="aqua", veredicto="corregido", revisor="Ana")]
+        texto = revision.informe(filas, universo_revisable(), gt.IDIOMAS)
+        total = sum(len(v) for v in universo_revisable().values())
+        self.assertIn(f"**Estado: 4 de {total} elementos revisados.**", texto)
+        self.assertIn("| Español (`es`) | 3 de 148 | 0 de 148 | 0 de 38 | 0 de 32 |", texto)
+        self.assertIn("| Inglés (`en`) | 0 de 148 | 0 de 148 | 0 de 38 | 1 de 61 |", texto)
+        for veredicto, cuenta in (("correcto", 2), ("corregir", 1), ("corregido", 1), ("dudoso", 1)):
+            self.assertIn(f"| `{veredicto}` | {cuenta} |", texto)
+        self.assertNotIn("No hay correcciones propuestas", texto)
+        pendientes = texto.split("## Pendientes")[1]
+        self.assertIn("| `en` | `categorias` | `lilac` | `dudoso` | ¿verbo? | Ana | 2026-10-23 |", pendientes)
+        self.assertIn("| `es` | `nombres` | `red` | `corregir` | mejor &#124; «rojo» | Zoe | 2026-10-23 |", pendientes)
+        self.assertLess(pendientes.index("`lilac`"), pendientes.index("`red`"), "ordenados por idioma (en antes que es)")
+        self.assertNotIn("aqua", pendientes, "lo corregido ya no está pendiente")
+
+    def test_datos_del_visor(self):
+        datos = {"idiomas": gt.IDIOMAS, "anotada": REAL["anotada"], "lexico": REAL["lexico"], "categorias": REAL["categorias"],
+                 "significados": {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
+                                  for f in REAL["significados"]},
+                 "hex_concepto": {c: gt.hex_de_concepto(c, REAL["anotada"], REAL["completa"]) for c in gt.CONCEPTOS}}
+        v = revision.datos_visor(datos)
+        self.assertEqual(v["idiomas"], [list(par) for par in gt.IDIOMAS])
+        self.assertEqual(v["alcances"], list(revision.ALCANCES))
+        self.assertEqual(v["veredictos"], list(revision.VEREDICTOS))
+        self.assertEqual(list(v["colores"]), [f["nombre_ingles"] for f in REAL["anotada"]])
+        alice = v["colores"]["aliceblue"]
+        self.assertEqual((alice["hex"], alice["nombres"]["en"], alice["nombres"]["es"]), ("#F0F8FF", "alice blue", "azul alicia"))
+        self.assertEqual(list(alice["nombres"]), [c for c, _ in gt.IDIOMAS])
+        self.assertEqual(list(alice["significados"]), [c for c, _ in gt.IDIOMAS])
+        original = next(f for f in REAL["anotada"] if f["nombre_ingles"] == "aliceblue")
+        self.assertEqual(alice["significados"]["es"], [original["significado_psicologico"], original["significado_mistico"]])
+        japones = next(f for f in REAL["significados"] if f["idioma"] == "ja" and f["nombre_ingles"] == "aliceblue")
+        self.assertEqual(alice["significados"]["ja"], [japones["significado_psicologico"], japones["significado_mistico"]])
+        self.assertEqual(v["lexico"]["es"]["white"]["formas"][0], ["blanco", "lema", ""])
+        self.assertEqual(v["lexico"]["es"]["white"]["hex"], "#FFFFFF")
+        self.assertEqual(v["categorias"]["en"]["lilac"][0][:2], ["lilac", "ADJ"])
+        self.assertNotIn("fr", v["categorias"])
+
+    def test_el_visor_lleva_los_datos_y_nada_externo(self):
+        html = (BASE["carpeta"] / "visor-revision.html").read_text(encoding="utf-8")
+        plantilla = (AQUI / "visor-plantilla.html").read_text(encoding="utf-8")
+        self.assertIn(revision.MARCA_DATOS, plantilla)
+        self.assertNotIn(revision.MARCA_DATOS, html)
+        self.assertEqual(html.count("<script>"), 1)
+        self.assertNotRegex(html, r"(?i)(src|href)\s*=\s*[\"']?(https?:)?//", "sin recursos externos")
+        self.assertNotRegex(html, r"(?i)@import|url\(\s*[\"']?https?:", "sin estilos externos")
+        trozo = html.split("const D = ", 1)[1].split(";\n  const COLUMNAS", 1)[0]
+        datos = json.loads(trozo.replace("<\\/", "</"))
+        self.assertEqual(sorted(datos), ["alcances", "categorias", "colores", "idiomas", "lexico", "veredictos"])
+        self.assertEqual(len(datos["colores"]), 148)
+        self.assertEqual(datos["colores"]["aliceblue"]["nombres"]["en"], "alice blue")
+
+    def test_los_datos_no_pueden_cerrar_el_script(self):
+        plantilla = "<script>const D = /*DATOS*/null;</script>"
+        datos = {"idiomas": [("en", "Inglés")], "anotada": [], "lexico": [], "categorias": [], "significados": {}, "hex_concepto": {}}
+        html = revision.visor_html(dict(datos, idiomas=[("en", "</script><b>")]), plantilla)
+        self.assertEqual(html.count("</script>"), 1, "el único cierre es el de la plantilla")
+        self.assertIn("<\\/script>", html)
+
+    def test_la_plantilla_debe_tener_la_marca_una_vez(self):
+        datos = {"idiomas": [], "anotada": [], "lexico": [], "categorias": [], "significados": {}, "hex_concepto": {}}
+        for plantilla in ("<script></script>", f"{revision.MARCA_DATOS} {revision.MARCA_DATOS}"):
+            with self.assertRaises(ValueError):
+                revision.visor_html(datos, plantilla)
+
+    @unittest.skipUnless(shutil.which("node"), "node no está instalado")
+    def test_el_script_del_visor_es_javascript_valido(self):
+        html = (BASE["carpeta"] / "visor-revision.html").read_text(encoding="utf-8")
+        guion = html.split("<script>", 1)[1].split("</script>", 1)[0]
+        with tempfile.TemporaryDirectory() as t:
+            ruta = Path(t) / "visor.js"
+            ruta.write_text(guion, encoding="utf-8")
+            resultado = subprocess.run(["node", "--check", str(ruta)], capture_output=True, text=True)
+        self.assertEqual((resultado.returncode, resultado.stderr), (0, ""))
+
+
 class AliasYCercania(unittest.TestCase):
     def test_alias_de_los_colores_reales(self):
         alias = gt.alias_de(REAL["anotada"])
@@ -1239,11 +1419,12 @@ class ArchivosGenerados(unittest.TestCase):
 
     def test_salvo_nombres_completos_salen_identicos_a_los_del_repositorio(self):
         repositorio = [AQUI / "README.md", AQUI / "colores-por-idioma.md", AQUI / "referencias.md", AQUI / "ambiguedad.md",
-                       AQUI / "categorias.md", *sorted((AQUI / "por-idioma").glob("*")),
+                       AQUI / "categorias.md", AQUI / "revisiones.md", AQUI / "visor-revision.html",
+                       *sorted((AQUI / "por-idioma").glob("*")),
                        # El manifiesto de la carpeta reducida es otro (otro nombres-completos.csv): se prueba aparte.
                        *sorted(p for p in (AQUI / "exportes").rglob("*") if p.is_file() and p.name != "manifiesto.json")]
-        self.assertEqual(len(repositorio), 5 + 30 + (4 + 30),
-                         "cinco archivos sueltos, 30 páginas por idioma, 4 exportes y 30 patrones de spaCy")
+        self.assertEqual(len(repositorio), 7 + 30 + (4 + 30),
+                         "siete archivos sueltos, 30 páginas por idioma, 4 exportes y 30 patrones de spaCy")
         for ruta in repositorio:
             relativa = ruta.relative_to(AQUI)
             generado = BASE["carpeta"] / relativa
@@ -1515,7 +1696,7 @@ class Programa(unittest.TestCase):
             return texto.rstrip("\n") + "x\n"
 
         for nombre, editar in (("README.md", en_la_tabla), ("colores-por-idioma.md", al_final), ("referencias.md", al_final),
-                               ("ambiguedad.md", al_final), ("auditoria-nombres.md", al_final), ("categorias.md", al_final), ("exportes/manifiesto.json", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
+                               ("ambiguedad.md", al_final), ("auditoria-nombres.md", al_final), ("categorias.md", al_final), ("revisiones.md", al_final), ("visor-revision.html", al_final), ("exportes/manifiesto.json", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
                                ("por-idioma/ja.md", al_final), ("exportes/colores.jsonl", al_final),
                                ("exportes/gazetteer.tsv", al_final), ("exportes/spacy/es.jsonl", al_final),
                                ("exportes/lexico-ud.tsv", al_final), ("exportes/ejemplos.conllu", al_final)):
@@ -1755,6 +1936,29 @@ class Programa(unittest.TestCase):
         self.assertIn("Errores en los CSV", error)
         self.assertIn("categorias.csv línea 2: categoría desconocida 'ADV'", error)
         self.assertEqual((salida, self.estado()), ("", antes))
+
+    def test_un_revisiones_csv_con_errores_sale_con_1_sin_tocar_nada(self):
+        antes = self.estado()
+        self.reescribir("revisiones.csv", lambda t: t + "es,nombres,aliceblue,quizá,Ana,2026-10-23,\n")
+        antes[Path("revisiones.csv")] = (self.carpeta / "revisiones.csv").read_bytes()
+        codigo, salida, error = ejecutar(self.carpeta)
+        self.assertEqual(codigo, 1)
+        self.assertIn("revisiones.csv línea 2: veredicto desconocido 'quizá'", error)
+        self.assertEqual((salida, self.estado()), ("", antes))
+
+    def test_una_revision_nueva_cambia_el_informe_y_no_el_manifiesto(self):
+        manifiesto_antes = (self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8")
+        visor_antes = (self.carpeta / "visor-revision.html").read_bytes()
+        self.reescribir("revisiones.csv", lambda t: t + "es,nombres,aliceblue,correcto,Ana,2026-10-23,\n")
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("revisiones.md", error)
+        self.assertNotIn("manifiesto.json", error, "el registro de revisiones no es parte de los datos del manifiesto")
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertIn("| Español (`es`) | 1 de 148 |", (self.carpeta / "revisiones.md").read_text(encoding="utf-8"))
+        self.assertEqual((self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"), manifiesto_antes)
+        self.assertEqual((self.carpeta / "visor-revision.html").read_bytes(), visor_antes, "el visor no depende de las revisiones")
+        self.assertEqual(ejecutar(self.carpeta, "--comprobar")[0], 0)
 
     def test_editar_categorias_csv_deja_categorias_md_desfasado_hasta_regenerar(self):
         self.reescribir("categorias.csv", lambda t: t.replace("She painted the bathroom walls aqua.",

@@ -11,6 +11,8 @@
 - significados-culturales.csv: matices por ámbito cultural (China, Japón, India…) de algunos colores.
 - categorias.csv: las categorías gramaticales (ADJ, NOUN, PROPN, VERB) de las palabras de color de una sola palabra
   en inglés y español, con una frase de ejemplo; se genera categorias.md (ver categorias.py).
+- revisiones.csv: el registro de qué elementos han revisado hablantes nativos y con qué resultado (empieza vacío); se
+  generan revisiones.md (la cobertura por idioma) y visor-revision.html (el visor para revisar; ver revision.py).
 - referencias.csv: las fuentes citadas por evidencia.csv y significados-culturales.csv; se genera referencias.md.
 - nombres-completos.csv: lista completa de nombres con hex. Sus tres primeras columnas son la fuente;
   css_cercano, delta_e y cercania se calculan aquí (color CSS más cercano según CIEDE2000, en colorimetria.py).
@@ -42,6 +44,7 @@ import categorias  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
+import revision  # noqa: E402
 
 ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
@@ -52,6 +55,10 @@ EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
 CATEGORIAS = CARPETA / "categorias.csv"
 CATEGORIAS_MD = CARPETA / "categorias.md"
+REVISIONES = CARPETA / "revisiones.csv"
+REVISIONES_MD = CARPETA / "revisiones.md"
+VISOR_PLANTILLA = CARPETA / "visor-plantilla.html"
+VISOR = CARPETA / "visor-revision.html"
 REFS_MD = CARPETA / "referencias.md"
 AMBIGUEDAD = CARPETA / "ambiguedad.md"
 AUDITORIA = CARPETA / "auditoria-nombres.md"
@@ -647,6 +654,7 @@ def main():
     evidencia_filas = leer(EVIDENCIA, COLUMNAS_EVIDENCIA)
     culturales = leer(CULTURALES, COLUMNAS_CULTURALES)
     gramaticales = leer(CATEGORIAS, categorias.COLUMNAS)
+    revisiones = leer(REVISIONES, revision.COLUMNAS)
     errores = []
     validar_anotada(anotada, errores)
     validar_completa(completa, errores)
@@ -659,6 +667,8 @@ def main():
     for i in sorted(ids - usadas):
         errores.append(f"referencias.csv: la referencia {i!r} no la usa ningún otro CSV")
     categorias.validar(gramaticales, anotada, lexico, [c for c, _ in IDIOMAS], CONCEPTOS, errores)
+    revisable = revision.universo({"idiomas": IDIOMAS, "anotada": anotada, "lexico": lexico, "categorias": gramaticales})
+    revision.validar(revisiones, revisable, [c for c, _ in IDIOMAS], errores)
     version = None
     if CHANGELOG.exists():
         version = manifiesto.leer_changelog(CHANGELOG.read_text(encoding="utf-8"), errores)
@@ -714,6 +724,8 @@ def main():
         AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
         AUDITORIA: auditoria.informe(completa),
         CATEGORIAS_MD: categorias.informe(gramaticales, IDIOMAS),
+        REVISIONES_MD: revision.informe(revisiones, revisable, IDIOMAS),
+        VISOR: revision.visor_html(datos, VISOR_PLANTILLA.read_text(encoding="utf-8")),
         COMPLETA: completa_texto,
         DIR_EXPORTES / "colores.jsonl": jsonl,
         DIR_EXPORTES / "gazetteer.tsv": tsv,
