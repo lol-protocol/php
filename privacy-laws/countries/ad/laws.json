@@ -29,11 +29,6 @@
     "confidence": "medium",
     "last_checked": "2026-10-22",
     "sources": {
-      "law_name": {
-        "url": "https://www.apda.ad/assets/pdf/agency/Decret_391-2022",
-        "confidence": "high",
-        "checked": "2026-10-22"
-      },
       "jurisdiction": {
         "url": "https://www.apda.ad/assets/pdf/agency/Decret_368-2022_del_14-9-2022_d_aprovacio_del_Reglament_de_l_Agencia_Andorrana_de_Proteccio_de_Dades.pdf",
         "confidence": "high",
