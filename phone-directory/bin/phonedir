@@ -73,6 +73,8 @@ function printHelp(): void
       phonedir search --name=<texto> | --street=<texto> | --phone=<texto> | --surname-sound=<texto> [opciones]
       phonedir stats [--dsn=<dsn>]
       phonedir link --sources=<id1>,<id2>,... [--min-score=0.5] [--dsn=<dsn>]
+      phonedir deceased <id> --year=AAAA --evidence=<texto> [--dsn=<dsn>]
+      phonedir deceased <id> --clear [--dsn=<dsn>]
       phonedir catalog list [--country=XX] [--year-from=YYYY] [--year-to=YYYY]
       phonedir catalog show <id>
       phonedir help
@@ -96,11 +98,21 @@ function printHelp(): void
     search:
       --type=natural|juridical|all   Qué buscar (por defecto: all)
 
+    deceased:
+      Marca que la persona de una entrada murió, para que un visitante pueda verla aunque su guía sea
+      reciente (hoy se ocultan las de 92 años o menos). Una marca equivocada publica la dirección y el
+      teléfono de alguien vivo, así que exige el comprobante y no se puede hacer desde la vista pública.
+      --year=<AAAA>        Año de la defunción (no antes de un año antes de la guía, ni en el futuro)
+      --evidence=<texto>   Dónde consta: una esquela, un acta de defunción, el libro de familia (máx. 1000)
+      --clear              Quita la marca: la entrada vuelve a seguir el año de su guía
+      El id sale de 'search' (la línea [persona] lo muestra como #id).
+
     Ejemplos:
       phonedir import directorio_1930.txt --catalog=es_1930_madrid --dsn=sqlite:madrid.sqlite
       phonedir search --name=garcia --dsn=sqlite:madrid.sqlite
       phonedir search --surname-sound=valdez --language=es --dsn=sqlite:madrid.sqlite
       phonedir link --sources=es_1930_madrid,es_1975_national --dsn=sqlite:madrid.sqlite
+      phonedir deceased 42 --year=1988 --evidence="Esquela, La Vanguardia, 12/03/1988" --dsn=sqlite:madrid.sqlite
 
     TXT;
 }
@@ -141,6 +153,17 @@ function publicViewNote(Privacy $privacy): string
 }
 
 /** @param array<string, string|true> $options */
+function naturalDatabaseFrom(array $options, Privacy $privacy): PhoneDirectoryPDODatabase
+{
+    return new PhoneDirectoryPDODatabase(
+        option($options, 'dsn', 'sqlite:phonedirectory.sqlite'),
+        option($options, 'user'),
+        option($options, 'password'),
+        $privacy
+    );
+}
+
+/** @param array<string, string|true> $options */
 function buildManager(array $options, ?MultiLanguagePhoneDirectoryParser $parser = null): PhoneDirectoryManagerV2
 {
     $dsn = option($options, 'dsn', 'sqlite:phonedirectory.sqlite');
@@ -149,7 +172,7 @@ function buildManager(array $options, ?MultiLanguagePhoneDirectoryParser $parser
 
     return new PhoneDirectoryManagerV2(
         parser: $parser,
-        naturalDatabase: new PhoneDirectoryPDODatabase($dsn, $user, $password, privacyFrom($options)),
+        naturalDatabase: naturalDatabaseFrom($options, privacyFrom($options)),
         juridicalDatabase: new JuridicalEntityPDODatabase($dsn, $user, $password)
     );
 }
@@ -158,8 +181,9 @@ function formatNatural(PhoneDirectoryEntry $entry): string
 {
     $phone = $entry->getPhoneNumber() ? " | {$entry->getPhoneNumber()}" : '';
     $source = $entry->getSourceDirectoryId() ? " | {$entry->getSourceDirectoryId()}" : '';
+    $died = $entry->getDeceasedYear() !== null ? " | † {$entry->getDeceasedYear()}" : '';
 
-    return "  [persona] {$entry->getFormattedName()} | {$entry->getStreet()}, {$entry->getCountryCode()}{$phone}{$source}";
+    return "  [persona #{$entry->getId()}] {$entry->getFormattedName()} | {$entry->getStreet()}, {$entry->getCountryCode()}{$phone}{$source}{$died}";
 }
 
 function formatJuridical(JuridicalEntity $entity): string
@@ -310,6 +334,55 @@ function commandLink(array $options): int
 }
 
 /**
+ * Records, or takes back, that the person of an entry died. Marking one makes a visitor able to see it, so
+ * it is for whoever holds the database, never for the public view.
+ *
+ * @param list<string> $args
+ * @param array<string, string|true> $options
+ */
+function commandDeceased(array $args, array $options): int
+{
+    $usage = 'uso: phonedir deceased <id> --year=AAAA --evidence=<texto>  |  phonedir deceased <id> --clear';
+
+    if (isset($options['publico'])) {
+        fail('--publico no se usa con deceased: marcar una defunción es cosa de quien tiene la base');
+    }
+    $rawId = $args[0] ?? fail($usage);
+    if (!ctype_digit($rawId) || (int) $rawId === 0) {
+        fail("el id debe ser un número positivo (míralo con 'search'), no \"{$rawId}\"");
+    }
+    $id = (int) $rawId;
+
+    $database = naturalDatabaseFrom($options, Privacy::forOwner());
+    $entry = $database->findById($id) ?? fail("no hay ninguna entrada con id {$id}");
+
+    if (isset($options['clear'])) {
+        if (isset($options['year']) || isset($options['evidence'])) {
+            fail('--clear no se combina con --year ni --evidence');
+        }
+        $database->clearDeceased($id);
+        echo "Marca quitada: {$entry->getFormattedName()} vuelve a seguir el año de su guía.\n";
+
+        return 0;
+    }
+
+    $year = option($options, 'year');
+    $evidence = option($options, 'evidence');
+    if ($year === null || $evidence === null) {
+        fail($usage);
+    }
+    if (!ctype_digit($year)) {
+        fail("--year debe ser un año AAAA, no \"{$year}\"");
+    }
+
+    $database->markDeceased($id, (int) $year, $evidence);
+    echo "Registrado: {$entry->getFormattedName()} murió en {$year}.\n";
+    echo "Un visitante ya puede ver esta entrada aunque su guía sea reciente. El comprobante queda en la base.\n";
+
+    return 0;
+}
+
+/**
  * @param list<string> $args
  * @param array<string, string|true> $options
  */
@@ -355,6 +428,7 @@ try {
         'search' => commandSearch($parsed['options']),
         'stats' => commandStats($parsed['options']),
         'link' => commandLink($parsed['options']),
+        'deceased' => commandDeceased($parsed['args'], $parsed['options']),
         'catalog' => commandCatalog($parsed['args'], $parsed['options']),
         'help', null => (function () {
             printHelp();

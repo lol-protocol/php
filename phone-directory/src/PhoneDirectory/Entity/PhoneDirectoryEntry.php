@@ -16,6 +16,7 @@ class PhoneDirectoryEntry
     private ?string $sourceDirectoryId;
     private string $rawName;
     private ?int $sourceLine;
+    private ?int $deceasedYear = null;
 
     /**
      * Create a phone directory entry for a natural person
@@ -171,6 +172,25 @@ class PhoneDirectoryEntry
         return $this->sourceLine;
     }
 
+    /** The year this person is known to have died, or null when nobody has said so (see PhoneDirectoryPDODatabase::markDeceased()). */
+    public function getDeceasedYear(): ?int
+    {
+        return $this->deceasedYear;
+    }
+
+    /**
+     * A copy of this entry that says its person died in $year (null: nothing known). It is not stored by
+     * itself: the only way to record a death is PhoneDirectoryPDODatabase::markDeceased(), which asks for
+     * the evidence, so insert() and update() leave the mark alone.
+     */
+    public function withDeceasedYear(?int $year): static
+    {
+        $copy = clone $this;
+        $copy->deceasedYear = $year;
+
+        return $copy;
+    }
+
     /**
      * @return array{
      *     id: int,
@@ -181,7 +201,8 @@ class PhoneDirectoryEntry
      *     phoneNumber: string|null,
      *     recordDate: string,
      *     sourceDirectoryId: string|null,
-     *     sourceLine: int|null
+     *     sourceLine: int|null,
+     *     deceasedYear: int|null
      * }
      */
     public function toArray(): array
@@ -196,6 +217,7 @@ class PhoneDirectoryEntry
             'recordDate' => $this->recordDate->format('Y-m-d H:i:s'),
             'sourceDirectoryId' => $this->sourceDirectoryId,
             'sourceLine' => $this->sourceLine,
+            'deceasedYear' => $this->deceasedYear,
         ];
     }
 }
