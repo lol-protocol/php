@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "SC",
+    "country_name": "Seychelles",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (anonymous and audiovisual works 50 years from creation or publication; applied art 25 years); section not seen",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Fair dealing exceptions exist (specifics not found); covers traditional cultural expressions and folklore (unconfirmed)",
+    "registration_required": "No (voluntary registration under 2015 Regulations made under ss. 28(2) and 37)",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://commons.laws.africa/akn/sc/act/2014/5/media/publication/sc-act-2014-5-publication-document.pdf",
+    "notes": "WTO membership 26 April 2015 per Commons only. No Berne/WCT/WPPT accession found; a 2019 WIPO workshop said Berne ratification was under consideration. Term is conflicting between sources (an old UNESCO page shows 25 years for the repealed 1984 Act).",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/details.jsp?id=15300",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/details.jsp?id=15300",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Seychelles.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/details.jsp?id=15300",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/details.jsp?id=15300",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "fair_use_exceptions": {
+        "url": "https://generisonline.com/an-overview-of-copyright-protection-laws-in-seychelles/",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "registration_required": {
+        "url": "https://www.wipo.int/wipolex/en/details.jsp?id=15300",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

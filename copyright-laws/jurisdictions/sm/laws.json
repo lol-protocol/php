@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "SM",
+    "country_name": "San Marino",
+    "region": "europe",
+    "law_name": "Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 36; photographs life + 50 years; computer programs 50 years from first disclosure; terms run to end of calendar year)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (copyright arises from creation)",
+    "enforcement_body": "State Patent and Trademark Office (Ufficio di Stato Brevetti e Marchi) - proposed copyright role only, unconfirmed (unconfirmed)",
+    "treaties_signatory": "Berne/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8234",
+    "notes": "Berne, WCT, WPPT in force 2 Sep 2020 (Council Decrees 69-71). WIPO Lex notes no consolidated text; a copyright reform bill was requested in Jan 2025, status unknown. Term from Commons summary; a Generis explainer says 70 years (not relied on).",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8234",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8234",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/San_Marino.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8234",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8234",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "registration_required": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/San_Marino.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "enforcement_body": {
+        "url": "https://www.consigliograndeegenerale.sm/on-line/home/documento17150056.html",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/20020",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
