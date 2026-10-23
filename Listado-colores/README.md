@@ -108,13 +108,31 @@ Límites que conviene tener presentes:
 
 ## Exportes
 
-Para usar los datos desde un programa sin leer ocho CSV, el generador produce dos archivos en `exportes/` y puede construir una base SQLite. Todo sale de los CSV; no se edita a mano.
+Para usar los datos desde un programa sin leer ocho CSV, el generador produce los archivos de `exportes/` (los dos primeros de abajo y los de «spaCy y Universal Dependencies») y puede construir una base SQLite. Todo sale de los CSV; no se edita a mano.
 
 - **`exportes/colores.jsonl`**: una línea JSON por cada color CSS (148), con todo lo que se sabe de él: `id` (nombre CSS), `hex`, `rgb`, `forma_natural_en`, `forma_con_guion_en` (la que se usa como adjetivo delante del sustantivo), `alias` (`id` y `tipo`), `nombres` y `significados` en los 30 idiomas (en `en`, el nombre es la forma natural), `evidencia` (base y referencias de cada significado), `culturales` (los matices del color), `lexico` (las formas del léxico básico de los conceptos que coinciden con el color, por idioma) y `categorias` (las categorías gramaticales de las palabras de ese color, por idioma, cada una con `forma`, `categoria`, `ocurrencia` y `ejemplo`; `{}` si no hay).
 - **`exportes/gazetteer.tsv`**: lista plana de formas de superficie, para buscar una palabra y saber a qué color o concepto remite. 7.080 filas separadas por tabuladores, ordenadas por forma sin distinguir mayúsculas. Columnas: `forma`, `idioma`, `fuente` (`css` o `lexico`), `tipo`, `concepto`, `hex`, `rasgos`, `forma_normalizada` (ver «Forma normalizada») y `categorias` (las categorías gramaticales de la forma separadas por comas, `ADJ,NOUN,VERB`; vacía si no hay; ver «Categorías gramaticales»). Las dos últimas van al final para no mover las demás columnas. Con `fuente=css`, `tipo` es `identificador` (`aliceblue`), `forma_natural` (`alice blue`), `forma_con_guion` (`alice-blue`) o `nombre` (la traducción en otro idioma). Con `fuente=lexico`, es `lema`, `flexion`, `sinonimo` o `variante` y `rasgos` trae lo que dice `lexico-basico.csv`. Una misma forma puede salir varias veces (por ejemplo, `abu-abu` en indonesio para `gray`, `grey` y como lema). La lista completa de 31.935 nombres no se repite aquí: está en `nombres-completos.csv`.
 - **Base SQLite** (no se guarda en el repositorio): `python3 generar-tabla.py --sqlite ruta.db`. Tablas: `colores`, `nombres`, `significados`, `alias`, `evidencia`, `culturales`, `referencias`, `conceptos`, `lexico`, `categorias` y `nombres_completos`, con índices por nombre, forma, forma normalizada y hex. `nombres` y `lexico` tienen una columna normalizada (`nombre_normalizado`, `forma_normalizada`). Ejemplo: `SELECT n.nombre, s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) WHERE n.color_id = 'crimson' AND n.idioma = 'ja';`.
 
-`--comprobar` compara los archivos de `exportes/` (los dos exportes y el manifiesto) con lo que generan los CSV y construye la base en memoria para verificar que cada tabla tenga tantas filas como su CSV y que un cruce de tablas funcione. Las funciones están en `exportes.py`. Los tres archivos de `exportes/` pesan en total unos 1,6 MB.
+`--comprobar` compara los archivos de `exportes/` (todos y el manifiesto) con lo que generan los CSV y construye la base en memoria para verificar que cada tabla tenga tantas filas como su CSV y que un cruce de tablas funcione. Las funciones están en `exportes.py`. Los archivos de `exportes/` pesan en total unos 2 MB (los patrones de spaCy, 0,35 MB; el JSONL, 1,1 MB).
+
+### spaCy y Universal Dependencies
+
+Tres exportes más, para etiquetadores y reconocedores que ya trabajan con esos formatos. Se generan igual que los demás y no se editan a mano.
+
+- **`exportes/spacy/<código>.jsonl`**: patrones para el `EntityRuler` de [spaCy](https://spacy.io/usage/rule-based-matching#entityruler), un archivo por idioma (los 30) y un patrón por cada forma del gazetteer de ese idioma (5.785 en total). Cada línea es `{"label":"COLOR","pattern":"alice blue","id":"aliceblue"}`: `pattern` es el texto de la forma (no una lista de tokens: lo parte el tokenizador del idioma del texto) e `id` es el concepto (el id CSS o el del léxico); si la forma sirve para más de uno, van separados por `;` y en orden alfabético (`lime;limegreen`). Se usa con `phrase_matcher_attr="LOWER"`, para no depender de las mayúsculas:
+
+  ```python
+  import spacy
+  nlp = spacy.blank("es")
+  ruler = nlp.add_pipe("entity_ruler", config={"phrase_matcher_attr": "LOWER"})
+  ruler.from_disk("exportes/spacy/es.jsonl")
+  [(e.text, e.ent_id_) for e in nlp("Una bufanda verde lima.").ents]  # [('verde lima', 'lime;limegreen')]
+  ```
+
+  Con spaCy 3.8 cargan los 30 archivos y cada forma se reconoce sola como entidad en todos; se probó con `spacy.blank(<código>)` y, para `ja`, `ko`, `th`, `vi` y `sw` (sin tokenizador propio instalado o sin idioma en spaCy), con el multilingüe `xx`, que parte por espacios. No se probó con los tokenizadores reales de esos idiomas ni con modelos entrenados. Límites: etiqueta toda aparición de la forma aunque no sea un color (`rosa`, `lima`, `orange`: ver «Categorías gramaticales»); no desambigua (el `id` lista los candidatos); no trae el hex (sale del `id` con `colores.jsonl` o la tabla `conceptos`); y solo reconoce las flexiones que están en `lexico-basico.csv`.
+- **`exportes/lexico-ud.tsv`**: un léxico de formas con su categoría gramatical, al estilo de los de Universal Dependencies. Columnas: `forma`, `lema`, `upos`, `feats` (en el formato de CoNLL-U, `Gender=Fem|Number=Sing`, o `_`), `idioma` y `concepto`; las cuatro primeras van en el orden de CoNLL-U. Solo inglés y español (los idiomas de `categorias.csv`), 264 filas: las formas base de `categorias.csv` con cada una de sus categorías (los nombres propios con su mayúscula), sus flexiones de `lexico-basico.csv` (solo como `ADJ`: los datos no dicen si el sustantivo se flexiona igual) y las formas flexionadas que salen en las frases de ejemplo (`blacked`, `khakis`). `feats` solo trae las características de UD del léxico (`Gender`, `Number`, `Animacy`); los demás rasgos del proyecto (`Terminacion`, `region`…) no pasan.
+- **`exportes/ejemplos.conllu`**: las 210 frases de ejemplo de `categorias.csv` en [CoNLL-U](https://universaldependencies.org/format.html), con `# sent_id` (`en-aqua-ADJ`) y `# text`. Solo la palabra de color lleva lema y `UPOS`; las demás palabras llevan `_`. **No pasa el validador de Universal Dependencies** (le falta la anotación de las demás palabras) y no es un treebank: sirve para comprobar qué categoría da un etiquetador a la palabra de color, comparando su resultado en ese token con la columna `UPOS`. La separación en tokens es simple (cada grupo de letras y dígitos y cada signo suelto, con `SpaceAfter=No` si van pegados) y no sigue las reglas de UD de ningún idioma.
 
 ### Forma normalizada
 
@@ -182,7 +200,7 @@ Para usar los datos desde otro programa con una versión fija, `exportes/manifie
 
 - `version`: la de la primera entrada de `CHANGELOG.md` (versionado semántico de los **datos**, no del generador: mayor si se quita o renombra una columna, menor si se añade algo, parche si se corrige un dato).
 - `idiomas`: los 30 códigos, en orden.
-- `entradas` y `exportes`: de cada CSV de datos y de cada exporte, `archivo`, `filas` (sin la cabecera) y `sha256` (más `columnas` en el TSV).
+- `entradas` y `exportes`: de cada CSV de datos y de cada exporte, `archivo`, `filas` (sin la cabecera; en `ejemplos.conllu`, las frases) y `sha256` (más `columnas` en los TSV).
 
 Para comprobar que tienes lo mismo que describe el manifiesto, desde esta carpeta:
 
@@ -224,7 +242,8 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 - `nombres-completos.csv`: lista completa. Columnas de la fuente: `nombre_ingles`, `hex`, `curada`. Columnas calculadas por el generador: `css_cercano`, `delta_e`, `cercania`.
 - `colorimetria.py`: sRGB a CIELAB y CIEDE2000, con los vectores de prueba de Sharma et al. Lo importa `generar-tabla.py`.
 - `exportes/colores.jsonl` y `exportes/gazetteer.tsv`: exportes para PLN. Generados.
-- `exportes.py`: genera los exportes y la base SQLite. Lo importa `generar-tabla.py`.
+- `exportes/spacy/<código>.jsonl`, `exportes/lexico-ud.tsv` y `exportes/ejemplos.conllu`: patrones de spaCy y léxico y ejemplos de Universal Dependencies (ver «spaCy y Universal Dependencies»). Generados.
+- `exportes.py`: genera los exportes (incluidos los de spaCy y UD) y la base SQLite. Lo importa `generar-tabla.py`.
 - `normalizacion.py`: la forma normalizada de un nombre (ver «Forma normalizada»). Lo importan `exportes.py` y `ambiguedad.py`.
 - `ambiguedad.md`: informe de las formas que designan más de un color (ver «Ambigüedad»). Generado.
 - `ambiguedad.py`: calcula ese informe. Lo importa `generar-tabla.py`.

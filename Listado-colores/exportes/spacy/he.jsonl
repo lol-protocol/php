@@ -1,0 +1,179 @@
+{"label":"COLOR","pattern":"אדום","id":"red"}
+{"label":"COLOR","pattern":"אדום הודי","id":"indianred"}
+{"label":"COLOR","pattern":"אדום כהה","id":"darkred"}
+{"label":"COLOR","pattern":"אדום לבנה","id":"firebrick"}
+{"label":"COLOR","pattern":"אדום סגלגל בינוני","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"אדום סגלגל חיוור","id":"palevioletred"}
+{"label":"COLOR","pattern":"אדומה","id":"red"}
+{"label":"COLOR","pattern":"אדומות","id":"red"}
+{"label":"COLOR","pattern":"אדומים","id":"red"}
+{"label":"COLOR","pattern":"אינדיגו","id":"indigo"}
+{"label":"COLOR","pattern":"אלמוג","id":"coral"}
+{"label":"COLOR","pattern":"אלמוגי","id":"coral"}
+{"label":"COLOR","pattern":"אלמוגי בהיר","id":"lightcoral"}
+{"label":"COLOR","pattern":"אפור","id":"gray;grey"}
+{"label":"COLOR","pattern":"אפור בהיר","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"אפור גיינסבורו","id":"gainsboro"}
+{"label":"COLOR","pattern":"אפור כהה","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"אפור עמום","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"אפור צפחה","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"אפור צפחה בהיר","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"אפור צפחה כהה","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"אפורה","id":"gray"}
+{"label":"COLOR","pattern":"אפורות","id":"gray"}
+{"label":"COLOR","pattern":"אפורים","id":"gray"}
+{"label":"COLOR","pattern":"אפרסק","id":"peachpuff"}
+{"label":"COLOR","pattern":"אקווה","id":"aqua"}
+{"label":"COLOR","pattern":"אקוומרין","id":"aquamarine"}
+{"label":"COLOR","pattern":"אקוומרין בינוני","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"ארגמן","id":"crimson"}
+{"label":"COLOR","pattern":"בורדו","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"בז'","id":"beige"}
+{"label":"COLOR","pattern":"ביסקוויט","id":"bisque"}
+{"label":"COLOR","pattern":"דרדר","id":"thistle"}
+{"label":"COLOR","pattern":"ורוד","id":"pink"}
+{"label":"COLOR","pattern":"ורוד בהיר","id":"lightpink"}
+{"label":"COLOR","pattern":"ורוד לבנדר","id":"lavenderblush"}
+{"label":"COLOR","pattern":"ורוד לוהט","id":"hotpink"}
+{"label":"COLOR","pattern":"ורוד מעונן","id":"mistyrose"}
+{"label":"COLOR","pattern":"ורוד עמוק","id":"deeppink"}
+{"label":"COLOR","pattern":"ורודה","id":"pink"}
+{"label":"COLOR","pattern":"ורודות","id":"pink"}
+{"label":"COLOR","pattern":"ורודים","id":"pink"}
+{"label":"COLOR","pattern":"זהב","id":"gold"}
+{"label":"COLOR","pattern":"זהב חיוור","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"זהב כהה","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"זהב-שיבולת","id":"goldenrod"}
+{"label":"COLOR","pattern":"זית","id":"olive"}
+{"label":"COLOR","pattern":"זית דראב","id":"olivedrab"}
+{"label":"COLOR","pattern":"חאקי","id":"khaki"}
+{"label":"COLOR","pattern":"חאקי כהה","id":"darkkhaki"}
+{"label":"COLOR","pattern":"חום","id":"brown"}
+{"label":"COLOR","pattern":"חום אוכף","id":"saddlebrown"}
+{"label":"COLOR","pattern":"חום ורדרד","id":"rosybrown"}
+{"label":"COLOR","pattern":"חום חול","id":"sandybrown"}
+{"label":"COLOR","pattern":"חומה","id":"brown"}
+{"label":"COLOR","pattern":"חומות","id":"brown"}
+{"label":"COLOR","pattern":"חומים","id":"brown"}
+{"label":"COLOR","pattern":"חיטה","id":"wheat"}
+{"label":"COLOR","pattern":"טורקיז","id":"turquoise"}
+{"label":"COLOR","pattern":"טורקיז בינוני","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"טורקיז חיוור","id":"paleturquoise"}
+{"label":"COLOR","pattern":"טורקיז כהה","id":"darkturquoise"}
+{"label":"COLOR","pattern":"טל דבש","id":"honeydew"}
+{"label":"COLOR","pattern":"ירוק","id":"green"}
+{"label":"COLOR","pattern":"ירוק אביב","id":"springgreen"}
+{"label":"COLOR","pattern":"ירוק אביב בינוני","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"ירוק בהיר","id":"lightgreen"}
+{"label":"COLOR","pattern":"ירוק דשא","id":"lawngreen"}
+{"label":"COLOR","pattern":"ירוק זית כהה","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"ירוק חיוור","id":"palegreen"}
+{"label":"COLOR","pattern":"ירוק ים","id":"seagreen"}
+{"label":"COLOR","pattern":"ירוק ים בהיר","id":"lightseagreen"}
+{"label":"COLOR","pattern":"ירוק ים בינוני","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"ירוק ים כהה","id":"darkseagreen"}
+{"label":"COLOR","pattern":"ירוק יער","id":"forestgreen"}
+{"label":"COLOR","pattern":"ירוק כהה","id":"darkgreen"}
+{"label":"COLOR","pattern":"ירוק ליים","id":"limegreen"}
+{"label":"COLOR","pattern":"ירוק-כחול","id":"teal"}
+{"label":"COLOR","pattern":"ירוק-צהוב","id":"greenyellow"}
+{"label":"COLOR","pattern":"ירוקה","id":"green"}
+{"label":"COLOR","pattern":"ירוקות","id":"green"}
+{"label":"COLOR","pattern":"ירוקים","id":"green"}
+{"label":"COLOR","pattern":"כחול","id":"blue"}
+{"label":"COLOR","pattern":"כחול אבקה","id":"powderblue"}
+{"label":"COLOR","pattern":"כחול אליס","id":"aliceblue"}
+{"label":"COLOR","pattern":"כחול בהיר","id":"lightblue"}
+{"label":"COLOR","pattern":"כחול בינוני","id":"mediumblue"}
+{"label":"COLOR","pattern":"כחול דודג'ר","id":"dodgerblue"}
+{"label":"COLOR","pattern":"כחול חצות","id":"midnightblue"}
+{"label":"COLOR","pattern":"כחול חרציות","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"כחול כהה","id":"darkblue"}
+{"label":"COLOR","pattern":"כחול מלכותי","id":"royalblue"}
+{"label":"COLOR","pattern":"כחול נייבי","id":"navy"}
+{"label":"COLOR","pattern":"כחול פלדה","id":"steelblue"}
+{"label":"COLOR","pattern":"כחול פלדה בהיר","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"כחול צפחה","id":"slateblue"}
+{"label":"COLOR","pattern":"כחול צפחה בינוני","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"כחול צפחה כהה","id":"darkslateblue"}
+{"label":"COLOR","pattern":"כחול קדטים","id":"cadetblue"}
+{"label":"COLOR","pattern":"כחול שמיים","id":"skyblue"}
+{"label":"COLOR","pattern":"כחול שמיים בהיר","id":"lightskyblue"}
+{"label":"COLOR","pattern":"כחול שמיים עמוק","id":"deepskyblue"}
+{"label":"COLOR","pattern":"כחולה","id":"blue"}
+{"label":"COLOR","pattern":"כחולות","id":"blue"}
+{"label":"COLOR","pattern":"כחולים","id":"blue"}
+{"label":"COLOR","pattern":"כסף","id":"silver"}
+{"label":"COLOR","pattern":"כתום","id":"orange"}
+{"label":"COLOR","pattern":"כתום כהה","id":"darkorange"}
+{"label":"COLOR","pattern":"כתום-אדום","id":"orangered"}
+{"label":"COLOR","pattern":"כתומה","id":"orange"}
+{"label":"COLOR","pattern":"כתומות","id":"orange"}
+{"label":"COLOR","pattern":"כתומים","id":"orange"}
+{"label":"COLOR","pattern":"לבן","id":"white"}
+{"label":"COLOR","pattern":"לבן נבאחו","id":"navajowhite"}
+{"label":"COLOR","pattern":"לבן עשן","id":"whitesmoke"}
+{"label":"COLOR","pattern":"לבן עתיק","id":"antiquewhite"}
+{"label":"COLOR","pattern":"לבן פרחוני","id":"floralwhite"}
+{"label":"COLOR","pattern":"לבן רוח רפאים","id":"ghostwhite"}
+{"label":"COLOR","pattern":"לבן שקדים","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"לבנדר","id":"lavender"}
+{"label":"COLOR","pattern":"לבנה","id":"white"}
+{"label":"COLOR","pattern":"לבנות","id":"white"}
+{"label":"COLOR","pattern":"לבנים","id":"white"}
+{"label":"COLOR","pattern":"ליים","id":"lime"}
+{"label":"COLOR","pattern":"לילך","id":"lilac"}
+{"label":"COLOR","pattern":"מג'נטה","id":"magenta"}
+{"label":"COLOR","pattern":"מג'נטה כהה","id":"darkmagenta"}
+{"label":"COLOR","pattern":"מגנטה","id":"magenta"}
+{"label":"COLOR","pattern":"מוקסין","id":"moccasin"}
+{"label":"COLOR","pattern":"משי תירס","id":"cornsilk"}
+{"label":"COLOR","pattern":"סגול","id":"purple;violet"}
+{"label":"COLOR","pattern":"סגול בינוני","id":"mediumpurple"}
+{"label":"COLOR","pattern":"סגול כהה","id":"darkviolet"}
+{"label":"COLOR","pattern":"סגול-כחול","id":"blueviolet"}
+{"label":"COLOR","pattern":"סגולה","id":"purple;violet"}
+{"label":"COLOR","pattern":"סגולות","id":"purple;violet"}
+{"label":"COLOR","pattern":"סגולים","id":"purple;violet"}
+{"label":"COLOR","pattern":"סחלב","id":"orchid"}
+{"label":"COLOR","pattern":"סחלב בינוני","id":"mediumorchid"}
+{"label":"COLOR","pattern":"סחלב כהה","id":"darkorchid"}
+{"label":"COLOR","pattern":"סיינה","id":"sienna"}
+{"label":"COLOR","pattern":"סלמון","id":"salmon"}
+{"label":"COLOR","pattern":"סלמון בהיר","id":"lightsalmon"}
+{"label":"COLOR","pattern":"סלמון כהה","id":"darksalmon"}
+{"label":"COLOR","pattern":"עגבנייה","id":"tomato"}
+{"label":"COLOR","pattern":"ענבר","id":"amber"}
+{"label":"COLOR","pattern":"עץ","id":"burlywood"}
+{"label":"COLOR","pattern":"פוקסיה","id":"fuchsia"}
+{"label":"COLOR","pattern":"פרו","id":"peru"}
+{"label":"COLOR","pattern":"פשתן","id":"linen"}
+{"label":"COLOR","pattern":"צדף","id":"seashell"}
+{"label":"COLOR","pattern":"צהוב","id":"yellow"}
+{"label":"COLOR","pattern":"צהוב בהיר","id":"lightyellow"}
+{"label":"COLOR","pattern":"צהוב זהב בהיר","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"צהוב-ירוק","id":"yellowgreen"}
+{"label":"COLOR","pattern":"צהובה","id":"yellow"}
+{"label":"COLOR","pattern":"צהובות","id":"yellow"}
+{"label":"COLOR","pattern":"צהובים","id":"yellow"}
+{"label":"COLOR","pattern":"ציאן","id":"cyan"}
+{"label":"COLOR","pattern":"ציאן בהיר","id":"lightcyan"}
+{"label":"COLOR","pattern":"ציאן כהה","id":"darkcyan"}
+{"label":"COLOR","pattern":"קרם","id":"cream"}
+{"label":"COLOR","pattern":"קרם מנטה","id":"mintcream"}
+{"label":"COLOR","pattern":"רבקה-סגול","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"שארטרז","id":"chartreuse"}
+{"label":"COLOR","pattern":"שוקולד","id":"chocolate"}
+{"label":"COLOR","pattern":"שזוף","id":"tan"}
+{"label":"COLOR","pattern":"שזיף","id":"plum"}
+{"label":"COLOR","pattern":"שחור","id":"black"}
+{"label":"COLOR","pattern":"שחורה","id":"black"}
+{"label":"COLOR","pattern":"שחורות","id":"black"}
+{"label":"COLOR","pattern":"שחורים","id":"black"}
+{"label":"COLOR","pattern":"שיפון לימון","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"שלג","id":"snow"}
+{"label":"COLOR","pattern":"שמנת פפאיה","id":"papayawhip"}
+{"label":"COLOR","pattern":"שנהב","id":"ivory"}
+{"label":"COLOR","pattern":"שני","id":"scarlet"}
+{"label":"COLOR","pattern":"תחרה ישנה","id":"oldlace"}
+{"label":"COLOR","pattern":"תכלת","id":"azure;lightblue;skyblue"}

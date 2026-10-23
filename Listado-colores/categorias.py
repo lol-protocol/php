@@ -73,8 +73,11 @@ def validar(filas, anotada, lexico, codigos, conceptos, errores):
             errores.append(f"{donde}: ejemplo vacío, con espacios sobrantes o con '|' o saltos de línea")
         elif ejemplo[-1] not in ".!?":
             errores.append(f"{donde}: la frase de ejemplo debe terminar en '.', '!' o '?'")
-        if not re.search(r"(?<!\w)" + re.escape(ocurrencia) + r"(?!\w)", ejemplo):
-            errores.append(f"{donde}: la frase no contiene la ocurrencia {ocurrencia!r} como palabra entera")
+        if not re.fullmatch(r"\w+", ocurrencia):
+            errores.append(f"{donde}: la ocurrencia {ocurrencia!r} debe tener solo letras y dígitos (es un token de ejemplos.conllu)")
+        veces = len(re.findall(r"(?<!\w)" + re.escape(ocurrencia) + r"(?!\w)", ejemplo))
+        if veces != 1:
+            errores.append(f"{donde}: la frase debe contener la ocurrencia {ocurrencia!r} una vez como palabra entera, no {veces}")
         clave = (idioma, concepto, categoria)
         if clave in vistos:
             errores.append(f"{donde}: repetida {idioma}/{concepto}/{categoria}")

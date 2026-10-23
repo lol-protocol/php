@@ -696,6 +696,7 @@ def main():
         return 0
     completa_texto = texto_completa(completa, cercanias)
     jsonl, tsv = exportes.colores_jsonl(datos), exportes.gazetteer_tsv(datos)
+    patrones, lexico_ud, conllu = exportes.spacy_patrones(datos), exportes.lexico_ud(datos), exportes.ejemplos_conllu(datos)
     # Las entradas del manifiesto, en el orden del README. nombres-completos.csv va con el texto que genera este programa.
     entradas = [(ruta.name, filas, ruta.read_text(encoding="utf-8"), None) for ruta, filas in (
         (ANOTADA, len(anotada)), (SIGNIFICADOS, len(traducidos)), (LEXICO, len(lexico)), (EVIDENCIA, len(evidencia_filas)),
@@ -703,6 +704,9 @@ def main():
     entradas.append((COMPLETA.name, len(completa), completa_texto, None))
     exportes_manifiesto = [("exportes/colores.jsonl", jsonl.count("\n"), jsonl, None),
                            ("exportes/gazetteer.tsv", tsv.count("\n") - 1, tsv, exportes.COLUMNAS_GAZETTEER)]
+    exportes_manifiesto += [(f"exportes/spacy/{codigo}.jsonl", texto.count("\n"), texto, None) for codigo, texto in patrones.items()]
+    exportes_manifiesto += [("exportes/lexico-ud.tsv", lexico_ud.count("\n") - 1, lexico_ud, exportes.COLUMNAS_LEXICO_UD),
+                            ("exportes/ejemplos.conllu", conllu.count("# sent_id"), conllu, None)]
     generados = {
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
@@ -713,13 +717,17 @@ def main():
         COMPLETA: completa_texto,
         DIR_EXPORTES / "colores.jsonl": jsonl,
         DIR_EXPORTES / "gazetteer.tsv": tsv,
+        DIR_EXPORTES / "lexico-ud.tsv": lexico_ud,
+        DIR_EXPORTES / "ejemplos.conllu": conllu,
         DIR_EXPORTES / "manifiesto.json": manifiesto.manifiesto(version, [c for c, _ in IDIOMAS], entradas, exportes_manifiesto),
     }
+    for codigo, texto in patrones.items():
+        generados[DIR_EXPORTES / "spacy" / f"{codigo}.jsonl"] = texto
     for codigo, etiqueta in IDIOMAS:
         generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(
             codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales)
     sobrantes = sorted(p for carpeta in (DIR_IDIOMAS, DIR_EXPORTES) if carpeta.exists()
-                       for p in carpeta.glob("*") if p not in generados)
+                       for p in carpeta.rglob("*") if p.is_file() and p not in generados)
 
     resumen = (f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas, "
                f"{len(traducidos)} significados traducidos, {len(lexico)} formas de léxico básico, "

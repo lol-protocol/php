@@ -1,0 +1,250 @@
+{"label":"COLOR","pattern":"akwa","id":"aqua"}
+{"label":"COLOR","pattern":"akwamaryna","id":"aquamarine"}
+{"label":"COLOR","pattern":"antyczny biały","id":"antiquewhite"}
+{"label":"COLOR","pattern":"beżowa","id":"beige"}
+{"label":"COLOR","pattern":"beżowe","id":"beige"}
+{"label":"COLOR","pattern":"beżowi","id":"beige"}
+{"label":"COLOR","pattern":"beżowy","id":"beige"}
+{"label":"COLOR","pattern":"biali","id":"white"}
+{"label":"COLOR","pattern":"biała","id":"white"}
+{"label":"COLOR","pattern":"białe","id":"white"}
+{"label":"COLOR","pattern":"biały","id":"white"}
+{"label":"COLOR","pattern":"biel Nawaho","id":"navajowhite"}
+{"label":"COLOR","pattern":"biskwitowy","id":"bisque"}
+{"label":"COLOR","pattern":"bladofiołkowoczerwony","id":"palevioletred"}
+{"label":"COLOR","pattern":"bladoturkusowy","id":"paleturquoise"}
+{"label":"COLOR","pattern":"bladozielony","id":"palegreen"}
+{"label":"COLOR","pattern":"bladozłoty","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"bordowa","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"bordowe","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"bordowi","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"bordowy","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"brzoskwiniowy","id":"peachpuff"}
+{"label":"COLOR","pattern":"brąz siodłowy","id":"saddlebrown"}
+{"label":"COLOR","pattern":"brązowa","id":"brown"}
+{"label":"COLOR","pattern":"brązowe","id":"brown"}
+{"label":"COLOR","pattern":"brązowi","id":"brown"}
+{"label":"COLOR","pattern":"brązowy","id":"brown"}
+{"label":"COLOR","pattern":"bursztynowa","id":"amber"}
+{"label":"COLOR","pattern":"bursztynowe","id":"amber"}
+{"label":"COLOR","pattern":"bursztynowi","id":"amber"}
+{"label":"COLOR","pattern":"bursztynowy","id":"amber"}
+{"label":"COLOR","pattern":"błękit Alicji","id":"aliceblue"}
+{"label":"COLOR","pattern":"błękit Dodgera","id":"dodgerblue"}
+{"label":"COLOR","pattern":"błękit kadecki","id":"cadetblue"}
+{"label":"COLOR","pattern":"błękit nieba","id":"skyblue"}
+{"label":"COLOR","pattern":"błękitna","id":"skyblue"}
+{"label":"COLOR","pattern":"błękitne","id":"skyblue"}
+{"label":"COLOR","pattern":"błękitni","id":"skyblue"}
+{"label":"COLOR","pattern":"błękitny","id":"lightblue;skyblue"}
+{"label":"COLOR","pattern":"ceglasty czerwony","id":"firebrick"}
+{"label":"COLOR","pattern":"chabrowy","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"chartreuse","id":"chartreuse"}
+{"label":"COLOR","pattern":"ciemnocyjan","id":"darkcyan"}
+{"label":"COLOR","pattern":"ciemnoczerwony","id":"darkred"}
+{"label":"COLOR","pattern":"ciemnofioletowy","id":"darkorchid;darkviolet"}
+{"label":"COLOR","pattern":"ciemnohaki","id":"darkkhaki"}
+{"label":"COLOR","pattern":"ciemnomagenta","id":"darkmagenta"}
+{"label":"COLOR","pattern":"ciemnomorski zielony","id":"darkseagreen"}
+{"label":"COLOR","pattern":"ciemnoniebiescy","id":"darkblue"}
+{"label":"COLOR","pattern":"ciemnoniebieska","id":"darkblue"}
+{"label":"COLOR","pattern":"ciemnoniebieski","id":"darkblue"}
+{"label":"COLOR","pattern":"ciemnoniebieskie","id":"darkblue"}
+{"label":"COLOR","pattern":"ciemnooliwkowozielony","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"ciemnopomarańczowy","id":"darkorange"}
+{"label":"COLOR","pattern":"ciemnoszary","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"ciemnoturkusowy","id":"darkturquoise"}
+{"label":"COLOR","pattern":"ciemnozielona","id":"darkgreen"}
+{"label":"COLOR","pattern":"ciemnozielone","id":"darkgreen"}
+{"label":"COLOR","pattern":"ciemnozieloni","id":"darkgreen"}
+{"label":"COLOR","pattern":"ciemnozielony","id":"darkgreen"}
+{"label":"COLOR","pattern":"ciemnozłoty","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"ciemnołososiowy","id":"darksalmon"}
+{"label":"COLOR","pattern":"ciemny łupkowy błękit","id":"darkslateblue"}
+{"label":"COLOR","pattern":"ciemny łupkowy szary","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"cyjan","id":"cyan"}
+{"label":"COLOR","pattern":"cyjanowa","id":"cyan"}
+{"label":"COLOR","pattern":"cyjanowe","id":"cyan"}
+{"label":"COLOR","pattern":"cyjanowi","id":"cyan"}
+{"label":"COLOR","pattern":"cyjanowy","id":"cyan"}
+{"label":"COLOR","pattern":"cytrynowy szyfon","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"czarna","id":"black"}
+{"label":"COLOR","pattern":"czarne","id":"black"}
+{"label":"COLOR","pattern":"czarni","id":"black"}
+{"label":"COLOR","pattern":"czarny","id":"black"}
+{"label":"COLOR","pattern":"czekoladowy","id":"chocolate"}
+{"label":"COLOR","pattern":"czerwona","id":"red"}
+{"label":"COLOR","pattern":"czerwone","id":"red"}
+{"label":"COLOR","pattern":"czerwoni","id":"red"}
+{"label":"COLOR","pattern":"czerwony","id":"red"}
+{"label":"COLOR","pattern":"drewniany","id":"burlywood"}
+{"label":"COLOR","pattern":"dymny biały","id":"whitesmoke"}
+{"label":"COLOR","pattern":"fioletowa","id":"purple"}
+{"label":"COLOR","pattern":"fioletowe","id":"purple"}
+{"label":"COLOR","pattern":"fioletowi","id":"purple"}
+{"label":"COLOR","pattern":"fioletowy","id":"purple;violet"}
+{"label":"COLOR","pattern":"fiołkowa","id":"violet"}
+{"label":"COLOR","pattern":"fiołkowe","id":"violet"}
+{"label":"COLOR","pattern":"fiołkowi","id":"violet"}
+{"label":"COLOR","pattern":"fiołkowy","id":"violet"}
+{"label":"COLOR","pattern":"fuksja","id":"fuchsia"}
+{"label":"COLOR","pattern":"gorący róż","id":"hotpink"}
+{"label":"COLOR","pattern":"granatowa","id":"navy"}
+{"label":"COLOR","pattern":"granatowe","id":"navy"}
+{"label":"COLOR","pattern":"granatowi","id":"navy"}
+{"label":"COLOR","pattern":"granatowy","id":"navy"}
+{"label":"COLOR","pattern":"głęboki błękit nieba","id":"deepskyblue"}
+{"label":"COLOR","pattern":"głęboki róż","id":"deeppink"}
+{"label":"COLOR","pattern":"indiańska czerwień","id":"indianred"}
+{"label":"COLOR","pattern":"indygo","id":"indigo"}
+{"label":"COLOR","pattern":"jasnocyjan","id":"lightcyan"}
+{"label":"COLOR","pattern":"jasnokoralowy","id":"lightcoral"}
+{"label":"COLOR","pattern":"jasnoniebiescy","id":"lightblue"}
+{"label":"COLOR","pattern":"jasnoniebieska","id":"lightblue"}
+{"label":"COLOR","pattern":"jasnoniebieski","id":"lightblue"}
+{"label":"COLOR","pattern":"jasnoniebieskie","id":"lightblue"}
+{"label":"COLOR","pattern":"jasnoróżowy","id":"lightpink"}
+{"label":"COLOR","pattern":"jasnoszary","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"jasnozielona","id":"lightgreen"}
+{"label":"COLOR","pattern":"jasnozielone","id":"lightgreen"}
+{"label":"COLOR","pattern":"jasnozieloni","id":"lightgreen"}
+{"label":"COLOR","pattern":"jasnozielony","id":"lightgreen"}
+{"label":"COLOR","pattern":"jasnozielony morski","id":"lightseagreen"}
+{"label":"COLOR","pattern":"jasnołososiowy","id":"lightsalmon"}
+{"label":"COLOR","pattern":"jasnożółty","id":"lightyellow"}
+{"label":"COLOR","pattern":"jasnożółty złotnica","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"jasny błękit nieba","id":"lightskyblue"}
+{"label":"COLOR","pattern":"jasny stalowy błękit","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"jasny łupkowy szary","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"jedwab kukurydziany","id":"cornsilk"}
+{"label":"COLOR","pattern":"karmazynowa","id":"crimson"}
+{"label":"COLOR","pattern":"karmazynowe","id":"crimson"}
+{"label":"COLOR","pattern":"karmazynowi","id":"crimson"}
+{"label":"COLOR","pattern":"karmazynowy","id":"crimson"}
+{"label":"COLOR","pattern":"kasztanowy","id":"maroon"}
+{"label":"COLOR","pattern":"khaki","id":"khaki"}
+{"label":"COLOR","pattern":"koralowa","id":"coral"}
+{"label":"COLOR","pattern":"koralowe","id":"coral"}
+{"label":"COLOR","pattern":"koralowi","id":"coral"}
+{"label":"COLOR","pattern":"koralowy","id":"coral"}
+{"label":"COLOR","pattern":"kość słoniowa","id":"ivory"}
+{"label":"COLOR","pattern":"kremowa","id":"cream"}
+{"label":"COLOR","pattern":"kremowa mięta","id":"mintcream"}
+{"label":"COLOR","pattern":"kremowa papaja","id":"papayawhip"}
+{"label":"COLOR","pattern":"kremowe","id":"cream"}
+{"label":"COLOR","pattern":"kremowi","id":"cream"}
+{"label":"COLOR","pattern":"kremowy","id":"cream"}
+{"label":"COLOR","pattern":"królewski błękit","id":"royalblue"}
+{"label":"COLOR","pattern":"kwiatowo biały","id":"floralwhite"}
+{"label":"COLOR","pattern":"lawendowa","id":"lavender"}
+{"label":"COLOR","pattern":"lawendowe","id":"lavender"}
+{"label":"COLOR","pattern":"lawendowi","id":"lavender"}
+{"label":"COLOR","pattern":"lawendowy","id":"lavender"}
+{"label":"COLOR","pattern":"lawendowy róż","id":"lavenderblush"}
+{"label":"COLOR","pattern":"lazurowy","id":"azure"}
+{"label":"COLOR","pattern":"leśna zieleń","id":"forestgreen"}
+{"label":"COLOR","pattern":"liliowa","id":"lilac"}
+{"label":"COLOR","pattern":"liliowe","id":"lilac"}
+{"label":"COLOR","pattern":"liliowi","id":"lilac"}
+{"label":"COLOR","pattern":"liliowy","id":"lilac"}
+{"label":"COLOR","pattern":"limonkowa","id":"lime"}
+{"label":"COLOR","pattern":"limonkowa zieleń","id":"limegreen"}
+{"label":"COLOR","pattern":"limonkowe","id":"lime"}
+{"label":"COLOR","pattern":"limonkowi","id":"lime"}
+{"label":"COLOR","pattern":"limonkowy","id":"lime"}
+{"label":"COLOR","pattern":"lniany","id":"linen"}
+{"label":"COLOR","pattern":"magenta","id":"magenta"}
+{"label":"COLOR","pattern":"mglisty róż","id":"mistyrose"}
+{"label":"COLOR","pattern":"migdałowy biały","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"miodowa rosa","id":"honeydew"}
+{"label":"COLOR","pattern":"mokasyn","id":"moccasin"}
+{"label":"COLOR","pattern":"morski","id":"teal"}
+{"label":"COLOR","pattern":"morski zielony","id":"seagreen"}
+{"label":"COLOR","pattern":"muszla","id":"seashell"}
+{"label":"COLOR","pattern":"niebiescy","id":"blue"}
+{"label":"COLOR","pattern":"niebieska","id":"blue"}
+{"label":"COLOR","pattern":"niebieski","id":"blue"}
+{"label":"COLOR","pattern":"niebieskie","id":"blue"}
+{"label":"COLOR","pattern":"niebieskofioletowy","id":"blueviolet"}
+{"label":"COLOR","pattern":"oliwkowa","id":"olive"}
+{"label":"COLOR","pattern":"oliwkowe","id":"olive"}
+{"label":"COLOR","pattern":"oliwkowi","id":"olive"}
+{"label":"COLOR","pattern":"oliwkowy","id":"olive"}
+{"label":"COLOR","pattern":"oliwkowy drab","id":"olivedrab"}
+{"label":"COLOR","pattern":"opalony","id":"tan"}
+{"label":"COLOR","pattern":"ostrożeń","id":"thistle"}
+{"label":"COLOR","pattern":"peruwiański","id":"peru"}
+{"label":"COLOR","pattern":"piaskowy brąz","id":"sandybrown"}
+{"label":"COLOR","pattern":"pomarańczowa","id":"orange"}
+{"label":"COLOR","pattern":"pomarańczowe","id":"orange"}
+{"label":"COLOR","pattern":"pomarańczowi","id":"orange"}
+{"label":"COLOR","pattern":"pomarańczowo-czerwony","id":"orangered"}
+{"label":"COLOR","pattern":"pomarańczowy","id":"orange"}
+{"label":"COLOR","pattern":"pomidorowy","id":"tomato"}
+{"label":"COLOR","pattern":"przyciemniony szary","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"pszeniczny","id":"wheat"}
+{"label":"COLOR","pattern":"pudrowy błękit","id":"powderblue"}
+{"label":"COLOR","pattern":"purpurowy","id":"purple"}
+{"label":"COLOR","pattern":"północny błękit","id":"midnightblue"}
+{"label":"COLOR","pattern":"Rebecca-fioletowy","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"różowa","id":"pink"}
+{"label":"COLOR","pattern":"różowe","id":"pink"}
+{"label":"COLOR","pattern":"różowi","id":"pink"}
+{"label":"COLOR","pattern":"różowobrązowy","id":"rosybrown"}
+{"label":"COLOR","pattern":"różowy","id":"pink"}
+{"label":"COLOR","pattern":"sjena","id":"sienna"}
+{"label":"COLOR","pattern":"srebrna","id":"silver"}
+{"label":"COLOR","pattern":"srebrne","id":"silver"}
+{"label":"COLOR","pattern":"srebrni","id":"silver"}
+{"label":"COLOR","pattern":"srebrny","id":"silver"}
+{"label":"COLOR","pattern":"stalowy błękit","id":"steelblue"}
+{"label":"COLOR","pattern":"stara koronka","id":"oldlace"}
+{"label":"COLOR","pattern":"storczykowy","id":"orchid"}
+{"label":"COLOR","pattern":"szara","id":"gray"}
+{"label":"COLOR","pattern":"szare","id":"gray"}
+{"label":"COLOR","pattern":"szary","id":"gray;grey"}
+{"label":"COLOR","pattern":"szary Gainsborough","id":"gainsboro"}
+{"label":"COLOR","pattern":"szarzy","id":"gray"}
+{"label":"COLOR","pattern":"szkarłatna","id":"scarlet"}
+{"label":"COLOR","pattern":"szkarłatne","id":"scarlet"}
+{"label":"COLOR","pattern":"szkarłatni","id":"scarlet"}
+{"label":"COLOR","pattern":"szkarłatny","id":"scarlet"}
+{"label":"COLOR","pattern":"trawnikowa zieleń","id":"lawngreen"}
+{"label":"COLOR","pattern":"turkusowa","id":"turquoise"}
+{"label":"COLOR","pattern":"turkusowe","id":"turquoise"}
+{"label":"COLOR","pattern":"turkusowi","id":"turquoise"}
+{"label":"COLOR","pattern":"turkusowy","id":"turquoise"}
+{"label":"COLOR","pattern":"upiorny biały","id":"ghostwhite"}
+{"label":"COLOR","pattern":"wiosenna zieleń","id":"springgreen"}
+{"label":"COLOR","pattern":"zielona","id":"green"}
+{"label":"COLOR","pattern":"zielone","id":"green"}
+{"label":"COLOR","pattern":"zieloni","id":"green"}
+{"label":"COLOR","pattern":"zielonkawo-żółty","id":"greenyellow"}
+{"label":"COLOR","pattern":"zielony","id":"green"}
+{"label":"COLOR","pattern":"złoci","id":"gold"}
+{"label":"COLOR","pattern":"złota","id":"gold"}
+{"label":"COLOR","pattern":"złote","id":"gold"}
+{"label":"COLOR","pattern":"złotnica","id":"goldenrod"}
+{"label":"COLOR","pattern":"złoty","id":"gold"}
+{"label":"COLOR","pattern":"łososiowa","id":"salmon"}
+{"label":"COLOR","pattern":"łososiowe","id":"salmon"}
+{"label":"COLOR","pattern":"łososiowi","id":"salmon"}
+{"label":"COLOR","pattern":"łososiowy","id":"salmon"}
+{"label":"COLOR","pattern":"łupkowy błękit","id":"slateblue"}
+{"label":"COLOR","pattern":"łupkowy szary","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"śliwkowy","id":"plum"}
+{"label":"COLOR","pattern":"śnieżny","id":"snow"}
+{"label":"COLOR","pattern":"średni akwamaryna","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"średni fioletowy","id":"mediumorchid"}
+{"label":"COLOR","pattern":"średni fiołkowoczerwony","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"średni morski zielony","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"średni niebieski","id":"mediumblue"}
+{"label":"COLOR","pattern":"średni purpurowy","id":"mediumpurple"}
+{"label":"COLOR","pattern":"średni turkusowy","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"średni wiosenny zielony","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"średni łupkowy błękit","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"żółci","id":"yellow"}
+{"label":"COLOR","pattern":"żółta","id":"yellow"}
+{"label":"COLOR","pattern":"żółte","id":"yellow"}
+{"label":"COLOR","pattern":"żółtozielony","id":"yellowgreen"}
+{"label":"COLOR","pattern":"żółty","id":"yellow"}

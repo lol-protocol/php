@@ -1,0 +1,189 @@
+{"label":"COLOR","pattern":"갈색","id":"brown"}
+{"label":"COLOR","pattern":"감색","id":"navy"}
+{"label":"COLOR","pattern":"검은색","id":"black"}
+{"label":"COLOR","pattern":"검정","id":"black"}
+{"label":"COLOR","pattern":"게인즈버러 그레이","id":"gainsboro"}
+{"label":"COLOR","pattern":"고스트 화이트","id":"ghostwhite"}
+{"label":"COLOR","pattern":"골드","id":"gold"}
+{"label":"COLOR","pattern":"골든로드","id":"goldenrod"}
+{"label":"COLOR","pattern":"그레이","id":"gray"}
+{"label":"COLOR","pattern":"금색","id":"gold"}
+{"label":"COLOR","pattern":"까만색","id":"black"}
+{"label":"COLOR","pattern":"나바호 화이트","id":"navajowhite"}
+{"label":"COLOR","pattern":"난초색","id":"orchid"}
+{"label":"COLOR","pattern":"남색","id":"darkblue;indigo"}
+{"label":"COLOR","pattern":"네이비","id":"navy"}
+{"label":"COLOR","pattern":"노란색","id":"yellow"}
+{"label":"COLOR","pattern":"노랑","id":"yellow"}
+{"label":"COLOR","pattern":"녹색","id":"green"}
+{"label":"COLOR","pattern":"눈","id":"snow"}
+{"label":"COLOR","pattern":"다저 블루","id":"dodgerblue"}
+{"label":"COLOR","pattern":"담청색","id":"azure"}
+{"label":"COLOR","pattern":"딥 스카이 블루","id":"deepskyblue"}
+{"label":"COLOR","pattern":"딥 핑크","id":"deeppink"}
+{"label":"COLOR","pattern":"라벤더","id":"lavender"}
+{"label":"COLOR","pattern":"라벤더 블러시","id":"lavenderblush"}
+{"label":"COLOR","pattern":"라벤더색","id":"lavender"}
+{"label":"COLOR","pattern":"라일락색","id":"lilac"}
+{"label":"COLOR","pattern":"라임","id":"lime"}
+{"label":"COLOR","pattern":"라임 그린","id":"limegreen"}
+{"label":"COLOR","pattern":"라임색","id":"lime"}
+{"label":"COLOR","pattern":"레몬 시폰","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"레베카 퍼플","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"로열 블루","id":"royalblue"}
+{"label":"COLOR","pattern":"리넨","id":"linen"}
+{"label":"COLOR","pattern":"마룬","id":"maroon"}
+{"label":"COLOR","pattern":"마젠타","id":"magenta"}
+{"label":"COLOR","pattern":"모래 갈색","id":"sandybrown"}
+{"label":"COLOR","pattern":"모카신","id":"moccasin"}
+{"label":"COLOR","pattern":"미드나이트 블루","id":"midnightblue"}
+{"label":"COLOR","pattern":"민트 크림","id":"mintcream"}
+{"label":"COLOR","pattern":"밀색","id":"wheat"}
+{"label":"COLOR","pattern":"바다 그린","id":"seagreen"}
+{"label":"COLOR","pattern":"밤색","id":"brown"}
+{"label":"COLOR","pattern":"백색","id":"white"}
+{"label":"COLOR","pattern":"버건디","id":"burgundy"}
+{"label":"COLOR","pattern":"버리우드","id":"burlywood"}
+{"label":"COLOR","pattern":"베이지","id":"beige"}
+{"label":"COLOR","pattern":"베이지색","id":"beige"}
+{"label":"COLOR","pattern":"벽돌 빨강","id":"firebrick"}
+{"label":"COLOR","pattern":"보라","id":"purple"}
+{"label":"COLOR","pattern":"보라색","id":"purple;violet"}
+{"label":"COLOR","pattern":"복숭아","id":"peachpuff"}
+{"label":"COLOR","pattern":"봄 그린","id":"springgreen"}
+{"label":"COLOR","pattern":"분홍","id":"pink"}
+{"label":"COLOR","pattern":"분홍색","id":"pink"}
+{"label":"COLOR","pattern":"붉은색","id":"red"}
+{"label":"COLOR","pattern":"브라운","id":"brown"}
+{"label":"COLOR","pattern":"블랜치드 아몬드","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"비스크","id":"bisque"}
+{"label":"COLOR","pattern":"빨간색","id":"red"}
+{"label":"COLOR","pattern":"빨강","id":"red"}
+{"label":"COLOR","pattern":"산호색","id":"coral"}
+{"label":"COLOR","pattern":"샤르트뢰즈","id":"chartreuse"}
+{"label":"COLOR","pattern":"숲 그린","id":"forestgreen"}
+{"label":"COLOR","pattern":"스틸 블루","id":"steelblue"}
+{"label":"COLOR","pattern":"슬레이트 그레이","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"슬레이트 블루","id":"slateblue"}
+{"label":"COLOR","pattern":"시안","id":"cyan"}
+{"label":"COLOR","pattern":"시에나","id":"sienna"}
+{"label":"COLOR","pattern":"실버","id":"silver"}
+{"label":"COLOR","pattern":"아이보리","id":"ivory"}
+{"label":"COLOR","pattern":"아쿠아","id":"aqua"}
+{"label":"COLOR","pattern":"아쿠아마린","id":"aquamarine"}
+{"label":"COLOR","pattern":"안개 장미","id":"mistyrose"}
+{"label":"COLOR","pattern":"안장 갈색","id":"saddlebrown"}
+{"label":"COLOR","pattern":"앤티크 화이트","id":"antiquewhite"}
+{"label":"COLOR","pattern":"앨리스 블루","id":"aliceblue"}
+{"label":"COLOR","pattern":"엉겅퀴","id":"thistle"}
+{"label":"COLOR","pattern":"연기 흰색","id":"whitesmoke"}
+{"label":"COLOR","pattern":"연노랑","id":"lightyellow"}
+{"label":"COLOR","pattern":"연두","id":"yellowgreen"}
+{"label":"COLOR","pattern":"연두색","id":"greenyellow;lightgreen"}
+{"label":"COLOR","pattern":"연분홍","id":"lightpink"}
+{"label":"COLOR","pattern":"연어색","id":"salmon"}
+{"label":"COLOR","pattern":"연초록","id":"lightgreen"}
+{"label":"COLOR","pattern":"연하늘","id":"lightblue"}
+{"label":"COLOR","pattern":"연한 골든로드","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"연한 골든로드 옐로","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"연한 바다 그린","id":"lightseagreen"}
+{"label":"COLOR","pattern":"연한 바이올렛 레드","id":"palevioletred"}
+{"label":"COLOR","pattern":"연한 스틸 블루","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"연한 슬레이트 그레이","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"연한 시안","id":"lightcyan"}
+{"label":"COLOR","pattern":"연한 연어색","id":"lightsalmon"}
+{"label":"COLOR","pattern":"연한 청록색","id":"paleturquoise"}
+{"label":"COLOR","pattern":"연한 초록","id":"lightgreen;palegreen"}
+{"label":"COLOR","pattern":"연한 코랄","id":"lightcoral"}
+{"label":"COLOR","pattern":"연한 파랑","id":"lightblue"}
+{"label":"COLOR","pattern":"연한 하늘색","id":"lightskyblue"}
+{"label":"COLOR","pattern":"연한 회색","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"오래된 레이스","id":"oldlace"}
+{"label":"COLOR","pattern":"오렌지색","id":"orange"}
+{"label":"COLOR","pattern":"올리브","id":"olive"}
+{"label":"COLOR","pattern":"올리브 드랩","id":"olivedrab"}
+{"label":"COLOR","pattern":"올리브색","id":"olive"}
+{"label":"COLOR","pattern":"와인색","id":"burgundy"}
+{"label":"COLOR","pattern":"은빛","id":"silver"}
+{"label":"COLOR","pattern":"은색","id":"silver"}
+{"label":"COLOR","pattern":"인디고","id":"indigo"}
+{"label":"COLOR","pattern":"인디언 레드","id":"indianred"}
+{"label":"COLOR","pattern":"자두","id":"plum"}
+{"label":"COLOR","pattern":"잔디 그린","id":"lawngreen"}
+{"label":"COLOR","pattern":"장미 갈색","id":"rosybrown"}
+{"label":"COLOR","pattern":"잿빛","id":"gray"}
+{"label":"COLOR","pattern":"적갈색","id":"maroon"}
+{"label":"COLOR","pattern":"적색","id":"red"}
+{"label":"COLOR","pattern":"조개껍질","id":"seashell"}
+{"label":"COLOR","pattern":"주홍","id":"orangered"}
+{"label":"COLOR","pattern":"주홍색","id":"scarlet"}
+{"label":"COLOR","pattern":"주황","id":"orange"}
+{"label":"COLOR","pattern":"주황색","id":"orange"}
+{"label":"COLOR","pattern":"중간 난초색","id":"mediumorchid"}
+{"label":"COLOR","pattern":"중간 바다 그린","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"중간 바이올렛 레드","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"중간 보라","id":"mediumpurple"}
+{"label":"COLOR","pattern":"중간 봄 그린","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"중간 슬레이트 블루","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"중간 아쿠아마린","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"중간 청록색","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"중간 파랑","id":"mediumblue"}
+{"label":"COLOR","pattern":"진초록","id":"darkgreen"}
+{"label":"COLOR","pattern":"진한 골든로드","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"진한 난초색","id":"darkorchid"}
+{"label":"COLOR","pattern":"진한 마젠타","id":"darkmagenta"}
+{"label":"COLOR","pattern":"진한 바다 그린","id":"darkseagreen"}
+{"label":"COLOR","pattern":"진한 보라","id":"darkviolet"}
+{"label":"COLOR","pattern":"진한 빨강","id":"darkred"}
+{"label":"COLOR","pattern":"진한 슬레이트 그레이","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"진한 슬레이트 블루","id":"darkslateblue"}
+{"label":"COLOR","pattern":"진한 시안","id":"darkcyan"}
+{"label":"COLOR","pattern":"진한 연어색","id":"darksalmon"}
+{"label":"COLOR","pattern":"진한 올리브 그린","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"진한 주황","id":"darkorange"}
+{"label":"COLOR","pattern":"진한 청록색","id":"darkturquoise"}
+{"label":"COLOR","pattern":"진한 초록","id":"darkgreen"}
+{"label":"COLOR","pattern":"진한 카키","id":"darkkhaki"}
+{"label":"COLOR","pattern":"진한 파랑","id":"darkblue"}
+{"label":"COLOR","pattern":"진한 회색","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"진홍색","id":"crimson"}
+{"label":"COLOR","pattern":"짙은 초록","id":"darkgreen"}
+{"label":"COLOR","pattern":"짙은 파란색","id":"darkblue"}
+{"label":"COLOR","pattern":"쪽빛","id":"indigo"}
+{"label":"COLOR","pattern":"청록","id":"teal"}
+{"label":"COLOR","pattern":"청록색","id":"turquoise"}
+{"label":"COLOR","pattern":"청보라","id":"blueviolet"}
+{"label":"COLOR","pattern":"청색","id":"blue"}
+{"label":"COLOR","pattern":"초록","id":"green"}
+{"label":"COLOR","pattern":"초록색","id":"green"}
+{"label":"COLOR","pattern":"초콜릿","id":"chocolate"}
+{"label":"COLOR","pattern":"카뎃 블루","id":"cadetblue"}
+{"label":"COLOR","pattern":"카키","id":"khaki"}
+{"label":"COLOR","pattern":"카키색","id":"khaki"}
+{"label":"COLOR","pattern":"코랄","id":"coral"}
+{"label":"COLOR","pattern":"콘실크","id":"cornsilk"}
+{"label":"COLOR","pattern":"콘플라워 블루","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"크림색","id":"cream"}
+{"label":"COLOR","pattern":"토마토","id":"tomato"}
+{"label":"COLOR","pattern":"파란색","id":"blue"}
+{"label":"COLOR","pattern":"파랑","id":"blue"}
+{"label":"COLOR","pattern":"파우더 블루","id":"powderblue"}
+{"label":"COLOR","pattern":"파파야 휘핑","id":"papayawhip"}
+{"label":"COLOR","pattern":"페루","id":"peru"}
+{"label":"COLOR","pattern":"푸른색","id":"blue"}
+{"label":"COLOR","pattern":"푸크시아","id":"fuchsia"}
+{"label":"COLOR","pattern":"플로럴 화이트","id":"floralwhite"}
+{"label":"COLOR","pattern":"핑크","id":"pink"}
+{"label":"COLOR","pattern":"하늘색","id":"lightblue;skyblue"}
+{"label":"COLOR","pattern":"하얀색","id":"white"}
+{"label":"COLOR","pattern":"하양","id":"white"}
+{"label":"COLOR","pattern":"핫 핑크","id":"hotpink"}
+{"label":"COLOR","pattern":"허니듀","id":"honeydew"}
+{"label":"COLOR","pattern":"호박색","id":"amber"}
+{"label":"COLOR","pattern":"황갈색","id":"tan"}
+{"label":"COLOR","pattern":"황금색","id":"gold"}
+{"label":"COLOR","pattern":"황색","id":"yellow"}
+{"label":"COLOR","pattern":"회색","id":"gray;grey"}
+{"label":"COLOR","pattern":"흐릿한 회색","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"흑색","id":"black"}
+{"label":"COLOR","pattern":"흰색","id":"white"}
