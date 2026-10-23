@@ -1,0 +1,179 @@
+{"label":"COLOR","pattern":"acvamarin","id":"aquamarine"}
+{"label":"COLOR","pattern":"acvamarin mediu","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"alb","id":"white"}
+{"label":"COLOR","pattern":"alb antic","id":"antiquewhite"}
+{"label":"COLOR","pattern":"alb fantomă","id":"ghostwhite"}
+{"label":"COLOR","pattern":"alb floral","id":"floralwhite"}
+{"label":"COLOR","pattern":"alb fumuriu","id":"whitesmoke"}
+{"label":"COLOR","pattern":"alb navajo","id":"navajowhite"}
+{"label":"COLOR","pattern":"alb-migdală","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"albastre","id":"blue"}
+{"label":"COLOR","pattern":"albastru","id":"blue"}
+{"label":"COLOR","pattern":"albastru albăstrea","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"albastru alice","id":"aliceblue"}
+{"label":"COLOR","pattern":"albastru ardezie","id":"slateblue"}
+{"label":"COLOR","pattern":"albastru ardezie mediu","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"albastru ardezie închis","id":"darkslateblue"}
+{"label":"COLOR","pattern":"albastru cadet","id":"cadetblue"}
+{"label":"COLOR","pattern":"albastru cer","id":"skyblue"}
+{"label":"COLOR","pattern":"albastru cer deschis","id":"lightskyblue"}
+{"label":"COLOR","pattern":"albastru cer profund","id":"deepskyblue"}
+{"label":"COLOR","pattern":"albastru deschis","id":"lightblue"}
+{"label":"COLOR","pattern":"albastru dodger","id":"dodgerblue"}
+{"label":"COLOR","pattern":"albastru mediu","id":"mediumblue"}
+{"label":"COLOR","pattern":"albastru miezul nopții","id":"midnightblue"}
+{"label":"COLOR","pattern":"albastru oțel","id":"steelblue"}
+{"label":"COLOR","pattern":"albastru oțel deschis","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"albastru pudră","id":"powderblue"}
+{"label":"COLOR","pattern":"albastru regal","id":"royalblue"}
+{"label":"COLOR","pattern":"albastru închis","id":"darkblue"}
+{"label":"COLOR","pattern":"albastră","id":"blue"}
+{"label":"COLOR","pattern":"albaștri","id":"blue"}
+{"label":"COLOR","pattern":"albe","id":"white"}
+{"label":"COLOR","pattern":"albi","id":"white"}
+{"label":"COLOR","pattern":"albă","id":"white"}
+{"label":"COLOR","pattern":"aqua","id":"aqua"}
+{"label":"COLOR","pattern":"argintie","id":"silver"}
+{"label":"COLOR","pattern":"argintii","id":"silver"}
+{"label":"COLOR","pattern":"argintiu","id":"silver"}
+{"label":"COLOR","pattern":"aurie","id":"gold"}
+{"label":"COLOR","pattern":"aurii","id":"gold"}
+{"label":"COLOR","pattern":"auriu","id":"gold"}
+{"label":"COLOR","pattern":"auriu pal","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"auriu închis","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"azuriu","id":"azure;skyblue"}
+{"label":"COLOR","pattern":"bej","id":"beige"}
+{"label":"COLOR","pattern":"bisque","id":"bisque"}
+{"label":"COLOR","pattern":"bleu","id":"lightblue;skyblue"}
+{"label":"COLOR","pattern":"bleumarin","id":"navy"}
+{"label":"COLOR","pattern":"bordo","id":"burgundy"}
+{"label":"COLOR","pattern":"bronz","id":"tan"}
+{"label":"COLOR","pattern":"carmin","id":"crimson"}
+{"label":"COLOR","pattern":"castaniu","id":"maroon"}
+{"label":"COLOR","pattern":"cenușiu","id":"gray"}
+{"label":"COLOR","pattern":"chartreuse","id":"chartreuse"}
+{"label":"COLOR","pattern":"chihlimbarie","id":"amber"}
+{"label":"COLOR","pattern":"chihlimbarii","id":"amber"}
+{"label":"COLOR","pattern":"chihlimbariu","id":"amber"}
+{"label":"COLOR","pattern":"cian","id":"cyan"}
+{"label":"COLOR","pattern":"ciocolatiu","id":"chocolate"}
+{"label":"COLOR","pattern":"corai deschis","id":"lightcoral"}
+{"label":"COLOR","pattern":"coral","id":"coral"}
+{"label":"COLOR","pattern":"crem","id":"cream"}
+{"label":"COLOR","pattern":"cremă de mentă","id":"mintcream"}
+{"label":"COLOR","pattern":"cyan","id":"cyan"}
+{"label":"COLOR","pattern":"cyan deschis","id":"lightcyan"}
+{"label":"COLOR","pattern":"cyan închis","id":"darkcyan"}
+{"label":"COLOR","pattern":"cărămiziu","id":"firebrick"}
+{"label":"COLOR","pattern":"dantelă veche","id":"oldlace"}
+{"label":"COLOR","pattern":"drab măsliniu","id":"olivedrab"}
+{"label":"COLOR","pattern":"fildeș","id":"ivory"}
+{"label":"COLOR","pattern":"frișcă de papaya","id":"papayawhip"}
+{"label":"COLOR","pattern":"fucsia","id":"fuchsia"}
+{"label":"COLOR","pattern":"galben","id":"yellow"}
+{"label":"COLOR","pattern":"galben deschis","id":"lightyellow"}
+{"label":"COLOR","pattern":"galben-auriu deschis","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"galbene","id":"yellow"}
+{"label":"COLOR","pattern":"galbeni","id":"yellow"}
+{"label":"COLOR","pattern":"galbenă","id":"yellow"}
+{"label":"COLOR","pattern":"gri","id":"gray;grey"}
+{"label":"COLOR","pattern":"gri ardezie","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"gri ardezie deschis","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"gri ardezie închis","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"gri deschis","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"gri Gainsborough","id":"gainsboro"}
+{"label":"COLOR","pattern":"gri închis","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"gri întunecat","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"grâu","id":"wheat"}
+{"label":"COLOR","pattern":"in","id":"linen"}
+{"label":"COLOR","pattern":"indigo","id":"indigo"}
+{"label":"COLOR","pattern":"kaki","id":"khaki"}
+{"label":"COLOR","pattern":"kaki închis","id":"darkkhaki"}
+{"label":"COLOR","pattern":"lavandă","id":"lavender"}
+{"label":"COLOR","pattern":"lemn","id":"burlywood"}
+{"label":"COLOR","pattern":"lila","id":"lilac"}
+{"label":"COLOR","pattern":"lime","id":"lime"}
+{"label":"COLOR","pattern":"magenta","id":"magenta"}
+{"label":"COLOR","pattern":"magenta închis","id":"darkmagenta"}
+{"label":"COLOR","pattern":"maro","id":"brown"}
+{"label":"COLOR","pattern":"maro nisipiu","id":"sandybrown"}
+{"label":"COLOR","pattern":"maro trandafiriu","id":"rosybrown"}
+{"label":"COLOR","pattern":"maro șa","id":"saddlebrown"}
+{"label":"COLOR","pattern":"mocasin","id":"moccasin"}
+{"label":"COLOR","pattern":"mov","id":"purple"}
+{"label":"COLOR","pattern":"măsliniu","id":"olive"}
+{"label":"COLOR","pattern":"mătase de porumb","id":"cornsilk"}
+{"label":"COLOR","pattern":"neagră","id":"black"}
+{"label":"COLOR","pattern":"negre","id":"black"}
+{"label":"COLOR","pattern":"negri","id":"black"}
+{"label":"COLOR","pattern":"negru","id":"black"}
+{"label":"COLOR","pattern":"oliv","id":"olive"}
+{"label":"COLOR","pattern":"orhidee","id":"orchid"}
+{"label":"COLOR","pattern":"orhidee mediu","id":"mediumorchid"}
+{"label":"COLOR","pattern":"orhidee închis","id":"darkorchid"}
+{"label":"COLOR","pattern":"peru","id":"peru"}
+{"label":"COLOR","pattern":"piersică","id":"peachpuff"}
+{"label":"COLOR","pattern":"portocalie","id":"orange"}
+{"label":"COLOR","pattern":"portocalii","id":"orange"}
+{"label":"COLOR","pattern":"portocaliu","id":"orange"}
+{"label":"COLOR","pattern":"portocaliu închis","id":"darkorange"}
+{"label":"COLOR","pattern":"prună","id":"plum"}
+{"label":"COLOR","pattern":"purpuriu mediu","id":"mediumpurple"}
+{"label":"COLOR","pattern":"Rebecca mov","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"rouă de miere","id":"honeydew"}
+{"label":"COLOR","pattern":"roz","id":"pink"}
+{"label":"COLOR","pattern":"roz cețos","id":"mistyrose"}
+{"label":"COLOR","pattern":"roz deschis","id":"lightpink"}
+{"label":"COLOR","pattern":"roz intens","id":"hotpink"}
+{"label":"COLOR","pattern":"roz lavandă","id":"lavenderblush"}
+{"label":"COLOR","pattern":"roz profund","id":"deeppink"}
+{"label":"COLOR","pattern":"roșie","id":"red;tomato"}
+{"label":"COLOR","pattern":"roșii","id":"red"}
+{"label":"COLOR","pattern":"roșu","id":"red"}
+{"label":"COLOR","pattern":"roșu indian","id":"indianred"}
+{"label":"COLOR","pattern":"roșu închis","id":"darkred"}
+{"label":"COLOR","pattern":"roșu-portocaliu","id":"orangered"}
+{"label":"COLOR","pattern":"roșu-violet mediu","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"roșu-violet pal","id":"palevioletred"}
+{"label":"COLOR","pattern":"scai","id":"thistle"}
+{"label":"COLOR","pattern":"scoică","id":"seashell"}
+{"label":"COLOR","pattern":"sienna","id":"sienna"}
+{"label":"COLOR","pattern":"somon","id":"salmon"}
+{"label":"COLOR","pattern":"somon deschis","id":"lightsalmon"}
+{"label":"COLOR","pattern":"somon închis","id":"darksalmon"}
+{"label":"COLOR","pattern":"stacojie","id":"crimson"}
+{"label":"COLOR","pattern":"stacojii","id":"crimson"}
+{"label":"COLOR","pattern":"stacojiu","id":"crimson"}
+{"label":"COLOR","pattern":"turcoaz","id":"turquoise"}
+{"label":"COLOR","pattern":"turcoaz mediu","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"turcoaz pal","id":"paleturquoise"}
+{"label":"COLOR","pattern":"turcoaz închis","id":"darkturquoise"}
+{"label":"COLOR","pattern":"verde","id":"green"}
+{"label":"COLOR","pattern":"verde deschis","id":"lightgreen"}
+{"label":"COLOR","pattern":"verde gazon","id":"lawngreen"}
+{"label":"COLOR","pattern":"verde lime","id":"limegreen"}
+{"label":"COLOR","pattern":"verde marin","id":"seagreen"}
+{"label":"COLOR","pattern":"verde măsliniu închis","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"verde pal","id":"palegreen"}
+{"label":"COLOR","pattern":"verde primăvară","id":"springgreen"}
+{"label":"COLOR","pattern":"verde primăvară mediu","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"verde pădure","id":"forestgreen"}
+{"label":"COLOR","pattern":"verde închis","id":"darkgreen"}
+{"label":"COLOR","pattern":"verde-albastru","id":"teal"}
+{"label":"COLOR","pattern":"verde-galben","id":"greenyellow;yellowgreen"}
+{"label":"COLOR","pattern":"verde-mare deschis","id":"lightseagreen"}
+{"label":"COLOR","pattern":"verde-mare mediu","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"verde-mare închis","id":"darkseagreen"}
+{"label":"COLOR","pattern":"verzi","id":"green"}
+{"label":"COLOR","pattern":"violet","id":"purple;violet"}
+{"label":"COLOR","pattern":"violet închis","id":"darkviolet"}
+{"label":"COLOR","pattern":"violet-albastru","id":"blueviolet"}
+{"label":"COLOR","pattern":"violete","id":"violet"}
+{"label":"COLOR","pattern":"violetă","id":"violet"}
+{"label":"COLOR","pattern":"violeți","id":"violet"}
+{"label":"COLOR","pattern":"vișinie","id":"maroon"}
+{"label":"COLOR","pattern":"vișinii","id":"maroon"}
+{"label":"COLOR","pattern":"vișiniu","id":"maroon"}
+{"label":"COLOR","pattern":"vârf de aur","id":"goldenrod"}
+{"label":"COLOR","pattern":"zăpadă","id":"snow"}
+{"label":"COLOR","pattern":"șifon de lămâie","id":"lemonchiffon"}

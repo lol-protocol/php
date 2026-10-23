@@ -1,0 +1,2006 @@
+# sent_id = en-aqua-ADJ
+# text = She painted the bathroom walls aqua.
+1	She	_	_	_	_	_	_	_	_
+2	painted	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	bathroom	_	_	_	_	_	_	_	_
+5	walls	_	_	_	_	_	_	_	_
+6	aqua	aqua	ADJ	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-aqua-NOUN
+# text = The aqua of the lagoon looked unreal.
+1	The	_	_	_	_	_	_	_	_
+2	aqua	aqua	NOUN	_	_	_	_	_	_
+3	of	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	lagoon	_	_	_	_	_	_	_	_
+6	looked	_	_	_	_	_	_	_	_
+7	unreal	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-aquamarine-ADJ
+# text = The aquamarine water was warm and clear.
+1	The	_	_	_	_	_	_	_	_
+2	aquamarine	aquamarine	ADJ	_	_	_	_	_	_
+3	water	_	_	_	_	_	_	_	_
+4	was	_	_	_	_	_	_	_	_
+5	warm	_	_	_	_	_	_	_	_
+6	and	_	_	_	_	_	_	_	_
+7	clear	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-aquamarine-NOUN
+# text = He gave her a ring set with an aquamarine.
+1	He	_	_	_	_	_	_	_	_
+2	gave	_	_	_	_	_	_	_	_
+3	her	_	_	_	_	_	_	_	_
+4	a	_	_	_	_	_	_	_	_
+5	ring	_	_	_	_	_	_	_	_
+6	set	_	_	_	_	_	_	_	_
+7	with	_	_	_	_	_	_	_	_
+8	an	_	_	_	_	_	_	_	_
+9	aquamarine	aquamarine	NOUN	_	_	_	_	_	SpaceAfter=No
+10	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-azure-ADJ
+# text = The azure sky stretched over the bay.
+1	The	_	_	_	_	_	_	_	_
+2	azure	azure	ADJ	_	_	_	_	_	_
+3	sky	_	_	_	_	_	_	_	_
+4	stretched	_	_	_	_	_	_	_	_
+5	over	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	bay	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-azure-NOUN
+# text = The azure of the sea faded at dusk.
+1	The	_	_	_	_	_	_	_	_
+2	azure	azure	NOUN	_	_	_	_	_	_
+3	of	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	sea	_	_	_	_	_	_	_	_
+6	faded	_	_	_	_	_	_	_	_
+7	at	_	_	_	_	_	_	_	_
+8	dusk	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-azure-PROPN
+# text = The company moved its servers to Azure.
+1	The	_	_	_	_	_	_	_	_
+2	company	_	_	_	_	_	_	_	_
+3	moved	_	_	_	_	_	_	_	_
+4	its	_	_	_	_	_	_	_	_
+5	servers	_	_	_	_	_	_	_	_
+6	to	_	_	_	_	_	_	_	_
+7	Azure	Azure	PROPN	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-beige-ADJ
+# text = He wore a beige coat.
+1	He	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	beige	beige	ADJ	_	_	_	_	_	_
+5	coat	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-beige-NOUN
+# text = Beige is a safe color for a sofa.
+1	Beige	beige	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	safe	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	_
+6	for	_	_	_	_	_	_	_	_
+7	a	_	_	_	_	_	_	_	_
+8	sofa	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-bisque-ADJ
+# text = The kitchen walls were bisque and the floor was slate.
+1	The	_	_	_	_	_	_	_	_
+2	kitchen	_	_	_	_	_	_	_	_
+3	walls	_	_	_	_	_	_	_	_
+4	were	_	_	_	_	_	_	_	_
+5	bisque	bisque	ADJ	_	_	_	_	_	_
+6	and	_	_	_	_	_	_	_	_
+7	the	_	_	_	_	_	_	_	_
+8	floor	_	_	_	_	_	_	_	_
+9	was	_	_	_	_	_	_	_	_
+10	slate	_	_	_	_	_	_	_	SpaceAfter=No
+11	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-bisque-NOUN
+# text = We started dinner with a lobster bisque.
+1	We	_	_	_	_	_	_	_	_
+2	started	_	_	_	_	_	_	_	_
+3	dinner	_	_	_	_	_	_	_	_
+4	with	_	_	_	_	_	_	_	_
+5	a	_	_	_	_	_	_	_	_
+6	lobster	_	_	_	_	_	_	_	_
+7	bisque	bisque	NOUN	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-black-ADJ
+# text = She wore a black dress.
+1	She	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	black	black	ADJ	_	_	_	_	_	_
+5	dress	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-black-NOUN
+# text = Black suits him.
+1	Black	black	NOUN	_	_	_	_	_	_
+2	suits	_	_	_	_	_	_	_	_
+3	him	_	_	_	_	_	_	_	SpaceAfter=No
+4	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-black-VERB
+# text = They blacked out the windows before the storm.
+1	They	_	_	_	_	_	_	_	_
+2	blacked	black	VERB	_	_	_	_	_	_
+3	out	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	windows	_	_	_	_	_	_	_	_
+6	before	_	_	_	_	_	_	_	_
+7	the	_	_	_	_	_	_	_	_
+8	storm	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-blue-ADJ
+# text = The sky was blue.
+1	The	_	_	_	_	_	_	_	_
+2	sky	_	_	_	_	_	_	_	_
+3	was	_	_	_	_	_	_	_	_
+4	blue	blue	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-blue-NOUN
+# text = Blue is her favorite color.
+1	Blue	blue	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	her	_	_	_	_	_	_	_	_
+4	favorite	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-blue-VERB
+# text = The gunsmith blued the steel to stop it rusting.
+1	The	_	_	_	_	_	_	_	_
+2	gunsmith	_	_	_	_	_	_	_	_
+3	blued	blue	VERB	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	steel	_	_	_	_	_	_	_	_
+6	to	_	_	_	_	_	_	_	_
+7	stop	_	_	_	_	_	_	_	_
+8	it	_	_	_	_	_	_	_	_
+9	rusting	_	_	_	_	_	_	_	SpaceAfter=No
+10	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-brown-ADJ
+# text = He has brown eyes.
+1	He	_	_	_	_	_	_	_	_
+2	has	_	_	_	_	_	_	_	_
+3	brown	brown	ADJ	_	_	_	_	_	_
+4	eyes	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-brown-NOUN
+# text = Brown goes well with green.
+1	Brown	brown	NOUN	_	_	_	_	_	_
+2	goes	_	_	_	_	_	_	_	_
+3	well	_	_	_	_	_	_	_	_
+4	with	_	_	_	_	_	_	_	_
+5	green	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-brown-VERB
+# text = Brown the onions in a little butter.
+1	Brown	brown	VERB	_	_	_	_	_	_
+2	the	_	_	_	_	_	_	_	_
+3	onions	_	_	_	_	_	_	_	_
+4	in	_	_	_	_	_	_	_	_
+5	a	_	_	_	_	_	_	_	_
+6	little	_	_	_	_	_	_	_	_
+7	butter	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-burlywood-ADJ
+# text = The table was painted burlywood.
+1	The	_	_	_	_	_	_	_	_
+2	table	_	_	_	_	_	_	_	_
+3	was	_	_	_	_	_	_	_	_
+4	painted	_	_	_	_	_	_	_	_
+5	burlywood	burlywood	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-burlywood-NOUN
+# text = Burlywood is a pale tan in CSS.
+1	Burlywood	burlywood	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	pale	_	_	_	_	_	_	_	_
+5	tan	_	_	_	_	_	_	_	_
+6	in	_	_	_	_	_	_	_	_
+7	CSS	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-chartreuse-ADJ
+# text = The chartreuse jacket stood out in the crowd.
+1	The	_	_	_	_	_	_	_	_
+2	chartreuse	chartreuse	ADJ	_	_	_	_	_	_
+3	jacket	_	_	_	_	_	_	_	_
+4	stood	_	_	_	_	_	_	_	_
+5	out	_	_	_	_	_	_	_	_
+6	in	_	_	_	_	_	_	_	_
+7	the	_	_	_	_	_	_	_	_
+8	crowd	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-chartreuse-NOUN
+# text = He ordered a glass of chartreuse after dinner.
+1	He	_	_	_	_	_	_	_	_
+2	ordered	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	glass	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	chartreuse	chartreuse	NOUN	_	_	_	_	_	_
+7	after	_	_	_	_	_	_	_	_
+8	dinner	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-chocolate-ADJ
+# text = The new couch is chocolate.
+1	The	_	_	_	_	_	_	_	_
+2	new	_	_	_	_	_	_	_	_
+3	couch	_	_	_	_	_	_	_	_
+4	is	_	_	_	_	_	_	_	_
+5	chocolate	chocolate	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-chocolate-NOUN
+# text = I would like some chocolate.
+1	I	_	_	_	_	_	_	_	_
+2	would	_	_	_	_	_	_	_	_
+3	like	_	_	_	_	_	_	_	_
+4	some	_	_	_	_	_	_	_	_
+5	chocolate	chocolate	NOUN	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-coral-ADJ
+# text = She painted her nails coral.
+1	She	_	_	_	_	_	_	_	_
+2	painted	_	_	_	_	_	_	_	_
+3	her	_	_	_	_	_	_	_	_
+4	nails	_	_	_	_	_	_	_	_
+5	coral	coral	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-coral-NOUN
+# text = The reef is made of living coral.
+1	The	_	_	_	_	_	_	_	_
+2	reef	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	made	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	living	_	_	_	_	_	_	_	_
+7	coral	coral	NOUN	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-cornsilk-ADJ
+# text = The page background is cornsilk.
+1	The	_	_	_	_	_	_	_	_
+2	page	_	_	_	_	_	_	_	_
+3	background	_	_	_	_	_	_	_	_
+4	is	_	_	_	_	_	_	_	_
+5	cornsilk	cornsilk	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-cornsilk-NOUN
+# text = The cornsilk stuck to my fingers.
+1	The	_	_	_	_	_	_	_	_
+2	cornsilk	cornsilk	NOUN	_	_	_	_	_	_
+3	stuck	_	_	_	_	_	_	_	_
+4	to	_	_	_	_	_	_	_	_
+5	my	_	_	_	_	_	_	_	_
+6	fingers	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-crimson-ADJ
+# text = A crimson sunset covered the hills.
+1	A	_	_	_	_	_	_	_	_
+2	crimson	crimson	ADJ	_	_	_	_	_	_
+3	sunset	_	_	_	_	_	_	_	_
+4	covered	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	hills	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-crimson-NOUN
+# text = The crimson of the flag had faded.
+1	The	_	_	_	_	_	_	_	_
+2	crimson	crimson	NOUN	_	_	_	_	_	_
+3	of	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	flag	_	_	_	_	_	_	_	_
+6	had	_	_	_	_	_	_	_	_
+7	faded	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-crimson-VERB
+# text = Her cheeks crimsoned with embarrassment.
+1	Her	_	_	_	_	_	_	_	_
+2	cheeks	_	_	_	_	_	_	_	_
+3	crimsoned	crimson	VERB	_	_	_	_	_	_
+4	with	_	_	_	_	_	_	_	_
+5	embarrassment	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-cyan-ADJ
+# text = The printer is out of cyan ink.
+1	The	_	_	_	_	_	_	_	_
+2	printer	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	out	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	cyan	cyan	ADJ	_	_	_	_	_	_
+7	ink	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-cyan-NOUN
+# text = Cyan and magenta mix to make blue.
+1	Cyan	cyan	NOUN	_	_	_	_	_	_
+2	and	_	_	_	_	_	_	_	_
+3	magenta	_	_	_	_	_	_	_	_
+4	mix	_	_	_	_	_	_	_	_
+5	to	_	_	_	_	_	_	_	_
+6	make	_	_	_	_	_	_	_	_
+7	blue	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-firebrick-ADJ
+# text = The button turned firebrick when hovered.
+1	The	_	_	_	_	_	_	_	_
+2	button	_	_	_	_	_	_	_	_
+3	turned	_	_	_	_	_	_	_	_
+4	firebrick	firebrick	ADJ	_	_	_	_	_	_
+5	when	_	_	_	_	_	_	_	_
+6	hovered	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-firebrick-NOUN
+# text = The oven is lined with firebrick.
+1	The	_	_	_	_	_	_	_	_
+2	oven	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	lined	_	_	_	_	_	_	_	_
+5	with	_	_	_	_	_	_	_	_
+6	firebrick	firebrick	NOUN	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-fuchsia-ADJ
+# text = She wore a fuchsia scarf.
+1	She	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	fuchsia	fuchsia	ADJ	_	_	_	_	_	_
+5	scarf	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-fuchsia-NOUN
+# text = The fuchsia bloomed on the porch.
+1	The	_	_	_	_	_	_	_	_
+2	fuchsia	fuchsia	NOUN	_	_	_	_	_	_
+3	bloomed	_	_	_	_	_	_	_	_
+4	on	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	porch	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-gainsboro-ADJ
+# text = The panel background is gainsboro.
+1	The	_	_	_	_	_	_	_	_
+2	panel	_	_	_	_	_	_	_	_
+3	background	_	_	_	_	_	_	_	_
+4	is	_	_	_	_	_	_	_	_
+5	gainsboro	gainsboro	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-gainsboro-NOUN
+# text = Gainsboro is the lightest of the grays here.
+1	Gainsboro	gainsboro	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	lightest	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	grays	_	_	_	_	_	_	_	_
+8	here	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-gold-ADJ
+# text = The trim is gold.
+1	The	_	_	_	_	_	_	_	_
+2	trim	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	gold	gold	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-gold-NOUN
+# text = They found gold in the river.
+1	They	_	_	_	_	_	_	_	_
+2	found	_	_	_	_	_	_	_	_
+3	gold	gold	NOUN	_	_	_	_	_	_
+4	in	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	river	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-goldenrod-ADJ
+# text = The header is goldenrod.
+1	The	_	_	_	_	_	_	_	_
+2	header	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	goldenrod	goldenrod	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-goldenrod-NOUN
+# text = Goldenrod grows along the roadside in autumn.
+1	Goldenrod	goldenrod	NOUN	_	_	_	_	_	_
+2	grows	_	_	_	_	_	_	_	_
+3	along	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	roadside	_	_	_	_	_	_	_	_
+6	in	_	_	_	_	_	_	_	_
+7	autumn	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-gray-ADJ
+# text = The sky turned gray.
+1	The	_	_	_	_	_	_	_	_
+2	sky	_	_	_	_	_	_	_	_
+3	turned	_	_	_	_	_	_	_	_
+4	gray	gray	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-gray-NOUN
+# text = Gray is the color of ash.
+1	Gray	gray	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	color	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	ash	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-gray-VERB
+# text = His hair grayed early.
+1	His	_	_	_	_	_	_	_	_
+2	hair	_	_	_	_	_	_	_	_
+3	grayed	gray	VERB	_	_	_	_	_	_
+4	early	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-green-ADJ
+# text = The grass is green.
+1	The	_	_	_	_	_	_	_	_
+2	grass	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	green	green	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-green-NOUN
+# text = Green is the color of spring.
+1	Green	green	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	color	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	spring	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-green-VERB
+# text = The hills greened after the first rains.
+1	The	_	_	_	_	_	_	_	_
+2	hills	_	_	_	_	_	_	_	_
+3	greened	green	VERB	_	_	_	_	_	_
+4	after	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	first	_	_	_	_	_	_	_	_
+7	rains	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-grey-ADJ
+# text = The clouds were grey.
+1	The	_	_	_	_	_	_	_	_
+2	clouds	_	_	_	_	_	_	_	_
+3	were	_	_	_	_	_	_	_	_
+4	grey	grey	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-grey-NOUN
+# text = Grey is the color of the pavement.
+1	Grey	grey	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	color	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	pavement	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-grey-VERB
+# text = He greyed prematurely.
+1	He	_	_	_	_	_	_	_	_
+2	greyed	grey	VERB	_	_	_	_	_	_
+3	prematurely	_	_	_	_	_	_	_	SpaceAfter=No
+4	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-honeydew-ADJ
+# text = The hallway walls were painted honeydew.
+1	The	_	_	_	_	_	_	_	_
+2	hallway	_	_	_	_	_	_	_	_
+3	walls	_	_	_	_	_	_	_	_
+4	were	_	_	_	_	_	_	_	_
+5	painted	_	_	_	_	_	_	_	_
+6	honeydew	honeydew	ADJ	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-honeydew-NOUN
+# text = She cut a honeydew for breakfast.
+1	She	_	_	_	_	_	_	_	_
+2	cut	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	honeydew	honeydew	NOUN	_	_	_	_	_	_
+5	for	_	_	_	_	_	_	_	_
+6	breakfast	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-indigo-ADJ
+# text = The indigo night was full of stars.
+1	The	_	_	_	_	_	_	_	_
+2	indigo	indigo	ADJ	_	_	_	_	_	_
+3	night	_	_	_	_	_	_	_	_
+4	was	_	_	_	_	_	_	_	_
+5	full	_	_	_	_	_	_	_	_
+6	of	_	_	_	_	_	_	_	_
+7	stars	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-indigo-NOUN
+# text = Indigo was once an expensive dye.
+1	Indigo	indigo	NOUN	_	_	_	_	_	_
+2	was	_	_	_	_	_	_	_	_
+3	once	_	_	_	_	_	_	_	_
+4	an	_	_	_	_	_	_	_	_
+5	expensive	_	_	_	_	_	_	_	_
+6	dye	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-ivory-ADJ
+# text = She chose an ivory gown.
+1	She	_	_	_	_	_	_	_	_
+2	chose	_	_	_	_	_	_	_	_
+3	an	_	_	_	_	_	_	_	_
+4	ivory	ivory	ADJ	_	_	_	_	_	_
+5	gown	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-ivory-NOUN
+# text = Poachers hunt elephants for ivory.
+1	Poachers	_	_	_	_	_	_	_	_
+2	hunt	_	_	_	_	_	_	_	_
+3	elephants	_	_	_	_	_	_	_	_
+4	for	_	_	_	_	_	_	_	_
+5	ivory	ivory	NOUN	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-khaki-ADJ
+# text = The soldiers wore khaki uniforms.
+1	The	_	_	_	_	_	_	_	_
+2	soldiers	_	_	_	_	_	_	_	_
+3	wore	_	_	_	_	_	_	_	_
+4	khaki	khaki	ADJ	_	_	_	_	_	_
+5	uniforms	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-khaki-NOUN
+# text = He wore khakis to the office.
+1	He	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	khakis	khaki	NOUN	_	_	_	_	_	_
+4	to	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	office	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-lavender-ADJ
+# text = The lavender curtains moved in the breeze.
+1	The	_	_	_	_	_	_	_	_
+2	lavender	lavender	ADJ	_	_	_	_	_	_
+3	curtains	_	_	_	_	_	_	_	_
+4	moved	_	_	_	_	_	_	_	_
+5	in	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	breeze	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-lavender-NOUN
+# text = Lavender grows well in dry soil.
+1	Lavender	lavender	NOUN	_	_	_	_	_	_
+2	grows	_	_	_	_	_	_	_	_
+3	well	_	_	_	_	_	_	_	_
+4	in	_	_	_	_	_	_	_	_
+5	dry	_	_	_	_	_	_	_	_
+6	soil	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-lime-ADJ
+# text = The lime walls glowed in the sun.
+1	The	_	_	_	_	_	_	_	_
+2	lime	lime	ADJ	_	_	_	_	_	_
+3	walls	_	_	_	_	_	_	_	_
+4	glowed	_	_	_	_	_	_	_	_
+5	in	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	sun	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-lime-NOUN
+# text = Add a slice of lime.
+1	Add	_	_	_	_	_	_	_	_
+2	a	_	_	_	_	_	_	_	_
+3	slice	_	_	_	_	_	_	_	_
+4	of	_	_	_	_	_	_	_	_
+5	lime	lime	NOUN	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-lime-VERB
+# text = Farmers lime acidic soil to improve it.
+1	Farmers	_	_	_	_	_	_	_	_
+2	lime	lime	VERB	_	_	_	_	_	_
+3	acidic	_	_	_	_	_	_	_	_
+4	soil	_	_	_	_	_	_	_	_
+5	to	_	_	_	_	_	_	_	_
+6	improve	_	_	_	_	_	_	_	_
+7	it	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-linen-ADJ
+# text = The walls were painted linen.
+1	The	_	_	_	_	_	_	_	_
+2	walls	_	_	_	_	_	_	_	_
+3	were	_	_	_	_	_	_	_	_
+4	painted	_	_	_	_	_	_	_	_
+5	linen	linen	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-linen-NOUN
+# text = The hotel changes the linen daily.
+1	The	_	_	_	_	_	_	_	_
+2	hotel	_	_	_	_	_	_	_	_
+3	changes	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	linen	linen	NOUN	_	_	_	_	_	_
+6	daily	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-magenta-ADJ
+# text = She chose a magenta ribbon.
+1	She	_	_	_	_	_	_	_	_
+2	chose	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	magenta	magenta	ADJ	_	_	_	_	_	_
+5	ribbon	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-magenta-NOUN
+# text = Magenta is one of the printing inks.
+1	Magenta	magenta	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	one	_	_	_	_	_	_	_	_
+4	of	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	printing	_	_	_	_	_	_	_	_
+7	inks	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-maroon-ADJ
+# text = The team wears maroon jerseys.
+1	The	_	_	_	_	_	_	_	_
+2	team	_	_	_	_	_	_	_	_
+3	wears	_	_	_	_	_	_	_	_
+4	maroon	maroon	ADJ	_	_	_	_	_	_
+5	jerseys	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-maroon-NOUN
+# text = Maroon looks good with gold.
+1	Maroon	maroon	NOUN	_	_	_	_	_	_
+2	looks	_	_	_	_	_	_	_	_
+3	good	_	_	_	_	_	_	_	_
+4	with	_	_	_	_	_	_	_	_
+5	gold	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-maroon-VERB
+# text = Pirates marooned him on a desert island.
+1	Pirates	_	_	_	_	_	_	_	_
+2	marooned	maroon	VERB	_	_	_	_	_	_
+3	him	_	_	_	_	_	_	_	_
+4	on	_	_	_	_	_	_	_	_
+5	a	_	_	_	_	_	_	_	_
+6	desert	_	_	_	_	_	_	_	_
+7	island	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-moccasin-ADJ
+# text = The text color is moccasin.
+1	The	_	_	_	_	_	_	_	_
+2	text	_	_	_	_	_	_	_	_
+3	color	_	_	_	_	_	_	_	_
+4	is	_	_	_	_	_	_	_	_
+5	moccasin	moccasin	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-moccasin-NOUN
+# text = He lost one moccasin in the creek.
+1	He	_	_	_	_	_	_	_	_
+2	lost	_	_	_	_	_	_	_	_
+3	one	_	_	_	_	_	_	_	_
+4	moccasin	moccasin	NOUN	_	_	_	_	_	_
+5	in	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	creek	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-navy-ADJ
+# text = He wore a navy blazer.
+1	He	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	navy	navy	ADJ	_	_	_	_	_	_
+5	blazer	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-navy-NOUN
+# text = Navy suits her better than black.
+1	Navy	navy	NOUN	_	_	_	_	_	_
+2	suits	_	_	_	_	_	_	_	_
+3	her	_	_	_	_	_	_	_	_
+4	better	_	_	_	_	_	_	_	_
+5	than	_	_	_	_	_	_	_	_
+6	black	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-olive-ADJ
+# text = The jacket was olive.
+1	The	_	_	_	_	_	_	_	_
+2	jacket	_	_	_	_	_	_	_	_
+3	was	_	_	_	_	_	_	_	_
+4	olive	olive	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-olive-NOUN
+# text = He ate an olive with his drink.
+1	He	_	_	_	_	_	_	_	_
+2	ate	_	_	_	_	_	_	_	_
+3	an	_	_	_	_	_	_	_	_
+4	olive	olive	NOUN	_	_	_	_	_	_
+5	with	_	_	_	_	_	_	_	_
+6	his	_	_	_	_	_	_	_	_
+7	drink	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-olive-PROPN
+# text = Olive moved to Dublin last year.
+1	Olive	Olive	PROPN	_	_	_	_	_	_
+2	moved	_	_	_	_	_	_	_	_
+3	to	_	_	_	_	_	_	_	_
+4	Dublin	_	_	_	_	_	_	_	_
+5	last	_	_	_	_	_	_	_	_
+6	year	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-orange-ADJ
+# text = The orange sunset lit the sky.
+1	The	_	_	_	_	_	_	_	_
+2	orange	orange	ADJ	_	_	_	_	_	_
+3	sunset	_	_	_	_	_	_	_	_
+4	lit	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	sky	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-orange-NOUN
+# text = She peeled an orange.
+1	She	_	_	_	_	_	_	_	_
+2	peeled	_	_	_	_	_	_	_	_
+3	an	_	_	_	_	_	_	_	_
+4	orange	orange	NOUN	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-orange-PROPN
+# text = We switched to Orange for our mobile plan.
+1	We	_	_	_	_	_	_	_	_
+2	switched	_	_	_	_	_	_	_	_
+3	to	_	_	_	_	_	_	_	_
+4	Orange	Orange	PROPN	_	_	_	_	_	_
+5	for	_	_	_	_	_	_	_	_
+6	our	_	_	_	_	_	_	_	_
+7	mobile	_	_	_	_	_	_	_	_
+8	plan	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-orchid-ADJ
+# text = The walls were orchid.
+1	The	_	_	_	_	_	_	_	_
+2	walls	_	_	_	_	_	_	_	_
+3	were	_	_	_	_	_	_	_	_
+4	orchid	orchid	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-orchid-NOUN
+# text = An orchid bloomed on the windowsill.
+1	An	_	_	_	_	_	_	_	_
+2	orchid	orchid	NOUN	_	_	_	_	_	_
+3	bloomed	_	_	_	_	_	_	_	_
+4	on	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	windowsill	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-peru-ADJ
+# text = The border is peru.
+1	The	_	_	_	_	_	_	_	_
+2	border	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	peru	peru	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-peru-PROPN
+# text = She was born in Peru.
+1	She	_	_	_	_	_	_	_	_
+2	was	_	_	_	_	_	_	_	_
+3	born	_	_	_	_	_	_	_	_
+4	in	_	_	_	_	_	_	_	_
+5	Peru	Peru	PROPN	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-pink-ADJ
+# text = She wore a pink dress.
+1	She	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	pink	pink	ADJ	_	_	_	_	_	_
+5	dress	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-pink-NOUN
+# text = Pink looks good on her.
+1	Pink	pink	NOUN	_	_	_	_	_	_
+2	looks	_	_	_	_	_	_	_	_
+3	good	_	_	_	_	_	_	_	_
+4	on	_	_	_	_	_	_	_	_
+5	her	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-pink-VERB
+# text = The old engine pinked under load.
+1	The	_	_	_	_	_	_	_	_
+2	old	_	_	_	_	_	_	_	_
+3	engine	_	_	_	_	_	_	_	_
+4	pinked	pink	VERB	_	_	_	_	_	_
+5	under	_	_	_	_	_	_	_	_
+6	load	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-plum-ADJ
+# text = The walls were plum.
+1	The	_	_	_	_	_	_	_	_
+2	walls	_	_	_	_	_	_	_	_
+3	were	_	_	_	_	_	_	_	_
+4	plum	plum	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-plum-NOUN
+# text = He ate a ripe plum.
+1	He	_	_	_	_	_	_	_	_
+2	ate	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	ripe	_	_	_	_	_	_	_	_
+5	plum	plum	NOUN	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-purple-ADJ
+# text = The purple flowers opened at dawn.
+1	The	_	_	_	_	_	_	_	_
+2	purple	purple	ADJ	_	_	_	_	_	_
+3	flowers	_	_	_	_	_	_	_	_
+4	opened	_	_	_	_	_	_	_	_
+5	at	_	_	_	_	_	_	_	_
+6	dawn	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-purple-NOUN
+# text = Purple is the color of royalty.
+1	Purple	purple	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	color	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	royalty	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-purple-VERB
+# text = The sky purpled at dusk.
+1	The	_	_	_	_	_	_	_	_
+2	sky	_	_	_	_	_	_	_	_
+3	purpled	purple	VERB	_	_	_	_	_	_
+4	at	_	_	_	_	_	_	_	_
+5	dusk	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-red-ADJ
+# text = The red door was open.
+1	The	_	_	_	_	_	_	_	_
+2	red	red	ADJ	_	_	_	_	_	_
+3	door	_	_	_	_	_	_	_	_
+4	was	_	_	_	_	_	_	_	_
+5	open	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-red-NOUN
+# text = Red is a warm color.
+1	Red	red	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	warm	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-salmon-ADJ
+# text = She painted the room salmon.
+1	She	_	_	_	_	_	_	_	_
+2	painted	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	room	_	_	_	_	_	_	_	_
+5	salmon	salmon	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-salmon-NOUN
+# text = We grilled salmon for dinner.
+1	We	_	_	_	_	_	_	_	_
+2	grilled	_	_	_	_	_	_	_	_
+3	salmon	salmon	NOUN	_	_	_	_	_	_
+4	for	_	_	_	_	_	_	_	_
+5	dinner	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-seashell-ADJ
+# text = The bedroom walls were seashell.
+1	The	_	_	_	_	_	_	_	_
+2	bedroom	_	_	_	_	_	_	_	_
+3	walls	_	_	_	_	_	_	_	_
+4	were	_	_	_	_	_	_	_	_
+5	seashell	seashell	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-seashell-NOUN
+# text = He picked up a seashell on the beach.
+1	He	_	_	_	_	_	_	_	_
+2	picked	_	_	_	_	_	_	_	_
+3	up	_	_	_	_	_	_	_	_
+4	a	_	_	_	_	_	_	_	_
+5	seashell	seashell	NOUN	_	_	_	_	_	_
+6	on	_	_	_	_	_	_	_	_
+7	the	_	_	_	_	_	_	_	_
+8	beach	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-sienna-ADJ
+# text = The sienna earth glowed in the evening.
+1	The	_	_	_	_	_	_	_	_
+2	sienna	sienna	ADJ	_	_	_	_	_	_
+3	earth	_	_	_	_	_	_	_	_
+4	glowed	_	_	_	_	_	_	_	_
+5	in	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	evening	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-sienna-NOUN
+# text = Burnt sienna is a warm brown pigment.
+1	Burnt	_	_	_	_	_	_	_	_
+2	sienna	sienna	NOUN	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	a	_	_	_	_	_	_	_	_
+5	warm	_	_	_	_	_	_	_	_
+6	brown	_	_	_	_	_	_	_	_
+7	pigment	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-sienna-PROPN
+# text = Sienna came to the meeting late.
+1	Sienna	Sienna	PROPN	_	_	_	_	_	_
+2	came	_	_	_	_	_	_	_	_
+3	to	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	meeting	_	_	_	_	_	_	_	_
+6	late	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-silver-ADJ
+# text = The car is silver.
+1	The	_	_	_	_	_	_	_	_
+2	car	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	silver	silver	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-silver-NOUN
+# text = The thieves stole the family silver.
+1	The	_	_	_	_	_	_	_	_
+2	thieves	_	_	_	_	_	_	_	_
+3	stole	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	family	_	_	_	_	_	_	_	_
+6	silver	silver	NOUN	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-silver-VERB
+# text = They silvered the glass to make a mirror.
+1	They	_	_	_	_	_	_	_	_
+2	silvered	silver	VERB	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	glass	_	_	_	_	_	_	_	_
+5	to	_	_	_	_	_	_	_	_
+6	make	_	_	_	_	_	_	_	_
+7	a	_	_	_	_	_	_	_	_
+8	mirror	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-snow-ADJ
+# text = The page background is snow.
+1	The	_	_	_	_	_	_	_	_
+2	page	_	_	_	_	_	_	_	_
+3	background	_	_	_	_	_	_	_	_
+4	is	_	_	_	_	_	_	_	_
+5	snow	snow	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-snow-NOUN
+# text = Snow covered the roofs.
+1	Snow	snow	NOUN	_	_	_	_	_	_
+2	covered	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	roofs	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-snow-VERB
+# text = It will snow tonight.
+1	It	_	_	_	_	_	_	_	_
+2	will	_	_	_	_	_	_	_	_
+3	snow	snow	VERB	_	_	_	_	_	_
+4	tonight	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-tan-ADJ
+# text = He wore tan boots.
+1	He	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	tan	tan	ADJ	_	_	_	_	_	_
+4	boots	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-tan-NOUN
+# text = Tan is a neutral color.
+1	Tan	tan	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	neutral	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-tan-VERB
+# text = She tans easily in the sun.
+1	She	_	_	_	_	_	_	_	_
+2	tans	tan	VERB	_	_	_	_	_	_
+3	easily	_	_	_	_	_	_	_	_
+4	in	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	sun	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-teal-ADJ
+# text = The teal sofa brightened the room.
+1	The	_	_	_	_	_	_	_	_
+2	teal	teal	ADJ	_	_	_	_	_	_
+3	sofa	_	_	_	_	_	_	_	_
+4	brightened	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	room	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-teal-NOUN
+# text = Teal is a blue-green color.
+1	Teal	teal	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	blue	_	_	_	_	_	_	_	SpaceAfter=No
+5	-	_	_	_	_	_	_	_	SpaceAfter=No
+6	green	_	_	_	_	_	_	_	_
+7	color	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-thistle-ADJ
+# text = The header is thistle.
+1	The	_	_	_	_	_	_	_	_
+2	header	_	_	_	_	_	_	_	_
+3	is	_	_	_	_	_	_	_	_
+4	thistle	thistle	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-thistle-NOUN
+# text = A thistle grew by the gate.
+1	A	_	_	_	_	_	_	_	_
+2	thistle	thistle	NOUN	_	_	_	_	_	_
+3	grew	_	_	_	_	_	_	_	_
+4	by	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	gate	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-tomato-ADJ
+# text = The button turned tomato when clicked.
+1	The	_	_	_	_	_	_	_	_
+2	button	_	_	_	_	_	_	_	_
+3	turned	_	_	_	_	_	_	_	_
+4	tomato	tomato	ADJ	_	_	_	_	_	_
+5	when	_	_	_	_	_	_	_	_
+6	clicked	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-tomato-NOUN
+# text = She sliced a tomato for the salad.
+1	She	_	_	_	_	_	_	_	_
+2	sliced	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	tomato	tomato	NOUN	_	_	_	_	_	_
+5	for	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	salad	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-turquoise-ADJ
+# text = The turquoise sea was calm.
+1	The	_	_	_	_	_	_	_	_
+2	turquoise	turquoise	ADJ	_	_	_	_	_	_
+3	sea	_	_	_	_	_	_	_	_
+4	was	_	_	_	_	_	_	_	_
+5	calm	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-turquoise-NOUN
+# text = Turquoise is a blue-green stone.
+1	Turquoise	turquoise	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	blue	_	_	_	_	_	_	_	SpaceAfter=No
+5	-	_	_	_	_	_	_	_	SpaceAfter=No
+6	green	_	_	_	_	_	_	_	_
+7	stone	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-violet-ADJ
+# text = The violet curtains were closed.
+1	The	_	_	_	_	_	_	_	_
+2	violet	violet	ADJ	_	_	_	_	_	_
+3	curtains	_	_	_	_	_	_	_	_
+4	were	_	_	_	_	_	_	_	_
+5	closed	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-violet-NOUN
+# text = A violet grew by the path.
+1	A	_	_	_	_	_	_	_	_
+2	violet	violet	NOUN	_	_	_	_	_	_
+3	grew	_	_	_	_	_	_	_	_
+4	by	_	_	_	_	_	_	_	_
+5	the	_	_	_	_	_	_	_	_
+6	path	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-violet-PROPN
+# text = Violet is waiting outside.
+1	Violet	Violet	PROPN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	waiting	_	_	_	_	_	_	_	_
+4	outside	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-wheat-ADJ
+# text = The walls were painted wheat.
+1	The	_	_	_	_	_	_	_	_
+2	walls	_	_	_	_	_	_	_	_
+3	were	_	_	_	_	_	_	_	_
+4	painted	_	_	_	_	_	_	_	_
+5	wheat	wheat	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-wheat-NOUN
+# text = The farmers harvested the wheat.
+1	The	_	_	_	_	_	_	_	_
+2	farmers	_	_	_	_	_	_	_	_
+3	harvested	_	_	_	_	_	_	_	_
+4	the	_	_	_	_	_	_	_	_
+5	wheat	wheat	NOUN	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-white-ADJ
+# text = She wore a white dress.
+1	She	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	white	white	ADJ	_	_	_	_	_	_
+5	dress	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-white-NOUN
+# text = White is the color of snow.
+1	White	white	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	color	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	snow	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-yellow-ADJ
+# text = The yellow bus stopped.
+1	The	_	_	_	_	_	_	_	_
+2	yellow	yellow	ADJ	_	_	_	_	_	_
+3	bus	_	_	_	_	_	_	_	_
+4	stopped	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-yellow-NOUN
+# text = Yellow is a cheerful color.
+1	Yellow	yellow	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	cheerful	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-yellow-VERB
+# text = The old pages yellowed with age.
+1	The	_	_	_	_	_	_	_	_
+2	old	_	_	_	_	_	_	_	_
+3	pages	_	_	_	_	_	_	_	_
+4	yellowed	yellow	VERB	_	_	_	_	_	_
+5	with	_	_	_	_	_	_	_	_
+6	age	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-lilac-ADJ
+# text = She wore a lilac dress.
+1	She	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	lilac	lilac	ADJ	_	_	_	_	_	_
+5	dress	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-lilac-NOUN
+# text = The lilac bloomed in May.
+1	The	_	_	_	_	_	_	_	_
+2	lilac	lilac	NOUN	_	_	_	_	_	_
+3	bloomed	_	_	_	_	_	_	_	_
+4	in	_	_	_	_	_	_	_	_
+5	May	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-burgundy-ADJ
+# text = She wore a burgundy coat.
+1	She	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	burgundy	burgundy	ADJ	_	_	_	_	_	_
+5	coat	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-burgundy-NOUN
+# text = He ordered a bottle of burgundy.
+1	He	_	_	_	_	_	_	_	_
+2	ordered	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	bottle	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	burgundy	burgundy	NOUN	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-burgundy-PROPN
+# text = They toured the vineyards of Burgundy.
+1	They	_	_	_	_	_	_	_	_
+2	toured	_	_	_	_	_	_	_	_
+3	the	_	_	_	_	_	_	_	_
+4	vineyards	_	_	_	_	_	_	_	_
+5	of	_	_	_	_	_	_	_	_
+6	Burgundy	Burgundy	PROPN	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-cream-ADJ
+# text = He wore a cream suit.
+1	He	_	_	_	_	_	_	_	_
+2	wore	_	_	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	cream	cream	ADJ	_	_	_	_	_	_
+5	suit	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-cream-NOUN
+# text = Whip the cream until it thickens.
+1	Whip	_	_	_	_	_	_	_	_
+2	the	_	_	_	_	_	_	_	_
+3	cream	cream	NOUN	_	_	_	_	_	_
+4	until	_	_	_	_	_	_	_	_
+5	it	_	_	_	_	_	_	_	_
+6	thickens	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-cream-VERB
+# text = Cream the butter and sugar together.
+1	Cream	cream	VERB	_	_	_	_	_	_
+2	the	_	_	_	_	_	_	_	_
+3	butter	_	_	_	_	_	_	_	_
+4	and	_	_	_	_	_	_	_	_
+5	sugar	_	_	_	_	_	_	_	_
+6	together	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-scarlet-ADJ
+# text = A scarlet ribbon hung from the door.
+1	A	_	_	_	_	_	_	_	_
+2	scarlet	scarlet	ADJ	_	_	_	_	_	_
+3	ribbon	_	_	_	_	_	_	_	_
+4	hung	_	_	_	_	_	_	_	_
+5	from	_	_	_	_	_	_	_	_
+6	the	_	_	_	_	_	_	_	_
+7	door	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-scarlet-NOUN
+# text = Scarlet is brighter than crimson.
+1	Scarlet	scarlet	NOUN	_	_	_	_	_	_
+2	is	_	_	_	_	_	_	_	_
+3	brighter	_	_	_	_	_	_	_	_
+4	than	_	_	_	_	_	_	_	_
+5	crimson	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-amber-ADJ
+# text = The amber light flashed.
+1	The	_	_	_	_	_	_	_	_
+2	amber	amber	ADJ	_	_	_	_	_	_
+3	light	_	_	_	_	_	_	_	_
+4	flashed	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-amber-NOUN
+# text = The insect was trapped in amber.
+1	The	_	_	_	_	_	_	_	_
+2	insect	_	_	_	_	_	_	_	_
+3	was	_	_	_	_	_	_	_	_
+4	trapped	_	_	_	_	_	_	_	_
+5	in	_	_	_	_	_	_	_	_
+6	amber	amber	NOUN	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = en-amber-PROPN
+# text = Amber lives next door.
+1	Amber	Amber	PROPN	_	_	_	_	_	_
+2	lives	_	_	_	_	_	_	_	_
+3	next	_	_	_	_	_	_	_	_
+4	door	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-beige-ADJ
+# text = Eligió una pared beige.
+1	Eligió	_	_	_	_	_	_	_	_
+2	una	_	_	_	_	_	_	_	_
+3	pared	_	_	_	_	_	_	_	_
+4	beige	beige	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-beige-NOUN
+# text = El beige combina con todo.
+1	El	_	_	_	_	_	_	_	_
+2	beige	beige	NOUN	_	_	_	_	_	_
+3	combina	_	_	_	_	_	_	_	_
+4	con	_	_	_	_	_	_	_	_
+5	todo	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-black-ADJ
+# text = Compró un abrigo negro.
+1	Compró	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	abrigo	_	_	_	_	_	_	_	_
+4	negro	negro	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-black-NOUN
+# text = El negro le sienta bien.
+1	El	_	_	_	_	_	_	_	_
+2	negro	negro	NOUN	_	_	_	_	_	_
+3	le	_	_	_	_	_	_	_	_
+4	sienta	_	_	_	_	_	_	_	_
+5	bien	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-blue-ADJ
+# text = El mar estaba azul.
+1	El	_	_	_	_	_	_	_	_
+2	mar	_	_	_	_	_	_	_	_
+3	estaba	_	_	_	_	_	_	_	_
+4	azul	azul	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-blue-NOUN
+# text = El azul del cielo era intenso.
+1	El	_	_	_	_	_	_	_	_
+2	azul	azul	NOUN	_	_	_	_	_	_
+3	del	_	_	_	_	_	_	_	_
+4	cielo	_	_	_	_	_	_	_	_
+5	era	_	_	_	_	_	_	_	_
+6	intenso	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-brown-ADJ
+# text = Compró un sofá marrón.
+1	Compró	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	sofá	_	_	_	_	_	_	_	_
+4	marrón	marrón	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-brown-NOUN
+# text = El marrón combina con el verde.
+1	El	_	_	_	_	_	_	_	_
+2	marrón	marrón	NOUN	_	_	_	_	_	_
+3	combina	_	_	_	_	_	_	_	_
+4	con	_	_	_	_	_	_	_	_
+5	el	_	_	_	_	_	_	_	_
+6	verde	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-coral-ADJ
+# text = Llevaba un vestido coral.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	vestido	_	_	_	_	_	_	_	_
+4	coral	coral	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-coral-NOUN
+# text = El coral se muere por el calor.
+1	El	_	_	_	_	_	_	_	_
+2	coral	coral	NOUN	_	_	_	_	_	_
+3	se	_	_	_	_	_	_	_	_
+4	muere	_	_	_	_	_	_	_	_
+5	por	_	_	_	_	_	_	_	_
+6	el	_	_	_	_	_	_	_	_
+7	calor	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-crimson-ADJ
+# text = Un atardecer carmesí cubrió el mar.
+1	Un	_	_	_	_	_	_	_	_
+2	atardecer	_	_	_	_	_	_	_	_
+3	carmesí	carmesí	ADJ	_	_	_	_	_	_
+4	cubrió	_	_	_	_	_	_	_	_
+5	el	_	_	_	_	_	_	_	_
+6	mar	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-crimson-NOUN
+# text = El carmesí de la bandera estaba desteñido.
+1	El	_	_	_	_	_	_	_	_
+2	carmesí	carmesí	NOUN	_	_	_	_	_	_
+3	de	_	_	_	_	_	_	_	_
+4	la	_	_	_	_	_	_	_	_
+5	bandera	_	_	_	_	_	_	_	_
+6	estaba	_	_	_	_	_	_	_	_
+7	desteñido	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-cyan-ADJ
+# text = La tinta cian se acabó.
+1	La	_	_	_	_	_	_	_	_
+2	tinta	_	_	_	_	_	_	_	_
+3	cian	cian	ADJ	_	_	_	_	_	_
+4	se	_	_	_	_	_	_	_	_
+5	acabó	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-cyan-NOUN
+# text = El cian es uno de los colores de impresión.
+1	El	_	_	_	_	_	_	_	_
+2	cian	cian	NOUN	_	_	_	_	_	_
+3	es	_	_	_	_	_	_	_	_
+4	uno	_	_	_	_	_	_	_	_
+5	de	_	_	_	_	_	_	_	_
+6	los	_	_	_	_	_	_	_	_
+7	colores	_	_	_	_	_	_	_	_
+8	de	_	_	_	_	_	_	_	_
+9	impresión	_	_	_	_	_	_	_	SpaceAfter=No
+10	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-gold-ADJ
+# text = El marco dorado brillaba.
+1	El	_	_	_	_	_	_	_	_
+2	marco	_	_	_	_	_	_	_	_
+3	dorado	dorado	ADJ	_	_	_	_	_	_
+4	brillaba	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-gold-NOUN
+# text = El dorado de la corona deslumbraba.
+1	El	_	_	_	_	_	_	_	_
+2	dorado	dorado	NOUN	_	_	_	_	_	_
+3	de	_	_	_	_	_	_	_	_
+4	la	_	_	_	_	_	_	_	_
+5	corona	_	_	_	_	_	_	_	_
+6	deslumbraba	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-gray-ADJ
+# text = El cielo está gris.
+1	El	_	_	_	_	_	_	_	_
+2	cielo	_	_	_	_	_	_	_	_
+3	está	_	_	_	_	_	_	_	_
+4	gris	gris	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-gray-NOUN
+# text = El gris domina la ciudad en invierno.
+1	El	_	_	_	_	_	_	_	_
+2	gris	gris	NOUN	_	_	_	_	_	_
+3	domina	_	_	_	_	_	_	_	_
+4	la	_	_	_	_	_	_	_	_
+5	ciudad	_	_	_	_	_	_	_	_
+6	en	_	_	_	_	_	_	_	_
+7	invierno	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-green-ADJ
+# text = El césped está verde.
+1	El	_	_	_	_	_	_	_	_
+2	césped	_	_	_	_	_	_	_	_
+3	está	_	_	_	_	_	_	_	_
+4	verde	verde	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-green-NOUN
+# text = El verde es su color favorito.
+1	El	_	_	_	_	_	_	_	_
+2	verde	verde	NOUN	_	_	_	_	_	_
+3	es	_	_	_	_	_	_	_	_
+4	su	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	_
+6	favorito	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-indigo-ADJ
+# text = El cielo índigo se llenó de estrellas.
+1	El	_	_	_	_	_	_	_	_
+2	cielo	_	_	_	_	_	_	_	_
+3	índigo	índigo	ADJ	_	_	_	_	_	_
+4	se	_	_	_	_	_	_	_	_
+5	llenó	_	_	_	_	_	_	_	_
+6	de	_	_	_	_	_	_	_	_
+7	estrellas	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-indigo-NOUN
+# text = El índigo es un tinte natural.
+1	El	_	_	_	_	_	_	_	_
+2	índigo	índigo	NOUN	_	_	_	_	_	_
+3	es	_	_	_	_	_	_	_	_
+4	un	_	_	_	_	_	_	_	_
+5	tinte	_	_	_	_	_	_	_	_
+6	natural	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-khaki-ADJ
+# text = Llevaba un pantalón caqui.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	pantalón	_	_	_	_	_	_	_	_
+4	caqui	caqui	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-khaki-NOUN
+# text = Comió un caqui maduro.
+1	Comió	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	caqui	caqui	NOUN	_	_	_	_	_	_
+4	maduro	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-lavender-ADJ
+# text = Eligió un tono lavanda.
+1	Eligió	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	tono	_	_	_	_	_	_	_	_
+4	lavanda	lavanda	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-lavender-NOUN
+# text = La lavanda huele muy bien.
+1	La	_	_	_	_	_	_	_	_
+2	lavanda	lavanda	NOUN	_	_	_	_	_	_
+3	huele	_	_	_	_	_	_	_	_
+4	muy	_	_	_	_	_	_	_	_
+5	bien	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-lime-ADJ
+# text = Llevaba una camiseta lima.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	una	_	_	_	_	_	_	_	_
+3	camiseta	_	_	_	_	_	_	_	_
+4	lima	lima	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-lime-NOUN
+# text = Añade zumo de lima.
+1	Añade	_	_	_	_	_	_	_	_
+2	zumo	_	_	_	_	_	_	_	_
+3	de	_	_	_	_	_	_	_	_
+4	lima	lima	NOUN	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-lime-VERB
+# text = Ella lima las uñas antes de pintarlas.
+1	Ella	_	_	_	_	_	_	_	_
+2	lima	lima	VERB	_	_	_	_	_	_
+3	las	_	_	_	_	_	_	_	_
+4	uñas	_	_	_	_	_	_	_	_
+5	antes	_	_	_	_	_	_	_	_
+6	de	_	_	_	_	_	_	_	_
+7	pintarlas	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-magenta-ADJ
+# text = Usó un tono magenta.
+1	Usó	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	tono	_	_	_	_	_	_	_	_
+4	magenta	magenta	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-magenta-NOUN
+# text = El magenta es un color de impresión.
+1	El	_	_	_	_	_	_	_	_
+2	magenta	magenta	NOUN	_	_	_	_	_	_
+3	es	_	_	_	_	_	_	_	_
+4	un	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	_
+6	de	_	_	_	_	_	_	_	_
+7	impresión	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-maroon-ADJ
+# text = Llevaba un vestido granate.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	vestido	_	_	_	_	_	_	_	_
+4	granate	granate	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-maroon-NOUN
+# text = El granate es una piedra preciosa.
+1	El	_	_	_	_	_	_	_	_
+2	granate	granate	NOUN	_	_	_	_	_	_
+3	es	_	_	_	_	_	_	_	_
+4	una	_	_	_	_	_	_	_	_
+5	piedra	_	_	_	_	_	_	_	_
+6	preciosa	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-olive-ADJ
+# text = Compró una chaqueta oliva.
+1	Compró	_	_	_	_	_	_	_	_
+2	una	_	_	_	_	_	_	_	_
+3	chaqueta	_	_	_	_	_	_	_	_
+4	oliva	oliva	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-olive-NOUN
+# text = Aliñó la ensalada con aceite de oliva.
+1	Aliñó	_	_	_	_	_	_	_	_
+2	la	_	_	_	_	_	_	_	_
+3	ensalada	_	_	_	_	_	_	_	_
+4	con	_	_	_	_	_	_	_	_
+5	aceite	_	_	_	_	_	_	_	_
+6	de	_	_	_	_	_	_	_	_
+7	oliva	oliva	NOUN	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-orange-ADJ
+# text = Pintó la pared naranja.
+1	Pintó	_	_	_	_	_	_	_	_
+2	la	_	_	_	_	_	_	_	_
+3	pared	_	_	_	_	_	_	_	_
+4	naranja	naranja	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-orange-NOUN
+# text = Peló una naranja.
+1	Peló	_	_	_	_	_	_	_	_
+2	una	_	_	_	_	_	_	_	_
+3	naranja	naranja	NOUN	_	_	_	_	_	SpaceAfter=No
+4	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-pink-ADJ
+# text = Llevaba un vestido rosa.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	vestido	_	_	_	_	_	_	_	_
+4	rosa	rosa	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-pink-NOUN
+# text = Le regaló una rosa roja.
+1	Le	_	_	_	_	_	_	_	_
+2	regaló	_	_	_	_	_	_	_	_
+3	una	_	_	_	_	_	_	_	_
+4	rosa	rosa	NOUN	_	_	_	_	_	_
+5	roja	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-purple-ADJ
+# text = Se puso un jersey morado.
+1	Se	_	_	_	_	_	_	_	_
+2	puso	_	_	_	_	_	_	_	_
+3	un	_	_	_	_	_	_	_	_
+4	jersey	_	_	_	_	_	_	_	_
+5	morado	morado	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-purple-NOUN
+# text = El morado es el color de la cuaresma.
+1	El	_	_	_	_	_	_	_	_
+2	morado	morado	NOUN	_	_	_	_	_	_
+3	es	_	_	_	_	_	_	_	_
+4	el	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	_
+6	de	_	_	_	_	_	_	_	_
+7	la	_	_	_	_	_	_	_	_
+8	cuaresma	_	_	_	_	_	_	_	SpaceAfter=No
+9	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-red-ADJ
+# text = Llevaba un vestido rojo.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	vestido	_	_	_	_	_	_	_	_
+4	rojo	rojo	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-red-NOUN
+# text = El rojo es un color cálido.
+1	El	_	_	_	_	_	_	_	_
+2	rojo	rojo	NOUN	_	_	_	_	_	_
+3	es	_	_	_	_	_	_	_	_
+4	un	_	_	_	_	_	_	_	_
+5	color	_	_	_	_	_	_	_	_
+6	cálido	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-salmon-ADJ
+# text = Llevaba una blusa salmón.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	una	_	_	_	_	_	_	_	_
+3	blusa	_	_	_	_	_	_	_	_
+4	salmón	salmón	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-salmon-NOUN
+# text = Cenamos salmón a la plancha.
+1	Cenamos	_	_	_	_	_	_	_	_
+2	salmón	salmón	NOUN	_	_	_	_	_	_
+3	a	_	_	_	_	_	_	_	_
+4	la	_	_	_	_	_	_	_	_
+5	plancha	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-silver-ADJ
+# text = Compró un coche plateado.
+1	Compró	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	coche	_	_	_	_	_	_	_	_
+4	plateado	plateado	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-turquoise-ADJ
+# text = Compró un collar turquesa.
+1	Compró	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	collar	_	_	_	_	_	_	_	_
+4	turquesa	turquesa	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-turquoise-NOUN
+# text = El turquesa es una piedra azulada.
+1	El	_	_	_	_	_	_	_	_
+2	turquesa	turquesa	NOUN	_	_	_	_	_	_
+3	es	_	_	_	_	_	_	_	_
+4	una	_	_	_	_	_	_	_	_
+5	piedra	_	_	_	_	_	_	_	_
+6	azulada	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-violet-ADJ
+# text = Llevaba una bufanda violeta.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	una	_	_	_	_	_	_	_	_
+3	bufanda	_	_	_	_	_	_	_	_
+4	violeta	violeta	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-violet-NOUN
+# text = Cogió una violeta del jardín.
+1	Cogió	_	_	_	_	_	_	_	_
+2	una	_	_	_	_	_	_	_	_
+3	violeta	violeta	NOUN	_	_	_	_	_	_
+4	del	_	_	_	_	_	_	_	_
+5	jardín	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-white-ADJ
+# text = Tiene el pelo blanco.
+1	Tiene	_	_	_	_	_	_	_	_
+2	el	_	_	_	_	_	_	_	_
+3	pelo	_	_	_	_	_	_	_	_
+4	blanco	blanco	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-white-NOUN
+# text = El blanco de la pared brillaba con el sol.
+1	El	_	_	_	_	_	_	_	_
+2	blanco	blanco	NOUN	_	_	_	_	_	_
+3	de	_	_	_	_	_	_	_	_
+4	la	_	_	_	_	_	_	_	_
+5	pared	_	_	_	_	_	_	_	_
+6	brillaba	_	_	_	_	_	_	_	_
+7	con	_	_	_	_	_	_	_	_
+8	el	_	_	_	_	_	_	_	_
+9	sol	_	_	_	_	_	_	_	SpaceAfter=No
+10	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-yellow-ADJ
+# text = El autobús amarillo se detuvo.
+1	El	_	_	_	_	_	_	_	_
+2	autobús	_	_	_	_	_	_	_	_
+3	amarillo	amarillo	ADJ	_	_	_	_	_	_
+4	se	_	_	_	_	_	_	_	_
+5	detuvo	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-yellow-NOUN
+# text = El amarillo alegra la habitación.
+1	El	_	_	_	_	_	_	_	_
+2	amarillo	amarillo	NOUN	_	_	_	_	_	_
+3	alegra	_	_	_	_	_	_	_	_
+4	la	_	_	_	_	_	_	_	_
+5	habitación	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-lilac-ADJ
+# text = Se puso una blusa lila.
+1	Se	_	_	_	_	_	_	_	_
+2	puso	_	_	_	_	_	_	_	_
+3	una	_	_	_	_	_	_	_	_
+4	blusa	_	_	_	_	_	_	_	_
+5	lila	lila	ADJ	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-lilac-NOUN
+# text = La lila perfuma el jardín.
+1	La	_	_	_	_	_	_	_	_
+2	lila	lila	NOUN	_	_	_	_	_	_
+3	perfuma	_	_	_	_	_	_	_	_
+4	el	_	_	_	_	_	_	_	_
+5	jardín	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-burgundy-ADJ
+# text = Compró un sofá burdeos.
+1	Compró	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	sofá	_	_	_	_	_	_	_	_
+4	burdeos	burdeos	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-burgundy-NOUN
+# text = Bebimos un burdeos excelente.
+1	Bebimos	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	burdeos	burdeos	NOUN	_	_	_	_	_	_
+4	excelente	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-burgundy-PROPN
+# text = Viajaron a Burdeos en tren.
+1	Viajaron	_	_	_	_	_	_	_	_
+2	a	_	_	_	_	_	_	_	_
+3	Burdeos	Burdeos	PROPN	_	_	_	_	_	_
+4	en	_	_	_	_	_	_	_	_
+5	tren	_	_	_	_	_	_	_	SpaceAfter=No
+6	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-cream-ADJ
+# text = Llevaba un abrigo crema.
+1	Llevaba	_	_	_	_	_	_	_	_
+2	un	_	_	_	_	_	_	_	_
+3	abrigo	_	_	_	_	_	_	_	_
+4	crema	crema	ADJ	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-cream-NOUN
+# text = Se puso crema en las manos.
+1	Se	_	_	_	_	_	_	_	_
+2	puso	_	_	_	_	_	_	_	_
+3	crema	crema	NOUN	_	_	_	_	_	_
+4	en	_	_	_	_	_	_	_	_
+5	las	_	_	_	_	_	_	_	_
+6	manos	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-scarlet-ADJ
+# text = Un lazo escarlata colgaba de la puerta.
+1	Un	_	_	_	_	_	_	_	_
+2	lazo	_	_	_	_	_	_	_	_
+3	escarlata	escarlata	ADJ	_	_	_	_	_	_
+4	colgaba	_	_	_	_	_	_	_	_
+5	de	_	_	_	_	_	_	_	_
+6	la	_	_	_	_	_	_	_	_
+7	puerta	_	_	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-scarlet-NOUN
+# text = El escarlata destacaba sobre el fondo.
+1	El	_	_	_	_	_	_	_	_
+2	escarlata	escarlata	NOUN	_	_	_	_	_	_
+3	destacaba	_	_	_	_	_	_	_	_
+4	sobre	_	_	_	_	_	_	_	_
+5	el	_	_	_	_	_	_	_	_
+6	fondo	_	_	_	_	_	_	_	SpaceAfter=No
+7	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-amber-ADJ
+# text = El semáforo ámbar parpadeaba.
+1	El	_	_	_	_	_	_	_	_
+2	semáforo	_	_	_	_	_	_	_	_
+3	ámbar	ámbar	ADJ	_	_	_	_	_	_
+4	parpadeaba	_	_	_	_	_	_	_	SpaceAfter=No
+5	.	_	_	_	_	_	_	_	_
+
+# sent_id = es-amber-NOUN
+# text = El insecto quedó atrapado en el ámbar.
+1	El	_	_	_	_	_	_	_	_
+2	insecto	_	_	_	_	_	_	_	_
+3	quedó	_	_	_	_	_	_	_	_
+4	atrapado	_	_	_	_	_	_	_	_
+5	en	_	_	_	_	_	_	_	_
+6	el	_	_	_	_	_	_	_	_
+7	ámbar	ámbar	NOUN	_	_	_	_	_	SpaceAfter=No
+8	.	_	_	_	_	_	_	_	_
+

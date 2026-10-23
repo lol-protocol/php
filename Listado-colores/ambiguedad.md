@@ -12,12 +12,12 @@ Límites: solo cubre las formas del gazetteer (los colores CSS en 30 idiomas y e
 
 | Lista | Casos | casi iguales | parecidos | distintos |
 |---|---|---|---|---|
-| 1. Dentro de un idioma | 132 | 11 | 33 | 88 |
+| 1. Dentro de un idioma | 124 | 9 | 33 | 82 |
 | 2. Entre idiomas | 15 | 0 | 3 | 12 |
 | 3. Dentro de un idioma, solo al normalizar | 0 | 0 | 0 | 0 |
 | 4. Entre idiomas, solo al normalizar | 2 | 0 | 0 | 2 |
 
-Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, `nl` 1, `sv` 1, `da` 3, `fi` 7, `pl` 7, `cs` 5, `ro` 5, `hu` 1, `el` 7, `ru` 12, `uk` 10, `tr` 5, `ar` 6, `he` 6, `fa` 5, `hi` 4, `bn` 1, `zh` 1, `ja` 2, `ko` 6, `vi` 5, `th` 6, `id` 2, `sw` 4.
+Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, `nl` 1, `sv` 1, `da` 2, `fi` 6, `pl` 7, `cs` 6, `ro` 5, `hu` 1, `el` 7, `ru` 11, `uk` 9, `tr` 5, `ar` 5, `he` 6, `fa` 5, `hi` 3, `bn` 1, `zh` 1, `ja` 2, `ko` 5, `vi` 4, `th` 6, `id` 1, `sw` 4.
 
 ## 1. Dentro de un idioma: una forma, varios colores
 
@@ -46,12 +46,10 @@ Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, 
 | `nl` | «limoengroen» | `lime` `#00FF00` · `limegreen` `#32CD32` | 11.6 | distintos |
 | `sv` | «limegrön» | `lime` `#00FF00` · `limegreen` `#32CD32` | 11.6 | distintos |
 | `da` | «limegrøn» | `lime` `#00FF00` · `limegreen` `#32CD32` | 11.6 | distintos |
-| `da` | «lyserød» | `lightpink` `#FFB6C1` · `pink` `#FFC0CB` | 2.7 | casi iguales |
 | `da` | «violet» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `fi` | «limetinvihreä» | `lime` `#00FF00` · `limegreen` `#32CD32` | 11.6 | distintos |
 | `fi` | «taivaansininen» | `skyblue` `#87CEEB` · `azure` `#F0FFFF` | 18.6 | distintos |
 | `fi` | «tulipunainen» | `firebrick` `#B22222` · `scarlet` `#FF2400` | 17.6 | distintos |
-| `fi` | «tummansininen» | `navy` `#000080` · `darkblue` `#00008B` | 1.6 | casi iguales |
 | `fi` | «vaaleanpunainen» | `lightpink` `#FFB6C1` · `pink` `#FFC0CB` | 2.7 | casi iguales |
 | `fi` | «violetit» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `fi` | «violetti» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
@@ -67,6 +65,7 @@ Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, 
 | `cs` | «fialové» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `cs` | «fialoví» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `cs` | «fialový» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
+| `cs` | «purpurová» | `purple` `#800080` · `magenta` `#FF00FF` | 30.3 | distintos |
 | `ro` | «azuriu» | `skyblue` `#87CEEB` · `azure` `#F0FFFF` | 18.6 | distintos |
 | `ro` | «bleu» | `skyblue` `#87CEEB` · `lightblue` `#ADD8E6` | 6.4 | parecidos |
 | `ro` | «roșie» | `red` `#FF0000` · `tomato` `#FF6347` | 10.2 | distintos |
@@ -84,7 +83,6 @@ Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, 
 | `ru` | «бордовое» | `maroon` `#800000` · `burgundy` `#900020` | 7.9 | parecidos |
 | `ru` | «бордовые» | `maroon` `#800000` · `burgundy` `#900020` | 7.9 | parecidos |
 | `ru` | «бордовый» | `maroon` `#800000` · `burgundy` `#900020` | 7.9 | parecidos |
-| `ru` | «голубой» | `cyan` `#00FFFF` · `lightblue` `#ADD8E6` | 17.4 | distintos |
 | `ru` | «лазурный» | `skyblue` `#87CEEB` · `azure` `#F0FFFF` | 18.6 | distintos |
 | `ru` | «темно-синий» | `navy` `#000080` · `darkblue` `#00008B` | 1.6 | casi iguales |
 | `ru` | «тёмно-синий» | `navy` `#000080` · `darkblue` `#00008B` | 1.6 | casi iguales |
@@ -92,7 +90,6 @@ Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, 
 | `ru` | «фиолетовое» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `ru` | «фиолетовые» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `ru` | «фиолетовый» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
-| `uk` | «блакитний» | `cyan` `#00FFFF` · `lightblue` `#ADD8E6` | 17.4 | distintos |
 | `uk` | «бордова» | `maroon` `#800000` · `burgundy` `#900020` | 7.9 | parecidos |
 | `uk` | «бордове» | `maroon` `#800000` · `burgundy` `#900020` | 7.9 | parecidos |
 | `uk` | «бордовий» | `maroon` `#800000` · `burgundy` `#900020` | 7.9 | parecidos |
@@ -108,7 +105,6 @@ Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, 
 | `tr` | «kırmızı» | `crimson` `#DC143C` · `red` `#FF0000` | 13.8 | distintos |
 | `tr` | «turkuaz» | `teal` `#008080` · `turquoise` `#40E0D0` | 28.1 | distintos |
 | `ar` | «أخضر مصفر» | `yellowgreen` `#9ACD32` · `greenyellow` `#ADFF2F` | 11.2 | distintos |
-| `ar` | «أرجواني» | `purple` `#800080` · `magenta` `#FF00FF` | 30.3 | distintos |
 | `ar` | «بنفسجي» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `ar` | «بنفسجية» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `ar` | «سماوي» | `cyan` `#00FFFF` · `skyblue` `#87CEEB` | 18.1 | distintos |
@@ -126,7 +122,6 @@ Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, 
 | `fa` | «قرمز» | `crimson` `#DC143C` · `red` `#FF0000` | 13.8 | distintos |
 | `hi` | «नींबू हरा» | `lime` `#00FF00` · `limegreen` `#32CD32` | 11.6 | distintos |
 | `hi` | «बैंगनी» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
-| `hi` | «भूरा» | `gray`, `grey` `#808080` · `brown` `#A52A2A` | 30.0 | distintos |
 | `hi` | «हल्का हरा» | `lightgreen` `#90EE90` · `palegreen` `#98FB98` | 2.8 | casi iguales |
 | `bn` | «বেগুনি» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `zh` | «深红色» | `darkred` `#8B0000` · `crimson` `#DC143C` | 18.8 | distintos |
@@ -134,14 +129,12 @@ Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, 
 | `ja` | «紺色» | `navy` `#000080` · `darkblue` `#00008B` | 1.6 | casi iguales |
 | `ko` | «남색» | `darkblue` `#00008B` · `indigo` `#4B0082` | 7.7 | parecidos |
 | `ko` | «보라색» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
-| `ko` | «연두» | `lightgreen` `#90EE90` · `yellowgreen` `#9ACD32` | 13.7 | distintos |
 | `ko` | «연두색» | `lightgreen` `#90EE90` · `greenyellow` `#ADFF2F` | 13.3 | distintos |
 | `ko` | «연한 초록» | `lightgreen` `#90EE90` · `palegreen` `#98FB98` | 2.8 | casi iguales |
 | `ko` | «하늘색» | `skyblue` `#87CEEB` · `lightblue` `#ADD8E6` | 6.4 | parecidos |
 | `vi` | «tím» | `purple` `#800080` · `violet` `#EE82EE` | 39.9 | distintos |
 | `vi` | «vàng xanh» | `yellowgreen` `#9ACD32` · `greenyellow` `#ADFF2F` | 11.2 | distintos |
 | `vi` | «xanh da trời» | `skyblue` `#87CEEB` · `azure` `#F0FFFF` | 18.6 | distintos |
-| `vi` | «xanh nhạt» | `lightgreen` `#90EE90` · `palegreen` `#98FB98` · `lightblue` `#ADD8E6` | 32.2 | distintos |
 | `vi` | «đỏ tươi» | `magenta` `#FF00FF` · `scarlet` `#FF2400` | 43.4 | distintos |
 | `th` | «ฟ้า» | `skyblue` `#87CEEB` · `lightblue` `#ADD8E6` | 6.4 | parecidos |
 | `th` | «ฟ้าอ่อน» | `lightskyblue` `#87CEFA` · `lightblue` `#ADD8E6` | 9.3 | distintos |
@@ -150,7 +143,6 @@ Casos de la lista 1 por idioma: `en` 1, `es` 3, `fr` 6, `pt` 3, `it` 4, `de` 3, 
 | `th` | «เขียวมะนาว» | `lime` `#00FF00` · `limegreen` `#32CD32` | 11.6 | distintos |
 | `th` | «แดงเข้ม» | `darkred` `#8B0000` · `crimson` `#DC143C` | 18.8 | distintos |
 | `id` | «cokelat» | `brown` `#A52A2A` · `chocolate` `#D2691E` | 24.7 | distintos |
-| `id` | «merah tua» | `darkred` `#8B0000` · `crimson` `#DC143C` | 18.8 | distintos |
 | `sw` | «bluu ya anga» | `skyblue` `#87CEEB` · `azure` `#F0FFFF` | 18.6 | distintos |
 | `sw` | «kijivu hafifu» | `dimgray`, `dimgrey` `#696969` · `lightgray`, `lightgrey` `#D3D3D3` | 33.2 | distintos |
 | `sw` | «samawati» | `blue` `#0000FF` · `skyblue` `#87CEEB` · `lightblue` `#ADD8E6` | 50.1 | distintos |

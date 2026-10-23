@@ -28,7 +28,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `coral` | 珊瑚色 | `#FF7F50` |  | 亲切、欢乐、社交的温暖与乐观。 | 海洋生命与守护；在地中海传统中是抵御邪眼的护身符。 | derivado | tradición ([elworthy1895](../referencias.md#elworthy1895)) |
 | `cornflowerblue` | 矢车菊蓝 | `#6495ED` |  | 和善、信任、安宁与开放。 | 忠诚与真诚的沟通；平和的灵性。 | derivado | derivado |
 | `cornsilk` | 玉米丝色 | `#FFF8DC` |  | 柔软、温暖、纯真与朴素。 | 收获与田野的温柔；谦逊的丰足与纯净。 | derivado | derivado |
-| `crimson` | 深红色 | `#DC143C` |  | 激情、强烈、勇气、紧迫与力量。 | 鲜血、生命与牺牲；生命力与炽热的爱，同时也是警示。 | derivado | derivado |
+| `crimson` | 绯红色 | `#DC143C` |  | 激情、强烈、勇气、紧迫与力量。 | 鲜血、生命与牺牲；生命力与炽热的爱，同时也是警示。 | derivado | derivado |
 | `cyan` | 青色 | `#00FFFF` | `aqua` | 清新、明澈、平静与沟通；与数字化和现代感相关。 | 水与净化；思维的清明与沟通的流动。 | derivado | derivado |
 | `darkblue` | 深蓝色 | `#00008B` |  | 深邃、严肃、可靠与权威。 | 深夜与智慧；潜意识与内省。 | derivado | derivado |
 | `darkcyan` | 深青色 | `#008B8B` |  | 深沉的平静、平衡与稳重。 | 深水与疗愈；理智与情感之间的平衡。 | derivado | derivado |
