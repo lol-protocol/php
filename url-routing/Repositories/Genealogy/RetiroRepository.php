@@ -31,6 +31,9 @@ final class RetiroRepository extends Repository
         'otro' => 'Otro motivo',
     ];
 
+    /** How long a pedido may wait for the owner before bin/pedidos-retiro.php calls it late (the example in PRIVACIDAD-Y-HONRA.md). */
+    public const PLAZO_HORAS = 24;
+
     /** What the owner may decide, and the state each decision leaves the pedido in. */
     public const DECISIONES = ['ocultar' => 'oculto', 'retirar' => 'retirado', 'rechazar' => 'rechazado'];
 
@@ -99,6 +102,61 @@ final class RetiroRepository extends Repository
 
             return true;
         });
+    }
+
+    /**
+     * The pedidos still waiting for the owner, oldest first, with the whole hours each has waited at $ahora (a
+     * unix time, for tests). Nothing about who asked or what they wrote: this is what a cron job mails.
+     *
+     * @return list<array{id: int, tipo: string, recurso_id: int, motivo: string, creado_en: string, horas: int}>
+     */
+    public function pendientes(?int $ahora = null): array
+    {
+        $ahora ??= time();
+        $filas = $this->db->fetchAll(
+            "SELECT id, tipo, recurso_id, motivo, creado_en FROM pedidos_retiro WHERE estado = 'pendiente' ORDER BY creado_en, id"
+        );
+
+        return array_map(static fn(array $f): array => [
+            'id' => (int)$f['id'],
+            'tipo' => (string)$f['tipo'],
+            'recurso_id' => (int)$f['recurso_id'],
+            'motivo' => (string)$f['motivo'],
+            'creado_en' => (string)$f['creado_en'],
+            'horas' => max(0, intdiv($ahora - (int)strtotime((string)$f['creado_en']), 3600)),
+        ], $filas);
+    }
+
+    /**
+     * Hides ('oculto') every pedido that has waited $horas or more without the owner deciding, and says why in
+     * its record. It never overrides a decision: a pedido the owner decides meanwhile is left as they decided.
+     *
+     * @return list<int> the numbers it hid
+     */
+    public function ocultarVencidos(int $horas, ?int $ahora = null): array
+    {
+        $ahora ??= time();
+        $ocultados = [];
+
+        foreach ($this->pendientes($ahora) as $pedido) {
+            if ($pedido['horas'] < $horas) {
+                continue;
+            }
+            $nota = "Oculto automáticamente: pasaron {$pedido['horas']} horas sin respuesta (plazo de {$horas} h).";
+            $hecho = $this->db->transaction(function () use ($pedido, $nota, $ahora): bool {
+                if ($this->db->execute("UPDATE pedidos_retiro SET estado = 'oculto' WHERE id = ? AND estado = 'pendiente'", [$pedido['id']]) !== 1) {
+                    return false;
+                }
+                $this->evento($pedido['id'], 'oculto', $nota, date('Y-m-d H:i:s', $ahora));
+
+                return true;
+            });
+            if ($hecho) {
+                $ocultados[] = $pedido['id'];
+            }
+        }
+
+        return $ocultados;
     }
 
     /** @return list<array> every pedido, the pending ones first, then the newest, each with its 'eventos' */

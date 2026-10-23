@@ -155,7 +155,27 @@ curl -s -o /dev/null -w '%{http_code}\n' https://$D/composer.json    # 404
 - **Marcar a quien vive:** en la ficha de una persona aparece **Privacidad**, solo para ti. Sirve para quien vive pero no tiene fechas, o quien murió sin defunción registrada. Ver [`ACCESO.md`](./ACCESO.md).
 - **`curl` o scripts:** `curl -u x:$T …` o `Authorization: Bearer $T`.
 
-## 8. Actualizar
+## 8. Vigilar los pedidos de retiro
+
+Cualquiera puede pedir el retiro de una página (`/r/{id}/`) y el pedido espera en `/0/3/` hasta que lo decidas: **recibirlo no oculta nada**. Para que no se quede esperando sin que lo veas, hay un script hecho para cron, que manda por correo lo que imprime y no imprime nada si no hay pedidos:
+
+```
+# /etc/cron.d/pedidos-retiro   (cron necesita un servidor de correo para mandar el aviso)
+MAILTO=tu@correo.com
+0 9 * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php
+```
+
+Lista número, página, motivo y cuánto lleva cada pedido, y marca `VENCIDO` el que pasó del plazo (`RETIRO_PLAZO_HORAS` en `.env`, 24 horas por omisión). No dice quién lo pidió ni qué escribió: el correo de cron viaja sin cifrar.
+
+**Ocultar automáticamente es opcional y es una decisión tuya.** Con `--ocultar`, el pedido que sigue pendiente pasado el plazo deja su página en 410 para los visitantes, como si hubieras elegido «ocultar mientras revisa», y el registro anota que fue automático. Nunca toca uno que ya decidiste, y rechazarlo la vuelve a mostrar. El costo: quien pida el retiro de una página puede bajarla si no contestas a tiempo. Si lo quieres, que corra más seguido que el aviso:
+
+```
+*/30 * * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --ocultar
+```
+
+Código de salida: 0 si nada está vencido, 1 si hay un pedido vencido sin ocultar, 2 si falla (base sin migrar, opción desconocida). Se probó con la base de SQLite y como proceso aparte (`tests/App/Integration/PedidosRetiroCliTest.php`); **no se probó con cron ni con un servidor de correo reales**.
+
+## 9. Actualizar
 
 ```bash
 cd /var/www/php && git pull
@@ -166,11 +186,11 @@ sudo systemctl reload php8.3-fpm        # vacía el opcache
 curl -s https://$D/ready                # debe dar "migrations":"applied"
 ```
 
-## 9. Rotar o quitar el token
+## 10. Rotar o quitar el token
 
 Cambia `OWNER_TOKEN` en `.env` y recarga PHP-FPM. **Cierra todas las sesiones abiertas**, incluida la tuya. Si lo quitas, vuelve a quedar todo lo privado cerrado para todos.
 
-## 10. Copias de seguridad
+## 11. Copias de seguridad
 
 - PostgreSQL: `pg_dump -Fc genealogia > genealogia-$(date +%F).dump`
 - SQLite: `sqlite3 /var/lib/url-routing/pos.sqlite ".backup '/ruta/pos-$(date +%F).sqlite'"`. No copies el archivo suelto con `cp`: con WAL puede quedar incompleto.
@@ -189,7 +209,8 @@ Con el código de `master`, en un directorio aparte (`git archive` + `composer i
 6. Con la demostración cargada, desde el navegador del propietario: marcar a una persona como viva (sin el token CSRF da 403, con él 303) y ver que un visitante pasa de ver su nombre a «Persona viva» y vuelve; «Persona privada» para quien solo está en una colección privada.
 7. Fallos: la base de PostgreSQL parada (500 sin detalle en la respuesta; la clave de la base no aparece ni en la respuesta ni en el log; y el sitio se recupera al volver la base), `LOG_FILE` en una carpeta que no existe (el sitio sigue sirviendo) y `OWNER_TOKEN` de menos de 20 caracteres (`/0/` da 404 y el log avisa).
 8. El limitador (100 peticiones y luego 429), y la recarga de PHP-FPM con la señal `USR2` (la que envía `systemctl reload`) y de nginx, con OPcache activo.
-9. Los comandos de copia de seguridad del paso 10, y restaurar el volcado en una base nueva.
+9. Los comandos de copia de seguridad del paso 11, y restaurar el volcado en una base nueva.
+10. `/ready` (200 con la base al día; 503 con una migración nueva sin aplicar, y vuelve a 200 al migrar) y el `Retry-After` del 429, con el servidor integrado de PHP y con las pruebas de `url-routing/`.
 
 De ahí salieron, además de las dos correcciones de la prueba anterior (sin el usuario 1, `/0/` daba 404 con la clave correcta; y `composer install --optimize-autoloader` imprimía avisos de PSR-4 por `tests/`), tres cambios en esta guía: las migraciones y el `INSERT` de SQLite se corren como `www-data` (una base creada por root no se podía escribir), la carpeta de logs de nginx hay que crearla (sin ella `nginx -t` falla), y `/.env` da 403, no 404.
 

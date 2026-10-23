@@ -119,9 +119,21 @@ que prometen las secciones 5 y 6 del borrador de
   agregan, nunca se cambian. El log de la aplicación anota el número de pedido y
   la página, nunca quién lo pidió ni qué escribió.
 - **Se deja de nombrar en las demás páginas.** Una persona oculta o retirada pasa a ser, para el visitante, una «Persona privada» en todas las páginas que la nombran (la familia de sus parientes, los árboles, los listados y el GEDCOM): `Privacidad` la trata como a una persona oculta por privacidad (`sqlRetirada()`). Los sucesos en los que participa dejan de verse, y con ellos los registros que los documentan, como pasa con una persona viva. Un suceso o un registro retirado sale también de las listas que lo nombran (`sucesos()` y `registros()`). El propietario lo ve todo.
-- **Lo que falta.** No avisa al propietario de un pedido nuevo (hay que mirar
-  `/0/3/`), no le escribe a quien lo pidió (el propietario responde por correo,
-  por su cuenta) y no vigila el plazo de respuesta. Retirar una página
+- **Avisar y vigilar el plazo.** `bin/pedidos-retiro.php` está hecho para cron,
+  que manda por correo lo que un trabajo imprime: lista los pedidos que esperan
+  (número, página, motivo y cuánto llevan, **nunca quién lo pidió ni qué
+  escribió**, porque el correo de cron viaja sin cifrar) y no imprime nada si no
+  hay ninguno. Marca como `VENCIDO` el que pasó del plazo (`RETIRO_PLAZO_HORAS`,
+  24 por omisión) y sale con código 1. **Ocultar no es automático**: solo lo hace
+  con `--ocultar`, y entonces deja la página como si el propietario hubiera
+  elegido «ocultar mientras revisa», con una nota en el registro que dice que fue
+  automático y por qué. Nunca toca un pedido que el propietario ya decidió. Para
+  activarlo hay que ponerlo en cron (ver [`DESPLIEGUE.md`](./DESPLIEGUE.md)); es
+  una decisión del propietario porque tiene el costo que ya dice el primer
+  punto: quien pide el retiro puede bajar una página si el propietario no
+  contesta a tiempo.
+- **Lo que falta.** No escribe a quien lo pidió (el propietario responde por
+  correo, por su cuenta). Retirar una página
   no borra los datos: para eso hay que corregirlos o borrarlos. Un apellido, una
   organización o una colección retirados sí salen de la búsqueda y del sitemap, pero
   siguen nombrados donde los enlaza una persona.
@@ -147,6 +159,7 @@ Esto hace privados los **objetos** que ya se presentaban como privados, oculta a
 - `tests/App/Integration/PagesTest.php` también cubre la página de la marca de vida: cerrada a visitantes, formulario y enlace solo para el propietario, y guardar con token CSRF y valores válidos (cada prueba que guarda deja la base como estaba).
 - `tests/App/Repositories/BusquedaDePersonasTest.php` (en SQLite y PostgreSQL): que la búsqueda de personas devuelva exactamente las visibles, en su orden y con el nombre real, para cualquier texto, límite y desplazamiento; que dé las mismas filas que la consulta de antes (la que pasaba por `personas()` para todo el catálogo); y, en SQLite, que una página no lea el catálogo entero (se comprobó que falla con la consulta de antes).
 - `tests/App/Integration/RetiroTest.php`: el enlace al pie, el formulario (sólo sobre lo que un visitante ve), sus validaciones y su token CSRF; que recibir un pedido no oculte nada; que ocultar, retirar y rechazar cambien lo que ve un visitante (410 en la página y en sus acciones, fuera del sitemap) pero no el propietario, y que cada paso quede en el historial. `tests/App/Repositories/RetiroRepositoryTest.php` hace lo mismo con el repositorio, en SQLite y PostgreSQL.
+- `tests/App/Integration/PedidosRetiroCliTest.php`: `bin/pedidos-retiro.php` como lo corre cron (un proceso de verdad y una base SQLite): que no diga nada si no hay pedidos, que no imprima quién pidió ni qué escribió, el código de salida, que `--ocultar` oculte solo lo vencido, el plazo por opción y por entorno, y los errores de uso. `tests/App/Repositories/RetiroRepositoryTest.php` prueba `pendientes()` y `ocultarVencidos()` (el borde exacto del plazo, el registro y que no pise una decisión).
 - `tests/App/Repositories/PrivadasRepositoriesTest.php` (en SQLite y PostgreSQL): quién es privado (una colección pública basta, ninguna colección no lo es), qué se oculta de él en cada repositorio y que el propietario lo vea todo.
 - `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos, de Lucía ni de Manuel, que está solo en una colección privada (se comprobó que falla si se apaga el enmascarado).
 

@@ -111,4 +111,86 @@ class RetiroRepositoryTest extends TestCase
         $this->assertNotContains('81372002', $sitemap->claves('8', 1));
         $this->assertContains('582317', $sitemap->claves('6', 1), 'the other types still list');
     }
+
+    /** Moves a pedido's arrival back in time, so a test does not have to wait for a deadline. */
+    private static function llegoHace(\App\Support\Database $db, int $numero, int $horas, int $ahora): void
+    {
+        $db->execute('UPDATE pedidos_retiro SET creado_en = ? WHERE id = ?', [date('Y-m-d H:i:s', $ahora - $horas * 3600), $numero]);
+    }
+
+    #[DataProvider('drivers')]
+    public function testPendientesAreTheOnesWaitingOldestFirstWithoutPersonalData(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $ahora = 1_800_000_000;
+        $reciente = $repo->crear('persona', 6128473105, 'me_nombra', 'Es falso: no vivo allí.', 'secreto@example.com');
+        $viejo = $repo->crear('suceso', 412000001, 'terminos', 'Insulta a mi madre.', 'otro@example.com');
+        $decidido = $repo->crear('grupo', 582317, 'otro', 'Otro.', 'c@example.com');
+        self::llegoHace($db, $reciente, 2, $ahora);
+        self::llegoHace($db, $viejo, 50, $ahora);
+        self::llegoHace($db, $decidido, 100, $ahora);
+        $repo->decidir($decidido, 'rechazar', null);
+
+        $pendientes = $repo->pendientes($ahora);
+
+        $this->assertSame([$viejo, $reciente], array_column($pendientes, 'id'), 'oldest first, and not the one already decided');
+        $this->assertSame([50, 2], array_column($pendientes, 'horas'));
+        $this->assertSame(['id', 'tipo', 'recurso_id', 'motivo', 'creado_en', 'horas'], array_keys($pendientes[0]));
+        $this->assertStringNotContainsString('secreto@example.com', json_encode($pendientes));
+        $this->assertStringNotContainsString('Insulta', json_encode($pendientes), 'a cron mail must not carry what they wrote');
+    }
+
+    #[DataProvider('drivers')]
+    public function testOcultarVencidosHidesOnlyThosePastTheDeadlineAndSaysWhy(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $ahora = 1_800_000_000;
+        $tarde = $repo->crear('persona', 6128473105, 'me_nombra', 'a', 'a@example.com');
+        $justo = $repo->crear('persona', 6128473106, 'familiar', 'b', 'b@example.com');
+        $a_tiempo = $repo->crear('persona', 6128473107, 'otro', 'c', 'c@example.com');
+        $rechazado = $repo->crear('persona', 6128473108, 'otro', 'd', 'd@example.com');
+        self::llegoHace($db, $tarde, 30, $ahora);
+        self::llegoHace($db, $justo, 24, $ahora);
+        self::llegoHace($db, $a_tiempo, 23, $ahora);
+        self::llegoHace($db, $rechazado, 90, $ahora);
+        $repo->decidir($rechazado, 'rechazar', 'No es cierto.');
+
+        $ocultados = $repo->ocultarVencidos(24, $ahora);
+
+        $this->assertSame([$tarde, $justo], $ocultados, 'the deadline itself counts as late; 23 hours does not');
+        $this->assertTrue($repo->retirado('persona', 6128473105));
+        $this->assertTrue($repo->retirado('persona', 6128473106));
+        $this->assertFalse($repo->retirado('persona', 6128473107), 'still on time: shown');
+        $this->assertFalse($repo->retirado('persona', 6128473108), 'the owner already rejected it: untouched');
+
+        $eventos = array_column(array_filter($repo->todos(), static fn(array $p): bool => (int)$p['id'] === $tarde), 'eventos')[0];
+        $this->assertSame(['recibido', 'oculto'], array_column($eventos, 'estado'));
+        $this->assertStringContainsString('Oculto automáticamente', (string)$eventos[1]['nota']);
+        $this->assertStringContainsString('30 horas', (string)$eventos[1]['nota']);
+        $this->assertStringContainsString('plazo de 24 h', (string)$eventos[1]['nota']);
+        $this->assertSame(date('Y-m-d H:i:s', $ahora), $eventos[1]['ocurrido_en'], 'the record says when');
+
+        $this->assertSame([], $repo->ocultarVencidos(24, $ahora), 'a second run has nothing left to hide');
+        $this->assertSame([$a_tiempo], array_column($repo->pendientes($ahora), 'id'));
+    }
+
+    #[DataProvider('drivers')]
+    public function testTheOwnerCanStillRejectWhatWasHiddenAutomatically(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $ahora = 1_800_000_000;
+        $numero = $repo->crear('persona', 6128473105, 'me_nombra', 'a', 'a@example.com');
+        self::llegoHace($db, $numero, 40, $ahora);
+        $repo->ocultarVencidos(24, $ahora);
+        $this->assertTrue($repo->retirado('persona', 6128473105));
+
+        $this->assertTrue($repo->decidir($numero, 'rechazar', 'Revisado: no hay nada que retirar.'));
+
+        $this->assertFalse($repo->retirado('persona', 6128473105), 'rejecting brings the page back, as ever');
+        $eventos = $repo->todos()[0]['eventos'];
+        $this->assertSame(['recibido', 'oculto', 'rechazado'], array_column($eventos, 'estado'));
+    }
 }
