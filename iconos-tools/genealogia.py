@@ -7,6 +7,7 @@ linea cortada = divorcio, discontinua = adopcion o parentesco parcial, punteada 
 """
 import math
 
+import comunes
 from kit import badge, tile
 from lib import Block, Disc, Icon, fmt
 
@@ -224,6 +225,7 @@ for suffix, u, d, gender in (
     ('nephew', 1, 2, 'm'), ('niece', 1, 2, 'f'), ('great_nephew', 1, 3, 'm'), ('great_niece', 1, 3, 'f'),
     ('cousin', 2, 2, 'm'), ('cousin_f', 2, 2, 'f'), ('second_cousin', 3, 3, 'm'), ('second_cousin_f', 3, 3, 'f'),
     ('cousin_once_removed', 2, 3, 'm'), ('cousin_once_removed_f', 2, 3, 'f'),
+    ('cousin_u', 2, 2, 'u'), ('second_cousin_u', 3, 3, 'u'), ('cousin_once_removed_u', 2, 3, 'u'),
 ):
     collateral(f'person_{suffix}', u, d, gender)
 
@@ -595,10 +597,6 @@ ic = new('action_search')
 ic.solid(Disc(43, 43, 5.5), 'indigo', d=2.4)
 ic.ring(27, 26, 12, tone='indigo', ink='indigo', w=4.6)
 
-ic = new('action_filter')
-for x, y, w in ((8, 11, 46), (15, 25, 32), (22, 39, 18)):
-    ic.solid(Block(x, y, w, 9, r=4.5), 'ink', d=2.4)
-
 
 def _lens(stem, r, sign):
     """Anillo con un punto en diagonal; el tamaño del anillo dice si acerca o aleja."""
@@ -626,13 +624,6 @@ def _spread(stem, far):
 _spread('action_expand', True)
 _spread('action_collapse', False)
 
-ic = new('action_share')
-for x, y in ((47, 14), (51, 31), (47, 48)):
-    ic.link([(15, 31), (x, y)], w=2.2)
-ic.solid(Disc(15, 31, 8), 'green', d=3)
-for x, y in ((47, 14), (51, 31), (47, 48)):
-    ic.solid(Disc(x, y, 4.6), 'green', d=2)
-
 ic = new('action_download')
 ic.mark('M23.5 7v4M31 5v4M38.5 7v4', tone='blue', ink='blue', w=2.8)
 ic.solid(Disc(31, 24, 7), 'blue', d=2.6)
@@ -642,10 +633,6 @@ ic = new('action_upload')
 ic.solid(Disc(31, 14, 7), 'blue', d=2.6)
 ic.mark('M23.5 27v5M31 27v7M38.5 27v5', tone='blue', ink='blue', w=2.8)
 ic.solid(Block(11, 42, 42, 8, r=4), 'ink', d=3)
-
-ic = new('action_print')
-for dx, dy, op, d in ((10, 10, 0.35, 0), (5, 5, 0.6, 0), (0, 0, 1.0, 3.5)):
-    ic.solid(Block(14 + dx, 14 + dy, 26, 26, r=6), 'slate', d=d, op=op)
 
 ic = new('action_sync')
 for a0, a1 in ((-170, -20), (10, 160)):
@@ -776,17 +763,6 @@ def _privacy(ic, x, y):
 reg(tile('ui_privacy', 'ink', _privacy))
 
 
-def _sliders(ic, x, y):
-    for dy, kx in ((-8, -4), (0, 4), (8, -1)):
-        yy = y + dy
-        ic.mark(f'M{fmt(x - 12.5)} {fmt(yy)}H{fmt(x + kx - 3.6)}M{fmt(x + kx + 3.6)} {fmt(yy)}H{fmt(x + 12.5)}', w=2)
-        ic.ring(x + kx, yy, 2.4, w=2)
-
-
-reg(tile('ui_settings', 'ink', _sliders))
-reg(tile('ui_menu', 'slate', lambda ic, x, y: ic.mark(f'M{fmt(x - 9.5)} {fmt(y - 7.5)}h19M{fmt(x - 9.5)} {fmt(y)}h19M{fmt(x - 9.5)} {fmt(y + 7.5)}h19', w=3)))
-
-
 def _photo(ic, x, y):
     ic.poly([(x - 11, y - 10), (x + 11, y - 10), (x + 11, y + 10), (x - 11, y + 10)], True, w=2.2)
     ic.poly([(x - 8, y + 7), (x - 3, y), (x + 2, y + 7)], True, filled=True)
@@ -813,11 +789,6 @@ ic = new('ui_source')
 for x, y in ((9, 38), (16, 26), (23, 14)):
     ic.solid(Block(x, y, 30, 10, r=5), 'brown', d=2.4)
 
-reg(tile('ui_calendar', 'red', lambda ic, x, y: [ic.dot(x - 10 + 10 * (i % 3), y - 9.5 + 9.5 * (i // 3), 2, **({'tone': '#FDE047'} if i == 4 else {})) for i in range(9)]))
-
-ic = new('ui_profile')
-node(ic, 'ci', 31, 30, 'self', r=15, d=4)
-
 
 def _doc(stem, hue, mark):
     ic = Icon(stem)
@@ -830,3 +801,5 @@ def _doc(stem, hue, mark):
 
 _doc('ui_export_pdf', 'red', lambda ic: ic.bars(19, 20, [22, 22, 12], 9.5, w=3.2))
 _doc('ui_export_csv', 'green', lambda ic: ic.mark('M19 22H41M19 31H41M19 40H41M24.5 17V44M35.5 17V44', w=2))
+
+ICONS.extend(comunes.ICONS)  # los que se llaman igual en los dos sets, definidos una vez en comunes.py

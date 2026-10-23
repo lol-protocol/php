@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_ui_profile_sky_g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#969696"/>
-      <stop offset="1" stop-color="#656565"/>
-    </linearGradient>
-    <linearGradient id="grad_ui_profile_blue_g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#939393"/>
-      <stop offset="1" stop-color="#606060"/>
+    <linearGradient id="grad_ui_profile_ink_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.9" cy="56.8" rx="15.55" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="32.2" cy="52.1" rx="16.28" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M23.98 23.64L25.6 25.8A9 9 0 0 0 40 15L38.38 12.84A9 9 0 0 0 23.98 23.64Z" fill="#3B3B3B"/><circle cx="31" cy="18" r="9" fill="url(#grad_ui_profile_sky_g)"/></g>
-    <g><path d="M46.7 37.6A10.5 10.5 0 0 1 48.8 43.9A10.5 10.5 0 0 1 38.3 54.4L27.3 54.4A10.5 10.5 0 0 1 18.9 50.2L17.28 48.04A10.5 10.5 0 0 1 15.18 41.74A10.5 10.5 0 0 1 25.68 31.24L36.68 31.24A10.5 10.5 0 0 1 45.08 35.44Z" fill="#373737"/><rect x="15" y="31" width="32" height="21" rx="10.5" fill="url(#grad_ui_profile_blue_g)"/></g>
+    <g><path d="M17.98 40.14L20.2 43.1A16.5 16.5 0 0 0 46.6 23.3L44.38 20.34A16.5 16.5 0 0 0 17.98 40.14Z" fill="#303030"/><circle cx="31" cy="30" r="16.5" fill="url(#grad_ui_profile_ink_g)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M25.9 30a5.1 5.1 0 1 0 10.2 0a5.1 5.1 0 1 0 -10.2 0Z" fill="#FFFFFF"/>
   </g>
 </svg>

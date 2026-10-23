@@ -5,17 +5,17 @@
       <stop offset="0" stop-color="#9B9B9B"/>
       <stop offset="1" stop-color="#6B6B6B"/>
     </linearGradient>
-    <linearGradient id="grad_ui_shelf_indigo_g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#8F8F8F"/>
-      <stop offset="1" stop-color="#5B5B5B"/>
+    <linearGradient id="grad_ui_shelf_indigo_g_m4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B8B8B"/>
+      <stop offset="1" stop-color="#575757"/>
     </linearGradient>
-    <linearGradient id="grad_ui_shelf_pink_g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#979797"/>
-      <stop offset="1" stop-color="#666666"/>
+    <linearGradient id="grad_ui_shelf_pink_g_p25" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B0B0B0"/>
+      <stop offset="1" stop-color="#7F7F7F"/>
     </linearGradient>
-    <linearGradient id="grad_ui_shelf_teal_g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9A9A9A"/>
-      <stop offset="1" stop-color="#6A6A6A"/>
+    <linearGradient id="grad_ui_shelf_teal_g_m19" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#878787"/>
+      <stop offset="1" stop-color="#575757"/>
     </linearGradient>
     <linearGradient id="grad_ui_shelf_amber_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#AEAEAE"/>
@@ -27,9 +27,9 @@
   </g>
   <g class="solids">
     <g><path d="M57.04 43.72A2 2 0 0 1 57.44 44.92L57.44 46.92A2 2 0 0 1 55.44 48.92L11.44 48.92A2 2 0 0 1 9.84 48.12L8.58 46.44A2 2 0 0 1 8.18 45.24L8.18 43.24A2 2 0 0 1 10.18 41.24L54.18 41.24A2 2 0 0 1 55.78 42.04Z" fill="#3E3E3E"/><rect x="8" y="41" width="48" height="6" rx="2" fill="url(#grad_ui_shelf_brown_g)"/></g>
-    <g><path d="M20.8 20.4A2 2 0 0 1 21.2 21.6L21.2 40.6A2 2 0 0 1 19.2 42.6L15.2 42.6A2 2 0 0 1 13.6 41.8L12.58 40.44A2 2 0 0 1 12.18 39.24L12.18 20.24A2 2 0 0 1 14.18 18.24L18.18 18.24A2 2 0 0 1 19.78 19.04Z" fill="#353535"/><rect x="12" y="18" width="8" height="23" rx="2" fill="url(#grad_ui_shelf_indigo_g)"/></g>
-    <g><path d="M29.8 13.4A2 2 0 0 1 30.2 14.6L30.2 40.6A2 2 0 0 1 28.2 42.6L24.2 42.6A2 2 0 0 1 22.6 41.8L21.58 40.44A2 2 0 0 1 21.18 39.24L21.18 13.24A2 2 0 0 1 23.18 11.24L27.18 11.24A2 2 0 0 1 28.78 12.04Z" fill="#3B3B3B"/><rect x="21" y="11" width="8" height="30" rx="2" fill="url(#grad_ui_shelf_pink_g)"/></g>
-    <g><path d="M38.8 22.4A2 2 0 0 1 39.2 23.6L39.2 40.6A2 2 0 0 1 37.2 42.6L33.2 42.6A2 2 0 0 1 31.6 41.8L30.58 40.44A2 2 0 0 1 30.18 39.24L30.18 22.24A2 2 0 0 1 32.18 20.24L36.18 20.24A2 2 0 0 1 37.78 21.04Z" fill="#3E3E3E"/><rect x="30" y="20" width="8" height="21" rx="2" fill="url(#grad_ui_shelf_teal_g)"/></g>
+    <g><path d="M20.8 20.4A2 2 0 0 1 21.2 21.6L21.2 40.6A2 2 0 0 1 19.2 42.6L15.2 42.6A2 2 0 0 1 13.6 41.8L12.58 40.44A2 2 0 0 1 12.18 39.24L12.18 20.24A2 2 0 0 1 14.18 18.24L18.18 18.24A2 2 0 0 1 19.78 19.04Z" fill="#313131"/><rect x="12" y="18" width="8" height="23" rx="2" fill="url(#grad_ui_shelf_indigo_g_m4)"/></g>
+    <g><path d="M29.8 13.4A2 2 0 0 1 30.2 14.6L30.2 40.6A2 2 0 0 1 28.2 42.6L24.2 42.6A2 2 0 0 1 22.6 41.8L21.58 40.44A2 2 0 0 1 21.18 39.24L21.18 13.24A2 2 0 0 1 23.18 11.24L27.18 11.24A2 2 0 0 1 28.78 12.04Z" fill="#545454"/><rect x="21" y="11" width="8" height="30" rx="2" fill="url(#grad_ui_shelf_pink_g_p25)"/></g>
+    <g><path d="M38.8 22.4A2 2 0 0 1 39.2 23.6L39.2 40.6A2 2 0 0 1 37.2 42.6L33.2 42.6A2 2 0 0 1 31.6 41.8L30.58 40.44A2 2 0 0 1 30.18 39.24L30.18 22.24A2 2 0 0 1 32.18 20.24L36.18 20.24A2 2 0 0 1 37.78 21.04Z" fill="#2B2B2B"/><rect x="30" y="20" width="8" height="21" rx="2" fill="url(#grad_ui_shelf_teal_g_m19)"/></g>
     <g><path d="M48.8 16.4A2 2 0 0 1 49.2 17.6L49.2 40.6A2 2 0 0 1 47.2 42.6L42.2 42.6A2 2 0 0 1 40.6 41.8L39.58 40.44A2 2 0 0 1 39.18 39.24L39.18 16.24A2 2 0 0 1 41.18 14.24L46.18 14.24A2 2 0 0 1 47.78 15.04Z" fill="#4F4F4F"/><rect x="39" y="14" width="9" height="27" rx="2" fill="url(#grad_ui_shelf_amber_g)"/></g>
   </g>
 </svg>

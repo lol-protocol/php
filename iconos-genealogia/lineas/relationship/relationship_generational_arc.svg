@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="links">
-    <path d="M13.66 40.68L13.66 40.68L14.21 38.99L14.81 37.37L15.46 35.8L16.16 34.29L16.9 32.83L17.69 31.44L18.43 30.23M23.44 23.99L24.23 23.21L25.3 22.26L26.39 21.35L27.5 20.5L28.64 19.7L29.79 18.95L30.97 18.26L31.65 17.89M38.13 15.21L38.31 15.16L39.56 14.81L40.82 14.52L42.08 14.27L43.34 14.07L44.6 13.92L45.85 13.82L47.1 13.76L47.25 13.76" fill="none" stroke="#565F6B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" stroke-dasharray="0.1 5.2"/>
+    <path d="M13.66 40.68L13.66 40.68L14.21 38.99L14.81 37.37L15.46 35.8L16.16 34.29L16.9 32.83L17.69 31.44L18.43 30.23M23.44 23.99L24.23 23.21L25.3 22.26L26.39 21.35L27.5 20.5L28.64 19.7L29.79 18.95L30.97 18.26L31.65 17.89M38.13 15.21L38.31 15.16L39.56 14.81L40.82 14.52L42.08 14.27L43.34 14.07L44.6 13.92L45.85 13.82L47.1 13.76L47.25 13.76" fill="none" stroke="#565F6B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" stroke-dasharray="0.1 5.2"/>
   </g>
   <g class="solids">
     <g><path d="M8.07 50.7L9.27 52.3A6.16 6.16 0 0 0 19.13 44.9L17.93 43.3A6.16 6.16 0 0 0 8.07 50.7Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="13" cy="47" r="6.16" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
