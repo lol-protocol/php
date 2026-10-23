@@ -44,11 +44,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://mondaq.co.uk/turkey/data-protection/1440344/changes-in-the-pdpl-was-published-in-the-official-gazette",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.kvkk.gov.tr/Icerik/6710/2019-273",
         "confidence": "high",
@@ -63,6 +58,11 @@
         "url": "https://mbkaya.com/turkish-data-protection-law-english-translation-kvkk/",
         "confidence": "high",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://mondaq.co.uk/turkey/data-protection/1440344/changes-in-the-pdpl-was-published-in-the-official-gazette",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

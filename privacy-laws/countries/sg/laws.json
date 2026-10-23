@@ -39,11 +39,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://conventuslaw.com/report/amendments-to-singapores-personal-data-protection/",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.pdpc.gov.sg/-/media/Files/PDPC/PDF-Files/Data-Protection-Officers/pdpc-corporate-brochure.pdf?la=en",
         "confidence": "medium",
@@ -53,6 +48,11 @@
         "url": "https://www.pdpc.gov.sg/-/media/Files/PDPC/PDF-Files/Advisory-Guidelines/AG-on-Key-Concepts/Annex-A--PDPAs-Framework-for-the-Collection-Use-and-Disclosure-of-Personal-Data-1-Feb-2021.pdf",
         "confidence": "medium",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://conventuslaw.com/report/amendments-to-singapores-personal-data-protection/",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

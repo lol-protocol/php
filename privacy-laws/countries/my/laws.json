@@ -44,11 +44,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.dfdl.com/insights/legal-and-tax-updates/malaysia-implementation-of-the-personal-data-protection-amendment-act-2024/",
         "confidence": "high",
@@ -63,6 +58,11 @@
         "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-bill-2024",
         "confidence": "low",
         "checked": "2026-10-18"
+      },
+      "notes": {
+        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

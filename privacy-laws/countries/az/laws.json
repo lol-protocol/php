@@ -29,6 +29,11 @@
     "confidence": "low",
     "last_checked": "2026-10-21",
     "sources": {
+      "genetic_data": {
+        "url": "https://caseguard.com/articles/protecting-the-personal-privacy-of-azerbaijani-citizens/",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
       "law_name": {
         "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
         "confidence": "medium",
@@ -68,11 +73,6 @@
         "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
         "confidence": "low",
         "checked": "2026-10-16"
-      },
-      "genetic_data": {
-        "url": "https://caseguard.com/articles/protecting-the-personal-privacy-of-azerbaijani-citizens/",
-        "confidence": "low",
-        "checked": "2026-10-21"
       }
     },
     "changes": [

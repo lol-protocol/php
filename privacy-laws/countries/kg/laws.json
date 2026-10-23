@@ -29,6 +29,16 @@
     "confidence": "medium",
     "last_checked": "2026-10-17",
     "sources": {
+      "deceased_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=KG&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=KG",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
       "law_name": {
         "url": "https://www.consentstack.io/regulations/kg-law58",
         "confidence": "medium",
@@ -78,16 +88,6 @@
         "url": "https://www.consentstack.io/regulations/kg-law58",
         "confidence": "low",
         "checked": "2026-10-16"
-      },
-      "deceased_data": {
-        "url": "https://www.dlapiperdataprotection.com/?c=KG&t=law",
-        "confidence": "medium",
-        "checked": "2026-10-17"
-      },
-      "genetic_data": {
-        "url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=KG",
-        "confidence": "low",
-        "checked": "2026-10-17"
       }
     },
     "changes": [
