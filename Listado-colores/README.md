@@ -1,6 +1,6 @@
 # Listado de colores con nombre y su significado
 
-Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene siete archivos de datos con alcances distintos (más los exportes para PLN, ver «Exportes»):
+Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene ocho archivos de datos con alcances distintos (más los exportes para PLN, ver «Exportes»):
 
 | Archivo | Qué contiene | Idiomas | Significados |
 |---|---|---|---|
@@ -9,10 +9,11 @@ Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: l
 | `lexico-basico.csv` | 38 términos de color de uso real (blanco, azul claro, granate…): forma base, flexiones, sinónimos y variantes | 30 | No tiene |
 | `evidencia.csv` | En qué se apoya cada significado de los 148 colores (hay estudios, tradición, derivado) y con qué fuentes | — | Los mismos |
 | `significados-culturales.csv` | 28 matices por ámbito cultural (China, Japón, India…) de nueve colores, cada uno con su fuente | — (texto en español) | Matices culturales |
-| `referencias.csv` | Las 35 fuentes que citan los dos archivos anteriores, con cuánto se pudo comprobar de cada una | — | — |
+| `categorias.csv` | 210 filas: las categorías gramaticales (adjetivo, sustantivo, nombre propio, verbo) con que puede aparecer cada palabra de color de una sola palabra, con una frase de ejemplo (ver «Categorías gramaticales») | 2: inglés y español | No tiene |
+| `referencias.csv` | Las 35 fuentes que citan `evidencia.csv` y `significados-culturales.csv`, con cuánto se pudo comprobar de cada una | — | — |
 | `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names`, y el color CSS más cercano a cada uno | 1: inglés (con algunos nombres en otros idiomas) | No tiene propios; se pueden heredar del color CSS más cercano (ver «Color CSS más cercano») |
 
-Cada color de los 148 se puede leer en cualquiera de los 30 idiomas (nombre, hex y los dos significados) en `por-idioma/<código>.md`; `colores-por-idioma.md` es el índice de esas páginas. Del resto se generan los exportes para PLN (`exportes/`, con una forma normalizada de cada nombre), dos informes (`ambiguedad.md` y `auditoria-nombres.md`) y la versión de los datos (`CHANGELOG.md` y `exportes/manifiesto.json`): ver «Exportes», «Ambigüedad», «Auditoría de los nombres completos» y «Versión de los datos y manifiesto».
+Cada color de los 148 se puede leer en cualquiera de los 30 idiomas (nombre, hex y los dos significados) en `por-idioma/<código>.md`; `colores-por-idioma.md` es el índice de esas páginas. Del resto se generan los exportes para PLN (`exportes/`, con una forma normalizada de cada nombre), dos informes (`ambiguedad.md` y `auditoria-nombres.md`), `categorias.md` (las categorías gramaticales, por idioma) y la versión de los datos (`CHANGELOG.md` y `exportes/manifiesto.json`): ver «Exportes», «Ambigüedad», «Categorías gramaticales», «Auditoría de los nombres completos» y «Versión de los datos y manifiesto».
 
 ## Idiomas
 
@@ -107,13 +108,13 @@ Límites que conviene tener presentes:
 
 ## Exportes
 
-Para usar los datos desde un programa sin leer siete CSV, el generador produce dos archivos en `exportes/` y puede construir una base SQLite. Todo sale de los CSV; no se edita a mano.
+Para usar los datos desde un programa sin leer ocho CSV, el generador produce dos archivos en `exportes/` y puede construir una base SQLite. Todo sale de los CSV; no se edita a mano.
 
-- **`exportes/colores.jsonl`**: una línea JSON por cada color CSS (148), con todo lo que se sabe de él: `id` (nombre CSS), `hex`, `rgb`, `forma_natural_en`, `forma_con_guion_en` (la que se usa como adjetivo delante del sustantivo), `alias` (`id` y `tipo`), `nombres` y `significados` en los 30 idiomas (en `en`, el nombre es la forma natural), `evidencia` (base y referencias de cada significado), `culturales` (los matices del color) y `lexico` (las formas del léxico básico de los conceptos que coinciden con el color, por idioma).
-- **`exportes/gazetteer.tsv`**: lista plana de formas de superficie, para buscar una palabra y saber a qué color o concepto remite. 7.080 filas separadas por tabuladores, ordenadas por forma sin distinguir mayúsculas. Columnas: `forma`, `idioma`, `fuente` (`css` o `lexico`), `tipo`, `concepto`, `hex`, `rasgos` y `forma_normalizada` (ver «Forma normalizada»; va al final para no mover las demás columnas). Con `fuente=css`, `tipo` es `identificador` (`aliceblue`), `forma_natural` (`alice blue`), `forma_con_guion` (`alice-blue`) o `nombre` (la traducción en otro idioma). Con `fuente=lexico`, es `lema`, `flexion`, `sinonimo` o `variante` y `rasgos` trae lo que dice `lexico-basico.csv`. Una misma forma puede salir varias veces (por ejemplo, `abu-abu` en indonesio para `gray`, `grey` y como lema). La lista completa de 31.935 nombres no se repite aquí: está en `nombres-completos.csv`.
-- **Base SQLite** (no se guarda en el repositorio): `python3 generar-tabla.py --sqlite ruta.db`. Tablas: `colores`, `nombres`, `significados`, `alias`, `evidencia`, `culturales`, `referencias`, `conceptos`, `lexico` y `nombres_completos`, con índices por nombre, forma, forma normalizada y hex. `nombres` y `lexico` tienen una columna normalizada (`nombre_normalizado`, `forma_normalizada`). Ejemplo: `SELECT n.nombre, s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) WHERE n.color_id = 'crimson' AND n.idioma = 'ja';`.
+- **`exportes/colores.jsonl`**: una línea JSON por cada color CSS (148), con todo lo que se sabe de él: `id` (nombre CSS), `hex`, `rgb`, `forma_natural_en`, `forma_con_guion_en` (la que se usa como adjetivo delante del sustantivo), `alias` (`id` y `tipo`), `nombres` y `significados` en los 30 idiomas (en `en`, el nombre es la forma natural), `evidencia` (base y referencias de cada significado), `culturales` (los matices del color), `lexico` (las formas del léxico básico de los conceptos que coinciden con el color, por idioma) y `categorias` (las categorías gramaticales de las palabras de ese color, por idioma, cada una con `forma`, `categoria`, `ocurrencia` y `ejemplo`; `{}` si no hay).
+- **`exportes/gazetteer.tsv`**: lista plana de formas de superficie, para buscar una palabra y saber a qué color o concepto remite. 7.080 filas separadas por tabuladores, ordenadas por forma sin distinguir mayúsculas. Columnas: `forma`, `idioma`, `fuente` (`css` o `lexico`), `tipo`, `concepto`, `hex`, `rasgos`, `forma_normalizada` (ver «Forma normalizada») y `categorias` (las categorías gramaticales de la forma separadas por comas, `ADJ,NOUN,VERB`; vacía si no hay; ver «Categorías gramaticales»). Las dos últimas van al final para no mover las demás columnas. Con `fuente=css`, `tipo` es `identificador` (`aliceblue`), `forma_natural` (`alice blue`), `forma_con_guion` (`alice-blue`) o `nombre` (la traducción en otro idioma). Con `fuente=lexico`, es `lema`, `flexion`, `sinonimo` o `variante` y `rasgos` trae lo que dice `lexico-basico.csv`. Una misma forma puede salir varias veces (por ejemplo, `abu-abu` en indonesio para `gray`, `grey` y como lema). La lista completa de 31.935 nombres no se repite aquí: está en `nombres-completos.csv`.
+- **Base SQLite** (no se guarda en el repositorio): `python3 generar-tabla.py --sqlite ruta.db`. Tablas: `colores`, `nombres`, `significados`, `alias`, `evidencia`, `culturales`, `referencias`, `conceptos`, `lexico`, `categorias` y `nombres_completos`, con índices por nombre, forma, forma normalizada y hex. `nombres` y `lexico` tienen una columna normalizada (`nombre_normalizado`, `forma_normalizada`). Ejemplo: `SELECT n.nombre, s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) WHERE n.color_id = 'crimson' AND n.idioma = 'ja';`.
 
-`--comprobar` compara los archivos de `exportes/` (los dos exportes y el manifiesto) con lo que generan los CSV y construye la base en memoria para verificar que cada tabla tenga tantas filas como su CSV y que un cruce de tablas funcione. Las funciones están en `exportes.py`. Los tres archivos de `exportes/` pesan en total unos 1,5 MB.
+`--comprobar` compara los archivos de `exportes/` (los dos exportes y el manifiesto) con lo que generan los CSV y construye la base en memoria para verificar que cada tabla tenga tantas filas como su CSV y que un cruce de tablas funcione. Las funciones están en `exportes.py`. Los tres archivos de `exportes/` pesan en total unos 1,6 MB.
 
 ### Forma normalizada
 
@@ -140,9 +141,24 @@ Cada caso trae la distancia máxima CIEDE2000 (ΔE) entre sus colores y una band
 
 Límites que conviene tener presentes:
 
-- Solo cubre las formas del gazetteer. No detecta palabras que, además de un color, son otra cosa (una flor, una fruta) ni palabras que no están en el listado: para eso hace falta un corpus.
+- Solo cubre las formas del gazetteer. No detecta palabras que, además de un color, son otra cosa (una flor, una fruta) ni palabras que no están en el listado: para eso hace falta un corpus. Para inglés y español, `categorias.md` dice con qué categorías gramaticales puede aparecer cada palabra (ver «Categorías gramaticales»), pero no cuál usa un texto concreto.
 - Parte de las ambigüedades viene de la traducción, que es una propuesta sin revisión de hablantes nativos. Una forma que remite a colores muy distintos en un idioma (en francés, `violet` a `purple` y `violet`, a 39,9 de distancia) puede ser un idioma que no distingue los dos colores o una traducción que conviene revisar; el informe no lo decide.
 - Las formas flexionadas cuentan una por una: si el lema de un idioma sirve para dos colores, cada flexión sale como un caso.
+
+## Categorías gramaticales
+
+Muchas palabras de color son también sustantivos, nombres propios o verbos (`coral`, `lime`, `tan`, `peru`, `violet`, `lima`). Para el etiquetado *part-of-speech*, `categorias.csv` dice con qué categoría puede aparecer cada palabra de color de una sola palabra y da una frase de ejemplo por categoría. `categorias.md` (generado) lo muestra por idioma, con un resumen; el exporte JSONL y el gazetteer lo llevan al lado de cada color o forma, y la base SQLite tiene la tabla `categorias`.
+
+- **Columnas.** `idioma`, `concepto` (el id CSS o el concepto del léxico), `forma` (la palabra), `categoria`, `ocurrencia` (la palabra tal como sale en la frase: `blacked`, `Peru`, `khakis`) y `ejemplo`.
+- **Categorías.** Las de [Universal Dependencies](https://universaldependencies.org/u/pos/): `ADJ` adjetivo, `NOUN` sustantivo, `PROPN` nombre propio y `VERB` verbo. Toda palabra tiene `ADJ` (es lo que la hace palabra de color); las demás son lecturas extra.
+- **Alcance.** Dos idiomas: inglés (los 56 nombres CSS de una sola palabra, más `lilac`, `burgundy`, `cream`, `scarlet` y `amber` del léxico básico) y español (los 32 lemas de una sola palabra del léxico básico). 93 palabras y 210 filas. Las palabras compuestas (`azul marino`, `light blue`) no entran. Un idioma que se agregue debe cubrir todas sus palabras de una sola palabra: el generador falla si falta alguna.
+- **Forma.** En inglés es la forma natural del color CSS (`aqua`, no `aliceblue`) o el lema del léxico; en español, el lema del léxico. No se anotan las flexiones; en el gazetteer solo la forma base trae categorías.
+
+Límites:
+
+- Son lecturas **posibles**, no cuántas veces ocurre cada una, y cada frase es un ejemplo. No se distingue el sentido: `coral` sustantivo es el animal y también el color.
+- Hay casos discutibles. Un sustantivo que modifica a otro (`a linen shirt`) puede etiquetarse `NOUN` o `ADJ` según el criterio de cada corpus; los ejemplos de `ADJ` en inglés usan la palabra como color en una posición clara (`painted the walls linen`).
+- Lo escribió un asistente de IA y ningún hablante nativo lo ha revisado: úsalo como punto de partida, no como corpus anotado.
 
 ## Auditoría de los nombres completos
 
@@ -198,6 +214,9 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 - `lexico-basico.csv`: léxico básico. Columnas: `concepto`, `idioma`, `forma`, `tipo`, `rasgos`. Filas ordenadas por concepto (en el orden de `CONCEPTOS` de `generar-tabla.py`), idioma y tipo.
 - `evidencia.csv`: una fila por color. Columnas: `nombre_ingles`, `base_psicologico`, `referencias_psicologico`, `base_mistico`, `referencias_mistico`. Las referencias son ids de `referencias.csv` separados por `;`.
 - `significados-culturales.csv`: matices culturales. Columnas: `color`, `ambito`, `matiz`, `solidez`, `referencias`.
+- `categorias.csv`: categorías gramaticales de las palabras de color (ver «Categorías gramaticales»). Columnas: `idioma`, `concepto`, `forma`, `categoria`, `ocurrencia`, `ejemplo`. Filas ordenadas por idioma, concepto (los colores CSS primero, luego los del léxico) y categoría (`ADJ`, `NOUN`, `PROPN`, `VERB`).
+- `categorias.md`: las mismas categorías por idioma, con un resumen. Generado.
+- `categorias.py`: valida `categorias.csv` y genera ese informe. Lo importa `generar-tabla.py`.
 - `referencias.csv`: fuentes. Columnas: `id`, `tipo` (`articulo`, `libro`, `web`), `cita`, `url`, `verificacion` (`resumen`, `pagina`, `existencia`). Con él se genera `referencias.md`, donde cada fuente tiene un ancla.
 - `significados-idiomas.csv`: los significados en los otros 29 idiomas. Columnas: `idioma`, `nombre_ingles`, `significado_psicologico`, `significado_mistico`. Una fila por color e idioma, ordenadas por `nombre_ingles` y, dentro de cada color, por el orden de idiomas de `generar-tabla.py`. Los pares que en `colores.csv` tienen el mismo texto en español (como `gray` y `grey`) tienen también el mismo texto traducido.
 - `por-idioma/<código>.md`: una página por idioma con el nombre, el hex, los alias, los dos significados y su base para los 148 colores, los matices culturales asociados al idioma y la tabla de su léxico básico. Generado.
@@ -214,7 +233,7 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 - `CHANGELOG.md`: registro de cambios de los datos, con su versión (ver «Versión de los datos y manifiesto»). Se edita a mano.
 - `exportes/manifiesto.json`: versión, filas y sumas SHA-256 de los CSV y de los exportes. Generado.
 - `manifiesto.py`: valida `CHANGELOG.md` y arma el manifiesto. Lo importa `generar-tabla.py`.
-- `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md` y `exportes/`.
+- `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md`, `categorias.md` y `exportes/`.
 - `pruebas.py`: pruebas del generador (`unittest`, solo biblioteca estándar). Ver «Pruebas» en «Uso».
 - `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.
 - `README.md`: este documento. La tabla va entre dos líneas que son marcadores HTML de inicio y fin (`tabla:inicio` y `tabla:fin`); no la edites a mano.
@@ -249,6 +268,7 @@ Reglas para editar los CSV (el generador las comprueba):
 - `lexico-basico.csv`: cada fila con concepto, idioma y tipo de la lista; un solo lema por concepto e idioma; los 11 conceptos básicos con lema en los 30 idiomas; formas con lema; ninguna forma vacía, con `|`, comillas o saltos de línea; sin letras latinas en los idiomas de otra escritura (el, ru, uk, ar, he, fa, hi, bn, zh, ja, ko, th); rasgos válidos según el tipo; sin filas repetidas; filas ordenadas.
 - `evidencia.csv`: una fila por color de `colores.csv`, en su orden; bases válidas; referencias ordenadas y existentes; los colores con estudios, exactamente los 13 indicados; los significados derivados no llevan referencias; la tradición moderna cita `leland2016`.
 - `significados-culturales.csv`: color de `colores.csv` y ámbito conocido; matiz sin `|` ni saltos de línea; solidez `alta`, `media` o `baja`; al menos una referencia existente; ordenado por color y ámbito.
+- `categorias.csv`: idioma y concepto conocidos; `forma` igual a la del color CSS (inglés) o a la del lema del léxico; una sola palabra; `categoria` una de `ADJ`, `NOUN`, `PROPN`, `VERB`; `ocurrencia` igual a la forma con a lo sumo cuatro letras más (`PROPN` con mayúscula inicial); `ejemplo` sin `|` ni saltos, terminado en `.`, `!` o `?`, y con la `ocurrencia` como palabra entera; una fila por idioma, concepto y categoría; todas las palabras de una sola palabra de cada idioma presente; ordenadas.
 - `referencias.csv`: id único y ordenado; tipo y verificación conocidos; una página web lleva url `https://`; ninguna referencia sin usar.
 - `significados-idiomas.csv`: un par de significados por cada color de `colores.csv` y cada idioma (todos menos `es`), sin repetidos; ningún campo vacío, con `|` ni con saltos de línea; ningún significado igual al texto en español (sin traducir). Si cambias un significado en `colores.csv`, actualiza también sus 29 traducciones.
 - `nombres-completos.csv`: nombre único sin distinguir mayúsculas; `hex` en `#RRGGBB`; `curada` vacía o `x`; filas ordenadas por nombre sin distinguir mayúsculas; ningún nombre con `|`, comas, comillas ni saltos de línea. Las tres primeras columnas se generaron una vez desde la fuente; `css_cercano`, `delta_e` y `cercania` las reescribe el generador y `--comprobar` falla si no coinciden con lo que calcula.

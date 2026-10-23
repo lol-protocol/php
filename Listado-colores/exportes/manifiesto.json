@@ -59,6 +59,11 @@
       "sha256": "a9384295525e0dbbaf922ab453326a02457f3dfc0d19cf7371234989c26a33e2"
     },
     {
+      "archivo": "categorias.csv",
+      "filas": 210,
+      "sha256": "9af6af472478cb4dcb6664c435643253c1e82a8423737d47f55577aa836c2ac6"
+    },
+    {
       "archivo": "referencias.csv",
       "filas": 35,
       "sha256": "01a634af16693c99b1be1c1ff353742515fcf1d9fdc6093284d8b9f512202f17"
@@ -73,7 +78,7 @@
     {
       "archivo": "exportes/colores.jsonl",
       "filas": 148,
-      "sha256": "61271d0eb443f6c4fca6269065b06889956b5a085764e9e335c7dd81b359d322"
+      "sha256": "42e25484e95b37962b8c9f92337ec8683843c6659a414e0a7c924087445a8a86"
     },
     {
       "archivo": "exportes/gazetteer.tsv",
@@ -86,9 +91,10 @@
         "concepto",
         "hex",
         "rasgos",
-        "forma_normalizada"
+        "forma_normalizada",
+        "categorias"
       ],
-      "sha256": "b25406b077bd914fed9d20f3617a81b04e7d207045f17887f432e7515316dabf"
+      "sha256": "fad728b6fc70b56583082972bd4f1b08a0da720d47b991c38874969e45a18c7d"
     }
   ]
 }

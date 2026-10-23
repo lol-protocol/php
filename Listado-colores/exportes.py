@@ -19,7 +19,8 @@ from normalizacion import normalizar  # noqa: E402  (módulo de esta carpeta)
 # Orden de las fuentes en el gazetteer y significado de cada una.
 FUENTES = ["css", "lexico"]
 # forma_normalizada va al final: quien lea las columnas por posición sigue leyendo las mismas.
-COLUMNAS_GAZETTEER = ["forma", "idioma", "fuente", "tipo", "concepto", "hex", "rasgos", "forma_normalizada"]
+# categorias, aún más al final, es la lista de categorías gramaticales (UPOS) de la forma, separadas por comas.
+COLUMNAS_GAZETTEER = ["forma", "idioma", "fuente", "tipo", "concepto", "hex", "rasgos", "forma_normalizada", "categorias"]
 
 
 def _json(objeto):
@@ -33,6 +34,10 @@ def _rgb(color):
 def colores_jsonl(d):
     """Una línea JSON por color CSS, con todo lo que se sabe de él en los 30 idiomas."""
     codigos = [c for c, _ in d["idiomas"]]
+    gramaticales = {}
+    for f in d["categorias"]:
+        gramaticales.setdefault(f["concepto"], {}).setdefault(f["idioma"], []).append(
+            {"forma": f["forma"], "categoria": f["categoria"], "ocurrencia": f["ocurrencia"], "ejemplo": f["ejemplo"]})
     lexico_por_concepto = {}
     for f in d["lexico"]:
         lexico_por_concepto.setdefault(f["concepto"], {}).setdefault(f["idioma"], []).append(
@@ -68,6 +73,7 @@ def colores_jsonl(d):
             },
             "culturales": culturales.get(nombre, []),
             "lexico": lexico_por_concepto.get(nombre, {}),
+            "categorias": gramaticales.get(nombre, {}),
         }
         lineas.append(_json(objeto))
     return "\n".join(lineas) + "\n"
@@ -92,7 +98,10 @@ def filas_gazetteer(d):
     orden_fuente = {fuente: n for n, fuente in enumerate(FUENTES)}
     # Se descartan las filas idénticas (por ejemplo, un nombre CSS que coincide con la forma natural).
     unicas = sorted(set(filas), key=lambda r: (r[0].casefold(), r[0], orden_idioma[r[1]], orden_fuente[r[2]], r[3], r[4], r[6]))
-    return [fila + (normalizar(fila[0], fila[1]),) for fila in unicas]
+    categorias = {}
+    for f in d["categorias"]:
+        categorias.setdefault((f["idioma"], f["concepto"], f["forma"]), []).append(f["categoria"])
+    return [fila + (normalizar(fila[0], fila[1]), ",".join(categorias.get((fila[1], fila[4], fila[0]), []))) for fila in unicas]
 
 
 def gazetteer_tsv(d):
@@ -114,12 +123,15 @@ CREATE TABLE culturales (color_id TEXT, ambito TEXT, matiz TEXT, solidez TEXT, r
 CREATE TABLE referencias (id TEXT PRIMARY KEY, tipo TEXT, cita TEXT, url TEXT, verificacion TEXT);
 CREATE TABLE conceptos (concepto TEXT PRIMARY KEY, hex TEXT NOT NULL);
 CREATE TABLE lexico (concepto TEXT, idioma TEXT, forma TEXT, tipo TEXT, rasgos TEXT, forma_normalizada TEXT);
+CREATE TABLE categorias (idioma TEXT, concepto TEXT, forma TEXT, categoria TEXT, ocurrencia TEXT, ejemplo TEXT,
+                         PRIMARY KEY (idioma, concepto, categoria));
 CREATE TABLE nombres_completos (nombre TEXT PRIMARY KEY, hex TEXT NOT NULL, curada INTEGER,
                                 css_cercano TEXT, delta_e REAL, cercania TEXT);
 CREATE INDEX nombres_por_nombre ON nombres (nombre);
 CREATE INDEX nombres_por_normalizado ON nombres (nombre_normalizado, idioma);
 CREATE INDEX lexico_por_forma ON lexico (forma, idioma);
 CREATE INDEX lexico_por_normalizada ON lexico (forma_normalizada, idioma);
+CREATE INDEX categorias_por_forma ON categorias (forma, idioma);
 CREATE INDEX completos_por_hex ON nombres_completos (hex);
 """
 
@@ -158,6 +170,8 @@ def construir_sqlite(ruta, d):
     conexion.executemany("INSERT INTO lexico VALUES (?,?,?,?,?,?)", [
         (f["concepto"], f["idioma"], f["forma"], f["tipo"], f["rasgos"], normalizar(f["forma"], f["idioma"]))
         for f in d["lexico"]])
+    conexion.executemany("INSERT INTO categorias VALUES (?,?,?,?,?,?)", [
+        tuple(f[c] for c in ("idioma", "concepto", "forma", "categoria", "ocurrencia", "ejemplo")) for f in d["categorias"]])
     conexion.executemany("INSERT INTO nombres_completos VALUES (?,?,?,?,?,?)", [
         (f["nombre_ingles"], f["hex"], 1 if f["curada"] == "x" else 0, css, float(f"{distancia:.2f}"), cercania)
         for f, (css, distancia, cercania) in zip(d["completa"], d["cercanias"])])
@@ -176,6 +190,7 @@ def comprobar_sqlite(d):
         "culturales": len(d["culturales"]),
         "referencias": len(d["referencias"]),
         "lexico": len(d["lexico"]),
+        "categorias": len(d["categorias"]),
         "nombres_completos": len(d["completa"]),
     }
     fallos = []

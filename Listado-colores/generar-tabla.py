@@ -9,7 +9,9 @@
   su forma base, flexiones, sinónimos y variantes.
 - evidencia.csv: en qué se apoya cada significado (hay estudios, tradición, derivado) y con qué fuentes.
 - significados-culturales.csv: matices por ámbito cultural (China, Japón, India…) de algunos colores.
-- referencias.csv: las fuentes citadas por los dos anteriores; se genera referencias.md.
+- categorias.csv: las categorías gramaticales (ADJ, NOUN, PROPN, VERB) de las palabras de color de una sola palabra
+  en inglés y español, con una frase de ejemplo; se genera categorias.md (ver categorias.py).
+- referencias.csv: las fuentes citadas por evidencia.csv y significados-culturales.csv; se genera referencias.md.
 - nombres-completos.csv: lista completa de nombres con hex. Sus tres primeras columnas son la fuente;
   css_cercano, delta_e y cercania se calculan aquí (color CSS más cercano según CIEDE2000, en colorimetria.py).
 - Por cada idioma se genera por-idioma/<código>.md (nombre, hex y los dos significados en ese idioma)
@@ -36,6 +38,7 @@ sys.dont_write_bytecode = True  # no dejar __pycache__ en la carpeta al importar
 sys.path.insert(0, str(CARPETA))
 import ambiguedad  # noqa: E402  (módulos de esta carpeta)
 import auditoria  # noqa: E402
+import categorias  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
@@ -47,6 +50,8 @@ LEXICO = CARPETA / "lexico-basico.csv"
 REFERENCIAS = CARPETA / "referencias.csv"
 EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
+CATEGORIAS = CARPETA / "categorias.csv"
+CATEGORIAS_MD = CARPETA / "categorias.md"
 REFS_MD = CARPETA / "referencias.md"
 AMBIGUEDAD = CARPETA / "ambiguedad.md"
 AUDITORIA = CARPETA / "auditoria-nombres.md"
@@ -641,6 +646,7 @@ def main():
     referencias = leer(REFERENCIAS, COLUMNAS_REFERENCIAS)
     evidencia_filas = leer(EVIDENCIA, COLUMNAS_EVIDENCIA)
     culturales = leer(CULTURALES, COLUMNAS_CULTURALES)
+    gramaticales = leer(CATEGORIAS, categorias.COLUMNAS)
     errores = []
     validar_anotada(anotada, errores)
     validar_completa(completa, errores)
@@ -652,6 +658,7 @@ def main():
     validar_culturales(culturales, anotada, ids, errores, usadas)
     for i in sorted(ids - usadas):
         errores.append(f"referencias.csv: la referencia {i!r} no la usa ningún otro CSV")
+    categorias.validar(gramaticales, anotada, lexico, [c for c, _ in IDIOMAS], CONCEPTOS, errores)
     version = None
     if CHANGELOG.exists():
         version = manifiesto.leer_changelog(CHANGELOG.read_text(encoding="utf-8"), errores)
@@ -674,7 +681,7 @@ def main():
     datos = {
         "idiomas": IDIOMAS, "anotada": anotada, "completa": completa, "cercanias": cercanias,
         "significados": significados, "lexico": lexico, "referencias": referencias, "evidencia": evidencia,
-        "culturales": culturales, "alias": alias_de(anotada),
+        "culturales": culturales, "categorias": gramaticales, "alias": alias_de(anotada),
         "hex_concepto": {c: hex_de_concepto(c, anotada, completa) for c in CONCEPTOS},
     }
     if "--sqlite" in sys.argv:
@@ -692,7 +699,7 @@ def main():
     # Las entradas del manifiesto, en el orden del README. nombres-completos.csv va con el texto que genera este programa.
     entradas = [(ruta.name, filas, ruta.read_text(encoding="utf-8"), None) for ruta, filas in (
         (ANOTADA, len(anotada)), (SIGNIFICADOS, len(traducidos)), (LEXICO, len(lexico)), (EVIDENCIA, len(evidencia_filas)),
-        (CULTURALES, len(culturales)), (REFERENCIAS, len(referencias)))]
+        (CULTURALES, len(culturales)), (CATEGORIAS, len(gramaticales)), (REFERENCIAS, len(referencias)))]
     entradas.append((COMPLETA.name, len(completa), completa_texto, None))
     exportes_manifiesto = [("exportes/colores.jsonl", jsonl.count("\n"), jsonl, None),
                            ("exportes/gazetteer.tsv", tsv.count("\n") - 1, tsv, exportes.COLUMNAS_GAZETTEER)]
@@ -702,6 +709,7 @@ def main():
         REFS_MD: referencias_md(referencias),
         AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
         AUDITORIA: auditoria.informe(completa),
+        CATEGORIAS_MD: categorias.informe(gramaticales, IDIOMAS),
         COMPLETA: completa_texto,
         DIR_EXPORTES / "colores.jsonl": jsonl,
         DIR_EXPORTES / "gazetteer.tsv": tsv,

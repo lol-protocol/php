@@ -23,6 +23,7 @@ Cada entrada empieza por `## X.Y.Z - AAAA-MM-DD`, va de la más reciente a la m�
   - Indonesio `crimson`: `merah tua` → `merah padam` (como en el léxico; `merah tua` queda en `darkred`).
   - Danés `lightpink`: `lyserød` → `lys lyserød` (`lyserød` queda en `pink`).
   - Polaco `purple`: `fioletowy` → `purpurowy`; checo `purple`: `fialová` → `purpurová` (`fioletowy` y `fialová` quedan en `violet`).
+- **Categorías gramaticales** (`categorias.csv`, `categorias.md`): 210 filas con las categorías (`ADJ`, `NOUN`, `PROPN`, `VERB`, las de Universal Dependencies) con que puede aparecer cada palabra de color de una sola palabra, con una frase de ejemplo por categoría. Cubre 61 palabras en inglés y 32 en español. El JSONL gana la clave `categorias`, el gazetteer la columna `categorias` (al final) y la base SQLite la tabla `categorias`.
 - Son propuestas de un asistente de IA, sin revisión de hablantes nativos. Las 29 colisiones que quedan son sobre todo lenguas que no distinguen los dos colores (púrpura y violeta en hebreo, persa, bengalí, suajili…) o casos en los que no había un nombre distinto del que estuviera seguro; no se tocan sin un hablante nativo.
 
 ## 1.0.0 - 2026-10-19
