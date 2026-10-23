@@ -695,6 +695,16 @@ final class ApplicationTest extends AppTestCase
         $this->assertStringContainsString('se guardan 7 días', $body);
     }
 
+    public function testWithoutRetentionTheBookmarkNeverExpires(): void
+    {
+        $app = $this->app($this->config(retentionDays: 0));
+        $location = $this->post($app, '/crear', ['fuente' => 'paisaje', 'paisaje' => 'paisaje-costa-1920x1080.jpg'])->headers['Location'];
+        $body = $this->get($app, $location)->body;
+        $this->assertStringContainsString('sin fecha de vencimiento', $body);
+        $this->assertStringNotContainsString('Se borrará solo', $body);
+        $this->assertStringNotContainsString('se borran solos', $body);
+    }
+
     public function testStaticFileResponsesExposeTheEtagOfTheCurrentFile(): void
     {
         $app = $this->app();

@@ -33,7 +33,8 @@ $now = time();
 $store = new BookmarkStore($config->storageDirectory . '/marcalibros');
 $limiter = new RateLimiter($config->storageDirectory . '/intentos');
 
-$bookmarks = $store->purgeOlderThan($config->retentionDays * 86400, $now);
+// Con MARCALIBROS_RETENTION_DAYS=0 (lo normal) los marcalibros no caducan: solo se limpian los intentos.
+$bookmarks = $config->retentionDays > 0 ? $store->purgeOlderThan($config->retentionDays * 86400, $now) : 0;
 $attempts = $limiter->purge(3600, $now);
 
 echo "Marcalibros borrados: $bookmarks\n";
