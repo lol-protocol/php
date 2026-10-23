@@ -121,6 +121,8 @@ El mapa completo de lo que cubre el filtro y lo que no está en
 ## Marco legal chileno (orientativo)
 
 No es asesoría legal: antes de abrir la plataforma conviene revisarlo con un abogado.
+Las preguntas para esa reunión, reunidas y ordenadas, están en
+[`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md).
 
 - **Constitución, art. 19 N° 4**: asegura el respeto y la protección de la vida
   privada y de la honra de la persona y de su familia, y la protección de sus

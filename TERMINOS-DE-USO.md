@@ -3,7 +3,9 @@
 > **Esto es un borrador para revisar con un abogado, no un texto listo para
 > publicar.** Lo escribió el equipo a partir de
 > [`PRIVACIDAD-Y-HONRA.md`](PRIVACIDAD-Y-HONRA.md) y de lo que hoy hace el código.
-> Lo que hay que confirmar o decidir está marcado con **⚖️**. Los datos entre
+> Lo que hay que confirmar o decidir está marcado con **⚖️**, y las preguntas,
+> reunidas y ordenadas para llevarlas a una reunión, están en
+> [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md). Los datos entre
 > corchetes (`[NOMBRE]`, `[CORREO]`…) faltan.
 
 ---
