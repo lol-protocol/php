@@ -15,6 +15,10 @@ use PhoneDirectory\Entity\PhoneDirectoryEntry;
  * Y - 18 + 110 is already in the past. In 2026 that is every directory up to 1933: the whole
  * 1934-1975 half of the catalog is hidden from a visitor.
  *
+ * One thing lifts that: a person recorded as dead (PhoneDirectoryEntry::getDeceasedYear()) is no longer
+ * someone who "may be alive", whatever year the directory came out. Only the owner of the database can
+ * record a death, and has to say where it is documented (PhoneDirectoryPDODatabase::markDeceased()).
+ *
  * An entry whose directory has no known year (no source, an id outside the catalog that embeds no
  * year) is hidden too. `url-routing` goes the other way for people with no dates, because hiding every
  * undated ancestor would hollow out a catalog of the dead; here the data is contact details, and a
@@ -80,7 +84,7 @@ final class Privacy
     public function mayBeAlive(PhoneDirectoryEntry $entry): bool
     {
         $latest = $this->latestPublishableYear;
-        if ($latest === null) {
+        if ($latest === null || $entry->getDeceasedYear() !== null) {
             return false;
         }
 

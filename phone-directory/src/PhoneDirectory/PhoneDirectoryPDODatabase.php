@@ -36,7 +36,14 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         'surname_phonetic' => ['string'],
         'full_name_folded' => ['string'],
         'street_folded' => ['string'],
+        'deceased_year' => ['int'],
+        'deceased_evidence' => ['text'],
     ];
+
+    /** A death is recorded in a year no earlier than this: nothing in the catalog is older. */
+    private const EARLIEST_DEATH_YEAR = 1800;
+
+    private const MAX_EVIDENCE_LENGTH = 1000;
 
     private const INDEXED_COLUMNS = [
         'full_name', 'country_code', 'street', 'phone_number', 'source_directory_id',
@@ -227,6 +234,10 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return $this->privacy->filter($this->getAllOrdered('full_name'));
     }
 
+    /**
+     * Saves the entry's fields. It does not touch the deceased mark (markDeceased() and clearDeceased() are the
+     * only ways to change it), so editing an entry never publishes or hides a person by accident.
+     */
     public function update(PhoneDirectoryEntry $entry): bool
     {
         $this->ensureConnection();
@@ -250,6 +261,104 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
     public function delete(int $id): bool
     {
         return $this->deleteById($id);
+    }
+
+    /**
+     * Records that the person in this entry died in $year, so a visitor may see it whatever year the directory
+     * came out (see Privacy). A wrong mark publishes a living person's address and phone number, so it asks for
+     * what a second person needs to check it: where the death is documented ($evidence: an obituary, a death
+     * certificate, a family book) and a year that fits the directory it comes from.
+     *
+     * Only the owner of the database can do this: a database opened for visitors refuses.
+     *
+     * @return bool false when there is no such entry
+     * @throws \LogicException If this database was opened for visitors
+     * @throws \InvalidArgumentException If $evidence is empty or too long, or $year is not plausible
+     */
+    public function markDeceased(int $id, int $year, string $evidence): bool
+    {
+        $this->requireOwner('record a death');
+
+        $evidence = trim($evidence);
+        if ($evidence === '') {
+            throw new \InvalidArgumentException('Say where the death is documented (an obituary, a death certificate): without it nobody can check the mark');
+        }
+        if (mb_strlen($evidence) > self::MAX_EVIDENCE_LENGTH) {
+            throw new \InvalidArgumentException('The evidence is longer than ' . self::MAX_EVIDENCE_LENGTH . ' characters: say where it is, do not copy it');
+        }
+
+        $this->validateEntityId($id);
+        $row = $this->findOneById($id);
+        if ($row === null) {
+            return false;
+        }
+
+        $this->assertPlausibleDeathYear($year, isset($row['source_directory_id']) ? (string) $row['source_directory_id'] : null);
+
+        $stmt = $this->pdo->prepare('UPDATE phone_directory SET deceased_year = :year, deceased_evidence = :evidence, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt->execute([':year' => $year, ':evidence' => $evidence, ':id' => $id]);
+
+        return true;
+    }
+
+    /**
+     * Takes the mark back: the entry goes back to following the directory's year.
+     *
+     * @return bool false when there is no such entry
+     * @throws \LogicException If this database was opened for visitors
+     */
+    public function clearDeceased(int $id): bool
+    {
+        $this->requireOwner('take back a death');
+
+        $this->validateEntityId($id);
+        if ($this->findOneById($id) === null) {
+            return false;
+        }
+
+        $stmt = $this->pdo->prepare('UPDATE phone_directory SET deceased_year = NULL, deceased_evidence = NULL, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+
+        return true;
+    }
+
+    /**
+     * Where the death of this entry's person is documented, or null when none is recorded. The text is not part
+     * of the entry (it may name relatives), so it is only for the owner.
+     *
+     * @throws \LogicException If this database was opened for visitors
+     */
+    public function getDeceasedEvidence(int $id): ?string
+    {
+        $this->requireOwner('read the evidence of a death');
+
+        $row = $this->findOneById($id);
+
+        return isset($row['deceased_evidence']) ? (string) $row['deceased_evidence'] : null;
+    }
+
+    private function requireOwner(string $action): void
+    {
+        if ($this->privacy->hidesLiving()) {
+            throw new \LogicException("A database opened for visitors cannot {$action}: open it with Privacy::forOwner()");
+        }
+    }
+
+    /**
+     * A person is listed in a directory a year before it comes out at the earliest, so a death earlier than that
+     * is a different person (a namesake) or a typo. Nor can it be in the future.
+     */
+    private function assertPlausibleDeathYear(int $year, ?string $directoryId): void
+    {
+        $thisYear = (int) date('Y');
+        if ($year < self::EARLIEST_DEATH_YEAR || $year > $thisYear) {
+            throw new \InvalidArgumentException("The year of death must be between " . self::EARLIEST_DEATH_YEAR . " and {$thisYear}, not {$year}");
+        }
+
+        $directoryYear = (new PhoneDirectoryCatalog())->yearOfDirectory($directoryId);
+        if ($directoryYear !== null && $year < $directoryYear - 1) {
+            throw new \InvalidArgumentException("The entry is from the {$directoryYear} directory: a death in {$year} would be a different person");
+        }
     }
 
     public function count(): int
@@ -344,7 +453,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
     /** @param Row $row */
     private function rowToEntry(array $row): PhoneDirectoryEntry
     {
-        return new PhoneDirectoryEntry(
+        $entry = new PhoneDirectoryEntry(
             fullName: $row['raw_name'] ?? $row['full_name'],
             countryCode: $row['country_code'] ?? $this->getDefaultCountryCode(),
             street: $row['street'],
@@ -357,5 +466,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
             language: $row['language'] ?? null,
             sourceLine: isset($row['source_line']) ? (int) $row['source_line'] : null
         );
+
+        return isset($row['deceased_year']) ? $entry->withDeceasedYear((int) $row['deceased_year']) : $entry;
     }
 }

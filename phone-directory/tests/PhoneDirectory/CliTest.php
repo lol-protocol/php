@@ -25,8 +25,14 @@ class CliTest extends TestCase
 
     private function runCli(string $command): array
     {
+        return $this->runCliArgs(explode(' ', $command));
+    }
+
+    /** For arguments that contain spaces, which runCli() would split. */
+    private function runCliArgs(array $args): array
+    {
         $descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
-        $process = proc_open(['php', $this->binary, ...explode(' ', $command)], $descriptors, $pipes);
+        $process = proc_open(['php', $this->binary, ...$args], $descriptors, $pipes);
         $this->assertIsResource($process);
 
         $stdout = stream_get_contents($pipes[1]);
@@ -268,5 +274,96 @@ class CliTest extends TestCase
             $this->assertSame(1, $exitCode, $date);
             $this->assertStringContainsString('--hoy debe ser una fecha AAAA-MM-DD', $stderr, $date);
         }
+    }
+
+    // --- a person recorded as dead (deceased) -----------------------------------------------------------
+
+    private function markTheRecentGarciaDead(): void
+    {
+        [$exitCode, $stdout] = $this->runCliArgs(['deceased', '2', '--year=1988', '--evidence=Esquela, La Vanguardia, 12/03/1988', "--dsn=sqlite:{$this->dbFile}"]);
+        $this->assertSame(0, $exitCode);
+        $this->assertStringContainsString('murió en 1988', $stdout);
+    }
+
+    public function testSearchShowsTheIdOfEachPerson(): void
+    {
+        [$old, $recent] = $this->importOldAndRecent();
+
+        [, $stdout] = $this->runCli("search --name=garcia --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertStringContainsString('[persona #1] García López, José', $stdout);
+        $this->assertStringContainsString('[persona #2] García Ruiz, José', $stdout);
+
+        unlink($old);
+        unlink($recent);
+    }
+
+    public function testADeadPersonOfARecentDirectoryAppearsInThePublicView(): void
+    {
+        [$old, $recent] = $this->importOldAndRecent();
+        $this->markTheRecentGarciaDead();
+
+        [, $stdout] = $this->runCli("search --name=garcia --publico --hoy=2026-10-20 --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertStringContainsString('2 resultado(s)', $stdout);
+        $this->assertStringContainsString('García Ruiz, José', $stdout);
+        $this->assertStringContainsString('† 1988', $stdout);
+        $this->assertStringNotContainsString('Esquela', $stdout, 'the evidence is for the owner');
+        $this->assertStringNotContainsString('La Vanguardia', $stdout);
+
+        unlink($old);
+        unlink($recent);
+    }
+
+    public function testTakingTheMarkBackHidesThePersonAgain(): void
+    {
+        [$old, $recent] = $this->importOldAndRecent();
+        $this->markTheRecentGarciaDead();
+
+        [$exitCode, $stdout] = $this->runCli("deceased 2 --clear --dsn=sqlite:{$this->dbFile}");
+        $this->assertSame(0, $exitCode);
+        $this->assertStringContainsString('Marca quitada', $stdout);
+
+        [, $search] = $this->runCli("search --name=garcia --publico --hoy=2026-10-20 --dsn=sqlite:{$this->dbFile}");
+        $this->assertStringContainsString('1 resultado(s)', $search);
+        $this->assertStringNotContainsString('García Ruiz', $search);
+
+        unlink($old);
+        unlink($recent);
+    }
+
+    public function testDeceasedRefusesWhatCannotBeChecked(): void
+    {
+        [$old, $recent] = $this->importOldAndRecent();
+        $dsn = "--dsn=sqlite:{$this->dbFile}";
+
+        $cases = [
+            'no id' => [['deceased', '--year=1988', '--evidence=x', $dsn], 'uso: phonedir deceased'],
+            'id that is not a number' => [['deceased', 'dos', '--year=1988', '--evidence=x', $dsn], 'el id debe ser un número positivo'],
+            'id 0' => [['deceased', '0', '--year=1988', '--evidence=x', $dsn], 'el id debe ser un número positivo'],
+            'unknown id' => [['deceased', '99', '--year=1988', '--evidence=x', $dsn], 'no hay ninguna entrada con id 99'],
+            'no evidence' => [['deceased', '2', '--year=1988', $dsn], 'uso: phonedir deceased'],
+            'blank evidence' => [['deceased', '2', '--year=1988', '--evidence=   ', $dsn], 'Say where the death is documented'],
+            'no year' => [['deceased', '2', '--evidence=x', $dsn], 'uso: phonedir deceased'],
+            'year that is not a year' => [['deceased', '2', '--year=pronto', '--evidence=x', $dsn], '--year debe ser un año'],
+            'death before the directory' => [['deceased', '2', '--year=1950', '--evidence=x', $dsn], 'would be a different person'],
+            'death in the future' => [['deceased', '2', '--year=' . ((int) date('Y') + 1), '--evidence=x', $dsn], 'The year of death must be between'],
+            'the public view' => [['deceased', '2', '--year=1988', '--evidence=x', '--publico', $dsn], '--publico no se usa con deceased'],
+            'clear with a year' => [['deceased', '2', '--clear', '--year=1988', $dsn], '--clear no se combina'],
+        ];
+
+        foreach ($cases as $name => [$args, $message]) {
+            [$exitCode, , $stderr] = $this->runCliArgs($args);
+
+            $this->assertSame(1, $exitCode, $name);
+            $this->assertStringContainsString($message, $stderr, $name);
+        }
+
+        // None of them left a mark behind.
+        [, $stdout] = $this->runCli("search --name=garcia --publico --hoy=2026-10-20 --dsn=sqlite:{$this->dbFile}");
+        $this->assertStringContainsString('1 resultado(s)', $stdout);
+
+        unlink($old);
+        unlink($recent);
     }
 }
