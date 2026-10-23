@@ -25,17 +25,19 @@ Las notas de [`frases.md`](frases.md) piden verificar contra el producto toda fr
 | «Nosotros las guardamos», «Nosotros la guardamos», «Reúne a tu familia y recopila sus historias» | No se pueden aportar historias; las copias de seguridad no están probadas | **No hay respaldo aquí** |
 | «Esa foto vieja del cajón es un tesoro. Compártela con tu familia.» | No hay subida de fotos. Es una invitación a compartir fuera del producto | Se puede publicar |
 | «Encontramos nuevas pistas sobre tus antepasados», «Hay un familiar que aún no conoces», «Ver mis hallazgos» (condicionales) | No hay pistas, hallazgos ni coincidencias. Lo más cercano, `phone-directory/RecordLinker`, enlaza guías telefónicas y `PRIVACIDAD-Y-HONRA.md` lo señala como riesgo para la privacidad | **No hay respaldo aquí.** Solo valen con datos reales de esa persona |
-| «Tu árbol puede tener pistas por descubrir», «Quizás hay un familiar que aún no conoces» | Mismo caso, pero están en la lista **no** condicional, contra lo que dice «Antes de usar». Van hedged («puede», «quizás») | **Decisión pendiente:** moverlas a condicionales o dejarlas |
+| «Tu árbol puede tener pistas por descubrir», «Quizás hay un familiar que aún no conoces» | Mismo caso, pero estaban en la lista **no** condicional, contra lo que dice «Antes de usar». Van hedged («puede», «quizás»), pero insinúan igual que el producto encuentra algo | **Movidas a los asuntos condicionales** de `frases.md`, y quitadas de las 15 traducciones. Si se prefiere dejarlas como asuntos de uso general, hay que devolverlas a las dos partes |
 | «Tu apellido tiene un origen. Descúbrelo hoy.» | La página de cada apellido muestra su origen (un código de país, por ejemplo «es») y, si la tiene, una descripción, además de su red y su dispersión por lugar de nacimiento. Los datos de demostración lo ilustran; los reales dependen de lo que se cargue | Respaldada en parte |
 | «Llevas en ti a cientos de antepasados.» | Aritmética: 8 generaciones son 256 personas; es una afirmación general, no sobre su árbol | Se puede publicar |
 | Lemas, eslóganes, manifiesto, legado, «llama a un familiar», hashtags | No afirman nada del producto | Se pueden publicar |
 
 ## Frases que sí se podrían afirmar
 
-Estas están respaldadas hoy por este repositorio, con los límites de [`ACCESO.md`](../url-routing/docs/ACCESO.md). **No se añadieron a `frases.md`**: cada una habría que traducirla a los 15 idiomas y revisarla con alguien nativo, y la decisión de publicarlas es de quien las usa.
+Estas están respaldadas hoy por este repositorio, con los límites de [`ACCESO.md`](../url-routing/docs/ACCESO.md). Están en [`frases.md`](frases.md), en la sección «Privacidad y control», y traducidas a los 15 idiomas como el resto: **borrador sin revisión nativa** (ver [`idiomas/README.md`](idiomas/README.md)). Publicarlas sigue siendo decisión de quien las usa, y si el producto cambia hay que volver a verificarlas.
 
 - «Las personas que podrían estar vivas no se muestran a quien visita tu árbol.» (es una deducción por fechas, no una certeza: no cubre a quien vive pero no tiene fechas)
 - «Tus colecciones privadas solo las ves tú.»
 - «Puedes llevarte tu árbol: exporta a GEDCOM.» (hoy, a partir de una colección que el propietario puede abrir)
+
+Los límites que no se deben ocultar al usarlas: la primera es una deducción por fechas (no cubre a quien vive pero no tiene fechas ni marca), la segunda no impide que una persona de una colección privada se vea si otra colección pública la incluye, y la tercera exporta una colección que el propietario puede abrir.
 
 Lo que **no** se puede decir con lo que hay: «tus datos están seguros», «nadie puede ver…» sin matices, «puedes borrar tu información cuando quieras» (no hay borrado) ni nada sobre moderación mientras el filtro no esté conectado.

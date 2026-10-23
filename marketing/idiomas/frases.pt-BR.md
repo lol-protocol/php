@@ -50,6 +50,11 @@ Talvez por isso a vida não seja uma questão de quanto tempo temos, mas do que 
 ## Confiança e respeito
 - Sua história familiar, tratada com respeito e cuidado.
 
+## Privacidade e controle
+- As pessoas que podem estar vivas não aparecem para quem visita sua árvore.
+- Só você vê suas coleções privadas.
+- Leve sua árvore com você: exporte para GEDCOM.
+
 ## Chamadas para ação
 - Comece hoje sua árvore genealógica.
 - Comece a descobrir quem foram seus avós.
@@ -87,8 +92,6 @@ Talvez por isso a vida não seja uma questão de quanto tempo temos, mas do que 
 - Comece hoje: seu primeiro passo está a um clique
 - Suas raízes, mais perto do que você imagina
 - Convide sua família para construir a história de vocês
-- Sua árvore pode ter pistas a descobrir
-- Talvez exista um parente que você ainda não conhece
 
 ### Texto de pré-visualização
 - Descubra quem veio antes de você.

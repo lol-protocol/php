@@ -50,7 +50,7 @@ No hace falta enviar las frases que quedaron fuera por depender del producto (co
 
 ## Al recibir la revisión
 
-- El archivo debe conservar las mismas 114 líneas y las mismas secciones, con `[Nombre]` y `[Marca]` intactos.
+- El archivo debe conservar las mismas 117 líneas y las mismas secciones, con `[Nombre]` y `[Marca]` intactos.
 - Revisar con cuidado cualquier cambio que altere el significado o añada una promesa (resultados, datos, seguridad); la nota «Antes de usar» de `../frases.md` manda.
 - Aplicar los cambios, quitar el comentario HTML de borrador del archivo y anotar en el README quién lo revisó y cuándo.
 
@@ -63,7 +63,7 @@ Copy and send as is.
 > **What to do.** Read your file next to `frases.en.md` (the English reference) and fix anything that is wrong, unnatural or off-tone. Aim for warm, respectful, plain language: not salesy, no hype.
 >
 > **Please check:**
-> 1. The meaning matches the reference, line by line (same sections, same order, same number of lines: 114).
+> 1. The meaning matches the reference, line by line (same sections, same order, same number of lines: 117).
 > 2. It sounds natural to a native reader, not like a translation.
 > 3. The register. We chose the one listed for your language in the table above; tell us if another fits this market better.
 > 4. Gender and politeness. Avoid assuming the reader's gender where you can.
@@ -71,6 +71,6 @@ Copy and send as is.
 > 6. The punctuation and typography conventions of your language.
 > 7. The hashtags: do they exist and read well?
 >
-> **Rules.** Keep `[Nombre]` and `[Marca]` exactly as written. Do not add or remove lines. Do not add promises about results, data, privacy or security. If a phrase already sounds like one, flag it instead of making it stronger. If something cannot be fixed, leave a comment rather than deleting it.
+> **Rules.** Keep `[Nombre]` and `[Marca]` exactly as written. Do not add or remove lines. Do not add promises about results, data, privacy or security. If a phrase already sounds like one, flag it instead of making it stronger. The three lines in the "Privacy and control" section are the exception that has been checked against the product, and only as worded: keep their meaning exactly, do not make them stronger (not "nobody can see", not "your data is safe"), and keep the hedge in the first one (people who *might* still be alive). If something cannot be fixed, leave a comment rather than deleting it.
 >
 > **Please send back** the corrected file plus short notes: what you changed, anything culturally sensitive, and anything you would avoid.

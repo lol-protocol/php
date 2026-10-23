@@ -50,6 +50,11 @@ Może właśnie dlatego życie nie polega na tym, ile mamy czasu, lecz na tym, c
 ## Zaufanie i szacunek
 - Historia twojej rodziny, potraktowana z szacunkiem i troską.
 
+## Prywatność i kontrola
+- Osoby, które mogą jeszcze żyć, nie są pokazywane nikomu, kto odwiedza twoje drzewo.
+- Twoje prywatne kolekcje widzisz tylko ty.
+- Zabierz swoje drzewo ze sobą: wyeksportuj je do GEDCOM.
+
 ## Wezwania do działania
 - Zacznij swoje drzewo genealogiczne już dziś.
 - Zacznij odkrywać, kim byli twoi dziadkowie.
@@ -87,8 +92,6 @@ Może właśnie dlatego życie nie polega na tym, ile mamy czasu, lecz na tym, c
 - Zacznij już dziś: pierwszy krok dzieli cię od jednego kliknięcia
 - Twoje korzenie są bliżej, niż myślisz
 - Zaproś rodzinę, by razem tworzyć waszą historię
-- W twoim drzewie mogą czekać ślady do odkrycia
-- Być może jest ktoś z rodziny, kogo jeszcze nie znasz
 
 ### Tekst podglądu
 - Odkryj, kto był przed tobą.

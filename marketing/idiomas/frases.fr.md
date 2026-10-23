@@ -50,6 +50,11 @@ C'est peut-être pour cela que la vie ne tient pas à la durée dont nous dispos
 ## Confiance et respect
 - Votre histoire familiale, traitée avec respect et soin.
 
+## Vie privée et contrôle
+- Les personnes qui pourraient être en vie ne sont pas montrées à ceux qui visitent votre arbre.
+- Vos collections privées ne sont visibles que par vous.
+- Emportez votre arbre avec vous : exportez-le en GEDCOM.
+
 ## Appels à l'action
 - Commencez votre arbre généalogique dès aujourd'hui.
 - Commencez à découvrir qui étaient vos grands-parents.
@@ -87,8 +92,6 @@ C'est peut-être pour cela que la vie ne tient pas à la durée dont nous dispos
 - Commencez dès aujourd'hui : votre premier pas est à un clic
 - Vos racines, plus proches que vous ne le pensez
 - Invitez votre famille à construire son histoire ensemble
-- Votre arbre cache peut-être des pistes à découvrir
-- Peut-être existe-t-il un parent que vous ne connaissez pas encore
 
 ### Texte d'aperçu
 - Découvrez qui est venu avant vous.
