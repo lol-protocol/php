@@ -90,4 +90,27 @@ class MigratorTest extends TestCase
         $this->expectException(\PDOException::class);
         Migrator::forSite($db, 'pos')->migrate();
     }
+
+    #[DataProvider('drivers')]
+    public function testPendingListsWhatMigrateWouldRunAndChangesNothing(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'pos');
+        $migrator = Migrator::forSite($db, 'pos');
+        $this->assertSame([], $migrator->pending(), 'a migrated database has nothing pending');
+
+        $db->execute("DELETE FROM schema_migrations WHERE version = 'pos/002_ordenes_codigo'");
+        $this->assertSame(['pos/002_ordenes_codigo'], $migrator->pending());
+        $this->assertSame(['pos/002_ordenes_codigo'], $migrator->pending(), 'asking twice changes nothing');
+        $this->assertSame(1, (int) $db->fetchValue("SELECT COUNT(*) FROM schema_migrations WHERE version = 'pos/001_esquema_inicial'"));
+    }
+
+    public function testPendingIsEverythingBeforeTheFirstMigration(): void
+    {
+        $db = new Database('sqlite::memory:');
+
+        $pending = Migrator::forSite($db, 'pos')->pending();
+
+        $this->assertSame(['pos/001_esquema_inicial', 'pos/002_ordenes_codigo'], $pending);
+        $this->assertSame([], $db->fetchAll("SELECT name FROM sqlite_master WHERE name = 'schema_migrations'"), 'it did not create the table');
+    }
 }

@@ -120,6 +120,7 @@ Con `$D` = tu dominio y `$T` = el valor de `OWNER_TOKEN`:
 
 ```bash
 curl -s https://$D/health                        # {"status":"ok",...}
+curl -s https://$D/ready                         # {"status":"ok","db":"ok","migrations":"applied",...}
 curl -s -o /dev/null -w '%{http_code}\n' https://$D/            # 200
 curl -s -o /dev/null -w '%{http_code}\n' https://$D/0/          # 401: pide la clave
 curl -s -o /dev/null -w '%{http_code}\n' -u x:$T https://$D/0/  # 200 (404 si falta el usuario 1: ver paso 4)
@@ -128,7 +129,7 @@ curl -sI -u x:$T https://$D/0/ | grep -i -E 'cache-control|vary|set-cookie|stric
 
 Debe verse `Cache-Control: private, no-store` y `Vary: Authorization`: lo que depende de quién pregunta no se guarda en cachés compartidas. Por HTTPS, la cookie de sesión lleva `secure; HttpOnly; SameSite=Lax` y llega `Strict-Transport-Security`; por HTTP plano, la cookie sale sin `secure`.
 
-`/health` solo dice que PHP responde: sigue en `ok` aunque la base de datos esté caída. Para saber si la base responde, abre una página que la consulte (la ficha de una persona, por ejemplo).
+Son dos preguntas distintas. **`/health`**: ¿responde PHP? No toca la base, así que sigue en `ok` aunque la base esté caída (es lo que quiere una sonda de «está vivo»). **`/ready`**: ¿puede servir este sitio? Pregunta a la base del sitio que elige el `Host` y si todas las migraciones están aplicadas; si algo falla da **503** y dice qué (`"db":"down"` o `"migrations":"pending"`), sin más detalle: la razón queda en `LOG_FILE`. Es lo que atrapa un despliegue que olvidó `bin/migrate.php`. Apunta ahí tu monitor, una vez por dominio. Cuenta para el limitador y no abre sesión.
 
 Y que lo que no debe servirse, no se sirve:
 
@@ -143,8 +144,9 @@ curl -s -o /dev/null -w '%{http_code}\n' https://$D/composer.json    # 404
 | `/0/` da **404** | Con la clave correcta y el mensaje «No existe el usuario 1»: falta crear el usuario (paso 4). Sin ese mensaje: `OWNER_TOKEN` falta o tiene menos de 20 caracteres (el log lo avisa con un *warning*) |
 | `/0/` da **401** con la clave correcta | El servidor no entrega la cabecera `Authorization` a PHP (regla de Apache, o un proxy que la quita). Con la clave equivocada también da 401: comprueba que no tiene espacios ni saltos de línea |
 | Un error de base de datos | El DSN, el usuario o los permisos del directorio de SQLite. El visitante ve solo «500 - Error interno del servidor»; el detalle (sin la clave) queda en `LOG_FILE`. Al volver la base, el sitio se recupera solo |
+| `/ready` da **503** | Con `"db":"down"`: la base no responde (DSN, usuario, el servicio parado). Con `"migrations":"pending"`: faltan migraciones, `sudo -u www-data php bin/migrate.php <sitio>` (paso 4) |
 | `attempt to write a readonly database` en el log | La base SQLite la creó otro usuario, normalmente root: paso 4 |
-| **429** | El limitador: 100 peticiones por minuto y por IP (`/health` no cuenta). Tú también, desde esa IP. Detrás de un proxy inverso sin `TRUSTED_PROXIES`, todos los visitantes comparten la IP del proxy (se deduce del código; no se probó con un proxy) |
+| **429** | El limitador: 100 peticiones por minuto y por IP (`/health` no cuenta). Tú también, desde esa IP. La respuesta trae `Retry-After` con los segundos que faltan. Cada IP deja un archivo en el directorio temporal, y el propio limitador borra los de más de una hora (se revisa cada diez minutos). Detrás de un proxy inverso sin `TRUSTED_PROXIES`, todos los visitantes comparten la IP del proxy (se deduce del código; no se probó con un proxy) |
 | Un `.env` descargable | La raíz web no es `public/` |
 
 ## 7. Usarlo como propietario
@@ -161,6 +163,7 @@ cd url-routing
 composer install --no-dev --optimize-autoloader
 sudo -u www-data php bin/migrate.php genealogy && sudo -u www-data php bin/migrate.php pos
 sudo systemctl reload php8.3-fpm        # vacía el opcache
+curl -s https://$D/ready                # debe dar "migrations":"applied"
 ```
 
 ## 9. Rotar o quitar el token

@@ -57,6 +57,30 @@ final class Migrator
         return $done;
     }
 
+    /**
+     * Versions that have a file but are not recorded as applied: what `migrate()` would run. All of them when
+     * schema_migrations does not exist yet. Changes nothing, so a readiness probe can ask it.
+     *
+     * @return list<string>
+     */
+    public function pending(): array
+    {
+        try {
+            $applied = array_column($this->db->fetchAll('SELECT version FROM schema_migrations'), 'version');
+        } catch (\PDOException) {
+            $applied = [];
+        }
+
+        $pending = [];
+        foreach (array_keys($this->files('migrations')) as $nombre) {
+            if (!in_array("{$this->namespace}/{$nombre}", $applied, true)) {
+                $pending[] = "{$this->namespace}/{$nombre}";
+            }
+        }
+
+        return $pending;
+    }
+
     /** Loads the demo data set (development and tests only). */
     public function seed(): void
     {
