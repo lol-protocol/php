@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_withdraw_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="grad_action_withdraw_red" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E76B6B"/>
+      <stop offset="1" stop-color="#DC2626"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="35.22" cy="57.32" rx="19.52" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M16.38 32.84L18 35A11 11 0 0 0 35.6 21.8L33.98 19.64A11 11 0 0 0 16.38 32.84Z" fill="#883307"/><circle cx="25" cy="26" r="11" fill="url(#grad_action_withdraw_orange)"/></g>
+    <g><path d="M38.98 49.64L40.24 51.32A9 9 0 0 0 54.64 40.52L53.38 38.84A9 9 0 0 0 38.98 49.64Z" fill="#801616"/><circle cx="46" cy="44" r="9" fill="url(#grad_action_withdraw_red)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M41 44L51 44" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

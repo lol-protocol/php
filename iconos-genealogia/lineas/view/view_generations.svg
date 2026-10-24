@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+    }
+  </style>
   <g class="solids">
-    <g><rect x="8" y="8" width="48" height="12" rx="6" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M27.66 16.51L28.74 17.95A4.18 4.18 0 0 0 35.42 12.93L34.34 11.49A4.18 4.18 0 0 0 27.66 16.51Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="14" r="4.18" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><rect x="8" y="25" width="48" height="12" rx="6" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M17.66 33.51L18.74 34.95A4.18 4.18 0 0 0 25.42 29.93L24.34 28.49A4.18 4.18 0 0 0 17.66 33.51Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="21" cy="31" r="4.18" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M37.66 33.51L38.74 34.95A4.18 4.18 0 0 0 45.42 29.93L44.34 28.49A4.18 4.18 0 0 0 37.66 33.51Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="41" cy="31" r="4.18" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><rect x="8" y="42" width="48" height="12" rx="6" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M10.66 50.51L11.74 51.95A4.18 4.18 0 0 0 18.42 46.93L17.34 45.49A4.18 4.18 0 0 0 10.66 50.51Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="14" cy="48" r="4.18" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M27.66 50.51L28.74 51.95A4.18 4.18 0 0 0 35.42 46.93L34.34 45.49A4.18 4.18 0 0 0 27.66 50.51Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="48" r="4.18" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M44.66 50.51L45.74 51.95A4.18 4.18 0 0 0 52.42 46.93L51.34 45.49A4.18 4.18 0 0 0 44.66 50.51Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="48" cy="48" r="4.18" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><rect x="8" y="8" width="48" height="12" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M27.96 16.28L29.04 17.72A3.8 3.8 0 0 0 35.12 13.16L34.04 11.72A3.8 3.8 0 0 0 27.96 16.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="14" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><rect x="8" y="25" width="48" height="12" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M17.96 33.28L19.04 34.72A3.8 3.8 0 0 0 25.12 30.16L24.04 28.72A3.8 3.8 0 0 0 17.96 33.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="21" cy="31" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M37.96 33.28L39.04 34.72A3.8 3.8 0 0 0 45.12 30.16L44.04 28.72A3.8 3.8 0 0 0 37.96 33.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="41" cy="31" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><rect x="8" y="42" width="48" height="12" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M10.96 50.28L12.04 51.72A3.8 3.8 0 0 0 18.12 47.16L17.04 45.72A3.8 3.8 0 0 0 10.96 50.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="14" cy="48" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M27.96 50.28L29.04 51.72A3.8 3.8 0 0 0 35.12 47.16L34.04 45.72A3.8 3.8 0 0 0 27.96 50.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="48" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M44.96 50.28L46.04 51.72A3.8 3.8 0 0 0 52.12 47.16L51.04 45.72A3.8 3.8 0 0 0 44.96 50.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="48" cy="48" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

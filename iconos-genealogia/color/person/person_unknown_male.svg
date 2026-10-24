@@ -10,7 +10,7 @@
     <ellipse cx="32.02" cy="44.62" rx="9.68" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M41.97 24.36A2.85 2.85 0 0 1 42.54 26.07L42.54 39.37A2.85 2.85 0 0 1 39.69 42.22L26.39 42.22A2.85 2.85 0 0 1 24.11 41.08L22.25 38.6A2.85 2.85 0 0 1 21.68 36.89L21.68 23.59A2.85 2.85 0 0 1 24.53 20.74L37.83 20.74A2.85 2.85 0 0 1 40.11 21.88Z" fill="#767C82"/><rect x="21.5" y="20.5" width="19" height="19" rx="2.85" fill="url(#grad_person_unknown_male_mist)"/></g>
+    <g><path d="M42.2 23.9A1.71 1.71 0 0 1 42.54 24.93L42.54 40.51A1.71 1.71 0 0 1 40.83 42.22L25.25 42.22A1.71 1.71 0 0 1 23.88 41.54L22.02 39.06A1.71 1.71 0 0 1 21.68 38.03L21.68 22.45A1.71 1.71 0 0 1 23.39 20.74L38.97 20.74A1.71 1.71 0 0 1 40.34 21.42Z" fill="#767C82"/><rect x="21.5" y="20.5" width="19" height="19" rx="1.71" fill="url(#grad_person_unknown_male_mist)"/></g>
   </g>
   <g class="marks">
     <path d="M12 30a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.6"/>

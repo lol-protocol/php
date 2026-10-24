@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-red{stroke:var(--ic-red,#801616)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M7.6 36.3L9.4 38.7A10.5 10.5 0 0 0 26.2 26.1L24.4 23.7A10.5 10.5 0 0 0 7.6 36.3Z" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/><circle cx="16" cy="30" r="10.5" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M37.6 36.3L39.4 38.7A10.5 10.5 0 0 0 56.2 26.1L54.4 23.7A10.5 10.5 0 0 0 37.6 36.3Z" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/><circle cx="46" cy="30" r="10.5" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-red" stroke="#801616"><path d="M7.6 36.3L9.4 38.7A10.5 10.5 0 0 0 26.2 26.1L24.4 23.7A10.5 10.5 0 0 0 7.6 36.3Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="16" cy="30" r="10.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-red" stroke="#801616"><path d="M37.6 36.3L39.4 38.7A10.5 10.5 0 0 0 56.2 26.1L54.4 23.7A10.5 10.5 0 0 0 37.6 36.3Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="46" cy="30" r="10.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M28.5 30h2M33.5 30h2" fill="none" stroke="#801616" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M28.5 30h2M33.5 30h2" class="ic-red" fill="none" stroke="#801616" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

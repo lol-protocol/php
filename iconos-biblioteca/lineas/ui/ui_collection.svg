@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-indigo{stroke:var(--ic-indigo,#2E2985)}
+      .ic-pink{stroke:var(--ic-pink,#7F1745)}
+      .ic-violet{stroke:var(--ic-violet,#482289)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M38.64 12.52A4 4 0 0 1 39.44 14.92L39.44 32.92A4 4 0 0 1 35.44 36.92L15.44 36.92A4 4 0 0 1 12.24 35.32L10.8 33.4A4 4 0 0 1 10 31L10 13A4 4 0 0 1 14 9L34 9A4 4 0 0 1 37.2 10.6Z" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="9" width="28" height="26" rx="4" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M44.64 18.52A4 4 0 0 1 45.44 20.92L45.44 38.92A4 4 0 0 1 41.44 42.92L21.44 42.92A4 4 0 0 1 18.24 41.32L16.8 39.4A4 4 0 0 1 16 37L16 19A4 4 0 0 1 20 15L40 15A4 4 0 0 1 43.2 16.6Z" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/><rect x="16" y="15" width="28" height="26" rx="4" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M50.64 24.52A4 4 0 0 1 51.44 26.92L51.44 44.92A4 4 0 0 1 47.44 48.92L27.44 48.92A4 4 0 0 1 24.24 47.32L22.8 45.4A4 4 0 0 1 22 43L22 25A4 4 0 0 1 26 21L46 21A4 4 0 0 1 49.2 22.6Z" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/><rect x="22" y="21" width="28" height="26" rx="4" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-indigo" stroke="#2E2985"><path d="M38.64 12.52A4 4 0 0 1 39.44 14.92L39.44 32.92A4 4 0 0 1 35.44 36.92L15.44 36.92A4 4 0 0 1 12.24 35.32L10.8 33.4A4 4 0 0 1 10 31L10 13A4 4 0 0 1 14 9L34 9A4 4 0 0 1 37.2 10.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="9" width="28" height="26" rx="4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-violet" stroke="#482289"><path d="M44.64 18.52A4 4 0 0 1 45.44 20.92L45.44 38.92A4 4 0 0 1 41.44 42.92L21.44 42.92A4 4 0 0 1 18.24 41.32L16.8 39.4A4 4 0 0 1 16 37L16 19A4 4 0 0 1 20 15L40 15A4 4 0 0 1 43.2 16.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="16" y="15" width="28" height="26" rx="4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-pink" stroke="#7F1745"><path d="M50.64 24.52A4 4 0 0 1 51.44 26.92L51.44 44.92A4 4 0 0 1 47.44 48.92L27.44 48.92A4 4 0 0 1 24.24 47.32L22.8 45.4A4 4 0 0 1 22 43L22 25A4 4 0 0 1 26 21L46 21A4 4 0 0 1 49.2 22.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="22" y="21" width="28" height="26" rx="4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-amber{stroke:var(--ic-amber,#7E4503)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M44.06 35.81L45.14 37.25A4.6 4.6 0 0 0 52.5 31.73L51.42 30.29A4.6 4.6 0 0 0 44.06 35.81Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><circle cx="47.74" cy="33.05" r="4.6" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-amber" stroke="#7E4503"><path d="M44.06 35.81L45.14 37.25A4.6 4.6 0 0 0 52.5 31.73L51.42 30.29A4.6 4.6 0 0 0 44.06 35.81Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="47.74" cy="33.05" r="4.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M14.26 33.05A17 17 0 0 1 47.74 33.05" fill="none" stroke="#7E4503" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14.26 33.05A17 17 0 0 1 47.74 33.05" class="ic-amber" fill="none" stroke="#7E4503" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

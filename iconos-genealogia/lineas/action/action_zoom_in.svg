@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-sky{stroke:var(--ic-sky,#014D73)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M38.54 45.24L39.98 47.16A5.5 5.5 0 0 0 48.78 40.56L47.34 38.64A5.5 5.5 0 0 0 38.54 45.24Z" fill="none" stroke="#014D73" stroke-width="1.8" stroke-linejoin="round"/><circle cx="42.94" cy="41.94" r="5.5" fill="none" stroke="#014D73" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-sky" stroke="#014D73"><path d="M38.54 45.24L39.98 47.16A5.5 5.5 0 0 0 48.78 40.56L47.34 38.64A5.5 5.5 0 0 0 38.54 45.24Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="42.94" cy="41.94" r="5.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M15.86 28.86a14 14 0 1 0 28 0a14 14 0 1 0 -28 0Z" fill="none" stroke="#014D73" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M22.86 28.86h14M29.86 21.86v14" fill="none" stroke="#014D73" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15.86 28.86a14 14 0 1 0 28 0a14 14 0 1 0 -28 0Z" class="ic-sky" fill="none" stroke="#014D73" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M22.86 28.86h14M29.86 21.86v14" class="ic-sky" fill="none" stroke="#014D73" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

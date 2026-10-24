@@ -11,7 +11,7 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.79" cy="59.5" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="31.6" cy="59.2" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="links">
     <path d="M31 50L31 41L17 41L17 32" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
@@ -22,13 +22,13 @@
     <path d="M45 32L45 23L52 23L52 14" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M26.6 53.67L27.62 55.03A5.72 5.72 0 0 0 36.78 48.17L35.76 46.81A5.72 5.72 0 0 0 26.6 53.67Z" fill="#29313D"/><circle cx="31" cy="50" r="5.72" fill="url(#grad_view_pedigree_ink)"/></g>
-    <g><path d="M22.52 29.55A1.38 1.38 0 0 1 22.8 30.38L22.8 36.82A1.38 1.38 0 0 1 21.42 38.2L14.98 38.2A1.38 1.38 0 0 1 13.88 37.65L12.86 36.29A1.38 1.38 0 0 1 12.58 35.46L12.58 29.02A1.38 1.38 0 0 1 13.96 27.64L20.4 27.64A1.38 1.38 0 0 1 21.5 28.19Z" fill="#767C82"/><rect x="12.4" y="27.4" width="9.2" height="9.2" rx="1.38" fill="url(#grad_view_pedigree_mist)"/></g>
-    <g><path d="M41.13 35.28L42.15 36.64A5.06 5.06 0 0 0 50.25 30.56L49.23 29.2A5.06 5.06 0 0 0 41.13 35.28Z" fill="#767C82"/><circle cx="45" cy="32" r="5.06" fill="url(#grad_view_pedigree_mist)"/></g>
-    <g><path d="M14.77 12.26A1.14 1.14 0 0 1 15 12.94L15 18.26A1.14 1.14 0 0 1 13.86 19.4L8.54 19.4A1.14 1.14 0 0 1 7.63 18.94L6.61 17.58A1.14 1.14 0 0 1 6.38 16.9L6.38 11.58A1.14 1.14 0 0 1 7.52 10.44L12.84 10.44A1.14 1.14 0 0 1 13.75 10.9Z" fill="#767C82"/><rect x="6.2" y="10.2" width="7.6" height="7.6" rx="1.14" fill="url(#grad_view_pedigree_mist)"/></g>
-    <g><path d="M20.84 16.75L21.86 18.11A4.18 4.18 0 0 0 28.54 13.09L27.52 11.73A4.18 4.18 0 0 0 20.84 16.75Z" fill="#767C82"/><circle cx="24" cy="14" r="4.18" fill="url(#grad_view_pedigree_mist)"/></g>
-    <g><path d="M42.77 12.26A1.14 1.14 0 0 1 43 12.94L43 18.26A1.14 1.14 0 0 1 41.86 19.4L36.54 19.4A1.14 1.14 0 0 1 35.63 18.94L34.61 17.58A1.14 1.14 0 0 1 34.38 16.9L34.38 11.58A1.14 1.14 0 0 1 35.52 10.44L40.84 10.44A1.14 1.14 0 0 1 41.75 10.9Z" fill="#767C82"/><rect x="34.2" y="10.2" width="7.6" height="7.6" rx="1.14" fill="url(#grad_view_pedigree_mist)"/></g>
-    <g><path d="M48.84 16.75L49.86 18.11A4.18 4.18 0 0 0 56.54 13.09L55.52 11.73A4.18 4.18 0 0 0 48.84 16.75Z" fill="#767C82"/><circle cx="52" cy="14" r="4.18" fill="url(#grad_view_pedigree_mist)"/></g>
+    <g><path d="M27.02 53.36L28.04 54.72A5.2 5.2 0 0 0 36.36 48.48L35.34 47.12A5.2 5.2 0 0 0 27.02 53.36Z" fill="#29313D"/><circle cx="31" cy="50" r="5.2" fill="url(#grad_view_pedigree_ink)"/></g>
+    <g><path d="M22.63 29.33A0.83 0.83 0 0 1 22.8 29.83L22.8 37.37A0.83 0.83 0 0 1 21.97 38.2L14.43 38.2A0.83 0.83 0 0 1 13.77 37.87L12.75 36.51A0.83 0.83 0 0 1 12.58 36.01L12.58 28.47A0.83 0.83 0 0 1 13.41 27.64L20.95 27.64A0.83 0.83 0 0 1 21.61 27.97Z" fill="#767C82"/><rect x="12.4" y="27.4" width="9.2" height="9.2" rx="0.83" fill="url(#grad_view_pedigree_mist)"/></g>
+    <g><path d="M41.5 35L42.52 36.36A4.6 4.6 0 0 0 49.88 30.84L48.86 29.48A4.6 4.6 0 0 0 41.5 35Z" fill="#767C82"/><circle cx="45" cy="32" r="4.6" fill="url(#grad_view_pedigree_mist)"/></g>
+    <g><path d="M14.86 12.07A0.68 0.68 0 0 1 15 12.48L15 18.72A0.68 0.68 0 0 1 14.32 19.4L8.08 19.4A0.68 0.68 0 0 1 7.54 19.13L6.52 17.77A0.68 0.68 0 0 1 6.38 17.36L6.38 11.12A0.68 0.68 0 0 1 7.06 10.44L13.3 10.44A0.68 0.68 0 0 1 13.84 10.71Z" fill="#767C82"/><rect x="6.2" y="10.2" width="7.6" height="7.6" rx="0.68" fill="url(#grad_view_pedigree_mist)"/></g>
+    <g><path d="M21.14 16.52L22.16 17.88A3.8 3.8 0 0 0 28.24 13.32L27.22 11.96A3.8 3.8 0 0 0 21.14 16.52Z" fill="#767C82"/><circle cx="24" cy="14" r="3.8" fill="url(#grad_view_pedigree_mist)"/></g>
+    <g><path d="M42.86 12.07A0.68 0.68 0 0 1 43 12.48L43 18.72A0.68 0.68 0 0 1 42.32 19.4L36.08 19.4A0.68 0.68 0 0 1 35.54 19.13L34.52 17.77A0.68 0.68 0 0 1 34.38 17.36L34.38 11.12A0.68 0.68 0 0 1 35.06 10.44L41.3 10.44A0.68 0.68 0 0 1 41.84 10.71Z" fill="#767C82"/><rect x="34.2" y="10.2" width="7.6" height="7.6" rx="0.68" fill="url(#grad_view_pedigree_mist)"/></g>
+    <g><path d="M49.14 16.52L50.16 17.88A3.8 3.8 0 0 0 56.24 13.32L55.22 11.96A3.8 3.8 0 0 0 49.14 16.52Z" fill="#767C82"/><circle cx="52" cy="14" r="3.8" fill="url(#grad_view_pedigree_mist)"/></g>
   </g>
   <g class="marks">
     <path d="M29.23 50a1.77 1.77 0 1 0 3.54 0a1.77 1.77 0 1 0 -3.54 0Z" fill="#FFFFFF"/>

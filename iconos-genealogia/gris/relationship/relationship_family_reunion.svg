@@ -15,7 +15,7 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.6" cy="55.8" rx="20.55" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="31.6" cy="55.8" rx="20.11" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="links">
     <path d="M31 30L31 13" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -26,12 +26,12 @@
     <path d="M31 30L14.55 21.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
   </g>
   <g class="solids">
-    <g><path d="M36.71 10.38A1.44 1.44 0 0 1 37 11.24L37 17.96A1.44 1.44 0 0 1 35.56 19.4L28.84 19.4A1.44 1.44 0 0 1 27.69 18.82L26.67 17.46A1.44 1.44 0 0 1 26.38 16.6L26.38 9.88A1.44 1.44 0 0 1 27.82 8.44L34.54 8.44A1.44 1.44 0 0 1 35.69 9.02Z" fill="#7B7B7B"/><rect x="26.2" y="8.2" width="9.6" height="9.6" rx="1.44" fill="url(#grad_relationship_family_reunion_mist_g)"/></g>
-    <g><path d="M43.41 24.91L44.43 26.27A5.28 5.28 0 0 0 52.88 19.93L51.86 18.57A5.28 5.28 0 0 0 43.41 24.91Z" fill="#7B7B7B"/><circle cx="47.45" cy="21.5" r="5.28" fill="url(#grad_relationship_family_reunion_mist_g)"/></g>
+    <g><path d="M36.83 10.15A0.86 0.86 0 0 1 37 10.66L37 18.54A0.86 0.86 0 0 1 36.14 19.4L28.26 19.4A0.86 0.86 0 0 1 27.57 19.05L26.55 17.69A0.86 0.86 0 0 1 26.38 17.18L26.38 9.3A0.86 0.86 0 0 1 27.24 8.44L35.12 8.44A0.86 0.86 0 0 1 35.81 8.79Z" fill="#7B7B7B"/><rect x="26.2" y="8.2" width="9.6" height="9.6" rx="0.86" fill="url(#grad_relationship_family_reunion_mist_g)"/></g>
+    <g><path d="M43.79 24.62L44.81 25.98A4.8 4.8 0 0 0 52.49 20.22L51.47 18.86A4.8 4.8 0 0 0 43.79 24.62Z" fill="#7B7B7B"/><circle cx="47.45" cy="21.5" r="4.8" fill="url(#grad_relationship_family_reunion_mist_g)"/></g>
     <g><path d="M52.96 39.47A1.06 1.06 0 0 1 52.86 40.85L49.4 44.31A1.06 1.06 0 0 1 47.91 44.31L44.45 40.85A1.06 1.06 0 0 1 44.35 40.73L43.33 39.37A1.06 1.06 0 0 1 43.43 37.99L46.89 34.53A1.06 1.06 0 0 1 48.38 34.53L51.84 37.99A1.06 1.06 0 0 1 51.94 38.11Z" fill="#7B7B7B"/><rect x="43.95" y="35" width="7.01" height="7.01" rx="1.06" transform="rotate(45 47.45 38.5)" fill="url(#grad_relationship_family_reunion_mist_r45_g)"/></g>
-    <g><path d="M36.71 44.38A1.44 1.44 0 0 1 37 45.24L37 51.96A1.44 1.44 0 0 1 35.56 53.4L28.84 53.4A1.44 1.44 0 0 1 27.69 52.82L26.67 51.46A1.44 1.44 0 0 1 26.38 50.6L26.38 43.88A1.44 1.44 0 0 1 27.82 42.44L34.54 42.44A1.44 1.44 0 0 1 35.69 43.02Z" fill="#7B7B7B"/><rect x="26.2" y="42.2" width="9.6" height="9.6" rx="1.44" fill="url(#grad_relationship_family_reunion_mist_g)"/></g>
-    <g><path d="M10.5 41.91L11.52 43.27A5.28 5.28 0 0 0 19.97 36.93L18.95 35.57A5.28 5.28 0 0 0 10.5 41.91Z" fill="#7B7B7B"/><circle cx="14.55" cy="38.5" r="5.28" fill="url(#grad_relationship_family_reunion_mist_g)"/></g>
+    <g><path d="M36.83 44.15A0.86 0.86 0 0 1 37 44.66L37 52.54A0.86 0.86 0 0 1 36.14 53.4L28.26 53.4A0.86 0.86 0 0 1 27.57 53.05L26.55 51.69A0.86 0.86 0 0 1 26.38 51.18L26.38 43.3A0.86 0.86 0 0 1 27.24 42.44L35.12 42.44A0.86 0.86 0 0 1 35.81 42.79Z" fill="#7B7B7B"/><rect x="26.2" y="42.2" width="9.6" height="9.6" rx="0.86" fill="url(#grad_relationship_family_reunion_mist_g)"/></g>
+    <g><path d="M10.89 41.62L11.91 42.98A4.8 4.8 0 0 0 19.59 37.22L18.57 35.86A4.8 4.8 0 0 0 10.89 41.62Z" fill="#7B7B7B"/><circle cx="14.55" cy="38.5" r="4.8" fill="url(#grad_relationship_family_reunion_mist_g)"/></g>
     <g><path d="M20.05 22.47A1.06 1.06 0 0 1 19.95 23.85L16.49 27.31A1.06 1.06 0 0 1 15 27.31L11.54 23.85A1.06 1.06 0 0 1 11.44 23.73L10.42 22.37A1.06 1.06 0 0 1 10.52 20.99L13.98 17.53A1.06 1.06 0 0 1 15.47 17.53L18.93 20.99A1.06 1.06 0 0 1 19.03 21.11Z" fill="#7B7B7B"/><rect x="11.04" y="18" width="7.01" height="7.01" rx="1.06" transform="rotate(45 14.55 21.5)" fill="url(#grad_relationship_family_reunion_mist_r45_g)"/></g>
-    <g><path d="M25.9 34.2L27.28 36.04A6.6 6.6 0 0 0 37.84 28.12L36.46 26.28A6.6 6.6 0 0 0 25.9 34.2Z" fill="#474747"/><circle cx="31" cy="30" r="6.6" fill="url(#grad_relationship_family_reunion_orange_g)"/></g>
+    <g><path d="M26.38 33.84L27.76 35.68A6 6 0 0 0 37.36 28.48L35.98 26.64A6 6 0 0 0 26.38 33.84Z" fill="#474747"/><circle cx="31" cy="30" r="6" fill="url(#grad_relationship_family_reunion_orange_g)"/></g>
   </g>
 </svg>

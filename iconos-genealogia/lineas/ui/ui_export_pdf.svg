@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-indigo{stroke:var(--ic-indigo,#2E2985)}
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-red{stroke:var(--ic-red,#801616)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M50.8 14.4A8 8 0 0 1 52.4 19.2L52.4 45.2A8 8 0 0 1 44.4 53.2L20.4 53.2A8 8 0 0 1 14 50L11.6 46.8A8 8 0 0 1 10 42L10 16A8 8 0 0 1 18 8L42 8A8 8 0 0 1 48.4 11.2Z" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="8" width="40" height="42" rx="8" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M41.2 52.1L42.64 54.02A8.5 8.5 0 0 0 56.24 43.82L54.8 41.9A8.5 8.5 0 0 0 41.2 52.1Z" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/><circle cx="48" cy="47" r="8.5" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-red" stroke="#801616"><path d="M50.8 14.4A8 8 0 0 1 52.4 19.2L52.4 45.2A8 8 0 0 1 44.4 53.2L20.4 53.2A8 8 0 0 1 14 50L11.6 46.8A8 8 0 0 1 10 42L10 16A8 8 0 0 1 18 8L42 8A8 8 0 0 1 48.4 11.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="8" width="40" height="42" rx="8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-indigo" stroke="#2E2985"><path d="M41.2 52.1L42.64 54.02A8.5 8.5 0 0 0 56.24 43.82L54.8 41.9A8.5 8.5 0 0 0 41.2 52.1Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="48" cy="47" r="8.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M19 20h22M19 29.5h22M19 39h12" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M45.2 47a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0 -5.6 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M19 20h22M19 29.5h22M19 39h12" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M45.2 47a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0 -5.6 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

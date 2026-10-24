@@ -15,13 +15,13 @@
   </g>
   <g class="solids">
     <g><rect x="8" y="8" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.55"/></g>
-    <g><path d="M27.84 16.75L28.74 17.95A4.18 4.18 0 0 0 35.42 12.93L34.52 11.73A4.18 4.18 0 0 0 27.84 16.75Z" fill="#883307"/><circle cx="31" cy="14" r="4.18" fill="url(#grad_view_generations_orange)"/></g>
+    <g><path d="M28.14 16.52L29.04 17.72A3.8 3.8 0 0 0 35.12 13.16L34.22 11.96A3.8 3.8 0 0 0 28.14 16.52Z" fill="#883307"/><circle cx="31" cy="14" r="3.8" fill="url(#grad_view_generations_orange)"/></g>
     <g><rect x="8" y="25" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.55"/></g>
-    <g><path d="M17.84 33.75L18.74 34.95A4.18 4.18 0 0 0 25.42 29.93L24.52 28.73A4.18 4.18 0 0 0 17.84 33.75Z" fill="#767C82"/><circle cx="21" cy="31" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
-    <g><path d="M37.84 33.75L38.74 34.95A4.18 4.18 0 0 0 45.42 29.93L44.52 28.73A4.18 4.18 0 0 0 37.84 33.75Z" fill="#767C82"/><circle cx="41" cy="31" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
+    <g><path d="M18.14 33.52L19.04 34.72A3.8 3.8 0 0 0 25.12 30.16L24.22 28.96A3.8 3.8 0 0 0 18.14 33.52Z" fill="#767C82"/><circle cx="21" cy="31" r="3.8" fill="url(#grad_view_generations_mist)"/></g>
+    <g><path d="M38.14 33.52L39.04 34.72A3.8 3.8 0 0 0 45.12 30.16L44.22 28.96A3.8 3.8 0 0 0 38.14 33.52Z" fill="#767C82"/><circle cx="41" cy="31" r="3.8" fill="url(#grad_view_generations_mist)"/></g>
     <g><rect x="8" y="42" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.55"/></g>
-    <g><path d="M10.84 50.75L11.74 51.95A4.18 4.18 0 0 0 18.42 46.93L17.52 45.73A4.18 4.18 0 0 0 10.84 50.75Z" fill="#767C82"/><circle cx="14" cy="48" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
-    <g><path d="M27.84 50.75L28.74 51.95A4.18 4.18 0 0 0 35.42 46.93L34.52 45.73A4.18 4.18 0 0 0 27.84 50.75Z" fill="#767C82"/><circle cx="31" cy="48" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
-    <g><path d="M44.84 50.75L45.74 51.95A4.18 4.18 0 0 0 52.42 46.93L51.52 45.73A4.18 4.18 0 0 0 44.84 50.75Z" fill="#767C82"/><circle cx="48" cy="48" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
+    <g><path d="M11.14 50.52L12.04 51.72A3.8 3.8 0 0 0 18.12 47.16L17.22 45.96A3.8 3.8 0 0 0 11.14 50.52Z" fill="#767C82"/><circle cx="14" cy="48" r="3.8" fill="url(#grad_view_generations_mist)"/></g>
+    <g><path d="M28.14 50.52L29.04 51.72A3.8 3.8 0 0 0 35.12 47.16L34.22 45.96A3.8 3.8 0 0 0 28.14 50.52Z" fill="#767C82"/><circle cx="31" cy="48" r="3.8" fill="url(#grad_view_generations_mist)"/></g>
+    <g><path d="M45.14 50.52L46.04 51.72A3.8 3.8 0 0 0 52.12 47.16L51.22 45.96A3.8 3.8 0 0 0 45.14 50.52Z" fill="#767C82"/><circle cx="48" cy="48" r="3.8" fill="url(#grad_view_generations_mist)"/></g>
   </g>
 </svg>
