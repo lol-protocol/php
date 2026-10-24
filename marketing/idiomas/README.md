@@ -26,16 +26,16 @@ Traducciones de la parte madura de [`../frases.md`](../frases.md) a 15 idiomas (
 
 ## Qué se tradujo y qué no
 
-**Traducido:** lemas, eslóganes del logo, manifiesto, emoción y pertenencia, legado familiar, la frase de confianza «Tu historia familiar, tratada con respeto y cuidado.» (también sujeta a la nota «Antes de usar»: verifica que el producto la cumple antes de publicarla), llamadas a la acción, redes sociales (15 frases y hashtags) y correo (asuntos, vista previa, saludos, botones y cierres de uso general).
+**Traducido:** lemas, eslóganes del logo, manifiesto, emoción y pertenencia, legado familiar, la frase de confianza «Tu historia familiar, tratada con respeto y cuidado.» (también sujeta a la nota «Antes de usar»: verifica que el producto la cumple antes de publicarla), **las tres frases de «Privacidad y control»** (respaldadas por el producto; ver [`../VERIFICACION.md`](../VERIFICACION.md)), llamadas a la acción, redes sociales (15 frases y hashtags) y correo (asuntos, vista previa, saludos, botones y cierres de uso general).
 
 **No traducido, a propósito:**
 - La nota «Antes de usar».
-- Los asuntos y el botón **condicionales**: solo valen cuando hay datos reales para esa persona, y eso depende de lo que haga el producto.
-- Las promesas sobre datos y privacidad: «Cuidamos tus datos con respeto; tu legado es de tu familia.» y el pie de correo. Hay que verificarlas contra el producto y contra la normativa de cada mercado antes de publicarlas, en cualquier idioma. «Un espacio seguro donde cada nombre se escribe con dignidad.» se quitó del español porque nada la respalda hoy; el detalle está en [`../VERIFICACION.md`](../VERIFICACION.md).
+- Los asuntos y el botón **condicionales**: solo valen cuando hay datos reales para esa persona, y eso depende de lo que haga el producto. Son cuatro asuntos: «Encontramos nuevas pistas…», «Hay un familiar que aún no conoces» y los dos que antes estaban entre los de uso general, «Tu árbol puede tener pistas por descubrir» y «Quizás hay un familiar que aún no conoces», que insinúan lo mismo aunque con «puede» y «quizás»; por eso salieron de las 15 traducciones (ya no están en los asuntos de uso general).
+- Las promesas sobre datos y privacidad que **no** tienen respaldo: «Cuidamos tus datos con respeto; tu legado es de tu familia.» y el pie de correo. Hay que verificarlas contra el producto y contra la normativa de cada mercado antes de publicarlas, en cualquier idioma. «Un espacio seguro donde cada nombre se escribe con dignidad.» se quitó del español porque nada la respalda hoy; el detalle está en [`../VERIFICACION.md`](../VERIFICACION.md).
 
 ## Convenciones
 
-- Todos los archivos tienen las mismas secciones, el mismo orden y el mismo número de elementos (114 líneas). El elemento N de una sección es el mismo mensaje en todos los idiomas, así que se pueden comparar lado a lado.
+- Todos los archivos tienen las mismas secciones, el mismo orden y el mismo número de elementos (117 líneas). El elemento N de una sección es el mismo mensaje en todos los idiomas, así que se pueden comparar lado a lado.
 - Los marcadores `[Nombre]` y `[Marca]` son idénticos en todos los idiomas. `[Marca]` se completa desde [`../config.json`](../config.json) con `php marketing/render.php` (una sola vez para todos los idiomas, con la opción de una escritura distinta por idioma); `[Nombre]` es por destinatario.
 - Los emojis de las frases de redes son los mismos en todos los idiomas.
 - Los hashtags están localizados. Conviene comprobar que existen y se usan en cada red antes de adoptarlos.
@@ -50,4 +50,4 @@ Traducciones de la parte madura de [`../frases.md`](../frases.md) a 15 idiomas (
 
 ## Agregar un idioma
 
-Copiar un archivo existente, traducir en el mismo orden manteniendo las 114 líneas, dejar `[Nombre]` y `[Marca]` tal cual y conservar los mismos emojis.
+Copiar un archivo existente, traducir en el mismo orden manteniendo las 117 líneas, dejar `[Nombre]` y `[Marca]` tal cual y conservar los mismos emojis.

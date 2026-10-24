@@ -50,6 +50,11 @@ Forse per questo la vita non riguarda quanto tempo abbiamo, ma ciò che facciamo
 ## Fiducia e rispetto
 - La storia della tua famiglia, trattata con rispetto e cura.
 
+## Privacy e controllo
+- Le persone che potrebbero essere ancora in vita non vengono mostrate a chi visita il tuo albero.
+- Le tue raccolte private le vedi solo tu.
+- Porta con te il tuo albero: esportalo in GEDCOM.
+
 ## Inviti all'azione
 - Inizia oggi il tuo albero genealogico.
 - Inizia a scoprire chi erano i tuoi nonni.
@@ -87,8 +92,6 @@ Forse per questo la vita non riguarda quanto tempo abbiamo, ma ciò che facciamo
 - Inizia oggi: il tuo primo passo è a un clic
 - Le tue radici, più vicine di quanto pensi
 - Invita la tua famiglia a costruire insieme la vostra storia
-- Il tuo albero potrebbe nascondere tracce ancora da scoprire
-- Forse c'è un parente che ancora non conosci
 
 ### Testi di anteprima
 - Scopri chi è venuto prima di te.

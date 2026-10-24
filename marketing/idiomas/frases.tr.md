@@ -50,6 +50,11 @@ Belki de bu yüzden hayat, ne kadar zamanımız olduğuyla değil, var olmak iç
 ## Güven ve saygı
 - Aile hikâyen, saygı ve özenle ele alınır.
 
+## Gizlilik ve kontrol
+- Hayatta olabilecek kişiler, ağacını ziyaret edenlere gösterilmez.
+- Özel koleksiyonlarını yalnızca sen görürsün.
+- Ağacını yanında götür: GEDCOM olarak dışa aktar.
+
 ## Harekete geçirici çağrılar
 - Soyağacını bugün oluşturmaya başla.
 - Büyükanne ve büyükbabalarının kim olduğunu keşfetmeye başla.
@@ -87,8 +92,6 @@ Belki de bu yüzden hayat, ne kadar zamanımız olduğuyla değil, var olmak iç
 - Bugün başla: ilk adım bir tık uzağında
 - Köklerin, sandığından daha yakın
 - Ailenle birlikte hikâyenizi yazmaya davet et
-- Ağacında keşfedilmeyi bekleyen ipuçları olabilir
-- Belki henüz tanımadığın bir akraban vardır
 
 ### Önizleme metinleri
 - Senden önce kimlerin geldiğini keşfet.

@@ -59,6 +59,13 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 - Tu historia familiar, tratada con respeto y cuidado.
 - Cuidamos tus datos con respeto; tu legado es de tu familia.
 
+## Privacidad y control
+> Respaldadas por el producto el 17 de octubre de 2026, con los límites de [`url-routing/docs/ACCESO.md`](../url-routing/docs/ACCESO.md) (ver [`VERIFICACION.md`](VERIFICACION.md)). Si el producto cambia, vuelve a verificarlas. No digas más que esto: nada de «tus datos están seguros», «nadie puede ver…» ni «puedes borrar tu información».
+
+- Las personas que podrían estar vivas no se muestran a quien visita tu árbol.
+- Tus colecciones privadas solo las ves tú.
+- Puedes llevarte tu árbol: exporta a GEDCOM.
+
 ## Llamadas a la acción
 - Empieza tu árbol genealógico hoy.
 - Empieza a descubrir quiénes fueron tus abuelos.
@@ -96,14 +103,14 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 - Empieza hoy: tu primer paso está a un clic
 - Tus raíces, más cerca de lo que crees
 - Invita a tu familia a construir su historia juntos
-- Tu árbol puede tener pistas por descubrir
-- Quizás hay un familiar que aún no conoces
 
 ### Asuntos condicionales
 > Solo enviar si hay datos reales para esa persona.
 
 - Encontramos nuevas pistas sobre tus antepasados
 - Hay un familiar que aún no conoces
+- Tu árbol puede tener pistas por descubrir
+- Quizás hay un familiar que aún no conoces
 
 ### Textos de vista previa
 - Descubre quiénes fueron los que vinieron antes que tú.

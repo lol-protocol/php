@@ -50,6 +50,11 @@ Vielleicht geht es im Leben deshalb nicht darum, wie viel Zeit wir haben, sonder
 ## Vertrauen und Respekt
 - Ihre Familiengeschichte, behandelt mit Respekt und Sorgfalt.
 
+## Privatsphäre und Kontrolle
+- Personen, die noch leben könnten, werden Besuchern Ihres Stammbaums nicht angezeigt.
+- Ihre privaten Sammlungen sehen nur Sie.
+- Nehmen Sie Ihren Stammbaum mit: Exportieren Sie ihn als GEDCOM.
+
 ## Handlungsaufforderungen
 - Beginnen Sie noch heute Ihren Stammbaum.
 - Beginnen Sie zu entdecken, wer Ihre Großeltern waren.
@@ -87,8 +92,6 @@ Vielleicht geht es im Leben deshalb nicht darum, wie viel Zeit wir haben, sonder
 - Fangen Sie heute an: Ihr erster Schritt ist nur einen Klick entfernt
 - Ihre Wurzeln, näher als Sie denken
 - Laden Sie Ihre Familie ein, gemeinsam ihre Geschichte zu schreiben
-- Ihr Stammbaum birgt vielleicht noch Spuren, die darauf warten, entdeckt zu werden
-- Vielleicht gibt es einen Verwandten, den Sie noch nicht kennen
 
 ### Vorschautexte
 - Entdecken Sie, wer vor Ihnen war.
