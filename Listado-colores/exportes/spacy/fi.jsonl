@@ -1,0 +1,180 @@
+{"label":"COLOR","pattern":"aavevalkoinen","id":"ghostwhite"}
+{"label":"COLOR","pattern":"akvaa","id":"aqua"}
+{"label":"COLOR","pattern":"akvamariini","id":"aquamarine"}
+{"label":"COLOR","pattern":"alice-sininen","id":"aliceblue"}
+{"label":"COLOR","pattern":"antiikinvalkoinen","id":"antiquewhite"}
+{"label":"COLOR","pattern":"beige","id":"beige"}
+{"label":"COLOR","pattern":"biskviitti","id":"bisque"}
+{"label":"COLOR","pattern":"burgundi","id":"burgundy"}
+{"label":"COLOR","pattern":"chartreusen","id":"chartreuse"}
+{"label":"COLOR","pattern":"dodgerinsininen","id":"dodgerblue"}
+{"label":"COLOR","pattern":"fuksia","id":"fuchsia"}
+{"label":"COLOR","pattern":"gainsborolainen harmaa","id":"gainsboro"}
+{"label":"COLOR","pattern":"harmaa","id":"gray;grey"}
+{"label":"COLOR","pattern":"harmaat","id":"gray"}
+{"label":"COLOR","pattern":"helakanpunainen","id":"scarlet"}
+{"label":"COLOR","pattern":"helakanpunaiset","id":"scarlet"}
+{"label":"COLOR","pattern":"hiekanruskea","id":"sandybrown"}
+{"label":"COLOR","pattern":"himmeä harmaa","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"hopea","id":"silver"}
+{"label":"COLOR","pattern":"hopeanvärinen","id":"silver"}
+{"label":"COLOR","pattern":"hunajakaste","id":"honeydew"}
+{"label":"COLOR","pattern":"indigo","id":"indigo"}
+{"label":"COLOR","pattern":"intiaaninpunainen","id":"indianred"}
+{"label":"COLOR","pattern":"jauhesininen","id":"powderblue"}
+{"label":"COLOR","pattern":"kadetinsininen","id":"cadetblue"}
+{"label":"COLOR","pattern":"kalpea kultavitsa","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"kalpea turkoosi","id":"paleturquoise"}
+{"label":"COLOR","pattern":"kalpea violetinpunainen","id":"palevioletred"}
+{"label":"COLOR","pattern":"kalpeanvihreä","id":"palegreen"}
+{"label":"COLOR","pattern":"karmiininpunainen","id":"crimson"}
+{"label":"COLOR","pattern":"karmiininpunaiset","id":"crimson"}
+{"label":"COLOR","pattern":"kastanjanruskea","id":"maroon"}
+{"label":"COLOR","pattern":"keltainen","id":"yellow"}
+{"label":"COLOR","pattern":"keltaiset","id":"yellow"}
+{"label":"COLOR","pattern":"keltavihreä","id":"yellowgreen"}
+{"label":"COLOR","pattern":"kermanvärinen","id":"cream"}
+{"label":"COLOR","pattern":"kermanväriset","id":"cream"}
+{"label":"COLOR","pattern":"keskiakvamariini","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"keskikevätvihreä","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"keskiliuskesininen","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"keskimerenvihreä","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"keskiorkidea","id":"mediumorchid"}
+{"label":"COLOR","pattern":"keskipurppura","id":"mediumpurple"}
+{"label":"COLOR","pattern":"keskisininen","id":"mediumblue"}
+{"label":"COLOR","pattern":"keskiturkoosi","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"keskivioletti punainen","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"keskiyön sininen","id":"midnightblue"}
+{"label":"COLOR","pattern":"kevätvihreä","id":"springgreen"}
+{"label":"COLOR","pattern":"khaki","id":"khaki"}
+{"label":"COLOR","pattern":"koralli","id":"coral"}
+{"label":"COLOR","pattern":"korallinpunainen","id":"coral"}
+{"label":"COLOR","pattern":"kukkavalkoinen","id":"floralwhite"}
+{"label":"COLOR","pattern":"kullanvärinen","id":"gold"}
+{"label":"COLOR","pattern":"kulta","id":"gold"}
+{"label":"COLOR","pattern":"kultavitsa","id":"goldenrod"}
+{"label":"COLOR","pattern":"kuninkaallinen sininen","id":"royalblue"}
+{"label":"COLOR","pattern":"kuumanpinkki","id":"hotpink"}
+{"label":"COLOR","pattern":"laivastonsininen","id":"navy"}
+{"label":"COLOR","pattern":"laivastonsiniset","id":"navy"}
+{"label":"COLOR","pattern":"laventeli","id":"lavender"}
+{"label":"COLOR","pattern":"laventelinpunainen","id":"lavenderblush"}
+{"label":"COLOR","pattern":"liila","id":"purple"}
+{"label":"COLOR","pattern":"lila","id":"lilac"}
+{"label":"COLOR","pattern":"limetinvihreä","id":"lime;limegreen"}
+{"label":"COLOR","pattern":"limetinvihreät","id":"lime"}
+{"label":"COLOR","pattern":"limetti","id":"lime"}
+{"label":"COLOR","pattern":"liuskeharmaa","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"liuskesininen","id":"slateblue"}
+{"label":"COLOR","pattern":"lohenpunainen","id":"salmon"}
+{"label":"COLOR","pattern":"lohenpunaiset","id":"salmon"}
+{"label":"COLOR","pattern":"lumi","id":"snow"}
+{"label":"COLOR","pattern":"luumu","id":"plum"}
+{"label":"COLOR","pattern":"magenta","id":"magenta"}
+{"label":"COLOR","pattern":"maissinsilkki","id":"cornsilk"}
+{"label":"COLOR","pattern":"mantelinvalkea","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"merenvihreä","id":"seagreen"}
+{"label":"COLOR","pattern":"meripihkanvärinen","id":"amber"}
+{"label":"COLOR","pattern":"meripihkanväriset","id":"amber"}
+{"label":"COLOR","pattern":"metsänvihreä","id":"forestgreen"}
+{"label":"COLOR","pattern":"mintunkermainen kerma","id":"mintcream"}
+{"label":"COLOR","pattern":"mokkasiini","id":"moccasin"}
+{"label":"COLOR","pattern":"musta","id":"black"}
+{"label":"COLOR","pattern":"mustat","id":"black"}
+{"label":"COLOR","pattern":"navajonvalkoinen","id":"navajowhite"}
+{"label":"COLOR","pattern":"norsunluu","id":"ivory"}
+{"label":"COLOR","pattern":"nurmikonvihreä","id":"lawngreen"}
+{"label":"COLOR","pattern":"ohdake","id":"thistle"}
+{"label":"COLOR","pattern":"oliivi","id":"olive"}
+{"label":"COLOR","pattern":"oliivinvihreä","id":"olive"}
+{"label":"COLOR","pattern":"oliivinvihreä drab","id":"olivedrab"}
+{"label":"COLOR","pattern":"oliivinvihreät","id":"olive"}
+{"label":"COLOR","pattern":"oranssi","id":"orange"}
+{"label":"COLOR","pattern":"oranssinpunainen","id":"orangered"}
+{"label":"COLOR","pattern":"oranssit","id":"orange"}
+{"label":"COLOR","pattern":"orkidea","id":"orchid"}
+{"label":"COLOR","pattern":"papajavaahto","id":"papayawhip"}
+{"label":"COLOR","pattern":"pellava","id":"linen"}
+{"label":"COLOR","pattern":"persikka","id":"peachpuff"}
+{"label":"COLOR","pattern":"peru","id":"peru"}
+{"label":"COLOR","pattern":"pinkki","id":"pink"}
+{"label":"COLOR","pattern":"punainen","id":"red"}
+{"label":"COLOR","pattern":"punaiset","id":"red"}
+{"label":"COLOR","pattern":"punaruskea","id":"maroon"}
+{"label":"COLOR","pattern":"punaruskeat","id":"maroon"}
+{"label":"COLOR","pattern":"purppura","id":"purple"}
+{"label":"COLOR","pattern":"puunruskea","id":"burlywood"}
+{"label":"COLOR","pattern":"Rebeccapurppura","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"ruiskaunokinsininen","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"ruskea","id":"brown"}
+{"label":"COLOR","pattern":"ruskeat","id":"brown"}
+{"label":"COLOR","pattern":"rusketus","id":"tan"}
+{"label":"COLOR","pattern":"ruusunruskea","id":"rosybrown"}
+{"label":"COLOR","pattern":"satulanruskea","id":"saddlebrown"}
+{"label":"COLOR","pattern":"savunvalkoinen","id":"whitesmoke"}
+{"label":"COLOR","pattern":"sienna","id":"sienna"}
+{"label":"COLOR","pattern":"simpukka","id":"seashell"}
+{"label":"COLOR","pattern":"sininen","id":"blue"}
+{"label":"COLOR","pattern":"siniset","id":"blue"}
+{"label":"COLOR","pattern":"sinivihreä","id":"teal"}
+{"label":"COLOR","pattern":"sinivioletti","id":"blueviolet"}
+{"label":"COLOR","pattern":"sitruunašifonki","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"suklaa","id":"chocolate"}
+{"label":"COLOR","pattern":"syaani","id":"cyan"}
+{"label":"COLOR","pattern":"syvä taivaansininen","id":"deepskyblue"}
+{"label":"COLOR","pattern":"syvänpinkki","id":"deeppink"}
+{"label":"COLOR","pattern":"taivaansininen","id":"azure;skyblue"}
+{"label":"COLOR","pattern":"taivaansiniset","id":"skyblue"}
+{"label":"COLOR","pattern":"teräksensininen","id":"steelblue"}
+{"label":"COLOR","pattern":"tomaatti","id":"tomato"}
+{"label":"COLOR","pattern":"tulipunainen","id":"firebrick;scarlet"}
+{"label":"COLOR","pattern":"tumma khaki","id":"darkkhaki"}
+{"label":"COLOR","pattern":"tumma kultavitsa","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"tumma liuskeharmaa","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"tumma liuskesininen","id":"darkslateblue"}
+{"label":"COLOR","pattern":"tumma lohenpunainen","id":"darksalmon"}
+{"label":"COLOR","pattern":"tumma magenta","id":"darkmagenta"}
+{"label":"COLOR","pattern":"tumma merenvihreä","id":"darkseagreen"}
+{"label":"COLOR","pattern":"tumma oliivinvihreä","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"tumma oranssi","id":"darkorange"}
+{"label":"COLOR","pattern":"tumma orkidea","id":"darkorchid"}
+{"label":"COLOR","pattern":"tumma syaani","id":"darkcyan"}
+{"label":"COLOR","pattern":"tumma turkoosi","id":"darkturquoise"}
+{"label":"COLOR","pattern":"tummanharmaa","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"tummanpunainen","id":"darkred"}
+{"label":"COLOR","pattern":"tummansininen","id":"darkblue"}
+{"label":"COLOR","pattern":"tummansiniset","id":"darkblue"}
+{"label":"COLOR","pattern":"tummanvihreä","id":"darkgreen"}
+{"label":"COLOR","pattern":"tummanvihreät","id":"darkgreen"}
+{"label":"COLOR","pattern":"tummanvioletti","id":"darkviolet"}
+{"label":"COLOR","pattern":"turkoosi","id":"turquoise"}
+{"label":"COLOR","pattern":"turkoosit","id":"turquoise"}
+{"label":"COLOR","pattern":"utuisen ruusu","id":"mistyrose"}
+{"label":"COLOR","pattern":"vaalea liuskeharmaa","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"vaalea merenvihreä","id":"lightseagreen"}
+{"label":"COLOR","pattern":"vaalea taivaansininen","id":"lightskyblue"}
+{"label":"COLOR","pattern":"vaaleanharmaa","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"vaaleankeltainen","id":"lightyellow"}
+{"label":"COLOR","pattern":"vaaleankeltainen kultavitsa","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"vaaleankoralli","id":"lightcoral"}
+{"label":"COLOR","pattern":"vaaleanlohenpunainen","id":"lightsalmon"}
+{"label":"COLOR","pattern":"vaaleanpunainen","id":"lightpink;pink"}
+{"label":"COLOR","pattern":"vaaleanpunaiset","id":"pink"}
+{"label":"COLOR","pattern":"vaaleansininen","id":"lightblue"}
+{"label":"COLOR","pattern":"vaaleansiniset","id":"lightblue"}
+{"label":"COLOR","pattern":"vaaleansyaani","id":"lightcyan"}
+{"label":"COLOR","pattern":"vaaleanteräksensininen","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"vaaleanvihreä","id":"lightgreen"}
+{"label":"COLOR","pattern":"vaaleanvihreät","id":"lightgreen"}
+{"label":"COLOR","pattern":"valkea","id":"white"}
+{"label":"COLOR","pattern":"valkoinen","id":"white"}
+{"label":"COLOR","pattern":"valkoiset","id":"white"}
+{"label":"COLOR","pattern":"vanha pitsi","id":"oldlace"}
+{"label":"COLOR","pattern":"vehnä","id":"wheat"}
+{"label":"COLOR","pattern":"vihreä","id":"green"}
+{"label":"COLOR","pattern":"vihreänkeltainen","id":"greenyellow"}
+{"label":"COLOR","pattern":"vihreät","id":"green"}
+{"label":"COLOR","pattern":"viininpunainen","id":"burgundy"}
+{"label":"COLOR","pattern":"viininpunaiset","id":"burgundy"}
+{"label":"COLOR","pattern":"violetit","id":"purple;violet"}
+{"label":"COLOR","pattern":"violetti","id":"purple;violet"}

@@ -1,0 +1,152 @@
+{"label":"COLOR","pattern":"acélkék","id":"steelblue"}
+{"label":"COLOR","pattern":"akvamarin","id":"aquamarine"}
+{"label":"COLOR","pattern":"alice-kék","id":"aliceblue"}
+{"label":"COLOR","pattern":"antikfehér","id":"antiquewhite"}
+{"label":"COLOR","pattern":"aqua","id":"aqua"}
+{"label":"COLOR","pattern":"arany","id":"gold"}
+{"label":"COLOR","pattern":"aranyvessző","id":"goldenrod"}
+{"label":"COLOR","pattern":"azúrkék","id":"azure"}
+{"label":"COLOR","pattern":"barackszínű","id":"peachpuff"}
+{"label":"COLOR","pattern":"barna","id":"brown"}
+{"label":"COLOR","pattern":"barnás","id":"tan"}
+{"label":"COLOR","pattern":"bisque","id":"bisque"}
+{"label":"COLOR","pattern":"bogáncs","id":"thistle"}
+{"label":"COLOR","pattern":"bordó","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"borostyán","id":"amber"}
+{"label":"COLOR","pattern":"bézs","id":"beige"}
+{"label":"COLOR","pattern":"bíbor","id":"crimson"}
+{"label":"COLOR","pattern":"búza","id":"wheat"}
+{"label":"COLOR","pattern":"búzavirágkék","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"chartreuse","id":"chartreuse"}
+{"label":"COLOR","pattern":"citromsifon","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"ciánkék","id":"cyan"}
+{"label":"COLOR","pattern":"csokoládé","id":"chocolate"}
+{"label":"COLOR","pattern":"dodgerkék","id":"dodgerblue"}
+{"label":"COLOR","pattern":"elefántcsont","id":"ivory"}
+{"label":"COLOR","pattern":"erdőzöld","id":"forestgreen"}
+{"label":"COLOR","pattern":"ezüst","id":"silver"}
+{"label":"COLOR","pattern":"faszín","id":"burlywood"}
+{"label":"COLOR","pattern":"fehér","id":"white"}
+{"label":"COLOR","pattern":"fekete","id":"black"}
+{"label":"COLOR","pattern":"forró rózsaszín","id":"hotpink"}
+{"label":"COLOR","pattern":"fukszia","id":"fuchsia"}
+{"label":"COLOR","pattern":"füstfehér","id":"whitesmoke"}
+{"label":"COLOR","pattern":"gainsborough-szürke","id":"gainsboro"}
+{"label":"COLOR","pattern":"gesztenyebarna","id":"maroon"}
+{"label":"COLOR","pattern":"halvány aranyvessző","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"halvány ibolyavörös","id":"palevioletred"}
+{"label":"COLOR","pattern":"halvány türkiz","id":"paleturquoise"}
+{"label":"COLOR","pattern":"halványzöld","id":"palegreen"}
+{"label":"COLOR","pattern":"homokbarna","id":"sandybrown"}
+{"label":"COLOR","pattern":"homályszürke","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"hó","id":"snow"}
+{"label":"COLOR","pattern":"ibolya","id":"violet"}
+{"label":"COLOR","pattern":"indigó","id":"indigo"}
+{"label":"COLOR","pattern":"indiánvörös","id":"indianred"}
+{"label":"COLOR","pattern":"kadétkék","id":"cadetblue"}
+{"label":"COLOR","pattern":"kagyló","id":"seashell"}
+{"label":"COLOR","pattern":"karmazsinvörös","id":"crimson"}
+{"label":"COLOR","pattern":"khaki","id":"khaki"}
+{"label":"COLOR","pattern":"királykék","id":"royalblue"}
+{"label":"COLOR","pattern":"korall","id":"coral"}
+{"label":"COLOR","pattern":"krém","id":"cream"}
+{"label":"COLOR","pattern":"kukoricaselyem","id":"cornsilk"}
+{"label":"COLOR","pattern":"kék","id":"blue"}
+{"label":"COLOR","pattern":"kékesibolya","id":"blueviolet"}
+{"label":"COLOR","pattern":"kékeszöld","id":"teal"}
+{"label":"COLOR","pattern":"ködös rózsaszín","id":"mistyrose"}
+{"label":"COLOR","pattern":"közepes akvamarin","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"közepes ibolyavörös","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"közepes kék","id":"mediumblue"}
+{"label":"COLOR","pattern":"közepes lila","id":"mediumpurple"}
+{"label":"COLOR","pattern":"közepes orchidea","id":"mediumorchid"}
+{"label":"COLOR","pattern":"közepes palakék","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"közepes tavaszzöld","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"közepes tengerzöld","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"közepes türkiz","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"lazacszín","id":"salmon"}
+{"label":"COLOR","pattern":"lazacszínű","id":"salmon"}
+{"label":"COLOR","pattern":"levendula","id":"lavender"}
+{"label":"COLOR","pattern":"levendulapiros","id":"lavenderblush"}
+{"label":"COLOR","pattern":"lila","id":"purple"}
+{"label":"COLOR","pattern":"lime","id":"lime"}
+{"label":"COLOR","pattern":"limezöld","id":"limegreen"}
+{"label":"COLOR","pattern":"magenta","id":"magenta"}
+{"label":"COLOR","pattern":"mandulafehér","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"mentakrém","id":"mintcream"}
+{"label":"COLOR","pattern":"mokaszin","id":"moccasin"}
+{"label":"COLOR","pattern":"mély égkék","id":"deepskyblue"}
+{"label":"COLOR","pattern":"mélyrózsaszín","id":"deeppink"}
+{"label":"COLOR","pattern":"mézharmat","id":"honeydew"}
+{"label":"COLOR","pattern":"narancs","id":"orange"}
+{"label":"COLOR","pattern":"narancssárga","id":"orange"}
+{"label":"COLOR","pattern":"narancsvörös","id":"orangered"}
+{"label":"COLOR","pattern":"navajo-fehér","id":"navajowhite"}
+{"label":"COLOR","pattern":"nyeregbarna","id":"saddlebrown"}
+{"label":"COLOR","pattern":"olajbarna","id":"olive"}
+{"label":"COLOR","pattern":"olajdrapp","id":"olivedrab"}
+{"label":"COLOR","pattern":"olajzöld","id":"olive"}
+{"label":"COLOR","pattern":"orchideaszínű","id":"orchid"}
+{"label":"COLOR","pattern":"orgona","id":"lilac"}
+{"label":"COLOR","pattern":"palakék","id":"slateblue"}
+{"label":"COLOR","pattern":"palaszürke","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"papajahab","id":"papayawhip"}
+{"label":"COLOR","pattern":"paradicsom","id":"tomato"}
+{"label":"COLOR","pattern":"perui","id":"peru"}
+{"label":"COLOR","pattern":"piros","id":"red"}
+{"label":"COLOR","pattern":"pázsitzöld","id":"lawngreen"}
+{"label":"COLOR","pattern":"púderkék","id":"powderblue"}
+{"label":"COLOR","pattern":"Rebecca-lila","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"régi csipke","id":"oldlace"}
+{"label":"COLOR","pattern":"rózsabarna","id":"rosybrown"}
+{"label":"COLOR","pattern":"rózsaszín","id":"pink"}
+{"label":"COLOR","pattern":"skarlát","id":"scarlet"}
+{"label":"COLOR","pattern":"szellemfehér","id":"ghostwhite"}
+{"label":"COLOR","pattern":"szienna","id":"sienna"}
+{"label":"COLOR","pattern":"szilvavirág","id":"plum"}
+{"label":"COLOR","pattern":"szürke","id":"gray;grey"}
+{"label":"COLOR","pattern":"sárga","id":"yellow"}
+{"label":"COLOR","pattern":"sárgászöld","id":"yellowgreen"}
+{"label":"COLOR","pattern":"sötét aranyrúd","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"sötét ciánkék","id":"darkcyan"}
+{"label":"COLOR","pattern":"sötét khaki","id":"darkkhaki"}
+{"label":"COLOR","pattern":"sötét lazac","id":"darksalmon"}
+{"label":"COLOR","pattern":"sötét narancs","id":"darkorange"}
+{"label":"COLOR","pattern":"sötét olajzöld","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"sötét orchideaszínű","id":"darkorchid"}
+{"label":"COLOR","pattern":"sötét palakék","id":"darkslateblue"}
+{"label":"COLOR","pattern":"sötét palaszürke","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"sötét tengerzöld","id":"darkseagreen"}
+{"label":"COLOR","pattern":"sötét türkiz","id":"darkturquoise"}
+{"label":"COLOR","pattern":"sötétibolya","id":"darkviolet"}
+{"label":"COLOR","pattern":"sötétkék","id":"darkblue"}
+{"label":"COLOR","pattern":"sötétmagenta","id":"darkmagenta"}
+{"label":"COLOR","pattern":"sötétszürke","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"sötétvörös","id":"darkred"}
+{"label":"COLOR","pattern":"sötétzöld","id":"darkgreen"}
+{"label":"COLOR","pattern":"tavaszzöld","id":"springgreen"}
+{"label":"COLOR","pattern":"tengerzöld","id":"seagreen"}
+{"label":"COLOR","pattern":"tengerészkék","id":"navy"}
+{"label":"COLOR","pattern":"türkiz","id":"turquoise"}
+{"label":"COLOR","pattern":"tűzvörös","id":"firebrick"}
+{"label":"COLOR","pattern":"világos acélkék","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"világos ciánkék","id":"lightcyan"}
+{"label":"COLOR","pattern":"világos lazac","id":"lightsalmon"}
+{"label":"COLOR","pattern":"világos palaszürke","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"világos tengerzöld","id":"lightseagreen"}
+{"label":"COLOR","pattern":"világos égkék","id":"lightskyblue"}
+{"label":"COLOR","pattern":"világoskorall","id":"lightcoral"}
+{"label":"COLOR","pattern":"világoskék","id":"lightblue"}
+{"label":"COLOR","pattern":"világosrózsaszín","id":"lightpink"}
+{"label":"COLOR","pattern":"világosszürke","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"világossárga","id":"lightyellow"}
+{"label":"COLOR","pattern":"világossárga aranyvessző","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"világoszöld","id":"lightgreen"}
+{"label":"COLOR","pattern":"virágfehér","id":"floralwhite"}
+{"label":"COLOR","pattern":"vászon","id":"linen"}
+{"label":"COLOR","pattern":"vörös","id":"red"}
+{"label":"COLOR","pattern":"zöld","id":"green"}
+{"label":"COLOR","pattern":"zöldessárga","id":"greenyellow"}
+{"label":"COLOR","pattern":"égkék","id":"skyblue"}
+{"label":"COLOR","pattern":"égszínkék","id":"skyblue"}
+{"label":"COLOR","pattern":"éjfélkék","id":"midnightblue"}

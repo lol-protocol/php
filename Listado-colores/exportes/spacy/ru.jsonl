@@ -1,0 +1,239 @@
+{"label":"COLOR","pattern":"аква","id":"aqua"}
+{"label":"COLOR","pattern":"аквамариновый","id":"aquamarine"}
+{"label":"COLOR","pattern":"алая","id":"scarlet"}
+{"label":"COLOR","pattern":"алисо-голубой","id":"aliceblue"}
+{"label":"COLOR","pattern":"алое","id":"scarlet"}
+{"label":"COLOR","pattern":"алые","id":"scarlet"}
+{"label":"COLOR","pattern":"алый","id":"scarlet"}
+{"label":"COLOR","pattern":"античный белый","id":"antiquewhite"}
+{"label":"COLOR","pattern":"багровый","id":"crimson"}
+{"label":"COLOR","pattern":"багряный","id":"scarlet"}
+{"label":"COLOR","pattern":"бежевая","id":"beige"}
+{"label":"COLOR","pattern":"бежевое","id":"beige"}
+{"label":"COLOR","pattern":"бежевые","id":"beige"}
+{"label":"COLOR","pattern":"бежевый","id":"beige"}
+{"label":"COLOR","pattern":"белая","id":"white"}
+{"label":"COLOR","pattern":"белое","id":"white"}
+{"label":"COLOR","pattern":"белые","id":"white"}
+{"label":"COLOR","pattern":"белый","id":"white"}
+{"label":"COLOR","pattern":"бирюзовая","id":"turquoise"}
+{"label":"COLOR","pattern":"бирюзовое","id":"turquoise"}
+{"label":"COLOR","pattern":"бирюзовые","id":"turquoise"}
+{"label":"COLOR","pattern":"бирюзовый","id":"turquoise"}
+{"label":"COLOR","pattern":"бисквитный","id":"bisque"}
+{"label":"COLOR","pattern":"бледно-бирюзовый","id":"paleturquoise"}
+{"label":"COLOR","pattern":"бледно-зелёный","id":"palegreen"}
+{"label":"COLOR","pattern":"бледно-золотарниковый","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"бледно-фиолетовый красный","id":"palevioletred"}
+{"label":"COLOR","pattern":"бордовая","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"бордовое","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"бордовые","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"бордовый","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"васильковый","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"весенне-зелёный","id":"springgreen"}
+{"label":"COLOR","pattern":"винный","id":"burgundy"}
+{"label":"COLOR","pattern":"газонный зелёный","id":"lawngreen"}
+{"label":"COLOR","pattern":"глубокий розовый","id":"deeppink"}
+{"label":"COLOR","pattern":"глубокое небо","id":"deepskyblue"}
+{"label":"COLOR","pattern":"голубая","id":"lightblue"}
+{"label":"COLOR","pattern":"голубое","id":"lightblue"}
+{"label":"COLOR","pattern":"голубой","id":"lightblue"}
+{"label":"COLOR","pattern":"голубые","id":"lightblue"}
+{"label":"COLOR","pattern":"древесный","id":"burlywood"}
+{"label":"COLOR","pattern":"дымчато-белый","id":"whitesmoke"}
+{"label":"COLOR","pattern":"желтовато-зелёный","id":"yellowgreen"}
+{"label":"COLOR","pattern":"желтый","id":"yellow"}
+{"label":"COLOR","pattern":"жёлтая","id":"yellow"}
+{"label":"COLOR","pattern":"жёлтое","id":"yellow"}
+{"label":"COLOR","pattern":"жёлтые","id":"yellow"}
+{"label":"COLOR","pattern":"жёлтый","id":"yellow"}
+{"label":"COLOR","pattern":"загар","id":"tan"}
+{"label":"COLOR","pattern":"зеленый","id":"green"}
+{"label":"COLOR","pattern":"зелёная","id":"green"}
+{"label":"COLOR","pattern":"зелёно-жёлтый","id":"greenyellow"}
+{"label":"COLOR","pattern":"зелёное","id":"green"}
+{"label":"COLOR","pattern":"зелёные","id":"green"}
+{"label":"COLOR","pattern":"зелёный","id":"green"}
+{"label":"COLOR","pattern":"золотарник","id":"goldenrod"}
+{"label":"COLOR","pattern":"золотая","id":"gold"}
+{"label":"COLOR","pattern":"золотистый","id":"gold"}
+{"label":"COLOR","pattern":"золотое","id":"gold"}
+{"label":"COLOR","pattern":"золотой","id":"gold"}
+{"label":"COLOR","pattern":"золотые","id":"gold"}
+{"label":"COLOR","pattern":"индиго","id":"indigo"}
+{"label":"COLOR","pattern":"индиговый","id":"indigo"}
+{"label":"COLOR","pattern":"индийский красный","id":"indianred"}
+{"label":"COLOR","pattern":"кадетский синий","id":"cadetblue"}
+{"label":"COLOR","pattern":"кирпичный","id":"firebrick"}
+{"label":"COLOR","pattern":"коралловая","id":"coral"}
+{"label":"COLOR","pattern":"коралловое","id":"coral"}
+{"label":"COLOR","pattern":"коралловые","id":"coral"}
+{"label":"COLOR","pattern":"коралловый","id":"coral"}
+{"label":"COLOR","pattern":"коричневая","id":"brown"}
+{"label":"COLOR","pattern":"коричневое","id":"brown"}
+{"label":"COLOR","pattern":"коричневые","id":"brown"}
+{"label":"COLOR","pattern":"коричневый","id":"brown"}
+{"label":"COLOR","pattern":"коричневый седла","id":"saddlebrown"}
+{"label":"COLOR","pattern":"королевский синий","id":"royalblue"}
+{"label":"COLOR","pattern":"красная","id":"red"}
+{"label":"COLOR","pattern":"красное","id":"red"}
+{"label":"COLOR","pattern":"красные","id":"red"}
+{"label":"COLOR","pattern":"красный","id":"red"}
+{"label":"COLOR","pattern":"кремовая","id":"cream"}
+{"label":"COLOR","pattern":"кремовое","id":"cream"}
+{"label":"COLOR","pattern":"кремовые","id":"cream"}
+{"label":"COLOR","pattern":"кремовый","id":"cream"}
+{"label":"COLOR","pattern":"кукурузный шёлк","id":"cornsilk"}
+{"label":"COLOR","pattern":"лавандовая","id":"lavender"}
+{"label":"COLOR","pattern":"лавандовое","id":"lavender"}
+{"label":"COLOR","pattern":"лавандовые","id":"lavender"}
+{"label":"COLOR","pattern":"лавандовый","id":"lavender"}
+{"label":"COLOR","pattern":"лавандовый румянец","id":"lavenderblush"}
+{"label":"COLOR","pattern":"лазурный","id":"azure;skyblue"}
+{"label":"COLOR","pattern":"лаймовая","id":"lime"}
+{"label":"COLOR","pattern":"лаймово-зелёный","id":"limegreen"}
+{"label":"COLOR","pattern":"лаймовое","id":"lime"}
+{"label":"COLOR","pattern":"лаймовые","id":"lime"}
+{"label":"COLOR","pattern":"лаймовый","id":"lime"}
+{"label":"COLOR","pattern":"лесной зелёный","id":"forestgreen"}
+{"label":"COLOR","pattern":"лиловая","id":"lilac"}
+{"label":"COLOR","pattern":"лиловое","id":"lilac"}
+{"label":"COLOR","pattern":"лиловые","id":"lilac"}
+{"label":"COLOR","pattern":"лиловый","id":"lilac"}
+{"label":"COLOR","pattern":"лимонный шифон","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"лососевая","id":"salmon"}
+{"label":"COLOR","pattern":"лососевое","id":"salmon"}
+{"label":"COLOR","pattern":"лососевые","id":"salmon"}
+{"label":"COLOR","pattern":"лососевый","id":"salmon"}
+{"label":"COLOR","pattern":"льняной","id":"linen"}
+{"label":"COLOR","pattern":"маджента","id":"magenta"}
+{"label":"COLOR","pattern":"малиновая","id":"crimson"}
+{"label":"COLOR","pattern":"малиновое","id":"crimson"}
+{"label":"COLOR","pattern":"малиновые","id":"crimson"}
+{"label":"COLOR","pattern":"малиновый","id":"crimson"}
+{"label":"COLOR","pattern":"медовая роса","id":"honeydew"}
+{"label":"COLOR","pattern":"миндальный","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"мокасин","id":"moccasin"}
+{"label":"COLOR","pattern":"морской зелёный","id":"seagreen"}
+{"label":"COLOR","pattern":"мятный крем","id":"mintcream"}
+{"label":"COLOR","pattern":"навахо белый","id":"navajowhite"}
+{"label":"COLOR","pattern":"небесно-голубой","id":"skyblue"}
+{"label":"COLOR","pattern":"оливковая","id":"olive"}
+{"label":"COLOR","pattern":"оливково-серый","id":"olivedrab"}
+{"label":"COLOR","pattern":"оливковое","id":"olive"}
+{"label":"COLOR","pattern":"оливковые","id":"olive"}
+{"label":"COLOR","pattern":"оливковый","id":"olive"}
+{"label":"COLOR","pattern":"оранжевая","id":"orange"}
+{"label":"COLOR","pattern":"оранжево-красный","id":"orangered"}
+{"label":"COLOR","pattern":"оранжевое","id":"orange"}
+{"label":"COLOR","pattern":"оранжевые","id":"orange"}
+{"label":"COLOR","pattern":"оранжевый","id":"orange"}
+{"label":"COLOR","pattern":"орхидейный","id":"orchid"}
+{"label":"COLOR","pattern":"охра сиенская","id":"sienna"}
+{"label":"COLOR","pattern":"персиковый","id":"peachpuff"}
+{"label":"COLOR","pattern":"перуанский","id":"peru"}
+{"label":"COLOR","pattern":"песочно-коричневый","id":"sandybrown"}
+{"label":"COLOR","pattern":"полуночно-синий","id":"midnightblue"}
+{"label":"COLOR","pattern":"пороховой","id":"powderblue"}
+{"label":"COLOR","pattern":"призрачно-белый","id":"ghostwhite"}
+{"label":"COLOR","pattern":"пурпурный","id":"magenta"}
+{"label":"COLOR","pattern":"пшеничный","id":"wheat"}
+{"label":"COLOR","pattern":"ракушка","id":"seashell"}
+{"label":"COLOR","pattern":"Ребекка-пурпурный","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"розовая","id":"pink"}
+{"label":"COLOR","pattern":"розово-коричневый","id":"rosybrown"}
+{"label":"COLOR","pattern":"розовое","id":"pink"}
+{"label":"COLOR","pattern":"розовые","id":"pink"}
+{"label":"COLOR","pattern":"розовый","id":"pink"}
+{"label":"COLOR","pattern":"светло-голубой","id":"lightcyan"}
+{"label":"COLOR","pattern":"светло-жёлтый","id":"lightyellow"}
+{"label":"COLOR","pattern":"светло-зеленый","id":"lightgreen"}
+{"label":"COLOR","pattern":"светло-зелёный","id":"lightgreen"}
+{"label":"COLOR","pattern":"светло-золотистый","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"светло-коралловый","id":"lightcoral"}
+{"label":"COLOR","pattern":"светло-лососевый","id":"lightsalmon"}
+{"label":"COLOR","pattern":"светло-морской зелёный","id":"lightseagreen"}
+{"label":"COLOR","pattern":"светло-небесный","id":"lightskyblue"}
+{"label":"COLOR","pattern":"светло-розовый","id":"lightpink"}
+{"label":"COLOR","pattern":"светло-серый","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"светло-сланцево-серый","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"светло-стальной синий","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"серая","id":"gray"}
+{"label":"COLOR","pattern":"серебристый","id":"silver"}
+{"label":"COLOR","pattern":"серебряная","id":"silver"}
+{"label":"COLOR","pattern":"серебряное","id":"silver"}
+{"label":"COLOR","pattern":"серебряные","id":"silver"}
+{"label":"COLOR","pattern":"серебряный","id":"silver"}
+{"label":"COLOR","pattern":"серое","id":"gray"}
+{"label":"COLOR","pattern":"серые","id":"gray"}
+{"label":"COLOR","pattern":"серый","id":"gray;grey"}
+{"label":"COLOR","pattern":"серый гейнсборо","id":"gainsboro"}
+{"label":"COLOR","pattern":"сине-зелёный","id":"teal"}
+{"label":"COLOR","pattern":"сине-фиолетовый","id":"blueviolet"}
+{"label":"COLOR","pattern":"синее","id":"blue"}
+{"label":"COLOR","pattern":"синие","id":"blue"}
+{"label":"COLOR","pattern":"синий","id":"blue"}
+{"label":"COLOR","pattern":"синий Доджер","id":"dodgerblue"}
+{"label":"COLOR","pattern":"синяя","id":"blue"}
+{"label":"COLOR","pattern":"сиреневый","id":"lilac"}
+{"label":"COLOR","pattern":"сланцево-серый","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"сланцево-синий","id":"slateblue"}
+{"label":"COLOR","pattern":"сливовый","id":"plum"}
+{"label":"COLOR","pattern":"сливочная папайя","id":"papayawhip"}
+{"label":"COLOR","pattern":"слоновая кость","id":"ivory"}
+{"label":"COLOR","pattern":"снежный","id":"snow"}
+{"label":"COLOR","pattern":"средне-аквамариновый","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"средне-бирюзовый","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"средне-весенний зелёный","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"средне-морской зелёный","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"средне-орхидейный","id":"mediumorchid"}
+{"label":"COLOR","pattern":"средне-синий","id":"mediumblue"}
+{"label":"COLOR","pattern":"средне-сланцевый синий","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"средне-фиолетовый","id":"mediumpurple"}
+{"label":"COLOR","pattern":"средне-фиолетовый красный","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"стально-синий","id":"steelblue"}
+{"label":"COLOR","pattern":"старое кружево","id":"oldlace"}
+{"label":"COLOR","pattern":"темно-зеленый","id":"darkgreen"}
+{"label":"COLOR","pattern":"темно-синий","id":"darkblue;navy"}
+{"label":"COLOR","pattern":"томатный","id":"tomato"}
+{"label":"COLOR","pattern":"туманно-розовый","id":"mistyrose"}
+{"label":"COLOR","pattern":"тускло-серый","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"тёмная орхидея","id":"darkorchid"}
+{"label":"COLOR","pattern":"тёмно-бирюзовый","id":"darkturquoise"}
+{"label":"COLOR","pattern":"тёмно-голубой","id":"darkcyan"}
+{"label":"COLOR","pattern":"тёмно-зелёный","id":"darkgreen"}
+{"label":"COLOR","pattern":"тёмно-золотарниковый","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"тёмно-красный","id":"darkred"}
+{"label":"COLOR","pattern":"тёмно-лососевый","id":"darksalmon"}
+{"label":"COLOR","pattern":"тёмно-морской зелёный","id":"darkseagreen"}
+{"label":"COLOR","pattern":"тёмно-оливковый","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"тёмно-оранжевый","id":"darkorange"}
+{"label":"COLOR","pattern":"тёмно-пурпурный","id":"darkmagenta"}
+{"label":"COLOR","pattern":"тёмно-серый","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"тёмно-синий","id":"darkblue;navy"}
+{"label":"COLOR","pattern":"тёмно-сланцево-серый","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"тёмно-сланцево-синий","id":"darkslateblue"}
+{"label":"COLOR","pattern":"тёмно-фиолетовый","id":"darkviolet"}
+{"label":"COLOR","pattern":"тёмно-хаки","id":"darkkhaki"}
+{"label":"COLOR","pattern":"фиалковый","id":"violet"}
+{"label":"COLOR","pattern":"фиолетовая","id":"purple;violet"}
+{"label":"COLOR","pattern":"фиолетовое","id":"purple;violet"}
+{"label":"COLOR","pattern":"фиолетовые","id":"purple;violet"}
+{"label":"COLOR","pattern":"фиолетовый","id":"purple;violet"}
+{"label":"COLOR","pattern":"фуксия","id":"fuchsia"}
+{"label":"COLOR","pattern":"хаки","id":"khaki"}
+{"label":"COLOR","pattern":"цветочно-белый","id":"floralwhite"}
+{"label":"COLOR","pattern":"циан","id":"cyan"}
+{"label":"COLOR","pattern":"черный","id":"black"}
+{"label":"COLOR","pattern":"чертополох","id":"thistle"}
+{"label":"COLOR","pattern":"чёрная","id":"black"}
+{"label":"COLOR","pattern":"чёрное","id":"black"}
+{"label":"COLOR","pattern":"чёрные","id":"black"}
+{"label":"COLOR","pattern":"чёрный","id":"black"}
+{"label":"COLOR","pattern":"шартрёз","id":"chartreuse"}
+{"label":"COLOR","pattern":"шоколадный","id":"chocolate"}
+{"label":"COLOR","pattern":"янтарная","id":"amber"}
+{"label":"COLOR","pattern":"янтарное","id":"amber"}
+{"label":"COLOR","pattern":"янтарные","id":"amber"}
+{"label":"COLOR","pattern":"янтарный","id":"amber"}
+{"label":"COLOR","pattern":"ярко-розовый","id":"hotpink"}

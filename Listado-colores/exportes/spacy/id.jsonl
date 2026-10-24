@@ -1,0 +1,160 @@
+{"label":"COLOR","pattern":"abu-abu","id":"gray;grey"}
+{"label":"COLOR","pattern":"abu-abu gainsboro","id":"gainsboro"}
+{"label":"COLOR","pattern":"abu-abu muda","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"abu-abu pudar","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"abu-abu slate","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"abu-abu slate muda","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"abu-abu slate tua","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"abu-abu tua","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"akuamarin","id":"aquamarine"}
+{"label":"COLOR","pattern":"akuamarin sedang","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"almond putih","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"ambar","id":"amber"}
+{"label":"COLOR","pattern":"anggrek","id":"orchid"}
+{"label":"COLOR","pattern":"anggrek sedang","id":"mediumorchid"}
+{"label":"COLOR","pattern":"anggrek tua","id":"darkorchid"}
+{"label":"COLOR","pattern":"aqua","id":"aqua"}
+{"label":"COLOR","pattern":"beige","id":"beige"}
+{"label":"COLOR","pattern":"biru","id":"blue"}
+{"label":"COLOR","pattern":"biru alice","id":"aliceblue"}
+{"label":"COLOR","pattern":"biru azur","id":"azure"}
+{"label":"COLOR","pattern":"biru baja","id":"steelblue"}
+{"label":"COLOR","pattern":"biru baja muda","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"biru bedak","id":"powderblue"}
+{"label":"COLOR","pattern":"biru cornflower","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"biru dodger","id":"dodgerblue"}
+{"label":"COLOR","pattern":"biru dongker","id":"navy"}
+{"label":"COLOR","pattern":"biru kadet","id":"cadetblue"}
+{"label":"COLOR","pattern":"biru kerajaan","id":"royalblue"}
+{"label":"COLOR","pattern":"biru langit","id":"skyblue"}
+{"label":"COLOR","pattern":"biru langit muda","id":"lightskyblue"}
+{"label":"COLOR","pattern":"biru langit tua","id":"deepskyblue"}
+{"label":"COLOR","pattern":"biru muda","id":"lightblue"}
+{"label":"COLOR","pattern":"biru navy","id":"navy"}
+{"label":"COLOR","pattern":"biru sedang","id":"mediumblue"}
+{"label":"COLOR","pattern":"biru slate","id":"slateblue"}
+{"label":"COLOR","pattern":"biru slate sedang","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"biru slate tua","id":"darkslateblue"}
+{"label":"COLOR","pattern":"biru tengah malam","id":"midnightblue"}
+{"label":"COLOR","pattern":"biru tua","id":"darkblue"}
+{"label":"COLOR","pattern":"bisque","id":"bisque"}
+{"label":"COLOR","pattern":"chartreuse","id":"chartreuse"}
+{"label":"COLOR","pattern":"chiffon lemon","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"cokelat","id":"brown;chocolate"}
+{"label":"COLOR","pattern":"cokelat merah jambu","id":"rosybrown"}
+{"label":"COLOR","pattern":"cokelat pasir","id":"sandybrown"}
+{"label":"COLOR","pattern":"cokelat pelana","id":"saddlebrown"}
+{"label":"COLOR","pattern":"coklat","id":"brown"}
+{"label":"COLOR","pattern":"drab zaitun","id":"olivedrab"}
+{"label":"COLOR","pattern":"emas","id":"gold"}
+{"label":"COLOR","pattern":"emas tua","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"embun madu","id":"honeydew"}
+{"label":"COLOR","pattern":"fuksia","id":"fuchsia"}
+{"label":"COLOR","pattern":"gading","id":"ivory"}
+{"label":"COLOR","pattern":"gandum","id":"wheat"}
+{"label":"COLOR","pattern":"goldenrod","id":"goldenrod"}
+{"label":"COLOR","pattern":"goldenrod pucat","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"hijau","id":"green"}
+{"label":"COLOR","pattern":"hijau hutan","id":"forestgreen"}
+{"label":"COLOR","pattern":"hijau jeruk nipis","id":"limegreen"}
+{"label":"COLOR","pattern":"hijau kekuningan","id":"greenyellow"}
+{"label":"COLOR","pattern":"hijau laut","id":"seagreen"}
+{"label":"COLOR","pattern":"hijau laut muda","id":"lightseagreen"}
+{"label":"COLOR","pattern":"hijau laut sedang","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"hijau laut tua","id":"darkseagreen"}
+{"label":"COLOR","pattern":"hijau limau","id":"lime"}
+{"label":"COLOR","pattern":"hijau muda","id":"lightgreen"}
+{"label":"COLOR","pattern":"hijau pucat","id":"palegreen"}
+{"label":"COLOR","pattern":"hijau rumput","id":"lawngreen"}
+{"label":"COLOR","pattern":"hijau semi","id":"springgreen"}
+{"label":"COLOR","pattern":"hijau semi sedang","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"hijau tua","id":"darkgreen"}
+{"label":"COLOR","pattern":"hijau zaitun","id":"olive"}
+{"label":"COLOR","pattern":"hijau zaitun tua","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"hitam","id":"black"}
+{"label":"COLOR","pattern":"indigo","id":"indigo"}
+{"label":"COLOR","pattern":"jambon","id":"pink"}
+{"label":"COLOR","pattern":"jeruk nipis","id":"lime"}
+{"label":"COLOR","pattern":"jingga","id":"orange"}
+{"label":"COLOR","pattern":"karang","id":"coral"}
+{"label":"COLOR","pattern":"karang muda","id":"lightcoral"}
+{"label":"COLOR","pattern":"kayu","id":"burlywood"}
+{"label":"COLOR","pattern":"keemasan","id":"gold"}
+{"label":"COLOR","pattern":"kelabu","id":"gray"}
+{"label":"COLOR","pattern":"keperakan","id":"silver"}
+{"label":"COLOR","pattern":"kerang laut","id":"seashell"}
+{"label":"COLOR","pattern":"khaki","id":"khaki"}
+{"label":"COLOR","pattern":"khaki tua","id":"darkkhaki"}
+{"label":"COLOR","pattern":"koral","id":"coral"}
+{"label":"COLOR","pattern":"krem","id":"cream"}
+{"label":"COLOR","pattern":"krim mint","id":"mintcream"}
+{"label":"COLOR","pattern":"krim pepaya","id":"papayawhip"}
+{"label":"COLOR","pattern":"kuning","id":"yellow"}
+{"label":"COLOR","pattern":"kuning goldenrod muda","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"kuning muda","id":"lightyellow"}
+{"label":"COLOR","pattern":"kuning-hijau","id":"yellowgreen"}
+{"label":"COLOR","pattern":"lavender","id":"lavender"}
+{"label":"COLOR","pattern":"lilac","id":"lilac"}
+{"label":"COLOR","pattern":"linen","id":"linen"}
+{"label":"COLOR","pattern":"magenta","id":"magenta"}
+{"label":"COLOR","pattern":"magenta tua","id":"darkmagenta"}
+{"label":"COLOR","pattern":"mawar berkabut","id":"mistyrose"}
+{"label":"COLOR","pattern":"merah","id":"red"}
+{"label":"COLOR","pattern":"merah anggur","id":"burgundy"}
+{"label":"COLOR","pattern":"merah bata","id":"firebrick"}
+{"label":"COLOR","pattern":"merah india","id":"indianred"}
+{"label":"COLOR","pattern":"merah jambu","id":"pink"}
+{"label":"COLOR","pattern":"merah marun","id":"maroon"}
+{"label":"COLOR","pattern":"merah menyala","id":"scarlet"}
+{"label":"COLOR","pattern":"merah muda","id":"pink"}
+{"label":"COLOR","pattern":"merah muda lavender","id":"lavenderblush"}
+{"label":"COLOR","pattern":"merah muda muda","id":"lightpink"}
+{"label":"COLOR","pattern":"merah padam","id":"crimson"}
+{"label":"COLOR","pattern":"merah tua","id":"darkred"}
+{"label":"COLOR","pattern":"merah violet pucat","id":"palevioletred"}
+{"label":"COLOR","pattern":"merah violet sedang","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"moccasin","id":"moccasin"}
+{"label":"COLOR","pattern":"nila","id":"indigo"}
+{"label":"COLOR","pattern":"oranye","id":"orange"}
+{"label":"COLOR","pattern":"oranye tua","id":"darkorange"}
+{"label":"COLOR","pattern":"oranye-merah","id":"orangered"}
+{"label":"COLOR","pattern":"perak","id":"silver"}
+{"label":"COLOR","pattern":"persik","id":"peachpuff"}
+{"label":"COLOR","pattern":"peru","id":"peru"}
+{"label":"COLOR","pattern":"pink","id":"pink"}
+{"label":"COLOR","pattern":"pink menyala","id":"hotpink"}
+{"label":"COLOR","pattern":"pink tua","id":"deeppink"}
+{"label":"COLOR","pattern":"prem","id":"plum"}
+{"label":"COLOR","pattern":"putih","id":"white"}
+{"label":"COLOR","pattern":"putih antik","id":"antiquewhite"}
+{"label":"COLOR","pattern":"putih asap","id":"whitesmoke"}
+{"label":"COLOR","pattern":"putih floral","id":"floralwhite"}
+{"label":"COLOR","pattern":"putih hantu","id":"ghostwhite"}
+{"label":"COLOR","pattern":"putih navajo","id":"navajowhite"}
+{"label":"COLOR","pattern":"renda lama","id":"oldlace"}
+{"label":"COLOR","pattern":"salju","id":"snow"}
+{"label":"COLOR","pattern":"salmon","id":"salmon"}
+{"label":"COLOR","pattern":"salmon muda","id":"lightsalmon"}
+{"label":"COLOR","pattern":"salmon tua","id":"darksalmon"}
+{"label":"COLOR","pattern":"sian","id":"cyan"}
+{"label":"COLOR","pattern":"sian muda","id":"lightcyan"}
+{"label":"COLOR","pattern":"sian tua","id":"darkcyan"}
+{"label":"COLOR","pattern":"sienna","id":"sienna"}
+{"label":"COLOR","pattern":"sutra jagung","id":"cornsilk"}
+{"label":"COLOR","pattern":"tan","id":"tan"}
+{"label":"COLOR","pattern":"teal","id":"teal"}
+{"label":"COLOR","pattern":"thistle","id":"thistle"}
+{"label":"COLOR","pattern":"tomat","id":"tomato"}
+{"label":"COLOR","pattern":"turkuois","id":"turquoise"}
+{"label":"COLOR","pattern":"turquoise","id":"turquoise"}
+{"label":"COLOR","pattern":"turquoise pucat","id":"paleturquoise"}
+{"label":"COLOR","pattern":"turquoise sedang","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"turquoise tua","id":"darkturquoise"}
+{"label":"COLOR","pattern":"ungu","id":"purple"}
+{"label":"COLOR","pattern":"ungu kebiruan","id":"blueviolet"}
+{"label":"COLOR","pattern":"ungu rebecca","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"ungu sedang","id":"mediumpurple"}
+{"label":"COLOR","pattern":"ungu tua","id":"darkviolet"}
+{"label":"COLOR","pattern":"ungu violet","id":"violet"}
+{"label":"COLOR","pattern":"violet","id":"violet"}
+{"label":"COLOR","pattern":"zaitun","id":"olive"}
