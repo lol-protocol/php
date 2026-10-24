@@ -576,6 +576,13 @@ for y, hue, w in ((14, 'orange', 30), (32, 'mist', 20), (50, 'mist', 26)):
     ic.solid(Disc(15, y, 4.6), hue, d=2)
     ic.solid(Block(26, y - 3.3, w, 6.6, r=3.3), hue, d=2)
 
+# dispersión: un grupo compacto y, cada vez más lejos y más pequeños, los nodos que se alejaron
+ic = reg(Icon('view_dispersion'))
+for kind, x, y, r in (('di', 33, 21, 4.4), ('sq', 40, 44, 4.0), ('ci', 48, 27, 3.6), ('di', 55, 49, 3.2), ('ci', 56, 13, 2.8)):
+    node(ic, kind, x, y, 'other', r=r, d=1.8)
+for x, y in ((9.5, 33), (18.5, 25), (18.5, 41)):
+    node(ic, 'ci', x, y, 'rel', r=5.6, d=2.4)
+
 # ------------------------------------------------------------------ action_
 # Las acciones son piezas sueltas con movimiento: lo que se ve es de dónde viene y a dónde va, nunca un objeto.
 def pt_on(cx, cy, r, a):
@@ -748,6 +755,12 @@ _add_rel('action_add_spouse', [lambda ic: ic.link([(14, 28), (36, 28)], 'double'
                                lambda ic: node(ic, 'ci', 14, 28, 'self', r=6.4, d=2.6),
                                lambda ic: node(ic, 'di', 36, 28, 'rel', r=6.4, d=2.6)])
 
+# retirar una página: el nodo y una insignia roja con una raya
+ic = new('action_withdraw')
+node(ic, 'ci', 25, 26, 'rel', r=11, d=3)
+ic.solid(Disc(46, 44, 9), 'red', d=2.4)
+ic.line(41, 44, 51, 44, w=3)
+
 # ------------------------------------------------------------------ ui_
 reg(badge('ui_verified', 'green', lambda ic: ic.dot(31, 30, 11.5)))
 reg(badge('ui_unverified', 'slate', lambda ic: ic.ring(31, 30, 11, w=2.6, dash='3 3.5')))
@@ -789,6 +802,47 @@ ic = new('ui_source')
 for x, y in ((9, 38), (16, 26), (23, 14)):
     ic.solid(Block(x, y, 30, 10, r=5), 'brown', d=2.4)
 
+# un suceso: un punto destacado entre otros sobre una línea de tiempo
+ic = new('ui_event')
+ic.link([(6, 46), (56, 46)])
+ic.link([(31, 30), (31, 46)], w=2.4)
+for x in (13, 49):
+    ic.solid(Disc(x, 46, 3.6), 'mist', d=1.6)
+ic.solid(Disc(31, 46, 4.4), 'orange', d=1.8)
+ic.solid(Disc(31, 20, 11), 'orange', d=3.2)
+
+# organización: bloques en jerarquía (los nodos son personas; los bloques, entidades)
+ic = new('ui_organization')
+ic.link([(32, 19), (32, 29), (17, 29), (17, 38)], w=2.2)
+ic.link([(32, 29), (47, 29), (47, 38)], w=2.2)
+ic.solid(Block(19.5, 8, 25, 11, r=5.5), 'indigo', d=3)
+for x in (7, 37):
+    ic.solid(Block(x, 38, 20, 11, r=5.5), 'slate', d=2.6)
+
+# miembros: personas dentro de una organización
+ic = new('ui_members')
+ic.solid(Block(6, 17, 52, 28, r=14), 'teal', d=3.4)
+for x, role in ((19, 'other'), (32, 'rel'), (45, 'other')):
+    node(ic, 'ci', x, 31, role, r=5.6, d=2)
+
+
+def _records(ic, x, y):
+    for dy in (-9, 0, 9):
+        ic.dot(x - 10, y + dy, 2.4)
+        ic.line(x - 3.5, y + dy, x + 12, y + dy, w=3.2)
+
+
+reg(tile('ui_records', 'blue', _records))
+
+# aportes: quien aporta (el nodo propio) y lo que aportó
+ic = new('ui_contribution')
+ic.link([(14, 31), (27, 31), (27, 17), (33, 17)], w=2.2)
+ic.link([(27, 31), (33, 31)], w=2.2)
+ic.link([(27, 31), (27, 45), (33, 45)], w=2.2)
+for y in (12, 26, 40):
+    ic.solid(Block(33, y, 22, 10, r=5), 'green', d=2.4)
+node(ic, 'ci', 14, 31, 'self', r=8, d=3)
+
 
 def _doc(stem, hue, mark):
     ic = Icon(stem)
@@ -801,5 +855,7 @@ def _doc(stem, hue, mark):
 
 _doc('ui_export_pdf', 'red', lambda ic: ic.bars(19, 20, [22, 22, 12], 9.5, w=3.2))
 _doc('ui_export_csv', 'green', lambda ic: ic.mark('M19 22H41M19 31H41M19 40H41M24.5 17V44M35.5 17V44', w=2))
+_doc('ui_export_gedcom', 'violet', lambda ic: (ic.mark('M28 21V27M18 27H38M18 27V32M38 27V32', w=2),
+                                                ic.dot(28, 18, 3.4), ic.dot(18, 35, 3.4), ic.dot(38, 35, 3.4)))
 
 ICONS.extend(comunes.ICONS)  # los que se llaman igual en los dos sets, definidos una vez en comunes.py

@@ -1,8 +1,8 @@
 # Iconos de árbol genealógico (SVG 2.5D)
 
-175 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
+183 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
 **sin letras, números ni pictogramas** (nada dibuja un objeto literal), así que
-no dependen del idioma. 525 archivos: 3 variantes × 175 iconos.
+no dependen del idioma. 549 archivos: 3 variantes × 183 iconos.
 
 Para verlos todos, abrí `galeria-iconos.html` desde la raíz del repositorio.
 
@@ -26,9 +26,9 @@ inglés.
 | `person_` | 82 | Parentescos desde la perspectiva de "tú" | `person_uncle` |
 | `relationship_` | 27 | Vínculos y tipos de familia | `relationship_married` |
 | `state_` | 8 | Estado de una persona | `state_widowed` |
-| `view_` | 12 | Formas de ver el árbol | `view_fan` |
-| `action_` | 32 | Acciones del usuario | `action_add_parent` |
-| `ui_` | 14 | Elementos de interfaz | `ui_dna` |
+| `view_` | 13 | Formas de ver el árbol | `view_fan` |
+| `action_` | 33 | Acciones del usuario | `action_add_parent` |
+| `ui_` | 20 | Elementos de interfaz | `ui_dna` |
 
 ## Cómo se leen
 
@@ -43,7 +43,8 @@ dibuja más grande para que se vea su forma. Un anillo discontinuo alrededor
 de un nodo significa "desconocido" o "sin pareja"; una línea ondulada une a
 una pareja sentimental y una barra gruesa roja, el vínculo de sangre. Las
 acciones y la interfaz usan la misma gramática que el set de biblioteca (ver
-`iconos-biblioteca/README.md`).
+`iconos-biblioteca/README.md`). Lo que no es una persona (una organización, los
+aportes de una cuenta) se dibuja con bloques redondeados en lugar de nodos.
 
 Los nombres de parentesco llevan el género en la palabra (`person_father`,
 `person_mother`, `person_parent`). Donde la palabra no lo distingue (`cousin`),
