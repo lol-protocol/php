@@ -17,7 +17,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`copyright-laws/`](copyright-laws/) | Base de datos de leyes de derechos de autor por jurisdicción, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
 | [`leyes-comunes/`](leyes-comunes/) | Núcleo compartido del verificador de enlaces de referencia de `privacy-laws/` y `copyright-laws/`: ninguno de los dos depende del otro, los dos dependen de esta carpeta. |
 | [`marketing/`](marketing/) | Frases y textos de marketing para un proyecto de genealogía: lemas, eslóganes, redes sociales y correo. |
-| [`citas-pos/`](citas-pos/) | Plan de citas célebres, en varios idiomas, como apoyo de marketing para Contrastocolor (el etiquetador POS): cada cita con su fuente verificada y sus traducciones como borrador. Por ahora solo hay plan, sin código ni CI. |
+| [`citas-pos/`](citas-pos/) | Documentación y plan de un apoyo de marketing para Contrastocolor (el etiquetador POS): citas célebres de dominio público, en varios idiomas, con cada palabra en el color de su categoría gramatical, cada una con su fuente verificada y sus traducciones como borrador. Por ahora solo hay documentación (ideas, criterios y plan), sin citas, código ni CI. |
 | [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |
 | [`psychology-and-marketing/`](psychology-and-marketing/) | Guía de psicología humana y neuromarketing ético para diseñar productos sin violar la privacidad del usuario. Solo documentos, sin código ni CI. |
 | [`sistema-nuevo/`](sistema-nuevo/) | Backoffice para revisar la actividad de un usuario contra el promedio de su universo comparable (PHP + Java + JS). |
