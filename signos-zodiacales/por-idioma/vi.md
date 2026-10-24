@@ -4,7 +4,7 @@
 
 ## Zodiaco occidental
 
-### Bạch Dương
+### ♈ Bạch Dương
 
 *21/03 – 19/04 · Lửa · Chủ động*
 
@@ -12,7 +12,7 @@ Dũng cảm, bốc đồng và tràn đầy năng lượng.
 
 Gắn với tinh thần chủ động và lòng dũng cảm: truyền thống mô tả người này thẳng thắn, hiếu thắng và luôn sẵn sàng bắt đầu điều mới, nhưng thiếu kiên nhẫn.
 
-### Kim Ngưu
+### ♉ Kim Ngưu
 
 *20/04 – 20/05 · Đất · Cố định*
 
@@ -20,7 +20,7 @@ Kiên nhẫn, gợi cảm và yêu sự ổn định.
 
 Gắn với sự bền bỉ và sở thích thiết thực: truyền thống mô tả người này trung thành, điềm tĩnh, thích sự thoải mái, nhưng đôi khi bướng bỉnh.
 
-### Song Tử
+### ♊ Song Tử
 
 *21/05 – 20/06 · Khí · Linh hoạt*
 
@@ -28,7 +28,7 @@ Tò mò, giao tiếp giỏi và đầu óc nhanh nhạy.
 
 Gắn với sự tò mò và lời nói: truyền thống mô tả người này hòa đồng, đa năng, luôn có câu hỏi mới, nhưng đôi khi thiếu tập trung.
 
-### Cự Giải
+### ♋ Cự Giải
 
 *21/06 – 22/07 · Nước · Chủ động*
 
@@ -36,7 +36,7 @@ Bảo vệ, nhạy cảm và rất trung thành với người thân.
 
 Gắn với gia đình và cảm xúc: truyền thống mô tả người này chu đáo, giàu trực giác, rất gắn bó với gia đình, nhưng đôi khi kín đáo.
 
-### Sư Tử
+### ♌ Sư Tử
 
 *23/07 – 22/08 · Lửa · Cố định*
 
@@ -44,7 +44,7 @@ Hào phóng, có sức hút và thích tỏa sáng.
 
 Gắn với sự hào phóng và khả năng lãnh đạo: truyền thống mô tả người này ấm áp, kiêu hãnh, thích là tâm điểm, nhưng đôi khi bướng bỉnh.
 
-### Xử Nữ
+### ♍ Xử Nữ
 
 *23/08 – 22/09 · Đất · Linh hoạt*
 
@@ -52,7 +52,7 @@ Phân tích, thực tế và rất chú trọng chi tiết.
 
 Gắn với trật tự và sự phụng sự: truyền thống mô tả người này có phương pháp, kín đáo, khắt khe với bản thân, nhưng đôi khi quá chỉ trích.
 
-### Thiên Bình
+### ♎ Thiên Bình
 
 *23/09 – 22/10 · Khí · Chủ động*
 
@@ -60,7 +60,7 @@ Khéo léo, hòa đồng và tìm kiếm sự cân bằng.
 
 Gắn với sự hài hòa và công bằng: truyền thống mô tả người này ân cần, thanh lịch, biết hòa giải, nhưng đôi khi thiếu quyết đoán.
 
-### Bọ Cạp
+### ♏ Bọ Cạp
 
 *23/10 – 21/11 · Nước · Cố định*
 
@@ -68,7 +68,7 @@ Mãnh liệt, trực giác nhạy bén và ý chí kiên định.
 
 Gắn với chiều sâu và quyết tâm: truyền thống mô tả người này kín đáo, đam mê, rất nhạy bén, nhưng đôi khi quá dữ dội.
 
-### Nhân Mã
+### ♐ Nhân Mã
 
 *22/11 – 21/12 · Lửa · Linh hoạt*
 
@@ -76,7 +76,7 @@ Lạc quan, thích phiêu lưu và yêu tự do.
 
 Gắn với khám phá và sự thẳng thắn: truyền thống mô tả người này lạc quan, không yên, thích du lịch và học hỏi, nhưng đôi khi liều lĩnh.
 
-### Ma Kết
+### ♑ Ma Kết
 
 *22/12 – 19/01 · Đất · Chủ động*
 
@@ -84,7 +84,7 @@ Kỷ luật, tham vọng và có trách nhiệm.
 
 Gắn với kỷ luật và sự kiên nhẫn: truyền thống mô tả người này tham vọng, nghiêm túc, có trách nhiệm về lâu dài, nhưng đôi khi cứng nhắc.
 
-### Bảo Bình
+### ♒ Bảo Bình
 
 *20/01 – 18/02 · Khí · Cố định*
 
@@ -92,7 +92,7 @@ Gắn với kỷ luật và sự kiên nhẫn: truyền thống mô tả ngườ
 
 Gắn với sự độc đáo và những ý tưởng cộng đồng: truyền thống mô tả người này độc lập, đổi mới, hơi xa cách, nhưng đôi khi nổi loạn.
 
-### Song Ngư
+### ♓ Song Ngư
 
 *19/02 – 20/03 · Nước · Linh hoạt*
 
@@ -104,7 +104,9 @@ Gắn với trí tưởng tượng và lòng trắc ẩn: truyền thống mô t
 
 ### Chuột
 
-*Zi · Nước · Dương · 1996, 2008, 2020, 2032*
+*子 Zi · Nước · Dương*
+
+1924 Mộc · 1936 Lửa · 1948 Đất · 1960 Kim · 1972 Nước · 1984 Mộc · 1996 Lửa · 2008 Đất · 2020 Kim · 2032 Nước
 
 Khôn khéo, nhanh nhẹn và rất tháo vát.
 
@@ -112,7 +114,9 @@ Gắn với sự lanh lợi và khả năng thích nghi: truyền thống mô t�
 
 ### Trâu
 
-*Chou · Đất · Âm · 1997, 2009, 2021, 2033*
+*丑 Chou · Đất · Âm*
+
+1925 Mộc · 1937 Lửa · 1949 Đất · 1961 Kim · 1973 Nước · 1985 Mộc · 1997 Lửa · 2009 Đất · 2021 Kim · 2033 Nước
 
 Chăm chỉ, kiên nhẫn và đáng tin cậy.
 
@@ -120,7 +124,9 @@ Gắn với sự nỗ lực và bền bỉ: truyền thống mô tả loài này
 
 ### Hổ
 
-*Yin · Mộc · Dương · 1998, 2010, 2022, 2034*
+*寅 Yin · Mộc · Dương*
+
+1926 Lửa · 1938 Đất · 1950 Kim · 1962 Nước · 1974 Mộc · 1986 Lửa · 1998 Đất · 2010 Kim · 2022 Nước · 2034 Mộc
 
 Dũng cảm, hiếu thắng và đầy đam mê.
 
@@ -128,7 +134,9 @@ Gắn với lòng can đảm và sức hút: truyền thống mô tả loài nà
 
 ### Mèo
 
-*Mao · Mộc · Âm · 1999, 2011, 2023, 2035*
+*卯 Mao · Mộc · Âm*
+
+1927 Lửa · 1939 Đất · 1951 Kim · 1963 Nước · 1975 Mộc · 1987 Lửa · 1999 Đất · 2011 Kim · 2023 Nước · 2035 Mộc
 
 Hiền hòa, thận trọng và nhạy cảm.
 
@@ -136,7 +144,9 @@ Gắn với sự điềm tĩnh và khéo léo: truyền thống mô tả loài n
 
 ### Rồng
 
-*Chen · Đất · Dương · 2000, 2012, 2024, 2036*
+*辰 Chen · Đất · Dương*
+
+1928 Đất · 1940 Kim · 1952 Nước · 1964 Mộc · 1976 Lửa · 1988 Đất · 2000 Kim · 2012 Nước · 2024 Mộc · 2036 Lửa
 
 Có sức hút, năng động và may mắn.
 
@@ -144,7 +154,9 @@ Gắn với vận may và hoài bão: truyền thống mô tả loài này tự 
 
 ### Rắn
 
-*Si · Lửa · Âm · 2001, 2013, 2025, 2037*
+*巳 Si · Lửa · Âm*
+
+1929 Đất · 1941 Kim · 1953 Nước · 1965 Mộc · 1977 Lửa · 1989 Đất · 2001 Kim · 2013 Nước · 2025 Mộc · 2037 Lửa
 
 Khôn ngoan, kín đáo và thanh lịch.
 
@@ -152,7 +164,9 @@ Gắn với trí tuệ và trực giác: truyền thống mô tả loài này s�
 
 ### Ngựa
 
-*Wu · Lửa · Dương · 2002, 2014, 2026, 2038*
+*午 Wu · Lửa · Dương*
+
+1930 Kim · 1942 Nước · 1954 Mộc · 1966 Lửa · 1978 Đất · 1990 Kim · 2002 Nước · 2014 Mộc · 2026 Lửa · 2038 Đất
 
 Tự do, năng động và hòa đồng.
 
@@ -160,7 +174,9 @@ Gắn với tự do và năng lượng: truyền thống mô tả loài này vui
 
 ### Dê
 
-*Wei · Đất · Âm · 2003, 2015, 2027, 2039*
+*未 Wei · Đất · Âm*
+
+1931 Kim · 1943 Nước · 1955 Mộc · 1967 Lửa · 1979 Đất · 1991 Kim · 2003 Nước · 2015 Mộc · 2027 Lửa · 2039 Đất
 
 Sáng tạo, dịu dàng và nghệ sĩ.
 
@@ -168,7 +184,9 @@ Gắn với sự nhạy cảm và óc sáng tạo: truyền thống mô tả lo�
 
 ### Khỉ
 
-*Shen · Kim · Dương · 2004, 2016, 2028, 2040*
+*申 Shen · Kim · Dương*
+
+1932 Nước · 1944 Mộc · 1956 Lửa · 1968 Đất · 1980 Kim · 1992 Nước · 2004 Mộc · 2016 Lửa · 2028 Đất · 2040 Kim
 
 Thông minh, vui tính và dí dỏm.
 
@@ -176,7 +194,9 @@ Gắn với sự lanh lợi và tính tò mò: truyền thống mô tả loài n
 
 ### Gà
 
-*You · Kim · Âm · 2005, 2017, 2029, 2041*
+*酉 You · Kim · Âm*
+
+1933 Nước · 1945 Mộc · 1957 Lửa · 1969 Đất · 1981 Kim · 1993 Nước · 2005 Mộc · 2017 Lửa · 2029 Đất · 2041 Kim
 
 Ngăn nắp, trung thực và tinh ý.
 
@@ -184,7 +204,9 @@ Gắn với trật tự và sự thẳng thắn: truyền thống mô tả loài
 
 ### Chó
 
-*Xu · Đất · Dương · 2006, 2018, 2030, 2042*
+*戌 Xu · Đất · Dương*
+
+1934 Mộc · 1946 Lửa · 1958 Đất · 1970 Kim · 1982 Nước · 1994 Mộc · 2006 Lửa · 2018 Đất · 2030 Kim · 2042 Nước
 
 Trung thành, công bằng và bảo vệ người khác.
 
@@ -192,7 +214,9 @@ Gắn với lòng trung thành và công bằng: truyền thống mô tả loài
 
 ### Lợn
 
-*Hai · Nước · Âm · 2007, 2019, 2031, 2043*
+*亥 Hai · Nước · Âm*
+
+1935 Mộc · 1947 Lửa · 1959 Đất · 1971 Kim · 1983 Nước · 1995 Mộc · 2007 Lửa · 2019 Đất · 2031 Kim · 2043 Nước
 
 Hào phóng, chân thành và tình cảm.
 

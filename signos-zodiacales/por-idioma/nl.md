@@ -4,196 +4,220 @@
 
 ## Zodiaco occidental
 
-### Ram
+### ♈ Ram
 
 *21/03 – 19/04 · Vuur · Kardinaal*
 
 Moedig, impulsief en vol energie.
 
-Verbonden met initiatief en moed: de traditie beschrijft hem als direct, competitief en altijd bereid iets nieuws te beginnen, maar ongeduldig.
+Teken van initiatief en moed: de traditie verbindt het met directheid, competitiedrang en zin in nieuwe dingen, maar ook met ongeduld.
 
-### Stier
+### ♉ Stier
 
 *20/04 – 20/05 · Aarde · Vast*
 
 Geduldig, sensueel en gehecht aan stabiliteit.
 
-Verbonden met standvastigheid en zin voor het tastbare: de traditie beschrijft hem als trouw, kalm en comfortlievend, maar soms koppig.
+Teken van standvastigheid en zin voor het tastbare: de traditie verbindt het met trouw, kalmte en liefde voor comfort, maar ook met koppigheid.
 
-### Tweelingen
+### ♊ Tweelingen
 
 *21/05 – 20/06 · Lucht · Veranderlijk*
 
 Nieuwsgierig, communicatief en snel van geest.
 
-Verbonden met nieuwsgierigheid en het woord: de traditie beschrijft hem als sociaal, veelzijdig en altijd met een nieuwe vraag, maar soms verstrooid.
+Teken van nieuwsgierigheid en het woord: de traditie verbindt het met gezelligheid, veelzijdigheid en steeds nieuwe vragen, maar ook met verstrooidheid.
 
-### Kreeft
+### ♋ Kreeft
 
 *21/06 – 22/07 · Water · Kardinaal*
 
 Beschermend, gevoelig en zeer loyaal aan de zijnen.
 
-Verbonden met huis en emoties: de traditie beschrijft hem als zorgzaam, intuïtief en sterk gehecht aan familie, maar soms gereserveerd.
+Teken van huis en gevoel: de traditie verbindt het met zorgzaamheid, intuïtie en gehechtheid aan familie, maar ook met terughoudendheid.
 
-### Leeuw
+### ♌ Leeuw
 
 *23/07 – 22/08 · Vuur · Vast*
 
 Vrijgevig, charismatisch en graag in de schijnwerpers.
 
-Verbonden met vrijgevigheid en leiderschap: de traditie beschrijft hem als warm, trots en graag in het middelpunt, maar soms koppig.
+Teken van vrijgevigheid en leiderschap: de traditie verbindt het met warmte, trots en liefde voor de schijnwerpers, maar ook met koppigheid.
 
-### Maagd
+### ♍ Maagd
 
 *23/08 – 22/09 · Aarde · Veranderlijk*
 
 Analytisch, praktisch en zeer nauwgezet.
 
-Verbonden met orde en dienstbaarheid: de traditie beschrijft hem als methodisch, discreet en veeleisend voor zichzelf, maar soms te kritisch.
+Teken van orde en dienstbaarheid: de traditie verbindt het met methodiek, bescheidenheid en strengheid voor zichzelf, maar ook met overmatige kritiek.
 
-### Weegschaal
+### ♎ Weegschaal
 
 *23/09 – 22/10 · Lucht · Kardinaal*
 
 Diplomatiek, sociaal en op zoek naar evenwicht.
 
-Verbonden met harmonie en rechtvaardigheid: de traditie beschrijft hem als vriendelijk, elegant en een goede bemiddelaar, maar soms besluiteloos.
+Teken van harmonie en rechtvaardigheid: de traditie verbindt het met vriendelijkheid, elegantie en bemiddelingstalent, maar ook met besluiteloosheid.
 
-### Schorpioen
+### ♏ Schorpioen
 
 *23/10 – 21/11 · Water · Vast*
 
 Intens, intuïtief en vastberaden.
 
-Verbonden met diepgang en vastberadenheid: de traditie beschrijft hem als gereserveerd, gepassioneerd en zeer opmerkzaam, maar soms te intens.
+Teken van diepgang en vastberadenheid: de traditie verbindt het met terughoudendheid, passie en scherpzinnigheid, maar ook met overmatige intensiteit.
 
-### Boogschutter
+### ♐ Boogschutter
 
 *22/11 – 21/12 · Vuur · Veranderlijk*
 
 Optimistisch, avontuurlijk en vrijheidslievend.
 
-Verbonden met ontdekking en openheid: de traditie beschrijft hem als optimistisch, rusteloos en gek op reizen en leren, maar soms onbezonnen.
+Teken van ontdekking en openheid: de traditie verbindt het met optimisme, rusteloosheid en liefde voor reizen en leren, maar ook met onbezonnenheid.
 
-### Steenbok
+### ♑ Steenbok
 
 *22/12 – 19/01 · Aarde · Kardinaal*
 
 Gedisciplineerd, ambitieus en verantwoordelijk.
 
-Verbonden met discipline en geduld: de traditie beschrijft hem als ambitieus, serieus en op lange termijn verantwoordelijk, maar soms rigide.
+Teken van discipline en geduld: de traditie verbindt het met ambitie, ernst en verantwoordelijkheid op lange termijn, maar ook met starheid.
 
-### Waterman
+### ♒ Waterman
 
 *20/01 – 18/02 · Lucht · Vast*
 
 Onafhankelijk, origineel en humanitair.
 
-Verbonden met originaliteit en collectieve ideeën: de traditie beschrijft hem als onafhankelijk, vernieuwend en wat afstandelijk, maar soms rebels.
+Teken van originaliteit en gedeelde ideeën: de traditie verbindt het met onafhankelijkheid, vernieuwing en een zekere afstand, maar ook met rebellie.
 
-### Vissen
+### ♓ Vissen
 
 *19/02 – 20/03 · Water · Veranderlijk*
 
 Empathisch, dromerig en zeer intuïtief.
 
-Verbonden met verbeelding en medeleven: de traditie beschrijft hem als gevoelig, artistiek en toegewijd aan anderen, maar soms ontwijkend.
+Teken van verbeelding en medeleven: de traditie verbindt het met gevoeligheid, artistiek talent en toewijding aan anderen, maar ook met ontwijkendheid.
 
 ## Horóscopo chino
 
 ### Rat
 
-*Zi · Water · Yang · 1996, 2008, 2020, 2032*
+*子 Zi · Water · Yang*
+
+1924 Hout · 1936 Vuur · 1948 Aarde · 1960 Metaal · 1972 Water · 1984 Hout · 1996 Vuur · 2008 Aarde · 2020 Metaal · 2032 Water
 
 Slim, wendbaar en zeer vindingrijk.
 
-Verbonden met vernuft en aanpassingsvermogen: de traditie beschrijft haar als oplettend, charmant en bedreven in het vinden van kansen, maar soms berekenend.
+Teken van vernuft en aanpassingsvermogen: de traditie verbindt het met opmerkzaamheid, charme en een neus voor kansen, maar ook met berekening.
 
 ### Os
 
-*Chou · Aarde · Yin · 1997, 2009, 2021, 2033*
+*丑 Chou · Aarde · Yin*
+
+1925 Hout · 1937 Vuur · 1949 Aarde · 1961 Metaal · 1973 Water · 1985 Hout · 1997 Vuur · 2009 Aarde · 2021 Metaal · 2033 Water
 
 Hardwerkend, geduldig en betrouwbaar.
 
-Verbonden met inspanning en volharding: de traditie beschrijft hem als standvastig, geduldig en een man van zijn woord, maar soms afwijzend tegenover verandering.
+Teken van inspanning en volharding: de traditie verbindt het met standvastigheid, geduld en betrouwbaarheid, maar ook met weerstand tegen verandering.
 
 ### Tijger
 
-*Yin · Hout · Yang · 1998, 2010, 2022, 2034*
+*寅 Yin · Hout · Yang*
+
+1926 Vuur · 1938 Aarde · 1950 Metaal · 1962 Water · 1974 Hout · 1986 Vuur · 1998 Aarde · 2010 Metaal · 2022 Water · 2034 Hout
 
 Moedig, competitief en gepassioneerd.
 
-Verbonden met moed en uitstraling: de traditie beschrijft hem als gedurfd, vrijgevig en een geboren leider, maar soms impulsief.
+Teken van moed en uitstraling: de traditie verbindt het met durf, vrijgevigheid en natuurlijk leiderschap, maar ook met impulsiviteit.
 
 ### Konijn
 
-*Mao · Hout · Yin · 1999, 2011, 2023, 2035*
+*卯 Mao · Hout · Yin*
+
+1927 Vuur · 1939 Aarde · 1951 Metaal · 1963 Water · 1975 Hout · 1987 Vuur · 1999 Aarde · 2011 Metaal · 2023 Water · 2035 Hout
 
 Vriendelijk, voorzichtig en gevoelig.
 
-Verbonden met rust en diplomatie: de traditie beschrijft hem als zacht, hoffelijk en gesteld op harmonie, maar soms conflictmijdend.
+Teken van rust en diplomatie: de traditie verbindt het met fijngevoeligheid, hoffelijkheid en liefde voor harmonie, maar ook met conflictvermijding.
 
 ### Draak
 
-*Chen · Aarde · Yang · 2000, 2012, 2024, 2036*
+*辰 Chen · Aarde · Yang*
+
+1928 Aarde · 1940 Metaal · 1952 Water · 1964 Hout · 1976 Vuur · 1988 Aarde · 2000 Metaal · 2012 Water · 2024 Hout · 2036 Vuur
 
 Charismatisch, energiek en gelukkig.
 
-Verbonden met geluk en ambitie: de traditie beschrijft hem als zelfverzekerd, magnetisch en vol plannen, maar soms trots.
+Teken van geluk en ambitie: de traditie verbindt het met zelfvertrouwen, aantrekkingskracht en veel plannen, maar ook met trots.
 
 ### Slang
 
-*Si · Vuur · Yin · 2001, 2013, 2025, 2037*
+*巳 Si · Vuur · Yin*
+
+1929 Aarde · 1941 Metaal · 1953 Water · 1965 Hout · 1977 Vuur · 1989 Aarde · 2001 Metaal · 2013 Water · 2025 Hout · 2037 Vuur
 
 Wijs, gereserveerd en elegant.
 
-Verbonden met wijsheid en intuïtie: de traditie beschrijft haar als bedachtzaam, elegant en strategisch, maar soms wantrouwig.
+Teken van wijsheid en intuïtie: de traditie verbindt het met bedachtzaamheid, elegantie en strategisch denken, maar ook met wantrouwen.
 
 ### Paard
 
-*Wu · Vuur · Yang · 2002, 2014, 2026, 2038*
+*午 Wu · Vuur · Yang*
+
+1930 Metaal · 1942 Water · 1954 Hout · 1966 Vuur · 1978 Aarde · 1990 Metaal · 2002 Water · 2014 Hout · 2026 Vuur · 2038 Aarde
 
 Vrijheidslievend, energiek en sociaal.
 
-Verbonden met vrijheid en energie: de traditie beschrijft hem als vrolijk, onafhankelijk en gek op beweging, maar soms rusteloos.
+Teken van vrijheid en energie: de traditie verbindt het met vrolijkheid, onafhankelijkheid en liefde voor beweging, maar ook met rusteloosheid.
 
 ### Geit
 
-*Wei · Aarde · Yin · 2003, 2015, 2027, 2039*
+*未 Wei · Aarde · Yin*
+
+1931 Metaal · 1943 Water · 1955 Hout · 1967 Vuur · 1979 Aarde · 1991 Metaal · 2003 Water · 2015 Hout · 2027 Vuur · 2039 Aarde
 
 Creatief, zachtaardig en artistiek.
 
-Verbonden met gevoeligheid en creativiteit: de traditie beschrijft haar als vriendelijk, dromerig en vredelievend, maar soms besluiteloos.
+Teken van gevoeligheid en creativiteit: de traditie verbindt het met vriendelijkheid, verbeelding en vredelievendheid, maar ook met besluiteloosheid.
 
 ### Aap
 
-*Shen · Metaal · Yang · 2004, 2016, 2028, 2040*
+*申 Shen · Metaal · Yang*
+
+1932 Water · 1944 Hout · 1956 Vuur · 1968 Aarde · 1980 Metaal · 1992 Water · 2004 Hout · 2016 Vuur · 2028 Aarde · 2040 Metaal
 
 Slim, grappig en vernuftig.
 
-Verbonden met vernuft en nieuwsgierigheid: de traditie beschrijft hem als grappig, inventief en snel van leren, maar soms ondeugend.
+Teken van vernuft en nieuwsgierigheid: de traditie verbindt het met humor, vindingrijkheid en snel leren, maar ook met ondeugendheid.
 
 ### Haan
 
-*You · Metaal · Yin · 2005, 2017, 2029, 2041*
+*酉 You · Metaal · Yin*
+
+1933 Water · 1945 Hout · 1957 Vuur · 1969 Aarde · 1981 Metaal · 1993 Water · 2005 Hout · 2017 Vuur · 2029 Aarde · 2041 Metaal
 
 Georganiseerd, eerlijk en opmerkzaam.
 
-Verbonden met orde en openheid: de traditie beschrijft hem als hardwerkend, punctueel en detailgericht, maar soms erg kritisch.
+Teken van orde en openheid: de traditie verbindt het met ijver, stiptheid en oog voor detail, maar ook met overmatige kritiek.
 
 ### Hond
 
-*Xu · Aarde · Yang · 2006, 2018, 2030, 2042*
+*戌 Xu · Aarde · Yang*
+
+1934 Hout · 1946 Vuur · 1958 Aarde · 1970 Metaal · 1982 Water · 1994 Hout · 2006 Vuur · 2018 Aarde · 2030 Metaal · 2042 Water
 
 Loyaal, rechtvaardig en beschermend.
 
-Verbonden met trouw en rechtvaardigheid: de traditie beschrijft hem als eerlijk, beschermend en een goede vriend, maar soms angstig.
+Teken van trouw en rechtvaardigheid: de traditie verbindt het met eerlijkheid, beschermingsdrang en vriendschap, maar ook met angstigheid.
 
 ### Varken
 
-*Hai · Water · Yin · 2007, 2019, 2031, 2043*
+*亥 Hai · Water · Yin*
+
+1935 Hout · 1947 Vuur · 1959 Aarde · 1971 Metaal · 1983 Water · 1995 Hout · 2007 Vuur · 2019 Aarde · 2031 Metaal · 2043 Water
 
 Royaal, oprecht en hartelijk.
 
-Verbonden met vrijgevigheid en levensgenot: de traditie beschrijft hem als oprecht, vriendelijk en goedhartig, maar soms naïef.
+Teken van vrijgevigheid en levensvreugde: de traditie verbindt het met oprechtheid, vriendelijkheid en een goed hart, maar ook met naïviteit.
