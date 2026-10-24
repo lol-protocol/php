@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-blue{stroke:var(--ic-blue,#153988)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M12.8 35.4L14.6 37.8A9 9 0 0 0 29 27L27.2 24.6A9 9 0 0 0 12.8 35.4Z" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/><circle cx="20" cy="30" r="9" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-blue" stroke="#153988"><path d="M12.8 35.4L14.6 37.8A9 9 0 0 0 29 27L27.2 24.6A9 9 0 0 0 12.8 35.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="20" cy="30" r="9" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M44 14L54 14L54 46L44 46" fill="none" stroke="#153988" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M32 30L40 30" fill="none" stroke="#153988" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5 3"/>
+    <path d="M44 14L54 14L54 46L44 46" class="ic-blue" fill="none" stroke="#153988" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M32 30L40 30" class="ic-blue" fill="none" stroke="#153988" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5 3"/>
   </g>
 </svg>

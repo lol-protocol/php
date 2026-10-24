@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .ic-rose{stroke:var(--ic-rose,#82112A)}
+    }
+  </style>
   <g class="links">
-    <path d="M26.97 29.62L27.5 28.89L28.2 28.03L28.9 27.31L29.6 26.76L30.3 26.42L31 26.3L31.7 26.42L32.4 26.76L33.1 27.31L33.8 28.03L34.5 28.89L35.2 29.84L35.9 30.83L36.2 31.25" fill="none" stroke="#82112A" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M26.97 29.62L27.5 28.89L28.2 28.03L28.9 27.31L29.6 26.76L30.3 26.42L31 26.3L31.7 26.42L32.4 26.76L33.1 27.31L33.8 28.03L34.5 28.89L35.2 29.84L35.9 30.83L36.2 31.25" class="ic-rose" fill="none" stroke="#82112A" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M26.44 26.02A2.4 2.4 0 0 1 26.92 27.46L26.92 38.66A2.4 2.4 0 0 1 24.52 41.06L13.32 41.06A2.4 2.4 0 0 1 11.4 40.1L9.48 37.54A2.4 2.4 0 0 1 9 36.1L9 24.9A2.4 2.4 0 0 1 11.4 22.5L22.6 22.5A2.4 2.4 0 0 1 24.52 23.46Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><rect x="9" y="22.5" width="16" height="16" rx="2.4" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M37.96 35.78L39.88 38.34A8.8 8.8 0 0 0 53.96 27.78L52.04 25.22A8.8 8.8 0 0 0 37.96 35.78Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><circle cx="45" cy="30.5" r="8.8" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-amber" stroke="#7E4503"><path d="M26.44 26.02A2.4 2.4 0 0 1 26.92 27.46L26.92 38.66A2.4 2.4 0 0 1 24.52 41.06L13.32 41.06A2.4 2.4 0 0 1 11.4 40.1L9.48 37.54A2.4 2.4 0 0 1 9 36.1L9 24.9A2.4 2.4 0 0 1 11.4 22.5L22.6 22.5A2.4 2.4 0 0 1 24.52 23.46Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="9" y="22.5" width="16" height="16" rx="2.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-amber" stroke="#7E4503"><path d="M37.96 35.78L39.88 38.34A8.8 8.8 0 0 0 53.96 27.78L52.04 25.22A8.8 8.8 0 0 0 37.96 35.78Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="45" cy="30.5" r="8.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

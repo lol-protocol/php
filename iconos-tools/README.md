@@ -63,7 +63,7 @@ en `ACEPTADOS` (hoy está vacío).
 
 Cada sólido es su cara frontal más una pared extruida hacia abajo y a la derecha (`LIGHT` en `lib.py`).
 La pared se dibuja con las mismas rectas y arcos de la forma (`exact_sweep`), no con un polígono que
-la aproxime: se ve igual de suave a 16 px que a 512 px. Cinco detalles:
+la aproxime: se ve igual de suave a 16 px que a 512 px. Seis detalles:
 
 - El degradado de la cara va de arriba a la izquierda a abajo a la derecha. En
   una forma girada (los rombos) se gira de vuelta (`light_axis`), porque si no
@@ -80,6 +80,11 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Cinco detalles:
 - En `lineas`, todo trazo normal pesa entre `LINE_MIN` (1,8, el contorno de un volumen) y `LINE_MAX` (2,2): antes
   los enlaces pesaban 2,6 y destacaban más que los objetos que unen. Las barras a propósito (`BAR`: el vínculo
   de sangre, `action_connect`) conservan su grosor. Un enlace doble de color y gris pesa 1,6, no 1,61.
+- En `lineas`, el color de cada trazo se puede sobrescribir con `--ic-<tono>` (ver los README de los sets). Cada
+  trazo lleva `class="ic-<tono>"` y el color de siempre como atributo; el `<style>` del icono pone
+  `stroke: var(--ic-<tono>, <color>)` solo para los tonos que usa. Va dentro de `@supports (--a:0)` porque un
+  renderizador sin variables CSS (`resvg`, que usa `similares.py`) dejaría los trazos sin dibujar con una regla `var()`
+  que no sabe resolver: con el `@supports` ignora el bloque y usa el atributo, y el dibujo sale igual que antes.
 - Las coordenadas llevan dos decimales (`fmt`). Con uno, el redondeo de los extremos de un arco
   de 1,5 de radio se notaba al ampliar.
 

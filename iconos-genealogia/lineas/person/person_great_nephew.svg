@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
   <g class="links">
-    <path d="M31 15.77L31 17.17L17 17.17L17 18.82" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M31 15.77L31 17.17L45 17.17L45 19.32" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M45 29.12L45 32.89" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M45 42.45L45 43.46" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 15.77L31 17.17L17 17.17L17 18.82" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 15.77L31 17.17L45 17.17L45 19.32" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M45 29.12L45 32.89" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M45 42.45L45 43.46" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M36.21 11.42A1 1 0 0 1 36.12 12.73L32.85 16A1 1 0 0 1 31.44 16L28.17 12.73A1 1 0 0 1 28.07 12.62L26.93 11.1A1 1 0 0 1 27.03 9.79L30.29 6.53A1 1 0 0 1 31.71 6.53L34.97 9.79A1 1 0 0 1 35.07 9.9Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="27.69" y="7.19" width="6.62" height="6.62" rx="1" transform="rotate(45 31 10.5)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M13.01 26.83L14.15 28.35A4.99 4.99 0 0 0 22.13 22.36L20.99 20.84A4.99 4.99 0 0 0 13.01 26.83Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="17" cy="23.83" r="4.99" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M50.21 24.76A1 1 0 0 1 50.12 26.06L46.85 29.33A1 1 0 0 1 45.44 29.33L42.17 26.06A1 1 0 0 1 42.07 25.95L40.93 24.43A1 1 0 0 1 41.03 23.13L44.29 19.86A1 1 0 0 1 45.71 19.86L48.97 23.13A1 1 0 0 1 49.07 23.23Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="41.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 45 23.83)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M50.21 38.09A1 1 0 0 1 50.12 39.4L46.85 42.66A1 1 0 0 1 45.44 42.66L42.17 39.4A1 1 0 0 1 42.07 39.29L40.93 37.77A1 1 0 0 1 41.03 36.46L44.29 33.19A1 1 0 0 1 45.71 33.19L48.97 36.46A1 1 0 0 1 49.07 36.57Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="41.69" y="33.86" width="6.62" height="6.62" rx="1" transform="rotate(45 45 37.17)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M53.11 46.8A2.04 2.04 0 0 1 53.51 48.02L53.51 57.54A2.04 2.04 0 0 1 51.47 59.58L41.95 59.58A2.04 2.04 0 0 1 40.32 58.77L38.61 56.48A2.04 2.04 0 0 1 38.2 55.26L38.2 45.74A2.04 2.04 0 0 1 40.24 43.7L49.76 43.7A2.04 2.04 0 0 1 51.39 44.52Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="38.2" y="43.7" width="13.6" height="13.6" rx="2.04" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M36.21 11.42A1 1 0 0 1 36.12 12.73L32.85 16A1 1 0 0 1 31.44 16L28.17 12.73A1 1 0 0 1 28.07 12.62L26.93 11.1A1 1 0 0 1 27.03 9.79L30.29 6.53A1 1 0 0 1 31.71 6.53L34.97 9.79A1 1 0 0 1 35.07 9.9Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="27.69" y="7.19" width="6.62" height="6.62" rx="1" transform="rotate(45 31 10.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M13.01 26.83L14.15 28.35A4.99 4.99 0 0 0 22.13 22.36L20.99 20.84A4.99 4.99 0 0 0 13.01 26.83Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="17" cy="23.83" r="4.99" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M50.21 24.76A1 1 0 0 1 50.12 26.06L46.85 29.33A1 1 0 0 1 45.44 29.33L42.17 26.06A1 1 0 0 1 42.07 25.95L40.93 24.43A1 1 0 0 1 41.03 23.13L44.29 19.86A1 1 0 0 1 45.71 19.86L48.97 23.13A1 1 0 0 1 49.07 23.23Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="41.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 45 23.83)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M50.21 38.09A1 1 0 0 1 50.12 39.4L46.85 42.66A1 1 0 0 1 45.44 42.66L42.17 39.4A1 1 0 0 1 42.07 39.29L40.93 37.77A1 1 0 0 1 41.03 36.46L44.29 33.19A1 1 0 0 1 45.71 33.19L48.97 36.46A1 1 0 0 1 49.07 36.57Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="41.69" y="33.86" width="6.62" height="6.62" rx="1" transform="rotate(45 45 37.17)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M53.11 46.8A2.04 2.04 0 0 1 53.51 48.02L53.51 57.54A2.04 2.04 0 0 1 51.47 59.58L41.95 59.58A2.04 2.04 0 0 1 40.32 58.77L38.61 56.48A2.04 2.04 0 0 1 38.2 55.26L38.2 45.74A2.04 2.04 0 0 1 40.24 43.7L49.76 43.7A2.04 2.04 0 0 1 51.39 44.52Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="38.2" y="43.7" width="13.6" height="13.6" rx="2.04" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M15.4 23.83a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15.4 23.83a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

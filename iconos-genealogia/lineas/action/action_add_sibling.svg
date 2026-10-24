@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-green{stroke:var(--ic-green,#0D5F2B)}
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
   <g class="links">
-    <path d="M22 19.25L22 21L10 21L10 32" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M22 21L34 21L34 32.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M22 19.25L22 21L10 21L10 32" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M22 21L34 21L34 32.75" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M28.29 14.21A1.19 1.19 0 0 1 28.17 15.76L24.28 19.65A1.19 1.19 0 0 1 22.6 19.65L18.71 15.76A1.19 1.19 0 0 1 18.59 15.63L17.15 13.71A1.19 1.19 0 0 1 17.27 12.16L21.16 8.27A1.19 1.19 0 0 1 22.84 8.27L26.73 12.16A1.19 1.19 0 0 1 26.85 12.29Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="18.06" y="9.06" width="7.88" height="7.88" rx="1.19" transform="rotate(45 22 13)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M5.25 41.56L6.69 43.48A5.94 5.94 0 0 0 16.19 36.36L14.75 34.44A5.94 5.94 0 0 0 5.25 41.56Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="10" cy="38" r="5.94" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M40.29 39.21A1.19 1.19 0 0 1 40.17 40.76L36.28 44.65A1.19 1.19 0 0 1 34.6 44.65L30.71 40.76A1.19 1.19 0 0 1 30.59 40.63L29.15 38.71A1.19 1.19 0 0 1 29.27 37.16L33.16 33.27A1.19 1.19 0 0 1 34.84 33.27L38.73 37.16A1.19 1.19 0 0 1 38.85 37.29Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="30.06" y="34.06" width="7.88" height="7.88" rx="1.19" transform="rotate(45 34 38)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M40.12 51.16L41.56 53.08A8.6 8.6 0 0 0 55.32 42.76L53.88 40.84A8.6 8.6 0 0 0 40.12 51.16Z" fill="none" stroke="#0D5F2B" stroke-width="1.8" stroke-linejoin="round"/><circle cx="47" cy="46" r="8.6" fill="none" stroke="#0D5F2B" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M28.29 14.21A1.19 1.19 0 0 1 28.17 15.76L24.28 19.65A1.19 1.19 0 0 1 22.6 19.65L18.71 15.76A1.19 1.19 0 0 1 18.59 15.63L17.15 13.71A1.19 1.19 0 0 1 17.27 12.16L21.16 8.27A1.19 1.19 0 0 1 22.84 8.27L26.73 12.16A1.19 1.19 0 0 1 26.85 12.29Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="18.06" y="9.06" width="7.88" height="7.88" rx="1.19" transform="rotate(45 22 13)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M5.25 41.56L6.69 43.48A5.94 5.94 0 0 0 16.19 36.36L14.75 34.44A5.94 5.94 0 0 0 5.25 41.56Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="10" cy="38" r="5.94" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M40.29 39.21A1.19 1.19 0 0 1 40.17 40.76L36.28 44.65A1.19 1.19 0 0 1 34.6 44.65L30.71 40.76A1.19 1.19 0 0 1 30.59 40.63L29.15 38.71A1.19 1.19 0 0 1 29.27 37.16L33.16 33.27A1.19 1.19 0 0 1 34.84 33.27L38.73 37.16A1.19 1.19 0 0 1 38.85 37.29Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="30.06" y="34.06" width="7.88" height="7.88" rx="1.19" transform="rotate(45 34 38)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-green" stroke="#0D5F2B"><path d="M40.12 51.16L41.56 53.08A8.6 8.6 0 0 0 55.32 42.76L53.88 40.84A8.6 8.6 0 0 0 40.12 51.16Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="47" cy="46" r="8.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M8.16 38a1.84 1.84 0 1 0 3.67 0a1.84 1.84 0 1 0 -3.67 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M42.8 46H51.2M47 41.8V50.2" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8.16 38a1.84 1.84 0 1 0 3.67 0a1.84 1.84 0 1 0 -3.67 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42.8 46H51.2M47 41.8V50.2" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

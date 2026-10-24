@@ -10,6 +10,7 @@ Para verlos todos, abrí `galeria-iconos.html` desde la raíz del repositorio.
 
 - `color/`: gradientes, extrusión y sombra.
 - `lineas/`: solo contornos, sin rellenos; las partes tapadas por otra forma no se dibujan.
+  Los colores se pueden cambiar desde la página (ver «Colores de `lineas`»).
 - `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
 Las tres variantes tienen exactamente los mismos nombres y carpetas.
@@ -60,6 +61,23 @@ sufijo `_g`) son únicos entre los iconos y las variantes del set, así que pued
 incrustar varios SVG en línea en la misma página, también `color` y `gris` de un
 mismo icono. Los iconos con el mismo nombre en los dos sets (`ui_menu`...) sí
 comparten ids.
+
+## Colores de `lineas`
+
+Cada trazo de `lineas/` lleva el color de su tono (`#883307` para `orange`...), y
+ese color se puede sobrescribir con una variable CSS `--ic-<tono>`. Solo
+funciona con el SVG **en línea** en la página (`<svg>` pegado o inyectado en el
+HTML): con `<img>` o `background: url(...)` los iconos se ven con sus colores de
+siempre, porque la página no llega al interior del archivo.
+
+```css
+.barra svg { --ic-orange: currentColor; --ic-slate: currentColor; --ic-mist: currentColor; }
+.alerta svg { --ic-orange: crimson; }   /* solo cambia lo naranja */
+```
+
+Los tonos que usa un icono están en su `<style>` (`.ic-orange`, `.ic-slate`...).
+Un renderizador sin variables CSS (por ejemplo `resvg`) ignora esa parte y dibuja
+los colores originales.
 
 ## Regenerar y validar
 
