@@ -2,6 +2,15 @@
 
 Cada idea lleva su justificación, su **utilidad** (qué aporta a Contrastocolor), su **esfuerzo** y de qué depende. Las dos que eligió la persona son **A4** y **A6**; el resto son propuestas.
 
+## Prioridad según las decisiones
+
+Con **lectores y público general** como audiencia, **sitio y correo** como canal y un tono **cercano y lúdico** (ver `README.md`):
+
+- **Suben:** A4 y A6 (elegidas), la **1** (la paleta fija, porque en un sitio y un correo el código se aprende por repetición), la **3** (series por categoría, buenas para una sección del sitio), la **7** (la cita de la semana encaja con un correo periódico) y la **9** (la línea de cita en el pie del correo es ahora un canal elegido). También la **2** y la **5** (el correo y el sitio deben ser legibles con daltonismo y con lector de pantalla).
+- **Bajan:** la **4** (hojas para docentes: el impreso no es canal y los docentes no son la audiencia principal; queda para cuando se amplíe), la **6** (cita por país: depende de tener antes el sitio funcionando por país) y la **8** (estadística de autores: necesita un etiquetador fiable que hoy no existe).
+- **Ya no aplica:** la tarjeta cuadrada de 1080×1080 de A5, pensada para redes. Las piezas se generan para el sitio y el correo.
+- **Correo:** la cita va como **texto HTML con el color en línea**, no solo como imagen, para que se lea con las imágenes bloqueadas y con lector de pantalla.
+
 ## Las dos elegidas
 
 ### A4. 🧠 Gramática como juego
@@ -46,4 +55,4 @@ Variantes:
 
 - **Una cita, un color (A1).** Cada cita se asocia a un color de `Listado-colores/colores.csv`. Sirve para tarjetas con el nombre del color en el idioma de la cita. Cuidado con la regla 4 del README: no se presenta ningún significado de color como un efecto comprobado.
 - **Palabras que cambian de lengua (A2)** y **Color y percepción (A3):** citas sobre traducir, nombrar y el color. Se usan como tema de selección en `CRITERIOS.md`.
-- **Formatos (A5):** tarjeta cuadrada de 1080×1080, línea para el pie de correo y cita rotativa para el sitio, siempre con idioma y fuente a la vista.
+- **Formatos (A5):** línea para el pie de correo y cita rotativa para el sitio, siempre con idioma y fuente a la vista. La tarjeta cuadrada de 1080×1080 se descartó: no hay redes sociales por ahora.

@@ -2,7 +2,22 @@
 
 Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de etiquetado *part-of-speech* de [`Listado-colores/`](../Listado-colores/)): citas de personas célebres, en varios idiomas, en las que **cada palabra va en el color de su categoría gramatical**. La cita en color enseña lo que hace el etiquetador sin tener que explicarlo.
 
-**Estado: documentación y plan. Todavía no hay citas, datos ni código.** Las citas candidatas de [`CRITERIOS.md`](CRITERIOS.md) son autores a investigar, no citas verificadas.
+**Estado: documentación y plan, con las decisiones de diseño ya tomadas (24 de octubre de 2026). Todavía no hay citas, datos ni código.** Las citas candidatas de [`CRITERIOS.md`](CRITERIOS.md) son autores a investigar, no citas verificadas.
+
+## Decisiones tomadas
+
+| Tema | Decisión |
+|---|---|
+| Audiencia | Lectores y público general |
+| Canal | El sitio de Contrastocolor y el correo. Sin redes sociales ni impreso por ahora |
+| Tono | Cercano y lúdico, con los límites de abajo |
+| Idiomas | Los 30 de `Listado-colores/`, con **códigos de 3 letras** (ISO 639-3) |
+| Etiquetas | Manuales, revisadas por una persona que hable el idioma |
+| Script | PHP sin dependencias |
+| Marca | «Contrastocolor» directamente, sin marcador |
+| Medición | Clics y aperturas |
+
+**Límites del tono lúdico.** El juego va en el acompañamiento de la pieza (la pregunta, el reto, la pista), nunca en la cita ni en los hechos. Sin burlas a los autores, a un idioma o a quien se equivoque en el juego, y sin prometer nada del producto.
 
 ## Qué hay en esta carpeta
 
@@ -24,14 +39,14 @@ Heredamos la disciplina de [`marketing/`](../marketing/): ninguna frase entra si
 
 1. **Cada cita tiene fuente primaria**: obra, edición, página o verso, y dónde se comprobó. Las citas «atribuidas a» sin fuente no entran; las citas falsas de expertos son justo lo que la guía ética del repo ([`psychology-and-marketing/02-ethical-neuromarketing.md`](../psychology-and-marketing/02-ethical-neuromarketing.md)) pide evitar.
 2. **Texto original, no traducción de segunda mano.** La traducción sale del original y se marca como borrador hasta que la revise un hablante nativo (como en [`marketing/idiomas/GUIA-REVISION.md`](../marketing/idiomas/GUIA-REVISION.md)).
-3. **Ninguna afirmación sobre el producto.** Una cita coloreada no demuestra que el etiquetador acierte. **No encontré código del etiquetador en este repositorio** (solo la evaluación de su viabilidad en [`Listado-paises/`](../Listado-paises/)): las etiquetas serán manuales, o saldrán de un etiquetador externo, y cada pieza dice cuál de los dos. Si algo promete una capacidad de Contrastocolor, se verifica antes, como en `marketing/VERIFICACION.md`.
+3. **Ninguna afirmación sobre el producto.** Una cita coloreada no demuestra que el etiquetador acierte. **No encontré código del etiquetador en este repositorio** (solo la evaluación de su viabilidad en [`Listado-paises/`](../Listado-paises/)): las etiquetas son manuales y las revisa una persona que hable el idioma, y cada pieza lo dice. Si un día se usa un etiquetador externo o el propio Contrastocolor, la pieza lo dice con su versión. Si algo promete una capacidad de Contrastocolor, se verifica antes, como en `marketing/VERIFICACION.md`.
 4. **Los colores no son hechos.** `Listado-colores/` aclara que los significados psicológicos y místicos de los colores son tradición o hipótesis. Ninguna pieza presenta un significado de color como un efecto comprobado.
-5. **Derechos.** Solo autores de dominio público, y traducciones propias. Los criterios y el límite de fechas están en `CRITERIOS.md`; el caso de la marca «Contrastocolor» está en [`PREGUNTAS-PARA-ABOGADO.md`](../PREGUNTAS-PARA-ABOGADO.md), pregunta 30.
+5. **Derechos.** Solo autores de dominio público, y traducciones propias. Los criterios y el límite de fechas están en `CRITERIOS.md`; el caso de la marca «Contrastocolor» está en [`PREGUNTAS-PARA-ABOGADO.md`](../PREGUNTAS-PARA-ABOGADO.md), pregunta 30. Como las piezas llevan el nombre directamente, si esa pregunta acaba en un cambio de nombre hay que reescribirlas.
 
 ## Relación con otros proyectos
 
-- [`marketing/`](../marketing/): es el apoyo de marketing de **conce.com** (genealogía) y su README dice que Contrastocolor no usa esos textos. Esta carpeta es el equivalente para Contrastocolor y toma de allí el patrón (marcador `[Marca]` en `config.json`, traducciones como borrador, guía de revisión nativa y un documento de verificación).
-- [`Listado-colores/`](../Listado-colores/): los 30 idiomas y los nombres de color, para las leyendas y para la idea «Una cita, un color».
+- [`marketing/`](../marketing/): es el apoyo de marketing de **conce.com** (genealogía) y su README dice que Contrastocolor no usa esos textos. Esta carpeta es el equivalente para Contrastocolor y toma de allí el patrón (traducciones como borrador, guía de revisión nativa y un documento de verificación).
+- [`Listado-colores/`](../Listado-colores/): los 30 idiomas y los nombres de color, para las leyendas y para la idea «Una cita, un color». Sus exportes usan códigos de 2 letras (`es`); esta carpeta usa los de 3 (`spa`), y la equivalencia está en `CRITERIOS.md`. Su `exportes/lexico-ud.tsv` ya trae la categoría UPOS de los nombres de color, un punto de partida para etiquetar.
 - [`Listado-paises/`](../Listado-paises/): las palabras anotadas por lengua, que deciden en qué idiomas empezar.
 - [`copyright-laws/`](../copyright-laws/): los plazos de protección por jurisdicción, para comprobar si un autor es de dominio público. Es informativa y no es asesoría legal.
 
