@@ -8,15 +8,15 @@
     }
   </style>
   <g class="links">
-    <path d="M31 44.25L31 41L17 41L17 37.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M31 44.25L31 41L45 41L45 37.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 44.75L31 41L17 41L17 37.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 44.75L31 41L45 41L45 37.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M17 27.5L17 23L10 23L10 18.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M17 27.5L17 23L24 23L24 18.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M45 27.5L45 23L38 23L38 18.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M45 27.5L45 23L52 23L52 18.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g class="ic-ink" stroke="#29313D"><path d="M26.42 53.43L27.62 55.03A5.72 5.72 0 0 0 36.78 48.17L35.58 46.57A5.72 5.72 0 0 0 26.42 53.43Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="50" r="5.72" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M26.84 53.12L28.04 54.72A5.2 5.2 0 0 0 36.36 48.48L35.16 46.88A5.2 5.2 0 0 0 26.84 53.12Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="50" r="5.2" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
     <g class="ic-mist" stroke="#767C82"><path d="M22.33 32.99A1.01 1.01 0 0 1 22.23 34.32L18.92 37.63A1.01 1.01 0 0 1 17.48 37.63L14.17 34.32A1.01 1.01 0 0 1 14.07 34.21L12.87 32.61A1.01 1.01 0 0 1 12.97 31.28L16.28 27.97A1.01 1.01 0 0 1 17.72 27.97L21.03 31.28A1.01 1.01 0 0 1 21.13 31.39Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="13.64" y="28.64" width="6.72" height="6.72" rx="1.01" transform="rotate(45 17 32)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
     <g class="ic-mist" stroke="#767C82"><path d="M50.33 32.99A1.01 1.01 0 0 1 50.23 34.32L46.92 37.63A1.01 1.01 0 0 1 45.48 37.63L42.17 34.32A1.01 1.01 0 0 1 42.07 34.21L40.87 32.61A1.01 1.01 0 0 1 40.97 31.28L44.28 27.97A1.01 1.01 0 0 1 45.72 27.97L49.03 31.28A1.01 1.01 0 0 1 49.13 31.39Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="41.64" y="28.64" width="6.72" height="6.72" rx="1.01" transform="rotate(45 45 32)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
     <g class="ic-mist" stroke="#767C82"><path d="M14.61 15.1A0.84 0.84 0 0 1 14.53 16.19L11.79 18.93A0.84 0.84 0 0 1 10.61 18.93L7.87 16.19A0.84 0.84 0 0 1 7.79 16.1L6.59 14.5A0.84 0.84 0 0 1 6.67 13.41L9.41 10.67A0.84 0.84 0 0 1 10.59 10.67L13.33 13.41A0.84 0.84 0 0 1 13.41 13.5Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="7.23" y="11.23" width="5.55" height="5.55" rx="0.84" transform="rotate(45 10 14)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>

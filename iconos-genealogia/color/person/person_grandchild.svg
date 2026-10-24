@@ -22,7 +22,7 @@
     <path d="M31 30.5L31 50.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M25.55 14.96L26.98 16.87A7.04 7.04 0 0 0 38.24 8.43L36.81 6.52A7.04 7.04 0 0 0 25.55 14.96Z" fill="#29313D"/><circle cx="31" cy="10.5" r="7.04" fill="url(#grad_person_grandchild_ink)"/></g>
+    <g><path d="M26.06 14.58L27.49 16.49A6.4 6.4 0 0 0 37.73 8.81L36.3 6.9A6.4 6.4 0 0 0 26.06 14.58Z" fill="#29313D"/><circle cx="31" cy="10.5" r="6.4" fill="url(#grad_person_grandchild_ink)"/></g>
     <g><path d="M38.36 31.81A1.41 1.41 0 0 1 38.22 33.65L33.61 38.26A1.41 1.41 0 0 1 31.62 38.26L27 33.65A1.41 1.41 0 0 1 26.87 33.5L25.44 31.58A1.41 1.41 0 0 1 25.57 29.74L30.18 25.13A1.41 1.41 0 0 1 32.18 25.13L36.79 29.74A1.41 1.41 0 0 1 36.92 29.9Z" fill="#767C82"/><rect x="26.33" y="25.83" width="9.34" height="9.34" rx="1.41" transform="rotate(45 31 30.5)" fill="url(#grad_person_grandchild_mist_r45)"/></g>
     <g><path d="M38.36 51.81A1.41 1.41 0 0 1 38.22 53.65L33.61 58.26A1.41 1.41 0 0 1 31.62 58.26L27 53.65A1.41 1.41 0 0 1 26.87 53.5L25.44 51.58A1.41 1.41 0 0 1 25.57 49.74L30.18 45.13A1.41 1.41 0 0 1 32.18 45.13L36.79 49.74A1.41 1.41 0 0 1 36.92 49.9Z" fill="#883307"/><rect x="26.33" y="45.83" width="9.34" height="9.34" rx="1.41" transform="rotate(45 31 50.5)" fill="url(#grad_person_grandchild_orange_r45)"/></g>
   </g>

@@ -10,9 +10,9 @@
     <g class="ic-green" stroke="#0D5F2B"><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.8 45.4A9 9 0 0 1 11 40L11 18A9 9 0 0 1 20 9L42 9A9 9 0 0 1 49.2 12.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="11" y="9" width="40" height="40" rx="9" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M17 35.75A13.5 13.5 0 0 1 44 35.75Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M28.2 25.37a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M24.37 31.87a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M32.03 31.87a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15.5 36.5A15 15 0 0 1 45.5 36.5Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M28.2 25.97a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M22.37 31.79a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34.03 31.79a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

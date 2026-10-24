@@ -15,16 +15,16 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.36" cy="58.48" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="32.58" cy="58.48" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="links">
     <path d="M22 14L22 24L12 24L12 33" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M22 24L32 24L32 33" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M17.96 17.41L18.98 18.77A5.28 5.28 0 0 0 27.42 12.43L26.4 11.07A5.28 5.28 0 0 0 17.96 17.41Z" fill="#474747"/><circle cx="22" cy="14" r="5.28" fill="url(#grad_action_share_tree_orange_g)"/></g>
-    <g><path d="M8.31 39.14L9.33 40.5A4.84 4.84 0 0 0 17.07 34.7L16.05 33.34A4.84 4.84 0 0 0 8.31 39.14Z" fill="#7B7B7B"/><circle cx="12" cy="36" r="4.84" fill="url(#grad_action_share_tree_mist_g)"/></g>
-    <g><path d="M28.31 39.14L29.33 40.5A4.84 4.84 0 0 0 37.07 34.7L36.05 33.34A4.84 4.84 0 0 0 28.31 39.14Z" fill="#7B7B7B"/><circle cx="32" cy="36" r="4.84" fill="url(#grad_action_share_tree_mist_g)"/></g>
+    <g><path d="M18.34 17.12L19.36 18.48A4.8 4.8 0 0 0 27.04 12.72L26.02 11.36A4.8 4.8 0 0 0 18.34 17.12Z" fill="#474747"/><circle cx="22" cy="14" r="4.8" fill="url(#grad_action_share_tree_orange_g)"/></g>
+    <g><path d="M8.66 38.88L9.68 40.24A4.4 4.4 0 0 0 16.72 34.96L15.7 33.6A4.4 4.4 0 0 0 8.66 38.88Z" fill="#7B7B7B"/><circle cx="12" cy="36" r="4.4" fill="url(#grad_action_share_tree_mist_g)"/></g>
+    <g><path d="M28.66 38.88L29.68 40.24A4.4 4.4 0 0 0 36.72 34.96L35.7 33.6A4.4 4.4 0 0 0 28.66 38.88Z" fill="#7B7B7B"/><circle cx="32" cy="36" r="4.4" fill="url(#grad_action_share_tree_mist_g)"/></g>
     <g><path d="M38.18 50.24L39.56 52.08A10 10 0 0 0 55.56 40.08L54.18 38.24A10 10 0 0 0 38.18 50.24Z" fill="#414141"/><circle cx="46" cy="44" r="10" fill="url(#grad_action_share_tree_green_g)"/></g>
   </g>
   <g class="marks">

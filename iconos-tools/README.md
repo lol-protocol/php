@@ -53,8 +53,8 @@ en `catalogo.GROUPS`; y que un nombre que esté en los dos sets sea idéntico en
 ambos (si no, va en `comunes.py`).
 
 `similares.py` dibuja la variante `gris` de cada icono a 24x24 y compara
-todos los pares de un mismo set; falla si dos se diferencian en menos de 0,8
-(diferencia media por píxel, de 0 a 255; unos dos píxeles totalmente
+todos los pares de un mismo set; falla si dos se diferencian en menos de 1,2
+(diferencia media por píxel, de 0 a 255; unos tres píxeles totalmente
 distintos de los 576). Muestra además los pares más cercanos, aunque no
 fallen. Si un par debe quedar por debajo a propósito, se anota con su motivo
 en `ACEPTADOS` (hoy está vacío).

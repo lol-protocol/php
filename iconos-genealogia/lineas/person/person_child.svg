@@ -8,10 +8,10 @@
     }
   </style>
   <g class="links">
-    <path d="M31 24L31 40.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 23.25L31 40.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g class="ic-ink" stroke="#29313D"><path d="M24.49 18.38L26.35 20.87A8.14 8.14 0 0 0 39.38 11.1L37.51 8.62A8.14 8.14 0 0 0 24.49 18.38Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="13.5" r="8.14" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M25.08 17.94L26.94 20.43A7.4 7.4 0 0 0 38.78 11.55L36.92 9.06A7.4 7.4 0 0 0 25.08 17.94Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="13.5" r="7.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
     <g class="ic-orange" stroke="#883307"><path d="M39.5 49.01A1.63 1.63 0 0 1 39.35 51.14L34.02 56.47A1.63 1.63 0 0 1 31.71 56.47L26.38 51.14A1.63 1.63 0 0 1 26.23 50.96L24.36 48.48A1.63 1.63 0 0 1 24.51 46.35L29.85 41.01A1.63 1.63 0 0 1 32.15 41.01L37.49 46.35A1.63 1.63 0 0 1 37.64 46.52Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="25.6" y="42.1" width="10.8" height="10.8" rx="1.63" transform="rotate(45 31 47.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">

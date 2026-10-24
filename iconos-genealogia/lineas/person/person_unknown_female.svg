@@ -7,7 +7,7 @@
     }
   </style>
   <g class="solids">
-    <g class="ic-mist" stroke="#767C82"><path d="M22.64 36.27L24.68 38.99A10.45 10.45 0 0 0 41.4 26.45L39.36 23.73A10.45 10.45 0 0 0 22.64 36.27Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="30" r="10.45" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M23.4 35.7L25.44 38.42A9.5 9.5 0 0 0 40.64 27.02L38.6 24.3A9.5 9.5 0 0 0 23.4 35.7Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="30" r="9.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
     <path d="M12 30a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" class="ic-slate" fill="none" stroke="#565F6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.6"/>

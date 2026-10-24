@@ -9,13 +9,13 @@
     }
   </style>
   <g class="links">
-    <path d="M31 19.5L31 24.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M31 37.75L31 43.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 19L31 24.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 37.75L31 44" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g class="ic-orange" stroke="#883307"><path d="M25.37 14.72L26.98 16.87A7.04 7.04 0 0 0 38.24 8.43L36.63 6.28A7.04 7.04 0 0 0 25.37 14.72Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="10.5" r="7.04" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M25.88 14.34L27.49 16.49A6.4 6.4 0 0 0 37.73 8.81L36.12 6.66A6.4 6.4 0 0 0 25.88 14.34Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="10.5" r="6.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
     <g class="ic-mist" stroke="#767C82"><path d="M38.36 31.81A1.41 1.41 0 0 1 38.22 33.65L33.61 38.26A1.41 1.41 0 0 1 31.62 38.26L27 33.65A1.41 1.41 0 0 1 26.87 33.5L25.26 31.34A1.41 1.41 0 0 1 25.39 29.5L30 24.89A1.41 1.41 0 0 1 32 24.89L36.61 29.5A1.41 1.41 0 0 1 36.74 29.66Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="26.33" y="25.83" width="9.34" height="9.34" rx="1.41" transform="rotate(45 31 30.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g class="ic-ink" stroke="#29313D"><path d="M25.37 54.72L26.98 56.87A7.04 7.04 0 0 0 38.24 48.43L36.63 46.28A7.04 7.04 0 0 0 25.37 54.72Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="50.5" r="7.04" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M25.88 54.34L27.49 56.49A6.4 6.4 0 0 0 37.73 48.81L36.12 46.66A6.4 6.4 0 0 0 25.88 54.34Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="50.5" r="6.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
     <path d="M28.82 50.5a2.18 2.18 0 1 0 4.35 0a2.18 2.18 0 1 0 -4.35 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>

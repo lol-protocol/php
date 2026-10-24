@@ -8,15 +8,15 @@
     }
   </style>
   <g class="links">
-    <path d="M31 17.04L31 18.8" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M31 30.37L31 32.14" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M31 43.71L31 45.47" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 16.54L31 19.05" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 29.87L31 32.39" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 43.2L31 45.72" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g class="ic-orange" stroke="#883307"><path d="M27.01 13.49L28.15 15.02A4.99 4.99 0 0 0 36.13 9.03L34.99 7.51A4.99 4.99 0 0 0 27.01 13.49Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="10.5" r="4.99" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g class="ic-orange" stroke="#883307"><path d="M27.01 26.83L28.15 28.35A4.99 4.99 0 0 0 36.13 22.36L34.99 20.84A4.99 4.99 0 0 0 27.01 26.83Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="23.83" r="4.99" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g class="ic-orange" stroke="#883307"><path d="M27.01 40.16L28.15 41.68A4.99 4.99 0 0 0 36.13 35.7L34.99 34.17A4.99 4.99 0 0 0 27.01 40.16Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="37.17" r="4.99" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g class="ic-ink" stroke="#29313D"><path d="M27.01 53.49L28.15 55.02A4.99 4.99 0 0 0 36.13 49.03L34.99 47.51A4.99 4.99 0 0 0 27.01 53.49Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="50.5" r="4.99" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M27.37 13.22L28.52 14.74A4.53 4.53 0 0 0 35.77 9.3L34.63 7.78A4.53 4.53 0 0 0 27.37 13.22Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="10.5" r="4.53" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M27.37 26.55L28.52 28.08A4.53 4.53 0 0 0 35.77 22.64L34.63 21.11A4.53 4.53 0 0 0 27.37 26.55Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="23.83" r="4.53" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M27.37 39.89L28.52 41.41A4.53 4.53 0 0 0 35.77 35.97L34.63 34.45A4.53 4.53 0 0 0 27.37 39.89Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="37.17" r="4.53" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M27.37 53.22L28.52 54.74A4.53 4.53 0 0 0 35.77 49.3L34.63 47.78A4.53 4.53 0 0 0 27.37 53.22Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="50.5" r="4.53" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
     <path d="M29.4 50.5a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>

@@ -44,9 +44,9 @@ def reg(ic):
 def node(ic, kind, x, y, role='other', r=6.0, d=None):
     d = max(1.8, min(3.2, 0.42 * r)) if d is None else d
     if kind == 'sq':
-        shape = Block(x - r, y - r, 2 * r, 2 * r, r=r * 0.3)
+        shape = Block(x - r, y - r, 2 * r, 2 * r, r=r * 0.18)
     elif kind == 'ci':
-        shape = Disc(x, y, r * 1.1)
+        shape = Disc(x, y, r * 1.0)
     else:
         s = r * 1.46
         shape = Block(x - s / 2, y - s / 2, s, s, r=r * 0.22, rot=45)

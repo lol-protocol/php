@@ -8,11 +8,11 @@
     }
   </style>
   <g class="links">
-    <path d="M27 28.6L36.25 28.6M27 32.4L36.25 32.4" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.8"/>
+    <path d="M27 28.6L37.25 28.6M27 32.4L37.25 32.4" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.8"/>
   </g>
   <g class="solids">
-    <g class="ic-mist" stroke="#767C82"><path d="M26.44 26.02A2.4 2.4 0 0 1 26.92 27.46L26.92 38.66A2.4 2.4 0 0 1 24.52 41.06L13.32 41.06A2.4 2.4 0 0 1 11.4 40.1L9.48 37.54A2.4 2.4 0 0 1 9 36.1L9 24.9A2.4 2.4 0 0 1 11.4 22.5L22.6 22.5A2.4 2.4 0 0 1 24.52 23.46Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="9" y="22.5" width="16" height="16" rx="2.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g class="ic-mist" stroke="#767C82"><path d="M37.96 35.78L39.88 38.34A8.8 8.8 0 0 0 53.96 27.78L52.04 25.22A8.8 8.8 0 0 0 37.96 35.78Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="45" cy="30.5" r="8.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M26.63 25.64A1.44 1.44 0 0 1 26.92 26.5L26.92 39.62A1.44 1.44 0 0 1 25.48 41.06L12.36 41.06A1.44 1.44 0 0 1 11.21 40.48L9.29 37.92A1.44 1.44 0 0 1 9 37.06L9 23.94A1.44 1.44 0 0 1 10.44 22.5L23.56 22.5A1.44 1.44 0 0 1 24.71 23.08Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="9" y="22.5" width="16" height="16" rx="1.44" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M38.6 35.3L40.52 37.86A8 8 0 0 0 53.32 28.26L51.4 25.7A8 8 0 0 0 38.6 35.3Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="45" cy="30.5" r="8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
     <path d="M21.9 15a5.6 5.6 0 1 0 11.2 0a5.6 5.6 0 1 0 -11.2 0Z" class="ic-orange" fill="none" stroke="#883307" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>

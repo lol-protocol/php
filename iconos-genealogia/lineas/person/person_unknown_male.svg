@@ -7,7 +7,7 @@
     }
   </style>
   <g class="solids">
-    <g class="ic-mist" stroke="#767C82"><path d="M41.97 24.36A2.85 2.85 0 0 1 42.54 26.07L42.54 39.37A2.85 2.85 0 0 1 39.69 42.22L26.39 42.22A2.85 2.85 0 0 1 24.11 41.08L22.07 38.36A2.85 2.85 0 0 1 21.5 36.65L21.5 23.35A2.85 2.85 0 0 1 24.35 20.5L37.65 20.5A2.85 2.85 0 0 1 39.93 21.64Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="21.5" y="20.5" width="19" height="19" rx="2.85" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M42.2 23.9A1.71 1.71 0 0 1 42.54 24.93L42.54 40.51A1.71 1.71 0 0 1 40.83 42.22L25.25 42.22A1.71 1.71 0 0 1 23.88 41.54L21.84 38.82A1.71 1.71 0 0 1 21.5 37.79L21.5 22.21A1.71 1.71 0 0 1 23.21 20.5L38.79 20.5A1.71 1.71 0 0 1 40.16 21.18Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="21.5" y="20.5" width="19" height="19" rx="1.71" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
     <path d="M12 30a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" class="ic-slate" fill="none" stroke="#565F6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.6"/>

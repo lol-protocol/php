@@ -11,13 +11,13 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.32" cy="44.26" rx="21.27" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="31.72" cy="43.46" rx="20.91" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="links">
     <path d="M17 30.5L45 30.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M10.14 36.02L11.88 38.34A8.8 8.8 0 0 0 25.96 27.78L24.22 25.46A8.8 8.8 0 0 0 10.14 36.02Z" fill="#29313D"/><circle cx="17" cy="30.5" r="8.8" fill="url(#grad_person_partner_ink)"/></g>
+    <g><path d="M10.78 35.54L12.52 37.86A8 8 0 0 0 25.32 28.26L23.58 25.94A8 8 0 0 0 10.78 35.54Z" fill="#29313D"/><circle cx="17" cy="30.5" r="8" fill="url(#grad_person_partner_ink)"/></g>
     <g><path d="M54.1 32A1.76 1.76 0 0 1 53.93 34.3L48.16 40.07A1.76 1.76 0 0 1 45.68 40.07L39.91 34.3A1.76 1.76 0 0 1 39.74 34.12L38 31.8A1.76 1.76 0 0 1 38.17 29.5L43.94 23.73A1.76 1.76 0 0 1 46.42 23.73L52.19 29.5A1.76 1.76 0 0 1 52.36 29.68Z" fill="#883307"/><rect x="39.16" y="24.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 45 30.5)" fill="url(#grad_person_partner_orange_r45)"/></g>
   </g>
   <g class="marks">
