@@ -2,7 +2,7 @@
 
 Cómo poner `url-routing` en un servidor y comprobar que quedó bien. Cubre los dos sitios (genealogía y POS), que son la misma aplicación: el `Host` de cada petición decide cuál se sirve.
 
-**Qué está probado y qué no.** Todos los pasos se ejecutaron en un servidor real: **nginx 1.24 con PHP-FPM 8.3 (como `www-data`)**, PostgreSQL 16 y SQLite, también con HTTPS (ver «Cómo se probó» al final). **No** se probaron: Apache y su `.htaccess`, un certificado emitido por una autoridad (certbot), las unidades de systemd ni PHP 8.1 o 8.2. Están marcados donde aparecen.
+**Qué está probado y qué no.** Todos los pasos se ejecutaron en un servidor real: **nginx 1.24 con PHP-FPM 8.3 (como `www-data`)**, PostgreSQL 16 y SQLite, también con HTTPS (ver «Cómo se probó» al final). Esa prueba ya es un script que se repite en cada cambio: [`deploy/smoke-test.sh`](../deploy/smoke-test.sh). **No** se probaron: Apache y su `.htaccess`, un certificado emitido por una autoridad (certbot), las unidades de systemd ni PHP 8.1 o 8.2. Están marcados donde aparecen.
 
 ## 0. Antes de empezar
 
@@ -208,10 +208,17 @@ Con el código de `master`, en un directorio aparte (`git archive` + `composer i
 5. HTTPS con un certificado autofirmado en el mismo bloque `server`: la cookie sale `secure`, llega `Strict-Transport-Security` y las redirecciones son relativas.
 6. Con la demostración cargada, desde el navegador del propietario: marcar a una persona como viva (sin el token CSRF da 403, con él 303) y ver que un visitante pasa de ver su nombre a «Persona viva» y vuelve; «Persona privada» para quien solo está en una colección privada.
 7. Fallos: la base de PostgreSQL parada (500 sin detalle en la respuesta; la clave de la base no aparece ni en la respuesta ni en el log; y el sitio se recupera al volver la base), `LOG_FILE` en una carpeta que no existe (el sitio sigue sirviendo) y `OWNER_TOKEN` de menos de 20 caracteres (`/0/` da 404 y el log avisa).
-8. El limitador (100 peticiones y luego 429), y la recarga de PHP-FPM con la señal `USR2` (la que envía `systemctl reload`) y de nginx, con OPcache activo.
+8. El limitador (100 peticiones y luego 429 con `Retry-After`), `/ready` (200 con la base al día; 503 con una migración nueva sin aplicar, y vuelve a 200 al migrar), y la recarga de PHP-FPM con la señal `USR2` (la que envía `systemctl reload`) y de nginx, con OPcache activo.
 9. Los comandos de copia de seguridad del paso 11, y restaurar el volcado en una base nueva.
-10. `/ready` (200 con la base al día; 503 con una migración nueva sin aplicar, y vuelve a 200 al migrar) y el `Retry-After` del 429, con el servidor integrado de PHP y con las pruebas de `url-routing/`.
 
 De ahí salieron, además de las dos correcciones de la prueba anterior (sin el usuario 1, `/0/` daba 404 con la clave correcta; y `composer install --optimize-autoloader` imprimía avisos de PSR-4 por `tests/`), tres cambios en esta guía: las migraciones y el `INSERT` de SQLite se corren como `www-data` (una base creada por root no se podía escribir), la carpeta de logs de nginx hay que crearla (sin ella `nginx -t` falla), y `/.env` da 403, no 404.
+
+### Repetirla
+
+```bash
+cd url-routing && ./deploy/smoke-test.sh
+```
+
+Levanta nginx y PHP-FPM en puertos altos de `127.0.0.1` dentro de un directorio temporal (que borra al terminar), instala el código como en el paso 1 y recorre los pasos 2 a 6 con el ejemplo de nginx del repositorio. Después recorre el ciclo de un pedido de retiro de punta a punta: el formulario, la base, y `bin/pedidos-retiro.php` (que avisa, sale con 1 cuando vence y con `--ocultar` deja la página en 410). Necesita `nginx`, `php-fpm` de la misma versión que `php`, `composer`, `curl` y `openssl`; con `SMOKE_PG_DSN` (y `SMOKE_PG_USER`, `SMOKE_PG_PASSWORD`) usa una base PostgreSQL vacía para genealogía. Las variables están explicadas en el encabezado del script. Lo corre el job `despliegue` de `.github/workflows/pruebas-url-routing.yml`. Se probó que **falla** cuando algo está mal: con un nginx que quita la cabecera `Authorization` fallan los seis chequeos de `/0/`, y sin las reglas del ejemplo que niegan los archivos ocultos falla `/.env`.
 
 **Lo que sigue sin probarse:** Apache y su `.htaccess` (ver [`ACCESO.md`](./ACCESO.md)), un certificado de verdad (certbot), las unidades de systemd (la recarga se probó con la señal, no con `systemctl`), PHP 8.1 y 8.2, y un proxy inverso delante con `TRUSTED_PROXIES`.
