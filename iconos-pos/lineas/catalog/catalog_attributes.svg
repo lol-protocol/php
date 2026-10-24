@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .ic-rose{stroke:var(--ic-rose,#82112A)}
+      .ic-teal{stroke:var(--ic-teal,#08564F)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-teal" stroke="#08564F"><path d="M9.2 16.6L10.52 18.36A6 6 0 0 0 20.12 11.16L18.8 9.4A6 6 0 0 0 9.2 16.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="14" cy="13" r="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M52.52 12.56A3.4 3.4 0 0 1 53.2 14.6A3.4 3.4 0 0 1 49.8 18L30.6 18A3.4 3.4 0 0 1 27.88 16.64L26.68 15.04A3.4 3.4 0 0 1 26 13A3.4 3.4 0 0 1 29.4 9.6L48.6 9.6A3.4 3.4 0 0 1 51.32 10.96Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="26" y="9.6" width="26" height="6.8" rx="3.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-rose" stroke="#82112A"><path d="M9.2 32.6L10.52 34.36A6 6 0 0 0 20.12 27.16L18.8 25.4A6 6 0 0 0 9.2 32.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="14" cy="29" r="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M44.52 28.56A3.4 3.4 0 0 1 45.2 30.6A3.4 3.4 0 0 1 41.8 34L30.6 34A3.4 3.4 0 0 1 27.88 32.64L26.68 31.04A3.4 3.4 0 0 1 26 29A3.4 3.4 0 0 1 29.4 25.6L40.6 25.6A3.4 3.4 0 0 1 43.32 26.96Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="26" y="25.6" width="18" height="6.8" rx="3.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-amber" stroke="#7E4503"><path d="M9.2 48.6L10.52 50.36A6 6 0 0 0 20.12 43.16L18.8 41.4A6 6 0 0 0 9.2 48.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="14" cy="45" r="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M48.52 44.56A3.4 3.4 0 0 1 49.2 46.6A3.4 3.4 0 0 1 45.8 50L30.6 50A3.4 3.4 0 0 1 27.88 48.64L26.68 47.04A3.4 3.4 0 0 1 26 45A3.4 3.4 0 0 1 29.4 41.6L44.6 41.6A3.4 3.4 0 0 1 47.32 42.96Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="26" y="41.6" width="22" height="6.8" rx="3.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+</svg>

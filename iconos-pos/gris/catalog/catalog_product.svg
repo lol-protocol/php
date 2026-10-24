@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_catalog_product_amber_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#AEAEAE"/>
+      <stop offset="1" stop-color="#878787"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.8" cy="57.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M53.2 19.6A7 7 0 0 1 54.6 23.8L54.6 47.8A7 7 0 0 1 47.6 54.8L21.6 54.8A7 7 0 0 1 16 52L12.58 47.44A7 7 0 0 1 11.18 43.24L11.18 19.24A7 7 0 0 1 18.18 12.24L44.18 12.24A7 7 0 0 1 49.78 15.04Z" fill="#4F4F4F"/><rect x="11" y="12" width="40" height="38" rx="7" fill="url(#grad_catalog_product_amber_g)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M36.8 21a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 40L34 40" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .ic-indigo{stroke:var(--ic-indigo,#2E2985)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-amber" stroke="#7E4503"><path d="M31 19A4 4 0 0 1 31.8 21.4L31.8 30.4A4 4 0 0 1 27.8 34.4L18.8 34.4A4 4 0 0 1 15.6 32.8L13.8 30.4A4 4 0 0 1 13 28L13 19A4 4 0 0 1 17 15L26 15A4 4 0 0 1 29.2 16.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="13" y="15" width="17" height="17" rx="4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M52 26A4 4 0 0 1 52.8 28.4L52.8 37.4A4 4 0 0 1 48.8 41.4L39.8 41.4A4 4 0 0 1 36.6 39.8L34.8 37.4A4 4 0 0 1 34 35L34 26A4 4 0 0 1 38 22L47 22A4 4 0 0 1 50.2 23.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="34" y="22" width="17" height="17" rx="4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-indigo" stroke="#2E2985"><path d="M57.5 45A6.5 6.5 0 0 1 58.8 48.9A6.5 6.5 0 0 1 52.3 55.4L15.3 55.4A6.5 6.5 0 0 1 10.1 52.8L8.3 50.4A6.5 6.5 0 0 1 7 46.5A6.5 6.5 0 0 1 13.5 40L50.5 40A6.5 6.5 0 0 1 55.7 42.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="7" y="40" width="50" height="13" rx="6.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+</svg>

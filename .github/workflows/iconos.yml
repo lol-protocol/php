@@ -6,6 +6,7 @@ on:
     paths:
       - "iconos-genealogia/**"
       - "iconos-biblioteca/**"
+      - "iconos-pos/**"
       - "iconos-tools/**"
       - "galeria-iconos.html"
       - ".github/workflows/iconos.yml"
@@ -13,6 +14,7 @@ on:
     paths:
       - "iconos-genealogia/**"
       - "iconos-biblioteca/**"
+      - "iconos-pos/**"
       - "iconos-tools/**"
       - "galeria-iconos.html"
       - ".github/workflows/iconos.yml"
@@ -45,7 +47,7 @@ jobs:
       - name: Regenerar y comprobar que no hay diferencias
         run: |
           python3 iconos-tools/build.py
-          cambios="$(git status --porcelain -- iconos-genealogia iconos-biblioteca galeria-iconos.html)"
+          cambios="$(git status --porcelain -- iconos-genealogia iconos-biblioteca iconos-pos galeria-iconos.html)"
           if [ -n "$cambios" ]; then
             echo "::error::Lo versionado no coincide con la salida de iconos-tools/build.py. Ejecuta python3 iconos-tools/build.py y confirma el resultado."
             echo "$cambios" | head -40

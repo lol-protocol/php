@@ -1,22 +1,22 @@
 # Generador y validador de los sets de iconos
 
-Genera y valida los dos sets de iconos SVG 2.5D del repositorio
-(`iconos-genealogia/` y `iconos-biblioteca/`, ver sus propios README para
-qué iconos tiene cada uno y cómo usarlos) y la galería compartida
+Genera y valida los tres sets de iconos SVG 2.5D del repositorio
+(`iconos-genealogia/`, `iconos-biblioteca/` e `iconos-pos/`, ver sus propios
+README para qué iconos tiene cada uno y cómo usarlos) y la galería compartida
 `galeria-iconos.html`, en la raíz del repositorio.
 
 ## Archivos
 
-- `genealogia.py` / `biblioteca.py`: definen cada icono una sola vez (forma,
-  color, variantes).
-- `lib.py` / `kit.py`: piezas comunes a ambos sets (primitivas SVG, paleta,
+- `genealogia.py` / `biblioteca.py` / `pos.py`: definen cada icono una sola vez
+  (forma, color, variantes).
+- `lib.py` / `kit.py`: piezas comunes a los sets (primitivas SVG, paleta,
   composición).
 - `comunes.py`: los iconos que se llaman igual en los dos sets (`ui_profile`,
   `ui_menu`, `action_filter`...), definidos una vez y que los dos sets incluyen,
   para que no se separen.
 - `catalogo.py`: lo que comparten el generador y el validador (variantes,
   prefijos que admite cada set y etiqueta de cada prefijo en la galería).
-- `build.py`: escribe los dos sets y `galeria-iconos.html` a partir de las
+- `build.py`: escribe los tres sets y `galeria-iconos.html` a partir de las
   definiciones. Genera y comprueba todo (nombres repetidos, prefijos sin
   etiqueta) antes de borrar nada: si falla, los sets quedan como estaban.
 - `validate.py`: comprueba las reglas de abajo.
@@ -29,11 +29,11 @@ qué iconos tiene cada uno y cómo usarlos) y la galería compartida
 
 ## Regenerar y validar
 
-Los SVG de ambos sets son salida generada — nunca se editan a mano. Después
-de cambiar `genealogia.py`, `biblioteca.py`, `lib.py` o `kit.py`:
+Los SVG de los tres sets son salida generada — nunca se editan a mano. Después
+de cambiar `genealogia.py`, `biblioteca.py`, `pos.py`, `lib.py` o `kit.py`:
 
 ```bash
-python3 iconos-tools/build.py      # escribe los dos sets y galeria-iconos.html
+python3 iconos-tools/build.py      # escribe los tres sets y galeria-iconos.html
 python3 iconos-tools/validate.py   # comprueba las reglas de abajo
 
 pip install -r iconos-tools/requirements.txt   # solo para similares.py
@@ -92,6 +92,6 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Seis detalles:
 
 `.github/workflows/iconos.yml` ejecuta los tres pasos (`build.py`,
 `validate.py`, `similares.py`) en cada cambio a `iconos-genealogia/`,
-`iconos-biblioteca/`, `iconos-tools/` o `galeria-iconos.html`, y falla si los
+`iconos-biblioteca/`, `iconos-pos/`, `iconos-tools/` o `galeria-iconos.html`, y falla si los
 SVG o la galería versionados no coinciden con lo que genera `build.py` (un
 archivo editado a mano o un generador cambiado sin regenerar).

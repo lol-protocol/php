@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-green{stroke:var(--ic-green,#0D5F2B)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
+  <g class="links">
+    <path d="M11 42.25L11 28.25M16.75 22L27.5 22" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M35 31.5L35 47L52 47" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" stroke-dasharray="0.1 5.2"/>
+  </g>
+  <g class="solids">
+    <g class="ic-green" stroke="#0D5F2B"><path d="M7.32 49.76L8.52 51.36A4.6 4.6 0 0 0 15.88 45.84L14.68 44.24A4.6 4.6 0 0 0 7.32 49.76Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="11" cy="47" r="4.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-green" stroke="#0D5F2B"><path d="M7.32 24.76L8.52 26.36A4.6 4.6 0 0 0 15.88 20.84L14.68 19.24A4.6 4.6 0 0 0 7.32 24.76Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="11" cy="22" r="4.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M29.08 26.44L30.76 28.68A7.4 7.4 0 0 0 42.6 19.8L40.92 17.56A7.4 7.4 0 0 0 29.08 26.44Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="35" cy="22" r="7.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M47 47a5 5 0 1 0 10 0a5 5 0 1 0 -10 0Z" class="ic-slate" fill="none" stroke="#565F6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.2"/>
+  </g>
+</svg>

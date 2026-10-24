@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_catalog_variants_amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E5A356"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="grad_catalog_variants_teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5AB6AE"/>
+      <stop offset="1" stop-color="#0D9488"/>
+    </linearGradient>
+    <linearGradient id="grad_catalog_variants_rose" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EB6583"/>
+      <stop offset="1" stop-color="#E11D48"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.9" cy="56.8" rx="21.99" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M32.6 32.8A6 6 0 0 1 33.8 36.4L33.8 48.4A6 6 0 0 1 27.8 54.4L15.8 54.4A6 6 0 0 1 11 52L9.38 49.84A6 6 0 0 1 8.18 46.24L8.18 34.24A6 6 0 0 1 14.18 28.24L26.18 28.24A6 6 0 0 1 30.98 30.64Z" fill="#7E4503"/><rect x="8" y="28" width="24" height="24" rx="6" fill="url(#grad_catalog_variants_amber)"/></g>
+    <g><path d="M43.6 22.8A6 6 0 0 1 44.8 26.4L44.8 38.4A6 6 0 0 1 38.8 44.4L26.8 44.4A6 6 0 0 1 22 42L20.38 39.84A6 6 0 0 1 19.18 36.24L19.18 24.24A6 6 0 0 1 25.18 18.24L37.18 18.24A6 6 0 0 1 41.98 20.64Z" fill="#08564F"/><rect x="19" y="18" width="24" height="24" rx="6" fill="url(#grad_catalog_variants_teal)"/></g>
+    <g><path d="M54.6 12.8A6 6 0 0 1 55.8 16.4L55.8 28.4A6 6 0 0 1 49.8 34.4L37.8 34.4A6 6 0 0 1 33 32L31.38 29.84A6 6 0 0 1 30.18 26.24L30.18 14.24A6 6 0 0 1 36.18 8.24L48.18 8.24A6 6 0 0 1 52.98 10.64Z" fill="#82112A"/><rect x="30" y="8" width="24" height="24" rx="6" fill="url(#grad_catalog_variants_rose)"/></g>
+  </g>
+</svg>
