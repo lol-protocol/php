@@ -43,7 +43,7 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 | `cobros-ingresos-funnels/` | con PostgreSQL y `export APP_ENV=dev`: `composer install && php bin/recrear_con_datos_de_ejemplo.php` (borra la base y la rearma con las migraciones y datos de ejemplo), luego `./vendor/bin/phpunit` (la CI corre además PHPStan) |
 | `sistema-nuevo/` | `php pruebas/ejecutar-php.php` y `./pruebas/ejecutar-js.sh`; con PostgreSQL, `php datos/generar-datos-semilla.php && php pruebas/ejecutar-integracion.php`; el e2e (`./pruebas/ejecutar-e2e.sh`) necesita los servicios de `ejecutar.sh` |
 | `url-routing/` | `composer install && ./vendor/bin/phpunit` (la CI lo corre también contra PostgreSQL) |
-| `document-formats/` | `node --test 'tests/*.test.js'` (la CI además importa a MySQL) |
+| `document-formats/` | `node --test 'tests/*.test.js'` (la CI además importa a MySQL y a MariaDB) |
 | `web-animations/` | `npm ci && npm test` (necesita el Chromium de Playwright) |
 | `iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/` | desde la raíz: `python3 iconos-tools/validate.py`, y `python3 iconos-tools/build.py` no debe dejar cambios en git (la CI corre además `python3 iconos-tools/similares.py`, que busca iconos casi idénticos a 24 px y necesita `pip install -r iconos-tools/requirements.txt`) |
 | `vps-setup/` | desde la raíz: `shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh` y `bats vps-setup/tests` |
