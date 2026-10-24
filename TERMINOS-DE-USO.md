@@ -124,5 +124,5 @@ los tribunales de [CIUDAD]. **⚖️**
 | Datos del responsable, correo, domicilio, ciudad | Decisión de la persona a cargo |
 | Plazos (retiro, respuesta, conservación del registro, aviso de cambios) | Abogado |
 | Política de privacidad | Abogado, a partir de la sección 7 |
-| El botón «Pedir retiro» y el registro de publicaciones | Hecho en `url-routing/` (`/r/{id}/` y `/0/3/`, ver su `docs/ACCESO.md`). Falta que el propietario reciba un aviso de cada pedido nuevo, para cumplir el plazo de la sección 5 |
+| El botón «Pedir retiro» y el registro de publicaciones | Hecho en `url-routing/` (`/r/{id}/` y `/0/3/`, ver su `docs/ACCESO.md`). Para cumplir el plazo de la sección 5, `bin/pedidos-retiro.php` (cron) avisa de los pedidos que esperan y, si se activa, oculta los vencidos; falta decidir si se activa (⚖️ ver la pregunta 15 de [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md)) |
 | Que todo texto libre pase por el filtro | Código: cabo suelto 1 de `PRIVACIDAD-Y-HONRA.md` |
