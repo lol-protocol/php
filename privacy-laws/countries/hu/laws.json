@@ -34,11 +34,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.dataguidance.com/jurisdiction/hungary",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-hungary",
         "confidence": "high",
@@ -53,6 +48,11 @@
         "url": "https://njt.hu/jogszabaly/2008-21-00-00",
         "confidence": "medium",
         "checked": "2026-10-22"
+      },
+      "notes": {
+        "url": "https://www.dataguidance.com/jurisdiction/hungary",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

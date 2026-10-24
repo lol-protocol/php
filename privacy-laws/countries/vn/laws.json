@@ -89,15 +89,15 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://luatvietnam.vn/bai-viet-lien-quan/luat-91-2025-qh15-405135.html",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://thesaigontimes.vn/saigontimes/bao-ve-du-lieu-ca-nhan-phan-1-thong-tin-cua-nguoi-da-mat-co-duoc-chia-se/",
         "confidence": "low",
         "checked": "2026-10-18"
+      },
+      "notes": {
+        "url": "https://luatvietnam.vn/bai-viet-lien-quan/luat-91-2025-qh15-405135.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

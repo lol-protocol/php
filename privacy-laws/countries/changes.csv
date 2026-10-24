@@ -769,3 +769,12 @@ date,country_code,law_name,field,old_value,new_value
 2026-10-21,ZM,Data Protection Act 2021 (DPA),genetic_data,,Sensitive personal data includes genetic and biometric data (s. 2); genetic identity also within personal data definition; sensitive data requires stricter conditions
 2026-10-21,ZW,Cyber and Data Protection Act (CDPA),research_exemption,,"Processing of sensitive data permitted where necessary for scientific research, under conditions specified by the Authority (s. 11); no general archiving/genealogy exemption found"
 2026-10-21,ZW,Cyber and Data Protection Act (CDPA),genetic_data,,"Genetic data (from DNA analysis) has its own provision: s. 12 'Genetic data, biometric sensitive data and health data' with heightened safeguards"
+2026-10-22,AD,Qualified Law 29/2021 of 28 October on the Protection of Personal Data,row,,added
+2026-10-22,BB,Data Protection Act 2019 (Act 2019-29),row,,added
+2026-10-22,CV,"Law No. 133/V/2001 of 22 January 2001 (General Legal Regime for Personal Data Protection of Natural Persons), as amended by Law No. 41/VIII/2013 and Law No. 121/IX/2021",row,,added
+2026-10-22,MC,Law No. 1.565 of 3 December 2024 on the Protection of Personal Data,row,,added
+2026-10-22,ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",row,,added
+2026-10-22,MG,Law No. 2014-038 on the Protection of Personal Data,row,,added
+2026-10-22,SC,Data Protection Act 2023 (Act 24 of 2023),row,,added
+2026-10-22,SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,row,,added
+2026-10-22,XK,Law No. 06/L-082 on Protection of Personal Data,row,,added

@@ -29,6 +29,16 @@
     "confidence": "low",
     "last_checked": "2026-10-21",
     "sources": {
+      "research_exemption": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://assembly.gm/documents/364/download",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
       "law_name": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
         "confidence": "medium",
@@ -83,16 +93,6 @@
         "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
         "confidence": "medium",
         "checked": "2026-10-16"
-      },
-      "research_exemption": {
-        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
-        "confidence": "medium",
-        "checked": "2026-10-21"
-      },
-      "genetic_data": {
-        "url": "https://assembly.gm/documents/364/download",
-        "confidence": "medium",
-        "checked": "2026-10-21"
       }
     },
     "changes": [

@@ -1,0 +1,97 @@
+[
+  {
+    "country_code": "ME",
+    "country_name": "Montenegro",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",
+    "jurisdiction": "Agency for Personal Data Protection and Free Access to Information (AZLP)",
+    "enactment_date": "2008-12-23",
+    "effective_date": "2008-12-23",
+    "scope": "Data subjects (natural persons) in Montenegro (unconfirmed)",
+    "applies_to": "Public and private controllers and processors (unconfirmed)",
+    "key_requirements": "Legal basis or consent for processing; special categories need explicit consent or legal justification; data-subject rights; agency can impose administrative fines (unconfirmed)",
+    "data_categories": "Personal data; special categories (racial/ethnic origin, political and religious beliefs, trade union, health, sex life, biometric data, criminal and misdemeanour records)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Agency for Personal Data Protection and Free Access to Information (AZLP)",
+    "penalties_range": "Per a third-party summary: fines of 10x to 300x the minimum wage for legal entities and 1x to 20x for responsible persons (unverified against the statute) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "Not named in the special-categories list of the 2008 law (health and biometric data are) (unconfirmed)",
+    "website_url": "https://www.coe.int/web/data-protection/montenegro",
+    "language": "Montenegrin",
+    "frameworks": "CoE-108",
+    "frameworks_not": "",
+    "notes": "Sources conflict on a replacement: ppc.land reports a new 106-article GDPR-style law adopted 2026-09-04 and applicable 2027-03-19 (fines up to EUR 2M or 4% turnover); a gov.me draft bill dated 2026-08-10 was seen but no Official Gazette publication found. Treat the 2008 law as the one confirmed in force and re-check.; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.cbcg.me/slike_i_fajlovi/fajlovi/fajlovi_brzi_linkovi/propisi/zakoni/ostali_zakoni/zakon_o_zastiti_podataka_o_licnosti_prec_tekst_77-24.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://www.offlist.me/what-is-montenegro-law-on-personal-data-protection",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://www.cbcg.me/slike_i_fajlovi/fajlovi/fajlovi_brzi_linkovi/propisi/zakoni/ostali_zakoni/zakon_o_zastiti_podataka_o_licnosti_prec_tekst_77-24.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://mofo.com/privacy-library/montenegro",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "applies_to": {
+        "url": "https://mofo.com/privacy-library/montenegro",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "key_requirements": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/montenegro",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "data_categories": {
+        "url": "https://mofo.com/privacy-library/montenegro",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://www.offlist.me/what-is-montenegro-law-on-personal-data-protection",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://www.clym.io/regulations/personal-data-protection-law-pdpl-montenegro",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "genetic_data": {
+        "url": "https://mofo.com/privacy-library/montenegro",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "frameworks": {
+        "url": "https://www.coe.int/web/data-protection/montenegro",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

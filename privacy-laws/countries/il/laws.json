@@ -39,11 +39,6 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.calcalistech.com/ctechnews/article/rkjxfdqygx",
         "confidence": "low",
@@ -53,6 +48,11 @@
         "url": "https://lawoffice.org.il/en/are-dna-tests-restricted-in-israel/",
         "confidence": "medium",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [
