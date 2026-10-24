@@ -151,7 +151,7 @@
     "loadErrorHelp": "ダブルクリックで開いたページでは、ブラウザーがローカルファイルの読み込みを禁止します。代わりにフォルダーを配信してください。{folder} で {command} を実行し、{address} を開きます。",
     "updatedUnknown": "不明（サーバーが Last-Modified ヘッダーを送信しませんでした）",
     "download": "CSVをダウンロード",
-    "csvFilename": "document-formats",
+    "csvFilename": "ドキュメント形式",
     "aboutTitle": "このデータベースについて",
     "aboutIntro": "この包括的なドキュメント形式データベースには、次の内容が含まれます。",
     "aboutFormats": "複数のカテゴリにまたがる {count} 件の形式",

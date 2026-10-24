@@ -52,14 +52,21 @@ test('every translation key the page uses exists in en.json', () => {
     assert.deepEqual(missing, [], 'these keys have no English text');
 });
 
-test('the languages with every string translated also have the new demo strings', () => {
-    for (const lang of ['de', 'en', 'es', 'fr', 'ja', 'zh']) {
+test('every language has every string, and does not just copy the English ones', () => {
+    const flat = (node, prefix = '') => Object.entries(node).flatMap(([k, v]) =>
+        typeof v === 'object' ? flat(v, `${prefix}${k}.`) : [[`${prefix}${k}`, v]]);
+    const englishStrings = new Map(flat(english));
+    for (const lang of LANGUAGES) {
         const tree = JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'));
         const blanks = [];
         const walk = (node, prefix) => Object.entries(node).forEach(([k, v]) =>
             typeof v === 'object' ? walk(v, `${prefix}${k}.`) : (v === '' && blanks.push(`${prefix}${k}`)));
         walk(tree, '');
         assert.deepEqual(blanks, [], `${lang} is meant to be complete`);
+        if (lang === 'en') continue;
+        // Some words are the same in many languages (Region, Standard, Format), but not a quarter of the file.
+        const same = flat(tree).filter(([key, value]) => value === englishStrings.get(key));
+        assert.ok(same.length < englishStrings.size / 4, `${lang} repeats ${same.length} English strings: ${same.slice(0, 5).map(([k]) => k)}`);
     }
 });
 
@@ -110,16 +117,21 @@ test('Localization.md states the real translation coverage', () => {
     const perLanguage = LANGUAGES.map(lang => filled(JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'))));
     const complete = perLanguage.filter(n => n === total).length;
     const partial = [...new Set(perLanguage.filter(n => n !== total))];
-    assert.equal(partial.length, 1, 'the partial languages all translate the same strings');
+    assert.ok(partial.length <= 1, 'the partial languages all translate the same strings');
 
     const doc = fs.readFileSync(path.join(__dirname, '..', 'docs', 'Localization.md'), 'utf8');
     const stated = (label) => doc.match(new RegExp(`\\*\\*${label}\\*\\*: (\\d+)`))?.[1];
     assert.equal(Number(stated('Languages')), LANGUAGES.length);
     assert.equal(Number(stated('Strings per language')), total);
     assert.equal(Number(stated('Fully translated')), complete);
-    assert.equal(Number(stated('Partly translated')), LANGUAGES.length - complete);
-    assert.ok(doc.includes(`with ${partial[0]} of the ${total} strings`), 'the partial coverage line');
-    assert.ok(doc.includes(`${partial[0]} of the ${total} strings`), 'the intro of the languages list');
+    if (partial.length === 0) {
+        assert.equal(complete, LANGUAGES.length);
+        assert.equal(/Partly translated/.test(doc), false, 'no language is partial any more');
+        assert.ok(doc.includes(`all ${total} strings`), 'the intro of the languages list');
+    } else {
+        assert.equal(Number(stated('Partly translated')), LANGUAGES.length - complete);
+        assert.ok(doc.includes(`with ${partial[0]} of the ${total} strings`), 'the partial coverage line');
+    }
 });
 
 test('the page loads the tabs and URL-state scripts it uses, after the library', () => {
@@ -137,11 +149,15 @@ test('every field kept in the URL is a field of the page', () => {
     for (const id of Object.values(fields)) assert.match(html, new RegExp(`id="${id}"`), `#${id} is not in the page`);
 });
 
-test('the name of the downloaded CSV is plain ASCII, so every browser and file system saves it as named', () => {
+test('the name of the downloaded CSV is a safe file name', () => {
     for (const lang of LANGUAGES) {
         const tree = JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'));
         const name = lookup(tree, 'demo.csvFilename');
-        if (name !== '') assert.match(name, /^[a-z0-9-]+$/, `${lang}: "${name}"`);
+        // Letters of any script are fine; what a file system or a download would refuse or mangle is not.
+        assert.match(name, /^[^\\/:*?"<>|\x00-\x1f]+$/, `${lang}: "${name}"`);
+        assert.equal(name, name.trim(), `${lang}: spaces at the ends`);
+        assert.ok(!name.startsWith('.') && !name.endsWith('.') && name.length <= 60, `${lang}: "${name}"`);
+        assert.ok(name !== '', `${lang}: empty`);
     }
 });
 
