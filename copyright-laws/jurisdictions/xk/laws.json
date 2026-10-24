@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "XK",
+    "country_name": "Kosovo",
+    "region": "europe",
+    "law_name": "Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (counted from 1 January of the year after death; joint works from death of last surviving author; anonymous works publication + 70 years)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Moral rights protected without time limit (article numbers not found)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (the 2011 law removed deposit of copies with the Office; no registration requirement found; unconfirmed)",
+    "enforcement_body": "Copyright Office under the Ministry of Culture, Youth and Sports (Zyra e të Drejtës së Autorit) (unconfirmed)",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://cps.rks-gov.net/wp-content/uploads/2020/09/LAW_NO._04_L-065_ON_COPYRIGHT_AND_RELATED_RIGHTS.pdf",
+    "notes": "Link is the repealed 2011 law; the 2023 text was not seen. No confirmed Berne/TRIPS/WCT/WPPT membership found (a 2011 paper says WIPO admission is tied to UN membership). Body source predates the 2023 law. Anti-Piracy Task Force created by the 2023 law.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Kosovo.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "protection_type": {
+        "url": "https://www.aippi.org/news/new-law-on-copyright-entered-into-force-in-kosovo/",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Kosovo.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "author_rights": {
+        "url": "https://gpg-pdf.chambers.com/Doing-Business-In-2026/551/",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "moral_rights": {
+        "url": "https://gpg-pdf.chambers.com/Doing-Business-In-2026/551/",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "orphan_works": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Kosovo.html",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "registration_required": {
+        "url": "https://www.petosevic.com/node/1435",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_body": {
+        "url": "https://www.petosevic.com/node/1435",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
