@@ -12,6 +12,8 @@
   "grosor_hoja_mm": 0.1,
   "solapas_mm": 90,
   "lomo_direccion": "arriba-abajo",
+  "tradicion": "griega",
+  "categoria": "filosofia",
   "plantilla": "clasica",
   "colores": { "fondo": "#f3ead7", "texto": "#2a1f17", "acento": "#7a2e1f" },
   "degradado": { "tipo": "radial", "colores": ["#f7f0de", "#dcc69a"] },
