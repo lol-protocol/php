@@ -120,6 +120,7 @@ Con `$D` = tu dominio y `$T` = el valor de `OWNER_TOKEN`:
 
 ```bash
 curl -s https://$D/health                        # {"status":"ok",...}
+curl -s https://$D/ready                         # {"status":"ok","db":"ok","migrations":"applied",...}
 curl -s -o /dev/null -w '%{http_code}\n' https://$D/            # 200
 curl -s -o /dev/null -w '%{http_code}\n' https://$D/0/          # 401: pide la clave
 curl -s -o /dev/null -w '%{http_code}\n' -u x:$T https://$D/0/  # 200 (404 si falta el usuario 1: ver paso 4)
@@ -128,7 +129,7 @@ curl -sI -u x:$T https://$D/0/ | grep -i -E 'cache-control|vary|set-cookie|stric
 
 Debe verse `Cache-Control: private, no-store` y `Vary: Authorization`: lo que depende de quién pregunta no se guarda en cachés compartidas. Por HTTPS, la cookie de sesión lleva `secure; HttpOnly; SameSite=Lax` y llega `Strict-Transport-Security`; por HTTP plano, la cookie sale sin `secure`.
 
-`/health` solo dice que PHP responde: sigue en `ok` aunque la base de datos esté caída. Para saber si la base responde, abre una página que la consulte (la ficha de una persona, por ejemplo).
+Son dos preguntas distintas. **`/health`**: ¿responde PHP? No toca la base, así que sigue en `ok` aunque la base esté caída (es lo que quiere una sonda de «está vivo»). **`/ready`**: ¿puede servir este sitio? Pregunta a la base del sitio que elige el `Host` y si todas las migraciones están aplicadas; si algo falla da **503** y dice qué (`"db":"down"` o `"migrations":"pending"`), sin más detalle: la razón queda en `LOG_FILE`. Es lo que atrapa un despliegue que olvidó `bin/migrate.php`. Apunta ahí tu monitor, una vez por dominio. Cuenta para el limitador y no abre sesión.
 
 Y que lo que no debe servirse, no se sirve:
 
@@ -143,8 +144,9 @@ curl -s -o /dev/null -w '%{http_code}\n' https://$D/composer.json    # 404
 | `/0/` da **404** | Con la clave correcta y el mensaje «No existe el usuario 1»: falta crear el usuario (paso 4). Sin ese mensaje: `OWNER_TOKEN` falta o tiene menos de 20 caracteres (el log lo avisa con un *warning*) |
 | `/0/` da **401** con la clave correcta | El servidor no entrega la cabecera `Authorization` a PHP (regla de Apache, o un proxy que la quita). Con la clave equivocada también da 401: comprueba que no tiene espacios ni saltos de línea |
 | Un error de base de datos | El DSN, el usuario o los permisos del directorio de SQLite. El visitante ve solo «500 - Error interno del servidor»; el detalle (sin la clave) queda en `LOG_FILE`. Al volver la base, el sitio se recupera solo |
+| `/ready` da **503** | Con `"db":"down"`: la base no responde (DSN, usuario, el servicio parado). Con `"migrations":"pending"`: faltan migraciones, `sudo -u www-data php bin/migrate.php <sitio>` (paso 4) |
 | `attempt to write a readonly database` en el log | La base SQLite la creó otro usuario, normalmente root: paso 4 |
-| **429** | El limitador: 100 peticiones por minuto y por IP (`/health` no cuenta). Tú también, desde esa IP. Detrás de un proxy inverso sin `TRUSTED_PROXIES`, todos los visitantes comparten la IP del proxy (se deduce del código; no se probó con un proxy) |
+| **429** | El limitador: 100 peticiones por minuto y por IP (`/health` no cuenta). Tú también, desde esa IP. La respuesta trae `Retry-After` con los segundos que faltan. Cada IP deja un archivo en el directorio temporal, y el propio limitador borra los de más de una hora (se revisa cada diez minutos). Detrás de un proxy inverso sin `TRUSTED_PROXIES`, todos los visitantes comparten la IP del proxy (se deduce del código; no se probó con un proxy) |
 | Un `.env` descargable | La raíz web no es `public/` |
 
 ## 7. Usarlo como propietario
@@ -153,7 +155,27 @@ curl -s -o /dev/null -w '%{http_code}\n' https://$D/composer.json    # 404
 - **Marcar a quien vive:** en la ficha de una persona aparece **Privacidad**, solo para ti. Sirve para quien vive pero no tiene fechas, o quien murió sin defunción registrada. Ver [`ACCESO.md`](./ACCESO.md).
 - **`curl` o scripts:** `curl -u x:$T …` o `Authorization: Bearer $T`.
 
-## 8. Actualizar
+## 8. Vigilar los pedidos de retiro
+
+Cualquiera puede pedir el retiro de una página (`/r/{id}/`) y el pedido espera en `/0/3/` hasta que lo decidas: **recibirlo no oculta nada**. Para que no se quede esperando sin que lo veas, hay un script hecho para cron, que manda por correo lo que imprime y no imprime nada si no hay pedidos:
+
+```
+# /etc/cron.d/pedidos-retiro   (cron necesita un servidor de correo para mandar el aviso)
+MAILTO=tu@correo.com
+0 9 * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php
+```
+
+Lista número, página, motivo y cuánto lleva cada pedido, y marca `VENCIDO` el que pasó del plazo (`RETIRO_PLAZO_HORAS` en `.env`, 24 horas por omisión). No dice quién lo pidió ni qué escribió: el correo de cron viaja sin cifrar.
+
+**Ocultar automáticamente es opcional y es una decisión tuya.** Con `--ocultar`, el pedido que sigue pendiente pasado el plazo deja su página en 410 para los visitantes, como si hubieras elegido «ocultar mientras revisa», y el registro anota que fue automático. Nunca toca uno que ya decidiste, y rechazarlo la vuelve a mostrar. El costo: quien pida el retiro de una página puede bajarla si no contestas a tiempo. Si lo quieres, que corra más seguido que el aviso:
+
+```
+*/30 * * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --ocultar
+```
+
+Código de salida: 0 si nada está vencido, 1 si hay un pedido vencido sin ocultar, 2 si falla (base sin migrar, opción desconocida). Se probó con la base de SQLite y como proceso aparte (`tests/App/Integration/PedidosRetiroCliTest.php`); **no se probó con cron ni con un servidor de correo reales**.
+
+## 9. Actualizar
 
 ```bash
 cd /var/www/php && git pull
@@ -161,13 +183,14 @@ cd url-routing
 composer install --no-dev --optimize-autoloader
 sudo -u www-data php bin/migrate.php genealogy && sudo -u www-data php bin/migrate.php pos
 sudo systemctl reload php8.3-fpm        # vacía el opcache
+curl -s https://$D/ready                # debe dar "migrations":"applied"
 ```
 
-## 9. Rotar o quitar el token
+## 10. Rotar o quitar el token
 
 Cambia `OWNER_TOKEN` en `.env` y recarga PHP-FPM. **Cierra todas las sesiones abiertas**, incluida la tuya. Si lo quitas, vuelve a quedar todo lo privado cerrado para todos.
 
-## 10. Copias de seguridad
+## 11. Copias de seguridad
 
 - PostgreSQL: `pg_dump -Fc genealogia > genealogia-$(date +%F).dump`
 - SQLite: `sqlite3 /var/lib/url-routing/pos.sqlite ".backup '/ruta/pos-$(date +%F).sqlite'"`. No copies el archivo suelto con `cp`: con WAL puede quedar incompleto.
@@ -186,7 +209,8 @@ Con el código de `master`, en un directorio aparte (`git archive` + `composer i
 6. Con la demostración cargada, desde el navegador del propietario: marcar a una persona como viva (sin el token CSRF da 403, con él 303) y ver que un visitante pasa de ver su nombre a «Persona viva» y vuelve; «Persona privada» para quien solo está en una colección privada.
 7. Fallos: la base de PostgreSQL parada (500 sin detalle en la respuesta; la clave de la base no aparece ni en la respuesta ni en el log; y el sitio se recupera al volver la base), `LOG_FILE` en una carpeta que no existe (el sitio sigue sirviendo) y `OWNER_TOKEN` de menos de 20 caracteres (`/0/` da 404 y el log avisa).
 8. El limitador (100 peticiones y luego 429), y la recarga de PHP-FPM con la señal `USR2` (la que envía `systemctl reload`) y de nginx, con OPcache activo.
-9. Los comandos de copia de seguridad del paso 10, y restaurar el volcado en una base nueva.
+9. Los comandos de copia de seguridad del paso 11, y restaurar el volcado en una base nueva.
+10. `/ready` (200 con la base al día; 503 con una migración nueva sin aplicar, y vuelve a 200 al migrar) y el `Retry-After` del 429, con el servidor integrado de PHP y con las pruebas de `url-routing/`.
 
 De ahí salieron, además de las dos correcciones de la prueba anterior (sin el usuario 1, `/0/` daba 404 con la clave correcta; y `composer install --optimize-autoloader` imprimía avisos de PSR-4 por `tests/`), tres cambios en esta guía: las migraciones y el `INSERT` de SQLite se corren como `www-data` (una base creada por root no se podía escribir), la carpeta de logs de nginx hay que crearla (sin ella `nginx -t` falla), y `/.env` da 403, no 404.
 
