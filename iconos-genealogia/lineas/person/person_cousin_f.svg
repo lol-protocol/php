@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="links">
-    <path d="M31 18.25L31 20.5L17 20.5L17 24" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M17 38.25L17 43" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M31 18.25L31 20.5L45 20.5L45 24" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M45 38.25L45 43" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 18.25L31 20.5L17 20.5L17 24" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M17 38.25L17 43" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 18.25L31 20.5L45 20.5L45 24" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M45 38.25L45 43" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
     <g><path d="M38.81 11.89A1.5 1.5 0 0 1 38.68 13.84L33.77 18.75A1.5 1.5 0 0 1 31.66 18.75L26.75 13.84A1.5 1.5 0 0 1 26.61 13.68L24.9 11.4A1.5 1.5 0 0 1 25.04 9.44L29.94 4.54A1.5 1.5 0 0 1 32.06 4.54L36.96 9.44A1.5 1.5 0 0 1 37.1 9.6Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="26.04" y="5.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 31 10.5)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>

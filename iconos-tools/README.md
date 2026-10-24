@@ -11,6 +11,9 @@ qué iconos tiene cada uno y cómo usarlos) y la galería compartida
   color, variantes).
 - `lib.py` / `kit.py`: piezas comunes a ambos sets (primitivas SVG, paleta,
   composición).
+- `comunes.py`: los iconos que se llaman igual en los dos sets (`ui_profile`,
+  `ui_menu`, `action_filter`...), definidos una vez y que los dos sets incluyen,
+  para que no se separen.
 - `catalogo.py`: lo que comparten el generador y el validador (variantes,
   prefijos que admite cada set y etiqueta de cada prefijo en la galería).
 - `build.py`: escribe los dos sets y `galeria-iconos.html` a partir de las
@@ -46,7 +49,8 @@ ids repetidos (tampoco entre variantes) ni iconos idénticos; que cada `url(#id)
 y todo id lo use algo; que ningún trazo, círculo ni rectángulo sin girar quede
 a menos de 1 unidad del borde del lienzo (cuenta también lo que un arco abulta
 entre sus extremos); y que todo prefijo de `catalogo.PREFIXES` tenga etiqueta
-en `catalogo.GROUPS`.
+en `catalogo.GROUPS`; y que un nombre que esté en los dos sets sea idéntico en
+ambos (si no, va en `comunes.py`).
 
 `similares.py` dibuja la variante `gris` de cada icono a 24x24 y compara
 todos los pares de un mismo set; falla si dos se diferencian en menos de 0,8
@@ -59,7 +63,7 @@ en `ACEPTADOS` (hoy está vacío).
 
 Cada sólido es su cara frontal más una pared extruida hacia abajo y a la derecha (`LIGHT` en `lib.py`).
 La pared se dibuja con las mismas rectas y arcos de la forma (`exact_sweep`), no con un polígono que
-la aproxime: se ve igual de suave a 16 px que a 512 px. Tres detalles:
+la aproxime: se ve igual de suave a 16 px que a 512 px. Cinco detalles:
 
 - El degradado de la cara va de arriba a la izquierda a abajo a la derecha. En
   una forma girada (los rombos) se gira de vuelta (`light_axis`), porque si no
@@ -69,6 +73,13 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Tres detalles:
 - El borde trasero de la pared se adelanta `INSET` (0,3) a lo largo de la extrusión para que quede
   tapado por la cara frontal. Sin eso asoma una línea gris fina en el borde antialiasado de la cara.
   En `lineas` no se aplica: ahí la pared es un trazo y su borde trasero coincide con el de la cara.
+- En `gris`, dos volúmenes que se tocan y son de tonos distintos se separan al menos `GRAY_GAP` (20 de 255):
+  los tonos de la paleta se reparten bien en color pero siete caen en 11 niveles de gris, y sin esto
+  `book_index` o `ui_collection` quedaban como un solo bloque. Cede el volumen de delante
+  (`_gray_shifts`); su degradado lleva el desplazamiento en el id (`..._g_p15`).
+- En `lineas`, todo trazo normal pesa entre `LINE_MIN` (1,8, el contorno de un volumen) y `LINE_MAX` (2,2): antes
+  los enlaces pesaban 2,6 y destacaban más que los objetos que unen. Las barras a propósito (`BAR`: el vínculo
+  de sangre, `action_connect`) conservan su grosor. Un enlace doble de color y gris pesa 1,6, no 1,61.
 - Las coordenadas llevan dos decimales (`fmt`). Con uno, el redondeo de los extremos de un arco
   de 1,5 de radio se notaba al ampliar.
 

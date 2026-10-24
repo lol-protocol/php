@@ -5,13 +5,13 @@
       <stop offset="0" stop-color="#8F8F8F"/>
       <stop offset="1" stop-color="#5B5B5B"/>
     </linearGradient>
-    <linearGradient id="grad_ui_collection_violet_g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#949494"/>
-      <stop offset="1" stop-color="#626262"/>
+    <linearGradient id="grad_ui_collection_violet_g_p13" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A1A1A1"/>
+      <stop offset="1" stop-color="#6F6F6F"/>
     </linearGradient>
-    <linearGradient id="grad_ui_collection_pink_g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#979797"/>
-      <stop offset="1" stop-color="#666666"/>
+    <linearGradient id="grad_ui_collection_pink_g_p29" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B4B4B4"/>
+      <stop offset="1" stop-color="#838383"/>
     </linearGradient>
   </defs>
   <g class="shadow">
@@ -19,7 +19,7 @@
   </g>
   <g class="solids">
     <g><path d="M38.64 12.52A4 4 0 0 1 39.44 14.92L39.44 32.92A4 4 0 0 1 35.44 36.92L15.44 36.92A4 4 0 0 1 12.24 35.32L10.98 33.64A4 4 0 0 1 10.18 31.24L10.18 13.24A4 4 0 0 1 14.18 9.24L34.18 9.24A4 4 0 0 1 37.38 10.84Z" fill="#353535"/><rect x="10" y="9" width="28" height="26" rx="4" fill="url(#grad_ui_collection_indigo_g)"/></g>
-    <g><path d="M44.64 18.52A4 4 0 0 1 45.44 20.92L45.44 38.92A4 4 0 0 1 41.44 42.92L21.44 42.92A4 4 0 0 1 18.24 41.32L16.98 39.64A4 4 0 0 1 16.18 37.24L16.18 19.24A4 4 0 0 1 20.18 15.24L40.18 15.24A4 4 0 0 1 43.38 16.84Z" fill="#393939"/><rect x="16" y="15" width="28" height="26" rx="4" fill="url(#grad_ui_collection_violet_g)"/></g>
-    <g><path d="M50.64 24.52A4 4 0 0 1 51.44 26.92L51.44 44.92A4 4 0 0 1 47.44 48.92L27.44 48.92A4 4 0 0 1 24.24 47.32L22.98 45.64A4 4 0 0 1 22.18 43.24L22.18 25.24A4 4 0 0 1 26.18 21.24L46.18 21.24A4 4 0 0 1 49.38 22.84Z" fill="#3B3B3B"/><rect x="22" y="21" width="28" height="26" rx="4" fill="url(#grad_ui_collection_pink_g)"/></g>
+    <g><path d="M44.64 18.52A4 4 0 0 1 45.44 20.92L45.44 38.92A4 4 0 0 1 41.44 42.92L21.44 42.92A4 4 0 0 1 18.24 41.32L16.98 39.64A4 4 0 0 1 16.18 37.24L16.18 19.24A4 4 0 0 1 20.18 15.24L40.18 15.24A4 4 0 0 1 43.38 16.84Z" fill="#464646"/><rect x="16" y="15" width="28" height="26" rx="4" fill="url(#grad_ui_collection_violet_g_p13)"/></g>
+    <g><path d="M50.64 24.52A4 4 0 0 1 51.44 26.92L51.44 44.92A4 4 0 0 1 47.44 48.92L27.44 48.92A4 4 0 0 1 24.24 47.32L22.98 45.64A4 4 0 0 1 22.18 43.24L22.18 25.24A4 4 0 0 1 26.18 21.24L46.18 21.24A4 4 0 0 1 49.38 22.84Z" fill="#585858"/><rect x="22" y="21" width="28" height="26" rx="4" fill="url(#grad_ui_collection_pink_g_p29)"/></g>
   </g>
 </svg>

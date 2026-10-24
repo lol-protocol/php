@@ -9,6 +9,9 @@ import math
 from catalogo import VARIANTS
 LIGHT = (0.6, 0.8)  # direccion de la extrusion: abajo a la derecha
 INSET = 0.3  # cuanto se mete el borde trasero de la extrusion bajo la cara frontal (ver exact_sweep)
+LINE_MIN, LINE_MAX = 1.8, 2.2  # grosor en lineas: el contorno de un volumen es LINE_MIN; marcas y enlaces, entre los dos
+BAR = 2.8  # un enlace mas grueso es una barra a proposito (relationship_blood_bond, action_connect): no se normaliza
+GRAY_GAP = 20  # minimo de gris (de 255) entre dos volumenes de tonos distintos que se tocan, en la variante gris
 
 BASE = {
     'mist': '#CBD5E1', 'slate': '#94A3B8', 'ink': '#475569', 'night': '#1E293B',
@@ -43,9 +46,13 @@ def mix(a, b, t):
     return _hex(tuple(x + (y - x) * t for x, y in zip(_rgb(a), _rgb(b))))
 
 
-def gray(c):
+def gray_level(c):
     r, g, b = _rgb(c)
-    y = round(0.299 * r + 0.587 * g + 0.114 * b)
+    return round(0.299 * r + 0.587 * g + 0.114 * b)
+
+
+def gray(c, shift=0):
+    y = max(0, min(255, gray_level(c) + shift))
     return '#%02X%02X%02X' % (y, y, y)
 
 
@@ -393,12 +400,15 @@ class Icon:
         self.links.append(dict(pts=distinct if len(distinct) > 1 else pts, style=style, hue=hue, w=w))
         return self
 
-    def mark(self, d, filled=False, tone='white', ink='ink', w=2.4, op=1.0, dash=None):
-        self.marks.append(dict(d=d, filled=filled, tone=tone, ink=ink, w=w, op=op, dash=dash))
+    def mark(self, d, filled=False, tone='white', ink='ink', w=2.4, op=1.0, dash=None, behind=False, pts=None):
+        """behind: la marca va detrás de los volúmenes (un contorno de referencia, no un detalle sobre uno).
+        pts: sus puntos, si es una polilínea, para ocultar en lineas lo que tapa un volumen."""
+        self.marks.append(dict(d=d, filled=filled, tone=tone, ink=ink, w=w, op=op, dash=dash, behind=behind, pts=pts))
         return self
 
     def poly(self, points, close=False, **kw):
-        return self.mark('M' + 'L'.join(pt(p) for p in points) + ('Z' if close else ''), **kw)
+        pts = [(float(x), float(y)) for x, y in points]
+        return self.mark('M' + 'L'.join(pt(p) for p in pts) + ('Z' if close else ''), pts=pts + pts[:1] if close else pts, **kw)
 
     def dot(self, x, y, r, **kw):
         return self.mark(circle_path(x, y, r), filled=True, **kw)
@@ -437,6 +447,38 @@ class Icon:
         return self.mark(d, **kw)
 
     # ----- render
+    @staticmethod
+    def _box(s):
+        """Caja del volumen con su extrusion, algo ensanchada para que cuenten los que solo se rozan."""
+        ex, ey = LIGHT[0] * s['d'], LIGHT[1] * s['d']
+        pts = s['shape'].pts()
+        xs = [p[0] for p in pts] + [p[0] + ex for p in pts]
+        ys = [p[1] for p in pts] + [p[1] + ey for p in pts]
+        return min(xs) - 0.5, min(ys) - 0.5, max(xs) + 0.5, max(ys) + 0.5
+
+    def _gray_shifts(self):
+        """Cuanto aclarar u oscurecer cada volumen en la variante gris para que no se funda con otro que toca.
+
+        Los tonos de la paleta se reparten bien en color pero mal en luminosidad: siete caen en 11 niveles de gris.
+        Dos volumenes que se tocan y son de tonos distintos se separan al menos GRAY_GAP; cede el de delante."""
+        shifts, grays, boxes = [], [], []
+        for s in self.solids:
+            level, box = gray_level(BASE[s['hue']]), self._box(s)
+            others = [grays[j] for j, o in enumerate(self.solids[:len(grays)])
+                      if o['hue'] != s['hue'] and not (box[2] <= boxes[j][0] or boxes[j][2] <= box[0] or box[3] <= boxes[j][1] or boxes[j][3] <= box[1])]
+            shift = 0
+            if others and min(abs(level - g) for g in others) < GRAY_GAP:
+                away = 1 if level >= min(others, key=lambda g: abs(level - g)) else -1  # alejarse del vecino mas cercano
+                for k in range(1, 256):
+                    ok = [c for c in (away * k, -away * k) if 30 <= level + c <= 215 and all(abs(level + c - g) >= GRAY_GAP for g in others)]
+                    if ok:
+                        shift = ok[0]
+                        break
+            shifts.append(shift)
+            grays.append(level + shift)
+            boxes.append(box)
+        return shifts
+
     def _bbox(self):
         xs, ys = [], []
         for s in self.solids:
@@ -450,7 +492,7 @@ class Icon:
         assert variant in VARIANTS
         lin = variant == 'lineas'
         col = gray if variant == 'gris' else (lambda c: c)
-        grads, out_shadow, out_links, out_solids, out_marks = {}, [], [], [], []
+        grads, out_shadow, out_back, out_links, out_solids, out_marks = {}, [], [], [], [], []
 
         if not lin:
             x0, _, x1, y1 = self._bbox()
@@ -461,28 +503,39 @@ class Icon:
         for ln in self.links:
             out_links += self._render_link(ln, variant, col)
 
-        for s in self.solids:
+        shifts = self._gray_shifts() if variant == 'gris' else [0] * len(self.solids)
+        for s, shift in zip(self.solids, shifts):
             hi, base, dark = tones(s['hue'])
             ex, ey = LIGHT[0] * s['d'], LIGHT[1] * s['d']
+            tint = (lambda c, k=shift: gray(c, k)) if variant == 'gris' else col
             sweep = s['shape'].sweep(ex, ey, 0.0 if lin else min(INSET, math.hypot(ex, ey) / 3)) if s['d'] > 0 else None
             parts = []
             if lin:
                 if sweep and s['shape'].convex:
-                    parts.append(f'<path d="{sweep}" fill="none" stroke="{dark}" stroke-width="1.8" stroke-linejoin="round"/>')
-                parts.append(s['shape'].front(f'fill="none" stroke="{dark}" stroke-width="1.8" stroke-linejoin="round"'))
+                    parts.append(f'<path d="{sweep}" fill="none" stroke="{dark}" stroke-width="{fmt(LINE_MIN)}" stroke-linejoin="round"/>')
+                parts.append(s['shape'].front(f'fill="none" stroke="{dark}" stroke-width="{fmt(LINE_MIN)}" stroke-linejoin="round"'))
             else:
                 if sweep:
                     dfill = tones(s['depth'])[1] if s['depth'] else dark
-                    parts.append(f'<path d="{sweep}" fill="{col(dfill)}"/>')
+                    parts.append(f'<path d="{sweep}" fill="{tint(dfill)}"/>')
                 turn = f'_r{fmt(s["shape"].rot)}'.replace('-', 'm').replace('.', 'p') if s['shape'].rot else ''
-                gid = f'grad_{self.stem}_{s["hue"]}{turn}{"_g" if variant == "gris" else ""}'
-                grads[gid] = (col(hi), col(base), s['shape'].light_axis())
+                moved = f'_{"m" if shift < 0 else "p"}{abs(shift)}' if shift else ''
+                gid = f'grad_{self.stem}_{s["hue"]}{turn}{"_g" if variant == "gris" else ""}{moved}'
+                grads[gid] = (tint(hi), tint(base), s['shape'].light_axis())
                 op = f' opacity="{fmt(s["op"])}"' if s['op'] != 1 else ''
                 parts.append(s['shape'].front(f'fill="url(#{gid})"{op}'))
             out_solids.append('<g>' + ''.join(parts) + '</g>')
 
+        sil = self._silhouettes() if lin and any(m['behind'] for m in self.marks) else []
         for m in self.marks:
-            out_marks.append(self._render_mark(m, lin, col))
+            if not m['behind']:
+                out_marks.append(self._render_mark(m, lin, col))
+                continue
+            d = m['d']
+            if lin and m['pts']:  # sin relleno, un volumen no tapa lo que tiene detrás: se oculta como en los enlaces
+                d = ''.join('M' + 'L'.join(pt(q) for q in pl) for pl in self._trim(m['pts'], sil))
+            if d:
+                out_back.append(self._render_mark(m, lin, col, d))
 
         lines = ['<?xml version="1.0" encoding="UTF-8"?>',
                  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">']
@@ -495,7 +548,7 @@ class Icon:
                           f'      <stop offset="1" stop-color="{c1}"/>',
                           '    </linearGradient>']
             lines.append('  </defs>')
-        for cls, items in (('shadow', out_shadow), ('links', out_links), ('solids', out_solids), ('marks', out_marks)):
+        for cls, items in (('shadow', out_shadow), ('back', out_back), ('links', out_links), ('solids', out_solids), ('marks', out_marks)):
             if items:
                 lines.append(f'  <g class="{cls}">')
                 lines += [f'    {i}' for i in items]
@@ -556,6 +609,8 @@ class Icon:
         lin = variant == 'lineas'
         c = dark if lin else col(base)
         w, p, style = ln['w'], ln['pts'], ln['style']
+        if lin and w <= BAR:  # en lineas los enlaces pesaban 2,6 y los contornos 1,8: todo trazo normal entre los dos
+            w = max(LINE_MIN, min(w, LINE_MAX))
         cap = 'butt' if lin and style != 'dotted' else 'round'
         common = f'fill="none" stroke="{c}" stroke-linecap="{cap}" stroke-linejoin="round"'
         sil = self._silhouettes() if lin else []
@@ -578,7 +633,7 @@ class Icon:
             d = ''
             for s in (-off, off):
                 d += d_of(polys([(a[0] + nx * s, a[1] + ny * s), (b[0] + nx * s, b[1] + ny * s)]))
-            return [f'<path d="{d}" {common} stroke-width="{fmt(w * 0.62)}"/>'] if d else []
+            return [f'<path d="{d}" {common} stroke-width="{fmt(LINE_MIN if lin else round(w * 0.62, 1))}"/>'] if d else []
         if style == 'cut':
             mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
             g = 4.8
@@ -593,10 +648,10 @@ class Icon:
             return [f'<path d="{d}" {common} stroke-width="{fmt(w)}"/>']
         raise ValueError(style)
 
-    def _render_mark(self, m, lin, col):
+    def _render_mark(self, m, lin, col, d=None):
         if lin:
             hue = m['tone'] if m['tone'] in BASE else m['ink']
-            w = 1.8 if m['filled'] else max(1.8, min(m['w'], 2.2))
+            w = LINE_MIN if m['filled'] else max(LINE_MIN, min(m['w'], LINE_MAX))
             attrs = (f'fill="none" stroke="{tones(hue)[2]}" stroke-width="{fmt(w)}" '
                      'stroke-linecap="round" stroke-linejoin="round"')
         else:
@@ -615,5 +670,5 @@ class Icon:
             attrs += f' stroke-dasharray="{m["dash"]}"'
         if m['op'] != 1:
             attrs += f' opacity="{fmt(m["op"])}"'
-        return f'<path d="{m["d"]}" {attrs}/>'
+        return f'<path d="{d or m["d"]}" {attrs}/>'
 

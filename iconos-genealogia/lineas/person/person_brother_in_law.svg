@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="links">
-    <path d="M19 45.6L25.75 45.6M20.25 49.4L25.5 49.4" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.61"/>
-    <path d="M41 21.25L41 30.5L31 30.5L31 41" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M41 21.25L41 30.5L51 30.5L51 40.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M19 45.6L25.75 45.6M20.25 49.4L25.5 49.4" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.8"/>
+    <path d="M41 21.25L41 30.5L31 30.5L31 41" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M41 21.25L41 30.5L51 30.5L51 40.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
     <g><path d="M48.81 14.89A1.5 1.5 0 0 1 48.68 16.84L43.77 21.75A1.5 1.5 0 0 1 41.66 21.75L36.75 16.84A1.5 1.5 0 0 1 36.61 16.68L34.9 14.4A1.5 1.5 0 0 1 35.04 12.44L39.94 7.54A1.5 1.5 0 0 1 42.06 7.54L46.96 12.44A1.5 1.5 0 0 1 47.1 12.6Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="36.04" y="8.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 41 13.5)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>

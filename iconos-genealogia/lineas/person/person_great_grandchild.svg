@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="links">
-    <path d="M31 17.5L31 20.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M31 27.5L31 34.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M31 41.5L31 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 17.5L31 20.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 27.5L31 34.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 41.5L31 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
     <g><path d="M26.07 13.2L27.48 15.08A6.16 6.16 0 0 0 37.34 7.69L35.93 5.8A6.16 6.16 0 0 0 26.07 13.2Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="9.5" r="6.16" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
