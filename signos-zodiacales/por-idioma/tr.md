@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Batı zodyağı
 
 ### ♈ Koç
 
 *21/03 – 19/04 · Ateş · Öncü*
+
+Dekanlar: 21/03 – 30/03 Mars · 31/03 – 09/04 Güneş · 10/04 – 19/04 Venüs
 
 Cesur, dürtüsel ve enerji doludur.
 
@@ -16,6 +18,8 @@ Girişkenlik ve cesaretle ilişkilendirilir: gelenek onu dobra, rekabetçi ve ye
 
 *20/04 – 20/05 · Toprak · Sabit*
 
+Dekanlar: 20/04 – 29/04 Merkür · 30/04 – 09/05 Ay · 10/05 – 20/05 Satürn
+
 Sabırlı, duyusal ve istikrarı sever.
 
 Kararlılık ve somut olana düşkünlükle ilişkilendirilir: gelenek onu sadık, sakin ve konforu seven, ama bazen inatçı biri olarak tanımlar.
@@ -23,6 +27,8 @@ Kararlılık ve somut olana düşkünlükle ilişkilendirilir: gelenek onu sadı
 ### ♊ İkizler
 
 *21/05 – 20/06 · Hava · Değişken*
+
+Dekanlar: 21/05 – 30/05 Jüpiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Güneş
 
 Meraklı, iletişimci ve zihni çevik.
 
@@ -32,6 +38,8 @@ Merak ve söz ile ilişkilendirilir: gelenek onu sosyal, çok yönlü ve hep yen
 
 *21/06 – 22/07 · Su · Öncü*
 
+Dekanlar: 21/06 – 30/06 Venüs · 01/07 – 10/07 Merkür · 11/07 – 22/07 Ay
+
 Koruyucu, hassas ve sevdiklerine çok sadık.
 
 Ev ve duygularla ilişkilendirilir: gelenek onu şefkatli, sezgisel ve ailesine çok bağlı, ama bazen içine kapanık biri olarak tanımlar.
@@ -39,6 +47,8 @@ Ev ve duygularla ilişkilendirilir: gelenek onu şefkatli, sezgisel ve ailesine 
 ### ♌ Aslan
 
 *23/07 – 22/08 · Ateş · Sabit*
+
+Dekanlar: 23/07 – 01/08 Satürn · 02/08 – 11/08 Jüpiter · 12/08 – 22/08 Mars
 
 Cömert, karizmatik ve parlamayı sever.
 
@@ -48,6 +58,8 @@ Cömertlik ve liderlikle ilişkilendirilir: gelenek onu sıcak, gururlu ve ilgi 
 
 *23/08 – 22/09 · Toprak · Değişken*
 
+Dekanlar: 23/08 – 01/09 Güneş · 02/09 – 11/09 Venüs · 12/09 – 22/09 Merkür
+
 Analitik, pratik ve detaylara çok önem veren.
 
 Düzen ve hizmetle ilişkilendirilir: gelenek onu yöntemli, ketum ve kendine karşı titiz, ama bazen fazla eleştirel biri olarak tanımlar.
@@ -55,6 +67,8 @@ Düzen ve hizmetle ilişkilendirilir: gelenek onu yöntemli, ketum ve kendine ka
 ### ♎ Terazi
 
 *23/09 – 22/10 · Hava · Öncü*
+
+Dekanlar: 23/09 – 02/10 Ay · 03/10 – 12/10 Satürn · 13/10 – 22/10 Jüpiter
 
 Diplomatik, sosyal ve dengeyi arayan.
 
@@ -64,6 +78,8 @@ Uyum ve adaletle ilişkilendirilir: gelenek onu nazik, zarif ve iyi bir arabuluc
 
 *23/10 – 21/11 · Su · Sabit*
 
+Dekanlar: 23/10 – 01/11 Mars · 02/11 – 11/11 Güneş · 12/11 – 21/11 Venüs
+
 Yoğun, sezgisel ve iradesi güçlü.
 
 Derinlik ve kararlılıkla ilişkilendirilir: gelenek onu ketum, tutkulu ve çok sezgili, ama bazen aşırı yoğun biri olarak tanımlar.
@@ -71,6 +87,8 @@ Derinlik ve kararlılıkla ilişkilendirilir: gelenek onu ketum, tutkulu ve çok
 ### ♐ Yay
 
 *22/11 – 21/12 · Ateş · Değişken*
+
+Dekanlar: 22/11 – 01/12 Merkür · 02/12 – 11/12 Ay · 12/12 – 21/12 Satürn
 
 İyimser, maceraperest ve özgürlüğü seven.
 
@@ -80,6 +98,8 @@ Keşif ve açık sözlülükle ilişkilendirilir: gelenek onu iyimser, huzursuz 
 
 *22/12 – 19/01 · Toprak · Öncü*
 
+Dekanlar: 22/12 – 31/12 Jüpiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Güneş
+
 Disiplinli, hırslı ve sorumluluk sahibi.
 
 Disiplin ve sabırla ilişkilendirilir: gelenek onu hırslı, ciddi ve uzun vadede sorumluluk sahibi, ama bazen katı biri olarak tanımlar.
@@ -87,6 +107,8 @@ Disiplin ve sabırla ilişkilendirilir: gelenek onu hırslı, ciddi ve uzun vade
 ### ♒ Kova
 
 *20/01 – 18/02 · Hava · Sabit*
+
+Dekanlar: 20/01 – 29/01 Venüs · 30/01 – 08/02 Merkür · 09/02 – 18/02 Ay
 
 Bağımsız, özgün ve insancıl.
 
@@ -96,11 +118,13 @@ Bağımsız, özgün ve insancıl.
 
 *19/02 – 20/03 · Su · Değişken*
 
+Dekanlar: 19/02 – 28/02 Satürn · 01/03 – 10/03 Jüpiter · 11/03 – 20/03 Mars
+
 Empatik, hayalperest ve çok sezgisel.
 
 Hayal gücü ve şefkatle ilişkilendirilir: gelenek onu duyarlı, sanatçı ruhlu ve başkalarına adanmış, ama bazen kaçamak biri olarak tanımlar.
 
-## Horóscopo chino
+## Çin burçları
 
 ### Fare
 

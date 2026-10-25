@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Westerse dierenriem
 
 ### ♈ Ram
 
 *21/03 – 19/04 · Vuur · Kardinaal*
+
+Decanaten: 21/03 – 30/03 Mars · 31/03 – 09/04 Zon · 10/04 – 19/04 Venus
 
 Moedig, impulsief en vol energie.
 
@@ -16,6 +18,8 @@ Teken van initiatief en moed: de traditie verbindt het met directheid, competiti
 
 *20/04 – 20/05 · Aarde · Vast*
 
+Decanaten: 20/04 – 29/04 Mercurius · 30/04 – 09/05 Maan · 10/05 – 20/05 Saturnus
+
 Geduldig, sensueel en gehecht aan stabiliteit.
 
 Teken van standvastigheid en zin voor het tastbare: de traditie verbindt het met trouw, kalmte en liefde voor comfort, maar ook met koppigheid.
@@ -23,6 +27,8 @@ Teken van standvastigheid en zin voor het tastbare: de traditie verbindt het met
 ### ♊ Tweelingen
 
 *21/05 – 20/06 · Lucht · Veranderlijk*
+
+Decanaten: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Zon
 
 Nieuwsgierig, communicatief en snel van geest.
 
@@ -32,6 +38,8 @@ Teken van nieuwsgierigheid en het woord: de traditie verbindt het met gezellighe
 
 *21/06 – 22/07 · Water · Kardinaal*
 
+Decanaten: 21/06 – 30/06 Venus · 01/07 – 10/07 Mercurius · 11/07 – 22/07 Maan
+
 Beschermend, gevoelig en zeer loyaal aan de zijnen.
 
 Teken van huis en gevoel: de traditie verbindt het met zorgzaamheid, intuïtie en gehechtheid aan familie, maar ook met terughoudendheid.
@@ -39,6 +47,8 @@ Teken van huis en gevoel: de traditie verbindt het met zorgzaamheid, intuïtie e
 ### ♌ Leeuw
 
 *23/07 – 22/08 · Vuur · Vast*
+
+Decanaten: 23/07 – 01/08 Saturnus · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Mars
 
 Vrijgevig, charismatisch en graag in de schijnwerpers.
 
@@ -48,6 +58,8 @@ Teken van vrijgevigheid en leiderschap: de traditie verbindt het met warmte, tro
 
 *23/08 – 22/09 · Aarde · Veranderlijk*
 
+Decanaten: 23/08 – 01/09 Zon · 02/09 – 11/09 Venus · 12/09 – 22/09 Mercurius
+
 Analytisch, praktisch en zeer nauwgezet.
 
 Teken van orde en dienstbaarheid: de traditie verbindt het met methodiek, bescheidenheid en strengheid voor zichzelf, maar ook met overmatige kritiek.
@@ -55,6 +67,8 @@ Teken van orde en dienstbaarheid: de traditie verbindt het met methodiek, besche
 ### ♎ Weegschaal
 
 *23/09 – 22/10 · Lucht · Kardinaal*
+
+Decanaten: 23/09 – 02/10 Maan · 03/10 – 12/10 Saturnus · 13/10 – 22/10 Jupiter
 
 Diplomatiek, sociaal en op zoek naar evenwicht.
 
@@ -64,6 +78,8 @@ Teken van harmonie en rechtvaardigheid: de traditie verbindt het met vriendelijk
 
 *23/10 – 21/11 · Water · Vast*
 
+Decanaten: 23/10 – 01/11 Mars · 02/11 – 11/11 Zon · 12/11 – 21/11 Venus
+
 Intens, intuïtief en vastberaden.
 
 Teken van diepgang en vastberadenheid: de traditie verbindt het met terughoudendheid, passie en scherpzinnigheid, maar ook met overmatige intensiteit.
@@ -71,6 +87,8 @@ Teken van diepgang en vastberadenheid: de traditie verbindt het met terughoudend
 ### ♐ Boogschutter
 
 *22/11 – 21/12 · Vuur · Veranderlijk*
+
+Decanaten: 22/11 – 01/12 Mercurius · 02/12 – 11/12 Maan · 12/12 – 21/12 Saturnus
 
 Optimistisch, avontuurlijk en vrijheidslievend.
 
@@ -80,6 +98,8 @@ Teken van ontdekking en openheid: de traditie verbindt het met optimisme, rustel
 
 *22/12 – 19/01 · Aarde · Kardinaal*
 
+Decanaten: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Zon
+
 Gedisciplineerd, ambitieus en verantwoordelijk.
 
 Teken van discipline en geduld: de traditie verbindt het met ambitie, ernst en verantwoordelijkheid op lange termijn, maar ook met starheid.
@@ -87,6 +107,8 @@ Teken van discipline en geduld: de traditie verbindt het met ambitie, ernst en v
 ### ♒ Waterman
 
 *20/01 – 18/02 · Lucht · Vast*
+
+Decanaten: 20/01 – 29/01 Venus · 30/01 – 08/02 Mercurius · 09/02 – 18/02 Maan
 
 Onafhankelijk, origineel en humanitair.
 
@@ -96,11 +118,13 @@ Teken van originaliteit en gedeelde ideeën: de traditie verbindt het met onafha
 
 *19/02 – 20/03 · Water · Veranderlijk*
 
+Decanaten: 19/02 – 28/02 Saturnus · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Mars
+
 Empathisch, dromerig en zeer intuïtief.
 
 Teken van verbeelding en medeleven: de traditie verbindt het met gevoeligheid, artistiek talent en toewijding aan anderen, maar ook met ontwijkendheid.
 
-## Horóscopo chino
+## Chinese horoscoop
 
 ### Rat
 

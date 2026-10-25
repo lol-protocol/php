@@ -38,7 +38,12 @@ SISTEMAS_LOCALES = {
     "bn": {"tropical": "সায়ন", "sideral": "নিরয়ণ"},
 }
 
-GRUPOS = {"occidental": "Zodiaco occidental", "chino": "Horóscopo chino"}
+# Cada tipo de signo y la clave de "terminos" con el título de su sección, traducido.
+GRUPOS = {"occidental": "zodiaco_occidental", "chino": "horoscopo_chino"}
+
+# Textos de la galería y de las fichas, también en "terminos".
+TERMINOS_DE_INTERFAZ = {"titulo", "zodiaco_occidental", "horoscopo_chino", "idioma", "ilustracion",
+                        "con_fondo", "sin_fondo", "decanatos"}
 
 # Idiomas que se escriben de derecha a izquierda: su ficha va dentro de <div dir="rtl">.
 DERECHA_A_IZQUIERDA = {"ar", "he", "fa", "ur"}
@@ -68,10 +73,23 @@ def validar(datos):
     esperados_idiomas = set(IDIOMAS)
 
     terminos = datos.get("terminos", {})
-    necesarios = ELEMENTOS_OCCIDENTALES | ELEMENTOS_CHINOS | MODALIDADES | POLARIDADES
+    necesarios = (ELEMENTOS_OCCIDENTALES | ELEMENTOS_CHINOS | MODALIDADES | POLARIDADES
+                  | TERMINOS_DE_INTERFAZ | set(zodiaco.ORDEN_CALDEO))
     for t in sorted(necesarios):
         if set(terminos.get(t, {})) != esperados_idiomas:
             errores.append(f"terminos/{t}: no tiene exactamente los {len(IDIOMAS)} idiomas")
+
+    ciclo = datos.get("nombres_del_ciclo", {})
+    if set(ciclo) != esperados_idiomas:
+        errores.append(f"nombres_del_ciclo: no tiene exactamente los {len(IDIOMAS)} idiomas")
+    for codigo, regla in ciclo.items():
+        plantilla = regla.get("plantilla", "")
+        if "{elemento}" not in plantilla or not ("{animal}" in plantilla or "{animal_minusculas}" in plantilla):
+            errores.append(f"nombres_del_ciclo/{codigo}: la plantilla necesita {{elemento}} y {{animal}}")
+        if not isinstance(regla.get("idiomatica"), bool):
+            errores.append(f"nombres_del_ciclo/{codigo}: idiomatica tiene que ser true o false")
+        if not set(regla.get("elementos", {})) <= ELEMENTOS_CHINOS:
+            errores.append(f"nombres_del_ciclo/{codigo}: elementos solo puede cambiar elementos chinos")
 
     troncos = datos.get("troncos", [])
     if len(troncos) != 10:
@@ -316,6 +334,15 @@ def anios(signo, datos, codigo):
     )
 
 
+def decanatos(signo, datos, codigo):
+    """Los tres decanatos de un signo con su regente, por ejemplo «Decanatos: 21/03 – 30/03 Marte · …»."""
+    terminos = datos["terminos"]
+    tramos = zodiaco.tramos_de_decanatos(signo)
+    regentes = zodiaco.regentes_de_decanatos(signo["id"], datos)
+    partes = [f"{_dia(a)} – {_dia(b)} {terminos[r][codigo]}" for (a, b), r in zip(tramos, regentes)]
+    return f"{terminos['decanatos'][codigo]}: " + " · ".join(partes)
+
+
 def ficha_de(datos, codigo):
     signos, terminos = datos["signos"], datos["terminos"]
     lineas = [
@@ -328,8 +355,8 @@ def ficha_de(datos, codigo):
     if rtl:
         # La línea en blanco después del <div> hace que GitHub siga leyendo Markdown adentro.
         lineas += [f'<div dir="rtl" lang="{codigo}">', ""]
-    for tipo, titulo in GRUPOS.items():
-        lineas += [f"## {titulo}", ""]
+    for tipo, clave in GRUPOS.items():
+        lineas += [f"## {terminos[clave][codigo]}", ""]
         for s in signos:
             if s["tipo"] != tipo:
                 continue
@@ -337,6 +364,8 @@ def ficha_de(datos, codigo):
             if tipo == "occidental":
                 encabezado = f"{s['simbolo']} {encabezado}"
             lineas += [f"### {encabezado}", "", f"*{rasgos(s, terminos, codigo)}*", ""]
+            if tipo == "occidental":
+                lineas += [decanatos(s, datos, codigo), ""]
             if tipo == "chino":
                 lineas += [anios(s, datos, codigo), ""]
             lineas += [s["descripciones"][codigo], "", s["descripciones_largas"][codigo], ""]
@@ -391,12 +420,12 @@ _PLANTILLA_GALERIA = """<!doctype html>
 </head>
 <body>
 <header>
-  <h1>Signos del zodiaco y horóscopo chino</h1>
-  <label>Idioma <select id="idioma"></select></label>
-  <label>Ilustración
+  <h1 id="titulo">Signos del zodiaco y horóscopo chino</h1>
+  <label><span id="et-idioma">Idioma</span> <select id="idioma"></select></label>
+  <label><span id="et-ilustracion">Ilustración</span>
     <select id="variante">
-      <option value="constelaciones">Con fondo</option>
-      <option value="constelaciones-sin-fondo">Sin fondo</option>
+      <option value="constelaciones" id="op-con-fondo">Con fondo</option>
+      <option value="constelaciones-sin-fondo" id="op-sin-fondo">Sin fondo</option>
     </select>
   </label>
 </header>
@@ -407,15 +436,24 @@ const idioma = document.getElementById("idioma");
 const variante = document.getElementById("variante");
 for (const [codigo, nombre] of DATOS.idiomas) idioma.add(new Option(nombre + " (" + codigo + ")", codigo));
 function pintar() {
-  const codigo = idioma.value, carpeta = variante.value;
+  const codigo = idioma.value, carpeta = variante.value, ui = DATOS.ui[codigo];
   const main = document.getElementById("contenido");
+  // Toda la página en el idioma elegido: textos, lang y dirección.
+  document.documentElement.lang = codigo;
+  document.documentElement.dir = DATOS.rtl.includes(codigo) ? "rtl" : "ltr";
+  document.title = ui.titulo;
+  document.getElementById("titulo").textContent = ui.titulo;
+  document.getElementById("et-idioma").textContent = ui.idioma;
+  document.getElementById("et-ilustracion").textContent = ui.ilustracion;
+  document.getElementById("op-con-fondo").textContent = ui.con_fondo;
+  document.getElementById("op-sin-fondo").textContent = ui.sin_fondo;
   main.lang = codigo;
-  main.dir = DATOS.rtl.includes(codigo) ? "rtl" : "ltr";
+  main.dir = document.documentElement.dir;
   main.className = carpeta === "constelaciones" ? "" : "sin-fondo";
   main.replaceChildren();
-  for (const [tipo, titulo] of DATOS.grupos) {
+  for (const [tipo, clave] of DATOS.grupos) {
     const h2 = document.createElement("h2");
-    h2.textContent = titulo;
+    h2.textContent = ui[clave];
     const rejilla = document.createElement("div");
     rejilla.className = "rejilla";
     for (const s of DATOS.signos.filter(s => s.tipo === tipo)) {
@@ -462,6 +500,7 @@ def galeria_de(datos):
         "idiomas": list(IDIOMAS.items()),
         "rtl": sorted(DERECHA_A_IZQUIERDA),
         "grupos": list(GRUPOS.items()),
+        "ui": {c: {t: datos["terminos"][t][c] for t in sorted(TERMINOS_DE_INTERFAZ)} for c in IDIOMAS},
         "signos": signos,
     }
     # «</» no puede aparecer dentro de <script>: cerraría el bloque antes de tiempo.

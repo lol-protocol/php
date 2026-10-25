@@ -15,6 +15,7 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 
 | `zodiaco.py` | Consultas: `signo_occidental(fecha)`, `cuspide(fecha)`, `animal_chino(anio)`, `animal_chino_de_fecha(fecha)` y `anios_del_animal(id, desde, hasta)`. |
 | `generar.py` | Valida el JSON y genera lo demás. Solo usa la biblioteca estándar de Python 3. |
 | `pruebas.py` | Pruebas de los datos, las consultas y lo generado (`unittest`). |
+| `pruebas_navegador.py` | Abre la galería en Chromium y la recorre en los 30 idiomas (Playwright). |
 | `constelaciones/*.svg` | Una ilustración por signo (24) sobre fondo de cielo nocturno, más `conejo-vi.svg`. Generadas, no editar a mano. |
 | `constelaciones-sin-fondo/*.svg` | Las mismas 25, transparentes y en `currentColor`. Generadas. |
 | `por-idioma/*.md` | Una ficha por idioma (30) y un índice. Generadas, no editar a mano. |
@@ -72,7 +73,7 @@ El *elemento fijo* es el de la rama y no cambia; el *elemento del año* sale del
 
 **El año empieza en el Año Nuevo lunar**, que cae entre el 21 de enero y el 20 de febrero. Quien nació en enero o principios de febrero puede tener el animal del año anterior. `animal_chino_de_fecha()` lo resuelve con `datos/anio-nuevo-lunar.json`, de 1900 a 2099; `animal_chino()` sigue recibiendo directamente el año lunar y sirve para cualquier año.
 
-Las fechas del Año Nuevo son las de la hora de China (UTC+8). Coinciden en los 200 años dos tablas independientes, las de las bibliotecas `lunardate` 0.2.2 y `LunarCalendar` 0.0.9; 2100 solo lo traía una y quedó fuera. Quien nació el mismo día del Año Nuevo, pero en otro huso horario, puede caer en el año anterior.
+Las fechas del Año Nuevo son las de la hora de China (UTC+8). Coinciden en los 200 años dos tablas independientes, las de las bibliotecas `lunardate` 0.2.2 y `LunarCalendar` 0.0.9; 2100 solo lo traía una y quedó fuera. `animal_chino_de_fecha()` pasa a esa hora un `datetime` con huso horario antes de comparar: las 20:00 UTC del 16/02/2026 ya son el 17/02 en China, año del Caballo. Una fecha o un `datetime` sin huso se toma tal cual.
 
 Algunos idiomas usan otro animal para el mismo lugar del ciclo: en vietnamita el conejo es *Mèo* (gato) y el buey es *Trâu* (búfalo), y en japonés y coreano 羊 es la oveja (*ひつじ*, *양*) donde el español dice cabra. Para el vietnamita hay una ilustración propia del gato (`conejo-vi.svg`), que la galería usa en lugar del conejo; está en `variantes` del signo (ver el esquema).
 
@@ -103,23 +104,48 @@ zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 17))["signo"]["id"]        
 zodiaco.es_cuspide(datetime.date(1990, 4, 5))                                  # False
 ```
 
-Las funciones devuelven los diccionarios de `datos/signos.json` tal cual y lanzan excepción si la entrada no es válida (`TypeError` si la fecha no es `datetime.date` o el año no es `int`, `ValueError` si el sistema no es `tropical` ni `sideral`).
+Más consultas:
+
+```python
+zodiaco.nombre_del_anio(2026, "es")         # 'Caballo de Fuego'
+zodiaco.nombre_del_anio(2026, "de")         # 'Feuer-Pferd'
+zodiaco.nombre_del_anio(2026, "ru")         # 'Лошадь (Огонь)'  (forma genérica: ver abajo)
+
+zodiaco.compatibilidad("rata", "dragon")    # {'relaciones': ['trino'], 'afinidad': 'alta'}
+zodiaco.compatibilidad("aries", "libra")    # {'relaciones': ['elementos_complementarios', 'opuestos'], 'afinidad': 'media'}
+
+d = zodiaco.decanato(datetime.date(1990, 4, 3))
+d["numero"], d["regente"], d["signo_regente"]["id"]   # (2, 'sol', 'leo')
+datos["terminos"][d["regente"]]["fr"]                 # 'Soleil'
+```
+
+- **Nombre del año** (`nombre_del_anio`): sale de `nombres_del_ciclo` en los datos, con una plantilla por idioma. Solo en español, inglés, portugués, francés, italiano, alemán, rumano, indonesio, chino y finés hay una forma fija que no depende de género o caso («Caballo de Fuego», «Fire Horse», «火马», «Tulihevonen»); en los demás es la genérica «Animal (Elemento)», y su regla lleva `"idiomatica": false` para que el producto decida si mostrarla.
+- **Compatibilidad** (`compatibilidad`): las afinidades de la tradición entre dos signos del mismo zodiaco. En el occidental, mismo elemento (`alta`), elementos complementarios —fuego y aire, tierra y agua— (`alta`), opuestos (`media`) y cuadratura (`baja`); en el chino, trino 三合 y amigos secretos 六合 (`alta`) y choque 六冲 (`baja`). Lo demás es `neutra`. No tiene respaldo científico, como el resto.
+- **Decanatos** (`decanato`, `regentes_de_decanatos`, `tramos_de_decanatos`): cada signo se parte en tres tramos de unos 10 días. El regente sigue el orden caldeo (Marte, Sol, Venus, Mercurio, Luna, Saturno, Júpiter, desde Aries), y `signo_regente` el sistema por triplicidad (los tres signos del mismo elemento). Las fichas los muestran con el nombre del astro en cada idioma.
+
+Las funciones devuelven los diccionarios de `datos/signos.json` tal cual y lanzan excepción si la entrada no es válida (`TypeError` si la fecha no es `datetime.date` o el año no es `int`, `ValueError` si el sistema, el idioma o el signo no existen, o si se comparan signos de zodiacos distintos).
 
 ```sh
-python3 generar.py              # regenera constelaciones/, constelaciones-sin-fondo/ y por-idioma/
+python3 generar.py              # regenera constelaciones/, constelaciones-sin-fondo/, por-idioma/ y galeria.html
 python3 generar.py --comprobar  # falla si lo committeado no coincide con datos/signos.json
 python3 -m unittest -v pruebas  # pruebas
+python3 pruebas_navegador.py    # la galería en Chromium (necesita playwright==1.55.0)
 ```
 
 Para cambiar un nombre, una descripción, una estrella o una figura, edita `datos/signos.json`, ejecuta `python3 generar.py` y revisa el diff de los archivos generados. `--comprobar` también falla si queda un archivo en las carpetas generadas que ya nadie genera.
 
-Las pruebas comprueban, entre otras cosas, que los dos zodiacos cubran el año bisiesto sin huecos ni solapes, el ciclo de 60 años (1900 Rata de Metal, 2024 Dragón de Madera, 2026 Caballo de Fuego), que cada texto esté en el alfabeto de su idioma (detectan un texto pegado en la columna equivocada) y que las descripciones en español no vuelvan a los adjetivos con género. Corren en CI (`.github/workflows/pruebas-signos-zodiacales.yml`) cuando cambia esta carpeta.
+Las pruebas comprueban, entre otras cosas, que los dos zodiacos cubran el año bisiesto sin huecos ni solapes, el ciclo de 60 años (1900 Rata de Metal, 2024 Dragón de Madera, 2026 Caballo de Fuego), que cada texto esté en el alfabeto de su idioma (detectan un texto pegado en la columna equivocada) y que las descripciones en español no vuelvan a los adjetivos con género. `pruebas_navegador.py` abre la galería en Chromium y, en los 30 idiomas y las dos variantes, comprueba que no haya errores de JavaScript, que carguen las 24 imágenes, que la interfaz salga en el idioma elegido, que árabe, hebreo, persa y urdu vayan de derecha a izquierda y que el vietnamita use el gato. Necesita `pip install playwright==1.55.0` (con `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`, no baja navegadores) y un Chromium: el de la variable `CHROMIUM` o el primero que encuentre.
+
+Todo corre en CI (`.github/workflows/pruebas-signos-zodiacales.yml`) cuando cambia esta carpeta; la galería, en un job aparte.
 
 ## Esquema de `datos/signos.json`
 
 ```jsonc
 {
-  "terminos": { "fuego": { "es": "Fuego", "en": "Fire", … }, … },   // elementos, modalidades y yin/yang × 30 idiomas
+  "terminos": { "fuego": { "es": "Fuego", "en": "Fire", … }, … },   // elementos, modalidades, yin/yang, los 7 astros
+                                                                    // y los textos de la galería y las fichas × 30 idiomas
+  "nombres_del_ciclo": { "es": { "plantilla": "{animal} de {elemento}", "idiomatica": true }, … },
+                       // también "elision" (fr, it: «d'Eau») y "elementos" (de: «Erd-Ochse»)
   "troncos": [ { "hanzi": "甲", "pinyin": "Jia", "elemento": "madera", "polaridad": "yang" }, … ],  // los 10, en orden
   "signos": [
     {
@@ -150,7 +176,7 @@ Son **esquemas** de 200×200 unidades dibujados a mano: la figura (en trazo fino
 
 - `constelaciones/`: sobre un cuadro de cielo nocturno, con un fondo de estrellas y brillo en las principales. Los ids internos son únicos por archivo (`fondo-aries`, `brillo-aries`), así que se pueden incrustar varios en una misma página.
 - `constelaciones-sin-fondo/`: transparente, sin colores fijos y sin ids. Todo se pinta en `currentColor`, así que toma el color del texto que lo rodea y sirve en tema claro, en tema oscuro o como icono.
-- `galeria.html`: las 25 ilustraciones con un selector de idioma y de variante. No carga nada de fuera; ábrela desde esta carpeta para que encuentre los SVG. La interfaz (títulos y selectores) está en español; los nombres y descripciones, en el idioma elegido, con dirección de derecha a izquierda en árabe, hebreo, persa y urdu.
+- `galeria.html`: las 25 ilustraciones con un selector de idioma y de variante. No carga nada de fuera; ábrela desde esta carpeta para que encuentre los SVG. Toda la página cambia al idioma elegido —título, selectores, secciones, nombres y descripciones—, con dirección de derecha a izquierda en árabe, hebreo, persa y urdu.
 
 **No llevan texto.** No tienen etiqueta, `<title>` ni `<desc>`, para que un lector de pantalla no lea español a quien usa otro idioma. El nombre accesible lo pone quien muestra el SVG, con `nombres[idioma]`:
 

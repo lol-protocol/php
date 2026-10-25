@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Zodiak Barat
 
 ### ♈ Aries
 
 *21/03 – 19/04 · Api · Kardinal*
+
+Dekan: 21/03 – 30/03 Mars · 31/03 – 09/04 Matahari · 10/04 – 19/04 Venus
 
 Berani, impulsif dan penuh energi.
 
@@ -16,6 +18,8 @@ Dikaitkan dengan inisiatif dan keberanian: tradisi menggambarkannya lugas, kompe
 
 *20/04 – 20/05 · Tanah · Tetap*
 
+Dekan: 20/04 – 29/04 Merkurius · 30/04 – 09/05 Bulan · 10/05 – 20/05 Saturnus
+
 Sabar, sensual dan menyukai kestabilan.
 
 Dikaitkan dengan keteguhan dan kesukaan pada hal-hal nyata: tradisi menggambarkannya setia, tenang dan menyukai kenyamanan, meski kadang keras kepala.
@@ -23,6 +27,8 @@ Dikaitkan dengan keteguhan dan kesukaan pada hal-hal nyata: tradisi menggambarka
 ### ♊ Gemini
 
 *21/05 – 20/06 · Udara · Berubah*
+
+Dekan: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Matahari
 
 Penasaran, komunikatif dan berpikiran cepat.
 
@@ -32,6 +38,8 @@ Dikaitkan dengan rasa ingin tahu dan kata-kata: tradisi menggambarkannya supel, 
 
 *21/06 – 22/07 · Air · Kardinal*
 
+Dekan: 21/06 – 30/06 Venus · 01/07 – 10/07 Merkurius · 11/07 – 22/07 Bulan
+
 Protektif, sensitif dan sangat setia kepada orang terdekat.
 
 Dikaitkan dengan rumah dan perasaan: tradisi menggambarkannya penyayang, intuitif dan sangat lekat dengan keluarga, meski kadang tertutup.
@@ -39,6 +47,8 @@ Dikaitkan dengan rumah dan perasaan: tradisi menggambarkannya penyayang, intuiti
 ### ♌ Leo
 
 *23/07 – 22/08 · Api · Tetap*
+
+Dekan: 23/07 – 01/08 Saturnus · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Mars
 
 Murah hati, karismatik dan suka tampil.
 
@@ -48,6 +58,8 @@ Dikaitkan dengan kemurahan hati dan kepemimpinan: tradisi menggambarkannya hanga
 
 *23/08 – 22/09 · Tanah · Berubah*
 
+Dekan: 23/08 – 01/09 Matahari · 02/09 – 11/09 Venus · 12/09 – 22/09 Merkurius
+
 Analitis, praktis dan sangat teliti.
 
 Dikaitkan dengan keteraturan dan pelayanan: tradisi menggambarkannya metodis, bersahaja dan menuntut diri sendiri, meski kadang terlalu kritis.
@@ -55,6 +67,8 @@ Dikaitkan dengan keteraturan dan pelayanan: tradisi menggambarkannya metodis, be
 ### ♎ Libra
 
 *23/09 – 22/10 · Udara · Kardinal*
+
+Dekan: 23/09 – 02/10 Bulan · 03/10 – 12/10 Saturnus · 13/10 – 22/10 Jupiter
 
 Diplomatis, supel dan mencari keseimbangan.
 
@@ -64,6 +78,8 @@ Dikaitkan dengan keselarasan dan keadilan: tradisi menggambarkannya ramah, anggu
 
 *23/10 – 21/11 · Air · Tetap*
 
+Dekan: 23/10 – 01/11 Mars · 02/11 – 11/11 Matahari · 12/11 – 21/11 Venus
+
 Intens, intuitif dan berkemauan keras.
 
 Dikaitkan dengan kedalaman dan tekad: tradisi menggambarkannya tertutup, bergairah dan sangat peka, meski kadang terlalu intens.
@@ -71,6 +87,8 @@ Dikaitkan dengan kedalaman dan tekad: tradisi menggambarkannya tertutup, bergair
 ### ♐ Sagitarius
 
 *22/11 – 21/12 · Api · Berubah*
+
+Dekan: 22/11 – 01/12 Merkurius · 02/12 – 11/12 Bulan · 12/12 – 21/12 Saturnus
 
 Optimis, petualang dan mencintai kebebasan.
 
@@ -80,6 +98,8 @@ Dikaitkan dengan penjelajahan dan keterusterangan: tradisi menggambarkannya opti
 
 *22/12 – 19/01 · Tanah · Kardinal*
 
+Dekan: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Matahari
+
 Disiplin, ambisius dan bertanggung jawab.
 
 Dikaitkan dengan disiplin dan kesabaran: tradisi menggambarkannya ambisius, serius dan bertanggung jawab untuk jangka panjang, meski kadang kaku.
@@ -87,6 +107,8 @@ Dikaitkan dengan disiplin dan kesabaran: tradisi menggambarkannya ambisius, seri
 ### ♒ Aquarius
 
 *20/01 – 18/02 · Udara · Tetap*
+
+Dekan: 20/01 – 29/01 Venus · 30/01 – 08/02 Merkurius · 09/02 – 18/02 Bulan
 
 Mandiri, orisinal dan humanis.
 
@@ -96,11 +118,13 @@ Dikaitkan dengan keorisinalan dan gagasan kolektif: tradisi menggambarkannya man
 
 *19/02 – 20/03 · Air · Berubah*
 
+Dekan: 19/02 – 28/02 Saturnus · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Mars
+
 Empatik, pemimpi dan sangat intuitif.
 
 Dikaitkan dengan imajinasi dan belas kasih: tradisi menggambarkannya peka, artistik dan berdedikasi pada orang lain, meski kadang menghindar.
 
-## Horóscopo chino
+## Shio Tionghoa
 
 ### Tikus
 

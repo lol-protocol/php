@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Zodiak zachodni
 
 ### ♈ Baran
 
 *21/03 – 19/04 · Ogień · Kardynalny*
+
+Dekanaty: 21/03 – 30/03 Mars · 31/03 – 09/04 Słońce · 10/04 – 19/04 Wenus
 
 Odwaga, zapał i energia.
 
@@ -16,6 +18,8 @@ Znak inicjatywy i odwagi: tradycja przypisuje mu bezpośredniość, ducha rywali
 
 *20/04 – 20/05 · Ziemia · Stały*
 
+Dekanaty: 20/04 – 29/04 Merkury · 30/04 – 09/05 Księżyc · 10/05 – 20/05 Saturn
+
 Cierpliwość, zmysłowość i umiłowanie stabilności.
 
 Znak stałości i zamiłowania do konkretu: tradycja przypisuje mu lojalność, spokój i umiłowanie wygody, ale też upór.
@@ -23,6 +27,8 @@ Znak stałości i zamiłowania do konkretu: tradycja przypisuje mu lojalność, 
 ### ♊ Bliźnięta
 
 *21/05 – 20/06 · Powietrze · Zmienny*
+
+Dekanaty: 21/05 – 30/05 Jowisz · 31/05 – 09/06 Mars · 10/06 – 20/06 Słońce
 
 Ciekawość, komunikatywność i bystrość umysłu.
 
@@ -32,6 +38,8 @@ Znak ciekawości i słowa: tradycja przypisuje mu towarzyskość, wszechstronno�
 
 *21/06 – 22/07 · Woda · Kardynalny*
 
+Dekanaty: 21/06 – 30/06 Wenus · 01/07 – 10/07 Merkury · 11/07 – 22/07 Księżyc
+
 Troskliwość, wrażliwość i lojalność wobec bliskich.
 
 Znak domu i uczuć: tradycja przypisuje mu troskliwość, intuicję i przywiązanie do rodziny, ale też skrytość.
@@ -39,6 +47,8 @@ Znak domu i uczuć: tradycja przypisuje mu troskliwość, intuicję i przywiąza
 ### ♌ Lew
 
 *23/07 – 22/08 · Ogień · Stały*
+
+Dekanaty: 23/07 – 01/08 Saturn · 02/08 – 11/08 Jowisz · 12/08 – 22/08 Mars
 
 Hojność, charyzma i chęć błyszczenia.
 
@@ -48,6 +58,8 @@ Znak hojności i przywództwa: tradycja przypisuje mu serdeczność, dumę i zam
 
 *23/08 – 22/09 · Ziemia · Zmienny*
 
+Dekanaty: 23/08 – 01/09 Słońce · 02/09 – 11/09 Wenus · 12/09 – 22/09 Merkury
+
 Analityczny umysł, praktyczność i dbałość o szczegóły.
 
 Znak porządku i służby: tradycja przypisuje mu metodyczność, dyskrecję i wymagania wobec siebie, ale też nadmierny krytycyzm.
@@ -55,6 +67,8 @@ Znak porządku i służby: tradycja przypisuje mu metodyczność, dyskrecję i w
 ### ♎ Waga
 
 *23/09 – 22/10 · Powietrze · Kardynalny*
+
+Dekanaty: 23/09 – 02/10 Księżyc · 03/10 – 12/10 Saturn · 13/10 – 22/10 Jowisz
 
 Dyplomacja, towarzyskość i dążenie do równowagi.
 
@@ -64,6 +78,8 @@ Znak harmonii i sprawiedliwości: tradycja przypisuje mu uprzejmość, elegancj�
 
 *23/10 – 21/11 · Woda · Stały*
 
+Dekanaty: 23/10 – 01/11 Mars · 02/11 – 11/11 Słońce · 12/11 – 21/11 Wenus
+
 Intensywność, intuicja i silna wola.
 
 Znak głębi i determinacji: tradycja przypisuje mu powściągliwość, namiętność i przenikliwość, ale też nadmierną intensywność.
@@ -71,6 +87,8 @@ Znak głębi i determinacji: tradycja przypisuje mu powściągliwość, namiętn
 ### ♐ Strzelec
 
 *22/11 – 21/12 · Ogień · Zmienny*
+
+Dekanaty: 22/11 – 01/12 Merkury · 02/12 – 11/12 Księżyc · 12/12 – 21/12 Saturn
 
 Optymizm, żądza przygód i umiłowanie wolności.
 
@@ -80,6 +98,8 @@ Znak odkrywania i szczerości: tradycja przypisuje mu optymizm, niespokojnego du
 
 *22/12 – 19/01 · Ziemia · Kardynalny*
 
+Dekanaty: 22/12 – 31/12 Jowisz · 01/01 – 10/01 Mars · 11/01 – 19/01 Słońce
+
 Dyscyplina, ambicja i odpowiedzialność.
 
 Znak dyscypliny i cierpliwości: tradycja przypisuje mu ambicję, powagę i odpowiedzialność w dłuższej perspektywie, ale też sztywność.
@@ -87,6 +107,8 @@ Znak dyscypliny i cierpliwości: tradycja przypisuje mu ambicję, powagę i odpo
 ### ♒ Wodnik
 
 *20/01 – 18/02 · Powietrze · Stały*
+
+Dekanaty: 20/01 – 29/01 Wenus · 30/01 – 08/02 Merkury · 09/02 – 18/02 Księżyc
 
 Niezależność, oryginalność i humanitaryzm.
 
@@ -96,11 +118,13 @@ Znak oryginalności i wspólnych idei: tradycja przypisuje mu niezależność, n
 
 *19/02 – 20/03 · Woda · Zmienny*
 
+Dekanaty: 19/02 – 28/02 Saturn · 01/03 – 10/03 Jowisz · 11/03 – 20/03 Mars
+
 Empatia, wyobraźnia i intuicja.
 
 Znak wyobraźni i współczucia: tradycja przypisuje mu wrażliwość, talent artystyczny i oddanie innym, ale też skłonność do ucieczki.
 
-## Horóscopo chino
+## Horoskop chiński
 
 ### Szczur
 
