@@ -18,7 +18,7 @@
     "deceased_data": "",
     "research_exemption": "",
     "genetic_data": "",
-    "website_url": "https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html",
+    "website_url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
     "language": "Italian",
     "frameworks": "",
     "frameworks_not": "",
@@ -30,7 +30,7 @@
     "last_checked": "2026-10-25",
     "sources": {
       "law_name": {
-        "url": "https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html",
+        "url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
         "confidence": "high",
         "checked": "2026-10-25"
       },
@@ -40,12 +40,12 @@
         "checked": "2026-10-25"
       },
       "enactment_date": {
-        "url": "https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html",
+        "url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
         "confidence": "high",
         "checked": "2026-10-25"
       },
       "effective_date": {
-        "url": "https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html",
+        "url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
         "confidence": "high",
         "checked": "2026-10-25"
       },
@@ -76,6 +76,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "website_url",
+        "from": "https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html",
+        "to": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii"
+      },
       {
         "date": "2026-10-25",
         "field": "row",
