@@ -117,8 +117,8 @@ Estas son las marcas **⚖️** del borrador, por sección.
     firme: se puede publicar con fuente, y quién lo decide?
 14. **§4, el filtro.** Se promete que todo texto libre pasa por un filtro
     automático y lo dudoso por una persona. ¿Es prudente prometer eso, o crea
-    una obligación que después no se cumpla (hoy no se cumple: el filtro no está
-    conectado)?
+    una obligación que después no se cumpla (hoy el filtro sólo revisa las notas
+    internas del panel; el sitio de genealogía no tiene dónde escribir)?
 15. **§5, plazos del retiro.** El borrador dice «24 horas» para ocultar y «10 días
     hábiles» para responder. ¿Son plazos que se pueden comprometer? ¿Qué pasa si
     no se cumplen? ¿Es correcto ocultar sin haber revisado (hoy es opcional, con
@@ -172,6 +172,16 @@ Estas son las marcas **⚖️** del borrador, por sección.
 30. **Marca y nombres.** `conce.com` y «Contrastocolor»: ¿conviene registrarlas
     antes de un lanzamiento? (Es una pregunta de propiedad industrial, fuera del
     alcance de este documento si no la atiende el mismo abogado.)
+31. **§5, retirar una persona.** Al retirarla, el sitio la muestra como «Persona
+    privada» en todas las páginas y oculta los sucesos y registros en los que
+    participa, pero **no borra los datos**. ¿Basta para atender un pedido de
+    supresión o de oposición, o hay que borrarlos? ¿Se puede conservar la
+    información para responder a un reclamo?
+32. **§7, direcciones de envío de la tienda.** La dirección de un pedido se
+    conserva mientras exista el pedido, sin purga automática (decisión de la
+    persona a cargo, documentada en `url-routing/docs/DATABASE.md`). ¿Es lícito
+    desde el 1 de diciembre de 2026, y por cuánto tiempo conviene conservarla
+    (la garantía legal es de seis meses)?
 
 ## Lo que tiene que decidir la persona a cargo antes de la reunión
 

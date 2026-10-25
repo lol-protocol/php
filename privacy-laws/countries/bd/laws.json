@@ -29,6 +29,16 @@
     "confidence": "low",
     "last_checked": "2026-10-21",
     "sources": {
+      "research_exemption": {
+        "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
       "law_name": {
         "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
         "confidence": "medium",
@@ -73,16 +83,6 @@
         "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
         "confidence": "low",
         "checked": "2026-10-16"
-      },
-      "research_exemption": {
-        "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
-        "confidence": "medium",
-        "checked": "2026-10-21"
-      },
-      "genetic_data": {
-        "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
-        "confidence": "medium",
-        "checked": "2026-10-21"
       }
     },
     "changes": [

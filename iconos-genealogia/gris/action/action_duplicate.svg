@@ -11,10 +11,10 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.78" cy="50.28" rx="15.25" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="31.78" cy="49.48" rx="14.52" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M17.14 29.52L18.4 31.2A8.8 8.8 0 0 0 32.48 20.64L31.22 18.96A8.8 8.8 0 0 0 17.14 29.52Z" fill="#7B7B7B"/><circle cx="24" cy="24" r="8.8" fill="url(#grad_action_duplicate_mist_g)"/></g>
-    <g><path d="M31.14 42.52L32.52 44.36A8.8 8.8 0 0 0 46.6 33.8L45.22 31.96A8.8 8.8 0 0 0 31.14 42.52Z" fill="#474747"/><circle cx="38" cy="37" r="8.8" fill="url(#grad_action_duplicate_orange_g)"/></g>
+    <g><path d="M17.78 29.04L19.04 30.72A8 8 0 0 0 31.84 21.12L30.58 19.44A8 8 0 0 0 17.78 29.04Z" fill="#7B7B7B"/><circle cx="24" cy="24" r="8" fill="url(#grad_action_duplicate_mist_g)"/></g>
+    <g><path d="M31.78 42.04L33.16 43.88A8 8 0 0 0 45.96 34.28L44.58 32.44A8 8 0 0 0 31.78 42.04Z" fill="#474747"/><circle cx="38" cy="37" r="8" fill="url(#grad_action_duplicate_orange_g)"/></g>
   </g>
 </svg>

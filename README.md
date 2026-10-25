@@ -24,9 +24,10 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`cobros-ingresos-funnels/`](cobros-ingresos-funnels/) | Panel web de cobros, ingresos y funnel de conversión: boletas, pagos, clientes, cohortes y auditoría (PHP + PostgreSQL). |
 | [`vps-setup/`](vps-setup/) | Scripts para configurar desde cero un VPS Ubuntu (Nginx, PHP, Python, PostgreSQL, SSL). |
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
-| [`iconos-genealogia/`](iconos-genealogia/) | Set de iconos SVG abstractos en 2.5D, sin texto, para árbol genealógico: 172 iconos en 3 variantes. |
+| [`iconos-genealogia/`](iconos-genealogia/) | Set de iconos SVG abstractos en 2.5D, sin texto, para árbol genealógico: 183 iconos en 3 variantes. |
 | [`iconos-biblioteca/`](iconos-biblioteca/) | Set de iconos SVG abstractos en 2.5D, sin texto, para biblioteca virtual: 151 iconos en 3 variantes. |
-| [`iconos-tools/`](iconos-tools/) | Generador y validador en Python de los dos sets de iconos y de la galería compartida `galeria-iconos.html`. |
+| [`iconos-pos/`](iconos-pos/) | Set de iconos SVG abstractos en 2.5D, sin texto, para el punto de venta (producto, variantes, atributos, pedidos, factura, seguimiento, deseos y direcciones): 8 iconos en 3 variantes. |
+| [`iconos-tools/`](iconos-tools/) | Generador y validador en Python de los tres sets de iconos y de la galería compartida `galeria-iconos.html`. |
 | [`marcalibros-plataforma-pos-brand-identity/`](marcalibros-plataforma-pos-brand-identity/) | Identidad de marca de Marcalibros (marcadores de lectura) para Plataforma POS: tokens de marca, iconos SVG, 1000 marcalibros (10 movimientos literarios y 10 tipos de texto) con su vista previa JPG, paisajes JPG, el generador en Python, un módulo PHP para crear marcalibros propios a partir de imágenes subidas y una aplicación web independiente, sin cuentas, para explorarlos y crearlos. |
 | [`marcalibros_b/`](marcalibros_b/) | Marcalibros (marcadores de lectura verticales 1:7) para Plataforma POS: 1000 piezas generadas (10 movimientos literarios), generador determinista en Python con QA, línea de marca (logos, iconos, cabeceras), modelo de datos del lector y editor de usuario con subidas seguras. El catálogo completo lo publica la CI como artefacto. |
 | [`Listado-colores/`](Listado-colores/) | Léxico de colores con nombre para el etiquetado part-of-speech: una lista completa de 31.935 nombres con su hex (con una marca de buenos nombres y su color CSS más cercano) y una tabla anotada de los 148 colores CSS, con sus nombres y dos significados (el psicológico y el místico) en 30 idiomas, un léxico básico de 38 términos de color de uso real, la evidencia de cada significado, matices culturales con sus referencias, exportes para PLN (JSONL, TSV y SQLite) con una forma normalizada para buscar en texto ruidoso y un manifiesto con la versión de los datos, y dos informes generados: las formas que designan más de un color y los nombres sospechosos de la lista completa. |
@@ -90,9 +91,9 @@ Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando camb
 
 `sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`, que también corre si cambia `defamatory-content-review/`, del que depende). `vps-setup/` tiene además `vps-setup-e2e.yml`: instala todo de verdad (`apt`, `systemd`, servicios) en un Ubuntu 24.04 desechable; solo corre si cambian los scripts, cada lunes o a mano.
 
-`iconos.yml` valida los dos sets de iconos: que los SVG commiteados coincidan con lo que produce
+`iconos.yml` valida los tres sets de iconos: que los SVG commiteados coincidan con lo que produce
 `iconos-tools/build.py`, `iconos-tools/validate.py` y `iconos-tools/similares.py` (iconos casi
-idénticos). Solo corre si cambia algo de `iconos-genealogia/`, `iconos-biblioteca/`,
+idénticos). Solo corre si cambia algo de `iconos-genealogia/`, `iconos-biblioteca/`, `iconos-pos/`,
 `iconos-tools/` o `galeria-iconos.html`.
 
 `informe-de-ramas.yml` lista cada lunes, en el resumen de la corrida, las ramas remotas vacías o ya fusionadas

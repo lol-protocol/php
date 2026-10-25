@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-pink{stroke:var(--ic-pink,#7F1745)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
   <g class="links">
-    <path d="M29.92 26.36L45.04 20.82" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M31.81 34.33L45.04 39.18" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M29.92 26.36L45.04 20.82" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31.81 34.33L45.04 39.18" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M12 36L13.8 38.4A10 10 0 0 0 29.8 26.4L28 24A10 10 0 0 0 12 36Z" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/><circle cx="20" cy="30" r="10" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M45.84 22.12L47.04 23.72A5.2 5.2 0 0 0 55.36 17.48L54.16 15.88A5.2 5.2 0 0 0 45.84 22.12Z" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="19" r="5.2" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M45.84 44.12L47.04 45.72A5.2 5.2 0 0 0 55.36 39.48L54.16 37.88A5.2 5.2 0 0 0 45.84 44.12Z" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="41" r="5.2" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-pink" stroke="#7F1745"><path d="M12 36L13.8 38.4A10 10 0 0 0 29.8 26.4L28 24A10 10 0 0 0 12 36Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="20" cy="30" r="10" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-pink" stroke="#7F1745"><path d="M45.84 22.12L47.04 23.72A5.2 5.2 0 0 0 55.36 17.48L54.16 15.88A5.2 5.2 0 0 0 45.84 22.12Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="19" r="5.2" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-pink" stroke="#7F1745"><path d="M45.84 44.12L47.04 45.72A5.2 5.2 0 0 0 55.36 39.48L54.16 37.88A5.2 5.2 0 0 0 45.84 44.12Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="41" r="5.2" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

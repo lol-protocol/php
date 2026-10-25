@@ -34,11 +34,6 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://digitalpolicyalert.org/event/37521-data-use-and-access-act-2025-commencement-no-6-and-transitional-and-saving-provisions-regulations-2026-including-data-protection-authority-governance-enter-into-force",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.legislation.gov.uk/ukpga/2018/12/section/3",
         "confidence": "high",
@@ -53,6 +48,11 @@
         "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/special-category-data/what-is-special-category-data",
         "confidence": "high",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://digitalpolicyalert.org/event/37521-data-use-and-access-act-2025-commencement-no-6-and-transitional-and-saving-provisions-regulations-2026-including-data-protection-authority-governance-enter-into-force",
+        "confidence": "medium",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

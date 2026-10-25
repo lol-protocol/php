@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+      .ic-teal{stroke:var(--ic-teal,#08564F)}
+    }
+  </style>
   <g class="links">
-    <path d="M43.89 18.79L40.6 22.63" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M43.89 18.79L40.6 22.63" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M44.6 26.8A6 6 0 0 1 45.8 30.4L45.8 46.4A6 6 0 0 1 39.8 52.4L15.8 52.4A6 6 0 0 1 11 50L9.2 47.6A6 6 0 0 1 8 44L8 28A6 6 0 0 1 14 22L38 22A6 6 0 0 1 42.8 24.4Z" fill="none" stroke="#08564F" stroke-width="1.8" stroke-linejoin="round"/><rect x="8" y="22" width="36" height="28" rx="6" fill="none" stroke="#08564F" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M43.2 17.6L44.4 19.2A6 6 0 0 0 54 12L52.8 10.4A6 6 0 0 0 43.2 17.6Z" fill="none" stroke="#08564F" stroke-width="1.8" stroke-linejoin="round"/><circle cx="48" cy="14" r="6" fill="none" stroke="#08564F" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-teal" stroke="#08564F"><path d="M44.6 26.8A6 6 0 0 1 45.8 30.4L45.8 46.4A6 6 0 0 1 39.8 52.4L15.8 52.4A6 6 0 0 1 11 50L9.2 47.6A6 6 0 0 1 8 44L8 28A6 6 0 0 1 14 22L38 22A6 6 0 0 1 42.8 24.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="8" y="22" width="36" height="28" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-teal" stroke="#08564F"><path d="M43.2 17.6L44.4 19.2A6 6 0 0 0 54 12L52.8 10.4A6 6 0 0 0 43.2 17.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="48" cy="14" r="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_catalog_attributes_teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5AB6AE"/>
+      <stop offset="1" stop-color="#0D9488"/>
+    </linearGradient>
+    <linearGradient id="grad_catalog_attributes_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_catalog_attributes_rose" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EB6583"/>
+      <stop offset="1" stop-color="#E11D48"/>
+    </linearGradient>
+    <linearGradient id="grad_catalog_attributes_amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E5A356"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="30.6" cy="55.16" rx="20.79" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M9.38 16.84L10.52 18.36A6 6 0 0 0 20.12 11.16L18.98 9.64A6 6 0 0 0 9.38 16.84Z" fill="#08564F"/><circle cx="14" cy="13" r="6" fill="url(#grad_catalog_attributes_teal)"/></g>
+    <g><path d="M52.52 12.56A3.4 3.4 0 0 1 53.2 14.6A3.4 3.4 0 0 1 49.8 18L30.6 18A3.4 3.4 0 0 1 27.88 16.64L26.86 15.28A3.4 3.4 0 0 1 26.18 13.24A3.4 3.4 0 0 1 29.58 9.84L48.78 9.84A3.4 3.4 0 0 1 51.5 11.2Z" fill="#767C82"/><rect x="26" y="9.6" width="26" height="6.8" rx="3.4" fill="url(#grad_catalog_attributes_mist)"/></g>
+    <g><path d="M9.38 32.84L10.52 34.36A6 6 0 0 0 20.12 27.16L18.98 25.64A6 6 0 0 0 9.38 32.84Z" fill="#82112A"/><circle cx="14" cy="29" r="6" fill="url(#grad_catalog_attributes_rose)"/></g>
+    <g><path d="M44.52 28.56A3.4 3.4 0 0 1 45.2 30.6A3.4 3.4 0 0 1 41.8 34L30.6 34A3.4 3.4 0 0 1 27.88 32.64L26.86 31.28A3.4 3.4 0 0 1 26.18 29.24A3.4 3.4 0 0 1 29.58 25.84L40.78 25.84A3.4 3.4 0 0 1 43.5 27.2Z" fill="#767C82"/><rect x="26" y="25.6" width="18" height="6.8" rx="3.4" fill="url(#grad_catalog_attributes_mist)"/></g>
+    <g><path d="M9.38 48.84L10.52 50.36A6 6 0 0 0 20.12 43.16L18.98 41.64A6 6 0 0 0 9.38 48.84Z" fill="#7E4503"/><circle cx="14" cy="45" r="6" fill="url(#grad_catalog_attributes_amber)"/></g>
+    <g><path d="M48.52 44.56A3.4 3.4 0 0 1 49.2 46.6A3.4 3.4 0 0 1 45.8 50L30.6 50A3.4 3.4 0 0 1 27.88 48.64L26.86 47.28A3.4 3.4 0 0 1 26.18 45.24A3.4 3.4 0 0 1 29.58 41.84L44.78 41.84A3.4 3.4 0 0 1 47.5 43.2Z" fill="#767C82"/><rect x="26" y="41.6" width="22" height="6.8" rx="3.4" fill="url(#grad_catalog_attributes_mist)"/></g>
+  </g>
+</svg>

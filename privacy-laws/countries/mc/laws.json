@@ -1,0 +1,87 @@
+[
+  {
+    "country_code": "MC",
+    "country_name": "Monaco",
+    "region": "europe",
+    "law_name": "Law No. 1.565 of 3 December 2024 on the Protection of Personal Data",
+    "jurisdiction": "Personal Data Protection Authority (APDP)",
+    "enactment_date": "2024-12-03",
+    "effective_date": "2024-12-14",
+    "scope": "Persons on Monegasque territory",
+    "applies_to": "Controllers and processors established in Monaco and those abroad processing data of persons in Monaco",
+    "key_requirements": "GDPR-style accountability (controller at the heart of compliance); security measures (art. 31); breach notification (art. 32 ff.); eight data-subject rights",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Autorite de Protection des Donnees Personnelles (APDP)",
+    "penalties_range": "Administrative fines of up to EUR 10 million (government announcement)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.gouv.mc/en/news/monaco-adopts-personal-data-protection-legislation-in-line-with-the-highest-european-standards",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Replaces Law 1.165 of 1993 and the CCIN; implemented by Sovereign Ordinance 11.327 of 2025-07-10. Compliance deadline for existing processing reportedly 2025-12-14. Effective date from a single secondary source; one commentary suggests sanctions applied from mid-2025. Monaco ratified Convention 108+ on 2025-03-06.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/monaco",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/monaco",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/monaco",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "effective_date": {
+        "url": "https://www.clym.io/regulations/law-on-the-protection-of-personal-information-monaco",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://cms.law/fr/mco/publication/nouvelle-loi-monegasque-sur-la-protection-des-donnees-personnelles",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "applies_to": {
+        "url": "https://cms.law/fr/mco/publication/nouvelle-loi-monegasque-sur-la-protection-des-donnees-personnelles",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "data_categories": {
+        "url": "https://cms.law/fr/mco/publication/nouvelle-loi-monegasque-sur-la-protection-des-donnees-personnelles",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://en.gouv.mc/content/download/527829/6060325/file/Monaco en Chiffres 2025 - 5. vie publique - Organisations Institutionnelles.pdf",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://www.gouv.mc/en/news/monaco-adopts-personal-data-protection-legislation-in-line-with-the-highest-european-standards",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

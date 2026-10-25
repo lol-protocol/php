@@ -29,6 +29,16 @@
     "confidence": "low",
     "last_checked": "2026-10-21",
     "sources": {
+      "research_exemption": {
+        "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://cdh-malawi.com/wp-content/uploads/2025/09/Data-Protection-Act-2024.pdf",
+        "confidence": "low",
+        "checked": "2026-10-21"
+      },
       "law_name": {
         "url": "https://cdh-malawi.com/wp-content/uploads/2025/09/Data-Protection-Act-2024.pdf",
         "confidence": "high",
@@ -83,16 +93,6 @@
         "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
         "confidence": "medium",
         "checked": "2026-10-16"
-      },
-      "research_exemption": {
-        "url": "https://cipit.strathmore.edu/review-of-the-malawi-data-protection-act-2024/",
-        "confidence": "low",
-        "checked": "2026-10-21"
-      },
-      "genetic_data": {
-        "url": "https://cdh-malawi.com/wp-content/uploads/2025/09/Data-Protection-Act-2024.pdf",
-        "confidence": "low",
-        "checked": "2026-10-21"
       }
     },
     "changes": [

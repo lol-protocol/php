@@ -5,8 +5,10 @@ Un icono se define una sola vez (solidos con extrusion, enlaces y marcas) y se
 renderiza en tres variantes: color, lineas y gris.
 """
 import math
+import re
 
 from catalogo import VARIANTS
+
 LIGHT = (0.6, 0.8)  # direccion de la extrusion: abajo a la derecha
 INSET = 0.3  # cuanto se mete el borde trasero de la extrusion bajo la cara frontal (ver exact_sweep)
 LINE_MIN, LINE_MAX = 1.8, 2.2  # grosor en lineas: el contorno de un volumen es LINE_MIN; marcas y enlaces, entre los dos
@@ -512,8 +514,8 @@ class Icon:
             parts = []
             if lin:
                 if sweep and s['shape'].convex:
-                    parts.append(f'<path d="{sweep}" fill="none" stroke="{dark}" stroke-width="{fmt(LINE_MIN)}" stroke-linejoin="round"/>')
-                parts.append(s['shape'].front(f'fill="none" stroke="{dark}" stroke-width="{fmt(LINE_MIN)}" stroke-linejoin="round"'))
+                    parts.append(f'<path d="{sweep}" fill="none" stroke-width="{fmt(LINE_MIN)}" stroke-linejoin="round"/>')
+                parts.append(s['shape'].front(f'fill="none" stroke-width="{fmt(LINE_MIN)}" stroke-linejoin="round"'))
             else:
                 if sweep:
                     dfill = tones(s['depth'])[1] if s['depth'] else dark
@@ -524,7 +526,7 @@ class Icon:
                 grads[gid] = (tint(hi), tint(base), s['shape'].light_axis())
                 op = f' opacity="{fmt(s["op"])}"' if s['op'] != 1 else ''
                 parts.append(s['shape'].front(f'fill="url(#{gid})"{op}'))
-            out_solids.append('<g>' + ''.join(parts) + '</g>')
+            out_solids.append(f'<g class="ic-{s["hue"]}" stroke="{dark}">' + ''.join(parts) + '</g>' if lin else '<g>' + ''.join(parts) + '</g>')
 
         sil = self._silhouettes() if lin and any(m['behind'] for m in self.marks) else []
         for m in self.marks:
@@ -539,6 +541,15 @@ class Icon:
 
         lines = ['<?xml version="1.0" encoding="UTF-8"?>',
                  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">']
+        if lin:
+            used = sorted(set(re.findall(r'class="ic-([a-z]+)"', ''.join(out_back + out_links + out_solids + out_marks))))
+            if used:
+                # dentro de @supports: un renderizador sin variables CSS (resvg...) se salta el bloque entero y deja los
+                # colores del atributo stroke; en un navegador la pagina puede sobrescribir --ic-<tono>
+                lines.append('  <style>')
+                lines.append('    @supports (--a:0){')
+                lines += [f'      .ic-{h}{{stroke:var(--ic-{h},{tones(h)[2]})}}' for h in used]
+                lines += ['    }', '  </style>']
         if grads:
             lines.append('  <defs>')
             for gid, (c0, c1, axis) in grads.items():
@@ -612,7 +623,8 @@ class Icon:
         if lin and w <= BAR:  # en lineas los enlaces pesaban 2,6 y los contornos 1,8: todo trazo normal entre los dos
             w = max(LINE_MIN, min(w, LINE_MAX))
         cap = 'butt' if lin and style != 'dotted' else 'round'
-        common = f'fill="none" stroke="{c}" stroke-linecap="{cap}" stroke-linejoin="round"'
+        cls = f'class="ic-{ln["hue"]}" ' if lin else ''
+        common = f'{cls}fill="none" stroke="{c}" stroke-linecap="{cap}" stroke-linejoin="round"'
         sil = self._silhouettes() if lin else []
 
         def polys(points):
@@ -652,7 +664,7 @@ class Icon:
         if lin:
             hue = m['tone'] if m['tone'] in BASE else m['ink']
             w = LINE_MIN if m['filled'] else max(LINE_MIN, min(m['w'], LINE_MAX))
-            attrs = (f'fill="none" stroke="{tones(hue)[2]}" stroke-width="{fmt(w)}" '
+            attrs = (f'class="ic-{hue}" fill="none" stroke="{tones(hue)[2]}" stroke-width="{fmt(w)}" '
                      'stroke-linecap="round" stroke-linejoin="round"')
         else:
             if m['tone'] == 'white':

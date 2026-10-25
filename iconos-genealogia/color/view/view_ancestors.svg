@@ -11,7 +11,7 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.6" cy="59.5" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="31.6" cy="59.2" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="links">
     <path d="M31 50L31 41L17 41L17 32" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
@@ -22,7 +22,7 @@
     <path d="M45 32L45 23L52 23L52 14" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M26.6 53.67L27.62 55.03A5.72 5.72 0 0 0 36.78 48.17L35.76 46.81A5.72 5.72 0 0 0 26.6 53.67Z" fill="#29313D"/><circle cx="31" cy="50" r="5.72" fill="url(#grad_view_ancestors_ink)"/></g>
+    <g><path d="M27.02 53.36L28.04 54.72A5.2 5.2 0 0 0 36.36 48.48L35.34 47.12A5.2 5.2 0 0 0 27.02 53.36Z" fill="#29313D"/><circle cx="31" cy="50" r="5.2" fill="url(#grad_view_ancestors_ink)"/></g>
     <g><path d="M22.33 32.99A1.01 1.01 0 0 1 22.23 34.32L18.92 37.63A1.01 1.01 0 0 1 17.48 37.63L14.17 34.32A1.01 1.01 0 0 1 14.07 34.21L13.05 32.85A1.01 1.01 0 0 1 13.15 31.52L16.46 28.21A1.01 1.01 0 0 1 17.9 28.21L21.21 31.52A1.01 1.01 0 0 1 21.31 31.63Z" fill="#767C82"/><rect x="13.64" y="28.64" width="6.72" height="6.72" rx="1.01" transform="rotate(45 17 32)" fill="url(#grad_view_ancestors_mist_r45)"/></g>
     <g><path d="M50.33 32.99A1.01 1.01 0 0 1 50.23 34.32L46.92 37.63A1.01 1.01 0 0 1 45.48 37.63L42.17 34.32A1.01 1.01 0 0 1 42.07 34.21L41.05 32.85A1.01 1.01 0 0 1 41.15 31.52L44.46 28.21A1.01 1.01 0 0 1 45.9 28.21L49.21 31.52A1.01 1.01 0 0 1 49.31 31.63Z" fill="#767C82"/><rect x="41.64" y="28.64" width="6.72" height="6.72" rx="1.01" transform="rotate(45 45 32)" fill="url(#grad_view_ancestors_mist_r45)"/></g>
     <g><path d="M14.61 15.1A0.84 0.84 0 0 1 14.53 16.19L11.79 18.93A0.84 0.84 0 0 1 10.61 18.93L7.87 16.19A0.84 0.84 0 0 1 7.79 16.1L6.77 14.74A0.84 0.84 0 0 1 6.85 13.65L9.59 10.91A0.84 0.84 0 0 1 10.77 10.91L13.51 13.65A0.84 0.84 0 0 1 13.59 13.74Z" fill="#767C82"/><rect x="7.23" y="11.23" width="5.55" height="5.55" rx="0.84" transform="rotate(45 10 14)" fill="url(#grad_view_ancestors_mist_r45)"/></g>

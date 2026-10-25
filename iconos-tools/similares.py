@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Busca iconos casi indistinguibles al verlos pequeños. Código de salida 1 si encuentra alguno.
 
-    python3 iconos-tools/similares.py [--minimo 0.8] [--lista 10] [--raiz RUTA]
+    python3 iconos-tools/similares.py [--minimo 1.2] [--lista 10] [--raiz RUTA]
 
 Cada icono de la variante gris se dibuja a 96x96 sobre blanco y se reduce a 24x24 promediando por áreas.
 La distancia entre dos iconos es la diferencia media por píxel, en una escala de 0 a 255: 1,0 equivale a
-unos dos píxeles de los 576 totalmente distintos. Se compara dentro de cada set, nunca entre sets.
+unos dos píxeles de los 576 totalmente distintos (el mínimo, 1,2, a unos tres). Se compara dentro de cada set, nunca entre sets.
 
 Necesita Pillow y resvg-py (pip install -r iconos-tools/requirements.txt). Las versiones están fijadas
 porque la distancia depende del renderizador.
@@ -73,7 +73,7 @@ def check_set(root, folder, minimum, listed):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
-    parser.add_argument('--minimo', type=float, default=0.8, help='distancia por debajo de la cual falla (0,8 por defecto)')
+    parser.add_argument('--minimo', type=float, default=1.2, help='distancia por debajo de la cual falla (1,2 por defecto)')
     parser.add_argument('--lista', type=int, default=10, help='cuántos pares cercanos se muestran por set')
     parser.add_argument('--raiz', type=Path, default=ROOT, help='carpeta que contiene los sets (la raíz del repositorio)')
     args = parser.parse_args()

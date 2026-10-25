@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_ui_organization_indigo_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8F8F8F"/>
+      <stop offset="1" stop-color="#5B5B5B"/>
+    </linearGradient>
+    <linearGradient id="grad_ui_organization_slate_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#BFBFBF"/>
+      <stop offset="1" stop-color="#A1A1A1"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.78" cy="53.48" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M32 19L32 29L17 29L17 38" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M32 29L47 29L47 38" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M45.2 12.6A5.5 5.5 0 0 1 46.3 15.9A5.5 5.5 0 0 1 40.8 21.4L26.8 21.4A5.5 5.5 0 0 1 22.4 19.2L20.78 17.04A5.5 5.5 0 0 1 19.68 13.74A5.5 5.5 0 0 1 25.18 8.24L39.18 8.24A5.5 5.5 0 0 1 43.58 10.44Z" fill="#353535"/><rect x="19.5" y="8" width="25" height="11" rx="5.5" fill="url(#grad_ui_organization_indigo_g)"/></g>
+    <g><path d="M27.46 42.28A5.5 5.5 0 0 1 28.56 45.58A5.5 5.5 0 0 1 23.06 51.08L14.06 51.08A5.5 5.5 0 0 1 9.66 48.88L8.28 47.04A5.5 5.5 0 0 1 7.18 43.74A5.5 5.5 0 0 1 12.68 38.24L21.68 38.24A5.5 5.5 0 0 1 26.08 40.44Z" fill="#5E5E5E"/><rect x="7" y="38" width="20" height="11" rx="5.5" fill="url(#grad_ui_organization_slate_g)"/></g>
+    <g><path d="M57.46 42.28A5.5 5.5 0 0 1 58.56 45.58A5.5 5.5 0 0 1 53.06 51.08L44.06 51.08A5.5 5.5 0 0 1 39.66 48.88L38.28 47.04A5.5 5.5 0 0 1 37.18 43.74A5.5 5.5 0 0 1 42.68 38.24L51.68 38.24A5.5 5.5 0 0 1 56.08 40.44Z" fill="#5E5E5E"/><rect x="37" y="38" width="20" height="11" rx="5.5" fill="url(#grad_ui_organization_slate_g)"/></g>
+  </g>
+</svg>

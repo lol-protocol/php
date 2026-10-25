@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_account_wishlist_rose" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EB6583"/>
+      <stop offset="1" stop-color="#E11D48"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.8" cy="55.2" rx="18.22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M51.2 17.6A7 7 0 0 1 52.6 21.8L52.6 45.8A7 7 0 0 1 45.6 52.8L23.6 52.8A7 7 0 0 1 18 50L14.58 45.44A7 7 0 0 1 13.18 41.24L13.18 17.24A7 7 0 0 1 20.18 10.24L42.18 10.24A7 7 0 0 1 47.78 13.04Z" fill="#82112A"/><rect x="13" y="10" width="36" height="38" rx="7" fill="url(#grad_account_wishlist_rose)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M31 20L40 29L31 40L22 29Z" fill="#FFFFFF"/>
+  </g>
+</svg>

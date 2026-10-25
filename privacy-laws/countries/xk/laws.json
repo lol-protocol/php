@@ -1,0 +1,87 @@
+[
+  {
+    "country_code": "XK",
+    "country_name": "Kosovo",
+    "region": "europe",
+    "law_name": "Law No. 06/L-082 on Protection of Personal Data",
+    "jurisdiction": "Information and Privacy Agency (AIP)",
+    "enactment_date": "2019-02-25",
+    "effective_date": "2019-02-25",
+    "scope": "Data subjects in Kosovo; also non-established controllers using equipment in Kosovo",
+    "applies_to": "All public and private bodies (incl. diplomatic and consular offices)",
+    "key_requirements": "GDPR-transposing law (Regulation 2016/679) setting duties for public and private processors; AIP supervises",
+    "data_categories": "Not specified",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Information and Privacy Agency (AIP)",
+    "penalties_range": "Fines up to EUR 40,000 or 2-4% of preceding-year turnover (sources conflict; one says flat EUR 40,000 cap) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://aip.rks-gov.net/en/personal-data-protection-as-a-priority/",
+    "language": "Albanian/Serbian/English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Gazette No. 6 dated 25 Feb 2019 but DLA Piper says in force 13 Feb 2019: dates inconsistent; adoption date not found. AIP took over National Agency for Personal Data Protection; effective_date earlier than enactment_date in the sources: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/?c=XK&t=law",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://aip.rks-gov.net/en/personal-data-protection-as-a-priority/",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/sites/default/files/law_no._06_l_-082_on_protection_of_personal_data_0.pdf",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "effective_date": {
+        "url": "https://www.dlapiperdataprotection.com/?c=XK&t=law",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://www.dataguidance.com/jurisdiction/kosovo",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "applies_to": {
+        "url": "https://www.dlapiperdataprotection.com/?c=XK&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?c=XK&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://aip.rks-gov.net/en/personal-data-protection-as-a-priority/",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://www.dataguidance.com/jurisdiction/kosovo",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
