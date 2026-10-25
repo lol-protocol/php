@@ -1,6 +1,6 @@
 # Registro de revisiones
 
-[`revisiones.csv`](revisiones.csv) anota quién ha revisado qué. Es el mismo formato que el de [`Listado-colores/`](../Listado-colores/README.md) (sección «Revisión por hablantes nativos»), para que quien ya revisó allí sepa cómo hacerlo aquí, con las citas en lugar de los colores. **Empieza vacío: nadie ha revisado nada todavía.**
+[`revisiones.csv`](revisiones.csv) anota quién ha revisado qué. Es el mismo formato que el de [`Listado-colores/`](../Listado-colores/README.md) (sección «Revisión por hablantes nativos»), para que quien ya revisó allí sepa cómo hacerlo aquí, con las citas en lugar de los colores. **Empieza vacío: nadie ha revisado nada todavía.** Hoy el único revisor previsto es la persona que encarga el trabajo, y solo para `spa`; no habrá revisores nativos de otros idiomas por ahora.
 
 Una cita no se publica en un idioma hasta que su traducción y sus etiquetas tengan una revisión `correcta` de una persona que hable ese idioma (ver `README.md`, reglas 2 y 3).
 
@@ -35,7 +35,7 @@ Una cita no se publica en un idioma hasta que su traducción y sus etiquetas ten
 
    La CI lo corre en cada PR que toque esta carpeta.
 
-Hoy lo único revisable son las **etiquetas de las frases de prueba** del prototipo (`spa-1`, `spa-2`, `eng-1`, `eng-2`, `deu-1`, `deu-2`, con alcance `etiquetas`). Las citas, con sus alcances `cita` y `traduccion`, se podrán revisar cuando exista `datos/citas.json`.
+Hoy lo único revisable son las **etiquetas de las frases de prueba** del prototipo (`spa-1`, `spa-2`, `eng-1`, `eng-2`, `deu-1`, `deu-2`, con alcance `etiquetas`). Sin revisores de otros idiomas, solo tienen quién las revise las de `spa`; las de `eng` y `deu` esperan a que aparezca alguien. Las citas, con sus alcances `cita` y `traduccion`, se podrán revisar cuando exista `datos/citas.json`.
 
 ## Qué no hace
 

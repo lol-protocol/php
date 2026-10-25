@@ -96,7 +96,11 @@ La cita ancla **no es parte del piloto**: se elige cuando haya revisores para va
 
 ### Piloto
 
-El piloto tiene **3 idiomas con 6 citas cada uno, 18 fichas en total**, que son las mismas 6 citas de la prueba de coloreada contra plana (ver `PLAN.md`). Idiomas propuestos: `spa`, `eng` y `deu`. Los dos primeros son los de más audiencia en este proyecto y los tres tienen muchas palabras anotadas; **el tercero se cambia por otro idioma de la oleada 1 o 2 si quien revisa habla ese en lugar del alemán.** El criterio para elegir los idiomas del piloto es que **alguien pueda etiquetar y revisar de verdad**, no que sean los de más datos.
+El piloto es de **un solo idioma, `spa`, con 6 citas = 6 fichas**, que son las 6 citas de la prueba de coloreada contra plana (ver `PLAN.md`), y las revisa la persona que encarga el trabajo. Se pensó antes en 3 idiomas (`spa`, `eng` y `deu`), pero **no habrá revisores nativos de otros idiomas por ahora**, y el criterio para elegir los idiomas del piloto es que **alguien pueda etiquetar y revisar de verdad**, no que sean los de más datos o los de más audiencia.
+
+Mientras no haya revisores, las citas de otros idiomas pueden prepararse como **borrador interno** (fuente, texto, etiquetas propuestas), pero **no se publican**. Cada idioma que consiga un revisor entra al piloto por el orden de la tabla de arriba.
+
+Consecuencia para los autores candidatos: las **citas en español** son las que importan primero. De los candidatos de arriba, los de lengua española son Cervantes y Sor Juana Inés de la Cruz; hay que buscar más autores de dominio público en español (de España y de América) para tener donde elegir las 6 citas.
 
 ## Etiquetado: categorías
 
