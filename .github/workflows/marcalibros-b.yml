@@ -36,7 +36,7 @@ jobs:
       run:
         working-directory: marcalibros_b
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Version fija: la salida del generador (SVG y hashes de referencia) debe ser
       # identica en todas las maquinas. Si se sube, se regeneran los hashes.
