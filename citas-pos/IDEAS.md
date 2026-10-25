@@ -8,6 +8,7 @@ Con **lectores y público general** como audiencia, **sitio y correo** como cana
 
 - **Suben:** A4 y A6 (elegidas), la **1** (la paleta fija, porque en un sitio y un correo el código se aprende por repetición), la **3** (series por categoría, buenas para una sección del sitio), la **7** (la cita de la semana encaja con un correo periódico) y la **9** (la línea de cita en el pie del correo es ahora un canal elegido). También la **2** y la **5** (el correo y el sitio deben ser legibles con daltonismo y con lector de pantalla).
 - **Bajan:** la **4** (hojas para docentes: el impreso no es canal y los docentes no son la audiencia principal; queda para cuando se amplíe), la **6** (cita por país: depende de tener antes el sitio funcionando por país) y la **8** (estadística de autores: necesita un etiquetador fiable que hoy no existe).
+- **En pausa por falta de revisores:** todo lo que necesita más de un idioma revisado: la **2** («el mismo pensamiento en cuatro lenguas»), la **6** (cita local por país), las variantes con traducción de A6 (carrusel de origen, alineación por color) y la «cita ancla» traducida a los 30. Mientras solo `spa` esté revisado, A4 y A6 se hacen en español.
 - **Ya no aplica:** la tarjeta cuadrada de 1080×1080 de A5, pensada para redes. Las piezas se generan para el sitio y el correo.
 - **Correo:** la cita va como **texto HTML con el color en línea**, no solo como imagen, para que se lea con las imágenes bloqueadas y con lector de pantalla.
 
