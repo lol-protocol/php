@@ -147,6 +147,9 @@ que prometen las secciones 5 y 6 del borrador de
   `pedidos_retiro.marcas` y se muestra en `/0/3/` como «El filtro encontró». Es un
   aviso para quien revisa: quien se queja de una acusación suele repetirla, así que
   bloquearlo perdería reclamos reales. Sin la librería, el pedido se guarda sin marcas.
+- **Responder.** El sitio no le escribe a quien pidió. Las respuestas tipo, en 16
+  idiomas y como borrador sin revisión nativa, están en
+  [`respuestas-tipo/`](./respuestas-tipo/README.md).
 - **Avisar y vigilar el plazo.** `bin/pedidos-retiro.php` está hecho para cron,
   que manda por correo lo que un trabajo imprime: lista los pedidos que esperan
   (número, página, motivo y cuánto llevan, **nunca quién lo pidió ni qué
