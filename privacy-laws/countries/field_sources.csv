@@ -507,6 +507,14 @@ KG,Law No. 58 of 14 April 2008 on Personal Information,key_requirements,https://
 KG,Law No. 58 of 14 April 2008 on Personal Information,data_categories,https://www.consentstack.io/regulations/kg-law58,medium,2026-10-16
 KG,Law No. 58 of 14 April 2008 on Personal Information,enforcement_authority,https://www.consentstack.io/regulations/kg-law58,medium,2026-10-16
 KG,Law No. 58 of 14 April 2008 on Personal Information,penalties_range,https://www.consentstack.io/regulations/kg-law58,low,2026-10-16
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,law_name,https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law,medium,2026-10-25
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,jurisdiction,https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law,medium,2026-10-25
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,enactment_date,https://consentstack.io/regulations/km-dpl,medium,2026-10-25
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,scope,https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law,medium,2026-10-25
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,applies_to,https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law,medium,2026-10-25
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,key_requirements,https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law,medium,2026-10-25
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,data_categories,https://consentstack.io/regulations/km-dpl,low,2026-10-25
+KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,enforcement_authority,https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law,medium,2026-10-25
 KR,,penalties_range,https://www.mlex.com/mlex/articles/2450211,medium,2026-10-14
 KR,,deceased_data,https://www.nepla.ai/wiki/it-정보-방송통신/개인정보-위치정보-신용정보/-일문일답-사망자의-정보가-개인정보인가-0xr84xjgnq1w,medium,2026-10-17
 KR,,research_exemption,https://www.opennetkorea.org/en/wp/3127,high,2026-10-17
@@ -545,6 +553,18 @@ LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,key_requireme
 LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,data_categories,https://www.clym.io/regulations/law-no-81-on-electronic-transactions-and-personal-data-lebanon,low,2026-10-18
 LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,retention_period,https://www.consentstack.io/regulations/lb-law81,low,2026-10-16
 LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,enforcement_authority,https://www.consentstack.io/regulations/lb-law81,low,2026-10-16
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,law_name,https://attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/act,high,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,jurisdiction,https://attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/act,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,enactment_date,https://www.dataguidance.com/sites/default/files/act_11_of_2011.pdf,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,effective_date,https://attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/act,high,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,scope,https://www.dataguidance.com/jurisdiction/saint-lucia,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,applies_to,https://www.dataguidance.com/jurisdiction/saint-lucia,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,key_requirements,https://www.dataguidance.com/jurisdiction/saint-lucia,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,data_categories,https://www.dataguidance.com/jurisdiction/saint-lucia,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,enforcement_authority,https://www.dataguidance.com/jurisdiction/saint-lucia,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,penalties_range,https://www.attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/section-71,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,exemptions,https://www.attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/section-65,medium,2026-10-25
+LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,research_exemption,https://www.attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/section-65,medium,2026-10-25
 LI,,deceased_data,https://whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-liechtenstein,medium,2026-10-17
 LI,,research_exemption,https://www.gesetze.li/konso/pdf/2018272000?version=2,medium,2026-10-17
 LI,,genetic_data,https://www.gesetze.li/konso/pdf/2018272000?version=2,medium,2026-10-17
@@ -1311,6 +1331,15 @@ UZ,,retention_period,https://www.ziraatbank.uz/OnpersonaldataLAWOFTHEREPUBLICOFU
 UZ,,enforcement_authority,https://gov.uz/en/dpm,medium,2026-10-15
 UZ,,research_exemption,https://president.uz/ru/lists/view/3020,low,2026-10-21
 UZ,,genetic_data,https://www.mondaq.com/data-protection/828474/uzbekistan-enacts-first-data-protection-law,medium,2026-10-21
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),law_name,https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html,high,2026-10-25
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),jurisdiction,https://www.vaticanstate.va/en/privacy-policy.html,medium,2026-10-25
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),enactment_date,https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html,high,2026-10-25
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),effective_date,https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html,high,2026-10-25
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),scope,https://www.vaticanstate.va/en/privacy-policy.html,medium,2026-10-25
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),applies_to,https://www.vaticanstate.va/en/privacy-policy.html,medium,2026-10-25
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),key_requirements,https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii,medium,2026-10-25
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),data_categories,https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii,medium,2026-10-25
+VA,General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State),enforcement_authority,https://www.vaticanstate.va/en/privacy-policy.html,low,2026-10-25
 VN,,law_name,https://thuvienphapluat.vn/van-ban/Bo-may-hanh-chinh/Law-91-2025-QH15-Personal-Data-Protection-665440.aspx,high,2026-10-14
 VN,,jurisdiction,https://tilleke.com/insights/vietnams-new-personal-data-protection-law-a-closer-look,high,2026-10-14
 VN,,enactment_date,https://sbv.gov.vn/en/w/tri%E1%BB%83n-khai-thi-h%C3%A0nh-lu%E1%BA%ADt-b%E1%BA%A3o-v%E1%BB%87-d%E1%BB%AF-li%E1%BB%87u-c%C3%A1-nh%C3%A2n-1,high,2026-10-14
