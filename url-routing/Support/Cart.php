@@ -52,6 +52,7 @@ final class Cart
             return false;
         }
 
+        SessionManager::getInstance()->ensureStarted();
         $_SESSION['carrito'][$sku] = min($cantidad, self::MAX_CANTIDAD);
         return true;
     }
@@ -98,11 +99,13 @@ final class Cart
 
     public function quitar(string $sku): void
     {
+        SessionManager::getInstance()->ensureStarted();
         unset($_SESSION['carrito'][$sku]);
     }
 
     public function vaciar(): void
     {
+        SessionManager::getInstance()->ensureStarted();
         $_SESSION['carrito'] = [];
     }
 }
