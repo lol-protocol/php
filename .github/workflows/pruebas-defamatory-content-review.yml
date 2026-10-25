@@ -26,6 +26,7 @@ jobs:
   phpunit:
     name: PHP ${{ matrix.php-version }}
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: defamatory-content-review
@@ -61,6 +62,7 @@ jobs:
   chat-front-guard:
     name: defamatory-content-review / front guard (Node)
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout

@@ -30,6 +30,7 @@ jobs:
   phone-directory:
     name: phone-directory / PHP ${{ matrix.php-version }}
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: phone-directory
@@ -82,6 +83,7 @@ jobs:
   phone-directory-ports:
     name: phone-directory / Python and Java ports
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: phone-directory/ports
