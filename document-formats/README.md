@@ -2,10 +2,9 @@
 
 Paper, document, book and screen sizes, organized by country and by type, as
 plain CSV files. Includes production specs (binding, folding, color spaces,
-accessibility), a SQL schema, a REST API reference, a browser demo (in
-English) and a JavaScript library whose interface strings come in 30
-languages (six fully translated; the rest show English for what isn't
-translated yet).
+accessibility), a SQL schema, a REST API reference, a browser demo and a
+JavaScript library whose interface strings come in 30 languages (all
+of them complete, none yet reviewed by a native speaker).
 
 ## Folder structure
 
@@ -318,12 +317,20 @@ from `specs/paper_type_translations.csv`. What stays in English is data
 (colors, textures, categories, notes, country names); those texts are marked `lang="en"`, and the names of the paper
 types carry the language they are shown in.
 
-German, English, Spanish, French, Japanese and Chinese have every UI string;
-the other 24 translate the title, the tabs and the unit names and show
-English for the rest, marked `lang="en"` so a screen reader doesn't read it
-with the wrong voice (the strings written in the HTML, the captions of the
-cards JavaScript draws, and the count announced when you filter). See
-`docs/Localization.md`.
+All 30 languages have every UI string. English and Spanish were written
+first, then German, French, Japanese and Chinese, and finally the other 24;
+none of them has been reviewed by a native speaker yet. If a language ever
+leaves a string empty, the page shows English there, marked `lang="en"` so a
+screen reader doesn't read it with the wrong voice (the strings written in
+the HTML, the captions of the cards JavaScript draws, and the count announced
+when you filter). See `docs/Localization.md`.
+
+The search boxes ignore case and Latin accents (`termico` finds «Papel térmico»), and the one on
+the Browser tab looks in the name, description, use, country, category and region of each format.
+The category and region filters show their words in the language of the page, in that language's
+alphabetical order (`regions.*` and `categories.*` in the translation files; the option's value
+stays the CSV's word). The **Sort by** menu orders the cards by name, width, height or area, smallest
+first; ties keep the catalog order, and the choice goes into the address like the filters.
 
 The address keeps what you are looking at, so you can share it:
 `app/index.html#tab=converter&from=A4&to=Letter`. It holds the tab, the
