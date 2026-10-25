@@ -9,6 +9,7 @@ Límites:
 - Cubre dos idiomas: inglés (los nombres CSS de una sola palabra y los términos del léxico básico que no son CSS) y español (los lemas de una sola palabra del léxico básico). Las palabras compuestas (`azul marino`, `light blue`) no entran.
 - Son las lecturas **posibles** de la palabra, no cuántas veces ocurre cada una, y cada frase es un ejemplo, no el único uso. No se distingue el sentido: `coral` sustantivo es el animal y el color.
 - Hay casos discutibles: un sustantivo que modifica a otro (`a linen shirt`) puede etiquetarse `NOUN` o `ADJ` según el criterio; los ejemplos de `ADJ` en inglés usan la palabra como color en una posición clara (`painted the walls linen`).
+- Nueve nombres CSS casi no se usan como color fuera de CSS (`cornsilk`, `firebrick`, `gainsboro`, `goldenrod`, `moccasin`, `peru`, `snow`, `thistle`, `tomato`): su ejemplo de `ADJ` habla de una página web (`The header is thistle`), porque en otro contexto no sonaría natural. Es uso de nombre CSS, no de lengua corriente.
 - Está escrito por un asistente de IA y ningún hablante nativo lo ha revisado.
 
 ## Resumen

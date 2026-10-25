@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | Alice mavisi | `#F0F8FF` |  | Sakinlik, ferahlık ve temizlik; hafiflik ve genişlik duygusu. | Göksel saflık ve dinginlik; açık gökyüzü ve net iletişimle ilişkilendirilir. | derivado | derivado |
 | `antiquewhite` | Antika beyaz | `#FAEBD7` |  | Nostalji, gelenek ve yumuşak sıcaklık; vintage havasını çağrıştırır. | Geçmişin hafızası ve bilgeliği; eskimiş saflık ve kadim döngüler. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Ferahlık, berraklık, enerji ve temiz su hissi. | Canlı su ve arınma; sezginin ve ince olanla iletişimin akışı. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Ferahlık, berraklık, sakinlik ve iletişim; dijital ve modern olanla ilişkilendirilir. | Su ve arınma; zihinsel berraklık ve iletişimin akışı. | derivado | derivado |
 | `aquamarine` | akuamarin | `#7FFFD4` |  | Rahatlatıcı ferahlık, sakinlik ve hafif iyimserlik. | Denizcilerin taşı: yolculuklarda koruma, cesaret ve duygusal berraklık. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | gök mavisi | `#F0FFFF` |  | Açık gökyüzü, açıklık, özgürlük ve dinginlik. | Ruhani yükseklik ve göğün saflığı; göksel olan ve açık zihin. | derivado | derivado |
 | `beige` | bej | `#F5F5DC` |  | Yansızlık, sadelik, istikrar ve ölçülülük. | Toprak ve alçakgönüllülük; aşırılıksız denge, gündelik hayat ve köklenme. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | tuğla kırmızı | `#B22222` |  | Güç, kararlılık, yoğun sıcaklık ve gerilim. | Demirci ocağının ve yuvanın ateşi; çaba, fedakârlık ve emek. | derivado | derivado |
 | `floralwhite` | çiçek beyazı | `#FFFAF0` |  | Yumuşaklık, incelik, saflık ve hafiflik. | Beyaz çiçek: masumiyet, başlangıçlar ve ilkbaharın bereketi. | derivado | derivado |
 | `forestgreen` | orman yeşili | `#228B22` |  | Doğa, denge, sağlık, sakinlik ve büyüme. | Kutsal orman: yaşam, yenilenme ve toprakla bağ. | derivado | derivado |
-| `fuchsia` | fuşya | `#FF00FF` | `magenta` | Cesaret, yaratıcılık, eksantriklik ve oyuncu enerji. | Dönüşüm ve büyü; maddi olan ile ruhani olan arasındaki bağ. | derivado | derivado |
+| `fuchsia` | fuşya | `#FF00FF` | `magenta` | Yaratıcılık, cesaret, yoğunluk ve titreşen enerji. | Dönüşüm ve maneviyat; maddi olan ile ince olan arasında bağlantı. | derivado | derivado |
 | `gainsboro` | gainsboro grisi | `#DCDCDC` |  | Zarif yansızlık, temizlik ve sakinlik. | Yüksüz, dengeli bir ara hâl. | derivado | derivado |
 | `ghostwhite` | hayalet beyazı | `#F8F8FF` |  | Hafiflik, ince gizem ve ışıltılı serinlik. | Eterik ve hayalet gibi olan; iki dünya arasında ince bir varlık. | derivado | derivado |
 | `gold` | altın | `#FFD700` |  | Başarı, zenginlik, itibar, iyimserlik ve sıcaklık. | Güneş ve kusursuzluk; aydınlanma, güç, bilgelik ve birçok gelenekte ilahi olan. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

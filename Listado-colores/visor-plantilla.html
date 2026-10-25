@@ -77,7 +77,7 @@ footer { margin-top: 1.5rem; }
 </main>
 <footer>
   <h2>Filas para <code>revisiones.csv</code></h2>
-  <p class="suave">Copia estas filas (sin cabecera) al final de <code>revisiones.csv</code>. Incluyen todo lo que has marcado, en cualquier idioma.</p>
+  <p class="suave">Copia estas filas (sin cabecera) al final de <code>revisiones.csv</code>. Incluyen todo lo que has marcado, en cualquier idioma. Tus marcas se guardan en este navegador, sin separar por persona: si lo comparte otra persona, pulsa «Borrar mis marcas» antes de empezar.</p>
   <p id="avisos" class="avisos" aria-live="polite"></p>
   <textarea id="salida" readonly aria-label="Filas para revisiones.csv"></textarea>
   <div class="barra">
@@ -91,7 +91,7 @@ footer { margin-top: 1.5rem; }
 (function () {
   "use strict";
   const D = /*DATOS*/null;
-  const COLUMNAS = ["idioma", "alcance", "elemento", "veredicto", "revisor", "fecha", "nota"];
+  const COLUMNAS = ["idioma", "alcance", "elemento", "veredicto", "revisor", "fecha", "huella", "nota"];
   const ALCANCES = {nombres: "Nombres", significados: "Significados", lexico: "Léxico básico", categorias: "Categorías gramaticales"};
   const AYUDA = {
     nombres: "Mira si el nombre del color en este idioma es el que se usaría de verdad (no un calco del inglés).",
@@ -276,7 +276,7 @@ footer { margin-top: 1.5rem; }
           const m = estado.marcas[clave(idioma, alcance, id)];
           if (!m || !m.veredicto) continue;
           if ((m.veredicto === "corregir" || m.veredicto === "dudoso") && !m.nota) { sinNota++; continue; }
-          filas.push([idioma, alcance, id, m.veredicto, estado.revisor.trim(), estado.fecha, m.nota || ""].map(campoCsv).join(","));
+          filas.push([idioma, alcance, id, m.veredicto, estado.revisor.trim(), estado.fecha, D.huellas[idioma][alcance][id], m.nota || ""].map(campoCsv).join(","));
         }
       }
     }

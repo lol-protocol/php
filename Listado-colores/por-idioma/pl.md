@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | błękit Alicji | `#F0F8FF` |  | Spokój, świeżość i czystość; poczucie lekkości i przestrzeni. | Niebiańska czystość i pogoda ducha; kojarzony z bezchmurnym niebem i jasną komunikacją. | derivado | derivado |
 | `antiquewhite` | antyczny biały | `#FAEBD7` |  | Nostalgia, tradycja i miękkie ciepło; przywodzi na myśl styl vintage. | Pamięć i mądrość przeszłości; zestarzała czystość i dawne cykle. | derivado | derivado |
-| `aqua` | akwa | `#00FFFF` | `cyan` | Świeżość, jasność, energia i wrażenie czystej wody. | Żywa woda i oczyszczenie; przepływ intuicji i komunikacji z tym, co subtelne. | derivado | derivado |
+| `aqua` | akwa | `#00FFFF` | `cyan` | Świeżość, jasność, spokój i komunikacja; kojarzony z cyfrowością i nowoczesnością. | Woda i oczyszczenie; jasność umysłu i przepływ komunikacji. | derivado | derivado |
 | `aquamarine` | akwamaryna | `#7FFFD4` |  | Odprężająca świeżość, spokój i lekki optymizm. | Kamień żeglarzy: ochrona w podróży, odwaga i jasność emocjonalna. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | lazurowy | `#F0FFFF` |  | Bezchmurne niebo, otwartość, wolność i pogoda ducha. | Duchowa wysokość i czystość nieba; to, co niebiańskie, i otwarty umysł. | derivado | derivado |
 | `beige` | beżowy | `#F5F5DC` |  | Neutralność, prostota, stabilność i dyskrecja. | Ziemia i pokora; równowaga bez skrajności, codzienność i zakorzenienie. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | ceglasty czerwony | `#B22222` |  | Siła, determinacja, intensywne ciepło i napięcie. | Ogień kuźni i ogniska domowego; wysiłek, ofiara i praca. | derivado | derivado |
 | `floralwhite` | kwiatowo biały | `#FFFAF0` |  | Miękkość, delikatność, czystość i lekkość. | Biały kwiat: niewinność, początki i błogosławieństwo wiosny. | derivado | derivado |
 | `forestgreen` | leśna zieleń | `#228B22` |  | Natura, równowaga, zdrowie, spokój i wzrost. | Święty las: życie, odnowa i więź z ziemią. | derivado | derivado |
-| `fuchsia` | fuksja | `#FF00FF` | `magenta` | Śmiałość, kreatywność, ekscentryczność i figlarna energia. | Przemiana i magia; więź między tym, co materialne, a duchowym. | derivado | derivado |
+| `fuchsia` | fuksja | `#FF00FF` | `magenta` | Kreatywność, śmiałość, intensywność i wibrująca energia. | Przemiana i duchowość; łączność między tym, co materialne, a subtelnym. | derivado | derivado |
 | `gainsboro` | szary Gainsborough | `#DCDCDC` |  | Elegancka neutralność, czystość i spokój. | Stan pośredni i równowaga, bez ciężaru. | derivado | derivado |
 | `ghostwhite` | upiorny biały | `#F8F8FF` |  | Lekkość, subtelna tajemnica i świetlisty chłód. | To, co eteryczne i widmowe; subtelna obecność między dwoma światami. | derivado | derivado |
 | `gold` | złoty | `#FFD700` |  | Sukces, bogactwo, prestiż, optymizm i ciepło. | Słońce i doskonałość; oświecenie, władza, mądrość i to, co boskie, w wielu tradycjach. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
