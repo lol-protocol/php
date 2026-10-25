@@ -29,7 +29,8 @@ este archivo).
 (`ECONNREFUSED`) de los servidores de GitHub Actions. En ellos, ese error es un aviso y no un enlace
 roto: sin la lista, cada corrida los marcaba en rojo y la issue automática de los enlaces rotos no se
 cerraba nunca. Entran solo después de verlos rechazar al runner más de una vez, y con el motivo al
-lado. No esconde enlaces muertos: un host que desaparece falla antes, en DNS, y eso sigue siendo roto.
+lado. El rechazo es intermitente: el mismo host que falla en una corrida suele responder en la
+siguiente, así que la lista crece con los casos que se vean en CI, no con un diagnóstico del sitio. No esconde enlaces muertos: un host que desaparece falla antes, en DNS, y eso sigue siendo roto.
 Un puerto cerrado en cualquier otro host también.
 
 ## Por qué no es una dependencia entre `privacy-laws/` y `copyright-laws/`
