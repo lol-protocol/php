@@ -73,15 +73,27 @@ final class RetiroRepository extends Repository
         ) !== null;
     }
 
-    /** Stores a new pedido ('pendiente', with its 'recibido' event) and returns its number. */
-    public function crear(string $tipo, int $id, string $motivo, string $detalle, string $contacto): int
+    /** How many pedidos on this page are waiting for a decision: a page with many is not asked about again (see RetiroController). */
+    public function pendientesDe(string $tipo, int $id): int
     {
-        return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto): int {
+        return (int)$this->db->fetchValue(
+            "SELECT COUNT(*) FROM pedidos_retiro WHERE tipo = ? AND recurso_id = ? AND estado = 'pendiente'",
+            [$tipo, $id]
+        );
+    }
+
+    /**
+     * Stores a new pedido ('pendiente', with its 'recibido' event) and returns its number. $marcas is what the
+     * filter found in $detalle (see Support/FiltroPedidos.php), for whoever reviews it.
+     */
+    public function crear(string $tipo, int $id, string $motivo, string $detalle, string $contacto, ?string $marcas = null): int
+    {
+        return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto, $marcas): int {
             $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(id), 0) + 1 FROM pedidos_retiro');
             $ahora = date('Y-m-d H:i:s');
             $this->db->execute(
-                'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [$numero, $tipo, $id, $motivo, $detalle, $contacto, $ahora]
+                'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en, marcas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [$numero, $tipo, $id, $motivo, $detalle, $contacto, $ahora, $marcas]
             );
             $this->evento($numero, 'recibido', null, $ahora);
 
@@ -163,7 +175,7 @@ final class RetiroRepository extends Repository
     public function todos(): array
     {
         $pedidos = $this->db->fetchAll(
-            "SELECT id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en FROM pedidos_retiro
+            "SELECT id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en, marcas FROM pedidos_retiro
               ORDER BY CASE WHEN estado = 'pendiente' THEN 0 ELSE 1 END, creado_en DESC, id DESC"
         );
         foreach ($pedidos as &$pedido) {

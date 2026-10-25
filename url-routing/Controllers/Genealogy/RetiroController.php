@@ -6,6 +6,9 @@ namespace App\Controllers\Genealogy;
 
 use App\Controllers\BaseController;
 use App\Repositories\Genealogy\RetiroRepository;
+use App\Support\Config;
+use App\Support\FiltroPedidos;
+use App\Support\RateLimiter;
 use App\Support\ServiceLocator;
 
 /**
@@ -19,6 +22,12 @@ class RetiroController extends BaseController
 {
     private const MAX_DETALLE = 2000;
     private const MAX_CONTACTO = 254;
+    /** A pedido a visitor may send per hour (RETIRO_MAX_POR_HORA). One hour is the longest window RateLimiter remembers. */
+    private const MAX_POR_HORA = 3;
+    /** Pedidos waiting on one page before it stops taking more (RETIRO_MAX_PENDIENTES). */
+    private const MAX_PENDIENTES = 10;
+    /** The form's decoy field: invisible to a person, filled by a bot that fills every field. */
+    private const CAMPO_TRAMPA = 'sitio_web';
 
     public function pedir(array $params = []): string
     {
@@ -42,6 +51,14 @@ class RetiroController extends BaseController
             return $this->handleForbidden();
         }
 
+        if ($this->postString(self::CAMPO_TRAMPA) !== '') {
+            // A bot: the same answer a person gets, without storing anything or saying why.
+            log_info('pedido de retiro descartado: campo trampa', ['tipo' => $tipo, 'id' => (int)$id]);
+            $this->flash('Recibimos tu pedido de retiro. Lo revisa una persona.');
+
+            return $this->redirect(enlace($tipo, $id));
+        }
+
         $valores = [
             'motivo' => $this->postString('motivo'),
             'detalle' => trim($this->postString('detalle')),
@@ -53,12 +70,29 @@ class RetiroController extends BaseController
             return view('genealogy/retiro/pedir', ['errores' => $errores, 'valores' => $valores] + $datos);
         }
 
-        $numero = $repo->crear($tipo, (int)$id, $valores['motivo'], $valores['detalle'], $valores['contacto']);
+        $limitador = RateLimiter::getInstance();
+        if (!$limitador->isAllowed('retiro:' . $limitador->getClientIp(), Config::getInt('RETIRO_MAX_POR_HORA', self::MAX_POR_HORA), 3600)) {
+            return $this->demasiados('Enviaste varios pedidos seguidos. Vuelve a intentarlo más tarde.', $limitador->retryAfter());
+        }
+        if ($repo->pendientesDe($tipo, (int)$id) >= Config::getInt('RETIRO_MAX_PENDIENTES', self::MAX_PENDIENTES)) {
+            return $this->demasiados('Esta página ya tiene varios pedidos de retiro esperando a que una persona los revise.', 3600);
+        }
+
+        $numero = $repo->crear($tipo, (int)$id, $valores['motivo'], $valores['detalle'], $valores['contacto'], FiltroPedidos::marcas($valores['detalle']));
         // The number and the page only: never who asked nor what they wrote.
         log_info('pedido de retiro recibido', ['pedido' => $numero, 'tipo' => $tipo, 'id' => (int)$id]);
         $this->flash("Recibimos tu pedido de retiro n.º {$numero}. Lo revisa una persona y te responde a {$valores['contacto']}.");
 
         return $this->redirect(enlace($tipo, $id));
+    }
+
+    /** A 429 with the reason in a sentence and when to try again, for a visitor who sent too many pedidos. */
+    private function demasiados(string $mensaje, int $segundos): string
+    {
+        http_response_code(429);
+        header('Retry-After: ' . max(1, $segundos));
+
+        return '<h1>429 - Demasiados pedidos</h1><p>' . htmlspecialchars($mensaje) . '</p>';
     }
 
     /** @param array{motivo: string, detalle: string, contacto: string} $valores @return array<string, string> field => message */

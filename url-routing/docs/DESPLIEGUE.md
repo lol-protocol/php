@@ -165,6 +165,8 @@ MAILTO=tu@correo.com
 0 9 * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php
 ```
 
+Los pedidos de retiro se marcan con el filtro de difamación si el servidor tiene la carpeta `defamatory-content-review/` junto a `url-routing/` (o `FILTRO_DIFAMACION_DIR` apunta a ella); si no, se guardan sin marcas y el log lo dice. Los topes contra el abuso se cambian con `RETIRO_MAX_POR_HORA` y `RETIRO_MAX_PENDIENTES` en `.env`.
+
 Lista número, página, motivo y cuánto lleva cada pedido, y marca `VENCIDO` el que pasó del plazo (`RETIRO_PLAZO_HORAS` en `.env`, 24 horas por omisión). No dice quién lo pidió ni qué escribió: el correo de cron viaja sin cifrar.
 
 **Ocultar automáticamente es opcional y es una decisión tuya.** Con `--ocultar`, el pedido que sigue pendiente pasado el plazo deja su página en 410 para los visitantes, como si hubieras elegido «ocultar mientras revisa», y el registro anota que fue automático. Nunca toca uno que ya decidiste, y rechazarlo la vuelve a mostrar. El costo: quien pida el retiro de una página puede bajarla si no contestas a tiempo. Si lo quieres, que corra más seguido que el aviso:

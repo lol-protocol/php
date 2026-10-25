@@ -47,7 +47,8 @@ if ($autorizacion !== null) {
     $_SERVER['HTTP_AUTHORIZATION'] = $autorizacion;
 }
 // Unique per process so the rate limiter never throttles a test run.
-$_SERVER['REMOTE_ADDR'] = '203.0.113.' . random_int(1, 254) . '-' . getmypid();
+// A test that needs one client across several requests (a limit) fixes it with TEST_REMOTE_ADDR.
+$_SERVER['REMOTE_ADDR'] = getenv('TEST_REMOTE_ADDR') ?: '203.0.113.' . random_int(1, 254) . '-' . getmypid();
 
 parse_str((string)parse_url($uri, PHP_URL_QUERY), $_GET);
 if ($method === 'POST') {
