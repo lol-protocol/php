@@ -421,9 +421,6 @@ class Icon:
     def line(self, x1, y1, x2, y2, **kw):
         return self.mark(f'M{fmt(x1)} {fmt(y1)}L{fmt(x2)} {fmt(y2)}', **kw)
 
-    def path(self, d, **kw):
-        return self.mark(d, **kw)
-
     def plus(self, x, y, s, **kw):
         return self.mark(f'M{fmt(x - s)} {fmt(y)}H{fmt(x + s)}M{fmt(x)} {fmt(y - s)}V{fmt(y + s)}', **kw)
 

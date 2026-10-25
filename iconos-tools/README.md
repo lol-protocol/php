@@ -10,15 +10,18 @@ README para qué iconos tiene cada uno y cómo usarlos) y la galería compartida
 - `genealogia.py` / `biblioteca.py` / `pos.py`: definen cada icono una sola vez
   (forma, color, variantes).
 - `lib.py` / `kit.py`: piezas comunes a los sets (primitivas SVG, paleta,
-  composición).
+  composición, y `catalog()`, el registro de iconos que usa cada módulo de set).
 - `comunes.py`: los iconos que se llaman igual en los dos sets (`ui_profile`,
   `ui_menu`, `action_filter`...), definidos una vez y que los dos sets incluyen,
   para que no se separen.
 - `catalogo.py`: lo que comparten el generador y el validador (variantes,
-  prefijos que admite cada set y etiqueta de cada prefijo en la galería).
+  prefijos que admite cada set y etiqueta de cada prefijo en la galería). Los
+  grupos de cada set salen en la galería en el orden de sus prefijos.
 - `build.py`: escribe los tres sets y `galeria-iconos.html` a partir de las
   definiciones. Genera y comprueba todo (nombres repetidos, prefijos sin
-  etiqueta) antes de borrar nada: si falla, los sets quedan como estaban.
+  etiqueta o que el set no admite, y que `build.SETS` y `catalogo.PREFIXES`
+  listen los mismos sets) antes de borrar nada: si falla, los sets quedan
+  como estaban.
 - `validate.py`: comprueba las reglas de abajo.
 - `similares.py`: busca iconos casi indistinguibles a 24 px dentro de un
   mismo set.
@@ -40,6 +43,8 @@ pip install -r iconos-tools/requirements.txt   # solo para similares.py
 python3 iconos-tools/similares.py  # busca iconos casi indistinguibles a 24 px
 ```
 
+Hace falta Python 3.10 o superior (la CI usa 3.13).
+
 `validate.py` comprueba que cada SVG esté bien formado, mida 64x64 y no
 contenga texto; que las tres variantes (`color/`, `lineas/`, `gris/`) tengan
 los mismos archivos y formas; que `gris/` no tenga colores cromáticos y
@@ -50,7 +55,13 @@ y todo id lo use algo; que ningún trazo, círculo ni rectángulo sin girar qued
 a menos de 1 unidad del borde del lienzo (cuenta también lo que un arco abulta
 entre sus extremos); y que todo prefijo de `catalogo.PREFIXES` tenga etiqueta
 en `catalogo.GROUPS`; y que un nombre que esté en los dos sets sea idéntico en
-ambos (si no, va en `comunes.py`).
+ambos (si no, va en `comunes.py`). En `lineas/`, además, cada clase `ic-<tono>`
+debe tener su regla del `<style>` y esa regla debe volver al mismo color que el
+atributo `stroke` (si no, un navegador y `resvg` dibujarían colores distintos).
+Y comprueba lo que se desfasa fuera de los SVG: que los números de cada
+README de set (iconos, archivos y tabla por prefijo) y los de su fila del
+README raíz sean los de los iconos que hay, y que `iconos.yml` corra y
+compare cada set de `catalogo.PREFIXES`.
 
 `similares.py` dibuja la variante `gris` de cada icono a 24x24 y compara
 todos los pares de un mismo set; falla si dos se diferencian en menos de 1,2
@@ -87,6 +98,17 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Seis detalles:
   que no sabe resolver: con el `@supports` ignora el bloque y usa el atributo, y el dibujo sale igual que antes.
 - Las coordenadas llevan dos decimales (`fmt`). Con uno, el redondeo de los extremos de un arco
   de 1,5 de radio se notaba al ampliar.
+
+## Añadir un set
+
+1. Un módulo `<set>.py` con `ICONS, reg, new = catalog()` (ver `pos.py`) y sus iconos.
+2. Sus prefijos en `catalogo.PREFIXES` y la etiqueta de cada uno en `catalogo.GROUPS`.
+3. El set en `build.SETS`, con el mismo orden y la misma carpeta que en `PREFIXES`.
+4. La carpeta en `.github/workflows/iconos.yml`: en los filtros de rutas de `push` y de
+   `pull_request`, y en el `git status` que detecta lo que `build.py` cambia.
+5. El `README.md` del set, su fila en el README raíz y su carpeta en la tabla de `CLAUDE.md`.
+
+`build.py` y `validate.py` fallan si faltan el 2, el 3, el 4 o los números del 5.
 
 ## CI
 

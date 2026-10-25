@@ -5,7 +5,7 @@
 libros con lomo ni lupas con mango), así que no dependen del idioma. 453
 archivos: 3 variantes × 151 iconos.
 
-Para verlos todos, abrí `galeria-iconos.html` desde la raíz del repositorio.
+Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
 ## Variantes
 

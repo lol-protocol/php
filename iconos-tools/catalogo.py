@@ -9,7 +9,7 @@ PREFIXES = {
     'iconos-pos': ('catalog', 'order', 'account'),
 }
 
-# etiqueta de cada prefijo en la galería, en el orden en que aparecen sus grupos
+# etiqueta de cada prefijo en la galería (los grupos de cada set salen en el orden de sus PREFIXES, no en el de aquí)
 GROUPS = {
     'person': 'Personas y parentescos',
     'relationship': 'Relaciones',

@@ -4,19 +4,10 @@ Si cada set los dibujara por su cuenta acabarían distintos (ya pasó con ui_pro
 los dos sets a la vez esperaría el mismo dibujo. validate.py comprueba que cualquier nombre que esté en los dos
 sets sea idéntico en ambos.
 """
-from kit import tile
-from lib import Block, Disc, Icon, fmt
+from kit import catalog, tile
+from lib import Block, Disc, fmt
 
-ICONS = []
-
-
-def reg(ic):
-    ICONS.append(ic)
-    return ic
-
-
-def new(stem):
-    return reg(Icon(stem))
+ICONS, reg, new = catalog()
 
 
 reg(tile('ui_calendar', 'red', lambda ic, x, y: [ic.dot(x - 10 + 10 * (i % 3), y - 9.5 + 9.5 * (i // 3), 2, **({'tone': '#FDE047'} if i == 4 else {})) for i in range(9)]))
@@ -32,10 +23,11 @@ def _sliders(ic, x, y):
 reg(tile('ui_settings', 'ink', _sliders))
 reg(tile('ui_menu', 'slate', lambda ic, x, y: ic.mark(f'M{fmt(x - 9.5)} {fmt(y - 7.5)}h19M{fmt(x - 9.5)} {fmt(y)}h19M{fmt(x - 9.5)} {fmt(y + 7.5)}h19', w=3)))
 
-# el yo del árbol genealógico: un disco con un punto (sin figura humana, como pide el estilo)
+# el yo del árbol genealógico: un disco grande con un punto (sin figura humana, como pide el estilo). Sus medidas son
+# propias (radio 16,5 y punto de 5,1): no siguen las de los nodos de genealogia.py, que son más pequeños
 ic = new('ui_profile')
-ic.solid(Disc(31, 30, 15 * 1.1), 'ink', d=4)
-ic.dot(31, 30, 15 * 0.34)
+ic.solid(Disc(31, 30, 16.5), 'ink', d=4)
+ic.dot(31, 30, 5.1)
 
 ic = new('action_filter')
 for x, y, w in ((8, 11, 46), (15, 25, 32), (22, 39, 18)):

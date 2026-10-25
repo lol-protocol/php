@@ -11,14 +11,14 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.84" cy="41.64" rx="19.17" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="31.84" cy="35.64" rx="19.17" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M12.38 34.84L13.52 36.36A6 6 0 0 0 23.12 29.16L21.98 27.64A6 6 0 0 0 12.38 34.84Z" fill="#08564F"/><circle cx="17" cy="31" r="6" fill="url(#grad_account_addresses_teal)"/></g>
-    <g><path d="M36.78 34.04L38.28 36.04A8 8 0 0 0 51.08 26.44L49.58 24.44A8 8 0 0 0 36.78 34.04Z" fill="#883307"/><circle cx="43" cy="29" r="8" fill="url(#grad_account_addresses_orange)"/></g>
+    <g><path d="M12.38 28.84L13.52 30.36A6 6 0 0 0 23.12 23.16L21.98 21.64A6 6 0 0 0 12.38 28.84Z" fill="#08564F"/><circle cx="17" cy="25" r="6" fill="url(#grad_account_addresses_teal)"/></g>
+    <g><path d="M36.78 28.04L38.28 30.04A8 8 0 0 0 51.08 20.44L49.58 18.44A8 8 0 0 0 36.78 28.04Z" fill="#883307"/><circle cx="43" cy="23" r="8" fill="url(#grad_account_addresses_orange)"/></g>
   </g>
   <g class="marks">
-    <path d="M9.5 45a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0Z" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M33 45a10 10 0 1 0 20 0a10 10 0 1 0 -20 0Z" fill="none" stroke="#EA580C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.5 39a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0Z" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M33 39a10 10 0 1 0 20 0a10 10 0 1 0 -20 0Z" fill="none" stroke="#EA580C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>
