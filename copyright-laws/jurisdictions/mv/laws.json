@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "MV",
+    "country_name": "Maldives",
+    "region": "asia_pacific",
+    "law_name": "Copyright and Related Rights Act (Law No. 23/2010), as amended by first amendment ratified 10 December 2024",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (extended from 50 years by the 2024 amendment; joint works from last surviving author)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Educational and research exceptions introduced by 2024 amendment (unconfirmed)",
+    "registration_required": "No (registration is voluntary)",
+    "enforcement_body": "Ministry of Economic Development and Trade (Maldives Intellectual Property Office under Act No. 13/2025) (unconfirmed)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/3140",
+    "notes": "Berne in force 22 Nov 2025; WCT/WPPT not confirmed; amendment effective three months after gazette publication",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.ifacca.org/news/2024/12/10/president-ratifies-first-amendment-copyright-and-r/",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/3140",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://gpg-pdf.chambers.com/doing-business-in-2025/496/",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/3140",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "fair_use_exceptions": {
+        "url": "https://atolltimes.mv/post/news/10624",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "registration_required": {
+        "url": "https://atolltimes.mv/post/news/10624",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.lysaght.co.uk/blog-home/maldives-prepares-for-a-new-era-of-trade-mark-protection-in-2026",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://trade.gov.mv/wp-content/uploads/Berne-Convention-Press-Statement-English-letterhead-v5.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

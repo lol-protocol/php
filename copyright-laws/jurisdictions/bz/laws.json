@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "BZ",
+    "country_name": "Belize",
+    "region": "americas",
+    "law_name": "Copyright Act, Cap. 252 (Revised Edition 2020)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 10(1); anonymous works 50 years from publication, s. 10(2); sound recordings and films s. 11)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (optional registration system may be provided by regulations)",
+    "enforcement_body": "Belize Intellectual Property Office (BELIPO)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
+    "notes": "TRIPS/WCT/WPPT not confirmed in searches; BELIPO as copyright body inferred from its copyright page",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://www.belipo.bz/copyright/",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "registration_required": {
+        "url": "https://www.belipo.bz/wp-content/uploads/2024/01/Cap_252_Copyright_Act-Revised-2020.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.belipo.bz/copyright/",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://wipo.int/wipolex/zh/treaties/notifications/details/treaty_berne_215",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

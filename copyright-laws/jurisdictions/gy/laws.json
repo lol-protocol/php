@@ -1,0 +1,61 @@
+[
+  {
+    "country_code": "GY",
+    "country_name": "Guyana",
+    "region": "americas",
+    "law_name": "Copyright Act 1956 (Cap. 74), UK Copyright Act 1956 applied to Guyana by the Copyright (British Guiana) Order 1966",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (photographs, audiovisual and posthumous works: 50 years from publication)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Deeds and Commercial Registries Authority, Ministry of Legal Affairs (DCRA) - WIPO-listed competent IP administration",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/9980",
+    "notes": "Term from Wikimedia Commons summary, statute section not seen; WCT/WPPT/TRIPS not confirmed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9980",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Guyana",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Guyana",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/en/web/country-profiles/contact?code=GY",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://wipo.int/wipolex/en/treaties/notifications/details/treaty_berne_159",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

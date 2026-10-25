@@ -1,0 +1,56 @@
+[
+  {
+    "country_code": "GD",
+    "country_name": "Grenada",
+    "region": "americas",
+    "law_name": "Copyright Act, 2011 (Act No. 21 of 2011)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 21(1); joint works from death of last surviving author; collective, audiovisual and anonymous works 50 years from publication or making)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/15753",
+    "notes": "Berne in force 22 Sep 1998 (WIPO notification 196); WTO 22 Feb 1996 per Commons; enforcement body not identified; WCT/WPPT not confirmed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/15753",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/15753",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Grenada.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Grenada.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
