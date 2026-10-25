@@ -35,6 +35,14 @@ class HttpSecurityHeaders
     {
         $isSecure = self::isHttps();
 
+        // What PHP's session cache limiter used to send, and only on requests that started a session. Now it
+        // is sent on all of them: pages are not cacheable, so a withdrawal takes effect at once, and a page
+        // the visitor is refused is no-store like the rest (see AccessPolicy::ocultar()). The owner's
+        // responses replace Cache-Control with `private, no-store` (AccessPolicy::marcarPrivada()).
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('Expires: Thu, 19 Nov 1981 08:52:00 GMT');
+
         header('X-Content-Type-Options: nosniff');
         header('X-Frame-Options: DENY');
         header('X-XSS-Protection: 1; mode=block');

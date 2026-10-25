@@ -8,10 +8,18 @@ on:
     branches: ['**']
     paths: ['vps-setup/**', '.github/workflows/vps-setup.yml']
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
 jobs:
   scripts:
     name: Scripts (syntax, ShellCheck, bats)
     runs-on: ubuntu-24.04   # = version del VPS objetivo (ubuntu-latest pasa a 26.04 con PHP 8.5)
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -39,6 +47,7 @@ jobs:
   real-tools:
     name: Real tools (nginx, sshd, BIND, fail2ban, certbot)
     runs-on: ubuntu-24.04   # = version del VPS objetivo (ubuntu-latest pasa a 26.04 con PHP 8.5)
+    timeout-minutes: 15
 
     steps:
       - name: Checkout

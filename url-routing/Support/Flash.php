@@ -9,6 +9,7 @@ final class Flash
 {
     public function set(string $mensaje): void
     {
+        SessionManager::getInstance()->ensureStarted();
         $_SESSION['flash'] = $mensaje;
     }
 

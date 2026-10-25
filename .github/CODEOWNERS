@@ -1,0 +1,4 @@
+# Quién revisa cada cambio. GitHub pide la revisión solo cuando el PR sale de borrador, así que no
+# estorba a las sesiones que abren PR en borrador (CLAUDE.md). Si hay más de una persona, se afina
+# por carpeta con líneas como «/vps-setup/ @usuario» (la última que coincide es la que manda).
+*  @michelangelo-delgadillo

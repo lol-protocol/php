@@ -127,7 +127,7 @@ curl -s -o /dev/null -w '%{http_code}\n' -u x:$T https://$D/0/  # 200 (404 si fa
 curl -sI -u x:$T https://$D/0/ | grep -i -E 'cache-control|vary|set-cookie|strict-transport'
 ```
 
-Debe verse `Cache-Control: private, no-store` y `Vary: Authorization`: lo que depende de quién pregunta no se guarda en cachés compartidas. Por HTTPS, la cookie de sesión lleva `secure; HttpOnly; SameSite=Lax` y llega `Strict-Transport-Security`; por HTTP plano, la cookie sale sin `secure`.
+Debe verse `Cache-Control: private, no-store` y `Vary: Authorization`: lo que depende de quién pregunta no se guarda en cachés compartidas. Por HTTPS, la cookie de sesión lleva `secure; HttpOnly; SameSite=Lax` y llega `Strict-Transport-Security`; por HTTP plano, la cookie sale sin `secure`. Quien solo lee páginas no recibe cookie (`curl -sI https://$D/ | grep -i set-cookie` no debe imprimir nada): ver [`ACCESO.md`](./ACCESO.md).
 
 Son dos preguntas distintas. **`/health`**: ¿responde PHP? No toca la base, así que sigue en `ok` aunque la base esté caída (es lo que quiere una sonda de «está vivo»). **`/ready`**: ¿puede servir este sitio? Pregunta a la base del sitio que elige el `Host` y si todas las migraciones están aplicadas; si algo falla da **503** y dice qué (`"db":"down"` o `"migrations":"pending"`), sin más detalle: la razón queda en `LOG_FILE`. Es lo que atrapa un despliegue que olvidó `bin/migrate.php`. Apunta ahí tu monitor, una vez por dominio. Cuenta para el limitador y no abre sesión.
 

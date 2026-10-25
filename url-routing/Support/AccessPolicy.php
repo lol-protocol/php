@@ -186,7 +186,13 @@ final class AccessPolicy
         }
 
         $token = self::token();
-        if (!self::tokenValido($token) || session_status() !== PHP_SESSION_ACTIVE || !self::traeCredenciales()) {
+        if (!self::tokenValido($token) || !self::traeCredenciales()) {
+            return;
+        }
+
+        // Someone who arrives with the credentials and no cookie has no session yet: this is where it starts.
+        SessionManager::getInstance()->ensureStarted();
+        if (session_status() !== PHP_SESSION_ACTIVE) {
             return;
         }
 

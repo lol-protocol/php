@@ -26,6 +26,7 @@ jobs:
   listado-paises:
     name: "Listado-paises: CSV válidos, tablas al día y pruebas"
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
