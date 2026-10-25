@@ -454,6 +454,16 @@ final class ApplicationTest extends AppTestCase
         $this->assertSame(0, (new BookmarkStore($this->dir . '/almacen/marcalibros'))->count());
     }
 
+    public function testInvisibleCharactersCannotHideAPersonalDataFromTheReview(): void
+    {
+        $app = $this->app();
+        foreach (["Escríbeme a juan.perez@gma\u{200B}il.com", "Fulano es un esta\u{200B}fador"] as $label) {
+            $response = $this->post($app, '/crear', ['fuente' => 'subida', 'nombre' => $label], $this->upload());
+            $this->assertSame(422, $response->status, json_encode($label));
+        }
+        $this->assertSame(0, (new BookmarkStore($this->dir . '/almacen/marcalibros'))->count());
+    }
+
     public function testTheSavedImagesHaveTheTwoSizes(): void
     {
         $app = $this->app();

@@ -157,6 +157,21 @@ final class BookmarkStoreTest extends AppTestCase
         $this->assertSame([], array_values(array_diff(scandir($this->bookmarks) ?: [], ['.', '..'])));
     }
 
+    public function testPurgeStrayCleansLeftoversButNeverASavedBookmark(): void
+    {
+        $store = $this->store();
+        $store->save($this->bookmark('aaaaaaaaaaaaaaaa'), $this->now - 3650 * 86400);
+        file_put_contents("$this->bookmarks/mp-bbbbbbbbbbbbbbbb.jpg", 'x');
+        file_put_contents("$this->bookmarks/.tmp-viejo", 'x');
+        touch("$this->bookmarks/mp-bbbbbbbbbbbbbbbb.jpg", $this->now - 7200);
+        touch("$this->bookmarks/.tmp-viejo", $this->now - 7200);
+
+        $store->purgeStray($this->now);
+        $this->assertNotNull($store->find('mp-aaaaaaaaaaaaaaaa'), 'un marcalibro guardado nunca se borra por viejo');
+        $this->assertFalse(file_exists("$this->bookmarks/mp-bbbbbbbbbbbbbbbb.jpg"));
+        $this->assertFalse(file_exists("$this->bookmarks/.tmp-viejo"));
+    }
+
     public function testPurgeCleansOrphansButKeepsRecentOnes(): void
     {
         $store = $this->store();

@@ -18,7 +18,7 @@ use Marcalibros\RejectionReason;
  * devuelve una Response, así se prueba sin servidor.
  *
  * Quien tiene el enlace de un marcalibro propio puede verlo, descargarlo y
- * borrarlo; nadie más puede encontrarlo. Se borran solos pasados unos días.
+ * borrarlo; nadie más puede encontrarlo. Si se configuró un plazo (MARCALIBROS_RETENTION_DAYS), se borran solos al vencer; por defecto no caducan.
  */
 final class Application
 {
@@ -527,7 +527,9 @@ final class Application
         $values = $this->formValues($request);
         try {
             $crop = CropSettings::fromArray($request->post);
-            $label = $request->field('nombre');
+            // Se revisa el texto ya limpio, que es el que se guarda: con el crudo, un carácter invisible
+            // en medio de una palabra o de un correo le ganaba al filtro.
+            $label = Label::clean($request->field('nombre'));
             if (($problem = $this->labels->problem($label)) !== null) {
                 return $this->renderCreate($values, $problem, 422);
             }

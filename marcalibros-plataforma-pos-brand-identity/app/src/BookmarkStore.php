@@ -99,7 +99,7 @@ final class BookmarkStore
 
     /**
      * Borra los marcalibros creados hace más de $seconds segundos, y también los
-     * archivos que quedaron sueltos (imágenes sin datos o temporales de más de una hora).
+     * archivos que quedaron sueltos (ver purgeStray).
      *
      * @return int Marcalibros borrados.
      */
@@ -116,6 +116,17 @@ final class BookmarkStore
                 $deleted++;
             }
         }
+        $this->purgeStray($now);
+        return $deleted;
+    }
+
+    /**
+     * Borra lo que quedó suelto de una subida interrumpida: imágenes sin datos y temporales,
+     * de más de una hora. No toca ningún marcalibro guardado, así que sirve también cuando
+     * los marcalibros no caducan.
+     */
+    public function purgeStray(int $now): void
+    {
         foreach (glob("$this->directory/mp-*.jpg") ?: [] as $file) {
             $id = explode('@', basename($file, '.jpg'))[0];
             if (self::isValidId($id) && !is_file($this->metaPath($id)) && (int) @filemtime($file) < $now - 3600) {
@@ -127,7 +138,6 @@ final class BookmarkStore
                 @unlink($file);
             }
         }
-        return $deleted;
     }
 
     private function metaPath(string $id): string
