@@ -107,6 +107,15 @@ El idioma se toma del subdominio de 3 letras; si no hay uno válido, cae a
 
 Con `TEST_PG_DSN` definida corren además contra PostgreSQL (ver `DATABASE.md`).
 
+### Análisis estático
+
+```bash
+phpstan analyse --no-progress
+```
+
+La configuración está en `phpstan.neon.dist` (nivel 5, analizando como PHP 8.1, el piso de `composer.json`).
+Lo corre la CI en el job `analisis-estatico`. Si no tienes PHPStan instalado, `composer global require phpstan/phpstan:^2.1`.
+
 ## 🔍 Ejemplos de URLs
 
 ### Genealogía

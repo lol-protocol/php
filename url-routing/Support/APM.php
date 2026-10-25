@@ -107,9 +107,7 @@ class APM
 
         if (count($this->transactions) > 0) {
             $lastTransaction = array_key_last($this->transactions);
-            if ($lastTransaction !== null) {
-                $this->transactions[$lastTransaction]['metadata']['metrics'][$name] = $value;
-            }
+            $this->transactions[$lastTransaction]['metadata']['metrics'][$name] = $value;
         }
     }
 
