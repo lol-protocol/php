@@ -1,0 +1,66 @@
+[
+  {
+    "country_code": "KM",
+    "country_name": "Comoros",
+    "region": "middle_east_africa",
+    "law_name": "Law of 11 March 1957 on Literary and Artistic Property (French law applied in Comoros); Bangui Agreement (OAPI) since 2013",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 21 of 1957 law); anonymous, collective and posthumous works 50 years from publication",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8839",
+    "notes": "Berne since 17 Apr 2005; Bangui Agreement since 25 May 2013 (Commons). Unclear whether OAPI Annex VII (possibly life + 70) now overrides the 1957 term; not confirmed.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8839",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8839",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Comoros.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8839",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8839",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Comoros.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

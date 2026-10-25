@@ -1,0 +1,61 @@
+[
+  {
+    "country_code": "PW",
+    "country_name": "Palau",
+    "region": "asia_pacific",
+    "law_name": "Republic of Palau Copyright Act of 2003 (RPPL No. 6-38)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 16(a)); joint works life of last surviving author + 50 years (s. 16(b)); anonymous, pseudonymous, work-for-hire, audiovisual and collective works 75 years from publication or 100 years from creation, whichever expires first (s. 16(c)-(d))",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/201049",
+    "notes": "In force 26 Nov 2003; also protects performers. Commons (2018) said Palau was not then in Berne or WTO; may be outdated. Term from Commons summary.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8122",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8122",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Palau.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8122",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8122",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

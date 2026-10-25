@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "NR",
+    "country_name": "Nauru",
+    "region": "asia_pacific",
+    "law_name": "Copyright Act 2019 (Act No. 17 of 2019), as amended by the Revised Written Laws Act 2021",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 18 'Duration of copyright'); government works 100 years from creation (Commons)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Moral rights recognized (s. 13)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Technological protection measures (s. 41) and rights-management information (s. 42) provisions in Part 7 on circumvention",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/21701",
+    "notes": "In effect 12 Jul 2019. Berne member from 11 May 2020 (Commons). Term figure is from the Commons summary, not the s. 18 text.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21701",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21701",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Nauru.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21701",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21701",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21701",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "digital_protection": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21701",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Nauru.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
