@@ -67,6 +67,7 @@ class PagesTest extends TestCase
             'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
             'DB_DSN_POS' => 'sqlite:' . self::$dir . '/pos.sqlite',
             'LOG_FILE' => self::$dir . '/app.log',
+            'SITEMAP_ESTADO_DIR' => self::$dir . '/sitemaps',
             'PATH' => (string)getenv('PATH'),
         ];
         if ($tokenConfigurado !== null) {
@@ -315,6 +316,55 @@ class PagesTest extends TestCase
         foreach (['/sitemap/10/2.xml', '/sitemap/99/1.xml', '/sitemap/10/0.xml', '/sitemap/10/1.txt', '/sitemap/10.xml'] as $uri) {
             $this->assertSame(404, $this->get(self::GENEALOGIA, $uri)[0], $uri);
         }
+    }
+
+    public function testTheIndexDatesEachPartOnceItHasBeenServed(): void
+    {
+        $this->get(self::GENEALOGIA, '/sitemap/7/1.xml');
+        [, $indice] = $this->get(self::GENEALOGIA, '/sitemap.xml');
+
+        $this->assertMatchesRegularExpression(
+            '#<loc>http://tudominio\.local/sitemap/7/1\.xml</loc><lastmod>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z</lastmod>#',
+            $indice
+        );
+        [, $colecciones] = $this->get(self::GENEALOGIA, '/sitemap/7/1.xml');
+        $this->assertStringNotContainsString('<lastmod>', $colecciones, 'the pages carry no date: the tables keep none');
+    }
+
+    /** CLI's $_SERVER holds the environment, so a request header goes in as an HTTP_* variable. */
+    public function testAPartTheCrawlerAlreadyHasIsA304WithNoBody(): void
+    {
+        [$codigo, $parte] = $this->get(self::POS, '/sitemap/8/1.xml');
+        $this->assertSame(200, $codigo);
+        $etag = '"' . substr(hash('sha256', $parte), 0, 32) . '"';
+
+        $this->assertSame([304, ''], array_slice($this->get(self::POS, '/sitemap/8/1.xml', entorno: ['HTTP_IF_NONE_MATCH' => $etag]), 0, 2));
+        $this->assertSame([304, ''], array_slice($this->get(self::POS, '/sitemap/8/1.xml', entorno: ['HTTP_IF_NONE_MATCH' => "W/{$etag}"]), 0, 2));
+        $this->assertSame([200, $parte], array_slice($this->get(self::POS, '/sitemap/8/1.xml', entorno: ['HTTP_IF_NONE_MATCH' => '"otra"']), 0, 2));
+    }
+
+    public function testAPartUnchangedSinceTheIndexDateIsA304(): void
+    {
+        $this->get(self::POS, '/sitemap/7/1.xml');
+        [, $indice] = $this->get(self::POS, '/sitemap.xml');
+        preg_match('#/sitemap/7/1\.xml</loc><lastmod>([^<]+)</lastmod>#', $indice, $m);
+        $this->assertNotEmpty($m, $indice);
+        $fecha = gmdate('D, d M Y H:i:s', (int)strtotime($m[1])) . ' GMT';
+
+        $this->assertSame(304, $this->get(self::POS, '/sitemap/7/1.xml', entorno: ['HTTP_IF_MODIFIED_SINCE' => $fecha])[0]);
+        $this->assertSame(200, $this->get(self::POS, '/sitemap/7/1.xml', entorno: ['HTTP_IF_MODIFIED_SINCE' => 'Mon, 01 Jan 2001 00:00:00 GMT'])[0]);
+    }
+
+    public function testAnUnwritableStateFolderStillServesTheSitemaps(): void
+    {
+        file_put_contents(self::$dir . '/no-es-carpeta', 'x');
+        $entorno = ['SITEMAP_ESTADO_DIR' => self::$dir . '/no-es-carpeta/sitemaps'];
+
+        [$codigo, $parte] = $this->get(self::GENEALOGIA, '/sitemap/l/1.xml', entorno: $entorno);
+        $this->assertSame(200, $codigo);
+        $this->assertStringContainsString('<loc>http://tudominio.local/mx/jal/gdl/</loc>', $parte);
+        [, $indice] = $this->get(self::GENEALOGIA, '/sitemap.xml', entorno: $entorno);
+        $this->assertStringNotContainsString('<lastmod>', $indice, 'no date rather than a false one');
     }
 
     public function testAPostIsNeverRedirected(): void
