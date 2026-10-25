@@ -80,6 +80,21 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 
 **La hora depende también de quién limpia las sesiones.** La sesión vive en un archivo de PHP, y quien lo borra la cierra antes de tiempo. La app le pide a PHP `session.gc_maxlifetime = 3600` al abrirla, y eso basta donde PHP limpia por su cuenta (la configuración que trae PHP por omisión). En Debian y Ubuntu, que es lo que arma [`vps-setup/`](../../vps-setup/README.md), PHP no limpia (`session.gc_probability = 0`): un cron (`/etc/cron.d/php`) borra los archivos de sesión que llevan más de `session.gc_maxlifetime` **del `php.ini`** sin tocarse, 1440 segundos (24 minutos) si nadie lo cambió, y no mira lo que la app pida en ejecución. Para que valga la hora hay que subirlo ahí (`session.gc_maxlifetime = 3600` en `/etc/php/8.3/fpm/php.ini`) y recargar PHP-FPM. Si no se sube, la sesión se pierde a los 24 minutos sin actividad: falla cerrado, el propietario vuelve a ser visitante hasta que escriba la clave otra vez.
 
+## Cuándo se abre una sesión
+
+El sitio solo pone su cookie de sesión (`PHPSESSID`) a quien la necesita. **Quien solo lee páginas no recibe ninguna cookie, y el servidor no guarda nada de esa visita**:
+
+| Quién | ¿Cookie? |
+|---|---|
+| Un visitante que lee páginas (personas, árboles, búsqueda, apellidos, un 404) | No |
+| Una página con formulario (`/r/{id}/`, el carrito y el pago del POS, las pantallas del propietario) | Sí: guarda el token CSRF que valida el envío |
+| El propietario que entra con la clave | Sí: es la sesión de la que habla la sección anterior |
+| Quien vuelve con la cookie que ya tenía | Se retoma la sesión que tenía |
+
+Antes se abría una sesión en **cada** petición. Un buscador no devuelve la cookie, así que cada una de sus visitas dejaba un archivo en el servidor, y todo visitante recibía una cookie (relevante para la pregunta 29 de [`PREGUNTAS-PARA-ABOGADO.md`](../../PREGUNTAS-PARA-ABOGADO.md)). Lo que no cambió: **ninguna página se puede guardar en una caché**. PHP mandaba `Cache-Control: no-store` solo porque abría la sesión, y ahora lo manda siempre la aplicación (`HttpSecurityHeaders`); es a propósito, para que un retiro se vea en la petición siguiente y no cuando venza una caché. Cachear páginas públicas sería otra decisión, con ese costo.
+
+Un límite: quien envía a mano una cookie `PHPSESSID` con cualquier valor sí abre una sesión (PHP crea una nueva en vez de aceptar un id que no conoce). Es un envío deliberado, no el de un lector.
+
 ## Despliegue
 
 La guía paso a paso, con las comprobaciones, está en [`DESPLIEGUE.md`](./DESPLIEGUE.md). Lo que importa para el acceso:
