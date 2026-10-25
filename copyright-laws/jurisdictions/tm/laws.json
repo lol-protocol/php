@@ -1,0 +1,56 @@
+[
+  {
+    "country_code": "TM",
+    "country_name": "Turkmenistan",
+    "region": "asia_pacific",
+    "law_name": "Law of Turkmenistan No. 257-IV of January 10, 2012 on Copyright and Related Rights (as amended by Law No. 668-V of 25 Nov 2017)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 23(1), subject to exceptions in Art. 23(2)-(5))",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/11443",
+    "notes": "Entered into force 20 Jan 2012; WIPO Lex marks the 2012 text as superseded by an amended version (2017, adds Art. 8-1 on registration); Berne Paris Act accession 29 Feb 2016, in force 29 May 2016; WCT/WPPT/TRIPS unconfirmed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/11443",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/11443",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/11443",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/wipolex/en/treaties/parties/remarks/TM/15",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "country_code": "AG",
+    "country_name": "Antigua and Barbuda",
+    "region": "americas",
+    "law_name": "Copyright Act, 2003 (Act No. 22 of 2003)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 10(1), to end of calendar year; anonymous works s. 10(2) 50 years from making or publication; joint works s. 10(5) from death of last surviving author)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Antigua and Barbuda Intellectual Property and Commerce Office (ABIPCO)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/5908",
+    "notes": "Berne in force 17 Mar 2000; TRIPS/WCT/WPPT not confirmed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5908",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5908",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Antigua_and_Barbuda.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/en/web/country-profiles/contact?code=AG",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/treaties/en/notifications/berne/treaty_berne_214.html",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

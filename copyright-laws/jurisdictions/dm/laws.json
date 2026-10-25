@@ -1,0 +1,61 @@
+[
+  {
+    "country_code": "DM",
+    "country_name": "Dominica",
+    "region": "americas",
+    "law_name": "Copyright Act, 2003 (Act No. 5 of 2003)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (s. 11(1); joint works 70 years after death of last surviving author, s. 11(2))",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Companies and Intellectual Property Office (CIPO)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/1189",
+    "notes": "Act in force 15 Nov 2003 (Commencement Order SRO 47 of 2003); Berne in force 7 Aug 1999; life+70 from Commons summary only, verify; TRIPS/WCT/WPPT not confirmed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/1189",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.cipo.gov.dm/intellectual-property/copyright",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Dominica.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.cipo.gov.dm/intellectual-property/copyright",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/treaties/en/notifications/berne/treaty_berne_205.html",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

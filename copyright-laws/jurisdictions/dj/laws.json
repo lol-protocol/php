@@ -1,0 +1,61 @@
+[
+  {
+    "country_code": "DJ",
+    "country_name": "Djibouti",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 154/AN/06 of July 23, 2006 on the Protection of Copyright and Related Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 12; cinematographic works 50 years (Art. 15); photographs and applied art 25 years from creation (Art. 16))",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Djibouti Office of Copyright and Related Rights (Office Djiboutien des Droits d'Auteur et de Droit Voisin, ODDA)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/fr/legislation/details/9086",
+    "notes": "Djibouti is NOT an OAPI member (absent from the 17-member list); Berne accession 13 May 2002; WTO member since 1995 per US Copyright Office circular; WCT/WPPT not confirmed; Law 114/AN/96 repealed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/fr/legislation/details/9086",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/fr/legislation/details/9086",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Djibouti.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/wipolex/edocs/lexdocs/laws/fr/dj/dj016fr.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_berne_223",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
