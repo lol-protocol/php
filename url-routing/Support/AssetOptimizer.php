@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+/**
+ * @deprecated Sin uso desde que se comprobó (2026-10-25): ningún código del repositorio llama a esta
+ *             clase, ni sus variables ASSET_MINIFY y ASSET_LAZY_LOAD tienen efecto en otra parte. Se
+ *             conserva como referencia, no se borra.
+ */
 class AssetOptimizer
 {
     private static ?AssetOptimizer $instance = null;

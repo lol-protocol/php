@@ -6,9 +6,12 @@ namespace App\Support;
 
 class Logger
 {
+    /** From the most to the least verbose: LOG_LEVEL keeps the entries at that level and above. */
+    private const NIVELES = ['DEBUG' => 0, 'INFO' => 1, 'WARNING' => 2, 'ERROR' => 3, 'CRITICAL' => 4];
+
     private static ?Logger $instance = null;
     private string $logFile;
-    private string $logLevel;
+    private int $minimo;
     private array $batch = [];
     private int $batchSize = 100;
     private float $lastFlush = 0;
@@ -17,7 +20,8 @@ class Logger
     private function __construct()
     {
         $this->logFile = getenv('LOG_FILE') ?: sys_get_temp_dir() . '/app.log';
-        $this->logLevel = getenv('LOG_LEVEL') ?: 'INFO';
+        // An unknown or empty LOG_LEVEL falls back to INFO instead of silencing the log.
+        $this->minimo = self::NIVELES[strtoupper((string)getenv('LOG_LEVEL'))] ?? self::NIVELES['INFO'];
         $this->lastFlush = microtime(true);
         register_shutdown_function([$this, 'flush']);
     }
@@ -57,6 +61,10 @@ class Logger
 
     private function log(string $level, string $message, array $context = []): void
     {
+        if (self::NIVELES[$level] < $this->minimo) {
+            return;
+        }
+
         $timestamp = date('Y-m-d H:i:s');
         $contextStr = !empty($context) ? ' | ' . json_encode($context) : '';
         $logMessage = "[{$timestamp}] [{$level}] {$message}{$contextStr}\n";

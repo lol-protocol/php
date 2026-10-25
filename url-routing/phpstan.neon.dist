@@ -1,0 +1,35 @@
+# Analisis estatico: phpstan analyse. Lo corre la CI (job `analisis-estatico` de pruebas-url-routing.yml).
+#
+# Nivel 5: tipos de argumentos y de retornos, comparaciones que no pueden cambiar, propiedades que
+# nadie lee, metodos y clases que no existen. Los otros proyectos PHP del repo (phone-directory,
+# defamatory-content-review) corren el 6, que ademas pide decir de que son los arrays
+# (`array<string, int>`, `list<...>`); aqui ese nivel da 219 avisos y 198 son solo eso, asi que el 6
+# queda para un cambio aparte, sin mezclarlo con lo que este nivel ya atrapa. Para subirlo:
+# `level: 6` y arreglar o dejar en una linea base lo que salga.
+#
+# Entran el codigo de la aplicacion y los scripts de bin/. Las vistas (views/), las migraciones y las
+# pruebas no: PHPUnit les da ruido (assertIsArray sobre algo que ya se sabe que es array, etc.).
+parameters:
+    level: 5
+    # El piso de composer.json (>=8.1): se analiza como si fuera 8.1 aunque la CI corra en otra version,
+    # asi una funcion o una sintaxis de 8.2 o mas nueva sale como error en vez de romper en un servidor viejo.
+    phpVersion: 80100
+    paths:
+        - Support
+        - Routing
+        - Controllers
+        - Repositories
+        - public
+        - bin
+    # Support/FiltroPedidos.php carga defamatory-content-review en tiempo de ejecucion (la carpeta
+    # hermana, o FILTRO_DIFAMACION_DIR) y, si no esta, sigue sin ella: no es una dependencia de
+    # composer, asi que PHPStan no la ve. Se la damos para que sus clases existan.
+    scanDirectories:
+        - ../defamatory-content-review/src
+    ignoreErrors:
+        # Support/AssetOptimizer.php no lo usa nadie en el repositorio y su cache nunca se lee. Esta marcada
+        # @deprecated y se conserva a proposito (CLAUDE.md: el codigo sin uso no se borra), asi que su
+        # aviso no es un error de quien lo llame.
+        -
+            identifier: property.onlyWritten
+            path: Support/AssetOptimizer.php

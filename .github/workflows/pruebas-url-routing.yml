@@ -95,6 +95,34 @@ jobs:
           php bin/migrate.php pos
           php bin/migrate.php genealogy | grep -q 'sin migraciones pendientes'
 
+  # PHPStan (url-routing/phpstan.neon.dist): tipos, comparaciones que no cambian, propiedades que nadie lee.
+  # Una sola version de PHP basta: la configuracion fija phpVersion en 8.1, el piso de composer.json.
+  analisis-estatico:
+    name: url-routing / análisis estático
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: url-routing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_sqlite, pdo_pgsql, mbstring
+          coverage: none
+          tools: phpstan:2.1
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Static analysis
+        run: phpstan analyse --no-progress
+
   # El despliegue de la guía (docs/DESPLIEGUE.md), de verdad: nginx con deploy/nginx.conf.example y
   # PHP-FPM, con el sitio de genealogia en PostgreSQL y el POS en SQLite. Lo que comprueba es la
   # instalacion (permisos, migraciones, cabeceras, lo que no debe servirse, HTTPS, /ready, el
