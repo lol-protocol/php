@@ -119,6 +119,19 @@ que prometen las secciones 5 y 6 del borrador de
   agregan, nunca se cambian. El log de la aplicación anota el número de pedido y
   la página, nunca quién lo pidió ni qué escribió.
 - **Se deja de nombrar en las demás páginas.** Una persona oculta o retirada pasa a ser, para el visitante, una «Persona privada» en todas las páginas que la nombran (la familia de sus parientes, los árboles, los listados y el GEDCOM): `Privacidad` la trata como a una persona oculta por privacidad (`sqlRetirada()`). Los sucesos en los que participa dejan de verse, y con ellos los registros que los documentan, como pasa con una persona viva. Un suceso o un registro retirado sale también de las listas que lo nombran (`sucesos()` y `registros()`). El propietario lo ve todo.
+- **Contra el abuso.** El formulario no pide cuenta, así que tiene frenos que no
+  guardan quién es el visitante: un tope de pedidos por visitante y por hora
+  (`RETIRO_MAX_POR_HORA`, 3; se cuenta con una huella de la IP en el limitador, no
+  en la base), un tope de pedidos pendientes por página (`RETIRO_MAX_PENDIENTES`, 10;
+  responde 429 con `Retry-After`) y un campo trampa (`sitio_web`, invisible) que
+  descarta al bot dándole la misma respuesta que a una persona.
+- **El filtro marca el texto, nunca lo bloquea.** Al recibir un pedido, el texto
+  pasa por `defamatory-content-review` (`Support/FiltroPedidos.php`, que carga la
+  librería de la carpeta hermana o de `FILTRO_DIFAMACION_DIR`, sin Composer) y lo que
+  encuentra («insulto», «acusación de delito», «dato personal (RUT)»…) queda en
+  `pedidos_retiro.marcas` y se muestra en `/0/3/` como «El filtro encontró». Es un
+  aviso para quien revisa: quien se queja de una acusación suele repetirla, así que
+  bloquearlo perdería reclamos reales. Sin la librería, el pedido se guarda sin marcas.
 - **Avisar y vigilar el plazo.** `bin/pedidos-retiro.php` está hecho para cron,
   que manda por correo lo que un trabajo imprime: lista los pedidos que esperan
   (número, página, motivo y cuánto llevan, **nunca quién lo pidió ni qué
@@ -150,6 +163,10 @@ Esto hace privados los **objetos** que ya se presentaban como privados, oculta a
 - **Un pedido del POS lo ven el propietario y la sesión que lo hizo.** Al confirmar la compra (`/p/3/`), el código de la orden queda en esa sesión; si se pierde la sesión (otro navegador, cookies borradas), quien compró ya no la puede abrir: el enlace solo no basta, a propósito. Como no hay cuentas, la orden queda a nombre de la cuenta fija (`DEFAULT_USER_ID`), así que en `/0/2/` el propietario ve todas las órdenes.
 
 ## Pruebas
+
+- `tests/App/Support/PrivacidadSinAtajosTest.php`: cuenta, archivo por archivo, las veces que el código lee `personas`, `sucesos` o `registros` directamente, y falla si cambia. Una consulta nueva que salte `Privacidad` no pasa sin quedar escrita ahí, con el motivo.
+- `tests/App/Repositories/RetiroRendimientoTest.php`: que preguntar si una persona está retirada use su índice (se comprobó que falla sin él), que una página de la búsqueda no lea el catálogo ni los pedidos, y que la vista completa del visitante siga rápida con 3000 personas y 400 pedidos.
+- `tests/App/Integration/RetiroTest.php` también cubre los frenos (tope por visitante y por página, el campo trampa) y las marcas del filtro.
 
 - `tests/App/Support/AccessPolicyTest.php`: lectura de credenciales (Basic y Bearer), comparación del token, caducidad de la sesión y las dos formas de negar.
 - `tests/App/Support/GedcomExporterTest.php`: fecha completa, solo el año y lugar.
