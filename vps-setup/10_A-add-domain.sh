@@ -37,6 +37,7 @@ done
 [ -n "$DOMAIN" ] || { echo "Uso: $0 <dominio> [opciones] (--help)"; exit 2; }
 require_valid domain "$DOMAIN" "El dominio"
 case "$TYPE" in landing|php|python|tomcat|marcalibros) ;; *) echo "--type debe ser landing, php, python, tomcat o marcalibros (recibido: $TYPE)"; exit 2 ;; esac
+[ "$TYPE" != marcalibros ] || [ -z "$NAME" ] || { echo "--name no aplica a --type marcalibros (la app siempre se llama marcalibros)"; exit 2; }
 [ -n "$NAME" ] || NAME=${DOMAIN//./-}
 EMAIL=${EMAIL:-"admin@$DOMAIN"}
 if [ "$TYPE" = php ] || [ "$TYPE" = python ]; then require_valid name "$NAME" "--name"; fi
