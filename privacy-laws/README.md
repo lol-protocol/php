@@ -110,12 +110,14 @@ Needs PHP with `curl`, `dom`, `mbstring` and `intl` (the last one keeps file nam
 
 ## Database
 
+MySQL 8.0 and MariaDB 10.11 (both are tested in CI).
+
 ```bash
-mysql -u root -p < database_schema.sql      # or: php import_database.php --create-schema
 php import_database.php --all               # schema + import + validation
+php tests/database_check.php                # compares every column of the database with the CSV
 ```
 
-The importer reads `region` straight from the CSV.
+Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `privacy_laws_db` database.** `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV.
 
 ## Data provenance
 
@@ -141,7 +143,7 @@ npm run check:links                # does every reference URL still answer? (--o
 
 The browser tests skip themselves when PHP, Playwright or Chromium is missing; set `E2E_REQUIRED=1` to make that an error. `check:links` exits with 1 on broken links (404/410, a host that no longer exists, a bad certificate); 401/403/429, a 5xx that persists after one retry, timeouts, temporary DNS failures and redirect loops (cookie walls) are only warnings, because many official sites block or throttle automated requests.
 
-CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, and the browser tests, on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
+CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, the browser tests, and the database import (MySQL 8.0 and MariaDB 10.11, compared column by column with the CSV), on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
 
 ## Pending
 

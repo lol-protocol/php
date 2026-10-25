@@ -27,7 +27,7 @@ CREATE TABLE countries (
 CREATE TABLE privacy_laws (
   law_id INT PRIMARY KEY AUTO_INCREMENT,
   country_id INT NOT NULL,
-  law_name VARCHAR(255) NOT NULL,
+  law_name VARCHAR(512) NOT NULL,
   jurisdiction VARCHAR(255) COMMENT 'Regulatory body or authority',
   enactment_date DATE COMMENT 'When law was enacted',
   effective_date DATE COMMENT 'When it became effective',
@@ -37,7 +37,7 @@ CREATE TABLE privacy_laws (
   data_categories TEXT COMMENT 'Types of personal data covered',
   retention_period VARCHAR(255) COMMENT 'Maximum data retention',
   enforcement_authority VARCHAR(255),
-  penalties_range VARCHAR(255) COMMENT 'Fine range or sanctions',
+  penalties_range TEXT COMMENT 'Fine range or sanctions',
   exemptions TEXT COMMENT 'Key exemptions or carve-outs',
   deceased_data TEXT COMMENT 'Whether and how long the data of deceased persons is protected',
   research_exemption TEXT COMMENT 'Exemption or lighter regime for historical, scientific or genealogical research and archives',

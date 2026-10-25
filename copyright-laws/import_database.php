@@ -1,7 +1,10 @@
 <?php
 /**
  * Copyright Laws Database Importer
- * Imports CSV data into normalized MySQL database
+ * Imports CSV data into normalized MySQL / MariaDB database
+ *
+ * Connection: DB_HOST (localhost), DB_PORT (3306), DB_USER (root), DB_PASSWORD (empty).
+ * --import replaces the contents of the tables with the CSV (it can be run again).
  *
  * Usage:
  *   php import_database.php --create-schema     # Create fresh schema
@@ -16,10 +19,18 @@ class CopyrightLawsImporter {
     private $csvPath = './jurisdictions/copyright_laws_master.csv';
     private $schemaPath = './database_schema.sql';
 
-    public function __construct($dbHost = 'localhost', $dbUser = 'root', $dbPass = '') {
+    /**
+     * Connection settings: the arguments, else DB_HOST / DB_PORT / DB_USER / DB_PASSWORD from the
+     * environment, else localhost:3306 as root without a password.
+     */
+    public function __construct($dbHost = null, $dbUser = null, $dbPass = null, $dbPort = null) {
+        $dbHost = $dbHost ?? (getenv('DB_HOST') ?: 'localhost');
+        $dbPort = $dbPort ?? (getenv('DB_PORT') ?: '3306');
+        $dbUser = $dbUser ?? (getenv('DB_USER') ?: 'root');
+        $dbPass = $dbPass ?? (getenv('DB_PASSWORD') ?: '');
         try {
             $this->pdo = new PDO(
-                "mysql:host=$dbHost",
+                "mysql:host=$dbHost;port=$dbPort;charset=utf8mb4",
                 $dbUser,
                 $dbPass,
                 [
@@ -79,6 +90,12 @@ class CopyrightLawsImporter {
 
         try {
             $this->pdo->exec("USE {$this->dbName}");
+
+            // All or nothing, and re-runnable: the tables end up holding exactly the CSV, never a
+            // half import or the same rows twice. The child tables go with their law (ON DELETE CASCADE).
+            $this->pdo->beginTransaction();
+            $this->pdo->exec("DELETE FROM copyright_laws");
+            $this->pdo->exec("DELETE FROM jurisdictions");
 
             // Read CSV
             $file = fopen($this->csvPath, 'r');
@@ -167,10 +184,14 @@ class CopyrightLawsImporter {
             }
 
             fclose($file);
+            $this->pdo->commit();
 
             $this->log("  ✓ Imported {$imported} copyright laws from " . count($jurisdictions) . " jurisdictions");
             return true;
         } catch (Exception $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
             $this->error("Import failed: " . $e->getMessage());
         }
     }
