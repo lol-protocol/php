@@ -55,8 +55,10 @@ Cada punto sale de un documento del repositorio, que se cita.
   más de 92 años, o las de quien el propietario marca como fallecido con su
   comprobante.
 - **Exportación a GEDCOM** de una colección ([`url-routing/docs/ACCESO.md`](url-routing/docs/ACCESO.md)).
-- **Lo que se guarda de quien visita:** una cookie de sesión en cada visita, un
-  archivo por IP (guardado con un hash, no la IP) en el directorio temporal
+- **Lo que se guarda de quien visita:** quien solo lee páginas no recibe cookie
+  ni deja sesión en el servidor; la cookie de sesión (`PHPSESSID`) se pone solo a
+  quien usa un formulario (pedido de retiro, carrito y pago de la tienda) o entra
+  como propietario. Además, un archivo por IP (guardado con un hash, no la IP) en el directorio temporal
   para el limitador de peticiones, y el log de la aplicación (que anota el número de un
   pedido de retiro y la página, nunca quién lo pidió).
 - **El filtro de insultos y acusaciones existe, pero el sitio no lo usa** todavía,
@@ -167,8 +169,13 @@ Estas son las marcas **⚖️** del borrador, por sección.
     «tus datos son tuyos»). ¿Alguna de las tres puede ser engañosa tal como está
     escrita? ¿Qué dice la ley de protección al consumidor sobre este tipo de
     promesas?
-29. **Cookies.** El sitio pone una cookie de sesión en cada visita, incluso a
-    quien no ha iniciado nada. ¿Hace falta un aviso o un consentimiento?
+29. **Cookies.** El sitio pone su cookie de sesión (`PHPSESSID`) solo cuando hace
+    falta: a quien envía un formulario (pedido de retiro, carrito y pago de la
+    tienda) y al propietario que entra. Quien solo lee páginas no recibe ninguna
+    (antes sí la recibía cada visita). La cookie guarda el token que valida el
+    envío del formulario y el carrito; no sirve para seguir a nadie. ¿Hace falta
+    un aviso o un consentimiento para esa cookie? ¿Y para el archivo por IP, con
+    hash, que usa el limitador de peticiones?
 30. **Marca y nombres.** `conce.com` y «Contrastocolor»: ¿conviene registrarlas
     antes de un lanzamiento? (Es una pregunta de propiedad industrial, fuera del
     alcance de este documento si no la atiende el mismo abogado.)
