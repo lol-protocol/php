@@ -11,16 +11,18 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 
 | Archivo | Qué es |
 |---|---|
 | `datos/signos.json` | La fuente de verdad: nombres, descripciones, rasgos, fechas, troncos celestes, términos traducidos y la figura de cada signo. |
-| `zodiaco.py` | Consultas: `signo_occidental(fecha)`, `animal_chino(anio)` y `anios_del_animal(id, desde, hasta)`. |
+| `datos/anio-nuevo-lunar.json` | La fecha del Año Nuevo lunar de cada año, de 1900 a 2099. |
+| `zodiaco.py` | Consultas: `signo_occidental(fecha)`, `cuspide(fecha)`, `animal_chino(anio)`, `animal_chino_de_fecha(fecha)` y `anios_del_animal(id, desde, hasta)`. |
 | `generar.py` | Valida el JSON y genera lo demás. Solo usa la biblioteca estándar de Python 3. |
 | `pruebas.py` | Pruebas de los datos, las consultas y lo generado (`unittest`). |
-| `constelaciones/*.svg` | Una ilustración por signo (24) sobre fondo de cielo nocturno. Generadas, no editar a mano. |
-| `constelaciones-sin-fondo/*.svg` | Las mismas 24, transparentes y en `currentColor`. Generadas. |
+| `constelaciones/*.svg` | Una ilustración por signo (24) sobre fondo de cielo nocturno, más `conejo-vi.svg`. Generadas, no editar a mano. |
+| `constelaciones-sin-fondo/*.svg` | Las mismas 25, transparentes y en `currentColor`. Generadas. |
 | `por-idioma/*.md` | Una ficha por idioma (30) y un índice. Generadas, no editar a mano. |
+| `galeria.html` | Página para ver las ilustraciones con su nombre y descripción en cada idioma. Generada. |
 
 ### Idiomas
 
-Español, inglés, portugués, francés, italiano, alemán, neerlandés, sueco, polaco, ruso, ucraniano, turco, griego, árabe, hebreo, hindi, chino (simplificado), japonés, coreano, vietnamita, tailandés, indonesio, persa, urdu, bengalí, rumano, checo, finés, suajili y danés. Los códigos son ISO 639-1 y están en `IDIOMAS` de `generar.py`.
+Español, inglés, portugués, francés, italiano, alemán, neerlandés, sueco, polaco, ruso, ucraniano, turco, griego, árabe, hebreo, hindi, chino (simplificado), japonés, coreano, vietnamita, tailandés, indonesio, persa, urdu, bengalí, rumano, checo, finés, suajili y danés. Los códigos son ISO 639-1 y están en `IDIOMAS` de `generar.py`. Las fichas de árabe, hebreo, persa y urdu van dentro de `<div dir="rtl">`, para que GitHub y los navegadores las muestren de derecha a izquierda.
 
 ### Género neutro
 
@@ -68,9 +70,13 @@ Doce animales que se repiten en ciclo. Cada animal es una de las doce *ramas ter
 
 El *elemento fijo* es el de la rama y no cambia; el *elemento del año* sale del tronco y es el que se usa al decir «Caballo de Fuego». No hay una lista cerrada de años: `zodiaco.animal_chino()` sirve para cualquiera, y las fichas muestran de 1924 a 2043.
 
-**El año empieza en el Año Nuevo lunar**, que cae entre el 21 de enero y el 20 de febrero. Quien nació en enero o principios de febrero puede tener el animal del año anterior. Los datos **no** traen las fechas del Año Nuevo lunar, así que `animal_chino()` recibe el año lunar y esa conversión la hace quien llama.
+**El año empieza en el Año Nuevo lunar**, que cae entre el 21 de enero y el 20 de febrero. Quien nació en enero o principios de febrero puede tener el animal del año anterior. `animal_chino_de_fecha()` lo resuelve con `datos/anio-nuevo-lunar.json`, de 1900 a 2099; `animal_chino()` sigue recibiendo directamente el año lunar y sirve para cualquier año.
 
-Algunos idiomas usan otro animal para el mismo lugar del ciclo: en vietnamita el conejo es *Mèo* (gato) y el buey es *Trâu* (búfalo), y en japonés y coreano 羊 es la oveja (*ひつじ*, *양*) donde el español dice cabra. Las ilustraciones dibujan el animal chino, así que en vietnamita el nombre «Mèo» va con un conejo. En finés el buey y Tauro comparten la palabra *Härkä*, y en suajili Capricornio y la cabra comparten *Mbuzi*. La tabla respeta cada uso.
+Las fechas del Año Nuevo son las de la hora de China (UTC+8). Coinciden en los 200 años dos tablas independientes, las de las bibliotecas `lunardate` 0.2.2 y `LunarCalendar` 0.0.9; 2100 solo lo traía una y quedó fuera. Quien nació el mismo día del Año Nuevo, pero en otro huso horario, puede caer en el año anterior.
+
+Algunos idiomas usan otro animal para el mismo lugar del ciclo: en vietnamita el conejo es *Mèo* (gato) y el buey es *Trâu* (búfalo), y en japonés y coreano 羊 es la oveja (*ひつじ*, *양*) donde el español dice cabra. Para el vietnamita hay una ilustración propia del gato (`conejo-vi.svg`), que la galería usa en lugar del conejo; está en `variantes` del signo (ver el esquema).
+
+Los 24 nombres son distintos en cada idioma, y una prueba lo comprueba: si Tauro y el Buey se llaman igual, quien lee no sabe de cuál se habla. Por eso el Buey va como búfalo en árabe (*الجاموس*), hebreo (*תאו*) y finés (*Puhveli*), donde la palabra para buey era la misma de Tauro; el búfalo ya es el animal del ciclo en vietnamita. En suajili, Capricornio es *Mbuzi wa bahari* (cabra marina, que es lo que significa) para no chocar con la Cabra china (*Mbuzi*). Estos cuatro nombres conviene que los confirme una persona nativa.
 
 ## Uso
 
@@ -87,6 +93,14 @@ datos = zodiaco.cargar_datos()
 datos["terminos"][a["elemento_del_anio"]]["ja"]                                # '火'
 
 zodiaco.anios_del_animal("dragon", 2000, 2030)                                 # [2000, 2012, 2024]
+
+# Desde una fecha de nacimiento: antes del Año Nuevo lunar cuenta el año anterior
+zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 16))["signo"]["id"]         # 'serpiente'
+zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 17))["signo"]["id"]         # 'caballo'
+
+# Cúspide: a un día o menos de un cambio de signo, para no afirmar uno que puede estar mal
+[s["id"] for s in zodiaco.cuspide(datetime.date(1990, 4, 20))]                 # ['aries', 'tauro']
+zodiaco.es_cuspide(datetime.date(1990, 4, 5))                                  # False
 ```
 
 Las funciones devuelven los diccionarios de `datos/signos.json` tal cual y lanzan excepción si la entrada no es válida (`TypeError` si la fecha no es `datetime.date` o el año no es `int`, `ValueError` si el sistema no es `tropical` ni `sideral`).
@@ -121,7 +135,8 @@ Las pruebas comprueban, entre otras cosas, que los dos zodiacos cubran el año b
       "descripciones":        { "es": "Valentía, …", … },
       "descripciones_largas": { "es": "Signo de …", … },
       "constelacion": { "estrellas": [[x, y], …], "lineas": [[i, j], …] },  // viewBox 200×200
-      "figura": ["M64 92 C60 66 …", …]                  // trazos SVG ("d"); los que acaban en Z se rellenan
+      "figura": ["M64 92 C60 66 …", …],                 // trazos SVG ("d"); los que acaban en Z se rellenan
+      "variantes": { "vi": { "constelacion": {…}, "figura": […] } }  // opcional: otra ilustración para un idioma
     }
   ]
 }
@@ -135,6 +150,7 @@ Son **esquemas** de 200×200 unidades dibujados a mano: la figura (en trazo fino
 
 - `constelaciones/`: sobre un cuadro de cielo nocturno, con un fondo de estrellas y brillo en las principales. Los ids internos son únicos por archivo (`fondo-aries`, `brillo-aries`), así que se pueden incrustar varios en una misma página.
 - `constelaciones-sin-fondo/`: transparente, sin colores fijos y sin ids. Todo se pinta en `currentColor`, así que toma el color del texto que lo rodea y sirve en tema claro, en tema oscuro o como icono.
+- `galeria.html`: las 25 ilustraciones con un selector de idioma y de variante. No carga nada de fuera; ábrela desde esta carpeta para que encuentre los SVG. La interfaz (títulos y selectores) está en español; los nombres y descripciones, en el idioma elegido, con dirección de derecha a izquierda en árabe, hebreo, persa y urdu.
 
 **No llevan texto.** No tienen etiqueta, `<title>` ni `<desc>`, para que un lector de pantalla no lea español a quien usa otro idioma. El nombre accesible lo pone quien muestra el SVG, con `nombres[idioma]`:
 
@@ -150,4 +166,4 @@ Son **esquemas** de 200×200 unidades dibujados a mano: la figura (en trazo fino
 
 `currentColor` solo hereda el color cuando el SVG está incrustado en el HTML. Dentro de un `<img>` se pinta negro.
 
-El fondo de estrellas y el tamaño de cada estrella salen de `generar.numeros()`, que usa SHA-256 y no depende de la versión de Python: el resultado es el mismo en cada ejecución y en cada máquina, y una prueba fija sus primeros valores.
+El fondo de estrellas y el tamaño de cada estrella salen de `generar.numeros()`, que usa SHA-256 y no depende de la versión de Python: el resultado es el mismo en cada ejecución y en cada máquina, y una prueba fija sus primeros valores. Las estrellas de fondo son puntos agrupados por brillo y tamaño en unos pocos trazos, así que cada SVG con fondo pesa unos 3,5 KB; una prueba avisa si alguno pasa de 4,5 KB.
