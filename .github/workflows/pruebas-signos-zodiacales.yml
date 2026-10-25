@@ -26,6 +26,7 @@ jobs:
   signos-zodiacales:
     name: "signos-zodiacales: datos válidos y archivos generados al día"
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout

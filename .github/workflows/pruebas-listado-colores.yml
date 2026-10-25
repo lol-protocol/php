@@ -26,6 +26,7 @@ jobs:
   listado-colores:
     name: "Listado-colores: CSV válidos y tabla del README al día"
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -57,6 +58,7 @@ jobs:
   listado-colores-matriz:
     name: "Listado-colores / Python ${{ matrix.python-version }} en ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
 
     strategy:
       fail-fast: false
