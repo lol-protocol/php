@@ -15,7 +15,7 @@
     "enforcement_body": "Not specified",
     "treaties_signatory": "Berne",
     "treaties_not_party": "",
-    "linked_resources": "https://www.aripo.org/storage/resources-member-state-laws/1674818599_php0azBFw.pdf",
+    "linked_resources": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/S%c3%a3o_Tom%c3%a9_and_Pr%c3%adncipe.html",
     "notes": "Replaces 1972 Copyright Code (Decree-Law 46980); Berne since 2016; TRIPS listed by a secondary source (Inventa) only; WCT/WPPT unconfirmed; law text not read directly",
     "pending_change": "",
     "pending_date": "",
@@ -24,12 +24,12 @@
     "last_checked": "2026-10-25",
     "sources": {
       "law_name": {
-        "url": "https://www.aripo.org/storage/resources-member-state-laws/1674818599_php0azBFw.pdf",
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/S%c3%a3o_Tom%c3%a9_and_Pr%c3%adncipe.html",
         "confidence": "medium",
         "checked": "2026-10-25"
       },
       "protection_type": {
-        "url": "https://www.aripo.org/storage/resources-member-state-laws/1674818599_php0azBFw.pdf",
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/S%c3%a3o_Tom%c3%a9_and_Pr%c3%adncipe.html",
         "confidence": "medium",
         "checked": "2026-10-25"
       },
@@ -45,6 +45,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "linked_resources",
+        "from": "https://www.aripo.org/storage/resources-member-state-laws/1674818599_php0azBFw.pdf",
+        "to": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/S%c3%a3o_Tom%c3%a9_and_Pr%c3%adncipe.html"
+      },
       {
         "date": "2026-10-25",
         "field": "row",
