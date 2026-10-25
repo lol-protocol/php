@@ -1,0 +1,227 @@
+{"label":"COLOR","pattern":"аква","id":"aqua"}
+{"label":"COLOR","pattern":"аквамариновий","id":"aquamarine"}
+{"label":"COLOR","pattern":"аліс-блакитний","id":"aliceblue"}
+{"label":"COLOR","pattern":"античний білий","id":"antiquewhite"}
+{"label":"COLOR","pattern":"багряна","id":"scarlet"}
+{"label":"COLOR","pattern":"багряне","id":"scarlet"}
+{"label":"COLOR","pattern":"багряний","id":"scarlet"}
+{"label":"COLOR","pattern":"багряні","id":"scarlet"}
+{"label":"COLOR","pattern":"бежева","id":"beige"}
+{"label":"COLOR","pattern":"бежеве","id":"beige"}
+{"label":"COLOR","pattern":"бежевий","id":"beige"}
+{"label":"COLOR","pattern":"бежеві","id":"beige"}
+{"label":"COLOR","pattern":"блакитна","id":"lightblue"}
+{"label":"COLOR","pattern":"блакитне","id":"lightblue"}
+{"label":"COLOR","pattern":"блакитний","id":"lightblue"}
+{"label":"COLOR","pattern":"блакитні","id":"lightblue"}
+{"label":"COLOR","pattern":"блідо-бірюзовий","id":"paleturquoise"}
+{"label":"COLOR","pattern":"блідо-зелений","id":"palegreen"}
+{"label":"COLOR","pattern":"блідо-золотарниковий","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"блідо-фіолетово-червоний","id":"palevioletred"}
+{"label":"COLOR","pattern":"бордова","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"бордове","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"бордовий","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"бордові","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"будяк","id":"thistle"}
+{"label":"COLOR","pattern":"бурштинова","id":"amber"}
+{"label":"COLOR","pattern":"бурштинове","id":"amber"}
+{"label":"COLOR","pattern":"бурштиновий","id":"amber"}
+{"label":"COLOR","pattern":"бурштинові","id":"amber"}
+{"label":"COLOR","pattern":"біла","id":"white"}
+{"label":"COLOR","pattern":"біле","id":"white"}
+{"label":"COLOR","pattern":"білий","id":"white"}
+{"label":"COLOR","pattern":"білі","id":"white"}
+{"label":"COLOR","pattern":"бірюзова","id":"turquoise"}
+{"label":"COLOR","pattern":"бірюзове","id":"turquoise"}
+{"label":"COLOR","pattern":"бірюзовий","id":"turquoise"}
+{"label":"COLOR","pattern":"бірюзові","id":"turquoise"}
+{"label":"COLOR","pattern":"бісквітний","id":"bisque"}
+{"label":"COLOR","pattern":"вершкова папайя","id":"papayawhip"}
+{"label":"COLOR","pattern":"весняно-зелений","id":"springgreen"}
+{"label":"COLOR","pattern":"волошковий","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"газонний зелений","id":"lawngreen"}
+{"label":"COLOR","pattern":"глибоке небо","id":"deepskyblue"}
+{"label":"COLOR","pattern":"глибокий рожевий","id":"deeppink"}
+{"label":"COLOR","pattern":"деревний","id":"burlywood"}
+{"label":"COLOR","pattern":"димчато-білий","id":"whitesmoke"}
+{"label":"COLOR","pattern":"жовта","id":"yellow"}
+{"label":"COLOR","pattern":"жовте","id":"yellow"}
+{"label":"COLOR","pattern":"жовтий","id":"yellow"}
+{"label":"COLOR","pattern":"жовтувато-зелений","id":"yellowgreen"}
+{"label":"COLOR","pattern":"жовті","id":"yellow"}
+{"label":"COLOR","pattern":"засмага","id":"tan"}
+{"label":"COLOR","pattern":"зелена","id":"green"}
+{"label":"COLOR","pattern":"зелене","id":"green"}
+{"label":"COLOR","pattern":"зелений","id":"green"}
+{"label":"COLOR","pattern":"зелено-жовтий","id":"greenyellow"}
+{"label":"COLOR","pattern":"зелені","id":"green"}
+{"label":"COLOR","pattern":"золота","id":"gold"}
+{"label":"COLOR","pattern":"золотарник","id":"goldenrod"}
+{"label":"COLOR","pattern":"золоте","id":"gold"}
+{"label":"COLOR","pattern":"золотий","id":"gold"}
+{"label":"COLOR","pattern":"золоті","id":"gold"}
+{"label":"COLOR","pattern":"кадетський синій","id":"cadetblue"}
+{"label":"COLOR","pattern":"квітково-білий","id":"floralwhite"}
+{"label":"COLOR","pattern":"коралловий","id":"coral"}
+{"label":"COLOR","pattern":"коралова","id":"coral"}
+{"label":"COLOR","pattern":"коралове","id":"coral"}
+{"label":"COLOR","pattern":"кораловий","id":"coral"}
+{"label":"COLOR","pattern":"коралові","id":"coral"}
+{"label":"COLOR","pattern":"коричнева","id":"brown"}
+{"label":"COLOR","pattern":"коричневе","id":"brown"}
+{"label":"COLOR","pattern":"коричневий","id":"brown"}
+{"label":"COLOR","pattern":"коричневий сідла","id":"saddlebrown"}
+{"label":"COLOR","pattern":"коричневі","id":"brown"}
+{"label":"COLOR","pattern":"королівський синій","id":"royalblue"}
+{"label":"COLOR","pattern":"кремова","id":"cream"}
+{"label":"COLOR","pattern":"кремове","id":"cream"}
+{"label":"COLOR","pattern":"кремовий","id":"cream"}
+{"label":"COLOR","pattern":"кремові","id":"cream"}
+{"label":"COLOR","pattern":"кукурудзяний шовк","id":"cornsilk"}
+{"label":"COLOR","pattern":"лавандова","id":"lavender"}
+{"label":"COLOR","pattern":"лавандове","id":"lavender"}
+{"label":"COLOR","pattern":"лавандовий","id":"lavender"}
+{"label":"COLOR","pattern":"лавандовий рум'янець","id":"lavenderblush"}
+{"label":"COLOR","pattern":"лавандові","id":"lavender"}
+{"label":"COLOR","pattern":"лазуровий","id":"azure"}
+{"label":"COLOR","pattern":"лаймова","id":"lime"}
+{"label":"COLOR","pattern":"лаймове","id":"lime"}
+{"label":"COLOR","pattern":"лаймовий","id":"lime"}
+{"label":"COLOR","pattern":"лаймово-зелений","id":"limegreen"}
+{"label":"COLOR","pattern":"лаймові","id":"lime"}
+{"label":"COLOR","pattern":"лимонний шифон","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"лососева","id":"salmon"}
+{"label":"COLOR","pattern":"лососеве","id":"salmon"}
+{"label":"COLOR","pattern":"лососевий","id":"salmon"}
+{"label":"COLOR","pattern":"лососеві","id":"salmon"}
+{"label":"COLOR","pattern":"льняний","id":"linen"}
+{"label":"COLOR","pattern":"лілова","id":"lilac"}
+{"label":"COLOR","pattern":"лілове","id":"lilac"}
+{"label":"COLOR","pattern":"ліловий","id":"lilac"}
+{"label":"COLOR","pattern":"лілові","id":"lilac"}
+{"label":"COLOR","pattern":"лісовий зелений","id":"forestgreen"}
+{"label":"COLOR","pattern":"м'ятний крем","id":"mintcream"}
+{"label":"COLOR","pattern":"маджента","id":"magenta"}
+{"label":"COLOR","pattern":"малинова","id":"crimson"}
+{"label":"COLOR","pattern":"малинове","id":"crimson"}
+{"label":"COLOR","pattern":"малиновий","id":"crimson"}
+{"label":"COLOR","pattern":"малинові","id":"crimson"}
+{"label":"COLOR","pattern":"медова роса","id":"honeydew"}
+{"label":"COLOR","pattern":"мигдальний білий","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"мокасин","id":"moccasin"}
+{"label":"COLOR","pattern":"морський зелений","id":"seagreen"}
+{"label":"COLOR","pattern":"мушля","id":"seashell"}
+{"label":"COLOR","pattern":"навахо білий","id":"navajowhite"}
+{"label":"COLOR","pattern":"небесно-блакитний","id":"skyblue"}
+{"label":"COLOR","pattern":"оливкова","id":"olive"}
+{"label":"COLOR","pattern":"оливкове","id":"olive"}
+{"label":"COLOR","pattern":"оливковий","id":"olive"}
+{"label":"COLOR","pattern":"оливково-сірий","id":"olivedrab"}
+{"label":"COLOR","pattern":"оливкові","id":"olive"}
+{"label":"COLOR","pattern":"опівнічно-синій","id":"midnightblue"}
+{"label":"COLOR","pattern":"оранжево-червоний","id":"orangered"}
+{"label":"COLOR","pattern":"орхідний","id":"orchid"}
+{"label":"COLOR","pattern":"персиковий","id":"peachpuff"}
+{"label":"COLOR","pattern":"перуанський","id":"peru"}
+{"label":"COLOR","pattern":"помаранчева","id":"orange"}
+{"label":"COLOR","pattern":"помаранчеве","id":"orange"}
+{"label":"COLOR","pattern":"помаранчевий","id":"orange"}
+{"label":"COLOR","pattern":"помаранчеві","id":"orange"}
+{"label":"COLOR","pattern":"примарно-білий","id":"ghostwhite"}
+{"label":"COLOR","pattern":"пудровий","id":"powderblue"}
+{"label":"COLOR","pattern":"пурпуровий","id":"magenta"}
+{"label":"COLOR","pattern":"пшеничний","id":"wheat"}
+{"label":"COLOR","pattern":"піщано-коричневий","id":"sandybrown"}
+{"label":"COLOR","pattern":"Ребекка-пурпуровий","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"рожева","id":"pink"}
+{"label":"COLOR","pattern":"рожеве","id":"pink"}
+{"label":"COLOR","pattern":"рожевий","id":"pink"}
+{"label":"COLOR","pattern":"рожево-коричневий","id":"rosybrown"}
+{"label":"COLOR","pattern":"рожеві","id":"pink"}
+{"label":"COLOR","pattern":"світло-блакитний","id":"lightcyan"}
+{"label":"COLOR","pattern":"світло-жовтий","id":"lightyellow"}
+{"label":"COLOR","pattern":"світло-зелений","id":"lightgreen"}
+{"label":"COLOR","pattern":"світло-золотистий","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"світло-коралловий","id":"lightcoral"}
+{"label":"COLOR","pattern":"світло-лососевий","id":"lightsalmon"}
+{"label":"COLOR","pattern":"світло-морський зелений","id":"lightseagreen"}
+{"label":"COLOR","pattern":"світло-небесний","id":"lightskyblue"}
+{"label":"COLOR","pattern":"світло-рожевий","id":"lightpink"}
+{"label":"COLOR","pattern":"світло-сланцево-сірий","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"світло-сталевий синій","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"світло-сірий","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"середньо-аквамариновий","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"середньо-бірюзовий","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"середньо-весняний зелений","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"середньо-морський зелений","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"середньо-орхідний","id":"mediumorchid"}
+{"label":"COLOR","pattern":"середньо-синій","id":"mediumblue"}
+{"label":"COLOR","pattern":"середньо-сланцевий синій","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"середньо-фіолетовий","id":"mediumpurple"}
+{"label":"COLOR","pattern":"середньо-фіолетово-червоний","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"синьо-зелений","id":"teal"}
+{"label":"COLOR","pattern":"синьо-фіолетовий","id":"blueviolet"}
+{"label":"COLOR","pattern":"синя","id":"blue"}
+{"label":"COLOR","pattern":"синє","id":"blue"}
+{"label":"COLOR","pattern":"сині","id":"blue"}
+{"label":"COLOR","pattern":"синій","id":"blue"}
+{"label":"COLOR","pattern":"синій Доджер","id":"dodgerblue"}
+{"label":"COLOR","pattern":"сланцевий синій","id":"slateblue"}
+{"label":"COLOR","pattern":"сланцево-сірий","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"сливовий","id":"plum"}
+{"label":"COLOR","pattern":"слонова кістка","id":"ivory"}
+{"label":"COLOR","pattern":"сніжний","id":"snow"}
+{"label":"COLOR","pattern":"срібна","id":"silver"}
+{"label":"COLOR","pattern":"срібне","id":"silver"}
+{"label":"COLOR","pattern":"срібний","id":"silver"}
+{"label":"COLOR","pattern":"срібні","id":"silver"}
+{"label":"COLOR","pattern":"сталево-синій","id":"steelblue"}
+{"label":"COLOR","pattern":"старе мереживо","id":"oldlace"}
+{"label":"COLOR","pattern":"сіра","id":"gray"}
+{"label":"COLOR","pattern":"сіре","id":"gray"}
+{"label":"COLOR","pattern":"сірий","id":"gray;grey"}
+{"label":"COLOR","pattern":"сірий гейнсборо","id":"gainsboro"}
+{"label":"COLOR","pattern":"сірі","id":"gray"}
+{"label":"COLOR","pattern":"сієна","id":"sienna"}
+{"label":"COLOR","pattern":"темна орхідея","id":"darkorchid"}
+{"label":"COLOR","pattern":"темно-блакитний","id":"darkcyan"}
+{"label":"COLOR","pattern":"темно-бірюзовий","id":"darkturquoise"}
+{"label":"COLOR","pattern":"темно-зелений","id":"darkgreen"}
+{"label":"COLOR","pattern":"темно-золотарниковий","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"темно-лососевий","id":"darksalmon"}
+{"label":"COLOR","pattern":"темно-морський зелений","id":"darkseagreen"}
+{"label":"COLOR","pattern":"темно-оливковий","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"темно-помаранчевий","id":"darkorange"}
+{"label":"COLOR","pattern":"темно-пурпуровий","id":"darkmagenta"}
+{"label":"COLOR","pattern":"темно-синій","id":"darkblue;navy"}
+{"label":"COLOR","pattern":"темно-сланцевий синій","id":"darkslateblue"}
+{"label":"COLOR","pattern":"темно-сланцево-сірий","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"темно-сірий","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"темно-фіолетовий","id":"darkviolet"}
+{"label":"COLOR","pattern":"темно-хакі","id":"darkkhaki"}
+{"label":"COLOR","pattern":"темно-червоний","id":"darkred"}
+{"label":"COLOR","pattern":"томатний","id":"tomato"}
+{"label":"COLOR","pattern":"туманно-рожевий","id":"mistyrose"}
+{"label":"COLOR","pattern":"тьмяно-сірий","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"фуксія","id":"fuchsia"}
+{"label":"COLOR","pattern":"фіалковий","id":"violet"}
+{"label":"COLOR","pattern":"фіолетова","id":"purple;violet"}
+{"label":"COLOR","pattern":"фіолетове","id":"purple;violet"}
+{"label":"COLOR","pattern":"фіолетовий","id":"purple;violet"}
+{"label":"COLOR","pattern":"фіолетові","id":"purple;violet"}
+{"label":"COLOR","pattern":"хакі","id":"khaki"}
+{"label":"COLOR","pattern":"цегляний","id":"firebrick"}
+{"label":"COLOR","pattern":"ціан","id":"cyan"}
+{"label":"COLOR","pattern":"червона","id":"red"}
+{"label":"COLOR","pattern":"червоне","id":"red"}
+{"label":"COLOR","pattern":"червоний","id":"red"}
+{"label":"COLOR","pattern":"червоні","id":"red"}
+{"label":"COLOR","pattern":"чорна","id":"black"}
+{"label":"COLOR","pattern":"чорне","id":"black"}
+{"label":"COLOR","pattern":"чорний","id":"black"}
+{"label":"COLOR","pattern":"чорні","id":"black"}
+{"label":"COLOR","pattern":"шартрез","id":"chartreuse"}
+{"label":"COLOR","pattern":"шоколадний","id":"chocolate"}
+{"label":"COLOR","pattern":"яскраво-рожевий","id":"hotpink"}
+{"label":"COLOR","pattern":"індиго","id":"indigo"}
+{"label":"COLOR","pattern":"індійський червоний","id":"indianred"}

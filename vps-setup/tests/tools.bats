@@ -51,6 +51,19 @@ setup() {
     [[ "$output" == *'a\ b'* ]]
 }
 
+@test "remote-run sube el codigo de Marcalibros solo para 06_E (o 10_A --type marcalibros)" {
+    export VPS_HOST=203.0.113.5 VPS_ENV=/no/existe
+    run bash "$VPS_DIR/remote-run.sh" --dry-run 06_E-setup-marcalibros-app.sh ejemplo.com
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"marcalibros-plataforma-pos-brand-identity defamatory-content-review"* ]]
+    run bash "$VPS_DIR/remote-run.sh" --dry-run 10_A-add-domain.sh ejemplo.com --type marcalibros
+    [[ "$output" == *"defamatory-content-review"* ]]
+    run bash "$VPS_DIR/remote-run.sh" --dry-run 10_A-add-domain.sh ejemplo.com --type php
+    [[ "$output" != *"defamatory-content-review"* ]]
+    run bash "$VPS_DIR/remote-run.sh" --dry-run 08-healthcheck.sh ejemplo.com
+    [[ "$output" == *"- vps-setup landing-page |"* ]]
+}
+
 @test "remote-run sin VPS_HOST falla con un mensaje claro" {
     VPS_ENV=/no/existe run bash "$VPS_DIR/remote-run.sh" --dry-run install-all.sh
     [ "$status" -eq 1 ]

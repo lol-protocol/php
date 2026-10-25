@@ -9,6 +9,7 @@ use App\Repositories\POS\OrdenRepository;
 use App\Repositories\POS\ProductoRepository;
 use App\Repositories\POS\SinStock;
 use App\Support\Cart;
+use App\Support\SessionManager;
 
 /**
  * /p/ — the purchase: summary (/p/), shipping address (/p/1/), payment
@@ -88,6 +89,7 @@ class CheckoutController extends BaseController
                 return $this->handleBadRequest('La dirección debe tener entre ' . self::DIRECCION_MIN . ' y ' . self::DIRECCION_MAX . ' caracteres');
             }
 
+            SessionManager::getInstance()->ensureStarted();
             $_SESSION['envio'] = $direccion;
             return $this->redirect('/p/2/');
         }
@@ -143,6 +145,7 @@ class CheckoutController extends BaseController
         }
 
         $carrito->vaciar();
+        SessionManager::getInstance()->ensureStarted();
         unset($_SESSION['envio']);
         $_SESSION[self::SESION_ORDENES][] = $orden['codigo'];
         $this->flash('¡Gracias! Recibimos tu orden. Guarda este enlace para seguirla.');

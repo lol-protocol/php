@@ -617,7 +617,7 @@ final class Application
         }
         return Response::html($this->view->page('mio', [
             'bookmark' => $bookmark,
-            'expires' => $bookmark['created'] + $this->config->retentionDays * 86400,
+            'expires' => $this->config->retentionDays > 0 ? $bookmark['created'] + $this->config->retentionDays * 86400 : null,
             'retentionDays' => $this->config->retentionDays,
         ], 'Tu marcalibro', ['private' => true, 'scripts' => ['mio.js'], 'section' => 'crear']), 200, ['X-Robots-Tag' => 'noindex, nofollow', 'Cache-Control' => 'private, no-cache']);
     }

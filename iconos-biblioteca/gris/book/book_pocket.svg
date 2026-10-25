@@ -9,10 +9,10 @@
   <g class="shadow">
     <ellipse cx="36.96" cy="55.96" rx="10.08" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
+  <g class="back">
+    <path d="M10 6L40 6L40 50L10 50Z" fill="none" stroke="#A1A1A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.5"/>
+  </g>
   <g class="solids">
     <g><path d="M47.12 29.16A4 4 0 0 1 47.92 31.56L47.92 49.56A4 4 0 0 1 43.92 53.56L31.92 53.56A4 4 0 0 1 28.72 51.96L26.98 49.64A4 4 0 0 1 26.18 47.24L26.18 29.24A4 4 0 0 1 30.18 25.24L42.18 25.24A4 4 0 0 1 45.38 26.84Z" fill="#474747"/><rect x="26" y="25" width="20" height="26" rx="4" fill="url(#grad_book_pocket_orange_g)"/></g>
-  </g>
-  <g class="marks">
-    <path d="M10 6L40 6L40 50L10 50Z" fill="none" stroke="#A1A1A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.5"/>
   </g>
 </svg>

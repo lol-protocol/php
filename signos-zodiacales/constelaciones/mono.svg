@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="fondo-mono" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-mono" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-mono)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.0" stroke-linecap="round" d="M129.9 169.7h0M128.0 118.0h0M177.4 29.6h0M28.5 53.1h0M27.0 159.9h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" d="M70.4 165.8h0M99.7 47.5h0M22.9 175.8h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.0" stroke-linecap="round" d="M91.0 31.2h0M173.4 90.0h0M67.4 143.6h0M102.3 120.1h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.0" stroke-linecap="round" d="M40.9 166.6h0M88.3 180.8h0M43.7 186.2h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" d="M68.8 176.0h0M61.1 15.5h0M99.6 143.1h0M135.4 82.0h0M64.6 155.6h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.0" stroke-linecap="round" d="M72.2 132.7h0M157.9 47.1h0M60.1 120.5h0M105.2 152.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.0" stroke-linecap="round" d="M71.4 64.6h0M114.0 49.1h0M126.3 20.0h0M104.0 66.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.5" stroke-linecap="round" d="M81.2 155.3h0M163.9 104.3h0M159.6 168.6h0M109.0 111.6h0M68.3 100.7h0M118.5 145.6h0M25.5 59.7h0M69.7 158.4h0M76.6 103.9h0M136.2 33.1h0M186.7 26.4h0M141.6 55.7h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.0" stroke-linecap="round" d="M99.6 14.0h0M179.0 76.8h0M161.0 153.6h0M169.5 54.4h0M189.5 107.5h0"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M74 50 a14 14 0 1 0 28 0 a14 14 0 1 0 -28 0"/>
+    <path d="M67 52 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0"/>
+    <path d="M99 52 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0"/>
+    <path d="M80 54 a8 7 0 1 0 16 0 a8 7 0 1 0 -16 0"/>
+    <path d="M88 64 C70 70 66 96 72 120 C78 140 98 142 106 126 C114 110 112 80 88 64 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M74 80 C58 90 56 110 66 124"/>
+    <path d="M104 80 C120 90 122 108 112 122"/>
+    <path d="M72 126 C62 138 64 152 80 152 L100 152 C112 152 116 140 108 128"/>
+    <path d="M106 130 C132 130 146 112 138 90 C132 74 150 70 152 82 C154 90 146 94 142 90"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="72" y1="52" x2="88" y2="50"/>
+    <line x1="88" y1="50" x2="104" y2="52"/>
+    <line x1="88" y1="50" x2="88" y2="70"/>
+    <line x1="88" y1="70" x2="66" y2="124"/>
+    <line x1="88" y1="70" x2="112" y2="122"/>
+    <line x1="66" y1="124" x2="80" y2="152"/>
+    <line x1="112" y1="122" x2="100" y2="152"/>
+    <line x1="80" y1="152" x2="100" y2="152"/>
+    <line x1="112" y1="122" x2="150" y2="80"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-mono)">
+    <circle cx="88" cy="50" r="2.8"/>
+    <circle cx="72" cy="52" r="1.6"/>
+    <circle cx="104" cy="52" r="2.4"/>
+    <circle cx="88" cy="70" r="2.0"/>
+    <circle cx="66" cy="124" r="1.6"/>
+    <circle cx="112" cy="122" r="2.4"/>
+    <circle cx="80" cy="152" r="2.4"/>
+    <circle cx="100" cy="152" r="1.6"/>
+    <circle cx="150" cy="80" r="2.0"/>
+  </g>
+</svg>

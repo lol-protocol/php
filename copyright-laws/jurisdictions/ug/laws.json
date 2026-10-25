@@ -33,15 +33,15 @@
         "confidence": "low",
         "checked": "2026-10-21"
       },
-      "fair_use_exceptions": {
-        "url": "https://www.cehurd.org/wp-content/uploads/downloads/2013/03/influencing-copyright.pdf",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
       "digital_protection": {
         "url": "https://cipit.strathmore.edu/ugandas-2025-copyright-and-neighbouring-rights-amendment-bill-a-turning-point-for-creators-rights/",
         "confidence": "low",
         "checked": "2026-10-21"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.cehurd.org/wp-content/uploads/downloads/2013/03/influencing-copyright.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
       },
       "notes": {
         "url": "https://www.monitor.co.ug/uganda/news/national/museveni-signs-copyright-law-seven-others-5441370",

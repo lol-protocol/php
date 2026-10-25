@@ -1,0 +1,86 @@
+[
+  {
+    "country_code": "BS",
+    "country_name": "Bahamas",
+    "region": "americas",
+    "law_name": "Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (individual works: 70 years from end of calendar year of author's death; anonymous works publication + 70 years)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Right to be identified as author and right to object to derogatory treatment of a visual artwork (Part III; articles not seen)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Fair dealing for research and private study, criticism, review and reporting (Part VI; list non-exclusive per commentary) (unconfirmed)",
+    "registration_required": "No (Part V provides voluntary registration; registration is not a prerequisite to infringement actions, per section headings)",
+    "enforcement_body": "Bahamas Copyright Office (named by a law-firm article; administering department not confirmed) (unconfirmed)",
+    "treaties_signatory": "Berne/WCT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8920",
+    "notes": "WCT accession deposited 11 July 2026 and in force 11 October 2026 (WIPO notification). Berne member since 10 July 1973 per Commons. WPPT and TRIPS not confirmed, so not listed.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Bahamas.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/8920",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8920",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "fair_use_exceptions": {
+        "url": "https://infojustice.org/wp-content/uploads/2013/03/band-and-gerafi-2013.pdf",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "registration_required": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/8920",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "enforcement_body": {
+        "url": "https://www.cyriljarnias.com/creation-societe-etranger/creation-societe-destination-bahamas/proteger-propriete-intellectuelle-bahamas/",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_wct_111",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -34,11 +34,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.diritto.it/codice-protezione-dati-personali-privacy-gdpr/",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://brocardi.it/codice-della-privacy/parte-i/titolo-i/capo-iii/art2terdecies.html",
         "confidence": "high",
@@ -53,6 +48,11 @@
         "url": "https://brocardi.it/codice-della-privacy/parte-i/titolo-i/capo-ii/art2septies.html",
         "confidence": "medium",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://www.diritto.it/codice-protezione-dati-personali-privacy-gdpr/",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

@@ -7,6 +7,8 @@ Un módulo para parsear guías telefónicas históricas en varios idiomas, extra
 > enlazador solo devuelven entradas de guías de hace más de 92 años** (ver
 > [Privacidad: personas que podrían estar vivas](#privacidad-personas-que-podrían-estar-vivas));
 > para leer todo lo que hay guardado hay que pedirlo (`Privacy::forOwner()`).
+> Una persona de la que se sabe que murió se puede marcar entrada por entrada
+> (`markDeceased()`, con su comprobante) y entonces sí se muestra.
 > El criterio general está en [`../PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md).
 
 ## Características
@@ -215,15 +217,41 @@ $visitante->filter($entries);          // solo las que se pueden mostrar, en su 
 Dónde se aplica:
 
 - **`PhoneDirectoryPDODatabase`**: `findById`, `findByName`, `findByStreet`, `findByPhone`, `findBySurnameSound`, `findBySourceDirectory`, `search` y `getAll`. Un número de teléfono reusado en una edición posterior sigue encontrando la entrada antigua. `count()` cuenta todo lo guardado, y `update()`, `delete()` y `clear()` no cambian: ocultar es sobre lo que se muestra, no sobre lo que se guarda.
-- **`PhoneDirectoryManagerV2`** y **`PhoneDirectoryManager`**: contestan con lo que su base puede mostrar.
+- **`PhoneDirectoryManagerV2`**: contesta con lo que su base puede mostrar.
 - **`RecordLinker`**: `new RecordLinker(privacy: …)`. Descarta antes de enlazar toda entrada que pueda ser de una persona viva, porque unir a una persona de dos ediciones arma un perfil (dónde vivía, y cuándo) que ninguna guía tenía por sí sola.
 - **`bin/phonedir`** usa la vista del propietario: quien corre el comando tiene la base. `--publico` muestra lo que vería un visitante (y lo dice al final), y `--hoy=AAAA-MM-DD` fija la fecha de referencia.
+
+#### Una persona que murió
+
+Si se sabe que la persona de una entrada murió, ya no es alguien que «podría estar viva» y un visitante puede ver su entrada aunque la guía sea reciente. Se marca entrada por entrada, y **una marca equivocada publica la dirección y el teléfono de alguien que vive**, así que la base pide lo que otra persona necesita para comprobarla:
+
+```php
+$propietario = new PhoneDirectoryPDODatabase($dsn, privacy: Privacy::forOwner());
+
+$propietario->markDeceased($id, 1988, 'Esquela, La Vanguardia, 12/03/1988');   // año y comprobante
+$propietario->getDeceasedEvidence($id);                                         // solo el propietario lo lee
+$propietario->clearDeceased($id);                                               // la entrada vuelve a seguir el año de su guía
+```
+
+- **Solo con la vista del propietario.** Una base abierta para visitantes (también la que se abre sin decir nada) lanza `LogicException` al marcar, quitar la marca o leer el comprobante.
+- **El comprobante es obligatorio** (hasta 1000 caracteres: dónde consta, no el documento) y **el año tiene que ser verosímil**: entre 1800 y el año en curso, y no más de un año antes de la guía de la entrada (una defunción anterior sería otra persona con el mismo nombre). Si no, `InvalidArgumentException` y no queda ninguna marca.
+- **El comprobante no forma parte de la entrada**: puede nombrar a parientes. El visitante ve solo el año (`getDeceasedYear()`, y `deceasedYear` en `toArray()`).
+- **`update()` no toca la marca, e `insert()` no guarda una que traiga la entrada** (`withDeceasedYear()` solo sirve para razonar en memoria): la única forma de registrar una defunción es `markDeceased()`, con su comprobante.
+- **También levanta el límite del enlazador**: las ediciones de una persona que murió se pueden enlazar, porque no arman el perfil de alguien vivo.
+- Las bases creadas antes reciben las dos columnas (`deceased_year`, `deceased_evidence`) la próxima vez que se llama a `createTable()`.
+
+```bash
+php bin/phonedir search --name=garcia --dsn=sqlite:madrid.sqlite            # [persona #42] García Ruiz, José | …
+php bin/phonedir deceased 42 --year=1988 --evidence="Esquela, La Vanguardia, 12/03/1988" --dsn=sqlite:madrid.sqlite
+php bin/phonedir deceased 42 --clear --dsn=sqlite:madrid.sqlite
+```
+
+Qué ve entonces un visitante: nombre, dirección y teléfono de esa persona, con `† 1988`. **Lo que esta marca no resuelve:** los parientes que siguen viviendo en esa dirección o con ese teléfono. La guía de una persona recién fallecida puede ser, hoy, la de una familia viva; el criterio de cuándo mostrarla es de quien publica.
 
 Límites, a propósito:
 
 - **Una guía sin año conocido se oculta.** Sin fuente, o con un id fuera del catálogo que no trae un año de cuatro cifras (como `custom_1990_x`): no se sabe cuántos años tiene esa gente, y un error publica el teléfono de alguien que vive. `url-routing/` hace lo contrario con las personas sin fechas, porque ahí los datos son de antepasados.
 - **La edad mínima de 18 años es un supuesto.** Un abonado más joven (raro) quedaría fuera de lo que esta regla cubre.
-- **No hay forma de mostrar una entrada reciente individual** aunque se sepa que la persona falleció. Hacerlo pediría una marca por entrada, como `personas.viva` en `url-routing/`; hoy no existe.
 - **Las empresas (`JuridicalEntity`) no se filtran:** no son personas. Una razón social que lleva un nombre propio sí podría delatar a alguien.
 
 ### PersonName / SurnameKeys — búsqueda fonética
@@ -348,7 +376,7 @@ php bin/phonedir help
 
 `--catalog=<id>` toma el país y ayuda a fijar el idioma de un directorio ya listado en el catálogo; para un archivo propio, se usan `--country` y `--source` en su lugar. Ver `php bin/phonedir help` para todas las opciones.
 
-`search` y `link` muestran todo lo guardado. Con `--publico` muestran solo lo que vería un visitante (sin las guías que pueden incluir personas vivas) y lo dicen al final:
+`search` muestra el id de cada persona (`[persona #42]`), que es el que usa `deceased`. `search` y `link` muestran todo lo guardado. Con `--publico` muestran solo lo que vería un visitante (sin las guías que pueden incluir personas vivas) y lo dicen al final:
 
 ```bash
 php bin/phonedir search --name=garcia --publico --dsn=sqlite:madrid.sqlite
@@ -406,6 +434,8 @@ surname_soundex       TEXT                -- clave fonética (búsqueda de varia
 surname_phonetic      TEXT                -- clave fonética por idioma
 full_name_folded      TEXT                -- copia en minúsculas y sin acentos, para buscar
 street_folded         TEXT                -- copia en minúsculas y sin acentos, para buscar
+deceased_year         INTEGER             -- año en que murió, si alguien lo comprobó (markDeceased)
+deceased_evidence     TEXT                -- dónde consta; solo lo lee el propietario
 record_date           DATETIME
 created_at            DATETIME
 updated_at            DATETIME
@@ -413,7 +443,7 @@ updated_at            DATETIME
 
 `juridical_entities` tiene la misma estructura de procedencia geográfica (`country_code`, `source_directory_id`, `source_line`) y de búsqueda sin acentos (`business_name_folded`, `street_folded`), además de `business_name`, `legal_name`, `business_type`.
 
-Las columnas `raw_name`/`surname_soundex`/`full_name_folded` (y sus equivalentes) se agregan automáticamente, junto con sus índices, la primera vez que `createTable()` se ejecuta sobre una tabla creada con una versión anterior de este módulo.
+Las columnas `raw_name`/`surname_soundex`/`full_name_folded`/`deceased_year` (y sus equivalentes) se agregan automáticamente, junto con sus índices, la primera vez que `createTable()` se ejecuta sobre una tabla creada con una versión anterior de este módulo.
 
 ## Pruebas
 

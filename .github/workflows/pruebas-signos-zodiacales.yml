@@ -26,15 +26,57 @@ jobs:
   signos-zodiacales:
     name: "signos-zodiacales: datos válidos y archivos generados al día"
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # Valida datos/signos.json (los 30 idiomas en cada nombre y descripcion, y que las
-      # lineas de cada constelacion apunten a estrellas que existan) y falla si algun SVG de
-      # constelaciones/ o signos-por-idioma.md no coincide con lo que genera ese JSON.
-      # Solo usa la biblioteca estandar de Python.
+      # Valida datos/signos.json (los 30 idiomas en nombres, descripciones y terminos; elemento,
+      # modalidad y ciclo chino; lineas y estrellas de cada constelacion) y falla si algun SVG de
+      # constelaciones/ o alguna ficha de por-idioma/ no coincide con lo que genera ese JSON, o si
+      # sobra un archivo que ya no se genera. Solo usa la biblioteca estandar de Python.
       - name: Comprobar datos y archivos generados
         working-directory: signos-zodiacales
         run: python3 generar.py --comprobar
+
+      # Coherencia de los datos (fechas sin huecos ni solapes, ciclo de anos chino, elementos),
+      # que validar() atrape datos rotos y que los SVG sean validos y sin scripts.
+      - name: Pruebas
+        working-directory: signos-zodiacales
+        run: python3 -m unittest -v pruebas
+
+      # Los ejemplos del docstring de zodiaco.py (signo de una fecha, animal y elemento de un ano).
+      - name: Ejemplos de zodiaco.py
+        working-directory: signos-zodiacales
+        run: python3 -m doctest -v zodiaco.py
+
+  galeria:
+    name: "signos-zodiacales: galería en Chromium"
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      # Solo la biblioteca de Python: el navegador lo pone setup-chrome.
+      - name: Instalar Playwright
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: pip install playwright==1.55.0
+
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+
+      # Abre galeria.html en Chromium y la recorre en los 30 idiomas y las dos variantes: sin errores
+      # de JavaScript, con las 24 imagenes cargadas, la interfaz en el idioma elegido, rtl donde toca
+      # y el gato en vietnamita.
+      - name: Galeria en Chromium
+        working-directory: signos-zodiacales
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+        run: python pruebas_navegador.py

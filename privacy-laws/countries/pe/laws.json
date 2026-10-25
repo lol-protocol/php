@@ -39,15 +39,15 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
+      "genetic_data": {
+        "url": "https://www.minsa.gob.pe/Recursos/OGTI/SINADEF/Ley-29733.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
       "notes": {
         "url": "https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/",
         "confidence": "high",
         "checked": "2026-10-14"
-      },
-      "genetic_data": {
-        "url": "https://www.congreso.gob.pe/Docs/DGP/DIDP/files/ley_29733.pdf",
-        "confidence": "medium",
-        "checked": "2026-10-18"
       }
     },
     "changes": [

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="fondo-cabra" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-cabra" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-cabra)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.0" stroke-linecap="round" d="M39.5 142.9h0M123.5 40.0h0M109.4 115.9h0M47.6 33.6h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" d="M89.9 46.7h0M163.3 186.5h0M157.5 178.8h0M124.2 189.7h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.0" stroke-linecap="round" d="M116.5 99.2h0M20.3 14.9h0M105.2 79.9h0M159.8 66.5h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.0" stroke-linecap="round" d="M140.6 100.1h0M132.5 84.3h0M112.7 124.9h0M114.1 44.9h0M84.9 46.1h0M35.1 118.8h0M101.0 149.9h0M135.3 138.0h0M167.3 184.4h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" d="M68.5 111.9h0M158.9 70.0h0M166.1 30.4h0M117.4 36.4h0M77.8 168.3h0M37.8 86.5h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.0" stroke-linecap="round" d="M98.4 112.7h0M178.9 25.5h0M71.5 180.6h0M18.6 16.8h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.0" stroke-linecap="round" d="M184.6 41.4h0M20.5 21.3h0M38.8 80.7h0M178.2 116.3h0M50.4 179.5h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.5" stroke-linecap="round" d="M44.2 139.8h0M43.5 31.5h0M64.4 118.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.0" stroke-linecap="round" d="M185.4 99.5h0M147.8 102.8h0M83.7 70.4h0M103.7 167.9h0M81.7 95.6h0M145.7 174.7h0"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 84 C40 92 42 104 52 106 C60 108 66 100 66 92 C66 84 58 76 52 76 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M52 76 C48 56 62 42 80 46 C72 50 68 60 66 76"/>
+    <path d="M50 106 C48 114 52 120 56 124"/>
+    <path d="M66 92 C90 88 128 88 150 98 C162 106 160 122 152 130 L150 158 L140 158 L138 136 C120 140 98 140 86 136 L84 158 L74 158 L72 116 C68 108 66 100 66 92 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M156 102 C162 96 166 98 166 104"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="44" y1="96" x2="60" y2="76"/>
+    <line x1="80" y1="46" x2="60" y2="76"/>
+    <line x1="60" y1="76" x2="100" y2="90"/>
+    <line x1="100" y1="90" x2="150" y2="98"/>
+    <line x1="150" y1="98" x2="138" y2="158"/>
+    <line x1="138" y1="158" x2="74" y2="158"/>
+    <line x1="74" y1="158" x2="56" y2="124"/>
+    <line x1="56" y1="124" x2="44" y2="96"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-cabra)">
+    <circle cx="44" cy="96" r="2.8"/>
+    <circle cx="80" cy="46" r="1.6"/>
+    <circle cx="60" cy="76" r="1.6"/>
+    <circle cx="100" cy="90" r="1.6"/>
+    <circle cx="150" cy="98" r="2.4"/>
+    <circle cx="138" cy="158" r="2.4"/>
+    <circle cx="74" cy="158" r="1.6"/>
+    <circle cx="56" cy="124" r="2.0"/>
+  </g>
+</svg>

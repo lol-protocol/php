@@ -76,7 +76,8 @@
     "asiaPacific": "アジア太平洋",
     "middleEast": "中東",
     "africa": "アフリカ",
-    "oceania": "オセアニア"
+    "oceania": "オセアニア",
+    "international": "国際"
   },
   "categories": {
     "standard": "標準",
@@ -86,6 +87,23 @@
     "photo": "写真",
     "business": "ビジネス",
     "packaging": "包装",
+    "stationery": "文具",
+    "envelope": "封筒",
+    "card": "カード",
+    "small": "小型",
+    "sticker": "ステッカー",
+    "form": "帳票",
+    "flyer": "チラシ",
+    "financial": "金融",
+    "largeFormat": "大判",
+    "booklet": "小冊子",
+    "brochure": "パンフレット",
+    "poster": "ポスター",
+    "roll": "ロール",
+    "large": "大型",
+    "marketing": "マーケティング",
+    "banner": "バナー",
+    "international": "国際",
     "label": "ラベル"
   },
   "measurementSystems": {
@@ -151,7 +169,23 @@
     "loadErrorHelp": "ダブルクリックで開いたページでは、ブラウザーがローカルファイルの読み込みを禁止します。代わりにフォルダーを配信してください。{folder} で {command} を実行し、{address} を開きます。",
     "updatedUnknown": "不明（サーバーが Last-Modified ヘッダーを送信しませんでした）",
     "download": "CSVをダウンロード",
-    "csvFilename": "document-formats"
+    "csvFilename": "ドキュメント形式",
+    "sortBy": "並べ替え",
+    "sortDefault": "カタログ順",
+    "sortName": "名前",
+    "sortWidth": "幅",
+    "sortHeight": "高さ",
+    "sortArea": "面積",
+    "aboutTitle": "このデータベースについて",
+    "aboutIntro": "この包括的なドキュメント形式データベースには、次の内容が含まれます。",
+    "aboutFormats": "複数のカテゴリにまたがる {count} 件の形式",
+    "aboutCountries": "地域規格と国際規格を持つ {count} の国と地域",
+    "aboutDual": "メートル法とヤード・ポンド法の両方の寸法",
+    "aboutSpecs": "印刷とデザインのための技術仕様",
+    "aboutConversions": "国際的な同等サイズを示す形式変換",
+    "aboutSources": "データの出典: ISO 216、ANSI、JIS、GB/T 規格。",
+    "aboutUpdated": "最終更新:",
+    "footer": "ドキュメント形式データベース v2.0 | HTML5、CSS3、JavaScript で構築"
   },
   "paperTypes": {
     "searchPlaceholder": "紙の種類を検索...",

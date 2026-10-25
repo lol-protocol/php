@@ -28,7 +28,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `coral` | karang | `#FF7F50` |  | Keramahan, kegembiraan, kehangatan sosial, dan optimisme. | Kehidupan laut dan perlindungan; dalam tradisi Mediterania, jimat penangkal mata jahat. | derivado | tradición ([elworthy1895](../referencias.md#elworthy1895)) |
 | `cornflowerblue` | biru cornflower | `#6495ED` |  | Keramahan, kepercayaan, ketenangan, dan keterbukaan. | Kesetiaan dan komunikasi yang tulus; spiritualitas yang tenteram. | derivado | derivado |
 | `cornsilk` | sutra jagung | `#FFF8DC` |  | Kelembutan, kehangatan, kepolosan, dan kesederhanaan. | Panen dan kelembutan ladang; kelimpahan yang rendah hati dan kemurnian. | derivado | derivado |
-| `crimson` | merah tua | `#DC143C` |  | Gairah, intensitas, keberanian, urgensi, dan kekuatan. | Darah, kehidupan, dan pengorbanan; tenaga hidup dan cinta yang membara, juga peringatan. | derivado | derivado |
+| `crimson` | merah padam | `#DC143C` |  | Gairah, intensitas, keberanian, urgensi, dan kekuatan. | Darah, kehidupan, dan pengorbanan; tenaga hidup dan cinta yang membara, juga peringatan. | derivado | derivado |
 | `cyan` | sian | `#00FFFF` | `aqua` | Kesegaran, kejernihan, ketenangan, dan komunikasi; dikaitkan dengan yang digital dan modern. | Air dan penyucian; kejernihan pikiran dan aliran komunikasi. | derivado | derivado |
 | `darkblue` | biru tua | `#00008B` |  | Kedalaman, kesungguhan, keandalan, dan wibawa. | Malam yang dalam dan kebijaksanaan; alam bawah sadar dan introspeksi. | derivado | derivado |
 | `darkcyan` | sian tua | `#008B8B` |  | Ketenangan yang dalam, keseimbangan, dan kesungguhan. | Air dalam dan penyembuhan; keseimbangan antara pikiran dan perasaan. | derivado | derivado |

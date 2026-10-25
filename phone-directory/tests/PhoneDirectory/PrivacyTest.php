@@ -110,4 +110,39 @@ class PrivacyTest extends TestCase
         })()), 'any iterable, and the result is a list');
         $this->assertSame([$a, $b, $c, $d], Privacy::forOwner()->filter([$a, $b, $c, $d]));
     }
+
+    public function testAPersonRecordedAsDeadMayBeShownWhateverTheDirectoryYear(): void
+    {
+        $privacy = Privacy::forVisitors(new \DateTimeImmutable('2026-10-20'));
+        $recent = self::entry('es_1975_national');
+        $dead = $recent->withDeceasedYear(1988);
+
+        $this->assertTrue($privacy->mayBeAlive($recent));
+        $this->assertFalse($privacy->mayBeAlive($dead));
+        $this->assertTrue($privacy->allows($dead));
+        $this->assertSame(1988, $dead->getDeceasedYear());
+        $this->assertSame([$dead], $privacy->filter([$recent, $dead]));
+    }
+
+    /** No directory, or one with no year, says nothing about when the person lived; a recorded death does. */
+    public function testARecordedDeathAlsoLiftsAnEntryWithoutAKnownYear(): void
+    {
+        $privacy = Privacy::forVisitors(new \DateTimeImmutable('2026-10-20'));
+
+        $this->assertTrue($privacy->allows(self::entry(null)->withDeceasedYear(1990)));
+        $this->assertTrue($privacy->allows(self::entry('mi_guia_sin_anio')->withDeceasedYear(1990)));
+    }
+
+    public function testWithDeceasedYearReturnsACopyAndNullTakesTheMarkBack(): void
+    {
+        $recent = self::entry('es_1975_national');
+        $dead = $recent->withDeceasedYear(1988);
+        $privacy = Privacy::forVisitors(new \DateTimeImmutable('2026-10-20'));
+
+        $this->assertNull($recent->getDeceasedYear(), 'the original is not changed');
+        $this->assertNotSame($recent, $dead);
+        $this->assertTrue($privacy->mayBeAlive($dead->withDeceasedYear(null)));
+        $this->assertSame(1988, $dead->toArray()['deceasedYear']);
+        $this->assertNull($recent->toArray()['deceasedYear']);
+    }
 }

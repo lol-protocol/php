@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "MG",
+    "country_name": "Madagascar",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 94-036 of 18 September 1995 on Literary and Artistic Property",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (art. 52: current calendar year and following 70 years; joint works from death of last survivor; anonymous/pseudonymous/posthumous works 70 years from 1 January after publication)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (no registration requirement found; unconfirmed)",
+    "enforcement_body": "Malagasy Copyright Office (Office Malgache du Droit d'Auteur, OMDA), created by Decree No. 98-434 of 16 June 1998",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8318",
+    "notes": "Law 94-036 still cited as the legal basis in a 2025 OMDA royalties decree; no replacement law found (a Loi 2020-002 was not confirmed). Berne since 1966; WCT/WPPT in force 24 Feb 2015; WTO since 1995 (Commons).",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8318",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8316",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Madagascar.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "author_rights": {
+        "url": "https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°-94-036-Portant-sur-la-Propriété-Littéraire-et-Artistique..pdf",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "orphan_works": {
+        "url": "https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°-94-036-Portant-sur-la-Propriété-Littéraire-et-Artistique..pdf",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "registration_required": {
+        "url": "https://wipo.int/documents/d/copyright/docs-fr-registration-replies-madagascar.pdf",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8318",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/wipolex/en/treaties/ShowResults?code=MG",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

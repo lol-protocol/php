@@ -44,25 +44,25 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.dfdl.com/insights/legal-and-tax-updates/malaysia-implementation-of-the-personal-data-protection-amendment-act-2024/",
         "confidence": "high",
         "checked": "2026-10-18"
       },
       "research_exemption": {
-        "url": "https://miea.com.my/sites/default/files/webmaster/Personal%20Data%20Protection%20Act%202010%20Act%20709_15Jun2016.pdf",
+        "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act%20709%2014%206%202016.pdf",
         "confidence": "low",
-        "checked": "2026-10-18"
+        "checked": "2026-10-22"
       },
       "genetic_data": {
         "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-bill-2024",
         "confidence": "low",
         "checked": "2026-10-18"
+      },
+      "notes": {
+        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

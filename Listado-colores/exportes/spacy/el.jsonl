@@ -1,0 +1,193 @@
+{"label":"COLOR","pattern":"άμμου καφέ","id":"sandybrown"}
+{"label":"COLOR","pattern":"άσπρα","id":"white"}
+{"label":"COLOR","pattern":"άσπρες","id":"white"}
+{"label":"COLOR","pattern":"άσπρη","id":"white"}
+{"label":"COLOR","pattern":"άσπρο","id":"white"}
+{"label":"COLOR","pattern":"άσπροι","id":"white"}
+{"label":"COLOR","pattern":"άσπρος","id":"white"}
+{"label":"COLOR","pattern":"έντονο ροζ","id":"hotpink"}
+{"label":"COLOR","pattern":"ίνδικο","id":"indigo"}
+{"label":"COLOR","pattern":"ακουά","id":"aqua"}
+{"label":"COLOR","pattern":"ακουαμαρίνα","id":"aquamarine"}
+{"label":"COLOR","pattern":"αμυγδαλί λευκό","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"ανοιξιάτικο πράσινο","id":"springgreen"}
+{"label":"COLOR","pattern":"ανοιχτό ατσάλι μπλε","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"ανοιχτό γαλάζιο ουρανού","id":"lightskyblue"}
+{"label":"COLOR","pattern":"ανοιχτό γκρι","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"ανοιχτό γκρι πλάκας","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"ανοιχτό θαλασσοπράσινο","id":"lightseagreen"}
+{"label":"COLOR","pattern":"ανοιχτό κίτρινο","id":"lightyellow"}
+{"label":"COLOR","pattern":"ανοιχτό κίτρινο χρυσοράβδι","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"ανοιχτό κοραλί","id":"lightcoral"}
+{"label":"COLOR","pattern":"ανοιχτό κυανό","id":"lightcyan"}
+{"label":"COLOR","pattern":"ανοιχτό μπλε","id":"lightblue"}
+{"label":"COLOR","pattern":"ανοιχτό πράσινο","id":"lightgreen"}
+{"label":"COLOR","pattern":"ανοιχτό ροζ","id":"lightpink"}
+{"label":"COLOR","pattern":"ανοιχτό σομόν","id":"lightsalmon"}
+{"label":"COLOR","pattern":"αντικέ λευκό","id":"antiquewhite"}
+{"label":"COLOR","pattern":"ασημί","id":"silver"}
+{"label":"COLOR","pattern":"ατσάλι μπλε","id":"steelblue"}
+{"label":"COLOR","pattern":"βαθύ γαλάζιο του ουρανού","id":"deepskyblue"}
+{"label":"COLOR","pattern":"βαθύ ροζ","id":"deeppink"}
+{"label":"COLOR","pattern":"βασιλικό μπλε","id":"royalblue"}
+{"label":"COLOR","pattern":"βιολετί","id":"violet"}
+{"label":"COLOR","pattern":"γαλάζια","id":"lightblue;skyblue"}
+{"label":"COLOR","pattern":"γαλάζιες","id":"lightblue;skyblue"}
+{"label":"COLOR","pattern":"γαλάζιο","id":"azure;lightblue;skyblue"}
+{"label":"COLOR","pattern":"γαλάζιο ανοιχτό","id":"lightblue"}
+{"label":"COLOR","pattern":"γαλάζιο του ουρανού","id":"skyblue"}
+{"label":"COLOR","pattern":"γαλάζιοι","id":"lightblue;skyblue"}
+{"label":"COLOR","pattern":"γαλάζιος","id":"lightblue;skyblue"}
+{"label":"COLOR","pattern":"γαϊδουράγκαθο","id":"thistle"}
+{"label":"COLOR","pattern":"γκρίζος","id":"gray"}
+{"label":"COLOR","pattern":"γκρι","id":"gray;grey"}
+{"label":"COLOR","pattern":"γκρι Γκέινσμπορο","id":"gainsboro"}
+{"label":"COLOR","pattern":"γκρι πλάκας","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"δαμάσκηνο","id":"plum"}
+{"label":"COLOR","pattern":"δροσιά μελιού","id":"honeydew"}
+{"label":"COLOR","pattern":"ελεφαντοστού","id":"ivory"}
+{"label":"COLOR","pattern":"ελιά","id":"olive"}
+{"label":"COLOR","pattern":"θαλασσί","id":"seagreen"}
+{"label":"COLOR","pattern":"θαμπό γκρι","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"ινδικό κόκκινο","id":"indianred"}
+{"label":"COLOR","pattern":"ιντίγκο","id":"indigo"}
+{"label":"COLOR","pattern":"κίτρινα","id":"yellow"}
+{"label":"COLOR","pattern":"κίτρινες","id":"yellow"}
+{"label":"COLOR","pattern":"κίτρινη","id":"yellow"}
+{"label":"COLOR","pattern":"κίτρινο","id":"yellow"}
+{"label":"COLOR","pattern":"κίτρινοι","id":"yellow"}
+{"label":"COLOR","pattern":"κίτρινος","id":"yellow"}
+{"label":"COLOR","pattern":"καπνώδες λευκό","id":"whitesmoke"}
+{"label":"COLOR","pattern":"καρμεζί","id":"crimson"}
+{"label":"COLOR","pattern":"καφέ","id":"brown"}
+{"label":"COLOR","pattern":"καφέ σέλας","id":"saddlebrown"}
+{"label":"COLOR","pattern":"κεχριμπαρί","id":"amber"}
+{"label":"COLOR","pattern":"κιτρινοπράσινο","id":"yellowgreen"}
+{"label":"COLOR","pattern":"κοραλί","id":"coral"}
+{"label":"COLOR","pattern":"κοχύλι","id":"seashell"}
+{"label":"COLOR","pattern":"κρέμα μέντας","id":"mintcream"}
+{"label":"COLOR","pattern":"κρέμα παπάγιας","id":"papayawhip"}
+{"label":"COLOR","pattern":"κρεμ","id":"cream"}
+{"label":"COLOR","pattern":"κυανά","id":"cyan"}
+{"label":"COLOR","pattern":"κυανές","id":"cyan"}
+{"label":"COLOR","pattern":"κυανή","id":"cyan"}
+{"label":"COLOR","pattern":"κυανοί","id":"cyan"}
+{"label":"COLOR","pattern":"κυανό","id":"cyan"}
+{"label":"COLOR","pattern":"κυανός","id":"cyan"}
+{"label":"COLOR","pattern":"κόκκινα","id":"red"}
+{"label":"COLOR","pattern":"κόκκινες","id":"red"}
+{"label":"COLOR","pattern":"κόκκινη","id":"red"}
+{"label":"COLOR","pattern":"κόκκινο","id":"red"}
+{"label":"COLOR","pattern":"κόκκινοι","id":"red"}
+{"label":"COLOR","pattern":"κόκκινος","id":"red"}
+{"label":"COLOR","pattern":"λαδί","id":"olive"}
+{"label":"COLOR","pattern":"λαχανί","id":"lime"}
+{"label":"COLOR","pattern":"λεβάντα","id":"lavender"}
+{"label":"COLOR","pattern":"λεμονί σιφόν","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"λευκό","id":"white"}
+{"label":"COLOR","pattern":"λευκό ανθέων","id":"floralwhite"}
+{"label":"COLOR","pattern":"λευκό Ναβάχο","id":"navajowhite"}
+{"label":"COLOR","pattern":"λευκό φάντασμα","id":"ghostwhite"}
+{"label":"COLOR","pattern":"λευκός","id":"white"}
+{"label":"COLOR","pattern":"λιλά","id":"lilac"}
+{"label":"COLOR","pattern":"λινό","id":"linen"}
+{"label":"COLOR","pattern":"ματζέντα","id":"magenta"}
+{"label":"COLOR","pattern":"μαυρισμένο","id":"tan"}
+{"label":"COLOR","pattern":"μαύρα","id":"black"}
+{"label":"COLOR","pattern":"μαύρες","id":"black"}
+{"label":"COLOR","pattern":"μαύρη","id":"black"}
+{"label":"COLOR","pattern":"μαύρο","id":"black"}
+{"label":"COLOR","pattern":"μαύροι","id":"black"}
+{"label":"COLOR","pattern":"μαύρος","id":"black"}
+{"label":"COLOR","pattern":"μενεξεδί","id":"violet"}
+{"label":"COLOR","pattern":"μεσαία ακουαμαρίνα","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"μεσαίο ανοιξιάτικο πράσινο","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"μεσαίο βιολετί κόκκινο","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"μεσαίο θαλασσοπράσινο","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"μεσαίο μπλε","id":"mediumblue"}
+{"label":"COLOR","pattern":"μεσαίο μπλε πλάκας","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"μεσαίο μωβ","id":"mediumpurple"}
+{"label":"COLOR","pattern":"μεσαίο ορχιδέ","id":"mediumorchid"}
+{"label":"COLOR","pattern":"μεσαίο τυρκουάζ","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"μεταξί καλαμποκιού","id":"cornsilk"}
+{"label":"COLOR","pattern":"μοβ","id":"purple"}
+{"label":"COLOR","pattern":"μοκασίνι","id":"moccasin"}
+{"label":"COLOR","pattern":"μπεζ","id":"beige"}
+{"label":"COLOR","pattern":"μπισκότο","id":"bisque"}
+{"label":"COLOR","pattern":"μπλε","id":"blue"}
+{"label":"COLOR","pattern":"μπλε Αλίκης","id":"aliceblue"}
+{"label":"COLOR","pattern":"μπλε βιολετί","id":"blueviolet"}
+{"label":"COLOR","pattern":"μπλε κυανάνθεμου","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"μπλε μεσάνυχτα","id":"midnightblue"}
+{"label":"COLOR","pattern":"μπλε Ντότζερ","id":"dodgerblue"}
+{"label":"COLOR","pattern":"μπλε πλάκας","id":"slateblue"}
+{"label":"COLOR","pattern":"μπλε των δοκίμων","id":"cadetblue"}
+{"label":"COLOR","pattern":"μπορντό","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"μωβ","id":"purple"}
+{"label":"COLOR","pattern":"ναυτικό μπλε","id":"navy"}
+{"label":"COLOR","pattern":"ντομάτα","id":"tomato"}
+{"label":"COLOR","pattern":"ξύλου","id":"burlywood"}
+{"label":"COLOR","pattern":"ομιχλώδες ροζ","id":"mistyrose"}
+{"label":"COLOR","pattern":"ορχιδέ","id":"orchid"}
+{"label":"COLOR","pattern":"παλιά δαντέλα","id":"oldlace"}
+{"label":"COLOR","pattern":"περού","id":"peru"}
+{"label":"COLOR","pattern":"πορτοκαλί","id":"orange"}
+{"label":"COLOR","pattern":"πορτοκαλοκόκκινο","id":"orangered"}
+{"label":"COLOR","pattern":"πράσινα","id":"green"}
+{"label":"COLOR","pattern":"πράσινες","id":"green"}
+{"label":"COLOR","pattern":"πράσινη","id":"green"}
+{"label":"COLOR","pattern":"πράσινο","id":"green"}
+{"label":"COLOR","pattern":"πράσινο γκαζόν","id":"lawngreen"}
+{"label":"COLOR","pattern":"πράσινο δάσους","id":"forestgreen"}
+{"label":"COLOR","pattern":"πράσινο λαχανί","id":"limegreen"}
+{"label":"COLOR","pattern":"πράσινο-κίτρινο","id":"greenyellow"}
+{"label":"COLOR","pattern":"πράσινοι","id":"green"}
+{"label":"COLOR","pattern":"πράσινος","id":"green"}
+{"label":"COLOR","pattern":"πυροτούβλο","id":"firebrick"}
+{"label":"COLOR","pattern":"Ρεμπέκα μωβ","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"ροδάκινο","id":"peachpuff"}
+{"label":"COLOR","pattern":"ροζ","id":"pink"}
+{"label":"COLOR","pattern":"ροζ καφέ","id":"rosybrown"}
+{"label":"COLOR","pattern":"ροζ λεβάντας","id":"lavenderblush"}
+{"label":"COLOR","pattern":"σαρτρέζ","id":"chartreuse"}
+{"label":"COLOR","pattern":"σιέλ","id":"skyblue"}
+{"label":"COLOR","pattern":"σιέννα","id":"sienna"}
+{"label":"COLOR","pattern":"σιτάρι","id":"wheat"}
+{"label":"COLOR","pattern":"σκούρο βιολετί","id":"darkviolet"}
+{"label":"COLOR","pattern":"σκούρο γκρι","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"σκούρο γκρι πλάκας","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"σκούρο ελιάς","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"σκούρο θαλασσοπράσινο","id":"darkseagreen"}
+{"label":"COLOR","pattern":"σκούρο κυανό","id":"darkcyan"}
+{"label":"COLOR","pattern":"σκούρο κόκκινο","id":"darkred"}
+{"label":"COLOR","pattern":"σκούρο ματζέντα","id":"darkmagenta"}
+{"label":"COLOR","pattern":"σκούρο μπλε","id":"darkblue;navy"}
+{"label":"COLOR","pattern":"σκούρο μπλε πλάκας","id":"darkslateblue"}
+{"label":"COLOR","pattern":"σκούρο ορχιδέ","id":"darkorchid"}
+{"label":"COLOR","pattern":"σκούρο πορτοκαλί","id":"darkorange"}
+{"label":"COLOR","pattern":"σκούρο πράσινο","id":"darkgreen"}
+{"label":"COLOR","pattern":"σκούρο σομόν","id":"darksalmon"}
+{"label":"COLOR","pattern":"σκούρο τυρκουάζ","id":"darkturquoise"}
+{"label":"COLOR","pattern":"σκούρο χακί","id":"darkkhaki"}
+{"label":"COLOR","pattern":"σκούρο χρυσοράβδι","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"σκόνη μπλε","id":"powderblue"}
+{"label":"COLOR","pattern":"σοκολατί","id":"chocolate"}
+{"label":"COLOR","pattern":"σομόν","id":"salmon"}
+{"label":"COLOR","pattern":"τιλ","id":"teal"}
+{"label":"COLOR","pattern":"τυρκουάζ","id":"turquoise"}
+{"label":"COLOR","pattern":"φούξια","id":"fuchsia"}
+{"label":"COLOR","pattern":"χακί","id":"khaki"}
+{"label":"COLOR","pattern":"χακί ελιάς","id":"olivedrab"}
+{"label":"COLOR","pattern":"χιόνι","id":"snow"}
+{"label":"COLOR","pattern":"χρυσά","id":"gold"}
+{"label":"COLOR","pattern":"χρυσές","id":"gold"}
+{"label":"COLOR","pattern":"χρυσή","id":"gold"}
+{"label":"COLOR","pattern":"χρυσαφί","id":"gold"}
+{"label":"COLOR","pattern":"χρυσοί","id":"gold"}
+{"label":"COLOR","pattern":"χρυσοράβδι","id":"goldenrod"}
+{"label":"COLOR","pattern":"χρυσό","id":"gold"}
+{"label":"COLOR","pattern":"χρυσός","id":"gold"}
+{"label":"COLOR","pattern":"ωχρό βιολετί κόκκινο","id":"palevioletred"}
+{"label":"COLOR","pattern":"ωχρό πράσινο","id":"palegreen"}
+{"label":"COLOR","pattern":"ωχρό τυρκουάζ","id":"paleturquoise"}
+{"label":"COLOR","pattern":"ωχρό χρυσοράβδι","id":"palegoldenrod"}

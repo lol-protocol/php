@@ -76,7 +76,8 @@
     "asiaPacific": "亚太地区",
     "middleEast": "中东",
     "africa": "非洲",
-    "oceania": "大洋洲"
+    "oceania": "大洋洲",
+    "international": "国际"
   },
   "categories": {
     "standard": "标准",
@@ -86,6 +87,23 @@
     "photo": "照片",
     "business": "商业",
     "packaging": "包装",
+    "stationery": "文具",
+    "envelope": "信封",
+    "card": "卡片",
+    "small": "小型",
+    "sticker": "贴纸",
+    "form": "表格",
+    "flyer": "传单",
+    "financial": "金融",
+    "largeFormat": "大幅面",
+    "booklet": "小册子",
+    "brochure": "宣传册",
+    "poster": "海报",
+    "roll": "卷筒",
+    "large": "大型",
+    "marketing": "营销",
+    "banner": "横幅",
+    "international": "国际",
     "label": "标签"
   },
   "measurementSystems": {
@@ -151,7 +169,23 @@
     "loadErrorHelp": "通过双击打开的页面，浏览器会阻止读取本地文件。请改为提供该文件夹：在 {folder} 中运行 {command}，然后打开 {address}。",
     "updatedUnknown": "未知（服务器未发送 Last-Modified 头）",
     "download": "下载 CSV",
-    "csvFilename": "document-formats"
+    "csvFilename": "文档格式",
+    "sortBy": "排序方式",
+    "sortDefault": "目录顺序",
+    "sortName": "名称",
+    "sortWidth": "宽度",
+    "sortHeight": "高度",
+    "sortArea": "面积",
+    "aboutTitle": "关于本数据库",
+    "aboutIntro": "这个全面的文档格式数据库包含:",
+    "aboutFormats": "涵盖多个类别的 {count} 种格式",
+    "aboutCountries": "{count} 个国家和地区的本地与国际标准",
+    "aboutDual": "公制与英制双重尺寸",
+    "aboutSpecs": "用于印刷和设计的技术规格",
+    "aboutConversions": "展示国际对应关系的格式换算",
+    "aboutSources": "数据来源: ISO 216、ANSI、JIS 和 GB/T 标准。",
+    "aboutUpdated": "最后更新:",
+    "footer": "文档格式数据库 v2.0 | 使用 HTML5、CSS3 和 JavaScript 构建"
   },
   "paperTypes": {
     "searchPlaceholder": "搜索纸张类型...",

@@ -8,10 +8,16 @@ on:
     branches: [master]
     paths:
       - "url-routing/**"
+      # los pedidos de retiro pasan por su filtro (url-routing/Support/FiltroPedidos.php)
+      - "defamatory-content-review/src/**"
+      - "defamatory-content-review/config/**"
       - ".github/workflows/pruebas-url-routing.yml"
   pull_request:
     paths:
       - "url-routing/**"
+      # los pedidos de retiro pasan por su filtro (url-routing/Support/FiltroPedidos.php)
+      - "defamatory-content-review/src/**"
+      - "defamatory-content-review/config/**"
       - ".github/workflows/pruebas-url-routing.yml"
   workflow_dispatch:
 
@@ -26,6 +32,7 @@ jobs:
   url-routing:
     name: url-routing / PHP ${{ matrix.php-version }}
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: url-routing
@@ -87,3 +94,57 @@ jobs:
           php bin/migrate.php genealogy
           php bin/migrate.php pos
           php bin/migrate.php genealogy | grep -q 'sin migraciones pendientes'
+
+  # El despliegue de la guía (docs/DESPLIEGUE.md), de verdad: nginx con deploy/nginx.conf.example y
+  # PHP-FPM, con el sitio de genealogia en PostgreSQL y el POS en SQLite. Lo que comprueba es la
+  # instalacion (permisos, migraciones, cabeceras, lo que no debe servirse, HTTPS, /ready, el
+  # limitador); la logica de las paginas ya la cubre phpunit.
+  despliegue:
+    name: url-routing / despliegue (nginx + PHP-FPM 8.3)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: url-routing
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: routing_test
+          POSTGRES_PASSWORD: routing_test
+          POSTGRES_DB: routing_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U routing_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite, pdo_pgsql, mbstring
+          coverage: none
+
+      - name: Install nginx and PHP-FPM
+        working-directory: .
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends nginx php8.3-fpm php8.3-pgsql php8.3-sqlite3 php8.3-mbstring
+
+      - name: Smoke test (nginx + PHP-FPM + HTTPS)
+        env:
+          PGPASSWORD: routing_test
+          SMOKE_PG_DSN: pgsql:host=127.0.0.1;port=5432;dbname=smoke
+          SMOKE_PG_USER: routing_test
+          SMOKE_PG_PASSWORD: routing_test
+        run: |
+          psql -h 127.0.0.1 -U routing_test -d routing_test -c 'CREATE DATABASE smoke'
+          ./deploy/smoke-test.sh

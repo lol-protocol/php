@@ -94,6 +94,24 @@ enable_nginx_site() {
     fi
 }
 
+# raise_php_upload_limit <tamano>: sube upload_max_filesize y post_max_size de PHP-FPM a <tamano>.
+# PHP tiene sus propios limites (2M y 8M por defecto): con solo subir el de Nginx, PHP seguiria
+# descartando el archivo. Es un ajuste GLOBAL de PHP-FPM (todas las apps comparten el pool); el
+# limite de cada sitio lo pone su client_max_body_size en Nginx. Si ya habia uno mas grande (de
+# otra app), se conserva. Archivo reemplazable con PHP_UPLOAD_INI (pruebas).
+raise_php_upload_limit() {
+    local size=$1 ini current
+    ini=${PHP_UPLOAD_INI:-/etc/php/$PHP_VERSION/fpm/conf.d/90-vps-setup-uploads.ini}
+    to_bytes() { local n=${1%?}; case "${1: -1}" in K) echo $((n*1024));; M) echo $((n*1024**2));; G) echo $((n*1024**3));; esac; }
+    current=$(sed -n 's/^upload_max_filesize *= *//p' "$ini" 2>/dev/null || true)   # aun no existe: vacio
+    if [ ! -d "$(dirname "$ini")" ]; then
+        echo "AVISO: no existe $(dirname "$ini") (¿falta 02_B-install-php.sh?): no se ajusto el limite de subida de PHP."
+    elif [ -z "$current" ] || [ "$(to_bytes "$size")" -gt "$(to_bytes "$current")" ]; then
+        printf 'upload_max_filesize = %s\npost_max_size = %s\n' "$size" "$size" | sudo tee "$ini" > /dev/null
+        sudo systemctl reload "$PHP_FPM_SERVICE"
+    fi
+}
+
 # Safe UFW rule (only if ufw is active)
 ufw_allow() {
     local rule=$1
@@ -124,13 +142,26 @@ setup_nginx_domain_logs() {
     sudo mkdir -p /var/log/nginx/"$domain"
 }
 
+# app_has_code <carpeta>: 0 si la carpeta ya tiene algo que NO sea el venv/ de los scripts, es decir,
+# codigo (o archivos) de la persona. 06_A y 06_B lo usan para no pisar una app ya subida al
+# re-correrlos (por ejemplo, para cambiar el puerto o el limite de subida).
+app_has_code() {
+    [ -d "$1" ] && [ -n "$(find "$1" -mindepth 1 -maxdepth 1 ! -name venv -print -quit 2>/dev/null)" ]
+}
+
 # Setup app directories with correct ownership
 setup_app_directories() {
     local app_path=$1
     local domain=$2
 
     sudo mkdir -p "$app_path"
-    sudo chown -R www-data:www-data "$app_path"
+    # chown -R solo en una carpeta nueva o sin codigo: sobre una app ya subida cambiaria el dueno y
+    # los permisos de TODOS sus archivos (un .env con 600, un deploy con otro usuario...)
+    if app_has_code "$app_path"; then
+        sudo chown www-data:www-data "$app_path"
+    else
+        sudo chown -R www-data:www-data "$app_path"
+    fi
     setup_nginx_domain_logs "$domain"
 }
 

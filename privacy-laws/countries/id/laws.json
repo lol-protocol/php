@@ -39,11 +39,6 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.rsm.global/indonesia/en/node/439",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://fh.unair.ac.id/proceedings/index.php/aicoll/article/view/16",
         "confidence": "medium",
@@ -58,6 +53,11 @@
         "url": "https://www.nishimura.com/sites/default/files/images/en_newsletter_221228_asia_data_protection.pdf",
         "confidence": "high",
         "checked": "2026-10-18"
+      },
+      "notes": {
+        "url": "https://www.rsm.global/indonesia/en/node/439",
+        "confidence": "medium",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

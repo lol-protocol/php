@@ -1,0 +1,80 @@
+# Dependabot: una vez por semana, en PR agrupados para no inundar de uno por paquete.
+#
+# - github-actions: sí con versiones mayores. Es lo que más cambia sin que nadie se entere
+#   (GitHub ya avisó de que upload-artifact@v4, download-artifact@v4 y cache@v4 dependen de Node 20).
+# - composer, npm y pip: solo menores y parches. Una versión mayor puede subir el piso de PHP o de
+#   Node (cobros-ingresos-funnels/ fija PHP 8.3 a propósito) y eso lo decide la persona, no un bot.
+#
+# Dependabot abre sus PR fuera de borrador: es la excepción a «abre los PR en borrador» de CLAUDE.md,
+# porque los abre GitHub y no una sesión. Fusionarlos sigue decidiéndolo la persona.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      acciones:
+        patterns: ["*"]
+    commit-message:
+      prefix: "CI"
+
+  - package-ecosystem: composer
+    directories:
+      - /
+      - /cobros-ingresos-funnels
+      - /defamatory-content-review
+      - /marcalibros-plataforma-pos-brand-identity/app
+      - /marcalibros-plataforma-pos-brand-identity/php
+      - /phone-directory
+      - /portadas-svg
+      - /url-routing
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    groups:
+      composer:
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    commit-message:
+      prefix: "composer"
+
+  - package-ecosystem: npm
+    directories:
+      - /copyright-laws
+      - /privacy-laws
+      - /web-animations
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    groups:
+      npm:
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    commit-message:
+      prefix: "npm"
+
+  - package-ecosystem: pip
+    directories:
+      - /iconos-tools
+      - /marcalibros-plataforma-pos-brand-identity/generator
+      - /marcalibros_b/generator
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 3
+    groups:
+      pip:
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    commit-message:
+      prefix: "pip"

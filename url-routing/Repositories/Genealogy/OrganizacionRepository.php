@@ -54,7 +54,8 @@ final class OrganizacionRepository extends Repository
     public function buscar(string $texto, int $limit = 50, int $offset = 0): array
     {
         return $this->db->fetchAll(
-            'SELECT id, nombre, tipo FROM organizaciones WHERE ' . self::sinAcentos('nombre') . self::LIKE_ESCAPED . ' ORDER BY nombre, id'
+            'SELECT id, nombre, tipo FROM organizaciones WHERE ' . self::sinAcentos('nombre') . self::LIKE_ESCAPED
+                . $this->sinRetiradas('organizacion', 'organizaciones.id') . ' ORDER BY nombre, id'
                 . self::page($limit, $offset),
             [self::patron($texto)]
         );

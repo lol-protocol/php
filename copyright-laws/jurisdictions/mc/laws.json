@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "MC",
+    "country_name": "Monaco",
+    "region": "europe",
+    "law_name": "Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 12; posthumous and collaborative works 50 years from publication or last author's death)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (unconfirmed)",
+    "enforcement_body": "Intellectual Property Division, Directorate of Economic Development (Division de la propriete intellectuelle, Direction du Developpement Economique)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/9056",
+    "notes": "Preparatory documents of Law 1.526 of 2022 also state 50 years post mortem; a Mondaq article mentions a planned extension to 70 years, no enacted law found. Two explainer sites claim 70 years (low reliability). WCT/WPPT/TRIPS status not confirmed.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9056",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9056",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Monaco.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9056",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9056",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "registration_required": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Monaco.html",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/fr/web/country-profiles/mc",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Monaco.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -1,0 +1,97 @@
+[
+  {
+    "country_code": "CV",
+    "country_name": "Cabo Verde",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 133/V/2001 of 22 January 2001 (General Legal Regime for Personal Data Protection of Natural Persons), as amended by Law No. 41/VIII/2013 and Law No. 121/IX/2021",
+    "jurisdiction": "National Commission for Data Protection (CNPD)",
+    "enactment_date": "2001-01-22",
+    "effective_date": "2001-01-22",
+    "scope": "Natural persons whose data is processed by controllers established in Cabo Verde or using equipment there",
+    "applies_to": "Public and private controllers (automated and manual files, incl. video surveillance)",
+    "key_requirements": "Data-subject rights of information, access, objection, rectification and erasure; CNPD supervision; special security measures for sensitive data",
+    "data_categories": "Personal data; sensitive data (special data incl. health and genetic data accessed through a physician) (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Comissao Nacional de Protecao de Dados Pessoais (CNPD)",
+    "penalties_range": "Per a third-party summary: administrative fines CVE 50,000-500,000 (individuals) and CVE 300,000-3,000,000 (legal entities); other infractions CVE 100,000-1,000,000; daily penalty CVE 5,000/10,000; criminal penalties for specific offences (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "Health and genetic data accessed via a physician (special data regime) (unconfirmed)",
+    "website_url": "https://boe.incv.cv/Bulletins/Download/3672",
+    "language": "Portuguese",
+    "frameworks": "CoE-108",
+    "frameworks_not": "",
+    "notes": "Law 121/IX/2021 (published 2021-03-17) amends the regime to align with Convention 108+ and amends CNPD statute Law 42/VIII/2013; its effective date was not found. CNPD operational since 2015. cnpd.cv not confirmed.; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://boe.incv.cv/Bulletins/Download/3672",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://boe.incv.cv/Bulletins/DownloadAct?id=102251",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://www.DataGuidance.com/notes/cape-verde-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://ictpolicyafrica.org/en/document/7qd8wf9c3qa",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "applies_to": {
+        "url": "https://ictpolicyafrica.org/en/document/7qd8wf9c3qa",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?c=CV&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "data_categories": {
+        "url": "https://www.offlist.me/what-is-cabo-verde-law-133-v-2001",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://boe.incv.cv/Bulletins/DownloadAct?id=102251",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://www.offlist.me/what-is-cabo-verde-law-133-v-2001",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "genetic_data": {
+        "url": "https://www.offlist.me/what-is-cabo-verde-law-133-v-2001",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "frameworks": {
+        "url": "https://www.coe.int/fr/web/portal/-/cabo-verde-joins-the-data-protection-and-cybercrime-conventions",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

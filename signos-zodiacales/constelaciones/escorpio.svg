@@ -1,7 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
-     aria-labelledby="t-escorpio d-escorpio">
-  <title id="t-escorpio">Constelación de Escorpio</title>
-  <desc id="d-escorpio">Esquema de la constelación, no a escala.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
     <radialGradient id="fondo-escorpio" cx="50%" cy="42%" r="70%">
       <stop offset="0" stop-color="#1c2656"/>
@@ -14,73 +11,46 @@
   </defs>
   <rect width="200" height="200" rx="14" fill="url(#fondo-escorpio)"/>
   <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
-  <g fill="#ffffff">
-    <circle cx="186.3" cy="155.3" r="0.89" fill-opacity="0.77"/>
-    <circle cx="64.7" cy="50.8" r="0.42" fill-opacity="0.44"/>
-    <circle cx="89.8" cy="40.5" r="0.50" fill-opacity="0.53"/>
-    <circle cx="89.4" cy="9.3" r="0.98" fill-opacity="0.57"/>
-    <circle cx="182.6" cy="127.4" r="1.09" fill-opacity="0.57"/>
-    <circle cx="68.7" cy="29.2" r="0.79" fill-opacity="0.60"/>
-    <circle cx="39.7" cy="81.9" r="0.65" fill-opacity="0.42"/>
-    <circle cx="170.2" cy="115.1" r="0.79" fill-opacity="0.32"/>
-    <circle cx="156.3" cy="27.1" r="0.59" fill-opacity="0.70"/>
-    <circle cx="103.8" cy="22.5" r="0.58" fill-opacity="0.54"/>
-    <circle cx="34.0" cy="31.2" r="0.74" fill-opacity="0.73"/>
-    <circle cx="18.7" cy="80.6" r="0.85" fill-opacity="0.77"/>
-    <circle cx="77.2" cy="123.4" r="0.70" fill-opacity="0.58"/>
-    <circle cx="164.2" cy="134.0" r="1.06" fill-opacity="0.48"/>
-    <circle cx="144.4" cy="102.2" r="0.63" fill-opacity="0.26"/>
-    <circle cx="189.0" cy="13.3" r="0.53" fill-opacity="0.50"/>
-    <circle cx="188.0" cy="165.8" r="0.88" fill-opacity="0.32"/>
-    <circle cx="72.1" cy="166.0" r="0.84" fill-opacity="0.35"/>
-    <circle cx="113.6" cy="33.0" r="0.71" fill-opacity="0.69"/>
-    <circle cx="118.5" cy="144.4" r="0.50" fill-opacity="0.45"/>
-    <circle cx="52.8" cy="38.1" r="0.53" fill-opacity="0.49"/>
-    <circle cx="78.9" cy="111.7" r="1.09" fill-opacity="0.74"/>
-    <circle cx="166.7" cy="21.3" r="0.90" fill-opacity="0.35"/>
-    <circle cx="183.8" cy="20.7" r="0.78" fill-opacity="0.67"/>
-    <circle cx="16.8" cy="117.1" r="0.50" fill-opacity="0.28"/>
-    <circle cx="79.1" cy="112.9" r="0.94" fill-opacity="0.25"/>
-    <circle cx="23.0" cy="54.5" r="0.45" fill-opacity="0.38"/>
-    <circle cx="72.5" cy="23.0" r="0.52" fill-opacity="0.27"/>
-    <circle cx="143.1" cy="10.1" r="0.49" fill-opacity="0.59"/>
-    <circle cx="138.3" cy="58.5" r="0.85" fill-opacity="0.50"/>
-    <circle cx="82.2" cy="25.0" r="0.88" fill-opacity="0.30"/>
-    <circle cx="158.4" cy="57.4" r="0.70" fill-opacity="0.53"/>
-    <circle cx="183.9" cy="117.6" r="0.82" fill-opacity="0.76"/>
-    <circle cx="171.3" cy="105.0" r="0.62" fill-opacity="0.41"/>
-    <circle cx="72.0" cy="131.6" r="0.73" fill-opacity="0.77"/>
-    <circle cx="128.3" cy="71.1" r="0.75" fill-opacity="0.39"/>
-    <circle cx="83.1" cy="63.2" r="0.62" fill-opacity="0.55"/>
-    <circle cx="181.2" cy="154.4" r="0.60" fill-opacity="0.37"/>
-    <circle cx="37.5" cy="152.5" r="0.92" fill-opacity="0.80"/>
-    <circle cx="8.2" cy="93.0" r="0.86" fill-opacity="0.61"/>
-    <circle cx="76.0" cy="28.2" r="0.86" fill-opacity="0.51"/>
-    <circle cx="72.2" cy="75.5" r="0.54" fill-opacity="0.77"/>
-    <circle cx="80.8" cy="124.6" r="0.99" fill-opacity="0.32"/>
-    <circle cx="189.7" cy="98.7" r="0.82" fill-opacity="0.64"/>
-    <circle cx="49.6" cy="53.0" r="0.76" fill-opacity="0.56"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.0" stroke-linecap="round" d="M66.6 99.1h0M103.5 11.1h0M54.3 120.2h0M144.7 177.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" d="M148.0 33.8h0M93.6 103.4h0M135.8 131.6h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.0" stroke-linecap="round" d="M44.7 157.9h0M67.0 47.7h0M31.7 164.7h0M90.2 112.7h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.0" stroke-linecap="round" d="M53.8 114.7h0M170.3 81.4h0M147.3 97.8h0M99.9 59.5h0M104.6 163.8h0M18.0 121.2h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" d="M136.0 55.0h0M125.6 110.1h0M79.8 44.2h0M150.1 22.1h0M179.0 93.4h0M44.1 159.0h0M171.7 132.2h0M172.7 60.5h0M121.1 103.9h0M16.5 70.5h0M180.2 86.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.0" stroke-linecap="round" d="M147.1 11.9h0M63.4 55.2h0M33.2 83.1h0M121.2 148.7h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.0" stroke-linecap="round" d="M127.5 135.7h0M51.5 20.8h0M21.7 152.8h0M177.3 8.6h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.5" stroke-linecap="round" d="M32.8 35.0h0M158.0 154.2h0M25.1 102.5h0M72.4 42.0h0M37.7 104.3h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.0" stroke-linecap="round" d="M64.6 184.3h0M133.2 126.6h0M60.2 106.3h0M18.7 110.4h0"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 112 C64 100 110 106 122 122 C124 132 108 138 86 136 C62 134 42 128 46 112 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M52 112 C36 106 26 92 32 78"/>
+    <path d="M32 78 C24 76 20 84 24 90"/>
+    <path d="M32 78 C38 74 44 78 42 86"/>
+    <path d="M120 124 C150 124 168 108 166 82 C164 60 144 48 126 56"/>
+    <path d="M126 56 L114 50 L118 64 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M66 134 L56 156"/>
+    <path d="M82 136 L76 158"/>
+    <path d="M98 138 L96 160"/>
+    <path d="M112 136 L116 158"/>
   </g>
-  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">
-    <line x1="30" y1="40" x2="55" y2="45"/>
-    <line x1="55" y1="45" x2="75" y2="65"/>
-    <line x1="75" y1="65" x2="85" y2="95"/>
-    <line x1="85" y1="95" x2="110" y2="110"/>
-    <line x1="110" y1="110" x2="140" y2="110"/>
-    <line x1="140" y1="110" x2="160" y2="125"/>
-    <line x1="160" y1="125" x2="165" y2="155"/>
-    <line x1="165" y1="155" x2="185" y2="165"/>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="24" y1="90" x2="32" y2="78"/>
+    <line x1="32" y1="78" x2="52" y2="112"/>
+    <line x1="52" y1="112" x2="86" y2="122"/>
+    <line x1="86" y1="122" x2="120" y2="124"/>
+    <line x1="120" y1="124" x2="162" y2="96"/>
+    <line x1="162" y1="96" x2="150" y2="56"/>
+    <line x1="150" y1="56" x2="126" y2="56"/>
+    <line x1="86" y1="122" x2="76" y2="158"/>
   </g>
   <g fill="#ffffff" filter="url(#brillo-escorpio)">
-    <circle cx="30" cy="40" r="2.8"/>
-    <circle cx="55" cy="45" r="2.4"/>
-    <circle cx="75" cy="65" r="2.4"/>
-    <circle cx="85" cy="95" r="1.6"/>
-    <circle cx="110" cy="110" r="1.6"/>
-    <circle cx="140" cy="110" r="1.6"/>
-    <circle cx="160" cy="125" r="1.6"/>
-    <circle cx="165" cy="155" r="2.0"/>
-    <circle cx="185" cy="165" r="1.6"/>
+    <circle cx="24" cy="90" r="2.8"/>
+    <circle cx="32" cy="78" r="1.6"/>
+    <circle cx="52" cy="112" r="2.4"/>
+    <circle cx="86" cy="122" r="2.4"/>
+    <circle cx="120" cy="124" r="1.6"/>
+    <circle cx="162" cy="96" r="1.6"/>
+    <circle cx="150" cy="56" r="1.6"/>
+    <circle cx="126" cy="56" r="2.4"/>
+    <circle cx="76" cy="158" r="1.6"/>
   </g>
-  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">ESCORPIO</text>
 </svg>

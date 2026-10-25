@@ -76,7 +76,8 @@
     "asiaPacific": "Asien-Pazifik",
     "middleEast": "Naher Osten",
     "africa": "Afrika",
-    "oceania": "Ozeanien"
+    "oceania": "Ozeanien",
+    "international": "International"
   },
   "categories": {
     "standard": "Standard",
@@ -86,6 +87,23 @@
     "photo": "Foto",
     "business": "Geschäft",
     "packaging": "Verpackung",
+    "stationery": "Schreibwaren",
+    "envelope": "Umschlag",
+    "card": "Karte",
+    "small": "Klein",
+    "sticker": "Aufkleber",
+    "form": "Formular",
+    "flyer": "Flyer",
+    "financial": "Finanzen",
+    "largeFormat": "Großformat",
+    "booklet": "Heft",
+    "brochure": "Broschüre",
+    "poster": "Plakat",
+    "roll": "Rolle",
+    "large": "Groß",
+    "marketing": "Marketing",
+    "banner": "Banner",
+    "international": "International",
     "label": "Etikett"
   },
   "measurementSystems": {
@@ -151,7 +169,23 @@
     "loadErrorHelp": "Browser blockieren das Lesen lokaler Dateien auf einer per Doppelklick geöffneten Seite. Stellen Sie den Ordner stattdessen bereit: Führen Sie {command} in {folder} aus und öffnen Sie {address}.",
     "updatedUnknown": "unbekannt (der Server hat keinen Last-Modified-Header gesendet)",
     "download": "CSV herunterladen",
-    "csvFilename": "dokumentformate"
+    "csvFilename": "dokumentformate",
+    "sortBy": "Sortieren nach",
+    "sortDefault": "Katalogreihenfolge",
+    "sortName": "Name",
+    "sortWidth": "Breite",
+    "sortHeight": "Höhe",
+    "sortArea": "Fläche",
+    "aboutTitle": "Über diese Datenbank",
+    "aboutIntro": "Diese umfassende Datenbank für Dokumentformate enthält:",
+    "aboutFormats": "{count} Formate in mehreren Kategorien",
+    "aboutCountries": "{count} Länder und Regionen mit lokalen und internationalen Normen",
+    "aboutDual": "Doppelte Maßangaben in metrischen und imperialen Einheiten",
+    "aboutSpecs": "Technische Angaben für Druck und Gestaltung",
+    "aboutConversions": "Formatumrechnungen mit internationalen Entsprechungen",
+    "aboutSources": "Daten nach den Normen ISO 216, ANSI, JIS und GB/T.",
+    "aboutUpdated": "Zuletzt aktualisiert:",
+    "footer": "Datenbank für Dokumentformate v2.0 | Erstellt mit HTML5, CSS3 und JavaScript"
   },
   "paperTypes": {
     "searchPlaceholder": "Papiersorten suchen...",

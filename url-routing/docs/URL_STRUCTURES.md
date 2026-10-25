@@ -6,7 +6,7 @@ Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de 
 |---|---|---|
 | vacío | `^$` | inicio |
 | `0` | `^0$` | cuenta |
-| 1 letra | `^[a-z]$` | función del sistema: `b` búsqueda; en el POS, `c` carrito y `p` pago |
+| 1 letra | `^[a-z]$` | función del sistema: `b` búsqueda; en genealogía, `r` pedir el retiro de una página; en el POS, `c` carrito y `p` pago |
 | 2 letras | `^[a-z]{2}$` | país (ISO 3166-1); detrás, región y ciudad de 1-3 letras (ISO 3166-2, UN/LOCODE) |
 | 3 letras | `^[a-z]{3}$` | idioma (ISO 639-2): va en el subdominio (`spa.`, `eng.`), nunca en la ruta |
 | 4+ letras | `^[a-z]{4,}$` | texto libre: lo que se busca, detrás de `/b/{tipo}/` |

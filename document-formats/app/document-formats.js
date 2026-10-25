@@ -40,6 +40,12 @@ const inchesToMm = (inches) => inches * MM_PER_INCH;
 // Fixed decimals as text ("21.0"), so reports keep their trailing zeros.
 const fixed = (value, decimals = 1) => Number(value).toFixed(decimals);
 
+// Text as it is compared when searching: lower case, and Latin letters without their accents
+// ("Papel térmico" and "papel termico" are the same). Only the combining marks of Latin letters
+// are removed, so Devanagari, Thai or Arabic text keeps the marks that give it its meaning.
+const normalizeText = (value) =>
+    String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').normalize('NFC').toLowerCase();
+
 const HTML_ESCAPES = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPES[char]);
 
@@ -172,7 +178,6 @@ class FormatLoader {
     async load() {
         try {
             this.formats = await fetchCSV(this.csvUrl);
-            console.log(`Loaded ${this.formats.length} formats`);
         } catch (error) {
             console.error('Error loading formats:', error);
         }
@@ -209,6 +214,9 @@ const FORMAT_CATALOG_FILES = [
 // differently, and has no entry at all for two catalog "country" values
 // that aren't really a single country: ISO 216 sizes are used worldwide,
 // and the European catalog names the region rather than a member state.
+// The country and region list the catalogs' countries are looked up in.
+const COUNTRIES_FILE = '../countries/countries_200_complete.csv';
+
 const REGION_COUNTRY_ALIASES = { USA: 'United States', UK: 'United Kingdom', UAE: 'United Arab Emirates' };
 const REGION_OVERRIDES = { International: 'International', Europe: 'Europe' };
 
@@ -219,7 +227,7 @@ const REGION_OVERRIDES = { International: 'International', Europe: 'Europe' };
 const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
     const [catalogResponses, countriesResponse] = await Promise.all([
         Promise.all(files.map(file => fetchOk(file))),
-        fetchOk('../countries/countries_200_complete.csv')
+        fetchOk(COUNTRIES_FILE)
     ]);
 
     const lastModified = [...catalogResponses, countriesResponse]
@@ -276,8 +284,8 @@ class FormatSearcher {
             ]
             .filter(Boolean)
             .join(' ')
-            .toLowerCase()
             .split(/\s+/)
+            .map(normalizeText)
             .filter(w => w.length >= MIN_WORD_LENGTH && !STOP_WORDS.has(w));
 
             words.forEach(word => {
@@ -294,7 +302,7 @@ class FormatSearcher {
     }
 
     search(query) {
-        const terms = query.toLowerCase().split(/\s+/);
+        const terms = normalizeText(query).split(/\s+/);
         const results = new Map();
 
         terms.forEach(term => {
@@ -305,12 +313,12 @@ class FormatSearcher {
 
         // Most matched terms first; among equals, an exact name match, then alphabetical,
         // so the order doesn't depend on the order of the CSV files.
-        const wanted = query.trim().toLowerCase();
+        const wanted = normalizeText(query.trim());
         const name = (idx) => this.formats[idx].format_name;
         return Array.from(results.entries())
             .sort(([aIdx, aHits], [bIdx, bHits]) =>
                 bHits - aHits ||
-                (name(bIdx).toLowerCase() === wanted) - (name(aIdx).toLowerCase() === wanted) ||
+                (normalizeText(name(bIdx)) === wanted) - (normalizeText(name(aIdx)) === wanted) ||
                 name(aIdx).localeCompare(name(bIdx)) ||
                 aIdx - bIdx)
             .map(([idx]) => this.formats[idx])
@@ -677,6 +685,7 @@ class FormatStatistics {
         const countries = new Set();
         const categories = new Set();
         const types = new Set();
+        const count = this.formats.length;
         let sumWidth = 0, sumHeight = 0;
         let largestFormat = null, smallestFormat = null;
         let maxArea = 0, minArea = Infinity;
@@ -701,8 +710,8 @@ class FormatStatistics {
             totalCountries: countries.size,
             totalCategories: categories.size,
             totalTypes: types.size,
-            averageWidth: fixed(sumWidth / this.formats.length),
-            averageHeight: fixed(sumHeight / this.formats.length),
+            averageWidth: fixed(count ? sumWidth / count : 0),
+            averageHeight: fixed(count ? sumHeight / count : 0),
             largestFormat,
             smallestFormat
         };
@@ -821,6 +830,14 @@ class LocalizationManager {
         'ro': 'Română', 'bg': 'Български', 'sr': 'Српски', 'hr': 'Hrvatski',
         'sk': 'Slovenčina', 'uk': 'Українська'
     };
+
+    // Languages written right to left. Only Arabic has a translation file today; the others
+    // are listed so that adding one needs no change here.
+    static RTL_LANGUAGES = new Set(['ar', 'he', 'fa', 'ur']);
+
+    static isRtl(langCode) {
+        return LocalizationManager.RTL_LANGUAGES.has(langCode);
+    }
 
     constructor(translationsPath = 'translations') {
         this.translationsPath = translationsPath;
@@ -1291,6 +1308,7 @@ const formatMessage = (template, values = {}) =>
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         escapeHtml,
+        normalizeText,
         sizeSimilarity,
         MM_PER_INCH,
         mmToInches,
@@ -1304,6 +1322,7 @@ if (typeof module !== 'undefined' && module.exports) {
         paperTypeName,
         formatMessage,
         FORMAT_CATALOG_FILES,
+        COUNTRIES_FILE,
         loadFormatCatalogs,
         splitCSVLine,
         parseCSV,

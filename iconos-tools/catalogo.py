@@ -6,6 +6,7 @@ VARIANTS = ('color', 'lineas', 'gris')
 PREFIXES = {
     'iconos-genealogia': ('person', 'relationship', 'state', 'view', 'action', 'ui'),
     'iconos-biblioteca': ('book', 'genre', 'format', 'status', 'action', 'attr', 'ui'),
+    'iconos-pos': ('catalog', 'order', 'account'),
 }
 
 # etiqueta de cada prefijo en la galería, en el orden en que aparecen sus grupos
@@ -21,4 +22,7 @@ GROUPS = {
     'format': 'Ediciones y formatos',
     'status': 'Disponibilidad y lectura',
     'attr': 'Atributos',
+    'catalog': 'Catálogo',
+    'order': 'Pedidos',
+    'account': 'Cuenta del cliente',
 }

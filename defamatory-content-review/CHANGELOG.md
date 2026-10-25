@@ -4,6 +4,11 @@
 
 ### Añadido
 
+- **Frases que no deben dar alerta** (`tests/fixtures/safe-phrases.php`,
+  `SafePhrasesTest`): las frases corrientes que antes se marcaban por error
+  («la mer de Chine», «matou a saudade», «el forro del abrigo», «antecedentes de la
+  familia»…) y una lista de control que sigue marcándose. Al arreglar un falso
+  positivo, la frase se agrega ahí.
 - **`public/moderar.php` limita las peticiones por IP** (`Http\RateLimiter`):
   30 por minuto por omisión (`MODERAR_POR_MINUTO`, `0` lo apaga); al pasarse,
   429 con `Retry-After`. La IP se guarda como HMAC con una clave del servidor.

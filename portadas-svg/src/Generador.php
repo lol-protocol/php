@@ -32,7 +32,7 @@ final class Generador
         $contenidos = [];
         foreach (self::piezas($libro) as $archivo => [$vista, $nombre]) {
             $cuerpo = $plantilla->dibujar($libro, $medidas, $vista);
-            $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->titulo} · $nombre", $cuerpo);
+            $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->textos->titulo} · $nombre", $cuerpo);
         }
         $contenidos['medidas.txt'] = self::resumen($libro, $medidas);
 
@@ -49,6 +49,32 @@ final class Generador
     }
 
     /**
+     * Letras de los textos del libro que las fuentes incrustadas no tienen (ver Fuentes): en el visor se
+     * dibujan con otra fuente, y el ajuste del texto las mide con un ancho medio.
+     *
+     * @return list<string> un aviso por texto afectado
+     */
+    public static function avisos(Libro $libro): array
+    {
+        $medida = Plantilla::crear($libro->plantilla)->medidaDe();
+        $t = $libro->textos;
+        $textos = [
+            'El título' => $t->titulo, 'El subtítulo' => $t->subtitulo, 'El autor' => mb_strtoupper($t->autor), 'El traductor' => $t->traductor,
+            'La editorial' => $t->editorial, 'La colección' => $t->coleccion, 'La contratapa' => $t->contratapa,
+            'La solapa de la contratapa' => $t->solapaContratapa, 'La solapa de la portada' => $t->solapaPortada,
+        ];
+        $avisos = [];
+        foreach ($textos as $nombre => $texto) {
+            $faltan = $medida->noCubiertas($texto);
+            if ($faltan !== '') {
+                $avisos[] = "$nombre lleva letras que la fuente no tiene ($faltan); se verán con otra fuente.";
+            }
+        }
+
+        return $avisos;
+    }
+
+    /**
      * El sobrelomo ya incluye la cubierta completa y sus solapas, así que con solapas no se escribe la
      * cubierta completa, y sin solapas no hay sobrelomo.
      *
@@ -56,7 +82,7 @@ final class Generador
      */
     private static function piezas(Libro $libro): array
     {
-        $excluida = $libro->solapasMm > 0 ? 'cubierta-completa.svg' : 'sobrelomo.svg';
+        $excluida = $libro->formato->solapas > 0 ? 'cubierta-completa.svg' : 'sobrelomo.svg';
 
         return array_diff_key(self::PIEZAS, [$excluida => true]);
     }
@@ -78,11 +104,11 @@ final class Generador
     private static function resumen(Libro $libro, Medidas $medidas): string
     {
         $lineas = [
-            "Libro: {$libro->titulo} — {$libro->autor}",
-            'Corte: ' . self::fmt($libro->anchoMm) . ' × ' . self::fmt($libro->altoMm) . ' mm',
-            'Sangrado: ' . self::fmt($libro->sangradoMm) . ' mm en cada borde exterior',
-            'Lomo: ' . self::fmt($libro->lomoMm) . ' mm (confírmalo con la imprenta: depende del papel)',
-            $libro->solapasMm > 0 ? 'Solapas: ' . self::fmt($libro->solapasMm) . ' mm' : 'Sin solapas',
+            "Libro: {$libro->textos->titulo} — {$libro->textos->autor}",
+            'Corte: ' . self::fmt($libro->formato->ancho) . ' × ' . self::fmt($libro->formato->alto) . ' mm',
+            'Sangrado: ' . self::fmt($libro->formato->sangrado) . ' mm en cada borde exterior',
+            'Lomo: ' . self::fmt($libro->formato->lomo) . ' mm (confírmalo con la imprenta: depende del papel)',
+            $libro->formato->solapas > 0 ? 'Solapas: ' . self::fmt($libro->formato->solapas) . ' mm' : 'Sin solapas',
             ...($libro->degradado === null ? [] : ['Fondo: ' . $libro->degradado->descripcion()]),
             '',
             'Tamaño de cada archivo, con sangrado (ancho × alto):',

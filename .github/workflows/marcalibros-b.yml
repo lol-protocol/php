@@ -1,0 +1,98 @@
+name: Marcalibros (generar catalogo y pruebas)
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master. La rama de trabajo
+# marcalibros_b tambien dispara el flujo para poder revisar el catalogo.
+on:
+  push:
+    branches: [master, marcalibros_b]
+    paths:
+      - "marcalibros_b/**"
+      - ".github/workflows/marcalibros-b.yml"
+  pull_request:
+    paths:
+      - "marcalibros_b/**"
+      - ".github/workflows/marcalibros-b.yml"
+  workflow_dispatch:
+    inputs:
+      forzar:
+        description: "Ignorar la cache y rehacer todas las piezas"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  catalogo:
+    name: Generar catalogo completo, pruebas y artefacto
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: marcalibros_b
+    steps:
+      - uses: actions/checkout@v5
+
+      # Version fija: la salida del generador (SVG y hashes de referencia) debe ser
+      # identica en todas las maquinas. Si se sube, se regeneran los hashes.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            marcalibros_b/generator/requirements.txt
+            marcalibros_b/generator/requirements-dev.txt
+
+      - name: Instalar dependencias
+        run: |
+          pip install -r generator/requirements.txt -r generator/requirements-dev.txt
+          pip freeze | grep -i -E '^(pillow|numpy|pyyaml|fonttools)=='
+          python -c "import platform; print(platform.python_version(), platform.platform())"
+
+      # El QA rasteriza cada SVG con Chromium real; sin el, el build falla a proposito.
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+
+      # Compilacion incremental: se restauran la cache y los archivos ya generados. Si
+      # cambia el codigo del generador, la clave de cada pieza cambia y se rehace todo;
+      # si solo cambia la taxonomia, se rehacen solo las piezas afectadas. La clave exacta
+      # incluye los archivos fuente; restore-keys recupera la cache mas reciente.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            marcalibros_b/catalog/.cache
+            marcalibros_b/catalog/svg
+            marcalibros_b/catalog/jpg
+            marcalibros_b/catalog/jpg2x
+            marcalibros_b/catalog/revision
+          key: marcalibros-${{ runner.os }}-py3.13-${{ hashFiles('marcalibros_b/generator/*.py', 'marcalibros_b/catalog/*.yaml') }}
+          restore-keys: |
+            marcalibros-${{ runner.os }}-py3.13-
+
+      - name: Generar el catalogo completo
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+          FORZAR: ${{ inputs.forzar && '--forzar' || '' }}
+        run: python generator/build.py --all $FORZAR
+
+      - name: Pruebas
+        run: python -m pytest -q tests
+
+      # El catalogo completo (SVG, JPG, hojas de revision) no se versiona en git:
+      # se publica aqui, y el manifest y unas pocas muestras si estan versionados.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: marcalibros-catalogo
+          path: |
+            marcalibros_b/catalog/svg
+            marcalibros_b/catalog/jpg
+            marcalibros_b/catalog/jpg2x
+            marcalibros_b/catalog/revision
+            marcalibros_b/catalog/manifest.json
+          if-no-files-found: error
+          retention-days: 30

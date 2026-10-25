@@ -1,0 +1,309 @@
+version: '0.5'
+nota: 'Biblioteca compartida de motivos: 93 + ninguno. requiere limita cuando un motivo tiene sentido visual.'
+motivos:
+- id: torre
+  nombre: Torre
+  implementado: true
+- id: golondrinas
+  nombre: Golondrinas
+  implementado: true
+- id: rio
+  nombre: Río
+  implementado: true
+- id: luna
+  nombre: Luna
+  implementado: true
+  requiere:
+    animos:
+    - nocturno
+    - tormentoso
+- id: cuervo
+  nombre: Cuervo
+  implementado: true
+- id: cipres
+  nombre: Cipreses
+  implementado: true
+- id: ruinas
+  nombre: Ruinas
+  implementado: true
+- id: velero
+  nombre: Velero
+  implementado: true
+  requiere:
+    escena: marina
+- id: castillo
+  nombre: Castillo
+  implementado: true
+- id: arbol
+  nombre: Árbol solitario
+  implementado: true
+- id: catedral
+  nombre: Catedral
+  implementado: true
+- id: rayo
+  nombre: Rayo
+  implementado: true
+  requiere:
+    animos:
+    - tormentoso
+- id: cruz
+  nombre: Cruz
+  implementado: true
+- id: estrellas
+  nombre: Estrellas
+  implementado: true
+  requiere:
+    animos:
+    - nocturno
+- id: organo
+  nombre: Órgano
+  implementado: true
+- id: fuente
+  nombre: Fuente
+  implementado: true
+- id: puente
+  nombre: Puente
+  implementado: true
+- id: faro
+  nombre: Faro
+  implementado: true
+  requiere:
+    escena: marina
+- id: rosa
+  nombre: Rosa
+  implementado: true
+- id: lira
+  nombre: Lira
+  implementado: true
+- id: urna
+  nombre: Urna griega
+  implementado: true
+- id: estatua
+  nombre: Coloso caído
+  implementado: true
+- id: horca
+  nombre: Horca
+  implementado: true
+- id: gato
+  nombre: Gato negro
+  implementado: true
+- id: corazon
+  nombre: Corazón
+  implementado: true
+- id: reloj
+  nombre: Reloj
+  implementado: true
+- id: ataud
+  nombre: Ataúd
+  implementado: true
+- id: lapidas
+  nombre: Lápidas
+  implementado: true
+- id: vela
+  nombre: Vela
+  implementado: true
+- id: olas
+  nombre: Olas
+  implementado: true
+  requiere:
+    escena: marina
+- id: nube
+  nombre: Nube
+  implementado: true
+- id: narcisos
+  nombre: Narcisos
+  implementado: true
+  requiere:
+    animos:
+    - pastoral
+- id: hojas
+  nombre: Hojas que caen
+  implementado: true
+  requiere:
+    animos:
+    - otonal
+- id: serpiente
+  nombre: Serpiente
+  implementado: true
+- id: espada
+  nombre: Espada
+  implementado: true
+- id: corona
+  nombre: Corona
+  implementado: true
+- id: barca
+  nombre: Barca
+  implementado: true
+  requiere:
+    escena: marina
+- id: arco
+  nombre: Arco gótico en ruinas
+  implementado: true
+- id: horreo
+  nombre: Hórreo gallego
+  implementado: true
+- id: barricada
+  nombre: Barricada
+  implementado: true
+- id: murcielagos
+  nombre: Murciélagos
+  implementado: true
+- id: gargola
+  nombre: Gárgola
+  implementado: true
+- id: mansion
+  nombre: Casa encantada
+  implementado: true
+- id: ventana_gotica
+  nombre: Ventana ojival
+  implementado: true
+- id: lobo
+  nombre: Lobo aullando
+  implementado: true
+- id: encapuchado
+  nombre: Figura encapuchada
+  implementado: true
+- id: mariposas
+  nombre: Mariposas amarillas
+  implementado: true
+- id: petalos
+  nombre: Lluvia de flores amarillas
+  implementado: true
+- id: ceiba
+  nombre: Ceiba
+  implementado: true
+- id: casa_colonial
+  nombre: Casa colonial
+  implementado: true
+- id: volcan
+  nombre: Volcán
+  implementado: true
+- id: maiz
+  nombre: Maíz
+  implementado: true
+- id: pez_dorado
+  nombre: Pececillos de oro
+  implementado: true
+- id: gallo
+  nombre: Gallo
+  implementado: true
+- id: lluvia
+  nombre: Lluvia
+  implementado: true
+- id: fantasma
+  nombre: Aparecido
+  implementado: true
+- id: alas
+  nombre: Alas enormes
+  implementado: true
+- id: chimeneas
+  nombre: Chimeneas de fábrica
+  implementado: true
+- id: farola
+  nombre: Farola de gas
+  implementado: true
+- id: carruaje
+  nombre: Carruaje
+  implementado: true
+- id: skyline
+  nombre: Línea de edificios
+  implementado: true
+- id: tren
+  nombre: Tren de vapor
+  implementado: true
+- id: molino
+  nombre: Molino de viento
+  implementado: true
+- id: mina
+  nombre: Castillete de mina
+  implementado: true
+- id: surcos
+  nombre: Surcos
+  implementado: true
+- id: trigal
+  nombre: Trigal
+  implementado: true
+- id: pozo
+  nombre: Pozo
+  implementado: true
+- id: cisne
+  nombre: Cisne
+  implementado: true
+- id: nenufar
+  nombre: Nenúfares
+  implementado: true
+- id: libelula
+  nombre: Libélula
+  implementado: true
+- id: lirio
+  nombre: Lirio
+  implementado: true
+- id: pavo_real
+  nombre: Pavo real
+  implementado: true
+- id: avion
+  nombre: Biplano
+  implementado: true
+- id: torre_eiffel
+  nombre: Torre Eiffel
+  implementado: true
+- id: guitarra
+  nombre: Guitarra cubista
+  implementado: true
+- id: rascacielos
+  nombre: Rascacielos
+  implementado: true
+- id: ojo
+  nombre: Ojo
+  implementado: true
+- id: engranaje
+  nombre: Engranaje
+  implementado: true
+- id: calavera
+  nombre: Calavera
+  implementado: true
+- id: reloj_arena
+  nombre: Reloj de arena
+  implementado: true
+- id: concha
+  nombre: Concha
+  implementado: true
+- id: laud
+  nombre: Laúd
+  implementado: true
+- id: cortina
+  nombre: Cortinaje
+  implementado: true
+- id: columna
+  nombre: Columna salomónica
+  implementado: true
+- id: templo
+  nombre: Templo griego
+  implementado: true
+- id: laurel
+  nombre: Corona de laurel
+  implementado: true
+- id: caballo
+  nombre: Caballo
+  implementado: true
+- id: escudo
+  nombre: Escudo
+  implementado: true
+- id: esfinge
+  nombre: Esfinge
+  implementado: true
+- id: espejo
+  nombre: Espejo
+  implementado: true
+- id: mano
+  nombre: Mano
+  implementado: true
+- id: creciente
+  nombre: Luna creciente
+  implementado: true
+- id: escalera
+  nombre: Escalera
+  implementado: true
+- id: ninguno
+  nombre: Sin motivo (solo paisaje)
+  implementado: true

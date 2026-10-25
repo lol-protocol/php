@@ -1,0 +1,71 @@
+version: 1
+base:
+  tinta: '#1E2A38'
+  papel: '#F4EEE1'
+  acento: '#C98B3A'
+  tinta_suave: '#696F73'
+tipografia:
+  titulo: Liberation Serif Italic (OFL)
+  interfaz: sistema (system-ui)
+contraste_minimo_acento_sobre_papel: 4.5
+movimientos:
+  romanticismo:
+    paleta: atardecer
+    acento: '#3E5C4A'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#1E2A38'
+    cielo_bajo: '#C98B3A'
+  gotico:
+    paleta: cripta
+    acento: '#070F10'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#060A0D'
+    cielo_bajo: '#1F3A3A'
+  realismo-magico:
+    paleta: tropico
+    acento: '#0B4D3A'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#0E5E5A'
+    cielo_bajo: '#F4C95D'
+  realismo:
+    paleta: ceniza
+    acento: '#4D4944'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#6E6A66'
+    cielo_bajo: '#D9D3C7'
+  naturalismo:
+    paleta: barro
+    acento: '#3A2B1C'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#4A3B2A'
+    cielo_bajo: '#B58B4E'
+  modernismo:
+    paleta: jade
+    acento: '#123D38'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#0F4C45'
+    cielo_bajo: '#B7E3D0'
+  vanguardias:
+    paleta: primarios
+    acento: '#101010'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#1B1B7A'
+    cielo_bajo: '#F2D21B'
+  barroco:
+    paleta: carmesi
+    acento: '#14040A'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#2A0510'
+    cielo_bajo: '#9C1C3B'
+  clasicismo:
+    paleta: marmol
+    acento: '#5F6976'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#7FA6D8'
+    cielo_bajo: '#F4F6F8'
+  simbolismo:
+    paleta: mistico
+    acento: '#0F0A2A'
+    sobre_acento: '#FFFFFF'
+    cielo_alto: '#1B1040'
+    cielo_bajo: '#8E6BC4'

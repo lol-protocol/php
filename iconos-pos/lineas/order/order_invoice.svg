@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-red{stroke:var(--ic-red,#801616)}
+      .ic-teal{stroke:var(--ic-teal,#08564F)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-teal" stroke="#08564F"><path d="M52 13A7 7 0 0 1 53.4 17.2L53.4 49.2A7 7 0 0 1 46.4 56.2L20.4 56.2A7 7 0 0 1 14.8 53.4L12.4 50.2A7 7 0 0 1 11 46L11 14A7 7 0 0 1 18 7L44 7A7 7 0 0 1 49.6 9.8Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="11" y="7" width="40" height="46" rx="7" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-red" stroke="#801616"><path d="M41.8 52.9L43 54.5A6.5 6.5 0 0 0 53.4 46.7L52.2 45.1A6.5 6.5 0 0 0 41.8 52.9Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="47" cy="49" r="6.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M19 17H27M35 17H43M19 26H27M35 26H43" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M19 40L43 40" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

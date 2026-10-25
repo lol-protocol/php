@@ -1,4 +1,11 @@
 country_code,law_name,field,url,confidence,checked
+AD,Law on Copyright and Neighboring Rights of 10 June 1999,law_name,https://www.wipo.int/wipolex/en/legislation/details/6925,high,2026-10-22
+AD,Law on Copyright and Neighboring Rights of 10 June 1999,protection_type,https://www.wipo.int/wipolex/en/legislation/details/6925,high,2026-10-22
+AD,Law on Copyright and Neighboring Rights of 10 June 1999,term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Andorra.html,medium,2026-10-22
+AD,Law on Copyright and Neighboring Rights of 10 June 1999,author_rights,https://www.wipo.int/wipolex/en/legislation/details/6925,medium,2026-10-22
+AD,Law on Copyright and Neighboring Rights of 10 June 1999,moral_rights,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Andorra.html,low,2026-10-22
+AD,Law on Copyright and Neighboring Rights of 10 June 1999,orphan_works,https://www.wipo.int/wipolex/en/legislation/details/6925,low,2026-10-22
+AD,Law on Copyright and Neighboring Rights of 10 June 1999,registration_required,https://www.wipo.int/wipolex/en/legislation/details/6925,low,2026-10-22
 AE,,law_name,https://uaelegislation.gov.ae/en/legislations/1534/download,high,2026-10-14
 AE,,term_of_protection,https://www.agip.com/Agip-Country-Service/en/10/c/1,medium,2026-10-14
 AE,,digital_protection,https://arab-digital-economy.org/?p=28026,medium,2026-10-14
@@ -28,6 +35,17 @@ BA,,moral_rights,https://godisnjak.pravni.ues.rs.ba/st%202010%20en/The%20right%2
 BA,,orphan_works,https://eprints.ibu.edu.ba/files/original/a45a767f64a179d622e49f504e2bb7d4.pdf,medium,2026-10-17
 BA,,digital_protection,https://merlin.obs.coe.int/article/5428,medium,2026-10-14
 BA,,fair_use_exceptions,https://cir.unsa.ba/wp-content/uploads/2021/02/Zakon-o-autorskim-i-srodnim-pravima-BiH.pdf,medium,2026-10-15
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",law_name,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Barbados.html,medium,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",protection_type,https://caipo.gov.bb/?p=4857,low,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Barbados.html,medium,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",author_rights,https://caipo.gov.bb/?p=4857,low,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",moral_rights,https://www.wipo.int/wipolex/en/text/125059,low,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",orphan_works,https://caipo.gov.bb/?p=4857,low,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",digital_protection,https://www.iipa.org/files/uploads/2020/02/2020SPEC301BARBADOS.pdf,low,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",fair_use_exceptions,https://governmentprintery.gov.bb/?p=2899,low,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",registration_required,https://caipo.gov.bb/?p=4857,low,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",enforcement_body,https://caipo.gov.bb/?p=4857,medium,2026-10-22
+BB,"Copyright Act, Cap. 300 (Copyright Act 1998, No. 4 of 1998; revised to 2006; amended by Act No. 17 of 2004)",treaties_signatory,https://wipo.int/wipolex/en/treaties/notifications/details/treaty_wppt_93,medium,2026-10-22
 BE,,law_name,https://legalblogs.wolterskluwer.com/copyright-blog/copyright-in-the-new-belgian-code-of-economic-law-codification-and-new-regulation/,high,2026-10-14
 BE,,term_of_protection,https://legalblogs.wolterskluwer.com/copyright-blog/copyright-in-the-new-belgian-code-of-economic-law-codification-and-new-regulation/,medium,2026-10-14
 BE,,enforcement_body,https://legalblogs.wolterskluwer.com/copyright-blog/copyright-in-the-new-belgian-code-of-economic-law-codification-and-new-regulation/,medium,2026-10-14
@@ -56,6 +74,16 @@ BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouri
 BN,,orphan_works,https://www.wipo.int/tk/en/databases/tklaws/articles/article_0120.html,medium,2026-10-14
 BN,,digital_protection,https://www.aseanip.org/docs/default-source/asean-ip-publications/asean-ipr-enforcement-handbook_with-isbn-and-logo-final.pdf?sfvrsn=ebda9515_1,medium,2026-10-15
 BR,,digital_protection,https://www.conjur.com.br/wp-content/uploads/2023/09/lei-9610.pdf,high,2026-10-14
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",law_name,https://www.wipo.int/wipolex/en/legislation/details/8920,medium,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",protection_type,https://www.wipo.int/wipolex/en/legislation/details/8920,low,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Bahamas.html,medium,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",author_rights,https://www.wipo.int/wipolex/en/legislation/details/8920,low,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",moral_rights,https://www.wipo.int/wipolex/zh/legislation/details/8920,medium,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",orphan_works,https://www.wipo.int/wipolex/en/legislation/details/8920,low,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",fair_use_exceptions,https://infojustice.org/wp-content/uploads/2013/03/band-and-gerafi-2013.pdf,low,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",registration_required,https://www.wipo.int/wipolex/zh/legislation/details/8920,medium,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",enforcement_body,https://www.cyriljarnias.com/creation-societe-etranger/creation-societe-destination-bahamas/proteger-propriete-intellectuelle-bahamas/,low,2026-10-22
+BS,"Copyright Act, 1998 (Chapter 323), consolidated through Act No. 2 of 2004 (LRO 1/2010)",treaties_signatory,https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_wct_111,medium,2026-10-22
 BW,,digital_protection,https://ictpolicyafrica.org/en/document/17uj8n5fwcv?page=2,high,2026-10-14
 BW,,fair_use_exceptions,https://ictpolicyafrica.org/en/document/17uj8n5fwcv?page=2,medium,2026-10-14
 BY,,digital_protection,https://www.iipa.org/files/uploads/2017/12/2014SPEC301CIS.pdf,medium,2026-10-18
@@ -89,6 +117,13 @@ CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 15
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",fair_use_exceptions,https://files.sld.cu/bmn/files/2018/05/La-Propiedad-Intelectual.pdf,low,2026-10-16
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",enforcement_body,https://www.wipo.int/wipolex/en/legislation/details/10650,high,2026-10-16
 CU,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",treaties_signatory,https://www.wipo.int/wipolex/en/treaties/parties/remarks/CU/15,medium,2026-10-16
+CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),law_name,https://www.wipo.int/wipolex/en/legislation/details/8227,high,2026-10-22
+CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),protection_type,https://www.wipo.int/wipolex/en/legislation/details/8227,medium,2026-10-22
+CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Cape_Verde.html,medium,2026-10-22
+CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),author_rights,https://www.wipo.int/wipolex/en/legislation/details/8227,low,2026-10-22
+CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),orphan_works,https://www.wipo.int/wipolex/en/legislation/details/8227,low,2026-10-22
+CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),registration_required,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Cape_Verde.html,medium,2026-10-22
+CV,Decree-Law No. 1/2009 of 27 April 2009 on the Revision of Copyright Law (amended by Decree-Law No. 2/2017),enforcement_body,https://www.wipo.int/wipolex/en/text/198371,medium,2026-10-22
 CY,,moral_rights,https://ldlaw.com.cy/2026/02/06/intellectual-property-rights-in-cyprus/,medium,2026-10-15
 CZ,,enforcement_body,https://www.wipo.int/en/web/country-profiles/contact?code=CZ,high,2026-10-14
 DE,,enforcement_body,https://www.lobbyregister.bundestag.de/inhalte-der-interessenvertretung/regelungsvorhabensuche/RV0027623/506429,medium,2026-10-14
@@ -185,6 +220,13 @@ KZ,,digital_protection,https://adilet.zan.kz/eng/docs/Z960000006_/download,mediu
 KZ,,fair_use_exceptions,https://www.wipo.int/wipolex/en/text/200035,medium,2026-10-14
 LA,,digital_protection,https://www.wipo.int/wipolex/en/legislation/details/22624,low,2026-10-15
 LB,,fair_use_exceptions,https://aub.edu.lb.libguides.com/copyright/Lebanese-Law,medium,2026-10-14
+LI,"Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",law_name,https://www.wipo.int/wipolex/en/legislation/details/6899,high,2026-10-22
+LI,"Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",protection_type,https://www.wipo.int/wipolex/en/legislation/details/6899,high,2026-10-22
+LI,"Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",term_of_protection,https://www.gesetze.li/chrono/pdf/2014167000,medium,2026-10-22
+LI,"Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",author_rights,https://www.wipo.int/wipolex/en/legislation/details/6899,medium,2026-10-22
+LI,"Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",orphan_works,https://www.wipo.int/wipolex/en/legislation/details/6899,low,2026-10-22
+LI,"Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",registration_required,https://www.wipo.int/wipolex/en/legislation/details/6899,low,2026-10-22
+LI,"Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",enforcement_body,https://suisa.ch/dam/jcr:cf56d093-9624-4ffc-a6ce-798c39aea0ef/GTS_FL_2019-2026_GER.pdf,medium,2026-10-22
 LK,,digital_protection,https://www.nipo.gov.lk/web/images/pdf_downloads/Intellectual_Property_Act_No_36_of_2003.pdf,medium,2026-10-15
 LR,"Liberia Intellectual Property Act, 2016 (Title 24, Liberian Code of Laws Revised; approved 14 June 2016; replaced the 1997 Copyright Law)",law_name,https://www.wipo.int/wipolex/en/legislation/details/16994,high,2026-10-16
 LR,"Liberia Intellectual Property Act, 2016 (Title 24, Liberian Code of Laws Revised; approved 14 June 2016; replaced the 1997 Copyright Law)",protection_type,https://www.wipo.int/wipolex/en/legislation/details/16994,medium,2026-10-16
@@ -203,11 +245,27 @@ LY,Law No. 9 of 1968 Issuing the Copyright Protection Law,registration_required,
 LY,Law No. 9 of 1968 Issuing the Copyright Protection Law,enforcement_body,https://www.agip.com/Agip-Country-Service/de/100/C,low,2026-10-16
 LY,Law No. 9 of 1968 Issuing the Copyright Protection Law,treaties_signatory,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Libya.html,medium,2026-10-16
 MA,,digital_protection,https://ictpolicyafrica.org/en/document/yu9qfo95bqm?page=7,high,2026-10-14
+MC,Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006),law_name,https://www.wipo.int/wipolex/en/legislation/details/9056,high,2026-10-22
+MC,Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006),protection_type,https://www.wipo.int/wipolex/en/legislation/details/9056,medium,2026-10-22
+MC,Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006),term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Monaco.html,medium,2026-10-22
+MC,Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006),author_rights,https://www.wipo.int/wipolex/en/legislation/details/9056,low,2026-10-22
+MC,Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006),orphan_works,https://www.wipo.int/wipolex/en/legislation/details/9056,low,2026-10-22
+MC,Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006),registration_required,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Monaco.html,low,2026-10-22
+MC,Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006),enforcement_body,https://www.wipo.int/fr/web/country-profiles/mc,medium,2026-10-22
+MC,Law No. 491 of 24 November 1948 on the protection of literary and artistic works (as amended to Law No. 1.313 of 29 June 2006),treaties_signatory,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Monaco.html,medium,2026-10-22
 MD,,digital_protection,https://www.legis.md/cautare/getResults?doc_id=133204&lang=ro,medium,2026-10-15
 MD,,fair_use_exceptions,https://www.wipo.org/export/sites/www/copyright/en/docs/limitations/md.pdf,medium,2026-10-18
 ME,,moral_rights,https://wipo.int/documents/d/copyright/docs-en-registration-replies-montenegro.pdf,medium,2026-10-14
 ME,,digital_protection,https://members.wto.org/crnattachments/2016/IP/MNE/16_5029_00_e.pdf,low,2026-10-15
 ME,,fair_use_exceptions,https://bdkadvokati.com/montenegro-amends-the-copyright-act-to-catch-up-with-advances-in-the-digital-era,medium,2026-10-14
+MG,Law No. 94-036 of 18 September 1995 on Literary and Artistic Property,law_name,https://www.wipo.int/wipolex/en/legislation/details/8318,high,2026-10-22
+MG,Law No. 94-036 of 18 September 1995 on Literary and Artistic Property,protection_type,https://www.wipo.int/wipolex/en/legislation/details/8316,medium,2026-10-22
+MG,Law No. 94-036 of 18 September 1995 on Literary and Artistic Property,term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Madagascar.html,medium,2026-10-22
+MG,Law No. 94-036 of 18 September 1995 on Literary and Artistic Property,author_rights,https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°-94-036-Portant-sur-la-Propriété-Littéraire-et-Artistique..pdf,medium,2026-10-22
+MG,Law No. 94-036 of 18 September 1995 on Literary and Artistic Property,orphan_works,https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°-94-036-Portant-sur-la-Propriété-Littéraire-et-Artistique..pdf,low,2026-10-22
+MG,Law No. 94-036 of 18 September 1995 on Literary and Artistic Property,registration_required,https://wipo.int/documents/d/copyright/docs-fr-registration-replies-madagascar.pdf,low,2026-10-22
+MG,Law No. 94-036 of 18 September 1995 on Literary and Artistic Property,enforcement_body,https://www.wipo.int/wipolex/en/legislation/details/8318,high,2026-10-22
+MG,Law No. 94-036 of 18 September 1995 on Literary and Artistic Property,treaties_signatory,https://www.wipo.int/wipolex/en/treaties/ShowResults?code=MG,medium,2026-10-22
 MK,,fair_use_exceptions,https://www.wipo.int/wipolex/en/text/498661,medium,2026-10-18
 ML,Law No. 08-024 of 23 July 2008 Laying Down the Regime of Literary and Artistic Property,law_name,https://www.wipo.int/wipolex/en/details.jsp?id=7736,high,2026-10-16
 ML,Law No. 08-024 of 23 July 2008 Laying Down the Regime of Literary and Artistic Property,protection_type,https://www.wipo.int/wipolex/en/details.jsp?id=7736,medium,2026-10-16
@@ -313,6 +371,13 @@ SA,,digital_protection,https://amlak.net.sa/en/101083/,medium,2026-10-14
 SA,,registration_required,https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework,medium,2026-10-14
 SA,,enforcement_body,https://gowlingwlg.com/en/insights-resources/articles/2026/saudi-arabia-copyright-law-2026,high,2026-10-14
 SA,,notes,https://gowlingwlg.com/insights-resources/articles/2026/saudi-arabia-copyright-law-implementing-regulations,high,2026-10-14
+SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",law_name,https://www.wipo.int/wipolex/en/details.jsp?id=15300,high,2026-10-22
+SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",protection_type,https://www.wipo.int/wipolex/en/details.jsp?id=15300,medium,2026-10-22
+SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Seychelles.html,medium,2026-10-22
+SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",author_rights,https://www.wipo.int/wipolex/en/details.jsp?id=15300,low,2026-10-22
+SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",orphan_works,https://www.wipo.int/wipolex/en/details.jsp?id=15300,low,2026-10-22
+SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",fair_use_exceptions,https://generisonline.com/an-overview-of-copyright-protection-laws-in-seychelles/,low,2026-10-22
+SC,"Copyright Act, 2014 (Act No. 5 of 2014; in force 1 August 2014; repealed Copyright Act Cap. 58 of 1984)",registration_required,https://www.wipo.int/wipolex/en/details.jsp?id=15300,medium,2026-10-22
 SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",law_name,https://www.wipo.int/wipolex/en/legislation/details/19710,high,2026-10-18
 SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",protection_type,https://www.wipo.int/wipolex/en/legislation/details/19710,high,2026-10-18
 SD,"Copyright and Neighbouring Rights Protection and Literary and Artistic Works Act, 2013",term_of_protection,https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Sudan,medium,2026-10-18
@@ -334,6 +399,14 @@ SL,"Copyright Act, 2011 (Act No. 8 of 2011)",orphan_works,https://www.wipo.int/w
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",fair_use_exceptions,https://dti.eui.eu/database/page/78/,medium,2026-10-16
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",enforcement_body,https://www.wipo.int/en/web/country-profiles/contact?code=SL,medium,2026-10-16
 SL,"Copyright Act, 2011 (Act No. 8 of 2011)",treaties_signatory,https://www.trade.gov/country-commercial-guides/sierra-leone-protecting-intellectual-property,medium,2026-10-16
+SM,Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998),law_name,https://www.wipo.int/wipolex/en/legislation/details/8234,high,2026-10-22
+SM,Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998),protection_type,https://www.wipo.int/wipolex/en/legislation/details/8234,medium,2026-10-22
+SM,Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998),term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/San_Marino.html,medium,2026-10-22
+SM,Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998),author_rights,https://www.wipo.int/wipolex/en/legislation/details/8234,low,2026-10-22
+SM,Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998),orphan_works,https://www.wipo.int/wipolex/en/legislation/details/8234,low,2026-10-22
+SM,Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998),registration_required,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/San_Marino.html,medium,2026-10-22
+SM,Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998),enforcement_body,https://www.consigliograndeegenerale.sm/on-line/home/documento17150056.html,low,2026-10-22
+SM,Law No. 8 of 25 January 1991 on copyright (amended by Laws No. 63/1997 and 43/1998),treaties_signatory,https://www.wipo.int/wipolex/en/legislation/details/20020,high,2026-10-22
 SN,,moral_rights,https://openjicareport.jica.go.jp/pdf/12113965_03.pdf,medium,2026-10-14
 SN,,orphan_works,https://www.eifl.net/system/files/resources/202312/what_can_libraries_in_senegal_do_under_copyright_act_2008.pdf,medium,2026-10-17
 SN,,digital_protection,https://www.memoireonline.com/10/12/6258/m_Leffectivite-de-la-protection-des-droits-de-propriete-litteraire-et-artistique17.html,high,2026-10-14
@@ -387,8 +460,8 @@ TZ,,digital_protection,https://media.tanzlii.org/media/legislation/322955/source
 TZ,,fair_use_exceptions,https://media.tanzlii.org/media/legislation/322955/source_file/a60fd77847905540/1999-7.pdf,medium,2026-10-14
 UG,,moral_rights,https://old.ulii.org/ug/judgment/commercial-court-uganda/2014/107,medium,2026-10-14
 UG,,orphan_works,https://cipit.strathmore.edu/ugandas-2025-copyright-and-neighbouring-rights-amendment-bill-a-turning-point-for-creators-rights/,low,2026-10-21
-UG,,fair_use_exceptions,https://www.cehurd.org/wp-content/uploads/downloads/2013/03/influencing-copyright.pdf,medium,2026-10-14
 UG,,digital_protection,https://cipit.strathmore.edu/ugandas-2025-copyright-and-neighbouring-rights-amendment-bill-a-turning-point-for-creators-rights/,low,2026-10-21
+UG,,fair_use_exceptions,https://www.cehurd.org/wp-content/uploads/downloads/2013/03/influencing-copyright.pdf,medium,2026-10-14
 UG,,notes,https://www.monitor.co.ug/uganda/news/national/museveni-signs-copyright-law-seven-others-5441370,medium,2026-10-21
 UY,,orphan_works,https://www.wipo.int/export/sites/www/ip-development/en/agenda/docs/2_part_2_legal_study_es.pdf,medium,2026-10-15
 UY,,digital_protection,https://impo.com.uy/bases/decretos/295-2017/10,medium,2026-10-14
@@ -397,6 +470,14 @@ UZ,,fair_use_exceptions,https://www.wipo.org/edocs/mdocs/copyright/en/wipo_cr_tb
 VE,,digital_protection,https://www.revistajuridicaonline.com/wp-content/uploads/2009/07/3-la_protecc_juridica.pdf,medium,2026-10-18
 VN,,digital_protection,https://www.tilleke.com/insights/vietnams-amended-ip-law-will-strengthen-and-modernize-copyright-protection/10/,high,2026-10-14
 VN,,notes,https://www.tilleke.com/insights/vietnam-enacts-landmark-ip-law-amendments/?page=5,high,2026-10-14
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),law_name,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Kosovo.html,medium,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),protection_type,https://www.aippi.org/news/new-law-on-copyright-entered-into-force-in-kosovo/,medium,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Kosovo.html,medium,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),author_rights,https://gpg-pdf.chambers.com/Doing-Business-In-2026/551/,medium,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),moral_rights,https://gpg-pdf.chambers.com/Doing-Business-In-2026/551/,medium,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),orphan_works,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Kosovo.html,low,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),registration_required,https://www.petosevic.com/node/1435,low,2026-10-22
+XK,Law No. 08/L-205 on Copyright and Related Rights (in force 27 October 2023; repealed Law No. 04/L-065 of 2011),enforcement_body,https://www.petosevic.com/node/1435,low,2026-10-22
 YE,Law No. 15 of 2012 on the Protection of Copyright and Related Rights,law_name,https://www.wipo.int/wipolex/en/legislation/details/19994,high,2026-10-16
 YE,Law No. 15 of 2012 on the Protection of Copyright and Related Rights,protection_type,https://www.wipo.int/wipolex/en/legislation/details/19994,high,2026-10-16
 YE,Law No. 15 of 2012 on the Protection of Copyright and Related Rights,term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Yemen.html,medium,2026-10-16

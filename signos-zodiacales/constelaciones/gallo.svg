@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="fondo-gallo" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-gallo" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-gallo)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.0" stroke-linecap="round" d="M96.2 36.6h0M130.6 75.7h0M38.8 73.1h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" d="M60.4 39.1h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.0" stroke-linecap="round" d="M75.6 141.1h0M150.3 113.9h0M108.3 169.6h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.0" stroke-linecap="round" d="M84.7 121.0h0M22.8 165.2h0M11.3 137.9h0M111.6 29.1h0M82.9 34.7h0M74.0 164.9h0M170.2 180.6h0M127.1 17.0h0M107.8 20.7h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" d="M78.7 47.5h0M160.5 87.2h0M52.9 168.2h0M70.3 13.9h0M110.0 53.3h0M72.8 74.3h0M166.2 64.8h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.0" stroke-linecap="round" d="M13.2 79.4h0M84.3 78.7h0M149.7 166.3h0M152.8 147.3h0M121.0 131.7h0M38.8 52.3h0M54.3 27.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.0" stroke-linecap="round" d="M179.5 23.9h0M34.2 160.7h0M34.2 87.6h0M66.2 93.6h0M176.6 184.4h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.5" stroke-linecap="round" d="M178.0 69.6h0M125.7 128.8h0M79.4 81.1h0M49.1 191.6h0M112.3 146.2h0M134.5 28.0h0M49.8 174.1h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.0" stroke-linecap="round" d="M96.5 86.9h0M125.2 55.4h0M159.1 23.6h0"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M52 62 C46 56 48 46 56 44 C64 42 70 48 70 56 C70 64 62 68 52 62 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M54 44 C52 36 58 34 60 40 C62 34 68 36 66 44"/>
+    <path d="M52 60 L40 62 L52 66"/>
+    <path d="M54 66 C52 74 56 78 60 74"/>
+    <path d="M64 68 C70 90 66 112 84 128 C100 142 134 138 148 122 C156 112 156 96 150 86 C134 84 108 82 90 76 C80 72 70 70 64 68 Z" fill="#e6c98b" fill-opacity="0.07"/>
+    <path d="M150 90 C166 70 186 62 188 44"/>
+    <path d="M148 98 C168 88 188 84 190 66"/>
+    <path d="M148 106 C166 104 184 108 188 94"/>
+    <path d="M100 138 L98 162 M96 162 L86 162"/>
+    <path d="M118 140 L120 162 M122 162 L132 162"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="40" y1="62" x2="60" y2="36"/>
+    <line x1="60" y1="36" x2="100" y2="78"/>
+    <line x1="100" y1="78" x2="150" y2="88"/>
+    <line x1="150" y1="88" x2="188" y2="44"/>
+    <line x1="150" y1="88" x2="148" y2="122"/>
+    <line x1="148" y1="122" x2="120" y2="162"/>
+    <line x1="120" y1="162" x2="98" y2="162"/>
+    <line x1="40" y1="62" x2="58" y2="76"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-gallo)">
+    <circle cx="40" cy="62" r="2.8"/>
+    <circle cx="60" cy="36" r="1.6"/>
+    <circle cx="100" cy="78" r="2.0"/>
+    <circle cx="150" cy="88" r="1.6"/>
+    <circle cx="188" cy="44" r="2.4"/>
+    <circle cx="148" cy="122" r="2.4"/>
+    <circle cx="120" cy="162" r="2.0"/>
+    <circle cx="98" cy="162" r="2.0"/>
+    <circle cx="58" cy="76" r="1.6"/>
+  </g>
+</svg>

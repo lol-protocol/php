@@ -20,9 +20,18 @@ test("status codes are classified: bot walls and server errors warn, dead pages 
   for (const code of [400, 404, 410]) assert.equal(classify(code, null, "u").status, "broken", String(code));
   assert.equal(classify(null, "getaddrinfo ENOTFOUND", "u").status, "broken");
   assert.equal(classify(null, "fetch failed (CERT_HAS_EXPIRED)", "u").status, "broken");
-  for (const soft of ["timeout after 15 s", "fetch failed (UND_ERR_CONNECT_TIMEOUT)", "fetch failed (UNABLE_TO_VERIFY_LEAF_SIGNATURE)", "fetch failed (ECONNRESET)", "fetch failed (EAI_AGAIN)", "fetch failed (redirect count exceeded)"]) {
+  for (const soft of ["timeout after 15 s", "fetch failed (UND_ERR_CONNECT_TIMEOUT)", "fetch failed (UNABLE_TO_VERIFY_LEAF_SIGNATURE)", "fetch failed (ECONNRESET)", "fetch failed (EAI_AGAIN)", "fetch failed (redirect count exceeded)", "fetch failed (ERR_SSL_SSL/TLS_ALERT_HANDSHAKE_FAILURE)"]) {
     assert.equal(classify(null, soft, "u").status, "warning", soft);
   }
+});
+
+test("a refused connection only warns at the hosts known to turn GitHub's runners away", () => {
+  const refused = "fetch failed (ECONNREFUSED)";
+  assert.equal(classify(null, refused, "https://law.moj.gov.tw/Eng/LawAll.aspx").status, "warning");
+  assert.equal(classify(null, refused, "https://www.ilga.gov/legislation").status, "warning"); // its subdomains too
+  assert.equal(classify(null, refused, "https://example.org/x").status, "broken");
+  assert.equal(classify(null, refused, "https://notilga.gov/x").status, "broken"); // another host that ends the same way
+  assert.equal(classify(null, "getaddrinfo ENOTFOUND law.moj.gov.tw", "https://law.moj.gov.tw/x").status, "broken"); // gone is still broken
 });
 
 test("a 5xx is retried once: a server that recovers is ok, one that keeps failing only warns", async (t) => {
@@ -110,6 +119,12 @@ test("the CLI checks every URL of the CSV, reports and fails only on broken link
   assert.equal(only.status, 0, only.stdout);
   assert.match(only.stdout, /2 URLs: 2 ok/);
   assert.equal(spawnSync(process.execPath, [join(root, "scripts", "check-links.js"), "--nope"], { encoding: "utf-8" }).status, 2);
+});
+
+test("a page that redirects forever (a cookie wall) only warns, with the wording Node really produces", { skip }, async () => {
+  const result = await checkUrl(`${server.url}/loop`, { timeoutMs: 5000 });
+  assert.match(result.detail, /redirect count exceeded/);
+  assert.equal(result.status, "warning");
 });
 
 test("per-value sources are checked too, labelled with the value they back", () => {

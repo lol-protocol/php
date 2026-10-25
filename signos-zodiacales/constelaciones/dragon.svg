@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="fondo-dragon" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-dragon" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-dragon)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.0" stroke-linecap="round" d="M105.1 182.3h0M156.5 18.3h0M172.8 11.0h0M60.2 173.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" d="M172.5 57.5h0M47.7 115.6h0M69.1 176.7h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.0" stroke-linecap="round" d="M179.1 149.5h0M72.3 101.2h0M111.4 122.7h0M145.8 188.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.0" stroke-linecap="round" d="M84.4 177.5h0M17.5 113.3h0M81.5 184.9h0M174.3 79.4h0M128.6 68.2h0M83.1 148.5h0M11.9 142.9h0M171.0 34.1h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" d="M84.9 132.0h0M123.6 109.4h0M88.6 186.8h0M102.9 110.7h0M155.3 36.9h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.0" stroke-linecap="round" d="M64.4 186.7h0M120.9 88.8h0M103.7 70.8h0M129.7 172.6h0M62.2 165.4h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.0" stroke-linecap="round" d="M67.6 123.4h0M148.4 54.5h0M166.4 178.2h0M139.4 129.3h0M138.4 17.9h0M133.9 68.1h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.5" stroke-linecap="round" d="M182.6 9.7h0M70.9 123.0h0M153.3 17.5h0M103.4 82.8h0M12.4 51.4h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.0" stroke-linecap="round" d="M153.1 181.2h0M8.7 98.5h0M87.0 104.0h0M40.2 120.0h0M145.8 104.6h0"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M36 144 C70 154 94 146 96 128 C98 112 68 108 72 90 C76 70 118 72 126 62"/>
+    <path d="M36 158 C74 168 110 158 110 128 C110 108 86 106 90 94 C94 82 134 86 140 66"/>
+    <path d="M36 144 L36 158"/>
+    <path d="M36 151 C26 146 20 150 18 158"/>
+    <path d="M36 151 C28 156 28 164 34 168"/>
+    <path d="M114 52 a12 12 0 1 0 24 0 a12 12 0 1 0 -24 0"/>
+    <path d="M114 52 C104 50 98 54 98 60 C102 64 110 62 116 60"/>
+    <path d="M120 41 C116 30 120 22 130 20"/>
+    <path d="M130 42 C134 32 142 28 150 30"/>
+    <path d="M102 56 C90 52 78 56 72 64"/>
+    <path d="M102 60 C92 66 88 74 90 82"/>
+    <path d="M138 48 C148 46 154 52 156 60"/>
+    <path d="M96 126 L88 138 M96 126 L96 140 M96 126 L104 138"/>
+    <path d="M84 94 L76 104 M84 94 L84 108 M84 94 L92 104"/>
+    <path d="M74 100 L68 94 L76 94"/>
+    <path d="M104 74 L100 66 L110 68"/>
+    <path d="M98 138 L100 146 L108 140"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="98" y1="58" x2="126" y2="52"/>
+    <line x1="126" y1="52" x2="130" y2="20"/>
+    <line x1="126" y1="52" x2="150" y2="30"/>
+    <line x1="126" y1="52" x2="132" y2="76"/>
+    <line x1="132" y1="76" x2="82" y2="92"/>
+    <line x1="82" y1="92" x2="100" y2="126"/>
+    <line x1="100" y1="126" x2="36" y2="151"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-dragon)">
+    <circle cx="98" cy="58" r="2.8"/>
+    <circle cx="126" cy="52" r="1.6"/>
+    <circle cx="130" cy="20" r="1.6"/>
+    <circle cx="150" cy="30" r="2.0"/>
+    <circle cx="132" cy="76" r="2.0"/>
+    <circle cx="82" cy="92" r="1.6"/>
+    <circle cx="100" cy="126" r="2.0"/>
+    <circle cx="36" cy="151" r="2.4"/>
+  </g>
+</svg>

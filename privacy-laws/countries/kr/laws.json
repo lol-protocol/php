@@ -34,11 +34,6 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.dlapiperdataprotection.com/index.html?c=KR&t=law",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.nepla.ai/wiki/it-정보-방송통신/개인정보-위치정보-신용정보/-일문일답-사망자의-정보가-개인정보인가-0xr84xjgnq1w",
         "confidence": "medium",
@@ -53,6 +48,11 @@
         "url": "https://prighter.com/resources/laws/korean-pipa/enforcement-decree/articles/article-18",
         "confidence": "high",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=KR&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

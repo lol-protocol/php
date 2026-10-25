@@ -49,7 +49,8 @@ final class SucesoRepository extends Repository
         return $this->db->fetchAll(
             "SELECT s.id, s.tipo, s.fecha, l.nombre AS lugar_nombre
                FROM {$this->privacidad->sucesos()} s LEFT JOIN lugares l ON l.ruta = s.lugar_ruta
-              WHERE " . self::sinAcentos("s.tipo || ' ' || COALESCE(s.descripcion, '') || ' ' || COALESCE(l.nombre, '')") . self::LIKE_ESCAPED . "
+              WHERE " . self::sinAcentos("s.tipo || ' ' || COALESCE(s.descripcion, '') || ' ' || COALESCE(l.nombre, '')") . self::LIKE_ESCAPED
+                . $this->sinRetiradas('suceso', 's.id') . "
               ORDER BY s.fecha, s.id" . self::page($limit, $offset),
             [self::patron($texto)]
         );

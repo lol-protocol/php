@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "LI",
+    "country_name": "Liechtenstein",
+    "region": "europe",
+    "law_name": "Law of 19 May 1999 on Copyright and Related Rights (Copyright Act, URG), LGBl. 1999 No. 160; consolidated 1 November 2021",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (Art. 33; special rule for music with lyrics: 70 years after death of the longest-living of lyricist and composer, Art. 33(4))",
+    "author_rights": "Economic rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (no registration requirement found; unconfirmed)",
+    "enforcement_body": "Government (Regierung) grants concessions to collecting societies; Office of Economic Affairs (Amt für Volkswirtschaft, AVW) approves tariffs",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/6899",
+    "notes": "General term in Art. 33(1) was not seen in the URG text; only the 2014 amendment of Art. 33(4). Berne since 1931 (Commons); WCT in force 30 April 2007 (WIPO notification); WPPT same date (IRIS); WTO since 1 Sept 1995 (Commons). Implementing Decree LGBl. 1999 No. 253.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/6899",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/6899",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "term_of_protection": {
+        "url": "https://www.gesetze.li/chrono/pdf/2014167000",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/6899",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/6899",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "registration_required": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/6899",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_body": {
+        "url": "https://suisa.ch/dam/jcr:cf56d093-9624-4ffc-a6ce-798c39aea0ef/GTS_FL_2019-2026_GER.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

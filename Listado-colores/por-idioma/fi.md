@@ -110,7 +110,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `mistyrose` | utuisen ruusu | `#FFE4E1` |  | Hienovaraisuus, nostalgia, pehmeys ja romantiikka. | Sumuinen aamunkoitto; uni, muisto ja se, mikä häipyy. | derivado | derivado |
 | `moccasin` | mokkasiini | `#FFE4B5` |  | Pehmeä lämpö, yksinkertaisuus, mukavuus ja ystävällisyys. | Maa ja polku; matka, nöyryys ja koti. | derivado | derivado |
 | `navajowhite` | navajonvalkoinen | `#FFDEAD` |  | Maanläheinen lämpö, yksinkertaisuus ja mukavuus. | Hiekka ja sato; yksinkertaisuus ja nöyrä yltäkylläisyys. | derivado | derivado |
-| `navy` | tummansininen | `#000080` |  | Arvovalta, luottamus, vakavuus ja ammattimaisuus. | Syvä meri ja yö; kuri, viisaus ja uskollisuus. | derivado | derivado |
+| `navy` | laivastonsininen | `#000080` |  | Arvovalta, luottamus, vakavuus ja ammattimaisuus. | Syvä meri ja yö; kuri, viisaus ja uskollisuus. | derivado | derivado |
 | `oldlace` | vanha pitsi | `#FDF5E6` |  | Nostalgia, hienovaraisuus, lämpö ja perinne. | Vanhan muisti ja hellyys; vanhentunut puhtaus ja huolenpito. | derivado | derivado |
 | `olive` | oliivi | `#808000` |  | Rauha, luonto, kohtuullisuus ja vakaus; myös väsymys. | Oliivipuu: rauha, viisaus, hiljainen voitto ja hedelmällisyys. | derivado | tradición |
 | `olivedrab` | oliivinvihreä drab | `#6B8E23` |  | Luonto, käytännöllisyys, vakaus ja sävyisyys. | Maaseutu ja villi luonto; sinnikkyys ja juurtuneisuus. | derivado | derivado |

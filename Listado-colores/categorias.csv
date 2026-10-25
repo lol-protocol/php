@@ -1,0 +1,211 @@
+idioma,concepto,forma,categoria,ocurrencia,ejemplo
+en,aqua,aqua,ADJ,aqua,She painted the bathroom walls aqua.
+en,aqua,aqua,NOUN,aqua,The aqua of the lagoon looked unreal.
+en,aquamarine,aquamarine,ADJ,aquamarine,The aquamarine water was warm and clear.
+en,aquamarine,aquamarine,NOUN,aquamarine,He gave her a ring set with an aquamarine.
+en,azure,azure,ADJ,azure,The azure sky stretched over the bay.
+en,azure,azure,NOUN,azure,The azure of the sea faded at dusk.
+en,azure,azure,PROPN,Azure,The company moved its servers to Azure.
+en,beige,beige,ADJ,beige,He wore a beige coat.
+en,beige,beige,NOUN,Beige,Beige is a safe color for a sofa.
+en,bisque,bisque,ADJ,bisque,The kitchen walls were bisque and the floor was slate.
+en,bisque,bisque,NOUN,bisque,We started dinner with a lobster bisque.
+en,black,black,ADJ,black,She wore a black dress.
+en,black,black,NOUN,Black,Black suits him.
+en,black,black,VERB,blacked,They blacked out the windows before the storm.
+en,blue,blue,ADJ,blue,The sky was blue.
+en,blue,blue,NOUN,Blue,Blue is her favorite color.
+en,blue,blue,VERB,blued,The gunsmith blued the steel to stop it rusting.
+en,brown,brown,ADJ,brown,He has brown eyes.
+en,brown,brown,NOUN,Brown,Brown goes well with green.
+en,brown,brown,VERB,Brown,Brown the onions in a little butter.
+en,burlywood,burlywood,ADJ,burlywood,The table was painted burlywood.
+en,burlywood,burlywood,NOUN,Burlywood,Burlywood is a pale tan in CSS.
+en,chartreuse,chartreuse,ADJ,chartreuse,The chartreuse jacket stood out in the crowd.
+en,chartreuse,chartreuse,NOUN,chartreuse,He ordered a glass of chartreuse after dinner.
+en,chocolate,chocolate,ADJ,chocolate,The new couch is chocolate.
+en,chocolate,chocolate,NOUN,chocolate,I would like some chocolate.
+en,coral,coral,ADJ,coral,She painted her nails coral.
+en,coral,coral,NOUN,coral,The reef is made of living coral.
+en,cornsilk,cornsilk,ADJ,cornsilk,The page background is cornsilk.
+en,cornsilk,cornsilk,NOUN,cornsilk,The cornsilk stuck to my fingers.
+en,crimson,crimson,ADJ,crimson,A crimson sunset covered the hills.
+en,crimson,crimson,NOUN,crimson,The crimson of the flag had faded.
+en,crimson,crimson,VERB,crimsoned,Her cheeks crimsoned with embarrassment.
+en,cyan,cyan,ADJ,cyan,The printer is out of cyan ink.
+en,cyan,cyan,NOUN,Cyan,Cyan and magenta mix to make blue.
+en,firebrick,firebrick,ADJ,firebrick,The button turned firebrick when hovered.
+en,firebrick,firebrick,NOUN,firebrick,The oven is lined with firebrick.
+en,fuchsia,fuchsia,ADJ,fuchsia,She wore a fuchsia scarf.
+en,fuchsia,fuchsia,NOUN,fuchsia,The fuchsia bloomed on the porch.
+en,gainsboro,gainsboro,ADJ,gainsboro,The panel background is gainsboro.
+en,gainsboro,gainsboro,NOUN,Gainsboro,Gainsboro is the lightest of the grays here.
+en,gold,gold,ADJ,gold,The trim is gold.
+en,gold,gold,NOUN,gold,They found gold in the river.
+en,goldenrod,goldenrod,ADJ,goldenrod,The header is goldenrod.
+en,goldenrod,goldenrod,NOUN,Goldenrod,Goldenrod grows along the roadside in autumn.
+en,gray,gray,ADJ,gray,The sky turned gray.
+en,gray,gray,NOUN,Gray,Gray is the color of ash.
+en,gray,gray,VERB,grayed,His hair grayed early.
+en,green,green,ADJ,green,The grass is green.
+en,green,green,NOUN,Green,Green is the color of spring.
+en,green,green,VERB,greened,The hills greened after the first rains.
+en,grey,grey,ADJ,grey,The clouds were grey.
+en,grey,grey,NOUN,Grey,Grey is the color of the pavement.
+en,grey,grey,VERB,greyed,He greyed prematurely.
+en,honeydew,honeydew,ADJ,honeydew,The hallway walls were painted honeydew.
+en,honeydew,honeydew,NOUN,honeydew,She cut a honeydew for breakfast.
+en,indigo,indigo,ADJ,indigo,The indigo night was full of stars.
+en,indigo,indigo,NOUN,Indigo,Indigo was once an expensive dye.
+en,ivory,ivory,ADJ,ivory,She chose an ivory gown.
+en,ivory,ivory,NOUN,ivory,Poachers hunt elephants for ivory.
+en,khaki,khaki,ADJ,khaki,The soldiers wore khaki uniforms.
+en,khaki,khaki,NOUN,khakis,He wore khakis to the office.
+en,lavender,lavender,ADJ,lavender,The lavender curtains moved in the breeze.
+en,lavender,lavender,NOUN,Lavender,Lavender grows well in dry soil.
+en,lime,lime,ADJ,lime,The lime walls glowed in the sun.
+en,lime,lime,NOUN,lime,Add a slice of lime.
+en,lime,lime,VERB,lime,Farmers lime acidic soil to improve it.
+en,linen,linen,ADJ,linen,The walls were painted linen.
+en,linen,linen,NOUN,linen,The hotel changes the linen daily.
+en,magenta,magenta,ADJ,magenta,She chose a magenta ribbon.
+en,magenta,magenta,NOUN,Magenta,Magenta is one of the printing inks.
+en,maroon,maroon,ADJ,maroon,The team wears maroon jerseys.
+en,maroon,maroon,NOUN,Maroon,Maroon looks good with gold.
+en,maroon,maroon,VERB,marooned,Pirates marooned him on a desert island.
+en,moccasin,moccasin,ADJ,moccasin,The text color is moccasin.
+en,moccasin,moccasin,NOUN,moccasin,He lost one moccasin in the creek.
+en,navy,navy,ADJ,navy,He wore a navy blazer.
+en,navy,navy,NOUN,Navy,Navy suits her better than black.
+en,olive,olive,ADJ,olive,The jacket was olive.
+en,olive,olive,NOUN,olive,He ate an olive with his drink.
+en,olive,olive,PROPN,Olive,Olive moved to Dublin last year.
+en,orange,orange,ADJ,orange,The orange sunset lit the sky.
+en,orange,orange,NOUN,orange,She peeled an orange.
+en,orange,orange,PROPN,Orange,We switched to Orange for our mobile plan.
+en,orchid,orchid,ADJ,orchid,The walls were orchid.
+en,orchid,orchid,NOUN,orchid,An orchid bloomed on the windowsill.
+en,peru,peru,ADJ,peru,The border is peru.
+en,peru,peru,PROPN,Peru,She was born in Peru.
+en,pink,pink,ADJ,pink,She wore a pink dress.
+en,pink,pink,NOUN,Pink,Pink looks good on her.
+en,pink,pink,VERB,pinked,The old engine pinked under load.
+en,plum,plum,ADJ,plum,The walls were plum.
+en,plum,plum,NOUN,plum,He ate a ripe plum.
+en,purple,purple,ADJ,purple,The purple flowers opened at dawn.
+en,purple,purple,NOUN,Purple,Purple is the color of royalty.
+en,purple,purple,VERB,purpled,The sky purpled at dusk.
+en,red,red,ADJ,red,The red door was open.
+en,red,red,NOUN,Red,Red is a warm color.
+en,salmon,salmon,ADJ,salmon,She painted the room salmon.
+en,salmon,salmon,NOUN,salmon,We grilled salmon for dinner.
+en,seashell,seashell,ADJ,seashell,The bedroom walls were seashell.
+en,seashell,seashell,NOUN,seashell,He picked up a seashell on the beach.
+en,sienna,sienna,ADJ,sienna,The sienna earth glowed in the evening.
+en,sienna,sienna,NOUN,sienna,Burnt sienna is a warm brown pigment.
+en,sienna,sienna,PROPN,Sienna,Sienna came to the meeting late.
+en,silver,silver,ADJ,silver,The car is silver.
+en,silver,silver,NOUN,silver,The thieves stole the family silver.
+en,silver,silver,VERB,silvered,They silvered the glass to make a mirror.
+en,snow,snow,ADJ,snow,The page background is snow.
+en,snow,snow,NOUN,Snow,Snow covered the roofs.
+en,snow,snow,VERB,snow,It will snow tonight.
+en,tan,tan,ADJ,tan,He wore tan boots.
+en,tan,tan,NOUN,Tan,Tan is a neutral color.
+en,tan,tan,VERB,tans,She tans easily in the sun.
+en,teal,teal,ADJ,teal,The teal sofa brightened the room.
+en,teal,teal,NOUN,Teal,Teal is a blue-green color.
+en,thistle,thistle,ADJ,thistle,The header is thistle.
+en,thistle,thistle,NOUN,thistle,A thistle grew by the gate.
+en,tomato,tomato,ADJ,tomato,The button turned tomato when clicked.
+en,tomato,tomato,NOUN,tomato,She sliced a tomato for the salad.
+en,turquoise,turquoise,ADJ,turquoise,The turquoise sea was calm.
+en,turquoise,turquoise,NOUN,Turquoise,Turquoise is a blue-green stone.
+en,violet,violet,ADJ,violet,The violet curtains were closed.
+en,violet,violet,NOUN,violet,A violet grew by the path.
+en,violet,violet,PROPN,Violet,Violet is waiting outside.
+en,wheat,wheat,ADJ,wheat,The walls were painted wheat.
+en,wheat,wheat,NOUN,wheat,The farmers harvested the wheat.
+en,white,white,ADJ,white,She wore a white dress.
+en,white,white,NOUN,White,White is the color of snow.
+en,yellow,yellow,ADJ,yellow,The yellow bus stopped.
+en,yellow,yellow,NOUN,Yellow,Yellow is a cheerful color.
+en,yellow,yellow,VERB,yellowed,The old pages yellowed with age.
+en,lilac,lilac,ADJ,lilac,She wore a lilac dress.
+en,lilac,lilac,NOUN,lilac,The lilac bloomed in May.
+en,burgundy,burgundy,ADJ,burgundy,She wore a burgundy coat.
+en,burgundy,burgundy,NOUN,burgundy,He ordered a bottle of burgundy.
+en,burgundy,burgundy,PROPN,Burgundy,They toured the vineyards of Burgundy.
+en,cream,cream,ADJ,cream,He wore a cream suit.
+en,cream,cream,NOUN,cream,Whip the cream until it thickens.
+en,cream,cream,VERB,Cream,Cream the butter and sugar together.
+en,scarlet,scarlet,ADJ,scarlet,A scarlet ribbon hung from the door.
+en,scarlet,scarlet,NOUN,Scarlet,Scarlet is brighter than crimson.
+en,amber,amber,ADJ,amber,The amber light flashed.
+en,amber,amber,NOUN,amber,The insect was trapped in amber.
+en,amber,amber,PROPN,Amber,Amber lives next door.
+es,beige,beige,ADJ,beige,Eligió una pared beige.
+es,beige,beige,NOUN,beige,El beige combina con todo.
+es,black,negro,ADJ,negro,Compró un abrigo negro.
+es,black,negro,NOUN,negro,El negro le sienta bien.
+es,blue,azul,ADJ,azul,El mar estaba azul.
+es,blue,azul,NOUN,azul,El azul del cielo era intenso.
+es,brown,marrón,ADJ,marrón,Compró un sofá marrón.
+es,brown,marrón,NOUN,marrón,El marrón combina con el verde.
+es,coral,coral,ADJ,coral,Llevaba un vestido coral.
+es,coral,coral,NOUN,coral,El coral se muere por el calor.
+es,crimson,carmesí,ADJ,carmesí,Un atardecer carmesí cubrió el mar.
+es,crimson,carmesí,NOUN,carmesí,El carmesí de la bandera estaba desteñido.
+es,cyan,cian,ADJ,cian,La tinta cian se acabó.
+es,cyan,cian,NOUN,cian,El cian es uno de los colores de impresión.
+es,gold,dorado,ADJ,dorado,El marco dorado brillaba.
+es,gold,dorado,NOUN,dorado,El dorado de la corona deslumbraba.
+es,gray,gris,ADJ,gris,El cielo está gris.
+es,gray,gris,NOUN,gris,El gris domina la ciudad en invierno.
+es,green,verde,ADJ,verde,El césped está verde.
+es,green,verde,NOUN,verde,El verde es su color favorito.
+es,indigo,índigo,ADJ,índigo,El cielo índigo se llenó de estrellas.
+es,indigo,índigo,NOUN,índigo,El índigo es un tinte natural.
+es,khaki,caqui,ADJ,caqui,Llevaba un pantalón caqui.
+es,khaki,caqui,NOUN,caqui,Comió un caqui maduro.
+es,lavender,lavanda,ADJ,lavanda,Eligió un tono lavanda.
+es,lavender,lavanda,NOUN,lavanda,La lavanda huele muy bien.
+es,lime,lima,ADJ,lima,Llevaba una camiseta lima.
+es,lime,lima,NOUN,lima,Añade zumo de lima.
+es,lime,lima,VERB,lima,Ella lima las uñas antes de pintarlas.
+es,magenta,magenta,ADJ,magenta,Usó un tono magenta.
+es,magenta,magenta,NOUN,magenta,El magenta es un color de impresión.
+es,maroon,granate,ADJ,granate,Llevaba un vestido granate.
+es,maroon,granate,NOUN,granate,El granate es una piedra preciosa.
+es,olive,oliva,ADJ,oliva,Compró una chaqueta oliva.
+es,olive,oliva,NOUN,oliva,Aliñó la ensalada con aceite de oliva.
+es,orange,naranja,ADJ,naranja,Pintó la pared naranja.
+es,orange,naranja,NOUN,naranja,Peló una naranja.
+es,pink,rosa,ADJ,rosa,Llevaba un vestido rosa.
+es,pink,rosa,NOUN,rosa,Le regaló una rosa roja.
+es,purple,morado,ADJ,morado,Se puso un jersey morado.
+es,purple,morado,NOUN,morado,El morado es el color de la cuaresma.
+es,red,rojo,ADJ,rojo,Llevaba un vestido rojo.
+es,red,rojo,NOUN,rojo,El rojo es un color cálido.
+es,salmon,salmón,ADJ,salmón,Llevaba una blusa salmón.
+es,salmon,salmón,NOUN,salmón,Cenamos salmón a la plancha.
+es,silver,plateado,ADJ,plateado,Compró un coche plateado.
+es,turquoise,turquesa,ADJ,turquesa,Compró un collar turquesa.
+es,turquoise,turquesa,NOUN,turquesa,El turquesa es una piedra azulada.
+es,violet,violeta,ADJ,violeta,Llevaba una bufanda violeta.
+es,violet,violeta,NOUN,violeta,Cogió una violeta del jardín.
+es,white,blanco,ADJ,blanco,Tiene el pelo blanco.
+es,white,blanco,NOUN,blanco,El blanco de la pared brillaba con el sol.
+es,yellow,amarillo,ADJ,amarillo,El autobús amarillo se detuvo.
+es,yellow,amarillo,NOUN,amarillo,El amarillo alegra la habitación.
+es,lilac,lila,ADJ,lila,Se puso una blusa lila.
+es,lilac,lila,NOUN,lila,La lila perfuma el jardín.
+es,burgundy,burdeos,ADJ,burdeos,Compró un sofá burdeos.
+es,burgundy,burdeos,NOUN,burdeos,Bebimos un burdeos excelente.
+es,burgundy,burdeos,PROPN,Burdeos,Viajaron a Burdeos en tren.
+es,cream,crema,ADJ,crema,Llevaba un abrigo crema.
+es,cream,crema,NOUN,crema,Se puso crema en las manos.
+es,scarlet,escarlata,ADJ,escarlata,Un lazo escarlata colgaba de la puerta.
+es,scarlet,escarlata,NOUN,escarlata,El escarlata destacaba sobre el fondo.
+es,amber,ámbar,ADJ,ámbar,El semáforo ámbar parpadeaba.
+es,amber,ámbar,NOUN,ámbar,El insecto quedó atrapado en el ámbar.

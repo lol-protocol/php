@@ -1,0 +1,367 @@
+<title>Revisión Marcalibros</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Mesa de revisión: barra de estado arriba, navegación por movimiento y autor, y las
+   diez obras de cada autor como fichas de catálogo con su tira vertical al lado. */
+:root {
+  --papel: #F2F3F5;
+  --ficha: #FFFFFF;
+  --tinta: #1C2130;
+  --tinta-suave: #5A6172;
+  --regla: #D9DCE3;
+  --acento: #0E6B6B;
+  --acento-suave: #DDEEEE;
+  --bien: #2F7D4A;
+  --bien-suave: #E3F1E7;
+  --corregir: #A55B00;
+  --corregir-suave: #FBEEDC;
+  --display: "Literata", "Iowan Old Style", Georgia, serif;
+  --texto: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel: #12151C; --ficha: #1A1F29; --tinta: #E6E8EE; --tinta-suave: #A1A8B8; --regla: #2C3342;
+    --acento: #56B8B4; --acento-suave: #173434; --bien: #6CC48A; --bien-suave: #183223;
+    --corregir: #F0A04B; --corregir-suave: #3A2812; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --papel: #12151C; --ficha: #1A1F29; --tinta: #E6E8EE; --tinta-suave: #A1A8B8; --regla: #2C3342;
+  --acento: #56B8B4; --acento-suave: #173434; --bien: #6CC48A; --bien-suave: #183223;
+  --corregir: #F0A04B; --corregir-suave: #3A2812; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--papel); color: var(--tinta); font: 15px/1.5 var(--texto);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+.envoltura { max-width: 1240px; margin: 0 auto; display: grid; gap: 20px; }
+button, input, textarea, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+
+/* Cabecera y progreso */
+.cabecera {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--papel);
+  padding-block: 16px 12px; border-bottom: 1px solid var(--regla); display: grid; gap: 12px;
+}
+.cabecera-fila { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; }
+h1 { font: 700 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
+h1 small { font: 500 0.8rem var(--mono); color: var(--tinta-suave); letter-spacing: 0.04em; margin-left: 6px; }
+.recuento { display: flex; gap: 16px; flex-wrap: wrap; font-variant-numeric: tabular-nums; font-size: 0.9rem; color: var(--tinta-suave); }
+.recuento b { color: var(--tinta); font-weight: 600; }
+.recuento .c-bien b { color: var(--bien); }
+.recuento .c-corregir b { color: var(--corregir); }
+.barra { height: 6px; border-radius: 3px; background: var(--regla); display: flex; overflow: hidden; }
+.barra i { display: block; height: 100%; }
+.barra .b { background: var(--bien); }
+.barra .c { background: var(--corregir); }
+.aviso { font-size: 0.85rem; color: var(--tinta-suave); margin: 0; }
+.aviso.error { color: var(--corregir); }
+
+/* Filtros */
+.filtros { display: grid; gap: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  border: 1px solid var(--regla); background: var(--ficha); border-radius: 999px; padding: 4px 12px;
+  cursor: pointer; font-size: 0.88rem; display: inline-flex; gap: 6px; align-items: center;
+}
+.chip[aria-pressed="true"] { background: var(--acento); border-color: var(--acento); color: var(--papel); }
+.chip .n { font: 500 0.75rem var(--mono); opacity: 0.75; font-variant-numeric: tabular-nums; }
+.busqueda { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.busqueda input[type="search"] {
+  flex: 1 1 240px; min-width: 0; padding: 7px 12px; border: 1px solid var(--regla); border-radius: 8px; background: var(--ficha);
+}
+.busqueda label { font-size: 0.88rem; color: var(--tinta-suave); display: inline-flex; gap: 6px; align-items: center; }
+
+/* Autor */
+.autor {
+  display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: flex-end; justify-content: space-between;
+  border-bottom: 1px solid var(--regla); padding-bottom: 10px;
+}
+.autor h2 { font: 600 1.35rem/1.2 var(--display); margin: 0; }
+.autor p { margin: 2px 0 0; color: var(--tinta-suave); font-size: 0.9rem; }
+.autor-rev { display: grid; gap: 6px; justify-items: end; min-width: 0; flex: 1 1 280px; }
+.autor-rev textarea { width: 100%; max-width: 420px; }
+
+/* Fichas */
+.fichas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 14px; }
+.ficha {
+  background: var(--ficha); border: 1px solid var(--regla); border-radius: 10px; padding: 12px;
+  display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 14px; align-items: start;
+}
+.ficha[data-estado="bien"] { box-shadow: inset 3px 0 0 var(--bien); }
+.ficha[data-estado="corregir"] { box-shadow: inset 3px 0 0 var(--corregir); }
+.tira { width: 60px; height: 420px; border-radius: 4px; background-repeat: no-repeat; background-color: var(--regla); }
+.datos { display: grid; gap: 8px; min-width: 0; align-content: start; }
+.num { font: 500 0.75rem var(--mono); color: var(--tinta-suave); letter-spacing: 0.04em; text-transform: uppercase; }
+.titulo { font: 600 1.05rem/1.3 var(--display); margin: 0; overflow-wrap: anywhere; }
+.de { font-size: 0.85rem; color: var(--tinta-suave); margin: -4px 0 0; }
+.rasgos { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 10px; margin: 0; font-size: 0.85rem; }
+.rasgos dt { color: var(--tinta-suave); }
+.rasgos dd { margin: 0; overflow-wrap: anywhere; }
+.botones { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn {
+  border: 1px solid var(--regla); background: transparent; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 0.85rem;
+}
+.btn[data-v="bien"][aria-pressed="true"] { background: var(--bien-suave); border-color: var(--bien); color: var(--bien); font-weight: 600; }
+.btn[data-v="corregir"][aria-pressed="true"] { background: var(--corregir-suave); border-color: var(--corregir); color: var(--corregir); font-weight: 600; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+textarea {
+  width: 100%; min-height: 64px; resize: vertical; padding: 6px 8px; border: 1px solid var(--regla); border-radius: 6px;
+  background: var(--papel); font-size: 0.88rem;
+}
+.guardado { font: 0.75rem var(--mono); color: var(--tinta-suave); min-height: 1em; }
+.vacio { color: var(--tinta-suave); padding: 24px 0; }
+.grupo { display: grid; gap: 12px; }
+.grupo h3 { font: 600 1.05rem var(--display); margin: 8px 0 0; }
+@media (prefers-reduced-motion: no-preference) { .chip, .btn { transition: background-color .15s, border-color .15s; } }
+</style>
+
+<div class="envoltura">
+  <header class="cabecera">
+    <div class="cabecera-fila">
+      <h1>Revisión Marcalibros <small id="total-piezas"></small></h1>
+      <div class="recuento" id="recuento"></div>
+    </div>
+    <div class="barra" id="barra" aria-hidden="true"><i class="b"></i><i class="c"></i></div>
+    <p class="aviso" id="aviso">Cargando las marcas de revisión…</p>
+  </header>
+
+  <section class="filtros" aria-label="Filtros">
+    <div class="chips" id="movimientos" role="group" aria-label="Movimiento"></div>
+    <div class="chips" id="autores" role="group" aria-label="Autor"></div>
+    <div class="busqueda">
+      <input type="search" id="buscar" placeholder="Buscar título, autor o motivo en todo el catálogo" aria-label="Buscar">
+      <label><input type="checkbox" id="solo-corregir"> Solo «a corregir»</label>
+      <label><input type="checkbox" id="solo-pendientes"> Solo pendientes</label>
+    </div>
+  </section>
+
+  <main id="vista"></main>
+</div>
+
+<script>
+const DATOS = /*__DATOS__*/null;
+const ANIMOS = { nocturno: "nocturno", tormentoso: "tormentoso", melancolico: "melancólico", crepuscular: "crepuscular",
+  auroral: "auroral", sentimental: "sentimental", pastoral: "pastoral", sublime: "sublime", otonal: "otoñal",
+  macabro: "macabro", lugubre: "lúgubre", espectral: "espectral", onirico: "onírico", exuberante: "exuberante", seco: "seco",
+  urbano: "urbano", provinciano: "provinciano", crudo: "crudo", sordido: "sórdido", exotico: "exótico", elegiaco: "elegíaco",
+  frenetico: "frenético", ludico: "lúdico", fastuoso: "fastuoso", vanitas: "vanitas", sereno: "sereno", heroico: "heroico",
+  tragico: "trágico", mistico: "místico", decadente: "decadente", ensueno: "ensueño" };
+const ESCENAS = { colinas: "colinas", montanas: "montañas", llanura: "llanura", marina: "marina", bosque: "bosque" };
+const GUTENBERG = { sin_verificar: "sin verificar", verificado: "verificado", no_disponible: "no disponible" };
+
+const estado = { mov: DATOS.movimientos[0].id, autor: null, rev: {}, aut: {}, db: null, uid: null, puedeEscribir: true };
+const piezasPorAutor = {};
+for (const p of DATOS.piezas) (piezasPorAutor[p.m + "~" + p.a] ||= []).push(p);
+const autorDe = Object.fromEntries(DATOS.autores.map(a => [a.m + "~" + a.id, a]));
+const nombreMov = Object.fromEntries(DATOS.movimientos.map(m => [m.id, m.nombre]));
+const $ = s => document.querySelector(s);
+const el = (tag, attrs = {}, ...hijos) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v; else if (k === "text") n.textContent = v;
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v);
+  }
+  for (const h of hijos) if (h != null) n.append(h);
+  return n;
+};
+try { const g = JSON.parse(localStorage.getItem("revision-nav") || "{}"); if (g.mov && nombreMov[g.mov]) { estado.mov = g.mov; estado.autor = g.autor || null; } } catch (e) {}
+
+/* --- Guardado: una escritura a la vez por documento --- */
+const colas = {};
+function guardar(coleccion, id, cuerpo, aviso) {
+  if (!estado.db) return;
+  const anterior = colas[coleccion + id] || Promise.resolve();
+  colas[coleccion + id] = anterior.then(async () => {
+    try {
+      await estado.db.collection(coleccion).doc(id).set({ ...cuerpo, fecha: new Date().toISOString(), por: estado.uid || "" });
+      if (aviso) aviso.textContent = "Guardado";
+    } catch (e) {
+      if (e && e.code === "invalid_argument") { estado.puedeEscribir = false; mostrarAviso("No tienes permiso para guardar marcas en esta página: la ves en modo lectura.", true); pintar(); }
+      else if (aviso) aviso.textContent = "No se pudo guardar. Vuelve a intentarlo.";
+    }
+  });
+}
+function mostrarAviso(t, error) { const a = $("#aviso"); a.textContent = t; a.classList.toggle("error", !!error); a.hidden = !t; }
+
+/* --- Recuento --- */
+function recuento() {
+  const total = DATOS.piezas.length;
+  let bien = 0, corregir = 0;
+  for (const p of DATOS.piezas) { const r = estado.rev[p.id]; if (r?.estado === "bien") bien++; else if (r?.estado === "corregir") corregir++; }
+  const autC = Object.values(estado.aut).filter(r => r.estado === "corregir").length;
+  $("#total-piezas").textContent = `${total} piezas · ${DATOS.autores.length} autores`;
+  $("#recuento").replaceChildren(
+    el("span", {}, el("b", { text: String(bien + corregir) }), ` de ${total} revisadas`),
+    el("span", { class: "c-bien" }, el("b", { text: String(bien) }), " bien"),
+    el("span", { class: "c-corregir" }, el("b", { text: String(corregir) }), " obras y ", el("b", { text: String(autC) }), " autores a corregir"),
+  );
+  const [b, c] = $("#barra").children;
+  b.style.width = (100 * bien / total) + "%"; c.style.width = (100 * corregir / total) + "%";
+}
+
+/* --- Controles de revisión (obra o autor) --- */
+function controles(coleccion, id, etiqueta) {
+  const mapa = coleccion === "revision" ? estado.rev : estado.aut;
+  const r = mapa[id] || {};
+  const aviso = el("span", { class: "guardado", "aria-live": "polite" });
+  const nota = el("textarea", { id: "nota-" + coleccion + "-" + id, "aria-label": "Nota para " + etiqueta,
+    placeholder: "Qué hay que cambiar: título, tipo, motivo, ánimo, autor…" });
+  nota.value = r.nota || "";
+  nota.hidden = r.estado !== "corregir" && !r.nota;
+  const boton = (v, texto) => el("button", { class: "btn", type: "button", "data-v": v, "aria-pressed": String(r.estado === v),
+    onclick: () => {
+      const actual = (coleccion === "revision" ? estado.rev : estado.aut)[id] || {};
+      const nuevo = actual.estado === v ? "" : v;
+      if (v === "corregir" && nuevo) { nota.hidden = false; nota.focus(); }
+      guardar(coleccion, id, { estado: nuevo, nota: nota.value.trim() }, aviso);
+    } }, texto);
+  let espera;
+  nota.addEventListener("input", () => {
+    clearTimeout(espera); aviso.textContent = "…";
+    espera = setTimeout(() => {
+      const actual = (coleccion === "revision" ? estado.rev : estado.aut)[id] || {};
+      if ((actual.nota || "") === nota.value.trim()) { aviso.textContent = ""; return; }
+      guardar(coleccion, id, { estado: actual.estado || "corregir", nota: nota.value.trim() }, aviso);
+    }, 900);
+  });
+  const caja = el("div", { class: "botones" }, boton("bien", "Bien"), boton("corregir", "Corregir"));
+  if (!estado.db || !estado.puedeEscribir) { caja.querySelectorAll("button").forEach(b => b.disabled = true); nota.readOnly = true; }
+  return { caja, nota, aviso };
+}
+
+/* --- Ficha de una obra --- */
+function ficha(p) {
+  const r = estado.rev[p.id] || {};
+  const [cw, ch] = DATOS.celda, cols = DATOS.columnas, escala = 60 / cw;
+  const col = p.s[1] % cols, fila = Math.floor(p.s[1] / cols);
+  const tira = el("div", { class: "tira", role: "img", "aria-label": "Marcalibro de " + p.t });
+  tira.style.backgroundImage = `url("sprites/${DATOS.movimientos[p.s[0]].id}.jpg")`;
+  tira.style.backgroundSize = `${cols * cw * escala}px auto`;
+  tira.style.backgroundPosition = `-${col * cw * escala}px -${fila * ch * escala}px`;
+  const c = controles("revision", p.id, p.t);
+  const rasgos = el("dl", { class: "rasgos" },
+    el("dt", { text: "Tipo" }), el("dd", { text: p.tp }),
+    el("dt", { text: "Motivo" }), el("dd", { text: DATOS.motivos[p.mo] || p.mo }),
+    el("dt", { text: "Ánimo" }), el("dd", { text: ANIMOS[p.an] || p.an }),
+    el("dt", { text: "Escena" }), el("dd", { text: `${ESCENAS[p.es] || p.es} · paleta ${p.pa}` }),
+    el("dt", { text: "Gutenberg" }), el("dd", { text: GUTENBERG[p.g] || p.g }),
+    p.fr ? el("dt", { text: "Frase" }) : null, p.fr ? el("dd", { text: `«${p.fr}» — ${p.fa}` }) : null);
+  return el("article", { class: "ficha", "data-estado": r.estado || "", "data-id": p.id },
+    tira,
+    el("div", { class: "datos" },
+      el("span", { class: "num", text: `${String(p.v).padStart(2, "0")} · ${p.f}` }),
+      el("h3", { class: "titulo", text: p.t }),
+      p.de ? el("p", { class: "de", text: "de " + p.de }) : null,
+      rasgos, c.caja, c.nota, c.aviso));
+}
+
+/* --- Navegación --- */
+function chipsMovimientos() {
+  $("#movimientos").replaceChildren(...DATOS.movimientos.map(m => {
+    const corr = DATOS.piezas.filter(p => p.m === m.id && estado.rev[p.id]?.estado === "corregir").length;
+    return el("button", { class: "chip", type: "button", "aria-pressed": String(m.id === estado.mov),
+      onclick: () => { estado.mov = m.id; estado.autor = null; recordar(); pintar(); } },
+      m.nombre, corr ? el("span", { class: "n", text: corr + " ✎" }) : null);
+  }));
+}
+function chipsAutores() {
+  const lista = DATOS.autores.filter(a => a.m === estado.mov);
+  if (!estado.autor || !lista.some(a => a.id === estado.autor)) estado.autor = lista[0].id;
+  $("#autores").replaceChildren(...lista.map(a => {
+    const ps = piezasPorAutor[a.m + "~" + a.id] || [];
+    const hechas = ps.filter(p => estado.rev[p.id]?.estado).length;
+    return el("button", { class: "chip", type: "button", "aria-pressed": String(a.id === estado.autor),
+      onclick: () => { estado.autor = a.id; recordar(); pintar(); } },
+      a.nombre, el("span", { class: "n", text: `${hechas}/${ps.length}` }));
+  }));
+}
+function recordar() { try { localStorage.setItem("revision-nav", JSON.stringify({ mov: estado.mov, autor: estado.autor })); } catch (e) {} }
+
+function filtradas() {
+  const q = $("#buscar").value.trim().toLowerCase();
+  const soloC = $("#solo-corregir").checked, soloP = $("#solo-pendientes").checked;
+  if (!q && !soloC && !soloP) return null;
+  const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const nq = norm(q);
+  return DATOS.piezas.filter(p => {
+    const r = estado.rev[p.id];
+    if (soloC && r?.estado !== "corregir") return false;
+    if (soloP && r?.estado) return false;
+    if (!nq) return true;
+    const a = autorDe[p.m + "~" + p.a];
+    return norm(`${p.t} ${p.de} ${a.nombre} ${DATOS.motivos[p.mo] || p.mo} ${p.tp}`).includes(nq);
+  });
+}
+
+function pintar() {
+  recuento(); chipsMovimientos(); chipsAutores();
+  const vista = $("#vista");
+  const lista = filtradas();
+  if (lista) {
+    $("#autores").hidden = true;
+    if (!lista.length) { vista.replaceChildren(el("p", { class: "vacio", text: "Ninguna obra coincide con la búsqueda o los filtros." })); return; }
+    const grupos = {};
+    for (const p of lista.slice(0, 120)) (grupos[p.m + "~" + p.a] ||= []).push(p);
+    vista.replaceChildren(
+      el("p", { class: "aviso", text: lista.length > 120 ? `${lista.length} obras; se muestran las 120 primeras. Afina la búsqueda para ver el resto.` : `${lista.length} obras` }),
+      ...Object.entries(grupos).map(([k, ps]) => {
+        const a = autorDe[k];
+        return el("section", { class: "grupo" }, el("h3", { text: `${a.nombre} · ${nombreMov[a.m]}` }),
+          el("div", { class: "fichas" }, ...ps.map(ficha)));
+      }));
+    return;
+  }
+  $("#autores").hidden = false;
+  const a = autorDe[estado.mov + "~" + estado.autor];
+  const idAutor = estado.mov + "~" + estado.autor;
+  const c = controles("autores", idAutor, a.nombre);
+  vista.replaceChildren(
+    el("section", { class: "grupo" },
+      el("div", { class: "autor" },
+        el("div", {}, el("h2", { text: a.nombre }), el("p", { text: `${a.epoca} · ${a.region} · ${nombreMov[a.m]}` })),
+        el("div", { class: "autor-rev" }, el("span", { class: "num", text: "¿El autor encaja en el movimiento?" }), c.caja, c.nota, c.aviso)),
+      el("div", { class: "fichas" }, ...(piezasPorAutor[idAutor] || []).map(ficha))));
+}
+
+/* Repinta sin perder lo que se está escribiendo: si el foco está en una nota, espera. */
+let pendiente = false;
+function repintarSeguro() {
+  const activo = document.activeElement;
+  if (activo && activo.tagName === "TEXTAREA") { pendiente = true; return; }
+  pintar();
+}
+document.addEventListener("focusout", e => { if (e.target.tagName === "TEXTAREA" && pendiente) { pendiente = false; setTimeout(pintar, 0); } });
+for (const id of ["#buscar", "#solo-corregir", "#solo-pendientes"]) $(id).addEventListener("input", pintar);
+
+pintar();
+
+/* --- Base de datos del Artifact --- */
+(async () => {
+  const db = window.claude ? await claude.use("db") : null;
+  if (!db) { mostrarAviso("Las marcas no están disponibles en esta vista: puedes recorrer el catálogo, pero no guardar la revisión.", true); return; }
+  estado.db = db;
+  const user = window.claude ? await claude.use("user") : null;
+  if (user) {
+    estado.uid = await user.id();
+    if ((await user.can("data.write")) === false) estado.puedeEscribir = false;
+  }
+  mostrarAviso(estado.puedeEscribir ? "" : "Ves esta revisión en modo lectura.");
+  db.collection("revision").limit(1000).onSnapshot(s => {
+    estado.rev = Object.fromEntries(s.docs.map(d => [d.id, d.data()]));
+    repintarSeguro();
+  }, () => mostrarAviso("Se perdió la conexión con las marcas. Recarga la página.", true));
+  db.collection("autores").limit(200).onSnapshot(s => {
+    estado.aut = Object.fromEntries(s.docs.map(d => [d.id, d.data()]));
+    repintarSeguro();
+  }, () => {});
+  pintar();
+})();
+</script>

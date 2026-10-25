@@ -1,0 +1,184 @@
+{"label":"COLOR","pattern":"أبيض","id":"white"}
+{"label":"COLOR","pattern":"أبيض اللوز","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"أبيض دخاني","id":"whitesmoke"}
+{"label":"COLOR","pattern":"أبيض زهري","id":"floralwhite"}
+{"label":"COLOR","pattern":"أبيض شبحي","id":"ghostwhite"}
+{"label":"COLOR","pattern":"أبيض عتيق","id":"antiquewhite"}
+{"label":"COLOR","pattern":"أبيض نافاجو","id":"navajowhite"}
+{"label":"COLOR","pattern":"أحمر","id":"red"}
+{"label":"COLOR","pattern":"أحمر بنفسجي شاحب","id":"palevioletred"}
+{"label":"COLOR","pattern":"أحمر بنفسجي متوسط","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"أحمر داكن","id":"darkred"}
+{"label":"COLOR","pattern":"أحمر طوبي","id":"firebrick"}
+{"label":"COLOR","pattern":"أحمر هندي","id":"indianred"}
+{"label":"COLOR","pattern":"أخضر","id":"green"}
+{"label":"COLOR","pattern":"أخضر العشب","id":"lawngreen"}
+{"label":"COLOR","pattern":"أخضر الغابة","id":"forestgreen"}
+{"label":"COLOR","pattern":"أخضر بحري","id":"seagreen"}
+{"label":"COLOR","pattern":"أخضر بحري داكن","id":"darkseagreen"}
+{"label":"COLOR","pattern":"أخضر بحري فاتح","id":"lightseagreen"}
+{"label":"COLOR","pattern":"أخضر بحري متوسط","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"أخضر داكن","id":"darkgreen"}
+{"label":"COLOR","pattern":"أخضر ربيعي","id":"springgreen"}
+{"label":"COLOR","pattern":"أخضر ربيعي متوسط","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"أخضر زيتوني داكن","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"أخضر شاحب","id":"palegreen"}
+{"label":"COLOR","pattern":"أخضر غامق","id":"darkgreen"}
+{"label":"COLOR","pattern":"أخضر فاتح","id":"lightgreen"}
+{"label":"COLOR","pattern":"أخضر ليموني","id":"limegreen"}
+{"label":"COLOR","pattern":"أخضر مصفر","id":"greenyellow;yellowgreen"}
+{"label":"COLOR","pattern":"أرجواني","id":"purple"}
+{"label":"COLOR","pattern":"أرجواني داكن","id":"darkmagenta"}
+{"label":"COLOR","pattern":"أرجواني ريبيكا","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"أرجواني متوسط","id":"mediumpurple"}
+{"label":"COLOR","pattern":"أرجواني ورد داكن","id":"darkorchid"}
+{"label":"COLOR","pattern":"أرجواني ورد متوسط","id":"mediumorchid"}
+{"label":"COLOR","pattern":"أرجواني وردي","id":"orchid"}
+{"label":"COLOR","pattern":"أزرق","id":"blue"}
+{"label":"COLOR","pattern":"أزرق أردوازي","id":"slateblue"}
+{"label":"COLOR","pattern":"أزرق أردوازي داكن","id":"darkslateblue"}
+{"label":"COLOR","pattern":"أزرق أردوازي متوسط","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"أزرق أليس","id":"aliceblue"}
+{"label":"COLOR","pattern":"أزرق القنطريون","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"أزرق بودرة","id":"powderblue"}
+{"label":"COLOR","pattern":"أزرق داكن","id":"darkblue"}
+{"label":"COLOR","pattern":"أزرق دودجر","id":"dodgerblue"}
+{"label":"COLOR","pattern":"أزرق سماوي","id":"skyblue"}
+{"label":"COLOR","pattern":"أزرق سماوي عميق","id":"deepskyblue"}
+{"label":"COLOR","pattern":"أزرق سماوي فاتح","id":"lightskyblue"}
+{"label":"COLOR","pattern":"أزرق غامق","id":"darkblue"}
+{"label":"COLOR","pattern":"أزرق فاتح","id":"lightblue"}
+{"label":"COLOR","pattern":"أزرق فولاذي","id":"steelblue"}
+{"label":"COLOR","pattern":"أزرق فولاذي فاتح","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"أزرق كاديت","id":"cadetblue"}
+{"label":"COLOR","pattern":"أزرق متوسط","id":"mediumblue"}
+{"label":"COLOR","pattern":"أزرق مخضر","id":"teal"}
+{"label":"COLOR","pattern":"أزرق ملكي","id":"royalblue"}
+{"label":"COLOR","pattern":"أزرق منتصف الليل","id":"midnightblue"}
+{"label":"COLOR","pattern":"أسود","id":"black"}
+{"label":"COLOR","pattern":"أصفر","id":"yellow"}
+{"label":"COLOR","pattern":"أصفر ذهبي فاتح","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"أصفر فاتح","id":"lightyellow"}
+{"label":"COLOR","pattern":"أكوا","id":"aqua"}
+{"label":"COLOR","pattern":"أكوامارين","id":"aquamarine"}
+{"label":"COLOR","pattern":"أكوامارين متوسط","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"برتقالي","id":"orange"}
+{"label":"COLOR","pattern":"برتقالي داكن","id":"darkorange"}
+{"label":"COLOR","pattern":"برتقالي مائل للحمرة","id":"orangered"}
+{"label":"COLOR","pattern":"برتقالية","id":"orange"}
+{"label":"COLOR","pattern":"برقوقي","id":"plum"}
+{"label":"COLOR","pattern":"بسكويتي","id":"bisque"}
+{"label":"COLOR","pattern":"بنفسجي","id":"purple;violet"}
+{"label":"COLOR","pattern":"بنفسجي داكن","id":"darkviolet"}
+{"label":"COLOR","pattern":"بنفسجي مزرق","id":"blueviolet"}
+{"label":"COLOR","pattern":"بنفسجية","id":"purple;violet"}
+{"label":"COLOR","pattern":"بني","id":"brown"}
+{"label":"COLOR","pattern":"بني رملي","id":"sandybrown"}
+{"label":"COLOR","pattern":"بني سرجي","id":"saddlebrown"}
+{"label":"COLOR","pattern":"بني وردي","id":"rosybrown"}
+{"label":"COLOR","pattern":"بنية","id":"brown"}
+{"label":"COLOR","pattern":"بيج","id":"beige"}
+{"label":"COLOR","pattern":"بيج داكن","id":"tan"}
+{"label":"COLOR","pattern":"بيرو","id":"peru"}
+{"label":"COLOR","pattern":"بيض","id":"white"}
+{"label":"COLOR","pattern":"بيضاء","id":"white"}
+{"label":"COLOR","pattern":"ثلجي","id":"snow"}
+{"label":"COLOR","pattern":"حرير الذرة","id":"cornsilk"}
+{"label":"COLOR","pattern":"حمر","id":"red"}
+{"label":"COLOR","pattern":"حمراء","id":"red"}
+{"label":"COLOR","pattern":"خزامي","id":"lavender"}
+{"label":"COLOR","pattern":"خزامية","id":"lavender"}
+{"label":"COLOR","pattern":"خشبي","id":"burlywood"}
+{"label":"COLOR","pattern":"خضر","id":"green"}
+{"label":"COLOR","pattern":"خضراء","id":"green"}
+{"label":"COLOR","pattern":"خوخي","id":"peachpuff"}
+{"label":"COLOR","pattern":"دانتيل قديم","id":"oldlace"}
+{"label":"COLOR","pattern":"ذهبي","id":"gold"}
+{"label":"COLOR","pattern":"ذهبي داكن","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"ذهبي شاحب","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"ذهبية","id":"gold"}
+{"label":"COLOR","pattern":"رمادي","id":"gray;grey"}
+{"label":"COLOR","pattern":"رمادي أردوازي","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"رمادي أردوازي داكن","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"رمادي أردوازي فاتح","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"رمادي خافت","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"رمادي داكن","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"رمادي غينزبورو","id":"gainsboro"}
+{"label":"COLOR","pattern":"رمادي فاتح","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"رمادية","id":"gray"}
+{"label":"COLOR","pattern":"زرق","id":"blue"}
+{"label":"COLOR","pattern":"زرقاء","id":"blue"}
+{"label":"COLOR","pattern":"زهري","id":"pink"}
+{"label":"COLOR","pattern":"زيتوني","id":"olive"}
+{"label":"COLOR","pattern":"زيتوني داكن","id":"olivedrab"}
+{"label":"COLOR","pattern":"زيتي","id":"olive"}
+{"label":"COLOR","pattern":"زيتية","id":"olive"}
+{"label":"COLOR","pattern":"سلموني","id":"salmon"}
+{"label":"COLOR","pattern":"سلموني داكن","id":"darksalmon"}
+{"label":"COLOR","pattern":"سلموني فاتح","id":"lightsalmon"}
+{"label":"COLOR","pattern":"سلمونية","id":"salmon"}
+{"label":"COLOR","pattern":"سماوي","id":"cyan;skyblue"}
+{"label":"COLOR","pattern":"سماوي داكن","id":"darkcyan"}
+{"label":"COLOR","pattern":"سماوي فاتح","id":"lightcyan"}
+{"label":"COLOR","pattern":"سماوية","id":"skyblue"}
+{"label":"COLOR","pattern":"سود","id":"black"}
+{"label":"COLOR","pattern":"سوداء","id":"black"}
+{"label":"COLOR","pattern":"سيان","id":"cyan"}
+{"label":"COLOR","pattern":"سيينا","id":"sienna"}
+{"label":"COLOR","pattern":"شارتروز","id":"chartreuse"}
+{"label":"COLOR","pattern":"شوكة","id":"thistle"}
+{"label":"COLOR","pattern":"شوكولاتة","id":"chocolate"}
+{"label":"COLOR","pattern":"شيفون الليمون","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"صدفة البحر","id":"seashell"}
+{"label":"COLOR","pattern":"صفر","id":"yellow"}
+{"label":"COLOR","pattern":"صفراء","id":"yellow"}
+{"label":"COLOR","pattern":"طماطم","id":"tomato"}
+{"label":"COLOR","pattern":"عاجي","id":"ivory"}
+{"label":"COLOR","pattern":"عصا ذهبية","id":"goldenrod"}
+{"label":"COLOR","pattern":"عنابي","id":"burgundy;maroon"}
+{"label":"COLOR","pattern":"عنابية","id":"burgundy"}
+{"label":"COLOR","pattern":"عنبري","id":"amber"}
+{"label":"COLOR","pattern":"عنبرية","id":"amber"}
+{"label":"COLOR","pattern":"فضي","id":"silver"}
+{"label":"COLOR","pattern":"فضية","id":"silver"}
+{"label":"COLOR","pattern":"فوشيا","id":"fuchsia"}
+{"label":"COLOR","pattern":"فيروزي","id":"turquoise"}
+{"label":"COLOR","pattern":"فيروزي داكن","id":"darkturquoise"}
+{"label":"COLOR","pattern":"فيروزي شاحب","id":"paleturquoise"}
+{"label":"COLOR","pattern":"فيروزي متوسط","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"فيروزية","id":"turquoise"}
+{"label":"COLOR","pattern":"قرمزي","id":"crimson"}
+{"label":"COLOR","pattern":"قرمزية","id":"crimson"}
+{"label":"COLOR","pattern":"قمحي","id":"wheat"}
+{"label":"COLOR","pattern":"كاكي","id":"khaki"}
+{"label":"COLOR","pattern":"كاكي داكن","id":"darkkhaki"}
+{"label":"COLOR","pattern":"كتاني","id":"linen"}
+{"label":"COLOR","pattern":"كحلي","id":"navy"}
+{"label":"COLOR","pattern":"كحلية","id":"navy"}
+{"label":"COLOR","pattern":"كريمة البابايا","id":"papayawhip"}
+{"label":"COLOR","pattern":"كريمة النعناع","id":"mintcream"}
+{"label":"COLOR","pattern":"كريمي","id":"cream"}
+{"label":"COLOR","pattern":"كريمية","id":"cream"}
+{"label":"COLOR","pattern":"كستنائي","id":"maroon"}
+{"label":"COLOR","pattern":"كستنائية","id":"maroon"}
+{"label":"COLOR","pattern":"لازوردي","id":"azure"}
+{"label":"COLOR","pattern":"لافندر","id":"lavender"}
+{"label":"COLOR","pattern":"ليلكي","id":"lilac"}
+{"label":"COLOR","pattern":"ليلكية","id":"lilac"}
+{"label":"COLOR","pattern":"ليموني","id":"lime"}
+{"label":"COLOR","pattern":"ليمونية","id":"lime"}
+{"label":"COLOR","pattern":"ماجنتا","id":"magenta"}
+{"label":"COLOR","pattern":"مرجاني","id":"coral"}
+{"label":"COLOR","pattern":"مرجاني فاتح","id":"lightcoral"}
+{"label":"COLOR","pattern":"مرجانية","id":"coral"}
+{"label":"COLOR","pattern":"موكاسين","id":"moccasin"}
+{"label":"COLOR","pattern":"ندى العسل","id":"honeydew"}
+{"label":"COLOR","pattern":"نيلي","id":"indigo"}
+{"label":"COLOR","pattern":"نيلية","id":"indigo"}
+{"label":"COLOR","pattern":"وردي","id":"pink"}
+{"label":"COLOR","pattern":"وردي ضبابي","id":"mistyrose"}
+{"label":"COLOR","pattern":"وردي عميق","id":"deeppink"}
+{"label":"COLOR","pattern":"وردي فاتح","id":"lightpink"}
+{"label":"COLOR","pattern":"وردي فاقع","id":"hotpink"}
+{"label":"COLOR","pattern":"وردي لافندري","id":"lavenderblush"}
+{"label":"COLOR","pattern":"وردية","id":"pink"}

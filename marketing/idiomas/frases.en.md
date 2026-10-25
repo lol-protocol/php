@@ -50,6 +50,11 @@ Perhaps that is why life is not about how much time we have, but about what we d
 ## Trust and respect
 - Your family story, treated with respect and care.
 
+## Privacy and control
+- People who might still be alive are not shown to anyone who visits your tree.
+- Only you can see your private collections.
+- Take your tree with you: export it to GEDCOM.
+
 ## Calls to action
 - Start your family tree today.
 - Start discovering who your grandparents were.
@@ -87,8 +92,6 @@ Perhaps that is why life is not about how much time we have, but about what we d
 - Start today: your first step is one click away
 - Your roots, closer than you think
 - Invite your family to build your story together
-- Your tree may have clues waiting to be found
-- Perhaps there's a relative you haven't met yet
 
 ### Preview text
 - Discover who came before you.

@@ -24,14 +24,8 @@ const {
     FormatConverter, FormatValidator, FormatBatchProcessor, DocumentGenerator,
     BookMarginManager, ScreenDeviceManager, SpecificationManager, LocalizationManager,
     MM_PER_INCH, mmToInches, inchesToMm, fixed, fetchCSV, indexByName, closestNames, UnknownFormatError,
-    DocumentFormats, FormatLoader, FormatSearcher, FormatStatistics,
+    DocumentFormats, FormatLoader, FormatSearcher, FormatStatistics, normalizeText,
 } = require('../app/document-formats.js');
-
-const quiet = async (fn) => {
-    const log = console.log;
-    console.log = () => {};
-    try { return await fn(); } finally { console.log = log; }
-};
 
 test('escapeHtml neutralises every HTML-significant character', () => {
     assert.equal(escapeHtml(`<a href="x" title='y'>&</a>`),
@@ -158,7 +152,7 @@ test('paper types can be looked up by name and filtered by category', async () =
 
 test('the default language loads from app/translations', async () => {
     const i18n = new LocalizationManager();
-    await quiet(() => i18n.init());
+    await i18n.init();
     assert.equal(i18n.getLanguage(), 'en');
     assert.notEqual(i18n.t('header.title'), 'header.title');
 });
@@ -174,7 +168,7 @@ test('no language ever shows a blank label: empty or missing strings fall back t
     for (const file of fs.readdirSync(path.join(APP_DIR, 'translations'))) {
         const code = file.replace(/\.json$/, '');
         const i18n = new LocalizationManager();
-        await quiet(() => i18n.loadLanguage(code));
+        await i18n.loadLanguage(code);
         assert.equal(i18n.getLanguage(), code);
         const blank = keys.filter(key => i18n.t(key) === '' || i18n.t(key) === key);
         assert.deepEqual(blank, [], `${code}: these keys show nothing or the raw key`);
@@ -183,9 +177,9 @@ test('no language ever shows a blank label: empty or missing strings fall back t
 
 test('a translated string wins over English, and a missing key still returns the default', async () => {
     const english = new LocalizationManager();
-    await quiet(() => english.loadLanguage('en'));
+    await english.loadLanguage('en');
     const spanish = new LocalizationManager();
-    await quiet(() => spanish.loadLanguage('es'));
+    await spanish.loadLanguage('es');
     assert.notEqual(spanish.t('header.title'), english.t('header.title'));
     assert.equal(spanish.t('no.such.key', 'Default'), 'Default');
     assert.equal(spanish.t('no.such.key'), 'no.such.key');
@@ -330,7 +324,7 @@ test('rows handed out by SpecificationManager cannot be changed for the next cal
 });
 
 test('DocumentFormats.load wires every manager from one call', async () => {
-    const docs = await quiet(() => DocumentFormats.load());
+    const docs = await DocumentFormats.load();
     assert.ok(docs.formats.length > 250);
     assert.ok(docs.lastModified instanceof Date);
     assert.ok(docs.converter.convert('Letter', 'A4'));
@@ -340,7 +334,7 @@ test('DocumentFormats.load wires every manager from one call', async () => {
     assert.ok(docs.statistics.getStats().totalCountries > 20);
     assert.ok(docs.searcher.search('A4').length > 0);
 
-    const light = await quiet(() => DocumentFormats.load({ only: [] }));
+    const light = await DocumentFormats.load({ only: [] });
     assert.equal(light.specs.getAllPaperTypes().length, 0, 'what is left out is not loaded');
 });
 
@@ -423,7 +417,55 @@ test('search puts an exact name first and breaks ties alphabetically, whatever t
 });
 
 test('DocumentFormats.load sets the book margins and the print specs', async () => {
-    const docs = await quiet(() => DocumentFormats.load());
+    const docs = await DocumentFormats.load();
     assert.equal(docs.generator.getRecommendedMargins({ format_name: 'Trade Paperback' }).left, 16);
     assert.equal(docs.validator.validateForPrinting('Business Card Standard', 300).recommendedDpi, 600);
+});
+
+test('statistics of an empty catalog are zeros, not NaN', () => {
+    const stats = new FormatStatistics([]).getStats();
+    assert.equal(stats.totalFormats, 0);
+    assert.equal(stats.averageWidth, '0.0');
+    assert.equal(stats.averageHeight, '0.0');
+    assert.equal(stats.largestFormat, null);
+});
+
+test('loading formats does not write to the console', async () => {
+    const log = console.log;
+    const lines = [];
+    console.log = (...args) => lines.push(args);
+    try {
+        await new FormatLoader('../specs/iso_216_series.csv').load();
+    } finally { console.log = log; }
+    assert.deepEqual(lines, []);
+});
+
+test('LocalizationManager.isRtl knows the right-to-left languages', () => {
+    for (const code of ['ar', 'he', 'fa', 'ur']) assert.equal(LocalizationManager.isRtl(code), true, code);
+    for (const code of ['en', 'es', 'ja', 'zh']) assert.equal(LocalizationManager.isRtl(code), false, code);
+    const files = fs.readdirSync(path.join(APP_DIR, 'translations')).map(f => f.replace('.json', ''));
+    assert.deepEqual(files.filter(code => LocalizationManager.isRtl(code)), ['ar'], 'the only RTL translation file');
+});
+
+test('normalizeText ignores case and Latin accents, and leaves other scripts alone', () => {
+    assert.equal(normalizeText('Papel TÉRMICO'), 'papel termico');
+    assert.equal(normalizeText('México'), 'mexico');
+    assert.equal(normalizeText('Zürich Škoda'), 'zurich skoda');
+    assert.equal(normalizeText(null), '');
+    assert.equal(normalizeText(210), '210');
+    // The marks of Devanagari and the syllables of Korean are not accents: they stay as they are.
+    assert.equal(normalizeText('सफ़ेद').length, normalizeText('सफ़ेद').normalize('NFC').length);
+    assert.equal(normalizeText('한국어'), '한국어');
+    assert.equal(normalizeText('ドキュメント'), 'ドキュメント');
+});
+
+test('searching finds a name whatever its accents and case', () => {
+    const rows = [
+        { format_name: 'Papel térmico', country: 'México', category: 'Roll', width_mm: 1, height_mm: 1 },
+        { format_name: 'Carta', country: 'Mexico', category: 'Standard', width_mm: 1, height_mm: 1 },
+    ];
+    const search = new FormatSearcher(rows);
+    assert.deepEqual(search.search('termico').map(f => f.format_name), ['Papel térmico']);
+    assert.deepEqual(search.search('TÉRMICO').map(f => f.format_name), ['Papel térmico']);
+    assert.deepEqual(search.search('méxico').map(f => f.format_name).sort(), ['Carta', 'Papel térmico']);
 });

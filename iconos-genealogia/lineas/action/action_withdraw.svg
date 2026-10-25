@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+      .ic-red{stroke:var(--ic-red,#801616)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-orange" stroke="#883307"><path d="M16.2 32.6L18 35A11 11 0 0 0 35.6 21.8L33.8 19.4A11 11 0 0 0 16.2 32.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="25" cy="26" r="11" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-red" stroke="#801616"><path d="M38.8 49.4L40.24 51.32A9 9 0 0 0 54.64 40.52L53.2 38.6A9 9 0 0 0 38.8 49.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="46" cy="44" r="9" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M41 44L51 44" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

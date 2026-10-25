@@ -1,8 +1,8 @@
 # Iconos de árbol genealógico (SVG 2.5D)
 
-172 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
+183 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
 **sin letras, números ni pictogramas** (nada dibuja un objeto literal), así que
-no dependen del idioma. 516 archivos: 3 variantes × 172 iconos.
+no dependen del idioma. 549 archivos: 3 variantes × 183 iconos.
 
 Para verlos todos, abrí `galeria-iconos.html` desde la raíz del repositorio.
 
@@ -10,6 +10,7 @@ Para verlos todos, abrí `galeria-iconos.html` desde la raíz del repositorio.
 
 - `color/`: gradientes, extrusión y sombra.
 - `lineas/`: solo contornos, sin rellenos; las partes tapadas por otra forma no se dibujan.
+  Los colores se pueden cambiar desde la página (ver «Colores de `lineas`»).
 - `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
 Las tres variantes tienen exactamente los mismos nombres y carpetas.
@@ -22,12 +23,12 @@ inglés.
 
 | Prefijo | Iconos | Contenido | Ejemplo |
 |---|---|---|---|
-| `person_` | 79 | Parentescos desde la perspectiva de "tú" | `person_uncle` |
+| `person_` | 82 | Parentescos desde la perspectiva de "tú" | `person_uncle` |
 | `relationship_` | 27 | Vínculos y tipos de familia | `relationship_married` |
 | `state_` | 8 | Estado de una persona | `state_widowed` |
-| `view_` | 12 | Formas de ver el árbol | `view_fan` |
-| `action_` | 32 | Acciones del usuario | `action_add_parent` |
-| `ui_` | 14 | Elementos de interfaz | `ui_dna` |
+| `view_` | 13 | Formas de ver el árbol | `view_fan` |
+| `action_` | 33 | Acciones del usuario | `action_add_parent` |
+| `ui_` | 20 | Elementos de interfaz | `ui_dna` |
 
 ## Cómo se leen
 
@@ -42,7 +43,13 @@ dibuja más grande para que se vea su forma. Un anillo discontinuo alrededor
 de un nodo significa "desconocido" o "sin pareja"; una línea ondulada une a
 una pareja sentimental y una barra gruesa roja, el vínculo de sangre. Las
 acciones y la interfaz usan la misma gramática que el set de biblioteca (ver
-`iconos-biblioteca/README.md`).
+`iconos-biblioteca/README.md`). Lo que no es una persona (una organización, los
+aportes de una cuenta) se dibuja con bloques redondeados en lugar de nodos.
+
+Los nombres de parentesco llevan el género en la palabra (`person_father`,
+`person_mother`, `person_parent`). Donde la palabra no lo distingue (`cousin`),
+sin sufijo es el masculino (cuadrado), `_f` el femenino (círculo) y `_u` el sin
+especificar (rombo): `person_cousin`, `person_cousin_f`, `person_cousin_u`.
 
 ## Uso
 
@@ -55,6 +62,23 @@ sufijo `_g`) son únicos entre los iconos y las variantes del set, así que pued
 incrustar varios SVG en línea en la misma página, también `color` y `gris` de un
 mismo icono. Los iconos con el mismo nombre en los dos sets (`ui_menu`...) sí
 comparten ids.
+
+## Colores de `lineas`
+
+Cada trazo de `lineas/` lleva el color de su tono (`#883307` para `orange`...), y
+ese color se puede sobrescribir con una variable CSS `--ic-<tono>`. Solo
+funciona con el SVG **en línea** en la página (`<svg>` pegado o inyectado en el
+HTML): con `<img>` o `background: url(...)` los iconos se ven con sus colores de
+siempre, porque la página no llega al interior del archivo.
+
+```css
+.barra svg { --ic-orange: currentColor; --ic-slate: currentColor; --ic-mist: currentColor; }
+.alerta svg { --ic-orange: crimson; }   /* solo cambia lo naranja */
+```
+
+Los tonos que usa un icono están en su `<style>` (`.ic-orange`, `.ic-slate`...).
+Un renderizador sin variables CSS (por ejemplo `resvg`) ignora esa parte y dibuja
+los colores originales.
 
 ## Regenerar y validar
 
@@ -69,8 +93,7 @@ Los SVG son salida generada, no se editan a mano — se definen en
   por una pequeña marca sobre el enlace (punto, cuadrado, anillo).
 - El efecto 2.5D es una extrusión hacia abajo y a la derecha con sombra
   proyectada; no es una proyección isométrica estricta.
-- A 24 px los pares masculino/femenino de `person_` son los más cercanos
-  entre sí (los diez primeros, de 0,99 a 1,2, frente a 0,8 de límite):
-  `person_grandson` y `person_granddaughter`, `person_great_grandson` y
-  `person_great_granddaughter`, `person_grandfather` y `person_grandmother`...
-  `iconos-tools/similares.py` los lista.
+- A 24 px los pares más cercanos entre sí son adopción y acogida
+  (`relationship_adoption` y `relationship_fostering`, 1,50) y los
+  masculino/femenino de `person_` (`person_grandson` y `person_granddaughter`,
+  1,51), frente a 1,2 de límite. `iconos-tools/similares.py` los lista.

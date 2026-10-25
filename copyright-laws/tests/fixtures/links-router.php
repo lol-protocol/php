@@ -12,6 +12,9 @@ switch ($path) {
     case '/moved':
         header('Location: /ok', true, 301);
         break;
+    case '/loop': // a cookie wall: it redirects to itself for as long as the client sends no cookie
+        header('Location: /loop', true, 302);
+        break;
     case '/blocked':
         http_response_code(403);
         break;
