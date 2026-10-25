@@ -4,7 +4,7 @@ namespace Marcalibros;
 
 /**
  * Un marcalibro propio ya guardado. Los nombres de archivo no llevan carpeta:
- * guarda en la base de datos solo estos nombres y arma la ruta al servirlos.
+ * guarda en disco solo estos nombres y arma la ruta al servirlos.
  */
 final class Bookmark
 {

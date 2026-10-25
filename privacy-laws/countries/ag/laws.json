@@ -1,0 +1,98 @@
+[
+  {
+    "country_code": "AG",
+    "country_name": "Antigua and Barbuda",
+    "region": "americas",
+    "law_name": "Data Protection Act 2013 (No. 10 of 2013)",
+    "jurisdiction": "Information Commissioner",
+    "enactment_date": "2013-10-28",
+    "effective_date": "2013-11-07",
+    "scope": "Data subjects whose personal data is handled by public and private bodies (unconfirmed)",
+    "applies_to": "Public and private bodies (unconfirmed)",
+    "key_requirements": "Data handling principles (notice, disclosure, security, access); data subject access and correction rights",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Retained no longer than necessary for the purpose (s. 9 Retention Principle) (unconfirmed)",
+    "enforcement_authority": "Information Commissioner (established under the Freedom of Information Act 2004)",
+    "penalties_range": "Sources conflict: up to $50000 and/or 3 years (summary) or $100000 and/or 5 years (indictment); another excerpt cites up to $200000 or 3 years (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Dates from one secondary source (assent 2013-10-28, gazette 2013-11-07); ConsentStack gives 2013-01-01, judged unreliable; Commissioner operational status unclear",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/taxonomy/term/82",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://www.offlist.me/what-is-antigua-and-barbuda-data-protection",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://www.offlist.me/what-is-antigua-and-barbuda-data-protection",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "retention_period": {
+        "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/taxonomy/term/82",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/ag-dpa",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "website_url",
+        "from": "https://tradecca.thecommonwealth.org/document/data-protection-act-2013",
+        "to": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013"
+      },
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

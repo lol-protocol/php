@@ -25,8 +25,10 @@ Requiere Python 3 con Pillow y numpy.
 
 ```bash
 python3 generator/generar_marcalibros.py                        # 1350 marcalibros (50 por categoría)
-python3 generator/generar_marcalibros.py --por-categoria 10     # 200 marcalibros, para pruebas rápidas
+python3 generator/generar_marcalibros.py --por-categoria 10 --salida /tmp/prueba   # 270 marcalibros, para pruebas rápidas
 ```
+
+Sin `--salida` el generador escribe en `catalog/` e `images/` del proyecto, y reemplaza lo versionado: usa `--salida` con cualquier número distinto de 50.
 
 Las versiones PNG (1400×200 y 2800×400) no se guardan en el repositorio, porque ocuparían unos 80 MB: se generan desde las mismas figuras con
 

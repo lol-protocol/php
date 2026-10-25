@@ -1,0 +1,61 @@
+[
+  {
+    "country_code": "CG",
+    "country_name": "Republic of the Congo",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 24-82 of July 7, 1982 on Copyright and Related Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 61; joint works: last surviving author + 50 years; anonymous and cinematographic works 50 years from creation; photographs 25 years)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Congolese Copyright Office (Bureau Congolais du Droit d'Auteur, BCDA) (unconfirmed)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/642",
+    "notes": "Congo is an OAPI member (Bangui Agreement Annex VII also applicable); WIPO Lex lists Law 24-82 as main national law; BCDA described as collecting society so its role as regulator is unconfirmed; TRIPS/WCT/WPPT not checked",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/642",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/642",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Republic_of_the_Congo.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.musicinafrica.net/node/15693",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Republic_of_the_Congo.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

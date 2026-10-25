@@ -17,7 +17,7 @@ abstract class SitemapRepository extends Repository
      * Sitemap file key => SQL whose `clave` column is each page's id. The key
      * is the type's digit width, or a letter for a type without one.
      *
-     * @return array<string, string>
+     * @return array<int|string, string>
      */
     abstract protected function fuentes(): array;
 
