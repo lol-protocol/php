@@ -106,6 +106,17 @@
     "international": "Internacional",
     "label": "Etiqueta"
   },
+  "paperCategories": {
+    "cardstock": "Cartulina",
+    "coated": "Estucado",
+    "decorative": "Decorativo",
+    "packaging": "Embalaje",
+    "photo": "Fotográfico",
+    "recycled": "Reciclado",
+    "specialty": "Especial",
+    "technical": "Técnico",
+    "writingPrinting": "Escritura e impresión"
+  },
   "measurementSystems": {
     "metric": "Métrico",
     "imperial": "Imperial",
@@ -176,6 +187,10 @@
     "sortWidth": "Ancho",
     "sortHeight": "Alto",
     "sortArea": "Área",
+    "sortReverse": "Invertir orden",
+    "compareShown": "Se muestran {shown} de {count} formatos coincidentes",
+    "closestTitle": "Formatos más parecidos a {format}",
+    "useAsTarget": "Usar {format} ({percent}% de similitud) como formato de destino",
     "aboutTitle": "Acerca de esta base de datos",
     "aboutIntro": "Esta completa base de datos de formatos de documento incluye:",
     "aboutFormats": "{count} formatos en varias categorías",

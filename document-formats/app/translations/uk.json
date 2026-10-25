@@ -106,6 +106,17 @@
     "international": "Міжнародний",
     "label": "Етикетки"
   },
+  "paperCategories": {
+    "cardstock": "Картон",
+    "coated": "Крейдований",
+    "decorative": "Декоративний",
+    "packaging": "Пакувальний",
+    "photo": "Фото",
+    "recycled": "Перероблений",
+    "specialty": "Спеціальний",
+    "technical": "Технічний",
+    "writingPrinting": "Для письма й друку"
+  },
   "measurementSystems": {
     "metric": "Метрична",
     "imperial": "Імперська",
@@ -176,6 +187,10 @@
     "sortWidth": "Ширина",
     "sortHeight": "Висота",
     "sortArea": "Площа",
+    "sortReverse": "Зворотний порядок",
+    "compareShown": "Показано {shown} з {count} відповідних форматів",
+    "closestTitle": "Формати, найближчі до {format}",
+    "useAsTarget": "Використати {format} (схожість {percent}%) як цільовий формат",
     "aboutTitle": "Про цю базу даних",
     "aboutIntro": "Ця всеосяжна база даних форматів документів містить:",
     "aboutFormats": "Форматів у кількох категоріях: {count}",

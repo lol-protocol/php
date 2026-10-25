@@ -106,6 +106,17 @@
     "international": "دولي",
     "label": "ملصقات"
   },
+  "paperCategories": {
+    "cardstock": "ورق مقوّى",
+    "coated": "مطلي",
+    "decorative": "زخرفي",
+    "packaging": "تغليف",
+    "photo": "صور",
+    "recycled": "معاد التدوير",
+    "specialty": "خاص",
+    "technical": "تقني",
+    "writingPrinting": "كتابة وطباعة"
+  },
   "measurementSystems": {
     "metric": "متري",
     "imperial": "إمبراطوري",
@@ -176,6 +187,10 @@
     "sortWidth": "العرض",
     "sortHeight": "الارتفاع",
     "sortArea": "المساحة",
+    "sortReverse": "عكس الترتيب",
+    "compareShown": "يُعرض {shown} من {count} مقاسًا مطابقًا",
+    "closestTitle": "أقرب المقاسات إلى {format}",
+    "useAsTarget": "استخدم {format} (تشابه {percent}%) كمقاس الوجهة",
     "aboutTitle": "حول قاعدة البيانات هذه",
     "aboutIntro": "تتضمن قاعدة بيانات مقاسات المستندات الشاملة هذه:",
     "aboutFormats": "{count} مقاسًا في فئات متعددة",

@@ -106,6 +106,17 @@
     "international": "Διεθνές",
     "label": "Ετικέτα"
   },
+  "paperCategories": {
+    "cardstock": "Χαρτόνι",
+    "coated": "Επιχρισμένο",
+    "decorative": "Διακοσμητικό",
+    "packaging": "Συσκευασίας",
+    "photo": "Φωτογραφικό",
+    "recycled": "Ανακυκλωμένο",
+    "specialty": "Ειδικό",
+    "technical": "Τεχνικό",
+    "writingPrinting": "Γραφής και εκτύπωσης"
+  },
   "measurementSystems": {
     "metric": "Μετρικό",
     "imperial": "Αγγλοσαξονικό",
@@ -176,6 +187,10 @@
     "sortWidth": "Πλάτος",
     "sortHeight": "Ύψος",
     "sortArea": "Εμβαδόν",
+    "sortReverse": "Αντίστροφη σειρά",
+    "compareShown": "Εμφανίζονται {shown} από {count} μεγέθη που ταιριάζουν",
+    "closestTitle": "Τα πιο κοντινά μεγέθη στο {format}",
+    "useAsTarget": "Χρήση του {format} (ομοιότητα {percent}%) ως μεγέθους προορισμού",
     "aboutTitle": "Σχετικά με αυτή τη βάση δεδομένων",
     "aboutIntro": "Αυτή η ολοκληρωμένη βάση δεδομένων μεγεθών εγγράφων περιλαμβάνει:",
     "aboutFormats": "{count} μεγέθη σε πολλές κατηγορίες",

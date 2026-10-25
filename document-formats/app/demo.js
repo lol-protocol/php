@@ -72,6 +72,7 @@ class FilterableList {
     filter(accepts, {announceCount = true} = {}) {
         let filtered = this.items.filter(accepts);
         if (this.compare) filtered = [...filtered].sort(this.compare);
+        if (this.reverse) filtered = [...filtered].reverse();
         this.render(filtered);
         if (announceCount) announce(tr(this.countKey, {count: filtered.length}), this.countKey);
     }
@@ -87,13 +88,26 @@ const matchesQuery = (query, texts) => {
 
 // "Large Format" -> "largeFormat", "Asia-Pacific" -> "asiaPacific": where a region or a category
 // of the data sits in the translation files (regions.*, categories.*).
-const vocabularyKey = (value) => String(value).split(/[\s-]+/).filter(Boolean)
+const vocabularyKey = (value) => String(value).split(/[\s/-]+/).filter(Boolean)
     .map((word, i) => (i ? word[0].toUpperCase() + word.slice(1).toLowerCase() : word.toLowerCase())).join('');
 // A region or category in the language of the page; one the files don't have stays as the CSV writes it.
 const vocabularyLabel = (group, value) => i18n.t(`${group}.${vocabularyKey(value)}`, value);
 // Words the page translates carry no lang of their own; the others are the CSV's English.
 const vocabularyLang = (group, value) =>
     LocalizationManager.lookup(i18n.translations, `${group}.${vocabularyKey(value)}`) === null ? dataLang() : '';
+
+// Fills a select with the given data values, labelled in the language of the page and sorted in
+// its alphabetical order. The first option (the "all" one) stays; so does the current choice.
+const fillVocabularySelect = (select, group, values) => {
+    const selected = select.value;
+    while (select.options.length > 1) select.remove(1);
+    addOptions(select, values.map(value => [value, vocabularyLabel(group, value)])
+        .sort((a, b) => a[1].localeCompare(b[1], i18n.getLanguage())));
+    select.value = selected;
+};
+
+// The comparison table shows this many rows at most, and says so when there are more.
+const COMPARE_LIMIT = 100;
 
 // How the Browser tab can order its cards. Ties keep the catalog order (sort is stable).
 const FORMAT_SORTS = {
@@ -127,6 +141,11 @@ class FormatBrowser extends FilterableList {
             categoryFilter: document.getElementById('category-filter'),
             regionFilter: document.getElementById('region-filter'),
             sortSelect: document.getElementById('sort-select'),
+            sortReverse: document.getElementById('sort-reverse'),
+            compareNote: document.getElementById('compare-note'),
+            equivalents: document.getElementById('equivalents'),
+            equivalentsTitle: document.getElementById('equivalents-title'),
+            equivalentsList: document.getElementById('equivalents-list'),
             resetBtn: document.getElementById('reset-btn'),
             downloadBtn: document.getElementById('download-btn'),
             fromFormat: document.getElementById('from-format'),
@@ -140,7 +159,7 @@ class FormatBrowser extends FilterableList {
     }
 
     setupEventListeners() {
-        const {search, countryFilter, categoryFilter, regionFilter, sortSelect, resetBtn, downloadBtn, fromFormat, toFormat, compareSearch} = this.els;
+        const {search, countryFilter, categoryFilter, regionFilter, sortSelect, sortReverse, resetBtn, downloadBtn, fromFormat, toFormat, compareSearch, equivalentsList} = this.els;
 
         document.addEventListener('change', (e) => {
             if (e.target === countryFilter || e.target === categoryFilter || e.target === regionFilter) {
@@ -154,7 +173,7 @@ class FormatBrowser extends FilterableList {
 
         document.addEventListener('input', (e) => {
             if (e.target === search) this.filterFormats();
-            else if (e.target === compareSearch) this.updateComparison();
+            else if (e.target === compareSearch) this.updateComparison({announceCount: true});
         });
 
         resetBtn.addEventListener('click', () => {
@@ -163,7 +182,22 @@ class FormatBrowser extends FilterableList {
             categoryFilter.value = '';
             regionFilter.value = '';
             sortSelect.value = '';
+            sortReverse.setAttribute('aria-pressed', 'false');
             this.filterFormats();
+        });
+
+        sortReverse.addEventListener('click', () => {
+            sortReverse.setAttribute('aria-pressed', String(sortReverse.getAttribute('aria-pressed') !== 'true'));
+            this.filterFormats({announceCount: false});
+        });
+
+        // A closest format becomes the target: the change event redraws the converter and the address.
+        equivalentsList.addEventListener('click', (e) => {
+            const button = e.target.closest('.equivalent-btn');
+            if (!button) return;
+            toFormat.value = button.dataset.format;
+            toFormat.dispatchEvent(new Event('change', {bubbles: true}));
+            toFormat.focus();
         });
 
         downloadBtn.addEventListener('click', () => {
@@ -193,23 +227,18 @@ class FormatBrowser extends FilterableList {
     // The option value stays the CSV's word, because that is what the formats are compared with.
     fillVocabularyFilters() {
         const {categoryFilter, regionFilter} = this.els;
-        for (const [select, group] of [[categoryFilter, 'categories'], [regionFilter, 'regions']]) {
-            const selected = select.value;
-            while (select.options.length > 1) select.remove(1);
-            const entries = this.vocabularyValues[group].map(value => [value, vocabularyLabel(group, value)])
-                .sort((a, b) => a[1].localeCompare(b[1], i18n.getLanguage()));
-            addOptions(select, entries);
-            select.value = selected;
-        }
+        fillVocabularySelect(categoryFilter, 'categories', this.vocabularyValues.categories);
+        fillVocabularySelect(regionFilter, 'regions', this.vocabularyValues.regions);
     }
 
     filterFormats(options) {
-        const {search, countryFilter, categoryFilter, regionFilter, sortSelect} = this.els;
+        const {search, countryFilter, categoryFilter, regionFilter, sortSelect, sortReverse} = this.els;
         const query = search.value;
         const country = countryFilter.value;
         const category = categoryFilter.value;
         const region = regionFilter.value;
         this.compare = FORMAT_SORTS[sortSelect.value] ?? null;
+        this.reverse = sortReverse.getAttribute('aria-pressed') === 'true';
 
         this.filter(format =>
             matchesQuery(query, [format.format_name, format.description, format.common_use,
@@ -281,11 +310,23 @@ class FormatBrowser extends FilterableList {
         totalCategories.textContent = stats.totalCategories;
     }
 
-    updateComparison() {
+    updateComparison({announceCount = false} = {}) {
+        const {compareNote} = this.els;
         const terms = this.els.compareSearch.value.split(',').map(normalizeText).map(t => t.trim()).filter(Boolean);
-        const matches = terms.length === 0 ? [] : this.formats.filter(format =>
-            terms.some(term => normalizeText(format.format_name).includes(term))
-        ).slice(0, 100);
+        const all = terms.length === 0 ? [] : this.formats.filter(format =>
+            terms.some(term => normalizeText(format.format_name).includes(term)));
+        const matches = all.slice(0, COMPARE_LIMIT);
+
+        // Say so when the table doesn't show every match, on screen and to a screen reader.
+        const cut = all.length > matches.length;
+        compareNote.hidden = !cut;
+        compareNote.textContent = cut ? tr('demo.compareShown', {shown: matches.length, count: all.length}) : '';
+        if (cut && fallbackLang('demo.compareShown')) compareNote.lang = 'en';
+        else compareNote.removeAttribute('lang');
+        if (announceCount && terms.length) {
+            if (cut) announce(compareNote.textContent, 'demo.compareShown');
+            else announce(tr('demo.resultsFormats', {count: all.length}), 'demo.resultsFormats');
+        }
 
         this.els.compareBody.innerHTML = matches.map(format => `
             <tr>
@@ -298,10 +339,36 @@ class FormatBrowser extends FilterableList {
         `).join('');
     }
 
+    // The five formats closest in size to the one chosen as origin, each a button that makes it the target.
+    // Same-named formats of several countries share a size, so each name appears once.
+    updateEquivalents(fromName) {
+        const {equivalents, equivalentsTitle, equivalentsList} = this.els;
+        if (!fromName) {
+            equivalents.hidden = true;
+            return;
+        }
+        const seen = new Set();
+        const closest = this.converter.findEquivalents(fromName, 0)
+            .filter(e => !seen.has(e.name) && seen.add(e.name))
+            .slice(0, 5);
+        equivalentsTitle.textContent = tr('demo.closestTitle', {format: fromName});
+        equivalentsList.innerHTML = closest.map(e => `
+            <li>
+                <button type="button" class="equivalent-btn" data-format="${escapeHtml(e.name)}"
+                        aria-label="${escapeHtml(tr('demo.useAsTarget', {format: e.name, percent: e.similarity}))}">
+                    <strong>${escapeHtml(e.name)}</strong>
+                    <span class="equivalent-size">${escapeHtml(e.dimensions.mm)} mm · <span${dataLang()}>${escapeHtml(e.country)}</span></span>
+                    — ${escapeHtml(e.similarity)}%
+                </button>
+            </li>`).join('');
+        equivalents.hidden = closest.length === 0;
+    }
+
     updateConverter() {
         const fromName = this.els.fromFormat.value;
         const toName = this.els.toFormat.value;
         const result = document.getElementById('conversion-result');
+        this.updateEquivalents(fromName);
 
         const conversion = fromName && toName ? this.converter.convert(fromName, toName) : null;
         if (!conversion) {
@@ -328,6 +395,7 @@ class FormatBrowser extends FilterableList {
     refresh() {
         this.fillVocabularyFilters();
         this.filterFormats({announceCount: false});
+        this.updateComparison();
         this.updateConverter();
     }
 }
@@ -379,7 +447,8 @@ class PaperTypeBrowser extends FilterableList {
 
     populateFilters() {
         const {categoryFilter, sizeSelect} = this.els;
-        addOptions(categoryFilter, sortedUnique(this.paperTypes.map(p => p.category)).map(c => [c, c]));
+        this.categories = sortedUnique(this.paperTypes.map(p => p.category));
+        fillVocabularySelect(categoryFilter, 'paperCategories', this.categories);
         addOptions(sizeSelect, formatSizeOptions(this.formats));
     }
 
@@ -421,7 +490,7 @@ class PaperTypeBrowser extends FilterableList {
             <div class="format-card">
                 <div class="format-card-header">
                     <h3 lang="${this.nameLang(p)}">${escapeHtml(title)}</h3>
-                    <span class="badge badge-${badgeSlug(p.category)}"${dataLang()}>${escapeHtml(p.category)}</span>
+                    <span class="badge badge-${badgeSlug(p.category)}"${vocabularyLang('paperCategories', p.category)}>${escapeHtml(vocabularyLabel('paperCategories', p.category))}</span>
                 </div>
                 <div class="format-info">
                     ${originals}
@@ -460,6 +529,7 @@ class PaperTypeBrowser extends FilterableList {
     }
 
     refresh() {
+        fillVocabularySelect(this.els.categoryFilter, 'paperCategories', this.categories);
         super.refresh();
         this.updateCombined();
     }
@@ -489,6 +559,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const state = {lang: i18n.getLanguage() === 'en' ? '' : i18n.getLanguage(),
             tab: document.querySelector('.tab-btn.active')?.dataset.tab === 'browser' ? '' : document.querySelector('.tab-btn.active')?.dataset.tab};
         for (const [key, id] of Object.entries(STATE_FIELDS)) state[key] = document.getElementById(id).value;
+        state.desc = document.getElementById('sort-reverse').getAttribute('aria-pressed') === 'true' ? '1' : '';
         const hash = encodeState(state);
         history.replaceState(null, '', hash ? `#${hash}` : location.pathname + location.search);
     };
@@ -496,6 +567,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.addEventListener('change', saveState);
     // The reset button empties the fields in its own click handler, which runs after this one.
     document.getElementById('reset-btn').addEventListener('click', () => setTimeout(saveState));
+    document.getElementById('sort-reverse').addEventListener('click', () => setTimeout(saveState));
 
     const tabs = new Tabs(document.querySelectorAll('.tab-btn'), document.querySelectorAll('.tab-content'), {
         isRtl: () => document.documentElement.dir === 'rtl',
@@ -609,6 +681,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     for (const [key, id] of Object.entries(STATE_FIELDS)) {
         if (urlState[key] !== undefined) document.getElementById(id).value = urlState[key];
     }
+    if (urlState.desc === '1') document.getElementById('sort-reverse').setAttribute('aria-pressed', 'true');
     const quiet = {announceCount: false};
     formatBrowser.filterFormats(quiet);
     formatBrowser.updateComparison();

@@ -77,13 +77,16 @@
                 </div>
                 <div class="control-group">
                     <label for="sort-select" data-translate="demo.sortBy">Sort by</label>
-                    <select id="sort-select">
-                        <option value="" data-translate="demo.sortDefault">Catalog order</option>
-                        <option value="name" data-translate="demo.sortName">Name</option>
-                        <option value="width" data-translate="demo.sortWidth">Width</option>
-                        <option value="height" data-translate="demo.sortHeight">Height</option>
-                        <option value="area" data-translate="demo.sortArea">Area</option>
-                    </select>
+                    <div class="sort-row">
+                        <select id="sort-select">
+                            <option value="" data-translate="demo.sortDefault">Catalog order</option>
+                            <option value="name" data-translate="demo.sortName">Name</option>
+                            <option value="width" data-translate="demo.sortWidth">Width</option>
+                            <option value="height" data-translate="demo.sortHeight">Height</option>
+                            <option value="area" data-translate="demo.sortArea">Area</option>
+                        </select>
+                        <button type="button" class="btn btn-secondary" id="sort-reverse" aria-pressed="false" data-translate="demo.sortReverse">Reverse order</button>
+                    </div>
                 </div>
                 <div class="control-group">
                     <span class="label-spacer" aria-hidden="true">&nbsp;</span>
@@ -122,6 +125,7 @@
                     </tbody>
                 </table>
             </div>
+            <p class="similarity-note" id="compare-note" hidden></p>
         </div>
 
         <!-- Converter Tab -->
@@ -147,6 +151,11 @@
                     <div class="equivalence-bar" aria-hidden="true">
                         <div class="equivalence-fill" id="equivalence-fill"></div>
                     </div>
+                </div>
+
+                <div class="equivalents" id="equivalents" hidden>
+                    <h3 id="equivalents-title"></h3>
+                    <ul class="equivalents-list" id="equivalents-list"></ul>
                 </div>
             </div>
         </div>

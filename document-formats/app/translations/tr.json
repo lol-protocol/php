@@ -106,6 +106,17 @@
     "international": "Uluslararası",
     "label": "Etiket"
   },
+  "paperCategories": {
+    "cardstock": "Karton",
+    "coated": "Kuşe",
+    "decorative": "Dekoratif",
+    "packaging": "Ambalaj",
+    "photo": "Fotoğraf",
+    "recycled": "Geri dönüştürülmüş",
+    "specialty": "Özel",
+    "technical": "Teknik",
+    "writingPrinting": "Yazı ve baskı"
+  },
   "measurementSystems": {
     "metric": "Metrik",
     "imperial": "İmparatorluk ölçüleri",
@@ -176,6 +187,10 @@
     "sortWidth": "Genişlik",
     "sortHeight": "Yükseklik",
     "sortArea": "Alan",
+    "sortReverse": "Sırayı ters çevir",
+    "compareShown": "Eşleşen {count} formattan {shown} tanesi gösteriliyor",
+    "closestTitle": "{format} formatına en yakın formatlar",
+    "useAsTarget": "{format} (%{percent} benzer) hedef format olarak kullan",
     "aboutTitle": "Bu veritabanı hakkında",
     "aboutIntro": "Bu kapsamlı belge formatları veritabanı şunları içerir:",
     "aboutFormats": "Birden çok kategoride {count} format",

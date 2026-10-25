@@ -106,6 +106,17 @@
     "international": "国際",
     "label": "ラベル"
   },
+  "paperCategories": {
+    "cardstock": "厚紙",
+    "coated": "コート紙",
+    "decorative": "装飾用",
+    "packaging": "包装用",
+    "photo": "写真用",
+    "recycled": "再生紙",
+    "specialty": "特殊紙",
+    "technical": "技術用",
+    "writingPrinting": "筆記・印刷用"
+  },
   "measurementSystems": {
     "metric": "メートル法",
     "imperial": "ヤード・ポンド法",
@@ -176,6 +187,10 @@
     "sortWidth": "幅",
     "sortHeight": "高さ",
     "sortArea": "面積",
+    "sortReverse": "順序を逆にする",
+    "compareShown": "一致する {count} 件のうち {shown} 件を表示しています",
+    "closestTitle": "{format} に最も近い形式",
+    "useAsTarget": "{format}（類似度 {percent}%）を変換先にする",
     "aboutTitle": "このデータベースについて",
     "aboutIntro": "この包括的なドキュメント形式データベースには、次の内容が含まれます。",
     "aboutFormats": "複数のカテゴリにまたがる {count} 件の形式",

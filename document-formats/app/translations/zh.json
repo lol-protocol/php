@@ -106,6 +106,17 @@
     "international": "国际",
     "label": "标签"
   },
+  "paperCategories": {
+    "cardstock": "卡纸",
+    "coated": "涂布纸",
+    "decorative": "装饰纸",
+    "packaging": "包装纸",
+    "photo": "相纸",
+    "recycled": "再生纸",
+    "specialty": "特种纸",
+    "technical": "技术用纸",
+    "writingPrinting": "书写与印刷纸"
+  },
   "measurementSystems": {
     "metric": "公制",
     "imperial": "英制",
@@ -176,6 +187,10 @@
     "sortWidth": "宽度",
     "sortHeight": "高度",
     "sortArea": "面积",
+    "sortReverse": "反转顺序",
+    "compareShown": "显示 {count} 个匹配格式中的 {shown} 个",
+    "closestTitle": "与 {format} 最接近的格式",
+    "useAsTarget": "将 {format}（相似度 {percent}%）设为目标格式",
     "aboutTitle": "关于本数据库",
     "aboutIntro": "这个全面的文档格式数据库包含:",
     "aboutFormats": "涵盖多个类别的 {count} 种格式",

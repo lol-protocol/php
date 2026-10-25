@@ -146,7 +146,7 @@ test('every field kept in the URL is a field of the page', () => {
     const { URL_STATE_KEYS } = require('../app/url-state.js');
     const fields = Object.fromEntries([...html.matchAll(/\b(\w+): '([\w-]+-(?:input|filter|search|format|select))'/g)].map(m => [m[1], m[2]]));
     const fromPage = Object.keys(fields);
-    const kept = URL_STATE_KEYS.filter(key => !['lang', 'tab'].includes(key));
+    const kept = URL_STATE_KEYS.filter(key => !['lang', 'tab', 'desc'].includes(key));   // desc is the reverse-order button
     assert.deepEqual(fromPage.sort(), [...kept].sort(), 'STATE_FIELDS in demo.js and URL_STATE_KEYS must list the same keys');
     for (const id of Object.values(fields)) assert.match(html, new RegExp(`id="${id}"`), `#${id} is not in the page`);
 });
@@ -179,7 +179,7 @@ test('the page keeps no style attributes, so a strict content security policy co
 
 // ---- regions and categories in the language of the page ----------------------------------
 
-const vocabularyKey = (value) => String(value).split(/[\s-]+/).filter(Boolean)
+const vocabularyKey = (value) => String(value).split(/[\s/-]+/).filter(Boolean)
     .map((word, i) => (i ? word[0].toUpperCase() + word.slice(1).toLowerCase() : word.toLowerCase())).join('');
 
 test('every region and category of the data has a translation key, so the filters never mix languages', () => {
@@ -205,7 +205,7 @@ test('the translation keys the page does not use are listed here, so a new one c
     for (const m of html.matchAll(/\b(?:tr|fallbackLang|i18n\.t)\(\s*'([\w.]+)'/g)) used.add(m[1]);
     for (const key of ['demo.aboutFormats', 'demo.aboutCountries']) used.add(key);   // filled in by a loop
     for (const key of flat(english)) if (html.includes(`'${key}'`)) used.add(key);   // passed around as options
-    const dynamic = /^(regions|categories)\./;   // vocabularyLabel() looks these up by the value of the data
+    const dynamic = /^(regions|categories|paperCategories)\./;   // vocabularyLabel() looks these up by the value of the data
     // Vocabulary for people who use the library (docs/Localization.md) rather than this page.
     const reserved = /^(header|search|filters|format|comparison|converter|statistics|actions|measurementSystems|messages)\.|^(language|theme|light|dark|auto)$|^tabs\.statistics$|^categories\.(specialty|business|packaging)$/;
     const unused = flat(english).filter(key => !used.has(key) && !dynamic.test(key));
@@ -231,4 +231,12 @@ test('index.html has no inline script or style, so a content security policy can
     assert.deepEqual(page.match(/\son[a-z]+="/g) ?? [], [], 'inline event handlers');
     assert.match(page, /<link rel="stylesheet" href="demo\.css">/);
     assert.ok(fs.existsSync(path.join(APP, 'demo.css')));
+});
+
+test('every category of the paper types has a translation key, in English the CSV\'s own word', () => {
+    const categories = [...new Set(csv('paper_types.csv').map(p => p.category))];
+    for (const value of categories) {
+        assert.equal(lookup(english, `paperCategories.${vocabularyKey(value)}`), value, value);
+    }
+    assert.equal(Object.keys(english.paperCategories).length, categories.length, 'no key for a category the data does not have');
 });

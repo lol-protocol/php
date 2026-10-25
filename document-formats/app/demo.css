@@ -537,6 +537,28 @@ body {
 .about-list { margin: 15px 0; padding-inline-start: 20px; }
 .about-note { margin-top: 15px; color: var(--text-light); }
 
+/* Sort menu and its reverse-order toggle, side by side. */
+.sort-row { display: flex; gap: 8px; }
+.sort-row select { flex: 1; min-width: 0; }
+.btn[aria-pressed="true"] { background: var(--primary); color: white; }
+
+/* The formats closest to the one chosen in the converter. */
+.equivalents { margin-top: 20px; }
+.equivalents-list { list-style: none; display: grid; gap: 8px; margin-top: 10px; }
+.equivalent-btn {
+    width: 100%;
+    text-align: start;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card-bg);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+}
+.equivalent-btn:hover, .equivalent-btn:focus-visible { border-color: var(--primary); }
+.equivalent-btn .equivalent-size { color: var(--text-light); }
+
 /* On paper: the results only, in black on white. */
 @media print {
     .skip-link, .language-picker, .tabs, .controls, .stats, .footer { display: none; }

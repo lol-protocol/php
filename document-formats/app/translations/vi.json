@@ -106,6 +106,17 @@
     "international": "Quốc tế",
     "label": "Nhãn"
   },
+  "paperCategories": {
+    "cardstock": "Giấy bìa",
+    "coated": "Giấy tráng phủ",
+    "decorative": "Trang trí",
+    "packaging": "Bao bì",
+    "photo": "Ảnh",
+    "recycled": "Tái chế",
+    "specialty": "Đặc biệt",
+    "technical": "Kỹ thuật",
+    "writingPrinting": "Viết và in"
+  },
   "measurementSystems": {
     "metric": "Hệ mét",
     "imperial": "Hệ Anh",
@@ -176,6 +187,10 @@
     "sortWidth": "Chiều rộng",
     "sortHeight": "Chiều cao",
     "sortArea": "Diện tích",
+    "sortReverse": "Đảo ngược thứ tự",
+    "compareShown": "Đang hiển thị {shown} trên {count} khổ giấy phù hợp",
+    "closestTitle": "Các khổ gần nhất với {format}",
+    "useAsTarget": "Dùng {format} (giống {percent}%) làm khổ đích",
     "aboutTitle": "Giới thiệu về cơ sở dữ liệu này",
     "aboutIntro": "Cơ sở dữ liệu khổ giấy và tài liệu toàn diện này bao gồm:",
     "aboutFormats": "{count} khổ giấy thuộc nhiều danh mục",

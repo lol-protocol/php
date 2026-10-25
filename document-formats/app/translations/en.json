@@ -106,6 +106,17 @@
     "international": "International",
     "label": "Label"
   },
+  "paperCategories": {
+    "cardstock": "Cardstock",
+    "coated": "Coated",
+    "decorative": "Decorative",
+    "packaging": "Packaging",
+    "photo": "Photo",
+    "recycled": "Recycled",
+    "specialty": "Specialty",
+    "technical": "Technical",
+    "writingPrinting": "Writing/Printing"
+  },
   "measurementSystems": {
     "metric": "Metric",
     "imperial": "Imperial",
@@ -176,6 +187,10 @@
     "sortWidth": "Width",
     "sortHeight": "Height",
     "sortArea": "Area",
+    "sortReverse": "Reverse order",
+    "compareShown": "Showing {shown} of {count} matching formats",
+    "closestTitle": "Closest formats to {format}",
+    "useAsTarget": "Use {format} ({percent}% alike) as the target format",
     "aboutTitle": "About This Database",
     "aboutIntro": "This comprehensive document format database includes:",
     "aboutFormats": "{count} formats across multiple categories",

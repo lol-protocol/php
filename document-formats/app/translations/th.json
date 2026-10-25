@@ -106,6 +106,17 @@
     "international": "นานาชาติ",
     "label": "ฉลาก"
   },
+  "paperCategories": {
+    "cardstock": "กระดาษแข็ง",
+    "coated": "กระดาษเคลือบ",
+    "decorative": "ตกแต่ง",
+    "packaging": "บรรจุภัณฑ์",
+    "photo": "ภาพถ่าย",
+    "recycled": "รีไซเคิล",
+    "specialty": "พิเศษ",
+    "technical": "งานเทคนิค",
+    "writingPrinting": "เขียนและพิมพ์"
+  },
   "measurementSystems": {
     "metric": "เมตริก",
     "imperial": "อิมพีเรียล",
@@ -176,6 +187,10 @@
     "sortWidth": "ความกว้าง",
     "sortHeight": "ความสูง",
     "sortArea": "พื้นที่",
+    "sortReverse": "กลับลำดับ",
+    "compareShown": "แสดง {shown} จาก {count} ขนาดที่ตรงกัน",
+    "closestTitle": "ขนาดที่ใกล้เคียง {format} ที่สุด",
+    "useAsTarget": "ใช้ {format} (คล้าย {percent}%) เป็นขนาดปลายทาง",
     "aboutTitle": "เกี่ยวกับฐานข้อมูลนี้",
     "aboutIntro": "ฐานข้อมูลขนาดเอกสารที่ครอบคลุมนี้ประกอบด้วย:",
     "aboutFormats": "{count} ขนาดในหลายหมวดหมู่",
