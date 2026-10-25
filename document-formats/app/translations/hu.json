@@ -106,6 +106,17 @@
     "international": "Nemzetközi",
     "label": "Címke"
   },
+  "paperCategories": {
+    "cardstock": "Karton",
+    "coated": "Mázolt",
+    "decorative": "Dekoratív",
+    "packaging": "Csomagoló",
+    "photo": "Fotó",
+    "recycled": "Újrahasznosított",
+    "specialty": "Különleges",
+    "technical": "Műszaki",
+    "writingPrinting": "Író- és nyomópapír"
+  },
   "measurementSystems": {
     "metric": "Metrikus",
     "imperial": "Angolszász",
@@ -176,6 +187,10 @@
     "sortWidth": "Szélesség",
     "sortHeight": "Magasság",
     "sortArea": "Terület",
+    "sortReverse": "Fordított sorrend",
+    "compareShown": "{count} egyező formátumból {shown} látható",
+    "closestTitle": "A(z) {format} formátumhoz legközelebbi formátumok",
+    "useAsTarget": "{format} ({percent}% hasonlóság) használata célformátumként",
     "aboutTitle": "Az adatbázisról",
     "aboutIntro": "Ez az átfogó dokumentumformátum-adatbázis a következőket tartalmazza:",
     "aboutFormats": "{count} formátum több kategóriában",

@@ -106,6 +106,17 @@
     "international": "Internațional",
     "label": "Etichetă"
   },
+  "paperCategories": {
+    "cardstock": "Carton",
+    "coated": "Cretat",
+    "decorative": "Decorativ",
+    "packaging": "Ambalaj",
+    "photo": "Foto",
+    "recycled": "Reciclat",
+    "specialty": "Special",
+    "technical": "Tehnic",
+    "writingPrinting": "Scris și tipar"
+  },
   "measurementSystems": {
     "metric": "Metric",
     "imperial": "Imperial",
@@ -176,6 +187,10 @@
     "sortWidth": "Lățime",
     "sortHeight": "Înălțime",
     "sortArea": "Suprafață",
+    "sortReverse": "Inversează ordinea",
+    "compareShown": "Se afișează {shown} din {count} formate potrivite",
+    "closestTitle": "Formatele cele mai apropiate de {format}",
+    "useAsTarget": "Folosește {format} (asemănare {percent}%) ca format de destinație",
     "aboutTitle": "Despre această bază de date",
     "aboutIntro": "Această bază de date cuprinzătoare a formatelor de documente include:",
     "aboutFormats": "{count} formate în mai multe categorii",

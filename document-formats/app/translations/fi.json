@@ -106,6 +106,17 @@
     "international": "Kansainvälinen",
     "label": "Tarra"
   },
+  "paperCategories": {
+    "cardstock": "Kartonki",
+    "coated": "Päällystetty",
+    "decorative": "Koriste",
+    "packaging": "Pakkaus",
+    "photo": "Valokuva",
+    "recycled": "Kierrätys",
+    "specialty": "Erikois",
+    "technical": "Tekninen",
+    "writingPrinting": "Kirjoitus ja painatus"
+  },
   "measurementSystems": {
     "metric": "Metrinen",
     "imperial": "Brittiläinen",
@@ -176,6 +187,10 @@
     "sortWidth": "Leveys",
     "sortHeight": "Korkeus",
     "sortArea": "Pinta-ala",
+    "sortReverse": "Käänteinen järjestys",
+    "compareShown": "Näytetään {shown}/{count} vastaavaa formaattia",
+    "closestTitle": "Formaattia {format} lähimmät formaatit",
+    "useAsTarget": "Käytä formaattia {format} ({percent} % samankaltainen) kohdeformaattina",
     "aboutTitle": "Tietoja tästä tietokannasta",
     "aboutIntro": "Tämä kattava asiakirjaformaattien tietokanta sisältää:",
     "aboutFormats": "{count} formaattia useissa luokissa",

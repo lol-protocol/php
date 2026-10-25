@@ -106,6 +106,17 @@
     "international": "Међународно",
     "label": "Налепнице"
   },
+  "paperCategories": {
+    "cardstock": "Картон",
+    "coated": "Премазни",
+    "decorative": "Декоративни",
+    "packaging": "Амбалажни",
+    "photo": "Фото",
+    "recycled": "Рециклирани",
+    "specialty": "Посебни",
+    "technical": "Технички",
+    "writingPrinting": "За писање и штампу"
+  },
   "measurementSystems": {
     "metric": "Метрички",
     "imperial": "Империјални",
@@ -176,6 +187,10 @@
     "sortWidth": "Ширина",
     "sortHeight": "Висина",
     "sortArea": "Површина",
+    "sortReverse": "Обрни редослед",
+    "compareShown": "Приказано {shown} од {count} одговарајућих формата",
+    "closestTitle": "Формати најближи формату {format}",
+    "useAsTarget": "Користи {format} (сличност {percent}%) као циљни формат",
     "aboutTitle": "О овој бази података",
     "aboutIntro": "Ова свеобухватна база података формата докумената садржи:",
     "aboutFormats": "Формата у више категорија: {count}",

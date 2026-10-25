@@ -106,6 +106,17 @@
     "international": "Internasjonalt",
     "label": "Etikett"
   },
+  "paperCategories": {
+    "cardstock": "Kartong",
+    "coated": "Bestrøket",
+    "decorative": "Dekorativt",
+    "packaging": "Emballasje",
+    "photo": "Foto",
+    "recycled": "Resirkulert",
+    "specialty": "Spesial",
+    "technical": "Teknisk",
+    "writingPrinting": "Skrive- og trykkpapir"
+  },
   "measurementSystems": {
     "metric": "Metrisk",
     "imperial": "Britisk",
@@ -176,6 +187,10 @@
     "sortWidth": "Bredde",
     "sortHeight": "Høyde",
     "sortArea": "Areal",
+    "sortReverse": "Omvendt rekkefølge",
+    "compareShown": "Viser {shown} av {count} formater som passer",
+    "closestTitle": "Formater som ligner mest på {format}",
+    "useAsTarget": "Bruk {format} ({percent} % likhet) som målformat",
     "aboutTitle": "Om denne databasen",
     "aboutIntro": "Denne omfattende databasen over dokumentformater inneholder:",
     "aboutFormats": "{count} formater i flere kategorier",

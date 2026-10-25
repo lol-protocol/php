@@ -106,6 +106,17 @@
     "international": "Medzinárodné",
     "label": "Štítky"
   },
+  "paperCategories": {
+    "cardstock": "Kartón",
+    "coated": "Natieraný",
+    "decorative": "Dekoratívny",
+    "packaging": "Obalový",
+    "photo": "Fotografický",
+    "recycled": "Recyklovaný",
+    "specialty": "Špeciálny",
+    "technical": "Technický",
+    "writingPrinting": "Písací a tlačový"
+  },
   "measurementSystems": {
     "metric": "Metrický",
     "imperial": "Imperiálny",
@@ -176,6 +187,10 @@
     "sortWidth": "Šírka",
     "sortHeight": "Výška",
     "sortArea": "Plocha",
+    "sortReverse": "Obrátiť poradie",
+    "compareShown": "Zobrazených {shown} z {count} zodpovedajúcich formátov",
+    "closestTitle": "Formáty najbližšie formátu {format}",
+    "useAsTarget": "Použiť {format} (podobnosť {percent} %) ako cieľový formát",
     "aboutTitle": "O tejto databáze",
     "aboutIntro": "Táto rozsiahla databáza formátov dokumentov obsahuje:",
     "aboutFormats": "Formátov vo viacerých kategóriách: {count}",
