@@ -126,8 +126,10 @@ Para poder responder a un reclamo guardamos, y no es público:
   escribió, cuándo, qué decidió el filtro (aprobada, para revisar, rechazada o
   borrada) y por qué. No copiamos el texto: guardamos su largo y una huella con la
   que se puede comprobar si un texto dado es el que se escribió.
-- **De quien visita:** una cookie de sesión y, para frenar el abuso, un archivo
-  por visitante guardado con una huella de la IP, no la IP.
+- **De quien visita:** una cookie de sesión, sólo si usas un formulario (como el
+  pedido de retiro o la compra) o entras como propietario; quien sólo lee páginas
+  no recibe ninguna. Y, para frenar el abuso, un archivo por visitante guardado
+  con una huella de la IP, no la IP.
 
 Lo guardamos durante [PLAZO] y sólo lo entregamos a quien lo pida con una orden
 judicial o a la autoridad competente. **⚖️** Plazo de conservación y base legal
