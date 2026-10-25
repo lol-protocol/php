@@ -4,196 +4,220 @@
 
 ## Zodiaco occidental
 
-### Berbec
+### ♈ Berbec
 
 *21/03 – 19/04 · Foc · Cardinal*
 
-Curajos, impulsiv și plin de energie.
+Curaj, avânt și energie.
 
-Asociat cu inițiativa și curajul: tradiția îl descrie ca direct, competitiv și mereu gata să înceapă ceva nou, dar nerăbdător.
+Semn al inițiativei și al curajului: tradiția îi atribuie sinceritate, spirit competitiv și dorința de a începe lucruri noi, dar și nerăbdare.
 
-### Taur
+### ♉ Taur
 
 *20/04 – 20/05 · Pământ · Fix*
 
-Răbdător, senzual și iubitor de stabilitate.
+Răbdare, senzualitate și iubire de stabilitate.
 
-Asociat cu statornicia și gustul pentru concret: tradiția îl descrie ca loial, calm și iubitor de confort, dar uneori încăpățânat.
+Semn al statorniciei și al gustului pentru concret: tradiția îi atribuie loialitate, calm și iubire de confort, dar și încăpățânare.
 
-### Gemeni
+### ♊ Gemeni
 
 *21/05 – 20/06 · Aer · Mutabil*
 
-Curios, comunicativ și cu mintea agilă.
+Curiozitate, comunicare și agilitate mentală.
 
-Asociat cu curiozitatea și cuvântul: tradiția îl descrie ca sociabil, versatil și mereu cu o întrebare nouă, dar uneori dispersat.
+Semn al curiozității și al cuvântului: tradiția îi atribuie sociabilitate, versatilitate și întrebări mereu noi, dar și dispersare.
 
-### Rac
+### ♋ Rac
 
 *21/06 – 22/07 · Apă · Cardinal*
 
-Protector, sensibil și foarte loial celor dragi.
+Protecție, sensibilitate și loialitate față de cei dragi.
 
-Asociat cu căminul și emoțiile: tradiția îl descrie ca grijuliu, intuitiv și foarte atașat de familie, dar uneori rezervat.
+Semn al căminului și al emoțiilor: tradiția îi atribuie grijă, intuiție și atașament față de familie, dar și rezervă.
 
-### Leu
+### ♌ Leu
 
 *23/07 – 22/08 · Foc · Fix*
 
-Generos, carismatic și iubitor de lumină.
+Generozitate, carismă și dorința de a străluci.
 
-Asociat cu generozitatea și conducerea: tradiția îl descrie ca fiind cald, mândru și iubitor de lumina reflectoarelor, dar uneori încăpățânat.
+Semn al generozității și al conducerii: tradiția îi atribuie căldură, mândrie și plăcerea de a fi în centrul atenției, dar și încăpățânare.
 
-### Fecioară
+### ♍ Fecioară
 
 *23/08 – 22/09 · Pământ · Mutabil*
 
-Analitic, practic și foarte meticulos.
+Analiză, simț practic și atenție la detalii.
 
-Asociat cu ordinea și slujirea: tradiția îl descrie ca metodic, discret și exigent cu sine, dar uneori prea critic.
+Semn al ordinii și al slujirii: tradiția îi atribuie metodă, discreție și exigență față de sine, dar și exces de critică.
 
-### Balanță
+### ♎ Balanță
 
 *23/09 – 22/10 · Aer · Cardinal*
 
-Diplomatic, sociabil și în căutarea echilibrului.
+Diplomație, sociabilitate și căutarea echilibrului.
 
-Asociat cu armonia și dreptatea: tradiția îl descrie ca amabil, elegant și un bun mediator, dar uneori indecis.
+Semn al armoniei și al dreptății: tradiția îi atribuie amabilitate, eleganță și talent de mediator, dar și nehotărâre.
 
-### Scorpion
+### ♏ Scorpion
 
 *23/10 – 21/11 · Apă · Fix*
 
-Intens, intuitiv și cu voință fermă.
+Intensitate, intuiție și voință fermă.
 
-Asociat cu profunzimea și hotărârea: tradiția îl descrie ca rezervat, pasionat și foarte perspicace, dar uneori prea intens.
+Semn al profunzimii și al hotărârii: tradiția îi atribuie rezervă, pasiune și mare perspicacitate, dar și exces de intensitate.
 
-### Săgetător
+### ♐ Săgetător
 
 *22/11 – 21/12 · Foc · Mutabil*
 
-Optimist, aventuros și iubitor de libertate.
+Optimism, aventură și iubire de libertate.
 
-Asociat cu explorarea și sinceritatea: tradiția îl descrie ca optimist, neliniștit și iubitor de călătorii și de învățare, dar uneori nesăbuit.
+Semn al explorării și al sincerității: tradiția îi atribuie optimism, neliniște și iubire de călătorii și de învățare, dar și imprudență.
 
-### Capricorn
+### ♑ Capricorn
 
 *22/12 – 19/01 · Pământ · Cardinal*
 
-Disciplinat, ambițios și responsabil.
+Disciplină, ambiție și responsabilitate.
 
-Asociat cu disciplina și răbdarea: tradiția îl descrie ca ambițios, serios și responsabil pe termen lung, dar uneori rigid.
+Semn al disciplinei și al răbdării: tradiția îi atribuie ambiție, seriozitate și responsabilitate pe termen lung, dar și rigiditate.
 
-### Vărsător
+### ♒ Vărsător
 
 *20/01 – 18/02 · Aer · Fix*
 
-Independent, original și umanitar.
+Independență, originalitate și umanitarism.
 
-Asociat cu originalitatea și ideile colective: tradiția îl descrie ca independent, inovator și oarecum distant, dar uneori rebel.
+Semn al originalității și al ideilor colective: tradiția îi atribuie independență, inovație și o anumită distanță, dar și spirit rebel.
 
-### Pești
+### ♓ Pești
 
 *19/02 – 20/03 · Apă · Mutabil*
 
-Empatic, visător și foarte intuitiv.
+Empatie, imaginație și intuiție.
 
-Asociat cu imaginația și compasiunea: tradiția îl descrie ca sensibil, artistic și dedicat celorlalți, dar uneori evaziv.
+Semn al imaginației și al compasiunii: tradiția îi atribuie sensibilitate, talent artistic și dăruire față de ceilalți, dar și tendința de evadare.
 
 ## Horóscopo chino
 
 ### Șobolan
 
-*Zi · Apă · Yang · 1996, 2008, 2020, 2032*
+*子 Zi · Apă · Yang*
 
-Isteț, agil și foarte ingenios.
+1924 Lemn · 1936 Foc · 1948 Pământ · 1960 Metal · 1972 Apă · 1984 Lemn · 1996 Foc · 2008 Pământ · 2020 Metal · 2032 Apă
 
-Asociat cu isteția și adaptabilitatea: tradiția îl descrie ca observator, fermecător și priceput în a găsi oportunități, dar uneori calculat.
+Istețime, agilitate și ingeniozitate.
+
+Semn al isteției și al adaptării: tradiția îi atribuie spirit de observație, farmec și pricepere în a găsi oportunități, dar și calcul.
 
 ### Bou
 
-*Chou · Pământ · Yin · 1997, 2009, 2021, 2033*
+*丑 Chou · Pământ · Yin*
 
-Harnic, răbdător și de încredere.
+1925 Lemn · 1937 Foc · 1949 Pământ · 1961 Metal · 1973 Apă · 1985 Lemn · 1997 Foc · 2009 Pământ · 2021 Metal · 2033 Apă
 
-Asociat cu efortul și perseverența: tradiția îl descrie ca ferm, răbdător și om de cuvânt, dar uneori închis la schimbare.
+Hărnicie, răbdare și seriozitate.
+
+Semn al efortului și al perseverenței: tradiția îi atribuie fermitate, răbdare și cuvânt ținut, dar și rezistență la schimbare.
 
 ### Tigru
 
-*Yin · Lemn · Yang · 1998, 2010, 2022, 2034*
+*寅 Yin · Lemn · Yang*
 
-Curajos, competitiv și pasionat.
+1926 Foc · 1938 Pământ · 1950 Metal · 1962 Apă · 1974 Lemn · 1986 Foc · 1998 Pământ · 2010 Metal · 2022 Apă · 2034 Lemn
 
-Asociat cu curajul și magnetismul: tradiția îl descrie ca îndrăzneț, generos și lider înnăscut, dar uneori impulsiv.
+Curaj, spirit competitiv și pasiune.
+
+Semn al curajului și al magnetismului: tradiția îi atribuie îndrăzneală, generozitate și calități naturale de lider, dar și impulsivitate.
 
 ### Iepure
 
-*Mao · Lemn · Yin · 1999, 2011, 2023, 2035*
+*卯 Mao · Lemn · Yin*
 
-Blând, prudent și sensibil.
+1927 Foc · 1939 Pământ · 1951 Metal · 1963 Apă · 1975 Lemn · 1987 Foc · 1999 Pământ · 2011 Metal · 2023 Apă · 2035 Lemn
 
-Asociat cu calmul și diplomația: tradiția îl descrie ca delicat, politicos și iubitor de armonie, dar uneori evitând conflictul.
+Blândețe, prudență și sensibilitate.
+
+Semn al calmului și al diplomației: tradiția îi atribuie delicatețe, politețe și iubire de armonie, dar și tendința de a evita conflictele.
 
 ### Dragon
 
-*Chen · Pământ · Yang · 2000, 2012, 2024, 2036*
+*辰 Chen · Pământ · Yang*
 
-Carismatic, energic și norocos.
+1928 Pământ · 1940 Metal · 1952 Apă · 1964 Lemn · 1976 Foc · 1988 Pământ · 2000 Metal · 2012 Apă · 2024 Lemn · 2036 Foc
 
-Asociat cu norocul și ambiția: tradiția îl descrie ca sigur pe sine, magnetic și plin de proiecte, dar uneori mândru.
+Carismă, energie și noroc.
+
+Semn al norocului și al ambiției: tradiția îi atribuie siguranță de sine, magnetism și multe proiecte, dar și mândrie.
 
 ### Șarpe
 
-*Si · Foc · Yin · 2001, 2013, 2025, 2037*
+*巳 Si · Foc · Yin*
 
-Înțelept, rezervat și elegant.
+1929 Pământ · 1941 Metal · 1953 Apă · 1965 Lemn · 1977 Foc · 1989 Pământ · 2001 Metal · 2013 Apă · 2025 Lemn · 2037 Foc
 
-Asociat cu înțelepciunea și intuiția: tradiția îl descrie ca reflexiv, elegant și strateg, dar uneori neîncrezător.
+Înțelepciune, discreție și eleganță.
+
+Semn al înțelepciunii și al intuiției: tradiția îi atribuie reflecție, eleganță și gândire strategică, dar și neîncredere.
 
 ### Cal
 
-*Wu · Foc · Yang · 2002, 2014, 2026, 2038*
+*午 Wu · Foc · Yang*
 
-Liber, energic și sociabil.
+1930 Metal · 1942 Apă · 1954 Lemn · 1966 Foc · 1978 Pământ · 1990 Metal · 2002 Apă · 2014 Lemn · 2026 Foc · 2038 Pământ
 
-Asociat cu libertatea și energia: tradiția îl descrie ca vesel, independent și iubitor de mișcare, dar uneori neliniștit.
+Libertate, energie și sociabilitate.
+
+Semn al libertății și al energiei: tradiția îi atribuie veselie, independență și plăcerea mișcării, dar și neliniște.
 
 ### Capră
 
-*Wei · Pământ · Yin · 2003, 2015, 2027, 2039*
+*未 Wei · Pământ · Yin*
 
-Creativ, blând și artistic.
+1931 Metal · 1943 Apă · 1955 Lemn · 1967 Foc · 1979 Pământ · 1991 Metal · 2003 Apă · 2015 Lemn · 2027 Foc · 2039 Pământ
 
-Asociat cu sensibilitatea și creativitatea: tradiția îl descrie ca amabil, visător și iubitor de pace, dar uneori indecis.
+Creativitate, blândețe și simț artistic.
+
+Semn al sensibilității și al creativității: tradiția îi atribuie amabilitate, imaginație și iubire de pace, dar și nehotărâre.
 
 ### Maimuță
 
-*Shen · Metal · Yang · 2004, 2016, 2028, 2040*
+*申 Shen · Metal · Yang*
 
-Isteț, amuzant și spiritual.
+1932 Apă · 1944 Lemn · 1956 Foc · 1968 Pământ · 1980 Metal · 1992 Apă · 2004 Lemn · 2016 Foc · 2028 Pământ · 2040 Metal
 
-Asociat cu isteția și curiozitatea: tradiția îl descrie ca amuzant, inventiv și rapid la învățat, dar uneori poznaș.
+Inteligență, umor și ingeniozitate.
+
+Semn al isteției și al curiozității: tradiția îi atribuie umor, inventivitate și ușurință în a învăța, dar și năzbâtii.
 
 ### Cocoș
 
-*You · Metal · Yin · 2005, 2017, 2029, 2041*
+*酉 You · Metal · Yin*
 
-Organizat, cinstit și atent la detalii.
+1933 Apă · 1945 Lemn · 1957 Foc · 1969 Pământ · 1981 Metal · 1993 Apă · 2005 Lemn · 2017 Foc · 2029 Pământ · 2041 Metal
 
-Asociat cu ordinea și sinceritatea: tradiția îl descrie ca harnic, punctual și atent la detalii, dar uneori foarte critic.
+Ordine, onestitate și spirit de observație.
+
+Semn al ordinii și al sincerității: tradiția îi atribuie hărnicie, punctualitate și atenție la detalii, dar și exces de critică.
 
 ### Câine
 
-*Xu · Pământ · Yang · 2006, 2018, 2030, 2042*
+*戌 Xu · Pământ · Yang*
 
-Loial, drept și protector.
+1934 Lemn · 1946 Foc · 1958 Pământ · 1970 Metal · 1982 Apă · 1994 Lemn · 2006 Foc · 2018 Pământ · 2030 Metal · 2042 Apă
 
-Asociat cu loialitatea și dreptatea: tradiția îl descrie ca onest, protector și bun prieten, dar uneori anxios.
+Loialitate, dreptate și protecție.
+
+Semn al loialității și al dreptății: tradiția îi atribuie onestitate, protecție și prietenie, dar și anxietate.
 
 ### Porc
 
-*Hai · Apă · Yin · 2007, 2019, 2031, 2043*
+*亥 Hai · Apă · Yin*
 
-Generos, sincer și afectuos.
+1935 Lemn · 1947 Foc · 1959 Pământ · 1971 Metal · 1983 Apă · 1995 Lemn · 2007 Foc · 2019 Pământ · 2031 Metal · 2043 Apă
 
-Asociat cu generozitatea și bucuria de a trăi: tradiția îl descrie ca sincer, afabil și bun la suflet, dar uneori naiv.
+Generozitate, sinceritate și afecțiune.
+
+Semn al generozității și al bucuriei de a trăi: tradiția îi atribuie sinceritate, afabilitate și bunătate, dar și naivitate.

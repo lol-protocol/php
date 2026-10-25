@@ -44,3 +44,8 @@ jobs:
       - name: Pruebas
         working-directory: signos-zodiacales
         run: python3 -m unittest -v pruebas
+
+      # Los ejemplos del docstring de zodiaco.py (signo de una fecha, animal y elemento de un ano).
+      - name: Ejemplos de zodiaco.py
+        working-directory: signos-zodiacales
+        run: python3 -m doctest -v zodiaco.py

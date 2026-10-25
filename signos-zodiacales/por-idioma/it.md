@@ -4,196 +4,220 @@
 
 ## Zodiaco occidental
 
-### Ariete
+### ♈ Ariete
 
 *21/03 – 19/04 · Fuoco · Cardinale*
 
-Coraggioso, impulsivo e pieno di energia.
+Coraggio, slancio ed energia.
 
-Associato all'iniziativa e al coraggio: la tradizione lo descrive come diretto, competitivo e sempre pronto a iniziare qualcosa di nuovo, anche se impaziente.
+Segno dell'iniziativa e del coraggio: la tradizione gli attribuisce schiettezza, spirito competitivo e voglia di iniziare cose nuove, ma anche impazienza.
 
-### Toro
+### ♉ Toro
 
 *20/04 – 20/05 · Terra · Fisso*
 
-Paziente, sensuale e amante della stabilità.
+Pazienza, sensualità e amore per la stabilità.
 
-Associato alla costanza e al gusto per il concreto: la tradizione lo descrive come leale, calmo e amante del comfort, anche se a volte testardo.
+Segno della costanza e del gusto per il concreto: la tradizione gli attribuisce lealtà, calma e amore per le comodità, ma anche testardaggine.
 
-### Gemelli
+### ♊ Gemelli
 
 *21/05 – 20/06 · Aria · Mutevole*
 
-Curioso, comunicativo e di mente agile.
+Curiosità, comunicazione e agilità mentale.
 
-Associato alla curiosità e alla parola: la tradizione lo descrive come socievole, versatile e sempre con una nuova domanda, anche se a volte dispersivo.
+Segno della curiosità e della parola: la tradizione gli attribuisce socievolezza, versatilità e domande sempre nuove, ma anche dispersione.
 
-### Cancro
+### ♋ Cancro
 
 *21/06 – 22/07 · Acqua · Cardinale*
 
-Protettivo, sensibile e molto leale ai suoi cari.
+Protezione, sensibilità e lealtà verso i propri cari.
 
-Associato alla casa e alle emozioni: la tradizione lo descrive come premuroso, intuitivo e molto legato alla famiglia, anche se a volte riservato.
+Segno della casa e delle emozioni: la tradizione gli attribuisce premura, intuito e attaccamento alla famiglia, ma anche riservatezza.
 
-### Leone
+### ♌ Leone
 
 *23/07 – 22/08 · Fuoco · Fisso*
 
-Generoso, carismatico e amante dei riflettori.
+Generosità, carisma e voglia di brillare.
 
-Associato alla generosità e alla leadership: la tradizione lo descrive come caloroso, orgoglioso e amante del protagonismo, anche se a volte testardo.
+Segno della generosità e della leadership: la tradizione gli attribuisce calore, orgoglio e gusto per il protagonismo, ma anche testardaggine.
 
-### Vergine
+### ♍ Vergine
 
 *23/08 – 22/09 · Terra · Mutevole*
 
-Analitico, pratico e molto meticoloso.
+Analisi, senso pratico e cura dei dettagli.
 
-Associato all'ordine e al servizio: la tradizione lo descrive come metodico, discreto ed esigente con sé stesso, anche se a volte troppo critico.
+Segno dell'ordine e del servizio: la tradizione gli attribuisce metodo, discrezione ed esigenza verso sé, ma anche eccesso di critica.
 
-### Bilancia
+### ♎ Bilancia
 
 *23/09 – 22/10 · Aria · Cardinale*
 
-Diplomatico, socievole e in cerca di equilibrio.
+Diplomazia, socievolezza e ricerca dell'equilibrio.
 
-Associato all'armonia e alla giustizia: la tradizione lo descrive come gentile, elegante e buon mediatore, anche se a volte indeciso.
+Segno dell'armonia e della giustizia: la tradizione gli attribuisce gentilezza, eleganza e doti di mediazione, ma anche indecisione.
 
-### Scorpione
+### ♏ Scorpione
 
 *23/10 – 21/11 · Acqua · Fisso*
 
-Intenso, intuitivo e di volontà ferma.
+Intensità, intuito e volontà ferma.
 
-Associato alla profondità e alla determinazione: la tradizione lo descrive come riservato, appassionato e molto perspicace, anche se a volte troppo intenso.
+Segno della profondità e della determinazione: la tradizione gli attribuisce riservatezza, passione e grande perspicacia, ma anche eccesso di intensità.
 
-### Sagittario
+### ♐ Sagittario
 
 *22/11 – 21/12 · Fuoco · Mutevole*
 
-Ottimista, avventuroso e amante della libertà.
+Ottimismo, avventura e amore per la libertà.
 
-Associato all'esplorazione e alla franchezza: la tradizione lo descrive come ottimista, inquieto e amante dei viaggi e dell'apprendimento, anche se a volte imprudente.
+Segno dell'esplorazione e della franchezza: la tradizione gli attribuisce ottimismo, irrequietezza e amore per i viaggi e lo studio, ma anche imprudenza.
 
-### Capricorno
+### ♑ Capricorno
 
 *22/12 – 19/01 · Terra · Cardinale*
 
-Disciplinato, ambizioso e responsabile.
+Disciplina, ambizione e senso di responsabilità.
 
-Associato alla disciplina e alla pazienza: la tradizione lo descrive come ambizioso, serio e responsabile sul lungo periodo, anche se a volte rigido.
+Segno della disciplina e della pazienza: la tradizione gli attribuisce ambizione, serietà e responsabilità nel lungo periodo, ma anche rigidità.
 
-### Acquario
+### ♒ Acquario
 
 *20/01 – 18/02 · Aria · Fisso*
 
-Indipendente, originale e umanitario.
+Indipendenza, originalità e umanitarismo.
 
-Associato all'originalità e alle idee collettive: la tradizione lo descrive come indipendente, innovatore e un po' distante, anche se a volte ribelle.
+Segno dell'originalità e delle idee collettive: la tradizione gli attribuisce indipendenza, innovazione e un certo distacco, ma anche ribellione.
 
-### Pesci
+### ♓ Pesci
 
 *19/02 – 20/03 · Acqua · Mutevole*
 
-Empatico, sognatore e molto intuitivo.
+Empatia, immaginazione e intuito.
 
-Associato all'immaginazione e alla compassione: la tradizione lo descrive come sensibile, artistico e dedito agli altri, anche se a volte sfuggente.
+Segno dell'immaginazione e della compassione: la tradizione gli attribuisce sensibilità, talento artistico e dedizione agli altri, ma anche tendenza alla fuga.
 
 ## Horóscopo chino
 
 ### Topo
 
-*Zi · Acqua · Yang · 1996, 2008, 2020, 2032*
+*子 Zi · Acqua · Yang*
 
-Astuto, agile e molto ingegnoso.
+1924 Legno · 1936 Fuoco · 1948 Terra · 1960 Metallo · 1972 Acqua · 1984 Legno · 1996 Fuoco · 2008 Terra · 2020 Metallo · 2032 Acqua
 
-Associato all'ingegno e all'adattamento: la tradizione lo descrive come osservatore, affascinante e abile nel cogliere le occasioni, anche se a volte calcolatore.
+Astuzia, agilità e ingegno.
+
+Segno dell'ingegno e dell'adattamento: la tradizione gli attribuisce spirito di osservazione, fascino e abilità nel cogliere le occasioni, ma anche calcolo.
 
 ### Bue
 
-*Chou · Terra · Yin · 1997, 2009, 2021, 2033*
+*丑 Chou · Terra · Yin*
 
-Laborioso, paziente e affidabile.
+1925 Legno · 1937 Fuoco · 1949 Terra · 1961 Metallo · 1973 Acqua · 1985 Legno · 1997 Fuoco · 2009 Terra · 2021 Metallo · 2033 Acqua
 
-Associato all'impegno e alla costanza: la tradizione lo descrive come saldo, paziente e di parola, anche se a volte chiuso al cambiamento.
+Laboriosità, pazienza e affidabilità.
+
+Segno dell'impegno e della costanza: la tradizione gli attribuisce fermezza, pazienza e parola mantenuta, ma anche resistenza al cambiamento.
 
 ### Tigre
 
-*Yin · Legno · Yang · 1998, 2010, 2022, 2034*
+*寅 Yin · Legno · Yang*
 
-Coraggioso, competitivo e appassionato.
+1926 Fuoco · 1938 Terra · 1950 Metallo · 1962 Acqua · 1974 Legno · 1986 Fuoco · 1998 Terra · 2010 Metallo · 2022 Acqua · 2034 Legno
 
-Associato al coraggio e al magnetismo: la tradizione lo descrive come audace, generoso e leader naturale, anche se a volte impulsivo.
+Coraggio, competitività e passione.
+
+Segno del coraggio e del magnetismo: la tradizione gli attribuisce audacia, generosità e leadership naturale, ma anche impulsività.
 
 ### Coniglio
 
-*Mao · Legno · Yin · 1999, 2011, 2023, 2035*
+*卯 Mao · Legno · Yin*
 
-Gentile, prudente e sensibile.
+1927 Fuoco · 1939 Terra · 1951 Metallo · 1963 Acqua · 1975 Legno · 1987 Fuoco · 1999 Terra · 2011 Metallo · 2023 Acqua · 2035 Legno
 
-Associato alla calma e alla diplomazia: la tradizione lo descrive come delicato, cortese e amante dell'armonia, anche se a volte evita il conflitto.
+Gentilezza, prudenza e sensibilità.
+
+Segno della calma e della diplomazia: la tradizione gli attribuisce delicatezza, cortesia e amore per l'armonia, ma anche tendenza a evitare i conflitti.
 
 ### Drago
 
-*Chen · Terra · Yang · 2000, 2012, 2024, 2036*
+*辰 Chen · Terra · Yang*
 
-Carismatico, energico e fortunato.
+1928 Terra · 1940 Metallo · 1952 Acqua · 1964 Legno · 1976 Fuoco · 1988 Terra · 2000 Metallo · 2012 Acqua · 2024 Legno · 2036 Fuoco
 
-Associato alla fortuna e all'ambizione: la tradizione lo descrive come sicuro, magnetico e pieno di progetti, anche se a volte orgoglioso.
+Carisma, energia e fortuna.
+
+Segno della fortuna e dell'ambizione: la tradizione gli attribuisce sicurezza, magnetismo e tanti progetti, ma anche orgoglio.
 
 ### Serpente
 
-*Si · Fuoco · Yin · 2001, 2013, 2025, 2037*
+*巳 Si · Fuoco · Yin*
 
-Saggio, riservato ed elegante.
+1929 Terra · 1941 Metallo · 1953 Acqua · 1965 Legno · 1977 Fuoco · 1989 Terra · 2001 Metallo · 2013 Acqua · 2025 Legno · 2037 Fuoco
 
-Associato alla saggezza e all'intuito: la tradizione lo descrive come riflessivo, elegante e stratega, anche se a volte diffidente.
+Saggezza, riservatezza ed eleganza.
+
+Segno della saggezza e dell'intuito: la tradizione gli attribuisce riflessione, eleganza e senso strategico, ma anche diffidenza.
 
 ### Cavallo
 
-*Wu · Fuoco · Yang · 2002, 2014, 2026, 2038*
+*午 Wu · Fuoco · Yang*
 
-Libero, energico e socievole.
+1930 Metallo · 1942 Acqua · 1954 Legno · 1966 Fuoco · 1978 Terra · 1990 Metallo · 2002 Acqua · 2014 Legno · 2026 Fuoco · 2038 Terra
 
-Associato alla libertà e all'energia: la tradizione lo descrive come allegro, indipendente e amante del movimento, anche se a volte inquieto.
+Libertà, energia e socievolezza.
+
+Segno della libertà e dell'energia: la tradizione gli attribuisce allegria, indipendenza e amore per il movimento, ma anche irrequietezza.
 
 ### Capra
 
-*Wei · Terra · Yin · 2003, 2015, 2027, 2039*
+*未 Wei · Terra · Yin*
 
-Creativa, gentile e artistica.
+1931 Metallo · 1943 Acqua · 1955 Legno · 1967 Fuoco · 1979 Terra · 1991 Metallo · 2003 Acqua · 2015 Legno · 2027 Fuoco · 2039 Terra
 
-Associato alla sensibilità e alla creatività: la tradizione lo descrive come gentile, sognatore e amante della pace, anche se a volte indeciso.
+Creatività, gentilezza e sensibilità artistica.
+
+Segno della sensibilità e della creatività: la tradizione gli attribuisce gentilezza, immaginazione e amore per la pace, ma anche indecisione.
 
 ### Scimmia
 
-*Shen · Metallo · Yang · 2004, 2016, 2028, 2040*
+*申 Shen · Metallo · Yang*
 
-Intelligente, divertente e ingegnoso.
+1932 Acqua · 1944 Legno · 1956 Fuoco · 1968 Terra · 1980 Metallo · 1992 Acqua · 2004 Legno · 2016 Fuoco · 2028 Terra · 2040 Metallo
 
-Associato all'ingegno e alla curiosità: la tradizione lo descrive come divertente, inventivo e rapido nell'apprendere, anche se a volte birichino.
+Intelligenza, umorismo e ingegno.
+
+Segno dell'ingegno e della curiosità: la tradizione gli attribuisce umorismo, inventiva e rapidità nell'imparare, ma anche birichineria.
 
 ### Gallo
 
-*You · Metallo · Yin · 2005, 2017, 2029, 2041*
+*酉 You · Metallo · Yin*
 
-Organizzato, onesto e osservatore.
+1933 Acqua · 1945 Legno · 1957 Fuoco · 1969 Terra · 1981 Metallo · 1993 Acqua · 2005 Legno · 2017 Fuoco · 2029 Terra · 2041 Metallo
 
-Associato all'ordine e alla franchezza: la tradizione lo descrive come lavoratore, puntuale e meticoloso, anche se a volte molto critico.
+Ordine, onestà e spirito di osservazione.
+
+Segno dell'ordine e della franchezza: la tradizione gli attribuisce laboriosità, puntualità e cura dei dettagli, ma anche eccesso di critica.
 
 ### Cane
 
-*Xu · Terra · Yang · 2006, 2018, 2030, 2042*
+*戌 Xu · Terra · Yang*
 
-Leale, giusto e protettivo.
+1934 Legno · 1946 Fuoco · 1958 Terra · 1970 Metallo · 1982 Acqua · 1994 Legno · 2006 Fuoco · 2018 Terra · 2030 Metallo · 2042 Acqua
 
-Associato alla lealtà e alla giustizia: la tradizione lo descrive come onesto, protettivo e buon amico, anche se a volte ansioso.
+Lealtà, giustizia e protezione.
+
+Segno della lealtà e della giustizia: la tradizione gli attribuisce onestà, spirito protettivo e amicizia, ma anche ansia.
 
 ### Maiale
 
-*Hai · Acqua · Yin · 2007, 2019, 2031, 2043*
+*亥 Hai · Acqua · Yin*
 
-Generoso, sincero e affettuoso.
+1935 Legno · 1947 Fuoco · 1959 Terra · 1971 Metallo · 1983 Acqua · 1995 Legno · 2007 Fuoco · 2019 Terra · 2031 Metallo · 2043 Acqua
 
-Associato alla generosità e al piacere di vivere: la tradizione lo descrive come sincero, affabile e di buon cuore, anche se a volte ingenuo.
+Generosità, sincerità e affetto.
+
+Segno della generosità e del piacere di vivere: la tradizione gli attribuisce sincerità, affabilità e buon cuore, ma anche ingenuità.
