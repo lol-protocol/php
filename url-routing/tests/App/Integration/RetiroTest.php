@@ -38,12 +38,12 @@ class RetiroTest extends TestCase
     }
 
     /** @return array{int, string, string} [status, body, sessionId] */
-    private function pedir(string $uri, string $metodo = 'GET', array $post = [], ?string $sid = null, bool $propietario = false): array
+    private function pedir(string $uri, string $metodo = 'GET', array $post = [], ?string $sid = null, bool $propietario = false, array $entorno = []): array
     {
         $autorizacion = $propietario ? 'Basic ' . base64_encode('propietario:' . self::TOKEN) : '';
         $cmd = [PHP_BINARY, '-d', 'display_errors=stderr', dirname(__DIR__, 2) . '/Support/request.php',
             self::HOST, $uri, $metodo, http_build_query($post), $sid ?? '', $autorizacion];
-        $env = [
+        $env = $entorno + [
             'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
             'LOG_FILE' => self::$dir . '/app.log',
             'OWNER_TOKEN' => self::TOKEN,
@@ -125,6 +125,65 @@ class RetiroTest extends TestCase
         $this->assertSame('recibido', $this->db()->fetchValue('SELECT estado FROM pedido_retiro_eventos WHERE pedido_id = ?', [$pedido['id']]));
         $this->assertSame(200, $this->pedir(self::JUAN)[0], 'receiving a pedido hides nothing by itself');
         $this->assertStringNotContainsString('ana@example.com', (string)@file_get_contents(self::$dir . '/app.log'), 'the log never names who asked');
+    }
+
+    public function testAVisitorCanOnlySendSomePedidosPerHour(): void
+    {
+        $entorno = ['TEST_REMOTE_ADDR' => '198.51.100.7-' . bin2hex(random_bytes(4)), 'RETIRO_MAX_POR_HORA' => '2'];
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $enviar = fn() => $this->pedir(self::PEDIR, 'POST', $this->pedidoValido($token), $sid, entorno: $entorno)[0];
+
+        $this->assertSame(303, $enviar());
+        $this->assertSame(303, $enviar());
+        $antes = (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro');
+        $this->assertSame(429, $enviar(), 'the third in the hour');
+        $this->assertSame($antes, (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro'), 'the refused one was not stored');
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', $this->pedidoValido($token), $sid,
+            entorno: ['TEST_REMOTE_ADDR' => '198.51.100.8-' . bin2hex(random_bytes(4)), 'RETIRO_MAX_POR_HORA' => '2'])[0], 'another visitor is not affected');
+    }
+
+    public function testAPageStopsTakingPedidosWhenManyAreWaiting(): void
+    {
+        $repo = new \App\Repositories\Genealogy\RetiroRepository($this->db());
+        for ($i = 0; $i < 3; $i++) {
+            $repo->crear('grupo', 582317, 'otro', 'x', "p{$i}@example.com");
+        }
+        [$sid, $token] = $this->formulario('/r/582317/');
+        $this->assertSame(429, $this->pedir('/r/582317/', 'POST', $this->pedidoValido($token), $sid, entorno: ['RETIRO_MAX_PENDIENTES' => '3'])[0]);
+        $this->assertSame(303, $this->pedir('/r/582317/', 'POST', $this->pedidoValido($token), $sid, entorno: ['RETIRO_MAX_PENDIENTES' => '4'])[0], 'under the limit');
+    }
+
+    public function testTheDecoyFieldDiscardsTheBotWithoutSayingSo(): void
+    {
+        [, $form] = $this->pedir(self::PEDIR);
+        $this->assertStringContainsString('name="sitio_web"', $form);
+        $this->assertStringContainsString('aria-hidden="true"', $form);
+
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $antes = (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro');
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', ['sitio_web' => 'http://spam.example'] + $this->pedidoValido($token), $sid)[0], 'the same answer a person gets');
+        $this->assertSame($antes, (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro'), 'nothing stored');
+    }
+
+    public function testTheFilterMarksTheTextForWhoReviewsAndNeverBlocksIt(): void
+    {
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', ['detalle' => 'Es un hijo de puta y dice que estafó a su familia.'] + $this->pedidoValido($token), $sid)[0], 'stored anyway');
+        $marcas = (string)$this->db()->fetchValue('SELECT marcas FROM pedidos_retiro ORDER BY id DESC LIMIT 1');
+        $this->assertStringContainsString('insulto', $marcas);
+        $this->assertStringContainsString('acusación de delito', $marcas);
+        $this->assertStringContainsString('⚠', $this->pedir('/0/3/', propietario: true)[1]);
+
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', ['detalle' => 'La ficha tiene una fecha equivocada.'] + $this->pedidoValido($token), $sid)[0]);
+        $this->assertNull($this->db()->fetchValue('SELECT marcas FROM pedidos_retiro ORDER BY id DESC LIMIT 1'), 'a plain complaint has no marks');
+    }
+
+    public function testWithoutTheFilterTheComplaintIsStoredAnyway(): void
+    {
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $sin = ['FILTRO_DIFAMACION_DIR' => self::$dir . '/no-hay-filtro'];
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', ['detalle' => 'Es un hijo de puta.'] + $this->pedidoValido($token), $sid, entorno: $sin)[0]);
+        $this->assertNull($this->db()->fetchValue('SELECT marcas FROM pedidos_retiro ORDER BY id DESC LIMIT 1'));
     }
 
     public function testAPageHiddenForPrivacyCannotBeReportedNorTurnInto410(): void

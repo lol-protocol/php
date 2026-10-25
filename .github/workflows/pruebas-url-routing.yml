@@ -8,10 +8,16 @@ on:
     branches: [master]
     paths:
       - "url-routing/**"
+      # los pedidos de retiro pasan por su filtro (url-routing/Support/FiltroPedidos.php)
+      - "defamatory-content-review/src/**"
+      - "defamatory-content-review/config/**"
       - ".github/workflows/pruebas-url-routing.yml"
   pull_request:
     paths:
       - "url-routing/**"
+      # los pedidos de retiro pasan por su filtro (url-routing/Support/FiltroPedidos.php)
+      - "defamatory-content-review/src/**"
+      - "defamatory-content-review/config/**"
       - ".github/workflows/pruebas-url-routing.yml"
   workflow_dispatch:
 

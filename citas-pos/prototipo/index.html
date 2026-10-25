@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Prototipo de la paleta</title>
+<!-- Generado por citas-pos/bin/prototipo.php desde datos/paleta.json y datos/ejemplos.json. No editar a mano. -->
+<style>
+  :root {
+    --fondo: #fbfaf7; --tinta: #1d1d22; --suave: #55555e; --borde: #d9d6cf; --panel: #f3f1ec;
+    --c-ADJ: #1f7d38;
+    --c-ADP: #b3387a;
+    --c-ADV: #4f7b1c;
+    --c-AUX: #ad541a;
+    --c-CCONJ: #78591e;
+    --c-DET: #5f463b;
+    --c-INTJ: #876d00;
+    --c-NOUN: #006cb8;
+    --c-NUM: #4f56a9;
+    --c-PART: #944d60;
+    --c-PRON: #89438e;
+    --c-PROPN: #005b6b;
+    --c-PUNCT: #727272;
+    --c-SCONJ: #007761;
+    --c-SYM: #6a6d8f;
+    --c-VERB: #c63845;
+    --c-X: #1f1f1f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) {
+      --fondo: #15161b; --tinta: #ececf1; --suave: #a4a4b0; --borde: #34353f; --panel: #1d1e25;
+    --c-ADJ: #76cf82;
+    --c-ADP: #ff80be;
+    --c-ADV: #a8d471;
+    --c-AUX: #ff9c60;
+    --c-CCONJ: #c6a062;
+    --c-DET: #ebcbbe;
+    --c-INTJ: #f6ce3e;
+    --c-NOUN: #22b4ff;
+    --c-NUM: #a2a2fd;
+    --c-PART: #efa0b2;
+    --c-PRON: #e296e5;
+    --c-PROPN: #47aebe;
+    --c-PUNCT: #969696;
+    --c-SCONJ: #60ceb4;
+    --c-SYM: #c7c9ef;
+    --c-VERB: #ff767a;
+    --c-X: #f3f3f3;
+    }
+  }
+  :root[data-tema="oscuro"] {
+    --fondo: #15161b; --tinta: #ececf1; --suave: #a4a4b0; --borde: #34353f; --panel: #1d1e25;
+    --c-ADJ: #76cf82;
+    --c-ADP: #ff80be;
+    --c-ADV: #a8d471;
+    --c-AUX: #ff9c60;
+    --c-CCONJ: #c6a062;
+    --c-DET: #ebcbbe;
+    --c-INTJ: #f6ce3e;
+    --c-NOUN: #22b4ff;
+    --c-NUM: #a2a2fd;
+    --c-PART: #efa0b2;
+    --c-PRON: #e296e5;
+    --c-PROPN: #47aebe;
+    --c-PUNCT: #969696;
+    --c-SCONJ: #60ceb4;
+    --c-SYM: #c7c9ef;
+    --c-VERB: #ff767a;
+    --c-X: #f3f3f3;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fondo); color: var(--tinta); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 52rem; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  h2 { font-size: 1.15rem; margin: 32px 0 8px; }
+  h3 { font-size: 1rem; margin: 16px 0 6px; }
+  small { color: var(--suave); font-weight: 400; }
+  code { font: 0.85em ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .aviso { background: var(--panel); border: 1px solid var(--borde); border-radius: 8px; padding: 10px 14px; color: var(--suave); }
+  .controles { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 10px; margin: 16px 0; }
+  .controles label { display: grid; gap: 4px; font-size: 0.85rem; color: var(--suave); }
+  .controles select { font: inherit; padding: 6px 8px; color: var(--tinta); background: var(--panel); border: 1px solid var(--borde); border-radius: 6px; }
+  .w { color: var(--color); text-decoration: var(--marca, none); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  .w[data-c="ADJ"] { --color: var(--c-ADJ); }
+  .w[data-c="ADP"] { --color: var(--c-ADP); }
+  .w[data-c="ADV"] { --color: var(--c-ADV); }
+  .w[data-c="AUX"] { --color: var(--c-AUX); }
+  .w[data-c="CCONJ"] { --color: var(--c-CCONJ); }
+  .w[data-c="DET"] { --color: var(--c-DET); }
+  .w[data-c="INTJ"] { --color: var(--c-INTJ); }
+  .w[data-c="NOUN"] { --color: var(--c-NOUN); }
+  .w[data-c="NUM"] { --color: var(--c-NUM); }
+  .w[data-c="PART"] { --color: var(--c-PART); }
+  .w[data-c="PRON"] { --color: var(--c-PRON); }
+  .w[data-c="PROPN"] { --color: var(--c-PROPN); }
+  .w[data-c="PUNCT"] { --color: var(--c-PUNCT); }
+  .w[data-c="SCONJ"] { --color: var(--c-SCONJ); }
+  .w[data-c="SYM"] { --color: var(--c-SYM); }
+  .w[data-c="VERB"] { --color: var(--c-VERB); }
+  .w[data-c="X"] { --color: var(--c-X); }
+  .w[data-g="nominal"] { --marca: underline solid; }
+  .w[data-g="verbal"] { --marca: underline wavy; }
+  .w[data-g="modificador"] { --marca: underline dotted; }
+  .w[data-g="funcion"] { --marca: underline dashed; }
+  .w[data-g="otros"] { --marca: none; }
+  [data-marcas="color"] .w { text-decoration: none; }
+  [data-marcas="marca"] .w { color: var(--tinta); }
+  [data-etiquetas="si"] .w:not(.muestra):not([data-c="PUNCT"])::after { content: attr(data-c); display: inline-block; font: 600 0.5em ui-monospace, Menlo, monospace; letter-spacing: 0.03em; margin-left: 0.2em; vertical-align: sub; color: var(--suave); }
+  .frase { font-size: 1.5rem; line-height: 2.1; margin: 4px 0 10px; }
+  .grupo ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 4px 16px; }
+  .grupo li { font-size: 0.95rem; }
+  .muestra { font-size: 1.25rem; font-weight: 700; display: inline-block; min-width: 1.8rem; }
+  [data-vision="protanopia"] #demo { filter: url(#f-protanopia); }
+  [data-vision="deuteranopia"] #demo { filter: url(#f-deuteranopia); }
+  [data-vision="tritanopia"] #demo { filter: url(#f-tritanopia); }
+  footer { margin-top: 32px; color: var(--suave); font-size: 0.85rem; }
+</style>
+</head>
+<body data-vision="normal" data-marcas="ambas" data-etiquetas="no">
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <filter id="f-protanopia" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0 0.114503 0.786281 0.099216 0 0 -0.003882 -0.048116 1.051998 0 0 0 0 0 1 0"/></filter>
+    <filter id="f-deuteranopia" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0 0.280085 0.672501 0.047413 0 0 -0.01182 0.04294 0.968881 0 0 0 0 0 1 0"/></filter>
+    <filter id="f-tritanopia" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0 -0.078411 0.930809 0.147602 0 0 0.004733 0.691367 0.3039 0 0 0 0 0 1 0"/></filter>
+  </defs>
+</svg>
+<main>
+  <h1>Prototipo de la paleta</h1>
+  <p class="aviso">Frases escritas para probar la paleta. No son citas célebres. Las etiquetas (categorías UPOS) las puso a mano quien armó el prototipo y ningún hablante nativo las ha revisado.</p>
+
+  <div class="controles">
+    <label>Tema
+      <select id="tema"><option value="auto">Según el sistema</option><option value="claro">Claro</option><option value="oscuro">Oscuro</option></select>
+    </label>
+    <label>Visión
+      <select id="vision"><option value="normal">Normal</option><option value="protanopia">Protanopía</option><option value="deuteranopia">Deuteranopía</option><option value="tritanopia">Tritanopía</option></select>
+    </label>
+    <label>Cómo se distinguen
+      <select id="marcas"><option value="ambas">Color y marca</option><option value="color">Solo color</option><option value="marca">Solo marca</option></select>
+    </label>
+    <label>Categoría junto a cada palabra
+      <select id="etiquetas"><option value="no">No</option><option value="si">Sí</option></select>
+    </label>
+  </div>
+
+  <div id="demo">
+    <h2>Leyenda</h2>
+    <section class="grupo"><h3>Nominales <small>· marca: subrayado</small></h3>
+<ul>
+  <li><span class="w muestra" data-c="NOUN" data-g="nominal">Aa</span> <code>NOUN</code> sustantivo</li>
+  <li><span class="w muestra" data-c="NUM" data-g="nominal">Aa</span> <code>NUM</code> numeral</li>
+  <li><span class="w muestra" data-c="PROPN" data-g="nominal">Aa</span> <code>PROPN</code> nombre propio</li>
+</ul></section>
+<section class="grupo"><h3>Verbales <small>· marca: ondulado</small></h3>
+<ul>
+  <li><span class="w muestra" data-c="AUX" data-g="verbal">Aa</span> <code>AUX</code> auxiliar</li>
+  <li><span class="w muestra" data-c="VERB" data-g="verbal">Aa</span> <code>VERB</code> verbo</li>
+</ul></section>
+<section class="grupo"><h3>Modificadores <small>· marca: punteado</small></h3>
+<ul>
+  <li><span class="w muestra" data-c="ADJ" data-g="modificador">Aa</span> <code>ADJ</code> adjetivo</li>
+  <li><span class="w muestra" data-c="ADV" data-g="modificador">Aa</span> <code>ADV</code> adverbio</li>
+</ul></section>
+<section class="grupo"><h3>Palabras funcionales <small>· marca: discontinuo</small></h3>
+<ul>
+  <li><span class="w muestra" data-c="ADP" data-g="funcion">Aa</span> <code>ADP</code> adposición (preposición)</li>
+  <li><span class="w muestra" data-c="CCONJ" data-g="funcion">Aa</span> <code>CCONJ</code> conjunción coordinante</li>
+  <li><span class="w muestra" data-c="DET" data-g="funcion">Aa</span> <code>DET</code> determinante</li>
+  <li><span class="w muestra" data-c="PART" data-g="funcion">Aa</span> <code>PART</code> partícula</li>
+  <li><span class="w muestra" data-c="PRON" data-g="funcion">Aa</span> <code>PRON</code> pronombre</li>
+  <li><span class="w muestra" data-c="SCONJ" data-g="funcion">Aa</span> <code>SCONJ</code> conjunción subordinante</li>
+</ul></section>
+<section class="grupo"><h3>Otros <small>· marca: ninguna</small></h3>
+<ul>
+  <li><span class="w muestra" data-c="INTJ" data-g="otros">Aa</span> <code>INTJ</code> interjección</li>
+  <li><span class="w muestra" data-c="PUNCT" data-g="otros">Aa</span> <code>PUNCT</code> puntuación</li>
+  <li><span class="w muestra" data-c="SYM" data-g="otros">Aa</span> <code>SYM</code> símbolo</li>
+  <li><span class="w muestra" data-c="X" data-g="otros">Aa</span> <code>X</code> otro</li>
+</ul></section>
+
+    <h2>Frases de prueba</h2>
+    <section class="idioma" lang="es"><h3 lang="es">Español <small>· <code>spa</code></small></h3>
+<p class="frase" id="spa-1"><span class="w" data-c="DET" data-g="funcion" title="DET · determinante">El</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">perro</span> <span class="w" data-c="ADJ" data-g="modificador" title="ADJ · adjetivo">pequeño</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">lee</span> <span class="w" data-c="ADV" data-g="modificador" title="ADV · adverbio">despacio</span> <span class="w" data-c="DET" data-g="funcion" title="DET · determinante">un</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">libro</span> <span class="w" data-c="ADJ" data-g="modificador" title="ADJ · adjetivo">rojo</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">.</span></p>
+<p class="frase" id="spa-2"><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">¡</span><span class="w" data-c="INTJ" data-g="otros" title="INTJ · interjección">Ay</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">!</span> <span class="w" data-c="PROPN" data-g="nominal" title="PROPN · nombre propio">María</span> <span class="w" data-c="CCONJ" data-g="funcion" title="CCONJ · conjunción coordinante">y</span> <span class="w" data-c="PRON" data-g="funcion" title="PRON · pronombre">yo</span> <span class="w" data-c="AUX" data-g="verbal" title="AUX · auxiliar">hemos</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">visto</span> <span class="w" data-c="NUM" data-g="nominal" title="NUM · numeral">tres</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">gatos</span> <span class="w" data-c="ADP" data-g="funcion" title="ADP · adposición (preposición)">en</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">casa</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">,</span> <span class="w" data-c="SCONJ" data-g="funcion" title="SCONJ · conjunción subordinante">porque</span> <span class="w" data-c="PRON" data-g="funcion" title="PRON · pronombre">ellos</span> <span class="w" data-c="ADV" data-g="modificador" title="ADV · adverbio">no</span> <span class="w" data-c="PRON" data-g="funcion" title="PRON · pronombre">se</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">van</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">.</span></p>
+</section>
+<section class="idioma" lang="en"><h3 lang="es">Inglés <small>· <code>eng</code></small></h3>
+<p class="frase" id="eng-1"><span class="w" data-c="DET" data-g="funcion" title="DET · determinante">The</span> <span class="w" data-c="ADJ" data-g="modificador" title="ADJ · adjetivo">small</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">dog</span> <span class="w" data-c="ADV" data-g="modificador" title="ADV · adverbio">slowly</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">reads</span> <span class="w" data-c="DET" data-g="funcion" title="DET · determinante">a</span> <span class="w" data-c="ADJ" data-g="modificador" title="ADJ · adjetivo">red</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">book</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">.</span></p>
+<p class="frase" id="eng-2"><span class="w" data-c="INTJ" data-g="otros" title="INTJ · interjección">Oh</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">,</span> <span class="w" data-c="PROPN" data-g="nominal" title="PROPN · nombre propio">Maria</span> <span class="w" data-c="CCONJ" data-g="funcion" title="CCONJ · conjunción coordinante">and</span> <span class="w" data-c="PRON" data-g="funcion" title="PRON · pronombre">I</span> <span class="w" data-c="AUX" data-g="verbal" title="AUX · auxiliar">have</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">seen</span> <span class="w" data-c="NUM" data-g="nominal" title="NUM · numeral">three</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">cats</span> <span class="w" data-c="ADP" data-g="funcion" title="ADP · adposición (preposición)">at</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">home</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">,</span> <span class="w" data-c="SCONJ" data-g="funcion" title="SCONJ · conjunción subordinante">because</span> <span class="w" data-c="PRON" data-g="funcion" title="PRON · pronombre">they</span> <span class="w" data-c="AUX" data-g="verbal" title="AUX · auxiliar">do</span> <span class="w" data-c="PART" data-g="funcion" title="PART · partícula">not</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">leave</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">.</span></p>
+</section>
+<section class="idioma" lang="de"><h3 lang="es">Alemán <small>· <code>deu</code></small></h3>
+<p class="frase" id="deu-1"><span class="w" data-c="DET" data-g="funcion" title="DET · determinante">Der</span> <span class="w" data-c="ADJ" data-g="modificador" title="ADJ · adjetivo">kleine</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">Hund</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">liest</span> <span class="w" data-c="ADV" data-g="modificador" title="ADV · adverbio">langsam</span> <span class="w" data-c="DET" data-g="funcion" title="DET · determinante">ein</span> <span class="w" data-c="ADJ" data-g="modificador" title="ADJ · adjetivo">rotes</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">Buch</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">.</span></p>
+<p class="frase" id="deu-2"><span class="w" data-c="INTJ" data-g="otros" title="INTJ · interjección">Ach</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">,</span> <span class="w" data-c="PROPN" data-g="nominal" title="PROPN · nombre propio">Maria</span> <span class="w" data-c="CCONJ" data-g="funcion" title="CCONJ · conjunción coordinante">und</span> <span class="w" data-c="PRON" data-g="funcion" title="PRON · pronombre">ich</span> <span class="w" data-c="AUX" data-g="verbal" title="AUX · auxiliar">haben</span> <span class="w" data-c="NUM" data-g="nominal" title="NUM · numeral">drei</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">Katzen</span> <span class="w" data-c="ADP" data-g="funcion" title="ADP · adposición (preposición)">zu</span> <span class="w" data-c="NOUN" data-g="nominal" title="NOUN · sustantivo">Hause</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">gesehen</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">,</span> <span class="w" data-c="SCONJ" data-g="funcion" title="SCONJ · conjunción subordinante">weil</span> <span class="w" data-c="PRON" data-g="funcion" title="PRON · pronombre">sie</span> <span class="w" data-c="PART" data-g="funcion" title="PART · partícula">nicht</span> <span class="w" data-c="VERB" data-g="verbal" title="VERB · verbo">gehen</span><span class="w" data-c="PUNCT" data-g="otros" title="PUNCT · puntuación">.</span></p>
+</section>
+
+  </div>
+
+  <footer>
+    La «marca» es el estilo del subrayado, que cambia por grupo: así una persona que no distingue ciertos colores aún separa los grupos. Dentro de un grupo, hay pares que algunas visiones confunden; ahí ayuda activar la categoría junto a cada palabra. La simulación de daltonismo es aproximada y no sustituye a probar con personas.
+  </footer>
+</main>
+<script>
+  (function () {
+    var raiz = document.documentElement, cuerpo = document.body;
+    function enlazar(id, aplicar) {
+      var el = document.getElementById(id);
+      el.addEventListener('change', function () { aplicar(el.value); });
+    }
+    enlazar('tema', function (v) { if (v === 'auto') { raiz.removeAttribute('data-tema'); } else { raiz.setAttribute('data-tema', v); } });
+    enlazar('vision', function (v) { cuerpo.setAttribute('data-vision', v); });
+    enlazar('marcas', function (v) { cuerpo.setAttribute('data-marcas', v); });
+    enlazar('etiquetas', function (v) { cuerpo.setAttribute('data-etiquetas', v); });
+  })();
+</script>
+</body>
+</html>

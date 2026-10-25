@@ -22,6 +22,9 @@ retirada» a quien no es el propietario; tú la sigues viendo. Cada decisión qu
         <dt>Página</dt><dd><a href="<?= esc(enlace($p['tipo'], $p['recurso_id'])) ?>"><?= esc(enlace($p['tipo'], $p['recurso_id'])) ?></a></dd>
         <dt>Motivo</dt><dd><?= esc(RetiroRepository::MOTIVOS[$p['motivo']] ?? $p['motivo']) ?></dd>
         <dt>Detalle</dt><dd><?= nl2br(esc($p['detalle'])) ?></dd>
+<?php if (!empty($p['marcas'])): ?>
+        <dt>El filtro encontró</dt><dd>⚠ <?= esc($p['marcas']) ?></dd>
+<?php endif; ?>
         <dt>Responder a</dt><dd><?= esc($p['contacto']) ?></dd>
         <dt>Historial</dt><dd><ul class="lista">
 <?php foreach ($p['eventos'] as $e): ?>

@@ -651,6 +651,16 @@
                     </select>
                 </div>
                 <div class="control-group">
+                    <label for="sort-select" data-translate="demo.sortBy">Sort by</label>
+                    <select id="sort-select">
+                        <option value="" data-translate="demo.sortDefault">Catalog order</option>
+                        <option value="name" data-translate="demo.sortName">Name</option>
+                        <option value="width" data-translate="demo.sortWidth">Width</option>
+                        <option value="height" data-translate="demo.sortHeight">Height</option>
+                        <option value="area" data-translate="demo.sortArea">Area</option>
+                    </select>
+                </div>
+                <div class="control-group">
                     <span class="label-spacer" aria-hidden="true">&nbsp;</span>
                     <button class="btn btn-secondary" id="reset-btn" data-translate="demo.reset">Reset Filters</button>
                 </div>
@@ -855,7 +865,8 @@
             // Keeps what the predicate accepts, draws it and tells the live region the count
             // (not when the filters are restored from the URL: nobody asked for them just now).
             filter(accepts, {announceCount = true} = {}) {
-                const filtered = this.items.filter(accepts);
+                let filtered = this.items.filter(accepts);
+                if (this.compare) filtered = [...filtered].sort(this.compare);
                 this.render(filtered);
                 if (announceCount) announce(tr(this.countKey, {count: filtered.length}), this.countKey);
             }
@@ -863,9 +874,29 @@
             refresh() { this.render(this.shown); }
         }
 
-        // The query is looked up, in lowercase, inside any of these texts.
-        const matchesQuery = (query, texts) =>
-            !query || texts.some(text => String(text ?? '').toLowerCase().includes(query));
+        // The query is looked up inside any of these texts, ignoring case and Latin accents.
+        const matchesQuery = (query, texts) => {
+            const wanted = normalizeText(query);
+            return !wanted || texts.some(text => normalizeText(text).includes(wanted));
+        };
+
+        // "Large Format" -> "largeFormat", "Asia-Pacific" -> "asiaPacific": where a region or a category
+        // of the data sits in the translation files (regions.*, categories.*).
+        const vocabularyKey = (value) => String(value).split(/[\s-]+/).filter(Boolean)
+            .map((word, i) => (i ? word[0].toUpperCase() + word.slice(1).toLowerCase() : word.toLowerCase())).join('');
+        // A region or category in the language of the page; one the files don't have stays as the CSV writes it.
+        const vocabularyLabel = (group, value) => i18n.t(`${group}.${vocabularyKey(value)}`, value);
+        // Words the page translates carry no lang of their own; the others are the CSV's English.
+        const vocabularyLang = (group, value) =>
+            LocalizationManager.lookup(i18n.translations, `${group}.${vocabularyKey(value)}`) === null ? dataLang() : '';
+
+        // How the Browser tab can order its cards. Ties keep the catalog order (sort is stable).
+        const FORMAT_SORTS = {
+            name: (a, b) => a.format_name.localeCompare(b.format_name, i18n.getLanguage()),
+            width: (a, b) => a.width_mm - b.width_mm,
+            height: (a, b) => a.height_mm - b.height_mm,
+            area: (a, b) => a.width_mm * a.height_mm - b.width_mm * b.height_mm
+        };
 
         class FormatBrowser extends FilterableList {
             constructor(formats) {
@@ -890,6 +921,7 @@
                     countryFilter: document.getElementById('country-filter'),
                     categoryFilter: document.getElementById('category-filter'),
                     regionFilter: document.getElementById('region-filter'),
+                    sortSelect: document.getElementById('sort-select'),
                     resetBtn: document.getElementById('reset-btn'),
                     downloadBtn: document.getElementById('download-btn'),
                     fromFormat: document.getElementById('from-format'),
@@ -903,11 +935,13 @@
             }
 
             setupEventListeners() {
-                const {search, countryFilter, categoryFilter, regionFilter, resetBtn, downloadBtn, fromFormat, toFormat, compareSearch} = this.els;
+                const {search, countryFilter, categoryFilter, regionFilter, sortSelect, resetBtn, downloadBtn, fromFormat, toFormat, compareSearch} = this.els;
 
                 document.addEventListener('change', (e) => {
                     if (e.target === countryFilter || e.target === categoryFilter || e.target === regionFilter) {
                         this.filterFormats();
+                    } else if (e.target === sortSelect) {
+                        this.filterFormats({announceCount: false});
                     } else if (e.target === fromFormat || e.target === toFormat) {
                         this.updateConverter();
                     }
@@ -923,6 +957,7 @@
                     countryFilter.value = '';
                     categoryFilter.value = '';
                     regionFilter.value = '';
+                    sortSelect.value = '';
                     this.filterFormats();
                 });
 
@@ -938,23 +973,42 @@
                 const distinct = (field) => sortedUnique(this.formats.map(f => f[field])).map(value => [value, value]);
 
                 addOptions(countryFilter, distinct('country'));
-                addOptions(categoryFilter, distinct('category'));
-                addOptions(regionFilter, distinct('region'));
+                this.vocabularyValues = {
+                    categories: sortedUnique(this.formats.map(f => f.category)),
+                    regions: sortedUnique(this.formats.map(f => f.region))
+                };
+                this.fillVocabularyFilters();
 
                 const formatOptions = formatSizeOptions(this.formats);
                 addOptions(fromFormat, formatOptions);
                 addOptions(toFormat, formatOptions);
             }
 
+            // The category and region lists, in the language of the page and in its alphabetical order.
+            // The option value stays the CSV's word, because that is what the formats are compared with.
+            fillVocabularyFilters() {
+                const {categoryFilter, regionFilter} = this.els;
+                for (const [select, group] of [[categoryFilter, 'categories'], [regionFilter, 'regions']]) {
+                    const selected = select.value;
+                    while (select.options.length > 1) select.remove(1);
+                    const entries = this.vocabularyValues[group].map(value => [value, vocabularyLabel(group, value)])
+                        .sort((a, b) => a[1].localeCompare(b[1], i18n.getLanguage()));
+                    addOptions(select, entries);
+                    select.value = selected;
+                }
+            }
+
             filterFormats(options) {
-                const {search, countryFilter, categoryFilter, regionFilter} = this.els;
-                const query = search.value.toLowerCase();
+                const {search, countryFilter, categoryFilter, regionFilter, sortSelect} = this.els;
+                const query = search.value;
                 const country = countryFilter.value;
                 const category = categoryFilter.value;
                 const region = regionFilter.value;
+                this.compare = FORMAT_SORTS[sortSelect.value] ?? null;
 
                 this.filter(format =>
-                    matchesQuery(query, [format.format_name, format.description, format.common_use]) &&
+                    matchesQuery(query, [format.format_name, format.description, format.common_use,
+                        format.country, format.category, format.region]) &&
                     (!country || format.country === country) &&
                     (!category || format.category === category) &&
                     (!region || format.region === region)
@@ -972,7 +1026,7 @@
                     <div class="format-card">
                         <div class="format-card-header">
                             <h3>${escapeHtml(format.format_name)}</h3>
-                            <span class="badge badge-${escapeHtml(String(format.category).toLowerCase())}"${dataLang()}>${escapeHtml(format.category)}</span>
+                            <span class="badge badge-${escapeHtml(String(format.category).toLowerCase())}"${vocabularyLang('categories', format.category)}>${escapeHtml(vocabularyLabel('categories', format.category))}</span>
                         </div>
                         <div class="format-info">
                             <div class="info-row">
@@ -1023,9 +1077,9 @@
             }
 
             updateComparison() {
-                const terms = this.els.compareSearch.value.toLowerCase().split(',').map(t => t.trim()).filter(Boolean);
+                const terms = this.els.compareSearch.value.split(',').map(normalizeText).map(t => t.trim()).filter(Boolean);
                 const matches = terms.length === 0 ? [] : this.formats.filter(format =>
-                    terms.some(term => format.format_name.toLowerCase().includes(term))
+                    terms.some(term => normalizeText(format.format_name).includes(term))
                 ).slice(0, 100);
 
                 this.els.compareBody.innerHTML = matches.map(format => `
@@ -1064,9 +1118,11 @@
                 result.classList.add('show');
             }
 
-            // Redraws what JavaScript wrote with words in it, after a language change.
+            // After a language change: the option labels, and the cards that JavaScript wrote
+            // with words in them (a name sort also depends on the language).
             refresh() {
-                super.refresh();
+                this.fillVocabularyFilters();
+                this.filterFormats({announceCount: false});
                 this.updateConverter();
             }
         }
@@ -1124,7 +1180,7 @@
 
             applyFilters(options) {
                 const {search, categoryFilter} = this.els;
-                const query = search.value.toLowerCase();
+                const query = search.value;
                 const category = categoryFilter.value;
 
                 this.filter(p =>
@@ -1207,7 +1263,7 @@
         // Each piece of state kept in the URL, and the field it comes from.
         const STATE_FIELDS = {
             q: 'search-input', country: 'country-filter', category: 'category-filter', region: 'region-filter',
-            compare: 'compare-search', from: 'from-format', to: 'to-format',
+            compare: 'compare-search', from: 'from-format', to: 'to-format', sort: 'sort-select',
             pq: 'paper-search-input', pcat: 'paper-category-filter', size: 'paper-size-select'
         };
 

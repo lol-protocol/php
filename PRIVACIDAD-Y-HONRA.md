@@ -98,7 +98,8 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
 3. **Textos largos.** Resuelto: el endpoint de moderación acepta hasta 10.000
    caracteres y revisa por párrafos lo que pasa de 2.000 (`LongText`). Un texto
    más largo que eso hay que mandarlo en varias partes.
-4. **Denuncia, retiro y registro.** En `url-routing/`, cada página pública de
+4. **Denuncia, retiro y registro** (el recorrido paso a paso está en
+   [`RECLAMOS.md`](RECLAMOS.md)). En `url-routing/`, cada página pública de
    genealogía lleva «Pedir el retiro de esta página» (`/r/{id}/`, sin cuenta).
    El propietario decide en `/0/3/` si la oculta mientras revisa, la retira o
    rechaza el pedido, y cada paso queda registrado con fecha y nota (ver

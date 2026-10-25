@@ -157,6 +157,13 @@ mayoría de quienes revisen el proyecto no hablan: si pasa
 `DictionaryIntegrityTest`, la estructura es correcta aunque el contenido
 lingüístico sólo lo pueda validar un hablante nativo.
 
+`SafePhrasesTest` es la red contra los falsos positivos: recorre las frases
+corrientes de `tests/fixtures/safe-phrases.php` (clave `safe`, deben
+aprobarse) y unas de control (`still`, deben seguir marcándose). **Si
+arreglas un falso positivo, agrega ahí la frase que lo producía**, en su
+idioma; así no vuelve cuando se amplían patrones o idiomas. Una frase que se
+marca a propósito (un insulto dentro de una frase inocente) no va en `safe`.
+
 ## Añadir un idioma nuevo
 
 Ver la sección "Añadir un idioma" en el `README.md` — cubre el archivo de
