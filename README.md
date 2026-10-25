@@ -97,10 +97,10 @@ Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando camb
 idénticos). Solo corre si cambia algo de `iconos-genealogia/`, `iconos-biblioteca/`, `iconos-pos/`,
 `iconos-tools/` o `galeria-iconos.html`.
 
-`informe-de-ramas.yml` lista cada lunes, en el resumen de la corrida, las ramas remotas vacías o ya fusionadas
+`informe-de-ramas.yml` lista cada lunes, en el resumen de la corrida, las ramas remotas vacías o ya fusionadas y, si sobran 10 o más, mantiene una issue con la lista
 (`.github/scripts/informe-de-ramas.sh`). Solo informa: borrarlas lo decide una persona.
 
-`privacy-laws/` y `copyright-laws/` también tienen los suyos: `laws-modules.yml` (validación de los CSV maestros, archivos generados al día, pruebas unitarias, de la API y de la caché de textos en PHP 8.1 y 8.4, y pruebas en navegador con axe-core), `laws-links.yml` (cada lunes comprueba que los enlaces de referencia sigan respondiendo, y mantiene una issue con los que fallan) y `laws-freshness.yml` (cada lunes busca datos que quedaron viejos: filas sin revisar hace más de un año, cambios previstos cuya fecha ya pasó, valores que cambiaron después de revisar la fuente).
+`privacy-laws/` y `copyright-laws/` también tienen los suyos: `laws-modules.yml` (validación de los CSV maestros, archivos generados al día, pruebas unitarias, de la API y de la caché de textos en PHP 8.1 y 8.4, y pruebas en navegador con axe-core), `laws-links.yml` (cada lunes comprueba que los enlaces de referencia sigan respondiendo, y mantiene una issue con los que fallan; en un PR revisa los países que toca, y no corre en cada push a `master`) y `laws-freshness.yml` (cada lunes busca datos que quedaron viejos: filas sin revisar hace más de un año, cambios previstos cuya fecha ya pasó, valores que cambiaron después de revisar la fuente, y mantiene una issue con lo que encuentre).
 
 ## Licencia
 
