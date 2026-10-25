@@ -106,6 +106,17 @@
     "international": "Międzynarodowe",
     "label": "Etykiety"
   },
+  "paperCategories": {
+    "cardstock": "Karton",
+    "coated": "Powlekany",
+    "decorative": "Dekoracyjny",
+    "packaging": "Opakowaniowy",
+    "photo": "Fotograficzny",
+    "recycled": "Z recyklingu",
+    "specialty": "Specjalny",
+    "technical": "Techniczny",
+    "writingPrinting": "Do pisania i druku"
+  },
   "measurementSystems": {
     "metric": "Metryczny",
     "imperial": "Imperialny",
@@ -176,6 +187,10 @@
     "sortWidth": "Szerokość",
     "sortHeight": "Wysokość",
     "sortArea": "Powierzchnia",
+    "sortReverse": "Odwróć kolejność",
+    "compareShown": "Wyświetlono {shown} z {count} pasujących formatów",
+    "closestTitle": "Formaty najbliższe formatowi {format}",
+    "useAsTarget": "Użyj {format} (podobieństwo {percent}%) jako formatu docelowego",
     "aboutTitle": "O tej bazie danych",
     "aboutIntro": "Ta obszerna baza danych formatów dokumentów zawiera:",
     "aboutFormats": "Formaty w wielu kategoriach: {count}",

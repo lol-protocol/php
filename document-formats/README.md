@@ -14,7 +14,7 @@ document-formats/
 ├── formats/       Formats grouped by document type
 ├── devices/       Screen sizes and resolutions
 ├── specs/         Standards, production and accessibility specs
-├── app/           Interactive demo (index.html), JS library (document-formats.js), tabs.js, url-state.js, translations/
+├── app/           Interactive demo (index.html, demo.css, demo.js), JS library (document-formats.js), tabs.js, url-state.js, translations/
 ├── docs/          Tutorials, frontend guide, localization guide
 ├── tests/         Node tests (library, CSV data) and the database check
 ├── CHANGELOG.md   What changed, newest first
@@ -330,7 +330,13 @@ the Browser tab looks in the name, description, use, country, category and regio
 The category and region filters show their words in the language of the page, in that language's
 alphabetical order (`regions.*` and `categories.*` in the translation files; the option's value
 stays the CSV's word). The **Sort by** menu orders the cards by name, width, height or area, smallest
-first; ties keep the catalog order, and the choice goes into the address like the filters.
+first, and **Reverse order** turns any of them round (largest first, Z to A); ties keep the catalog
+order, and both choices go into the address like the filters. The category filter of the Paper Types
+tab is translated the same way (`paperCategories.*`).
+
+The comparison table shows at most 100 rows and says so («Showing 100 of 213 matching formats»)
+when more formats match. Choosing a format in the converter lists the five formats closest to it in
+size; picking one makes it the target.
 
 The address keeps what you are looking at, so you can share it:
 `app/index.html#tab=converter&from=A4&to=Letter`. It holds the tab, the
@@ -338,6 +344,10 @@ language (unless English), the search boxes and the filters (`url-state.js`
 lists the keys). The **Download CSV** button saves the formats on screen, with
 the same columns as the catalogs plus `region`, in UTF-8 with a byte order mark so a
 spreadsheet reads accents correctly.
+
+The page keeps its styles in `app/demo.css` and its script in `app/demo.js`: `index.html` has no
+inline `<style>`, `<script>`, `style` attribute or event handler, so it can be served with a content
+security policy that forbids them (`tests/demo.test.js` checks it).
 
 Printing the page prints the results only (no tabs, filters or language picker).
 

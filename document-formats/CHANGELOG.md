@@ -5,6 +5,13 @@ carries the details. Dates are those of the merge.
 
 ## Unreleased
 
+- Demo: `index.html` keeps no inline CSS or JavaScript (now `app/demo.css` and `app/demo.js`), the
+  Paper Types categories are translated (`paperCategories.*`), the comparison says when it cuts the
+  list at 100 rows, **Reverse order** next to **Sort by**, and the converter lists the five closest
+  formats to the one chosen. 13 new strings per language, 182 in all.
+- `docs/frontend_implementation_guide.md` no longer defines its own `FormatConverter`: it uses the
+  library's, and a test stops a guide from redeclaring a library class.
+
 - Demo: searching ignores case and Latin accents (`normalizeText()`, also used by `FormatSearcher`),
   the Browser tab's search also looks in country, category and region, the category and region
   filters and the card badges are translated (24 new strings per language: `regions.international`,

@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | xanh Alice | `#F0F8FF` |  | Bình yên, tươi mát và sạch sẽ; cảm giác nhẹ nhàng và thoáng rộng. | Sự trong sạch và thanh bình của cõi trời; gắn với bầu trời quang đãng và giao tiếp rõ ràng. | derivado | derivado |
 | `antiquewhite` | trắng cổ | `#FAEBD7` |  | Hoài niệm, truyền thống và sự ấm áp dịu nhẹ; gợi nhớ phong cách cổ điển. | Ký ức và minh triết của quá khứ; sự thuần khiết đã nhuốm thời gian và những chu kỳ cổ xưa. | derivado | derivado |
-| `aqua` | xanh aqua | `#00FFFF` | `cyan` | Tươi mát, trong trẻo, năng lượng và cảm giác về nước sạch. | Nước sống và sự thanh tẩy; dòng chảy của trực giác và sự giao cảm với cõi vi tế. | derivado | derivado |
+| `aqua` | xanh aqua | `#00FFFF` | `cyan` | Tươi mát, trong trẻo, bình tĩnh và giao tiếp; gắn với kỹ thuật số và hiện đại. | Nước và sự thanh tẩy; sự minh mẫn của tâm trí và dòng chảy giao tiếp. | derivado | derivado |
 | `aquamarine` | xanh aquamarine | `#7FFFD4` |  | Sự tươi mát thư giãn, bình yên và sự lạc quan nhẹ nhàng. | Viên đá của người đi biển: bảo vệ trong các chuyến đi, dũng khí và sự sáng rõ về cảm xúc. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | xanh da trời | `#F0FFFF` |  | Bầu trời quang đãng, cởi mở, tự do và thanh bình. | Tầm cao tinh thần và sự trong sạch của bầu trời; điều thuộc về cõi trời và tâm trí rộng mở. | derivado | derivado |
 | `beige` | be | `#F5F5DC` |  | Trung tính, giản dị, ổn định và kín đáo. | Đất và sự khiêm nhường; cân bằng không cực đoan, đời sống thường nhật và sự bén rễ. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | đỏ gạch | `#B22222` |  | Sức mạnh, quyết tâm, sự ấm áp nồng đượm và căng thẳng. | Lửa lò rèn và lửa bếp; nỗ lực, hiến tế và lao động. | derivado | derivado |
 | `floralwhite` | trắng hoa | `#FFFAF0` |  | Mềm mại, tinh tế, thuần khiết và nhẹ nhàng. | Đóa hoa trắng: ngây thơ, khởi đầu và phúc lành của mùa xuân. | derivado | derivado |
 | `forestgreen` | xanh rừng | `#228B22` |  | Thiên nhiên, cân bằng, sức khỏe, bình tĩnh và sinh trưởng. | Khu rừng thiêng: sự sống, đổi mới và kết nối với đất. | derivado | derivado |
-| `fuchsia` | hoa vân anh | `#FF00FF` | `magenta` | Táo bạo, sáng tạo, lập dị và năng lượng tinh nghịch. | Chuyển hóa và phép thuật; sợi dây nối giữa vật chất và tinh thần. | derivado | derivado |
+| `fuchsia` | hoa vân anh | `#FF00FF` | `magenta` | Sáng tạo, táo bạo, mãnh liệt và năng lượng rộn ràng. | Chuyển hóa và tâm linh; sự kết nối giữa vật chất và vi tế. | derivado | derivado |
 | `gainsboro` | xám Gainsborough | `#DCDCDC` |  | Trung tính thanh nhã, sạch sẽ và bình tĩnh. | Trạng thái trung gian và cân bằng, không gánh nặng. | derivado | derivado |
 | `ghostwhite` | trắng ma | `#F8F8FF` |  | Nhẹ nhàng, bí ẩn tinh tế và sự lạnh lẽo rực sáng. | Điều thanh khiết như ê-te và bóng ma; sự hiện diện tinh tế giữa hai thế giới. | derivado | derivado |
 | `gold` | vàng kim | `#FFD700` |  | Thành công, giàu có, uy tín, lạc quan và ấm áp. | Mặt trời và sự hoàn hảo; giác ngộ, quyền lực, minh triết và thần thánh trong nhiều truyền thống. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

@@ -62,3 +62,11 @@ test('the methods the examples call on library classes exist', () => {
     }
     assert.deepEqual([...new Set(missing)], []);
 });
+
+test('no example declares a class with the name of a library class', () => {
+    // A guide that writes its own FormatConverter would teach an interface the library doesn't have.
+    const clashes = blocks.flatMap(({ file, line, code }) => [...code.matchAll(/\bclass\s+([A-Z]\w*)/g)]
+        .filter(m => typeof library[m[1]] === 'function')
+        .map(m => `${file}:${line}: class ${m[1]}`));
+    assert.deepEqual(clashes, []);
+});

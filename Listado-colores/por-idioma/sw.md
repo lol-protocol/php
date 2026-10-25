@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | bluu alice | `#F0F8FF` |  | Utulivu, uchangamfu na usafi; hisia ya wepesi na upana. | Usafi na amani ya mbinguni; unahusishwa na anga safi na mawasiliano wazi. | derivado | derivado |
 | `antiquewhite` | nyeupe ya kale | `#FAEBD7` |  | Kumbukumbu za zamani, mila na joto laini; huamsha hisia ya mambo ya kale. | Kumbukumbu na hekima ya zamani; usafi ulioiva kwa wakati na mizunguko ya kale. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Uchangamfu, uwazi, nguvu na hisia ya maji safi. | Maji hai na utakaso; mtiririko wa angavu na mawasiliano na yasiyoonekana. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Uchangamfu, uwazi, utulivu na mawasiliano; unahusishwa na dijitali na wa kisasa. | Maji na utakaso; uwazi wa akili na mtiririko wa mawasiliano. | derivado | derivado |
 | `aquamarine` | akwamarini | `#7FFFD4` |  | Uchangamfu wa kutuliza, amani na matumaini mepesi. | Jiwe la mabaharia: ulinzi safarini, ujasiri na uwazi wa hisia. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | bluu ya anga | `#F0FFFF` |  | Anga safi, uwazi wa moyo, uhuru na utulivu. | Kimo cha kiroho na usafi wa anga; yale ya mbinguni na akili iliyo wazi. | derivado | derivado |
 | `beige` | beige | `#F5F5DC` |  | Kutoegemea, urahisi, utulivu na unyenyekevu. | Ardhi na unyenyekevu; usawa bila kupita kiasi, maisha ya kila siku na kuota mizizi. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | nyekundu ya matofali | `#B22222` |  | Nguvu, azimio, joto kali na mvutano. | Moto wa karakana ya uhunzi na wa jiko; juhudi, kafara na kazi. | derivado | derivado |
 | `floralwhite` | nyeupe ya maua | `#FFFAF0` |  | Ulaini, ulaini maridadi, usafi na wepesi. | Ua jeupe: kutokuwa na hatia, mwanzo na baraka ya majira ya kuchipua. | derivado | derivado |
 | `forestgreen` | kijani cha msitu | `#228B22` |  | Asili, usawa, afya, utulivu na ukuaji. | Msitu mtakatifu: uhai, upya na uhusiano na ardhi. | derivado | derivado |
-| `fuchsia` | fuksia | `#FF00FF` | `magenta` | Ujasiri, ubunifu, upekee wa kipekee na nguvu ya kucheza. | Mabadiliko na uchawi; kiungo kati ya kimwili na kiroho. | derivado | derivado |
+| `fuchsia` | fuksia | `#FF00FF` | `magenta` | Ubunifu, ujasiri, ukali na nguvu inayopiga mdundo. | Mabadiliko na kiroho; uhusiano kati ya kimwili na hafifu. | derivado | derivado |
 | `gainsboro` | kijivu cha gainsboro | `#DCDCDC` |  | Kutoegemea kwa kupendeza, usafi na utulivu. | Hali ya kati na usawa, bila mzigo. | derivado | derivado |
 | `ghostwhite` | nyeupe ya mzimu | `#F8F8FF` |  | Wepesi, fumbo hafifu na ubaridi ung'aao. | Yasiyo ya kimwili na yanayofanana na mzimu; uwepo hafifu kati ya ulimwengu mbili. | derivado | derivado |
 | `gold` | dhahabu | `#FFD700` |  | Mafanikio, utajiri, heshima, matumaini na joto. | Jua na ukamilifu; mwanga wa ufahamu, nguvu, hekima na uungu katika mila nyingi. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

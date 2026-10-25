@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | azul alicia | `#F0F8FF` |  | Calma, frescura y limpieza; sensación de ligereza y amplitud. | Pureza celestial y serenidad; asociado al cielo despejado y a la comunicación clara. | derivado | derivado |
 | `antiquewhite` | blanco antiguo | `#FAEBD7` |  | Nostalgia, tradición y calidez suave; evoca lo vintage. | Memoria y sabiduría de lo pasado; pureza envejecida y ciclos antiguos. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Frescura, claridad, energía y sensación de agua limpia. | Agua viva y purificación; flujo de la intuición y de la comunicación con lo sutil. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Frescura, claridad, calma y comunicación; asociado a lo digital y moderno. | Agua y purificación; claridad mental y flujo de la comunicación. | derivado | derivado |
 | `aquamarine` | aguamarina | `#7FFFD4` |  | Frescura relajante, calma y optimismo ligero. | Piedra de los marineros: protección en los viajes, valor y claridad emocional. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | azur | `#F0FFFF` |  | Cielo despejado, apertura, libertad y serenidad. | Altura espiritual y pureza del cielo; lo celestial y la mente abierta. | derivado | derivado |
 | `beige` | beis | `#F5F5DC` |  | Neutralidad, sencillez, estabilidad y discreción. | Tierra y humildad; equilibrio sin extremos, la vida cotidiana y el arraigo. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | ladrillo | `#B22222` |  | Fuerza, determinación, calidez intensa y tensión. | Fuego de la forja y del hogar; esfuerzo, sacrificio y trabajo. | derivado | derivado |
 | `floralwhite` | blanco floral | `#FFFAF0` |  | Suavidad, delicadeza, pureza y ligereza. | Flor blanca: inocencia, comienzos y bendición de la primavera. | derivado | derivado |
 | `forestgreen` | verde bosque | `#228B22` |  | Naturaleza, equilibrio, salud, calma y crecimiento. | Bosque sagrado: vida, renovación y conexión con la tierra. | derivado | derivado |
-| `fuchsia` | fucsia | `#FF00FF` | `magenta` | Audacia, creatividad, excentricidad y energía lúdica. | Transformación y magia; vínculo entre lo material y lo espiritual. | derivado | derivado |
+| `fuchsia` | fucsia | `#FF00FF` | `magenta` | Creatividad, audacia, intensidad y energía vibrante. | Transformación y espiritualidad; conexión entre lo material y lo sutil. | derivado | derivado |
 | `gainsboro` | gris Gainsboro | `#DCDCDC` |  | Neutralidad elegante, limpieza y calma. | Estado intermedio y de equilibrio, sin carga. | derivado | derivado |
 | `ghostwhite` | blanco fantasma | `#F8F8FF` |  | Ligereza, misterio sutil y frialdad luminosa. | Lo etéreo y lo espectral; presencia sutil entre dos mundos. | derivado | derivado |
 | `gold` | oro | `#FFD700` |  | Éxito, riqueza, prestigio, optimismo y calidez. | Sol y perfección; iluminación, poder, sabiduría y lo divino en muchas tradiciones. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

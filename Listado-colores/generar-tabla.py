@@ -41,6 +41,7 @@ sys.path.insert(0, str(CARPETA))
 import ambiguedad  # noqa: E402  (módulos de esta carpeta)
 import auditoria  # noqa: E402
 import categorias  # noqa: E402
+import cobertura  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
@@ -55,6 +56,7 @@ EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
 CATEGORIAS = CARPETA / "categorias.csv"
 CATEGORIAS_MD = CARPETA / "categorias.md"
+COBERTURA = CARPETA / "cobertura.md"
 REVISIONES = CARPETA / "revisiones.csv"
 REVISIONES_MD = CARPETA / "revisiones.md"
 VISOR_PLANTILLA = CARPETA / "visor-plantilla.html"
@@ -415,6 +417,22 @@ def alias_de(anotada):
     return alias
 
 
+def validar_alias(anotada, traducidos, errores):
+    """Dos colores con el mismo hex (aqua y cyan, gray y grey) dicen lo mismo: los dos significados, en español y en cada idioma."""
+    significados = {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"]) for f in traducidos}
+    for nombre, otros in alias_de(anotada).items():
+        for otro, _ in otros:
+            if nombre >= otro:  # cada par una vez
+                continue
+            propio = next(f for f in anotada if f["nombre_ingles"] == nombre)
+            ajeno = next(f for f in anotada if f["nombre_ingles"] == otro)
+            if (propio["significado_psicologico"], propio["significado_mistico"]) != (ajeno["significado_psicologico"], ajeno["significado_mistico"]):
+                errores.append(f"colores.csv: {nombre} y {otro} tienen el mismo hex y deben tener los mismos significados en español")
+            distintos = sorted(i for (i, n), par in significados.items() if n == nombre and par != significados.get((i, otro)))
+            if distintos:
+                errores.append(f"significados-idiomas.csv: {nombre} y {otro} tienen el mismo hex y deben tener los mismos significados; difieren en {', '.join(distintos)}")
+
+
 def cercania_de(delta, mismo_hex):
     if mismo_hex:
         return "exacto"
@@ -642,23 +660,37 @@ def comprobar_o_escribir(base, archivos, comprobar, sobrantes=()):
     return []
 
 
+def leer_todos():
+    """Lee los nueve CSV. Si varios están mal (cabecera inesperada, fila con campos de más o de menos), los cuenta todos."""
+    fallos, leidos = [], {}
+    pedidos = (("anotada", leer, (ANOTADA, COLUMNAS_ANOTADA)), ("completa", leer_completa, ()),
+               ("traducidos", leer, (SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)), ("lexico", leer, (LEXICO, COLUMNAS_LEXICO)),
+               ("referencias", leer, (REFERENCIAS, COLUMNAS_REFERENCIAS)), ("evidencia", leer, (EVIDENCIA, COLUMNAS_EVIDENCIA)),
+               ("culturales", leer, (CULTURALES, COLUMNAS_CULTURALES)), ("gramaticales", leer, (CATEGORIAS, categorias.COLUMNAS)),
+               ("revisiones", leer, (REVISIONES, revision.COLUMNAS)))
+    for nombre, lector, argumentos in pedidos:
+        try:
+            leidos[nombre] = lector(*argumentos)
+        except SystemExit as salida:
+            fallos.append(str(salida.code))
+    if fallos:
+        sys.exit("No se pudieron leer los CSV:\n  " + "\n  ".join(fallos))
+    return leidos
+
+
 def main():
-    anotada = leer(ANOTADA, COLUMNAS_ANOTADA)
+    leidos = leer_todos()
+    anotada, completa, traducidos, lexico = leidos["anotada"], leidos["completa"], leidos["traducidos"], leidos["lexico"]
+    referencias, evidencia_filas, culturales = leidos["referencias"], leidos["evidencia"], leidos["culturales"]
+    gramaticales, revisiones = leidos["gramaticales"], leidos["revisiones"]
     fallos = colorimetria.autoprueba()
     if fallos:
         sys.exit(f"colorimetria.py: CIEDE2000 no coincide con {len(fallos)} vectores de Sharma et al.: {fallos[:2]}")
-    completa = leer_completa()
-    traducidos = leer(SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)
-    lexico = leer(LEXICO, COLUMNAS_LEXICO)
-    referencias = leer(REFERENCIAS, COLUMNAS_REFERENCIAS)
-    evidencia_filas = leer(EVIDENCIA, COLUMNAS_EVIDENCIA)
-    culturales = leer(CULTURALES, COLUMNAS_CULTURALES)
-    gramaticales = leer(CATEGORIAS, categorias.COLUMNAS)
-    revisiones = leer(REVISIONES, revision.COLUMNAS)
     errores = []
     validar_anotada(anotada, errores)
     validar_completa(completa, errores)
     validar_significados(traducidos, anotada, errores)
+    validar_alias(anotada, traducidos, errores)
     validar_lexico(lexico, anotada, completa, errores)
     ids = validar_referencias(referencias, errores)
     usadas = set()
@@ -724,7 +756,8 @@ def main():
         AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
         AUDITORIA: auditoria.informe(completa),
         CATEGORIAS_MD: categorias.informe(gramaticales, IDIOMAS),
-        REVISIONES_MD: revision.informe(revisiones, revisable, IDIOMAS),
+        COBERTURA: cobertura.informe(IDIOMAS, anotada, lexico, gramaticales, CONCEPTOS, datos["hex_concepto"]),
+        REVISIONES_MD: revision.informe(revisiones, revisable, IDIOMAS, revision.huellas(datos)),
         VISOR: revision.visor_html(datos, VISOR_PLANTILLA.read_text(encoding="utf-8")),
         COMPLETA: completa_texto,
         DIR_EXPORTES / "colores.jsonl": jsonl,

@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | albastru alice | `#F0F8FF` |  | Calm, prospețime și curățenie; o senzație de ușurință și de spațiu. | Puritate cerească și seninătate; asociat cu cerul senin și cu comunicarea limpede. | derivado | derivado |
 | `antiquewhite` | alb antic | `#FAEBD7` |  | Nostalgie, tradiție și căldură blândă; evocă stilul vintage. | Memoria și înțelepciunea trecutului; puritate îmbătrânită și cicluri străvechi. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Prospețime, claritate, energie și senzația de apă curată. | Apă vie și purificare; curgerea intuiției și a comunicării cu subtilul. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Prospețime, claritate, calm și comunicare; asociat cu digitalul și modernul. | Apă și purificare; claritate mentală și fluxul comunicării. | derivado | derivado |
 | `aquamarine` | acvamarin | `#7FFFD4` |  | Prospețime relaxantă, calm și optimism ușor. | Piatra marinarilor: protecție în călătorii, curaj și claritate emoțională. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | azuriu | `#F0FFFF` |  | Cer senin, deschidere, libertate și seninătate. | Înălțime spirituală și puritatea cerului; cereștile și mintea deschisă. | derivado | derivado |
 | `beige` | bej | `#F5F5DC` |  | Neutralitate, simplitate, stabilitate și discreție. | Pământ și smerenie; echilibru fără extreme, viața de zi cu zi și înrădăcinare. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | cărămiziu | `#B22222` |  | Forță, hotărâre, căldură intensă și tensiune. | Focul fierăriei și al vetrei; efort, sacrificiu și muncă. | derivado | derivado |
 | `floralwhite` | alb floral | `#FFFAF0` |  | Blândețe, delicatețe, puritate și ușurință. | Floare albă: nevinovăție, început și binecuvântarea primăverii. | derivado | derivado |
 | `forestgreen` | verde pădure | `#228B22` |  | Natură, echilibru, sănătate, calm și creștere. | Pădure sacră: viață, reînnoire și legătura cu pământul. | derivado | derivado |
-| `fuchsia` | fucsia | `#FF00FF` | `magenta` | Îndrăzneală, creativitate, excentricitate și energie jucăușă. | Transformare și magie; legătura dintre material și spiritual. | derivado | derivado |
+| `fuchsia` | fucsia | `#FF00FF` | `magenta` | Creativitate, îndrăzneală, intensitate și energie vibrantă. | Transformare și spiritualitate; legătura dintre material și subtil. | derivado | derivado |
 | `gainsboro` | gri Gainsborough | `#DCDCDC` |  | Neutralitate elegantă, curățenie și calm. | Stare intermediară de echilibru, fără povară. | derivado | derivado |
 | `ghostwhite` | alb fantomă | `#F8F8FF` |  | Ușurință, mister subtil și răcoare luminoasă. | Eterul și spectrul; prezență subtilă între două lumi. | derivado | derivado |
 | `gold` | auriu | `#FFD700` |  | Succes, bogăție, prestigiu, optimism și căldură. | Soare și perfecțiune; iluminare, putere, înțelepciune și divinul în multe tradiții. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

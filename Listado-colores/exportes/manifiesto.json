@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "idiomas": [
     "en",
     "es",
@@ -36,12 +36,12 @@
     {
       "archivo": "colores.csv",
       "filas": 148,
-      "sha256": "18a73a729e5d07bcc5d76016f601457a462f00290c4d0cc484cee1cce132c2a6"
+      "sha256": "63023178d255992bc50f4357676b1a27980d9235f39c8f92ec01f7d7d6c79d55"
     },
     {
       "archivo": "significados-idiomas.csv",
       "filas": 4292,
-      "sha256": "8e7f61fa808c0da9ba2d66c62b4edf5d0bc686896139b233fda7377842d31cf8"
+      "sha256": "1cbb028ad6d8db8368b163f48fc27cf75da2c5ae0b530ed719aae1358d0e5a98"
     },
     {
       "archivo": "lexico-basico.csv",
@@ -78,7 +78,7 @@
     {
       "archivo": "exportes/colores.jsonl",
       "filas": 148,
-      "sha256": "42e25484e95b37962b8c9f92337ec8683843c6659a414e0a7c924087445a8a86"
+      "sha256": "3cb25c553e96b4bd14ad03742603d7afd513cd347622a2d23007652215d6edb6"
     },
     {
       "archivo": "exportes/gazetteer.tsv",
@@ -94,7 +94,7 @@
         "forma_normalizada",
         "categorias"
       ],
-      "sha256": "fad728b6fc70b56583082972bd4f1b08a0da720d47b991c38874969e45a18c7d"
+      "sha256": "29be744798556870c0d5f6729f053887b8af9c6bc726b55814c398c45654ee59"
     },
     {
       "archivo": "exportes/spacy/en.jsonl",

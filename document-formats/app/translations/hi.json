@@ -106,6 +106,17 @@
     "international": "अंतरराष्ट्रीय",
     "label": "लेबल"
   },
+  "paperCategories": {
+    "cardstock": "कार्डस्टॉक",
+    "coated": "कोटेड",
+    "decorative": "सजावटी",
+    "packaging": "पैकेजिंग",
+    "photo": "फ़ोटो",
+    "recycled": "पुनर्चक्रित",
+    "specialty": "विशेष",
+    "technical": "तकनीकी",
+    "writingPrinting": "लेखन और छपाई"
+  },
   "measurementSystems": {
     "metric": "मीट्रिक",
     "imperial": "इम्पीरियल",
@@ -176,6 +187,10 @@
     "sortWidth": "चौड़ाई",
     "sortHeight": "ऊँचाई",
     "sortArea": "क्षेत्रफल",
+    "sortReverse": "क्रम उलटें",
+    "compareShown": "{count} मिलते फ़ॉर्मैट में से {shown} दिखाए जा रहे हैं",
+    "closestTitle": "{format} के सबसे क़रीबी फ़ॉर्मैट",
+    "useAsTarget": "{format} ({percent}% समान) को लक्ष्य फ़ॉर्मैट बनाएँ",
     "aboutTitle": "इस डेटाबेस के बारे में",
     "aboutIntro": "इस व्यापक दस्तावेज़ फ़ॉर्मैट डेटाबेस में शामिल हैं:",
     "aboutFormats": "कई श्रेणियों में {count} फ़ॉर्मैट",

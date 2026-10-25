@@ -106,6 +106,17 @@
     "international": "Internationaal",
     "label": "Etiketten"
   },
+  "paperCategories": {
+    "cardstock": "Karton",
+    "coated": "Gestreken",
+    "decorative": "Decoratief",
+    "packaging": "Verpakking",
+    "photo": "Foto",
+    "recycled": "Gerecycled",
+    "specialty": "Speciaal",
+    "technical": "Technisch",
+    "writingPrinting": "Schrijf- en drukpapier"
+  },
   "measurementSystems": {
     "metric": "Metrisch",
     "imperial": "Brits-Amerikaans",
@@ -176,6 +187,10 @@
     "sortWidth": "Breedte",
     "sortHeight": "Hoogte",
     "sortArea": "Oppervlakte",
+    "sortReverse": "Volgorde omkeren",
+    "compareShown": "{shown} van {count} passende formaten getoond",
+    "closestTitle": "Formaten die het meest op {format} lijken",
+    "useAsTarget": "{format} ({percent}% overeenkomst) als doelformaat gebruiken",
     "aboutTitle": "Over deze database",
     "aboutIntro": "Deze uitgebreide database van documentformaten bevat:",
     "aboutFormats": "{count} formaten in meerdere categorieën",

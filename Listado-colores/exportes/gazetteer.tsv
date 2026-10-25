@@ -1350,7 +1350,7 @@ greenyellow	en	css	identificador	greenyellow	#ADFF2F		greenyellow
 grená	pt	lexico	lema	maroon	#800000		grena	
 grey	en	css	forma_natural	grey	#808080		grey	ADJ,NOUN,VERB
 grey	en	css	identificador	grey	#808080		grey	ADJ,NOUN,VERB
-grey	en	lexico	variante	gray	#808080	region=GB	grey	
+grey	en	lexico	variante	gray	#808080	region=GB	grey	ADJ,NOUN,VERB
 gri	ro	css	nombre	gray	#808080		gri	
 gri	ro	css	nombre	grey	#808080		gri	
 gri	ro	lexico	lema	gray	#808080		gri	
@@ -1394,7 +1394,7 @@ grijs	nl	css	nombre	grey	#808080		grijs
 grijs	nl	lexico	lema	gray	#808080		grijs	
 grijze	nl	lexico	flexion	gray	#808080	Terminacion=-e	grijze	
 gris	es	css	nombre	gray	#808080		gris	ADJ,NOUN
-gris	es	css	nombre	grey	#808080		gris	
+gris	es	css	nombre	grey	#808080		gris	ADJ,NOUN
 gris	es	lexico	lema	gray	#808080		gris	ADJ,NOUN
 gris	fr	css	nombre	gray	#808080		gris	
 gris	fr	css	nombre	grey	#808080		gris	

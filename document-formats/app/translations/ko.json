@@ -106,6 +106,17 @@
     "international": "국제",
     "label": "라벨"
   },
+  "paperCategories": {
+    "cardstock": "카드스톡",
+    "coated": "코팅지",
+    "decorative": "장식용",
+    "packaging": "포장용",
+    "photo": "사진용",
+    "recycled": "재생지",
+    "specialty": "특수지",
+    "technical": "기술용",
+    "writingPrinting": "필기·인쇄용"
+  },
   "measurementSystems": {
     "metric": "미터법",
     "imperial": "야드파운드법",
@@ -176,6 +187,10 @@
     "sortWidth": "너비",
     "sortHeight": "높이",
     "sortArea": "면적",
+    "sortReverse": "순서 뒤집기",
+    "compareShown": "일치하는 규격 {count}개 중 {shown}개 표시",
+    "closestTitle": "{format}과(와) 가장 가까운 규격",
+    "useAsTarget": "{format}(유사도 {percent}%)을(를) 대상 규격으로 사용",
     "aboutTitle": "이 데이터베이스 소개",
     "aboutIntro": "이 종합 문서 규격 데이터베이스에는 다음이 포함되어 있습니다.",
     "aboutFormats": "여러 카테고리에 걸친 규격 {count}개",

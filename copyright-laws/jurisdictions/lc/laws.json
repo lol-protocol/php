@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "LC",
+    "country_name": "Saint Lucia",
+    "region": "americas",
+    "law_name": "Copyright Act, Chapter 13.07 (Act No. 10 of 1995, as amended by Act No. 7 of 2000), 2015 Revised Edition",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (end of calendar year of death, s. 9(1)); unknown authorship 50 years from first availability to the public (s. 9(2))",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Moral rights recognized (ss. 14-18): attribution, integrity and related rights last as long as copyright; right against false attribution (s. 16) lasts 20 years after death (s. 18)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (registration only of collecting societies under 2000 amendment; unconfirmed)",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/20382",
+    "notes": "In force 1 Oct 1996. Berne since 24 Aug 1993, WTO 1 Jan 1995; Commons also lists a WIPO treaty on 6 Mar 2002 without naming WCT or WPPT. 2000 amendment added collective societies and performers' moral rights. Section 16 is cited as the 20-year right in search summary; check numbering.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://www.attorneygeneralchambers.com/laws-of-saint-lucia/copyright-act/section-9",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "moral_rights": {
+        "url": "https://attorneygeneralchambers.com/laws-of-saint-lucia/copyright-act/section-18",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "registration_required": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/20382",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Saint_Lucia.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
