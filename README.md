@@ -1,6 +1,6 @@
 # lol-protocol/php
 
-Este repositorio aloja varios proyectos independientes, cada uno en su propia carpeta.
+Este repositorio aloja varios proyectos independientes, cada uno en su propia carpeta. Buena parte del desarrollo lo hacen sesiones de [Claude Code](https://claude.com/claude-code); [`CLAUDE.md`](CLAUDE.md) tiene las reglas que siguen (un PR por carpeta, cómo evitar que dos sesiones choquen, qué pruebas corre cada proyecto) y también sirve de guía para quien contribuya a mano.
 
 > **Antes de tocar cualquier cosa que muestre datos de personas**, lee
 > [`PRIVACIDAD-Y-HONRA.md`](PRIVACIDAD-Y-HONRA.md): por qué la privacidad y la
