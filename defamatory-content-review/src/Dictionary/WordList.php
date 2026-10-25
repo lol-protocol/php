@@ -37,22 +37,23 @@ class WordList
         }
     }
 
-    /** @param array<string,mixed> $data */
+    /** @param array<string,mixed> $data nameCollision: también apellido o nombre legítimo; se registra, pero no basta para rechazar solo. `generated`: una forma de TopicInflector, que no pisa una entrada que ya tenga esa clave (con la clave plegada, «prasě» y «prase» son la misma). */
     private function addWord(array $data, string $category): void
     {
         $term = $data['word'] ?? '';
         if ($term === '') {
             return;
         }
-        // nameCollision: también apellido/nombre legítimo — se registra pero no basta para rechazar solo.
-        $this->index->set($this->normalize($term), [
+        $entry = [
+            'generated' => (bool) ($data['generated'] ?? false),
             'original' => $term,
             'category' => $category,
             'riskType' => $data['riskType'] ?? 'ordinario',
             'severity' => $data['severity'] ?? 'medium',
             'nameCollision' => $data['nameCollision'] ?? false, 'ambiguous' => $data['ambiguous'] ?? false,
             'targeted' => $data['targeted'] ?? null, 'whenTargeted' => $data['whenTargeted'] ?? null, // ver TargetContext
-        ]);
+        ];
+        $this->index->set($this->normalize($term), $entry, (bool) ($data['generated'] ?? false));
     }
 
     /** Minúsculas + diacríticos + leet + separadores intercalados + variantes de script ("ΜΑΛΑΚΑΣ", "козел", "مـدمـن"), para que todas lleguen a la misma clave. Conserva espacios internos (entradas multipalabra). */

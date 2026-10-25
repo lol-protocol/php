@@ -77,7 +77,9 @@ final class WordListPhonetics
         if ($this->index === null) {
             $this->index = [];
             foreach ($words as $word) {
-                $this->index[$this->fusionFold($word['original'])] ??= $word;
+                if (!($word['generated'] ?? false)) { // un nombre no se declina: las formas generadas solo multiplicarían el índice
+                    $this->index[$this->fusionFold($word['original'])] ??= $word;
+                }
             }
         }
 

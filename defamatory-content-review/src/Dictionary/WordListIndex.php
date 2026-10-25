@@ -8,7 +8,7 @@ namespace DefamatoryContentReview\Dictionary;
  * WordList — separado porque cargar el diccionario y consultar el índice
  * ya cargado son dos momentos distintos.
  *
- * @phpstan-type WordEntry array{original: string, category: string, riskType: string, severity: string, nameCollision: bool, ambiguous: bool, targeted: ?bool, whenTargeted: ?string}
+ * @phpstan-type WordEntry array{original: string, category: string, riskType: string, severity: string, nameCollision: bool, ambiguous: bool, targeted: ?bool, whenTargeted: ?string, generated?: bool}
  */
 final class WordListIndex
 {
@@ -17,9 +17,13 @@ final class WordListIndex
     /** @var array<string,WordEntry> las entradas de varias palabras, escritas pegadas («hijodeputa») */
     private array $glued = [];
 
-    /** @param WordEntry $data */
-    public function set(string $key, array $data): void
+    /** @param WordEntry $data
+     * @param bool $keepExisting no reemplaza una entrada que ya está con esa clave */
+    public function set(string $key, array $data, bool $keepExisting = false): void
     {
+        if ($keepExisting && isset($this->words[$key])) {
+            return;
+        }
         $this->words[$key] = $data;
         if (str_contains($key, ' ')) {
             $this->glued[str_replace(' ', '', $key)] ??= $data;
