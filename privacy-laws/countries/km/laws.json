@@ -1,0 +1,82 @@
+[
+  {
+    "country_code": "KM",
+    "country_name": "Comoros",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data",
+    "jurisdiction": "National Authority for the Protection of Personal Data (not yet constituted)",
+    "enactment_date": "2021-06-29",
+    "effective_date": "2021-06-29",
+    "scope": "Data subjects in Comoros (extraterritorial: offering goods/services to or monitoring people in Comoros)",
+    "applies_to": "Controllers and processors in Comoros and abroad targeting Comoros residents",
+    "key_requirements": "Transparency notice at collection; data subject rights of access, rectification and deletion; breach notification to the Authority within 72 hours",
+    "data_categories": "Personal data (sensitive categories unverified) (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Authority for the Protection of Personal Data (not formally constituted as of 2024-2025)",
+    "penalties_range": "Not specified",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://consentstack.io/regulations/km-dpl",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Some sources instead cite an undated 2014 Ministry of Justice text (26 June 2014); dataprotection.africa factsheet claims no comprehensive law. Official Journal text not located; regulator not operational so enforcement is theoretical.; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://consentstack.io/regulations/km-dpl",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://consentstack.io/regulations/km-dpl",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

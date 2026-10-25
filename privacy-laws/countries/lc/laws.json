@@ -1,0 +1,102 @@
+[
+  {
+    "country_code": "LC",
+    "country_name": "Saint Lucia",
+    "region": "americas",
+    "law_name": "Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015",
+    "jurisdiction": "Data Protection Commissioner (s. 5)",
+    "enactment_date": "2011-04-06",
+    "effective_date": "2023-01-31",
+    "scope": "Data subjects (individuals) whose personal data is processed",
+    "applies_to": "Data controllers and processors",
+    "key_requirements": "Express consent of the data subject before processing; notification of processing by controllers; access requests answered within 30 days (ss. 52-53); direct-marketing stop right (s. 57)",
+    "data_categories": "Personal data; sensitive personal data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Commissioner",
+    "penalties_range": "General offence: fine up to XCD 10000 for individuals and up to XCD 100000 for bodies corporate",
+    "exemptions": "Part VI: national security, crime and taxation, health and social work, regulatory activities, journalism literature and art, research history and statistics (s. 63), publicly available information; s. 65 legal disclosures",
+    "deceased_data": "",
+    "research_exemption": "Part VI exempts research, history and statistics (s. 63)",
+    "genetic_data": "",
+    "website_url": "https://attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/act",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Only partly in force: S.I. 4/2023 commenced Part I, ss. 32-43, Part VI and Schedule 2 (a)-(g) on 31 Jan 2023. Part II (Commissioner) not listed as commenced. Amending Act 2 of 2015 in force 13 Apr 2015 added privacy impact assessments.; Only partly in force: S.I. 4/2023 brought into force Part I, ss. 32-43 of Part III, Part VI and Schedule 2(a)-(g) on 31 Jan 2023. Commissioner provisions (Part 2) not confirmed commenced. Amendment Act 2 of 2015 dated 13 Apr 2015.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/act",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/act",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/sites/default/files/act_11_of_2011.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/act",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.dataguidance.com/jurisdiction/saint-lucia",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.dataguidance.com/jurisdiction/saint-lucia",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://www.dataguidance.com/jurisdiction/saint-lucia",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://www.dataguidance.com/jurisdiction/saint-lucia",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/jurisdiction/saint-lucia",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://www.attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/section-71",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "exemptions": {
+        "url": "https://www.attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/section-65",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "research_exemption": {
+        "url": "https://www.attorneygeneralchambers.com/laws-of-saint-lucia/data-protection-act/section-65",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
