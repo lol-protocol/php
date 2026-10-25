@@ -18,7 +18,7 @@
     "deceased_data": "",
     "research_exemption": "",
     "genetic_data": "",
-    "website_url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
+    "website_url": "https://dataprotection.africa/?p=19758",
     "language": "English",
     "frameworks": "",
     "frameworks_not": "",
@@ -29,23 +29,8 @@
     "confidence": "medium",
     "last_checked": "2026-10-25",
     "sources": {
-      "law_name": {
-        "url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
-        "confidence": "high",
-        "checked": "2026-10-25"
-      },
-      "jurisdiction": {
-        "url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
-        "confidence": "high",
-        "checked": "2026-10-25"
-      },
       "enactment_date": {
         "url": "https://dataprotection.africa/?p=19758",
-        "confidence": "medium",
-        "checked": "2026-10-25"
-      },
-      "effective_date": {
-        "url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
         "confidence": "medium",
         "checked": "2026-10-25"
       },
@@ -59,19 +44,9 @@
         "confidence": "medium",
         "checked": "2026-10-25"
       },
-      "key_requirements": {
-        "url": "https://www.esccom.org.sz/publications/notices/docs/Notice 8.pdf",
-        "confidence": "medium",
-        "checked": "2026-10-25"
-      },
       "data_categories": {
         "url": "https://www.DataGuidance.com/jurisdiction/eswatini",
         "confidence": "low",
-        "checked": "2026-10-25"
-      },
-      "enforcement_authority": {
-        "url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
-        "confidence": "high",
         "checked": "2026-10-25"
       },
       "penalties_range": {
@@ -81,6 +56,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "website_url",
+        "from": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
+        "to": "https://dataprotection.africa/?p=19758"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

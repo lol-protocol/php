@@ -18,7 +18,7 @@
     "deceased_data": "",
     "research_exemption": "",
     "genetic_data": "",
-    "website_url": "https://www.parliament.gov.gy/new2/documents/bills/23718-bill_no._14_of_2023.pdf",
+    "website_url": "https://dpi.gov.gy/data-protection-bill-passed-in-national-assembly/",
     "language": "English",
     "frameworks": "",
     "frameworks_not": "",
@@ -76,6 +76,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "website_url",
+        "from": "https://www.parliament.gov.gy/new2/documents/bills/23718-bill_no._14_of_2023.pdf",
+        "to": "https://dpi.gov.gy/data-protection-bill-passed-in-national-assembly/"
+      },
       {
         "date": "2026-10-25",
         "field": "row",
