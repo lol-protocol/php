@@ -2,6 +2,8 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
+<div dir="rtl" lang="ur">
+
 ## Zodiaco occidental
 
 ### ♈ حمل
@@ -221,3 +223,5 @@
 فیاضی، خلوص اور محبت۔
 
 فیاضی اور زندگی کے لطف کا برج: روایت اس سے خلوص، خوش اخلاقی اور نیک دلی منسوب کرتی ہے، ساتھ ہی بھولپن بھی۔
+
+</div>

@@ -273,10 +273,17 @@ class PruebasDeSalidas(unittest.TestCase):
         cls.archivos = generar.esperados(cls.datos)
         cls.svgs = {ruta: texto for ruta, texto in cls.archivos.items() if ruta.suffix == ".svg"}
 
-    def test_hay_un_svg_por_signo_en_cada_variante(self):
-        ids = {s["id"] for s in self.datos["signos"]}
+    def test_hay_un_svg_por_signo_y_por_variante_de_idioma(self):
+        ids = {ident for s in self.datos["signos"] for ident, _ in generar.ilustraciones(s)}
+        self.assertIn("conejo-vi", ids)  # el Gato (Mèo) que el vietnamita pone en el lugar del Conejo
         for carpeta in (generar.SALIDA_SVG, generar.SALIDA_SVG_SIN_FONDO):
             self.assertEqual({p.stem for p in self.svgs if p.parent == carpeta}, ids, carpeta.name)
+
+    def test_los_svg_con_fondo_son_ligeros(self):
+        # El fondo de estrellas va en pocos trazos de puntos; un <circle> por estrella lo duplicaría.
+        for ruta, texto in self.svgs.items():
+            if ruta.parent == generar.SALIDA_SVG:
+                self.assertLess(len(texto.encode("utf-8")), 4500, ruta.name)
 
     def test_hay_una_ficha_por_idioma_y_un_indice(self):
         fichas = {p.stem for p in self.archivos if p.suffix == ".md"}
@@ -312,7 +319,7 @@ class PruebasDeSalidas(unittest.TestCase):
                 vistos[ident] = ruta.name
 
     def test_cada_svg_dibuja_una_estrella_por_punto_de_los_datos(self):
-        por_id = {s["id"]: s for s in self.datos["signos"]}
+        por_id = {ident: d for s in self.datos["signos"] for ident, d in generar.ilustraciones(s)}
         for ruta, texto in self.svgs.items():
             ultimo_grupo = list(ElementTree.fromstring(texto).iter(SVG_NS + "g"))[-1]
             self.assertEqual(len(list(ultimo_grupo)), len(por_id[ruta.stem]["constelacion"]["estrellas"]),
@@ -354,6 +361,135 @@ class PruebasDeSalidas(unittest.TestCase):
 
 # SHA-256 de "aries:fondo:0", ":1" y ":2", primeros 8 bytes / 2**64 (calculado aparte con sha256sum).
 PRIMEROS_NUMEROS = [0.255966, 0.36027, 0.556261]
+
+
+class PruebasDeAnioNuevo(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        with zodiaco.ANIO_NUEVO.open(encoding="utf-8") as f:
+            cls.crudas = json.load(f)["fechas"]
+
+    def test_la_tabla_pasa_la_validacion_y_cubre_1900_a_2099(self):
+        self.assertEqual(generar.validar_anio_nuevo(self.crudas), [])
+        self.assertEqual((min(map(int, self.crudas)), max(map(int, self.crudas))), (1900, 2099))
+
+    def test_fechas_conocidas_del_anio_nuevo(self):
+        casos = {1900: "1900-01-31", 1985: "1985-02-20", 2000: "2000-02-05", 2024: "2024-02-10",
+                 2025: "2025-01-29", 2026: "2026-02-17", 2034: "2034-02-19"}
+        for anio, fecha in casos.items():
+            self.assertEqual(self.crudas[str(anio)], fecha, anio)
+
+    def test_animal_de_una_fecha_cambia_el_dia_del_anio_nuevo(self):
+        casos = {(2026, 2, 16): ("serpiente", 2025), (2026, 2, 17): ("caballo", 2026),
+                 (2024, 2, 9): ("conejo", 2023), (2024, 2, 10): ("dragon", 2024),
+                 (1985, 2, 19): ("rata", 1984), (1985, 2, 20): ("buey", 1985),
+                 (1900, 1, 1): ("cerdo", 1899), (2099, 12, 31): ("cabra", 2099)}
+        for fecha, (animal, anio_lunar) in casos.items():
+            r = zodiaco.animal_chino_de_fecha(datetime.date(*fecha))
+            self.assertEqual((r["signo"]["id"], r["anio_lunar"]), (animal, anio_lunar), fecha)
+
+    def test_despues_de_febrero_coincide_con_animal_chino_del_mismo_anio(self):
+        for anio in range(1900, 2100):
+            self.assertEqual(zodiaco.animal_chino_de_fecha(datetime.date(anio, 3, 1))["signo"]["id"],
+                             zodiaco.animal_chino(anio)["signo"]["id"], anio)
+
+    def test_animal_de_fecha_rechaza_entradas_no_validas(self):
+        with self.assertRaises(ValueError):
+            zodiaco.animal_chino_de_fecha(datetime.date(2100, 3, 1))
+        with self.assertRaises(TypeError):
+            zodiaco.animal_chino_de_fecha("2026-02-17")
+
+    def test_la_validacion_detecta_una_fecha_fuera_de_la_ventana(self):
+        malas = dict(self.crudas, **{"2024": "2024-03-10"})
+        self.assertTrue(any("2024" in e for e in generar.validar_anio_nuevo(malas)))
+
+    def test_la_validacion_detecta_un_anio_que_falta(self):
+        malas = {k: v for k, v in self.crudas.items() if k != "1950"}
+        self.assertTrue(any("faltan" in e for e in generar.validar_anio_nuevo(malas)))
+
+
+class PruebasDeCuspide(unittest.TestCase):
+    def test_un_dia_del_cambio_es_cuspide(self):
+        for fecha, par in {(2024, 4, 19): ("aries", "tauro"), (2024, 4, 20): ("aries", "tauro"),
+                           (2024, 12, 22): ("sagitario", "capricornio"), (2025, 1, 19): ("capricornio", "acuario")}.items():
+            self.assertEqual(tuple(s["id"] for s in zodiaco.cuspide(datetime.date(*fecha))), par, fecha)
+
+    def test_lejos_del_cambio_no_es_cuspide(self):
+        self.assertIsNone(zodiaco.cuspide(datetime.date(2024, 4, 5)))
+        self.assertFalse(zodiaco.es_cuspide(datetime.date(2024, 4, 22)))
+
+    def test_el_margen_amplia_la_cuspide(self):
+        self.assertFalse(zodiaco.es_cuspide(datetime.date(2024, 4, 22)))
+        self.assertTrue(zodiaco.es_cuspide(datetime.date(2024, 4, 22), margen=3))
+
+    def test_el_sideral_tiene_sus_propias_cuspides(self):
+        self.assertTrue(zodiaco.es_cuspide(datetime.date(2024, 4, 14), sistema="sideral"))
+        self.assertFalse(zodiaco.es_cuspide(datetime.date(2024, 4, 14)))
+
+    def test_cuspide_rechaza_un_margen_no_valido(self):
+        for malo in (-1, 1.5, True):
+            with self.assertRaises(ValueError):
+                zodiaco.cuspide(datetime.date(2024, 4, 19), margen=malo)
+
+
+class PruebasDeIdiomas(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.datos = cargar_datos()
+        cls.archivos = generar.esperados(cls.datos)
+
+    def test_los_24_nombres_son_distintos_en_cada_idioma(self):
+        # Si Tauro y el Buey se llaman igual, quien lee no sabe de cuál se habla.
+        for codigo in generar.IDIOMAS:
+            nombres = [s["nombres"][codigo] for s in self.datos["signos"]]
+            repetidos = sorted({n for n in nombres if nombres.count(n) > 1})
+            self.assertEqual(repetidos, [], codigo)
+
+    def test_las_fichas_de_derecha_a_izquierda_van_en_un_div_rtl(self):
+        for codigo in generar.IDIOMAS:
+            ficha = self.archivos[generar.SALIDA_MD / f"{codigo}.md"]
+            if codigo in generar.DERECHA_A_IZQUIERDA:
+                self.assertIn(f'<div dir="rtl" lang="{codigo}">\n\n', ficha, codigo)
+                self.assertTrue(ficha.rstrip().endswith("</div>"), codigo)
+            else:
+                self.assertNotIn('dir="rtl"', ficha, codigo)
+
+    def test_la_validacion_detecta_una_variante_para_un_idioma_desconocido(self):
+        datos = copy.deepcopy(self.datos)
+        conejo = next(s for s in datos["signos"] if s["id"] == "conejo")
+        conejo["variantes"]["xx"] = conejo["variantes"]["vi"]
+        self.assertTrue(any("idioma desconocido" in e for e in generar.validar(datos)))
+
+    def test_la_ficha_vietnamita_y_la_galeria_usan_el_gato(self):
+        conejo = next(s for s in self.datos["signos"] if s["id"] == "conejo")
+        self.assertEqual(generar.archivo_svg(conejo, "vi"), "conejo-vi")
+        self.assertEqual(generar.archivo_svg(conejo, "es"), "conejo")
+
+
+class PruebasDeGaleria(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.datos = cargar_datos()
+        cls.html = generar.esperados(cls.datos)[generar.GALERIA]
+        cls.contenido = json.loads(re.search(r"const DATOS = (.*);\n", cls.html).group(1).replace("<\\/", "</"))
+
+    def test_trae_los_30_idiomas_y_los_24_signos(self):
+        self.assertEqual([c for c, _ in self.contenido["idiomas"]], list(generar.IDIOMAS))
+        self.assertEqual([s["id"] for s in self.contenido["signos"]], [s["id"] for s in self.datos["signos"]])
+
+    def test_cada_imagen_que_pide_existe(self):
+        for s in self.contenido["signos"]:
+            for codigo in generar.IDIOMAS:
+                nombre = s["archivos"].get(codigo, s["id"])
+                for carpeta in (generar.SALIDA_SVG, generar.SALIDA_SVG_SIN_FONDO):
+                    self.assertTrue((carpeta / f"{nombre}.svg").exists(), f"{carpeta.name}/{nombre}.svg")
+
+    def test_no_carga_nada_de_fuera(self):
+        self.assertNotRegex(self.html, r"https?://|<link\b|src=\"http")
+
+    def test_los_datos_no_cierran_el_script_antes_de_tiempo(self):
+        bloque = self.html.split("<script>", 1)[1].rsplit("</script>", 1)[0]
+        self.assertNotIn("</", bloque.replace("<\\/", ""))
 
 
 if __name__ == "__main__":

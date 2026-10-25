@@ -11,53 +11,15 @@
   </defs>
   <rect width="200" height="200" rx="14" fill="url(#fondo-sagitario)"/>
   <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
-  <g fill="#ffffff">
-    <circle cx="132.2" cy="31.6" r="0.71" fill-opacity="0.74"/>
-    <circle cx="76.0" cy="154.8" r="0.84" fill-opacity="0.66"/>
-    <circle cx="22.4" cy="121.2" r="0.79" fill-opacity="0.42"/>
-    <circle cx="172.3" cy="141.7" r="1.01" fill-opacity="0.34"/>
-    <circle cx="26.1" cy="101.9" r="0.99" fill-opacity="0.63"/>
-    <circle cx="84.8" cy="28.5" r="0.91" fill-opacity="0.47"/>
-    <circle cx="144.5" cy="43.1" r="0.65" fill-opacity="0.54"/>
-    <circle cx="84.6" cy="114.3" r="0.50" fill-opacity="0.75"/>
-    <circle cx="85.3" cy="121.8" r="0.80" fill-opacity="0.56"/>
-    <circle cx="97.3" cy="98.5" r="0.83" fill-opacity="0.64"/>
-    <circle cx="126.4" cy="42.1" r="1.08" fill-opacity="0.75"/>
-    <circle cx="170.0" cy="118.1" r="0.86" fill-opacity="0.29"/>
-    <circle cx="77.5" cy="132.4" r="0.78" fill-opacity="0.31"/>
-    <circle cx="51.4" cy="136.1" r="0.89" fill-opacity="0.42"/>
-    <circle cx="165.8" cy="53.8" r="0.94" fill-opacity="0.63"/>
-    <circle cx="109.3" cy="117.5" r="0.96" fill-opacity="0.69"/>
-    <circle cx="184.9" cy="43.3" r="0.49" fill-opacity="0.60"/>
-    <circle cx="185.4" cy="80.7" r="0.96" fill-opacity="0.42"/>
-    <circle cx="76.7" cy="18.9" r="0.77" fill-opacity="0.57"/>
-    <circle cx="40.4" cy="150.8" r="0.61" fill-opacity="0.36"/>
-    <circle cx="20.6" cy="104.7" r="0.81" fill-opacity="0.41"/>
-    <circle cx="130.0" cy="122.5" r="0.41" fill-opacity="0.75"/>
-    <circle cx="130.6" cy="40.1" r="0.41" fill-opacity="0.54"/>
-    <circle cx="163.1" cy="191.0" r="0.89" fill-opacity="0.38"/>
-    <circle cx="157.5" cy="189.0" r="0.94" fill-opacity="0.33"/>
-    <circle cx="103.1" cy="27.2" r="0.58" fill-opacity="0.72"/>
-    <circle cx="25.6" cy="163.4" r="0.40" fill-opacity="0.27"/>
-    <circle cx="20.9" cy="99.4" r="0.68" fill-opacity="0.72"/>
-    <circle cx="108.6" cy="112.6" r="0.51" fill-opacity="0.52"/>
-    <circle cx="106.2" cy="158.7" r="0.88" fill-opacity="0.49"/>
-    <circle cx="71.0" cy="42.4" r="0.48" fill-opacity="0.74"/>
-    <circle cx="11.0" cy="109.4" r="0.85" fill-opacity="0.78"/>
-    <circle cx="18.1" cy="136.0" r="0.61" fill-opacity="0.41"/>
-    <circle cx="36.4" cy="79.7" r="0.98" fill-opacity="0.67"/>
-    <circle cx="129.1" cy="45.0" r="0.41" fill-opacity="0.68"/>
-    <circle cx="55.5" cy="172.4" r="0.55" fill-opacity="0.45"/>
-    <circle cx="147.0" cy="48.5" r="0.88" fill-opacity="0.79"/>
-    <circle cx="124.5" cy="181.1" r="0.50" fill-opacity="0.30"/>
-    <circle cx="69.9" cy="145.2" r="0.85" fill-opacity="0.74"/>
-    <circle cx="92.4" cy="57.7" r="0.50" fill-opacity="0.40"/>
-    <circle cx="85.5" cy="110.6" r="0.61" fill-opacity="0.32"/>
-    <circle cx="47.9" cy="86.8" r="0.78" fill-opacity="0.54"/>
-    <circle cx="20.3" cy="58.6" r="0.60" fill-opacity="0.36"/>
-    <circle cx="183.3" cy="108.8" r="0.64" fill-opacity="0.55"/>
-    <circle cx="59.4" cy="75.5" r="0.49" fill-opacity="0.46"/>
-  </g>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.0" stroke-linecap="round" d="M40.4 150.8h0M25.6 163.4h0M124.5 181.1h0M92.4 57.7h0M85.5 110.6h0M20.3 58.6h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" d="M170.0 118.1h0M77.5 132.4h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.0" stroke-linecap="round" d="M172.3 141.7h0M163.1 191.0h0M157.5 189.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.0" stroke-linecap="round" d="M184.9 43.3h0M130.6 40.1h0M108.6 112.6h0M18.1 136.0h0M55.5 172.4h0M59.4 75.5h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" d="M22.4 121.2h0M144.5 43.1h0M85.3 121.8h0M76.7 18.9h0M20.6 104.7h0M47.9 86.8h0M183.3 108.8h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.0" stroke-linecap="round" d="M84.8 28.5h0M51.4 136.1h0M185.4 80.7h0M106.2 158.7h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.0" stroke-linecap="round" d="M84.6 114.3h0M130.0 122.5h0M103.1 27.2h0M71.0 42.4h0M129.1 45.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.5" stroke-linecap="round" d="M132.2 31.6h0M76.0 154.8h0M97.3 98.5h0M20.9 99.4h0M11.0 109.4h0M69.9 145.2h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.0" stroke-linecap="round" d="M26.1 101.9h0M126.4 42.1h0M165.8 53.8h0M109.3 117.5h0M36.4 79.7h0M147.0 48.5h0"/>
   <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
     <path d="M44 120 C56 108 96 106 116 112 C128 116 132 128 126 134 C108 140 62 140 46 134 C40 130 40 124 44 120 Z" fill="#e6c98b" fill-opacity="0.07"/>
     <path d="M116 134 L120 164"/>

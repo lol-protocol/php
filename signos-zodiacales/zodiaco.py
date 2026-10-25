@@ -8,6 +8,10 @@
     >>> a = zodiaco.animal_chino(2026)
     >>> a["signo"]["id"], a["elemento_del_anio"], a["tronco"]["hanzi"] + a["signo"]["rama"]["hanzi"]
     ('caballo', 'fuego', '丙午')
+    >>> zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 16))["signo"]["id"]  # antes del Año Nuevo
+    'serpiente'
+    >>> [s["id"] for s in zodiaco.cuspide(datetime.date(1990, 4, 20))]
+    ['aries', 'tauro']
 
 Las funciones devuelven los diccionarios de los datos tal cual (con nombres y descripciones en los
 30 idiomas) y lanzan excepción ante una entrada no válida. Solo usa la biblioteca estándar.
@@ -18,6 +22,7 @@ from functools import lru_cache
 from pathlib import Path
 
 DATOS = Path(__file__).resolve().parent / "datos" / "signos.json"
+ANIO_NUEVO = Path(__file__).resolve().parent / "datos" / "anio-nuevo-lunar.json"
 
 SISTEMAS = ("tropical", "sideral")
 
@@ -30,6 +35,14 @@ def cargar_datos():
     """Lee datos/signos.json una sola vez."""
     with DATOS.open(encoding="utf-8") as f:
         return json.load(f)
+
+
+@lru_cache(maxsize=1)
+def fechas_anio_nuevo():
+    """{año: fecha del Año Nuevo lunar} desde datos/anio-nuevo-lunar.json (1900–2099)."""
+    with ANIO_NUEVO.open(encoding="utf-8") as f:
+        crudas = json.load(f)["fechas"]
+    return {int(a): datetime.date.fromisoformat(d) for a, d in crudas.items()}
 
 
 def _en_rango(mes_dia, desde, hasta):
@@ -58,12 +71,56 @@ def signo_occidental(fecha, sistema="tropical", datos=None):
     raise LookupError(f"ningún signo {sistema} cubre el {fecha.day:02d}/{fecha.month:02d}")
 
 
+def cuspide(fecha, sistema="tropical", margen=1, datos=None):
+    """Los dos signos entre los que cae una fecha si está a `margen` días o menos de un cambio de signo.
+
+    Devuelve (signo_anterior, signo_siguiente) o None. Sirve para no afirmar un signo que puede estar
+    mal: las fechas límite varían un día según el año y la hora de nacimiento.
+    """
+    if isinstance(margen, bool) or not isinstance(margen, int) or margen < 0:
+        raise ValueError(f"margen debe ser un entero mayor o igual que 0, no {margen!r}")
+    if not isinstance(fecha, datetime.date):
+        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    dia = datetime.date(fecha.year, fecha.month, fecha.day)
+    propio = signo_occidental(dia, sistema, datos)
+    for d in range(1, margen + 1):
+        antes = signo_occidental(dia - datetime.timedelta(days=d), sistema, datos)
+        if antes["id"] != propio["id"]:
+            return (antes, propio)
+        despues = signo_occidental(dia + datetime.timedelta(days=d), sistema, datos)
+        if despues["id"] != propio["id"]:
+            return (propio, despues)
+    return None
+
+
+def es_cuspide(fecha, sistema="tropical", margen=1, datos=None):
+    """Si la fecha está a `margen` días o menos de un cambio de signo."""
+    return cuspide(fecha, sistema, margen, datos) is not None
+
+
+def animal_chino_de_fecha(fecha, datos=None):
+    """Como animal_chino(), pero desde una fecha del calendario gregoriano (1900–2099).
+
+    Usa las fechas del Año Nuevo lunar de datos/anio-nuevo-lunar.json: una fecha anterior al Año
+    Nuevo de su año pertenece al año lunar anterior. Las fechas son de la hora de China (UTC+8):
+    quien nació el mismo día del Año Nuevo pero en otro huso puede caer en el año anterior.
+    """
+    if not isinstance(fecha, datetime.date):
+        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    tabla = fechas_anio_nuevo()
+    if fecha.year not in tabla:
+        raise ValueError(f"solo hay fechas del Año Nuevo lunar de {min(tabla)} a {max(tabla)}, no de {fecha.year}")
+    dia = datetime.date(fecha.year, fecha.month, fecha.day)
+    anio_lunar = fecha.year if dia >= tabla[fecha.year] else fecha.year - 1
+    return {**animal_chino(anio_lunar, datos), "anio_lunar": anio_lunar}
+
+
 def animal_chino(anio_lunar, datos=None):
     """El animal, el tronco celeste y el elemento de un año del calendario chino.
 
     anio_lunar es el año lunar, que empieza con el Año Nuevo chino (entre el 21 de enero y el 20 de
-    febrero). Quien nació en enero o principios de febrero puede pertenecer al año anterior: los datos
-    no traen las fechas del Año Nuevo, así que esa conversión la tiene que hacer quien llama.
+    febrero). Para partir de una fecha de nacimiento, usa animal_chino_de_fecha(): quien nació en
+    enero o principios de febrero puede pertenecer al año anterior.
 
     Devuelve un diccionario con:
       signo              el animal (los datos del signo chino)

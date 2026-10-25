@@ -112,7 +112,7 @@ Taitava, ketterä ja hyvin kekseliäs.
 
 Yhdistetään oveluuteen ja sopeutumiskykyyn: perinne kuvaa sitä tarkkaavaiseksi, viehättäväksi ja taitavaksi löytämään tilaisuuksia, mutta joskus laskelmoivaksi.
 
-### Härkä
+### Puhveli
 
 *丑 Chou · Maa · Yin*
 

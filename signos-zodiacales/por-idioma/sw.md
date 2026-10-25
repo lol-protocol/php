@@ -76,7 +76,7 @@ Mwenye matumaini, mpenda matukio na uhuru.
 
 Huhusishwa na uchunguzi na ukweli: mapokeo humwelezea kuwa mwenye matumaini, asiye na utulivu na mpenda kusafiri na kujifunza, ingawa wakati mwingine mzembe.
 
-### ♑ Mbuzi
+### ♑ Mbuzi wa bahari
 
 *22/12 – 19/01 · Ardhi · Msingi*
 

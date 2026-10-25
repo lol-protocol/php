@@ -40,6 +40,9 @@ SISTEMAS_LOCALES = {
 
 GRUPOS = {"occidental": "Zodiaco occidental", "chino": "Horóscopo chino"}
 
+# Idiomas que se escriben de derecha a izquierda: su ficha va dentro de <div dir="rtl">.
+DERECHA_A_IZQUIERDA = {"ar", "he", "fa", "ur"}
+
 ELEMENTOS_OCCIDENTALES = {"fuego", "tierra", "aire", "agua"}
 ELEMENTOS_CHINOS = {"madera", "fuego", "tierra", "metal", "agua"}
 MODALIDADES = {"cardinal", "fijo", "mutable"}
@@ -115,24 +118,76 @@ def validar(datos):
         else:
             errores.append(f"{sid}: tipo desconocido {s['tipo']!r}")
         if "constelacion" in s:
-            estrellas = s["constelacion"]["estrellas"]
-            for a, b in s["constelacion"]["lineas"]:
-                if not (0 <= a < len(estrellas) and 0 <= b < len(estrellas)):
-                    errores.append(f"{sid}: una línea apunta a una estrella que no existe")
-            for x, y in estrellas:
-                if not (0 <= x <= 200 and 0 <= y <= 200):
-                    errores.append(f"{sid}: una estrella cae fuera del cuadro de 200×200")
-            if not s.get("figura") or any(not d.strip() for d in s["figura"]):
-                errores.append(f"{sid}: falta la figura (lista de trazos) o tiene un trazo vacío")
+            errores += _errores_de_figura(sid, s)
+        for codigo, variante in s.get("variantes", {}).items():
+            if codigo not in IDIOMAS:
+                errores.append(f"{sid}: variante para un idioma desconocido: {codigo!r}")
+            errores += _errores_de_figura(f"{sid}/variantes/{codigo}", variante)
+    return errores
+
+
+def _errores_de_figura(donde, s):
+    """Problemas de la constelación y la figura de un signo o de una variante."""
+    errores = []
+    if "constelacion" not in s:
+        return [f"{donde}: falta la constelación"]
+    estrellas = s["constelacion"]["estrellas"]
+    for a, b in s["constelacion"]["lineas"]:
+        if not (0 <= a < len(estrellas) and 0 <= b < len(estrellas)):
+            errores.append(f"{donde}: una línea apunta a una estrella que no existe")
+    for x, y in estrellas:
+        if not (0 <= x <= 200 and 0 <= y <= 200):
+            errores.append(f"{donde}: una estrella cae fuera del cuadro de 200×200")
+    if not s.get("figura") or any(not d.strip() for d in s["figura"]):
+        errores.append(f"{donde}: falta la figura (lista de trazos) o tiene un trazo vacío")
+    return errores
+
+
+def ilustraciones(signo):
+    """(nombre de archivo, signo a dibujar) del signo y de cada variante por idioma (aries, conejo-vi…)."""
+    yield signo["id"], signo
+    for codigo, variante in sorted(signo.get("variantes", {}).items()):
+        ident = f"{signo['id']}-{codigo}"
+        yield ident, {**signo, "id": ident, "figura": variante["figura"], "constelacion": variante["constelacion"]}
+
+
+def archivo_svg(signo, codigo):
+    """Nombre del SVG que corresponde a un signo en un idioma (con su variante, si tiene)."""
+    return f"{signo['id']}-{codigo}" if codigo in signo.get("variantes", {}) else signo["id"]
+
+
+def validar_anio_nuevo(fechas):
+    """Problemas de datos/anio-nuevo-lunar.json: {año: "AAAA-MM-DD"} (lista vacía si está bien)."""
+    errores = []
+    try:
+        anios = sorted(int(a) for a in fechas)
+    except ValueError:
+        return ["anio-nuevo-lunar: hay un año que no es un número"]
+    if anios != list(range(anios[0], anios[-1] + 1)):
+        errores.append("anio-nuevo-lunar: faltan años en el medio")
+    anterior = None
+    for anio in anios:
+        try:
+            dia = datetime.date.fromisoformat(fechas[str(anio)])
+        except ValueError:
+            errores.append(f"anio-nuevo-lunar/{anio}: la fecha no es AAAA-MM-DD")
+            continue
+        if not (dia.year == anio and datetime.date(anio, 1, 21) <= dia <= datetime.date(anio, 2, 20)):
+            errores.append(f"anio-nuevo-lunar/{anio}: {dia} no cae entre el 21/01 y el 20/02 de su año")
+        if anterior and not 353 <= (dia - anterior).days <= 385:
+            errores.append(f"anio-nuevo-lunar/{anio}: un año lunar dura entre 353 y 385 días")
+        anterior = dia
     return errores
 
 
 def cargar():
     with DATOS.open(encoding="utf-8") as f:
         datos = json.load(f)
-    errores = validar(datos)
+    with zodiaco.ANIO_NUEVO.open(encoding="utf-8") as f:
+        anio_nuevo = json.load(f)["fechas"]
+    errores = validar(datos) + validar_anio_nuevo(anio_nuevo)
     if errores:
-        sys.exit("datos/signos.json no es válido:\n  " + "\n  ".join(errores))
+        sys.exit("Los datos no son válidos:\n  " + "\n  ".join(errores))
     return datos
 
 
@@ -200,13 +255,21 @@ def svg_de(signo):
         "  </defs>",
         f'  <rect width="200" height="200" rx="14" fill="url(#fondo-{ident})"/>',
         '  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>',
-        '  <g fill="#ffffff">',
     ]
+    # Las 45 estrellas de fondo son puntos («M x y h0» con trazo redondo), agrupados por brillo y
+    # tamaño en unos pocos trazos, en lugar de un <circle> por estrella: pesan una cuarta parte.
+    grupos = {}
     for _ in range(45):
         x, y = entre(azar, 8, 192), entre(azar, 8, 192)
         r, o = entre(azar, 0.4, 1.1), entre(azar, 0.25, 0.8)
-        partes.append(f'    <circle cx="{x:.1f}" cy="{y:.1f}" r="{r:.2f}" fill-opacity="{o:.2f}"/>')
-    partes.append("  </g>")
+        brillo = min((0.3, 0.5, 0.75), key=lambda b: abs(b - o))
+        grosor = min((1.0, 1.5, 2.0), key=lambda g: abs(g - 2 * r))
+        grupos.setdefault((brillo, grosor), []).append(f"M{x:.1f} {y:.1f}h0")
+    for (brillo, grosor), puntos in sorted(grupos.items()):
+        partes.append(
+            f'  <path stroke="#ffffff" stroke-opacity="{brillo}" stroke-width="{grosor}" '
+            f'stroke-linecap="round" d="{"".join(puntos)}"/>'
+        )
     partes += _figura_y_estrellas(signo, "#e6c98b", "#a9bcff", "#ffffff", _radios(signo),
                                   filtro=f' filter="url(#brillo-{ident})"')
     partes.append("</svg>")
@@ -261,6 +324,10 @@ def ficha_de(datos, codigo):
         "> Generado por `generar.py` desde `datos/signos.json`. No editar a mano.",
         "",
     ]
+    rtl = codigo in DERECHA_A_IZQUIERDA
+    if rtl:
+        # La línea en blanco después del <div> hace que GitHub siga leyendo Markdown adentro.
+        lineas += [f'<div dir="rtl" lang="{codigo}">', ""]
     for tipo, titulo in GRUPOS.items():
         lineas += [f"## {titulo}", ""]
         for s in signos:
@@ -273,6 +340,8 @@ def ficha_de(datos, codigo):
             if tipo == "chino":
                 lineas += [anios(s, datos, codigo), ""]
             lineas += [s["descripciones"][codigo], "", s["descripciones_largas"][codigo], ""]
+    if rtl:
+        lineas += ["</div>", ""]
     return "\n".join(lineas)
 
 
@@ -291,14 +360,125 @@ def indice_de():
     return "\n".join(lineas)
 
 
+GALERIA = RAIZ / "galeria.html"
+
+_PLANTILLA_GALERIA = """<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signos del zodiaco y horóscopo chino</title>
+<!-- Generado por generar.py desde datos/signos.json. No editar a mano. -->
+<style>
+  :root { --fondo: #f4f4f6; --tarjeta: #ffffff; --texto: #1f2a44; --suave: #5b6478; --borde: #dde1ea; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fondo: #10131a; --tarjeta: #181c26; --texto: #e8edf7; --suave: #a3abbd; --borde: #2a3040; }
+  }
+  body { margin: 0; background: var(--fondo); color: var(--texto); font: 15px/1.45 system-ui, sans-serif; }
+  header { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; padding: 16px; }
+  h1 { font-size: 1.2rem; margin: 0; flex: 1 1 100%; }
+  label { color: var(--suave); }
+  select { font: inherit; padding: 4px 6px; }
+  h2 { font-size: 1rem; margin: 8px 16px; color: var(--suave); }
+  .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; padding: 0 16px 16px; }
+  figure { margin: 0; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px; padding: 10px; }
+  img { width: 100%; height: auto; display: block; border-radius: 8px; }
+  .sin-fondo img { background: #ffffff; }
+  figcaption { margin-top: 8px; }
+  figcaption b { display: block; }
+  figcaption span { color: var(--suave); font-size: .9em; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Signos del zodiaco y horóscopo chino</h1>
+  <label>Idioma <select id="idioma"></select></label>
+  <label>Ilustración
+    <select id="variante">
+      <option value="constelaciones">Con fondo</option>
+      <option value="constelaciones-sin-fondo">Sin fondo</option>
+    </select>
+  </label>
+</header>
+<main id="contenido"></main>
+<script>
+const DATOS = __DATOS__;
+const idioma = document.getElementById("idioma");
+const variante = document.getElementById("variante");
+for (const [codigo, nombre] of DATOS.idiomas) idioma.add(new Option(nombre + " (" + codigo + ")", codigo));
+function pintar() {
+  const codigo = idioma.value, carpeta = variante.value;
+  const main = document.getElementById("contenido");
+  main.lang = codigo;
+  main.dir = DATOS.rtl.includes(codigo) ? "rtl" : "ltr";
+  main.className = carpeta === "constelaciones" ? "" : "sin-fondo";
+  main.replaceChildren();
+  for (const [tipo, titulo] of DATOS.grupos) {
+    const h2 = document.createElement("h2");
+    h2.textContent = titulo;
+    const rejilla = document.createElement("div");
+    rejilla.className = "rejilla";
+    for (const s of DATOS.signos.filter(s => s.tipo === tipo)) {
+      const fig = document.createElement("figure");
+      const img = document.createElement("img");
+      img.src = carpeta + "/" + (s.archivos[codigo] || s.id) + ".svg";
+      img.alt = s.nombres[codigo];
+      img.width = 200; img.height = 200;
+      const pie = document.createElement("figcaption");
+      const b = document.createElement("b");
+      // U+FE0E pide el símbolo como texto; sin él, muchos sistemas pintan ♈ como emoji de color.
+      b.textContent = (s.simbolo ? s.simbolo + "\\uFE0E " : "") + s.nombres[codigo];
+      const span = document.createElement("span");
+      span.textContent = s.descripciones[codigo];
+      pie.append(b, span);
+      fig.append(img, pie);
+      rejilla.append(fig);
+    }
+    main.append(h2, rejilla);
+  }
+}
+idioma.addEventListener("change", pintar);
+variante.addEventListener("change", pintar);
+pintar();
+</script>
+</body>
+</html>
+"""
+
+
+def galeria_de(datos):
+    """Página HTML autocontenida para ver las ilustraciones con su nombre en cada idioma."""
+    signos = []
+    for s in datos["signos"]:
+        signos.append({
+            "id": s["id"],
+            "tipo": s["tipo"],
+            "simbolo": s.get("simbolo", ""),
+            "archivos": {c: archivo_svg(s, c) for c in s.get("variantes", {})},
+            "nombres": s["nombres"],
+            "descripciones": s["descripciones"],
+        })
+    contenido = {
+        "idiomas": list(IDIOMAS.items()),
+        "rtl": sorted(DERECHA_A_IZQUIERDA),
+        "grupos": list(GRUPOS.items()),
+        "signos": signos,
+    }
+    # «</» no puede aparecer dentro de <script>: cerraría el bloque antes de tiempo.
+    json_seguro = json.dumps(contenido, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    return _PLANTILLA_GALERIA.replace("__DATOS__", json_seguro)
+
+
 def esperados(datos):
-    archivos = {SALIDA_MD / "README.md": indice_de()}
+    archivos = {SALIDA_MD / "README.md": indice_de(), GALERIA: galeria_de(datos)}
     for codigo in IDIOMAS:
         archivos[SALIDA_MD / f"{codigo}.md"] = ficha_de(datos, codigo)
     for s in datos["signos"]:
-        if "constelacion" in s:
-            archivos[SALIDA_SVG / f"{s['id']}.svg"] = svg_de(s)
-            archivos[SALIDA_SVG_SIN_FONDO / f"{s['id']}.svg"] = svg_sin_fondo(s)
+        if "constelacion" not in s:
+            continue
+        for ident, dibujo in ilustraciones(s):
+            archivos[SALIDA_SVG / f"{ident}.svg"] = svg_de(dibujo)
+            archivos[SALIDA_SVG_SIN_FONDO / f"{ident}.svg"] = svg_sin_fondo(dibujo)
     return archivos
 
 

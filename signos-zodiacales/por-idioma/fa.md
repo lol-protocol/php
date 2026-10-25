@@ -2,6 +2,8 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
+<div dir="rtl" lang="fa">
+
 ## Zodiaco occidental
 
 ### ♈ حمل
@@ -221,3 +223,5 @@
 سخاوتمند، صمیمی و مهربان.
 
 با سخاوت و لذت بردن از زندگی پیوند دارد: سنت آن را صادق، خوش‌برخورد و مهربان توصیف می‌کند، هرچند گاهی ساده‌دل است.
+
+</div>
