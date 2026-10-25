@@ -27,8 +27,9 @@ parameters:
     scanDirectories:
         - ../defamatory-content-review/src
     ignoreErrors:
-        # Support/AssetOptimizer.php no lo usa nadie en el repositorio; su cache nunca se lee. Es codigo
-        # muerto, no un error de quien lo llame: lo correcto es borrar la clase en un cambio aparte.
+        # Support/AssetOptimizer.php no lo usa nadie en el repositorio y su cache nunca se lee. Esta marcada
+        # @deprecated y se conserva a proposito (CLAUDE.md: el codigo sin uso no se borra), asi que su
+        # aviso no es un error de quien lo llame.
         -
             identifier: property.onlyWritten
             path: Support/AssetOptimizer.php
