@@ -34,6 +34,9 @@ final class RetiroRepository extends Repository
     /** How long a pedido may wait for the owner before bin/pedidos-retiro.php calls it late (the example in PRIVACIDAD-Y-HONRA.md). */
     public const PLAZO_HORAS = 24;
 
+    /** How many times crear() asks for a number when someone else took the one it read. Each retry reads the new maximum, so one is enough in practice. */
+    private const INTENTOS_DE_NUMERO = 5;
+
     /** What the owner may decide, and the state each decision leaves the pedido in. */
     public const DECISIONES = ['ocultar' => 'oculto', 'retirar' => 'retirado', 'rechazar' => 'rechazado'];
 
@@ -85,20 +88,41 @@ final class RetiroRepository extends Repository
     /**
      * Stores a new pedido ('pendiente', with its 'recibido' event) and returns its number. $marcas is what the
      * filter found in $detalle (see Support/FiltroPedidos.php), for whoever reviews it.
+     *
+     * The number is MAX(id) + 1, and two people asking at the same moment read the same maximum: the second
+     * INSERT then breaks the primary key. That person must not get an error page, because the complaint would
+     * be lost, so the whole transaction is tried again and reads the maximum the winner left. Only that error is
+     * retried (a CHECK that refuses the data, or a database that is down, would fail the same way every time).
      */
     public function crear(string $tipo, int $id, string $motivo, string $detalle, string $contacto, ?string $marcas = null): int
     {
-        return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto, $marcas): int {
-            $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(id), 0) + 1 FROM pedidos_retiro');
-            $ahora = date('Y-m-d H:i:s');
-            $this->db->execute(
-                'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en, marcas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                [$numero, $tipo, $id, $motivo, $detalle, $contacto, $ahora, $marcas]
-            );
-            $this->evento($numero, 'recibido', null, $ahora);
+        for ($intento = 1; ; $intento++) {
+            try {
+                return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto, $marcas): int {
+                    $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(id), 0) + 1 FROM pedidos_retiro');
+                    $ahora = date('Y-m-d H:i:s');
+                    $this->db->execute(
+                        'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en, marcas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                        [$numero, $tipo, $id, $motivo, $detalle, $contacto, $ahora, $marcas]
+                    );
+                    $this->evento($numero, 'recibido', null, $ahora);
 
-            return $numero;
-        });
+                    return $numero;
+                });
+            } catch (\PDOException $e) {
+                if ($intento >= self::INTENTOS_DE_NUMERO || !self::numeroTomado($e)) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
+    /** Whether the database refused the INSERT because that pedido number already exists (PostgreSQL and SQLite word it differently). */
+    private static function numeroTomado(\PDOException $e): bool
+    {
+        $mensaje = strtolower($e->getMessage());
+
+        return str_contains($mensaje, 'duplicate key') || str_contains($mensaje, 'unique constraint failed');
     }
 
     /** The owner's decision ($decision a DECISIONES key) on pedido $numero; false when there is no such pedido. */

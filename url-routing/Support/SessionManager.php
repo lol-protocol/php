@@ -20,10 +20,46 @@ class SessionManager
         return self::$instance;
     }
 
+    /**
+     * Resumes the session a request already has (it came with the session cookie) and does nothing for
+     * a request that has none. A visitor who only reads pages must not get a cookie, nor leave a session
+     * file on the server for every request: a crawler never sends the cookie back, so each of its hits
+     * would be a new file. Whatever needs to write to the session starts it then (ensureStarted()).
+     */
+    public function resume(): void
+    {
+        if (isset($_COOKIE[session_name()])) {
+            $this->start();
+        }
+    }
+
+    /**
+     * Starts a session if there is none, for the code that is about to write to it (a CSRF token, a flash
+     * message, the cart, an owner who just logged in). Does nothing once output has begun, because a session
+     * started then would lose its cookie, and does nothing on the bare command line: there is no request there,
+     * and the unit tests fill $_SESSION by hand and should not leave session files behind. The tests' request
+     * harness is the one command-line caller that serves requests, and it sets REQUEST_METHOD like a server.
+     */
+    public function ensureStarted(): void
+    {
+        if (session_status() !== PHP_SESSION_NONE || headers_sent()) {
+            return;
+        }
+        if (PHP_SAPI === 'cli' && !isset($_SERVER['REQUEST_METHOD'])) {
+            return;
+        }
+
+        $this->start();
+    }
+
     public function start(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start([
+                // PHP would add its own Cache-Control, Expires and Pragma here, and only on requests that
+                // start a session. Every response gets them from HttpSecurityHeaders instead, so a page
+                // does not become cacheable just because its visitor has no cookie.
+                'cache_limiter' => '',
                 'cookie_httponly' => true,
                 'cookie_secure' => $this->isSecure(),
                 'cookie_samesite' => 'Lax',
@@ -81,6 +117,7 @@ class SessionManager
 
     public function setCsrfToken(): string
     {
+        $this->ensureStarted();
         if (!isset($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }

@@ -31,6 +31,7 @@ Varias sesiones trabajan a la vez, y ya pasó que dos hicieron lo mismo o que do
 - Las carpetas `_Garbage/` se conservan. Ver «Carpetas `_Garbage/`» en el `README.md` raíz: no las borres ni las limpies.
 - `README.md` se llama siempre así, en mayúsculas. Los demás nombres de archivo siguen lo que ya haga cada proyecto (`document-formats/docs/Localization.md`, `url-routing/docs/README_URLS.md`). No renombres archivos en masa ni unifiques mayúsculas entre proyectos.
 - No hay una forma única esperada para lo que devuelve un «validador» nuevo: `cobros-ingresos-funnels/src/Dinero.php`'s `Dinero::centavos()` devuelve un `int` y lanza excepción en valores inválidos; `privacy-laws/scripts/check-links.js`'s `classify()` devuelve un objeto `{status, code, detail, finalUrl}`. Si agregas un validador, elige una de esas dos formas en vez de inventar una tercera, salvo que tengas una razón concreta.
+- **No borres código sin uso.** Márcalo `@deprecated` (con una línea que diga desde cuándo y, si lo sabes, por qué dejó de usarse) y déjalo donde está. Es la misma lógica que las carpetas `_Garbage/`: se conserva como referencia en vez de borrarse.
 
 ## Probar antes de empujar
 

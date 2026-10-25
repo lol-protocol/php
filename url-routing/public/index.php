@@ -34,7 +34,7 @@ define('DEBUG_MODE', getenv('DEBUG') === 'true');
 
 HealthCheck::handle();
 
-SessionManager::getInstance()->start();
+SessionManager::getInstance()->resume();
 HttpSecurityHeaders::setSecurityHeaders();
 
 $container = Container::getInstance();

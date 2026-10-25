@@ -36,7 +36,8 @@ $sessionId = $argv[5] ?? null;
 $autorizacion = ($argv[6] ?? '') !== '' ? $argv[6] : null;
 
 if ($sessionId !== null) {
-    session_id($sessionId);
+    // What a browser does: send the session cookie back. The app resumes a session only when it sees one.
+    $_COOKIE[session_name()] = $sessionId;
 }
 
 $_SERVER['HTTP_HOST'] = $host;
