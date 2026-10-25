@@ -29,11 +29,6 @@
     "confidence": "medium",
     "last_checked": "2026-10-17",
     "sources": {
-      "notes": {
-        "url": "https://www.inc-conso.fr/content/loi-informatique-et-libertes-adaptation-de-la-loi-au-reglement-general-sur-la-protection-des",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.cnil.fr/fr/node/84781",
         "confidence": "high",
@@ -48,6 +43,11 @@
         "url": "https://www.assemblee-nationale.fr/dyn/15/amendements/0965/CION-SOC/AS32.pdf",
         "confidence": "medium",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://www.inc-conso.fr/content/loi-informatique-et-libertes-adaptation-de-la-loi-au-reglement-general-sur-la-protection-des",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

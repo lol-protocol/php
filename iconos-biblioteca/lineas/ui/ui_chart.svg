@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-blue{stroke:var(--ic-blue,#153988)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M22.96 37.28A3 3 0 0 1 23.56 39.08L23.56 49.08A3 3 0 0 1 20.56 52.08L14.56 52.08A3 3 0 0 1 12.16 50.88L10.6 48.8A3 3 0 0 1 10 47L10 37A3 3 0 0 1 13 34L19 34A3 3 0 0 1 21.4 35.2Z" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="34" width="12" height="16" rx="3" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M37.96 27.28A3 3 0 0 1 38.56 29.08L38.56 49.08A3 3 0 0 1 35.56 52.08L29.56 52.08A3 3 0 0 1 27.16 50.88L25.6 48.8A3 3 0 0 1 25 47L25 27A3 3 0 0 1 28 24L34 24A3 3 0 0 1 36.4 25.2Z" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/><rect x="25" y="24" width="12" height="26" rx="3" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M52.96 15.28A3 3 0 0 1 53.56 17.08L53.56 49.08A3 3 0 0 1 50.56 52.08L44.56 52.08A3 3 0 0 1 42.16 50.88L40.6 48.8A3 3 0 0 1 40 47L40 15A3 3 0 0 1 43 12L49 12A3 3 0 0 1 51.4 13.2Z" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/><rect x="40" y="12" width="12" height="38" rx="3" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-blue" stroke="#153988"><path d="M22.96 37.28A3 3 0 0 1 23.56 39.08L23.56 49.08A3 3 0 0 1 20.56 52.08L14.56 52.08A3 3 0 0 1 12.16 50.88L10.6 48.8A3 3 0 0 1 10 47L10 37A3 3 0 0 1 13 34L19 34A3 3 0 0 1 21.4 35.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="34" width="12" height="16" rx="3" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-blue" stroke="#153988"><path d="M37.96 27.28A3 3 0 0 1 38.56 29.08L38.56 49.08A3 3 0 0 1 35.56 52.08L29.56 52.08A3 3 0 0 1 27.16 50.88L25.6 48.8A3 3 0 0 1 25 47L25 27A3 3 0 0 1 28 24L34 24A3 3 0 0 1 36.4 25.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="25" y="24" width="12" height="26" rx="3" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-blue" stroke="#153988"><path d="M52.96 15.28A3 3 0 0 1 53.56 17.08L53.56 49.08A3 3 0 0 1 50.56 52.08L44.56 52.08A3 3 0 0 1 42.16 50.88L40.6 48.8A3 3 0 0 1 40 47L40 15A3 3 0 0 1 43 12L49 12A3 3 0 0 1 51.4 13.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="40" y="12" width="12" height="38" rx="3" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

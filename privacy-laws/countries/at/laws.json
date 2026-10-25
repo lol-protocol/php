@@ -34,11 +34,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/austria-579009824",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
       "research_exemption": {
         "url": "https://www.activemind.legal/law/at-research/",
         "confidence": "high",
@@ -48,6 +43,11 @@
         "url": "https://www.meduniwien.ac.at/web/en/biobank/allgemeine-information/information-fuer-forscherinnen/gesetzlicher-rahmen/",
         "confidence": "medium",
         "checked": "2026-10-18"
+      },
+      "notes": {
+        "url": "https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/austria-579009824",
+        "confidence": "medium",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+    }
+  </style>
   <g class="solids">
-    <g><rect x="8" y="17" width="28" height="30" rx="6" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M52.9 22.2A6 6 0 0 1 54.1 25.8L54.1 43.8A6 6 0 0 1 48.1 49.8L32.1 49.8A6 6 0 0 1 27.3 47.4L25.2 44.6A6 6 0 0 1 24 41L24 23A6 6 0 0 1 30 17L46 17A6 6 0 0 1 50.8 19.4Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><rect x="24" y="17" width="28" height="30" rx="6" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><rect x="8" y="17" width="28" height="30" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M52.9 22.2A6 6 0 0 1 54.1 25.8L54.1 43.8A6 6 0 0 1 48.1 49.8L32.1 49.8A6 6 0 0 1 27.3 47.4L25.2 44.6A6 6 0 0 1 24 41L24 23A6 6 0 0 1 30 17L46 17A6 6 0 0 1 50.8 19.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="24" y="17" width="28" height="30" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

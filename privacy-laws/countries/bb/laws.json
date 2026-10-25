@@ -1,0 +1,92 @@
+[
+  {
+    "country_code": "BB",
+    "country_name": "Barbados",
+    "region": "americas",
+    "law_name": "Data Protection Act 2019 (Act 2019-29)",
+    "jurisdiction": "Data Protection Commissioner (Barbados)",
+    "enactment_date": "2019-08-12",
+    "effective_date": "2021-03-31",
+    "scope": "Individuals (data subjects) whose personal data is processed (unconfirmed)",
+    "applies_to": "Controllers and processors (unconfirmed)",
+    "key_requirements": "Breach notification to Commissioner within 72 hours; informed consent for sensitive data; Commissioner may issue enforcement notices",
+    "data_categories": "Personal data; sensitive personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Commissioner / Data Protection Commission",
+    "penalties_range": "Fines up to BBD 500,000 (one source also cites BBD 10,000 minimum and 2 months-3 years imprisonment, unverified) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "No 2025 Barbados Personal Data Protection Act found. Sections 50,51,52,55,56,57 (registration) excluded from 2021-03-31 proclamation; status unconfirmed. Citation unclear (Cap. 380A in one source)",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/jurisdiction/barbados",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/jurisdiction/barbados",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "effective_date": {
+        "url": "https://www.dataguidance.com/notes/barbados-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "applies_to": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "data_categories": {
+        "url": "https://www.barbadoschamberofcommerce.com/wp-content/uploads/2021/06/BCCI-AGM-Keynote-Bartlett-Morgan-BDPA-Business-Implications.pdf",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/jurisdiction/barbados",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://www.lexmundi.com/guides/data-privacy-guide/jurisdictions/caribbean/barbados/",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

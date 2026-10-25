@@ -34,11 +34,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.arnoldporter.com/en/perspectives/advisories/2026/02/china-data-privacy-and-cybersecurity-2025-year-in-review",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://prighter.com/resources/laws/chinese-pipl/articles/article-49",
         "confidence": "high",
@@ -53,6 +48,11 @@
         "url": "https://conventuslaw.com/report/feature-article-on-chinas-personal-information-3/",
         "confidence": "medium",
         "checked": "2026-10-18"
+      },
+      "notes": {
+        "url": "https://www.arnoldporter.com/en/perspectives/advisories/2026/02/china-data-privacy-and-cybersecurity-2025-year-in-review",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

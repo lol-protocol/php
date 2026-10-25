@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Genera los dos sets de iconos y la galería.
+"""Genera los tres sets de iconos y la galería.
 
     python3 iconos-tools/build.py
 
-Escribe iconos-genealogia/ e iconos-biblioteca/ (variantes color, lineas y gris, una carpeta por
-prefijo) y galeria-iconos.html. Los SVG son salida generada: se editan en genealogia.py y biblioteca.py.
+Escribe iconos-genealogia/, iconos-biblioteca/ e iconos-pos/ (variantes color, lineas y gris, una carpeta
+por prefijo) y galeria-iconos.html. Los SVG son salida generada: se editan en genealogia.py, biblioteca.py
+y pos.py.
 """
 import json
 import shutil
@@ -17,11 +18,13 @@ sys.path.insert(0, str(HERE))
 
 import biblioteca  # noqa: E402
 import genealogia  # noqa: E402
+import pos  # noqa: E402
 from catalogo import GROUPS, VARIANTS  # noqa: E402
 
 SETS = (
     ('genealogia', 'iconos-genealogia', 'Árbol genealógico', genealogia.ICONS),
     ('biblioteca', 'iconos-biblioteca', 'Biblioteca virtual', biblioteca.ICONS),
+    ('pos', 'iconos-pos', 'Punto de venta', pos.ICONS),
 )
 
 

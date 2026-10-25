@@ -200,11 +200,12 @@ def reading(stem, hue, fn):
     fn(ic)
 
 
-reading('read', 'blue', lambda ic: ic.line(21, 42, 41, 42, w=4.2))
-reading('reading', 'blue', lambda ic: (ic.line(21, 42, 41, 42, w=4.2, op=0.4), ic.line(21, 42, 31, 42, w=4.2)))
-reading('read_later', 'brown', lambda ic: (ic.line(21, 42, 41, 42, w=4.2, op=0.4), ic.dot(21, 30, 3)))
-reading('quick_read', 'teal', lambda ic: ic.line(21, 42, 28, 42, w=4.2))
-reading('long_read', 'brown', lambda ic: ic.line(21, 42, 41, 42, w=4.2, dash='4 3'))
+BAR_W = 5.6  # a 4,2 la barra de «leído» y la de «leyendo» se diferenciaban en menos de 1 a 24 px
+reading('read', 'blue', lambda ic: ic.line(21, 42, 41, 42, w=BAR_W))
+reading('reading', 'blue', lambda ic: (ic.line(21, 42, 41, 42, w=BAR_W, op=0.4), ic.line(21, 42, 31, 42, w=BAR_W)))
+reading('read_later', 'brown', lambda ic: (ic.line(21, 42, 41, 42, w=BAR_W, op=0.4), ic.dot(21, 30, 3)))
+reading('quick_read', 'teal', lambda ic: ic.line(21, 42, 28, 42, w=BAR_W))
+reading('long_read', 'brown', lambda ic: ic.line(21, 42, 41, 42, w=BAR_W, dash='4 3'))
 
 # --------------------------------------------------------------------------- action_: formas en movimiento
 ic = new('action_rate')

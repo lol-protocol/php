@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-rose{stroke:var(--ic-rose,#82112A)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-rose" stroke="#82112A"><path d="M51.2 17.6A7 7 0 0 1 52.6 21.8L52.6 45.8A7 7 0 0 1 45.6 52.8L23.6 52.8A7 7 0 0 1 18 50L14.4 45.2A7 7 0 0 1 13 41L13 17A7 7 0 0 1 20 10L42 10A7 7 0 0 1 47.6 12.8Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="13" y="10" width="36" height="38" rx="7" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M31 20L40 29L31 40L22 29Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

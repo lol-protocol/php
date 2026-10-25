@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_ui_contribution_green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#61C084"/>
+      <stop offset="1" stop-color="#16A34A"/>
+    </linearGradient>
+    <linearGradient id="grad_ui_contribution_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.22" cy="54.32" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M14 31L27 31L27 17L33 17" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M27 31L33 31" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M27 31L27 45L33 45" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M55.44 15.92A5 5 0 0 1 56.44 18.92A5 5 0 0 1 51.44 23.92L39.44 23.92A5 5 0 0 1 35.44 21.92L34.18 20.24A5 5 0 0 1 33.18 17.24A5 5 0 0 1 38.18 12.24L50.18 12.24A5 5 0 0 1 54.18 14.24Z" fill="#0D5F2B"/><rect x="33" y="12" width="22" height="10" rx="5" fill="url(#grad_ui_contribution_green)"/></g>
+    <g><path d="M55.44 29.92A5 5 0 0 1 56.44 32.92A5 5 0 0 1 51.44 37.92L39.44 37.92A5 5 0 0 1 35.44 35.92L34.18 34.24A5 5 0 0 1 33.18 31.24A5 5 0 0 1 38.18 26.24L50.18 26.24A5 5 0 0 1 54.18 28.24Z" fill="#0D5F2B"/><rect x="33" y="26" width="22" height="10" rx="5" fill="url(#grad_ui_contribution_green)"/></g>
+    <g><path d="M55.44 43.92A5 5 0 0 1 56.44 46.92A5 5 0 0 1 51.44 51.92L39.44 51.92A5 5 0 0 1 35.44 49.92L34.18 48.24A5 5 0 0 1 33.18 45.24A5 5 0 0 1 38.18 40.24L50.18 40.24A5 5 0 0 1 54.18 42.24Z" fill="#0D5F2B"/><rect x="33" y="40" width="22" height="10" rx="5" fill="url(#grad_ui_contribution_green)"/></g>
+    <g><path d="M7.78 36.04L9.4 38.2A8 8 0 0 0 22.2 28.6L20.58 26.44A8 8 0 0 0 7.78 36.04Z" fill="#29313D"/><circle cx="14" cy="31" r="8" fill="url(#grad_ui_contribution_ink)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M11.28 31a2.72 2.72 0 1 0 5.44 0a2.72 2.72 0 1 0 -5.44 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

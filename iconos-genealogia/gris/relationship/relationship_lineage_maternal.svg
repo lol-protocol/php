@@ -11,7 +11,7 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.57" cy="59.41" rx="8" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="31.57" cy="58.96" rx="8" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="links">
     <path d="M31 10.5L31 23.83" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
@@ -19,10 +19,10 @@
     <path d="M31 37.17L31 50.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M27.19 13.73L28.15 15.02A4.99 4.99 0 0 0 36.13 9.03L35.17 7.75A4.99 4.99 0 0 0 27.19 13.73Z" fill="#474747"/><circle cx="31" cy="10.5" r="4.99" fill="url(#grad_relationship_lineage_maternal_orange_g)"/></g>
-    <g><path d="M27.19 27.07L28.15 28.35A4.99 4.99 0 0 0 36.13 22.36L35.17 21.08A4.99 4.99 0 0 0 27.19 27.07Z" fill="#474747"/><circle cx="31" cy="23.83" r="4.99" fill="url(#grad_relationship_lineage_maternal_orange_g)"/></g>
-    <g><path d="M27.19 40.4L28.15 41.68A4.99 4.99 0 0 0 36.13 35.7L35.17 34.41A4.99 4.99 0 0 0 27.19 40.4Z" fill="#474747"/><circle cx="31" cy="37.17" r="4.99" fill="url(#grad_relationship_lineage_maternal_orange_g)"/></g>
-    <g><path d="M27.19 53.73L28.15 55.02A4.99 4.99 0 0 0 36.13 49.03L35.17 47.75A4.99 4.99 0 0 0 27.19 53.73Z" fill="#303030"/><circle cx="31" cy="50.5" r="4.99" fill="url(#grad_relationship_lineage_maternal_ink_g)"/></g>
+    <g><path d="M27.55 13.46L28.52 14.74A4.53 4.53 0 0 0 35.77 9.3L34.81 8.02A4.53 4.53 0 0 0 27.55 13.46Z" fill="#474747"/><circle cx="31" cy="10.5" r="4.53" fill="url(#grad_relationship_lineage_maternal_orange_g)"/></g>
+    <g><path d="M27.55 26.79L28.52 28.08A4.53 4.53 0 0 0 35.77 22.64L34.81 21.35A4.53 4.53 0 0 0 27.55 26.79Z" fill="#474747"/><circle cx="31" cy="23.83" r="4.53" fill="url(#grad_relationship_lineage_maternal_orange_g)"/></g>
+    <g><path d="M27.55 40.13L28.52 41.41A4.53 4.53 0 0 0 35.77 35.97L34.81 34.69A4.53 4.53 0 0 0 27.55 40.13Z" fill="#474747"/><circle cx="31" cy="37.17" r="4.53" fill="url(#grad_relationship_lineage_maternal_orange_g)"/></g>
+    <g><path d="M27.55 53.46L28.52 54.74A4.53 4.53 0 0 0 35.77 49.3L34.81 48.02A4.53 4.53 0 0 0 27.55 53.46Z" fill="#303030"/><circle cx="31" cy="50.5" r="4.53" fill="url(#grad_relationship_lineage_maternal_ink_g)"/></g>
   </g>
   <g class="marks">
     <path d="M29.4 50.5a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" fill="#FFFFFF"/>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
+  <g class="links">
+    <path d="M6 46L9.25 46M17.5 46L26.5 46M36.25 46L45.25 46M53.5 46L56 46" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 33.5L31 41.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g class="ic-mist" stroke="#767C82"><path d="M10.12 48.16L11.08 49.44A3.6 3.6 0 0 0 16.84 45.12L15.88 43.84A3.6 3.6 0 0 0 10.12 48.16Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="13" cy="46" r="3.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M46.12 48.16L47.08 49.44A3.6 3.6 0 0 0 52.84 45.12L51.88 43.84A3.6 3.6 0 0 0 46.12 48.16Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="49" cy="46" r="3.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M27.48 48.64L28.56 50.08A4.4 4.4 0 0 0 35.6 44.8L34.52 43.36A4.4 4.4 0 0 0 27.48 48.64Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="46" r="4.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M22.2 26.6L24.12 29.16A11 11 0 0 0 41.72 15.96L39.8 13.4A11 11 0 0 0 22.2 26.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="20" r="11" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+</svg>

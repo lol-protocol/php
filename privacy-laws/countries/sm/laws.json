@@ -1,0 +1,82 @@
+[
+  {
+    "country_code": "SM",
+    "country_name": "San Marino",
+    "region": "europe",
+    "law_name": "Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data",
+    "jurisdiction": "San Marino Data Protection Authority (Garante)",
+    "enactment_date": "2018-12-21",
+    "effective_date": "2019-01-05",
+    "scope": "Natural persons with regard to processing of their personal data (including data held abroad)",
+    "applies_to": "Not specified",
+    "key_requirements": "GDPR-modelled law; security of processing (art. 33 cited in Garante sanction against Facebook); independent Garante supervises (art. 52) (unconfirmed)",
+    "data_categories": "Not specified",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Guarantor of San Marino (Garante per la protezione dei dati personali)",
+    "penalties_range": "Administrative fines; Garante reportedly ordered Facebook to pay EUR 4M (challenged); statutory caps not found (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.consigliograndeegenerale.sm/on-line/home/documento17124613.html",
+    "language": "Italian",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Garante has 3 members and 2 alternates (art. 52 as amended by Decree 84/2021); took office 2020-02-01; drafted to seek EU adequacy",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dataguidance.com/jurisdiction/san-marino",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/jurisdiction/san-marino",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/jurisdiction/san-marino",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "effective_date": {
+        "url": "https://www.dataguidance.com/jurisdiction/san-marino",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://www.consigliograndeegenerale.sm/on-line/home/documento17124613.html",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "key_requirements": {
+        "url": "https://www.editorialedomani.it/giustizia/la-guerra-giudiziaria-di-san-marino-contro-facebook-udy9zhax",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/jurisdiction/san-marino",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://www.editorialedomani.it/giustizia/la-guerra-giudiziaria-di-san-marino-contro-facebook-udy9zhax",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

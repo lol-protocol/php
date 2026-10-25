@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-paper{stroke:var(--ic-paper,#938D73)}
+      .ic-red{stroke:var(--ic-red,#801616)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M48.12 14.16A4 4 0 0 1 48.92 16.56L48.92 46.56A4 4 0 0 1 44.92 50.56L20.92 50.56A4 4 0 0 1 17.72 48.96L15.8 46.4A4 4 0 0 1 15 44L15 14A4 4 0 0 1 19 10L43 10A4 4 0 0 1 46.2 11.6Z" fill="none" stroke="#938D73" stroke-width="1.8" stroke-linejoin="round"/><rect x="15" y="10" width="32" height="38" rx="4" fill="none" stroke="#938D73" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M34.2 44.6L35.28 46.04A6 6 0 0 0 44.88 38.84L43.8 37.4A6 6 0 0 0 34.2 44.6Z" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/><circle cx="39" cy="41" r="6" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-paper" stroke="#938D73"><path d="M48.12 14.16A4 4 0 0 1 48.92 16.56L48.92 46.56A4 4 0 0 1 44.92 50.56L20.92 50.56A4 4 0 0 1 17.72 48.96L15.8 46.4A4 4 0 0 1 15 44L15 14A4 4 0 0 1 19 10L43 10A4 4 0 0 1 46.2 11.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="15" y="10" width="32" height="38" rx="4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-red" stroke="#801616"><path d="M34.2 44.6L35.28 46.04A6 6 0 0 0 44.88 38.84L43.8 37.4A6 6 0 0 0 34.2 44.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="39" cy="41" r="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

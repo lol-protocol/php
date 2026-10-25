@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .ic-brown{stroke:var(--ic-brown,#553822)}
+      .ic-indigo{stroke:var(--ic-indigo,#2E2985)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M44.8 39.4A5 5 0 0 1 45.8 42.4L45.8 44.4A5 5 0 0 1 40.8 49.4L16.8 49.4A5 5 0 0 1 12.8 47.4L11 45A5 5 0 0 1 10 42L10 40A5 5 0 0 1 15 35L39 35A5 5 0 0 1 43 37Z" fill="none" stroke="#553822" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="35" width="34" height="12" rx="5" fill="none" stroke="#553822" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M48.8 28.4A5 5 0 0 1 49.8 31.4L49.8 33.4A5 5 0 0 1 44.8 38.4L20.8 38.4A5 5 0 0 1 16.8 36.4L15 34A5 5 0 0 1 14 31L14 29A5 5 0 0 1 19 24L43 24A5 5 0 0 1 47 26Z" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/><rect x="14" y="24" width="34" height="12" rx="5" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M52.8 17.4A5 5 0 0 1 53.8 20.4L53.8 22.4A5 5 0 0 1 48.8 27.4L24.8 27.4A5 5 0 0 1 20.8 25.4L19 23A5 5 0 0 1 18 20L18 18A5 5 0 0 1 23 13L47 13A5 5 0 0 1 51 15Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><rect x="18" y="13" width="34" height="12" rx="5" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-brown" stroke="#553822"><path d="M44.8 39.4A5 5 0 0 1 45.8 42.4L45.8 44.4A5 5 0 0 1 40.8 49.4L16.8 49.4A5 5 0 0 1 12.8 47.4L11 45A5 5 0 0 1 10 42L10 40A5 5 0 0 1 15 35L39 35A5 5 0 0 1 43 37Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="35" width="34" height="12" rx="5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-indigo" stroke="#2E2985"><path d="M48.8 28.4A5 5 0 0 1 49.8 31.4L49.8 33.4A5 5 0 0 1 44.8 38.4L20.8 38.4A5 5 0 0 1 16.8 36.4L15 34A5 5 0 0 1 14 31L14 29A5 5 0 0 1 19 24L43 24A5 5 0 0 1 47 26Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="14" y="24" width="34" height="12" rx="5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-amber" stroke="#7E4503"><path d="M52.8 17.4A5 5 0 0 1 53.8 20.4L53.8 22.4A5 5 0 0 1 48.8 27.4L24.8 27.4A5 5 0 0 1 20.8 25.4L19 23A5 5 0 0 1 18 20L18 18A5 5 0 0 1 23 13L47 13A5 5 0 0 1 51 15Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="18" y="13" width="34" height="12" rx="5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

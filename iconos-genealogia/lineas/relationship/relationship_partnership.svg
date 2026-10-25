@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
   <g class="links">
-    <path d="M25 30.5L37.25 30.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M25 30.5L37.25 30.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M26.1 32A1.76 1.76 0 0 1 25.93 34.3L20.16 40.07A1.76 1.76 0 0 1 17.68 40.07L11.91 34.3A1.76 1.76 0 0 1 11.74 34.12L9.82 31.56A1.76 1.76 0 0 1 9.99 29.26L15.76 23.49A1.76 1.76 0 0 1 18.24 23.49L24.01 29.26A1.76 1.76 0 0 1 24.18 29.44Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="11.16" y="24.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 17 30.5)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M54.1 32A1.76 1.76 0 0 1 53.93 34.3L48.16 40.07A1.76 1.76 0 0 1 45.68 40.07L39.91 34.3A1.76 1.76 0 0 1 39.74 34.12L37.82 31.56A1.76 1.76 0 0 1 37.99 29.26L43.76 23.49A1.76 1.76 0 0 1 46.24 23.49L52.01 29.26A1.76 1.76 0 0 1 52.18 29.44Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="39.16" y="24.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 45 30.5)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M26.1 32A1.76 1.76 0 0 1 25.93 34.3L20.16 40.07A1.76 1.76 0 0 1 17.68 40.07L11.91 34.3A1.76 1.76 0 0 1 11.74 34.12L9.82 31.56A1.76 1.76 0 0 1 9.99 29.26L15.76 23.49A1.76 1.76 0 0 1 18.24 23.49L24.01 29.26A1.76 1.76 0 0 1 24.18 29.44Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="11.16" y="24.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 17 30.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M54.1 32A1.76 1.76 0 0 1 53.93 34.3L48.16 40.07A1.76 1.76 0 0 1 45.68 40.07L39.91 34.3A1.76 1.76 0 0 1 39.74 34.12L37.82 31.56A1.76 1.76 0 0 1 37.99 29.26L43.76 23.49A1.76 1.76 0 0 1 46.24 23.49L52.01 29.26A1.76 1.76 0 0 1 52.18 29.44Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="39.16" y="24.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 45 30.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

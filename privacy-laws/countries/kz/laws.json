@@ -29,6 +29,16 @@
     "confidence": "medium",
     "last_checked": "2026-10-21",
     "sources": {
+      "deceased_data": {
+        "url": "https://adilet.zan.kz/eng/docs/V2000021498",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
+      "genetic_data": {
+        "url": "https://adilet.zan.kz/eng/docs/Z1600000040/download",
+        "confidence": "medium",
+        "checked": "2026-10-21"
+      },
       "law_name": {
         "url": "https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026",
         "confidence": "medium",
@@ -78,16 +88,6 @@
         "url": "https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026",
         "confidence": "low",
         "checked": "2026-10-16"
-      },
-      "deceased_data": {
-        "url": "https://adilet.zan.kz/eng/docs/V2000021498",
-        "confidence": "medium",
-        "checked": "2026-10-21"
-      },
-      "genetic_data": {
-        "url": "https://adilet.zan.kz/eng/docs/Z1600000040/download",
-        "confidence": "medium",
-        "checked": "2026-10-21"
       }
     },
     "changes": [
