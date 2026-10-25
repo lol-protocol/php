@@ -325,6 +325,13 @@ screen reader doesn't read it with the wrong voice (the strings written in
 the HTML, the captions of the cards JavaScript draws, and the count announced
 when you filter). See `docs/Localization.md`.
 
+The search boxes ignore case and Latin accents (`termico` finds «Papel térmico»), and the one on
+the Browser tab looks in the name, description, use, country, category and region of each format.
+The category and region filters show their words in the language of the page, in that language's
+alphabetical order (`regions.*` and `categories.*` in the translation files; the option's value
+stays the CSV's word). The **Sort by** menu orders the cards by name, width, height or area, smallest
+first; ties keep the catalog order, and the choice goes into the address like the filters.
+
 The address keeps what you are looking at, so you can share it:
 `app/index.html#tab=converter&from=A4&to=Letter`. It holds the tab, the
 language (unless English), the search boxes and the filters (`url-state.js`

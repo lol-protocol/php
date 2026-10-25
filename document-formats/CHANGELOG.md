@@ -5,6 +5,12 @@ carries the details. Dates are those of the merge.
 
 ## Unreleased
 
+- Demo: searching ignores case and Latin accents (`normalizeText()`, also used by `FormatSearcher`),
+  the Browser tab's search also looks in country, category and region, the category and region
+  filters and the card badges are translated (24 new strings per language: `regions.international`,
+  17 more `categories.*`, and the sort labels), and a **Sort by** menu (name, width, height, area)
+  orders the cards and is kept in the address. 169 strings per language now.
+
 - The 24 languages that translated only the title, the tabs and the units now have all 145 UI
   strings (Portuguese, Russian, Arabic, Korean, Italian, Dutch, Turkish, Hindi, Thai, Vietnamese,
   Polish, Swedish, Norwegian, Danish, Finnish, Greek, Czech, Hungarian, Romanian, Bulgarian,

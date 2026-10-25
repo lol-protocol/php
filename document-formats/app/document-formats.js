@@ -40,6 +40,12 @@ const inchesToMm = (inches) => inches * MM_PER_INCH;
 // Fixed decimals as text ("21.0"), so reports keep their trailing zeros.
 const fixed = (value, decimals = 1) => Number(value).toFixed(decimals);
 
+// Text as it is compared when searching: lower case, and Latin letters without their accents
+// ("Papel térmico" and "papel termico" are the same). Only the combining marks of Latin letters
+// are removed, so Devanagari, Thai or Arabic text keeps the marks that give it its meaning.
+const normalizeText = (value) =>
+    String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').normalize('NFC').toLowerCase();
+
 const HTML_ESCAPES = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPES[char]);
 
@@ -278,8 +284,8 @@ class FormatSearcher {
             ]
             .filter(Boolean)
             .join(' ')
-            .toLowerCase()
             .split(/\s+/)
+            .map(normalizeText)
             .filter(w => w.length >= MIN_WORD_LENGTH && !STOP_WORDS.has(w));
 
             words.forEach(word => {
@@ -296,7 +302,7 @@ class FormatSearcher {
     }
 
     search(query) {
-        const terms = query.toLowerCase().split(/\s+/);
+        const terms = normalizeText(query).split(/\s+/);
         const results = new Map();
 
         terms.forEach(term => {
@@ -307,12 +313,12 @@ class FormatSearcher {
 
         // Most matched terms first; among equals, an exact name match, then alphabetical,
         // so the order doesn't depend on the order of the CSV files.
-        const wanted = query.trim().toLowerCase();
+        const wanted = normalizeText(query.trim());
         const name = (idx) => this.formats[idx].format_name;
         return Array.from(results.entries())
             .sort(([aIdx, aHits], [bIdx, bHits]) =>
                 bHits - aHits ||
-                (name(bIdx).toLowerCase() === wanted) - (name(aIdx).toLowerCase() === wanted) ||
+                (normalizeText(name(bIdx)) === wanted) - (normalizeText(name(aIdx)) === wanted) ||
                 name(aIdx).localeCompare(name(bIdx)) ||
                 aIdx - bIdx)
             .map(([idx]) => this.formats[idx])
@@ -1302,6 +1308,7 @@ const formatMessage = (template, values = {}) =>
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         escapeHtml,
+        normalizeText,
         sizeSimilarity,
         MM_PER_INCH,
         mmToInches,

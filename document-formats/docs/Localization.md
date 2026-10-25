@@ -5,7 +5,7 @@ The Document Formats Database includes a multi-language localization system with
 ## Supported Languages
 
 The system supports the following 30 languages, and **all of them are complete**: each file has
-all 145 strings. English and Spanish were written first, then German, French, Japanese and
+all 169 strings. English and Spanish were written first, then German, French, Japanese and
 Chinese, and last the other 24; none has been reviewed by a native speaker yet, so corrections
 are welcome. A string a language leaves empty or lacks is shown in English.
 
@@ -480,7 +480,7 @@ localStorage.removeItem('preferredLanguage');
 ## Statistics
 
 - **Languages**: 30
-- **Strings per language**: 145
+- **Strings per language**: 169
 - **Fully translated**: 30
 - **Reviewed by a native speaker**: none yet
 
