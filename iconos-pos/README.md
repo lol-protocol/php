@@ -6,7 +6,7 @@ archivos: 3 variantes × 8 iconos. Son los de las pantallas del sitio de punto
 de venta de `url-routing/` (producto, orden y cuenta del cliente) que no tenían
 icono en los otros dos sets.
 
-Para verlos todos, abrí `galeria-iconos.html` desde la raíz del repositorio.
+Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
 ## Variantes
 

@@ -4,7 +4,7 @@
 **sin letras, números ni pictogramas** (nada dibuja un objeto literal), así que
 no dependen del idioma. 549 archivos: 3 variantes × 183 iconos.
 
-Para verlos todos, abrí `galeria-iconos.html` desde la raíz del repositorio.
+Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
 ## Variantes
 

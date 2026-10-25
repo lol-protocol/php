@@ -1,19 +1,10 @@
 #!/usr/bin/env python3
 """Catálogo abstracto de biblioteca: volúmenes, géneros por forma y patrón, estados por relleno, acciones por movimiento."""
 import comunes
-from kit import PATTERNS, badge, genre, hexagon, volume
-from lib import Block, Disc, Icon, RPoly, fmt
+from kit import PATTERNS, badge, catalog, genre, hexagon, volume
+from lib import Block, Disc, RPoly, fmt
 
-ICONS = []
-
-
-def reg(ic):
-    ICONS.append(ic)
-    return ic
-
-
-def new(stem):
-    return reg(Icon(stem))
+ICONS, reg, new = catalog()
 
 
 # --------------------------------------------------------------------------- book_: volúmenes neutros
@@ -130,7 +121,7 @@ GENRES = {
     'half': ('cooking', 'travel', 'sports', 'nature', 'self_help', 'children', 'young_adult'),
 }
 for shape, names in GENRES.items():
-    for pattern, name in zip(PATTERNS, names):
+    for pattern, name in zip(PATTERNS, names, strict=True):
         reg(genre(f'genre_{name}', shape, pattern))
 
 # --------------------------------------------------------------------------- format_

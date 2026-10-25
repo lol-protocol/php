@@ -19,7 +19,7 @@ sys.path.insert(0, str(HERE))
 import biblioteca  # noqa: E402
 import genealogia  # noqa: E402
 import pos  # noqa: E402
-from catalogo import GROUPS, VARIANTS  # noqa: E402
+from catalogo import GROUPS, PREFIXES, VARIANTS  # noqa: E402
 
 SETS = (
     ('genealogia', 'iconos-genealogia', 'Árbol genealógico', genealogia.ICONS),
@@ -41,6 +41,9 @@ def plan_set(folder, icons):
     unlabeled = sorted({prefix(s) for s in stems} - set(GROUPS))
     if unlabeled:
         raise SystemExit(f'{folder}: prefijos sin etiqueta en catalogo.GROUPS {unlabeled}')
+    foreign = sorted({prefix(s) for s in stems} - set(PREFIXES[folder]))
+    if foreign:
+        raise SystemExit(f'{folder}: prefijos que el set no admite según catalogo.PREFIXES {foreign}')
     base = ROOT / folder
     return {base / v / prefix(i.stem) / f'{i.stem}.svg': i.render(v) for i in icons for v in VARIANTS}
 
@@ -60,7 +63,7 @@ def gallery_data():
         for icon in sorted(icons, key=lambda i: i.stem):
             groups.setdefault(prefix(icon.stem), []).append([prefix(icon.stem), icon.stem])
         ordered = [{'id': g, 'label': GROUPS[g], 'prefix': g + '_*', 'items': items}
-                   for g, items in sorted(groups.items(), key=lambda kv: list(GROUPS).index(kv[0]))]
+                   for g, items in sorted(groups.items(), key=lambda kv: PREFIXES[folder].index(kv[0]))]
         data.append({'key': key, 'dir': folder, 'title': title, 'groups': ordered})
     return data
 
@@ -73,6 +76,9 @@ def gallery_html():
 
 
 def main():
+    folders = [folder for _, folder, _, _ in SETS]
+    if folders != list(PREFIXES):
+        raise SystemExit(f'build.SETS {folders} no coincide con catalogo.PREFIXES {list(PREFIXES)}: un set sin una de las dos listas no se valida')
     # primero se genera y comprueba todo; solo entonces se borra y se escribe, para que un error no deje los sets a medias
     plans = [(folder, icons, plan_set(folder, icons)) for _, folder, _, icons in SETS]
     gallery = gallery_html()

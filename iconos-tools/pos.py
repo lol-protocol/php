@@ -1,18 +1,9 @@
 #!/usr/bin/env python3
 """Catálogo abstracto del punto de venta: catálogo, pedidos y cuenta del cliente, con la gramática de biblioteca y genealogía."""
-from kit import volume
-from lib import Block, Disc, Icon
+from kit import catalog, volume
+from lib import Block, Disc
 
-ICONS = []
-
-
-def reg(ic):
-    ICONS.append(ic)
-    return ic
-
-
-def new(stem):
-    return reg(Icon(stem))
+ICONS, reg, new = catalog()
 
 
 # --------------------------------------------------------------------------- catalog_: lo que se vende
@@ -64,7 +55,7 @@ ic.poly([(31, 20), (40, 29), (31, 40), (22, 29)], True, filled=True)
 
 # direcciones: dos marcadores, uno por lugar de entrega
 ic = new('account_addresses')
-ic.ring(17, 45, 7.5, tone='teal', ink='teal', w=3)
-ic.solid(Disc(17, 31, 6), 'teal', d=2.2)
-ic.ring(43, 45, 10, tone='orange', ink='orange', w=3.2)
-ic.solid(Disc(43, 29, 8), 'orange', d=2.8)
+ic.ring(17, 39, 7.5, tone='teal', ink='teal', w=3)
+ic.solid(Disc(17, 25, 6), 'teal', d=2.2)
+ic.ring(43, 39, 10, tone='orange', ink='orange', w=3.2)
+ic.solid(Disc(43, 23, 8), 'orange', d=2.8)

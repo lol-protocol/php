@@ -8,6 +8,21 @@ import math
 
 from lib import Block, Disc, Icon, RPoly, fmt
 
+# --------------------------------------------------------------------------- catálogo de un módulo
+def catalog():
+    """(ICONS, reg, new) de un módulo: reg(ic) añade un icono ya hecho y new(stem) crea uno vacío y lo añade."""
+    icons = []
+
+    def reg(ic):
+        icons.append(ic)
+        return ic
+
+    def new(stem):
+        return reg(Icon(stem))
+
+    return icons, reg, new
+
+
 # --------------------------------------------------------------------------- géneros: forma x patrón
 CX, CY = 30.5, 29.0
 PATTERNS = ('plain', 'stripes', 'dots', 'waves', 'ring', 'grid', 'split')

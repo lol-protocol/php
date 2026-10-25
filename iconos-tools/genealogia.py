@@ -8,7 +8,7 @@ linea cortada = divorcio, discontinua = adopcion o parentesco parcial, punteada 
 import math
 
 import comunes
-from kit import badge, tile
+from kit import badge, catalog, tile
 from lib import Block, Disc, Icon, fmt
 
 def arc_pts(cx, cy, r, a0, a1, n=48):
@@ -26,18 +26,13 @@ def bezier_pts(p0, p1, p2, p3, n=40):
     return out
 
 
-ICONS = []
+ICONS, reg, new = catalog()
 KIND = {'m': 'sq', 'f': 'ci', 'u': 'di'}
 CHAIN = {1: dict(r=7.4, h=34), 2: dict(r=6.4, h=40), 3: dict(r=5.6, h=42)}
 SMALL = {3: 3.3}
 BIG_REL = {3: 6.6}  # en las cadenas de tres generaciones el familiar se dibuja mayor: cuadrado y circulo se separan mejor
 DENSE_REL = 6.8  # en los diagramas densos (nodos de 4,5) el familiar se dibuja mayor para que se vea su forma
 ROLE = {'self': 'ink', 'rel': 'orange', 'other': 'mist', 'rel2': 'amber'}
-
-
-def reg(ic):
-    ICONS.append(ic)
-    return ic
 
 
 # ------------------------------------------------------------------ nodos
@@ -589,10 +584,6 @@ def pt_on(cx, cy, r, a):
     return cx + r * math.cos(math.radians(a)), cy + r * math.sin(math.radians(a))
 
 
-def new(stem):
-    return reg(Icon(stem))
-
-
 reg(badge('action_add', 'green', lambda ic: ic.plus(31, 30, 10, w=4)))
 reg(badge('action_delete', 'red', lambda ic: ic.cross(31, 30, 8.5, w=4)))
 
@@ -731,12 +722,12 @@ for px, py in ((42, 44), (50, 39.5), (50, 48.5)):
     ic.dot(px, py, 2.4)
 
 
-def _add_rel(stem, parts):
+def _add_rel(stem, parts, badge_at=(47, 46)):
     ic = Icon(stem)
     for p in parts:
         p(ic)
-    ic.solid(Disc(47, 46, 8.6), 'green', d=2.4)
-    ic.plus(47, 46, 4.2, w=2.8)
+    ic.solid(Disc(*badge_at, 8.6), 'green', d=2.4)
+    ic.plus(*badge_at, 4.2, w=2.8)
     return reg(ic)
 
 
@@ -751,9 +742,10 @@ _add_rel('action_add_sibling', [lambda ic: ic.link([(22, 13), (22, 21), (10, 21)
                                 lambda ic: node(ic, 'di', 22, 13, 'other', r=5.4, d=2.4),
                                 lambda ic: node(ic, 'ci', 10, 38, 'self', r=5.4, d=2.4),
                                 lambda ic: node(ic, 'di', 34, 38, 'rel', r=5.4, d=2.4)])
-_add_rel('action_add_spouse', [lambda ic: ic.link([(14, 28), (36, 28)], 'double'),
-                               lambda ic: node(ic, 'ci', 14, 28, 'self', r=6.4, d=2.6),
-                               lambda ic: node(ic, 'di', 36, 28, 'rel', r=6.4, d=2.6)])
+# la pareja ocupa una sola fila: se sube con su insignia para que el dibujo quede centrado como los otros add_
+_add_rel('action_add_spouse', [lambda ic: ic.link([(14, 21), (36, 21)], 'double'),
+                               lambda ic: node(ic, 'ci', 14, 21, 'self', r=6.4, d=2.6),
+                               lambda ic: node(ic, 'di', 36, 21, 'rel', r=6.4, d=2.6)], badge_at=(47, 41))
 
 # retirar una página: el nodo y una insignia roja con una raya
 ic = new('action_withdraw')
