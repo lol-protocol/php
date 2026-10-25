@@ -1,0 +1,56 @@
+[
+  {
+    "country_code": "TL",
+    "country_name": "Timor-Leste",
+    "region": "asia_pacific",
+    "law_name": "Code of Copyright and Related Rights (approved by National Parliament 29 Nov 2022; in force about 28 May 2023)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (per Commons summary; not verified against the Code text; photographs 25 years from publication) (unconfirmed)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://mondaq.com/copyright/1266316/approved-the-first-code-of-copyright-and-related-rights",
+    "notes": "No official text or law number found; Indonesian Law No. 6/1982 applied until 27 May 2023; enforcement body and treaties not confirmed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://mondaq.com/copyright/1266316/approved-the-first-code-of-copyright-and-related-rights",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://mondaq.com/copyright/1266316/approved-the-first-code-of-copyright-and-related-rights",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/East_Timor.html",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://en.tatoli.tl/2023/04/13/tls-copyright-law-to-come-into-force-in-june/16/",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

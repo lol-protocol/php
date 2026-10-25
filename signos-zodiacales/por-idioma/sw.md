@@ -2,109 +2,135 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Nyota za Magharibi
 
-### Kondoo dume
+### ♈ Kondoo dume
 
 *21/03 – 19/04 · Moto · Msingi*
+
+Dekani: 21/03 – 30/03 Mirihi · 31/03 – 09/04 Jua · 10/04 – 19/04 Zuhura
 
 Jasiri, mwenye haraka na amejaa nguvu.
 
 Huhusishwa na ujasiri wa kuanzisha mambo: mapokeo humwelezea kuwa mwazi, mshindani na tayari kuanza jambo jipya, ingawa hana subira.
 
-### Fahali
+### ♉ Fahali
 
 *20/04 – 20/05 · Ardhi · Thabiti*
+
+Dekani: 20/04 – 29/04 Zebaki · 30/04 – 09/05 Mwezi · 10/05 – 20/05 Zohali
 
 Mvumilivu, mwenye hisia na anapenda utulivu.
 
 Huhusishwa na uthabiti na kupenda vitu halisi: mapokeo humwelezea kuwa mwaminifu, mtulivu na mpenda starehe, ingawa wakati mwingine mkaidi.
 
-### Mapacha
+### ♊ Mapacha
 
 *21/05 – 20/06 · Hewa · Badilika*
+
+Dekani: 21/05 – 30/05 Mshtarii · 31/05 – 09/06 Mirihi · 10/06 – 20/06 Jua
 
 Mdadisi, mwenye mawasiliano na akili ya haraka.
 
 Huhusishwa na udadisi na maneno: mapokeo humwelezea kuwa mwenye urafiki, mwenye vipaji vingi na daima na swali jipya, ingawa wakati mwingine hana umakini.
 
-### Kaa
+### ♋ Kaa
 
 *21/06 – 22/07 · Maji · Msingi*
+
+Dekani: 21/06 – 30/06 Zuhura · 01/07 – 10/07 Zebaki · 11/07 – 22/07 Mwezi
 
 Mlinzi, nyeti na mwaminifu sana kwa wapendwa wake.
 
 Huhusishwa na nyumbani na hisia: mapokeo humwelezea kuwa mwenye kujali, mwenye angavu na aliyeshikamana sana na familia, ingawa wakati mwingine mwenye kujificha.
 
-### Simba
+### ♌ Simba
 
 *23/07 – 22/08 · Moto · Thabiti*
+
+Dekani: 23/07 – 01/08 Zohali · 02/08 – 11/08 Mshtarii · 12/08 – 22/08 Mirihi
 
 Mkarimu, mwenye haiba na anapenda kung'aa.
 
 Huhusishwa na ukarimu na uongozi: mapokeo humwelezea kuwa mchangamfu, mwenye kiburi na anayependa kuangaziwa, ingawa wakati mwingine mkaidi.
 
-### Bikira
+### ♍ Bikira
 
 *23/08 – 22/09 · Ardhi · Badilika*
+
+Dekani: 23/08 – 01/09 Jua · 02/09 – 11/09 Zuhura · 12/09 – 22/09 Zebaki
 
 Mchambuzi, mwenye vitendo na makini sana.
 
 Huhusishwa na mpangilio na huduma: mapokeo humwelezea kuwa mwenye mbinu, mwenye hadhari na mkali kwa nafsi yake, ingawa wakati mwingine mkosoaji kupita kiasi.
 
-### Mizani
+### ♎ Mizani
 
 *23/09 – 22/10 · Hewa · Msingi*
+
+Dekani: 23/09 – 02/10 Mwezi · 03/10 – 12/10 Zohali · 13/10 – 22/10 Mshtarii
 
 Mwenye busara, mwenye urafiki na anatafuta usawa.
 
 Huhusishwa na maelewano na haki: mapokeo humwelezea kuwa mpole, mwenye umaridadi na msuluhishi mzuri, ingawa wakati mwingine hasiti.
 
-### Nge
+### ♏ Nge
 
 *23/10 – 21/11 · Maji · Thabiti*
+
+Dekani: 23/10 – 01/11 Mirihi · 02/11 – 11/11 Jua · 12/11 – 21/11 Zuhura
 
 Mkali, mwenye angavu na nia thabiti.
 
 Huhusishwa na kina na azma: mapokeo humwelezea kuwa mwenye kujizuia, mwenye shauku na makini sana, ingawa wakati mwingine mkali kupita kiasi.
 
-### Mpiga upinde
+### ♐ Mpiga upinde
 
 *22/11 – 21/12 · Moto · Badilika*
+
+Dekani: 22/11 – 01/12 Zebaki · 02/12 – 11/12 Mwezi · 12/12 – 21/12 Zohali
 
 Mwenye matumaini, mpenda matukio na uhuru.
 
 Huhusishwa na uchunguzi na ukweli: mapokeo humwelezea kuwa mwenye matumaini, asiye na utulivu na mpenda kusafiri na kujifunza, ingawa wakati mwingine mzembe.
 
-### Mbuzi
+### ♑ Mbuzi wa bahari
 
 *22/12 – 19/01 · Ardhi · Msingi*
+
+Dekani: 22/12 – 31/12 Mshtarii · 01/01 – 10/01 Mirihi · 11/01 – 19/01 Jua
 
 Mwenye nidhamu, mwenye tamaa na mwajibikaji.
 
 Huhusishwa na nidhamu na subira: mapokeo humwelezea kuwa mwenye tamaa, makini na mwajibikaji kwa muda mrefu, ingawa wakati mwingine mgumu.
 
-### Mbeba maji
+### ♒ Mbeba maji
 
 *20/01 – 18/02 · Hewa · Thabiti*
+
+Dekani: 20/01 – 29/01 Zuhura · 30/01 – 08/02 Zebaki · 09/02 – 18/02 Mwezi
 
 Huru, mbunifu na mwenye kujali binadamu.
 
 Huhusishwa na ubunifu na mawazo ya jamii: mapokeo humwelezea kuwa huru, mvumbuzi na mwenye umbali kidogo, ingawa wakati mwingine muasi.
 
-### Samaki
+### ♓ Samaki
 
 *19/02 – 20/03 · Maji · Badilika*
+
+Dekani: 19/02 – 28/02 Zohali · 01/03 – 10/03 Mshtarii · 11/03 – 20/03 Mirihi
 
 Mwenye huruma, mwenye ndoto na mwenye angavu sana.
 
 Huhusishwa na mawazo na huruma: mapokeo humwelezea kuwa nyeti, msanii na aliyejitolea kwa wengine, ingawa wakati mwingine mkwepaji.
 
-## Horóscopo chino
+## Nyota za Kichina
 
 ### Panya
 
-*Zi · Maji · Yang · 1996, 2008, 2020, 2032*
+*子 Zi · Maji · Yang*
+
+1924 Mbao · 1936 Moto · 1948 Ardhi · 1960 Chuma · 1972 Maji · 1984 Mbao · 1996 Moto · 2008 Ardhi · 2020 Chuma · 2032 Maji
 
 Mjanja, mwepesi na mbunifu sana.
 
@@ -112,7 +138,9 @@ Huhusishwa na ujanja na kujirekebisha: mapokeo humwelezea kuwa mchunguzi, mvutia
 
 ### Ng'ombe
 
-*Chou · Ardhi · Yin · 1997, 2009, 2021, 2033*
+*丑 Chou · Ardhi · Yin*
+
+1925 Mbao · 1937 Moto · 1949 Ardhi · 1961 Chuma · 1973 Maji · 1985 Mbao · 1997 Moto · 2009 Ardhi · 2021 Chuma · 2033 Maji
 
 Mchapakazi, mvumilivu na mwaminifu.
 
@@ -120,7 +148,9 @@ Huhusishwa na juhudi na uvumilivu: mapokeo humwelezea kuwa thabiti, mvumilivu na
 
 ### Tigri
 
-*Yin · Mbao · Yang · 1998, 2010, 2022, 2034*
+*寅 Yin · Mbao · Yang*
+
+1926 Moto · 1938 Ardhi · 1950 Chuma · 1962 Maji · 1974 Mbao · 1986 Moto · 1998 Ardhi · 2010 Chuma · 2022 Maji · 2034 Mbao
 
 Jasiri, mshindani na mwenye shauku.
 
@@ -128,7 +158,9 @@ Huhusishwa na ujasiri na mvuto: mapokeo humwelezea kuwa jasiri, mkarimu na kiong
 
 ### Sungura
 
-*Mao · Mbao · Yin · 1999, 2011, 2023, 2035*
+*卯 Mao · Mbao · Yin*
+
+1927 Moto · 1939 Ardhi · 1951 Chuma · 1963 Maji · 1975 Mbao · 1987 Moto · 1999 Ardhi · 2011 Chuma · 2023 Maji · 2035 Mbao
 
 Mpole, mwangalifu na nyeti.
 
@@ -136,7 +168,9 @@ Huhusishwa na utulivu na busara ya kidiplomasia: mapokeo humwelezea kuwa mpole, 
 
 ### Joka
 
-*Chen · Ardhi · Yang · 2000, 2012, 2024, 2036*
+*辰 Chen · Ardhi · Yang*
+
+1928 Ardhi · 1940 Chuma · 1952 Maji · 1964 Mbao · 1976 Moto · 1988 Ardhi · 2000 Chuma · 2012 Maji · 2024 Mbao · 2036 Moto
 
 Mwenye nguvu, mwenye haiba na mwenye bahati.
 
@@ -144,7 +178,9 @@ Huhusishwa na bahati na tamaa: mapokeo humwelezea kuwa mwenye kujiamini, mvuto n
 
 ### Nyoka
 
-*Si · Moto · Yin · 2001, 2013, 2025, 2037*
+*巳 Si · Moto · Yin*
+
+1929 Ardhi · 1941 Chuma · 1953 Maji · 1965 Mbao · 1977 Moto · 1989 Ardhi · 2001 Chuma · 2013 Maji · 2025 Mbao · 2037 Moto
 
 Mwenye hekima, mtulivu na mwenye umaridadi.
 
@@ -152,7 +188,9 @@ Huhusishwa na hekima na angavu: mapokeo humwelezea kuwa mwenye kutafakari, mweny
 
 ### Farasi
 
-*Wu · Moto · Yang · 2002, 2014, 2026, 2038*
+*午 Wu · Moto · Yang*
+
+1930 Chuma · 1942 Maji · 1954 Mbao · 1966 Moto · 1978 Ardhi · 1990 Chuma · 2002 Maji · 2014 Mbao · 2026 Moto · 2038 Ardhi
 
 Mwenye roho huru, mwenye nguvu na mwenye urafiki.
 
@@ -160,7 +198,9 @@ Huhusishwa na uhuru na nguvu: mapokeo humwelezea kuwa mchangamfu, huru na mpenda
 
 ### Mbuzi
 
-*Wei · Ardhi · Yin · 2003, 2015, 2027, 2039*
+*未 Wei · Ardhi · Yin*
+
+1931 Chuma · 1943 Maji · 1955 Mbao · 1967 Moto · 1979 Ardhi · 1991 Chuma · 2003 Maji · 2015 Mbao · 2027 Moto · 2039 Ardhi
 
 Mbunifu, mpole na mwenye sanaa.
 
@@ -168,7 +208,9 @@ Huhusishwa na unyeti na ubunifu: mapokeo humwelezea kuwa mpole, mwenye ndoto na 
 
 ### Nyani
 
-*Shen · Chuma · Yang · 2004, 2016, 2028, 2040*
+*申 Shen · Chuma · Yang*
+
+1932 Maji · 1944 Mbao · 1956 Moto · 1968 Ardhi · 1980 Chuma · 1992 Maji · 2004 Mbao · 2016 Moto · 2028 Ardhi · 2040 Chuma
 
 Mwerevu, mcheshi na mwenye busara.
 
@@ -176,7 +218,9 @@ Huhusishwa na ujanja na udadisi: mapokeo humwelezea kuwa mcheshi, mbunifu na ana
 
 ### Jogoo
 
-*You · Chuma · Yin · 2005, 2017, 2029, 2041*
+*酉 You · Chuma · Yin*
+
+1933 Maji · 1945 Mbao · 1957 Moto · 1969 Ardhi · 1981 Chuma · 1993 Maji · 2005 Mbao · 2017 Moto · 2029 Ardhi · 2041 Chuma
 
 Mpangilio, mkweli na mchunguzi.
 
@@ -184,7 +228,9 @@ Huhusishwa na mpangilio na ukweli: mapokeo humwelezea kuwa mchapakazi, mwenye ku
 
 ### Mbwa
 
-*Xu · Ardhi · Yang · 2006, 2018, 2030, 2042*
+*戌 Xu · Ardhi · Yang*
+
+1934 Mbao · 1946 Moto · 1958 Ardhi · 1970 Chuma · 1982 Maji · 1994 Mbao · 2006 Moto · 2018 Ardhi · 2030 Chuma · 2042 Maji
 
 Mwaminifu, mwadilifu na mlinzi.
 
@@ -192,7 +238,9 @@ Huhusishwa na uaminifu na haki: mapokeo humwelezea kuwa mkweli, mlinzi na rafiki
 
 ### Nguruwe
 
-*Hai · Maji · Yin · 2007, 2019, 2031, 2043*
+*亥 Hai · Maji · Yin*
+
+1935 Mbao · 1947 Moto · 1959 Ardhi · 1971 Chuma · 1983 Maji · 1995 Mbao · 2007 Moto · 2019 Ardhi · 2031 Chuma · 2043 Maji
 
 Mkarimu, mkweli na mwenye upendo.
 

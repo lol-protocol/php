@@ -2,198 +2,246 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Västerländsk zodiak
 
-### Väduren
+### ♈ Väduren
 
 *21/03 – 19/04 · Eld · Kardinal*
 
+Dekaner: 21/03 – 30/03 Mars · 31/03 – 09/04 Solen · 10/04 – 19/04 Venus
+
 Modig, impulsiv och full av energi.
 
-Förknippas med initiativ och mod: traditionen beskriver honom som rak, tävlingsinriktad och alltid redo att börja något nytt, men otålig.
+Tecken för initiativ och mod: traditionen förknippar det med rakhet, tävlingsanda och lust att börja nytt, men också med otålighet.
 
-### Oxen
+### ♉ Oxen
 
 *20/04 – 20/05 · Jord · Fast*
 
+Dekaner: 20/04 – 29/04 Merkurius · 30/04 – 09/05 Månen · 10/05 – 20/05 Saturnus
+
 Tålmodig, sinnlig och stabilitetsälskande.
 
-Förknippas med uthållighet och sinne för det konkreta: traditionen beskriver honom som lojal, lugn och bekvämlighetsälskande, men ibland envis.
+Tecken för uthållighet och sinne för det konkreta: traditionen förknippar det med lojalitet, lugn och kärlek till bekvämlighet, men också med envishet.
 
-### Tvillingarna
+### ♊ Tvillingarna
 
 *21/05 – 20/06 · Luft · Föränderlig*
 
+Dekaner: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Solen
+
 Nyfiken, kommunikativ och kvick.
 
-Förknippas med nyfikenhet och ordet: traditionen beskriver honom som sällskaplig, mångsidig och alltid med en ny fråga, men ibland spridd.
+Tecken för nyfikenhet och ordet: traditionen förknippar det med sällskaplighet, mångsidighet och ständigt nya frågor, men också med splittring.
 
-### Kräftan
+### ♋ Kräftan
 
 *21/06 – 22/07 · Vatten · Kardinal*
 
+Dekaner: 21/06 – 30/06 Venus · 01/07 – 10/07 Merkurius · 11/07 – 22/07 Månen
+
 Skyddande, känslig och mycket lojal mot sina.
 
-Förknippas med hemmet och känslorna: traditionen beskriver honom som omtänksam, intuitiv och mycket fäst vid familjen, men ibland reserverad.
+Tecken för hemmet och känslorna: traditionen förknippar det med omtanke, intuition och fäste vid familjen, men också med tillbakadragenhet.
 
-### Lejonet
+### ♌ Lejonet
 
 *23/07 – 22/08 · Eld · Fast*
 
+Dekaner: 23/07 – 01/08 Saturnus · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Mars
+
 Generös, karismatisk och gillar att lysa.
 
-Förknippas med generositet och ledarskap: traditionen beskriver honom som varm, stolt och förtjust i rampljuset, men ibland envis.
+Tecken för generositet och ledarskap: traditionen förknippar det med värme, stolthet och kärlek till rampljuset, men också med envishet.
 
-### Jungfrun
+### ♍ Jungfrun
 
 *23/08 – 22/09 · Jord · Föränderlig*
 
+Dekaner: 23/08 – 01/09 Solen · 02/09 – 11/09 Venus · 12/09 – 22/09 Merkurius
+
 Analytisk, praktisk och mycket noggrann.
 
-Förknippas med ordning och tjänstvillighet: traditionen beskriver honom som metodisk, diskret och krävande mot sig själv, men ibland för kritisk.
+Tecken för ordning och tjänstvillighet: traditionen förknippar det med metodik, diskretion och höga krav på sig själv, men också med överdriven kritik.
 
-### Vågen
+### ♎ Vågen
 
 *23/09 – 22/10 · Luft · Kardinal*
 
+Dekaner: 23/09 – 02/10 Månen · 03/10 – 12/10 Saturnus · 13/10 – 22/10 Jupiter
+
 Diplomatisk, social och söker balans.
 
-Förknippas med harmoni och rättvisa: traditionen beskriver honom som vänlig, elegant och en bra medlare, men ibland obeslutsam.
+Tecken för harmoni och rättvisa: traditionen förknippar det med vänlighet, elegans och talang för medling, men också med obeslutsamhet.
 
-### Skorpionen
+### ♏ Skorpionen
 
 *23/10 – 21/11 · Vatten · Fast*
 
+Dekaner: 23/10 – 01/11 Mars · 02/11 – 11/11 Solen · 12/11 – 21/11 Venus
+
 Intensiv, intuitiv och viljestark.
 
-Förknippas med djup och beslutsamhet: traditionen beskriver honom som reserverad, passionerad och mycket skarpsynt, men ibland alltför intensiv.
+Tecken för djup och beslutsamhet: traditionen förknippar det med tillbakadragenhet, passion och skarpsinne, men också med överdriven intensitet.
 
-### Skytten
+### ♐ Skytten
 
 *22/11 – 21/12 · Eld · Föränderlig*
 
+Dekaner: 22/11 – 01/12 Merkurius · 02/12 – 11/12 Månen · 12/12 – 21/12 Saturnus
+
 Optimistisk, äventyrlig och frihetsälskande.
 
-Förknippas med utforskande och rakhet: traditionen beskriver honom som optimistisk, rastlös och förtjust i att resa och lära, men ibland oförsiktig.
+Tecken för utforskande och rakhet: traditionen förknippar det med optimism, rastlöshet och kärlek till resor och lärande, men också med oförsiktighet.
 
-### Stenbocken
+### ♑ Stenbocken
 
 *22/12 – 19/01 · Jord · Kardinal*
 
+Dekaner: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Solen
+
 Disciplinerad, ambitiös och ansvarsfull.
 
-Förknippas med disciplin och tålamod: traditionen beskriver honom som ambitiös, allvarlig och ansvarstagande på lång sikt, men ibland rigid.
+Tecken för disciplin och tålamod: traditionen förknippar det med ambition, allvar och långsiktigt ansvar, men också med stelhet.
 
-### Vattumannen
+### ♒ Vattumannen
 
 *20/01 – 18/02 · Luft · Fast*
 
+Dekaner: 20/01 – 29/01 Venus · 30/01 – 08/02 Merkurius · 09/02 – 18/02 Månen
+
 Självständig, originell och humanitär.
 
-Förknippas med originalitet och gemensamma idéer: traditionen beskriver honom som självständig, nyskapande och något distanserad, men ibland upprorisk.
+Tecken för originalitet och gemensamma idéer: traditionen förknippar det med självständighet, nytänkande och en viss distans, men också med upproriskhet.
 
-### Fiskarna
+### ♓ Fiskarna
 
 *19/02 – 20/03 · Vatten · Föränderlig*
 
+Dekaner: 19/02 – 28/02 Saturnus · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Mars
+
 Empatisk, drömsk och mycket intuitiv.
 
-Förknippas med fantasi och medkänsla: traditionen beskriver honom som känslig, konstnärlig och hängiven andra, men ibland undvikande.
+Tecken för fantasi och medkänsla: traditionen förknippar det med känslighet, konstnärlig talang och hängivenhet till andra, men också med undanglidning.
 
-## Horóscopo chino
+## Kinesiskt horoskop
 
 ### Råtta
 
-*Zi · Vatten · Yang · 1996, 2008, 2020, 2032*
+*子 Zi · Vatten · Yang*
+
+1924 Trä · 1936 Eld · 1948 Jord · 1960 Metall · 1972 Vatten · 1984 Trä · 1996 Eld · 2008 Jord · 2020 Metall · 2032 Vatten
 
 Listig, kvick och mycket påhittig.
 
-Förknippas med kvickhet och anpassningsförmåga: traditionen beskriver den som observant, charmig och skicklig på att hitta möjligheter, men ibland beräknande.
+Tecken för kvickhet och anpassningsförmåga: traditionen förknippar det med iakttagelseförmåga, charm och näsa för möjligheter, men också med beräkning.
 
 ### Oxe
 
-*Chou · Jord · Yin · 1997, 2009, 2021, 2033*
+*丑 Chou · Jord · Yin*
+
+1925 Trä · 1937 Eld · 1949 Jord · 1961 Metall · 1973 Vatten · 1985 Trä · 1997 Eld · 2009 Jord · 2021 Metall · 2033 Vatten
 
 Arbetsam, tålmodig och pålitlig.
 
-Förknippas med ansträngning och uthållighet: traditionen beskriver den som stadig, tålmodig och ordhållig, men ibland sluten för förändring.
+Tecken för möda och uthållighet: traditionen förknippar det med stadga, tålamod och pålitlighet, men också med motstånd mot förändring.
 
 ### Tiger
 
-*Yin · Trä · Yang · 1998, 2010, 2022, 2034*
+*寅 Yin · Trä · Yang*
+
+1926 Eld · 1938 Jord · 1950 Metall · 1962 Vatten · 1974 Trä · 1986 Eld · 1998 Jord · 2010 Metall · 2022 Vatten · 2034 Trä
 
 Modig, tävlingsinriktad och passionerad.
 
-Förknippas med mod och utstrålning: traditionen beskriver den som djärv, generös och en naturlig ledare, men ibland impulsiv.
+Tecken för mod och utstrålning: traditionen förknippar det med djärvhet, generositet och naturligt ledarskap, men också med impulsivitet.
 
 ### Kanin
 
-*Mao · Trä · Yin · 1999, 2011, 2023, 2035*
+*卯 Mao · Trä · Yin*
+
+1927 Eld · 1939 Jord · 1951 Metall · 1963 Vatten · 1975 Trä · 1987 Eld · 1999 Jord · 2011 Metall · 2023 Vatten · 2035 Trä
 
 Vänlig, försiktig och känslig.
 
-Förknippas med lugn och diplomati: traditionen beskriver den som varsam, artig och harmoniälskande, men ibland konflikträdd.
+Tecken för lugn och diplomati: traditionen förknippar det med finkänslighet, artighet och kärlek till harmoni, men också med konfliktskygghet.
 
 ### Draken
 
-*Chen · Jord · Yang · 2000, 2012, 2024, 2036*
+*辰 Chen · Jord · Yang*
+
+1928 Jord · 1940 Metall · 1952 Vatten · 1964 Trä · 1976 Eld · 1988 Jord · 2000 Metall · 2012 Vatten · 2024 Trä · 2036 Eld
 
 Karismatisk, energisk och lyckosam.
 
-Förknippas med lycka och ambition: traditionen beskriver den som självsäker, magnetisk och full av projekt, men ibland stolt.
+Tecken för lycka och ambition: traditionen förknippar det med självsäkerhet, dragningskraft och många planer, men också med stolthet.
 
 ### Orm
 
-*Si · Eld · Yin · 2001, 2013, 2025, 2037*
+*巳 Si · Eld · Yin*
+
+1929 Jord · 1941 Metall · 1953 Vatten · 1965 Trä · 1977 Eld · 1989 Jord · 2001 Metall · 2013 Vatten · 2025 Trä · 2037 Eld
 
 Vis, reserverad och elegant.
 
-Förknippas med visdom och intuition: traditionen beskriver den som eftertänksam, elegant och strategisk, men ibland misstänksam.
+Tecken för visdom och intuition: traditionen förknippar det med eftertanke, elegans och strategiskt tänkande, men också med misstänksamhet.
 
 ### Häst
 
-*Wu · Eld · Yang · 2002, 2014, 2026, 2038*
+*午 Wu · Eld · Yang*
+
+1930 Metall · 1942 Vatten · 1954 Trä · 1966 Eld · 1978 Jord · 1990 Metall · 2002 Vatten · 2014 Trä · 2026 Eld · 2038 Jord
 
 Frihetsälskande, energisk och social.
 
-Förknippas med frihet och energi: traditionen beskriver den som glad, självständig och förtjust i rörelse, men ibland rastlös.
+Tecken för frihet och energi: traditionen förknippar det med glädje, självständighet och kärlek till rörelse, men också med rastlöshet.
 
 ### Get
 
-*Wei · Jord · Yin · 2003, 2015, 2027, 2039*
+*未 Wei · Jord · Yin*
+
+1931 Metall · 1943 Vatten · 1955 Trä · 1967 Eld · 1979 Jord · 1991 Metall · 2003 Vatten · 2015 Trä · 2027 Eld · 2039 Jord
 
 Kreativ, mild och konstnärlig.
 
-Förknippas med känslighet och kreativitet: traditionen beskriver den som vänlig, drömsk och fredsälskande, men ibland obeslutsam.
+Tecken för känslighet och kreativitet: traditionen förknippar det med vänlighet, fantasi och fredlighet, men också med obeslutsamhet.
 
 ### Apa
 
-*Shen · Metall · Yang · 2004, 2016, 2028, 2040*
+*申 Shen · Metall · Yang*
+
+1932 Vatten · 1944 Trä · 1956 Eld · 1968 Jord · 1980 Metall · 1992 Vatten · 2004 Trä · 2016 Eld · 2028 Jord · 2040 Metall
 
 Smart, rolig och påhittig.
 
-Förknippas med kvickhet och nyfikenhet: traditionen beskriver den som rolig, uppfinningsrik och snabb att lära, men ibland okynnig.
+Tecken för kvickhet och nyfikenhet: traditionen förknippar det med humor, uppfinningsrikedom och snabb inlärning, men också med busighet.
 
 ### Tupp
 
-*You · Metall · Yin · 2005, 2017, 2029, 2041*
+*酉 You · Metall · Yin*
+
+1933 Vatten · 1945 Trä · 1957 Eld · 1969 Jord · 1981 Metall · 1993 Vatten · 2005 Trä · 2017 Eld · 2029 Jord · 2041 Metall
 
 Organiserad, ärlig och observant.
 
-Förknippas med ordning och rakhet: traditionen beskriver den som arbetsam, punktlig och detaljinriktad, men ibland mycket kritisk.
+Tecken för ordning och rakhet: traditionen förknippar det med flit, punktlighet och sinne för detaljer, men också med överdriven kritik.
 
 ### Hund
 
-*Xu · Jord · Yang · 2006, 2018, 2030, 2042*
+*戌 Xu · Jord · Yang*
+
+1934 Trä · 1946 Eld · 1958 Jord · 1970 Metall · 1982 Vatten · 1994 Trä · 2006 Eld · 2018 Jord · 2030 Metall · 2042 Vatten
 
 Lojal, rättvis och skyddande.
 
-Förknippas med lojalitet och rättvisa: traditionen beskriver den som ärlig, skyddande och en god vän, men ibland orolig.
+Tecken för lojalitet och rättvisa: traditionen förknippar det med ärlighet, beskyddarinstinkt och vänskap, men också med ängslighet.
 
 ### Gris
 
-*Hai · Vatten · Yin · 2007, 2019, 2031, 2043*
+*亥 Hai · Vatten · Yin*
+
+1935 Trä · 1947 Eld · 1959 Jord · 1971 Metall · 1983 Vatten · 1995 Trä · 2007 Eld · 2019 Jord · 2031 Metall · 2043 Vatten
 
 Generös, uppriktig och kärleksfull.
 
-Förknippas med generositet och njutning: traditionen beskriver den som uppriktig, vänlig och godhjärtad, men ibland naiv.
+Tecken för generositet och livsglädje: traditionen förknippar det med uppriktighet, vänlighet och ett gott hjärta, men också med naivitet.

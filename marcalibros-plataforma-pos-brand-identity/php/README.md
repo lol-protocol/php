@@ -47,7 +47,7 @@ try {
     echo $e->userMessage();                    // texto en español para la persona
 }
 
-// En la base de datos se guarda solo esto:
+// Lo que conviene guardar (la aplicación de app/ lo escribe en un JSON junto a las imágenes):
 $bookmark->toArray();   // id, source, label, files ('1x' y '2x'), width, height
 ```
 

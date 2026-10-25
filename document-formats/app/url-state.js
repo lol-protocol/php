@@ -3,7 +3,7 @@
  * so a result can be shared: app/index.html#tab=converter&from=A4&to=Letter.
  * Only the keys listed here are read; empty values are left out.
  */
-const URL_STATE_KEYS = ['lang', 'tab', 'q', 'country', 'category', 'region', 'compare', 'from', 'to', 'pq', 'pcat', 'size'];
+const URL_STATE_KEYS = ['lang', 'tab', 'q', 'country', 'category', 'region', 'compare', 'from', 'to', 'pq', 'pcat', 'size', 'sort'];
 
 // {tab: 'about', q: ''} -> "tab=about"
 const encodeState = (state) => {

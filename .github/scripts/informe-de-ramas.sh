@@ -12,6 +12,7 @@
 #
 # Necesita un clon con todas las ramas (fetch-depth: 0) y `gh` con permiso de leer pull requests.
 # Variables: BASE_REF (origin/master), MIN_DIAS (3), GITHUB_REPOSITORY (lol-protocol/php).
+# Con GITHUB_OUTPUT escribe `sobrantes=N` (vacías + fusionadas) para el paso que decide si abre una issue.
 set -euo pipefail
 
 base="${BASE_REF:-origin/master}"
@@ -23,6 +24,8 @@ abiertas=$(gh api "repos/$repo/pulls?state=open&per_page=100" --paginate --jq '.
 
 vacias=""
 fusionadas=""
+n_vacias=0
+n_fusionadas=0
 total=0
 while IFS='|' read -r rama fecha; do
   case "$rama" in HEAD | master) continue ;; esac
@@ -32,12 +35,14 @@ while IFS='|' read -r rama fecha; do
   dia=$(date -u -d "@$fecha" +%F)
   if [ "$(git rev-list --count "$base..origin/$rama")" = 0 ]; then
     vacias+="- \`$rama\` (último commit: $dia)"$'\n'
+    n_vacias=$((n_vacias + 1))
     continue
   fi
   mb=$(git merge-base "$base" "origin/$rama")
   mapfile -t archivos < <(git diff --name-only "$mb" "origin/$rama")
   if [ "${#archivos[@]}" -gt 0 ] && git diff --quiet "$base" "origin/$rama" -- "${archivos[@]}"; then
     fusionadas+="- \`$rama\` (último commit: $dia, ${#archivos[@]} archivos)"$'\n'
+    n_fusionadas=$((n_fusionadas + 1))
   fi
 done < <(git for-each-ref --format='%(refname:strip=3)|%(committerdate:unix)' refs/remotes/origin)
 
@@ -60,4 +65,9 @@ informe() {
 informe
 if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
   informe >>"$GITHUB_STEP_SUMMARY"
+fi
+
+# Para el paso que decide si abre la issue: cuántas ramas sobran en total.
+if [ -n "${GITHUB_OUTPUT:-}" ]; then
+  echo "sobrantes=$((n_vacias + n_fusionadas))" >>"$GITHUB_OUTPUT"
 fi

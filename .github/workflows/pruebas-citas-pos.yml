@@ -1,0 +1,46 @@
+name: Pruebas citas POS
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "citas-pos/**"
+      - ".github/workflows/pruebas-citas-pos.yml"
+  pull_request:
+    paths:
+      - "citas-pos/**"
+      - ".github/workflows/pruebas-citas-pos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+
+      - name: Los scripts compilan
+        run: |
+          for f in citas-pos/bin/*.php; do php -l "$f"; done
+
+      - name: Paleta (categorías, contraste y colores confundibles)
+        run: php citas-pos/bin/comprobar-paleta.php
+
+      - name: prototipo/index.html al día con el generador
+        run: php citas-pos/bin/prototipo.php --comprobar
+
+      - name: Registro de revisiones válido
+        run: php citas-pos/bin/comprobar-revisiones.php

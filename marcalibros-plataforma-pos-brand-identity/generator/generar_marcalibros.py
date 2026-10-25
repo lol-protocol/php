@@ -424,11 +424,13 @@ def main():
     ap = argparse.ArgumentParser(description="Genera marcalibros y paisajes de la marca.")
     ap.add_argument("--por-categoria", type=int, default=50,
                     help=f"variantes por categoría (hay {len(CATEGORIAS)}: 50 da {50 * len(CATEGORIAS)} marcalibros)")
+    ap.add_argument("--salida", type=Path,
+                    help="carpeta donde escribir catalog/ e images/ (por defecto, la del proyecto: reescribe lo versionado)")
     args = ap.parse_args()
     if args.por_categoria < 1:
         ap.error("--por-categoria debe ser 1 o más")
 
-    raiz = Path(__file__).resolve().parent.parent
+    raiz = args.salida or Path(__file__).resolve().parent.parent
     total, pesos, excedidos, repetidos = generar_marcalibros(raiz, args.por_categoria)
     paisajes = generar_paisajes(raiz)
     print(f"Marcalibros generados: {total} ({len(CATEGORIAS)} categorías x {args.por_categoria})")

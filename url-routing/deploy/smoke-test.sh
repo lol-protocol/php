@@ -312,6 +312,9 @@ CAB=$(cabeceras "$H" "$HTTPS/0/" -u "x:$TOKEN")
 contiene "la cookie de sesión es secure" 'secure' "$(printf '%s' "$CAB" | grep -i '^set-cookie')"
 contiene "la cookie de sesión es HttpOnly" 'httponly' "$(printf '%s' "$CAB" | grep -i '^set-cookie')"
 contiene "Strict-Transport-Security" 'strict-transport-security' "$CAB"
+no_contiene "quien solo mira no recibe cookie" 'set-cookie' "$(cabeceras "$H" "$HTTPS/")"
+no_contiene "ni siquiera la página de una persona" 'set-cookie' "$(cabeceras "$H" "$HTTPS/6128473101/")"
+contiene "una página con formulario sí abre sesión (secure)" 'secure' "$(cabeceras "$H" "$HTTPS/r/6128473105/" | grep -i '^set-cookie')"
 no_contiene "por HTTP plano la cookie no es secure" 'secure' "$(cabeceras "$H" "$HTTP/0/" -u "x:$TOKEN" | grep -i '^set-cookie')"
 
 echo "== El sitio de cada dominio"

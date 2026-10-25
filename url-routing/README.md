@@ -1,46 +1,44 @@
 # url-routing
 
-Routing de URLs para dos sitios con el mismo código: el de genealogía y el POS (Contrastocolor). El tipo de recurso se infiere de la **forma** del primer segmento de la URL (cantidad de dígitos; 2 letras para un país, 3 para un idioma, 1 para una función del sistema), no de palabras: `/6128473190/` es una persona porque tiene 10 dígitos. PHP 8.1 o más, sin framework; SQLite o PostgreSQL por sitio.
+Routing de URLs para los sitios de **genealogía** y **POS** (Contrastocolor), que son la misma aplicación PHP: el `Host` de cada petición decide cuál se sirve. El tipo de recurso se infiere de la **forma** del primer segmento de la URL (cantidad de dígitos, letras), no de palabras.
 
-Este archivo es solo la puerta de entrada: el detalle está en `docs/`.
+Este archivo solo orienta. La documentación vive en [`docs/`](docs/); el esquema de URLs, que es lo que más se consulta, está en [`docs/README_URLS.md`](docs/README_URLS.md).
 
-## Empezar
+## Qué carpeta se publica
 
-```bash
-composer install
-php bin/migrate.php genealogy --seed     # var/genealogy.sqlite con datos de demostración
-php bin/migrate.php pos --seed           # var/pos.sqlite
-php -S spa.tudominio.local:8000 -t public public/index.php
-php -S spa.contrastocolor.local:8001 -t public public/index.php
-```
+**Solo `public/`.** El servidor web apunta ahí (`root /var/www/url-routing/public`, ver `deploy/nginx.conf.example`); el resto del proyecto, incluido este archivo, no se sirve. No pongas nada en `public/` que no deba ser público.
 
-Sin `.env`, cada sitio usa un SQLite local en `var/`. Las variables están explicadas en [`.env.example`](.env.example).
+## Requisitos
+
+PHP 8.1 o más, con `pdo`, `pdo_pgsql` (y `pdo_sqlite` si algún sitio usa SQLite), `mbstring` y `ctype`. Composer, solo para instalar las dependencias.
 
 ## Pruebas
 
 ```bash
-./vendor/bin/phpunit                     # contra SQLite
-TEST_PG_DSN='pgsql:host=127.0.0.1;dbname=routing_test' \
-TEST_PG_USER=routing_test TEST_PG_PASSWORD=routing_test \
-./vendor/bin/phpunit                     # además contra PostgreSQL
+composer install
+./vendor/bin/phpunit
 ```
 
-La CI (`.github/workflows/pruebas-url-routing.yml`) las corre en PHP 8.1 a 8.4, contra SQLite y PostgreSQL, y además la prueba de humo del despliegue con nginx y PHP-FPM (`deploy/smoke-test.sh`).
+La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de nuevo contra PostgreSQL (así lo hace la CI). Detalle en [`docs/DATABASE.md`](docs/DATABASE.md).
+
+## Scripts de `bin/`
+
+| Script | Para qué |
+|---|---|
+| `php bin/migrate.php <sitio> [--seed]` | Aplica las migraciones de un sitio (`genealogy` o `pos`); `--seed` carga datos de demostración (solo desarrollo). |
+| `php bin/rutas.php > docs/RUTAS.md` | Regenera la lista de rutas desde `config/routes/`. No edites `RUTAS.md` a mano. |
+| `php bin/fusionar.php <duplicado> <vigente> [--confirmar]` | Fusiona una persona duplicada en la que queda; sin `--confirmar` solo muestra qué movería. |
+| `php bin/pedidos-retiro.php [--ocultar] [--horas=N]` | Lista los pedidos de retiro que esperan al propietario; pensado para cron (no imprime nada si no hay). |
+
+La base de datos sale de `DB_DSN_<SITIO>` / `DB_DSN` (o de `.env`), igual que en la aplicación web.
 
 ## Documentación
 
-| Archivo | Qué tiene |
+| Documento | Contenido |
 |---|---|
-| [`docs/README_URLS.md`](docs/README_URLS.md) | El esquema de URLs, la estructura de carpetas y ejemplos |
-| [`docs/URL_STRUCTURES.md`](docs/URL_STRUCTURES.md) | La gramática de los formatos, los sitemaps y lo que ven los buscadores |
-| [`docs/RUTAS.md`](docs/RUTAS.md) | Todas las rutas, generado desde la configuración (`php bin/rutas.php`) |
-| [`docs/ACCESO.md`](docs/ACCESO.md) | Quién ve qué: el propietario, las personas vivas, los pedidos de retiro |
-| [`docs/DATABASE.md`](docs/DATABASE.md) | SQLite o PostgreSQL en cada sitio, y las migraciones |
-| [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md) | Instalarlo en un servidor con nginx y PHP-FPM, paso a paso |
-
-## Scripts
-
-- `bin/migrate.php`: aplica las migraciones de un sitio (y los datos de demostración con `--seed`).
-- `bin/rutas.php`: regenera `docs/RUTAS.md`.
-- `bin/fusionar.php`: fusiona dos fichas de la misma persona.
-- `bin/pedidos-retiro.php`: avisa de los pedidos de retiro que esperan, para cron.
+| [`docs/README_URLS.md`](docs/README_URLS.md) | El esquema de URLs y la estructura de archivos |
+| [`docs/URL_STRUCTURES.md`](docs/URL_STRUCTURES.md) | La gramática de formatos, con ejemplos |
+| [`docs/RUTAS.md`](docs/RUTAS.md) | Todas las rutas (generado) |
+| [`docs/ACCESO.md`](docs/ACCESO.md) | Qué es privado y quién puede verlo (`OWNER_TOKEN`; no hay cuentas de usuario) |
+| [`docs/DATABASE.md`](docs/DATABASE.md) | Una base de datos por sitio, SQLite o PostgreSQL |
+| [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md) | Cómo ponerlo en un servidor y comprobar que quedó bien |

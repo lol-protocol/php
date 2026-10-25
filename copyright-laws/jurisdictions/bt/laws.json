@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "BT",
+    "country_name": "Bhutan",
+    "region": "asia_pacific",
+    "law_name": "The Copyright Act of the Kingdom of Bhutan, 2001",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (joint works from last surviving author; anonymous works 50 years from publication; ss. 18.1-18.4 per Commons summary)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (voluntary registration and deposit system)",
+    "enforcement_body": "Intellectual Property Division / Department of Intellectual Property (Copyright Division) (unconfirmed)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/5213",
+    "notes": "Berne in force 25 Nov 2004; WCT/WPPT status conflicting (2019 slides: ongoing; 2025 document: party), unconfirmed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5213",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5213",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Bhutan.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5213",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "registration_required": {
+        "url": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-bhutan.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-bhutan.pdf",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_berne_243",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

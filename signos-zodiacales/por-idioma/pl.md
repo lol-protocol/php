@@ -2,198 +2,246 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Zodiak zachodni
 
-### Baran
+### ♈ Baran
 
 *21/03 – 19/04 · Ogień · Kardynalny*
 
-Odważny, impulsywny i pełen energii.
+Dekanaty: 21/03 – 30/03 Mars · 31/03 – 09/04 Słońce · 10/04 – 19/04 Wenus
 
-Kojarzony z inicjatywą i odwagą: tradycja opisuje go jako bezpośredniego, rywalizującego i zawsze gotowego zacząć coś nowego, choć niecierpliwego.
+Odwaga, zapał i energia.
 
-### Byk
+Znak inicjatywy i odwagi: tradycja przypisuje mu bezpośredniość, ducha rywalizacji i chęć zaczynania nowych rzeczy, ale też niecierpliwość.
+
+### ♉ Byk
 
 *20/04 – 20/05 · Ziemia · Stały*
 
-Cierpliwy, zmysłowy i ceniący stabilność.
+Dekanaty: 20/04 – 29/04 Merkury · 30/04 – 09/05 Księżyc · 10/05 – 20/05 Saturn
 
-Kojarzony ze stałością i zamiłowaniem do konkretu: tradycja opisuje go jako lojalnego, spokojnego i lubiącego wygodę, choć czasem upartego.
+Cierpliwość, zmysłowość i umiłowanie stabilności.
 
-### Bliźnięta
+Znak stałości i zamiłowania do konkretu: tradycja przypisuje mu lojalność, spokój i umiłowanie wygody, ale też upór.
+
+### ♊ Bliźnięta
 
 *21/05 – 20/06 · Powietrze · Zmienny*
 
-Ciekawski, komunikatywny i bystry.
+Dekanaty: 21/05 – 30/05 Jowisz · 31/05 – 09/06 Mars · 10/06 – 20/06 Słońce
 
-Kojarzony z ciekawością i słowem: tradycja opisuje go jako towarzyskiego, wszechstronnego i zawsze z nowym pytaniem, choć czasem rozproszonego.
+Ciekawość, komunikatywność i bystrość umysłu.
 
-### Rak
+Znak ciekawości i słowa: tradycja przypisuje mu towarzyskość, wszechstronność i wciąż nowe pytania, ale też rozproszenie.
+
+### ♋ Rak
 
 *21/06 – 22/07 · Woda · Kardynalny*
 
-Opiekuńczy, wrażliwy i bardzo lojalny wobec bliskich.
+Dekanaty: 21/06 – 30/06 Wenus · 01/07 – 10/07 Merkury · 11/07 – 22/07 Księżyc
 
-Kojarzony z domem i emocjami: tradycja opisuje go jako opiekuńczego, intuicyjnego i bardzo przywiązanego do rodziny, choć czasem zamkniętego w sobie.
+Troskliwość, wrażliwość i lojalność wobec bliskich.
 
-### Lew
+Znak domu i uczuć: tradycja przypisuje mu troskliwość, intuicję i przywiązanie do rodziny, ale też skrytość.
+
+### ♌ Lew
 
 *23/07 – 22/08 · Ogień · Stały*
 
-Hojny, charyzmatyczny i lubiący błyszczeć.
+Dekanaty: 23/07 – 01/08 Saturn · 02/08 – 11/08 Jowisz · 12/08 – 22/08 Mars
 
-Kojarzony z hojnością i przywództwem: tradycja opisuje go jako serdecznego, dumnego i lubiącego być w centrum uwagi, choć czasem upartego.
+Hojność, charyzma i chęć błyszczenia.
 
-### Panna
+Znak hojności i przywództwa: tradycja przypisuje mu serdeczność, dumę i zamiłowanie do bycia w centrum uwagi, ale też upór.
+
+### ♍ Panna
 
 *23/08 – 22/09 · Ziemia · Zmienny*
 
-Analityczny, praktyczny i bardzo dokładny.
+Dekanaty: 23/08 – 01/09 Słońce · 02/09 – 11/09 Wenus · 12/09 – 22/09 Merkury
 
-Kojarzony z porządkiem i służbą: tradycja opisuje go jako metodycznego, dyskretnego i wymagającego wobec siebie, choć czasem zbyt krytycznego.
+Analityczny umysł, praktyczność i dbałość o szczegóły.
 
-### Waga
+Znak porządku i służby: tradycja przypisuje mu metodyczność, dyskrecję i wymagania wobec siebie, ale też nadmierny krytycyzm.
+
+### ♎ Waga
 
 *23/09 – 22/10 · Powietrze · Kardynalny*
 
-Dyplomatyczny, towarzyski i dążący do równowagi.
+Dekanaty: 23/09 – 02/10 Księżyc · 03/10 – 12/10 Saturn · 13/10 – 22/10 Jowisz
 
-Kojarzony z harmonią i sprawiedliwością: tradycja opisuje go jako uprzejmego, eleganckiego i dobrego mediatora, choć czasem niezdecydowanego.
+Dyplomacja, towarzyskość i dążenie do równowagi.
 
-### Skorpion
+Znak harmonii i sprawiedliwości: tradycja przypisuje mu uprzejmość, elegancję i talent mediatora, ale też niezdecydowanie.
+
+### ♏ Skorpion
 
 *23/10 – 21/11 · Woda · Stały*
 
-Intensywny, intuicyjny i silnej woli.
+Dekanaty: 23/10 – 01/11 Mars · 02/11 – 11/11 Słońce · 12/11 – 21/11 Wenus
 
-Kojarzony z głębią i determinacją: tradycja opisuje go jako powściągliwego, namiętnego i bardzo spostrzegawczego, choć czasem zbyt intensywnego.
+Intensywność, intuicja i silna wola.
 
-### Strzelec
+Znak głębi i determinacji: tradycja przypisuje mu powściągliwość, namiętność i przenikliwość, ale też nadmierną intensywność.
+
+### ♐ Strzelec
 
 *22/11 – 21/12 · Ogień · Zmienny*
 
-Optymistyczny, żądny przygód i kochający wolność.
+Dekanaty: 22/11 – 01/12 Merkury · 02/12 – 11/12 Księżyc · 12/12 – 21/12 Saturn
 
-Kojarzony z odkrywaniem i szczerością: tradycja opisuje go jako optymistycznego, niespokojnego i lubiącego podróże i naukę, choć czasem nierozważnego.
+Optymizm, żądza przygód i umiłowanie wolności.
 
-### Koziorożec
+Znak odkrywania i szczerości: tradycja przypisuje mu optymizm, niespokojnego ducha i zamiłowanie do podróży i nauki, ale też nierozwagę.
+
+### ♑ Koziorożec
 
 *22/12 – 19/01 · Ziemia · Kardynalny*
 
-Zdyscyplinowany, ambitny i odpowiedzialny.
+Dekanaty: 22/12 – 31/12 Jowisz · 01/01 – 10/01 Mars · 11/01 – 19/01 Słońce
 
-Kojarzony z dyscypliną i cierpliwością: tradycja opisuje go jako ambitnego, poważnego i odpowiedzialnego w dłuższej perspektywie, choć czasem sztywnego.
+Dyscyplina, ambicja i odpowiedzialność.
 
-### Wodnik
+Znak dyscypliny i cierpliwości: tradycja przypisuje mu ambicję, powagę i odpowiedzialność w dłuższej perspektywie, ale też sztywność.
+
+### ♒ Wodnik
 
 *20/01 – 18/02 · Powietrze · Stały*
 
-Niezależny, oryginalny i humanitarny.
+Dekanaty: 20/01 – 29/01 Wenus · 30/01 – 08/02 Merkury · 09/02 – 18/02 Księżyc
 
-Kojarzony z oryginalnością i wspólnymi ideami: tradycja opisuje go jako niezależnego, nowatorskiego i nieco zdystansowanego, choć czasem buntowniczego.
+Niezależność, oryginalność i humanitaryzm.
 
-### Ryby
+Znak oryginalności i wspólnych idei: tradycja przypisuje mu niezależność, nowatorstwo i pewien dystans, ale też buntowniczość.
+
+### ♓ Ryby
 
 *19/02 – 20/03 · Woda · Zmienny*
 
-Empatyczny, marzycielski i bardzo intuicyjny.
+Dekanaty: 19/02 – 28/02 Saturn · 01/03 – 10/03 Jowisz · 11/03 – 20/03 Mars
 
-Kojarzony z wyobraźnią i współczuciem: tradycja opisuje go jako wrażliwego, artystycznego i oddanego innym, choć czasem wymijającego.
+Empatia, wyobraźnia i intuicja.
 
-## Horóscopo chino
+Znak wyobraźni i współczucia: tradycja przypisuje mu wrażliwość, talent artystyczny i oddanie innym, ale też skłonność do ucieczki.
+
+## Horoskop chiński
 
 ### Szczur
 
-*Zi · Woda · Yang · 1996, 2008, 2020, 2032*
+*子 Zi · Woda · Yang*
 
-Sprytny, zwinny i bardzo pomysłowy.
+1924 Drewno · 1936 Ogień · 1948 Ziemia · 1960 Metal · 1972 Woda · 1984 Drewno · 1996 Ogień · 2008 Ziemia · 2020 Metal · 2032 Woda
 
-Kojarzony ze sprytem i zdolnością adaptacji: tradycja opisuje go jako spostrzegawczego, czarującego i zręcznego w znajdowaniu okazji, choć czasem wyrachowanego.
+Spryt, zwinność i pomysłowość.
+
+Znak sprytu i zdolności adaptacji: tradycja przypisuje mu spostrzegawczość, urok i umiejętność znajdowania okazji, ale też wyrachowanie.
 
 ### Wół
 
-*Chou · Ziemia · Yin · 1997, 2009, 2021, 2033*
+*丑 Chou · Ziemia · Yin*
 
-Pracowity, cierpliwy i godny zaufania.
+1925 Drewno · 1937 Ogień · 1949 Ziemia · 1961 Metal · 1973 Woda · 1985 Drewno · 1997 Ogień · 2009 Ziemia · 2021 Metal · 2033 Woda
 
-Kojarzony z wysiłkiem i wytrwałością: tradycja opisuje go jako stanowczego, cierpliwego i dotrzymującego słowa, choć czasem niechętnego zmianom.
+Pracowitość, cierpliwość i niezawodność.
+
+Znak wysiłku i wytrwałości: tradycja przypisuje mu stanowczość, cierpliwość i dotrzymywanie słowa, ale też niechęć do zmian.
 
 ### Tygrys
 
-*Yin · Drewno · Yang · 1998, 2010, 2022, 2034*
+*寅 Yin · Drewno · Yang*
 
-Odważny, rywalizujący i pełen pasji.
+1926 Ogień · 1938 Ziemia · 1950 Metal · 1962 Woda · 1974 Drewno · 1986 Ogień · 1998 Ziemia · 2010 Metal · 2022 Woda · 2034 Drewno
 
-Kojarzony z odwagą i magnetyzmem: tradycja opisuje go jako śmiałego, hojnego i urodzonego przywódcę, choć czasem impulsywnego.
+Odwaga, duch rywalizacji i pasja.
+
+Znak odwagi i magnetyzmu: tradycja przypisuje mu śmiałość, hojność i naturalne przywództwo, ale też impulsywność.
 
 ### Królik
 
-*Mao · Drewno · Yin · 1999, 2011, 2023, 2035*
+*卯 Mao · Drewno · Yin*
 
-Łagodny, ostrożny i wrażliwy.
+1927 Ogień · 1939 Ziemia · 1951 Metal · 1963 Woda · 1975 Drewno · 1987 Ogień · 1999 Ziemia · 2011 Metal · 2023 Woda · 2035 Drewno
 
-Kojarzony ze spokojem i dyplomacją: tradycja opisuje go jako delikatnego, uprzejmego i lubiącego harmonię, choć czasem unikającego konfliktów.
+Łagodność, ostrożność i wrażliwość.
+
+Znak spokoju i dyplomacji: tradycja przypisuje mu delikatność, uprzejmość i umiłowanie harmonii, ale też unikanie konfliktów.
 
 ### Smok
 
-*Chen · Ziemia · Yang · 2000, 2012, 2024, 2036*
+*辰 Chen · Ziemia · Yang*
 
-Charyzmatyczny, energiczny i szczęśliwy.
+1928 Ziemia · 1940 Metal · 1952 Woda · 1964 Drewno · 1976 Ogień · 1988 Ziemia · 2000 Metal · 2012 Woda · 2024 Drewno · 2036 Ogień
 
-Kojarzony ze szczęściem i ambicją: tradycja opisuje go jako pewnego siebie, magnetycznego i pełnego planów, choć czasem dumnego.
+Charyzma, energia i szczęście.
+
+Znak szczęścia i ambicji: tradycja przypisuje mu pewność siebie, magnetyzm i mnóstwo planów, ale też dumę.
 
 ### Wąż
 
-*Si · Ogień · Yin · 2001, 2013, 2025, 2037*
+*巳 Si · Ogień · Yin*
 
-Mądry, powściągliwy i elegancki.
+1929 Ziemia · 1941 Metal · 1953 Woda · 1965 Drewno · 1977 Ogień · 1989 Ziemia · 2001 Metal · 2013 Woda · 2025 Drewno · 2037 Ogień
 
-Kojarzony z mądrością i intuicją: tradycja opisuje go jako refleksyjnego, eleganckiego i strategicznego, choć czasem nieufnego.
+Mądrość, powściągliwość i elegancja.
+
+Znak mądrości i intuicji: tradycja przypisuje mu rozwagę, elegancję i myślenie strategiczne, ale też nieufność.
 
 ### Koń
 
-*Wu · Ogień · Yang · 2002, 2014, 2026, 2038*
+*午 Wu · Ogień · Yang*
 
-Wolny duchem, energiczny i towarzyski.
+1930 Metal · 1942 Woda · 1954 Drewno · 1966 Ogień · 1978 Ziemia · 1990 Metal · 2002 Woda · 2014 Drewno · 2026 Ogień · 2038 Ziemia
 
-Kojarzony z wolnością i energią: tradycja opisuje go jako pogodnego, niezależnego i lubiącego ruch, choć czasem niespokojnego.
+Wolność, energia i towarzyskość.
+
+Znak wolności i energii: tradycja przypisuje mu pogodę ducha, niezależność i zamiłowanie do ruchu, ale też niepokój.
 
 ### Koza
 
-*Wei · Ziemia · Yin · 2003, 2015, 2027, 2039*
+*未 Wei · Ziemia · Yin*
 
-Kreatywny, łagodny i artystyczny.
+1931 Metal · 1943 Woda · 1955 Drewno · 1967 Ogień · 1979 Ziemia · 1991 Metal · 2003 Woda · 2015 Drewno · 2027 Ogień · 2039 Ziemia
 
-Kojarzony z wrażliwością i kreatywnością: tradycja opisuje go jako uprzejmego, rozmarzonego i miłującego pokój, choć czasem niezdecydowanego.
+Kreatywność, łagodność i wrażliwość artystyczna.
+
+Znak wrażliwości i kreatywności: tradycja przypisuje mu uprzejmość, wyobraźnię i umiłowanie pokoju, ale też niezdecydowanie.
 
 ### Małpa
 
-*Shen · Metal · Yang · 2004, 2016, 2028, 2040*
+*申 Shen · Metal · Yang*
 
-Inteligentny, zabawny i pomysłowy.
+1932 Woda · 1944 Drewno · 1956 Ogień · 1968 Ziemia · 1980 Metal · 1992 Woda · 2004 Drewno · 2016 Ogień · 2028 Ziemia · 2040 Metal
 
-Kojarzony ze sprytem i ciekawością: tradycja opisuje go jako zabawnego, pomysłowego i szybko uczącego się, choć czasem psotnego.
+Inteligencja, poczucie humoru i pomysłowość.
+
+Znak sprytu i ciekawości: tradycja przypisuje mu poczucie humoru, pomysłowość i łatwość uczenia się, ale też psotność.
 
 ### Kogut
 
-*You · Metal · Yin · 2005, 2017, 2029, 2041*
+*酉 You · Metal · Yin*
 
-Zorganizowany, uczciwy i spostrzegawczy.
+1933 Woda · 1945 Drewno · 1957 Ogień · 1969 Ziemia · 1981 Metal · 1993 Woda · 2005 Drewno · 2017 Ogień · 2029 Ziemia · 2041 Metal
 
-Kojarzony z porządkiem i szczerością: tradycja opisuje go jako pracowitego, punktualnego i dbającego o szczegóły, choć czasem bardzo krytycznego.
+Porządek, uczciwość i spostrzegawczość.
+
+Znak porządku i szczerości: tradycja przypisuje mu pracowitość, punktualność i dbałość o szczegóły, ale też nadmierny krytycyzm.
 
 ### Pies
 
-*Xu · Ziemia · Yang · 2006, 2018, 2030, 2042*
+*戌 Xu · Ziemia · Yang*
 
-Lojalny, sprawiedliwy i opiekuńczy.
+1934 Drewno · 1946 Ogień · 1958 Ziemia · 1970 Metal · 1982 Woda · 1994 Drewno · 2006 Ogień · 2018 Ziemia · 2030 Metal · 2042 Woda
 
-Kojarzony z lojalnością i sprawiedliwością: tradycja opisuje go jako uczciwego, opiekuńczego i dobrego przyjaciela, choć czasem lękliwego.
+Lojalność, poczucie sprawiedliwości i opiekuńczość.
+
+Znak lojalności i sprawiedliwości: tradycja przypisuje mu uczciwość, opiekuńczość i przyjacielskość, ale też lękliwość.
 
 ### Świnia
 
-*Hai · Woda · Yin · 2007, 2019, 2031, 2043*
+*亥 Hai · Woda · Yin*
 
-Hojny, szczery i czuły.
+1935 Drewno · 1947 Ogień · 1959 Ziemia · 1971 Metal · 1983 Woda · 1995 Drewno · 2007 Ogień · 2019 Ziemia · 2031 Metal · 2043 Woda
 
-Kojarzony z hojnością i radością życia: tradycja opisuje go jako szczerego, miłego i dobrodusznego, choć czasem naiwnego.
+Hojność, szczerość i serdeczność.
+
+Znak hojności i radości życia: tradycja przypisuje mu szczerość, życzliwość i dobre serce, ale też naiwność.

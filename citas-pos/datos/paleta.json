@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "descripcion": "Un color por categoría UPOS, con una marca (estilo de subrayado) por grupo para no depender solo del color. Estado: provisional (prototipo); se aprueba o se cambia tras probarla con personas.",
+  "fondo": {
+    "claro": "#fbfaf7",
+    "oscuro": "#15161b"
+  },
+  "grupos": {
+    "nominal": {
+      "nombre": "Nominales",
+      "marca": "subrayado"
+    },
+    "verbal": {
+      "nombre": "Verbales",
+      "marca": "ondulado"
+    },
+    "modificador": {
+      "nombre": "Modificadores",
+      "marca": "punteado"
+    },
+    "funcion": {
+      "nombre": "Palabras funcionales",
+      "marca": "discontinuo"
+    },
+    "otros": {
+      "nombre": "Otros",
+      "marca": "ninguna"
+    }
+  },
+  "categorias": [
+    {
+      "codigo": "ADJ",
+      "nombre": "adjetivo",
+      "grupo": "modificador",
+      "claro": "#1f7d38",
+      "oscuro": "#76cf82"
+    },
+    {
+      "codigo": "ADP",
+      "nombre": "adposición (preposición)",
+      "grupo": "funcion",
+      "claro": "#b3387a",
+      "oscuro": "#ff80be"
+    },
+    {
+      "codigo": "ADV",
+      "nombre": "adverbio",
+      "grupo": "modificador",
+      "claro": "#4f7b1c",
+      "oscuro": "#a8d471"
+    },
+    {
+      "codigo": "AUX",
+      "nombre": "auxiliar",
+      "grupo": "verbal",
+      "claro": "#ad541a",
+      "oscuro": "#ff9c60"
+    },
+    {
+      "codigo": "CCONJ",
+      "nombre": "conjunción coordinante",
+      "grupo": "funcion",
+      "claro": "#78591e",
+      "oscuro": "#c6a062"
+    },
+    {
+      "codigo": "DET",
+      "nombre": "determinante",
+      "grupo": "funcion",
+      "claro": "#5f463b",
+      "oscuro": "#ebcbbe"
+    },
+    {
+      "codigo": "INTJ",
+      "nombre": "interjección",
+      "grupo": "otros",
+      "claro": "#876d00",
+      "oscuro": "#f6ce3e"
+    },
+    {
+      "codigo": "NOUN",
+      "nombre": "sustantivo",
+      "grupo": "nominal",
+      "claro": "#006cb8",
+      "oscuro": "#22b4ff"
+    },
+    {
+      "codigo": "NUM",
+      "nombre": "numeral",
+      "grupo": "nominal",
+      "claro": "#4f56a9",
+      "oscuro": "#a2a2fd"
+    },
+    {
+      "codigo": "PART",
+      "nombre": "partícula",
+      "grupo": "funcion",
+      "claro": "#944d60",
+      "oscuro": "#efa0b2"
+    },
+    {
+      "codigo": "PRON",
+      "nombre": "pronombre",
+      "grupo": "funcion",
+      "claro": "#89438e",
+      "oscuro": "#e296e5"
+    },
+    {
+      "codigo": "PROPN",
+      "nombre": "nombre propio",
+      "grupo": "nominal",
+      "claro": "#005b6b",
+      "oscuro": "#47aebe"
+    },
+    {
+      "codigo": "PUNCT",
+      "nombre": "puntuación",
+      "grupo": "otros",
+      "claro": "#727272",
+      "oscuro": "#969696"
+    },
+    {
+      "codigo": "SCONJ",
+      "nombre": "conjunción subordinante",
+      "grupo": "funcion",
+      "claro": "#007761",
+      "oscuro": "#60ceb4"
+    },
+    {
+      "codigo": "SYM",
+      "nombre": "símbolo",
+      "grupo": "otros",
+      "claro": "#6a6d8f",
+      "oscuro": "#c7c9ef"
+    },
+    {
+      "codigo": "VERB",
+      "nombre": "verbo",
+      "grupo": "verbal",
+      "claro": "#c63845",
+      "oscuro": "#ff767a"
+    },
+    {
+      "codigo": "X",
+      "nombre": "otro",
+      "grupo": "otros",
+      "claro": "#1f1f1f",
+      "oscuro": "#f3f3f3"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "KN",
+    "country_name": "Saint Kitts and Nevis",
+    "region": "americas",
+    "law_name": "Copyright Act, 2024 (Act No. 14 of 2024), replacing Copyright Act 2000 (Cap. 18.08)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (end of calendar year of death; extended from 50; not retroactive for works already protected under the 2000 Act)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Technological protection measures provided for (unconfirmed)",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (voluntary registration)",
+    "enforcement_body": "Intellectual Property Office of St. Kitts and Nevis",
+    "treaties_signatory": "Berne/TRIPS/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/10193",
+    "notes": "WPPT in force 8 Oct 2024 per Dutch treaty database; Berne 9 Apr 1995 and WTO 21 Feb 1996 per Commons; WCT unconfirmed; 2024 Act commencement date not seen",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.informea.org/en/content/legislation/copyright-act-no-14-2024",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.informea.org/en/content/legislation/copyright-act-no-14-2024",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://www.skncgtoronto.gov.kn/?p=11801",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "digital_protection": {
+        "url": "https://www.informea.org/en/content/legislation/copyright-act-no-14-2024",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "registration_required": {
+        "url": "https://www.informea.org/en/content/legislation/copyright-act-no-14-2024",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://sknis.gov.kn/2017/06/26/is-copying-right-copyright-in-st-kitts-and-nevis/",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://treatydatabase.overheid.nl/en/Treaty/Details/007931_w",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <g fill="none" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M62 112 C62 88 138 88 138 112 C138 134 62 134 62 112 Z" fill="currentColor" fill-opacity="0.07"/>
+    <path d="M72 94 C60 80 56 66 62 54"/>
+    <path d="M62 54 C50 52 44 60 48 70 C52 66 58 66 62 62"/>
+    <path d="M128 94 C140 80 144 66 138 54"/>
+    <path d="M138 54 C150 52 156 60 152 70 C148 66 142 66 138 62"/>
+    <path d="M64 112 L40 118 L32 134"/>
+    <path d="M66 124 L46 138 L42 154"/>
+    <path d="M76 132 L62 150 L62 164"/>
+    <path d="M136 112 L160 118 L168 134"/>
+    <path d="M134 124 L154 138 L158 154"/>
+    <path d="M124 132 L138 150 L138 164"/>
+    <path d="M90 92 L88 82"/>
+    <path d="M110 92 L112 82"/>
+  </g>
+  <g stroke="currentColor" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="48" y1="70" x2="100" y2="100"/>
+    <line x1="152" y1="70" x2="100" y2="100"/>
+    <line x1="100" y1="100" x2="80" y2="128"/>
+    <line x1="100" y1="100" x2="120" y2="128"/>
+    <line x1="80" y1="128" x2="32" y2="134"/>
+    <line x1="120" y1="128" x2="168" y2="134"/>
+    <line x1="80" y1="128" x2="62" y2="164"/>
+    <line x1="120" y1="128" x2="138" y2="164"/>
+  </g>
+  <g fill="currentColor">
+    <circle cx="48" cy="70" r="2.8"/>
+    <circle cx="152" cy="70" r="1.6"/>
+    <circle cx="100" cy="100" r="2.0"/>
+    <circle cx="80" cy="128" r="2.0"/>
+    <circle cx="120" cy="128" r="2.0"/>
+    <circle cx="32" cy="134" r="2.4"/>
+    <circle cx="168" cy="134" r="2.0"/>
+    <circle cx="62" cy="164" r="1.6"/>
+    <circle cx="138" cy="164" r="2.4"/>
+  </g>
+</svg>

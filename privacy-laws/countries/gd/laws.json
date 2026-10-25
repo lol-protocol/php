@@ -1,0 +1,82 @@
+[
+  {
+    "country_code": "GD",
+    "country_name": "Grenada",
+    "region": "americas",
+    "law_name": "Data Protection Act 2023 (Act No. 1 of 2023)",
+    "jurisdiction": "Information Commission (not reported appointed)",
+    "enactment_date": "2023-05-09",
+    "effective_date": "2023-05-09",
+    "scope": "Data subjects (unconfirmed)",
+    "applies_to": "Public and private bodies (unconfirmed)",
+    "key_requirements": "Seven data protection principles; data subject rights of access and rectification; notice and consent (unconfirmed)",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Information Commission",
+    "penalties_range": "Individuals: up to EC$50000 or 3 years (summary); up to EC$100000 or 5 years (indictable); bodies corporate: up to EC$250000 (summary) or EC$500000 (indictable); unverified against enacted text (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://nowgrenada.com/2023/05/deputy-gg-assents-2023-data-protection-bill/",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Commencement by ministerial Gazette order; none located and a 2026 government document reportedly describes the framework as not in force; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://nowgrenada.com/2023/05/deputy-gg-assents-2023-data-protection-bill/",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/jurisdiction/grenada",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://nowgrenada.com/2023/05/deputy-gg-assents-2023-data-protection-bill/",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://uwi.edu/data-protection/pg-external_grenada.php",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.lawgratis.com/blog-detail/privacy-law-at-grenada",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://www.lawgratis.com/blog-detail/privacy-law-at-grenada",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/jurisdiction/grenada",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://www.lawgratis.com/blog-detail/privacy-law-at-grenada",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

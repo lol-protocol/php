@@ -50,9 +50,12 @@ class ResponseHeadersTest extends TestCase
         self::$puerto = (int)substr((string)stream_socket_get_name($socket, false), strlen('127.0.0.1:'));
         fclose($socket);
 
+        // Sessions go to a folder of their own, to count what a request leaves behind.
+        @mkdir(self::$dir . '/sesiones', 0777, true);
+
         $publico = dirname(__DIR__, 3) . '/public';
         self::$servidor = proc_open(
-            [PHP_BINARY, '-S', '127.0.0.1:' . self::$puerto, '-t', $publico, $publico . '/index.php'],
+            [PHP_BINARY, '-d', 'session.save_path=' . self::$dir . '/sesiones', '-S', '127.0.0.1:' . self::$puerto, '-t', $publico, $publico . '/index.php'],
             [1 => ['file', self::$dir . '/server.out', 'w'], 2 => ['file', self::$dir . '/server.err', 'w']],
             $pipes,
             null,
@@ -211,5 +214,104 @@ class ResponseHeadersTest extends TestCase
             }
             $this->assertSame(1, count(array_keys($valores, 'accept-encoding', true)), "{$nombre}: Vary was " . implode(' | ', $respuesta['headers']['vary'] ?? ['(none)']));
         }
+    }
+
+    // --- sessions: only for whoever needs one -------------------------------------------------------
+
+    private static function archivosDeSesion(): int
+    {
+        return count(glob(self::$dir . '/sesiones/sess_*') ?: []);
+    }
+
+    private static function cookieDeSesion(array $respuesta): ?string
+    {
+        foreach ($respuesta['headers']['set-cookie'] ?? [] as $cookie) {
+            if (preg_match('/^PHPSESSID=([^;]+)/', $cookie, $m) === 1) {
+                return $m[1];
+            }
+        }
+
+        return null;
+    }
+
+    /** @return array<string, array{string, string}> [host, uri] */
+    public static function paginasQueSoloSeLeen(): array
+    {
+        return [
+            'inicio' => [self::GENEALOGIA, '/'],
+            'una persona' => [self::GENEALOGIA, '/6128473101/'],
+            'una persona que podria vivir' => [self::GENEALOGIA, '/6128473105/'],
+            'la busqueda' => [self::GENEALOGIA, '/b/10/garcia/'],
+            'una pagina que no existe' => [self::GENEALOGIA, '/99999999/'],
+            'una coleccion privada' => [self::GENEALOGIA, '/1048294/'],
+            'el POS' => [self::POS, '/'],
+        ];
+    }
+
+    /**
+     * Reading a page is not a reason to open a session: a visitor who only looks gets no cookie, and the server
+     * keeps nothing about them. A crawler never sends the cookie back, so with a session per request each of its
+     * hits used to leave a file behind.
+     */
+    #[DataProvider('paginasQueSoloSeLeen')]
+    public function testAVisitorWhoOnlyReadsGetsNoCookieAndLeavesNoSession(string $host, string $uri): void
+    {
+        $antes = self::archivosDeSesion();
+
+        $respuesta = $this->pedir($host, $uri);
+
+        $this->assertNotSame(0, $respuesta['status']);
+        $this->assertArrayNotHasKey('set-cookie', $respuesta['headers'], "{$uri} must not set a cookie");
+        $this->assertSame($antes, self::archivosDeSesion(), "{$uri} must not leave a session file");
+    }
+
+    /**
+     * Not opening a session must not make a page cacheable: PHP's session was what sent these headers, and a
+     * withdrawal has to take effect on the next request, not when a cache expires.
+     */
+    #[DataProvider('paginasQueSoloSeLeen')]
+    public function testWithoutASessionEveryResponseIsStillNotCacheable(string $host, string $uri): void
+    {
+        $respuesta = $this->pedir($host, $uri);
+
+        $this->assertSame(['no-store, no-cache, must-revalidate'], $respuesta['headers']['cache-control'], $uri);
+        $this->assertSame(['no-cache'], $respuesta['headers']['pragma'], $uri);
+        $this->assertSame(['Thu, 19 Nov 1981 08:52:00 GMT'], $respuesta['headers']['expires'], $uri);
+    }
+
+    /** A page with a form needs a CSRF token that survives until the POST, so it is what starts the session. */
+    public function testAPageWithAFormStartsASession(): void
+    {
+        $antes = self::archivosDeSesion();
+
+        $respuesta = $this->pedir(self::GENEALOGIA, '/r/6128473105/');
+
+        $this->assertSame(200, $respuesta['status']);
+        $this->assertStringContainsString('name="csrf_token"', $respuesta['body']);
+        $cookie = self::cookieDeSesion($respuesta);
+        $this->assertNotNull($cookie, 'the form has a token to keep, so it sets the cookie');
+        $this->assertSame($antes + 1, self::archivosDeSesion());
+        $this->assertStringContainsString('HttpOnly', implode(';', $respuesta['headers']['set-cookie']));
+        $this->assertStringContainsString('SameSite=Lax', implode(';', $respuesta['headers']['set-cookie']));
+    }
+
+    /**
+     * The owner who logs in with the credentials gets a session, and later requests with only the cookie are
+     * recognised as theirs: browsing public pages after /0/ still shows what only the owner sees.
+     */
+    public function testTheOwnerGetsASessionWhenLoggingInAndItIsResumedWithJustTheCookie(): void
+    {
+        $respuesta = $this->pedir(self::GENEALOGIA, '/0/', ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)]);
+        $this->assertSame(200, $respuesta['status']);
+        $cookie = self::cookieDeSesion($respuesta);
+        $this->assertNotNull($cookie, 'logging in opens the session');
+
+        // Only the cookie now: no credentials. The collection is private, so this is the owner or a 404.
+        $conCookie = $this->pedir(self::GENEALOGIA, '/1048294/', ['Cookie' => "PHPSESSID={$cookie}"]);
+        $this->assertSame(200, $conCookie['status'], 'the session is the owner\'s');
+        $this->assertSame(['private, no-store'], $conCookie['headers']['cache-control']);
+
+        $sinCookie = $this->pedir(self::GENEALOGIA, '/1048294/');
+        $this->assertSame(404, $sinCookie['status'], 'without the cookie it is the visitor\'s 404');
     }
 }

@@ -1,7 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
-     aria-labelledby="t-acuario d-acuario">
-  <title id="t-acuario">Constelación de Acuario</title>
-  <desc id="d-acuario">Esquema de la constelación con su figura, no a escala.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
     <radialGradient id="fondo-acuario" cx="50%" cy="42%" r="70%">
       <stop offset="0" stop-color="#1c2656"/>
@@ -14,53 +11,15 @@
   </defs>
   <rect width="200" height="200" rx="14" fill="url(#fondo-acuario)"/>
   <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
-  <g fill="#ffffff">
-    <circle cx="184.0" cy="108.3" r="0.43" fill-opacity="0.51"/>
-    <circle cx="190.8" cy="113.9" r="0.92" fill-opacity="0.44"/>
-    <circle cx="47.2" cy="116.7" r="0.94" fill-opacity="0.52"/>
-    <circle cx="143.9" cy="132.2" r="1.06" fill-opacity="0.35"/>
-    <circle cx="183.7" cy="56.1" r="0.48" fill-opacity="0.34"/>
-    <circle cx="86.7" cy="156.9" r="0.68" fill-opacity="0.70"/>
-    <circle cx="57.5" cy="34.0" r="0.92" fill-opacity="0.48"/>
-    <circle cx="39.5" cy="91.0" r="0.68" fill-opacity="0.64"/>
-    <circle cx="42.0" cy="50.6" r="0.81" fill-opacity="0.27"/>
-    <circle cx="184.0" cy="76.2" r="0.91" fill-opacity="0.36"/>
-    <circle cx="175.6" cy="44.4" r="0.58" fill-opacity="0.51"/>
-    <circle cx="50.0" cy="116.6" r="0.83" fill-opacity="0.48"/>
-    <circle cx="186.4" cy="107.5" r="0.89" fill-opacity="0.42"/>
-    <circle cx="185.9" cy="16.1" r="0.61" fill-opacity="0.35"/>
-    <circle cx="13.2" cy="16.7" r="0.62" fill-opacity="0.49"/>
-    <circle cx="187.5" cy="66.2" r="0.41" fill-opacity="0.26"/>
-    <circle cx="54.5" cy="154.1" r="0.54" fill-opacity="0.38"/>
-    <circle cx="111.5" cy="62.9" r="0.74" fill-opacity="0.40"/>
-    <circle cx="165.1" cy="115.8" r="1.00" fill-opacity="0.65"/>
-    <circle cx="36.0" cy="166.9" r="0.99" fill-opacity="0.75"/>
-    <circle cx="44.8" cy="100.5" r="0.79" fill-opacity="0.34"/>
-    <circle cx="62.4" cy="47.5" r="0.86" fill-opacity="0.45"/>
-    <circle cx="66.9" cy="159.5" r="0.88" fill-opacity="0.75"/>
-    <circle cx="164.2" cy="69.2" r="0.88" fill-opacity="0.51"/>
-    <circle cx="75.0" cy="119.2" r="0.47" fill-opacity="0.72"/>
-    <circle cx="183.8" cy="121.8" r="0.45" fill-opacity="0.61"/>
-    <circle cx="63.7" cy="116.4" r="0.85" fill-opacity="0.27"/>
-    <circle cx="35.0" cy="110.3" r="0.44" fill-opacity="0.42"/>
-    <circle cx="96.4" cy="119.8" r="0.72" fill-opacity="0.52"/>
-    <circle cx="63.7" cy="77.9" r="0.48" fill-opacity="0.67"/>
-    <circle cx="79.0" cy="99.6" r="0.43" fill-opacity="0.55"/>
-    <circle cx="144.3" cy="30.4" r="0.94" fill-opacity="0.50"/>
-    <circle cx="74.3" cy="20.4" r="0.60" fill-opacity="0.65"/>
-    <circle cx="146.6" cy="84.4" r="0.80" fill-opacity="0.68"/>
-    <circle cx="121.2" cy="158.6" r="0.79" fill-opacity="0.71"/>
-    <circle cx="114.6" cy="137.8" r="0.78" fill-opacity="0.47"/>
-    <circle cx="44.3" cy="38.1" r="0.93" fill-opacity="0.40"/>
-    <circle cx="163.7" cy="142.7" r="0.68" fill-opacity="0.25"/>
-    <circle cx="58.7" cy="74.1" r="0.92" fill-opacity="0.32"/>
-    <circle cx="113.1" cy="18.7" r="0.68" fill-opacity="0.36"/>
-    <circle cx="140.7" cy="120.5" r="1.07" fill-opacity="0.26"/>
-    <circle cx="170.8" cy="98.6" r="0.44" fill-opacity="0.66"/>
-    <circle cx="99.7" cy="101.2" r="0.66" fill-opacity="0.29"/>
-    <circle cx="131.4" cy="20.5" r="0.52" fill-opacity="0.63"/>
-    <circle cx="83.6" cy="77.1" r="0.45" fill-opacity="0.63"/>
-  </g>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.0" stroke-linecap="round" d="M102.9 50.4h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" d="M180.9 58.4h0M143.8 115.8h0M139.7 88.5h0M129.8 50.3h0M114.4 113.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.0" stroke-linecap="round" d="M73.8 106.0h0M146.7 11.4h0M164.9 65.2h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.0" stroke-linecap="round" d="M150.3 110.0h0M153.4 129.1h0M134.2 108.0h0M66.0 107.4h0M111.2 44.4h0M120.9 73.1h0M185.1 182.8h0M8.3 92.9h0M53.0 68.4h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" d="M98.5 46.2h0M11.5 110.0h0M160.6 38.2h0M108.5 136.1h0M189.2 42.4h0M113.6 57.4h0M169.7 128.2h0M16.5 166.1h0M71.6 30.6h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.0" stroke-linecap="round" d="M59.5 27.5h0M39.0 129.3h0M45.7 44.5h0M173.5 137.4h0M147.5 119.3h0M86.4 95.5h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.0" stroke-linecap="round" d="M104.1 184.1h0M90.3 142.8h0M69.0 185.2h0M120.6 95.1h0M72.1 43.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.5" stroke-linecap="round" d="M20.0 127.0h0M26.4 10.2h0M27.3 33.8h0M109.7 82.1h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.0" stroke-linecap="round" d="M155.9 76.3h0M185.6 93.7h0M104.1 39.9h0"/>
   <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
     <path d="M54 46 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0"/>
     <path d="M62 56 C50 62 46 84 46 110 L36 160 M62 56 C74 62 78 84 76 110 L88 160"/>
@@ -82,13 +41,12 @@
   </g>
   <g fill="#ffffff" filter="url(#brillo-acuario)">
     <circle cx="62" cy="46" r="2.8"/>
-    <circle cx="108" cy="80" r="2.0"/>
+    <circle cx="108" cy="80" r="2.4"/>
     <circle cx="106" cy="98" r="2.0"/>
     <circle cx="134" cy="130" r="1.6"/>
-    <circle cx="152" cy="156" r="2.0"/>
-    <circle cx="36" cy="160" r="2.0"/>
-    <circle cx="88" cy="160" r="2.0"/>
-    <circle cx="62" cy="108" r="2.0"/>
+    <circle cx="152" cy="156" r="1.6"/>
+    <circle cx="36" cy="160" r="1.6"/>
+    <circle cx="88" cy="160" r="2.4"/>
+    <circle cx="62" cy="108" r="2.4"/>
   </g>
-  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">ACUARIO</text>
 </svg>

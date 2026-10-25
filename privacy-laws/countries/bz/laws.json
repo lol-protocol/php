@@ -1,0 +1,82 @@
+[
+  {
+    "country_code": "BZ",
+    "country_name": "Belize",
+    "region": "americas",
+    "law_name": "Data Protection Act 2021 (Act No. 45 of 2021)",
+    "jurisdiction": "Data Protection Commissioner (s. 68; not yet established per DataGuidance)",
+    "enactment_date": "2021-11-29",
+    "effective_date": "2021-11-29",
+    "scope": "Data subjects (unconfirmed)",
+    "applies_to": "Data controllers and processors (unconfirmed)",
+    "key_requirements": "Data subject rights (access, rectification, erasure, restriction, portability, objection to direct marketing); breach notification to the Commissioner (reported as 72 hours); enforcement and information notices",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Commissioner (Office of the Data Protection Commissioner)",
+    "penalties_range": "Offences for non-compliance incl. failure to comply with notice; amounts not found (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Section 97 requires a Minister's Gazette Order to commence (DataGuidance); one summary (Clym) claims in force on gazettal 2021-11-30; no commencement order or Commissioner found; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/jurisdiction/belize",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://www.offlist.me/what-is-belize-data-protection-act",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.dataguidance.com/jurisdiction/belize",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.dataguidance.com/jurisdiction/belize",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/jurisdiction/belize",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
