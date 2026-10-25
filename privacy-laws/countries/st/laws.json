@@ -1,0 +1,92 @@
+[
+  {
+    "country_code": "ST",
+    "country_name": "Sao Tome and Principe",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data",
+    "jurisdiction": "ANPDP (National Data Protection Agency)",
+    "enactment_date": "2016-05-10",
+    "effective_date": "2016-05-10",
+    "scope": "Data subjects in Sao Tome and Principe (unconfirmed)",
+    "applies_to": "Public and private controllers and processors (unconfirmed)",
+    "key_requirements": "Notification/registration of processing and cross-border transfers with the ANPDP; processing principles and processor agreements; data subject rights; no breach notification, DPO or DPIA duty",
+    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Data Protection Agency (ANPDP)",
+    "penalties_range": "Administrative fines of USD 1,250 to 50,000 plus civil and criminal penalties (Miranda); another source gives STN 50M-120M individuals and STN 250M-500M entities (conflicting) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.afapdp.org/wp-content/uploads/2022/02/Loi-de-Protection-des-Donnes-Personnlles-03_2016.pdf",
+    "language": "Portuguese",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "ANPDP organisation set by Law 7/2017 of 6 April 2017 (VdA); fine figures conflict across sources",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.mirandalawfirm.com/en/insights-knowledge/publications/alerts/new-data-protection-law-enacted",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.mofo.com/privacy-library/sao-tome-and-principe",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://www.mirandalawfirm.com/en/insights-knowledge/publications/alerts/new-data-protection-law-enacted",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://www.consentstack.io/regulations/st-law032016",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://www.consentstack.io/regulations/st-law032016",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.mofo.com/privacy-library/sao-tome-and-principe",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://www.mirandalawfirm.com/en/insights-knowledge/publications/alerts/new-data-protection-law-enacted",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

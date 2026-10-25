@@ -1,0 +1,92 @@
+[
+  {
+    "country_code": "SZ",
+    "country_name": "Eswatini",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act, 2022 (Act No. 5 of 2022)",
+    "jurisdiction": "EDPA (Eswatini Data Protection Authority - the Eswatini Communications Commission)",
+    "enactment_date": "2022-03-04",
+    "effective_date": "2022-03-04",
+    "scope": "Data subjects in Eswatini (unconfirmed)",
+    "applies_to": "Data controllers and processors (registration/notification required)",
+    "key_requirements": "Controllers must notify/register with the Commission before processing (registration window 1 March-30 September 2024); lawful processing and data subject rights; enforcement notices with show-cause periods",
+    "data_categories": "Personal information; sensitive information (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Eswatini Data Protection Authority (EDPA) / Eswatini Communications Commission (ESCCOM)",
+    "penalties_range": "Administrative: E5M or 2% of annual turnover; criminal: E100M or 5% of turnover or up to 10 years imprisonment (secondary source, s. 53 unverified) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Gazette Extraordinary No. 41 Vol. LX of 2022-03-04; s. 1(2) in operation on publication; other sources mention 23 Aug 2022 or enforcement from Sept 2025 (conflicting)",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://dataprotection.africa/?p=19758",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.DataGuidance.com/jurisdiction/eswatini",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.DataGuidance.com/jurisdiction/eswatini",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://www.esccom.org.sz/publications/notices/docs/Notice 8.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://www.DataGuidance.com/jurisdiction/eswatini",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/sz-dpa",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

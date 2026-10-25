@@ -17,6 +17,16 @@ AE,,enforcement_authority,https://securiti.ai/uae-personal-data-protection-law/,
 AE,,deceased_data,https://cms.law/en/are/legal-updates/UAE-legal-reforms-new-UAE-data-protection-law,medium,2026-10-17
 AE,,research_exemption,https://resourcehub.bakermckenzie.com/en/resources/global-data-and-cyber-handbook/emea/uae/topics/legal-bases-for-processing-of-personal-data,medium,2026-10-17
 AE,,genetic_data,https://www.mondaq.com/data-protection/1389892/an-overview-of-the-uae-personal-data-protection-law,medium,2026-10-17
+AG,Data Protection Act 2013 (No. 10 of 2013),law_name,https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013,medium,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),jurisdiction,https://www.dataguidance.com/taxonomy/term/82,medium,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),enactment_date,https://www.offlist.me/what-is-antigua-and-barbuda-data-protection,low,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),effective_date,https://www.offlist.me/what-is-antigua-and-barbuda-data-protection,low,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),scope,https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013,low,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),applies_to,https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013,low,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),key_requirements,https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013,medium,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),retention_period,https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013,low,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),enforcement_authority,https://www.dataguidance.com/taxonomy/term/82,medium,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),penalties_range,https://www.consentstack.io/regulations/ag-dpa,low,2026-10-25
 AL,,enactment_date,https://www.karanovicpartners.com/news/albanian-parliament-finally-approves-new-data-protection-law-fully-aligned-with-eu-standards/,high,2026-10-15
 AL,,research_exemption,https://kpmg.com/al/en/insights/2025/02/new-law-on--personal-data-protection-.html,medium,2026-10-21
 AL,,genetic_data,https://kpmg.com/al/en/insights/2025/02/new-law-on--personal-data-protection-.html,medium,2026-10-21
@@ -128,6 +138,18 @@ BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal dat
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",data_categories,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law,medium,2026-10-16
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",enforcement_authority,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law,high,2026-10-16
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",penalties_range,https://www.consentstack.io/regulations/bj-code-numerique,low,2026-10-16
+BN,Personal Data Protection Order 2025 (PDPO),law_name,https://pdp.aiti.gov.bn/overview/legislation/,high,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),jurisdiction,https://pdp.aiti.gov.bn/overview/legislation/,high,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),enactment_date,https://www.dlapiperdataprotection.com/index.html?c=BN&t=law,medium,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),effective_date,https://www.dlapiperdataprotection.com/index.html?c=BN&t=law,medium,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),scope,https://www.dlapiperdataprotection.com/index.html?c=BN&t=law,medium,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),applies_to,https://pdp.aiti.gov.bn/overview/legislation/,medium,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),key_requirements,https://www.offlist.me/what-is-brunei-data-protection,medium,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),data_categories,https://www.dlapiperdataprotection.com/index.html?c=BN&t=law,low,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),retention_period,https://www.offlist.me/what-is-brunei-data-protection,low,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),enforcement_authority,https://pdp.aiti.gov.bn/overview/legislation/,high,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),penalties_range,https://law.ungovr.org/ai/bn,low,2026-10-25
+BN,Personal Data Protection Order 2025 (PDPO),exemptions,https://www.dlapiperdataprotection.com/index.html?c=BN&t=law,medium,2026-10-25
 BR,,enforcement_authority,https://lefosse.com/noticias/anpd-se-torna-agencia-reguladora-e-reforca-sua-capacidade-fiscalizatoria-regulatoria-e-institucional/,high,2026-10-14
 BR,,deceased_data,https://www.gov.br/anpd/pt-br/assuntos/noticias/NotaTecnica3CGF.ANPD.pdf,medium,2026-10-17
 BR,,research_exemption,https://www.aurum.com.br/blog/lgpd-comentada/art-11-a-13-lgpd/,medium,2026-10-17
@@ -141,6 +163,14 @@ BW,,genetic_data,https://compliance.theartofservice.com/controls/botswana-data-p
 BY,,retention_period,https://cpd.by/en/national-regulation/the-belarusian-data-protection-act/,medium,2026-10-15
 BY,,penalties_range,https://gomelisp.gov.by/otvetstvennost-za-narushenie-zakona-o-personalnyh-dannyh-chto-grozit-narushitelyam/?print=pdf,medium,2026-10-15
 BY,,genetic_data,https://www.dlapiperdataprotection.com/?c=BY,medium,2026-10-21
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),law_name,https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf,high,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),jurisdiction,https://www.dataguidance.com/jurisdiction/belize,medium,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),enactment_date,https://www.offlist.me/what-is-belize-data-protection-act,medium,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),scope,https://www.dataguidance.com/jurisdiction/belize,low,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),applies_to,https://www.dataguidance.com/jurisdiction/belize,low,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),key_requirements,https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf,medium,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),enforcement_authority,https://www.dataguidance.com/jurisdiction/belize,low,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),penalties_range,https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf,low,2026-10-25
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",law_name,https://startwithidentity.com/regulations/canada/quebec-law-25/,high,2026-10-16
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",jurisdiction,https://clym.io/regulations/quebec-law-25,high,2026-10-16
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",enactment_date,https://clym.io/regulations/quebec-law-25,high,2026-10-16
@@ -201,6 +231,15 @@ CD,"Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on pers
 CD,"Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on personal data protection",penalties_range,https://www.consentstack.io/regulations/cd-digital-code,medium,2026-10-16
 CD,"Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on personal data protection",exemptions,https://www.offlist.me/what-is-drc-digital-code-2023,low,2026-10-16
 CD,"Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on personal data protection",genetic_data,https://www.dlapiperdataprotection.com/?c=CD&t=law,medium,2026-10-16
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,law_name,https://www.sgg.cg/JO/2019/congo-jo-2019-45.pdf,high,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,jurisdiction,https://www.dlapiperdataprotection.com/?c=CG&t=law,medium,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,enactment_date,https://www.sgg.cg/JO/2019/congo-jo-2019-45.pdf,high,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,scope,https://www.dlapiperdataprotection.com/?c=CG&t=law,low,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,applies_to,https://www.dlapiperdataprotection.com/?c=CG&t=law,low,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,key_requirements,https://www.dlapiperdataprotection.com/?c=CG&t=law,medium,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,data_categories,https://www.dlapiperdataprotection.com/?c=CG&t=law,low,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,enforcement_authority,https://www.consentstack.io/regulations/cg-law292019,medium,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,penalties_range,https://www.consentstack.io/regulations/cg-law292019,low,2026-10-25
 CH,,deceased_data,https://www.mll-news.com/new-swiss-data-protection-law-an-overview-of-the-most-important-revisions-of-the-swiss-federal-act-on-data-protection/?lang=en,medium,2026-10-17
 CH,,research_exemption,https://onlinekommentar.ch/en/kommentare/dsg31_2_e,medium,2026-10-17
 CH,,genetic_data,https://usercentrics.com/knowledge-hub/switzerland-federal-data-protection-act-fadp/,medium,2026-10-17
@@ -338,6 +377,14 @@ GB,,deceased_data,https://www.legislation.gov.uk/ukpga/2018/12/section/3,high,20
 GB,,research_exemption,https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/the-research-provisions/exemptions/,high,2026-10-17
 GB,,genetic_data,https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/special-category-data/what-is-special-category-data,high,2026-10-17
 GB,,notes,https://digitalpolicyalert.org/event/37521-data-use-and-access-act-2025-commencement-no-6-and-transitional-and-saving-provisions-regulations-2026-including-data-protection-authority-governance-enter-into-force,medium,2026-10-14
+GD,Data Protection Act 2023 (Act No. 1 of 2023),law_name,https://nowgrenada.com/2023/05/deputy-gg-assents-2023-data-protection-bill/,medium,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),jurisdiction,https://www.dataguidance.com/jurisdiction/grenada,low,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),enactment_date,https://nowgrenada.com/2023/05/deputy-gg-assents-2023-data-protection-bill/,medium,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),scope,https://uwi.edu/data-protection/pg-external_grenada.php,low,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),applies_to,https://www.lawgratis.com/blog-detail/privacy-law-at-grenada,low,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),key_requirements,https://www.lawgratis.com/blog-detail/privacy-law-at-grenada,low,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),enforcement_authority,https://www.dataguidance.com/jurisdiction/grenada,low,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),penalties_range,https://www.lawgratis.com/blog-detail/privacy-law-at-grenada,low,2026-10-25
 GE,,enforcement_authority,https://parliament.ge/en/print/news/antikoruftsiuli-biuro-da-personalur-monatsemta-datsvis-samsakhuri-2026-tslis-2-marts-gaukmdeba,high,2026-10-15
 GE,,deceased_data,https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/georgia-273882423,low,2026-10-21
 GE,,research_exemption,https://matsne.gov.ge/en/document/view/5827307,low,2026-10-21
@@ -369,12 +416,30 @@ GN,Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data,ap
 GN,Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data,key_requirements,https://www.dlapiperdataprotection.com/?c=GN&t=law,low,2026-10-16
 GN,Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data,enforcement_authority,https://dataprotection.africa/guinea/,medium,2026-10-16
 GN,Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data,penalties_range,https://www.dlapiperdataprotection.com/?c=GN&t=law,medium,2026-10-16
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,law_name,https://www.consentstack.io/regulations/gq-law12016,medium,2026-10-25
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,jurisdiction,https://www.dlapiperdataprotection.com/?c=GQ&t=law,high,2026-10-25
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,enactment_date,https://www.consentstack.io/regulations/gq-law12016,medium,2026-10-25
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,scope,https://www.dlapiperdataprotection.com/?c=GQ&t=law,low,2026-10-25
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,applies_to,https://www.dlapiperdataprotection.com/?c=GQ&t=law,low,2026-10-25
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,key_requirements,https://www.dlapiperdataprotection.com/?c=GQ&t=law,medium,2026-10-25
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,data_categories,https://www.dlapiperdataprotection.com/?c=GQ&t=law,medium,2026-10-25
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,enforcement_authority,https://www.dlapiperdataprotection.com/?c=GQ&t=law,high,2026-10-25
+GQ,Law No. 1/2016 of 22 July 2016 on the Protection of Personal Data,penalties_range,https://www.consentstack.io/regulations/gq-law12016,low,2026-10-25
 GR,,law_name,https://dpa.gr/sites/default/files/2020-08/LAW 4624_2019_EN_TRANSLATED BY THE HDPA.PDF,high,2026-10-14
 GR,,enactment_date,https://www.pwc.com/gr/en/media-centre/tax-legal-news/Legal%20Flash%20-%20GDPR_eng.pdf,high,2026-10-14
 GR,,effective_date,https://www.privacylaws.com/reports-gateway/articles/int163/int163greece/,high,2026-10-14
 GR,,enforcement_authority,https://edpb.europa.eu/about-edpb/our-members_en,high,2026-10-14
 GR,,research_exemption,https://www.activemind.legal/law/gr-research/,high,2026-10-18
 GR,,genetic_data,https://edri.org/our-work/greece-new-data-protection-law-raises-concerns/,medium,2026-10-18
+GY,Data Protection Act 2023 (Act No. 18 of 2023),law_name,https://www.dataguidance.com/news/guyana-data-protection-act-gets-presidential-assent,high,2026-10-25
+GY,Data Protection Act 2023 (Act No. 18 of 2023),jurisdiction,https://www.consentstack.io/regulations/gy-dpa,medium,2026-10-25
+GY,Data Protection Act 2023 (Act No. 18 of 2023),enactment_date,https://www.dataguidance.com/news/guyana-data-protection-act-gets-presidential-assent,high,2026-10-25
+GY,Data Protection Act 2023 (Act No. 18 of 2023),scope,https://www.dataguidance.com/jurisdiction/guyana,low,2026-10-25
+GY,Data Protection Act 2023 (Act No. 18 of 2023),applies_to,https://www.dataguidance.com/jurisdiction/guyana,medium,2026-10-25
+GY,Data Protection Act 2023 (Act No. 18 of 2023),key_requirements,https://dpi.gov.gy/data-protection-bill-passed-in-national-assembly/,medium,2026-10-25
+GY,Data Protection Act 2023 (Act No. 18 of 2023),data_categories,https://mola.gov.gy//bills/DATA PROTECTION BILL 20231694715430.pdf,low,2026-10-25
+GY,Data Protection Act 2023 (Act No. 18 of 2023),enforcement_authority,https://www.consentstack.io/regulations/gy-dpa,medium,2026-10-25
+GY,Data Protection Act 2023 (Act No. 18 of 2023),penalties_range,https://dpi.gov.gy/data-protection-bill-passed-in-national-assembly/,low,2026-10-25
 HK,,law_name,https://www.pcpd.org.hk/english/data_privacy_law/ordinance_at_a_Glance/ordinance.html,high,2026-10-14
 HK,,enactment_date,https://www.pcpd.org.hk/english/about_pcpd/our_organisation/facts/key_facts_n_history.html,high,2026-10-14
 HK,,effective_date,https://www.pcpd.org.hk/english/about_pcpd/our_organisation/facts/key_facts_n_history.html,high,2026-10-14
@@ -762,10 +827,30 @@ SO,Data Protection Act 2023 (Law No. 005 of 2023),data_categories,https://www.co
 SO,Data Protection Act 2023 (Law No. 005 of 2023),enforcement_authority,https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations,high,2026-10-16
 SO,Data Protection Act 2023 (Law No. 005 of 2023),penalties_range,https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations,low,2026-10-16
 SO,Data Protection Act 2023 (Law No. 005 of 2023),exemptions,https://cipit.strathmore.edu/ushering-in-a-new-dawn-for-data-protection-unpacking-the-somalia-data-protection-act-of-2023/,low,2026-10-16
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,law_name,https://www.mirandalawfirm.com/en/insights-knowledge/publications/alerts/new-data-protection-law-enacted,high,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,jurisdiction,https://www.mofo.com/privacy-library/sao-tome-and-principe,high,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,enactment_date,https://www.mirandalawfirm.com/en/insights-knowledge/publications/alerts/new-data-protection-law-enacted,high,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,effective_date,https://www.consentstack.io/regulations/st-law032016,low,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,scope,https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe,low,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,applies_to,https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe,low,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,key_requirements,https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe,medium,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,data_categories,https://www.consentstack.io/regulations/st-law032016,low,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,enforcement_authority,https://www.mofo.com/privacy-library/sao-tome-and-principe,high,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,penalties_range,https://www.mirandalawfirm.com/en/insights-knowledge/publications/alerts/new-data-protection-law-enacted,low,2026-10-25
 SV,,key_requirements,https://central-law.com/el-salvador-nueva-ley-de-proteccion-de-datos-personales-claves-para-su-cumplimiento-y-aplicacion/,medium,2026-10-15
 SV,,retention_period,https://transparencia.mh.gob.sv/downloads/pdf/700-UAIP-LY-2024-14993.pdf,medium,2026-10-15
 SV,,penalties_range,https://www.elsalvador.com/h-opinion/h-editoriales/organizaciones-laborales-/1195558/2025/,low,2026-10-14
 SV,,exemptions,https://www.jurisprudencia.gob.sv/DocumentosBoveda/D/2/2020-2029/2024/11/10660E.PDF,medium,2026-10-15
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",law_name,https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf,high,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",jurisdiction,https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf,high,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",enactment_date,https://dataprotection.africa/?p=19758,medium,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",effective_date,https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf,medium,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",scope,https://www.DataGuidance.com/jurisdiction/eswatini,low,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",applies_to,https://www.DataGuidance.com/jurisdiction/eswatini,medium,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",key_requirements,https://www.esccom.org.sz/publications/notices/docs/Notice 8.pdf,medium,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",data_categories,https://www.DataGuidance.com/jurisdiction/eswatini,low,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",enforcement_authority,https://www.esccom.org.sz/legislation/DATA PROTECTION ACT.pdf,high,2026-10-25
+SZ,"Data Protection Act, 2022 (Act No. 5 of 2022)",penalties_range,https://www.consentstack.io/regulations/sz-dpa,low,2026-10-25
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,law_name,https://www.dlapiperdataprotection.com/?t=law&c=TD,high,2026-10-16
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,jurisdiction,https://www.clym.io/regulations/law-no-007pr2015-chad,medium,2026-10-18
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,enactment_date,https://www.consentstack.io/regulations/td-law007,high,2026-10-16
@@ -806,6 +891,17 @@ TJ,Law No. 1537 of 3 August 2018 on Personal Data Protection,key_requirements,ht
 TJ,Law No. 1537 of 3 August 2018 on Personal Data Protection,data_categories,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ,medium,2026-10-16
 TJ,Law No. 1537 of 3 August 2018 on Personal Data Protection,enforcement_authority,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ,low,2026-10-16
 TJ,Law No. 1537 of 3 August 2018 on Personal Data Protection,penalties_range,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ,low,2026-10-16
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),law_name,https://www.dlapiperdataprotection.com/?c=TM,high,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),jurisdiction,https://www.dlapiperdataprotection.com/?c=TM,medium,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),enactment_date,https://merlin.obs.coe.int/article/7972,high,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),effective_date,https://merlin.obs.coe.int/article/7972,high,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),scope,https://merlin.obs.coe.int/article/7972,medium,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),applies_to,https://www.dlapiperdataprotection.com/?c=TM,low,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),key_requirements,https://merlin.obs.coe.int/article/7972,medium,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),data_categories,https://merlin.obs.coe.int/article/7972,low,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),enforcement_authority,https://merlin.obs.coe.int/article/7972,medium,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),penalties_range,https://www.dlapiperdataprotection.com/?c=TM,low,2026-10-25
+TM,Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data),exemptions,https://merlin.obs.coe.int/article/7972,medium,2026-10-25
 TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,law_name,https://www.dlapiperdataprotection.com/?t=law&c=TN,high,2026-10-16
 TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,jurisdiction,https://www.dlapiperdataprotection.com/?t=law&c=TN,high,2026-10-16
 TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,enactment_date,https://www.dlapiperdataprotection.com/?t=law&c=TN,high,2026-10-16
@@ -1234,6 +1330,16 @@ VN,,penalties_range,https://lsvn.vn/nhung-quy-dinh-dang-chu-y-trong-luat-bao-ve-
 VN,,exemptions,https://www.tilleke.com/insights/new-decree-provides-guidance-for-vietnams-personal-data-protection-law,medium,2026-10-14
 VN,,deceased_data,https://thesaigontimes.vn/saigontimes/bao-ve-du-lieu-ca-nhan-phan-1-thong-tin-cua-nguoi-da-mat-co-duoc-chia-se/,low,2026-10-18
 VN,,notes,https://luatvietnam.vn/bai-viet-lien-quan/luat-91-2025-qh15-405135.html,medium,2026-10-14
+VU,Data Protection and Privacy Act No. 13 of 2024,law_name,https://cert.gov.vu/images/legislation/Data_Protection_and_Privacy_Act_No13_of_2024-EN.pdf,high,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,jurisdiction,https://www.mofo.com/privacy-library/vanuatu,low,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,enactment_date,https://www.mofo.com/privacy-library/vanuatu,low,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,effective_date,https://www.consentstack.io/regulations/vu-dppa,low,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,scope,https://www.mofo.com/privacy-library/vanuatu,medium,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,applies_to,https://www.mofo.com/privacy-library/vanuatu,medium,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,key_requirements,https://parliament.gov.vu/images/Bill_for_the_Data_Protection_and_Privacy_Act_No._of_2024.pdf,low,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,data_categories,https://www.mofo.com/privacy-library/vanuatu,low,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,enforcement_authority,https://www.mofo.com/privacy-library/vanuatu,low,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,exemptions,https://www.mofo.com/privacy-library/vanuatu,medium,2026-10-25
 XK,Law No. 06/L-082 on Protection of Personal Data,law_name,https://www.dlapiperdataprotection.com/?c=XK&t=law,high,2026-10-22
 XK,Law No. 06/L-082 on Protection of Personal Data,jurisdiction,https://aip.rks-gov.net/en/personal-data-protection-as-a-priority/,high,2026-10-22
 XK,Law No. 06/L-082 on Protection of Personal Data,enactment_date,https://www.dataguidance.com/sites/default/files/law_no._06_l_-082_on_protection_of_personal_data_0.pdf,low,2026-10-22

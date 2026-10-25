@@ -1,0 +1,87 @@
+[
+  {
+    "country_code": "GY",
+    "country_name": "Guyana",
+    "region": "americas",
+    "law_name": "Data Protection Act 2023 (Act No. 18 of 2023)",
+    "jurisdiction": "Data Protection Commissioner / Data Protection Office (not yet operational)",
+    "enactment_date": "2023-08-16",
+    "effective_date": "2023-08-16",
+    "scope": "Data subjects (individuals) (unconfirmed)",
+    "applies_to": "Data controllers and processors",
+    "key_requirements": "Consent must be freely given, informed, specific and unambiguous; data subject rights (access, rectification, erasure, portability); DPIAs, DPO and registration with the Data Protection Office",
+    "data_categories": "Personal data; sensitive personal data (s. 9 of the Bill) (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Commissioner / Data Protection Office",
+    "penalties_range": "Government report on the Bill cited fines up to GYD 100 million and up to 5 years imprisonment; final amounts unverified (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.parliament.gov.gy/new2/documents/bills/23718-bill_no._14_of_2023.pdf",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Commencement by ministerial order on a day to be appointed; sources (MoFo; ConsentStack) say not yet in force as of 2026, a low-authority catalogue says partially in force; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dataguidance.com/news/guyana-data-protection-act-gets-presidential-assent",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.consentstack.io/regulations/gy-dpa",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/news/guyana-data-protection-act-gets-presidential-assent",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.dataguidance.com/jurisdiction/guyana",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.dataguidance.com/jurisdiction/guyana",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://dpi.gov.gy/data-protection-bill-passed-in-national-assembly/",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://mola.gov.gy//bills/DATA PROTECTION BILL 20231694715430.pdf",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.consentstack.io/regulations/gy-dpa",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://dpi.gov.gy/data-protection-bill-passed-in-national-assembly/",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

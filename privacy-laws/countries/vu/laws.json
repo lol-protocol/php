@@ -1,0 +1,92 @@
+[
+  {
+    "country_code": "VU",
+    "country_name": "Vanuatu",
+    "region": "asia_pacific",
+    "law_name": "Data Protection and Privacy Act No. 13 of 2024",
+    "jurisdiction": "Digital Safety Authority (Deputy Commissioner for data protection)",
+    "enactment_date": "2024-12-05",
+    "effective_date": "2025-01-02",
+    "scope": "Data subjects whose personal data is processed in Vanuatu (public and private sectors)",
+    "applies_to": "Public and private sector controllers and processors",
+    "key_requirements": "Rights of access, rectification, erasure and restriction reported; oversight framework with offences and penalties; consent details not verified (unconfirmed)",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Digital Safety Authority (Digital Safety Authority Act No. 15 of 2024; reportedly not yet operational)",
+    "penalties_range": "Not specified",
+    "exemptions": "Processing purely for personal or household activities",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://cert.gov.vu/images/legislation/Data_Protection_and_Privacy_Act_No13_of_2024-EN.pdf",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Sources conflict: assent 2024-12-01 vs 2024-12-05; commencement 2025-01-02 vs 2025-02-01; official text not opened",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://cert.gov.vu/images/legislation/Data_Protection_and_Privacy_Act_No13_of_2024-EN.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.mofo.com/privacy-library/vanuatu",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://www.mofo.com/privacy-library/vanuatu",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://www.consentstack.io/regulations/vu-dppa",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.mofo.com/privacy-library/vanuatu",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.mofo.com/privacy-library/vanuatu",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://parliament.gov.vu/images/Bill_for_the_Data_Protection_and_Privacy_Act_No._of_2024.pdf",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://www.mofo.com/privacy-library/vanuatu",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.mofo.com/privacy-library/vanuatu",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "exemptions": {
+        "url": "https://www.mofo.com/privacy-library/vanuatu",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
