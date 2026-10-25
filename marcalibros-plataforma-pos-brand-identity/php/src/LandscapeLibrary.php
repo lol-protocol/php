@@ -19,7 +19,7 @@ final class LandscapeLibrary
         $found = glob(rtrim($directory, '/') . '/paisaje-*.jpg');
         foreach ($found === false ? [] : $found as $file) {
             $name = basename($file);
-            if (preg_match('/^paisaje-[a-z]+-\d+x\d+\.jpg$/', $name) === 1) {
+            if (preg_match('/^paisaje-[a-z]+-\d+x\d+\.jpg\z/', $name) === 1) {
                 $this->names[] = $name;
             }
         }
