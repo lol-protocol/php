@@ -7,6 +7,12 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 > honra son la condición para que este proyecto exista, qué ya está resuelto y
 > qué cabos sueltos quedan.
 
+Los demás documentos de la raíz: [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md) (el borrador de los
+términos de uso, para revisar con un abogado), [`RECLAMOS.md`](RECLAMOS.md) (qué pasa, paso a
+paso, cuando alguien reclama), [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md) (lo que
+el equipo no puede decidir solo), [`CONTRIBUTING.md`](CONTRIBUTING.md) (cómo abrir un PR a mano)
+y [`SECURITY.md`](SECURITY.md) (cómo avisar de una fuga de datos sin publicarla).
+
 | Proyecto | Qué es |
 |---|---|
 | [`defamatory-content-review/`](defamatory-content-review/) | Librería PHP — detección de insultos y ridiculización en nombres, y de insultos, amenazas y acusaciones contra personas en textos libres, para plataformas genealógicas. El proyecto principal del repositorio. |
@@ -43,11 +49,19 @@ es solo texto; `marketing/` es texto e imágenes con dos scripts PHP sueltos (`r
 `iconos/vista-previa.php`), sin tests ni CI; los sets de iconos son SVG más el
 generador/validador de `iconos-tools/` (ver "CI/CD" más abajo); y `privacy-laws/` y
 `copyright-laws/` comparten el núcleo de su verificador de enlaces en `leyes-comunes/`, sin que
-uno dependa del otro. La única dependencia entre proyectos es:
-**`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
-acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer
-(`lol-protocol/defamatory-content-review`, repositorio `path` a `../defamatory-content-review`),
-así que ambas carpetas deben estar presentes. El resto de proyectos no depende de ningún otro.
+uno dependa del otro. Tres proyectos usan `defamatory-content-review/` y necesitan esa carpeta
+al lado:
+
+- **`phone-directory/`** usa sus clases de plegado de acentos y claves fonéticas; su
+  `composer.json` la declara como dependencia Composer (`lol-protocol/defamatory-content-review`,
+  repositorio `path` a `../defamatory-content-review`).
+- **`sistema-nuevo/`** pasa las notas del panel por su filtro; la busca en
+  `../defamatory-content-review` o en la carpeta de `FILTRO_DIFAMACION_DIR`.
+- **`marcalibros-plataforma-pos-brand-identity/`** revisa con su filtro el texto que cada persona
+  escribe en su marcalibro; su aplicación carga las clases desde `../defamatory-content-review/src/`.
+
+Por eso los workflows de esos tres corren también cuando cambia `defamatory-content-review/`. El
+resto de proyectos no depende de ningún otro.
 
 ## Desarrollo
 
@@ -55,7 +69,7 @@ Cada proyecto se instala y se prueba desde su propia carpeta:
 
 ```bash
 cd phone-directory        # o defamatory-content-review, sistema-nuevo, vps-setup...
-composer install          # o npm install, según el proyecto
+composer install          # o npm ci, según el proyecto
 ./vendor/bin/phpunit
 ```
 
