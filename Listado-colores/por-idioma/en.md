@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | alice blue | `#F0F8FF` |  | Calm, freshness and cleanliness; a sense of lightness and spaciousness. | Celestial purity and serenity; linked to the clear sky and clear communication. | derivado | derivado |
 | `antiquewhite` | antique white | `#FAEBD7` |  | Nostalgia, tradition and soft warmth; evokes the vintage. | Memory and wisdom of the past; aged purity and ancient cycles. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Freshness, clarity, energy and the feel of clean water. | Living water and purification; the flow of intuition and of communication with the subtle. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Freshness, clarity, calm and communication; associated with the digital and the modern. | Water and purification; mental clarity and the flow of communication. | derivado | derivado |
 | `aquamarine` | aquamarine | `#7FFFD4` |  | Relaxing freshness, calm and light optimism. | Sailors' stone: protection on journeys, courage and emotional clarity. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | azure | `#F0FFFF` |  | Clear sky, openness, freedom and serenity. | Spiritual height and the purity of the sky; the celestial and the open mind. | derivado | derivado |
 | `beige` | beige | `#F5F5DC` |  | Neutrality, simplicity, stability and discretion. | Earth and humility; balance without extremes, everyday life and rootedness. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | firebrick | `#B22222` |  | Strength, determination, intense warmth and tension. | Fire of the forge and the hearth; effort, sacrifice and work. | derivado | derivado |
 | `floralwhite` | floral white | `#FFFAF0` |  | Softness, delicacy, purity and lightness. | White flower: innocence, beginnings and the blessing of spring. | derivado | derivado |
 | `forestgreen` | forest green | `#228B22` |  | Nature, balance, health, calm and growth. | Sacred forest: life, renewal and connection with the earth. | derivado | derivado |
-| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Boldness, creativity, eccentricity and playful energy. | Transformation and magic; a link between the material and the spiritual. | derivado | derivado |
+| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Creativity, boldness, intensity and vibrant energy. | Transformation and spirituality; a connection between the material and the subtle. | derivado | derivado |
 | `gainsboro` | gainsboro | `#DCDCDC` |  | Elegant neutrality, cleanliness and calm. | An intermediate state of balance, without burden. | derivado | derivado |
 | `ghostwhite` | ghost white | `#F8F8FF` |  | Lightness, subtle mystery and luminous coolness. | The ethereal and the spectral; a subtle presence between two worlds. | derivado | derivado |
 | `gold` | gold | `#FFD700` |  | Success, wealth, prestige, optimism and warmth. | Sun and perfection; illumination, power, wisdom and the divine in many traditions. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

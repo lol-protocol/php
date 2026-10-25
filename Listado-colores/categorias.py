@@ -84,6 +84,9 @@ def validar(filas, anotada, lexico, codigos, conceptos, errores):
         vistos.add(clave)
         presentes.setdefault(idioma, set()).add(concepto)
         claves.append((orden_idioma[idioma], clave_concepto(concepto, anotada, conceptos), UPOS.index(categoria) if categoria in UPOS else -1))
+    adjetivos = {(f["idioma"], f["concepto"]) for f in filas if f["categoria"] == "ADJ"}
+    for idioma, concepto in sorted({(f["idioma"], f["concepto"]) for f in filas} - adjetivos, key=lambda p: (orden_idioma.get(p[0], 0), p[1])):
+        errores.append(f"categorias.csv: {idioma}/{concepto} no tiene la categoría ADJ (toda palabra de color puede ser adjetivo)")
     for idioma in sorted(presentes, key=orden_idioma.get):
         esperados = palabras_esperadas(idioma, anotada, lemas, conceptos)
         faltan, sobran = sorted(esperados - presentes[idioma]), sorted(presentes[idioma] - esperados)
@@ -130,6 +133,9 @@ def informe(filas, idiomas):
         "No se distingue el sentido: `coral` sustantivo es el animal y el color.",
         "- Hay casos discutibles: un sustantivo que modifica a otro (`a linen shirt`) puede etiquetarse `NOUN` o `ADJ` según el criterio; "
         "los ejemplos de `ADJ` en inglés usan la palabra como color en una posición clara (`painted the walls linen`).",
+        "- Nueve nombres CSS casi no se usan como color fuera de CSS (`cornsilk`, `firebrick`, `gainsboro`, `goldenrod`, `moccasin`, "
+        "`peru`, `snow`, `thistle`, `tomato`): su ejemplo de `ADJ` habla de una página web (`The header is thistle`), porque en "
+        "otro contexto no sonaría natural. Es uso de nombre CSS, no de lengua corriente.",
         "- Está escrito por un asistente de IA y ningún hablante nativo lo ha revisado.",
         "",
         "## Resumen",

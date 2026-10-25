@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | alice-blauw | `#F0F8FF` |  | Rust, frisheid en properheid; een gevoel van lichtheid en ruimte. | Hemelse zuiverheid en sereniteit; verbonden met de heldere hemel en heldere communicatie. | derivado | derivado |
 | `antiquewhite` | antiekwit | `#FAEBD7` |  | Nostalgie, traditie en zachte warmte; roept het vintage op. | Geheugen en wijsheid van het verleden; verouderde zuiverheid en oeroude cycli. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Frisheid, helderheid, energie en het gevoel van schoon water. | Levend water en reiniging; stroom van intuïtie en van communicatie met het subtiele. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Frisheid, helderheid, rust en communicatie; geassocieerd met het digitale en moderne. | Water en reiniging; mentale helderheid en stroom van communicatie. | derivado | derivado |
 | `aquamarine` | aquamarijn | `#7FFFD4` |  | Ontspannende frisheid, rust en licht optimisme. | Steen van de zeelui: bescherming op reis, moed en emotionele helderheid. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | azuur | `#F0FFFF` |  | Heldere hemel, openheid, vrijheid en sereniteit. | Spirituele hoogte en zuiverheid van de hemel; het hemelse en de open geest. | derivado | derivado |
 | `beige` | beige | `#F5F5DC` |  | Neutraliteit, eenvoud, stabiliteit en terughoudendheid. | Aarde en nederigheid; evenwicht zonder uitersten, het dagelijks leven en verworteling. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | vuursteenrood | `#B22222` |  | Kracht, vastberadenheid, intense warmte en spanning. | Vuur van de smidse en de haard; inspanning, offer en werk. | derivado | derivado |
 | `floralwhite` | bloemenwit | `#FFFAF0` |  | Zachtheid, delicaatheid, zuiverheid en lichtheid. | Witte bloem: onschuld, begin en zegen van de lente. | derivado | derivado |
 | `forestgreen` | bosgroen | `#228B22` |  | Natuur, evenwicht, gezondheid, rust en groei. | Heilig bos: leven, vernieuwing en verbondenheid met de aarde. | derivado | derivado |
-| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Durf, creativiteit, excentriciteit en speelse energie. | Transformatie en magie; band tussen het materiële en het spirituele. | derivado | derivado |
+| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Creativiteit, durf, intensiteit en levendige energie. | Transformatie en spiritualiteit; verbinding tussen het materiële en het subtiele. | derivado | derivado |
 | `gainsboro` | Gainsborough-grijs | `#DCDCDC` |  | Elegante neutraliteit, properheid en rust. | Tussentoestand van evenwicht, zonder last. | derivado | derivado |
 | `ghostwhite` | spookwit | `#F8F8FF` |  | Lichtheid, subtiel mysterie en stralende koelte. | Het etherische en spookachtige; subtiele aanwezigheid tussen twee werelden. | derivado | derivado |
 | `gold` | goud | `#FFD700` |  | Succes, rijkdom, prestige, optimisme en warmte. | Zon en volmaaktheid; verlichting, macht, wijsheid en het goddelijke in veel tradities. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

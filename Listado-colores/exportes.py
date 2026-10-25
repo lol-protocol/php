@@ -48,6 +48,11 @@ def colores_jsonl(d):
         culturales.setdefault(f["color"], []).append(
             {"ambito": f["ambito"], "matiz": f["matiz"], "solidez": f["solidez"],
              "referencias": [i for i in f["referencias"].split(";") if i]})
+    # Los alias (mismo hex: gray y grey) comparten las categorías de sus palabras.
+    for nombre, otros in d["alias"].items():
+        for otro, _ in otros:
+            for idioma, lista in gramaticales.get(otro, {}).items():
+                gramaticales.setdefault(nombre, {}).setdefault(idioma, lista)
     lineas = []
     for f in d["anotada"]:
         nombre = f["nombre_ingles"]
@@ -99,10 +104,14 @@ def filas_gazetteer(d):
     orden_fuente = {fuente: n for n, fuente in enumerate(FUENTES)}
     # Se descartan las filas idénticas (por ejemplo, un nombre CSS que coincide con la forma natural).
     unicas = sorted(set(filas), key=lambda r: (r[0].casefold(), r[0], orden_idioma[r[1]], orden_fuente[r[2]], r[3], r[4], r[6]))
-    categorias = {}
+    # Una forma tiene las categorías que dice categorias.csv para ella y su hex: así los alias (gray y grey) las comparten.
+    hexes = {f["nombre_ingles"]: f["hex"] for f in d["anotada"]} | d["hex_concepto"]
+    categorias, aportó = {}, {}
     for f in d["categorias"]:
-        categorias.setdefault((f["idioma"], f["concepto"], f["forma"]), []).append(f["categoria"])
-    return [fila + (normalizar(fila[0], fila[1]), ",".join(categorias.get((fila[1], fila[4], fila[0]), []))) for fila in unicas]
+        clave = (f["idioma"], f["forma"], hexes[f["concepto"]])
+        if aportó.setdefault(clave, f["concepto"]) == f["concepto"]:  # si dos alias traen lo mismo, cuenta el primero
+            categorias.setdefault(clave, []).append(f["categoria"])
+    return [fila + (normalizar(fila[0], fila[1]), ",".join(categorias.get((fila[1], fila[0], fila[5]), []))) for fila in unicas]
 
 
 def gazetteer_tsv(d):

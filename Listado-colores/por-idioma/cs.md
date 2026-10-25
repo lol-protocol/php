@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | alicemodrá | `#F0F8FF` |  | Klid, svěžest a čistota; pocit lehkosti a prostoru. | Nebeská čistota a vyrovnanost; spojený s jasným nebem a srozumitelnou komunikací. | derivado | derivado |
 | `antiquewhite` | antická bílá | `#FAEBD7` |  | Nostalgie, tradice a jemné teplo; evokuje vintage. | Paměť a moudrost minulosti; zestárlá čistota a prastaré cykly. | derivado | derivado |
-| `aqua` | akvová | `#00FFFF` | `cyan` | Svěžest, jasnost, energie a pocit čisté vody. | Živá voda a očištění; tok intuice a komunikace s jemnohmotným. | derivado | derivado |
+| `aqua` | akvová | `#00FFFF` | `cyan` | Svěžest, jasnost, klid a komunikace; spojený s digitálním a moderním. | Voda a očištění; jasnost mysli a tok komunikace. | derivado | derivado |
 | `aquamarine` | akvamarínová | `#7FFFD4` |  | Uvolňující svěžest, klid a lehký optimismus. | Kámen námořníků: ochrana na cestách, odvaha a citová jasnost. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | azurová | `#F0FFFF` |  | Jasné nebe, otevřenost, svoboda a vyrovnanost. | Duchovní výška a čistota nebe; nebeské a otevřená mysl. | derivado | derivado |
 | `beige` | béžová | `#F5F5DC` |  | Neutralita, jednoduchost, stabilita a diskrétnost. | Země a pokora; rovnováha bez extrémů, každodennost a zakořeněnost. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | cihlová | `#B22222` |  | Síla, odhodlání, intenzivní teplo a napětí. | Oheň kovárny a krbu; úsilí, oběť a práce. | derivado | derivado |
 | `floralwhite` | květinově bílá | `#FFFAF0` |  | Měkkost, jemnost, čistota a lehkost. | Bílý květ: nevinnost, počátky a požehnání jara. | derivado | derivado |
 | `forestgreen` | lesní zelená | `#228B22` |  | Příroda, rovnováha, zdraví, klid a růst. | Posvátný les: život, obnova a spojení se zemí. | derivado | derivado |
-| `fuchsia` | fuchsiová | `#FF00FF` | `magenta` | Odvaha, kreativita, výstřednost a hravá energie. | Přeměna a magie; pouto mezi hmotným a duchovním. | derivado | derivado |
+| `fuchsia` | fuchsiová | `#FF00FF` | `magenta` | Kreativita, odvaha, intenzita a vibrující energie. | Přeměna a duchovnost; spojení mezi hmotným a jemnohmotným. | derivado | derivado |
 | `gainsboro` | gainsborough šedá | `#DCDCDC` |  | Elegantní neutralita, čistota a klid. | Přechodný stav rovnováhy bez tíže. | derivado | derivado |
 | `ghostwhite` | duchově bílá | `#F8F8FF` |  | Lehkost, jemné tajemství a zářivá chladnost. | Éterické a přízračné; jemná přítomnost mezi dvěma světy. | derivado | derivado |
 | `gold` | zlatá | `#FFD700` |  | Úspěch, bohatství, prestiž, optimismus a teplo. | Slunce a dokonalost; osvícení, moc, moudrost a božské v mnoha tradicích. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

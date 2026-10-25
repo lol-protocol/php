@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | alice-kék | `#F0F8FF` |  | Nyugalom, frissesség és tisztaság; a könnyedség és a tágasság érzése. | Égi tisztaság és derű; a tiszta éghez és az világos kommunikációhoz kötődik. | derivado | derivado |
 | `antiquewhite` | antikfehér | `#FAEBD7` |  | Nosztalgia, hagyomány és lágy melegség; a vintage hangulatát idézi. | A múlt emlékezete és bölcsessége; megöregedett tisztaság és ősi ciklusok. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Frissesség, tisztaság, energia és a tiszta víz érzete. | Eleven víz és megtisztulás; az intuíció és a finom világgal való kapcsolat áramlása. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Frissesség, tisztaság, nyugalom és kommunikáció; a digitálishoz és a modernhez kötődik. | Víz és megtisztulás; szellemi tisztaság és a kommunikáció áramlása. | derivado | derivado |
 | `aquamarine` | akvamarin | `#7FFFD4` |  | Lazító frissesség, nyugalom és könnyed optimizmus. | A tengerészek köve: védelem az utakon, bátorság és érzelmi tisztaság. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | azúrkék | `#F0FFFF` |  | Tiszta ég, nyitottság, szabadság és derű. | Szellemi magasság és az ég tisztasága; az égi és a nyitott elme. | derivado | derivado |
 | `beige` | bézs | `#F5F5DC` |  | Semlegesség, egyszerűség, stabilitás és visszafogottság. | Föld és alázat; egyensúly szélsőségek nélkül, a hétköznapok és a gyökerezettség. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | tűzvörös | `#B22222` |  | Erő, eltökéltség, intenzív melegség és feszültség. | A kovácsműhely és a tűzhely tüze; erőfeszítés, áldozat és munka. | derivado | derivado |
 | `floralwhite` | virágfehér | `#FFFAF0` |  | Lágyság, finomság, tisztaság és könnyedség. | Fehér virág: ártatlanság, kezdetek és a tavasz áldása. | derivado | derivado |
 | `forestgreen` | erdőzöld | `#228B22` |  | Természet, egyensúly, egészség, nyugalom és növekedés. | Szent erdő: élet, megújulás és kapcsolat a földdel. | derivado | derivado |
-| `fuchsia` | fukszia | `#FF00FF` | `magenta` | Merészség, kreativitás, különcség és játékos energia. | Átváltozás és mágia; kötelék az anyagi és a szellemi között. | derivado | derivado |
+| `fuchsia` | fukszia | `#FF00FF` | `magenta` | Kreativitás, merészség, intenzitás és vibráló energia. | Átváltozás és lelkiség; kapcsolat az anyagi és a finom között. | derivado | derivado |
 | `gainsboro` | gainsborough-szürke | `#DCDCDC` |  | Elegáns semlegesség, tisztaság és nyugalom. | Köztes, egyensúlyi állapot teher nélkül. | derivado | derivado |
 | `ghostwhite` | szellemfehér | `#F8F8FF` |  | Könnyedség, finom titokzatosság és sugárzó hűvösség. | Az éteri és a kísérteties; finom jelenlét két világ között. | derivado | derivado |
 | `gold` | arany | `#FFD700` |  | Siker, gazdagság, tekintély, optimizmus és melegség. | Nap és tökéletesség; megvilágosodás, hatalom, bölcsesség és az isteni sok hagyományban. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
