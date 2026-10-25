@@ -43,6 +43,8 @@ Con SQLite, el directorio del archivo debe ser escribible por el usuario de PHP-
 sudo install -d -o www-data -g www-data -m 750 /var/lib/url-routing
 ```
 
+Ahí mismo pueden vivir las fechas de los sitemaps (`SITEMAP_ESTADO_DIR=/var/lib/url-routing/sitemaps` en el paso 3; la carpeta la crea la aplicación). Por omisión van al directorio temporal, y con el `PrivateTmp` de PHP-FPM se vacía en cada reinicio: los sitemaps se sirven igual, pero sus `<lastmod>` vuelven a empezar.
+
 ## 3. El archivo `.env`
 
 ```bash
@@ -219,6 +221,6 @@ De ahí salieron, además de las dos correcciones de la prueba anterior (sin el 
 cd url-routing && ./deploy/smoke-test.sh
 ```
 
-Levanta nginx y PHP-FPM en puertos altos de `127.0.0.1` dentro de un directorio temporal (que borra al terminar), instala el código como en el paso 1 y recorre los pasos 2 a 6 con el ejemplo de nginx del repositorio. Después recorre el ciclo de un pedido de retiro de punta a punta: el formulario, la base, y `bin/pedidos-retiro.php` (que avisa, sale con 1 cuando vence y con `--ocultar` deja la página en 410). Necesita `nginx`, `php-fpm` de la misma versión que `php`, `composer`, `curl` y `openssl`; con `SMOKE_PG_DSN` (y `SMOKE_PG_USER`, `SMOKE_PG_PASSWORD`) usa una base PostgreSQL vacía para genealogía. Las variables están explicadas en el encabezado del script. Lo corre el job `despliegue` de `.github/workflows/pruebas-url-routing.yml`. Se probó que **falla** cuando algo está mal: con un nginx que quita la cabecera `Authorization` fallan los seis chequeos de `/0/`, y sin las reglas del ejemplo que niegan los archivos ocultos falla `/.env`.
+Levanta nginx y PHP-FPM en puertos altos de `127.0.0.1` dentro de un directorio temporal (que borra al terminar), instala el código como en el paso 1 y recorre los pasos 2 a 6 con el ejemplo de nginx del repositorio. Después recorre el ciclo de un pedido de retiro de punta a punta: el formulario, la base, y `bin/pedidos-retiro.php` (que avisa, sale con 1 cuando vence y con `--ocultar` deja la página en 410). También comprueba las cabeceras de los sitemaps, que phpunit no puede ver: `ETag`, `Last-Modified`, `Cache-Control: no-cache` y el 304 a quien ya tiene la copia. Necesita `nginx`, `php-fpm` de la misma versión que `php`, `composer`, `curl` y `openssl`; con `SMOKE_PG_DSN` (y `SMOKE_PG_USER`, `SMOKE_PG_PASSWORD`) usa una base PostgreSQL vacía para genealogía. Las variables están explicadas en el encabezado del script. Lo corre el job `despliegue` de `.github/workflows/pruebas-url-routing.yml`. Se probó que **falla** cuando algo está mal: con un nginx que quita la cabecera `Authorization` fallan los seis chequeos de `/0/`, y sin las reglas del ejemplo que niegan los archivos ocultos falla `/.env`.
 
 **Lo que sigue sin probarse:** Apache y su `.htaccess` (ver [`ACCESO.md`](./ACCESO.md)), un certificado de verdad (certbot), las unidades de systemd (la recarga se probó con la señal, no con `systemctl`), PHP 8.1 y 8.2, y un proxy inverso delante con `TRUSTED_PROXIES`.

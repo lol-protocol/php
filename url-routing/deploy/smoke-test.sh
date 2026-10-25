@@ -328,6 +328,18 @@ como_web php -r '
 ' "$TRABAJO/datos/pos.sqlite"
 ok "POS: /0/ con el usuario 1 creado como el usuario de PHP-FPM" 200 "$(codigo "$POS" "$HTTP/0/" -u "x:$TOKEN")"
 
+echo "== Los sitemaps: un buscador que ya tiene la copia recibe un 304"
+reiniciar_limitador
+CAB=$(cabeceras "$H" "$HTTP/sitemap/l/1.xml")
+contiene "una parte sale con ETag" 'etag: "' "$CAB"
+contiene "se pregunta cada vez (Cache-Control: no-cache)" 'cache-control: no-cache' "$CAB"
+contiene "y con Last-Modified (el estado se puede escribir)" 'last-modified: ' "$CAB"
+ETAG=$(printf '%s' "$CAB" | grep -i '^etag:' | sed 's/^[^:]*:[[:space:]]*//' | tr -d '\r')
+ok "con esa copia (If-None-Match), 304" 304 "$(codigo "$H" "$HTTP/sitemap/l/1.xml" -H "If-None-Match: $ETAG")"
+ok "y sin cuerpo" '' "$(cuerpo "$H" "$HTTP/sitemap/l/1.xml" -H "If-None-Match: $ETAG")"
+ok "con otra copia, 200" 200 "$(codigo "$H" "$HTTP/sitemap/l/1.xml" -H 'If-None-Match: "otra"')"
+contiene "el índice da la fecha de la parte ya servida" '/sitemap/l/1.xml</loc><lastmod>' "$(cuerpo "$H" "$HTTP/sitemap.xml")"
+
 echo "== /ready detecta un despliegue que olvidó migrar"
 # El código nuevo trae una migración y todavía nadie corrió bin/migrate.php.
 mkdir -p "$APP/database/pos/migrations"
