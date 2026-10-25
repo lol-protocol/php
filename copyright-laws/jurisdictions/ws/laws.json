@@ -1,0 +1,86 @@
+[
+  {
+    "country_code": "WS",
+    "country_name": "Samoa",
+    "region": "asia_pacific",
+    "law_name": "Copyright Act 1998 (Act No. 25 of 1998), as amended by Act No. 10 of 2011",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 75 years (s. 16(1)); joint works from death of last author; collective, audiovisual and anonymous works 75 years from making/publication (s. 16(3)-(4))",
+    "author_rights": "Economic rights",
+    "moral_rights": "Moral rights recognized (s. 7); economic and moral rights last for life + 75 years per Commons summary of s. 16",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Specific exceptions: private reproduction (s. 8), research/private study (s. 8A), parliamentary/judicial proceedings (s. 8B), incidental inclusion (s. 8C), demonstration (s. 8D), quotation (s. 9), teaching (s. 10), libraries and archives (s. 11)",
+    "registration_required": "No (no registration provision seen; unconfirmed)",
+    "enforcement_body": "Ministry of Commerce, Industry and Labour (MCIL)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/498229",
+    "notes": "Berne since 21 Jul 2006, WTO since 10 May 2012 (Commons). WCT/WPPT status not found. Term of 75 years is from a secondary summary of the 1998-2011 text; later amendments unchecked; 2023 consolidation exists on PacLII.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5760",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5760",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Samoa.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Samoa.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/en/text/498229",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5760",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.int/wipolex/en/text/498229",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "registration_required": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5760",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.mcil.gov.ws/wp-content/uploads/2018/07/Copyright-Act-1998.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Samoa.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

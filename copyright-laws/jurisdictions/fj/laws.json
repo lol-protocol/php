@@ -1,0 +1,81 @@
+[
+  {
+    "country_code": "FJ",
+    "country_name": "Fiji",
+    "region": "asia_pacific",
+    "law_name": "Copyright Act 1999 (Act No. 11 of 1999)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (end of calendar year of death) for literary, dramatic, musical, artistic works; photographs, anonymous works, sound recordings, audiovisual works, broadcasts 50 years from taking/publication/making/broadcast",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Fair dealing provisions (specific purposes and articles not confirmed) (unconfirmed)",
+    "registration_required": "No (copyright is automatic on creation in a material form)",
+    "enforcement_body": "Office of the Attorney General (publishes copyright guidance) (unconfirmed)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/1542",
+    "notes": "Assented 19 Mar 1999; in force 1 Jul 2000. Berne member (Commons gives 9 Oct 1970), WTO since 14 Jan 1996. Moral rights, TPM and body not verified.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Fiji.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/1542",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "fair_use_exceptions": {
+        "url": "https://ag.gov.fj/copyrights/",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "registration_required": {
+        "url": "https://ag.gov.fj/copyrights/",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://ag.gov.fj/copyrights/",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Fiji.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

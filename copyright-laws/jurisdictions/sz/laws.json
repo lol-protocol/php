@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "SZ",
+    "country_name": "Eswatini",
+    "region": "middle_east_africa",
+    "law_name": "Copyright and Neighbouring Rights Act, 2018 (Act No. 4 of 2018)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 8(1)(f)); joint works 50 years after death of the author who dies first or life of the last, whichever is longer; audiovisual, collective, photographs and computer programmes 50 years from creation (s. 8(1)(a)); anonymous/pseudonymous 50 years from first made available (s. 8(3))",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Technological protection measures: dedicated anti-circumvention Part in the Act (section not confirmed) (unconfirmed)",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Eswatini Copyright Office (collecting society: ESWACOS)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/18374",
+    "notes": "Act replaces Copyright Act 1912 (life + 50 years); 2018 Act: 50 years for audiovisual/collective works, photographs, software (from creation), sound recordings (from publication) per secondary source; general life-based term unconfirmed; commencement by Minister's gazette notice not confirmed; Berne since 14 Dec 1998, WTO since 1 Jan 1995; WCT/WPPT unconfirmed; Assented 1 Mar 2018, published 9 Mar 2018; repealed Copyright Act 1912 (which gave life + 50). Term confirmed life + 50 only through the Commons summary (secondary), not the Act text, though the predecessor and the Commons summary agree. WTO 1 Jan 1995, Berne 14 Dec 1998. WCT/WPPT status not found.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/18374",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/18374",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Eswatini",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/18374",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/18374",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "digital_protection": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/18374",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.eswatiniobserver.com/?p=13498",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Eswatini.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

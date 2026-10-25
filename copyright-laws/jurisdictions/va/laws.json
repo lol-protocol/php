@@ -1,0 +1,81 @@
+[
+  {
+    "country_code": "VA",
+    "country_name": "Vatican City",
+    "region": "europe",
+    "law_name": "Law No. CXCVII of 2017 on the Protection of Copyright on Intellectual Works and Related Rights (Vatican City State), replacing Law No. CXXXII of 2011",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years; 70 years after publication for works without a named author",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Governed through Italian Law No. 633/1941, applied as supplementary law (Art. 1); specifics not seen (unconfirmed)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Via Italian Law No. 633/1941 as supplementary law (Art. 1); specifics not seen (unconfirmed)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Pontifical Commission for Vatican City State (issuing authority) (unconfirmed)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22802",
+    "notes": "Promulgated 1 Sep 2017, in force 1 Oct 2017. Holy See owns copyright in works published under its name or on its commission. Berne member since 12 Sep 1935 per Commons (another source cites 1975). Earlier Law XII of 12 Jan 1960 and 2011 law are repealed.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/22802",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/22802",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Vatican_City.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/22802",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/22802",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/22802",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/22802",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://portolano.it/news/copyright-and-the-vatican",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Vatican_City.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
