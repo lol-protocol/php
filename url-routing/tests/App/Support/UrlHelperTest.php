@@ -38,4 +38,46 @@ class UrlHelperTest extends TestCase
     {
         $this->assertNull(Router::canonica((new UrlHelper(new Router()))->busqueda($digitos, $texto, $pagina)));
     }
+
+    /** @return array<string, array{list<string>, string}> */
+    public static function lugaresValidos(): array
+    {
+        return [
+            'solo pais' => [['ar'], '/ar/'],
+            'pais y subdivision' => [['ar', 'c'], '/ar/c/'],
+            'pais, subdivision y ciudad' => [['ar', 'b', 'lpz'], '/ar/b/lpz/'],
+            'se pasa a minusculas' => [['AR', 'C'], '/ar/c/'],
+        ];
+    }
+
+    #[DataProvider('lugaresValidos')]
+    public function testEnlaceLugar(array $codes, string $esperada): void
+    {
+        $this->assertSame($esperada, (new UrlHelper(new Router()))->enlaceLugar($codes));
+    }
+
+    /** @return array<string, array{list<string>}> */
+    public static function lugaresInvalidos(): array
+    {
+        return [
+            'pais de 3 letras' => [['arg']],
+            'pais de 1 letra' => [['a']],
+            'subdivision de 4 letras' => [['ar', 'abcd']],
+            'sin codigos' => [[]],
+            'mas de 3 codigos' => [['ar', 'b', 'lpz', 'x']],
+            'codigo con numeros' => [['a1']],
+        ];
+    }
+
+    /**
+     * PlaceMatchStrategy solo reconoce un pais de 2 letras seguido de hasta
+     * dos codigos de 1 a 3 letras; un enlace que no respete eso generaria
+     * una URL que la propia app no podria resolver.
+     */
+    #[DataProvider('lugaresInvalidos')]
+    public function testEnlaceLugarRejectsMalformedPlaces(array $codes): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new UrlHelper(new Router()))->enlaceLugar($codes);
+    }
 }
