@@ -23,6 +23,15 @@ y `copyright-laws/tests/check-links.test.js`, que siguen corriendo contra el
 `check-links.js` de su propio proyecto (son 20 líneas que configuran y reexportan
 este archivo).
 
+## Sitios que rechazan a los runners
+
+`hosts-que-rechazan-runners.txt` lista los hosts que están vivos pero rechazan la conexión
+(`ECONNREFUSED`) de los servidores de GitHub Actions. En ellos, ese error es un aviso y no un enlace
+roto: sin la lista, cada corrida los marcaba en rojo y la issue automática de los enlaces rotos no se
+cerraba nunca. Entran solo después de verlos rechazar al runner más de una vez, y con el motivo al
+lado. No esconde enlaces muertos: un host que desaparece falla antes, en DNS, y eso sigue siendo roto.
+Un puerto cerrado en cualquier otro host también.
+
 ## Por qué no es una dependencia entre `privacy-laws/` y `copyright-laws/`
 
 Ninguno de los dos importa del otro: ambos importan de esta carpeta, un tercero
