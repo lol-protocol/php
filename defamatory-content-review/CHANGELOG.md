@@ -97,6 +97,25 @@ Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»
 
 ### Añadido
 
+- **Flexión en 13 idiomas más** (además de alemán, neerlandés y turco, que ya
+  la tenían): sueco, danés, noruego (`NordicInflection`), ruso, ucraniano, polaco,
+  checo, eslovaco, búlgaro, rumano (`SuffixInflection`), húngaro, griego y hebreo.
+  Cada uno genera las clases regulares —plural y, donde se declina, los casos
+  («идиотом», «idiotę», «seggfejek», «אידיוטים»)— de unas 150–200 entradas del
+  diccionario (sin etnia, religión ni discapacidad) y de las listas de chat; los
+  verbos regulares del ruso, el ucraniano, el polaco y los nórdicos. Lo generado
+  llega como mucho a revisión. Medido contra las 50 000 palabras más frecuentes de
+  cada idioma, las palabras nuevas son declinaciones de insultos que ya se
+  detectaban; las que chocaban con palabras comunes («tyve» = veinte, «черта» =
+  rasgo, «moči» = poder, «גנבה» = robo) se excluyeron. Rasgo nuevo `infl` para la
+  forma declinada. Faltan árabe, finés, islandés, hindi, suajili y tagalo (sin
+  reglas seguras o sin lista de frecuencias para medirlas). Planillas de
+  revisión regeneradas. `DeclensionTest`.
+- **Una forma generada no pisa una entrada escrita** ni entra en la búsqueda
+  fonética de nombres. Con los acentos plegados «prasě» y «prase» son la misma
+  clave, y la forma generada reemplazaba al lema (y su severidad); además, cada
+  forma de más multiplicaba el índice fonético: `validateName` iba 3–5 veces más
+  lento en ruso, polaco y checo. `GeneratedFormsTest`.
 - **Palabras de varios países en el español base** (el idioma sigue siendo
   `spa`, sin variantes por país): «puto» (`targeted`: «eres un puto» se bloquea,
   «los putos deberes» pasa), «joto» y «trolo» se bloquean; «pija» y «pico» se
