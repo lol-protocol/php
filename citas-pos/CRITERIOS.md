@@ -80,9 +80,27 @@ Con 30 idiomas, las oleadas ya no dicen *qué* se hace sino *en qué orden* entr
 
 Un idioma sin revisor nativo no se publica, pero puede quedar en borrador. Con etiquetas manuales, cada idioma necesita además a alguien que lo hable para etiquetar y revisar: ese es el cuello de botella real de los 30 idiomas (ver «Riesgos» en `PLAN.md`).
 
+### Cómo se cubren los 30 idiomas
+
+**Primero, una cita original por idioma.** Cada idioma tiene citas de autores de su propia tradición, en su lengua original. Es lo que mejor cumple «original primero» (A6 en `IDEAS.md`): no hay traducción de por medio y la fuente se puede comprobar en el idioma del lector.
+
+**Después, una «cita ancla» traducida a los 30.** Para la pieza «el mismo pensamiento en varias lenguas» (idea 2 de `IDEAS.md`) hace falta una sola frase muy corta, que ya esté verificada en su original y que se pueda traducir sin perder el sentido. Criterios para elegirla:
+
+- De **4 a 8 palabras**, una sola oración.
+- De **dominio público** en su original, con la misma comprobación que cualquier cita.
+- Con **varias categorías distintas** (al menos sustantivo, verbo y un adjetivo o adverbio), para que el color enseñe algo.
+- **Sin juegos de palabras ni expresiones hechas** que no se traduzcan, y sin referencias culturales que solo un idioma entienda.
+- **Traducción nuestra**, borrador hasta que un hablante del idioma la revise y firme en `revisiones.csv` (alcance `traduccion`).
+
+La cita ancla **no es parte del piloto**: se elige cuando haya revisores para varios idiomas.
+
+### Piloto
+
+El piloto tiene **3 idiomas con 6 citas cada uno, 18 fichas en total**, que son las mismas 6 citas de la prueba de coloreada contra plana (ver `PLAN.md`). Idiomas propuestos: `spa`, `eng` y `deu`. Los dos primeros son los de más audiencia en este proyecto y los tres tienen muchas palabras anotadas; **el tercero se cambia por otro idioma de la oleada 1 o 2 si quien revisa habla ese en lugar del alemán.** El criterio para elegir los idiomas del piloto es que **alguien pueda etiquetar y revisar de verdad**, no que sean los de más datos.
+
 ## Etiquetado: categorías
 
-Se usa UPOS (Universal Dependencies): 17 categorías. Los colores de cada una los fija la fase 2 de [`PLAN.md`](PLAN.md); aquí solo el catálogo.
+Se usa UPOS (Universal Dependencies): 17 categorías. Sus colores y su marca (el estilo de subrayado de su grupo) están en [`datos/paleta.json`](datos/paleta.json), una paleta **provisional** que se puede ver en [`prototipo/index.html`](prototipo/index.html); aquí solo el catálogo.
 
 | Código | Categoría | Código | Categoría | Código | Categoría |
 |---|---|---|---|---|---|

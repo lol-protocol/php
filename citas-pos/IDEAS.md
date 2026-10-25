@@ -41,7 +41,7 @@ Variantes:
 
 ## Otras ideas
 
-1. 🎨 **Paleta fija de 17 categorías.** Una sola leyenda en todas las piezas. Con repetición, la audiencia aprende el código, y se vuelve un activo de marca. Hay precedente pedagógico en los símbolos gramaticales de colores de la tradición Montessori. **Utilidad:** alta. **Esfuerzo:** bajo. **Depende de:** decidir la paleta (ver `PLAN.md`, fase 2).
+1. 🎨 **Paleta fija de 17 categorías.** Una sola leyenda en todas las piezas. Con repetición, la audiencia aprende el código, y se vuelve un activo de marca. Hay precedente pedagógico en los símbolos gramaticales de colores de la tradición Montessori. **Utilidad:** alta. **Esfuerzo:** bajo. **Depende de:** aprobar la paleta; ya hay una [provisional](datos/paleta.json) con su [prototipo](prototipo/index.html) (ver `PLAN.md`, fase 2).
 2. 🔁 **El mismo pensamiento en cuatro lenguas.** Una idea en `es`, `en`, `de` y `ru`, coloreada. Se ve que el alemán manda el verbo al final y que el ruso no tiene artículos. Muestra por qué hace falta un etiquetador por lengua. **Utilidad:** alta. **Esfuerzo:** medio. **Depende de:** traducciones propias revisadas.
 3. 🎯 **Una serie por categoría.** «Solo los adjetivos de Wilde»: la cita en gris y una sola categoría en color. Da 17 episodios con estructura propia y evita el problema de distinguir 17 colores a la vez. **Utilidad:** alta. **Esfuerzo:** bajo.
 4. 🎓 **Hojas para docentes.** Citas breves para colorear a mano en clase, imprimibles. Quien enseña gramática es público natural de un etiquetador. **Utilidad:** alta. **Esfuerzo:** medio. **Depende de:** conocer la audiencia (decisión abierta 3 en `PLAN.md`).

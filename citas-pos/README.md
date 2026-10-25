@@ -2,7 +2,7 @@
 
 Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de etiquetado *part-of-speech* de [`Listado-colores/`](../Listado-colores/)): citas de personas célebres, en varios idiomas, en las que **cada palabra va en el color de su categoría gramatical**. La cita en color enseña lo que hace el etiquetador sin tener que explicarlo.
 
-**Estado: documentación y plan, con las decisiones de diseño ya tomadas (24 de octubre de 2026). Todavía no hay citas, datos ni código.** Las citas candidatas de [`CRITERIOS.md`](CRITERIOS.md) son autores a investigar, no citas verificadas.
+**Estado: documentación, una paleta provisional con su prototipo y el registro de revisiones; todavía no hay citas.** Las decisiones de diseño se tomaron el 24 y el 25 de octubre de 2026. Las citas candidatas de [`CRITERIOS.md`](CRITERIOS.md) son autores a investigar, no citas verificadas, y las frases del prototipo son frases de prueba, no citas.
 
 ## Decisiones tomadas
 
@@ -16,6 +16,9 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 | Script | PHP sin dependencias |
 | Marca | «Contrastocolor» directamente, sin marcador |
 | Medición | Clics y aperturas |
+| Piloto | 3 idiomas × 6 citas = 18 fichas (`spa`, `eng` y `deu` propuestos); el resto de los 30 entra cuando haya revisor |
+| Cobertura de los 30 | Una cita original por idioma primero; una «cita ancla» traducida a los 30 después |
+| Registro de revisiones | El formato de `Listado-colores/` ([`REVISIONES.md`](REVISIONES.md)) |
 
 **Límites del tono lúdico.** El juego va en el acompañamiento de la pieza (la pregunta, el reto, la pista), nunca en la cita ni en los hechos. Sin burlas a los autores, a un idioma o a quien se equivoque en el juego, y sin prometer nada del producto.
 
@@ -25,7 +28,13 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 |---|---|
 | [`IDEAS.md`](IDEAS.md) | Las ideas de contenido y formato, justificadas, con su utilidad, su esfuerzo y de qué dependen. Marca las dos elegidas. |
 | [`CRITERIOS.md`](CRITERIOS.md) | Qué citas usar: largo, idiomas, autores, derechos y cómo se verifica cada una. |
-| [`PLAN.md`](PLAN.md) | Las fases de trabajo, las decisiones abiertas, cómo se mide si sirve y los riesgos. |
+| [`PLAN.md`](PLAN.md) | Las fases de trabajo, las preguntas abiertas, cómo se mide si sirve y los riesgos. |
+| [`REVISIONES.md`](REVISIONES.md) y [`revisiones.csv`](revisiones.csv) | Quién ha revisado qué, con el formato del registro de `Listado-colores/`. Empieza vacío. |
+| [`datos/paleta.json`](datos/paleta.json) | Un color por categoría UPOS, en modo claro y oscuro, y la marca (estilo de subrayado) de cada grupo. **Provisional.** |
+| [`datos/ejemplos.json`](datos/ejemplos.json) | Seis frases de prueba (no son citas) en `spa`, `eng` y `deu`, con sus etiquetas puestas a mano y sin revisión nativa. |
+| [`datos/idiomas.json`](datos/idiomas.json) | Los 30 idiomas con su código de 3 letras y el de 2 de `Listado-colores/`. |
+| [`prototipo/index.html`](prototipo/index.html) | La paleta en una sola página, sin servidor: leyenda, frases de prueba, tema claro y oscuro, simulación de daltonismo y marcas. Generado: no se edita a mano. |
+| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php` y `comprobar-revisiones.php` (PHP sin dependencias). |
 
 ## Idea central
 
@@ -54,4 +63,16 @@ No depende de ningún proyecto en tiempo de ejecución.
 
 ## Cómo probar esta carpeta
 
-Por ahora no hay código ni pruebas. Cuando lo haya, este README dirá cómo correrlas, y el workflow `pruebas-citas-pos.yml` (con filtro de rutas) irá en el mismo PR que el código, junto con su viñeta en la sección «CI/CD» del README raíz.
+Desde la raíz del repositorio, con PHP 8.3 y sin instalar nada:
+
+```bash
+php citas-pos/bin/comprobar-paleta.php        # las 17 categorías, contraste de 4,5:1 en claro y oscuro, colores confundibles (--lista para verlos)
+php citas-pos/bin/prototipo.php --comprobar   # prototipo/index.html al día con datos/ (sin --comprobar, lo regenera)
+php citas-pos/bin/comprobar-revisiones.php    # revisiones.csv válido
+```
+
+El workflow [`pruebas-citas-pos.yml`](../.github/workflows/pruebas-citas-pos.yml) corre las tres, con filtro de rutas, en cada PR que toque esta carpeta.
+
+Para ver el prototipo, abre `citas-pos/prototipo/index.html` en un navegador: no necesita servidor ni conexión.
+
+**Lo que estas comprobaciones no cubren:** no hay pruebas de las citas ni de sus traducciones (aún no existen), la paleta no se ha probado con personas con daltonismo ni en un correo real, y la simulación de daltonismo es una aproximación.

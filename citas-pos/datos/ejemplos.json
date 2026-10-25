@@ -1,0 +1,56 @@
+{
+  "aviso": "Frases escritas para probar la paleta. No son citas célebres. Las etiquetas (categorías UPOS) las puso a mano quien armó el prototipo y ningún hablante nativo las ha revisado.",
+  "ejemplos": [
+    {
+      "idioma": "spa",
+      "html": "es",
+      "nombre": "Español",
+      "frases": [
+        {
+          "id": "spa-1",
+          "texto": "El perro pequeño lee despacio un libro rojo.",
+          "palabras": [["El", "DET"], ["perro", "NOUN"], ["pequeño", "ADJ"], ["lee", "VERB"], ["despacio", "ADV"], ["un", "DET"], ["libro", "NOUN"], ["rojo", "ADJ"], [".", "PUNCT"]]
+        },
+        {
+          "id": "spa-2",
+          "texto": "¡Ay! María y yo hemos visto tres gatos en casa, porque ellos no se van.",
+          "palabras": [["¡", "PUNCT"], ["Ay", "INTJ"], ["!", "PUNCT"], ["María", "PROPN"], ["y", "CCONJ"], ["yo", "PRON"], ["hemos", "AUX"], ["visto", "VERB"], ["tres", "NUM"], ["gatos", "NOUN"], ["en", "ADP"], ["casa", "NOUN"], [",", "PUNCT"], ["porque", "SCONJ"], ["ellos", "PRON"], ["no", "ADV"], ["se", "PRON"], ["van", "VERB"], [".", "PUNCT"]]
+        }
+      ]
+    },
+    {
+      "idioma": "eng",
+      "html": "en",
+      "nombre": "Inglés",
+      "frases": [
+        {
+          "id": "eng-1",
+          "texto": "The small dog slowly reads a red book.",
+          "palabras": [["The", "DET"], ["small", "ADJ"], ["dog", "NOUN"], ["slowly", "ADV"], ["reads", "VERB"], ["a", "DET"], ["red", "ADJ"], ["book", "NOUN"], [".", "PUNCT"]]
+        },
+        {
+          "id": "eng-2",
+          "texto": "Oh, Maria and I have seen three cats at home, because they do not leave.",
+          "palabras": [["Oh", "INTJ"], [",", "PUNCT"], ["Maria", "PROPN"], ["and", "CCONJ"], ["I", "PRON"], ["have", "AUX"], ["seen", "VERB"], ["three", "NUM"], ["cats", "NOUN"], ["at", "ADP"], ["home", "NOUN"], [",", "PUNCT"], ["because", "SCONJ"], ["they", "PRON"], ["do", "AUX"], ["not", "PART"], ["leave", "VERB"], [".", "PUNCT"]]
+        }
+      ]
+    },
+    {
+      "idioma": "deu",
+      "html": "de",
+      "nombre": "Alemán",
+      "frases": [
+        {
+          "id": "deu-1",
+          "texto": "Der kleine Hund liest langsam ein rotes Buch.",
+          "palabras": [["Der", "DET"], ["kleine", "ADJ"], ["Hund", "NOUN"], ["liest", "VERB"], ["langsam", "ADV"], ["ein", "DET"], ["rotes", "ADJ"], ["Buch", "NOUN"], [".", "PUNCT"]]
+        },
+        {
+          "id": "deu-2",
+          "texto": "Ach, Maria und ich haben drei Katzen zu Hause gesehen, weil sie nicht gehen.",
+          "palabras": [["Ach", "INTJ"], [",", "PUNCT"], ["Maria", "PROPN"], ["und", "CCONJ"], ["ich", "PRON"], ["haben", "AUX"], ["drei", "NUM"], ["Katzen", "NOUN"], ["zu", "ADP"], ["Hause", "NOUN"], ["gesehen", "VERB"], [",", "PUNCT"], ["weil", "SCONJ"], ["sie", "PRON"], ["nicht", "PART"], ["gehen", "VERB"], [".", "PUNCT"]]
+        }
+      ]
+    }
+  ]
+}
