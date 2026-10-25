@@ -40,6 +40,10 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # La regla de arriba no bastó: la #256 propuso «^10.5 || ^13.0». PHPUnit 11 pide PHP 8.2 y 12 pide
+      # PHP 8.3, y el piso de varios proyectos es 8.1. Por nombre y por versión, que sí es explícito.
+      - dependency-name: "phpunit/phpunit"
+        versions: [">=11"]
     commit-message:
       prefix: "composer"
 
@@ -76,5 +80,8 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # Igual que arriba: la #260 subió el piso de «pytest>=8» a «>=9.1.1», una versión mayor.
+      - dependency-name: "pytest"
+        versions: [">=9"]
     commit-message:
       prefix: "pip"
