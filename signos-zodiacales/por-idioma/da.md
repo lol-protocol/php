@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Vestlig dyrekreds
 
 ### ♈ Vædderen
 
 *21/03 – 19/04 · Ild · Kardinal*
+
+Dekaner: 21/03 – 30/03 Mars · 31/03 – 09/04 Solen · 10/04 – 19/04 Venus
 
 Modig, impulsiv og fuld af energi.
 
@@ -16,6 +18,8 @@ Forbindes med initiativ og mod: traditionen beskriver den som direkte, konkurren
 
 *20/04 – 20/05 · Jord · Fast*
 
+Dekaner: 20/04 – 29/04 Merkur · 30/04 – 09/05 Månen · 10/05 – 20/05 Saturn
+
 Tålmodig, sanselig og glad for stabilitet.
 
 Forbindes med standhaftighed og sans for det konkrete: traditionen beskriver den som loyal, rolig og komfortelskende, men nogle gange stædig.
@@ -23,6 +27,8 @@ Forbindes med standhaftighed og sans for det konkrete: traditionen beskriver den
 ### ♊ Tvillingerne
 
 *21/05 – 20/06 · Luft · Foranderlig*
+
+Dekaner: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Solen
 
 Nysgerrig, kommunikativ og hurtigtænkende.
 
@@ -32,6 +38,8 @@ Forbindes med nysgerrighed og ordet: traditionen beskriver den som social, alsid
 
 *21/06 – 22/07 · Vand · Kardinal*
 
+Dekaner: 21/06 – 30/06 Venus · 01/07 – 10/07 Merkur · 11/07 – 22/07 Månen
+
 Beskyttende, følsom og meget loyal over for sine.
 
 Forbindes med hjemmet og følelserne: traditionen beskriver den som omsorgsfuld, intuitiv og meget knyttet til familien, men nogle gange reserveret.
@@ -39,6 +47,8 @@ Forbindes med hjemmet og følelserne: traditionen beskriver den som omsorgsfuld,
 ### ♌ Løven
 
 *23/07 – 22/08 · Ild · Fast*
+
+Dekaner: 23/07 – 01/08 Saturn · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Mars
 
 Generøs, karismatisk og elsker at skinne.
 
@@ -48,6 +58,8 @@ Forbindes med generøsitet og lederskab: traditionen beskriver den som varm, sto
 
 *23/08 – 22/09 · Jord · Foranderlig*
 
+Dekaner: 23/08 – 01/09 Solen · 02/09 – 11/09 Venus · 12/09 – 22/09 Merkur
+
 Analytisk, praktisk og meget omhyggelig.
 
 Forbindes med orden og tjeneste: traditionen beskriver den som metodisk, diskret og krævende over for sig selv, men nogle gange for kritisk.
@@ -55,6 +67,8 @@ Forbindes med orden og tjeneste: traditionen beskriver den som metodisk, diskret
 ### ♎ Vægten
 
 *23/09 – 22/10 · Luft · Kardinal*
+
+Dekaner: 23/09 – 02/10 Månen · 03/10 – 12/10 Saturn · 13/10 – 22/10 Jupiter
 
 Diplomatisk, social og søger balance.
 
@@ -64,6 +78,8 @@ Forbindes med harmoni og retfærdighed: traditionen beskriver den som venlig, el
 
 *23/10 – 21/11 · Vand · Fast*
 
+Dekaner: 23/10 – 01/11 Mars · 02/11 – 11/11 Solen · 12/11 – 21/11 Venus
+
 Intens, intuitiv og viljestærk.
 
 Forbindes med dybde og beslutsomhed: traditionen beskriver den som reserveret, lidenskabelig og meget opmærksom, men nogle gange alt for intens.
@@ -71,6 +87,8 @@ Forbindes med dybde og beslutsomhed: traditionen beskriver den som reserveret, l
 ### ♐ Skytten
 
 *22/11 – 21/12 · Ild · Foranderlig*
+
+Dekaner: 22/11 – 01/12 Merkur · 02/12 – 11/12 Månen · 12/12 – 21/12 Saturn
 
 Optimistisk, eventyrlysten og frihedselskende.
 
@@ -80,6 +98,8 @@ Forbindes med udforskning og ligefremhed: traditionen beskriver den som optimist
 
 *22/12 – 19/01 · Jord · Kardinal*
 
+Dekaner: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Solen
+
 Disciplineret, ambitiøs og ansvarlig.
 
 Forbindes med disciplin og tålmodighed: traditionen beskriver den som ambitiøs, alvorlig og ansvarlig på lang sigt, men nogle gange rigid.
@@ -87,6 +107,8 @@ Forbindes med disciplin og tålmodighed: traditionen beskriver den som ambitiøs
 ### ♒ Vandmanden
 
 *20/01 – 18/02 · Luft · Fast*
+
+Dekaner: 20/01 – 29/01 Venus · 30/01 – 08/02 Merkur · 09/02 – 18/02 Månen
 
 Uafhængig, original og humanitær.
 
@@ -96,11 +118,13 @@ Forbindes med originalitet og fælles idéer: traditionen beskriver den som uafh
 
 *19/02 – 20/03 · Vand · Foranderlig*
 
+Dekaner: 19/02 – 28/02 Saturn · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Mars
+
 Empatisk, drømmende og meget intuitiv.
 
 Forbindes med fantasi og medfølelse: traditionen beskriver den som følsom, kunstnerisk og hengiven over for andre, men nogle gange undvigende.
 
-## Horóscopo chino
+## Kinesisk horoskop
 
 ### Rotten
 

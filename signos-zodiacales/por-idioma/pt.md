@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Zodíaco ocidental
 
 ### ♈ Áries
 
 *21/03 – 19/04 · Fogo · Cardinal*
+
+Decanatos: 21/03 – 30/03 Marte · 31/03 – 09/04 Sol · 10/04 – 19/04 Vênus
 
 Coragem, impulso e energia.
 
@@ -16,6 +18,8 @@ Signo da iniciativa e da coragem: a tradição lhe atribui franqueza, espírito 
 
 *20/04 – 20/05 · Terra · Fixo*
 
+Decanatos: 20/04 – 29/04 Mercúrio · 30/04 – 09/05 Lua · 10/05 – 20/05 Saturno
+
 Paciência, sensualidade e amor pela estabilidade.
 
 Signo da constância e do gosto pelo concreto: a tradição lhe atribui lealdade, calma e amor pelo conforto, mas também teimosia.
@@ -23,6 +27,8 @@ Signo da constância e do gosto pelo concreto: a tradição lhe atribui lealdade
 ### ♊ Gêmeos
 
 *21/05 – 20/06 · Ar · Mutável*
+
+Decanatos: 21/05 – 30/05 Júpiter · 31/05 – 09/06 Marte · 10/06 – 20/06 Sol
 
 Curiosidade, comunicação e agilidade mental.
 
@@ -32,6 +38,8 @@ Signo da curiosidade e da palavra: a tradição lhe atribui sociabilidade, versa
 
 *21/06 – 22/07 · Água · Cardinal*
 
+Decanatos: 21/06 – 30/06 Vênus · 01/07 – 10/07 Mercúrio · 11/07 – 22/07 Lua
+
 Proteção, sensibilidade e lealdade aos seus.
 
 Signo do lar e das emoções: a tradição lhe atribui cuidado, intuição e apego à família, mas também reserva.
@@ -39,6 +47,8 @@ Signo do lar e das emoções: a tradição lhe atribui cuidado, intuição e ape
 ### ♌ Leão
 
 *23/07 – 22/08 · Fogo · Fixo*
+
+Decanatos: 23/07 – 01/08 Saturno · 02/08 – 11/08 Júpiter · 12/08 – 22/08 Marte
 
 Generosidade, carisma e gosto por brilhar.
 
@@ -48,6 +58,8 @@ Signo da generosidade e da liderança: a tradição lhe atribui calor humano, or
 
 *23/08 – 22/09 · Terra · Mutável*
 
+Decanatos: 23/08 – 01/09 Sol · 02/09 – 11/09 Vênus · 12/09 – 22/09 Mercúrio
+
 Análise, senso prático e atenção aos detalhes.
 
 Signo da ordem e do serviço: a tradição lhe atribui método, discrição e exigência consigo, mas também excesso de crítica.
@@ -55,6 +67,8 @@ Signo da ordem e do serviço: a tradição lhe atribui método, discrição e ex
 ### ♎ Libra
 
 *23/09 – 22/10 · Ar · Cardinal*
+
+Decanatos: 23/09 – 02/10 Lua · 03/10 – 12/10 Saturno · 13/10 – 22/10 Júpiter
 
 Diplomacia, sociabilidade e busca do equilíbrio.
 
@@ -64,6 +78,8 @@ Signo da harmonia e da justiça: a tradição lhe atribui amabilidade, elegânci
 
 *23/10 – 21/11 · Água · Fixo*
 
+Decanatos: 23/10 – 01/11 Marte · 02/11 – 11/11 Sol · 12/11 – 21/11 Vênus
+
 Intensidade, intuição e vontade firme.
 
 Signo da profundidade e da determinação: a tradição lhe atribui reserva, paixão e grande percepção, mas também excesso de intensidade.
@@ -71,6 +87,8 @@ Signo da profundidade e da determinação: a tradição lhe atribui reserva, pai
 ### ♐ Sagitário
 
 *22/11 – 21/12 · Fogo · Mutável*
+
+Decanatos: 22/11 – 01/12 Mercúrio · 02/12 – 11/12 Lua · 12/12 – 21/12 Saturno
 
 Otimismo, aventura e amor pela liberdade.
 
@@ -80,6 +98,8 @@ Signo da exploração e da franqueza: a tradição lhe atribui otimismo, inquiet
 
 *22/12 – 19/01 · Terra · Cardinal*
 
+Decanatos: 22/12 – 31/12 Júpiter · 01/01 – 10/01 Marte · 11/01 – 19/01 Sol
+
 Disciplina, ambição e responsabilidade.
 
 Signo da disciplina e da paciência: a tradição lhe atribui ambição, seriedade e responsabilidade a longo prazo, mas também rigidez.
@@ -87,6 +107,8 @@ Signo da disciplina e da paciência: a tradição lhe atribui ambição, serieda
 ### ♒ Aquário
 
 *20/01 – 18/02 · Ar · Fixo*
+
+Decanatos: 20/01 – 29/01 Vênus · 30/01 – 08/02 Mercúrio · 09/02 – 18/02 Lua
 
 Independência, originalidade e humanitarismo.
 
@@ -96,11 +118,13 @@ Signo da originalidade e das ideias coletivas: a tradição lhe atribui independ
 
 *19/02 – 20/03 · Água · Mutável*
 
+Decanatos: 19/02 – 28/02 Saturno · 01/03 – 10/03 Júpiter · 11/03 – 20/03 Marte
+
 Empatia, imaginação e intuição.
 
 Signo da imaginação e da compaixão: a tradição lhe atribui sensibilidade, talento artístico e dedicação aos outros, mas também evasão.
 
-## Horóscopo chino
+## Horóscopo chinês
 
 ### Rato
 

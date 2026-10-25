@@ -492,5 +492,167 @@ class PruebasDeGaleria(unittest.TestCase):
         self.assertNotIn("</", bloque.replace("<\\/", ""))
 
 
+
+class PruebasDeHusoHorario(unittest.TestCase):
+    utc = datetime.timezone.utc
+
+    def test_un_datetime_con_huso_se_pasa_a_la_hora_de_china(self):
+        # Las 20:00 UTC del 16/02/2026 son las 04:00 del 17/02 en China: ya es el año del Caballo.
+        r = zodiaco.animal_chino_de_fecha(datetime.datetime(2026, 2, 16, 20, 0, tzinfo=self.utc))
+        self.assertEqual(r["signo"]["id"], "caballo")
+
+    def test_antes_de_la_medianoche_de_china_sigue_el_anio_anterior(self):
+        r = zodiaco.animal_chino_de_fecha(datetime.datetime(2026, 2, 16, 15, 59, tzinfo=self.utc))
+        self.assertEqual(r["signo"]["id"], "serpiente")
+
+    def test_un_huso_al_oeste_tambien_se_convierte(self):
+        nueva_york = datetime.timezone(datetime.timedelta(hours=-5))
+        r = zodiaco.animal_chino_de_fecha(datetime.datetime(2026, 2, 16, 12, 0, tzinfo=nueva_york))
+        self.assertEqual(r["signo"]["id"], "caballo")  # 17:00 UTC = 01:00 del 17/02 en China
+
+    def test_sin_huso_se_toma_tal_cual(self):
+        self.assertEqual(zodiaco.animal_chino_de_fecha(datetime.datetime(2026, 2, 16, 23, 59))["signo"]["id"], "serpiente")
+        self.assertEqual(zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 16))["signo"]["id"], "serpiente")
+
+
+class PruebasDeNombresDelCiclo(unittest.TestCase):
+    def test_nombres_conocidos(self):
+        casos = {
+            (2026, "es"): "Caballo de Fuego", (2026, "en"): "Fire Horse", (2024, "de"): "Holz-Drache",
+            (2021, "de"): "Metall-Ochse", (2009, "de"): "Erd-Ochse", (2032, "fr"): "Rat d'Eau",
+            (2032, "it"): "Topo d'Acqua", (2024, "zh"): "木龙", (2026, "fi"): "Tulihevonen",
+            (2026, "id"): "Kuda Api", (2026, "ro"): "Cal de Foc", (2026, "pt"): "Cavalo de Fogo",
+        }
+        for (anio, idioma), esperado in casos.items():
+            self.assertEqual(zodiaco.nombre_del_anio(anio, idioma), esperado, (anio, idioma))
+
+    def test_los_idiomas_sin_forma_fija_usan_la_generica(self):
+        datos = zodiaco.cargar_datos()
+        for codigo, regla in datos["nombres_del_ciclo"].items():
+            if not regla["idiomatica"]:
+                self.assertEqual(regla["plantilla"], "{animal} ({elemento})", codigo)
+        self.assertEqual(zodiaco.nombre_del_anio(2026, "ru"), "Лошадь (Огонь)")
+
+    def test_los_60_nombres_son_distintos_en_cada_idioma(self):
+        for codigo in generar.IDIOMAS:
+            nombres = {zodiaco.nombre_del_anio(a, codigo) for a in range(1984, 2044)}
+            self.assertEqual(len(nombres), 60, codigo)
+
+    def test_rechaza_un_idioma_desconocido(self):
+        with self.assertRaises(ValueError):
+            zodiaco.nombre_del_anio(2026, "xx")
+
+    def test_la_validacion_detecta_una_plantilla_rota(self):
+        datos = copy.deepcopy(cargar_datos())
+        datos["nombres_del_ciclo"]["es"]["plantilla"] = "{animal}"
+        self.assertTrue(any("nombres_del_ciclo/es" in e for e in generar.validar(datos)))
+
+
+class PruebasDeCompatibilidad(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        datos = cargar_datos()
+        cls.occidentales = [s["id"] for s in datos["signos"] if s["tipo"] == "occidental"]
+        cls.chinos = [s["id"] for s in datos["signos"] if s["tipo"] == "chino"]
+
+    def test_es_simetrica(self):
+        for grupo in (self.occidentales, self.chinos):
+            for a in grupo:
+                for b in grupo:
+                    self.assertEqual(zodiaco.compatibilidad(a, b), zodiaco.compatibilidad(b, a), (a, b))
+
+    def test_parejas_occidentales_conocidas(self):
+        casos = {("aries", "leo"): "alta", ("aries", "geminis"): "alta", ("aries", "libra"): "media",
+                 ("aries", "cancer"): "baja", ("aries", "capricornio"): "baja", ("aries", "tauro"): "neutra",
+                 ("tauro", "virgo"): "alta", ("tauro", "escorpio"): "media"}
+        for (a, b), afinidad in casos.items():
+            self.assertEqual(zodiaco.compatibilidad(a, b)["afinidad"], afinidad, (a, b))
+
+    def test_cada_animal_tiene_dos_del_trino_un_amigo_secreto_y_un_choque(self):
+        for a in self.chinos:
+            otros = [zodiaco.compatibilidad(a, b)["relaciones"] for b in self.chinos if b != a]
+            self.assertEqual(sum("trino" in r for r in otros), 2, a)
+            self.assertEqual(sum("amigos_secretos" in r for r in otros), 1, a)
+            self.assertEqual(sum("choque" in r for r in otros), 1, a)
+
+    def test_parejas_chinas_conocidas(self):
+        self.assertIn("trino", zodiaco.compatibilidad("tigre", "perro")["relaciones"])
+        self.assertIn("amigos_secretos", zodiaco.compatibilidad("caballo", "cabra")["relaciones"])
+        self.assertIn("choque", zodiaco.compatibilidad("serpiente", "cerdo")["relaciones"])
+
+    def test_rechaza_mezclar_zodiacos_o_ids_desconocidos(self):
+        with self.assertRaises(ValueError):
+            zodiaco.compatibilidad("aries", "rata")
+        with self.assertRaises(ValueError):
+            zodiaco.compatibilidad("aries", "unicornio")
+
+
+class PruebasDeDecanatos(unittest.TestCase):
+    def test_los_regentes_siguen_el_orden_caldeo(self):
+        esperados = {"aries": ["marte", "sol", "venus"], "tauro": ["mercurio", "luna", "saturno"],
+                     "capricornio": ["jupiter", "marte", "sol"], "piscis": ["saturno", "jupiter", "marte"]}
+        for signo, regentes in esperados.items():
+            self.assertEqual(zodiaco.regentes_de_decanatos(signo), regentes, signo)
+
+    def test_decanatos_en_fechas_conocidas(self):
+        casos = {(1990, 3, 21): (1, "aries"), (1990, 3, 30): (1, "aries"), (1990, 3, 31): (2, "leo"),
+                 (1990, 4, 9): (2, "leo"), (1990, 4, 10): (3, "sagitario"), (1990, 4, 19): (3, "sagitario")}
+        for fecha, (numero, regente_por_triplicidad) in casos.items():
+            d = zodiaco.decanato(datetime.date(*fecha))
+            self.assertEqual((d["signo"]["id"], d["numero"], d["signo_regente"]["id"]),
+                             ("aries", numero, regente_por_triplicidad), fecha)
+
+    def test_capricornio_cruza_el_fin_de_anio(self):
+        self.assertEqual(zodiaco.decanato(datetime.date(2025, 12, 31))["numero"], 1)
+        self.assertEqual(zodiaco.decanato(datetime.date(2026, 1, 1))["numero"], 2)
+        self.assertEqual(zodiaco.decanato(datetime.date(2026, 1, 19))["numero"], 3)
+
+    def test_cada_dia_del_anio_tiene_un_decanato_del_1_al_3(self):
+        dia = datetime.date(2024, 1, 1)
+        while dia.year == 2024:
+            for sistema in zodiaco.SISTEMAS:
+                self.assertIn(zodiaco.decanato(dia, sistema)["numero"], (1, 2, 3), (dia, sistema))
+            dia += datetime.timedelta(days=1)
+
+    def test_los_tramos_cubren_el_signo_sin_huecos(self):
+        for s in cargar_datos()["signos"]:
+            if s["tipo"] != "occidental":
+                continue
+            tramos = zodiaco.tramos_de_decanatos(s)
+            self.assertEqual(tramos[0][0], s["tropical"]["desde"], s["id"])
+            self.assertEqual(tramos[-1][1], s["tropical"]["hasta"], s["id"])
+
+
+class PruebasDeTextosTraducidos(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.datos = cargar_datos()
+        cls.archivos = generar.esperados(cls.datos)
+
+    def test_las_secciones_de_cada_ficha_estan_en_su_idioma(self):
+        t = self.datos["terminos"]
+        for codigo in generar.IDIOMAS:
+            ficha = self.archivos[generar.SALIDA_MD / f"{codigo}.md"]
+            secciones = [l[3:] for l in ficha.splitlines() if l.startswith("## ")]
+            self.assertEqual(secciones, [t["zodiaco_occidental"][codigo], t["horoscopo_chino"][codigo]], codigo)
+
+    def test_cada_signo_occidental_trae_sus_decanatos_en_la_ficha(self):
+        ficha = self.archivos[generar.SALIDA_MD / "es.md"]
+        self.assertIn("Decanatos: 21/03 – 30/03 Marte · 31/03 – 09/04 Sol · 10/04 – 19/04 Venus", ficha)
+        self.assertEqual(ficha.count("Decanatos: "), 12)
+
+    def test_la_galeria_trae_la_interfaz_en_los_30_idiomas(self):
+        html = self.archivos[generar.GALERIA]
+        contenido = json.loads(re.search(r"const DATOS = (.*);\n", html).group(1).replace("<\\/", "</"))
+        self.assertEqual(set(contenido["ui"]), set(generar.IDIOMAS))
+        for codigo, ui in contenido["ui"].items():
+            self.assertEqual(set(ui), generar.TERMINOS_DE_INTERFAZ, codigo)
+
+    def test_la_validacion_detecta_un_termino_de_interfaz_sin_traducir(self):
+        datos = copy.deepcopy(self.datos)
+        del datos["terminos"]["sin_fondo"]["ko"]
+        self.assertTrue(any("terminos/sin_fondo" in e for e in generar.validar(datos)))
+
+
 if __name__ == "__main__":
     unittest.main()

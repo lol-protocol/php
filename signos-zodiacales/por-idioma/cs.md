@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Západní zvěrokruh
 
 ### ♈ Beran
 
 *21/03 – 19/04 · Oheň · Kardinální*
+
+Dekány: 21/03 – 30/03 Mars · 31/03 – 09/04 Slunce · 10/04 – 19/04 Venuše
 
 Odvaha, elán a energie.
 
@@ -16,6 +18,8 @@ Znamení iniciativy a odvahy: tradice mu připisuje přímost, soutěživost a c
 
 *20/04 – 20/05 · Země · Pevný*
 
+Dekány: 20/04 – 29/04 Merkur · 30/04 – 09/05 Měsíc · 10/05 – 20/05 Saturn
+
 Trpělivost, smyslnost a láska ke stabilitě.
 
 Znamení stálosti a smyslu pro hmatatelné: tradice mu připisuje věrnost, klid a lásku k pohodlí, ale také tvrdohlavost.
@@ -23,6 +27,8 @@ Znamení stálosti a smyslu pro hmatatelné: tradice mu připisuje věrnost, kli
 ### ♊ Blíženci
 
 *21/05 – 20/06 · Vzduch · Proměnlivý*
+
+Dekány: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Slunce
 
 Zvědavost, komunikativnost a bystrost.
 
@@ -32,6 +38,8 @@ Znamení zvědavosti a slova: tradice mu připisuje společenskost, všestrannos
 
 *21/06 – 22/07 · Voda · Kardinální*
 
+Dekány: 21/06 – 30/06 Venuše · 01/07 – 10/07 Merkur · 11/07 – 22/07 Měsíc
+
 Starostlivost, citlivost a věrnost blízkým.
 
 Znamení domova a citů: tradice mu připisuje pečlivost, intuici a lásku k rodině, ale také uzavřenost.
@@ -39,6 +47,8 @@ Znamení domova a citů: tradice mu připisuje pečlivost, intuici a lásku k ro
 ### ♌ Lev
 
 *23/07 – 22/08 · Oheň · Pevný*
+
+Dekány: 23/07 – 01/08 Saturn · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Mars
 
 Štědrost, charisma a touha zářit.
 
@@ -48,6 +58,8 @@ Znamení štědrosti a vůdcovství: tradice mu připisuje vřelost, hrdost a z�
 
 *23/08 – 22/09 · Země · Proměnlivý*
 
+Dekány: 23/08 – 01/09 Slunce · 02/09 – 11/09 Venuše · 12/09 – 22/09 Merkur
+
 Analytičnost, praktičnost a smysl pro detail.
 
 Znamení pořádku a služby: tradice mu připisuje metodičnost, nenápadnost a náročnost k sobě, ale také přílišnou kritičnost.
@@ -55,6 +67,8 @@ Znamení pořádku a služby: tradice mu připisuje metodičnost, nenápadnost a
 ### ♎ Váhy
 
 *23/09 – 22/10 · Vzduch · Kardinální*
+
+Dekány: 23/09 – 02/10 Měsíc · 03/10 – 12/10 Saturn · 13/10 – 22/10 Jupiter
 
 Diplomacie, společenskost a hledání rovnováhy.
 
@@ -64,6 +78,8 @@ Znamení harmonie a spravedlnosti: tradice mu připisuje laskavost, eleganci a t
 
 *23/10 – 21/11 · Voda · Pevný*
 
+Dekány: 23/10 – 01/11 Mars · 02/11 – 11/11 Slunce · 12/11 – 21/11 Venuše
+
 Intenzita, intuice a pevná vůle.
 
 Znamení hloubky a odhodlání: tradice mu připisuje zdrženlivost, vášnivost a bystrý úsudek, ale také přílišnou intenzitu.
@@ -71,6 +87,8 @@ Znamení hloubky a odhodlání: tradice mu připisuje zdrženlivost, vášnivost
 ### ♐ Střelec
 
 *22/11 – 21/12 · Oheň · Proměnlivý*
+
+Dekány: 22/11 – 01/12 Merkur · 02/12 – 11/12 Měsíc · 12/12 – 21/12 Saturn
 
 Optimismus, dobrodružnost a láska ke svobodě.
 
@@ -80,6 +98,8 @@ Znamení objevování a upřímnosti: tradice mu připisuje optimismus, neklid a
 
 *22/12 – 19/01 · Země · Kardinální*
 
+Dekány: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Slunce
+
 Disciplína, ctižádost a odpovědnost.
 
 Znamení disciplíny a trpělivosti: tradice mu připisuje ctižádost, vážnost a dlouhodobou odpovědnost, ale také strnulost.
@@ -87,6 +107,8 @@ Znamení disciplíny a trpělivosti: tradice mu připisuje ctižádost, vážnos
 ### ♒ Vodnář
 
 *20/01 – 18/02 · Vzduch · Pevný*
+
+Dekány: 20/01 – 29/01 Venuše · 30/01 – 08/02 Merkur · 09/02 – 18/02 Měsíc
 
 Nezávislost, originalita a lidskost.
 
@@ -96,11 +118,13 @@ Znamení originality a společných myšlenek: tradice mu připisuje nezávislos
 
 *19/02 – 20/03 · Voda · Proměnlivý*
 
+Dekány: 19/02 – 28/02 Saturn · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Mars
+
 Empatie, představivost a intuice.
 
 Znamení představivosti a soucitu: tradice mu připisuje citlivost, umělecký talent a oddanost druhým, ale také sklon k útěku.
 
-## Horóscopo chino
+## Čínský horoskop
 
 ### Krysa
 

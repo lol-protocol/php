@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Nyota za Magharibi
 
 ### ♈ Kondoo dume
 
 *21/03 – 19/04 · Moto · Msingi*
+
+Dekani: 21/03 – 30/03 Mirihi · 31/03 – 09/04 Jua · 10/04 – 19/04 Zuhura
 
 Jasiri, mwenye haraka na amejaa nguvu.
 
@@ -16,6 +18,8 @@ Huhusishwa na ujasiri wa kuanzisha mambo: mapokeo humwelezea kuwa mwazi, mshinda
 
 *20/04 – 20/05 · Ardhi · Thabiti*
 
+Dekani: 20/04 – 29/04 Zebaki · 30/04 – 09/05 Mwezi · 10/05 – 20/05 Zohali
+
 Mvumilivu, mwenye hisia na anapenda utulivu.
 
 Huhusishwa na uthabiti na kupenda vitu halisi: mapokeo humwelezea kuwa mwaminifu, mtulivu na mpenda starehe, ingawa wakati mwingine mkaidi.
@@ -23,6 +27,8 @@ Huhusishwa na uthabiti na kupenda vitu halisi: mapokeo humwelezea kuwa mwaminifu
 ### ♊ Mapacha
 
 *21/05 – 20/06 · Hewa · Badilika*
+
+Dekani: 21/05 – 30/05 Mshtarii · 31/05 – 09/06 Mirihi · 10/06 – 20/06 Jua
 
 Mdadisi, mwenye mawasiliano na akili ya haraka.
 
@@ -32,6 +38,8 @@ Huhusishwa na udadisi na maneno: mapokeo humwelezea kuwa mwenye urafiki, mwenye 
 
 *21/06 – 22/07 · Maji · Msingi*
 
+Dekani: 21/06 – 30/06 Zuhura · 01/07 – 10/07 Zebaki · 11/07 – 22/07 Mwezi
+
 Mlinzi, nyeti na mwaminifu sana kwa wapendwa wake.
 
 Huhusishwa na nyumbani na hisia: mapokeo humwelezea kuwa mwenye kujali, mwenye angavu na aliyeshikamana sana na familia, ingawa wakati mwingine mwenye kujificha.
@@ -39,6 +47,8 @@ Huhusishwa na nyumbani na hisia: mapokeo humwelezea kuwa mwenye kujali, mwenye a
 ### ♌ Simba
 
 *23/07 – 22/08 · Moto · Thabiti*
+
+Dekani: 23/07 – 01/08 Zohali · 02/08 – 11/08 Mshtarii · 12/08 – 22/08 Mirihi
 
 Mkarimu, mwenye haiba na anapenda kung'aa.
 
@@ -48,6 +58,8 @@ Huhusishwa na ukarimu na uongozi: mapokeo humwelezea kuwa mchangamfu, mwenye kib
 
 *23/08 – 22/09 · Ardhi · Badilika*
 
+Dekani: 23/08 – 01/09 Jua · 02/09 – 11/09 Zuhura · 12/09 – 22/09 Zebaki
+
 Mchambuzi, mwenye vitendo na makini sana.
 
 Huhusishwa na mpangilio na huduma: mapokeo humwelezea kuwa mwenye mbinu, mwenye hadhari na mkali kwa nafsi yake, ingawa wakati mwingine mkosoaji kupita kiasi.
@@ -55,6 +67,8 @@ Huhusishwa na mpangilio na huduma: mapokeo humwelezea kuwa mwenye mbinu, mwenye 
 ### ♎ Mizani
 
 *23/09 – 22/10 · Hewa · Msingi*
+
+Dekani: 23/09 – 02/10 Mwezi · 03/10 – 12/10 Zohali · 13/10 – 22/10 Mshtarii
 
 Mwenye busara, mwenye urafiki na anatafuta usawa.
 
@@ -64,6 +78,8 @@ Huhusishwa na maelewano na haki: mapokeo humwelezea kuwa mpole, mwenye umaridadi
 
 *23/10 – 21/11 · Maji · Thabiti*
 
+Dekani: 23/10 – 01/11 Mirihi · 02/11 – 11/11 Jua · 12/11 – 21/11 Zuhura
+
 Mkali, mwenye angavu na nia thabiti.
 
 Huhusishwa na kina na azma: mapokeo humwelezea kuwa mwenye kujizuia, mwenye shauku na makini sana, ingawa wakati mwingine mkali kupita kiasi.
@@ -71,6 +87,8 @@ Huhusishwa na kina na azma: mapokeo humwelezea kuwa mwenye kujizuia, mwenye shau
 ### ♐ Mpiga upinde
 
 *22/11 – 21/12 · Moto · Badilika*
+
+Dekani: 22/11 – 01/12 Zebaki · 02/12 – 11/12 Mwezi · 12/12 – 21/12 Zohali
 
 Mwenye matumaini, mpenda matukio na uhuru.
 
@@ -80,6 +98,8 @@ Huhusishwa na uchunguzi na ukweli: mapokeo humwelezea kuwa mwenye matumaini, asi
 
 *22/12 – 19/01 · Ardhi · Msingi*
 
+Dekani: 22/12 – 31/12 Mshtarii · 01/01 – 10/01 Mirihi · 11/01 – 19/01 Jua
+
 Mwenye nidhamu, mwenye tamaa na mwajibikaji.
 
 Huhusishwa na nidhamu na subira: mapokeo humwelezea kuwa mwenye tamaa, makini na mwajibikaji kwa muda mrefu, ingawa wakati mwingine mgumu.
@@ -87,6 +107,8 @@ Huhusishwa na nidhamu na subira: mapokeo humwelezea kuwa mwenye tamaa, makini na
 ### ♒ Mbeba maji
 
 *20/01 – 18/02 · Hewa · Thabiti*
+
+Dekani: 20/01 – 29/01 Zuhura · 30/01 – 08/02 Zebaki · 09/02 – 18/02 Mwezi
 
 Huru, mbunifu na mwenye kujali binadamu.
 
@@ -96,11 +118,13 @@ Huhusishwa na ubunifu na mawazo ya jamii: mapokeo humwelezea kuwa huru, mvumbuzi
 
 *19/02 – 20/03 · Maji · Badilika*
 
+Dekani: 19/02 – 28/02 Zohali · 01/03 – 10/03 Mshtarii · 11/03 – 20/03 Mirihi
+
 Mwenye huruma, mwenye ndoto na mwenye angavu sana.
 
 Huhusishwa na mawazo na huruma: mapokeo humwelezea kuwa nyeti, msanii na aliyejitolea kwa wengine, ingawa wakati mwingine mkwepaji.
 
-## Horóscopo chino
+## Nyota za Kichina
 
 ### Panya
 

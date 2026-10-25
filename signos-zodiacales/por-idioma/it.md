@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Zodiaco occidentale
 
 ### ♈ Ariete
 
 *21/03 – 19/04 · Fuoco · Cardinale*
+
+Decani: 21/03 – 30/03 Marte · 31/03 – 09/04 Sole · 10/04 – 19/04 Venere
 
 Coraggio, slancio ed energia.
 
@@ -16,6 +18,8 @@ Segno dell'iniziativa e del coraggio: la tradizione gli attribuisce schiettezza,
 
 *20/04 – 20/05 · Terra · Fisso*
 
+Decani: 20/04 – 29/04 Mercurio · 30/04 – 09/05 Luna · 10/05 – 20/05 Saturno
+
 Pazienza, sensualità e amore per la stabilità.
 
 Segno della costanza e del gusto per il concreto: la tradizione gli attribuisce lealtà, calma e amore per le comodità, ma anche testardaggine.
@@ -23,6 +27,8 @@ Segno della costanza e del gusto per il concreto: la tradizione gli attribuisce 
 ### ♊ Gemelli
 
 *21/05 – 20/06 · Aria · Mutevole*
+
+Decani: 21/05 – 30/05 Giove · 31/05 – 09/06 Marte · 10/06 – 20/06 Sole
 
 Curiosità, comunicazione e agilità mentale.
 
@@ -32,6 +38,8 @@ Segno della curiosità e della parola: la tradizione gli attribuisce socievolezz
 
 *21/06 – 22/07 · Acqua · Cardinale*
 
+Decani: 21/06 – 30/06 Venere · 01/07 – 10/07 Mercurio · 11/07 – 22/07 Luna
+
 Protezione, sensibilità e lealtà verso i propri cari.
 
 Segno della casa e delle emozioni: la tradizione gli attribuisce premura, intuito e attaccamento alla famiglia, ma anche riservatezza.
@@ -39,6 +47,8 @@ Segno della casa e delle emozioni: la tradizione gli attribuisce premura, intuit
 ### ♌ Leone
 
 *23/07 – 22/08 · Fuoco · Fisso*
+
+Decani: 23/07 – 01/08 Saturno · 02/08 – 11/08 Giove · 12/08 – 22/08 Marte
 
 Generosità, carisma e voglia di brillare.
 
@@ -48,6 +58,8 @@ Segno della generosità e della leadership: la tradizione gli attribuisce calore
 
 *23/08 – 22/09 · Terra · Mutevole*
 
+Decani: 23/08 – 01/09 Sole · 02/09 – 11/09 Venere · 12/09 – 22/09 Mercurio
+
 Analisi, senso pratico e cura dei dettagli.
 
 Segno dell'ordine e del servizio: la tradizione gli attribuisce metodo, discrezione ed esigenza verso sé, ma anche eccesso di critica.
@@ -55,6 +67,8 @@ Segno dell'ordine e del servizio: la tradizione gli attribuisce metodo, discrezi
 ### ♎ Bilancia
 
 *23/09 – 22/10 · Aria · Cardinale*
+
+Decani: 23/09 – 02/10 Luna · 03/10 – 12/10 Saturno · 13/10 – 22/10 Giove
 
 Diplomazia, socievolezza e ricerca dell'equilibrio.
 
@@ -64,6 +78,8 @@ Segno dell'armonia e della giustizia: la tradizione gli attribuisce gentilezza, 
 
 *23/10 – 21/11 · Acqua · Fisso*
 
+Decani: 23/10 – 01/11 Marte · 02/11 – 11/11 Sole · 12/11 – 21/11 Venere
+
 Intensità, intuito e volontà ferma.
 
 Segno della profondità e della determinazione: la tradizione gli attribuisce riservatezza, passione e grande perspicacia, ma anche eccesso di intensità.
@@ -71,6 +87,8 @@ Segno della profondità e della determinazione: la tradizione gli attribuisce ri
 ### ♐ Sagittario
 
 *22/11 – 21/12 · Fuoco · Mutevole*
+
+Decani: 22/11 – 01/12 Mercurio · 02/12 – 11/12 Luna · 12/12 – 21/12 Saturno
 
 Ottimismo, avventura e amore per la libertà.
 
@@ -80,6 +98,8 @@ Segno dell'esplorazione e della franchezza: la tradizione gli attribuisce ottimi
 
 *22/12 – 19/01 · Terra · Cardinale*
 
+Decani: 22/12 – 31/12 Giove · 01/01 – 10/01 Marte · 11/01 – 19/01 Sole
+
 Disciplina, ambizione e senso di responsabilità.
 
 Segno della disciplina e della pazienza: la tradizione gli attribuisce ambizione, serietà e responsabilità nel lungo periodo, ma anche rigidità.
@@ -87,6 +107,8 @@ Segno della disciplina e della pazienza: la tradizione gli attribuisce ambizione
 ### ♒ Acquario
 
 *20/01 – 18/02 · Aria · Fisso*
+
+Decani: 20/01 – 29/01 Venere · 30/01 – 08/02 Mercurio · 09/02 – 18/02 Luna
 
 Indipendenza, originalità e umanitarismo.
 
@@ -96,11 +118,13 @@ Segno dell'originalità e delle idee collettive: la tradizione gli attribuisce i
 
 *19/02 – 20/03 · Acqua · Mutevole*
 
+Decani: 19/02 – 28/02 Saturno · 01/03 – 10/03 Giove · 11/03 – 20/03 Marte
+
 Empatia, immaginazione e intuito.
 
 Segno dell'immaginazione e della compassione: la tradizione gli attribuisce sensibilità, talento artistico e dedizione agli altri, ma anche tendenza alla fuga.
 
-## Horóscopo chino
+## Oroscopo cinese
 
 ### Topo
 

@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Länsimainen eläinrata
 
 ### ♈ Oinas
 
 *21/03 – 19/04 · Tuli · Kardinaali*
+
+Dekaanit: 21/03 – 30/03 Mars · 31/03 – 09/04 Aurinko · 10/04 – 19/04 Venus
 
 Rohkea, impulsiivinen ja täynnä energiaa.
 
@@ -16,6 +18,8 @@ Yhdistetään aloitteellisuuteen ja rohkeuteen: perinne kuvaa sitä suoraksi, ki
 
 *20/04 – 20/05 · Maa · Pysyvä*
 
+Dekaanit: 20/04 – 29/04 Merkurius · 30/04 – 09/05 Kuu · 10/05 – 20/05 Saturnus
+
 Kärsivällinen, aistillinen ja vakauden ystävä.
 
 Yhdistetään vakaisuuteen ja konkreettisen arvostamiseen: perinne kuvaa sitä uskolliseksi, rauhalliseksi ja mukavuudenhaluiseksi, mutta joskus itsepäiseksi.
@@ -23,6 +27,8 @@ Yhdistetään vakaisuuteen ja konkreettisen arvostamiseen: perinne kuvaa sitä u
 ### ♊ Kaksoset
 
 *21/05 – 20/06 · Ilma · Muuntuva*
+
+Dekaanit: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Aurinko
 
 Uteliias, puhelias ja nopea ajattelija.
 
@@ -32,6 +38,8 @@ Yhdistetään uteliaisuuteen ja sanaan: perinne kuvaa sitä seurallisaksi, monip
 
 *21/06 – 22/07 · Vesi · Kardinaali*
 
+Dekaanit: 21/06 – 30/06 Venus · 01/07 – 10/07 Merkurius · 11/07 – 22/07 Kuu
+
 Suojeleva, herkkä ja hyvin uskollinen läheisilleen.
 
 Yhdistetään kotiin ja tunteisiin: perinne kuvaa sitä huolehtivaksi, intuitiiviseksi ja perheeseen vahvasti kiintyneeksi, mutta joskus varautuneeksi.
@@ -39,6 +47,8 @@ Yhdistetään kotiin ja tunteisiin: perinne kuvaa sitä huolehtivaksi, intuitiiv
 ### ♌ Leijona
 
 *23/07 – 22/08 · Tuli · Pysyvä*
+
+Dekaanit: 23/07 – 01/08 Saturnus · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Mars
 
 Anteliias, karismaattinen ja haluaa loistaa.
 
@@ -48,6 +58,8 @@ Yhdistetään anteliaisuuteen ja johtajuuteen: perinne kuvaa sitä lämpimäksi,
 
 *23/08 – 22/09 · Maa · Muuntuva*
 
+Dekaanit: 23/08 – 01/09 Aurinko · 02/09 – 11/09 Venus · 12/09 – 22/09 Merkurius
+
 Analyyttinen, käytännöllinen ja tarkka yksityiskohdissa.
 
 Yhdistetään järjestykseen ja palvelemiseen: perinne kuvaa sitä järjestelmälliseksi, vaatimattomaksi ja itselleen vaativaksi, mutta joskus liian kriittiseksi.
@@ -55,6 +67,8 @@ Yhdistetään järjestykseen ja palvelemiseen: perinne kuvaa sitä järjestelmä
 ### ♎ Vaaka
 
 *23/09 – 22/10 · Ilma · Kardinaali*
+
+Dekaanit: 23/09 – 02/10 Kuu · 03/10 – 12/10 Saturnus · 13/10 – 22/10 Jupiter
 
 Diplomaattinen, seurallinen ja tasapainoa etsivä.
 
@@ -64,6 +78,8 @@ Yhdistetään sopuun ja oikeudenmukaisuuteen: perinne kuvaa sitä ystävällisek
 
 *23/10 – 21/11 · Vesi · Pysyvä*
 
+Dekaanit: 23/10 – 01/11 Mars · 02/11 – 11/11 Aurinko · 12/11 – 21/11 Venus
+
 Intensiivinen, intuitiivinen ja vahvatahtoinen.
 
 Yhdistetään syvyyteen ja päättäväisyyteen: perinne kuvaa sitä pidättyväksi, intohimoiseksi ja hyvin tarkkanäköiseksi, mutta joskus liian voimakkaaksi.
@@ -71,6 +87,8 @@ Yhdistetään syvyyteen ja päättäväisyyteen: perinne kuvaa sitä pidättyvä
 ### ♐ Jousimies
 
 *22/11 – 21/12 · Tuli · Muuntuva*
+
+Dekaanit: 22/11 – 01/12 Merkurius · 02/12 – 11/12 Kuu · 12/12 – 21/12 Saturnus
 
 Optimistinen, seikkailunhaluinen ja vapauden ystävä.
 
@@ -80,6 +98,8 @@ Yhdistetään tutkimiseen ja suoruuteen: perinne kuvaa sitä optimistiseksi, lev
 
 *22/12 – 19/01 · Maa · Kardinaali*
 
+Dekaanit: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Aurinko
+
 Kurinalainen, kunnianhimoinen ja vastuullinen.
 
 Yhdistetään kuriin ja kärsivällisyyteen: perinne kuvaa sitä kunnianhimoiseksi, vakavaksi ja pitkällä aikavälillä vastuulliseksi, mutta joskus jäykäksi.
@@ -87,6 +107,8 @@ Yhdistetään kuriin ja kärsivällisyyteen: perinne kuvaa sitä kunnianhimoisek
 ### ♒ Vesimies
 
 *20/01 – 18/02 · Ilma · Pysyvä*
+
+Dekaanit: 20/01 – 29/01 Venus · 30/01 – 08/02 Merkurius · 09/02 – 18/02 Kuu
 
 Riippumaton, omaperäinen ja humanitaarinen.
 
@@ -96,11 +118,13 @@ Yhdistetään omaperäisyyteen ja yhteisiin ideoihin: perinne kuvaa sitä riippu
 
 *19/02 – 20/03 · Vesi · Muuntuva*
 
+Dekaanit: 19/02 – 28/02 Saturnus · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Mars
+
 Empaattinen, unelmoiva ja hyvin intuitiivinen.
 
 Yhdistetään mielikuvitukseen ja myötätuntoon: perinne kuvaa sitä herkäksi, taiteelliseksi ja muille omistautuneeksi, mutta joskus väistelevääksi.
 
-## Horóscopo chino
+## Kiinalainen horoskooppi
 
 ### Rotta
 

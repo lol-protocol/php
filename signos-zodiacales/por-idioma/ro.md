@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Zodiacul occidental
 
 ### ♈ Berbec
 
 *21/03 – 19/04 · Foc · Cardinal*
+
+Decanii: 21/03 – 30/03 Marte · 31/03 – 09/04 Soare · 10/04 – 19/04 Venus
 
 Curaj, avânt și energie.
 
@@ -16,6 +18,8 @@ Semn al inițiativei și al curajului: tradiția îi atribuie sinceritate, spiri
 
 *20/04 – 20/05 · Pământ · Fix*
 
+Decanii: 20/04 – 29/04 Mercur · 30/04 – 09/05 Luna · 10/05 – 20/05 Saturn
+
 Răbdare, senzualitate și iubire de stabilitate.
 
 Semn al statorniciei și al gustului pentru concret: tradiția îi atribuie loialitate, calm și iubire de confort, dar și încăpățânare.
@@ -23,6 +27,8 @@ Semn al statorniciei și al gustului pentru concret: tradiția îi atribuie loia
 ### ♊ Gemeni
 
 *21/05 – 20/06 · Aer · Mutabil*
+
+Decanii: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Marte · 10/06 – 20/06 Soare
 
 Curiozitate, comunicare și agilitate mentală.
 
@@ -32,6 +38,8 @@ Semn al curiozității și al cuvântului: tradiția îi atribuie sociabilitate,
 
 *21/06 – 22/07 · Apă · Cardinal*
 
+Decanii: 21/06 – 30/06 Venus · 01/07 – 10/07 Mercur · 11/07 – 22/07 Luna
+
 Protecție, sensibilitate și loialitate față de cei dragi.
 
 Semn al căminului și al emoțiilor: tradiția îi atribuie grijă, intuiție și atașament față de familie, dar și rezervă.
@@ -39,6 +47,8 @@ Semn al căminului și al emoțiilor: tradiția îi atribuie grijă, intuiție �
 ### ♌ Leu
 
 *23/07 – 22/08 · Foc · Fix*
+
+Decanii: 23/07 – 01/08 Saturn · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Marte
 
 Generozitate, carismă și dorința de a străluci.
 
@@ -48,6 +58,8 @@ Semn al generozității și al conducerii: tradiția îi atribuie căldură, mâ
 
 *23/08 – 22/09 · Pământ · Mutabil*
 
+Decanii: 23/08 – 01/09 Soare · 02/09 – 11/09 Venus · 12/09 – 22/09 Mercur
+
 Analiză, simț practic și atenție la detalii.
 
 Semn al ordinii și al slujirii: tradiția îi atribuie metodă, discreție și exigență față de sine, dar și exces de critică.
@@ -55,6 +67,8 @@ Semn al ordinii și al slujirii: tradiția îi atribuie metodă, discreție și 
 ### ♎ Balanță
 
 *23/09 – 22/10 · Aer · Cardinal*
+
+Decanii: 23/09 – 02/10 Luna · 03/10 – 12/10 Saturn · 13/10 – 22/10 Jupiter
 
 Diplomație, sociabilitate și căutarea echilibrului.
 
@@ -64,6 +78,8 @@ Semn al armoniei și al dreptății: tradiția îi atribuie amabilitate, elegan�
 
 *23/10 – 21/11 · Apă · Fix*
 
+Decanii: 23/10 – 01/11 Marte · 02/11 – 11/11 Soare · 12/11 – 21/11 Venus
+
 Intensitate, intuiție și voință fermă.
 
 Semn al profunzimii și al hotărârii: tradiția îi atribuie rezervă, pasiune și mare perspicacitate, dar și exces de intensitate.
@@ -71,6 +87,8 @@ Semn al profunzimii și al hotărârii: tradiția îi atribuie rezervă, pasiune
 ### ♐ Săgetător
 
 *22/11 – 21/12 · Foc · Mutabil*
+
+Decanii: 22/11 – 01/12 Mercur · 02/12 – 11/12 Luna · 12/12 – 21/12 Saturn
 
 Optimism, aventură și iubire de libertate.
 
@@ -80,6 +98,8 @@ Semn al explorării și al sincerității: tradiția îi atribuie optimism, neli
 
 *22/12 – 19/01 · Pământ · Cardinal*
 
+Decanii: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Marte · 11/01 – 19/01 Soare
+
 Disciplină, ambiție și responsabilitate.
 
 Semn al disciplinei și al răbdării: tradiția îi atribuie ambiție, seriozitate și responsabilitate pe termen lung, dar și rigiditate.
@@ -87,6 +107,8 @@ Semn al disciplinei și al răbdării: tradiția îi atribuie ambiție, seriozit
 ### ♒ Vărsător
 
 *20/01 – 18/02 · Aer · Fix*
+
+Decanii: 20/01 – 29/01 Venus · 30/01 – 08/02 Mercur · 09/02 – 18/02 Luna
 
 Independență, originalitate și umanitarism.
 
@@ -96,11 +118,13 @@ Semn al originalității și al ideilor colective: tradiția îi atribuie indepe
 
 *19/02 – 20/03 · Apă · Mutabil*
 
+Decanii: 19/02 – 28/02 Saturn · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Marte
+
 Empatie, imaginație și intuiție.
 
 Semn al imaginației și al compasiunii: tradiția îi atribuie sensibilitate, talent artistic și dăruire față de ceilalți, dar și tendința de evadare.
 
-## Horóscopo chino
+## Horoscopul chinezesc
 
 ### Șobolan
 

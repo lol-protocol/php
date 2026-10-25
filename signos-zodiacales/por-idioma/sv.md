@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Västerländsk zodiak
 
 ### ♈ Väduren
 
 *21/03 – 19/04 · Eld · Kardinal*
+
+Dekaner: 21/03 – 30/03 Mars · 31/03 – 09/04 Solen · 10/04 – 19/04 Venus
 
 Modig, impulsiv och full av energi.
 
@@ -16,6 +18,8 @@ Tecken för initiativ och mod: traditionen förknippar det med rakhet, tävlings
 
 *20/04 – 20/05 · Jord · Fast*
 
+Dekaner: 20/04 – 29/04 Merkurius · 30/04 – 09/05 Månen · 10/05 – 20/05 Saturnus
+
 Tålmodig, sinnlig och stabilitetsälskande.
 
 Tecken för uthållighet och sinne för det konkreta: traditionen förknippar det med lojalitet, lugn och kärlek till bekvämlighet, men också med envishet.
@@ -23,6 +27,8 @@ Tecken för uthållighet och sinne för det konkreta: traditionen förknippar de
 ### ♊ Tvillingarna
 
 *21/05 – 20/06 · Luft · Föränderlig*
+
+Dekaner: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Solen
 
 Nyfiken, kommunikativ och kvick.
 
@@ -32,6 +38,8 @@ Tecken för nyfikenhet och ordet: traditionen förknippar det med sällskaplighe
 
 *21/06 – 22/07 · Vatten · Kardinal*
 
+Dekaner: 21/06 – 30/06 Venus · 01/07 – 10/07 Merkurius · 11/07 – 22/07 Månen
+
 Skyddande, känslig och mycket lojal mot sina.
 
 Tecken för hemmet och känslorna: traditionen förknippar det med omtanke, intuition och fäste vid familjen, men också med tillbakadragenhet.
@@ -39,6 +47,8 @@ Tecken för hemmet och känslorna: traditionen förknippar det med omtanke, intu
 ### ♌ Lejonet
 
 *23/07 – 22/08 · Eld · Fast*
+
+Dekaner: 23/07 – 01/08 Saturnus · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Mars
 
 Generös, karismatisk och gillar att lysa.
 
@@ -48,6 +58,8 @@ Tecken för generositet och ledarskap: traditionen förknippar det med värme, s
 
 *23/08 – 22/09 · Jord · Föränderlig*
 
+Dekaner: 23/08 – 01/09 Solen · 02/09 – 11/09 Venus · 12/09 – 22/09 Merkurius
+
 Analytisk, praktisk och mycket noggrann.
 
 Tecken för ordning och tjänstvillighet: traditionen förknippar det med metodik, diskretion och höga krav på sig själv, men också med överdriven kritik.
@@ -55,6 +67,8 @@ Tecken för ordning och tjänstvillighet: traditionen förknippar det med metodi
 ### ♎ Vågen
 
 *23/09 – 22/10 · Luft · Kardinal*
+
+Dekaner: 23/09 – 02/10 Månen · 03/10 – 12/10 Saturnus · 13/10 – 22/10 Jupiter
 
 Diplomatisk, social och söker balans.
 
@@ -64,6 +78,8 @@ Tecken för harmoni och rättvisa: traditionen förknippar det med vänlighet, e
 
 *23/10 – 21/11 · Vatten · Fast*
 
+Dekaner: 23/10 – 01/11 Mars · 02/11 – 11/11 Solen · 12/11 – 21/11 Venus
+
 Intensiv, intuitiv och viljestark.
 
 Tecken för djup och beslutsamhet: traditionen förknippar det med tillbakadragenhet, passion och skarpsinne, men också med överdriven intensitet.
@@ -71,6 +87,8 @@ Tecken för djup och beslutsamhet: traditionen förknippar det med tillbakadrage
 ### ♐ Skytten
 
 *22/11 – 21/12 · Eld · Föränderlig*
+
+Dekaner: 22/11 – 01/12 Merkurius · 02/12 – 11/12 Månen · 12/12 – 21/12 Saturnus
 
 Optimistisk, äventyrlig och frihetsälskande.
 
@@ -80,6 +98,8 @@ Tecken för utforskande och rakhet: traditionen förknippar det med optimism, ra
 
 *22/12 – 19/01 · Jord · Kardinal*
 
+Dekaner: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Solen
+
 Disciplinerad, ambitiös och ansvarsfull.
 
 Tecken för disciplin och tålamod: traditionen förknippar det med ambition, allvar och långsiktigt ansvar, men också med stelhet.
@@ -87,6 +107,8 @@ Tecken för disciplin och tålamod: traditionen förknippar det med ambition, al
 ### ♒ Vattumannen
 
 *20/01 – 18/02 · Luft · Fast*
+
+Dekaner: 20/01 – 29/01 Venus · 30/01 – 08/02 Merkurius · 09/02 – 18/02 Månen
 
 Självständig, originell och humanitär.
 
@@ -96,11 +118,13 @@ Tecken för originalitet och gemensamma idéer: traditionen förknippar det med 
 
 *19/02 – 20/03 · Vatten · Föränderlig*
 
+Dekaner: 19/02 – 28/02 Saturnus · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Mars
+
 Empatisk, drömsk och mycket intuitiv.
 
 Tecken för fantasi och medkänsla: traditionen förknippar det med känslighet, konstnärlig talang och hängivenhet till andra, men också med undanglidning.
 
-## Horóscopo chino
+## Kinesiskt horoskop
 
 ### Råtta
 

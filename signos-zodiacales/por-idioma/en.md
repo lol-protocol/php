@@ -2,11 +2,13 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-## Zodiaco occidental
+## Western zodiac
 
 ### ♈ Aries
 
 *21/03 – 19/04 · Fire · Cardinal*
+
+Decans: 21/03 – 30/03 Mars · 31/03 – 09/04 Sun · 10/04 – 19/04 Venus
 
 Brave, impulsive and full of energy.
 
@@ -16,6 +18,8 @@ Linked to initiative and courage: tradition describes it as direct, competitive 
 
 *20/04 – 20/05 · Earth · Fixed*
 
+Decans: 20/04 – 29/04 Mercury · 30/04 – 09/05 Moon · 10/05 – 20/05 Saturn
+
 Patient, sensual and devoted to stability.
 
 Linked to steadiness and a taste for the tangible: tradition describes it as loyal, calm and fond of comfort, though sometimes stubborn.
@@ -23,6 +27,8 @@ Linked to steadiness and a taste for the tangible: tradition describes it as loy
 ### ♊ Gemini
 
 *21/05 – 20/06 · Air · Mutable*
+
+Decans: 21/05 – 30/05 Jupiter · 31/05 – 09/06 Mars · 10/06 – 20/06 Sun
 
 Curious, talkative and quick-minded.
 
@@ -32,6 +38,8 @@ Linked to curiosity and words: tradition describes it as sociable, versatile and
 
 *21/06 – 22/07 · Water · Cardinal*
 
+Decans: 21/06 – 30/06 Venus · 01/07 – 10/07 Mercury · 11/07 – 22/07 Moon
+
 Protective, sensitive and loyal to loved ones.
 
 Linked to home and emotions: tradition describes it as caring, intuitive and very attached to family, though sometimes reserved.
@@ -39,6 +47,8 @@ Linked to home and emotions: tradition describes it as caring, intuitive and ver
 ### ♌ Leo
 
 *23/07 – 22/08 · Fire · Fixed*
+
+Decans: 23/07 – 01/08 Saturn · 02/08 – 11/08 Jupiter · 12/08 – 22/08 Mars
 
 Generous, charismatic and loves to shine.
 
@@ -48,6 +58,8 @@ Linked to generosity and leadership: tradition describes it as warm, proud and f
 
 *23/08 – 22/09 · Earth · Mutable*
 
+Decans: 23/08 – 01/09 Sun · 02/09 – 11/09 Venus · 12/09 – 22/09 Mercury
+
 Analytical, practical and very detail-oriented.
 
 Linked to order and service: tradition describes it as methodical, discreet and demanding of itself, though sometimes too critical.
@@ -55,6 +67,8 @@ Linked to order and service: tradition describes it as methodical, discreet and 
 ### ♎ Libra
 
 *23/09 – 22/10 · Air · Cardinal*
+
+Decans: 23/09 – 02/10 Moon · 03/10 – 12/10 Saturn · 13/10 – 22/10 Jupiter
 
 Diplomatic, sociable and seeks balance.
 
@@ -64,6 +78,8 @@ Linked to harmony and justice: tradition describes it as kind, elegant and a goo
 
 *23/10 – 21/11 · Water · Fixed*
 
+Decans: 23/10 – 01/11 Mars · 02/11 – 11/11 Sun · 12/11 – 21/11 Venus
+
 Intense, intuitive and strong-willed.
 
 Linked to depth and determination: tradition describes it as reserved, passionate and very perceptive, though sometimes overly intense.
@@ -71,6 +87,8 @@ Linked to depth and determination: tradition describes it as reserved, passionat
 ### ♐ Sagittarius
 
 *22/11 – 21/12 · Fire · Mutable*
+
+Decans: 22/11 – 01/12 Mercury · 02/12 – 11/12 Moon · 12/12 – 21/12 Saturn
 
 Optimistic, adventurous and freedom-loving.
 
@@ -80,6 +98,8 @@ Linked to exploration and frankness: tradition describes it as optimistic, restl
 
 *22/12 – 19/01 · Earth · Cardinal*
 
+Decans: 22/12 – 31/12 Jupiter · 01/01 – 10/01 Mars · 11/01 – 19/01 Sun
+
 Disciplined, ambitious and responsible.
 
 Linked to discipline and patience: tradition describes it as ambitious, serious and responsible in the long run, though sometimes rigid.
@@ -87,6 +107,8 @@ Linked to discipline and patience: tradition describes it as ambitious, serious 
 ### ♒ Aquarius
 
 *20/01 – 18/02 · Air · Fixed*
+
+Decans: 20/01 – 29/01 Venus · 30/01 – 08/02 Mercury · 09/02 – 18/02 Moon
 
 Independent, original and humanitarian.
 
@@ -96,11 +118,13 @@ Linked to originality and collective ideas: tradition describes it as independen
 
 *19/02 – 20/03 · Water · Mutable*
 
+Decans: 19/02 – 28/02 Saturn · 01/03 – 10/03 Jupiter · 11/03 – 20/03 Mars
+
 Empathetic, dreamy and very intuitive.
 
 Linked to imagination and compassion: tradition describes it as sensitive, artistic and devoted to others, though sometimes evasive.
 
-## Horóscopo chino
+## Chinese zodiac
 
 ### Rat
 

@@ -8,6 +8,8 @@
 
 *21/03 – 19/04 · Fuego · Cardinal*
 
+Decanatos: 21/03 – 30/03 Marte · 31/03 – 09/04 Sol · 10/04 – 19/04 Venus
+
 Valentía, impulso y energía.
 
 Signo de la iniciativa y el coraje: la tradición le atribuye franqueza, espíritu competitivo y ganas de empezar cosas nuevas, aunque también impaciencia.
@@ -15,6 +17,8 @@ Signo de la iniciativa y el coraje: la tradición le atribuye franqueza, espíri
 ### ♉ Tauro
 
 *20/04 – 20/05 · Tierra · Fijo*
+
+Decanatos: 20/04 – 29/04 Mercurio · 30/04 – 09/05 Luna · 10/05 – 20/05 Saturno
 
 Paciencia, sensualidad y amor por la estabilidad.
 
@@ -24,6 +28,8 @@ Signo de la constancia y el gusto por lo concreto: la tradición le atribuye lea
 
 *21/05 – 20/06 · Aire · Mutable*
 
+Decanatos: 21/05 – 30/05 Júpiter · 31/05 – 09/06 Marte · 10/06 – 20/06 Sol
+
 Curiosidad, comunicación y agilidad mental.
 
 Signo de la curiosidad y la palabra: la tradición le atribuye sociabilidad, versatilidad y preguntas siempre nuevas, aunque también dispersión.
@@ -31,6 +37,8 @@ Signo de la curiosidad y la palabra: la tradición le atribuye sociabilidad, ver
 ### ♋ Cáncer
 
 *21/06 – 22/07 · Agua · Cardinal*
+
+Decanatos: 21/06 – 30/06 Venus · 01/07 – 10/07 Mercurio · 11/07 – 22/07 Luna
 
 Protección, sensibilidad y lealtad a los suyos.
 
@@ -40,6 +48,8 @@ Signo del hogar y las emociones: la tradición le atribuye cuidado, intuición y
 
 *23/07 – 22/08 · Fuego · Fijo*
 
+Decanatos: 23/07 – 01/08 Saturno · 02/08 – 11/08 Júpiter · 12/08 – 22/08 Marte
+
 Generosidad, carisma y gusto por brillar.
 
 Signo de la generosidad y el liderazgo: la tradición le atribuye calidez, orgullo y gusto por el protagonismo, aunque también terquedad.
@@ -47,6 +57,8 @@ Signo de la generosidad y el liderazgo: la tradición le atribuye calidez, orgul
 ### ♍ Virgo
 
 *23/08 – 22/09 · Tierra · Mutable*
+
+Decanatos: 23/08 – 01/09 Sol · 02/09 – 11/09 Venus · 12/09 – 22/09 Mercurio
 
 Análisis, sentido práctico y atención al detalle.
 
@@ -56,6 +68,8 @@ Signo del orden y el servicio: la tradición le atribuye método, discreción y 
 
 *23/09 – 22/10 · Aire · Cardinal*
 
+Decanatos: 23/09 – 02/10 Luna · 03/10 – 12/10 Saturno · 13/10 – 22/10 Júpiter
+
 Diplomacia, sociabilidad y búsqueda del equilibrio.
 
 Signo de la armonía y la justicia: la tradición le atribuye amabilidad, elegancia y dotes de mediación, aunque también indecisión.
@@ -63,6 +77,8 @@ Signo de la armonía y la justicia: la tradición le atribuye amabilidad, elegan
 ### ♏ Escorpio
 
 *23/10 – 21/11 · Agua · Fijo*
+
+Decanatos: 23/10 – 01/11 Marte · 02/11 – 11/11 Sol · 12/11 – 21/11 Venus
 
 Intensidad, intuición y voluntad firme.
 
@@ -72,6 +88,8 @@ Signo de la profundidad y la determinación: la tradición le atribuye reserva, 
 
 *22/11 – 21/12 · Fuego · Mutable*
 
+Decanatos: 22/11 – 01/12 Mercurio · 02/12 – 11/12 Luna · 12/12 – 21/12 Saturno
+
 Optimismo, aventura y amor por la libertad.
 
 Signo de la exploración y la franqueza: la tradición le atribuye optimismo, inquietud y amor por viajar y aprender, aunque también imprudencia.
@@ -79,6 +97,8 @@ Signo de la exploración y la franqueza: la tradición le atribuye optimismo, in
 ### ♑ Capricornio
 
 *22/12 – 19/01 · Tierra · Cardinal*
+
+Decanatos: 22/12 – 31/12 Júpiter · 01/01 – 10/01 Marte · 11/01 – 19/01 Sol
 
 Disciplina, ambición y responsabilidad.
 
@@ -88,6 +108,8 @@ Signo de la disciplina y la paciencia: la tradición le atribuye ambición, seri
 
 *20/01 – 18/02 · Aire · Fijo*
 
+Decanatos: 20/01 – 29/01 Venus · 30/01 – 08/02 Mercurio · 09/02 – 18/02 Luna
+
 Independencia, originalidad y humanitarismo.
 
 Signo de la originalidad y las ideas colectivas: la tradición le atribuye independencia, innovación y cierta distancia, aunque también rebeldía.
@@ -95,6 +117,8 @@ Signo de la originalidad y las ideas colectivas: la tradición le atribuye indep
 ### ♓ Piscis
 
 *19/02 – 20/03 · Agua · Mutable*
+
+Decanatos: 19/02 – 28/02 Saturno · 01/03 – 10/03 Júpiter · 11/03 – 20/03 Marte
 
 Empatía, imaginación e intuición.
 
