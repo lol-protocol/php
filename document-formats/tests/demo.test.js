@@ -6,14 +6,16 @@ const path = require('node:path');
 const { parseCSV, paperTypeName, formatMessage, LocalizationManager, FORMAT_CATALOG_FILES } = require('../app/document-formats.js');
 
 const APP = path.join(__dirname, '..', 'app');
-const html = fs.readFileSync(path.join(APP, 'index.html'), 'utf8');
+const page = fs.readFileSync(path.join(APP, 'index.html'), 'utf8');
+const script = fs.readFileSync(path.join(APP, 'demo.js'), 'utf8');
+const html = `${page}\n${script}`;   // the markup and the script that fills it, read together
 const english = JSON.parse(fs.readFileSync(path.join(APP, 'translations', 'en.json'), 'utf8'));
 const csv = (file) => parseCSV(fs.readFileSync(path.join(__dirname, '..', 'specs', file), 'utf8'));
 
 const lookup = (tree, key) => key.split('.').reduce((node, part) => node?.[part], tree);
 const LANGUAGES = Object.keys(LocalizationManager.LANGUAGE_NAMES);
 
-// These tests read index.html as text. They don't replace opening the demo in a browser,
+// These tests read index.html and demo.js as text. They don't replace opening the demo in a browser,
 // but they stop the easy regressions: a label unplugged from its field, a tab without its
 // panel, a translation key that doesn't exist.
 
@@ -136,7 +138,7 @@ test('Localization.md states the real translation coverage', () => {
 
 test('the page loads the tabs and URL-state scripts it uses, after the library', () => {
     const scripts = [...html.matchAll(/<script src="([^"]+)"/g)].map(m => m[1]);
-    assert.deepEqual(scripts, ['document-formats.js', 'tabs.js', 'url-state.js']);
+    assert.deepEqual(scripts, ['document-formats.js', 'tabs.js', 'url-state.js', 'demo.js']);
     for (const file of scripts) assert.ok(fs.existsSync(path.join(APP, file)), `${file} is missing`);
 });
 
@@ -145,7 +147,7 @@ test('every field kept in the URL is a field of the page', () => {
     const fields = Object.fromEntries([...html.matchAll(/\b(\w+): '([\w-]+-(?:input|filter|search|format|select))'/g)].map(m => [m[1], m[2]]));
     const fromPage = Object.keys(fields);
     const kept = URL_STATE_KEYS.filter(key => !['lang', 'tab'].includes(key));
-    assert.deepEqual(fromPage.sort(), [...kept].sort(), 'STATE_FIELDS in index.html and URL_STATE_KEYS must list the same keys');
+    assert.deepEqual(fromPage.sort(), [...kept].sort(), 'STATE_FIELDS in demo.js and URL_STATE_KEYS must list the same keys');
     for (const id of Object.values(fields)) assert.match(html, new RegExp(`id="${id}"`), `#${id} is not in the page`);
 });
 
@@ -221,4 +223,12 @@ test('the Browser tab can sort, and the choice is part of the address', () => {
             assert.ok(lookup(tree, `demo.${key}`), `${lang} demo.${key}`);
         }
     }
+});
+
+test('index.html has no inline script or style, so a content security policy can forbid them', () => {
+    assert.deepEqual(page.match(/<script(?![^>]*\bsrc=)[^>]*>/g) ?? [], [], 'inline <script>');
+    assert.deepEqual(page.match(/<style[\s>]/g) ?? [], [], 'inline <style>');
+    assert.deepEqual(page.match(/\son[a-z]+="/g) ?? [], [], 'inline event handlers');
+    assert.match(page, /<link rel="stylesheet" href="demo\.css">/);
+    assert.ok(fs.existsSync(path.join(APP, 'demo.css')));
 });

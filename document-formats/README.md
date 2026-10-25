@@ -14,7 +14,7 @@ document-formats/
 ├── formats/       Formats grouped by document type
 ├── devices/       Screen sizes and resolutions
 ├── specs/         Standards, production and accessibility specs
-├── app/           Interactive demo (index.html), JS library (document-formats.js), tabs.js, url-state.js, translations/
+├── app/           Interactive demo (index.html, demo.css, demo.js), JS library (document-formats.js), tabs.js, url-state.js, translations/
 ├── docs/          Tutorials, frontend guide, localization guide
 ├── tests/         Node tests (library, CSV data) and the database check
 ├── CHANGELOG.md   What changed, newest first
@@ -338,6 +338,10 @@ language (unless English), the search boxes and the filters (`url-state.js`
 lists the keys). The **Download CSV** button saves the formats on screen, with
 the same columns as the catalogs plus `region`, in UTF-8 with a byte order mark so a
 spreadsheet reads accents correctly.
+
+The page keeps its styles in `app/demo.css` and its script in `app/demo.js`: `index.html` has no
+inline `<style>`, `<script>`, `style` attribute or event handler, so it can be served with a content
+security policy that forbids them (`tests/demo.test.js` checks it).
 
 Printing the page prints the results only (no tabs, filters or language picker).
 
