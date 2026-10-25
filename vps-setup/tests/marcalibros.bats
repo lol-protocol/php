@@ -60,7 +60,7 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     c="$CRON_DIR/marcalibros"
     grep -qx "MARCALIBROS_STORAGE=$DATA_DIR/marcalibros" "$c"
     grep -qx 'MARCALIBROS_RETENTION_DAYS=7' "$c"
-    grep -q "^17 3 \* \* \* www-data /usr/bin/php $WWW_DIR/marcalibros/$P/app/bin/limpiar.php$" "$c"
+    grep -q "^17 3 \* \* \* www-data $(command -v php) $WWW_DIR/marcalibros/$P/app/bin/limpiar.php > /dev/null$" "$c"
     grep -q 'fastcgi_param MARCALIBROS_RETENTION_DAYS 7;' "$NGINX_DIR/sites-available/ejemplo.com"
 }
 
@@ -124,6 +124,8 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     run bash "$VPS_DIR/10_A-add-domain.sh" ejemplo.com --type marcalibros --dry-run
     [ "$status" -eq 0 ]
     [[ "$output" == *"+ ./06_E-setup-marcalibros-app.sh ejemplo.com"* ]] && [[ "$output" == *"--app marcalibros"* ]]
+    run bash "$VPS_DIR/10_A-add-domain.sh" ejemplo.com --type marcalibros --name otra --dry-run
+    [ "$status" -eq 2 ] && [[ "$output" == *"--name no aplica"* ]]
     instalar ejemplo.com
     [ "$status" -eq 0 ]
     run bash "$VPS_DIR/10_B-remove-domain.sh" ejemplo.com --yes
