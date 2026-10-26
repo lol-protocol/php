@@ -8,6 +8,7 @@ declare(strict_types=1);
  *
  *   php bin/pedidos-retiro.php                  # list what is waiting, flagging what is late
  *   php bin/pedidos-retiro.php --ocultar        # and hide the late ones while they are reviewed
+ *   php bin/pedidos-retiro.php --ocultar --solo-ocultados   # same, but print only when it hid something
  *   php bin/pedidos-retiro.php --horas=48       # another deadline (default: RETIRO_PLAZO_HORAS, else 24)
  *
  * Hiding is the owner's decision, so it only happens with --ocultar: receiving a pedido hides nothing,
@@ -17,6 +18,11 @@ declare(strict_types=1);
  *
  * The listing has the number, the page and the reason of each pedido, and how long it has waited: never
  * who asked nor what they wrote, because cron mail travels in the clear.
+ *
+ * It lists everything that waits on every run, so a job that runs every half hour would mail every half hour
+ * for as long as one pedido waits. --solo-ocultados is for that job: it prints (the same listing) only on the
+ * run that hid something, so the owner learns a page went down and is not told again at the next run. The
+ * daily job without it is the reminder of what still waits.
  *
  * Exit code: 0 when nothing is late, 1 when some pedido is late and still pending, 2 on a usage error
  * or when the database is not ready.
@@ -30,12 +36,15 @@ require __DIR__ . '/../vendor/autoload.php';
 
 Config::load();
 
-$uso = "Uso: php bin/pedidos-retiro.php [--horas=24] [--ocultar]\n";
+$uso = "Uso: php bin/pedidos-retiro.php [--horas=24] [--ocultar [--solo-ocultados]]\n";
 $ocultar = false;
+$soloOcultados = false;
 $horas = Config::getInt('RETIRO_PLAZO_HORAS', RetiroRepository::PLAZO_HORAS);
 foreach (array_slice($argv, 1) as $argumento) {
     if ($argumento === '--ocultar') {
         $ocultar = true;
+    } elseif ($argumento === '--solo-ocultados') {
+        $soloOcultados = true;
     } elseif (preg_match('/^--horas=(\d+)$/', $argumento, $m) === 1) {
         $horas = (int)$m[1];
     } else {
@@ -45,6 +54,10 @@ foreach (array_slice($argv, 1) as $argumento) {
 }
 if ($horas < 1 || $horas > 8760) {
     fwrite(STDERR, $uso . "El plazo es un número de horas de 1 a 8760.\n");
+    exit(2);
+}
+if ($soloOcultados && !$ocultar) {
+    fwrite(STDERR, $uso . "--solo-ocultados va con --ocultar: sin ocultar nada no tendría nada que decir.\n");
     exit(2);
 }
 
@@ -57,7 +70,7 @@ try {
     exit(2);
 }
 
-if ($pendientes === []) {
+if ($pendientes === [] || ($soloOcultados && $ocultados === [])) {
     exit(0);
 }
 

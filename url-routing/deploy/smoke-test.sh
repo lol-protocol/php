@@ -419,6 +419,9 @@ ok "el visitante ya recibe 410" 410 "$(codigo "$H" "$HTTPS/$PEDIDA/")"
 ok "el propietario sigue viéndola" 200 "$(codigo "$H" "$HTTPS/$PEDIDA/" -u "x:$TOKEN")"
 cron_retiros --ocultar
 ok "ya no queda nada pendiente: silencio" "" "$CRON_SALIDA"
+cron_retiros --ocultar --solo-ocultados
+ok "--solo-ocultados sin nada nuevo: silencio" "" "$CRON_SALIDA"
+ok "y sale con 0" 0 "$CRON_CODIGO"
 
 echo "== Recargas (lo que hace systemctl reload)"
 kill -USR2 "$(cat "$TRABAJO/run/fpm.pid")"

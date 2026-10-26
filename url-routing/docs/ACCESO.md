@@ -155,14 +155,15 @@ que prometen las secciones 5 y 6 del borrador de
   (número, página, motivo y cuánto llevan, **nunca quién lo pidió ni qué
   escribió**, porque el correo de cron viaja sin cifrar) y no imprime nada si no
   hay ninguno. Marca como `VENCIDO` el que pasó del plazo (`RETIRO_PLAZO_HORAS`,
-  24 por omisión) y sale con código 1. **Ocultar no es automático**: solo lo hace
-  con `--ocultar`, y entonces deja la página como si el propietario hubiera
-  elegido «ocultar mientras revisa», con una nota en el registro que dice que fue
-  automático y por qué. Nunca toca un pedido que el propietario ya decidió. Para
-  activarlo hay que ponerlo en cron (ver [`DESPLIEGUE.md`](./DESPLIEGUE.md)); es
-  una decisión del propietario porque tiene el costo que ya dice el primer
-  punto: quien pide el retiro puede bajar una página si el propietario no
-  contesta a tiempo.
+  24 por omisión) y sale con código 1. **Ocultar solo lo hace con `--ocultar`**,
+  y entonces deja la página como si el propietario hubiera elegido «ocultar
+  mientras revisa», con una nota en el registro que dice que fue automático y
+  por qué. Nunca toca un pedido que el propietario ya decidió. **El propietario
+  decidió activarlo (26 de octubre de 2026)**: la línea de cron de
+  [`DESPLIEGUE.md`](./DESPLIEGUE.md) lo trae puesto, con `--solo-ocultados` para
+  que el correo salga solo en la corrida que ocultó algo y no cada media hora.
+  Tiene el costo que ya dice el primer punto: quien pide el retiro puede bajar
+  una página si el propietario no contesta a tiempo.
 - **Lo que falta.** No escribe a quien lo pidió (el propietario responde por
   correo, por su cuenta). Retirar una página
   no borra los datos: para eso hay que corregirlos o borrarlos. Un apellido, una

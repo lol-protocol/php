@@ -113,6 +113,37 @@ class PedidosRetiroCliTest extends TestCase
         $this->assertStringContainsString("n.º {$a_tiempo}", $segundaSalida);
     }
 
+    public function testSoloOcultadosStaysSilentUntilItHidesSomething(): void
+    {
+        $a_tiempo = $this->pedido(3);
+
+        [$codigo, $salida, $error] = $this->correr(['--ocultar', '--solo-ocultados']);
+        $this->assertSame([0, '', ''], [$codigo, $salida, $error], 'a pedido on time is not news for a job that runs every half hour');
+
+        $this->db->execute('UPDATE pedidos_retiro SET creado_en = ? WHERE id = ?', [date('Y-m-d H:i:s', time() - 30 * 3600), $a_tiempo]);
+        [$codigo, $salida] = $this->correr(['--ocultar', '--solo-ocultados']);
+        $this->assertSame(0, $codigo);
+        $this->assertStringContainsString("n.º {$a_tiempo}", $salida);
+        $this->assertStringContainsString('VENCIDO: oculto automáticamente', $salida, 'the run that hid it says so');
+        $this->assertTrue($this->repo->retirado('persona', 6128473105));
+
+        [$codigo, $salida, $error] = $this->correr(['--ocultar', '--solo-ocultados']);
+        $this->assertSame([0, '', ''], [$codigo, $salida, $error], 'the next run has nothing new to say');
+    }
+
+    public function testSoloOcultadosKeepsOtherPedidosOutOfTheMailUntilTheyAreLate(): void
+    {
+        $tarde = $this->pedido(30);
+        $this->db->execute('UPDATE pedidos_retiro SET recurso_id = 6128473101 WHERE id = ?', [$tarde]);
+        $a_tiempo = $this->pedido(3);
+
+        [, $salida] = $this->correr(['--ocultar', '--solo-ocultados']);
+        $this->assertStringContainsString("n.º {$tarde}", $salida);
+        $this->assertStringContainsString("n.º {$a_tiempo}", $salida, 'the listing is the same one: what is still waiting goes along with what was hidden');
+
+        $this->assertSame([0, '', ''], $this->correr(['--ocultar', '--solo-ocultados']), 'and then silence again');
+    }
+
     public function testTheDeadlineComesFromTheFlagOrTheEnvironment(): void
     {
         $this->pedido(5);
@@ -125,7 +156,7 @@ class PedidosRetiroCliTest extends TestCase
 
     public function testRefusesWhatItDoesNotUnderstand(): void
     {
-        foreach ([['--horas=0'], ['--horas=abc'], ['--horas=9000'], ['--horas'], ['--ocultar=si'], ['hola']] as $args) {
+        foreach ([['--horas=0'], ['--horas=abc'], ['--horas=9000'], ['--horas'], ['--ocultar=si'], ['--solo-ocultados'], ['hola']] as $args) {
             [$codigo, $salida, $error] = $this->correr($args);
 
             $this->assertSame(2, $codigo, implode(' ', $args));

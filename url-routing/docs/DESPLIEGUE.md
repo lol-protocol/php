@@ -4,6 +4,19 @@ Cómo poner `url-routing` en un servidor y comprobar que quedó bien. Cubre los 
 
 **Qué está probado y qué no.** Todos los pasos se ejecutaron en un servidor real: **nginx 1.24 con PHP-FPM 8.3 (como `www-data`)**, PostgreSQL 16 y SQLite, también con HTTPS (ver «Cómo se probó» al final). Esa prueba ya es un script que se repite en cada cambio: [`deploy/smoke-test.sh`](../deploy/smoke-test.sh). **No** se probaron: Apache y su `.htaccess`, un certificado emitido por una autoridad (certbot), las unidades de systemd ni PHP 8.1 o 8.2. Están marcados donde aparecen.
 
+## Antes de contratar nada: lo que hay que decidir
+
+Para quien instala por primera vez. Cada punto lleva a donde se explica; marca los que ya tengas resueltos.
+
+- [ ] **Dónde vive el servidor (el país).** Es un dato que piden los [términos de uso](../../TERMINOS-DE-USO.md) y que importa para los datos personales que guarda el sitio. Decídelo antes de contratar, porque mudarlo después es trabajo.
+- [ ] **Un VPS con Ubuntu 24.04.** Es lo que usan los scripts de [`vps-setup/`](../../vps-setup/README.md), y [`vps-setup/DEPLOYMENT.md`](../../vps-setup/DEPLOYMENT.md) los recorre de punta a punta (VPS nuevo, DNS, nginx, PHP-FPM, PostgreSQL y certificado). Esta guía empieza donde esa termina.
+- [ ] **Los dominios**: uno para genealogía y otro para el POS (`POS_DOMAINS`, paso 3). Su DNS tiene que apuntar al servidor **antes** de pedir el certificado: sin eso, la autoridad no puede comprobar que el dominio es tuyo.
+- [ ] **HTTPS** (paso 5 y [`04-setup-ssl.sh`](../../vps-setup/04-setup-ssl.sh)). El token del propietario viaja en una cabecera: sin HTTPS lo ve cualquiera en la red.
+- [ ] **Correo saliente para cron.** Con el ocultamiento automático activado (paso 8), el sitio puede ocultar una página sin que estés mirando; el correo de cron es la forma de enterarte. Sin un servidor de correo (o un relé) configurado, ese aviso no llega y solo te queda mirar `/0/3/`. Pruébalo antes de dar el sitio por listo.
+- [ ] **Dónde guardar el secreto del propietario** (`OWNER_TOKEN`). Si lo pierdes, se cambia (paso 10) y se cierran todas las sesiones; si se filtra, es la llave de todo lo privado.
+- [ ] **Quién responde por el sitio.** El nombre, el domicilio y el correo de contacto que piden los [términos de uso](../../TERMINOS-DE-USO.md) tienen que ser reales antes de publicar.
+- [ ] **Cómo y dónde guardarás las copias de seguridad** (paso 11). No hay copias automáticas: una copia que vive en el mismo servidor no sirve si el servidor se pierde.
+
 ## 0. Antes de empezar
 
 | Hace falta | Detalle |
@@ -164,18 +177,17 @@ Cualquiera puede pedir el retiro de una página (`/r/{id}/`) y el pedido espera 
 ```
 # /etc/cron.d/pedidos-retiro   (cron necesita un servidor de correo para mandar el aviso)
 MAILTO=tu@correo.com
-0 9 * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php
+0 9 * * *     www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php
+*/30 * * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --ocultar --solo-ocultados
 ```
+
+La primera línea es el recordatorio de cada día: lista lo que sigue esperando. La segunda es el **ocultamiento automático, que está activado** (decisión del propietario, 26 de octubre de 2026): cada media hora oculta los pedidos que pasaron del plazo sin respuesta, y **solo manda correo en la corrida que ocultó algo**. Sin `--solo-ocultados`, esa línea mandaría el mismo listado cada media hora mientras un pedido espere.
 
 Los pedidos de retiro se marcan con el filtro de difamación si el servidor tiene la carpeta `defamatory-content-review/` junto a `url-routing/` (o `FILTRO_DIFAMACION_DIR` apunta a ella); si no, se guardan sin marcas y el log lo dice. Los topes contra el abuso se cambian con `RETIRO_MAX_POR_HORA` y `RETIRO_MAX_PENDIENTES` en `.env`.
 
-Lista número, página, motivo y cuánto lleva cada pedido, y marca `VENCIDO` el que pasó del plazo (`RETIRO_PLAZO_HORAS` en `.env`, 24 horas por omisión). No dice quién lo pidió ni qué escribió: el correo de cron viaja sin cifrar.
+El listado tiene número, página, motivo y cuánto lleva cada pedido, y marca `VENCIDO` el que pasó del plazo (`RETIRO_PLAZO_HORAS` en `.env`, 24 horas por omisión). No dice quién lo pidió ni qué escribió: el correo de cron viaja sin cifrar.
 
-**Ocultar automáticamente es opcional y es una decisión tuya.** Con `--ocultar`, el pedido que sigue pendiente pasado el plazo deja su página en 410 para los visitantes, como si hubieras elegido «ocultar mientras revisa», y el registro anota que fue automático. Nunca toca uno que ya decidiste, y rechazarlo la vuelve a mostrar. El costo: quien pida el retiro de una página puede bajarla si no contestas a tiempo. Si lo quieres, que corra más seguido que el aviso:
-
-```
-*/30 * * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --ocultar
-```
+**Qué hace el ocultamiento automático.** El pedido que sigue pendiente pasado el plazo deja su página en 410 para los visitantes, como si hubieras elegido «ocultar mientras revisa», y el registro anota que fue automático. Nunca toca uno que ya decidiste, y rechazarlo la vuelve a mostrar. **El costo:** quien pida el retiro de una página puede bajarla si no contestas a tiempo; los frenos del formulario (3 pedidos por visitante y por hora, 10 pendientes por página) limitan cuánto, pero no lo impiden. Si algún día no lo quieres, borra la segunda línea: el recordatorio diario sigue avisando y no se oculta nada.
 
 Código de salida: 0 si nada está vencido, 1 si hay un pedido vencido sin ocultar, 2 si falla (base sin migrar, opción desconocida). Se probó con la base de SQLite y como proceso aparte (`tests/App/Integration/PedidosRetiroCliTest.php`); **no se probó con cron ni con un servidor de correo reales**.
 
