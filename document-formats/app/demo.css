@@ -130,7 +130,8 @@ body {
 
 .controls {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* min(): on a phone narrower than 200 px of column plus padding, one column that fits. */
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
     gap: 15px;
     margin-bottom: 25px;
     background: var(--card-bg);
@@ -201,7 +202,7 @@ body {
 
 .formats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
     gap: 20px;
 }
 
@@ -223,6 +224,8 @@ body {
 
 .format-card-header {
     display: flex;
+    flex-wrap: wrap;   /* a long name and a long badge go on two lines instead of out of the card */
+    gap: 8px;
     justify-content: space-between;
     align-items: start;
     margin-bottom: 15px;
@@ -537,6 +540,10 @@ body {
 .about-list { margin: 15px 0; padding-inline-start: 20px; }
 .about-note { margin-top: 15px; color: var(--text-light); }
 
+/* A field never grows wider than its column, whatever the length of its options. */
+.control-group { min-width: 0; }
+.control-group input, .control-group select { max-width: 100%; }
+
 /* Sort menu and its reverse-order toggle, side by side. */
 .sort-row { display: flex; gap: 8px; }
 .sort-row select { flex: 1; min-width: 0; }
@@ -579,11 +586,12 @@ body {
     }
 
     .controls {
-        grid-template-columns: 1fr;
+        /* minmax(0, …): a select with long option names must not widen the column past the screen. */
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .formats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .tabs {

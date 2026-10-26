@@ -647,14 +647,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // The language: the one in the URL, else the saved one, else (first visit) the browser's
     // when the demo has it.
-    try {
-        const browserLanguage = (navigator.language || '').slice(0, 2).toLowerCase();
-        if (urlState.lang in LocalizationManager.LANGUAGE_NAMES) {
-            i18n.currentLanguage = urlState.lang;
-        } else if (!localStorage.getItem('preferredLanguage') && browserLanguage in LocalizationManager.LANGUAGE_NAMES) {
-            i18n.currentLanguage = browserLanguage;
-        }
-    } catch (error) { /* storage blocked: stay in English */ }
+    const browserLanguage = (navigator.language || '').slice(0, 2).toLowerCase();
+    if (urlState.lang in LocalizationManager.LANGUAGE_NAMES) {
+        i18n.currentLanguage = urlState.lang;
+    } else if (!LocalizationManager.savedLanguage() && browserLanguage in LocalizationManager.LANGUAGE_NAMES) {
+        i18n.currentLanguage = browserLanguage;
+    }
     await i18n.init();
     applyLanguage();
 
