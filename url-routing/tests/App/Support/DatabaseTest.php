@@ -75,6 +75,21 @@ class DatabaseTest extends TestCase
         $this->assertNull($db->fetchOne('SELECT * FROM usuarios WHERE id = ?', [50]));
     }
 
+    /**
+     * PostgreSQL's JIT compiled the visitor's searches on every request (2.5 s of a 70 ms query with 20,000
+     * personas), whatever the server's own setting says; the connection turns it off.
+     */
+    #[DataProvider('drivers')]
+    public function testPostgresConnectionsHaveJitTurnedOff(string $driver): void
+    {
+        if ($driver !== 'pgsql') {
+            $this->markTestSkipped('JIT is a PostgreSQL setting.');
+        }
+        $db = TestDatabases::fresh($driver, 'pos');
+
+        $this->assertSame('off', $db->fetchValue('SHOW jit'));
+    }
+
     #[DataProvider('drivers')]
     public function testTransactionRollsBackOnError(string $driver): void
     {

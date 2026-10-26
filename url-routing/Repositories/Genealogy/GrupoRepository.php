@@ -10,6 +10,18 @@ use App\Support\Privacidad;
 final class GrupoRepository extends Repository
 {
     /**
+     * SQL: the personas (aliased p, from personas()) whose REAL grupo_id is $grupo, a column or a `?`, picked on the
+     * real table. personas() masks grupo_id for a hidden persona, so a filter on its column alone leaves the database
+     * to work out `oculta` for the whole catalog before it can tell who is in the group; this picks the group's
+     * members first and personas() masks only those, as PersonaRepository::buscar() does. It never replaces
+     * `p.grupo_id = $grupo`, which stays in every query: that is what leaves the hidden ones out.
+     */
+    private static function delGrupo(string $grupo): string
+    {
+        return "p.id IN (SELECT q.id FROM personas q WHERE q.grupo_id = {$grupo})";
+    }
+
+    /**
      * A living persona's surname group is hidden (see Privacidad::personas()),
      * so living people count in no group, appear in no group's network and
      * weigh in no group's birthplaces.
@@ -18,7 +30,7 @@ final class GrupoRepository extends Repository
     {
         return $this->db->fetchOne(
             "SELECT g.id, g.apellido, g.origen, g.descripcion,
-                    (SELECT COUNT(*) FROM {$this->privacidad->personas()} p WHERE p.grupo_id = g.id) AS total_personas
+                    (SELECT COUNT(*) FROM {$this->privacidad->personas()} p WHERE " . self::delGrupo('g.id') . " AND p.grupo_id = g.id) AS total_personas
                FROM grupos g WHERE g.id = ?",
             [$id]
         );
@@ -29,9 +41,9 @@ final class GrupoRepository extends Repository
     {
         return $this->db->fetchAll(
             "SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id
-               FROM {$this->privacidad->personas()} p WHERE p.grupo_id = ?
+               FROM {$this->privacidad->personas()} p WHERE " . self::delGrupo('?') . " AND p.grupo_id = ?
               ORDER BY p.apellidos, p.nombres, p.id",
-            [$id]
+            [$id, $id]
         );
     }
 
@@ -49,10 +61,10 @@ final class GrupoRepository extends Repository
                JOIN suceso_participantes sp ON sp.persona_id = p.id AND sp.rol = '" . Privacidad::ROL_PRINCIPAL . "'
                JOIN {$this->privacidad->sucesos()} s ON s.id = sp.suceso_id AND s.tipo = 'nacimiento'
                JOIN lugares l ON l.ruta = s.lugar_ruta
-              WHERE p.grupo_id = ?
+              WHERE " . self::delGrupo('?') . " AND p.grupo_id = ?
               GROUP BY s.lugar_ruta, l.nombre
               ORDER BY total DESC, s.lugar_ruta",
-            [$id]
+            [$id, $id]
         );
     }
 

@@ -152,3 +152,15 @@ TEST_PG_USER=routing_test TEST_PG_PASSWORD=routing_test \
   `sucesos_fecha_idx`: el plan depende del tamaño de las tablas y de sus
   estadísticas (con 20.000 personas lee la tabla entera; con 80.000 lo usa para
   el visitante). Las listas de un lugar no cambiaron.
+- **JIT apagado.** `Database` hace `SET jit = off` al conectar a PostgreSQL,
+  diga lo que diga la configuración del servidor. Las expresiones de privacidad
+  (`Privacidad`) hacen que las búsquedas y listas de un visitante parezcan caras
+  al planificador, y PostgreSQL las compilaba (JIT) en cada petición: con 20.000
+  personas, 2,5 s de compilación para una búsqueda de 70 ms. Para consultas
+  cortas como estas el JIT nunca compensa.
+- **Lo que cuesta una lista del visitante.** Las listas por apellido (ficha,
+  red y dispersión) y por lugar eligen primero las filas sobre las tablas reales
+  y enmascaran solo esas (como la búsqueda de personas), así que no calculan
+  «quién está oculto» para todo el catálogo. Medido con 20.000 personas en
+  PostgreSQL, un visitante tardaba entre 37 y 61 ms en esas páginas, y tarda
+  entre 2 y 13 ms.
