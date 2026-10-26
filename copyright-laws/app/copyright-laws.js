@@ -76,10 +76,12 @@ const hostOf = (url) => {
     return "";
   }
 };
+// The accessible name starts with the visible text (the host), as WCAG 2.5.3 "Label in Name" asks:
+// axe-core's label-content-name-mismatch rule fails a link whose name only ends with it.
 function sourceLink(url, lawName) {
   return url
     ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="source-link" title="${esc(t("table.open"))}" aria-label="${esc(
-        `${t("table.open")}: ${lawName} (${hostOf(url)})`
+        `${hostOf(url)}: ${t("table.open")}: ${lawName}`
       )}">${hostOf(url).split(".").map(esc).join(".<wbr>")}<span aria-hidden="true"> ↗</span></a>`
     : valueHtml("");
 }
