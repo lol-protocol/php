@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Cada carpeta de proyecto en la raíz del repo debe tener una fila en la
       # tabla de README.md (un link "](<carpeta>/..."); si no, la tabla quedó
@@ -49,7 +49,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Cada archivo de .github/workflows/ debe nombrarse entre comillas invertidas en
       # README.md (seccion CI/CD), y cada *.yml que README.md nombra debe existir ahi; si no,
@@ -83,7 +83,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # CLAUDE.md manda a correr scripts por su ruta (php bin/..., ./pruebas/...). Si uno se
       # mueve y el texto no se entera, la proxima sesion copia un comando que ya no existe.
@@ -98,7 +98,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Un documento que se mueve deja enlaces muertos en los README de otros proyectos.
       # Que comprueba, que ignora y como probarlo: el docstring del script.
@@ -112,7 +112,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # `composer validate` detecta un JSON mal formado, un campo que no existe y un composer.lock
       # que ya no coincide con su composer.json. En modo estricto los avisos también fallan.
@@ -139,7 +139,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # vps-setup/03-configure-nginx-site.sh copia TODA la carpeta (cp -r landing-page/. destino/) a
       # la raiz que sirve Nginx: cualquier archivo que se ponga ahi queda publico en

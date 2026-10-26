@@ -36,11 +36,11 @@ jobs:
       run:
         working-directory: marcalibros_b
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       # Version fija: la salida del generador (SVG y hashes de referencia) debe ser
       # identica en todas las maquinas. Si se sube, se regeneran los hashes.
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: pip
@@ -55,14 +55,14 @@ jobs:
           python -c "import platform; print(platform.python_version(), platform.platform())"
 
       # El QA rasteriza cada SVG con Chromium real; sin el, el build falla a proposito.
-      - uses: browser-actions/setup-chrome@v1
+      - uses: browser-actions/setup-chrome@v2
         id: chrome
 
       # Compilacion incremental: se restauran la cache y los archivos ya generados. Si
       # cambia el codigo del generador, la clave de cada pieza cambia y se rehace todo;
       # si solo cambia la taxonomia, se rehacen solo las piezas afectadas. La clave exacta
       # incluye los archivos fuente; restore-keys recupera la cache mas reciente.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: |
             marcalibros_b/catalog/.cache
@@ -85,7 +85,7 @@ jobs:
 
       # El catalogo completo (SVG, JPG, hojas de revision) no se versiona en git:
       # se publica aqui, y el manifest y unas pocas muestras si estan versionados.
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: marcalibros-catalogo
           path: |

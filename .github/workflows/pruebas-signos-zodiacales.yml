@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Valida datos/signos.json (los 30 idiomas en nombres, descripciones y terminos; elemento,
       # modalidad y ciclo chino; lineas y estrellas de cada constelacion) y falla si algun SVG de
@@ -58,9 +58,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
 
@@ -70,7 +70,7 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
         run: pip install playwright==1.55.0
 
-      - uses: browser-actions/setup-chrome@v1
+      - uses: browser-actions/setup-chrome@v2
         id: chrome
 
       # Abre galeria.html en Chromium y la recorre en los 30 idiomas y las dos variantes: sin errores
