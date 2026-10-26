@@ -1,12 +1,13 @@
 # Términos de uso — borrador
 
-> **Esto es un borrador para revisar con un abogado, no un texto listo para
-> publicar.** Lo escribió el equipo a partir de
+> **Esto es un borrador, no un texto listo para publicar, y ningún abogado lo ha
+> revisado: el propietario decidió (26 de octubre de 2026) no consultar a uno.**
+> Lo escribió el equipo a partir de
 > [`PRIVACIDAD-Y-HONRA.md`](PRIVACIDAD-Y-HONRA.md) y de lo que hoy hace el código.
-> Lo que hay que confirmar o decidir está marcado con **⚖️**, y las preguntas,
-> reunidas y ordenadas para llevarlas a una reunión, están en
-> [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md). Los datos entre
-> corchetes (`[NOMBRE]`, `[CORREO]`…) faltan.
+> Lo que hay que confirmar o decidir está marcado con **⚖️**: son decisiones que
+> toma el propietario, bajo su responsabilidad, y las preguntas, reunidas y
+> ordenadas, están en [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md).
+> Los datos entre corchetes (`[NOMBRE]`, `[CORREO]`…) faltan.
 >
 > Cada compromiso lleva, cuando hace falta, una línea **«Hoy:»** que dice qué
 > hace ya el código y qué todavía no, para no prometer lo que el sitio no hace.
@@ -92,8 +93,10 @@ Por eso está prohibido:
   pedido** (y entonces se vuelve a mostrar), y deja una nota de por qué.
 - **Ocultamos el contenido en un plazo de [24] horas** mientras lo revisamos.
   **⚖️** Plazo comprometido. **Hoy:** el código avisa de los pedidos que esperan
-  y marca los que pasan de 24 horas; ocultarlos solos cuando vencen es una opción
-  que hay que activar. **⚖️** ¿Se promete ocultar sin haber revisado? (pregunta 15).
+  y marca los que pasan de 24 horas; ocultarlos solos cuando vencen se decidió activar
+  (26 de octubre de 2026; vale desde que el cron del servidor lleve `--ocultar`,
+  ver `url-routing/docs/DESPLIEGUE.md`). **⚖️** ¿Se promete ocultar sin haber
+  revisado? (pregunta 15).
 - **Qué ve el visitante de una página oculta o retirada:** «Página retirada»
   (no la página), y deja de salir en la búsqueda y en el mapa del sitio.
 - **Si lo que se retira es una persona**, deja de nombrarse en todo el sitio: en
@@ -183,6 +186,6 @@ los tribunales de [CIUDAD]. **⚖️**
 | Datos del responsable, correo, domicilio, ciudad | Decisión de la persona a cargo |
 | Plazos (retiro, respuesta, conservación del registro, aviso de cambios) | Abogado |
 | Política de privacidad | Abogado, a partir de la sección 7 |
-| El botón «Pedir retiro», su cola y el registro | Hecho en `url-routing/` (`/r/{id}/` y `/0/3/`, ver su `docs/ACCESO.md`). Para cumplir el plazo de la sección 5, `bin/pedidos-retiro.php` (cron) avisa de los pedidos que esperan y, si se activa, oculta los vencidos; falta decidir si se activa (⚖️ pregunta 15 de [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md)) |
+| El botón «Pedir retiro», su cola y el registro | Hecho en `url-routing/` (`/r/{id}/` y `/0/3/`, ver su `docs/ACCESO.md`). Para cumplir el plazo de la sección 5, `bin/pedidos-retiro.php` (cron) avisa de los pedidos que esperan y, con `--ocultar`, oculta los vencidos; el propietario decidió activarlo (26 de octubre de 2026); falta instalarlo en el servidor (⚖️ queda por decidir si se promete: pregunta 15 de [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md)) |
 | Que el propietario reciba un aviso de cada pedido nuevo | Poner `bin/pedidos-retiro.php` en cron con `MAILTO` (ver `url-routing/docs/DESPLIEGUE.md`) |
 | Que todo texto libre pase por el filtro | Hecho para las notas del panel (`sistema-nuevo/`, con su registro). Falta para el sitio de genealogía y lo que se importe, que hoy no tienen dónde escribir: cabo suelto 1 de `PRIVACIDAD-Y-HONRA.md` |
