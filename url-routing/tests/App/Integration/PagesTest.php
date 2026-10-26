@@ -1403,6 +1403,19 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString('/6128473108/5/', $this->get(self::GENEALOGIA, self::CARLOS)[1], 'a visitor is not shown the link');
     }
 
+    /** For a visitor /{id}/2/ answers 401, so the tab that leads there is only shown to the owner. */
+    public function testOnlyTheOwnerIsOfferedTheEditTabOfACollection(): void
+    {
+        foreach (['/1048293/', '/1048293/1/'] as $uri) {
+            [$codigo, $visitante] = $this->get(self::GENEALOGIA, $uri);
+            $this->assertSame(200, $codigo, $uri);
+            $this->assertStringContainsString('/1048293/1/', $visitante, "{$uri}: the tree tab is there for everyone");
+            $this->assertStringNotContainsString('/1048293/2/', $visitante, "{$uri}: a visitor is not offered a page that refuses them");
+
+            $this->assertStringContainsString('/1048293/2/', $this->getComoPropietario(self::GENEALOGIA, $uri)[1], "{$uri}: the owner is");
+        }
+    }
+
     public function testTheOwnerCanMarkAPersonaAsDeceasedAndBackToDeduced(): void
     {
         try {
