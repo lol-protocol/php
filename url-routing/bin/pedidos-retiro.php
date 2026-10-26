@@ -24,6 +24,14 @@ declare(strict_types=1);
  * run that hid something, so the owner learns a page went down and is not told again at the next run. The
  * daily job without it is the reminder of what still waits.
  *
+ *   php bin/pedidos-retiro.php --depurar        # erase the personal data of pedidos resolved long ago
+ *   php bin/pedidos-retiro.php --depurar --meses=6   # another retention (default: RETIRO_CONSERVAR_MESES, else 12)
+ *
+ * A pedido holds the requester's email and what they wrote. Once it is 'retirado' or 'rechazado' and its last
+ * event is older than the retention, --depurar blanks contacto, detalle and the filter marks and stamps
+ * depurado_en. Number, page, reason, state and history stay. Like --ocultar it happens only with the flag, and
+ * it prints only a count, never what it erased.
+ *
  * Exit code: 0 when nothing is late, 1 when some pedido is late and still pending, 2 on a usage error
  * or when the database is not ready.
  */
@@ -36,15 +44,21 @@ require __DIR__ . '/../vendor/autoload.php';
 
 Config::load();
 
-$uso = "Uso: php bin/pedidos-retiro.php [--horas=24] [--ocultar [--solo-ocultados]]\n";
+$uso = "Uso: php bin/pedidos-retiro.php [--horas=24] [--ocultar [--solo-ocultados]] [--depurar [--meses=12]]\n";
 $ocultar = false;
 $soloOcultados = false;
 $horas = Config::getInt('RETIRO_PLAZO_HORAS', RetiroRepository::PLAZO_HORAS);
+$depurar = false;
+$meses = Config::getInt('RETIRO_CONSERVAR_MESES', RetiroRepository::CONSERVAR_MESES);
 foreach (array_slice($argv, 1) as $argumento) {
     if ($argumento === '--ocultar') {
         $ocultar = true;
     } elseif ($argumento === '--solo-ocultados') {
         $soloOcultados = true;
+    } elseif ($argumento === '--depurar') {
+        $depurar = true;
+    } elseif (preg_match('/^--meses=(\d+)$/', $argumento, $m) === 1) {
+        $meses = (int)$m[1];
     } elseif (preg_match('/^--horas=(\d+)$/', $argumento, $m) === 1) {
         $horas = (int)$m[1];
     } else {
@@ -61,15 +75,26 @@ if ($soloOcultados && !$ocultar) {
     exit(2);
 }
 
+if ($meses < 1 || $meses > 240) {
+    fwrite(STDERR, $uso . "La conservación es un número de meses de 1 a 240.\n");
+    exit(2);
+}
+
 try {
     $repo = new RetiroRepository(Database::forSite('genealogy'));
     $pendientes = $repo->pendientes();
     $ocultados = $ocultar ? $repo->ocultarVencidos($horas) : [];
+    $depurados = $depurar ? $repo->depurar($meses) : [];
 } catch (\PDOException $e) {
     fwrite(STDERR, "No se pudo leer los pedidos de retiro (¿falta correr bin/migrate.php genealogy?).\n");
     exit(2);
 }
 
+if ($depurados !== []) {
+    echo count($depurados) === 1
+        ? "Se borraron los datos personales de 1 pedido resuelto hace más de {$meses} meses.\n"
+        : 'Se borraron los datos personales de ' . count($depurados) . " pedidos resueltos hace más de {$meses} meses.\n";
+}
 if ($pendientes === [] || ($soloOcultados && $ocultados === [])) {
     exit(0);
 }

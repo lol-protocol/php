@@ -179,4 +179,65 @@ class PedidosRetiroCliTest extends TestCase
         $this->assertSame('', $salida);
         $this->assertStringContainsString('bin/migrate.php genealogy', $error);
     }
+
+    /** A resolved pedido whose last event happened $meses months ago. */
+    private function resuelto(string $decision, int $meses): int
+    {
+        $numero = $this->pedido(1, 'Mi dirección es Calle Falsa 123.', 'secreto@example.com');
+        $this->repo->decidir($numero, $decision, 'Listo.');
+        $fecha = date('Y-m-d H:i:s', strtotime("-{$meses} months"));
+        $this->db->execute('UPDATE pedido_retiro_eventos SET ocurrido_en = ? WHERE pedido_id = ?', [$fecha, $numero]);
+
+        return $numero;
+    }
+
+    public function testDepurarDoesNothingWithoutTheFlag(): void
+    {
+        $numero = $this->resuelto('retirar', 24);
+
+        [$codigo, $salida] = $this->correr();
+
+        $this->assertSame([0, ''], [$codigo, $salida]);
+        $this->assertSame('secreto@example.com', $this->db->fetchValue('SELECT contacto FROM pedidos_retiro WHERE id = ?', [$numero]));
+    }
+
+    public function testDepurarErasesOnlyOldResolvedPedidosAndPrintsACount(): void
+    {
+        $viejo = $this->resuelto('retirar', 13);
+        $rechazado = $this->resuelto('rechazar', 13);
+        $reciente = $this->resuelto('retirar', 2);
+        $oculto = $this->resuelto('ocultar', 24);
+
+        [$codigo, $salida, $error] = $this->correr(['--depurar']);
+
+        $this->assertSame([0, ''], [$codigo, $error]);
+        $this->assertStringContainsString('2 pedidos resueltos hace más de 12 meses', $salida);
+        $this->assertStringNotContainsString('secreto@example.com', $salida);
+        foreach ([$viejo, $rechazado] as $n) {
+            $fila = $this->db->fetchAll('SELECT detalle, contacto, marcas, depurado_en, estado FROM pedidos_retiro WHERE id = ?', [$n])[0];
+            $this->assertSame(['', '', null], [$fila['detalle'], $fila['contacto'], $fila['marcas']]);
+            $this->assertNotNull($fila['depurado_en']);
+            $this->assertCount(2, $this->db->fetchAll('SELECT 1 FROM pedido_retiro_eventos WHERE pedido_id = ?', [$n]), 'the history stays');
+        }
+        foreach ([$reciente, $oculto] as $n) {
+            $this->assertSame('secreto@example.com', $this->db->fetchValue('SELECT contacto FROM pedidos_retiro WHERE id = ?', [$n]));
+        }
+
+        [, $segunda] = $this->correr(['--depurar']);
+        $this->assertSame('', $segunda, 'nothing left to erase: silence');
+    }
+
+    public function testDepurarHonorsMesesAndRejectsBadValues(): void
+    {
+        $numero = $this->resuelto('retirar', 3);
+
+        $this->correr(['--depurar', '--meses=6']);
+        $this->assertSame('secreto@example.com', $this->db->fetchValue('SELECT contacto FROM pedidos_retiro WHERE id = ?', [$numero]));
+
+        $this->correr(['--depurar', '--meses=2']);
+        $this->assertSame('', $this->db->fetchValue('SELECT contacto FROM pedidos_retiro WHERE id = ?', [$numero]));
+
+        [$codigo] = $this->correr(['--depurar', '--meses=0']);
+        $this->assertSame(2, $codigo);
+    }
 }

@@ -193,4 +193,28 @@ class RetiroRepositoryTest extends TestCase
         $eventos = $repo->todos()[0]['eventos'];
         $this->assertSame(['recibido', 'oculto', 'rechazado'], array_column($eventos, 'estado'));
     }
+
+    #[DataProvider('drivers')]
+    public function testDepurarErasesPersonalDataOfOldResolvedPedidosOnly(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $resuelto = $repo->crear('persona', 6128473105, 'me_nombra', 'Es falso.', 'a@example.com', 'acusación');
+        $pendiente = $repo->crear('grupo', 582317, 'otro', 'Otro.', 'b@example.com');
+        $repo->decidir($resuelto, 'retirar', 'Hecho.');
+
+        $this->assertSame([], $repo->depurar(12), 'resolved today: kept');
+        $ahora = strtotime('+13 months');
+
+        $this->assertSame([$resuelto], $repo->depurar(12, $ahora), 'the pending one is never touched');
+        $this->assertSame([], $repo->depurar(12, $ahora), 'and not twice');
+
+        $porId = array_column($repo->todos(), null, 'id');
+        $this->assertSame(['', ''], [$porId[$resuelto]['detalle'], $porId[$resuelto]['contacto']]);
+        $this->assertNull($porId[$resuelto]['marcas']);
+        $this->assertNotNull($porId[$resuelto]['depurado_en']);
+        $this->assertSame('b@example.com', $porId[$pendiente]['contacto']);
+        $this->assertSame(['recibido', 'retirado'], array_column($porId[$resuelto]['eventos'], 'estado'));
+        $this->assertTrue($repo->retirado('persona', 6128473105), 'the page stays withdrawn');
+    }
 }

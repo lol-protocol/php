@@ -164,6 +164,15 @@ que prometen las secciones 5 y 6 del borrador de
   que el correo salga solo en la corrida que ocultó algo y no cada media hora.
   Tiene el costo que ya dice el primer punto: quien pide el retiro puede bajar
   una página si el propietario no contesta a tiempo.
+- **Depuración (opcional).** Un pedido guarda el correo de quien lo envió y lo que
+  escribió, sin límite de tiempo. `php bin/pedidos-retiro.php --depurar` borra
+  `contacto`, `detalle` y las marcas del filtro de los pedidos **retirados o
+  rechazados** cuyo último evento tiene más de 12 meses (`--meses=N` o
+  `RETIRO_CONSERVAR_MESES`), y anota `depurado_en`; la cola `/0/3/` pasa a decir
+  «Datos personales borrados el …». Se conservan el número, la página, el motivo, el
+  estado y el historial. Un pedido pendiente u oculto sigue en revisión y no se toca.
+  Solo corre con la opción, e imprime un conteo, nunca lo que borró. El plazo de 12
+  meses es un valor inicial: ⚖️ que lo confirme la abogada (`PREGUNTAS-PARA-ABOGADO.md`).
 - **Lo que falta.** No escribe a quien lo pidió (el propietario responde por
   correo, por su cuenta). Retirar una página
   no borra los datos: para eso hay que corregirlos o borrarlos. Un apellido, una
@@ -195,7 +204,7 @@ Esto hace privados los **objetos** que ya se presentaban como privados, oculta a
 - `tests/App/Integration/PagesTest.php` también cubre la página de la marca de vida: cerrada a visitantes, formulario y enlace solo para el propietario, y guardar con token CSRF y valores válidos (cada prueba que guarda deja la base como estaba).
 - `tests/App/Repositories/BusquedaDePersonasTest.php` (en SQLite y PostgreSQL): que la búsqueda de personas devuelva exactamente las visibles, en su orden y con el nombre real, para cualquier texto, límite y desplazamiento; que dé las mismas filas que la consulta de antes (la que pasaba por `personas()` para todo el catálogo); y, en SQLite, que una página no lea el catálogo entero (se comprobó que falla con la consulta de antes).
 - `tests/App/Integration/RetiroTest.php`: el enlace al pie, el formulario (sólo sobre lo que un visitante ve), sus validaciones y su token CSRF; que recibir un pedido no oculte nada; que ocultar, retirar y rechazar cambien lo que ve un visitante (410 en la página y en sus acciones, fuera del sitemap) pero no el propietario, y que cada paso quede en el historial. `tests/App/Repositories/RetiroRepositoryTest.php` hace lo mismo con el repositorio, en SQLite y PostgreSQL.
-- `tests/App/Integration/PedidosRetiroCliTest.php`: `bin/pedidos-retiro.php` como lo corre cron (un proceso de verdad y una base SQLite): que no diga nada si no hay pedidos, que no imprima quién pidió ni qué escribió, el código de salida, que `--ocultar` oculte solo lo vencido, el plazo por opción y por entorno, y los errores de uso. `tests/App/Repositories/RetiroRepositoryTest.php` prueba `pendientes()` y `ocultarVencidos()` (el borde exacto del plazo, el registro y que no pise una decisión).
+- `tests/App/Integration/PedidosRetiroCliTest.php`: `bin/pedidos-retiro.php` como lo corre cron (un proceso de verdad y una base SQLite): que no diga nada si no hay pedidos, que no imprima quién pidió ni qué escribió, el código de salida, que `--ocultar` oculte solo lo vencido, el plazo por opción y por entorno, `--depurar` (solo lo resuelto y viejo, nada sin la opción) y los errores de uso. `tests/App/Repositories/RetiroRepositoryTest.php` prueba `pendientes()` y `ocultarVencidos()` (el borde exacto del plazo, el registro y que no pise una decisión).
 - `tests/App/Repositories/PrivadasRepositoriesTest.php` (en SQLite y PostgreSQL): quién es privado (una colección pública basta, ninguna colección no lo es), qué se oculta de él en cada repositorio y que el propietario lo vea todo.
 - `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos, de Lucía ni de Manuel, que está solo en una colección privada (se comprobó que falla si se apaga el enmascarado).
 
