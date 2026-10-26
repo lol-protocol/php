@@ -4,7 +4,7 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 
 
 > **Aviso.** Las descripciones recogen lo que la astrología y el horóscopo chino *atribuyen* a cada signo. No hay evidencia científica de que la fecha de nacimiento influya en el carácter. Las constelaciones occidentales son figuras de la tradición, no grupos de estrellas físicamente relacionados, y los animales chinos **no tienen constelaciones**: sus figuras estelares son un dibujo hecho para este proyecto.
 
-> **Estado de las traducciones.** Las escribió una IA y **ninguna persona nativa las ha revisado**, tampoco la versión en género neutro (ver más abajo). Antes de mostrarlas a usuarios hay que revisarlas, sobre todo en los idiomas de menos recursos (suajili, bengalí, urdu, persa, tailandés, hebreo, árabe) y los nombres de los signos en suajili.
+> **Estado de las traducciones.** Las escribió una IA y **ninguna persona nativa las ha revisado**, tampoco la versión en género neutro (ver más abajo). Antes de mostrarlas a usuarios hay que revisarlas, sobre todo en los idiomas de menos recursos (suajili, bengalí, urdu, persa, tailandés, hebreo, árabe) y los nombres de los signos en suajili. El estado de cada idioma está en `revision` de `datos/signos.json` (hoy los 30 son `sin_revisar`), sale en su ficha y en el índice de `por-idioma/`, y lo consulta `zodiaco.revision(idioma)`. Ver «Revisar una traducción».
 
 ## Contenido
 
@@ -12,7 +12,10 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 
 |---|---|
 | `datos/signos.json` | La fuente de verdad: nombres, descripciones, rasgos, fechas, troncos celestes, términos traducidos y la figura de cada signo. |
 | `datos/anio-nuevo-lunar.json` | La fecha del Año Nuevo lunar de cada año, de 1900 a 2099. |
-| `zodiaco.py` | Consultas: `signo_occidental(fecha)`, `cuspide(fecha)`, `animal_chino(anio)`, `animal_chino_de_fecha(fecha)` y `anios_del_animal(id, desde, hasta)`. |
+| `datos/vectores.json` | Las respuestas de `zodiaco.py` a un conjunto fijo de entradas (cada día del año, cada año de 1900 a 2099, cada par de signos…), que comparten Python y PHP. Generado, no editar a mano. |
+| `CHANGELOG.md` | Historial de cambios de los datos. Su primera entrada tiene que coincidir con `version` de `datos/signos.json`. |
+| `zodiaco.py` | Consultas: `signo_occidental(fecha)`, `cuspide(fecha)`, `animal_chino(anio)`, `animal_chino_de_fecha(fecha)`, `anios_del_animal(id, desde, hasta)`, `version()` y `revision(idioma)`, entre otras (ver «Uso»). |
+| `php/` | El port a PHP de `zodiaco.py` (`php/src/Zodiaco.php`) y sus pruebas (`php/pruebas/ejecutar.php`). Sin dependencias. |
 | `generar.py` | Valida el JSON y genera lo demás. Solo usa la biblioteca estándar de Python 3. |
 | `pruebas.py` | Pruebas de los datos, las consultas y lo generado (`unittest`). |
 | `pruebas_navegador.py` | Abre la galería en Chromium y la recorre en los 30 idiomas (Playwright). |
@@ -129,6 +132,7 @@ Las funciones devuelven los diccionarios de `datos/signos.json` tal cual y lanza
 python3 generar.py              # regenera constelaciones/, constelaciones-sin-fondo/, por-idioma/ y galeria.html
 python3 generar.py --comprobar  # falla si lo committeado no coincide con datos/signos.json
 python3 -m unittest -v pruebas  # pruebas
+php php/pruebas/ejecutar.php    # el port a PHP contra datos/vectores.json
 python3 pruebas_navegador.py    # la galería en Chromium (necesita playwright==1.55.0)
 ```
 
@@ -138,10 +142,43 @@ Las pruebas comprueban, entre otras cosas, que los dos zodiacos cubran el año b
 
 Todo corre en CI (`.github/workflows/pruebas-signos-zodiacales.yml`) cuando cambia esta carpeta; la galería, en un job aparte.
 
+### PHP
+
+`php/src/Zodiaco.php` es la misma biblioteca en PHP (8.1 o más), sin Composer ni dependencias: `require 'php/src/Zodiaco.php';` y `SignosZodiacales\Zodiaco::…`. Lee los mismos `datos/*.json` y devuelve los mismos arrays.
+
+```php
+use SignosZodiacales\Zodiaco;
+
+Zodiaco::signoOccidental(new DateTimeImmutable('1990-04-03'))['id'];             // 'aries'
+Zodiaco::signoOccidental(new DateTimeImmutable('1990-04-03'), 'sideral')['id'];  // 'piscis'
+Zodiaco::animalChino(2026)['elemento_del_anio'];                                 // 'fuego'
+Zodiaco::animalChinoDeFecha(new DateTimeImmutable('2026-02-16'))['signo']['id']; // 'serpiente'
+Zodiaco::nombreDelAnio(2026, 'es');                                              // 'Caballo de Fuego'
+Zodiaco::compatibilidad('rata', 'dragon')['afinidad'];                           // 'alta'
+```
+
+Los nombres pasan a camelCase (`signo_occidental` → `signoOccidental`, `anios_del_animal` → `aniosDelAnimal`) y hay una diferencia a propósito: Python distingue un `date` de un `datetime` con huso horario, y PHP no distingue una fecha «sin huso» de otra con huso. Por eso `animalChinoDeFecha()` toma el día de la fecha en su propio huso, y **`animalChinoDeInstante()`** la pasa antes a la hora de China, como hace Python con un `datetime` con huso. Las entradas no válidas lanzan `InvalidArgumentException` (o `TypeError`, por los tipos estrictos).
+
+**Los dos se prueban contra los mismos vectores.** `generar.py` calcula con `zodiaco.py` las respuestas a unas 3 700 entradas y las guarda en `datos/vectores.json`; `python3 generar.py --comprobar` falla si el archivo no está al día, y `php php/pruebas/ejecutar.php` falla si PHP da una sola respuesta distinta. Si cambias una consulta de Python, regenera los vectores y el port tiene que seguirla (el diff de `vectores.json` dice qué cambió). El primer día que se probó, los vectores atraparon un fallo del port: dos signos del mismo elemento contaban también como «elementos complementarios».
+
+### Versión y revisión
+
+`datos/signos.json` lleva `version` (versionado semántico: mayor si cambia el esquema o lo que devuelven las consultas, menor si se agregan datos o funciones, parche si se corrige un texto) y `CHANGELOG.md` cuenta qué cambió. `generar.py --comprobar` falla si la primera entrada del `CHANGELOG.md` no coincide con `version`: no se puede cambiar una sin la otra.
+
+**Revisar una traducción.** Cuando una persona nativa revise un idioma, cambia su entrada en `revision` de `datos/signos.json`:
+
+```json
+"es": { "estado": "revisado", "por": "Nombre Apellido", "fecha": "2026-10-26" }
+```
+
+`por` y `fecha` (AAAA-MM-DD) son obligatorios si el estado es `revisado`. Luego `python3 generar.py` actualiza la ficha y el índice, y se apunta en `CHANGELOG.md` (versión menor, o parche si solo cambia esto) con la misma versión en `datos/signos.json`.
+
 ## Esquema de `datos/signos.json`
 
 ```jsonc
 {
+  "version": "1.1.0",                                               // la de CHANGELOG.md
+  "revision": { "es": { "estado": "sin_revisar" }, … },             // los 30 idiomas; «revisado» lleva «por» y «fecha»
   "terminos": { "fuego": { "es": "Fuego", "en": "Fire", … }, … },   // elementos, modalidades, yin/yang, los 7 astros
                                                                     // y los textos de la galería y las fichas × 30 idiomas
   "nombres_del_ciclo": { "es": { "plantilla": "{animal} de {elemento}", "idiomatica": true }, … },

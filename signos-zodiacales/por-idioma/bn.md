@@ -2,6 +2,8 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
+> Traducción sin revisar por una persona nativa.
+
 ## পাশ্চাত্য রাশিচক্র
 
 ### ♈ মেষ

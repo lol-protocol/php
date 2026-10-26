@@ -1,4 +1,97 @@
 {
+  "version": "1.1.0",
+  "revision": {
+    "es": {
+      "estado": "sin_revisar"
+    },
+    "en": {
+      "estado": "sin_revisar"
+    },
+    "pt": {
+      "estado": "sin_revisar"
+    },
+    "fr": {
+      "estado": "sin_revisar"
+    },
+    "it": {
+      "estado": "sin_revisar"
+    },
+    "de": {
+      "estado": "sin_revisar"
+    },
+    "nl": {
+      "estado": "sin_revisar"
+    },
+    "sv": {
+      "estado": "sin_revisar"
+    },
+    "pl": {
+      "estado": "sin_revisar"
+    },
+    "ru": {
+      "estado": "sin_revisar"
+    },
+    "uk": {
+      "estado": "sin_revisar"
+    },
+    "tr": {
+      "estado": "sin_revisar"
+    },
+    "el": {
+      "estado": "sin_revisar"
+    },
+    "ar": {
+      "estado": "sin_revisar"
+    },
+    "he": {
+      "estado": "sin_revisar"
+    },
+    "hi": {
+      "estado": "sin_revisar"
+    },
+    "zh": {
+      "estado": "sin_revisar"
+    },
+    "ja": {
+      "estado": "sin_revisar"
+    },
+    "ko": {
+      "estado": "sin_revisar"
+    },
+    "vi": {
+      "estado": "sin_revisar"
+    },
+    "th": {
+      "estado": "sin_revisar"
+    },
+    "id": {
+      "estado": "sin_revisar"
+    },
+    "fa": {
+      "estado": "sin_revisar"
+    },
+    "ur": {
+      "estado": "sin_revisar"
+    },
+    "bn": {
+      "estado": "sin_revisar"
+    },
+    "ro": {
+      "estado": "sin_revisar"
+    },
+    "cs": {
+      "estado": "sin_revisar"
+    },
+    "fi": {
+      "estado": "sin_revisar"
+    },
+    "sw": {
+      "estado": "sin_revisar"
+    },
+    "da": {
+      "estado": "sin_revisar"
+    }
+  },
   "terminos": {
     "fuego": {
       "es": "Fuego",

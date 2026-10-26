@@ -201,6 +201,12 @@ class PruebasDeConsultas(unittest.TestCase):
         with self.assertRaises(ValueError):
             zodiaco.anios_del_animal("unicornio", 2000, 2030)
 
+    def test_version_y_revision(self):
+        self.assertRegex(zodiaco.version(), r"^\d+\.\d+\.\d+$")
+        self.assertEqual(zodiaco.revision("es")["estado"], "sin_revisar")
+        with self.assertRaises(ValueError):
+            zodiaco.revision("xx")
+
 
 class PruebasDeValidacion(unittest.TestCase):
     """validar() tiene que atrapar datos rotos, no solo aprobar los buenos."""
@@ -264,6 +270,58 @@ class PruebasDeValidacion(unittest.TestCase):
     def test_detecta_ids_repetidos(self):
         self.datos["signos"][1]["id"] = self.datos["signos"][0]["id"]
         self.assertTrue(self.errores_con("repetidos"))
+
+
+    def test_detecta_una_version_mal_escrita(self):
+        for mala in ("1.1", "v1.1.0", "", "1.1.0-beta"):
+            self.datos["version"] = mala
+            self.assertTrue(self.errores_con("version:"), mala)
+
+    def test_detecta_un_idioma_sin_estado_de_revision(self):
+        del self.datos["revision"]["sw"]
+        self.assertTrue(self.errores_con("revision: no tiene exactamente"))
+
+    def test_detecta_un_estado_de_revision_desconocido(self):
+        self.datos["revision"]["es"]["estado"] = "casi_revisado"
+        self.assertTrue(self.errores_con("revision/es"))
+
+    def test_un_idioma_revisado_necesita_quien_y_cuando(self):
+        self.datos["revision"]["es"] = {"estado": "revisado"}
+        self.assertTrue(self.errores_con("revision/es"))
+        self.datos["revision"]["es"] = {"estado": "revisado", "por": "Ana", "fecha": "2026-13-01"}
+        self.assertTrue(self.errores_con("revision/es"))
+        self.datos["revision"]["es"] = {"estado": "revisado", "por": "  ", "fecha": "2026-10-26"}
+        self.assertTrue(self.errores_con("revision/es"))
+
+    def test_un_idioma_revisado_completo_es_valido(self):
+        self.datos["revision"]["es"] = {"estado": "revisado", "por": "Ana", "fecha": "2026-10-26"}
+        self.assertEqual(generar.validar(self.datos), [])
+        self.assertIn("Revisada por Ana (2026-10-26)", generar.indice_de(self.datos))
+        self.assertIn("Traducción revisada por Ana el 2026-10-26.", generar.ficha_de(self.datos, "es"))
+
+    def test_sin_revisar_no_lleva_mas_campos(self):
+        self.datos["revision"]["es"] = {"estado": "sin_revisar", "por": "Ana"}
+        self.assertTrue(self.errores_con("revision/es"))
+
+
+class PruebasDelChangelog(unittest.TestCase):
+    def test_el_changelog_real_coincide_con_la_version_de_los_datos(self):
+        self.assertEqual(generar.validar_changelog(generar.CHANGELOG.read_text(encoding="utf-8"), zodiaco.version()), [])
+
+    def test_detecta_una_version_que_no_esta_arriba(self):
+        texto = "## [1.0.0] - 2026-10-24\n\n## [0.9.0] - 2026-10-01\n"
+        self.assertTrue(generar.validar_changelog(texto, "1.1.0"))
+
+    def test_detecta_versiones_desordenadas_o_repetidas(self):
+        self.assertTrue(generar.validar_changelog("## [1.0.0] - 2026-10-24\n## [1.1.0] - 2026-10-26\n", "1.0.0"))
+        self.assertTrue(generar.validar_changelog("## [1.0.0] - 2026-10-24\n## [1.0.0] - 2026-10-20\n", "1.0.0"))
+
+    def test_detecta_un_changelog_vacio_o_con_fecha_imposible(self):
+        self.assertTrue(generar.validar_changelog("# Historial\n", "1.0.0"))
+        self.assertTrue(generar.validar_changelog("## [1.0.0] - 2026-02-30\n", "1.0.0"))
+
+    def test_un_changelog_bien_hecho_pasa(self):
+        self.assertEqual(generar.validar_changelog("## [1.1.0] - 2026-10-26\n## [1.0.0] - 2026-10-24\n", "1.1.0"), [])
 
 
 class PruebasDeSalidas(unittest.TestCase):
@@ -652,6 +710,59 @@ class PruebasDeTextosTraducidos(unittest.TestCase):
         datos = copy.deepcopy(self.datos)
         del datos["terminos"]["sin_fondo"]["ko"]
         self.assertTrue(any("terminos/sin_fondo" in e for e in generar.validar(datos)))
+
+
+    def test_cada_ficha_dice_si_su_traduccion_esta_revisada(self):
+        for codigo in generar.IDIOMAS:
+            self.assertIn("> Traducción sin revisar por una persona nativa.", self.archivos[generar.SALIDA_MD / f"{codigo}.md"], codigo)
+        indice = self.archivos[generar.SALIDA_MD / "README.md"]
+        self.assertEqual(indice.count("| Sin revisar |"), len(generar.IDIOMAS))
+        self.assertIn(f"Versión de los datos: {zodiaco.version()}", indice)
+
+
+class PruebasDeVectores(unittest.TestCase):
+    """datos/vectores.json es lo que comparten Python y los ports: tiene que estar completo y sus errores, fallar."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.datos = cargar_datos()
+        cls.vectores = json.loads(generar.vectores_de(cls.datos))
+
+    def test_estan_todas_las_consultas_con_el_tamano_esperado(self):
+        v = self.vectores
+        self.assertEqual(v["version"], zodiaco.version())
+        self.assertEqual({k: len(x) for k, x in v["signo_occidental"].items()}, {"tropical": 366, "sideral": 366})
+        self.assertEqual(len(v["cuspide"]), 366)
+        self.assertEqual(len(v["animal_chino"]), 200)
+        self.assertEqual(len(v["animal_chino_de_fecha"]), 400)
+        self.assertEqual(set(v["nombre_del_anio"]), set(generar.IDIOMAS))
+        self.assertEqual(len(v["compatibilidad"]), 2 * 12 * 12)
+        self.assertEqual({k: len(x) for k, x in v["decanato"].items()}, {"tropical": 366, "sideral": 366})
+        self.assertEqual(set(v["revision"]), set(generar.IDIOMAS))
+
+    def test_el_archivo_committeado_es_el_que_genera_generar_py(self):
+        self.assertEqual(generar.VECTORES.read_text(encoding="utf-8"), generar.vectores_de(self.datos))
+
+    def test_cada_caso_de_error_lanza_excepcion_en_python(self):
+        con_fecha = {"signo_occidental", "cuspide", "animal_chino_de_fecha"}
+        for caso in self.vectores["errores"]:
+            args = list(caso["args"])
+            if caso["funcion"] in con_fecha:
+                args[0] = datetime.date.fromisoformat(args[0])
+            with self.subTest(caso=caso), self.assertRaises((TypeError, ValueError, LookupError)):
+                getattr(zodiaco, caso["funcion"])(*args)
+
+    def test_los_instantes_con_huso_dan_lo_mismo_que_en_la_hora_de_china(self):
+        for texto, anio_lunar, _ in self.vectores["animal_chino_de_instante"]:
+            instante = datetime.datetime.fromisoformat(texto)
+            en_china = instante.astimezone(zodiaco.HORA_DE_CHINA).replace(tzinfo=None)
+            self.assertEqual(zodiaco.animal_chino_de_fecha(en_china)["anio_lunar"], anio_lunar, texto)
+
+    def test_hay_un_instante_que_cambia_de_dia_al_pasar_a_china(self):
+        # Sin la conversión, 16/02/2026 20:00 UTC sería Serpiente; en China ya es el 17 y es Caballo.
+        sin_convertir = zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 16))["anio_lunar"]
+        convertido = zodiaco.animal_chino_de_fecha(datetime.datetime(2026, 2, 16, 20, tzinfo=datetime.timezone.utc))["anio_lunar"]
+        self.assertEqual((sin_convertir, convertido), (2025, 2026))
 
 
 if __name__ == "__main__":
