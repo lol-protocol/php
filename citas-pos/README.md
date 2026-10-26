@@ -2,7 +2,7 @@
 
 Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de etiquetado *part-of-speech* de [`Listado-colores/`](../Listado-colores/)): citas de personas célebres, en varios idiomas, en las que **cada palabra va en el color de su categoría gramatical**. La cita en color enseña lo que hace el etiquetador sin tener que explicarlo.
 
-**Estado: documentación, una paleta provisional con su prototipo y el registro de revisiones; todavía no hay citas.** Las decisiones de diseño se tomaron el 24 y el 25 de octubre de 2026. Las citas candidatas de [`CRITERIOS.md`](CRITERIOS.md) son autores a investigar, no citas verificadas, y las frases del prototipo son frases de prueba, no citas.
+**Estado: documentación, una paleta provisional con su prototipo, el registro de revisiones y 6 citas candidatas sin verificar; todavía no hay ninguna cita con texto.** Las decisiones de diseño se tomaron el 24 y el 25 de octubre de 2026. Las candidatas de [`datos/citas.json`](datos/citas.json) no tienen texto porque aún no se pudo abrir una edición de dominio público para comprobarlas (ver «Para desbloquear la verificación» en [`PLAN.md`](PLAN.md)), y las frases del prototipo son frases de prueba, no citas.
 
 ## Decisiones tomadas
 
@@ -31,10 +31,11 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 | [`PLAN.md`](PLAN.md) | Las fases de trabajo, las preguntas abiertas, cómo se mide si sirve y los riesgos. |
 | [`REVISIONES.md`](REVISIONES.md) y [`revisiones.csv`](revisiones.csv) | Quién ha revisado qué, con el formato del registro de `Listado-colores/`. Empieza vacío. |
 | [`datos/paleta.json`](datos/paleta.json) | Un color por categoría UPOS, en modo claro y oscuro, y la marca (estilo de subrayado) de cada grupo. **Provisional.** |
+| [`datos/citas.json`](datos/citas.json) | Las 6 citas candidatas del piloto en español (Bécquer, Martí, Sor Juana, Darío, Quevedo y Calderón), con qué falta comprobar de cada una. **Todas `sin-verificar` y sin texto**: no se pudo abrir ninguna edición de dominio público desde el entorno donde se armó. |
 | [`datos/ejemplos.json`](datos/ejemplos.json) | Seis frases de prueba (no son citas) en `spa`, `eng` y `deu`, con sus etiquetas puestas a mano y sin revisión nativa. |
 | [`datos/idiomas.json`](datos/idiomas.json) | Los 30 idiomas con su código de 3 letras y el de 2 de `Listado-colores/`. |
 | [`prototipo/index.html`](prototipo/index.html) | La paleta en una sola página, sin servidor: leyenda, frases de prueba, tema claro y oscuro, simulación de daltonismo y marcas. Generado: no se edita a mano. |
-| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php` y `comprobar-revisiones.php` (PHP sin dependencias). |
+| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php`, `comprobar-citas.php` y `comprobar-revisiones.php` (PHP sin dependencias). |
 
 ## Idea central
 
@@ -68,11 +69,12 @@ Desde la raíz del repositorio, con PHP 8.3 y sin instalar nada:
 ```bash
 php citas-pos/bin/comprobar-paleta.php        # las 17 categorías, contraste de 4,5:1 en claro y oscuro, colores confundibles (--lista para verlos)
 php citas-pos/bin/prototipo.php --comprobar   # prototipo/index.html al día con datos/ (sin --comprobar, lo regenera)
+php citas-pos/bin/comprobar-citas.php         # datos/citas.json: fichas completas y ninguna verificada sin texto, edición y dos fuentes
 php citas-pos/bin/comprobar-revisiones.php    # revisiones.csv válido
 ```
 
-El workflow [`pruebas-citas-pos.yml`](../.github/workflows/pruebas-citas-pos.yml) corre las tres, con filtro de rutas, en cada PR que toque esta carpeta.
+El workflow [`pruebas-citas-pos.yml`](../.github/workflows/pruebas-citas-pos.yml) corre las cuatro, con filtro de rutas, en cada PR que toque esta carpeta.
 
 Para ver el prototipo, abre `citas-pos/prototipo/index.html` en un navegador: no necesita servidor ni conexión.
 
-**Lo que estas comprobaciones no cubren:** no hay pruebas de las citas ni de sus traducciones (aún no existen), la paleta no se ha probado con personas con daltonismo ni en un correo real, y la simulación de daltonismo es una aproximación.
+**Lo que estas comprobaciones no cubren:** que el texto de una cita coincida con su fuente (lo hace una persona al verificar; el validador solo exige que quede anotado con qué), ni hay pruebas de las traducciones (aún no existen), la paleta no se ha probado con personas con daltonismo ni en un correo real, y la simulación de daltonismo es una aproximación.

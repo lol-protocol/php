@@ -100,7 +100,7 @@ El piloto es de **un solo idioma, `spa`, con 6 citas = 6 fichas**, que son las 6
 
 Mientras no haya revisores, las citas de otros idiomas pueden prepararse como **borrador interno** (fuente, texto, etiquetas propuestas), pero **no se publican**. Cada idioma que consiga un revisor entra al piloto por el orden de la tabla de arriba.
 
-Consecuencia para los autores candidatos: las **citas en español** son las que importan primero. De los candidatos de arriba, los de lengua española son Cervantes y Sor Juana Inés de la Cruz; hay que buscar más autores de dominio público en español (de España y de América) para tener donde elegir las 6 citas.
+Las **6 candidatas** del piloto están en [`datos/citas.json`](datos/citas.json), todas `sin-verificar`: Bécquer (Rima XXI), Martí (*Versos sencillos* XXXIX), Sor Juana («A su retrato»), Darío («Canción de otoño en primavera»), Quevedo («Amor constante más allá de la muerte») y Calderón (*La vida es sueño*). Se eligieron por ser de dominio público, de entre 6 y 20 palabras, sin clíticos ni contracciones y de épocas y países distintos (España, Cuba, México y Nicaragua); tres hablan de color. Solo una es de autora, porque es la que cumple los demás criterios; ampliar la lista a más voces es una decisión abierta.
 
 ## Etiquetado: categorías
 
@@ -125,20 +125,40 @@ Reglas de etiquetado para las citas:
 
 ## Ficha de cada cita
 
-Cuando exista el corpus (fase 1 de `PLAN.md`), cada cita tendrá, como mínimo:
+Cada cita de [`datos/citas.json`](datos/citas.json) tiene estos campos, y [`bin/comprobar-citas.php`](bin/comprobar-citas.php) los valida:
 
 | Campo | Contenido |
 |---|---|
-| `id` | Identificador estable |
+| `id` | Identificador estable: el código de idioma, un guion y letras o números (`spa-c1`). Es el que usa `revisiones.csv`. |
 | `idioma` | Código de 3 letras del original (ISO 639-3) |
 | `escritura` | Solo si hace falta distinguirla, por ejemplo `Hans` en chino simplificado |
-| `texto` | El texto exacto, con la ortografía de la edición citada |
-| `autor`, `fallecimiento` | Autor y año de su muerte |
-| `obra`, `edicion`, `ubicacion` | Obra, edición, página o verso |
-| `fuente` | Dónde se comprobó (enlace o referencia) |
+| `texto` | El texto exacto, con la ortografía de la edición citada. `null` mientras no se haya verificado. |
+| `autor`, `fallecimiento` | Autor y año de su muerte (solo entran fallecidos hasta 1925) |
+| `obra`, `ubicacion`, `edicion` | Obra, dónde está (verso, capítulo, página) y la edición exacta. `edicion` es `null` hasta verificar. |
+| `fuentes` | Las dos o más fuentes consultadas: `nombre`, `url` (`https://`), `consultada` (`AAAA-MM-DD`) y `coincide: true` |
 | `dominio_publico` | Cómo se comprobó (ver «Derechos de autor») |
 | `tema` | Palabras, nombres, traducción, color… |
-| `etiquetas` | Categoría de cada palabra, y de dónde salen |
-| `estado` | `sin-verificar`, `verificada` o `descartada` (con motivo) |
+| `etiquetas` | Pares `[forma, categoría UPOS]`, y de dónde salen (ver «Etiquetado»). `null` hasta tener texto. |
+| `estado` | `sin-verificar`, `verificada` o `descartada` |
+| `por_comprobar` | Solo en `sin-verificar`: qué falta confirmar, en una lista. Obligatorio. |
+| `motivo_descarte` | Solo en `descartada`: por qué. Obligatorio. |
 
-Una cita en estado `sin-verificar` nunca se publica.
+### Reglas que el validador hace cumplir
+
+- Una cita `verificada` tiene **texto exacto de entre 6 y 20 palabras**, **edición** y **al menos dos fuentes de sitios distintos** que coinciden con el texto.
+- Una cita `sin-verificar` dice qué falta (`por_comprobar`) y **nunca se publica**.
+- Una cita de un autor fallecido después de 1925 no entra, salvo como `descartada`.
+- Las etiquetas, si hay, reconstruyen el texto palabra por palabra.
+
+El validador **no comprueba que el texto coincida con la fuente**: eso lo hace una persona al verificar, y queda anotado en `fuentes`. Lo que impide es declarar «verificada» una cita sin haber anotado con qué.
+
+### Cómo se verifica una cita
+
+1. Se localiza la obra en una **edición de dominio público** y se anota cuál (año, editor si lo hay).
+2. Se copia el texto **de esa edición**, no de una antología ni de una página de frases.
+3. Se contrasta con **una segunda fuente independiente** (otra edición o un repositorio de textos de otro sitio), carácter por carácter, incluidas tildes, puntuación y mayúsculas.
+4. Si las dos difieren, se decide con la edición más antigua o más fiable, y se anota la variante en `por_comprobar` o en una nota.
+5. Se rellena `texto`, `edicion`, `fuentes` y `ubicacion` exacta, y solo entonces el estado pasa a `verificada`.
+6. Después, el revisor de ese idioma firma `cita` en `revisiones.csv`.
+
+**Estado actual (26 de octubre de 2026):** las 6 candidatas del piloto están `sin-verificar` y sin texto, porque desde el entorno donde se armó esto no se pudo abrir ninguna edición de dominio público (la política de red bloquea Wikisource, Project Gutenberg y la Biblioteca Virtual Miguel de Cervantes). El texto de las citas **no se escribió de memoria** para no dar por buena una cita sin comprobar.

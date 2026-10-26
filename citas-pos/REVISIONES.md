@@ -35,7 +35,7 @@ Una cita no se publica en un idioma hasta que su traducción y sus etiquetas ten
 
    La CI lo corre en cada PR que toque esta carpeta.
 
-Hoy lo único revisable son las **etiquetas de las frases de prueba** del prototipo (`spa-1`, `spa-2`, `eng-1`, `eng-2`, `deu-1`, `deu-2`, con alcance `etiquetas`). Sin revisores de otros idiomas, solo tienen quién las revise las de `spa`; las de `eng` y `deu` esperan a que aparezca alguien. Las citas, con sus alcances `cita` y `traduccion`, se podrán revisar cuando exista `datos/citas.json`.
+Hoy lo único revisable son las **etiquetas de las frases de prueba** del prototipo (`spa-1`, `spa-2`, `eng-1`, `eng-2`, `deu-1`, `deu-2`, con alcance `etiquetas`). Sin revisores de otros idiomas, solo tienen quién las revise las de `spa`; las de `eng` y `deu` esperan a que aparezca alguien. Las 6 citas candidatas (`spa-c1` a `spa-c6`, en `datos/citas.json`) ya tienen id, pero **todavía no tienen texto**, así que no hay nada que revisar en ellas; con alcance `cita` se podrán revisar cuando estén verificadas.
 
 ## Qué no hace
 
