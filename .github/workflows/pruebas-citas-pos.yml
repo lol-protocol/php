@@ -42,5 +42,8 @@ jobs:
       - name: prototipo/index.html al día con el generador
         run: php citas-pos/bin/prototipo.php --comprobar
 
+      - name: Citas con ficha completa y ninguna verificada sin fuentes
+        run: php citas-pos/bin/comprobar-citas.php
+
       - name: Registro de revisiones válido
         run: php citas-pos/bin/comprobar-revisiones.php

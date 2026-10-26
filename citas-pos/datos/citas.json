@@ -1,0 +1,125 @@
+{
+  "descripcion": "Las 6 citas candidatas del piloto en español (fase 1 de PLAN.md). TODAS están sin verificar: no se pudo consultar ninguna edición de dominio público desde el entorno donde se armó este archivo, así que ninguna lleva texto. Una cita solo pasa a «verificada» con su texto exacto, su edición y al menos dos fuentes independientes que coincidan (ver CRITERIOS.md). Las ubicaciones, los años y las variantes de abajo son de memoria o salen de búsquedas web sin abrir la fuente: hay que confirmarlos.",
+  "citas": [
+    {
+      "id": "spa-c1",
+      "idioma": "spa",
+      "texto": null,
+      "autor": "Gustavo Adolfo Bécquer",
+      "fallecimiento": 1870,
+      "obra": "Rimas",
+      "ubicacion": "Rima XXI, primeros versos",
+      "edicion": null,
+      "fuentes": [],
+      "dominio_publico": "Fallecido en 1870: de dominio público aun con vida+100. Falta elegir una edición que también lo sea.",
+      "tema": ["color", "palabras"],
+      "etiquetas": null,
+      "estado": "sin-verificar",
+      "por_comprobar": [
+        "El texto exacto de los primeros versos y su puntuación: hay variantes entre ediciones.",
+        "Una edición de dominio público como base (las Rimas se publicaron tras su muerte).",
+        "Cuántos versos entran en la cita (debe quedar entre 6 y 20 palabras)."
+      ]
+    },
+    {
+      "id": "spa-c2",
+      "idioma": "spa",
+      "texto": null,
+      "autor": "José Martí",
+      "fallecimiento": 1895,
+      "obra": "Versos sencillos (1891)",
+      "ubicacion": "Poema XXXIX, primera estrofa",
+      "edicion": null,
+      "fuentes": [],
+      "dominio_publico": "Fallecido en 1895: de dominio público aun con vida+100. Falta elegir una edición que también lo sea.",
+      "tema": ["color"],
+      "etiquetas": null,
+      "estado": "sin-verificar",
+      "por_comprobar": [
+        "Hay variantes entre ediciones en esta estrofa: una búsqueda web mostró «en junio como en enero» y «en julio como en enero». Hay que decidir con la edición de 1891.",
+        "La puntuación y las mayúsculas de la estrofa.",
+        "Que la estrofa completa quede entre 6 y 20 palabras."
+      ]
+    },
+    {
+      "id": "spa-c3",
+      "idioma": "spa",
+      "texto": null,
+      "autor": "Sor Juana Inés de la Cruz",
+      "fallecimiento": 1695,
+      "obra": "Sonetos: «A su retrato»",
+      "ubicacion": "Soneto 145 (según la numeración de Wikisource: CXLV), primer cuarteto",
+      "edicion": null,
+      "fuentes": [],
+      "dominio_publico": "Fallecida en 1695: de dominio público aun con vida+100. Las ediciones críticas modernas tienen derechos propios del editor: hay que usar una edición antigua o una que sea de dominio público.",
+      "tema": ["color", "ver"],
+      "etiquetas": null,
+      "estado": "sin-verificar",
+      "por_comprobar": [
+        "Si el primer verso lleva tilde en «Éste»: unas ediciones lo escriben con ella y otras sin ella.",
+        "La puntuación del cuarteto.",
+        "Edición base antigua (por ejemplo, la de Inundación castálida, 1689) y que no sea una edición crítica moderna.",
+        "Que el cuarteto entero (una sola oración) quede entre 6 y 20 palabras."
+      ]
+    },
+    {
+      "id": "spa-c4",
+      "idioma": "spa",
+      "texto": null,
+      "autor": "Rubén Darío",
+      "fallecimiento": 1916,
+      "obra": "Cantos de vida y esperanza (1905): «Canción de otoño en primavera»",
+      "ubicacion": "Primeros dos versos",
+      "edicion": null,
+      "fuentes": [],
+      "dominio_publico": "Fallecido en 1916: de dominio público aun con vida+100. Falta elegir una edición que también lo sea.",
+      "tema": ["juventud", "tiempo"],
+      "etiquetas": null,
+      "estado": "sin-verificar",
+      "por_comprobar": [
+        "El texto exacto de los dos primeros versos, con sus signos de exclamación y su puntuación.",
+        "La edición de 1905 como base."
+      ]
+    },
+    {
+      "id": "spa-c5",
+      "idioma": "spa",
+      "texto": null,
+      "autor": "Francisco de Quevedo",
+      "fallecimiento": 1645,
+      "obra": "Soneto «Amor constante más allá de la muerte»",
+      "ubicacion": "Los dos últimos versos (13 y 14)",
+      "edicion": null,
+      "fuentes": [],
+      "dominio_publico": "Fallecido en 1645: de dominio público aun con vida+100. Falta elegir una edición que también lo sea.",
+      "tema": ["amor", "tiempo"],
+      "etiquetas": null,
+      "estado": "sin-verificar",
+      "por_comprobar": [
+        "Que los versos 13 y 14 sean los que se cree y su texto exacto: el soneto se publicó tras su muerte y circulan versiones distintas.",
+        "Una edición antigua o de dominio público como base, no una edición crítica moderna.",
+        "Que los dos versos juntos queden entre 6 y 20 palabras."
+      ]
+    },
+    {
+      "id": "spa-c6",
+      "idioma": "spa",
+      "texto": null,
+      "autor": "Pedro Calderón de la Barca",
+      "fallecimiento": 1681,
+      "obra": "La vida es sueño",
+      "ubicacion": "Monólogo de Segismundo en la jornada II, últimos versos",
+      "edicion": null,
+      "fuentes": [],
+      "dominio_publico": "Fallecido en 1681: de dominio público aun con vida+100. Falta elegir una edición que también lo sea.",
+      "tema": ["sueño", "vida"],
+      "etiquetas": null,
+      "estado": "sin-verificar",
+      "por_comprobar": [
+        "En qué jornada y escena está el pasaje y su texto exacto.",
+        "La puntuación y la ortografía de la edición base (hay ediciones modernizadas).",
+        "Una edición antigua o de dominio público como base."
+      ]
+    }
+  ]
+}
