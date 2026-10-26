@@ -10,7 +10,7 @@ La lógica está en [`Support/AccessPolicy.php`](../Support/AccessPolicy.php) y 
 |---|---|
 | Colección con `publica = false`: `/{id}/`, `/{id}/1/`, `/{id}/3/` (GEDCOM) | **404**, idéntico al de un id que no existe |
 | Pedidos del POS: `/{código de 16 dígitos}/` y sus acciones | **404**, igual (salvo para la sesión que hizo la compra) |
-| Página de edición de una colección: `/{id}/2/` | **404** si la colección es privada; **401** si es pública |
+| Página de edición de una colección: `/{id}/2/` | **404** si la colección es privada; **401** si es pública. El enlace «Editar» solo lo ve el propietario; para entrar, `/0/` |
 | Área de cuenta, genealogía y POS: `/0/` y sus acciones | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN` |
 | Búsqueda de colecciones (`/b/7/`) | las privadas no aparecen, ni buscándolas por su nombre exacto |
 | Marca de «vive / falleció» de una persona: `/{id de persona}/5/` | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN`. Guardar exige además el token CSRF del formulario |
