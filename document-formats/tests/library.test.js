@@ -469,3 +469,20 @@ test('searching finds a name whatever its accents and case', () => {
     assert.deepEqual(search.search('TÉRMICO').map(f => f.format_name), ['Papel térmico']);
     assert.deepEqual(search.search('méxico').map(f => f.format_name).sort(), ['Carta', 'Papel térmico']);
 });
+
+test('the language manager works, and switches language, when the browser blocks storage', async () => {
+    const original = globalThis.localStorage;
+    const blocked = () => { throw new Error('SecurityError: The operation is insecure.'); };
+    globalThis.localStorage = { getItem: blocked, setItem: blocked };
+    try {
+        assert.equal(LocalizationManager.savedLanguage(), null);
+        assert.doesNotThrow(() => LocalizationManager.saveLanguage('fr'));
+        const i18n = new LocalizationManager('../app/translations');
+        assert.equal(i18n.getLanguage(), 'en');
+        await i18n.setLanguage('fr');
+        assert.equal(i18n.getLanguage(), 'fr', 'the switch is not undone because the choice cannot be saved');
+        assert.notEqual(i18n.t('demo.download'), 'Download CSV');
+    } finally {
+        globalThis.localStorage = original;
+    }
+});

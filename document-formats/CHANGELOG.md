@@ -5,6 +5,14 @@ carries the details. Dates are those of the merge.
 
 ## Unreleased
 
+- Fixed: with browser storage blocked (some private modes, sandboxed frames, blocked cookies) the demo
+  showed nothing, because `LocalizationManager` read `localStorage` without guarding it; and a
+  language switch was undone when the choice couldn't be saved. `LocalizationManager.savedLanguage()`
+  and `saveLanguage()` now guard both, and the page only stops remembering the choice.
+- Fixed: on a 320 px screen the Paper Types tab was wider than the screen (a long size name in the
+  select, then a long category badge). The grids use `minmax(min(…, 100%), …)` / `minmax(0, 1fr)`
+  and the card header wraps.
+
 - Demo: `index.html` keeps no inline CSS or JavaScript (now `app/demo.css` and `app/demo.js`), the
   Paper Types categories are translated (`paperCategories.*`), the comparison says when it cuts the
   list at 100 rows, **Reverse order** next to **Sort by**, and the converter lists the five closest

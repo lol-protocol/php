@@ -839,9 +839,26 @@ class LocalizationManager {
         return LocalizationManager.RTL_LANGUAGES.has(langCode);
     }
 
+    // The language the person chose last time. Reading or writing it can throw when the browser
+    // blocks storage (some private modes, sandboxed frames, cookies blocked): then the page still
+    // works and switches languages; it only doesn't remember the choice.
+    static savedLanguage() {
+        try {
+            return localStorage.getItem('preferredLanguage');
+        } catch (error) {
+            return null;
+        }
+    }
+
+    static saveLanguage(langCode) {
+        try {
+            localStorage.setItem('preferredLanguage', langCode);
+        } catch (error) { /* not remembered, see savedLanguage() */ }
+    }
+
     constructor(translationsPath = 'translations') {
         this.translationsPath = translationsPath;
-        this.currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
+        this.currentLanguage = LocalizationManager.savedLanguage() || 'en';
         this.translations = {};
         // English text, used for any string the current language leaves empty or lacks.
         this.english = null;
@@ -865,7 +882,7 @@ class LocalizationManager {
             if (langCode === 'en') this.english = this.translations;
             else await this.loadEnglish(timeout);
             this.currentLanguage = langCode;
-            localStorage.setItem('preferredLanguage', langCode);
+            LocalizationManager.saveLanguage(langCode);
             this.notifyListeners();
         } catch (error) {
             console.error(`Error loading language ${langCode}:`, error);
