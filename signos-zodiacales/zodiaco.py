@@ -20,6 +20,8 @@
     >>> d["signo"]["id"], d["numero"], d["regente"], d["signo_regente"]["id"]
     ('aries', 2, 'sol', 'leo')
 
+Hay un port a PHP en php/ que da las mismas respuestas (datos/vectores.json las fija).
+
 Las funciones devuelven los diccionarios de los datos tal cual (con nombres y descripciones en los
 30 idiomas) y lanzan excepción ante una entrada no válida. Solo usa la biblioteca estándar.
 """
@@ -61,6 +63,20 @@ def fechas_anio_nuevo():
     with ANIO_NUEVO.open(encoding="utf-8") as f:
         crudas = json.load(f)["fechas"]
     return {int(a): datetime.date.fromisoformat(d) for a, d in crudas.items()}
+
+
+def version(datos=None):
+    """La versión de los datos (X.Y.Z, la de CHANGELOG.md)."""
+    return (datos or cargar_datos())["version"]
+
+
+def revision(idioma, datos=None):
+    """El estado de revisión de las traducciones de un idioma: {"estado": "sin_revisar"} o
+    {"estado": "revisado", "por": …, "fecha": "AAAA-MM-DD"}."""
+    datos = datos or cargar_datos()
+    if idioma not in datos["revision"]:
+        raise ValueError(f"idioma desconocido: {idioma!r}")
+    return datos["revision"][idioma]
 
 
 def _en_rango(mes_dia, desde, hasta):

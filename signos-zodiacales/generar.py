@@ -8,6 +8,7 @@ Uso:
 import datetime
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 from xml.etree import ElementTree
@@ -16,6 +17,8 @@ import zodiaco
 
 RAIZ = Path(__file__).resolve().parent
 DATOS = RAIZ / "datos" / "signos.json"
+CHANGELOG = RAIZ / "CHANGELOG.md"
+VECTORES = RAIZ / "datos" / "vectores.json"
 SALIDA_SVG = RAIZ / "constelaciones"
 SALIDA_SVG_SIN_FONDO = RAIZ / "constelaciones-sin-fondo"
 SALIDA_MD = RAIZ / "por-idioma"
@@ -52,6 +55,7 @@ ELEMENTOS_OCCIDENTALES = {"fuego", "tierra", "aire", "agua"}
 ELEMENTOS_CHINOS = {"madera", "fuego", "tierra", "metal", "agua"}
 MODALIDADES = {"cardinal", "fijo", "mutable"}
 POLARIDADES = {"yang", "yin"}
+ESTADOS_DE_REVISION = ("sin_revisar", "revisado")
 
 # Años de cada animal que muestra la ficha. zodiaco.animal_chino() sirve para cualquier año.
 ANIOS_FICHA = (1924, 2043)
@@ -67,10 +71,52 @@ def _fecha_valida(par):
         return False
 
 
+def _fecha_iso_valida(texto):
+    if not isinstance(texto, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", texto):
+        return False
+    try:
+        datetime.date.fromisoformat(texto)
+    except ValueError:
+        return False
+    return True
+
+
+def validar_changelog(texto, version):
+    """Problemas de CHANGELOG.md respecto de la versión de los datos (lista vacía si está bien)."""
+    entradas = re.findall(r"^## \[(\d+\.\d+\.\d+)\] - (\d{4}-\d{2}-\d{2})$", texto, re.MULTILINE)
+    if not entradas:
+        return ["CHANGELOG.md: no tiene ninguna entrada «## [X.Y.Z] - AAAA-MM-DD»"]
+    errores = []
+    if entradas[0][0] != version:
+        errores.append(f"CHANGELOG.md: la entrada más reciente es {entradas[0][0]} y datos/signos.json dice {version}")
+    versiones = [tuple(map(int, v.split("."))) for v, _ in entradas]
+    if versiones != sorted(versiones, reverse=True) or len(set(versiones)) != len(versiones):
+        errores.append("CHANGELOG.md: las versiones tienen que ir de la más nueva a la más vieja, sin repetir")
+    for _, fecha in entradas:
+        if not _fecha_iso_valida(fecha):
+            errores.append(f"CHANGELOG.md: la fecha {fecha} no existe")
+    return errores
+
+
 def validar(datos):
     """Devuelve la lista de problemas de datos/signos.json (vacía si está bien)."""
     errores = []
     esperados_idiomas = set(IDIOMAS)
+
+    if not re.fullmatch(r"\d+\.\d+\.\d+", str(datos.get("version", ""))):
+        errores.append("version: tiene que ser X.Y.Z (versionado semántico)")
+
+    revision = datos.get("revision", {})
+    if set(revision) != esperados_idiomas:
+        errores.append(f"revision: no tiene exactamente los {len(IDIOMAS)} idiomas")
+    for codigo, estado in revision.items():
+        if estado.get("estado") not in ESTADOS_DE_REVISION:
+            errores.append(f"revision/{codigo}: estado tiene que ser uno de {ESTADOS_DE_REVISION}")
+        elif estado["estado"] == "revisado":
+            if not str(estado.get("por", "")).strip() or not _fecha_iso_valida(estado.get("fecha")):
+                errores.append(f"revision/{codigo}: un idioma revisado necesita «por» (quién) y «fecha» (AAAA-MM-DD)")
+        elif set(estado) != {"estado"}:
+            errores.append(f"revision/{codigo}: sin_revisar no lleva más campos")
 
     terminos = datos.get("terminos", {})
     necesarios = (ELEMENTOS_OCCIDENTALES | ELEMENTOS_CHINOS | MODALIDADES | POLARIDADES
@@ -203,7 +249,8 @@ def cargar():
         datos = json.load(f)
     with zodiaco.ANIO_NUEVO.open(encoding="utf-8") as f:
         anio_nuevo = json.load(f)["fechas"]
-    errores = validar(datos) + validar_anio_nuevo(anio_nuevo)
+    errores = (validar(datos) + validar_anio_nuevo(anio_nuevo)
+               + validar_changelog(CHANGELOG.read_text(encoding="utf-8") if CHANGELOG.exists() else "", datos.get("version")))
     if errores:
         sys.exit("Los datos no son válidos:\n  " + "\n  ".join(errores))
     return datos
@@ -343,12 +390,20 @@ def decanatos(signo, datos, codigo):
     return f"{terminos['decanatos'][codigo]}: " + " · ".join(partes)
 
 
+def texto_de_revision(estado):
+    if estado["estado"] == "revisado":
+        return f"Traducción revisada por {estado['por']} el {estado['fecha']}."
+    return "Traducción sin revisar por una persona nativa."
+
+
 def ficha_de(datos, codigo):
     signos, terminos = datos["signos"], datos["terminos"]
     lineas = [
         f"# {IDIOMAS[codigo]} (`{codigo}`)",
         "",
         "> Generado por `generar.py` desde `datos/signos.json`. No editar a mano.",
+        "",
+        f"> {texto_de_revision(datos['revision'][codigo])}",
         "",
     ]
     rtl = codigo in DERECHA_A_IZQUIERDA
@@ -374,17 +429,21 @@ def ficha_de(datos, codigo):
     return "\n".join(lineas)
 
 
-def indice_de():
+def indice_de(datos):
     lineas = [
         "# Fichas por idioma",
         "",
         "> Generado por `generar.py` desde `datos/signos.json`. No editar a mano.",
         "",
-        "| Idioma | Código | Ficha |",
-        "| --- | --- | --- |",
+        f"Versión de los datos: {datos['version']}. La columna «Revisión» sale de `revision` en `datos/signos.json`.",
+        "",
+        "| Idioma | Código | Ficha | Revisión |",
+        "| --- | --- | --- | --- |",
     ]
     for codigo, nombre in IDIOMAS.items():
-        lineas.append(f"| {nombre} | `{codigo}` | [{codigo}.md]({codigo}.md) |")
+        estado = datos["revision"][codigo]
+        revision = f"Revisada por {estado['por']} ({estado['fecha']})" if estado["estado"] == "revisado" else "Sin revisar"
+        lineas.append(f"| {nombre} | `{codigo}` | [{codigo}.md]({codigo}.md) | {revision} |")
     lineas.append("")
     return "\n".join(lineas)
 
@@ -508,8 +567,120 @@ def galeria_de(datos):
     return _PLANTILLA_GALERIA.replace("__DATOS__", json_seguro)
 
 
+# Casos que tienen que fallar, para que cualquier port compruebe que también lanza excepción. «args» usa
+# fechas como texto AAAA-MM-DD; el tipo de error es el de Python (TypeError o ValueError) y en un port
+# basta con que lance cualquier excepción.
+CASOS_DE_ERROR = (
+    ("signo_occidental", ["1990-04-03", "marciano"]),
+    ("cuspide", ["1990-04-03", "tropical", -1]),
+    ("animal_chino", ["2026"]),
+    ("animal_chino", [True]),
+    ("animal_chino_de_fecha", ["2100-01-01"]),
+    ("animal_chino_de_fecha", ["1899-12-31"]),
+    ("nombre_del_anio", [2026, "xx"]),
+    ("compatibilidad", ["rata", "aries"]),
+    ("compatibilidad", ["rata", "no-existe"]),
+    ("regentes_de_decanatos", ["rata"]),
+    ("anios_del_animal", ["aries", 2000, 2030]),
+    ("revision", ["xx"]),
+)
+
+# Instantes con huso horario: animal_chino_de_instante los pasa a la hora de China (UTC+8).
+INSTANTES = (
+    "2026-02-16T20:00:00+00:00",   # ya es 17/02 en China: Caballo
+    "2026-02-16T15:59:59+00:00",   # 16/02 23:59:59 en China: Serpiente
+    "2026-02-16T16:00:00+00:00",   # 17/02 00:00 en China: Caballo
+    "2026-02-17T07:00:00-08:00",   # 17/02 23:00 en China: Caballo
+    "2026-02-16T22:00:00-05:00",   # 17/02 11:00 en China: Caballo
+    "2000-02-04T23:30:00-05:00",   # 05/02 12:30 en China: Dragón (Año Nuevo 05/02)
+    "2000-02-05T00:30:00+09:00",   # 04/02 23:30 en China: Conejo
+)
+
+
+def _dias_del_anio_bisiesto():
+    inicio = datetime.date(2024, 1, 1)
+    return [inicio + datetime.timedelta(days=n) for n in range(366)]
+
+
+def vectores_de(datos):
+    """datos/vectores.json: las respuestas de zodiaco.py a un conjunto fijo de entradas.
+
+    Es la referencia que comparten todos los ports (php/ hoy): cada uno los lee y comprueba que da lo
+    mismo. Lo genera esta función con zodiaco.py, así que Python manda y --comprobar avisa si cambia.
+    """
+    dias = _dias_del_anio_bisiesto()
+    ids = lambda signos: None if signos is None else [s["id"] for s in signos]
+    cuerpo = {
+        "version": datos["version"],
+        "signo_occidental": {
+            sistema: [[d.strftime("%m-%d"), zodiaco.signo_occidental(d, sistema, datos)["id"]] for d in dias]
+            for sistema in zodiaco.SISTEMAS
+        },
+        "cuspide": [[d.strftime("%m-%d"), ids(zodiaco.cuspide(d, "tropical", 1, datos))] for d in dias],
+        "animal_chino": [],
+        "animal_chino_de_fecha": [],
+        "animal_chino_de_instante": [],
+        "nombre_del_anio": {},
+        "compatibilidad": [],
+        "decanato": {
+            sistema: [
+                [d.strftime("%m-%d"), x["signo"]["id"], x["numero"], x["regente"], x["signo_regente"]["id"]]
+                for d in dias for x in [zodiaco.decanato(d, sistema, datos)]
+            ]
+            for sistema in zodiaco.SISTEMAS
+        },
+        "regentes_de_decanatos": {
+            s["id"]: zodiaco.regentes_de_decanatos(s["id"], datos) for s in datos["signos"] if s["tipo"] == "occidental"
+        },
+        "tramos_de_decanatos": {
+            sistema: {s["id"]: zodiaco.tramos_de_decanatos(s, sistema) for s in datos["signos"] if s["tipo"] == "occidental"}
+            for sistema in zodiaco.SISTEMAS
+        },
+        "anios_del_animal": {
+            s["id"]: zodiaco.anios_del_animal(s["id"], 1900, 2099, datos) for s in datos["signos"] if s["tipo"] == "chino"
+        },
+        "revision": {c: datos["revision"][c] for c in IDIOMAS},
+        "errores": [{"funcion": f, "args": a} for f, a in CASOS_DE_ERROR],
+    }
+    for anio in range(1900, 2100):
+        a = zodiaco.animal_chino(anio, datos)
+        cuerpo["animal_chino"].append([anio, a["signo"]["id"], a["tronco"]["hanzi"], a["elemento_del_anio"], a["polaridad"]])
+    for anio, dia in sorted(zodiaco.fechas_anio_nuevo().items()):
+        for fecha in (dia - datetime.timedelta(days=1), dia):
+            cuerpo["animal_chino_de_fecha"].append([fecha.isoformat(), zodiaco.animal_chino_de_fecha(fecha, datos)["anio_lunar"]])
+    for texto in INSTANTES:
+        x = zodiaco.animal_chino_de_fecha(datetime.datetime.fromisoformat(texto), datos)
+        cuerpo["animal_chino_de_instante"].append([texto, x["anio_lunar"], x["signo"]["id"]])
+    for codigo in IDIOMAS:
+        cuerpo["nombre_del_anio"][codigo] = [zodiaco.nombre_del_anio(a, codigo, datos) for a in range(2020, 2036)]
+    for tipo in ("occidental", "chino"):
+        del_tipo = [s["id"] for s in datos["signos"] if s["tipo"] == tipo]
+        for a in del_tipo:
+            for b in del_tipo:
+                c = zodiaco.compatibilidad(a, b, datos)
+                cuerpo["compatibilidad"].append([a, b, c["relaciones"], c["afinidad"]])
+    # Una línea por entrada de primer nivel y cada vector en una línea: se lee y el diff es corto.
+    lineas = []
+    for clave, valor in cuerpo.items():
+        if isinstance(valor, dict) and clave != "revision":
+            sub = []
+            for k, v in valor.items():
+                if isinstance(v, list) and len(v) > 40:  # una línea por entrada, como las listas de primer nivel
+                    v = "[\n" + ",\n".join("      " + json.dumps(x, ensure_ascii=False, separators=(",", ":")) for x in v) + "\n    ]"
+                else:
+                    v = json.dumps(v, ensure_ascii=False, separators=(",", ":"))
+                sub.append(f"    {json.dumps(k, ensure_ascii=False)}: {v}")
+            texto = "{\n" + ",\n".join(sub) + "\n  }"
+        elif isinstance(valor, list):
+            texto = "[\n" + ",\n".join("    " + json.dumps(v, ensure_ascii=False, separators=(",", ":")) for v in valor) + "\n  ]"
+        else:
+            texto = json.dumps(valor, ensure_ascii=False, separators=(",", ":"))
+        lineas.append(f"  {json.dumps(clave)}: {texto}")
+    return "{\n" + ",\n".join(lineas) + "\n}\n"
+
+
 def esperados(datos):
-    archivos = {SALIDA_MD / "README.md": indice_de(), GALERIA: galeria_de(datos)}
+    archivos = {SALIDA_MD / "README.md": indice_de(datos), VECTORES: vectores_de(datos), GALERIA: galeria_de(datos)}
     for codigo in IDIOMAS:
         archivos[SALIDA_MD / f"{codigo}.md"] = ficha_de(datos, codigo)
     for s in datos["signos"]:

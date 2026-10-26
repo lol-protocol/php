@@ -81,3 +81,28 @@ jobs:
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         run: python pruebas_navegador.py
+
+  php:
+    name: "signos-zodiacales: port a PHP ${{ matrix.php-version }}"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.1", "8.4"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring
+          coverage: none
+
+      # Compara el port con datos/vectores.json, las respuestas que genera zodiaco.py (Python): cada día del
+      # año, cada año de 1900 a 2099, cada par de signos, el nombre del año en 30 idiomas, los casos de error.
+      - name: Pruebas del port a PHP
+        working-directory: signos-zodiacales/php
+        run: php pruebas/ejecutar.php
