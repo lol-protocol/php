@@ -240,3 +240,11 @@ test('every category of the paper types has a translation key, in English the CS
     }
     assert.equal(Object.keys(english.paperCategories).length, categories.length, 'no key for a category the data does not have');
 });
+
+test('grid columns cannot be wider than a phone screen', () => {
+    // minmax(320px, 1fr) forces 320 px even on a 320 px screen with padding; min(320px, 100%) doesn't.
+    const css = fs.readFileSync(path.join(APP, 'demo.css'), 'utf8');
+    const fixed = [...css.matchAll(/minmax\(\s*(\d+px)\s*,/g)].map(m => m[0]);
+    assert.deepEqual(fixed, [], 'use minmax(min(<size>, 100%), …)');
+    assert.doesNotMatch(css, /grid-template-columns:\s*1fr\s*;/, 'a bare 1fr column grows to its widest content: use minmax(0, 1fr)');
+});
