@@ -29,8 +29,8 @@
   "author": "lol-protocol",
   "license": "MIT",
   "devDependencies": {
-    "axe-core": "4.10.3",
+    "axe-core": "4.14.0",
     "csv-parse": "7.0.3",
-    "playwright": "1.56.1"
+    "playwright": "1.64.1"
   }
 }
