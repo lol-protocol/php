@@ -607,6 +607,58 @@ class PrivacidadRepositoriesTest extends TestCase
         $db->execute('INSERT INTO suceso_participantes (suceso_id, persona_id, rol) VALUES (?, ?, ?)', [$suceso, $persona, $rol]);
     }
 
+    /**
+     * The page of a place is cut after the hidden births are left out, not before: with the earliest birth
+     * hidden, a page of two is still two visible people, not one.
+     */
+    #[DataProvider('drivers')]
+    public function testAPlacePageIsFilledWithVisiblePeopleEvenWhenHiddenOnesComeFirst(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $db->execute("INSERT INTO lugares (ruta, padre_ruta, codigo, nombre, nivel) VALUES ('pe', NULL, 'pe', 'Perú', 1)");
+        foreach ([[6128479401, '1801-01-01'], [6128479402, '1802-01-01'], [6128479403, '1803-01-01']] as [$id, $fecha]) {
+            $this->nacida($db, $id, $fecha);
+            $db->execute("UPDATE sucesos SET lugar_ruta = 'pe' WHERE id IN (SELECT suceso_id FROM suceso_participantes WHERE persona_id = ?)", [$id]);
+        }
+        $db->execute('UPDATE personas SET viva = TRUE WHERE id = ?', [6128479401]); // the earliest, hidden by the owner's mark
+
+        $this->assertSame(
+            [6128479402, 6128479403],
+            self::ids((new LugarRepository($db, self::publica()))->personas('pe', 2))
+        );
+        $this->assertSame(
+            [6128479401, 6128479402],
+            self::ids((new LugarRepository($db, Privacidad::propietario()))->personas('pe', 2)),
+            'the owner still sees the earliest'
+        );
+    }
+
+    /** A surname's page counts, lists and places only who may be seen; the hidden are not in its group at all. */
+    #[DataProvider('drivers')]
+    public function testASurnameLeavesOutAHiddenMemberInEveryQuery(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new GrupoRepository($db, self::publica());
+        $antes = [
+            'total' => (int)$repo->find(582317)['total_personas'],
+            'red' => self::ids($repo->red(582317)),
+            'lugares' => array_sum(array_map('intval', array_column($repo->dispersion(582317), 'total'))),
+        ];
+        $this->assertContains(self::JOSE, $antes['red']);
+
+        $db->execute('UPDATE personas SET viva = TRUE WHERE id = ?', [self::JOSE]); // born in 1868, hidden by the mark
+
+        $this->assertSame($antes['total'] - 1, (int)$repo->find(582317)['total_personas']);
+        $this->assertNotContains(self::JOSE, self::ids($repo->red(582317)));
+        $this->assertSame(
+            array_values(array_diff($antes['red'], [self::JOSE])),
+            self::ids($repo->red(582317)),
+            'and nobody else is left out'
+        );
+        $this->assertSame($antes['lugares'] - 1, array_sum(array_map('intval', array_column($repo->dispersion(582317), 'total'))));
+        $this->assertContains(self::JOSE, self::ids((new GrupoRepository($db, Privacidad::propietario()))->red(582317)), 'the owner still sees him');
+    }
+
     private function nacida(Database $db, int $id, string $fecha): void
     {
         $db->execute("INSERT INTO personas (id, nombres, apellidos) VALUES (?, 'Prueba', 'Límite')", [$id]);
