@@ -29,7 +29,7 @@ El piloto de 3 idiomas, la cobertura de los 30 y el registro los propuso Claude 
 | 1. Corpus | Las 6 fichas del piloto (6 citas en `spa`), cada una con la ficha de [`CRITERIOS.md`](CRITERIOS.md) y su estado de verificación | **En curso, bloqueada por la red.** Las 6 candidatas están en [`datos/citas.json`](datos/citas.json) con su autor, obra y qué falta comprobar, y un validador impide darlas por verificadas sin dos fuentes. **Ninguna tiene texto**: desde el entorno de la sesión no se pudo abrir ninguna edición de dominio público. Ver «Para desbloquear la verificación» |
 | 2. Paleta y datos | La paleta de las 17 categorías (con variante para daltonismo) y `datos/citas.json` con un esquema que usa códigos de 3 letras | **Paleta hecha, provisional**: [`datos/paleta.json`](datos/paleta.json), su comprobador y un [prototipo web](prototipo/index.html). [`datos/citas.json`](datos/citas.json) existe con las 6 candidatas, aún sin texto. Falta probar la paleta con personas |
 | 3. Traducciones y etiquetas | Etiquetas de categoría de las citas en `spa`; traducciones a otros idiomas solo como borrador interno | Pendiente. Una persona que hable el idioma revisa y firma cada idioma en [`revisiones.csv`](revisiones.csv). **Con solo `spa` revisable, esta fase se limita a ese idioma** hasta que haya revisores de otros; entonces hace falta una guía de revisión como la de `marketing/idiomas/GUIA-REVISION.md` |
-| 4. Render | Un script PHP sin dependencias que genera la pieza del sitio y el texto HTML del correo, con `--comprobar` | Pendiente. `bin/prototipo.php` es un antecedente: genera la página del prototipo con el mismo `--comprobar` |
+| 4. Render | Un script PHP sin dependencias que genera la pieza del sitio y el texto HTML del correo, con `--comprobar` | **Hecha en lo que no depende de las citas**: [`bin/render.php`](bin/render.php) genera [`salida/`](salida/) (hoja del sitio y, por frase, un fragmento de correo y otro de sitio) y no publica ninguna cita sin texto verificado y revisión `correcta` de su texto y sus etiquetas. Hoy genera solo las frases de prueba. Falta probar el correo en clientes reales y adaptarlo a la herramienta de correo cuando exista |
 | 5. CI | `.github/workflows/pruebas-citas-pos.yml` con filtro de rutas y su viñeta en «CI/CD» del README raíz | **Creado**, con tres comprobaciones (paleta, prototipo al día, registro de revisiones). Crece con cada fase |
 
 La fase 1 no necesita código, y es la que más valor tiene y más riesgo quita.
@@ -48,6 +48,7 @@ Dos caminos, y sirve cualquiera:
 ```bash
 php citas-pos/bin/comprobar-paleta.php          # las 17 categorías, contraste, colores confundibles (--lista para verlos)
 php citas-pos/bin/prototipo.php --comprobar     # prototipo/index.html al día con datos/ (sin --comprobar, lo regenera)
+php citas-pos/bin/render.php --comprobar        # salida/ al día con datos/ (sin --comprobar, la regenera)
 php citas-pos/bin/comprobar-citas.php           # datos/citas.json: fichas completas y nada verificado sin fuentes
 php citas-pos/bin/comprobar-revisiones.php      # revisiones.csv válido
 ```

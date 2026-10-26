@@ -35,7 +35,8 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 | [`datos/ejemplos.json`](datos/ejemplos.json) | Seis frases de prueba (no son citas) en `spa`, `eng` y `deu`, con sus etiquetas puestas a mano y sin revisión nativa. |
 | [`datos/idiomas.json`](datos/idiomas.json) | Los 30 idiomas con su código de 3 letras y el de 2 de `Listado-colores/`. |
 | [`prototipo/index.html`](prototipo/index.html) | La paleta en una sola página, sin servidor: leyenda, frases de prueba, tema claro y oscuro, simulación de daltonismo y marcas. Generado: no se edita a mano. |
-| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php`, `comprobar-citas.php` y `comprobar-revisiones.php` (PHP sin dependencias). |
+| [`salida/`](salida/) | Las piezas de cita coloreada: `citas-pos.css` (la hoja del sitio) y, por cada frase, un fragmento para el **correo** (`*.correo.html`, estilos en línea, fondo propio, sin imágenes) y otro para el **sitio** (`*.sitio.html`, con las clases de la hoja). Hoy solo hay las de `ejemplos/`, que son frases de prueba y **no son citas**; las de `citas/` aparecerán cuando una cita esté verificada y revisada. Generado: no se edita a mano. |
+| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php`, `render.php`, `comprobar-citas.php` y `comprobar-revisiones.php`, y `lib/comun.php` con lo que comparten (PHP sin dependencias). |
 
 ## Idea central
 
@@ -69,12 +70,13 @@ Desde la raíz del repositorio, con PHP 8.3 y sin instalar nada:
 ```bash
 php citas-pos/bin/comprobar-paleta.php        # las 17 categorías, contraste de 4,5:1 en claro y oscuro, colores confundibles (--lista para verlos)
 php citas-pos/bin/prototipo.php --comprobar   # prototipo/index.html al día con datos/ (sin --comprobar, lo regenera)
+php citas-pos/bin/render.php --comprobar      # salida/ al día (sin --comprobar, la regenera). Una cita solo sale si está verificada y revisada
 php citas-pos/bin/comprobar-citas.php         # datos/citas.json: fichas completas y ninguna verificada sin texto, edición y dos fuentes
 php citas-pos/bin/comprobar-revisiones.php    # revisiones.csv válido
 ```
 
-El workflow [`pruebas-citas-pos.yml`](../.github/workflows/pruebas-citas-pos.yml) corre las cuatro, con filtro de rutas, en cada PR que toque esta carpeta.
+El workflow [`pruebas-citas-pos.yml`](../.github/workflows/pruebas-citas-pos.yml) corre las cinco, con filtro de rutas, en cada PR que toque esta carpeta.
 
 Para ver el prototipo, abre `citas-pos/prototipo/index.html` en un navegador: no necesita servidor ni conexión.
 
-**Lo que estas comprobaciones no cubren:** que el texto de una cita coincida con su fuente (lo hace una persona al verificar; el validador solo exige que quede anotado con qué), ni hay pruebas de las traducciones (aún no existen), la paleta no se ha probado con personas con daltonismo ni en un correo real, y la simulación de daltonismo es una aproximación.
+**Lo que estas comprobaciones no cubren:** que el fragmento del correo se vea bien en clientes de correo reales (no se ha probado en ninguno; lleva su propio fondo claro, pero un cliente que invierta los colores o ignore el estilo del subrayado lo cambiaría), que el texto de una cita coincida con su fuente (lo hace una persona al verificar; el validador solo exige que quede anotado con qué), ni hay pruebas de las traducciones (aún no existen), la paleta no se ha probado con personas con daltonismo ni en un correo real, y la simulación de daltonismo es una aproximación.
