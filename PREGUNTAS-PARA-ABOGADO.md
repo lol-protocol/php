@@ -16,6 +16,14 @@
 > no el texto de la ley: la primera pregunta es si la fecha y las obligaciones
 > son esas.
 
+> **Actualización del 26 de octubre de 2026.** La persona a cargo decidió **no
+> consultar a un abogado**. Este documento sigue sirviendo como la lista de lo
+> que alguien tiene que decidir antes de abrir el sitio, pero esas decisiones las
+> toma ella, bajo su responsabilidad: donde dice «el abogado» o «la reunión», léase
+> «la persona a cargo». No cambian dos cosas: la fecha de la Ley 21.719 (1 de
+> diciembre de 2026) y que las fuentes del repositorio son resúmenes de terceros,
+> no el texto de la ley.
+
 ## Qué llevar a la reunión
 
 1. Este documento.
@@ -123,8 +131,9 @@ Estas son las marcas **⚖️** del borrador, por sección.
     internas del panel; el sitio de genealogía no tiene dónde escribir)?
 15. **§5, plazos del retiro.** El borrador dice «24 horas» para ocultar y «10 días
     hábiles» para responder. ¿Son plazos que se pueden comprometer? ¿Qué pasa si
-    no se cumplen? ¿Es correcto ocultar sin haber revisado (hoy es opcional, con
-    `--ocultar`), o conviene no prometer ocultar?
+    no se cumplen? ¿Es correcto ocultar sin haber revisado? **Decidido el 26 de octubre de
+    2026: se activa** (`--ocultar` en cron, con el plazo de 24 horas); queda
+    por decidir si se promete en los términos.
 16. **§5, quiénes pueden pedir el retiro por un difunto.** Grado de parentesco, y
     cómo se acredita sin pedir más datos personales.
 17. **§6, el registro.** Plazo de conservación y base legal para guardar quién
@@ -197,8 +206,9 @@ Sin esto el abogado no puede cerrar los textos:
 - Quién es el responsable (persona o sociedad), su domicilio, el correo de contacto
   y la ciudad de los tribunales.
 - En qué país está el servidor y quién más tiene acceso a los respaldos.
-- Si se va a activar el ocultamiento automático de los pedidos de retiro
-  (`--ocultar`) y con qué plazo.
+- ~~Si se va a activar el ocultamiento automático de los pedidos de retiro
+  (`--ocultar`) y con qué plazo.~~ **Decidido el 26 de octubre de 2026:** se
+  activa, con el plazo de 24 horas.
 - Qué mercados e idiomas se van a usar de verdad, y en cuáles se va a mandar
   correo.
 - Si habrá cuentas y contenido subido por usuarios, o si el sitio seguirá siendo

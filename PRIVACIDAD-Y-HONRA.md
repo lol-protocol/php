@@ -111,7 +111,8 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    del plazo (24 horas por omisión) y, solo si se activa con `--ocultar`, oculta
    los vencidos mientras se revisan y lo anota en el registro. Ocultar no es
    automático por defecto porque quien pide un retiro podría bajar una página si
-   el propietario no contesta a tiempo: es una decisión suya. Falta escribirle a
+   el propietario no contesta a tiempo: es una decisión suya, y el 26 de octubre
+   de 2026 la tomó: activarlo. Falta escribirle a
    quien lo pidió (el propietario responde por correo, por su cuenta). Una persona retirada ya no se nombra
    en las demás páginas; un apellido, una organización o una colección retirados
    sí siguen nombrados donde los enlaza una persona.
@@ -129,7 +130,7 @@ El mapa completo de lo que cubre el filtro y lo que no está en
 
 ## Marco legal chileno (orientativo)
 
-No es asesoría legal: antes de abrir la plataforma conviene revisarlo con un abogado.
+No es asesoría legal: antes de abrir la plataforma conviene revisarlo con un abogado (el propietario decidió, el 26 de octubre de 2026, no consultar a uno).
 Las preguntas para esa reunión, reunidas y ordenadas, están en
 [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md).
 
