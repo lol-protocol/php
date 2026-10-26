@@ -41,12 +41,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # the change-history check compares with the base branch
 
       - name: Set up Node.js 22
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -101,3 +101,63 @@ jobs:
         run: |
           npx playwright install --with-deps chromium
           npm run test:e2e
+
+  # import_database.php had never run against a database: its first real run (MariaDB 10.11, October
+  # 2026) found a schema too narrow for the data ("Data too long for column"), and a failed import
+  # that left half the rows in place, which a second run then duplicated. This job runs it on the two
+  # servers the document-formats importer is tested on and compares every column with the CSV.
+  database:
+    name: ${{ matrix.module }} / ${{ matrix.db.name }} import
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [privacy-laws, copyright-laws]
+        db:
+          - { name: MySQL 8.0, image: 'mysql:8.0' }
+          - { name: MariaDB 10.11, image: 'mariadb:10.11' }
+
+    services:
+      mysql:
+        image: ${{ matrix.db.image }}
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: '3306'
+      DB_USER: root
+      DB_PASSWORD: root
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql
+          coverage: none
+
+      - name: Create the schema, import the CSV and validate
+        run: php import_database.php --all
+
+      - name: Compare every column with the CSV
+        run: php tests/database_check.php
+
+      - name: Import again (it replaces the rows, it does not add them) and compare again
+        run: |
+          php import_database.php --import
+          php tests/database_check.php

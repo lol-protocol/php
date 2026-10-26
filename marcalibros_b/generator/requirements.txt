@@ -1,6 +1,6 @@
 # Versiones exactas: la salida del generador (hashes de referencia, elección de semillas por
 # parecido visual) depende de cómo rasteriza Pillow. Si se suben, regenerar los hashes.
 Pillow==12.3.0
-PyYAML==6.0.1
-numpy==2.5.3
+PyYAML==6.0.3
+numpy==2.5.4
 fonttools==4.67.0

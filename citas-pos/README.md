@@ -11,12 +11,12 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 | Audiencia | Lectores y público general |
 | Canal | El sitio de Contrastocolor y el correo. Sin redes sociales ni impreso por ahora |
 | Tono | Cercano y lúdico, con los límites de abajo |
-| Idiomas | Los 30 de `Listado-colores/`, con **códigos de 3 letras** (ISO 639-3) |
+| Idiomas | Los 30 de `Listado-colores/`, con **códigos de 3 letras** (ISO 639-3), como alcance a largo plazo. Hoy solo se publica lo que una persona que habla el idioma haya revisado, y eso es `spa` |
 | Etiquetas | Manuales, revisadas por una persona que hable el idioma |
 | Script | PHP sin dependencias |
 | Marca | «Contrastocolor» directamente, sin marcador |
-| Medición | Clics y aperturas |
-| Piloto | 3 idiomas × 6 citas = 18 fichas (`spa`, `eng` y `deu` propuestos); el resto de los 30 entra cuando haya revisor |
+| Piloto | **1 idioma (`spa`) × 6 citas = 6 fichas**, revisadas por la persona. No habrá revisores nativos de otros idiomas por ahora; los demás idiomas quedan como borrador interno hasta que los haya |
+| Medición | Clics y aperturas, **pospuesta**: todavía no hay audiencia ni herramienta de correo. Se prepara el material y la prueba queda pendiente. **Sin ella no sabemos si la cita coloreada sirve más que la plana** |
 | Cobertura de los 30 | Una cita original por idioma primero; una «cita ancla» traducida a los 30 después |
 | Registro de revisiones | El formato de `Listado-colores/` ([`REVISIONES.md`](REVISIONES.md)) |
 

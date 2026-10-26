@@ -4,7 +4,7 @@
 
 ## Antes de abrirlo (reglas de `CLAUDE.md`)
 
-- [ ] Toca **una sola carpeta de proyecto**. Si cruza carpetas, lo separé; los archivos compartidos (`README.md` raíz, `.gitignore`, `composer.json` raíz) van en un PR chico y aparte.
+- [ ] Toca **una sola carpeta de proyecto**. Si cruza carpetas, lo separé; los archivos compartidos (`README.md` raíz, `CLAUDE.md`, los demás documentos de la raíz, `.gitignore`, `composer.json` raíz) van en un PR chico y aparte.
 - [ ] Miré los PR abiertos y las ramas con trabajo sin fusionar: nadie más está en esta carpeta, y no hay otro PR que haga lo mismo.
 - [ ] Está abierto **en borrador**. Fusionarlo lo decide la persona.
 

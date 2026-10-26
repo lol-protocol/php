@@ -18,7 +18,8 @@ class TopicInflectorTest extends TestCase
 
         $this->assertSame(['desnudo', 'desnudos', 'desnuda', 'desnudas'], array_column($out['sexual'], 'word'));
         foreach ($out['sexual'] as $entry) {
-            $this->assertSame(['word' => $entry['word'], 'riskType' => 'sexual', 'severity' => 'medium'], $entry);
+            $generated = $entry['word'] === 'desnudo' ? [] : ['generated' => true]; // las formas generadas no pisan una entrada propia
+            $this->assertSame(['word' => $entry['word'], 'riskType' => 'sexual', 'severity' => 'medium'] + $generated, $entry);
         }
     }
 

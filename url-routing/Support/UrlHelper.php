@@ -43,8 +43,14 @@ class UrlHelper
             throw new \InvalidArgumentException('Un lugar tiene entre 1 y 3 codigos');
         }
 
-        foreach ($codes as $code) {
-            if (!ctype_alpha($code)) {
+        // El primero tiene que ser el pais (2 letras) y el resto, de 1 a 3
+        // letras: es lo que PlaceMatchStrategy exige para reconocer esta URL
+        // al reves. ctype_alpha solo no lo garantiza (aceptaria un pais de
+        // 3 letras, por ejemplo), y generar un enlace que no se puede
+        // resolver es peor que rechazarlo aqui.
+        foreach ($codes as $i => $code) {
+            $largoValido = $i === 0 ? strlen($code) === 2 : strlen($code) >= 1 && strlen($code) <= 3;
+            if (!ctype_alpha($code) || !$largoValido) {
                 throw new \InvalidArgumentException("Codigo de lugar invalido: {$code}");
             }
         }

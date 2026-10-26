@@ -12,7 +12,7 @@ Este archivo es para una persona que abre un pull request a mano, desde la web d
 
 Este repositorio reúne proyectos independientes (la lista está en [`README.md`](README.md)). Un PR toca **una sola carpeta de proyecto**; si tu cambio cruza varias, sepáralo en varios PR.
 
-Los archivos compartidos de la raíz (`README.md`, `.gitignore` y el `composer.json` de la raíz) son los que más chocan entre PR distintos: cámbialos en un PR chico y aparte, para que se pueda revisar y fusionar rápido. La excepción: una carpeta de proyecto nueva trae su fila en la tabla de `README.md`, y un workflow nuevo su viñeta en la sección «CI/CD», en el mismo PR que los agrega (el check `estructura.yml` falla si faltan).
+Los archivos compartidos de la raíz (`README.md`, `CLAUDE.md`, los demás documentos de la raíz como `PRIVACIDAD-Y-HONRA.md`, `.gitignore` y el `composer.json` de la raíz) son los que más chocan entre PR distintos: cámbialos en un PR chico y aparte, para que se pueda revisar y fusionar rápido. La excepción: una carpeta de proyecto nueva trae su fila en la tabla de `README.md`, y un workflow nuevo su viñeta en la sección «CI/CD», en el mismo PR que los agrega (el check `estructura.yml` falla si faltan).
 
 ## Pruebas
 

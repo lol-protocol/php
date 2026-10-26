@@ -13,18 +13,10 @@ namespace DefamatoryContentReview\Chat\Inflection;
  */
 final class TopicInflector
 {
-    private const BY_LANGUAGE = [
-        'spa' => SpanishInflection::class, 'eng' => EnglishInflection::class, 'por' => PortugueseInflection::class,
-        'ita' => ItalianInflection::class, 'fra' => FrenchInflection::class, 'deu' => GermanInflection::class,
-        'nld' => DutchInflection::class, 'tur' => TurkishInflection::class,
-    ];
-    /** Idiomas cuyo adjetivo se declina sin cambiar de género: «dumme», «domme» llevan el rasgo `infl`. */
-    private const INFLECTED_ADJ = ['deu', 'nld'];
-
     /** @return array<int,string> */
     public static function forms(string $language, string $lemma, string $kind): array
     {
-        $class = self::BY_LANGUAGE[$language] ?? null;
+        $class = InflectionLanguages::classFor($language);
 
         return $class === null ? [$lemma] : (new $class())->forms($lemma, $kind);
     }
@@ -34,7 +26,7 @@ final class TopicInflector
     {
         $forms = self::forms($language, $lemma, $kind);
         if ($kind === 'verb') { return array_fill_keys($forms, 'verb'); }
-        if ($kind === 'adj' && in_array($language, self::INFLECTED_ADJ, true)) { return [$lemma => 'sg'] + array_fill_keys($forms, 'infl'); }
+        if (InflectionLanguages::inflects($language, $kind)) { return [$lemma => 'sg'] + array_fill_keys($forms, 'infl'); }
         $masculine = $kind === 'adj' ? self::forms($language, $lemma, 'noun') : $forms;
         $feminine = array_values(array_diff($forms, $masculine));
         $gender = $feminine === [] ? '' : 'm.';
@@ -78,8 +70,11 @@ final class TopicInflector
                     $severity = FormSeverity::of($tag, $entry['by'] ?? [], $base['severity'] ?? 'medium', $capGenerated && !$own);
                     $row = ['word' => $form] + $base;
                     $row['severity'] = $severity;
-                    if (!$own && isset($row['nameCollision'])) {
-                        $row['nameCollision'] = false;
+                    if (!$own) {
+                        $row['generated'] = true;
+                        if (isset($row['nameCollision'])) {
+                            $row['nameCollision'] = false;
+                        }
                     }
                     if ($severity !== 'none') {
                         $expanded[$category][] = $row;
