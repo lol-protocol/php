@@ -34,6 +34,9 @@ final class RetiroRepository extends Repository
     /** How long a pedido may wait for the owner before bin/pedidos-retiro.php calls it late (the example in PRIVACIDAD-Y-HONRA.md). */
     public const PLAZO_HORAS = 24;
 
+    /** How many months a resolved pedido keeps the requester's email and text before bin/pedidos-retiro.php --depurar erases them. */
+    public const CONSERVAR_MESES = 12;
+
     /** How many times crear() asks for a number when someone else took the one it read. Each retry reads the new maximum, so one is enough in practice. */
     private const INTENTOS_DE_NUMERO = 5;
 
@@ -195,11 +198,41 @@ final class RetiroRepository extends Repository
         return $ocultados;
     }
 
+    /**
+     * Erases the personal data (contacto, detalle, marcas) of every pedido already resolved ('retirado' or
+     * 'rechazado') whose last event is $meses months old or more, and stamps depurado_en. A pending or hidden
+     * pedido is still under review and keeps everything. The number, page, reason, state and history stay.
+     *
+     * @return list<int> the numbers it purged
+     */
+    public function depurar(int $meses, ?int $ahora = null): array
+    {
+        $ahora ??= time();
+        $limite = date('Y-m-d H:i:s', strtotime("-{$meses} months", $ahora));
+        $filas = $this->db->fetchAll(
+            "SELECT p.id FROM pedidos_retiro p
+              WHERE p.estado IN ('retirado', 'rechazado') AND p.depurado_en IS NULL
+                AND (SELECT MAX(e.ocurrido_en) FROM pedido_retiro_eventos e WHERE e.pedido_id = p.id) <= ?
+              ORDER BY p.id",
+            [$limite]
+        );
+        $depurados = [];
+        foreach ($filas as $fila) {
+            $this->db->execute(
+                "UPDATE pedidos_retiro SET detalle = '', contacto = '', marcas = NULL, depurado_en = ? WHERE id = ? AND depurado_en IS NULL",
+                [date('Y-m-d H:i:s', $ahora), $fila['id']]
+            );
+            $depurados[] = (int)$fila['id'];
+        }
+
+        return $depurados;
+    }
+
     /** @return list<array> every pedido, the pending ones first, then the newest, each with its 'eventos' */
     public function todos(): array
     {
         $pedidos = $this->db->fetchAll(
-            "SELECT id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en, marcas FROM pedidos_retiro
+            "SELECT id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en, marcas, depurado_en FROM pedidos_retiro
               ORDER BY CASE WHEN estado = 'pendiente' THEN 0 ELSE 1 END, creado_en DESC, id DESC"
         );
         foreach ($pedidos as &$pedido) {

@@ -179,6 +179,8 @@ Cualquiera puede pedir el retiro de una página (`/r/{id}/`) y el pedido espera 
 MAILTO=tu@correo.com
 0 9 * * *     www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php
 */30 * * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --ocultar --solo-ocultados
+# opcional: borra el correo y el texto de los pedidos resueltos hace más de 12 meses (RETIRO_CONSERVAR_MESES)
+30 3 * * 0    www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --depurar
 ```
 
 La primera línea es el recordatorio de cada día: lista lo que sigue esperando. La segunda es el **ocultamiento automático, que está activado** (decisión del propietario, 26 de octubre de 2026): cada media hora oculta los pedidos que pasaron del plazo sin respuesta, y **solo manda correo en la corrida que ocultó algo**. Sin `--solo-ocultados`, esa línea mandaría el mismo listado cada media hora mientras un pedido espere.
