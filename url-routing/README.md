@@ -28,7 +28,7 @@ La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de 
 | `php bin/migrate.php <sitio> [--seed]` | Aplica las migraciones de un sitio (`genealogy` o `pos`); `--seed` carga datos de demostración (solo desarrollo). |
 | `php bin/rutas.php > docs/RUTAS.md` | Regenera la lista de rutas desde `config/routes/`. No edites `RUTAS.md` a mano. |
 | `php bin/fusionar.php <duplicado> <vigente> [--confirmar]` | Fusiona una persona duplicada en la que queda; sin `--confirmar` solo muestra qué movería. |
-| `php bin/pedidos-retiro.php [--ocultar] [--horas=N]` | Lista los pedidos de retiro que esperan al propietario; pensado para cron (no imprime nada si no hay). |
+| `php bin/pedidos-retiro.php [--ocultar [--solo-ocultados]] [--horas=N]` | Lista los pedidos de retiro que esperan al propietario; pensado para cron (no imprime nada si no hay). Con `--ocultar` oculta los que pasaron del plazo; con `--solo-ocultados`, solo imprime en la corrida que ocultó algo. |
 
 La base de datos sale de `DB_DSN_<SITIO>` / `DB_DSN` (o de `.env`), igual que en la aplicación web.
 
