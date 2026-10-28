@@ -265,3 +265,12 @@ sudo_tmp() { make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in -u|systemctl
     grep -q -- '--bind 127.0.0.1:8002 app:app' "$SYSTEMD_DIR/blog.service"                # el puerto nuevo si
     grep -q 'proxy_pass http://127.0.0.1:8002;' "$NGINX_DIR/sites-available/blog.ejemplo.com"
 }
+
+# ---- landing: solo el SVG, sin texto inventado ----
+@test "landing-page: solo el SVG (sin titulo, subtitulo ni correo) y con descripcion accesible" {
+    f="$VPS_DIR/../landing-page/index.html"
+    ! grep -qiE '<h[1-6]|<p[ >]|mailto:|<a |<button' "$f"
+    grep -q '<svg [^>]*role="img"[^>]*aria-label=' "$f"
+    [ "$(grep -c '<polygon' "$f")" -eq 9 ]            # los 9 poligonos del dibujo original, intactos
+    grep -q 'prefers-reduced-motion' "$f"
+}

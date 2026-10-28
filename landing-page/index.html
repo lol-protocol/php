@@ -26,57 +26,11 @@
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 60px;
-            flex-wrap: wrap;
             justify-content: center;
-        }
-
-        .content {
-            flex: 1;
-            min-width: 300px;
-            color: white;
-            text-align: center;
-            z-index: 2;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-
-        .subtitle {
-            font-size: 1.25rem;
-            opacity: 0.95;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #667eea;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 2px solid white;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .cta-button:hover {
-            background: transparent;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .svg-container {
             flex: 1;
-            min-width: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -85,7 +39,7 @@
 
         svg {
             width: 100%;
-            max-width: 400px;
+            max-width: 520px;
             height: auto;
             filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
         }
@@ -111,32 +65,18 @@
             }
         }
 
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                gap: 40px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .subtitle {
-                font-size: 1rem;
+        /* Sin animacion para quien la desactiva en su sistema (mareo, bateria) */
+        @media (prefers-reduced-motion: reduce) {
+            .cube {
+                animation: none;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="content">
-            <h1>Initech</h1>
-            <p class="subtitle">Soluciones innovadoras para tu negocio digital</p>
-            <a href="mailto:admin@initech.fun" class="cta-button">Contactanos</a>
-        </div>
-
         <div class="svg-container">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Figuras geométricas isométricas de colores">
                 <!-- Cubo 1 -->
                 <g class="cube">
                     <!-- Cara frontal -->
