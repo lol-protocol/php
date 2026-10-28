@@ -101,6 +101,20 @@ final class PaginacionRecorrerTest extends TestCase
         $db->rollBack();
     }
 
+    public function testSiQuienLoRecorreTerminoLaTransaccionNoFallaAlCerrar(): void
+    {
+        $db = Database::connection();
+        $recorrido = Paginacion::recorrer($db, 'g.n', self::DESDE, 'g.n', [':minimo' => '0'], 2);
+
+        foreach ($recorrido as $fila) {
+            $db->rollBack();   // quien recorre termina la transaccion que abrio el recorrido
+            break;
+        }
+
+        unset($recorrido);     // el finally no tiene nada que deshacer y no tira "no active transaction"
+        self::assertFalse($db->inTransaction());
+    }
+
     public function testUnErrorDeLaConsultaSePropagaYNoDejaLaTransaccionAbierta(): void
     {
         $db = Database::connection();

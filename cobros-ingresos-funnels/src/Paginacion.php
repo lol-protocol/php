@@ -131,19 +131,31 @@ final class Paginacion
                 yield from $filas;
             }
         } finally {
-            if ($propia) {
-                // Terminar la transaccion cierra el cursor, y no falla aunque la consulta si lo haya hecho.
-                if ($db->inTransaction()) {
-                    $db->rollBack();
-                }
-            } else {
-                // Es de una transaccion de afuera: se cierra solo el cursor. Si esa transaccion
-                // ya quedo abortada por un error, no se puede ni cerrar, y se deja que la deshaga quien la abrio.
-                try {
-                    $db->exec("CLOSE {$cursor}");
-                } catch (\PDOException) {
-                }
+            self::cerrarRecorrido($db, $cursor, $propia);
+        }
+    }
+
+    /**
+     * Lo que recorrer() deja cerrado al terminar, se corte donde se corte. Va aparte (y no en
+     * el finally) para que el estado de la transaccion se pregunte al terminar y no se de por
+     * sabido desde que se abrio: quien recorre puede haberla terminado antes.
+     */
+    private static function cerrarRecorrido(PDO $db, string $cursor, bool $propia): void
+    {
+        if ($propia) {
+            // Terminar la transaccion cierra el cursor. Si quien recorria ya la termino, no hay nada que deshacer.
+            if ($db->inTransaction()) {
+                $db->rollBack();
             }
+
+            return;
+        }
+
+        // Es de una transaccion de afuera: se cierra solo el cursor. Si esa transaccion
+        // ya quedo abortada por un error, no se puede ni cerrar, y se deja que la deshaga quien la abrio.
+        try {
+            $db->exec("CLOSE {$cursor}");
+        } catch (\PDOException) {
         }
     }
 }
