@@ -21,3 +21,10 @@ sourcea desde ningun script.
   vhost de la landing, rutas de apps distintas de las que usan los scripts, el VPS como "activo"
   con una IP fija y un ejemplo de backup. Un vhost creado como ahi se indica no lleva la marca
   `# vps-setup:` y los scripts se niegan despues a tocarlo.
+
+- `landing-index-con-texto.html`: la `landing-page/index.html` anterior, con el titulo "Initech", el
+  subtitulo ("Soluciones innovadoras para tu negocio digital") y el boton de correo
+  (`mailto:admin@initech.fun`). Ese texto lo agregue yo sin que estuviera en la especificacion
+  original (solo el SVG de cubos 2.5D); la persona decidio dejar unicamente el SVG. Se guarda aqui,
+  y no en `landing-page/`, porque `vps-setup/` copia toda esa carpeta al servidor web y cualquier
+  archivo que se ponga alli queda publico.
