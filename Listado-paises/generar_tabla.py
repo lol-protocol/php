@@ -6,7 +6,7 @@ Uso: python3 generar_tabla.py               valida y escribe las dos tablas y pr
      (solo biblioteca estándar de Python 3)
 
 Genealogía (paises.csv):      prioridad = IG x IO;  excluido si IO <= UMBRAL_GENEALOGIA
-Etiquetador POS (paises_pos.csv): prioridad = IL x IP local;  excluido si IP local <= UMBRAL_POS
+Etiquetador POS (paises_pos.csv): prioridad = IL x IP local;  excluido si IP local <= UMBRAL_POS e IO <= UMBRAL_GENEALOGIA
   IP debe ser el máximo de los niveles (niveles_lenguas.csv) de las lenguas de idioma_principal.
   IP local debe ser el nivel de la primera lengua listada (la lengua local).
   El nivel de cada lengua debe salir de sus palabras anotadas (nivel_por_palabras).
@@ -39,8 +39,8 @@ COLUMNAS_FINAL = [
 COLUMNAS_PAISES = [
     "codigo", "pais", "tipo", "region", "poblacion_millones",
     "poblacion_historica_acumulada", "idh", "pib_per_capita_usd", "pib_per_capita_ppa_usd",
-    "alfabetizacion_adultos", "usuarios_internet", "emigrantes_pct", "indice_genealogia", "indice_operabilidad",
-    "comentarios",
+    "alfabetizacion_adultos", "usuarios_internet", "emigrantes_pct", "libertad_fh", "democracia_eiu",
+    "corrupcion_cpi", "indice_genealogia", "indice_operabilidad", "comentarios",
 ]
 COLUMNAS_POS = ["codigo", "idioma_principal", "indice_lectura", "indice_pos", "indice_pos_local",
                 "comentarios_pos"]
@@ -48,12 +48,14 @@ COLUMNAS_NIVELES = ["lengua", "codigos", "palabras_anotadas", "treebanks_ud", "p
 TIPOS = {"estado", "territorio", "entidad disputada"}
 NUMERICAS_PAISES = ["poblacion_millones", "poblacion_historica_acumulada", "idh",
                     "pib_per_capita_usd", "pib_per_capita_ppa_usd", "alfabetizacion_adultos",
-                    "usuarios_internet", "emigrantes_pct"]
-RANGOS = {"idh": (0, 1), "alfabetizacion_adultos": (0, 100), "usuarios_internet": (0, 100)}
+                    "usuarios_internet", "emigrantes_pct", "democracia_eiu", "corrupcion_cpi"]
+LIBERTADES = {"", "libre", "parcial", "no libre"}
+RANGOS = {"idh": (0, 1), "alfabetizacion_adultos": (0, 100), "usuarios_internet": (0, 100),
+          "democracia_eiu": (0, 100), "corrupcion_cpi": (0, 100)}
 ESCALAS_PAISES = ["indice_genealogia", "indice_operabilidad"]
 ESCALAS_POS = ["indice_lectura", "indice_pos", "indice_pos_local"]
 UMBRAL_GENEALOGIA = 1  # IO <= 1: inviable para operar
-UMBRAL_POS = 1  # IP local <= 1: la lengua local no tiene recursos para un etiquetador
+UMBRAL_POS = 1  # IP local <= 1: la lengua local no tiene recursos; excluye solo si además IO <= 1
 # Nivel de una lengua según sus palabras anotadas (Universal Dependencies + MasakhaPOS):
 # (mínimo de palabras, nivel). Sin ninguna, nivel 1.
 UMBRALES_NIVEL = [(500_000, 5), (100_000, 4), (10_000, 3), (1, 2)]
@@ -188,6 +190,9 @@ def main(comprobar=False):
         errores += errores_de("paises.csv", linea, f, ESCALAS_PAISES, NUMERICAS_PAISES)
         if f.get("tipo") not in TIPOS:
             errores.append(f"paises.csv línea {linea} ({f.get('codigo')}): tipo '{f.get('tipo')}' no válido")
+        if f.get("libertad_fh") not in LIBERTADES:
+            errores.append(f"paises.csv línea {linea} ({f.get('codigo')}): libertad_fh "
+                           f"'{f.get('libertad_fh')}' no válida")
         for campo, (minimo, maximo) in RANGOS.items():
             valor = f.get(campo) or ""
             try:
@@ -266,7 +271,8 @@ def main(comprobar=False):
         ig, io = int(f["indice_genealogia"]), int(f["indice_operabilidad"])
         p = pos_por_codigo[f["codigo"]]
         il, ip, ipl = int(p["indice_lectura"]), int(p["indice_pos"]), int(p["indice_pos_local"])
-        excl_gen, excl_pos = io <= UMBRAL_GENEALOGIA, ipl <= UMBRAL_POS
+        excl_gen = io <= UMBRAL_GENEALOGIA
+        excl_pos = ipl <= UMBRAL_POS and excl_gen  # sin recursos y, además, inviable para operar
         excluidos_gen += excl_gen
         excluidos_pos += excl_pos
         filas_gen.append((excl_gen, -ig * io, f["pais"], [
@@ -274,7 +280,7 @@ def main(comprobar=False):
             celda(f["poblacion_historica_acumulada"]),
             celda(f["idh"]), celda(f["pib_per_capita_usd"]),
             celda(f["pib_per_capita_ppa_usd"]), celda(f["usuarios_internet"]), celda(f["emigrantes_pct"]),
-            str(ig), str(io), str(ig * io), "sí" if excl_gen else "no", f["comentarios"],
+            celda(f["libertad_fh"]), celda(f["democracia_eiu"]), celda(f["corrupcion_cpi"]), str(ig), str(io), str(ig * io), "sí" if excl_gen else "no", f["comentarios"],
         ]))
         local = lenguas[p["idioma_principal"].split(";")[0].strip()]
         filas_pos.append((excl_pos, -il * ipl, f["pais"], [
@@ -288,7 +294,9 @@ def main(comprobar=False):
             **{clave: numero(f[columna]) for clave, columna in (
                 ("pob", "poblacion_millones"), ("nac", "poblacion_historica_acumulada"), ("idh", "idh"),
                 ("pib", "pib_per_capita_usd"), ("ppa", "pib_per_capita_ppa_usd"),
-                ("alf", "alfabetizacion_adultos"), ("net", "usuarios_internet"), ("emi", "emigrantes_pct"))},
+                ("alf", "alfabetizacion_adultos"), ("net", "usuarios_internet"), ("emi", "emigrantes_pct"),
+                ("eiu", "democracia_eiu"), ("cpi", "corrupcion_cpi"))},
+            "fh": f["libertad_fh"],
             "ig": ig, "io": io, "pg": ig * io, "xg": excl_gen, "cg": f["comentarios"],
             "lenguas": p["idioma_principal"], "local": local["lengua"], "il": il, "ip": ip, "ipl": ipl,
             "pal": int(local["palabras_anotadas"]), "web": numero(local["paginas_web_pct"]),
@@ -303,8 +311,9 @@ def main(comprobar=False):
             "indice_lectura": il, "indice_pos_local": ipl, "prioridad_pos": il * ipl,
             "excluido_pos": "si" if excl_pos else "no",
             "motivo_exclusion_pos":
-                f"IP local {ipl}: la lengua local ({local['lengua']}) no tiene palabras anotadas en "
-                "Universal Dependencies ni en MasakhaPOS" if excl_pos else "",
+                f"IP local {ipl} e IO {io}: la lengua local ({local['lengua']}) no tiene palabras "
+                "anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+                if excl_pos else "",
         })
 
     gen_ordenado = [c for *_, c in sorted(filas_gen, key=lambda x: (x[0], x[1], x[2]))]
@@ -313,12 +322,14 @@ def main(comprobar=False):
     texto_gen = tabla_md(
         "Listado de países: genealogía",
         "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población 2024 de Our "
-        "World in Data; PIB nominal del Banco Mundial; PIB PPA (Banco Mundial) e IDH 2023 (PNUD) vía "
-        "Gapminder. "
+        "World in Data; PIB nominal del Banco Mundial; PIB PPA (Banco Mundial), IDH 2023 (PNUD), "
+        "libertad (Freedom House 2022), democracia (EIU 2020) y corrupción (Transparencia "
+        "Internacional 2023) vía Gapminder. "
         "Ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", "Población 2024 (M)", "Nacidos en la historia (M)",
          "IDH 2023", "PIB pc nominal 2024 (USD)", "PIB pc PPA 2023 ($ int. 2021)",
-         "Internet (% pob.)", "Emigrantes (% pob.)", "Genealogía (IG)",
+         "Internet (% pob.)", "Emigrantes (% pob.)", "Libertad (Freedom House)",
+         "Democracia (EIU, 0–100)", "Corrupción (CPI, 100 = limpio)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
         gen_ordenado)
     texto_pos = tabla_md(

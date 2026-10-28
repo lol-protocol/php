@@ -29,7 +29,7 @@ BR,portugués,4,5,5,Mercado editorial amplio
 BN,malayo; inglés,4,5,4,IP por inglés (mejor recurso listado).
 BG,búlgaro,4,4,4,
 BF,moré; francés,1,5,3,IP por francés (mejor recurso listado). Alfabetización muy baja
-BI,kirundi; francés,2,5,1,"IP por francés (mejor recurso listado). Alfabetización baja, mercado editorial muy reducido"
+BI,kirundi; francés; inglés,2,5,1,"IP por francés (mejor recurso listado). Alfabetización baja, mercado editorial muy reducido"
 CV,portugués; criollo caboverdiano,3,5,5,
 KH,jemer; inglés,2,5,1,IP por inglés (mejor recurso listado).
 CM,francés; inglés,2,5,5,
@@ -56,7 +56,7 @@ EC,español; quechua,4,5,5,
 EG,árabe; árabe egipcio,3,5,5,
 SV,español,3,5,5,
 AE,árabe; inglés; urdu,3,5,5,
-ER,tigriña; árabe,2,5,1,IP por árabe (mejor recurso listado).
+ER,tigriña; árabe; inglés,2,5,1,IP por árabe (mejor recurso listado).
 SK,eslovaco,4,4,4,
 SI,esloveno,4,4,4,
 ES,español; catalán; gallego; euskera,4,5,5,
@@ -79,12 +79,12 @@ GL,groenlandés; danés,3,4,1,IP por danés (mejor recurso listado).
 GT,español; lenguas mayas,3,5,5,
 GG,inglés,4,5,5,
 GN,pular; francés; susu,1,5,1,IP por francés (mejor recurso listado). Alfabetización muy baja
-GQ,fang; español; francés,3,5,1,IP por español (mejor recurso listado).
+GQ,fang; español; francés; portugués,3,5,1,IP por español (mejor recurso listado).
 GW,portugués; criollo guineense,2,5,5,
 GY,inglés,3,5,5,
 HT,criollo haitiano; francés,2,5,3,IP por francés (mejor recurso listado).
 HN,español,3,5,5,
-HK,chino cantonés; inglés,4,5,3,IP por inglés (mejor recurso listado).
+HK,chino cantonés; inglés; chino,4,5,3,IP por inglés (mejor recurso listado).
 HU,húngaro,4,3,3,
 IN,hindi; inglés; bengalí,3,5,4,IP por inglés (mejor recurso listado).
 ID,indonesio,3,4,4,
@@ -117,9 +117,9 @@ LY,árabe,3,5,5,
 LI,alemán,4,5,5,Mercado editorial pequeño
 LT,lituano,4,3,3,
 LU,francés; alemán; luxemburgués,4,5,5,
-MO,chino cantonés; portugués,4,5,3,IP por portugués (mejor recurso listado).
+MO,chino cantonés; portugués; chino,4,5,3,IP por portugués (mejor recurso listado).
 MK,macedonio; albanés,4,3,2,IP por albanés (mejor recurso listado).
-MG,malgache; francés,2,5,1,IP por francés (mejor recurso listado).
+MG,malgache; francés; inglés,2,5,1,IP por francés (mejor recurso listado).
 MY,malayo; inglés; chino,4,5,4,IP por inglés (mejor recurso listado).
 MW,chichewa; inglés,2,5,3,IP por inglés (mejor recurso listado).
 MV,dhivehi,4,1,1,

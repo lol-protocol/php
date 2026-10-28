@@ -201,6 +201,10 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
             "--emigrantes": self.csv("emi.csv", ("country", "time", "emigrant_n"), [("aaa", pd.ANIO_EMIGRANTES, 400_000)]),
             "--poblacion-gapminder": self.csv("popg.csv", ("geo", "time", "pop"),
                                               [("ccc", 1800, 1000), ("ccc", 2010, 5000), ("ccc", 2030, 9000)]),
+            "--libertad": self.csv("fh.csv", ("country", "time", "freedstatus_fh"),
+                                   [("aaa", 2022, "PF"), ("bbb", 2010, "F")]),
+            "--democracia": self.csv("eiu.csv", ("country", "time", "demox_eiu"), [("aaa", 2020, 61.5)]),
+            "--corrupcion": self.csv("cpi.csv", ("country", "time", "cpi"), [("aaa", 2023, 45.0)]),
             "--pib-ppa": self.csv("ppa.csv", ("country", "time", "gdp_pcap"), [("aaa", pd.ANIO_PIB_PPA, 30000.4)]),
             "--pib-pc-bm": self.csv("gdp.csv", ("Country Name", "Country Code", "Year", "Value"),
                                     [("A", "AAA", pd.ANIO_PIB_NOMINAL, 20000.4),
@@ -220,6 +224,8 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(aa["alfabetizacion_adultos"], "")  # 2009 es anterior al mínimo
         self.assertEqual(aa["usuarios_internet"], "80.0")
         self.assertEqual(aa["emigrantes_pct"], "10.0")  # 400 000 / 4 000 000
+        self.assertEqual((aa["libertad_fh"], aa["democracia_eiu"], aa["corrupcion_cpi"]), ("parcial", "61.5", "45"))
+        self.assertEqual(bb["libertad_fh"], "")  # 2010 es anterior al mínimo
         self.assertEqual(bb["poblacion_millones"], "0.25")  # Banco Mundial, sin OWID
         self.assertEqual(bb["pib_per_capita_usd"], "10000")  # de dos años antes
         self.assertEqual(bb["alfabetizacion_adultos"], "70.0")

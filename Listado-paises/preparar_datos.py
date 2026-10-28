@@ -8,13 +8,16 @@ Uso (desde esta carpeta; las rutas apuntan a copias locales de las fuentes, ver 
         --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \\
         --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \\
         --emigrantes emigrantes-gapminder.csv --poblacion-gapminder poblacion-gapminder.csv \\
+        --libertad libertad-gapminder.csv --democracia democracia-gapminder.csv \\
+        --corrupcion corrupcion-gapminder.csv \\
         --pib-ppa pib-ppa-gapminder.csv --pib-pc-bm pib-pc.csv --poblacion-bm population.csv
 
 Escribe:
     poblacion_larga.csv  serie larga de población por país (codigo, anio, poblacion)
     natalidad.csv        natalidad por país desde 1800 (codigo, anio, tasa_por_mil)
     paises.csv           población 2024, IDH 2023, PIB per cápita nominal y PPA de 2023,
-                         alfabetización de adultos, usuarios de internet y emigrantes
+                         alfabetización de adultos, usuarios de internet, emigrantes,
+                         libertad (Freedom House), democracia (EIU) y corrupción (CPI)
 
 Serie larga de cada país (método compuesto). Cada fuente solo cubre los años anteriores al
 primero de las de arriba:
@@ -38,6 +41,9 @@ ANIO_PIB_NOMINAL_MINIMO y ANIO_PIB_NOMINAL con dato.
 PIB per cápita PPA: el de Gapminder de ANIO_PIB_PPA, en dólares internacionales de 2021 (basado
 en el Banco Mundial).
 IDH: el del PNUD de ANIO_IDH, tal como lo publica Gapminder.
+Libertad (estatus de Freedom House), democracia (índice de la EIU, 0-100) y corrupción (índice de
+percepción de Transparencia Internacional, 0-100, 100 = sin corrupción), vía Gapminder: el último
+dato de cada país desde ANIO_MINIMO_GOBERNANZA.
 Alfabetización de adultos (UNESCO) y usuarios de internet (Banco Mundial), también vía Gapminder:
 el último dato de cada país desde ANIO_MINIMO_ALFABETIZACION y ANIO_MINIMO_INTERNET.
 Emigrantes: los de ANIO_EMIGRANTES (ONU, vía Gapminder), en porcentaje de la población residente.
@@ -59,6 +65,8 @@ ANIO_IDH = 2023
 ANIO_MINIMO_ALFABETIZACION = 2010  # la UNESCO no publica todos los años, y casi nunca en países ricos
 ANIO_MINIMO_INTERNET = 2020
 ANIO_EMIGRANTES = 2024
+ANIO_MINIMO_GOBERNANZA = 2019  # libertad, democracia y corrupción
+LIBERTAD = {"F": "libre", "PF": "parcial", "NF": "no libre"}  # estatus de Freedom House
 ANIO_MAXIMO_GAPMINDER = 2015  # después, la población de Gapminder es proyección
 FACTOR_NATALIDAD = 7.0  # tasa bruta por mil ~ 7 x fecundidad total, para países sin tasa
 SUDAMERICA = {"AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE"}
@@ -102,14 +110,14 @@ def leer_bm(ruta):
     return datos
 
 
-def leer_gapminder(ruta):
+def leer_gapminder(ruta, convertir=float):
     """Archivo DDF de Gapminder (geo o country, time, valor) -> código ISO alfa-3 -> {anio: valor}."""
     datos = {}
     for f in leer(ruta):
         geo = f.get("geo") or f["country"]
         (columna,) = set(f) - {"geo", "country", "time"}
         if f[columna]:
-            datos.setdefault(geo.upper(), {})[int(f["time"])] = float(f[columna])
+            datos.setdefault(geo.upper(), {})[int(f["time"])] = convertir(f[columna])
     return datos
 
 
@@ -171,7 +179,8 @@ def formato_millones(personas):
 def main(argv=None, carpeta=AQUI):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     for nombre in ("co2", "maddison", "hyde", "clio", "natalidad-gapminder", "fecundidad-gapminder", "idh",
-                   "alfabetizacion", "internet", "emigrantes", "poblacion-gapminder", "pib-ppa", "pib-pc-bm",
+                   "alfabetizacion", "internet", "emigrantes", "poblacion-gapminder", "libertad", "democracia", "corrupcion",
+                   "pib-ppa", "pib-pc-bm",
                    "poblacion-bm"):
         ap.add_argument(f"--{nombre}", required=True)
     args = ap.parse_args(argv)
@@ -219,6 +228,9 @@ def main(argv=None, carpeta=AQUI):
     internet = leer_gapminder(args.internet)
     pib_ppa = leer_gapminder(args.pib_ppa)
     emigrantes = leer_gapminder(args.emigrantes)
+    gobernanza = (("libertad_fh", leer_gapminder(args.libertad, lambda v: LIBERTAD[v])),
+                  ("democracia_eiu", leer_gapminder(args.democracia)),
+                  ("corrupcion_cpi", leer_gapminder(args.corrupcion)))
 
     pib_pc_bm, poblacion_bm = leer_bm(args.pib_pc_bm), leer_bm(args.poblacion_bm)
     # Sin población de OWID, la del Banco Mundial hasta el mismo año. Sin esa, la de Gapminder hasta
@@ -238,7 +250,7 @@ def main(argv=None, carpeta=AQUI):
     con_clio, clio_descartada = [], []
     filas_larga, filas_natalidad, sin_serie, sin_pob, sin_pib, sin_natalidad = [], [], [], [], [], []
     sin_idh, sin_nominal, nominal_anterior, sin_alfabetizacion, sin_internet = [], [], [], [], []
-    sin_emigrantes = []
+    sin_emigrantes, sin_gobernanza = [], {columna: [] for columna, _ in gobernanza}
     for fila in paises:
         codigo, clave = fila["codigo"], owid[fila["codigo"]]
         modernos = sorted(poblacion.get(clave, {}).items())
@@ -266,6 +278,13 @@ def main(argv=None, carpeta=AQUI):
         fila["emigrantes_pct"] = f"{100 * emigrados / actual:.1f}" if emigrados and actual else ""
         if not fila["emigrantes_pct"]:
             sin_emigrantes.append(codigo)
+        for columna, datos in gobernanza:
+            dato = ultimo_dato(datos.get(clave, {}), ANIO_MINIMO_GOBERNANZA)
+            if not dato:
+                fila[columna] = ""
+                sin_gobernanza[columna].append(codigo)
+            else:  # el estatus de libertad es texto; los índices, números
+                fila[columna] = dato[1] if isinstance(dato[1], str) else f"{dato[1]:g}"
         ppa = pib_ppa.get(clave, {}).get(ANIO_PIB_PPA)
         fila["pib_per_capita_ppa_usd"] = str(round(ppa)) if ppa else ""
         if not ppa:
@@ -318,6 +337,8 @@ def main(argv=None, carpeta=AQUI):
     print(f"población del Banco Mundial (sin dato en OWID): {', '.join(con_poblacion_bm) or 'ninguno'}; "
           f"de Gapminder, solo para la serie larga: {', '.join(con_poblacion_gapminder) or 'ninguno'}")
     print(f"paises.csv: emigrantes {ANIO_EMIGRANTES} sin dato (vacío): {', '.join(sin_emigrantes) or 'ninguno'}")
+    print("paises.csv: sin dato desde " + str(ANIO_MINIMO_GOBERNANZA) + " (vacío): "
+          + "; ".join(f"{columna} {len(faltan)}" for columna, faltan in sin_gobernanza.items()))
     print(f"paises.csv: PIB PPA {ANIO_PIB_PPA} sin dato (vacío): {', '.join(sin_pib) or 'ninguno'}")
     print(f"paises.csv: PIB nominal sin dato desde {ANIO_PIB_NOMINAL_MINIMO} (vacío): "
           f"{', '.join(sin_nominal) or 'ninguno'}; de un año anterior a {ANIO_PIB_NOMINAL}: "

@@ -89,6 +89,9 @@ Vaticano ni otros territorios menores.
 | `alfabetizacion_adultos` | Porcentaje de mayores de 15 años que saben leer y escribir (UNESCO, vía Gapminder), del último año desde 2010. Vacía en 73, casi todos de ingreso alto: la UNESCO no la mide donde es casi universal. |
 | `usuarios_internet` | Porcentaje de la población que usa internet (Banco Mundial, `IT.NET.USER.ZS`, vía Gapminder), del último año desde 2020; casi todos son de 2024. Vacía en 21. |
 | `emigrantes_pct` | Personas nacidas en el país que viven en otro, en porcentaje de la población residente, de 2024 (ONU, *International Migrant Stock*, vía Gapminder). Mide la diáspora que puede buscar sus raíces. Vacía en 12, entre ellos los territorios nuevos. |
+| `libertad_fh` | Estatus de Freedom House de 2022: `libre`, `parcial` o `no libre` (vía Gapminder). Vacía en 14. |
+| `democracia_eiu` | Índice de democracia de la EIU de 2020, de 0 a 100 (vía Gapminder). Vacía en 41. |
+| `corrupcion_cpi` | Índice de percepción de la corrupción de Transparencia Internacional de 2023, de 0 a 100; 100 es sin corrupción (vía Gapminder). Vacía en 30. |
 | `indice_genealogia` | IG, de 1 a 5. |
 | `indice_operabilidad` | IO, de 1 a 5. |
 | `comentarios` | Motivo de los puntajes de genealogía. |
@@ -142,6 +145,15 @@ abajo).
 
 **La columna de emigrantes** sirve para contrastar la parte de diáspora de IG. No cambia ningún
 puntaje por sí sola.
+
+**Libertad, democracia y corrupción** sirven para contrastar IO, sin cambiar ningún puntaje. IO
+coincide con ellas en general: la corrupción mediana (100 = sin corrupción) va de 20 en los países
+con IO 1 a unos 78 en los de IO 5, y entre los de IO 5 solo Singapur no es «libre» (es «parcial»).
+**Señales para revisar:**
+
+- Arabia Saudita, Baréin, Catar, Emiratos Árabes Unidos y Omán tienen IO 4 y son «no libres». Son
+  estables y con pagos sin fricción, pero la rúbrica pone el control estatal de internet en IO 2.
+- Paraguay (corrupción 28), Filipinas e Indonesia (34) tienen IO 4 con una corrupción alta.
 
 **Prioridad** = IG × IO (1 a 25). Ordena la tabla; no es un tercer índice.
 
@@ -227,27 +239,27 @@ Hay **dos versiones**, porque responden a preguntas distintas:
   23 con 4, 31 con 3, 7 con 2 y 40 con 1.
 
 **La prioridad y la exclusión POS usan IP local** (decisión tomada). **Prioridad POS** =
-IL × IP local. **Excluido POS** = IP local ≤ 1, es decir, la lengua local no tiene ninguna palabra
-anotada en esas fuentes. Con los niveles medidos quedan fuera **40 países y territorios** (antes,
-con los niveles de memoria, 13): Burundi (kirundi), Bután (dzongkha), Camboya (jemer), Chad
-(árabe chadiano), Comoras (shikomor), Congo (lingala), Curazao (papiamento), Eritrea (tigriña),
-Fiyi (fiyiano), Gambia (mandinga), Groenlandia (groenlandés), Guinea (pular), Guinea Ecuatorial
-(fang), Islas Marshall (marshalés), Islas Salomón (pijin de las Salomón), Kiribati (gilbertés),
-Laos (lao), Lesoto (sesoto), Madagascar (malgache), Maldivas (dhivehi), Micronesia (chuukés),
-Mongolia (mongol), Myanmar (birmano), Namibia (oshiwambo), Nauru (nauruano), Palaos (palauano),
-Papúa Nueva Guinea (tok pisin), República Centroafricana (sango), República Democrática del
-Congo (lingala), Samoa (samoano), Somalia (somalí), Sudán del Sur (árabe juba), Tayikistán
-(tayiko), Timor Oriental (tetun), Tonga (tongano), Turkmenistán (turcomano), Tuvalu (tuvaluano),
-Vanuatu (bislama), Yibuti (somalí) y Zambia (bemba). El umbral está en `UMBRAL_POS`.
+IL × IP local. **Excluido POS** (decidido) = la lengua local no tiene ninguna palabra anotada en
+esas fuentes (IP local ≤ 1) **y además** el país es inviable para operar (IO ≤ 1). Quedan fuera
+**7**: Eritrea, Myanmar, República Centroafricana, República Democrática del Congo, Somalia, Sudán
+del Sur y Turkmenistán. Los otros 33 países cuya lengua local no tiene corpus anotado (birmano,
+jemer, malgache, mongol, tok pisin…) siguen dentro, con prioridad baja: su IP local de 1 los deja
+al final. Los umbrales están en `UMBRAL_POS` y `UMBRAL_GENEALOGIA`.
 
 `generar_tabla.py` se detiene si el nivel de una lengua no sale de sus palabras anotadas, si IP no
 es el máximo de las lenguas listadas, si IP local no es el nivel de la primera, si una lengua no
 tiene nivel, o si el prefijo «IP por …» del comentario no corresponde.
 
-**Qué lenguas se listan (decidido):** todas las de uso amplio en textos escritos. En la práctica,
-se añadió el inglés, el ruso o el árabe estándar donde el comentario de genealogía ya los nombra
-(Omán, Jordania, Uzbekistán, Turkmenistán y otros), en 30 países. Una lengua que ese comentario no
-nombra no se listó, aunque se use. Eso afecta a IP, no a IP local.
+**Qué lenguas se listan (decidido):** todas las de uso amplio en textos escritos. Se añadió el
+inglés, el ruso o el árabe estándar donde el comentario de genealogía ya los nombra (Omán,
+Jordania, Uzbekistán, Turkmenistán y otros), en 30 países. Además, cada país lista sus **lenguas
+oficiales** según Unicode CLDR (estatus «oficial» u «oficial de hecho», no las regionales): eso
+sumó el inglés en Burundi, Eritrea y Madagascar, el portugués en Guinea Ecuatorial y el chino
+estándar en Hong Kong y Macao, al final de su lista. No se sumaron cinco variedades oficiales que
+se escriben poco o cuya forma escrita es otra lengua: el alemán suizo (Suiza y Liechtenstein), el
+manés (Isla de Man), el hindi de Fiyi y el hakka y el hokkien de Taiwán. Una lengua de uso amplio
+que no es oficial ni aparece en el comentario sigue sin listarse (el inglés en Maldivas, que CLDR
+no da como oficial). Todo esto afecta a IP, no a IP local, y hoy no cambió el IP de ningún país.
 
 **La lengua local** es la primera de cada lista. En 35 países se reordenó la lista para que la
 primera fuera la lengua local y no la lengua franca (por ejemplo, hausa en Nigeria, zulú en
@@ -378,8 +390,10 @@ Banco Mundial.
 - [`open-numbers/ddf--gapminder--fasttrack`](https://github.com/open-numbers/ddf--gapminder--fasttrack),
   commit `dee8978` (15 de octubre de 2026): fecundidad por país de 1800 a 2100
   (`children_per_woman_total_fertility`), PIB per cápita PPA en dólares internacionales de 2021
-  (`gdp_pcap`, versión 32, basado en el Banco Mundial) y emigrantes por país de origen
-  (`emigrant_n`, de la ONU).
+  (`gdp_pcap`, versión 32, basado en el Banco Mundial), emigrantes por país de origen
+  (`emigrant_n`, de la ONU), estatus de libertad de Freedom House (`freedstatus_fh`), índice de
+  democracia de la EIU (`demox_eiu`) e índice de percepción de la corrupción de Transparencia
+  Internacional (`corruption_perception_index_cpi`).
 - [`datasets/world-development-indicators`](https://github.com/datasets/world-development-indicators),
   commit `4ebec5a` (1 de julio de 2026), archivo `indicators/ny.gdp.pcap.cd/data.csv`: PIB per
   cápita en dólares corrientes del Banco Mundial (`NY.GDP.PCAP.CD`), hasta 2025.
@@ -399,6 +413,9 @@ Para los recursos de las lenguas y el mapa:
 - [`commoncrawl/cc-crawl-statistics`](https://github.com/commoncrawl/cc-crawl-statistics), commit
   `ea9a79e` (17 de octubre de 2026), archivo `plots/languages.csv`: porcentaje de páginas por
   lengua del rastreo `CC-MAIN-2026-39` (`CRAWL` en `preparar_lenguas.py`).
+- [`unicode-org/cldr-json`](https://github.com/unicode-org/cldr-json), commit `7d2b9cb` (CLDR 49),
+  archivo `cldr-json/cldr-core/supplemental/territoryInfo.json`: lenguas oficiales de cada país.
+  Se usó una vez para completar `idioma_principal`; no lo lee ningún script.
 - [`nvkelso/natural-earth-vector`](https://github.com/nvkelso/natural-earth-vector), commit
   `ca96624` (2 de junio de 2022), archivo `geojson/ne_50m_admin_0_countries.geojson`: fronteras de
   Natural Earth (dominio público), escala 1:50 millones.
@@ -425,6 +442,9 @@ curl -so internet-gapminder.csv $sg/ddf--datapoints--internet_users--by--geo--ti
 curl -so fecundidad-gapminder.csv $ft/ddf--datapoints--children_per_woman_total_fertility--by--country--time.csv
 curl -so pib-ppa-gapminder.csv $ft/ddf--datapoints--gdp_pcap--by--country--time.csv
 curl -so emigrantes-gapminder.csv $ft/ddf--datapoints--emigrant_n--by--country--time.csv
+curl -so libertad-gapminder.csv $ft/ddf--datapoints--freedstatus_fh--by--country--time.csv
+curl -so democracia-gapminder.csv $ft/ddf--datapoints--demox_eiu--by--country--time.csv
+curl -so corrupcion-gapminder.csv $ft/ddf--datapoints--corruption_perception_index_cpi--by--country--time.csv
 curl -so poblacion-gapminder.csv $sg/ddf--datapoints--total_population_with_projections--by--geo--time.csv
 curl -so pib-pc.csv $r/datasets/world-development-indicators/4ebec5a2273f531ba238a34dbe440394dc5a6c4b/indicators/ny.gdp.pcap.cd/data.csv
 curl -sO $r/datasets/population/d4b1a4a9a17e2123baf0ef119de05bceced1ab1b/data/population.csv
@@ -433,6 +453,8 @@ python3 preparar_datos.py --co2 co2-data/owid-co2-data.csv --maddison maddison-2
     --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \
     --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \
     --emigrantes emigrantes-gapminder.csv --poblacion-gapminder poblacion-gapminder.csv \
+    --libertad libertad-gapminder.csv --democracia democracia-gapminder.csv \
+    --corrupcion corrupcion-gapminder.csv \
     --pib-ppa pib-ppa-gapminder.csv --pib-pc-bm pib-pc.csv --poblacion-bm population.csv
 python3 historia_poblacion.py && python3 generar_tabla.py
 ```
@@ -488,6 +510,9 @@ Léelo antes de usar la tabla para decidir.
   comparar países, no como conteo exacto.
 - **Alfabetización, internet y emigrantes: de fuente** (UNESCO, Banco Mundial y ONU, vía
   Gapminder). En alfabetización e internet el año varía por país; es el último disponible.
+- **Libertad, democracia y corrupción: de fuente** (Freedom House 2022, EIU 2020 y Transparencia
+  Internacional 2023, vía Gapminder). Son los últimos años que publica Gapminder; el de la EIU es
+  el más viejo.
 - **IP: medido** con las palabras anotadas de Universal Dependencies y MasakhaPOS. Solo cuenta
   corpus abiertos con etiqueta gramatical: una lengua con otros recursos (diccionarios, corpus sin
   anotar, modelos) queda en el nivel 1 si no tiene ninguno de esos.
@@ -505,5 +530,5 @@ Léelo antes de usar la tabla para decidir.
 3. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
 4. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-5. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
-   listó, aunque se use (el inglés en Maldivas, por ejemplo). Afecta a IP, no a IP local.
+5. **Señales de IO para revisar:** las monarquías del Golfo y los países con IO 4 y corrupción
+   alta (ver «Libertad, democracia y corrupción» arriba).
