@@ -50,6 +50,52 @@ function verdadero(bool $condicion, string $mensaje): void
     }
 }
 
+/**
+ * Una huella de cada dibujo que hacen las plantillas, los adornos y los motivos, con un libro fijo: es la red
+ * contra cambios que nadie se propuso. Si cambias a propósito cómo se ve algo, regenera el archivo con
+ * `php pruebas/ejecutar.php --actualizar-dibujos` y mira en el diff qué dibujos cambiaron.
+ *
+ * @return array<string, string>
+ */
+function huellasDeDibujos(): array
+{
+    $huellas = [];
+    $tradiciones = array_column(Catalogo::tradiciones(), 'slug');
+    $categorias = array_column(Catalogo::categorias(), 'slug');
+    $zona = new Rectangulo(10.0, 20.0, 60.0, 6.0);
+    foreach ($tradiciones as $tradicion) {
+        $adorno = Adorno::de($tradicion);
+        $huellas["adorno $tradicion friso"] = md5($adorno->friso($zona, '#000000'));
+        $huellas["adorno $tradicion emblema"] = md5($adorno->emblema(50.0, 60.0, 4.4, '#000000'));
+        $huellas["adorno $tradicion emblema grande"] = md5($adorno->emblema(50.0, 60.0, 34.0, '#000000', 0.3));
+    }
+    foreach ($categorias as $categoria) {
+        $huellas["motivo $categoria"] = md5(Motivo::dibujar($categoria, 50.0, 60.0, 6.5, '#000000'));
+    }
+    // Cada plantilla con cada tradición, y una categoría distinta por vuelta para pasar por todos los motivos.
+    $vuelta = 0;
+    foreach (array_keys(Plantilla::disponibles()) as $plantilla) {
+        foreach ([null, ...$tradiciones] as $tradicion) {
+            $libro = libroDeEjemplo([
+                'plantilla' => $plantilla,
+                'subtitulo' => 'Un subtítulo de prueba',
+                'traductor' => 'Traductor de prueba',
+                'editorial' => 'Editorial de prueba',
+                'cita' => 'Una cita de prueba.',
+                'contratapa' => 'Un texto de contratapa de prueba.',
+                'paginas' => 224,
+                'categoria' => $categorias[$vuelta++ % count($categorias)],
+            ] + ($tradicion === null ? [] : ['tradicion' => $tradicion]));
+            $objeto = Plantilla::crear($plantilla);
+            foreach (['portada', 'contratapa', 'lomo'] as $vista) {
+                $huellas["$plantilla " . ($tradicion ?? 'sin tradición') . " $vista"] = md5($objeto->dibujar($libro, new Medidas($libro), $vista));
+            }
+        }
+    }
+
+    return $huellas;
+}
+
 /** Texto de la primera etiqueta de ese nombre en un documento XML, o vacío si no hay. */
 function textoDe(DOMDocument $doc, string $etiqueta): string
 {
@@ -245,7 +291,7 @@ function dentro(array $caja, Rectangulo $panel): bool
 function librosParaGeometria(): array
 {
     $libros = [];
-    foreach (['clasica', 'sobria'] as $plantilla) {
+    foreach (['clasica', 'sobria', 'tipografica'] as $plantilla) {
         foreach ([0.0, 90.0] as $solapas) {
             // Sin tradición y con cada una de las que tienen adorno propio.
             foreach ([null, ...array_column(Catalogo::tradiciones(), 'slug')] as $indice => $tradicion) {
@@ -587,7 +633,7 @@ $pruebas = [
 
     'El subtítulo deja bajo el título un espacio proporcional a su tamaño' => function (): void {
         $apretados = [];
-        foreach (['clasica', 'sobria'] as $plantilla) {
+        foreach (['clasica', 'sobria', 'tipografica'] as $plantilla) {
             foreach (['Hola', 'Apología de Sócrates', 'Diálogos de Platón sobre la justicia, el alma, el amor y la ciudad ideal, con notas'] as $titulo) {
                 $libro = libroDeEjemplo(['plantilla' => $plantilla, 'titulo' => $titulo, 'subtitulo' => 'SUBTITULO-PRUEBA']);
                 $plantillaObjeto = Plantilla::crear($plantilla);
@@ -1176,7 +1222,7 @@ $pruebas = [
 
         $mal = [];
         foreach (Catalogo::categorias() as $categoria) {
-            foreach (['clasica', 'sobria'] as $plantilla) {
+            foreach (['clasica', 'sobria', 'tipografica'] as $plantilla) {
                 $colores = Plantilla::crear($plantilla)->paleta((float) $categoria['tono']);
                 $texto = $contraste($colores['texto'], $colores['fondo']);
                 $acento = $contraste($colores['acento'], $colores['fondo']);
@@ -1321,6 +1367,28 @@ $pruebas = [
         Archivos::borrarDirectorio($dir);
     },
 
+    'Los dibujos no cambian sin querer' => function (): void {
+        $ruta = __DIR__ . '/dibujos.json';
+        $ahora = huellasDeDibujos();
+        $leidas = is_file($ruta) ? json_decode((string) file_get_contents($ruta), true) : null;
+        if (!is_array($leidas)) {
+            throw new RuntimeException('falta pruebas/dibujos.json: se crea con `php pruebas/ejecutar.php --actualizar-dibujos`');
+        }
+        /** @var array<string, string> $guardadas */
+        $guardadas = $leidas;
+
+        $cambiaron = [];
+        foreach ($ahora as $nombre => $huella) {
+            if (($guardadas[$nombre] ?? null) !== $huella) {
+                $cambiaron[] = $nombre . (isset($guardadas[$nombre]) ? '' : ' (nuevo)');
+            }
+        }
+        foreach (array_diff_key($guardadas, $ahora) as $nombre => $huella) {
+            $cambiaron[] = "$nombre (ya no existe)";
+        }
+        verdadero($cambiaron === [], count($cambiaron) . " dibujos cambiaron; si es a propósito, `php pruebas/ejecutar.php --actualizar-dibujos`:\n  " . implode("\n  ", array_slice($cambiaron, 0, 10)));
+    },
+
     'Los libros de ejemplo se cargan' => function (): void {
         $ejemplos = glob(__DIR__ . '/../ejemplos/*.json') ?: [];
         verdadero(count($ejemplos) >= 2, 'faltan ejemplos');
@@ -1329,6 +1397,14 @@ $pruebas = [
         }
     },
 ];
+
+if (in_array('--actualizar-dibujos', $argv, true)) {
+    $huellas = huellasDeDibujos();
+    ksort($huellas);
+    file_put_contents(__DIR__ . '/dibujos.json', json_encode($huellas, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n");
+    echo count($huellas) . " huellas escritas en pruebas/dibujos.json.\n";
+    exit(0);
+}
 
 $fallidas = 0;
 foreach ($pruebas as $nombre => $cuerpo) {

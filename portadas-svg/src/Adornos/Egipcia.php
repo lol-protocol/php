@@ -31,9 +31,9 @@ final class Egipcia extends Adorno
         });
     }
 
-    public function emblema(float $cx, float $cy, float $radio, string $color): string
+    public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = self::grosor($radio);
+        $grosor = $trazo ?? self::grosor($radio);
         $r = $radio - $grosor;
         $svg = self::circulo($cx, $cy, $r * 0.27, $color, $grosor);
         foreach ([-1, 1] as $lado) {

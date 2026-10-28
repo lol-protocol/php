@@ -26,9 +26,9 @@ final class Celta extends Adorno
         });
     }
 
-    public function emblema(float $cx, float $cy, float $radio, string $color): string
+    public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = self::grosor($radio);
+        $grosor = $trazo ?? self::grosor($radio);
         $r = $radio - $grosor;
         $svg = '';
         foreach ([270, 30, 150] as $angulo) {

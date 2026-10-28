@@ -24,9 +24,9 @@ final class Precolombina extends Adorno
         }) . self::linea([[$zona->x, $abajo], [$zona->x + $zona->ancho, $abajo]], $color, $grosor);
     }
 
-    public function emblema(float $cx, float $cy, float $radio, string $color): string
+    public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = self::grosor($radio);
+        $grosor = $trazo ?? self::grosor($radio);
         $r = $radio - $grosor;
         $unidad = [
             [-0.2, -1.0], [0.2, -1.0], [0.2, -0.6], [0.6, -0.6], [0.6, -0.2], [1.0, -0.2], [1.0, 0.2], [0.6, 0.2], [0.6, 0.6], [0.2, 0.6],

@@ -8,6 +8,7 @@ use PortadasSvg\Adornos\Adorno;
 use PortadasSvg\Adornos\Motivo;
 use PortadasSvg\Plantillas\Clasica;
 use PortadasSvg\Plantillas\Sobria;
+use PortadasSvg\Plantillas\Tipografica;
 
 /**
  * Plantilla de cubierta: dibuja la portada, la contratapa, el lomo y las solapas.
@@ -102,7 +103,7 @@ abstract class Plantilla
     /** @return array<string, class-string<Plantilla>> */
     public static function disponibles(): array
     {
-        return ['clasica' => Clasica::class, 'sobria' => Sobria::class];
+        return ['clasica' => Clasica::class, 'sobria' => Sobria::class, 'tipografica' => Tipografica::class];
     }
 
     public static function crear(string $nombre): self

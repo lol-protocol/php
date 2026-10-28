@@ -28,9 +28,9 @@ final class Griega extends Adorno
         });
     }
 
-    public function emblema(float $cx, float $cy, float $radio, string $color): string
+    public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = self::grosor($radio);
+        $grosor = $trazo ?? self::grosor($radio);
         $lado = $radio * 2 * 0.9;
         $x = $cx - $lado / 2;
         $y = $cy - $lado / 2;

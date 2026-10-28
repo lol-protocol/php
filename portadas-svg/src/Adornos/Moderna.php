@@ -21,9 +21,9 @@ final class Moderna extends Adorno
             });
     }
 
-    public function emblema(float $cx, float $cy, float $radio, string $color): string
+    public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = self::grosor($radio);
+        $grosor = $trazo ?? self::grosor($radio);
         $r = $radio - $grosor;
         $puntas = [];
         for ($i = 0; $i < 8; $i++) {

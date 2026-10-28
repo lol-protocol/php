@@ -43,8 +43,11 @@ abstract class Adorno extends Trazos
      */
     abstract public function friso(Rectangulo $zona, string $color): string;
 
-    /** Dibujo centrado en (cx, cy) que cabe en un cuadrado de `2 × $radio` mm de lado. */
-    abstract public function emblema(float $cx, float $cy, float $radio, string $color): string;
+    /**
+     * Dibujo centrado en (cx, cy) que cabe en un cuadrado de `2 × $radio` mm de lado. El grosor de la línea
+     * sale del radio; con `$trazo` se fija en mm, para un emblema grande de línea fina.
+     */
+    abstract public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string;
 
     /** Qué parte del radio ocupa de verdad el emblema, para colocar lo que va a su lado. */
     public function ocupa(): float
