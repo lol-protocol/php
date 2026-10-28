@@ -70,6 +70,7 @@ $coloresSegmento = [
         <span class="label">Cartera pendiente</span>
         <span class="value"><?= Config::dinero($carteraPendiente) ?></span>
         <span class="delta <?= $carteraPendiente > 0 ? 'critical' : 'good' ?>">Saldo abierto a hoy</span>
+        <span class="delta"><a href="?page=cobranza">Ver quién debe</a></span>
     </div>
     <div class="panel stat-tile">
         <span class="label">Devoluciones pendientes</span>

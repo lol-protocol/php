@@ -6,6 +6,12 @@ Pequeño sistema en PHP (sin framework) para analizar:
   Solo se registran pagos que el usuario nos hace a nosotros — no hay módulo de
   costos ni pagos propios del negocio.
 - **Cartera** pendiente, con antigüedad de saldo (al día / 1-30 / 31-60 / 61+ días).
+- **Cobranza** (`?page=cobranza`): la misma cartera, cliente por cliente: quién debe, cuánto
+  (saldo total y saldo ya vencido, en USD a la tasa de hoy), cuántas boletas y desde cuándo (los
+  días de la boleta que lleva más tiempo vencida), con su email para reclamar y un acceso directo a
+  registrar su pago. Se ve por defecto a los que tienen saldo vencido, o todo el saldo abierto, y se
+  ordena por monto vencido, antigüedad, saldo o nombre. Sus totales son los del Dashboard: las dos
+  pantallas salen de la misma consulta (`IngresosYCobrosRepository::saldosAbiertosSql()`).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
   etapa, por canal de adquisición y por país/género/rango de edad.
@@ -424,12 +430,14 @@ las tres suites, contra un Postgres 16, en PHP 8.3 (el mínimo) y en 8.4.
 public/            front controller (index.php) + CSS
 src/
   Controllers/       un controlador por sección (dashboard, boletas —la pantalla
-                      «Cobros e ingresos», `?page=cobros`—, pagos, notas de crédito,
-                      funnel, cohortes, clientes, auditoria). Todas las páginas son públicas, no hay
+                      «Cobros e ingresos», `?page=cobros`—, cobranza, pagos, notas de
+                      crédito, funnel, cohortes, clientes, auditoria). Todas las páginas son públicas, no hay
                       login (ver `_Garbage/README.md`).
   Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
                       IngresosYCobrosRepository (kpis, ingresos y cobros por mes,
-                      antigüedad de cartera, por método de pago) y
+                      antigüedad de cartera, por método de pago; su
+                      `saldosAbiertosSql()` es la única definición de cartera),
+                      CobranzaRepository (esa cartera por cliente) y
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
                       por separado. AuditoriaRepository también concentra el
@@ -524,7 +532,7 @@ bin/                    los comandos, todos con `php bin/<comando>.php`:
                         vez por día)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP: una carpeta por sección o entidad (dashboard,
-                        boletas, pagos, notas, clientes, funnel, cohortes, auditoria) y en
+                        boletas, cobranza, pagos, notas, clientes, funnel, cohortes, auditoria) y en
                         ella una por pantalla, con el mismo nombre para lo mismo:
                         listado, alta, edicion y anulacion (boletas y pagos; los
                         clientes tienen listado, alta y ficha; las notas, listado

@@ -7,6 +7,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Controllers\AuditoriaController;
 use App\Controllers\ClientesController;
 use App\Controllers\BoletasController;
+use App\Controllers\CobranzaController;
 use App\Controllers\CohortesController;
 use App\Controllers\DashboardController;
 use App\Controllers\FunnelController;
@@ -46,6 +47,7 @@ $paginas = [
     'boleta-nueva' => fn () => (new BoletasController())->nueva(),
     'boleta-editar' => fn () => (new BoletasController())->editar(),
     'boleta-anular' => fn () => (new BoletasController())->anular(),
+    'cobranza' => fn () => (new CobranzaController())->index(),
     'pagos' => fn () => (new PagosController())->index(),
     'pago-nuevo' => fn () => (new PagosController())->nuevo(),
     'pago-editar' => fn () => (new PagosController())->editar(),
