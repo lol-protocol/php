@@ -30,7 +30,7 @@ final class Clasica extends Plantilla
     /** Friso del adorno de la tradición, arriba dentro del marco: distancia al borde superior del corte, margen a cada lado y alto. */
     private const FRISO_Y = 17.0;
     private const FRISO_MARGEN = 18.0;
-    private const FRISO_ALTO = 5.0;
+    private const FRISO_ALTO = 4.0;
     /** Ornamento: altura (fracción del alto), radio del emblema, y tramos de línea a cada lado (separación del emblema, largo hasta, grosor). */
     private const ORNAMENTO_Y = 0.6;
     private const EMBLEMA_RADIO = 4.4;

@@ -19,7 +19,7 @@ final class Sobria extends Plantilla
     private const BARRA_ALTO = 2.4;
     /** Friso del adorno de la tradición, que sustituye a la barra: ancho y alto. */
     private const FRISO_ANCHO = 54.0;
-    private const FRISO_ALTO = 5.0;
+    private const FRISO_ALTO = 4.0;
     /** Título: distancia al borde superior del corte, alto disponible (fracción del alto) y tamaño. */
     private const TITULO_Y = 30.0;
     private const TITULO_ALTO = 0.42;

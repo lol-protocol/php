@@ -10,6 +10,7 @@ require __DIR__ . '/../src/autocarga.php';
 
 use PortadasSvg\Adornos\Adorno;
 use PortadasSvg\Adornos\Generico;
+use PortadasSvg\Adornos\Motivo;
 use PortadasSvg\Anchos;
 use PortadasSvg\Archivos;
 use PortadasSvg\Catalogo;
@@ -238,8 +239,10 @@ function librosParaGeometria(): array
     foreach (['clasica', 'sobria'] as $plantilla) {
         foreach ([0.0, 90.0] as $solapas) {
             // Sin tradición y con cada una de las que tienen adorno propio.
-            foreach ([null, 'griega', 'china', 'arabe', 'medieval'] as $tradicion) {
-                $propios = $tradicion === null ? [] : ['tradicion' => $tradicion];
+            foreach ([null, ...array_column(Catalogo::tradiciones(), 'slug')] as $indice => $tradicion) {
+                // Cada libro lleva además una categoría distinta, para que los 27 motivos pasen por la contratapa.
+                $categoria = ['categoria' => Catalogo::categorias()[$indice % 27]['slug']];
+                $propios = ($tradicion === null ? [] : ['tradicion' => $tradicion]) + $categoria;
                 $libros[] = libroLargo($plantilla, $solapas, $propios);
                 $libros[] = libroLargo($plantilla, $solapas, ['lomo_mm' => 3.2] + $propios);
                 $libros[] = libroLargo($plantilla, $solapas, ['titulo' => 'Hola'] + $propios);
@@ -1061,7 +1064,7 @@ $pruebas = [
 
     'Los adornos caben en la zona que se les da, sea cual sea' => function (): void {
         $fuera = [];
-        foreach (['griega', 'china', 'arabe', 'medieval'] as $tradicion) {
+        foreach (array_column(Catalogo::tradiciones(), 'slug') as $tradicion) {
             $adorno = Adorno::de($tradicion);
             foreach ([[36.0, 6.0], [36.0, 4.0], [99.0, 5.0], [17.3, 4.0], [4.0, 5.0]] as [$ancho, $alto]) {
                 $zona = new Rectangulo(10.0, 20.0, $ancho, $alto);
@@ -1146,6 +1149,39 @@ $pruebas = [
             }
         }
         verdadero($mal === [], "contraste insuficiente:\n  " . implode("\n  ", $mal));
+    },
+
+    'Cada categoría tiene su motivo, y cabe en su cuadrado' => function (): void {
+        igual(array_column(Catalogo::categorias(), 'slug'), Motivo::CATEGORIAS);
+        $mal = [];
+        foreach (Motivo::CATEGORIAS as $categoria) {
+            foreach ([3.0, 6.5, 12.0] as $radio) {
+                $dibujo = Motivo::dibujar($categoria, 50.0, 60.0, $radio, '#000000');
+                if ($dibujo === '') {
+                    $mal[] = "$categoria no dibuja nada";
+                    continue;
+                }
+                foreach (adornos($dibujo) as $caja) {
+                    if ($caja['x0'] < 50.0 - $radio - 0.2 || $caja['x1'] > 50.0 + $radio + 0.2 || $caja['y0'] < 60.0 - $radio - 0.2 || $caja['y1'] > 60.0 + $radio + 0.2) {
+                        $mal[] = sprintf('%s radio %g: x %.2f–%.2f, y %.2f–%.2f', $categoria, $radio, $caja['x0'], $caja['x1'], $caja['y0'], $caja['y1']);
+                        break;
+                    }
+                }
+            }
+        }
+        verdadero($mal === [], "motivos fuera de su cuadrado:\n  " . implode("\n  ", $mal));
+        igual('', Motivo::dibujar('inventada', 0.0, 0.0, 5.0, '#000000'));
+    },
+
+    'La contratapa lleva el motivo de la categoría solo si el libro tiene una' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        Generador::escribir(libroDeEjemplo(), "$dir/sin");
+        Generador::escribir(libroDeEjemplo(['categoria' => 'poesia']), "$dir/con");
+        $sin = (string) file_get_contents("$dir/sin/contratapa.svg");
+        $con = (string) file_get_contents("$dir/con/contratapa.svg");
+        verdadero(substr_count($con, '<polyline') > substr_count($sin, '<polyline'), 'la lira no está');
+        igual(0, substr_count($sin, '<polyline'));
+        Archivos::borrarDirectorio($dir);
     },
 
     'Los libros de ejemplo se cargan' => function (): void {
