@@ -634,6 +634,13 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   árabe…; lo que apareció, como «Pollack» o «sesaat», va a `legit`). En italiano,
   francés, neerlandés, noruego, finés, islandés y hebreo la doble letra es parte
   de la palabra («anno» → «ano», «penne» → «pene»), y ahí no se reduce.
+- **Artículo y preposiciones pegados (hebreo y árabe).** «הטיפש» (el tonto), «ובחרא»,
+  «الغبي», «بالغبي»: si la palabra no está tal cual, se prueba sin hasta tres letras
+  iniciales y con un resto de tres letras o más (`CliticPrefixes`). Lo hallado así
+  trae `prefix => clitic` y baja a revisión, nunca bloquea solo. En hebreo se quitan
+  ו ה ב כ; no «ל», «מ» ni «ש», porque con ellas «לחיות» (vivir) o «במטבח» (en la
+  cocina) darían alerta. Es una lista fija por idioma: añadir otro idioma de
+  este tipo es añadirlo a `CliticPrefixes` y medir sus falsos positivos.
 - **Palabras ambiguas.** «vamos a coger el bus», «está de bomba la fiesta»,
   «techo de paja» no son contenido sexual ni bélico: esas palabras sólo
   cuentan si la misma línea trae algo firme (`medium` o `high`) del mismo

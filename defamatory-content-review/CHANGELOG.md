@@ -116,6 +116,17 @@ Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»
   forma declinada. Faltan árabe, finés, islandés, hindi, suajili y tagalo (sin
   reglas seguras o sin lista de frecuencias para medirlas). Planillas de
   revisión regeneradas. `DeclensionTest`.
+- **Artículo y preposiciones pegados, en hebreo y árabe** (`CliticPrefixes`,
+  `SearchStrategy`): «הטיפש» (el tonto), «ובחרא», «الغبي», «بالغبي» no se
+  encontraban, porque la palabra no estaba tal cual. Ahora, si no está, se prueba
+  sin hasta tres letras iniciales (hebreo: ו ה ב כ; árabe: ال و ب ل ف ك) y un resto
+  de tres letras o más. Lo hallado así trae `prefix => clitic` y nunca bloquea solo
+  (baja a revisión, como las letras dobles). En hebreo no se quitan «ל», «מ» ni
+  «ש»: con ellas, «לחיות» (vivir), «להחזיר» (devolver), «במטבח» (en la cocina) y
+  «שנוכל» (que podamos) daban alerta. Medido con las 50 000 palabras más frecuentes:
+  hebreo 232 → 450 y árabe 165 → 320, casi todo «el/la + insulto» (la «ودودة»,
+  «amistosa», es la excepción conocida). «للعين» (para el ojo) pasa de `legit` a
+  `everyday`. `CliticPrefixesTest`.
 - **Una forma generada no pisa una entrada escrita** ni entra en la búsqueda
   fonética de nombres. Con los acentos plegados «prasě» y «prase» son la misma
   clave, y la forma generada reemplazaba al lema (y su severidad); además, cada

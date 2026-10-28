@@ -28,12 +28,14 @@ final class ChatTopics
     private array $everyday = [];
     /** true: también las dobles («puuta»); 'elongated': sólo rachas de 3 o más («puuuta»); false: nada */
     private bool|string $collapseRepeats;
+    private string $language;
     /** @var array{types?:list<string>, before?:list<string>, after?:list<string>} */
     private array $targeting;
 
     /** @param array<string,mixed> $config ['meta' => …, 'words' => categoría => entradas, 'patterns' => …] */
     public function __construct(array $config, string $language)
     {
+        $this->language = $language;
         $words = TopicInflector::expand($config['words'] ?? [], $language);
         $this->words = new WordList(['meta' => $config['meta'] ?? [], 'words' => $words], $language);
         $this->collapseRepeats = $config['meta']['collapseRepeats'] ?? 'elongated';
@@ -65,9 +67,7 @@ final class ChatTopics
     public function scan(WordList $list, string $text): array
     {
         $text = EverydayWords::mask($text, $this->everyday);
-        $search = fn(string $phrase): ?array => $list->search($phrase);
-
-        return WordListScanner::scan($text, $this->collapseRepeats !== false ? RepeatedLetters::searcher($search, $this->legit, $this->collapseRepeats === true) : $search);
+        return WordListScanner::scan($text, SearchStrategy::of($list, $this->language, $this->collapseRepeats, $this->legit));
     }
 
     /** @return array{types?:list<string>, before?:list<string>, after?:list<string>} ver TargetContext */
