@@ -4,7 +4,7 @@ A database and search tool for copyright legislation, built for digital librarie
 
 > **Informational only, not legal advice.** The data was compiled without review by a lawyer. Copyright terms and exceptions change, and some entries may be incomplete or out of date. Before relying on any row, check it against the official source (see the `linked_resources` column and the body named in `enforcement_body`).
 
-> The data is a curated starting point (158 laws, 158 jurisdictions). Terms are summaries: check the official source before relying on any entry. The 73 jurisdictions added in October 2026 and 24 more added on 16 October 2 on 17 October (Kyrgyzstan, Nicaragua) and 9 on 18 October (Sudan, Afghanistan, Niger, Burkina Faso, South Sudan, Guinea, Gabon, Lesotho, Palestine; see [docs/research-2026-10/new-rows-2026-10-16.md](docs/research-2026-10/new-rows-2026-10-16.md), [new-rows-2026-10-17.md](docs/research-2026-10/new-rows-2026-10-17.md) and [new-rows-2026-10-18.md](docs/research-2026-10/new-rows-2026-10-18.md), which also list the places still to research) were compiled from secondary sources through web search (see [Data provenance](#data-provenance)).
+> The data is a curated starting point (197 laws, 197 jurisdictions). Terms are summaries: check the official source before relying on any entry. The 73 jurisdictions added in October 2026 and 24 more added on 16 October 2 on 17 October (Kyrgyzstan, Nicaragua) and 9 on 18 October (Sudan, Afghanistan, Niger, Burkina Faso, South Sudan, Guinea, Gabon, Lesotho, Palestine; see [docs/research-2026-10/new-rows-2026-10-16.md](docs/research-2026-10/new-rows-2026-10-16.md), [new-rows-2026-10-17.md](docs/research-2026-10/new-rows-2026-10-17.md) and [new-rows-2026-10-18.md](docs/research-2026-10/new-rows-2026-10-18.md) and [new-rows-2026-10-22.md](docs/research-2026-10/new-rows-2026-10-22.md) (22 October: Cabo Verde, Andorra, Monaco, San Marino, Kosovo, Bahamas, Barbados, Seychelles, Madagascar, Liechtenstein) and [new-rows-2026-10-25.md](docs/research-2026-10/new-rows-2026-10-25.md) (25 October: Guyana, Belize, Grenada, Antigua and Barbuda, Dominica, Saint Kitts and Nevis, Saint Vincent and the Grenadines, Suriname, Timor-Leste, Maldives, Bhutan, Republic of the Congo, Djibouti, Sao Tome and Principe, Turkmenistan) and [new-rows-2026-10-25-batch5.md](docs/research-2026-10/new-rows-2026-10-25-batch5.md) (25 October, second batch: Eswatini, Samoa, Fiji, Tonga, Comoros, Solomon Islands, Kiribati, Nauru, Palau, Micronesia, Tuvalu, Vatican City, Saint Lucia, Vanuatu; the Marshall Islands have no author-life term and Equatorial Guinea's law could not be settled, so both are still to add), which also list the places still to research) were compiled from secondary sources through web search (see [Data provenance](#data-provenance)).
 
 ## What it does
 
@@ -99,12 +99,14 @@ Needs PHP with `curl`, `dom`, `mbstring` and `intl` (the last one keeps file nam
 
 ## Database
 
+MySQL 8.0 and MariaDB 10.11 (both are tested in CI).
+
 ```bash
-mysql -u root -p < database_schema.sql      # or: php import_database.php --create-schema
 php import_database.php --all               # schema + import + validation
+php tests/database_check.php                # compares every column of the database with the CSV
 ```
 
-The importer reads `region` straight from the CSV.
+Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `copyright_laws_db` database.** `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV.
 
 ## Tests
 
@@ -118,7 +120,7 @@ npm run check:links                # does every reference URL still answer? (--o
 
 The browser tests skip themselves when PHP, Playwright or Chromium is missing; set `E2E_REQUIRED=1` to make that an error. `check:links` exits with 1 on broken links (404/410, a host that no longer exists, a bad certificate); 401/403/429, a 5xx that persists after one retry, timeouts, temporary DNS failures and redirect loops (cookie walls) are only warnings, because many official sites block or throttle automated requests.
 
-CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, and the browser tests, on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
+CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, the browser tests, and the database import (MySQL 8.0 and MariaDB 10.11, compared column by column with the CSV), on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
 
 ## Data provenance
 
@@ -129,7 +131,7 @@ The first real link check (11 Oct 2026, GitHub Actions) found dead links mostly 
 
 - The first 50 rows come from the original curated list.
 - The 73 jurisdictions added in October 2026 (BG HR CY EE LV LT MT SK SI LU NO IS UA RS AL MK BA ME MD GE AM AZ BY KZ UZ UY VE PY CR BO PA JM TT GT EC PK LK NP KH TW MN MO LA MM BD DO SV BN QA KW BH OM JO LB IQ IR MA TN DZ GH SN CI UG RW TZ ZM MW ZW BW AO ET MU CM) were researched through web search only, without access to the statutes themselves. `linked_resources` values are pages that appeared in search results (mostly WIPO Lex).
-- **Treaties have three states.** `treaties_signatory` lists confirmed memberships (Berne 135, TRIPS 132, WCT 103, WPPT 95 of 158 jurisdictions at the time of writing), `treaties_not_party` confirmed non-memberships (28 cases, e.g. Taiwan and Iran for Berne, WTO observers for TRIPS, Brazil for WCT/WPPT), and anything else is "not confirmed". The treaty filter only matches confirmed memberships, so it under-counts; the jurisdiction card shows all three states. Weak "not a party" answers from old sources (Norway, Iceland, Egypt, Lebanon for WCT/WPPT) were left as "not confirmed". The EU row describes the Union's own memberships: it is not a Berne party itself. The second batch of jurisdictions is thinner than the first: where a term of protection could not be found the jurisdiction was not added.
+- **Treaties have three states.** `treaties_signatory` lists confirmed memberships (Berne 170, TRIPS 149, WCT 111, WPPT 101 of 197 jurisdictions at the time of writing), `treaties_not_party` confirmed non-memberships (28 cases, e.g. Taiwan and Iran for Berne, WTO observers for TRIPS, Brazil for WCT/WPPT), and anything else is "not confirmed". The treaty filter only matches confirmed memberships, so it under-counts; the jurisdiction card shows all three states. Weak "not a party" answers from old sources (Norway, Iceland, Egypt, Lebanon for WCT/WPPT) were left as "not confirmed". The EU row describes the Union's own memberships: it is not a Berne party itself. The second batch of jurisdictions is thinner than the first: where a term of protection could not be found the jurisdiction was not added.
 - Where sources disagree on the term, the `notes` column says so, and the term keeps the figure most sources give (for example Iran, Oman, Bahrain, Kuwait, Iraq, and Trinidad and Tobago, whose 2026 amendment has no confirmed commencement date).
 - Per-batch sources, confidence and doubts are kept in [docs/research-2026-10/](docs/research-2026-10/).
 

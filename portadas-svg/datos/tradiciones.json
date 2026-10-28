@@ -1,0 +1,18 @@
+[
+  {"slug": "griega", "nombre": "griega"},
+  {"slug": "romana", "nombre": "romana"},
+  {"slug": "egipcia", "nombre": "egipcia"},
+  {"slug": "mesopotamica", "nombre": "mesopotámica"},
+  {"slug": "hebrea", "nombre": "hebrea"},
+  {"slug": "persa", "nombre": "persa"},
+  {"slug": "arabe", "nombre": "árabe"},
+  {"slug": "india", "nombre": "india"},
+  {"slug": "china", "nombre": "china"},
+  {"slug": "japonesa", "nombre": "japonesa"},
+  {"slug": "celta", "nombre": "celta"},
+  {"slug": "nordica", "nombre": "nórdica"},
+  {"slug": "medieval", "nombre": "medieval europea"},
+  {"slug": "renacentista", "nombre": "renacentista"},
+  {"slug": "precolombina", "nombre": "precolombina"},
+  {"slug": "moderna", "nombre": "europea moderna"}
+]

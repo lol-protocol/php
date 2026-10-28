@@ -9,6 +9,7 @@ use App\Config;
 /** @var string $hasta */
 /** @var bool $personalizado */
 /** @var float $carteraPendiente */
+/** @var array{cantidad: int, total_usd: float} $devolucionesPendientes */
 /** @var array $antiguedad */
 /** @var array $serieMensual */
 /** @var array $funnelResumen */
@@ -69,6 +70,16 @@ $coloresSegmento = [
         <span class="label">Cartera pendiente</span>
         <span class="value"><?= Config::dinero($carteraPendiente) ?></span>
         <span class="delta <?= $carteraPendiente > 0 ? 'critical' : 'good' ?>">Saldo abierto a hoy</span>
+        <span class="delta"><a href="?page=cobranza">Ver quién debe</a></span>
+    </div>
+    <div class="panel stat-tile">
+        <span class="label">Devoluciones pendientes</span>
+        <span class="value"><?= Config::dinero($devolucionesPendientes['total_usd']) ?></span>
+        <?php if ($devolucionesPendientes['cantidad'] > 0): ?>
+            <span class="delta critical"><a href="?page=notas"><?= $devolucionesPendientes['cantidad'] ?> <?= $devolucionesPendientes['cantidad'] === 1 ? 'nota' : 'notas' ?> sin devolver</a></span>
+        <?php else: ?>
+            <span class="delta good">Ninguna nota sin devolver</span>
+        <?php endif; ?>
     </div>
 </div>
 

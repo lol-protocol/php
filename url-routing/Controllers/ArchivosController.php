@@ -7,13 +7,23 @@ namespace App\Controllers;
 use App\Repositories\SitemapRepository;
 use App\Support\Config;
 use App\Support\HostParser;
+use App\Support\RespuestaCondicional;
 use App\Support\ServiceLocator;
+use App\Support\SitemapEstado;
 
 /**
  * /robots.txt, /sitemap.xml (an index) and /sitemap/{tipo}/{n}.xml, where
  * {tipo} is the type's digit width (or the letter its sitemap repository
  * gives a type without one) and {n} the 1-based part: a sitemap file holds
  * at most SitemapRepository::POR_PARTE URLs.
+ *
+ * Every request asks the database again: a page that is hidden or withdrawn
+ * leaves the sitemap at once. What a crawler can skip is the download: each
+ * file goes out with an ETag and, when SitemapEstado knows it, a
+ * Last-Modified, and a request that already has the current copy gets a 304.
+ * The index gives each part the <lastmod> SitemapEstado remembers for it (the
+ * last time its list of pages changed); the pages themselves carry no
+ * <lastmod>, because the tables keep no modification dates.
  */
 abstract class ArchivosController extends BaseController
 {
@@ -50,15 +60,18 @@ abstract class ArchivosController extends BaseController
     {
         $repo = $this->repo();
         $base = $this->base();
+        $estado = SitemapEstado::desdeConfig();
         $partes = [];
         foreach ($repo->tipos() as $tipo) {
             $total = (int)ceil($repo->cuantas($tipo) / SitemapRepository::POR_PARTE);
             for ($n = 1; $n <= $total; $n++) {
-                $partes[] = "{$base}/sitemap/{$tipo}/{$n}.xml";
+                $url = "{$base}/sitemap/{$tipo}/{$n}.xml";
+                // Known once the part has been served: until then, no date rather than a made-up one.
+                $partes[] = [$url, $estado->desde($url)];
             }
         }
 
-        return self::xml('sitemapindex', 'sitemap', $partes);
+        return self::servir($estado, "{$base}/sitemap.xml", self::xml('sitemapindex', 'sitemap', $partes));
     }
 
     public function parte(array $params = []): string
@@ -76,18 +89,44 @@ abstract class ArchivosController extends BaseController
         }
 
         $base = $this->base();
-        return self::xml('urlset', 'url', array_map(fn(string $clave): string => $base . $this->enlaceDe($ruta[0], $clave), $claves));
+        $xml = self::xml('urlset', 'url', array_map(fn(string $clave): array => [$base . $this->enlaceDe($ruta[0], $clave), null], $claves));
+
+        return self::servir(SitemapEstado::desdeConfig(), "{$base}/sitemap/{$ruta[0]}/{$m[1]}.xml", $xml);
     }
 
-    /** @param list<string> $urls */
-    private static function xml(string $raiz, string $elemento, array $urls): string
+    /**
+     * Sends $xml, the file at $url, with its validators; a 304 with no body if the client has it already.
+     * no-cache: a copy may be kept, but is asked about every time, so a page that left the list is not
+     * listed by anyone's cache either.
+     */
+    private static function servir(SitemapEstado $estado, string $url, string $xml): string
     {
-        header('Content-Type: application/xml; charset=UTF-8');
+        $etag = '"' . substr(hash('sha256', $xml), 0, 32) . '"';
+        $desde = $estado->registrar($url, $xml);
 
+        header('Content-Type: application/xml; charset=UTF-8');
+        header('Cache-Control: no-cache');
+        header("ETag: {$etag}");
+        if ($desde !== null) {
+            header('Last-Modified: ' . RespuestaCondicional::fechaHttp($desde));
+        }
+
+        if (RespuestaCondicional::sinCambios($_SERVER['HTTP_IF_NONE_MATCH'] ?? null, $_SERVER['HTTP_IF_MODIFIED_SINCE'] ?? null, $etag, $desde)) {
+            http_response_code(304);
+            return '';
+        }
+
+        return $xml;
+    }
+
+    /** @param list<array{string, int|null}> $entradas each file or page: its URL and, if known, since when it is what it is */
+    private static function xml(string $raiz, string $elemento, array $entradas): string
+    {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
             . "<{$raiz} xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
-        foreach ($urls as $url) {
-            $xml .= "  <{$elemento}><loc>" . htmlspecialchars($url, ENT_XML1 | ENT_QUOTES, 'UTF-8') . "</loc></{$elemento}>\n";
+        foreach ($entradas as [$url, $desde]) {
+            $fecha = $desde === null ? '' : '<lastmod>' . gmdate('Y-m-d\\TH:i:s\\Z', $desde) . '</lastmod>';
+            $xml .= "  <{$elemento}><loc>" . htmlspecialchars($url, ENT_XML1 | ENT_QUOTES, 'UTF-8') . "</loc>{$fecha}</{$elemento}>\n";
         }
 
         return $xml . "</{$raiz}>\n";

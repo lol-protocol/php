@@ -12,7 +12,7 @@ final class ConfigTest extends TestCase
         $config = Config::fromEnvironment('/srv/app', []);
         $this->assertSame('/srv', $config->projectRoot);
         $this->assertSame('/srv/app/storage', $config->storageDirectory);
-        $this->assertSame(30, $config->retentionDays);
+        $this->assertSame(0, $config->retentionDays, 'Por defecto no se borra nada.');
         $this->assertSame(10, $config->createsPerHour);
         $this->assertSame(5000, $config->maxStored);
         $this->assertFalse($config->trustForwardedFor);
@@ -39,7 +39,7 @@ final class ConfigTest extends TestCase
     public function testEmptyValuesFallBackToDefaults(): void
     {
         $config = Config::fromEnvironment('/srv/app', ['MARCALIBROS_RETENTION_DAYS' => '', 'MARCALIBROS_STORAGE' => '']);
-        $this->assertSame(30, $config->retentionDays);
+        $this->assertSame(0, $config->retentionDays);
         $this->assertSame('/srv/app/storage', $config->storageDirectory);
     }
 
@@ -53,6 +53,13 @@ final class ConfigTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         Config::fromEnvironment('/srv/app', ['MARCALIBROS_CREATES_PER_HOUR' => '0']);
+    }
+
+    public function testRetentionZeroMeansNeverButNegativeIsRejected(): void
+    {
+        $this->assertSame(0, Config::fromEnvironment('/srv/app', ['MARCALIBROS_RETENTION_DAYS' => '0'])->retentionDays);
+        $this->expectException(\InvalidArgumentException::class);
+        Config::fromEnvironment('/srv/app', ['MARCALIBROS_RETENTION_DAYS' => '-1']);
     }
 
     public function testForwardedForIsOnlyTrustedWithExactlyOne(): void

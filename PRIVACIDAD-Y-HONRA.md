@@ -66,7 +66,7 @@ De ahí salen tres certezas que guían todo lo demás:
 | **Un insulto disfrazado sigue siendo un insulto.** | `EvasionCleaner`, `MaskedTerms`, letras sueltas y repetidas, signos. |
 | **Las personas vivas son privadas por defecto.** | `url-routing`: `AccessPolicy` y `Privacidad`. Sin defunción y nacida hace menos de 110 años, se muestra como «Persona viva»; quien solo figura en colecciones privadas, como «Persona privada» (ver `url-routing/docs/ACCESO.md`). |
 | **Un registro que delata a un vivo tampoco se muestra.** | `url-routing`: sucesos y registros con un participante vivo dan 404. |
-| **Un teléfono de una guía reciente no se publica.** | `phone-directory`: `Privacy`. La base y el enlazador solo devuelven entradas de guías de hace más de 92 años (en 2026, hasta 1933); una guía sin año conocido se oculta (ver `phone-directory/README.md`). |
+| **Un teléfono de una guía reciente no se publica.** | `phone-directory`: `Privacy`. La base y el enlazador solo devuelven entradas de guías de hace más de 92 años (en 2026, hasta 1933); una guía sin año conocido se oculta, salvo la entrada de quien el propietario marca como fallecido, con su comprobante (ver `phone-directory/README.md`). |
 | **El filtro propone, una persona decide.** | Las decisiones `review` necesitan una cola y alguien que la atienda. |
 | **Lo que promete el marketing se compara con lo que hace el producto.** | [`marketing/VERIFICACION.md`](marketing/VERIFICACION.md): frase por frase, qué respalda este repositorio y qué no. |
 
@@ -88,23 +88,34 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    años desde su nacimiento), y enlazar ediciones tampoco arma el perfil de
    quien podría vivir (`Privacy`). Quien lee la base como propietario, como lo
    hace la línea de comandos, lo ve todo, así que **nada de ahí se publica sin
-   pasar por la vista de visitante**. Falta poder marcar a una persona
-   fallecida entrada por entrada para mostrar una guía reciente, y decidir qué
-   hacer con las razones sociales que llevan un nombre propio (las empresas no
-   se filtran).
+   pasar por la vista de visitante**. Se puede marcar a una persona fallecida
+   entrada por entrada para mostrar una guía reciente (`markDeceased`): pide el
+   comprobante y un año verosímil, solo la hace quien tiene la base, y el
+   comprobante no sale con la entrada. Eso no resuelve a los parientes que
+   siguen viviendo en esa dirección o con ese teléfono. Falta decidir qué hacer
+   con las razones sociales que llevan un nombre propio (las empresas no se
+   filtran).
 3. **Textos largos.** Resuelto: el endpoint de moderación acepta hasta 10.000
    caracteres y revisa por párrafos lo que pasa de 2.000 (`LongText`). Un texto
    más largo que eso hay que mandarlo en varias partes.
-4. **Denuncia, retiro y registro.** En `url-routing/`, cada página pública de
+4. **Denuncia, retiro y registro** (el recorrido paso a paso está en
+   [`RECLAMOS.md`](RECLAMOS.md)). En `url-routing/`, cada página pública de
    genealogía lleva «Pedir el retiro de esta página» (`/r/{id}/`, sin cuenta).
    El propietario decide en `/0/3/` si la oculta mientras revisa, la retira o
    rechaza el pedido, y cada paso queda registrado con fecha y nota (ver
    [`url-routing/docs/ACCESO.md`](url-routing/docs/ACCESO.md)). En
    `sistema-nuevo/`, las notas del panel pasan por el filtro y cada guardado
-   queda en un registro (quién, cuándo y qué decidió el filtro). Falta: avisar al
-   propietario de un pedido nuevo y vigilar el plazo de respuesta (por ejemplo,
-   ocultar en 24 horas mientras se revisa), y que una página retirada deje de
-   nombrarse en las demás.
+   queda en un registro (quién, cuándo y qué decidió el filtro). Para no dejar un
+   pedido esperando, `bin/pedidos-retiro.php` está hecho para cron: lista los
+   pedidos pendientes (sin quién los pidió ni qué escribió), marca el que pasó
+   del plazo (24 horas por omisión) y, solo si se activa con `--ocultar`, oculta
+   los vencidos mientras se revisan y lo anota en el registro. Ocultar no es
+   automático por defecto porque quien pide un retiro podría bajar una página si
+   el propietario no contesta a tiempo: es una decisión suya, y el 26 de octubre
+   de 2026 la tomó: activarlo. Falta escribirle a
+   quien lo pidió (el propietario responde por correo, por su cuenta). Una persona retirada ya no se nombra
+   en las demás páginas; un apellido, una organización o una colección retirados
+   sí siguen nombrados donde los enlaza una persona.
 5. **Términos de uso** que prohíban imputar hechos a terceros y publicar sus datos
    sensibles, y que digan qué pasa con quien lo haga. Hay un borrador en
    [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md), con lo que falta decidir marcado
@@ -119,7 +130,9 @@ El mapa completo de lo que cubre el filtro y lo que no está en
 
 ## Marco legal chileno (orientativo)
 
-No es asesoría legal: antes de abrir la plataforma conviene revisarlo con un abogado.
+No es asesoría legal: antes de abrir la plataforma conviene revisarlo con un abogado (el propietario decidió, el 26 de octubre de 2026, no consultar a uno).
+Las preguntas para esa reunión, reunidas y ordenadas, están en
+[`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md).
 
 - **Constitución, art. 19 N° 4**: asegura el respeto y la protección de la vida
   privada y de la honra de la persona y de su familia, y la protección de sus

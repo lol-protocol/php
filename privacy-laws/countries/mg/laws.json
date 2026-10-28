@@ -1,0 +1,102 @@
+[
+  {
+    "country_code": "MG",
+    "country_name": "Madagascar",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2014-038 on the Protection of Personal Data",
+    "jurisdiction": "Malagasy Commission for Informatics and Liberties (CMIL)",
+    "enactment_date": "2015-01-09",
+    "effective_date": "2015-06-09",
+    "scope": "Data subjects whose personal data is processed (unconfirmed)",
+    "applies_to": "Public and private controllers processing personal data (unconfirmed)",
+    "key_requirements": "Consent or other legal basis; prior notification to the CMIL before processing; cross-border transfers only to countries with adequate protection or with CMIL approval (unconfirmed)",
+    "data_categories": "Personal data; sensitive data (biometric and health among them) (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Malagasy Commission for Informatics and Liberties (CMIL)",
+    "penalties_range": "Vendor source cites up to 5% of pre-tax turnover plus criminal penalties; not verified against the statute (unconfirmed)",
+    "exemptions": "Journalistic; artistic and academic research processing under safeguards (secondary summary; articles not found) (unconfirmed)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "No specific rule found (unconfirmed)",
+    "website_url": "https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°2014-038-sur-la-protection-des-données-à-Kre-personnel.pdf",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Enforcement long delayed: CMIL structure set by Decree 2023-1541 of 6 Dec 2023; members appointed after Council of Ministers of 30 Jul 2025. Publication date disputed (9 Jun 2015 vs 20 July). Madagascar ratified the Malabo Convention by Law 2024-004.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°2014-038-sur-la-protection-des-données-à-Kre-personnel.pdf",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://www.dlapiperdataprotection.com/?c=MG&t=law",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://www.dlapiperdataprotection.com/?c=MG&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "effective_date": {
+        "url": "https://www.dlapiperdataprotection.com/?c=MG&t=law",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "applies_to": {
+        "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "key_requirements": {
+        "url": "https://www.consentstack.io/regulations/mg-law2014038",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "data_categories": {
+        "url": "https://www.consentstack.io/regulations/mg-law2014038",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://fr.allafrica.com/stories/202508050468.html",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "exemptions": {
+        "url": "https://www.consentstack.io/regulations/mg-law2014038",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "genetic_data": {
+        "url": "https://www.consentstack.io/regulations/mg-law2014038",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

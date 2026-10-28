@@ -18,7 +18,7 @@ use Marcalibros\RejectionReason;
  * devuelve una Response, así se prueba sin servidor.
  *
  * Quien tiene el enlace de un marcalibro propio puede verlo, descargarlo y
- * borrarlo; nadie más puede encontrarlo. Se borran solos pasados unos días.
+ * borrarlo; nadie más puede encontrarlo. Si se configuró un plazo (MARCALIBROS_RETENTION_DAYS), se borran solos al vencer; por defecto no caducan.
  */
 final class Application
 {
@@ -189,7 +189,8 @@ final class Application
                 return $this->notFound('Ese filtro no es válido.');
             }
         }
-        // Los filtros vienen de un formulario: "Todos" llega como valor vacío y no filtra.
+        // Los filtros de motivo y color vienen de un formulario: "Todos" llega como valor vacío y no filtra.
+        // La categoría no: va en el enlace, o se omite.
         $motif = $this->optionalParam($request, 'motivo');
         if ($motif !== null && !$this->catalog->hasMotif($motif)) {
             return $this->notFound('No encontramos ese motivo.');
@@ -245,13 +246,9 @@ final class Application
             ], 'Marcalibros', $options + ['description' => $description, 'share' => $this->share('Marcalibros', $description, '/', '/paisajes/' . self::SHARE_IMAGE, 1200, 630)]));
         }
 
-        $all = $this->catalog->search($slug, $motif, $color === null ? null : self::PALETTE[$color]);
-        $pages = max(1, (int) ceil(count($all) / self::PER_PAGE));
-        $requested = $request->param('pagina');
-        $page = $requested !== null && ctype_digit($requested) ? max(1, min($pages, (int) $requested)) : 1;
-        $items = array_map($this->presentEntry(...), array_slice($all, ($page - 1) * self::PER_PAGE, self::PER_PAGE));
+        ['total' => $total, 'page' => $page, 'pages' => $pages, 'items' => $items] = $this->listing($request, $slug, $motif, $color);
         $current = $slug === null ? null : $this->categoryBySlug($slug);
-        [$heading, $lead] = $this->listingText($current, $motif, $color, count($all));
+        [$heading, $lead] = $this->listingText($current, $motif, $color, $total);
 
         return Response::html($this->view->page('catalogo', $shared + [
             'groups' => [],
@@ -261,7 +258,7 @@ final class Application
             'items' => $items,
             'page' => $page,
             'pages' => $pages,
-            'total' => count($all),
+            'total' => $total,
         ], $heading . ' · Marcalibros', $options + ['share' => $this->share($heading . ' · Marcalibros', $lead, $this->view->url('/', ['categoria' => $slug, 'motivo' => $motif, 'color' => $color]), '/paisajes/' . self::SHARE_IMAGE, 1200, 630)]));
     }
 
@@ -277,11 +274,7 @@ final class Application
         }
         ['slug' => $slug, 'motif' => $motif, 'color' => $color] = $filters;
 
-        $all = $this->catalog->search($slug, $motif, $color === null ? null : self::PALETTE[$color]);
-        $pages = max(1, (int) ceil(count($all) / self::PER_PAGE));
-        $requested = $request->param('pagina');
-        $page = $requested !== null && ctype_digit($requested) ? max(1, min($pages, (int) $requested)) : 1;
-        $items = array_map($this->presentEntry(...), array_slice($all, ($page - 1) * self::PER_PAGE, self::PER_PAGE));
+        ['total' => $total, 'page' => $page, 'pages' => $pages, 'items' => $items] = $this->listing($request, $slug, $motif, $color);
         $current = $slug === null ? null : $this->categoryBySlug($slug);
         $filtering = $motif !== null || $color !== null;
         $title = $current !== null ? (string) $current['nombre'] : ($filtering ? 'Resultados' : 'Todos los marcalibros');
@@ -290,12 +283,28 @@ final class Application
         return Response::html($this->view->page('imprimir', [
             'items' => $items,
             'heading' => $title,
-            'total' => count($all),
+            'total' => $total,
             'page' => $page,
             'pages' => $pages,
             'backUrl' => $this->view->url('/', $query + ['pagina' => $page > 1 ? $page : null]),
             'pageUrl' => fn (int $n): string => $this->view->url('/imprimir', $query + ['pagina' => $n > 1 ? $n : null]),
         ], 'Imprimir · ' . $title, ['private' => true, 'scripts' => ['imprimir.js'], 'section' => 'catalogo']));
+    }
+
+    /**
+     * La página pedida de los marcalibros que cumplen los filtros; la comparten el catálogo y la hoja
+     * para imprimir, así ambos muestran lo mismo en el mismo orden.
+     *
+     * @return array{total: int, page: int, pages: int, items: list<array<string, mixed>>}
+     */
+    private function listing(Request $request, ?string $slug, ?string $motif, ?string $color): array
+    {
+        $all = $this->catalog->search($slug, $motif, $color === null ? null : self::PALETTE[$color]);
+        $pages = max(1, (int) ceil(count($all) / self::PER_PAGE));
+        $requested = $request->param('pagina');
+        $page = $requested !== null && ctype_digit($requested) ? max(1, min($pages, (int) $requested)) : 1;
+        $items = array_map($this->presentEntry(...), array_slice($all, ($page - 1) * self::PER_PAGE, self::PER_PAGE));
+        return ['total' => count($all), 'page' => $page, 'pages' => $pages, 'items' => $items];
     }
 
     private function optionalParam(Request $request, string $name): ?string
@@ -509,9 +518,6 @@ final class Application
         if ($request->header('sec-fetch-site') === 'cross-site') {
             return Response::text('Petición de otro sitio rechazada.', 403);
         }
-        if ($request->bodyTooLarge) {
-            return $this->renderCreate([], $this->tooLargeMessage(), 413);
-        }
 
         $now = ($this->clock)();
         $subject = 'crear:' . $request->clientIp;
@@ -520,6 +526,9 @@ final class Application
             return $this->renderCreate($this->formValues($request), 'Hiciste muchos intentos seguidos. Vuelve a probar en ' . $this->waitText($wait) . '.', 429)
                 ->withDefaultHeaders(['Retry-After' => (string) $wait]);
         }
+        if ($request->bodyTooLarge) {
+            return $this->renderCreate([], $this->tooLargeMessage(), 413);
+        }
         if ($this->store->count() >= $this->config->maxStored) {
             return $this->renderCreate($this->formValues($request), 'Ahora mismo no se pueden guardar más marcalibros. Vuelve a intentarlo más tarde.', 503);
         }
@@ -527,7 +536,9 @@ final class Application
         $values = $this->formValues($request);
         try {
             $crop = CropSettings::fromArray($request->post);
-            $label = $request->field('nombre');
+            // Se revisa el texto ya limpio, que es el que se guarda: con el crudo, un carácter invisible
+            // en medio de una palabra o de un correo le ganaba al filtro.
+            $label = Label::clean($request->field('nombre'));
             if (($problem = $this->labels->problem($label)) !== null) {
                 return $this->renderCreate($values, $problem, 422);
             }
@@ -541,7 +552,12 @@ final class Application
             } else {
                 throw new BookmarkRejectedException(RejectionReason::InvalidCrop);
             }
-            $this->store->save($bookmark, $now);
+            try {
+                $this->store->save($bookmark, $now);
+            } catch (\RuntimeException $e) {
+                error_log('marcalibros: ' . $e->getMessage());
+                throw new BookmarkRejectedException(RejectionReason::StorageFailed, $e);
+            }
         } catch (BookmarkRejectedException $e) {
             $status = $e->reason === RejectionReason::StorageFailed ? 500 : 422;
             return $this->renderCreate($values, $this->messageFor($e), $status);
@@ -617,7 +633,7 @@ final class Application
         }
         return Response::html($this->view->page('mio', [
             'bookmark' => $bookmark,
-            'expires' => $bookmark['created'] + $this->config->retentionDays * 86400,
+            'expires' => $this->config->retentionDays > 0 ? $bookmark['created'] + $this->config->retentionDays * 86400 : null,
             'retentionDays' => $this->config->retentionDays,
         ], 'Tu marcalibro', ['private' => true, 'scripts' => ['mio.js'], 'section' => 'crear']), 200, ['X-Robots-Tag' => 'noindex, nofollow', 'Cache-Control' => 'private, no-cache']);
     }

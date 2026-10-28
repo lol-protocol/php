@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | biru alice | `#F0F8FF` |  | Ketenangan, kesegaran, dan kebersihan; kesan ringan dan lapang. | Kemurnian dan ketenteraman surgawi; dikaitkan dengan langit cerah dan komunikasi yang jernih. | derivado | derivado |
 | `antiquewhite` | putih antik | `#FAEBD7` |  | Nostalgia, tradisi, dan kehangatan lembut; membangkitkan kesan kuno. | Ingatan dan kebijaksanaan masa lalu; kemurnian yang menua dan siklus-siklus purba. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Kesegaran, kejernihan, energi, dan kesan air bersih. | Air hidup dan penyucian; aliran intuisi dan hubungan dengan yang halus. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Kesegaran, kejernihan, ketenangan, dan komunikasi; dikaitkan dengan yang digital dan modern. | Air dan penyucian; kejernihan pikiran dan aliran komunikasi. | derivado | derivado |
 | `aquamarine` | akuamarin | `#7FFFD4` |  | Kesegaran yang menenangkan, ketenangan, dan optimisme ringan. | Batu para pelaut: perlindungan dalam perjalanan, keberanian, dan kejernihan emosi. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | biru azur | `#F0FFFF` |  | Langit cerah, keterbukaan, kebebasan, dan ketenangan. | Ketinggian spiritual dan kemurnian langit; yang surgawi dan pikiran yang terbuka. | derivado | derivado |
 | `beige` | beige | `#F5F5DC` |  | Netralitas, kesederhanaan, stabilitas, dan sikap bersahaja. | Tanah dan kerendahan hati; keseimbangan tanpa ekstrem, kehidupan sehari-hari, dan berakar. | derivado | derivado |
@@ -28,7 +28,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `coral` | karang | `#FF7F50` |  | Keramahan, kegembiraan, kehangatan sosial, dan optimisme. | Kehidupan laut dan perlindungan; dalam tradisi Mediterania, jimat penangkal mata jahat. | derivado | tradición ([elworthy1895](../referencias.md#elworthy1895)) |
 | `cornflowerblue` | biru cornflower | `#6495ED` |  | Keramahan, kepercayaan, ketenangan, dan keterbukaan. | Kesetiaan dan komunikasi yang tulus; spiritualitas yang tenteram. | derivado | derivado |
 | `cornsilk` | sutra jagung | `#FFF8DC` |  | Kelembutan, kehangatan, kepolosan, dan kesederhanaan. | Panen dan kelembutan ladang; kelimpahan yang rendah hati dan kemurnian. | derivado | derivado |
-| `crimson` | merah tua | `#DC143C` |  | Gairah, intensitas, keberanian, urgensi, dan kekuatan. | Darah, kehidupan, dan pengorbanan; tenaga hidup dan cinta yang membara, juga peringatan. | derivado | derivado |
+| `crimson` | merah padam | `#DC143C` |  | Gairah, intensitas, keberanian, urgensi, dan kekuatan. | Darah, kehidupan, dan pengorbanan; tenaga hidup dan cinta yang membara, juga peringatan. | derivado | derivado |
 | `cyan` | sian | `#00FFFF` | `aqua` | Kesegaran, kejernihan, ketenangan, dan komunikasi; dikaitkan dengan yang digital dan modern. | Air dan penyucian; kejernihan pikiran dan aliran komunikasi. | derivado | derivado |
 | `darkblue` | biru tua | `#00008B` |  | Kedalaman, kesungguhan, keandalan, dan wibawa. | Malam yang dalam dan kebijaksanaan; alam bawah sadar dan introspeksi. | derivado | derivado |
 | `darkcyan` | sian tua | `#008B8B` |  | Ketenangan yang dalam, keseimbangan, dan kesungguhan. | Air dalam dan penyembuhan; keseimbangan antara pikiran dan perasaan. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | merah bata | `#B22222` |  | Kekuatan, tekad, kehangatan yang pekat, dan ketegangan. | Api tempat tempa dan perapian; upaya, pengorbanan, dan kerja. | derivado | derivado |
 | `floralwhite` | putih floral | `#FFFAF0` |  | Kelembutan, kehalusan, kemurnian, dan keringanan. | Bunga putih: kepolosan, permulaan, dan berkah musim semi. | derivado | derivado |
 | `forestgreen` | hijau hutan | `#228B22` |  | Alam, keseimbangan, kesehatan, ketenangan, dan pertumbuhan. | Hutan suci: kehidupan, pembaruan, dan hubungan dengan bumi. | derivado | derivado |
-| `fuchsia` | fuksia | `#FF00FF` | `magenta` | Keberanian, kreativitas, keunikan, dan energi yang jenaka. | Transformasi dan sihir; penghubung antara yang material dan yang spiritual. | derivado | derivado |
+| `fuchsia` | fuksia | `#FF00FF` | `magenta` | Kreativitas, keberanian, intensitas, dan energi yang berdenyut. | Transformasi dan spiritualitas; hubungan antara yang material dan yang halus. | derivado | derivado |
 | `gainsboro` | abu-abu gainsboro | `#DCDCDC` |  | Netralitas yang anggun, kebersihan, dan ketenangan. | Keadaan di tengah dan keseimbangan, tanpa beban. | derivado | derivado |
 | `ghostwhite` | putih hantu | `#F8F8FF` |  | Keringanan, misteri yang halus, dan kesejukan yang bercahaya. | Yang eterik dan yang seperti hantu; kehadiran halus di antara dua dunia. | derivado | derivado |
 | `gold` | emas | `#FFD700` |  | Kesuksesan, kekayaan, gengsi, optimisme, dan kehangatan. | Matahari dan kesempurnaan; pencerahan, kekuasaan, kebijaksanaan, dan yang ilahi dalam banyak tradisi. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

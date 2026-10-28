@@ -73,6 +73,18 @@ final class Database
             $pdo->sqliteCreateFunction('translate', [self::class, 'traducir'], 3, \PDO::SQLITE_DETERMINISTIC);
         }
 
+        if ($this->driver($pdo) === 'pgsql') {
+            // PostgreSQL compiles (JIT) any query whose estimated cost is high, and the privacy expressions
+            // (Privacidad) make a visitor's searches and lists look expensive to it: with 20,000 personas the
+            // compilation took 2.5 s of a search that runs in 70 ms without it, on every request. For short
+            // queries like this app's it never pays off, so it is off for this connection whatever the server
+            // is configured to do. A server without the setting (before PostgreSQL 11) has no JIT to turn off.
+            try {
+                $pdo->exec('SET jit = off');
+            } catch (\PDOException) {
+            }
+        }
+
         return $this->pdo = $pdo;
     }
 

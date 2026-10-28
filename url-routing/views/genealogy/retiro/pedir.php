@@ -19,6 +19,9 @@ responde al correo que dejes con lo que decidió.</p>
 <?php endforeach; ?>
         <?= $error('motivo') ?>
     </fieldset>
+    <div style="position:absolute;left:-10000px" aria-hidden="true">
+        <label>No rellenes este campo <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"></label>
+    </div>
     <p><label for="detalle">Qué hay que retirar y por qué</label><br>
         <textarea id="detalle" name="detalle" rows="6" cols="60" maxlength="2000" required<?= isset($errores['detalle']) ? ' aria-describedby="error-detalle"' : '' ?>><?= esc($valor('detalle')) ?></textarea></p>
     <?= $error('detalle') ?>

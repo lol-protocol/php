@@ -25,6 +25,15 @@ test("status codes are classified: bot walls and server errors warn, dead pages 
   }
 });
 
+test("a refused connection only warns at the hosts known to turn GitHub's runners away", () => {
+  const refused = "fetch failed (ECONNREFUSED)";
+  assert.equal(classify(null, refused, "https://law.moj.gov.tw/Eng/LawAll.aspx").status, "warning");
+  assert.equal(classify(null, refused, "https://www.ilga.gov/legislation").status, "warning"); // its subdomains too
+  assert.equal(classify(null, refused, "https://example.org/x").status, "broken");
+  assert.equal(classify(null, refused, "https://notilga.gov/x").status, "broken"); // another host that ends the same way
+  assert.equal(classify(null, "getaddrinfo ENOTFOUND law.moj.gov.tw", "https://law.moj.gov.tw/x").status, "broken"); // gone is still broken
+});
+
 test("a 5xx is retried once: a server that recovers is ok, one that keeps failing only warns", async (t) => {
   const answer = (statuses) => {
     const calls = [];

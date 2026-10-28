@@ -7,7 +7,8 @@ linea cortada = divorcio, discontinua = adopcion o parentesco parcial, punteada 
 """
 import math
 
-from kit import badge, tile
+import comunes
+from kit import badge, catalog, tile
 from lib import Block, Disc, Icon, fmt
 
 def arc_pts(cx, cy, r, a0, a1, n=48):
@@ -25,7 +26,7 @@ def bezier_pts(p0, p1, p2, p3, n=40):
     return out
 
 
-ICONS = []
+ICONS, reg, new = catalog()
 KIND = {'m': 'sq', 'f': 'ci', 'u': 'di'}
 CHAIN = {1: dict(r=7.4, h=34), 2: dict(r=6.4, h=40), 3: dict(r=5.6, h=42)}
 SMALL = {3: 3.3}
@@ -34,18 +35,13 @@ DENSE_REL = 6.8  # en los diagramas densos (nodos de 4,5) el familiar se dibuja 
 ROLE = {'self': 'ink', 'rel': 'orange', 'other': 'mist', 'rel2': 'amber'}
 
 
-def reg(ic):
-    ICONS.append(ic)
-    return ic
-
-
 # ------------------------------------------------------------------ nodos
 def node(ic, kind, x, y, role='other', r=6.0, d=None):
     d = max(1.8, min(3.2, 0.42 * r)) if d is None else d
     if kind == 'sq':
-        shape = Block(x - r, y - r, 2 * r, 2 * r, r=r * 0.3)
+        shape = Block(x - r, y - r, 2 * r, 2 * r, r=r * 0.18)
     elif kind == 'ci':
-        shape = Disc(x, y, r * 1.1)
+        shape = Disc(x, y, r * 1.0)
     else:
         s = r * 1.46
         shape = Block(x - s / 2, y - s / 2, s, s, r=r * 0.22, rot=45)
@@ -224,6 +220,7 @@ for suffix, u, d, gender in (
     ('nephew', 1, 2, 'm'), ('niece', 1, 2, 'f'), ('great_nephew', 1, 3, 'm'), ('great_niece', 1, 3, 'f'),
     ('cousin', 2, 2, 'm'), ('cousin_f', 2, 2, 'f'), ('second_cousin', 3, 3, 'm'), ('second_cousin_f', 3, 3, 'f'),
     ('cousin_once_removed', 2, 3, 'm'), ('cousin_once_removed_f', 2, 3, 'f'),
+    ('cousin_u', 2, 2, 'u'), ('second_cousin_u', 3, 3, 'u'), ('cousin_once_removed_u', 2, 3, 'u'),
 ):
     collateral(f'person_{suffix}', u, d, gender)
 
@@ -574,14 +571,17 @@ for y, hue, w in ((14, 'orange', 30), (32, 'mist', 20), (50, 'mist', 26)):
     ic.solid(Disc(15, y, 4.6), hue, d=2)
     ic.solid(Block(26, y - 3.3, w, 6.6, r=3.3), hue, d=2)
 
+# dispersión: un grupo compacto y, cada vez más lejos y más pequeños, los nodos que se alejaron
+ic = reg(Icon('view_dispersion'))
+for kind, x, y, r in (('di', 33, 21, 4.4), ('sq', 40, 44, 4.0), ('ci', 48, 27, 3.6), ('di', 55, 49, 3.2), ('ci', 56, 13, 2.8)):
+    node(ic, kind, x, y, 'other', r=r, d=1.8)
+for x, y in ((9.5, 33), (18.5, 25), (18.5, 41)):
+    node(ic, 'ci', x, y, 'rel', r=5.6, d=2.4)
+
 # ------------------------------------------------------------------ action_
 # Las acciones son piezas sueltas con movimiento: lo que se ve es de dónde viene y a dónde va, nunca un objeto.
 def pt_on(cx, cy, r, a):
     return cx + r * math.cos(math.radians(a)), cy + r * math.sin(math.radians(a))
-
-
-def new(stem):
-    return reg(Icon(stem))
 
 
 reg(badge('action_add', 'green', lambda ic: ic.plus(31, 30, 10, w=4)))
@@ -594,10 +594,6 @@ ic.solid(Disc(15.5, 46, 3.6), 'ink', d=1.6)
 ic = new('action_search')
 ic.solid(Disc(43, 43, 5.5), 'indigo', d=2.4)
 ic.ring(27, 26, 12, tone='indigo', ink='indigo', w=4.6)
-
-ic = new('action_filter')
-for x, y, w in ((8, 11, 46), (15, 25, 32), (22, 39, 18)):
-    ic.solid(Block(x, y, w, 9, r=4.5), 'ink', d=2.4)
 
 
 def _lens(stem, r, sign):
@@ -626,13 +622,6 @@ def _spread(stem, far):
 _spread('action_expand', True)
 _spread('action_collapse', False)
 
-ic = new('action_share')
-for x, y in ((47, 14), (51, 31), (47, 48)):
-    ic.link([(15, 31), (x, y)], w=2.2)
-ic.solid(Disc(15, 31, 8), 'green', d=3)
-for x, y in ((47, 14), (51, 31), (47, 48)):
-    ic.solid(Disc(x, y, 4.6), 'green', d=2)
-
 ic = new('action_download')
 ic.mark('M23.5 7v4M31 5v4M38.5 7v4', tone='blue', ink='blue', w=2.8)
 ic.solid(Disc(31, 24, 7), 'blue', d=2.6)
@@ -642,10 +631,6 @@ ic = new('action_upload')
 ic.solid(Disc(31, 14, 7), 'blue', d=2.6)
 ic.mark('M23.5 27v5M31 27v7M38.5 27v5', tone='blue', ink='blue', w=2.8)
 ic.solid(Block(11, 42, 42, 8, r=4), 'ink', d=3)
-
-ic = new('action_print')
-for dx, dy, op, d in ((10, 10, 0.35, 0), (5, 5, 0.6, 0), (0, 0, 1.0, 3.5)):
-    ic.solid(Block(14 + dx, 14 + dy, 26, 26, r=6), 'slate', d=d, op=op)
 
 ic = new('action_sync')
 for a0, a1 in ((-170, -20), (10, 160)):
@@ -737,12 +722,12 @@ for px, py in ((42, 44), (50, 39.5), (50, 48.5)):
     ic.dot(px, py, 2.4)
 
 
-def _add_rel(stem, parts):
+def _add_rel(stem, parts, badge_at=(47, 46)):
     ic = Icon(stem)
     for p in parts:
         p(ic)
-    ic.solid(Disc(47, 46, 8.6), 'green', d=2.4)
-    ic.plus(47, 46, 4.2, w=2.8)
+    ic.solid(Disc(*badge_at, 8.6), 'green', d=2.4)
+    ic.plus(*badge_at, 4.2, w=2.8)
     return reg(ic)
 
 
@@ -757,9 +742,16 @@ _add_rel('action_add_sibling', [lambda ic: ic.link([(22, 13), (22, 21), (10, 21)
                                 lambda ic: node(ic, 'di', 22, 13, 'other', r=5.4, d=2.4),
                                 lambda ic: node(ic, 'ci', 10, 38, 'self', r=5.4, d=2.4),
                                 lambda ic: node(ic, 'di', 34, 38, 'rel', r=5.4, d=2.4)])
-_add_rel('action_add_spouse', [lambda ic: ic.link([(14, 28), (36, 28)], 'double'),
-                               lambda ic: node(ic, 'ci', 14, 28, 'self', r=6.4, d=2.6),
-                               lambda ic: node(ic, 'di', 36, 28, 'rel', r=6.4, d=2.6)])
+# la pareja ocupa una sola fila: se sube con su insignia para que el dibujo quede centrado como los otros add_
+_add_rel('action_add_spouse', [lambda ic: ic.link([(14, 21), (36, 21)], 'double'),
+                               lambda ic: node(ic, 'ci', 14, 21, 'self', r=6.4, d=2.6),
+                               lambda ic: node(ic, 'di', 36, 21, 'rel', r=6.4, d=2.6)], badge_at=(47, 41))
+
+# retirar una página: el nodo y una insignia roja con una raya
+ic = new('action_withdraw')
+node(ic, 'ci', 25, 26, 'rel', r=11, d=3)
+ic.solid(Disc(46, 44, 9), 'red', d=2.4)
+ic.line(41, 44, 51, 44, w=3)
 
 # ------------------------------------------------------------------ ui_
 reg(badge('ui_verified', 'green', lambda ic: ic.dot(31, 30, 11.5)))
@@ -774,17 +766,6 @@ def _privacy(ic, x, y):
 
 
 reg(tile('ui_privacy', 'ink', _privacy))
-
-
-def _sliders(ic, x, y):
-    for dy, kx in ((-8, -4), (0, 4), (8, -1)):
-        yy = y + dy
-        ic.mark(f'M{fmt(x - 12.5)} {fmt(yy)}H{fmt(x + kx - 3.6)}M{fmt(x + kx + 3.6)} {fmt(yy)}H{fmt(x + 12.5)}', w=2)
-        ic.ring(x + kx, yy, 2.4, w=2)
-
-
-reg(tile('ui_settings', 'ink', _sliders))
-reg(tile('ui_menu', 'slate', lambda ic, x, y: ic.mark(f'M{fmt(x - 9.5)} {fmt(y - 7.5)}h19M{fmt(x - 9.5)} {fmt(y)}h19M{fmt(x - 9.5)} {fmt(y + 7.5)}h19', w=3)))
 
 
 def _photo(ic, x, y):
@@ -813,10 +794,46 @@ ic = new('ui_source')
 for x, y in ((9, 38), (16, 26), (23, 14)):
     ic.solid(Block(x, y, 30, 10, r=5), 'brown', d=2.4)
 
-reg(tile('ui_calendar', 'red', lambda ic, x, y: [ic.dot(x - 10 + 10 * (i % 3), y - 9.5 + 9.5 * (i // 3), 2, **({'tone': '#FDE047'} if i == 4 else {})) for i in range(9)]))
+# un suceso: un punto destacado entre otros sobre una línea de tiempo
+ic = new('ui_event')
+ic.link([(6, 46), (56, 46)])
+ic.link([(31, 30), (31, 46)], w=2.4)
+for x in (13, 49):
+    ic.solid(Disc(x, 46, 3.6), 'mist', d=1.6)
+ic.solid(Disc(31, 46, 4.4), 'orange', d=1.8)
+ic.solid(Disc(31, 20, 11), 'orange', d=3.2)
 
-ic = new('ui_profile')
-node(ic, 'ci', 31, 30, 'self', r=15, d=4)
+# organización: bloques en jerarquía (los nodos son personas; los bloques, entidades)
+ic = new('ui_organization')
+ic.link([(32, 19), (32, 29), (17, 29), (17, 38)], w=2.2)
+ic.link([(32, 29), (47, 29), (47, 38)], w=2.2)
+ic.solid(Block(19.5, 8, 25, 11, r=5.5), 'indigo', d=3)
+for x in (7, 37):
+    ic.solid(Block(x, 38, 20, 11, r=5.5), 'slate', d=2.6)
+
+# miembros: personas dentro de una organización
+ic = new('ui_members')
+ic.solid(Block(6, 17, 52, 28, r=14), 'teal', d=3.4)
+for x, role in ((19, 'other'), (32, 'rel'), (45, 'other')):
+    node(ic, 'ci', x, 31, role, r=5.6, d=2)
+
+
+def _records(ic, x, y):
+    for dy in (-9, 0, 9):
+        ic.dot(x - 10, y + dy, 2.4)
+        ic.line(x - 3.5, y + dy, x + 12, y + dy, w=3.2)
+
+
+reg(tile('ui_records', 'blue', _records))
+
+# aportes: quien aporta (el nodo propio) y lo que aportó
+ic = new('ui_contribution')
+ic.link([(14, 31), (27, 31), (27, 17), (33, 17)], w=2.2)
+ic.link([(27, 31), (33, 31)], w=2.2)
+ic.link([(27, 31), (27, 45), (33, 45)], w=2.2)
+for y in (12, 26, 40):
+    ic.solid(Block(33, y, 22, 10, r=5), 'green', d=2.4)
+node(ic, 'ci', 14, 31, 'self', r=8, d=3)
 
 
 def _doc(stem, hue, mark):
@@ -830,3 +847,7 @@ def _doc(stem, hue, mark):
 
 _doc('ui_export_pdf', 'red', lambda ic: ic.bars(19, 20, [22, 22, 12], 9.5, w=3.2))
 _doc('ui_export_csv', 'green', lambda ic: ic.mark('M19 22H41M19 31H41M19 40H41M24.5 17V44M35.5 17V44', w=2))
+_doc('ui_export_gedcom', 'violet', lambda ic: (ic.mark('M28 21V27M18 27H38M18 27V32M38 27V32', w=2),
+                                                ic.dot(28, 18, 3.4), ic.dot(18, 35, 3.4), ic.dot(38, 35, 3.4)))
+
+ICONS.extend(comunes.ICONS)  # los que se llaman igual en los dos sets, definidos una vez en comunes.py

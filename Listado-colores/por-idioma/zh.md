@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | 爱丽丝蓝 | `#F0F8FF` |  | 平静、清新与洁净；轻盈开阔之感。 | 天界的纯净与安宁；与晴空和清晰的沟通相关联。 | derivado | derivado |
 | `antiquewhite` | 古董白 | `#FAEBD7` |  | 怀旧、传统与柔和的温暖；让人想起复古风格。 | 往昔的记忆与智慧；岁月沉淀的纯净与古老的轮回。 | derivado | derivado |
-| `aqua` | 水青色 | `#00FFFF` | `cyan` | 清新、明澈、活力，以及清水般的感受。 | 活水与净化；直觉的流动以及与微妙世界的沟通。 | derivado | derivado |
+| `aqua` | 水青色 | `#00FFFF` | `cyan` | 清新、明澈、平静与沟通；与数字化和现代感相关。 | 水与净化；思维的清明与沟通的流动。 | derivado | derivado |
 | `aquamarine` | 海蓝色 | `#7FFFD4` |  | 令人放松的清新、平静与轻快的乐观。 | 水手之石：旅途中的守护、勇气与情感上的清明。 | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | 蔚蓝色 | `#F0FFFF` |  | 晴空、开阔、自由与安宁。 | 精神的高度与天空的纯净；天界与开放的心灵。 | derivado | derivado |
 | `beige` | 米色 | `#F5F5DC` |  | 中性、朴素、稳定与低调。 | 大地与谦逊；不走极端的平衡、日常生活与扎根。 | derivado | derivado |
@@ -28,7 +28,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `coral` | 珊瑚色 | `#FF7F50` |  | 亲切、欢乐、社交的温暖与乐观。 | 海洋生命与守护；在地中海传统中是抵御邪眼的护身符。 | derivado | tradición ([elworthy1895](../referencias.md#elworthy1895)) |
 | `cornflowerblue` | 矢车菊蓝 | `#6495ED` |  | 和善、信任、安宁与开放。 | 忠诚与真诚的沟通；平和的灵性。 | derivado | derivado |
 | `cornsilk` | 玉米丝色 | `#FFF8DC` |  | 柔软、温暖、纯真与朴素。 | 收获与田野的温柔；谦逊的丰足与纯净。 | derivado | derivado |
-| `crimson` | 深红色 | `#DC143C` |  | 激情、强烈、勇气、紧迫与力量。 | 鲜血、生命与牺牲；生命力与炽热的爱，同时也是警示。 | derivado | derivado |
+| `crimson` | 绯红色 | `#DC143C` |  | 激情、强烈、勇气、紧迫与力量。 | 鲜血、生命与牺牲；生命力与炽热的爱，同时也是警示。 | derivado | derivado |
 | `cyan` | 青色 | `#00FFFF` | `aqua` | 清新、明澈、平静与沟通；与数字化和现代感相关。 | 水与净化；思维的清明与沟通的流动。 | derivado | derivado |
 | `darkblue` | 深蓝色 | `#00008B` |  | 深邃、严肃、可靠与权威。 | 深夜与智慧；潜意识与内省。 | derivado | derivado |
 | `darkcyan` | 深青色 | `#008B8B` |  | 深沉的平静、平衡与稳重。 | 深水与疗愈；理智与情感之间的平衡。 | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | 火砖红 | `#B22222` |  | 力量、决心、浓烈的温暖与紧张。 | 锻炉与炉灶之火；努力、牺牲与劳作。 | derivado | derivado |
 | `floralwhite` | 花白 | `#FFFAF0` |  | 柔软、细腻、纯净与轻盈。 | 白花：纯真、开端与春天的祝福。 | derivado | derivado |
 | `forestgreen` | 森林绿 | `#228B22` |  | 自然、平衡、健康、平静与成长。 | 神圣的森林：生命、更新与同大地的联系。 | derivado | derivado |
-| `fuchsia` | 紫红色 | `#FF00FF` | `magenta` | 大胆、创造力、古怪与俏皮的能量。 | 转化与魔法；物质与精神之间的纽带。 | derivado | derivado |
+| `fuchsia` | 紫红色 | `#FF00FF` | `magenta` | 创造力、大胆、强烈与跃动的能量。 | 转化与灵性；物质与微妙之物之间的联系。 | derivado | derivado |
 | `gainsboro` | 庚斯博罗灰 | `#DCDCDC` |  | 优雅的中性、洁净与平静。 | 居中的状态与平衡，不带负担。 | derivado | derivado |
 | `ghostwhite` | 幽灵白 | `#F8F8FF` |  | 轻盈、微妙的神秘与明亮的清冷。 | 空灵与幽灵般的存在；两个世界之间的微妙临在。 | derivado | derivado |
 | `gold` | 金色 | `#FFD700` |  | 成功、财富、声望、乐观与温暖。 | 太阳与圆满；觉悟、力量、智慧，在许多传统中象征神圣。 | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

@@ -889,13 +889,22 @@ palabras no entiende contexto:
   medido: el 0,7 % de las palabras frecuentes de español e inglés,
   deletreadas, irían a revisión).
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
-  por tema, más `ambiguous`). Portugués, italiano y francés ya generan sus
-  formas regulares; alemán, neerlandés y turco, los plurales y la declinación
-  del adjetivo («Huren», «dumme», «kutten», «domme», «orospular»: ver
-  `GermanInflection`, `DutchInflection`, `TurkishInflection`; en alemán y
-  neerlandés el adjetivo declinado lleva el rasgo `infl`); los otros 25 no. Las amenazas con forma (`patterns`) sólo están en
+  por tema, más `ambiguous`). Portugués, italiano y francés generan sus
+  formas regulares; también alemán, neerlandés, turco, los nórdicos (sueco,
+  danés, noruego), los eslavos (ruso, ucraniano, polaco, checo, eslovaco,
+  búlgaro), rumano, húngaro, griego y hebreo, con las clases regulares de cada
+  uno: plural y, donde se declina, los casos («Huren», «идиотом», «idiotę»,
+  «seggfejek», «אידיוטים»). Ver `SuffixInflection`, `NordicInflection` y
+  las clases de cada idioma. En esos idiomas la forma declinada lleva el rasgo
+  `infl` (no se sabe si es plural), y `'by' => ['infl' => 'none']` las descarta
+  todas. Lo irregular (vocales fugaces raras, cambios de raíz) va a mano en
+  `also`. Las formas generadas no entran en la búsqueda fonética de nombres
+  (un nombre no se declina). No tienen reglas: árabe, finés, islandés, hindi,
+  suajili, tagalo, indonesio, vietnamita, japonés, coreano, tailandés y
+  cantonés (los cuatro últimos y el vietnamita no flexionan; los demás son
+  irregulares o no hay lista de frecuencias para medirlos). Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
-  Esos 25 no tienen plurales, géneros ni conjugaciones automáticos —sólo la
+  Los idiomas sin reglas no tienen plurales, géneros ni conjugaciones automáticos —sólo la
   forma base y las que se añadan a mano con `also`—, y se escribieron
   sin revisión nativa. En japonés, cantonés y tailandés hace falta la
   extensión `intl` para encontrar palabras dentro de una frase (ver «Idiomas

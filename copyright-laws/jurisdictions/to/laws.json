@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "TO",
+    "country_name": "Tonga",
+    "region": "asia_pacific",
+    "law_name": "Copyright Act 2002 (Act No. 12 of 2002), 2020 Revised Edition, Chapter 17.05",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years; anonymous and collective works 50 years from creation or publication; applied art 25 years from creation",
+    "author_rights": "Economic rights",
+    "moral_rights": "Moral rights recognized (dedicated section in Part I; article number and duration not confirmed) (unconfirmed)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/21343",
+    "notes": "Adopted 30 Jul 2002, assented 4 Mar 2004, in force 1 Sep 2008 (WIPO Lex). Berne 14 Jun 2001, WTO 27 Jul 2007 (Commons). Commons says government works are public domain.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21343",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21343",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Tonga.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/5270",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21343",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/21343",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Tonga.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

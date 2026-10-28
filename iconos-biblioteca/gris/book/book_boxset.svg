@@ -13,9 +13,9 @@
       <stop offset="0" stop-color="#AEAEAE"/>
       <stop offset="1" stop-color="#878787"/>
     </linearGradient>
-    <linearGradient id="grad_book_boxset_brown_g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9B9B9B"/>
-      <stop offset="1" stop-color="#6B6B6B"/>
+    <linearGradient id="grad_book_boxset_brown_g_m36" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#777777"/>
+      <stop offset="1" stop-color="#474747"/>
     </linearGradient>
   </defs>
   <g class="shadow">
@@ -25,6 +25,6 @@
     <g><path d="M23.7 10.6A2.5 2.5 0 0 1 24.2 12.1L24.2 45.1A2.5 2.5 0 0 1 21.7 47.6L15.7 47.6A2.5 2.5 0 0 1 13.7 46.6L12.68 45.24A2.5 2.5 0 0 1 12.18 43.74L12.18 10.74A2.5 2.5 0 0 1 14.68 8.24L20.68 8.24A2.5 2.5 0 0 1 22.68 9.24Z" fill="#353535"/><rect x="12" y="8" width="11" height="38" rx="2.5" fill="url(#grad_book_boxset_indigo_g)"/></g>
     <g><path d="M37.7 10.6A2.5 2.5 0 0 1 38.2 12.1L38.2 45.1A2.5 2.5 0 0 1 35.7 47.6L29.7 47.6A2.5 2.5 0 0 1 27.7 46.6L26.68 45.24A2.5 2.5 0 0 1 26.18 43.74L26.18 10.74A2.5 2.5 0 0 1 28.68 8.24L34.68 8.24A2.5 2.5 0 0 1 36.68 9.24Z" fill="#3B3B3B"/><rect x="26" y="8" width="11" height="38" rx="2.5" fill="url(#grad_book_boxset_pink_g)"/></g>
     <g><path d="M51.7 10.6A2.5 2.5 0 0 1 52.2 12.1L52.2 45.1A2.5 2.5 0 0 1 49.7 47.6L43.7 47.6A2.5 2.5 0 0 1 41.7 46.6L40.68 45.24A2.5 2.5 0 0 1 40.18 43.74L40.18 10.74A2.5 2.5 0 0 1 42.68 8.24L48.68 8.24A2.5 2.5 0 0 1 50.68 9.24Z" fill="#4F4F4F"/><rect x="40" y="8" width="11" height="38" rx="2.5" fill="url(#grad_book_boxset_amber_g)"/></g>
-    <g><path d="M57.3 32.4A4 4 0 0 1 58.1 34.8L58.1 50.8A4 4 0 0 1 54.1 54.8L14.1 54.8A4 4 0 0 1 10.9 53.2L8.98 50.64A4 4 0 0 1 8.18 48.24L8.18 32.24A4 4 0 0 1 12.18 28.24L52.18 28.24A4 4 0 0 1 55.38 29.84Z" fill="#3E3E3E"/><rect x="8" y="28" width="48" height="24" rx="4" fill="url(#grad_book_boxset_brown_g)"/></g>
+    <g><path d="M57.3 32.4A4 4 0 0 1 58.1 34.8L58.1 50.8A4 4 0 0 1 54.1 54.8L14.1 54.8A4 4 0 0 1 10.9 53.2L8.98 50.64A4 4 0 0 1 8.18 48.24L8.18 32.24A4 4 0 0 1 12.18 28.24L52.18 28.24A4 4 0 0 1 55.38 29.84Z" fill="#1A1A1A"/><rect x="8" y="28" width="48" height="24" rx="4" fill="url(#grad_book_boxset_brown_g_m36)"/></g>
   </g>
 </svg>

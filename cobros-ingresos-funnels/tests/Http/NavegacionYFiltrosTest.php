@@ -9,7 +9,7 @@ final class NavegacionYFiltrosTest extends HttpTestCase
 {
     public function testTodasLasPantallasResponden(): void
     {
-        foreach (['dashboard', 'cobros', 'pagos', 'clientes', 'funnel', 'cohortes', 'auditoria',
+        foreach (['dashboard', 'cobros', 'cobranza', 'pagos', 'notas', 'clientes', 'funnel', 'cohortes', 'auditoria',
                   'boleta-nueva', 'pago-nuevo', 'cliente-nuevo', 'cliente&id=1'] as $pagina) {
             $this->assertStatus(200, $this->get("page={$pagina}"), "page={$pagina}");
         }
@@ -40,6 +40,10 @@ final class NavegacionYFiltrosTest extends HttpTestCase
             'page=cobros&pagina=9999999999999999999',
             'page=cobros&estado=pagada&pagina=9999999999999999999',
             'page=pagos&pagina=9999999999999999999',
+            'page=notas&pagina=9999999999999999999',
+            'page=notas&estado[]=todas',
+            'page=cobranza&pagina=9999999999999999999',
+            'page=cobranza&alcance[]=todos&orden[]=saldo',
             'page=clientes&pagina=9999999999999999999',
             'page=auditoria&pagina=9999999999999999999',
             'page=auditoria&antes=basura',
@@ -69,7 +73,9 @@ final class NavegacionYFiltrosTest extends HttpTestCase
         foreach ([
             'dashboard' => 'Dashboard',
             'cobros' => 'Cobros e ingresos',
+            'cobranza' => 'Cobranza',
             'pagos' => 'Pagos',
+            'notas' => 'Notas de crédito',
             'funnel' => 'Funnel de conversión',
             'cohortes' => 'Cohortes de conversión',
             'clientes' => 'Clientes',

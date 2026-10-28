@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | 앨리스 블루 | `#F0F8FF` |  | 차분함, 상쾌함, 청결함; 가볍고 트인 느낌. | 천상의 순수함과 고요; 맑은 하늘과 명료한 소통과 연결된다. | derivado | derivado |
 | `antiquewhite` | 앤티크 화이트 | `#FAEBD7` |  | 향수, 전통, 부드러운 따뜻함; 빈티지를 떠올리게 한다. | 지나간 시간의 기억과 지혜; 세월에 숙성된 순수함과 오래된 순환. | derivado | derivado |
-| `aqua` | 아쿠아 | `#00FFFF` | `cyan` | 상쾌함, 명료함, 에너지, 맑은 물의 느낌. | 살아 있는 물과 정화; 직관의 흐름과 미묘한 것과의 교감. | derivado | derivado |
+| `aqua` | 아쿠아 | `#00FFFF` | `cyan` | 상쾌함, 명료함, 차분함, 소통; 디지털과 현대적인 것과 연관된다. | 물과 정화; 정신의 명료함과 소통의 흐름. | derivado | derivado |
 | `aquamarine` | 아쿠아마린 | `#7FFFD4` |  | 편안한 상쾌함, 평온, 가벼운 낙관. | 뱃사람의 돌: 여행의 보호, 용기, 감정의 명료함. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | 담청색 | `#F0FFFF` |  | 맑은 하늘, 개방감, 자유, 고요. | 정신의 높이와 하늘의 순수함; 천상의 것과 열린 마음. | derivado | derivado |
 | `beige` | 베이지 | `#F5F5DC` |  | 중립, 소박함, 안정, 절제. | 대지와 겸손; 극단 없는 균형, 일상의 삶, 뿌리내림. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | 벽돌 빨강 | `#B22222` |  | 힘, 결단, 짙은 따뜻함, 긴장. | 대장간과 화덕의 불; 노력, 희생, 노동. | derivado | derivado |
 | `floralwhite` | 플로럴 화이트 | `#FFFAF0` |  | 부드러움, 섬세함, 순수함, 가벼움. | 하얀 꽃: 순수, 시작, 봄의 축복. | derivado | derivado |
 | `forestgreen` | 숲 그린 | `#228B22` |  | 자연, 균형, 건강, 차분함, 성장. | 신성한 숲: 생명, 갱신, 대지와의 연결. | derivado | derivado |
-| `fuchsia` | 푸크시아 | `#FF00FF` | `magenta` | 대담함, 창의성, 별남, 장난기 있는 에너지. | 변환과 마법; 물질과 영적인 것을 잇는 고리. | derivado | derivado |
+| `fuchsia` | 푸크시아 | `#FF00FF` | `magenta` | 창의성, 대담함, 강렬함, 맥동하는 에너지. | 변환과 영성; 물질과 미묘한 것 사이의 연결. | derivado | derivado |
 | `gainsboro` | 게인즈버러 그레이 | `#DCDCDC` |  | 우아한 중립, 청결함, 차분함. | 중간 상태와 균형, 무게 없음. | derivado | derivado |
 | `ghostwhite` | 고스트 화이트 | `#F8F8FF` |  | 가벼움, 은은한 신비, 빛나는 서늘함. | 에테르적인 것과 유령 같은 것; 두 세계 사이의 은은한 기척. | derivado | derivado |
 | `gold` | 금색 | `#FFD700` |  | 성공, 부, 위신, 낙관, 따뜻함. | 태양과 완전함; 깨달음, 힘, 지혜, 많은 전통에서 신성한 것. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
@@ -81,7 +81,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `lightcyan` | 연한 시안 | `#E0FFFF` |  | 가벼운 상쾌함, 명료함, 차분함. | 맑은 물과 깨끗한 공기; 생각의 순수함. | derivado | derivado |
 | `lightgoldenrodyellow` | 연한 골든로드 옐로 | `#FAFAD2` |  | 빛나는 부드러움, 조용한 낙관, 따뜻함. | 부드러운 황금빛; 온화한 깨달음과 축복. | derivado | derivado |
 | `lightgray` | 연한 회색 | `#D3D3D3` | `lightgrey` | 중립, 차분함, 청결함, 숨 쉴 여백. | 보이는 것과 보이지 않는 것 사이의 이행; 중간에 있는 것. | derivado | derivado |
-| `lightgreen` | 연두 | `#90EE90` |  | 차분함, 상쾌함, 갱신, 안녕. | 새싹과 희망; 여린 성장과 부드러운 치유. | derivado | derivado |
+| `lightgreen` | 연초록 | `#90EE90` |  | 차분함, 상쾌함, 갱신, 안녕. | 새싹과 희망; 여린 성장과 부드러운 치유. | derivado | derivado |
 | `lightgrey` | 연한 회색 | `#D3D3D3` | `lightgray` | 중립, 차분함, 청결함, 숨 쉴 여백. | 보이는 것과 보이지 않는 것 사이의 이행; 중간에 있는 것. | derivado | derivado |
 | `lightpink` | 연분홍 | `#FFB6C1` |  | 다정함, 달콤함, 순수함, 부드러운 애정. | 섬세한 사랑과 순수; 낭만적인 시작. | derivado | derivado |
 | `lightsalmon` | 연한 연어색 | `#FFA07A` |  | 밝은 따뜻함, 친근함, 온화한 에너지. | 아침 해; 친절함과 너그러움. | derivado | derivado |

@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
   <g class="links">
-    <path d="M27 16.75L27 20.5L11 20.5L11 25.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M27 16.75L27 20.5L43 20.5L43 25.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M43 36.75L43 40.5L35 40.5L35 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M43 36.75L43 40.5L51 40.5L51 45.25" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M27 16.75L27 20.5L11 20.5L11 25.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M27 16.75L27 20.5L43 20.5L43 25.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M43 36.75L43 40.5L35 40.5L35 45.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M43 36.75L43 40.5L51 40.5L51 45.25" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M33.25 11.61A1.2 1.2 0 0 1 33.14 13.17L29.22 17.1A1.2 1.2 0 0 1 27.52 17.1L23.6 13.17A1.2 1.2 0 0 1 23.49 13.05L22.12 11.22A1.2 1.2 0 0 1 22.23 9.65L26.15 5.73A1.2 1.2 0 0 1 27.85 5.73L31.77 9.65A1.2 1.2 0 0 1 31.88 9.78Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="23.03" y="6.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 27 10.5)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M17.25 31.61A1.2 1.2 0 0 1 17.14 33.17L13.22 37.1A1.2 1.2 0 0 1 11.52 37.1L7.6 33.17A1.2 1.2 0 0 1 7.49 33.05L6.12 31.22A1.2 1.2 0 0 1 6.23 29.65L10.15 25.73A1.2 1.2 0 0 1 11.85 25.73L15.77 29.65A1.2 1.2 0 0 1 15.88 29.78Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="7.03" y="26.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 11 30.5)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M49.25 31.61A1.2 1.2 0 0 1 49.14 33.17L45.22 37.1A1.2 1.2 0 0 1 43.52 37.1L39.6 33.17A1.2 1.2 0 0 1 39.49 33.05L38.12 31.22A1.2 1.2 0 0 1 38.23 29.65L42.15 25.73A1.2 1.2 0 0 1 43.85 25.73L47.77 29.65A1.2 1.2 0 0 1 47.88 29.78Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="39.03" y="26.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 43 30.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M41.25 51.61A1.2 1.2 0 0 1 41.14 53.17L37.22 57.1A1.2 1.2 0 0 1 35.52 57.1L31.6 53.17A1.2 1.2 0 0 1 31.49 53.05L30.12 51.22A1.2 1.2 0 0 1 30.23 49.65L34.15 45.73A1.2 1.2 0 0 1 35.85 45.73L39.77 49.65A1.2 1.2 0 0 1 39.88 49.78Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="31.03" y="46.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 35 50.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M57.25 51.61A1.2 1.2 0 0 1 57.14 53.17L53.22 57.1A1.2 1.2 0 0 1 51.52 57.1L47.6 53.17A1.2 1.2 0 0 1 47.49 53.05L46.12 51.22A1.2 1.2 0 0 1 46.23 49.65L50.15 45.73A1.2 1.2 0 0 1 51.85 45.73L55.77 49.65A1.2 1.2 0 0 1 55.88 49.78Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="47.03" y="46.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 51 50.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M33.25 11.61A1.2 1.2 0 0 1 33.14 13.17L29.22 17.1A1.2 1.2 0 0 1 27.52 17.1L23.6 13.17A1.2 1.2 0 0 1 23.49 13.05L22.12 11.22A1.2 1.2 0 0 1 22.23 9.65L26.15 5.73A1.2 1.2 0 0 1 27.85 5.73L31.77 9.65A1.2 1.2 0 0 1 31.88 9.78Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="23.03" y="6.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 27 10.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M17.25 31.61A1.2 1.2 0 0 1 17.14 33.17L13.22 37.1A1.2 1.2 0 0 1 11.52 37.1L7.6 33.17A1.2 1.2 0 0 1 7.49 33.05L6.12 31.22A1.2 1.2 0 0 1 6.23 29.65L10.15 25.73A1.2 1.2 0 0 1 11.85 25.73L15.77 29.65A1.2 1.2 0 0 1 15.88 29.78Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="7.03" y="26.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 11 30.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M49.25 31.61A1.2 1.2 0 0 1 49.14 33.17L45.22 37.1A1.2 1.2 0 0 1 43.52 37.1L39.6 33.17A1.2 1.2 0 0 1 39.49 33.05L38.12 31.22A1.2 1.2 0 0 1 38.23 29.65L42.15 25.73A1.2 1.2 0 0 1 43.85 25.73L47.77 29.65A1.2 1.2 0 0 1 47.88 29.78Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="39.03" y="26.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 43 30.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M41.25 51.61A1.2 1.2 0 0 1 41.14 53.17L37.22 57.1A1.2 1.2 0 0 1 35.52 57.1L31.6 53.17A1.2 1.2 0 0 1 31.49 53.05L30.12 51.22A1.2 1.2 0 0 1 30.23 49.65L34.15 45.73A1.2 1.2 0 0 1 35.85 45.73L39.77 49.65A1.2 1.2 0 0 1 39.88 49.78Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="31.03" y="46.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 35 50.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M57.25 51.61A1.2 1.2 0 0 1 57.14 53.17L53.22 57.1A1.2 1.2 0 0 1 51.52 57.1L47.6 53.17A1.2 1.2 0 0 1 47.49 53.05L46.12 51.22A1.2 1.2 0 0 1 46.23 49.65L50.15 45.73A1.2 1.2 0 0 1 51.85 45.73L55.77 49.65A1.2 1.2 0 0 1 55.88 49.78Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="47.03" y="46.53" width="7.94" height="7.94" rx="1.2" transform="rotate(45 51 50.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

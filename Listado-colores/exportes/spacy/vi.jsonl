@@ -1,0 +1,153 @@
+{"label":"COLOR","pattern":"be","id":"beige"}
+{"label":"COLOR","pattern":"bạc","id":"silver"}
+{"label":"COLOR","pattern":"cam","id":"orange"}
+{"label":"COLOR","pattern":"cam đậm","id":"darkorange"}
+{"label":"COLOR","pattern":"chàm","id":"indigo"}
+{"label":"COLOR","pattern":"cà chua","id":"tomato"}
+{"label":"COLOR","pattern":"cá hồi","id":"salmon"}
+{"label":"COLOR","pattern":"cá hồi nhạt","id":"lightsalmon"}
+{"label":"COLOR","pattern":"cá hồi đậm","id":"darksalmon"}
+{"label":"COLOR","pattern":"cây kế","id":"thistle"}
+{"label":"COLOR","pattern":"cây thanh tú","id":"goldenrod"}
+{"label":"COLOR","pattern":"cây thanh tú nhạt","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"da hươu","id":"moccasin"}
+{"label":"COLOR","pattern":"ghi","id":"gray"}
+{"label":"COLOR","pattern":"gỗ","id":"burlywood"}
+{"label":"COLOR","pattern":"hoa lan","id":"orchid"}
+{"label":"COLOR","pattern":"hoa vân anh","id":"fuchsia"}
+{"label":"COLOR","pattern":"hạnh nhân trắng","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"hồng","id":"pink"}
+{"label":"COLOR","pattern":"hồng nhạt","id":"lightpink"}
+{"label":"COLOR","pattern":"hồng nóng","id":"hotpink"}
+{"label":"COLOR","pattern":"hồng oải hương","id":"lavenderblush"}
+{"label":"COLOR","pattern":"hồng sương","id":"mistyrose"}
+{"label":"COLOR","pattern":"hồng đậm","id":"deeppink"}
+{"label":"COLOR","pattern":"hổ phách","id":"amber"}
+{"label":"COLOR","pattern":"kaki","id":"khaki"}
+{"label":"COLOR","pattern":"kaki đậm","id":"darkkhaki"}
+{"label":"COLOR","pattern":"kem","id":"cream"}
+{"label":"COLOR","pattern":"kem bạc hà","id":"mintcream"}
+{"label":"COLOR","pattern":"kem đu đủ","id":"papayawhip"}
+{"label":"COLOR","pattern":"lúa mì","id":"wheat"}
+{"label":"COLOR","pattern":"lụa ngô","id":"cornsilk"}
+{"label":"COLOR","pattern":"lục lam","id":"cyan"}
+{"label":"COLOR","pattern":"magenta","id":"magenta"}
+{"label":"COLOR","pattern":"màu bánh quy","id":"bisque"}
+{"label":"COLOR","pattern":"mận","id":"plum"}
+{"label":"COLOR","pattern":"ngà voi","id":"ivory"}
+{"label":"COLOR","pattern":"ngọc lam","id":"turquoise"}
+{"label":"COLOR","pattern":"ngọc lam nhạt","id":"paleturquoise"}
+{"label":"COLOR","pattern":"ngọc lam vừa","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"ngọc lam đậm","id":"darkturquoise"}
+{"label":"COLOR","pattern":"nâu","id":"brown"}
+{"label":"COLOR","pattern":"nâu cát","id":"sandybrown"}
+{"label":"COLOR","pattern":"nâu hồng","id":"rosybrown"}
+{"label":"COLOR","pattern":"nâu yên ngựa","id":"saddlebrown"}
+{"label":"COLOR","pattern":"nâu đỏ","id":"maroon"}
+{"label":"COLOR","pattern":"oải hương","id":"lavender"}
+{"label":"COLOR","pattern":"phong lan vừa","id":"mediumorchid"}
+{"label":"COLOR","pattern":"phong lan đậm","id":"darkorchid"}
+{"label":"COLOR","pattern":"pê-ru","id":"peru"}
+{"label":"COLOR","pattern":"ren cũ","id":"oldlace"}
+{"label":"COLOR","pattern":"rám nắng","id":"tan"}
+{"label":"COLOR","pattern":"san hô","id":"coral"}
+{"label":"COLOR","pattern":"san hô nhạt","id":"lightcoral"}
+{"label":"COLOR","pattern":"sô cô la","id":"chocolate"}
+{"label":"COLOR","pattern":"sương mật","id":"honeydew"}
+{"label":"COLOR","pattern":"trắng","id":"white"}
+{"label":"COLOR","pattern":"trắng cổ","id":"antiquewhite"}
+{"label":"COLOR","pattern":"trắng hoa","id":"floralwhite"}
+{"label":"COLOR","pattern":"trắng khói","id":"whitesmoke"}
+{"label":"COLOR","pattern":"trắng ma","id":"ghostwhite"}
+{"label":"COLOR","pattern":"trắng Navajo","id":"navajowhite"}
+{"label":"COLOR","pattern":"tuyết","id":"snow"}
+{"label":"COLOR","pattern":"tím","id":"purple;violet"}
+{"label":"COLOR","pattern":"tím Rebecca","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"tím violet","id":"violet"}
+{"label":"COLOR","pattern":"tím vừa","id":"mediumpurple"}
+{"label":"COLOR","pattern":"tím xanh","id":"blueviolet"}
+{"label":"COLOR","pattern":"tím đậm","id":"darkviolet"}
+{"label":"COLOR","pattern":"tử đinh hương","id":"lilac"}
+{"label":"COLOR","pattern":"voan chanh","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"vàng","id":"yellow"}
+{"label":"COLOR","pattern":"vàng cây thanh tú nhạt","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"vàng cây thanh tú đậm","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"vàng kim","id":"gold"}
+{"label":"COLOR","pattern":"vàng nhạt","id":"lightyellow"}
+{"label":"COLOR","pattern":"vàng xanh","id":"greenyellow;yellowgreen"}
+{"label":"COLOR","pattern":"vải lanh","id":"linen"}
+{"label":"COLOR","pattern":"vỏ sò","id":"seashell"}
+{"label":"COLOR","pattern":"xanh Alice","id":"aliceblue"}
+{"label":"COLOR","pattern":"xanh aqua","id":"aqua"}
+{"label":"COLOR","pattern":"xanh aquamarine","id":"aquamarine"}
+{"label":"COLOR","pattern":"xanh aquamarine vừa","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"xanh ardoa","id":"slateblue"}
+{"label":"COLOR","pattern":"xanh ardoa vừa","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"xanh ardoa đậm","id":"darkslateblue"}
+{"label":"COLOR","pattern":"xanh biển","id":"seagreen"}
+{"label":"COLOR","pattern":"xanh biển nhạt","id":"lightseagreen"}
+{"label":"COLOR","pattern":"xanh biển vừa","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"xanh biển đậm","id":"darkseagreen"}
+{"label":"COLOR","pattern":"xanh bột","id":"powderblue"}
+{"label":"COLOR","pattern":"xanh cadet","id":"cadetblue"}
+{"label":"COLOR","pattern":"xanh chanh","id":"lime"}
+{"label":"COLOR","pattern":"xanh chanh lục","id":"limegreen"}
+{"label":"COLOR","pattern":"xanh chartreuse","id":"chartreuse"}
+{"label":"COLOR","pattern":"xanh cỏ","id":"lawngreen"}
+{"label":"COLOR","pattern":"xanh da trời","id":"azure;skyblue"}
+{"label":"COLOR","pattern":"xanh da trời nhạt","id":"lightskyblue"}
+{"label":"COLOR","pattern":"xanh da trời đậm","id":"deepskyblue"}
+{"label":"COLOR","pattern":"xanh Dodger","id":"dodgerblue"}
+{"label":"COLOR","pattern":"xanh dương","id":"blue"}
+{"label":"COLOR","pattern":"xanh dương nhạt","id":"lightblue"}
+{"label":"COLOR","pattern":"xanh dương vừa","id":"mediumblue"}
+{"label":"COLOR","pattern":"xanh dương đậm","id":"darkblue"}
+{"label":"COLOR","pattern":"xanh hoa cúc","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"xanh hoàng gia","id":"royalblue"}
+{"label":"COLOR","pattern":"xanh hải quân","id":"navy"}
+{"label":"COLOR","pattern":"xanh lam","id":"blue"}
+{"label":"COLOR","pattern":"xanh lá","id":"green"}
+{"label":"COLOR","pattern":"xanh lá cây","id":"green"}
+{"label":"COLOR","pattern":"xanh lá nhạt","id":"lightgreen"}
+{"label":"COLOR","pattern":"xanh lá non","id":"palegreen"}
+{"label":"COLOR","pattern":"xanh lá đậm","id":"darkgreen"}
+{"label":"COLOR","pattern":"xanh lơ","id":"cyan"}
+{"label":"COLOR","pattern":"xanh lơ nhạt","id":"lightcyan"}
+{"label":"COLOR","pattern":"xanh lơ đậm","id":"darkcyan"}
+{"label":"COLOR","pattern":"xanh lục","id":"green"}
+{"label":"COLOR","pattern":"xanh mòng két","id":"teal"}
+{"label":"COLOR","pattern":"xanh navy","id":"navy"}
+{"label":"COLOR","pattern":"xanh ngọc","id":"turquoise"}
+{"label":"COLOR","pattern":"xanh nhạt","id":"lightblue"}
+{"label":"COLOR","pattern":"xanh nửa đêm","id":"midnightblue"}
+{"label":"COLOR","pattern":"xanh rừng","id":"forestgreen"}
+{"label":"COLOR","pattern":"xanh thép","id":"steelblue"}
+{"label":"COLOR","pattern":"xanh thép nhạt","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"xanh xuân","id":"springgreen"}
+{"label":"COLOR","pattern":"xanh xuân vừa","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"xanh ô liu drab","id":"olivedrab"}
+{"label":"COLOR","pattern":"xanh ô liu đậm","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"xanh đậm","id":"darkblue"}
+{"label":"COLOR","pattern":"xám","id":"gray;grey"}
+{"label":"COLOR","pattern":"xám ardoa","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"xám ardoa nhạt","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"xám ardoa đậm","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"xám Gainsborough","id":"gainsboro"}
+{"label":"COLOR","pattern":"xám mờ","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"xám nhạt","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"xám đậm","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"ô liu","id":"olive"}
+{"label":"COLOR","pattern":"đen","id":"black"}
+{"label":"COLOR","pattern":"đào","id":"peachpuff"}
+{"label":"COLOR","pattern":"đất sienna","id":"sienna"}
+{"label":"COLOR","pattern":"đỏ","id":"red"}
+{"label":"COLOR","pattern":"đỏ cam","id":"orangered"}
+{"label":"COLOR","pattern":"đỏ gạch","id":"firebrick"}
+{"label":"COLOR","pattern":"đỏ thẫm","id":"crimson"}
+{"label":"COLOR","pattern":"đỏ tím nhạt","id":"palevioletred"}
+{"label":"COLOR","pattern":"đỏ tím vừa","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"đỏ tươi","id":"magenta;scarlet"}
+{"label":"COLOR","pattern":"đỏ tươi đậm","id":"darkmagenta"}
+{"label":"COLOR","pattern":"đỏ đô","id":"burgundy"}
+{"label":"COLOR","pattern":"đỏ đậm","id":"darkred"}
+{"label":"COLOR","pattern":"đỏ Ấn Độ","id":"indianred"}

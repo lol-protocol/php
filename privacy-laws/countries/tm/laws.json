@@ -1,0 +1,97 @@
+[
+  {
+    "country_code": "TM",
+    "country_name": "Turkmenistan",
+    "region": "asia_pacific",
+    "law_name": "Law No. 519-V on Information about Private Life and Its Protection (Law on Personal Data)",
+    "jurisdiction": "Prosecutor General's Office of Turkmenistan",
+    "enactment_date": "2017-03-20",
+    "effective_date": "2017-07-01",
+    "scope": "Individuals in Turkmenistan (information about private life)",
+    "applies_to": "All persons and entities collecting and processing personal data (unconfirmed)",
+    "key_requirements": "Consent-based collection and processing with exceptions (law enforcement, statistics, journalism); 33 articles in six chapters; individuals may sue directly in court",
+    "data_categories": "Personal data / information about private life (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Prosecutor General's Office of Turkmenistan (no dedicated data protection authority)",
+    "penalties_range": "Administrative Code: fine of 5-10 basic units (about USD 150-294) or administrative arrest up to 15 days for handling private-life information without consent (unconfirmed)",
+    "exemptions": "Law enforcement, statistics, lawful professional journalism or mass media activity",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=TM",
+    "language": "Turkmen/Russian",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Published 2017-03-29 in Neytralniy Turkmenistan; DLA Piper page last reviewed 2022",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/?c=TM",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.dlapiperdataprotection.com/?c=TM",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://merlin.obs.coe.int/article/7972",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://merlin.obs.coe.int/article/7972",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://merlin.obs.coe.int/article/7972",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.dlapiperdataprotection.com/?c=TM",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://merlin.obs.coe.int/article/7972",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://merlin.obs.coe.int/article/7972",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://merlin.obs.coe.int/article/7972",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://www.dlapiperdataprotection.com/?c=TM",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "exemptions": {
+        "url": "https://merlin.obs.coe.int/article/7972",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

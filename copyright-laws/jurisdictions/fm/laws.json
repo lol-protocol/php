@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "FM",
+    "country_name": "Micronesia",
+    "region": "asia_pacific",
+    "law_name": "Copyright Law, Title 35, Chapter 1 of the Code of the Federated States of Micronesia (originally Public Law 2-29, 1981)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years; anonymous works shorter of 100 years from creation or 75 years from publication",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Fair use limitation (s. 107); FSM Government works excluded from copyright (s. 105)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/194683",
+    "notes": "Berne since 7 Oct 2003 (Commons). Foreign-work protection tied to nationality, treaty or proclamation (s. 104). WIPO Lex marks some Title 35 editions as superseded (2014 annotated edition covers ss. 101-126).",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/text/194683",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/text/194683",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Federated_States_of_Micronesia.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/text/194683",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/text/194683",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.int/wipolex/en/text/194683",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Federated_States_of_Micronesia.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -63,14 +63,25 @@ final class LugarRepository extends Repository
      */
     public function personas(string $ruta, int $limit = 200): array
     {
+        // The page is picked on the births, in the order of sucesos_fecha_idx (fecha, id), and sucesos() asks
+        // whether each may be seen only for the ones it reaches, until the page is full; only then are those
+        // personas masked, which is what the outer query reads. Joining personas() to every birth in the place
+        // first computed `oculta` for all of them before it could sort and cut, so a country's page cost as much
+        // as its catalog. The ties of a date at the cut are broken by the event's id, what the index orders by;
+        // the rows shown are ordered by date and persona id, as they always were. A sucesos() birth is one with
+        // no hidden participant, her own included, so the `NOT p.oculta` of the outer query leaves nobody out
+        // today: it stays as the check that cannot be forgotten.
         return $this->db->fetchAll(
-            "SELECT DISTINCT p.id, p.nombres, p.apellidos, s.fecha AS nacimiento, l.nombre AS lugar_nombre
-               FROM {$this->privacidad->sucesos()} s
-               JOIN suceso_participantes sp ON sp.suceso_id = s.id AND sp.rol = '" . Privacidad::ROL_PRINCIPAL . "'
-               JOIN {$this->privacidad->personas()} p ON p.id = sp.persona_id
-               JOIN lugares l ON l.ruta = s.lugar_ruta
-              WHERE s.tipo = 'nacimiento' AND (s.lugar_ruta = ? OR s.lugar_ruta LIKE ?) AND NOT p.oculta
-              ORDER BY nacimiento, p.id" . self::page($limit),
+            "SELECT DISTINCT p.id, p.nombres, p.apellidos, c.nacimiento, c.lugar_nombre
+               FROM (SELECT DISTINCT sp.persona_id AS id, s.fecha AS nacimiento, l.nombre AS lugar_nombre, s.id AS suceso_id
+                       FROM {$this->privacidad->sucesos()} s
+                       JOIN suceso_participantes sp ON sp.suceso_id = s.id AND sp.rol = '" . Privacidad::ROL_PRINCIPAL . "'
+                       JOIN lugares l ON l.ruta = s.lugar_ruta
+                      WHERE s.tipo = 'nacimiento' AND (s.lugar_ruta = ? OR s.lugar_ruta LIKE ?)
+                      ORDER BY s.fecha, s.id" . self::page($limit) . ") c
+               JOIN {$this->privacidad->personas()} p ON p.id = c.id
+              WHERE NOT p.oculta
+              ORDER BY c.nacimiento, p.id",
             [$ruta, $ruta . '/%']
         );
     }

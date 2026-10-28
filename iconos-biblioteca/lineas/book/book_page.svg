@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-paper{stroke:var(--ic-paper,#938D73)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M42.94 16.92A2.5 2.5 0 0 1 43.44 18.42L43.44 51.42A2.5 2.5 0 0 1 40.94 53.92L17.94 53.92A2.5 2.5 0 0 1 15.94 52.92L14.5 51A2.5 2.5 0 0 1 14 49.5L14 16.5A2.5 2.5 0 0 1 16.5 14L39.5 14A2.5 2.5 0 0 1 41.5 15Z" fill="none" stroke="#938D73" stroke-width="1.8" stroke-linejoin="round"/><rect x="14" y="14" width="28" height="38" rx="2.5" fill="none" stroke="#938D73" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M49.94 10.92A2.5 2.5 0 0 1 50.44 12.42L50.44 45.42A2.5 2.5 0 0 1 47.94 47.92L24.94 47.92A2.5 2.5 0 0 1 22.94 46.92L21.5 45A2.5 2.5 0 0 1 21 43.5L21 10.5A2.5 2.5 0 0 1 23.5 8L46.5 8A2.5 2.5 0 0 1 48.5 9Z" fill="none" stroke="#938D73" stroke-width="1.8" stroke-linejoin="round"/><rect x="21" y="8" width="28" height="38" rx="2.5" fill="none" stroke="#938D73" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-paper" stroke="#938D73"><path d="M42.94 16.92A2.5 2.5 0 0 1 43.44 18.42L43.44 51.42A2.5 2.5 0 0 1 40.94 53.92L17.94 53.92A2.5 2.5 0 0 1 15.94 52.92L14.5 51A2.5 2.5 0 0 1 14 49.5L14 16.5A2.5 2.5 0 0 1 16.5 14L39.5 14A2.5 2.5 0 0 1 41.5 15Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="14" y="14" width="28" height="38" rx="2.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-paper" stroke="#938D73"><path d="M49.94 10.92A2.5 2.5 0 0 1 50.44 12.42L50.44 45.42A2.5 2.5 0 0 1 47.94 47.92L24.94 47.92A2.5 2.5 0 0 1 22.94 46.92L21.5 45A2.5 2.5 0 0 1 21 43.5L21 10.5A2.5 2.5 0 0 1 23.5 8L46.5 8A2.5 2.5 0 0 1 48.5 9Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="21" y="8" width="28" height="38" rx="2.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

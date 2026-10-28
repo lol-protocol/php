@@ -1,0 +1,102 @@
+[
+  {
+    "country_code": "BN",
+    "country_name": "Brunei",
+    "region": "asia_pacific",
+    "law_name": "Personal Data Protection Order 2025 (PDPO)",
+    "jurisdiction": "AITI",
+    "enactment_date": "2025-01-08",
+    "effective_date": "2026-01-01",
+    "scope": "Individuals whose personal data is handled by private-sector organisations in Brunei",
+    "applies_to": "Private-sector organisations (and private processors acting for government agencies); government agencies excluded",
+    "key_requirements": "Purpose limitation and consent with withdrawal; access, correction and accuracy; security arrangements, retention limits, overseas transfer protections; appoint at least one DPO",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Retention limitation applies (article not confirmed) (unconfirmed)",
+    "enforcement_authority": "Authority for Info-communications Technology Industry of Brunei Darussalam (AITI)",
+    "penalties_range": "Administrative penalty up to 10% of annual Brunei turnover (if turnover exceeds BND 10M) or BND 1M otherwise (unconfirmed)",
+    "exemptions": "Government agencies excluded",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://pdp.aiti.gov.bn/overview/legislation/",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Most provisions (Parts 3-9) commenced 2026-01-01 per commencement notification; penalty details conflict between secondary sources",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://pdp.aiti.gov.bn/overview/legislation/",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://pdp.aiti.gov.bn/overview/legislation/",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BN&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BN&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BN&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://pdp.aiti.gov.bn/overview/legislation/",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://www.offlist.me/what-is-brunei-data-protection",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BN&t=law",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "retention_period": {
+        "url": "https://www.offlist.me/what-is-brunei-data-protection",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://pdp.aiti.gov.bn/overview/legislation/",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://law.ungovr.org/ai/bn",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "exemptions": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BN&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

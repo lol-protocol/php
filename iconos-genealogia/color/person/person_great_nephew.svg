@@ -15,7 +15,7 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.76" cy="59.5" rx="19.09" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="32.99" cy="59.5" rx="18.88" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="links">
     <path d="M31 10.5L31 17.17L17 17.17L17 23.83" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
@@ -25,10 +25,10 @@
   </g>
   <g class="solids">
     <g><path d="M36.21 11.42A1 1 0 0 1 36.12 12.73L32.85 16A1 1 0 0 1 31.44 16L28.17 12.73A1 1 0 0 1 28.07 12.62L27.11 11.34A1 1 0 0 1 27.21 10.03L30.47 6.77A1 1 0 0 1 31.89 6.77L35.15 10.03A1 1 0 0 1 35.25 10.14Z" fill="#767C82"/><rect x="27.69" y="7.19" width="6.62" height="6.62" rx="1" transform="rotate(45 31 10.5)" fill="url(#grad_person_great_nephew_mist_r45)"/></g>
-    <g><path d="M13.19 27.07L14.15 28.35A4.99 4.99 0 0 0 22.13 22.36L21.17 21.08A4.99 4.99 0 0 0 13.19 27.07Z" fill="#29313D"/><circle cx="17" cy="23.83" r="4.99" fill="url(#grad_person_great_nephew_ink)"/></g>
+    <g><path d="M13.55 26.79L14.52 28.08A4.53 4.53 0 0 0 21.77 22.64L20.81 21.35A4.53 4.53 0 0 0 13.55 26.79Z" fill="#29313D"/><circle cx="17" cy="23.83" r="4.53" fill="url(#grad_person_great_nephew_ink)"/></g>
     <g><path d="M50.21 24.76A1 1 0 0 1 50.12 26.06L46.85 29.33A1 1 0 0 1 45.44 29.33L42.17 26.06A1 1 0 0 1 42.07 25.95L41.11 24.67A1 1 0 0 1 41.21 23.37L44.47 20.1A1 1 0 0 1 45.89 20.1L49.15 23.37A1 1 0 0 1 49.25 23.47Z" fill="#767C82"/><rect x="41.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 45 23.83)" fill="url(#grad_person_great_nephew_mist_r45)"/></g>
     <g><path d="M50.21 38.09A1 1 0 0 1 50.12 39.4L46.85 42.66A1 1 0 0 1 45.44 42.66L42.17 39.4A1 1 0 0 1 42.07 39.29L41.11 38.01A1 1 0 0 1 41.21 36.7L44.47 33.43A1 1 0 0 1 45.89 33.43L49.15 36.7A1 1 0 0 1 49.25 36.81Z" fill="#767C82"/><rect x="41.69" y="33.86" width="6.62" height="6.62" rx="1" transform="rotate(45 45 37.17)" fill="url(#grad_person_great_nephew_mist_r45)"/></g>
-    <g><path d="M53.11 46.8A2.04 2.04 0 0 1 53.51 48.02L53.51 57.54A2.04 2.04 0 0 1 51.47 59.58L41.95 59.58A2.04 2.04 0 0 1 40.32 58.77L38.79 56.72A2.04 2.04 0 0 1 38.38 55.5L38.38 45.98A2.04 2.04 0 0 1 40.42 43.94L49.94 43.94A2.04 2.04 0 0 1 51.57 44.76Z" fill="#883307"/><rect x="38.2" y="43.7" width="13.6" height="13.6" rx="2.04" fill="url(#grad_person_great_nephew_orange)"/></g>
+    <g><path d="M53.27 46.47A1.22 1.22 0 0 1 53.51 47.21L53.51 58.36A1.22 1.22 0 0 1 52.29 59.58L41.14 59.58A1.22 1.22 0 0 1 40.16 59.1L38.62 57.05A1.22 1.22 0 0 1 38.38 56.32L38.38 45.16A1.22 1.22 0 0 1 39.6 43.94L50.76 43.94A1.22 1.22 0 0 1 51.74 44.43Z" fill="#883307"/><rect x="38.2" y="43.7" width="13.6" height="13.6" rx="1.22" fill="url(#grad_person_great_nephew_orange)"/></g>
   </g>
   <g class="marks">
     <path d="M15.4 23.83a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" fill="#FFFFFF"/>

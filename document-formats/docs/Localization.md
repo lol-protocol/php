@@ -4,10 +4,10 @@ The Document Formats Database includes a multi-language localization system with
 
 ## Supported Languages
 
-The system supports the following 30 languages. **Six are complete** (English, Spanish,
-French, German, Chinese and Japanese). The other 24 translate only the page title, the tabs
-and the unit names (`header.*`, `tabs.*` except `tabs.paperTypes`, `format.millimeters`,
-`format.inches`: 10 of the 145 strings); any string a language leaves empty or lacks is shown in English.
+The system supports the following 30 languages, and **all of them are complete**: each file has
+all 182 strings. English and Spanish were written first, then German, French, Japanese and
+Chinese, and last the other 24; none has been reviewed by a native speaker yet, so corrections
+are welcome. A string a language leaves empty or lacks is shown in English.
 
 - **English** (en) - English
 - **Spanish** (es) - Español
@@ -480,9 +480,9 @@ localStorage.removeItem('preferredLanguage');
 ## Statistics
 
 - **Languages**: 30
-- **Strings per language**: 145
-- **Fully translated**: 6 (English, Spanish, French, German, Chinese, Japanese)
-- **Partly translated**: 24, with 10 of the 145 strings
+- **Strings per language**: 182
+- **Fully translated**: 30
+- **Reviewed by a native speaker**: none yet
 
 `tests/demo.test.js` recomputes these numbers from the translation files and fails if this section is out of date.
 

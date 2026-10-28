@@ -4,8 +4,8 @@
 #   --png    genera tambien los PNG del catalogo (generator/exportar_png.py; necesita python3,
 #            Pillow y numpy). Sin esto la app funciona igual, sin la descarga en PNG.
 #   --repo   carpeta del monorepo con el codigo (por defecto, la que contiene a vps-setup/)
-# Variables: MAX_UPLOAD (6M), MARCALIBROS_RETENTION_DAYS (dias que se conserva un marcalibro; el
-#            de la app, 30, si no se da), MARCALIBROS_PNG=1 (igual que --png).
+# Variables: MAX_UPLOAD (6M), MARCALIBROS_RETENTION_DAYS (dias que se conserva un marcalibro; la
+#            app los guarda para siempre, 0, si no se da), MARCALIBROS_PNG=1 (igual que --png).
 # Re-correrlo actualiza el codigo y conserva los marcalibros creados y los PNG ya generados.
 set -e
 
@@ -31,8 +31,8 @@ require_arg "$DOMAIN" "$0 <dominio> [--png] [--repo DIR]   (ej. $0 marcalibros.e
 require_valid domain "$DOMAIN" "El dominio"
 require_valid size "$MAX_UPLOAD" "MAX_UPLOAD"
 RETENTION=${MARCALIBROS_RETENTION_DAYS:-}
-if [ -n "$RETENTION" ] && ! [[ "$RETENTION" =~ ^[1-9][0-9]{0,3}$ ]]; then
-    echo "MARCALIBROS_RETENTION_DAYS debe ser un numero de dias (1 a 9999); recibido: $RETENTION"
+if [ -n "$RETENTION" ] && ! [[ "$RETENTION" =~ ^(0|[1-9][0-9]{0,3})$ ]]; then
+    echo "MARCALIBROS_RETENTION_DAYS debe ser un numero de dias (0 = no borrar nunca, o 1 a 9999); recibido: $RETENTION"
     exit 2
 fi
 
@@ -73,7 +73,7 @@ for other in "$NGINX_DIR"/sites-available/*; do
 done
 claim_nginx_vhost "$DOMAIN" "$MARK"
 
-# --- Codigo: se arma aparte y se cambia de golpe, para que nunca se sirva a medio copiar ---
+# --- Codigo: se arma aparte y se cambia con dos renombres seguidos, para que nunca se sirva a medio copiar ---
 # Se conserva la disposicion del monorepo porque app/bootstrap.php busca a sus vecinos con rutas
 # relativas (../php/src, ../../defamatory-content-review/src).
 echo "Copiando el codigo a $APP_PATH..."
@@ -147,12 +147,13 @@ EOFNGINX
 raise_php_upload_limit "$MAX_UPLOAD"
 
 # --- Limpieza diaria de los marcalibros vencidos (no hay copias de seguridad, a proposito) ---
+PHP_BIN=$(command -v php)   # el mismo php que se comprobo arriba (no siempre es /usr/bin/php)
 CRON_ENV="MARCALIBROS_STORAGE=$STORAGE"
 [ -z "$RETENTION" ] || CRON_ENV+=$'\n'"MARCALIBROS_RETENTION_DAYS=$RETENTION"
 sudo tee "$CRON_DIR/marcalibros" > /dev/null <<EOFCRON
 # vps-setup: $MARK
 $CRON_ENV
-17 3 * * * www-data /usr/bin/php $APP_PATH/$PROJECT/app/bin/limpiar.php
+17 3 * * * www-data $PHP_BIN $APP_PATH/$PROJECT/app/bin/limpiar.php > /dev/null
 EOFCRON
 sudo chmod 644 "$CRON_DIR/marcalibros"
 

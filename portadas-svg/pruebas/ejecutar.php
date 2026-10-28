@@ -8,13 +8,21 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/autocarga.php';
 
+use PortadasSvg\Adornos\Adorno;
+use PortadasSvg\Adornos\Generico;
+use PortadasSvg\Anchos;
 use PortadasSvg\Archivos;
+use PortadasSvg\Catalogo;
 use PortadasSvg\Cli;
 use PortadasSvg\Color;
 use PortadasSvg\Degradado;
+use PortadasSvg\FactorFijo;
+use PortadasSvg\Fuentes;
 use PortadasSvg\Generador;
 use PortadasSvg\Libro;
+use PortadasSvg\Lista;
 use PortadasSvg\Medidas;
+use PortadasSvg\Nombres;
 use PortadasSvg\Plantilla;
 use PortadasSvg\Rectangulo;
 use PortadasSvg\Svg;
@@ -88,10 +96,32 @@ function libroLargo(string $plantilla, float $solapas, array $extra = []): Libro
     ]);
 }
 
-/** Ancho estimado de una línea, con las mismas estimaciones que usan las plantillas. */
-function anchoEstimado(string $texto, float $tamano, float $espaciado, Plantilla $plantilla): float
+/**
+ * Ancho estimado de una línea con la tabla de anchos de la cara con que se pinta, la misma que usan
+ * las plantillas. `$extra` son los atributos font-style y font-weight del texto.
+ *
+ * @param array<string, float|int|string> $extra
+ */
+function anchoEstimado(string $texto, float $tamano, float $espaciado, Plantilla $plantilla, array $extra = []): float
 {
-    return mb_strlen($texto) * ($tamano * $plantilla->factorPara($texto) + $espaciado);
+    return $plantilla->medidaDe($extra)->em($texto) * $tamano + $espaciado * mb_strlen($texto);
+}
+
+/**
+ * Los atributos de cara tipográfica de un `<text>`, en la forma que entiende `Plantilla::medidaDe`.
+ *
+ * @return array<string, string>
+ */
+function caraDe(DOMElement $elemento): array
+{
+    $cara = [];
+    foreach (['font-style', 'font-weight'] as $atributo) {
+        if ($elemento->getAttribute($atributo) !== '') {
+            $cara[$atributo] = $elemento->getAttribute($atributo);
+        }
+    }
+
+    return $cara;
 }
 
 /**
@@ -116,7 +146,7 @@ function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
             }
             $x = (float) $giro[1];
             $y = (float) $giro[2];
-            $largo = anchoEstimado($elemento->textContent, $tamano, $espaciado, $plantilla);
+            $largo = anchoEstimado($elemento->textContent, $tamano, $espaciado, $plantilla, caraDe($elemento));
             // Con rotate(90) las letras crecen hacia +x; con rotate(-90), hacia -x.
             $hacia = (int) $giro[3] === 90 ? 0.8 : 0.2;
             $cajas[] = [
@@ -141,7 +171,7 @@ function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
                 continue;
             }
             $x = (float) $tspan->getAttribute('x');
-            $ancho = anchoEstimado($texto, $tamano, $espaciado, $plantilla);
+            $ancho = anchoEstimado($texto, $tamano, $espaciado, $plantilla, caraDe($elemento));
             [$izquierda, $derecha] = match ($anclaje) {
                 'middle' => [$x - $ancho / 2, $x + $ancho / 2],
                 'end' => [$x - $ancho, $x],
@@ -207,9 +237,13 @@ function librosParaGeometria(): array
     $libros = [];
     foreach (['clasica', 'sobria'] as $plantilla) {
         foreach ([0.0, 90.0] as $solapas) {
-            $libros[] = libroLargo($plantilla, $solapas);
-            $libros[] = libroLargo($plantilla, $solapas, ['lomo_mm' => 3.2]);
-            $libros[] = libroLargo($plantilla, $solapas, ['titulo' => 'Hola']);
+            // Sin tradición y con cada una de las que tienen adorno propio.
+            foreach ([null, 'griega', 'china', 'arabe', 'medieval'] as $tradicion) {
+                $propios = $tradicion === null ? [] : ['tradicion' => $tradicion];
+                $libros[] = libroLargo($plantilla, $solapas, $propios);
+                $libros[] = libroLargo($plantilla, $solapas, ['lomo_mm' => 3.2] + $propios);
+                $libros[] = libroLargo($plantilla, $solapas, ['titulo' => 'Hola'] + $propios);
+            }
         }
     }
     foreach (glob(__DIR__ . '/../ejemplos/*.json') ?: [] as $ruta) {
@@ -238,15 +272,25 @@ function adornos(string $cuerpo): array
         $y = [(float) $linea->getAttribute('y1'), (float) $linea->getAttribute('y2')];
         $adornos[] = ['texto' => 'una línea', 'x0' => min($x) - $mitad, 'x1' => max($x) + $mitad, 'y0' => min($y) - $mitad, 'y1' => max($y) + $mitad];
     }
-    foreach ($doc->getElementsByTagName('polygon') as $poligono) {
-        $x = [];
-        $y = [];
-        foreach (explode(' ', $poligono->getAttribute('points')) as $punto) {
-            [$px, $py] = explode(',', $punto);
-            $x[] = (float) $px;
-            $y[] = (float) $py;
+    foreach (['polygon', 'polyline'] as $etiqueta) {
+        foreach ($doc->getElementsByTagName($etiqueta) as $poligono) {
+            $mitad = (float) $poligono->getAttribute('stroke-width') / 2;
+            $x = [];
+            $y = [];
+            foreach (explode(' ', $poligono->getAttribute('points')) as $punto) {
+                [$px, $py] = explode(',', $punto);
+                $x[] = (float) $px;
+                $y[] = (float) $py;
+            }
+            $adornos[] = ['texto' => 'un ornamento', 'x0' => min($x) - $mitad, 'x1' => max($x) + $mitad, 'y0' => min($y) - $mitad, 'y1' => max($y) + $mitad];
         }
-        $adornos[] = ['texto' => 'un ornamento', 'x0' => min($x), 'x1' => max($x), 'y0' => min($y), 'y1' => max($y)];
+    }
+    foreach ($doc->getElementsByTagName('circle') as $circulo) {
+        $mitad = (float) $circulo->getAttribute('stroke-width') / 2;
+        $cx = (float) $circulo->getAttribute('cx');
+        $cy = (float) $circulo->getAttribute('cy');
+        $r = (float) $circulo->getAttribute('r') + $mitad;
+        $adornos[] = ['texto' => 'un ornamento', 'x0' => $cx - $r, 'x1' => $cx + $r, 'y0' => $cy - $r, 'y1' => $cy + $r];
     }
     foreach ($doc->getElementsByTagName('rect') as $rectangulo) {
         $relleno = $rectangulo->getAttribute('fill');
@@ -324,9 +368,9 @@ $pruebas = [
     },
 
     'Texto::envolver parte por palabras y respeta los párrafos' => function (): void {
-        igual(['uno', 'dos', 'tres'], Texto::envolver('uno dos tres', 5.0, 1.0, 1.0));
-        igual(['a b', '', 'c'], Texto::envolver("a b\n\nc", 20.0, 1.0, 1.0));
-        igual([], Texto::envolver('', 20.0, 1.0, 1.0));
+        igual(['uno', 'dos', 'tres'], Texto::envolver('uno dos tres', 5.0, 1.0, new FactorFijo(1.0)));
+        igual(['a b', '', 'c'], Texto::envolver("a b\n\nc", 20.0, 1.0, new FactorFijo(1.0)));
+        igual([], Texto::envolver('', 20.0, 1.0, new FactorFijo(1.0)));
     },
 
     'Svg::lineas conserva las líneas en blanco con un espacio de no ruptura' => function (): void {
@@ -334,26 +378,26 @@ $pruebas = [
     },
 
     'Texto::envolver corta las palabras más largas que la línea' => function (): void {
-        igual(['abc', 'def', 'gh'], Texto::envolver('abcdefgh', 3.0, 1.0, 1.0));
+        igual(['abc', 'def', 'gh'], Texto::envolver('abcdefgh', 3.0, 1.0, new FactorFijo(1.0)));
     },
 
     'Texto::ajustar baja el tamaño hasta que el texto cabe' => function (): void {
         // Una línea de «hola» a 7,4 mm ocupa 7,4 × 1,35 = 9,99 mm; a 7,6 mm ocuparía 10,26 mm.
-        $ajuste = Texto::ajustar('hola', 100.0, 10.0, 10.0, 5.0, 0.5, 1.35);
+        $ajuste = Texto::ajustar('hola', 100.0, 10.0, 10.0, 5.0, new FactorFijo(0.5), 1.35);
         aproximado(7.4, $ajuste['tamano']);
         igual(['hola'], $ajuste['lineas']);
     },
 
     'Texto::ajustar recorta con «…» si ni al mínimo cabe' => function (): void {
-        $ajuste = Texto::ajustar('uno dos tres cuatro cinco seis', 5.0, 1.0, 1.0, 1.0, 1.0, 1.35);
+        $ajuste = Texto::ajustar('uno dos tres cuatro cinco seis', 5.0, 1.0, 1.0, 1.0, new FactorFijo(1.0), 1.35);
         aproximado(1.0, $ajuste['tamano']);
-        igual(['un…'], $ajuste['lineas']);
+        igual(['uno…'], $ajuste['lineas']);
     },
 
     'Texto::unaLinea reduce el tamaño o recorta' => function (): void {
-        aproximado(4.0, Texto::unaLinea('Ana', 100.0, 4.0, 2.0, 0.5)['tamano']);
+        aproximado(4.0, Texto::unaLinea('Ana', 100.0, 4.0, 2.0, new FactorFijo(0.5))['tamano']);
 
-        $largo = Texto::unaLinea(str_repeat('a', 100), 10.0, 4.0, 2.0, 0.5);
+        $largo = Texto::unaLinea(str_repeat('a', 100), 10.0, 4.0, 2.0, new FactorFijo(0.5));
         aproximado(2.0, $largo['tamano']);
         igual(str_repeat('a', 9) . '…', $largo['texto']);
     },
@@ -486,7 +530,7 @@ $pruebas = [
 
     'Texto::unaLinea descuenta el espaciado entre letras' => function (): void {
         // Cuatro letras con 1 mm de espaciado en 10 mm: a tamaño 1,5 cada letra ocupa 1,5 + 1 = 2,5 mm.
-        aproximado(1.5, Texto::unaLinea('ABCD', 10.0, 4.0, 1.0, 1.0, 1.0)['tamano']);
+        aproximado(1.5, Texto::unaLinea('ABCD', 10.0, 4.0, 1.0, new FactorFijo(1.0), 1.0)['tamano']);
     },
 
     'Ningún texto se sale de su panel, con textos largos y en las dos plantillas' => function (): void {
@@ -723,6 +767,385 @@ $pruebas = [
 
         igual(0, $codigo);
         igual($antes, count(glob(sys_get_temp_dir() . '/portadas-svg-*') ?: []));
+    },
+
+    'La tabla de anchos coincide con las medidas de un navegador' => function (): void {
+        // Anchos en em medidos con Chromium (canvas.measureText a 1000 px, con kerning) usando los mismos
+        // archivos de fuentes/. Son la referencia independiente de la tabla. La tabla ignora el kerning, que solo
+        // acorta, así que nunca debe quedar por debajo de lo medido y se pasa como mucho un 4,5 %.
+        $medidos = [
+            ['serif', 'normal', 400, 'Apología de Sócrates', 9.806],
+            ['serif', 'normal', 400, 'En el año 399 a. C., Sócrates comparece ante un jurado de ciudadanos atenienses acusado de impiedad y de corromper a la juventud.', 62.417],
+            ['serif', 'normal', 400, 'Diálogos de Platón sobre la justicia, el alma, el amor y la ciudad ideal', 32.570],
+            ['serif', 'normal', 400, 'MARCO TULIO CICERÓN AURELIANO DE LA ACADEMIA', 26.632],
+            ['serif', 'normal', 400, 'Edición de ejemplo · Clásicos', 13.761],
+            ['serif', 'normal', 400, 'Wagner y Valdés: AVATAR Tipo', 14.532],
+            ['serif', 'italic', 400, 'Defensa ante el jurado de Atenas', 14.088],
+            ['serif', 'italic', 400, 'Traducción de Patricio de Azcárate', 15.213],
+            ['sans', 'normal', 400, 'Tratado militar chino atribuido al general Sun Tzu, que según la tradición lo escribió', 39.367],
+            ['sans', 'normal', 400, 'SUN TZU', 4.439],
+            ['sans', 'normal', 400, 'Edición de ejemplo · Clásicos', 13.809],
+            ['sans', 'normal', 700, 'El arte de la guerra', 9.101],
+            ['sans', 'normal', 700, 'Diálogos de Platón sobre la justicia', 16.930],
+        ];
+        $mal = [];
+        foreach ($medidos as [$familia, $estilo, $peso, $texto, $navegador]) {
+            $tabla = Anchos::de($familia, $estilo, $peso)->em($texto);
+            if ($tabla < $navegador * 0.999 || $tabla > $navegador * 1.045) {
+                $mal[] = sprintf('%s/%s/%d «%s»: tabla %.3f, navegador %.3f', $familia, $estilo, $peso, mb_substr($texto, 0, 30), $tabla, $navegador);
+            }
+        }
+        verdadero($mal === [], "la tabla se aleja del navegador:\n  " . implode("\n  ", $mal));
+    },
+
+    'Anchos rechaza una cara que no está en la tabla y avisa de las letras que la fuente no tiene' => function (): void {
+        lanza(RuntimeException::class, fn () => Anchos::de('serif', 'normal', 700));
+        lanza(RuntimeException::class, fn () => Anchos::de('script', 'normal', 400));
+
+        $serif = Anchos::de('serif', 'normal', 400);
+        igual('Ł', $serif->noCubiertas('Łukasz ñ áé'));
+        igual('', $serif->noCubiertas('Apología de Sócrates, «ñandú» — ¿sí?'));
+        // Una letra que la fuente no tiene cuenta como la media de las minúsculas, no como cero.
+        aproximado(0.551, $serif->em('Ł'));
+    },
+
+    'Cada pieza incrusta solo las fuentes que usa' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        $textos = ['subtitulo' => 'Con cursiva', 'contratapa' => 'Un texto de contratapa.', 'editorial' => 'Editorial de prueba'];
+        Generador::escribir(libroDeEjemplo($textos), "$dir/clasica");
+        Generador::escribir(libroDeEjemplo(['plantilla' => 'sobria'] + $textos), "$dir/sobria");
+        $caras = static fn (string $ruta): int => substr_count((string) file_get_contents($ruta), '@font-face');
+
+        igual(2, $caras("$dir/clasica/portada.svg")); // normal y cursiva
+        igual(1, $caras("$dir/clasica/lomo.svg")); // el lomo no usa cursiva
+        igual(1, $caras("$dir/clasica/contratapa.svg"));
+        verdadero(!str_contains((string) file_get_contents("$dir/clasica/lomo.svg"), 'font-style:italic'), 'el lomo lleva la cursiva sin usarla');
+        verdadero(!str_contains((string) file_get_contents("$dir/sobria/portada.svg"), 'Source Serif'), 'la sobria lleva la serif');
+        verdadero(str_contains((string) file_get_contents("$dir/sobria/portada.svg"), "font-family:'Inter'"), 'la sobria no incrusta Inter');
+
+        // Lo incrustado es de verdad un archivo woff2, no un texto cualquiera en base64.
+        verdadero(preg_match('/base64,([A-Za-z0-9+\/=]+)\)/', (string) file_get_contents("$dir/clasica/lomo.svg"), $datos) === 1, 'no hay datos en base64');
+        igual('wOF2', substr((string) base64_decode($datos[1] ?? '', true), 0, 4));
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'Fuentes rechaza una familia o un estilo que no tiene' => function (): void {
+        lanza(InvalidArgumentException::class, fn () => Fuentes::pila('script'));
+        lanza(InvalidArgumentException::class, fn () => Fuentes::estilo(['sans|italic' => ['sans', 'italic']]));
+        igual('', Fuentes::estilo([]));
+    },
+
+    'El título se reparte en líneas parejas sin cambiar cuántas son' => function (): void {
+        // Llenando cada línea hasta el borde saldría «El arte de la» y «guerra».
+        $medida = new FactorFijo(1.0);
+        igual(['El arte de la', 'guerra'], Texto::envolver('El arte de la guerra', 14.0, 1.0, $medida));
+        igual(['El arte de', 'la guerra'], Texto::ajustar('El arte de la guerra', 14.0, 10.0, 1.0, 1.0, $medida, 1.35, true)['lineas']);
+        // Con una sola línea, o sin pedir el reparto, no cambia nada.
+        igual(['Hola'], Texto::ajustar('Hola', 14.0, 10.0, 1.0, 1.0, $medida, 1.35, true)['lineas']);
+        igual(['El arte de la', 'guerra'], Texto::ajustar('El arte de la guerra', 14.0, 10.0, 1.0, 1.0, $medida, 1.35)['lineas']);
+    },
+
+    'Nombres compara sin tildes ni mayúsculas y saca nombres de carpeta' => function (): void {
+        igual('filosofia y ensayo', Nombres::plegar("  Filosofía   Y\tEnsayo "));
+        igual('lukasz', Nombres::plegar('Łukasz'));
+        igual('e', Nombres::plegar("e\u{0301}")); // e + tilde suelta, como lo escribe Excel en Mac
+        igual('gustavo-adolfo-becquer-rimas-y-leyendas', Nombres::slug('Gustavo Adolfo Bécquer — Rimas y leyendas'));
+        igual('', Nombres::slug('道德經'));
+        igual('', Nombres::slug(' ¿¡ '));
+        // Largo máximo: se corta en un guion, no a media palabra.
+        $largo = Nombres::slug(str_repeat('palabra ', 30), 20);
+        igual('palabra-palabra', $largo);
+        igual('abcdefghij', Nombres::slug('abcdefghijklmnop', 10));
+    },
+
+    'El catálogo encuentra una categoría o tradición por slug o por nombre' => function (): void {
+        igual('filosofia', Catalogo::categoria('Filosofía y ensayo')['slug']);
+        igual('filosofia', Catalogo::categoria('FILOSOFIA')['slug']);
+        igual('tipo de texto', Catalogo::categoria('filosofia')['familia']);
+        igual('movimiento literario', Catalogo::categoria('Realismo mágico')['familia']);
+        igual('arabe', Catalogo::tradicion('Árabe')['slug']);
+        igual('medieval europea', Catalogo::tradicion('medieval')['nombre']);
+        igual(27, count(Catalogo::categorias()));
+        igual(count(Catalogo::tradiciones()), count(array_unique(array_column(Catalogo::tradiciones(), 'slug'))));
+
+        try {
+            Catalogo::tradicion('marciana');
+            throw new RuntimeException('no lanzó');
+        } catch (InvalidArgumentException $error) {
+            verdadero(str_contains($error->getMessage(), '«marciana»') && str_contains($error->getMessage(), 'griega, romana'), 'el error no nombra lo que falló ni da opciones: ' . $error->getMessage());
+        }
+    },
+
+    'Sin época, tradición, categoría ni cita no se arma ficha' => function (): void {
+        $libro = libroDeEjemplo();
+        igual('', $libro->textos->contratapa);
+        igual('', $libro->textos->solapaPortada);
+        igual('', $libro->textos->solapaContratapa);
+        igual(null, $libro->tradicion);
+        igual(null, $libro->categoria);
+    },
+
+    'Con tradición y categoría, la contratapa y las solapas se arman con los datos' => function (): void {
+        $libro = libroDeEjemplo([
+            'titulo' => '¿Qué es la filosofía?', 'subtitulo' => 'Una introducción', 'autor' => 'Autor de prueba', 'traductor' => 'Traductora X',
+            'epoca' => 'siglo II', 'tradicion' => 'Romana', 'categoria' => 'Filosofía y ensayo', 'cita' => 'Una frase.', 'paginas' => 224,
+        ]);
+        igual('romana', $libro->tradicion);
+        igual('filosofia', $libro->categoria);
+        igual(
+            "«Una frase.»\n\n«¿Qué es la filosofía?: Una introducción» es una obra de Autor de prueba (siglo II), de la tradición romana.\n\nTipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.",
+            $libro->textos->contratapa,
+        );
+        igual("Tipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.", $libro->textos->solapaPortada);
+        igual("Autor de prueba (siglo II).\n\nTradición romana.", $libro->textos->solapaContratapa);
+
+        // Sin nada más que la tradición, solo lo que se sabe.
+        $minimo = libroDeEjemplo(['tradicion' => 'china']);
+        igual('«Título de prueba» es una obra de Autor de prueba, de la tradición china.' . "\n\n112 páginas.", $minimo->textos->contratapa);
+    },
+
+    'Un texto escrito a mano manda sobre la ficha' => function (): void {
+        $libro = libroDeEjemplo(['tradicion' => 'china', 'contratapa' => 'Mi sinopsis.', 'solapa_portada' => 'Mi solapa.']);
+        igual('Mi sinopsis.', $libro->textos->contratapa);
+        igual('Mi solapa.', $libro->textos->solapaPortada);
+        verdadero(str_contains($libro->textos->solapaContratapa, 'Tradición china.'), 'lo que no se escribió sí se arma');
+        // Aunque sea vacío: quien escribe "contratapa": "" no quiere texto.
+        igual('', libroDeEjemplo(['tradicion' => 'china', 'contratapa' => ''])->textos->contratapa);
+    },
+
+    'Una tradición o una categoría que no existe se rechaza nombrando el campo' => function (): void {
+        foreach (['tradicion', 'categoria'] as $campo) {
+            try {
+                libroDeEjemplo([$campo => 'inventada']);
+                throw new RuntimeException('no lanzó');
+            } catch (InvalidArgumentException $error) {
+                verdadero(str_contains($error->getMessage(), "'$campo'") && str_contains($error->getMessage(), 'prueba') && str_contains($error->getMessage(), '«inventada»'), $error->getMessage());
+            }
+        }
+        lanza(InvalidArgumentException::class, fn () => libroDeEjemplo(['tradicion' => 5]));
+    },
+
+    'Los avisos dicen qué letras no cubren las fuentes' => function (): void {
+        igual([], Generador::avisos(libroDeEjemplo(['titulo' => 'Ñandú: ¿cómo? ¡Ásí! «Ü»'])));
+        $avisos = Generador::avisos(libroDeEjemplo(['titulo' => 'Łódź', 'autor' => 'Şahin', 'contratapa' => 'Ok']));
+        igual(2, count($avisos));
+        verdadero(str_contains($avisos[0], 'El título') && str_contains($avisos[0], 'Ł'), $avisos[0]);
+        verdadero(str_contains($avisos[1], 'El autor') && str_contains($avisos[1], 'Ş'), $avisos[1]);
+    },
+
+    'La lista de ejemplo se lee y cada fila sale con su ficha' => function (): void {
+        $libros = Lista::leer(__DIR__ . '/../ejemplos/lista.csv');
+        igual(
+            ['marco-aurelio-meditaciones', 'lao-tse-tao-te-king', 'anonimo-cantar-de-mio-cid', 'anonimo-las-mil-y-una-noches', 'gustavo-adolfo-becquer-rimas-y-leyendas'],
+            array_map(static fn (Libro $libro): string => $libro->id, $libros),
+        );
+        igual('romana', $libros[0]->tradicion);
+        igual('filosofia', $libros[0]->categoria);
+        igual('cuentos', $libros[3]->categoria); // escrita por su nombre, con mayúsculas y espacios
+        igual('arabe', $libros[3]->tradicion); // escrita con tilde
+        verdadero(str_contains($libros[0]->textos->contratapa, '«Lo que no conviene a la colmena, no conviene a la abeja.»'), 'falta la cita');
+        verdadero(str_contains($libros[1]->textos->contratapa, 'tradición china'), 'falta la tradición');
+        verdadero(!str_contains($libros[1]->textos->contratapa, '«»'), 'cita vacía');
+    },
+
+    'La lista acepta ; o tabulador, BOM, encabezados con tilde y celdas con saltos de línea' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        $contenido = "\xEF\xBB\xBF" . "Título;Autor;Páginas;Época;Colección;Contratapa;Fondo\r\n"
+            . "\"Uno; y dos\";Ana;100;;;\"Primer párrafo.\r\n\r\nSegundo.\";#112233\r\n"
+            . "\r\n"
+            . ";;;;;;\r\n"
+            . "Dos;Beto;50;;;;\r\n";
+        file_put_contents("$dir/lista.csv", $contenido);
+        $libros = Lista::leer("$dir/lista.csv");
+        igual(['ana-uno-y-dos', 'beto-dos'], array_map(static fn (Libro $libro): string => $libro->id, $libros));
+        igual('Uno; y dos', $libros[0]->textos->titulo);
+        igual("Primer párrafo.\n\nSegundo.", $libros[0]->textos->contratapa);
+        igual('#112233', $libros[0]->colores['fondo']);
+        aproximado(5.0, $libros[0]->formato->lomo); // 100 páginas: 50 hojas de 0,1 mm
+        aproximado(2.5, $libros[1]->formato->lomo); // 50 páginas: 25 hojas
+        file_put_contents("$dir/tab.csv", "titulo\tautor\tpaginas\nUno\tAna\t10\n");
+        igual('Uno', Lista::leer("$dir/tab.csv")[0]->textos->titulo);
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'La lista da todos los errores juntos, con el número de fila' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        file_put_contents("$dir/lista.csv", implode("\n", [
+            'titulo,autor,paginas,tradicion,categoria,id',
+            'Bien,Ana,100,griega,poesia,',            // fila 2: bien
+            'Sin autor,,100,,,',                      // fila 3
+            'Mala tradición,Ana,100,marciana,,',      // fila 4
+            'Páginas raras,Ana,cien,,,',              // fila 5
+            'Mala categoría,Ana,100,,fantasia,',      // fila 6
+            'Id con mayúscula,Ana,100,,,Mi Libro',    // fila 7
+            'Bien,Ana,100,,,',                        // fila 8: mismo nombre que la fila 2
+            'Demasiadas,Ana,100,,,,sobra',            // fila 9
+        ]) . "\n");
+        try {
+            Lista::leer("$dir/lista.csv");
+            throw new RuntimeException('no lanzó');
+        } catch (InvalidArgumentException $error) {
+            $mensaje = $error->getMessage();
+            verdadero(str_contains($mensaje, '7 filas con errores'), $mensaje);
+            foreach ([
+                "fila 3 («Sin autor»): 'titulo' y 'autor' son obligatorios",
+                "fila 4 («Mala tradición»): 'tradicion': la tradición «marciana» no existe",
+                "fila 5 («Páginas raras»): 'paginas' debe ser un número entero, no «cien»",
+                "fila 6 («Mala categoría»): 'categoria': la categoría «fantasia» no existe",
+                "fila 7 («Id con mayúscula»): 'id' debe llevar solo letras minúsculas",
+                "fila 8 («Bien»): el id 'ana-bien' ya lo usa la fila 2",
+                "fila 9 («Demasiadas»): tiene más celdas que columnas",
+            ] as $esperado) {
+                verdadero(str_contains($mensaje, $esperado), "falta «{$esperado}» en:\n$mensaje");
+            }
+            verdadero(!str_contains($mensaje, 'fila 2 ('), 'la fila buena no debe salir como error');
+        }
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'La lista rechaza un archivo que no sirve' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        $caso = static function (string $contenido, string $esperado) use ($dir): void {
+            file_put_contents("$dir/lista.csv", $contenido);
+            try {
+                Lista::leer("$dir/lista.csv");
+                throw new RuntimeException("no lanzó con «{$contenido}»");
+            } catch (InvalidArgumentException $error) {
+                verdadero(str_contains($error->getMessage(), $esperado), "esperado «{$esperado}» en: " . $error->getMessage());
+            }
+        };
+        $caso("titulo,autor,tradicioon\nA,B,griega\n", 'columnas que no conozco: «tradicioon»');
+        $caso("titulo,titulo,autor\nA,B,C\n", "la columna 'titulo' está repetida");
+        $caso("titulo,paginas\nA,10\n", "falta la columna 'autor'");
+        $caso("titulo,autor,paginas\n", 'no tiene ningún libro');
+        $caso('', "falta la columna 'titulo'");
+        $caso("titulo,autor\nCaf\xE9,B\n", 'no está en UTF-8');
+        lanza(InvalidArgumentException::class, fn () => Lista::leer("$dir/no-existe.csv"));
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'El CLI genera una lista CSV, avisa de las letras sin cubrir y no escribe nada si hay errores' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        file_put_contents("$dir/buena.csv", "titulo,autor,paginas,tradicion\nŁódź,Ana,100,griega\nDos,Beto,50,\n");
+        file_put_contents("$dir/mala.csv", "titulo,autor,paginas,tradicion\nUno,Ana,100,griega\nDos,,50,\n");
+
+        [$codigo, $salida, $errores] = correrCli(["--lista=$dir/buena.csv", "--salida=$dir/salida"]);
+        igual(0, $codigo);
+        igual(['ana-lodz', 'beto-dos'], array_map('basename', glob("$dir/salida/*") ?: []));
+        verdadero(is_file("$dir/salida/ana-lodz/portada.svg"), 'falta la portada');
+        verdadero(str_contains($errores, 'Aviso, ana-lodz: El título lleva letras que la fuente no tiene (Ł'), $errores);
+
+        // Una fila mala: ninguna carpeta se escribe, ni la de la fila buena.
+        [$codigo, , $errores] = correrCli(["--lista=$dir/mala.csv", "--salida=$dir/otra"]);
+        igual(1, $codigo);
+        verdadero(str_contains($errores, 'fila 3'), $errores);
+        verdadero(!is_dir("$dir/otra"), 'escribió algo con errores en la lista');
+
+        // Un libro de la lista y otro de un JSON con el mismo nombre de carpeta se rechazan.
+        file_put_contents("$dir/ana-lodz.json", '{"titulo":"X","autor":"Y","paginas":10}');
+        [$codigo, , $errores] = correrCli(["--lista=$dir/buena.csv", "$dir/ana-lodz.json", "--salida=$dir/tercera"]);
+        igual(1, $codigo);
+        verdadero(str_contains($errores, "se llaman igual ('ana-lodz')"), $errores);
+        verdadero(!is_dir("$dir/tercera"), 'escribió algo con un nombre repetido');
+
+        [$codigo, , $errores] = correrCli(['--lista=']);
+        igual(2, $codigo);
+        [$codigo] = correrCli(['--comprobar', "--lista=$dir/buena.csv"]);
+        igual(2, $codigo);
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'Los adornos caben en la zona que se les da, sea cual sea' => function (): void {
+        $fuera = [];
+        foreach (['griega', 'china', 'arabe', 'medieval'] as $tradicion) {
+            $adorno = Adorno::de($tradicion);
+            foreach ([[36.0, 6.0], [36.0, 4.0], [99.0, 5.0], [17.3, 4.0], [4.0, 5.0]] as [$ancho, $alto]) {
+                $zona = new Rectangulo(10.0, 20.0, $ancho, $alto);
+                $dibujo = $adorno->friso($zona, '#000000');
+                verdadero($dibujo !== '', "$tradicion no dibuja friso");
+                foreach (adornos($dibujo) as $caja) {
+                    // Un grosor de tolerancia: los trazos son líneas con ancho y no cuentan como relleno.
+                    if ($caja['x0'] < $zona->x - 0.5 || $caja['x1'] > $zona->x + $ancho + 0.5 || $caja['y0'] < $zona->y - 0.5 || $caja['y1'] > $zona->y + $alto + 0.5) {
+                        $fuera[] = sprintf('friso %s %gx%g: x %.2f–%.2f, y %.2f–%.2f', $tradicion, $ancho, $alto, $caja['x0'], $caja['x1'], $caja['y0'], $caja['y1']);
+                        break;
+                    }
+                }
+            }
+            foreach ([2.0, 4.4, 9.0] as $radio) {
+                foreach (adornos($adorno->emblema(50.0, 60.0, $radio, '#000000')) as $caja) {
+                    if ($caja['x0'] < 50.0 - $radio - 0.3 || $caja['x1'] > 50.0 + $radio + 0.3 || $caja['y0'] < 60.0 - $radio - 0.3 || $caja['y1'] > 60.0 + $radio + 0.3) {
+                        $fuera[] = sprintf('emblema %s de radio %g: x %.2f–%.2f, y %.2f–%.2f', $tradicion, $radio, $caja['x0'], $caja['x1'], $caja['y0'], $caja['y1']);
+                        break;
+                    }
+                }
+            }
+        }
+        verdadero($fuera === [], "adornos fuera de su zona:\n  " . implode("\n  ", $fuera));
+    },
+
+    'Sin adorno propio, la plantilla conserva su rombo y su raya' => function (): void {
+        igual(Generico::class, Adorno::de(null)::class);
+        igual(Generico::class, Adorno::de('inventada')::class);
+        igual('', Adorno::de(null)->friso(new Rectangulo(0.0, 0.0, 36.0, 6.0), '#000000'));
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        Generador::escribir(libroDeEjemplo(), "$dir/sin");
+        Generador::escribir(libroDeEjemplo(['tradicion' => 'griega']), "$dir/con");
+        $sin = (string) file_get_contents("$dir/sin/contratapa.svg");
+        $con = (string) file_get_contents("$dir/con/contratapa.svg");
+        verdadero(str_contains($sin, '<line') && !str_contains($sin, '<polyline'), 'sin tradición, la contratapa lleva su raya');
+        verdadero(str_contains($con, '<polyline') && !str_contains($con, '<line'), 'con tradición, el friso sustituye a la raya');
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'La categoría da el color del libro, y los colores propios mandan' => function (): void {
+        igual('#ff0000', Color::hsl(0.0, 1.0, 0.5));
+        igual('#00ff00', Color::hsl(120.0, 1.0, 0.5));
+        igual('#0000ff', Color::hsl(-120.0, 1.0, 0.5));
+        igual('#808080', Color::hsl(200.0, 0.0, 0.5));
+
+        $sin = libroDeEjemplo();
+        $con = libroDeEjemplo(['categoria' => 'filosofia']);
+        $propios = libroDeEjemplo(['categoria' => 'filosofia', 'colores' => ['fondo' => '#112233']]);
+        verdadero($sin->colores !== $con->colores, 'la categoría no cambia los colores');
+        igual('#112233', $propios->colores['fondo']);
+        igual($con->colores['acento'], $propios->colores['acento']);
+        igual($con->colores, libroDeEjemplo(['categoria' => 'Filosofía y ensayo'])->colores);
+        // Las dos plantillas dan colores distintos para una misma categoría: una clara y una oscura.
+        verdadero(Color::esClaro($con->colores['fondo']) && !Color::esClaro(libroDeEjemplo(['categoria' => 'filosofia', 'plantilla' => 'sobria'])->colores['fondo']), 'la clásica es clara y la sobria oscura');
+    },
+
+    'Los colores de cada categoría se leen: texto y acento tienen contraste con el fondo' => function (): void {
+        $luz = static function (string $hex): float {
+            $canal = static fn (int $c): float => ($c /= 255) <= 0.03928 ? $c / 12.92 : (($c + 0.055) / 1.055) ** 2.4;
+            [$r, $g, $b] = Color::rgb($hex);
+
+            return 0.2126 * $canal($r) + 0.7152 * $canal($g) + 0.0722 * $canal($b);
+        };
+        $contraste = static function (string $a, string $b) use ($luz): float {
+            [$mas, $menos] = $luz($a) >= $luz($b) ? [$luz($a), $luz($b)] : [$luz($b), $luz($a)];
+
+            return ($mas + 0.05) / ($menos + 0.05);
+        };
+
+        $mal = [];
+        foreach (Catalogo::categorias() as $categoria) {
+            foreach (['clasica', 'sobria'] as $plantilla) {
+                $colores = Plantilla::crear($plantilla)->paleta((float) $categoria['tono']);
+                $texto = $contraste($colores['texto'], $colores['fondo']);
+                $acento = $contraste($colores['acento'], $colores['fondo']);
+                if ($texto < 7.0) {
+                    $mal[] = sprintf('%s %s: texto %.1f:1', $categoria['slug'], $plantilla, $texto);
+                }
+                if ($acento < 3.0) {
+                    $mal[] = sprintf('%s %s: acento %.1f:1', $categoria['slug'], $plantilla, $acento);
+                }
+            }
+        }
+        verdadero($mal === [], "contraste insuficiente:\n  " . implode("\n  ", $mal));
     },
 
     'Los libros de ejemplo se cargan' => function (): void {

@@ -153,6 +153,7 @@ Los tipos se adaptan a cada motor (`SqlDialect`).
 | `source_directory_id`, `source_line` | Directorio y línea de origen |
 | `surname_soundex`, `surname_phonetic` | Claves para buscar por sonido del apellido |
 | `full_name_folded`, `street_folded` | Nombre y calle sin acentos ni mayúsculas, para búsquedas |
+| `deceased_year`, `deceased_evidence` | Año en que murió la persona y dónde consta (`markDeceased()`); con el año, un visitante puede ver una entrada de una guía reciente. El comprobante solo lo lee el propietario |
 | `record_date`, `created_at`, `updated_at` | Fechas |
 
 ### `juridical_entities`

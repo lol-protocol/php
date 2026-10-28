@@ -5,12 +5,13 @@
 libros con lomo ni lupas con mango), así que no dependen del idioma. 453
 archivos: 3 variantes × 151 iconos.
 
-Para verlos todos, abrí `galeria-iconos.html` desde la raíz del repositorio.
+Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
 ## Variantes
 
 - `color/`: gradientes, extrusión y sombra.
 - `lineas/`: solo contornos, sin rellenos; las partes tapadas por otra forma no se dibujan.
+  Los colores se pueden cambiar desde la página (ver «Colores de `lineas`»).
 - `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
 Las tres variantes tienen exactamente los mismos nombres y carpetas.
@@ -68,6 +69,23 @@ incrustar varios SVG en línea en la misma página, también `color` y `gris` de
 mismo icono. Los iconos con el mismo nombre en los dos sets (`ui_menu`...) sí
 comparten ids.
 
+## Colores de `lineas`
+
+Cada trazo de `lineas/` lleva el color de su tono (`#883307` para `orange`...), y
+ese color se puede sobrescribir con una variable CSS `--ic-<tono>`. Solo
+funciona con el SVG **en línea** en la página (`<svg>` pegado o inyectado en el
+HTML): con `<img>` o `background: url(...)` los iconos se ven con sus colores de
+siempre, porque la página no llega al interior del archivo.
+
+```css
+.barra svg { --ic-orange: currentColor; --ic-slate: currentColor; --ic-mist: currentColor; }
+.alerta svg { --ic-orange: crimson; }   /* solo cambia lo naranja */
+```
+
+Los tonos que usa un icono están en su `<style>` (`.ic-orange`, `.ic-slate`...).
+Un renderizador sin variables CSS (por ejemplo `resvg`) ignora esa parte y dibuja
+los colores originales.
+
 ## Regenerar y validar
 
 Los SVG son salida generada, no se editan a mano — se definen en
@@ -82,7 +100,7 @@ Los SVG son salida generada, no se editan a mano — se definen en
   pequeños (rayas y ondas, anillo y cruz).
 - El efecto 2.5D es una extrusión hacia abajo y a la derecha con sombra
   proyectada; no es una proyección isométrica estricta.
-- A 24 px algunos pares quedan cerca entre sí, frente a 0,8 de límite: el
-  más cercano es `status_read` con `status_reading` (0,97) y, dentro de una
-  misma familia de géneros, `genre_self_help` con `genre_travel` (1,04).
+- A 24 px algunos pares quedan cerca entre sí, frente a 1,2 de límite: el
+  más cercano es `status_read` con `status_reading` (1,27) y, dentro de las
+  familias de géneros, `genre_horror` con `genre_thriller` (1,35).
   `iconos-tools/similares.py` los lista.

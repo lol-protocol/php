@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
   <g class="links">
-    <path d="M31 24L31 40.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 23.25L31 40.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M24.49 18.38L26.35 20.87A8.14 8.14 0 0 0 39.38 11.1L37.51 8.62A8.14 8.14 0 0 0 24.49 18.38Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="13.5" r="8.14" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M39.5 49.01A1.63 1.63 0 0 1 39.35 51.14L34.02 56.47A1.63 1.63 0 0 1 31.71 56.47L26.38 51.14A1.63 1.63 0 0 1 26.23 50.96L24.36 48.48A1.63 1.63 0 0 1 24.51 46.35L29.85 41.01A1.63 1.63 0 0 1 32.15 41.01L37.49 46.35A1.63 1.63 0 0 1 37.64 46.52Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="25.6" y="42.1" width="10.8" height="10.8" rx="1.63" transform="rotate(45 31 47.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M25.08 17.94L26.94 20.43A7.4 7.4 0 0 0 38.78 11.55L36.92 9.06A7.4 7.4 0 0 0 25.08 17.94Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="13.5" r="7.4" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M39.5 49.01A1.63 1.63 0 0 1 39.35 51.14L34.02 56.47A1.63 1.63 0 0 1 31.71 56.47L26.38 51.14A1.63 1.63 0 0 1 26.23 50.96L24.36 48.48A1.63 1.63 0 0 1 24.51 46.35L29.85 41.01A1.63 1.63 0 0 1 32.15 41.01L37.49 46.35A1.63 1.63 0 0 1 37.64 46.52Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="25.6" y="42.1" width="10.8" height="10.8" rx="1.63" transform="rotate(45 31 47.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M28.48 13.5a2.52 2.52 0 1 0 5.03 0a2.52 2.52 0 1 0 -5.03 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M28.48 13.5a2.52 2.52 0 1 0 5.03 0a2.52 2.52 0 1 0 -5.03 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

@@ -124,6 +124,13 @@ Las páginas de una persona oculta (viva o privada) llevan `<meta name="robots" 
 
 El sitemap lista solo lo que un visitante puede ver, lo pida quien lo pida: ninguna persona que podría estar viva o que solo está en colecciones privadas, ningún suceso ni registro que la delataría, ninguna colección privada. Cada parte se nombra por el largo de dígitos de su tipo (`10`, `9`, `8`, `7`, `6`, `5`) o `l` para lugares. Las URLs absolutas usan `SITE_URL_GENEALOGY` (o, sin ella, el esquema y el host de la petición).
 
+Cada petición vuelve a preguntar a la base, así que una página que se oculta o se retira sale del sitemap en ese momento. Lo que un buscador sí se ahorra es la descarga:
+
+- Cada archivo sale con `ETag` y `Cache-Control: no-cache` (se puede guardar, pero se pregunta cada vez). Una petición con el `If-None-Match` de la copia actual recibe un **304** sin cuerpo.
+- `Support/SitemapEstado.php` recuerda, por archivo, una huella de lo que lista y **desde cuándo lista exactamente eso**. Esa fecha es el `<lastmod>` de cada parte en el índice y el `Last-Modified` del archivo (y `If-Modified-Since` también da 304). Se mueve cuando entra o sale una página, no cuando se vuelve a generar el archivo.
+- Una parte que nunca se sirvió no lleva `<lastmod>` en el índice hasta que alguien la pida: mejor sin fecha que con una inventada. Las páginas mismas no llevan `<lastmod>`, porque las tablas no guardan fechas de modificación.
+- El estado son archivos chicos en `SITEMAP_ESTADO_DIR` (por omisión, una carpeta en el directorio temporal). Si se pierde, las fechas empiezan de nuevo; si no se puede escribir, no hay fechas y el sitemap se sirve igual.
+
 ---
 
 ## 2. POS — Contrastocolor

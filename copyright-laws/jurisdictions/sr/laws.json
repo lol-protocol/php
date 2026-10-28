@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "SR",
+    "country_name": "Suriname",
+    "region": "americas",
+    "law_name": "Copyright Act 1913 (Wet Auteursrecht 1913, Auteurswet) as amended up to S.B. 2015 No. 83",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (from 1 January of the year after death; anonymous/posthumous works 50 years from publication; per Commons summary)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Narrow exceptions listed in arts. 15bis-17, e.g. quotation with source (unconfirmed)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Bureau Intellectual Property (Bureau Intellectuele Eigendom) (unconfirmed)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8827",
+    "notes": "2015 amendment challenged by collecting society SASUR before Constitutional Court (Feb 2024); WCT/WPPT not confirmed",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8827",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8827",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Suriname.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8827",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8827",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_body": {
+        "url": "https://www.ivir.nl/publicaties/download/463.pdf",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "treaties_signatory": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Suriname.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

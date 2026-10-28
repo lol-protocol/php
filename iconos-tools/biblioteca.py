@@ -1,18 +1,10 @@
 #!/usr/bin/env python3
 """Catálogo abstracto de biblioteca: volúmenes, géneros por forma y patrón, estados por relleno, acciones por movimiento."""
-from kit import PATTERNS, badge, genre, hexagon, volume
-from lib import Block, Disc, Icon, RPoly, fmt
+import comunes
+from kit import PATTERNS, badge, catalog, genre, hexagon, volume
+from lib import Block, Disc, RPoly, fmt
 
-ICONS = []
-
-
-def reg(ic):
-    ICONS.append(ic)
-    return ic
-
-
-def new(stem):
-    return reg(Icon(stem))
+ICONS, reg, new = catalog()
 
 
 # --------------------------------------------------------------------------- book_: volúmenes neutros
@@ -46,7 +38,7 @@ volume(ic, 'teal', 17, 10, 28, 38, d=2)
 ic.mark('M22 14Q26 29 22 44', w=2, op=0.55)
 
 ic = new('book_pocket')
-ic.poly([(10, 6), (40, 6), (40, 50), (10, 50)], True, tone='slate', ink='slate', w=2, dash='3 3.5')
+ic.poly([(10, 6), (40, 6), (40, 50), (10, 50)], True, tone='slate', ink='slate', w=2, dash='3 3.5', behind=True)
 volume(ic, 'orange', 26, 25, 20, 26, d=3.2, r=4)
 
 ic = new('book_boxset')
@@ -129,7 +121,7 @@ GENRES = {
     'half': ('cooking', 'travel', 'sports', 'nature', 'self_help', 'children', 'young_adult'),
 }
 for shape, names in GENRES.items():
-    for pattern, name in zip(PATTERNS, names):
+    for pattern, name in zip(PATTERNS, names, strict=True):
         reg(genre(f'genre_{name}', shape, pattern))
 
 # --------------------------------------------------------------------------- format_
@@ -199,11 +191,12 @@ def reading(stem, hue, fn):
     fn(ic)
 
 
-reading('read', 'blue', lambda ic: ic.line(21, 42, 41, 42, w=4.2))
-reading('reading', 'blue', lambda ic: (ic.line(21, 42, 41, 42, w=4.2, op=0.4), ic.line(21, 42, 31, 42, w=4.2)))
-reading('read_later', 'brown', lambda ic: (ic.line(21, 42, 41, 42, w=4.2, op=0.4), ic.dot(21, 30, 3)))
-reading('quick_read', 'teal', lambda ic: ic.line(21, 42, 28, 42, w=4.2))
-reading('long_read', 'brown', lambda ic: ic.line(21, 42, 41, 42, w=4.2, dash='4 3'))
+BAR_W = 5.6  # a 4,2 la barra de «leído» y la de «leyendo» se diferenciaban en menos de 1 a 24 px
+reading('read', 'blue', lambda ic: ic.line(21, 42, 41, 42, w=BAR_W))
+reading('reading', 'blue', lambda ic: (ic.line(21, 42, 41, 42, w=BAR_W, op=0.4), ic.line(21, 42, 31, 42, w=BAR_W)))
+reading('read_later', 'brown', lambda ic: (ic.line(21, 42, 41, 42, w=BAR_W, op=0.4), ic.dot(21, 30, 3)))
+reading('quick_read', 'teal', lambda ic: ic.line(21, 42, 28, 42, w=BAR_W))
+reading('long_read', 'brown', lambda ic: ic.line(21, 42, 41, 42, w=BAR_W, dash='4 3'))
 
 # --------------------------------------------------------------------------- action_: formas en movimiento
 ic = new('action_rate')
@@ -214,13 +207,6 @@ ic.ring(48, 30, 7.5, tone='amber', ink='amber', w=3.4)
 ic = new('action_review')
 ic.solid(Disc(24, 26, 14), 'teal', d=3.5)
 ic.solid(Disc(45, 42, 8), 'sky', d=2.6)
-
-ic = new('action_share')
-for x, y in ((47, 14), (51, 31), (47, 48)):
-    ic.link([(15, 31), (x, y)], w=2.2)
-ic.solid(Disc(15, 31, 8), 'green', d=3)
-for x, y in ((47, 14), (51, 31), (47, 48)):
-    ic.solid(Disc(x, y, 4.6), 'green', d=2)
 
 ic = new('action_download_book')
 ic.solid(Block(23, 6, 18, 22, r=4), 'brown', d=3)
@@ -238,10 +224,6 @@ for x, y in sats:
 ic.solid(Disc(31, 30, 7), 'indigo', d=3)
 for x, y in sats:
     ic.solid(Disc(x, y, 4), 'indigo', d=2)
-
-ic = new('action_filter')
-for x, y, w in ((10, 14, 44), (18, 27, 28), (25, 40, 14)):
-    ic.solid(Block(x, y, w, 8, r=4), 'ink', d=2.4)
 
 ic = new('action_search_book')
 ic.solid(Disc(43, 43, 5.5), 'indigo', d=2.4)
@@ -282,11 +264,6 @@ ic.solid(Disc(48, 14, 6), 'teal', d=2)
 ic = new('action_scan')
 ic.solid(Block(14, 12, 36, 38, r=6), 'ink', d=4)
 ic.line(6, 31, 58, 31, w=4, tone='amber', ink='amber')
-
-ic = new('action_print')
-ic.solid(Block(24, 24, 26, 26, r=6), 'slate', d=0, op=0.35)
-ic.solid(Block(19, 19, 26, 26, r=6), 'slate', d=0, op=0.6)
-ic.solid(Block(14, 14, 26, 26, r=6), 'slate', d=3.5)
 
 ic = new('action_recommend')
 ic.solid(RPoly([(31, 6), (41, 21), (21, 21)], r=2), 'amber', d=2.2)
@@ -359,10 +336,6 @@ ic = new('ui_chart')
 for x, y, h in ((10, 34, 16), (25, 24, 26), (40, 12, 38)):
     ic.solid(Block(x, y, 12, h, r=3), 'blue', d=2.6)
 
-ic = new('ui_profile')
-ic.solid(Disc(31, 18, 9), 'sky', d=3)
-ic.solid(Block(15, 31, 32, 21, r=10.5), 'blue', d=3)
-
 ic = new('ui_history')
 ic.arc(31, 30, 16, -60, 215, tone='ink', ink='ink', w=4.4)
 ic.solid(Disc(31, 30, 5), 'ink', d=2)
@@ -425,23 +398,9 @@ ic.solid(Block(8, 16, 48, 32, r=4.5), 'sky', d=3.4)
 ic.ring(21, 32, 6.5, w=2.4)
 ic.bars(32, 27, [16, 12, 8], 6, w=2.4)
 
-ic = new('ui_calendar')
-ic.solid(Block(12, 10, 39, 39, r=9.5), 'red', d=4)
-for i in range(9):
-    ic.dot(21.5 + 10 * (i % 3), 20 + 9.5 * (i // 3), 2, **({'tone': '#FDE047'} if i == 4 else {}))
-
-ic = new('ui_settings')
-ic.solid(Block(12, 10, 39, 39, r=9.5), 'ink', d=4)
-for dy, kx in ((-8, -4), (0, 4), (8, -1)):
-    y = 29.5 + dy
-    ic.mark(f'M19 {fmt(y)}H{fmt(31.5 + kx - 3.6)}M{fmt(31.5 + kx + 3.6)} {fmt(y)}H44', w=2)
-    ic.ring(31.5 + kx, y, 2.4, w=2)
-
-ic = new('ui_menu')
-ic.solid(Block(12, 10, 39, 39, r=9.5), 'slate', d=4)
-ic.mark('M22 22h19M22 29.5h19M22 37h19', w=3)
-
 ic = new('ui_home')
 ic.solid(Block(12, 10, 39, 39, r=9.5), 'orange', d=4)
 ic.mark('M23 41V31A8.5 8.5 0 0 1 40 31V41', w=2.8)
 ic.dot(31.5, 36, 2.4)
+
+ICONS.extend(comunes.ICONS)  # los que se llaman igual en los dos sets, definidos una vez en comunes.py

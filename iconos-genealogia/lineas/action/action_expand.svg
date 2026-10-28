@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M8.96 13.28L10.04 14.72A3.8 3.8 0 0 0 16.12 10.16L15.04 8.72A3.8 3.8 0 0 0 8.96 13.28Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="11" r="3.8" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M46.96 13.28L48.04 14.72A3.8 3.8 0 0 0 54.12 10.16L53.04 8.72A3.8 3.8 0 0 0 46.96 13.28Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="11" r="3.8" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M8.96 51.28L10.04 52.72A3.8 3.8 0 0 0 16.12 48.16L15.04 46.72A3.8 3.8 0 0 0 8.96 51.28Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="49" r="3.8" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M46.96 51.28L48.04 52.72A3.8 3.8 0 0 0 54.12 48.16L53.04 46.72A3.8 3.8 0 0 0 46.96 51.28Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="49" r="3.8" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M25 34.5L26.68 36.74A7.5 7.5 0 0 0 38.68 27.74L37 25.5A7.5 7.5 0 0 0 25 34.5Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="30" r="7.5" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M8.96 13.28L10.04 14.72A3.8 3.8 0 0 0 16.12 10.16L15.04 8.72A3.8 3.8 0 0 0 8.96 13.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="11" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M46.96 13.28L48.04 14.72A3.8 3.8 0 0 0 54.12 10.16L53.04 8.72A3.8 3.8 0 0 0 46.96 13.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="11" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M8.96 51.28L10.04 52.72A3.8 3.8 0 0 0 16.12 48.16L15.04 46.72A3.8 3.8 0 0 0 8.96 51.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="49" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M46.96 51.28L48.04 52.72A3.8 3.8 0 0 0 54.12 48.16L53.04 46.72A3.8 3.8 0 0 0 46.96 51.28Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="49" r="3.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M25 34.5L26.68 36.74A7.5 7.5 0 0 0 38.68 27.74L37 25.5A7.5 7.5 0 0 0 25 34.5Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="30" r="7.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

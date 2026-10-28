@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | aliceblå | `#F0F8FF` |  | Ro, friskhed og renhed; en følelse af lethed og rummelighed. | Himmelsk renhed og sindsro; knyttet til den klare himmel og klar kommunikation. | derivado | derivado |
 | `antiquewhite` | antikhvid | `#FAEBD7` |  | Nostalgi, tradition og blød varme; leder tanken hen på det vintage. | Erindring og visdom fra fortiden; ældet renhed og ældgamle cyklusser. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Friskhed, klarhed, energi og følelsen af rent vand. | Levende vand og rensning; intuitionens strøm og kommunikationen med det subtile. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Friskhed, klarhed, ro og kommunikation; forbundet med det digitale og moderne. | Vand og rensning; mental klarhed og kommunikationens strøm. | derivado | derivado |
 | `aquamarine` | akvamarin | `#7FFFD4` |  | Afslappende friskhed, ro og let optimisme. | Sømændenes sten: beskyttelse på rejser, mod og følelsesmæssig klarhed. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | azurblå | `#F0FFFF` |  | Klar himmel, åbenhed, frihed og sindsro. | Åndelig højde og himlens renhed; det himmelske og det åbne sind. | derivado | derivado |
 | `beige` | beige | `#F5F5DC` |  | Neutralitet, enkelhed, stabilitet og diskretion. | Jord og ydmyghed; balance uden yderligheder, hverdagen og rodfæstethed. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | ildrød | `#B22222` |  | Styrke, beslutsomhed, intens varme og spænding. | Smedjens og arnens ild; slid, ofring og arbejde. | derivado | derivado |
 | `floralwhite` | blomsterhvid | `#FFFAF0` |  | Blødhed, sarthed, renhed og lethed. | Hvid blomst: uskyld, begyndelser og forårets velsignelse. | derivado | derivado |
 | `forestgreen` | skovgrøn | `#228B22` |  | Natur, balance, sundhed, ro og vækst. | Hellig skov: liv, fornyelse og forbindelse til jorden. | derivado | derivado |
-| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Dristighed, kreativitet, excentricitet og legende energi. | Forvandling og magi; bånd mellem det materielle og det åndelige. | derivado | derivado |
+| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Kreativitet, dristighed, intensitet og vibrerende energi. | Forvandling og åndelighed; forbindelse mellem det materielle og det subtile. | derivado | derivado |
 | `gainsboro` | gainsboro-grå | `#DCDCDC` |  | Elegant neutralitet, renhed og ro. | En mellemtilstand af balance uden byrde. | derivado | derivado |
 | `ghostwhite` | spøgelseshvid | `#F8F8FF` |  | Lethed, subtil mystik og lysende kølighed. | Det æteriske og spøgelsesagtige; en subtil tilstedeværelse mellem to verdener. | derivado | derivado |
 | `gold` | guld | `#FFD700` |  | Succes, rigdom, prestige, optimisme og varme. | Sol og fuldkommenhed; oplysning, magt, visdom og det guddommelige i mange traditioner. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
@@ -83,7 +83,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `lightgray` | lysegrå | `#D3D3D3` | `lightgrey` | Neutralitet, ro, renhed og plads til at trække vejret. | Overgang mellem det synlige og det usynlige; det mellemliggende. | derivado | derivado |
 | `lightgreen` | lysegrøn | `#90EE90` |  | Ro, friskhed, fornyelse og velvære. | Spire og håb; øm vækst og mild healing. | derivado | derivado |
 | `lightgrey` | lysegrå | `#D3D3D3` | `lightgray` | Neutralitet, ro, renhed og plads til at trække vejret. | Overgang mellem det synlige og det usynlige; det mellemliggende. | derivado | derivado |
-| `lightpink` | lyserød | `#FFB6C1` |  | Ømhed, sødme, uskyld og blød hengivenhed. | Sart kærlighed og renhed; romantiske begyndelser. | derivado | derivado |
+| `lightpink` | lys lyserød | `#FFB6C1` |  | Ømhed, sødme, uskyld og blød hengivenhed. | Sart kærlighed og renhed; romantiske begyndelser. | derivado | derivado |
 | `lightsalmon` | lyslaks | `#FFA07A` |  | Glad varme, nærhed og venlig energi. | Morgensol; venlighed og gavmildhed. | derivado | derivado |
 | `lightseagreen` | lys havgrøn | `#20B2AA` |  | Ro, balance, friskhed og kommunikation. | Hav og healing; balance mellem følelse og sind. | derivado | derivado |
 | `lightskyblue` | lyshimmelblå | `#87CEFA` |  | Lethed, frihed, sindsro og optimisme. | Åben himmel; inspiration, fred og høje stræbsomheder. | derivado | derivado |

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var array{id: string, source: string, label: ?string, files: array<string, string>, width: int, height: int, created: int} $bookmark
- * @var int $expires
+ * @var int|null $expires  Momento en que se borra solo; null si no caduca
  * @var int $retentionDays
  */
 $base = '/mio/' . $bookmark['id'];
@@ -34,7 +34,11 @@ $base = '/mio/' . $bookmark['id'];
     </section>
   </div>
 
+  <?php if ($expires !== null): ?>
   <p class="expira">Se borrará solo el <?= $this->e($this->date($expires)) ?> (a los <?= (int) $retentionDays ?> días de crearlo).</p>
+  <?php else: ?>
+  <p class="expira">Se guarda sin fecha de vencimiento; solo se borra si lo borras tú.</p>
+  <?php endif; ?>
 
   <details class="borrar">
     <summary>Borrar ahora</summary>

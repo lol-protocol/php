@@ -10,7 +10,7 @@ La lógica está en [`Support/AccessPolicy.php`](../Support/AccessPolicy.php) y 
 |---|---|
 | Colección con `publica = false`: `/{id}/`, `/{id}/1/`, `/{id}/3/` (GEDCOM) | **404**, idéntico al de un id que no existe |
 | Pedidos del POS: `/{código de 16 dígitos}/` y sus acciones | **404**, igual (salvo para la sesión que hizo la compra) |
-| Página de edición de una colección: `/{id}/2/` | **404** si la colección es privada; **401** si es pública |
+| Página de edición de una colección: `/{id}/2/` | **404** si la colección es privada; **401** si es pública. El enlace «Editar» solo lo ve el propietario; para entrar, `/0/` |
 | Área de cuenta, genealogía y POS: `/0/` y sus acciones | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN` |
 | Búsqueda de colecciones (`/b/7/`) | las privadas no aparecen, ni buscándolas por su nombre exacto |
 | Marca de «vive / falleció» de una persona: `/{id de persona}/5/` | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN`. Guardar exige además el token CSRF del formulario |
@@ -80,6 +80,21 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 
 **La hora depende también de quién limpia las sesiones.** La sesión vive en un archivo de PHP, y quien lo borra la cierra antes de tiempo. La app le pide a PHP `session.gc_maxlifetime = 3600` al abrirla, y eso basta donde PHP limpia por su cuenta (la configuración que trae PHP por omisión). En Debian y Ubuntu, que es lo que arma [`vps-setup/`](../../vps-setup/README.md), PHP no limpia (`session.gc_probability = 0`): un cron (`/etc/cron.d/php`) borra los archivos de sesión que llevan más de `session.gc_maxlifetime` **del `php.ini`** sin tocarse, 1440 segundos (24 minutos) si nadie lo cambió, y no mira lo que la app pida en ejecución. Para que valga la hora hay que subirlo ahí (`session.gc_maxlifetime = 3600` en `/etc/php/8.3/fpm/php.ini`) y recargar PHP-FPM. Si no se sube, la sesión se pierde a los 24 minutos sin actividad: falla cerrado, el propietario vuelve a ser visitante hasta que escriba la clave otra vez.
 
+## Cuándo se abre una sesión
+
+El sitio solo pone su cookie de sesión (`PHPSESSID`) a quien la necesita. **Quien solo lee páginas no recibe ninguna cookie, y el servidor no guarda nada de esa visita**:
+
+| Quién | ¿Cookie? |
+|---|---|
+| Un visitante que lee páginas (personas, árboles, búsqueda, apellidos, un 404) | No |
+| Una página con formulario (`/r/{id}/`, el carrito y el pago del POS, las pantallas del propietario) | Sí: guarda el token CSRF que valida el envío |
+| El propietario que entra con la clave | Sí: es la sesión de la que habla la sección anterior |
+| Quien vuelve con la cookie que ya tenía | Se retoma la sesión que tenía |
+
+Antes se abría una sesión en **cada** petición. Un buscador no devuelve la cookie, así que cada una de sus visitas dejaba un archivo en el servidor, y todo visitante recibía una cookie (relevante para la pregunta 29 de [`PREGUNTAS-PARA-ABOGADO.md`](../../PREGUNTAS-PARA-ABOGADO.md)). Lo que no cambió: **ninguna página se puede guardar en una caché**. PHP mandaba `Cache-Control: no-store` solo porque abría la sesión, y ahora lo manda siempre la aplicación (`HttpSecurityHeaders`); es a propósito, para que un retiro se vea en la petición siguiente y no cuando venza una caché. Cachear páginas públicas sería otra decisión, con ese costo.
+
+Un límite: quien envía a mano una cookie `PHPSESSID` con cualquier valor sí abre una sesión (PHP crea una nueva en vez de aceptar un id que no conoce). Es un envío deliberado, no el de un lector.
+
 ## Despliegue
 
 La guía paso a paso, con las comprobaciones, está en [`DESPLIEGUE.md`](./DESPLIEGUE.md). Lo que importa para el acceso:
@@ -88,7 +103,7 @@ La guía paso a paso, con las comprobaciones, está en [`DESPLIEGUE.md`](./DESPL
 - **Nginx:** pasa la cabecera a PHP-FPM por defecto; no hace falta nada (probado con nginx 1.24 y PHP-FPM 8.3: clave correcta 200, equivocada 401). Ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example).
 - **Apache:** `public/.htaccess` incluye la regla que entrega la cabecera a PHP (CGI/FPM la descartan). **No se probó en un Apache real**: comprobarlo con `curl -u x:<token> https://tudominio/0/` (debe dar 200).
 - **Cachés compartidas (CDN, proxy inverso):** las respuestas del propietario, que dependen de quién pregunta, llevan `Cache-Control: private, no-store` y `Vary: Authorization`. La caché no debe quitarlas ni guardar esas respuestas. Lo que se le niega a un visitante es, en cambio, un 404 **sin cabeceras propias**, igual al de una página que no existe: una cabecera que solo tuviera el 404 de lo privado delataría qué ids existen. Si la caché añade o cambia cabeceras, tiene que hacerlo igual en los dos.
-- **Fuerza bruta:** un token de 32 bytes aleatorios no es adivinable. El único freno es el limitador global (100 peticiones por minuto y por IP, `RateLimiter`).
+- **Fuerza bruta:** un token de 32 bytes aleatorios no es adivinable. El único freno es el limitador global (100 peticiones por minuto y por IP, `RateLimiter`; al pasarse responde 429 con `Retry-After`).
 
 ## Pedidos de retiro
 
@@ -118,10 +133,51 @@ que prometen las secciones 5 y 6 del borrador de
   con fecha y nota: recibido, oculto, retirado, rechazado. Esas filas sólo se
   agregan, nunca se cambian. El log de la aplicación anota el número de pedido y
   la página, nunca quién lo pidió ni qué escribió.
-- **Lo que falta.** No avisa al propietario de un pedido nuevo (hay que mirar
-  `/0/3/`), no le escribe a quien lo pidió (el propietario responde por correo,
-  por su cuenta) y no vigila el plazo de respuesta. Una página retirada se sigue
-  nombrando en otras: la persona en la familia de sus parientes o en un árbol. Para retirarla de verdad hay que corregir o borrar los datos.
+- **Se deja de nombrar en las demás páginas.** Una persona oculta o retirada pasa a ser, para el visitante, una «Persona privada» en todas las páginas que la nombran (la familia de sus parientes, los árboles, los listados y el GEDCOM): `Privacidad` la trata como a una persona oculta por privacidad (`sqlRetirada()`). Los sucesos en los que participa dejan de verse, y con ellos los registros que los documentan, como pasa con una persona viva. Un suceso o un registro retirado sale también de las listas que lo nombran (`sucesos()` y `registros()`). El propietario lo ve todo.
+- **Contra el abuso.** El formulario no pide cuenta, así que tiene frenos que no
+  guardan quién es el visitante: un tope de pedidos por visitante y por hora
+  (`RETIRO_MAX_POR_HORA`, 3; se cuenta con una huella de la IP en el limitador, no
+  en la base), un tope de pedidos pendientes por página (`RETIRO_MAX_PENDIENTES`, 10;
+  responde 429 con `Retry-After`) y un campo trampa (`sitio_web`, invisible) que
+  descarta al bot dándole la misma respuesta que a una persona.
+- **El filtro marca el texto, nunca lo bloquea.** Al recibir un pedido, el texto
+  pasa por `defamatory-content-review` (`Support/FiltroPedidos.php`, que carga la
+  librería de la carpeta hermana o de `FILTRO_DIFAMACION_DIR`, sin Composer) y lo que
+  encuentra («insulto», «acusación de delito», «dato personal (RUT)»…) queda en
+  `pedidos_retiro.marcas` y se muestra en `/0/3/` como «El filtro encontró». Es un
+  aviso para quien revisa: quien se queja de una acusación suele repetirla, así que
+  bloquearlo perdería reclamos reales. Sin la librería, el pedido se guarda sin marcas.
+- **Responder.** El sitio no le escribe a quien pidió. Las respuestas tipo, en 16
+  idiomas y como borrador sin revisión nativa, están en
+  [`respuestas-tipo/`](./respuestas-tipo/README.md).
+- **Avisar y vigilar el plazo.** `bin/pedidos-retiro.php` está hecho para cron,
+  que manda por correo lo que un trabajo imprime: lista los pedidos que esperan
+  (número, página, motivo y cuánto llevan, **nunca quién lo pidió ni qué
+  escribió**, porque el correo de cron viaja sin cifrar) y no imprime nada si no
+  hay ninguno. Marca como `VENCIDO` el que pasó del plazo (`RETIRO_PLAZO_HORAS`,
+  24 por omisión) y sale con código 1. **Ocultar solo lo hace con `--ocultar`**,
+  y entonces deja la página como si el propietario hubiera elegido «ocultar
+  mientras revisa», con una nota en el registro que dice que fue automático y
+  por qué. Nunca toca un pedido que el propietario ya decidió. **El propietario
+  decidió activarlo (26 de octubre de 2026)**: la línea de cron de
+  [`DESPLIEGUE.md`](./DESPLIEGUE.md) lo trae puesto, con `--solo-ocultados` para
+  que el correo salga solo en la corrida que ocultó algo y no cada media hora.
+  Tiene el costo que ya dice el primer punto: quien pide el retiro puede bajar
+  una página si el propietario no contesta a tiempo.
+- **Depuración (opcional).** Un pedido guarda el correo de quien lo envió y lo que
+  escribió, sin límite de tiempo. `php bin/pedidos-retiro.php --depurar` borra
+  `contacto`, `detalle` y las marcas del filtro de los pedidos **retirados o
+  rechazados** cuyo último evento tiene más de 12 meses (`--meses=N` o
+  `RETIRO_CONSERVAR_MESES`), y anota `depurado_en`; la cola `/0/3/` pasa a decir
+  «Datos personales borrados el …». Se conservan el número, la página, el motivo, el
+  estado y el historial. Un pedido pendiente u oculto sigue en revisión y no se toca.
+  Solo corre con la opción, e imprime un conteo, nunca lo que borró. El plazo de 12
+  meses es un valor inicial: ⚖️ que lo confirme la abogada (`PREGUNTAS-PARA-ABOGADO.md`).
+- **Lo que falta.** No escribe a quien lo pidió (el propietario responde por
+  correo, por su cuenta). Retirar una página
+  no borra los datos: para eso hay que corregirlos o borrarlos. Un apellido, una
+  organización o una colección retirados sí salen de la búsqueda y del sitemap, pero
+  siguen nombrados donde los enlaza una persona.
 
 ## Lo que esto NO cubre
 
@@ -136,6 +192,10 @@ Esto hace privados los **objetos** que ya se presentaban como privados, oculta a
 
 ## Pruebas
 
+- `tests/App/Support/PrivacidadSinAtajosTest.php`: cuenta, archivo por archivo, las veces que el código lee `personas`, `sucesos` o `registros` directamente, y falla si cambia. Una consulta nueva que salte `Privacidad` no pasa sin quedar escrita ahí, con el motivo.
+- `tests/App/Repositories/RetiroRendimientoTest.php`: que preguntar si una persona está retirada use su índice (se comprobó que falla sin él), que una página de la búsqueda no lea el catálogo ni los pedidos, y que la vista completa del visitante siga rápida con 3000 personas y 400 pedidos.
+- `tests/App/Integration/RetiroTest.php` también cubre los frenos (tope por visitante y por página, el campo trampa) y las marcas del filtro.
+
 - `tests/App/Support/AccessPolicyTest.php`: lectura de credenciales (Basic y Bearer), comparación del token, caducidad de la sesión y las dos formas de negar.
 - `tests/App/Support/GedcomExporterTest.php`: fecha completa, solo el año y lugar.
 - `tests/App/Support/PrivacidadTest.php`: el umbral, que el SQL del propietario sea el de siempre y que un alias inválido se rechace antes de llegar al SQL.
@@ -144,6 +204,7 @@ Esto hace privados los **objetos** que ya se presentaban como privados, oculta a
 - `tests/App/Integration/PagesTest.php` también cubre la página de la marca de vida: cerrada a visitantes, formulario y enlace solo para el propietario, y guardar con token CSRF y valores válidos (cada prueba que guarda deja la base como estaba).
 - `tests/App/Repositories/BusquedaDePersonasTest.php` (en SQLite y PostgreSQL): que la búsqueda de personas devuelva exactamente las visibles, en su orden y con el nombre real, para cualquier texto, límite y desplazamiento; que dé las mismas filas que la consulta de antes (la que pasaba por `personas()` para todo el catálogo); y, en SQLite, que una página no lea el catálogo entero (se comprobó que falla con la consulta de antes).
 - `tests/App/Integration/RetiroTest.php`: el enlace al pie, el formulario (sólo sobre lo que un visitante ve), sus validaciones y su token CSRF; que recibir un pedido no oculte nada; que ocultar, retirar y rechazar cambien lo que ve un visitante (410 en la página y en sus acciones, fuera del sitemap) pero no el propietario, y que cada paso quede en el historial. `tests/App/Repositories/RetiroRepositoryTest.php` hace lo mismo con el repositorio, en SQLite y PostgreSQL.
+- `tests/App/Integration/PedidosRetiroCliTest.php`: `bin/pedidos-retiro.php` como lo corre cron (un proceso de verdad y una base SQLite): que no diga nada si no hay pedidos, que no imprima quién pidió ni qué escribió, el código de salida, que `--ocultar` oculte solo lo vencido, el plazo por opción y por entorno, `--depurar` (solo lo resuelto y viejo, nada sin la opción) y los errores de uso. `tests/App/Repositories/RetiroRepositoryTest.php` prueba `pendientes()` y `ocultarVencidos()` (el borde exacto del plazo, el registro y que no pise una decisión).
 - `tests/App/Repositories/PrivadasRepositoriesTest.php` (en SQLite y PostgreSQL): quién es privado (una colección pública basta, ninguna colección no lo es), qué se oculta de él en cada repositorio y que el propietario lo vea todo.
 - `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos, de Lucía ni de Manuel, que está solo en una colección privada (se comprobó que falla si se apaga el enmascarado).
 

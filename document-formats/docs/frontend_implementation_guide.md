@@ -398,49 +398,27 @@ class FormatSelector {
 
 ### 3. Format Converter
 
+There is no need to write a converter: `app/document-formats.js` already has one,
+`FormatConverter`. It compares two sizes (the same similarity score the demo shows) and lists
+the formats closest to a given one. The equivalence matrix of `specs/format_equivalence_matrix.csv`,
+with its notes, comes through `SpecificationManager`.
+
 ```javascript
-class FormatConverter {
-    constructor(dataManager) {
-        this.dataManager = dataManager;
-        this.conversions = new Map();
-        this.loadConversions();
-    }
-    
-    loadConversions() {
-        // This would load from ../specs/format_equivalence_matrix.csv
-        this.conversions.set('Letter-A4', {
-            equivalence: 95,
-            level: 'Very Similar',
-            notes: 'Nearly equivalent size'
-        });
-    }
-    
-    convert(fromFormat, toFormat) {
-        const key = `${fromFormat}-${toFormat}`;
-        if (this.conversions.has(key)) {
-            return this.conversions.get(key);
-        }
-        return null;
-    }
-    
-    findEquivalents(formatName) {
-        const format = this.dataManager.formats.find(f => f.format_name === formatName);
-        if (!format) return [];
-        
-        const width = parseFloat(format.width_mm);
-        const height = parseFloat(format.height_mm);
-        
-        return this.dataManager.formats.filter(f => {
-            const fWidth = parseFloat(f.width_mm);
-            const fHeight = parseFloat(f.height_mm);
-            
-            const widthDiff = Math.abs(fWidth - width) / width;
-            const heightDiff = Math.abs(fHeight - height) / height;
-            
-            return (widthDiff < 0.1 && heightDiff < 0.1) && f.format_name !== formatName;
-        });
-    }
-}
+const converter = new FormatConverter(dataManager.formats);
+
+// Letter -> A4: both sizes, their difference in mm, and how alike they are (0-100).
+const result = converter.convert('Letter', 'A4');
+console.log(`${result.similarity}% alike; width differs by ${result.differences.width} mm`);
+
+// Every format at least 90% alike to A4, closest first.
+const equivalents = converter.findEquivalents('A4', 90);
+equivalents.slice(0, 5).forEach(e => console.log(`${e.name} (${e.dimensions.mm} mm): ${e.similarity}%`));
+
+// The curated notes of the equivalence matrix, when the pair is in it.
+const specs = new SpecificationManager();
+await specs.loadAllSpecifications();
+const [pair] = specs.getFormatEquivalent('A4', 'Letter');
+if (pair) console.log(pair.compatibility_level, pair.notes);
 ```
 
 ## CSS Styling

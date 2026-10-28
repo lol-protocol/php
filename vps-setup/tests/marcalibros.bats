@@ -23,6 +23,7 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     instalar ejemplo.com --nope; [ "$status" -eq 2 ]
     MAX_UPLOAD='6M; return 200' instalar ejemplo.com; [ "$status" -eq 2 ]
     MARCALIBROS_RETENTION_DAYS='30; x' instalar ejemplo.com; [ "$status" -eq 2 ]
+    MARCALIBROS_RETENTION_DAYS=-1 instalar ejemplo.com; [ "$status" -eq 2 ]
     [ ! -e "$WWW_DIR/marcalibros" ] && [ ! -s "$SUDO_LOG" ]
 }
 
@@ -59,8 +60,15 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     c="$CRON_DIR/marcalibros"
     grep -qx "MARCALIBROS_STORAGE=$DATA_DIR/marcalibros" "$c"
     grep -qx 'MARCALIBROS_RETENTION_DAYS=7' "$c"
-    grep -q "^17 3 \* \* \* www-data /usr/bin/php $WWW_DIR/marcalibros/$P/app/bin/limpiar.php$" "$c"
+    grep -q "^17 3 \* \* \* www-data $(command -v php) $WWW_DIR/marcalibros/$P/app/bin/limpiar.php > /dev/null$" "$c"
     grep -q 'fastcgi_param MARCALIBROS_RETENTION_DAYS 7;' "$NGINX_DIR/sites-available/ejemplo.com"
+}
+
+@test "06_E acepta MARCALIBROS_RETENTION_DAYS=0 (no borrar nunca) y lo deja explicito" {
+    MARCALIBROS_RETENTION_DAYS=0 instalar ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -qx 'MARCALIBROS_RETENTION_DAYS=0' "$CRON_DIR/marcalibros"
+    grep -q 'fastcgi_param MARCALIBROS_RETENTION_DAYS 0;' "$NGINX_DIR/sites-available/ejemplo.com"
 }
 
 @test "06_E al re-correrlo actualiza el codigo y conserva los PNG y los marcalibros creados" {
@@ -116,6 +124,8 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     run bash "$VPS_DIR/10_A-add-domain.sh" ejemplo.com --type marcalibros --dry-run
     [ "$status" -eq 0 ]
     [[ "$output" == *"+ ./06_E-setup-marcalibros-app.sh ejemplo.com"* ]] && [[ "$output" == *"--app marcalibros"* ]]
+    run bash "$VPS_DIR/10_A-add-domain.sh" ejemplo.com --type marcalibros --name otra --dry-run
+    [ "$status" -eq 2 ] && [[ "$output" == *"--name no aplica"* ]]
     instalar ejemplo.com
     [ "$status" -eq 0 ]
     run bash "$VPS_DIR/10_B-remove-domain.sh" ejemplo.com --yes

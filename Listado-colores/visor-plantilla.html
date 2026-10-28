@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión de Listado-colores</title>
+<style>
+:root {
+  --fondo: #ffffff; --panel: #f4f4f7; --texto: #1b1b1f; --suave: #5b5b66; --borde: #d3d3dc;
+  --acento: #1d4ed8; --ok: #15803d; --mal: #b91c1c; --duda: #92400e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #121216; --panel: #1b1b21; --texto: #ececf1; --suave: #a3a3b0; --borde: #34343e;
+    --acento: #8ab4ff; --ok: #4ade80; --mal: #f87171; --duda: #fbbf24;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0 16px 48px; background: var(--fondo); color: var(--texto); font: 16px/1.5 system-ui, sans-serif; }
+main, header, footer { max-width: 62rem; margin: 0 auto; }
+h1 { font-size: 1.5rem; margin: 1.5rem 0 .25rem; }
+p { margin: .25rem 0 .75rem; }
+.suave { color: var(--suave); }
+.aviso { background: var(--panel); border: 1px solid var(--borde); border-radius: 8px; padding: .5rem .75rem; }
+.controles { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .75rem; margin: 1rem 0; }
+.controles label { display: flex; flex-direction: column; font-size: .875rem; color: var(--suave); gap: .25rem; }
+input, select, button, textarea { font: inherit; color: inherit; background: var(--fondo); border: 1px solid var(--borde); border-radius: 6px; padding: .35rem .5rem; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--acento); outline-offset: 1px; }
+.barra { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-bottom: .75rem; }
+.barra .crece { flex: 1 1 14rem; }
+.fila { border: 1px solid var(--borde); border-radius: 8px; padding: .6rem .75rem; margin-bottom: .6rem; }
+.fila[hidden] { display: none; }
+.fila.marcada { border-left: 4px solid var(--acento); }
+.cabecera { display: flex; flex-wrap: wrap; gap: .5rem .75rem; align-items: center; }
+.muestra { display: inline-block; width: 1.5rem; height: 1.5rem; border-radius: 4px; border: 1px solid var(--borde); flex: none; }
+.hex { font: .8125rem ui-monospace, monospace; color: var(--suave); }
+.id { font-weight: 600; }
+.contexto { font-size: .875rem; color: var(--suave); }
+.texto { margin: .35rem 0; }
+.texto b { font-weight: 600; }
+.formas { margin: .35rem 0; padding-left: 1.25rem; }
+.formas .rasgo { color: var(--suave); font-size: .875rem; }
+.respuesta { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .5rem; }
+.respuesta input[type=text] { flex: 1 1 14rem; }
+.ver[aria-pressed=true] { color: #fff; border-color: transparent; }
+.ver-correcto[aria-pressed=true] { background: var(--ok); }
+.ver-corregir[aria-pressed=true] { background: var(--mal); }
+.ver-dudoso[aria-pressed=true] { background: var(--duda); }
+.falta { border-color: var(--mal) !important; }
+textarea { width: 100%; min-height: 9rem; font: .8125rem ui-monospace, monospace; }
+footer { margin-top: 1.5rem; }
+.avisos { color: var(--mal); margin: .25rem 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Revisión de Listado-colores</h1>
+  <p class="aviso">Todo lo que hay aquí (traducciones de nombres, significados, léxico y categorías gramaticales) lo escribió un asistente de IA y
+    ningún hablante nativo lo ha revisado. Tu revisión cuenta. Marca lo que veas bien, mal o dudoso; el visor te da las filas para
+    <code>revisiones.csv</code>. Nada sale de tu navegador.</p>
+</header>
+<main>
+  <div class="controles">
+    <label>Idioma <select id="idioma"></select></label>
+    <label>Qué revisas <select id="alcance"></select></label>
+    <label>Tu nombre o alias <input id="revisor" type="text" autocomplete="off"></label>
+    <label>Fecha de la revisión <input id="fecha" type="date"></label>
+  </div>
+  <p id="ayuda" class="suave"></p>
+  <div class="barra">
+    <input id="filtro" class="crece" type="search" placeholder="Buscar en lo que se ve" aria-label="Buscar en lo que se ve">
+    <label><input id="sinmarcar" type="checkbox"> Solo sin marcar</label>
+    <span id="progreso" class="suave" aria-live="polite"></span>
+  </div>
+  <div id="lista"></div>
+</main>
+<footer>
+  <h2>Filas para <code>revisiones.csv</code></h2>
+  <p class="suave">Copia estas filas (sin cabecera) al final de <code>revisiones.csv</code>. Incluyen todo lo que has marcado, en cualquier idioma. Tus marcas se guardan en este navegador, sin separar por persona: si lo comparte otra persona, pulsa «Borrar mis marcas» antes de empezar.</p>
+  <p id="avisos" class="avisos" aria-live="polite"></p>
+  <textarea id="salida" readonly aria-label="Filas para revisiones.csv"></textarea>
+  <div class="barra">
+    <button id="copiar" type="button">Copiar filas</button>
+    <button id="descargar" type="button">Descargar CSV (con cabecera)</button>
+    <button id="borrar" type="button">Borrar mis marcas</button>
+    <span id="estado" class="suave" aria-live="polite"></span>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+  const D = /*DATOS*/null;
+  const COLUMNAS = ["idioma", "alcance", "elemento", "veredicto", "revisor", "fecha", "huella", "nota"];
+  const ALCANCES = {nombres: "Nombres", significados: "Significados", lexico: "Léxico básico", categorias: "Categorías gramaticales"};
+  const AYUDA = {
+    nombres: "Mira si el nombre del color en este idioma es el que se usaría de verdad (no un calco del inglés).",
+    significados: "Mira si los dos significados están bien traducidos y suenan naturales. La versión en español es el original.",
+    lexico: "Mira si las formas (lema, flexiones, sinónimos, variantes) son correctas y de uso real.",
+    categorias: "Mira si cada categoría gramatical es posible para esa palabra y si la frase de ejemplo es natural."
+  };
+  const VEREDICTOS = {correcto: "Correcto", corregir: "Corregir", dudoso: "Dudoso"};
+  const CLAVE_LOCAL = "listado-colores-revision";
+  const estado = {idioma: "es", alcance: "nombres", revisor: "", fecha: hoy(), marcas: {}};
+  const $ = (id) => document.getElementById(id);
+
+  function hoy() {
+    const f = new Date();
+    return f.getFullYear() + "-" + String(f.getMonth() + 1).padStart(2, "0") + "-" + String(f.getDate()).padStart(2, "0");
+  }
+  function el(etiqueta, clase, texto) {
+    const e = document.createElement(etiqueta);
+    if (clase) e.className = clase;
+    if (texto !== undefined) e.textContent = texto;
+    return e;
+  }
+  function clave(idioma, alcance, elemento) { return idioma + "\t" + alcance + "\t" + elemento; }
+  function nombreIdioma(codigo) { return (D.idiomas.find((p) => p[0] === codigo) || [codigo, codigo])[1]; }
+
+  function elementos(idioma, alcance) {
+    if (alcance === "nombres" || alcance === "significados") return Object.keys(D.colores);
+    if (alcance === "lexico") return Object.keys(D.lexico[idioma] || {});
+    return Object.keys(D.categorias[idioma] || {});
+  }
+
+  function cargar() {
+    try {
+      const guardado = JSON.parse(localStorage.getItem(CLAVE_LOCAL));
+      if (guardado && typeof guardado === "object") {
+        for (const campo of ["revisor", "fecha", "idioma", "alcance"]) if (typeof guardado[campo] === "string") estado[campo] = guardado[campo];
+        if (guardado.marcas && typeof guardado.marcas === "object") estado.marcas = guardado.marcas;
+      }
+    } catch (e) { /* sin almacenamiento: el visor funciona igual, solo que no recuerda */ }
+  }
+  function guardar() {
+    try { localStorage.setItem(CLAVE_LOCAL, JSON.stringify(estado)); } catch (e) { /* idem */ }
+  }
+
+  function muestra(hex) {
+    const m = el("span", "muestra");
+    m.style.background = hex;
+    m.title = hex;
+    return m;
+  }
+
+  function contenido(art, idioma, alcance, id) {
+    const cab = el("div", "cabecera");
+    const hex = (alcance === "nombres" || alcance === "significados") ? D.colores[id].hex
+      : (D.colores[id] || D.lexico[idioma][id] || {}).hex;
+    if (hex) { cab.append(muestra(hex), el("span", "hex", hex)); }
+    cab.append(el("span", "id", id));
+    let buscable = id;
+    if (alcance === "nombres" || alcance === "significados") {
+      const c = D.colores[id];
+      cab.append(el("span", "", "→ " + c.nombres[idioma]));
+      const contexto = ["en", "es"].filter((l) => l !== idioma).map((l) => nombreIdioma(l) + ": " + c.nombres[l]).join(" · ");
+      art.append(cab);
+      if (alcance === "nombres" && contexto) art.append(el("div", "contexto", contexto));
+      buscable += " " + Object.values(c.nombres).join(" ");
+      if (alcance === "significados") {
+        const propio = c.significados[idioma];
+        const p = el("p", "texto"); p.append(el("b", "", "Psicológico: "), document.createTextNode(propio[0]));
+        const m = el("p", "texto"); m.append(el("b", "", "Místico: "), document.createTextNode(propio[1]));
+        art.append(p, m);
+        buscable += " " + propio.join(" ");
+        if (idioma !== "es") {
+          const original = c.significados.es;
+          art.append(el("div", "contexto", "Español (original): " + original[0] + " / " + original[1]));
+        }
+      }
+    } else if (alcance === "lexico") {
+      art.append(cab);
+      const ul = el("ul", "formas");
+      for (const [forma, tipo, rasgos] of D.lexico[idioma][id].formas) {
+        const li = el("li", "", forma + " ");
+        li.append(el("span", "rasgo", "(" + tipo + (rasgos ? ", " + rasgos : "") + ")"));
+        ul.append(li);
+        buscable += " " + forma;
+      }
+      art.append(ul);
+    } else {
+      art.append(cab);
+      const ul = el("ul", "formas");
+      for (const [forma, categoria, , ejemplo] of D.categorias[idioma][id]) {
+        const li = el("li", "", forma + " → " + categoria + ": ");
+        li.append(el("i", "", ejemplo));
+        ul.append(li);
+        buscable += " " + forma + " " + ejemplo;
+      }
+      art.append(ul);
+    }
+    art.dataset.texto = buscable.toLowerCase();
+  }
+
+  function respuesta(art, idioma, alcance, id) {
+    const k = clave(idioma, alcance, id);
+    const caja = el("div", "respuesta");
+    const botones = {};
+    const nota = el("input");
+    nota.type = "text";
+    nota.placeholder = "Nota (obligatoria si corriges o dudas: qué cambiar o de qué dudas)";
+    nota.setAttribute("aria-label", "Nota sobre " + id);
+    const pintar = () => {
+      const m = estado.marcas[k] || {};
+      for (const v in botones) botones[v].setAttribute("aria-pressed", String(m.veredicto === v));
+      art.classList.toggle("marcada", Boolean(m.veredicto));
+      nota.classList.toggle("falta", (m.veredicto === "corregir" || m.veredicto === "dudoso") && !m.nota);
+    };
+    for (const v in VEREDICTOS) {
+      const b = el("button", "ver ver-" + v, VEREDICTOS[v]);
+      b.type = "button";
+      b.onclick = () => {
+        const actual = (estado.marcas[k] || {}).veredicto;
+        if (actual === v) delete estado.marcas[k];
+        else estado.marcas[k] = {veredicto: v, nota: (estado.marcas[k] || {}).nota || ""};
+        cambio(); pintar();
+      };
+      botones[v] = b;
+      caja.append(b);
+    }
+    nota.value = (estado.marcas[k] || {}).nota || "";
+    nota.oninput = () => {
+      if (!estado.marcas[k]) { nota.value = ""; return; }
+      estado.marcas[k].nota = nota.value.trim();
+      cambio(); pintar();
+    };
+    caja.append(nota);
+    art.append(caja);
+    pintar();
+  }
+
+  function dibujar() {
+    const lista = $("lista");
+    lista.textContent = "";
+    const ids = elementos(estado.idioma, estado.alcance);
+    $("ayuda").textContent = AYUDA[estado.alcance];
+    if (!ids.length) lista.append(el("p", "aviso", "Este idioma no tiene datos de «" + ALCANCES[estado.alcance] + "»."));
+    for (const id of ids) {
+      const art = el("article", "fila");
+      art.dataset.id = id;
+      contenido(art, estado.idioma, estado.alcance, id);
+      respuesta(art, estado.idioma, estado.alcance, id);
+      lista.append(art);
+    }
+    filtrar();
+  }
+
+  function filtrar() {
+    const texto = $("filtro").value.trim().toLowerCase();
+    const solo = $("sinmarcar").checked;
+    let vistos = 0, marcados = 0;
+    for (const art of $("lista").children) {
+      if (!art.dataset.id) continue;
+      const marcada = Boolean((estado.marcas[clave(estado.idioma, estado.alcance, art.dataset.id)] || {}).veredicto);
+      if (marcada) marcados++;
+      const oculta = (texto && !art.dataset.texto.includes(texto)) || (solo && marcada);
+      art.hidden = oculta;
+      if (!oculta) vistos++;
+    }
+    const total = elementos(estado.idioma, estado.alcance).length;
+    $("progreso").textContent = marcados + " de " + total + " marcados · " + vistos + " a la vista";
+  }
+
+  function campoCsv(texto) {
+    return /[",\n]/.test(texto) ? '"' + texto.replace(/"/g, '""') + '"' : texto;
+  }
+
+  function salida() {
+    const filas = [], avisos = [];
+    let sinNota = 0;
+    if (!estado.revisor.trim()) avisos.push("Escribe tu nombre o alias.");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(estado.fecha)) avisos.push("La fecha debe ser AAAA-MM-DD.");
+    for (const [idioma] of D.idiomas) {
+      for (const alcance of D.alcances) {
+        for (const id of elementos(idioma, alcance)) {
+          const m = estado.marcas[clave(idioma, alcance, id)];
+          if (!m || !m.veredicto) continue;
+          if ((m.veredicto === "corregir" || m.veredicto === "dudoso") && !m.nota) { sinNota++; continue; }
+          filas.push([idioma, alcance, id, m.veredicto, estado.revisor.trim(), estado.fecha, D.huellas[idioma][alcance][id], m.nota || ""].map(campoCsv).join(","));
+        }
+      }
+    }
+    if (sinNota) avisos.push(sinNota + " fila(s) con «corregir» o «dudoso» sin nota: no salen hasta que la escribas.");
+    return {filas, avisos};
+  }
+
+  function cambio() {
+    guardar();
+    const {filas, avisos} = salida();
+    $("salida").value = filas.join("\n");
+    $("avisos").textContent = avisos.join(" ");
+    $("estado").textContent = filas.length + " fila(s) lista(s)";
+    filtrar();
+  }
+
+  function aviso(texto) { $("estado").textContent = texto; }
+
+  function iniciar() {
+    cargar();
+    const ci = $("idioma");
+    for (const [codigo, nombre] of D.idiomas) { const o = el("option", "", nombre + " (" + codigo + ")"); o.value = codigo; ci.append(o); }
+    const ca = $("alcance");
+    for (const a of D.alcances) { const o = el("option", "", ALCANCES[a]); o.value = a; ca.append(o); }
+    if (!D.idiomas.some((p) => p[0] === estado.idioma)) estado.idioma = D.idiomas[0][0];
+    if (!D.alcances.includes(estado.alcance)) estado.alcance = D.alcances[0];
+    ci.value = estado.idioma; ca.value = estado.alcance;
+    $("revisor").value = estado.revisor; $("fecha").value = estado.fecha;
+    ci.onchange = () => { estado.idioma = ci.value; guardar(); dibujar(); };
+    ca.onchange = () => { estado.alcance = ca.value; guardar(); dibujar(); };
+    $("revisor").oninput = () => { estado.revisor = $("revisor").value; cambio(); };
+    $("fecha").onchange = () => { estado.fecha = $("fecha").value; cambio(); };
+    $("filtro").oninput = filtrar;
+    $("sinmarcar").onchange = filtrar;
+    $("copiar").onclick = async () => {
+      const texto = $("salida").value;
+      try { await navigator.clipboard.writeText(texto); aviso("Copiado."); }
+      catch (e) { $("salida").select(); aviso("Selecciona y copia con Ctrl+C."); }
+    };
+    $("descargar").onclick = () => {
+      const filas = $("salida").value;
+      const blob = new Blob([COLUMNAS.join(",") + "\n" + (filas ? filas + "\n" : "")], {type: "text/csv;charset=utf-8"});
+      const a = el("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "revisiones-nuevas.csv";
+      document.body.append(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    };
+    $("borrar").onclick = () => {
+      if (!Object.keys(estado.marcas).length || !confirm("¿Borrar todas tus marcas de este navegador?")) return;
+      estado.marcas = {};
+      dibujar(); cambio();
+    };
+    dibujar();
+    cambio();
+  }
+  iniciar();
+})();
+</script>
+</body>
+</html>

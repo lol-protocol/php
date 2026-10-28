@@ -6,6 +6,12 @@ Pequeño sistema en PHP (sin framework) para analizar:
   Solo se registran pagos que el usuario nos hace a nosotros — no hay módulo de
   costos ni pagos propios del negocio.
 - **Cartera** pendiente, con antigüedad de saldo (al día / 1-30 / 31-60 / 61+ días).
+- **Cobranza** (`?page=cobranza`): la misma cartera, cliente por cliente: quién debe, cuánto
+  (saldo total y saldo ya vencido, en USD a la tasa de hoy), cuántas boletas y desde cuándo (los
+  días de la boleta que lleva más tiempo vencida), con su email para reclamar y un acceso directo a
+  registrar su pago. Se ve por defecto a los que tienen saldo vencido, o todo el saldo abierto, y se
+  ordena por monto vencido, antigüedad, saldo o nombre. Sus totales son los del Dashboard: las dos
+  pantallas salen de la misma consulta (`IngresosYCobrosRepository::saldosAbiertosSql()`).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
   etapa, por canal de adquisición y por país/género/rango de edad.
@@ -32,12 +38,28 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Boletas y pagos**: alta, edición y anulación. Anular es un soft-delete (queda
   marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
   doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.
+- **Notas de crédito (devoluciones)**: anular una boleta que ya tenía pagos emite una
+  nota por lo cobrado. La pantalla «Notas de crédito» (`?page=notas`) lista las que
+  siguen pendientes de devolver, las ya devueltas o todas, y desde ahí se anota el día
+  en que se le devolvió la plata al cliente (queda en la auditoría). El Dashboard
+  muestra cuánto falta devolver y la ficha del cliente, el estado de cada nota.
 - **Auditoría**: historial de cada alta, edición y anulación de boletas, pagos y
   clientes, con fecha y el detalle de qué cambió, de la más reciente a la más
   antigua (se navega con «Más antiguas» y «Más recientes»). Sin login (ver más
   abajo), el usuario de toda entrada nueva es "Sistema"; las de antes de sacarlo
   conservan el suyo.
 - **Paginación** en los listados grandes (boletas, pagos, clientes).
+- **Exportar a CSV** las tres listas de trabajo: Cobros e ingresos (`?page=cobros-csv`),
+  Pagos (`?page=pagos-csv`) y Cobranza (`?page=cobranza-csv`). Cada una tiene su enlace
+  «Exportar CSV» y baja **todas** las filas que la pantalla mostraría con sus filtros
+  actuales (período, estado, cliente, alcance, orden), no solo la página que se ve. Es un
+  CSV estándar (UTF-8 con marca de orden para que Excel muestre bien las tildes, comas,
+  decimales con punto, fechas `AAAA-MM-DD`). Un texto que empiece con `=`, `+`, `-` o `@`
+  lleva un apóstrofe delante, para que Excel o LibreOffice no lo ejecuten como fórmula (un
+  cliente llamado `=HYPERLINK(...)`); los números no se tocan. Se exporta de a mil filas,
+  así que una base grande no agota la memoria de PHP. Llevan datos personales (nombre y
+  email de los clientes): valen las mismas precauciones de acceso que el resto de la app
+  (ver «Antes de exponerlo»), y se mandan con `Cache-Control: no-store`.
 
 > El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
 > pantalla de login con sesión, bloqueo por fuerza bruta y gestión de usuarios del
@@ -306,7 +328,7 @@ poco después (`rsync -a --ignore-existing /var/backups/cobros/ usuario@otra-maq
 o con el almacenamiento externo que ya uses. Y un respaldo que nunca se restauró no es un respaldo:
 probalo de vez en cuando.
 
-**Restaurar** (probado: en una base nueva quedan los mismos datos, las 11 migraciones anotadas, los
+**Restaurar** (probado: en una base nueva quedan los mismos datos, las migraciones anotadas, los
 triggers, `migrar.php` dice «La base ya estaba al día» y las pantallas cargan):
 
 ```bash
@@ -419,12 +441,14 @@ las tres suites, contra un Postgres 16, en PHP 8.3 (el mínimo) y en 8.4.
 public/            front controller (index.php) + CSS
 src/
   Controllers/       un controlador por sección (dashboard, boletas —la pantalla
-                      «Cobros e ingresos», `?page=cobros`—, pagos, funnel, cohortes,
-                      clientes, auditoria). Todas las páginas son públicas, no hay
+                      «Cobros e ingresos», `?page=cobros`—, cobranza, pagos, notas de
+                      crédito, funnel, cohortes, clientes, auditoria). Todas las páginas son públicas, no hay
                       login (ver `_Garbage/README.md`).
   Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
                       IngresosYCobrosRepository (kpis, ingresos y cobros por mes,
-                      antigüedad de cartera, por método de pago) y
+                      antigüedad de cartera, por método de pago; su
+                      `saldosAbiertosSql()` es la única definición de cartera),
+                      CobranzaRepository (esa cartera por cliente) y
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
                       por separado. AuditoriaRepository también concentra el
@@ -459,7 +483,13 @@ src/
                         el mismo array en cada vista que los muestra, testeado
   Paginacion.php        helper de paginación (página/offset/total, testeado) y
                         consultar(), el esqueleto único de los listados paginados
-                        (contar, acotar la página, traer solo esa), testeado
+                        (contar, acotar la página, traer solo esa), y recorrer(), lo
+                        mismo sin paginar: todas las filas de la consulta, de a mil
+                        con un cursor de PostgreSQL, para exportar; testeado
+  EscritorCsv.php       escribe filas en CSV (RFC 4180) y neutraliza las celdas que una
+                        planilla tomaría por fórmula, testeado
+  Descarga.php          la respuesta de una exportación (headers de archivo adjunto y
+                        sin caché, marca UTF-8, y las filas de a una)
   Csrf.php              token CSRF por sesión propia (no depende de ningún login),
                         verificado en Router (testeado)
   ConexionSegura.php    detecta HTTPS (directo o detras de proxy), testeado
@@ -481,7 +511,13 @@ src/
                         simultaneas), testeado
   Repositories/NotaCreditoRepository.php  devoluciones emitidas al anular
                         una boleta ya cobrada, y su total por rango/mes en
-                        USD para netear los cobros de los reportes
+                        USD para netear los cobros de los reportes; el listado
+                        por estado (pendientes/devueltas), el registro de la
+                        devolución (un UPDATE que solo pasa si seguía pendiente,
+                        como la anulación) y lo que falta devolver
+  FechaDeDevolucion.php el día en que se devolvió la plata: devuelve la fecha
+                        ya validada o lanza una excepción con el mensaje para
+                        la pantalla (entre la nota y hoy), como Dinero::centavos()
   RangoEdad.php         el tramo de edad (Menor de 18, 18-24, 25-34, ...)
                         como expresion SQL, con age(); lo comparten
                         segmentacion y funnel. Una fecha de nacimiento
@@ -501,7 +537,8 @@ database/
                         en cambios numerados (001 = esquema inicial, 005 =
                         catálogo, 006 y 008 = índices, 007 = mayoría de edad,
                         009 = origen de las tasas de cambio, 010 = mayoría de
-                        edad de cada país, 011 = la tasa de cambio de cada día)
+                        edad de cada país, 011 = la tasa de cambio de cada día,
+                        012 = la fecha de devolución de cada nota de crédito)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
@@ -512,10 +549,11 @@ bin/                    los comandos, todos con `php bin/<comando>.php`:
                         vez por día)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP: una carpeta por sección o entidad (dashboard,
-                        boletas, pagos, clientes, funnel, cohortes, auditoria) y en
+                        boletas, cobranza, pagos, notas, clientes, funnel, cohortes, auditoria) y en
                         ella una por pantalla, con el mismo nombre para lo mismo:
                         listado, alta, edicion y anulacion (boletas y pagos; los
-                        clientes tienen listado, alta y ficha). Con partials
+                        clientes tienen listado, alta y ficha; las notas, listado
+                        y devolucion). Con partials
                         compartidos: _filtro_fechas.php (el período y el rango
                         Desde/Hasta de las cinco pantallas con filtro),
                         _avisos.php (los avisos de arriba de la pantalla),
@@ -595,6 +633,15 @@ phpstan.neon            configuracion del analisis estatico
   anularlos o editarlos descuadraría la devolución, y la app lo rechaza con un
   409 (la regla simétrica de no poder cargar un pago nuevo contra una boleta
   anulada). Su `tasa_a_usd` es el promedio de la de los pagos que devuelve.
+  `fecha_devolucion` (migración `012`) es `NULL` mientras la plata sigue pendiente de
+  devolver y el día en que se devolvió cuando se registra desde la pantalla Notas de
+  crédito: «pendiente» es `fecha_devolucion IS NULL`, sin un estado aparte que pueda
+  contradecirse. Esa fecha no puede ser anterior a la nota (lo exige la base) ni
+  futura (lo valida la app). Registrarla **no cambia los reportes de cobros**: siguen
+  restando la nota el día en que se emitió, no el día en que se devolvió. Lo que falta
+  devolver (Dashboard y Notas de crédito) se valúa a la tasa de hoy, como la cartera
+  pendiente: es plata por pagar hoy en moneda extranjera. Las notas que ya existían al
+  aplicar la migración quedan pendientes, porque la base no sabe si se devolvieron.
 - `boletas_con_saldo` (vista): cada boleta con `pagado` (la suma de sus pagos no
   anulados), `saldo` y `primer_pago`. Es la única definición de "cuánto se pagó":
   la usan todas las consultas en vez de repetir la subconsulta.

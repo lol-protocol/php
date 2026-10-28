@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="fondo-serpiente" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-serpiente" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-serpiente)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.0" stroke-linecap="round" d="M148.3 108.7h0M114.4 140.4h0M8.7 169.4h0M17.0 31.8h0M55.4 37.5h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" stroke-linecap="round" d="M145.8 169.5h0M132.2 133.8h0M59.1 55.2h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.3" stroke-width="2.0" stroke-linecap="round" d="M150.1 189.6h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.0" stroke-linecap="round" d="M149.9 103.0h0M88.9 185.1h0M114.0 185.4h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" d="M94.2 94.5h0M17.9 154.1h0M33.4 63.9h0M42.9 181.9h0M137.4 106.4h0M191.4 126.0h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.5" stroke-width="2.0" stroke-linecap="round" d="M15.1 12.7h0M80.7 131.7h0M189.3 35.8h0M46.8 183.2h0M62.4 45.6h0M120.3 189.5h0M186.9 41.8h0M80.3 63.3h0M58.0 158.1h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.0" stroke-linecap="round" d="M156.8 51.9h0M124.6 139.6h0M144.3 94.2h0M101.8 159.9h0M131.2 187.6h0M149.7 77.2h0M8.6 102.7h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.5" stroke-linecap="round" d="M94.8 26.9h0M177.1 146.1h0M121.9 144.9h0M119.2 76.2h0M95.0 79.3h0M98.7 156.7h0M10.4 116.5h0"/>
+  <path stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.0" stroke-linecap="round" d="M70.7 26.8h0M173.7 13.2h0M164.4 88.6h0M134.4 74.4h0"/>
+  <g fill="none" stroke="#e6c98b" stroke-opacity="0.7" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M36 144 C70 154 94 146 96 128 C98 112 68 108 72 90 C76 70 118 72 126 58 C128 54 128 50 124 46"/>
+    <path d="M36 158 C74 168 110 158 110 128 C110 108 86 106 90 94 C94 82 134 86 140 62 C142 54 142 48 138 44"/>
+    <path d="M36 144 L36 158"/>
+    <path d="M124 46 C122 38 130 32 138 36 C142 40 142 46 138 44"/>
+    <path d="M134 34 L134 24 L128 18"/>
+    <path d="M134 24 L140 18"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.5" stroke-linecap="round">
+    <line x1="134" y1="22" x2="132" y2="38"/>
+    <line x1="132" y1="38" x2="130" y2="62"/>
+    <line x1="130" y1="62" x2="84" y2="84"/>
+    <line x1="84" y1="84" x2="82" y2="104"/>
+    <line x1="82" y1="104" x2="103" y2="128"/>
+    <line x1="103" y1="128" x2="74" y2="152"/>
+    <line x1="74" y1="152" x2="36" y2="151"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-serpiente)">
+    <circle cx="134" cy="22" r="2.8"/>
+    <circle cx="132" cy="38" r="1.6"/>
+    <circle cx="130" cy="62" r="1.6"/>
+    <circle cx="84" cy="84" r="1.6"/>
+    <circle cx="82" cy="104" r="2.4"/>
+    <circle cx="103" cy="128" r="2.0"/>
+    <circle cx="74" cy="152" r="2.0"/>
+    <circle cx="36" cy="151" r="2.4"/>
+  </g>
+</svg>

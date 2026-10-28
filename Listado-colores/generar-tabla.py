@@ -9,7 +9,11 @@
   su forma base, flexiones, sinónimos y variantes.
 - evidencia.csv: en qué se apoya cada significado (hay estudios, tradición, derivado) y con qué fuentes.
 - significados-culturales.csv: matices por ámbito cultural (China, Japón, India…) de algunos colores.
-- referencias.csv: las fuentes citadas por los dos anteriores; se genera referencias.md.
+- categorias.csv: las categorías gramaticales (ADJ, NOUN, PROPN, VERB) de las palabras de color de una sola palabra
+  en inglés y español, con una frase de ejemplo; se genera categorias.md (ver categorias.py).
+- revisiones.csv: el registro de qué elementos han revisado hablantes nativos y con qué resultado (empieza vacío); se
+  generan revisiones.md (la cobertura por idioma) y visor-revision.html (el visor para revisar; ver revision.py).
+- referencias.csv: las fuentes citadas por evidencia.csv y significados-culturales.csv; se genera referencias.md.
 - nombres-completos.csv: lista completa de nombres con hex. Sus tres primeras columnas son la fuente;
   css_cercano, delta_e y cercania se calculan aquí (color CSS más cercano según CIEDE2000, en colorimetria.py).
 - Por cada idioma se genera por-idioma/<código>.md (nombre, hex y los dos significados en ese idioma)
@@ -36,9 +40,12 @@ sys.dont_write_bytecode = True  # no dejar __pycache__ en la carpeta al importar
 sys.path.insert(0, str(CARPETA))
 import ambiguedad  # noqa: E402  (módulos de esta carpeta)
 import auditoria  # noqa: E402
+import categorias  # noqa: E402
+import cobertura  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
+import revision  # noqa: E402
 
 ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
@@ -47,6 +54,13 @@ LEXICO = CARPETA / "lexico-basico.csv"
 REFERENCIAS = CARPETA / "referencias.csv"
 EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
+CATEGORIAS = CARPETA / "categorias.csv"
+CATEGORIAS_MD = CARPETA / "categorias.md"
+COBERTURA = CARPETA / "cobertura.md"
+REVISIONES = CARPETA / "revisiones.csv"
+REVISIONES_MD = CARPETA / "revisiones.md"
+VISOR_PLANTILLA = CARPETA / "visor-plantilla.html"
+VISOR = CARPETA / "visor-revision.html"
 REFS_MD = CARPETA / "referencias.md"
 AMBIGUEDAD = CARPETA / "ambiguedad.md"
 AUDITORIA = CARPETA / "auditoria-nombres.md"
@@ -403,6 +417,22 @@ def alias_de(anotada):
     return alias
 
 
+def validar_alias(anotada, traducidos, errores):
+    """Dos colores con el mismo hex (aqua y cyan, gray y grey) dicen lo mismo: los dos significados, en español y en cada idioma."""
+    significados = {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"]) for f in traducidos}
+    for nombre, otros in alias_de(anotada).items():
+        for otro, _ in otros:
+            if nombre >= otro:  # cada par una vez
+                continue
+            propio = next(f for f in anotada if f["nombre_ingles"] == nombre)
+            ajeno = next(f for f in anotada if f["nombre_ingles"] == otro)
+            if (propio["significado_psicologico"], propio["significado_mistico"]) != (ajeno["significado_psicologico"], ajeno["significado_mistico"]):
+                errores.append(f"colores.csv: {nombre} y {otro} tienen el mismo hex y deben tener los mismos significados en español")
+            distintos = sorted(i for (i, n), par in significados.items() if n == nombre and par != significados.get((i, otro)))
+            if distintos:
+                errores.append(f"significados-idiomas.csv: {nombre} y {otro} tienen el mismo hex y deben tener los mismos significados; difieren en {', '.join(distintos)}")
+
+
 def cercania_de(delta, mismo_hex):
     if mismo_hex:
         return "exacto"
@@ -630,21 +660,37 @@ def comprobar_o_escribir(base, archivos, comprobar, sobrantes=()):
     return []
 
 
+def leer_todos():
+    """Lee los nueve CSV. Si varios están mal (cabecera inesperada, fila con campos de más o de menos), los cuenta todos."""
+    fallos, leidos = [], {}
+    pedidos = (("anotada", leer, (ANOTADA, COLUMNAS_ANOTADA)), ("completa", leer_completa, ()),
+               ("traducidos", leer, (SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)), ("lexico", leer, (LEXICO, COLUMNAS_LEXICO)),
+               ("referencias", leer, (REFERENCIAS, COLUMNAS_REFERENCIAS)), ("evidencia", leer, (EVIDENCIA, COLUMNAS_EVIDENCIA)),
+               ("culturales", leer, (CULTURALES, COLUMNAS_CULTURALES)), ("gramaticales", leer, (CATEGORIAS, categorias.COLUMNAS)),
+               ("revisiones", leer, (REVISIONES, revision.COLUMNAS)))
+    for nombre, lector, argumentos in pedidos:
+        try:
+            leidos[nombre] = lector(*argumentos)
+        except SystemExit as salida:
+            fallos.append(str(salida.code))
+    if fallos:
+        sys.exit("No se pudieron leer los CSV:\n  " + "\n  ".join(fallos))
+    return leidos
+
+
 def main():
-    anotada = leer(ANOTADA, COLUMNAS_ANOTADA)
+    leidos = leer_todos()
+    anotada, completa, traducidos, lexico = leidos["anotada"], leidos["completa"], leidos["traducidos"], leidos["lexico"]
+    referencias, evidencia_filas, culturales = leidos["referencias"], leidos["evidencia"], leidos["culturales"]
+    gramaticales, revisiones = leidos["gramaticales"], leidos["revisiones"]
     fallos = colorimetria.autoprueba()
     if fallos:
         sys.exit(f"colorimetria.py: CIEDE2000 no coincide con {len(fallos)} vectores de Sharma et al.: {fallos[:2]}")
-    completa = leer_completa()
-    traducidos = leer(SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)
-    lexico = leer(LEXICO, COLUMNAS_LEXICO)
-    referencias = leer(REFERENCIAS, COLUMNAS_REFERENCIAS)
-    evidencia_filas = leer(EVIDENCIA, COLUMNAS_EVIDENCIA)
-    culturales = leer(CULTURALES, COLUMNAS_CULTURALES)
     errores = []
     validar_anotada(anotada, errores)
     validar_completa(completa, errores)
     validar_significados(traducidos, anotada, errores)
+    validar_alias(anotada, traducidos, errores)
     validar_lexico(lexico, anotada, completa, errores)
     ids = validar_referencias(referencias, errores)
     usadas = set()
@@ -652,6 +698,9 @@ def main():
     validar_culturales(culturales, anotada, ids, errores, usadas)
     for i in sorted(ids - usadas):
         errores.append(f"referencias.csv: la referencia {i!r} no la usa ningún otro CSV")
+    categorias.validar(gramaticales, anotada, lexico, [c for c, _ in IDIOMAS], CONCEPTOS, errores)
+    revisable = revision.universo({"idiomas": IDIOMAS, "anotada": anotada, "lexico": lexico, "categorias": gramaticales})
+    revision.validar(revisiones, revisable, [c for c, _ in IDIOMAS], errores)
     version = None
     if CHANGELOG.exists():
         version = manifiesto.leer_changelog(CHANGELOG.read_text(encoding="utf-8"), errores)
@@ -674,7 +723,7 @@ def main():
     datos = {
         "idiomas": IDIOMAS, "anotada": anotada, "completa": completa, "cercanias": cercanias,
         "significados": significados, "lexico": lexico, "referencias": referencias, "evidencia": evidencia,
-        "culturales": culturales, "alias": alias_de(anotada),
+        "culturales": culturales, "categorias": gramaticales, "alias": alias_de(anotada),
         "hex_concepto": {c: hex_de_concepto(c, anotada, completa) for c in CONCEPTOS},
     }
     if "--sqlite" in sys.argv:
@@ -689,29 +738,41 @@ def main():
         return 0
     completa_texto = texto_completa(completa, cercanias)
     jsonl, tsv = exportes.colores_jsonl(datos), exportes.gazetteer_tsv(datos)
+    patrones, lexico_ud, conllu = exportes.spacy_patrones(datos), exportes.lexico_ud(datos), exportes.ejemplos_conllu(datos)
     # Las entradas del manifiesto, en el orden del README. nombres-completos.csv va con el texto que genera este programa.
     entradas = [(ruta.name, filas, ruta.read_text(encoding="utf-8"), None) for ruta, filas in (
         (ANOTADA, len(anotada)), (SIGNIFICADOS, len(traducidos)), (LEXICO, len(lexico)), (EVIDENCIA, len(evidencia_filas)),
-        (CULTURALES, len(culturales)), (REFERENCIAS, len(referencias)))]
+        (CULTURALES, len(culturales)), (CATEGORIAS, len(gramaticales)), (REFERENCIAS, len(referencias)))]
     entradas.append((COMPLETA.name, len(completa), completa_texto, None))
     exportes_manifiesto = [("exportes/colores.jsonl", jsonl.count("\n"), jsonl, None),
                            ("exportes/gazetteer.tsv", tsv.count("\n") - 1, tsv, exportes.COLUMNAS_GAZETTEER)]
+    exportes_manifiesto += [(f"exportes/spacy/{codigo}.jsonl", texto.count("\n"), texto, None) for codigo, texto in patrones.items()]
+    exportes_manifiesto += [("exportes/lexico-ud.tsv", lexico_ud.count("\n") - 1, lexico_ud, exportes.COLUMNAS_LEXICO_UD),
+                            ("exportes/ejemplos.conllu", conllu.count("# sent_id"), conllu, None)]
     generados = {
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
         REFS_MD: referencias_md(referencias),
         AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
         AUDITORIA: auditoria.informe(completa),
+        CATEGORIAS_MD: categorias.informe(gramaticales, IDIOMAS),
+        COBERTURA: cobertura.informe(IDIOMAS, anotada, lexico, gramaticales, CONCEPTOS, datos["hex_concepto"]),
+        REVISIONES_MD: revision.informe(revisiones, revisable, IDIOMAS, revision.huellas(datos)),
+        VISOR: revision.visor_html(datos, VISOR_PLANTILLA.read_text(encoding="utf-8")),
         COMPLETA: completa_texto,
         DIR_EXPORTES / "colores.jsonl": jsonl,
         DIR_EXPORTES / "gazetteer.tsv": tsv,
+        DIR_EXPORTES / "lexico-ud.tsv": lexico_ud,
+        DIR_EXPORTES / "ejemplos.conllu": conllu,
         DIR_EXPORTES / "manifiesto.json": manifiesto.manifiesto(version, [c for c, _ in IDIOMAS], entradas, exportes_manifiesto),
     }
+    for codigo, texto in patrones.items():
+        generados[DIR_EXPORTES / "spacy" / f"{codigo}.jsonl"] = texto
     for codigo, etiqueta in IDIOMAS:
         generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(
             codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales)
     sobrantes = sorted(p for carpeta in (DIR_IDIOMAS, DIR_EXPORTES) if carpeta.exists()
-                       for p in carpeta.glob("*") if p not in generados)
+                       for p in carpeta.rglob("*") if p.is_file() and p not in generados)
 
     resumen = (f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas, "
                f"{len(traducidos)} significados traducidos, {len(lexico)} formas de léxico básico, "

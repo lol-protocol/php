@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | alice-sininen | `#F0F8FF` |  | Rauha, raikkaus ja puhtaus; keveyden ja avaruuden tunne. | Taivaallinen puhtaus ja tyyneys; yhdistetty kirkkaaseen taivaaseen ja selkeään viestintään. | derivado | derivado |
 | `antiquewhite` | antiikinvalkoinen | `#FAEBD7` |  | Nostalgia, perinne ja pehmeä lämpö; tuo mieleen vintagen. | Menneen muisti ja viisaus; vanhentunut puhtaus ja ikivanhat kierrot. | derivado | derivado |
-| `aqua` | akvaa | `#00FFFF` | `cyan` | Raikkaus, kirkkaus, energia ja puhtaan veden tunne. | Elävä vesi ja puhdistus; intuition virta ja yhteys hienovaraiseen. | derivado | derivado |
+| `aqua` | akvaa | `#00FFFF` | `cyan` | Raikkaus, kirkkaus, rauha ja viestintä; yhdistetty digitaaliseen ja moderniin. | Vesi ja puhdistus; mielen selkeys ja viestinnän virta. | derivado | derivado |
 | `aquamarine` | akvamariini | `#7FFFD4` |  | Rentouttava raikkaus, rauha ja kevyt optimismi. | Merimiesten kivi: suoja matkoilla, rohkeus ja tunteiden selkeys. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | taivaansininen | `#F0FFFF` |  | Kirkas taivas, avoimuus, vapaus ja tyyneys. | Henkinen korkeus ja taivaan puhtaus; taivaallinen ja avoin mieli. | derivado | derivado |
 | `beige` | beige | `#F5F5DC` |  | Neutraalius, yksinkertaisuus, vakaus ja hillitsevyys. | Maa ja nöyryys; tasapaino ilman ääripäitä, arki ja juurtuneisuus. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | tulipunainen | `#B22222` |  | Voima, päättäväisyys, voimakas lämpö ja jännite. | Pajan ja takan tuli; ponnistelu, uhri ja työ. | derivado | derivado |
 | `floralwhite` | kukkavalkoinen | `#FFFAF0` |  | Pehmeys, hienovaraisuus, puhtaus ja keveys. | Valkoinen kukka: viattomuus, alut ja kevään siunaus. | derivado | derivado |
 | `forestgreen` | metsänvihreä | `#228B22` |  | Luonto, tasapaino, terveys, rauha ja kasvu. | Pyhä metsä: elämä, uudistuminen ja yhteys maahan. | derivado | derivado |
-| `fuchsia` | fuksia | `#FF00FF` | `magenta` | Uskaliaisuus, luovuus, eksentrisyys ja leikkisä energia. | Muutos ja taika; side aineellisen ja hengellisen välillä. | derivado | derivado |
+| `fuchsia` | fuksia | `#FF00FF` | `magenta` | Luovuus, uskaliaisuus, voimakkuus ja värähtelevä energia. | Muutos ja hengellisyys; yhteys aineellisen ja hienovaraisen välillä. | derivado | derivado |
 | `gainsboro` | gainsborolainen harmaa | `#DCDCDC` |  | Tyylikäs neutraalius, puhtaus ja rauha. | Välitila ja tasapaino ilman painoa. | derivado | derivado |
 | `ghostwhite` | aavevalkoinen | `#F8F8FF` |  | Keveys, hienovarainen mysteeri ja hohtava viileys. | Eteerinen ja aavemainen; hienovarainen läsnäolo kahden maailman välillä. | derivado | derivado |
 | `gold` | kulta | `#FFD700` |  | Menestys, rikkaus, arvostus, optimismi ja lämpö. | Aurinko ja täydellisyys; valaistuminen, valta, viisaus ja jumalallinen monissa perinteissä. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
@@ -110,7 +110,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `mistyrose` | utuisen ruusu | `#FFE4E1` |  | Hienovaraisuus, nostalgia, pehmeys ja romantiikka. | Sumuinen aamunkoitto; uni, muisto ja se, mikä häipyy. | derivado | derivado |
 | `moccasin` | mokkasiini | `#FFE4B5` |  | Pehmeä lämpö, yksinkertaisuus, mukavuus ja ystävällisyys. | Maa ja polku; matka, nöyryys ja koti. | derivado | derivado |
 | `navajowhite` | navajonvalkoinen | `#FFDEAD` |  | Maanläheinen lämpö, yksinkertaisuus ja mukavuus. | Hiekka ja sato; yksinkertaisuus ja nöyrä yltäkylläisyys. | derivado | derivado |
-| `navy` | tummansininen | `#000080` |  | Arvovalta, luottamus, vakavuus ja ammattimaisuus. | Syvä meri ja yö; kuri, viisaus ja uskollisuus. | derivado | derivado |
+| `navy` | laivastonsininen | `#000080` |  | Arvovalta, luottamus, vakavuus ja ammattimaisuus. | Syvä meri ja yö; kuri, viisaus ja uskollisuus. | derivado | derivado |
 | `oldlace` | vanha pitsi | `#FDF5E6` |  | Nostalgia, hienovaraisuus, lämpö ja perinne. | Vanhan muisti ja hellyys; vanhentunut puhtaus ja huolenpito. | derivado | derivado |
 | `olive` | oliivi | `#808000` |  | Rauha, luonto, kohtuullisuus ja vakaus; myös väsymys. | Oliivipuu: rauha, viisaus, hiljainen voitto ja hedelmällisyys. | derivado | tradición |
 | `olivedrab` | oliivinvihreä drab | `#6B8E23` |  | Luonto, käytännöllisyys, vakaus ja sävyisyys. | Maaseutu ja villi luonto; sinnikkyys ja juurtuneisuus. | derivado | derivado |

@@ -1,10 +1,16 @@
 # Términos de uso — borrador
 
-> **Esto es un borrador para revisar con un abogado, no un texto listo para
-> publicar.** Lo escribió el equipo a partir de
+> **Esto es un borrador, no un texto listo para publicar, y ningún abogado lo ha
+> revisado: el propietario decidió (26 de octubre de 2026) no consultar a uno.**
+> Lo escribió el equipo a partir de
 > [`PRIVACIDAD-Y-HONRA.md`](PRIVACIDAD-Y-HONRA.md) y de lo que hoy hace el código.
-> Lo que hay que confirmar o decidir está marcado con **⚖️**. Los datos entre
-> corchetes (`[NOMBRE]`, `[CORREO]`…) faltan.
+> Lo que hay que confirmar o decidir está marcado con **⚖️**: son decisiones que
+> toma el propietario, bajo su responsabilidad, y las preguntas, reunidas y
+> ordenadas, están en [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md).
+> Los datos entre corchetes (`[NOMBRE]`, `[CORREO]`…) faltan.
+>
+> Cada compromiso lleva, cuando hace falta, una línea **«Hoy:»** que dice qué
+> hace ya el código y qué todavía no, para no prometer lo que el sitio no hace.
 
 ---
 
@@ -57,6 +63,18 @@ Por eso está prohibido:
   que queda en revisión no se muestra hasta que una persona lo apruebe.
 - El filtro se equivoca a veces, en los dos sentidos. Si algo tuyo quedó
   bloqueado sin razón, escríbenos a [CORREO].
+- **Las personas que podrían estar vivas se muestran como «Persona viva»**, sin
+  nombre, fechas ni lugar, y también quien sólo figura en colecciones privadas
+  («Persona privada»). Se presume viva a quien nació hace menos de 110 años y no
+  tiene defunción, o a quien la persona a cargo marca así. Es una deducción por
+  fechas, no una certeza: si ves a una persona viva con su nombre, avísanos.
+- **Hoy:** el sitio de genealogía es de lectura, no tiene formularios de
+  contenido, así que el filtro revisa las **notas internas del panel de
+  administración**: no se guarda una con insultos o amenazas, y una con una
+  acusación o un dato sensible o personal se guarda marcada para releerla. El día
+  que los usuarios puedan escribir, todo texto libre pasará por él antes de
+  publicarse. **⚖️** ¿Conviene prometerlo así? (pregunta 14 de
+  [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md)).
 - Podemos rechazar, editar u ocultar cualquier contenido que infrinja estos
   términos, aunque el filtro lo haya dejado pasar.
 
@@ -64,23 +82,61 @@ Por eso está prohibido:
 
 - **Cualquier persona puede pedirlo, tenga cuenta o no**, si un contenido
   habla de ella o de un familiar fallecido, o si cree que infringe estos
-  términos. Se pide con el botón «Pedir retiro» de cada página o escribiendo a
-  [CORREO].
+  términos. Cada página de una persona, un suceso, un registro, una colección,
+  un apellido o una organización lleva al pie **«Pedir el retiro de esta
+  página»**; también puedes escribir a [CORREO]. El formulario pide un motivo
+  (habla de mí, de un familiar fallecido, infringe los términos u otro), qué hay
+  que retirar y por qué, y un correo para responderte.
+- **Recibir un pedido no oculta nada por sí solo**: lo revisa una persona. Si no
+  fuera así, cualquiera podría bajar cualquier página. Quien revisa puede
+  **ocultar la página mientras la revisa**, **retirarla** o **rechazar el
+  pedido** (y entonces se vuelve a mostrar), y deja una nota de por qué.
 - **Ocultamos el contenido en un plazo de [24] horas** mientras lo revisamos.
-  **⚖️** Plazo comprometido.
-- Respondemos en un plazo de [10] días hábiles con la decisión: se retira, se
-  corrige o se vuelve a publicar, con las razones. **⚖️** Plazo y
-  procedimiento.
+  **⚖️** Plazo comprometido. **Hoy:** el código avisa de los pedidos que esperan
+  y marca los que pasan de 24 horas; ocultarlos solos cuando vencen se decidió activar
+  (26 de octubre de 2026; vale desde que el cron del servidor lleve `--ocultar`,
+  ver `url-routing/docs/DESPLIEGUE.md`). **⚖️** ¿Se promete ocultar sin haber
+  revisado? (pregunta 15).
+- **Qué ve el visitante de una página oculta o retirada:** «Página retirada»
+  (no la página), y deja de salir en la búsqueda y en el mapa del sitio.
+- **Si lo que se retira es una persona**, deja de nombrarse en todo el sitio: en
+  las demás páginas aparece como «Persona privada» (la familia de sus parientes,
+  los árboles, los listados y la exportación), y los sucesos en los que
+  participa, con los registros que los documentan, dejan de verse.
+- **Retirar no es borrar.** Los datos siguen guardados para quien administra el
+  sitio. Corregirlos o borrarlos es otra decisión, y la tomamos al responder.
+  Un apellido, una organización o una colección retirados salen de la búsqueda,
+  pero pueden seguir nombrados donde los enlaza una persona.
+- Te respondemos al correo que dejaste en un plazo de [10] días hábiles con la
+  decisión: se retira, se corrige o se vuelve a publicar, con las razones.
+  **⚖️** Plazo y procedimiento. **Hoy:** el sitio no escribe solo a quien pidió:
+  quien administra responde por correo.
 - La familia de una persona fallecida puede pedir el retiro de lo que afecte
-  su honra. **⚖️** Quiénes pueden pedirlo (grado de parentesco).
+  su honra. **⚖️** Quiénes pueden pedirlo (grado de parentesco) y cómo se
+  acredita sin pedir más datos personales (pregunta 16).
 
 ## 6. Qué registramos
 
-Para poder responder a un reclamo guardamos, de cada publicación, **quién la
-hizo, cuándo, qué decidió el filtro y quién la revisó**. Ese registro no es
-público. Lo guardamos durante [PLAZO] y sólo lo entregamos a quien lo pida con
-una orden judicial o a la autoridad competente. **⚖️** Plazo de conservación y
-base legal.
+Para poder responder a un reclamo guardamos, y no es público:
+
+- **De cada pedido de retiro:** la página, el motivo, lo que escribiste, tu
+  correo y todo lo que pasó con él, en orden y con fecha y nota (recibido,
+  oculto, retirado, rechazado). Sólo se agregan datos, nunca se cambian los
+  anteriores. El registro técnico del sitio anota el número del pedido y la
+  página, pero no quién lo pidió ni qué escribió. Tu correo se usa sólo para
+  responder a ese pedido.
+- **De cada nota interna que se guarda:** a qué acción se refiere, quién la
+  escribió, cuándo, qué decidió el filtro (aprobada, para revisar, rechazada o
+  borrada) y por qué. No copiamos el texto: guardamos su largo y una huella con la
+  que se puede comprobar si un texto dado es el que se escribió.
+- **De quien visita:** una cookie de sesión, sólo si usas un formulario (como el
+  pedido de retiro o la compra) o entras como propietario; quien sólo lee páginas
+  no recibe ninguna. Y, para frenar el abuso, un archivo por visitante guardado
+  con una huella de la IP, no la IP.
+
+Lo guardamos durante [PLAZO] y sólo lo entregamos a quien lo pida con una orden
+judicial o a la autoridad competente. **⚖️** Plazo de conservación y base legal
+(pregunta 17).
 
 ## 7. Tus datos personales
 
@@ -90,6 +146,14 @@ base legal.
   obligaciones (ver `privacy-laws/countries/cl/`).
 - Puedes pedir acceso, rectificación, supresión u oposición respecto de tus
   datos escribiendo a [CORREO].
+- **Hoy**, pedir la supresión no tiene pantalla: se atiende a mano, borrando lo
+  que corresponda en la base de datos.
+- **Tienda.** La dirección de envío de un pedido se copia al pedido y se
+  conserva mientras exista el pedido, sin borrarse sola: la boleta, una garantía
+  o una devolución tienen que mostrar adónde se mandó. La libreta de direcciones
+  del cliente dura lo que él quiera. **⚖️** Si la tienda tiene sus propios
+  términos, esto va allí; y confirmar con la Ley 21.719 que conservarla así es
+  lícito y qué debe decir la política de privacidad.
 - Los detalles van en la Política de privacidad. **⚖️** Falta redactarla.
 
 ## 8. Qué pasa si no se respetan estos términos
@@ -122,5 +186,6 @@ los tribunales de [CIUDAD]. **⚖️**
 | Datos del responsable, correo, domicilio, ciudad | Decisión de la persona a cargo |
 | Plazos (retiro, respuesta, conservación del registro, aviso de cambios) | Abogado |
 | Política de privacidad | Abogado, a partir de la sección 7 |
-| El botón «Pedir retiro» y el registro de publicaciones | Hecho en `url-routing/` (`/r/{id}/` y `/0/3/`, ver su `docs/ACCESO.md`). Falta que el propietario reciba un aviso de cada pedido nuevo, para cumplir el plazo de la sección 5 |
-| Que todo texto libre pase por el filtro | Código: cabo suelto 1 de `PRIVACIDAD-Y-HONRA.md` |
+| El botón «Pedir retiro», su cola y el registro | Hecho en `url-routing/` (`/r/{id}/` y `/0/3/`, ver su `docs/ACCESO.md`). Para cumplir el plazo de la sección 5, `bin/pedidos-retiro.php` (cron) avisa de los pedidos que esperan y, con `--ocultar`, oculta los vencidos; el propietario decidió activarlo (26 de octubre de 2026); falta instalarlo en el servidor (⚖️ queda por decidir si se promete: pregunta 15 de [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md)) |
+| Que el propietario reciba un aviso de cada pedido nuevo | Poner `bin/pedidos-retiro.php` en cron con `MAILTO` (ver `url-routing/docs/DESPLIEGUE.md`) |
+| Que todo texto libre pase por el filtro | Hecho para las notas del panel (`sistema-nuevo/`, con su registro). Falta para el sitio de genealogía y lo que se importe, que hoy no tienen dónde escribir: cabo suelto 1 de `PRIVACIDAD-Y-HONRA.md` |

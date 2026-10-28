@@ -34,11 +34,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.legisweb.com.br/legislacao/?id=491391",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.gov.br/anpd/pt-br/assuntos/noticias/NotaTecnica3CGF.ANPD.pdf",
         "confidence": "medium",
@@ -53,6 +48,11 @@
         "url": "https://confidata.com.br/blog/dados-sensiveis-lgpd-bases-legais-cuidados",
         "confidence": "high",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://www.legisweb.com.br/legislacao/?id=491391",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

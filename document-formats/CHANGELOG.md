@@ -3,6 +3,38 @@
 What changed in `document-formats/`, newest first. Each entry names the pull request that
 carries the details. Dates are those of the merge.
 
+## Unreleased
+
+- Fixed: with browser storage blocked (some private modes, sandboxed frames, blocked cookies) the demo
+  showed nothing, because `LocalizationManager` read `localStorage` without guarding it; and a
+  language switch was undone when the choice couldn't be saved. `LocalizationManager.savedLanguage()`
+  and `saveLanguage()` now guard both, and the page only stops remembering the choice.
+- Fixed: on a 320 px screen the Paper Types tab was wider than the screen (a long size name in the
+  select, then a long category badge). The grids use `minmax(min(…, 100%), …)` / `minmax(0, 1fr)`
+  and the card header wraps.
+
+- Demo: `index.html` keeps no inline CSS or JavaScript (now `app/demo.css` and `app/demo.js`), the
+  Paper Types categories are translated (`paperCategories.*`), the comparison says when it cuts the
+  list at 100 rows, **Reverse order** next to **Sort by**, and the converter lists the five closest
+  formats to the one chosen. 13 new strings per language, 182 in all.
+- `docs/frontend_implementation_guide.md` no longer defines its own `FormatConverter`: it uses the
+  library's, and a test stops a guide from redeclaring a library class.
+
+- Demo: searching ignores case and Latin accents (`normalizeText()`, also used by `FormatSearcher`),
+  the Browser tab's search also looks in country, category and region, the category and region
+  filters and the card badges are translated (24 new strings per language: `regions.international`,
+  17 more `categories.*`, and the sort labels), and a **Sort by** menu (name, width, height, area)
+  orders the cards and is kept in the address. 169 strings per language now.
+
+- The 24 languages that translated only the title, the tabs and the units now have all 145 UI
+  strings (Portuguese, Russian, Arabic, Korean, Italian, Dutch, Turkish, Hindi, Thai, Vietnamese,
+  Polish, Swedish, Norwegian, Danish, Finnish, Greek, Czech, Hungarian, Romanian, Bulgarian,
+  Serbian, Croatian, Slovak, Ukrainian). The tab names and subtitle of those files, which were
+  English text, are translated too. None has been reviewed by a native speaker.
+- The name of the downloaded CSV may use any letters, not only ASCII: Chromium saves non-ASCII
+  names correctly once the system has a UTF-8 locale (the `download` name seen before came from a
+  container without one). Japanese and Chinese now use their own names.
+
 ## 2026-10-22
 
 - Quick wins: the About tab and the footer of the demo are translated (10 new strings, 145

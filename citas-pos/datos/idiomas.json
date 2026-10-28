@@ -1,0 +1,155 @@
+{
+  "descripcion": "Los 30 idiomas de Listado-colores/, con código de 3 letras (ISO 639-3) y el de 2 letras que usa Listado-colores/. Fuente única de los códigos de citas-pos/. El chino simplificado se distingue por su escritura (campo escritura), no por el código.",
+  "idiomas": [
+    {
+      "codigo": "ara",
+      "codigo2": "ar",
+      "nombre": "Árabe"
+    },
+    {
+      "codigo": "ben",
+      "codigo2": "bn",
+      "nombre": "Bengalí"
+    },
+    {
+      "codigo": "ces",
+      "codigo2": "cs",
+      "nombre": "Checo"
+    },
+    {
+      "codigo": "dan",
+      "codigo2": "da",
+      "nombre": "Danés"
+    },
+    {
+      "codigo": "deu",
+      "codigo2": "de",
+      "nombre": "Alemán"
+    },
+    {
+      "codigo": "ell",
+      "codigo2": "el",
+      "nombre": "Griego"
+    },
+    {
+      "codigo": "eng",
+      "codigo2": "en",
+      "nombre": "Inglés"
+    },
+    {
+      "codigo": "fas",
+      "codigo2": "fa",
+      "nombre": "Persa"
+    },
+    {
+      "codigo": "fin",
+      "codigo2": "fi",
+      "nombre": "Finés"
+    },
+    {
+      "codigo": "fra",
+      "codigo2": "fr",
+      "nombre": "Francés"
+    },
+    {
+      "codigo": "heb",
+      "codigo2": "he",
+      "nombre": "Hebreo"
+    },
+    {
+      "codigo": "hin",
+      "codigo2": "hi",
+      "nombre": "Hindi"
+    },
+    {
+      "codigo": "hun",
+      "codigo2": "hu",
+      "nombre": "Húngaro"
+    },
+    {
+      "codigo": "ind",
+      "codigo2": "id",
+      "nombre": "Indonesio"
+    },
+    {
+      "codigo": "ita",
+      "codigo2": "it",
+      "nombre": "Italiano"
+    },
+    {
+      "codigo": "jpn",
+      "codigo2": "ja",
+      "nombre": "Japonés"
+    },
+    {
+      "codigo": "kor",
+      "codigo2": "ko",
+      "nombre": "Coreano"
+    },
+    {
+      "codigo": "nld",
+      "codigo2": "nl",
+      "nombre": "Neerlandés"
+    },
+    {
+      "codigo": "pol",
+      "codigo2": "pl",
+      "nombre": "Polaco"
+    },
+    {
+      "codigo": "por",
+      "codigo2": "pt",
+      "nombre": "Portugués"
+    },
+    {
+      "codigo": "ron",
+      "codigo2": "ro",
+      "nombre": "Rumano"
+    },
+    {
+      "codigo": "rus",
+      "codigo2": "ru",
+      "nombre": "Ruso"
+    },
+    {
+      "codigo": "spa",
+      "codigo2": "es",
+      "nombre": "Español"
+    },
+    {
+      "codigo": "swa",
+      "codigo2": "sw",
+      "nombre": "Suajili"
+    },
+    {
+      "codigo": "swe",
+      "codigo2": "sv",
+      "nombre": "Sueco"
+    },
+    {
+      "codigo": "tha",
+      "codigo2": "th",
+      "nombre": "Tailandés"
+    },
+    {
+      "codigo": "tur",
+      "codigo2": "tr",
+      "nombre": "Turco"
+    },
+    {
+      "codigo": "ukr",
+      "codigo2": "uk",
+      "nombre": "Ucraniano"
+    },
+    {
+      "codigo": "vie",
+      "codigo2": "vi",
+      "nombre": "Vietnamita"
+    },
+    {
+      "codigo": "zho",
+      "codigo2": "zh",
+      "nombre": "Chino simplificado"
+    }
+  ]
+}

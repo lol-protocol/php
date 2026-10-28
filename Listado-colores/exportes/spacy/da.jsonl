@@ -1,0 +1,182 @@
+{"label":"COLOR","pattern":"akvamarin","id":"aquamarine"}
+{"label":"COLOR","pattern":"aliceblå","id":"aliceblue"}
+{"label":"COLOR","pattern":"antikhvid","id":"antiquewhite"}
+{"label":"COLOR","pattern":"aqua","id":"aqua"}
+{"label":"COLOR","pattern":"azurblå","id":"azure"}
+{"label":"COLOR","pattern":"beige","id":"beige"}
+{"label":"COLOR","pattern":"biskuit","id":"bisque"}
+{"label":"COLOR","pattern":"blegegrøn","id":"palegreen"}
+{"label":"COLOR","pattern":"blegguldris","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"blegturkis","id":"paleturquoise"}
+{"label":"COLOR","pattern":"blegviolet rød","id":"palevioletred"}
+{"label":"COLOR","pattern":"blomme","id":"plum"}
+{"label":"COLOR","pattern":"blomsterhvid","id":"floralwhite"}
+{"label":"COLOR","pattern":"blå","id":"blue"}
+{"label":"COLOR","pattern":"blågrøn","id":"teal"}
+{"label":"COLOR","pattern":"blåviolet","id":"blueviolet"}
+{"label":"COLOR","pattern":"bordeaux","id":"burgundy"}
+{"label":"COLOR","pattern":"brun","id":"brown"}
+{"label":"COLOR","pattern":"brune","id":"brown"}
+{"label":"COLOR","pattern":"brunt","id":"brown"}
+{"label":"COLOR","pattern":"chartreuse","id":"chartreuse"}
+{"label":"COLOR","pattern":"chokolade","id":"chocolate"}
+{"label":"COLOR","pattern":"citronchiffon","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"creme","id":"cream"}
+{"label":"COLOR","pattern":"cremefarvet","id":"cream"}
+{"label":"COLOR","pattern":"cyan","id":"cyan"}
+{"label":"COLOR","pattern":"dodgerblå","id":"dodgerblue"}
+{"label":"COLOR","pattern":"dyb himmelblå","id":"deepskyblue"}
+{"label":"COLOR","pattern":"dyb pink","id":"deeppink"}
+{"label":"COLOR","pattern":"dæmpet grå","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"elfenben","id":"ivory"}
+{"label":"COLOR","pattern":"fersken","id":"peachpuff"}
+{"label":"COLOR","pattern":"forårsgrøn","id":"springgreen"}
+{"label":"COLOR","pattern":"fuchsia","id":"fuchsia"}
+{"label":"COLOR","pattern":"gainsboro-grå","id":"gainsboro"}
+{"label":"COLOR","pattern":"gammel blonde","id":"oldlace"}
+{"label":"COLOR","pattern":"grå","id":"gray;grey"}
+{"label":"COLOR","pattern":"grøn","id":"green"}
+{"label":"COLOR","pattern":"grønne","id":"green"}
+{"label":"COLOR","pattern":"grønngul","id":"greenyellow"}
+{"label":"COLOR","pattern":"grønt","id":"green"}
+{"label":"COLOR","pattern":"gul","id":"yellow"}
+{"label":"COLOR","pattern":"guld","id":"gold"}
+{"label":"COLOR","pattern":"guldris","id":"goldenrod"}
+{"label":"COLOR","pattern":"gule","id":"yellow"}
+{"label":"COLOR","pattern":"gulgrøn","id":"yellowgreen"}
+{"label":"COLOR","pattern":"gult","id":"yellow"}
+{"label":"COLOR","pattern":"gylden","id":"gold"}
+{"label":"COLOR","pattern":"havgrøn","id":"seagreen"}
+{"label":"COLOR","pattern":"himmelblå","id":"skyblue"}
+{"label":"COLOR","pattern":"honningdug","id":"honeydew"}
+{"label":"COLOR","pattern":"hvede","id":"wheat"}
+{"label":"COLOR","pattern":"hvid","id":"white"}
+{"label":"COLOR","pattern":"hvide","id":"white"}
+{"label":"COLOR","pattern":"hvidt","id":"white"}
+{"label":"COLOR","pattern":"ildrød","id":"firebrick"}
+{"label":"COLOR","pattern":"indigo","id":"indigo"}
+{"label":"COLOR","pattern":"indisk rød","id":"indianred"}
+{"label":"COLOR","pattern":"kadetblå","id":"cadetblue"}
+{"label":"COLOR","pattern":"karmosinrød","id":"crimson"}
+{"label":"COLOR","pattern":"karmosinrøde","id":"crimson"}
+{"label":"COLOR","pattern":"karmosinrødt","id":"crimson"}
+{"label":"COLOR","pattern":"kastanjebrun","id":"maroon"}
+{"label":"COLOR","pattern":"khaki","id":"khaki"}
+{"label":"COLOR","pattern":"kongeblå","id":"royalblue"}
+{"label":"COLOR","pattern":"koral","id":"coral"}
+{"label":"COLOR","pattern":"koralrød","id":"coral"}
+{"label":"COLOR","pattern":"kornblåt","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"laks","id":"salmon"}
+{"label":"COLOR","pattern":"laksefarvet","id":"salmon"}
+{"label":"COLOR","pattern":"lavendel","id":"lavender"}
+{"label":"COLOR","pattern":"lavendelrosa","id":"lavenderblush"}
+{"label":"COLOR","pattern":"lilla","id":"purple"}
+{"label":"COLOR","pattern":"lime","id":"lime"}
+{"label":"COLOR","pattern":"limegrøn","id":"lime;limegreen"}
+{"label":"COLOR","pattern":"limegrønne","id":"lime"}
+{"label":"COLOR","pattern":"limegrønt","id":"lime"}
+{"label":"COLOR","pattern":"lys havgrøn","id":"lightseagreen"}
+{"label":"COLOR","pattern":"lys lyserød","id":"lightpink"}
+{"label":"COLOR","pattern":"lys skifergrå","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"lyscyan","id":"lightcyan"}
+{"label":"COLOR","pattern":"lyseblå","id":"lightblue"}
+{"label":"COLOR","pattern":"lysegrå","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"lysegrøn","id":"lightgreen"}
+{"label":"COLOR","pattern":"lysegrønne","id":"lightgreen"}
+{"label":"COLOR","pattern":"lysegrønt","id":"lightgreen"}
+{"label":"COLOR","pattern":"lysegul","id":"lightyellow"}
+{"label":"COLOR","pattern":"lyserød","id":"pink"}
+{"label":"COLOR","pattern":"lyserøde","id":"pink"}
+{"label":"COLOR","pattern":"lyserødt","id":"pink"}
+{"label":"COLOR","pattern":"lysestålblå","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"lysgul guldris","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"lyshimmelblå","id":"lightskyblue"}
+{"label":"COLOR","pattern":"lyskoral","id":"lightcoral"}
+{"label":"COLOR","pattern":"lyslaks","id":"lightsalmon"}
+{"label":"COLOR","pattern":"lærred","id":"linen"}
+{"label":"COLOR","pattern":"magenta","id":"magenta"}
+{"label":"COLOR","pattern":"majssilke","id":"cornsilk"}
+{"label":"COLOR","pattern":"mandelhvid","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"marineblå","id":"navy"}
+{"label":"COLOR","pattern":"mellemakvamarin","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"mellemblå","id":"mediumblue"}
+{"label":"COLOR","pattern":"mellemforårsgrøn","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"mellemhavgrøn","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"mellemorkidé","id":"mediumorchid"}
+{"label":"COLOR","pattern":"mellempurpur","id":"mediumpurple"}
+{"label":"COLOR","pattern":"mellemskiferblå","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"mellemturkis","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"mellemviolet rød","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"midnatblå","id":"midnightblue"}
+{"label":"COLOR","pattern":"mintcreme","id":"mintcream"}
+{"label":"COLOR","pattern":"mokkasin","id":"moccasin"}
+{"label":"COLOR","pattern":"mørk cyan","id":"darkcyan"}
+{"label":"COLOR","pattern":"mørk guldris","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"mørk havgrøn","id":"darkseagreen"}
+{"label":"COLOR","pattern":"mørk khaki","id":"darkkhaki"}
+{"label":"COLOR","pattern":"mørk laksefarve","id":"darksalmon"}
+{"label":"COLOR","pattern":"mørk olivengrøn","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"mørk orange","id":"darkorange"}
+{"label":"COLOR","pattern":"mørk orkidé","id":"darkorchid"}
+{"label":"COLOR","pattern":"mørk skiferblå","id":"darkslateblue"}
+{"label":"COLOR","pattern":"mørk skifergrå","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"mørk turkis","id":"darkturquoise"}
+{"label":"COLOR","pattern":"mørkeblå","id":"darkblue"}
+{"label":"COLOR","pattern":"mørkegrå","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"mørkegrøn","id":"darkgreen"}
+{"label":"COLOR","pattern":"mørkegrønne","id":"darkgreen"}
+{"label":"COLOR","pattern":"mørkegrønt","id":"darkgreen"}
+{"label":"COLOR","pattern":"mørkemagenta","id":"darkmagenta"}
+{"label":"COLOR","pattern":"mørkerød","id":"darkred"}
+{"label":"COLOR","pattern":"mørkeviolet","id":"darkviolet"}
+{"label":"COLOR","pattern":"navajohvid","id":"navajowhite"}
+{"label":"COLOR","pattern":"oliven","id":"olive"}
+{"label":"COLOR","pattern":"oliven drab","id":"olivedrab"}
+{"label":"COLOR","pattern":"olivengrøn","id":"olive"}
+{"label":"COLOR","pattern":"olivengrønne","id":"olive"}
+{"label":"COLOR","pattern":"olivengrønt","id":"olive"}
+{"label":"COLOR","pattern":"orange","id":"orange"}
+{"label":"COLOR","pattern":"orangerød","id":"orangered"}
+{"label":"COLOR","pattern":"orkidé","id":"orchid"}
+{"label":"COLOR","pattern":"papajacreme","id":"papayawhip"}
+{"label":"COLOR","pattern":"peru","id":"peru"}
+{"label":"COLOR","pattern":"pink","id":"pink"}
+{"label":"COLOR","pattern":"plænegrøn","id":"lawngreen"}
+{"label":"COLOR","pattern":"pudderblå","id":"powderblue"}
+{"label":"COLOR","pattern":"rav","id":"amber"}
+{"label":"COLOR","pattern":"ravfarvet","id":"amber"}
+{"label":"COLOR","pattern":"Rebecca-lilla","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"rosabrun","id":"rosybrown"}
+{"label":"COLOR","pattern":"rød","id":"red"}
+{"label":"COLOR","pattern":"rødbrun","id":"maroon"}
+{"label":"COLOR","pattern":"rødbrune","id":"maroon"}
+{"label":"COLOR","pattern":"rødbrunt","id":"maroon"}
+{"label":"COLOR","pattern":"røde","id":"red"}
+{"label":"COLOR","pattern":"rødt","id":"red"}
+{"label":"COLOR","pattern":"røgvhid","id":"whitesmoke"}
+{"label":"COLOR","pattern":"sadelbrun","id":"saddlebrown"}
+{"label":"COLOR","pattern":"sandbrun","id":"sandybrown"}
+{"label":"COLOR","pattern":"sienna","id":"sienna"}
+{"label":"COLOR","pattern":"skal","id":"seashell"}
+{"label":"COLOR","pattern":"skarlagenrød","id":"scarlet"}
+{"label":"COLOR","pattern":"skarlagenrøde","id":"scarlet"}
+{"label":"COLOR","pattern":"skarlagenrødt","id":"scarlet"}
+{"label":"COLOR","pattern":"skiferblå","id":"slateblue"}
+{"label":"COLOR","pattern":"skifergrå","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"skovgrøn","id":"forestgreen"}
+{"label":"COLOR","pattern":"sne","id":"snow"}
+{"label":"COLOR","pattern":"solbrun","id":"tan"}
+{"label":"COLOR","pattern":"sort","id":"black"}
+{"label":"COLOR","pattern":"sorte","id":"black"}
+{"label":"COLOR","pattern":"spøgelseshvid","id":"ghostwhite"}
+{"label":"COLOR","pattern":"stålblå","id":"steelblue"}
+{"label":"COLOR","pattern":"sølv","id":"silver"}
+{"label":"COLOR","pattern":"sølvfarvet","id":"silver"}
+{"label":"COLOR","pattern":"tidsel","id":"thistle"}
+{"label":"COLOR","pattern":"tomat","id":"tomato"}
+{"label":"COLOR","pattern":"træbrun","id":"burlywood"}
+{"label":"COLOR","pattern":"turkis","id":"turquoise"}
+{"label":"COLOR","pattern":"tågerosa","id":"mistyrose"}
+{"label":"COLOR","pattern":"varm pink","id":"hotpink"}
+{"label":"COLOR","pattern":"vinrød","id":"burgundy"}
+{"label":"COLOR","pattern":"violet","id":"purple;violet"}

@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | アリスブルー | `#F0F8FF` |  | 穏やかさ、爽やかさ、清潔感；軽やかで開放的な感覚。 | 天上の清らかさと静けさ；澄んだ空や明晰なコミュニケーションと結びつく。 | derivado | derivado |
 | `antiquewhite` | アンティークホワイト | `#FAEBD7` |  | 郷愁、伝統、やわらかな温もり；ヴィンテージを思わせる。 | 過去の記憶と叡智；年月を経た純粋さと古代の循環。 | derivado | derivado |
-| `aqua` | アクア | `#00FFFF` | `cyan` | 爽やかさ、明晰さ、エネルギー、澄んだ水の感覚。 | 生きた水と浄化；直感の流れと微細なものとの交信。 | derivado | derivado |
+| `aqua` | アクア | `#00FFFF` | `cyan` | 爽やかさ、明晰さ、落ち着き、コミュニケーション；デジタルや現代的なものと結びつく。 | 水と浄化；精神の明晰さと対話の流れ。 | derivado | derivado |
 | `aquamarine` | アクアマリン | `#7FFFD4` |  | くつろぎを与える爽やかさ、穏やかさ、軽やかな楽観。 | 船乗りの石：旅の守護、勇気、感情の明晰さ。 | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | 紺碧 | `#F0FFFF` |  | 晴れた空、開放感、自由、静けさ。 | 精神の高みと空の清らかさ；天上的なものと開かれた心。 | derivado | derivado |
 | `beige` | ベージュ | `#F5F5DC` |  | 中立、素朴さ、安定、控えめさ。 | 大地と謙虚さ；極端のない均衡、日常の暮らし、根を張ること。 | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | ファイアブリック | `#B22222` |  | 力、決意、強い温もり、緊張。 | 鍛冶場と炉辺の火；努力、犠牲、仕事。 | derivado | derivado |
 | `floralwhite` | フローラルホワイト | `#FFFAF0` |  | やわらかさ、繊細さ、清らかさ、軽やかさ。 | 白い花：無垢、始まり、春の祝福。 | derivado | derivado |
 | `forestgreen` | フォレストグリーン | `#228B22` |  | 自然、均衡、健康、落ち着き、成長。 | 聖なる森：生命、更新、大地とのつながり。 | derivado | derivado |
-| `fuchsia` | フューシャ | `#FF00FF` | `magenta` | 大胆さ、創造性、風変わり、遊び心のあるエネルギー。 | 変容と魔法；物質と精神をつなぐ絆。 | derivado | derivado |
+| `fuchsia` | フューシャ | `#FF00FF` | `magenta` | 創造性、大胆さ、激しさ、脈打つエネルギー。 | 変容と精神性；物質と微細なもののつながり。 | derivado | derivado |
 | `gainsboro` | ゲインズボロー | `#DCDCDC` |  | 上品な中立、清潔感、落ち着き。 | 中間の状態と均衡、重さのないもの。 | derivado | derivado |
 | `ghostwhite` | ゴーストホワイト | `#F8F8FF` |  | 軽やかさ、微かな神秘、輝く冷たさ。 | エーテル的なものと幽玄なもの；二つの世界のあいだの微かな気配。 | derivado | derivado |
 | `gold` | 金 | `#FFD700` |  | 成功、富、威信、楽観、温もり。 | 太陽と完全性；悟り、力、叡智、多くの伝統で神聖なもの。 | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

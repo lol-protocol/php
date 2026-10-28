@@ -9,6 +9,7 @@ use App\Support\Database;
 use App\Support\Format;
 use App\Support\HealthCheck;
 use App\Support\HostParser;
+use App\Support\Migrator;
 use App\Support\Router;
 use App\Support\UrlHelper;
 use App\Support\ServiceLocator;
@@ -33,7 +34,7 @@ define('DEBUG_MODE', getenv('DEBUG') === 'true');
 
 HealthCheck::handle();
 
-SessionManager::getInstance()->start();
+SessionManager::getInstance()->resume();
 HttpSecurityHeaders::setSecurityHeaders();
 
 $container = Container::getInstance();
@@ -65,6 +66,9 @@ if (!RateLimiter::getInstance()->checkLimit(100, 60)) {
     echo '<h1>429 - Too Many Requests</h1>';
     exit;
 }
+
+// After the limiter, because this one does reach the database.
+HealthCheck::handleReady($container->get('db'), Migrator::forSite($container->get('db'), $site), $locator->getLogger());
 
 $response = $locator->getRouter()->dispatch();
 echo $response;

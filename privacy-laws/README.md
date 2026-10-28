@@ -4,7 +4,7 @@ A database and search tool for privacy legislation, built for genealogy platform
 
 > **Informational only, not legal advice.** The data was compiled without review by a lawyer. Laws change, penalty amounts are adjusted over time, and some entries may be incomplete or out of date. Before relying on any row, check it against the official source (see the `website_url` column and the regulator named in `enforcement_authority`).
 
-> The data is a curated starting point (159 laws, 130 countries). The countries and states added in October 2026 and the `frameworks` column were compiled from secondary sources (see [Data provenance](#data-provenance)); check the official source before relying on any entry.
+> The data is a curated starting point (182 laws, 153 countries). The countries and states added in October 2026 and the `frameworks` column were compiled from secondary sources (see [Data provenance](#data-provenance)); check the official source before relying on any entry.
 
 ## What it does
 
@@ -110,12 +110,14 @@ Needs PHP with `curl`, `dom`, `mbstring` and `intl` (the last one keeps file nam
 
 ## Database
 
+MySQL 8.0 and MariaDB 10.11 (both are tested in CI).
+
 ```bash
-mysql -u root -p < database_schema.sql      # or: php import_database.php --create-schema
 php import_database.php --all               # schema + import + validation
+php tests/database_check.php                # compares every column of the database with the CSV
 ```
 
-The importer reads `region` straight from the CSV.
+Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `privacy_laws_db` database.** `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV.
 
 ## Data provenance
 
@@ -125,7 +127,7 @@ The first real link check (11 Oct 2026, GitHub Actions) found dead links mostly 
 
 
 - The first 53 rows come from the original curated list.
-- A second batch (October 2026) added Bulgaria, 25 more countries with a data-protection law, 24 US state laws and three Canadian provincial laws; the places found to have no general law yet are listed in [docs/research-2026-10/new-rows-2026-10-16.md](docs/research-2026-10/new-rows-2026-10-16.md), with the ones still to research. The `deceased_data`, `research_exemption` and `genetic_data` columns (for genealogy use) are filled only where a source was found: between 17 and 21 October 2026 they were researched for the older rows too, so they now cover 83, 114 and 144 of the 159 laws; 9 laws (El Salvador, Chile, Somalia, Niger, Mali, Guinea, Burundi, Mauritania, Gabon) have none of the three yet: searches did not reach the articles, and their official texts need to be read directly. Their values carry the source and confidence of each cell in `field_sources.csv`, and low-confidence ones end in "(unconfirmed)".
+- A second batch (October 2026) added Bulgaria, 25 more countries with a data-protection law, 24 US state laws and three Canadian provincial laws; the places found to have no general law yet are listed in [docs/research-2026-10/new-rows-2026-10-16.md](docs/research-2026-10/new-rows-2026-10-16.md), with the ones still to research. The `deceased_data`, `research_exemption` and `genetic_data` columns (for genealogy use) are filled only where a source was found: between 17 and 21 October 2026 they were researched for the older rows too, so they now cover 83, 114 and 144 of the 159 laws; 9 laws (El Salvador, Chile, Somalia, Niger, Mali, Guinea, Burundi, Mauritania, Gabon) have none of the three yet: searches did not reach the articles, and their official texts need to be read directly. Their values carry the source and confidence of each cell in `field_sources.csv`, and low-confidence ones end in "(unconfirmed)". A third batch (22 October 2026) added Montenegro, Cabo Verde, Andorra, Monaco, San Marino, Kosovo, Barbados, Seychelles and Madagascar; Bahamas and Saint Lucia have a law but no enactment date was found, so they are still to add ([docs/research-2026-10/new-rows-2026-10-22.md](docs/research-2026-10/new-rows-2026-10-22.md)). A fourth batch (25 October 2026) added Guyana, Belize, Grenada, Antigua and Barbuda, Brunei, the Republic of the Congo, Sao Tome and Principe, Eswatini, Equatorial Guinea, Turkmenistan and Vanuatu ([docs/research-2026-10/new-rows-2026-10-25.md](docs/research-2026-10/new-rows-2026-10-25.md)); several are enacted but their commencement is not confirmed. A fifth batch (25 October 2026) added Saint Lucia, the Comoros and Vatican City; the others researched (Fiji, Solomon Islands, Nauru, Palau, Micronesia have no general law; Tonga, Kiribati and the Marshall Islands have a recent act whose enactment date is unknown; Samoa and Tuvalu could not be settled; Bahamas and Djibouti still lack an enactment date) are listed in [docs/research-2026-10/new-rows-2026-10-25-batch5.md](docs/research-2026-10/new-rows-2026-10-25-batch5.md).
 - The 49 countries added in October 2026 (HR CY EE LV LT MT SK SI NO IS LI UA RS AL MK BA MD GE AM BY UZ UY EC CR PA PY DO JM NI TW LK NP QA BH OM JO MA GH SN CI UG RW TZ ZM ZW MU BW AO ET) and the `frameworks` column were researched through web search only (no access to the primary texts). `website_url` values are pages that appeared in search results; some point to law-firm guides rather than the regulator.
 - Confidence notes, sources and open doubts per batch are kept in [docs/research-2026-10/](docs/research-2026-10/). Known weak spots: Burkina Faso and Ghana (Convention 108 status unclear, left empty), Russia's Convention 108 status after leaving the Council of Europe, Mexico's APEC CBPR status, and entry-into-force days that two sources disagree on (see each row's `notes`).
 
@@ -141,7 +143,7 @@ npm run check:links                # does every reference URL still answer? (--o
 
 The browser tests skip themselves when PHP, Playwright or Chromium is missing; set `E2E_REQUIRED=1` to make that an error. `check:links` exits with 1 on broken links (404/410, a host that no longer exists, a bad certificate); 401/403/429, a 5xx that persists after one retry, timeouts, temporary DNS failures and redirect loops (cookie walls) are only warnings, because many official sites block or throttle automated requests.
 
-CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, and the browser tests, on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
+CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, the browser tests, and the database import (MySQL 8.0 and MariaDB 10.11, compared column by column with the CSV), on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
 
 ## Pending
 

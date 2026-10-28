@@ -11,16 +11,16 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.2" cy="58.59" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="31.86" cy="58.59" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="links">
-    <path d="M11 11.6L51 11.6M11 15.4L51 15.4" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.61"/>
+    <path d="M11 11.6L51 11.6M11 15.4L51 15.4" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
     <path d="M31 13.5L31 30.5L21 30.5L21 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
     <path d="M31 13.5L31 30.5L41 30.5L41 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M19.11 9.8A2.04 2.04 0 0 1 19.51 11.02L19.51 20.54A2.04 2.04 0 0 1 17.47 22.58L7.95 22.58A2.04 2.04 0 0 1 6.32 21.77L4.79 19.72A2.04 2.04 0 0 1 4.38 18.5L4.38 8.98A2.04 2.04 0 0 1 6.42 6.94L15.94 6.94A2.04 2.04 0 0 1 17.57 7.76Z" fill="#767C82"/><rect x="4.2" y="6.7" width="13.6" height="13.6" rx="2.04" fill="url(#grad_relationship_nuclear_family_mist)"/></g>
-    <g><path d="M45.2 18.23L46.73 20.27A7.48 7.48 0 0 0 58.7 11.3L57.16 9.25A7.48 7.48 0 0 0 45.2 18.23Z" fill="#767C82"/><circle cx="51" cy="13.5" r="7.48" fill="url(#grad_relationship_nuclear_family_mist)"/></g>
+    <g><path d="M19.27 9.47A1.22 1.22 0 0 1 19.51 10.21L19.51 21.36A1.22 1.22 0 0 1 18.29 22.58L7.14 22.58A1.22 1.22 0 0 1 6.16 22.1L4.62 20.05A1.22 1.22 0 0 1 4.38 19.32L4.38 8.16A1.22 1.22 0 0 1 5.6 6.94L16.76 6.94A1.22 1.22 0 0 1 17.74 7.43Z" fill="#767C82"/><rect x="4.2" y="6.7" width="13.6" height="13.6" rx="1.22" fill="url(#grad_relationship_nuclear_family_mist)"/></g>
+    <g><path d="M45.74 17.82L47.27 19.86A6.8 6.8 0 0 0 58.15 11.7L56.62 9.66A6.8 6.8 0 0 0 45.74 17.82Z" fill="#767C82"/><circle cx="51" cy="13.5" r="6.8" fill="url(#grad_relationship_nuclear_family_mist)"/></g>
     <g><path d="M28.81 48.89A1.5 1.5 0 0 1 28.68 50.84L23.77 55.75A1.5 1.5 0 0 1 21.66 55.75L16.75 50.84A1.5 1.5 0 0 1 16.61 50.68L15.08 48.64A1.5 1.5 0 0 1 15.22 46.68L20.12 41.78A1.5 1.5 0 0 1 22.24 41.78L27.14 46.68A1.5 1.5 0 0 1 27.28 46.84Z" fill="#883307"/><rect x="16.04" y="42.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 21 47.5)" fill="url(#grad_relationship_nuclear_family_orange_r45)"/></g>
     <g><path d="M48.81 48.89A1.5 1.5 0 0 1 48.68 50.84L43.77 55.75A1.5 1.5 0 0 1 41.66 55.75L36.75 50.84A1.5 1.5 0 0 1 36.61 50.68L35.08 48.64A1.5 1.5 0 0 1 35.22 46.68L40.12 41.78A1.5 1.5 0 0 1 42.24 41.78L47.14 46.68A1.5 1.5 0 0 1 47.28 46.84Z" fill="#883307"/><rect x="36.04" y="42.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 41 47.5)" fill="url(#grad_relationship_nuclear_family_orange_r45)"/></g>
   </g>

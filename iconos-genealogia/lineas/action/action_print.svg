@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
   <g class="solids">
-    <g><rect x="24" y="24" width="26" height="26" rx="6" fill="none" stroke="#565F6B" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><rect x="19" y="19" width="26" height="26" rx="6" fill="none" stroke="#565F6B" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M40.9 19.2A6 6 0 0 1 42.1 22.8L42.1 36.8A6 6 0 0 1 36.1 42.8L22.1 42.8A6 6 0 0 1 17.3 40.4L15.2 37.6A6 6 0 0 1 14 34L14 20A6 6 0 0 1 20 14L34 14A6 6 0 0 1 38.8 16.4Z" fill="none" stroke="#565F6B" stroke-width="1.8" stroke-linejoin="round"/><rect x="14" y="14" width="26" height="26" rx="6" fill="none" stroke="#565F6B" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-slate" stroke="#565F6B"><rect x="24" y="24" width="26" height="26" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-slate" stroke="#565F6B"><rect x="19" y="19" width="26" height="26" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-slate" stroke="#565F6B"><path d="M40.9 19.2A6 6 0 0 1 42.1 22.8L42.1 36.8A6 6 0 0 1 36.1 42.8L22.1 42.8A6 6 0 0 1 17.3 40.4L15.2 37.6A6 6 0 0 1 14 34L14 20A6 6 0 0 1 20 14L34 14A6 6 0 0 1 38.8 16.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="14" y="14" width="26" height="26" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

@@ -50,6 +50,11 @@ Misschien gaat het in het leven daarom niet om hoeveel tijd we hebben, maar om w
 ## Vertrouwen en respect
 - Jouw familieverhaal, met respect en zorg behandeld.
 
+## Privacy en controle
+- Mensen die nog in leven kunnen zijn, worden niet getoond aan wie je stamboom bezoekt.
+- Je privécollecties zie alleen jij.
+- Neem je stamboom mee: exporteer hem naar GEDCOM.
+
 ## Oproepen tot actie
 - Begin vandaag nog met je stamboom.
 - Begin met ontdekken wie je grootouders waren.
@@ -87,8 +92,6 @@ Misschien gaat het in het leven daarom niet om hoeveel tijd we hebben, maar om w
 - Begin vandaag: je eerste stap is slechts één klik verwijderd
 - Je wortels, dichterbij dan je denkt
 - Nodig je familie uit om samen jullie verhaal te schrijven
-- Je stamboom bevat misschien sporen die nog ontdekt moeten worden
-- Misschien is er een familielid dat je nog niet kent
 
 ### Voorbeeldtekst
 - Ontdek wie er vóór je kwamen.

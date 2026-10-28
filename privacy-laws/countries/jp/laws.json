@@ -29,11 +29,6 @@
     "confidence": "medium",
     "last_checked": "2026-10-17",
     "sources": {
-      "notes": {
-        "url": "https://www.aoshearman.com/en/insights/ao-shearman-on-data/amendments-to-the-act-on-the-protection-of-personal-information-promulgated",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://www.lexmundi.com/guides/global-data-privacy-guide/jurisdictions/asia-pacific/japan",
         "confidence": "medium",
@@ -48,6 +43,11 @@
         "url": "https://nature.com/articles/s10038-017-0409-4.pdf",
         "confidence": "low",
         "checked": "2026-10-17"
+      },
+      "notes": {
+        "url": "https://www.aoshearman.com/en/insights/ao-shearman-on-data/amendments-to-the-act-on-the-protection-of-personal-information-promulgated",
+        "confidence": "medium",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

@@ -454,6 +454,27 @@ final class ApplicationTest extends AppTestCase
         $this->assertSame(0, (new BookmarkStore($this->dir . '/almacen/marcalibros'))->count());
     }
 
+    public function testInvisibleCharactersCannotHideAPersonalDataFromTheReview(): void
+    {
+        $app = $this->app();
+        foreach (["Escríbeme a juan.perez@gma\u{200B}il.com", "Fulano es un esta\u{200B}fador"] as $label) {
+            $response = $this->post($app, '/crear', ['fuente' => 'subida', 'nombre' => $label], $this->upload());
+            $this->assertSame(422, $response->status, json_encode($label));
+        }
+        $this->assertSame(0, (new BookmarkStore($this->dir . '/almacen/marcalibros'))->count());
+    }
+
+    public function testTheSheetAndTheCatalogShowTheSamePage(): void
+    {
+        $app = $this->app();
+        $catalog = $this->get($app, '/', ['categoria' => 'leyes', 'pagina' => '2'])->body;
+        $sheet = $this->get($app, '/imprimir', ['categoria' => 'leyes', 'pagina' => '2'])->body;
+        preg_match_all('#mb-leyes-\d+#', $catalog, $a);
+        preg_match_all('#mb-leyes-\d+#', $sheet, $b);
+        $this->assertSame(array_values(array_unique($a[0])), array_values(array_unique($b[0])));
+        $this->assertContains('mb-leyes-26', $b[0]);
+    }
+
     public function testTheSavedImagesHaveTheTwoSizes(): void
     {
         $app = $this->app();
@@ -577,6 +598,41 @@ final class ApplicationTest extends AppTestCase
         $this->assertStringContainsString('La imagen pesa demasiado', $response->body);
     }
 
+    public function testAnOversizedBodyAlsoSpendsAnAttempt(): void
+    {
+        $app = $this->app($this->config(createsPerHour: 1));
+        $this->assertSame(413, $this->post($app, '/crear', tooLarge: true)->status);
+        $this->assertSame(429, $this->post($app, '/crear', tooLarge: true)->status);
+    }
+
+    public function testAFailureSavingTheDataKeepsTheFormAndSaysSo(): void
+    {
+        $config = $this->config();
+        $limits = new \Marcalibros\Limits();
+        $library = new \Marcalibros\LandscapeLibrary($config->projectRoot . '/images');
+        $app = new Application(
+            $config,
+            new \Marcalibros\Catalog($config->projectRoot . '/catalog/manifest.json'),
+            $library,
+            new \Marcalibros\BookmarkMaker($config->storageDirectory . '/marcalibros', $library, $limits),
+            new BookmarkStore($this->dir . '/no/existe'),   // los datos no se pueden escribir
+            new \MarcalibrosApp\RateLimiter($config->storageDirectory . '/intentos'),
+            new \MarcalibrosApp\View(dirname(__DIR__) . '/templates'),
+            $limits,
+            fn (): int => $this->now,
+            fn (string $p): bool => false,
+        );
+        $previous = ini_set('error_log', $this->dir . '/errores.log');
+        try {
+            $response = @$this->post($app, '/crear', ['fuente' => 'paisaje', 'paisaje' => 'paisaje-costa-1920x1080.jpg', 'nombre' => 'Para mi libro']);
+        } finally {
+            ini_set('error_log', (string) $previous);
+        }
+        $this->assertSame(500, $response->status);
+        $this->assertStringContainsString('No se pudo guardar el marcalibro', $response->body);
+        $this->assertStringContainsString('value="Para mi libro"', $response->body);
+    }
+
     public function testInvalidCropAndSourceAreRejected(): void
     {
         $app = $this->app();
@@ -693,6 +749,16 @@ final class ApplicationTest extends AppTestCase
         $body = $this->get($app, $location)->body;
         $this->assertStringContainsString('a los 7 días de crearlo', $body);
         $this->assertStringContainsString('se guardan 7 días', $body);
+    }
+
+    public function testWithoutRetentionTheBookmarkNeverExpires(): void
+    {
+        $app = $this->app($this->config(retentionDays: 0));
+        $location = $this->post($app, '/crear', ['fuente' => 'paisaje', 'paisaje' => 'paisaje-costa-1920x1080.jpg'])->headers['Location'];
+        $body = $this->get($app, $location)->body;
+        $this->assertStringContainsString('sin fecha de vencimiento', $body);
+        $this->assertStringNotContainsString('Se borrará solo', $body);
+        $this->assertStringNotContainsString('se borran solos', $body);
     }
 
     public function testStaticFileResponsesExposeTheEtagOfTheCurrentFile(): void

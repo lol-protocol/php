@@ -1,0 +1,91 @@
+/* Generado por citas-pos/bin/render.php desde datos/paleta.json. No editar a mano. */
+.citas-pos {
+  --cp-fondo: #fbfaf7; --cp-tinta: #1d1d22; --cp-suave: #55555e;
+  --cp-ADJ: #1f7d38;
+  --cp-ADP: #b3387a;
+  --cp-ADV: #4f7b1c;
+  --cp-AUX: #ad541a;
+  --cp-CCONJ: #78591e;
+  --cp-DET: #5f463b;
+  --cp-INTJ: #876d00;
+  --cp-NOUN: #006cb8;
+  --cp-NUM: #4f56a9;
+  --cp-PART: #944d60;
+  --cp-PRON: #89438e;
+  --cp-PROPN: #005b6b;
+  --cp-PUNCT: #727272;
+  --cp-SCONJ: #007761;
+  --cp-SYM: #6a6d8f;
+  --cp-VERB: #c63845;
+  --cp-X: #1f1f1f;
+}
+@media (prefers-color-scheme: dark) {
+  .citas-pos:not([data-tema="claro"]) {
+    --cp-fondo: #15161b; --cp-tinta: #ececf1; --cp-suave: #a4a4b0;
+    --cp-ADJ: #76cf82;
+    --cp-ADP: #ff80be;
+    --cp-ADV: #a8d471;
+    --cp-AUX: #ff9c60;
+    --cp-CCONJ: #c6a062;
+    --cp-DET: #ebcbbe;
+    --cp-INTJ: #f6ce3e;
+    --cp-NOUN: #22b4ff;
+    --cp-NUM: #a2a2fd;
+    --cp-PART: #efa0b2;
+    --cp-PRON: #e296e5;
+    --cp-PROPN: #47aebe;
+    --cp-PUNCT: #969696;
+    --cp-SCONJ: #60ceb4;
+    --cp-SYM: #c7c9ef;
+    --cp-VERB: #ff767a;
+    --cp-X: #f3f3f3;
+  }
+}
+.citas-pos[data-tema="oscuro"] {
+  --cp-fondo: #15161b; --cp-tinta: #ececf1; --cp-suave: #a4a4b0;
+    --cp-ADJ: #76cf82;
+    --cp-ADP: #ff80be;
+    --cp-ADV: #a8d471;
+    --cp-AUX: #ff9c60;
+    --cp-CCONJ: #c6a062;
+    --cp-DET: #ebcbbe;
+    --cp-INTJ: #f6ce3e;
+    --cp-NOUN: #22b4ff;
+    --cp-NUM: #a2a2fd;
+    --cp-PART: #efa0b2;
+    --cp-PRON: #e296e5;
+    --cp-PROPN: #47aebe;
+    --cp-PUNCT: #969696;
+    --cp-SCONJ: #60ceb4;
+    --cp-SYM: #c7c9ef;
+    --cp-VERB: #ff767a;
+    --cp-X: #f3f3f3;
+}
+.citas-pos { margin: 0; padding: 16px 20px; border-radius: 8px; background: var(--cp-fondo); color: var(--cp-tinta); }
+.citas-pos blockquote { margin: 0; font: 1.375rem/2 Georgia, "Times New Roman", serif; }
+.citas-pos blockquote p { margin: 0; }
+.citas-pos figcaption { margin-top: 8px; font: 0.8125rem/1.4 system-ui, sans-serif; color: var(--cp-suave); }
+.citas-pos .w { color: var(--color); text-decoration: var(--marca, none); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.citas-pos .w[data-c="ADJ"] { --color: var(--cp-ADJ); }
+.citas-pos .w[data-c="ADP"] { --color: var(--cp-ADP); }
+.citas-pos .w[data-c="ADV"] { --color: var(--cp-ADV); }
+.citas-pos .w[data-c="AUX"] { --color: var(--cp-AUX); }
+.citas-pos .w[data-c="CCONJ"] { --color: var(--cp-CCONJ); }
+.citas-pos .w[data-c="DET"] { --color: var(--cp-DET); }
+.citas-pos .w[data-c="INTJ"] { --color: var(--cp-INTJ); }
+.citas-pos .w[data-c="NOUN"] { --color: var(--cp-NOUN); }
+.citas-pos .w[data-c="NUM"] { --color: var(--cp-NUM); }
+.citas-pos .w[data-c="PART"] { --color: var(--cp-PART); }
+.citas-pos .w[data-c="PRON"] { --color: var(--cp-PRON); }
+.citas-pos .w[data-c="PROPN"] { --color: var(--cp-PROPN); }
+.citas-pos .w[data-c="PUNCT"] { --color: var(--cp-PUNCT); }
+.citas-pos .w[data-c="SCONJ"] { --color: var(--cp-SCONJ); }
+.citas-pos .w[data-c="SYM"] { --color: var(--cp-SYM); }
+.citas-pos .w[data-c="VERB"] { --color: var(--cp-VERB); }
+.citas-pos .w[data-c="X"] { --color: var(--cp-X); }
+.citas-pos .w[data-g="nominal"] { --marca: underline solid; }
+.citas-pos .w[data-g="verbal"] { --marca: underline wavy; }
+.citas-pos .w[data-g="modificador"] { --marca: underline dotted; }
+.citas-pos .w[data-g="funcion"] { --marca: underline dashed; }
+.citas-pos .w[data-g="otros"] { --marca: none; }
+

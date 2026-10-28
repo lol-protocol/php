@@ -21,8 +21,15 @@ retirada» a quien no es el propietario; tú la sigues viendo. Cada decisión qu
     <dl class="ficha">
         <dt>Página</dt><dd><a href="<?= esc(enlace($p['tipo'], $p['recurso_id'])) ?>"><?= esc(enlace($p['tipo'], $p['recurso_id'])) ?></a></dd>
         <dt>Motivo</dt><dd><?= esc(RetiroRepository::MOTIVOS[$p['motivo']] ?? $p['motivo']) ?></dd>
+<?php if (!empty($p['depurado_en'])): ?>
+        <dt>Datos personales</dt><dd>Borrados el <?= esc(substr((string)$p['depurado_en'], 0, 10)) ?> (el correo y lo que escribió quien pidió).</dd>
+<?php else: ?>
         <dt>Detalle</dt><dd><?= nl2br(esc($p['detalle'])) ?></dd>
+<?php if (!empty($p['marcas'])): ?>
+        <dt>El filtro encontró</dt><dd>⚠ <?= esc($p['marcas']) ?></dd>
+<?php endif; ?>
         <dt>Responder a</dt><dd><?= esc($p['contacto']) ?></dd>
+<?php endif; ?>
         <dt>Historial</dt><dd><ul class="lista">
 <?php foreach ($p['eventos'] as $e): ?>
             <li><?= esc($e['ocurrido_en']) ?> · <?= esc($e['estado']) ?><?= $e['nota'] !== null && $e['nota'] !== '' ? ' · ' . esc($e['nota']) : '' ?></li>

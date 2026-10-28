@@ -7,9 +7,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Controllers\AuditoriaController;
 use App\Controllers\ClientesController;
 use App\Controllers\BoletasController;
+use App\Controllers\CobranzaController;
 use App\Controllers\CohortesController;
 use App\Controllers\DashboardController;
 use App\Controllers\FunnelController;
+use App\Controllers\NotasCreditoController;
 use App\Controllers\PagosController;
 use App\Database;
 use App\ManejadorDeErrores;
@@ -42,13 +44,19 @@ $router = new Router();
 $paginas = [
     'dashboard' => fn () => (new DashboardController())->index(),
     'cobros' => fn () => (new BoletasController())->index(),
+    'cobros-csv' => fn () => (new BoletasController())->exportar(),
     'boleta-nueva' => fn () => (new BoletasController())->nueva(),
     'boleta-editar' => fn () => (new BoletasController())->editar(),
     'boleta-anular' => fn () => (new BoletasController())->anular(),
+    'cobranza' => fn () => (new CobranzaController())->index(),
+    'cobranza-csv' => fn () => (new CobranzaController())->exportar(),
     'pagos' => fn () => (new PagosController())->index(),
+    'pagos-csv' => fn () => (new PagosController())->exportar(),
     'pago-nuevo' => fn () => (new PagosController())->nuevo(),
     'pago-editar' => fn () => (new PagosController())->editar(),
     'pago-anular' => fn () => (new PagosController())->anular(),
+    'notas' => fn () => (new NotasCreditoController())->index(),
+    'nota-devolver' => fn () => (new NotasCreditoController())->devolver(),
     'funnel' => fn () => (new FunnelController())->index(),
     'cohortes' => fn () => (new CohortesController())->index(),
     'clientes' => fn () => (new ClientesController())->index(),

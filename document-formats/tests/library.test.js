@@ -24,7 +24,7 @@ const {
     FormatConverter, FormatValidator, FormatBatchProcessor, DocumentGenerator,
     BookMarginManager, ScreenDeviceManager, SpecificationManager, LocalizationManager,
     MM_PER_INCH, mmToInches, inchesToMm, fixed, fetchCSV, indexByName, closestNames, UnknownFormatError,
-    DocumentFormats, FormatLoader, FormatSearcher, FormatStatistics,
+    DocumentFormats, FormatLoader, FormatSearcher, FormatStatistics, normalizeText,
 } = require('../app/document-formats.js');
 
 test('escapeHtml neutralises every HTML-significant character', () => {
@@ -445,4 +445,44 @@ test('LocalizationManager.isRtl knows the right-to-left languages', () => {
     for (const code of ['en', 'es', 'ja', 'zh']) assert.equal(LocalizationManager.isRtl(code), false, code);
     const files = fs.readdirSync(path.join(APP_DIR, 'translations')).map(f => f.replace('.json', ''));
     assert.deepEqual(files.filter(code => LocalizationManager.isRtl(code)), ['ar'], 'the only RTL translation file');
+});
+
+test('normalizeText ignores case and Latin accents, and leaves other scripts alone', () => {
+    assert.equal(normalizeText('Papel TÉRMICO'), 'papel termico');
+    assert.equal(normalizeText('México'), 'mexico');
+    assert.equal(normalizeText('Zürich Škoda'), 'zurich skoda');
+    assert.equal(normalizeText(null), '');
+    assert.equal(normalizeText(210), '210');
+    // The marks of Devanagari and the syllables of Korean are not accents: they stay as they are.
+    assert.equal(normalizeText('सफ़ेद').length, normalizeText('सफ़ेद').normalize('NFC').length);
+    assert.equal(normalizeText('한국어'), '한국어');
+    assert.equal(normalizeText('ドキュメント'), 'ドキュメント');
+});
+
+test('searching finds a name whatever its accents and case', () => {
+    const rows = [
+        { format_name: 'Papel térmico', country: 'México', category: 'Roll', width_mm: 1, height_mm: 1 },
+        { format_name: 'Carta', country: 'Mexico', category: 'Standard', width_mm: 1, height_mm: 1 },
+    ];
+    const search = new FormatSearcher(rows);
+    assert.deepEqual(search.search('termico').map(f => f.format_name), ['Papel térmico']);
+    assert.deepEqual(search.search('TÉRMICO').map(f => f.format_name), ['Papel térmico']);
+    assert.deepEqual(search.search('méxico').map(f => f.format_name).sort(), ['Carta', 'Papel térmico']);
+});
+
+test('the language manager works, and switches language, when the browser blocks storage', async () => {
+    const original = globalThis.localStorage;
+    const blocked = () => { throw new Error('SecurityError: The operation is insecure.'); };
+    globalThis.localStorage = { getItem: blocked, setItem: blocked };
+    try {
+        assert.equal(LocalizationManager.savedLanguage(), null);
+        assert.doesNotThrow(() => LocalizationManager.saveLanguage('fr'));
+        const i18n = new LocalizationManager('../app/translations');
+        assert.equal(i18n.getLanguage(), 'en');
+        await i18n.setLanguage('fr');
+        assert.equal(i18n.getLanguage(), 'fr', 'the switch is not undone because the choice cannot be saved');
+        assert.notEqual(i18n.t('demo.download'), 'Download CSV');
+    } finally {
+        globalThis.localStorage = original;
+    }
 });

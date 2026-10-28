@@ -21,10 +21,11 @@ jobs:
   readme-projects:
     name: README raíz lista todas las carpetas de proyecto
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Cada carpeta de proyecto en la raíz del repo debe tener una fila en la
       # tabla de README.md (un link "](<carpeta>/..."); si no, la tabla quedó
@@ -44,10 +45,11 @@ jobs:
   readme-workflows:
     name: README raíz nombra los workflows que hay
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Cada archivo de .github/workflows/ debe nombrarse entre comillas invertidas en
       # README.md (seccion CI/CD), y cada *.yml que README.md nombra debe existir ahi; si no,
@@ -77,13 +79,77 @@ jobs:
   claude-md-rutas:
     name: CLAUDE.md cita rutas que existen
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # CLAUDE.md manda a correr scripts por su ruta (php bin/..., ./pruebas/...). Si uno se
       # mueve y el texto no se entera, la proxima sesion copia un comando que ya no existe.
       # Que comprueba y como probarlo: el docstring del script.
       - name: Comprobar que las rutas que cita CLAUDE.md existen
         run: python3 .github/scripts/comprobar-rutas-de-claude-md.py
+
+  enlaces-md:
+    name: Enlaces relativos de los .md existen
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Un documento que se mueve deja enlaces muertos en los README de otros proyectos.
+      # Que comprueba, que ignora y como probarlo: el docstring del script.
+      - name: Comprobar que los enlaces relativos de los .md apuntan a algo que existe
+        run: python3 .github/scripts/comprobar-enlaces-md.py
+
+  composer-validate:
+    name: Los composer.json son válidos
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # `composer validate` detecta un JSON mal formado, un campo que no existe y un composer.lock
+      # que ya no coincide con su composer.json. En modo estricto los avisos también fallan.
+      # El de la raiz va sin --strict: tiene dos avisos de antes (sin "license" y phone-directory
+      # en "@dev", que es lo que lo conecta con la carpeta) que se arreglan aparte.
+      - name: composer validate en cada composer.json versionado
+        run: |
+          fallos=""
+          while IFS= read -r f; do
+            d="$(dirname "$f")"
+            if [ "$d" = "." ]; then estricto=""; else estricto="--strict"; fi
+            echo "== $f ${estricto:-(sin --strict)}"
+            (cd "$d" && composer validate $estricto --no-interaction) || fallos="$fallos $f"
+          done < <(git ls-files 'composer.json' '**/composer.json')
+          if [ -n "$fallos" ]; then
+            echo "::error::composer validate falla en:$fallos"
+            exit 1
+          fi
+
+  landing-page:
+    name: landing-page/ solo trae archivos web
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # vps-setup/03-configure-nginx-site.sh copia TODA la carpeta (cp -r landing-page/. destino/) a
+      # la raiz que sirve Nginx: cualquier archivo que se ponga ahi queda publico en
+      # https://<dominio>/<archivo>. Un README, un script o un archivo oculto no deben llegar ahi.
+      - name: Rechazar documentacion, scripts y archivos ocultos en landing-page/
+        run: |
+          mal=$(git ls-files landing-page | grep -iE '(^|/)(readme|license|changelog|contributing)[^/]*$|\.(md|markdown|sh|py|php|rb|pl|ya?ml|env)$|(^|/)\.[^/]+' || true)
+          if [ -n "$mal" ]; then
+            echo "::error::landing-page/ se copia entera al servidor web; no pueden estar publicos:"
+            echo "$mal"
+            exit 1
+          fi
+          echo "landing-page/: $(git ls-files landing-page | wc -l) archivo(s), todos web."

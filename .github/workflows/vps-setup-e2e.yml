@@ -15,6 +15,13 @@ on:
     - cron: '17 6 * * 1'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
 jobs:
   install-all:
     name: install-all real en Ubuntu 24.04 (systemd)
@@ -23,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # El runner trae servidores web preinstalados (ocuparian el puerto 80) y alguna unidad caida.
       - name: Preparar el runner (web servers preinstalados, unidades caidas)

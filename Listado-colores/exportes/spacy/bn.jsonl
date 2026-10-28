@@ -1,0 +1,150 @@
+{"label":"COLOR","pattern":"অর্কিড","id":"orchid"}
+{"label":"COLOR","pattern":"অ্যাকোয়া","id":"aqua"}
+{"label":"COLOR","pattern":"অ্যাকোয়ামেরিন","id":"aquamarine"}
+{"label":"COLOR","pattern":"আকাশি","id":"skyblue"}
+{"label":"COLOR","pattern":"আকাশি নীল","id":"skyblue"}
+{"label":"COLOR","pattern":"ইটের লাল","id":"firebrick"}
+{"label":"COLOR","pattern":"ইন্ডিগো","id":"indigo"}
+{"label":"COLOR","pattern":"ইন্ডিয়ান রেড","id":"indianred"}
+{"label":"COLOR","pattern":"উষ্ণ গোলাপি","id":"hotpink"}
+{"label":"COLOR","pattern":"এলিস নীল","id":"aliceblue"}
+{"label":"COLOR","pattern":"কমলা","id":"orange"}
+{"label":"COLOR","pattern":"কমলা-লাল","id":"orangered"}
+{"label":"COLOR","pattern":"কর্নফ্লাওয়ার নীল","id":"cornflowerblue"}
+{"label":"COLOR","pattern":"কাঠ রঙ","id":"burlywood"}
+{"label":"COLOR","pattern":"কালো","id":"black"}
+{"label":"COLOR","pattern":"কিরমিজি","id":"crimson"}
+{"label":"COLOR","pattern":"কুয়াশাচ্ছন্ন গোলাপি","id":"mistyrose"}
+{"label":"COLOR","pattern":"ক্যাডেট নীল","id":"cadetblue"}
+{"label":"COLOR","pattern":"ক্রিম","id":"cream"}
+{"label":"COLOR","pattern":"খাকি","id":"khaki"}
+{"label":"COLOR","pattern":"গম","id":"wheat"}
+{"label":"COLOR","pattern":"গাঢ় অর্কিড","id":"darkorchid"}
+{"label":"COLOR","pattern":"গাঢ় আকাশি নীল","id":"deepskyblue"}
+{"label":"COLOR","pattern":"গাঢ় কমলা","id":"darkorange"}
+{"label":"COLOR","pattern":"গাঢ় খাকি","id":"darkkhaki"}
+{"label":"COLOR","pattern":"গাঢ় গোলাপি","id":"deeppink"}
+{"label":"COLOR","pattern":"গাঢ় গোল্ডেনরড","id":"darkgoldenrod"}
+{"label":"COLOR","pattern":"গাঢ় জলপাই সবুজ","id":"darkolivegreen"}
+{"label":"COLOR","pattern":"গাঢ় টার্কোয়াজ","id":"darkturquoise"}
+{"label":"COLOR","pattern":"গাঢ় ধূসর","id":"darkgray;darkgrey"}
+{"label":"COLOR","pattern":"গাঢ় নীল","id":"darkblue"}
+{"label":"COLOR","pattern":"গাঢ় বেগুনি","id":"darkviolet"}
+{"label":"COLOR","pattern":"গাঢ় ম্যাজেন্টা","id":"darkmagenta"}
+{"label":"COLOR","pattern":"গাঢ় লাল","id":"darkred"}
+{"label":"COLOR","pattern":"গাঢ় সবুজ","id":"darkgreen"}
+{"label":"COLOR","pattern":"গাঢ় সামুদ্রিক সবুজ","id":"darkseagreen"}
+{"label":"COLOR","pattern":"গাঢ় সায়ান","id":"darkcyan"}
+{"label":"COLOR","pattern":"গাঢ় স্যামন","id":"darksalmon"}
+{"label":"COLOR","pattern":"গাঢ় স্লেট ধূসর","id":"darkslategray;darkslategrey"}
+{"label":"COLOR","pattern":"গাঢ় স্লেট নীল","id":"darkslateblue"}
+{"label":"COLOR","pattern":"গেইন্সবরো ধূসর","id":"gainsboro"}
+{"label":"COLOR","pattern":"গোলাপি","id":"pink"}
+{"label":"COLOR","pattern":"গোলাপি বাদামি","id":"rosybrown"}
+{"label":"COLOR","pattern":"গোল্ডেনরড","id":"goldenrod"}
+{"label":"COLOR","pattern":"চকলেট","id":"chocolate"}
+{"label":"COLOR","pattern":"ছাই","id":"gray"}
+{"label":"COLOR","pattern":"জলপাই","id":"olive"}
+{"label":"COLOR","pattern":"জলপাই ড্রাব","id":"olivedrab"}
+{"label":"COLOR","pattern":"টমেটো","id":"tomato"}
+{"label":"COLOR","pattern":"টার্কোয়াজ","id":"turquoise"}
+{"label":"COLOR","pattern":"টিল","id":"teal"}
+{"label":"COLOR","pattern":"ট্যান","id":"tan"}
+{"label":"COLOR","pattern":"ডজার নীল","id":"dodgerblue"}
+{"label":"COLOR","pattern":"থিসল","id":"thistle"}
+{"label":"COLOR","pattern":"ধূসর","id":"gray;grey"}
+{"label":"COLOR","pattern":"ধোঁয়াটে সাদা","id":"whitesmoke"}
+{"label":"COLOR","pattern":"নাভাহো সাদা","id":"navajowhite"}
+{"label":"COLOR","pattern":"নীল","id":"blue"}
+{"label":"COLOR","pattern":"নীল বেগুনি","id":"blueviolet"}
+{"label":"COLOR","pattern":"নীল রং","id":"indigo"}
+{"label":"COLOR","pattern":"নীলাভ","id":"azure"}
+{"label":"COLOR","pattern":"নেভি","id":"navy"}
+{"label":"COLOR","pattern":"নেভি নীল","id":"navy"}
+{"label":"COLOR","pattern":"পাউডার নীল","id":"powderblue"}
+{"label":"COLOR","pattern":"পীচ","id":"peachpuff"}
+{"label":"COLOR","pattern":"পুদিনা ক্রিম","id":"mintcream"}
+{"label":"COLOR","pattern":"পুরনো লেস","id":"oldlace"}
+{"label":"COLOR","pattern":"পেঁপে ক্রিম","id":"papayawhip"}
+{"label":"COLOR","pattern":"পেরু","id":"peru"}
+{"label":"COLOR","pattern":"প্রবাল","id":"coral"}
+{"label":"COLOR","pattern":"প্রাচীন সাদা","id":"antiquewhite"}
+{"label":"COLOR","pattern":"ফিকে গোল্ডেনরড","id":"palegoldenrod"}
+{"label":"COLOR","pattern":"ফিকে টার্কোয়াজ","id":"paleturquoise"}
+{"label":"COLOR","pattern":"ফিকে বেগুনি লাল","id":"palevioletred"}
+{"label":"COLOR","pattern":"ফিকে সবুজ","id":"palegreen"}
+{"label":"COLOR","pattern":"ফিরোজা","id":"turquoise"}
+{"label":"COLOR","pattern":"ফুলেল সাদা","id":"floralwhite"}
+{"label":"COLOR","pattern":"ফুশিয়া","id":"fuchsia"}
+{"label":"COLOR","pattern":"বন সবুজ","id":"forestgreen"}
+{"label":"COLOR","pattern":"বরই","id":"plum"}
+{"label":"COLOR","pattern":"বরফ","id":"snow"}
+{"label":"COLOR","pattern":"বসন্ত সবুজ","id":"springgreen"}
+{"label":"COLOR","pattern":"বাদামি","id":"brown"}
+{"label":"COLOR","pattern":"বালুকাময় বাদামি","id":"sandybrown"}
+{"label":"COLOR","pattern":"বিস্কুট","id":"bisque"}
+{"label":"COLOR","pattern":"বেইজ","id":"beige"}
+{"label":"COLOR","pattern":"বেগুনি","id":"purple;violet"}
+{"label":"COLOR","pattern":"ব্লাঞ্চড আলমন্ড","id":"blanchedalmond"}
+{"label":"COLOR","pattern":"ভুট্টার রেশম","id":"cornsilk"}
+{"label":"COLOR","pattern":"ভূতুড়ে সাদা","id":"ghostwhite"}
+{"label":"COLOR","pattern":"মধুর শিশির","id":"honeydew"}
+{"label":"COLOR","pattern":"মধ্যরাত্রি নীল","id":"midnightblue"}
+{"label":"COLOR","pattern":"মাঝারি অর্কিড","id":"mediumorchid"}
+{"label":"COLOR","pattern":"মাঝারি অ্যাকোয়ামেরিন","id":"mediumaquamarine"}
+{"label":"COLOR","pattern":"মাঝারি টার্কোয়াজ","id":"mediumturquoise"}
+{"label":"COLOR","pattern":"মাঝারি নীল","id":"mediumblue"}
+{"label":"COLOR","pattern":"মাঝারি বসন্ত সবুজ","id":"mediumspringgreen"}
+{"label":"COLOR","pattern":"মাঝারি বেগুনি","id":"mediumpurple"}
+{"label":"COLOR","pattern":"মাঝারি বেগুনি লাল","id":"mediumvioletred"}
+{"label":"COLOR","pattern":"মাঝারি সামুদ্রিক সবুজ","id":"mediumseagreen"}
+{"label":"COLOR","pattern":"মাঝারি স্লেট নীল","id":"mediumslateblue"}
+{"label":"COLOR","pattern":"মেরুন","id":"maroon"}
+{"label":"COLOR","pattern":"মোকাসিন","id":"moccasin"}
+{"label":"COLOR","pattern":"ম্যাজেন্টা","id":"magenta"}
+{"label":"COLOR","pattern":"ম্যারুন","id":"maroon"}
+{"label":"COLOR","pattern":"ম্লান ধূসর","id":"dimgray;dimgrey"}
+{"label":"COLOR","pattern":"রক্তলাল","id":"crimson"}
+{"label":"COLOR","pattern":"রাজকীয় নীল","id":"royalblue"}
+{"label":"COLOR","pattern":"রুপালি","id":"silver"}
+{"label":"COLOR","pattern":"রূপালি","id":"silver"}
+{"label":"COLOR","pattern":"রেবেকা বেগুনি","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"লন সবুজ","id":"lawngreen"}
+{"label":"COLOR","pattern":"লাইম","id":"lime"}
+{"label":"COLOR","pattern":"লাইম সবুজ","id":"limegreen"}
+{"label":"COLOR","pattern":"লাল","id":"red"}
+{"label":"COLOR","pattern":"লিনেন","id":"linen"}
+{"label":"COLOR","pattern":"লিলাক","id":"lilac"}
+{"label":"COLOR","pattern":"লেবু শিফন","id":"lemonchiffon"}
+{"label":"COLOR","pattern":"ল্যাভেন্ডার","id":"lavender"}
+{"label":"COLOR","pattern":"ল্যাভেন্ডার ব্লাশ","id":"lavenderblush"}
+{"label":"COLOR","pattern":"শার্ত্রুজ","id":"chartreuse"}
+{"label":"COLOR","pattern":"সবুজ","id":"green"}
+{"label":"COLOR","pattern":"সবুজ-হলুদ","id":"greenyellow"}
+{"label":"COLOR","pattern":"সাদা","id":"white"}
+{"label":"COLOR","pattern":"সামুদ্রিক শামুক","id":"seashell"}
+{"label":"COLOR","pattern":"সামুদ্রিক সবুজ","id":"seagreen"}
+{"label":"COLOR","pattern":"সায়ান","id":"cyan"}
+{"label":"COLOR","pattern":"সিয়েনা","id":"sienna"}
+{"label":"COLOR","pattern":"সোনালি","id":"gold"}
+{"label":"COLOR","pattern":"স্টিল নীল","id":"steelblue"}
+{"label":"COLOR","pattern":"স্যাডল বাদামি","id":"saddlebrown"}
+{"label":"COLOR","pattern":"স্যামন","id":"salmon"}
+{"label":"COLOR","pattern":"স্লেট ধূসর","id":"slategray;slategrey"}
+{"label":"COLOR","pattern":"স্লেট নীল","id":"slateblue"}
+{"label":"COLOR","pattern":"হলুদ","id":"yellow"}
+{"label":"COLOR","pattern":"হলুদ-সবুজ","id":"yellowgreen"}
+{"label":"COLOR","pattern":"হাতির দাঁত","id":"ivory"}
+{"label":"COLOR","pattern":"হালকা আকাশি নীল","id":"lightskyblue"}
+{"label":"COLOR","pattern":"হালকা গোলাপি","id":"lightpink"}
+{"label":"COLOR","pattern":"হালকা ধূসর","id":"lightgray;lightgrey"}
+{"label":"COLOR","pattern":"হালকা নীল","id":"lightblue"}
+{"label":"COLOR","pattern":"হালকা প্রবাল","id":"lightcoral"}
+{"label":"COLOR","pattern":"হালকা সবুজ","id":"lightgreen"}
+{"label":"COLOR","pattern":"হালকা সামুদ্রিক সবুজ","id":"lightseagreen"}
+{"label":"COLOR","pattern":"হালকা সায়ান","id":"lightcyan"}
+{"label":"COLOR","pattern":"হালকা সোনালি হলুদ","id":"lightgoldenrodyellow"}
+{"label":"COLOR","pattern":"হালকা স্টিল নীল","id":"lightsteelblue"}
+{"label":"COLOR","pattern":"হালকা স্যামন","id":"lightsalmon"}
+{"label":"COLOR","pattern":"হালকা স্লেট ধূসর","id":"lightslategray;lightslategrey"}
+{"label":"COLOR","pattern":"হালকা হলুদ","id":"lightyellow"}

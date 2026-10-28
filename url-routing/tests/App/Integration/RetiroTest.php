@@ -38,12 +38,12 @@ class RetiroTest extends TestCase
     }
 
     /** @return array{int, string, string} [status, body, sessionId] */
-    private function pedir(string $uri, string $metodo = 'GET', array $post = [], ?string $sid = null, bool $propietario = false): array
+    private function pedir(string $uri, string $metodo = 'GET', array $post = [], ?string $sid = null, bool $propietario = false, array $entorno = []): array
     {
         $autorizacion = $propietario ? 'Basic ' . base64_encode('propietario:' . self::TOKEN) : '';
         $cmd = [PHP_BINARY, '-d', 'display_errors=stderr', dirname(__DIR__, 2) . '/Support/request.php',
             self::HOST, $uri, $metodo, http_build_query($post), $sid ?? '', $autorizacion];
-        $env = [
+        $env = $entorno + [
             'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
             'LOG_FILE' => self::$dir . '/app.log',
             'OWNER_TOKEN' => self::TOKEN,
@@ -127,6 +127,65 @@ class RetiroTest extends TestCase
         $this->assertStringNotContainsString('ana@example.com', (string)@file_get_contents(self::$dir . '/app.log'), 'the log never names who asked');
     }
 
+    public function testAVisitorCanOnlySendSomePedidosPerHour(): void
+    {
+        $entorno = ['TEST_REMOTE_ADDR' => '198.51.100.7-' . bin2hex(random_bytes(4)), 'RETIRO_MAX_POR_HORA' => '2'];
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $enviar = fn() => $this->pedir(self::PEDIR, 'POST', $this->pedidoValido($token), $sid, entorno: $entorno)[0];
+
+        $this->assertSame(303, $enviar());
+        $this->assertSame(303, $enviar());
+        $antes = (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro');
+        $this->assertSame(429, $enviar(), 'the third in the hour');
+        $this->assertSame($antes, (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro'), 'the refused one was not stored');
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', $this->pedidoValido($token), $sid,
+            entorno: ['TEST_REMOTE_ADDR' => '198.51.100.8-' . bin2hex(random_bytes(4)), 'RETIRO_MAX_POR_HORA' => '2'])[0], 'another visitor is not affected');
+    }
+
+    public function testAPageStopsTakingPedidosWhenManyAreWaiting(): void
+    {
+        $repo = new \App\Repositories\Genealogy\RetiroRepository($this->db());
+        for ($i = 0; $i < 3; $i++) {
+            $repo->crear('grupo', 582317, 'otro', 'x', "p{$i}@example.com");
+        }
+        [$sid, $token] = $this->formulario('/r/582317/');
+        $this->assertSame(429, $this->pedir('/r/582317/', 'POST', $this->pedidoValido($token), $sid, entorno: ['RETIRO_MAX_PENDIENTES' => '3'])[0]);
+        $this->assertSame(303, $this->pedir('/r/582317/', 'POST', $this->pedidoValido($token), $sid, entorno: ['RETIRO_MAX_PENDIENTES' => '4'])[0], 'under the limit');
+    }
+
+    public function testTheDecoyFieldDiscardsTheBotWithoutSayingSo(): void
+    {
+        [, $form] = $this->pedir(self::PEDIR);
+        $this->assertStringContainsString('name="sitio_web"', $form);
+        $this->assertStringContainsString('aria-hidden="true"', $form);
+
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $antes = (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro');
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', ['sitio_web' => 'http://spam.example'] + $this->pedidoValido($token), $sid)[0], 'the same answer a person gets');
+        $this->assertSame($antes, (int)$this->db()->fetchValue('SELECT COUNT(*) FROM pedidos_retiro'), 'nothing stored');
+    }
+
+    public function testTheFilterMarksTheTextForWhoReviewsAndNeverBlocksIt(): void
+    {
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', ['detalle' => 'Es un hijo de puta y dice que estafó a su familia.'] + $this->pedidoValido($token), $sid)[0], 'stored anyway');
+        $marcas = (string)$this->db()->fetchValue('SELECT marcas FROM pedidos_retiro ORDER BY id DESC LIMIT 1');
+        $this->assertStringContainsString('insulto', $marcas);
+        $this->assertStringContainsString('acusación de delito', $marcas);
+        $this->assertStringContainsString('⚠', $this->pedir('/0/3/', propietario: true)[1]);
+
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', ['detalle' => 'La ficha tiene una fecha equivocada.'] + $this->pedidoValido($token), $sid)[0]);
+        $this->assertNull($this->db()->fetchValue('SELECT marcas FROM pedidos_retiro ORDER BY id DESC LIMIT 1'), 'a plain complaint has no marks');
+    }
+
+    public function testWithoutTheFilterTheComplaintIsStoredAnyway(): void
+    {
+        [$sid, $token] = $this->formulario(self::PEDIR);
+        $sin = ['FILTRO_DIFAMACION_DIR' => self::$dir . '/no-hay-filtro'];
+        $this->assertSame(303, $this->pedir(self::PEDIR, 'POST', ['detalle' => 'Es un hijo de puta.'] + $this->pedidoValido($token), $sid, entorno: $sin)[0]);
+        $this->assertNull($this->db()->fetchValue('SELECT marcas FROM pedidos_retiro ORDER BY id DESC LIMIT 1'));
+    }
+
     public function testAPageHiddenForPrivacyCannotBeReportedNorTurnInto410(): void
     {
         // The baptism of Juan (born 1925, no death): a record that would give a living person away.
@@ -136,6 +195,27 @@ class RetiroTest extends TestCase
         $repo = new \App\Repositories\Genealogy\RetiroRepository($this->db());
         $repo->decidir($repo->crear('registro', 81372001, 'otro', 'x', 'c@example.com'), 'retirar', null);
         $this->assertSame(404, $this->pedir('/81372001/')[0], 'still a 404, not a 410 that confirms it exists');
+    }
+
+    public function testAWithdrawnPersonaIsNamedNowhereElseForAVisitor(): void
+    {
+        $db = $this->db();
+        $repo = new \App\Repositories\Genealogy\RetiroRepository($db);
+        // José (6128473101) is Antonio's father, and Antonio's ascendencia page lists him by name.
+        $antes = $this->pedir('/6128473103/1/')[1];
+        $this->assertStringContainsString('José García Álvarez', $antes, 'precondition');
+
+        $numero = $repo->crear('persona', 6128473101, 'familiar', 'x', 'd@example.com');
+        $repo->decidir($numero, 'retirar', null);
+        $despues = $this->pedir('/6128473103/1/')[1];
+        $this->assertStringNotContainsString('José', $despues, 'masked in the tree of his son');
+        $this->assertStringContainsString('Persona privada', $despues);
+        $this->assertStringNotContainsString('José García Álvarez', $this->pedir('/6128473101/2/')[1] . $this->pedir('/582317/')[1] . $this->pedir('/b/10/')[1]);
+        $this->assertSame(410, $this->pedir('/6128473101/')[0]);
+        $this->assertStringContainsString('José García Álvarez', $this->pedir('/6128473103/1/', propietario: true)[1], 'the owner still sees him');
+
+        $repo->decidir($numero, 'rechazar', null);
+        $this->assertStringContainsString('José García Álvarez', $this->pedir('/6128473103/1/')[1], 'rejected: named again');
     }
 
     public function testTheOwnerHidesWithdrawsOrRejectsAndEveryStepIsRecorded(): void

@@ -1,0 +1,102 @@
+[
+  {
+    "country_code": "SC",
+    "country_name": "Seychelles",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act 2023 (Act 24 of 2023)",
+    "jurisdiction": "Information Commission of Seychelles",
+    "enactment_date": "2023-12-19",
+    "effective_date": "2023-12-22",
+    "scope": "Data subjects whose personal data is processed in Seychelles",
+    "applies_to": "Public and private data controllers and processors",
+    "key_requirements": "Lawful processing and data subject rights (access, rectification, erasure); breach notification to the Commission within 72 hours (s. 44 in the Bill); administrative fines by the Commission",
+    "data_categories": "Personal data; sensitive data (includes genetic and health data)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Information Commission (Seychelles)",
+    "penalties_range": "Administrative fines and offences under Part VIII (unlawful disclosure, obstruction); amounts not found (unconfirmed)",
+    "exemptions": "Criminal investigation and national security by relevant authorities; purely personal processing by a natural person (exemptions provision s. 4)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "Genetic data is listed as sensitive personal data (Part IV, s. 22 in the enacted Act)",
+    "website_url": "https://www.infocom.sc/data-protection/",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Replaced the never-implemented Data Protection Act 2003. 18-month transition from 22 Dec 2023 (to about June 2025) for controllers to comply. Enactment date is presidential assent 19 Dec 2023; published in Gazette 22 Dec 2023.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-22",
+    "sources": {
+      "law_name": {
+        "url": "https://www.gazette.sc/sites/default/files/2023-12/Act 24 - 2023 - Data Protection Act 2023.pdf",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "jurisdiction": {
+        "url": "https://www.infocom.sc/data-protection/",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "enactment_date": {
+        "url": "https://applebyglobal.com/publications/data-protection-law-now-in-force-in-seychelles",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "effective_date": {
+        "url": "https://applebyglobal.com/publications/data-protection-law-now-in-force-in-seychelles",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "scope": {
+        "url": "https://www.consentstack.io/regulations/sc-dpa",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "applies_to": {
+        "url": "https://www.dlapiperdataprotection.com/?c=SC&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "key_requirements": {
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-seychelles-dpa",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "data_categories": {
+        "url": "https://www.dlapiperdataprotection.com/?c=SC&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "enforcement_authority": {
+        "url": "https://www.infocom.sc/data-protection/",
+        "confidence": "high",
+        "checked": "2026-10-22"
+      },
+      "penalties_range": {
+        "url": "https://www.gazette.sc/sites/default/files/2023-12/Act 24 - 2023 - Data Protection Act 2023.pdf",
+        "confidence": "low",
+        "checked": "2026-10-22"
+      },
+      "exemptions": {
+        "url": "https://www.dlapiperdataprotection.com/?c=SC&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=SC&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-22"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-22",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -1,8 +1,9 @@
 name: Informe de ramas
 
-# Cada lunes lista las ramas remotas vacías o ya fusionadas, en el resumen de la corrida.
-# Solo informa: no borra nada (ver .github/scripts/informe-de-ramas.sh). También corre cuando cambia
-# el propio workflow o el script, para ver su resultado en el PR.
+# Cada lunes lista las ramas remotas vacías o ya fusionadas, en el resumen de la corrida. Si sobran
+# UMBRAL_RAMAS o más, además mantiene una issue con la lista, y la cierra cuando bajan del umbral
+# (.github/scripts/mantener-issue.sh). Solo informa: no borra nada (ver .github/scripts/informe-de-ramas.sh).
+# También corre cuando cambia el propio workflow o el script, para ver su resultado en el PR (sin issue).
 on:
   schedule:
     - cron: '41 6 * * 1'
@@ -21,18 +22,53 @@ permissions:
   contents: read
   pull-requests: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   ramas:
     name: ramas vacías o fusionadas
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    # issues: write solo para el paso final, que no corre en un PR ni en un push.
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: write
     env:
       GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      UMBRAL_RAMAS: 10
+      TITLE: Ramas que ya no aportan nada
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # hacen falta todas las ramas y su historia
 
+      # `shell: bash` mantiene pipefail, para que `tee` no esconda un fallo del script.
       - name: Listar las ramas que ya no aportan nada
-        run: bash .github/scripts/informe-de-ramas.sh
+        id: informe
+        shell: bash
+        run: bash .github/scripts/informe-de-ramas.sh | tee informe.md
+
+      - name: Mantener la issue (solo en la corrida semanal o a mano)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          SOBRANTES: ${{ steps.informe.outputs.sobrantes }}
+        run: |
+          if [ "${SOBRANTES:-0}" -ge "$UMBRAL_RAMAS" ]; then
+            {
+              echo "Sobran **$SOBRANTES** ramas remotas (el umbral es $UMBRAL_RAMAS). [Corrida]($RUN_URL)."
+              echo
+              cat informe.md
+              echo
+              echo "Para borrarlas: \`git push origin --delete <rama>\`, o desde GitHub, en Branches. Para que no vuelvan a juntarse: Settings → General → «Automatically delete head branches». La issue se cierra sola cuando sobren menos de $UMBRAL_RAMAS."
+            } > body.md
+            bash .github/scripts/mantener-issue.sh fallo "$TITLE" body.md
+          else
+            bash .github/scripts/mantener-issue.sh ok "$TITLE" "" "Sobran ${SOBRANTES:-0} ramas, por debajo del umbral ($UMBRAL_RAMAS) ([corrida]($RUN_URL))."
+          fi

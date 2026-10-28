@@ -68,4 +68,33 @@ class SessionManagerTest extends TestCase
     {
         $this->assertSame(SessionManager::getInstance(), SessionManager::getInstance());
     }
+
+    public function testResumeDoesNothingForARequestWithoutTheSessionCookie(): void
+    {
+        $original = $_COOKIE;
+        $_COOKIE = [];
+        try {
+            SessionManager::getInstance()->resume();
+
+            $this->assertSame(PHP_SESSION_NONE, session_status(), 'no cookie, no session');
+        } finally {
+            $_COOKIE = $original;
+        }
+    }
+
+    /**
+     * The unit tests fill $_SESSION by hand. If ensureStarted() opened a real session there, it would replace what
+     * they set up and leave a file behind on every run.
+     */
+    public function testEnsureStartedDoesNotOpenASessionOnTheBareCommandLine(): void
+    {
+        $this->assertSame('cli', PHP_SAPI);
+        $this->assertArrayNotHasKey('REQUEST_METHOD', $_SERVER);
+        $_SESSION = ['puesto_a_mano' => 1];
+
+        SessionManager::getInstance()->ensureStarted();
+
+        $this->assertSame(PHP_SESSION_NONE, session_status());
+        $this->assertSame(['puesto_a_mano' => 1], $_SESSION, 'what the test put there is untouched');
+    }
 }

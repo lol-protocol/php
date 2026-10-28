@@ -1,0 +1,93 @@
+[
+  {
+    "country_code": "VA",
+    "country_name": "Vatican City",
+    "region": "europe",
+    "law_name": "General Regulation on the Protection of Personal Data (Decree No. DCLVII of the Pontifical Commission for Vatican City State)",
+    "jurisdiction": "Governorate of Vatican City State (controller; Data Protection Officer is the General Counsel)",
+    "enactment_date": "2024-04-30",
+    "effective_date": "2024-04-30",
+    "scope": "Data subjects whose data is processed by Vatican City State bodies",
+    "applies_to": "Vatican City State entities acting as controllers/processors",
+    "key_requirements": "Legitimate purpose and consent; processing of special categories (racial/ethnic origin, political opinions, biometric data) generally prohibited; specific information to data subjects; DPO and controller roles (art. 11)",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Governorate of Vatican City State (Secretary General as controller); independent supervisory authority not confirmed",
+    "penalties_range": "Not specified",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
+    "language": "Italian",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Promulgated ad experimentum for three years (to about 2027-04-30); inspired by the GDPR but adapted to the institutional structure; a regulation rather than a statute; Holy See entities outside the State not covered.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.vaticanstate.va/en/privacy-policy.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://www.vaticanstate.va/en/privacy-policy.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.vaticanstate.va/en/privacy-policy.html",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.vaticanstate.va/en/privacy-policy.html",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-25",
+        "field": "website_url",
+        "from": "https://vaticanstate.va/en/news/566-pontifical-commission-of-vatican-city-state-promulgates-general-regulation-on-the-protection-of-personal-data.html",
+        "to": "https://digitalpolicyalert.org/event/19901-adopted-general-regulation-on-the-protection-of-personal-data-decree-no-dclvii"
+      },
+      {
+        "date": "2026-10-25",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

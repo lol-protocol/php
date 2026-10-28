@@ -40,7 +40,7 @@ Se hace con variables de entorno. Todas son opcionales.
 |---|---|---|
 | `MARCALIBROS_STORAGE` | `app/storage` | Dónde se guardan los marcalibros creados. Debe quedar **fuera** de `public/` |
 | `MARCALIBROS_PROJECT_ROOT` | carpeta superior a `app/` | Carpeta con `catalog/`, `images/` y `svg/` |
-| `MARCALIBROS_RETENTION_DAYS` | `30` | Días que se conserva un marcalibro creado |
+| `MARCALIBROS_RETENTION_DAYS` | `0` | Días que se conserva un marcalibro creado. `0` = no se borran nunca (solo quien tenga el enlace puede borrarlo) |
 | `MARCALIBROS_CREATES_PER_HOUR` | `10` | Intentos de crear por hora y por dirección IP (los fallidos también cuentan) |
 | `MARCALIBROS_MAX_STORED` | `5000` | Tope de marcalibros guardados a la vez; al llegar, no se aceptan más |
 | `MARCALIBROS_TRUST_FORWARDED_FOR` | apagado | Con `1`, la IP de cada persona es la última de `X-Forwarded-For`. Solo detrás de un proxy propio que la ponga |
@@ -51,7 +51,7 @@ Se hace con variables de entorno. Todas son opcionales.
 No hay sesión ni cookies, así que no hay nada que un tercero pueda hacer "en nombre" de alguien. En su lugar:
 
 - **El enlace es la llave.** Cada marcalibro propio tiene un identificador de 64 bits aleatorios (`mp-` y 16 caracteres hexadecimales); no hay listados ni búsqueda. Quien tiene el enlace puede verlo, descargarlo y borrarlo. Las páginas llevan `noindex`.
-- **Se borran solos** a los `MARCALIBROS_RETENTION_DAYS` días (ver más abajo).
+- **No caducan** por defecto (`MARCALIBROS_RETENTION_DAYS=0`): solo se borran si quien tiene el enlace los borra. Con un número de días, se borran solos pasado ese plazo (`bin/limpiar.php`, ver más abajo).
 - **Límite de intentos** por IP. La IP no se guarda: se usa un HMAC con una clave propia del servidor (`storage/intentos/.clave`, permisos 600).
 - **Tope de almacenamiento**, para que nadie llene el disco.
 - **Archivos fuera de `public/`.** Las imágenes se sirven con PHP, con `X-Content-Type-Options: nosniff` y `X-Robots-Tag`. Los SVG del catálogo llevan una CSP con `sandbox`.
@@ -65,7 +65,9 @@ Lo que **no** hace: HTTPS ni `Strict-Transport-Security` (eso lo ponen el servid
 
 ## Despliegue
 
-La aplicación corre en **un solo VPS**, y por eso guarda los marcalibros creados en el disco local (`MARCALIBROS_STORAGE`). **No hay copias de seguridad, a propósito:** los marcalibros creados se borran solos a los `MARCALIBROS_RETENTION_DAYS` días y quien pierda uno puede crear otro; el catálogo y los PNG se regeneran con los scripts de `generator/`. Si algún día corre en más de un servidor, el disco local deja de servir: habría que llevar el almacenamiento a algo compartido.
+La aplicación corre en **un solo VPS**, y por eso guarda los marcalibros creados en el disco local (`MARCALIBROS_STORAGE`). El catálogo y los PNG se regeneran con los scripts de `generator/`, pero **los marcalibros creados no**: como no caducan y no hay copias de seguridad automáticas, si el disco se pierde se pierden con él (el tope `MARCALIBROS_MAX_STORED` también es permanente: al llegar a él no se aceptan más). Si eso importa, copia `MARCALIBROS_STORAGE` por tu cuenta.
+
+En un VPS se instala con `vps-setup/06_E-setup-marcalibros-app.sh <dominio>` (ver `vps-setup/README.md`). Si algún día corre en más de un servidor, el disco local deja de servir: habría que llevar el almacenamiento a algo compartido.
 
 Dirige todo lo que no sea un archivo de `public/assets/` a `public/index.php`. Ejemplo para nginx con php-fpm:
 
@@ -103,7 +105,7 @@ Sin ellos la aplicación funciona igual: solo no ofrece la descarga en PNG.
 17 3 * * *  cd /srv/marcalibros/app && php bin/limpiar.php
 ```
 
-Borra los marcalibros vencidos, los archivos sueltos de subidas interrumpidas y los registros de intentos antiguos. Usa las mismas variables de entorno que la aplicación.
+Borra los marcalibros vencidos (solo si hay `MARCALIBROS_RETENTION_DAYS` mayor que 0), los archivos sueltos de subidas interrumpidas y los registros de intentos antiguos. Usa las mismas variables de entorno que la aplicación.
 
 ## Pruebas
 

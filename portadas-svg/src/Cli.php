@@ -13,10 +13,14 @@ final class Cli
     private const USO = <<<'TXT'
         Uso:
           php bin/generar.php libro.json [más.json ...] [--salida=carpeta]
+          php bin/generar.php --lista=libros.csv [--lista=otra.csv ...] [libro.json ...] [--salida=carpeta]
           php bin/generar.php --comprobar
           php bin/generar.php --help
 
-        Cada libro escribe sus SVG en <salida>/<nombre del archivo>/. La salida por defecto es salida/.
+        Cada libro escribe sus SVG en <salida>/<nombre del archivo>/ (o <salida>/<id>/ si viene de una
+        lista CSV). La salida por defecto es salida/.
+        --lista lee una fila por libro de un CSV en UTF-8 (ver README.md); si alguna fila tiene errores, los
+        da todos juntos y no escribe nada.
         --comprobar regenera ejemplos/*.json y falla si no coincide con ejemplos/salida/.
         TXT;
 
@@ -29,6 +33,7 @@ final class Cli
     public static function ejecutar(array $argumentos, string $raiz, callable $salida, callable $errores): int
     {
         $rutas = [];
+        $listas = [];
         $carpeta = $raiz . '/salida';
         $comprobar = false;
         foreach ($argumentos as $argumento) {
@@ -44,6 +49,12 @@ final class Cli
                 if ($carpeta === '') {
                     return self::uso($errores, '--salida necesita una carpeta: --salida=carpeta');
                 }
+            } elseif (str_starts_with($argumento, '--lista=')) {
+                $lista = substr($argumento, strlen('--lista='));
+                if ($lista === '') {
+                    return self::uso($errores, '--lista necesita un archivo: --lista=libros.csv');
+                }
+                $listas[] = $lista;
             } elseif (str_starts_with($argumento, '-')) {
                 return self::uso($errores, "Opción desconocida: $argumento");
             } else {
@@ -51,15 +62,15 @@ final class Cli
             }
         }
 
-        if ($comprobar && $rutas !== []) {
-            return self::uso($errores, '--comprobar no admite archivos de libros.');
+        if ($comprobar && ($rutas !== [] || $listas !== [])) {
+            return self::uso($errores, '--comprobar no admite archivos de libros ni listas.');
         }
-        if (!$comprobar && $rutas === []) {
-            return self::uso($errores, 'Falta el archivo JSON del libro.');
+        if (!$comprobar && $rutas === [] && $listas === []) {
+            return self::uso($errores, 'Falta el archivo JSON del libro o una lista con --lista=.');
         }
 
         try {
-            return $comprobar ? self::comprobar($raiz, $salida, $errores) : self::generar($rutas, $carpeta, $salida);
+            return $comprobar ? self::comprobar($raiz, $salida, $errores) : self::generar($rutas, $listas, $carpeta, $salida, $errores);
         } catch (\Throwable $error) {
             $errores('Error: ' . $error->getMessage() . "\n");
 
@@ -77,20 +88,34 @@ final class Cli
 
     /**
      * @param list<string> $rutas
+     * @param list<string> $listas
      * @param callable(string): void $salida
+     * @param callable(string): void $errores
      */
-    private static function generar(array $rutas, string $carpeta, callable $salida): int
+    private static function generar(array $rutas, array $listas, string $carpeta, callable $salida, callable $errores): int
     {
         // Se leen todos antes de escribir: un libro roto o repetido no deja la salida a medias.
         $libros = [];
-        foreach ($rutas as $ruta) {
-            $libro = Libro::desdeArchivo($ruta);
+        $agregar = static function (Libro $libro, string $origen) use (&$libros): void {
             if (isset($libros[$libro->id])) {
-                throw new \InvalidArgumentException("$ruta y {$libros[$libro->id][1]} se llaman igual ('{$libro->id}') y escribirían en la misma carpeta. Renombra uno.");
+                throw new \InvalidArgumentException("$origen y {$libros[$libro->id][1]} se llaman igual ('{$libro->id}') y escribirían en la misma carpeta. Renombra uno.");
             }
-            $libros[$libro->id] = [$libro, $ruta];
+            $libros[$libro->id] = [$libro, $origen];
+        };
+        foreach ($rutas as $ruta) {
+            $agregar(Libro::desdeArchivo($ruta), $ruta);
+        }
+        foreach ($listas as $lista) {
+            foreach (Lista::leer($lista) as $libro) {
+                $agregar($libro, "$lista (id '{$libro->id}')");
+            }
         }
 
+        foreach ($libros as [$libro]) {
+            foreach (Generador::avisos($libro) as $aviso) {
+                $errores("Aviso, {$libro->id}: $aviso\n");
+            }
+        }
         foreach ($libros as [$libro]) {
             $directorio = "$carpeta/{$libro->id}";
             $salida("$directorio: " . implode(', ', Generador::escribir($libro, $directorio)) . "\n");

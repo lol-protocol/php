@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | aliceblå | `#F0F8FF` |  | Lugn, friskhet och renhet; en känsla av lätthet och rymd. | Himmelsk renhet och stillhet; förknippad med den klara himlen och tydlig kommunikation. | derivado | derivado |
 | `antiquewhite` | antikvit | `#FAEBD7` |  | Nostalgi, tradition och mjuk värme; väcker tankar på det vintage. | Minne och visdom från det förflutna; åldrad renhet och urgamla cykler. | derivado | derivado |
-| `aqua` | aqua | `#00FFFF` | `cyan` | Friskhet, klarhet, energi och känslan av rent vatten. | Levande vatten och rening; intuitionens flöde och kommunikationen med det subtila. | derivado | derivado |
+| `aqua` | aqua | `#00FFFF` | `cyan` | Friskhet, klarhet, lugn och kommunikation; förknippad med det digitala och moderna. | Vatten och rening; mental klarhet och kommunikationens flöde. | derivado | derivado |
 | `aquamarine` | akvamarin | `#7FFFD4` |  | Avslappnande friskhet, lugn och lätt optimism. | Sjömännens sten: skydd på resor, mod och känslomässig klarhet. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | azurblå | `#F0FFFF` |  | Klar himmel, öppenhet, frihet och stillhet. | Andlig höjd och himlens renhet; det himmelska och det öppna sinnet. | derivado | derivado |
 | `beige` | beige | `#F5F5DC` |  | Neutralitet, enkelhet, stabilitet och återhållsamhet. | Jord och ödmjukhet; balans utan ytterligheter, vardagen och rotfästet. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | eldtegelröd | `#B22222` |  | Styrka, beslutsamhet, intensiv värme och spänning. | Smedjans och härdens eld; möda, offer och arbete. | derivado | derivado |
 | `floralwhite` | blomvit | `#FFFAF0` |  | Mjukhet, finkänslighet, renhet och lätthet. | Vit blomma: oskuld, begynnelser och vårens välsignelse. | derivado | derivado |
 | `forestgreen` | skogsgrön | `#228B22` |  | Natur, balans, hälsa, lugn och tillväxt. | Helig skog: liv, förnyelse och band till jorden. | derivado | derivado |
-| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Djärvhet, kreativitet, excentricitet och lekfull energi. | Förvandling och magi; band mellan det materiella och det andliga. | derivado | derivado |
+| `fuchsia` | fuchsia | `#FF00FF` | `magenta` | Kreativitet, djärvhet, intensitet och vibrerande energi. | Förvandling och andlighet; förbindelse mellan det materiella och det subtila. | derivado | derivado |
 | `gainsboro` | gainsboro-grå | `#DCDCDC` |  | Elegant neutralitet, renhet och lugn. | Ett mellanläge av balans, utan tyngd. | derivado | derivado |
 | `ghostwhite` | spökvit | `#F8F8FF` |  | Lätthet, subtil mystik och lysande svalka. | Det eteriska och spöklika; en subtil närvaro mellan två världar. | derivado | derivado |
 | `gold` | guld | `#FFD700` |  | Framgång, rikedom, anseende, optimism och värme. | Sol och fulländning; upplysning, makt, visdom och det gudomliga i många traditioner. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

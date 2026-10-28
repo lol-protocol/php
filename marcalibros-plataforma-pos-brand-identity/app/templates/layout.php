@@ -62,7 +62,7 @@ $nav = ['catalogo' => ['/', 'Catálogo'], 'crear' => ['/crear', 'Crear el mío']
 </main>
 <footer class="pie">
   <div class="pie__fila">
-    <p>Los marcalibros que creas se guardan <?= isset($retentionDays) ? (int) $retentionDays . ' días' : 'unos días' ?> y se borran solos. No hace falta cuenta: quien tenga el enlace de tu marcalibro puede verlo y borrarlo.</p>
+    <p>Los marcalibros que creas <?= !isset($retentionDays) ? 'se guardan unos días y se borran solos' : ((int) $retentionDays > 0 ? 'se guardan ' . (int) $retentionDays . ' días y se borran solos' : 'se guardan sin fecha de vencimiento: solo se borran si los borras tú') ?>. No hace falta cuenta: quien tenga el enlace de tu marcalibro puede verlo y borrarlo.</p>
     <p>Hecho con la identidad de Plataforma POS.</p>
   </div>
 </footer>

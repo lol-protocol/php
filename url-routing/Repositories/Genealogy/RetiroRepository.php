@@ -31,6 +31,15 @@ final class RetiroRepository extends Repository
         'otro' => 'Otro motivo',
     ];
 
+    /** How long a pedido may wait for the owner before bin/pedidos-retiro.php calls it late (the example in PRIVACIDAD-Y-HONRA.md). */
+    public const PLAZO_HORAS = 24;
+
+    /** How many months a resolved pedido keeps the requester's email and text before bin/pedidos-retiro.php --depurar erases them. */
+    public const CONSERVAR_MESES = 12;
+
+    /** How many times crear() asks for a number when someone else took the one it read. Each retry reads the new maximum, so one is enough in practice. */
+    private const INTENTOS_DE_NUMERO = 5;
+
     /** What the owner may decide, and the state each decision leaves the pedido in. */
     public const DECISIONES = ['ocultar' => 'oculto', 'retirar' => 'retirado', 'rechazar' => 'rechazado'];
 
@@ -45,21 +54,21 @@ final class RetiroRepository extends Repository
     }
 
     /**
-     * Whether a visitor reaches the page, as the rest of the site decides it (Privacidad): an event or a
-     * record that would give a living person away and a private colección are not there for a visitor,
-     * so they can't be reported, and a pedido on one doesn't turn its 404 into a 410 that confirms it
-     * exists. A living persona's page is there (it shows only «Persona viva»).
+     * Whether a visitor would reach the page if it had no pedido de retiro, as the rest of the site decides
+     * it (Privacidad): an event or a record that would give a living person away and a private colección
+     * are not there for a visitor, so they can't be reported, and a pedido on one doesn't turn its 404 into
+     * a 410 that confirms it exists. A living persona's page is there (it shows only «Persona viva»).
      */
     public function existe(string $tipo, int $id): bool
     {
         $desde = match ($tipo) {
-            'suceso' => $this->privacidad->sucesos() . ' x',
-            'registro' => $this->privacidad->registros() . ' x',
-            'coleccion' => '(SELECT id FROM colecciones WHERE publica) x',
-            default => isset(self::TABLAS[$tipo]) ? self::TABLAS[$tipo] . ' x' : null,
+            'suceso' => 'sucesos x WHERE ' . $this->privacidad->sqlSucesoVisible('x'),
+            'registro' => 'registros x WHERE ' . $this->privacidad->sqlRegistroVisible('x'),
+            'coleccion' => 'colecciones x WHERE x.publica',
+            default => isset(self::TABLAS[$tipo]) ? self::TABLAS[$tipo] . ' x WHERE TRUE' : null,
         };
 
-        return $desde !== null && $this->db->fetchValue("SELECT 1 FROM {$desde} WHERE x.id = ?", [$id]) !== null;
+        return $desde !== null && $this->db->fetchValue("SELECT 1 FROM {$desde} AND x.id = ?", [$id]) !== null;
     }
 
     public function retirado(string $tipo, int $id): bool
@@ -70,20 +79,53 @@ final class RetiroRepository extends Repository
         ) !== null;
     }
 
-    /** Stores a new pedido ('pendiente', with its 'recibido' event) and returns its number. */
-    public function crear(string $tipo, int $id, string $motivo, string $detalle, string $contacto): int
+    /** How many pedidos on this page are waiting for a decision: a page with many is not asked about again (see RetiroController). */
+    public function pendientesDe(string $tipo, int $id): int
     {
-        return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto): int {
-            $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(id), 0) + 1 FROM pedidos_retiro');
-            $ahora = date('Y-m-d H:i:s');
-            $this->db->execute(
-                'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [$numero, $tipo, $id, $motivo, $detalle, $contacto, $ahora]
-            );
-            $this->evento($numero, 'recibido', null, $ahora);
+        return (int)$this->db->fetchValue(
+            "SELECT COUNT(*) FROM pedidos_retiro WHERE tipo = ? AND recurso_id = ? AND estado = 'pendiente'",
+            [$tipo, $id]
+        );
+    }
 
-            return $numero;
-        });
+    /**
+     * Stores a new pedido ('pendiente', with its 'recibido' event) and returns its number. $marcas is what the
+     * filter found in $detalle (see Support/FiltroPedidos.php), for whoever reviews it.
+     *
+     * The number is MAX(id) + 1, and two people asking at the same moment read the same maximum: the second
+     * INSERT then breaks the primary key. That person must not get an error page, because the complaint would
+     * be lost, so the whole transaction is tried again and reads the maximum the winner left. Only that error is
+     * retried (a CHECK that refuses the data, or a database that is down, would fail the same way every time).
+     */
+    public function crear(string $tipo, int $id, string $motivo, string $detalle, string $contacto, ?string $marcas = null): int
+    {
+        for ($intento = 1; ; $intento++) {
+            try {
+                return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto, $marcas): int {
+                    $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(id), 0) + 1 FROM pedidos_retiro');
+                    $ahora = date('Y-m-d H:i:s');
+                    $this->db->execute(
+                        'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en, marcas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                        [$numero, $tipo, $id, $motivo, $detalle, $contacto, $ahora, $marcas]
+                    );
+                    $this->evento($numero, 'recibido', null, $ahora);
+
+                    return $numero;
+                });
+            } catch (\PDOException $e) {
+                if ($intento >= self::INTENTOS_DE_NUMERO || !self::numeroTomado($e)) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
+    /** Whether the database refused the INSERT because that pedido number already exists (PostgreSQL and SQLite word it differently). */
+    private static function numeroTomado(\PDOException $e): bool
+    {
+        $mensaje = strtolower($e->getMessage());
+
+        return str_contains($mensaje, 'duplicate key') || str_contains($mensaje, 'unique constraint failed');
     }
 
     /** The owner's decision ($decision a DECISIONES key) on pedido $numero; false when there is no such pedido. */
@@ -101,11 +143,96 @@ final class RetiroRepository extends Repository
         });
     }
 
+    /**
+     * The pedidos still waiting for the owner, oldest first, with the whole hours each has waited at $ahora (a
+     * unix time, for tests). Nothing about who asked or what they wrote: this is what a cron job mails.
+     *
+     * @return list<array{id: int, tipo: string, recurso_id: int, motivo: string, creado_en: string, horas: int}>
+     */
+    public function pendientes(?int $ahora = null): array
+    {
+        $ahora ??= time();
+        $filas = $this->db->fetchAll(
+            "SELECT id, tipo, recurso_id, motivo, creado_en FROM pedidos_retiro WHERE estado = 'pendiente' ORDER BY creado_en, id"
+        );
+
+        return array_map(static fn(array $f): array => [
+            'id' => (int)$f['id'],
+            'tipo' => (string)$f['tipo'],
+            'recurso_id' => (int)$f['recurso_id'],
+            'motivo' => (string)$f['motivo'],
+            'creado_en' => (string)$f['creado_en'],
+            'horas' => max(0, intdiv($ahora - (int)strtotime((string)$f['creado_en']), 3600)),
+        ], $filas);
+    }
+
+    /**
+     * Hides ('oculto') every pedido that has waited $horas or more without the owner deciding, and says why in
+     * its record. It never overrides a decision: a pedido the owner decides meanwhile is left as they decided.
+     *
+     * @return list<int> the numbers it hid
+     */
+    public function ocultarVencidos(int $horas, ?int $ahora = null): array
+    {
+        $ahora ??= time();
+        $ocultados = [];
+
+        foreach ($this->pendientes($ahora) as $pedido) {
+            if ($pedido['horas'] < $horas) {
+                continue;
+            }
+            $nota = "Oculto automáticamente: pasaron {$pedido['horas']} horas sin respuesta (plazo de {$horas} h).";
+            $hecho = $this->db->transaction(function () use ($pedido, $nota, $ahora): bool {
+                if ($this->db->execute("UPDATE pedidos_retiro SET estado = 'oculto' WHERE id = ? AND estado = 'pendiente'", [$pedido['id']]) !== 1) {
+                    return false;
+                }
+                $this->evento($pedido['id'], 'oculto', $nota, date('Y-m-d H:i:s', $ahora));
+
+                return true;
+            });
+            if ($hecho) {
+                $ocultados[] = $pedido['id'];
+            }
+        }
+
+        return $ocultados;
+    }
+
+    /**
+     * Erases the personal data (contacto, detalle, marcas) of every pedido already resolved ('retirado' or
+     * 'rechazado') whose last event is $meses months old or more, and stamps depurado_en. A pending or hidden
+     * pedido is still under review and keeps everything. The number, page, reason, state and history stay.
+     *
+     * @return list<int> the numbers it purged
+     */
+    public function depurar(int $meses, ?int $ahora = null): array
+    {
+        $ahora ??= time();
+        $limite = date('Y-m-d H:i:s', strtotime("-{$meses} months", $ahora));
+        $filas = $this->db->fetchAll(
+            "SELECT p.id FROM pedidos_retiro p
+              WHERE p.estado IN ('retirado', 'rechazado') AND p.depurado_en IS NULL
+                AND (SELECT MAX(e.ocurrido_en) FROM pedido_retiro_eventos e WHERE e.pedido_id = p.id) <= ?
+              ORDER BY p.id",
+            [$limite]
+        );
+        $depurados = [];
+        foreach ($filas as $fila) {
+            $this->db->execute(
+                "UPDATE pedidos_retiro SET detalle = '', contacto = '', marcas = NULL, depurado_en = ? WHERE id = ? AND depurado_en IS NULL",
+                [date('Y-m-d H:i:s', $ahora), $fila['id']]
+            );
+            $depurados[] = (int)$fila['id'];
+        }
+
+        return $depurados;
+    }
+
     /** @return list<array> every pedido, the pending ones first, then the newest, each with its 'eventos' */
     public function todos(): array
     {
         $pedidos = $this->db->fetchAll(
-            "SELECT id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en FROM pedidos_retiro
+            "SELECT id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en, marcas, depurado_en FROM pedidos_retiro
               ORDER BY CASE WHEN estado = 'pendiente' THEN 0 ELSE 1 END, creado_en DESC, id DESC"
         );
         foreach ($pedidos as &$pedido) {

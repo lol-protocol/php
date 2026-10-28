@@ -11,7 +11,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 |---|---|---|---|---|---|---|---|
 | `aliceblue` | Aliceblau | `#F0F8FF` |  | Ruhe, Frische und Sauberkeit; ein Gefühl von Leichtigkeit und Weite. | Himmlische Reinheit und Gelassenheit; verbunden mit dem klaren Himmel und klarer Kommunikation. | derivado | derivado |
 | `antiquewhite` | Antikweiß | `#FAEBD7` |  | Nostalgie, Tradition und sanfte Wärme; erinnert an Vintage. | Erinnerung und Weisheit der Vergangenheit; gealterte Reinheit und uralte Zyklen. | derivado | derivado |
-| `aqua` | Aqua | `#00FFFF` | `cyan` | Frische, Klarheit, Energie und das Gefühl von sauberem Wasser. | Lebendiges Wasser und Reinigung; Fluss der Intuition und der Verbindung mit dem Feinstofflichen. | derivado | derivado |
+| `aqua` | Aqua | `#00FFFF` | `cyan` | Frische, Klarheit, Ruhe und Kommunikation; verbunden mit dem Digitalen und Modernen. | Wasser und Reinigung; geistige Klarheit und Fluss der Kommunikation. | derivado | derivado |
 | `aquamarine` | Aquamarin | `#7FFFD4` |  | Entspannende Frische, Ruhe und leichter Optimismus. | Stein der Seefahrer: Schutz auf Reisen, Mut und emotionale Klarheit. | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
 | `azure` | Azurblau | `#F0FFFF` |  | Klarer Himmel, Offenheit, Freiheit und Gelassenheit. | Geistige Höhe und Reinheit des Himmels; das Himmlische und der offene Geist. | derivado | derivado |
 | `beige` | Beige | `#F5F5DC` |  | Neutralität, Schlichtheit, Stabilität und Zurückhaltung. | Erde und Demut; Ausgewogenheit ohne Extreme, Alltag und Verwurzelung. | derivado | derivado |
@@ -57,7 +57,7 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `firebrick` | Feuerziegel | `#B22222` |  | Stärke, Entschlossenheit, intensive Wärme und Spannung. | Feuer der Schmiede und des Herds; Mühe, Opfer und Arbeit. | derivado | derivado |
 | `floralwhite` | Blumenweiß | `#FFFAF0` |  | Sanftheit, Zartheit, Reinheit und Leichtigkeit. | Weiße Blüte: Unschuld, Anfänge und Segen des Frühlings. | derivado | derivado |
 | `forestgreen` | Waldgrün | `#228B22` |  | Natur, Gleichgewicht, Gesundheit, Ruhe und Wachstum. | Heiliger Wald: Leben, Erneuerung und Verbindung zur Erde. | derivado | derivado |
-| `fuchsia` | Fuchsia | `#FF00FF` | `magenta` | Kühnheit, Kreativität, Exzentrik und spielerische Energie. | Wandlung und Magie; Verbindung zwischen dem Materiellen und dem Spirituellen. | derivado | derivado |
+| `fuchsia` | Fuchsia | `#FF00FF` | `magenta` | Kreativität, Kühnheit, Intensität und lebendige Energie. | Wandlung und Spiritualität; Verbindung zwischen dem Materiellen und dem Feinstofflichen. | derivado | derivado |
 | `gainsboro` | Gainsboro-Grau | `#DCDCDC` |  | Elegante Neutralität, Sauberkeit und Ruhe. | Zwischenzustand des Gleichgewichts, ohne Last. | derivado | derivado |
 | `ghostwhite` | Geisterweiß | `#F8F8FF` |  | Leichtigkeit, feines Geheimnis und leuchtende Kühle. | Das Ätherische und Geisterhafte; feine Präsenz zwischen zwei Welten. | derivado | derivado |
 | `gold` | Gold | `#FFD700` |  | Erfolg, Reichtum, Ansehen, Optimismus und Wärme. | Sonne und Vollkommenheit; Erleuchtung, Macht, Weisheit und das Göttliche in vielen Traditionen. | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |

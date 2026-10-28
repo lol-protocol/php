@@ -22,6 +22,7 @@ import json
 import re
 import shutil
 import sqlite3
+import subprocess
 import sys
 import tempfile
 import unicodedata
@@ -34,10 +35,13 @@ sys.dont_write_bytecode = True  # no dejar __pycache__ de los módulos de al lad
 sys.path.insert(0, str(AQUI))
 import ambiguedad  # noqa: E402
 import auditoria  # noqa: E402
+import categorias  # noqa: E402
+import cobertura  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
 import normalizacion  # noqa: E402
+import revision  # noqa: E402
 
 # El generador se llama generar-tabla.py (con guion): no se puede importar con `import`.
 _especificacion = importlib.util.spec_from_file_location("generar_tabla", AQUI / "generar-tabla.py")
@@ -45,7 +49,8 @@ gt = importlib.util.module_from_spec(_especificacion)
 _especificacion.loader.exec_module(gt)
 
 ARCHIVOS_DE_ENTRADA = ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
-                       "significados-culturales.csv", "referencias.csv", "CHANGELOG.md", "README.md"]
+                       "significados-culturales.csv", "categorias.csv", "referencias.csv", "revisiones.csv", "visor-plantilla.html",
+                       "CHANGELOG.md", "README.md"]
 REAL = {}  # los CSV reales, leídos una vez; cada prueba trabaja con copias (ver real())
 BASE = {}  # la carpeta temporal con el proyecto reducido ya generado
 
@@ -58,6 +63,8 @@ def setUpModule():
     REAL["referencias"] = gt.leer(gt.REFERENCIAS, gt.COLUMNAS_REFERENCIAS)
     REAL["evidencia"] = gt.leer(gt.EVIDENCIA, gt.COLUMNAS_EVIDENCIA)
     REAL["culturales"] = gt.leer(gt.CULTURALES, gt.COLUMNAS_CULTURALES)
+    REAL["categorias"] = gt.leer(gt.CATEGORIAS, categorias.COLUMNAS)
+    REAL["revisiones"] = gt.leer(gt.REVISIONES, revision.COLUMNAS)
     BASE["temporal"] = tempfile.TemporaryDirectory()
     BASE["carpeta"] = Path(BASE["temporal"].name)
     preparar_proyecto_reducido(BASE["carpeta"])
@@ -97,7 +104,10 @@ def rutas_para(carpeta):
         "CARPETA": carpeta, "ANOTADA": carpeta / "colores.csv", "COMPLETA": carpeta / "nombres-completos.csv",
         "SIGNIFICADOS": carpeta / "significados-idiomas.csv", "LEXICO": carpeta / "lexico-basico.csv",
         "REFERENCIAS": carpeta / "referencias.csv", "EVIDENCIA": carpeta / "evidencia.csv",
-        "CULTURALES": carpeta / "significados-culturales.csv", "REFS_MD": carpeta / "referencias.md",
+        "CULTURALES": carpeta / "significados-culturales.csv", "CATEGORIAS": carpeta / "categorias.csv",
+        "CATEGORIAS_MD": carpeta / "categorias.md", "COBERTURA": carpeta / "cobertura.md", "REVISIONES": carpeta / "revisiones.csv",
+        "REVISIONES_MD": carpeta / "revisiones.md", "VISOR_PLANTILLA": carpeta / "visor-plantilla.html",
+        "VISOR": carpeta / "visor-revision.html", "REFS_MD": carpeta / "referencias.md",
         "AMBIGUEDAD": carpeta / "ambiguedad.md", "AUDITORIA": carpeta / "auditoria-nombres.md", "CHANGELOG": carpeta / "CHANGELOG.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
         "INDICE": carpeta / "colores-por-idioma.md", "DIR_IDIOMAS": carpeta / "por-idioma",
     }
@@ -125,6 +135,12 @@ def primera(filas, **criterios):
     return next(i for i, f in enumerate(filas) if all(f[campo] == valor for campo, valor in criterios.items()))
 
 
+def universo_revisable(**cambios):
+    """Lo que se puede revisar según los CSV reales (o con alguno cambiado)."""
+    datos = {"idiomas": gt.IDIOMAS, "anotada": real("anotada"), "lexico": real("lexico"), "categorias": real("categorias")}
+    return revision.universo({**datos, **cambios})
+
+
 class PruebaConErrores(unittest.TestCase):
     def assertSoloError(self, errores, fragmento):
         self.assertEqual(len(errores), 1, errores)
@@ -146,6 +162,8 @@ class DatosReales(unittest.TestCase):
         ids = gt.validar_referencias(real("referencias"), errores)
         gt.validar_evidencia(real("evidencia"), real("anotada"), ids, errores, usadas)
         gt.validar_culturales(real("culturales"), real("anotada"), ids, errores, usadas)
+        categorias.validar(real("categorias"), real("anotada"), real("lexico"), [c for c, _ in gt.IDIOMAS], gt.CONCEPTOS, errores)
+        revision.validar(real("revisiones"), universo_revisable(), [c for c, _ in gt.IDIOMAS], errores)
         self.assertEqual(errores, [])
         self.assertEqual(usadas, ids, "ninguna referencia sin usar")
 
@@ -241,6 +259,38 @@ class NombresCompletos(PruebaConErrores):
     def test_orden_roto_sin_distinguir_mayusculas(self):
         self.assertSoloError(self.validar([self.fila("beta"), self.fila("Alpha")]), "ordenadas por nombre")
         self.assertEqual(self.validar([self.fila("Alpha"), self.fila("beta")]), [])
+
+
+class AliasConElMismoSignificado(PruebaConErrores):
+    def validar(self, anotada=None, traducidos=None):
+        errores = []
+        gt.validar_alias(anotada or real("anotada"), traducidos or real("significados"), errores)
+        return errores
+
+    def test_los_datos_reales_no_tienen_alias_con_significados_distintos(self):
+        self.assertEqual(self.validar(), [])
+
+    def test_aqua_y_cyan_en_espanol(self):
+        for campo in ("significado_psicologico", "significado_mistico"):
+            anotada = real("anotada")
+            anotada[primera(anotada, nombre_ingles="aqua")][campo] += " distinto"
+            self.assertSoloError(self.validar(anotada=anotada), "aqua y cyan tienen el mismo hex y deben tener los mismos significados en español")
+
+    def test_fuchsia_y_magenta_en_otro_idioma(self):
+        traducidos = real("significados")
+        traducidos[primera(traducidos, idioma="ja", nombre_ingles="fuchsia")]["significado_mistico"] += "。"
+        self.assertSoloError(self.validar(traducidos=traducidos), "fuchsia y magenta tienen el mismo hex y deben tener los mismos significados; difieren en ja")
+
+    def test_gray_y_grey_tambien(self):
+        traducidos = real("significados")
+        for idioma in ("fr", "de"):
+            traducidos[primera(traducidos, idioma=idioma, nombre_ingles="grey")]["significado_psicologico"] += "."
+        self.assertSoloError(self.validar(traducidos=traducidos), "gray y grey tienen el mismo hex y deben tener los mismos significados; difieren en de, fr")
+
+    def test_dos_colores_con_distinto_hex_pueden_decir_cosas_distintas(self):
+        anotada = real("anotada")
+        anotada[primera(anotada, nombre_ingles="red")]["significado_mistico"] += " distinto"
+        self.assertEqual(self.validar(anotada=anotada), [])
 
 
 class Significados(PruebaConErrores):
@@ -525,6 +575,540 @@ class Culturales(PruebaConErrores):
         filas = real("culturales")
         filas[0], filas[-1] = filas[-1], filas[0]
         self.assertSoloError(self.validar(filas), "ordenadas por color")
+
+
+class Categorias(PruebaConErrores):
+    def validar(self, filas):
+        errores = []
+        categorias.validar(filas, real("anotada"), real("lexico"), [c for c, _ in gt.IDIOMAS], gt.CONCEPTOS, errores)
+        return errores
+
+    def test_las_filas_reales_cubren_ingles_y_espanol(self):
+        filas = real("categorias")
+        self.assertEqual({f["idioma"] for f in filas}, {"en", "es"})
+        self.assertEqual({f["categoria"] for f in filas}, set(categorias.UPOS))
+        self.assertEqual(len(filas), len(REAL["categorias"]))
+        en = {f["concepto"] for f in filas if f["idioma"] == "en"}
+        self.assertEqual(en, {f["nombre_ingles"] for f in REAL["anotada"] if " " not in f["forma_natural_en"]}
+                         | {"lilac", "burgundy", "cream", "scarlet", "amber"})
+        es = {f["concepto"] for f in filas if f["idioma"] == "es"}
+        self.assertEqual(es, {f["concepto"] for f in REAL["lexico"]
+                              if f["idioma"] == "es" and f["tipo"] == "lema" and " " not in f["forma"]})
+
+    def test_cada_palabra_tiene_adjetivo_y_las_demas_son_lecturas_extra(self):
+        # Una palabra de color siempre puede ser adjetivo (es lo que la hace palabra de color).
+        for (idioma, concepto), lista in categorias.por_concepto(real("categorias")).items():
+            self.assertIn("ADJ", [f["categoria"] for f in lista], (idioma, concepto))
+
+    def test_idioma_o_concepto_desconocidos(self):
+        for campo, valor in (("idioma", "xx"), ("concepto", "nocolor")):
+            filas = real("categorias")
+            filas[0][campo] = valor
+            self.assertHayError(self.validar(filas), "idioma o concepto desconocido")
+
+    def test_un_concepto_css_sin_forma_en_el_idioma(self):
+        filas = real("categorias")
+        filas[0].update(idioma="es", concepto="aliceblue")  # color CSS que no está en el léxico en español
+        self.assertHayError(self.validar(filas), "aliceblue no tiene forma en es")
+
+    def test_la_forma_debe_ser_la_del_color_o_la_del_lema(self):
+        filas = real("categorias")
+        i = primera(filas, idioma="en", concepto="aqua", categoria="ADJ")
+        filas[i]["forma"] = "Aqua"
+        self.assertHayError(self.validar(filas), "la forma de aqua en en es 'aqua', no 'Aqua'")
+        filas = real("categorias")
+        i = primera(filas, idioma="es", concepto="lime", categoria="VERB")
+        filas[i]["forma"] = "limón"
+        self.assertHayError(self.validar(filas), "la forma de lime en es es 'lima', no 'limón'")
+
+    def test_la_forma_debe_ser_una_sola_palabra(self):
+        filas = real("categorias")
+        i = primera(filas, idioma="es", concepto="red", categoria="ADJ")
+        filas[i].update(concepto="lightblue", forma="azul claro", ocurrencia="azul claro", ejemplo="Pintó la pared azul claro.")
+        errores = self.validar(filas)
+        self.assertHayError(errores, "la forma debe ser una sola palabra")
+        self.assertHayError(errores, "no son de una sola palabra")
+
+    def test_categoria_desconocida(self):
+        filas = real("categorias")
+        filas[0]["categoria"] = "ADV"
+        self.assertHayError(self.validar(filas), "categoría desconocida 'ADV'")
+
+    def test_la_ocurrencia_es_la_forma_con_pocas_letras_mas(self):
+        filas = real("categorias")
+        i = primera(filas, idioma="en", concepto="black", categoria="VERB")
+        self.assertEqual(filas[i]["ocurrencia"], "blacked")  # dos letras más: vale
+        filas[i].update(ocurrencia="blackened", ejemplo="They blackened the windows.")  # cuatro más: vale
+        self.assertEqual(self.validar(filas), [])
+        filas[i].update(ocurrencia="blackeners", ejemplo="The blackeners came.")  # seis más: no
+        self.assertHayError(self.validar(filas), "debe ser la forma 'black' con a lo sumo 4 letras más")
+        filas[i].update(ocurrencia="darken", ejemplo="They darken the windows.")
+        self.assertHayError(self.validar(filas), "debe ser la forma 'black'")
+
+    def test_un_nombre_propio_lleva_mayuscula(self):
+        filas = real("categorias")
+        i = primera(filas, idioma="en", concepto="peru", categoria="PROPN")
+        filas[i].update(ocurrencia="peru", ejemplo="She was born in peru.")
+        self.assertHayError(self.validar(filas), "un nombre propio se escribe con mayúscula inicial")
+
+    def test_ejemplo_vacio_con_barra_o_sin_punto_final(self):
+        for ejemplo, esperado in (("", "ejemplo vacío"), (" He wore a beige coat.", "espacios sobrantes"),
+                                  ("He wore a beige | coat.", "'|' o saltos"), ("He wore a\nbeige coat.", "saltos de línea"),
+                                  ("He wore a beige coat", "debe terminar en")):
+            with self.subTest(ejemplo):
+                filas = real("categorias")
+                i = primera(filas, idioma="en", concepto="beige", categoria="ADJ")
+                filas[i]["ejemplo"] = ejemplo
+                self.assertHayError(self.validar(filas), esperado)
+
+    def test_toda_palabra_de_color_tiene_adjetivo(self):
+        filas = [f for f in real("categorias") if not (f["idioma"] == "es" and f["concepto"] == "white" and f["categoria"] == "ADJ")]
+        self.assertSoloError(self.validar(filas), "es/white no tiene la categoría ADJ")
+
+    def test_los_signos_finales_validos(self):
+        for final in ".!?":
+            filas = real("categorias")
+            i = primera(filas, idioma="en", concepto="beige", categoria="ADJ")
+            filas[i]["ejemplo"] = f"He wore a beige coat{final}"
+            self.assertEqual(self.validar(filas), [], final)
+
+    def test_la_frase_contiene_la_ocurrencia_como_palabra_entera(self):
+        filas = real("categorias")
+        i = primera(filas, idioma="es", concepto="lime", categoria="VERB")
+        for ejemplo in ("Ella pinta las uñas.", "Ella limaba las uñas.", "Ella sublima las uñas."):
+            filas[i]["ejemplo"] = ejemplo
+            self.assertHayError(self.validar(filas), "una vez como palabra entera, no 0")
+        filas[i]["ejemplo"] = "Lima es la capital."  # la mayúscula inicial no es la ocurrencia 'lima': no vale
+        self.assertHayError(self.validar(filas), "una vez como palabra entera, no 0")
+
+    def test_la_ocurrencia_sale_una_sola_vez_y_es_una_palabra_sin_signos(self):
+        # ejemplos.conllu marca un solo token por frase: una ocurrencia repetida o con guion no tendría un token claro.
+        filas = real("categorias")
+        i = primera(filas, idioma="es", concepto="lime", categoria="VERB")
+        filas[i]["ejemplo"] = "Ella lima las uñas y lima la madera."
+        self.assertSoloError(self.validar(filas), "una vez como palabra entera, no 2")
+        filas = real("categorias")
+        i = primera(filas, idioma="en", concepto="black", categoria="ADJ")
+        filas[i].update(ocurrencia="black-", ejemplo="She wore a black- dress.")
+        self.assertHayError(self.validar(filas), "debe tener solo letras y dígitos")
+
+    def test_una_categoria_repetida_para_el_mismo_concepto(self):
+        filas = real("categorias")
+        i = primera(filas, idioma="en", concepto="aqua", categoria="ADJ")
+        filas.insert(i + 1, dict(filas[i]))
+        self.assertHayError(self.validar(filas), "repetida en/aqua/ADJ")
+
+    def test_el_orden_de_las_categorias_es_adj_noun_propn_verb(self):
+        self.assertEqual(categorias.UPOS, ["ADJ", "NOUN", "PROPN", "VERB"])
+        filas = real("categorias")
+        i = primera(filas, idioma="en", concepto="olive", categoria="PROPN")
+        verbo = dict(filas[i], categoria="VERB", ocurrencia="Olive", ejemplo="They Olive the walls.")
+        filas.insert(i + 1, verbo)  # ADJ, NOUN, PROPN, VERB: vale
+        self.assertEqual(self.validar(filas), [])
+        filas[i], filas[i + 1] = filas[i + 1], filas[i]  # ADJ, NOUN, VERB, PROPN: no
+        self.assertSoloError(self.validar(filas), "ordenadas por idioma, concepto")
+
+    def test_el_orden_es_idioma_concepto_y_categoria(self):
+        filas = real("categorias")
+        i = primera(filas, idioma="en", concepto="aqua", categoria="ADJ")
+        filas[i], filas[i + 1] = filas[i + 1], filas[i]  # NOUN antes que ADJ
+        self.assertSoloError(self.validar(filas), "ordenadas por idioma, concepto")
+        filas = real("categorias")
+        filas = [f for f in filas if f["idioma"] == "es"] + [f for f in filas if f["idioma"] == "en"]
+        self.assertSoloError(self.validar(filas), "ordenadas por idioma, concepto")
+
+    def test_a_un_idioma_presente_no_le_puede_faltar_ninguna_palabra(self):
+        filas = [f for f in real("categorias") if not (f["idioma"] == "es" and f["concepto"] == "lime")]
+        self.assertSoloError(self.validar(filas), "a es le faltan 1 palabras (por ejemplo lime)")
+
+    def test_un_idioma_ausente_no_da_error_de_cobertura(self):
+        self.assertEqual(self.validar([f for f in real("categorias") if f["idioma"] == "en"]), [])
+        self.assertEqual(self.validar([]), [])
+
+    def test_a_ingles_le_faltan_los_colores_css_y_los_del_lexico(self):
+        for concepto in ("azure", "lilac"):
+            filas = [f for f in real("categorias") if not (f["idioma"] == "en" and f["concepto"] == concepto)]
+            self.assertSoloError(self.validar(filas), f"a en le faltan 1 palabras (por ejemplo {concepto})")
+
+    def test_las_formas_de_ejemplo_siguen_a_las_del_lexico(self):
+        # Si el léxico cambia el lema de «lime» en español, categorias.csv deja de coincidir y lo dice.
+        lexico = real("lexico")
+        i = primera(lexico, idioma="es", concepto="lime", tipo="lema")
+        lexico[i]["forma"] = "lima verde"
+        errores = []
+        categorias.validar(real("categorias"), real("anotada"), lexico, [c for c, _ in gt.IDIOMAS], gt.CONCEPTOS, errores)
+        self.assertHayError(errores, "la forma de lime en es es 'lima verde', no 'lima'")
+
+    def test_el_informe_cuenta_las_categorias_de_los_datos_reales(self):
+        filas = real("categorias")
+        texto = categorias.informe(filas, gt.IDIOMAS)
+        for codigo, nombre in (("en", "Inglés"), ("es", "Español")):
+            propias = [f for f in filas if f["idioma"] == codigo]
+            cuentas = [sum(1 for f in propias if f["categoria"] == u) for u in categorias.UPOS]
+            palabras = {f["concepto"] for f in propias}
+            varias = sum(1 for c in palabras if sum(1 for f in propias if f["concepto"] == c) > 1)
+            fila = f"| {nombre} (`{codigo}`) | {len(palabras)} | " + " | ".join(map(str, cuentas)) + f" | {varias} |"
+            self.assertIn(fila, texto)
+            self.assertIn(f"## {nombre} (`{codigo}`)", texto)
+        self.assertNotIn("(`fr`)", texto)
+        self.assertIn("| `lime` | lima | `VERB` | Ella lima las uñas antes de pintarlas. |", texto)
+
+    def test_la_nota_de_los_nueve_nombres_css_coincide_con_los_ejemplos(self):
+        # Si se agrega o se cambia un ejemplo de ADJ de contexto web, la nota del informe y del README deben seguirlo.
+        web = re.compile(r"\b(page|header|panel|button|text color|border)\b", re.I)
+        nueve = sorted(f["concepto"] for f in REAL["categorias"] if f["idioma"] == "en" and f["categoria"] == "ADJ" and web.search(f["ejemplo"]))
+        informe = categorias.informe(real("categorias"), gt.IDIOMAS)
+        readme = (AQUI / "README.md").read_text(encoding="utf-8")
+        self.assertEqual(len(nueve), 9)
+        for nombre in nueve:
+            self.assertIn(f"`{nombre}`", informe.split("Nueve nombres CSS")[1].split("\n")[0])
+            self.assertIn(f"`{nombre}`", readme.split("Nueve nombres CSS")[1].split("\n")[0])
+
+    def test_el_informe_escapa_la_barra_vertical(self):
+        filas = [dict(real("categorias")[0], ejemplo="Una | barra.")]
+        self.assertIn("Una &#124; barra.", categorias.informe(filas, gt.IDIOMAS))
+
+
+FILA_REVISADA = {"idioma": "es", "alcance": "nombres", "elemento": "aliceblue", "veredicto": "correcto",
+                 "revisor": "Ana", "fecha": "2026-10-23", "nota": ""}
+
+
+def datos_reales():
+    """Lo que generar-tabla.py le pasa a revision.py y a exportes.py, con los CSV reales."""
+    return {"idiomas": gt.IDIOMAS, "anotada": real("anotada"), "lexico": real("lexico"), "categorias": real("categorias"),
+            "significados": {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
+                             for f in REAL["significados"]},
+            "hex_concepto": {c: gt.hex_de_concepto(c, REAL["anotada"], REAL["completa"]) for c in gt.CONCEPTOS}}
+
+
+def huellas_reales():
+    if "huellas" not in REAL:
+        REAL["huellas"] = revision.huellas(datos_reales())
+    return REAL["huellas"]
+
+
+class Revision(PruebaConErrores):
+    def validar(self, filas, **cambios):
+        errores = []
+        revision.validar(filas, universo_revisable(**cambios), [c for c, _ in gt.IDIOMAS], errores)
+        return errores
+
+    def fila(self, **campos):
+        fila = {**FILA_REVISADA, **campos}
+        fila.setdefault("huella", huellas_reales().get((fila["idioma"], fila["alcance"]), {}).get(fila["elemento"], "0123abcd"))
+        return fila
+
+    def test_el_registro_real_empieza_vacio(self):
+        self.assertEqual(REAL["revisiones"], [], "nadie ha revisado nada todavía: si cambia, actualiza README y revisiones.md")
+
+    def test_lo_que_se_puede_revisar(self):
+        universo = universo_revisable()
+        for codigo, _ in gt.IDIOMAS:
+            self.assertEqual(len(universo[(codigo, "nombres")]), 148)
+            self.assertEqual(universo[(codigo, "significados")], universo[(codigo, "nombres")])
+            conceptos = list(dict.fromkeys(f["concepto"] for f in REAL["lexico"] if f["idioma"] == codigo))
+            self.assertEqual(universo[(codigo, "lexico")], conceptos)
+        self.assertEqual({i for i, a in universo if a == "categorias"}, {"en", "es"})
+        self.assertEqual(len(universo[("en", "categorias")]), 61)
+        self.assertEqual(len(universo[("es", "categorias")]), 32)
+        self.assertNotIn(("fr", "categorias"), universo)
+
+    def test_una_fila_valida_y_el_orden_no_importa(self):
+        filas = [self.fila(), self.fila(elemento="red", veredicto="corregir", nota="mejor «rojo»"),
+                 self.fila(idioma="en", elemento="blue"), self.fila(alcance="lexico", elemento="white"),
+                 self.fila(alcance="categorias", elemento="lilac", idioma="en"), self.fila(revisor="Luis")]
+        self.assertEqual(self.validar(filas), [])
+        self.assertEqual(self.validar(filas[::-1]), [])
+
+    def test_idioma_alcance_o_elemento_desconocidos(self):
+        self.assertSoloError(self.validar([self.fila(idioma="xx")]), "idioma desconocido 'xx'")
+        self.assertSoloError(self.validar([self.fila(alcance="todo")]), "alcance desconocido 'todo'")
+        self.assertSoloError(self.validar([self.fila(elemento="nocolor")]), "'nocolor' no es un elemento de nombres en es")
+        # El léxico solo tiene conceptos propios: un color CSS que no está en él no vale.
+        self.assertSoloError(self.validar([self.fila(alcance="lexico", elemento="aliceblue")]),
+                             "'aliceblue' no es un elemento de lexico en es")
+
+    def test_categorias_solo_en_los_idiomas_que_las_tienen(self):
+        self.assertSoloError(self.validar([self.fila(alcance="categorias", idioma="fr", elemento="white")]),
+                             "categorias no tiene datos en fr")
+
+    def test_veredicto_desconocido(self):
+        self.assertSoloError(self.validar([self.fila(veredicto="quizá")]), "veredicto desconocido 'quizá'")
+
+    def test_el_revisor_no_puede_estar_vacio_ni_llevar_espacios_o_saltos(self):
+        for revisor in ("", " ", " Ana", "Ana ", "A\nna"):
+            self.assertSoloError(self.validar([self.fila(revisor=revisor)]), "revisor vacío")
+
+    def test_la_fecha_es_aaaa_mm_dd_y_existe(self):
+        for fecha in ("", "23/10/2026", "2026-1-5", "2026-10-23T10:00", "hoy"):
+            self.assertSoloError(self.validar([self.fila(fecha=fecha)]), "la fecha debe ser AAAA-MM-DD")
+        self.assertSoloError(self.validar([self.fila(fecha="2026-02-30")]), "fecha que no existe")
+        self.assertEqual(self.validar([self.fila(fecha="2028-02-29")]), [], "29 de febrero de un año bisiesto")
+
+    def test_la_nota_no_lleva_espacios_sobrantes_ni_saltos(self):
+        for nota in (" x", "x ", "x\ny"):
+            self.assertSoloError(self.validar([self.fila(nota=nota)]), "nota con espacios sobrantes")
+
+    def test_corregir_y_dudoso_necesitan_nota_y_correcto_y_corregido_no(self):
+        for veredicto in ("corregir", "dudoso"):
+            self.assertSoloError(self.validar([self.fila(veredicto=veredicto)]), "necesita una nota")
+            self.assertEqual(self.validar([self.fila(veredicto=veredicto, nota="algo")]), [])
+        for veredicto in ("correcto", "corregido"):
+            self.assertEqual(self.validar([self.fila(veredicto=veredicto)]), [])
+
+    def test_una_fila_por_revisor_y_elemento(self):
+        self.assertSoloError(self.validar([self.fila(), self.fila(veredicto="dudoso", nota="x")]),
+                             "Ana ya revisó nombres/aliceblue en es")
+        self.assertEqual(self.validar([self.fila(), self.fila(revisor="Luis")]), [], "otro revisor: vale")
+        self.assertEqual(self.validar([self.fila(), self.fila(idioma="fr")]), [], "otro idioma: vale")
+        self.assertEqual(self.validar([self.fila(), self.fila(alcance="significados")]), [], "otro alcance: vale")
+
+    def test_el_informe_sin_filas(self):
+        texto = revision.informe([], universo_revisable(), gt.IDIOMAS, huellas_reales())
+        total = sum(len(v) for v in universo_revisable().values())
+        self.assertIn(f"**Estado: ningún elemento revisado todavía (0 de {total}).**", texto)
+        self.assertIn("| Español (`es`) | 0 de 148 | 0 de 148 | 0 de 38 | 0 de 32 |", texto)
+        self.assertIn("| Francés (`fr`) | 0 de 148 | 0 de 148 | 0 de 38 | — |", texto)
+        self.assertIn("| `correcto` | 0 |", texto)
+        self.assertIn("No hay correcciones propuestas ni dudas por atender.", texto)
+
+    def test_el_informe_con_filas(self):
+        filas = [self.fila(), self.fila(revisor="Luis"),  # dos revisores del mismo elemento cuentan un elemento
+                 self.fila(elemento="red", veredicto="corregir", nota="mejor | «rojo»", revisor="Zoe"),
+                 self.fila(idioma="en", alcance="categorias", elemento="lilac", veredicto="dudoso", nota="¿verbo?", revisor="Ana"),
+                 self.fila(elemento="aqua", veredicto="corregido", revisor="Ana")]
+        texto = revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales())
+        total = sum(len(v) for v in universo_revisable().values())
+        self.assertIn(f"**Estado: 4 de {total} elementos revisados.**", texto)
+        self.assertIn("| Español (`es`) | 3 de 148 | 0 de 148 | 0 de 38 | 0 de 32 |", texto)
+        self.assertIn("| Inglés (`en`) | 0 de 148 | 0 de 148 | 0 de 38 | 1 de 61 |", texto)
+        for veredicto, cuenta in (("correcto", 2), ("corregir", 1), ("corregido", 1), ("dudoso", 1)):
+            self.assertIn(f"| `{veredicto}` | {cuenta} |", texto)
+        self.assertNotIn("No hay correcciones propuestas", texto)
+        pendientes = texto.split("## Pendientes")[1].split("## Atención")[0]
+        self.assertIn("| `en` | `categorias` | `lilac` | `dudoso` | ¿verbo? | Ana | 2026-10-23 |", pendientes)
+        self.assertIn("| `es` | `nombres` | `red` | `corregir` | mejor &#124; «rojo» | Zoe | 2026-10-23 |", pendientes)
+        self.assertLess(pendientes.index("`lilac`"), pendientes.index("`red`"), "ordenados por idioma (en antes que es)")
+        self.assertNotIn("aqua", pendientes, "lo corregido ya no está pendiente")
+
+    def test_la_huella_es_fnv1a_de_32_bits(self):
+        # Vectores de prueba publicados de FNV-1a de 32 bits.
+        for texto, esperado in (("", "811c9dc5"), ("a", "e40c292c"), ("foobar", "bf9cf968")):
+            self.assertEqual(revision.huella(texto), esperado, texto)
+        self.assertEqual(revision.huella("ñandú"), revision.huella("ñandú"))
+        self.assertNotEqual(revision.huella("ñandú"), revision.huella("nandu"))
+
+    def test_la_huella_debe_ser_de_ocho_cifras_hexadecimales_en_minuscula(self):
+        for huella in ("", "abc", "0123abcg", "0123ABCD", "0123abcd0"):
+            self.assertSoloError(self.validar([self.fila(huella=huella)]), "la huella debe ser de 8 cifras")
+        self.assertEqual(self.validar([self.fila(huella="0123abcd")]), [], "una huella de otro momento es válida: caduca, no es un error")
+
+    def test_hay_una_huella_por_cada_elemento_revisable(self):
+        huellas = huellas_reales()
+        universo = universo_revisable()
+        self.assertEqual({k: set(v) for k, v in huellas.items()}, {k: set(v) for k, v in universo.items()})
+        self.assertTrue(all(len(h) == 8 for lista in huellas.values() for h in lista.values()))
+
+    def test_la_huella_cambia_con_lo_que_ve_el_revisor_y_con_nada_mas(self):
+        base = huellas_reales()
+        for alcance, campo, cambiar in (
+                ("nombres", "anotada", lambda d: d["anotada"][primera(d["anotada"], nombre_ingles="aliceblue")].update(nombre_es="otro")),
+                ("significados", "anotada", lambda d: d["anotada"][primera(d["anotada"], nombre_ingles="aliceblue")].update(significado_mistico="otro")),
+                ("lexico", "lexico", lambda d: d["lexico"][primera(d["lexico"], idioma="es", concepto="white", tipo="lema")].update(forma="otro")),
+                ("categorias", "categorias", lambda d: d["categorias"][primera(d["categorias"], idioma="es", concepto="white", categoria="ADJ")].update(ejemplo="Otra frase."))):
+            with self.subTest(alcance):
+                datos = datos_reales()
+                cambiar(datos)
+                nuevas = revision.huellas(datos)
+                cambiadas = {(k, e) for k, lista in nuevas.items() for e, h in lista.items() if h != base[k][e]}
+                elemento = "aliceblue" if alcance in ("nombres", "significados") else "white"
+                self.assertEqual(cambiadas, {(("es", alcance), elemento)})
+
+    def test_la_huella_de_significados_en_otro_idioma_sale_de_significados_idiomas(self):
+        datos = datos_reales()
+        datos["significados"][("ja", "aliceblue")] = ("x", "y")
+        self.assertEqual(revision.huellas(datos)[("ja", "significados")]["aliceblue"], revision.huella("x\ny"))
+
+    def test_un_correcto_cuyo_dato_cambio_caduca_y_no_cuenta(self):
+        filas = [self.fila(huella="0123abcd")]
+        atencion, revisados = revision.situacion(filas, huellas_reales())
+        self.assertEqual(atencion["caducada"], filas)
+        self.assertEqual(revisados, {})
+        texto = revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales())
+        self.assertIn("ningún elemento revisado todavía", texto)
+        self.assertIn("### Revisiones `correcto` caducadas", texto)
+        self.assertIn("| `es` | `nombres` | `aliceblue` | `correcto` | Ana | 2026-10-23 |", texto)
+
+    def test_un_correcto_vigente_cuenta_y_no_pide_atencion(self):
+        atencion, revisados = revision.situacion([self.fila()], huellas_reales())
+        self.assertEqual(atencion, {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": []})
+        self.assertEqual(revisados, {("es", "nombres"): {"aliceblue"}})
+
+    def test_un_corregir_cuyo_dato_cambio_pide_marcarlo_corregido(self):
+        filas = [self.fila(veredicto="corregir", nota="mejor otro", huella="0123abcd")]
+        atencion, revisados = revision.situacion(filas, huellas_reales())
+        self.assertEqual(atencion["ya_cambio"], filas)
+        self.assertEqual(revisados, {("es", "nombres"): {"aliceblue"}}, "una duda o corrección sigue contando: alguien miró")
+        self.assertIn("### Correcciones o dudas cuyo dato ya cambió", revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales()))
+
+    def test_un_dudoso_cuyo_dato_cambio_tambien(self):
+        atencion, _ = revision.situacion([self.fila(veredicto="dudoso", nota="x", huella="0123abcd")], huellas_reales())
+        self.assertEqual(len(atencion["ya_cambio"]), 1)
+
+    def test_un_corregir_vigente_no_pide_atencion_de_cambio(self):
+        atencion, _ = revision.situacion([self.fila(veredicto="corregir", nota="x")], huellas_reales())
+        self.assertEqual(atencion["ya_cambio"], [])
+
+    def test_un_corregido_con_el_dato_igual_no_esta_aplicado(self):
+        filas = [self.fila(veredicto="corregido")]
+        atencion, revisados = revision.situacion(filas, huellas_reales())
+        self.assertEqual(atencion["sin_cambio"], filas)
+        self.assertIn("### Filas `corregido` con el dato sin cambios", revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales()))
+
+    def test_un_corregido_con_el_dato_distinto_esta_bien(self):
+        atencion, revisados = revision.situacion([self.fila(veredicto="corregido", huella="0123abcd")], huellas_reales())
+        self.assertEqual(atencion, {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": []})
+        self.assertEqual(revisados, {("es", "nombres"): {"aliceblue"}})
+
+    def test_revisores_en_desacuerdo(self):
+        filas = [self.fila(), self.fila(revisor="Luis", veredicto="corregir", nota="mejor otro")]
+        atencion, _ = revision.situacion(filas, huellas_reales())
+        self.assertEqual(atencion["conflicto"], filas)
+        texto = revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales())
+        self.assertIn("### Revisores en desacuerdo", texto)
+        self.assertIn("| `es` | `nombres` | `aliceblue` | `correcto` | Ana | 2026-10-23 |", texto)
+        self.assertIn("| `es` | `nombres` | `aliceblue` | `corregir` | Luis | 2026-10-23 |", texto)
+
+    def test_dos_correcto_no_son_un_conflicto_ni_un_correcto_y_un_dato_de_otro_elemento(self):
+        for filas in ([self.fila(), self.fila(revisor="Luis")],
+                      [self.fila(), self.fila(revisor="Luis", elemento="red", veredicto="corregir", nota="x")]):
+            self.assertEqual(revision.situacion(filas, huellas_reales())[0]["conflicto"], [])
+
+    def test_un_correcto_y_un_corregir_ya_caducado_no_son_conflicto(self):
+        filas = [self.fila(), self.fila(revisor="Luis", veredicto="corregir", nota="x", huella="0123abcd")]
+        self.assertEqual(revision.situacion(filas, huellas_reales())[0]["conflicto"], [], "el corregir es de un dato que ya no existe")
+
+    def test_sin_nada_que_atender_el_informe_lo_dice(self):
+        texto = revision.informe([self.fila()], universo_revisable(), gt.IDIOMAS, huellas_reales())
+        self.assertIn("Nada que atender: ninguna revisión caducada, sin aplicar ni en conflicto.", texto)
+
+    def test_datos_del_visor(self):
+        datos = datos_reales()
+        v = revision.datos_visor(datos)
+        self.assertEqual(v["huellas"]["es"]["nombres"]["aliceblue"], huellas_reales()[("es", "nombres")]["aliceblue"])
+        self.assertNotIn("categorias", v["huellas"]["fr"], "fr no tiene categorías que revisar")
+        self.assertEqual(v["idiomas"], [list(par) for par in gt.IDIOMAS])
+        self.assertEqual(v["alcances"], list(revision.ALCANCES))
+        self.assertEqual(v["veredictos"], list(revision.VEREDICTOS))
+        self.assertEqual(list(v["colores"]), [f["nombre_ingles"] for f in REAL["anotada"]])
+        alice = v["colores"]["aliceblue"]
+        self.assertEqual((alice["hex"], alice["nombres"]["en"], alice["nombres"]["es"]), ("#F0F8FF", "alice blue", "azul alicia"))
+        self.assertEqual(list(alice["nombres"]), [c for c, _ in gt.IDIOMAS])
+        self.assertEqual(list(alice["significados"]), [c for c, _ in gt.IDIOMAS])
+        original = next(f for f in REAL["anotada"] if f["nombre_ingles"] == "aliceblue")
+        self.assertEqual(alice["significados"]["es"], [original["significado_psicologico"], original["significado_mistico"]])
+        japones = next(f for f in REAL["significados"] if f["idioma"] == "ja" and f["nombre_ingles"] == "aliceblue")
+        self.assertEqual(alice["significados"]["ja"], [japones["significado_psicologico"], japones["significado_mistico"]])
+        self.assertEqual(v["lexico"]["es"]["white"]["formas"][0], ["blanco", "lema", ""])
+        self.assertEqual(v["lexico"]["es"]["white"]["hex"], "#FFFFFF")
+        self.assertEqual(v["categorias"]["en"]["lilac"][0][:2], ["lilac", "ADJ"])
+        self.assertNotIn("fr", v["categorias"])
+
+    def test_el_visor_lleva_los_datos_y_nada_externo(self):
+        html = (BASE["carpeta"] / "visor-revision.html").read_text(encoding="utf-8")
+        plantilla = (AQUI / "visor-plantilla.html").read_text(encoding="utf-8")
+        self.assertIn(revision.MARCA_DATOS, plantilla)
+        self.assertNotIn(revision.MARCA_DATOS, html)
+        self.assertEqual(html.count("<script>"), 1)
+        self.assertNotRegex(html, r"(?i)(src|href)\s*=\s*[\"']?(https?:)?//", "sin recursos externos")
+        self.assertNotRegex(html, r"(?i)@import|url\(\s*[\"']?https?:", "sin estilos externos")
+        trozo = html.split("const D = ", 1)[1].split(";\n  const COLUMNAS", 1)[0]
+        datos = json.loads(trozo.replace("<\\/", "</"))
+        self.assertEqual(sorted(datos), ["alcances", "categorias", "colores", "huellas", "idiomas", "lexico", "veredictos"])
+        self.assertEqual(len(datos["colores"]), 148)
+        self.assertEqual(datos["colores"]["aliceblue"]["nombres"]["en"], "alice blue")
+
+    def test_los_datos_no_pueden_cerrar_el_script(self):
+        plantilla = "<script>const D = /*DATOS*/null;</script>"
+        datos = {"idiomas": [("en", "Inglés")], "anotada": [], "lexico": [], "categorias": [], "significados": {}, "hex_concepto": {}}
+        html = revision.visor_html(dict(datos, idiomas=[("en", "</script><b>")]), plantilla)
+        self.assertEqual(html.count("</script>"), 1, "el único cierre es el de la plantilla")
+        self.assertIn("<\\/script>", html)
+
+    def test_la_plantilla_debe_tener_la_marca_una_vez(self):
+        datos = {"idiomas": [], "anotada": [], "lexico": [], "categorias": [], "significados": {}, "hex_concepto": {}}
+        for plantilla in ("<script></script>", f"{revision.MARCA_DATOS} {revision.MARCA_DATOS}"):
+            with self.assertRaises(ValueError):
+                revision.visor_html(datos, plantilla)
+
+    @unittest.skipUnless(shutil.which("node"), "node no está instalado")
+    def test_el_script_del_visor_es_javascript_valido(self):
+        html = (BASE["carpeta"] / "visor-revision.html").read_text(encoding="utf-8")
+        guion = html.split("<script>", 1)[1].split("</script>", 1)[0]
+        with tempfile.TemporaryDirectory() as t:
+            ruta = Path(t) / "visor.js"
+            ruta.write_text(guion, encoding="utf-8")
+            resultado = subprocess.run(["node", "--check", str(ruta)], capture_output=True, text=True)
+        self.assertEqual((resultado.returncode, resultado.stderr), (0, ""))
+
+
+class Cobertura(unittest.TestCase):
+    def hex_concepto(self):
+        return {c: gt.hex_de_concepto(c, REAL["anotada"], REAL["completa"]) for c in gt.CONCEPTOS}
+
+    def test_huecos_del_lexico_reales(self):
+        huecos = cobertura.huecos_lexico(gt.IDIOMAS, REAL["lexico"], gt.CONCEPTOS)
+        self.assertEqual(sum(len(v) for v in huecos.values()), 45)
+        self.assertEqual(len(huecos["sw"]), 20)
+        self.assertNotIn("en", huecos)
+        # coherencia con el validador: los 11 conceptos básicos nunca faltan
+        self.assertTrue(all(c not in gt.BASICOS for lista in huecos.values() for c in lista))
+
+    def test_huecos_con_datos_sinteticos(self):
+        lexico = [{"idioma": "en", "concepto": "red", "tipo": "lema", "forma": "red", "rasgos": ""},
+                  {"idioma": "en", "concepto": "blue", "tipo": "flexion", "forma": "blues", "rasgos": ""},
+                  {"idioma": "es", "concepto": "red", "tipo": "lema", "forma": "rojo", "rasgos": ""},
+                  {"idioma": "es", "concepto": "blue", "tipo": "lema", "forma": "azul", "rasgos": ""}]
+        self.assertEqual(cobertura.huecos_lexico([("en", "Inglés"), ("es", "Español")], lexico, ["red", "blue"]), {"en": ["blue"]},
+                         "una flexión no cuenta como lema")
+
+    def test_colisiones_de_nombres_reales(self):
+        colisiones = cobertura.colisiones_nombres(gt.IDIOMAS, REAL["anotada"])
+        self.assertEqual(sum(len(v) for v in colisiones.values()), 29)
+        self.assertEqual(len(colisiones), 18)
+        self.assertNotIn("es", colisiones)
+        self.assertIn(("סגול", ["purple", "violet"]), colisiones["he"])
+
+    def test_gray_y_grey_no_son_una_colision(self):
+        anotada = [{"nombre_ingles": n, "forma_natural_en": n, "nombre_es": "gris", "hex": "#808080"} for n in ("gray", "grey")]
+        self.assertEqual(cobertura.colisiones_nombres([("es", "Español")], anotada), {}, "mismo hex: es un alias")
+        anotada[1]["hex"] = "#808081"
+        self.assertEqual(cobertura.colisiones_nombres([("es", "Español")], anotada), {"es": [("gris", ["gray", "grey"])]})
+
+    def test_nombres_iguales_solo_sin_distinguir_mayusculas(self):
+        anotada = [{"nombre_ingles": "a", "forma_natural_en": "a", "nombre_es": "Azul", "hex": "#000001"},
+                   {"nombre_ingles": "b", "forma_natural_en": "b", "nombre_es": "azul", "hex": "#000002"}]
+        self.assertEqual(cobertura.colisiones_nombres([("es", "Español")], anotada), {"es": [("Azul", ["a", "b"])]})
+
+    def test_lemas_compartidos_reales(self):
+        compartidos = cobertura.lemas_compartidos(gt.IDIOMAS, REAL["lexico"], self.hex_concepto())
+        self.assertEqual(sum(len(v) for v in compartidos.values()), 25)
+        self.assertIn(("violet", ["purple", "violet"]), compartidos["fr"])
+        self.assertNotIn("es", compartidos)
+
+    def test_un_lema_para_alias_no_es_compartido(self):
+        lexico = [{"idioma": "es", "concepto": c, "tipo": "lema", "forma": "gris", "rasgos": ""} for c in ("gray", "grey")]
+        self.assertEqual(cobertura.lemas_compartidos([("es", "Español")], lexico, {"gray": "#808080", "grey": "#808080"}), {})
+
+    def test_el_informe_resume_lo_mismo_que_calculan_las_funciones(self):
+        texto = cobertura.informe(gt.IDIOMAS, REAL["anotada"], REAL["lexico"], REAL["categorias"], gt.CONCEPTOS, self.hex_concepto())
+        self.assertIn("14 idiomas tienen lema para todos; 16 tienen huecos (45 lemas en total).", texto)
+        self.assertIn("2 idiomas (Inglés, Español); 28 sin ninguna.", texto)
+        self.assertIn("29 casos en 18 idiomas.", texto)
+        self.assertIn("25 casos en 17 idiomas.", texto)
+        self.assertIn("| Suajili (`sw`) | 18 de 38 |", texto)
+        self.assertIn("| Español (`es`) | 38 de 38 | — |", texto)
+        self.assertIn("| Hebreo (`he`) | סגול | `purple`, `violet` |", texto)
 
 
 class AliasYCercania(unittest.TestCase):
@@ -961,14 +1545,23 @@ class Manifiesto(unittest.TestCase):
         self.assertEqual(datos["idiomas"], [c for c, _ in gt.IDIOMAS])
         self.assertEqual([e["archivo"] for e in datos["entradas"]],
                          ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
-                          "significados-culturales.csv", "referencias.csv", "nombres-completos.csv"])
-        self.assertEqual([e["archivo"] for e in datos["exportes"]], ["exportes/colores.jsonl", "exportes/gazetteer.tsv"])
+                          "significados-culturales.csv", "categorias.csv", "referencias.csv", "nombres-completos.csv"])
+        self.assertEqual([e["archivo"] for e in datos["exportes"]],
+                         ["exportes/colores.jsonl", "exportes/gazetteer.tsv"]
+                         + [f"exportes/spacy/{c}.jsonl" for c, _ in gt.IDIOMAS]
+                         + ["exportes/lexico-ud.tsv", "exportes/ejemplos.conllu"])
         for entrada in datos["entradas"] + datos["exportes"]:
             ruta = carpeta / entrada["archivo"]
-            filas = ruta.read_text(encoding="utf-8").count("\n") - (0 if ruta.suffix == ".jsonl" else 1)  # menos la cabecera
+            texto = ruta.read_text(encoding="utf-8")
+            if ruta.suffix == ".conllu":
+                filas = texto.count("# sent_id")  # una por frase
+            else:
+                filas = texto.count("\n") - (0 if ruta.suffix == ".jsonl" else 1)  # menos la cabecera
             self.assertEqual(entrada["sha256"], self.suma(ruta), entrada["archivo"])
             self.assertEqual(entrada["filas"], filas, entrada["archivo"])
-        self.assertEqual(datos["exportes"][1]["columnas"], exportes.COLUMNAS_GAZETTEER)
+        por_archivo = {e["archivo"]: e for e in datos["exportes"]}
+        self.assertEqual(por_archivo["exportes/gazetteer.tsv"]["columnas"], exportes.COLUMNAS_GAZETTEER)
+        self.assertEqual(por_archivo["exportes/lexico-ud.tsv"]["columnas"], exportes.COLUMNAS_LEXICO_UD)
         return datos
 
     def test_el_manifiesto_del_repositorio_coincide_con_sus_archivos(self):
@@ -1040,15 +1633,21 @@ class Auxiliares(unittest.TestCase):
                     gt.leer_completa()
 
 
+def exportes_orden(idioma):
+    return [c for c, _ in gt.IDIOMAS].index(idioma)
+
+
 class ArchivosGenerados(unittest.TestCase):
     """Lo que genera main() sobre el proyecto reducido, comparado con los archivos del repositorio."""
 
     def test_salvo_nombres_completos_salen_identicos_a_los_del_repositorio(self):
         repositorio = [AQUI / "README.md", AQUI / "colores-por-idioma.md", AQUI / "referencias.md", AQUI / "ambiguedad.md",
+                       AQUI / "categorias.md", AQUI / "cobertura.md", AQUI / "revisiones.md", AQUI / "visor-revision.html",
                        *sorted((AQUI / "por-idioma").glob("*")),
                        # El manifiesto de la carpeta reducida es otro (otro nombres-completos.csv): se prueba aparte.
-                       *sorted(p for p in (AQUI / "exportes").glob("*") if p.name != "manifiesto.json")]
-        self.assertEqual(len(repositorio), 4 + 30 + 2, "cuatro archivos sueltos, 30 páginas por idioma y 2 exportes")
+                       *sorted(p for p in (AQUI / "exportes").rglob("*") if p.is_file() and p.name != "manifiesto.json")]
+        self.assertEqual(len(repositorio), 8 + 30 + (4 + 30),
+                         "ocho archivos sueltos, 30 páginas por idioma, 4 exportes y 30 patrones de spaCy")
         for ruta in repositorio:
             relativa = ruta.relative_to(AQUI)
             generado = BASE["carpeta"] / relativa
@@ -1094,7 +1693,7 @@ class ArchivosGenerados(unittest.TestCase):
         lineas = (BASE["carpeta"] / "exportes" / "colores.jsonl").read_text(encoding="utf-8").splitlines()
         objetos = [json.loads(linea) for linea in lineas]
         self.assertEqual([o["id"] for o in objetos], [f["nombre_ingles"] for f in REAL["anotada"]])
-        self.assertEqual({tuple(sorted(o)) for o in objetos}, {("alias", "culturales", "evidencia", "forma_con_guion_en",
+        self.assertEqual({tuple(sorted(o)) for o in objetos}, {("alias", "categorias", "culturales", "evidencia", "forma_con_guion_en",
                                                                  "forma_natural_en", "hex", "id", "lexico", "nombres",
                                                                  "rgb", "significados")})
         alice = objetos[0]
@@ -1105,6 +1704,20 @@ class ArchivosGenerados(unittest.TestCase):
         gris = next(o for o in objetos if o["id"] == "gray")
         self.assertEqual(gris["alias"], [{"id": "grey", "tipo": "ortografia"}])
         self.assertIn("es", gris["lexico"])
+        lima = next(o for o in objetos if o["id"] == "lime")
+        self.assertEqual({c: [x["categoria"] for x in lista] for c, lista in lima["categorias"].items()},
+                         {"en": ["ADJ", "NOUN", "VERB"], "es": ["ADJ", "NOUN", "VERB"]})
+        self.assertEqual(lima["categorias"]["es"][2], {"forma": "lima", "categoria": "VERB", "ocurrencia": "lima",
+                                                       "ejemplo": "Ella lima las uñas antes de pintarlas."})
+        self.assertEqual(next(o for o in objetos if o["id"] == "aliceblue")["categorias"], {})
+        css = {f["nombre_ingles"] for f in REAL["anotada"]}
+        propios = sum(1 for f in REAL["categorias"] if f["concepto"] in css)
+        entradas = sum(len(lista) for o in objetos for lista in o["categorias"].values())
+        self.assertGreaterEqual(entradas, propios)
+        self.assertNotIn("lilac", [o["id"] for o in objetos], "los conceptos que no son CSS no entran")
+        grey = next(o for o in objetos if o["id"] == "grey")
+        self.assertEqual(grey["categorias"]["es"], next(o for o in objetos if o["id"] == "gray")["categorias"]["es"],
+                         "el alias hereda las categorías que solo tenía su pareja")
 
     def test_gazetteer_tsv(self):
         lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()
@@ -1114,16 +1727,173 @@ class ArchivosGenerados(unittest.TestCase):
         self.assertEqual(len(filas), len(set(map(tuple, filas))), "sin filas repetidas")
         formas = [f[0] for f in filas]
         self.assertEqual(formas, sorted(formas, key=lambda x: (x.casefold(), x)))
-        self.assertIn(["alice blue", "en", "css", "forma_natural", "aliceblue", "#F0F8FF", "", "alice blue"], filas)
-        self.assertIn(["alice-blue", "en", "css", "forma_con_guion", "aliceblue", "#F0F8FF", "", "alice blue"], filas)
-        self.assertIn(["aliceblue", "en", "css", "identificador", "aliceblue", "#F0F8FF", "", "aliceblue"], filas)
+        self.assertIn(["alice blue", "en", "css", "forma_natural", "aliceblue", "#F0F8FF", "", "alice blue", ""], filas)
+        self.assertIn(["alice-blue", "en", "css", "forma_con_guion", "aliceblue", "#F0F8FF", "", "alice blue", ""], filas)
+        self.assertIn(["aliceblue", "en", "css", "identificador", "aliceblue", "#F0F8FF", "", "aliceblue", ""], filas)
         self.assertTrue(any(f[1] == "es" and f[2] == "lexico" and f[3] == "lema" and f[4] == "red" for f in filas))
+
+    def test_gazetteer_categorias(self):
+        lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()
+        filas = [linea.split("\t") for linea in lineas[1:]]
+        self.assertEqual(exportes.COLUMNAS_GAZETTEER[-1], "categorias", "va al final: no mueve las demás columnas")
+        esperadas = {}
+        for f in REAL["categorias"]:
+            esperadas.setdefault((f["idioma"], f["concepto"], f["forma"]), []).append(f["categoria"])
+        # Una forma tiene las categorías de categorias.csv para ella y su hex (así los alias gray y grey las comparten).
+        hex_de = {(f[1], f[4]): f[5] for f in filas}
+        por_hex = {}
+        for (idioma, concepto, forma), lista in esperadas.items():
+            por_hex.setdefault((idioma, forma, hex_de[(idioma, concepto)]), lista)
+        for f in filas:
+            self.assertEqual(f[8], ",".join(por_hex.get((f[1], f[0], f[5]), [])), f[:6])
+        self.assertTrue(all(any(f[8] for f in filas if (f[1], f[4], f[0]) == clave) for clave in esperadas),
+                        "cada palabra de categorias.csv sale con sus categorías")
+        gris = {(f[4], f[8]) for f in filas if f[0] == "gris" and f[1] == "es" and f[2] == "css"}
+        self.assertEqual(gris, {("gray", "ADJ,NOUN"), ("grey", "ADJ,NOUN")}, "el alias grey hereda las de gray")
+        # Cada palabra de categorias.csv sale en el gazetteer como lema (o como nombre CSS en inglés).
+        self.assertTrue(all(any(f[:5] == [forma, idioma, "lexico", "lema", concepto] or f[:5] == [forma, idioma, "css", "forma_natural", concepto]
+                                for f in filas) for idioma, concepto, forma in esperadas))
+        self.assertIn(["lima", "es", "lexico", "lema", "lime", "#00FF00", "", "lima", "ADJ,NOUN,VERB"], filas)
+        # Las flexiones y las palabras de otros idiomas no traen categorías.
+        self.assertTrue(all(f[8] == "" for f in filas if f[3] == "flexion" or f[1] not in ("en", "es")))
+
+    def test_patrones_de_spacy(self):
+        gazetteer = [linea.split("\t") for linea in
+                     (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()[1:]]
+        conceptos_validos = {f["nombre_ingles"] for f in REAL["anotada"]} | set(gt.CONCEPTOS)
+        archivos = sorted(p.name for p in (BASE["carpeta"] / "exportes" / "spacy").iterdir())
+        self.assertEqual(archivos, sorted(f"{c}.jsonl" for c, _ in gt.IDIOMAS))
+        for codigo, _ in gt.IDIOMAS:
+            with self.subTest(codigo):
+                texto = (BASE["carpeta"] / "exportes" / "spacy" / f"{codigo}.jsonl").read_text(encoding="utf-8")
+                self.assertTrue(texto.endswith("\n"))
+                patrones = [json.loads(linea) for linea in texto.splitlines()]
+                self.assertTrue(all(list(p) == ["label", "pattern", "id"] for p in patrones))
+                self.assertEqual({p["label"] for p in patrones}, {"COLOR"})
+                formas = [p["pattern"] for p in patrones]
+                self.assertEqual(len(formas), len(set(formas)), "un patrón por forma")
+                esperadas = {}
+                for forma, idioma, _, _, concepto, *_ in gazetteer:
+                    if idioma == codigo:
+                        esperadas.setdefault(forma, set()).add(concepto)
+                self.assertEqual(formas, list(esperadas), "las formas del gazetteer, en su orden")
+                for p in patrones:
+                    ids = p["id"].split(";")
+                    self.assertEqual(ids, sorted(esperadas[p["pattern"]]), p)
+                    self.assertLessEqual(set(ids), conceptos_validos, p)
+
+    def test_patrones_de_spacy_con_formas_de_varios_conceptos(self):
+        por_forma = {json.loads(l)["pattern"]: json.loads(l)["id"] for l in
+                     (BASE["carpeta"] / "exportes" / "spacy" / "es.jsonl").read_text(encoding="utf-8").splitlines()}
+        self.assertEqual(por_forma["verde lima"], "lime;limegreen")  # separados por «;» y en orden alfabético
+        self.assertEqual(por_forma["azul claro"], "lightblue")
+        self.assertEqual(por_forma["blancas"], "white", "las flexiones también")
+        en = {json.loads(l)["pattern"]: json.loads(l)["id"] for l in
+              (BASE["carpeta"] / "exportes" / "spacy" / "en.jsonl").read_text(encoding="utf-8").splitlines()}
+        self.assertEqual((en["alice blue"], en["alice-blue"], en["aliceblue"]), ("aliceblue",) * 3)
+
+    @unittest.skipUnless(importlib.util.find_spec("spacy"), "spaCy no está instalado")
+    def test_los_patrones_cargan_en_spacy_y_reconocen_las_formas(self):
+        import spacy  # noqa: PLC0415  (opcional: solo si está instalado)
+        for codigo, texto, esperado in (("en", "She wore a light blue dress.", [("light blue", "lightblue")]),
+                                        ("es", "Una bufanda verde lima.", [("verde lima", "lime;limegreen")]),
+                                        ("zh", "她穿着一条浅蓝色的裙子。", [("浅蓝色", "lightblue")])):
+            with self.subTest(codigo):
+                nlp = spacy.blank(codigo)
+                ruler = nlp.add_pipe("entity_ruler", config={"phrase_matcher_attr": "LOWER"})
+                ruler.from_disk(BASE["carpeta"] / "exportes" / "spacy" / f"{codigo}.jsonl")
+                self.assertEqual([(e.text, e.ent_id_) for e in nlp(texto).ents], esperado)
+
+    def test_feats_ud(self):
+        for rasgos, esperado in (("Gender=Fem;Number=Sing", "Gender=Fem|Number=Sing"),
+                                 ("Number=Plur;Animacy=Anim", "Animacy=Anim|Number=Plur"),  # orden alfabético
+                                 ("Number=Plur", "Number=Plur"), ("", "_"), ("Terminacion=-e", "_"),
+                                 ("Gender=Fem;Terminacion=-e", "_"), ("region=GB", "_")):
+            self.assertEqual(exportes._feats_ud(rasgos), esperado, rasgos)
+
+    def test_lexico_ud(self):
+        lineas = (BASE["carpeta"] / "exportes" / "lexico-ud.tsv").read_text(encoding="utf-8").splitlines()
+        self.assertEqual(lineas[0].split("\t"), exportes.COLUMNAS_LEXICO_UD)
+        filas = [linea.split("\t") for linea in lineas[1:]]
+        self.assertTrue(all(len(f) == 6 for f in filas))
+        self.assertEqual(len(filas), len(set(map(tuple, filas))), "sin filas repetidas")
+        self.assertEqual({f[4] for f in filas}, {"en", "es"})
+        self.assertLessEqual({f[2] for f in filas}, set(categorias.UPOS))
+        # Cada fila de categorias.csv sale con su categoría (los nombres propios con su mayúscula inicial).
+        for c in REAL["categorias"]:
+            forma = c["ocurrencia"] if c["categoria"] == "PROPN" else c["forma"]
+            self.assertIn([forma, forma, c["categoria"], "_", c["idioma"], c["concepto"]], filas)
+        for forma, lema, upos, feats, idioma, concepto in filas:
+            if upos == "PROPN":
+                self.assertTrue(forma[0].isupper(), forma)
+            if feats != "_":
+                pares = feats.split("|")
+                self.assertEqual(pares, sorted(pares), "FEATS en orden alfabético")
+                self.assertLessEqual({p.split("=")[0] for p in pares}, exportes.RASGOS_UD)
+        # Las flexiones del léxico salen solo como ADJ, con sus rasgos de UD.
+        self.assertIn(["blancas", "blanco", "ADJ", "Gender=Fem|Number=Plur", "es", "white"], filas)
+        self.assertNotIn(["blancas", "blanco", "NOUN", "Gender=Fem|Number=Plur", "es", "white"], filas)
+        # Y las formas flexionadas de las frases de ejemplo, con su lema.
+        self.assertIn(["blacked", "black", "VERB", "_", "en", "black"], filas)
+        self.assertIn(["khakis", "khaki", "NOUN", "_", "en", "khaki"], filas)
+        self.assertEqual(len([f for f in filas if f[0] == "lima"]), 3)
+        orden = [(exportes_orden(f[4]), f[0].casefold(), f[0]) for f in filas]
+        self.assertEqual(orden, sorted(orden), "ordenado por idioma y forma")
+
+    def test_lexico_ud_con_una_ocurrencia_en_mayuscula_de_frase(self):
+        # «Blacked» al empezar la frase es la misma forma que «blacked»; un nombre propio sí conserva la mayúscula.
+        categoria = {"idioma": "en", "concepto": "black", "forma": "black", "categoria": "VERB", "ocurrencia": "Blacked", "ejemplo": "Blacked out."}
+        propio = {"idioma": "en", "concepto": "peru", "forma": "peru", "categoria": "PROPN", "ocurrencia": "Peru", "ejemplo": "Peru."}
+        texto = exportes.lexico_ud({"idiomas": [("en", "Inglés")], "lexico": [], "categorias": [categoria, propio]})
+        self.assertEqual(texto.splitlines()[1:], ["black\tblack\tVERB\t_\ten\tblack", "blacked\tblack\tVERB\t_\ten\tblack",
+                                                   "Peru\tPeru\tPROPN\t_\ten\tperu"])
+
+    def test_ejemplos_conllu(self):
+        texto = (BASE["carpeta"] / "exportes" / "ejemplos.conllu").read_text(encoding="utf-8")
+        self.assertTrue(texto.endswith("\n\n") and not texto.endswith("\n\n\n"), "cada frase termina en una línea vacía")
+        bloques = texto.rstrip("\n").split("\n\n")
+        self.assertEqual(len(bloques), len(REAL["categorias"]))
+        ids = []
+        for bloque, fila in zip(bloques, REAL["categorias"]):
+            lineas = bloque.split("\n")
+            self.assertEqual(lineas[0], f"# sent_id = {fila['idioma']}-{fila['concepto']}-{fila['categoria']}")
+            self.assertEqual(lineas[1], f"# text = {fila['ejemplo']}")
+            ids.append(lineas[0])
+            fichas = [linea.split("\t") for linea in lineas[2:]]
+            self.assertTrue(all(len(f) == 10 for f in fichas), bloque)
+            self.assertEqual([f[0] for f in fichas], [str(n) for n in range(1, len(fichas) + 1)])
+            # Las fichas, con su SpaceAfter, reconstruyen la frase.
+            rehecha = "".join(f[1] + ("" if f[9] == "SpaceAfter=No" else " ") for f in fichas).rstrip()
+            self.assertEqual(rehecha, fila["ejemplo"])
+            anotadas = [f for f in fichas if f[3] != "_"]
+            self.assertEqual(len(anotadas), 1, bloque)
+            lema = fila["ocurrencia"] if fila["categoria"] == "PROPN" else fila["forma"]
+            self.assertEqual(anotadas[0][1:4], [fila["ocurrencia"], lema, fila["categoria"]])
+            self.assertTrue(all(f[2] == "_" and f[4:9] == ["_"] * 5 for f in fichas if f[3] == "_"))
+        self.assertEqual(len(ids), len(set(ids)), "sent_id únicos")
+
+    def test_ejemplos_conllu_pega_los_signos(self):
+        datos = {"categorias": [{"idioma": "en", "concepto": "aqua", "forma": "aqua", "categoria": "ADJ",
+                                 "ocurrencia": "aqua", "ejemplo": "It is aqua, really!"}]}
+        self.assertEqual(exportes.ejemplos_conllu(datos).splitlines(), [
+            "# sent_id = en-aqua-ADJ", "# text = It is aqua, really!",
+            "1\tIt\t_\t_\t_\t_\t_\t_\t_\t_", "2\tis\t_\t_\t_\t_\t_\t_\t_\t_",
+            "3\taqua\taqua\tADJ\t_\t_\t_\t_\t_\tSpaceAfter=No", "4\t,\t_\t_\t_\t_\t_\t_\t_\t_",
+            "5\treally\t_\t_\t_\t_\t_\t_\t_\tSpaceAfter=No", "6\t!\t_\t_\t_\t_\t_\t_\t_\t_", ""])
+
+    def test_dos_alias_con_las_mismas_categorias_no_las_duplican_en_el_gazetteer(self):
+        datos = datos_reales()
+        copias = [dict(f, concepto="grey") for f in datos["categorias"] if f["idioma"] == "es" and f["concepto"] == "gray"]
+        datos["categorias"] = datos["categorias"] + copias  # gray y grey (mismo hex) con las mismas filas para «gris»
+        gris = [fila for fila in exportes.filas_gazetteer(datos) if fila[1] == "es" and fila[0] == "gris"]
+        self.assertTrue(gris)
+        self.assertEqual({fila[8] for fila in gris}, {"ADJ,NOUN"})
 
     def test_gazetteer_forma_normalizada(self):
         lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()
         filas = [linea.split("\t") for linea in lineas[1:]]
-        self.assertEqual(exportes.COLUMNAS_GAZETTEER[-1], "forma_normalizada", "va al final: no mueve las demás columnas")
-        for forma, idioma, *_, normalizada in filas:
+        self.assertEqual(exportes.COLUMNAS_GAZETTEER[7], "forma_normalizada", "va después de las siete primeras: no las mueve")
+        for forma, idioma, *_, normalizada, _categorias in filas:
             self.assertEqual(normalizada, normalizacion.normalizar(forma, idioma), (forma, idioma))
             self.assertNotEqual(normalizada, "", (forma, idioma))
         self.assertIn(["marrón", "es", "lexico", "lema", "brown"], [f[:5] for f in filas if f[7] == "marron"])
@@ -1171,9 +1941,10 @@ class Programa(unittest.TestCase):
             return texto.rstrip("\n") + "x\n"
 
         for nombre, editar in (("README.md", en_la_tabla), ("colores-por-idioma.md", al_final), ("referencias.md", al_final),
-                               ("ambiguedad.md", al_final), ("auditoria-nombres.md", al_final), ("exportes/manifiesto.json", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
+                               ("ambiguedad.md", al_final), ("auditoria-nombres.md", al_final), ("categorias.md", al_final), ("cobertura.md", al_final), ("revisiones.md", al_final), ("visor-revision.html", al_final), ("exportes/manifiesto.json", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
                                ("por-idioma/ja.md", al_final), ("exportes/colores.jsonl", al_final),
-                               ("exportes/gazetteer.tsv", al_final)):
+                               ("exportes/gazetteer.tsv", al_final), ("exportes/spacy/es.jsonl", al_final),
+                               ("exportes/lexico-ud.tsv", al_final), ("exportes/ejemplos.conllu", al_final)):
             with self.subTest(nombre):
                 ruta = self.carpeta / nombre
                 original = ruta.read_text(encoding="utf-8")
@@ -1206,6 +1977,19 @@ class Programa(unittest.TestCase):
         self.assertEqual(ejecutar(self.carpeta)[0], 0)
         self.assertFalse((self.carpeta / "por-idioma" / "xx.md").exists())
         self.assertFalse((self.carpeta / "exportes" / "viejo.tsv").exists())
+        self.assertEqual(ejecutar(self.carpeta, "--comprobar")[0], 0)
+
+    def test_un_archivo_sobrante_en_una_subcarpeta_de_exportes_tambien_se_detecta(self):
+        (self.carpeta / "exportes" / "spacy" / "xx.jsonl").write_text("sobra", encoding="utf-8")
+        (self.carpeta / "exportes" / "otra").mkdir()
+        (self.carpeta / "exportes" / "otra" / "viejo.txt").write_text("sobra", encoding="utf-8")
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("exportes/spacy/xx.jsonl (sobra)", error)
+        self.assertIn("exportes/otra/viejo.txt (sobra)", error)
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertFalse((self.carpeta / "exportes" / "spacy" / "xx.jsonl").exists())
+        self.assertFalse((self.carpeta / "exportes" / "otra" / "viejo.txt").exists())
         self.assertEqual(ejecutar(self.carpeta, "--comprobar")[0], 0)
 
     def test_editar_un_csv_deja_los_archivos_desfasados_hasta_regenerar(self):
@@ -1243,6 +2027,18 @@ class Programa(unittest.TestCase):
         self.assertEqual(error.count("hay campos vacíos"), 30)
         self.assertIn("... y 5 errores más", error)
 
+    def test_varios_csv_rotos_se_cuentan_todos_juntos(self):
+        self.reescribir("lexico-basico.csv", lambda t: t.replace("concepto,", "concept,", 1))
+        self.reescribir("categorias.csv", lambda t: t.replace("idioma,", "lang,", 1))
+        lineas = (self.carpeta / "evidencia.csv").read_text(encoding="utf-8").splitlines(keepends=True)
+        lineas[3] = lineas[3].rstrip("\n") + ",sobra\n"
+        (self.carpeta / "evidencia.csv").write_text("".join(lineas), encoding="utf-8")
+        codigo, salida, error = ejecutar(self.carpeta)
+        self.assertEqual((codigo, salida), (1, ""))
+        self.assertIn("No se pudieron leer los CSV", error)
+        for esperado in ("lexico-basico.csv: cabecera inesperada", "categorias.csv: cabecera inesperada", "evidencia.csv"):
+            self.assertIn(esperado, error)
+
     def test_cabecera_inesperada(self):
         self.reescribir("lexico-basico.csv", lambda t: t.replace("concepto,", "concept,", 1))
         codigo, _, error = ejecutar(self.carpeta, "--comprobar")
@@ -1252,7 +2048,7 @@ class Programa(unittest.TestCase):
     def test_una_fila_con_mas_o_menos_campos_que_la_cabecera_es_un_error_en_cada_csv(self):
         # Antes, una fila corta rompía con un traceback en cuatro CSV y una larga se aceptaba en silencio en seis.
         for nombre, columnas in (("colores.csv", 34), ("significados-idiomas.csv", 4), ("lexico-basico.csv", 5),
-                                 ("evidencia.csv", 5), ("significados-culturales.csv", 5), ("referencias.csv", 5),
+                                 ("evidencia.csv", 5), ("significados-culturales.csv", 5), ("categorias.csv", 6), ("referencias.csv", 5),
                                  ("nombres-completos.csv", 6)):
             for variante in ("corta", "larga"):
                 with self.subTest(nombre, variante=variante):
@@ -1274,8 +2070,15 @@ class Programa(unittest.TestCase):
         self.assertEqual(codigo, 1)
         self.assertIn("exportes/manifiesto.json", error)
 
+    def poner_changelog(self, texto):
+        """Un CHANGELOG propio: estas pruebas no dependen de lo que diga el real."""
+        (self.carpeta / "CHANGELOG.md").write_text(texto, encoding="utf-8")
+
     def test_la_version_del_manifiesto_sale_del_changelog(self):
-        self.reescribir("CHANGELOG.md", lambda t: t.replace("## 1.0.0 - 2026-10-19", "## 1.1.0 - 2026-10-20\n\nUn cambio.\n\n## 1.0.0 - 2026-10-19", 1))
+        self.poner_changelog("# Cambios\n\n## 1.0.0 - 2026-01-01\n\nPrimera.\n")
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertEqual(json.loads((self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))["version"], "1.0.0")
+        self.poner_changelog("# Cambios\n\n## 1.1.0 - 2026-02-01\n\nUn cambio.\n\n## 1.0.0 - 2026-01-01\n\nPrimera.\n")
         codigo, _, error = ejecutar(self.carpeta, "--comprobar")
         self.assertEqual(codigo, 1)
         self.assertIn("No coinciden con los CSV: exportes/manifiesto.json.", error, "solo el manifiesto cambia con la versión")
@@ -1291,7 +2094,7 @@ class Programa(unittest.TestCase):
 
     def test_un_changelog_invalido_es_un_error_y_no_toca_nada(self):
         antes = self.estado()
-        self.reescribir("CHANGELOG.md", lambda t: t.replace("## 1.0.0 - 2026-10-19", "## 1.0 - 2026-10-19", 1))
+        self.poner_changelog("# Cambios\n\n## 1.0 - 2026-01-01\n\nPrimera.\n")
         antes["CHANGELOG.md"] = (self.carpeta / "CHANGELOG.md").read_bytes()
         codigo, _, error = ejecutar(self.carpeta)
         self.assertEqual(codigo, 1)
@@ -1340,6 +2143,10 @@ class Programa(unittest.TestCase):
                          {"colores": 148, "nombres": 148 * 30, "significados": 148 * 30, "evidencia": 148,
                           "referencias": len(REAL["referencias"]), "lexico": len(REAL["lexico"])})
         self.assertEqual(cuenta("culturales"), len(REAL["culturales"]))
+        self.assertEqual(cuenta("categorias"), len(REAL["categorias"]))
+        self.assertEqual(conexion.execute(
+            "SELECT categoria, ocurrencia FROM categorias WHERE forma = 'lima' AND idioma = 'es' ORDER BY categoria").fetchall(),
+            [("ADJ", "lima"), ("NOUN", "lima"), ("VERB", "lima")])
         self.assertEqual(cuenta("nombres_completos"), len((self.carpeta / "nombres-completos.csv").read_text(encoding="utf-8").splitlines()) - 1)
         japones = next(f for f in REAL["significados"] if f["idioma"] == "ja" and f["nombre_ingles"] == "crimson")
         consulta = ("SELECT s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) "
@@ -1364,17 +2171,73 @@ class Programa(unittest.TestCase):
 
     def test_comprobar_falla_si_la_base_no_coincide_con_los_csv(self):
         original = exportes.construir_sqlite
+        for tabla in ("lexico", "categorias"):
+            def con_una_fila_menos(ruta, datos):
+                conexion = original(ruta, datos)
+                conexion.execute(f"DELETE FROM {tabla} WHERE rowid = (SELECT min(rowid) FROM {tabla})")
+                return conexion
 
-        def con_una_fila_menos(ruta, datos):
-            conexion = original(ruta, datos)
-            conexion.execute("DELETE FROM lexico WHERE rowid = (SELECT min(rowid) FROM lexico)")
-            return conexion
+            with self.subTest(tabla), mock.patch.object(exportes, "construir_sqlite", con_una_fila_menos):
+                codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+                self.assertEqual(codigo, 1)
+                self.assertIn("La base SQLite no coincide con los CSV", error)
+                esperadas = len(REAL[tabla])
+                self.assertIn(f"{tabla}: {esperadas - 1} filas, se esperaban {esperadas}", error)
 
-        with mock.patch.object(exportes, "construir_sqlite", con_una_fila_menos):
-            codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+    def test_un_alias_con_otro_significado_sale_con_1(self):
+        def cambiar(texto):
+            frase = "Frescura, claridad, calma y comunicación; asociado a lo digital y moderno."
+            self.assertEqual(texto.count(frase), 2, "aqua y cyan llevan el mismo texto")
+            return texto.replace(frase, frase + " Y más.", 1)  # solo cambia la fila de aqua, la primera
+        self.reescribir("colores.csv", cambiar)
+        codigo, salida, error = ejecutar(self.carpeta)
+        self.assertEqual((codigo, salida), (1, ""))
+        self.assertIn("colores.csv: aqua y cyan tienen el mismo hex y deben tener los mismos significados en español", error)
+
+    def test_un_categorias_csv_con_errores_sale_con_1_sin_tocar_nada(self):
+        antes = self.estado()
+        self.reescribir("categorias.csv", lambda t: t.replace(",ADJ,aqua,", ",ADV,aqua,", 1))
+        antes[Path("categorias.csv")] = (self.carpeta / "categorias.csv").read_bytes()
+        codigo, salida, error = ejecutar(self.carpeta)
         self.assertEqual(codigo, 1)
-        self.assertIn("La base SQLite no coincide con los CSV", error)
-        self.assertIn(f"lexico: {len(REAL['lexico']) - 1} filas, se esperaban {len(REAL['lexico'])}", error)
+        self.assertIn("Errores en los CSV", error)
+        self.assertIn("categorias.csv línea 2: categoría desconocida 'ADV'", error)
+        self.assertEqual((salida, self.estado()), ("", antes))
+
+    def test_un_revisiones_csv_con_errores_sale_con_1_sin_tocar_nada(self):
+        antes = self.estado()
+        self.reescribir("revisiones.csv", lambda t: t + "es,nombres,aliceblue,quizá,Ana,2026-10-23,0123abcd,\n")
+        antes[Path("revisiones.csv")] = (self.carpeta / "revisiones.csv").read_bytes()
+        codigo, salida, error = ejecutar(self.carpeta)
+        self.assertEqual(codigo, 1)
+        self.assertIn("revisiones.csv línea 2: veredicto desconocido 'quizá'", error)
+        self.assertEqual((salida, self.estado()), ("", antes))
+
+    def test_una_revision_nueva_cambia_el_informe_y_no_el_manifiesto(self):
+        manifiesto_antes = (self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8")
+        visor_antes = (self.carpeta / "visor-revision.html").read_bytes()
+        self.reescribir("revisiones.csv", lambda t: t + f"es,nombres,aliceblue,correcto,Ana,2026-10-23,{huellas_reales()[('es', 'nombres')]['aliceblue']},\n")
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("revisiones.md", error)
+        self.assertNotIn("manifiesto.json", error, "el registro de revisiones no es parte de los datos del manifiesto")
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertIn("| Español (`es`) | 1 de 148 |", (self.carpeta / "revisiones.md").read_text(encoding="utf-8"))
+        self.assertEqual((self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"), manifiesto_antes)
+        self.assertEqual((self.carpeta / "visor-revision.html").read_bytes(), visor_antes, "el visor no depende de las revisiones")
+        self.assertEqual(ejecutar(self.carpeta, "--comprobar")[0], 0)
+
+    def test_editar_categorias_csv_deja_categorias_md_desfasado_hasta_regenerar(self):
+        self.reescribir("categorias.csv", lambda t: t.replace("She painted the bathroom walls aqua.",
+                                                              "She painted the walls aqua.", 1))
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        for archivo in ("categorias.md", "exportes/colores.jsonl", "exportes/manifiesto.json"):  # el gazetteer no lleva las frases
+            self.assertIn(archivo, error)
+        self.assertNotIn("gazetteer.tsv", error)
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertIn("She painted the walls aqua.", (self.carpeta / "categorias.md").read_text(encoding="utf-8"))
+        self.assertEqual(ejecutar(self.carpeta, "--comprobar")[0], 0)
 
     def test_si_la_autoprueba_de_color_falla_main_sale_con_1(self):
         with mock.patch.object(colorimetria, "VECTORES_SHARMA", [((50.0, 2.6772, -79.7751), (50.0, 0.0, -82.7485), 9.0)]):

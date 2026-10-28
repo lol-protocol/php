@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_view_dispersion_mist_r45_g" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+    <linearGradient id="grad_view_dispersion_mist_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+    <linearGradient id="grad_view_dispersion_orange_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A5A5A5"/>
+      <stop offset="1" stop-color="#7B7B7B"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.89" cy="55.85" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M38.03 21.86A0.97 0.97 0 0 1 37.94 23.12L34.76 26.3A0.97 0.97 0 0 1 33.4 26.3L30.22 23.12A0.97 0.97 0 0 1 30.13 23.02L29.23 21.82A0.97 0.97 0 0 1 29.32 20.56L32.5 17.38A0.97 0.97 0 0 1 33.86 17.38L37.04 20.56A0.97 0.97 0 0 1 37.13 20.66Z" fill="#7B7B7B"/><rect x="29.79" y="17.79" width="6.42" height="6.42" rx="0.97" transform="rotate(45 33 21)" fill="url(#grad_view_dispersion_mist_r45_g)"/></g>
+    <g><path d="M44.94 41.73A0.72 0.72 0 0 1 45.08 42.16L45.08 48.72A0.72 0.72 0 0 1 44.36 49.44L37.8 49.44A0.72 0.72 0 0 1 37.22 49.15L36.32 47.95A0.72 0.72 0 0 1 36.18 47.52L36.18 40.96A0.72 0.72 0 0 1 36.9 40.24L43.46 40.24A0.72 0.72 0 0 1 44.04 40.53Z" fill="#7B7B7B"/><rect x="36" y="40" width="8" height="8" rx="0.72" fill="url(#grad_view_dispersion_mist_g)"/></g>
+    <g><path d="M45.3 29.4L46.2 30.6A3.6 3.6 0 0 0 51.96 26.28L51.06 25.08A3.6 3.6 0 0 0 45.3 29.4Z" fill="#7B7B7B"/><circle cx="48" cy="27" r="3.6" fill="url(#grad_view_dispersion_mist_g)"/></g>
+    <g><path d="M58.95 50.02A0.7 0.7 0 0 1 58.89 50.94L56.58 53.25A0.7 0.7 0 0 1 55.58 53.25L53.27 50.94A0.7 0.7 0 0 1 53.21 50.86L52.31 49.66A0.7 0.7 0 0 1 52.37 48.74L54.68 46.43A0.7 0.7 0 0 1 55.68 46.43L57.99 48.74A0.7 0.7 0 0 1 58.05 48.82Z" fill="#7B7B7B"/><rect x="52.66" y="46.66" width="4.67" height="4.67" rx="0.7" transform="rotate(45 55 49)" fill="url(#grad_view_dispersion_mist_r45_g)"/></g>
+    <g><path d="M53.94 14.92L54.84 16.12A2.8 2.8 0 0 0 59.32 12.76L58.42 11.56A2.8 2.8 0 0 0 53.94 14.92Z" fill="#7B7B7B"/><circle cx="56" cy="13" r="2.8" fill="url(#grad_view_dispersion_mist_g)"/></g>
+    <g><path d="M5.2 36.6L6.46 38.28A5.6 5.6 0 0 0 15.42 31.56L14.16 29.88A5.6 5.6 0 0 0 5.2 36.6Z" fill="#474747"/><circle cx="9.5" cy="33" r="5.6" fill="url(#grad_view_dispersion_orange_g)"/></g>
+    <g><path d="M14.2 28.6L15.46 30.28A5.6 5.6 0 0 0 24.42 23.56L23.16 21.88A5.6 5.6 0 0 0 14.2 28.6Z" fill="#474747"/><circle cx="18.5" cy="25" r="5.6" fill="url(#grad_view_dispersion_orange_g)"/></g>
+    <g><path d="M14.2 44.6L15.46 46.28A5.6 5.6 0 0 0 24.42 39.56L23.16 37.88A5.6 5.6 0 0 0 14.2 44.6Z" fill="#474747"/><circle cx="18.5" cy="41" r="5.6" fill="url(#grad_view_dispersion_orange_g)"/></g>
+  </g>
+</svg>

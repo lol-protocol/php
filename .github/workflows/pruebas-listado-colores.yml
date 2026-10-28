@@ -26,10 +26,11 @@ jobs:
   listado-colores:
     name: "Listado-colores: CSV válidos y tabla del README al día"
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Valida los siete CSV de datos y CHANGELOG.md, y falla si algun archivo generado
       # (la tabla de README.md, nombres-completos.csv, colores-por-idioma.md, por-idioma/,
@@ -57,6 +58,7 @@ jobs:
   listado-colores-matriz:
     name: "Listado-colores / Python ${{ matrix.python-version }} en ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
 
     strategy:
       fail-fast: false
@@ -71,10 +73,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 

@@ -13,9 +13,25 @@
 // a redirect loop (a cookie wall: the site sets a cookie and redirects, browsers keep it, fetch does not)
 // and a TLS handshake the server refuses (it answers, but not to Node's TLS settings or to a cloud runner;
 // a dead host fails earlier, in DNS or with a refused connection). An expired or wrong certificate is
-// still broken.
+// still broken. A refused connection is broken too, except at the hosts listed in
+// hosts-que-rechazan-runners.txt, which are alive and turn GitHub's runners away.
 // With GITHUB_STEP_SUMMARY set (GitHub Actions) a Markdown summary is appended to it.
-import { appendFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, readFileSync, writeFileSync } from "node:fs";
+
+// Hosts that are alive but refuse GitHub's runners (see hosts-que-rechazan-runners.txt).
+const REFUSING_HOSTS = readFileSync(new URL("./hosts-que-rechazan-runners.txt", import.meta.url), "utf-8")
+  .split("\n")
+  .map((line) => line.replace(/#.*/, "").trim().toLowerCase())
+  .filter(Boolean);
+
+function refusesRunners(url) {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return REFUSING_HOSTS.some((h) => host === h || host.endsWith(`.${h}`));
+  } catch {
+    return false;
+  }
+}
 
 const SOFT = new Set([401, 403, 429]);
 
@@ -24,6 +40,9 @@ const SOFT = new Set([401, 403, 429]);
 const SOFT_ERRORS = /timeout|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|UND_ERR_SOCKET|ECONNRESET|EAI_AGAIN|UNABLE_TO_VERIFY_LEAF_SIGNATURE|UNABLE_TO_GET_ISSUER_CERT|redirect count exceeded|TLS_ALERT_HANDSHAKE_FAILURE/;
 
 export function classify(code, error, finalUrl) {
+  if (error && /ECONNREFUSED/.test(error) && refusesRunners(finalUrl)) {
+    return { status: "warning", code: null, detail: `${error} (this host is known to refuse cloud runners)`, finalUrl };
+  }
   if (error && SOFT_ERRORS.test(error)) return { status: "warning", code: null, detail: `${error} (may work in a browser)`, finalUrl };
   if (error) return { status: "broken", code: null, detail: error, finalUrl };
   if (code >= 200 && code < 400) return { status: "ok", code, detail: "", finalUrl };

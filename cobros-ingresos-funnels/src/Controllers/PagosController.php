@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Database;
+use App\Descarga;
 use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
@@ -21,6 +22,7 @@ use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
 use App\Validacion;
 use App\View;
+use Generator;
 
 final class PagosController
 {
@@ -48,6 +50,47 @@ final class PagosController
             'activePage' => 'pagos',
             'titulo' => 'Pagos',
         ]);
+    }
+
+    /**
+     * Descarga en CSV TODOS los pagos que el listado mostraria con los filtros de la URL (el
+     * periodo y el cliente: los mismos que lee index()), no solo la pagina que se ve. Un
+     * periodo invalido cae en el de por defecto como en la pantalla, pero sin avisos.
+     */
+    public function exportar(): void
+    {
+        ['desde' => $desde, 'hasta' => $hasta] = FiltroDePeriodo::rangoActivo();
+        $cliente = trim((string) ($_GET['cliente'] ?? ''));
+
+        Descarga::csv(
+            'pagos',
+            ['ID', 'Fecha', 'Cliente ID', 'Cliente', 'Boleta', 'Método', 'Moneda', 'Monto', 'Anulado'],
+            self::filasParaExportar((new PagoRepository())->exportar($desde, $hasta, $cliente ?: null))
+        );
+    }
+
+    /**
+     * Cada pago como una fila de CSV: el monto va como decimal (no como texto) y la boleta
+     * vacia si es un anticipo.
+     *
+     * @param iterable<array<string, mixed>> $pagos
+     * @return Generator<int, list<string|int|float|null>>
+     */
+    private static function filasParaExportar(iterable $pagos): Generator
+    {
+        foreach ($pagos as $p) {
+            yield [
+                (int) $p['id'],
+                $p['fecha_pago'],
+                (int) $p['cliente_id'],
+                $p['cliente'],
+                $p['boleta_id'] === null ? null : (int) $p['boleta_id'],
+                Etiquetas::metodoPago($p['metodo']),
+                $p['moneda_codigo'],
+                (float) $p['monto'],
+                $p['anulada'] ? 'Sí' : 'No',
+            ];
+        }
     }
 
     public function nuevo(): void

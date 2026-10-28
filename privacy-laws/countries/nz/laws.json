@@ -34,11 +34,6 @@
         "confidence": "high",
         "checked": "2026-10-14"
       },
-      "notes": {
-        "url": "https://www.justice.govt.nz/justice-sector-policy/key-initiatives/enhancing-the-privacy-act",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "deceased_data": {
         "url": "https://bitraser.com/article/new-zealand-privacy-act-2020.php",
         "confidence": "low",
@@ -53,6 +48,11 @@
         "url": "https://privacy.org.nz/privacy-act-2020/codes-of-practice/hipc2020/",
         "confidence": "low",
         "checked": "2026-10-18"
+      },
+      "notes": {
+        "url": "https://www.justice.govt.nz/justice-sector-policy/key-initiatives/enhancing-the-privacy-act",
+        "confidence": "high",
+        "checked": "2026-10-14"
       }
     },
     "changes": [

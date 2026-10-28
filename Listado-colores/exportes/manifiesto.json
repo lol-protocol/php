@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.1",
   "idiomas": [
     "en",
     "es",
@@ -36,12 +36,12 @@
     {
       "archivo": "colores.csv",
       "filas": 148,
-      "sha256": "8b28fb9a20112a2d1d7f63d029b82f2dc828ee303370f9fcebb1ad2e31ca868c"
+      "sha256": "63023178d255992bc50f4357676b1a27980d9235f39c8f92ec01f7d7d6c79d55"
     },
     {
       "archivo": "significados-idiomas.csv",
       "filas": 4292,
-      "sha256": "8e7f61fa808c0da9ba2d66c62b4edf5d0bc686896139b233fda7377842d31cf8"
+      "sha256": "1cbb028ad6d8db8368b163f48fc27cf75da2c5ae0b530ed719aae1358d0e5a98"
     },
     {
       "archivo": "lexico-basico.csv",
@@ -59,6 +59,11 @@
       "sha256": "a9384295525e0dbbaf922ab453326a02457f3dfc0d19cf7371234989c26a33e2"
     },
     {
+      "archivo": "categorias.csv",
+      "filas": 210,
+      "sha256": "9af6af472478cb4dcb6664c435643253c1e82a8423737d47f55577aa836c2ac6"
+    },
+    {
       "archivo": "referencias.csv",
       "filas": 35,
       "sha256": "01a634af16693c99b1be1c1ff353742515fcf1d9fdc6093284d8b9f512202f17"
@@ -73,7 +78,7 @@
     {
       "archivo": "exportes/colores.jsonl",
       "filas": 148,
-      "sha256": "6f478a254b789c1a3a12ecfc1c9fe5590c3ade723b88c0c05a36ef3e9e0f662b"
+      "sha256": "3cb25c553e96b4bd14ad03742603d7afd513cd347622a2d23007652215d6edb6"
     },
     {
       "archivo": "exportes/gazetteer.tsv",
@@ -86,9 +91,178 @@
         "concepto",
         "hex",
         "rasgos",
-        "forma_normalizada"
+        "forma_normalizada",
+        "categorias"
       ],
-      "sha256": "e152d868c629d3a16870e8f081e222d37fe77571a6c042ac150520a0ae3215d2"
+      "sha256": "29be744798556870c0d5f6729f053887b8af9c6bc726b55814c398c45654ee59"
+    },
+    {
+      "archivo": "exportes/spacy/en.jsonl",
+      "filas": 340,
+      "sha256": "1b40f1ed282f6f06c8bc259b1e9b0fbfe4d19584b9958f476a574567e59ca467"
+    },
+    {
+      "archivo": "exportes/spacy/es.jsonl",
+      "filas": 201,
+      "sha256": "0ab1707a3648358e49d782d4c3e388626b9eacf2089663ae851282b88cd3ff64"
+    },
+    {
+      "archivo": "exportes/spacy/fr.jsonl",
+      "filas": 180,
+      "sha256": "3220fbb46a4bad695ec2705a57bfb138707628df5a838ccdf2b78eb88656e788"
+    },
+    {
+      "archivo": "exportes/spacy/pt.jsonl",
+      "filas": 201,
+      "sha256": "a9b0122719c1ecd27471630353ed5dd173edb923685c5dfc9d150478ac832d66"
+    },
+    {
+      "archivo": "exportes/spacy/it.jsonl",
+      "filas": 184,
+      "sha256": "238c508030b0186761e7108fa36e62cabae4d8cf605ae279a90ccb40e73f9ba9"
+    },
+    {
+      "archivo": "exportes/spacy/de.jsonl",
+      "filas": 303,
+      "sha256": "63566bd0027cd306596ae117f8e14bd5ee38a315a9f760e342f1559e149b9aff"
+    },
+    {
+      "archivo": "exportes/spacy/nl.jsonl",
+      "filas": 178,
+      "sha256": "2aaef1f72758c24121bcbaca1790e38c88563137c8dfa77ab3d23837558ab6ec"
+    },
+    {
+      "archivo": "exportes/spacy/sv.jsonl",
+      "filas": 187,
+      "sha256": "3b8adf717e8c92abca152f75c00d61f060da8e2b2ccc703ae6ef6cc84c6f789d"
+    },
+    {
+      "archivo": "exportes/spacy/da.jsonl",
+      "filas": 182,
+      "sha256": "8486b10f7f6225ab17d3ad64810e35bc26aa29a1c251cd488057049a1ab5f992"
+    },
+    {
+      "archivo": "exportes/spacy/fi.jsonl",
+      "filas": 180,
+      "sha256": "3ce52e8ae220a6a30ba7631435c0680acefad8a1bc069fca4f652ab5a1455965"
+    },
+    {
+      "archivo": "exportes/spacy/pl.jsonl",
+      "filas": 250,
+      "sha256": "7d533e5116e2d49e2c609519f7e48dcf099992dae02e3518211f7293dea5e572"
+    },
+    {
+      "archivo": "exportes/spacy/cs.jsonl",
+      "filas": 246,
+      "sha256": "4767d119352e00bafaac284a74b900ccd3b5b05b9e8c942e52a393f2dca54500"
+    },
+    {
+      "archivo": "exportes/spacy/ro.jsonl",
+      "filas": 179,
+      "sha256": "4caca826b58dc56e4406bbea8420f598254670d3f9e3ce70aa29bf2c47c72942"
+    },
+    {
+      "archivo": "exportes/spacy/hu.jsonl",
+      "filas": 152,
+      "sha256": "13d193a6aed86f97bb278e7c26d07d96daab9884d5b7dffbd97301b5405bba56"
+    },
+    {
+      "archivo": "exportes/spacy/el.jsonl",
+      "filas": 193,
+      "sha256": "c9d9b685eae18abf9faa9a254a85507ca2b258e9fb15967114bd89be2a9eb87e"
+    },
+    {
+      "archivo": "exportes/spacy/ru.jsonl",
+      "filas": 239,
+      "sha256": "48b9f9f7e7e3ff34d285a5e6a1dea9d48382fef10c8a1e1dbfd41162dac983e1"
+    },
+    {
+      "archivo": "exportes/spacy/uk.jsonl",
+      "filas": 227,
+      "sha256": "fa9ec5d4ed15c86b8aec74a20f153443f60c26c9bcdde2a508b76b42b884b83a"
+    },
+    {
+      "archivo": "exportes/spacy/tr.jsonl",
+      "filas": 151,
+      "sha256": "720be943caea95f53e8448dac3c7abc2cf1539d0459367e770e83aaa198fdcc1"
+    },
+    {
+      "archivo": "exportes/spacy/ar.jsonl",
+      "filas": 184,
+      "sha256": "70e9ecf30d582c6501882314e10858d08f8b8ccbd90fa3f71bf5d7b630e80736"
+    },
+    {
+      "archivo": "exportes/spacy/he.jsonl",
+      "filas": 179,
+      "sha256": "20e73592b56aa205a0c3dd026c54e0fa16d7b6d9bc8e0e26c420a91cd7c316e9"
+    },
+    {
+      "archivo": "exportes/spacy/fa.jsonl",
+      "filas": 148,
+      "sha256": "87f600f46fc901bbcbcfffcf43bc211498bbd791f31a6bf74ff032bafac51d38"
+    },
+    {
+      "archivo": "exportes/spacy/hi.jsonl",
+      "filas": 171,
+      "sha256": "5b1200c2a9ae730d5696924caf890dc82c00a69f4f1459750ced3284bca0f8a1"
+    },
+    {
+      "archivo": "exportes/spacy/bn.jsonl",
+      "filas": 150,
+      "sha256": "3702948a83806eb7e6c221f995136e96c71951ed5117009bacb655fc3b431a99"
+    },
+    {
+      "archivo": "exportes/spacy/zh.jsonl",
+      "filas": 169,
+      "sha256": "f54418ad39fcceafe8dd81f6fc3c9ad801b9f459c55a214b06bd916b5b7bafb0"
+    },
+    {
+      "archivo": "exportes/spacy/ja.jsonl",
+      "filas": 201,
+      "sha256": "14ef17b6612909bbd533e47c17881aa816bc8797b6347cb74ff66993e6803c90"
+    },
+    {
+      "archivo": "exportes/spacy/ko.jsonl",
+      "filas": 189,
+      "sha256": "8bd016abfca06d84b14c0f509c992e13fb881afe75f9a73ae508fc66a20ed04b"
+    },
+    {
+      "archivo": "exportes/spacy/vi.jsonl",
+      "filas": 153,
+      "sha256": "296417856f5c27e3a54b6a397b5081c3739c111351a29fb5f593bc1258b2eaf5"
+    },
+    {
+      "archivo": "exportes/spacy/th.jsonl",
+      "filas": 164,
+      "sha256": "424a529e0ba59c9dd4d547b65794e24807dd1738eb8903e799bdfaa2b9ccff84"
+    },
+    {
+      "archivo": "exportes/spacy/id.jsonl",
+      "filas": 160,
+      "sha256": "33d1870dc677d576dbbb8e0b05a8995413a09a69ebad55c0eb7a4b83dfeb3c4e"
+    },
+    {
+      "archivo": "exportes/spacy/sw.jsonl",
+      "filas": 144,
+      "sha256": "2921926e6f04b95f928032868a08830e1b17ccf48041e7ea3a79c8d191930dd8"
+    },
+    {
+      "archivo": "exportes/lexico-ud.tsv",
+      "filas": 264,
+      "columnas": [
+        "forma",
+        "lema",
+        "upos",
+        "feats",
+        "idioma",
+        "concepto"
+      ],
+      "sha256": "02259cc1a0c68c53029116845df988ec8df11fc4b0ea3bcd5b8a65c84b950a88"
+    },
+    {
+      "archivo": "exportes/ejemplos.conllu",
+      "filas": 210,
+      "sha256": "83aec49a62b0ac76356f50672a4c1122de8133fd754c19ea933251e8fdac1349"
     }
   ]
 }

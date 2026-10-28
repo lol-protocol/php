@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .ic-orange{stroke:var(--ic-orange,#883307)}
+      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
+  <g class="links">
+    <path d="M31 18.25L31 20.5L17 20.5L17 24" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M17 38.25L17 43.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 18.25L31 20.5L45 20.5L45 24" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M45 38.25L45 44" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g class="ic-mist" stroke="#767C82"><path d="M38.81 11.89A1.5 1.5 0 0 1 38.68 13.84L33.77 18.75A1.5 1.5 0 0 1 31.66 18.75L26.75 13.84A1.5 1.5 0 0 1 26.61 13.68L24.9 11.4A1.5 1.5 0 0 1 25.04 9.44L29.94 4.54A1.5 1.5 0 0 1 32.06 4.54L36.96 9.44A1.5 1.5 0 0 1 37.1 9.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="26.04" y="5.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 31 10.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M24.81 31.89A1.5 1.5 0 0 1 24.68 33.84L19.77 38.75A1.5 1.5 0 0 1 17.66 38.75L12.75 33.84A1.5 1.5 0 0 1 12.61 33.68L10.9 31.4A1.5 1.5 0 0 1 11.04 29.44L15.94 24.54A1.5 1.5 0 0 1 18.06 24.54L22.96 29.44A1.5 1.5 0 0 1 23.1 29.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="12.04" y="25.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 17 30.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-ink" stroke="#29313D"><path d="M11.56 54.58L13.27 56.86A6.8 6.8 0 0 0 24.15 48.7L22.44 46.42A6.8 6.8 0 0 0 11.56 54.58Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="17" cy="50.5" r="6.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M52.81 31.89A1.5 1.5 0 0 1 52.68 33.84L47.77 38.75A1.5 1.5 0 0 1 45.66 38.75L40.75 33.84A1.5 1.5 0 0 1 40.61 33.68L38.9 31.4A1.5 1.5 0 0 1 39.04 29.44L43.94 24.54A1.5 1.5 0 0 1 46.06 24.54L50.96 29.44A1.5 1.5 0 0 1 51.1 29.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="40.04" y="25.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 45 30.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M52.81 51.89A1.5 1.5 0 0 1 52.68 53.84L47.77 58.75A1.5 1.5 0 0 1 45.66 58.75L40.75 53.84A1.5 1.5 0 0 1 40.61 53.68L38.9 51.4A1.5 1.5 0 0 1 39.04 49.44L43.94 44.54A1.5 1.5 0 0 1 46.06 44.54L50.96 49.44A1.5 1.5 0 0 1 51.1 49.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="40.04" y="45.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 45 50.5)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M14.69 50.5a2.31 2.31 0 1 0 4.62 0a2.31 2.31 0 1 0 -4.62 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

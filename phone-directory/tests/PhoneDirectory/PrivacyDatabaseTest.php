@@ -177,4 +177,194 @@ class PrivacyDatabaseTest extends TestCase
         $visitor->disconnect();
         $owner->disconnect();
     }
+
+    // --- a person recorded as dead -------------------------------------------------------------------------
+
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testARecordedDeathMakesTheEntryVisibleToVisitorsThroughEveryFinder(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $this->assertNull($visitor->findById($ids['recent']));
+
+        $this->assertTrue($owner->markDeceased($ids['recent'], 1988, 'Esquela, La Vanguardia, 12/03/1988'));
+
+        $this->assertSame('GARCÍA RUIZ, José', $visitor->findById($ids['recent'])?->getRawName());
+        $this->assertSame(1988, $visitor->findById($ids['recent'])?->getDeceasedYear());
+        $this->assertSame(['GARCÍA LÓPEZ, José', 'GARCÍA RUIZ, José'], self::names($visitor->findByName('garcia')));
+        $this->assertSame(['GARCÍA RUIZ, José'], self::names($visitor->findBySourceDirectory(self::RECENT)));
+        $this->assertSame(['GARCÍA LÓPEZ, José', 'GARCÍA RUIZ, José'], self::names($visitor->findBySurnameSound('Garcia', 'es')));
+        $this->assertCount(2, $visitor->getAll());
+        $this->assertSame(['GARCÍA RUIZ, José'], self::names($visitor->search(['street' => 'calle mayor 12', 'name' => 'ruiz'])));
+        // The other recent entries are still hidden: the mark is per person.
+        $this->assertNull($visitor->findById($ids['recentOnly']));
+        $this->assertSame([], $visitor->findByName('martin'));
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    /** The first row for a number is the recent García, now visible; the old one must not be lost behind it. */
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testAMarkedEntryDoesNotHideTheOtherOneThatSharesItsPhoneNumber(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $owner->markDeceased($ids['recentOnly'], 1990, 'Acta de defunción n.º 5, Registro Civil de Madrid');
+
+        $this->assertSame('MARTÍN SOTO, Ana', $visitor->findByPhone('555-0002')?->getRawName());
+        $this->assertNotNull($visitor->findByPhone('555-0001'));
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testTakingTheMarkBackHidesTheEntryAgain(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $owner->markDeceased($ids['recent'], 1988, 'Esquela');
+        $this->assertNotNull($visitor->findById($ids['recent']));
+
+        $this->assertTrue($owner->clearDeceased($ids['recent']));
+
+        $this->assertNull($visitor->findById($ids['recent']));
+        $this->assertNull($owner->findById($ids['recent'])?->getDeceasedYear());
+        $this->assertNull($owner->getDeceasedEvidence($ids['recent']), 'the evidence goes with the mark');
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testOnlyTheOwnerCanRecordOrTakeBackADeath(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $owner->markDeceased($ids['old'], 1935, 'Esquela');
+
+        foreach ([
+            fn() => $visitor->markDeceased($ids['recent'], 1988, 'Esquela'),
+            fn() => $visitor->clearDeceased($ids['old']),
+            fn() => $visitor->getDeceasedEvidence($ids['old']),
+        ] as $i => $call) {
+            try {
+                $call();
+                $this->fail("call {$i}: a database opened for visitors must refuse");
+            } catch (\LogicException $e) {
+                $this->assertStringContainsString('opened for visitors', $e->getMessage());
+            }
+        }
+
+        $this->assertNull($visitor->findById($ids['recent']), 'the refused mark left nothing behind');
+        $this->assertSame(1935, $owner->findById($ids['old'])?->getDeceasedYear(), 'nor was the other one taken back');
+        $forgetful = new PhoneDirectoryPDODatabase($dsn, $user, $password);
+        $this->expectException(\LogicException::class);
+        $forgetful->markDeceased($ids['recent'], 1988, 'Esquela');
+    }
+
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testADeathNeedsEvidenceAndAYearThatFits(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $thisYear = (int) date('Y');
+
+        $refused = [
+            'empty evidence' => [$ids['recent'], 1988, '', 'Say where the death is documented'],
+            'blank evidence' => [$ids['recent'], 1988, " \n ", 'Say where the death is documented'],
+            'evidence that is a whole document' => [$ids['recent'], 1988, str_repeat('a', 1001), 'longer than 1000'],
+            'a year in the future' => [$ids['recent'], $thisYear + 1, 'Esquela', 'must be between 1800 and ' . $thisYear],
+            'a year before the catalog' => [$ids['recent'], 1799, 'Esquela', 'must be between 1800'],
+            'a death two years before the 1975 directory' => [$ids['recent'], 1973, 'Esquela', 'a different person'],
+            'an id of 0' => [0, 1988, 'Esquela', ''],
+        ];
+        foreach ($refused as $name => [$id, $year, $evidence, $message]) {
+            try {
+                $owner->markDeceased($id, $year, $evidence);
+                $this->fail("{$name}: should have been refused");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString($message, $e->getMessage(), $name);
+            }
+        }
+        $this->assertNull($visitor->findById($ids['recent']), 'no refused mark published anything');
+
+        // The year before the directory is the earliest that fits: it lists the people alive when it was compiled.
+        $this->assertTrue($owner->markDeceased($ids['recent'], 1974, 'Esquela'));
+        // A well-formed mark on an entry that does not exist is not an error: there is nothing to mark.
+        $this->assertFalse($owner->markDeceased(987654, 1988, 'Esquela'));
+        $this->assertFalse($owner->clearDeceased(987654));
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testTheEvidenceIsOnlyForTheOwnerAndNeverPartOfTheEntry(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $owner->markDeceased($ids['recent'], 1988, '  Esquela de su viuda Carmen, La Vanguardia  ');
+
+        $this->assertSame('Esquela de su viuda Carmen, La Vanguardia', $owner->getDeceasedEvidence($ids['recent']));
+        $this->assertNull($owner->getDeceasedEvidence($ids['old']), 'no mark, no evidence');
+        $seen = $visitor->findById($ids['recent']);
+        $this->assertNotNull($seen);
+        $this->assertStringNotContainsString('viuda', json_encode($seen->toArray(), JSON_UNESCAPED_UNICODE));
+        $this->assertSame(1988, $seen->toArray()['deceasedYear']);
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    /** Editing an entry must not publish or hide a person by accident, and a stored entry cannot carry a mark in. */
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testUpdateAndInsertLeaveTheMarkAlone(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $owner->markDeceased($ids['recent'], 1988, 'Esquela');
+
+        $edited = $owner->findById($ids['recent']);
+        $this->assertNotNull($edited);
+        $this->assertTrue($owner->update($edited));
+        $this->assertSame(1988, $owner->findById($ids['recent'])?->getDeceasedYear(), 'update() keeps the mark');
+        $this->assertNotNull($visitor->findById($ids['recent']));
+
+        $unchecked = $owner->insert((new PhoneDirectoryEntry(
+            fullName: 'RUIZ, Pablo',
+            countryCode: 'ES',
+            street: 'Calle Sol 9',
+            phoneNumber: '555-0004',
+            sourceDirectoryId: self::RECENT,
+            language: 'es'
+        ))->withDeceasedYear(1999));
+        $this->assertNull($owner->findById($unchecked)?->getDeceasedYear(), 'insert() does not store a death nobody documented');
+        $this->assertNull($visitor->findById($unchecked));
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    /** Joining the entries of a person who is recorded as dead builds no profile of someone who may be alive. */
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testARecordedDeathLetsTheLinkerJoinThatPersonsEditions(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $owner->markDeceased($ids['recent'], 1988, 'Esquela');
+
+        $links = (new RecordLinker(minimumScore: 0.3, privacy: Privacy::forVisitors(self::today())))->link($owner->getAll());
+
+        $this->assertCount(1, $links);
+        $this->assertSame($ids['recent'], $links[0]->later->getId());
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    /** A database made before the columns existed gets them the next time createTable() runs. */
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testADatabaseFromBeforeTheMarkExistedIsUpgraded(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $pdo = new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        $pdo->exec('ALTER TABLE phone_directory DROP COLUMN deceased_year');
+        $pdo->exec('ALTER TABLE phone_directory DROP COLUMN deceased_evidence');
+
+        $owner->createTable();
+
+        $this->assertNull($owner->findById($ids['old'])?->getDeceasedYear());
+        $this->assertTrue($owner->markDeceased($ids['recent'], 1988, 'Esquela'));
+        $this->assertNotNull($visitor->findById($ids['recent']));
+        $this->assertCount(4, $owner->getAll(), 'the rows that were there are still there');
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
 }

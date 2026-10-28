@@ -4,12 +4,16 @@
     python3 iconos-tools/validate.py
 
 Reglas: SVG bien formado de 64x64 sin texto, tres variantes con los mismos archivos, nombres
-<prefijo>_<descripcion> dentro de la carpeta del mismo prefijo, gris sin colores cromáticos, líneas sin
-rellenos, ids únicos, cada url(#id) apuntando a un id definido y todo id usado, todo el dibujo dentro del
-lienzo (a más de 1 unidad del borde) y ningún icono repetido.
+<prefijo>_<descripcion> dentro de la carpeta del mismo prefijo (y un prefijo con etiqueta en catalogo.GROUPS),
+gris sin colores cromáticos, líneas sin rellenos y con cada clase ic-<tono> de acuerdo con su regla del <style>,
+ids únicos, cada url(#id) apuntando a un id definido y todo id usado, todo el dibujo dentro del lienzo (a más de
+1 unidad del borde), ningún icono repetido dentro de un set, y un nombre que esté en dos sets dibujado igual en
+ambos. Además comprueba que los números de los README (los de cada set y su fila en el README raíz) coincidan
+con los iconos que hay, y que iconos.yml corra y compare cada set de catalogo.PREFIXES.
 """
 import collections
 import hashlib
+import itertools
 import math
 import re
 import sys
@@ -38,7 +42,7 @@ def local(tag):
 
 def signature(root):
     """(solidos, marcas): lo que debe coincidir entre variantes. La sombra solo existe en color y gris, y un
-    enlace puede quedar oculto del todo en lineas por quedar tapado por los nodos."""
+    enlace o una marca de la capa back pueden quedar ocultos del todo en lineas por quedar tapados por un volumen."""
     groups = {g.get('class'): g for g in root if local(g.tag) == 'g'}
     solids = groups.get('solids')
     marks = groups.get('marks')
@@ -143,7 +147,7 @@ def outside_canvas(root):
     return None
 
 
-def check_file(path, rel, variant, text):
+def check_file(rel, variant, text):
     try:
         root = ET.fromstring(text)
     except ET.ParseError as e:
@@ -177,10 +181,66 @@ def check_file(path, rel, variant, text):
     if variant == 'lineas':
         if 'Gradient' in text or re.search(r'fill="(?!none")', text):
             fail(f'{rel}: la variante lineas no debe tener rellenos')
+        check_theme(root, rel, text)
     return root
 
 
+def check_theme(root, rel, text):
+    """Cada clase ic-<tono> de un icono lineas debe tener su regla del <style> (la que deja cambiar el color con
+    --ic-<tono>), y el color que esa regla recupera debe ser el del atributo stroke: si no, un navegador y un
+    renderizador sin variables CSS dibujarían colores distintos."""
+    rules = dict(re.findall(r'\.ic-([a-z]+)\{stroke:var\(--ic-\1,(#[0-9A-Fa-f]{6})\)\}', text))
+    classes = {c[3:] for e in root.iter() for c in (e.get('class') or '').split() if c.startswith('ic-')}
+    if classes != set(rules):
+        fail(f'{rel}: las clases ic-* {sorted(classes)} no coinciden con las reglas del <style> {sorted(rules)}')
+        return
+    for e in root.iter():
+        for c in (e.get('class') or '').split():
+            if c.startswith('ic-') and (e.get('stroke') or '').upper() != rules[c[3:]].upper():
+                fail(f'{rel}: .{c} tiene stroke="{e.get("stroke")}" pero su regla vuelve a {rules[c[3:]]}')
+                return
+
+
+def check_readme(folder, by_prefix, root_readme):
+    """Los números que el README de un set y la fila del README raíz dan de sus iconos, contra los que hay."""
+    total = sum(by_prefix.values())
+    readme = ROOT / folder / 'README.md'
+    if not readme.is_file():
+        fail(f'{folder}/README.md: no existe')
+        return
+    text = readme.read_text(encoding='utf-8')
+    for pattern, what, expected in ((r'(\d+) iconos SVG', 'iconos SVG', total),
+                                    (r'(\d+)\s+archivos', 'archivos', total * len(VARIANTS)),
+                                    (r'×\s*(\d+) iconos', '× iconos', total)):
+        found = re.search(pattern, text)
+        if not found or int(found.group(1)) != expected:
+            fail(f'{folder}/README.md: dice {found.group(1) if found else "nada"} de «{what}» y son {expected}')
+    rows = {m.group(1): int(m.group(2)) for m in re.finditer(r'^\| `([a-z]+)_` \| (\d+) \|', text, re.M)}
+    if rows != dict(by_prefix):
+        fail(f'{folder}/README.md: la tabla de prefijos {dict(sorted(rows.items()))} no coincide con los iconos {dict(sorted(by_prefix.items()))}')
+    row = next((line for line in root_readme.splitlines() if f']({folder}/)' in line), '')
+    found = re.search(r'(\d+) iconos', row)
+    if not found or int(found.group(1)) != total:
+        fail(f'README.md (raíz): la fila de {folder}/ dice {found.group(1) if found else "nada"} iconos y son {total}')
+
+
+def check_workflow(folders):
+    """iconos.yml debe correr (filtros de rutas de push y de pull_request) y comparar lo versionado (git status) para
+    cada set de catalogo.PREFIXES: un set que falte en cualquiera de los tres sitios no se comprobaría en la CI."""
+    workflow = ROOT / '.github' / 'workflows' / 'iconos.yml'
+    text = workflow.read_text(encoding='utf-8')
+    paths = re.findall(r'^\s+- "([^"]+)"\s*$', text, re.M)
+    drift = re.search(r'git status --porcelain --([^\n")]*)', text)
+    for folder in folders:
+        if paths.count(f'{folder}/**') != 2:
+            fail(f'.github/workflows/iconos.yml: {folder}/** debe estar en los filtros de rutas de push y de pull_request')
+        if not drift or folder not in drift.group(1).split():
+            fail(f'.github/workflows/iconos.yml: {folder} debe estar en el git status que detecta lo que build.py cambia')
+
+
 def main():
+    by_name = {}  # carpeta -> nombre -> variante -> texto, para comparar los iconos que se llaman igual en dos sets
+    root_readme = (ROOT / 'README.md').read_text(encoding='utf-8')
     for prefix in sorted({p for prefixes in PREFIXES.values() for p in prefixes} - set(GROUPS)):
         fail(f'catalogo.GROUPS: falta la etiqueta del prefijo {prefix}')
     for folder, prefixes in PREFIXES.items():
@@ -195,6 +255,7 @@ def main():
         if not (files['color'] == files['lineas'] == files['gris']):
             fail(f'{folder}: las tres variantes no tienen los mismos archivos')
         seen_ids, seen_shapes = {}, {}
+        by_name[folder] = {}
         for rel in sorted(files['color']):
             sub, _, name = rel.partition('/')
             stem = name[:-4]
@@ -211,7 +272,8 @@ def main():
             roots = {}
             for v in VARIANTS:
                 text = (base / v / rel).read_text(encoding='utf-8')
-                roots[v] = check_file(base / v / rel, f'{folder}/{v}/{rel}', v, text)
+                by_name[folder].setdefault(stem, {})[v] = text
+                roots[v] = check_file(f'{folder}/{v}/{rel}', v, text)
                 if v == 'gris':
                     digest = hashlib.md5(re.sub(r'grad_[a-z0-9_]+', 'g', text).encode()).hexdigest()
                     if digest in seen_shapes:
@@ -229,6 +291,12 @@ def main():
                             seen_ids[e.get('id')] = f'{v}/{rel}'
         by_prefix = collections.Counter(Path(r).name.split('_')[0] for r in files['color'])
         print(f'{folder}: {len(files["color"])} iconos x {len(VARIANTS)} variantes {dict(sorted(by_prefix.items()))}')
+        check_readme(folder, by_prefix, root_readme)
+    check_workflow(PREFIXES)
+    for first, second in itertools.combinations(by_name, 2):
+        for stem in sorted(set(by_name[first]) & set(by_name[second])):
+            if by_name[first][stem] != by_name[second][stem]:
+                fail(f'{stem}: se llama igual en {first} y {second} pero se dibuja distinto (definirlo en comunes.py)')
     if failures:
         print(f'\n{len(failures)} fallos:')
         for f in failures[:60]:

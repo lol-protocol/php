@@ -6,8 +6,8 @@ namespace PortadasSvg\Plantillas;
 
 use PortadasSvg\Libro;
 use PortadasSvg\Plantilla;
+use PortadasSvg\Color;
 use PortadasSvg\Rectangulo;
-use PortadasSvg\Svg;
 use PortadasSvg\Texto;
 
 /** Libro clásico: marco doble, título centrado en serif y un rombo entre el título y el autor. */
@@ -27,12 +27,16 @@ final class Clasica extends Plantilla
     private const SUBTITULO_ALTO = 16.0;
     private const SUBTITULO_TAMANO_MAX = 5.0;
     private const SUBTITULO_TAMANO_MIN = 3.2;
-    /** Ornamento: altura (fracción del alto), tramos de línea a cada lado del rombo (desde, hasta, grosor) y radio del rombo. */
+    /** Friso del adorno de la tradición, arriba dentro del marco: distancia al borde superior del corte, margen a cada lado y alto. */
+    private const FRISO_Y = 17.0;
+    private const FRISO_MARGEN = 18.0;
+    private const FRISO_ALTO = 5.0;
+    /** Ornamento: altura (fracción del alto), radio del emblema, y tramos de línea a cada lado (separación del emblema, largo hasta, grosor). */
     private const ORNAMENTO_Y = 0.6;
-    private const ORNAMENTO_LINEA_DESDE = 4.0;
+    private const EMBLEMA_RADIO = 4.4;
+    private const ORNAMENTO_LINEA_SEPARACION = 1.8;
     private const ORNAMENTO_LINEA_HASTA = 16.0;
     private const ORNAMENTO_LINEA_GROSOR = 0.4;
-    private const ORNAMENTO_ROMBO = 2.2;
     /** Traductor: separación bajo el ornamento y tamaño. */
     private const TRADUCTOR_SEPARACION = 9.0;
     private const TRADUCTOR_TAMANO_MAX = 3.4;
@@ -50,9 +54,15 @@ final class Clasica extends Plantilla
         return ['fondo' => '#f3ead7', 'texto' => '#2a1f17', 'acento' => '#7a2e1f'];
     }
 
+    public function paleta(float $tono): array
+    {
+        return ['fondo' => Color::hsl($tono, 0.45, 0.91), 'texto' => Color::hsl($tono, 0.35, 0.13), 'acento' => Color::hsl($tono, 0.55, 0.33)];
+    }
+
     protected function portada(Libro $libro, Rectangulo $panel): string
     {
         $colores = $libro->colores;
+        $adorno = $this->adorno($libro);
         $cx = $panel->x + $panel->ancho / 2;
         $ancho = $panel->ancho - 2 * self::MARGEN;
 
@@ -61,21 +71,24 @@ final class Clasica extends Plantilla
         $svg = $this->rectangulo(new Rectangulo($panel->x + $exterior, $panel->y + $exterior, $panel->ancho - 2 * $exterior, $panel->alto - 2 * $exterior), ['fill' => 'none', 'stroke' => $colores['acento'], 'stroke-width' => self::MARCO_EXTERIOR_GROSOR]);
         $svg .= $this->rectangulo(new Rectangulo($panel->x + $interior, $panel->y + $interior, $panel->ancho - 2 * $interior, $panel->alto - 2 * $interior), ['fill' => 'none', 'stroke' => $colores['acento'], 'stroke-width' => self::MARCO_INTERIOR_GROSOR]);
 
+        $svg .= $adorno->friso(new Rectangulo($panel->x + self::FRISO_MARGEN, $panel->y + self::FRISO_Y, $panel->ancho - 2 * self::FRISO_MARGEN, self::FRISO_ALTO), $colores['acento']);
+
         $zonaAlto = $panel->alto * self::TITULO_ALTO;
-        $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $zonaAlto, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->factorPara($libro->textos->titulo), self::INTERLINEADO);
+        $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $zonaAlto, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO, true);
         $y = $this->baseline($panel->y + $panel->alto * self::TITULO_Y, $zonaAlto, count($titulo['lineas']), $titulo['tamano']);
         $svg .= $this->parrafo($titulo['lineas'], $cx, $y, $titulo['tamano'], 'middle', $colores['texto']);
         $fin = $y + (count($titulo['lineas']) - 1) * $titulo['tamano'] * self::INTERLINEADO;
 
         if ($libro->textos->subtitulo !== '') {
-            $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->factorPara($libro->textos->subtitulo), self::INTERLINEADO);
+            $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->medidaDe(['font-style' => 'italic']), self::INTERLINEADO, true);
             $svg .= $this->parrafo($subtitulo['lineas'], $cx, $this->bajoElTitulo($fin, $titulo['tamano'], $subtitulo['tamano']), $subtitulo['tamano'], 'middle', $colores['texto'], ['font-style' => 'italic']);
         }
 
         $ornamento = $panel->y + $panel->alto * self::ORNAMENTO_Y;
-        $svg .= $this->linea($cx - self::ORNAMENTO_LINEA_HASTA, $ornamento, $cx - self::ORNAMENTO_LINEA_DESDE, $ornamento, $colores['acento'], self::ORNAMENTO_LINEA_GROSOR);
-        $svg .= $this->linea($cx + self::ORNAMENTO_LINEA_DESDE, $ornamento, $cx + self::ORNAMENTO_LINEA_HASTA, $ornamento, $colores['acento'], self::ORNAMENTO_LINEA_GROSOR);
-        $svg .= Svg::elemento('polygon', ['points' => $this->rombo($cx, $ornamento, self::ORNAMENTO_ROMBO), 'fill' => $colores['acento']]);
+        $desde = self::EMBLEMA_RADIO * $adorno->ocupa() + self::ORNAMENTO_LINEA_SEPARACION;
+        $svg .= $this->linea($cx - self::ORNAMENTO_LINEA_HASTA, $ornamento, $cx - $desde, $ornamento, $colores['acento'], self::ORNAMENTO_LINEA_GROSOR);
+        $svg .= $this->linea($cx + $desde, $ornamento, $cx + self::ORNAMENTO_LINEA_HASTA, $ornamento, $colores['acento'], self::ORNAMENTO_LINEA_GROSOR);
+        $svg .= $adorno->emblema($cx, $ornamento, self::EMBLEMA_RADIO, $colores['acento']);
 
         if ($libro->textos->traductor !== '') {
             $svg .= $this->rotulo('Traducción de ' . $libro->textos->traductor, $cx, $ornamento + self::TRADUCTOR_SEPARACION, $ancho, self::TRADUCTOR_TAMANO_MAX, self::TRADUCTOR_TAMANO_MIN, 'middle', $colores['texto'], ['font-style' => 'italic']);
@@ -84,18 +97,5 @@ final class Clasica extends Plantilla
         $svg .= $this->editorial($libro, $cx, $panel->y + $panel->alto - self::PIE_ABAJO, 'middle', $ancho);
 
         return $svg;
-    }
-
-    /** Puntos de un rombo centrado en (cx, cy), para el ornamento. */
-    private function rombo(float $cx, float $cy, float $radio): string
-    {
-        $punto = static fn (float $x, float $y): string => Svg::n($x) . ',' . Svg::n($y);
-
-        return implode(' ', [
-            $punto($cx, $cy - $radio),
-            $punto($cx + $radio, $cy),
-            $punto($cx, $cy + $radio),
-            $punto($cx - $radio, $cy),
-        ]);
     }
 }

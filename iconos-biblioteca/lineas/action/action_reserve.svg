@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-violet{stroke:var(--ic-violet,#482289)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M23 36L24.8 38.4A10 10 0 0 0 40.8 26.4L39 24A10 10 0 0 0 23 36Z" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="30" r="10" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-violet" stroke="#482289"><path d="M23 36L24.8 38.4A10 10 0 0 0 40.8 26.4L39 24A10 10 0 0 0 23 36Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="30" r="10" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M12 30a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" fill="none" stroke="#482289" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+    <path d="M12 30a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" class="ic-violet" fill="none" stroke="#482289" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
   </g>
 </svg>

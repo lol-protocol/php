@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    @supports (--a:0){
+      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .ic-red{stroke:var(--ic-red,#801616)}
+    }
+  </style>
   <g class="solids">
-    <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.8 45.4A9 9 0 0 1 11 40L11 18A9 9 0 0 1 20 9L42 9A9 9 0 0 1 49.2 12.6Z" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/><rect x="11" y="9" width="40" height="40" rx="9" fill="none" stroke="#801616" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-red" stroke="#801616"><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.8 45.4A9 9 0 0 1 11 40L11 18A9 9 0 0 1 20 9L42 9A9 9 0 0 1 49.2 12.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="11" y="9" width="40" height="40" rx="9" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M30.5 15.5L44.5 40L16.5 40Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M30.5 15.5L44.5 40L16.5 40Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

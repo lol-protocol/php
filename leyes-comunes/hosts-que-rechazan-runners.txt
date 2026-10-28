@@ -1,0 +1,12 @@
+# Sitios que están vivos pero rechazan la conexión (ECONNREFUSED) de los servidores de GitHub Actions.
+# Para el verificador de enlaces, ECONNREFUSED en uno de estos hosts es un aviso, no un enlace roto.
+#
+# Un host entra aquí SOLO cuando se vio rechazar al runner en más de una corrida y la página sigue
+# siendo la fuente oficial. El rechazo es INTERMITENTE (depende de qué servidor de GitHub toque, y el
+# mismo host que falla en una corrida responde en la siguiente): por eso un aviso y no un roto. No sirve para esconder un enlace muerto: cuando un host de esta lista
+# deje de existir, falla antes, en DNS (ENOTFOUND), y eso sigue contando como roto. Un host cubre
+# también sus subdominios. Una línea por host; lo que sigue a «#» es el motivo y quién lo vio.
+ilga.gov        # Illinois; visto en la #134 (BIPA) y en las corridas posteriores
+noyb.eu         # visto en la #118
+law.moj.gov.tw  # Taiwán, Ministerio de Justicia; rechazó el runner en la corrida del 22-oct-2026 en master
+aip.rks-gov.net # Kosovo, Agencia de Información y Privacidad; rechazó el runner en las corridas de los PR de 25-oct-2026
