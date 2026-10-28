@@ -21,7 +21,7 @@ BY,Bielorrusia,estado,Europa,2,1,2,si,IO 1 (se excluye con IO <= 1): Sanciones d
 BE,Bélgica,estado,Europa,4,4,16,no,,5,5,25,no,
 BZ,Belice,estado,América,3,4,12,no,,3,5,15,no,
 BJ,Benín,estado,África,1,3,3,no,,2,5,10,no,
-BT,Bután,estado,Asia,1,3,3,no,,2,1,2,si,IP local 1: la lengua local (dzongkha) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+BT,Bután,estado,Asia,1,3,3,no,,2,1,2,no,
 BO,Bolivia,estado,América,3,2,6,no,,3,5,15,no,
 BA,Bosnia y Herzegovina,estado,Europa,3,3,9,no,,3,4,12,no,
 BW,Botsuana,estado,África,2,3,6,no,,3,3,9,no,
@@ -29,34 +29,34 @@ BR,Brasil,estado,América,4,3,12,no,,4,5,20,no,
 BN,Brunéi,estado,Asia,1,3,3,no,,4,4,16,no,
 BG,Bulgaria,estado,Europa,3,4,12,no,,4,4,16,no,
 BF,Burkina Faso,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Gobierno militar desde 2022; amplias zonas fuera de control estatal por grupos armados,1,3,3,no,
-BI,Burundi,estado,África,1,2,2,no,,2,1,2,si,IP local 1: la lengua local (kirundi) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+BI,Burundi,estado,África,1,2,2,no,,2,1,2,no,
 CV,Cabo Verde,estado,África,3,4,12,no,,3,5,15,no,
-KH,Camboya,estado,Asia,2,2,4,no,,2,1,2,si,IP local 1: la lengua local (jemer) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+KH,Camboya,estado,Asia,2,2,4,no,,2,1,2,no,
 CM,Camerún,estado,África,2,2,4,no,,2,5,10,no,
 CA,Canadá,estado,América,5,5,25,no,,5,5,25,no,
 QA,Catar,estado,Asia,1,4,4,no,,3,5,15,no,
-TD,Chad,estado,África,1,2,2,no,,1,1,1,si,IP local 1: la lengua local (árabe chadiano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+TD,Chad,estado,África,1,2,2,no,,1,1,1,no,
 CZ,Chequia,estado,Europa,3,4,12,no,,4,5,20,no,
 CL,Chile,estado,América,3,4,12,no,,4,5,20,no,
 CN,China,estado,Asia,5,2,10,no,,4,4,16,no,
 CY,Chipre,estado,Europa,3,4,12,no,,4,4,16,no,
 CO,Colombia,estado,América,3,3,9,no,,4,5,20,no,
-KM,Comoras,estado,África,1,3,3,no,,2,1,2,si,IP local 1: la lengua local (shikomor) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-CG,Congo,estado,África,1,2,2,no,,3,1,3,si,IP local 1: la lengua local (lingala) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+KM,Comoras,estado,África,1,3,3,no,,2,1,2,no,
+CG,Congo,estado,África,1,2,2,no,,3,1,3,no,
 KP,Corea del Norte,estado,Asia,1,1,1,si,"IO 1 (se excluye con IO <= 1): Sanciones de la ONU, EE. UU. y UE; sin internet abierto ni registros accesibles; sin IDH publicado",3,5,15,no,
 KR,Corea del Sur,estado,Asia,5,5,25,no,,5,5,25,no,
 CI,Costa de Marfil,estado,África,2,3,6,no,,2,5,10,no,
 CR,Costa Rica,estado,América,3,4,12,no,,4,5,20,no,
 HR,Croacia,estado,Europa,3,4,12,no,,4,4,16,no,
 CU,Cuba,estado,América,4,1,4,si,IO 1 (se excluye con IO <= 1): Embargo de EE. UU.; control estatal de internet y de medios; pagos casi imposibles; registros coloniales valiosos pero de acceso restringido,4,5,20,no,
-CW,Curazao,territorio,América,4,4,16,no,,3,1,3,si,IP local 1: la lengua local (papiamento) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+CW,Curazao,territorio,América,4,4,16,no,,3,1,3,no,
 DK,Dinamarca,estado,Europa,5,5,25,no,,5,4,20,no,
 DM,Dominica,estado,América,2,4,8,no,,3,5,15,no,
 EC,Ecuador,estado,América,2,3,6,no,,4,5,20,no,
 EG,Egipto,estado,África,2,3,6,no,,3,5,15,no,
 SV,El Salvador,estado,América,2,3,6,no,,3,5,15,no,
 AE,Emiratos Árabes Unidos,estado,Asia,2,4,8,no,,3,5,15,no,
-ER,Eritrea,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Partido único sin prensa libre ni internet abierto; sin registros accesibles,2,1,2,si,IP local 1: la lengua local (tigriña) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+ER,Eritrea,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Partido único sin prensa libre ni internet abierto; sin registros accesibles,2,1,2,si,"IP local 1 e IO 1: la lengua local (tigriña) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 SK,Eslovaquia,estado,Europa,3,4,12,no,,4,4,16,no,
 SI,Eslovenia,estado,Europa,3,4,12,no,,4,4,16,no,
 ES,España,estado,Europa,4,4,16,no,,4,5,20,no,
@@ -64,22 +64,22 @@ SZ,Esuatini,estado,África,2,3,6,no,,3,5,15,no,
 US,Estados Unidos,estado,América,5,5,25,no,,5,5,25,no,
 EE,Estonia,estado,Europa,3,5,15,no,,4,5,20,no,
 ET,Etiopía,estado,África,2,2,4,no,,2,3,6,no,
-FJ,Fiyi,estado,Oceanía,2,3,6,no,,4,1,4,si,IP local 1: la lengua local (fiyiano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+FJ,Fiyi,estado,Oceanía,2,3,6,no,,4,1,4,no,
 PH,Filipinas,estado,Asia,3,4,12,no,,4,2,8,no,
 FI,Finlandia,estado,Europa,4,5,20,no,,5,4,20,no,
 FR,Francia,estado,Europa,4,4,16,no,,4,5,20,no,
 GA,Gabón,estado,África,1,3,3,no,,3,5,15,no,
-GM,Gambia,estado,África,2,3,6,no,,2,1,2,si,IP local 1: la lengua local (mandinga) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+GM,Gambia,estado,África,2,3,6,no,,2,1,2,no,
 GE,Georgia,estado,Europa,3,3,9,no,,4,3,12,no,
 GH,Ghana,estado,África,2,3,6,no,,3,3,9,no,
 GI,Gibraltar,territorio,Europa,3,4,12,no,,4,5,20,no,
 GD,Granada,estado,América,2,4,8,no,,4,5,20,no,
 GR,Grecia,estado,Europa,4,4,16,no,,4,4,16,no,
-GL,Groenlandia,territorio,América,3,3,9,no,,3,1,3,si,IP local 1: la lengua local (groenlandés) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+GL,Groenlandia,territorio,América,3,3,9,no,,3,1,3,no,
 GT,Guatemala,estado,América,3,3,9,no,,3,5,15,no,
 GG,Guernsey,territorio,Europa,4,4,16,no,,4,5,20,no,
-GN,Guinea,estado,África,1,2,2,no,,1,1,1,si,IP local 1: la lengua local (pular) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-GQ,Guinea Ecuatorial,estado,África,1,2,2,no,,3,1,3,si,IP local 1: la lengua local (fang) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+GN,Guinea,estado,África,1,2,2,no,,1,1,1,no,
+GQ,Guinea Ecuatorial,estado,África,1,2,2,no,,3,1,3,no,
 GW,Guinea-Bisáu,estado,África,1,2,2,no,,2,5,10,no,
 GY,Guyana,estado,América,2,3,6,no,,3,5,15,no,
 HT,Haití,estado,América,1,1,1,si,IO 1 (se excluye con IO <= 1): Crisis de seguridad y Estado fallido; sin registros civiles accesibles en línea; criollo y francés,2,3,6,no,
@@ -94,8 +94,8 @@ IE,Irlanda,estado,Europa,5,5,25,no,,5,5,25,no,
 IM,Isla de Man,territorio,Europa,4,4,16,no,,4,5,20,no,
 IS,Islandia,estado,Europa,4,4,16,no,,5,5,25,no,
 FO,Islas Feroe,territorio,Europa,4,4,16,no,,4,3,12,no,
-MH,Islas Marshall,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (marshalés) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-SB,Islas Salomón,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (pijin de las Salomón) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+MH,Islas Marshall,estado,Oceanía,1,3,3,no,,3,1,3,no,
+SB,Islas Salomón,estado,Oceanía,1,3,3,no,,3,1,3,no,
 IL,Israel,estado,Asia,4,3,12,no,,4,4,16,no,
 IT,Italia,estado,Europa,5,4,20,no,,4,5,20,no,
 JM,Jamaica,estado,América,3,4,12,no,,4,5,20,no,
@@ -105,11 +105,11 @@ JO,Jordania,estado,Asia,2,3,6,no,,3,5,15,no,
 KZ,Kazajistán,estado,Asia,2,3,6,no,,4,3,12,no,
 KE,Kenia,estado,África,2,3,6,no,,3,3,9,no,
 KG,Kirguistán,estado,Asia,1,2,2,no,,3,3,9,no,
-KI,Kiribati,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (gilbertés) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+KI,Kiribati,estado,Oceanía,1,3,3,no,,3,1,3,no,
 XK,Kosovo,entidad disputada,Europa,2,3,6,no,,3,3,9,no,
 KW,Kuwait,estado,Asia,1,4,4,no,,3,5,15,no,
-LA,Laos,estado,Asia,1,2,2,no,,3,1,3,si,IP local 1: la lengua local (lao) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-LS,Lesoto,estado,África,2,3,6,no,,3,1,3,si,IP local 1: la lengua local (sesoto) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+LA,Laos,estado,Asia,1,2,2,no,,3,1,3,no,
+LS,Lesoto,estado,África,2,3,6,no,,3,1,3,no,
 LV,Letonia,estado,Europa,3,4,12,no,,4,4,16,no,
 LB,Líbano,estado,Asia,3,2,6,no,,3,5,15,no,
 LR,Liberia,estado,África,2,3,6,no,,2,5,10,no,
@@ -119,25 +119,25 @@ LT,Lituania,estado,Europa,3,4,12,no,,4,3,12,no,
 LU,Luxemburgo,estado,Europa,3,5,15,no,,4,5,20,no,
 MO,Macao,territorio,Asia,2,3,6,no,,4,3,12,no,
 MK,Macedonia del Norte,estado,Europa,2,3,6,no,,4,2,8,no,
-MG,Madagascar,estado,África,1,2,2,no,,2,1,2,si,IP local 1: la lengua local (malgache) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+MG,Madagascar,estado,África,1,2,2,no,,2,1,2,no,
 MY,Malasia,estado,Asia,3,4,12,no,,4,4,16,no,
 MW,Malaui,estado,África,2,3,6,no,,2,3,6,no,
-MV,Maldivas,estado,Asia,1,3,3,no,,4,1,4,si,IP local 1: la lengua local (dhivehi) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+MV,Maldivas,estado,Asia,1,3,3,no,,4,1,4,no,
 ML,Malí,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Gobierno militar desde 2020-2021; conflicto con grupos armados; francés,1,3,3,no,
 MT,Malta,estado,Europa,3,4,12,no,,4,3,12,no,
 MA,Marruecos,estado,África,2,3,6,no,,2,5,10,no,
 MU,Mauricio,estado,África,3,4,12,no,,3,5,15,no,
 MR,Mauritania,estado,África,1,3,3,no,,2,5,10,no,
 MX,México,estado,América,4,3,12,no,,4,5,20,no,
-FM,Micronesia,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (chuukés) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+FM,Micronesia,estado,Oceanía,1,3,3,no,,3,1,3,no,
 MD,Moldavia,estado,Europa,3,3,9,no,,4,5,20,no,
 MC,Mónaco,estado,Europa,2,5,10,no,,4,5,20,no,
-MN,Mongolia,estado,Asia,1,3,3,no,,4,1,4,si,IP local 1: la lengua local (mongol) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+MN,Mongolia,estado,Asia,1,3,3,no,,4,1,4,no,
 ME,Montenegro,estado,Europa,2,4,8,no,,3,4,12,no,
 MZ,Mozambique,estado,África,1,2,2,no,,2,5,10,no,
-MM,Myanmar,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Gobierno militar desde 2021 y guerra civil; sanciones internacionales; registros no accesibles,3,1,3,si,IP local 1: la lengua local (birmano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-NA,Namibia,estado,África,3,4,12,no,,3,1,3,si,IP local 1: la lengua local (oshiwambo) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-NR,Nauru,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (nauruano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+MM,Myanmar,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Gobierno militar desde 2021 y guerra civil; sanciones internacionales; registros no accesibles,3,1,3,si,"IP local 1 e IO 1: la lengua local (birmano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+NA,Namibia,estado,África,3,4,12,no,,3,1,3,no,
+NR,Nauru,estado,Oceanía,1,3,3,no,,3,1,3,no,
 NP,Nepal,estado,Asia,1,2,2,no,,2,2,4,no,
 NI,Nicaragua,estado,América,2,2,4,no,,3,5,15,no,
 NE,Níger,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Gobierno militar desde 2023; conflicto con grupos armados; francés,1,3,3,no,
@@ -147,24 +147,24 @@ NZ,Nueva Zelanda,estado,Oceanía,4,5,20,no,,5,5,25,no,
 OM,Omán,estado,Asia,1,4,4,no,,3,5,15,no,
 NL,Países Bajos,estado,Europa,5,5,25,no,,5,5,25,no,
 PK,Pakistán,estado,Asia,2,2,4,no,,2,4,8,no,
-PW,Palaos,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (palauano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+PW,Palaos,estado,Oceanía,1,3,3,no,,3,1,3,no,
 PS,Palestina,entidad disputada,Asia,2,1,2,si,IO 1 (se excluye con IO <= 1): Conflicto y ocupación; guerra en Gaza desde 2023; registros otomanos y británicos; árabe,3,5,15,no,
 PA,Panamá,estado,América,3,4,12,no,,4,5,20,no,
-PG,Papúa Nueva Guinea,estado,Oceanía,1,3,3,no,,2,1,2,si,IP local 1: la lengua local (tok pisin) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+PG,Papúa Nueva Guinea,estado,Oceanía,1,3,3,no,,2,1,2,no,
 PY,Paraguay,estado,América,3,4,12,no,,3,2,6,no,
 PE,Perú,estado,América,3,3,9,no,,3,5,15,no,
 PL,Polonia,estado,Europa,4,4,16,no,,3,5,15,no,
 PT,Portugal,estado,Europa,5,5,25,no,,4,5,20,no,
 PR,Puerto Rico,territorio,América,4,4,16,no,,3,5,15,no,
 GB,Reino Unido,estado,Europa,5,5,25,no,,5,5,25,no,
-CF,República Centroafricana,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado y Estado frágil; embargo de armas de la ONU,1,1,1,si,IP local 1: la lengua local (sango) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-CD,República Democrática del Congo,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado en el este; infraestructura de registros muy limitada; francés,2,1,2,si,IP local 1: la lengua local (lingala) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+CF,República Centroafricana,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado y Estado frágil; embargo de armas de la ONU,1,1,1,si,"IP local 1 e IO 1: la lengua local (sango) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+CD,República Democrática del Congo,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado en el este; infraestructura de registros muy limitada; francés,2,1,2,si,"IP local 1 e IO 1: la lengua local (lingala) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 DO,República Dominicana,estado,América,3,4,12,no,,3,5,15,no,
 RE,Reunión,territorio,África,4,4,16,no,,3,5,15,no,
 RW,Ruanda,estado,África,2,3,6,no,,3,3,9,no,
 RO,Rumania,estado,Europa,3,4,12,no,,4,5,20,no,
 RU,Rusia,estado,Europa,4,1,4,si,IO 1 (se excluye con IO <= 1): Sanciones amplias de EE. UU. y UE; bloqueo de pagos y de plataformas; registros soviéticos valiosos pero inoperables,4,5,20,no,
-WS,Samoa,estado,Oceanía,2,3,6,no,,3,1,3,si,IP local 1: la lengua local (samoano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+WS,Samoa,estado,Oceanía,2,3,6,no,,3,1,3,no,
 KN,San Cristóbal y Nieves,estado,América,2,4,8,no,,4,5,20,no,
 SM,San Marino,estado,Europa,2,4,8,no,,4,5,20,no,
 VC,San Vicente y las Granadinas,estado,América,2,4,8,no,,3,5,15,no,
@@ -176,34 +176,34 @@ SC,Seychelles,estado,África,2,4,8,no,,4,5,20,no,
 SL,Sierra Leona,estado,África,2,3,6,no,,1,5,5,no,
 SG,Singapur,estado,Asia,3,5,15,no,,4,5,20,no,
 SY,Siria,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Caída del régimen en 2024; transición en curso; sanciones y registros destruidos o inaccesibles,3,5,15,no,
-SO,Somalia,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado y Estado fallido; sin registros civiles ni banca estable,2,1,2,si,IP local 1: la lengua local (somalí) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+SO,Somalia,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado y Estado fallido; sin registros civiles ni banca estable,2,1,2,si,"IP local 1 e IO 1: la lengua local (somalí) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 LK,Sri Lanka,estado,Asia,2,3,6,no,,4,2,8,no,
 ZA,Sudáfrica,estado,África,4,4,16,no,,4,3,12,no,
 SD,Sudán,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Guerra civil desde 2023; registros destruidos o inaccesibles; árabe e inglés,2,5,10,no,
-SS,Sudán del Sur,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Guerra civil intermitente; Estado frágil; sanciones de la ONU; inglés,1,1,1,si,IP local 1: la lengua local (árabe juba) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+SS,Sudán del Sur,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Guerra civil intermitente; Estado frágil; sanciones de la ONU; inglés,1,1,1,si,"IP local 1 e IO 1: la lengua local (árabe juba) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 SE,Suecia,estado,Europa,5,5,25,no,,5,4,20,no,
 CH,Suiza,estado,Europa,4,5,20,no,,5,5,25,no,
 SR,Surinam,estado,América,2,3,6,no,,3,5,15,no,
 TH,Tailandia,estado,Asia,2,3,6,no,,4,3,12,no,
 TW,Taiwán,entidad disputada,Asia,3,4,12,no,,5,4,20,no,
 TZ,Tanzania,estado,África,1,2,2,no,,3,3,9,no,
-TJ,Tayikistán,estado,Asia,1,2,2,no,,4,1,4,si,IP local 1: la lengua local (tayiko) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-TL,Timor Oriental,estado,Asia,1,3,3,no,,2,1,2,si,IP local 1: la lengua local (tetun) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+TJ,Tayikistán,estado,Asia,1,2,2,no,,4,1,4,no,
+TL,Timor Oriental,estado,Asia,1,3,3,no,,2,1,2,no,
 TG,Togo,estado,África,1,2,2,no,,2,3,6,no,
-TO,Tonga,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (tongano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+TO,Tonga,estado,Oceanía,1,3,3,no,,3,1,3,no,
 TT,Trinidad y Tobago,estado,América,3,4,12,no,,4,5,20,no,
 TN,Túnez,estado,África,2,2,4,no,,3,5,15,no,
-TM,Turkmenistán,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Régimen autoritario; internet muy restringido; sin registros accesibles; turcomano y ruso,3,1,3,si,IP local 1: la lengua local (turcomano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+TM,Turkmenistán,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Régimen autoritario; internet muy restringido; sin registros accesibles; turcomano y ruso,3,1,3,si,"IP local 1 e IO 1: la lengua local (turcomano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 TR,Turquía,estado,Asia,2,3,6,no,,4,5,20,no,
-TV,Tuvalu,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (tuvaluano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+TV,Tuvalu,estado,Oceanía,1,3,3,no,,3,1,3,no,
 UA,Ucrania,estado,Europa,3,2,6,no,,4,4,16,no,
 UG,Uganda,estado,África,1,2,2,no,,3,3,9,no,
 UY,Uruguay,estado,América,3,4,12,no,,4,5,20,no,
 UZ,Uzbekistán,estado,Asia,1,3,3,no,,4,3,12,no,
-VU,Vanuatu,estado,Oceanía,1,3,3,no,,3,1,3,si,IP local 1: la lengua local (bislama) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+VU,Vanuatu,estado,Oceanía,1,3,3,no,,3,1,3,no,
 VE,Venezuela,estado,América,2,1,2,si,IO 1 (se excluye con IO <= 1): Sanciones de EE. UU.; crisis económica y control cambiario; pagos casi inviables; español,3,5,15,no,
 VN,Vietnam,estado,Asia,3,2,6,no,,4,3,12,no,
 YE,Yemen,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Guerra civil desde 2014; país dividido; árabe,2,5,10,no,
-DJ,Yibuti,estado,África,1,3,3,no,,2,1,2,si,IP local 1: la lengua local (somalí) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
-ZM,Zambia,estado,África,2,3,6,no,,3,1,3,si,IP local 1: la lengua local (bemba) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS
+DJ,Yibuti,estado,África,1,3,3,no,,2,1,2,no,
+ZM,Zambia,estado,África,2,3,6,no,,3,1,3,no,
 ZW,Zimbabue,estado,África,2,2,4,no,,3,3,9,no,

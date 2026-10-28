@@ -162,16 +162,18 @@ const MODOS = {
     columnas: [
       ["pais", "País", false], ["r", "Región", false], ["pob", "Población 2024 (M)", true, 2],
       ["nac", "Nacidos en la historia (M)", true, 0], ["idh", "IDH 2023", true, 3], ["net", "Internet (%)", true, 1],
-      ["emi", "Emigrantes (%)", true, 1], ["ig", "IG", true, 0], ["io", "IO", true, 0], ["prio", "Prioridad", true, 0],
+      ["emi", "Emigrantes (%)", true, 1], ["fh", "Libertad (FH)", false], ["cpi", "Corrupción (CPI)", true, 0],
+      ["ig", "IG", true, 0], ["io", "IO", true, 0], ["prio", "Prioridad", true, 0],
       ["excl", "Excluido", false],
     ],
     tip: (d) => [["Población 2024", fmt(d.pob, 2) && fmt(d.pob, 2) + " M"], ["Nacidos en la historia", fmt(d.nac, 0) && fmt(d.nac, 0) + " M"],
-      ["IDH 2023", fmt(d.idh, 3)], ["Internet", fmt(d.net, 1) && fmt(d.net, 1) + " %"], ["Emigrantes", fmt(d.emi, 1) && fmt(d.emi, 1) + " %"]],
+      ["IDH 2023", fmt(d.idh, 3)], ["Internet", fmt(d.net, 1) && fmt(d.net, 1) + " %"], ["Emigrantes", fmt(d.emi, 1) && fmt(d.emi, 1) + " %"],
+      ["Libertad (Freedom House)", d.fh], ["Democracia (EIU)", fmt(d.eiu, 1)], ["Corrupción (CPI, 100 = limpio)", fmt(d.cpi, 0)]],
   },
   pos: {
     prioridad: (d) => d.pp, excluido: (d) => d.xp, nota: (d) => d.cp,
-    motivo: (d) => `IP local ${d.ipl}`, formula: (d) => `IL ${d.il} × IP local ${d.ipl}`,
-    bajada: "Prioridad para un etiquetador gramatical (POS): interés en la lectura (IL) por los recursos de la lengua local (IP local). Se excluye con IP local ≤ 1.",
+    motivo: (d) => `IP local ${d.ipl} e IO ${d.io}`, formula: (d) => `IL ${d.il} × IP local ${d.ipl}`,
+    bajada: "Prioridad para un etiquetador gramatical (POS): interés en la lectura (IL) por los recursos de la lengua local (IP local). Se excluye si la lengua local no tiene corpus anotado (IP local ≤ 1) y el país es inviable para operar (IO ≤ 1).",
     columnas: [
       ["pais", "País", false], ["local", "Lengua local", false], ["alf", "Alfabetización (%)", true, 1],
       ["net", "Internet (%)", true, 1], ["pal", "Palabras anotadas", true, 0], ["web", "Texto web (%)", true, 4],

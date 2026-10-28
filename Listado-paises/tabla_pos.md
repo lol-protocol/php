@@ -168,47 +168,47 @@
 | Togo | ewé; francés; mina | estado | 72.6 | 39.5 | 2 | 5 | 3 | 28 159 | — | 6 | no | IP por francés (mejor recurso listado). |
 | Afganistán | dari; pastún | estado | 37.3 | 16.1 | 1 | 5 | 5 | 654 699 | 0.6934 | 5 | no | Alfabetización muy baja |
 | Sierra Leona | inglés; krio | estado | 43.6 | 25.1 | 1 | 5 | 5 | 1 126 448 | 41.8620 | 5 | no | Alfabetización muy baja |
+| Fiyi | fiyiano; inglés | estado | — | 74.7 | 4 | 5 | 1 | 0 | 0.0001 | 4 | no | IP por inglés (mejor recurso listado). |
+| Maldivas | dhivehi | estado | 98.2 | 85.2 | 4 | 1 | 1 | 0 | 0.0024 | 4 | no |  |
+| Mongolia | mongol; ruso | estado | 98.6 | 85.1 | 4 | 5 | 1 | 0 | 0.0159 | 4 | no | IP por ruso (mejor recurso listado). |
 | Nepal | nepalí; inglés | estado | 68.7 | 46.3 | 2 | 5 | 2 | 801 | 0.0534 | 4 | no | IP por inglés (mejor recurso listado). |
+| Tayikistán | tayiko; ruso | estado | — | 55.8 | 4 | 5 | 1 | 0 | 0.0065 | 4 | no | IP por ruso (mejor recurso listado). |
 | Burkina Faso | moré; francés | estado | 41.4 | 28.3 | 1 | 5 | 3 | 33 792 | — | 3 | no | IP por francés (mejor recurso listado). Alfabetización muy baja |
+| Congo | lingala; francés | estado | — | 47.3 | 3 | 5 | 1 | 0 | 0.0006 | 3 | no | IP por francés (mejor recurso listado). |
+| Curazao | papiamento; neerlandés; inglés; español | territorio | — | — | 3 | 5 | 1 | 0 | — | 3 | no | IP por neerlandés (mejor recurso listado). |
+| Groenlandia | groenlandés; danés | territorio | — | — | 3 | 4 | 1 | 0 | 0.0009 | 3 | no | IP por danés (mejor recurso listado). |
+| Guinea Ecuatorial | fang; español; francés | estado | — | 63.3 | 3 | 5 | 1 | 0 | — | 3 | no | IP por español (mejor recurso listado). |
+| Islas Marshall | marshalés; inglés | estado | 95.8 | 65.9 | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
+| Islas Salomón | pijin de las Salomón; inglés | estado | — | 29.0 | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
+| Kiribati | gilbertés; inglés | estado | 98.6 | 89.4 | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
+| Laos | lao | estado | 75.6 | 65.6 | 3 | 1 | 1 | 0 | 0.0055 | 3 | no |  |
+| Lesoto | sesoto; inglés | estado | 90.5 | 51.8 | 3 | 5 | 1 | 0 | 0.0007 | 3 | no | IP por inglés (mejor recurso listado). |
 | Malí | bambara; francés | estado | 35.5 | 36.8 | 1 | 5 | 3 | 53 960 | — | 3 | no | IP por francés (mejor recurso listado). Alfabetización muy baja |
+| Micronesia | chuukés; inglés | estado | — | 39.5 | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
+| Namibia | oshiwambo; inglés; afrikáans | estado | 87.6 | 64.9 | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
+| Nauru | nauruano; inglés | estado | 96.6 | 83.0 | 3 | 5 | 1 | 0 | 0.0000 | 3 | no | IP por inglés (mejor recurso listado). |
 | Níger | hausa; francés; zarma | estado | 35.6 | 15.6 | 1 | 5 | 3 | 94 556 | 0.0030 | 3 | no | IP por francés (mejor recurso listado). Alfabetización muy baja |
-| Fiyi | fiyiano; inglés | estado | — | 74.7 | 4 | 5 | 1 | 0 | 0.0001 | 4 | sí | IP por inglés (mejor recurso listado). |
-| Maldivas | dhivehi | estado | 98.2 | 85.2 | 4 | 1 | 1 | 0 | 0.0024 | 4 | sí |  |
-| Mongolia | mongol; ruso | estado | 98.6 | 85.1 | 4 | 5 | 1 | 0 | 0.0159 | 4 | sí | IP por ruso (mejor recurso listado). |
-| Tayikistán | tayiko; ruso | estado | — | 55.8 | 4 | 5 | 1 | 0 | 0.0065 | 4 | sí | IP por ruso (mejor recurso listado). |
-| Congo | lingala; francés | estado | — | 47.3 | 3 | 5 | 1 | 0 | 0.0006 | 3 | sí | IP por francés (mejor recurso listado). |
-| Curazao | papiamento; neerlandés; inglés; español | territorio | — | — | 3 | 5 | 1 | 0 | — | 3 | sí | IP por neerlandés (mejor recurso listado). |
-| Groenlandia | groenlandés; danés | territorio | — | — | 3 | 4 | 1 | 0 | 0.0009 | 3 | sí | IP por danés (mejor recurso listado). |
-| Guinea Ecuatorial | fang; español; francés | estado | — | 63.3 | 3 | 5 | 1 | 0 | — | 3 | sí | IP por español (mejor recurso listado). |
-| Islas Marshall | marshalés; inglés | estado | 95.8 | 65.9 | 3 | 5 | 1 | 0 | — | 3 | sí | IP por inglés (mejor recurso listado). |
-| Islas Salomón | pijin de las Salomón; inglés | estado | — | 29.0 | 3 | 5 | 1 | 0 | — | 3 | sí | IP por inglés (mejor recurso listado). |
-| Kiribati | gilbertés; inglés | estado | 98.6 | 89.4 | 3 | 5 | 1 | 0 | — | 3 | sí | IP por inglés (mejor recurso listado). |
-| Laos | lao | estado | 75.6 | 65.6 | 3 | 1 | 1 | 0 | 0.0055 | 3 | sí |  |
-| Lesoto | sesoto; inglés | estado | 90.5 | 51.8 | 3 | 5 | 1 | 0 | 0.0007 | 3 | sí | IP por inglés (mejor recurso listado). |
-| Micronesia | chuukés; inglés | estado | — | 39.5 | 3 | 5 | 1 | 0 | — | 3 | sí | IP por inglés (mejor recurso listado). |
+| Palaos | palauano; inglés | estado | 100.0 | 83.9 | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
+| Samoa | samoano; inglés | estado | 98.0 | — | 3 | 5 | 1 | 0 | 0.0007 | 3 | no | IP por inglés (mejor recurso listado). |
+| Tonga | tongano; inglés | estado | 91.0 | 67.4 | 3 | 5 | 1 | 0 | 0.0001 | 3 | no | IP por inglés (mejor recurso listado). |
+| Tuvalu | tuvaluano; inglés | estado | 100.0 | — | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
+| Vanuatu | bislama; inglés; francés | estado | 88.0 | — | 3 | 5 | 1 | 0 | 0.0002 | 3 | no | IP por inglés (mejor recurso listado). |
+| Zambia | bemba; inglés; nyanja | estado | 82.0 | 17.1 | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
+| Burundi | kirundi; francés | estado | 71.4 | 8.6 | 2 | 5 | 1 | 0 | 0.0001 | 2 | no | IP por francés (mejor recurso listado). Alfabetización baja, mercado editorial muy reducido |
+| Bután | dzongkha; inglés | estado | 64.9 | 91.3 | 2 | 5 | 1 | 0 | 0.0001 | 2 | no | IP por inglés (mejor recurso listado). |
+| Camboya | jemer; inglés | estado | 71.9 | 68.5 | 2 | 5 | 1 | 0 | 0.0107 | 2 | no | IP por inglés (mejor recurso listado). |
+| Comoras | shikomor; francés; árabe | estado | 75.8 | 32.5 | 2 | 5 | 1 | 0 | — | 2 | no | IP por francés (mejor recurso listado). |
+| Gambia | mandinga; inglés | estado | 51.6 | 49.5 | 2 | 5 | 1 | 0 | — | 2 | no | IP por inglés (mejor recurso listado). |
+| Madagascar | malgache; francés | estado | 74.7 | 18.7 | 2 | 5 | 1 | 0 | 0.0036 | 2 | no | IP por francés (mejor recurso listado). |
+| Papúa Nueva Guinea | tok pisin; inglés; hiri motu | estado | 87.1 | 18.8 | 2 | 5 | 1 | 0 | — | 2 | no | IP por inglés (mejor recurso listado). |
+| Timor Oriental | tetun; portugués | estado | 72.5 | 35.0 | 2 | 5 | 1 | 0 | — | 2 | no | IP por portugués (mejor recurso listado). |
+| Yibuti | somalí; francés; árabe; afar | estado | — | 65.3 | 2 | 5 | 1 | 0 | 0.0056 | 2 | no | IP por francés (mejor recurso listado). |
+| Chad | árabe chadiano; francés; árabe | estado | 30.6 | 12.6 | 1 | 5 | 1 | 0 | — | 1 | no | IP por francés (mejor recurso listado). Alfabetización muy baja |
+| Guinea | pular; francés; susu | estado | 39.6 | 33.3 | 1 | 5 | 1 | 0 | — | 1 | no | IP por francés (mejor recurso listado). Alfabetización muy baja |
 | Myanmar | birmano | estado | 93.5 | 45.4 | 3 | 1 | 1 | 0 | 0.0165 | 3 | sí |  |
-| Namibia | oshiwambo; inglés; afrikáans | estado | 87.6 | 64.9 | 3 | 5 | 1 | 0 | — | 3 | sí | IP por inglés (mejor recurso listado). |
-| Nauru | nauruano; inglés | estado | 96.6 | 83.0 | 3 | 5 | 1 | 0 | 0.0000 | 3 | sí | IP por inglés (mejor recurso listado). |
-| Palaos | palauano; inglés | estado | 100.0 | 83.9 | 3 | 5 | 1 | 0 | — | 3 | sí | IP por inglés (mejor recurso listado). |
-| Samoa | samoano; inglés | estado | 98.0 | — | 3 | 5 | 1 | 0 | 0.0007 | 3 | sí | IP por inglés (mejor recurso listado). |
-| Tonga | tongano; inglés | estado | 91.0 | 67.4 | 3 | 5 | 1 | 0 | 0.0001 | 3 | sí | IP por inglés (mejor recurso listado). |
 | Turkmenistán | turcomano; ruso | estado | 99.9 | — | 3 | 5 | 1 | 0 | 0.0030 | 3 | sí | IP por ruso (mejor recurso listado). |
-| Tuvalu | tuvaluano; inglés | estado | 100.0 | — | 3 | 5 | 1 | 0 | — | 3 | sí | IP por inglés (mejor recurso listado). |
-| Vanuatu | bislama; inglés; francés | estado | 88.0 | — | 3 | 5 | 1 | 0 | 0.0002 | 3 | sí | IP por inglés (mejor recurso listado). |
-| Zambia | bemba; inglés; nyanja | estado | 82.0 | 17.1 | 3 | 5 | 1 | 0 | — | 3 | sí | IP por inglés (mejor recurso listado). |
-| Burundi | kirundi; francés | estado | 71.4 | 8.6 | 2 | 5 | 1 | 0 | 0.0001 | 2 | sí | IP por francés (mejor recurso listado). Alfabetización baja, mercado editorial muy reducido |
-| Bután | dzongkha; inglés | estado | 64.9 | 91.3 | 2 | 5 | 1 | 0 | 0.0001 | 2 | sí | IP por inglés (mejor recurso listado). |
-| Camboya | jemer; inglés | estado | 71.9 | 68.5 | 2 | 5 | 1 | 0 | 0.0107 | 2 | sí | IP por inglés (mejor recurso listado). |
-| Comoras | shikomor; francés; árabe | estado | 75.8 | 32.5 | 2 | 5 | 1 | 0 | — | 2 | sí | IP por francés (mejor recurso listado). |
 | Eritrea | tigriña; árabe | estado | — | 14.3 | 2 | 5 | 1 | 0 | 0.0007 | 2 | sí | IP por árabe (mejor recurso listado). |
-| Gambia | mandinga; inglés | estado | 51.6 | 49.5 | 2 | 5 | 1 | 0 | — | 2 | sí | IP por inglés (mejor recurso listado). |
-| Madagascar | malgache; francés | estado | 74.7 | 18.7 | 2 | 5 | 1 | 0 | 0.0036 | 2 | sí | IP por francés (mejor recurso listado). |
-| Papúa Nueva Guinea | tok pisin; inglés; hiri motu | estado | 87.1 | 18.8 | 2 | 5 | 1 | 0 | — | 2 | sí | IP por inglés (mejor recurso listado). |
 | República Democrática del Congo | lingala; francés; suajili; kikongo | estado | 65.7 | 19.7 | 2 | 5 | 1 | 0 | 0.0006 | 2 | sí | IP por francés (mejor recurso listado). |
 | Somalia | somalí; árabe | estado | 54.1 | 27.9 | 2 | 5 | 1 | 0 | 0.0056 | 2 | sí | IP por árabe (mejor recurso listado). Alfabetización baja |
-| Timor Oriental | tetun; portugués | estado | 72.5 | 35.0 | 2 | 5 | 1 | 0 | — | 2 | sí | IP por portugués (mejor recurso listado). |
-| Yibuti | somalí; francés; árabe; afar | estado | — | 65.3 | 2 | 5 | 1 | 0 | 0.0056 | 2 | sí | IP por francés (mejor recurso listado). |
-| Chad | árabe chadiano; francés; árabe | estado | 30.6 | 12.6 | 1 | 5 | 1 | 0 | — | 1 | sí | IP por francés (mejor recurso listado). Alfabetización muy baja |
-| Guinea | pular; francés; susu | estado | 39.6 | 33.3 | 1 | 5 | 1 | 0 | — | 1 | sí | IP por francés (mejor recurso listado). Alfabetización muy baja |
 | República Centroafricana | sango; francés | estado | 42.4 | 13.8 | 1 | 5 | 1 | 0 | 0.0005 | 1 | sí | IP por francés (mejor recurso listado). Alfabetización muy baja |
 | Sudán del Sur | árabe juba; inglés | estado | — | — | 1 | 5 | 1 | 0 | — | 1 | sí | IP por inglés (mejor recurso listado). Alfabetización muy baja |
