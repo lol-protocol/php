@@ -50,6 +50,14 @@ function verdadero(bool $condicion, string $mensaje): void
     }
 }
 
+/** Texto de la primera etiqueta de ese nombre en un documento XML, o vacío si no hay. */
+function textoDe(DOMDocument $doc, string $etiqueta): string
+{
+    $nodo = $doc->getElementsByTagName($etiqueta)->item(0);
+
+    return $nodo === null ? '' : $nodo->textContent;
+}
+
 function lanza(string $clase, callable $cuerpo): void
 {
     try {
@@ -706,7 +714,8 @@ $pruebas = [
             'solapa_portada' => 'TEXTO-SOLAPA-P',
             'solapas_mm' => 90,
         ]), $dir);
-        $esta = static fn (string $archivo, string $texto): bool => str_contains((string) file_get_contents("$dir/$archivo"), $texto);
+        // El título y la descripción de cada pieza nombran el libro y, en la contratapa, su texto: no cuentan como dibujo.
+        $esta = static fn (string $archivo, string $texto): bool => str_contains((string) preg_replace('#<(title|desc)\b[^>]*>.*?</\1>#s', '', (string) file_get_contents("$dir/$archivo")), $texto);
 
         verdadero($esta('portada.svg', 'SUBTITULO-X'), 'la portada no lleva su subtítulo');
         verdadero(!$esta('portada.svg', 'TEXTO-CONTRATAPA') && !$esta('portada.svg', 'TEXTO-SOLAPA'), 'portada.svg arrastra otros paneles');
@@ -806,36 +815,64 @@ $pruebas = [
         lanza(RuntimeException::class, fn () => Anchos::de('script', 'normal', 400));
 
         $serif = Anchos::de('serif', 'normal', 400);
-        igual('Ł', $serif->noCubiertas('Łukasz ñ áé'));
+        igual('道', $serif->noCubiertas('道Lukasz ñ áé'));
         igual('', $serif->noCubiertas('Apología de Sócrates, «ñandú» — ¿sí?'));
+        // Hay latín extendido, griego y cirílico.
+        igual('', $serif->noCubiertas('Łukasz Şahin Čapek Ελλάς Война и мир'));
+        // El griego politónico solo lo trae Inter, la fuente de la plantilla sobria.
+        igual('Ἀῆ', $serif->noCubiertas('Ἀθῆναι'));
+        igual('', Anchos::de('sans', 'normal', 400)->noCubiertas('Ἀθῆναι'));
         // Una letra que la fuente no tiene cuenta como la media de las minúsculas, no como cero.
-        aproximado(0.551, $serif->em('Ł'));
+        aproximado(0.551, $serif->em('道'));
     },
 
-    'Cada pieza incrusta solo las fuentes que usa' => function (): void {
+    'Cada pieza incrusta solo los trozos de fuente que usa' => function (): void {
         $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
         $textos = ['subtitulo' => 'Con cursiva', 'contratapa' => 'Un texto de contratapa.', 'editorial' => 'Editorial de prueba'];
         Generador::escribir(libroDeEjemplo($textos), "$dir/clasica");
         Generador::escribir(libroDeEjemplo(['plantilla' => 'sobria'] + $textos), "$dir/sobria");
-        $caras = static fn (string $ruta): int => substr_count((string) file_get_contents($ruta), '@font-face');
+        $contenido = static fn (string $ruta): string => (string) file_get_contents($ruta);
+        $reglas = static fn (string $ruta, string $estilo): int => substr_count($contenido($ruta), "font-style:$estilo;");
 
-        igual(2, $caras("$dir/clasica/portada.svg")); // normal y cursiva
-        igual(1, $caras("$dir/clasica/lomo.svg")); // el lomo no usa cursiva
-        igual(1, $caras("$dir/clasica/contratapa.svg"));
-        verdadero(!str_contains((string) file_get_contents("$dir/clasica/lomo.svg"), 'font-style:italic'), 'el lomo lleva la cursiva sin usarla');
-        verdadero(!str_contains((string) file_get_contents("$dir/sobria/portada.svg"), 'Source Serif'), 'la sobria lleva la serif');
-        verdadero(str_contains((string) file_get_contents("$dir/sobria/portada.svg"), "font-family:'Inter'"), 'la sobria no incrusta Inter');
+        // Portada: el texto lleva tilde (trozos básico y latino) y el subtítulo va en cursiva, sin tilde (solo el básico).
+        igual(2, $reglas("$dir/clasica/portada.svg", 'normal'));
+        igual(1, $reglas("$dir/clasica/portada.svg", 'italic'));
+        // El lomo no usa cursiva; la contratapa, sin tildes, solo el trozo básico.
+        igual(0, $reglas("$dir/clasica/lomo.svg", 'italic'));
+        igual(1, $reglas("$dir/clasica/contratapa.svg", 'normal'));
+        verdadero(!str_contains($contenido("$dir/sobria/portada.svg"), 'Source Serif'), 'la sobria lleva la serif');
+        verdadero(str_contains($contenido("$dir/sobria/portada.svg"), "font-family:'Inter'"), 'la sobria no incrusta Inter');
+        verdadero(str_contains($contenido("$dir/sobria/portada.svg"), 'font-weight:700'), 'el título de la sobria va en negrita');
 
-        // Lo incrustado es de verdad un archivo woff2, no un texto cualquiera en base64.
-        verdadero(preg_match('/base64,([A-Za-z0-9+\/=]+)\)/', (string) file_get_contents("$dir/clasica/lomo.svg"), $datos) === 1, 'no hay datos en base64');
+        // Cada trozo lleva su unicode-range y es de verdad un archivo woff2.
+        verdadero(preg_match('/base64,([A-Za-z0-9+\/=]+)\) format\(\'woff2\'\);unicode-range:(U\+[0-9A-F,\-U+]+)\}/', $contenido("$dir/clasica/contratapa.svg"), $datos) === 1, 'no hay un trozo completo');
         igual('wOF2', substr((string) base64_decode($datos[1] ?? '', true), 0, 4));
+        igual('U+20-7E', $datos[2] ?? '');
+
+        // Los alfabetos solo se incrustan si el texto los usa, y se pagan en peso.
+        $abc = libroDeEjemplo(['titulo' => 'Solo ascii', 'autor' => 'Ana']);
+        $griego = libroDeEjemplo(['titulo' => 'Solo ascii Ω', 'autor' => 'Ana']);
+        $ruso = libroDeEjemplo(['titulo' => 'Война и мир', 'autor' => 'Толстой']);
+        foreach (['abc' => $abc, 'griego' => $griego, 'ruso' => $ruso] as $nombre => $libro) {
+            Generador::escribir($libro, "$dir/$nombre");
+        }
+        // (El lomo escribe «título · autor»: el punto medio está en el trozo latino, así que lleva dos.)
+        igual(2, $reglas("$dir/abc/lomo.svg", 'normal'));
+        igual(3, $reglas("$dir/griego/lomo.svg", 'normal'));
+        verdadero(str_contains($contenido("$dir/griego/lomo.svg"), 'U+3A3-'), 'falta el trozo griego');
+        verdadero(str_contains($contenido("$dir/ruso/lomo.svg"), 'U+400-'), 'falta el trozo cirílico');
+        verdadero(filesize("$dir/clasica/lomo.svg") < 40000, 'el lomo pesa más de 40 KB: ' . filesize("$dir/clasica/lomo.svg"));
         Archivos::borrarDirectorio($dir);
     },
 
-    'Fuentes rechaza una familia o un estilo que no tiene' => function (): void {
+    'Fuentes rechaza una familia o una cara que no tiene' => function (): void {
         lanza(InvalidArgumentException::class, fn () => Fuentes::pila('script'));
-        lanza(InvalidArgumentException::class, fn () => Fuentes::estilo(['sans|italic' => ['sans', 'italic']]));
+        lanza(InvalidArgumentException::class, fn () => Fuentes::estilo(['x' => ['familia' => 'sans', 'estilo' => 'italic', 'peso' => 400, 'texto' => 'a']]));
+        lanza(InvalidArgumentException::class, fn () => Fuentes::estilo(['x' => ['familia' => 'serif', 'estilo' => 'normal', 'peso' => 700, 'texto' => 'a']]));
+        lanza(InvalidArgumentException::class, fn () => Fuentes::estilo(['x' => ['familia' => 'script', 'estilo' => 'normal', 'peso' => 400, 'texto' => 'a']]));
         igual('', Fuentes::estilo([]));
+        // Un texto sin ninguna letra que las fuentes tengan no incrusta nada.
+        igual('', Fuentes::estilo(['x' => ['familia' => 'sans', 'estilo' => 'normal', 'peso' => 400, 'texto' => '道']]));
     },
 
     'El título se reparte en líneas parejas sin cambiar cuántas son' => function (): void {
@@ -930,10 +967,10 @@ $pruebas = [
 
     'Los avisos dicen qué letras no cubren las fuentes' => function (): void {
         igual([], Generador::avisos(libroDeEjemplo(['titulo' => 'Ñandú: ¿cómo? ¡Ásí! «Ü»'])));
-        $avisos = Generador::avisos(libroDeEjemplo(['titulo' => 'Łódź', 'autor' => 'Şahin', 'contratapa' => 'Ok']));
+        $avisos = Generador::avisos(libroDeEjemplo(['titulo' => 'Lodz 道', 'autor' => 'Ana 德', 'contratapa' => 'Ok']));
         igual(2, count($avisos));
-        verdadero(str_contains($avisos[0], 'El título') && str_contains($avisos[0], 'Ł'), $avisos[0]);
-        verdadero(str_contains($avisos[1], 'El autor') && str_contains($avisos[1], 'Ş'), $avisos[1]);
+        verdadero(str_contains($avisos[0], 'El título') && str_contains($avisos[0], '道'), $avisos[0]);
+        verdadero(str_contains($avisos[1], 'El autor') && str_contains($avisos[1], '德'), $avisos[1]);
     },
 
     'La lista de ejemplo se lee y cada fila sale con su ficha' => function (): void {
@@ -1033,14 +1070,14 @@ $pruebas = [
     'El CLI genera una lista CSV, avisa de las letras sin cubrir y no escribe nada si hay errores' => function (): void {
         $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
         mkdir($dir);
-        file_put_contents("$dir/buena.csv", "titulo,autor,paginas,tradicion\nŁódź,Ana,100,griega\nDos,Beto,50,\n");
+        file_put_contents("$dir/buena.csv", "titulo,autor,paginas,tradicion\nLodz 道,Ana,100,griega\nDos,Beto,50,\n");
         file_put_contents("$dir/mala.csv", "titulo,autor,paginas,tradicion\nUno,Ana,100,griega\nDos,,50,\n");
 
         [$codigo, $salida, $errores] = correrCli(["--lista=$dir/buena.csv", "--salida=$dir/salida"]);
         igual(0, $codigo);
         igual(['ana-lodz', 'beto-dos'], array_map('basename', glob("$dir/salida/*") ?: []));
         verdadero(is_file("$dir/salida/ana-lodz/portada.svg"), 'falta la portada');
-        verdadero(str_contains($errores, 'Aviso, ana-lodz: El título lleva letras que la fuente no tiene (Ł'), $errores);
+        verdadero(str_contains($errores, 'Aviso, ana-lodz: El título lleva letras que la fuente no tiene (道'), $errores);
 
         // Una fila mala: ninguna carpeta se escribe, ni la de la fila buena.
         [$codigo, , $errores] = correrCli(["--lista=$dir/mala.csv", "--salida=$dir/otra"]);
@@ -1197,6 +1234,28 @@ $pruebas = [
         igual(0, $lineas("$dir/estrecho/lomo.svg")); // 3 mm: no cabe
         igual(0, $lineas("$dir/sin/lomo.svg"));
         verdadero($lineas("$dir/sobria/portada.svg") > $lineas("$dir/sobria-sin/portada.svg"), 'la portada sobria no lleva motivo');
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'Cada SVG se anuncia como imagen con título, descripción e idioma' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        Generador::escribir(libroDeEjemplo(['subtitulo' => 'Sub', 'contratapa' => "Primer párrafo.\n\nSegundo   párrafo.", 'idioma' => 'pt-BR']), "$dir/libro");
+        foreach (['portada', 'contratapa', 'lomo', 'cubierta-completa'] as $pieza) {
+            $doc = new DOMDocument();
+            verdadero($doc->load("$dir/libro/$pieza.svg"), "$pieza no es XML válido");
+            $raiz = $doc->documentElement ?? throw new RuntimeException("$pieza no tiene raíz");
+            igual('img', $raiz->getAttribute('role'));
+            igual('titulo descripcion', $raiz->getAttribute('aria-labelledby'));
+            igual('pt-BR', $raiz->getAttribute('lang'));
+            igual('pt-BR', $raiz->getAttributeNS('http://www.w3.org/XML/1998/namespace', 'lang'));
+            verdadero(str_contains(textoDe($doc, 'title'), 'Título de prueba'), 'el título no nombra el libro');
+            verdadero(str_contains(textoDe($doc, 'desc'), '«Título de prueba»: Sub, de Autor de prueba.'), "la descripción de $pieza no dice de qué libro es");
+        }
+        $desc = new DOMDocument();
+        $desc->load("$dir/libro/contratapa.svg");
+        verdadero(str_contains(textoDe($desc, 'desc'), 'Primer párrafo. Segundo párrafo.'), 'la descripción de la contratapa no lleva su texto');
+        lanza(InvalidArgumentException::class, fn () => libroDeEjemplo(['idioma' => 'español']));
+        igual('es', libroDeEjemplo()->idioma);
         Archivos::borrarDirectorio($dir);
     },
 

@@ -17,7 +17,7 @@ final class Lista
     /** Columnas de texto que pasan tal cual al libro. */
     private const TEXTO = [
         'titulo', 'subtitulo', 'autor', 'traductor', 'epoca', 'tradicion', 'categoria', 'isbn',
-        'editorial', 'coleccion', 'cita', 'contratapa', 'solapa_portada', 'solapa_contratapa', 'plantilla',
+        'editorial', 'coleccion', 'cita', 'contratapa', 'solapa_portada', 'solapa_contratapa', 'plantilla', 'idioma',
     ];
     /** Columnas de medidas en mm. */
     private const MEDIDAS = ['solapas_mm', 'lomo_mm'];

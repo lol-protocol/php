@@ -34,6 +34,8 @@ final class Libro
         /** Degradado del fondo, o null si el fondo es un color sólido. */
         public readonly ?Degradado $degradado,
         public readonly string $lomoDireccion,
+        /** Idioma del texto de la cubierta, como código BCP 47 (`es`, `pt-BR`): para los lectores de pantalla. */
+        public readonly string $idioma,
         /** Tradición cultural (slug de datos/tradiciones.json), o null si no se dio. */
         public readonly ?string $tradicion,
         /** Categoría de Marcalibros (slug de datos/categorias.json), o null si no se dio. */
@@ -126,6 +128,11 @@ final class Libro
 
         // Lo que se escribe a mano manda; la ficha rellena solo lo que quedó vacío, y solo si hay datos con
         // los que armarla.
+        $idioma = self::cadena($datos, 'idioma', 'es');
+        if (preg_match('/^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/', $idioma) !== 1) {
+            throw new \InvalidArgumentException("$id: 'idioma' debe ser un código como es, en o pt-BR.");
+        }
+
         $textos = new Textos(
             titulo: $titulo,
             subtitulo: $subtitulo,
@@ -147,6 +154,7 @@ final class Libro
             colores: $colores,
             degradado: $degradado,
             lomoDireccion: $direccion,
+            idioma: $idioma,
             tradicion: $tradicion['slug'] ?? null,
             categoria: $categoria['slug'] ?? null,
         );

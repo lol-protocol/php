@@ -85,9 +85,10 @@ abstract class Plantilla
     protected const LOMO_MOTIVO_SEPARACION = 3.0;
 
     /**
-     * Caras tipográficas que ha dibujado la pieza en curso: [familia, estilo]. Se vacía en cada `dibujar`.
+     * Caras tipográficas que ha dibujado la pieza en curso, con todo el texto escrito con cada una. Se vacía
+     * en cada `dibujar`.
      *
-     * @var array<string, array{0: string, 1: string}>
+     * @var array<string, array{familia: string, estilo: string, peso: int, texto: string}>
      */
     private array $usadas = [];
 
@@ -189,14 +190,18 @@ abstract class Plantilla
     }
 
     /**
-     * Anota que se va a pintar texto con esta cara, para incrustar su fuente.
+     * Anota que se va a pintar este texto con esta cara, para incrustar solo los trozos de fuente que hacen
+     * falta.
      *
      * @param array<string, float|int|string> $extra
      */
-    private function usar(array $extra): void
+    private function usar(array $extra, string $texto): void
     {
         $estilo = self::estiloDe($extra);
-        $this->usadas[$this->familia() . '/' . $estilo] = [$this->familia(), $estilo];
+        $peso = self::pesoDe($extra);
+        $clave = "{$this->familia()}/$estilo/$peso";
+        $antes = $this->usadas[$clave]['texto'] ?? '';
+        $this->usadas[$clave] = ['familia' => $this->familia(), 'estilo' => $estilo, 'peso' => $peso, 'texto' => $antes . $texto];
     }
 
     /**
@@ -276,7 +281,7 @@ abstract class Plantilla
         $x = $panel->x + $panel->ancho / 2 - $sentido * self::LOMO_CENTRADO * $texto['tamano'];
         $y = $panel->y + $panel->alto / 2;
 
-        $this->usar([]);
+        $this->usar([], $texto['texto']);
 
         return $svg . Svg::elemento('text', [
             'transform' => 'translate(' . Svg::n($x) . ' ' . Svg::n($y) . ') rotate(' . (90 * $sentido) . ')',
@@ -330,7 +335,7 @@ abstract class Plantilla
      */
     protected function parrafo(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra = []): string
     {
-        $this->usar($extra);
+        $this->usar($extra, implode('', $lineas));
 
         return Svg::elemento('text', [
             'x' => $x,
