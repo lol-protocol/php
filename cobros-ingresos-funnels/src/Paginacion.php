@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use Generator;
 use PDO;
 
 /**
@@ -12,6 +13,11 @@ use PDO;
 final class Paginacion
 {
     public const POR_PAGINA = 25;
+
+    /** Filas que trae cada FETCH de recorrer(): lo que se tiene en memoria a la vez, sin importar cuantas filas haya. */
+    public const POR_LOTE = 1000;
+
+    private static int $recorridos = 0;
 
     public static function pagina(): int
     {
@@ -87,5 +93,69 @@ final class Paginacion
             'totalPaginas' => self::totalPaginas($total),
             'pagina' => $pagina,
         ];
+    }
+
+    /**
+     * TODAS las filas de la misma consulta que consultar() pagina (mismos $columnas,
+     * $desde, $orden y $params), de a una y sin tenerlas juntas en memoria: es lo que
+     * usa una exportacion, que no puede cortar en paginas. Con un cursor de PostgreSQL
+     * trae $lote filas por vez; exportar 120 mil boletas con fetchAll() era
+     * reventar el limite de memoria de PHP, como le paso al filtro de estado de Cobros.
+     *
+     * Un cursor solo vive dentro de una transaccion: si no hay una abierta, se abre
+     * una (solo de lectura, y se deshace al terminar) y, si ya hay una, se usa esa. Se
+     * cierra al terminar de recorrer y tambien si quien lo recorre se corta antes
+     * (un break, una excepcion).
+     *
+     * @param array<string, string> $params los marcadores de $desde
+     * @return Generator<int, array<string, mixed>>
+     */
+    public static function recorrer(
+        PDO $db,
+        string $columnas,
+        string $desde,
+        string $orden,
+        array $params,
+        int $lote = self::POR_LOTE,
+    ): Generator {
+        $propia = !$db->inTransaction();
+        if ($propia) {
+            $db->beginTransaction();
+        }
+        $cursor = 'recorrido_' . (++self::$recorridos);
+
+        try {
+            $declarar = $db->prepare("DECLARE {$cursor} NO SCROLL CURSOR FOR SELECT {$columnas} FROM {$desde} ORDER BY {$orden}");
+            $declarar->execute($params);
+            while (($filas = $db->query("FETCH FORWARD {$lote} FROM {$cursor}")->fetchAll()) !== []) {
+                yield from $filas;
+            }
+        } finally {
+            self::cerrarRecorrido($db, $cursor, $propia);
+        }
+    }
+
+    /**
+     * Lo que recorrer() deja cerrado al terminar, se corte donde se corte. Va aparte (y no en
+     * el finally) para que el estado de la transaccion se pregunte al terminar y no se de por
+     * sabido desde que se abrio: quien recorre puede haberla terminado antes.
+     */
+    private static function cerrarRecorrido(PDO $db, string $cursor, bool $propia): void
+    {
+        if ($propia) {
+            // Terminar la transaccion cierra el cursor. Si quien recorria ya la termino, no hay nada que deshacer.
+            if ($db->inTransaction()) {
+                $db->rollBack();
+            }
+
+            return;
+        }
+
+        // Es de una transaccion de afuera: se cierra solo el cursor. Si esa transaccion
+        // ya quedo abortada por un error, no se puede ni cerrar, y se deja que la deshaga quien la abrio.
+        try {
+            $db->exec("CLOSE {$cursor}");
+        } catch (\PDOException) {
+        }
     }
 }

@@ -8,6 +8,7 @@ use App\FiltroDePeriodo;
 use App\Repositories\FunnelRepository;
 use App\Repositories\IngresosYCobrosRepository;
 use App\Repositories\MonedaRepository;
+use App\Repositories\NotaCreditoRepository;
 use App\Repositories\SegmentacionRepository;
 use App\View;
 
@@ -38,6 +39,7 @@ final class DashboardController
             'kpisAnioAnterior' => $ingresosRepo->kpis($desdeAnio, $hastaAnio),
             'antiguedad' => $antiguedad,
             'carteraPendiente' => array_sum($antiguedad),
+            'devolucionesPendientes' => (new NotaCreditoRepository())->pendientes(),
             'serieMensual' => $serieMensual,
             'funnelResumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'segmentacion' => [

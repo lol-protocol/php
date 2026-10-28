@@ -86,6 +86,34 @@ final class IngresosYCobrosRepository
     private const TRAMOS = ['Al día' => 0, '1-30 días' => 30, '31-60 días' => 60, '61+ días' => null];
 
     /**
+     * La consulta de las boletas con saldo abierto, una fila cada una: boleta_id,
+     * cliente_id, dias_vencido (hoy menos el vencimiento: cero o menos es que todavia
+     * no vence) y saldo_usd (lo que falta cobrar, a la tasa de hoy). Excluye las
+     * anuladas y las que deben un centavo o menos.
+     *
+     * Es la unica definicion de "cartera": la suman por tramo carteraPorAntiguedad()
+     * (el Dashboard y Cobros) y por cliente CobranzaRepository, asi que el total de
+     * una y de otra no pueden discrepar. Se usa como tabla derivada:
+     * "FROM (" . saldosAbiertosSql() . ") s".
+     */
+    public static function saldosAbiertosSql(): string
+    {
+        return 'SELECT x.boleta_id, x.cliente_id, x.dias_vencido, x.saldo_usd
+                FROM (
+                    SELECT b.id AS boleta_id, b.cliente_id,
+                           (CURRENT_DATE - b.fecha_vencimiento) AS dias_vencido,
+                           (b.monto - COALESCE(p.pagado, 0)) * m.tasa_a_usd AS saldo_usd
+                    FROM boletas b
+                    JOIN monedas m ON m.codigo = b.moneda_codigo
+                    LEFT JOIN (SELECT boleta_id, SUM(monto) AS pagado
+                               FROM pagos WHERE NOT anulada AND boleta_id IS NOT NULL
+                               GROUP BY boleta_id) p ON p.boleta_id = b.id
+                    WHERE NOT b.anulada
+                ) x
+                WHERE x.saldo_usd > ' . Dinero::UN_CENTAVO;
+    }
+
+    /**
      * Saldo pendiente de la cartera (sin boletas anuladas), agrupado por
      * antigüedad de vencimiento. Es lo que se debe hoy, asi que se valua en USD a
      * la tasa de hoy (monedas.tasa_a_usd) y no a la que tenia cada boleta al
@@ -104,18 +132,8 @@ final class IngresosYCobrosRepository
     public function carteraPorAntiguedad(): array
     {
         $filas = $this->db->query(
-            'SELECT ' . self::tramoSql('x.dias_vencido') . ' AS tramo, SUM(x.saldo_usd) AS total
-             FROM (
-                 SELECT (CURRENT_DATE - b.fecha_vencimiento) AS dias_vencido,
-                        (b.monto - COALESCE(p.pagado, 0)) * m.tasa_a_usd AS saldo_usd
-                 FROM boletas b
-                 JOIN monedas m ON m.codigo = b.moneda_codigo
-                 LEFT JOIN (SELECT boleta_id, SUM(monto) AS pagado
-                            FROM pagos WHERE NOT anulada AND boleta_id IS NOT NULL
-                            GROUP BY boleta_id) p ON p.boleta_id = b.id
-                 WHERE NOT b.anulada
-             ) x
-             WHERE x.saldo_usd > ' . Dinero::UN_CENTAVO . '
+            'SELECT ' . self::tramoSql('s.dias_vencido') . ' AS tramo, SUM(s.saldo_usd) AS total
+             FROM (' . self::saldosAbiertosSql() . ') s
              GROUP BY 1'
         )->fetchAll(PDO::FETCH_KEY_PAIR);
 

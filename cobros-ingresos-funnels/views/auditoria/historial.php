@@ -4,7 +4,7 @@
 /** @var string|null $masAntiguas */
 /** @var string|null $masRecientes */
 
-$accionLabel = ['crear' => 'Creó', 'editar' => 'Editó', 'anular' => 'Anuló', 'activar' => 'Reactivó'];
+$accionLabel = ['crear' => 'Creó', 'editar' => 'Editó', 'anular' => 'Anuló', 'activar' => 'Reactivó', 'devolver' => 'Devolvió'];
 $entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente', 'nota_credito' => 'Nota de crédito', 'usuario' => 'Usuario', 'monedas' => 'Tasas de cambio'];
 ?>
 

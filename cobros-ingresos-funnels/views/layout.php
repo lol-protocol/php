@@ -8,7 +8,9 @@ use App\Config;
 $paginas = [
     'dashboard' => 'Dashboard',
     'cobros' => 'Cobros e ingresos',
+    'cobranza' => 'Cobranza',
     'pagos' => 'Pagos',
+    'notas' => 'Notas de crédito',
     'funnel' => 'Funnel',
     'cohortes' => 'Cohortes',
     'clientes' => 'Clientes',

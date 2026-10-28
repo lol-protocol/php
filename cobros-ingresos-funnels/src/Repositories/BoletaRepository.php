@@ -8,6 +8,7 @@ use App\Database;
 use App\Dinero;
 use App\EstadoBoleta;
 use App\Paginacion;
+use Generator;
 use PDO;
 
 /**
@@ -147,6 +148,45 @@ final class BoletaRepository
      */
     public function listado(string $desde, string $hasta, ?string $estado = null, ?string $cliente = null, int $pagina = 1): array
     {
+        $consulta = $this->consultaDelListado($desde, $hasta, $estado, $cliente);
+
+        $resultado = Paginacion::consultar(
+            $this->db,
+            columnas: $consulta['columnas'],
+            desde: $consulta['desde'],
+            orden: $consulta['orden'],
+            params: $consulta['params'],
+            pagina: $pagina,
+            desdeDelConteo: $consulta['desdeDelConteo'],
+        );
+        $resultado['filas'] = self::conEstadoCalculado($resultado['filas']);
+
+        return $resultado;
+    }
+
+    /**
+     * TODAS las boletas que listado() mostraria con esos filtros (todas las paginas), de
+     * a una y en el mismo orden, para exportarlas: ver Paginacion::recorrer().
+     *
+     * @return Generator<int, array<string, mixed>>
+     */
+    public function exportar(string $desde, string $hasta, ?string $estado = null, ?string $cliente = null): Generator
+    {
+        $consulta = $this->consultaDelListado($desde, $hasta, $estado, $cliente);
+
+        foreach (Paginacion::recorrer($this->db, $consulta['columnas'], $consulta['desde'], $consulta['orden'], $consulta['params']) as $fila) {
+            yield self::conEstadoCalculado([$fila])[0];
+        }
+    }
+
+    /**
+     * La consulta del listado de Cobros, armada una sola vez para que la pagina que se ve y
+     * lo que se exporta no puedan discrepar en filtros ni en orden.
+     *
+     * @return array{columnas: string, desde: string, orden: string, params: array<string, string>, desdeDelConteo: string}
+     */
+    private function consultaDelListado(string $desde, string $hasta, ?string $estado, ?string $cliente): array
+    {
         $params = [':desde' => $desde, ':hasta' => $hasta];
         $filtroCliente = '';
         if ($cliente !== null && $cliente !== '') {
@@ -165,21 +205,16 @@ final class BoletaRepository
 
         $where = " WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}{$filtroEstado}";
 
-        // El desempate por id da un orden total: sin el, dos boletas del mismo dia
-        // podian cambiar de lugar entre la pagina 1 y la 2.
-        $resultado = Paginacion::consultar(
-            $this->db,
-            columnas: 'b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
+        return [
+            'columnas' => 'b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
                     c.id AS cliente_id, c.nombre AS cliente, b.pagado',
-            desde: "boletas_con_saldo b JOIN clientes c ON c.id = b.cliente_id{$where}",
-            orden: 'b.fecha_emision DESC, b.id DESC',
-            params: $params,
-            pagina: $pagina,
-            desdeDelConteo: "{$tablaDelConteo} b JOIN clientes c ON c.id = b.cliente_id{$where}",
-        );
-        $resultado['filas'] = self::conEstadoCalculado($resultado['filas']);
-
-        return $resultado;
+            'desde' => "boletas_con_saldo b JOIN clientes c ON c.id = b.cliente_id{$where}",
+            // El desempate por id da un orden total: sin el, dos boletas del mismo dia
+            // podian cambiar de lugar entre la pagina 1 y la 2.
+            'orden' => 'b.fecha_emision DESC, b.id DESC',
+            'params' => $params,
+            'desdeDelConteo' => "{$tablaDelConteo} b JOIN clientes c ON c.id = b.cliente_id{$where}",
+        ];
     }
 
     /** Agrega saldo/estado calculado (EstadoBoleta) a cada fila de un fetchAll() de boletas. */

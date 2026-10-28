@@ -130,11 +130,11 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
 <?php if ($notasCredito): ?>
 <div class="panel">
     <h2>Notas de crédito (devoluciones)</h2>
-    <p class="subtitulo">Emitidas al anular boletas que ya estaban cobradas. Los pagos originales siguen en el historial de arriba; estas notas son lo que hay que devolverle al cliente.</p>
+    <p class="subtitulo">Emitidas al anular boletas que ya estaban cobradas. Los pagos originales siguen en el historial de arriba; estas notas son lo que hay que devolverle al cliente, y cada una dice si ya se le devolvió.</p>
     <div class="table-wrap">
         <table>
             <thead>
-            <tr><th>Fecha</th><th>Boleta</th><th>Motivo</th><th class="num">Monto</th></tr>
+            <tr><th>Fecha</th><th>Boleta</th><th>Motivo</th><th class="num">Monto</th><th>Devolución</th></tr>
             </thead>
             <tbody>
             <?php foreach ($notasCredito as $n): ?>
@@ -143,6 +143,14 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
                     <td>Boleta #<?= (int) $n['boleta_id'] ?></td>
                     <td><?= htmlspecialchars($n['motivo']) ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $n['monto'], $n['moneda_codigo']) ?></td>
+                    <td class="acciones">
+                        <?php if ($n['fecha_devolucion'] === null): ?>
+                            <span class="badge pendiente">Pendiente</span>
+                            <a href="?page=nota-devolver&amp;id=<?= (int) $n['id'] ?>">Registrar devolución</a>
+                        <?php else: ?>
+                            <span class="badge pagada">Devuelta el <?= htmlspecialchars($n['fecha_devolucion']) ?></span>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

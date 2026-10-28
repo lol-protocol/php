@@ -90,7 +90,7 @@ abstract class HttpTestCase extends TestCase
         $this->limpiezas[] = $limpieza;
     }
 
-    /** @return array{status: int, location: ?string, cuerpo: string} */
+    /** @return array{status: int, location: ?string, cuerpo: string, cabeceras: string} */
     protected function get(string $query): array
     {
         return $this->pedir($query, null);
@@ -98,7 +98,7 @@ abstract class HttpTestCase extends TestCase
 
     /**
      * @param array<string, scalar> $datos
-     * @return array{status: int, location: ?string, cuerpo: string}
+     * @return array{status: int, location: ?string, cuerpo: string, cabeceras: string}
      */
     protected function post(string $query, array $datos): array
     {
@@ -126,7 +126,7 @@ abstract class HttpTestCase extends TestCase
         return (int) $query[$parametro];
     }
 
-    /** @param array{status: int, location: ?string, cuerpo: string} $respuesta */
+    /** @param array{status: int, location: ?string, cuerpo: string, cabeceras: string} $respuesta */
     protected function assertStatus(int $esperado, array $respuesta, string $contexto = ''): void
     {
         self::assertSame(
@@ -138,7 +138,7 @@ abstract class HttpTestCase extends TestCase
 
     /**
      * @param array<string, scalar>|null $datos null = GET
-     * @return array{status: int, location: ?string, cuerpo: string}
+     * @return array{status: int, location: ?string, cuerpo: string, cabeceras: string}
      */
     private function pedir(string $query, ?array $datos): array
     {
@@ -170,6 +170,6 @@ abstract class HttpTestCase extends TestCase
         }
         $location = preg_match('/^Location: ([^\r\n]+)/mi', $cabeceras, $destino) === 1 ? $destino[1] : null;
 
-        return ['status' => $status, 'location' => $location, 'cuerpo' => substr($respuesta, $largoCabeceras)];
+        return ['status' => $status, 'location' => $location, 'cuerpo' => substr($respuesta, $largoCabeceras), 'cabeceras' => $cabeceras];
     }
 }

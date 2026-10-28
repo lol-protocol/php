@@ -7,6 +7,7 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
+use App\Repositories\CobranzaRepository;
 use App\Repositories\IngresosYCobrosRepository;
 
 /**
@@ -108,5 +109,84 @@ final class RendimientoAEscalaTest extends IntegracionTestCase
             $pico,
             sprintf('la cartera gasto %.1f MB: esta leyendo todas las boletas en PHP', $pico / 1048576)
         );
+    }
+
+    /**
+     * La lista de cobranza agrupa por cliente en SQL: con 15 mil boletas impagas de un
+     * mismo cliente da una sola fila con su suma, y no las trae a PHP para sumarlas.
+     */
+    public function testLaCobranzaSeAgrupaEnSqlYNoTraeLasBoletasAPhp(): void
+    {
+        $repo = new CobranzaRepository();
+        $antes = $this->filaDelCliente1($repo);
+        $moneda = $this->cargarBoletas();
+        $despues = [];
+        $resumen = [];
+
+        $pico = $this->picoDeMemoria(function () use ($repo, &$despues, &$resumen): void {
+            $despues = $this->filaDelCliente1($repo);
+            $resumen = $repo->resumen();
+        });
+
+        $tasa = (float) Database::connection()->query("SELECT tasa_a_usd FROM monedas WHERE codigo = '{$moneda}'")->fetchColumn();
+        $impagas = self::BOLETAS / 2;
+        self::assertSame(($antes['boletas'] ?? 0) + $impagas, (int) $despues['boletas'], 'las boletas impagas se cuentan en la fila del cliente');
+        self::assertEqualsWithDelta(
+            (float) ($antes['saldo_usd'] ?? 0) + $impagas * (float) self::MONTO * $tasa,
+            (float) $despues['saldo_usd'],
+            0.05,
+            'su saldo suma el de todas'
+        );
+        self::assertGreaterThan(0.0, $resumen['vencido_usd']);
+        self::assertLessThan(
+            3 * 1024 * 1024,
+            $pico,
+            sprintf('la cobranza gasto %.1f MB: esta leyendo todas las boletas en PHP', $pico / 1048576)
+        );
+    }
+
+    /**
+     * Exportar todas las boletas del rango no las junta en memoria: el recorrido por lotes
+     * (Paginacion::recorrer) trae mil por vez y las va entregando de a una. Con un fetchAll()
+     * las 30 mil quedaban juntas en un arreglo (con 120 mil, el limite de memoria de PHP).
+     */
+    public function testExportarTodasLasBoletasNoLasJuntaEnMemoria(): void
+    {
+        $this->cargarBoletas();
+        $repo = new BoletaRepository();
+        $contadas = 0;
+        $pagadas = 0;
+
+        $pico = $this->picoDeMemoria(function () use ($repo, &$contadas, &$pagadas): void {
+            foreach ($repo->exportar(self::EMISION, self::EMISION) as $boleta) {
+                $contadas++;
+                $pagadas += $boleta['estado'] === 'pagada' ? 1 : 0;
+            }
+        });
+
+        self::assertSame(self::BOLETAS, $contadas, 'salen todas, no una pagina');
+        self::assertSame(self::BOLETAS / 2, $pagadas, 'cada una con su estado calculado');
+        self::assertLessThan(
+            3 * 1024 * 1024,
+            $pico,
+            sprintf('la exportacion gasto %.1f MB: esta juntando todas las boletas en PHP', $pico / 1048576)
+        );
+    }
+
+    /** La fila del cliente #1 en la lista (todas las paginas), o un arreglo vacio si todavia no debe nada. */
+    private function filaDelCliente1(CobranzaRepository $repo): array
+    {
+        $pagina = 1;
+        do {
+            $listado = $repo->listado('todos', 'cliente', $pagina);
+            foreach ($listado['filas'] as $fila) {
+                if ((int) $fila['cliente_id'] === 1) {
+                    return $fila;
+                }
+            }
+            $pagina++;
+        } while ($pagina <= $listado['totalPaginas']);
+
+        return [];
     }
 }

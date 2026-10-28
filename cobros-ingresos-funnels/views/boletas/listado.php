@@ -79,6 +79,7 @@ use App\Etiquetas;
 
 <div class="panel">
     <h2>Boletas (<?= $totalBoletas ?>)</h2>
+    <p class="subtitulo"><a href="<?= htmlspecialchars(url_con_parametros(['page' => 'cobros-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todas las filas con estos filtros, no solo esta página</p>
     <div class="table-wrap">
         <table>
             <thead>

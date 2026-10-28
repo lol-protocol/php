@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Database;
+use App\Descarga;
 use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
@@ -20,6 +21,7 @@ use App\Repositories\MonedaRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Validacion;
 use App\View;
+use Generator;
 use LogicException;
 
 final class BoletasController
@@ -83,11 +85,11 @@ final class BoletasController
         $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
         $filtros['avisos'] = [...Avisos::confirmaciones('cobros'), ...$filtros['avisos']];
-        $estado = (string) ($_GET['estado'] ?? '');
-        if ($estado !== '' && !array_key_exists($estado, Etiquetas::estadosBoleta())) {
+        $pedido = (string) ($_GET['estado'] ?? '');
+        $estado = self::estadoDelFiltro($pedido);
+        if ($pedido !== '' && $estado === '') {
             // Antes un estado inventado daba la tabla vacia con el selector en "Todos".
             $filtros['avisos'][] = Avisos::atencion('El estado pedido no existe; se muestran las boletas de todos los estados.');
-            $estado = '';
         }
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
@@ -111,6 +113,57 @@ final class BoletasController
             'activePage' => 'cobros',
             'titulo' => 'Cobros e ingresos',
         ]);
+    }
+
+    /**
+     * Descarga en CSV TODAS las boletas que el listado mostraria con los filtros de la URL
+     * (el periodo, el estado y el cliente: los mismos que lee index()), no solo la pagina
+     * que se ve. Un filtro invalido cae en su valor por defecto como en la pantalla, pero
+     * sin avisos: aca no hay donde mostrarlos.
+     */
+    public function exportar(): void
+    {
+        ['desde' => $desde, 'hasta' => $hasta] = FiltroDePeriodo::rangoActivo();
+        $estado = self::estadoDelFiltro((string) ($_GET['estado'] ?? ''));
+        $cliente = trim((string) ($_GET['cliente'] ?? ''));
+
+        Descarga::csv(
+            'cobros',
+            ['ID', 'Cliente ID', 'Cliente', 'Concepto', 'Moneda', 'Monto', 'Pagado', 'Saldo', 'Emisión', 'Vencimiento', 'Estado'],
+            self::filasParaExportar((new BoletaRepository())->exportar($desde, $hasta, $estado ?: null, $cliente ?: null))
+        );
+    }
+
+    /**
+     * Cada boleta como una fila de CSV. Los montos van como decimales (no como texto):
+     * una planilla los trata como numeros, y el escritor neutraliza como formula solo el texto.
+     *
+     * @param iterable<array<string, mixed>> $boletas
+     * @return Generator<int, list<string|int|float|null>>
+     */
+    private static function filasParaExportar(iterable $boletas): Generator
+    {
+        foreach ($boletas as $b) {
+            yield [
+                (int) $b['id'],
+                (int) $b['cliente_id'],
+                $b['cliente'],
+                $b['concepto'],
+                $b['moneda_codigo'],
+                (float) $b['monto'],
+                (float) $b['pagado'],
+                (float) $b['saldo'],
+                $b['fecha_emision'],
+                $b['fecha_vencimiento'],
+                Etiquetas::estadoBoleta($b['estado']),
+            ];
+        }
+    }
+
+    /** El estado pedido por URL si es uno de los que existen, y '' (todos) si no. */
+    private static function estadoDelFiltro(string $pedido): string
+    {
+        return array_key_exists($pedido, Etiquetas::estadosBoleta()) ? $pedido : '';
     }
 
     public function nueva(): void
