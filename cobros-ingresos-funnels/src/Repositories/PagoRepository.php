@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Database;
 use App\Paginacion;
+use Generator;
 use PDO;
 
 /**
@@ -91,6 +92,39 @@ final class PagoRepository
      */
     public function listado(string $desde, string $hasta, ?string $cliente = null, int $pagina = 1): array
     {
+        $consulta = $this->consultaDelListado($desde, $hasta, $cliente);
+
+        return Paginacion::consultar(
+            $this->db,
+            columnas: $consulta['columnas'],
+            desde: $consulta['desde'],
+            orden: $consulta['orden'],
+            params: $consulta['params'],
+            pagina: $pagina,
+        );
+    }
+
+    /**
+     * TODOS los pagos que listado() mostraria con esos filtros (todas las paginas), de a
+     * uno y en el mismo orden, para exportarlos: ver Paginacion::recorrer().
+     *
+     * @return Generator<int, array<string, mixed>>
+     */
+    public function exportar(string $desde, string $hasta, ?string $cliente = null): Generator
+    {
+        $consulta = $this->consultaDelListado($desde, $hasta, $cliente);
+
+        return Paginacion::recorrer($this->db, $consulta['columnas'], $consulta['desde'], $consulta['orden'], $consulta['params']);
+    }
+
+    /**
+     * La consulta del listado de Pagos, armada una sola vez para que la pagina que se ve y
+     * lo que se exporta no puedan discrepar en filtros ni en orden.
+     *
+     * @return array{columnas: string, desde: string, orden: string, params: array<string, string>}
+     */
+    private function consultaDelListado(string $desde, string $hasta, ?string $cliente): array
+    {
         $params = [':desde' => $desde, ':hasta' => $hasta];
         $filtroCliente = '';
         if ($cliente !== null && $cliente !== '') {
@@ -98,16 +132,14 @@ final class PagoRepository
             $params[':cliente'] = '%' . $cliente . '%';
         }
 
-        return Paginacion::consultar(
-            $this->db,
-            columnas: 'p.id, p.monto, p.moneda_codigo, p.fecha_pago, p.metodo, p.boleta_id, p.anulada,
+        return [
+            'columnas' => 'p.id, p.monto, p.moneda_codigo, p.fecha_pago, p.metodo, p.boleta_id, p.anulada,
                     c.id AS cliente_id, c.nombre AS cliente',
-            desde: "pagos p JOIN clientes c ON c.id = p.cliente_id
+            'desde' => "pagos p JOIN clientes c ON c.id = p.cliente_id
              WHERE p.fecha_pago BETWEEN :desde AND :hasta{$filtroCliente}",
-            orden: 'p.fecha_pago DESC, p.id DESC',
-            params: $params,
-            pagina: $pagina,
-        );
+            'orden' => 'p.fecha_pago DESC, p.id DESC',
+            'params' => $params,
+        ];
     }
 
     /**

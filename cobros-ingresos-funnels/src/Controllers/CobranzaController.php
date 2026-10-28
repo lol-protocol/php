@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Avisos;
+use App\Descarga;
 use App\Paginacion;
 use App\Repositories\CobranzaRepository;
 use App\Repositories\MonedaRepository;
 use App\View;
+use Generator;
 
 /** La lista de cobranza: a quien hay que reclamarle, cuanto y desde cuando. Solo lee. */
 final class CobranzaController
@@ -35,6 +37,48 @@ final class CobranzaController
             'activePage' => 'cobranza',
             'titulo' => 'Cobranza',
         ]);
+    }
+
+    /**
+     * Descarga en CSV TODOS los clientes que la lista mostraria con el alcance y el orden de
+     * la URL, no solo la pagina que se ve. Un valor invalido cae en el de por defecto como
+     * en la pantalla, pero sin avisos.
+     */
+    public function exportar(): void
+    {
+        $avisos = [];
+        $alcance = self::opcion('alcance', CobranzaRepository::ALCANCES, '', $avisos);
+        $orden = self::opcion('orden', CobranzaRepository::ORDENES, '', $avisos);
+
+        Descarga::csv(
+            'cobranza',
+            ['Cliente ID', 'Cliente', 'Email', 'País', 'Ciudad', 'Boletas', 'Saldo USD', 'Vencido USD', 'Días de la boleta más vencida'],
+            self::filasParaExportar((new CobranzaRepository())->exportar($alcance, $orden))
+        );
+    }
+
+    /**
+     * Cada cliente como una fila de CSV: los montos van como decimales y los dias como
+     * entero (cero o negativo = no tiene nada vencido; sigue siendo un numero, no una formula).
+     *
+     * @param iterable<array<string, mixed>> $clientes
+     * @return Generator<int, list<string|int|float|null>>
+     */
+    private static function filasParaExportar(iterable $clientes): Generator
+    {
+        foreach ($clientes as $c) {
+            yield [
+                (int) $c['cliente_id'],
+                $c['nombre'],
+                $c['email'],
+                $c['pais'],
+                $c['ciudad'],
+                (int) $c['boletas'],
+                (float) $c['saldo_usd'],
+                (float) $c['vencido_usd'],
+                (int) $c['dias_mayor_vencimiento'],
+            ];
+        }
     }
 
     /**

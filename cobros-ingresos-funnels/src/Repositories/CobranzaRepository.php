@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Database;
 use App\Paginacion;
+use Generator;
 use PDO;
 
 /**
@@ -56,6 +57,39 @@ final class CobranzaRepository
      */
     public function listado(string $alcance, string $orden, int $pagina = 1): array
     {
+        $consulta = self::consultaDelListado($alcance, $orden);
+
+        return Paginacion::consultar(
+            $this->db,
+            columnas: $consulta['columnas'],
+            desde: $consulta['desde'],
+            orden: $consulta['orden'],
+            params: [],
+            pagina: $pagina,
+        );
+    }
+
+    /**
+     * TODOS los clientes que listado() mostraria con ese alcance y orden (todas las
+     * paginas), de a uno y en el mismo orden, para exportarlos: ver Paginacion::recorrer().
+     *
+     * @return Generator<int, array<string, mixed>>
+     */
+    public function exportar(string $alcance, string $orden): Generator
+    {
+        $consulta = self::consultaDelListado($alcance, $orden);
+
+        return Paginacion::recorrer($this->db, $consulta['columnas'], $consulta['desde'], $consulta['orden'], []);
+    }
+
+    /**
+     * La consulta del listado de Cobranza, armada una sola vez para que la pagina que se
+     * ve y lo que se exporta no puedan discrepar en alcance ni en orden.
+     *
+     * @return array{columnas: string, desde: string, orden: string}
+     */
+    private static function consultaDelListado(string $alcance, string $orden): array
+    {
         $filtro = $alcance === 'todos' ? '' : ' WHERE t.vencido_usd > 0';
         // Orden total, con desempate por cliente: si no, dos clientes empatados pueden
         // cambiar de lugar entre una pagina y la siguiente. Nunca viene de la URL: sale
@@ -67,14 +101,11 @@ final class CobranzaRepository
             default => 't.vencido_usd DESC, t.dias_mayor_vencimiento DESC, t.cliente_id',
         };
 
-        return Paginacion::consultar(
-            $this->db,
-            columnas: 't.*',
-            desde: '(' . self::porClienteSql() . ") t{$filtro}",
-            orden: $ordenSql,
-            params: [],
-            pagina: $pagina,
-        );
+        return [
+            'columnas' => 't.*',
+            'desde' => '(' . self::porClienteSql() . ") t{$filtro}",
+            'orden' => $ordenSql,
+        ];
     }
 
     /**

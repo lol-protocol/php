@@ -49,6 +49,17 @@ Pequeño sistema en PHP (sin framework) para analizar:
   abajo), el usuario de toda entrada nueva es "Sistema"; las de antes de sacarlo
   conservan el suyo.
 - **Paginación** en los listados grandes (boletas, pagos, clientes).
+- **Exportar a CSV** las tres listas de trabajo: Cobros e ingresos (`?page=cobros-csv`),
+  Pagos (`?page=pagos-csv`) y Cobranza (`?page=cobranza-csv`). Cada una tiene su enlace
+  «Exportar CSV» y baja **todas** las filas que la pantalla mostraría con sus filtros
+  actuales (período, estado, cliente, alcance, orden), no solo la página que se ve. Es un
+  CSV estándar (UTF-8 con marca de orden para que Excel muestre bien las tildes, comas,
+  decimales con punto, fechas `AAAA-MM-DD`). Un texto que empiece con `=`, `+`, `-` o `@`
+  lleva un apóstrofe delante, para que Excel o LibreOffice no lo ejecuten como fórmula (un
+  cliente llamado `=HYPERLINK(...)`); los números no se tocan. Se exporta de a mil filas,
+  así que una base grande no agota la memoria de PHP. Llevan datos personales (nombre y
+  email de los clientes): valen las mismas precauciones de acceso que el resto de la app
+  (ver «Antes de exponerlo»), y se mandan con `Cache-Control: no-store`.
 
 > El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
 > pantalla de login con sesión, bloqueo por fuerza bruta y gestión de usuarios del
@@ -472,7 +483,13 @@ src/
                         el mismo array en cada vista que los muestra, testeado
   Paginacion.php        helper de paginación (página/offset/total, testeado) y
                         consultar(), el esqueleto único de los listados paginados
-                        (contar, acotar la página, traer solo esa), testeado
+                        (contar, acotar la página, traer solo esa), y recorrer(), lo
+                        mismo sin paginar: todas las filas de la consulta, de a mil
+                        con un cursor de PostgreSQL, para exportar; testeado
+  EscritorCsv.php       escribe filas en CSV (RFC 4180) y neutraliza las celdas que una
+                        planilla tomaría por fórmula, testeado
+  Descarga.php          la respuesta de una exportación (headers de archivo adjunto y
+                        sin caché, marca UTF-8, y las filas de a una)
   Csrf.php              token CSRF por sesión propia (no depende de ningún login),
                         verificado en Router (testeado)
   ConexionSegura.php    detecta HTTPS (directo o detras de proxy), testeado

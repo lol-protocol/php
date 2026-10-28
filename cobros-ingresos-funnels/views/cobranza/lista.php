@@ -60,6 +60,7 @@ $claseDelTramo = ['Al día' => 'pagada', '1-30 días' => 'pendiente', '31-60 dí
 
 <div class="panel">
     <h2><?= htmlspecialchars(CobranzaRepository::ALCANCES[$alcance]) ?> (<?= $totalClientes ?>)</h2>
+    <p class="subtitulo"><a href="<?= htmlspecialchars(url_con_parametros(['page' => 'cobranza-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todas las filas con estos filtros, no solo esta página</p>
     <div class="table-wrap">
         <table>
             <thead>

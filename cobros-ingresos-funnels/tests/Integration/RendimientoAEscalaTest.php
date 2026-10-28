@@ -145,6 +145,34 @@ final class RendimientoAEscalaTest extends IntegracionTestCase
         );
     }
 
+    /**
+     * Exportar todas las boletas del rango no las junta en memoria: el recorrido por lotes
+     * (Paginacion::recorrer) trae mil por vez y las va entregando de a una. Con un fetchAll()
+     * las 30 mil quedaban juntas en un arreglo (con 120 mil, el limite de memoria de PHP).
+     */
+    public function testExportarTodasLasBoletasNoLasJuntaEnMemoria(): void
+    {
+        $this->cargarBoletas();
+        $repo = new BoletaRepository();
+        $contadas = 0;
+        $pagadas = 0;
+
+        $pico = $this->picoDeMemoria(function () use ($repo, &$contadas, &$pagadas): void {
+            foreach ($repo->exportar(self::EMISION, self::EMISION) as $boleta) {
+                $contadas++;
+                $pagadas += $boleta['estado'] === 'pagada' ? 1 : 0;
+            }
+        });
+
+        self::assertSame(self::BOLETAS, $contadas, 'salen todas, no una pagina');
+        self::assertSame(self::BOLETAS / 2, $pagadas, 'cada una con su estado calculado');
+        self::assertLessThan(
+            3 * 1024 * 1024,
+            $pico,
+            sprintf('la exportacion gasto %.1f MB: esta juntando todas las boletas en PHP', $pico / 1048576)
+        );
+    }
+
     /** La fila del cliente #1 en la lista (todas las paginas), o un arreglo vacio si todavia no debe nada. */
     private function filaDelCliente1(CobranzaRepository $repo): array
     {
