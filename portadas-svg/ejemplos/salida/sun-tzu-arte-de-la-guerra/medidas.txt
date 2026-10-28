@@ -3,7 +3,7 @@ Corte: 135 × 210 mm
 Sangrado: 3 mm en cada borde exterior
 Lomo: 4,8 mm (confírmalo con la imprenta: depende del papel)
 Sin solapas
-Fondo: degradado lineal, 0°: #261722 → #170e14
+Fondo: degradado lineal, 0°: #171726 → #0e0e17
 
 Tamaño de cada archivo, con sangrado (ancho × alto):
   portada.svg: 138 × 216 mm
