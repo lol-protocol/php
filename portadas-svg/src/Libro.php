@@ -144,6 +144,7 @@ final class Libro
             contratapa: self::cadena($datos, 'contratapa', $ficha->hayDatos() ? $ficha->contratapa() : ''),
             solapaContratapa: self::cadena($datos, 'solapa_contratapa', $ficha->hayDatos() ? $ficha->solapaContratapa() : ''),
             solapaPortada: self::cadena($datos, 'solapa_portada', $ficha->hayDatos() ? $ficha->solapaPortada() : ''),
+            cita: self::cadena($datos, 'cita'),
         );
 
         return new self(

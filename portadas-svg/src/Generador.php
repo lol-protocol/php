@@ -57,8 +57,7 @@ final class Generador
         $t = $libro->textos;
         $libroDe = '«' . $t->titulo . '»' . ($t->subtitulo === '' ? '' : ": {$t->subtitulo}") . ', de ' . $t->autor . '.';
         $texto = match ($vista) {
-            'contratapa' => $t->contratapa,
-            'cubierta', 'sobrelomo' => $t->contratapa,
+            'contratapa', 'cubierta', 'sobrelomo' => ($t->cita === '' ? '' : "«{$t->cita}» ") . $t->contratapa,
             default => '',
         };
         $texto = trim((string) preg_replace('/\s+/u', ' ', $texto));

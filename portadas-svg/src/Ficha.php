@@ -34,11 +34,10 @@ final class Ficha
         return $this->epoca !== '' || $this->cita !== '' || $this->tradicion !== null || $this->categoria !== null;
     }
 
-    /** La cita, si la hay; luego quién escribió la obra y en qué categoría se clasifica. */
+    /** Qué obra es y de quién, en qué categoría se clasifica, y su traducción y extensión. La cita no va aquí: la contratapa la compone aparte. */
     public function contratapa(): string
     {
         return self::parrafos([
-            $this->cita === '' ? '' : "«{$this->cita}»",
             $this->obra(),
             $this->clasificacion(),
             self::unir([$this->traduccion(), $this->extension()]),

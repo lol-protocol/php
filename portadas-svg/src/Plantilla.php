@@ -54,6 +54,13 @@ abstract class Plantilla
     protected const CONTRATAPA_TEXTO_ALTO = 0.5;
     protected const CONTRATAPA_TAMANO_MAX = 4.2;
     protected const CONTRATAPA_TAMANO_MIN = 2.8;
+    /** Contratapa: la cita que la abre (alto máximo, tamaño, espacio libre bajo ella) y la línea de su autor (tamaño y separación). */
+    protected const CITA_ALTO = 34.0;
+    protected const CITA_TAMANO_MAX = 5.6;
+    protected const CITA_TAMANO_MIN = 3.4;
+    protected const CITA_SEPARACION = 8.0;
+    protected const CITA_AUTOR_TAMANO = 3.2;
+    protected const CITA_AUTOR_SEPARACION = 3.0;
     /** Pie con editorial y colección: distancia de su línea base al borde inferior del corte, y tamaño. */
     protected const PIE_Y = 12.0;
     protected const PIE_TAMANO_MAX = 3.2;
@@ -118,6 +125,17 @@ abstract class Plantilla
      * @return array{fondo: string, texto: string, acento: string}
      */
     abstract public function paleta(float $tono): array;
+
+    /**
+     * Atributos de la letra de la cita de la contratapa: cursiva en la serif. La plantilla sans la escribe en
+     * redonda, porque no incrusta su cursiva.
+     *
+     * @return array<string, string>
+     */
+    protected function estiloDeCita(): array
+    {
+        return $this->familia() === 'serif' ? ['font-style' => 'italic'] : [];
+    }
 
     /** Adorno de la tradición del libro. */
     protected function adorno(Libro $libro): Adorno
@@ -234,9 +252,22 @@ abstract class Plantilla
         if ($svg === '') {
             $svg = $this->linea($x, $panel->y + self::CONTRATAPA_RAYA_Y, $x + self::CONTRATAPA_RAYA_LARGO, $panel->y + self::CONTRATAPA_RAYA_Y, $colores['acento'], self::CONTRATAPA_RAYA_GROSOR);
         }
+        $y = $panel->y + self::CONTRATAPA_TEXTO_Y;
+        $alto = $panel->alto * self::CONTRATAPA_TEXTO_ALTO;
+        if ($libro->textos->cita !== '') {
+            // La cita abre la contratapa, más grande y con la letra propia de la plantilla, y firmada por el autor.
+            $estilo = $this->estiloDeCita();
+            $cita = Texto::ajustar('«' . $libro->textos->cita . '»', $ancho, self::CITA_ALTO, self::CITA_TAMANO_MAX, self::CITA_TAMANO_MIN, $this->medidaDe($estilo), self::INTERLINEADO, true);
+            $svg .= $this->parrafo($cita['lineas'], $x, $y + $cita['tamano'] * self::ASCENDENTE, $cita['tamano'], 'start', $colores['texto'], $estilo);
+            $firma = $y + $cita['tamano'] * self::ASCENDENTE + (count($cita['lineas']) - 1) * $cita['tamano'] * self::INTERLINEADO + $cita['tamano'] * self::DESCENDENTE + self::CITA_AUTOR_SEPARACION + self::CITA_AUTOR_TAMANO * self::ASCENDENTE;
+            $svg .= $this->rotulo('— ' . $libro->textos->autor, $x, $firma, $ancho, self::CITA_AUTOR_TAMANO, self::CONTRATAPA_TAMANO_MIN, 'start', $colores['acento']);
+            $gastado = $firma + self::CITA_AUTOR_TAMANO * self::DESCENDENTE + self::CITA_SEPARACION - $y;
+            $y += $gastado;
+            $alto -= $gastado;
+        }
         if ($libro->textos->contratapa !== '') {
-            $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $panel->alto * self::CONTRATAPA_TEXTO_ALTO, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
-            $svg .= $this->parrafo($texto['lineas'], $x, $panel->y + self::CONTRATAPA_TEXTO_Y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
+            $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $alto, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
+            $svg .= $this->parrafo($texto['lineas'], $x, $y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
         }
 
         if ($libro->categoria !== null) {

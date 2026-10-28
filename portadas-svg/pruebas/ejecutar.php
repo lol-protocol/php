@@ -96,6 +96,7 @@ function libroLargo(string $plantilla, float $solapas, array $extra = []): Libro
         'editorial' => 'Edición de ejemplo para la colección de textos clásicos de dominio público',
         'coleccion' => 'Colección de prueba muy larga',
         'isbn' => '978-84-00-00000-0',
+        'cita' => str_repeat('Una cita larga de la propia obra para forzar su ajuste en la contratapa. ', 6),
         'contratapa' => str_repeat('Párrafo de prueba con bastante texto para forzar el ajuste de la contratapa. ', 30),
         'solapa_contratapa' => str_repeat('Solapa con texto largo. ', 40),
         'solapa_portada' => str_repeat('Solapa de la portada con texto largo. ', 40),
@@ -253,7 +254,8 @@ function librosParaGeometria(): array
                 $propios = ($tradicion === null ? [] : ['tradicion' => $tradicion]) + $categoria;
                 $libros[] = libroLargo($plantilla, $solapas, $propios);
                 $libros[] = libroLargo($plantilla, $solapas, ['lomo_mm' => 3.2] + $propios);
-                $libros[] = libroLargo($plantilla, $solapas, ['titulo' => 'Hola'] + $propios);
+                $libros[] = libroLargo($plantilla, $solapas, ['titulo' => 'Hola', 'cita' => 'Una frase corta.'] + $propios);
+                $libros[] = libroLargo($plantilla, $solapas, ['cita' => 'Una cita de tamaño mediano que ocupa dos o tres líneas.'] + $propios);
             }
         }
     }
@@ -932,8 +934,9 @@ $pruebas = [
         ]);
         igual('romana', $libro->tradicion);
         igual('filosofia', $libro->categoria);
+        igual('Una frase.', $libro->textos->cita); // la cita no entra en el texto de la ficha: la contratapa la compone aparte
         igual(
-            "«Una frase.»\n\n«¿Qué es la filosofía?: Una introducción» es una obra de Autor de prueba (siglo II), de la tradición romana.\n\nTipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.",
+            "«¿Qué es la filosofía?: Una introducción» es una obra de Autor de prueba (siglo II), de la tradición romana.\n\nTipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.",
             $libro->textos->contratapa,
         );
         igual("Tipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.", $libro->textos->solapaPortada);
@@ -983,7 +986,7 @@ $pruebas = [
         igual('filosofia', $libros[0]->categoria);
         igual('cuentos', $libros[3]->categoria); // escrita por su nombre, con mayúsculas y espacios
         igual('arabe', $libros[3]->tradicion); // escrita con tilde
-        verdadero(str_contains($libros[0]->textos->contratapa, '«Lo que no conviene a la colmena, no conviene a la abeja.»'), 'falta la cita');
+        igual('Lo que no conviene a la colmena, no conviene a la abeja.', $libros[0]->textos->cita);
         verdadero(str_contains($libros[1]->textos->contratapa, 'tradición china'), 'falta la tradición');
         verdadero(!str_contains($libros[1]->textos->contratapa, '«»'), 'cita vacía');
     },
