@@ -1,0 +1,372 @@
+<title>Editor de Marcalibros</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;1,400;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+  /* Plataforma POS · Marcalibros — tokens de marca/brand-tokens.yaml.
+     Composición: escenario fijo a la izquierda con la tira 1:7 y su miniatura; controles y receta a la derecha. */
+  :root {
+    --papel: #F4EEE1; --papel-2: #EAE2D0; --tinta: #1E2A38; --tinta-suave: #5E6975; --acento: #C98B3A;
+    --acento-fuerte: #8A5A18; --linea: #D6CCB6; --ok: #2F6B4F; --error: #A23B2A; --campo: #FBF8F0;
+    --display: "Crimson Pro", Georgia, "Times New Roman", serif;
+    --ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --papel: #141B24; --papel-2: #1B2430; --tinta: #EFE8D8; --tinta-suave: #A2AAB3; --acento: #D9A04D;
+      --acento-fuerte: #E3B36A; --linea: #2B3644; --ok: #6FC49A; --error: #E58D7C; --campo: #0F151D; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --papel: #141B24; --papel-2: #1B2430; --tinta: #EFE8D8; --tinta-suave: #A2AAB3; --acento: #D9A04D;
+    --acento-fuerte: #E3B36A; --linea: #2B3644; --ok: #6FC49A; --error: #E58D7C; --campo: #0F151D; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--papel); color: var(--tinta); font: 15px/1.5 var(--ui);
+    padding-block: 24px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .app { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: 40px; align-items: start; }
+  header { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; border-bottom: 1px solid var(--linea); padding-bottom: 14px; }
+  h1 { font: italic 600 34px/1.1 var(--display); margin: 0; letter-spacing: -0.01em; }
+  header p { margin: 0; color: var(--tinta-suave); font-size: 13px; }
+  .escenario { position: sticky; top: 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .tira { background: var(--papel-2); border: 1px solid var(--linea); padding: 14px; border-radius: 6px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 10px 18px; width: 100%; }
+  .tira .rotulo { flex: 1 1 100%; text-align: center; }
+  #lienzo { height: min(64vh, 640px); aspect-ratio: 1 / 7; max-width: 100%; border-radius: 10px; box-shadow: 0 1px 0 var(--linea), 0 10px 24px -14px rgba(0,0,0,.45); display: block; }
+  .mini { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--tinta-suave); font-size: 12px; text-align: center; }
+  #mini { width: 50px; height: 350px; border-radius: 4px; display: block; }
+  .rotulo { font: 600 11px/1.2 var(--ui); letter-spacing: .09em; text-transform: uppercase; color: var(--tinta-suave); }
+  .estado { width: 100%; font-size: 13px; padding: 8px 10px; border-radius: 4px; border: 1px solid var(--linea); background: var(--campo); }
+  .estado b { font-weight: 600; }
+  .estado.ok b { color: var(--ok); }
+  .estado.mal b { color: var(--error); }
+  main { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+  section { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  h2 { font: italic 600 22px/1.2 var(--display); margin: 0; }
+  .pestanas { display: flex; gap: 0; border: 1px solid var(--linea); border-radius: 6px; overflow: hidden; width: fit-content; }
+  .pestanas button { font: 500 14px var(--ui); padding: 8px 16px; background: var(--campo); color: var(--tinta); border: 0; cursor: pointer; }
+  .pestanas button + button { border-left: 1px solid var(--linea); }
+  .pestanas button[aria-pressed="true"] { background: var(--tinta); color: var(--papel); }
+  .fila { display: flex; flex-wrap: wrap; gap: 14px 20px; }
+  .campo { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .campo.ancho { flex: 1 1 100%; }
+  label, .etiqueta { font: 500 13px var(--ui); color: var(--tinta-suave); }
+  input[type=text], input[type=number], select, textarea {
+    font: 15px var(--ui); color: var(--tinta); background: var(--campo); border: 1px solid var(--linea); border-radius: 4px; padding: 8px 10px; min-width: 0; width: 100%;
+  }
+  textarea { resize: vertical; min-height: 78px; font-family: var(--display); font-style: italic; font-size: 18px; line-height: 1.35; }
+  input[type=range] { width: 100%; accent-color: var(--acento-fuerte); }
+  :focus-visible { outline: 2px solid var(--acento-fuerte); outline-offset: 2px; }
+  .paletas { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px; }
+  .paleta { border: 2px solid transparent; border-radius: 6px; padding: 0; background: none; cursor: pointer; text-align: center; font: 12px var(--ui); color: var(--tinta-suave); }
+  .paleta i { display: block; height: 44px; border-radius: 4px; margin-bottom: 4px; }
+  .paleta[aria-pressed="true"] { border-color: var(--acento-fuerte); color: var(--tinta); }
+  .boton { font: 600 14px var(--ui); padding: 9px 16px; border-radius: 4px; border: 1px solid var(--tinta); background: var(--tinta); color: var(--papel); cursor: pointer; }
+  .boton.sec { background: transparent; color: var(--tinta); }
+  .nota { font-size: 13px; color: var(--tinta-suave); margin: 0; max-width: 62ch; }
+  .suelta { border: 1.5px dashed var(--linea); border-radius: 6px; padding: 18px; background: var(--campo); display: flex; flex-direction: column; gap: 10px; }
+  .contador { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--tinta-suave); text-align: right; }
+  pre { margin: 0; padding: 14px; background: var(--campo); border: 1px solid var(--linea); border-radius: 6px; font: 12.5px/1.5 var(--mono); overflow-x: auto; max-width: 100%; }
+  .avisos { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+  .avisos li::before { content: "✕ "; color: var(--error); }
+  .avisos li.bien::before { content: "✓ "; color: var(--ok); }
+  @media (max-width: 760px) {
+    .app { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .escenario { position: static; }
+    #lienzo { height: min(56vh, 480px); }
+  }
+  @media (prefers-reduced-motion: no-preference) { .boton, .paleta { transition: background .15s, border-color .15s; } }
+</style>
+
+<div class="app">
+  <header>
+    <h1>Editor de Marcalibros</h1>
+    <p>Diseña una tira 1:7 y obtén su receta. La imagen no sale de tu navegador.</p>
+  </header>
+
+  <aside class="escenario" aria-label="Vista previa">
+    <div class="tira">
+      <span class="rotulo">200 × 1400</span>
+      <canvas id="lienzo" width="400" height="2800" role="img" aria-label="Vista previa del marcalibros"></canvas>
+      <div class="mini"><canvas id="mini" width="50" height="350" role="img" aria-label="Tamaño de lectura 50 por 350"></canvas><span>Lectura<br>50 × 350</span></div>
+    </div>
+    <div id="estado" class="estado" aria-live="polite"></div>
+  </aside>
+
+  <main>
+    <section aria-labelledby="h-fondo">
+      <h2 id="h-fondo">Fondo</h2>
+      <div class="pestanas" role="group" aria-label="Tipo de fondo">
+        <button type="button" id="t-generado" aria-pressed="true">Paisaje generado</button>
+        <button type="button" id="t-imagen" aria-pressed="false">Tu imagen</button>
+      </div>
+
+      <div id="p-generado" class="fila" style="flex-direction:column">
+        <div class="campo"><span class="etiqueta">Paleta</span><div id="paletas" class="paletas"></div></div>
+        <div class="fila">
+          <div class="campo" style="flex:1 1 150px"><label for="arq">Composición</label>
+            <select id="arq"><option value="colinas">Colinas</option><option value="montanas">Montañas</option><option value="llanura">Llanura</option></select></div>
+          <div class="campo" style="flex:1 1 150px"><label for="motivo">Motivo</label>
+            <select id="motivo"><option value="ninguno">Ninguno</option><option value="luna">Luna</option><option value="cipres">Cipreses</option><option value="arbol">Árbol solitario</option></select></div>
+          <div class="campo" style="flex:1 1 150px"><label for="semilla">Semilla</label>
+            <div class="fila" style="flex-wrap:nowrap;gap:8px"><input id="semilla" type="number" min="0" max="4294967295" step="1" value="7"><button type="button" class="boton sec" id="azar" title="Otra semilla">Azar</button></div></div>
+        </div>
+        <p class="nota">Vista aproximada. El servidor dibuja el paisaje con el motor del catálogo y las siluetas completas.</p>
+      </div>
+
+      <div id="p-imagen" hidden class="fila" style="flex-direction:column">
+        <div class="suelta">
+          <label for="archivo" class="etiqueta">JPG, PNG o WebP, hasta 5 MB y 24 megapíxeles</label>
+          <input id="archivo" type="file" accept="image/jpeg,image/png,image/webp">
+          <p class="nota" id="info-imagen">Todavía no hay imagen. La recortas a 1:7 aquí; al subirla, el servidor la recodifica a JPEG y le quita los metadatos.</p>
+        </div>
+        <div class="fila" id="ajustes-imagen" hidden>
+          <div class="campo" style="flex:1 1 180px"><label for="zoom">Zoom</label><input id="zoom" type="range" min="1" max="4" step="0.01" value="1"></div>
+          <div class="campo" style="flex:1 1 180px"><label for="px">Posición horizontal</label><input id="px" type="range" min="0" max="1" step="0.005" value="0.5"></div>
+          <div class="campo" style="flex:1 1 180px"><label for="py">Posición vertical</label><input id="py" type="range" min="0" max="1" step="0.005" value="0.5"></div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-texto">
+      <h2 id="h-texto">Texto</h2>
+      <div class="campo ancho"><label for="frase">Frase</label><textarea id="frase" maxlength="200">Lee despacio, que el tiempo sobra.</textarea><div class="contador" id="cuenta">0 / 200</div></div>
+      <div class="fila">
+        <div class="campo" style="flex:2 1 200px"><label for="autor">Autoría (opcional)</label><input id="autor" type="text" maxlength="60" value="Marcalibros"></div>
+        <div class="campo" style="flex:1 1 160px"><label for="tono">Color del texto</label>
+          <select id="tono"><option value="auto">Automático</option><option value="claro">Claro</option><option value="oscuro">Oscuro</option></select></div>
+      </div>
+      <p class="nota">El texto va en la franja central. Si el fondo no deja leerlo con contraste de 4,5:1, se añade un velo; si ni así, se rechaza.</p>
+    </section>
+
+    <section aria-labelledby="h-receta">
+      <h2 id="h-receta">Receta</h2>
+      <ul class="avisos" id="avisos"></ul>
+      <pre id="receta" tabindex="0" aria-label="Receta en JSON"></pre>
+      <div class="fila"><button type="button" class="boton" id="copiar">Copiar receta</button><span id="copiado" class="nota" role="status"></span></div>
+      <p class="nota">El servidor valida la receta y la dibuja. El <code>id</code> de la imagen es un marcador de posición: se asigna al subir el archivo.</p>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var W = 200, H = 1400, ESC = 2;
+  var FRANJA = { x0: 16, y0: 440, x1: 184, y1: 860 };
+  var MIN_CONTRASTE = 4.5, VELOS = [0.35, 0.5, 0.65, 0.8];
+  var TONOS = { claro: "#FFFFFF", oscuro: "#111111" };
+  var MAX_BYTES = 5 * 1024 * 1024, MAX_PIXELES = 24e6, LADO_GUARDADO = 4000;
+
+  // Paletas del catálogo (generator/plantillas.py).
+  var PALETAS = {
+    atardecer: { n: "Atardecer", a: "#1E2A38", b: "#C98B3A", s: "#F4EEE1", l: "#7A9CB0", c: "#3E5C4A", f: "#1E2A38" },
+    amanecer: { n: "Amanecer", a: "#7A9CB0", b: "#F4EEE1", s: "#C98B3A", l: "#A7BCC7", c: "#3E5C4A", f: "#1E2A38" },
+    noche: { n: "Noche", a: "#0F1822", b: "#2B3D52", s: "#F4EEE1", l: "#3A4D63", c: "#16202B", f: "#080D13" },
+    niebla: { n: "Niebla", a: "#B9C4C6", b: "#E8E6DD", s: "#FFFFFF", l: "#9AA9AB", c: "#5E7172", f: "#2F3C3D" },
+    otono: { n: "Otoño", a: "#5B3A29", b: "#E3A857", s: "#FBE9C6", l: "#A8683A", c: "#4A2E1F", f: "#26150D" },
+    rosa: { n: "Rosa", a: "#4B2E4F", b: "#E9A5A0", s: "#FFF1DC", l: "#8C5A7A", c: "#2E1B38", f: "#170D1E" },
+    esmeralda: { n: "Esmeralda", a: "#14332F", b: "#9FC9A2", s: "#F6F1C9", l: "#4F8C73", c: "#1B4237", f: "#0B1F1A" },
+    medianoche: { n: "Medianoche", a: "#120E2B", b: "#4A3F7A", s: "#EDE7FF", l: "#2E2A5E", c: "#0F0B22", f: "#06040F" },
+    ceniza: { n: "Ceniza", a: "#6E6A66", b: "#D9D3C7", s: "#FBF7EE", l: "#8F8A82", c: "#4D4944", f: "#1F1D1A" },
+    dorada: { n: "Dorada", a: "#F2C879", b: "#FBEFD5", s: "#D9772B", l: "#C9A15E", c: "#6B4E2A", f: "#2E1F0F" },
+    tempestad: { n: "Tempestad", a: "#1B2B2A", b: "#5E7F7A", s: "#E6F2EE", l: "#36524F", c: "#12201F", f: "#070F0E" },
+    cripta: { n: "Cripta", a: "#060A0D", b: "#1F3A3A", s: "#D6EBDD", l: "#14292A", c: "#070F10", f: "#030708" }
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var lienzo = $("lienzo"), ctx = lienzo.getContext("2d");
+  var mini = $("mini"), mctx = mini.getContext("2d");
+  var estado = { fondo: "generado", paleta: "atardecer", arq: "colinas", motivo: "luna", semilla: 7,
+                 img: null, zoom: 1, px: 0.5, py: 0.5, uid: azarHex(32) };
+  var ultimo = { tono: "claro", contraste: 0, velo: 0, error: "", recorte: null, errorImagen: "" };
+
+  function azarHex(n) { var a = new Uint8Array(n / 2); (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach(function (_, i) { a[i] = Math.random() * 256; });
+    return Array.prototype.map.call(a, function (b) { return ("0" + b.toString(16)).slice(-2); }).join(""); }
+  function rng(seed) { var t = seed >>> 0; return function () { t += 0x6D2B79F5; var r = Math.imul(t ^ (t >>> 15), 1 | t); r ^= r + Math.imul(r ^ (r >>> 7), 61 | r); return ((r ^ (r >>> 14)) >>> 0) / 4294967296; }; }
+
+  // ---------- color y contraste ----------
+  function lum(r, g, b) { function f(v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); } return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); }
+  function hex(h) { return [1, 3, 5].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); }
+  function contrasteTono(datos, tono) { // percentil 10 del contraste, como qa.py
+    var t = hex(TONOS[tono]), lt = lum(t[0], t[1], t[2]), r = [];
+    for (var i = 0; i < datos.length; i += 16) { var l = lum(datos[i], datos[i + 1], datos[i + 2]); var hi = Math.max(l, lt), lo = Math.min(l, lt); r.push((hi + 0.05) / (lo + 0.05)); }
+    r.sort(function (a, b) { return a - b; }); return r[Math.floor(r.length * 0.1)];
+  }
+  function mezclar(datos, color, op) { var c = hex(color), out = new Uint8ClampedArray(datos.length);
+    for (var i = 0; i < datos.length; i += 4) { for (var k = 0; k < 3; k++) out[i + k] = datos[i + k] * (1 - op) + c[k] * op; out[i + 3] = 255; } return out; }
+
+  // ---------- fondos ----------
+  function colinas(r, base, amp, paso) {
+    var f = [0, 1, 2].map(function () { return [r() * 0.8 + 0.8, r() * 6.28, r() * 0.65 + 0.35]; }), s = f.reduce(function (a, q) { return a + q[2]; }, 0), pts = [];
+    for (var x = 0; x <= W + paso; x += paso) { var t = x / W, y = base - amp * f.reduce(function (a, q) { return a + q[2] * (0.5 + 0.5 * Math.sin(2 * Math.PI * q[0] * t + q[1])); }, 0) / s; pts.push([x, y]); }
+    return pts;
+  }
+  function picos(r, base, amp) { var pts = [], x = 0; while (x <= W + 20) { pts.push([x, base - amp * (0.25 + 0.75 * r())]); x += 14 + r() * 22; if (pts.length % 2 === 0) pts.push([x - 6, base - amp * 0.1]); } return pts; }
+  function poli(c, pts, color) { c.beginPath(); c.moveTo(pts[0][0], pts[0][1]); pts.forEach(function (p) { c.lineTo(p[0], p[1]); }); c.lineTo(W + 20, H); c.lineTo(-20, H); c.closePath(); c.fillStyle = color; c.fill(); }
+  function yEn(pts, x) { var m = pts[0]; pts.forEach(function (p) { if (Math.abs(p[0] - x) < Math.abs(m[0] - x)) m = p; }); return m[1]; }
+
+  function pintarGenerado(c) {
+    var p = PALETAS[estado.paleta], r = rng(estado.semilla * 7919 + 13);
+    var g = c.createLinearGradient(0, 0, 0, H);
+    if (r() < 0.4) { g.addColorStop(0, p.b); g.addColorStop(1, p.a); } else { g.addColorStop(0, p.a); g.addColorStop(1, p.b); }
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    var luna = estado.motivo === "luna", cx = (0.3 + r() * 0.4) * W, cy = (luna ? 0.12 + r() * 0.1 : 0.08 + r() * 0.16) * H, rad = luna ? 46 : 20 + r() * 10;
+    c.beginPath(); c.arc(cx, cy, rad, 0, 6.2832); c.fillStyle = p.s; c.fill();
+    var lejos, cerca;
+    if (estado.arq === "montanas") { lejos = picos(r, 0.74 * H, 150); cerca = picos(r, 0.88 * H, 90); }
+    else if (estado.arq === "llanura") { lejos = colinas(r, 0.8 * H, 14, 10); cerca = colinas(r, 0.9 * H, 10, 10); }
+    else { lejos = colinas(r, 0.76 * H, 120, 8); cerca = colinas(r, 0.86 * H, 100, 8); }
+    poli(c, lejos, p.l);
+    var mx = (0.3 + r() * 0.4) * W, my = yEn(lejos, mx) + 2;
+    if (estado.motivo === "cipres") for (var k = -1; k <= 1; k++) cipres(c, mx + k * 16, my + (k % 2 ? 4 : 0), 100 + r() * 50, p.f);
+    if (estado.motivo === "arbol") arbol(c, mx, my, 110, p.f);
+    poli(c, cerca, p.c);
+  }
+  function cipres(c, x, y, h, col) { var w = h * 0.16; c.beginPath(); c.moveTo(x, y - h); c.quadraticCurveTo(x + w, y - h * 0.4, x + w * 0.7, y); c.lineTo(x - w * 0.7, y); c.quadraticCurveTo(x - w, y - h * 0.4, x, y - h); c.fillStyle = col; c.fill(); }
+  function arbol(c, x, y, h, col) { c.fillStyle = col; c.fillRect(x - 2, y - h * 0.4, 4, h * 0.4); c.beginPath(); c.arc(x, y - h * 0.6, h * 0.3, 0, 6.2832); c.fill(); }
+
+  function recorteDe(img) {
+    var iw = img.width, ih = img.height, cw = Math.min(iw, ih / 7) / estado.zoom, ch = cw * 7;
+    var x = (iw - cw) * estado.px, y = (ih - ch) * estado.py;
+    var s = Math.min(1, LADO_GUARDADO / Math.max(iw, ih));
+    var ancho = Math.max(50, Math.round(cw * s)), alto = ancho * 7;
+    var gx = Math.max(0, Math.min(Math.round(x * s), Math.round(iw * s) - ancho)), gy = Math.max(0, Math.min(Math.round(y * s), Math.round(ih * s) - alto));
+    return { x: gx, y: gy, ancho: ancho, alto: alto, fuente: [x, y, cw, ch] };
+  }
+  function pintarImagen(c) {
+    c.fillStyle = "#888"; c.fillRect(0, 0, W, H);
+    if (!estado.img) return;
+    var r = recorteDe(estado.img.bitmap); c.drawImage(estado.img.bitmap, r.fuente[0], r.fuente[1], r.fuente[2], r.fuente[3], 0, 0, W, H);
+  }
+
+  // ---------- texto ----------
+  function partir(c, texto, ancho) { var lineas = [], act = ""; texto.split(/\s+/).filter(Boolean).forEach(function (w) { var t = act ? act + " " + w : w; if (act && c.measureText(t).width > ancho) { lineas.push(act); act = w; } else act = t; }); if (act) lineas.push(act); return lineas; }
+  function disponerTexto(c, frase, autor) {
+    var ancho = FRANJA.x1 - FRANJA.x0 - 20, tam = 15, tamA = 11, il = 1.32;
+    c.font = "italic 400 " + tam + "px 'Crimson Pro', Georgia, serif"; var ls = partir(c, frase, ancho);
+    c.font = "italic 400 " + tamA + "px 'Crimson Pro', Georgia, serif"; var as = autor ? partir(c, "— " + autor, ancho) : [];
+    var alto = ls.length * tam * il + (as.length ? 10 + as.length * tamA * il : 0);
+    return { ls: ls, as: as, tam: tam, tamA: tamA, il: il, alto: alto };
+  }
+  function dibujarTexto(c, d, color) {
+    var y = FRANJA.y0 + ((FRANJA.y1 - FRANJA.y0) - d.alto) / 2 + d.tam, cx = (FRANJA.x0 + FRANJA.x1) / 2;
+    c.fillStyle = color; c.textAlign = "center";
+    c.font = "italic 400 " + d.tam + "px 'Crimson Pro', Georgia, serif"; d.ls.forEach(function (l) { c.fillText(l, cx, y); y += d.tam * d.il; });
+    if (d.as.length) { y += 10; c.font = "italic 400 " + d.tamA + "px 'Crimson Pro', Georgia, serif"; d.as.forEach(function (l) { c.fillText(l, cx, y); y += d.tamA * d.il; }); }
+    c.textAlign = "start";
+  }
+
+  // ---------- render ----------
+  function render() {
+    ctx.setTransform(ESC, 0, 0, ESC, 0, 0);
+    estado.fondo === "imagen" ? pintarImagen(ctx) : pintarGenerado(ctx);
+    var frase = $("frase").value.trim(), autor = $("autor").value.trim();
+    ultimo.error = ""; ultimo.velo = 0; ultimo.contraste = 0;
+    if (frase) {
+      var d = disponerTexto(ctx, frase, autor);
+      if (d.alto > FRANJA.y1 - FRANJA.y0) ultimo.error = "La frase es demasiado larga para el marcalibros.";
+      else if (!(estado.fondo === "imagen" && !estado.img)) {
+        var caja = ctx.getImageData(FRANJA.x0 * ESC, FRANJA.y0 * ESC, (FRANJA.x1 - FRANJA.x0) * ESC, (FRANJA.y1 - FRANJA.y0) * ESC).data;
+        var pedido = $("tono").value, orden = pedido === "auto" ? ["claro", "oscuro"] : [pedido, pedido === "claro" ? "oscuro" : "claro"], hallado = null;
+        if (pedido === "auto") orden.sort(function (a, b) { return contrasteTono(caja, b) - contrasteTono(caja, a); });
+        outer: for (var i = 0; i < orden.length; i++) {
+          var t = orden[i], r0 = contrasteTono(caja, t);
+          if (r0 >= MIN_CONTRASTE) { hallado = { t: t, r: r0, v: 0 }; break; }
+          var contrario = TONOS[t === "claro" ? "oscuro" : "claro"];
+          for (var k = 0; k < VELOS.length; k++) { var rr = contrasteTono(mezclar(caja, contrario, VELOS[k]), t); if (rr >= MIN_CONTRASTE) { hallado = { t: t, r: rr, v: VELOS[k] }; break outer; } }
+        }
+        if (!hallado) ultimo.error = "El texto no se puede leer sobre este fondo. Prueba con otra imagen, otra paleta o sin texto.";
+        else {
+          if (hallado.v) { ctx.fillStyle = TONOS[hallado.t === "claro" ? "oscuro" : "claro"]; ctx.globalAlpha = hallado.v; ctx.fillRect(FRANJA.x0, FRANJA.y0, FRANJA.x1 - FRANJA.x0, FRANJA.y1 - FRANJA.y0); ctx.globalAlpha = 1; }
+          dibujarTexto(ctx, d, TONOS[hallado.t]); ultimo.tono = hallado.t; ultimo.contraste = hallado.r; ultimo.velo = hallado.v;
+        }
+      }
+    }
+    mctx.imageSmoothingQuality = "high"; mctx.clearRect(0, 0, 50, 350); mctx.drawImage(lienzo, 0, 0, 50, 350);
+    ultimo.recorte = estado.fondo === "imagen" && estado.img ? recorteDe(estado.img.bitmap) : null;
+    salida();
+  }
+
+  // ---------- receta ----------
+  function construir() {
+    var fondo;
+    if (estado.fondo === "imagen") {
+      var r = ultimo.recorte || { x: 0, y: 0, ancho: 50, alto: 350 };
+      fondo = { tipo: "imagen", imagen: "0".repeat(32), recorte: { x: r.x, y: r.y, ancho: r.ancho, alto: r.alto } };
+    } else fondo = { tipo: "generado", paleta: estado.paleta, arquetipo: estado.arq, motivo: estado.motivo, semilla: estado.semilla };
+    var receta = { fondo: fondo }, frase = $("frase").value.trim();
+    if (frase) { receta.texto = { frase: frase }; var a = $("autor").value.trim(); if (a) receta.texto.autor = a; if ($("tono").value !== "auto") receta.texto.tono = $("tono").value; else receta.texto.tono = ultimo.tono; }
+    return { id: "usr:" + estado.uid, origen: "usuario", version: 1, propietario: "tu-cuenta", creado: new Date().toISOString().replace(/\.\d+Z$/, "Z"), visibilidad: "privado", receta: receta };
+  }
+  function problemas(doc) {
+    var e = [], f = doc.receta.fondo;
+    if (f.tipo === "imagen") {
+      if (!estado.img) e.push("Falta la imagen.");
+      if (ultimo.errorImagen) e.push(ultimo.errorImagen);
+      if (f.recorte.alto - 7 * f.recorte.ancho > 1 || 7 * f.recorte.ancho - f.recorte.alto > 1) e.push("El recorte no es 1:7.");
+    } else {
+      if (!/^[0-9]+$/.test(String(f.semilla)) || f.semilla > 4294967295) e.push("La semilla debe ser un entero entre 0 y 4294967295.");
+    }
+    var t = doc.receta.texto;
+    if (t && (t.frase.length < 1 || t.frase.length > 200)) e.push("La frase debe tener entre 1 y 200 caracteres.");
+    if (t && t.autor && t.autor.length > 60) e.push("La autoría admite hasta 60 caracteres.");
+    if (ultimo.error) e.push(ultimo.error);
+    return e;
+  }
+  function salida() {
+    var doc = construir(), errores = problemas(doc);
+    $("receta").textContent = JSON.stringify(doc, null, 2);
+    $("avisos").innerHTML = ""; (errores.length ? errores : ["La receta cumple el esquema."]).forEach(function (m) { var li = document.createElement("li"); li.textContent = m; if (!errores.length) li.className = "bien"; $("avisos").appendChild(li); });
+    var caja = $("estado"), t = doc.receta.texto;
+    caja.className = "estado " + (errores.length ? "mal" : "ok");
+    caja.innerHTML = errores.length ? "<b>Receta con errores.</b> Revisa la lista de abajo." : "<b>Receta válida.</b> " + (t && ultimo.contraste ? "Contraste del texto " + ultimo.contraste.toFixed(1).replace(".", ",") + ":1" + (ultimo.velo ? ", con velo del " + Math.round(ultimo.velo * 100) + " %." : ".") : "Sin texto.");
+    $("copiar").disabled = errores.length > 0;
+    $("cuenta").textContent = $("frase").value.length + " / 200";
+  }
+
+  // ---------- controles ----------
+  function fondo(t) {
+    estado.fondo = t; $("t-generado").setAttribute("aria-pressed", t === "generado"); $("t-imagen").setAttribute("aria-pressed", t === "imagen");
+    $("p-generado").hidden = t !== "generado"; $("p-imagen").hidden = t !== "imagen"; render();
+  }
+  $("t-generado").onclick = function () { fondo("generado"); }; $("t-imagen").onclick = function () { fondo("imagen"); };
+  Object.keys(PALETAS).forEach(function (k) {
+    var p = PALETAS[k], b = document.createElement("button"); b.type = "button"; b.className = "paleta"; b.setAttribute("aria-pressed", k === estado.paleta); b.dataset.k = k;
+    b.innerHTML = "<i style='background:linear-gradient(" + p.a + "," + p.b + " 62%," + p.c + " 62%)'></i>" + p.n;
+    b.onclick = function () { estado.paleta = k; document.querySelectorAll(".paleta").forEach(function (x) { x.setAttribute("aria-pressed", x.dataset.k === k); }); render(); };
+    $("paletas").appendChild(b);
+  });
+  $("arq").onchange = function () { estado.arq = this.value; render(); };
+  $("motivo").onchange = function () { estado.motivo = this.value; render(); };
+  $("motivo").value = estado.motivo; $("semilla").value = estado.semilla;
+  $("semilla").oninput = function () { var v = Math.floor(Number(this.value)); estado.semilla = isFinite(v) && v >= 0 ? Math.min(v, 4294967295) : 0; render(); };
+  $("azar").onclick = function () { estado.semilla = Math.floor(Math.random() * 100000); $("semilla").value = estado.semilla; render(); };
+  ["frase", "autor"].forEach(function (id) { $(id).oninput = render; }); $("tono").onchange = render;
+  ["zoom", "px", "py"].forEach(function (id) { $(id).oninput = function () { estado[id] = Number(this.value); render(); }; });
+
+  $("archivo").onchange = function () {
+    var f = this.files && this.files[0]; ultimo.errorImagen = ""; estado.img = null; $("ajustes-imagen").hidden = true;
+    if (!f) { render(); return; }
+    function fallo(m) { ultimo.errorImagen = m; $("info-imagen").textContent = m; render(); }
+    if (["image/jpeg", "image/png", "image/webp"].indexOf(f.type) < 0) return fallo("Solo se aceptan imágenes JPG, PNG o WebP.");
+    if (f.size > MAX_BYTES) return fallo("El archivo pesa más de 5 MB.");
+    createImageBitmap(f).then(function (bm) {
+      if (bm.width * bm.height > MAX_PIXELES) return fallo("La imagen supera los 24 megapíxeles.");
+      if (bm.width < 50 || bm.height < 350) return fallo("La imagen es demasiado pequeña (mínimo 50 × 350).");
+      estado.img = { bitmap: bm }; estado.zoom = 1; estado.px = 0.5; estado.py = 0.5; $("zoom").value = 1; $("px").value = 0.5; $("py").value = 0.5;
+      $("ajustes-imagen").hidden = false; $("info-imagen").textContent = bm.width + " × " + bm.height + " px. Encuadra la tira con los controles.";
+      render();
+    }, function () { fallo("No se pudo leer la imagen."); });
+  };
+
+  $("copiar").onclick = function () {
+    var t = $("receta").textContent, ok = function () { $("copiado").textContent = "Receta copiada."; }, sel = function () { var r = document.createRange(); r.selectNodeContents($("receta")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); $("copiado").textContent = "Selecciona y copia con Ctrl+C."; };
+    try { navigator.clipboard.writeText(t).then(ok, sel); } catch (e) { sel(); }
+  };
+
+  render();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(render);
+})();
+</script>
