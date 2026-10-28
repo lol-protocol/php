@@ -1259,6 +1259,65 @@ $pruebas = [
         Archivos::borrarDirectorio($dir);
     },
 
+    'La lista admite formato, sangrado, grosor, sentido del lomo, idioma y degradado' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        file_put_contents("$dir/lista.csv", implode("\n", [
+            'titulo,autor,paginas,ancho_mm,alto_mm,sangrado_mm,grosor_hoja_mm,lomo_direccion,idioma,degradado,degradado_tipo,degradado_angulo',
+            'Uno,Ana,100,"148,5",210,5,0.2,abajo-arriba,en,#112233 #445566,radial,',
+            'Dos,Beto,100,,,,,,,auto,,45',
+            'Tres,Cleo,100,,,,,,,,,',
+        ]) . "\n");
+        $libros = Lista::leer("$dir/lista.csv");
+        aproximado(148.5, $libros[0]->formato->ancho);
+        aproximado(210.0, $libros[0]->formato->alto);
+        aproximado(5.0, $libros[0]->formato->sangrado);
+        aproximado(10.0, $libros[0]->formato->lomo); // 50 hojas de 0,2 mm
+        igual('abajo-arriba', $libros[0]->lomoDireccion);
+        igual('en', $libros[0]->idioma);
+        igual(['#112233', '#445566'], $libros[0]->degradado?->colores);
+        igual('radial', $libros[0]->degradado?->tipo);
+        $auto = $libros[1]->degradado;
+        if ($auto === null) {
+            throw new RuntimeException('la segunda fila no tiene degradado');
+        }
+        aproximado(45.0, $auto->angulo);
+        igual(2, count($auto->colores));
+        igual(null, $libros[2]->degradado);
+        aproximado(135.0, $libros[2]->formato->ancho);
+
+        foreach ([["degradado_angulo", "girado"], ["degradado_tipo", "cónico"], ["ancho_mm", "ancho"]] as [$columna, $valor]) {
+            file_put_contents("$dir/mala.csv", "titulo,autor,paginas,$columna\nUno,Ana,100,$valor\n");
+            lanza(InvalidArgumentException::class, fn () => Lista::leer("$dir/mala.csv"));
+        }
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'Con --omitir-errores la lista salta las filas malas y avisa de cada una' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        file_put_contents("$dir/lista.csv", "titulo,autor,paginas,tradicion\nBuena,Ana,100,griega\nMala,Beto,100,marciana\nOtra buena,Cleo,50,\nSin autor,,50,\n");
+
+        $avisos = [];
+        $libros = Lista::leer("$dir/lista.csv", true, static function (string $aviso) use (&$avisos): void {
+            $avisos[] = $aviso;
+        });
+        igual(['ana-buena', 'cleo-otra-buena'], array_map(static fn (Libro $libro): string => $libro->id, $libros));
+        igual(2, count($avisos));
+        $todos = implode("\n", $avisos);
+        verdadero(str_contains($todos, 'se omite la fila 3 («Mala»)') && str_contains($todos, 'se omite la fila 5 («Sin autor»)'), $todos);
+        lanza(InvalidArgumentException::class, fn () => Lista::leer("$dir/lista.csv"));
+
+        [$codigo, $salida, $errores] = correrCli(["--lista=$dir/lista.csv", '--omitir-errores', "--salida=$dir/salida"]);
+        igual(0, $codigo);
+        igual(['ana-buena', 'cleo-otra-buena'], array_map('basename', glob("$dir/salida/*") ?: []));
+        verdadero(substr_count($errores, 'Aviso: ') === 2, $errores);
+        [$codigo] = correrCli(["--lista=$dir/lista.csv", "--salida=$dir/otra"]);
+        igual(1, $codigo);
+        verdadero(!is_dir("$dir/otra"), 'escribió algo sin --omitir-errores');
+        Archivos::borrarDirectorio($dir);
+    },
+
     'Los libros de ejemplo se cargan' => function (): void {
         $ejemplos = glob(__DIR__ . '/../ejemplos/*.json') ?: [];
         verdadero(count($ejemplos) >= 2, 'faltan ejemplos');
