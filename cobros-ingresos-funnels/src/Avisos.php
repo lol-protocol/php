@@ -27,6 +27,7 @@ final class Avisos
         'cobros' => ['creada' => 'Boleta #%d creada.', 'editada' => 'Boleta #%d actualizada.', 'anulada' => 'Boleta #%d anulada.'],
         'pagos' => ['creado' => 'Pago #%d registrado.', 'editado' => 'Pago #%d actualizado.', 'anulado' => 'Pago #%d anulado.'],
         'cliente' => ['creado' => 'Cliente creado.'],
+        'notas' => ['devuelta' => 'Devolución de la nota de crédito #%d registrada.'],
     ];
 
     /**

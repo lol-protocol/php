@@ -9,6 +9,7 @@ $paginas = [
     'dashboard' => 'Dashboard',
     'cobros' => 'Cobros e ingresos',
     'pagos' => 'Pagos',
+    'notas' => 'Notas de crédito',
     'funnel' => 'Funnel',
     'cohortes' => 'Cohortes',
     'clientes' => 'Clientes',

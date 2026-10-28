@@ -10,6 +10,7 @@ use App\Controllers\BoletasController;
 use App\Controllers\CohortesController;
 use App\Controllers\DashboardController;
 use App\Controllers\FunnelController;
+use App\Controllers\NotasCreditoController;
 use App\Controllers\PagosController;
 use App\Database;
 use App\ManejadorDeErrores;
@@ -49,6 +50,8 @@ $paginas = [
     'pago-nuevo' => fn () => (new PagosController())->nuevo(),
     'pago-editar' => fn () => (new PagosController())->editar(),
     'pago-anular' => fn () => (new PagosController())->anular(),
+    'notas' => fn () => (new NotasCreditoController())->index(),
+    'nota-devolver' => fn () => (new NotasCreditoController())->devolver(),
     'funnel' => fn () => (new FunnelController())->index(),
     'cohortes' => fn () => (new CohortesController())->index(),
     'clientes' => fn () => (new ClientesController())->index(),
