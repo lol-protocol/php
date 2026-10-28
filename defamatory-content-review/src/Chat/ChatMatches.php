@@ -77,9 +77,9 @@ final class ChatMatches
     }
 
     /**
-     * Lo que sólo se encontró reduciendo letras dobles («puuta» → «puta») nunca
-     * bloquea solo: puede ser un apellido («Pratt» → «prat»). Lo que era `high`
-     * pasa a `medium`, o sea a revisión.
+     * Lo que sólo se encontró reduciendo letras dobles («puuta» → «puta») o quitando
+     * preposiciones pegadas (CliticPrefixes) nunca bloquea solo: puede ser un apellido
+     * («Pratt») o otra palabra («מחזיר»). Lo que era `high` pasa a `medium`.
      *
      * @param array<int,array<string,mixed>> $matches
      * @return array<int,array<string,mixed>>
@@ -87,7 +87,7 @@ final class ChatMatches
     public static function downgradeDoubled(array $matches): array
     {
         return array_map(
-            fn(array $match): array => ($match['repeat'] ?? '') === 'doubled' && $match['severity'] === 'high' ? ['severity' => 'medium'] + $match : $match,
+            fn(array $match): array => (($match['repeat'] ?? '') === 'doubled' || isset($match['prefix'])) && $match['severity'] === 'high' ? ['severity' => 'medium'] + $match : $match,
             $matches
         );
     }
