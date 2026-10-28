@@ -95,16 +95,38 @@ Un identificador que no existe se rechaza con la lista de los que sí.
 
 ### Adornos por tradición
 
-La `tradicion` decide el adorno de la cubierta: un **friso** (una franja que se repite) arriba de la portada y de la contratapa, y un **emblema** en el centro de la portada de la plantilla clásica. Son solo líneas y círculos en el color de acento, sin imágenes.
+La `tradicion` decide el adorno de la cubierta: un **friso** (una franja que se repite) arriba de la portada y de la contratapa, y un **emblema** en el centro de la portada de la plantilla clásica. Son solo líneas finas y círculos en el color de acento, sin imágenes. Las 16 tradiciones de `datos/tradiciones.json` tienen el suyo:
 
 | Tradición | Friso | Emblema |
 |---|---|---|
-| `griega` | meandro (espirales cuadradas unidas por una línea de base) | espiral cuadrada dentro de un marco |
-| `china` | nubes en espiral (arcos concéntricos) | disco *bi*: círculos con un cuadrado girado |
-| `arabe` | estrellas de ocho puntas unidas por rombos, entre dos filetes | estrella de ocho puntas con círculo y octógono |
+| `griega` | meandro (espirales cuadradas) | espiral cuadrada dentro de un marco |
+| `romana` | arcada de medio punto | corona de laurel |
+| `egipcia` | flores de loto | disco solar con alas |
+| `mesopotamica` | zigurat (pirámide escalonada) | roseta de ocho pétalos |
+| `hebrea` | granadas con hojas | doce piedras en círculo |
+| `persa` | boteh (la gota curvada) | medallón de rayos |
+| `arabe` | estrellas de ocho puntas y rombos, entre dos filetes | estrella de ocho puntas con círculo y octógono |
+| `india` | pétalos de loto | mandala de ocho pétalos |
+| `china` | nubes en espiral | disco *bi*: círculos con un cuadrado girado |
+| `japonesa` | círculos enlazados (*shippo*) | crisantemo de rayos |
+| `celta` | parejas de espirales | triskel |
+| `nordica` | dientes de lobo | flor de seis pétalos hecha con compás |
 | `medieval` | entrelazado de dos ondas | cuadrilóbulo gótico |
+| `renacentista` | onda con perlas | cartela ovalada |
+| `precolombina` | escalinata | chakana (cruz escalonada) |
+| `moderna` | filete con rombos | estrella de cuatro puntas |
 
-Las demás tradiciones de la lista aún no tienen adorno propio y usan el de siempre: el rombo con dos líneas, y una raya o una barra de acento donde iría el friso. Para añadir uno, crea `src/Adornos/Nombre.php` que extienda `Adorno` (con `friso()` y `emblema()`), y regístralo en `Adorno::de()`. Una prueba comprueba que ningún adorno se salga de su zona ni pise un texto.
+Sin tradición, o con una que no tenga adorno, se usa el de siempre: el rombo con dos líneas y una raya o una barra de acento donde iría el friso. Para añadir uno, crea `src/Adornos/Nombre.php` que extienda `Adorno` (con `friso()` y `emblema()`; los trazos comunes están en `Trazos`) y regístralo en `Adorno::de()`. Una prueba comprueba que ningún adorno se salga de su zona ni pise un texto.
+
+### Un motivo por categoría
+
+Cada una de las 27 categorías tiene un dibujo pequeño (`src/Adornos/Motivo.php`): un amanecer para el romanticismo, una balanza para las leyes, una lira para la poesía, un faro para el modernismo anglosajón, una brújula para los viajes… Es de líneas finas en el color de acento y va en tres sitios:
+
+- **Contratapa** (las dos plantillas): abajo a la izquierda, sobre el pie.
+- **Lomo**: abajo, en el color del texto del lomo, si el lomo mide 5 mm o más; el título se acorta lo justo, con el mismo margen arriba y abajo. En un lomo más estrecho no se pone.
+- **Portada sobria**: arriba a la derecha, frente al friso.
+
+Una prueba comprueba que haya uno por cada categoría de `datos/categorias.json` y que quepa en su cuadrado.
 
 ### Colores por categoría
 
@@ -253,7 +275,7 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 
 ```
 bin/generar.php          línea de comandos
-src/Adornos/             un adorno por tradición (Griega, China, Arabe, Medieval) y el Generico
+src/Adornos/             un adorno por tradición, el Generico, los 27 Motivo de las categorías y los Trazos que comparten
 src/                     Libro (con Formato y Textos), Lista (CSV), Catalogo, Ficha, Nombres, Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
 fuentes/                 fuentes woff2 que se incrustan en los SVG, con sus licencias
 datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
@@ -271,4 +293,4 @@ pruebas/ejecutar.php     pruebas unitarias, sin dependencias
 - El ajuste de texto mide con anchos reales pero sin kerning: las líneas pueden quedar hasta un 4 % más cortas de lo posible. Las letras que las fuentes no cubren (ver «Fuentes») se miden con un ancho medio.
 - Cada SVG pesa entre 65 y 140 KB por las fuentes incrustadas.
 - No genera el código de barras ni el PDF para imprenta; se obtiene desde los SVG con una herramienta externa.
-- Solo hay dos plantillas, y solo cuatro tradiciones con adorno propio (de 16).
+- Solo hay dos plantillas.

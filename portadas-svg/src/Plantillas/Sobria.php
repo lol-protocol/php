@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PortadasSvg\Plantillas;
 
+use PortadasSvg\Adornos\Motivo;
 use PortadasSvg\Color;
 use PortadasSvg\Libro;
 use PortadasSvg\Plantilla;
@@ -19,7 +20,10 @@ final class Sobria extends Plantilla
     private const BARRA_ALTO = 2.4;
     /** Friso del adorno de la tradición, que sustituye a la barra: ancho y alto. */
     private const FRISO_ANCHO = 54.0;
-    private const FRISO_ALTO = 5.0;
+    private const FRISO_ALTO = 4.0;
+    /** Motivo de la categoría, arriba a la derecha: radio y distancia de su centro al borde superior del corte. */
+    private const MOTIVO_RADIO = 7.0;
+    private const MOTIVO_Y = 16.5;
     /** Título: distancia al borde superior del corte, alto disponible (fracción del alto) y tamaño. */
     private const TITULO_Y = 30.0;
     private const TITULO_ALTO = 0.42;
@@ -75,6 +79,10 @@ final class Sobria extends Plantilla
         $svg = $this->adorno($libro)->friso(new Rectangulo($x, $panel->y + self::BARRA_Y, self::FRISO_ANCHO, self::FRISO_ALTO), $colores['acento']);
         if ($svg === '') {
             $svg = $this->rectangulo(new Rectangulo($x, $panel->y + self::BARRA_Y, self::BARRA_ANCHO, self::BARRA_ALTO), ['fill' => $colores['acento']]);
+        }
+
+        if ($libro->categoria !== null) {
+            $svg .= Motivo::dibujar($libro->categoria, $panel->x + $panel->ancho - self::MARGEN - self::MOTIVO_RADIO, $panel->y + self::MOTIVO_Y, self::MOTIVO_RADIO, $colores['acento']);
         }
 
         $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $panel->alto * self::TITULO_ALTO, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->medidaDe(['font-weight' => 'bold']), self::INTERLINEADO, true);

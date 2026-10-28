@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PortadasSvg;
 
 use PortadasSvg\Adornos\Adorno;
+use PortadasSvg\Adornos\Motivo;
 use PortadasSvg\Plantillas\Clasica;
 use PortadasSvg\Plantillas\Sobria;
 
@@ -44,7 +45,10 @@ abstract class Plantilla
     /** Contratapa: friso del adorno de la tradición, que sustituye a la raya (distancia al borde superior, ancho y alto). */
     protected const CONTRATAPA_FRISO_Y = 17.0;
     protected const CONTRATAPA_FRISO_ANCHO = 36.0;
-    protected const CONTRATAPA_FRISO_ALTO = 6.0;
+    protected const CONTRATAPA_FRISO_ALTO = 5.0;
+    /** Contratapa: motivo de la categoría, abajo a la izquierda sobre el pie (radio y distancia de su centro al borde inferior). */
+    protected const CONTRATAPA_MOTIVO_RADIO = 6.5;
+    protected const CONTRATAPA_MOTIVO_Y = 30.0;
     /** Contratapa: dónde empieza el texto desde el borde superior, qué fracción del alto puede ocupar y su tamaño. */
     protected const CONTRATAPA_TEXTO_Y = 34.0;
     protected const CONTRATAPA_TEXTO_ALTO = 0.5;
@@ -75,6 +79,10 @@ abstract class Plantilla
     protected const LOMO_TAMANO_MIN = 2.2;
     protected const LOMO_TAMANO_ANCHO = 0.6;
     protected const LOMO_CENTRADO = 0.35;
+    /** Lomo: el motivo de la categoría solo cabe si el lomo mide al menos esto; su radio (fracción del ancho del lomo) y el espacio libre hasta el texto. */
+    protected const LOMO_MOTIVO_ANCHO_MINIMO = 5.0;
+    protected const LOMO_MOTIVO_RADIO = 0.36;
+    protected const LOMO_MOTIVO_SEPARACION = 3.0;
 
     /**
      * Caras tipográficas que ha dibujado la pieza en curso: [familia, estilo]. Se vacía en cada `dibujar`.
@@ -226,6 +234,10 @@ abstract class Plantilla
             $svg .= $this->parrafo($texto['lineas'], $x, $panel->y + self::CONTRATAPA_TEXTO_Y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
         }
 
+        if ($libro->categoria !== null) {
+            $svg .= Motivo::dibujar($libro->categoria, $x + self::CONTRATAPA_MOTIVO_RADIO, $panel->y + $panel->alto - self::CONTRATAPA_MOTIVO_Y, self::CONTRATAPA_MOTIVO_RADIO, $colores['acento']);
+        }
+
         // Hueco en blanco para el código de barras del ISBN: el código lo pone quien imprime. El pie
         // llega hasta el hueco y deja un espacio libre antes de él.
         $caja = new Rectangulo($panel->x + $panel->ancho - self::MARGEN - self::CODIGO_ANCHO, $panel->y + $panel->alto - self::CODIGO_Y, self::CODIGO_ANCHO, self::CODIGO_ALTO);
@@ -248,7 +260,13 @@ abstract class Plantilla
             return $svg;
         }
 
-        $largo = $panel->alto - 2 * self::MARGEN;
+        // Con categoría y un lomo ancho, el motivo va abajo. El texto deja el mismo espacio arriba y abajo,
+        // para seguir centrado.
+        $radio = $libro->categoria !== null && $panel->ancho >= self::LOMO_MOTIVO_ANCHO_MINIMO ? $panel->ancho * self::LOMO_MOTIVO_RADIO : 0.0;
+        if ($radio > 0.0) {
+            $svg .= Motivo::dibujar($libro->categoria ?? '', $panel->x + $panel->ancho / 2, $panel->y + $panel->alto - self::MARGEN - $radio, $radio, $colores['texto']);
+        }
+        $largo = $panel->alto - 2 * self::MARGEN - ($radio > 0.0 ? 2 * (2 * $radio + self::LOMO_MOTIVO_SEPARACION) : 0.0);
         $completo = $libro->textos->titulo . ' · ' . $libro->textos->autor;
         $texto = Texto::unaLinea($completo, $largo, min(self::LOMO_TAMANO_MAX, $panel->ancho * self::LOMO_TAMANO_ANCHO), self::LOMO_TAMANO_MIN, $this->medidaDe());
 
