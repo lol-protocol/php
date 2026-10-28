@@ -120,7 +120,13 @@ Sin tradición, o con una que no tenga adorno, se usa el de siempre: el rombo co
 
 ### Un motivo por categoría
 
-Cada una de las 27 categorías tiene un dibujo pequeño (`src/Adornos/Motivo.php`) que va abajo a la izquierda de la contratapa, sobre el pie: un amanecer para el romanticismo, una balanza para las leyes, una lira para la poesía, un faro para el modernismo anglosajón, una brújula para los viajes… Es de líneas finas en el color de acento. Una prueba comprueba que haya uno por cada categoría de `datos/categorias.json` y que quepa en su cuadrado.
+Cada una de las 27 categorías tiene un dibujo pequeño (`src/Adornos/Motivo.php`): un amanecer para el romanticismo, una balanza para las leyes, una lira para la poesía, un faro para el modernismo anglosajón, una brújula para los viajes… Es de líneas finas en el color de acento y va en tres sitios:
+
+- **Contratapa** (las dos plantillas): abajo a la izquierda, sobre el pie.
+- **Lomo**: abajo, en el color del texto del lomo, si el lomo mide 5 mm o más; el título se acorta lo justo, con el mismo margen arriba y abajo. En un lomo más estrecho no se pone.
+- **Portada sobria**: arriba a la derecha, frente al friso.
+
+Una prueba comprueba que haya uno por cada categoría de `datos/categorias.json` y que quepa en su cuadrado.
 
 ### Colores por categoría
 

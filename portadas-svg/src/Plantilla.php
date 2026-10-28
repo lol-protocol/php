@@ -79,6 +79,10 @@ abstract class Plantilla
     protected const LOMO_TAMANO_MIN = 2.2;
     protected const LOMO_TAMANO_ANCHO = 0.6;
     protected const LOMO_CENTRADO = 0.35;
+    /** Lomo: el motivo de la categoría solo cabe si el lomo mide al menos esto; su radio (fracción del ancho del lomo) y el espacio libre hasta el texto. */
+    protected const LOMO_MOTIVO_ANCHO_MINIMO = 5.0;
+    protected const LOMO_MOTIVO_RADIO = 0.36;
+    protected const LOMO_MOTIVO_SEPARACION = 3.0;
 
     /**
      * Caras tipográficas que ha dibujado la pieza en curso: [familia, estilo]. Se vacía en cada `dibujar`.
@@ -256,7 +260,13 @@ abstract class Plantilla
             return $svg;
         }
 
-        $largo = $panel->alto - 2 * self::MARGEN;
+        // Con categoría y un lomo ancho, el motivo va abajo. El texto deja el mismo espacio arriba y abajo,
+        // para seguir centrado.
+        $radio = $libro->categoria !== null && $panel->ancho >= self::LOMO_MOTIVO_ANCHO_MINIMO ? $panel->ancho * self::LOMO_MOTIVO_RADIO : 0.0;
+        if ($radio > 0.0) {
+            $svg .= Motivo::dibujar($libro->categoria ?? '', $panel->x + $panel->ancho / 2, $panel->y + $panel->alto - self::MARGEN - $radio, $radio, $colores['texto']);
+        }
+        $largo = $panel->alto - 2 * self::MARGEN - ($radio > 0.0 ? 2 * (2 * $radio + self::LOMO_MOTIVO_SEPARACION) : 0.0);
         $completo = $libro->textos->titulo . ' · ' . $libro->textos->autor;
         $texto = Texto::unaLinea($completo, $largo, min(self::LOMO_TAMANO_MAX, $panel->ancho * self::LOMO_TAMANO_ANCHO), self::LOMO_TAMANO_MIN, $this->medidaDe());
 

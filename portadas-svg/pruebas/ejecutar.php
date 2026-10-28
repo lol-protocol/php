@@ -1184,6 +1184,22 @@ $pruebas = [
         Archivos::borrarDirectorio($dir);
     },
 
+    'El lomo lleva el motivo de la categoría solo si es ancho, y la portada sobria también' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        foreach (['ancho' => 224, 'estrecho' => 60] as $nombre => $paginas) {
+            Generador::escribir(libroDeEjemplo(['categoria' => 'leyes', 'paginas' => $paginas]), "$dir/$nombre");
+        }
+        Generador::escribir(libroDeEjemplo(['paginas' => 224]), "$dir/sin");
+        Generador::escribir(libroDeEjemplo(['categoria' => 'leyes', 'plantilla' => 'sobria']), "$dir/sobria");
+        Generador::escribir(libroDeEjemplo(['plantilla' => 'sobria']), "$dir/sobria-sin");
+        $lineas = static fn (string $ruta): int => substr_count((string) file_get_contents($ruta), '<polyline');
+        verdadero($lineas("$dir/ancho/lomo.svg") > 0, 'el lomo de 11,2 mm no lleva motivo');
+        igual(0, $lineas("$dir/estrecho/lomo.svg")); // 3 mm: no cabe
+        igual(0, $lineas("$dir/sin/lomo.svg"));
+        verdadero($lineas("$dir/sobria/portada.svg") > $lineas("$dir/sobria-sin/portada.svg"), 'la portada sobria no lleva motivo');
+        Archivos::borrarDirectorio($dir);
+    },
+
     'Los libros de ejemplo se cargan' => function (): void {
         $ejemplos = glob(__DIR__ . '/../ejemplos/*.json') ?: [];
         verdadero(count($ejemplos) >= 2, 'faltan ejemplos');
