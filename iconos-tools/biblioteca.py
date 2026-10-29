@@ -405,4 +405,4 @@ ic.solid(Block(12, 10, 39, 39, r=9.5), 'orange', d=4)
 ic.mark('M23 41V31A8.5 8.5 0 0 1 40 31V41', w=2.8)
 ic.dot(31.5, 36, 2.4)
 
-ICONS.extend(comunes.ICONS)  # los que se llaman igual en los dos sets, definidos una vez en comunes.py
+ICONS.extend(comunes.for_set('biblioteca'))  # los que se llaman igual en otro set, definidos una vez en comunes.py

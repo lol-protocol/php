@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_cart_items_amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E5A356"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="grad_cart_items_rose" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EB6583"/>
+      <stop offset="1" stop-color="#E11D48"/>
+    </linearGradient>
+    <linearGradient id="grad_cart_items_teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5AB6AE"/>
+      <stop offset="1" stop-color="#0D9488"/>
+    </linearGradient>
+    <linearGradient id="grad_cart_items_sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#53ABD9"/>
+      <stop offset="1" stop-color="#0284C7"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="33.2" cy="57.6" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M26.6 14.8A3 3 0 0 1 27.2 16.6L27.2 28.6A3 3 0 0 1 24.2 31.6L18.2 31.6A3 3 0 0 1 15.8 30.4L14.78 29.04A3 3 0 0 1 14.18 27.24L14.18 15.24A3 3 0 0 1 17.18 12.24L23.18 12.24A3 3 0 0 1 25.58 13.44Z" fill="#7E4503"/><rect x="14" y="12" width="12" height="18" rx="3" fill="url(#grad_cart_items_amber)"/></g>
+    <g><path d="M40.6 10.8A3 3 0 0 1 41.2 12.6L41.2 28.6A3 3 0 0 1 38.2 31.6L32.2 31.6A3 3 0 0 1 29.8 30.4L28.78 29.04A3 3 0 0 1 28.18 27.24L28.18 11.24A3 3 0 0 1 31.18 8.24L37.18 8.24A3 3 0 0 1 39.58 9.44Z" fill="#82112A"/><rect x="28" y="8" width="12" height="22" rx="3" fill="url(#grad_cart_items_rose)"/></g>
+    <g><path d="M51.6 16.8A3 3 0 0 1 52.2 18.6L52.2 28.6A3 3 0 0 1 49.2 31.6L45.2 31.6A3 3 0 0 1 42.8 30.4L41.78 29.04A3 3 0 0 1 41.18 27.24L41.18 17.24A3 3 0 0 1 44.18 14.24L48.18 14.24A3 3 0 0 1 50.58 15.44Z" fill="#08564F"/><rect x="41" y="14" width="10" height="16" rx="3" fill="url(#grad_cart_items_teal)"/></g>
+    <g><path d="M57.67 30.8A4 4 0 0 1 58.38 34.03L54.57 52.03A4 4 0 0 1 50.66 55.2L18.14 55.2A4 4 0 0 1 14.94 53.6L12.72 50.64A4 4 0 0 1 12.01 49.07L8.2 31.07A4 4 0 0 1 12.11 26.24L52.25 26.24A4 4 0 0 1 55.45 27.84Z" fill="#014D73"/><path d="M8.02 30.83A4 4 0 0 1 11.93 26L52.07 26A4 4 0 0 1 55.98 30.83L52.17 48.83A4 4 0 0 1 48.26 52L15.74 52A4 4 0 0 1 11.83 48.83Z" fill="url(#grad_cart_items_sky)"/></g>
+  </g>
+</svg>

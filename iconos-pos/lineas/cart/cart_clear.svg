@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
+  <style>
+    @supports (--a:0){
+      .icono25d .ic-sky{stroke:var(--ic-sky,#014D73)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-sky" stroke="#014D73"><path d="M57.67 30.8A4 4 0 0 1 58.38 34.03L54.57 52.03A4 4 0 0 1 50.66 55.2L18.14 55.2A4 4 0 0 1 14.94 53.6L12.54 50.4A4 4 0 0 1 11.83 48.83L8.02 30.83A4 4 0 0 1 11.93 26L52.07 26A4 4 0 0 1 55.27 27.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.02 30.83A4 4 0 0 1 11.93 26L52.07 26A4 4 0 0 1 55.98 30.83L52.17 48.83A4 4 0 0 1 48.26 52L15.74 52A4 4 0 0 1 11.83 48.83Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M14 12L26 12L26 27L14 27Z" class="ic-sky" fill="none" stroke="#014D73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.6 3"/>
+    <path d="M28 8L40 8L40 27L28 27Z" class="ic-sky" fill="none" stroke="#014D73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.6 3"/>
+    <path d="M41 14L51 14L51 27L41 27Z" class="ic-sky" fill="none" stroke="#014D73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.6 3"/>
+  </g>
+</svg>

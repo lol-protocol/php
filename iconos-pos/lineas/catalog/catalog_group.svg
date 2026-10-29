@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
+  <style>
+    @supports (--a:0){
+      .icono25d .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .icono25d .ic-rose{stroke:var(--ic-rose,#82112A)}
+      .icono25d .ic-teal{stroke:var(--ic-teal,#08564F)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-amber" stroke="#7E4503"><path d="M12.4 48.2L14.2 50.6A12 12 0 0 0 33.4 36.2L31.6 33.8A12 12 0 0 0 12.4 48.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="22" cy="41" r="12" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-rose" stroke="#82112A"><path d="M32.4 48.2L34.2 50.6A12 12 0 0 0 53.4 36.2L51.6 33.8A12 12 0 0 0 32.4 48.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="42" cy="41" r="12" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-teal" stroke="#08564F"><path d="M22.4 30.2L24.2 32.6A12 12 0 0 0 43.4 18.2L41.6 15.8A12 12 0 0 0 22.4 30.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="32" cy="23" r="12" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+</svg>

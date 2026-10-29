@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
+  <style>
+    @supports (--a:0){
+      .icono25d .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .icono25d .ic-green{stroke:var(--ic-green,#0D5F2B)}
+      .icono25d .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .icono25d .ic-rose{stroke:var(--ic-rose,#82112A)}
+      .icono25d .ic-sky{stroke:var(--ic-sky,#014D73)}
+      .icono25d .ic-teal{stroke:var(--ic-teal,#08564F)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-amber" stroke="#7E4503"><path d="M18.6 12.8A3 3 0 0 1 19.2 14.6L19.2 24.6A3 3 0 0 1 16.2 27.6L12.2 27.6A3 3 0 0 1 9.8 26.4L8.6 24.8A3 3 0 0 1 8 23L8 13A3 3 0 0 1 11 10L15 10A3 3 0 0 1 17.4 11.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="8" y="10" width="10" height="16" rx="3" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-rose" stroke="#82112A"><path d="M30.6 8.8A3 3 0 0 1 31.2 10.6L31.2 24.6A3 3 0 0 1 28.2 27.6L24.2 27.6A3 3 0 0 1 21.8 26.4L20.6 24.8A3 3 0 0 1 20 23L20 9A3 3 0 0 1 23 6L27 6A3 3 0 0 1 29.4 7.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="20" y="6" width="10" height="20" rx="3" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-teal" stroke="#08564F"><path d="M41.6 13.8A3 3 0 0 1 42.2 15.6L42.2 24.6A3 3 0 0 1 39.2 27.6L36.2 27.6A3 3 0 0 1 33.8 26.4L32.6 24.8A3 3 0 0 1 32 23L32 14A3 3 0 0 1 35 11L38 11A3 3 0 0 1 40.4 12.2Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="32" y="11" width="9" height="15" rx="3" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-sky" stroke="#014D73"><path d="M46.48 26.8A4 4 0 0 1 47.16 30.17L43.66 44.17A4 4 0 0 1 39.78 47.2L17.02 47.2A4 4 0 0 1 13.82 45.6L11.42 42.4A4 4 0 0 1 10.74 40.97L7.24 26.97A4 4 0 0 1 11.12 22L40.88 22A4 4 0 0 1 44.08 23.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.24 26.97A4 4 0 0 1 11.12 22L40.88 22A4 4 0 0 1 44.76 26.97L41.26 40.97A4 4 0 0 1 37.38 44L14.62 44A4 4 0 0 1 10.74 40.97Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-green" stroke="#0D5F2B"><path d="M40.12 51.16L41.56 53.08A8.6 8.6 0 0 0 55.32 42.76L53.88 40.84A8.6 8.6 0 0 0 40.12 51.16Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="47" cy="46" r="8.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M42.8 46H51.2M47 41.8V50.2" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

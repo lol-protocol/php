@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_checkout_payment_indigo_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8F8F8F"/>
+      <stop offset="1" stop-color="#5B5B5B"/>
+    </linearGradient>
+    <linearGradient id="grad_checkout_payment_amber_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#AEAEAE"/>
+      <stop offset="1" stop-color="#878787"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="33.2" cy="54.6" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M59.2 20.6A6 6 0 0 1 60.4 24.2L60.4 46.2A6 6 0 0 1 54.4 52.2L14.4 52.2A6 6 0 0 1 9.6 49.8L7.38 46.84A6 6 0 0 1 6.18 43.24L6.18 21.24A6 6 0 0 1 12.18 15.24L52.18 15.24A6 6 0 0 1 56.98 17.64Z" fill="#353535"/><rect x="6" y="15" width="52" height="34" rx="6" fill="url(#grad_checkout_payment_indigo_g)"/></g>
+    <g><rect x="12" y="34" width="13" height="9" rx="2.5" fill="url(#grad_checkout_payment_amber_g)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M10 26H54" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

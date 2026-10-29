@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Catálogo abstracto del punto de venta: catálogo, pedidos y cuenta del cliente, con la gramática de biblioteca y genealogía."""
+"""Catálogo abstracto del punto de venta: catálogo, pedidos, cuenta, carrito y pago, con la gramática de biblioteca y genealogía."""
+import comunes
 from kit import catalog, volume
-from lib import Block, Disc
+from lib import Block, Disc, RPoly
 
 ICONS, reg, new = catalog()
 
@@ -59,3 +60,91 @@ ic.ring(17, 39, 7.5, tone='teal', ink='teal', w=3)
 ic.solid(Disc(17, 25, 6), 'teal', d=2.2)
 ic.ring(43, 39, 10, tone='orange', ink='orange', w=3.2)
 ic.solid(Disc(43, 23, 8), 'orange', d=2.8)
+
+# colección: varios productos juntos, dentro de un marco discontinuo
+ic = new('catalog_collection')
+ic.poly([(7, 9), (57, 9), (57, 55), (7, 55)], True, tone='slate', ink='slate', w=2.2, dash='3.5 3.8', behind=True)
+for x, y, hue in ((13, 15, 'amber'), (34, 15, 'teal'), (13, 34, 'rose'), (34, 34, 'indigo')):
+    ic.solid(Block(x, y, 17, 15, r=4), hue, d=2.4)
+
+# etiqueta: un rótulo con su agujero
+ic = new('catalog_tag')
+ic.solid(RPoly([(8, 18), (36, 18), (56, 32), (36, 46), (8, 46)], r=3), 'teal', d=4)
+ic.ring(19, 32, 3.4, w=2.8)
+
+# grupo: productos que van juntos, tres discos que se tocan
+ic = new('catalog_group')
+ic.solid(Disc(22, 41, 12), 'amber', d=3)
+ic.solid(Disc(42, 41, 12), 'rose', d=3)
+ic.solid(Disc(32, 23, 12), 'teal', d=3)
+
+# devolución: el volumen y el arco que vuelve hacia atrás
+ic = new('order_return')
+volume(ic, 'amber', 18, 28, 28, 24, d=4, r=5)
+ic.arc(32, 31, 18, 190, 350, tone='orange', ink='orange', w=4.2)
+ic.solid(Disc(14.2, 28, 4.6), 'orange', d=1.8)
+
+
+# --------------------------------------------------------------------------- cart_: el carrito
+def _basket(ic, small, items):
+    """La cesta (un trapecio) con los productos que asoman por arriba; small deja sitio a la insignia de una acción."""
+    for x, y, w, h, hue in items:
+        ic.solid(Block(x, y, w, h, r=3), hue, d=2)
+    top, bottom, left, right = (22, 44, 6, 46) if small else (26, 52, 7, 57)
+    ic.solid(RPoly([(left, top), (right, top), (right - 5.5, bottom), (left + 5.5, bottom)], r=4), 'sky', d=4)
+
+
+def _badge(ic, hue, symbol):
+    ic.solid(Disc(47, 46, 8.6), hue, d=2.4)
+    symbol(47, 46)
+
+
+ITEMS = ((14, 12, 12, 18, 'amber'), (28, 8, 12, 22, 'rose'), (41, 14, 10, 16, 'teal'))
+# la acción se lee también por lo que hay en la cesta: uno más al añadir, uno solo al quitar
+ADDED_ITEMS = ((8, 10, 10, 16, 'amber'), (20, 6, 10, 20, 'rose'), (32, 11, 9, 15, 'teal'))
+SMALL_ITEMS = ((11, 9, 11, 17, 'amber'), (25, 6, 11, 20, 'rose'))
+LAST_ITEM = ((18, 8, 11, 18, 'rose'),)
+
+ic = new('cart_items')
+_basket(ic, False, ITEMS)
+
+ic = new('cart_add')
+_basket(ic, True, ADDED_ITEMS)
+_badge(ic, 'green', lambda x, y: ic.plus(x, y, 4.2, w=2.8))
+
+ic = new('cart_remove')
+_basket(ic, True, LAST_ITEM)
+_badge(ic, 'red', lambda x, y: ic.line(x - 4.6, y, x + 4.6, y, w=3))
+
+ic = new('cart_update')
+_basket(ic, True, SMALL_ITEMS)
+_badge(ic, 'amber', lambda x, y: [ic.arc(x, y, 4.3, a0, a0 + 130, w=2.2) for a0 in (-150, 30)])
+
+# vaciar: la cesta sin nada y los contornos discontinuos de lo que había
+ic = new('cart_clear')
+_basket(ic, False, ())
+for x, y, w, h in ((14, 12, 12, 18), (28, 8, 12, 22), (41, 14, 10, 16)):
+    ic.poly([(x, y), (x + w, y), (x + w, y + h - 3), (x, y + h - 3)], True, tone='sky', ink='sky', w=2, dash='2.6 3')
+
+
+# --------------------------------------------------------------------------- checkout_: el pago
+# envío: el paquete y su flecha
+ic = new('checkout_shipping')
+volume(ic, 'amber', 7, 16, 28, 30, d=5, r=5)
+ic.arrow(40, 31, 57, 31, head=5, tone='sky', ink='sky', w=3.6)
+ic.mark('M41 22h8M41 40h8', tone='sky', ink='sky', w=2.6, op=0.6)
+
+# pago: una tarjeta con su banda y su chip
+ic = new('checkout_payment')
+ic.solid(Block(6, 15, 52, 34, r=6), 'indigo', d=4)
+ic.solid(Block(12, 34, 13, 9, r=2.5), 'amber', d=0)
+ic.mark('M10 26H54', w=6)
+
+# confirmar: el pedido con la insignia verde de visto bueno
+ic = new('checkout_confirm')
+volume(ic, 'amber', 9, 10, 36, 36, d=5, r=6)
+ic.solid(Disc(45, 43, 11), 'green', d=2.6)
+ic.check(45, 43, 5.5, w=3.4)
+
+# los que se llaman igual en otro set, definidos una vez en comunes.py
+ICONS.extend(comunes.for_set('pos'))

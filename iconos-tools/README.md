@@ -11,9 +11,9 @@ README para qué iconos tiene cada uno y cómo usarlos) y la galería compartida
   (forma, color, variantes).
 - `lib.py` / `kit.py`: piezas comunes a los sets (primitivas SVG, paleta,
   composición, y `catalog()`, el registro de iconos que usa cada módulo de set).
-- `comunes.py`: los iconos que se llaman igual en los dos sets (`ui_profile`,
-  `ui_menu`, `action_filter`...), definidos una vez y que los dos sets incluyen,
-  para que no se separen.
+- `comunes.py`: los iconos que se llaman igual en más de un set (`ui_profile`,
+  `ui_menu`, `action_filter`, `action_search`...), definidos una vez y que cada
+  set incluye según su tabla `USADO_EN`, para que no se separen.
 - `catalogo.py`: lo que comparten el generador y el validador (variantes,
   prefijos que admite cada set y etiqueta de cada prefijo en la galería). Los
   grupos de cada set salen en la galería en el orden de sus prefijos.
@@ -103,7 +103,8 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Seis detalles:
 
 ## Añadir un set
 
-1. Un módulo `<set>.py` con `ICONS, reg, new = catalog()` (ver `pos.py`) y sus iconos.
+1. Un módulo `<set>.py` con `ICONS, reg, new = catalog()` (ver `pos.py`) y sus iconos; si usa
+   alguno compartido, `ICONS.extend(comunes.for_set('<set>'))` y la clave del set en `comunes.USADO_EN`.
 2. Sus prefijos en `catalogo.PREFIXES` y la etiqueta de cada uno en `catalogo.GROUPS`.
 3. El set en `build.SETS`, con el mismo orden y la misma carpeta que en `PREFIXES`.
 4. La carpeta en `.github/workflows/iconos.yml`: en los filtros de rutas de `push` y de
