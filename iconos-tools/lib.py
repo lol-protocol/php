@@ -63,6 +63,17 @@ def tones(hue):
     return mix(base, '#FFFFFF', 0.32), base, mix(base, '#000000', 0.42)
 
 
+def theme_style(hues, indent=''):
+    """Líneas del <style> que deja cambiar el color de cada tono de `lineas` con --ic-<tono>; vacío si no hay tonos."""
+    if not hues:
+        return []
+    # dentro de @supports: un renderizador sin variables CSS (resvg...) se salta el bloque entero y deja los
+    # colores del atributo stroke; en un navegador la pagina puede sobrescribir --ic-<tono>. Las reglas van
+    # acotadas a la clase de la raiz: un <style> en linea vale para todo el documento
+    rules = [f'    .{SCOPE_CLASS} .ic-{h}{{stroke:var(--ic-{h},{tones(h)[2]})}}' for h in hues]
+    return [f'{indent}{line}' for line in ['<style>', '  @supports (--a:0){', *rules, '  }', '</style>']]
+
+
 # ---------------------------------------------------------------- geometria
 def _unit(v):
     n = math.hypot(*v) or 1.0
@@ -492,7 +503,9 @@ class Icon:
                 ys += [y, y + ey]
         return (min(xs), min(ys), max(xs), max(ys)) if xs else (16, 16, 48, 48)
 
-    def render(self, variant):
+    def _compose(self, variant):
+        """(tonos usados, líneas del dibujo): lo que comparten el archivo suelto (`render`) y el <symbol> del sprite
+        (`symbol`). Las líneas van sin sangría de base: quien las usa las coloca donde las necesita."""
         assert variant in VARIANTS
         lin = variant == 'lineas'
         col = gray if variant == 'gris' else (lambda c: c)
@@ -542,33 +555,38 @@ class Icon:
                 out_back.append(self._render_mark(m, lin, col, d))
 
         used = sorted(set(re.findall(r'class="ic-([a-z]+)"', ''.join(out_back + out_links + out_solids + out_marks)))) if lin else []
+        lines = []
+        if grads:
+            lines.append('<defs>')
+            for gid, (c0, c1, axis) in grads.items():
+                x1, y1, x2, y2 = (fmt(v) for v in axis)
+                lines += [f'  <linearGradient id="{gid}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}">',
+                          f'    <stop offset="0" stop-color="{c0}"/>',
+                          f'    <stop offset="1" stop-color="{c1}"/>',
+                          '  </linearGradient>']
+            lines.append('</defs>')
+        for cls, items in (('shadow', out_shadow), ('back', out_back), ('links', out_links), ('solids', out_solids), ('marks', out_marks)):
+            if items:
+                lines.append(f'<g class="{cls}">')
+                lines += [f'  {i}' for i in items]
+                lines.append('</g>')
+        return used, lines
+
+    def render(self, variant):
+        used, body = self._compose(variant)
         scope = f' class="{SCOPE_CLASS}"' if used else ''
         lines = ['<?xml version="1.0" encoding="UTF-8"?>',
                  f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"{scope}>']
-        if used:
-            # dentro de @supports: un renderizador sin variables CSS (resvg...) se salta el bloque entero y deja los
-            # colores del atributo stroke; en un navegador la pagina puede sobrescribir --ic-<tono>. Las reglas van
-            # acotadas a la clase de la raiz: un <style> en linea vale para todo el documento
-            lines.append('  <style>')
-            lines.append('    @supports (--a:0){')
-            lines += [f'      .{SCOPE_CLASS} .ic-{h}{{stroke:var(--ic-{h},{tones(h)[2]})}}' for h in used]
-            lines += ['    }', '  </style>']
-        if grads:
-            lines.append('  <defs>')
-            for gid, (c0, c1, axis) in grads.items():
-                x1, y1, x2, y2 = (fmt(v) for v in axis)
-                lines += [f'    <linearGradient id="{gid}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}">',
-                          f'      <stop offset="0" stop-color="{c0}"/>',
-                          f'      <stop offset="1" stop-color="{c1}"/>',
-                          '    </linearGradient>']
-            lines.append('  </defs>')
-        for cls, items in (('shadow', out_shadow), ('back', out_back), ('links', out_links), ('solids', out_solids), ('marks', out_marks)):
-            if items:
-                lines.append(f'  <g class="{cls}">')
-                lines += [f'    {i}' for i in items]
-                lines.append('  </g>')
+        lines += theme_style(used, '  ')
+        lines += [f'  {line}' for line in body]
         lines.append('</svg>')
         return '\n'.join(lines) + '\n'
+
+    def symbol(self, variant):
+        """(tonos usados, texto) del icono como <symbol id="<nombre>"> para un sprite (ver `sprite`): mismo dibujo que
+        `render`, sin <style>."""
+        used, body = self._compose(variant)
+        return used, '\n'.join([f'  <symbol id="{self.stem}" viewBox="0 0 64 64">', *[f'    {line}' for line in body], '  </symbol>'])
 
     # ----- piezas
     def _silhouettes(self):
@@ -693,3 +711,15 @@ class Icon:
             attrs += f' opacity="{fmt(m["op"])}"'
         return f'<path d="{d or m["d"]}" {attrs}/>'
 
+
+def sprite(icons, variant):
+    """Todos los iconos de un set, en una variante, como un solo SVG de <symbol> (uno por icono, con su nombre de id)
+    para pintarlos con <use href="sprite.svg#nombre">. En `lineas` lleva un solo <style> con la unión de los tonos."""
+    parts = [(hues, text) for _, hues, text in sorted((i.stem, *i.symbol(variant)) for i in icons)]
+    used = sorted({h for hues, _ in parts for h in hues})
+    scope = f' class="{SCOPE_CLASS}"' if used else ''
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>', f'<svg xmlns="http://www.w3.org/2000/svg"{scope}>']
+    lines += theme_style(used, '  ')
+    lines += [text for _, text in parts]
+    lines.append('</svg>')
+    return '\n'.join(lines) + '\n'

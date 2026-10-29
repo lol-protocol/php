@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="account_addresses" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_account_addresses_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+      <linearGradient id="grad_account_addresses_orange" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#F18D5A"/>
+        <stop offset="1" stop-color="#EA580C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.84" cy="35.64" rx="19.17" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M12.38 28.84L13.52 30.36A6 6 0 0 0 23.12 23.16L21.98 21.64A6 6 0 0 0 12.38 28.84Z" fill="#08564F"/><circle cx="17" cy="25" r="6" fill="url(#grad_account_addresses_teal)"/></g>
+      <g><path d="M36.78 28.04L38.28 30.04A8 8 0 0 0 51.08 20.44L49.58 18.44A8 8 0 0 0 36.78 28.04Z" fill="#883307"/><circle cx="43" cy="23" r="8" fill="url(#grad_account_addresses_orange)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M9.5 39a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0Z" fill="none" stroke="#0D9488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M33 39a10 10 0 1 0 20 0a10 10 0 1 0 -20 0Z" fill="none" stroke="#EA580C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="account_wishlist" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_account_wishlist_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="55.2" rx="18.22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.2 17.6A7 7 0 0 1 52.6 21.8L52.6 45.8A7 7 0 0 1 45.6 52.8L23.6 52.8A7 7 0 0 1 18 50L14.58 45.44A7 7 0 0 1 13.18 41.24L13.18 17.24A7 7 0 0 1 20.18 10.24L42.18 10.24A7 7 0 0 1 47.78 13.04Z" fill="#82112A"/><rect x="13" y="10" width="36" height="38" rx="7" fill="url(#grad_account_wishlist_rose)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M31 20L40 29L31 40L22 29Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="action_search" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_search_indigo" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8781ED"/>
+        <stop offset="1" stop-color="#4F46E5"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="43.72" cy="52.82" rx="8" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M38.78 46.54L40.04 48.22A5.5 5.5 0 0 0 48.84 41.62L47.58 39.94A5.5 5.5 0 0 0 38.78 46.54Z" fill="#2E2985"/><circle cx="43" cy="43" r="5.5" fill="url(#grad_action_search_indigo)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15 26a12 12 0 1 0 24 0a12 12 0 1 0 -24 0Z" fill="none" stroke="#4F46E5" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="cart_add" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_cart_add_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_add_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_add_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_add_sky" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#53ABD9"/>
+        <stop offset="1" stop-color="#0284C7"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_add_green" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#61C084"/>
+        <stop offset="1" stop-color="#16A34A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.08" cy="58.92" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M18.6 12.8A3 3 0 0 1 19.2 14.6L19.2 24.6A3 3 0 0 1 16.2 27.6L12.2 27.6A3 3 0 0 1 9.8 26.4L8.78 25.04A3 3 0 0 1 8.18 23.24L8.18 13.24A3 3 0 0 1 11.18 10.24L15.18 10.24A3 3 0 0 1 17.58 11.44Z" fill="#7E4503"/><rect x="8" y="10" width="10" height="16" rx="3" fill="url(#grad_cart_add_amber)"/></g>
+      <g><path d="M30.6 8.8A3 3 0 0 1 31.2 10.6L31.2 24.6A3 3 0 0 1 28.2 27.6L24.2 27.6A3 3 0 0 1 21.8 26.4L20.78 25.04A3 3 0 0 1 20.18 23.24L20.18 9.24A3 3 0 0 1 23.18 6.24L27.18 6.24A3 3 0 0 1 29.58 7.44Z" fill="#82112A"/><rect x="20" y="6" width="10" height="20" rx="3" fill="url(#grad_cart_add_rose)"/></g>
+      <g><path d="M41.6 13.8A3 3 0 0 1 42.2 15.6L42.2 24.6A3 3 0 0 1 39.2 27.6L36.2 27.6A3 3 0 0 1 33.8 26.4L32.78 25.04A3 3 0 0 1 32.18 23.24L32.18 14.24A3 3 0 0 1 35.18 11.24L38.18 11.24A3 3 0 0 1 40.58 12.44Z" fill="#08564F"/><rect x="32" y="11" width="9" height="15" rx="3" fill="url(#grad_cart_add_teal)"/></g>
+      <g><path d="M46.48 26.8A4 4 0 0 1 47.16 30.17L43.66 44.17A4 4 0 0 1 39.78 47.2L17.02 47.2A4 4 0 0 1 13.82 45.6L11.6 42.64A4 4 0 0 1 10.92 41.21L7.42 27.21A4 4 0 0 1 11.3 22.24L41.06 22.24A4 4 0 0 1 44.26 23.84Z" fill="#014D73"/><path d="M7.24 26.97A4 4 0 0 1 11.12 22L40.88 22A4 4 0 0 1 44.76 26.97L41.26 40.97A4 4 0 0 1 37.38 44L14.62 44A4 4 0 0 1 10.74 40.97Z" fill="url(#grad_cart_add_sky)"/></g>
+      <g><path d="M40.3 51.4L41.56 53.08A8.6 8.6 0 0 0 55.32 42.76L54.06 41.08A8.6 8.6 0 0 0 40.3 51.4Z" fill="#0D5F2B"/><circle cx="47" cy="46" r="8.6" fill="url(#grad_cart_add_green)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M42.8 46H51.2M47 41.8V50.2" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="cart_clear" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_cart_clear_sky" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#53ABD9"/>
+        <stop offset="1" stop-color="#0284C7"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.2" cy="57.6" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M57.67 30.8A4 4 0 0 1 58.38 34.03L54.57 52.03A4 4 0 0 1 50.66 55.2L18.14 55.2A4 4 0 0 1 14.94 53.6L12.72 50.64A4 4 0 0 1 12.01 49.07L8.2 31.07A4 4 0 0 1 12.11 26.24L52.25 26.24A4 4 0 0 1 55.45 27.84Z" fill="#014D73"/><path d="M8.02 30.83A4 4 0 0 1 11.93 26L52.07 26A4 4 0 0 1 55.98 30.83L52.17 48.83A4 4 0 0 1 48.26 52L15.74 52A4 4 0 0 1 11.83 48.83Z" fill="url(#grad_cart_clear_sky)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M14 12L26 12L26 27L14 27Z" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.6 3"/>
+      <path d="M28 8L40 8L40 27L28 27Z" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.6 3"/>
+      <path d="M41 14L51 14L51 27L41 27Z" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.6 3"/>
+    </g>
+  </symbol>
+  <symbol id="cart_items" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_cart_items_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_items_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_items_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_items_sky" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#53ABD9"/>
+        <stop offset="1" stop-color="#0284C7"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.2" cy="57.6" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M26.6 14.8A3 3 0 0 1 27.2 16.6L27.2 28.6A3 3 0 0 1 24.2 31.6L18.2 31.6A3 3 0 0 1 15.8 30.4L14.78 29.04A3 3 0 0 1 14.18 27.24L14.18 15.24A3 3 0 0 1 17.18 12.24L23.18 12.24A3 3 0 0 1 25.58 13.44Z" fill="#7E4503"/><rect x="14" y="12" width="12" height="18" rx="3" fill="url(#grad_cart_items_amber)"/></g>
+      <g><path d="M40.6 10.8A3 3 0 0 1 41.2 12.6L41.2 28.6A3 3 0 0 1 38.2 31.6L32.2 31.6A3 3 0 0 1 29.8 30.4L28.78 29.04A3 3 0 0 1 28.18 27.24L28.18 11.24A3 3 0 0 1 31.18 8.24L37.18 8.24A3 3 0 0 1 39.58 9.44Z" fill="#82112A"/><rect x="28" y="8" width="12" height="22" rx="3" fill="url(#grad_cart_items_rose)"/></g>
+      <g><path d="M51.6 16.8A3 3 0 0 1 52.2 18.6L52.2 28.6A3 3 0 0 1 49.2 31.6L45.2 31.6A3 3 0 0 1 42.8 30.4L41.78 29.04A3 3 0 0 1 41.18 27.24L41.18 17.24A3 3 0 0 1 44.18 14.24L48.18 14.24A3 3 0 0 1 50.58 15.44Z" fill="#08564F"/><rect x="41" y="14" width="10" height="16" rx="3" fill="url(#grad_cart_items_teal)"/></g>
+      <g><path d="M57.67 30.8A4 4 0 0 1 58.38 34.03L54.57 52.03A4 4 0 0 1 50.66 55.2L18.14 55.2A4 4 0 0 1 14.94 53.6L12.72 50.64A4 4 0 0 1 12.01 49.07L8.2 31.07A4 4 0 0 1 12.11 26.24L52.25 26.24A4 4 0 0 1 55.45 27.84Z" fill="#014D73"/><path d="M8.02 30.83A4 4 0 0 1 11.93 26L52.07 26A4 4 0 0 1 55.98 30.83L52.17 48.83A4 4 0 0 1 48.26 52L15.74 52A4 4 0 0 1 11.83 48.83Z" fill="url(#grad_cart_items_sky)"/></g>
+    </g>
+  </symbol>
+  <symbol id="cart_remove" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_cart_remove_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_remove_sky" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#53ABD9"/>
+        <stop offset="1" stop-color="#0284C7"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_remove_red" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E76B6B"/>
+        <stop offset="1" stop-color="#DC2626"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.08" cy="58.92" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M29.6 10.8A3 3 0 0 1 30.2 12.6L30.2 24.6A3 3 0 0 1 27.2 27.6L22.2 27.6A3 3 0 0 1 19.8 26.4L18.78 25.04A3 3 0 0 1 18.18 23.24L18.18 11.24A3 3 0 0 1 21.18 8.24L26.18 8.24A3 3 0 0 1 28.58 9.44Z" fill="#82112A"/><rect x="18" y="8" width="11" height="18" rx="3" fill="url(#grad_cart_remove_rose)"/></g>
+      <g><path d="M46.48 26.8A4 4 0 0 1 47.16 30.17L43.66 44.17A4 4 0 0 1 39.78 47.2L17.02 47.2A4 4 0 0 1 13.82 45.6L11.6 42.64A4 4 0 0 1 10.92 41.21L7.42 27.21A4 4 0 0 1 11.3 22.24L41.06 22.24A4 4 0 0 1 44.26 23.84Z" fill="#014D73"/><path d="M7.24 26.97A4 4 0 0 1 11.12 22L40.88 22A4 4 0 0 1 44.76 26.97L41.26 40.97A4 4 0 0 1 37.38 44L14.62 44A4 4 0 0 1 10.74 40.97Z" fill="url(#grad_cart_remove_sky)"/></g>
+      <g><path d="M40.3 51.4L41.56 53.08A8.6 8.6 0 0 0 55.32 42.76L54.06 41.08A8.6 8.6 0 0 0 40.3 51.4Z" fill="#801616"/><circle cx="47" cy="46" r="8.6" fill="url(#grad_cart_remove_red)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M42.4 46L51.6 46" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="cart_update" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_cart_update_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_update_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+      <linearGradient id="grad_cart_update_sky" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#53ABD9"/>
+        <stop offset="1" stop-color="#0284C7"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.08" cy="58.92" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M22.6 11.8A3 3 0 0 1 23.2 13.6L23.2 24.6A3 3 0 0 1 20.2 27.6L15.2 27.6A3 3 0 0 1 12.8 26.4L11.78 25.04A3 3 0 0 1 11.18 23.24L11.18 12.24A3 3 0 0 1 14.18 9.24L19.18 9.24A3 3 0 0 1 21.58 10.44Z" fill="#7E4503"/><rect x="11" y="9" width="11" height="17" rx="3" fill="url(#grad_cart_update_amber)"/></g>
+      <g><path d="M36.6 8.8A3 3 0 0 1 37.2 10.6L37.2 24.6A3 3 0 0 1 34.2 27.6L29.2 27.6A3 3 0 0 1 26.8 26.4L25.78 25.04A3 3 0 0 1 25.18 23.24L25.18 9.24A3 3 0 0 1 28.18 6.24L33.18 6.24A3 3 0 0 1 35.58 7.44Z" fill="#82112A"/><rect x="25" y="6" width="11" height="20" rx="3" fill="url(#grad_cart_update_rose)"/></g>
+      <g><path d="M46.48 26.8A4 4 0 0 1 47.16 30.17L43.66 44.17A4 4 0 0 1 39.78 47.2L17.02 47.2A4 4 0 0 1 13.82 45.6L11.6 42.64A4 4 0 0 1 10.92 41.21L7.42 27.21A4 4 0 0 1 11.3 22.24L41.06 22.24A4 4 0 0 1 44.26 23.84Z" fill="#014D73"/><path d="M7.24 26.97A4 4 0 0 1 11.12 22L40.88 22A4 4 0 0 1 44.76 26.97L41.26 40.97A4 4 0 0 1 37.38 44L14.62 44A4 4 0 0 1 10.74 40.97Z" fill="url(#grad_cart_update_sky)"/></g>
+      <g><path d="M40.3 51.4L41.56 53.08A8.6 8.6 0 0 0 55.32 42.76L54.06 41.08A8.6 8.6 0 0 0 40.3 51.4Z" fill="#7E4503"/><circle cx="47" cy="46" r="8.6" fill="url(#grad_cart_update_amber)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M43.28 43.85A4.3 4.3 0 0 1 51.04 44.53" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M50.72 48.15A4.3 4.3 0 0 1 42.96 47.47" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="catalog_attributes" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_catalog_attributes_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_attributes_mist" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#DCE2EB"/>
+        <stop offset="1" stop-color="#CBD5E1"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_attributes_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_attributes_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="30.6" cy="55.16" rx="20.79" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M9.38 16.84L10.52 18.36A6 6 0 0 0 20.12 11.16L18.98 9.64A6 6 0 0 0 9.38 16.84Z" fill="#08564F"/><circle cx="14" cy="13" r="6" fill="url(#grad_catalog_attributes_teal)"/></g>
+      <g><path d="M52.52 12.56A3.4 3.4 0 0 1 53.2 14.6A3.4 3.4 0 0 1 49.8 18L30.6 18A3.4 3.4 0 0 1 27.88 16.64L26.86 15.28A3.4 3.4 0 0 1 26.18 13.24A3.4 3.4 0 0 1 29.58 9.84L48.78 9.84A3.4 3.4 0 0 1 51.5 11.2Z" fill="#767C82"/><rect x="26" y="9.6" width="26" height="6.8" rx="3.4" fill="url(#grad_catalog_attributes_mist)"/></g>
+      <g><path d="M9.38 32.84L10.52 34.36A6 6 0 0 0 20.12 27.16L18.98 25.64A6 6 0 0 0 9.38 32.84Z" fill="#82112A"/><circle cx="14" cy="29" r="6" fill="url(#grad_catalog_attributes_rose)"/></g>
+      <g><path d="M44.52 28.56A3.4 3.4 0 0 1 45.2 30.6A3.4 3.4 0 0 1 41.8 34L30.6 34A3.4 3.4 0 0 1 27.88 32.64L26.86 31.28A3.4 3.4 0 0 1 26.18 29.24A3.4 3.4 0 0 1 29.58 25.84L40.78 25.84A3.4 3.4 0 0 1 43.5 27.2Z" fill="#767C82"/><rect x="26" y="25.6" width="18" height="6.8" rx="3.4" fill="url(#grad_catalog_attributes_mist)"/></g>
+      <g><path d="M9.38 48.84L10.52 50.36A6 6 0 0 0 20.12 43.16L18.98 41.64A6 6 0 0 0 9.38 48.84Z" fill="#7E4503"/><circle cx="14" cy="45" r="6" fill="url(#grad_catalog_attributes_amber)"/></g>
+      <g><path d="M48.52 44.56A3.4 3.4 0 0 1 49.2 46.6A3.4 3.4 0 0 1 45.8 50L30.6 50A3.4 3.4 0 0 1 27.88 48.64L26.86 47.28A3.4 3.4 0 0 1 26.18 45.24A3.4 3.4 0 0 1 29.58 41.84L44.78 41.84A3.4 3.4 0 0 1 47.5 43.2Z" fill="#767C82"/><rect x="26" y="41.6" width="22" height="6.8" rx="3.4" fill="url(#grad_catalog_attributes_mist)"/></g>
+    </g>
+  </symbol>
+  <symbol id="catalog_collection" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_catalog_collection_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_collection_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_collection_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_collection_indigo" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8781ED"/>
+        <stop offset="1" stop-color="#4F46E5"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.72" cy="53.32" rx="18.14" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="back">
+      <path d="M7 9L57 9L57 55L7 55Z" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3.5 3.8"/>
+    </g>
+    <g class="solids">
+      <g><path d="M30.64 18.52A4 4 0 0 1 31.44 20.92L31.44 27.92A4 4 0 0 1 27.44 31.92L18.44 31.92A4 4 0 0 1 15.24 30.32L13.98 28.64A4 4 0 0 1 13.18 26.24L13.18 19.24A4 4 0 0 1 17.18 15.24L26.18 15.24A4 4 0 0 1 29.38 16.84Z" fill="#7E4503"/><rect x="13" y="15" width="17" height="15" rx="4" fill="url(#grad_catalog_collection_amber)"/></g>
+      <g><path d="M51.64 18.52A4 4 0 0 1 52.44 20.92L52.44 27.92A4 4 0 0 1 48.44 31.92L39.44 31.92A4 4 0 0 1 36.24 30.32L34.98 28.64A4 4 0 0 1 34.18 26.24L34.18 19.24A4 4 0 0 1 38.18 15.24L47.18 15.24A4 4 0 0 1 50.38 16.84Z" fill="#08564F"/><rect x="34" y="15" width="17" height="15" rx="4" fill="url(#grad_catalog_collection_teal)"/></g>
+      <g><path d="M30.64 37.52A4 4 0 0 1 31.44 39.92L31.44 46.92A4 4 0 0 1 27.44 50.92L18.44 50.92A4 4 0 0 1 15.24 49.32L13.98 47.64A4 4 0 0 1 13.18 45.24L13.18 38.24A4 4 0 0 1 17.18 34.24L26.18 34.24A4 4 0 0 1 29.38 35.84Z" fill="#82112A"/><rect x="13" y="34" width="17" height="15" rx="4" fill="url(#grad_catalog_collection_rose)"/></g>
+      <g><path d="M51.64 37.52A4 4 0 0 1 52.44 39.92L52.44 46.92A4 4 0 0 1 48.44 50.92L39.44 50.92A4 4 0 0 1 36.24 49.32L34.98 47.64A4 4 0 0 1 34.18 45.24L34.18 38.24A4 4 0 0 1 38.18 34.24L47.18 34.24A4 4 0 0 1 50.38 35.84Z" fill="#2E2985"/><rect x="34" y="34" width="17" height="15" rx="4" fill="url(#grad_catalog_collection_indigo)"/></g>
+    </g>
+  </symbol>
+  <symbol id="catalog_group" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_catalog_group_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_group_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_group_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.9" cy="57.8" rx="21.07" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M12.58 48.44L14.2 50.6A12 12 0 0 0 33.4 36.2L31.78 34.04A12 12 0 0 0 12.58 48.44Z" fill="#7E4503"/><circle cx="22" cy="41" r="12" fill="url(#grad_catalog_group_amber)"/></g>
+      <g><path d="M32.58 48.44L34.2 50.6A12 12 0 0 0 53.4 36.2L51.78 34.04A12 12 0 0 0 32.58 48.44Z" fill="#82112A"/><circle cx="42" cy="41" r="12" fill="url(#grad_catalog_group_rose)"/></g>
+      <g><path d="M22.58 30.44L24.2 32.6A12 12 0 0 0 43.4 18.2L41.78 16.04A12 12 0 0 0 22.58 30.44Z" fill="#08564F"/><circle cx="32" cy="23" r="12" fill="url(#grad_catalog_group_teal)"/></g>
+    </g>
+  </symbol>
+  <symbol id="catalog_product" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_catalog_product_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="57.2" rx="20.06" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M53.2 19.6A7 7 0 0 1 54.6 23.8L54.6 47.8A7 7 0 0 1 47.6 54.8L21.6 54.8A7 7 0 0 1 16 52L12.58 47.44A7 7 0 0 1 11.18 43.24L11.18 19.24A7 7 0 0 1 18.18 12.24L44.18 12.24A7 7 0 0 1 49.78 15.04Z" fill="#7E4503"/><rect x="11" y="12" width="40" height="38" rx="7" fill="url(#grad_catalog_product_amber)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M36.8 21a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18 40L34 40" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    </g>
+  </symbol>
+  <symbol id="catalog_tag" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_catalog_tag_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.08" cy="51.6" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M55.57 33.4A3 3 0 0 1 54.89 37.66L39.17 48.66A3 3 0 0 1 37.45 49.2L13.4 49.2A3 3 0 0 1 11 48L8.78 45.04A3 3 0 0 1 8.18 43.24L8.18 21.24A3 3 0 0 1 11.18 18.24L35.23 18.24A3 3 0 0 1 36.95 18.78L52.67 29.78A3 3 0 0 1 53.35 30.44Z" fill="#08564F"/><path d="M8 21A3 3 0 0 1 11 18L35.05 18A3 3 0 0 1 36.77 18.54L52.49 29.54A3 3 0 0 1 52.49 34.46L36.77 45.46A3 3 0 0 1 35.05 46L11 46A3 3 0 0 1 8 43Z" fill="url(#grad_catalog_tag_teal)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15.6 32a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="catalog_variants" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_catalog_variants_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_variants_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+      <linearGradient id="grad_catalog_variants_rose" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#EB6583"/>
+        <stop offset="1" stop-color="#E11D48"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.9" cy="56.8" rx="21.99" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M32.6 32.8A6 6 0 0 1 33.8 36.4L33.8 48.4A6 6 0 0 1 27.8 54.4L15.8 54.4A6 6 0 0 1 11 52L9.38 49.84A6 6 0 0 1 8.18 46.24L8.18 34.24A6 6 0 0 1 14.18 28.24L26.18 28.24A6 6 0 0 1 30.98 30.64Z" fill="#7E4503"/><rect x="8" y="28" width="24" height="24" rx="6" fill="url(#grad_catalog_variants_amber)"/></g>
+      <g><path d="M43.6 22.8A6 6 0 0 1 44.8 26.4L44.8 38.4A6 6 0 0 1 38.8 44.4L26.8 44.4A6 6 0 0 1 22 42L20.38 39.84A6 6 0 0 1 19.18 36.24L19.18 24.24A6 6 0 0 1 25.18 18.24L37.18 18.24A6 6 0 0 1 41.98 20.64Z" fill="#08564F"/><rect x="19" y="18" width="24" height="24" rx="6" fill="url(#grad_catalog_variants_teal)"/></g>
+      <g><path d="M54.6 12.8A6 6 0 0 1 55.8 16.4L55.8 28.4A6 6 0 0 1 49.8 34.4L37.8 34.4A6 6 0 0 1 33 32L31.38 29.84A6 6 0 0 1 30.18 26.24L30.18 14.24A6 6 0 0 1 36.18 8.24L48.18 8.24A6 6 0 0 1 52.98 10.64Z" fill="#82112A"/><rect x="30" y="8" width="24" height="24" rx="6" fill="url(#grad_catalog_variants_rose)"/></g>
+    </g>
+  </symbol>
+  <symbol id="checkout_confirm" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_checkout_confirm_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+      <linearGradient id="grad_checkout_confirm_green" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#61C084"/>
+        <stop offset="1" stop-color="#16A34A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.28" cy="58.48" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M46.8 16.4A6 6 0 0 1 48 20L48 44A6 6 0 0 1 42 50L18 50A6 6 0 0 1 13.2 47.6L10.38 43.84A6 6 0 0 1 9.18 40.24L9.18 16.24A6 6 0 0 1 15.18 10.24L39.18 10.24A6 6 0 0 1 43.98 12.64Z" fill="#7E4503"/><rect x="9" y="10" width="36" height="36" rx="6" fill="url(#grad_checkout_confirm_amber)"/></g>
+      <g><path d="M36.38 49.84L37.76 51.68A11 11 0 0 0 55.36 38.48L53.98 36.64A11 11 0 0 0 36.38 49.84Z" fill="#0D5F2B"/><circle cx="45" cy="43" r="11" fill="url(#grad_checkout_confirm_green)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M39.5 43.27L43.35 46.85L50.5 39.15" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="checkout_payment" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_checkout_payment_indigo" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8781ED"/>
+        <stop offset="1" stop-color="#4F46E5"/>
+      </linearGradient>
+      <linearGradient id="grad_checkout_payment_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.2" cy="54.6" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M59.2 20.6A6 6 0 0 1 60.4 24.2L60.4 46.2A6 6 0 0 1 54.4 52.2L14.4 52.2A6 6 0 0 1 9.6 49.8L7.38 46.84A6 6 0 0 1 6.18 43.24L6.18 21.24A6 6 0 0 1 12.18 15.24L52.18 15.24A6 6 0 0 1 56.98 17.64Z" fill="#2E2985"/><rect x="6" y="15" width="52" height="34" rx="6" fill="url(#grad_checkout_payment_indigo)"/></g>
+      <g><rect x="12" y="34" width="13" height="9" rx="2.5" fill="url(#grad_checkout_payment_amber)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M10 26H54" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="checkout_shipping" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_checkout_shipping_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="22.5" cy="52.4" rx="14.26" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M37 22A5 5 0 0 1 38 25L38 45A5 5 0 0 1 33 50L15 50A5 5 0 0 1 11 48L8.18 44.24A5 5 0 0 1 7.18 41.24L7.18 21.24A5 5 0 0 1 12.18 16.24L30.18 16.24A5 5 0 0 1 34.18 18.24Z" fill="#7E4503"/><rect x="7" y="16" width="28" height="30" rx="5" fill="url(#grad_checkout_shipping_amber)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M40 31L57 31M52 35L57 31L52 27" fill="none" stroke="#0284C7" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M41 22h8M41 40h8" fill="none" stroke="#0284C7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+    </g>
+  </symbol>
+  <symbol id="order_history" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_order_history_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+      <linearGradient id="grad_order_history_orange" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#F18D5A"/>
+        <stop offset="1" stop-color="#EA580C"/>
+      </linearGradient>
+      <linearGradient id="grad_order_history_indigo" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8781ED"/>
+        <stop offset="1" stop-color="#4F46E5"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.9" cy="57.8" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M31 19A4 4 0 0 1 31.8 21.4L31.8 30.4A4 4 0 0 1 27.8 34.4L18.8 34.4A4 4 0 0 1 15.6 32.8L13.98 30.64A4 4 0 0 1 13.18 28.24L13.18 19.24A4 4 0 0 1 17.18 15.24L26.18 15.24A4 4 0 0 1 29.38 16.84Z" fill="#7E4503"/><rect x="13" y="15" width="17" height="17" rx="4" fill="url(#grad_order_history_amber)"/></g>
+      <g><path d="M52 26A4 4 0 0 1 52.8 28.4L52.8 37.4A4 4 0 0 1 48.8 41.4L39.8 41.4A4 4 0 0 1 36.6 39.8L34.98 37.64A4 4 0 0 1 34.18 35.24L34.18 26.24A4 4 0 0 1 38.18 22.24L47.18 22.24A4 4 0 0 1 50.38 23.84Z" fill="#883307"/><rect x="34" y="22" width="17" height="17" rx="4" fill="url(#grad_order_history_orange)"/></g>
+      <g><path d="M57.5 45A6.5 6.5 0 0 1 58.8 48.9A6.5 6.5 0 0 1 52.3 55.4L15.3 55.4A6.5 6.5 0 0 1 10.1 52.8L8.48 50.64A6.5 6.5 0 0 1 7.18 46.74A6.5 6.5 0 0 1 13.68 40.24L50.68 40.24A6.5 6.5 0 0 1 55.88 42.84Z" fill="#2E2985"/><rect x="7" y="40" width="50" height="13" rx="6.5" fill="url(#grad_order_history_indigo)"/></g>
+    </g>
+  </symbol>
+  <symbol id="order_invoice" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_order_invoice_teal" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5AB6AE"/>
+        <stop offset="1" stop-color="#0D9488"/>
+      </linearGradient>
+      <linearGradient id="grad_order_invoice_red" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E76B6B"/>
+        <stop offset="1" stop-color="#DC2626"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.85" cy="59.5" rx="20.1" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52 13A7 7 0 0 1 53.4 17.2L53.4 49.2A7 7 0 0 1 46.4 56.2L20.4 56.2A7 7 0 0 1 14.8 53.4L12.58 50.44A7 7 0 0 1 11.18 46.24L11.18 14.24A7 7 0 0 1 18.18 7.24L44.18 7.24A7 7 0 0 1 49.78 10.04Z" fill="#08564F"/><rect x="11" y="7" width="40" height="46" rx="7" fill="url(#grad_order_invoice_teal)"/></g>
+      <g><path d="M41.98 53.14L43 54.5A6.5 6.5 0 0 0 53.4 46.7L52.38 45.34A6.5 6.5 0 0 0 41.98 53.14Z" fill="#801616"/><circle cx="47" cy="49" r="6.5" fill="url(#grad_order_invoice_red)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 17H27M35 17H43M19 26H27M35 26H43" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19 40L43 40" fill="none" stroke="#FFFFFF" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="order_return" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_order_return_amber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E5A356"/>
+        <stop offset="1" stop-color="#D97706"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="45.5" cy="52.4" rx="14.26" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M60 22A5 5 0 0 1 61 25L61 45A5 5 0 0 1 56 50L38 50A5 5 0 0 1 34 48L31.18 44.24A5 5 0 0 1 30.18 41.24L30.18 21.24A5 5 0 0 1 35.18 16.24L53.18 16.24A5 5 0 0 1 57.18 18.24Z" fill="#7E4503"/><rect x="30" y="16" width="28" height="30" rx="5" fill="url(#grad_order_return_amber)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M24 31L7 31M12 27L7 31L12 35" fill="none" stroke="#EA580C" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 22h8M15 40h8" fill="none" stroke="#EA580C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+    </g>
+  </symbol>
+  <symbol id="order_tracking" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_order_tracking_green" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#61C084"/>
+        <stop offset="1" stop-color="#16A34A"/>
+      </linearGradient>
+      <linearGradient id="grad_order_tracking_orange" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#F18D5A"/>
+        <stop offset="1" stop-color="#EA580C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="25.24" cy="55.6" rx="17.33" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="links">
+      <path d="M11 47L11 22L35 22" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+      <path d="M35 22L35 47L52 47" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" stroke-dasharray="0.1 5.2"/>
+    </g>
+    <g class="solids">
+      <g><path d="M7.5 50L8.52 51.36A4.6 4.6 0 0 0 15.88 45.84L14.86 44.48A4.6 4.6 0 0 0 7.5 50Z" fill="#0D5F2B"/><circle cx="11" cy="47" r="4.6" fill="url(#grad_order_tracking_green)"/></g>
+      <g><path d="M7.5 25L8.52 26.36A4.6 4.6 0 0 0 15.88 20.84L14.86 19.48A4.6 4.6 0 0 0 7.5 25Z" fill="#0D5F2B"/><circle cx="11" cy="22" r="4.6" fill="url(#grad_order_tracking_green)"/></g>
+      <g><path d="M29.26 26.68L30.76 28.68A7.4 7.4 0 0 0 42.6 19.8L41.1 17.8A7.4 7.4 0 0 0 29.26 26.68Z" fill="#883307"/><circle cx="35" cy="22" r="7.4" fill="url(#grad_order_tracking_orange)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M47 47a5 5 0 1 0 10 0a5 5 0 1 0 -10 0Z" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.2"/>
+    </g>
+  </symbol>
+  <symbol id="ui_profile" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_profile_ink" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#828B99"/>
+        <stop offset="1" stop-color="#475569"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="52.1" rx="16.28" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M17.98 40.14L20.2 43.1A16.5 16.5 0 0 0 46.6 23.3L44.38 20.34A16.5 16.5 0 0 0 17.98 40.14Z" fill="#29313D"/><circle cx="31" cy="30" r="16.5" fill="url(#grad_ui_profile_ink)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M25.9 30a5.1 5.1 0 1 0 10.2 0a5.1 5.1 0 1 0 -10.2 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="ui_settings" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_settings_ink" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#828B99"/>
+        <stop offset="1" stop-color="#475569"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.7" cy="54.6" rx="19.04" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.5 17A9.5 9.5 0 0 1 53.4 22.7L53.4 42.7A9.5 9.5 0 0 1 43.9 52.2L23.9 52.2A9.5 9.5 0 0 1 16.3 48.4L14.08 45.44A9.5 9.5 0 0 1 12.18 39.74L12.18 19.74A9.5 9.5 0 0 1 21.68 10.24L41.68 10.24A9.5 9.5 0 0 1 49.28 14.04Z" fill="#29313D"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_settings_ink)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 21.5H23.9M31.1 21.5H44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.1 21.5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19 29.5H31.9M39.1 29.5H44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M33.1 29.5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19 37.5H26.9M34.1 37.5H44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.1 37.5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+</svg>
