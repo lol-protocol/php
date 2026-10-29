@@ -32,10 +32,13 @@ final class FinnishInflection implements TopicInflection
         return array_values(array_unique([$lemma, ...$forms]));
     }
 
-    /** @param list<string> $endings @return list<string> */
+    /**
+     * @param list<string> $endings
+     * @return list<string>
+     */
     private function plain(string $stem, array $endings, bool $front): array
     {
-        return array_values(array_map(fn(string $e): string => $stem . $this->harmony($e, $front), $endings));
+        return array_map(fn(string $e): string => $stem . $this->harmony($e, $front), $endings);
     }
 
     /**
