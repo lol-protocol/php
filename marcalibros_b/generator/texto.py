@@ -115,10 +115,12 @@ def componer(frase, autor, caja, tam=15.0, tam_autor=11.0, interlineado=1.32):
     ancho = x1 - x0 - 20
     bloques = []
     lineas = _partir(frase, tam, ancho)
-    autores = _partir("— " + autor, tam_autor, ancho)
-    alto = len(lineas) * tam * interlineado + 10 + len(autores) * tam_autor * interlineado
+    autores = _partir("— " + autor, tam_autor, ancho) if autor else []  # sin autoría: solo la frase
+    alto = len(lineas) * tam * interlineado + (10 + len(autores) * tam_autor * interlineado if autores else 0)
     y = y0 + ((y1 - y0) - alto) / 2 + tam
     for grupo, t in ((lineas, tam), (autores, tam_autor)):
+        if not grupo:
+            continue
         glifos = []
         for linea in grupo:
             x = x0 + ((x1 - x0) - _ancho_linea(linea, t)) / 2
