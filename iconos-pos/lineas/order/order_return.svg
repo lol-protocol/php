@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
+  <style>
+    @supports (--a:0){
+      .icono25d .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .icono25d .ic-orange{stroke:var(--ic-orange,#883307)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-amber" stroke="#7E4503"><path d="M47.4 33.2A5 5 0 0 1 48.4 36.2L48.4 50.2A5 5 0 0 1 43.4 55.2L25.4 55.2A5 5 0 0 1 21.4 53.2L19 50A5 5 0 0 1 18 47L18 33A5 5 0 0 1 23 28L41 28A5 5 0 0 1 45 30Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="18" y="28" width="28" height="24" rx="5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M10.52 30.76L11.6 32.2A4.6 4.6 0 0 0 18.96 26.68L17.88 25.24A4.6 4.6 0 0 0 10.52 30.76Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="14.2" cy="28" r="4.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M14.27 27.87A18 18 0 0 1 49.73 27.87" class="ic-orange" fill="none" stroke="#883307" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

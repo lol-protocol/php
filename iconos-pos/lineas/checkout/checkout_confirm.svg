@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
+  <style>
+    @supports (--a:0){
+      .icono25d .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .icono25d .ic-green{stroke:var(--ic-green,#0D5F2B)}
+      .icono25d .ic-ink{stroke:var(--ic-ink,#29313D)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-amber" stroke="#7E4503"><path d="M46.8 16.4A6 6 0 0 1 48 20L48 44A6 6 0 0 1 42 50L18 50A6 6 0 0 1 13.2 47.6L10.2 43.6A6 6 0 0 1 9 40L9 16A6 6 0 0 1 15 10L39 10A6 6 0 0 1 43.8 12.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="9" y="10" width="36" height="36" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-green" stroke="#0D5F2B"><path d="M36.2 49.6L37.76 51.68A11 11 0 0 0 55.36 38.48L53.8 36.4A11 11 0 0 0 36.2 49.6Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="45" cy="43" r="11" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M39.5 43.27L43.35 46.85L50.5 39.15" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

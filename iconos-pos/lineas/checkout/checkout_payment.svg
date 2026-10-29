@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
+  <style>
+    @supports (--a:0){
+      .icono25d .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .icono25d .ic-indigo{stroke:var(--ic-indigo,#2E2985)}
+      .icono25d .ic-ink{stroke:var(--ic-ink,#29313D)}
+    }
+  </style>
+  <g class="solids">
+    <g class="ic-indigo" stroke="#2E2985"><path d="M59.2 20.6A6 6 0 0 1 60.4 24.2L60.4 46.2A6 6 0 0 1 54.4 52.2L14.4 52.2A6 6 0 0 1 9.6 49.8L7.2 46.6A6 6 0 0 1 6 43L6 21A6 6 0 0 1 12 15L52 15A6 6 0 0 1 56.8 17.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="6" y="15" width="52" height="34" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-amber" stroke="#7E4503"><rect x="12" y="34" width="13" height="9" rx="2.5" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M10 26H54" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

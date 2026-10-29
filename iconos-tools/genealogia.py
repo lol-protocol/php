@@ -598,10 +598,6 @@ ic = new('action_edit')
 ic.solid(Block(13, 26, 38, 10, r=5, rot=-45), 'teal', d=3)
 ic.solid(Disc(15.5, 46, 3.6), 'ink', d=1.6)
 
-ic = new('action_search')
-ic.solid(Disc(43, 43, 5.5), 'indigo', d=2.4)
-ic.ring(27, 26, 12, tone='indigo', ink='indigo', w=4.6)
-
 
 def _lens(stem, r, sign):
     """Anillo con un punto en diagonal; el tamaño del anillo dice si acerca o aleja."""
@@ -858,4 +854,4 @@ _doc('ui_export_csv', 'green', lambda ic: ic.mark('M19 22H41M19 31H41M19 40H41M2
 _doc('ui_export_gedcom', 'violet', lambda ic: (ic.mark('M28 21V27M18 27H38M18 27V32M38 27V32', w=2),
                                                 ic.dot(28, 18, 3.4), ic.dot(18, 35, 3.4), ic.dot(38, 35, 3.4)))
 
-ICONS.extend(comunes.ICONS)  # los que se llaman igual en los dos sets, definidos una vez en comunes.py
+ICONS.extend(comunes.for_set('genealogia'))  # los que se llaman igual en otro set, definidos una vez en comunes.py

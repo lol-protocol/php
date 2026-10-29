@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_catalog_tag_teal_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9A9A9A"/>
+      <stop offset="1" stop-color="#6A6A6A"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.08" cy="51.6" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M55.57 33.4A3 3 0 0 1 54.89 37.66L39.17 48.66A3 3 0 0 1 37.45 49.2L13.4 49.2A3 3 0 0 1 11 48L8.78 45.04A3 3 0 0 1 8.18 43.24L8.18 21.24A3 3 0 0 1 11.18 18.24L35.23 18.24A3 3 0 0 1 36.95 18.78L52.67 29.78A3 3 0 0 1 53.35 30.44Z" fill="#3E3E3E"/><path d="M8 21A3 3 0 0 1 11 18L35.05 18A3 3 0 0 1 36.77 18.54L52.49 29.54A3 3 0 0 1 52.49 34.46L36.77 45.46A3 3 0 0 1 35.05 46L11 46A3 3 0 0 1 8 43Z" fill="url(#grad_catalog_tag_teal_g)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M15.6 32a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

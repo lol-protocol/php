@@ -10,7 +10,7 @@ SCOPE_CLASS = 'icono25d'
 PREFIXES = {
     'iconos-genealogia': ('person', 'relationship', 'state', 'view', 'action', 'ui'),
     'iconos-biblioteca': ('book', 'genre', 'format', 'status', 'action', 'attr', 'ui'),
-    'iconos-pos': ('catalog', 'order', 'account'),
+    'iconos-pos': ('catalog', 'order', 'account', 'cart', 'checkout', 'ui', 'action'),
 }
 
 # etiqueta de cada prefijo en la galería (los grupos de cada set salen en el orden de sus PREFIXES, no en el de aquí)
@@ -29,4 +29,6 @@ GROUPS = {
     'catalog': 'Catálogo',
     'order': 'Pedidos',
     'account': 'Cuenta del cliente',
+    'cart': 'Carrito',
+    'checkout': 'Pago',
 }

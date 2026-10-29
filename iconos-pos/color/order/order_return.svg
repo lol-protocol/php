@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_order_return_amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E5A356"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="grad_order_return_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="29" cy="57.6" rx="17.85" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M47.4 33.2A5 5 0 0 1 48.4 36.2L48.4 50.2A5 5 0 0 1 43.4 55.2L25.4 55.2A5 5 0 0 1 21.4 53.2L19.18 50.24A5 5 0 0 1 18.18 47.24L18.18 33.24A5 5 0 0 1 23.18 28.24L41.18 28.24A5 5 0 0 1 45.18 30.24Z" fill="#7E4503"/><rect x="18" y="28" width="28" height="24" rx="5" fill="url(#grad_order_return_amber)"/></g>
+    <g><path d="M10.7 31L11.6 32.2A4.6 4.6 0 0 0 18.96 26.68L18.06 25.48A4.6 4.6 0 0 0 10.7 31Z" fill="#883307"/><circle cx="14.2" cy="28" r="4.6" fill="url(#grad_order_return_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M14.27 27.87A18 18 0 0 1 49.73 27.87" fill="none" stroke="#EA580C" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

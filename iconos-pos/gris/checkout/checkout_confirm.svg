@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_checkout_confirm_amber_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#AEAEAE"/>
+      <stop offset="1" stop-color="#878787"/>
+    </linearGradient>
+    <linearGradient id="grad_checkout_confirm_green_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9D9D9D"/>
+      <stop offset="1" stop-color="#6F6F6F"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="33.28" cy="58.48" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M46.8 16.4A6 6 0 0 1 48 20L48 44A6 6 0 0 1 42 50L18 50A6 6 0 0 1 13.2 47.6L10.38 43.84A6 6 0 0 1 9.18 40.24L9.18 16.24A6 6 0 0 1 15.18 10.24L39.18 10.24A6 6 0 0 1 43.98 12.64Z" fill="#4F4F4F"/><rect x="9" y="10" width="36" height="36" rx="6" fill="url(#grad_checkout_confirm_amber_g)"/></g>
+    <g><path d="M36.38 49.84L37.76 51.68A11 11 0 0 0 55.36 38.48L53.98 36.64A11 11 0 0 0 36.38 49.84Z" fill="#414141"/><circle cx="45" cy="43" r="11" fill="url(#grad_checkout_confirm_green_g)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M39.5 43.27L43.35 46.85L50.5 39.15" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,14 +1,25 @@
-"""Los iconos que llevan el mismo nombre en los dos sets: se definen una vez, aquí, y los dos los incluyen.
+"""Los iconos que llevan el mismo nombre en más de un set: se definen una vez, aquí, y cada set incluye los suyos.
 
 Si cada set los dibujara por su cuenta acabarían distintos (ya pasó con ui_profile y action_filter), y quien use
-los dos sets a la vez esperaría el mismo dibujo. validate.py comprueba que cualquier nombre que esté en los dos
-sets sea idéntico en ambos.
+varios sets a la vez esperaría el mismo dibujo. USADO_EN dice en qué sets va cada uno y for_set(set) da los de un
+set; validate.py comprueba que cualquier nombre que esté en dos sets sea idéntico en ambos.
 """
 from kit import catalog, tile
 from lib import Block, Disc, fmt
 
 ICONS, reg, new = catalog()
 
+# clave de cada set (la de su módulo: genealogia, biblioteca, pos) en la que va cada icono
+USADO_EN = {
+    'ui_calendar': ('genealogia', 'biblioteca'),
+    'ui_settings': ('genealogia', 'biblioteca', 'pos'),
+    'ui_menu': ('genealogia', 'biblioteca'),
+    'ui_profile': ('genealogia', 'biblioteca', 'pos'),
+    'action_filter': ('genealogia', 'biblioteca'),
+    'action_print': ('genealogia', 'biblioteca'),
+    'action_share': ('genealogia', 'biblioteca'),
+    'action_search': ('genealogia', 'pos'),
+}
 
 reg(tile('ui_calendar', 'red', lambda ic, x, y: [ic.dot(x - 10 + 10 * (i % 3), y - 9.5 + 9.5 * (i // 3), 2, **({'tone': '#FDE047'} if i == 4 else {})) for i in range(9)]))
 
@@ -43,3 +54,15 @@ for x, y in ((47, 14), (51, 31), (47, 48)):
 ic.solid(Disc(15, 31, 8), 'green', d=3)
 for x, y in ((47, 14), (51, 31), (47, 48)):
     ic.solid(Disc(x, y, 4.6), 'green', d=2)
+
+ic = new('action_search')
+ic.solid(Disc(43, 43, 5.5), 'indigo', d=2.4)
+ic.ring(27, 26, 12, tone='indigo', ink='indigo', w=4.6)
+
+
+def for_set(name):
+    """Los iconos compartidos que lleva el set `name`."""
+    missing = sorted({i.stem for i in ICONS} ^ set(USADO_EN))
+    if missing:
+        raise SystemExit(f'comunes.py: USADO_EN y los iconos definidos no coinciden en {missing}')
+    return [i for i in ICONS if name in USADO_EN[i.stem]]
