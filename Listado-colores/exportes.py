@@ -20,8 +20,9 @@ from normalizacion import normalizar  # noqa: E402  (módulo de esta carpeta)
 # Orden de las fuentes en el gazetteer y significado de cada una.
 FUENTES = ["css", "lexico"]
 # forma_normalizada va al final: quien lea las columnas por posición sigue leyendo las mismas.
+# hex_cotidiano, el último, es el matiz de uso corriente del concepto (vacío si no hay uno curado); ver README.
 # categorias, aún más al final, es la lista de categorías gramaticales (UPOS) de la forma, separadas por comas.
-COLUMNAS_GAZETTEER = ["forma", "idioma", "fuente", "tipo", "concepto", "hex", "rasgos", "forma_normalizada", "categorias"]
+COLUMNAS_GAZETTEER = ["forma", "idioma", "fuente", "tipo", "concepto", "hex", "rasgos", "forma_normalizada", "categorias", "hex_cotidiano"]
 
 
 def _json(objeto):
@@ -111,7 +112,8 @@ def filas_gazetteer(d):
         clave = (f["idioma"], f["forma"], hexes[f["concepto"]])
         if aportó.setdefault(clave, f["concepto"]) == f["concepto"]:  # si dos alias traen lo mismo, cuenta el primero
             categorias.setdefault(clave, []).append(f["categoria"])
-    return [fila + (normalizar(fila[0], fila[1]), ",".join(categorias.get((fila[1], fila[0], fila[5]), []))) for fila in unicas]
+    return [fila + (normalizar(fila[0], fila[1]), ",".join(categorias.get((fila[1], fila[0], fila[5]), [])),
+                                  d["hex_cotidiano"].get(fila[4], "")) for fila in unicas]
 
 
 def gazetteer_tsv(d):
@@ -213,7 +215,7 @@ CREATE TABLE evidencia (color_id TEXT PRIMARY KEY, base_psicologico TEXT, refere
                         base_mistico TEXT, referencias_mistico TEXT);
 CREATE TABLE culturales (color_id TEXT, ambito TEXT, matiz TEXT, solidez TEXT, referencias TEXT);
 CREATE TABLE referencias (id TEXT PRIMARY KEY, tipo TEXT, cita TEXT, url TEXT, verificacion TEXT);
-CREATE TABLE conceptos (concepto TEXT PRIMARY KEY, hex TEXT NOT NULL);
+CREATE TABLE conceptos (concepto TEXT PRIMARY KEY, hex TEXT NOT NULL, hex_cotidiano TEXT);
 CREATE TABLE lexico (concepto TEXT, idioma TEXT, forma TEXT, tipo TEXT, rasgos TEXT, forma_normalizada TEXT);
 CREATE TABLE categorias (idioma TEXT, concepto TEXT, forma TEXT, categoria TEXT, ocurrencia TEXT, ejemplo TEXT,
                          PRIMARY KEY (idioma, concepto, categoria));
@@ -258,7 +260,8 @@ def construir_sqlite(ruta, d):
         (f["color"], f["ambito"], f["matiz"], f["solidez"], f["referencias"]) for f in d["culturales"]])
     conexion.executemany("INSERT INTO referencias VALUES (?,?,?,?,?)", [
         (f["id"], f["tipo"], f["cita"], f["url"], f["verificacion"]) for f in d["referencias"]])
-    conexion.executemany("INSERT INTO conceptos VALUES (?,?)", sorted(d["hex_concepto"].items()))
+    conexion.executemany("INSERT INTO conceptos VALUES (?,?,?)", [
+        (c, h, d["hex_cotidiano"].get(c, "")) for c, h in sorted(d["hex_concepto"].items())])
     conexion.executemany("INSERT INTO lexico VALUES (?,?,?,?,?,?)", [
         (f["concepto"], f["idioma"], f["forma"], f["tipo"], f["rasgos"], normalizar(f["forma"], f["idioma"]))
         for f in d["lexico"]])

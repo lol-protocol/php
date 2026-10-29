@@ -7,6 +7,15 @@ colores distintos).
 """
 
 
+# Un lema con este rasgo lo propuso un asistente de IA y ningún hablante nativo lo ha revisado.
+ORIGEN_IA = "origen=ia"
+
+
+def propuestas_ia(lexico):
+    """[(idioma, concepto, lema)] de los lemas propuestos por IA sin revisar, en el orden del archivo."""
+    return [(f["idioma"], f["concepto"], f["forma"]) for f in lexico if f["tipo"] == "lema" and f["rasgos"] == ORIGEN_IA]
+
+
 def huecos_lexico(idiomas, lexico, conceptos):
     """{código: [conceptos del léxico sin lema en ese idioma]}, solo los idiomas con huecos."""
     con_lema = {(f["idioma"], f["concepto"]) for f in lexico if f["tipo"] == "lema"}
@@ -54,6 +63,7 @@ def informe(idiomas, anotada, lexico, categorias, conceptos, hex_concepto):
     huecos = huecos_lexico(idiomas, lexico, conceptos)
     colisiones = colisiones_nombres(idiomas, anotada)
     compartidos = lemas_compartidos(idiomas, lexico, hex_concepto)
+    propuestas = propuestas_ia(lexico)
     con_categorias = sorted({f["idioma"] for f in categorias}, key=[c for c, _ in idiomas].index)
     sin_categorias = [c for c, _ in idiomas if c not in con_categorias]
     partes = [
@@ -68,6 +78,7 @@ def informe(idiomas, anotada, lexico, categorias, conceptos, hex_concepto):
         "",
         f"- Léxico básico: {len(conceptos)} conceptos. {len(idiomas) - len(huecos)} idiomas tienen lema para todos; "
         f"{len(huecos)} tienen huecos ({sum(len(v) for v in huecos.values())} lemas en total).",
+        f"- De esos huecos, {len(propuestas)} los llenó una propuesta de IA sin revisar (rasgo `{ORIGEN_IA}` en `lexico-basico.csv`).",
         f"- Categorías gramaticales: {len(con_categorias)} idiomas ({', '.join(nombres[c] for c in con_categorias)}); "
         f"{len(sin_categorias)} sin ninguna.",
         f"- Nombres CSS repetidos con hex distinto: {sum(len(v) for v in colisiones.values())} casos en {len(colisiones)} idiomas.",
@@ -84,6 +95,17 @@ def informe(idiomas, anotada, lexico, categorias, conceptos, hex_concepto):
     for codigo, nombre in idiomas:
         faltan = huecos.get(codigo, [])
         partes.append(f"| {nombre} (`{codigo}`) | {len(conceptos) - len(faltan)} de {len(conceptos)} | {_codigos(faltan) or '—'} |")
+    partes += ["", "## Lemas propuestos por IA sin revisar", "",
+               "Llenan huecos del léxico; los escribió un asistente de IA y ningún hablante nativo los ha visto. Cuando uno los "
+               "confirme (en `revisiones.csv`), se quita el rasgo `origen=ia` del lema; si no, se corrige o se borra la fila.", ""]
+    if not propuestas:
+        partes.append("Ninguno.")
+    else:
+        partes += ["| Idioma | Concepto | Lema |", "|---|---|---|"]
+        for codigo, nombre in idiomas:
+            for idioma, concepto, lema in propuestas:
+                if idioma == codigo:
+                    partes.append(f"| {nombre} (`{codigo}`) | `{concepto}` | {lema} |")
     partes += ["", "## Idiomas sin categorías gramaticales", "", _codigos(sin_categorias) or "Ninguno.", "",
                "## Nombres CSS repetidos con hex distinto", "",
                "Un mismo nombre para dos colores que no son el mismo: quien busque por nombre no sabe cuál es.", ""]

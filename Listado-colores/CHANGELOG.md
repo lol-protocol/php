@@ -10,6 +10,15 @@ Cuándo subir cada número es decisión de quien cambia los datos; el generador 
 
 Cada entrada empieza por `## X.Y.Z - AAAA-MM-DD`, va de la más reciente a la más antigua y dice qué cambió. `generar-tabla.py` comprueba el formato.
 
+## 1.2.0 - 2026-10-29
+
+Añade datos y una columna; ninguna columna existente cambia de lugar.
+
+- **Hex cotidiano.** El gazetteer gana la columna `hex_cotidiano` (al final) y la tabla `conceptos` de SQLite la columna del mismo nombre: el matiz de uso corriente de cada concepto del léxico, tomado de la entrada curada de `nombres-completos.csv` con el mismo nombre (vacío si no hay). Es aparte del hex de referencia, que sigue siendo el CSS. Para `lime`, `khaki` y `violet` está más cerca de lo que dice la palabra; para `green` no (`#00FF00`).
+- **12 lemas propuestos por IA** en `lexico-basico.csv`, con el rasgo `origen=ia` (suajili: `turquoise`, `violet`, `indigo`, `lavender`, `olive`, `magenta`, `coral`, `khaki`, `amber`; coreano `violet`; ruso y ucraniano `cyan`). Llenan huecos del léxico, pasan de 45 a 33 los lemas que faltan y no repiten el lema de otro concepto. Ningún hablante nativo los ha revisado; `cobertura.md` los lista. Se descartaron dos propuestas (`lilac` en danés, `scarlet` en rumano) porque su lema ya era el de otro concepto.
+- Los 33 huecos restantes, los 29 nombres repetidos y los 25 lemas compartidos no se tocan: necesitan hablante nativo.
+- El CSV del léxico admite el rasgo `origen=ia` en un lema; cualquier otro rasgo sigue siendo un error.
+
 ## 1.1.1 - 2026-10-25
 
 Correcciones de coherencia y completitud de la 1.1.0; no cambia ninguna columna de los CSV de datos salvo la nueva `huella` de `revisiones.csv`, que todavía estaba vacío.

@@ -359,6 +359,21 @@ class Lexico(PruebaConErrores):
         filas[primera(filas, tipo="lema")]["rasgos"] = "Number=Plur"
         self.assertSoloError(self.validar(filas), "un lema no lleva rasgos")
 
+    def test_un_lema_solo_puede_llevar_el_rasgo_de_propuesta_de_ia(self):
+        filas = real("lexico")
+        i = primera(filas, idioma="es", concepto="white", tipo="lema")
+        filas[i]["rasgos"] = "origen=ia"
+        self.assertEqual(self.validar(filas), [], "la marca de propuesta sin revisar es válida en un lema")
+        for rasgos in ("origen=nativo", "origen=IA", "region=GB"):
+            filas[i]["rasgos"] = rasgos
+            self.assertSoloError(self.validar(filas), "un lema no lleva rasgos (solo 'origen=ia'")
+
+    def test_los_lemas_de_ia_reales_son_solo_los_de_los_huecos(self):
+        # Cada lema con origen=ia llena un hueco: el idioma no tenía lema para ese concepto en master antes de la propuesta.
+        propuestas = [(f["idioma"], f["concepto"]) for f in REAL["lexico"] if f["tipo"] == "lema" and f["rasgos"] == "origen=ia"]
+        self.assertEqual(len(propuestas), len(set(propuestas)))
+        self.assertFalse(any(c in gt.BASICOS for _, c in propuestas), "los conceptos básicos nunca son propuestas")
+
     def test_dos_lemas_para_el_mismo_concepto_e_idioma(self):
         filas = real("lexico")
         i = primera(filas, tipo="lema")
@@ -778,7 +793,8 @@ def datos_reales():
     return {"idiomas": gt.IDIOMAS, "anotada": real("anotada"), "lexico": real("lexico"), "categorias": real("categorias"),
             "significados": {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
                              for f in REAL["significados"]},
-            "hex_concepto": {c: gt.hex_de_concepto(c, REAL["anotada"], REAL["completa"]) for c in gt.CONCEPTOS}}
+            "hex_concepto": {c: gt.hex_de_concepto(c, REAL["anotada"], REAL["completa"]) for c in gt.CONCEPTOS},
+            "hex_cotidiano": {c: gt.hex_cotidiano_de_concepto(c, REAL["completa"]) for c in gt.CONCEPTOS}}
 
 
 def huellas_reales():
@@ -1052,14 +1068,42 @@ class Revision(PruebaConErrores):
         self.assertEqual((resultado.returncode, resultado.stderr), (0, ""))
 
 
+class HexCotidiano(unittest.TestCase):
+    def test_solo_cuentan_las_entradas_curadas_con_el_mismo_nombre(self):
+        completa = [{"nombre_ingles": "Lime", "hex": "#AAFF32", "curada": "x"},
+                    {"nombre_ingles": "Navy", "hex": "#01153E", "curada": ""},
+                    {"nombre_ingles": "limes", "hex": "#000000", "curada": "x"}]
+        self.assertEqual(gt.hex_cotidiano_de_concepto("lime", completa), "#AAFF32", "sin distinguir mayúsculas")
+        self.assertEqual(gt.hex_cotidiano_de_concepto("navy", completa), "", "una entrada no curada no vale")
+        self.assertEqual(gt.hex_cotidiano_de_concepto("red", completa), "", "sin entrada: vacío, no el hex CSS")
+
+    def test_valores_reales_que_motivan_la_columna(self):
+        for concepto, esperado in (("lime", "#AAFF32"), ("khaki", "#C3B091"), ("violet", "#9A0EEA"), ("green", "#00FF00")):
+            self.assertEqual(gt.hex_cotidiano_de_concepto(concepto, REAL["completa"]), esperado, concepto)
+        self.assertEqual(gt.hex_cotidiano_de_concepto("navy", REAL["completa"]), "", "navy no está curado")
+
+    def test_el_hex_de_referencia_no_cambia(self):
+        # El hex CSS sigue siendo el de referencia: la columna nueva no lo reemplaza.
+        self.assertEqual(gt.hex_de_concepto("lime", REAL["anotada"], REAL["completa"]), "#00FF00")
+
+    def test_sqlite_lleva_la_columna_en_conceptos(self):
+        conexion = exportes.construir_sqlite(":memory:", {**datos_reales(), "completa": REAL["completa"], "cercanias": [],
+                                                           "significados": datos_reales()["significados"],
+                                                           "referencias": REAL["referencias"], "evidencia": {f["nombre_ingles"]: f for f in REAL["evidencia"]},
+                                                           "culturales": REAL["culturales"], "alias": gt.alias_de(REAL["anotada"])})
+        self.addCleanup(conexion.close)
+        self.assertEqual(conexion.execute("SELECT hex, hex_cotidiano FROM conceptos WHERE concepto = 'lime'").fetchone(), ("#00FF00", "#AAFF32"))
+        self.assertEqual(conexion.execute("SELECT hex_cotidiano FROM conceptos WHERE concepto = 'navy'").fetchone(), ("",))
+
+
 class Cobertura(unittest.TestCase):
     def hex_concepto(self):
         return {c: gt.hex_de_concepto(c, REAL["anotada"], REAL["completa"]) for c in gt.CONCEPTOS}
 
     def test_huecos_del_lexico_reales(self):
         huecos = cobertura.huecos_lexico(gt.IDIOMAS, REAL["lexico"], gt.CONCEPTOS)
-        self.assertEqual(sum(len(v) for v in huecos.values()), 45)
-        self.assertEqual(len(huecos["sw"]), 20)
+        self.assertEqual(sum(len(v) for v in huecos.values()), 33)
+        self.assertEqual(len(huecos["sw"]), 11)
         self.assertNotIn("en", huecos)
         # coherencia con el validador: los 11 conceptos básicos nunca faltan
         self.assertTrue(all(c not in gt.BASICOS for lista in huecos.values() for c in lista))
@@ -1079,6 +1123,25 @@ class Cobertura(unittest.TestCase):
         self.assertNotIn("es", colisiones)
         self.assertIn(("סגול", ["purple", "violet"]), colisiones["he"])
 
+    def test_las_propuestas_de_ia_son_las_filas_lema_con_origen_ia(self):
+        lexico = [{"idioma": "sw", "concepto": "olive", "tipo": "lema", "forma": "zeituni", "rasgos": "origen=ia"},
+                  {"idioma": "sw", "concepto": "red", "tipo": "lema", "forma": "nyekundu", "rasgos": ""},
+                  {"idioma": "es", "concepto": "red", "tipo": "flexion", "forma": "rojos", "rasgos": "origen=ia"},
+                  {"idioma": "es", "concepto": "blue", "tipo": "sinonimo", "forma": "x", "rasgos": "origen=ia"}]
+        self.assertEqual(cobertura.propuestas_ia(lexico), [("sw", "olive", "zeituni")])
+        reales = cobertura.propuestas_ia(REAL["lexico"])
+        self.assertEqual(len(reales), 12)
+        self.assertTrue(all(c in gt.CONCEPTOS for _, c, _ in reales))
+
+    def test_las_propuestas_de_ia_no_repiten_el_lema_de_otro_concepto(self):
+        # Una propuesta debe llenar un hueco, no sumar una ambigüedad (como «lilla» para `purple` y `lilac`).
+        lemas = {}
+        for f in REAL["lexico"]:
+            if f["tipo"] == "lema":
+                lemas.setdefault((f["idioma"], f["forma"].casefold()), []).append(f["concepto"])
+        for idioma, concepto, lema in cobertura.propuestas_ia(REAL["lexico"]):
+            self.assertEqual(lemas[(idioma, lema.casefold())], [concepto], (idioma, lema))
+
     def test_gray_y_grey_no_son_una_colision(self):
         anotada = [{"nombre_ingles": n, "forma_natural_en": n, "nombre_es": "gris", "hex": "#808080"} for n in ("gray", "grey")]
         self.assertEqual(cobertura.colisiones_nombres([("es", "Español")], anotada), {}, "mismo hex: es un alias")
@@ -1092,7 +1155,7 @@ class Cobertura(unittest.TestCase):
 
     def test_lemas_compartidos_reales(self):
         compartidos = cobertura.lemas_compartidos(gt.IDIOMAS, REAL["lexico"], self.hex_concepto())
-        self.assertEqual(sum(len(v) for v in compartidos.values()), 25)
+        self.assertEqual(sum(len(v) for v in compartidos.values()), 25)  # las propuestas de IA no agregan ambigüedad
         self.assertIn(("violet", ["purple", "violet"]), compartidos["fr"])
         self.assertNotIn("es", compartidos)
 
@@ -1102,11 +1165,13 @@ class Cobertura(unittest.TestCase):
 
     def test_el_informe_resume_lo_mismo_que_calculan_las_funciones(self):
         texto = cobertura.informe(gt.IDIOMAS, REAL["anotada"], REAL["lexico"], REAL["categorias"], gt.CONCEPTOS, self.hex_concepto())
-        self.assertIn("14 idiomas tienen lema para todos; 16 tienen huecos (45 lemas en total).", texto)
+        self.assertIn("17 idiomas tienen lema para todos; 13 tienen huecos (33 lemas en total).", texto)
         self.assertIn("2 idiomas (Inglés, Español); 28 sin ninguna.", texto)
         self.assertIn("29 casos en 18 idiomas.", texto)
         self.assertIn("25 casos en 17 idiomas.", texto)
-        self.assertIn("| Suajili (`sw`) | 18 de 38 |", texto)
+        self.assertIn("| Suajili (`sw`) | 27 de 38 |", texto)
+        self.assertIn("12 los llenó una propuesta de IA sin revisar", texto)
+        self.assertIn("| Suajili (`sw`) | `turquoise` | feruzi |", texto)
         self.assertIn("| Español (`es`) | 38 de 38 | — |", texto)
         self.assertIn("| Hebreo (`he`) | סגול | `purple`, `violet` |", texto)
 
@@ -1727,15 +1792,15 @@ class ArchivosGenerados(unittest.TestCase):
         self.assertEqual(len(filas), len(set(map(tuple, filas))), "sin filas repetidas")
         formas = [f[0] for f in filas]
         self.assertEqual(formas, sorted(formas, key=lambda x: (x.casefold(), x)))
-        self.assertIn(["alice blue", "en", "css", "forma_natural", "aliceblue", "#F0F8FF", "", "alice blue", ""], filas)
-        self.assertIn(["alice-blue", "en", "css", "forma_con_guion", "aliceblue", "#F0F8FF", "", "alice blue", ""], filas)
-        self.assertIn(["aliceblue", "en", "css", "identificador", "aliceblue", "#F0F8FF", "", "aliceblue", ""], filas)
+        self.assertIn(["alice blue", "en", "css", "forma_natural", "aliceblue", "#F0F8FF", "", "alice blue", "", ""], filas)
+        self.assertIn(["alice-blue", "en", "css", "forma_con_guion", "aliceblue", "#F0F8FF", "", "alice blue", "", ""], filas)
+        self.assertIn(["aliceblue", "en", "css", "identificador", "aliceblue", "#F0F8FF", "", "aliceblue", "", ""], filas)
         self.assertTrue(any(f[1] == "es" and f[2] == "lexico" and f[3] == "lema" and f[4] == "red" for f in filas))
 
     def test_gazetteer_categorias(self):
         lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()
         filas = [linea.split("\t") for linea in lineas[1:]]
-        self.assertEqual(exportes.COLUMNAS_GAZETTEER[-1], "categorias", "va al final: no mueve las demás columnas")
+        self.assertEqual(exportes.COLUMNAS_GAZETTEER[8], "categorias", "va después de las ocho primeras: no las mueve")
         esperadas = {}
         for f in REAL["categorias"]:
             esperadas.setdefault((f["idioma"], f["concepto"], f["forma"]), []).append(f["categoria"])
@@ -1753,7 +1818,7 @@ class ArchivosGenerados(unittest.TestCase):
         # Cada palabra de categorias.csv sale en el gazetteer como lema (o como nombre CSS en inglés).
         self.assertTrue(all(any(f[:5] == [forma, idioma, "lexico", "lema", concepto] or f[:5] == [forma, idioma, "css", "forma_natural", concepto]
                                 for f in filas) for idioma, concepto, forma in esperadas))
-        self.assertIn(["lima", "es", "lexico", "lema", "lime", "#00FF00", "", "lima", "ADJ,NOUN,VERB"], filas)
+        self.assertIn(["lima", "es", "lexico", "lema", "lime", "#00FF00", "", "lima", "ADJ,NOUN,VERB", "#AAFF32"], filas)
         # Las flexiones y las palabras de otros idiomas no traen categorías.
         self.assertTrue(all(f[8] == "" for f in filas if f[3] == "flexion" or f[1] not in ("en", "es")))
 
@@ -1893,7 +1958,7 @@ class ArchivosGenerados(unittest.TestCase):
         lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()
         filas = [linea.split("\t") for linea in lineas[1:]]
         self.assertEqual(exportes.COLUMNAS_GAZETTEER[7], "forma_normalizada", "va después de las siete primeras: no las mueve")
-        for forma, idioma, *_, normalizada, _categorias in filas:
+        for forma, idioma, *_, normalizada, _categorias, _cotidiano in filas:
             self.assertEqual(normalizada, normalizacion.normalizar(forma, idioma), (forma, idioma))
             self.assertNotEqual(normalizada, "", (forma, idioma))
         self.assertIn(["marrón", "es", "lexico", "lema", "brown"], [f[:5] for f in filas if f[7] == "marron"])

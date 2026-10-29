@@ -184,5 +184,14 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `lightgreen` | `#90EE90` | kijani hafifu |  |  |  |
 | `darkgreen` | `#006400` | kijani iliyokolea |  |  |  |
 | `skyblue` | `#87CEEB` | samawati |  |  |  |
+| `turquoise` | `#40E0D0` | feruzi (propuesta de IA sin revisar) |  |  |  |
 | `gold` | `#FFD700` | dhahabu |  |  |  |
 | `silver` | `#C0C0C0` | fedha |  |  |  |
+| `violet` | `#EE82EE` | urujuani (propuesta de IA sin revisar) |  |  |  |
+| `indigo` | `#4B0082` | nili (propuesta de IA sin revisar) |  |  |  |
+| `lavender` | `#E6E6FA` | lavenda (propuesta de IA sin revisar) |  |  |  |
+| `olive` | `#808000` | zeituni (propuesta de IA sin revisar) |  |  |  |
+| `magenta` | `#FF00FF` | magenta (propuesta de IA sin revisar) |  |  |  |
+| `coral` | `#FF7F50` | marijani (propuesta de IA sin revisar) |  |  |  |
+| `khaki` | `#F0E68C` | kaki (propuesta de IA sin revisar) |  |  |  |
+| `amber` | `#FFBF00` | kaharabu (propuesta de IA sin revisar) |  |  |  |

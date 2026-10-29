@@ -4,7 +4,7 @@ Generado por `generar-tabla.py` a partir de `revisiones.csv`. No editar a mano.
 
 Casi todo el contenido de este proyecto (traducciones de nombres, significados, léxico y categorías gramaticales) lo escribió un asistente de IA y ningún hablante nativo lo ha revisado. `revisiones.csv` es el registro de quién ha revisado qué; este informe lo resume.
 
-**Estado: ningún elemento revisado todavía (0 de 10068).**
+**Estado: ningún elemento revisado todavía (0 de 10080).**
 
 ## Cómo revisar
 
@@ -50,8 +50,8 @@ Elementos con al menos una fila, sobre el total de cada alcance (`—` si el idi
 | Rumano (`ro`) | 0 de 148 | 0 de 148 | 0 de 36 | — |
 | Húngaro (`hu`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
 | Griego (`el`) | 0 de 148 | 0 de 148 | 0 de 35 | — |
-| Ruso (`ru`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
-| Ucraniano (`uk`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
+| Ruso (`ru`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
+| Ucraniano (`uk`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Turco (`tr`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
 | Árabe (`ar`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
 | Hebreo (`he`) | 0 de 148 | 0 de 148 | 0 de 36 | — |
@@ -60,11 +60,11 @@ Elementos con al menos una fila, sobre el total de cada alcance (`—` si el idi
 | Bengalí (`bn`) | 0 de 148 | 0 de 148 | 0 de 33 | — |
 | Chino simplificado (`zh`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Japonés (`ja`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
-| Coreano (`ko`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
+| Coreano (`ko`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Vietnamita (`vi`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
 | Tailandés (`th`) | 0 de 148 | 0 de 148 | 0 de 36 | — |
 | Indonesio (`id`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
-| Suajili (`sw`) | 0 de 148 | 0 de 148 | 0 de 18 | — |
+| Suajili (`sw`) | 0 de 148 | 0 de 148 | 0 de 27 | — |
 
 ## Filas por veredicto
 
