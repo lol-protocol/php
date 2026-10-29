@@ -17,7 +17,7 @@
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Personal data definition covers physical, physiological and genetic characteristics; sensitive-data rules not confirmed (unconfirmed)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
     "language": "French",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-29",
     "sources": {
       "law_name": {
         "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
@@ -78,9 +78,20 @@
         "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
         "confidence": "low",
         "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
+        "confidence": "low",
+        "checked": "2026-10-29"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-29",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Personal data definition covers physical, physiological and genetic characteristics; sensitive-data rules not confirmed (unconfirmed)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

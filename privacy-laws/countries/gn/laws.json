@@ -17,7 +17,7 @@
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Art. 1: personal data includes genetic identifiers; health is sensitive data; consent required; extra authorization for genetic/medical/research data (secondary summary) (unconfirmed)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
     "language": "French",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-29",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
@@ -73,9 +73,20 @@
         "url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
         "confidence": "medium",
         "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
+        "confidence": "low",
+        "checked": "2026-10-29"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-29",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Art. 1: personal data includes genetic identifiers; health is sensitive data; consent required; extra authorization for genetic/medical/research data (secondary summary) (unconfirmed)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

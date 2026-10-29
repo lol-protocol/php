@@ -17,7 +17,7 @@
     "exemptions": "Art. 2 excludes: purely family/domestic processing (non-commercial); public security, defence, State security, crime prevention/investigation; public registries",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Sensitive data need express written consent (press summary; exceptions for medical emergency); genetic data category not confirmed (unconfirmed)",
     "website_url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
     "language": "Spanish",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-11",
+    "last_checked": "2026-10-29",
     "sources": {
       "key_requirements": {
         "url": "https://central-law.com/el-salvador-nueva-ley-de-proteccion-de-datos-personales-claves-para-su-cumplimiento-y-aplicacion/",
@@ -48,9 +48,20 @@
         "url": "https://www.jurisprudencia.gob.sv/DocumentosBoveda/D/2/2020-2029/2024/11/10660E.PDF",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "genetic_data": {
+        "url": "https://www.elsalvador.com/noticias/nacional/puntos-claves-de-las-nuevas-leyes-proteccion-datos-personales-y-ciberseguridad/1181041/2024/",
+        "confidence": "low",
+        "checked": "2026-10-29"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-29",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data need express written consent (press summary; exceptions for medical emergency); genetic data category not confirmed (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "exemptions",
