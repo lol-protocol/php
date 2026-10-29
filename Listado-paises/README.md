@@ -149,11 +149,10 @@ puntaje por sí sola.
 **Libertad, democracia y corrupción** sirven para contrastar IO, sin cambiar ningún puntaje. IO
 coincide con ellas en general: la corrupción mediana (100 = sin corrupción) va de 20 en los países
 con IO 1 a unos 78 en los de IO 5, y entre los de IO 5 solo Singapur no es «libre» (es «parcial»).
-**Señales para revisar:**
-
-- Arabia Saudita, Baréin, Catar, Emiratos Árabes Unidos y Omán tienen IO 4 y son «no libres». Son
-  estables y con pagos sin fricción, pero la rúbrica pone el control estatal de internet en IO 2.
-- Paraguay (corrupción 28), Filipinas e Indonesia (34) tienen IO 4 con una corrupción alta.
+**Ajustes hechos al contrastar** (decididos): bajaron de IO 4 a IO 3 las cinco monarquías del
+Golfo (Arabia Saudita, Baréin, Catar, Emiratos Árabes Unidos y Omán), por el control estatal de
+internet, y Paraguay, Filipinas e Indonesia, por su corrupción alta (índice por debajo de 35). El
+comentario de cada uno nombra el factor.
 
 **Prioridad** = IG × IO (1 a 25). Ordena la tabla; no es un tercer índice.
 
@@ -530,5 +529,3 @@ Léelo antes de usar la tabla para decidir.
 3. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
 4. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-5. **Señales de IO para revisar:** las monarquías del Golfo y los países con IO 4 y corrupción
-   alta (ver «Libertad, democracia y corrupción» arriba).
