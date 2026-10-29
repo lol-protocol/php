@@ -248,3 +248,6 @@ Sin red desde el entorno, la verificación la hace una persona: `python generato
 
 ## Interfaz del editor (hecha, prototipo)
 `editor/index.html`: página estática de un solo archivo, publicada también como Artifact (https://claude.ai/artifact/Y7pFRFCB5RY94vSxyC4nck). Fondo «paisaje generado» (12 paletas del catálogo, composición, motivo, semilla; vista aproximada en JS) o «tu imagen» (recorte 1:7 con zoom y posición, sin salir del navegador; valida tipo, 5 MB y 24 MP). Texto con elección automática del tono y velo hasta 4,5:1, como `editor.py`; miniatura 50×350. Genera el documento de diseño `usr:` y lo valida (frase 1–200, autoría ≤60, recorte 1:7, semilla 0–4294967295); el `id` de imagen es un marcador de posición. No sube nada y no tiene servidor: la receta se copia. Pendiente: pestaña «plantilla del catálogo» (necesita el manifest), vista exacta con el motor del servidor y envío real.
+
+## Frases originales sin firma (hecho)
+Las 14 frases originales del Realismo mágico se dibujan sin «— Marcalibros»: solo la frase, centrada. `texto.componer` omite el bloque de autoría si `autor` está vacío; el manifest lleva `frase.firmada` (false en las originales). Hashes de referencia regenerados.
