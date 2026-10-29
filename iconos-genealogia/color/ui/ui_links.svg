@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_ui_links_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_ui_links_orange_r45" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="grad_ui_links_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.6" cy="56.32" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M32.64 15.95L14.64 46.95M29.36 14.05L11.36 45.05" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M31 15L49 46" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"/>
+    <path d="M13 46L49 46M31 49.6L31 42.4" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"/>
+  </g>
+  <g class="solids">
+    <g><path d="M25.9 19.2L27.28 21.04A6.6 6.6 0 0 0 37.84 13.12L36.46 11.28A6.6 6.6 0 0 0 25.9 19.2Z" fill="#29313D"/><circle cx="31" cy="15" r="6.6" fill="url(#grad_ui_links_ink)"/></g>
+    <g><path d="M20.12 47.26A1.36 1.36 0 0 1 20 49.04L15.52 53.52A1.36 1.36 0 0 1 13.6 53.52L9.12 49.04A1.36 1.36 0 0 1 9 48.9L7.62 47.06A1.36 1.36 0 0 1 7.74 45.28L12.22 40.8A1.36 1.36 0 0 1 14.14 40.8L18.62 45.28A1.36 1.36 0 0 1 18.74 45.42Z" fill="#883307"/><rect x="8.47" y="41.47" width="9.05" height="9.05" rx="1.36" transform="rotate(45 13 46)" fill="url(#grad_ui_links_orange_r45)"/></g>
+    <g><path d="M55.84 42.72A1.01 1.01 0 0 1 56.04 43.33L56.04 52.51A1.01 1.01 0 0 1 55.03 53.52L45.85 53.52A1.01 1.01 0 0 1 45.04 53.12L43.78 51.44A1.01 1.01 0 0 1 43.58 50.83L43.58 41.65A1.01 1.01 0 0 1 44.59 40.64L53.77 40.64A1.01 1.01 0 0 1 54.58 41.04Z" fill="#767C82"/><rect x="43.4" y="40.4" width="11.2" height="11.2" rx="1.01" fill="url(#grad_ui_links_mist)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M28.76 15a2.24 2.24 0 1 0 4.49 0a2.24 2.24 0 1 0 -4.49 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

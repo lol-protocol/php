@@ -625,7 +625,7 @@ class Icon:
         w, p, style = ln['w'], ln['pts'], ln['style']
         if lin and w <= BAR:  # en lineas los enlaces pesaban 2,6 y los contornos 1,8: todo trazo normal entre los dos
             w = max(LINE_MIN, min(w, LINE_MAX))
-        cap = 'butt' if lin and style != 'dotted' else 'round'
+        cap = 'butt' if lin and style not in ('dotted', 'dashdot') else 'round'
         cls = f'class="ic-{ln["hue"]}" ' if lin else ''
         common = f'{cls}fill="none" stroke="{c}" stroke-linecap="{cap}" stroke-linejoin="round"'
         sil = self._silhouettes() if lin else []
@@ -639,9 +639,10 @@ class Icon:
         a, b = p[0], p[-1]
         ux, uy = _unit((b[0] - a[0], b[1] - a[1]))
         nx, ny = -uy, ux
-        if style in ('line', 'dashed', 'dotted'):
+        if style in ('line', 'dashed', 'dotted', 'dashdot'):
             d = d_of(polys(p))
-            extra = {'line': '', 'dashed': ' stroke-dasharray="4 4.5"', 'dotted': ' stroke-dasharray="0.1 5.2"'}[style]
+            extra = {'line': '', 'dashed': ' stroke-dasharray="4 4.5"', 'dotted': ' stroke-dasharray="0.1 5.2"',
+                     'dashdot': ' stroke-dasharray="5 4.4 0.1 4.4"'}[style]
             return [f'<path d="{d}" {common} stroke-width="{fmt(w)}"{extra}/>'] if d else []
         if style == 'tie':  # vínculo lateral (entre hermanos, hermanastros, cuñados): una raya con un travesaño en el medio
             d = d_of(polys(p))

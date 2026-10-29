@@ -53,7 +53,7 @@ forma, tono y posición.
   en el suelo.
 - `catalog_collection`: varios productos juntos, en un marco discontinuo.
   `catalog_tag`: un rótulo con su agujero. `catalog_group`: tres discos que se
-  tocan. `order_return`: el volumen y un arco que vuelve hacia atrás.
+  tocan. `order_return`: el paquete y la flecha de `checkout_shipping`, en sentido contrario.
 - `cart_`: la cesta (un trapecio azul) con los productos que asoman. La acción
   se lee por la insignia y por lo que hay dentro: `cart_add` lleva el «+» verde
   y un producto más, `cart_remove` el «−» rojo y uno solo, `cart_update` las dos

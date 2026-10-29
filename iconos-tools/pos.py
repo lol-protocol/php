@@ -78,11 +78,11 @@ ic.solid(Disc(22, 41, 12), 'amber', d=3)
 ic.solid(Disc(42, 41, 12), 'rose', d=3)
 ic.solid(Disc(32, 23, 12), 'teal', d=3)
 
-# devolución: el volumen y el arco que vuelve hacia atrás
+# devolución: el paquete y la flecha de checkout_shipping, en sentido contrario
 ic = new('order_return')
-volume(ic, 'amber', 18, 28, 28, 24, d=4, r=5)
-ic.arc(32, 31, 18, 190, 350, tone='orange', ink='orange', w=4.2)
-ic.solid(Disc(14.2, 28, 4.6), 'orange', d=1.8)
+volume(ic, 'amber', 30, 16, 28, 30, d=5, r=5)
+ic.arrow(24, 31, 7, 31, head=5, tone='orange', ink='orange', w=3.6)
+ic.mark('M15 22h8M15 40h8', tone='orange', ink='orange', w=2.6, op=0.6)
 
 
 # --------------------------------------------------------------------------- cart_: el carrito

@@ -27,7 +27,7 @@ inglés.
 | Prefijo | Iconos | Contenido | Ejemplo |
 |---|---|---|---|
 | `book_` | 23 | Tipos y partes de un libro | `book_boxset` |
-| `genre_` | 42 | Géneros literarios y temas (6 familias x 7 patrones) | `genre_scifi` |
+| `genre_` | 42 | Géneros literarios y temas (6 familias de 6 a 8 géneros, uno por patrón) | `genre_scifi` |
 | `format_` | 7 | Ediciones y formatos | `format_braille` |
 | `status_` | 22 | Disponibilidad y estado de lectura | `status_overdue` |
 | `action_` | 24 | Acciones del usuario | `action_borrow` |
@@ -46,7 +46,8 @@ relleno y posición:
   tensión y aventura, hexágono verde azulado = ciencia y técnica, rombo
   violeta = imaginación y arte, semicírculo verde = vida práctica) y el
   **género** por el patrón dentro de ella (liso, rayas, puntos, ondas, anillo,
-  cruz, mitad).
+  cruz, mitad y, solo en la familia de ocho géneros, la violeta, una V). Los
+  dos cómics, `genre_graphic_novel` y `genre_manga`, van juntos en esa familia.
 - `status_`: discos con un indicador blanco: el estado se lee por el relleno
   (lleno, vacío, mitad, anillo, anillo roto, arco...).
 - `action_`: piezas sueltas con movimiento; la estela marca de dónde viene la
