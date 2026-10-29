@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
   <style>
     @supports (--a:0){
-      .ic-brown{stroke:var(--ic-brown,#553822)}
-      .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .icono25d .ic-brown{stroke:var(--ic-brown,#553822)}
+      .icono25d .ic-ink{stroke:var(--ic-ink,#29313D)}
     }
   </style>
   <g class="solids">

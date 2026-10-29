@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
   <style>
     @supports (--a:0){
-      .ic-mist{stroke:var(--ic-mist,#767C82)}
-      .ic-orange{stroke:var(--ic-orange,#883307)}
-      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+      .icono25d .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .icono25d .ic-orange{stroke:var(--ic-orange,#883307)}
+      .icono25d .ic-slate{stroke:var(--ic-slate,#565F6B)}
     }
   </style>
   <g class="links">
     <path d="M18.25 11.6L24 11.6M19.5 15.4L24 15.4" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.8"/>
     <path d="M39.75 45.6L44.25 45.6M39.75 49.4L44.25 49.4" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.8"/>
-    <path d="M31 22.75L31 40.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2" stroke-dasharray="4 4.5"/>
+    <path d="M31 22.75L31 40.5M27.4 30.5L34.6 30.5" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
     <g class="ic-mist" stroke="#767C82"><path d="M5.56 17.58L7.27 19.86A6.8 6.8 0 0 0 18.15 11.7L16.44 9.42A6.8 6.8 0 0 0 5.56 17.58Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="11" cy="13.5" r="6.8" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>

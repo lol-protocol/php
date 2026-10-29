@@ -16,7 +16,7 @@
   <g class="links">
     <path d="M11 11.6L31 11.6M11 15.4L31 15.4" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
     <path d="M31 45.6L51 45.6M31 49.4L51 49.4" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
-    <path d="M31 13.5L31 47.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" stroke-dasharray="4 4.5"/>
+    <path d="M31 13.5L31 47.5M27.4 30.5L34.6 30.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
     <g><path d="M5.74 17.82L7.27 19.86A6.8 6.8 0 0 0 18.15 11.7L16.62 9.66A6.8 6.8 0 0 0 5.74 17.82Z" fill="#7B7B7B"/><circle cx="11" cy="13.5" r="6.8" fill="url(#grad_relationship_co_brother_in_law_mist_g)"/></g>

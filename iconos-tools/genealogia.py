@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Catalogo abstracto de genealogia: diagramas de parentesco sin texto.
 
-Gramatica visual: naranja = el familiar, azul oscuro con punto = tu, gris claro = otros;
-cuadrado = hombre, circulo = mujer, rombo = sin especificar; linea doble = matrimonio,
-linea cortada = divorcio, discontinua = adopcion o parentesco parcial, punteada = acogida.
+Gramatica visual (colores, formas de los nodos y significado de cada estilo de enlace): ver "Como se leen" en
+iconos-genealogia/README.md. Esta es la unica copia; aqui no se repite para que no se desfasen.
 """
 import math
 
@@ -294,9 +293,9 @@ for suffix, gender, style in (
     done(s)
 
 # uno mismo y desconocidos
+# «tú» es el nodo propio solo: el anillo discontinuo significa «desconocido» o «sin pareja» (person_unknown*, state_single)
 ic = reg(Icon('person_self'))
 node(ic, 'ci', 31, 30, 'self', r=11, d=4)
-ic.ring(31, 30, 18, tone='slate', ink='slate', w=2, dash='3 3.6')
 
 for stem, kind in (('person_unknown', 'di'), ('person_unknown_male', 'sq'), ('person_unknown_female', 'ci')):
     ic = reg(Icon(stem))
@@ -332,7 +331,7 @@ done(s)
 
 s = scene('relationship_twins')
 s.n('p', 'u', 0.5, 0).n('a', 'u', 0, 1, 'rel').n('b', 'u', 1, 1, 'rel')
-s.line('p', 'a').line('p', 'b').line('a', 'b', 'dashed')
+s.line('p', 'a').line('p', 'b').line('a', 'b', 'tie')
 done(s)
 
 s = scene('relationship_triplets')
@@ -388,7 +387,7 @@ done(s)
 
 s = scene('relationship_step_family')
 s.n('p1', 'u', 0, 0).n('p2', 'u', 2, 0).n('c1', 'u', 0, 1, 'rel').n('c2', 'u', 2, 1, 'rel')
-s.couple('p1', 'p2').desc('p1', 'c1').desc('p2', 'c2').line('c1', 'c2', 'dashed')
+s.couple('p1', 'p2').desc('p1', 'c1').desc('p2', 'c2').line('c1', 'c2', 'tie')
 done(s)
 
 s = scene('relationship_nuclear_family')
@@ -414,12 +413,12 @@ done(s)
 
 s = scene('relationship_co_brother_in_law')
 s.n('w1', 'f', 0, 0).n('h1', 'm', 1, 0, 'rel').n('h2', 'm', 1, 1, 'rel').n('w2', 'f', 2, 1)
-s.couple('w1', 'h1').couple('h2', 'w2').line('h1', 'h2', 'dashed')
+s.couple('w1', 'h1').couple('h2', 'w2').line('h1', 'h2', 'tie')
 done(s)
 
 s = scene('relationship_co_sister_in_law')
 s.n('h1', 'm', 0, 0).n('w1', 'f', 1, 0, 'rel').n('w2', 'f', 1, 1, 'rel').n('h2', 'm', 2, 1)
-s.couple('h1', 'w1').couple('w2', 'h2').line('w1', 'w2', 'dashed')
+s.couple('h1', 'w1').couple('w2', 'h2').line('w1', 'w2', 'tie')
 done(s)
 
 ic = reg(Icon('relationship_family_reunion'))
@@ -695,19 +694,20 @@ ic = new('action_duplicate')
 node(ic, 'ci', 24, 24, 'other', r=8, d=2.4)
 node(ic, 'ci', 38, 37, 'rel', r=8, d=2.6)
 
+# los dos nodos van separados y la insignia es pequeña: así el enlace se ve a cada lado (antes lo tapaban los tres discos)
 ic = new('action_connect')
-ic.link([(16, 31), (46, 31)], w=3)
-node(ic, 'ci', 16, 31, 'other', r=7, d=3)
-node(ic, 'ci', 46, 31, 'other', r=7, d=3)
-ic.solid(Disc(31, 31, 6.2), 'green', d=2)
-ic.plus(31, 31, 3.2, w=2.4)
+ic.link([(10, 31), (52, 31)], w=3)
+node(ic, 'ci', 10, 31, 'other', r=6.5, d=3)
+node(ic, 'ci', 52, 31, 'other', r=6.5, d=3)
+ic.solid(Disc(31, 31, 5), 'green', d=2)
+ic.plus(31, 31, 2.6, w=2.2)
 
 ic = new('action_disconnect')
-ic.link([(16, 31), (25, 31)], w=3)
-ic.link([(37, 31), (46, 31)], w=3)
-node(ic, 'ci', 16, 31, 'other', r=7, d=3)
-node(ic, 'ci', 46, 31, 'other', r=7, d=3)
-ic.cross(31, 31, 3.6, w=2.6, tone='red', ink='red')
+ic.link([(10, 31), (24, 31)], w=3)
+ic.link([(38, 31), (52, 31)], w=3)
+node(ic, 'ci', 10, 31, 'other', r=6.5, d=3)
+node(ic, 'ci', 52, 31, 'other', r=6.5, d=3)
+ic.cross(31, 31, 3.4, w=2.4, tone='red', ink='red')
 
 ic = new('action_share_tree')
 ic.link([(22, 14), (22, 24), (12, 24), (12, 33)], w=2.2)
@@ -754,7 +754,7 @@ ic.solid(Disc(46, 44, 9), 'red', d=2.4)
 ic.line(41, 44, 51, 44, w=3)
 
 # ------------------------------------------------------------------ ui_
-reg(badge('ui_verified', 'green', lambda ic: ic.dot(31, 30, 11.5)))
+reg(badge('ui_verified', 'green', lambda ic: ic.check(31, 30, 8, w=3.6)))  # con la marca: el disco lleno ya es status_available en biblioteca
 reg(badge('ui_unverified', 'slate', lambda ic: ic.ring(31, 30, 11, w=2.6, dash='3 3.5')))
 
 reg(tile('ui_notes', 'amber', lambda ic, x, y: ic.bars(x - 11, y - 9.5, [22, 15, 19], 9.5, w=3.2)))

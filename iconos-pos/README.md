@@ -11,7 +11,9 @@ Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 ## Variantes
 
 - `color/`: gradientes, extrusión y sombra.
-- `lineas/`: solo contornos, sin rellenos; las partes tapadas por otra forma no se dibujan.
+- `lineas/`: solo contornos, sin rellenos, como un dibujo de alambre: los volúmenes que se solapan se ven
+  transparentes (también los que en `color` son translúcidos); solo se ocultan los enlaces y las marcas que
+  quedan detrás de un volumen.
   Los colores se pueden cambiar desde la página (ver «Colores de `lineas`»).
 - `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
@@ -75,7 +77,8 @@ siempre, porque la página no llega al interior del archivo.
 
 Los tonos que usa un icono están en su `<style>` (`.ic-orange`, `.ic-green`...).
 Un renderizador sin variables CSS (por ejemplo `resvg`) ignora esa parte y dibuja
-los colores originales.
+los colores originales. Las reglas van acotadas a la clase `icono25d` que lleva la raíz del SVG
+(un `<style>` en línea vale para todo el documento), así que no cambian nada de la página fuera del icono.
 
 ## Regenerar y validar
 

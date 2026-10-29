@@ -24,7 +24,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 
-from catalogo import GROUPS, PREFIXES, VARIANTS  # noqa: E402
+from catalogo import GROUPS, PREFIXES, SCOPE_CLASS, VARIANTS  # noqa: E402
 
 MARGIN = 1  # unidades que el dibujo debe quedar lejos del borde del lienzo de 64 (los trazos tienen grosor)
 NAME = re.compile(r'^[a-z]+(_[a-z0-9]+)+$')
@@ -187,12 +187,16 @@ def check_file(rel, variant, text):
 
 def check_theme(root, rel, text):
     """Cada clase ic-<tono> de un icono lineas debe tener su regla del <style> (la que deja cambiar el color con
-    --ic-<tono>), y el color que esa regla recupera debe ser el del atributo stroke: si no, un navegador y un
-    renderizador sin variables CSS dibujarían colores distintos."""
-    rules = dict(re.findall(r'\.ic-([a-z]+)\{stroke:var\(--ic-\1,(#[0-9A-Fa-f]{6})\)\}', text))
+    --ic-<tono>), acotada a la clase de la raíz (un <style> en línea vale para todo el documento), y el color que
+    esa regla recupera debe ser el del atributo stroke: si no, un navegador y un renderizador sin variables CSS
+    dibujarían colores distintos."""
+    rules = dict(re.findall(rf'\.{SCOPE_CLASS} \.ic-([a-z]+)\{{stroke:var\(--ic-\1,(#[0-9A-Fa-f]{{6}})\)\}}', text))
     classes = {c[3:] for e in root.iter() for c in (e.get('class') or '').split() if c.startswith('ic-')}
     if classes != set(rules):
         fail(f'{rel}: las clases ic-* {sorted(classes)} no coinciden con las reglas del <style> {sorted(rules)}')
+        return
+    if classes and SCOPE_CLASS not in (root.get('class') or '').split():
+        fail(f'{rel}: la raíz debe llevar class="{SCOPE_CLASS}", a la que van acotadas las reglas del <style>')
         return
     for e in root.iter():
         for c in (e.get('class') or '').split():

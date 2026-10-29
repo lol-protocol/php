@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
   <style>
     @supports (--a:0){
-      .ic-amber{stroke:var(--ic-amber,#7E4503)}
-      .ic-mist{stroke:var(--ic-mist,#767C82)}
-      .ic-rose{stroke:var(--ic-rose,#82112A)}
-      .ic-teal{stroke:var(--ic-teal,#08564F)}
+      .icono25d .ic-amber{stroke:var(--ic-amber,#7E4503)}
+      .icono25d .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .icono25d .ic-rose{stroke:var(--ic-rose,#82112A)}
+      .icono25d .ic-teal{stroke:var(--ic-teal,#08564F)}
     }
   </style>
   <g class="solids">

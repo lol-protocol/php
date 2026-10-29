@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
   <style>
     @supports (--a:0){
-      .ic-ink{stroke:var(--ic-ink,#29313D)}
-      .ic-slate{stroke:var(--ic-slate,#565F6B)}
+      .icono25d .ic-ink{stroke:var(--ic-ink,#29313D)}
     }
   </style>
   <g class="solids">
@@ -11,6 +10,5 @@
   </g>
   <g class="marks">
     <path d="M27.26 30a3.74 3.74 0 1 0 7.48 0a3.74 3.74 0 1 0 -7.48 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M13 30a18 18 0 1 0 36 0a18 18 0 1 0 -36 0Z" class="ic-slate" fill="none" stroke="#565F6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.6"/>
   </g>
 </svg>
