@@ -44,10 +44,17 @@ tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Ma
 - `historia_poblacion.py`: calcula los nacidos en la historia de cada país a partir de esos dos
   archivos, y escribe la columna de `paises.csv` y `poblacion_historica_detalle.csv` (con la banda
   de sensibilidad).
+- `escenarios.md`: el puesto de cada país con la regla vigente y con alternativas (otro umbral de
+  exclusión, más peso a un índice), para ver cuánto depende el ranking de esas decisiones.
+- `datos_detalle.csv`: año y fuente de cada dato de `paises.csv` (lo escribe `preparar_datos.py`).
+  Sirve para los datos que no son del mismo año en todos los países: alfabetización, internet,
+  PIB nominal, libertad, democracia y corrupción.
+- `descargar_fuentes.py` y `fuentes.sha256`: bajan todas las fuentes, fijadas por commit, y
+  comprueban su SHA-256; con `--rehacer` corren todos los scripts. Ver «Fuentes».
 - `pruebas.py`: pruebas del proyecto. La CI las corre junto con `generar_tabla.py --comprobar`
   (`.github/workflows/pruebas-listado-paises.yml`).
 
-`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
+`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv`, `vista.html` y `escenarios.md` son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
 
 ```bash
 python3 generar_tabla.py              # valida y regenera las tablas, priorizacion.csv y vista.html
@@ -57,6 +64,7 @@ python3 preparar_datos.py ...         # datos de los países; ver «Fuentes»
 python3 historia_poblacion.py         # recalcula los nacidos en la historia
 python3 preparar_lenguas.py ...       # recursos de cada lengua; ver «Fuentes»
 python3 preparar_mapa.py ...          # trazados del mapa; ver «Fuentes»
+python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer   # baja todo y rehace los datos
 ```
 
 Todos los scripts usan solo la biblioteca estándar de Python 3. `generar_tabla.py` se detiene con
@@ -418,6 +426,13 @@ Para los recursos de las lenguas y el mapa:
 - [`nvkelso/natural-earth-vector`](https://github.com/nvkelso/natural-earth-vector), commit
   `ca96624` (2 de junio de 2022), archivo `geojson/ne_50m_admin_0_countries.geojson`: fronteras de
   Natural Earth (dominio público), escala 1:50 millones.
+
+**Para reproducir todo de una vez:** `python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer`
+baja las 434 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
+`fuentes.sha256` y corre todos los scripts. Si las fuentes no cambiaron, el proyecto queda
+idéntico. El job `reproducir` de `pruebas-listado-paises.yml` lo hace en la CI cuando se lanza a
+mano (*Run workflow*) y falla si algún archivo cambia. Los comandos de abajo hacen lo mismo paso
+a paso.
 
 Para reproducir `poblacion_larga.csv`, `natalidad.csv` y las columnas de `paises.csv`:
 
