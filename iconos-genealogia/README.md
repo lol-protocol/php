@@ -1,8 +1,8 @@
 # Iconos de árbol genealógico (SVG 2.5D)
 
-204 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
+207 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
 **sin letras, números ni pictogramas** (nada dibuja un objeto literal), así que
-no dependen del idioma. 612 archivos: 3 variantes × 204 iconos.
+no dependen del idioma. 621 archivos: 3 variantes × 207 iconos.
 
 Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
@@ -28,9 +28,9 @@ inglés.
 | `person_` | 103 | Parentescos desde la perspectiva de "tú" | `person_uncle` |
 | `relationship_` | 27 | Vínculos y tipos de familia | `relationship_married` |
 | `state_` | 8 | Estado de una persona | `state_widowed` |
-| `view_` | 13 | Formas de ver el árbol | `view_fan` |
+| `view_` | 14 | Formas de ver el árbol | `view_fan` |
 | `action_` | 33 | Acciones del usuario | `action_add_parent` |
-| `ui_` | 20 | Elementos de interfaz | `ui_dna` |
+| `ui_` | 22 | Elementos de interfaz | `ui_dna` |
 
 ## Cómo se leen
 
@@ -43,8 +43,7 @@ Cada estilo de enlace significa una cosa:
 - línea: de padres a hijos, o una pareja sin más (`person_partner`)
 - doble: matrimonio. Cortada: divorcio.
 - discontinua: adopción o parentesco parcial (medios hermanos)
-- punteada: vínculo provisional, según el contexto: acogida (de padres a hijo) o
-  compromiso (entre una pareja)
+- punteada: acogida (de padres a hijo). Raya y punto: compromiso (entre una pareja)
 - con un travesaño en el medio: vínculo lateral entre hermanos, hermanastros o
   cuñados (gemelos, `relationship_step_family`, los concuñados)
 - ondulada: pareja sentimental. Barra gruesa roja: el vínculo de sangre.

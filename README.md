@@ -30,7 +30,7 @@ y [`SECURITY.md`](SECURITY.md) (cómo avisar de una fuga de datos sin publicarla
 | [`cobros-ingresos-funnels/`](cobros-ingresos-funnels/) | Panel web de cobros, ingresos y funnel de conversión: boletas, pagos, clientes, cohortes y auditoría (PHP + PostgreSQL). |
 | [`vps-setup/`](vps-setup/) | Scripts para configurar desde cero un VPS Ubuntu (Nginx, PHP, Python, PostgreSQL, SSL). |
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
-| [`iconos-genealogia/`](iconos-genealogia/) | Set de iconos SVG abstractos en 2.5D, sin texto, para árbol genealógico: 204 iconos en 3 variantes. |
+| [`iconos-genealogia/`](iconos-genealogia/) | Set de iconos SVG abstractos en 2.5D, sin texto, para árbol genealógico: 207 iconos en 3 variantes. |
 | [`iconos-biblioteca/`](iconos-biblioteca/) | Set de iconos SVG abstractos en 2.5D, sin texto, para biblioteca virtual: 151 iconos en 3 variantes. |
 | [`iconos-pos/`](iconos-pos/) | Set de iconos SVG abstractos en 2.5D, sin texto, para el punto de venta (catálogo, pedidos, cuenta del cliente, carrito y pago): 23 iconos en 3 variantes. |
 | [`iconos-tools/`](iconos-tools/) | Generador y validador en Python de los tres sets de iconos y de la galería compartida `galeria-iconos.html`. |
