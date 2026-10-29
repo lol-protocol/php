@@ -1242,6 +1242,7 @@ turquoise,vi,ngọc lam,lema,
 turquoise,vi,xanh ngọc,sinonimo,
 turquoise,th,เทอร์ควอยซ์,lema,
 turquoise,id,turkuois,lema,
+turquoise,sw,feruzi,lema,origen=ia
 beige,en,beige,lema,
 beige,es,beige,lema,
 beige,es,beiges,flexion,Number=Plur
@@ -1517,9 +1518,11 @@ violet,hi,बैंगनी,lema,
 violet,bn,বেগুনি,lema,
 violet,zh,紫罗兰色,lema,
 violet,ja,すみれ色,lema,
+violet,ko,바이올렛,lema,origen=ia
 violet,vi,tím,lema,
 violet,th,ม่วง,lema,
 violet,id,violet,lema,
+violet,sw,urujuani,lema,origen=ia
 indigo,en,indigo,lema,
 indigo,es,índigo,lema,
 indigo,es,índigos,flexion,Number=Plur
@@ -1564,6 +1567,7 @@ indigo,ko,인디고,sinonimo,
 indigo,vi,chàm,lema,
 indigo,th,คราม,lema,
 indigo,id,nila,lema,
+indigo,sw,nili,lema,origen=ia
 lavender,en,lavender,lema,
 lavender,es,lavanda,lema,
 lavender,es,lavandas,flexion,Number=Plur
@@ -1611,6 +1615,7 @@ lavender,ko,라벤더색,lema,
 lavender,vi,oải hương,lema,
 lavender,th,ลาเวนเดอร์,lema,
 lavender,id,lavender,lema,
+lavender,sw,lavenda,lema,origen=ia
 maroon,en,maroon,lema,
 maroon,es,granate,lema,
 maroon,es,granates,flexion,Number=Plur
@@ -1733,6 +1738,7 @@ olive,ko,올리브색,lema,
 olive,vi,ô liu,lema,
 olive,th,เขียวมะกอก,lema,
 olive,id,hijau zaitun,lema,
+olive,sw,zeituni,lema,origen=ia
 navy,en,navy,lema,
 navy,en,navy blue,sinonimo,
 navy,es,azul marino,lema,
@@ -1810,6 +1816,8 @@ cyan,el,κυανό,flexion,Gender=Neut;Number=Sing
 cyan,el,κυανοί,flexion,Gender=Masc;Number=Plur
 cyan,el,κυανές,flexion,Gender=Fem;Number=Plur
 cyan,el,κυανά,flexion,Gender=Neut;Number=Plur
+cyan,ru,циан,lema,origen=ia
+cyan,uk,ціан,lema,origen=ia
 cyan,tr,camgöbeği,lema,
 cyan,ar,سيان,lema,
 cyan,he,ציאן,lema,
@@ -1857,6 +1865,7 @@ magenta,ko,마젠타,lema,
 magenta,vi,magenta,lema,
 magenta,th,มาเจนต้า,lema,
 magenta,id,magenta,lema,
+magenta,sw,magenta,lema,origen=ia
 salmon,en,salmon,lema,
 salmon,es,salmón,lema,
 salmon,es,salmones,flexion,Number=Plur
@@ -1968,6 +1977,7 @@ coral,ja,珊瑚色,sinonimo,
 coral,ko,산호색,lema,
 coral,vi,san hô,lema,
 coral,id,koral,lema,
+coral,sw,marijani,lema,origen=ia
 crimson,en,crimson,lema,
 crimson,es,carmesí,lema,
 crimson,es,carmesíes,flexion,Number=Plur
@@ -2065,6 +2075,7 @@ khaki,ko,카키색,lema,
 khaki,vi,kaki,lema,
 khaki,th,กากี,lema,
 khaki,id,khaki,lema,
+khaki,sw,kaki,lema,origen=ia
 lime,en,lime,lema,
 lime,en,lime green,sinonimo,
 lime,es,lima,lema,
@@ -2399,3 +2410,4 @@ amber,ko,호박색,lema,
 amber,vi,hổ phách,lema,
 amber,th,อำพัน,lema,
 amber,id,ambar,lema,
+amber,sw,kaharabu,lema,origen=ia

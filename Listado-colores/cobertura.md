@@ -6,7 +6,8 @@ Este informe no corrige nada ni hace fallar la generación: dice dónde faltan d
 
 ## Resumen
 
-- Léxico básico: 38 conceptos. 14 idiomas tienen lema para todos; 16 tienen huecos (45 lemas en total).
+- Léxico básico: 38 conceptos. 17 idiomas tienen lema para todos; 13 tienen huecos (33 lemas en total).
+- De esos huecos, 12 los llenó una propuesta de IA sin revisar (rasgo `origen=ia` en `lexico-basico.csv`).
 - Categorías gramaticales: 2 idiomas (Inglés, Español); 28 sin ninguna.
 - Nombres CSS repetidos con hex distinto: 29 casos en 18 idiomas.
 - Lemas del léxico que sirven a colores de distinto hex: 25 casos en 17 idiomas.
@@ -32,8 +33,8 @@ El generador solo exige lema en los 30 idiomas para los 11 conceptos básicos; e
 | Rumano (`ro`) | 36 de 38 | `lime`, `scarlet` |
 | Húngaro (`hu`) | 37 de 38 | `lime` |
 | Griego (`el`) | 35 de 38 | `crimson`, `lime`, `scarlet` |
-| Ruso (`ru`) | 37 de 38 | `cyan` |
-| Ucraniano (`uk`) | 37 de 38 | `cyan` |
+| Ruso (`ru`) | 38 de 38 | — |
+| Ucraniano (`uk`) | 38 de 38 | — |
 | Turco (`tr`) | 37 de 38 | `crimson` |
 | Árabe (`ar`) | 37 de 38 | `scarlet` |
 | Hebreo (`he`) | 36 de 38 | `maroon`, `navy` |
@@ -42,11 +43,30 @@ El generador solo exige lema en los 30 idiomas para los 11 conceptos básicos; e
 | Bengalí (`bn`) | 33 de 38 | `salmon`, `lime`, `burgundy`, `scarlet`, `amber` |
 | Chino simplificado (`zh`) | 38 de 38 | — |
 | Japonés (`ja`) | 38 de 38 | — |
-| Coreano (`ko`) | 37 de 38 | `violet` |
+| Coreano (`ko`) | 38 de 38 | — |
 | Vietnamita (`vi`) | 37 de 38 | `salmon` |
 | Tailandés (`th`) | 36 de 38 | `coral`, `crimson` |
 | Indonesio (`id`) | 38 de 38 | — |
-| Suajili (`sw`) | 18 de 38 | `turquoise`, `beige`, `violet`, `indigo`, `lavender`, `maroon`, `olive`, `navy`, `cyan`, `magenta`, `salmon`, `coral`, `crimson`, `khaki`, `lime`, `lilac`, `burgundy`, `cream`, `scarlet`, `amber` |
+| Suajili (`sw`) | 27 de 38 | `beige`, `maroon`, `navy`, `cyan`, `salmon`, `crimson`, `lime`, `lilac`, `burgundy`, `cream`, `scarlet` |
+
+## Lemas propuestos por IA sin revisar
+
+Llenan huecos del léxico; los escribió un asistente de IA y ningún hablante nativo los ha visto. Cuando uno los confirme (en `revisiones.csv`), se quita el rasgo `origen=ia` del lema; si no, se corrige o se borra la fila.
+
+| Idioma | Concepto | Lema |
+|---|---|---|
+| Ruso (`ru`) | `cyan` | циан |
+| Ucraniano (`uk`) | `cyan` | ціан |
+| Coreano (`ko`) | `violet` | 바이올렛 |
+| Suajili (`sw`) | `turquoise` | feruzi |
+| Suajili (`sw`) | `violet` | urujuani |
+| Suajili (`sw`) | `indigo` | nili |
+| Suajili (`sw`) | `lavender` | lavenda |
+| Suajili (`sw`) | `olive` | zeituni |
+| Suajili (`sw`) | `magenta` | magenta |
+| Suajili (`sw`) | `coral` | marijani |
+| Suajili (`sw`) | `khaki` | kaki |
+| Suajili (`sw`) | `amber` | kaharabu |
 
 ## Idiomas sin categorías gramaticales
 
