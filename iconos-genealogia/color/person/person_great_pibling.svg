@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_great_pibling_mist_r45" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_person_great_pibling_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_person_great_pibling_orange_r45" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.79" cy="58.96" rx="18.7" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 10.5L31 17.17L17 17.17L17 23.83" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M17 23.83L17 37.17" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M17 37.17L17 50.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 10.5L31 17.17L45 17.17L45 23.83" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M36.21 11.42A1 1 0 0 1 36.12 12.73L32.85 16A1 1 0 0 1 31.44 16L28.17 12.73A1 1 0 0 1 28.07 12.62L27.11 11.34A1 1 0 0 1 27.21 10.03L30.47 6.77A1 1 0 0 1 31.89 6.77L35.15 10.03A1 1 0 0 1 35.25 10.14Z" fill="#767C82"/><rect x="27.69" y="7.19" width="6.62" height="6.62" rx="1" transform="rotate(45 31 10.5)" fill="url(#grad_person_great_pibling_mist_r45)"/></g>
+    <g><path d="M22.21 24.76A1 1 0 0 1 22.12 26.06L18.85 29.33A1 1 0 0 1 17.44 29.33L14.17 26.06A1 1 0 0 1 14.07 25.95L13.11 24.67A1 1 0 0 1 13.21 23.37L16.47 20.1A1 1 0 0 1 17.89 20.1L21.15 23.37A1 1 0 0 1 21.25 23.47Z" fill="#767C82"/><rect x="13.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 17 23.83)" fill="url(#grad_person_great_pibling_mist_r45)"/></g>
+    <g><path d="M22.21 38.09A1 1 0 0 1 22.12 39.4L18.85 42.66A1 1 0 0 1 17.44 42.66L14.17 39.4A1 1 0 0 1 14.07 39.29L13.11 38.01A1 1 0 0 1 13.21 36.7L16.47 33.43A1 1 0 0 1 17.89 33.43L21.15 36.7A1 1 0 0 1 21.25 36.81Z" fill="#767C82"/><rect x="13.69" y="33.86" width="6.62" height="6.62" rx="1" transform="rotate(45 17 37.17)" fill="url(#grad_person_great_pibling_mist_r45)"/></g>
+    <g><path d="M13.55 53.46L14.52 54.74A4.53 4.53 0 0 0 21.77 49.3L20.81 48.02A4.53 4.53 0 0 0 13.55 53.46Z" fill="#29313D"/><circle cx="17" cy="50.5" r="4.53" fill="url(#grad_person_great_pibling_ink)"/></g>
+    <g><path d="M52.81 25.22A1.5 1.5 0 0 1 52.68 27.18L47.77 32.08A1.5 1.5 0 0 1 45.66 32.08L40.75 27.18A1.5 1.5 0 0 1 40.61 27.02L39.08 24.97A1.5 1.5 0 0 1 39.22 23.02L44.12 18.11A1.5 1.5 0 0 1 46.24 18.11L51.14 23.02A1.5 1.5 0 0 1 51.28 23.18Z" fill="#883307"/><rect x="40.04" y="18.87" width="9.93" height="9.93" rx="1.5" transform="rotate(45 45 23.83)" fill="url(#grad_person_great_pibling_orange_r45)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M15.4 50.5a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

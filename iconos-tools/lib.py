@@ -656,15 +656,15 @@ class Icon:
             return [f'<path d="{d}" {common} stroke-width="{fmt(LINE_MIN if lin else round(w * 0.62, 1))}"/>'] if d else []
         if style == 'cut':
             mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
-            g = 4.8
+            g = 5.6
             e1 = (mid[0] - ux * g, mid[1] - uy * g)
             e2 = (mid[0] + ux * g, mid[1] + uy * g)
             ang = math.radians(62)
             vx, vy = _unit((ux * math.cos(ang) - uy * math.sin(ang), ux * math.sin(ang) + uy * math.cos(ang)))
             d = d_of(polys([a, e1])) + d_of(polys([e2, b]))
-            for s in (-2.4, 2.4):
+            for s in (-2.8, 2.8):
                 cx, cy = mid[0] + ux * s, mid[1] + uy * s
-                d += f'M{pt((cx - vx * 5.2, cy - vy * 5.2))}L{pt((cx + vx * 5.2, cy + vy * 5.2))}'
+                d += f'M{pt((cx - vx * 6.0, cy - vy * 6.0))}L{pt((cx + vx * 6.0, cy + vy * 6.0))}'
             return [f'<path d="{d}" {common} stroke-width="{fmt(w)}"/>']
         raise ValueError(style)
 
