@@ -16,8 +16,8 @@
     "penalties_range": "Up to 20,000 UTM (~USD 1.3M) for very serious infringements",
     "exemptions": "Government functions",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Consent exemption for scientific, historical or public-interest statistical research (university summary; article not confirmed) (unconfirmed)",
+    "genetic_data": "Sensitive data: genetic data (from biological exam) and biological profile data (arts. 16, 16 bis); stricter basis required",
     "website_url": "https://www.dlapiperdataprotection.com/?c=CL&t=law",
     "language": "Spanish",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "2026-12-01",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-29",
     "sources": {
       "law_name": {
         "url": "https://www.az.cl/en/executive-published-new-personal-data-law-in-chile/",
@@ -68,9 +68,31 @@
         "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/chile",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://uchile.cl/u245658",
+        "confidence": "low",
+        "checked": "2026-10-29"
+      },
+      "genetic_data": {
+        "url": "https://preyproject.com/es/blog/datos-personales-vs-datos-sensibles-ley-21719",
+        "confidence": "medium",
+        "checked": "2026-10-29"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-29",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data: genetic data (from biological exam) and biological profile data (arts. 16, 16 bis); stricter basis required"
+      },
+      {
+        "date": "2026-10-29",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Consent exemption for scientific, historical or public-interest statistical research (university summary; article not confirmed) (unconfirmed)"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

@@ -1,0 +1,107 @@
+[
+  {
+    "country_code": "BS",
+    "country_name": "Bahamas",
+    "region": "americas",
+    "law_name": "Data Protection (Privacy of Personal Information) Act 2003",
+    "jurisdiction": "Office of the Data Protection Commissioner",
+    "enactment_date": "2003-04-11",
+    "effective_date": "2007-04-02",
+    "scope": "Living individuals whose personal data is processed in the Bahamas",
+    "applies_to": "Public and private data controllers established in the Bahamas or using equipment there",
+    "key_requirements": "Eight data protection principles (fair collection, purpose, accuracy, disclosure, retention, security); access and correction rights; objection to direct marketing",
+    "data_categories": "Personal data (unconfirmed)",
+    "retention_period": "Retained only as long as necessary (unconfirmed)",
+    "enforcement_authority": "Office of the Data Protection Commissioner (ODPC)",
+    "penalties_range": "Summary conviction: fine up to BSD 2,000; conviction on information: up to BSD 100,000; forfeiture/erasure of data",
+    "exemptions": "Exemptions for transfer of data for criminal investigation and prosecution; Minister may prescribe further exceptions to the access right (unconfirmed)",
+    "deceased_data": "Not covered: protects living individuals only",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dataguidance.com/jurisdiction/bahamas",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Exact enactment date not found (one site says 2003-01-01); Data Protection Bill 2025 proposed to repeal and replace it, not enacted per sources found; O; Enactment year 2003; exact assent date not found (a listed 1 Jan 2003 looks like a placeholder). Data Protection Bill 2025 to repeal and replace the Act was tabled Oct 2025 and was in House committee stage; an Aug 2026 summary still treats the 2003 Act as governing and the Bill as prospective.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-25",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BS&t=law",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/jurisdiction/bahamas",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "enactment_date": {
+        "url": "https://privacydocs.github.io/Caribbean/Bahamas%20-%20Data%20Protection%20Act.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "effective_date": {
+        "url": "https://privacydocs.github.io/Caribbean/Bahamas%20-%20Data%20Protection%20Act.pdf",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "scope": {
+        "url": "https://practiceguidesdev.chambers.com/practice-guides/data-protection-privacy-2022/the-bahamas",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "applies_to": {
+        "url": "https://www.dataguidance.com/jurisdiction/bahamas",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "key_requirements": {
+        "url": "https://www.dataguidance.com/jurisdiction/bahamas",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      },
+      "data_categories": {
+        "url": "https://www.dataguidance.com/jurisdiction/bahamas",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "retention_period": {
+        "url": "https://www.dataguidance.com/jurisdiction/bahamas",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/jurisdiction/bahamas",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "penalties_range": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BS&t=law",
+        "confidence": "high",
+        "checked": "2026-10-25"
+      },
+      "exemptions": {
+        "url": "https://www.coe.int/web/octopus/-/bahamas",
+        "confidence": "low",
+        "checked": "2026-10-25"
+      },
+      "deceased_data": {
+        "url": "https://practiceguidesdev.chambers.com/practice-guides/data-protection-privacy-2022/the-bahamas",
+        "confidence": "medium",
+        "checked": "2026-10-25"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-29",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
