@@ -32,9 +32,9 @@ final class Hebrea extends Adorno
         });
     }
 
-    public function emblema(float $cx, float $cy, float $radio, string $color): string
+    public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = self::grosor($radio);
+        $grosor = $trazo ?? self::grosor($radio);
         $r = $radio - $grosor;
         $svg = '';
         for ($i = 0; $i < 12; $i++) {

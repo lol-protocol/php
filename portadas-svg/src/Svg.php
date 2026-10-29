@@ -10,14 +10,21 @@ final class Svg
     /**
      * Documento SVG del tamaño físico de `vista`, con el viewBox puesto sobre esa zona del lienzo.
      * `cuerpo` dibuja solo lo que cae dentro de la vista.
+     *
+     * Es accesible: se anuncia como una imagen (`role="img"`) con su título y su descripción, y declara el
+     * idioma del texto. Un lector de pantalla no recorre el texto dibujado, así que la descripción lleva lo
+     * que la pieza dice.
      */
-    public static function documento(Rectangulo $vista, string $titulo, string $cuerpo): string
+    public static function documento(Rectangulo $vista, string $titulo, string $descripcion, string $idioma, string $cuerpo): string
     {
         $viewBox = implode(' ', [self::n($vista->x), self::n($vista->y), self::n($vista->ancho), self::n($vista->alto)]);
+        $lang = self::e($idioma);
 
         return '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-            . '<svg xmlns="http://www.w3.org/2000/svg" width="' . self::n($vista->ancho) . 'mm" height="' . self::n($vista->alto) . 'mm" viewBox="' . $viewBox . '">' . "\n"
-            . '<title>' . self::e($titulo) . "</title>\n"
+            . '<svg xmlns="http://www.w3.org/2000/svg" width="' . self::n($vista->ancho) . 'mm" height="' . self::n($vista->alto) . 'mm" viewBox="' . $viewBox . '"'
+            . ' role="img" aria-labelledby="titulo descripcion" lang="' . $lang . '" xml:lang="' . $lang . '">' . "\n"
+            . '<title id="titulo">' . self::e($titulo) . "</title>\n"
+            . '<desc id="descripcion">' . self::e($descripcion) . "</desc>\n"
             . $cuerpo
             . "</svg>\n";
     }

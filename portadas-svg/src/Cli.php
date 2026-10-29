@@ -13,14 +13,15 @@ final class Cli
     private const USO = <<<'TXT'
         Uso:
           php bin/generar.php libro.json [más.json ...] [--salida=carpeta]
-          php bin/generar.php --lista=libros.csv [--lista=otra.csv ...] [libro.json ...] [--salida=carpeta]
+          php bin/generar.php --lista=libros.csv [--lista=otra.csv ...] [libro.json ...] [--omitir-errores] [--salida=carpeta]
           php bin/generar.php --comprobar
           php bin/generar.php --help
 
         Cada libro escribe sus SVG en <salida>/<nombre del archivo>/ (o <salida>/<id>/ si viene de una
         lista CSV). La salida por defecto es salida/.
         --lista lee una fila por libro de un CSV en UTF-8 (ver README.md); si alguna fila tiene errores, los
-        da todos juntos y no escribe nada.
+        da todos juntos y no escribe nada. Con --omitir-errores, salta las filas malas, las avisa y escribe
+        el resto.
         --comprobar regenera ejemplos/*.json y falla si no coincide con ejemplos/salida/.
         TXT;
 
@@ -36,6 +37,7 @@ final class Cli
         $listas = [];
         $carpeta = $raiz . '/salida';
         $comprobar = false;
+        $omitir = false;
         foreach ($argumentos as $argumento) {
             if ($argumento === '--help' || $argumento === '-h') {
                 $salida(self::USO . "\n");
@@ -44,6 +46,8 @@ final class Cli
             }
             if ($argumento === '--comprobar') {
                 $comprobar = true;
+            } elseif ($argumento === '--omitir-errores') {
+                $omitir = true;
             } elseif (str_starts_with($argumento, '--salida=')) {
                 $carpeta = substr($argumento, strlen('--salida='));
                 if ($carpeta === '') {
@@ -70,7 +74,7 @@ final class Cli
         }
 
         try {
-            return $comprobar ? self::comprobar($raiz, $salida, $errores) : self::generar($rutas, $listas, $carpeta, $salida, $errores);
+            return $comprobar ? self::comprobar($raiz, $salida, $errores) : self::generar($rutas, $listas, $omitir, $carpeta, $salida, $errores);
         } catch (\Throwable $error) {
             $errores('Error: ' . $error->getMessage() . "\n");
 
@@ -92,7 +96,7 @@ final class Cli
      * @param callable(string): void $salida
      * @param callable(string): void $errores
      */
-    private static function generar(array $rutas, array $listas, string $carpeta, callable $salida, callable $errores): int
+    private static function generar(array $rutas, array $listas, bool $omitir, string $carpeta, callable $salida, callable $errores): int
     {
         // Se leen todos antes de escribir: un libro roto o repetido no deja la salida a medias.
         $libros = [];
@@ -106,7 +110,9 @@ final class Cli
             $agregar(Libro::desdeArchivo($ruta), $ruta);
         }
         foreach ($listas as $lista) {
-            foreach (Lista::leer($lista) as $libro) {
+            foreach (Lista::leer($lista, $omitir, static function (string $mensaje) use ($errores): void {
+                $errores("Aviso: $mensaje\n");
+            }) as $libro) {
                 $agregar($libro, "$lista (id '{$libro->id}')");
             }
         }

@@ -66,14 +66,15 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `formato.ancho_mm`, `formato.alto_mm` | `135` y `210` | Medida de corte, entre 50 y 500 mm. |
 | `sangrado_mm` | `3` | Sangrado en cada borde exterior, hasta 10 mm. |
 | `solapas_mm` | `0` | Ancho de cada solapa. `0` no pone sobrelomo; si no es `0`, mínimo 40 y no más ancho que la portada. |
-| `plantilla` | `clasica` | `clasica` o `sobria`. |
+| `plantilla` | `clasica` | `clasica`, `sobria` o `tipografica`. Ver «Plantillas». |
+| `idioma` | `es` | Idioma del texto de la cubierta (`es`, `en`, `pt-BR`…). Va en cada SVG para los lectores de pantalla. |
 | `colores.fondo`, `colores.texto`, `colores.acento` | los de la plantilla | Colores en `#rrggbb`. |
 | `degradado` | sin degradado | Degradado del fondo de toda la cubierta. Ver «Degradados». |
 | `lomo_direccion` | `arriba-abajo` | Sentido del texto del lomo: `arriba-abajo` o `abajo-arriba`. |
 | `epoca` | vacío | Época del autor o de la obra, en texto libre (`siglo II`, `399 a. C.`). Solo para la ficha. |
 | `tradicion` | vacío | Tradición cultural: una de la lista de «Clasificación». |
 | `categoria` | vacío | Categoría de Marcalibros: una de la lista de «Clasificación». |
-| `cita` | vacío | Una frase breve de la propia obra, para abrir la contratapa. |
+| `cita` | vacío | Una frase breve de la propia obra. Abre la contratapa, más grande y firmada por el autor. |
 | `contratapa` | la ficha | Texto de la contratapa. Los párrafos van separados por una línea en blanco. |
 | `solapa_contratapa` | la ficha | Texto de la solapa interior de la contratapa (solo con solapas). |
 | `solapa_portada` | la ficha | Texto de la solapa interior de la portada (solo con solapas). |
@@ -122,7 +123,7 @@ Sin tradición, o con una que no tenga adorno, se usa el de siempre: el rombo co
 
 Cada una de las 27 categorías tiene un dibujo pequeño (`src/Adornos/Motivo.php`): un amanecer para el romanticismo, una balanza para las leyes, una lira para la poesía, un faro para el modernismo anglosajón, una brújula para los viajes… Es de líneas finas en el color de acento y va en tres sitios:
 
-- **Contratapa** (las dos plantillas): abajo a la izquierda, sobre el pie.
+- **Contratapa** (las tres plantillas): abajo a la izquierda, sobre el pie.
 - **Lomo**: abajo, en el color del texto del lomo, si el lomo mide 5 mm o más; el título se acorta lo justo, con el mismo margen arriba y abajo. En un lomo más estrecho no se pone.
 - **Portada sobria**: arriba a la derecha, frente al friso.
 
@@ -130,15 +131,13 @@ Una prueba comprueba que haya uno por cada categoría de `datos/categorias.json`
 
 ### Colores por categoría
 
-Cada categoría tiene un `tono` (0–360°) en `datos/categorias.json`, repartidos con el ángulo áureo para que las 27 se distingan. Si el libro no da `colores`, la plantilla se tiñe de ese tono: la clásica con fondo claro, la sobria con fondo oscuro, y en las dos el acento del mismo tono. Así los libros de una categoría se parecen entre sí. Los `colores` del libro mandan sobre los de la categoría, color por color. Una prueba comprueba que, en las 27 categorías y las dos plantillas, el texto tenga contraste 7:1 con el fondo y el acento 3:1.
+Cada categoría tiene un `tono` (0–360°) en `datos/categorias.json`, repartidos a partes iguales (13° entre uno y el siguiente) y mezclados para que las categorías de una misma familia queden lejos entre sí. Si el libro no da `colores`, la plantilla se tiñe de ese tono: la clásica y la tipográfica con fondo claro, la sobria con fondo oscuro, y en todas el acento del mismo tono. Así los libros de una categoría se parecen entre sí. Los `colores` del libro mandan sobre los de la categoría, color por color. Una prueba comprueba que, en las 27 categorías y las tres plantillas, el texto tenga contraste 7:1 con el fondo y el acento 3:1.
 
 ### La ficha de la contratapa y las solapas
 
 Si el libro trae `epoca`, `tradicion`, `categoria` o `cita`, y no trae los textos escritos a mano, la contratapa y las solapas se arman con esos datos. **No hay sinopsis inventada**: la ficha solo dice lo que ya está en los datos. Por ejemplo, la contratapa de *Meditaciones* sale así:
 
 ```
-«Lo que no conviene a la colmena, no conviene a la abeja.»
-
 «Meditaciones» es una obra de Marco Aurelio (siglo II), de la tradición romana.
 
 Tipo de texto: Filosofía y ensayo.
@@ -146,7 +145,7 @@ Tipo de texto: Filosofía y ensayo.
 224 páginas.
 ```
 
-- **Contratapa**: la cita (si hay), qué obra es y de quién, la clasificación, la traducción y la extensión.
+- **Contratapa**: qué obra es y de quién, la clasificación, la traducción y la extensión. La `cita`, si la hay, no va en este texto: la contratapa la compone aparte arriba, en cursiva (en la serif) o redonda (en la sans), con el nombre del autor debajo.
 - **Solapa de la portada**: la clasificación, la traducción y la extensión.
 - **Solapa de la contratapa**: el autor, su época y la tradición.
 
@@ -170,10 +169,10 @@ Tao Te King,,Lao Tsé,siglo IV a. C.,china,libros-sagrados,96,,Edición de ejemp
 | `subtitulo`, `traductor`, `editorial`, `coleccion`, `isbn` | Como en el JSON. |
 | `epoca`, `tradicion`, `categoria`, `cita` | Ver «Clasificación y ficha». |
 | `contratapa`, `solapa_portada`, `solapa_contratapa` | Texto a mano; manda sobre la ficha. Un salto de línea doble separa párrafos. |
-| `plantilla`, `solapas_mm`, `lomo_mm` | Como en el JSON (los mm admiten punto o coma decimal). |
+| `plantilla`, `idioma`, `lomo_direccion`, `solapas_mm`, `lomo_mm`, `sangrado_mm`, `grosor_hoja_mm` | Como en el JSON (los mm admiten punto o coma decimal). |
+| `ancho_mm`, `alto_mm` | El formato de corte (`formato.ancho_mm` y `formato.alto_mm` del JSON). |
+| `degradado`, `degradado_tipo`, `degradado_angulo` | El degradado del fondo: `auto` o de 2 a 6 colores separados por espacios (`#f3ead7 #c9a96e`); `lineal` o `radial`; y los grados. Con solo el tipo o el ángulo, los colores son `auto`. |
 | `fondo`, `texto`, `acento` | Colores `#rrggbb`. |
-
-El resto de campos del JSON (`formato`, `sangrado_mm`, `degradado`…) no están en la lista: valen los de siempre, y un libro que los necesite se escribe en JSON.
 
 Cada fila pasa por los mismos controles que un JSON. Si alguna falla, el error nombra la fila (como se ve en la hoja de cálculo) y el título, se dan todas juntas y no se escribe ningún libro, para corregir la lista de una vez:
 
@@ -185,7 +184,13 @@ lista.csv: 2 filas con errores:
 
 Una columna que no se conoce (un `tradicioon` mal escrito) también se rechaza, en vez de ignorarla en silencio.
 
-Con 300 libros, el generador tarda medio segundo y escribe unos 85 MB (cada SVG lleva sus fuentes). Si un título o un texto lleva letras que las fuentes no cubren, el generador lo avisa por libro y sigue.
+Si prefieres seguir con las filas buenas, `--omitir-errores` salta las malas, avisa de cada una (con su fila y su error) y escribe el resto:
+
+```bash
+php bin/generar.php --lista=libros.csv --omitir-errores --salida=salida
+```
+
+Con 300 libros, el generador tarda un par de segundos y escribe unos 60 MB (cada SVG lleva las partes de fuente que usa). Si un título o un texto lleva letras que las fuentes no cubren, el generador lo avisa por libro y sigue.
 
 ## Medidas
 
@@ -223,27 +228,43 @@ Un `"degradado": {}` vacío equivale a un degradado `auto` lineal de arriba abaj
 
 - **`clasica`**: fondo crema, marco doble, título centrado en serif, el adorno de la tradición (o un rombo) y el autor en mayúsculas espaciadas.
 - **`sobria`**: fondo oscuro, sans, título a la izquierda, friso o barra de color de acento y lomo en ese mismo color.
+- **`tipografica`**: fondo claro sin marco, el autor en mayúsculas espaciadas sobre un título grande en serif, a la izquierda, y el emblema de la tradición en grande, de línea fina, ocupando la parte de abajo.
 
 Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plantilla`. Tiene que implementar `coloresPorDefecto()`, `paleta()` (sus colores teñidos de un tono) y `portada()`, y puede redefinir `familia()` (`serif` por defecto, o `sans`) y `coloresLomo()`. Para medir un texto antes de colocarlo, usa `$this->medidaDe()`, con los atributos de estilo del texto si no es el normal (`['font-style' => 'italic']`, `['font-weight' => 'bold']`). Después regístrala en `Plantilla::disponibles()`. La contratapa, el lomo y las solapas se heredan.
 
 ## Fuentes
 
-Los SVG llevan sus fuentes dentro, como `@font-face` con el archivo `woff2` en base64, así que no dependen de lo que tenga instalado quien los abra. Son libres (licencia OFL, con su texto en `fuentes/`):
+Los SVG llevan sus fuentes dentro, como `@font-face` con archivos `woff2` en base64, así que no dependen de lo que tenga instalado quien los abra. Son libres (licencia OFL, con su texto en `fuentes/`):
 
-| Familia | Quién la usa | Archivos |
+| Familia | Quién la usa | Caras |
 |---|---|---|
-| Source Serif 4 | `clasica` (normal y cursiva) | `fuentes/source-serif-4-latin-wght-*.woff2` |
-| Inter | `sobria` (normal y negrita) | `fuentes/inter-latin-wght-normal.woff2` |
+| Source Serif 4 | `clasica` y `tipografica` | normal y cursiva, peso 400 |
+| Inter | `sobria` | normal, pesos 400 y 700 |
 
-Cada pieza incrusta solo las caras que dibuja: el lomo de una portada con subtítulo en cursiva no lleva la cursiva. Por eso un SVG pesa entre 65 y 140 KB, casi todo fuentes.
+Cada cara está cortada en **trozos por alfabeto**, cada uno con su `unicode-range`: las letras básicas (U+0020–007E), el resto del latín (tildes, `¿ ¡ « » · —`), el latín extendido (`ł ş č ő`…), el vietnamita, el griego, el griego politónico (solo en Inter), el cirílico y el cirílico extendido. Una pieza incrusta solo los trozos que sus textos necesitan: un texto en español lleva los dos primeros de cada cara, no la fuente entera, y el griego o el cirílico solo pesan si el título los usa. Por eso un SVG ocupa unos 20–60 KB y no más de 100.
 
-Las fuentes son el subconjunto latino: cubren español, francés, italiano, portugués, alemán y los idiomas del latín básico, pero **no** `ł`, `ş`, `č`, `ă`, `ő` ni otras letras del este y el centro de Europa, ni griego o cirílico. Esas letras salen con la fuente de reserva del visor. `MedidaFuente::noCubiertas()` dice cuáles faltan en un texto.
+Lo que ninguna de las dos fuentes tiene (chino, japonés, árabe, hebreo, devanagari…) sale con la fuente de reserva del visor, y el generador avisa por libro qué letras faltan (`MedidaFuente::noCubiertas()`).
 
 ### El ancho del texto
 
 El ajuste de títulos, subtítulos, rótulos y párrafos mide el texto con los anchos reales de cada letra, que están en `datos/anchos.json`. No tiene en cuenta el kerning, que casi siempre acorta un poco la línea, así que mide igual o algo más que un navegador (hasta un 4 % más en los textos probados) y un texto que cabe en la estimación cabe también al dibujarlo. Los títulos se reparten en líneas parejas, sin dejar una palabra suelta en la última.
 
-`datos/anchos.json` se genera con `herramientas/medir-fuentes.py` (`pip install fonttools brotli`). Solo hay que volver a correrla si cambian las fuentes de `fuentes/` o los pesos que usan las plantillas; una prueba compara la tabla con las medidas de un navegador.
+### Volver a preparar las fuentes
+
+`fuentes/*.woff2`, `datos/fuentes.json` (qué letras trae cada trozo) y `datos/anchos.json` los genera `herramientas/preparar-fuentes.py` a partir de las fuentes variables de Fontsource. Solo hay que correrla si cambian las fuentes o los pesos que usan las plantillas:
+
+```bash
+pip install fonttools brotli
+npm pack @fontsource-variable/source-serif-4@5.3.1 @fontsource-variable/inter@5.3.0
+# extrae los dos .tgz, junta sus carpetas files/ en una y pásala:
+python3 herramientas/preparar-fuentes.py carpeta/con/los/woff2
+```
+
+Una prueba compara la tabla de anchos con las medidas de un navegador.
+
+## Accesibilidad
+
+Cada SVG se anuncia como una imagen (`role="img"`) con su `<title>` y su `<desc>`, y declara el idioma del libro (`lang` y `xml:lang`, del campo `idioma`). La descripción dice qué pieza es y de qué libro, y la de la contratapa lleva su texto, porque un lector de pantalla no recorre el texto dibujado.
 
 ## Antes de imprimir
 
@@ -267,7 +288,9 @@ php bin/generar.php --comprobar   # ejemplos/salida/ coincide con lo que genera 
 phpstan analyse --no-progress     # análisis estático, nivel máximo (phpstan.neon.dist)
 ```
 
-Las pruebas de geometría comprueban, con textos largos y cortos y en las dos plantillas, que ningún texto se salga de su panel, que no se pise con otro texto ni con los adornos (rombo, reglas, hueco del código de barras), y que el subtítulo deje bajo el título un espacio proporcional a su tamaño. Miden con la misma tabla de anchos que las plantillas, que no tiene kerning: la vista previa en un navegador es la prueba final.
+Las pruebas de geometría comprueban, con textos largos y cortos, en las tres plantillas, con las 16 tradiciones y los 27 motivos, que ningún texto se salga de su panel, que no se pise con otro texto ni con los adornos (rombo, reglas, hueco del código de barras), y que el subtítulo deje bajo el título un espacio proporcional a su tamaño. Miden con la misma tabla de anchos que las plantillas, que no tiene kerning: la vista previa en un navegador es la prueba final.
+
+Otra prueba guarda una huella de cada dibujo (`pruebas/dibujos.json`: cada adorno, cada motivo y cada plantilla con cada tradición) y falla si alguno cambia sin que lo hayas querido. Si lo cambiaste a propósito, `php pruebas/ejecutar.php --actualizar-dibujos` regenera el archivo y el diff muestra qué dibujos cambiaron. Las huellas dependen de la aritmética de decimales de PHP: están hechas con PHP 8.3, el de la CI.
 
 Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos/*.json --salida=ejemplos/salida`. El workflow `pruebas-portadas-svg.yml` corre las pruebas, la comprobación de los ejemplos, PHPStan 2.1 y `composer validate` cuando cambia esta carpeta.
 
@@ -277,20 +300,24 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 bin/generar.php          línea de comandos
 src/Adornos/             un adorno por tradición, el Generico, los 27 Motivo de las categorías y los Trazos que comparten
 src/                     Libro (con Formato y Textos), Lista (CSV), Catalogo, Ficha, Nombres, Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
-fuentes/                 fuentes woff2 que se incrustan en los SVG, con sus licencias
+fuentes/                 las fuentes en trozos woff2 que se incrustan en los SVG, con sus licencias
+datos/fuentes.json       qué letras trae cada trozo (su unicode-range)
 datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
 datos/categorias.json    las 27 categorías de Marcalibros
 datos/tradiciones.json   las tradiciones culturales
-herramientas/            medir-fuentes.py, que genera datos/anchos.json
+herramientas/            preparar-fuentes.py, que genera fuentes/, datos/fuentes.json y datos/anchos.json
 ejemplos/*.json          libros de ejemplo
 ejemplos/lista.csv       lista de ejemplo, con la ficha armada a partir de los datos
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
 pruebas/ejecutar.php     pruebas unitarias, sin dependencias
+pruebas/dibujos.json     huellas de los dibujos, para que no cambien sin querer
 ```
 
 ## Limitaciones
 
 - El ajuste de texto mide con anchos reales pero sin kerning: las líneas pueden quedar hasta un 4 % más cortas de lo posible. Las letras que las fuentes no cubren (ver «Fuentes») se miden con un ancho medio.
-- Cada SVG pesa entre 65 y 140 KB por las fuentes incrustadas.
+- Cada SVG pesa unos 20–60 KB por las fuentes incrustadas.
+- La portada no admite imágenes: solo texto y adornos de línea.
+- Solo está probado en Chromium; Inkscape y algunos lectores de ebook ignoran las fuentes incrustadas en un SVG y usarían otras.
 - No genera el código de barras ni el PDF para imprenta; se obtiene desde los SVG con una herramienta externa.
-- Solo hay dos plantillas.
+- Solo hay tres plantillas.

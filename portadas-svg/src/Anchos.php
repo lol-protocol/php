@@ -6,7 +6,7 @@ namespace PortadasSvg;
 
 /**
  * Tablas de anchos de las fuentes que incrusta el generador, leídas de datos/anchos.json. Ese archivo
- * lo produce herramientas/medir-fuentes.py; aquí solo se lee.
+ * lo produce herramientas/preparar-fuentes.py; aquí solo se lee.
  */
 final class Anchos
 {
@@ -25,7 +25,7 @@ final class Anchos
     {
         $contenido = file_get_contents(self::RUTA);
         if ($contenido === false) {
-            throw new \RuntimeException('No se pudo leer datos/anchos.json. Se genera con herramientas/medir-fuentes.py.');
+            throw new \RuntimeException('No se pudo leer datos/anchos.json. Se genera con herramientas/preparar-fuentes.py.');
         }
         $datos = json_decode($contenido, true, 512, JSON_THROW_ON_ERROR);
 
@@ -35,7 +35,7 @@ final class Anchos
         $cara = is_array($porEstilo) ? ($porEstilo[(string) $peso] ?? null) : null;
         $unidades = is_array($datos) ? ($datos['unidades'] ?? null) : null;
         if (!is_array($cara) || !is_array($cara['anchos'] ?? null) || !is_int($cara['promedio'] ?? null) || !is_int($unidades)) {
-            throw new \RuntimeException("datos/anchos.json no tiene la cara $familia/$estilo/$peso. Añade ese peso a PESOS en herramientas/medir-fuentes.py y vuelve a correrla.");
+            throw new \RuntimeException("datos/anchos.json no tiene la cara $familia/$estilo/$peso. Añade esa cara a FAMILIAS en herramientas/preparar-fuentes.py y vuelve a correrla.");
         }
 
         $anchos = [];

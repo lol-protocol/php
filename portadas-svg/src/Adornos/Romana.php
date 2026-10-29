@@ -26,9 +26,9 @@ final class Romana extends Adorno
         });
     }
 
-    public function emblema(float $cx, float $cy, float $radio, string $color): string
+    public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = self::grosor($radio);
+        $grosor = $trazo ?? self::grosor($radio);
         $r = $radio - $grosor;
         $svg = '';
         // Doce hojas de laurel, todas inclinadas hacia fuera, alrededor de un círculo.

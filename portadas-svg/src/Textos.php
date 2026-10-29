@@ -18,6 +18,8 @@ final class Textos
         public readonly string $contratapa,
         public readonly string $solapaContratapa,
         public readonly string $solapaPortada,
+        /** Una frase breve de la propia obra, que abre la contratapa. */
+        public readonly string $cita = '',
     ) {
     }
 }

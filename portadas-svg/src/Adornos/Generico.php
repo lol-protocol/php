@@ -15,7 +15,7 @@ final class Generico extends Adorno
         return '';
     }
 
-    public function emblema(float $cx, float $cy, float $radio, string $color): string
+    public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
         $r = $radio * $this->ocupa();
         $punto = static fn (float $x, float $y): string => Svg::n($x) . ',' . Svg::n($y);

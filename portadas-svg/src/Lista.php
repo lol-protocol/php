@@ -17,20 +17,27 @@ final class Lista
     /** Columnas de texto que pasan tal cual al libro. */
     private const TEXTO = [
         'titulo', 'subtitulo', 'autor', 'traductor', 'epoca', 'tradicion', 'categoria', 'isbn',
-        'editorial', 'coleccion', 'cita', 'contratapa', 'solapa_portada', 'solapa_contratapa', 'plantilla',
+        'editorial', 'coleccion', 'cita', 'contratapa', 'solapa_portada', 'solapa_contratapa', 'plantilla', 'idioma', 'lomo_direccion',
     ];
     /** Columnas de medidas en mm. */
-    private const MEDIDAS = ['solapas_mm', 'lomo_mm'];
+    private const MEDIDAS = ['solapas_mm', 'lomo_mm', 'sangrado_mm', 'grosor_hoja_mm'];
+    /** Columnas de medidas en mm que van dentro de `formato`. */
+    private const FORMATO = ['ancho_mm', 'alto_mm'];
+    /** Columnas del degradado del fondo: la lista de colores (o «auto»), el tipo y el ángulo. */
+    private const DEGRADADO = ['degradado', 'degradado_tipo', 'degradado_angulo'];
     /** Columnas de color, que van a `colores`. */
     private const COLORES = ['fondo', 'texto', 'acento'];
     /** Cuántos caracteres puede tener el nombre de carpeta de un libro. */
     private const ID_MAXIMO = 80;
 
     /**
+     * Con `$omitirErrores`, una fila con errores no detiene la lectura: se salta y su error se da a `$aviso`.
+     *
+     * @param (callable(string): void)|null $aviso
      * @return list<Libro>
      * @throws \InvalidArgumentException si la lista no se puede leer o alguna fila tiene errores
      */
-    public static function leer(string $ruta): array
+    public static function leer(string $ruta, bool $omitirErrores = false, ?callable $aviso = null): array
     {
         $contenido = is_file($ruta) && is_readable($ruta) ? file_get_contents($ruta) : false;
         if ($contenido === false) {
@@ -71,7 +78,13 @@ final class Lista
             }
         }
 
-        if ($errores !== []) {
+        if ($errores !== [] && $omitirErrores) {
+            foreach ($errores as $error) {
+                if ($aviso !== null) {
+                    $aviso("$ruta: se omite la $error");
+                }
+            }
+        } elseif ($errores !== []) {
             throw new \InvalidArgumentException("$ruta: " . count($errores) . (count($errores) === 1 ? ' fila con errores' : ' filas con errores') . ":\n  " . implode("\n  ", $errores));
         }
         if ($libros === []) {
@@ -115,7 +128,7 @@ final class Lista
      */
     private static function encabezados(array $celdas, string $ruta): array
     {
-        $validas = [...self::TEXTO, ...self::MEDIDAS, ...self::COLORES, 'id', 'paginas'];
+        $validas = [...self::TEXTO, ...self::MEDIDAS, ...self::FORMATO, ...self::DEGRADADO, ...self::COLORES, 'id', 'paginas'];
         $nombres = [];
         $desconocidas = [];
         foreach ($celdas as $celda) {
@@ -151,6 +164,8 @@ final class Lista
     {
         $datos = [];
         $colores = [];
+        $formato = [];
+        $degradado = [];
         foreach ($celdas as $posicion => $celda) {
             $valor = trim((string) $celda);
             if ($valor === '') {
@@ -163,6 +178,10 @@ final class Lista
                 $colores[$columna] = $valor;
             } elseif (in_array($columna, self::MEDIDAS, true)) {
                 $datos[$columna] = self::numero($columna, $valor);
+            } elseif (in_array($columna, self::FORMATO, true)) {
+                $formato[$columna] = self::numero($columna, $valor);
+            } elseif (in_array($columna, self::DEGRADADO, true)) {
+                $degradado[$columna] = $valor;
             } elseif ($columna === 'paginas') {
                 $datos['paginas'] = ctype_digit($valor) ? (int) $valor : throw new \InvalidArgumentException("'paginas' debe ser un número entero, no «{$valor}».");
             } else {
@@ -175,8 +194,41 @@ final class Lista
         if ($colores !== []) {
             $datos['colores'] = $colores;
         }
+        if ($formato !== []) {
+            $datos['formato'] = $formato;
+        }
+        if ($degradado !== []) {
+            $datos['degradado'] = self::degradado($degradado);
+        }
 
         return $datos === [] ? null : $datos;
+    }
+
+    /**
+     * El objeto `degradado` de un libro a partir de sus tres columnas: `degradado` es «auto» o de 2 a 6
+     * colores separados por espacios.
+     *
+     * @param array<string, string> $celdas
+     * @return array<string, mixed>
+     */
+    private static function degradado(array $celdas): array
+    {
+        $degradado = [];
+        if (isset($celdas['degradado_tipo'])) {
+            $degradado['tipo'] = mb_strtolower($celdas['degradado_tipo']);
+        }
+        if (isset($celdas['degradado_angulo'])) {
+            if (preg_match('/^-?\d+(?:[.,]\d+)?$/', $celdas['degradado_angulo']) !== 1) {
+                throw new \InvalidArgumentException("'degradado_angulo' debe ser un número de grados, no «{$celdas['degradado_angulo']}».");
+            }
+            $degradado['angulo'] = (float) str_replace(',', '.', $celdas['degradado_angulo']);
+        }
+        $colores = $celdas['degradado'] ?? 'auto';
+        if (mb_strtolower($colores) !== 'auto') {
+            $degradado['colores'] = preg_split('/\s+/', $colores, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        }
+
+        return $degradado;
     }
 
     /** Un número de mm, con punto o coma decimal. */

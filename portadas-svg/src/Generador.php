@@ -32,7 +32,7 @@ final class Generador
         $contenidos = [];
         foreach (self::piezas($libro) as $archivo => [$vista, $nombre]) {
             $cuerpo = $plantilla->dibujar($libro, $medidas, $vista);
-            $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->textos->titulo} · $nombre", $cuerpo);
+            $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->textos->titulo} · $nombre", self::descripcion($libro, $vista, $nombre), $libro->idioma, $cuerpo);
         }
         $contenidos['medidas.txt'] = self::resumen($libro, $medidas);
 
@@ -46,6 +46,26 @@ final class Generador
         }
 
         return array_keys($contenidos);
+    }
+
+    /**
+     * Lo que dice una pieza, para quien no la ve: qué pieza es, de qué libro y, en la contratapa, su texto.
+     * Se recorta a 500 letras.
+     */
+    private static function descripcion(Libro $libro, string $vista, string $nombre): string
+    {
+        $t = $libro->textos;
+        $libroDe = '«' . $t->titulo . '»' . ($t->subtitulo === '' ? '' : ": {$t->subtitulo}") . ', de ' . $t->autor . '.';
+        $texto = match ($vista) {
+            'contratapa', 'cubierta', 'sobrelomo' => ($t->cita === '' ? '' : "«{$t->cita}» ") . $t->contratapa,
+            default => '',
+        };
+        $texto = trim((string) preg_replace('/\s+/u', ' ', $texto));
+        if (mb_strlen($texto) > 500) {
+            $texto = rtrim(mb_substr($texto, 0, 499)) . '…';
+        }
+
+        return trim("$nombre del libro $libroDe $texto");
     }
 
     /**
