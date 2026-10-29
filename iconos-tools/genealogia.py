@@ -194,6 +194,8 @@ ancestor('person_grandfather_paternal', 2, 'm', 'p')
 ancestor('person_grandmother_paternal', 2, 'f', 'p')
 ancestor('person_grandfather_maternal', 2, 'm', 'm')
 ancestor('person_grandmother_maternal', 2, 'f', 'm')
+ancestor('person_grandparent_paternal', 2, 'u', 'p')
+ancestor('person_grandparent_maternal', 2, 'u', 'm')
 for suffix, gender in (('great_grandfather', 'm'), ('great_grandmother', 'f'), ('great_grandparent', 'u')):
     ancestor(f'person_{suffix}', 3, gender)
 
@@ -207,7 +209,7 @@ for suffix, gender in (('great_grandson', 'm'), ('great_granddaughter', 'f'), ('
 # hermanos
 for suffix, gender in (('brother', 'm'), ('sister', 'f'), ('sibling', 'u')):
     collateral(f'person_{suffix}', 1, 1, gender)
-for suffix, gender in (('half_brother', 'm'), ('half_sister', 'f')):
+for suffix, gender in (('half_brother', 'm'), ('half_sister', 'f'), ('half_sibling', 'u')):
     s = scene(f'person_{suffix}')
     s.n('a', 'u', 1, 0).n('me', 'f', 0, 1, 'self').n('rel', gender, 2, 1, 'rel')
     s.desc('a', 'me').desc('a', 'rel', 'dashed')
@@ -220,21 +222,23 @@ for suffix, u, d, gender in (
     ('cousin', 2, 2, 'm'), ('cousin_f', 2, 2, 'f'), ('second_cousin', 3, 3, 'm'), ('second_cousin_f', 3, 3, 'f'),
     ('cousin_once_removed', 2, 3, 'm'), ('cousin_once_removed_f', 2, 3, 'f'),
     ('cousin_u', 2, 2, 'u'), ('second_cousin_u', 3, 3, 'u'), ('cousin_once_removed_u', 2, 3, 'u'),
+    # sin género: palabras propias en inglés (pibling = hermano o hermana de un progenitor; nibling = hijo o hija de un hermano)
+    ('pibling', 2, 1, 'u'), ('great_pibling', 3, 1, 'u'), ('nibling', 1, 2, 'u'), ('great_nibling', 1, 3, 'u'),
 ):
     collateral(f'person_{suffix}', u, d, gender)
 
 # ------------------------------------------------------------------ person_: politicos
-for suffix, gender in (('stepfather', 'm'), ('stepmother', 'f')):
+for suffix, gender in (('stepfather', 'm'), ('stepmother', 'f'), ('stepparent', 'u')):
     s = scene(f'person_{suffix}')
-    s.n('p', 'f' if gender == 'm' else 'm', 0, 0).n('rel', gender, 2, 0, 'rel').n('me', 'f', 0, 1, 'self')
+    s.n('p', {'m': 'f', 'f': 'm'}.get(gender, 'u'), 0, 0).n('rel', gender, 2, 0, 'rel').n('me', 'f', 0, 1, 'self')
     s.couple('p', 'rel').desc('p', 'me')
     done(s)
-for suffix, gender in (('stepson', 'm'), ('stepdaughter', 'f')):
+for suffix, gender in (('stepson', 'm'), ('stepdaughter', 'f'), ('stepchild', 'u')):
     s = scene(f'person_{suffix}')
     s.n('me', 'f', 0, 0, 'self').n('p', 'u', 2, 0).n('rel', gender, 2, 1, 'rel')
     s.couple('me', 'p').desc('p', 'rel')
     done(s)
-for suffix, gender in (('stepbrother', 'm'), ('stepsister', 'f')):
+for suffix, gender in (('stepbrother', 'm'), ('stepsister', 'f'), ('stepsibling', 'u')):
     s = scene(f'person_{suffix}')
     s.n('p1', 'u', 0, 0).n('p2', 'u', 2, 0).n('me', 'f', 0, 1, 'self').n('rel', gender, 2, 1, 'rel')
     s.couple('p1', 'p2').desc('p1', 'me').desc('p2', 'rel')
@@ -242,6 +246,7 @@ for suffix, gender in (('stepbrother', 'm'), ('stepsister', 'f')):
 
 # adopcion, acogida, padrinos, tutela
 MARK = 1.5
+MARK_SIZE = {'dot': 1.5, 'square': 1.5, 'ring': 1.5, 'arrow': 1.8}  # escala de cada marca sobre el enlace
 for stem, gender, up, style, mark in (
     ('person_adoptive_father', 'm', True, 'dashed', 'dot'), ('person_adoptive_mother', 'f', True, 'dashed', 'dot'),
     ('person_adopted_son', 'm', False, 'dashed', 'dot'), ('person_adopted_daughter', 'f', False, 'dashed', 'dot'),
@@ -249,9 +254,12 @@ for stem, gender, up, style, mark in (
     ('person_foster_son', 'm', False, 'dotted', 'square'), ('person_foster_daughter', 'f', False, 'dotted', 'square'),
     ('person_godfather', 'm', True, 'line', 'ring'), ('person_godmother', 'f', True, 'line', 'ring'),
     ('person_godson', 'm', False, 'line', 'ring'), ('person_goddaughter', 'f', False, 'line', 'ring'),
+    ('person_adoptive_parent', 'u', True, 'dashed', 'dot'), ('person_adopted_child', 'u', False, 'dashed', 'dot'),
+    ('person_foster_parent', 'u', True, 'dotted', 'square'), ('person_foster_child', 'u', False, 'dotted', 'square'),
+    ('person_godparent', 'u', True, 'line', 'ring'), ('person_godchild', 'u', False, 'line', 'ring'),
     ('person_guardian', 'u', True, 'line', 'arrow'), ('person_ward', 'u', False, 'line', 'arrow'),
 ):
-    s = scene(stem, r=6.8, h=40, mark=MARK)
+    s = scene(stem, r=6.8, h=40, mark=MARK_SIZE[mark])
     if up:
         s.n('rel', gender, 0, 0, 'rel').n('me', 'f', 0, 1, 'self').desc('rel', 'me', style, mark)
     else:
@@ -259,22 +267,22 @@ for stem, gender, up, style, mark in (
     done(s)
 
 # parentesco politico
-for suffix, gender in (('father_in_law', 'm'), ('mother_in_law', 'f')):
+for suffix, gender in (('father_in_law', 'm'), ('mother_in_law', 'f'), ('parent_in_law', 'u')):
     s = scene(f'person_{suffix}')
     s.n('rel', gender, 1, 0, 'rel').n('sp', 'u', 1, 1).n('me', 'f', 0, 1, 'self')
     s.couple('me', 'sp').desc('rel', 'sp')
     done(s)
-for suffix, gender in (('son_in_law', 'm'), ('daughter_in_law', 'f')):
+for suffix, gender in (('son_in_law', 'm'), ('daughter_in_law', 'f'), ('child_in_law', 'u')):
     s = scene(f'person_{suffix}')
     s.n('me', 'f', 0, 0, 'self').n('ch', 'u', 0, 1).n('rel', gender, 1, 1, 'rel')
     s.couple('ch', 'rel').desc('me', 'ch')
     done(s)
-for suffix, gender in (('brother_in_law', 'm'), ('sister_in_law', 'f')):
+for suffix, gender in (('brother_in_law', 'm'), ('sister_in_law', 'f'), ('sibling_in_law', 'u')):
     s = scene(f'person_{suffix}')
     s.n('p', 'u', 1.5, 0).n('me', 'f', 0, 1, 'self').n('sp', 'u', 1, 1).n('rel', gender, 2, 1, 'rel')
     s.couple('me', 'sp').desc('p', 'sp').desc('p', 'rel')
     done(s)
-for suffix, gender in (('brother_in_law_via_sibling', 'm'), ('sister_in_law_via_sibling', 'f')):
+for suffix, gender in (('brother_in_law_via_sibling', 'm'), ('sister_in_law_via_sibling', 'f'), ('sibling_in_law_via_sibling', 'u')):
     s = scene(f'person_{suffix}')
     s.n('p', 'u', 0.5, 0).n('me', 'f', 0, 1, 'self').n('sib', 'u', 1, 1).n('rel', gender, 2, 1, 'rel')
     s.couple('sib', 'rel').desc('p', 'me').desc('p', 'sib')
@@ -283,7 +291,7 @@ for suffix, gender in (('brother_in_law_via_sibling', 'm'), ('sister_in_law_via_
 # pareja
 for suffix, gender, style in (
     ('spouse', 'u', 'double'), ('husband', 'm', 'double'), ('wife', 'f', 'double'), ('partner', 'u', 'line'),
-    ('ex_husband', 'm', 'cut'), ('ex_wife', 'f', 'cut'),
+    ('ex_husband', 'm', 'cut'), ('ex_wife', 'f', 'cut'), ('ex_spouse', 'u', 'cut'),
 ):
     s = scene(f'person_{suffix}')
     s.n('me', 'f', 0, 0, 'self').n('rel', gender, 1, 0, 'rel').couple('me', 'rel', style)

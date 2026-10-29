@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_child_in_law_ink_g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
+    </linearGradient>
+    <linearGradient id="grad_person_child_in_law_mist_r45_g" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+    <linearGradient id="grad_person_child_in_law_orange_r45_g" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0" stop-color="#A5A5A5"/>
+      <stop offset="1" stop-color="#7B7B7B"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.72" cy="59.5" rx="20.91" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M17 45.6L45 45.6M17 49.4L45 49.4" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M17 13.5L17 47.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M10.78 18.54L12.52 20.86A8 8 0 0 0 25.32 11.26L23.58 8.94A8 8 0 0 0 10.78 18.54Z" fill="#303030"/><circle cx="17" cy="13.5" r="8" fill="url(#grad_person_child_in_law_ink_g)"/></g>
+    <g><path d="M26.1 49A1.76 1.76 0 0 1 25.93 51.3L20.16 57.07A1.76 1.76 0 0 1 17.68 57.07L11.91 51.3A1.76 1.76 0 0 1 11.74 51.12L10 48.8A1.76 1.76 0 0 1 10.17 46.5L15.94 40.73A1.76 1.76 0 0 1 18.42 40.73L24.19 46.5A1.76 1.76 0 0 1 24.36 46.68Z" fill="#7B7B7B"/><rect x="11.16" y="41.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 17 47.5)" fill="url(#grad_person_child_in_law_mist_r45_g)"/></g>
+    <g><path d="M54.1 49A1.76 1.76 0 0 1 53.93 51.3L48.16 57.07A1.76 1.76 0 0 1 45.68 57.07L39.91 51.3A1.76 1.76 0 0 1 39.74 51.12L38 48.8A1.76 1.76 0 0 1 38.17 46.5L43.94 40.73A1.76 1.76 0 0 1 46.42 40.73L52.19 46.5A1.76 1.76 0 0 1 52.36 46.68Z" fill="#474747"/><rect x="39.16" y="41.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 45 47.5)" fill="url(#grad_person_child_in_law_orange_r45_g)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M14.28 13.5a2.72 2.72 0 1 0 5.44 0a2.72 2.72 0 1 0 -5.44 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

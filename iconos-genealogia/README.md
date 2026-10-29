@@ -1,8 +1,8 @@
 # Iconos de árbol genealógico (SVG 2.5D)
 
-183 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
+204 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
 **sin letras, números ni pictogramas** (nada dibuja un objeto literal), así que
-no dependen del idioma. 549 archivos: 3 variantes × 183 iconos.
+no dependen del idioma. 612 archivos: 3 variantes × 204 iconos.
 
 Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
@@ -25,7 +25,7 @@ inglés.
 
 | Prefijo | Iconos | Contenido | Ejemplo |
 |---|---|---|---|
-| `person_` | 82 | Parentescos desde la perspectiva de "tú" | `person_uncle` |
+| `person_` | 103 | Parentescos desde la perspectiva de "tú" | `person_uncle` |
 | `relationship_` | 27 | Vínculos y tipos de familia | `relationship_married` |
 | `state_` | 8 | Estado de una persona | `state_widowed` |
 | `view_` | 13 | Formas de ver el árbol | `view_fan` |
@@ -63,6 +63,13 @@ Los nombres de parentesco llevan el género en la palabra (`person_father`,
 `person_mother`, `person_parent`). Donde la palabra no lo distingue (`cousin`),
 sin sufijo es el masculino (cuadrado), `_f` el femenino (círculo) y `_u` el sin
 especificar (rombo): `person_cousin`, `person_cousin_f`, `person_cousin_u`.
+
+Las demás parejas con género tienen su versión sin especificar (rombo) con una palabra propia:
+`person_pibling` (tío o tía) y `person_nibling` (sobrino o sobrina), con sus «grandes»;
+`person_stepparent`, `person_stepchild`, `person_stepsibling` y `person_half_sibling`;
+`person_parent_in_law`, `person_child_in_law` y `person_sibling_in_law`; `person_ex_spouse`;
+`person_adoptive_parent`, `person_adopted_child`, `person_foster_parent`, `person_foster_child`,
+`person_godparent` y `person_godchild`; y `person_grandparent_paternal` y `_maternal`.
 
 ## Uso
 
