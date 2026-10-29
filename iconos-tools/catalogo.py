@@ -2,6 +2,10 @@
 
 VARIANTS = ('color', 'lineas', 'gris')
 
+# clase de la raíz de los SVG lineas: las reglas de su <style> empiezan por ella. Un <style> en un SVG puesto en línea vale
+# para todo el documento, y sin esto una clase ic-<tono> de la página (o de otro icono) cambiaría de color sin querer
+SCOPE_CLASS = 'icono25d'
+
 # carpeta de cada set -> prefijos de nombre que admite (el nombre de un icono es <prefijo>_<descripcion>)
 PREFIXES = {
     'iconos-genealogia': ('person', 'relationship', 'state', 'view', 'action', 'ui'),

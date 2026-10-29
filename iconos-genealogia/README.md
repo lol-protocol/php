@@ -9,7 +9,9 @@ Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 ## Variantes
 
 - `color/`: gradientes, extrusión y sombra.
-- `lineas/`: solo contornos, sin rellenos; las partes tapadas por otra forma no se dibujan.
+- `lineas/`: solo contornos, sin rellenos, como un dibujo de alambre: los volúmenes que se solapan se ven
+  transparentes (también los que en `color` son translúcidos); solo se ocultan los enlaces y las marcas que
+  quedan detrás de un volumen.
   Los colores se pueden cambiar desde la página (ver «Colores de `lineas`»).
 - `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
@@ -34,17 +36,28 @@ inglés.
 
 Los parentescos son diagramas: naranja = el familiar, azul oscuro con punto =
 tú, gris claro = el resto. Cuadrado = hombre, círculo = mujer, rombo = sin
-especificar. Línea doble = matrimonio, línea cortada = divorcio, discontinua =
-adopción o parentesco parcial, punteada = acogida; una marca sobre el enlace
-distingue al padrino (anillo hueco), al adoptante (punto pequeño), al
-acogedor (cuadrado lleno) y al tutor (punta de flecha). En los diagramas
-densos (primos segundos, tíos abuelos, sobrinos nietos...) el familiar se
-dibuja más grande para que se vea su forma. Un anillo discontinuo alrededor
-de un nodo significa "desconocido" o "sin pareja"; una línea ondulada une a
-una pareja sentimental y una barra gruesa roja, el vínculo de sangre. Las
-acciones y la interfaz usan la misma gramática que el set de biblioteca (ver
-`iconos-biblioteca/README.md`). Lo que no es una persona (una organización, los
-aportes de una cuenta) se dibuja con bloques redondeados en lugar de nodos.
+especificar. «Tú» (`person_self`) es el nodo propio solo, sin anillo.
+
+Cada estilo de enlace significa una cosa:
+
+- línea: de padres a hijos, o una pareja sin más (`person_partner`)
+- doble: matrimonio. Cortada: divorcio.
+- discontinua: adopción o parentesco parcial (medios hermanos)
+- punteada: vínculo provisional, según el contexto: acogida (de padres a hijo) o
+  compromiso (entre una pareja)
+- con un travesaño en el medio: vínculo lateral entre hermanos, hermanastros o
+  cuñados (gemelos, `relationship_step_family`, los concuñados)
+- ondulada: pareja sentimental. Barra gruesa roja: el vínculo de sangre.
+
+Una marca sobre el enlace distingue al padrino (anillo hueco), al adoptante
+(punto pequeño), al acogedor (cuadrado lleno) y al tutor (punta de flecha). Un
+anillo discontinuo alrededor de un nodo significa «desconocido» o «sin pareja»;
+alrededor de varios (`view_family_group`), un grupo. En los diagramas densos
+(primos segundos, tíos abuelos, sobrinos nietos...) el familiar se dibuja más
+grande para que se vea su forma. Las acciones y la interfaz usan la misma
+gramática que el set de biblioteca (ver `iconos-biblioteca/README.md`). Lo que
+no es una persona (una organización, los aportes de una cuenta) se dibuja con
+bloques redondeados en lugar de nodos.
 
 Los nombres de parentesco llevan el género en la palabra (`person_father`,
 `person_mother`, `person_parent`). Donde la palabra no lo distingue (`cousin`),
@@ -78,7 +91,8 @@ siempre, porque la página no llega al interior del archivo.
 
 Los tonos que usa un icono están en su `<style>` (`.ic-orange`, `.ic-slate`...).
 Un renderizador sin variables CSS (por ejemplo `resvg`) ignora esa parte y dibuja
-los colores originales.
+los colores originales. Las reglas van acotadas a la clase `icono25d` que lleva la raíz del SVG
+(un `<style>` en línea vale para todo el documento), así que no cambian nada de la página fuera del icono.
 
 ## Regenerar y validar
 

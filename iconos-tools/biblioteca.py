@@ -157,10 +157,10 @@ for i, (dx, dy) in enumerate(((-5, -9), (5, -9), (-5, 0), (5, 0), (-5, 9), (5, 9
     else:
         ic.ring(31 + dx, 29 + dy, 2.4, w=1.6, op=0.6)
 
+# la onda de sonido dentro del volumen: con los arcos al costado era book_audiobook cambiando solo el color del volumen
 ic = new('format_audio_edition')
-volume(ic, 'indigo', 10, 14, 28, 34, d=5)
-ic.arc(38, 31, 9, -55, 55, tone='indigo', ink='indigo', w=3.2)
-ic.arc(38, 31, 16, -55, 55, tone='indigo', ink='indigo', w=3.2)
+volume(ic, 'indigo', 11, 10, 40, 40, d=6)
+ic.mark(''.join(f'M{x} {fmt(31 - h / 2)}v{h}' for x, h in ((20, 8), (26, 18), (32, 26), (38, 14), (44, 7))), w=3.4)
 
 # --------------------------------------------------------------------------- status_: el estado se lee por el relleno
 for stem, hue, fn in (
@@ -225,9 +225,11 @@ ic.solid(Disc(31, 30, 7), 'indigo', d=3)
 for x, y in sats:
     ic.solid(Disc(x, y, 4), 'indigo', d=2)
 
+# la lupa sobre un volumen: sin él sería el action_search de genealogía, dibujo por dibujo
 ic = new('action_search_book')
-ic.solid(Disc(43, 43, 5.5), 'indigo', d=2.4)
-ic.ring(27, 26, 12, tone='indigo', ink='indigo', w=4.6)
+volume(ic, 'brown', 8, 10, 30, 38, d=4)
+ic.solid(Disc(47, 45, 5), 'indigo', d=2.2)
+ic.ring(34, 28, 11, tone='indigo', ink='indigo', w=4.2)
 
 ic = new('action_sort')
 ic.solid(Disc(17, 30, 12), 'indigo', d=3.2)

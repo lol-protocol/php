@@ -16,7 +16,7 @@
   <g class="links">
     <path d="M31 13.5L17 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
     <path d="M31 13.5L45 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M17 47.5L45 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" stroke-dasharray="4 4.5"/>
+    <path d="M17 47.5L45 47.5M31 51.1L31 43.9" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
     <g><path d="M40.1 15A1.76 1.76 0 0 1 39.93 17.3L34.16 23.07A1.76 1.76 0 0 1 31.68 23.07L25.91 17.3A1.76 1.76 0 0 1 25.74 17.12L24 14.8A1.76 1.76 0 0 1 24.17 12.5L29.94 6.73A1.76 1.76 0 0 1 32.42 6.73L38.19 12.5A1.76 1.76 0 0 1 38.36 12.68Z" fill="#767C82"/><rect x="25.16" y="7.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 31 13.5)" fill="url(#grad_relationship_twins_mist_r45)"/></g>

@@ -93,7 +93,9 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Seis detalles:
   de sangre, `action_connect`) conservan su grosor. Un enlace doble de color y gris pesa 1,6, no 1,61.
 - En `lineas`, el color de cada trazo se puede sobrescribir con `--ic-<tono>` (ver los README de los sets). Cada
   trazo lleva `class="ic-<tono>"` y el color de siempre como atributo; el `<style>` del icono pone
-  `stroke: var(--ic-<tono>, <color>)` solo para los tonos que usa. Va dentro de `@supports (--a:0)` porque un
+  `stroke: var(--ic-<tono>, <color>)` solo para los tonos que usa, y cada regla va acotada a la clase `icono25d`
+  de la raíz (un `<style>` en línea vale para todo el documento: sin eso afectaría a cualquier clase `ic-<tono>`
+  de la página). Va dentro de `@supports (--a:0)` porque un
   renderizador sin variables CSS (`resvg`, que usa `similares.py`) dejaría los trazos sin dibujar con una regla `var()`
   que no sabe resolver: con el `@supports` ignora el bloque y usa el atributo, y el dibujo sale igual que antes.
 - Las coordenadas llevan dos decimales (`fmt`). Con uno, el redondeo de los extremos de un arco

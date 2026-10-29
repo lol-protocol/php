@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
   <style>
     @supports (--a:0){
-      .ic-ink{stroke:var(--ic-ink,#29313D)}
-      .ic-mist{stroke:var(--ic-mist,#767C82)}
-      .ic-pink{stroke:var(--ic-pink,#7F1745)}
+      .icono25d .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .icono25d .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .icono25d .ic-pink{stroke:var(--ic-pink,#7F1745)}
     }
   </style>
   <g class="solids">

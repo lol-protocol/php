@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
   <style>
     @supports (--a:0){
-      .ic-indigo{stroke:var(--ic-indigo,#2E2985)}
+      .icono25d .ic-indigo{stroke:var(--ic-indigo,#2E2985)}
+      .icono25d .ic-ink{stroke:var(--ic-ink,#29313D)}
     }
   </style>
   <g class="solids">
-    <g class="ic-indigo" stroke="#2E2985"><path d="M39.8 20.4A6 6 0 0 1 41 24L41 46A6 6 0 0 1 35 52L19 52A6 6 0 0 1 14.2 49.6L11.2 45.6A6 6 0 0 1 10 42L10 20A6 6 0 0 1 16 14L32 14A6 6 0 0 1 36.8 16.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="10" y="14" width="28" height="34" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-indigo" stroke="#2E2985"><path d="M53.4 17.2A6 6 0 0 1 54.6 20.8L54.6 48.8A6 6 0 0 1 48.6 54.8L20.6 54.8A6 6 0 0 1 15.8 52.4L12.2 47.6A6 6 0 0 1 11 44L11 16A6 6 0 0 1 17 10L45 10A6 6 0 0 1 49.8 12.4Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="11" y="10" width="40" height="40" rx="6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M43.16 23.63A9 9 0 0 1 43.16 38.37" class="ic-indigo" fill="none" stroke="#2E2985" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M47.18 17.89A16 16 0 0 1 47.18 44.11" class="ic-indigo" fill="none" stroke="#2E2985" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20 27v8M26 22v18M32 18v26M38 24v14M44 27.5v7" class="ic-ink" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

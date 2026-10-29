@@ -7,7 +7,7 @@ renderiza en tres variantes: color, lineas y gris.
 import math
 import re
 
-from catalogo import VARIANTS
+from catalogo import SCOPE_CLASS, VARIANTS
 
 LIGHT = (0.6, 0.8)  # direccion de la extrusion: abajo a la derecha
 INSET = 0.3  # cuanto se mete el borde trasero de la extrusion bajo la cara frontal (ver exact_sweep)
@@ -421,6 +421,11 @@ class Icon:
     def line(self, x1, y1, x2, y2, **kw):
         return self.mark(f'M{fmt(x1)} {fmt(y1)}L{fmt(x2)} {fmt(y2)}', **kw)
 
+    def path(self, d, **kw):
+        """@deprecated Sin uso desde que se comprobó (2026-10-25): ningún icono la llama, y mark() hace lo mismo.
+        Se conserva como referencia, no se borra (regla de CLAUDE.md)."""
+        return self.mark(d, **kw)
+
     def plus(self, x, y, s, **kw):
         return self.mark(f'M{fmt(x - s)} {fmt(y)}H{fmt(x + s)}M{fmt(x)} {fmt(y - s)}V{fmt(y + s)}', **kw)
 
@@ -536,17 +541,18 @@ class Icon:
             if d:
                 out_back.append(self._render_mark(m, lin, col, d))
 
+        used = sorted(set(re.findall(r'class="ic-([a-z]+)"', ''.join(out_back + out_links + out_solids + out_marks)))) if lin else []
+        scope = f' class="{SCOPE_CLASS}"' if used else ''
         lines = ['<?xml version="1.0" encoding="UTF-8"?>',
-                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">']
-        if lin:
-            used = sorted(set(re.findall(r'class="ic-([a-z]+)"', ''.join(out_back + out_links + out_solids + out_marks))))
-            if used:
-                # dentro de @supports: un renderizador sin variables CSS (resvg...) se salta el bloque entero y deja los
-                # colores del atributo stroke; en un navegador la pagina puede sobrescribir --ic-<tono>
-                lines.append('  <style>')
-                lines.append('    @supports (--a:0){')
-                lines += [f'      .ic-{h}{{stroke:var(--ic-{h},{tones(h)[2]})}}' for h in used]
-                lines += ['    }', '  </style>']
+                 f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"{scope}>']
+        if used:
+            # dentro de @supports: un renderizador sin variables CSS (resvg...) se salta el bloque entero y deja los
+            # colores del atributo stroke; en un navegador la pagina puede sobrescribir --ic-<tono>. Las reglas van
+            # acotadas a la clase de la raiz: un <style> en linea vale para todo el documento
+            lines.append('  <style>')
+            lines.append('    @supports (--a:0){')
+            lines += [f'      .{SCOPE_CLASS} .ic-{h}{{stroke:var(--ic-{h},{tones(h)[2]})}}' for h in used]
+            lines += ['    }', '  </style>']
         if grads:
             lines.append('  <defs>')
             for gid, (c0, c1, axis) in grads.items():
@@ -637,6 +643,11 @@ class Icon:
             d = d_of(polys(p))
             extra = {'line': '', 'dashed': ' stroke-dasharray="4 4.5"', 'dotted': ' stroke-dasharray="0.1 5.2"'}[style]
             return [f'<path d="{d}" {common} stroke-width="{fmt(w)}"{extra}/>'] if d else []
+        if style == 'tie':  # vínculo lateral (entre hermanos, hermanastros, cuñados): una raya con un travesaño en el medio
+            d = d_of(polys(p))
+            mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+            d += f'M{pt((mid[0] + nx * 3.6, mid[1] + ny * 3.6))}L{pt((mid[0] - nx * 3.6, mid[1] - ny * 3.6))}'
+            return [f'<path d="{d}" {common} stroke-width="{fmt(w)}"/>'] if d else []
         if style == 'double':
             off = 1.9
             d = ''
