@@ -111,8 +111,13 @@ Whisper (`02_I`, descarga varios GB).
 
 ## 7. Base de datos de una app
 
-Los scripts instalan PostgreSQL (y MariaDB con `02_G`), pero no crean bases: cada app necesita la
-suya, con un usuario propio y sin permisos sobre las demás.
+Las **apps Python** (`06_B`) ya traen la suya: el script crea, si PostgreSQL está instalado, el rol y la base
+`app_<nombre>` con una contraseña aleatoria, y deja la conexión en `/var/www/<app>/.env` (modo 600, solo la lee el
+usuario de esa app) como `DATABASE_URL=postgresql://app_<nombre>:<clave>@localhost:5432/app_<nombre>`. El servicio
+la recibe como variable de entorno. La clave nunca se imprime ni queda en el historial, y re-correr el script no la
+cambia. Cada rol solo puede entrar a su base (se revoca `CONNECT` a los demás). `APP_DB=0` omite todo esto.
+
+Para una app **PHP** (hasta que tenga su propio usuario) o una base extra, a mano:
 
 ```bash
 sudo -u postgres createuser --pwprompt tienda      # pide la contraseña: no la escribas en el historial
@@ -121,7 +126,7 @@ sudo -u postgres createdb --owner=tienda tienda
 
 PostgreSQL solo escucha en `localhost`: la app se conecta a `host=localhost dbname=tienda user=tienda`.
 Guarda la contraseña en la configuración de la app (por ejemplo un `.env` fuera de la carpeta
-pública y legible solo por `www-data`), nunca en el repo.
+pública y legible solo por el usuario de la app), nunca en el repo.
 
 ## 8. Verificar
 

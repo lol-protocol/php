@@ -189,3 +189,14 @@ del() { run bash "$FAKE/10_B-remove-domain.sh" "$@"; }
     del ejemplo.com --app 'A B' --yes; [ "$status" -eq 2 ]
     [ -L "$NGINX_DIR/sites-enabled/ejemplo.com" ]
 }
+
+@test "10_B con --app: archivo restringido a root (puede llevar el .env con la clave de la BD) y avisa como quitar usuario y base" {
+    del ejemplo.com --app miapp --yes
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [ "$(stat -c %a "$REMOVED_DIR")" = 700 ]
+    [ "$(stat -c %a "$(ls -d "$REMOVED_DIR"/ejemplo.com-*)")" = 700 ]
+    [[ "$output" == *"sudo -u postgres dropdb app_miapp && sudo -u postgres dropuser app_miapp"* ]]
+    [[ "$output" == *"sudo userdel app-miapp"* ]]
+    [[ "$output" == *"pg_dump -Fc app_miapp"* ]]
+    ! grep -qE "dropdb|dropuser|userdel" "$SUDO_LOG"          # NO los ejecuta: solo los indica
+}

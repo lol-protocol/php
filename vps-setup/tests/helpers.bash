@@ -25,6 +25,12 @@ if [ "$SUDO_EXEC" = 1 ]; then
     exec "$@"
 fi
 exit 0'
+    # Comandos que ALTERAN el sistema (usuarios, grupos, bases de datos): nunca de verdad en los
+    # tests unitarios, aunque un sudo de prueba termine haciendo "exec" del comando. Un test que
+    # los "ejecutaba" creo un usuario real app-blog en la maquina; ahora son solo un registro.
+    for c in useradd userdel usermod groupadd groupdel dropdb dropuser createdb createuser; do
+        make_stub "$c" 'echo "'"$c"' $*" >> "$SUDO_LOG"'
+    done
     export PATH="$STUB_BIN:$PATH"
 }
 

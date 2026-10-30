@@ -149,6 +149,82 @@ app_has_code() {
     [ -d "$1" ] && [ -n "$(find "$1" -mindepth 1 -maxdepth 1 ! -name venv -print -quit 2>/dev/null)" ]
 }
 
+# ---------------------------------------------------------------------------
+# Aislamiento por app: cada app tiene su usuario de sistema "app-<nombre>", sus archivos son
+# suyos (750) y, si hay PostgreSQL, su propia base y su propio usuario de BD. Asi una app
+# comprometida no lee el codigo, el .env ni la base de las demas.
+# ---------------------------------------------------------------------------
+APP_USER_PREFIX=${APP_USER_PREFIX:-app-}
+
+app_user_name() { echo "${APP_USER_PREFIX}$1"; }
+
+# create_app_user <usuario> <carpeta>: usuario de sistema sin login ni home propio (su "home" es la
+# carpeta de la app). Idempotente. Para entrar como el: sudo -u <usuario> bash (no -s: su shell es nologin).
+create_app_user() {
+    local user=$1 home=$2
+    if id "$user" > /dev/null 2>&1; then return 0; fi
+    sudo useradd --system --user-group --home-dir "$home" --no-create-home --shell /usr/sbin/nologin "$user"
+}
+
+# own_app_dir <carpeta> <usuario>: la carpeta (y su contenido) pasa a ser del usuario de la app, modo 750.
+# Solo cambia el dueno de TODO el arbol si la carpeta esta vacia o ya es del usuario: sobre una app con
+# codigo de OTRO dueno no se toca nada (chown -R cambiaria permisos de todos sus archivos) y se explica
+# como migrarla a mano.
+own_app_dir() {
+    local path=$1 user=$2 cur
+    cur=$(stat -c %U "$path" 2> /dev/null || echo "")
+    if [ "$cur" = "$user" ]; then
+        :
+    elif app_has_code "$path"; then
+        echo "ERROR: $path ya tiene codigo y es de '$cur', no de '$user'." >&2
+        echo "Para aislarla, pasala a su usuario (revisa antes que nada la use mas): sudo chown -R $user:$user $path" >&2
+        exit 1
+    else
+        sudo chown -R "$user:$user" "$path"
+    fi
+    sudo chmod 750 "$path"
+}
+
+# setup_app_database <app> <archivo .env> <usuario dueno del .env>: crea (si PostgreSQL esta instalado)
+# el rol y la base "app_<nombre>", les pone una contrasena aleatoria y la guarda como DATABASE_URL en
+# el .env de la app (modo 600, solo del usuario de la app). Nada de la contrasena pasa por la linea de
+# comandos ni por la pantalla: el SQL entra por stdin y el .env se escribe con umask 077.
+#   - Idempotente: si el .env ya tiene DATABASE_URL, no se toca (no se rota la contrasena en cada corrida).
+#   - Aislada: se revoca CONNECT a PUBLIC, asi el rol de otra app no puede entrar a esta base.
+#   - APP_DB=0 la omite.
+setup_app_database() {
+    local app=$1 env_file=$2 owner=$3 db pw exists
+    db="app_${app//-/_}"
+    if [ "${APP_DB:-1}" = 0 ]; then
+        echo "APP_DB=0: no se crea base de datos para $app."
+        return 0
+    fi
+    if ! command -v psql > /dev/null 2>&1; then
+        echo "AVISO: PostgreSQL no esta instalado (02_D-install-postgresql.sh): no se crea base de datos para $app."
+        return 0
+    fi
+    if sudo test -f "$env_file" && sudo grep -q '^DATABASE_URL=' "$env_file"; then
+        echo "  La base de datos de $app ya esta configurada (.env con DATABASE_URL): se conserva."
+        return 0
+    fi
+    pw=$(openssl rand -hex 16)
+    # "cd /": el usuario postgres no puede entrar a la carpeta actual (psql avisaria de ello)
+    exists=$(cd / && sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='$db'")
+    if [ "$exists" = 1 ]; then
+        printf "ALTER ROLE %s WITH LOGIN PASSWORD '%s';\n" "$db" "$pw" | (cd / && sudo -u postgres psql -q -v ON_ERROR_STOP=1)
+    else
+        printf "CREATE ROLE %s LOGIN PASSWORD '%s';\n" "$db" "$pw" | (cd / && sudo -u postgres psql -q -v ON_ERROR_STOP=1)
+    fi
+    exists=$(cd / && sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='$db'")
+    [ "$exists" = 1 ] || (cd / && sudo -u postgres createdb --owner="$db" "$db")
+    printf 'REVOKE ALL ON DATABASE %s FROM PUBLIC;\n' "$db" | (cd / && sudo -u postgres psql -q -v ON_ERROR_STOP=1)
+    printf 'DATABASE_URL=postgresql://%s:%s@localhost:5432/%s\n' "$db" "$pw" "$db" \
+        | sudo sh -c 'umask 077; cat > "$1"' sh "$env_file"
+    sudo chown "$owner:$owner" "$env_file"
+    sudo chmod 600 "$env_file"
+    echo "  Base de datos '$db' creada; la conexion (DATABASE_URL) esta en $env_file (solo la lee $owner)."
+}
+
 # Setup app directories with correct ownership
 setup_app_directories() {
     local app_path=$1
@@ -283,6 +359,11 @@ validate_duration() {
     [[ "$1" =~ ^[1-9][0-9]{0,3}[sm]$ ]]
 }
 
+# Nombre de app cuyo usuario de sistema "app-<nombre>" cabe en los 32 caracteres que admite Linux.
+validate_appuser() {
+    [ $(( ${#1} + ${#APP_USER_PREFIX} )) -le 32 ]
+}
+
 # Nombre de app / servicio systemd: minusculas, digitos, "_" y "-".
 validate_name() {
     [[ "$1" =~ ^[a-z0-9][a-z0-9_-]{0,62}$ ]]
@@ -311,6 +392,7 @@ require_valid() {
         ipv4)         hint="una IPv4 como 203.0.113.5" ;;
         ipv6)         hint="una IPv6 como 2001:db8::5" ;;
         port)         hint="un numero entre 1024 y 65535" ;;
+        appuser)      hint="como maximo $((32 - ${#APP_USER_PREFIX})) caracteres (su usuario de sistema es ${APP_USER_PREFIX}<nombre>, y Linux admite 32)" ;;
         size)         hint="un numero seguido de K, M o G (ej. 20M)" ;;
         duration)     hint="un numero seguido de s o m (ej. 120s)" ;;
         name)         hint="minusculas, digitos, '_' y '-' (max. 63), debe empezar con letra o digito" ;;

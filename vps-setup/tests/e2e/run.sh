@@ -75,6 +75,21 @@ wait_http "$D_PY" / 200
 check "gunicorn responde detras de Nginx" bash -c "curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'Hello from Python App'"
 check "otra app en el mismo puerto se rechaza" bash -c "! ./06_B-setup-python-app.sh otra otra.$D $PY_PORT < /dev/null"
 
+step "Aislamiento entre apps Python (usuario, carpeta y base de datos propios)"
+check "06_B de una segunda app (api, puerto 8012)" ./06_B-setup-python-app.sh api "api.$D" 8012
+wait_http "api.$D" / 200
+check "el usuario de sistema app-$APP_PY existe sin login (nologin)" bash -c "getent passwd app-$APP_PY | grep -q ':/usr/sbin/nologin$'"
+check "gunicorn de $APP_PY corre como app-$APP_PY (no como www-data ni root)" bash -c "test \"\$(stat -c %U /proc/\$(systemctl show -p MainPID --value $APP_PY))\" = app-$APP_PY"
+check "su carpeta es solo suya (750) y su .env es 600" bash -c "test \"\$(stat -c '%U %a' /var/www/$APP_PY)\" = 'app-$APP_PY 750' && test \"\$(stat -c '%U %a' /var/www/$APP_PY/.env)\" = 'app-$APP_PY 600'"
+check "la app recibe su DATABASE_URL por el entorno del servicio" bash -c "tr '\\0' '\\n' < /proc/\$(systemctl show -p MainPID --value $APP_PY)/environ | grep -q '^DATABASE_URL=postgresql://app_$APP_PY:'"
+check "$APP_PY NO puede leer el codigo ni el .env de api" bash -c "! sudo -u app-$APP_PY cat /var/www/api/app.py && ! sudo -u app-$APP_PY cat /var/www/api/.env"
+check "api NO puede listar la carpeta de $APP_PY" bash -c "! sudo -u app-api ls /var/www/$APP_PY"
+check "$APP_PY se conecta a SU base con su .env" bash -c "set -a; . /var/www/$APP_PY/.env; set +a; cd /; psql \"\$DATABASE_URL\" -tAc 'select current_database()' | grep -qx app_$APP_PY"
+check "$APP_PY NO puede entrar a la base de api (sin CONNECT)" bash -c "set -a; . /var/www/$APP_PY/.env; set +a; cd /; ! psql \"\${DATABASE_URL%/*}/app_api\" -tAc 'select 1'"
+check "re-correr 06_B conserva el .env (no rota la contrasena)" bash -c "cp /var/www/$APP_PY/.env /tmp/e2e-state/env.antes && ./06_B-setup-python-app.sh $APP_PY $D_PY $PY_PORT && cmp /var/www/$APP_PY/.env /tmp/e2e-state/env.antes"
+check "$APP_PY sigue respondiendo tras re-correr" bash -c "sleep 2; curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'Hello from Python App'"
+check "cambiar el puerto de $APP_PY al re-correr REINICIA el servicio (sin eso: 502)" bash -c "./06_B-setup-python-app.sh $APP_PY $D_PY 8013 > /dev/null && sleep 3 && ss -ltn | grep -q '127.0.0.1:8013' && ! ss -ltn | grep -q '127.0.0.1:$PY_PORT ' && curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'Hello from Python App'"
+
 step "Tomcat (02_H + 06_D en la raiz)"
 check "02_H termina bien" ./02_H-install-tomcat.sh
 check "06_D termina bien" ./06_D-setup-tomcat-app.sh "$D_JAVA"

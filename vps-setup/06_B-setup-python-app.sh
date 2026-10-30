@@ -14,6 +14,8 @@ require_valid domain "$DOMAIN" "El dominio (argumento 2)"
 require_valid port "$PORT" "El puerto (argumento 3)"
 require_valid size "$MAX_UPLOAD" "MAX_UPLOAD"
 require_valid duration "$PROXY_TIMEOUT" "PROXY_TIMEOUT"
+require_valid appuser "$APP_NAME" "El nombre de la app (argumento 1)"
+APP_USER=$(app_user_name "$APP_NAME")
 SYSTEMD_DIR=${SYSTEMD_DIR:-/etc/systemd/system}
 WWW_DIR=${WWW_DIR:-/var/www}   # reemplazable en los tests (igual que en 10_B)
 APP_PATH="$WWW_DIR/$APP_NAME"
@@ -33,15 +35,21 @@ if [ ! -f "$SYSTEMD_DIR/$APP_NAME.service" ] && ss -ltn "( sport = :$PORT )" 2>/
     exit 1
 fi
 
-echo "Creando directorios..."
+# Aislamiento: la app corre con SU usuario ($APP_USER), no como www-data (que comparten Nginx y las
+# demas apps). Su carpeta es solo suya (750): otra app comprometida no puede leer su codigo ni su .env.
+echo "Creando usuario y directorios..."
+create_app_user "$APP_USER" "$APP_PATH"
+sudo mkdir -p "$APP_PATH"
+own_app_dir "$APP_PATH" "$APP_USER"
 # Carpeta de logs propia de este dominio -- si no existe, "nginx -t" falla mas
 # abajo porque Nginx no crea directorios el solo, solo los archivos dentro.
-setup_app_directories "$APP_PATH" "$DOMAIN"
+setup_nginx_domain_logs "$DOMAIN"
 
 # Entorno virtual propio de esta app: aisla sus dependencias (Flask, etc.) del
 # resto del sistema. Obligatorio en Ubuntu 24.04 (PEP 668 bloquea pip a nivel de sistema).
 echo "Creando entorno virtual Python..."
-sudo -u www-data python3 -m venv $VENV_PATH
+# "env -C": el usuario de la app no puede entrar a la carpeta desde donde se corre este script.
+sudo -u "$APP_USER" env -C "$APP_PATH" python3 -m venv "$VENV_PATH"
 
 # App Flask de ejemplo, solo para confirmar que el reverse proxy y el servicio
 # systemd funcionan antes de subir el codigo real
@@ -62,12 +70,17 @@ def hello():
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=$PORT)
 EOF
+    sudo chown "$APP_USER:$APP_USER" "$APP_PATH/app.py"
 fi
 
 # gunicorn: servidor WSGI de produccion para apps Flask/Django -- el
 # "app.run()" de arriba es solo para desarrollo, no se usa en produccion
 echo "Instalando Flask..."
-sudo -u www-data $VENV_PATH/bin/pip install flask gunicorn
+sudo -u "$APP_USER" env -C "$APP_PATH" "$VENV_PATH/bin/pip" install --no-cache-dir flask gunicorn
+
+# Base de datos propia de la app (rol y base "app_<nombre>") y su DATABASE_URL en el .env de la app.
+# Se crea AQUI, antes de arrancar el servicio, que lee ese .env.
+setup_app_database "$APP_NAME" "$APP_PATH/.env" "$APP_USER"
 
 # systemd mantiene la app corriendo en segundo plano y la reinicia sola si se
 # cae (Restart=always) o si el servidor reinicia (systemctl enable)
@@ -86,13 +99,16 @@ After=network.target
 
 [Service]
 Type=notify
-User=www-data
+User=$APP_USER
+Group=$APP_USER
 WorkingDirectory=$APP_PATH
+# DATABASE_URL (y lo que agregues) viene del .env de la app; el "-" hace que no sea obligatorio.
+EnvironmentFile=-$APP_PATH/.env
 Environment="PATH=$VENV_PATH/bin"
 ExecStart=$VENV_PATH/bin/gunicorn --workers $WORKERS --timeout $GUNICORN_TIMEOUT --bind 127.0.0.1:$PORT app:app
 Restart=always
 RestartSec=10
-# Sandbox basico: la app corre como www-data y es la parte expuesta a internet.
+# Sandbox basico: la app es la parte expuesta a internet; corre con su propio usuario.
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectHome=true
@@ -109,7 +125,10 @@ EOFSERVICE
 
 echo "Iniciando servicio..."
 sudo systemctl daemon-reload   # necesario cada vez que se crea/modifica un archivo .service
-service_start_enable "$APP_NAME"
+# restart (no solo start): al re-correr con otro puerto, timeout o usuario, el servicio ya esta activo y
+# "start" no haria nada: seguiria con la configuracion vieja mientras Nginx apunta a la nueva (502).
+sudo systemctl enable "$APP_NAME"
+sudo systemctl restart "$APP_NAME"
 
 # Nginx no ejecuta Python: solo reenvia ("proxy_pass") las peticiones del
 # dominio publico hacia el puerto local $PORT donde escucha gunicorn
