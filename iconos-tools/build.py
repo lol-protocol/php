@@ -4,8 +4,8 @@
     python3 iconos-tools/build.py
 
 Escribe iconos-genealogia/, iconos-biblioteca/ e iconos-pos/ (variantes color, lineas y gris, una carpeta
-por prefijo) y galeria-iconos.html. Los SVG son salida generada: se editan en genealogia.py, biblioteca.py
-y pos.py.
+por prefijo y, en la raíz de cada variante, un sprite.svg con todos los iconos como <symbol>) y
+galeria-iconos.html. Los SVG son salida generada: se editan en genealogia.py, biblioteca.py y pos.py.
 """
 import json
 import shutil
@@ -19,7 +19,8 @@ sys.path.insert(0, str(HERE))
 import biblioteca  # noqa: E402
 import genealogia  # noqa: E402
 import pos  # noqa: E402
-from catalogo import GROUPS, PREFIXES, VARIANTS  # noqa: E402
+from catalogo import GROUPS, PREFIXES, SPRITE, VARIANTS  # noqa: E402
+from lib import sprite  # noqa: E402
 
 SETS = (
     ('genealogia', 'iconos-genealogia', 'Árbol genealógico', genealogia.ICONS),
@@ -45,7 +46,9 @@ def plan_set(folder, icons):
     if foreign:
         raise SystemExit(f'{folder}: prefijos que el set no admite según catalogo.PREFIXES {foreign}')
     base = ROOT / folder
-    return {base / v / prefix(i.stem) / f'{i.stem}.svg': i.render(v) for i in icons for v in VARIANTS}
+    files = {base / v / prefix(i.stem) / f'{i.stem}.svg': i.render(v) for i in icons for v in VARIANTS}
+    files.update({base / v / SPRITE: sprite(icons, v) for v in VARIANTS})
+    return files
 
 
 def write_set(folder, files):
@@ -84,7 +87,7 @@ def main():
     gallery = gallery_html()
     for folder, icons, files in plans:
         write_set(folder, files)
-        print(f'{folder}: {len(icons)} iconos x {len(VARIANTS)} variantes')
+        print(f'{folder}: {len(icons)} iconos x {len(VARIANTS)} variantes (más un {SPRITE} por variante)')
     (ROOT / 'galeria-iconos.html').write_text(gallery, encoding='utf-8')
     print('galeria-iconos.html')
 

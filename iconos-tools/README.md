@@ -15,13 +15,14 @@ README para qué iconos tiene cada uno y cómo usarlos) y la galería compartida
   `ui_menu`, `action_filter`, `action_search`...), definidos una vez y que cada
   set incluye según su tabla `USADO_EN`, para que no se separen.
 - `catalogo.py`: lo que comparten el generador y el validador (variantes,
-  prefijos que admite cada set y etiqueta de cada prefijo en la galería). Los
-  grupos de cada set salen en la galería en el orden de sus prefijos.
-- `build.py`: escribe los tres sets y `galeria-iconos.html` a partir de las
-  definiciones. Genera y comprueba todo (nombres repetidos, prefijos sin
-  etiqueta o que el set no admite, y que `build.SETS` y `catalogo.PREFIXES`
-  listen los mismos sets) antes de borrar nada: si falla, los sets quedan
-  como estaban.
+  nombre del sprite, clase de la raíz de `lineas`, prefijos que admite cada
+  set y etiqueta de cada prefijo en la galería). Los grupos de cada set salen
+  en la galería en el orden de sus prefijos.
+- `build.py`: escribe los tres sets (con el `sprite.svg` de cada variante) y
+  `galeria-iconos.html` a partir de las definiciones. Genera y comprueba todo
+  (nombres repetidos, prefijos sin etiqueta o que el set no admite, y que
+  `build.SETS` y `catalogo.PREFIXES` listen los mismos sets) antes de borrar
+  nada: si falla, los sets quedan como estaban.
 - `validate.py`: comprueba las reglas de abajo.
 - `similares.py`: busca iconos casi indistinguibles a 24 px dentro de un
   mismo set.
@@ -36,7 +37,7 @@ Los SVG de los tres sets son salida generada — nunca se editan a mano. Despué
 de cambiar `genealogia.py`, `biblioteca.py`, `pos.py`, `lib.py` o `kit.py`:
 
 ```bash
-python3 iconos-tools/build.py      # escribe los tres sets y galeria-iconos.html
+python3 iconos-tools/build.py      # escribe los tres sets, sus sprites y galeria-iconos.html
 python3 iconos-tools/validate.py   # comprueba las reglas de abajo
 
 pip install -r iconos-tools/requirements.txt   # solo para similares.py
@@ -44,6 +45,12 @@ python3 iconos-tools/similares.py  # busca iconos casi indistinguibles a 24 px
 ```
 
 Hace falta Python 3.10 o superior (la CI usa 3.13).
+
+El sprite de cada variante (`<set>/<variante>/sprite.svg`) sale de los mismos
+iconos que los archivos sueltos: `Icon.symbol()` da el `<symbol>` de uno y
+`lib.sprite()` junta los de un set en una variante, con un solo `<style>` en
+`lineas`. Los `<symbol>` van ordenados por nombre y el `id` de cada uno es el
+nombre del icono.
 
 `validate.py` comprueba que cada SVG esté bien formado, mida 64x64 y no
 contenga texto; que las tres variantes (`color/`, `lineas/`, `gris/`) tengan
@@ -63,7 +70,15 @@ README de set (iconos, archivos y tabla por prefijo) y los de su fila del
 README raíz sean los de los iconos que hay, y que `iconos.yml` corra y
 compare cada set de `catalogo.PREFIXES`.
 
-`similares.py` dibuja la variante `gris` de cada icono a 24x24 y compara
+Cada sprite pasa las mismas reglas que un icono suelto (sin texto, gris sin
+colores cromáticos, `lineas` sin rellenos y con su tema, dentro del lienzo, cada
+`url(#id)` con su id), salvo que sus `<symbol>` miden 64x64 por su propio
+`viewBox` y que el `id` de un `<symbol>` no lo usa nadie por dentro. Además
+debe tener un `<symbol>` por icono suelto, ni uno más, con los mismos sólidos y
+marcas, y nada fuera de los `<symbol>` y el `<style>`. Que el sprite sea
+exactamente lo que genera `build.py` lo comprueba la CI.
+
+`similares.py` (que no cuenta el `sprite.svg`, que no es un icono) dibuja la variante `gris` de cada icono a 24x24 y compara
 todos los pares de un mismo set; falla si dos se diferencian en menos de 1,2
 (diferencia media por píxel, de 0 a 255; unos tres píxeles totalmente
 distintos de los 576). Muestra además los pares más cercanos, aunque no
