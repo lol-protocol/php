@@ -254,10 +254,12 @@ sudo_tmp() { make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in -u|systemctl
 
 @test "06_B: la primera vez crea app.py; al re-correr (p. ej. otro puerto) conserva tu codigo y actualiza servicio y proxy" {
     export WWW_DIR="$BATS_TEST_TMPDIR/www" NOPORT="8001 8002"; sudo_tmp
+    make_stub stat 'if [ "$1" = -c ] && [ "$2" = %U ]; then echo "${FAKE_OWNER:-root}"; else exec /usr/bin/stat "$@"; fi'
     run bash "$VPS_DIR/06_B-setup-python-app.sh" blog blog.ejemplo.com 8001
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     grep -q "Hello from Python App" "$WWW_DIR/blog/app.py"
     echo 'print("MI APP")' > "$WWW_DIR/blog/app.py"
+    export FAKE_OWNER=app-blog                      # tras la 1a corrida la carpeta ya es del usuario de la app
     run bash "$VPS_DIR/06_B-setup-python-app.sh" blog blog.ejemplo.com 8002
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     [[ "$output" == *"se conserva tu codigo"* ]]

@@ -125,10 +125,18 @@ for it in "${ITEMS[@]}"; do
 done
 [ -z "$APP" ] || sudo systemctl daemon-reload
 sudo systemctl reload nginx
+# Lo archivado puede incluir el .env de la app (con la contrasena de su base de datos): solo root entra.
+sudo chmod 700 "$REMOVED_DIR" "$DEST"
 
 echo ""
 echo "✓ $DOMAIN archivado en $DEST (para restaurarlo, mueve las carpetas de vuelta y reactiva el enlace en sites-enabled)."
 echo "Quedan a mano (no se tocaron):"
 [ "$APP" != marcalibros ] || echo "  - Marcalibros:  los marcalibros creados siguen en /var/lib/marcalibros (caducan solos; borralos a mano si quieres)"
+if [ -n "$APP" ]; then
+    # Datos y usuario de la app: NO se borran solos (la base puede tener lo unico que importa de la app).
+    echo "  - Base de datos de la app (si la tenia): sudo -u postgres dropdb app_${APP//-/_} && sudo -u postgres dropuser app_${APP//-/_}"
+    echo "    (antes, un respaldo si lo necesitas: sudo -u postgres pg_dump -Fc app_${APP//-/_} > app_${APP//-/_}.dump)"
+    echo "  - Usuario de sistema de la app (si lo tenia): sudo userdel $(app_user_name "$APP")"
+fi
 echo "  - Certificado:  sudo certbot delete --cert-name $DOMAIN"
 echo "  - Zona DNS:     si usas BIND (06_C), quita la zona de /etc/bind/named.conf.local; si no, borra los registros en tu registrador"
