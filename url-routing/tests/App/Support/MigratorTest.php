@@ -37,7 +37,7 @@ class MigratorTest extends TestCase
             $this->assertSame([], $migrator->migrate(), "{$site}: nothing pending after the first run");
             $esperadas = $site === 'genealogy'
                 ? ['genealogy/001_esquema_inicial', 'genealogy/002_personas_viva', 'genealogy/003_persona_alias', 'genealogy/004_indices_de_listados', 'genealogy/005_pedidos_retiro', 'genealogy/006_pedidos_retiro_marcas', 'genealogy/007_pedidos_retiro_depurados']
-                : ['pos/001_esquema_inicial', 'pos/002_ordenes_codigo'];
+                : ['pos/001_esquema_inicial', 'pos/002_ordenes_codigo', 'pos/003_orden_eventos_orden'];
             $this->assertSame($esperadas, array_column($db->fetchAll('SELECT version FROM schema_migrations ORDER BY version'), 'version'));
         }
     }
@@ -110,7 +110,50 @@ class MigratorTest extends TestCase
 
         $pending = Migrator::forSite($db, 'pos')->pending();
 
-        $this->assertSame(['pos/001_esquema_inicial', 'pos/002_ordenes_codigo'], $pending);
+        $this->assertSame(['pos/001_esquema_inicial', 'pos/002_ordenes_codigo', 'pos/003_orden_eventos_orden'], $pending);
         $this->assertSame([], $db->fetchAll("SELECT name FROM sqlite_master WHERE name = 'schema_migrations'"), 'it did not create the table');
+    }
+
+    /**
+     * La 003 rehace orden_eventos (la clave pasa de la hora al número de evento): lo que ya había no se pierde y
+     * queda numerado por su hora, y desde entonces caben dos eventos de la misma orden en el mismo segundo.
+     */
+    public function testMigration003KeepsTheEventsOfExistingOrdersAndNumbersThemByTime(): void
+    {
+        $dir = sys_get_temp_dir() . '/migrator-eventos-' . getmypid();
+        @mkdir("{$dir}/migrations", 0777, true);
+        $origen = dirname(__DIR__, 3) . '/database/pos/migrations';
+        foreach (['001_esquema_inicial', '002_ordenes_codigo'] as $nombre) {
+            copy("{$origen}/{$nombre}.sql", "{$dir}/migrations/{$nombre}.sql");
+        }
+
+        $db = new Database('sqlite::memory:');
+        $migrator = new Migrator($db, $dir, 'pos');
+
+        try {
+            $migrator->migrate();
+            $db->execute("INSERT INTO usuarios (id, email, nombre) VALUES (1, 'a@b.c', 'A')");
+            $db->execute("INSERT INTO ordenes (id, usuario_id, estado, total_centavos) VALUES (10, 1, 'pendiente', 100), (11, 1, 'pendiente', 100)");
+            $db->execute(
+                "INSERT INTO orden_eventos (orden_id, ocurrido_en, estado, detalle) VALUES
+                    (10, '2026-09-02 09:00:00', 'enviada', 'segundo'),
+                    (10, '2026-09-01 10:00:00', 'pagada', 'primero'),
+                    (11, '2026-09-01 10:00:00', 'pendiente', NULL)"
+            );
+
+            copy("{$origen}/003_orden_eventos_orden.sql", "{$dir}/migrations/003_orden_eventos_orden.sql");
+            $this->assertSame(['pos/003_orden_eventos_orden'], $migrator->migrate());
+
+            $filas = $db->fetchAll('SELECT orden_id, orden, estado, detalle FROM orden_eventos ORDER BY orden_id, orden');
+            $this->assertSame(
+                [[10, 1, 'pagada', 'primero'], [10, 2, 'enviada', 'segundo'], [11, 1, 'pendiente', null]],
+                array_map(static fn(array $f): array => [(int)$f['orden_id'], (int)$f['orden'], $f['estado'], $f['detalle']], $filas)
+            );
+
+            $db->execute("INSERT INTO orden_eventos (orden_id, orden, ocurrido_en, estado) VALUES (10, 3, '2026-09-02 09:00:00', 'entregada')");
+            $this->assertSame(3, (int)$db->fetchValue('SELECT COUNT(*) FROM orden_eventos WHERE orden_id = 10'), 'same second, same order: it fits');
+        } finally {
+            exec('rm -rf ' . escapeshellarg($dir));
+        }
     }
 }

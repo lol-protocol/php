@@ -90,12 +90,22 @@ final class OrdenRepository extends Repository
                 [$id, $sku, $productoId, $nombre, $cantidad, $precio]
             );
         }
-        $this->db->execute(
-            "INSERT INTO orden_eventos (orden_id, ocurrido_en, estado, detalle) VALUES (?, ?, 'pendiente', 'Orden recibida.')",
-            [$id, date('Y-m-d H:i:s')]
-        );
+        $this->agregarEvento($id, 'pendiente', 'Orden recibida.');
 
         return ['id' => $id, 'codigo' => (string)$codigo];
+    }
+
+    /**
+     * Anota un paso de la orden con el número que le toca (1, 2, 3...): dos en el mismo segundo siguen
+     * en el orden en que se anotaron, que la hora no distingue (ver la migración 003).
+     */
+    public function agregarEvento(int $ordenId, string $estado, ?string $detalle = null, ?string $cuando = null): void
+    {
+        $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(orden), 0) + 1 FROM orden_eventos WHERE orden_id = ?', [$ordenId]);
+        $this->db->execute(
+            'INSERT INTO orden_eventos (orden_id, orden, ocurrido_en, estado, detalle) VALUES (?, ?, ?, ?, ?)',
+            [$ordenId, $numero, $cuando ?? date('Y-m-d H:i:s'), $estado, $detalle]
+        );
     }
 
     /** @return list<array> with each line's subtotal */
@@ -113,7 +123,7 @@ final class OrdenRepository extends Repository
     public function eventos(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT ocurrido_en, estado, detalle FROM orden_eventos WHERE orden_id = ? ORDER BY ocurrido_en',
+            'SELECT ocurrido_en, estado, detalle FROM orden_eventos WHERE orden_id = ? ORDER BY orden',
             [$id]
         );
     }

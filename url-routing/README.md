@@ -30,7 +30,7 @@ La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de 
 | `php bin/fusionar.php <duplicado> <vigente> [--confirmar]` | Fusiona una persona duplicada en la que queda; sin `--confirmar` solo muestra qué movería. |
 | `php bin/pedidos-retiro.php [--ocultar [--solo-ocultados]] [--horas=N]` | Lista los pedidos de retiro que esperan al propietario; pensado para cron (no imprime nada si no hay). Con `--ocultar` oculta los que pasaron del plazo; con `--solo-ocultados`, solo imprime en la corrida que ocultó algo. |
 
-La base de datos sale de `DB_DSN_<SITIO>` / `DB_DSN` (o de `.env`), igual que en la aplicación web.
+La base de datos sale de `DB_DSN_<SITIO>` (o de `.env`), igual que en la aplicación web; sin ella, un SQLite local en `var/`. No existe un `DB_DSN` compartido a propósito: los dos sitios tienen tablas con los mismos nombres (ver [`docs/DATABASE.md`](docs/DATABASE.md)).
 
 ## Documentación
 
