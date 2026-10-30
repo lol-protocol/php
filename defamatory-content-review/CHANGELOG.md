@@ -42,6 +42,10 @@
 
 ### Arreglado
 
+- **README y CONTRIBUTING al día**: los dos ejemplos de la fusión fonética (`Elba Gina`) mostraban
+  `riskType: 'ordinario'` y «tipo ordinario» cuando desde 4.3.2 devuelven `fonetico`; «~7.800 términos» pasa a
+  «más de 8.000» (hoy son 8.206) y las cifras de islandés, swahili y tagalo de CONTRIBUTING (85, 86 y 101) a las
+  de ahora (94, 94 y 109).
 - **Lo que caía sobre un corte de un texto largo se aprobaba** (`LongText`).
   Por dos huecos: el corte sólo se hacía en el espacio ASCII, así que con
   saltos de línea, tabuladores o espacios no separables entre palabras partía
