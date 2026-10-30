@@ -24,6 +24,8 @@ final class Fuentes
 
     /** @var array<string, string> */
     private static array $base64 = [];
+    /** @var array<string, array<int, array{int, string}>> */
+    private static array $contornos = [];
     /** @var array<string, array<string, array<int, list<array{archivo: string, rangos: list<array{int, int}>, texto: string}>>>>|null */
     private static ?array $indice = null;
 
@@ -67,6 +69,43 @@ final class Fuentes
         ksort($reglas);
 
         return $reglas === [] ? '' : "<style>\n" . implode("\n", $reglas) . "\n</style>\n";
+    }
+
+    /**
+     * El contorno de una letra, para escribir el texto a trazos en lugar de con la fuente: su avance y su
+     * trazado SVG, en milésimas de em y con la línea base en y = 0 (el trazado es '' para un espacio). Null si
+     * la cara no tiene esa letra.
+     *
+     * @return array{int, string}|null
+     */
+    public static function contorno(string $familia, string $estilo, int $peso, int $codigo): ?array
+    {
+        $trozos = self::indice()[$familia][$estilo][$peso] ?? throw new \InvalidArgumentException("La familia '$familia' no tiene la cara $estilo $peso en fuentes/.");
+        foreach ($trozos as $trozo) {
+            if (!self::cubreAlguna($trozo['rangos'], [$codigo])) {
+                continue;
+            }
+            $archivo = $trozo['archivo'];
+            if (!isset(self::$contornos[$archivo])) {
+                $ruta = __DIR__ . '/../fuentes/trazos/' . preg_replace('/\.woff2$/', '.json', $archivo);
+                $contenido = file_get_contents($ruta);
+                $datos = $contenido === false ? null : json_decode($contenido, true, 4);
+                if (!is_array($datos)) {
+                    throw new \RuntimeException("No se pudo leer $ruta. Se genera con herramientas/preparar-fuentes.py.");
+                }
+                $letras = [];
+                foreach ($datos as $clave => $letra) {
+                    if (is_array($letra) && is_int($letra[0] ?? null) && is_string($letra[1] ?? null)) {
+                        $letras[(int) $clave] = [$letra[0], $letra[1]];
+                    }
+                }
+                self::$contornos[$archivo] = $letras;
+            }
+
+            return self::$contornos[$archivo][$codigo] ?? null;
+        }
+
+        return null;
     }
 
     /**

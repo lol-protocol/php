@@ -21,7 +21,7 @@ final class Svg
         $lang = self::e($idioma);
 
         return '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-            . '<svg xmlns="http://www.w3.org/2000/svg" width="' . self::n($vista->ancho) . 'mm" height="' . self::n($vista->alto) . 'mm" viewBox="' . $viewBox . '"'
+            . '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . self::n($vista->ancho) . 'mm" height="' . self::n($vista->alto) . 'mm" viewBox="' . $viewBox . '"'
             . ' role="img" aria-labelledby="titulo descripcion" lang="' . $lang . '" xml:lang="' . $lang . '">' . "\n"
             . '<title id="titulo">' . self::e($titulo) . "</title>\n"
             . '<desc id="descripcion">' . self::e($descripcion) . "</desc>\n"
