@@ -906,10 +906,13 @@ palabras no entiende contexto:
   `infl` (no se sabe si es plural), y `'by' => ['infl' => 'none']` las descarta
   todas. Lo irregular (vocales fugaces raras, cambios de raíz) va a mano en
   `also`. Las formas generadas no entran en la búsqueda fonética de nombres
-  (un nombre no se declina). No tienen reglas: árabe, finés, islandés, hindi,
-  suajili, tagalo, indonesio, vietnamita, japonés, coreano, tailandés y
-  cantonés (los cuatro últimos y el vietnamita no flexionan; los demás son
-  irregulares o no hay lista de frecuencias para medirlos). Las amenazas con forma (`patterns`) sólo están en
+  (un nombre no se declina). También tienen reglas el finés (casos con armonía
+  vocálica y alternancia de consonantes: «paskaa», «vittuun», «idiootin»), el árabe
+  (plurales sanos y los rotos de las palabras más comunes), el hindi (casos
+  oblicuos y plurales) y el tagalo (el ligamento «-ng»: «tangang»). No tienen reglas:
+  islandés (declinación con cambios de vocal que no se deducen de la forma) y suajili
+  (clases nominales; no hay lista de frecuencias para medir falsos positivos); el
+  indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   Los idiomas sin reglas no tienen plurales, géneros ni conjugaciones automáticos —sólo la
   forma base y las que se añadan a mano con `also`—, y se escribieron
