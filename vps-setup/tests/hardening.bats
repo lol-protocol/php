@@ -217,19 +217,69 @@ esac'
     grep -q 'mktemp -d' "$VPS_DIR/02_J-install-webmin.sh"
 }
 
-@test "02_J WEBMIN_ALLOW_FROM restringe el puerto 10000 a esa IP; sin ella avisa que queda abierto" {
-    setup_stubs; setup_system_stubs; export SUDO_EXEC=0
+# sudo que EJECUTA de verdad solo lo que toca el miniserv.conf de prueba y simula el resto
+webmin_sudo() {
+    export WEBMIN_CONF="$BATS_TEST_TMPDIR/miniserv.conf" UFW_OUT="$BATS_TEST_TMPDIR/ufw.out"
+    printf 'port=10000\nlisten=10000\n' > "$WEBMIN_CONF"
+    printf 'Status: active\n' > "$UFW_OUT"
     make_stub apt-cache 'exit 0'
-    WEBMIN_ALLOW_FROM=203.0.113.5 run bash "$VPS_DIR/02_J-install-webmin.sh"
+    make_stub sudo 'echo "$*" >> "$SUDO_LOG"
+case "$1" in
+    sed|grep|tee) for a in "$@"; do [ "$a" = "$WEBMIN_CONF" ] && exec "$@"; done ;;
+    ufw) [ "$2" = status ] && cat "$UFW_OUT" ;;
+esac
+exit 0'
+}
+
+@test "02_J por defecto: Webmin escucha SOLO en localhost (bind=127.0.0.1), sin regla de UFW, y explica el tunel SSH" {
+    setup_stubs; setup_system_stubs; webmin_sudo
+    run bash "$VPS_DIR/02_J-install-webmin.sh" < /dev/null
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -qx 'bind=127.0.0.1' "$WEBMIN_CONF"
+    [ "$(grep -c '^bind=' "$WEBMIN_CONF")" -eq 1 ]
+    grep -qx 'port=10000' "$WEBMIN_CONF"                         # lo demas de la config intacto
+    ! grep -q "ufw allow" "$SUDO_LOG"
+    grep -q "systemctl restart webmin" "$SUDO_LOG"               # miniserv.conf solo se relee al reiniciar
+    [[ "$output" == *"ssh -L 10000:localhost:10000"* ]] && [[ "$output" == *"https://localhost:10000"* ]]
+    [[ "$output" != *"AVISO DE SEGURIDAD"* ]]
+}
+
+@test "02_J es idempotente: re-correr no duplica el bind, y quita la regla abierta de una instalacion anterior" {
+    setup_stubs; setup_system_stubs; webmin_sudo
+    printf 'port=10000\nbind=0.0.0.0\n' > "$WEBMIN_CONF"
+    printf 'Status: active\n10000/tcp                   ALLOW       Anywhere\n' > "$UFW_OUT"
+    run bash "$VPS_DIR/02_J-install-webmin.sh" < /dev/null
+    run bash "$VPS_DIR/02_J-install-webmin.sh" < /dev/null
     [ "$status" -eq 0 ]
+    [ "$(grep -c '^bind=' "$WEBMIN_CONF")" -eq 1 ] && grep -qx 'bind=127.0.0.1' "$WEBMIN_CONF"
+    grep -q "ufw delete allow 10000/tcp" "$SUDO_LOG"
+}
+
+@test "02_J WEBMIN_ALLOW_FROM: escucha en todas las interfaces y UFW solo deja pasar a esa IP" {
+    setup_stubs; setup_system_stubs; webmin_sudo
+    printf 'port=10000\nbind=127.0.0.1\n' > "$WEBMIN_CONF"
+    WEBMIN_ALLOW_FROM=203.0.113.5 run bash "$VPS_DIR/02_J-install-webmin.sh" < /dev/null
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    ! grep -q '^bind=' "$WEBMIN_CONF"                            # quitado el bind de localhost
     grep -q "ufw allow from 203.0.113.5 to any port 10000 proto tcp" "$SUDO_LOG"
     ! grep -q "ufw allow 10000/tcp" "$SUDO_LOG"
-    [[ "$output" != *"AVISO DE SEGURIDAD"* ]]
-    : > "$SUDO_LOG"
-    run bash "$VPS_DIR/02_J-install-webmin.sh"
+    [[ "$output" == *"solo desde 203.0.113.5"* ]] && [[ "$output" != *"AVISO DE SEGURIDAD"* ]]
+}
+
+@test "02_J WEBMIN_PUBLIC=1: abierto a todo internet, y lo avisa" {
+    setup_stubs; setup_system_stubs; webmin_sudo
+    WEBMIN_PUBLIC=1 run bash "$VPS_DIR/02_J-install-webmin.sh" < /dev/null
     [ "$status" -eq 0 ]
+    ! grep -q '^bind=' "$WEBMIN_CONF"
     grep -q "ufw allow 10000/tcp" "$SUDO_LOG"
     [[ "$output" == *"AVISO DE SEGURIDAD"* ]]
+}
+
+@test "02_J WEBMIN_ALLOW_FROM y WEBMIN_PUBLIC=1 a la vez se rechazan antes de instalar nada" {
+    setup_stubs; setup_system_stubs; webmin_sudo
+    WEBMIN_ALLOW_FROM=203.0.113.5 WEBMIN_PUBLIC=1 run bash "$VPS_DIR/02_J-install-webmin.sh" < /dev/null
+    [ "$status" -eq 2 ]
+    ! grep -q "apt-get install" "$SUDO_LOG"
 }
 
 @test "02_J rechaza un WEBMIN_ALLOW_FROM invalido antes de tocar el firewall" {

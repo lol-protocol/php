@@ -45,7 +45,9 @@ for j in recidive nginx-botsearch nginx-http-auth nginx-bad-request; do
     check "fail2ban: jail $j activo" fail2ban-client status "$j"
 done
 check "UFW limita SSH (LIMIT, no solo ALLOW)" bash -c 'ufw status | grep -E "^OpenSSH +LIMIT"' 
-check "Webmin responde en 10000 (HTTPS)" bash -c 'curl -sk -o /dev/null -w "%{http_code}" https://127.0.0.1:10000/ | grep -qE "^(200|30[0-9])$"'
+check "Webmin responde en 10000 por localhost (HTTPS)" bash -c 'curl -sk -o /dev/null -w "%{http_code}" https://127.0.0.1:10000/ | grep -qE "^(200|30[0-9])$"'
+check "Webmin escucha SOLO en 127.0.0.1" bash -c 'ss -ltn "( sport = :10000 )" | awk "NR>1{print \$4}" | grep -q "^127.0.0.1:10000$" && ! ss -ltn "( sport = :10000 )" | awk "NR>1{print \$4}" | grep -qvE "^127.0.0.1:"'
+check "UFW NO tiene regla para el puerto 10000" bash -c '! ufw status | grep -q 10000'
 check "apt: espera el lock y conserva configs (01)" grep -q 'Lock::Timeout' /etc/apt/apt.conf.d/90-vps-setup
 
 step "Landing ($D)"

@@ -4,8 +4,8 @@
 #   --dry-run      muestra el plan (y que pasos ya estan hechos) sin ejecutar nada
 #   --resume       salta los pasos ya completados para este dominio (usalo tras un fallo)
 #   --yes          no pide confirmacion
-#   --with-webmin  instala tambien Webmin (02_J): panel web en el puerto 10000 con el login
-#                  de root/sudo. Por defecto NO se instala (menos superficie expuesta)
+#   --with-webmin  instala tambien Webmin (02_J): panel web con el login de root/sudo. Por defecto
+#                  NO se instala; si se instala, escucha SOLO en localhost (acceso por tunel SSH)
 #   --skip-ssl     no pide el certificado (04): para instalar todo ANTES de que el DNS apunte
 #                  al VPS; luego corre ./04-setup-ssl.sh <dominio> <email>
 # El avance se guarda en ~/.local/state/vps-setup/install-all.state
@@ -57,7 +57,7 @@ echo "║   Dominio: $DOMAIN"
 echo "║   Email: $EMAIL"
 [ "$DRY_RUN" -eq 1 ] && echo "║   MODO DRY-RUN: no se ejecuta nada"
 [ "$RESUME" -eq 1 ] && echo "║   MODO RESUME: se omiten los pasos ya completados"
-[ "$WITH_WEBMIN" -eq 1 ] && echo "║   Con Webmin (02_J, puerto 10000)"
+[ "$WITH_WEBMIN" -eq 1 ] && echo "║   Con Webmin (02_J, solo por tunel SSH)"
 [ "$SKIP_SSL" -eq 1 ] && echo "║   SIN certificado SSL (04): pidelo cuando el DNS apunte al VPS"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
@@ -251,8 +251,9 @@ if [ "$SKIP_SSL" -eq 1 ]; then
     echo ""
 fi
 if [ "$WITH_WEBMIN" -eq 1 ]; then
-    echo "Panel de administracion (Webmin):"
-    echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
+    echo "Panel de administracion (Webmin): escucha SOLO en localhost del VPS. Desde TU equipo:"
+    echo "  ssh -L 10000:localhost:10000 usuario@$IP     (deja esa terminal abierta)"
+    echo "  y abre https://localhost:10000   (usuario/contraseña: los mismos que por SSH)"
 else
     echo "Webmin no se instalo (usa --with-webmin, o luego: bash ./02_J-install-webmin.sh)"
 fi
