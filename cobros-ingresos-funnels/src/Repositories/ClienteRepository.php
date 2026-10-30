@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Busqueda;
 use App\Database;
 use App\Paginacion;
 use PDO;
@@ -54,7 +55,7 @@ final class ClienteRepository
         $params = [];
         if ($query !== '') {
             $where = ' WHERE c.nombre ILIKE :q OR c.email ILIKE :q';
-            $params[':q'] = '%' . $query . '%';
+            $params[':q'] = Busqueda::contiene($query);
         }
 
         return Paginacion::consultar(

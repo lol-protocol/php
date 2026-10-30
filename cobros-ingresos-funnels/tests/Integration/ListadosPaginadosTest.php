@@ -6,6 +6,7 @@ namespace App\Tests\Integration;
 
 use App\Database;
 use App\Paginacion;
+use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\PagoRepository;
 
@@ -64,6 +65,40 @@ final class ListadosPaginadosTest extends IntegracionTestCase
         self::assertSame(30, $repo->buscar('zzzz PAGINADO')['total'], 'ILIKE: no distingue mayusculas');
         self::assertSame(1, $repo->buscar('zzzz-paginado-7@')['total'], 'tambien busca en el email');
         self::assertSame(0, $repo->buscar('Nadie se llama asi ' . uniqid())['total']);
+    }
+
+    /** `%` y `_` del texto tipeado son caracteres, no comodines: antes «_» traia a todos y «q_z» encontraba «qxz». */
+    public function testBuscarTrataElPorcentajeYElGuionBajoComoCaracteres(): void
+    {
+        $this->crearClientes(1, 'ZZZZ q_z', numerados: false);
+        $this->crearClientes(1, 'ZZZZ qxz', numerados: false);
+        $this->crearClientes(1, 'ZZZZ Cien% Real', numerados: false);
+        $this->crearClientes(1, 'ZZZZ CienXX Real', numerados: false);
+        $repo = new ClienteRepository();
+
+        self::assertSame(1, $repo->buscar('q_z')['total'], '«_» no es «cualquier letra»');
+        self::assertSame(1, $repo->buscar('Cien% Real')['total'], '«%» no es «cualquier cosa»');
+        $conPorcentaje = self::contar("SELECT COUNT(*) FROM clientes WHERE strpos(nombre, '%') > 0 OR strpos(email, '%') > 0");
+        $conGuionBajo = self::contar("SELECT COUNT(*) FROM clientes WHERE strpos(nombre, '_') > 0 OR strpos(email, '_') > 0");
+        self::assertSame($conPorcentaje, $repo->buscar('%')['total'], 'buscar «%» trae solo a quien lo lleva');
+        self::assertSame($conGuionBajo, $repo->buscar('_')['total'], 'buscar «_» trae solo a quien lo lleva');
+        self::assertLessThan(self::contar('SELECT COUNT(*) FROM clientes'), $repo->buscar('_')['total'], '«_» no trae a todos');
+    }
+
+    public function testElFiltroDeClienteDeBoletasYPagosTratalosComodinesComoCaracteres(): void
+    {
+        $this->crearClientes(1, 'ZZZZ q_z', numerados: false);
+        $this->crearClientes(1, 'ZZZZ qxz', numerados: false);
+        $ids = Database::connection()->query("SELECT c.id, p.moneda_codigo FROM clientes c JOIN paises p ON p.codigo = c.pais_codigo WHERE c.nombre IN ('ZZZZ q_z', 'ZZZZ qxz') ORDER BY c.nombre")->fetchAll();
+        self::assertCount(2, $ids);
+        $hoy = date('Y-m-d');
+        foreach ($ids as $c) {
+            (new BoletaRepository())->crear(['cliente_id' => $c['id'], 'concepto' => 'x', 'monto' => 10, 'moneda_codigo' => $c['moneda_codigo'], 'fecha_emision' => $hoy, 'fecha_vencimiento' => $hoy]);
+            (new PagoRepository())->crear(['boleta_id' => null, 'cliente_id' => $c['id'], 'monto' => 10, 'moneda_codigo' => $c['moneda_codigo'], 'fecha_pago' => $hoy, 'metodo' => 'efectivo']);
+        }
+
+        self::assertSame(1, (new BoletaRepository())->listado($hoy, $hoy, null, 'q_z')['total']);
+        self::assertSame(1, (new PagoRepository())->listado($hoy, $hoy, 'q_z')['total']);
     }
 
     public function testBuscarPaginaOrdenaPorNombreYNoRepiteFilasEntrePaginas(): void
