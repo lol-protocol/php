@@ -36,9 +36,9 @@ apt-cache search <pkg> # Buscar paquete
 ./02_J-install-webmin.sh
 ```
 
-**Panel web:** `https://IP_DEL_VPS:10000` (mismo usuario/contraseña que SSH)
+**Panel web:** por túnel SSH, `https://localhost:10000` tras `ssh -L 10000:localhost:10000 usuario@IP_DEL_VPS` (mismo usuario/contraseña que SSH)
 
-**Seguridad:** el puerto 10000 acepta el login de root/sudo del sistema; para que solo tu IP llegue a él instala con `WEBMIN_ALLOW_FROM=203.0.113.5 ./02_J-install-webmin.sh` (IPv4 o CIDR). Sin esa variable queda abierto a internet.
+**Seguridad:** el login es el de root/sudo del sistema, así que Webmin escucha solo en `127.0.0.1` (`bind=` en `/etc/webmin/miniserv.conf`) y no hay regla de UFW para el 10000. Con una IP fija puedes abrirlo solo a ella: `WEBMIN_ALLOW_FROM=203.0.113.5 ./02_J-install-webmin.sh` (IPv4 o CIDR); `WEBMIN_PUBLIC=1` lo abre a todo internet (no recomendado).
 
 **Módulos más útiles:**
 - **Nginx Webserver** — edita server blocks, SSL, proxy, gzip sobre `/etc/nginx/` directamente

@@ -41,7 +41,7 @@ mismo VPS — todavía no están registrados ni configurados. Cómo agregar uno
 - **Webmin** (gratis, opcional)
   - GUI que **edita los archivos de configuración nativos** (Nginx, cron, usuarios, UFW) — no tiene base de datos propia ni convención de carpetas propietaria
   - Si se desinstala, nada dejar de funcionar: todo sigue siendo Nginx/Certbot/systemd estándar
-  - Interfaz web (`:10000`), mismo usuario/contraseña que SSH
+  - Interfaz web (`:10000`), solo por túnel SSH (escucha en localhost); mismo usuario/contraseña que SSH
   - Alternativa a cPanel (de pago), Virtualmin y CloudPanel (que administran el servidor con su propio CLI/base de datos y no resisten bien no tener panel)
 
 ### Servidor Web
@@ -184,7 +184,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - ✅ BIND (si se usa) es solo autoritativo, sin recursión, y solo transfiere la zona a OVH (`06_C`)
 - ✅ Apps Python bajo systemd con `NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=full`, `ProtectHome` (`06_B`)
 - ✅ Marcalibros (`06_E`): el código es de root (la app no puede reescribirse), los datos van fuera de la carpeta web en `/var/lib/marcalibros` (750, `www-data`) y Nginx solo expone `public/`
-- ⚠️ Webmin (puerto 10000) queda abierto a internet salvo que uses `WEBMIN_ALLOW_FROM=<tu IP>` al instalarlo (`02_J`)
+- ✅ Webmin (si se instala, `02_J`) escucha solo en `127.0.0.1`: no hay puerto 10000 abierto; se entra por túnel SSH. `WEBMIN_ALLOW_FROM=<IP fija>` o `WEBMIN_PUBLIC=1` lo abren a propósito
 - ⚠️ Las apps comparten el usuario `www-data` (sin aislamiento entre apps); ver "Límites conocidos" en el README
 
 ### Base de Datos
@@ -212,7 +212,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
                       │
          ┌────────────▼─────────────┐
          │  Nginx (Reverse Proxy)   │
-         │  + Webmin :10000 (admin) │
+         │  + Webmin (solo túnel)   │
          └────────────┬─────────────┘
                       │
         ┌─────────────┼─────────────┐

@@ -41,7 +41,7 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     ia ejemplo.com a@ejemplo.com --yes --with-webmin
     [ "$(cat "$BATS_TEST_TMPDIR/ip_en_hijo")" = "203.0.113.9" ]
     [ "$(wc -l < "$BATS_TEST_TMPDIR/ifconfig.calls")" -eq 1 ]
-    [[ "$output" == *"https://203.0.113.9:10000"* ]]
+    [[ "$output" == *"ssh -L 10000:localhost:10000 usuario@203.0.113.9"* ]] && [[ "$output" == *"https://localhost:10000"* ]]
 }
 
 @test "--dry-run no ejecuta nada y no guarda estado" {

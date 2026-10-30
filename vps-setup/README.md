@@ -112,11 +112,15 @@ curl http://initech.fun                     # Prueba SIN SSL primero
 
 ## 🖥️ Webmin — acceso y uso
 
-```
-https://IP_DEL_VPS:10000
+Webmin escucha **solo en localhost del VPS**: no hay puerto 10000 abierto a internet (el login es el de root/sudo del sistema, un blanco de fuerza bruta). Se entra por un túnel SSH, que funciona con cualquier IP (fija o dinámica). Desde TU equipo:
+
+```bash
+ssh -L 10000:localhost:10000 usuario@IP_DEL_VPS     # deja esa terminal abierta
 ```
 
-Inicia sesión con el mismo usuario/contraseña que usas por SSH (root o tu usuario con sudo).
+y en el navegador: `https://localhost:10000` (el certificado es autofirmado: acepta el aviso). Inicia sesión con el mismo usuario/contraseña que usas por SSH (root o tu usuario con sudo).
+
+Alternativas: con una IP **fija**, `WEBMIN_ALLOW_FROM=<tu IP> ./02_J-install-webmin.sh` lo deja accesible directo (`https://IP_DEL_VPS:10000`) solo desde esa IP; `WEBMIN_PUBLIC=1` lo abre a todo internet (no recomendado).
 
 **Módulos más útiles ya incluidos:**
 - **Nginx Webserver** — edita server blocks, SSL, proxy, gzip directamente sobre `/etc/nginx/`
@@ -142,7 +146,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 02_G | `02_G-install-mariadb.sh` | *(Opcional)* Instala MariaDB |
 | 02_H | `02_H-install-tomcat.sh` | *(Opcional)* Instala Apache Tomcat — requiere que `02_A` (Java) ya haya corrido |
 | 02_I | `02_I-install-python-whisper.sh` | *(Opcional)* Instala Whisper (OpenAI, transcripción de audio) + ffmpeg + librerías Python básicas en un venv en `/opt/venvs/whisper` — requiere que `02_C` (Python) ya haya corrido |
-| 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional: `install-all.sh` solo lo instala con `--with-webmin`). Con `WEBMIN_ALLOW_FROM=<tu IP>` el puerto 10000 solo se abre a esa IP; sin ella queda abierto a todo internet y el script lo avisa |
+| 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional: `install-all.sh` solo lo instala con `--with-webmin`). Por defecto escucha **solo en localhost** (`bind=127.0.0.1`, sin regla de UFW) y se entra por túnel SSH; `WEBMIN_ALLOW_FROM=<IP fija>` lo abre solo a esa IP y `WEBMIN_PUBLIC=1` a todo internet. Re-correrlo cierra una regla abierta de una instalación anterior |
 | 03 | `03-configure-nginx-site.sh <dominio>` | Crea el virtual host de Nginx (estático, sin PHP) y copia la landing page |
 | 04 | `04-setup-ssl.sh <dominio> [email] [--force] [--staging]` | Obtiene certificado SSL. Verifica antes que el DNS apunte al VPS; sin terminal y con el DNS mal, **aborta** para no gastar un intento de Let's Encrypt (`--force` lo salta). `--staging` pide un certificado de prueba sin límite semanal |
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
@@ -171,7 +175,7 @@ Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independiente
 ./install-all.sh initech.fun admin@initech.fun --dry-run   # muestra el plan, no ejecuta nada
 ./install-all.sh initech.fun admin@initech.fun --yes       # sin confirmación
 ./install-all.sh initech.fun admin@initech.fun --resume    # tras un fallo: salta lo ya hecho
-./install-all.sh initech.fun admin@initech.fun --with-webmin   # incluye el panel Webmin (puerto 10000)
+./install-all.sh initech.fun admin@initech.fun --with-webmin   # incluye el panel Webmin (solo por túnel SSH)
 ./install-all.sh initech.fun admin@initech.fun --skip-ssl  # instala todo antes de que el DNS apunte; SSL luego con 04
 ```
 
@@ -256,7 +260,7 @@ Límites conocidos (decisiones de diseño, no bugs):
   aislarlas hace falta un usuario y un pool de PHP-FPM por app (no incluido).
 - `remote-run.sh` usa `StrictHostKeyChecking=accept-new`: confía en la huella del VPS en la primera conexión. Verifícala
   con la consola del proveedor si te preocupa un MITM en esa primera vez.
-- Webmin (02_J) y el instalador `setup-repos.sh` se descargan de `raw.githubusercontent.com/.../master` sin verificar
+- Webmin (02_J) escucha solo en localhost; el instalador `setup-repos.sh` y el propio paquete se descargan de `raw.githubusercontent.com/.../master` sin verificar
   firma ni checksum (es el método oficial de Webmin); las librerías de `02_I`/`06_B` se instalan con `pip` sin fijar versiones.
 - Los certificados y la zona DNS no se eliminan al quitar un dominio con `10_B` (se indican los comandos).
 
@@ -295,7 +299,7 @@ ls -la /var/www/landing-page/tudominio.com/
 
 **Landing page no se ve:** verifica permisos con `sudo chown -R www-data:www-data /var/www/landing-page/tudominio.com`
 
-**No puedo entrar a Webmin:** verifica que el puerto 10000 esté abierto (`sudo ufw status`) y que el servicio esté corriendo (`sudo systemctl status webmin`)
+**No puedo entrar a Webmin:** no hay puerto abierto a propósito: abre antes el túnel (`ssh -L 10000:localhost:10000 usuario@IP_DEL_VPS`) y entra a `https://localhost:10000`. Si no responde, mira el servicio (`sudo systemctl status webmin`) y que escuche en `127.0.0.1:10000` (`sudo ss -ltn | grep 10000`)
 
 ## 🎯 Próximos Pasos (opcionales)
 

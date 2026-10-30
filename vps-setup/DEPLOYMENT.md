@@ -61,7 +61,7 @@ VPS y correr los scripts allí: los comandos son los mismos, sin el `./remote-ru
 ./remote-run.sh install-all.sh tudominio.com tu@email.com               # de verdad
 ```
 
-Opciones útiles: `--skip-ssl` (el DNS aún no apunta), `--with-webmin` (panel web en el puerto 10000),
+Opciones útiles: `--skip-ssl` (el DNS aún no apunta), `--with-webmin` (panel web, solo por túnel SSH),
 `--yes` (sin confirmación) y `--resume` (tras un fallo, salta lo ya hecho).
 
 Cada corrida deja un log en `~/.local/state/vps-setup/install-all-<fecha>.log` del VPS. Si un paso
@@ -88,8 +88,12 @@ de Let's Encrypt (hay un límite semanal). `--staging` pide un certificado de pr
 ./remote-run.sh 09_A-setup-monitoring.sh 'https://hooks.slack.com/...' tu@email.com
 ```
 
-Si instalaste Webmin, restringe el puerto 10000 a tu IP: instálalo con
-`WEBMIN_ALLOW_FROM=<tu IP> ./02_J-install-webmin.sh`, o cambia la regla de UFW (el script lo explica).
+Si instalaste Webmin, **no hay puerto abierto**: escucha solo en el localhost del VPS. Desde tu equipo:
+
+```bash
+ssh -L 10000:localhost:10000 ubuntu@<IP_DEL_VPS>     # deja esa terminal abierta
+# navegador: https://localhost:10000  (certificado autofirmado: acepta el aviso)
+```
 
 ## 6. Más dominios y aplicaciones
 
