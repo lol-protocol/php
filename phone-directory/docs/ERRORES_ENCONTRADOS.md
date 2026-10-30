@@ -52,7 +52,7 @@ cd phone-directory
 - **Corrección**: `createTable()` agrega la columna con su valor por defecto y ejecuta
   `DatabaseConstants::MIGRATION_NULL_COUNTRY_CODE` para rellenar los NULL existentes.
 - **Cobertura**: `PhoneDirectoryDatabaseTest::testCreateTableAddsMissingColumnsToOldDatabase`.
-  `PotentialErrorsTest::testError12_LegacyDatabaseWithNullCountryCodeFailsMigration` confirma que un INSERT
+  `PotentialErrorsTest::testLegacyDatabaseWithNullCountryCodeFailsMigration` confirma que un INSERT
   *nuevo* con NULL sigue rechazándose, que es lo esperado.
 
 ### 5. UTF-8 inválido hace fallar `preg_match` — corregido
@@ -73,7 +73,7 @@ cd phone-directory
 - **Hallazgo original**: si `parse()` lanza una excepción, `$firstNames` y `$lastNames` quedan sin inicializar.
 - **Por qué no aplica**: si el constructor lanza, el objeto no llega a existir. Además ambos arrays se inicializan
   antes de llamar a `parse()`.
-- **Cobertura**: `PotentialErrorsTest::testError13_PersonNameRejectsWhitespaceOnlyName`.
+- **Cobertura**: `PotentialErrorsTest::testPersonNameRejectsWhitespaceOnlyName`.
 
 ### 8. `PhonePattern::REGEX` sin validar — corregido
 - **Corrección**: `PhonePattern::getValidatedRegex()` compila la regex una vez y lanza `InvalidArgumentException`

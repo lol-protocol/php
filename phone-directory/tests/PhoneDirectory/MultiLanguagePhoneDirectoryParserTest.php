@@ -83,6 +83,76 @@ class MultiLanguagePhoneDirectoryParserTest extends TestCase
         $this->assertEquals('natural', $entries[0]['type']);
     }
 
+    /**
+     * "BANK, Henry" is a person whose surname is a business word: filed as a business he would leave Privacy,
+     * which only covers persons, and a visitor would get his name, street and phone from a 1960 directory.
+     */
+    public function testSurnameThatIsABusinessWordFollowedByAGivenNameIsNatural(): void
+    {
+        $cases = [
+            ['en', "BANK, Henry\n12 Main Street\n555-123-4567"],
+            ['en', 'STORE, Mary, 12 Main Street, 555-123-4568'],
+            ['es', "HOSPITAL, Joan\nCalle Mayor 12\n555-123-4569"],
+            ['es', "BANCO, Luis\nCalle Mayor 13\n555-123-4570"],
+            ['it', "ALBERGO, Giovanni\nVia Roma 12\n555-123-4571"],
+            ['de', "BANK, Hans\nHauptstrasse 12\n555-123-4572"],
+            ['pt', "LOJA, Manuel\nRua Nova 12\n555-123-4573"],
+        ];
+
+        foreach ($cases as [$language, $content]) {
+            $entries = $this->parser->parseContent($content, $language);
+
+            $this->assertCount(1, $entries, $content);
+            $this->assertSame('natural', $entries[0]['type'], $content);
+        }
+    }
+
+    public function testBusinessNamesWithACommaAreStillBusinesses(): void
+    {
+        $cases = [
+            ['en', "BANK OF AMERICA, N.A.\n12 Main Street\n555-123-4574"],
+            ['en', "Hotel Reina, Ltd\n12 Main Street\n555-123-4575"],
+            ['es', "Banco Inca, S.A.\nCalle Mayor 14\n555-123-4576"],
+            ['es', "Hotel Sanchez\nCalle Sol 5\n555-123-4577"],
+        ];
+
+        foreach ($cases as [$language, $content]) {
+            $entries = $this->parser->parseContent($content, $language);
+
+            $this->assertCount(1, $entries, $content);
+            $this->assertSame('juridical', $entries[0]['type'], $content);
+        }
+    }
+
+    /** A person who lives on "Bank Street" or "Calle del Banco" is still a person: the street says where, not what. */
+    public function testABusinessWordInTheStreetLineDoesNotMakeAPersonABusiness(): void
+    {
+        $cases = [
+            ['en', "SMITH, John\n12 Bank Street\n555-123-4567"],
+            ['en', "SMITH, John\n3 Hospital Road\n555-123-4568"],
+            ['es', "GARCÍA LÓPEZ, José\nCalle del Banco 4\n555-123-4569"],
+            ['es', "GARCÍA LÓPEZ, José\nCalle Hospital 4\n555-123-4570"],
+            ['it', "ROSSI, Mario\nVia della Farmacia 3\n555-123-4571"],
+        ];
+
+        foreach ($cases as [$language, $content]) {
+            $entries = $this->parser->parseContent($content, $language);
+
+            $this->assertCount(1, $entries, $content);
+            $this->assertSame('natural', $entries[0]['type'], $content);
+        }
+    }
+
+    /** A line of text that is neither street nor phone can still say what the business is. */
+    public function testADescriptionLineBetweenNameAndStreetStillGivesTheBusinessType(): void
+    {
+        $entries = $this->parser->parseContent("Casa Lola\nRestaurante\nCalle Luna 3\n555-444-5555", 'es');
+
+        $this->assertCount(1, $entries);
+        $this->assertSame('juridical', $entries[0]['type']);
+        $this->assertSame('restaurante', $entries[0]['entity']->getBusinessType());
+    }
+
     public function testBusinessIsJuridical(): void
     {
         $entries = $this->parser->parseContent("Farmacia Central\nCalle Luna 3\n555-444-5555", 'es');

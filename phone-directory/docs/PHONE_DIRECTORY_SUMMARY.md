@@ -175,7 +175,7 @@ Las columnas de búsqueda llevan índice. El catálogo histórico no está en la
 
 ## Tests
 
-231 tests PHPUnit (incluida la ejecución de los ejemplos), que CI ejecuta en PHP 8.1–8.4 contra SQLite y PostgreSQL (MySQL si se define
+La suite de PHPUnit (`./vendor/bin/phpunit`, incluida la ejecución de los ejemplos), que CI ejecuta en PHP 8.1–8.4 contra SQLite y PostgreSQL (MySQL si se define
 `PHONEDIR_MYSQL_DSN`). Los ports a Python y Java tienen sus propios tests. El detalle por archivo está en
 [PROJECT_COMPLETION_REPORT.md](PROJECT_COMPLETION_REPORT.md).
 

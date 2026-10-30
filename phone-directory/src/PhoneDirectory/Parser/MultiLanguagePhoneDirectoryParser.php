@@ -182,7 +182,7 @@ class MultiLanguagePhoneDirectoryParser
                     $buffer = [];
                 }
                 $this->finalizeEntry(
-                    ['name' => $single['name'], 'phone' => $single['phone'], 'street' => $single['street'], 'type' => $this->extractBusinessType($single['name'], $language)],
+                    ['name' => $single['name'], 'phone' => $single['phone'], 'street' => $single['street'], 'type' => $this->businessTypeOfName($single['name'], $language)],
                     $lineNumber,
                     $language
                 );
@@ -265,12 +265,17 @@ class MultiLanguagePhoneDirectoryParser
         $nameSet = false;
 
         foreach ($lines as $line) {
-            if (empty($data['phone']) && preg_match($phoneRegex, $line, $matches)) {
+            $isPhoneLine = preg_match($phoneRegex, $line, $matches) === 1;
+            $isStreetLine = $this->extractStreet($line, $language) !== null;
+
+            if (empty($data['phone']) && $isPhoneLine) {
                 $data['phone'] = $matches[0];
             }
 
-            if (empty($data['type'])) {
-                $typeMatch = $this->extractBusinessType($line, $language);
+            // Only the name (and any line of text that is neither street nor phone) can say it is a business:
+            // "12 Bank Street" or "Calle del Banco 4" say where someone lives, not what they are.
+            if (empty($data['type']) && !$isPhoneLine && !$isStreetLine) {
+                $typeMatch = $nameSet ? $this->extractBusinessType($line, $language) : $this->businessTypeOfName($line, $language);
                 if ($typeMatch) {
                     $data['type'] = $typeMatch;
                 }
@@ -283,7 +288,7 @@ class MultiLanguagePhoneDirectoryParser
                 }
             }
 
-            if (!$nameSet && !preg_match($phoneRegex, $line) && !$this->extractStreet($line, $language)) {
+            if (!$nameSet && !$isPhoneLine && !$isStreetLine) {
                 $data['name'] = $line;
                 $nameSet = true;
             }
@@ -394,6 +399,29 @@ class MultiLanguagePhoneDirectoryParser
         return null;
     }
 
+    /**
+     * The business word in a name, unless the name is a surname followed by a given name: "BANK, Henry" is a
+     * person whose surname happens to be a business word (Bank, Store, Hospital, Albergo...), and treating them
+     * as a business would also take them out from under Privacy, which only covers persons. Only the exact
+     * shape "<one word>, <given name>" is spared, with no business word in the given-name part: "BANK OF
+     * AMERICA, N.A." and "HOTEL REINA, S.A." stay businesses.
+     */
+    private function businessTypeOfName(string $name, string $language): ?string
+    {
+        $type = $this->extractBusinessType($name, $language);
+        if ($type === null) {
+            return null;
+        }
+
+        $parts = array_map('trim', explode(',', $name));
+        $isSurnameAndGivenName = count($parts) === 2
+            && mb_strtolower($parts[0], 'UTF-8') === $type
+            && preg_match('/^\p{L}[\p{L}\'. -]*$/u', $parts[1]) === 1
+            && $this->extractBusinessType($parts[1], $language) === null;
+
+        return $isSurnameAndGivenName ? null : $type;
+    }
+
     private function getStreetPattern(string $language): string
     {
         if (!isset($this->streetPatternCache[$language])) {
@@ -438,8 +466,7 @@ class MultiLanguagePhoneDirectoryParser
             return true;
         }
 
-        $pattern = $this->getEntityTypePattern($language);
-        return $pattern !== null && preg_match($pattern, $data['name'] ?? '') === 1;
+        return $this->businessTypeOfName($data['name'] ?? '', $language) !== null;
     }
 
     /** @param array<string, string|null> $data */
