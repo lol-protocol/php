@@ -19,8 +19,12 @@ final class Generador
         'sobrelomo.svg' => ['sobrelomo', 'Sobrelomo'],
     ];
 
-    /** @return list<string> nombres de los archivos escritos */
-    public static function escribir(Libro $libro, string $directorio): array
+    /**
+     * Con `$textoATrazos`, el texto sale como contornos en vez de con la fuente incrustada (ver Plantilla).
+     *
+     * @return list<string> nombres de los archivos escritos
+     */
+    public static function escribir(Libro $libro, string $directorio, bool $textoATrazos = false): array
     {
         if (!is_dir($directorio) && !mkdir($directorio, 0777, true)) {
             throw new \RuntimeException("No se pudo crear la carpeta $directorio.");
@@ -29,6 +33,7 @@ final class Generador
         // Todo se calcula antes de tocar el disco: si algo falla al dibujar, la carpeta no cambia.
         $medidas = new Medidas($libro);
         $plantilla = Plantilla::crear($libro->plantilla);
+        $plantilla->textoATrazos = $textoATrazos;
         $contenidos = [];
         foreach (self::piezas($libro) as $archivo => [$vista, $nombre]) {
             $cuerpo = $plantilla->dibujar($libro, $medidas, $vista);
@@ -69,8 +74,9 @@ final class Generador
     }
 
     /**
-     * Letras de los textos del libro que las fuentes incrustadas no tienen (ver Fuentes): en el visor se
-     * dibujan con otra fuente, y el ajuste del texto las mide con un ancho medio.
+     * Cosas que conviene mirar de un libro antes de publicarlo: letras de sus textos que las fuentes
+     * incrustadas no tienen (ver Fuentes: en el visor se dibujan con otra fuente, y el ajuste del texto las mide
+     * con un ancho medio) y el derecho de autor de una traducción.
      *
      * @return list<string> un aviso por texto afectado
      */
@@ -89,6 +95,10 @@ final class Generador
             if ($faltan !== '') {
                 $avisos[] = "$nombre lleva letras que la fuente no tiene ($faltan); se verán con otra fuente.";
             }
+        }
+
+        if ($t->traductor !== '') {
+            $avisos[] = "El traductor «{$t->traductor}» figura en la cubierta: una traducción moderna puede no ser de dominio público; comprueba su licencia.";
         }
 
         return $avisos;

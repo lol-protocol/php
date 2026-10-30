@@ -4,6 +4,7 @@
 Es una herramienta de desarrollo. El generador en PHP no la necesita para correr: solo lee lo que esta produce,
 
   fuentes/*.woff2        las fuentes cortadas en trozos por alfabeto (un archivo por cara y trozo),
+  fuentes/trazos/*.json  el contorno de cada letra de cada trozo, para la salida con el texto a trazos,
   datos/fuentes.json     qué letras trae cada trozo (un `unicode-range` por archivo),
   datos/anchos.json      el ancho de cada letra, para medir el texto sin un navegador.
 
@@ -27,6 +28,8 @@ import json
 import sys
 from pathlib import Path
 
+from fontTools.pens.svgPathPen import SVGPathPen
+from fontTools.pens.transformPen import TransformPen
 from fontTools.subset import Options, Subsetter
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
@@ -70,6 +73,25 @@ def rangos(codigos: list[int]) -> str:
     return ",".join(partes)
 
 
+def contornos(fuente: TTFont, codigos: list[int], cmap: dict[int, str], por_em: int) -> dict[str, list]:
+    """Por código Unicode: [avance, contorno SVG], en milésimas de em, con la y hacia abajo y la línea base en 0.
+
+    Los números van redondeados a enteros: a 20 mm de tamaño de letra, una milésima son 0,02 mm.
+    """
+    glifos = fuente.getGlyphSet()
+    hmtx = fuente["hmtx"]
+    escala = UNIDADES / por_em
+    resultado: dict[str, list] = {}
+    for codigo in codigos:
+        if codigo not in cmap:
+            continue
+        nombre = cmap[codigo]
+        lapiz = SVGPathPen(glifos, ntos=lambda v: str(round(v)))
+        glifos[nombre].draw(TransformPen(lapiz, (escala, 0, 0, -escala, 0, 0)))
+        resultado[str(codigo)] = [round(hmtx[nombre][0] * escala), lapiz.getCommands()]
+    return resultado
+
+
 def main() -> int:
     if len(sys.argv) != 2:
         print(__doc__, file=sys.stderr)
@@ -77,7 +99,8 @@ def main() -> int:
     origen = Path(sys.argv[1])
     (RAIZ / "fuentes").mkdir(exist_ok=True)
     (RAIZ / "datos").mkdir(exist_ok=True)
-    for viejo in (RAIZ / "fuentes").glob("*.woff2"):
+    (RAIZ / "fuentes" / "trazos").mkdir(exist_ok=True)
+    for viejo in [*(RAIZ / "fuentes").glob("*.woff2"), *(RAIZ / "fuentes" / "trazos").glob("*.json")]:
         viejo.unlink()
 
     indice: dict = {}
@@ -94,7 +117,7 @@ def main() -> int:
                 if not ruta.exists():
                     print(f"falta {ruta.name}: se salta {familia} {estilo} {peso} {trozo}", file=sys.stderr)
                     continue
-                fuente = TTFont(ruta)
+                fuente = TTFont(ruta, recalcTimestamp=False)
                 fija = instantiateVariableFont(fuente, {"wght": peso}, inplace=False)
                 disponibles = {c for c in fija.getBestCmap() if c >= 0x20 and c not in usados}
                 if trozo == "basico":
@@ -115,12 +138,15 @@ def main() -> int:
                 subsetter.populate(unicodes=sorted(disponibles))
                 subsetter.subset(fija)
                 nombre = f"{familia}-{estilo}-{peso}-{trozo}.woff2"
-                fija.flavor = "woff2"
-                fija.save(RAIZ / "fuentes" / nombre)
-
                 cmap = fija.getBestCmap()
                 hmtx = fija["hmtx"]
                 por_em = fija["head"].unitsPerEm
+                (RAIZ / "fuentes" / "trazos" / nombre.replace(".woff2", ".json")).write_text(
+                    json.dumps(contornos(fija, sorted(disponibles), cmap, por_em), separators=(",", ":")) + "\n", encoding="utf-8"
+                )
+                fija.flavor = "woff2"
+                fija.save(RAIZ / "fuentes" / nombre)
+
                 for codigo in sorted(disponibles):
                     if codigo in cmap:
                         tabla[str(codigo)] = round(hmtx[cmap[codigo]][0] * UNIDADES / por_em)

@@ -1389,6 +1389,97 @@ $pruebas = [
         verdadero($cambiaron === [], count($cambiaron) . " dibujos cambiaron; si es a propósito, `php pruebas/ejecutar.php --actualizar-dibujos`:\n  " . implode("\n  ", array_slice($cambiaron, 0, 10)));
     },
 
+    'Los contornos de las letras coinciden con la tabla de anchos' => function (): void {
+        foreach ([['serif', 'normal', 400], ['serif', 'italic', 400], ['sans', 'normal', 400], ['sans', 'normal', 700]] as [$familia, $estilo, $peso]) {
+            $medida = Anchos::de($familia, $estilo, $peso);
+            foreach (['A', 'g', 'ñ', 'Ж', 'ω', ' ', '«', '¿'] as $letra) {
+                $contorno = Fuentes::contorno($familia, $estilo, $peso, mb_ord($letra));
+                if ($contorno === null) {
+                    continue; // la serif no tiene todo (sin griego politónico, por ejemplo)
+                }
+                aproximado($medida->em($letra), $contorno[0] / 1000);
+                verdadero(($letra === ' ') === ($contorno[1] === ''), "el contorno de «{$letra}» " . ($contorno[1] === '' ? 'está vacío' : 'no debería estar vacío'));
+            }
+        }
+        verdadero(Fuentes::contorno('serif', 'normal', 400, mb_ord('A')) !== null, 'la serif no tiene la A');
+        igual(null, Fuentes::contorno('serif', 'normal', 400, mb_ord('道')));
+        lanza(InvalidArgumentException::class, fn () => Fuentes::contorno('serif', 'normal', 700, 65));
+    },
+
+    'Con el texto a trazos, la pieza no lleva texto ni fuentes y se ve donde estaría el texto' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        $libro = libroDeEjemplo(['subtitulo' => 'Con cursiva', 'contratapa' => "Un texto de contratapa.\n\nOtro párrafo, con ñ.", 'editorial' => 'Editorial', 'plantilla' => 'clasica', 'titulo' => 'Título Ωmega Ж']);
+        Generador::escribir($libro, "$dir/trazos", true);
+        Generador::escribir($libro, "$dir/fuente");
+        foreach (['portada', 'contratapa', 'lomo'] as $pieza) {
+            $doc = new DOMDocument();
+            verdadero($doc->load("$dir/trazos/$pieza.svg"), "$pieza no es XML válido");
+            igual(0, $doc->getElementsByTagName('text')->length);
+            igual(0, $doc->getElementsByTagName('style')->length);
+            $ids = [];
+            foreach ($doc->getElementsByTagName('path') as $camino) {
+                $ids[$camino->getAttribute('id')] = true;
+            }
+            foreach ($doc->getElementsByTagName('use') as $uso) {
+                verdadero(isset($ids[ltrim($uso->getAttribute('href'), '#')]), "$pieza: un <use> apunta a un contorno que no está");
+                igual($uso->getAttribute('href'), $uso->getAttribute('xlink:href'));
+            }
+        }
+        $portada = new DOMDocument();
+        $portada->load("$dir/trazos/portada.svg");
+        verdadero($portada->getElementsByTagName('use')->length > 20, 'la portada no tiene letras');
+        verdadero(str_contains((string) file_get_contents("$dir/trazos/lomo.svg"), 'rotate(90)'), 'el lomo no va girado');
+        verdadero(filesize("$dir/trazos/lomo.svg") < filesize("$dir/fuente/lomo.svg"), 'el lomo a trazos no pesa menos que con la fuente');
+
+        // El grupo de una línea empieza donde la empezaría el texto: el título centrado queda centrado en la portada.
+        $medidas = new Medidas($libro);
+        $zona = $medidas->pieza('portada');
+        $centro = $zona->x + $zona->ancho / 2;
+        $titulo = null; // la línea de letra más grande
+        $mayor = 0.0;
+        foreach ($portada->getElementsByTagName('g') as $grupo) {
+            if (preg_match('/translate\(([\d.]+) ([\d.]+)\) scale\(([\d.]+)\)/', $grupo->getAttribute('transform'), $m) === 1 && (float) $m[3] > $mayor) {
+                $mayor = (float) $m[3];
+                $titulo = (float) $m[1];
+            }
+        }
+        verdadero($titulo !== null, 'no se encontró la línea del título');
+        // Centrado: empieza a la izquierda del centro de la portada, y no tan a la izquierda como el margen.
+        verdadero($titulo < $centro && $titulo > $zona->x + 10, "el título empieza en x = $titulo y el centro está en $centro");
+        Archivos::borrarDirectorio($dir);
+
+        [$codigo] = correrCli(['ejemplos/platon-apologia.json', '--trazos', "--salida=$dir/cli"]);
+        igual(0, $codigo);
+        verdadero(!str_contains((string) file_get_contents("$dir/cli/platon-apologia/contratapa.svg"), '<text'), 'la salida con --trazos lleva <text>');
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'Un libro con traductor avisa de los derechos de la traducción' => function (): void {
+        igual([], Generador::avisos(libroDeEjemplo()));
+        $avisos = Generador::avisos(libroDeEjemplo(['traductor' => 'Patricio de Azcárate']));
+        igual(1, count($avisos));
+        verdadero(str_contains($avisos[0], 'Patricio de Azcárate') && str_contains($avisos[0], 'dominio público'), $avisos[0]);
+    },
+
+    'Las categorías copiadas siguen siendo las de Marcalibros' => function (): void {
+        // Si esa carpeta cambia sus categorías, este archivo hay que actualizarlo a mano (ver README).
+        $ruta = __DIR__ . '/../../marcalibros-plataforma-pos-brand-identity/catalog/manifest.json';
+        if (!is_file($ruta)) {
+            return; // el proyecto se usa suelto, sin el resto del repositorio
+        }
+        $manifiesto = json_decode((string) file_get_contents($ruta), true);
+        $categorias = is_array($manifiesto) ? ($manifiesto['categorias'] ?? null) : null;
+        if (!is_array($categorias)) {
+            throw new RuntimeException('el manifiesto de Marcalibros no tiene categorías');
+        }
+        $origen = [];
+        foreach ($categorias as $categoria) {
+            $origen[] = is_array($categoria) ? [$categoria['slug'] ?? null, $categoria['nombre'] ?? null, $categoria['familia'] ?? null] : null;
+        }
+        $copia = array_map(static fn (array $categoria): array => [$categoria['slug'], $categoria['nombre'], $categoria['familia']], Catalogo::categorias());
+        igual($origen, $copia);
+    },
+
     'Los libros de ejemplo se cargan' => function (): void {
         $ejemplos = glob(__DIR__ . '/../ejemplos/*.json') ?: [];
         verdadero(count($ejemplos) >= 2, 'faltan ejemplos');

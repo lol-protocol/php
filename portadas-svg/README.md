@@ -245,6 +245,16 @@ Cada cara está cortada en **trozos por alfabeto**, cada uno con su `unicode-ran
 
 Lo que ninguna de las dos fuentes tiene (chino, japonés, árabe, hebreo, devanagari…) sale con la fuente de reserva del visor, y el generador avisa por libro qué letras faltan (`MedidaFuente::noCubiertas()`).
 
+### Texto a trazos (`--trazos`)
+
+Algunos programas ignoran las fuentes incrustadas en un SVG: CairoSVG, por ejemplo, las cambia por otras, y lo mismo pueden hacer Inkscape y algunos lectores de ebook. Con `--trazos` el texto no se escribe con la fuente sino como contornos, y la pieza no depende de ninguna:
+
+```bash
+php bin/generar.php ejemplos/platon-apologia.json --trazos
+```
+
+Cada letra es un trazado definido una sola vez en `<defs>` (con `fuentes/trazos/*.json`, generados por `herramientas/preparar-fuentes.py`) y colocado con `<use>`. Se ve igual que con la fuente en Chromium y en CairoSVG, y una imprenta que pide el texto convertido a trazos lo recibe ya hecho. A cambio, el texto no se puede seleccionar ni buscar (la descripción accesible de cada SVG sigue teniéndolo) y no aplica kerning, igual que la medida del texto. Sirve para los mismos alfabetos que las fuentes.
+
 ### El ancho del texto
 
 El ajuste de títulos, subtítulos, rótulos y párrafos mide el texto con los anchos reales de cada letra, que están en `datos/anchos.json`. No tiene en cuenta el kerning, que casi siempre acorta un poco la línea, así que mide igual o algo más que un navegador (hasta un 4 % más en los textos probados) y un texto que cabe en la estimación cabe también al dibujarlo. Los títulos se reparten en líneas parejas, sin dejar una palabra suelta en la última.
@@ -268,7 +278,7 @@ Cada SVG se anuncia como una imagen (`role="img"`) con su `<title>` y su `<desc>
 
 ## Antes de imprimir
 
-- **Fuentes.** Van incrustadas (ver «Fuentes»). Algunas imprentas piden el texto convertido a trazos: en Inkscape, Trayecto → Objeto a trazado.
+- **Fuentes.** Van incrustadas (ver «Fuentes»). Si la imprenta pide el texto convertido a trazos, usa `--trazos`.
 - **Ajuste del texto.** Mira siempre la vista previa. Si un texto no cabe ni al tamaño mínimo, se recorta con «…»: acórtalo en el JSON en vez de dejar que se recorte.
 - **Degradados al imprimir.** Las impresoras los convierten a CMYK, y eso puede cambiar tonos o mostrar bandas en degradados suaves. Pide prueba de color al impresor.
 - **Vista previa en imagen.** `rsvg-convert -w 2000 portada.svg -o portada.png`, Inkscape o Chromium. Los SVG están en milímetros.
@@ -278,7 +288,7 @@ Cada SVG se anuncia como una imagen (`role="img"`) con su `<title>` y su `<desc>
 
 ## Dominio público
 
-Los textos antiguos (Platón, Sun Tzu) son de dominio público, pero **una traducción moderna puede no serlo**. En España y en la UE, la protección dura toda la vida del traductor más 70 años. Comprueba la licencia de la traducción antes de poner el nombre del traductor. Por eso los ejemplos dejan `traductor` vacío.
+Los textos antiguos (Platón, Sun Tzu) son de dominio público, pero **una traducción moderna puede no serlo**. En España y en la UE, la protección dura toda la vida del traductor más 70 años. Comprueba la licencia de la traducción antes de poner el nombre del traductor. Por eso los ejemplos dejan `traductor` vacío, y el generador avisa de cada libro que lleva traductor.
 
 ## Pruebas
 
@@ -290,7 +300,7 @@ phpstan analyse --no-progress     # análisis estático, nivel máximo (phpstan.
 
 Las pruebas de geometría comprueban, con textos largos y cortos, en las tres plantillas, con las 16 tradiciones y los 27 motivos, que ningún texto se salga de su panel, que no se pise con otro texto ni con los adornos (rombo, reglas, hueco del código de barras), y que el subtítulo deje bajo el título un espacio proporcional a su tamaño. Miden con la misma tabla de anchos que las plantillas, que no tiene kerning: la vista previa en un navegador es la prueba final.
 
-Otra prueba guarda una huella de cada dibujo (`pruebas/dibujos.json`: cada adorno, cada motivo y cada plantilla con cada tradición) y falla si alguno cambia sin que lo hayas querido. Si lo cambiaste a propósito, `php pruebas/ejecutar.php --actualizar-dibujos` regenera el archivo y el diff muestra qué dibujos cambiaron. Las huellas dependen de la aritmética de decimales de PHP: están hechas con PHP 8.3, el de la CI.
+Con el repositorio completo, otra prueba comprueba que `datos/categorias.json` siga igual que las categorías de `marcalibros-plataforma-pos-brand-identity/catalog/manifest.json` (si allí cambian, hay que actualizar el archivo a mano; el workflow de este proyecto no corre al cambiar esa carpeta, así que se nota la próxima vez que se corren las pruebas). Otra guarda una huella de cada dibujo (`pruebas/dibujos.json`: cada adorno, cada motivo y cada plantilla con cada tradición) y falla si alguno cambia sin que lo hayas querido. Si lo cambiaste a propósito, `php pruebas/ejecutar.php --actualizar-dibujos` regenera el archivo y el diff muestra qué dibujos cambiaron. Las huellas dependen de la aritmética de decimales de PHP: están hechas con PHP 8.3, el de la CI.
 
 Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos/*.json --salida=ejemplos/salida`. El workflow `pruebas-portadas-svg.yml` corre las pruebas, la comprobación de los ejemplos, PHPStan 2.1 y `composer validate` cuando cambia esta carpeta.
 
@@ -301,6 +311,7 @@ bin/generar.php          línea de comandos
 src/Adornos/             un adorno por tradición, el Generico, los 27 Motivo de las categorías y los Trazos que comparten
 src/                     Libro (con Formato y Textos), Lista (CSV), Catalogo, Ficha, Nombres, Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
 fuentes/                 las fuentes en trozos woff2 que se incrustan en los SVG, con sus licencias
+fuentes/trazos/          el contorno de cada letra de esos trozos, para --trazos
 datos/fuentes.json       qué letras trae cada trozo (su unicode-range)
 datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
 datos/categorias.json    las 27 categorías de Marcalibros
@@ -318,6 +329,6 @@ pruebas/dibujos.json     huellas de los dibujos, para que no cambien sin querer
 - El ajuste de texto mide con anchos reales pero sin kerning: las líneas pueden quedar hasta un 4 % más cortas de lo posible. Las letras que las fuentes no cubren (ver «Fuentes») se miden con un ancho medio.
 - Cada SVG pesa unos 20–60 KB por las fuentes incrustadas.
 - La portada no admite imágenes: solo texto y adornos de línea.
-- Solo está probado en Chromium; Inkscape y algunos lectores de ebook ignoran las fuentes incrustadas en un SVG y usarían otras.
+- Probado en Chromium, CairoSVG y resvg. Los dos últimos ignoran las fuentes incrustadas y usan otras (la maqueta aguanta, pero no se ve igual): para esos visores, `--trazos`, que se ve igual que en Chromium. No he probado Inkscape ni lectores de ebook, que pueden hacer lo mismo. El enlace de Python de resvg (`resvg-py`) no acepta el tamaño en mm del `width`/`height`; hay que pasarlo a píxeles.
 - No genera el código de barras ni el PDF para imprenta; se obtiene desde los SVG con una herramienta externa.
 - Solo hay tres plantillas.
