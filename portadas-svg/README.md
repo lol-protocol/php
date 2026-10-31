@@ -6,7 +6,7 @@ Cada libro es un JSON con sus datos. El generador escribe un SVG por pieza, con 
 
 ## Requisitos
 
-- PHP 8.3 o más, con la extensión `mbstring` (las pruebas usan además `dom`). `composer.json` declara esos requisitos y dos atajos (`composer test` y `composer comprobar`).
+- PHP 8.3 o más, con las extensiones `mbstring` y `zlib` (las pruebas usan además `dom`). `composer.json` declara esos requisitos y dos atajos (`composer test` y `composer comprobar`).
 - Sin dependencias: no hace falta `composer install`.
 - Para ver o convertir los SVG: cualquier navegador, Inkscape o `rsvg-convert`. Las fuentes van dentro del SVG, así que se ven igual en todos.
 - Solo para volver a medir las fuentes (casi nunca): Python 3 con `fonttools` y `brotli`. Ver «Fuentes».
@@ -118,6 +118,10 @@ La `tradicion` decide el adorno de la cubierta: un **friso** (una franja que se 
 | `moderna` | filete con rombos | estrella de cuatro puntas |
 
 Sin tradición, o con una que no tenga adorno, se usa el de siempre: el rombo con dos líneas y una raya o una barra de acento donde iría el friso. Para añadir uno, crea `src/Adornos/Nombre.php` que extienda `Adorno` (con `friso()` y `emblema()`; los trazos comunes están en `Trazos`) y regístralo en `Adorno::de()`. Una prueba comprueba que ningún adorno se salga de su zona ni pise un texto.
+
+### El emblema de la contratapa
+
+Si la contratapa tiene poco texto, el emblema de la tradición aparece en grande y muy tenue en el centro (marca de agua) para que no quede vacía. Solo se pone si cabe sin tocar el texto: una contratapa larga no lo lleva.
 
 ### Un motivo por categoría
 
@@ -243,7 +247,7 @@ Los SVG llevan sus fuentes dentro, como `@font-face` con archivos `woff2` en bas
 
 Cada cara está cortada en **trozos por alfabeto**, cada uno con su `unicode-range`: las letras básicas (U+0020–007E), el resto del latín (tildes, `¿ ¡ « » · —`), el latín extendido (`ł ş č ő`…), el vietnamita, el griego, el griego politónico (solo en Inter), el cirílico y el cirílico extendido. Una pieza incrusta solo los trozos que sus textos necesitan: un texto en español lleva los dos primeros de cada cara, no la fuente entera, y el griego o el cirílico solo pesan si el título los usa. Por eso un SVG ocupa unos 20–60 KB y no más de 100.
 
-Lo que ninguna de las dos fuentes tiene (chino, japonés, árabe, hebreo, devanagari…) sale con la fuente de reserva del visor, y el generador avisa por libro qué letras faltan (`MedidaFuente::noCubiertas()`).
+Lo que ninguna de las dos fuentes tiene (chino, japonés, coreano, hebreo, árabe, devanagari…) sale con la fuente de reserva del visor, y el generador avisa por libro qué letras faltan (`MedidaFuente::noCubiertas()`). Para algunos de esos alfabetos hay una salida: ver «Alfabetos sin fuente».
 
 ### Texto a trazos (`--trazos`)
 
@@ -253,7 +257,21 @@ Algunos programas ignoran las fuentes incrustadas en un SVG: CairoSVG, por ejemp
 php bin/generar.php ejemplos/platon-apologia.json --trazos
 ```
 
-Cada letra es un trazado definido una sola vez en `<defs>` (con `fuentes/trazos/*.json`, generados por `herramientas/preparar-fuentes.py`) y colocado con `<use>`. Se ve igual que con la fuente en Chromium y en CairoSVG, y una imprenta que pide el texto convertido a trazos lo recibe ya hecho. A cambio, el texto no se puede seleccionar ni buscar (la descripción accesible de cada SVG sigue teniéndolo) y no aplica kerning, igual que la medida del texto. Sirve para los mismos alfabetos que las fuentes.
+Cada letra es un trazado definido una sola vez en `<defs>` (con `fuentes/trazos/*.json.gz`, generados por `herramientas/preparar-fuentes.py`) y colocado con `<use>`. Se ve igual que con la fuente en Chromium y en CairoSVG, y una imprenta que pide el texto convertido a trazos lo recibe ya hecho. A cambio, el texto no se puede seleccionar ni buscar (la descripción accesible de cada SVG sigue teniéndolo) y no aplica kerning, igual que la medida del texto. Sirve para los mismos alfabetos que las fuentes.
+
+### Alfabetos sin fuente
+
+Meter en el repositorio una fuente de chino o de japonés pesaría decenas de megas. En su lugar, el proyecto saca los contornos de **una fuente que ya tengas** (por ejemplo Noto Sans CJK, de licencia libre), solo de las letras que tus libros usan:
+
+```bash
+pip install fonttools brotli
+python3 herramientas/glifos-extra.py NotoSansTC-Regular.otf fuentes/extra/chino.json --lista libros.csv
+php bin/generar.php --lista=libros.csv --trazos
+```
+
+`--lista` toma del CSV (o del JSON) las letras que las fuentes del proyecto no tienen; también vale `--texto "道德經"`. Con esos contornos el generador dibuja las letras (solo con `--trazos`: una fuente incrustada no se puede componer con ellas) y **mide el texto con su ancho real**, así que un título en chino no se sale de la portada. Los `.json` van en `fuentes/extra/` o en otra carpeta que pases con `--extra=carpeta` (útil si la licencia de tu fuente no permite redistribuir sus contornos). Sin ellos el generador avisa de las letras y las deja en blanco.
+
+Sirve para los alfabetos que se escriben letra a letra y de izquierda a derecha (chino, japonés, coreano). **No** sirve para los que cambian de forma según las letras vecinas (árabe, devanagari) ni para los de derecha a izquierda (hebreo, árabe): el generador pone las letras en el orden en que están escritas en el texto.
 
 ### El ancho del texto
 
@@ -300,7 +318,7 @@ phpstan analyse --no-progress     # análisis estático, nivel máximo (phpstan.
 
 Las pruebas de geometría comprueban, con textos largos y cortos, en las tres plantillas, con las 16 tradiciones y los 27 motivos, que ningún texto se salga de su panel, que no se pise con otro texto ni con los adornos (rombo, reglas, hueco del código de barras), y que el subtítulo deje bajo el título un espacio proporcional a su tamaño. Miden con la misma tabla de anchos que las plantillas, que no tiene kerning: la vista previa en un navegador es la prueba final.
 
-Con el repositorio completo, otra prueba comprueba que `datos/categorias.json` siga igual que las categorías de `marcalibros-plataforma-pos-brand-identity/catalog/manifest.json` (si allí cambian, hay que actualizar el archivo a mano; el workflow de este proyecto no corre al cambiar esa carpeta, así que se nota la próxima vez que se corren las pruebas). Otra guarda una huella de cada dibujo (`pruebas/dibujos.json`: cada adorno, cada motivo y cada plantilla con cada tradición) y falla si alguno cambia sin que lo hayas querido. Si lo cambiaste a propósito, `php pruebas/ejecutar.php --actualizar-dibujos` regenera el archivo y el diff muestra qué dibujos cambiaron. Las huellas dependen de la aritmética de decimales de PHP: están hechas con PHP 8.3, el de la CI.
+Con el repositorio completo, otra prueba comprueba que `datos/categorias.json` siga igual que las categorías de `marcalibros-plataforma-pos-brand-identity/catalog/manifest.json` (si allí cambian, hay que actualizar el archivo a mano; el workflow de este proyecto no corre al cambiar esa carpeta, así que se nota la próxima vez que se corren las pruebas). Otra guarda una huella de cada dibujo (`pruebas/dibujos.json`: cada adorno, cada motivo y cada plantilla con cada tradición) y falla si alguno cambia sin que lo hayas querido. Si lo cambiaste a propósito, `php pruebas/ejecutar.php --actualizar-dibujos` regenera el archivo y el diff muestra qué dibujos cambiaron. Las huellas se calculan con los números redondeados a dos decimales (una milésima de más o de menos en una curva, por la aritmética de cada plataforma, no las cambia); aun así, están hechas con PHP 8.3, el de la CI.
 
 Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos/*.json --salida=ejemplos/salida`. El workflow `pruebas-portadas-svg.yml` corre las pruebas, la comprobación de los ejemplos, PHPStan 2.1 y `composer validate` cuando cambia esta carpeta.
 
@@ -311,12 +329,13 @@ bin/generar.php          línea de comandos
 src/Adornos/             un adorno por tradición, el Generico, los 27 Motivo de las categorías y los Trazos que comparten
 src/                     Libro (con Formato y Textos), Lista (CSV), Catalogo, Ficha, Nombres, Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
 fuentes/                 las fuentes en trozos woff2 que se incrustan en los SVG, con sus licencias
-fuentes/trazos/          el contorno de cada letra de esos trozos, para --trazos
+fuentes/trazos/          el contorno de cada letra de esos trozos (comprimido), para --trazos
+fuentes/extra/           los contornos de otras letras, de una fuente tuya (ver «Alfabetos sin fuente»)
 datos/fuentes.json       qué letras trae cada trozo (su unicode-range)
 datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
 datos/categorias.json    las 27 categorías de Marcalibros
 datos/tradiciones.json   las tradiciones culturales
-herramientas/            preparar-fuentes.py, que genera fuentes/, datos/fuentes.json y datos/anchos.json
+herramientas/            preparar-fuentes.py (genera fuentes/, datos/fuentes.json y datos/anchos.json) y glifos-extra.py (contornos de una fuente tuya)
 ejemplos/*.json          libros de ejemplo
 ejemplos/lista.csv       lista de ejemplo, con la ficha armada a partir de los datos
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI

@@ -80,7 +80,7 @@ final class Generador
      *
      * @return list<string> un aviso por texto afectado
      */
-    public static function avisos(Libro $libro): array
+    public static function avisos(Libro $libro, bool $textoATrazos = false): array
     {
         $medida = Plantilla::crear($libro->plantilla)->medidaDe();
         $t = $libro->textos;
@@ -91,9 +91,18 @@ final class Generador
         ];
         $avisos = [];
         foreach ($textos as $nombre => $texto) {
+            if ($textoATrazos) {
+                $sin = $medida->sinContorno($texto);
+                if ($sin !== '') {
+                    $avisos[] = "$nombre lleva letras que ni las fuentes ni las fuentes extra tienen ($sin); no se dibujan. Ver herramientas/glifos-extra.py.";
+                }
+                continue;
+            }
             $faltan = $medida->noCubiertas($texto);
             if ($faltan !== '') {
-                $avisos[] = "$nombre lleva letras que la fuente no tiene ($faltan); se verán con otra fuente.";
+                $conExtra = implode('', array_diff(mb_str_split($faltan), mb_str_split($medida->sinContorno($texto))));
+                $aviso = "$nombre lleva letras que la fuente no tiene ($faltan); se verán con otra fuente.";
+                $avisos[] = $conExtra === '' ? $aviso : "$aviso Con --trazos se dibujan ($conExtra) con las fuentes extra.";
             }
         }
 

@@ -26,6 +26,10 @@ final class Fuentes
     private static array $base64 = [];
     /** @var array<string, array<int, array{int, string}>> */
     private static array $contornos = [];
+    /** Carpeta de las fuentes extra: contornos de letras que las fuentes del proyecto no tienen (ver herramientas/glifos-extra.py). */
+    private static string $carpetaExtra = __DIR__ . '/../fuentes/extra';
+    /** @var array<int, array{int, string}>|null */
+    private static ?array $extras = null;
     /** @var array<string, array<string, array<int, list<array{archivo: string, rangos: list<array{int, int}>, texto: string}>>>>|null */
     private static ?array $indice = null;
 
@@ -72,6 +76,46 @@ final class Fuentes
     }
 
     /**
+     * Usa otra carpeta de fuentes extra (por defecto `fuentes/extra/`). Cada `.json` de la carpeta es un
+     * `{"código": [avance, "trazado"]}` como los de `fuentes/trazos/`. Sirven para letras que las fuentes del
+     * proyecto no tienen: solo se dibujan con el texto a trazos, y con ellas se mide el texto.
+     */
+    public static function usarExtras(string $carpeta): void
+    {
+        self::$carpetaExtra = $carpeta;
+        self::$extras = null;
+        Anchos::reiniciar();
+    }
+
+    /**
+     * Las letras de las fuentes extra, por código: su avance y su trazado.
+     *
+     * @return array<int, array{int, string}>
+     */
+    public static function extras(): array
+    {
+        if (self::$extras !== null) {
+            return self::$extras;
+        }
+        $extras = [];
+        $archivos = glob(self::$carpetaExtra . '/*.json') ?: [];
+        sort($archivos);
+        foreach ($archivos as $archivo) {
+            $datos = json_decode((string) file_get_contents($archivo), true, 4);
+            if (!is_array($datos)) {
+                throw new \RuntimeException("$archivo no es un JSON de letras. Se genera con herramientas/glifos-extra.py.");
+            }
+            foreach ($datos as $codigo => $letra) {
+                if (is_array($letra) && is_int($letra[0] ?? null) && is_string($letra[1] ?? null)) {
+                    $extras[(int) $codigo] ??= [$letra[0], $letra[1]];
+                }
+            }
+        }
+
+        return self::$extras = $extras;
+    }
+
+    /**
      * El contorno de una letra, para escribir el texto a trazos en lugar de con la fuente: su avance y su
      * trazado SVG, en milésimas de em y con la línea base en y = 0 (el trazado es '' para un espacio). Null si
      * la cara no tiene esa letra.
@@ -87,8 +131,9 @@ final class Fuentes
             }
             $archivo = $trozo['archivo'];
             if (!isset(self::$contornos[$archivo])) {
-                $ruta = __DIR__ . '/../fuentes/trazos/' . preg_replace('/\.woff2$/', '.json', $archivo);
-                $contenido = file_get_contents($ruta);
+                $ruta = __DIR__ . '/../fuentes/trazos/' . preg_replace('/\.woff2$/', '.json.gz', $archivo);
+                $comprimido = file_get_contents($ruta);
+                $contenido = $comprimido === false ? false : gzdecode($comprimido);
                 $datos = $contenido === false ? null : json_decode($contenido, true, 4);
                 if (!is_array($datos)) {
                     throw new \RuntimeException("No se pudo leer $ruta. Se genera con herramientas/preparar-fuentes.py.");
@@ -102,10 +147,10 @@ final class Fuentes
                 self::$contornos[$archivo] = $letras;
             }
 
-            return self::$contornos[$archivo][$codigo] ?? null;
+            return self::$contornos[$archivo][$codigo] ?? self::extras()[$codigo] ?? null;
         }
 
-        return null;
+        return self::extras()[$codigo] ?? null;
     }
 
     /**

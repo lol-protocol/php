@@ -47,6 +47,12 @@ abstract class Plantilla
     protected const CONTRATAPA_FRISO_Y = 17.0;
     protected const CONTRATAPA_FRISO_ANCHO = 36.0;
     protected const CONTRATAPA_FRISO_ALTO = 5.0;
+    /** Contratapa corta: marca de agua con el emblema de la tradición (radio, altura de su centro como fracción del alto, opacidad y grosor de línea). */
+    protected const CONTRATAPA_TEXTO_SEPARACION = 8.0;
+    protected const CONTRATAPA_MARCA_RADIO = 24.0;
+    protected const CONTRATAPA_MARCA_Y = 0.64;
+    protected const CONTRATAPA_MARCA_OPACIDAD = 0.3;
+    protected const CONTRATAPA_MARCA_TRAZO = 0.25;
     /** Contratapa: motivo de la categoría, abajo a la izquierda sobre el pie (radio y distancia de su centro al borde inferior). */
     protected const CONTRATAPA_MOTIVO_RADIO = 6.5;
     protected const CONTRATAPA_MOTIVO_Y = 30.0;
@@ -281,9 +287,18 @@ abstract class Plantilla
             $y += $gastado;
             $alto -= $gastado;
         }
+        $fin = $y;
         if ($libro->textos->contratapa !== '') {
             $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $alto, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
             $svg .= $this->parrafo($texto['lineas'], $x, $y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
+            $fin = $y + count($texto['lineas']) * $texto['tamano'] * self::INTERLINEADO;
+        }
+
+        // Una contratapa con poco texto queda vacía: el emblema de la tradición, muy tenue, llena el hueco. Solo
+        // se pone si cabe sin tocar el texto.
+        $centro = $panel->y + $panel->alto * self::CONTRATAPA_MARCA_Y;
+        if ($libro->tradicion !== null && $centro - self::CONTRATAPA_MARCA_RADIO > $fin + self::CONTRATAPA_TEXTO_SEPARACION) {
+            $svg .= Svg::elemento('g', ['opacity' => self::CONTRATAPA_MARCA_OPACIDAD], $this->adorno($libro)->emblema($panel->x + $panel->ancho / 2, $centro, self::CONTRATAPA_MARCA_RADIO, $colores['acento'], self::CONTRATAPA_MARCA_TRAZO));
         }
 
         if ($libro->categoria !== null) {

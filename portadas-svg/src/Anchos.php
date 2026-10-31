@@ -21,6 +21,12 @@ final class Anchos
         return self::$caras["$familia/$estilo/$peso"] ??= self::cargar($familia, $estilo, $peso);
     }
 
+    /** Olvida lo leído: hace falta al cambiar de fuentes extra (ver Fuentes::usarExtras). */
+    public static function reiniciar(): void
+    {
+        self::$caras = [];
+    }
+
     private static function cargar(string $familia, string $estilo, int $peso): MedidaFuente
     {
         $contenido = file_get_contents(self::RUTA);
@@ -45,6 +51,11 @@ final class Anchos
             }
         }
 
-        return new MedidaFuente($anchos, $cara['promedio'], $unidades);
+        $extras = [];
+        foreach (Fuentes::extras() as $codigo => [$avance]) {
+            $extras[$codigo] = $avance;
+        }
+
+        return new MedidaFuente($anchos, $cara['promedio'], $unidades, $extras);
     }
 }

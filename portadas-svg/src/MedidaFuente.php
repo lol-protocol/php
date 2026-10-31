@@ -10,12 +10,16 @@ namespace PortadasSvg;
  */
 final class MedidaFuente implements Medida
 {
-    /** @param array<int, int> $anchos código Unicode => ancho en milésimas de em */
+    /**
+     * @param array<int, int> $anchos código Unicode => ancho en milésimas de em
+     * @param array<int, int> $extras lo mismo, para las letras que la fuente no tiene pero sí las fuentes extra (ver Fuentes::usarExtras)
+     */
     public function __construct(
         private readonly array $anchos,
-        /** Ancho que se da a una letra que la fuente no tiene: la media de las minúsculas. */
+        /** Ancho que se da a una letra que ni la fuente ni las extra tienen: la media de las minúsculas. */
         private readonly int $promedio,
         private readonly int $unidades,
+        private readonly array $extras = [],
     ) {
     }
 
@@ -27,10 +31,19 @@ final class MedidaFuente implements Medida
             if ($codigo < 0x20) {
                 continue;
             }
-            $suma += $this->anchos[$codigo] ?? $this->promedio;
+            $suma += $this->anchos[$codigo] ?? $this->extras[$codigo] ?? $this->promedio;
         }
 
         return $suma / $this->unidades;
+    }
+
+    /**
+     * Las letras de `texto` que ni las fuentes extra tienen: con `--trazos` no se pueden dibujar. Las que sí
+     * tiene alguna fuente extra (y esta no) se dibujan solo con `--trazos`.
+     */
+    public function sinContorno(string $texto): string
+    {
+        return implode('', array_filter(mb_str_split($this->noCubiertas($texto)), fn (string $letra): bool => !isset($this->extras[mb_ord($letra)])));
     }
 
     /** Las letras de `texto` que la fuente no tiene, sin repetir y en el orden en que salen. */
