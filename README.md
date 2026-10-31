@@ -8,9 +8,11 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 > qué cabos sueltos quedan.
 
 Los demás documentos de la raíz: [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md) (el borrador de los
-términos de uso, para revisar con un abogado), [`RECLAMOS.md`](RECLAMOS.md) (qué pasa, paso a
+términos de uso, que ningún abogado ha revisado), [`RECLAMOS.md`](RECLAMOS.md) (qué pasa, paso a
 paso, cuando alguien reclama), [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md) (lo que
-el equipo no puede decidir solo), [`CONTRIBUTING.md`](CONTRIBUTING.md) (cómo abrir un PR a mano)
+el equipo no puede decidir solo), [`CUMPLIMIENTO-LEY-21719.md`](CUMPLIMIENTO-LEY-21719.md) (qué
+hace el sitio frente a la ley chilena de datos y qué falta antes del 1 de diciembre de 2026),
+[`CONTRIBUTING.md`](CONTRIBUTING.md) (cómo abrir un PR a mano)
 y [`SECURITY.md`](SECURITY.md) (cómo avisar de una fuga de datos sin publicarla).
 
 | Proyecto | Qué es |
