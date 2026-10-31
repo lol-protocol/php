@@ -5,6 +5,17 @@ carries the details. Dates are those of the merge.
 
 ## Unreleased
 
+- Fixed: picking two languages quickly could leave the page in the first one when its file arrived
+  last; `loadLanguage()` now ignores a stale answer.
+- Fixed: `getStats().totalTypes` was always 1, because the catalogs have no type column; the type now
+  follows from the category, as in `import_database.php` (a test compares both).
+- Fixed: three names mean two sizes in two countries (Half Letter, Index Card 3x5, Index Card 4x6),
+  and the size lists offered one of them at random. `formatChoices()` lists each size, with the
+  country, and `FormatConverter.compare()` / `closestTo()` work on rows.
+- i18n: plural forms (`translateCount()`, `key_one`… next to each key; 15 languages add forms),
+  numbers and units in the language of the page, country names from `Intl.DisplayNames`, searching
+  by the translated words, and the converter's arrow reversed in right-to-left pages.
+
 - Fixed: with browser storage blocked (some private modes, sandboxed frames, blocked cookies) the demo
   showed nothing, because `LocalizationManager` read `localStorage` without guarding it; and a
   language switch was undone when the choice couldn't be saved. `LocalizationManager.savedLanguage()`
