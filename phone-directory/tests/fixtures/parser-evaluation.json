@@ -48,9 +48,7 @@
             "id": "en-calle-de-respaldo-con-tilde",
             "idioma": "en",
             "entrada": "OCONNOR, Sean\n14 Ó Briain Close\n555-321-7654",
-            "esperado": [{"tipo": "natural", "nombre": "OCONNOR, Sean", "calle": "14 Ó Briain Close", "telefono": "555-321-7654"}],
-            "falla_conocida": "La calle de respaldo solo acepta letras sin tilde: con «Ó» no reconoce la calle y la entrada se pierde.",
-            "categoria": "calle-de-respaldo"
+            "esperado": [{"tipo": "natural", "nombre": "OCONNOR, Sean", "calle": "14 Ó Briain Close", "telefono": "555-321-7654"}]
         },
         {
             "id": "en-empresa",
@@ -92,7 +90,7 @@
             "idioma": "en",
             "entrada": "TAYLOR, Jim\nApt 4 Building 7\n555-123-4567",
             "esperado": [{"tipo": "natural", "nombre": "TAYLOR, Jim", "calle": "Apt 4 Building 7", "telefono": "555-123-4567"}],
-            "falla_conocida": "La calle no empieza con número ni tiene palabra de calle. Hoy la calle de respaldo toma «Apt» como el nombre de un registro inventado y la entrada real se pierde.",
+            "falla_conocida": "La calle no empieza con número ni tiene palabra de calle, así que no se reconoce y la entrada queda como error de parsing (antes, además, salía un registro inventado con «Apt» de nombre).",
             "categoria": "calle-de-respaldo"
         },
         {
@@ -123,9 +121,7 @@
             "id": "es-empresa-con-numero-en-el-nombre",
             "idioma": "es",
             "entrada": "Restaurante 3 Hermanos\nCalle Larga 5\n555-123-4567",
-            "esperado": [{"tipo": "juridical", "nombre": "Restaurante 3 Hermanos", "calle": "Calle Larga 5", "telefono": "555-123-4567"}],
-            "falla_conocida": "La calle de respaldo toma «3 Hermanos», en medio del nombre, por una calle: sale una empresa «Restaurante» en «3 Hermanos» y la entrada real se pierde.",
-            "categoria": "calle-de-respaldo"
+            "esperado": [{"tipo": "juridical", "nombre": "Restaurante 3 Hermanos", "calle": "Calle Larga 5", "telefono": "555-123-4567"}]
         },
         {
             "id": "es-calle-con-numero-al-final-sin-palabra-de-calle",
@@ -177,9 +173,7 @@
             "id": "fr-calle-de-respaldo-con-guion-y-tilde",
             "idioma": "fr",
             "entrada": "LEFÈVRE, Hélène\n8 Clos Saint-Éloi",
-            "esperado": [{"tipo": "natural", "nombre": "LEFÈVRE, Hélène", "calle": "8 Clos Saint-Éloi", "telefono": null}],
-            "falla_conocida": "La calle de respaldo corta en el primer carácter que no es una letra sin tilde: se guarda «8 Clos Saint».",
-            "categoria": "calle-de-respaldo"
+            "esperado": [{"tipo": "natural", "nombre": "LEFÈVRE, Hélène", "calle": "8 Clos Saint-Éloi", "telefono": null}]
         },
         {
             "id": "fr-telefono-local",

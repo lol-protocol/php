@@ -231,8 +231,10 @@ class MultiLanguagePhoneDirectoryParser:
         if re.fullmatch(r'[\d\s().+-]+', line):
             return None
 
-        match = re.search(r'\d+\s+[\w\s]+', line)
-        return match.group() if match else None
+        # Same rule as the PHP StreetFallback: the whole line is a house number followed only by words.
+        word = r"[^\W\d_](?:[^\W\d_]|['’.\-])*"
+        trimmed = line.strip()
+        return trimmed if re.fullmatch(rf"\d{{1,5}}[A-Za-z]?\s+{word}(?:\s+{word})*", trimmed) else None
 
     def _process_buffer(self, lines: List[str], start_line: int, language: str):
         """Process a buffer of lines into an entry."""
