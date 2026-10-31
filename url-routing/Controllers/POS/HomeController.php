@@ -14,11 +14,17 @@ use App\Repositories\POS\ProductoRepository;
  */
 class HomeController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function index(array $params = []): string
     {
         return $this->busquedaDeFormulario() ?? view('pos/home/index');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function buscar(array $params = []): string
     {
         // Orders have a digit width too, but they are private: never listed.

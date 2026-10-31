@@ -14,12 +14,21 @@ class ArchivoMatchStrategy implements MatchStrategy
 {
     private const MAX_SEGMENTOS = 3;
 
+    /**
+     * @param list<string> $segments
+     * @param array<string, mixed> $config
+     */
     public function matches(array $segments, array $config): bool
     {
         return isset($config['archivos'][$segments[0] ?? ''])
             && str_contains((string)end($segments), '.');
     }
 
+    /**
+     * @param list<string> $segments
+     * @param array<string, mixed> $config
+     * @return array{controller: string, method: string, params: array<string, mixed>}|null
+     */
     public function resolve(array $segments, array $config): ?array
     {
         $entry = $config['archivos'][$segments[0]];

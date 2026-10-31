@@ -73,6 +73,9 @@ HealthCheck::handleReady($container->get('db'), Migrator::forSite($container->ge
 $response = $locator->getRouter()->dispatch();
 echo $response;
 
+/**
+ * @param array<string, mixed> $data
+ */
 function view(string $name, array $data = []): string
 {
     // Prevent path traversal attacks
@@ -119,11 +122,17 @@ function accion(string $tipo, int|string $id, int|string $codigo): string
     return ServiceLocator::getInstance()->getUrlHelper()->accion($tipo, $id, $codigo);
 }
 
+/**
+ * @param list<string> $codes
+ */
 function enlaceLugar(array $codes): string
 {
     return ServiceLocator::getInstance()->getUrlHelper()->enlaceLugar($codes);
 }
 
+/**
+ * @param list<string> $codes
+ */
 function accionLugar(array $codes, int|string $codigo): string
 {
     return ServiceLocator::getInstance()->getUrlHelper()->accionLugar($codes, $codigo);
@@ -150,11 +159,17 @@ function esc(mixed $text): string
     return ServiceLocator::getInstance()->getUrlHelper()->esc($text);
 }
 
+/**
+ * @param array<string, mixed> $context
+ */
 function log_info(string $message, array $context = []): void
 {
     ServiceLocator::getInstance()->getLogger()->info($message, $context);
 }
 
+/**
+ * @param array<string, mixed> $context
+ */
 function log_error(string $message, array $context = []): void
 {
     ServiceLocator::getInstance()->getLogger()->error($message, $context);

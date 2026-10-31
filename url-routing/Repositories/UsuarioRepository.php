@@ -7,12 +7,19 @@ namespace App\Repositories;
 /** Both sites have a usuarios table with the same shape. */
 final class UsuarioRepository extends Repository
 {
+    /**
+     * @return array<string, mixed>|null
+     */
     public function find(int $id): ?array
     {
         return $this->db->fetchOne('SELECT id, email, nombre, creado_en FROM usuarios WHERE id = ?', [$id]);
     }
 
-    /** POS only. @return list<array> */
+    /**
+     * POS only.
+     *
+     * @return list<array<string, mixed>>
+     */
     public function deseos(int $usuarioId): array
     {
         return $this->db->fetchAll(
@@ -24,7 +31,11 @@ final class UsuarioRepository extends Repository
         );
     }
 
-    /** POS only. @return list<array> the default address first */
+    /**
+     * POS only.
+     *
+     * @return list<array<string, mixed>> the default address first
+     */
     public function direcciones(int $usuarioId): array
     {
         $rows = $this->db->fetchAll(

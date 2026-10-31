@@ -10,6 +10,9 @@ use App\Repositories\POS\CatalogoRepository;
 /** Coleccion (collection / campaign) — 7-digit id. */
 class ColeccionController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = new CatalogoRepository($this->db());

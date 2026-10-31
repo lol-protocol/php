@@ -21,6 +21,9 @@ class ArchivosController extends Base
         return 'SITE_URL_GENEALOGY';
     }
 
+    /**
+     * @return list<string>
+     */
     protected function excluidas(): array
     {
         return ['/0/', '/b/'];

@@ -8,8 +8,11 @@ class APM
 {
     private static ?APM $instance = null;
     private bool $enabled = false;
+    /** @var array<string, mixed> */
     private array $config = [];
+    /** @var array<int|string, array<string, mixed>> */
     private array $transactions = [];
+    /** @var list<array<string, mixed>> */
     private array $errors = [];
 
     private function __construct()
@@ -70,6 +73,9 @@ class APM
         $this->transactions[$transaction]['metadata'][$key] = $value;
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function recordError(\Throwable $exception, array $context = []): void
     {
         if (!$this->enabled) {
@@ -92,6 +98,9 @@ class APM
         ]);
     }
 
+    /**
+     * @param array<string, string> $tags
+     */
     public function recordCustomMetric(string $name, float $value, array $tags = []): void
     {
         if (!$this->enabled) {
@@ -130,6 +139,9 @@ class APM
         $this->errors = [];
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     private function send(array $payload): void
     {
         if (empty($this->config['endpoint'])) {

@@ -14,6 +14,7 @@ class AssetOptimizer
     private static ?AssetOptimizer $instance = null;
     private bool $minifyEnabled;
     private bool $lazyLoadEnabled;
+    /** @var array<string, string> */
     private array $assetCache = [];
 
     private function __construct()
@@ -74,6 +75,9 @@ class AssetOptimizer
         return $js;
     }
 
+    /**
+     * @param array<string, string> $attributes
+     */
     public function generateImageLazyLoad(string $src, string $alt = '', array $attributes = []): string
     {
         if (!$this->lazyLoadEnabled) {
@@ -93,6 +97,9 @@ class AssetOptimizer
         );
     }
 
+    /**
+     * @param array<string, string> $attributes
+     */
     public function generateImage(string $src, string $alt = '', array $attributes = []): string
     {
         $attrs = '';
@@ -108,6 +115,9 @@ class AssetOptimizer
         );
     }
 
+    /**
+     * @param array<string, string> $attributes
+     */
     public function generateScriptTag(string $src, array $attributes = []): string
     {
         $attrs = '';
@@ -122,6 +132,9 @@ class AssetOptimizer
         );
     }
 
+    /**
+     * @param array<string, string> $attributes
+     */
     public function generateLinkTag(string $href, string $rel = 'stylesheet', array $attributes = []): string
     {
         $attrs = '';

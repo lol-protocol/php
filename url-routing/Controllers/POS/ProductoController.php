@@ -10,6 +10,9 @@ use App\Repositories\POS\ProductoRepository;
 /** Producto — 8-digit id. */
 class ProductoController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = new ProductoRepository($this->db());
@@ -17,6 +20,9 @@ class ProductoController extends BaseController
             fn(int $id) => ['variantes' => $repo->variantes($id), 'etiquetas' => $repo->etiquetas($id)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function variantes(array $params = []): string
     {
         $repo = new ProductoRepository($this->db());
@@ -24,6 +30,9 @@ class ProductoController extends BaseController
             fn(int $id) => ['variantes' => $repo->variantes($id)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function atributos(array $params = []): string
     {
         $repo = new ProductoRepository($this->db());

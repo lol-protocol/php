@@ -128,9 +128,10 @@ class BaseController
      * $key, plus whatever $extra returns for that id. When the id is missing
      * but $movida gives the URL it moved to, that's a 301 there instead.
      *
-     * @param callable(int): ?array $find
-     * @param (callable(int, array): array)|null $extra
+     * @param callable(int): (array<string, mixed>|null) $find
+     * @param (callable(int, array<string, mixed>): array<string, mixed>)|null $extra
      * @param (callable(int): ?string)|null $movida
+     * @param array<string, mixed> $params
      */
     protected function renderFound(
         array $params,
@@ -180,6 +181,7 @@ class BaseController
      * text otherwise; three are always text and page (see busqueda()).
      *
      * @return array{int, string, int}|null
+     * @param list<string> $ruta
      */
     protected function busquedaPedida(array $ruta): ?array
     {
@@ -243,7 +245,7 @@ class BaseController
      * It returns null for a type that has no listing, which is a 404.
      *
      * @param array<string, mixed> $params the route's parameters ('ruta': the segments after "b")
-     * @param callable(string, string, int, int): ?array $buscar [tipo, texto, limite, desplazamiento] => rows
+     * @param callable(string, string, int, int): (list<array<string, mixed>>|null) $buscar [tipo, texto, limite, desplazamiento] => rows
      * @param list<string> $noListables
      */
     protected function listadoDeBusqueda(array $params, string $vista, callable $buscar, array $noListables = []): string

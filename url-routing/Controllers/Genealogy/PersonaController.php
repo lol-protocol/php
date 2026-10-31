@@ -28,9 +28,9 @@ class PersonaController extends BaseController
      * What a persona page lists about the persona: $lista($id) normally,
      * $vacio when the persona is hidden.
      *
-     * @param callable(int): array $lista
-     * @param array<string, list<array>> $vacio
-     * @return callable(int, array): array
+     * @param callable(int): array<string, list<array<string, mixed>>> $lista
+     * @param array<string, list<array<string, mixed>>> $vacio
+     * @return callable(int, array<string, mixed>): array<string, list<array<string, mixed>>>
      */
     private static function salvoOculta(callable $lista, array $vacio): callable
     {
@@ -56,6 +56,9 @@ class PersonaController extends BaseController
         };
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = $this->repo();
@@ -66,6 +69,9 @@ class PersonaController extends BaseController
             ), self::movida($repo, null));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function ascendencia(array $params = []): string
     {
         $repo = $this->repo();
@@ -74,6 +80,9 @@ class PersonaController extends BaseController
             self::movida($repo, 1));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function descendencia(array $params = []): string
     {
         $repo = $this->repo();
@@ -82,6 +91,9 @@ class PersonaController extends BaseController
             self::movida($repo, 2));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function vinculos(array $params = []): string
     {
         $repo = $this->repo();
@@ -90,6 +102,9 @@ class PersonaController extends BaseController
             self::movida($repo, 3));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function cronologia(array $params = []): string
     {
         $repo = $this->repo();
@@ -103,6 +118,8 @@ class PersonaController extends BaseController
      * what the dates say, "deducir" goes back to the dates. Anyone else is asked for the
      * credentials (401), as on a collection's edit page: the persona is public, so asking
      * confirms nothing. The form posts to this same URL.
+     *
+     * @param array<string, mixed> $params
      */
     public function viva(array $params = []): string
     {

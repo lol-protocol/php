@@ -10,6 +10,9 @@ use App\Repositories\Genealogy\SucesoRepository;
 /** Suceso (event) — 9-digit id. */
 class SucesoController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = new SucesoRepository($this->db(), $this->privacidad());

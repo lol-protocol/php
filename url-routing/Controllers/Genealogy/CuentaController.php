@@ -19,16 +19,25 @@ use App\Repositories\UsuarioRepository;
  */
 class CuentaController extends BaseController
 {
+    /**
+     * @return array<string, mixed>|null
+     */
     private function usuario(): ?array
     {
         return (new UsuarioRepository($this->db()))->find(self::DEFAULT_USER_ID);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function index(array $params = []): string
     {
         return $this->pedirPropietario(fn() => $this->conUsuario('genealogy/cuenta/index'));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function colecciones(array $params = []): string
     {
         return $this->pedirPropietario(fn() => view('genealogy/cuenta/colecciones', [
@@ -36,6 +45,9 @@ class CuentaController extends BaseController
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function aportes(array $params = []): string
     {
         return $this->pedirPropietario(fn() => view('genealogy/cuenta/aportes', [
@@ -48,6 +60,8 @@ class CuentaController extends BaseController
      * /0/3/ — the pedidos de retiro and what was decided about each one. The owner decides here:
      * hide the page while reviewing it, withdraw it, or reject the pedido (the page shows again
      * unless another pedido keeps it hidden). The form posts to this same URL.
+     *
+     * @param array<string, mixed> $params
      */
     public function retiros(array $params = []): string
     {

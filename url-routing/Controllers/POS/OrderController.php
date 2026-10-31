@@ -16,6 +16,9 @@ use App\Support\AccessPolicy;
  */
 class OrderController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     private function render(array $params, string $view, callable $extra): string
     {
         $mostrar = function () use ($params, $view, $extra): string {
@@ -36,6 +39,9 @@ class OrderController extends BaseController
         return $this->soloPropietario($mostrar);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         return $this->render($params, 'pos/order/show', function (int $id): array {
@@ -44,18 +50,27 @@ class OrderController extends BaseController
         });
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function invoice(array $params = []): string
     {
         return $this->render($params, 'pos/order/invoice',
             fn(int $id) => ['items' => (new OrdenRepository($this->db()))->items($id)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function track(array $params = []): string
     {
         return $this->render($params, 'pos/order/track',
             fn(int $id) => ['eventos' => (new OrdenRepository($this->db()))->eventos($id)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function devolucion(array $params = []): string
     {
         return $this->render($params, 'pos/order/devolucion',

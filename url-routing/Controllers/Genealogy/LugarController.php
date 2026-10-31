@@ -14,7 +14,10 @@ use App\Repositories\Genealogy\LugarRepository;
  */
 class LugarController extends BaseController
 {
-    /** @return array{0: ?string, 1: ?string} [ruta, error response] */
+    /**
+     * @return array{0: ?string, 1: ?string} [ruta, error response]
+     * @param array<string, mixed> $params
+     */
     private function ruta(array $params): array
     {
         $codes = $params['codes'] ?? null;
@@ -29,6 +32,9 @@ class LugarController extends BaseController
         return [LugarRepository::ruta($codes), null];
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     private function render(array $params, string $view, callable $extra): string
     {
         [$ruta, $error] = $this->ruta($params);
@@ -45,18 +51,27 @@ class LugarController extends BaseController
         return view($view, ['lugar' => $lugar, 'jerarquia' => $repo->jerarquia($ruta)] + $extra($repo, $ruta));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         return $this->render($params, 'genealogy/lugar/show',
             fn(LugarRepository $repo, string $ruta) => ['hijos' => $repo->hijos($ruta)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function personas(array $params = []): string
     {
         return $this->render($params, 'genealogy/lugar/personas',
             fn(LugarRepository $repo, string $ruta) => ['personas' => $repo->personas($ruta)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function sucesos(array $params = []): string
     {
         return $this->render($params, 'genealogy/lugar/sucesos',
