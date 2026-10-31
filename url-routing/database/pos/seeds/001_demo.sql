@@ -75,9 +75,9 @@ INSERT INTO orden_items (orden_id, sku, producto_id, nombre, cantidad, precio_un
     (8137204719000, 'GOR-AZ', 81372049, 'Gorra de seis paneles — Azul marino', 1, 24900),
     (8137204719001, 'GOR-AZ', 81372049, 'Gorra de seis paneles — Azul marino', 1, 24900);
 
-INSERT INTO orden_eventos (orden_id, ocurrido_en, estado, detalle) VALUES
-    (8137204719000, '2026-09-01 10:15:00', 'pagada', 'Pago confirmado.'),
-    (8137204719000, '2026-09-02 09:00:00', 'enviada', 'Entregado a paquetería, guía MX123456789.');
+INSERT INTO orden_eventos (orden_id, orden, ocurrido_en, estado, detalle) VALUES
+    (8137204719000, 1, '2026-09-01 10:15:00', 'pagada', 'Pago confirmado.'),
+    (8137204719000, 2, '2026-09-02 09:00:00', 'enviada', 'Entregado a paquetería, guía MX123456789.');
 
 INSERT INTO deseos (usuario_id, producto_id) VALUES
     (1, 81372048);

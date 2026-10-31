@@ -29,9 +29,9 @@ url-routing/
 │   └── pos/<tipo>/<acción>.php
 └── Controllers/
     ├── Genealogy/                      # Persona (10), Suceso (9), Registro (8), Coleccion (7),
-    │                                   # Grupo (6), Organizacion (5), Lugar, Home, Cuenta, Archivos
+    │                                   # Grupo (6), Organizacion (5), Lugar, Home, Cuenta, Retiro (r), Archivos
     └── POS/                            # Order (16), Producto (8), Coleccion (7), Etiqueta (6), Atributo (5),
-                                        # Grupo (4), Home, Cuenta, Cart (c), Checkout (p)
+                                        # Grupo (4), Home, Cuenta, Cart (c), Checkout (p), Archivos
 ```
 
 Todos los tipos registrados en `config/routes/*.php` tienen controlador,
@@ -41,8 +41,8 @@ fallan si una ruta apunta a un controlador/método inexistente o si un
 controlador referencia una vista sin archivo, así que agregar un tipo nuevo sin
 completar las piezas rompe CI en vez de dar un 500 en producción.
 
-**Pendiente:** devoluciones y preferencias muestran un aviso de "todavía no
-disponible". El carrito y la compra (`/c/`, `/p/`) funcionan: la compra crea la
+**Pendiente:** devoluciones, preferencias y la edición de colecciones
+(`/{colección}/2/`) muestran un aviso de "todavía no disponible". El carrito y la compra (`/c/`, `/p/`) funcionan: la compra crea la
 orden, pero no cobra en línea (queda pendiente de pago). El proyecto no tiene cuentas de usuario (es un addon de un solo
 operador, no un producto multiusuario): la página de cuenta (`0`) actúa sobre
 una cuenta fija en vez de una sesión, y lo privado (colecciones con
@@ -51,7 +51,7 @@ identifica con `OWNER_TOKEN`. Ver [`ACCESO.md`](./ACCESO.md). Para ponerlo en un
 
 ## 🧠 Principio de diseño
 
-1. **Solo dígitos** → el número de dígitos selecciona el tipo. Más dígitos = mayor cardinalidad esperada de ese catálogo. `persona` es el techo (10 dígitos) en genealogía; `producto` es el techo (8 dígitos) en POS, deliberadamente menor que persona.
+1. **Solo dígitos** → el número de dígitos selecciona el tipo. Más dígitos = mayor cardinalidad esperada de ese catálogo. `persona` es el techo (10 dígitos) en genealogía; `producto` es el techo (8 dígitos) de los ids correlativos en POS, deliberadamente menor que persona; `orden` usa 16 dígitos porque su id es un código aleatorio, no un número que crece.
 2. **Letras** → el largo dice qué es: 2 letras un país, y detrás región y ciudad (1-3 letras) — una jerarquía de códigos, no una secuencia de registros —; 3 letras un idioma (en el subdominio); 1 letra una función del sistema.
 3. **Segmento reservado** → rutas de sistema fuera del esquema numérico: `0` (cuenta) y, en el POS, `c` (carrito) y `p` (pago): letras sueltas que se leen igual en varios idiomas, nunca palabras. Sus pasos son acciones numéricas, por el mismo mecanismo.
 4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `config/routes/*.php`). Un código de acción que no existe en ese arreglo es **404**, nunca un `show` silencioso del recurso base.

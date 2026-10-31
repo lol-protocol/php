@@ -8,8 +8,9 @@ declare(strict_types=1);
  *   php bin/migrate.php genealogy            # apply migrations
  *   php bin/migrate.php pos --seed           # apply + load demo data (dev only)
  *
- * The database comes from DB_DSN_<SITE> / DB_DSN (or .env), exactly as the
- * web app resolves it — see docs/DATABASE.md.
+ * The database comes from DB_DSN_<SITE> (or .env), exactly as the web app
+ * resolves it, or a local SQLite file under var/ when it is not set. There is
+ * deliberately no shared DB_DSN — see docs/DATABASE.md.
  */
 
 use App\Support\Config;
