@@ -88,3 +88,32 @@ def test_sugerencias_solo_con_id_verificado():
                           {"id": "romanticismo-becquer-02", "gutenberg_estado": "sin_verificar", "gutenberg_id": 99},
                           {"id": "realismo-magico-rulfo-01", "gutenberg_estado": "no_disponible", "gutenberg_id": None}]}
     assert modelo.sugerencias_por_gutenberg(falso) == {"1234": ["cat:romanticismo-becquer-01"]}
+
+
+def test_sugerencias_por_metadatos_reconocen_autor_y_obra():
+    config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    libro = {"title": "Rimas", "authors": [{"name": "Bécquer, Gustavo Adolfo", "birth_year": 1836, "death_year": 1870}]}
+    s = modelo.sugerencias_por_metadatos(libro, config)
+    assert s and all(x["diseno"].startswith("cat:romanticismo-becquer-") for x in s)
+    assert len(s) == 10
+    # el título que se parece a una obra del catálogo pone esa pieza primero
+    libro["title"] = "El monte de las ánimas"
+    primero = modelo.sugerencias_por_metadatos(libro, config)[0]
+    assert primero["nivel"] == "obra" and primero["diseno"] == "cat:romanticismo-becquer-02"
+    # los diseños sugeridos existen en el manifest
+    assert all(x["diseno"][4:] in PIEZAS for x in s)
+
+
+def test_sugerencias_por_metadatos_no_confunden_autores():
+    config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    # mismo apellido, otros años: no es Poe ni Dickens
+    assert modelo.sugerencias_por_metadatos({"title": "x", "authors": [{"name": "Poe, Alguien", "birth_year": 1950, "death_year": 2010}]}, config) == []
+    assert modelo.sugerencias_por_metadatos({"title": "x", "authors": [{"name": "Anónimo"}]}, config) == []
+    # Poe, en el orden de Gutendex
+    poe = modelo.sugerencias_por_metadatos({"title": "x", "authors": [{"name": "Poe, Edgar Allan", "birth_year": 1809, "death_year": 1849}]}, config)
+    assert poe and all("-poe-" in x["diseno"] for x in poe)
+    # otra grafía (Virgil / Virgilio) se reconoce por prefijo y años a. C.; un nombre suelto sin años no basta (Homer)
+    homero = modelo.sugerencias_por_metadatos({"title": "The Iliad", "authors": [{"name": "Homer"}]}, config)
+    assert homero == []  # sin años ni nombre completo: un solo nombre no basta
+    virgilio = modelo.sugerencias_por_metadatos({"title": "Aeneid", "authors": [{"name": "Virgil", "birth_year": -70, "death_year": -19}]}, config)
+    assert len(virgilio) == 10 and all("-virgilio-" in x["diseno"] for x in virgilio)  # Virgil ~ Virgilio, y los años a. C. coinciden
