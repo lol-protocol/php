@@ -226,6 +226,17 @@ def test_las_piezas_con_frase_la_llevan_dibujada():
             assert "<use " in svg and "fill-rule" in svg, e["id"]
 
 
+def test_frases_originales_van_sin_firma_y_las_demas_firmadas():
+    import texto
+    manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
+    for e in manifiesto["entradas"]:
+        if e.get("frase"):
+            assert e["frase"]["firmada"] == (e["movimiento"] != "realismo-magico"), e["id"]
+    solo, _ = texto.componer("Lee despacio", "", (16, 440, 184, 860))
+    con, _ = texto.componer("Lee despacio", "Yo", (16, 440, 184, 860))
+    assert len(solo) == 1 and len(con) == 2  # sin autoría no hay segundo bloque
+
+
 def test_archivos_del_catalogo_validos():
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
     for e in manifiesto["entradas"]:

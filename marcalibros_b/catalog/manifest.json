@@ -43,7 +43,8 @@
         "texto": "Hombres necios que acusáis a la mujer sin razón",
         "autor": "Sor Juana Inés de la Cruz",
         "obra": "Hombres necios",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "a34b18da9b43c5f4cb00c805d83278f3d2bb800fe8519737ee472c32b66b4af0",
       "sha256": "7bc097b26fe6e2d99c03822a2656642271375936825afdafb1c33e1d4c2d5388"
@@ -86,7 +87,8 @@
         "texto": "¿Qué es la vida? Un frenesí. ¿Qué es la vida? Una ilusión",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "81dca38762de6a3a02f214f704b240db3592719ab82fb25abb8b3bf431e97451"
     },
@@ -128,7 +130,8 @@
         "texto": "No man is an island, entire of itself",
         "autor": "John Donne",
         "obra": "Devotions upon Emergent Occasions",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "9f87d785446c2030e20a5398f400fb11c4c274f2ce5b9035bd30453d43137326"
     },
@@ -318,7 +321,8 @@
         "texto": "Better to reign in Hell than serve in Heaven",
         "autor": "John Milton",
         "obra": "Paradise Lost",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "baaec5fea4803498bb7df6986e3f983ac01d310acb6adb10d92668a7bde36b96"
     },
@@ -397,7 +401,8 @@
         "texto": "Hombres necios que acusáis a la mujer sin razón",
         "autor": "Sor Juana Inés de la Cruz",
         "obra": "Hombres necios",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "07261d9f556bda4c47f717663fc164b0530bb8e0d4ff002dd09dd3fa8e6f09bf"
     },
@@ -480,7 +485,8 @@
         "texto": "¿Qué es la vida? Un frenesí. ¿Qué es la vida? Una ilusión",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "a4a2f39868caef684fde2cd5ae91dc9c69f6cb1623b95d84e026056b8197ab12"
     },
@@ -522,7 +528,8 @@
         "texto": "Mientras por competir con tu cabello oro bruñido al sol relumbra en vano",
         "autor": "Luis de Góngora",
         "obra": "Mientras por competir con tu cabello",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "aa813c7462ccfa3d5f7f0a6794c7bcd02e84dcbd29e82f51fcf3144ae547a52c"
     },
@@ -601,7 +608,8 @@
         "texto": "Mientras por competir con tu cabello oro bruñido al sol relumbra en vano",
         "autor": "Luis de Góngora",
         "obra": "Mientras por competir con tu cabello",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "f3e671a964c8b54ed42c60abbb8d140986fc0341ebc51b782d9edc0449bb9bb5"
     },
@@ -754,7 +762,8 @@
         "texto": "Los sueños, sueños son",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "96fa3f76bd4b3db1e4680d312b5a108b9d1ba9cea32386ad35f19d48648f5407"
     },
@@ -911,7 +920,8 @@
         "texto": "En un lugar de la Mancha, de cuyo nombre no quiero acordarme",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "296f974d48529323b4c2995a6e2436fd4d5da6ceaae0214433cf2a744c8be877"
     },
@@ -953,7 +963,8 @@
         "texto": "Better to reign in Hell than serve in Heaven",
         "autor": "John Milton",
         "obra": "Paradise Lost",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "fec5241c4de7e269c98026f5ef3d40c79c5899630d6a0add4966420253e219a0"
     },
@@ -1032,7 +1043,8 @@
         "texto": "Better to reign in Hell than serve in Heaven",
         "autor": "John Milton",
         "obra": "Paradise Lost",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "ee47609b8b4c0ff227ad838b87deca67261d4b80e04ce7a64ee96a097136a500"
     },
@@ -1074,7 +1086,8 @@
         "texto": "¿Qué es la vida? Un frenesí. ¿Qué es la vida? Una ilusión",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "7cd2df71025d760c337f467eb0ba88840181f6a562548f94cf95b086538937a7"
     },
@@ -1153,7 +1166,8 @@
         "texto": "Better to reign in Hell than serve in Heaven",
         "autor": "John Milton",
         "obra": "Paradise Lost",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "32b259f58304b79ca4426c8d099700ebd65f44967e54979de12cf503e5a4ccb0"
     },
@@ -1195,7 +1209,8 @@
         "texto": "Mientras por competir con tu cabello oro bruñido al sol relumbra en vano",
         "autor": "Luis de Góngora",
         "obra": "Mientras por competir con tu cabello",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "a9345b15f5d9256774375e93481f86fbb5a55a386aa54cc973da1af8013aa2ab"
     },
@@ -1240,7 +1255,8 @@
         "texto": "Better to reign in Hell than serve in Heaven",
         "autor": "John Milton",
         "obra": "Paradise Lost",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "14ee05f1c091bbf62c1d8eae1a3cf14e457f73f915c6398c34a1273dd5a5dbf4",
       "sha256": "f58b07a177a1fd5596c938eeaab8b853ad34da84868235827853e414b00e9907"
@@ -1357,7 +1373,8 @@
         "texto": "Un soneto me manda hacer Violante",
         "autor": "Lope de Vega",
         "obra": "La niña de plata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "bf21c6e4fdba681dad3cc005f206374e39858e074e72331ef50f54ae16b72024"
     },
@@ -1399,7 +1416,8 @@
         "texto": "La libertad, Sancho, es uno de los más preciosos dones",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "ddc8a523c78687faddb01b6e86afdb3385c925786ae407a07d5de9dc76d500a7"
     },
@@ -1478,7 +1496,8 @@
         "texto": "Lo bueno, si breve, dos veces bueno",
         "autor": "Baltasar Gracián",
         "obra": "Oráculo manual",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "8058fcc7cc5e28605fea3e39f884cee6b4de30bbafdf78cdff41456afdd5ec8e"
     },
@@ -1557,7 +1576,8 @@
         "texto": "Los sueños, sueños son",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "ac4b635f41ff5d5256ec3522e1e3f0afb6a679e23fdc283275710caeb6a31ec1"
     },
@@ -1677,7 +1697,8 @@
         "texto": "Aprended, flores, en mí lo que va de ayer a hoy",
         "autor": "Luis de Góngora",
         "obra": "Aprended, flores",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "b9adeef7aed36a85c7c6e17d25a3e28298c61c51391c718e4668fd085764835d"
     },
@@ -1719,7 +1740,8 @@
         "texto": "La libertad, Sancho, es uno de los más preciosos dones",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "e4f377abe9ca35ddad0b4224122ca9bbd05afbe3ce1f1544f6688947c8f72e1e"
     },
@@ -1835,7 +1857,8 @@
         "texto": "Lo bueno, si breve, dos veces bueno",
         "autor": "Baltasar Gracián",
         "obra": "Oráculo manual",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "0f5e76d793925edf31d852b696abed76b6877912e114afdb486bc021393372f3"
     },
@@ -1914,7 +1937,8 @@
         "texto": "Mientras por competir con tu cabello oro bruñido al sol relumbra en vano",
         "autor": "Luis de Góngora",
         "obra": "Mientras por competir con tu cabello",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "fe60a86fda0b3a9fee9fe32e37bde113a4cabacfebc30e02ff3834376157fe5f"
     },
@@ -1993,7 +2017,8 @@
         "texto": "Better to reign in Hell than serve in Heaven",
         "autor": "John Milton",
         "obra": "Paradise Lost",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "f53d89385935868259a69807e360e9f0b2cb8c7a2d69ff315235ac1564f7ce26"
     },
@@ -2038,7 +2063,8 @@
         "texto": "Mientras por competir con tu cabello oro bruñido al sol relumbra en vano",
         "autor": "Luis de Góngora",
         "obra": "Mientras por competir con tu cabello",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "43bdae94e78698844652d70570427cf9606d13880954ff444c2005bf5a5e4887",
       "sha256": "03732ae554c66071b72bb9e5dd18488b2cfba593efcc7206303d3072b3b7099b"
@@ -2081,7 +2107,8 @@
         "texto": "Cerrar podrá mis ojos la postrera sombra",
         "autor": "Francisco de Quevedo",
         "obra": "Amor constante más allá de la muerte",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "e63ebb7143b606c7995e15b6949b07e3146178c46cf8a0b03a6104c3eacac057"
     },
@@ -2345,7 +2372,8 @@
         "texto": "En un lugar de la Mancha, de cuyo nombre no quiero acordarme",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "83ff130400b6508dc71bc31076d752eebe7cdd9d6ed3d0c79aa6e9aaf4062109"
     },
@@ -2575,7 +2603,8 @@
         "texto": "Un soneto me manda hacer Violante",
         "autor": "Lope de Vega",
         "obra": "La niña de plata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "6553b62be4a3b02d244ab201dfe2cc98b665d304d22b05afba36bde1929cb16c"
     },
@@ -2691,7 +2720,8 @@
         "texto": "Un soneto me manda hacer Violante",
         "autor": "Lope de Vega",
         "obra": "La niña de plata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "b604df61b161a0b761ef94db976ff74aa47b9ce8a5267fdb3e84167e5ceb66ff"
     },
@@ -2733,7 +2763,8 @@
         "texto": "No man is an island, entire of itself",
         "autor": "John Donne",
         "obra": "Devotions upon Emergent Occasions",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "d01e9e23d47a0a4c876a06a3719bc686e9eeba55354462e887e04cff60bc78b6"
     },
@@ -2815,7 +2846,8 @@
         "texto": "Mientras por competir con tu cabello oro bruñido al sol relumbra en vano",
         "autor": "Luis de Góngora",
         "obra": "Mientras por competir con tu cabello",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "23a8e80a1a807dbef119b91845f493cb5f79ea904414f52e954aac9e24e670b0",
       "sha256": "852c014d4861a12b91a6e71e634beee2229854b05f829ba3525de9db76d8e4f6"
@@ -2858,7 +2890,8 @@
         "texto": "En un lugar de la Mancha, de cuyo nombre no quiero acordarme",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "d327377eb1471107ee921bcacb035b5df6098d8eaf3f8e40207fe728909d03e5"
     },
@@ -2900,7 +2933,8 @@
         "texto": "Los sueños, sueños son",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "de3a95c9acf41194cd223d3f1b40a7257d18491b858bc5a23b022118e960558a"
     },
@@ -2979,7 +3013,8 @@
         "texto": "Better to reign in Hell than serve in Heaven",
         "autor": "John Milton",
         "obra": "Paradise Lost",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "618751b79947b4358254233d95bf0f4258bc439ef5f876db714f87e91c4bd747"
     },
@@ -3058,7 +3093,8 @@
         "texto": "Cerrar podrá mis ojos la postrera sombra",
         "autor": "Francisco de Quevedo",
         "obra": "Amor constante más allá de la muerte",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "e2b23e4a270b64bca9220a3ff4449a917b7a3eb8859771322910daefd3b123d2"
     },
@@ -3100,7 +3136,8 @@
         "texto": "¿Qué es la vida? Un frenesí. ¿Qué es la vida? Una ilusión",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "01c02597813cc9aff46254310609a23f3c8e5b8fb3e8274dafe1d379dd8c21ba"
     },
@@ -3219,7 +3256,8 @@
         "texto": "En un lugar de la Mancha, de cuyo nombre no quiero acordarme",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "ab3c11a0f053f4dcdee267c6440c8e8a09e1e8882b7a8fd8ba5083c8d19221d5",
       "sha256": "767c2f40e539eece0e8a42c1d14f9c77397ea8d4260be620604dff1060667880"
@@ -3299,7 +3337,8 @@
         "texto": "Hombres necios que acusáis a la mujer sin razón",
         "autor": "Sor Juana Inés de la Cruz",
         "obra": "Hombres necios",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "d124a74d3d3babe8f1827b9e8be7e7ed22c6ef5f7637c678d6cbc2a6a6eea6a8"
     },
@@ -3341,7 +3380,8 @@
         "texto": "No man is an island, entire of itself",
         "autor": "John Donne",
         "obra": "Devotions upon Emergent Occasions",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "53ef74c0c0f5c7db3d8d21f9e9ba7b96d8dd5679b6e0f90c12b8c3a84503eb75"
     },
@@ -3383,7 +3423,8 @@
         "texto": "Cerrar podrá mis ojos la postrera sombra",
         "autor": "Francisco de Quevedo",
         "obra": "Amor constante más allá de la muerte",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "4c341838b2890db74d57771f94f6aa40a50776381d7747c6ce93ab321fee87d9"
     },
@@ -3462,7 +3503,8 @@
         "texto": "La libertad, Sancho, es uno de los más preciosos dones",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "85018de31d4394112a3c3d3460c54b0f1316f0f619b3f415a82ee85f997c7015"
     },
@@ -3541,7 +3583,8 @@
         "texto": "Los sueños, sueños son",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "0f6d6a6e1465325f156ac9a6e2b4495b508480c564a922e754ad1a7033cc37f2"
     },
@@ -3583,7 +3626,8 @@
         "texto": "Aprended, flores, en mí lo que va de ayer a hoy",
         "autor": "Luis de Góngora",
         "obra": "Aprended, flores",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "0f5118809e070d932e734496e93cd67bf533597335cc80cc9c0bc436c4557622"
     },
@@ -3666,7 +3710,8 @@
         "texto": "¿Qué es la vida? Un frenesí. ¿Qué es la vida? Una ilusión",
         "autor": "Calderón de la Barca",
         "obra": "La vida es sueño",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "45dea03c9ac54096f0eaabfc962b7388d50b892856166fbd232ef2b72d8207b0"
     },
@@ -3708,7 +3753,8 @@
         "texto": "Cerrar podrá mis ojos la postrera sombra",
         "autor": "Francisco de Quevedo",
         "obra": "Amor constante más allá de la muerte",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "cb9372744cb13aac117bdfa13bab5ad32fa2f9d766c35b911aba091ed6d77340"
     },
@@ -3824,7 +3870,8 @@
         "texto": "La libertad, Sancho, es uno de los más preciosos dones",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "47ec7a4965cb026c3da662240f75aa61626edc40439705ec9491bfd8c8881127"
     },
@@ -3866,7 +3913,8 @@
         "texto": "En un lugar de la Mancha, de cuyo nombre no quiero acordarme",
         "autor": "Miguel de Cervantes",
         "obra": "Don Quijote",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "a505723b53078c7612c14eda79cf33f4ee1e2e3f14cdf02b113240e64232dce9"
     },
@@ -3945,7 +3993,8 @@
         "texto": "Cerrar podrá mis ojos la postrera sombra",
         "autor": "Francisco de Quevedo",
         "obra": "Amor constante más allá de la muerte",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "4cd72b9f33c4859ea2a04591f6b129778ad39b1b20257570066aa6eaf1d59ae8"
     },
@@ -3987,7 +4036,8 @@
         "texto": "Better to reign in Hell than serve in Heaven",
         "autor": "John Milton",
         "obra": "Paradise Lost",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "4e03b8c5e81f2c3d517500d953ef45408be508f9e1f6e3b5988b4929bb66fa5c"
     },
@@ -4032,7 +4082,8 @@
         "texto": "Carpe diem, quam minimum credula postero",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256_2x": "0734c7b419a8a6ce9442a34a4331b7be05be5c6119ddaa38a0c00547eec4c0ef",
       "sha256": "a9fcfd7f31a773b15d59d19316cc8014e2d616bde787fa7f7cfe5843f5a9ae62"
@@ -4075,7 +4126,8 @@
         "texto": "Forsan et haec olim meminisse iuvabit",
         "autor": "Virgilio",
         "obra": "Eneida",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "084aa15589a633f9bfe6bd355d1259f14385c258d611b7f9ec27e411b1c31fbf"
     },
@@ -4117,7 +4169,8 @@
         "texto": "En tanto que de rosa y azucena se muestra la color en vuestro gesto",
         "autor": "Garcilaso de la Vega",
         "obra": "Soneto XXIII",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "a922d40c26de45998a95fa5a2aac8072af8283790eab71cc04dd6b57b08db535"
     },
@@ -4196,7 +4249,8 @@
         "texto": "À vaincre sans péril, on triomphe sans gloire",
         "autor": "Pierre Corneille",
         "obra": "Le Cid",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "2182a8cefa998c321d7648b67b32cdc5408aafbe11047ae186b1a8d204acd476"
     },
@@ -4312,7 +4366,8 @@
         "texto": "Omnia vincit Amor",
         "autor": "Virgilio",
         "obra": "Bucólicas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "7f328a4d9e7b34e280c7e10e8e588fad8690f52600b82f4d359adcd0a2b3ffe9"
     },
@@ -4506,7 +4561,8 @@
         "texto": "Das Ewig-Weibliche zieht uns hinan",
         "autor": "Johann Wolfgang von Goethe",
         "obra": "Faust",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "2285677337bce3ee7161199aedacc1f88b6e494f171f5cd3b6010340f7049987"
     },
@@ -4548,7 +4604,8 @@
         "texto": "Exegi monumentum aere perennius",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "df424452872085e0835f7ed3ab81778957d74c523cf98bd9494434ad3e64fbb7"
     },
@@ -4590,7 +4647,8 @@
         "texto": "Video meliora proboque, deteriora sequor",
         "autor": "Ovidio",
         "obra": "Metamorfosis",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "ad05aa5cba4748d762f4e22379182484f73f9b2ad03114815a8ef763cdb128f6"
     },
@@ -4632,7 +4690,8 @@
         "texto": "Omnia vincit Amor",
         "autor": "Virgilio",
         "obra": "Bucólicas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "3b9e691ca0effc1ca240e5818a27d0d57dd9033a79311ac75f2deab658595966"
     },
@@ -4748,7 +4807,8 @@
         "texto": "Exegi monumentum aere perennius",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "d64ddfdada0eadadebdc9da4a0026bb36a1775253a36a47e0c8db49ebe8573fc"
     },
@@ -4830,7 +4890,8 @@
         "texto": "Ce n'est plus une ardeur dans mes veines cachée",
         "autor": "Jean Racine",
         "obra": "Phèdre",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "74f5d64244bdd5164c28c3cde6f15f2f6148cdc8c5547d2a4de10c867e56b68c",
       "sha256": "8352a0bfd99810bd6589a0eaf882cab673a11d448fff268bf0907223781efde3"
@@ -5021,7 +5082,8 @@
         "texto": "Il faut manger pour vivre, et non pas vivre pour manger",
         "autor": "Molière",
         "obra": "L'Avare",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "bcf5b31b2bfbfa335126015922fa17ff532cda632e4b1f653ce58496a1cd89c4"
     },
@@ -5100,7 +5162,8 @@
         "texto": "Zwei Seelen wohnen, ach! in meiner Brust",
         "autor": "Johann Wolfgang von Goethe",
         "obra": "Faust",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "85eb724fc994a4ffac6df2bcae35604892a9f48b12d1e41bdc90dc48a8627d3b"
     },
@@ -5142,7 +5205,8 @@
         "texto": "Arma virumque cano",
         "autor": "Virgilio",
         "obra": "Eneida",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "cd00d0b95d09b6f7fae699cd25e5dcdf5a7e45379553f7268382292f5a940712"
     },
@@ -5184,7 +5248,8 @@
         "texto": "En tanto que de rosa y azucena se muestra la color en vuestro gesto",
         "autor": "Garcilaso de la Vega",
         "obra": "Soneto XXIII",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "c49cd66591a55895d5f27b5b1f6d705ab8bf405d6581f794fd41cf5b603690fc"
     },
@@ -5229,7 +5294,8 @@
         "texto": "Exegi monumentum aere perennius",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256_2x": "a05c39c6e092411ee3fa454cf693003114965142d10000118b54314ac39ced4a",
       "sha256": "9fc88cf1969699f9f357c069c771922531a783e55a7ed5b08c62da88ee0abcdf"
@@ -5272,7 +5338,8 @@
         "texto": "En tanto que de rosa y azucena se muestra la color en vuestro gesto",
         "autor": "Garcilaso de la Vega",
         "obra": "Soneto XXIII",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "d5b7c8647e70e045d4bc53f6911b562baff7f39163a4db0c23c236e065338681"
     },
@@ -5351,7 +5418,8 @@
         "texto": "Arma virumque cano",
         "autor": "Virgilio",
         "obra": "Eneida",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "ea65787ee8d328bc5f626631778f412cc729def7d197ca93a6384fb20f3c4e1c"
     },
@@ -5393,7 +5461,8 @@
         "texto": "Das Ewig-Weibliche zieht uns hinan",
         "autor": "Johann Wolfgang von Goethe",
         "obra": "Faust",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "423a8c79700fb7d92628d7683505d5165fb2053abcbe912cdefe75bdfb4b351d"
     },
@@ -5435,7 +5504,8 @@
         "texto": "À vaincre sans péril, on triomphe sans gloire",
         "autor": "Pierre Corneille",
         "obra": "Le Cid",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "17604bc8f909c213645b80c01a3341f6f16f0e7a35c6b7d3b106bdd1cc6631cc"
     },
@@ -5477,7 +5547,8 @@
         "texto": "Das Ewig-Weibliche zieht uns hinan",
         "autor": "Johann Wolfgang von Goethe",
         "obra": "Faust",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "ee9804d2e34236ccda328cabef67510bcca5d74a9385e19bb569f42a62b6186f"
     },
@@ -5633,7 +5704,8 @@
         "texto": "Il faut manger pour vivre, et non pas vivre pour manger",
         "autor": "Molière",
         "obra": "L'Avare",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "794b7447f70cb8b38f5c05198e773bcdd6c38346c40aa7163998aa9f9d576938",
       "sha256": "6a4f8e7c4afff6e58d662677fde8d74e69019b1bfa9cb642c903b6f608094603"
@@ -5676,7 +5748,8 @@
         "texto": "Dulce et decorum est pro patria mori",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "1de2bca17ce703ccd1035c5b97c611e2eda2418f53b211e425bee6b5a446e62c"
     },
@@ -5755,7 +5828,8 @@
         "texto": "Dulce et decorum est pro patria mori",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "6924ea4a88afeb05219861af8076f47ecc76df7490859a30b7a0ec58a3da8ae8"
     },
@@ -5945,7 +6019,8 @@
         "texto": "Video meliora proboque, deteriora sequor",
         "autor": "Ovidio",
         "obra": "Metamorfosis",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "b1cd33335569e5ed276a39b8b911e9ff44bb3edc7932bbb134d433d4bbb2fd8e"
     },
@@ -6027,7 +6102,8 @@
         "texto": "Omnia vincit Amor",
         "autor": "Virgilio",
         "obra": "Bucólicas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256_2x": "3bd5af79a8ee3d2c19762d1ed65485433c8c0904ad6a4dc09f946eef689dee71",
       "sha256": "9c72350c0d620a47987b927ad6b0336d0599a1610ad6a17f3a849315b5788f1c"
@@ -6218,7 +6294,8 @@
         "texto": "Carpe diem, quam minimum credula postero",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "50acc317f2db7dbe9e1f7f9c750cdef13bcf703715eb4a0e6760a8ee4296311b"
     },
@@ -6371,7 +6448,8 @@
         "texto": "Forsan et haec olim meminisse iuvabit",
         "autor": "Virgilio",
         "obra": "Eneida",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "7859769c9e90b3cde188a096ba7690079ae71f410fdef85d87ec69904db8c2de"
     },
@@ -6454,7 +6532,8 @@
         "texto": "Omnia vincit Amor",
         "autor": "Virgilio",
         "obra": "Bucólicas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "3419409a5716178f1e7796bbc635770df5adc155aa322d19a6d72b2d3cb1fa1b"
     },
@@ -6496,7 +6575,8 @@
         "texto": "Omnia vincit Amor",
         "autor": "Virgilio",
         "obra": "Bucólicas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "37047ac732d919e317f5921f24fc26f78561b75cc9ff78e75466c07d9677c2d0"
     },
@@ -6538,7 +6618,8 @@
         "texto": "Das Ewig-Weibliche zieht uns hinan",
         "autor": "Johann Wolfgang von Goethe",
         "obra": "Faust",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "d3f324107fa40f2670e99b626a4fb6b6c68c365c7724c26ddfb90cbbd5845d4a"
     },
@@ -6691,7 +6772,8 @@
         "texto": "Zwei Seelen wohnen, ach! in meiner Brust",
         "autor": "Johann Wolfgang von Goethe",
         "obra": "Faust",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "a176ebb784524cbc75403a994bc25207f16afda825fd63bd84ed3c53a09c2255"
     },
@@ -6733,7 +6815,8 @@
         "texto": "Carpe diem, quam minimum credula postero",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "6a6fe65697cc4338562f3b9ac020f215d4c896989bffde408c31e3e0251445a8"
     },
@@ -6775,7 +6858,8 @@
         "texto": "Video meliora proboque, deteriora sequor",
         "autor": "Ovidio",
         "obra": "Metamorfosis",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "2921a8174d67812c57af2f2defd0b26c67751df1ba0a75827c5f96da051328d0"
     },
@@ -6858,7 +6942,8 @@
         "texto": "Carpe diem, quam minimum credula postero",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "a339a96cc295fd6af8319b8907d3407f6b451867ba758629737e72f6ea463aad"
     },
@@ -6900,7 +6985,8 @@
         "texto": "Dulce et decorum est pro patria mori",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "2c51bfca0b875370daa43622aa79d0b53b1050060d7ce15fcbf33e60bbff0b77"
     },
@@ -7053,7 +7139,8 @@
         "texto": "Omnia vincit Amor",
         "autor": "Virgilio",
         "obra": "Bucólicas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "e26f1979e74e30bea74b1573751a651253bda0dacdd7feb37536c342404ddd5d"
     },
@@ -7095,7 +7182,8 @@
         "texto": "Exegi monumentum aere perennius",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "27bb785a4cb5137f8ee3f55b079a54066ea492abb5695c363bdb230985ee317c"
     },
@@ -7174,7 +7262,8 @@
         "texto": "Carpe diem, quam minimum credula postero",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "a078e8f7d99beafe7ddffb1bf5cdb05c30a0ed6a142119874ccff11dc711c9c2"
     },
@@ -7257,7 +7346,8 @@
         "texto": "Ce n'est plus une ardeur dans mes veines cachée",
         "autor": "Jean Racine",
         "obra": "Phèdre",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "28f22ce82414126fec284b54f8f8c641eed83d3cdf9376796fa8743dd943c896"
     },
@@ -7373,7 +7463,8 @@
         "texto": "En tanto que de rosa y azucena se muestra la color en vuestro gesto",
         "autor": "Garcilaso de la Vega",
         "obra": "Soneto XXIII",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "c86b6bd17e3c24e387fa71cfeb95ee1302efe3cd56c91d387f85c95c06f2c1f6"
     },
@@ -7415,7 +7506,8 @@
         "texto": "Ce n'est plus une ardeur dans mes veines cachée",
         "autor": "Jean Racine",
         "obra": "Phèdre",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "4f94ac675d7929c289b023c0986b330c0d0aef28f2201e97f4b4f9b864716608"
     },
@@ -7457,7 +7549,8 @@
         "texto": "Carpe diem, quam minimum credula postero",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "84d508e0e4d4cb1373acfa02062006aa4c64545ac1249cfca9514dd2b4d37254"
     },
@@ -7499,7 +7592,8 @@
         "texto": "Forsan et haec olim meminisse iuvabit",
         "autor": "Virgilio",
         "obra": "Eneida",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "0562b0d390e98136811c347481ffb026ce5f4eb42ab46b7376fc4c87a688a956"
     },
@@ -7730,7 +7824,8 @@
         "texto": "Dulce et decorum est pro patria mori",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "48fcbe5e60ed5d6496c4f1308858d8008f68bd99a29efc7d45eb834180843809"
     },
@@ -7846,7 +7941,8 @@
         "texto": "Omnia vincit Amor",
         "autor": "Virgilio",
         "obra": "Bucólicas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "3f5b9652eb0ccb971704a26b30649c4c1dcfa47499be19d6b239d19a2970bd49"
     },
@@ -7888,7 +7984,8 @@
         "texto": "Tempus edax rerum",
         "autor": "Ovidio",
         "obra": "Metamorfosis",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "78c1aa2ea8f7887d0c11def302626199a5928d6e86b6299100ac2ca5fafc0c28"
     },
@@ -7930,7 +8027,8 @@
         "texto": "Dulce et decorum est pro patria mori",
         "autor": "Horacio",
         "obra": "Odas",
-        "idioma": "la"
+        "idioma": "la",
+        "firmada": true
       },
       "sha256": "3601b25c622acd2d80a9e2a9fb6a18ee5e5dadd97aeb9967a49169be9bf0ea77"
     },
@@ -7972,7 +8070,8 @@
         "texto": "À vaincre sans péril, on triomphe sans gloire",
         "autor": "Pierre Corneille",
         "obra": "Le Cid",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "fdfc8f4872f14046602c35fc1648be8d7bf9f6765441afbe44b0f0337145f969"
     },
@@ -8017,7 +8116,8 @@
         "texto": "You are mine, you shall be mine, and you and I are one for ever.",
         "autor": "Sheridan Le Fanu",
         "obra": "Carmilla",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "c4d8f3b7893b334ed627ee7158c9f7ca258253d777326bd192e6dcd9f29b640b",
       "sha256": "aee82d07b2104179aa4fac42e8e0b07359c183d6766f2031ea92d094f7c10d49"
@@ -8171,7 +8271,8 @@
         "texto": "You are mine, you shall be mine, and you and I are one for ever.",
         "autor": "Sheridan Le Fanu",
         "obra": "Carmilla",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "36cfd2bc3b3925ec2f709a2c058581f3c1bae5a47856b3f5dd81d57b45701702"
     },
@@ -8213,7 +8314,8 @@
         "texto": "The blood is the life!",
         "autor": "Bram Stoker",
         "obra": "Dracula",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "84c567d9c922b3e5e11020b14ad5cd0acaa7b6bda1e14d3c6047944b0a7971e6"
     },
@@ -8292,7 +8394,8 @@
         "texto": "You are mine, you shall be mine, and you and I are one for ever.",
         "autor": "Sheridan Le Fanu",
         "obra": "Carmilla",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "ef1d263f3a528b79cfba70c749af467006b180242a3776a827660f2977eef16b"
     },
@@ -8411,7 +8514,8 @@
         "texto": "Beware; for I am fearless, and therefore powerful.",
         "autor": "Mary Shelley",
         "obra": "Frankenstein",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "bc1a0de4fdc40f527df0bebbc80ff9d9b117cee998084f7ace7b30252f2b982d",
       "sha256": "f6d831c08dc1f31b391a1a75ffbe8f11256f3e7ead9c377c634486309b1adae0"
@@ -8453,7 +8557,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "68255380e0e3b93190d05fd7742539a0376eb4a255168008d76ed79f8eece0a0"
     },
@@ -8495,7 +8600,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "0125fe3d79b62c77cd8b100416c7c85aa3186bffadbd55a3cda380317d898e4d"
     },
@@ -8574,7 +8680,8 @@
         "texto": "Man is not truly one, but truly two.",
         "autor": "Robert Louis Stevenson",
         "obra": "Dr Jekyll and Mr Hyde",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "7ad512dccf3913008884c82ac62e13a1e3a872cc3be5cd5b9dcb164086156a16"
     },
@@ -8690,7 +8797,8 @@
         "texto": "Man is not truly one, but truly two.",
         "autor": "Robert Louis Stevenson",
         "obra": "Dr Jekyll and Mr Hyde",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "6fadfb7bd3bd84ed8813b75be1c83db70de26f6e6f979d83780507d29c126008"
     },
@@ -8731,7 +8839,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "394353f30527d487d94964b418dcd731606ce140a64b212d41efc69985684b38"
     },
@@ -8773,7 +8882,8 @@
         "texto": "Welcome to my house! Enter freely and of your own will!",
         "autor": "Bram Stoker",
         "obra": "Dracula",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "3812c18fd50195119fbea3cfb76bfc56183f9020c442bdec34df7711aee0f79a"
     },
@@ -8930,7 +9040,8 @@
         "texto": "Whatever our souls are made of, his and mine are the same.",
         "autor": "Emily Brontë",
         "obra": "Wuthering Heights",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "38b103ac96b71bea6d288332095f7b4a6a68a18e3416d0fa85e150852d996134"
     },
@@ -9009,7 +9120,8 @@
         "texto": "Whatever our souls are made of, his and mine are the same.",
         "autor": "Emily Brontë",
         "obra": "Wuthering Heights",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "f7daaea83f8a9572494cb8d2f560356ca9966827c3f420938015cafe4fa2c934"
     },
@@ -9088,7 +9200,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "13794d9afb05c93e31e9ac06700471c9d6413c0128f7337a2eee4df434eb010f"
     },
@@ -9130,7 +9243,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "26a2afc3e3f0dbf7bba408c7fb0c997b6f58a76bc78fee32958e45f9fe4b7b26"
     },
@@ -9212,7 +9326,8 @@
         "texto": "You are mine, you shall be mine, and you and I are one for ever.",
         "autor": "Sheridan Le Fanu",
         "obra": "Carmilla",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "e3fbdc3de4659eef32db96d779db4099ea9d17fd9f6f5854132814fe9d73a58b",
       "sha256": "f5e42bdd7ad3a5c6688a9487d947d11f66bf076dc33417a50c53bb98ecf1f359"
@@ -9255,7 +9370,8 @@
         "texto": "Man is not truly one, but truly two.",
         "autor": "Robert Louis Stevenson",
         "obra": "Dr Jekyll and Mr Hyde",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "d9812295cd793ae97a050761d6b7c204167a70a49f6140400a5def1f56356100"
     },
@@ -9297,7 +9413,8 @@
         "texto": "Man is not truly one, but truly two.",
         "autor": "Robert Louis Stevenson",
         "obra": "Dr Jekyll and Mr Hyde",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "dc112b6e2054fe708e2108f8ad59636e176f7694d7eb7451a5bffc3106cc8339"
     },
@@ -9413,7 +9530,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "620b509154252b0573486609b6aab9fa2ff7a4ddee6d5d4460591c2924533ac2"
     },
@@ -9565,7 +9683,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "6040aa95c8bbf17a1e91aa0aed4085a3ee5b9516a27a8793ca15f6e341c5d336"
     },
@@ -9648,7 +9767,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "ef1179d396c27c171023e6d8da08ef08972e1009e01da825ac480da80038fcdc"
     },
@@ -9764,7 +9884,8 @@
         "texto": "Man is not truly one, but truly two.",
         "autor": "Robert Louis Stevenson",
         "obra": "Dr Jekyll and Mr Hyde",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "a83a3efe8ae1e2c7221203c986fff7d2cd9baaf449ecd49da650325e7f33e113"
     },
@@ -9806,7 +9927,8 @@
         "texto": "Man is not truly one, but truly two.",
         "autor": "Robert Louis Stevenson",
         "obra": "Dr Jekyll and Mr Hyde",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "9bce5ae3cdf1955cc14b86c9092186be7e9f29b8a7d4f57b9cf3c4b87a39b99f"
     },
@@ -9922,7 +10044,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "4aefa49c06150a8cd2e1b36a40860cbbcbbfba4516e9b45243f01829bf7e1718"
     },
@@ -10042,7 +10165,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "d9aefa64b7516982e34ec8eb61abc29b56bb23bb34b36ef62d02580a9b9bb423"
     },
@@ -10120,7 +10244,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "3888765a52f88837b249ff512984f2f784589e3b90becfa8c29f0e32626c8bf9"
     },
@@ -10199,7 +10324,8 @@
         "texto": "Whatever our souls are made of, his and mine are the same.",
         "autor": "Emily Brontë",
         "obra": "Wuthering Heights",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "0d63ce1fc7d2564405438ce5f5c644cc7c6fbe76d98ef1701cc7c089b79c584a"
     },
@@ -10278,7 +10404,8 @@
         "texto": "The blood is the life!",
         "autor": "Bram Stoker",
         "obra": "Dracula",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "e0043ef5b55a9d6558c6ece926104a7a3f054a2ad431b230fe22bd723036cef5"
     },
@@ -10435,7 +10562,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "63bf311abe65f4776d509c291a3787e17dfda74014e54cb39cd24fe720addddf"
     },
@@ -10477,7 +10605,8 @@
         "texto": "Whatever our souls are made of, his and mine are the same.",
         "autor": "Emily Brontë",
         "obra": "Wuthering Heights",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "a522355bc6ca303acddc75461eb9b1e1b74825c150d836433ec3b73c3adde527"
     },
@@ -10518,7 +10647,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "37150366ceeb454d54ff883f8ac9255d3f95e479e86a844d3490b2063fbdf14d"
     },
@@ -10560,7 +10690,8 @@
         "texto": "Whatever our souls are made of, his and mine are the same.",
         "autor": "Emily Brontë",
         "obra": "Wuthering Heights",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "a220928dfb28c6112b913e2388d21fb547541d52b3a7a303e19355354bd20a2f"
     },
@@ -10639,7 +10770,8 @@
         "texto": "Whatever our souls are made of, his and mine are the same.",
         "autor": "Emily Brontë",
         "obra": "Wuthering Heights",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "2e00761e6dfb0245336f851514a15734bbe978fdb75161b0f7eec8492715a98e"
     },
@@ -10718,7 +10850,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "df8915fc8b2aac7efd177a9b3c7da5f7fe37662a74a12e8545f368ea43ee23f3"
     },
@@ -10838,7 +10971,8 @@
         "texto": "The blood is the life!",
         "autor": "Bram Stoker",
         "obra": "Dracula",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "bf69c10bd699112dc8eb46c647c9ca0d5a11a05fb1ab5e19a869cc34d116cdcf"
     },
@@ -10954,7 +11088,8 @@
         "texto": "Whatever our souls are made of, his and mine are the same.",
         "autor": "Emily Brontë",
         "obra": "Wuthering Heights",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "22daba7a57e38a3091e1ff8f196d929ecce3f6d2f4ca6e312ef94703e3307290"
     },
@@ -11033,7 +11168,8 @@
         "texto": "The blood is the life!",
         "autor": "Bram Stoker",
         "obra": "Dracula",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "2a9945780d0cb3139a5b8e9b8c5984398f79cfb24966e6b867190344f1fd8c5b"
     },
@@ -11112,7 +11248,8 @@
         "texto": "Welcome to my house! Enter freely and of your own will!",
         "autor": "Bram Stoker",
         "obra": "Dracula",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "e9fdb664df4b75a9bcc84cd2b3d42284c10573c6f39d59d3ec54437e570a0f81"
     },
@@ -11306,7 +11443,8 @@
         "texto": "The blood is the life!",
         "autor": "Bram Stoker",
         "obra": "Dracula",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "7ab30619f83ccc2ce73463d54c8baf183bfa6675af034c6a9d2040f3e31a8a3e"
     },
@@ -11385,7 +11523,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "db944d188673a0403d7bac2c25d8e7bd6d2229235974a4c25d443744627ac37d"
     },
@@ -11464,7 +11603,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "d5d76124f1d5d6c8ab8fbbe816ea68a53e4fd0f4c1e0e7afb61d53d33ffd20d3"
     },
@@ -11506,7 +11646,8 @@
         "texto": "Cold in the earth, and the deep snow piled above thee",
         "autor": "Emily Brontë",
         "obra": "Remembrance",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "1512393df62dbaac9e417841e58d22eeb92dc923d4201068f1a4a1041e606225"
     },
@@ -11548,7 +11689,8 @@
         "texto": "The blood is the life!",
         "autor": "Bram Stoker",
         "obra": "Dracula",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "3a4073ae2a97cf09cf2e7b3f98dbaf466f2381337963c312453d46301e43ede0"
     },
@@ -11668,7 +11810,8 @@
         "texto": "You are mine, you shall be mine, and you and I are one for ever.",
         "autor": "Sheridan Le Fanu",
         "obra": "Carmilla",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "237b0b08a3dd704052a1f29c7490d3a31af3e2ccba75bb0f898f041b33579892"
     },
@@ -11710,7 +11853,8 @@
         "texto": "You are mine, you shall be mine, and you and I are one for ever.",
         "autor": "Sheridan Le Fanu",
         "obra": "Carmilla",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "1b892051140834b8b4b50c8e269a3355ddd53f120895c7cc6e21c6012364f8e4"
     },
@@ -11863,7 +12007,8 @@
         "texto": "Beware; for I am fearless, and therefore powerful.",
         "autor": "Mary Shelley",
         "obra": "Frankenstein",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "a51f58a288c1f8fb18e02e483563ddf5440a9e551b6ab9f61ad1911052081ef4"
     },
@@ -11905,7 +12050,8 @@
         "texto": "Beware; for I am fearless, and therefore powerful.",
         "autor": "Mary Shelley",
         "obra": "Frankenstein",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "cafba34a3427c7f5d970e74a7771e256449fb2064ebaf8de77abccf578deb557"
     },
@@ -11947,7 +12093,8 @@
         "texto": "No coward soul is mine",
         "autor": "Emily Brontë",
         "obra": "No Coward Soul Is Mine",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "579c8caa7eafd87be0c0a24d6d81be31b601e237f2bd9836cbca4c8c34e13a26"
     },
@@ -11992,7 +12139,8 @@
         "texto": "Yo soy un hombre sincero de donde crece la palma",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "337edf2bf611abe941ba29daa6b10158941117ece96a9604b79d789828022719",
       "sha256": "b13d9a55e7a6d1dfcdf6abae64a859318e64a3e87cc97a9618a8a8f732cea518"
@@ -12035,7 +12183,8 @@
         "texto": "Juventud, divino tesoro, ¡ya te vas para no volver!",
         "autor": "Rubén Darío",
         "obra": "Canción de otoño en primavera",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "d6f45b54c9073ecbe17d1b2716f9ff0d14709e526547abc4857f1215f73ddb63"
     },
@@ -12077,7 +12226,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "c85bccf4f965669cc33d85e35d22014c138f4da2aacabd4486eaa2438633b2ab"
     },
@@ -12192,7 +12342,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "da3f2292a6cdca9c7374dfc4e52558aad3fa5a75ee2640ec29c1878060bcebcf"
     },
@@ -12234,7 +12385,8 @@
         "texto": "Juventud, divino tesoro, ¡ya te vas para no volver!",
         "autor": "Rubén Darío",
         "obra": "Canción de otoño en primavera",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "2bbf94ecb2d6c1b7a1084bc2fa02e711fde718d3acb7e4f21ba5d43f84a462e6"
     },
@@ -12350,7 +12502,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "f377b73e9dac66192616c035f573a2aa83cc51e320d0e9798113d5a2760added"
     },
@@ -12395,7 +12548,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "1d604150a044390ce909fbe38d2c60be5a80314ff098f909f8d5785e44c7cce6",
       "sha256": "f1a718300324c395816618879d8d1c173325e831809c36213eb16df5663f9262"
@@ -12512,7 +12666,8 @@
         "texto": "Yo soy un hombre sincero de donde crece la palma",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "6f108eea9d75733ee9020dda04fd7c13b3aece867ed260719b996473ebf71197"
     },
@@ -12554,7 +12709,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "d65471c0e3813ca517981adc873556a35d8ea657c97159fbf43daf8b2198792a"
     },
@@ -12596,7 +12752,8 @@
         "texto": "Una noche toda llena de murmullos, de perfumes y de músicas de alas",
         "autor": "José Asunción Silva",
         "obra": "Nocturno",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "910b5209aaa6ed75f3a3175bf9f58214dc9446419f565b0da1ec835581f5f4d5"
     },
@@ -12675,7 +12832,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "b0db4585173996854f3d5f3f4a8751012a48df147c3b464b9c87c3224decd499"
     },
@@ -12754,7 +12912,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "a4b479b3442c0eb4f49599afff12d7214636d63941bc0e8e65861df0c59a328d"
     },
@@ -12799,7 +12958,8 @@
         "texto": "Yo soy un hombre sincero de donde crece la palma",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "8e7f4dcd43387cf77e34a63f57b1f656efb2b45e28e1cd58d16f70f332de6e23",
       "sha256": "e9b0f33a8a02ff3257e192bf91c4d48bf3b51b2f55d175df55f1d4f6dc5e0e2f"
@@ -12842,7 +13002,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "b930a47d47c0a851a1a1004c94bd730359e28744e7f3e4acc253278ccbad86dc"
     },
@@ -12884,7 +13045,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "9e6150b86e4058d4af83daf4ac38b1d95f6f03bc45289d19eefc145f8e7ed2c8"
     },
@@ -12926,7 +13088,8 @@
         "texto": "Dichoso el árbol, que es apenas sensitivo",
         "autor": "Rubén Darío",
         "obra": "Lo fatal",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "590c7416e1b48b054754c336af00869211eecae5629a3e311df8945d7162095f"
     },
@@ -13005,7 +13168,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "8403a1932dec1f5792042e84ceabee09802cda10937aa39e0280586903cbb199"
     },
@@ -13047,7 +13211,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "9d773d930aeedf0a277d5a6b2f79545d2b2ba18139e9459e2e55b782d338929e"
     },
@@ -13089,7 +13254,8 @@
         "texto": "Juventud, divino tesoro, ¡ya te vas para no volver!",
         "autor": "Rubén Darío",
         "obra": "Canción de otoño en primavera",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "f6cc12f4e14063b60c956dcb1da057c8eff7233c54eebe9f85e22b94f1646e23"
     },
@@ -13168,7 +13334,8 @@
         "texto": "Una noche toda llena de murmullos, de perfumes y de músicas de alas",
         "autor": "José Asunción Silva",
         "obra": "Nocturno",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "9c386d62ee5847c9245c2e4a4d91ea511f6d515392a771a666f65138582c4ade"
     },
@@ -13213,7 +13380,8 @@
         "texto": "Cultivo una rosa blanca",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "649649242f1748dba6c186af5baa99af4239bc8f95c2d04d46db2cfff2e98d54",
       "sha256": "c0cff4515d245069c9dd8a777f4776036fbb722c7427dcb152014f42eb6502e8"
@@ -13330,7 +13498,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "8440ddeb61ebc705f378abefe0a0bf2e2b91e09bc9ba13b7107e214920066bb4"
     },
@@ -13372,7 +13541,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "f37c7e9a0fb6d0763551920cb1f7680240c22a2d1e80c3b128d3b443c641a11e"
     },
@@ -13414,7 +13584,8 @@
         "texto": "Una noche toda llena de murmullos, de perfumes y de músicas de alas",
         "autor": "José Asunción Silva",
         "obra": "Nocturno",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "5654691456a94a2ffa13b50f3c542373ae265954a5cdaa6732cccb54619f4370"
     },
@@ -13493,7 +13664,8 @@
         "texto": "Juventud, divino tesoro, ¡ya te vas para no volver!",
         "autor": "Rubén Darío",
         "obra": "Canción de otoño en primavera",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "dd847333d10ffab767fd255a753c3b21718473b30d19e23157b8ce5c9d37ddaa"
     },
@@ -13534,7 +13706,8 @@
         "texto": "Cultivo una rosa blanca",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "3a6d844d279e0f7a4c8938f56d1d6f0c0a32cab9637924a1cfbceb80252cf2f6"
     },
@@ -13576,7 +13749,8 @@
         "texto": "Una noche toda llena de murmullos, de perfumes y de músicas de alas",
         "autor": "José Asunción Silva",
         "obra": "Nocturno",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "2b9ffdde3dfba092273b59ecc0ed41d89a617a332de58481201e497ac69f1bc5"
     },
@@ -13844,7 +14018,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "27b3cbfe37b27ba2b1ad1a314c794e402226549fd55bd50c8e916dccd27dbd75"
     },
@@ -13922,7 +14097,8 @@
         "texto": "Una noche toda llena de murmullos, de perfumes y de músicas de alas",
         "autor": "José Asunción Silva",
         "obra": "Nocturno",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "3efb3bec2fce43a8d890b20bc3bb577070dcbcb7b5c60149624acdc4b0c8d0e3"
     },
@@ -13964,7 +14140,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "3004f7f6440f79866814e33f49e276d15158a15a4f2cb1ac0965a2f3d2a90fd1"
     },
@@ -14009,7 +14186,8 @@
         "texto": "Una noche toda llena de murmullos, de perfumes y de músicas de alas",
         "autor": "José Asunción Silva",
         "obra": "Nocturno",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "9932a3fd1722a66bc7d6ace74ef512b2c10245af232b1aa779c0f5680d44d601",
       "sha256": "13708f803b93c0f62fcfcfdd3c8e57bcf152782a81f2a468673d8fa06d4a65e4"
@@ -14052,7 +14230,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "356de4cd5b4f7a84a827222aef2b9f2a81e8f0e5f1c5e2411fa7bb227cb84fe8"
     },
@@ -14131,7 +14310,8 @@
         "texto": "Dichoso el árbol, que es apenas sensitivo",
         "autor": "Rubén Darío",
         "obra": "Lo fatal",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "08742300f28bd02e503ac49fa53c16dc13740b3738bebb8a4f9ac5017dac14a0"
     },
@@ -14247,7 +14427,8 @@
         "texto": "Dichoso el árbol, que es apenas sensitivo",
         "autor": "Rubén Darío",
         "obra": "Lo fatal",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "514dd57b690bd30fa894456627d4e3a528db5bf43fdc7a1d986539de7e330123"
     },
@@ -14441,7 +14622,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "a6730adc8d3e776e20232a042b2667615f5a685db06505826c431a136583b684"
     },
@@ -14483,7 +14665,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "9a364ee2bfc3ffe30b5b3b323106418724b8e3851445547826005e10a1fb6e71"
     },
@@ -14562,7 +14745,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "1dfda98f1a20abcd8517a283d8ce7f6f40ee4db40fb89d40d31b1c9fbf41e2a5"
     },
@@ -14604,7 +14788,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "07f6a09aae6241d257ac304b19d34018840e2fd994af0014305ca14a30302a90"
     },
@@ -14683,7 +14868,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "1871317035498ab59049df4d9cd3170349244eedf10d19c897b90d6e03ee5e83"
     },
@@ -14725,7 +14911,8 @@
         "texto": "Juventud, divino tesoro, ¡ya te vas para no volver!",
         "autor": "Rubén Darío",
         "obra": "Canción de otoño en primavera",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "2bc25275f92af5d5d57f3c14d1e28e52a23dc9f9e92bf096db5fd999966492fd"
     },
@@ -14844,7 +15031,8 @@
         "texto": "Juventud, divino tesoro, ¡ya te vas para no volver!",
         "autor": "Rubén Darío",
         "obra": "Canción de otoño en primavera",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "5ff31f07913a804ab0ae8cd7b27bbeeb853ecb10912f6813f34f582a07ac3990"
     },
@@ -14886,7 +15074,8 @@
         "texto": "Juventud, divino tesoro, ¡ya te vas para no volver!",
         "autor": "Rubén Darío",
         "obra": "Canción de otoño en primavera",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "ab868a67696951fdc621db1f43790d24484b428c20310ca9ac98737f55cd7777"
     },
@@ -14928,7 +15117,8 @@
         "texto": "Cultivo una rosa blanca",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "768dd4898bb30114f057c533ae67a76c87719605f8ebbab51c7943b42f60db07"
     },
@@ -14970,7 +15160,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "cdc28056c137226a5dc9a01c9b1415e69c2effadb441a0fd066143c1fc2bef43"
     },
@@ -15012,7 +15203,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "7aaacdf937396a87783b1e224a2acc6349e689e785f64066b7811de604762949"
     },
@@ -15054,7 +15246,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "7753075e5ba97f05799feee434cba4dd482a5c8dc4ce84b40f5c0e88e7d7861d"
     },
@@ -15096,7 +15289,8 @@
         "texto": "La princesa está triste… ¿qué tendrá la princesa?",
         "autor": "Rubén Darío",
         "obra": "Sonatina",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "81640571fbe4a0d8f7872dd6608f8f9ad03d6e00f2ee7c2a5d053229eb7d4beb"
     },
@@ -15326,7 +15520,8 @@
         "texto": "Yo soy un hombre sincero de donde crece la palma",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "9a826655e9145704155836712b0139482d8ad4fc58dfec68b97029b3e1ce18c3"
     },
@@ -15405,7 +15600,8 @@
         "texto": "Una noche toda llena de murmullos, de perfumes y de músicas de alas",
         "autor": "José Asunción Silva",
         "obra": "Nocturno",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "7c82a3fbdf97cf780093780912983cd98320a82ffcf6431e11aa8c33ee868404"
     },
@@ -15447,7 +15643,8 @@
         "texto": "Juventud, divino tesoro, ¡ya te vas para no volver!",
         "autor": "Rubén Darío",
         "obra": "Canción de otoño en primavera",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "48c3d403823d3ec439eca773319eb1334f94238e65a76f89be3c157920a2166f"
     },
@@ -15489,7 +15686,8 @@
         "texto": "Dichoso el árbol, que es apenas sensitivo",
         "autor": "Rubén Darío",
         "obra": "Lo fatal",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "ff2eeb4fe997a18a4a0dc13b647639c5c79ef12a12dd9e1544ee176ebcaef794"
     },
@@ -15568,7 +15766,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "b408a626ee7f40679f2afe243d694ea5c9c3c5db8bd66e3844ae995607a66d9f"
     },
@@ -15651,7 +15850,8 @@
         "texto": "Vida, nada me debes. ¡Vida, estamos en paz!",
         "autor": "Amado Nervo",
         "obra": "En paz",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "2916e79b3a2ddd71e33739a89fc2df5a6ca39cbac4e85433082a958bccb10abe"
     },
@@ -15730,7 +15930,8 @@
         "texto": "Con los pobres de la tierra quiero yo mi suerte echar",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "244ce911083cc3f9eddbee6b6b5261129d4225d1bf223667a51bb7f955e68bec"
     },
@@ -15772,7 +15973,8 @@
         "texto": "Cultivo una rosa blanca",
         "autor": "José Martí",
         "obra": "Versos sencillos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "5a475f8d6c0cfaac1365bf876e3b899252dbbed85f15f244f9c5ae0946d67836"
     },
@@ -15924,7 +16126,8 @@
         "texto": "Dichoso el árbol, que es apenas sensitivo",
         "autor": "Rubén Darío",
         "obra": "Lo fatal",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "68c673e7f02c91e4b6df588c8d77d5faf4feb6495b47b13ae6061894ed3f750f"
     },
@@ -16081,7 +16284,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "aa9217fa2033efc43de9d0c41a9dd64ee1a4ab3fb1abd3e5b6c872e47ba89db5"
     },
@@ -16123,7 +16327,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "ebe84f88f18b30b65dcb33f4ab1dc1e6ada9a874e5e5e5838868617aa7c7e5ff"
     },
@@ -16239,7 +16444,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "747eb1abe928334d0167faaaf6b45dacc221c607a823c174f810dd42bd10d808"
     },
@@ -16395,7 +16601,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "8ffc609f49fd6955df09f00df9f278e706e10a6adaa08b8f65c001b700867d03",
       "sha256": "98e58ccdfb5207a86433115bf1f817bc949f5eea5162778861e4bf5fbc68f399"
@@ -16475,7 +16682,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "81cf516edd4bd76883fef3f12a1f6f421ab703c84c92b8ec52173916a07ea0e4"
     },
@@ -16517,7 +16725,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "557a40d6809451794bb9de4ec8fee72d631b8d0a725f3018f43a62ed0e250218"
     },
@@ -16559,7 +16768,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "8f0b335e3d22e9013896d3a9f8abae1429da7e5a4520eba6096a8de342f91503"
     },
@@ -16601,7 +16811,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "0d9a9e8883dc483b1e81c9479eaf3852a58de4b4cf437750513c024976e9b548"
     },
@@ -16680,7 +16891,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "c9681c455d3f4c69292badca1c99caae91ac20fe577efef129f4a3ebc7006b90"
     },
@@ -16722,7 +16934,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "cca52285997317103bb8bf950593017f1e717f48b4438b855fe1b42419b30e2d"
     },
@@ -16842,7 +17055,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "a7c7414259ab206c28f4fc5028df2cbf3974cb8ff44c24bb0887f54c6f80d765"
     },
@@ -16884,7 +17098,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "8db46f19002f29f56a3c7adc9508a5b32ca647e854e2633d9d7e4d33987d20ee"
     },
@@ -17000,7 +17215,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "9098de374a0d6892e7ef2a87e7b1af295df38537567afc4d1de060d4ba4c04f6"
     },
@@ -17079,7 +17295,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "9ade87a8781a6d021f3ffb59f391935bcc5f0c6202cab46b50178a87d1cc1290"
     },
@@ -17121,7 +17338,8 @@
         "texto": "J'accuse…!",
         "autor": "Émile Zola",
         "obra": "Lettre au président de la République",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "9962e65983d6fc8a234b269afad0aa1f5c6f24c5968d9cdff16962a190638b61"
     },
@@ -17203,7 +17421,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "a8928d9aaecacac399a6e6983587546199d13b8cfe00e1a94e0d05ecd50b05b4",
       "sha256": "f524c09d8fcbd3414c7fa6635b3a3ac8dd59c193e9f5d53344c80eb99fe6b05e"
@@ -17246,7 +17465,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "1a29e484c13b4adfc5ce27a9ebbc3c9de467ed4db58457cd7627ff989f40c491"
     },
@@ -17325,7 +17545,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "f01c99f88d2a3dc424f326166f36c0f6b7728237369bb24c36f4fa5927ddfa3a"
     },
@@ -17404,7 +17625,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "4df2747c0f550939e74076562d9a7fbcddf63d9ec06f704b8dea13afcbd50897"
     },
@@ -17446,7 +17668,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "b0057258cb7117fd534fe02c0d23dd7b56bc2c7febb1b44fd6bd6d9911d5d128"
     },
@@ -17562,7 +17785,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "7087430a14a3a6511ec385f0e555bf5f9f5a120bfcc6fbfc25e151beee1c24d0"
     },
@@ -17607,7 +17831,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "476101c3de43d3d0efdcb97f044e8dbb515653b94251783cafe19efa5eab2cb0",
       "sha256": "1493376c3803ad0e4d4bf5880d404b26e7bc34f06e728bcc2594f701a071c925"
@@ -17650,7 +17875,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "030363833b8812eb39dc23b9692cf6646450163907572e1920693064320c7521"
     },
@@ -17766,7 +17992,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "ff7cafc3887e52e65fada59f75c00d217583c611d9e254bedd462e493f5a0b29"
     },
@@ -17845,7 +18072,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "2830bd66db005120a7c822df4871611e63f78b2f1e0f91f5d68c408d10e4f7ff"
     },
@@ -17924,7 +18152,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "ddc4060cc68882d227d417051b8a1186464abf95d52ec5aa73ba59d267c574c6"
     },
@@ -18044,7 +18273,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "f021130319be02cc9f3449a348f3ca631f085788aa16a294fabbe394212edd66"
     },
@@ -18197,7 +18427,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "eee4c867382c64bbca7b33c4e7fd049d2f346952b7196fdeb54b8789a968247b"
     },
@@ -18239,7 +18470,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "b6459bc8dad775e89d49eef3498fd3a871acdeca4c5a7c3d2e9aa2f19f5b95cf"
     },
@@ -18281,7 +18513,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "a29aa0c91d54f99580ae8c5ddde98166b7d9a121acfc38883a595089ecd6c081"
     },
@@ -18323,7 +18556,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "f28982907317205cc525a8768e55a0f678a28c8e0bb8089baea78161793304ba"
     },
@@ -18365,7 +18599,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "ebd9b826d58335885413b9212d3d40659c46f6d99be70628c507ea892ee5a547"
     },
@@ -18410,7 +18645,8 @@
         "texto": "J'accuse…!",
         "autor": "Émile Zola",
         "obra": "Lettre au président de la République",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "b3d66ead3d01baea514b719072139e75659fbd636c0b9c79a347f98c3f3a2a85",
       "sha256": "571f5e1d47aa88a0933270fc1be6193fba8d4de54393cbd60d3c774ab259204a"
@@ -18490,7 +18726,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "928ac7602e5225063e89fd5946d13b66b0a4c2b82a6e5a60c8fe3b22917d50a8"
     },
@@ -18569,7 +18806,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "b6bb49b792c90f21f495cb90b264e7800b1853ec7e8eefb84f5c4cc5375b1602"
     },
@@ -18648,7 +18886,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "069c70b1dfd47584ed416fb63544df204557b1478b756072ca34f7734d48a038"
     },
@@ -18727,7 +18966,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "473e6017e3b2c95d5ab47d8e41fb4b9126ac3c741d4bae840f23fbbb399733ef"
     },
@@ -18847,7 +19087,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "132ce1b2434c9f300529ab2cd473e84043af621f70f3e1c273bfff179146e115"
     },
@@ -18926,7 +19167,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "95bcb33102697cd306e25bfd3369c495717bc93b8f4bf97eeb1fc2e23ba2ea84"
     },
@@ -19005,7 +19247,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "070f1c5726c9554d58b46c2b6bd01ef818f87f9f8e225c6a64d61b310f0e965e"
     },
@@ -19084,7 +19327,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "aa9e92efb747b6b418d563d4cb0b60d70f0b7b403c5c41de728f6fc9b9cd5ea9"
     },
@@ -19126,7 +19370,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "4adb951b93a06b062bc95e71399d00a2a368528d80ff652f233bac1b5b3f7fe3"
     },
@@ -19168,7 +19413,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "c65210cbc0b0ca2436c381d3ec484c262bfb5f64e485d8d1eb6fd770d238c6b8"
     },
@@ -19213,7 +19459,8 @@
         "texto": "J'accuse…!",
         "autor": "Émile Zola",
         "obra": "Lettre au président de la République",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "4fc5466708365dc7e7a1b598320d493b8576c3eba49c0b8868d1de95e3cf54a7",
       "sha256": "8810a3d55d396d1029f05275c7e96b89e35fb7a560eddbd065d82a357bb757d8"
@@ -19330,7 +19577,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "9be9e9070088f5617e60619a45ac2469a6f65c3c21a2235c0b0ba6c8e75a57d5"
     },
@@ -19372,7 +19620,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "5b2fd21521e4f60a1a7ac8530323582f187c0777cee37cbe297a5f39de026620"
     },
@@ -19488,7 +19737,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "df17fb914ab5b1df659322d182d92715589e5195c2128d98b7f25961b8ca38b4"
     },
@@ -19567,7 +19817,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "d42fe3696700c4bf83eedd06b926a63db4243f58753d1790561eb7b6073928f0"
     },
@@ -19612,7 +19863,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "85148d87afbfc1e64740c3cf17cc8df602fb4989617a874d4e9c82df6da60a1a",
       "sha256": "7297ef94d8535855fbb6f139deb31886ccf6452ec7af287b3717c17b284381f2"
@@ -19655,7 +19907,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "16e38412992a69f73b2d732d4fbbd347c122400f078a0efe46fe3c984b80049d"
     },
@@ -19697,7 +19950,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "a8847cddaf1961bf47a61577346e679f7f095b59ff4277e81c1307e932eb49f3"
     },
@@ -19813,7 +20067,8 @@
         "texto": "Des hommes poussaient, une armée noire, vengeresse",
         "autor": "Émile Zola",
         "obra": "Germinal",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "e92dbf4efc7e81de31dd5213993142e58857532cae2e16d56959d7cc1bba11ef"
     },
@@ -19855,7 +20110,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "23e06cb5f0c714853b4b90dc40b2923ccf98f2a9d23d32b04e251429ea354d2e"
     },
@@ -20049,7 +20305,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "bec35388e7ccb98f9535d284e0b1763f6deef84613339a93fb87309eeabc46ec"
     },
@@ -20128,7 +20385,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "f33ed4c094bb235b29a0a197d2748d0b9aa4e4ec8b5a04d7cc973c63794d8a44"
     },
@@ -20244,7 +20502,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "fc4746bc0ab8ac69d457a4f99b80b6e6c4471ed9f5bb34c9eb827faa53d2e9b2"
     },
@@ -20323,7 +20582,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "62b487b85c8886ab65346a9aa6f247d1251a1a4866af10b630ad4848dbdb00ca"
     },
@@ -20405,7 +20665,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "d2952a06c4589212b686242c25dc1a37415b545254131c9d1706c42be4fae9a4",
       "sha256": "1409b3acf1a395afd509fcd47af7b69aceda4707d0c74888ee4cbf37658a1cef"
@@ -20596,7 +20857,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "34e3c0a4d998278ef0b8aabe14694627fb5638903acd73ec5d35d3a5ff5562c5"
     },
@@ -20938,7 +21200,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "c872be37deaac42001e240c1602d409ae9514f0a1f0f24f6a371b5f6f33ba43f"
     },
@@ -20980,7 +21243,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "79d837a88889e38e722280447f3d9ddedd9c4c2ac54c3347d82f8fb586e132f7"
     },
@@ -21133,7 +21397,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "00bdafc4ded7b8ef29f8bd1a6fc8a1e7dc98153d506048382e3325c8e96ca03e"
     },
@@ -21178,7 +21443,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "6ba72099e6a6b9fdb5d0d73a8ff2b544d35a0eff26853e16f87a188872a913aa",
       "sha256": "590ab74757e718dda7e4a825825b6cdcdc94a540b714b022150a53332a22b749"
@@ -21221,7 +21487,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "6109d922d170c43d4cebddb54ad829b93da32535120a018da9d16a383fb67653"
     },
@@ -21337,7 +21604,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "f4d63867e45cdd746a443cec511d2145a95072d35ce49ea5a434f354ab52b49b"
     },
@@ -21379,7 +21647,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "6db2cba545b38bc8c96486e2371c65a44904d9fe5011dd27146084b83b981853"
     },
@@ -21421,7 +21690,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "ffa706e10294d4786d7b0d095d1574dfc3432ac5248e6c771f37db12171b6912"
     },
@@ -21500,7 +21770,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "ad0cb7827aac287ca1330145cf0fbdab8da15b1e994e535ab06d6aba2e1e8cbb"
     },
@@ -21582,7 +21853,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "f7ec6877c3057360fc86f606caeece6473c9ac762741f18ba889a3cd8679cb52",
       "sha256": "d768f28c3c9404935afbca4e62d12084380f7fb0fcf620f9501a8b972e046709"
@@ -21736,7 +22008,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "c8ec1cb71368bf53460ee1bfbec4b2ea96c63b3965c11896cb91d88691800548"
     },
@@ -21778,7 +22051,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "19520871ddc83d5ed0623ceae99a6f16153b3b2b90b4af4de1284c4ec8eb466a"
     },
@@ -21894,7 +22168,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "da74614917748129fc6bdda9afce8c4ff95b0d78905e9cb25ab25d16054c2aad"
     },
@@ -21936,7 +22211,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "55a154c46265768f0cd3e2631e915220e8048d0191f120f5aec21e9de624cc26"
     },
@@ -21981,7 +22257,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "80576245c537174fd30c32b46ecdde9dd27e39d6d0a82677c0f4a1962dc37ba7",
       "sha256": "409fb8941a71932a2c4e609ae64e0e36b20afd62f25f2e0c63bc59b99c26e463"
@@ -22024,7 +22301,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "9e68fc49cb6679098c6a9c0ee9b38c756054a2eae0be2ab257821cf4add9e38a"
     },
@@ -22066,7 +22344,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "2fcff431aca511e76b1cd5c962bfc8e7f9c9f3c67e021ec549ac8d3cfab6057a"
     },
@@ -22108,7 +22387,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "54d3c149d17ebd273d823070ad573ff07b6149b9d8b44059b070b74d40692833"
     },
@@ -22150,7 +22430,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "9d9dc385f288ea73d242999bba3a80991a686ab339e3f3ea3d815a57d58affdc"
     },
@@ -22192,7 +22473,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "6a0c27507f6ddb9ea1768bb1e9034ddec4a2b7e0c03b064c8b43bf374d3c26d5"
     },
@@ -22345,7 +22627,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "c58678956081e586d827be7acfdc46652b91ad84192ed37b2bdb478e7973b485"
     },
@@ -22390,7 +22673,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "6b2a3cd2e667d940cf449c2c8d67f59ae658ddbbf5e39606515c2479bde8e2a2",
       "sha256": "c65f7e17990cb24bdf024744767d0d94d71ee103251a6bc504de9a59ce02f99c"
@@ -22470,7 +22754,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "e36a3055e789129be347e4221e4ddf71a816757e83d6acd81c6bfce1e810e83c"
     },
@@ -22586,7 +22871,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "af4d8c7c61ddfcbeb2876f899a3270b8fdbef0a02523c163d7ba90216892f863"
     },
@@ -22702,7 +22988,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "2f99cd72c9982ef19c41b9c8d5ffa23f087f196d3fd329c08cda401e4a8abfb5"
     },
@@ -22784,7 +23071,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "21e23a088e70063d2e4235acc7f2bd2ccc7912b9df5b186471d0f3ffbcbda4ca",
       "sha256": "c4927d5a28e59cd0d9c43e5ed02c67a0dc2e5235fe3177c455469eacae19ba9d"
@@ -22827,7 +23115,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "b50c139a6617bcf837c01f56507e5f399a2f533dafc9c66a230e9eee9072a87e"
     },
@@ -22906,7 +23195,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "d43d242964a1ac230f46d673f3a88246acb721f1f768542f12718e50959c2aad"
     },
@@ -23022,7 +23312,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "366c86384ff3729d1553fb8cb85584fe64aea834de05d3721c3290b1f516adb8"
     },
@@ -23101,7 +23392,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "36f07f1f767c1a349cb5ba0256f621d59166c7285200a41fd19aa5804d8c5432"
     },
@@ -23143,7 +23435,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "bf41eebed46935e32117b57bed61807192e6531bd55640a38e461ca33cbc8845"
     },
@@ -23226,7 +23519,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "c37747252684c458569acae83a1a9f024c9111ea5ecf51d7c7601dee3b25a9c6"
     },
@@ -23305,7 +23599,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "c3be3c83266ee3c6b7772b57f3d331a7c0cac86a2e40919e6fd271c06d275794"
     },
@@ -23384,7 +23679,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "283f4170bbcadf678ca31d562f9b7e20755f1484a6545958264035782b778514"
     },
@@ -23426,7 +23722,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "4f57189a3776bcbe594936bec31db249b2bead558d13b7eb50c34140f2a12054"
     },
@@ -23468,7 +23765,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "533e1fc93ab591f305a04fbbff3b1dc05a819aa54030b60c93625383ec88e08d"
     },
@@ -23510,7 +23808,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "1bdd6bfcb3fad4e2b5e97d308257e65e4787aadfe2fc6ad839acc40ceb5b8728"
     },
@@ -23666,9 +23965,10 @@
         "texto": "Esa tarde, hasta las sombras llegaron tarde",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "b78595d07b651ba5da9ec14391446043de540675ff680b9763ffe01249a384ec"
+      "sha256": "1e4e80f3c3fdbacf1a7e517d4637c1cb97111f126b8d0c2f0b1f37d634bfc563"
     },
     {
       "id": "realismo-magico-allende-04",
@@ -23708,9 +24008,10 @@
         "texto": "La abuela hablaba con los muertos y ellos le contestaban",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "392f4a27ea42e791ee1fb0dedb84b1693306eaf3570dacbdf4e0479235e0a800"
+      "sha256": "19510aa14e2633bbadc439cf840c5561defc34abd32fa020bce6ea9763a1bafa"
     },
     {
       "id": "realismo-magico-allende-05",
@@ -23750,9 +24051,10 @@
         "texto": "Los gallos cantaban a medianoche para despertar los sueños",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "2d569d2cbf10a16024a0b6133514350c01e55a03d908c174c5846583242a8143"
+      "sha256": "0707154720441b7b2e8675512d8fe90731b924aa705b0d1a69516960a2b9f6d3"
     },
     {
       "id": "realismo-magico-allende-06",
@@ -23792,9 +24094,10 @@
         "texto": "La luna se detuvo a escuchar la historia",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "4bcf9f7223ec341139571d8dc443a1593d0cb7d16cfa7571cd0669dd007d1885"
+      "sha256": "f6245391fc08121a60cf8476bf9ddbe28460eb302d8ab26baca11f899380f570"
     },
     {
       "id": "realismo-magico-allende-07",
@@ -23834,9 +24137,10 @@
         "texto": "El río subía cada noche a buscar su nombre",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "6fbff537df524a8a624e99501840a35fface23c638cf03a7c47b77f372b058cc"
+      "sha256": "f07d4e4d806a1fadf2c49495deb36f3dcf3bacbc7ab10fa23798bc64ed212528"
     },
     {
       "id": "realismo-magico-allende-08",
@@ -23990,10 +24294,11 @@
         "texto": "Los árboles recordaban a los que se fueron",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256_2x": "74172df1f6e6d979819b500970814b176563aa0f7fd288ab44fb7db063b3d308",
-      "sha256": "3b4be0f4d214dcc1be5a35846720bb1a1921972fe33fcc006531c4254204f06c"
+      "sha256_2x": "56ed48f4ee73cf983192fef24312a894383f384ce4af61e5f9329a1b5a1c8b12",
+      "sha256": "11374b48661b4743b25920b2ef76d75864b9abb6df3783715f5292db03c20a18"
     },
     {
       "id": "realismo-magico-amado-02",
@@ -24033,9 +24338,10 @@
         "texto": "La abuela hablaba con los muertos y ellos le contestaban",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "e5c3b566949a0886e325846f02a71344fa4e7b8e44c63b512cfc9b963cbeb4c8"
+      "sha256": "c1a28cb74ed2321cfd8b5601d8f4e02cb2daf317dd94670659c1d00e1ae19ab5"
     },
     {
       "id": "realismo-magico-amado-03",
@@ -24075,9 +24381,10 @@
         "texto": "La memoria tenía puerta propia y la dejaban abierta",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "83f1493a527d012ca5a4d23abb78ef285056ea58410227c16e4bb460942a2a67"
+      "sha256": "9e9f43701f8e47491de4dc8ef6b0bd4efe9f09a089f99304dccafe5976b0c3f8"
     },
     {
       "id": "realismo-magico-amado-04",
@@ -24227,9 +24534,10 @@
         "texto": "Los gallos cantaban a medianoche para despertar los sueños",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "02e4fa4fbd43e343a0c6c043d6ebe7e51822710d34d6fb809fafacafb9e79997"
+      "sha256": "c6e52da018f93fa93d5423f472c4e86b10d977a5925c9e00857e48858224d55b"
     },
     {
       "id": "realismo-magico-amado-08",
@@ -24269,9 +24577,10 @@
         "texto": "La luna se detuvo a escuchar la historia",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "ec7be9519de8885678f3ddcce292927495cd96118a280834a1e30778336b3516"
+      "sha256": "d701e2feeabbc37a26d54eeedefb3680efc78d41fee2034b3f403e9c8bed87d9"
     },
     {
       "id": "realismo-magico-amado-09",
@@ -24311,9 +24620,10 @@
         "texto": "Llovió flores toda la tarde y nadie se sorprendió",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "569fd6edcf34afbd3db9d37f9c8e9cac688eeedfcb0a2d6486cec27a7ed9f35e"
+      "sha256": "a605eaf7c16ab34b8af2c135ba3092106f68c8caa5fe9554a5554f3172c50645"
     },
     {
       "id": "realismo-magico-amado-10",
@@ -24353,9 +24663,10 @@
         "texto": "Llovió flores toda la tarde y nadie se sorprendió",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "4db57800149106d79c73aec16f8203abc48706284f0b59dc738b158e61d94170"
+      "sha256": "2407668b260176e2fcc432b7e8296a881d303c44fd3e7345dcfddb87819d202b"
     },
     {
       "id": "realismo-magico-asturias-01",
@@ -24436,9 +24747,10 @@
         "texto": "Una niña cosió el atardecer a su vestido",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "fb38bbf6025c9f34b1fb6deae37289960b61369dc68e1d24a4656ede0fc0ca2a"
+      "sha256": "3d4af9dc4c8884e676fffb511cd8e40caa9547b2bb8464246eebd5ec013b8138"
     },
     {
       "id": "realismo-magico-asturias-03",
@@ -24514,9 +24826,10 @@
         "texto": "Los árboles recordaban a los que se fueron",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "62e7fe246042eec872b91e543989660d4ddaf361cb6b7b7ea33e29625197300a"
+      "sha256": "004138b45ef14f6fa690a3c223c206297193a49c2772f7b50511cf1321454f30"
     },
     {
       "id": "realismo-magico-asturias-05",
@@ -24556,9 +24869,10 @@
         "texto": "Los árboles recordaban a los que se fueron",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "782feee6c75236e3d945a22e8e138dedc6073268dd4b6a1fa16c3d7e5371c24d"
+      "sha256": "b8cf7cac0d7a5fd60cc7928a160750416b6d881ff1c77881aa1572eccea54222"
     },
     {
       "id": "realismo-magico-asturias-06",
@@ -24709,9 +25023,10 @@
         "texto": "El mar le prestó una canción al pueblo",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "7c905e8c85deed836a60a712e4902f43483df809cfc1d497e15a15470ba3bf31"
+      "sha256": "5b87bf7bdb35c834054743468eff34ce4ba77b71232c400f23288543c9bdd5fd"
     },
     {
       "id": "realismo-magico-asturias-10",
@@ -24791,10 +25106,11 @@
         "texto": "La luna se detuvo a escuchar la historia",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256_2x": "bef169826b54a5253f4d00f65d395414779d83b1f34f26f5f31ef49a17198085",
-      "sha256": "dd4ef672c17c80dd1719c062dff18d43935b3db793378e91cdca8568457dfb74"
+      "sha256_2x": "ba1b31dc26ade6fbd44f0f6e8776c181e1ab3c8d8cc8cf718f9a3ca4e2bc5d9e",
+      "sha256": "b65e44f6c320dceec75bcc05399c0b357ac90b55235e61bdd667ce0bd7f0b346"
     },
     {
       "id": "realismo-magico-belli-02",
@@ -24834,9 +25150,10 @@
         "texto": "Una niña cosió el atardecer a su vestido",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "8fd9279ce7b0acbf04304f4ec2dac1e9239b2c242ad6724b8ef615641c1b82eb"
+      "sha256": "43ab2f22060e472cee1384d961bc21d5883279d7e917febcdff97aaf5ae8036c"
     },
     {
       "id": "realismo-magico-belli-03",
@@ -24876,9 +25193,10 @@
         "texto": "La luna se detuvo a escuchar la historia",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "ae35b741974be602a7f923ae314ca751fdb855e902540f7170e70b1d63dc1cea"
+      "sha256": "ccba98581805aa6fab356a89185be20468de214a84601771f9948e3cb94060a3"
     },
     {
       "id": "realismo-magico-belli-04",
@@ -24955,9 +25273,10 @@
         "texto": "Los gallos cantaban a medianoche para despertar los sueños",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "d6027b68513f9859c180e7361c88abb75c8aea2206dae1e8cff322553b006042"
+      "sha256": "527a5fb6b676d44bdf4019c972260efce8fe55c28050932dcedabc0ce7d8dc39"
     },
     {
       "id": "realismo-magico-belli-06",
@@ -25033,9 +25352,10 @@
         "texto": "Allí lo imposible se tomaba con café",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "8af64c1fbb5d51f5611ac6f75aa2fce8b5255d37156cd90e5ed0d92e843485d4"
+      "sha256": "fd8e16ba86ad0cec59118099bcf869b55c47ce75eca4609afbc2239b98f15678"
     },
     {
       "id": "realismo-magico-belli-08",
@@ -25075,9 +25395,10 @@
         "texto": "La abuela hablaba con los muertos y ellos le contestaban",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "178415318757bf4b7a5c59c14203fab0a4a722dcf22ae09598ac9d5fba29e21f"
+      "sha256": "d5e0959a6b61605082a94d75674c44c468a075ce700e9679e2e947b1bdc8a8d5"
     },
     {
       "id": "realismo-magico-belli-09",
@@ -25117,9 +25438,10 @@
         "texto": "El viento traía cartas que nadie había escrito",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "db5f625c58da95de6d9f4cd2fee3fad49dd85e2663e22d98a3002adc8f3e73a9"
+      "sha256": "795875bc21856f819c4c26f2e3c4cd5f09d4c1e374b8bc23bfb5eaf5ac2e7401"
     },
     {
       "id": "realismo-magico-belli-10",
@@ -25159,9 +25481,10 @@
         "texto": "En ese pueblo, los relojes olvidaban la hora",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "d57abde00e084bf84f231bea6c00dda671e96b7b5d7a0a427ea685dd2cc5b418"
+      "sha256": "6a32803f0e425d23add27a4f59c65418093629c6495b85fd886b09271c8a78e7"
     },
     {
       "id": "realismo-magico-carpentier-01",
@@ -25204,10 +25527,11 @@
         "texto": "La memoria tenía puerta propia y la dejaban abierta",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256_2x": "cc14fc3825b94cc4a1de56c8816d2770ed55b764b2a0e21b24ca02ac34522f16",
-      "sha256": "3a4ae74da202b1ca5394447a48860b2f3afd7e084facb51ec901a6350dd0f272"
+      "sha256_2x": "cc6bca641bbcede715b909abdfc1f9781cae1519c3f6d582cd47260ea652a083",
+      "sha256": "d9cd9356feb9026a71e8e3aa67db7b2a57e0d594059997be54cfb6dfe1aa7958"
     },
     {
       "id": "realismo-magico-carpentier-02",
@@ -25247,9 +25571,10 @@
         "texto": "El río subía cada noche a buscar su nombre",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "65625a2ed228cd881fbf3b5499e700c803322b0576ff17b37bb99ec22077be93"
+      "sha256": "6ae7fee61c4c0cb9013193c4183d9f7af130d497a51379eb834d9746663257b9"
     },
     {
       "id": "realismo-magico-carpentier-03",
@@ -25289,9 +25614,10 @@
         "texto": "La abuela hablaba con los muertos y ellos le contestaban",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "7622d27efde44fcefedb53d9615400d77c7e4ba9ad98a92efccc1adc22cf5d70"
+      "sha256": "cfd77eda707ad6f9ec6e93866a79d32fc2bc48e3f104da3f4c379cebfecc537f"
     },
     {
       "id": "realismo-magico-carpentier-04",
@@ -25368,9 +25694,10 @@
         "texto": "Cada casa guardaba un secreto del tamaño de un pájaro",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "98eb07bba87d40102e8e1a07458e11efc524ddca3855471ef7f7db39f7b78d2b"
+      "sha256": "b77482de420c8f09248292140016a1d6a9d744df13c8d568b60a88101120c746"
     },
     {
       "id": "realismo-magico-carpentier-06",
@@ -25447,9 +25774,10 @@
         "texto": "El mar le prestó una canción al pueblo",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "183baa0d8af8d1ec838a87818e8c8516db4884cada6c3ccef2c874f798fcc080"
+      "sha256": "39fbff241c2d8f8c78539ea74ecbda868bdd49bfa8a4ea9dc16e15e1b7e8cd39"
     },
     {
       "id": "realismo-magico-carpentier-08",
@@ -25489,9 +25817,10 @@
         "texto": "El río subía cada noche a buscar su nombre",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "96c50f8df0f02e22aad5dcf473c04623a8f6e6303a96f048fb5ac728e8232e59"
+      "sha256": "f012a816852213a44338361110c7452f9acb32dfc427d636b0a120eee48ab882"
     },
     {
       "id": "realismo-magico-carpentier-09",
@@ -25531,9 +25860,10 @@
         "texto": "El río subía cada noche a buscar su nombre",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "58ac1da6ccf65c1d44a3c62dc95ccc64ee684ada197be0629f2801b7416fb3bf"
+      "sha256": "2b10cc0ae4771ce3d94d5c7b975a521e00fd901d12ac26207035281594f6c530"
     },
     {
       "id": "realismo-magico-carpentier-10",
@@ -25651,9 +25981,10 @@
         "texto": "Los gallos cantaban a medianoche para despertar los sueños",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "13b32a3dce9680636257a95efd569829ed0184a1a0e54ab2285ed96ac5442b1c"
+      "sha256": "6db30b9511b365cc70311f110f3f181aa9af78b89ac7a78dc2b7a8a961f3d3b7"
     },
     {
       "id": "realismo-magico-esquivel-03",
@@ -25730,9 +26061,10 @@
         "texto": "El río subía cada noche a buscar su nombre",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "29287cd517e7c7b703545abc931f868aa2472d86d5142fa605cced6114f67c6c"
+      "sha256": "3fcdb318886f239997c0fb4cba3d2ef27fa29a09301ccf5b60604d44e1592ad7"
     },
     {
       "id": "realismo-magico-esquivel-05",
@@ -25772,9 +26104,10 @@
         "texto": "Llovió flores toda la tarde y nadie se sorprendió",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "4cd62cbaa9e0a126ce9d5b0dbdc8cd04c1026347bb0269eea32d10db3dbcf5a0"
+      "sha256": "a6cb92f8e6451d453f05809aca3a80b1ba06aa9d3941992576e88696fae1774d"
     },
     {
       "id": "realismo-magico-esquivel-06",
@@ -25814,9 +26147,10 @@
         "texto": "Los gallos cantaban a medianoche para despertar los sueños",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "44d5a3b95b66e9046026f7819bf39edebf0e80447b3220fc3384786ebc7d27b7"
+      "sha256": "93b500c87c96beec0e257c1a38115e0215687b18670ebd5cc524959645e88a17"
     },
     {
       "id": "realismo-magico-esquivel-07",
@@ -25930,9 +26264,10 @@
         "texto": "Los árboles recordaban a los que se fueron",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "6894722656b7cecf7821f7382b19ba792e19f1c61b54ad4b46bab15fa809e103"
+      "sha256": "01547041d967bcf3760e4a75cc88f5c51514b91f539053bf0025508eb7377cf1"
     },
     {
       "id": "realismo-magico-esquivel-10",
@@ -25972,9 +26307,10 @@
         "texto": "Allí lo imposible se tomaba con café",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "d5e5dfab9642dd3919ecb91e172a1b79a36509f5176d235b23213c4d3397f97d"
+      "sha256": "9ae6f3aae7637c0ad50d6944cf1428432719e66d9dbb39375384cbb1ac848e39"
     },
     {
       "id": "realismo-magico-garcia-marquez-01",
@@ -26092,9 +26428,10 @@
         "texto": "Una niña cosió el atardecer a su vestido",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "1680c9ad5ae9d3c1ac13e7208352470e0df8082fc7d5447e504d58cd0ada356c"
+      "sha256": "0bed232af627c14cdfc7370a3ecec2f352759390c4f22522fa2050c0f96b4220"
     },
     {
       "id": "realismo-magico-garcia-marquez-04",
@@ -26134,9 +26471,10 @@
         "texto": "El mar le prestó una canción al pueblo",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "900742a5ffee8b1941b1b988e8165847c124915b2791be17c8391db822092f04"
+      "sha256": "b3250c39d4b6cb52b3331003bb3fc1d6ec9280f0c0836be591f2518cf1b2cb67"
     },
     {
       "id": "realismo-magico-garcia-marquez-05",
@@ -26176,9 +26514,10 @@
         "texto": "El río subía cada noche a buscar su nombre",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "b499454bdb054eb4f91f32c318cb32c9508be47cf515f06130d5ce77e48bd04a"
+      "sha256": "3d1a9205b7f1c0059db7d571d1f6044ec62ec95a4b40a17884a674f706e54e59"
     },
     {
       "id": "realismo-magico-garcia-marquez-06",
@@ -26218,9 +26557,10 @@
         "texto": "El mar le prestó una canción al pueblo",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "8acf97c14055cb91150f86b21e9b17f219c618b04c9f679766aacb125283e33b"
+      "sha256": "ecc30f88096af14098b2e4c5f37518ea030cd592afce03f6be8ead511039d80c"
     },
     {
       "id": "realismo-magico-garcia-marquez-07",
@@ -26297,9 +26637,10 @@
         "texto": "La abuela hablaba con los muertos y ellos le contestaban",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "6a403c25fe2d4d3744c7de4a0941ef7f4c960720e1c9b63329fb8cc752df8468"
+      "sha256": "1cd2bd0013dd0964fb94b9bda6d9b61084b39df81d5017b7a8f16e8fb2a94504"
     },
     {
       "id": "realismo-magico-garcia-marquez-09",
@@ -26339,9 +26680,10 @@
         "texto": "La abuela hablaba con los muertos y ellos le contestaban",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "77e3a54341825ac1f760f6948b613a7b12b7736579dc77e89d317c5d58b774b5"
+      "sha256": "d738655e00e5f14ece134177aaf7ad02cf4251485d5d86a73271e7334ff83c90"
     },
     {
       "id": "realismo-magico-garcia-marquez-10",
@@ -26421,10 +26763,11 @@
         "texto": "El mar le prestó una canción al pueblo",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256_2x": "d14143b61812ef57a5d17bf295a1f4185ebe23cbbc727af9bfc624b860f74b3c",
-      "sha256": "e59d1b8ffbb95c0d013276848a2ce206da39a441e3f866c0ff05bc48ed4bb6bf"
+      "sha256_2x": "4424ed5f8e77b12f15551ec7f32dbe2fd75f4ab6ed418013ce20dce34a41d408",
+      "sha256": "880139f4a60b9996d138c96f77c1999ad1189960e4cbbca1c7cf845a9e9bc113"
     },
     {
       "id": "realismo-magico-garro-02",
@@ -26501,9 +26844,10 @@
         "texto": "La abuela hablaba con los muertos y ellos le contestaban",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "e00e3c565428c494b8861df163192efc41446b79ff0837b91d1edb0c27842683"
+      "sha256": "3330ee9f186994ee5e87114f8761c721338053868fb0bc9de42568810a95c356"
     },
     {
       "id": "realismo-magico-garro-04",
@@ -26543,9 +26887,10 @@
         "texto": "En ese pueblo, los relojes olvidaban la hora",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "ab713b7506e59b034c1daa751cfb8d6dae1b1ced57e9e8868bcc934dc120dd34"
+      "sha256": "dfe481081274f70ec7180234f35d3c2fd8b98e37df8ee82ef58a701ebc54be87"
     },
     {
       "id": "realismo-magico-garro-05",
@@ -26622,9 +26967,10 @@
         "texto": "Esa tarde, hasta las sombras llegaron tarde",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "3518ae5c6db23d1e3907bec57dbc84c46a64f6faa410a6c6a9901187206bd477"
+      "sha256": "dd5858f596de4b84e6d4ac8271a4cd70944f0ec2f54674495816a8471f908d81"
     },
     {
       "id": "realismo-magico-garro-07",
@@ -26814,10 +27160,11 @@
         "texto": "Allí lo imposible se tomaba con café",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256_2x": "11132f8164b4de5fbf36e2fd3478f3e8bea07f2b08bd3464e3c16432c8cc1658",
-      "sha256": "98cd28329cc92f82e54581a27bc4e151e60da76965a220141a7d370d06a7353d"
+      "sha256_2x": "66ce82c3bea9c14b43805834a71b84460e865d3c6db71e584dc1005861867e3b",
+      "sha256": "abe984dfe4918847d1bb040a475b950af4c96cfd52683ecae31ca902224ae760"
     },
     {
       "id": "realismo-magico-rulfo-02",
@@ -26894,9 +27241,10 @@
         "texto": "La luna se detuvo a escuchar la historia",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "f202431d20bed5fd8f78bd15911a3a5d93ce38037c296b97499226541aa1cf55"
+      "sha256": "c6ed3c1505e1306f868a982c87af25509267bc5eb68f9376b1edfbf7d777b2f1"
     },
     {
       "id": "realismo-magico-rulfo-04",
@@ -26936,9 +27284,10 @@
         "texto": "Allí lo imposible se tomaba con café",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "afb1d659b3718de9d7e8773afc39fea30a19da5e945f388f11bbc5daf5e4b499"
+      "sha256": "20085ff54077425bcc2f01bc8b53c21efa01976f4890ca34afb3940d99ca599b"
     },
     {
       "id": "realismo-magico-rulfo-05",
@@ -26978,9 +27327,10 @@
         "texto": "Cada casa guardaba un secreto del tamaño de un pájaro",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "7b66af842419ba50acfc0e1cfca087aaa577e8f6d1e8f10f9af65cd39d6828f9"
+      "sha256": "b7e274ab6beecc59808f5b3897b918da9de2bf75c0ba035e4a02518a86e8d5ab"
     },
     {
       "id": "realismo-magico-rulfo-06",
@@ -27057,9 +27407,10 @@
         "texto": "Allí lo imposible se tomaba con café",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "12c177e9f6a67a403def55ae842fe987c11c8fa0ccadc8216d04091147fe8cea"
+      "sha256": "df5d215a630ba4910422e028ddd09a475dde0a3f129383859bb4091177f69e86"
     },
     {
       "id": "realismo-magico-rulfo-08",
@@ -27213,10 +27564,11 @@
         "texto": "Llovió flores toda la tarde y nadie se sorprendió",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256_2x": "4d70655ba28f8f5615d469b1e8ca35a3122b5f7b681571684d2cdde76172fa4f",
-      "sha256": "728cda39327fc36d898f45c03c1c7a7126be71e4192b6e5119afa822facce24c"
+      "sha256_2x": "3593318ddc752817874618f89f69ae4e0dcce2b55272b6ac33ec6f851756982b",
+      "sha256": "03fae86124d5e780e5b036381c1c35bc1b8b02def7c1998028724da0d5f8211d"
     },
     {
       "id": "realismo-magico-uslar-pietri-02",
@@ -27293,9 +27645,10 @@
         "texto": "La abuela hablaba con los muertos y ellos le contestaban",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "e916587052e03f8b7cd1804693aaa84699c138e58c76d374447b7a5014860e8b"
+      "sha256": "253667e2fcb1ac1025001cd44196301d6ab2108219e6837a7b6ef4d9499e8578"
     },
     {
       "id": "realismo-magico-uslar-pietri-04",
@@ -27335,9 +27688,10 @@
         "texto": "Los árboles recordaban a los que se fueron",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "ed3c82c8b564a9dd428dc71c8c15c5589776f3ff4aa9f1f1d58667e810740246"
+      "sha256": "2e216386181ca31d4e1ee78554efb1f686b581620bd795d20fc1d915c2083304"
     },
     {
       "id": "realismo-magico-uslar-pietri-05",
@@ -27377,9 +27731,10 @@
         "texto": "Una niña cosió el atardecer a su vestido",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "850bdebd6237b7395b1ba2bc3a5a416156aa212e252c1aea97dd8d302f2e58a6"
+      "sha256": "2552fcd9510d2db1f2366bfcf0ef3bf55e701a97ee35fe2401b5905381b9797f"
     },
     {
       "id": "realismo-magico-uslar-pietri-06",
@@ -27419,9 +27774,10 @@
         "texto": "Los árboles recordaban a los que se fueron",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "1040be8aa3e03b49b9a21d61e1cb313195807cd5f551817034fbb13af2be92e9"
+      "sha256": "694c50acc97e769bdf035d0be41036fef2a2abd1142276fc0ba939dd71c83f0a"
     },
     {
       "id": "realismo-magico-uslar-pietri-07",
@@ -27498,9 +27854,10 @@
         "texto": "Los gallos cantaban a medianoche para despertar los sueños",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "c7e51ce34a5c4b19d84ca79d8829df97e0f5fd01a2e46bcdb36e7bd0c6f1c9de"
+      "sha256": "5ba9f4b6256c95ba6dd5368cc0ad879685ba61c3747fb3defd56b7f088be7ced"
     },
     {
       "id": "realismo-magico-uslar-pietri-09",
@@ -27540,9 +27897,10 @@
         "texto": "Esa tarde, hasta las sombras llegaron tarde",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "82d8b7878386fd3d6511d168ef92196a1edce3833ea70bb79cd81d1b14e7c071"
+      "sha256": "9342470577d5fc3901c531b7f9be476ce07c7a34f08e19f0685092cb4c0d3671"
     },
     {
       "id": "realismo-magico-uslar-pietri-10",
@@ -27582,9 +27940,10 @@
         "texto": "La memoria tenía puerta propia y la dejaban abierta",
         "autor": "Marcalibros",
         "obra": "texto original",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": false
       },
-      "sha256": "06098d62972e3444b2888aa1721d479a23f18b053cc670ada1bddf315eaf56e2"
+      "sha256": "1061476dcb9d4250aaabff79093ef2a48fa802fb699d349888cf694b1cecfd1b"
     },
     {
       "id": "realismo-tolstoi-01",
@@ -27627,7 +27986,8 @@
         "texto": "À nous deux maintenant !",
         "autor": "Honoré de Balzac",
         "obra": "Le Père Goriot",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "1444eba9dec61a4b4b021b1ba7e41937bef564ca917bf474f6be9a6ed41cbe0a",
       "sha256": "ad32e09d42d787da98d74ce0672b8441b92da3d944769c9e58918be08f864cd2"
@@ -27744,7 +28104,8 @@
         "texto": "It was the best of times, it was the worst of times",
         "autor": "Charles Dickens",
         "obra": "A Tale of Two Cities",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "3c396f1a359386ac25406160959150b0d56705b90f9755c0cb2264a4b03d8891"
     },
@@ -27786,7 +28147,8 @@
         "texto": "Il faut être rangé dans sa vie et violent dans ses œuvres",
         "autor": "Gustave Flaubert",
         "obra": "Correspondance",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "26363607c0b5c3628e2d0379c2aa800ca9b473a7045181a620fb65835ed7e8f9"
     },
@@ -27828,7 +28190,8 @@
         "texto": "I loved her against reason, against promise, against peace, against hope, against happiness",
         "autor": "Charles Dickens",
         "obra": "Great Expectations",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "ff994c743b1f812908ad4d2a71d6929cbc57bd6060e4149265ab2537a7f3d64a"
     },
@@ -27870,7 +28233,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "f337561833e6ad9b861fd787f19c986217881d9bdfc92b3a7a96ebab9783367a"
     },
@@ -27912,7 +28276,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "db23fa0d864a55ef0905ddf9a9079991f70485ec69228548a057350ac51f0217"
     },
@@ -27954,7 +28319,8 @@
         "texto": "Please, sir, I want some more.",
         "autor": "Charles Dickens",
         "obra": "Oliver Twist",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "573dba7a50873a244691698f9904c55e5e9c40b33c22842e4feb2f9934be6e81"
     },
@@ -28074,7 +28440,8 @@
         "texto": "Beauty is truth, truth beauty",
         "autor": "John Keats",
         "obra": "Ode on a Grecian Urn",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "733452972e7ebae7f06892d64aa7085b362542589279337730e5f52bc98ef7dd"
     },
@@ -28116,7 +28483,8 @@
         "texto": "Que es mi barco mi tesoro, que es mi dios la libertad",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "a9908b7c60822d16f532139dc337f1b571f98f99be31a2ad45a397b3c52fb77f"
     },
@@ -28231,7 +28599,8 @@
         "texto": "Que es mi barco mi tesoro, que es mi dios la libertad",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "804e79e86fb4c25a5f90703a4ae358922344054db75597ba998a3f52dcea8f00"
     },
@@ -28273,7 +28642,8 @@
         "texto": "Que es mi barco mi tesoro, que es mi dios la libertad",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "feef3bda3c4101e17009a4da4f24fd6d19ba329477839292e290afa3d8008a9e"
     },
@@ -28315,7 +28685,8 @@
         "texto": "Volverán las oscuras golondrinas",
         "autor": "Gustavo Adolfo Bécquer",
         "obra": "Rima LIII",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "72ed906f806e479fc968c63055b41ef88d5e134f1d2477b1a531eb6d9c12a881"
     },
@@ -28434,7 +28805,8 @@
         "texto": "Poesía… eres tú",
         "autor": "Gustavo Adolfo Bécquer",
         "obra": "Rima XXI",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "a0267b39cac0aea87c5a909851270df4d3b87e0dc9b2c13b52691d818bafb172",
       "sha256": "e5f6fbc549af746a82b5bd47398c1331b432cee2d67b582b3c9a59e56aaf1ea2"
@@ -28477,7 +28849,8 @@
         "texto": "She walks in beauty, like the night",
         "autor": "Lord Byron",
         "obra": "She Walks in Beauty",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "87d0314e94da35de7091fa3382da8da1cb0390d8e44faa0be824bc963a3f2735"
     },
@@ -28519,7 +28892,8 @@
         "texto": "Beauty is truth, truth beauty",
         "autor": "John Keats",
         "obra": "Ode on a Grecian Urn",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "75eb4ae65905105796538a9a30ece8d9556ab67ed230db701452a479cb34c508"
     },
@@ -28561,7 +28935,8 @@
         "texto": "Poesía… eres tú",
         "autor": "Gustavo Adolfo Bécquer",
         "obra": "Rima XXI",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "41af69f6ff3adbe772e9c132ed8b7ece2b0957b9b3ccc371be6a8f88ba1812b3"
     },
@@ -28640,7 +29015,8 @@
         "texto": "If Winter comes, can Spring be far behind?",
         "autor": "Percy Bysshe Shelley",
         "obra": "Ode to the West Wind",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "7e4fb7d6b24541ef2ab5353af5b012cbdca3ba1a5d2390a77ba5349709de47a7"
     },
@@ -28719,7 +29095,8 @@
         "texto": "Beauty is truth, truth beauty",
         "autor": "John Keats",
         "obra": "Ode on a Grecian Urn",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "b56549d5d151841f6c2152e2efeac5f57f5b89edd01ffe1b1f783151aeeb682b"
     },
@@ -28837,7 +29214,8 @@
         "texto": "If Winter comes, can Spring be far behind?",
         "autor": "Percy Bysshe Shelley",
         "obra": "Ode to the West Wind",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "1423996bc0dfca916798c5449f319c6b17890b8090aad35eaa5facbcb463074d",
       "sha256": "fbb68a14b12fe66f7d59a8476d11d1540bd4a0c93a3c733bf81f522c43593ee3"
@@ -28917,7 +29295,8 @@
         "texto": "Escribir en Madrid es llorar",
         "autor": "Mariano José de Larra",
         "obra": "Artículos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "73978a3f8e11e7af60695ad4e0510eef011cf303deb3ceb6d840b587c762cd1f"
     },
@@ -29032,7 +29411,8 @@
         "texto": "Demain, dès l'aube, à l'heure où blanchit la campagne",
         "autor": "Victor Hugo",
         "obra": "Les Contemplations",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "9c34359b5dd48cb24c623d5ee6423a5d1d7e3773745951ddf67482f67fb1acd8"
     },
@@ -29074,7 +29454,8 @@
         "texto": "Quoth the Raven, “Nevermore.”",
         "autor": "Edgar Allan Poe",
         "obra": "The Raven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "e24c355559a7dccc22c077ce97c32f7a2040f009aa26ba8e0243cf8e9a4fdd1e"
     },
@@ -29116,7 +29497,8 @@
         "texto": "Quoth the Raven, “Nevermore.”",
         "autor": "Edgar Allan Poe",
         "obra": "The Raven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "8fabb03f27da9509539c1626400ec61b6d23f6d2560a04436c4bce850c6b71ff"
     },
@@ -29194,7 +29576,8 @@
         "texto": "I wandered lonely as a cloud",
         "autor": "William Wordsworth",
         "obra": "Daffodils",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "fba7d447dc25d39ab97fa8a604719a25d8d951916aece9dd266926e46e6106d7"
     },
@@ -29314,7 +29697,8 @@
         "texto": "Beauty is truth, truth beauty",
         "autor": "John Keats",
         "obra": "Ode on a Grecian Urn",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "2d0ec7fe93ea554c0350466d83193e080eca534a49c37e0273421c3391934697"
     },
@@ -29356,7 +29740,8 @@
         "texto": "Poesía… eres tú",
         "autor": "Gustavo Adolfo Bécquer",
         "obra": "Rima XXI",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "e5ddd124fa0022f9e14459573a9f710276b9cca7aef432793f1d86b728d18bf0"
     },
@@ -29472,7 +29857,8 @@
         "texto": "Escribir en Madrid es llorar",
         "autor": "Mariano José de Larra",
         "obra": "Artículos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "46412d23dc5c2707bc49fa4f976340fe18b3c849dd75ba88f632b29ccb186446"
     },
@@ -29588,7 +29974,8 @@
         "texto": "Que es mi barco mi tesoro, que es mi dios la libertad",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "94b38ee7bd2e7451b3a73c85f26d25a1b1e7a0a176189cd03b9a63e0811ac26b"
     },
@@ -29632,7 +30019,8 @@
         "texto": "Que es mi barco mi tesoro, que es mi dios la libertad",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "a7f475fd51abdf250178f8e243fa2741ba46812010233d7d24bb022270e7b5eb",
       "sha256": "17ef4f0650bb95ff0b753c16722ccf29d4e6cec11ccc6824894bf0054030aa19"
@@ -29859,7 +30247,8 @@
         "texto": "Demain, dès l'aube, à l'heure où blanchit la campagne",
         "autor": "Victor Hugo",
         "obra": "Les Contemplations",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "44f761a6585288a8f9eb0cecc438ed6cc83e3aa214702dc67c7bfb8ce8617d26"
     },
@@ -29938,7 +30327,8 @@
         "texto": "Escribir en Madrid es llorar",
         "autor": "Mariano José de Larra",
         "obra": "Artículos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "0a070f1a13def647651265c6bb9ff75e4b89ed07c024949268e30bf360cc4836"
     },
@@ -29980,7 +30370,8 @@
         "texto": "Podrá nublarse el sol eternamente",
         "autor": "Gustavo Adolfo Bécquer",
         "obra": "Rima LXXIII",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "ba5c86cf4c052ee26afb81d6c13ed3aa1d183a73fd9eb4296aea02c70e9beee1"
     },
@@ -30063,7 +30454,8 @@
         "texto": "Que es mi barco mi tesoro, que es mi dios la libertad",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "e54d4d2ae16091b4b210f0cab8bc11f02856d6505c1c9edb428865a631ed4d79"
     },
@@ -30142,7 +30534,8 @@
         "texto": "Escribir en Madrid es llorar",
         "autor": "Mariano José de Larra",
         "obra": "Artículos",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "e032ce2b619e28325a42be88f9f3d0c695e92e9f05da9817493b9eaac51d0bbd"
     },
@@ -30184,7 +30577,8 @@
         "texto": "Negra sombra que me asombras",
         "autor": "Rosalía de Castro",
         "obra": "Follas novas",
-        "idioma": "gl"
+        "idioma": "gl",
+        "firmada": true
       },
       "sha256": "e522d6e1839e11f32d87d5065c6b05ce3f2a9b1d3dd5bdf95832978d342805a2"
     },
@@ -30226,7 +30620,8 @@
         "texto": "Volverán las oscuras golondrinas",
         "autor": "Gustavo Adolfo Bécquer",
         "obra": "Rima LIII",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "07c63fe0a09df973a9ed08695f0702d6d49d7ef5284a9d9014fd2a37cc45f425"
     },
@@ -30268,7 +30663,8 @@
         "texto": "Demain, dès l'aube, à l'heure où blanchit la campagne",
         "autor": "Victor Hugo",
         "obra": "Les Contemplations",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "2a9d4db5088bcab29e54144c1e39af8c8b6790d3e316b8e8529ad51f81f42e5f"
     },
@@ -30384,7 +30780,8 @@
         "texto": "If Winter comes, can Spring be far behind?",
         "autor": "Percy Bysshe Shelley",
         "obra": "Ode to the West Wind",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "1813353d68287218fae4c98cbd14dba48d8b269bbaaf742016da40f1b1f9be2d"
     },
@@ -30466,7 +30863,8 @@
         "texto": "Negra sombra que me asombras",
         "autor": "Rosalía de Castro",
         "obra": "Follas novas",
-        "idioma": "gl"
+        "idioma": "gl",
+        "firmada": true
       },
       "sha256": "0e34af53377182bdd659bebf1ad0e896c5f7238ea64506479d53bcc0d34eef89"
     },
@@ -30508,7 +30906,8 @@
         "texto": "A thing of beauty is a joy for ever",
         "autor": "John Keats",
         "obra": "Endymion",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "282854cf35e3fc063ec2461a99c7cf8d4ec8d647e12cffc0851f57da00cfdedd"
     },
@@ -30587,7 +30986,8 @@
         "texto": "A thing of beauty is a joy for ever",
         "autor": "John Keats",
         "obra": "Endymion",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "8000e862f97e4e1df87f6f6dc8706660432b561014cf849199d79e7da68fe1ec"
     },
@@ -30776,7 +31176,8 @@
         "texto": "If Winter comes, can Spring be far behind?",
         "autor": "Percy Bysshe Shelley",
         "obra": "Ode to the West Wind",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "e733ad512d7e9ade516b3d8940e68de43a14d043ba7cf1e0ead6e5d45c8af80e"
     },
@@ -30896,7 +31297,8 @@
         "texto": "Poesía… eres tú",
         "autor": "Gustavo Adolfo Bécquer",
         "obra": "Rima XXI",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "9a02b347b7c85465eb8e09611312c41d749f9f506cd546cfd4b678f6c521e250"
     },
@@ -30975,7 +31377,8 @@
         "texto": "Quoth the Raven, “Nevermore.”",
         "autor": "Edgar Allan Poe",
         "obra": "The Raven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "cb916f1e6a01af60c398c2ae162d7189e5e201d9ee573590a8c99a77041be6cd"
     },
@@ -31090,7 +31493,8 @@
         "texto": "Volverán las oscuras golondrinas",
         "autor": "Gustavo Adolfo Bécquer",
         "obra": "Rima LIII",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "ab8a7d6a2146d5665dacf67992abf7f526c11151985d6eafa2d378090ae8e415"
     },
@@ -31132,7 +31536,8 @@
         "texto": "Beauty is truth, truth beauty",
         "autor": "John Keats",
         "obra": "Ode on a Grecian Urn",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "af5856a8b3cb5707c6370d58c5b368454f1ba7018525c0d2b2e8b33cc663a66b"
     },
@@ -31252,7 +31657,8 @@
         "texto": "I wandered lonely as a cloud",
         "autor": "William Wordsworth",
         "obra": "Daffodils",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "6c36a77597a23957c0a137615a1134f71640dcb7789f0a8cf4b326fbae2c5771"
     },
@@ -31294,7 +31700,8 @@
         "texto": "Que es mi barco mi tesoro, que es mi dios la libertad",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "225070226c1e3e16a827ab97b87c1db7e479e7e45eb0e2f05454c7e5ff37531c"
     },
@@ -31336,7 +31743,8 @@
         "texto": "Que es mi barco mi tesoro, que es mi dios la libertad",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "cc045deece8b59f11d65685fc35f0218d9c20e6f554a15f0f246ab81b99d1133"
     },
@@ -31452,7 +31860,8 @@
         "texto": "Demain, dès l'aube, à l'heure où blanchit la campagne",
         "autor": "Victor Hugo",
         "obra": "Les Contemplations",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "77196b26cbc25d3b240ac91a692f095f95495034f64d28fcd4dc16ae8273d3d7"
     },
@@ -31531,7 +31940,8 @@
         "texto": "A thing of beauty is a joy for ever",
         "autor": "John Keats",
         "obra": "Endymion",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "ae9bc61331780308ec2fd4761d5b4a335b580a86a303ff7d6e455d6dc8bd556a"
     },
@@ -31613,7 +32023,8 @@
         "texto": "Demain, dès l'aube, à l'heure où blanchit la campagne",
         "autor": "Victor Hugo",
         "obra": "Les Contemplations",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "440b498635dc38047525fc6b22845f159f540b95e80bf0fafef1fd626379dc4f",
       "sha256": "ad35f3fd0c260f5f333306d0817adec595cbc0243c40f51e1f54e3a23fdf7f65"
@@ -31656,7 +32067,8 @@
         "texto": "She walks in beauty, like the night",
         "autor": "Lord Byron",
         "obra": "She Walks in Beauty",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "b66ac573d2bf9660de6bf41c469f968cf4405e6a9d1f30880c91e170e5f63731"
     },
@@ -31882,7 +32294,8 @@
         "texto": "Con diez cañones por banda, viento en popa a toda vela",
         "autor": "José de Espronceda",
         "obra": "Canción del pirata",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "976d8700c2fc83d0a94e4814e9216f4ede8bee3e1ce6c68a368913762fd8e67b"
     },
@@ -31924,7 +32337,8 @@
         "texto": "Quoth the Raven, “Nevermore.”",
         "autor": "Edgar Allan Poe",
         "obra": "The Raven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "0413829677674935728205cb57774b305ff120a9b9ce1b56a5963428a68e7641"
     },
@@ -32005,7 +32419,8 @@
         "texto": "Il pleure dans mon cœur comme il pleut sur la ville",
         "autor": "Paul Verlaine",
         "obra": "Romances sans paroles",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "ad6127c65a9ca1521b51282cb8799b9325045d7a25a51b55435e1c42643895e7",
       "sha256": "06eafe583922e8868bd8897733f697dce61a5c83801a7a2e9e08fcb6dba27183"
@@ -32048,7 +32463,8 @@
         "texto": "Il pleure dans mon cœur comme il pleut sur la ville",
         "autor": "Paul Verlaine",
         "obra": "Romances sans paroles",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "1a3e464c358e65e93cdeb81266937f89110ee6ac71afb11ebba5b1f3bf7b0bd1"
     },
@@ -32127,7 +32543,8 @@
         "texto": "Tread softly because you tread on my dreams",
         "autor": "W. B. Yeats",
         "obra": "He Wishes for the Cloths of Heaven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "13a45ec0e22de236e26335597f55f90c941b6408d2411e0546c9aae52bc76869"
     },
@@ -32206,7 +32623,8 @@
         "texto": "Là, tout n'est qu'ordre et beauté, luxe, calme et volupté",
         "autor": "Charles Baudelaire",
         "obra": "L'invitation au voyage",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "0e330ead9a6ac248a0c4d4e161a05834b6adf7a8a141633dcb87fc8dfc42fc8d"
     },
@@ -32248,7 +32666,8 @@
         "texto": "Tread softly because you tread on my dreams",
         "autor": "W. B. Yeats",
         "obra": "He Wishes for the Cloths of Heaven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "48f2bec1074bae5467531fc7a4a0cb2dd0b64cc1c080cb8e712f673b82dc9b72"
     },
@@ -32327,7 +32746,8 @@
         "texto": "Ah ! que la vie est quotidienne",
         "autor": "Jules Laforgue",
         "obra": "Complainte",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "7b1dacdbb9ac2739598fea123f31b8465b4a5cea13e4f737f06ddd4b303c93c4"
     },
@@ -32369,7 +32789,8 @@
         "texto": "Tread softly because you tread on my dreams",
         "autor": "W. B. Yeats",
         "obra": "He Wishes for the Cloths of Heaven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "6ceb97e8c98cfcb8ee7a144575ddf822b0b47f11c888fc5d2cae59c1a8ef1cef"
     },
@@ -32563,7 +32984,8 @@
         "texto": "Hypocrite lecteur, — mon semblable, — mon frère !",
         "autor": "Charles Baudelaire",
         "obra": "Au lecteur",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "27b1c981e8bad5e4a98d562ef775ff4a7da7c5afa73501ee2e7996e65924a6de"
     },
@@ -32605,7 +33027,8 @@
         "texto": "Ah ! que la vie est quotidienne",
         "autor": "Jules Laforgue",
         "obra": "Complainte",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "9d2eab573786639bdea443d03f13c91f6991b44c79ce8f2d289726656e96385b"
     },
@@ -32683,7 +33106,8 @@
         "texto": "De la musique avant toute chose",
         "autor": "Paul Verlaine",
         "obra": "Art poétique",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "6e2fad16baa0bf419952d838105d64e8d8be10644799fdac3c8995c56075b602"
     },
@@ -32840,7 +33264,8 @@
         "texto": "La chair est triste, hélas ! et j'ai lu tous les livres",
         "autor": "Stéphane Mallarmé",
         "obra": "Brise marine",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "9ce34bd3d45ee174c06b5f86376686b114d351a621cc061d133d365877ec8ce6"
     },
@@ -32882,7 +33307,8 @@
         "texto": "La chair est triste, hélas ! et j'ai lu tous les livres",
         "autor": "Stéphane Mallarmé",
         "obra": "Brise marine",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "18387b2c349c69f37f09c19c0fa450fe9b97b4c1464009c1553d23f33ba64052"
     },
@@ -33035,7 +33461,8 @@
         "texto": "De la musique avant toute chose",
         "autor": "Paul Verlaine",
         "obra": "Art poétique",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "7458cacbca2ee495003477c63c21caae19bf0d9f88192aac2019f6dd8cc8f785"
     },
@@ -33077,7 +33504,8 @@
         "texto": "Tread softly because you tread on my dreams",
         "autor": "W. B. Yeats",
         "obra": "He Wishes for the Cloths of Heaven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "628987caf8dfdeb437a4a1d290ade631c5ac6f07c0b5765f216a36c8e4aad6b6"
     },
@@ -33156,7 +33584,8 @@
         "texto": "Je est un autre",
         "autor": "Arthur Rimbaud",
         "obra": "Lettre du voyant",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "5110e001b018142bf7bd0966a1b2fb777f467d3ebba0a3e702c26d41e85bfe39"
     },
@@ -33276,7 +33705,8 @@
         "texto": "Ah ! que la vie est quotidienne",
         "autor": "Jules Laforgue",
         "obra": "Complainte",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "aa5f624aad69990836df937a2be5ac47eea522d214ec6d440b62bcc5b7891d86"
     },
@@ -33318,7 +33748,8 @@
         "texto": "Things fall apart; the centre cannot hold",
         "autor": "W. B. Yeats",
         "obra": "The Second Coming",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "038a40588789934ff5ff1d845ac79c9a8f4a83c21c3052580d6ff9274bf0b819"
     },
@@ -33397,7 +33828,8 @@
         "texto": "La chair est triste, hélas ! et j'ai lu tous les livres",
         "autor": "Stéphane Mallarmé",
         "obra": "Brise marine",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "c816dc859cfa447673b98e4f037cf3a48c4d072e344dbb44fd03927d40a5e0f0"
     },
@@ -33439,7 +33871,8 @@
         "texto": "Elle est retrouvée. Quoi ? — L'éternité.",
         "autor": "Arthur Rimbaud",
         "obra": "L'Éternité",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "c8de9d3b2d8c0af639b3f2065d71e09c0701dffae02d57400cc98d83e1e60422"
     },
@@ -33481,7 +33914,8 @@
         "texto": "Là, tout n'est qu'ordre et beauté, luxe, calme et volupté",
         "autor": "Charles Baudelaire",
         "obra": "L'invitation au voyage",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "21a3ca33c9265f94bff9cc65b5c6c55a809f41724553cf25c1f16d7f9fac53a2"
     },
@@ -33560,7 +33994,8 @@
         "texto": "De la musique avant toute chose",
         "autor": "Paul Verlaine",
         "obra": "Art poétique",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "211929c6aa3c3d364ce14b3b5cdfa52e7314b67cb77509cb85137794dc37fc07"
     },
@@ -33605,7 +34040,8 @@
         "texto": "Là, tout n'est qu'ordre et beauté, luxe, calme et volupté",
         "autor": "Charles Baudelaire",
         "obra": "L'invitation au voyage",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "604836b20ce5f1590c9d699fddf2dfd0a62852d696ef96f622e3d0c176cfe2be",
       "sha256": "32a34dfaf7514a6b1c22d7a5cd37b92264f64c12c2a52c7899838b9849877996"
@@ -33722,7 +34158,8 @@
         "texto": "Tread softly because you tread on my dreams",
         "autor": "W. B. Yeats",
         "obra": "He Wishes for the Cloths of Heaven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "eb12fe945da8a41548eef606d5ad5f1428d964c64df58902940926fddc815a55"
     },
@@ -33801,7 +34238,8 @@
         "texto": "Things fall apart; the centre cannot hold",
         "autor": "W. B. Yeats",
         "obra": "The Second Coming",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "8146405840646a086a0c7a5473ed3c83637aa7b5aec4035ead20d2e75ba4af60"
     },
@@ -33843,7 +34281,8 @@
         "texto": "Hypocrite lecteur, — mon semblable, — mon frère !",
         "autor": "Charles Baudelaire",
         "obra": "Au lecteur",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "35ed1219f14630ae66a91d3feb52558f35a321243a130439d2ff92843cc3db7e"
     },
@@ -33885,7 +34324,8 @@
         "texto": "Du musst dein Leben ändern",
         "autor": "Rainer Maria Rilke",
         "obra": "Archaïscher Torso Apollos",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "02390bff03f9f42a3a4d559bb4d9867204bea96a5dc273fa01d05a4fb6a00d58"
     },
@@ -33964,7 +34404,8 @@
         "texto": "Things fall apart; the centre cannot hold",
         "autor": "W. B. Yeats",
         "obra": "The Second Coming",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "465094c36ee7a125095fcdc7fba4e174db2f1fe978a391b9744fd31cc8d122cd"
     },
@@ -34009,7 +34450,8 @@
         "texto": "Il pleure dans mon cœur comme il pleut sur la ville",
         "autor": "Paul Verlaine",
         "obra": "Romances sans paroles",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "50f1adb12a1aa89ceaa31f91553883a08bf09f0308547bda1c2c2ab0e264eeae",
       "sha256": "0cf1defed4e8edd27147dafb5420cb694b249d892c1e6ab38b8f7b0c1a4f94fd"
@@ -34052,7 +34494,8 @@
         "texto": "Du musst dein Leben ändern",
         "autor": "Rainer Maria Rilke",
         "obra": "Archaïscher Torso Apollos",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "3ab6930a0e50a0b314c98c4d849a6b2c43029a6bef57cbe94013a821f8e67706"
     },
@@ -34094,7 +34537,8 @@
         "texto": "Ah ! que la vie est quotidienne",
         "autor": "Jules Laforgue",
         "obra": "Complainte",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "8a84d100f18bd4722d1aef17eece7c0b158ac4709a16c610eed025e9ca687736"
     },
@@ -34210,7 +34654,8 @@
         "texto": "Là, tout n'est qu'ordre et beauté, luxe, calme et volupté",
         "autor": "Charles Baudelaire",
         "obra": "L'invitation au voyage",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "0d40ea26031d23a857953414ae1704c5d45511338a97cb5fbfd08ce9b21db6a7"
     },
@@ -34326,7 +34771,8 @@
         "texto": "Elle est retrouvée. Quoi ? — L'éternité.",
         "autor": "Arthur Rimbaud",
         "obra": "L'Éternité",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "a1104439573d575fe6e9b99dd5215ed94c16ec9d7340f4bf6acc33aff9d8dd29"
     },
@@ -34368,7 +34814,8 @@
         "texto": "Hypocrite lecteur, — mon semblable, — mon frère !",
         "autor": "Charles Baudelaire",
         "obra": "Au lecteur",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "eb6b53a77c7d9253e269b4059e0ccc5641fea89e03a52a8c766442c4f4678fb8"
     },
@@ -34413,7 +34860,8 @@
         "texto": "Things fall apart; the centre cannot hold",
         "autor": "W. B. Yeats",
         "obra": "The Second Coming",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256_2x": "cd7c351f445d7f7c9a1db047f51852087de8cf90eaa89df817b811b46a08eff0",
       "sha256": "022b327431cceccd24fc7b67db8a13842b961685100e8f9dc7e4bee9e853687e"
@@ -34530,7 +34978,8 @@
         "texto": "Ah ! que la vie est quotidienne",
         "autor": "Jules Laforgue",
         "obra": "Complainte",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "b358c2c3797754ca013e5de456d6866b40ba1899d8136f384c4e987ee885eb0d"
     },
@@ -34572,7 +35021,8 @@
         "texto": "Du musst dein Leben ändern",
         "autor": "Rainer Maria Rilke",
         "obra": "Archaïscher Torso Apollos",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "3438ca3bcdcb2c3183171ab6dd1ee174cd6200cf8161012c5d15d4f330f17b81"
     },
@@ -34651,7 +35101,8 @@
         "texto": "Il pleure dans mon cœur comme il pleut sur la ville",
         "autor": "Paul Verlaine",
         "obra": "Romances sans paroles",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "01c8925e746490b7225cd634914cd0621974abf50eddcd43442f4e070a872446"
     },
@@ -34693,7 +35144,8 @@
         "texto": "Tread softly because you tread on my dreams",
         "autor": "W. B. Yeats",
         "obra": "He Wishes for the Cloths of Heaven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "977c5fd79cc58c2f712ca41002f4df481f7e9645d6252ab0198cba427ccb668b"
     },
@@ -34812,7 +35264,8 @@
         "texto": "Wer, wenn ich schriee, hörte mich denn aus der Engel Ordnungen?",
         "autor": "Rainer Maria Rilke",
         "obra": "Duineser Elegien",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256_2x": "26ad93af6381fa21bd9de4d70e43cb1f99ff04dc16881ea783d49d98a838db32",
       "sha256": "4647e510e55585cc7bf37f4e0a70775a58c0911a8609a65beb62a1abc5abcddb"
@@ -34929,7 +35382,8 @@
         "texto": "Du musst dein Leben ändern",
         "autor": "Rainer Maria Rilke",
         "obra": "Archaïscher Torso Apollos",
-        "idioma": "de"
+        "idioma": "de",
+        "firmada": true
       },
       "sha256": "2c9590092e42bf1f5fd0eb2c4f64d6bf52a48c394078a69bbd60f615ec7ac2a9"
     },
@@ -34971,7 +35425,8 @@
         "texto": "Hypocrite lecteur, — mon semblable, — mon frère !",
         "autor": "Charles Baudelaire",
         "obra": "Au lecteur",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "1470686a4676885ae4cd9aeebdb02ba3ab224d3afa2d4ca4f368baf48b6dcb10"
     },
@@ -35013,7 +35468,8 @@
         "texto": "Things fall apart; the centre cannot hold",
         "autor": "W. B. Yeats",
         "obra": "The Second Coming",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "75c726cdd89128a47705536445811b493ca5f9b83230c8e0b8069bddc4bcaabd"
     },
@@ -35055,7 +35511,8 @@
         "texto": "Hypocrite lecteur, — mon semblable, — mon frère !",
         "autor": "Charles Baudelaire",
         "obra": "Au lecteur",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "d02ea607b5c18b1a87c5555a0cb8bd5f1e19722ce032a90aaf4d3230f8c938b1"
     },
@@ -35248,7 +35705,8 @@
         "texto": "Things fall apart; the centre cannot hold",
         "autor": "W. B. Yeats",
         "obra": "The Second Coming",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "e95ed5db7e85e53a408480f27a88d9c77b48566086d68711683958032ff875ad"
     },
@@ -35290,7 +35748,8 @@
         "texto": "Ah ! que la vie est quotidienne",
         "autor": "Jules Laforgue",
         "obra": "Complainte",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "d4ab7acc45037255ca417e1e34770eb69a62c225ffa90b0014511bee1578abfa"
     },
@@ -35332,7 +35791,8 @@
         "texto": "Ah ! que la vie est quotidienne",
         "autor": "Jules Laforgue",
         "obra": "Complainte",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "ad04f11df7e2c7475077d470fb3e53a07415631540d80d7fd70614e75342247a"
     },
@@ -35448,7 +35908,8 @@
         "texto": "Là, tout n'est qu'ordre et beauté, luxe, calme et volupté",
         "autor": "Charles Baudelaire",
         "obra": "L'invitation au voyage",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "91790b416a44538c53546c511dae19bbf31d85b54f54270b7ae86d0bff666f4f"
     },
@@ -35490,7 +35951,8 @@
         "texto": "Là, tout n'est qu'ordre et beauté, luxe, calme et volupté",
         "autor": "Charles Baudelaire",
         "obra": "L'invitation au voyage",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "f24b27f5b159dedfd6d26ffd0b65efb0c4b45bed7f610bedd6a4756e44a7e787"
     },
@@ -35532,7 +35994,8 @@
         "texto": "Tread softly because you tread on my dreams",
         "autor": "W. B. Yeats",
         "obra": "He Wishes for the Cloths of Heaven",
-        "idioma": "en"
+        "idioma": "en",
+        "firmada": true
       },
       "sha256": "dbd58a484e0315cca925439b1fe437a7afaabd773c3c121f72f02bb899ee0171"
     },
@@ -35614,7 +36077,8 @@
         "texto": "De la musique avant toute chose",
         "autor": "Paul Verlaine",
         "obra": "Art poétique",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "c11adab5d5dd059a3c89af1bac3d6c86624c631c10edfc89ed6a3610e6fb9623",
       "sha256": "10595cc5456d53accbb28a427bdf7d8171a187bc8f4b610e4f0c8f4f6de49993"
@@ -35768,7 +36232,8 @@
         "texto": "Elle est retrouvée. Quoi ? — L'éternité.",
         "autor": "Arthur Rimbaud",
         "obra": "L'Éternité",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "df42a7980ff7998ce1d1a1273a0894b76646becae990b770ce4c5eb749997b16"
     },
@@ -35810,7 +36275,8 @@
         "texto": "La chair est triste, hélas ! et j'ai lu tous les livres",
         "autor": "Stéphane Mallarmé",
         "obra": "Brise marine",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "0867269a5fe0ecc3957a579d13578c5ea38615978b8f1745fc9507712c6a8d2e"
     },
@@ -35926,7 +36392,8 @@
         "texto": "De la musique avant toute chose",
         "autor": "Paul Verlaine",
         "obra": "Art poétique",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "6f94c188ab037f25d214e92929d94686cccc9b51aedcb5c89bca60e7306713bb"
     },
@@ -36008,7 +36475,8 @@
         "texto": "Por qué cantáis la rosa, ¡oh Poetas! Hacedla florecer en el poema",
         "autor": "Vicente Huidobro",
         "obra": "Arte poética",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256_2x": "2e0e8e5113aec83aa14b7078fb0f4311f4cae1c117ddd97e0b86f02e0403b008",
       "sha256": "cf46c9e599aad22e9f65eb042f6c8fd6fc7e5d437ccdb67f13240fb3287d3b8d"
@@ -36125,7 +36593,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "aa00c00a125ed798805998ca92e8e49371ae1f5f768a2eedcab644aa954274fc"
     },
@@ -36167,7 +36636,8 @@
         "texto": "Hay golpes en la vida, tan fuertes… ¡Yo no sé!",
         "autor": "César Vallejo",
         "obra": "Los heraldos negros",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "0c7147555b418d1505ee1c832c10bef707fcc9bc4472d659f000591f87fb0c3b"
     },
@@ -36246,7 +36716,8 @@
         "texto": "A las cinco de la tarde",
         "autor": "Federico García Lorca",
         "obra": "Llanto por Ignacio Sánchez Mejías",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "33a14d092530cdaa03b7df67afb5c21bce0be708978ecaf2fc7843645c001020"
     },
@@ -36362,7 +36833,8 @@
         "texto": "Tudo vale a pena se a alma não é pequena",
         "autor": "Fernando Pessoa",
         "obra": "Mensagem",
-        "idioma": "pt"
+        "idioma": "pt",
+        "firmada": true
       },
       "sha256": "6d67ae493c306fc3a048c265ec55cb02698101f73368b7cc5f3bb8590e3c002b"
     },
@@ -36445,7 +36917,8 @@
         "texto": "Tudo vale a pena se a alma não é pequena",
         "autor": "Fernando Pessoa",
         "obra": "Mensagem",
-        "idioma": "pt"
+        "idioma": "pt",
+        "firmada": true
       },
       "sha256": "314238f1121801a889bb8aa8b0f06414765229bc177f33838cd86a51d9775d09"
     },
@@ -36524,7 +36997,8 @@
         "texto": "Por qué cantáis la rosa, ¡oh Poetas! Hacedla florecer en el poema",
         "autor": "Vicente Huidobro",
         "obra": "Arte poética",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "0d3f3af745d70409aac20c3dbd4f99817bb8ca5c4c2ce4ab23262c6f22410eea"
     },
@@ -36566,7 +37040,8 @@
         "texto": "Tudo vale a pena se a alma não é pequena",
         "autor": "Fernando Pessoa",
         "obra": "Mensagem",
-        "idioma": "pt"
+        "idioma": "pt",
+        "firmada": true
       },
       "sha256": "cd15b295634871a98614a74ca8910cbba0fee47e6877049133e096854c0df425"
     },
@@ -36608,7 +37083,8 @@
         "texto": "Tudo vale a pena se a alma não é pequena",
         "autor": "Fernando Pessoa",
         "obra": "Mensagem",
-        "idioma": "pt"
+        "idioma": "pt",
+        "firmada": true
       },
       "sha256": "e628b419fda7c5d3fe110b1e8af64ece1fa709efeb9d267c4e69263246c7e6ef"
     },
@@ -36687,7 +37163,8 @@
         "texto": "Tudo vale a pena se a alma não é pequena",
         "autor": "Fernando Pessoa",
         "obra": "Mensagem",
-        "idioma": "pt"
+        "idioma": "pt",
+        "firmada": true
       },
       "sha256": "a6e8170d98cb398e7e26c43ca58cc01ac54852250722d0def2ce748e277782a5"
     },
@@ -36729,7 +37206,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "ddf5bea043ccd112f2c37161bd4bf31d6e429643b6c4410de22fbb0e1a44c3f5"
     },
@@ -36771,7 +37249,8 @@
         "texto": "Sous le pont Mirabeau coule la Seine",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "30a69bdbc43dd70f8580b40f2bf94a3e5980492413a1de0119106a78d9875717"
     },
@@ -36854,7 +37333,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "80fc46f63ec96ee5dc7532f748081a99b5c8fca61c97767357fa073a4615e2f9"
     },
@@ -37080,7 +37560,8 @@
         "texto": "Un automobile ruggente… è più bello della Vittoria di Samotracia",
         "autor": "F. T. Marinetti",
         "obra": "Manifesto del Futurismo",
-        "idioma": "it"
+        "idioma": "it",
+        "firmada": true
       },
       "sha256": "516a3b322ec98315e8ffe0718e1be9f7966359ab820666aac1563ad465a399cb"
     },
@@ -37159,7 +37640,8 @@
         "texto": "Verde que te quiero verde",
         "autor": "Federico García Lorca",
         "obra": "Romance sonámbulo",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "4e89cca3f3ec73ec8e29d8941f85cfb2584f40b1fde5108f99e1b350ec3d8136"
     },
@@ -37204,7 +37686,8 @@
         "texto": "Un automobile ruggente… è più bello della Vittoria di Samotracia",
         "autor": "F. T. Marinetti",
         "obra": "Manifesto del Futurismo",
-        "idioma": "it"
+        "idioma": "it",
+        "firmada": true
       },
       "sha256_2x": "3c8155c347a21b8fc4be72098abab084cbd215d682bf4d480ea763b98c1d1fda",
       "sha256": "dfa77313ec7c6129cc7db15c927e3690f7d4dc727d4435412e5840c969a71167"
@@ -37284,7 +37767,8 @@
         "texto": "Sous le pont Mirabeau coule la Seine",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "886487cf267626c9367d6b62029fbf0943b8c96e7804b14e84910537cd24c679"
     },
@@ -37326,7 +37810,8 @@
         "texto": "Verde que te quiero verde",
         "autor": "Federico García Lorca",
         "obra": "Romance sonámbulo",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "837d2218bc9e57cabb6954a09a825e14160aa372a727eb21812789ad3e60fdb0"
     },
@@ -37552,7 +38037,8 @@
         "texto": "Sous le pont Mirabeau coule la Seine",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "48fc81add7c6bc31f5378df02614ac26adb4497a070b13d0f31ae80c9a803ddd"
     },
@@ -37671,7 +38157,8 @@
         "texto": "A las cinco de la tarde",
         "autor": "Federico García Lorca",
         "obra": "Llanto por Ignacio Sánchez Mejías",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "7b566597964eaac18837116545e2b892bf2a4843f0f53dbd0950101cf7edae15"
     },
@@ -37750,7 +38237,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "8617a2c1b4036c343feda716698cd5e3edb561502e1b2cf87f92637e4158e6cd"
     },
@@ -37940,7 +38428,8 @@
         "texto": "Tudo vale a pena se a alma não é pequena",
         "autor": "Fernando Pessoa",
         "obra": "Mensagem",
-        "idioma": "pt"
+        "idioma": "pt",
+        "firmada": true
       },
       "sha256": "559cb1788914b779c7ed4c988875a0553dfea8afd038c5e1e35c5bba376447e7"
     },
@@ -38023,7 +38512,8 @@
         "texto": "Hay golpes en la vida, tan fuertes… ¡Yo no sé!",
         "autor": "César Vallejo",
         "obra": "Los heraldos negros",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "038889442ac3374047d1eb232eb8fe6a3a178ac6d30fdd5368b35336a67d22f8"
     },
@@ -38065,7 +38555,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "a41a14ef165b34414d435f174dd06fcb5014f8fb307386cff5fc14d97dcccd44"
     },
@@ -38181,7 +38672,8 @@
         "texto": "Por qué cantáis la rosa, ¡oh Poetas! Hacedla florecer en el poema",
         "autor": "Vicente Huidobro",
         "obra": "Arte poética",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "541134f9e0fd8f335c202424141fa02e5ddcdf4da684715b2d76446cf46a77c3"
     },
@@ -38260,7 +38752,8 @@
         "texto": "Un automobile ruggente… è più bello della Vittoria di Samotracia",
         "autor": "F. T. Marinetti",
         "obra": "Manifesto del Futurismo",
-        "idioma": "it"
+        "idioma": "it",
+        "firmada": true
       },
       "sha256": "fdc31751770c33f83817923461f106a34b768b39a74d1f88bfff8ce6b77984dd"
     },
@@ -38491,7 +38984,8 @@
         "texto": "Sous le pont Mirabeau coule la Seine",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "82dc7d4c63ae6c63e30d111e98e154f013e1da54b4ef4e709ca4bd27720ffd13"
     },
@@ -38533,7 +39027,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "e2f290a812332a736639e002c916a4e08a2e9221d5df9b123f079bfb6eee8d39"
     },
@@ -38612,7 +39107,8 @@
         "texto": "A las cinco de la tarde",
         "autor": "Federico García Lorca",
         "obra": "Llanto por Ignacio Sánchez Mejías",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "57e265320c9931e3c25f84fbdf7985c66bbcf54082db9f848f33e991f6a14ca5"
     },
@@ -38654,7 +39150,8 @@
         "texto": "Un automobile ruggente… è più bello della Vittoria di Samotracia",
         "autor": "F. T. Marinetti",
         "obra": "Manifesto del Futurismo",
-        "idioma": "it"
+        "idioma": "it",
+        "firmada": true
       },
       "sha256": "ea80e44e23340e3bcb55a890906a34de8fc25c42fc186181229675571b31a47a"
     },
@@ -38733,7 +39230,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "042da8f331bbaea42fa6cafdf5af34144d0d80772eadfff0cce7f05115f0fe88"
     },
@@ -38816,7 +39314,8 @@
         "texto": "Por qué cantáis la rosa, ¡oh Poetas! Hacedla florecer en el poema",
         "autor": "Vicente Huidobro",
         "obra": "Arte poética",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "331b13d1ad6c51eb8cdf3c1d19ec24ef4814f69a7f47758458c3fe429b8760fb"
     },
@@ -38858,7 +39357,8 @@
         "texto": "A las cinco de la tarde",
         "autor": "Federico García Lorca",
         "obra": "Llanto por Ignacio Sánchez Mejías",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "7405d6f70be9d6ee073ad2df3ae533cf26708289a4feb3678e2840675d79ee31"
     },
@@ -38937,7 +39437,8 @@
         "texto": "Hay golpes en la vida, tan fuertes… ¡Yo no sé!",
         "autor": "César Vallejo",
         "obra": "Los heraldos negros",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "2d5c73820b247071376c359d0bc6cc529dd7ff1ad7a3f2d43751e54a6566de98"
     },
@@ -38979,7 +39480,8 @@
         "texto": "Tudo vale a pena se a alma não é pequena",
         "autor": "Fernando Pessoa",
         "obra": "Mensagem",
-        "idioma": "pt"
+        "idioma": "pt",
+        "firmada": true
       },
       "sha256": "eb71014fd9e4981043d53a6556072f898d0b50ca4ea7db4dc91f4334bfd28347"
     },
@@ -39021,7 +39523,8 @@
         "texto": "A las cinco de la tarde",
         "autor": "Federico García Lorca",
         "obra": "Llanto por Ignacio Sánchez Mejías",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "fca44b4243c0102ddcba79043e8954994f22b27c8201bd391690953e8cb0bc34"
     },
@@ -39100,7 +39603,8 @@
         "texto": "Verde que te quiero verde",
         "autor": "Federico García Lorca",
         "obra": "Romance sonámbulo",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "4c8795879f89a987363e8921a6df8cfed52dd79b4f810d54b3a04b8885ccbbea"
     },
@@ -39142,7 +39646,8 @@
         "texto": "A las cinco de la tarde",
         "autor": "Federico García Lorca",
         "obra": "Llanto por Ignacio Sánchez Mejías",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "f495b0babbd8dfbc41a61f57850c0e8cea46e048df071cf48652d5b38e41cfd6"
     },
@@ -39225,7 +39730,8 @@
         "texto": "Verde que te quiero verde",
         "autor": "Federico García Lorca",
         "obra": "Romance sonámbulo",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "3209461175df9a11fd1d7882a89003a04668c6fddb9c49e1030a7205da97d5c7"
     },
@@ -39304,7 +39810,8 @@
         "texto": "Hay golpes en la vida, tan fuertes… ¡Yo no sé!",
         "autor": "César Vallejo",
         "obra": "Los heraldos negros",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "c051aeb4f0f3bd32b0cd7125768845c3625d14aa66a9914332fb052de411dff0"
     },
@@ -39383,7 +39890,8 @@
         "texto": "Hay golpes en la vida, tan fuertes… ¡Yo no sé!",
         "autor": "César Vallejo",
         "obra": "Los heraldos negros",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "b3c7cfc28eae2a113306caf70ef80b559059b5445de68d99a7d64abdcbfe62f7"
     },
@@ -39462,7 +39970,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "11f5288a82af784c8f437107a99dda2cb70300a3aa3d8dc549a9ca50a503ec1e"
     },
@@ -39541,7 +40050,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256": "7adb90e97d422d04f679405ec674533e8e350372a5bc657d4a4e1c36036f454d"
     },
@@ -39586,7 +40096,8 @@
         "texto": "Vienne la nuit sonne l'heure, les jours s'en vont, je demeure",
         "autor": "Guillaume Apollinaire",
         "obra": "Le pont Mirabeau",
-        "idioma": "fr"
+        "idioma": "fr",
+        "firmada": true
       },
       "sha256_2x": "e97a2dc78449837d438e86b66c8603f6140f0d6876118c81e8113fe62da2d8fc",
       "sha256": "da3f93b851933df69f6485f426485995b38bddb9d9d07b3e26d31c1b05e173d5"
@@ -39666,7 +40177,8 @@
         "texto": "Un automobile ruggente… è più bello della Vittoria di Samotracia",
         "autor": "F. T. Marinetti",
         "obra": "Manifesto del Futurismo",
-        "idioma": "it"
+        "idioma": "it",
+        "firmada": true
       },
       "sha256": "8c080380754e38bab17f6f0029a6d9ff674d952f548933702f9eaca3ec3d98d6"
     },
@@ -39745,7 +40257,8 @@
         "texto": "Por qué cantáis la rosa, ¡oh Poetas! Hacedla florecer en el poema",
         "autor": "Vicente Huidobro",
         "obra": "Arte poética",
-        "idioma": "es"
+        "idioma": "es",
+        "firmada": true
       },
       "sha256": "9684ce019085947a8f3c3678b991fcc90de0c230998fdf3e4083813337a3dbad"
     },
