@@ -34,7 +34,10 @@ jobs:
 
       - name: Los scripts compilan
         run: |
-          for f in citas-pos/bin/*.php citas-pos/bin/lib/*.php; do php -l "$f"; done
+          for f in citas-pos/bin/*.php citas-pos/bin/lib/*.php citas-pos/pruebas/*.php; do php -l "$f"; done
+
+      - name: Pruebas de los validadores y del generador
+        run: php citas-pos/pruebas/ejecutar.php
 
       - name: Paleta (categorías, contraste y colores confundibles)
         run: php citas-pos/bin/comprobar-paleta.php
