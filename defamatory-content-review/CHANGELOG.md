@@ -116,6 +116,14 @@ Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»
   forma declinada. Faltan árabe, finés, islandés, hindi, suajili y tagalo (sin
   reglas seguras o sin lista de frecuencias para medirlas). Planillas de
   revisión regeneradas. `DeclensionTest`.
+- **`bin/inflection-check.php`: la flexión medida contra UniMorph.** Compara lo que genera
+  `TopicInflector` con las formas atestiguadas de palabras corrientes y da precisión y cobertura
+  por idioma y por terminación (tabla en el README). Con ella se corrigieron: el búlgaro (adjetivos en
+  «-ен» pierden la «е»: precisión 31 → 53 %, cobertura 8 → 22 %), el turco (ahora con los casos:
+  cobertura 2 → 23 %), el húngaro (más casos y las vocales de enlace: 65 → 80 % y 5 → 24 %) y los
+  nórdicos (formas definidas: «idioten», «idioterna»; cobertura del sueco 11 → 39 %, del danés 11 → 33 %
+  y del noruego 22 → 88 %). Los lemas de una o dos letras no generan formas («so» → «son», «am» →
+  «ama» = pero). Se excluyeron las colisiones que aparecieron («ama», «sıkı», «bussen», «обратно»).
 - **Flexión en finés, árabe, hindi y tagalo** (`FinnishInflection`, `ArabicInflection`,
   `HindiInflection`, `TagalogInflection`): finés con los casos y la armonía vocálica
   («paskaa», «vittuun», «idiootin»), con las dos raíces de la alternancia de consonantes
