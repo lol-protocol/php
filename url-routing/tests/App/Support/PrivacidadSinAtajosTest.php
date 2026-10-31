@@ -21,6 +21,7 @@ class PrivacidadSinAtajosTest extends TestCase
         'Repositories/Genealogy/PersonaRepository.php' => [13, 'walks parent/child ids; every row it returns is joined to personas() (masked) before it is shown, and buscar() asks sqlVisible() of the real table'],
         'Repositories/Genealogy/GrupoRepository.php' => [1, 'delGrupo() only picks which ids to look at; every row the queries return is read from personas() (masked), and each keeps asking the masked grupo_id too, which leaves the hidden ones out'],
         'Repositories/Genealogy/SitemapRepository.php' => [1, 'asks NOT sqlOculta() of the real table'],
+        'Repositories/Genealogy/SupresionRepository.php' => [9, 'the owner\'s tool to answer and erase one persona by id (bin/persona.php): it needs the real rows, and it never serves a page'],
         'Repositories/Genealogy/FusionRepository.php' => [7, 'the owner\'s merge tool (bin/fusionar.php): it never serves a page'],
     ];
 
