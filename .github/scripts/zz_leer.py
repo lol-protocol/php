@@ -21,6 +21,10 @@ for it in items:
         t = text(data, ctype, final)
     except Exception as e:
         print("  ERROR", repr(e)[:200]); continue
+    if it.get("raw"):
+        rr = data.decode("utf-8", "ignore").replace("\\/", "/"); seen = set()
+        for m in re.finditer(it["raw"], rr, re.I):
+            if m.group(0) not in seen: seen.add(m.group(0)); print("  RAW", m.group(0)[:260])
     if it.get("links"):
         raw = data.decode("utf-8", "ignore"); rl = re.compile(it["links"], re.I); seen = set()
         for m in re.finditer(r'href=["\']([^"\']+)["\']', raw):
