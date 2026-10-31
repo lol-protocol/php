@@ -36,6 +36,9 @@ final class TablaDeRutas
         return $md;
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private static function sitio(string $nombre, array $config): string
     {
         $md = "## {$nombre}\n\n### Entidades (solo dígitos)\n\n| Dígitos | Tipo | Acciones |\n|---|---|---|\n";
@@ -76,6 +79,9 @@ final class TablaDeRutas
         return $md;
     }
 
+    /**
+     * @param array<int, string> $acciones
+     */
     private static function acciones(array $acciones): string
     {
         if ($acciones === []) {
@@ -85,6 +91,9 @@ final class TablaDeRutas
         return implode(' · ', array_map(static fn(int $c, string $m): string => "{$c} {$m}", array_keys($acciones), $acciones));
     }
 
+    /**
+     * @param array<string, mixed> $entrada
+     */
     private static function destino(array $entrada): string
     {
         return '`' . $entrada['controller'] . '::' . ($entrada['method'] ?? 'index') . '`';

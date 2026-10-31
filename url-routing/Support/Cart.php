@@ -76,8 +76,8 @@ final class Cart
      * `subtotal_centavos`, and one total per currency: adding centavos of
      * different currencies is meaningless.
      *
-     * @param array<string, array> $variantes
-     * @return array{list<array>, array<string, int>} [lineas, totales]
+     * @param array<string, array<string, mixed>> $variantes
+     * @return array{list<array<string, mixed>>, array<string, int>} [lineas, totales]
      */
     public function revisar(array $variantes): array
     {

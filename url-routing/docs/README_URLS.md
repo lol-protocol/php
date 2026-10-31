@@ -113,7 +113,7 @@ Con `TEST_PG_DSN` definida corren además contra PostgreSQL (ver `DATABASE.md`).
 phpstan analyse --no-progress
 ```
 
-La configuración está en `phpstan.neon.dist` (nivel 5, analizando como PHP 8.1, el piso de `composer.json`).
+La configuración está en `phpstan.neon.dist` (nivel 6, analizando como PHP 8.1, el piso de `composer.json`; pide que cada array diga de qué es en el docblock: `@param array<string, mixed> $params`, `@return list<string>`).
 Lo corre la CI en el job `analisis-estatico`. Si no tienes PHPStan instalado, `composer global require phpstan/phpstan:^2.1`.
 
 ## 🔍 Ejemplos de URLs

@@ -6,12 +6,18 @@ namespace App\Support;
 
 class Container
 {
-    private static $instance;
-    private $bindings = [];
-    private $singletons = [];
-    private $resolved = [];
+    private static ?self $instance = null;
 
-    public static function getInstance()
+    /** @var array<string, callable> */
+    private array $bindings = [];
+
+    /** @var array<string, true> */
+    private array $singletons = [];
+
+    /** @var array<string, mixed> */
+    private array $resolved = [];
+
+    public static function getInstance(): self
     {
         if (self::$instance === null) {
             self::$instance = new self();

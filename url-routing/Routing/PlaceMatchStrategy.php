@@ -17,11 +17,20 @@ class PlaceMatchStrategy implements MatchStrategy
     private const PAIS = '/^[a-z]{2}$/';
     private const SUBDIVISION = '/^[a-z]{1,3}$/';
 
+    /**
+     * @param list<string> $segments
+     * @param array<string, mixed> $config
+     */
     public function matches(array $segments, array $config): bool
     {
         return isset($config['place']) && preg_match(self::PAIS, $segments[0] ?? '') === 1;
     }
 
+    /**
+     * @param list<string> $segments
+     * @param array<string, mixed> $config
+     * @return array{controller: string, method: string, params: array<string, mixed>}|null
+     */
     public function resolve(array $segments, array $config): ?array
     {
         $entry = $config['place'];

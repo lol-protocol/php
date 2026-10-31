@@ -32,7 +32,11 @@ abstract class ArchivosController extends BaseController
     /** The .env key with the site's public address (e.g. https://conce.com). */
     abstract protected function claveUrl(): string;
 
-    /** Paths no crawler should walk: the account area, search results, the purchase flow... */
+    /**
+     * Paths no crawler should walk: the account area, search results, the purchase flow...
+     *
+     * @return list<string>
+     */
     abstract protected function excluidas(): array;
 
     /** The page of $clave in sitemap file $tipo, relative to the site's root. */
@@ -48,6 +52,9 @@ abstract class ArchivosController extends BaseController
         return rtrim((string)Config::get($this->claveUrl(), ''), '/') ?: HostParser::origen();
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function robots(array $params = []): string
     {
         header('Content-Type: text/plain; charset=UTF-8');
@@ -56,6 +63,9 @@ abstract class ArchivosController extends BaseController
         return "User-agent: *\n" . implode('', $reglas) . "\nSitemap: " . $this->base() . "/sitemap.xml\n";
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function indice(array $params = []): string
     {
         $repo = $this->repo();
@@ -74,6 +84,9 @@ abstract class ArchivosController extends BaseController
         return self::servir($estado, "{$base}/sitemap.xml", self::xml('sitemapindex', 'sitemap', $partes));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function parte(array $params = []): string
     {
         $repo = $this->repo();

@@ -10,6 +10,9 @@ use App\Repositories\Genealogy\RegistroRepository;
 /** Registro (documentary record) — 8-digit id. */
 class RegistroController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = new RegistroRepository($this->db(), $this->privacidad());
@@ -17,6 +20,9 @@ class RegistroController extends BaseController
             fn(int $id) => ['sucesos' => $repo->sucesos($id)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function fuente(array $params = []): string
     {
         $repo = new RegistroRepository($this->db(), $this->privacidad());

@@ -20,6 +20,9 @@ final class LugarRepository extends Repository
         return implode('/', array_map('strtolower', $codes));
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function find(string $ruta): ?array
     {
         return $this->db->fetchOne(

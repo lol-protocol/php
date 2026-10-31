@@ -99,26 +99,39 @@ final class Database
         return (string)($pdo ?? $this->pdo())->getAttribute(\PDO::ATTR_DRIVER_NAME);
     }
 
-    /** @return list<array<string, mixed>> */
+    /**
+     * @return list<array<string, mixed>>
+     * @param array<int|string, mixed> $params
+     */
     public function fetchAll(string $sql, array $params = []): array
     {
         return $this->run($sql, $params)->fetchAll();
     }
 
-    /** @return array<string, mixed>|null */
+    /**
+     * @return array<string, mixed>|null
+     * @param array<int|string, mixed> $params
+     */
     public function fetchOne(string $sql, array $params = []): ?array
     {
         $row = $this->run($sql, $params)->fetch();
         return $row === false ? null : $row;
     }
 
+    /**
+     * @param array<int|string, mixed> $params
+     */
     public function fetchValue(string $sql, array $params = []): mixed
     {
         $value = $this->run($sql, $params)->fetchColumn();
         return $value === false ? null : $value;
     }
 
-    /** Runs a statement and returns the number of affected rows. */
+    /**
+     * Runs a statement and returns the number of affected rows.
+     *
+     * @param array<int|string, mixed> $params
+     */
     public function execute(string $sql, array $params = []): int
     {
         return $this->run($sql, $params)->rowCount();
@@ -143,6 +156,9 @@ final class Database
         }
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function insert(string $table, array $data): void
     {
         $this->assertIdentifiers($table, $data);
@@ -155,6 +171,10 @@ final class Database
         $this->execute("INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})", array_values($data));
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $where
+     */
     public function update(string $table, array $data, array $where): int
     {
         $this->assertIdentifiers($table, $data, $where);
@@ -171,6 +191,9 @@ final class Database
         );
     }
 
+    /**
+     * @param array<string, mixed> $where
+     */
     public function delete(string $table, array $where): int
     {
         $this->assertIdentifiers($table, $where);
@@ -182,6 +205,9 @@ final class Database
         return $this->execute("DELETE FROM {$table} WHERE {$cond}", array_values($where));
     }
 
+    /**
+     * @param array<int|string, mixed> $params
+     */
     private function run(string $sql, array $params): \PDOStatement
     {
         $stmt = $this->pdo()->prepare($sql);
@@ -202,6 +228,8 @@ final class Database
      * they're interpolated into the SQL. Reject anything that isn't a plain
      * identifier so a caller passing request data (e.g. $_POST) as $data
      * can't inject SQL through the array keys.
+     *
+     * @param array<string, mixed> ...$columnSets
      */
     private function assertIdentifiers(string $table, array ...$columnSets): void
     {

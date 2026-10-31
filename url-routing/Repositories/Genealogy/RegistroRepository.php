@@ -12,6 +12,8 @@ final class RegistroRepository extends Repository
      * A record that documents an event with a living participant is null here,
      * as if it did not exist: its title and source usually name the person
      * (see Privacidad::registros()).
+     *
+     * @return array<string, mixed>|null
      */
     public function find(int $id): ?array
     {

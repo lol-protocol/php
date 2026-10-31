@@ -16,21 +16,33 @@ use App\Repositories\UsuarioRepository;
  */
 class CuentaController extends BaseController
 {
+    /**
+     * @return array<string, mixed>|null
+     */
     private function usuario(): ?array
     {
         return (new UsuarioRepository($this->db()))->find(self::DEFAULT_USER_ID);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function index(array $params = []): string
     {
         return $this->pedirPropietario(fn() => $this->conUsuario('pos/cuenta/index'));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function perfil(array $params = []): string
     {
         return $this->pedirPropietario(fn() => $this->conUsuario('pos/cuenta/perfil'));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function ordenes(array $params = []): string
     {
         return $this->pedirPropietario(fn() => view('pos/cuenta/ordenes', [
@@ -38,6 +50,9 @@ class CuentaController extends BaseController
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function deseos(array $params = []): string
     {
         return $this->pedirPropietario(fn() => view('pos/cuenta/deseos', [
@@ -45,6 +60,9 @@ class CuentaController extends BaseController
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function direcciones(array $params = []): string
     {
         return $this->pedirPropietario(fn() => view('pos/cuenta/direcciones', [
@@ -52,6 +70,9 @@ class CuentaController extends BaseController
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function preferencias(array $params = []): string
     {
         return $this->pedirPropietario(fn() => view('pos/cuenta/preferencias'));

@@ -12,6 +12,7 @@ class Logger
     private static ?Logger $instance = null;
     private string $logFile;
     private int $minimo;
+    /** @var list<string> */
     private array $batch = [];
     private int $batchSize = 100;
     private float $lastFlush = 0;
@@ -34,31 +35,49 @@ class Logger
         return self::$instance;
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function debug(string $message, array $context = []): void
     {
         $this->log('DEBUG', $message, $context);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function info(string $message, array $context = []): void
     {
         $this->log('INFO', $message, $context);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function warning(string $message, array $context = []): void
     {
         $this->log('WARNING', $message, $context);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function error(string $message, array $context = []): void
     {
         $this->log('ERROR', $message, $context);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function critical(string $message, array $context = []): void
     {
         $this->log('CRITICAL', $message, $context);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     private function log(string $level, string $message, array $context = []): void
     {
         if (self::NIVELES[$level] < $this->minimo) {

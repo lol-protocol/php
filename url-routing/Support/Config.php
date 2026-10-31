@@ -6,8 +6,12 @@ namespace App\Support;
 
 class Config
 {
+    /** @var array<string, mixed> */
     private static array $config = [];
 
+    /**
+     * @param array<string, mixed> $defaults
+     */
     public static function load(array $defaults = [], ?string $envFile = null): void
     {
         self::$config = $defaults;
@@ -51,6 +55,10 @@ class Config
         return $value === 'true' || $value === '1' || $value === 'yes';
     }
 
+    /**
+     * @param array<array-key, mixed> $default
+     * @return array<array-key, mixed>
+     */
     public static function getArray(string $key, array $default = []): array
     {
         $value = self::get($key, null);

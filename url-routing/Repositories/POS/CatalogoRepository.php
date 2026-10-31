@@ -14,6 +14,9 @@ final class CatalogoRepository extends Repository
 {
     private const PRODUCTO = 'SELECT ' . ProductoRepository::RESUMEN . ' FROM productos p ';
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function atributo(int $id): ?array
     {
         return $this->db->fetchOne('SELECT id, tipo, nombre, valor FROM atributos WHERE id = ?', [$id]);
@@ -30,6 +33,9 @@ final class CatalogoRepository extends Repository
         );
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function etiqueta(int $id): ?array
     {
         return $this->db->fetchOne('SELECT id, nombre FROM etiquetas WHERE id = ?', [$id]);
@@ -46,6 +52,9 @@ final class CatalogoRepository extends Repository
         );
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function coleccion(int $id): ?array
     {
         return $this->db->fetchOne(
@@ -65,6 +74,9 @@ final class CatalogoRepository extends Repository
         );
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function grupo(int $id): ?array
     {
         return $this->db->fetchOne(

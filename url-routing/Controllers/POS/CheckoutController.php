@@ -57,6 +57,9 @@ class CheckoutController extends BaseController
         return is_string($direccion) ? $direccion : null;
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function index(array $params = []): string
     {
         $resumen = $this->resumen();
@@ -68,6 +71,9 @@ class CheckoutController extends BaseController
         return view('pos/checkout/index', ['lineas' => $lineas, 'moneda' => $moneda, 'total' => $total]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function shipping(array $params = []): string
     {
         $denegado = $this->exigirMetodo('GET', 'HEAD', 'POST');
@@ -97,6 +103,9 @@ class CheckoutController extends BaseController
         return view('pos/checkout/shipping', ['direccion' => self::direccion() ?? '']);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function payment(array $params = []): string
     {
         $resumen = $this->resumen();
@@ -111,6 +120,9 @@ class CheckoutController extends BaseController
         return view('pos/checkout/payment');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function confirm(array $params = []): string
     {
         $denegado = $this->exigirMetodo('GET', 'HEAD', 'POST');
