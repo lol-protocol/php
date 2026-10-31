@@ -13,6 +13,7 @@ final class MedidaFuente implements Medida
     /**
      * @param array<int, int> $anchos código Unicode => ancho en milésimas de em
      * @param array<int, int> $extras lo mismo, para las letras que la fuente no tiene pero sí las fuentes extra (ver Fuentes::usarExtras)
+     * @param array<string, int> $formas palabra compuesta de antemano (árabe, devanagari…) => su ancho en milésimas de em
      */
     public function __construct(
         private readonly array $anchos,
@@ -20,10 +21,26 @@ final class MedidaFuente implements Medida
         private readonly int $promedio,
         private readonly int $unidades,
         private readonly array $extras = [],
+        private readonly array $formas = [],
     ) {
     }
 
     public function em(string $texto): float
+    {
+        if ($this->formas === []) {
+            return $this->sumar($texto) / $this->unidades;
+        }
+
+        // Una palabra compuesta de antemano mide lo que mide compuesta, no la suma de sus letras sueltas.
+        $suma = 0;
+        foreach (Fuentes::trozos($texto, $this->formas) as $trozo) {
+            $suma += $this->formas[$trozo] ?? $this->sumar($trozo);
+        }
+
+        return $suma / $this->unidades;
+    }
+
+    private function sumar(string $texto): int
     {
         $suma = 0;
         foreach (mb_str_split($texto) as $letra) {
@@ -34,7 +51,7 @@ final class MedidaFuente implements Medida
             $suma += $this->anchos[$codigo] ?? $this->extras[$codigo] ?? $this->promedio;
         }
 
-        return $suma / $this->unidades;
+        return $suma;
     }
 
     /**
@@ -43,7 +60,19 @@ final class MedidaFuente implements Medida
      */
     public function sinContorno(string $texto): string
     {
-        return implode('', array_filter(mb_str_split($this->noCubiertas($texto)), fn (string $letra): bool => !isset($this->extras[mb_ord($letra)])));
+        $faltan = [];
+        foreach (Fuentes::trozos($texto, $this->formas) as $trozo) {
+            if (isset($this->formas[$trozo])) {
+                continue;
+            }
+            foreach (mb_str_split($this->noCubiertas($trozo)) as $letra) {
+                if (!isset($this->extras[mb_ord($letra)])) {
+                    $faltan[$letra] = true;
+                }
+            }
+        }
+
+        return implode('', array_keys($faltan));
     }
 
     /** Las letras de `texto` que la fuente no tiene, sin repetir y en el orden en que salen. */

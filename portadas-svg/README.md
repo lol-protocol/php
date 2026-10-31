@@ -271,7 +271,27 @@ php bin/generar.php --lista=libros.csv --trazos
 
 `--lista` toma del CSV (o del JSON) las letras que las fuentes del proyecto no tienen; también vale `--texto "道德經"`. Con esos contornos el generador dibuja las letras (solo con `--trazos`: una fuente incrustada no se puede componer con ellas) y **mide el texto con su ancho real**, así que un título en chino no se sale de la portada. Los `.json` van en `fuentes/extra/` o en otra carpeta que pases con `--extra=carpeta` (útil si la licencia de tu fuente no permite redistribuir sus contornos). Sin ellos el generador avisa de las letras y las deja en blanco.
 
-Sirve para los alfabetos que se escriben letra a letra y de izquierda a derecha (chino, japonés, coreano). **No** sirve para los que cambian de forma según las letras vecinas (árabe, devanagari) ni para los de derecha a izquierda (hebreo, árabe): el generador pone las letras en el orden en que están escritas en el texto.
+Sirve para los alfabetos que se escriben letra a letra y de izquierda a derecha (chino, japonés, coreano). Esto sirve para los alfabetos que se escriben letra a letra y de izquierda a derecha (chino, japonés, coreano). Para los demás, ver abajo.
+
+#### Árabe, hebreo y devanagari: palabras ya compuestas
+
+En esos alfabetos una letra cambia de forma según las vecinas (árabe, devanagari) o se escribe de derecha a izquierda (hebreo, árabe): no basta con un contorno por letra. Para ellos, el mismo script compone **cada palabra de antemano con HarfBuzz** (el motor de formas de letras de los navegadores) y guarda la palabra entera, con sus letras ya colocadas:
+
+```bash
+pip install fonttools brotli uharfbuzz
+python3 herramientas/glifos-extra.py NotoSansArabic-Regular.otf fuentes/extra/arabe.formas.json --formas --lista libros.csv
+python3 herramientas/glifos-extra.py NotoSansHebrew-Regular.otf fuentes/extra/hebreo.formas.json --formas --lista libros.csv
+python3 herramientas/glifos-extra.py NotoSansDevanagari-Regular.otf fuentes/extra/hindi.formas.json --formas --lista libros.csv
+php bin/generar.php --lista=libros.csv --trazos
+```
+
+El archivo se llama `*.formas.json`. Cada script toma de la lista las palabras que su fuente puede componer y deja las demás. Con ellas, el generador:
+
+- dibuja la palabra tal cual (el árabe sale unido y en la forma de cada posición; el devanagari con sus conjuntos de letras) y la **mide** como es;
+- encuentra la palabra aunque lleve signos pegados (`«كليلة»`, `الكتاب.`);
+- coloca de derecha a izquierda una línea escrita solo con palabras así, y en una frase mezclada («…es una obra de ابن المقفع»), cada tramo seguido de ellas.
+
+Es un bidi mínimo: no resuelve números ni paréntesis dentro de un tramo, no alinea a la derecha un párrafo entero de derecha a izquierda, y una palabra que no esté en el archivo no se dibuja (hay que volver a correr el script cuando cambian los textos). Probado con Noto Sans Arabic, Hebrew y Devanagari en Chromium.
 
 ### El ancho del texto
 
@@ -289,6 +309,17 @@ python3 herramientas/preparar-fuentes.py carpeta/con/los/woff2
 ```
 
 Una prueba compara la tabla de anchos con las medidas de un navegador.
+
+## Imágenes PNG o JPG
+
+Las tiendas de ebooks suelen pedir la cubierta como imagen. `herramientas/a-png.sh` convierte los SVG de una carpeta con lo primero que encuentre instalado (`rsvg-convert`, Inkscape o `resvg`):
+
+```bash
+php bin/generar.php libro.json --trazos --salida=salida
+bash herramientas/a-png.sh salida/libro 2560 png     # o 1200 jpg: el segundo número es el alto en píxeles
+```
+
+Parte de SVG hechos con `--trazos` (esos programas ignoran las fuentes incrustadas). Cada imagen incluye el sangrado de 3 mm; si la tienda pide la portada recortada, hay que quitarlo (con `convert` de ImageMagick: `-crop` de 3 mm a cada lado).
 
 ## Accesibilidad
 
@@ -335,7 +366,7 @@ datos/fuentes.json       qué letras trae cada trozo (su unicode-range)
 datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
 datos/categorias.json    las 27 categorías de Marcalibros
 datos/tradiciones.json   las tradiciones culturales
-herramientas/            preparar-fuentes.py (genera fuentes/, datos/fuentes.json y datos/anchos.json) y glifos-extra.py (contornos de una fuente tuya)
+herramientas/            preparar-fuentes.py (genera fuentes/, datos/fuentes.json y datos/anchos.json), glifos-extra.py (contornos y palabras compuestas de una fuente tuya) y a-png.sh (SVG a PNG o JPG)
 ejemplos/*.json          libros de ejemplo
 ejemplos/lista.csv       lista de ejemplo, con la ficha armada a partir de los datos
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
@@ -348,6 +379,6 @@ pruebas/dibujos.json     huellas de los dibujos, para que no cambien sin querer
 - El ajuste de texto mide con anchos reales pero sin kerning: las líneas pueden quedar hasta un 4 % más cortas de lo posible. Las letras que las fuentes no cubren (ver «Fuentes») se miden con un ancho medio.
 - Cada SVG pesa unos 20–60 KB por las fuentes incrustadas.
 - La portada no admite imágenes: solo texto y adornos de línea.
-- Probado en Chromium, CairoSVG y resvg. Los dos últimos ignoran las fuentes incrustadas y usan otras (la maqueta aguanta, pero no se ve igual): para esos visores, `--trazos`, que se ve igual que en Chromium. No he probado Inkscape ni lectores de ebook, que pueden hacer lo mismo. El enlace de Python de resvg (`resvg-py`) no acepta el tamaño en mm del `width`/`height`; hay que pasarlo a píxeles.
+- Probado en Chromium, CairoSVG, resvg, librsvg (`rsvg-convert`) e Inkscape 1.2. Todos menos Chromium **ignoran las fuentes incrustadas** (Inkscape lo avisa: «font face rule limited support») y usan otras: la maqueta aguanta, pero no se ve igual. Para esos visores, `--trazos`, que se ve igual que en Chromium. No he probado lectores de ebook, que pueden hacer lo mismo. El enlace de Python de resvg (`resvg-py`) no acepta el tamaño en mm del `width`/`height`; hay que pasarlo a píxeles.
 - No genera el código de barras ni el PDF para imprenta; se obtiene desde los SVG con una herramienta externa.
 - Solo hay tres plantillas.

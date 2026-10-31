@@ -30,6 +30,8 @@ final class Fuentes
     private static string $carpetaExtra = __DIR__ . '/../fuentes/extra';
     /** @var array<int, array{int, string}>|null */
     private static ?array $extras = null;
+    /** @var array<string, array{int, bool, list<array{int, int, string}>}>|null */
+    private static ?array $formas = null;
     /** @var array<string, array<string, array<int, list<array{archivo: string, rangos: list<array{int, int}>, texto: string}>>>>|null */
     private static ?array $indice = null;
 
@@ -84,6 +86,7 @@ final class Fuentes
     {
         self::$carpetaExtra = $carpeta;
         self::$extras = null;
+        self::$formas = null;
         Anchos::reiniciar();
     }
 
@@ -98,7 +101,7 @@ final class Fuentes
             return self::$extras;
         }
         $extras = [];
-        $archivos = glob(self::$carpetaExtra . '/*.json') ?: [];
+        $archivos = array_filter(glob(self::$carpetaExtra . '/*.json') ?: [], static fn (string $archivo): bool => !str_ends_with($archivo, '.formas.json'));
         sort($archivos);
         foreach ($archivos as $archivo) {
             $datos = json_decode((string) file_get_contents($archivo), true, 4);
@@ -113,6 +116,71 @@ final class Fuentes
         }
 
         return self::$extras = $extras;
+    }
+
+    /**
+     * Palabras compuestas de antemano con HarfBuzz (árabe, devanagari, hebreo…), de los `*.formas.json` de la
+     * carpeta de fuentes extra: por palabra, su avance, si es de derecha a izquierda y sus letras ya colocadas
+     * (x, y y trazado). Las genera `herramientas/glifos-extra.py --formas`.
+     *
+     * @return array<string, array{int, bool, list<array{int, int, string}>}>
+     */
+    public static function formas(): array
+    {
+        if (self::$formas !== null) {
+            return self::$formas;
+        }
+        $formas = [];
+        $archivos = glob(self::$carpetaExtra . '/*.formas.json') ?: [];
+        sort($archivos);
+        foreach ($archivos as $archivo) {
+            $datos = json_decode((string) file_get_contents($archivo), true, 6);
+            if (!is_array($datos)) {
+                throw new \RuntimeException("$archivo no es un JSON de palabras. Se genera con herramientas/glifos-extra.py --formas.");
+            }
+            foreach ($datos as $palabra => $forma) {
+                if (!is_array($forma) || !is_int($forma[0] ?? null) || !is_array($forma[2] ?? null)) {
+                    throw new \RuntimeException("$archivo: la palabra «{$palabra}» no tiene el formato [avance, derecha_a_izquierda, letras].");
+                }
+                $letras = [];
+                foreach ($forma[2] as $letra) {
+                    if (!is_array($letra) || !is_int($letra[0] ?? null) || !is_int($letra[1] ?? null) || !is_string($letra[2] ?? null)) {
+                        throw new \RuntimeException("$archivo: una letra de «{$palabra}» no es [x, y, trazado].");
+                    }
+                    $letras[] = [$letra[0], $letra[1], $letra[2]];
+                }
+                $formas[(string) $palabra] ??= [$forma[0], (bool) ($forma[1] ?? false), $letras];
+            }
+        }
+
+        return self::$formas = $formas;
+    }
+
+    /**
+     * Parte un texto en espacios y palabras. Si a una palabra le pegan signos de puntuación o símbolos
+     * (`«palabra»`, `palabra.`) y lo que queda está en `$palabras`, también los separa, para encontrarla.
+     *
+     * @param array<string, mixed> $palabras las palabras compuestas de antemano, por clave
+     * @return list<string>
+     */
+    public static function trozos(string $texto, array $palabras): array
+    {
+        $trozos = [];
+        foreach (preg_split('/(\s+)/u', $texto, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY) ?: [] as $trozo) {
+            if (isset($palabras[$trozo]) || trim($trozo) === '' || $palabras === []) {
+                $trozos[] = $trozo;
+            } elseif (preg_match('/^([\p{P}\p{S}]*)(.+?)([\p{P}\p{S}]*)$/su', $trozo, $m) === 1 && isset($palabras[$m[2]])) {
+                foreach ([$m[1], $m[2], $m[3]] as $parte) {
+                    if ($parte !== '') {
+                        $trozos[] = $parte;
+                    }
+                }
+            } else {
+                $trozos[] = $trozo;
+            }
+        }
+
+        return $trozos;
     }
 
     /**

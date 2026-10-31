@@ -434,26 +434,41 @@ abstract class Plantilla
         $escala = $tamano / 1000;
         $espaciado = (float) ($extra['letter-spacing'] ?? 0.0) / $escala; // en milésimas de em
 
+        $formas = Fuentes::formas();
         $svg = '';
         foreach ($lineas as $indice => $linea) {
+            $trozos = $this->enOrdenVisual(Fuentes::trozos($linea, $formas), $formas);
+
             $letras = '';
             $avance = 0.0;
-            foreach (mb_str_split($linea) as $letra) {
-                $codigo = mb_ord($letra);
-                if ($codigo < 0x20) {
+            foreach ($trozos as $trozo) {
+                if (isset($formas[$trozo])) {
+                    [$ancho, , $piezas] = $formas[$trozo];
+                    foreach ($piezas as [$px, $py, $contorno]) {
+                        $id = 'f' . substr(md5($contorno), 0, 10);
+                        $this->glifos[$id] = $contorno;
+                        $letras .= Svg::elemento('use', ['href' => "#$id", 'xlink:href' => "#$id", 'x' => $avance + $px, 'y' => $py]);
+                    }
+                    $avance += $ancho;
                     continue;
                 }
-                $contorno = Fuentes::contorno($familia, $estilo, $peso, $codigo);
-                if ($contorno === null) {
-                    $avance += $medida->em($letra) * 1000 + $espaciado;
-                    continue;
+                foreach (mb_str_split($trozo) as $letra) {
+                    $codigo = mb_ord($letra);
+                    if ($codigo < 0x20) {
+                        continue;
+                    }
+                    $contorno = Fuentes::contorno($familia, $estilo, $peso, $codigo);
+                    if ($contorno === null) {
+                        $avance += $medida->em($letra) * 1000 + $espaciado;
+                        continue;
+                    }
+                    if ($contorno[1] !== '') {
+                        $id = "g$familia-$estilo-$peso-$codigo";
+                        $this->glifos[$id] = $contorno[1];
+                        $letras .= Svg::elemento('use', ['href' => "#$id", 'xlink:href' => "#$id", 'x' => $avance]);
+                    }
+                    $avance += $contorno[0] + $espaciado;
                 }
-                if ($contorno[1] !== '') {
-                    $id = "g$familia-$estilo-$peso-$codigo";
-                    $this->glifos[$id] = $contorno[1];
-                    $letras .= Svg::elemento('use', ['href' => "#$id", 'xlink:href' => "#$id", 'x' => $avance]);
-                }
-                $avance += $contorno[0] + $espaciado;
             }
             if ($letras === '') {
                 continue;
@@ -472,6 +487,57 @@ abstract class Plantilla
         }
 
         return $svg;
+    }
+
+    /**
+     * Pone en orden visual los trozos de una línea: las palabras de derecha a izquierda compuestas de antemano
+     * (árabe, hebreo…) se leen de derecha a izquierda, así que una línea hecha solo de ellas se invierte entera, y
+     * en una frase mezclada se invierte cada tramo seguido de ellas, con los espacios de en medio. Es un bidi
+     * mínimo: no resuelve números ni paréntesis dentro de un tramo, ni más de un nivel de mezcla.
+     *
+     * @param list<string> $trozos palabras, signos y espacios, en el orden en que se escribieron
+     * @param array<string, array{int, bool, list<array{int, int, string}>}> $formas
+     * @return list<string>
+     */
+    private function enOrdenVisual(array $trozos, array $formas): array
+    {
+        $derechaAIzquierda = static fn (string $trozo): bool => $formas[$trozo][1] ?? false;
+        $palabras = array_filter($trozos, static fn (string $trozo): bool => trim($trozo) !== '');
+        if ($palabras !== [] && array_filter($palabras, $derechaAIzquierda) === $palabras) {
+            return array_reverse($trozos);
+        }
+
+        $resultado = [];
+        $tramo = [];
+        foreach ($trozos as $trozo) {
+            if ($derechaAIzquierda($trozo) || ($tramo !== [] && trim($trozo) === '')) {
+                $tramo[] = $trozo;
+                continue;
+            }
+            array_push($resultado, ...self::invertirTramo($tramo));
+            $tramo = [];
+            $resultado[] = $trozo;
+        }
+        array_push($resultado, ...self::invertirTramo($tramo));
+
+        return $resultado;
+    }
+
+    /**
+     * Invierte un tramo de palabras de derecha a izquierda. Un tramo termina en palabra: los espacios del final
+     * no son parte de él y se quedan donde estaban.
+     *
+     * @param list<string> $tramo
+     * @return list<string>
+     */
+    private static function invertirTramo(array $tramo): array
+    {
+        $cola = [];
+        while ($tramo !== [] && trim(end($tramo)) === '') {
+            array_unshift($cola, (string) array_pop($tramo));
+        }
+
+        return [...array_reverse($tramo), ...$cola];
     }
 
     /** Los contornos que usan las letras de la pieza, una sola vez cada uno, para referirse a ellos con `<use>`. */

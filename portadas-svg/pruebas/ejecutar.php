@@ -1540,6 +1540,57 @@ $pruebas = [
         igual(null, Fuentes::contorno('serif', 'normal', 400, 36947)); // y deja todo como estaba
     },
 
+    'Las palabras compuestas de antemano se miden, se encuentran con su puntuación y se ordenan de derecha a izquierda' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir("$dir/extra", 0777, true);
+        $primera = 'M0 0L100 0L100 -100Z';
+        $segunda = 'M0 0L200 0L200 -100Z';
+        $tercera = 'M0 0L300 0L300 -100Z';
+        $cuarta = 'M0 0L400 0L400 -100Z';
+        file_put_contents("$dir/extra/rtl.formas.json", json_encode([
+            'אב' => [1200, 1, [[0, 0, $primera], [600, 0, $segunda]]],
+            'גד' => [1000, 1, [[0, 0, $tercera], [500, 0, $cuarta]]],
+        ], JSON_UNESCAPED_UNICODE));
+        $id = static fn (string $contorno): string => 'f' . substr(md5($contorno), 0, 10);
+        try {
+            Fuentes::usarExtras("$dir/extra");
+            $medida = Anchos::de('serif', 'normal', 400);
+
+            // El ancho es el de la palabra compuesta, no la suma de sus letras sueltas.
+            $espacio = $medida->em(' ');
+            aproximado(1.2 + $espacio + 1.0, $medida->em('אב גד'));
+            // Los signos pegados se separan para encontrar la palabra.
+            igual(['«', 'אב', '».'], Fuentes::trozos('«אב».', Fuentes::formas()));
+            igual(['Hola', ' ', 'אב', ' ', 'fin'], Fuentes::trozos('Hola אב fin', Fuentes::formas()));
+            aproximado($medida->em('«') + 1.2 + $medida->em('».'), $medida->em('«אב».'));
+            igual('', $medida->sinContorno('«אב» גד.'));
+            igual('ה', $medida->sinContorno('הה אב')); // una palabra que no está compuesta no se dibuja
+            igual([], Generador::avisos(libroDeEjemplo(['titulo' => 'אב גד', 'autor' => 'גד']), true));
+
+            // El lomo escribe «título · autor»: el tramo de derecha a izquierda se invierte dentro de la frase.
+            Generador::escribir(libroDeEjemplo(['titulo' => 'אב גד', 'autor' => 'Ana']), "$dir/mixta", true);
+            $x = static function (string $svg, string $contorno) use ($id): ?float {
+                return preg_match('/<use href="#' . $id($contorno) . '"[^>]* x="([\d.]+)"/', $svg, $m) === 1 ? (float) $m[1] : null;
+            };
+            $lomo = (string) file_get_contents("$dir/mixta/lomo.svg");
+            $alef = $x($lomo, $primera);
+            $guimel = $x($lomo, $tercera);
+            verdadero($alef !== null && $guimel !== null, 'el lomo no dibuja las palabras');
+            verdadero($guimel < $alef, "«גד» (a $guimel) debería quedar a la izquierda de «אב» (a $alef): se leen de derecha a izquierda");
+
+            // Una línea escrita solo con palabras de derecha a izquierda se invierte entera; con varias palabras sueltas, no.
+            Generador::escribir(libroDeEjemplo(['titulo' => 'Ana', 'autor' => 'אב גד']), "$dir/pura", true);
+            $portada = (string) file_get_contents("$dir/pura/portada.svg");
+            $alef = $x($portada, $primera);
+            $guimel = $x($portada, $tercera);
+            verdadero($alef !== null && $guimel !== null && $guimel < $alef, 'el autor, de derecha a izquierda, no se invirtió entero');
+        } finally {
+            Fuentes::usarExtras(__DIR__ . '/../fuentes/extra');
+            Archivos::borrarDirectorio($dir);
+        }
+        igual([], Fuentes::formas());
+    },
+
     'Los libros de ejemplo se cargan' => function (): void {
         $ejemplos = glob(__DIR__ . '/../ejemplos/*.json') ?: [];
         verdadero(count($ejemplos) >= 2, 'faltan ejemplos');

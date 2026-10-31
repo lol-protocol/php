@@ -56,6 +56,11 @@ final class Anchos
             $extras[$codigo] = $avance;
         }
 
-        return new MedidaFuente($anchos, $cara['promedio'], $unidades, $extras);
+        $formas = [];
+        foreach (Fuentes::formas() as $palabra => [$avance]) {
+            $formas[(string) $palabra] = $avance;
+        }
+
+        return new MedidaFuente($anchos, $cara['promedio'], $unidades, $extras, $formas);
     }
 }
