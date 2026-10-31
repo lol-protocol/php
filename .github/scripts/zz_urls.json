@@ -1,160 +1,197 @@
 [
  {
-  "id": "SV",
+  "id": "GQ-wipo",
+  "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+  "kw": [
+   "Copyright and Related Rights"
+  ],
+  "ctx": 14,
+  "before": 14,
+  "max": 3
+ },
+ {
+  "id": "SV-fallecidos",
   "url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
   "kw": [
-   "fallecid|difunt|muert|post.?mortem|investigaci|científic|históric|estadístic|archiv|genétic|biométric"
+   "fallecid"
   ],
-  "max": 25
+  "ctx": 4,
+  "before": 6,
+  "max": 6
  },
  {
-  "id": "CL",
-  "url": "https://www.bcn.cl/leychile/navegar?idNorma=1209272",
+  "id": "SV-genetica",
+  "url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
   "kw": [
-   "fallecid|difunt|muert|post.?mortem|investigaci|científic|históric|estadístic|archiv|genétic|biométric"
+   "gen[ée]tic"
   ],
-  "max": 25,
-  "head": 5
+  "ctx": 3,
+  "before": 8,
+  "max": 6
  },
  {
-  "id": "CL-b",
+  "id": "CL-fallecidos",
   "url": "https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272",
   "kw": [
-   "fallecid|difunt|muert|post.?mortem|investigaci|científic|históric|estadístic|archiv|genétic|biométric"
+   "fallecid|causante"
   ],
-  "max": 25,
-  "head": 5
+  "ctx": 6,
+  "before": 10,
+  "max": 5
  },
  {
-  "id": "SO",
+  "id": "CL-artículos",
+  "url": "https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272",
+  "kw": [
+   "Art[ií]culo 16 (bis|quinquies)|Art[ií]culo 4º|Art[ií]culo 16\\\\."
+  ],
+  "ctx": 3,
+  "before": 0,
+  "max": 8
+ },
+ {
+  "id": "GA-décédée",
+  "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+  "kw": [
+   "décédé|décès|défunt|post.?mortem|ayants? droit"
+  ],
+  "ctx": 5,
+  "before": 6,
+  "max": 8
+ },
+ {
+  "id": "ML-deceased",
+  "url": "https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf",
+  "kw": [
+   "deceas|dead person|death|heir"
+  ],
+  "ctx": 5,
+  "before": 6,
+  "max": 8
+ },
+ {
+  "id": "SO-deceased",
   "url": "https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf",
   "kw": [
-   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric"
+   "deceas|dead|death"
   ],
-  "max": 25
+  "ctx": 4,
+  "before": 5,
+  "max": 6
  },
  {
-  "id": "NE",
-  "url": "https://www.dataguidance.com/sites/default/files/loi_ndeg_2023-31_modifiant_la_loi_ndeg_2022-59.pdf",
+  "id": "afapdp-index",
+  "url": "https://www.afapdp.org/",
+  "links": "burundi|mauritan|guin|niger|mali|gabon|legislation|textes|pays",
+  "kw": [],
+  "head": 2
+ },
+ {
+  "id": "afapdp-textes",
+  "url": "https://www.afapdp.org/archives/category/textes-juridiques",
+  "links": "burundi|mauritan|guin|niger",
+  "kw": [],
+  "head": 2
+ },
+ {
+  "id": "afapdp-pays",
+  "url": "https://www.afapdp.org/pays-membres",
+  "links": "burundi|mauritan|guin|niger",
+  "kw": [],
+  "head": 2
+ },
+ {
+  "id": "afapdp-wp",
+  "url": "https://www.afapdp.org/wp-json/wp/v2/media?search=burundi&per_page=20",
   "kw": [
-   "décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
+   "source_url"
   ],
+  "ctx": 0,
+  "before": 0,
   "max": 20
  },
  {
-  "id": "ML",
-  "url": "https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf",
+  "id": "afapdp-wp-mr",
+  "url": "https://www.afapdp.org/wp-json/wp/v2/media?search=mauritanie&per_page=20",
   "kw": [
-   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric"
+   "source_url"
   ],
-  "max": 25
+  "ctx": 0,
+  "before": 0,
+  "max": 20
  },
  {
-  "id": "GA",
-  "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+  "id": "afapdp-wp-gn",
+  "url": "https://www.afapdp.org/wp-json/wp/v2/media?search=guinee&per_page=20",
   "kw": [
-   "décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
+   "source_url"
   ],
-  "max": 25
+  "ctx": 0,
+  "before": 0,
+  "max": 20
  },
  {
-  "id": "GN",
-  "url": "https://dataprotection.africa/guinea/",
-  "kw": [
-   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric|décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
-  ],
-  "max": 12
- },
- {
-  "id": "BI",
-  "url": "https://dataprotection.africa/burundi/",
-  "kw": [
-   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric|décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
-  ],
-  "max": 12,
-  "head": 5
- },
- {
-  "id": "MR",
-  "url": "https://dataprotection.africa/mauritania/",
-  "kw": [
-   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric|décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
-  ],
-  "max": 12,
-  "head": 5
- },
- {
-  "id": "TO",
-  "url": "http://www.paclii.org/to/legis/num_act/",
+  "id": "paclii-https",
+  "url": "https://www.paclii.org/to/legis/num_act/",
   "kw": [
    "privacy|data protection"
   ],
   "head": 3
  },
  {
-  "id": "KI",
-  "url": "http://www.paclii.org/ki/legis/num_act/",
+  "id": "paclii-ws",
+  "url": "https://www.paclii.org/ws/legis/consol_act/",
   "kw": [
    "privacy|data protection"
   ],
   "head": 3
  },
  {
-  "id": "MH",
-  "url": "http://www.paclii.org/mh/legis/num_act/",
+  "id": "tonga-gov",
+  "url": "https://ago.gov.to/",
   "kw": [
-   "privacy|data protection|personal data"
+   "privacy"
   ],
   "head": 3
  },
  {
-  "id": "WS",
-  "url": "http://www.paclii.org/ws/legis/num_act/",
+  "id": "kiribati-dto",
+  "url": "https://www.dto.gov.ki/",
+  "kw": [
+   "data protection|privacy"
+  ],
+  "head": 3
+ },
+ {
+  "id": "ws-mcit",
+  "url": "https://www.mcit.gov.ws/",
   "kw": [
    "privacy|data protection"
   ],
   "head": 3
  },
  {
-  "id": "TV",
-  "url": "http://www.paclii.org/tv/legis/num_act/",
-  "kw": [
-   "privacy|data protection"
-  ],
-  "head": 3
- },
- {
-  "id": "DJ-1",
-  "url": "https://www.assemblee-nationale.dj/",
+  "id": "dj-jo",
+  "url": "https://www.journalofficiel.dj/",
   "kw": [
    "code du num|numérique"
   ],
   "head": 3
  },
  {
-  "id": "DJ-2",
-  "url": "https://www.presidence.dj/",
+  "id": "dj-assemblee",
+  "url": "https://assemblee.dj/",
+  "kw": [
+   "code du num|numérique"
+  ],
+  "head": 3
+ },
+ {
+  "id": "dj-adetic",
+  "url": "https://www.adetic.dj/",
   "kw": [
    "code du num|numérique|donn"
   ],
-  "head": 3
- },
- {
-  "id": "GQ-wipo",
-  "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
-  "kw": [
-   "copyright|author|derecho"
-  ],
-  "max": 10,
-  "head": 3
- },
- {
-  "id": "MH-wipo",
-  "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
-  "kw": [
-   "copyright|author|recorded"
-  ],
-  "max": 10,
   "head": 3
  }
 ]

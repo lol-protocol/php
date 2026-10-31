@@ -21,12 +21,20 @@ for it in items:
         t = text(data, ctype, final)
     except Exception as e:
         print("  ERROR", repr(e)[:200]); continue
+    if it.get("links"):
+        raw = data.decode("utf-8", "ignore"); rl = re.compile(it["links"], re.I); seen = set()
+        for m in re.finditer(r'href=["\']([^"\']+)["\']', raw):
+            h = m.group(1)
+            if rl.search(h) and h not in seen: seen.add(h); print("  LINK", h[:240])
     lines = [l.strip() for l in t.splitlines() if l.strip()]
     print(f"  ok: {len(data)} bytes, {len(lines)} lines, final={final}")
     if it.get("head"): print("\n".join("  | " + l[:220] for l in lines[:it["head"]]))
     if kws:
         rx = re.compile("|".join(kws), re.I); shown = 0; last = -99
+        art = ""
         for i, l in enumerate(lines):
+            m = re.match(r"(?i)^(art(?:ículo|icle|icle|\.)?\s*\.?\s*\d+[\w°º]*(?:\s+(?:bis|ter|quater|quinquies|sexies))?)", l)
+            if m: art = m.group(1)
             if rx.search(l) and i > last + ctxn and shown < it.get("max", 14):
-                seg = lines[max(0, i - 1): i + ctxn + 1]
-                print("  --- l.%d" % i); print("\n".join("  | " + s[:300] for s in seg)); shown += 1; last = i
+                seg = lines[max(0, i - it.get("before", 1)): i + ctxn + 1]
+                print("  --- l.%d [%s]" % (i, art)); print("\n".join("  | " + x[:300] for x in seg)); shown += 1; last = i
