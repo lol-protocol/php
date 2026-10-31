@@ -27,7 +27,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 
-from catalogo import PREFIXES  # noqa: E402
+from catalogo import PREFIXES, SPRITE  # noqa: E402
 
 SETS = tuple(PREFIXES)
 RENDER, THUMB = 96, 24
@@ -47,7 +47,7 @@ def distance(a, b):
 
 
 def check_set(root, folder, minimum, listed):
-    files = sorted((root / folder / 'gris').rglob('*.svg'))
+    files = sorted(p for p in (root / folder / 'gris').rglob('*.svg') if p.name != SPRITE)  # el sprite no es un icono
     if not files:
         print(f'{folder}: no hay iconos en gris/')
         return 1

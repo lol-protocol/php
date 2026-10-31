@@ -906,10 +906,13 @@ palabras no entiende contexto:
   `infl` (no se sabe si es plural), y `'by' => ['infl' => 'none']` las descarta
   todas. Lo irregular (vocales fugaces raras, cambios de raíz) va a mano en
   `also`. Las formas generadas no entran en la búsqueda fonética de nombres
-  (un nombre no se declina). No tienen reglas: árabe, finés, islandés, hindi,
-  suajili, tagalo, indonesio, vietnamita, japonés, coreano, tailandés y
-  cantonés (los cuatro últimos y el vietnamita no flexionan; los demás son
-  irregulares o no hay lista de frecuencias para medirlos). Las amenazas con forma (`patterns`) sólo están en
+  (un nombre no se declina). También tienen reglas el finés (casos con armonía
+  vocálica y alternancia de consonantes: «paskaa», «vittuun», «idiootin»), el árabe
+  (plurales sanos y los rotos de las palabras más comunes), el hindi (casos
+  oblicuos y plurales) y el tagalo (el ligamento «-ng»: «tangang»). No tienen reglas:
+  islandés (declinación con cambios de vocal que no se deducen de la forma) y suajili
+  (clases nominales; no hay lista de frecuencias para medir falsos positivos); el
+  indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   Los idiomas sin reglas no tienen plurales, géneros ni conjugaciones automáticos —sólo la
   forma base y las que se añadan a mano con `also`—, y se escribieron
@@ -917,6 +920,48 @@ palabras no entiende contexto:
   extensión `intl` para encontrar palabras dentro de una frase (ver «Idiomas
   sin espacios»). `ChatTopicsCoverageTest` fija una línea
   sexual, una amenaza y una cotidiana por idioma.
+
+### Comprobar la flexión con UniMorph
+
+Las reglas de flexión de cada idioma no las ha revisado ninguna persona nativa. Lo que sí se puede
+medir sin ella es la morfología: `bin/inflection-check.php` compara lo que genera `TopicInflector`
+con las formas que [UniMorph](https://unimorph.github.io) registra para palabras corrientes
+(los datos no están en el repositorio: se descargan de `github.com/unimorph/<código>`):
+
+```bash
+php bin/inflection-check.php rus rus.tsv ru_50k.txt 400 --ends
+```
+
+Da, por idioma y por tipo (sustantivo, adjetivo), la **precisión** (qué parte de lo generado existe),
+la **cobertura** (qué parte de lo que existe se genera) y, con `--ends`, la precisión por última
+letra del lema, para ver qué clase falla. Una precisión baja no es en sí un problema (una forma
+inventada rara vez coincide con otra palabra; eso lo mide `bin/false-positives.php`), pero un fallo
+sistemático se ve enseguida: con ella se vio que los adjetivos búlgaros en «-ен» pierden la «е»
+(«тъжен» → «тъжна») y que el turco necesitaba los casos. Resultado con 400 lemas frecuentes por tipo:
+
+| Idioma | Sustantivos (precisión / cobertura) | Adjetivos |
+|---|---|---|
+| ruso | 81 % / 89 % | 91 % / 81 % |
+| ucraniano | 74 % / 84 % | 93 % / 99 % (16 lemas) |
+| polaco | 63 % / 80 % | 94 % / 90 % |
+| checo | 55 % / 79 % | 94 % / 96 % |
+| griego | 79 % / 84 % | 81 % / 56 % |
+| alemán | 90 % / 17 % | 99 % / 81 % |
+| neerlandés | — | 92 % / 28 % |
+| búlgaro | 50 % / 64 % | 53 % / 22 % |
+| húngaro | 80 % / 24 % | 79 % / 29 % |
+| turco | 79 % / 23 % | — |
+| noruego | 48 % / 88 % | 51 % / 62 % |
+| danés | 42 % / 33 % | 59 % / 53 % |
+| sueco | 46 % / 39 % | 53 % / 27 % |
+| rumano | 37 % / 22 % | 71 % / 20 % |
+| árabe | 30 % / 8 % | 61 % / 6 % |
+| hebreo | 46 % / 4 % | — |
+
+Los más flojos son rumano, árabe y hebreo (cobertura baja: UniMorph trae formas con posesivos,
+vocales y estados constructos que no se generan). Sin datos de sustantivos en UniMorph, no se pudo
+validar el hindi, el tagalo ni los sustantivos neerlandeses; finés y eslovaco no están en UniMorph
+con esos nombres. Ninguna cifra sustituye a la revisión nativa de lo ofensivo.
 
 ## API
 

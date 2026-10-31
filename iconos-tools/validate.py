@@ -8,7 +8,8 @@ Reglas: SVG bien formado de 64x64 sin texto, tres variantes con los mismos archi
 gris sin colores cromáticos, líneas sin rellenos y con cada clase ic-<tono> de acuerdo con su regla del <style>,
 ids únicos, cada url(#id) apuntando a un id definido y todo id usado, todo el dibujo dentro del lienzo (a más de
 1 unidad del borde), ningún icono repetido dentro de un set, y un nombre que esté en dos sets dibujado igual en
-ambos. Además comprueba que los números de los README (los de cada set y su fila en el README raíz) coincidan
+ambos. Cada variante trae además un sprite.svg con un <symbol> por icono (mismos nombres y mismo número de sólidos y
+marcas que los archivos sueltos, y las mismas reglas de tema, de gris y de lienzo). Además comprueba que los números de los README (los de cada set y su fila en el README raíz) coincidan
 con los iconos que hay, y que iconos.yml corra y compare cada set de catalogo.PREFIXES.
 """
 import collections
@@ -24,7 +25,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 
-from catalogo import GROUPS, PREFIXES, SCOPE_CLASS, VARIANTS  # noqa: E402
+from catalogo import GROUPS, PREFIXES, SCOPE_CLASS, SPRITE, VARIANTS  # noqa: E402
 
 MARGIN = 1  # unidades que el dibujo debe quedar lejos del borde del lienzo de 64 (los trazos tienen grosor)
 NAME = re.compile(r'^[a-z]+(_[a-z0-9]+)+$')
@@ -147,13 +148,19 @@ def outside_canvas(root):
     return None
 
 
-def check_file(rel, variant, text):
+def check_file(rel, variant, text, sprite=False):
+    """Las reglas de un icono suelto o, con sprite=True, del sprite de una variante: la raíz no mide nada (cada <symbol> lleva
+    su viewBox) y el id de un <symbol> no tiene por qué usarlo un url(#...)."""
     try:
         root = ET.fromstring(text)
     except ET.ParseError as e:
         fail(f'{rel}: XML mal formado ({e})')
         return None
-    if root.get('viewBox') != '0 0 64 64' or root.get('width') != '64' or root.get('height') != '64':
+    symbols = [e for e in root.iter() if local(e.tag) == 'symbol'] if sprite else []
+    if sprite:
+        if any(e.get('viewBox') != '0 0 64 64' for e in symbols):
+            fail(f'{rel}: cada <symbol> debe llevar viewBox="0 0 64 64"')
+    elif root.get('viewBox') != '0 0 64 64' or root.get('width') != '64' or root.get('height') != '64':
         fail(f'{rel}: debe ser 64x64 con viewBox="0 0 64 64"')
     if any(local(e.tag) in ('text', 'tspan') or 'font-family' in e.attrib or 'font-size' in e.attrib for e in root.iter()):
         fail(f'{rel}: contiene texto')
@@ -163,7 +170,7 @@ def check_file(rel, variant, text):
     used = set(re.findall(r'url\(#([^)]+)\)', text))
     for name in sorted(used - set(ids)):
         fail(f'{rel}: url(#{name}) apunta a un id que no existe')
-    for name in sorted(set(ids) - used):
+    for name in sorted(set(ids) - used - {e.get('id') for e in symbols}):
         fail(f'{rel}: el id {name} no lo usa nada')
     found = outside_canvas(root)
     if found:
@@ -203,6 +210,29 @@ def check_theme(root, rel, text):
             if c.startswith('ic-') and (e.get('stroke') or '').upper() != rules[c[3:]].upper():
                 fail(f'{rel}: .{c} tiene stroke="{e.get("stroke")}" pero su regla vuelve a {rules[c[3:]]}')
                 return
+
+
+def check_sprite(rel, variant, text, icon_roots):
+    """El sprite de una variante: un <symbol> por icono suelto (icon_roots: nombre -> raíz de su SVG), con el mismo número de
+    sólidos y marcas, y nada más que el <style> del tema. Que sea exactamente lo que genera build.py lo comprueba la CI."""
+    root = check_file(rel, variant, text, sprite=True)
+    if root is None:
+        return
+    if local(root.tag) != 'svg':
+        fail(f'{rel}: la raíz debe ser <svg>')
+    stray = sorted({local(e.tag) for e in root if local(e.tag) not in ('symbol', 'style')})
+    if stray:
+        fail(f'{rel}: elementos sueltos fuera de los <symbol>: {stray}')
+    symbols = {e.get('id'): e for e in root if local(e.tag) == 'symbol'}
+    missing, extra = sorted(set(icon_roots) - set(symbols)), sorted(set(symbols) - set(icon_roots))
+    if missing:
+        fail(f'{rel}: faltan <symbol> de {missing[:5]}{" ..." if len(missing) > 5 else ""} ({len(missing)})')
+    if extra:
+        fail(f'{rel}: <symbol> sin icono suelto {extra[:5]}{" ..." if len(extra) > 5 else ""} ({len(extra)})')
+    for stem in sorted(set(symbols) & set(icon_roots)):
+        if signature(symbols[stem]) != signature(icon_roots[stem]):
+            fail(f'{rel}: el <symbol> {stem} no tiene los mismos sólidos y marcas que su icono suelto: '
+                 f'{signature(symbols[stem])} y {signature(icon_roots[stem])}')
 
 
 def check_readme(folder, by_prefix, root_readme):
@@ -255,10 +285,15 @@ def main():
         extra = sorted(p.name for p in base.iterdir() if p.name not in VARIANTS and p.name != 'README.md')
         if extra:
             fail(f'{folder}: elementos fuera de las variantes: {extra}')
-        files = {v: {p.relative_to(base / v).as_posix() for p in (base / v).rglob('*') if p.is_file()} for v in VARIANTS}
+        every = {v: {p.relative_to(base / v).as_posix() for p in (base / v).rglob('*') if p.is_file()} for v in VARIANTS}
+        for v in VARIANTS:
+            if SPRITE not in every[v]:
+                fail(f'{folder}/{v}/{SPRITE}: no existe')
+        files = {v: every[v] - {SPRITE} for v in VARIANTS}
         if not (files['color'] == files['lineas'] == files['gris']):
             fail(f'{folder}: las tres variantes no tienen los mismos archivos')
         seen_ids, seen_shapes = {}, {}
+        icon_roots = {v: {} for v in VARIANTS}  # variante -> nombre -> raíz, para compararlas con el sprite
         by_name[folder] = {}
         for rel in sorted(files['color']):
             sub, _, name = rel.partition('/')
@@ -293,8 +328,12 @@ def main():
                             if e.get('id') in seen_ids:
                                 fail(f'{folder}/{v}/{rel}: id {e.get("id")} repetido en {seen_ids[e.get("id")]}')
                             seen_ids[e.get('id')] = f'{v}/{rel}'
+                    icon_roots[v][stem] = root
+        for v in VARIANTS:
+            if SPRITE in every[v]:
+                check_sprite(f'{folder}/{v}/{SPRITE}', v, (base / v / SPRITE).read_text(encoding='utf-8'), icon_roots[v])
         by_prefix = collections.Counter(Path(r).name.split('_')[0] for r in files['color'])
-        print(f'{folder}: {len(files["color"])} iconos x {len(VARIANTS)} variantes {dict(sorted(by_prefix.items()))}')
+        print(f'{folder}: {len(files["color"])} iconos x {len(VARIANTS)} variantes y su {SPRITE} {dict(sorted(by_prefix.items()))}')
         check_readme(folder, by_prefix, root_readme)
     check_workflow(PREFIXES)
     for first, second in itertools.combinations(by_name, 2):

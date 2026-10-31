@@ -192,6 +192,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `beige` | `#F5F5DC` | 베이지색 |  | 베이지 |  |
 | `gold` | `#FFD700` | 금색 |  | 황금색, 골드 |  |
 | `silver` | `#C0C0C0` | 은색 |  | 은빛, 실버 |  |
+| `violet` | `#EE82EE` | 바이올렛 (propuesta de IA sin revisar) |  |  |  |
 | `indigo` | `#4B0082` | 쪽빛 |  | 인디고 |  |
 | `lavender` | `#E6E6FA` | 라벤더색 |  |  |  |
 | `maroon` | `#800000` | 적갈색 |  |  |  |

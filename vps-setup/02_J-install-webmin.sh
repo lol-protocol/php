@@ -6,10 +6,23 @@ source "$(dirname "$0")/lib.sh"
 
 print_header "02_J" "Instalacion de Webmin"
 
+# Como se accede a Webmin (por defecto, SOLO por tunel SSH):
+#   (nada)                 escucha solo en 127.0.0.1: no hay puerto 10000 abierto a internet ni regla de UFW.
+#                          Entras con:  ssh -L 10000:localhost:10000 usuario@IP_DEL_VPS  y abres
+#                          https://localhost:10000. Funciona con cualquier IP (fija o dinamica).
+#   WEBMIN_ALLOW_FROM=IP   escucha en todas las interfaces, pero UFW solo deja pasar a esa IP/CIDR.
+#                          Solo tiene sentido con una IP fija.
+#   WEBMIN_PUBLIC=1        abierto a todo internet (login de root/sudo expuesto a fuerza bruta: NO recomendado).
 # Se valida ANTES de descargar/instalar nada (antes se validaba al final, con Webmin ya instalado).
 WEBMIN_ALLOW_FROM=${WEBMIN_ALLOW_FROM:-}
+WEBMIN_PUBLIC=${WEBMIN_PUBLIC:-0}
+WEBMIN_CONF=${WEBMIN_CONF:-/etc/webmin/miniserv.conf}
 if [ -n "$WEBMIN_ALLOW_FROM" ] && ! [[ "$WEBMIN_ALLOW_FROM" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}(/[0-9]{1,2})?$ ]]; then
     echo "ERROR: WEBMIN_ALLOW_FROM debe ser una IPv4 o CIDR (ej. 203.0.113.5 o 203.0.113.0/24)"
+    exit 2
+fi
+if [ -n "$WEBMIN_ALLOW_FROM" ] && [ "$WEBMIN_PUBLIC" = 1 ]; then
+    echo "ERROR: WEBMIN_ALLOW_FROM y WEBMIN_PUBLIC=1 se contradicen: elige uno."
     exit 2
 fi
 
@@ -45,19 +58,38 @@ echo "[2/3] Instalando Webmin..."
 sudo apt-get install -y --install-recommends webmin
 
 # Webmin acepta el login de root/sudo del sistema: abierto a todo internet es un blanco de
-# fuerza bruta (fail2ban solo vigila SSH). Con WEBMIN_ALLOW_FROM=<tu IP> (o CIDR) solo
-# esa direccion llega al puerto; sin ella queda abierto y se avisa al final.
-echo "[3/3] Abriendo el puerto 10000 en el firewall..."
-if [ -n "$WEBMIN_ALLOW_FROM" ]; then
-    if sudo ufw status | grep -q "Status: active"; then
-        sudo ufw allow from "$WEBMIN_ALLOW_FROM" to any port 10000 proto tcp
+# fuerza bruta (fail2ban solo vigila SSH). Por eso, por defecto, no se abre al exterior.
+echo "[3/3] Configurando el acceso a Webmin..."
+if [ -n "$WEBMIN_ALLOW_FROM" ] || [ "$WEBMIN_PUBLIC" = 1 ]; then
+    # Escucha en todas las interfaces (sin "bind=").
+    sudo sed -i '/^bind=/d' "$WEBMIN_CONF"
+    if [ -n "$WEBMIN_ALLOW_FROM" ]; then
+        if sudo ufw status | grep -q "Status: active"; then
+            sudo ufw allow from "$WEBMIN_ALLOW_FROM" to any port 10000 proto tcp
+        else
+            echo "AVISO: ufw no esta activo; la regla no se agrego (corre 01-system-update.sh)"
+        fi
+        WEBMIN_MODE=ip
     else
-        echo "AVISO: ufw no esta activo; la regla no se agrego (corre 01-system-update.sh)"
+        ufw_allow "10000/tcp"
+        WEBMIN_MODE=publico
     fi
 else
-    ufw_allow "10000/tcp"
-    WEBMIN_OPEN=1
+    # Solo localhost: sin regla de UFW (el trafico de loopback no pasa por el firewall) y se
+    # quita cualquier regla abierta que una instalacion anterior haya dejado.
+    if sudo grep -q '^bind=' "$WEBMIN_CONF"; then
+        sudo sed -i 's/^bind=.*/bind=127.0.0.1/' "$WEBMIN_CONF"
+    else
+        echo 'bind=127.0.0.1' | sudo tee -a "$WEBMIN_CONF" > /dev/null
+    fi
+    if sudo ufw status | grep -q "Status: active" && sudo ufw status | grep -qE '^10000/tcp +ALLOW'; then
+        sudo ufw delete allow 10000/tcp > /dev/null 2>&1 || true
+        echo "  Se quito la regla antigua de UFW que abria el 10000 a todo internet."
+    fi
+    WEBMIN_MODE=tunel
 fi
+# miniserv.conf solo se relee al reiniciar
+sudo systemctl restart webmin
 
 # Si install-all.sh llamo a este script, hereda su CACHED_PUBLIC_IP (variable
 # exportada) y no vuelve a consultar ifconfig.me; si este script corre solo,
@@ -68,17 +100,28 @@ echo ""
 echo "✓ Webmin instalado"
 sudo systemctl status webmin --no-pager | head -5
 echo ""
-echo "Accede con el mismo usuario/contraseña que usas por SSH (root o tu usuario sudo):"
-echo "  https://$IP:10000"
+echo "Usuario y contraseña: los mismos que por SSH (root o tu usuario sudo)."
+case "$WEBMIN_MODE" in
+    tunel)
+        echo "Webmin escucha SOLO en 127.0.0.1 (no hay puerto 10000 abierto a internet). Para entrar,"
+        echo "desde TU equipo abre un tunel SSH y deja esa terminal abierta:"
+        echo "  ssh -L 10000:localhost:10000 usuario@$IP"
+        echo "y en el navegador:  https://localhost:10000   (el certificado es autofirmado: acepta el aviso)"
+        ;;
+    ip)
+        echo "Acceso directo, solo desde $WEBMIN_ALLOW_FROM:  https://$IP:10000"
+        ;;
+    publico)
+        echo "  https://$IP:10000"
+        echo ""
+        echo "AVISO DE SEGURIDAD: el puerto 10000 esta abierto a todo internet. Cierralo y usa el tunel SSH:"
+        echo "  sudo ufw delete allow 10000/tcp; ./02_J-install-webmin.sh   (sin WEBMIN_PUBLIC)"
+        ;;
+esac
 echo ""
 echo "Modulos utiles ya incluidos: Nginx Webserver, Usuarios y Grupos,"
 echo "Tareas Cron, Firewall (UFW), Actualizacion de Paquetes, Gestor de Archivos."
 echo ""
-if [ -n "$WEBMIN_OPEN" ]; then
-    echo "AVISO DE SEGURIDAD: el puerto 10000 esta abierto a todo internet. Restringelo a tu IP:"
-    echo "  sudo ufw delete allow 10000/tcp && sudo ufw allow from <TU_IP> to any port 10000 proto tcp"
-    echo ""
-fi
 echo "Nada de esto es obligatorio para que el resto de los scripts funcione:"
 echo "Webmin es 100% opcional y solo una capa visual sobre los mismos"
 echo "comandos (nginx, certbot, systemctl, etc.) que ya usan estos scripts."

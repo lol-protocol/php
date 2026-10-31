@@ -155,6 +155,19 @@ BR,,deceased_data,https://www.gov.br/anpd/pt-br/assuntos/noticias/NotaTecnica3CG
 BR,,research_exemption,https://www.aurum.com.br/blog/lgpd-comentada/art-11-a-13-lgpd/,medium,2026-10-17
 BR,,genetic_data,https://confidata.com.br/blog/dados-sensiveis-lgpd-bases-legais-cuidados,high,2026-10-17
 BR,,notes,https://www.legisweb.com.br/legislacao/?id=491391,high,2026-10-14
+BS,Data Protection (Privacy of Personal Information) Act 2003,law_name,https://www.dlapiperdataprotection.com/?c=BS&t=law,high,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,jurisdiction,https://www.dataguidance.com/jurisdiction/bahamas,high,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,enactment_date,https://www.dataguidance.com/jurisdiction/bahamas,high,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,effective_date,https://www.dataguidance.com/jurisdiction/bahamas,high,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,scope,https://www.dlapiperdataprotection.com/?c=BS&t=law,medium,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,applies_to,https://www.dataguidance.com/jurisdiction/bahamas,medium,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,key_requirements,https://www.dataguidance.com/jurisdiction/bahamas,medium,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,data_categories,https://www.dataguidance.com/jurisdiction/bahamas,low,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,retention_period,https://www.dataguidance.com/jurisdiction/bahamas,low,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,enforcement_authority,https://www.dataguidance.com/jurisdiction/bahamas,high,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,penalties_range,https://www.dlapiperdataprotection.com/?c=BS&t=law,high,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,exemptions,https://www.coe.int/web/octopus/-/bahamas,low,2026-10-25
+BS,Data Protection (Privacy of Personal Information) Act 2003,deceased_data,https://www.dlapiperdataprotection.com/?c=BS&t=law,medium,2026-10-25
 BW,,enactment_date,https://misa.org/blog/new-botswana-data-protection-act-progressive-step-to-a-more-secure-digital-environment/,medium,2026-10-15
 BW,,effective_date,https://www.michalsons.com/blog/botswanas-data-protection-act-grace-period-extended/60775,high,2026-10-15
 BW,,retention_period,https://www.studocu.com/row/document/university-of-botswana/intellectual-property-i/data-protection-act-2024-botswana-government-gazette-a137/143960215,medium,2026-10-15
@@ -1382,3 +1395,20 @@ ZM,,genetic_data,https://www.dlapiperdataprotection.com/?c=ZM&t=law,high,2026-10
 ZW,,retention_period,https://zimlii.org/akn/zw/act/2021/5/eng@2022-03-11/source.pdf,medium,2026-10-15
 ZW,,research_exemption,https://www.dlapiperdataprotection.com/?c=ZW&t=law,medium,2026-10-21
 ZW,,genetic_data,https://zimlii.org/akn/zw/act/2021/5/eng@2022-03-11,medium,2026-10-21
+SV,,genetic_data,https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf,high,2026-10-31
+CL,,research_exemption,https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272,high,2026-10-31
+CL,,genetic_data,https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272,high,2026-10-31
+SO,,research_exemption,https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf,high,2026-10-31
+SO,,genetic_data,https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf,high,2026-10-31
+NE,,genetic_data,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law,low,2026-10-29
+ML,,genetic_data,https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf,medium,2026-10-31
+GN,,genetic_data,https://www.dlapiperdataprotection.com/?c=GN&t=law,low,2026-10-29
+GA,,genetic_data,https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf,medium,2026-10-31
+SV,,deceased_data,https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf,high,2026-10-31
+SV,,research_exemption,https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf,high,2026-10-31
+CL,,deceased_data,https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272,high,2026-10-31
+SO,,deceased_data,https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf,medium,2026-10-31
+GA,,deceased_data,https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf,medium,2026-10-31
+GA,,research_exemption,https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf,medium,2026-10-31
+ML,,deceased_data,https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf,low,2026-10-31
+ML,,research_exemption,https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf,medium,2026-10-31

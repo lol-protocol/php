@@ -24,6 +24,14 @@ final class Fuentes
 
     /** @var array<string, string> */
     private static array $base64 = [];
+    /** @var array<string, array<int, array{int, string}>> */
+    private static array $contornos = [];
+    /** Carpeta de las fuentes extra: contornos de letras que las fuentes del proyecto no tienen (ver herramientas/glifos-extra.py). */
+    private static string $carpetaExtra = __DIR__ . '/../fuentes/extra';
+    /** @var array<int, array{int, string}>|null */
+    private static ?array $extras = null;
+    /** @var array<string, array{int, bool, list<array{int, int, string}>}>|null */
+    private static ?array $formas = null;
     /** @var array<string, array<string, array<int, list<array{archivo: string, rangos: list<array{int, int}>, texto: string}>>>>|null */
     private static ?array $indice = null;
 
@@ -67,6 +75,150 @@ final class Fuentes
         ksort($reglas);
 
         return $reglas === [] ? '' : "<style>\n" . implode("\n", $reglas) . "\n</style>\n";
+    }
+
+    /**
+     * Usa otra carpeta de fuentes extra (por defecto `fuentes/extra/`). Cada `.json` de la carpeta es un
+     * `{"código": [avance, "trazado"]}` como los de `fuentes/trazos/`. Sirven para letras que las fuentes del
+     * proyecto no tienen: solo se dibujan con el texto a trazos, y con ellas se mide el texto.
+     */
+    public static function usarExtras(string $carpeta): void
+    {
+        self::$carpetaExtra = $carpeta;
+        self::$extras = null;
+        self::$formas = null;
+        Anchos::reiniciar();
+    }
+
+    /**
+     * Las letras de las fuentes extra, por código: su avance y su trazado.
+     *
+     * @return array<int, array{int, string}>
+     */
+    public static function extras(): array
+    {
+        if (self::$extras !== null) {
+            return self::$extras;
+        }
+        $extras = [];
+        $archivos = array_filter(glob(self::$carpetaExtra . '/*.json') ?: [], static fn (string $archivo): bool => !str_ends_with($archivo, '.formas.json'));
+        sort($archivos);
+        foreach ($archivos as $archivo) {
+            $datos = json_decode((string) file_get_contents($archivo), true, 4);
+            if (!is_array($datos)) {
+                throw new \RuntimeException("$archivo no es un JSON de letras. Se genera con herramientas/glifos-extra.py.");
+            }
+            foreach ($datos as $codigo => $letra) {
+                if (is_array($letra) && is_int($letra[0] ?? null) && is_string($letra[1] ?? null)) {
+                    $extras[(int) $codigo] ??= [$letra[0], $letra[1]];
+                }
+            }
+        }
+
+        return self::$extras = $extras;
+    }
+
+    /**
+     * Palabras compuestas de antemano con HarfBuzz (árabe, devanagari, hebreo…), de los `*.formas.json` de la
+     * carpeta de fuentes extra: por palabra, su avance, si es de derecha a izquierda y sus letras ya colocadas
+     * (x, y y trazado). Las genera `herramientas/glifos-extra.py --formas`.
+     *
+     * @return array<string, array{int, bool, list<array{int, int, string}>}>
+     */
+    public static function formas(): array
+    {
+        if (self::$formas !== null) {
+            return self::$formas;
+        }
+        $formas = [];
+        $archivos = glob(self::$carpetaExtra . '/*.formas.json') ?: [];
+        sort($archivos);
+        foreach ($archivos as $archivo) {
+            $datos = json_decode((string) file_get_contents($archivo), true, 6);
+            if (!is_array($datos)) {
+                throw new \RuntimeException("$archivo no es un JSON de palabras. Se genera con herramientas/glifos-extra.py --formas.");
+            }
+            foreach ($datos as $palabra => $forma) {
+                if (!is_array($forma) || !is_int($forma[0] ?? null) || !is_array($forma[2] ?? null)) {
+                    throw new \RuntimeException("$archivo: la palabra «{$palabra}» no tiene el formato [avance, derecha_a_izquierda, letras].");
+                }
+                $letras = [];
+                foreach ($forma[2] as $letra) {
+                    if (!is_array($letra) || !is_int($letra[0] ?? null) || !is_int($letra[1] ?? null) || !is_string($letra[2] ?? null)) {
+                        throw new \RuntimeException("$archivo: una letra de «{$palabra}» no es [x, y, trazado].");
+                    }
+                    $letras[] = [$letra[0], $letra[1], $letra[2]];
+                }
+                $formas[(string) $palabra] ??= [$forma[0], (bool) ($forma[1] ?? false), $letras];
+            }
+        }
+
+        return self::$formas = $formas;
+    }
+
+    /**
+     * Parte un texto en espacios y palabras. Si a una palabra le pegan signos de puntuación o símbolos
+     * (`«palabra»`, `palabra.`) y lo que queda está en `$palabras`, también los separa, para encontrarla.
+     *
+     * @param array<string, mixed> $palabras las palabras compuestas de antemano, por clave
+     * @return list<string>
+     */
+    public static function trozos(string $texto, array $palabras): array
+    {
+        $trozos = [];
+        foreach (preg_split('/(\s+)/u', $texto, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY) ?: [] as $trozo) {
+            if (isset($palabras[$trozo]) || trim($trozo) === '' || $palabras === []) {
+                $trozos[] = $trozo;
+            } elseif (preg_match('/^([\p{P}\p{S}]*)(.+?)([\p{P}\p{S}]*)$/su', $trozo, $m) === 1 && isset($palabras[$m[2]])) {
+                foreach ([$m[1], $m[2], $m[3]] as $parte) {
+                    if ($parte !== '') {
+                        $trozos[] = $parte;
+                    }
+                }
+            } else {
+                $trozos[] = $trozo;
+            }
+        }
+
+        return $trozos;
+    }
+
+    /**
+     * El contorno de una letra, para escribir el texto a trazos en lugar de con la fuente: su avance y su
+     * trazado SVG, en milésimas de em y con la línea base en y = 0 (el trazado es '' para un espacio). Null si
+     * la cara no tiene esa letra.
+     *
+     * @return array{int, string}|null
+     */
+    public static function contorno(string $familia, string $estilo, int $peso, int $codigo): ?array
+    {
+        $trozos = self::indice()[$familia][$estilo][$peso] ?? throw new \InvalidArgumentException("La familia '$familia' no tiene la cara $estilo $peso en fuentes/.");
+        foreach ($trozos as $trozo) {
+            if (!self::cubreAlguna($trozo['rangos'], [$codigo])) {
+                continue;
+            }
+            $archivo = $trozo['archivo'];
+            if (!isset(self::$contornos[$archivo])) {
+                $ruta = __DIR__ . '/../fuentes/trazos/' . preg_replace('/\.woff2$/', '.json.gz', $archivo);
+                $comprimido = file_get_contents($ruta);
+                $contenido = $comprimido === false ? false : gzdecode($comprimido);
+                $datos = $contenido === false ? null : json_decode($contenido, true, 4);
+                if (!is_array($datos)) {
+                    throw new \RuntimeException("No se pudo leer $ruta. Se genera con herramientas/preparar-fuentes.py.");
+                }
+                $letras = [];
+                foreach ($datos as $clave => $letra) {
+                    if (is_array($letra) && is_int($letra[0] ?? null) && is_string($letra[1] ?? null)) {
+                        $letras[(int) $clave] = [$letra[0], $letra[1]];
+                    }
+                }
+                self::$contornos[$archivo] = $letras;
+            }
+
+            return self::$contornos[$archivo][$codigo] ?? self::extras()[$codigo] ?? null;
+        }
+
+        return self::extras()[$codigo] ?? null;
     }
 
     /**

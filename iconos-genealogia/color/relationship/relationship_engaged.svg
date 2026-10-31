@@ -10,7 +10,7 @@
     <ellipse cx="31.96" cy="43.46" rx="21.12" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="links">
-    <path d="M17 30.5L45 30.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" stroke-dasharray="0.1 5.2"/>
+    <path d="M17 30.5L45 30.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" stroke-dasharray="5 4.4 0.1 4.4"/>
   </g>
   <g class="solids">
     <g><path d="M26.63 25.64A1.44 1.44 0 0 1 26.92 26.5L26.92 39.62A1.44 1.44 0 0 1 25.48 41.06L12.36 41.06A1.44 1.44 0 0 1 11.21 40.48L9.47 38.16A1.44 1.44 0 0 1 9.18 37.3L9.18 24.18A1.44 1.44 0 0 1 10.62 22.74L23.74 22.74A1.44 1.44 0 0 1 24.89 23.32Z" fill="#767C82"/><rect x="9" y="22.5" width="16" height="16" rx="1.44" fill="url(#grad_relationship_engaged_mist)"/></g>

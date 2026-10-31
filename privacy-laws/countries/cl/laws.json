@@ -15,9 +15,9 @@
     "enforcement_authority": "Personal Data Protection Agency (Agencia de Protección de Datos Personales)",
     "penalties_range": "Up to 20,000 UTM (~USD 1.3M) for very serious infringements",
     "exemptions": "Government functions",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Heirs may exercise the data subject's rights after death, but cannot access, rectify or delete the data if the deceased forbade it expressly or a law so provides (art. 4)",
+    "research_exemption": "Legitimate interest for processing solely for historical, statistical, scientific and public-interest research purposes (art. 16 quinquies); health and biological-profile data may be used for such studies (art. 16 bis)",
+    "genetic_data": "Genetic, proteomic and metabolic data are sensitive 'biological profile' data, processable only for the purposes of special health laws (art. 16 bis)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=CL&t=law",
     "language": "Spanish",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "2026-12-01",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-31",
     "sources": {
       "law_name": {
         "url": "https://www.az.cl/en/executive-published-new-personal-data-law-in-chile/",
@@ -68,9 +68,54 @@
         "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/chile",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272",
+        "confidence": "high",
+        "checked": "2026-10-31"
+      },
+      "genetic_data": {
+        "url": "https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272",
+        "confidence": "high",
+        "checked": "2026-10-31"
+      },
+      "deceased_data": {
+        "url": "https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272",
+        "confidence": "high",
+        "checked": "2026-10-31"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-31",
+        "field": "genetic_data",
+        "from": "Sensitive data: genetic data (from biological exam) and biological profile data (arts. 16, 16 bis); stricter basis required",
+        "to": "Genetic, proteomic and metabolic data are sensitive 'biological profile' data, processable only for the purposes of special health laws (art. 16 bis)"
+      },
+      {
+        "date": "2026-10-31",
+        "field": "research_exemption",
+        "from": "Consent exemption for scientific, historical or public-interest statistical research (university summary; article not confirmed) (unconfirmed)",
+        "to": "Legitimate interest for processing solely for historical, statistical, scientific and public-interest research purposes (art. 16 quinquies); health and biological-profile data may be used for such studies (art. 16 bis)"
+      },
+      {
+        "date": "2026-10-31",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Heirs may exercise the data subject's rights after death, but cannot access, rectify or delete the data if the deceased forbade it expressly or a law so provides (art. 4)"
+      },
+      {
+        "date": "2026-10-29",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data: genetic data (from biological exam) and biological profile data (arts. 16, 16 bis); stricter basis required"
+      },
+      {
+        "date": "2026-10-29",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Consent exemption for scientific, historical or public-interest statistical research (university summary; article not confirmed) (unconfirmed)"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

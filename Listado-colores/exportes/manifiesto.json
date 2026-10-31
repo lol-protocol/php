@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1",
+  "version": "1.2.0",
   "idiomas": [
     "en",
     "es",
@@ -45,8 +45,8 @@
     },
     {
       "archivo": "lexico-basico.csv",
-      "filas": 2400,
-      "sha256": "9c326ed9606aa9bb693183296edf1e13babbf3bbb419c490184f3f907a3a3810"
+      "filas": 2412,
+      "sha256": "f4c014c154c750cd5379069235198fdd4a35d0123d78b9e4cdb13ac582d2b96d"
     },
     {
       "archivo": "evidencia.csv",
@@ -78,11 +78,11 @@
     {
       "archivo": "exportes/colores.jsonl",
       "filas": 148,
-      "sha256": "3cb25c553e96b4bd14ad03742603d7afd513cd347622a2d23007652215d6edb6"
+      "sha256": "7b1738e0fb3a03d122b313de98049a439c4c718a9ad45595150000638a22aaff"
     },
     {
       "archivo": "exportes/gazetteer.tsv",
-      "filas": 7080,
+      "filas": 7092,
       "columnas": [
         "forma",
         "idioma",
@@ -92,9 +92,10 @@
         "hex",
         "rasgos",
         "forma_normalizada",
-        "categorias"
+        "categorias",
+        "hex_cotidiano"
       ],
-      "sha256": "29be744798556870c0d5f6729f053887b8af9c6bc726b55814c398c45654ee59"
+      "sha256": "679af9b6b61746f07658989b013a583813736ab52a9696dc0947b7dd4e817cb1"
     },
     {
       "archivo": "exportes/spacy/en.jsonl",
@@ -223,8 +224,8 @@
     },
     {
       "archivo": "exportes/spacy/ko.jsonl",
-      "filas": 189,
-      "sha256": "8bd016abfca06d84b14c0f509c992e13fb881afe75f9a73ae508fc66a20ed04b"
+      "filas": 190,
+      "sha256": "1c531d5d4f3e409a67dfe47001b5de992734e41345f88d6b8c84b0163bc385e5"
     },
     {
       "archivo": "exportes/spacy/vi.jsonl",
@@ -243,8 +244,8 @@
     },
     {
       "archivo": "exportes/spacy/sw.jsonl",
-      "filas": 144,
-      "sha256": "2921926e6f04b95f928032868a08830e1b17ccf48041e7ea3a79c8d191930dd8"
+      "filas": 151,
+      "sha256": "197296c868fc72971b750a593f1d4ba222950a751fb96bda957cc384e656879e"
     },
     {
       "archivo": "exportes/lexico-ud.tsv",

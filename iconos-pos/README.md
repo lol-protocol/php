@@ -2,7 +2,7 @@
 
 23 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
 **sin letras, números ni pictogramas**, así que no dependen del idioma. 69
-archivos: 3 variantes × 23 iconos. Son los de las pantallas del sitio de punto
+archivos de icono (3 variantes × 23 iconos), más un `sprite.svg` por variante. Son los de las pantallas del sitio de punto
 de venta de `url-routing/` (producto, colección, etiqueta, grupo, orden,
 devolución, cuenta del cliente, carrito y pago); tres de ellos
 (`ui_profile`, `ui_settings` y `action_search`) son los mismos de los otros sets.
@@ -18,7 +18,8 @@ Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
   Los colores se pueden cambiar desde la página (ver «Colores de `lineas`»).
 - `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
-Las tres variantes tienen exactamente los mismos nombres y carpetas.
+Las tres variantes tienen exactamente los mismos nombres y carpetas, y cada una trae un
+`sprite.svg` en su raíz con todos sus iconos (ver «Sprite»).
 
 ## Estructura y nombres
 
@@ -53,7 +54,7 @@ forma, tono y posición.
   en el suelo.
 - `catalog_collection`: varios productos juntos, en un marco discontinuo.
   `catalog_tag`: un rótulo con su agujero. `catalog_group`: tres discos que se
-  tocan. `order_return`: el volumen y un arco que vuelve hacia atrás.
+  tocan. `order_return`: el paquete y la flecha de `checkout_shipping`, en sentido contrario.
 - `cart_`: la cesta (un trapecio azul) con los productos que asoman. La acción
   se lee por la insignia y por lo que hay dentro: `cart_add` lleva el «+» verde
   y un producto más, `cart_remove` el «−» rojo y uno solo, `cart_update` las dos
@@ -78,13 +79,40 @@ sufijo `_g`) son únicos entre los iconos y las variantes del set, así que pued
 incrustar varios SVG en línea en la misma página, también `color` y `gris` de un
 mismo icono.
 
+## Sprite
+
+Cada variante trae un `sprite.svg` en su raíz (`iconos-pos/color/sprite.svg`...) con
+todos sus iconos como `<symbol>`, cada uno con el nombre del icono por `id`, para
+pintarlos con `<use>` sin un archivo por icono:
+
+```html
+<svg width="24" height="24" aria-hidden="true"><use href="iconos-pos/color/sprite.svg#order_tracking"/></svg>
+```
+
+El icono toma el tamaño del `<svg>` que lo contiene. Hay un sprite por variante y
+no uno que junte las tres, que pesaría el triple: el de `color` pesa unos 37 KB (unos 6 KB con gzip).
+
+- **Como archivo aparte** (el ejemplo): la página y el sprite deben servirse por
+  HTTP desde el mismo origen. Abriendo el HTML con `file://` no se pinta. Se
+  descarga una vez y el navegador lo reutiliza para todos los iconos.
+- **En línea**: pega el contenido del sprite en la página, con `width="0"
+  height="0" style="position:absolute"` y `aria-hidden="true"` en su `<svg>`, y
+  usa `<use href="#order_tracking"/>`. No lo ocultes con `display:none` ni con
+  `hidden`: un `<svg>` oculto no pinta los degradados y los iconos de `color` y
+  `gris` salen oscuros. Pega una sola variante por página: los `id` de los
+  `<symbol>` son los mismos en las tres.
+
+El dibujo es el mismo que el del archivo suelto.
+
 ## Colores de `lineas`
 
 Cada trazo de `lineas/` lleva el color de su tono (`#883307` para `orange`...), y
-ese color se puede sobrescribir con una variable CSS `--ic-<tono>`. Solo
-funciona con el SVG **en línea** en la página (`<svg>` pegado o inyectado en el
-HTML): con `<img>` o `background: url(...)` los iconos se ven con sus colores de
-siempre, porque la página no llega al interior del archivo.
+ese color se puede sobrescribir con una variable CSS `--ic-<tono>`. Funciona con
+el SVG **en línea** en la página (`<svg>` pegado o inyectado en el HTML) y con
+`<use>` sobre el sprite, en línea o como archivo aparte (ver «Sprite»): la
+variable se hereda hasta el icono. Con `<img>` o `background: url(...)` los
+iconos se ven con sus colores de siempre, porque la página no llega al interior
+del archivo.
 
 ```css
 .barra svg { --ic-orange: currentColor; --ic-green: currentColor; }

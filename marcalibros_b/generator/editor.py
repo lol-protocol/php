@@ -236,8 +236,6 @@ def renderizar_receta(receta, manifiesto, *, usuario, almacen=None, densidad=1):
         bloques, alto = tx.componer(t["frase"], autor, franja)
         if alto > y1 - y0:
             raise ErrorEditor("la frase es demasiado larga para el marcalibros")
-        if not autor:  # componer reserva el hueco de «— Autor»: se centra la frase sola
-            bloques = [{"tam": bloques[0]["tam"], "glifos": [(c, x, round(y + 12, 1)) for c, x, y in bloques[0]["glifos"]]}]
         tono, ratio, velo = _tono_legible(caja, t.get("tono"))
         if velo:
             contrario = TONOS_TEXTO["oscuro" if tono == "claro" else "claro"]

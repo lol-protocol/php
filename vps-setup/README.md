@@ -112,11 +112,15 @@ curl http://initech.fun                     # Prueba SIN SSL primero
 
 ## 🖥️ Webmin — acceso y uso
 
-```
-https://IP_DEL_VPS:10000
+Webmin escucha **solo en localhost del VPS**: no hay puerto 10000 abierto a internet (el login es el de root/sudo del sistema, un blanco de fuerza bruta). Se entra por un túnel SSH, que funciona con cualquier IP (fija o dinámica). Desde TU equipo:
+
+```bash
+ssh -L 10000:localhost:10000 usuario@IP_DEL_VPS     # deja esa terminal abierta
 ```
 
-Inicia sesión con el mismo usuario/contraseña que usas por SSH (root o tu usuario con sudo).
+y en el navegador: `https://localhost:10000` (el certificado es autofirmado: acepta el aviso). Inicia sesión con el mismo usuario/contraseña que usas por SSH (root o tu usuario con sudo).
+
+Alternativas: con una IP **fija**, `WEBMIN_ALLOW_FROM=<tu IP> ./02_J-install-webmin.sh` lo deja accesible directo (`https://IP_DEL_VPS:10000`) solo desde esa IP; `WEBMIN_PUBLIC=1` lo abre a todo internet (no recomendado).
 
 **Módulos más útiles ya incluidos:**
 - **Nginx Webserver** — edita server blocks, SSL, proxy, gzip directamente sobre `/etc/nginx/`
@@ -142,7 +146,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 02_G | `02_G-install-mariadb.sh` | *(Opcional)* Instala MariaDB |
 | 02_H | `02_H-install-tomcat.sh` | *(Opcional)* Instala Apache Tomcat — requiere que `02_A` (Java) ya haya corrido |
 | 02_I | `02_I-install-python-whisper.sh` | *(Opcional)* Instala Whisper (OpenAI, transcripción de audio) + ffmpeg + librerías Python básicas en un venv en `/opt/venvs/whisper` — requiere que `02_C` (Python) ya haya corrido |
-| 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional: `install-all.sh` solo lo instala con `--with-webmin`). Con `WEBMIN_ALLOW_FROM=<tu IP>` el puerto 10000 solo se abre a esa IP; sin ella queda abierto a todo internet y el script lo avisa |
+| 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional: `install-all.sh` solo lo instala con `--with-webmin`). Por defecto escucha **solo en localhost** (`bind=127.0.0.1`, sin regla de UFW) y se entra por túnel SSH; `WEBMIN_ALLOW_FROM=<IP fija>` lo abre solo a esa IP y `WEBMIN_PUBLIC=1` a todo internet. Re-correrlo cierra una regla abierta de una instalación anterior |
 | 03 | `03-configure-nginx-site.sh <dominio>` | Crea el virtual host de Nginx (estático, sin PHP) y copia la landing page |
 | 04 | `04-setup-ssl.sh <dominio> [email] [--force] [--staging]` | Obtiene certificado SSL. Verifica antes que el DNS apunte al VPS; sin terminal y con el DNS mal, **aborta** para no gastar un intento de Let's Encrypt (`--force` lo salta). `--staging` pide un certificado de prueba sin límite semanal |
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
@@ -154,7 +158,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
 | 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
 | 06_A | `06_A-setup-php-app.sh <app> <dominio>` | *(Opcional)* Configura una app PHP adicional. Si la carpeta ya tiene tu código, re-correrlo (p. ej. para cambiar el límite de subida) **no lo reemplaza**: solo crea la página de prueba en una carpeta vacía. Permite subidas de hasta `MAX_UPLOAD` (20M por defecto) en Nginx y en PHP |
-| 06_B | `06_B-setup-python-app.sh <app> <dominio> [puerto]` | *(Opcional)* Configura una app Python (Flask + Gunicorn). Cada app necesita su propio puerto local (por defecto 8000): el script rechaza uno que ya use otra app. Como en `06_A`, re-correrlo no pisa tu `app.py`: solo actualiza el servicio y el proxy. `MAX_UPLOAD` (20M) y `PROXY_TIMEOUT` (120s, igual en Nginx y gunicorn) son configurables |
+| 06_B | `06_B-setup-python-app.sh <app> <dominio> [puerto]` | *(Opcional)* Configura una app Python (Flask + Gunicorn). Cada app necesita su propio puerto local (por defecto 8000): el script rechaza uno que ya use otra app. Como en `06_A`, re-correrlo no pisa tu `app.py`: solo actualiza el servicio y el proxy. `MAX_UPLOAD` (20M) y `PROXY_TIMEOUT` (120s, igual en Nginx y gunicorn) son configurables Cada app Python corre con **su propio usuario de sistema** (`app-<nombre>`), en una carpeta 750 solo suya, y con **su propia base de datos y rol** PostgreSQL (`app_<nombre>`, sin acceso a las demás): su `DATABASE_URL` queda en un `.env` modo 600 que el servicio carga. `APP_DB=0` omite la base |
 | 06_C | `06_C-setup-dns-server.sh <dominio> [ip]` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`), con registro CAA (solo Let's Encrypt) y AAAA si das `VPS_IP6=`. Sin IP usa la pública detectada — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
 | 06_D | `06_D-setup-tomcat-app.sh <dominio> [context]` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho. Admite `MAX_UPLOAD` y `PROXY_TIMEOUT` como 06_B |
 | 06_E | `06_E-setup-marcalibros-app.sh <dominio> [--png] [--repo DIR]` | *(Opcional)* Instala la app Marcalibros (`marcalibros-plataforma-pos-brand-identity/app`) copiando el código del monorepo a `/var/www/marcalibros/` (de root, con dos renombres seguidos, sin copiar sobre el sitio en uso), sus datos en `/var/lib/marcalibros` (solo `www-data`), un vhost que manda todo a `public/index.php` y la limpieza diaria en `/etc/cron.d/marcalibros`. Re-correrlo actualiza el código y conserva datos y PNG. `--png` genera los PNG del catálogo (necesita Pillow y numpy). `MAX_UPLOAD` es 6M; `MARCALIBROS_RETENTION_DAYS` fija los días de conservación (por defecto 0: no se borran nunca). Solo admite un dominio |
@@ -171,7 +175,7 @@ Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independiente
 ./install-all.sh initech.fun admin@initech.fun --dry-run   # muestra el plan, no ejecuta nada
 ./install-all.sh initech.fun admin@initech.fun --yes       # sin confirmación
 ./install-all.sh initech.fun admin@initech.fun --resume    # tras un fallo: salta lo ya hecho
-./install-all.sh initech.fun admin@initech.fun --with-webmin   # incluye el panel Webmin (puerto 10000)
+./install-all.sh initech.fun admin@initech.fun --with-webmin   # incluye el panel Webmin (solo por túnel SSH)
 ./install-all.sh initech.fun admin@initech.fun --skip-ssl  # instala todo antes de que el DNS apunte; SSL luego con 04
 ```
 
@@ -252,11 +256,12 @@ autoritativo (06_C), unidades systemd de apps Python con sandbox básico (06_B),
 privados (02_J), entradas validadas con listas blancas y `remote-run.sh` solo por llave.
 
 Límites conocidos (decisiones de diseño, no bugs):
-- Todas las apps PHP/Python corren como `www-data`: una app comprometida puede leer los archivos de las demás. Para
-  aislarlas hace falta un usuario y un pool de PHP-FPM por app (no incluido).
+- Las apps **PHP** corren todavía como `www-data` (pool de PHP-FPM compartido): una app PHP comprometida puede leer los
+  archivos de las demás apps PHP. Las apps **Python** ya están aisladas (usuario, carpeta 750 y base propios). El pool
+  de PHP-FPM por app es el siguiente paso.
 - `remote-run.sh` usa `StrictHostKeyChecking=accept-new`: confía en la huella del VPS en la primera conexión. Verifícala
   con la consola del proveedor si te preocupa un MITM en esa primera vez.
-- Webmin (02_J) y el instalador `setup-repos.sh` se descargan de `raw.githubusercontent.com/.../master` sin verificar
+- Webmin (02_J) escucha solo en localhost; el instalador `setup-repos.sh` y el propio paquete se descargan de `raw.githubusercontent.com/.../master` sin verificar
   firma ni checksum (es el método oficial de Webmin); las librerías de `02_I`/`06_B` se instalan con `pip` sin fijar versiones.
 - Los certificados y la zona DNS no se eliminan al quitar un dominio con `10_B` (se indican los comandos).
 
@@ -295,7 +300,7 @@ ls -la /var/www/landing-page/tudominio.com/
 
 **Landing page no se ve:** verifica permisos con `sudo chown -R www-data:www-data /var/www/landing-page/tudominio.com`
 
-**No puedo entrar a Webmin:** verifica que el puerto 10000 esté abierto (`sudo ufw status`) y que el servicio esté corriendo (`sudo systemctl status webmin`)
+**No puedo entrar a Webmin:** no hay puerto abierto a propósito: abre antes el túnel (`ssh -L 10000:localhost:10000 usuario@IP_DEL_VPS`) y entra a `https://localhost:10000`. Si no responde, mira el servicio (`sudo systemctl status webmin`) y que escuche en `127.0.0.1:10000` (`sudo ss -ltn | grep 10000`)
 
 ## 🎯 Próximos Pasos (opcionales)
 

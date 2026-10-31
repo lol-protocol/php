@@ -72,3 +72,14 @@ hc() { run bash "$VPS_DIR/08-healthcheck.sh" "$@"; }
     [ "$status" -eq 1 ]
     [[ "$output" == *"fail2ban instalado pero NO activo"* ]]
 }
+
+@test "Webmin escuchando en una direccion publica es un AVISO; solo en localhost, OK" {
+    make_stub ss 'if [[ "$*" == *10000* ]]; then printf "State Recv-Q Send-Q Local Address:Port Peer\nLISTEN 0 128 ${WEBMIN_ADDR} 0.0.0.0:*\n"; else echo LISTEN; fi'
+    WEBMIN_ADDR="0.0.0.0:10000" hc ejemplo.com
+    [ "$status" -eq 0 ]                                          # un aviso no es una falla
+    [[ "$output" == *"[AVISO] Webmin escucha en una direccion publica"* ]]
+    WEBMIN_ADDR="127.0.0.1:10000" hc ejemplo.com
+    [[ "$output" == *"[OK]    Webmin solo escucha en localhost"* ]]
+    WEBMIN_ADDR="[::]:10000" hc ejemplo.com
+    [[ "$output" == *"[AVISO] Webmin escucha en una direccion publica"* ]]
+}

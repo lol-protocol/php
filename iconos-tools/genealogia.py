@@ -322,7 +322,7 @@ s.n('a', 'm', 0, 0).n('b', 'f', 1, 0).couple('a', 'b', 'cut')
 done(s)
 
 s = scene('relationship_engaged')
-s.n('a', 'm', 0, 0).n('b', 'f', 1, 0).couple('a', 'b', 'dotted')
+s.n('a', 'm', 0, 0).n('b', 'f', 1, 0).couple('a', 'b', 'dashdot')
 s.decor.append(lambda ic, pos, r: (ic.ring(31, 18, 5.2, tone='orange', ink='orange', w=2.6),
                                    ic.dot(31, 11.6, 1.8, tone='orange', ink='orange')))
 done(s)
@@ -585,6 +585,17 @@ for kind, x, y, r in (('di', 33, 21, 4.4), ('sq', 40, 44, 4.0), ('ci', 48, 27, 3
 for x, y in ((9.5, 33), (18.5, 25), (18.5, 41)):
     node(ic, 'ci', x, y, 'rel', r=5.6, d=2.4)
 
+# red de un grupo: un anillo de nodos unidos entre sí y uno central que se une a tres (no es un árbol: hay ciclos)
+ic = reg(Icon('view_network'))
+ring = ((12, 20, 'ci'), (34, 9, 'di'), (54, 24, 'sq'), (45, 51, 'ci'), (17, 49, 'di'))
+for (x0, y0, _), (x1, y1, _) in zip(ring, ring[1:] + ring[:1]):
+    ic.link([(x0, y0), (x1, y1)], w=2.2)
+for x, y, _ in (ring[0], ring[2], ring[4]):
+    ic.link([(31, 33), (x, y)], w=2.2)
+for x, y, kind in ring:
+    node(ic, kind, x, y, 'other', r=4.8, d=2)
+node(ic, 'ci', 31, 33, 'rel', r=6.2, d=2.6)
+
 # ------------------------------------------------------------------ action_
 # Las acciones son piezas sueltas con movimiento: lo que se ve es de dónde viene y a dónde va, nunca un objeto.
 def pt_on(cx, cy, r, a):
@@ -831,6 +842,22 @@ def _records(ic, x, y):
 reg(tile('ui_records', 'blue', _records))
 
 # aportes: quien aporta (el nodo propio) y lo que aportó
+# vínculos de una persona: ella y dos parientes, unidos por tres tipos de enlace distintos
+ic = new('ui_links')
+ic.link([(31, 15), (13, 46)], 'double')
+ic.link([(31, 15), (49, 46)], w=2.4)
+ic.link([(13, 46), (49, 46)], 'tie', w=2.4)
+node(ic, 'ci', 31, 15, 'self', r=6.6, d=2.6)
+node(ic, 'di', 13, 46, 'rel', r=6.2, d=2.6)
+node(ic, 'sq', 49, 46, 'other', r=5.6, d=2.4)
+
+# colecciones de la cuenta: varios árboles, cada uno con su nodo, dentro de un marco discontinuo
+ic = new('ui_collections')
+ic.poly([(6, 8), (58, 8), (58, 56), (6, 56)], True, tone='slate', ink='slate', w=2.2, dash='3.5 3.8', behind=True)
+for x, y, kind in ((12, 14, 'ci'), (34, 14, 'di'), (12, 35, 'sq'), (34, 35, 'ci')):
+    ic.solid(Block(x, y, 18, 17, r=4.5), 'mist', d=2.4)
+    node(ic, kind, x + 9, y + 8.5, 'self' if kind == 'ci' else 'rel', r=4.6, d=1.4)
+
 ic = new('ui_contribution')
 ic.link([(14, 31), (27, 31), (27, 17), (33, 17)], w=2.2)
 ic.link([(27, 31), (33, 31)], w=2.2)

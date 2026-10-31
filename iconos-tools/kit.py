@@ -25,7 +25,8 @@ def catalog():
 
 # --------------------------------------------------------------------------- géneros: forma x patrón
 CX, CY = 30.5, 29.0
-PATTERNS = ('plain', 'stripes', 'dots', 'waves', 'ring', 'grid', 'split')
+# la octava solo la usa la familia que tiene ocho géneros (rombo); las de siete no llegan a ella
+PATTERNS = ('plain', 'stripes', 'dots', 'waves', 'ring', 'grid', 'split', 'chevron')
 FAMILY_HUE = {'circle': 'pink', 'square': 'brown', 'triangle': 'red', 'hexagon': 'teal', 'diamond': 'violet', 'half': 'green'}
 
 HALF_R = 15  # radio del semicírculo: con 13,5 el patrón no cabía y las rayas y la cruz se fundían con el contorno
@@ -77,6 +78,8 @@ def _draw_pattern(ic, pattern, px, py, p, kx, pr):
         ic.ring(px, py, 0.62 * pr, w=2.8)
     elif pattern == 'grid':
         ic.mark(f'M{fmt(px - 0.8 * p * kx)} {fmt(py)}h{fmt(1.6 * p * kx)}M{fmt(px)} {fmt(py - 0.8 * p)}v{fmt(1.6 * p)}', w=2.6)
+    elif pattern == 'chevron':
+        ic.poly([(px - 0.75 * p * kx, py - 0.35 * p), (px, py + 0.4 * p), (px + 0.75 * p * kx, py - 0.35 * p)], w=2.8)
     elif pattern == 'split':
         ic.mark(f'M{fmt(px)} {fmt(py - 0.8 * pr)}A{fmt(0.8 * pr)} {fmt(0.8 * pr)} 0 0 0 {fmt(px)} {fmt(py + 0.8 * pr)}Z', filled=True)
 

@@ -1,6 +1,9 @@
-"""Datos que comparten el generador, el validador y la comprobación de miniaturas: variantes y prefijos de cada set."""
+"""Datos que comparten el generador, el validador y la comprobación de miniaturas: variantes, sprite y prefijos de cada set."""
 
 VARIANTS = ('color', 'lineas', 'gris')
+
+# archivo con todos los iconos de una variante como <symbol>, en la raíz de la carpeta de esa variante (no en una subcarpeta de prefijo)
+SPRITE = 'sprite.svg'
 
 # clase de la raíz de los SVG lineas: las reglas de su <style> empiezan por ella. Un <style> en un SVG puesto en línea vale
 # para todo el documento, y sin esto una clase ic-<tono> de la página (o de otro icono) cambiaría de color sin querer

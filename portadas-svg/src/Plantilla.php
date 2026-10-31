@@ -47,6 +47,12 @@ abstract class Plantilla
     protected const CONTRATAPA_FRISO_Y = 17.0;
     protected const CONTRATAPA_FRISO_ANCHO = 36.0;
     protected const CONTRATAPA_FRISO_ALTO = 5.0;
+    /** Contratapa corta: marca de agua con el emblema de la tradición (radio, altura de su centro como fracción del alto, opacidad y grosor de línea). */
+    protected const CONTRATAPA_TEXTO_SEPARACION = 8.0;
+    protected const CONTRATAPA_MARCA_RADIO = 24.0;
+    protected const CONTRATAPA_MARCA_Y = 0.64;
+    protected const CONTRATAPA_MARCA_OPACIDAD = 0.3;
+    protected const CONTRATAPA_MARCA_TRAZO = 0.25;
     /** Contratapa: motivo de la categoría, abajo a la izquierda sobre el pie (radio y distancia de su centro al borde inferior). */
     protected const CONTRATAPA_MOTIVO_RADIO = 6.5;
     protected const CONTRATAPA_MOTIVO_Y = 30.0;
@@ -100,6 +106,20 @@ abstract class Plantilla
      */
     private array $usadas = [];
 
+    /**
+     * Con `true`, el texto no se escribe con la fuente sino como contornos: cada letra es un trazado, y la
+     * pieza no depende de ninguna fuente. Se ve igual en cualquier visor, pero el texto ya no se puede
+     * seleccionar ni buscar.
+     */
+    public bool $textoATrazos = false;
+
+    /**
+     * Contornos de las letras que ha dibujado la pieza en curso, por identificador (ver `aTrazos`).
+     *
+     * @var array<string, string>
+     */
+    private array $glifos = [];
+
     /** @return array<string, class-string<Plantilla>> */
     public static function disponibles(): array
     {
@@ -151,6 +171,7 @@ abstract class Plantilla
     public function dibujar(Libro $libro, Medidas $medidas, string $vista = 'sobrelomo'): string
     {
         $this->usadas = [];
+        $this->glifos = [];
         $paneles = '';
         foreach ($medidas->paneles($vista) as $panel) {
             $zona = $medidas->pieza($panel);
@@ -165,7 +186,7 @@ abstract class Plantilla
         }
 
         return ($libro->degradado?->defs($medidas->lienzo()) ?? '')
-            . Fuentes::estilo($this->usadas)
+            . ($this->textoATrazos ? $this->defsDeGlifos() : Fuentes::estilo($this->usadas))
             . $this->rectangulo($medidas->vista($vista), ['fill' => $this->relleno($libro)])
             . $paneles;
     }
@@ -266,9 +287,18 @@ abstract class Plantilla
             $y += $gastado;
             $alto -= $gastado;
         }
+        $fin = $y;
         if ($libro->textos->contratapa !== '') {
             $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $alto, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
             $svg .= $this->parrafo($texto['lineas'], $x, $y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
+            $fin = $y + count($texto['lineas']) * $texto['tamano'] * self::INTERLINEADO;
+        }
+
+        // Una contratapa con poco texto queda vacía: el emblema de la tradición, muy tenue, llena el hueco. Solo
+        // se pone si cabe sin tocar el texto.
+        $centro = $panel->y + $panel->alto * self::CONTRATAPA_MARCA_Y;
+        if ($libro->tradicion !== null && $centro - self::CONTRATAPA_MARCA_RADIO > $fin + self::CONTRATAPA_TEXTO_SEPARACION) {
+            $svg .= Svg::elemento('g', ['opacity' => self::CONTRATAPA_MARCA_OPACIDAD], $this->adorno($libro)->emblema($panel->x + $panel->ancho / 2, $centro, self::CONTRATAPA_MARCA_RADIO, $colores['acento'], self::CONTRATAPA_MARCA_TRAZO));
         }
 
         if ($libro->categoria !== null) {
@@ -314,6 +344,10 @@ abstract class Plantilla
         $y = $panel->y + $panel->alto / 2;
 
         $this->usar([], $texto['texto']);
+
+        if ($this->textoATrazos) {
+            return $svg . $this->aTrazos([$texto['texto']], 0.0, 0.0, $texto['tamano'], 'middle', $colores['texto'], [], 'translate(' . Svg::n($x) . ' ' . Svg::n($y) . ') rotate(' . (90 * $sentido) . ') ');
+        }
 
         return $svg . Svg::elemento('text', [
             'transform' => 'translate(' . Svg::n($x) . ' ' . Svg::n($y) . ') rotate(' . (90 * $sentido) . ')',
@@ -368,6 +402,9 @@ abstract class Plantilla
     protected function parrafo(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra = []): string
     {
         $this->usar($extra, implode('', $lineas));
+        if ($this->textoATrazos) {
+            return $this->aTrazos($lineas, $x, $y, $tamano, $anclaje, $color, $extra);
+        }
 
         return Svg::elemento('text', [
             'x' => $x,
@@ -377,6 +414,145 @@ abstract class Plantilla
             'text-anchor' => $anclaje,
             'fill' => $color,
         ] + $extra, Svg::lineas($lineas, $x, $tamano, self::INTERLINEADO));
+    }
+
+    /**
+     * El mismo texto que `parrafo`, pero como contornos: una línea es un grupo escalado al tamaño de letra, y
+     * cada letra un `<use>` de su trazado, colocado según su avance. No aplica kerning, igual que la medida
+     * del texto. Una letra que la fuente no tiene deja su hueco (con el ancho medio) y no se dibuja.
+     *
+     * @param list<string> $lineas
+     * @param array<string, float|int|string> $extra
+     * @param string $antes transformación previa del grupo, para el texto girado del lomo
+     */
+    private function aTrazos(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra, string $antes = ''): string
+    {
+        $familia = $this->familia();
+        $estilo = self::estiloDe($extra);
+        $peso = self::pesoDe($extra);
+        $medida = $this->medidaDe($extra);
+        $escala = $tamano / 1000;
+        $espaciado = (float) ($extra['letter-spacing'] ?? 0.0) / $escala; // en milésimas de em
+
+        $formas = Fuentes::formas();
+        $svg = '';
+        foreach ($lineas as $indice => $linea) {
+            $trozos = $this->enOrdenVisual(Fuentes::trozos($linea, $formas), $formas);
+
+            $letras = '';
+            $avance = 0.0;
+            foreach ($trozos as $trozo) {
+                if (isset($formas[$trozo])) {
+                    [$ancho, , $piezas] = $formas[$trozo];
+                    foreach ($piezas as [$px, $py, $contorno]) {
+                        $id = 'f' . substr(md5($contorno), 0, 10);
+                        $this->glifos[$id] = $contorno;
+                        $letras .= Svg::elemento('use', ['href' => "#$id", 'xlink:href' => "#$id", 'x' => $avance + $px, 'y' => $py]);
+                    }
+                    $avance += $ancho;
+                    continue;
+                }
+                foreach (mb_str_split($trozo) as $letra) {
+                    $codigo = mb_ord($letra);
+                    if ($codigo < 0x20) {
+                        continue;
+                    }
+                    $contorno = Fuentes::contorno($familia, $estilo, $peso, $codigo);
+                    if ($contorno === null) {
+                        $avance += $medida->em($letra) * 1000 + $espaciado;
+                        continue;
+                    }
+                    if ($contorno[1] !== '') {
+                        $id = "g$familia-$estilo-$peso-$codigo";
+                        $this->glifos[$id] = $contorno[1];
+                        $letras .= Svg::elemento('use', ['href' => "#$id", 'xlink:href' => "#$id", 'x' => $avance]);
+                    }
+                    $avance += $contorno[0] + $espaciado;
+                }
+            }
+            if ($letras === '') {
+                continue;
+            }
+            $ancho = $avance * $escala;
+            $inicio = match ($anclaje) {
+                'middle' => $x - $ancho / 2,
+                'end' => $x - $ancho,
+                default => $x,
+            };
+            $base = $y + $indice * $tamano * self::INTERLINEADO;
+            $svg .= Svg::elemento('g', [
+                'transform' => $antes . 'translate(' . Svg::n($inicio) . ' ' . Svg::n($base) . ') scale(' . rtrim(rtrim(number_format($escala, 6, '.', ''), '0'), '.') . ')',
+                'fill' => $color,
+            ], "\n" . $letras);
+        }
+
+        return $svg;
+    }
+
+    /**
+     * Pone en orden visual los trozos de una línea: las palabras de derecha a izquierda compuestas de antemano
+     * (árabe, hebreo…) se leen de derecha a izquierda, así que una línea hecha solo de ellas se invierte entera, y
+     * en una frase mezclada se invierte cada tramo seguido de ellas, con los espacios de en medio. Es un bidi
+     * mínimo: no resuelve números ni paréntesis dentro de un tramo, ni más de un nivel de mezcla.
+     *
+     * @param list<string> $trozos palabras, signos y espacios, en el orden en que se escribieron
+     * @param array<string, array{int, bool, list<array{int, int, string}>}> $formas
+     * @return list<string>
+     */
+    private function enOrdenVisual(array $trozos, array $formas): array
+    {
+        $derechaAIzquierda = static fn (string $trozo): bool => $formas[$trozo][1] ?? false;
+        $palabras = array_filter($trozos, static fn (string $trozo): bool => trim($trozo) !== '');
+        if ($palabras !== [] && array_filter($palabras, $derechaAIzquierda) === $palabras) {
+            return array_reverse($trozos);
+        }
+
+        $resultado = [];
+        $tramo = [];
+        foreach ($trozos as $trozo) {
+            if ($derechaAIzquierda($trozo) || ($tramo !== [] && trim($trozo) === '')) {
+                $tramo[] = $trozo;
+                continue;
+            }
+            array_push($resultado, ...self::invertirTramo($tramo));
+            $tramo = [];
+            $resultado[] = $trozo;
+        }
+        array_push($resultado, ...self::invertirTramo($tramo));
+
+        return $resultado;
+    }
+
+    /**
+     * Invierte un tramo de palabras de derecha a izquierda. Un tramo termina en palabra: los espacios del final
+     * no son parte de él y se quedan donde estaban.
+     *
+     * @param list<string> $tramo
+     * @return list<string>
+     */
+    private static function invertirTramo(array $tramo): array
+    {
+        $cola = [];
+        while ($tramo !== [] && trim(end($tramo)) === '') {
+            array_unshift($cola, (string) array_pop($tramo));
+        }
+
+        return [...array_reverse($tramo), ...$cola];
+    }
+
+    /** Los contornos que usan las letras de la pieza, una sola vez cada uno, para referirse a ellos con `<use>`. */
+    private function defsDeGlifos(): string
+    {
+        if ($this->glifos === []) {
+            return '';
+        }
+        ksort($this->glifos);
+        $trazados = '';
+        foreach ($this->glifos as $id => $contorno) {
+            $trazados .= Svg::elemento('path', ['id' => $id, 'd' => $contorno]);
+        }
+
+        return "<defs>\n" . $trazados . "</defs>\n";
     }
 
     /**

@@ -147,6 +147,8 @@ RASGOS_FLEXION = {
     "Terminacion=-e": "-e", "Terminacion=-en": "-en", "Terminacion=-er": "-er",
     "Terminacion=-es": "-es", "Terminacion=-em": "-em",
 }
+# Un lema con este rasgo lo propuso un asistente de IA y ningún hablante nativo lo ha revisado. Se quita al confirmarlo.
+ORIGEN_IA = cobertura.ORIGEN_IA
 RE_ETIQUETA = re.compile(r"(region|ortografia|registro|uso|forma)=[A-Za-z_-]+")
 # Idiomas cuya escritura no es latina: sus formas no pueden llevar letras latinas.
 SIN_LETRAS_LATINAS = {"el", "ru", "uk", "ar", "he", "fa", "hi", "bn", "zh", "ja", "ko", "th"}
@@ -353,6 +355,18 @@ def hex_de_concepto(concepto, anotada, completa):
     return None
 
 
+def hex_cotidiano_de_concepto(concepto, completa):
+    """Hex del nombre de uso corriente (la entrada curada de la lista completa con el mismo nombre) o "" si no hay.
+
+    No sustituye al hex de referencia: el color CSS `lime` es verde puro y `khaki` un amarillo pálido, y quien dice «lima» o
+    «caqui» piensa en otro matiz. Es el que da la lista completa, con sus defectos (allí `green` es #00FF00).
+    """
+    for f in completa:
+        if f["nombre_ingles"].lower() == concepto and f["curada"] == "x":
+            return f["hex"]
+    return ""
+
+
 def validar_lexico(filas, anotada, completa, errores):
     """El léxico básico: valida cada fila y que cada concepto tenga su lema en cada idioma donde aparece."""
     codigos = [c for c, _ in IDIOMAS]
@@ -374,8 +388,8 @@ def validar_lexico(filas, anotada, completa, errores):
             errores.append(f"lexico-basico.csv línea {n}: letras latinas en {idioma}: {forma!r}")
         if tipo == "flexion" and rasgos not in RASGOS_FLEXION:
             errores.append(f"lexico-basico.csv línea {n}: rasgos de flexión no válidos: {rasgos!r}")
-        if tipo == "lema" and rasgos:
-            errores.append(f"lexico-basico.csv línea {n}: un lema no lleva rasgos")
+        if tipo == "lema" and rasgos not in ("", ORIGEN_IA):
+            errores.append(f"lexico-basico.csv línea {n}: un lema no lleva rasgos (solo {ORIGEN_IA!r} si es una propuesta sin revisar)")
         if tipo in ("sinonimo", "variante") and rasgos and not RE_ETIQUETA.fullmatch(rasgos):
             errores.append(f"lexico-basico.csv línea {n}: etiqueta no válida: {rasgos!r}")
         clave = (concepto, idioma, forma, tipo, rasgos)
@@ -546,7 +560,8 @@ def tabla_lexico(codigo, lexico, anotada, completa):
         filas = por_concepto.get(concepto)
         if not filas:
             continue
-        lema = next(f["forma"] for f in filas if f["tipo"] == "lema")
+        lema = next(f["forma"] + (" (propuesta de IA sin revisar)" if f["rasgos"] == ORIGEN_IA else "")
+                    for f in filas if f["tipo"] == "lema")
         flexiones = ", ".join(f"{f['forma']} ({RASGOS_FLEXION[f['rasgos']]})" for f in filas if f["tipo"] == "flexion")
 
         def con_etiqueta(f):
@@ -725,6 +740,7 @@ def main():
         "significados": significados, "lexico": lexico, "referencias": referencias, "evidencia": evidencia,
         "culturales": culturales, "categorias": gramaticales, "alias": alias_de(anotada),
         "hex_concepto": {c: hex_de_concepto(c, anotada, completa) for c in CONCEPTOS},
+        "hex_cotidiano": {c: hex_cotidiano_de_concepto(c, completa) for c in CONCEPTOS},
     }
     if "--sqlite" in sys.argv:
         indice = sys.argv.index("--sqlite")

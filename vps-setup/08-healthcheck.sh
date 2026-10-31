@@ -28,6 +28,16 @@ for svc in webmin fail2ban mariadb tomcat10; do
     fi
 done
 
+# Webmin acepta el login de root/sudo: expuesto a internet es un blanco de fuerza bruta. Solo se
+# avisa (no es una falla): hay quien lo abre a proposito para una IP fija con WEBMIN_ALLOW_FROM.
+if systemctl is-active --quiet webmin 2>/dev/null; then
+    if ss -ltn "( sport = :10000 )" 2>/dev/null | awk 'NR>1{print $4}' | grep -qvE '^(127\.0\.0\.1|\[::1\]):'; then
+        warn "Webmin escucha en una direccion publica (puerto 10000): usa el tunel SSH (ver 02_J) o limitalo con WEBMIN_ALLOW_FROM"
+    else
+        ok "Webmin solo escucha en localhost (acceso por tunel SSH)"
+    fi
+fi
+
 echo "Firewall:"
 if sudo ufw status | grep -q "^Status: active"; then ok "UFW activo"; else fail "UFW inactivo"; fi
 

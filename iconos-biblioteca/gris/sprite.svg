@@ -1,0 +1,2869 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="action_add_to_shelf" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_add_to_shelf_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_action_add_to_shelf_indigo_g_m4" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8B8B8B"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_action_add_to_shelf_pink_g_p25" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#B0B0B0"/>
+        <stop offset="1" stop-color="#7F7F7F"/>
+      </linearGradient>
+      <linearGradient id="grad_action_add_to_shelf_teal_g_m19" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#878787"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_action_add_to_shelf_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.6" cy="53" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M56.7 46.6A2.5 2.5 0 0 1 57.2 48.1A2.5 2.5 0 0 1 54.7 50.6L11.7 50.6A2.5 2.5 0 0 1 9.7 49.6L8.68 48.24A2.5 2.5 0 0 1 8.18 46.74A2.5 2.5 0 0 1 10.68 44.24L53.68 44.24A2.5 2.5 0 0 1 55.68 45.24Z" fill="#3E3E3E"/><rect x="8" y="44" width="48" height="5" rx="2.5" fill="url(#grad_action_add_to_shelf_brown_g)"/></g>
+      <g><path d="M20.8 24.4A2 2 0 0 1 21.2 25.6L21.2 43.6A2 2 0 0 1 19.2 45.6L15.2 45.6A2 2 0 0 1 13.6 44.8L12.58 43.44A2 2 0 0 1 12.18 42.24L12.18 24.24A2 2 0 0 1 14.18 22.24L18.18 22.24A2 2 0 0 1 19.78 23.04Z" fill="#313131"/><rect x="12" y="22" width="8" height="22" rx="2" fill="url(#grad_action_add_to_shelf_indigo_g_m4)"/></g>
+      <g><path d="M30.8 19.4A2 2 0 0 1 31.2 20.6L31.2 43.6A2 2 0 0 1 29.2 45.6L25.2 45.6A2 2 0 0 1 23.6 44.8L22.58 43.44A2 2 0 0 1 22.18 42.24L22.18 19.24A2 2 0 0 1 24.18 17.24L28.18 17.24A2 2 0 0 1 29.78 18.04Z" fill="#545454"/><rect x="22" y="17" width="8" height="27" rx="2" fill="url(#grad_action_add_to_shelf_pink_g_p25)"/></g>
+      <g><path d="M40.8 26.4A2 2 0 0 1 41.2 27.6L41.2 43.6A2 2 0 0 1 39.2 45.6L35.2 45.6A2 2 0 0 1 33.6 44.8L32.58 43.44A2 2 0 0 1 32.18 42.24L32.18 26.24A2 2 0 0 1 34.18 24.24L38.18 24.24A2 2 0 0 1 39.78 25.04Z" fill="#2B2B2B"/><rect x="32" y="24" width="8" height="20" rx="2" fill="url(#grad_action_add_to_shelf_teal_g_m19)"/></g>
+      <g><path d="M43.38 17.84L44.4 19.2A6 6 0 0 0 54 12L52.98 10.64A6 6 0 0 0 43.38 17.84Z" fill="#414141"/><circle cx="48" cy="14" r="6" fill="url(#grad_action_add_to_shelf_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M48 22v4" fill="none" stroke="#6F6F6F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="action_all_connections" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_all_connections_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.6" cy="56" rx="21.71" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="links">
+      <path d="M31 30L12 12" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+      <path d="M31 30L50 12" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+      <path d="M31 30L12 48" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+      <path d="M31 30L50 48" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    </g>
+    <g class="solids">
+      <g><path d="M25.58 34.44L27.2 36.6A7 7 0 0 0 38.4 28.2L36.78 26.04A7 7 0 0 0 25.58 34.44Z" fill="#353535"/><circle cx="31" cy="30" r="7" fill="url(#grad_action_all_connections_indigo_g)"/></g>
+      <g><path d="M8.98 14.64L10 16A4 4 0 0 0 16.4 11.2L15.38 9.84A4 4 0 0 0 8.98 14.64Z" fill="#353535"/><circle cx="12" cy="12" r="4" fill="url(#grad_action_all_connections_indigo_g)"/></g>
+      <g><path d="M46.98 14.64L48 16A4 4 0 0 0 54.4 11.2L53.38 9.84A4 4 0 0 0 46.98 14.64Z" fill="#353535"/><circle cx="50" cy="12" r="4" fill="url(#grad_action_all_connections_indigo_g)"/></g>
+      <g><path d="M8.98 50.64L10 52A4 4 0 0 0 16.4 47.2L15.38 45.84A4 4 0 0 0 8.98 50.64Z" fill="#353535"/><circle cx="12" cy="48" r="4" fill="url(#grad_action_all_connections_indigo_g)"/></g>
+      <g><path d="M46.98 50.64L48 52A4 4 0 0 0 54.4 47.2L53.38 45.84A4 4 0 0 0 46.98 50.64Z" fill="#353535"/><circle cx="50" cy="48" r="4" fill="url(#grad_action_all_connections_indigo_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_annotate" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_annotate_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.6" cy="54.8" rx="21.71" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="links">
+      <path d="M48 14L36 28" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.6 26.8A6 6 0 0 1 45.8 30.4L45.8 46.4A6 6 0 0 1 39.8 52.4L15.8 52.4A6 6 0 0 1 11 50L9.38 47.84A6 6 0 0 1 8.18 44.24L8.18 28.24A6 6 0 0 1 14.18 22.24L38.18 22.24A6 6 0 0 1 42.98 24.64Z" fill="#3E3E3E"/><rect x="8" y="22" width="36" height="28" rx="6" fill="url(#grad_action_annotate_teal_g)"/></g>
+      <g><path d="M43.38 17.84L44.4 19.2A6 6 0 0 0 54 12L52.98 10.64A6 6 0 0 0 43.38 17.84Z" fill="#3E3E3E"/><circle cx="48" cy="14" r="6" fill="url(#grad_action_annotate_teal_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_bookmark" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_bookmark_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.2" cy="57.6" rx="9.38" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M42.4 13.2A5 5 0 0 1 43.4 16.2L43.4 50.2A5 5 0 0 1 38.4 55.2L30.4 55.2A5 5 0 0 1 26.4 53.2L24.18 50.24A5 5 0 0 1 23.18 47.24L23.18 13.24A5 5 0 0 1 28.18 8.24L36.18 8.24A5 5 0 0 1 40.18 10.24Z" fill="#474747"/><rect x="23" y="8" width="18" height="44" rx="5" fill="url(#grad_action_bookmark_orange_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M28.8 18a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="action_borrow" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_borrow_sky_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#969696"/>
+        <stop offset="1" stop-color="#656565"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="44.9" cy="43.8" rx="9.11" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M36.98 35.64L38.6 37.8A9 9 0 0 0 53 27L51.38 24.84A9 9 0 0 0 36.98 35.64Z" fill="#3B3B3B"/><circle cx="44" cy="30" r="9" fill="url(#grad_action_borrow_sky_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 14L10 14L10 46L20 46" fill="none" stroke="#656565" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24 30L32 30" fill="none" stroke="#656565" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5 3"/>
+    </g>
+  </symbol>
+  <symbol id="action_download_book" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_download_book_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_action_download_book_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.9" cy="56.8" rx="20.15" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M42 10A4 4 0 0 1 42.8 12.4L42.8 26.4A4 4 0 0 1 38.8 30.4L28.8 30.4A4 4 0 0 1 25.6 28.8L23.98 26.64A4 4 0 0 1 23.18 24.24L23.18 10.24A4 4 0 0 1 27.18 6.24L37.18 6.24A4 4 0 0 1 40.38 7.84Z" fill="#3E3E3E"/><rect x="23" y="6" width="18" height="22" rx="4" fill="url(#grad_action_download_book_brown_g)"/></g>
+      <g><path d="M54 48A4 4 0 0 1 54.8 50.4A4 4 0 0 1 50.8 54.4L16.8 54.4A4 4 0 0 1 13.6 52.8L11.98 50.64A4 4 0 0 1 11.18 48.24A4 4 0 0 1 15.18 44.24L49.18 44.24A4 4 0 0 1 52.38 45.84Z" fill="#303030"/><rect x="11" y="44" width="42" height="8" rx="4" fill="url(#grad_action_download_book_ink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M31 33v4M24 35v3M38 35v3" fill="none" stroke="#6B6B6B" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="action_favorite" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_favorite_rose_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5D5D5D"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.66" cy="31.16" rx="8" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M27.18 25.24L28.32 26.76A5 5 0 0 0 36.32 20.76L35.18 19.24A5 5 0 0 0 27.18 25.24Z" fill="#363636"/><circle cx="31" cy="22" r="5" fill="url(#grad_action_favorite_rose_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M16 30a15 15 0 1 0 30 0a15 15 0 1 0 -30 0Z" fill="none" stroke="#5D5D5D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="action_filter" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_filter_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.72" cy="52.32" rx="21.82" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M54.54 14.72A4.5 4.5 0 0 1 55.44 17.42A4.5 4.5 0 0 1 50.94 21.92L13.94 21.92A4.5 4.5 0 0 1 10.34 20.12L9.08 18.44A4.5 4.5 0 0 1 8.18 15.74A4.5 4.5 0 0 1 12.68 11.24L49.68 11.24A4.5 4.5 0 0 1 53.28 13.04Z" fill="#303030"/><rect x="8" y="11" width="46" height="9" rx="4.5" fill="url(#grad_action_filter_ink_g)"/></g>
+      <g><path d="M47.54 28.72A4.5 4.5 0 0 1 48.44 31.42A4.5 4.5 0 0 1 43.94 35.92L20.94 35.92A4.5 4.5 0 0 1 17.34 34.12L16.08 32.44A4.5 4.5 0 0 1 15.18 29.74A4.5 4.5 0 0 1 19.68 25.24L42.68 25.24A4.5 4.5 0 0 1 46.28 27.04Z" fill="#303030"/><rect x="15" y="25" width="32" height="9" rx="4.5" fill="url(#grad_action_filter_ink_g)"/></g>
+      <g><path d="M40.54 42.72A4.5 4.5 0 0 1 41.44 45.42A4.5 4.5 0 0 1 36.94 49.92L27.94 49.92A4.5 4.5 0 0 1 24.34 48.12L23.08 46.44A4.5 4.5 0 0 1 22.18 43.74A4.5 4.5 0 0 1 26.68 39.24L35.68 39.24A4.5 4.5 0 0 1 39.28 41.04Z" fill="#303030"/><rect x="22" y="39" width="18" height="9" rx="4.5" fill="url(#grad_action_filter_ink_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_follow" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_follow_blue_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#939393"/>
+        <stop offset="1" stop-color="#606060"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.6" cy="47.96" rx="16.19" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M17.38 38.84L19.12 41.16A11 11 0 0 0 36.72 27.96L34.98 25.64A11 11 0 0 0 17.38 38.84Z" fill="#373737"/><circle cx="26" cy="32" r="11" fill="url(#grad_action_follow_blue_g)"/></g>
+      <g><path d="M40.18 23.24L41.2 24.6A5 5 0 0 0 49.2 18.6L48.18 17.24A5 5 0 0 0 40.18 23.24Z" fill="#373737"/><circle cx="44" cy="20" r="5" fill="url(#grad_action_follow_blue_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M7 32a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" fill="none" stroke="#606060" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 4"/>
+    </g>
+  </symbol>
+  <symbol id="action_highlight" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_highlight_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+      <linearGradient id="grad_action_highlight_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.48" cy="51.68" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M42.46 14.28A2.5 2.5 0 0 1 42.96 15.78A2.5 2.5 0 0 1 40.46 18.28L11.46 18.28A2.5 2.5 0 0 1 9.46 17.28L8.68 16.24A2.5 2.5 0 0 1 8.18 14.74A2.5 2.5 0 0 1 10.68 12.24L39.68 12.24A2.5 2.5 0 0 1 41.68 13.24Z" fill="#303030"/><rect x="8" y="12" width="34" height="5" rx="2.5" fill="url(#grad_action_highlight_ink_g)"/></g>
+      <g><rect x="8" y="24" width="48" height="12" rx="6" fill="url(#grad_action_highlight_amber_g)" opacity="0.9"/></g>
+      <g><path d="M56.46 45.28A2.5 2.5 0 0 1 56.96 46.78A2.5 2.5 0 0 1 54.46 49.28L11.46 49.28A2.5 2.5 0 0 1 9.46 48.28L8.68 47.24A2.5 2.5 0 0 1 8.18 45.74A2.5 2.5 0 0 1 10.68 43.24L53.68 43.24A2.5 2.5 0 0 1 55.68 44.24Z" fill="#303030"/><rect x="8" y="43" width="48" height="5" rx="2.5" fill="url(#grad_action_highlight_ink_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_preview" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_preview_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+      <linearGradient id="grad_action_preview_mist_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E1E1E1"/>
+        <stop offset="1" stop-color="#D3D3D3"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.9" cy="58.8" rx="21.99" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M28.98 34.64L30.6 36.8A14 14 0 0 0 53 20L51.38 17.84A14 14 0 0 0 28.98 34.64Z" fill="#353535"/><circle cx="40" cy="26" r="14" fill="url(#grad_action_preview_indigo_g)"/></g>
+      <g><path d="M40.6 32.8A6 6 0 0 1 41.8 36.4L41.8 50.4A6 6 0 0 1 35.8 56.4L15.8 56.4A6 6 0 0 1 11 54L9.38 51.84A6 6 0 0 1 8.18 48.24L8.18 34.24A6 6 0 0 1 14.18 28.24L34.18 28.24A6 6 0 0 1 38.98 30.64Z" fill="#7B7B7B"/><rect x="8" y="28" width="32" height="26" rx="6" fill="url(#grad_action_preview_mist_g)" opacity="0.85"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_print" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_print_slate_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#BFBFBF"/>
+        <stop offset="1" stop-color="#A1A1A1"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32" cy="52.4" rx="16.56" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><rect x="24" y="24" width="26" height="26" rx="6" fill="url(#grad_action_print_slate_g)" opacity="0.35"/></g>
+      <g><rect x="19" y="19" width="26" height="26" rx="6" fill="url(#grad_action_print_slate_g)" opacity="0.6"/></g>
+      <g><path d="M40.9 19.2A6 6 0 0 1 42.1 22.8L42.1 36.8A6 6 0 0 1 36.1 42.8L22.1 42.8A6 6 0 0 1 17.3 40.4L15.38 37.84A6 6 0 0 1 14.18 34.24L14.18 20.24A6 6 0 0 1 20.18 14.24L34.18 14.24A6 6 0 0 1 38.98 16.64Z" fill="#5E5E5E"/><rect x="14" y="14" width="26" height="26" rx="6" fill="url(#grad_action_print_slate_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_rate" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_rate_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="23.4" cy="42.8" rx="16.01" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M7.78 35.04L9.4 37.2A8 8 0 0 0 22.2 27.6L20.58 25.44A8 8 0 0 0 7.78 35.04Z" fill="#4F4F4F"/><circle cx="14" cy="30" r="8" fill="url(#grad_action_rate_amber_g)"/></g>
+      <g><path d="M24.78 35.04L26.4 37.2A8 8 0 0 0 39.2 27.6L37.58 25.44A8 8 0 0 0 24.78 35.04Z" fill="#4F4F4F"/><circle cx="31" cy="30" r="8" fill="url(#grad_action_rate_amber_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M40.5 30a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0Z" fill="none" stroke="#878787" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="action_recommend" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_recommend_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.9" cy="54.8" rx="10.95" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M33.92 10.17A2 2 0 0 1 33.98 10.26L40.25 19.65A2 2 0 0 1 38.58 22.76L26.06 22.76A2 2 0 0 1 24.46 21.96L23.32 20.44A2 2 0 0 1 23.25 18.13L29.52 8.74A2 2 0 0 1 32.78 8.65Z" fill="#4F4F4F"/><path d="M29.34 8.5A2 2 0 0 1 32.66 8.5L38.93 17.89A2 2 0 0 1 37.26 21L24.74 21A2 2 0 0 1 23.07 17.89Z" fill="url(#grad_action_recommend_amber_g)"/></g>
+      <g><path d="M22.38 45.84L24 48A11 11 0 0 0 41.6 34.8L39.98 32.64A11 11 0 0 0 22.38 45.84Z" fill="#4F4F4F"/><circle cx="31" cy="39" r="11" fill="url(#grad_action_recommend_amber_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_remove_from_shelf" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_remove_from_shelf_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_action_remove_from_shelf_indigo_g_m4" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8B8B8B"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_action_remove_from_shelf_pink_g_p25" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#B0B0B0"/>
+        <stop offset="1" stop-color="#7F7F7F"/>
+      </linearGradient>
+      <linearGradient id="grad_action_remove_from_shelf_teal_g_m19" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#878787"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_action_remove_from_shelf_red_g_p15" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9F9F9F"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.6" cy="53" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M56.7 46.6A2.5 2.5 0 0 1 57.2 48.1A2.5 2.5 0 0 1 54.7 50.6L11.7 50.6A2.5 2.5 0 0 1 9.7 49.6L8.68 48.24A2.5 2.5 0 0 1 8.18 46.74A2.5 2.5 0 0 1 10.68 44.24L53.68 44.24A2.5 2.5 0 0 1 55.68 45.24Z" fill="#3E3E3E"/><rect x="8" y="44" width="48" height="5" rx="2.5" fill="url(#grad_action_remove_from_shelf_brown_g)"/></g>
+      <g><path d="M20.8 24.4A2 2 0 0 1 21.2 25.6L21.2 43.6A2 2 0 0 1 19.2 45.6L15.2 45.6A2 2 0 0 1 13.6 44.8L12.58 43.44A2 2 0 0 1 12.18 42.24L12.18 24.24A2 2 0 0 1 14.18 22.24L18.18 22.24A2 2 0 0 1 19.78 23.04Z" fill="#313131"/><rect x="12" y="22" width="8" height="22" rx="2" fill="url(#grad_action_remove_from_shelf_indigo_g_m4)"/></g>
+      <g><path d="M30.8 19.4A2 2 0 0 1 31.2 20.6L31.2 43.6A2 2 0 0 1 29.2 45.6L25.2 45.6A2 2 0 0 1 23.6 44.8L22.58 43.44A2 2 0 0 1 22.18 42.24L22.18 19.24A2 2 0 0 1 24.18 17.24L28.18 17.24A2 2 0 0 1 29.78 18.04Z" fill="#545454"/><rect x="22" y="17" width="8" height="27" rx="2" fill="url(#grad_action_remove_from_shelf_pink_g_p25)"/></g>
+      <g><path d="M40.8 26.4A2 2 0 0 1 41.2 27.6L41.2 43.6A2 2 0 0 1 39.2 45.6L35.2 45.6A2 2 0 0 1 33.6 44.8L32.58 43.44A2 2 0 0 1 32.18 42.24L32.18 26.24A2 2 0 0 1 34.18 24.24L38.18 24.24A2 2 0 0 1 39.78 25.04Z" fill="#2B2B2B"/><rect x="32" y="24" width="8" height="20" rx="2" fill="url(#grad_action_remove_from_shelf_teal_g_m19)"/></g>
+      <g><path d="M43.38 19.84L44.4 21.2A6 6 0 0 0 54 14L52.98 12.64A6 6 0 0 0 43.38 19.84Z" fill="#454545"/><circle cx="48" cy="16" r="6" fill="url(#grad_action_remove_from_shelf_red_g_p15)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M48 30v-5" fill="none" stroke="#5C5C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+    </g>
+  </symbol>
+  <symbol id="action_renew" viewBox="0 0 64 64">
+    <g class="shadow">
+      <ellipse cx="32" cy="50.4" rx="14.72" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="marks">
+      <path d="M17.84 25.21A14 14 0 0 1 44.16 25.21" fill="none" stroke="#6F6F6F" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M44.16 34.79A14 14 0 0 1 17.84 34.79" fill="none" stroke="#6F6F6F" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="action_reserve" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_reserve_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.9" cy="44.8" rx="10.03" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M23.18 36.24L24.8 38.4A10 10 0 0 0 40.8 26.4L39.18 24.24A10 10 0 0 0 23.18 36.24Z" fill="#393939"/><circle cx="31" cy="30" r="10" fill="url(#grad_action_reserve_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M12 30a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" fill="none" stroke="#626262" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+    </g>
+  </symbol>
+  <symbol id="action_return" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_return_blue_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#939393"/>
+        <stop offset="1" stop-color="#606060"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="20.9" cy="43.8" rx="9.11" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M12.98 35.64L14.6 37.8A9 9 0 0 0 29 27L27.38 24.84A9 9 0 0 0 12.98 35.64Z" fill="#373737"/><circle cx="20" cy="30" r="9" fill="url(#grad_action_return_blue_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M44 14L54 14L54 46L44 46" fill="none" stroke="#606060" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32 30L40 30" fill="none" stroke="#606060" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5 3"/>
+    </g>
+  </symbol>
+  <symbol id="action_review" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_review_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+      <linearGradient id="grad_action_review_sky_g_m15" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#878787"/>
+        <stop offset="1" stop-color="#565656"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.28" cy="54.48" rx="20.5" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M12.98 34.64L14.9 37.2A14 14 0 0 0 37.3 20.4L35.38 17.84A14 14 0 0 0 12.98 34.64Z" fill="#3E3E3E"/><circle cx="24" cy="26" r="14" fill="url(#grad_action_review_teal_g)"/></g>
+      <g><path d="M38.78 47.04L40.16 48.88A8 8 0 0 0 52.96 39.28L51.58 37.44A8 8 0 0 0 38.78 47.04Z" fill="#2C2C2C"/><circle cx="45" cy="42" r="8" fill="url(#grad_action_review_sky_g_m15)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_scan" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_scan_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.2" cy="55.6" rx="17.66" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.2 17.6A6 6 0 0 1 52.4 21.2L52.4 47.2A6 6 0 0 1 46.4 53.2L22.4 53.2A6 6 0 0 1 17.6 50.8L15.38 47.84A6 6 0 0 1 14.18 44.24L14.18 18.24A6 6 0 0 1 20.18 12.24L44.18 12.24A6 6 0 0 1 48.98 14.64Z" fill="#303030"/><rect x="14" y="12" width="36" height="38" rx="6" fill="url(#grad_action_scan_ink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M6 31L58 31" fill="none" stroke="#878787" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="action_search_book" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_search_book_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_action_search_book_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="30.66" cy="54.16" rx="20.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M39.2 15.6A6 6 0 0 1 40.4 19.2L40.4 45.2A6 6 0 0 1 34.4 51.2L16.4 51.2A6 6 0 0 1 11.6 48.8L9.38 45.84A6 6 0 0 1 8.18 42.24L8.18 16.24A6 6 0 0 1 14.18 10.24L32.18 10.24A6 6 0 0 1 36.98 12.64Z" fill="#3E3E3E"/><rect x="8" y="10" width="30" height="38" rx="6" fill="url(#grad_action_search_book_brown_g)"/></g>
+      <g><path d="M43.18 48.24L44.32 49.76A5 5 0 0 0 52.32 43.76L51.18 42.24A5 5 0 0 0 43.18 48.24Z" fill="#353535"/><circle cx="47" cy="45" r="5" fill="url(#grad_action_search_book_indigo_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M23 28a11 11 0 1 0 22 0a11 11 0 1 0 -22 0Z" fill="none" stroke="#5B5B5B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="action_share" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_share_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.9" cy="56.6" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="links">
+      <path d="M15 31L47 14" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+      <path d="M15 31L51 31" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+      <path d="M15 31L47 48" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    </g>
+    <g class="solids">
+      <g><path d="M8.78 36.04L10.4 38.2A8 8 0 0 0 23.2 28.6L21.58 26.44A8 8 0 0 0 8.78 36.04Z" fill="#414141"/><circle cx="15" cy="31" r="8" fill="url(#grad_action_share_green_g)"/></g>
+      <g><path d="M43.5 17L44.52 18.36A4.6 4.6 0 0 0 51.88 12.84L50.86 11.48A4.6 4.6 0 0 0 43.5 17Z" fill="#414141"/><circle cx="47" cy="14" r="4.6" fill="url(#grad_action_share_green_g)"/></g>
+      <g><path d="M47.5 34L48.52 35.36A4.6 4.6 0 0 0 55.88 29.84L54.86 28.48A4.6 4.6 0 0 0 47.5 34Z" fill="#414141"/><circle cx="51" cy="31" r="4.6" fill="url(#grad_action_share_green_g)"/></g>
+      <g><path d="M43.5 51L44.52 52.36A4.6 4.6 0 0 0 51.88 46.84L50.86 45.48A4.6 4.6 0 0 0 43.5 51Z" fill="#414141"/><circle cx="47" cy="48" r="4.6" fill="url(#grad_action_share_green_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_sort" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_sort_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.1" cy="46.96" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M7.58 37.44L9.32 39.76A12 12 0 0 0 28.52 25.36L26.78 23.04A12 12 0 0 0 7.58 37.44Z" fill="#353535"/><circle cx="17" cy="30" r="12" fill="url(#grad_action_sort_indigo_g)"/></g>
+      <g><path d="M34.18 34.74L35.56 36.58A7.5 7.5 0 0 0 47.56 27.58L46.18 25.74A7.5 7.5 0 0 0 34.18 34.74Z" fill="#353535"/><circle cx="40" cy="30" r="7.5" fill="url(#grad_action_sort_indigo_g)"/></g>
+      <g><path d="M50.98 32.64L52 34A4 4 0 0 0 58.4 29.2L57.38 27.84A4 4 0 0 0 50.98 32.64Z" fill="#353535"/><circle cx="54" cy="30" r="4" fill="url(#grad_action_sort_indigo_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="action_subscribe" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_action_subscribe_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.9" cy="43.8" rx="8.19" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M24.78 36.04L26.4 38.2A8 8 0 0 0 39.2 28.6L37.58 26.44A8 8 0 0 0 24.78 36.04Z" fill="#474747"/><circle cx="31" cy="31" r="8" fill="url(#grad_action_subscribe_orange_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15 31a16 16 0 1 0 32 0a16 16 0 1 0 -32 0Z" fill="none" stroke="#7B7B7B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+    </g>
+  </symbol>
+  <symbol id="attr_annotated" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_annotated_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#353535"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_annotated_indigo_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 21L35 21L35 39L21 39Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M37.8 26a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z" fill="#FFFFFF"/>
+      <path d="M37.8 33a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="attr_award" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_award_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#474747"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_award_orange_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M23 27a8 8 0 1 0 16 0a8 8 0 1 0 -16 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M27.8 27a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z" fill="#FFFFFF"/>
+      <path d="M28 39a3 3 0 1 0 6 0a3 3 0 1 0 -6 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="attr_bilingual" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_bilingual_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#3E3E3E"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_bilingual_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 27a8 8 0 1 0 16 0a8 8 0 1 0 -16 0Z" fill="#FFFFFF" opacity="0.9"/>
+      <path d="M30 34a6 6 0 1 0 12 0a6 6 0 1 0 -12 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="attr_controversial" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_controversial_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#363636"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_controversial_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M28.5 20A10 10 0 0 0 28.5 40Z" fill="#FFFFFF"/>
+      <path d="M33.5 20A10 10 0 0 1 33.5 40Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="attr_critical_praise" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_critical_praise_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#4F4F4F"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_critical_praise_amber_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M25.5 30a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0 -11 0Z" fill="#FFFFFF"/>
+      <path d="M39.5 30L43 30M22.5 30L19 30M31 38.5L31 42M31 21.5L31 18" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="attr_donation" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_donation_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#3B3B3B"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_donation_pink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M18.5 34a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0 -11 0Z" fill="#FFFFFF"/>
+      <path d="M28 28Q33 20 39 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.1 4"/>
+      <path d="M37 24a3 3 0 1 0 6 0a3 3 0 1 0 -6 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="attr_first_edition" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_first_edition_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#474747"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_first_edition_orange_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 32a9 9 0 1 0 18 0a9 9 0 1 0 -18 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21.5 24a3 3 0 1 0 6 0a3 3 0 1 0 -6 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="attr_illustrated" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_illustrated_sky_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#969696"/>
+        <stop offset="1" stop-color="#656565"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#3B3B3B"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_illustrated_sky_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 21L41 21L41 39L21 39Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24 36L29 29L34 36Z" fill="#FFFFFF"/>
+      <path d="M33.8 26a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="attr_multi_reader" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_multi_reader_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#414141"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_multi_reader_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17 30a6 6 0 1 0 12 0a6 6 0 1 0 -12 0Z" fill="#FFFFFF" opacity="0.9"/>
+      <path d="M25 30a6 6 0 1 0 12 0a6 6 0 1 0 -12 0Z" fill="#FFFFFF" opacity="0.9"/>
+      <path d="M33 30a6 6 0 1 0 12 0a6 6 0 1 0 -12 0Z" fill="#FFFFFF" opacity="0.9"/>
+    </g>
+  </symbol>
+  <symbol id="attr_premium" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_premium_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#393939"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_premium_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M31 19L40 30L31 41L22 30Z" fill="#FFFFFF"/>
+      <path d="M27.8 30a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z" fill="none" stroke="#626262" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="attr_private" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_private_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#303030"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_private_ink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 30a11 11 0 1 0 22 0a11 11 0 1 0 -22 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26 30a5 5 0 1 0 10 0a5 5 0 1 0 -10 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="attr_public" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_public_blue_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#939393"/>
+        <stop offset="1" stop-color="#606060"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#373737"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_public_blue_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 30a10 10 0 1 0 20 0a10 10 0 1 0 -20 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.4 20a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="#FFFFFF"/>
+      <path d="M37.1 35a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="#FFFFFF"/>
+      <path d="M19.7 35a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="attr_signed" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_signed_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#3E3E3E"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_signed_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 33C25 21 29 38 33 29S39 27 41 32" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 39L41 39" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="attr_translation" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_attr_translation_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#3E3E3E"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_translation_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M18 30a8 8 0 1 0 16 0a8 8 0 1 0 -16 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28 30a8 8 0 1 0 16 0a8 8 0 1 0 -16 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+    </g>
+  </symbol>
+  <symbol id="book_ancient_tome" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_ancient_tome_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="34" cy="58.4" rx="17.48" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.8 20.4A6 6 0 0 1 53 24L53 50A6 6 0 0 1 47 56L27 56A6 6 0 0 1 22.2 53.6L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_ancient_tome_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15 29L47 29" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+      <path d="M27.4 29a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="book_audiobook" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_audiobook_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="25.5" cy="54.4" rx="14.26" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M39.8 20.4A6 6 0 0 1 41 24L41 46A6 6 0 0 1 35 52L19 52A6 6 0 0 1 14.2 49.6L11.38 45.84A6 6 0 0 1 10.18 42.24L10.18 20.24A6 6 0 0 1 16.18 14.24L32.18 14.24A6 6 0 0 1 36.98 16.64Z" fill="#3E3E3E"/><rect x="10" y="14" width="28" height="34" rx="6" fill="url(#grad_book_audiobook_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M43.16 23.63A9 9 0 0 1 43.16 38.37" fill="none" stroke="#5B5B5B" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M47.18 17.89A16 16 0 0 1 47.18 44.11" fill="none" stroke="#5B5B5B" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="book_bibliography" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_bibliography_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#353535"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_bibliography_indigo_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20.5 29a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.5 29a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="book_binding" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_binding_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#4F4F4F"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_binding_amber_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 14L22 44" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.5"/>
+      <path d="M15 18L47 18" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+      <path d="M15 40L47 40" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+    </g>
+  </symbol>
+  <symbol id="book_bookmark" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_bookmark_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_book_bookmark_red_g_m5" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8B8B8B"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_bookmark_brown_g)"/></g>
+      <g><path d="M34.96 7.48A1.2 1.2 0 0 1 36.16 6.28L41.76 6.28A1.2 1.2 0 0 1 42.96 7.48L42.96 31.4A1.01 1.01 0 0 1 41.16 32.03L39.9 30.45A1.2 1.2 0 0 0 38.02 30.45L36.76 32.03A1.01 1.01 0 0 1 34.96 31.4Z" fill="#313131"/><path d="M34 6.2A1.2 1.2 0 0 1 35.2 5L40.8 5A1.2 1.2 0 0 1 42 6.2L42 30.12A1.01 1.01 0 0 1 40.2 30.75L38.94 29.17A1.2 1.2 0 0 0 37.06 29.17L35.8 30.75A1.01 1.01 0 0 1 34 30.12Z" fill="url(#grad_book_bookmark_red_g_m5)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_boxset" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_boxset_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+      <linearGradient id="grad_book_boxset_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+      <linearGradient id="grad_book_boxset_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+      <linearGradient id="grad_book_boxset_brown_g_m36" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#777777"/>
+        <stop offset="1" stop-color="#474747"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.05" cy="57.2" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M23.7 10.6A2.5 2.5 0 0 1 24.2 12.1L24.2 45.1A2.5 2.5 0 0 1 21.7 47.6L15.7 47.6A2.5 2.5 0 0 1 13.7 46.6L12.68 45.24A2.5 2.5 0 0 1 12.18 43.74L12.18 10.74A2.5 2.5 0 0 1 14.68 8.24L20.68 8.24A2.5 2.5 0 0 1 22.68 9.24Z" fill="#353535"/><rect x="12" y="8" width="11" height="38" rx="2.5" fill="url(#grad_book_boxset_indigo_g)"/></g>
+      <g><path d="M37.7 10.6A2.5 2.5 0 0 1 38.2 12.1L38.2 45.1A2.5 2.5 0 0 1 35.7 47.6L29.7 47.6A2.5 2.5 0 0 1 27.7 46.6L26.68 45.24A2.5 2.5 0 0 1 26.18 43.74L26.18 10.74A2.5 2.5 0 0 1 28.68 8.24L34.68 8.24A2.5 2.5 0 0 1 36.68 9.24Z" fill="#3B3B3B"/><rect x="26" y="8" width="11" height="38" rx="2.5" fill="url(#grad_book_boxset_pink_g)"/></g>
+      <g><path d="M51.7 10.6A2.5 2.5 0 0 1 52.2 12.1L52.2 45.1A2.5 2.5 0 0 1 49.7 47.6L43.7 47.6A2.5 2.5 0 0 1 41.7 46.6L40.68 45.24A2.5 2.5 0 0 1 40.18 43.74L40.18 10.74A2.5 2.5 0 0 1 42.68 8.24L48.68 8.24A2.5 2.5 0 0 1 50.68 9.24Z" fill="#4F4F4F"/><rect x="40" y="8" width="11" height="38" rx="2.5" fill="url(#grad_book_boxset_amber_g)"/></g>
+      <g><path d="M57.3 32.4A4 4 0 0 1 58.1 34.8L58.1 50.8A4 4 0 0 1 54.1 54.8L14.1 54.8A4 4 0 0 1 10.9 53.2L8.98 50.64A4 4 0 0 1 8.18 48.24L8.18 32.24A4 4 0 0 1 12.18 28.24L52.18 28.24A4 4 0 0 1 55.38 29.84Z" fill="#1A1A1A"/><rect x="8" y="28" width="48" height="24" rx="4" fill="url(#grad_book_boxset_brown_g_m36)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_chapter" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_chapter_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_chapter_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 22L30 22L30 29L40 29L40 36L32 36" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="book_collection" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_collection_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_book_collection_indigo_g_m4" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8B8B8B"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_book_collection_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.9" cy="51.8" rx="20.15" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M44.8 39.4A5 5 0 0 1 45.8 42.4L45.8 44.4A5 5 0 0 1 40.8 49.4L16.8 49.4A5 5 0 0 1 12.8 47.4L11.18 45.24A5 5 0 0 1 10.18 42.24L10.18 40.24A5 5 0 0 1 15.18 35.24L39.18 35.24A5 5 0 0 1 43.18 37.24Z" fill="#3E3E3E"/><rect x="10" y="35" width="34" height="12" rx="5" fill="url(#grad_book_collection_brown_g)"/></g>
+      <g><path d="M48.8 28.4A5 5 0 0 1 49.8 31.4L49.8 33.4A5 5 0 0 1 44.8 38.4L20.8 38.4A5 5 0 0 1 16.8 36.4L15.18 34.24A5 5 0 0 1 14.18 31.24L14.18 29.24A5 5 0 0 1 19.18 24.24L43.18 24.24A5 5 0 0 1 47.18 26.24Z" fill="#313131"/><rect x="14" y="24" width="34" height="12" rx="5" fill="url(#grad_book_collection_indigo_g_m4)"/></g>
+      <g><path d="M52.8 17.4A5 5 0 0 1 53.8 20.4L53.8 22.4A5 5 0 0 1 48.8 27.4L24.8 27.4A5 5 0 0 1 20.8 25.4L19.18 23.24A5 5 0 0 1 18.18 20.24L18.18 18.24A5 5 0 0 1 23.18 13.24L47.18 13.24A5 5 0 0 1 51.18 15.24Z" fill="#4F4F4F"/><rect x="18" y="13" width="34" height="12" rx="5" fill="url(#grad_book_collection_amber_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_cover" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_cover_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="30.66" cy="55.16" rx="15.33" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M46.62 12.16A3.5 3.5 0 0 1 47.32 14.26L47.32 49.26A3.5 3.5 0 0 1 43.82 52.76L18.82 52.76A3.5 3.5 0 0 1 16.02 51.36L14.88 49.84A3.5 3.5 0 0 1 14.18 47.74L14.18 12.74A3.5 3.5 0 0 1 17.68 9.24L42.68 9.24A3.5 3.5 0 0 1 45.48 10.64Z" fill="#3E3E3E"/><rect x="14" y="9" width="32" height="42" rx="3.5" fill="url(#grad_book_cover_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 17L38 17L38 32L22 32Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="book_digital" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_digital_sky_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#969696"/>
+        <stop offset="1" stop-color="#656565"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3B3B3B"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_digital_sky_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22.1 22a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M22.1 29a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M22.1 36a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M29.1 22a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M29.1 29a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M29.1 36a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M36.1 22a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M36.1 29a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M36.1 36a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="book_ebook" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_ebook_night_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#6C6C6C"/>
+        <stop offset="1" stop-color="#282828"/>
+      </linearGradient>
+      <linearGradient id="grad_book_ebook_sky_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#969696"/>
+        <stop offset="1" stop-color="#656565"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.08" cy="59.28" rx="12.95" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M46.16 12.88A5 5 0 0 1 47.16 15.88L47.16 51.88A5 5 0 0 1 42.16 56.88L26.16 56.88A5 5 0 0 1 22.16 54.88L20.18 52.24A5 5 0 0 1 19.18 49.24L19.18 13.24A5 5 0 0 1 24.18 8.24L40.18 8.24A5 5 0 0 1 44.18 10.24Z" fill="#171717"/><rect x="19" y="8" width="26" height="46" rx="5" fill="url(#grad_book_ebook_night_g)"/></g>
+      <g><rect x="23" y="13" width="18" height="32" rx="2.5" fill="url(#grad_book_ebook_sky_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_folded_page" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_folded_page_paper_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#F6F6F6"/>
+        <stop offset="1" stop-color="#F1F1F1"/>
+      </linearGradient>
+      <linearGradient id="grad_book_folded_page_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.96" cy="55.96" rx="14.68" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M47.32 22A3 3 0 0 1 47.92 23.8L47.92 50.56A3 3 0 0 1 44.92 53.56L20.92 53.56A3 3 0 0 1 18.52 52.36L16.78 50.04A3 3 0 0 1 16.18 48.24L16.18 11.24A3 3 0 0 1 19.18 8.24L32.94 8.24A3 3 0 0 1 35.06 9.12L45.3 19.36A3 3 0 0 1 45.58 19.68Z" fill="#8C8C8C"/><path d="M16 11A3 3 0 0 1 19 8L32.76 8A3 3 0 0 1 34.88 8.88L45.12 19.12A3 3 0 0 1 46 21.24L46 48A3 3 0 0 1 43 51L19 51A3 3 0 0 1 16 48Z" fill="url(#grad_book_folded_page_paper_g)"/></g>
+      <g><path d="M34 11.62A1.5 1.5 0 0 1 36.56 10.56L43.44 17.44A1.5 1.5 0 0 1 42.38 20L35.5 20A1.5 1.5 0 0 1 34 18.5Z" fill="url(#grad_book_folded_page_amber_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_hardcover" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_hardcover_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="34" cy="58.4" rx="17.48" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.8 20.4A6 6 0 0 1 53 24L53 50A6 6 0 0 1 47 56L27 56A6 6 0 0 1 22.2 53.6L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_hardcover_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 16L41 16L41 42L21 42Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    </g>
+  </symbol>
+  <symbol id="book_index" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_index_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_book_index_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+      <linearGradient id="grad_book_index_pink_g_m15" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#888888"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_book_index_teal_g_m19" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#878787"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.86" cy="56" rx="16.43" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M46 18A6 6 0 0 1 47.2 21.6L47.2 47.6A6 6 0 0 1 41.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L37.18 10.24A6 6 0 0 1 41.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="28" height="38" rx="6" fill="url(#grad_book_index_brown_g)"/></g>
+      <g><path d="M50.32 15.76A2 2 0 0 1 50.72 16.96L50.72 20.96A2 2 0 0 1 48.72 22.96L43.72 22.96A2 2 0 0 1 42.12 22.16L41.58 21.44A2 2 0 0 1 41.18 20.24L41.18 16.24A2 2 0 0 1 43.18 14.24L48.18 14.24A2 2 0 0 1 49.78 15.04Z" fill="#4F4F4F"/><rect x="41" y="14" width="9" height="8" rx="2" fill="url(#grad_book_index_amber_g)"/></g>
+      <g><path d="M50.32 26.76A2 2 0 0 1 50.72 27.96L50.72 31.96A2 2 0 0 1 48.72 33.96L43.72 33.96A2 2 0 0 1 42.12 33.16L41.58 32.44A2 2 0 0 1 41.18 31.24L41.18 27.24A2 2 0 0 1 43.18 25.24L48.18 25.24A2 2 0 0 1 49.78 26.04Z" fill="#2C2C2C"/><rect x="41" y="25" width="9" height="8" rx="2" fill="url(#grad_book_index_pink_g_m15)"/></g>
+      <g><path d="M50.32 37.76A2 2 0 0 1 50.72 38.96L50.72 42.96A2 2 0 0 1 48.72 44.96L43.72 44.96A2 2 0 0 1 42.12 44.16L41.58 43.44A2 2 0 0 1 41.18 42.24L41.18 38.24A2 2 0 0 1 43.18 36.24L48.18 36.24A2 2 0 0 1 49.78 37.04Z" fill="#2B2B2B"/><rect x="41" y="36" width="9" height="8" rx="2" fill="url(#grad_book_index_teal_g_m19)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_manuscript" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_manuscript_paper_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#F6F6F6"/>
+        <stop offset="1" stop-color="#F1F1F1"/>
+      </linearGradient>
+      <linearGradient id="grad_book_manuscript_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.96" cy="52.96" rx="15.6" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M48.12 14.16A4 4 0 0 1 48.92 16.56L48.92 46.56A4 4 0 0 1 44.92 50.56L20.92 50.56A4 4 0 0 1 17.72 48.96L15.98 46.64A4 4 0 0 1 15.18 44.24L15.18 14.24A4 4 0 0 1 19.18 10.24L43.18 10.24A4 4 0 0 1 46.38 11.84Z" fill="#8C8C8C"/><rect x="15" y="10" width="32" height="38" rx="4" fill="url(#grad_book_manuscript_paper_g)"/></g>
+      <g><path d="M34.38 44.84L35.28 46.04A6 6 0 0 0 44.88 38.84L43.98 37.64A6 6 0 0 0 34.38 44.84Z" fill="#363636"/><circle cx="39" cy="41" r="6" fill="url(#grad_book_manuscript_red_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_notebook" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_notebook_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#414141"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_notebook_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M14.7 15a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14.7 23a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14.7 31a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14.7 39a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="book_open" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_open_brown_rm9_g" x1="0.14" y1="0" x2="0.86" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_book_open_brown_r9_g" x1="0" y1="0.14" x2="1" y2="0.86">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.4" cy="51.59" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M31.12 19.97A6 6 0 0 1 32.24 22.63L35.06 40.41A6 6 0 0 1 30.07 47.28L18.22 49.15A6 6 0 0 1 12.48 46.83L10.86 44.67A6 6 0 0 1 9.74 42.01L6.92 24.23A6 6 0 0 1 11.91 17.36L23.76 15.49A6 6 0 0 1 29.5 17.81Z" fill="#3E3E3E"/><rect x="8" y="16" width="24" height="30" rx="6" transform="rotate(-9 20 31)" fill="url(#grad_book_open_brown_rm9_g)"/></g>
+      <g><path d="M56.93 21.85A6 6 0 0 1 58.06 26.39L55.24 44.17A6 6 0 0 1 48.38 49.15L36.53 47.28A6 6 0 0 1 32.67 44.95L31.05 42.79A6 6 0 0 1 29.92 38.25L32.74 20.47A6 6 0 0 1 39.6 15.49L51.45 17.36A6 6 0 0 1 55.31 19.69Z" fill="#3E3E3E"/><rect x="31" y="16" width="24" height="30" rx="6" transform="rotate(9 43 31)" fill="url(#grad_book_open_brown_r9_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_page" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_page_paper_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#F6F6F6"/>
+        <stop offset="1" stop-color="#F1F1F1"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.22" cy="56.32" rx="16.76" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M42.94 16.92A2.5 2.5 0 0 1 43.44 18.42L43.44 51.42A2.5 2.5 0 0 1 40.94 53.92L17.94 53.92A2.5 2.5 0 0 1 15.94 52.92L14.68 51.24A2.5 2.5 0 0 1 14.18 49.74L14.18 16.74A2.5 2.5 0 0 1 16.68 14.24L39.68 14.24A2.5 2.5 0 0 1 41.68 15.24Z" fill="#8C8C8C"/><rect x="14" y="14" width="28" height="38" rx="2.5" fill="url(#grad_book_page_paper_g)"/></g>
+      <g><path d="M49.94 10.92A2.5 2.5 0 0 1 50.44 12.42L50.44 45.42A2.5 2.5 0 0 1 47.94 47.92L24.94 47.92A2.5 2.5 0 0 1 22.94 46.92L21.68 45.24A2.5 2.5 0 0 1 21.18 43.74L21.18 10.74A2.5 2.5 0 0 1 23.68 8.24L46.68 8.24A2.5 2.5 0 0 1 48.68 9.24Z" fill="#8C8C8C"/><rect x="21" y="8" width="28" height="38" rx="2.5" fill="url(#grad_book_page_paper_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_paperback" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_paperback_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.6" cy="52" rx="13.43" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M45 14A6 6 0 0 1 46.2 17.6L46.2 43.6A6 6 0 0 1 40.2 49.6L24.2 49.6A6 6 0 0 1 19.4 47.2L18.38 45.84A6 6 0 0 1 17.18 42.24L17.18 16.24A6 6 0 0 1 23.18 10.24L39.18 10.24A6 6 0 0 1 43.98 12.64Z" fill="#3E3E3E"/><rect x="17" y="10" width="28" height="38" rx="6" fill="url(#grad_book_paperback_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 14Q26 29 22 44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    </g>
+  </symbol>
+  <symbol id="book_pocket" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_pocket_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="36.96" cy="55.96" rx="10.08" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="back">
+      <path d="M10 6L40 6L40 50L10 50Z" fill="none" stroke="#A1A1A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.5"/>
+    </g>
+    <g class="solids">
+      <g><path d="M47.12 29.16A4 4 0 0 1 47.92 31.56L47.92 49.56A4 4 0 0 1 43.92 53.56L31.92 53.56A4 4 0 0 1 28.72 51.96L26.98 49.64A4 4 0 0 1 26.18 47.24L26.18 29.24A4 4 0 0 1 30.18 25.24L42.18 25.24A4 4 0 0 1 45.38 26.84Z" fill="#474747"/><rect x="26" y="25" width="20" height="26" rx="4" fill="url(#grad_book_pocket_orange_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="book_rare" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_rare_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#393939"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_rare_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M31 19L40 28L31 40L22 28Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="book_spine" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_spine_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.5" cy="57.4" rx="9.66" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M42.4 13.2A3 3 0 0 1 43 15L43 52A3 3 0 0 1 40 55L28 55A3 3 0 0 1 25.6 53.8L22.78 50.04A3 3 0 0 1 22.18 48.24L22.18 11.24A3 3 0 0 1 25.18 8.24L37.18 8.24A3 3 0 0 1 39.58 9.44Z" fill="#3E3E3E"/><rect x="22" y="8" width="18" height="43" rx="3" fill="url(#grad_book_spine_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22.5 15L39.5 15" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M22.5 20L39.5 20" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="book_standard" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_book_standard_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_standard_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21.5 16L21.5 42" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+    </g>
+  </symbol>
+  <symbol id="format_audio_edition" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_format_audio_edition_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="57.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M53.4 17.2A6 6 0 0 1 54.6 20.8L54.6 48.8A6 6 0 0 1 48.6 54.8L20.6 54.8A6 6 0 0 1 15.8 52.4L12.38 47.84A6 6 0 0 1 11.18 44.24L11.18 16.24A6 6 0 0 1 17.18 10.24L45.18 10.24A6 6 0 0 1 49.98 12.64Z" fill="#353535"/><rect x="11" y="10" width="40" height="40" rx="6" fill="url(#grad_format_audio_edition_indigo_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 27v8M26 22v18M32 18v26M38 24v14M44 27.5v7" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="format_braille" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_format_braille_night_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#6C6C6C"/>
+        <stop offset="1" stop-color="#282828"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#171717"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_format_braille_night_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M23 20a3 3 0 1 0 6 0a3 3 0 1 0 -6 0Z" fill="#FFFFFF"/>
+      <path d="M33.6 20a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+      <path d="M23.6 29a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+      <path d="M33 29a3 3 0 1 0 6 0a3 3 0 1 0 -6 0Z" fill="#FFFFFF"/>
+      <path d="M23 38a3 3 0 1 0 6 0a3 3 0 1 0 -6 0Z" fill="#FFFFFF"/>
+      <path d="M33.6 38a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+    </g>
+  </symbol>
+  <symbol id="format_large_print" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_format_large_print_blue_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#939393"/>
+        <stop offset="1" stop-color="#606060"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#373737"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_format_large_print_blue_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 19h18M22 28h18M22 37h10" fill="none" stroke="#FFFFFF" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="format_limited_edition" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_format_limited_edition_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.4" cy="56.8" rx="16.93" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50.6 18.8A6 6 0 0 1 51.8 22.4L51.8 48.4A6 6 0 0 1 45.8 54.4L25.8 54.4A6 6 0 0 1 21 52L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#393939"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_format_limited_edition_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 16L42 16L42 42L20 42Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.1 4.4"/>
+      <path d="M27 29a4 4 0 1 0 8 0a4 4 0 1 0 -8 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="format_luxury_edition" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_format_luxury_edition_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.4" cy="56.8" rx="16.93" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50.6 18.8A6 6 0 0 1 51.8 22.4L51.8 48.4A6 6 0 0 1 45.8 54.4L25.8 54.4A6 6 0 0 1 21 52L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#4F4F4F"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_format_luxury_edition_amber_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 16L42 16L42 42L20 42Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+      <path d="M31 23L36 29L31 35L26 29Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="format_masterpiece" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_format_masterpiece_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.4" cy="56.8" rx="16.93" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50.6 18.8A6 6 0 0 1 51.8 22.4L51.8 48.4A6 6 0 0 1 45.8 54.4L25.8 54.4A6 6 0 0 1 21 52L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#4F4F4F"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_format_masterpiece_amber_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 29a9 9 0 1 0 18 0a9 9 0 1 0 -18 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M27.6 29a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="format_series" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_format_series_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.7" cy="56.6" rx="20.88" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M23.9 24.2A2.5 2.5 0 0 1 24.4 25.7L24.4 51.7A2.5 2.5 0 0 1 21.9 54.2L13.9 54.2A2.5 2.5 0 0 1 11.9 53.2L9.68 50.24A2.5 2.5 0 0 1 9.18 48.74L9.18 22.74A2.5 2.5 0 0 1 11.68 20.24L19.68 20.24A2.5 2.5 0 0 1 21.68 21.24Z" fill="#3E3E3E"/><rect x="9" y="20" width="13" height="31" rx="2.5" fill="url(#grad_format_series_brown_g)"/></g>
+      <g><path d="M38.9 17.2A2.5 2.5 0 0 1 39.4 18.7L39.4 51.7A2.5 2.5 0 0 1 36.9 54.2L28.9 54.2A2.5 2.5 0 0 1 26.9 53.2L24.68 50.24A2.5 2.5 0 0 1 24.18 48.74L24.18 15.74A2.5 2.5 0 0 1 26.68 13.24L34.68 13.24A2.5 2.5 0 0 1 36.68 14.24Z" fill="#3E3E3E"/><rect x="24" y="13" width="13" height="38" rx="2.5" fill="url(#grad_format_series_brown_g)"/></g>
+      <g><path d="M53.9 10.2A2.5 2.5 0 0 1 54.4 11.7L54.4 51.7A2.5 2.5 0 0 1 51.9 54.2L43.9 54.2A2.5 2.5 0 0 1 41.9 53.2L39.68 50.24A2.5 2.5 0 0 1 39.18 48.74L39.18 8.74A2.5 2.5 0 0 1 41.68 6.24L49.68 6.24A2.5 2.5 0 0 1 51.68 7.24Z" fill="#3E3E3E"/><rect x="39" y="6" width="13" height="45" rx="2.5" fill="url(#grad_format_series_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M12.5 26.5L18.5 26.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M27.5 19.5L33.5 19.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M42.5 12.5L48.5 12.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_adventure" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_adventure_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#363636"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_adventure_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 15.5L44.5 40L16.5 40Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24.56 31.9Q27.53 25.96 30.5 31.9T36.44 31.9" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_art" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_art_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_art_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24.45 23.46h12.1M24.45 29h12.1M24.45 34.54h12.1" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_article" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_article_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_article_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 17.5L42 17.5L42 40.5L19 40.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M23.84 29Q27.17 22.34 30.5 29T37.16 29" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_biography" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_biography_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3B3B3B"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_biography_pink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17.5 29a13 13 0 1 0 26 0a13 13 0 1 0 -26 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24.58 29h11.84M30.5 23.08v11.84" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_children" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_children_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#414141"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_children_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15.5 36.5A15 15 0 0 1 45.5 36.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M23.43 29.4h14.14M30.5 25.24v8.32" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_chronicle" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_chronicle_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_chronicle_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 17.5L42 17.5L42 40.5L19 40.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30.5 23.08A5.92 5.92 0 0 0 30.5 34.92Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_comedy" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_comedy_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3B3B3B"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_comedy_pink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17.5 29a13 13 0 1 0 26 0a13 13 0 1 0 -26 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.2 24.12a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M23.32 32.4a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M33.08 32.4a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_cooking" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_cooking_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#414141"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_cooking_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15.5 36.5A15 15 0 0 1 45.5 36.5Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_diary" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_diary_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3B3B3B"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_diary_pink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17.5 29a13 13 0 1 0 26 0a13 13 0 1 0 -26 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30.5 23.08A5.92 5.92 0 0 0 30.5 34.92Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_drama" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_drama_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3B3B3B"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_drama_pink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17.5 29a13 13 0 1 0 26 0a13 13 0 1 0 -26 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.17 24.12h10.66M25.17 29h10.66M25.17 33.88h10.66" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_economics" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_economics_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_economics_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M44 29L37.25 40.69L23.75 40.69L17 29L23.75 17.31L37.25 17.31Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.66 29a4.84 4.84 0 1 0 9.67 0a4.84 4.84 0 1 0 -9.67 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_education" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_education_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_education_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M44 29L37.25 40.69L23.75 40.69L17 29L23.75 17.31L37.25 17.31Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30.5 22.76A6.24 6.24 0 0 0 30.5 35.24Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_essay" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_essay_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_essay_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 17.5L42 17.5L42 40.5L19 40.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.17 24.12h10.66M25.17 29h10.66M25.17 33.88h10.66" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_fantasy" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_fantasy_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_fantasy_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_graphic_novel" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_graphic_novel_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_graphic_novel_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M23.78 29h13.44M30.5 22.28v13.44" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_history" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_history_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_history_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 17.5L42 17.5L42 40.5L19 40.5Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_horror" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_horror_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#363636"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_horror_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 15.5L44.5 40L16.5 40Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26.41 31.9a4.09 4.09 0 1 0 8.18 0a4.09 4.09 0 1 0 -8.18 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_literary_fiction" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_literary_fiction_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_literary_fiction_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30.5 22.28A6.72 6.72 0 0 0 30.5 35.72Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_manga" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_manga_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_manga_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24.2 26.06L30.5 32.36L36.8 26.06" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_mathematics" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_mathematics_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_mathematics_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M44 29L37.25 40.69L23.75 40.69L17 29L23.75 17.31L37.25 17.31Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M23.48 29Q26.99 21.98 30.5 29T37.52 29" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_medicine" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_medicine_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_medicine_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M44 29L37.25 40.69L23.75 40.69L17 29L23.75 17.31L37.25 17.31Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24.26 29h12.48M30.5 22.76v12.48" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_memoir" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_memoir_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3B3B3B"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_memoir_pink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17.5 29a13 13 0 1 0 26 0a13 13 0 1 0 -26 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.91 29a4.59 4.59 0 1 0 9.18 0a4.59 4.59 0 1 0 -9.18 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_music" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_music_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_music_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.2 23.46a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M22.66 32.86a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M33.74 32.86a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_mystery" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_mystery_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#363636"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_mystery_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 15.5L44.5 40L16.5 40Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.2 27.54a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M23.84 34.94a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M32.56 34.94a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_nature" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_nature_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#414141"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_nature_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15.5 36.5A15 15 0 0 1 45.5 36.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M22.54 29.4Q26.52 24.72 30.5 29.4T38.46 29.4" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_philosophy" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_philosophy_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_philosophy_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 17.5L42 17.5L42 40.5L19 40.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24.58 29h11.84M30.5 23.08v11.84" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_poetry" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_poetry_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3B3B3B"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_poetry_pink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17.5 29a13 13 0 1 0 26 0a13 13 0 1 0 -26 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M23.84 29Q27.17 22.34 30.5 29T37.16 29" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_reference" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_reference_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_reference_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 17.5L42 17.5L42 40.5L19 40.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.2 24.12a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M23.32 32.4a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M33.08 32.4a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_religion" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_religion_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_religion_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M22.94 29Q26.72 21.44 30.5 29T38.06 29" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_romance" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_romance_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3B3B3B"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_romance_pink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17.5 29a13 13 0 1 0 26 0a13 13 0 1 0 -26 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_science" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_science_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_science_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M44 29L37.25 40.69L23.75 40.69L17 29L23.75 17.31L37.25 17.31Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_scifi" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_scifi_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_scifi_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M44 29L37.25 40.69L23.75 40.69L17 29L23.75 17.31L37.25 17.31Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.2 23.85a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M23.05 32.59a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M33.35 32.59a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_screenplay" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_screenplay_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_screenplay_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.29 29a5.21 5.21 0 1 0 10.42 0a5.21 5.21 0 1 0 -10.42 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_self_help" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_self_help_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#414141"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_self_help_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15.5 36.5A15 15 0 0 1 45.5 36.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26.53 29.4a3.97 3.97 0 1 0 7.94 0a3.97 3.97 0 1 0 -7.94 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_sports" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_sports_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#414141"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_sports_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15.5 36.5A15 15 0 0 1 45.5 36.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.2 25.97a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M22.37 31.79a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+      <path d="M34.03 31.79a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_suspense" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_suspense_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#363636"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_suspense_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 15.5L44.5 40L16.5 40Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="genre_technology" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_technology_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_technology_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M44 29L37.25 40.69L23.75 40.69L17 29L23.75 17.31L37.25 17.31Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24.88 23.85h11.23M24.88 29h11.23M24.88 34.15h11.23" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_thriller" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_thriller_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#363636"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_thriller_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 15.5L44.5 40L16.5 40Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.75 27.54h9.5M25.75 31.9h9.5M25.75 36.26h9.5" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_travel" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_travel_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#414141"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_travel_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15.5 36.5A15 15 0 0 1 45.5 36.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24.14 25.97h12.73M24.14 29.4h12.73M24.14 32.83h12.73" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_treatise" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_treatise_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_treatise_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 17.5L42 17.5L42 40.5L19 40.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.91 29a4.59 4.59 0 1 0 9.18 0a4.59 4.59 0 1 0 -9.18 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_western" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_western_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#363636"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_western_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M30.5 15.5L44.5 40L16.5 40Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.22 31.9h10.56M30.5 26.62v10.56" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="genre_young_adult" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_genre_young_adult_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#414141"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_young_adult_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M15.5 36.5A15 15 0 0 1 45.5 36.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30.5 24.28A5.12 5.12 0 0 0 30.5 34.52Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_archived" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_archived_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#303030"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_archived_ink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19.5 30A11.5 11.5 0 0 1 42.5 30Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_available" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_available_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#414141"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_available_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19.5 30a11.5 11.5 0 1 0 23 0a11.5 11.5 0 1 0 -23 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_bestseller" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_bestseller_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#474747"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_bestseller_orange_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 41V35M31 41V24M40 41V30" fill="none" stroke="#FFFFFF" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="status_borrowed" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_borrowed_sky_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#969696"/>
+        <stop offset="1" stop-color="#656565"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#3B3B3B"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_borrowed_sky_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M31 18.5A11.5 11.5 0 0 0 31 41.5Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_damaged" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_damaged_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#474747"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_damaged_orange_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22.9 38.1A11.5 11.5 0 0 1 39.1 21.9Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_in_transit" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_in_transit_sky_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#969696"/>
+        <stop offset="1" stop-color="#656565"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#3B3B3B"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_in_transit_sky_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M17.3 30a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z" fill="#FFFFFF"/>
+      <path d="M25.8 30a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z" fill="#FFFFFF"/>
+      <path d="M36.6 30a4.4 4.4 0 1 0 8.8 0a4.4 4.4 0 1 0 -8.8 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_long_read" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_long_read_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_status_long_read_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 42L41 42" fill="none" stroke="#FFFFFF" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 3"/>
+    </g>
+  </symbol>
+  <symbol id="status_lost" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_lost_slate_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#BFBFBF"/>
+        <stop offset="1" stop-color="#A1A1A1"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#5E5E5E"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_lost_slate_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 30a11 11 0 1 0 22 0a11 11 0 1 0 -22 0Z" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3.2 3.6"/>
+    </g>
+  </symbol>
+  <symbol id="status_new" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_new_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#4F4F4F"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_new_amber_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 30a11 11 0 1 0 22 0a11 11 0 1 0 -22 0Z" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M27 30a4 4 0 1 0 8 0a4 4 0 1 0 -8 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_on_hold" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_on_hold_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#4F4F4F"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_on_hold_amber_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M25 21V39M37 21V39" fill="none" stroke="#FFFFFF" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="status_overdue" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_overdue_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#474747"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_overdue_orange_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M36.25 20.91A10.5 10.5 0 1 1 25.75 20.91" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="status_popular" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_popular_rose_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5D5D5D"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#363636"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_popular_rose_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M27.4 22a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0Z" fill="#FFFFFF"/>
+      <path d="M19.4 36a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0Z" fill="#FFFFFF"/>
+      <path d="M35.4 36a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_quick_read" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_quick_read_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_status_quick_read_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 42L28 42" fill="none" stroke="#FFFFFF" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="status_read" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_read_blue_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#939393"/>
+        <stop offset="1" stop-color="#606060"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#373737"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_status_read_blue_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 42L41 42" fill="none" stroke="#FFFFFF" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="status_read_later" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_read_later_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_status_read_later_brown_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 42L41 42" fill="none" stroke="#FFFFFF" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+      <path d="M18 30a3 3 0 1 0 6 0a3 3 0 1 0 -6 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_reading" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_reading_blue_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#939393"/>
+        <stop offset="1" stop-color="#606060"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#373737"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_status_reading_blue_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M21 42L41 42" fill="none" stroke="#FFFFFF" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+      <path d="M21 42L31 42" fill="none" stroke="#FFFFFF" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="status_recommended" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_recommended_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#353535"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_recommended_indigo_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M31 19L42 39L20 39Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_renewed" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_renewed_green_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9D9D9D"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#414141"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_renewed_green_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M38.78 22.22A11 11 0 1 1 23.22 22.22" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M27.6 30a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_reserved" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_reserved_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#393939"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_reserved_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20.5 30a10.5 10.5 0 1 0 21 0a10.5 10.5 0 1 0 -21 0Z" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="status_returned" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_returned_blue_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#939393"/>
+        <stop offset="1" stop-color="#606060"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#373737"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_returned_blue_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M31 18.5A11.5 11.5 0 0 1 31 41.5Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_unavailable" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_unavailable_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#363636"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_unavailable_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M26.8 30a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="status_upcoming_release" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_status_upcoming_release_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="55.1" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M15.58 41.94L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.78 18.54A19.5 19.5 0 0 0 15.58 41.94Z" fill="#3E3E3E"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_upcoming_release_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 34A11 11 0 0 1 42 34" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M27.8 38a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="ui_calendar" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_calendar_red_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#909090"/>
+        <stop offset="1" stop-color="#5C5C5C"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.7" cy="54.6" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.5 17A9.5 9.5 0 0 1 53.4 22.7L53.4 42.7A9.5 9.5 0 0 1 43.9 52.2L23.9 52.2A9.5 9.5 0 0 1 16.3 48.4L14.08 45.44A9.5 9.5 0 0 1 12.18 39.74L12.18 19.74A9.5 9.5 0 0 1 21.68 10.24L41.68 10.24A9.5 9.5 0 0 1 49.28 14.04Z" fill="#363636"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_calendar_red_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19.5 20a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#FFFFFF"/>
+      <path d="M29.5 20a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#FFFFFF"/>
+      <path d="M39.5 20a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#FFFFFF"/>
+      <path d="M19.5 29.5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#FFFFFF"/>
+      <path d="M29.5 29.5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#D7D7D7"/>
+      <path d="M39.5 29.5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#FFFFFF"/>
+      <path d="M19.5 39a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#FFFFFF"/>
+      <path d="M29.5 39a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#FFFFFF"/>
+      <path d="M39.5 39a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="ui_catalog" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_catalog_sky_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#969696"/>
+        <stop offset="1" stop-color="#656565"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.7" cy="54.6" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.5 17A9.5 9.5 0 0 1 53.4 22.7L53.4 42.7A9.5 9.5 0 0 1 43.9 52.2L23.9 52.2A9.5 9.5 0 0 1 16.3 48.4L14.08 45.44A9.5 9.5 0 0 1 12.18 39.74L12.18 19.74A9.5 9.5 0 0 1 21.68 10.24L41.68 10.24A9.5 9.5 0 0 1 49.28 14.04Z" fill="#3B3B3B"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_catalog_sky_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19.1 21a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M27 21L42 21" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19.1 30a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M27 30L42 30" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19.1 39a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+      <path d="M27 39L42 39" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="ui_chart" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_chart_blue_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#939393"/>
+        <stop offset="1" stop-color="#606060"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.78" cy="54.48" rx="20.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M22.96 37.28A3 3 0 0 1 23.56 39.08L23.56 49.08A3 3 0 0 1 20.56 52.08L14.56 52.08A3 3 0 0 1 12.16 50.88L10.78 49.04A3 3 0 0 1 10.18 47.24L10.18 37.24A3 3 0 0 1 13.18 34.24L19.18 34.24A3 3 0 0 1 21.58 35.44Z" fill="#373737"/><rect x="10" y="34" width="12" height="16" rx="3" fill="url(#grad_ui_chart_blue_g)"/></g>
+      <g><path d="M37.96 27.28A3 3 0 0 1 38.56 29.08L38.56 49.08A3 3 0 0 1 35.56 52.08L29.56 52.08A3 3 0 0 1 27.16 50.88L25.78 49.04A3 3 0 0 1 25.18 47.24L25.18 27.24A3 3 0 0 1 28.18 24.24L34.18 24.24A3 3 0 0 1 36.58 25.44Z" fill="#373737"/><rect x="25" y="24" width="12" height="26" rx="3" fill="url(#grad_ui_chart_blue_g)"/></g>
+      <g><path d="M52.96 15.28A3 3 0 0 1 53.56 17.08L53.56 49.08A3 3 0 0 1 50.56 52.08L44.56 52.08A3 3 0 0 1 42.16 50.88L40.78 49.04A3 3 0 0 1 40.18 47.24L40.18 15.24A3 3 0 0 1 43.18 12.24L49.18 12.24A3 3 0 0 1 51.58 13.44Z" fill="#373737"/><rect x="40" y="12" width="12" height="38" rx="3" fill="url(#grad_ui_chart_blue_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="ui_collection" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_collection_indigo_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8F8F8F"/>
+        <stop offset="1" stop-color="#5B5B5B"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_collection_violet_g_p13" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A1A1A1"/>
+        <stop offset="1" stop-color="#6F6F6F"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_collection_pink_g_p29" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#B4B4B4"/>
+        <stop offset="1" stop-color="#838383"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="30.72" cy="51.32" rx="19.06" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M38.64 12.52A4 4 0 0 1 39.44 14.92L39.44 32.92A4 4 0 0 1 35.44 36.92L15.44 36.92A4 4 0 0 1 12.24 35.32L10.98 33.64A4 4 0 0 1 10.18 31.24L10.18 13.24A4 4 0 0 1 14.18 9.24L34.18 9.24A4 4 0 0 1 37.38 10.84Z" fill="#353535"/><rect x="10" y="9" width="28" height="26" rx="4" fill="url(#grad_ui_collection_indigo_g)"/></g>
+      <g><path d="M44.64 18.52A4 4 0 0 1 45.44 20.92L45.44 38.92A4 4 0 0 1 41.44 42.92L21.44 42.92A4 4 0 0 1 18.24 41.32L16.98 39.64A4 4 0 0 1 16.18 37.24L16.18 19.24A4 4 0 0 1 20.18 15.24L40.18 15.24A4 4 0 0 1 43.38 16.84Z" fill="#464646"/><rect x="16" y="15" width="28" height="26" rx="4" fill="url(#grad_ui_collection_violet_g_p13)"/></g>
+      <g><path d="M50.64 24.52A4 4 0 0 1 51.44 26.92L51.44 44.92A4 4 0 0 1 47.44 48.92L27.44 48.92A4 4 0 0 1 24.24 47.32L22.98 45.64A4 4 0 0 1 22.18 43.24L22.18 25.24A4 4 0 0 1 26.18 21.24L46.18 21.24A4 4 0 0 1 49.38 22.84Z" fill="#585858"/><rect x="22" y="21" width="28" height="26" rx="4" fill="url(#grad_ui_collection_pink_g_p29)"/></g>
+    </g>
+  </symbol>
+  <symbol id="ui_history" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_history_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="35.37" cy="39" rx="8.62" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M27.18 33.24L28.2 34.6A5 5 0 0 0 36.2 28.6L35.18 27.24A5 5 0 0 0 27.18 33.24Z" fill="#303030"/><circle cx="31" cy="30" r="5" fill="url(#grad_ui_history_ink_g)"/></g>
+      <g><path d="M37.96 16.68L38.62 17.56A3.4 3.4 0 0 0 44.06 13.48L43.4 12.6A3.4 3.4 0 0 0 37.96 16.68Z" fill="#303030"/><circle cx="40.5" cy="14.4" r="3.4" fill="url(#grad_ui_history_ink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M39 16.14A16 16 0 1 1 17.89 20.82" fill="none" stroke="#535353" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="ui_home" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_home_orange_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#A5A5A5"/>
+        <stop offset="1" stop-color="#7B7B7B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.7" cy="54.6" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.5 17A9.5 9.5 0 0 1 53.4 22.7L53.4 42.7A9.5 9.5 0 0 1 43.9 52.2L23.9 52.2A9.5 9.5 0 0 1 16.3 48.4L14.08 45.44A9.5 9.5 0 0 1 12.18 39.74L12.18 19.74A9.5 9.5 0 0 1 21.68 10.24L41.68 10.24A9.5 9.5 0 0 1 49.28 14.04Z" fill="#474747"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_home_orange_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M23 41V31A8.5 8.5 0 0 1 40 31V41" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M29.1 36a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="ui_languages" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_languages_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_languages_indigo_g_m5" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#565656"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_languages_pink_g_p24" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AFAFAF"/>
+        <stop offset="1" stop-color="#7E7E7E"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.65" cy="58.8" rx="20.38" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M12.78 31.54L14.4 33.7A10.5 10.5 0 0 0 31.2 21.1L29.58 18.94A10.5 10.5 0 0 0 12.78 31.54Z" fill="#3E3E3E"/><circle cx="21" cy="25" r="10.5" fill="url(#grad_ui_languages_teal_g)"/></g>
+      <g><path d="M54 19A4 4 0 0 1 54.8 21.4L54.8 33.4A4 4 0 0 1 50.8 37.4L38.8 37.4A4 4 0 0 1 35.6 35.8L33.98 33.64A4 4 0 0 1 33.18 31.24L33.18 19.24A4 4 0 0 1 37.18 15.24L49.18 15.24A4 4 0 0 1 52.38 16.84Z" fill="#303030"/><rect x="33" y="15" width="20" height="20" rx="4" fill="url(#grad_ui_languages_indigo_g_m5)"/></g>
+      <g><path d="M35.8 38.65A2.5 2.5 0 0 1 35.93 38.83L44.44 52.58A2.5 2.5 0 0 1 42.31 56.4L25.29 56.4A2.5 2.5 0 0 1 23.29 55.4L21.67 53.24A2.5 2.5 0 0 1 21.54 50.42L30.05 36.67A2.5 2.5 0 0 1 34.18 36.49Z" fill="#535353"/><path d="M29.87 36.43A2.5 2.5 0 0 1 34.13 36.43L42.64 50.18A2.5 2.5 0 0 1 40.51 54L23.49 54A2.5 2.5 0 0 1 21.36 50.18Z" fill="url(#grad_ui_languages_pink_g_p24)"/></g>
+    </g>
+  </symbol>
+  <symbol id="ui_library_card" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_library_card_sky_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#969696"/>
+        <stop offset="1" stop-color="#656565"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.02" cy="53.12" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M57.14 20.52A4.5 4.5 0 0 1 58.04 23.22L58.04 46.22A4.5 4.5 0 0 1 53.54 50.72L14.54 50.72A4.5 4.5 0 0 1 10.94 48.92L9.08 46.44A4.5 4.5 0 0 1 8.18 43.74L8.18 20.74A4.5 4.5 0 0 1 12.68 16.24L51.68 16.24A4.5 4.5 0 0 1 55.28 18.04Z" fill="#3B3B3B"/><rect x="8" y="16" width="48" height="32" rx="4.5" fill="url(#grad_ui_library_card_sky_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M14.5 32a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32 27h16M32 33h12M32 39h8" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="ui_magazine" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_magazine_pink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#979797"/>
+        <stop offset="1" stop-color="#666666"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_magazine_mist_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E1E1E1"/>
+        <stop offset="1" stop-color="#D3D3D3"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.2" cy="56.6" rx="15.82" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M47.2 13.6A6 6 0 0 1 48.4 17.2L48.4 48.2A6 6 0 0 1 42.4 54.2L22.4 54.2A6 6 0 0 1 17.6 51.8L15.38 48.84A6 6 0 0 1 14.18 45.24L14.18 14.24A6 6 0 0 1 20.18 8.24L40.18 8.24A6 6 0 0 1 44.98 10.64Z" fill="#3B3B3B"/><rect x="14" y="8" width="32" height="43" rx="6" fill="url(#grad_ui_magazine_pink_g)"/></g>
+      <g><rect x="20" y="24" width="20" height="14" rx="2" fill="url(#grad_ui_magazine_mist_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M20 16L40 16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="ui_map" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_map_teal_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9A9A9A"/>
+        <stop offset="1" stop-color="#6A6A6A"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.7" cy="54.6" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.5 17A9.5 9.5 0 0 1 53.4 22.7L53.4 42.7A9.5 9.5 0 0 1 43.9 52.2L23.9 52.2A9.5 9.5 0 0 1 16.3 48.4L14.08 45.44A9.5 9.5 0 0 1 12.18 39.74L12.18 19.74A9.5 9.5 0 0 1 21.68 10.24L41.68 10.24A9.5 9.5 0 0 1 49.28 14.04Z" fill="#3E3E3E"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_map_teal_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M18 40L28 24L38 36L46 19" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.4"/>
+      <path d="M15.4 40a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="#FFFFFF"/>
+      <path d="M25.4 24a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="#FFFFFF"/>
+      <path d="M35.4 36a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="#FFFFFF"/>
+      <path d="M43.4 19a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="ui_menu" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_menu_slate_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#BFBFBF"/>
+        <stop offset="1" stop-color="#A1A1A1"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.7" cy="54.6" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.5 17A9.5 9.5 0 0 1 53.4 22.7L53.4 42.7A9.5 9.5 0 0 1 43.9 52.2L23.9 52.2A9.5 9.5 0 0 1 16.3 48.4L14.08 45.44A9.5 9.5 0 0 1 12.18 39.74L12.18 19.74A9.5 9.5 0 0 1 21.68 10.24L41.68 10.24A9.5 9.5 0 0 1 49.28 14.04Z" fill="#5E5E5E"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_menu_slate_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M22 22h19M22 29.5h19M22 37h19" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="ui_music" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_music_violet_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#949494"/>
+        <stop offset="1" stop-color="#626262"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.7" cy="54.6" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.5 17A9.5 9.5 0 0 1 53.4 22.7L53.4 42.7A9.5 9.5 0 0 1 43.9 52.2L23.9 52.2A9.5 9.5 0 0 1 16.3 48.4L14.08 45.44A9.5 9.5 0 0 1 12.18 39.74L12.18 19.74A9.5 9.5 0 0 1 21.68 10.24L41.68 10.24A9.5 9.5 0 0 1 49.28 14.04Z" fill="#393939"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_music_violet_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M18 24Q24.5 16 31 24T44 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18 35Q24.5 27 31 35T44 35" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    </g>
+  </symbol>
+  <symbol id="ui_newspaper" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_newspaper_paper_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#F6F6F6"/>
+        <stop offset="1" stop-color="#F1F1F1"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_newspaper_mist_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#E1E1E1"/>
+        <stop offset="1" stop-color="#D3D3D3"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="33.08" cy="58.28" rx="19.39" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M53.46 12.28A3.5 3.5 0 0 1 54.16 14.38L54.16 52.38A3.5 3.5 0 0 1 50.66 55.88L17.66 55.88A3.5 3.5 0 0 1 14.86 54.48L12.88 51.84A3.5 3.5 0 0 1 12.18 49.74L12.18 11.74A3.5 3.5 0 0 1 15.68 8.24L48.68 8.24A3.5 3.5 0 0 1 51.48 9.64Z" fill="#A1A1A1"/><rect x="12" y="8" width="40" height="45" rx="3.5" fill="url(#grad_ui_newspaper_paper_g)"/></g>
+      <g><rect x="18" y="24" width="13" height="13" rx="2" fill="url(#grad_ui_newspaper_mist_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M18 17L46 17" fill="none" stroke="#282828" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M35 26h11M35 31h11M35 36h7" fill="none" stroke="#A1A1A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18 44h28M18 49h20" fill="none" stroke="#A1A1A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="ui_notifications" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_notifications_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.72" cy="41.32" rx="8" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M26.38 34.84L27.64 36.52A6 6 0 0 0 37.24 29.32L35.98 27.64A6 6 0 0 0 26.38 34.84Z" fill="#4F4F4F"/><circle cx="31" cy="31" r="6" fill="url(#grad_ui_notifications_amber_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M18 31a13 13 0 1 0 26 0a13 13 0 1 0 -26 0Z" fill="none" stroke="#878787" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+      <path d="M11 31a20 20 0 1 0 40 0a20 20 0 1 0 -40 0Z" fill="none" stroke="#878787" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+      <path d="M4 31a27 27 0 1 0 54 0a27 27 0 1 0 -54 0Z" fill="none" stroke="#878787" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+    </g>
+  </symbol>
+  <symbol id="ui_personal_library" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_personal_library_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_personal_library_indigo_g_m4" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8B8B8B"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_personal_library_pink_g_p25" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#B0B0B0"/>
+        <stop offset="1" stop-color="#7F7F7F"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_personal_library_teal_g_m19" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#878787"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_personal_library_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_personal_library_rose_g_p14" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9E9E9E"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.72" cy="51.32" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M57.04 43.72A2 2 0 0 1 57.44 44.92L57.44 46.92A2 2 0 0 1 55.44 48.92L11.44 48.92A2 2 0 0 1 9.84 48.12L8.58 46.44A2 2 0 0 1 8.18 45.24L8.18 43.24A2 2 0 0 1 10.18 41.24L54.18 41.24A2 2 0 0 1 55.78 42.04Z" fill="#3E3E3E"/><rect x="8" y="41" width="48" height="6" rx="2" fill="url(#grad_ui_personal_library_brown_g)"/></g>
+      <g><path d="M20.8 20.4A2 2 0 0 1 21.2 21.6L21.2 40.6A2 2 0 0 1 19.2 42.6L15.2 42.6A2 2 0 0 1 13.6 41.8L12.58 40.44A2 2 0 0 1 12.18 39.24L12.18 20.24A2 2 0 0 1 14.18 18.24L18.18 18.24A2 2 0 0 1 19.78 19.04Z" fill="#313131"/><rect x="12" y="18" width="8" height="23" rx="2" fill="url(#grad_ui_personal_library_indigo_g_m4)"/></g>
+      <g><path d="M29.8 13.4A2 2 0 0 1 30.2 14.6L30.2 40.6A2 2 0 0 1 28.2 42.6L24.2 42.6A2 2 0 0 1 22.6 41.8L21.58 40.44A2 2 0 0 1 21.18 39.24L21.18 13.24A2 2 0 0 1 23.18 11.24L27.18 11.24A2 2 0 0 1 28.78 12.04Z" fill="#545454"/><rect x="21" y="11" width="8" height="30" rx="2" fill="url(#grad_ui_personal_library_pink_g_p25)"/></g>
+      <g><path d="M38.8 22.4A2 2 0 0 1 39.2 23.6L39.2 40.6A2 2 0 0 1 37.2 42.6L33.2 42.6A2 2 0 0 1 31.6 41.8L30.58 40.44A2 2 0 0 1 30.18 39.24L30.18 22.24A2 2 0 0 1 32.18 20.24L36.18 20.24A2 2 0 0 1 37.78 21.04Z" fill="#2B2B2B"/><rect x="30" y="20" width="8" height="21" rx="2" fill="url(#grad_ui_personal_library_teal_g_m19)"/></g>
+      <g><path d="M48.8 16.4A2 2 0 0 1 49.2 17.6L49.2 40.6A2 2 0 0 1 47.2 42.6L42.2 42.6A2 2 0 0 1 40.6 41.8L39.58 40.44A2 2 0 0 1 39.18 39.24L39.18 16.24A2 2 0 0 1 41.18 14.24L46.18 14.24A2 2 0 0 1 47.78 15.04Z" fill="#4F4F4F"/><rect x="39" y="14" width="9" height="27" rx="2" fill="url(#grad_ui_personal_library_amber_g)"/></g>
+      <g><path d="M39.38 19.34L40.4 20.7A8.5 8.5 0 0 0 54 10.5L52.98 9.14A8.5 8.5 0 0 0 39.38 19.34Z" fill="#444444"/><circle cx="46" cy="14" r="8.5" fill="url(#grad_ui_personal_library_rose_g_p14)"/></g>
+    </g>
+  </symbol>
+  <symbol id="ui_profile" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_profile_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.2" cy="52.1" rx="16.28" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M17.98 40.14L20.2 43.1A16.5 16.5 0 0 0 46.6 23.3L44.38 20.34A16.5 16.5 0 0 0 17.98 40.14Z" fill="#303030"/><circle cx="31" cy="30" r="16.5" fill="url(#grad_ui_profile_ink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M25.9 30a5.1 5.1 0 1 0 10.2 0a5.1 5.1 0 1 0 -10.2 0Z" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+  <symbol id="ui_reference" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_reference_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="31.78" cy="55.48" rx="19.12" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M30.76 14.68A4 4 0 0 1 31.56 17.08L31.56 28.08A4 4 0 0 1 27.56 32.08L16.56 32.08A4 4 0 0 1 13.36 30.48L11.98 28.64A4 4 0 0 1 11.18 26.24L11.18 15.24A4 4 0 0 1 15.18 11.24L26.18 11.24A4 4 0 0 1 29.38 12.84Z" fill="#3E3E3E"/><rect x="11" y="11" width="19" height="19" rx="4" fill="url(#grad_ui_reference_brown_g)"/></g>
+      <g><path d="M51.76 14.68A4 4 0 0 1 52.56 17.08L52.56 28.08A4 4 0 0 1 48.56 32.08L37.56 32.08A4 4 0 0 1 34.36 30.48L32.98 28.64A4 4 0 0 1 32.18 26.24L32.18 15.24A4 4 0 0 1 36.18 11.24L47.18 11.24A4 4 0 0 1 50.38 12.84Z" fill="#3E3E3E"/><rect x="32" y="11" width="19" height="19" rx="4" fill="url(#grad_ui_reference_brown_g)"/></g>
+      <g><path d="M30.76 35.68A4 4 0 0 1 31.56 38.08L31.56 49.08A4 4 0 0 1 27.56 53.08L16.56 53.08A4 4 0 0 1 13.36 51.48L11.98 49.64A4 4 0 0 1 11.18 47.24L11.18 36.24A4 4 0 0 1 15.18 32.24L26.18 32.24A4 4 0 0 1 29.38 33.84Z" fill="#3E3E3E"/><rect x="11" y="32" width="19" height="19" rx="4" fill="url(#grad_ui_reference_brown_g)"/></g>
+      <g><path d="M51.76 35.68A4 4 0 0 1 52.56 38.08L52.56 49.08A4 4 0 0 1 48.56 53.08L37.56 53.08A4 4 0 0 1 34.36 51.48L32.98 49.64A4 4 0 0 1 32.18 47.24L32.18 36.24A4 4 0 0 1 36.18 32.24L47.18 32.24A4 4 0 0 1 50.38 33.84Z" fill="#3E3E3E"/><rect x="32" y="32" width="19" height="19" rx="4" fill="url(#grad_ui_reference_brown_g)"/></g>
+    </g>
+  </symbol>
+  <symbol id="ui_settings" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_settings_ink_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8A8A8A"/>
+        <stop offset="1" stop-color="#535353"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.7" cy="54.6" rx="19.04" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M51.5 17A9.5 9.5 0 0 1 53.4 22.7L53.4 42.7A9.5 9.5 0 0 1 43.9 52.2L23.9 52.2A9.5 9.5 0 0 1 16.3 48.4L14.08 45.44A9.5 9.5 0 0 1 12.18 39.74L12.18 19.74A9.5 9.5 0 0 1 21.68 10.24L41.68 10.24A9.5 9.5 0 0 1 49.28 14.04Z" fill="#303030"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_settings_ink_g)"/></g>
+    </g>
+    <g class="marks">
+      <path d="M19 21.5H23.9M31.1 21.5H44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25.1 21.5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19 29.5H31.9M39.1 29.5H44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M33.1 29.5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M19 37.5H26.9M34.1 37.5H44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M28.1 37.5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+  <symbol id="ui_shelf" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="grad_ui_shelf_brown_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#9B9B9B"/>
+        <stop offset="1" stop-color="#6B6B6B"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_shelf_indigo_g_m4" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8B8B8B"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_shelf_pink_g_p25" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#B0B0B0"/>
+        <stop offset="1" stop-color="#7F7F7F"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_shelf_teal_g_m19" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#878787"/>
+        <stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <linearGradient id="grad_ui_shelf_amber_g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#AEAEAE"/>
+        <stop offset="1" stop-color="#878787"/>
+      </linearGradient>
+    </defs>
+    <g class="shadow">
+      <ellipse cx="32.72" cy="51.32" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+    </g>
+    <g class="solids">
+      <g><path d="M57.04 43.72A2 2 0 0 1 57.44 44.92L57.44 46.92A2 2 0 0 1 55.44 48.92L11.44 48.92A2 2 0 0 1 9.84 48.12L8.58 46.44A2 2 0 0 1 8.18 45.24L8.18 43.24A2 2 0 0 1 10.18 41.24L54.18 41.24A2 2 0 0 1 55.78 42.04Z" fill="#3E3E3E"/><rect x="8" y="41" width="48" height="6" rx="2" fill="url(#grad_ui_shelf_brown_g)"/></g>
+      <g><path d="M20.8 20.4A2 2 0 0 1 21.2 21.6L21.2 40.6A2 2 0 0 1 19.2 42.6L15.2 42.6A2 2 0 0 1 13.6 41.8L12.58 40.44A2 2 0 0 1 12.18 39.24L12.18 20.24A2 2 0 0 1 14.18 18.24L18.18 18.24A2 2 0 0 1 19.78 19.04Z" fill="#313131"/><rect x="12" y="18" width="8" height="23" rx="2" fill="url(#grad_ui_shelf_indigo_g_m4)"/></g>
+      <g><path d="M29.8 13.4A2 2 0 0 1 30.2 14.6L30.2 40.6A2 2 0 0 1 28.2 42.6L24.2 42.6A2 2 0 0 1 22.6 41.8L21.58 40.44A2 2 0 0 1 21.18 39.24L21.18 13.24A2 2 0 0 1 23.18 11.24L27.18 11.24A2 2 0 0 1 28.78 12.04Z" fill="#545454"/><rect x="21" y="11" width="8" height="30" rx="2" fill="url(#grad_ui_shelf_pink_g_p25)"/></g>
+      <g><path d="M38.8 22.4A2 2 0 0 1 39.2 23.6L39.2 40.6A2 2 0 0 1 37.2 42.6L33.2 42.6A2 2 0 0 1 31.6 41.8L30.58 40.44A2 2 0 0 1 30.18 39.24L30.18 22.24A2 2 0 0 1 32.18 20.24L36.18 20.24A2 2 0 0 1 37.78 21.04Z" fill="#2B2B2B"/><rect x="30" y="20" width="8" height="21" rx="2" fill="url(#grad_ui_shelf_teal_g_m19)"/></g>
+      <g><path d="M48.8 16.4A2 2 0 0 1 49.2 17.6L49.2 40.6A2 2 0 0 1 47.2 42.6L42.2 42.6A2 2 0 0 1 40.6 41.8L39.58 40.44A2 2 0 0 1 39.18 39.24L39.18 16.24A2 2 0 0 1 41.18 14.24L46.18 14.24A2 2 0 0 1 47.78 15.04Z" fill="#4F4F4F"/><rect x="39" y="14" width="9" height="27" rx="2" fill="url(#grad_ui_shelf_amber_g)"/></g>
+    </g>
+  </symbol>
+</svg>

@@ -115,13 +115,15 @@ ic.poly([(22, 22), (30, 22), (30, 29), (40, 29), (40, 36), (32, 36)], w=2.6)
 GENRES = {
     'circle': ('romance', 'drama', 'comedy', 'poetry', 'memoir', 'biography', 'diary'),
     'square': ('history', 'essay', 'reference', 'article', 'treatise', 'philosophy', 'chronicle'),
-    'triangle': ('suspense', 'thriller', 'mystery', 'adventure', 'horror', 'western', 'manga'),
+    'triangle': ('suspense', 'thriller', 'mystery', 'adventure', 'horror', 'western'),
     'hexagon': ('science', 'technology', 'scifi', 'mathematics', 'economics', 'medicine', 'education'),
-    'diamond': ('fantasy', 'art', 'music', 'religion', 'screenplay', 'graphic_novel', 'literary_fiction'),
+    'diamond': ('fantasy', 'art', 'music', 'religion', 'screenplay', 'graphic_novel', 'literary_fiction', 'manga'),
     'half': ('cooking', 'travel', 'sports', 'nature', 'self_help', 'children', 'young_adult'),
 }
 for shape, names in GENRES.items():
-    for pattern, name in zip(PATTERNS, names, strict=True):
+    if len(names) > len(PATTERNS):
+        raise SystemExit(f'genre_: la familia {shape} tiene {len(names)} géneros y solo hay {len(PATTERNS)} patrones')
+    for pattern, name in zip(PATTERNS, names):  # una familia con menos géneros que patrones no usa los últimos
         reg(genre(f'genre_{name}', shape, pattern))
 
 # --------------------------------------------------------------------------- format_

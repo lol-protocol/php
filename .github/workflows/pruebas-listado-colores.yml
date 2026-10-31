@@ -32,10 +32,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # Valida los siete CSV de datos y CHANGELOG.md, y falla si algun archivo generado
+      # Valida los nueve CSV y CHANGELOG.md, y falla si algun archivo generado
       # (la tabla de README.md, nombres-completos.csv, colores-por-idioma.md, por-idioma/,
-      # referencias.md, ambiguedad.md, auditoria-nombres.md o exportes/, con su
-      # manifiesto) no coincide con lo que generan; construye
+      # referencias.md, ambiguedad.md, auditoria-nombres.md, categorias.md,
+      # cobertura.md, revisiones.md, visor-revision.html o exportes/, con los patrones
+      # de spaCy y su manifiesto) no coincide con lo que generan; construye
       # ademas una base SQLite en memoria y comprueba que los recuentos coincidan.
       # Tarda entre 13 y 20 s porque recalcula el color CSS mas cercano de cada nombre.
       - name: Comprobar datos y tabla

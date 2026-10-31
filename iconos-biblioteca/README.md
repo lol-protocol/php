@@ -3,7 +3,7 @@
 151 iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave),
 **sin letras, números ni pictogramas** (nada dibuja un objeto literal, ni
 libros con lomo ni lupas con mango), así que no dependen del idioma. 453
-archivos: 3 variantes × 151 iconos.
+archivos de icono (3 variantes × 151 iconos), más un `sprite.svg` por variante.
 
 Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
@@ -16,7 +16,8 @@ Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
   Los colores se pueden cambiar desde la página (ver «Colores de `lineas`»).
 - `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
-Las tres variantes tienen exactamente los mismos nombres y carpetas.
+Las tres variantes tienen exactamente los mismos nombres y carpetas, y cada una trae un
+`sprite.svg` en su raíz con todos sus iconos (ver «Sprite»).
 
 ## Estructura y nombres
 
@@ -27,7 +28,7 @@ inglés.
 | Prefijo | Iconos | Contenido | Ejemplo |
 |---|---|---|---|
 | `book_` | 23 | Tipos y partes de un libro | `book_boxset` |
-| `genre_` | 42 | Géneros literarios y temas (6 familias x 7 patrones) | `genre_scifi` |
+| `genre_` | 42 | Géneros literarios y temas (6 familias de 6 a 8 géneros, uno por patrón) | `genre_scifi` |
 | `format_` | 7 | Ediciones y formatos | `format_braille` |
 | `status_` | 22 | Disponibilidad y estado de lectura | `status_overdue` |
 | `action_` | 24 | Acciones del usuario | `action_borrow` |
@@ -46,7 +47,8 @@ relleno y posición:
   tensión y aventura, hexágono verde azulado = ciencia y técnica, rombo
   violeta = imaginación y arte, semicírculo verde = vida práctica) y el
   **género** por el patrón dentro de ella (liso, rayas, puntos, ondas, anillo,
-  cruz, mitad).
+  cruz, mitad y, solo en la familia de ocho géneros, la violeta, una V). Los
+  dos cómics, `genre_graphic_novel` y `genre_manga`, van juntos en esa familia.
 - `status_`: discos con un indicador blanco: el estado se lee por el relleno
   (lleno, vacío, mitad, anillo, anillo roto, arco...).
 - `action_`: piezas sueltas con movimiento; la estela marca de dónde viene la
@@ -71,13 +73,40 @@ incrustar varios SVG en línea en la misma página, también `color` y `gris` de
 mismo icono. Los iconos con el mismo nombre en los dos sets (`ui_menu`...) sí
 comparten ids.
 
+## Sprite
+
+Cada variante trae un `sprite.svg` en su raíz (`iconos-biblioteca/color/sprite.svg`...) con
+todos sus iconos como `<symbol>`, cada uno con el nombre del icono por `id`, para
+pintarlos con `<use>` sin un archivo por icono:
+
+```html
+<svg width="24" height="24" aria-hidden="true"><use href="iconos-biblioteca/color/sprite.svg#book_ebook"/></svg>
+```
+
+El icono toma el tamaño del `<svg>` que lo contiene. Hay un sprite por variante y
+no uno que junte las tres, que pesaría el triple: el de `color` pesa unos 180 KB (unos 16 KB con gzip).
+
+- **Como archivo aparte** (el ejemplo): la página y el sprite deben servirse por
+  HTTP desde el mismo origen. Abriendo el HTML con `file://` no se pinta. Se
+  descarga una vez y el navegador lo reutiliza para todos los iconos.
+- **En línea**: pega el contenido del sprite en la página, con `width="0"
+  height="0" style="position:absolute"` y `aria-hidden="true"` en su `<svg>`, y
+  usa `<use href="#book_ebook"/>`. No lo ocultes con `display:none` ni con
+  `hidden`: un `<svg>` oculto no pinta los degradados y los iconos de `color` y
+  `gris` salen oscuros. Pega una sola variante por página: los `id` de los
+  `<symbol>` son los mismos en las tres.
+
+El dibujo es el mismo que el del archivo suelto.
+
 ## Colores de `lineas`
 
 Cada trazo de `lineas/` lleva el color de su tono (`#883307` para `orange`...), y
-ese color se puede sobrescribir con una variable CSS `--ic-<tono>`. Solo
-funciona con el SVG **en línea** en la página (`<svg>` pegado o inyectado en el
-HTML): con `<img>` o `background: url(...)` los iconos se ven con sus colores de
-siempre, porque la página no llega al interior del archivo.
+ese color se puede sobrescribir con una variable CSS `--ic-<tono>`. Funciona con
+el SVG **en línea** en la página (`<svg>` pegado o inyectado en el HTML) y con
+`<use>` sobre el sprite, en línea o como archivo aparte (ver «Sprite»): la
+variable se hereda hasta el icono. Con `<img>` o `background: url(...)` los
+iconos se ven con sus colores de siempre, porque la página no llega al interior
+del archivo.
 
 ```css
 .barra svg { --ic-orange: currentColor; --ic-slate: currentColor; --ic-mist: currentColor; }

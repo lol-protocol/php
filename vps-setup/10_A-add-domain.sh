@@ -41,6 +41,9 @@ case "$TYPE" in landing|php|python|tomcat|marcalibros) ;; *) echo "--type debe s
 [ -n "$NAME" ] || NAME=${DOMAIN//./-}
 EMAIL=${EMAIL:-"admin@$DOMAIN"}
 if [ "$TYPE" = php ] || [ "$TYPE" = python ]; then require_valid name "$NAME" "--name"; fi
+# Las apps Python tienen su usuario de sistema app-<nombre> (max. 32 caracteres): el nombre por defecto
+# sale del dominio y puede ser largo, asi que se avisa aqui (con --name) en vez de fallar a mitad.
+if [ "$TYPE" = python ]; then require_valid appuser "$NAME" "--name (o el nombre sacado del dominio: pasa uno corto con --name)"; fi
 [ "$TYPE" != tomcat ] || require_valid context_path "$CONTEXT" "--context"
 if [ -n "$PORT" ]; then
     [ "$TYPE" = python ] || { echo "--port solo aplica a --type python"; exit 2; }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" class="icono25d">
+  <style>
+    @supports (--a:0){
+      .icono25d .ic-ink{stroke:var(--ic-ink,#29313D)}
+      .icono25d .ic-mist{stroke:var(--ic-mist,#767C82)}
+      .icono25d .ic-orange{stroke:var(--ic-orange,#883307)}
+      .icono25d .ic-slate{stroke:var(--ic-slate,#565F6B)}
+    }
+  </style>
+  <g class="links">
+    <path d="M28.74 22.67L16.78 43.27M26.08 19.68L14 40.49" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.8"/>
+    <path d="M35.66 23.02L45.73 40.36" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M19.25 46L43.25 46M31 49.6L31 42.4" class="ic-slate" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g class="ic-ink" stroke="#29313D"><path d="M25.72 18.96L27.28 21.04A6.6 6.6 0 0 0 37.84 13.12L36.28 11.04A6.6 6.6 0 0 0 25.72 18.96Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="15" r="6.6" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-orange" stroke="#883307"><path d="M20.12 47.26A1.36 1.36 0 0 1 20 49.04L15.52 53.52A1.36 1.36 0 0 1 13.6 53.52L9.12 49.04A1.36 1.36 0 0 1 9 48.9L7.44 46.82A1.36 1.36 0 0 1 7.56 45.04L12.04 40.56A1.36 1.36 0 0 1 13.96 40.56L18.44 45.04A1.36 1.36 0 0 1 18.56 45.18Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="8.47" y="41.47" width="9.05" height="9.05" rx="1.36" transform="rotate(45 13 46)" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g class="ic-mist" stroke="#767C82"><path d="M55.84 42.72A1.01 1.01 0 0 1 56.04 43.33L56.04 52.51A1.01 1.01 0 0 1 55.03 53.52L45.85 53.52A1.01 1.01 0 0 1 45.04 53.12L43.6 51.2A1.01 1.01 0 0 1 43.4 50.59L43.4 41.41A1.01 1.01 0 0 1 44.41 40.4L53.59 40.4A1.01 1.01 0 0 1 54.4 40.8Z" fill="none" stroke-width="1.8" stroke-linejoin="round"/><rect x="43.4" y="40.4" width="11.2" height="11.2" rx="1.01" fill="none" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M28.76 15a2.24 2.24 0 1 0 4.49 0a2.24 2.24 0 1 0 -4.49 0Z" class="ic-ink" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

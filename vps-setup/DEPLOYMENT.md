@@ -61,7 +61,7 @@ VPS y correr los scripts allí: los comandos son los mismos, sin el `./remote-ru
 ./remote-run.sh install-all.sh tudominio.com tu@email.com               # de verdad
 ```
 
-Opciones útiles: `--skip-ssl` (el DNS aún no apunta), `--with-webmin` (panel web en el puerto 10000),
+Opciones útiles: `--skip-ssl` (el DNS aún no apunta), `--with-webmin` (panel web, solo por túnel SSH),
 `--yes` (sin confirmación) y `--resume` (tras un fallo, salta lo ya hecho).
 
 Cada corrida deja un log en `~/.local/state/vps-setup/install-all-<fecha>.log` del VPS. Si un paso
@@ -88,8 +88,12 @@ de Let's Encrypt (hay un límite semanal). `--staging` pide un certificado de pr
 ./remote-run.sh 09_A-setup-monitoring.sh 'https://hooks.slack.com/...' tu@email.com
 ```
 
-Si instalaste Webmin, restringe el puerto 10000 a tu IP: instálalo con
-`WEBMIN_ALLOW_FROM=<tu IP> ./02_J-install-webmin.sh`, o cambia la regla de UFW (el script lo explica).
+Si instalaste Webmin, **no hay puerto abierto**: escucha solo en el localhost del VPS. Desde tu equipo:
+
+```bash
+ssh -L 10000:localhost:10000 ubuntu@<IP_DEL_VPS>     # deja esa terminal abierta
+# navegador: https://localhost:10000  (certificado autofirmado: acepta el aviso)
+```
 
 ## 6. Más dominios y aplicaciones
 
@@ -107,8 +111,13 @@ Whisper (`02_I`, descarga varios GB).
 
 ## 7. Base de datos de una app
 
-Los scripts instalan PostgreSQL (y MariaDB con `02_G`), pero no crean bases: cada app necesita la
-suya, con un usuario propio y sin permisos sobre las demás.
+Las **apps Python** (`06_B`) ya traen la suya: el script crea, si PostgreSQL está instalado, el rol y la base
+`app_<nombre>` con una contraseña aleatoria, y deja la conexión en `/var/www/<app>/.env` (modo 600, solo la lee el
+usuario de esa app) como `DATABASE_URL=postgresql://app_<nombre>:<clave>@localhost:5432/app_<nombre>`. El servicio
+la recibe como variable de entorno. La clave nunca se imprime ni queda en el historial, y re-correr el script no la
+cambia. Cada rol solo puede entrar a su base (se revoca `CONNECT` a los demás). `APP_DB=0` omite todo esto.
+
+Para una app **PHP** (hasta que tenga su propio usuario) o una base extra, a mano:
 
 ```bash
 sudo -u postgres createuser --pwprompt tienda      # pide la contraseña: no la escribas en el historial
@@ -117,7 +126,7 @@ sudo -u postgres createdb --owner=tienda tienda
 
 PostgreSQL solo escucha en `localhost`: la app se conecta a `host=localhost dbname=tienda user=tienda`.
 Guarda la contraseña en la configuración de la app (por ejemplo un `.env` fuera de la carpeta
-pública y legible solo por `www-data`), nunca en el repo.
+pública y legible solo por el usuario de la app), nunca en el repo.
 
 ## 8. Verificar
 

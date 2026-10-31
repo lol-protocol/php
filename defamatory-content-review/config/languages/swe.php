@@ -176,7 +176,7 @@ return [
             ['word' => 'fjolla', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'feminiserad', 'riskType' => 'genero', 'severity' => 'medium', 'forms' => 'adj'],
             ['word' => 'flata', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun'],
-            ['word' => 'hora', 'riskType' => 'genero', 'severity' => 'high', 'nameCollision' => true],
+            ['word' => 'hora', 'riskType' => 'genero', 'severity' => 'high', 'nameCollision' => true, 'forms' => 'noun'],
             ['word' => 'slampa', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'prostituerad', 'riskType' => 'genero', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'gammal nucka', 'riskType' => 'genero', 'severity' => 'medium'],

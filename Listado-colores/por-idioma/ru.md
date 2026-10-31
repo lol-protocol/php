@@ -199,6 +199,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `maroon` | `#800000` | бордовый | бордовая (f), бордовое (n), бордовые (pl) |  |  |
 | `olive` | `#808000` | оливковый | оливковая (f), оливковое (n), оливковые (pl) |  |  |
 | `navy` | `#000080` | тёмно-синий |  |  | темно-синий (ortografia=sin_dieresis) |
+| `cyan` | `#00FFFF` | циан (propuesta de IA sin revisar) |  |  |  |
 | `magenta` | `#FF00FF` | маджента |  |  |  |
 | `salmon` | `#FA8072` | лососевый | лососевая (f), лососевое (n), лососевые (pl) |  |  |
 | `coral` | `#FF7F50` | коралловый | коралловая (f), коралловое (n), коралловые (pl) |  |  |

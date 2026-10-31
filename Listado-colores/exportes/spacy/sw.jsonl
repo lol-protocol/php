@@ -35,16 +35,19 @@
 {"label":"COLOR","pattern":"dhahabu iliyokolea","id":"darkgoldenrod"}
 {"label":"COLOR","pattern":"drab ya mzeituni","id":"olivedrab"}
 {"label":"COLOR","pattern":"fedha","id":"silver"}
+{"label":"COLOR","pattern":"feruzi","id":"turquoise"}
 {"label":"COLOR","pattern":"fuksia","id":"fuchsia"}
 {"label":"COLOR","pattern":"ganda la bahari","id":"seashell"}
 {"label":"COLOR","pattern":"goldenrod","id":"goldenrod"}
 {"label":"COLOR","pattern":"goldenrod ya rangi","id":"palegoldenrod"}
 {"label":"COLOR","pattern":"hariri ya mahindi","id":"cornsilk"}
 {"label":"COLOR","pattern":"indigo","id":"indigo"}
+{"label":"COLOR","pattern":"kaharabu","id":"amber"}
 {"label":"COLOR","pattern":"kahawia","id":"brown"}
 {"label":"COLOR","pattern":"kahawia ya mchanga","id":"sandybrown"}
 {"label":"COLOR","pattern":"kahawia ya tandiko","id":"saddlebrown"}
 {"label":"COLOR","pattern":"kahawia ya waridi","id":"rosybrown"}
+{"label":"COLOR","pattern":"kaki","id":"khaki"}
 {"label":"COLOR","pattern":"khaki","id":"khaki"}
 {"label":"COLOR","pattern":"khaki iliyokolea","id":"darkkhaki"}
 {"label":"COLOR","pattern":"kijani","id":"green"}
@@ -82,6 +85,7 @@
 {"label":"COLOR","pattern":"manjano hafifu","id":"lightyellow"}
 {"label":"COLOR","pattern":"manjano ya goldenrod hafifu","id":"lightgoldenrodyellow"}
 {"label":"COLOR","pattern":"manjano-kijani","id":"yellowgreen"}
+{"label":"COLOR","pattern":"marijani","id":"coral"}
 {"label":"COLOR","pattern":"marun","id":"maroon"}
 {"label":"COLOR","pattern":"matumbawe","id":"coral"}
 {"label":"COLOR","pattern":"matumbawe hafifu","id":"lightcoral"}
@@ -90,6 +94,7 @@
 {"label":"COLOR","pattern":"mzeituni","id":"olive"}
 {"label":"COLOR","pattern":"ndimu","id":"lime"}
 {"label":"COLOR","pattern":"ngano","id":"wheat"}
+{"label":"COLOR","pattern":"nili","id":"indigo"}
 {"label":"COLOR","pattern":"njano","id":"yellow"}
 {"label":"COLOR","pattern":"nyanya","id":"tomato"}
 {"label":"COLOR","pattern":"nyekundu","id":"red"}
@@ -131,6 +136,7 @@
 {"label":"COLOR","pattern":"turquoise wa wastani","id":"mediumturquoise"}
 {"label":"COLOR","pattern":"turquoise ya rangi","id":"paleturquoise"}
 {"label":"COLOR","pattern":"umande wa asali","id":"honeydew"}
+{"label":"COLOR","pattern":"urujuani","id":"violet"}
 {"label":"COLOR","pattern":"waridi","id":"pink"}
 {"label":"COLOR","pattern":"waridi hafifu","id":"lightpink"}
 {"label":"COLOR","pattern":"waridi iliyokolea","id":"deeppink"}
@@ -142,3 +148,4 @@
 {"label":"COLOR","pattern":"zambarau wa wastani","id":"mediumpurple"}
 {"label":"COLOR","pattern":"zambarau ya bluu","id":"blueviolet"}
 {"label":"COLOR","pattern":"zambarau ya Rebecca","id":"rebeccapurple"}
+{"label":"COLOR","pattern":"zeituni","id":"olive"}
