@@ -1,7 +1,7 @@
 -- 011: cada boleta, cada pago y cada nota de credito guarda la tasa de cambio de su dia.
 --
 -- Hasta la 010 todos los totales en USD convertian con monedas.tasa_a_usd, que es la
--- de hoy: cuando la tasa cambiaba (ahora que database/actualizar_tasas.php la
+-- de hoy: cuando la tasa cambiaba (ahora que bin/actualizar_tasas.php la
 -- actualiza todos los dias), cambiaban tambien los ingresos y los cobros de meses
 -- anteriores, y un mes ya cerrado dejaba de dar la misma cifra. Un ingreso de
 -- 1.000.000 de pesos no vale lo mismo en USD cuando se facturo que ahora.

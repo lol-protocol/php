@@ -339,12 +339,20 @@ document.documentElement.dir = LocalizationManager.isRtl(i18n.getLanguage()) ? '
 
 ### Pluralization
 
+A text that says a number has its plural forms next to it, named after the categories of
+`Intl.PluralRules`: `key_zero`, `key_one`, `key_two`, `key_few`, `key_many`. The key itself is the
+"other" form, and the only one every language must have; a language adds only the forms it needs
+(English and Spanish `_one`, Arabic all five, Japanese none). `translateCount(key, count)` picks the
+form for the current language, and only falls back to English when the language lacks the key
+altogether, so a Japanese page never shows the English singular. The forms are not counted as
+separate strings, and a language may leave the number out of one of them («مقاس واحد», one sheet).
+
 ```javascript
-// Simple pluralization example
-function formatCount(count, key) {
-    return i18n.t(key).replace('{count}', count);
-}
+// "1 format found" / "2 formats found"; in Arabic, six different sentences.
+const text = formatMessage(i18n.translateCount('demo.resultsFormats', count), {count});
 ```
+
+`tests/demo.test.js` checks that each language only uses the categories it has.
 
 ## Performance Optimization
 

@@ -243,6 +243,9 @@ class PhoneDirectoryCatalog
      *
      * Not \b: an underscore is a "word" character too, so "custom_1990_x" has no word boundary
      * around the digits at all; look for a 4-digit run not itself touching other digits instead.
+     *
+     * With more than one year in the id ("scan_1925_reprint_1985") the latest wins: a later year can only
+     * make the directory look more recent, so it is hidden from a visitor rather than shown by mistake.
      */
     public function yearOfDirectory(?string $directoryId): ?int
     {
@@ -255,8 +258,8 @@ class PhoneDirectoryCatalog
             return $catalogYear;
         }
 
-        if (preg_match('/(?<!\d)(1[89]\d{2}|20\d{2})(?!\d)/', $directoryId, $m)) {
-            return (int) $m[1];
+        if (preg_match_all('/(?<!\d)(1[89]\d{2}|20\d{2})(?!\d)/', $directoryId, $m) > 0) {
+            return max(array_map('intval', $m[1]));
         }
 
         return null;

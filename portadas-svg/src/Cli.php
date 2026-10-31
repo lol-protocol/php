@@ -13,7 +13,7 @@ final class Cli
     private const USO = <<<'TXT'
         Uso:
           php bin/generar.php libro.json [más.json ...] [--salida=carpeta]
-          php bin/generar.php --lista=libros.csv [--lista=otra.csv ...] [libro.json ...] [--omitir-errores] [--trazos] [--salida=carpeta]
+          php bin/generar.php --lista=libros.csv [--lista=otra.csv ...] [libro.json ...] [--omitir-errores] [--trazos] [--extra=carpeta] [--salida=carpeta]
           php bin/generar.php --comprobar
           php bin/generar.php --help
 
@@ -24,6 +24,8 @@ final class Cli
         el resto.
         --trazos escribe el texto como contornos en vez de con la fuente incrustada: se ve igual en cualquier
         visor, pero el texto ya no se puede seleccionar ni buscar.
+        --extra=carpeta usa los .json de esa carpeta (ver herramientas/glifos-extra.py) para las letras que las
+        fuentes del proyecto no tienen; solo se dibujan con --trazos. Sin la opción, se buscan en fuentes/extra/.
         --comprobar regenera ejemplos/*.json y falla si no coincide con ejemplos/salida/.
         TXT;
 
@@ -41,6 +43,7 @@ final class Cli
         $comprobar = false;
         $omitir = false;
         $trazos = false;
+        $extra = null;
         foreach ($argumentos as $argumento) {
             if ($argumento === '--help' || $argumento === '-h') {
                 $salida(self::USO . "\n");
@@ -53,6 +56,11 @@ final class Cli
                 $omitir = true;
             } elseif ($argumento === '--trazos') {
                 $trazos = true;
+            } elseif (str_starts_with($argumento, '--extra=')) {
+                $extra = substr($argumento, strlen('--extra='));
+                if ($extra === '' || !is_dir($extra)) {
+                    return self::uso($errores, "--extra necesita una carpeta que exista: --extra=carpeta (recibí «{$extra}»).");
+                }
             } elseif (str_starts_with($argumento, '--salida=')) {
                 $carpeta = substr($argumento, strlen('--salida='));
                 if ($carpeta === '') {
@@ -79,6 +87,8 @@ final class Cli
         }
 
         try {
+            Fuentes::usarExtras($extra ?? $raiz . '/fuentes/extra');
+
             return $comprobar ? self::comprobar($raiz, $salida, $errores) : self::generar($rutas, $listas, $omitir, $trazos, $carpeta, $salida, $errores);
         } catch (\Throwable $error) {
             $errores('Error: ' . $error->getMessage() . "\n");
@@ -123,7 +133,7 @@ final class Cli
         }
 
         foreach ($libros as [$libro]) {
-            foreach (Generador::avisos($libro) as $aviso) {
+            foreach (Generador::avisos($libro, $trazos) as $aviso) {
                 $errores("Aviso, {$libro->id}: $aviso\n");
             }
         }

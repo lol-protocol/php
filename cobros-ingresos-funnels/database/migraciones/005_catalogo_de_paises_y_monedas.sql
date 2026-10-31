@@ -1,7 +1,7 @@
 -- 005: el catalogo de referencia -monedas (ISO 4217) y paises (ISO 3166-1)-
 -- viaja con las migraciones.
 --
--- Hasta ahora lo cargaba solo database/seed.php, que es de desarrollo (borra
+-- Hasta ahora lo cargaba solo bin/recrear_con_datos_de_ejemplo.php (antes database/seed.php), que es de desarrollo (borra
 -- toda la base): una base de produccion creada con las migraciones quedaba con
 -- paises y monedas vacios, y como clientes.pais_codigo es NOT NULL y apunta a
 -- paises, no se podia dar de alta ni un cliente. (La 001 dice que las tasas las

@@ -6,7 +6,7 @@ Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
 
 - **11 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
-- **33 idiomas** identificados por código ISO 639-3, con ~7.800 términos.
+- **33 idiomas** identificados por código ISO 639-3, con más de 8.000 términos.
 - **Modelo de parentesco lingüístico** — validación cruzada entre lenguas
   emparentadas, con la coincidencia ponderada por su afinidad léxica.
 - **Protección de apellidos legítimos** — «Cerda», «Moro» o «Savage» son linajes
@@ -137,7 +137,7 @@ $result = $reviewer->validateFullName('Elba', 'Gina');
 
 $result->isValid();                     // false
 $result->hasOnlyPhoneticDetections();   // true — es inferencia, no coincidencia literal
-$result->getPhoneticFusionTerms();      // [{term: 'vagina', riskType: 'ordinario', ...}]
+$result->getPhoneticFusionTerms();      // [{term: 'vagina', riskType: 'fonetico', ...}]
 
 $reviewer->decide($result);             // 'review' — nunca 'reject' sólo por esto
 ```
@@ -287,7 +287,7 @@ FusionSupport::isSupported('ara');                                      // false
   literal en la forma plegada y rompía el cálculo de la frontera de fusión).
 - **Variantes por distancia de edición** ("Cerrda", "Certa"): **deliberadamente
   no cubierta**. Colapsar letras dobles cerraría este caso, pero across
-  ~7.800 palabras en 33 idiomas no hay forma de verificar a mano qué
+  más de 8.000 palabras en 33 idiomas no hay forma de verificar a mano qué
   colisiones no deseadas produciría — "Serrano" (apellido real) se volvería
   "Serano", y así con cada doble letra en cada idioma. Se documenta como
   límite en vez de implementarse a medias.
@@ -327,7 +327,7 @@ $registry->resolve('SPA');  // 'spa'
 ### Cobertura de los diccionarios
 
 `coverage` no es cosmético: dice dónde hace falta revisión de hablante nativo
-antes de usar el módulo en producción para ese idioma. ~7.800 términos en
+antes de usar el módulo en producción para ese idioma. Más de 8.000 términos en
 total; sólo 3 idiomas (`isl`, `swa`, `tgl` — los últimos en incorporarse)
 siguen en `basic`.
 
@@ -921,6 +921,48 @@ palabras no entiende contexto:
   sin espacios»). `ChatTopicsCoverageTest` fija una línea
   sexual, una amenaza y una cotidiana por idioma.
 
+### Comprobar la flexión con UniMorph
+
+Las reglas de flexión de cada idioma no las ha revisado ninguna persona nativa. Lo que sí se puede
+medir sin ella es la morfología: `bin/inflection-check.php` compara lo que genera `TopicInflector`
+con las formas que [UniMorph](https://unimorph.github.io) registra para palabras corrientes
+(los datos no están en el repositorio: se descargan de `github.com/unimorph/<código>`):
+
+```bash
+php bin/inflection-check.php rus rus.tsv ru_50k.txt 400 --ends
+```
+
+Da, por idioma y por tipo (sustantivo, adjetivo), la **precisión** (qué parte de lo generado existe),
+la **cobertura** (qué parte de lo que existe se genera) y, con `--ends`, la precisión por última
+letra del lema, para ver qué clase falla. Una precisión baja no es en sí un problema (una forma
+inventada rara vez coincide con otra palabra; eso lo mide `bin/false-positives.php`), pero un fallo
+sistemático se ve enseguida: con ella se vio que los adjetivos búlgaros en «-ен» pierden la «е»
+(«тъжен» → «тъжна») y que el turco necesitaba los casos. Resultado con 400 lemas frecuentes por tipo:
+
+| Idioma | Sustantivos (precisión / cobertura) | Adjetivos |
+|---|---|---|
+| ruso | 81 % / 89 % | 91 % / 81 % |
+| ucraniano | 74 % / 84 % | 93 % / 99 % (16 lemas) |
+| polaco | 63 % / 80 % | 94 % / 90 % |
+| checo | 55 % / 79 % | 94 % / 96 % |
+| griego | 79 % / 84 % | 81 % / 56 % |
+| alemán | 90 % / 17 % | 99 % / 81 % |
+| neerlandés | — | 92 % / 28 % |
+| búlgaro | 50 % / 64 % | 53 % / 22 % |
+| húngaro | 80 % / 24 % | 79 % / 29 % |
+| turco | 79 % / 23 % | — |
+| noruego | 48 % / 88 % | 51 % / 62 % |
+| danés | 42 % / 33 % | 59 % / 53 % |
+| sueco | 46 % / 39 % | 53 % / 27 % |
+| rumano | 37 % / 22 % | 71 % / 20 % |
+| árabe | 30 % / 8 % | 61 % / 6 % |
+| hebreo | 46 % / 4 % | — |
+
+Los más flojos son rumano, árabe y hebreo (cobertura baja: UniMorph trae formas con posesivos,
+vocales y estados constructos que no se generan). Sin datos de sustantivos en UniMorph, no se pudo
+validar el hindi, el tagalo ni los sustantivos neerlandeses; finés y eslovaco no están en UniMorph
+con esos nombres. Ninguna cifra sustituye a la revisión nativa de lo ofensivo.
+
 ## API
 
 ### `DefamatoryContentReviewer`
@@ -981,7 +1023,7 @@ diccionario que coincidió) y, en fusiones, `fusedFrom` (el nombre completo):
 
 ```php
 $reviewer->validateFullName('Elba', 'Gina')->getExplanations();
-// ['«Elba Gina» leído seguido suena como «vagina» (diccionario spa, tipo ordinario, severidad medium).']
+// ['«Elba Gina» leído seguido suena como «vagina» (diccionario spa, tipo fonetico, severidad medium).']
 ```
 
 ### `ScoringPolicy`

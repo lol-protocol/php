@@ -24,7 +24,7 @@ const {
     FormatConverter, FormatValidator, FormatBatchProcessor, DocumentGenerator,
     BookMarginManager, ScreenDeviceManager, SpecificationManager, LocalizationManager,
     MM_PER_INCH, mmToInches, inchesToMm, fixed, fetchCSV, indexByName, closestNames, UnknownFormatError,
-    DocumentFormats, FormatLoader, FormatSearcher, FormatStatistics, normalizeText,
+    DocumentFormats, FormatLoader, FormatSearcher, FormatStatistics, normalizeText, formatChoices, formatType,
 } = require('../app/document-formats.js');
 
 test('escapeHtml neutralises every HTML-significant character', () => {
@@ -186,8 +186,10 @@ test('a translated string wins over English, and a missing key still returns the
 });
 
 test('every translation file has exactly the keys of en.json', () => {
+    // Plural forms (key_one, key_few…) are each language's own: only the base key is shared.
     const flat = (tree, prefix = '') => Object.entries(tree).flatMap(([k, v]) =>
-        typeof v === 'object' ? flat(v, `${prefix}${k}.`) : [`${prefix}${k}`]);
+        typeof v === 'object' ? flat(v, `${prefix}${k}.`) : [`${prefix}${k}`])
+        .filter(key => !LocalizationManager.PLURAL_SUFFIX.test(key));
     const dir = path.join(APP_DIR, 'translations');
     const expected = flat(JSON.parse(fs.readFileSync(path.join(dir, 'en.json'), 'utf8'))).sort();
     for (const file of fs.readdirSync(dir)) {
@@ -485,4 +487,94 @@ test('the language manager works, and switches language, when the browser blocks
     } finally {
         globalThis.localStorage = original;
     }
+});
+
+test('a language that arrives late does not override the one chosen after it', async () => {
+    const original = globalThis.fetch;
+    const delays = { fr: 60, de: 5 };
+    globalThis.fetch = async (url, options) => {
+        const lang = url.match(/(\w+)\.json$/)?.[1];
+        await new Promise(resolve => setTimeout(resolve, delays[lang] ?? 0));
+        return original(url, options);
+    };
+    try {
+        const i18n = new LocalizationManager('../app/translations');
+        await i18n.loadLanguage('en');
+        const seen = [];
+        i18n.subscribe(lang => seen.push(lang));
+        await Promise.all([i18n.setLanguage('fr'), i18n.setLanguage('de')]);   // French answers last
+        assert.equal(i18n.getLanguage(), 'de');
+        assert.equal(i18n.t('demo.download'), 'CSV herunterladen');
+        assert.deepEqual(seen, ['de'], 'listeners hear only the language that won');
+    } finally {
+        globalThis.fetch = original;
+    }
+});
+
+test('translateCount picks the plural form of the language, and the base form when it has none', async () => {
+    const i18n = new LocalizationManager('../app/translations');
+    await i18n.loadLanguage('en');
+    assert.equal(i18n.translateCount('demo.resultsFormats', 1), '{count} format found');
+    assert.equal(i18n.translateCount('demo.resultsFormats', 2), '{count} formats found');
+    await i18n.loadLanguage('ar');
+    assert.equal(i18n.translateCount('demo.resultsFormats', 0), 'لم يُعثر على أي مقاس');
+    assert.equal(i18n.translateCount('demo.resultsFormats', 2), 'تم العثور على مقاسين');
+    assert.equal(i18n.translateCount('demo.resultsFormats', 5), 'تم العثور على {count} مقاسات');
+    assert.equal(i18n.translateCount('demo.resultsFormats', 11), 'تم العثور على {count} مقاسًا');
+    assert.equal(i18n.translateCount('demo.resultsFormats', 100), 'تم العثور على {count} مقاس');
+    await i18n.loadLanguage('ja');
+    assert.equal(i18n.translateCount('demo.resultsFormats', 1), i18n.t('demo.resultsFormats'), 'Japanese has one form, never the English singular');
+    assert.equal(i18n.translateCount('no.such.key', 1), 'no.such.key');
+});
+
+test('statistics count the types the categories imply, as the database import does', async () => {
+    const { formats } = await loadFormatCatalogs();
+    const types = new Set(formats.map(formatType));
+    assert.ok(types.size >= 5, `only ${[...types]}`);
+    assert.equal(new FormatStatistics(formats).getStats().totalTypes, types.size);
+    assert.equal(formatType({ category: 'Sticker' }), 'Label');
+    assert.equal(formatType({ category: 'Standard' }), 'Paper');
+    assert.equal(formatType({ category: 'Standard', type: 'Book' }), 'Book', 'a type column wins');
+});
+
+test('formatChoices gives one entry per distinct sheet, and names the country when a name means two sizes', async () => {
+    const { formats } = await loadFormatCatalogs();
+    const choices = formatChoices(formats);
+    const keys = choices.map(c => c.key);
+    assert.equal(new Set(keys).size, keys.length, 'keys are unique');
+    for (const name of ['Half Letter', 'Index Card 3x5', 'Index Card 4x6']) {
+        const split = keys.filter(k => k.startsWith(`${name} (`));
+        assert.ok(split.length >= 2, `${name}: ${split}`);
+        assert.ok(!keys.includes(name), `${name} alone would mean two sizes`);
+    }
+    assert.ok(keys.includes('A4') && !keys.some(k => k.startsWith('A4 (')), 'a name with one size stays as it is');
+    // Every row is offered: same name, same size -> the same entry.
+    const sizes = new Set(choices.map(c => `${c.format.format_name}|${c.format.width_mm}×${c.format.height_mm}`));
+    for (const f of formats) assert.ok(sizes.has(`${f.format_name}|${f.width_mm}×${f.height_mm}`), f.format_name);
+});
+
+test('compare and closestTo work on rows, so two sizes of one name stay apart', async () => {
+    const { formats } = await loadFormatCatalogs();
+    const converter = new FormatConverter(formats);
+    const halfLetters = formats.filter(f => f.format_name === 'Half Letter');
+    const [usa, intl] = [halfLetters.find(f => f.country === 'USA'), halfLetters.find(f => f.country !== 'USA')];
+    assert.ok(usa && intl && usa.width_mm !== intl.width_mm);
+    const result = converter.compare(usa, intl);
+    assert.ok(result.similarity >= 99, `${result.similarity}`);   // 0.3 mm apart: rounds to 100
+    assert.equal(result.differences.width, fixed(Math.abs(usa.width_mm - intl.width_mm)));
+    const closest = converter.closestTo(usa);
+    // Mexico's Media Carta is exactly the US size (100); the international Half Letter is 0.3 mm off.
+    assert.ok(closest.some(c => c.format === intl && c.similarity >= 99), 'the other Half Letter is listed as alike');
+    assert.ok(!closest.some(c => c.format === usa), 'not itself');
+    assert.ok(closest.every((c, i) => i === 0 || closest[i - 1].similarity >= c.similarity));
+    assert.deepEqual(converter.convert('Letter', 'A4'), converter.compare(...['Letter', 'A4'].map(n => indexByName(formats).get(n))));
+});
+
+test('every catalog country has an ISO code for Intl.DisplayNames, except the two regions', async () => {
+    const { formats } = await loadFormatCatalogs();
+    const missing = [...new Set(formats.filter(f => !f.country_code && !['International', 'Europe'].includes(f.country)).map(f => f.country))];
+    assert.deepEqual(missing, []);
+    assert.ok(formats.every(f => /^([A-Z]{2})?$/.test(f.country_code)));
+    assert.equal(formats.find(f => f.country === 'USA').country_code, 'US');
+    assert.equal(new Intl.DisplayNames(['es'], { type: 'region' }).of('US'), 'Estados Unidos');
 });

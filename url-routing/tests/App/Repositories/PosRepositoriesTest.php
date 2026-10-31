@@ -170,6 +170,22 @@ class PosRepositoriesTest extends TestCase
         $this->assertSame(28, (int)$db->fetchValue("SELECT stock FROM variantes WHERE sku = 'CAM-AZ-M'"));
     }
 
+    /** Dos pasos de la misma orden en el mismo segundo: la hora no los distingue, el número sí. */
+    #[DataProvider('drivers')]
+    public function testEventsOfTheSameSecondKeepTheOrderTheyWereAdded(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'pos', seed: true);
+        $repo = new OrdenRepository($db);
+        $orden = $repo->crear(['CAM-AZ-M' => 1], 'Calle Prueba 123, Ciudad', 1);
+
+        $repo->agregarEvento($orden['id'], 'pagada', 'Pago confirmado.', '2026-10-30 12:00:00');
+        $repo->agregarEvento($orden['id'], 'enviada', null, '2026-10-30 12:00:00');
+        $repo->agregarEvento($orden['id'], 'entregada', 'En la puerta.', '2026-10-30 12:00:00');
+
+        $this->assertSame(['pendiente', 'pagada', 'enviada', 'entregada'], array_column($repo->eventos($orden['id']), 'estado'));
+        $this->assertSame([1, 2, 3, 4], array_map('intval', array_column($db->fetchAll('SELECT orden FROM orden_eventos WHERE orden_id = ? ORDER BY orden', [$orden['id']]), 'orden')));
+    }
+
     #[DataProvider('drivers')]
     public function testCrearChangesNothingWhenALineIsOutOfStock(string $driver): void
     {

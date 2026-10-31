@@ -8,9 +8,11 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 > qué cabos sueltos quedan.
 
 Los demás documentos de la raíz: [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md) (el borrador de los
-términos de uso, para revisar con un abogado), [`RECLAMOS.md`](RECLAMOS.md) (qué pasa, paso a
+términos de uso, que ningún abogado ha revisado), [`RECLAMOS.md`](RECLAMOS.md) (qué pasa, paso a
 paso, cuando alguien reclama), [`PREGUNTAS-PARA-ABOGADO.md`](PREGUNTAS-PARA-ABOGADO.md) (lo que
-el equipo no puede decidir solo), [`CONTRIBUTING.md`](CONTRIBUTING.md) (cómo abrir un PR a mano)
+el equipo no puede decidir solo), [`CUMPLIMIENTO-LEY-21719.md`](CUMPLIMIENTO-LEY-21719.md) (qué
+hace el sitio frente a la ley chilena de datos y qué falta antes del 1 de diciembre de 2026),
+[`CONTRIBUTING.md`](CONTRIBUTING.md) (cómo abrir un PR a mano)
 y [`SECURITY.md`](SECURITY.md) (cómo avisar de una fuga de datos sin publicarla).
 
 | Proyecto | Qué es |
@@ -103,7 +105,7 @@ Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando camb
 - `pruebas-listado-paises.yml`: valida los CSV de `Listado-paises/` y que `tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` estén al día (`python3 generar_tabla.py --comprobar`), y corre sus pruebas (`python3 -m unittest pruebas`).
 - `pruebas-portadas-svg.yml`: pruebas unitarias de `portadas-svg/` (`php pruebas/ejecutar.php`), que `ejemplos/salida/` coincida con lo que genera el código (`php bin/generar.php --comprobar`), PHPStan 2.1 y `composer validate`, en PHP 8.3.
 - `pruebas-signos-zodiacales.yml`: valida `signos-zodiacales/datos/signos.json` (los 30 idiomas en nombres, descripciones y términos; elemento, modalidad y ciclo chino; líneas y estrellas de cada constelación) y la tabla del Año Nuevo lunar, y que `constelaciones/*.svg`, `constelaciones-sin-fondo/*.svg`, `por-idioma/*.md` y `galeria.html` estén al día, sin archivos sueltos (`python3 generar.py --comprobar`); corre además sus pruebas (`python3 -m unittest pruebas`): coherencia de los datos, las consultas de `zodiaco.py`, que `validar()` atrape datos rotos y que los SVG sean válidos y sin scripts; y los ejemplos de `zodiaco.py` (`python3 -m doctest zodiaco.py`). Un segundo job abre `galeria.html` en Chromium con Playwright (`python pruebas_navegador.py`) y la recorre en los 30 idiomas y las dos variantes: sin errores de JavaScript, con las imágenes cargadas y la interfaz en el idioma elegido. Un tercero corre el port a PHP (`php php/pruebas/ejecutar.php`, en PHP 8.1 y 8.4) contra `datos/vectores.json`, las respuestas que genera `zodiaco.py`.
-- `pruebas-citas-pos.yml`: comprueba la paleta de `citas-pos/` (las 17 categorías, contraste de 4,5:1 en modo claro y oscuro y que ningún par de colores se parezca demasiado), que `prototipo/index.html` y `salida/` (las piezas de cita coloreada para el correo y el sitio) coincidan con lo que genera el código, que cada cita de `datos/citas.json` tenga su ficha completa y ninguna figure como verificada sin texto, edición y dos fuentes, y que el registro de revisiones sea válido, en PHP 8.3.
+- `pruebas-citas-pos.yml`: corre las pruebas de los validadores y del generador de `citas-pos/` (`php citas-pos/pruebas/ejecutar.php`), comprueba la paleta de `citas-pos/` (las 17 categorías, contraste de 4,5:1 en modo claro y oscuro y que ningún par de colores se parezca demasiado), que `prototipo/index.html` y `salida/` (las piezas de cita coloreada para el correo y el sitio) coincidan con lo que genera el código, que cada cita de `datos/citas.json` tenga su ficha completa y ninguna figure como verificada sin texto, edición y dos fuentes, y que el registro de revisiones sea válido, en PHP 8.3.
 - `marcalibros-b.yml`: genera los 1000 marcalibros de `marcalibros_b/` con Chromium para el QA, pasa sus pruebas (determinismo, hashes de referencia, modelo de datos y editor) y sube el catálogo como artefacto `marcalibros-catalogo`. Se puede lanzar a mano con `workflow_dispatch` (entrada `forzar` para ignorar la caché).
 
 `sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`, que también corre si cambia `defamatory-content-review/`, del que depende). `vps-setup/` tiene además `vps-setup-e2e.yml`: instala todo de verdad (`apt`, `systemd`, servicios) en un Ubuntu 24.04 desechable; solo corre si cambian los scripts, cada lunes o a mano.

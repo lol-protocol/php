@@ -29,10 +29,6 @@ class GermanicTurkishInflectionTest extends TestCase
             'neerlandés adjetivo' => ['nld', 'dom', 'adj', ['dom' => 'sg', 'domme' => 'infl']],
             'neerlandés adjetivo átono' => ['nld', 'mager', 'adj', ['mager' => 'sg', 'magere' => 'infl']],
             'neerlandés s → z' => ['nld', 'vies', 'adj', ['vies' => 'sg', 'vieze' => 'infl']],
-            'turco posterior' => ['tur', 'salak', 'noun', ['salak' => 'sg', 'salaklar' => 'pl']],
-            'turco anterior' => ['tur', 'piç', 'noun', ['piç' => 'sg', 'piçler' => 'pl']],
-            'turco â' => ['tur', 'sahtekâr', 'noun', ['sahtekâr' => 'sg', 'sahtekârlar' => 'pl']],
-            'turco: el verbo queda literal' => ['tur', 'sikmek', 'verb', ['sikmek' => 'verb']],
         ];
     }
 

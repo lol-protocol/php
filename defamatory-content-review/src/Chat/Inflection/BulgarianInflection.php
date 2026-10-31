@@ -4,7 +4,8 @@ namespace DefamatoryContentReview\Chat\Inflection;
 
 /**
  * Formas regulares del búlgaro: plural y artículo pospuesto («идиот» → «идиоти», «идиотът»,
- * «идиотите»), y el adjetivo por género y número («тъп» → «тъпа», «тъпо», «тъпи»). Ver SuffixInflection.
+ * «идиотите»), y el adjetivo por género y número («тъп» → «тъпа», «тъпо», «тъпи»; los de «-ен» pierden la «е»
+ * en unos («тъжен» → «тъжна») y no en otros («ален» → «алена»): se dan las dos). Ver SuffixInflection.
  */
 final class BulgarianInflection extends SuffixInflection
 {
@@ -21,8 +22,11 @@ final class BulgarianInflection extends SuffixInflection
 
     protected function adjectives(): array
     {
+        $forms = ['а', 'о', 'и', 'ия', 'ият', 'ата', 'ото', 'ите'];
+
         return [
-            '/^(.+[^аеиоуъяю])$/u' => ['а', 'о', 'и', 'ия', 'ият', 'ата', 'ото', 'ите'],
+            '/^(.+)ен$/u' => [...array_map(fn(string $e): string => 'ен' . $e, $forms), ...array_map(fn(string $e): string => 'н' . $e, $forms)], // тъжен → тъжна; ален → алена
+            '/^(.+[^аеиоуъяю])$/u' => $forms,
         ];
     }
 }
