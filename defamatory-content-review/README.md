@@ -6,7 +6,7 @@ Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
 
 - **11 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
-- **33 idiomas** identificados por código ISO 639-3, con ~7.800 términos.
+- **33 idiomas** identificados por código ISO 639-3, con más de 8.000 términos.
 - **Modelo de parentesco lingüístico** — validación cruzada entre lenguas
   emparentadas, con la coincidencia ponderada por su afinidad léxica.
 - **Protección de apellidos legítimos** — «Cerda», «Moro» o «Savage» son linajes
@@ -137,7 +137,7 @@ $result = $reviewer->validateFullName('Elba', 'Gina');
 
 $result->isValid();                     // false
 $result->hasOnlyPhoneticDetections();   // true — es inferencia, no coincidencia literal
-$result->getPhoneticFusionTerms();      // [{term: 'vagina', riskType: 'ordinario', ...}]
+$result->getPhoneticFusionTerms();      // [{term: 'vagina', riskType: 'fonetico', ...}]
 
 $reviewer->decide($result);             // 'review' — nunca 'reject' sólo por esto
 ```
@@ -287,7 +287,7 @@ FusionSupport::isSupported('ara');                                      // false
   literal en la forma plegada y rompía el cálculo de la frontera de fusión).
 - **Variantes por distancia de edición** ("Cerrda", "Certa"): **deliberadamente
   no cubierta**. Colapsar letras dobles cerraría este caso, pero across
-  ~7.800 palabras en 33 idiomas no hay forma de verificar a mano qué
+  más de 8.000 palabras en 33 idiomas no hay forma de verificar a mano qué
   colisiones no deseadas produciría — "Serrano" (apellido real) se volvería
   "Serano", y así con cada doble letra en cada idioma. Se documenta como
   límite en vez de implementarse a medias.
@@ -327,7 +327,7 @@ $registry->resolve('SPA');  // 'spa'
 ### Cobertura de los diccionarios
 
 `coverage` no es cosmético: dice dónde hace falta revisión de hablante nativo
-antes de usar el módulo en producción para ese idioma. ~7.800 términos en
+antes de usar el módulo en producción para ese idioma. Más de 8.000 términos en
 total; sólo 3 idiomas (`isl`, `swa`, `tgl` — los últimos en incorporarse)
 siguen en `basic`.
 
@@ -1023,7 +1023,7 @@ diccionario que coincidió) y, en fusiones, `fusedFrom` (el nombre completo):
 
 ```php
 $reviewer->validateFullName('Elba', 'Gina')->getExplanations();
-// ['«Elba Gina» leído seguido suena como «vagina» (diccionario spa, tipo ordinario, severidad medium).']
+// ['«Elba Gina» leído seguido suena como «vagina» (diccionario spa, tipo fonetico, severidad medium).']
 ```
 
 ### `ScoringPolicy`
