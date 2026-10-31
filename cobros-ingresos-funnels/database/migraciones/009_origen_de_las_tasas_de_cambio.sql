@@ -1,7 +1,7 @@
 -- 009: de donde viene cada tasa de cambio y desde cuando.
 --
 -- monedas.tasa_a_usd lo cargo la 005 con tasas de ejemplo, y todos los totales en
--- USD (Dashboard, Cobros, Pagos, Cohortes) las usan. database/actualizar_tasas.php
+-- USD (Dashboard, Cobros, Pagos, Cohortes) las usan. bin/actualizar_tasas.php
 -- las reemplaza por las reales; estas dos columnas dicen cuales ya lo estan:
 --
 --   tasa_actualizada_en: cuando es la cotizacion (la fecha que informa la fuente, o
