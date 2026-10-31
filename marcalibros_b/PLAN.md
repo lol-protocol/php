@@ -251,3 +251,6 @@ Sin red desde el entorno, la verificación la hace una persona: `python generato
 
 ## Frases originales sin firma (hecho)
 Las 14 frases originales del Realismo mágico se dibujan sin «— Marcalibros»: solo la frase, centrada. `texto.componer` omite el bloque de autoría si `autor` está vacío; el manifest lleva `frase.firmada` (false en las originales). Hashes de referencia regenerados.
+
+## Otro enfoque para Gutenberg: reconocer al autor por los metadatos (hecho)
+Verificar a mano 1000 ids de obra bloquea el lector. `modelo.sugerencias_por_metadatos(libro, taxonomia)` no necesita ids: recibe los metadatos del libro abierto (título, autores con años, como los da Gutendex) y reconoce al autor del catálogo por nombre (sin tildes, «Apellido, Nombre» o al revés, Virgil ~ Virgilio) y por años de vida (a. C. incluidos). Devuelve sus diseños, con primero los que se parecen al título. Si el nombre es una sola palabra y no hay años que comparar, no sugiere nada (evita falsos positivos). El flujo de ids verificados (`gutenberg_manual.py`) sigue sirviendo para el vínculo exacto obra→texto. Cubierto por tests con registros simulados; falta probarlo con la API real cuando haya red.
