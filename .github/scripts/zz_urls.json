@@ -1,0 +1,160 @@
+[
+ {
+  "id": "SV",
+  "url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
+  "kw": [
+   "fallecid|difunt|muert|post.?mortem|investigaci|científic|históric|estadístic|archiv|genétic|biométric"
+  ],
+  "max": 25
+ },
+ {
+  "id": "CL",
+  "url": "https://www.bcn.cl/leychile/navegar?idNorma=1209272",
+  "kw": [
+   "fallecid|difunt|muert|post.?mortem|investigaci|científic|históric|estadístic|archiv|genétic|biométric"
+  ],
+  "max": 25,
+  "head": 5
+ },
+ {
+  "id": "CL-b",
+  "url": "https://www.bcn.cl/leychile/consulta/obtxml?opt=7&idNorma=1209272",
+  "kw": [
+   "fallecid|difunt|muert|post.?mortem|investigaci|científic|históric|estadístic|archiv|genétic|biométric"
+  ],
+  "max": 25,
+  "head": 5
+ },
+ {
+  "id": "SO",
+  "url": "https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf",
+  "kw": [
+   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric"
+  ],
+  "max": 25
+ },
+ {
+  "id": "NE",
+  "url": "https://www.dataguidance.com/sites/default/files/loi_ndeg_2023-31_modifiant_la_loi_ndeg_2022-59.pdf",
+  "kw": [
+   "décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
+  ],
+  "max": 20
+ },
+ {
+  "id": "ML",
+  "url": "https://clinregs.niaid.nih.gov/sites/default/files/documents/mali/Mali-DPL_GoogleTranslation.pdf",
+  "kw": [
+   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric"
+  ],
+  "max": 25
+ },
+ {
+  "id": "GA",
+  "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+  "kw": [
+   "décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
+  ],
+  "max": 25
+ },
+ {
+  "id": "GN",
+  "url": "https://dataprotection.africa/guinea/",
+  "kw": [
+   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric|décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
+  ],
+  "max": 12
+ },
+ {
+  "id": "BI",
+  "url": "https://dataprotection.africa/burundi/",
+  "kw": [
+   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric|décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
+  ],
+  "max": 12,
+  "head": 5
+ },
+ {
+  "id": "MR",
+  "url": "https://dataprotection.africa/mauritania/",
+  "kw": [
+   "decease|dead|death|post.?mortem|research|scientific|histor|statistic|archiv|genetic|biometric|décéd|défunt|mort|post.?mortem|recherche|scientifi|historiq|statistiq|archiv|généti|biométr"
+  ],
+  "max": 12,
+  "head": 5
+ },
+ {
+  "id": "TO",
+  "url": "http://www.paclii.org/to/legis/num_act/",
+  "kw": [
+   "privacy|data protection"
+  ],
+  "head": 3
+ },
+ {
+  "id": "KI",
+  "url": "http://www.paclii.org/ki/legis/num_act/",
+  "kw": [
+   "privacy|data protection"
+  ],
+  "head": 3
+ },
+ {
+  "id": "MH",
+  "url": "http://www.paclii.org/mh/legis/num_act/",
+  "kw": [
+   "privacy|data protection|personal data"
+  ],
+  "head": 3
+ },
+ {
+  "id": "WS",
+  "url": "http://www.paclii.org/ws/legis/num_act/",
+  "kw": [
+   "privacy|data protection"
+  ],
+  "head": 3
+ },
+ {
+  "id": "TV",
+  "url": "http://www.paclii.org/tv/legis/num_act/",
+  "kw": [
+   "privacy|data protection"
+  ],
+  "head": 3
+ },
+ {
+  "id": "DJ-1",
+  "url": "https://www.assemblee-nationale.dj/",
+  "kw": [
+   "code du num|numérique"
+  ],
+  "head": 3
+ },
+ {
+  "id": "DJ-2",
+  "url": "https://www.presidence.dj/",
+  "kw": [
+   "code du num|numérique|donn"
+  ],
+  "head": 3
+ },
+ {
+  "id": "GQ-wipo",
+  "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+  "kw": [
+   "copyright|author|derecho"
+  ],
+  "max": 10,
+  "head": 3
+ },
+ {
+  "id": "MH-wipo",
+  "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+  "kw": [
+   "copyright|author|recorded"
+  ],
+  "max": 10,
+  "head": 3
+ }
+]
