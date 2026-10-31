@@ -143,9 +143,7 @@
             "id": "es-telefono-chileno",
             "idioma": "es",
             "entrada": "ROJAS, Carmen\nCalle Larga 5\n2-345-678",
-            "esperado": [{"tipo": "natural", "nombre": "ROJAS, Carmen", "calle": "Calle Larga 5", "telefono": "2-345-678"}],
-            "falla_conocida": "El patrón de teléfono solo reconoce números de EE. UU. (3-3-4 dígitos y centralitas con nombre).",
-            "categoria": "formato-de-telefono"
+            "esperado": [{"tipo": "natural", "nombre": "ROJAS, Carmen", "calle": "Calle Larga 5", "telefono": "2-345-678"}]
         },
         {
             "id": "es-deteccion-de-idioma",
@@ -179,17 +177,13 @@
             "id": "fr-telefono-local",
             "idioma": "fr",
             "entrada": "DUPONT, Marie\n12 rue de la Paix\n01 42 68 53 00",
-            "esperado": [{"tipo": "natural", "nombre": "DUPONT, Marie", "calle": "12 rue de la Paix", "telefono": "01 42 68 53 00"}],
-            "falla_conocida": "El patrón de teléfono solo reconoce números de EE. UU.",
-            "categoria": "formato-de-telefono"
+            "esperado": [{"tipo": "natural", "nombre": "DUPONT, Marie", "calle": "12 rue de la Paix", "telefono": "01 42 68 53 00"}]
         },
         {
             "id": "fr-una-linea-con-telefono-local",
             "idioma": "fr",
             "entrada": "DUPONT Marie 12 rue de la Paix 01 42 68 53 00",
-            "esperado": [{"tipo": "natural", "nombre": "DUPONT, Marie", "calle": "12 rue de la Paix", "telefono": "01 42 68 53 00"}],
-            "falla_conocida": "Sin reconocer el teléfono, la calle se queda con él: «12 rue de la Paix 01 42 68 53 00».",
-            "categoria": "formato-de-telefono"
+            "esperado": [{"tipo": "natural", "nombre": "DUPONT, Marie", "calle": "12 rue de la Paix", "telefono": "01 42 68 53 00"}]
         },
         {
             "id": "pt-bloque",
@@ -207,9 +201,7 @@
             "id": "pt-telefono-local",
             "idioma": "pt",
             "entrada": "SILVA, João\nRua Augusta 100\n21 342 0000",
-            "esperado": [{"tipo": "natural", "nombre": "SILVA, João", "calle": "Rua Augusta 100", "telefono": "21 342 0000"}],
-            "falla_conocida": "El patrón de teléfono solo reconoce números de EE. UU.",
-            "categoria": "formato-de-telefono"
+            "esperado": [{"tipo": "natural", "nombre": "SILVA, João", "calle": "Rua Augusta 100", "telefono": "21 342 0000"}]
         },
         {
             "id": "de-bloque",
@@ -227,16 +219,14 @@
             "id": "de-telefono-local",
             "idioma": "de",
             "entrada": "MÜLLER, Hans\nHauptstraße 5\n030 123456",
-            "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstraße 5", "telefono": "030 123456"}],
-            "falla_conocida": "El patrón de teléfono solo reconoce números de EE. UU.",
-            "categoria": "formato-de-telefono"
+            "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstraße 5", "telefono": "030 123456"}]
         },
         {
             "id": "de-una-linea-sin-separadores",
             "idioma": "de",
             "entrada": "MÜLLER Hans Hauptstraße 5 030 123456",
             "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstraße 5", "telefono": "030 123456"}],
-            "falla_conocida": "Se corta en el primer dígito (el número de la calle va al final) y el teléfono no se reconoce: el nombre se lleva «Hauptstraße» y la calle, el teléfono.",
+            "falla_conocida": "Sin separadores, la línea se corta en el primer dígito, que en alemán es el final de la calle: el teléfono sale bien, pero el nombre se lleva «Hauptstraße» y la calle queda en «5» (lo mismo que es-una-linea-sin-separadores).",
             "categoria": "calle-numero-al-final"
         },
         {
@@ -262,9 +252,7 @@
             "id": "it-telefono-local",
             "idioma": "it",
             "entrada": "ROSSI, Luigi\nVia Roma 10\n06 1234567",
-            "esperado": [{"tipo": "natural", "nombre": "ROSSI, Luigi", "calle": "Via Roma 10", "telefono": "06 1234567"}],
-            "falla_conocida": "El patrón de teléfono solo reconoce números de EE. UU.",
-            "categoria": "formato-de-telefono"
+            "esperado": [{"tipo": "natural", "nombre": "ROSSI, Luigi", "calle": "Via Roma 10", "telefono": "06 1234567"}]
         },
         {
             "id": "it-deteccion-de-idioma-con-corso",
@@ -288,6 +276,24 @@
             "idioma_detectado": "en",
             "entrada": "SMITH, John\n12 Oak Street\n555-123-4567",
             "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "es-telefono-espana",
+            "idioma": "es",
+            "entrada": "LÓPEZ, Ana\nCalle Mayor 12\n91 234 56 78",
+            "esperado": [{"tipo": "natural", "nombre": "LÓPEZ, Ana", "calle": "Calle Mayor 12", "telefono": "91 234 56 78"}]
+        },
+        {
+            "id": "de-telefono-con-prefijo-entre-parentesis",
+            "idioma": "de",
+            "entrada": "SCHMIDT, Eva\nLindenallee 3\n(089) 654321",
+            "esperado": [{"tipo": "natural", "nombre": "SCHMIDT, Eva", "calle": "Lindenallee 3", "telefono": "(089) 654321"}]
+        },
+        {
+            "id": "fr-telefono-internacional",
+            "idioma": "fr",
+            "entrada": "MARTIN, Paul\n3 rue Victor Hugo\n+33 1 45 00 00 00",
+            "esperado": [{"tipo": "natural", "nombre": "MARTIN, Paul", "calle": "3 rue Victor Hugo", "telefono": "+33 1 45 00 00 00"}]
         }
     ]
 }

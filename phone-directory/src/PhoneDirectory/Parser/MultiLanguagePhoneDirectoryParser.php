@@ -149,7 +149,7 @@ class MultiLanguagePhoneDirectoryParser
         }
 
         $this->detectedLanguage = $language;
-        $phoneRegex = PhonePattern::getValidatedRegex();
+        $phoneRegex = PhonePattern::regexFor($language);
 
         $buffer = [];
         $bufferStart = 0;
@@ -176,7 +176,8 @@ class MultiLanguagePhoneDirectoryParser
                 // Only a street word, as PhoneDirectoryParser does: the number-first fallback alone would
                 // turn "Restaurante 3 Hermanos" or "Apt 4 Building 7" into a record of their own.
                 fn($street) => $this->hasStreetWord($street, $language),
-                PersonName::LANGUAGE_SURNAME_COUNT[$language] ?? 1
+                PersonName::LANGUAGE_SURNAME_COUNT[$language] ?? 1,
+                $language
             ) : null;
             if ($single !== null) {
                 if (!empty($buffer)) {
@@ -375,7 +376,7 @@ class MultiLanguagePhoneDirectoryParser
             return $line;
         }
 
-        if (PhonePattern::isOnlyAPhoneNumber($line)) {
+        if (PhonePattern::isOnlyAPhoneNumber($line, $language)) {
             return null;
         }
 

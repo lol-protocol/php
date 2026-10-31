@@ -37,18 +37,18 @@ final class SingleLineEntrySplitter
      *
      * @return SplitEntry|null
      */
-    public static function split(string $line, callable $looksLikeStreet, int $surnameWordCount = 1): ?array
+    public static function split(string $line, callable $looksLikeStreet, int $surnameWordCount = 1, ?string $language = null): ?array
     {
         $fields = array_map('trim', preg_split(self::FIELD_DELIMITER, $line, -1, PREG_SPLIT_NO_EMPTY));
 
         if (count($fields) >= 2) {
-            $result = self::splitByFields($fields, $looksLikeStreet);
+            $result = self::splitByFields($fields, $looksLikeStreet, $language);
             if ($result !== null) {
                 return $result;
             }
         }
 
-        $result = self::splitByDigitBoundary($line, $looksLikeStreet);
+        $result = self::splitByDigitBoundary($line, $looksLikeStreet, $language);
         if ($result !== null) {
             $result['name'] = self::assumeSurnameFirst($result['name'], $surnameWordCount);
         }
@@ -78,11 +78,11 @@ final class SingleLineEntrySplitter
      * @param string[] $fields
      * @return SplitEntry|null
      */
-    private static function splitByFields(array $fields, callable $looksLikeStreet): ?array
+    private static function splitByFields(array $fields, callable $looksLikeStreet, ?string $language): ?array
     {
         $phone = null;
         foreach ($fields as $field) {
-            if (PhonePattern::isOnlyAPhoneNumber($field)) {
+            if (PhonePattern::isOnlyAPhoneNumber($field, $language)) {
                 $phone = $field;
                 break;
             }
@@ -126,12 +126,12 @@ final class SingleLineEntrySplitter
     }
 
     /** @return SplitEntry|null */
-    private static function splitByDigitBoundary(string $line, callable $looksLikeStreet): ?array
+    private static function splitByDigitBoundary(string $line, callable $looksLikeStreet, ?string $language): ?array
     {
         $rest = $line;
         $phone = null;
 
-        if (preg_match(PhonePattern::getValidatedRegex(), $line, $match, PREG_OFFSET_CAPTURE)) {
+        if (preg_match(PhonePattern::regexFor($language), $line, $match, PREG_OFFSET_CAPTURE)) {
             $phone = $match[0][0];
             $offset = $match[0][1];
             $rest = substr($line, 0, $offset) . substr($line, $offset + strlen($phone));
