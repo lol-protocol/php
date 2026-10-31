@@ -1,0 +1,62 @@
+name: Borrar ramas fusionadas
+
+# SOLO A MANO. Borra las ramas remotas que informe-de-ramas.yml lista como vacías o ya fusionadas
+# (mismos criterios: .github/scripts/informe-de-ramas.sh), sin PR abierto y sin commits de los últimos
+# MIN_DIAS días. Por defecto es un SIMULACRO: lista lo que borraría y no borra nada. Para borrar de
+# verdad, lanza el workflow con «borrar» marcado.
+#
+# Cada rama se borra con --force-with-lease sobre el commit que tenía al hacer la lista: si alguien
+# empujó algo entre medias, se salta. La salida trae el comando para restaurar cada una.
+# Nunca toca master ni la rama por defecto (.github/scripts/borrar-ramas.sh).
+on:
+  workflow_dispatch:
+    inputs:
+      borrar:
+        description: 'Borrar de verdad (si no, solo un simulacro que lista lo que borraría)'
+        type: boolean
+        default: false
+      min_dias:
+        description: 'No tocar ramas con un commit de menos de estos días'
+        type: string
+        default: '3'
+      maximo:
+        description: 'Máximo de ramas por corrida'
+        type: string
+        default: '100'
+
+permissions:
+  contents: write # para borrar ramas; solo se usa con «borrar» marcado
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  borrar:
+    name: ${{ inputs.borrar && 'borrar ramas fusionadas' || 'simulacro (no borra)' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      MIN_DIAS: ${{ inputs.min_dias }}
+      MAXIMO: ${{ inputs.maximo }}
+      BORRAR: ${{ inputs.borrar }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # hacen falta todas las ramas y su historia
+
+      - name: Hacer la lista (vacías y fusionadas)
+        shell: bash
+        env:
+          LISTA_RAMAS: ${{ runner.temp }}/ramas.txt
+        run: bash .github/scripts/informe-de-ramas.sh
+
+      - name: Borrar (o simular)
+        shell: bash
+        run: bash .github/scripts/borrar-ramas.sh "${{ runner.temp }}/ramas.txt"

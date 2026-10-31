@@ -13,6 +13,8 @@
 # Necesita un clon con todas las ramas (fetch-depth: 0) y `gh` con permiso de leer pull requests.
 # Variables: BASE_REF (origin/master), MIN_DIAS (3), GITHUB_REPOSITORY (lol-protocol/php).
 # Con GITHUB_OUTPUT escribe `sobrantes=N` (vacías + fusionadas) para el paso que decide si abre una issue.
+# Con LISTA_RAMAS=<archivo> escribe además «rama sha» (una por línea) de las vacías y fusionadas, para
+# borrar-ramas-fusionadas.yml; este script sigue sin borrar nada.
 set -euo pipefail
 
 base="${BASE_REF:-origin/master}"
@@ -22,6 +24,7 @@ ahora=$(date +%s)
 
 abiertas=$(gh api "repos/$repo/pulls?state=open&per_page=100" --paginate --jq '.[].head.ref')
 
+if [ -n "${LISTA_RAMAS:-}" ]; then : >"$LISTA_RAMAS"; fi
 vacias=""
 fusionadas=""
 n_vacias=0
@@ -35,6 +38,7 @@ while IFS='|' read -r rama fecha; do
   dia=$(date -u -d "@$fecha" +%F)
   if [ "$(git rev-list --count "$base..origin/$rama")" = 0 ]; then
     vacias+="- \`$rama\` (último commit: $dia)"$'\n'
+    if [ -n "${LISTA_RAMAS:-}" ]; then echo "$rama $(git rev-parse "origin/$rama")" >>"$LISTA_RAMAS"; fi
     n_vacias=$((n_vacias + 1))
     continue
   fi
@@ -42,6 +46,7 @@ while IFS='|' read -r rama fecha; do
   mapfile -t archivos < <(git diff --name-only "$mb" "origin/$rama")
   if [ "${#archivos[@]}" -gt 0 ] && git diff --quiet "$base" "origin/$rama" -- "${archivos[@]}"; then
     fusionadas+="- \`$rama\` (último commit: $dia, ${#archivos[@]} archivos)"$'\n'
+    if [ -n "${LISTA_RAMAS:-}" ]; then echo "$rama $(git rev-parse "origin/$rama")" >>"$LISTA_RAMAS"; fi
     n_fusionadas=$((n_fusionadas + 1))
   fi
 done < <(git for-each-ref --format='%(refname:strip=3)|%(committerdate:unix)' refs/remotes/origin)

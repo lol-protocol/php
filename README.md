@@ -114,7 +114,7 @@ idénticos). Solo corre si cambia algo de `iconos-genealogia/`, `iconos-bibliote
 `iconos-tools/` o `galeria-iconos.html`.
 
 `informe-de-ramas.yml` lista cada lunes, en el resumen de la corrida, las ramas remotas vacías o ya fusionadas y, si sobran 10 o más, mantiene una issue con la lista
-(`.github/scripts/informe-de-ramas.sh`). Solo informa: borrarlas lo decide una persona.
+(`.github/scripts/informe-de-ramas.sh`). Solo informa: borrarlas lo decide una persona. Si esa persona prefiere no hacerlo rama por rama, `borrar-ramas-fusionadas.yml` (solo a mano, con un simulacro por defecto) borra esa misma lista cuando se lanza con «borrar» marcado (`.github/scripts/borrar-ramas.sh`).
 
 `privacy-laws/` y `copyright-laws/` también tienen los suyos: `laws-modules.yml` (validación de los CSV maestros, archivos generados al día, pruebas unitarias, de la API y de la caché de textos en PHP 8.1 y 8.4, pruebas en navegador con axe-core, y la importación a MySQL 8.0 y MariaDB 10.11 comparada columna por columna con el CSV), `laws-links.yml` (cada lunes comprueba que los enlaces de referencia sigan respondiendo, y mantiene una issue con los que fallan; en un PR revisa los países que toca, y no corre en cada push a `master`) y `laws-freshness.yml` (cada lunes busca datos que quedaron viejos: filas sin revisar hace más de un año, cambios previstos cuya fecha ya pasó, valores que cambiaron después de revisar la fuente, y mantiene una issue con lo que encuentre).
 
