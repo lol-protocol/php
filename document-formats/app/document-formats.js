@@ -130,9 +130,34 @@ const fetchOk = async (url, options) => {
 };
 const fetchCSV = async (url) => parseCSV(await (await fetchOk(url)).text());
 
-// One format by name. Same-named formats in different countries share a size,
-// so when a name repeats, the last row stays.
+// One format by name; when a name repeats, the last row stays. Same-named rows of different
+// countries almost always share a size, but not all: Half Letter is 139.7×215.9 mm in the USA and
+// 140×216 mm in the international list. formatChoices() keeps those apart.
 const indexByName = (formats) => new Map(formats.map(f => [f.format_name, f]));
+
+// One entry per distinct sheet, for a list a person picks from: { key, format }. The key is the
+// name alone when every row with that name has the same size, and "name (country)" for each size
+// when it doesn't, so the list never offers one name for two sizes.
+const formatChoices = (formats) => {
+    const sizesByName = new Map();
+    for (const format of formats) {
+        const sizes = sizesByName.get(format.format_name) ?? new Map();
+        const size = `${format.width_mm}×${format.height_mm}`;
+        if (!sizes.has(size)) sizes.set(size, format);
+        sizesByName.set(format.format_name, sizes);
+    }
+    return [...sizesByName].flatMap(([name, sizes]) => sizes.size === 1
+        ? [{ key: name, format: [...sizes.values()][0] }]
+        : [...sizes.values()].map(format => ({ key: `${name} (${format.country})`, format })));
+};
+
+// The catalogs have no type column; it follows from the category, the same way
+// import_database.php fills format_types (TYPE_BY_CATEGORY there).
+const TYPE_BY_CATEGORY = {
+    Envelope: 'Envelope', Book: 'Book', Label: 'Label', Sticker: 'Label',
+    Card: 'Card', Legal: 'Document', Form: 'Document', Financial: 'Document'
+};
+const formatType = (format) => format.type || TYPE_BY_CATEGORY[format.category] || 'Paper';
 
 // Edit distance between two names, for "did you mean" suggestions.
 const editDistance = (a, b) => {
@@ -241,9 +266,12 @@ const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
         countriesResponse.text()
     ]);
 
-    const countryRegions = new Map(parseCSV(countriesText).map(c => [c.country_name, c.region]));
-    const regionOf = (country) =>
-        REGION_OVERRIDES[country] ?? countryRegions.get(REGION_COUNTRY_ALIASES[country] ?? country) ?? 'Other';
+    const countries = new Map(parseCSV(countriesText).map(c => [c.country_name, c]));
+    const countryOf = (name) => countries.get(REGION_COUNTRY_ALIASES[name] ?? name);
+    const regionOf = (country) => REGION_OVERRIDES[country] ?? countryOf(country)?.region ?? 'Other';
+    // The ISO 3166 code, so a page can name the country in its own language
+    // (Intl.DisplayNames); empty for International and Europe, which are not countries.
+    const codeOf = (country) => (REGION_OVERRIDES[country] ? '' : countryOf(country)?.country_code ?? '');
 
     const seen = new Set();
     const formats = catalogTexts.flatMap(text => parseCSV(text)).filter(format => {
@@ -251,7 +279,7 @@ const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
-    }).map(format => ({ ...format, region: regionOf(format.country) }));
+    }).map(format => ({ ...format, region: regionOf(format.country), country_code: codeOf(format.country) }));
 
     return { formats, lastModified };
 };
@@ -376,6 +404,16 @@ class FormatConverter {
         return Math.round(sizeSimilarity(f1, f2));
     }
 
+    // Every other sheet, closest in size first: [{format, similarity}]. Rows of the same name and
+    // size (the same sheet listed by several countries) are left out.
+    closestTo(sheet) {
+        return this.formats
+            .filter(f => f.width_mm && f.height_mm &&
+                !(f.format_name === sheet.format_name && f.width_mm === sheet.width_mm && f.height_mm === sheet.height_mm))
+            .map(format => ({ format, similarity: Math.round(sizeSimilarity(sheet, format)) }))
+            .sort((a, b) => b.similarity - a.similarity);
+    }
+
     findEquivalents(formatName, threshold = 90) {
         if (!this.byName.has(formatName)) return [];
 
@@ -404,10 +442,17 @@ class FormatConverter {
         const from = this.byName.get(fromName);
         const to = this.byName.get(toName);
         if (!from || !to) return null;
+        return this.compare(from, to);
+    }
 
+    // Like convert(), for two rows rather than two names: a name can mean two sizes
+    // (see formatChoices), and then only the row says which one.
+    compare(from, to) {
         if (!from.width_mm || !to.width_mm) return null;
+        const fromName = from.format_name;
+        const toName = to.format_name;
 
-        const similarity = this.calculateSimilarity(fromName, toName);
+        const similarity = Math.round(sizeSimilarity(from, to));
         const widthDiff = Math.abs(from.width_mm - to.width_mm);
         const heightDiff = Math.abs(from.height_mm - to.height_mm);
 
@@ -693,7 +738,7 @@ class FormatStatistics {
         this.formats.forEach(f => {
             countries.add(f.country);
             categories.add(f.category);
-            types.add(f.type || 'Unknown');
+            types.add(formatType(f));
 
             const w = parseFloat(f.width_mm) || 0;
             const h = parseFloat(f.height_mm) || 0;
@@ -877,14 +922,20 @@ class LocalizationManager {
             langCode = 'en';
         }
 
+        // Each call is numbered: when the person picks French and then German before French has
+        // arrived, the French answer comes last but is stale, and must not win.
+        const request = this.lastRequest = (this.lastRequest ?? 0) + 1;
         try {
-            this.translations = await this._fetchTranslations(langCode, timeout);
-            if (langCode === 'en') this.english = this.translations;
-            else await this.loadEnglish(timeout);
+            const translations = await this._fetchTranslations(langCode, timeout);
+            if (langCode !== 'en') await this.loadEnglish(timeout);
+            if (request !== this.lastRequest) return;
+            this.translations = translations;
+            if (langCode === 'en') this.english = translations;
             this.currentLanguage = langCode;
             LocalizationManager.saveLanguage(langCode);
             this.notifyListeners();
         } catch (error) {
+            if (request !== this.lastRequest) return;
             console.error(`Error loading language ${langCode}:`, error);
             if (langCode !== 'en') {
                 await this.loadLanguage('en', timeout);
@@ -948,6 +999,22 @@ class LocalizationManager {
 
     t(key, defaultValue = key) {
         return this.translate(key, defaultValue);
+    }
+
+    // A text that says a number: "1 format found", "2 formats found". The plural forms of a key live
+    // next to it as key_zero, key_one, key_two, key_few, key_many (the categories of
+    // Intl.PluralRules); key itself is the "other" form, and the only one a language must have.
+    // A language uses its own forms; only when it lacks the key altogether does English answer.
+    static PLURAL_SUFFIX = /_(zero|one|two|few|many)$/;
+
+    translateCount(key, count) {
+        const pick = (tree, lang) => {
+            let category = 'other';
+            try { category = new Intl.PluralRules(lang).select(count); } catch (error) { /* unknown locale */ }
+            return (category !== 'other' && LocalizationManager.lookup(tree, `${key}_${category}`)) ||
+                LocalizationManager.lookup(tree, key);
+        };
+        return pick(this.translations, this.currentLanguage) ?? pick(this.english, 'en') ?? key;
     }
 
     // "header.title|search.placeholder:placeholder" -> [{key: 'header.title', attr: null},
@@ -1327,6 +1394,9 @@ if (typeof module !== 'undefined' && module.exports) {
         escapeHtml,
         normalizeText,
         sizeSimilarity,
+        formatChoices,
+        formatType,
+        TYPE_BY_CATEGORY,
         MM_PER_INCH,
         mmToInches,
         inchesToMm,

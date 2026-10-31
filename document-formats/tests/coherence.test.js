@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { parseCSV, FORMAT_CATALOG_FILES, COUNTRIES_FILE } = require('../app/document-formats.js');
+const { parseCSV, FORMAT_CATALOG_FILES, COUNTRIES_FILE, TYPE_BY_CATEGORY } = require('../app/document-formats.js');
 
 const ROOT = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
@@ -196,4 +196,10 @@ test('.nvmrc names the Node version the CI workflow uses', () => {
     const ci = workflow.match(/node-version: '(\d+)'/)?.[1];
     assert.ok(ci, 'node-version not found in the workflow');
     assert.equal(read('.nvmrc').trim(), ci);
+});
+
+test('the library and the importer derive the format type from the category in the same way', () => {
+    const php = read('import_database.php').match(/const TYPE_BY_CATEGORY = \[([\s\S]*?)\];/)[1];
+    const importer = Object.fromEntries([...php.matchAll(/'([^']+)'\s*=>\s*'([^']+)'/g)].map(m => [m[1], m[2]]));
+    assert.deepEqual(TYPE_BY_CATEGORY, importer);
 });
