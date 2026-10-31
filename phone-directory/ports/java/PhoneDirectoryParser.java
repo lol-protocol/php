@@ -240,6 +240,9 @@ class MultiLanguagePhoneDirectoryParser {
     private static final List<String> DETECTION_ORDER = List.of("es", "fr", "pt", "de", "it");
 
     private static final Pattern SEPARATOR = Pattern.compile("^(?:[-=_*]\\s*){2,}$");
+    private static final Pattern NUMBER_FIRST_STREET = Pattern.compile(
+        "\\d{1,5}[a-zA-Z]?\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*"
+    );
 
     private static final Pattern PHONE_PATTERN =
         Pattern.compile("\\b\\d{3}[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b");
@@ -398,13 +401,9 @@ class MultiLanguagePhoneDirectoryParser {
             return null;
         }
 
-        Pattern p = Pattern.compile("\\d+\\s+[\\w\\s]+", Pattern.UNICODE_CHARACTER_CLASS);
-        Matcher m = p.matcher(line);
-        if (m.find()) {
-            return m.group();
-        }
-
-        return null;
+        // Same rule as the PHP StreetFallback: the whole line is a house number followed only by words.
+        String trimmed = line.trim();
+        return NUMBER_FIRST_STREET.matcher(trimmed).matches() ? trimmed : null;
     }
 
     public List<Map<String, Object>> getEntries() {

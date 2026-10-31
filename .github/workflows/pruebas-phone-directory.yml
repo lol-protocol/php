@@ -80,6 +80,11 @@ jobs:
       - name: Benchmark smoke run
         run: php bin/benchmark.php 2000
 
+      # Cifras del parser contra el conjunto fijo de casos (tests/fixtures/parser-evaluation.json);
+      # falla, igual que ParserEvaluationTest, si un caso no se comporta como dice el conjunto.
+      - name: Parser evaluation
+        run: php bin/evaluate-parser.php
+
   phone-directory-ports:
     name: phone-directory / Python and Java ports
     runs-on: ubuntu-24.04

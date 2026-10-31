@@ -471,6 +471,17 @@ PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `comp
 
 Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`.
 
+### Cuánto acierta el parser
+
+`tests/fixtures/parser-evaluation.json` es un conjunto fijo de guías cortas en los seis idiomas, cada una con lo que una persona leería en ella (nombre, calle, teléfono, persona o empresa). `bin/evaluate-parser.php` pasa `MultiLanguagePhoneDirectoryParser` por esos casos y dice cuántos salen bien, cuántas entradas encuentra y cuántas de ellas son correctas, y qué sigue fallando, agrupado por causa:
+
+```bash
+php bin/evaluate-parser.php            # resumen
+php bin/evaluate-parser.php --detail   # además, lo esperado y lo obtenido en cada caso que falla
+```
+
+Los casos que el parser todavía resuelve mal están marcados con `falla_conocida` y su motivo. `ParserEvaluationTest` (y el script, que corre también en la CI) exige que los demás salgan exactamente como dice el conjunto y que los marcados sigan fallando: un cambio que arregla uno tiene que quitarle la marca, y uno que rompe otro no pasa. Para medir una mejora, agrega primero los casos que la muestran.
+
 ## API Completa
 
 ### PhoneDirectoryParser / MultiLanguagePhoneDirectoryParser
@@ -520,6 +531,7 @@ Para directorios telefónicos grandes:
 - Con "viuda de" o "widow of", solo se guarda el tratamiento; el nombre del marido que sigue no se vuelve a separar en nombre/apellido
 - Ver «Privacidad: personas que podrían estar vivas» para lo que la base no devuelve por omisión y por qué
 - La detección automática de idioma es una heurística por palabras clave; con muy poco texto, o en un idioma no soportado, puede fallar (siempre se puede indicar el idioma explícitamente)
+- Los casos de `tests/fixtures/parser-evaluation.json` marcados con `falla_conocida` documentan lo que el parser multilingüe todavía no resuelve; entre ellos, que el teléfono solo se reconoce con formatos de EE. UU. (no `01 42 68 53 00`, `030 123456`, `2-345-678`…), que una calle sin palabra de calle y con el número al final («Los Aromos 123») no se reconoce, y que dos registros seguidos sin línea en blanco se leen como uno
 
 ## Licencia
 
