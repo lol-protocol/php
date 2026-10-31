@@ -250,9 +250,10 @@ Qué ve entonces un visitante: nombre, dirección y teléfono de esa persona, co
 
 Límites, a propósito:
 
-- **Una guía sin año conocido se oculta.** Sin fuente, o con un id fuera del catálogo que no trae un año de cuatro cifras (como `custom_1990_x`): no se sabe cuántos años tiene esa gente, y un error publica el teléfono de alguien que vive. `url-routing/` hace lo contrario con las personas sin fechas, porque ahí los datos son de antepasados.
+- **Una guía sin año conocido se oculta.** Sin fuente, o con un id fuera del catálogo que no trae un año de cuatro cifras (como `custom_1990_x`): no se sabe cuántos años tiene esa gente, y un error publica el teléfono de alguien que vive. Si el id trae dos años (`scan_1925_reimpresion_1985`), vale el más reciente. `url-routing/` hace lo contrario con las personas sin fechas, porque ahí los datos son de antepasados.
 - **La edad mínima de 18 años es un supuesto.** Un abonado más joven (raro) quedaría fuera de lo que esta regla cubre.
 - **Las empresas (`JuridicalEntity`) no se filtran:** no son personas. Una razón social que lleva un nombre propio sí podría delatar a alguien.
+- **Qué es una empresa lo decide una lista corta de palabras** (`hotel`, `banco`, `Ltd`, `GmbH`…, por idioma) que solo se busca en el nombre, no en la calle ni en el teléfono. Un apellido que es una de esas palabras, escrito «APELLIDO, Nombre» (`BANK, Henry`), es una persona. Lo que la lista no conoce (`Smith & Sons`, `Hermanos García`, `Plumbing`) se guarda como persona, con un apellido que no lo es: es el lado seguro para la privacidad (se oculta de más), pero ensucia la búsqueda fonética y el enlace de registros.
 
 ### PersonName / SurnameKeys — búsqueda fonética
 Cada entrada guarda, junto con su apellido, dos claves fonéticas calculadas al insertarla: un código Soundex (sirve para cualquier idioma, encuentra variantes como Smith/Smyth) y una clave por idioma, basada en las reglas fonéticas específicas de cada uno, que encuentra confusiones que Soundex no ve (Valdez/Baldez en español). `findBySurnameSound()` busca por cualquiera de las dos.
@@ -498,20 +499,6 @@ Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT
 - `count(): int`
 - `search(array): array`
 - `clear(): bool`
-
-### PhoneDirectoryManager (obsoleto, usar `PhoneDirectoryManagerV2`)
-
-Interfaz de alto nivel que combina el parser en inglés y la base de datos de personas naturales.
-
-- `processFile(string, bool): array`
-- `addEntry(PhoneDirectoryEntry): int`
-- `getEntry(int): ?PhoneDirectoryEntry`
-- `findByName(string): array`, `findByStreet(string): array`, `findByPhone(string): ?PhoneDirectoryEntry`
-- `findBySurnameSound(string, ?string): array`
-- `getAllEntries(): array`
-- `search(array): array`
-- `updateEntry(PhoneDirectoryEntry): bool`, `deleteEntry(int): bool`
-- `getTotalCount(): int`
 
 ## Consideraciones de Rendimiento
 

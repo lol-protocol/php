@@ -194,6 +194,24 @@ class PhoneDirectoryCatalogTest extends TestCase
         }
     }
 
+    public function testYearOfDirectoryComesFromTheCatalogOrFromTheId(): void
+    {
+        $this->assertSame(1930, $this->catalog->yearOfDirectory('es_1930_madrid'));
+        $this->assertSame(1990, $this->catalog->yearOfDirectory('custom_1990_springfield'));
+        $this->assertNull($this->catalog->yearOfDirectory('edicion19300'), 'five digits in a row are not a year');
+        $this->assertNull($this->catalog->yearOfDirectory('sin_anio'));
+        $this->assertNull($this->catalog->yearOfDirectory(''));
+        $this->assertNull($this->catalog->yearOfDirectory(null));
+    }
+
+    /** A later year can only make a directory look more recent, which hides it: the safe side for Privacy. */
+    public function testYearOfDirectoryWithTwoYearsInTheIdTakesTheLatest(): void
+    {
+        $this->assertSame(1985, $this->catalog->yearOfDirectory('scan_1925_reimpresion_1985'));
+        $this->assertSame(1985, $this->catalog->yearOfDirectory('madrid_1985_de_la_edicion_1925'));
+        $this->assertSame(2024, $this->catalog->yearOfDirectory('guia_2024_copia_de_1930'));
+    }
+
     public function testYearRangeSpansCenturies(): void
     {
         $stats = $this->catalog->getStatistics();
