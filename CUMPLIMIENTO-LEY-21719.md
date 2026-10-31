@@ -44,7 +44,8 @@
 
 1. La política de privacidad no está escrita y los términos tienen huecos
    (responsable, domicilio, correo, país del servidor, plazos).
-2. No hay plazo de conservación definido para nada.
+2. Solo los pedidos de retiro tienen un plazo de conservación (`--depurar`, 12 meses, y falta ponerlo en
+   el cron); las direcciones de la tienda, los logs y las copias de seguridad no.
 3. Pedir que se **borre** algo no tiene herramienta: «retirar» solo oculta, y
    corregir o borrar se hace a mano en la base.
 4. No hay un procedimiento escrito si hay una fuga de datos.
@@ -93,7 +94,7 @@ privacidad. Cada fila se comprobó en el código.
 | Documentos de respaldo (actas, censos) | `registros` | La fuente de cada dato | Igual | Sin plazo |
 | Árboles de personas con nombre de autor | `colecciones`, `usuarios` | Publicar un árbol | Los públicos, todos; los privados, solo el propietario | Sin plazo |
 | Correo y nombre de quien aportó | `usuarios` | Saber quién aportó | Solo el propietario | Sin plazo |
-| **Pedidos de retiro**: motivo, texto libre, **correo de contacto** | `pedidos_retiro`, `pedido_retiro_eventos` | Atender el reclamo y dejar el registro | Solo el propietario | Sin plazo (⚖️ `[PLAZO]` en los términos) |
+| **Pedidos de retiro**: motivo, texto libre, **correo de contacto** | `pedidos_retiro`, `pedido_retiro_eventos` | Atender el reclamo y dejar el registro | Solo el propietario | El correo, el texto y las marcas se borran 12 meses después de resolverse **si el cron lleva `--depurar`** (opcional; [`url-routing/docs/ACCESO.md`](url-routing/docs/ACCESO.md)). Se conservan el número, la página, el motivo, el estado y el historial. Pendientes u ocultos no se tocan |
 | Cookie de sesión (`PHPSESSID`) con el token CSRF, el carrito o mensajes | Archivo de sesión en el servidor | Que un formulario funcione | Nadie | Caduca a la hora sin actividad, o a las 12 horas |
 | IP de quien visita, como hash SHA-256 | Archivo del limitador, en el directorio temporal | Frenar el abuso (100 peticiones por minuto) | Nadie | Se borra a la hora |
 | Log de la aplicación: errores, y el número y la página de un pedido de retiro, **nunca quién lo pidió** | `LOG_FILE` | Operar el sitio | Quien administra el servidor | Lo que dure el archivo: no hay rotación definida para este |
@@ -135,7 +136,7 @@ propio es la issue #233, **sin resolver**.
 | 11 | **Seguridad** | HTTPS obligatorio, un solo secreto que se rota, cabeceras, limitador, sin contraseñas de visitantes, sin pagos. **Sin cifrado de la base en reposo** (depende del servidor) | ◐ | Decidir copias de seguridad y dónde viven (paso 11 de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md)) |
 | 12 | **Avisar de una vulneración** a la Agencia y a las personas | [`SECURITY.md`](SECURITY.md) dice cómo **reportarle** una falla al mantenedor. No hay un procedimiento para cuando **ya pasó** | ❌ | Una hoja de «si pasa»: detectar, contener (rotar el token cierra todas las sesiones), evaluar, avisar, anotar. Puedo redactarla |
 | 13 | **Registro de lo que se trata** | §3 de este documento | ◐ | Pasarlo a un lugar estable y mantenerlo al día |
-| 14 | **Conservación limitada** | Nada tiene plazo; solo caducan las sesiones, el hash de IP y el log de nginx | ❌ | Decidir un plazo por tipo de dato (§5, punto 2) |
+| 14 | **Conservación limitada** | Los pedidos de retiro tienen `--depurar` (12 meses; hay que ponerlo en el cron: la guía de despliegue aún no lo trae). Caducan las sesiones, el hash de IP y el log de nginx. **No tienen plazo**: la ficha y sus sucesos, las direcciones de la tienda, el log de la aplicación y las copias | ◐ | Decidir un plazo para esos cuatro y poner `--depurar` en el cron (§5, punto 2) |
 | 15 | **Encargados y transferencias** | El servidor es un VPS de un proveedor; no se ha decidido el país | ❌ | Decidir el país y comprobar qué exige la ley con el proveedor |
 | 16 | **Datos de categorías especiales** | Genéticos o de salud no se piden. Un acta puede decir la causa de una muerte, una religión o un origen | ❔ | Mirar si alguna ficha o registro lo dice (§7, pregunta 4) |
 | 17 | **Menores** | Los vivos no se muestran, así que no hay fichas de niños visibles. El formulario de retiro pide un correo a quien sea | ✅ | — |
@@ -152,8 +153,9 @@ propio es la issue #233, **sin resolver**.
 
 1. **Política de privacidad escrita y términos completos**, con un correo real que
    alguien lea.
-2. **Plazos de conservación** decididos para los pedidos de retiro, las direcciones
-   de la tienda, los logs de la aplicación y las copias de seguridad.
+2. **Plazos de conservación** decididos para las direcciones de la tienda, los logs
+   de la aplicación y las copias de seguridad, y `--depurar` puesto en el cron de los
+   pedidos de retiro (ya existe, con 12 meses como valor inicial).
 3. **Una forma de borrar de verdad** cuando alguien lo pida y corresponda, con
    registro. Antes hay que decidir qué se borra y qué se conserva. Una propuesta
    para empezar: se borra o anonimiza el nombre, las fechas y el lugar de la
