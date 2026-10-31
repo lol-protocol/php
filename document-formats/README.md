@@ -325,8 +325,18 @@ screen reader doesn't read it with the wrong voice (the strings written in
 the HTML, the captions of the cards JavaScript draws, and the count announced
 when you filter). See `docs/Localization.md`.
 
+Numbers follow the language of the page (`8,27"` in German, `8.27"` in English; Latin digits in every
+language, with no thousands separator), the unit too (`мм` in Russian, `مم` in Arabic), and so do the
+country names, which come from `Intl.DisplayNames` and the ISO code of each country. Counts use the
+plural forms of each language («1 format found», and six forms in Arabic; see `docs/Localization.md`).
+In a right-to-left page the converter's arrow points left. A few names mean two sizes in two countries
+(Half Letter is 139.7×215.9 mm in the USA and 140×216 mm in the international list): the size lists show
+them as «Half Letter (USA)» and «Half Letter (International)», and the converter compares the rows,
+not the names (`formatChoices()`, `FormatConverter.compare()` and `closestTo()`).
+
 The search boxes ignore case and Latin accents (`termico` finds «Papel térmico»), and the one on
-the Browser tab looks in the name, description, use, country, category and region of each format.
+the Browser tab looks in the name, description, use, country, category and region of each format,
+in English and in the words the page shows (`Vereinigte Staaten`, `Umschlag`).
 The category and region filters show their words in the language of the page, in that language's
 alphabetical order (`regions.*` and `categories.*` in the translation files; the option's value
 stays the CSV's word). The **Sort by** menu orders the cards by name, width, height or area, smallest

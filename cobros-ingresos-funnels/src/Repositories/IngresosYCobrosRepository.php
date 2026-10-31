@@ -89,7 +89,10 @@ final class IngresosYCobrosRepository
      * La consulta de las boletas con saldo abierto, una fila cada una: boleta_id,
      * cliente_id, dias_vencido (hoy menos el vencimiento: cero o menos es que todavia
      * no vence) y saldo_usd (lo que falta cobrar, a la tasa de hoy). Excluye las
-     * anuladas y las que deben un centavo o menos.
+     * anuladas y las que deben un centavo o menos, medido en la moneda de la boleta
+     * (como BoletaRepository::ESTADO_SQL y EstadoBoleta): una boleta «pagada» en el
+     * listado no es deuda aqui, y una «vencida» si lo es, valga lo que valga su
+     * moneda en dolares.
      *
      * Es la unica definicion de "cartera": la suman por tramo carteraPorAntiguedad()
      * (el Dashboard y Cobros) y por cliente CobranzaRepository, asi que el total de
@@ -102,6 +105,7 @@ final class IngresosYCobrosRepository
                 FROM (
                     SELECT b.id AS boleta_id, b.cliente_id,
                            (CURRENT_DATE - b.fecha_vencimiento) AS dias_vencido,
+                           (b.monto - COALESCE(p.pagado, 0)) AS saldo,
                            (b.monto - COALESCE(p.pagado, 0)) * m.tasa_a_usd AS saldo_usd
                     FROM boletas b
                     JOIN monedas m ON m.codigo = b.moneda_codigo
@@ -110,7 +114,7 @@ final class IngresosYCobrosRepository
                                GROUP BY boleta_id) p ON p.boleta_id = b.id
                     WHERE NOT b.anulada
                 ) x
-                WHERE x.saldo_usd > ' . Dinero::UN_CENTAVO;
+                WHERE round(x.saldo, 2) > ' . Dinero::UN_CENTAVO;
     }
 
     /**

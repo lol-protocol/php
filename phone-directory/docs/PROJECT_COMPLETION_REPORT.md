@@ -39,10 +39,6 @@ La descripción funcional está en [PHONE_DIRECTORY_SUMMARY.md](PHONE_DIRECTORY_
 
 | Métrica | Valor |
 |---------|-------|
-| Archivos PHP en `src/` | 35 |
-| Líneas de código PHP (`src/`) | ~4 000 |
-| Líneas de tests PHP (`tests/`) | ~3 200 |
-| Tests PHPUnit | 231 |
 | Tests de los ports | 13 (Python) + 12 chequeos (Java) |
 | Idiomas | 6 |
 | Motores de base de datos | SQLite, MySQL/MariaDB, PostgreSQL |
@@ -52,24 +48,25 @@ La descripción funcional está en [PHONE_DIRECTORY_SUMMARY.md](PHONE_DIRECTORY_
 
 ## Tests
 
-| Archivo (`tests/PhoneDirectory/`) | Tests | Qué cubre |
-|-----------------------------------|-------|-----------|
-| `PersonNameTest` | 33 | Nombres, apellidos, partículas, títulos |
-| `PhoneDirectoryParserTest` | 33 | Parser original |
-| `PhoneDirectoryDatabaseTest` | 27 | CRUD, búsquedas, migración, backfill |
-| `JuridicalEntityDatabaseTest` | 19 | CRUD y búsquedas de empresas |
-| `MultiLanguagePhoneDirectoryParserTest` | 19 | Idiomas, empresas, lectura de archivos, UTF-8 inválido |
-| `PhoneDirectoryCatalogTest` | 17 | Catálogo histórico |
-| `PotentialErrorsTest` | 14 | Los errores de [ERRORES_ENCONTRADOS.md](ERRORES_ENCONTRADOS.md) |
-| `GeoLocationTest` | 13 | Validación de ubicación |
-| `PhoneDirectoryManagerTest` | 13 | Manager v1 (obsoleto) |
-| `CliTest` | 11 | Comandos de `bin/phonedir` |
-| `RecordLinkerTest` | 11 | Enlace de registros entre directorios |
-| `CrossDatabaseTest` | 7 | Mismo comportamiento en SQLite, PostgreSQL y MySQL |
-| `SurnameKeysTest` | 6 | Soundex y claves fonéticas |
-| `PhoneDirectoryManagerV2Test` | 4 | Manager actual |
-| `TextFoldingTest` | 2 | Plegado de acentos y validación UTF-8 |
-| `ExamplesRunTest` | 2 | Los ejemplos de `examples/` corren sin errores ni avisos |
+| Archivo (`tests/PhoneDirectory/`) | Qué cubre |
+|-----------------------------------|-----------|
+| `PersonNameTest` | Nombres, apellidos, partículas, títulos |
+| `PhoneDirectoryParserTest` | Parser original |
+| `PhoneDirectoryDatabaseTest` | CRUD, búsquedas, migración, backfill |
+| `JuridicalEntityDatabaseTest` | CRUD y búsquedas de empresas |
+| `MultiLanguagePhoneDirectoryParserTest` | Idiomas, personas y empresas, lectura de archivos, UTF-8 inválido |
+| `PhoneDirectoryCatalogTest` | Catálogo histórico y año de un directorio |
+| `PotentialErrorsTest` | Los errores de [ERRORES_ENCONTRADOS.md](ERRORES_ENCONTRADOS.md) |
+| `GeoLocationTest` | Validación de ubicación |
+| `CliTest` | Comandos de `bin/phonedir` |
+| `RecordLinkerTest` | Enlace de registros entre directorios |
+| `PrivacyTest`, `PrivacyDatabaseTest` | Quién puede ver qué: años de guía, marca de fallecido, cada método de la base |
+| `CrossDatabaseTest` | Mismo comportamiento en SQLite, PostgreSQL y MySQL |
+| `SurnameKeysTest` | Soundex y claves fonéticas |
+| `PhoneDirectoryManagerV2Test` | Manager actual |
+| `DirectoryDatabaseInterfaceTest` | La interfaz común de las dos bases |
+| `TextFoldingTest` | Plegado de acentos y validación UTF-8 |
+| `ExamplesRunTest` | Los ejemplos de `examples/` corren sin errores ni avisos |
 
 La cobertura de código no se mide en CI.
 

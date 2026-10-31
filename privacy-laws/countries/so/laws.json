@@ -15,9 +15,9 @@
     "enforcement_authority": "Somalia Data Protection Authority (DPA)",
     "penalties_range": "Authority may investigate and impose fines; amounts not found (unconfirmed)",
     "exemptions": "Exemptions in art. 5(1)-(3) including personal or household use (unconfirmed)",
-    "deceased_data": "",
-    "research_exemption": "No research/archiving exemption seen; art. 5 exemptions: household, national public health emergency, crime prevention, national security, legal claims (unconfirmed)",
-    "genetic_data": "Sensitive personal data: biometric, race/clan/ethnic origin, religion, health status, sex life, political views; genetic not listed, Authority may add categories",
+    "deceased_data": "Not addressed: the Act does not mention deceased persons' data",
+    "research_exemption": "Archiving in the public interest or historical, statistical or scientific research is a lawful basis for processing (art. 14(2)(k))",
+    "genetic_data": "Genetic data are not in the sensitive-data list (art. 2(15): biometric, race/clan/ethnic origin, religion, health, marital status/sex life, political opinions; the Authority may add categories)",
     "website_url": "https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-29",
+    "last_checked": "2026-10-31",
     "sources": {
       "law_name": {
         "url": "https://www.consentstack.io/regulations/so-dpa",
@@ -85,17 +85,40 @@
         "checked": "2026-10-16"
       },
       "research_exemption": {
-        "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
-        "confidence": "low",
-        "checked": "2026-10-29"
+        "url": "https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf",
+        "confidence": "high",
+        "checked": "2026-10-31"
       },
       "genetic_data": {
         "url": "https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf",
+        "confidence": "high",
+        "checked": "2026-10-31"
+      },
+      "deceased_data": {
+        "url": "https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf",
         "confidence": "medium",
-        "checked": "2026-10-29"
+        "checked": "2026-10-31"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-31",
+        "field": "genetic_data",
+        "from": "Sensitive personal data: biometric, race/clan/ethnic origin, religion, health status, sex life, political views; genetic not listed, Authority may add categories",
+        "to": "Genetic data are not in the sensitive-data list (art. 2(15): biometric, race/clan/ethnic origin, religion, health, marital status/sex life, political opinions; the Authority may add categories)"
+      },
+      {
+        "date": "2026-10-31",
+        "field": "research_exemption",
+        "from": "No research/archiving exemption seen; art. 5 exemptions: household, national public health emergency, crime prevention, national security, legal claims (unconfirmed)",
+        "to": "Archiving in the public interest or historical, statistical or scientific research is a lawful basis for processing (art. 14(2)(k))"
+      },
+      {
+        "date": "2026-10-31",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not addressed: the Act does not mention deceased persons' data"
+      },
       {
         "date": "2026-10-29",
         "field": "genetic_data",

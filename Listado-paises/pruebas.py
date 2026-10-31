@@ -151,6 +151,11 @@ class GeneradorDeTablas(unittest.TestCase):
     def test_los_datos_del_proyecto_son_validos_y_las_tablas_estan_al_dia(self):
         generar_tabla.main(comprobar=True)
 
+    def test_puestos_comparten_el_puesto_en_empate_y_saltan_al_siguiente(self):
+        registros = [{"c": "A", "p": 9}, {"c": "B", "p": 9}, {"c": "C", "p": 4}, {"c": "D", "p": 1}]
+        puestos = generar_tabla.puestos(registros, lambda d: d["p"], lambda d: d["c"] == "D")
+        self.assertEqual(puestos, {"A": 1, "B": 1, "C": 3, "D": None})
+
     def test_ip_es_el_maximo_de_las_lenguas_y_ip_local_el_de_la_primera(self):
         niveles = {f["lengua"]: int(f["nivel"]) for f in leer_csv(AQUI / "niveles_lenguas.csv")}
         for f in leer_csv(AQUI / "paises_pos.csv"):
@@ -230,6 +235,11 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(bb["pib_per_capita_usd"], "10000")  # de dos años antes
         self.assertEqual(bb["alfabetizacion_adultos"], "70.0")
         self.assertEqual(cc["poblacion_millones"], "")  # Gapminder no da la población actual
+        detalle = {(f["codigo"], f["columna"]): (f["anio"], f["fuente"]) for f in leer_csv(self.d / "datos_detalle.csv")}
+        self.assertEqual(detalle[("BB", "poblacion_millones")], ("2024", "Banco Mundial"))
+        self.assertEqual(detalle[("BB", "pib_per_capita_usd")], (str(pd.ANIO_PIB_NOMINAL - 2), "Banco Mundial"))
+        self.assertEqual(detalle[("BB", "alfabetizacion_adultos")], ("2020", "UNESCO vía Gapminder"))
+        self.assertNotIn(("CC", "poblacion_millones"), detalle)
 
         larga = {}
         for f in leer_csv(self.d / "poblacion_larga.csv"):

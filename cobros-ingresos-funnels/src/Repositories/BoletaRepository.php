@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Busqueda;
 use App\Database;
 use App\Dinero;
 use App\EstadoBoleta;
@@ -191,7 +192,7 @@ final class BoletaRepository
         $filtroCliente = '';
         if ($cliente !== null && $cliente !== '') {
             $filtroCliente = ' AND c.nombre ILIKE :cliente';
-            $params[':cliente'] = '%' . $cliente . '%';
+            $params[':cliente'] = Busqueda::contiene($cliente);
         }
 
         // Sin filtro de estado el conteo no necesita los pagos (ni la vista que los suma por boleta).

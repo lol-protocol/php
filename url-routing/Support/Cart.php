@@ -15,10 +15,20 @@ final class Cart
     /** Distinct SKU lines; a cart with lots of different products stops growing instead of becoming unusable. */
     public const MAX_LINEAS = 20;
 
-    /** @return array<string, int> sku => cantidad */
+    /**
+     * @return array<string, int> sku => cantidad. Ojo: PHP vuelve `int` toda clave que sea un número escrito
+     *         («12345», un código de barras), así que el SKU de un foreach sobre esto no siempre es un string:
+     *         para recorrer SKUs, skus().
+     */
     public function items(): array
     {
         return $_SESSION['carrito'] ?? [];
+    }
+
+    /** @return list<string> los SKU del carrito, siempre como string (el que piden el catálogo y los métodos de esta clase) */
+    public function skus(): array
+    {
+        return array_map('strval', array_keys($this->items()));
     }
 
     public function estaVacio(): bool
@@ -75,6 +85,7 @@ final class Cart
         $totales = [];
 
         foreach ($this->items() as $sku => $cantidad) {
+            $sku = (string)$sku;
             $variante = $variantes[$sku] ?? null;
             if ($variante === null || !$variante['activo']) {
                 $this->quitar($sku);

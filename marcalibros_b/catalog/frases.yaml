@@ -1,7 +1,7 @@
 # Frases horneadas en la franja de texto de las piezas. Ver `nota`.
 version: '0.1'
 nota: 'Frases breves de autores en dominio público (fallecidos antes de 1956), en su idioma original. Escritas de memoria: TODAS están sin verificar
-  (texto exacto, obra y atribución). Realismo mágico lleva frases originales breves (autor «Marcalibros», `original: true`): sus autores tienen derechos vigentes y no se cita a ninguno. Naturalismo comparte las de Realismo
+  (texto exacto, obra y atribución). Realismo mágico lleva frases originales breves (autor «Marcalibros», `original: true`, sin firma: solo se dibuja la frase): sus autores tienen derechos vigentes y no se cita a ninguno. Naturalismo comparte las de Realismo
   (solo hay dos propias).'
 reparto:
   proporcion_con_frase: 0.5

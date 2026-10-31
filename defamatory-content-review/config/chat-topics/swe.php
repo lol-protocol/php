@@ -3,7 +3,7 @@
 /** Swedish chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'swe', 'kind' => 'chat-topics', 'collapseRepeats' => true],
-    'legit' => ['mess', 'bussar', 'messar', 'messer'],
+    'legit' => ['mess', 'bussar', 'messar', 'messer', 'bussen'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['du', 'du är', 'din', 'ditt', 'dina', 'ni', 'jävla', 'satans', 'fula', 'feta', 'dumma', 'äckliga', 'era'],

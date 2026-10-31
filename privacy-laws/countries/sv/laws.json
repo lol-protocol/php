@@ -15,9 +15,9 @@
     "enforcement_authority": "Agencia de Ciberseguridad del Estado (ACE), per Human Rights Watch; another source names the new National Digital Authority",
     "penalties_range": "Up to 40 monthly minimum wages, commerce sector (~USD 14,600) for very serious infractions (unconfirmed)",
     "exemptions": "Art. 2 excludes: purely family/domestic processing (non-commercial); public security, defence, State security, crime prevention/investigation; public registries",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "Sensitive data need express written consent (press summary; exceptions for medical emergency); genetic data category not confirmed (unconfirmed)",
+    "deceased_data": "Rights over a deceased person's data are exercised by heirs or successors who prove their status (art. 6)",
+    "research_exemption": "Erasure exception for scientific, historical or statistical research if data are pseudonymised or dissociated, and for public-interest archiving (art. 10(e)-(f)); information-duty exemption for historical archives and research (art. 28(h)); sensitive data may be processed for statistics or science if dissociated (art. 38)",
+    "genetic_data": "Genetic information is listed among sensitive personal data (art. 4(g)); sensitive data may only be processed in cases set by law (art. 38)",
     "website_url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
     "language": "Spanish",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-29",
+    "last_checked": "2026-10-31",
     "sources": {
       "key_requirements": {
         "url": "https://central-law.com/el-salvador-nueva-ley-de-proteccion-de-datos-personales-claves-para-su-cumplimiento-y-aplicacion/",
@@ -50,12 +50,40 @@
         "checked": "2026-10-15"
       },
       "genetic_data": {
-        "url": "https://www.elsalvador.com/noticias/nacional/puntos-claves-de-las-nuevas-leyes-proteccion-datos-personales-y-ciberseguridad/1181041/2024/",
-        "confidence": "low",
-        "checked": "2026-10-29"
+        "url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
+        "confidence": "high",
+        "checked": "2026-10-31"
+      },
+      "deceased_data": {
+        "url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
+        "confidence": "high",
+        "checked": "2026-10-31"
+      },
+      "research_exemption": {
+        "url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
+        "confidence": "high",
+        "checked": "2026-10-31"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-31",
+        "field": "genetic_data",
+        "from": "Sensitive data need express written consent (press summary; exceptions for medical emergency); genetic data category not confirmed (unconfirmed)",
+        "to": "Genetic information is listed among sensitive personal data (art. 4(g)); sensitive data may only be processed in cases set by law (art. 38)"
+      },
+      {
+        "date": "2026-10-31",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Erasure exception for scientific, historical or statistical research if data are pseudonymised or dissociated, and for public-interest archiving (art. 10(e)-(f)); information-duty exemption for historical archives and research (art. 28(h)); sensitive data may be processed for statistics or science if dissociated (art. 38)"
+      },
+      {
+        "date": "2026-10-31",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Rights over a deceased person's data are exercised by heirs or successors who prove their status (art. 6)"
+      },
       {
         "date": "2026-10-29",
         "field": "genetic_data",

@@ -2,6 +2,8 @@
 
 [`revisiones.csv`](revisiones.csv) anota quién ha revisado qué. Es el mismo formato que el de [`Listado-colores/`](../Listado-colores/README.md) (sección «Revisión por hablantes nativos»), para que quien ya revisó allí sepa cómo hacerlo aquí, con las citas en lugar de los colores. **Empieza vacío: nadie ha revisado nada todavía.** Hoy el único revisor previsto es la persona que encarga el trabajo, y solo para `spa`; no habrá revisores nativos de otros idiomas por ahora.
 
+Para revisar en español, sigue la [guía de revisión](GUIA-REVISION.md): qué se mira, las convenciones de etiquetado y cómo dejar tus filas.
+
 Una cita no se publica en un idioma hasta que su traducción y sus etiquetas tengan una revisión `correcta` de una persona que hable ese idioma (ver `README.md`, reglas 2 y 3).
 
 ## Columnas

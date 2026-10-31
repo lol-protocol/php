@@ -17,6 +17,13 @@ final class SwedishInflection extends NordicInflection
         };
     }
 
+    protected function definite(string $word, array $plurals): array
+    {
+        $vowel = preg_match('/[aeiouyåäö]$/u', $word) === 1;
+
+        return [$word . ($vowel ? 'n' : 'en'), $word . ($vowel ? 't' : 'et'), ...array_map(fn(string $p): string => $p . (str_ends_with($p, 'r') ? 'na' : 'en'), $plurals)];
+    }
+
     protected function adjectiveEnding(): string
     {
         return 'a';

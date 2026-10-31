@@ -222,7 +222,7 @@ return [
 
         'pol' => [
             ['word' => 'педал', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun'],
-            ['word' => 'обратен', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'adj'],
+            ['word' => 'обратен', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'курва', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'путка', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun'],
             ['word' => 'проститутка', 'riskType' => 'genero', 'severity' => 'medium', 'forms' => 'noun'],

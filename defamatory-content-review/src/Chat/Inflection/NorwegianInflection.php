@@ -14,6 +14,14 @@ final class NorwegianInflection extends NordicInflection
         };
     }
 
+    protected function definite(string $word, array $plurals): array
+    {
+        $vowel = preg_match('/[aeiouyæøå]$/u', $word) === 1;
+        $feminine = str_ends_with($word, 'e') ? [substr($word, 0, -1) . 'a'] : (str_ends_with($word, 'a') ? [] : [$word . 'a']);
+
+        return [$word . ($vowel ? 'n' : 'en'), $word . ($vowel ? 't' : 'et'), ...$feminine, ...array_map(fn(string $p): string => str_ends_with($p, 'er') ? substr($p, 0, -2) . 'ene' : $p . 'ne', $plurals)];
+    }
+
     protected function adjectiveEnding(): string
     {
         return 'e';

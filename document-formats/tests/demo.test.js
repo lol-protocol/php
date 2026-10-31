@@ -113,8 +113,10 @@ test('every language of the demo has a name for every paper type', () => {
 });
 
 test('Localization.md states the real translation coverage', () => {
-    const count = (tree) => Object.values(tree).reduce((sum, v) => sum + (typeof v === 'object' ? count(v) : 1), 0);
-    const filled = (tree) => Object.values(tree).reduce((sum, v) => sum + (typeof v === 'object' ? filled(v) : v === '' ? 0 : 1), 0);
+    // Plural forms (key_one…) are not strings of their own: they don't count.
+    const plural = (k) => LocalizationManager.PLURAL_SUFFIX.test(k);
+    const count = (tree) => Object.entries(tree).reduce((sum, [k, v]) => sum + (typeof v === 'object' ? count(v) : plural(k) ? 0 : 1), 0);
+    const filled = (tree) => Object.entries(tree).reduce((sum, [k, v]) => sum + (typeof v === 'object' ? filled(v) : plural(k) || v === '' ? 0 : 1), 0);
     const total = count(english);
     const perLanguage = LANGUAGES.map(lang => filled(JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'))));
     const complete = perLanguage.filter(n => n === total).length;
@@ -208,7 +210,7 @@ test('the translation keys the page does not use are listed here, so a new one c
     const dynamic = /^(regions|categories|paperCategories)\./;   // vocabularyLabel() looks these up by the value of the data
     // Vocabulary for people who use the library (docs/Localization.md) rather than this page.
     const reserved = /^(header|search|filters|format|comparison|converter|statistics|actions|measurementSystems|messages)\.|^(language|theme|light|dark|auto)$|^tabs\.statistics$|^categories\.(specialty|business|packaging)$/;
-    const unused = flat(english).filter(key => !used.has(key) && !dynamic.test(key));
+    const unused = flat(english).filter(key => !used.has(key.replace(LocalizationManager.PLURAL_SUFFIX, '')) && !dynamic.test(key));
     const unexpected = unused.filter(key => !reserved.test(key));
     assert.deepEqual(unexpected, [], 'these keys are in en.json but nothing uses them: use them, or list them as reserved');
 });
@@ -247,4 +249,30 @@ test('grid columns cannot be wider than a phone screen', () => {
     const fixed = [...css.matchAll(/minmax\(\s*(\d+px)\s*,/g)].map(m => m[0]);
     assert.deepEqual(fixed, [], 'use minmax(min(<size>, 100%), …)');
     assert.doesNotMatch(css, /grid-template-columns:\s*1fr\s*;/, 'a bare 1fr column grows to its widest content: use minmax(0, 1fr)');
+});
+
+test('plural forms use the categories of their language, next to a base form with the same placeholders', () => {
+    const placeholders = (text) => [...String(text).matchAll(/\{(\w+)\}/g)].map(m => m[1]);
+    for (const lang of LANGUAGES) {
+        const tree = JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'));
+        const categories = new Intl.PluralRules(lang).resolvedOptions().pluralCategories;
+        const walk = (node, prefix) => Object.entries(node).forEach(([k, v]) => {
+            if (typeof v === 'object') return walk(v, `${prefix}${k}.`);
+            const m = k.match(LocalizationManager.PLURAL_SUFFIX);
+            if (!m) return;
+            const base = node[k.replace(LocalizationManager.PLURAL_SUFFIX, '')];
+            assert.ok(categories.includes(m[1]), `${lang} ${prefix}${k}: ${lang} has no "${m[1]}" form (${categories})`);
+            assert.equal(typeof base, 'string', `${lang} ${prefix}${k} has no base form`);
+            // "مقاس واحد" (one sheet) may leave the number out; it never adds a placeholder.
+            for (const p of placeholders(v)) assert.ok(placeholders(base).includes(p), `${lang} ${prefix}${k}: {${p}}`);
+        });
+        walk(tree, '');
+    }
+});
+
+test('the page writes no unit or arrow of its own, and counts through the plural forms', () => {
+    const code = script.replace(/^\s*\/\/.*$/gm, '');   // comments may talk about millimetres
+    assert.doesNotMatch(code, /\d\)? mm\b|\} mm\b| mm\)/, 'use mm(), the unit of the language');
+    assert.doesNotMatch(script, /tr\('demo\.results(Formats|PaperTypes)'/, 'counts go through trCount()');
+    assert.match(script, /dir === 'rtl' \? '←' : '→'/);
 });

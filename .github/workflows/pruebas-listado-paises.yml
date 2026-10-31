@@ -44,3 +44,25 @@ jobs:
       - name: Pruebas
         working-directory: Listado-paises
         run: python3 -m unittest -v pruebas
+
+  # Solo al lanzarlo a mano (workflow_dispatch): baja las fuentes fijadas por commit,
+  # comprueba su SHA-256 contra fuentes.sha256, rehace todos los datos y falla si algún
+  # archivo del proyecto cambia. Tarda menos de un minuto y baja unos 35 MB.
+  reproducir:
+    name: "Listado-paises: los datos se rehacen idénticos desde las fuentes"
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Bajar fuentes y rehacer los datos
+        working-directory: Listado-paises
+        run: python3 descargar_fuentes.py --destino "$RUNNER_TEMP/fuentes" --rehacer
+
+      - name: Comprobar que nada cambió
+        run: |
+          git status --porcelain
+          test -z "$(git status --porcelain)"

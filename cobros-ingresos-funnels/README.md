@@ -623,6 +623,11 @@ phpstan.neon            configuracion del analisis estatico
   restringe con `CHECK` (migración 004, `NOT VALID`: rigen para filas nuevas o
   modificadas y no revisan las que ya existían; el comentario de la migración
   explica cómo encontrarlas y validarlas).
+- `usuarios_funnel`: cada etapa (`fecha_registro`, `fecha_lead`, `fecha_conversion`)
+  solo existe si existe la anterior y ninguna es anterior a la etapa de antes ni a
+  `fecha_visita`: sin eso, el funnel contaba tasas de lead a cliente mayores que 100 %
+  y tiempos de conversión negativos. Es un `CHECK` `NOT VALID` (migración 013), igual
+  que el anterior: no revisa las filas que ya existían.
 - `notas_credito`: devoluciones. Al anular una boleta que ya tenía pagos, los
   pagos **no** se tocan (la plata entró de verdad y tiene que seguir en el
   historial de caja): se emite una nota de crédito por lo cobrado, que queda
@@ -734,7 +739,7 @@ antes de enviarlo, y el servidor lo vuelve a validar.
   por el que ordenan el listado y el selector de los formularios. Con 30 mil
   clientes y 150 mil visitantes del funnel bajan la ficha de 24 a 0,08 ms y el
   listado de 32 a 0,2 ms (la página 600, de 37 a 9 ms); con los datos del seed no
-  se nota. El buscador de texto (`ILIKE '%…%'`) queda sin índice a propósito:
+  se nota. El buscador de texto (`ILIKE '%…%'`, con el `%` y el `_` que escriba la persona escapados: `App\Busqueda`) queda sin índice a propósito:
   necesitaría `pg_trgm`, una extensión que pide permisos que la base de producción
   puede no darle a la app, y tarda unos 40 ms con 30 mil clientes. `IndicesTest`
   vigila que esas consultas sigan pudiendo usar su índice.

@@ -81,7 +81,7 @@ $this->backfillDerivedColumns();
 ```
 
 **Tests.** `PhoneDirectoryDatabaseTest::testCreateTableAddsMissingColumnsToOldDatabase` migra una tabla antigua real.
-`PotentialErrorsTest::testError12_LegacyDatabaseWithNullCountryCodeFailsMigration` confirma que un INSERT *nuevo*
+`PotentialErrorsTest::testLegacyDatabaseWithNullCountryCodeFailsMigration` confirma que un INSERT *nuevo*
 con `country_code` NULL se sigue rechazando, que es el comportamiento buscado.
 
 ### #5 — UTF-8 inválido hace fallar las regex `/u` (corregido)
@@ -125,7 +125,7 @@ return PHP_INT_MAX;
 nada sobre qué llamar `getFirstName()`. De todos modos, el constructor inicializa `$firstNames` y `$lastNames` a `[]`
 antes de llamar a `parse()`.
 
-**Test.** `PotentialErrorsTest::testError13_PersonNameRejectsWhitespaceOnlyName`.
+**Test.** `PotentialErrorsTest::testPersonNameRejectsWhitespaceOnlyName`.
 
 ### #8 — `PhonePattern::REGEX` sin validar (corregido)
 

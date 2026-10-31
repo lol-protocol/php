@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Busqueda;
 use App\Database;
 use App\Paginacion;
 use Generator;
@@ -129,7 +130,7 @@ final class PagoRepository
         $filtroCliente = '';
         if ($cliente !== null && $cliente !== '') {
             $filtroCliente = ' AND c.nombre ILIKE :cliente';
-            $params[':cliente'] = '%' . $cliente . '%';
+            $params[':cliente'] = Busqueda::contiene($cliente);
         }
 
         return [

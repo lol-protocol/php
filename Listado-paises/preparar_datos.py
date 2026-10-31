@@ -15,6 +15,7 @@ Uso (desde esta carpeta; las rutas apuntan a copias locales de las fuentes, ver 
 Escribe:
     poblacion_larga.csv  serie larga de población por país (codigo, anio, poblacion)
     natalidad.csv        natalidad por país desde 1800 (codigo, anio, tasa_por_mil)
+    datos_detalle.csv    año y fuente de cada dato de paises.csv (codigo, columna, anio, fuente)
     paises.csv           población 2024, IDH 2023, PIB per cápita nominal y PPA de 2023,
                          alfabetización de adultos, usuarios de internet, emigrantes,
                          libertad (Freedom House), democracia (EIU) y corrupción (CPI)
@@ -251,8 +252,15 @@ def main(argv=None, carpeta=AQUI):
     filas_larga, filas_natalidad, sin_serie, sin_pob, sin_pib, sin_natalidad = [], [], [], [], [], []
     sin_idh, sin_nominal, nominal_anterior, sin_alfabetizacion, sin_internet = [], [], [], [], []
     sin_emigrantes, sin_gobernanza = [], {columna: [] for columna, _ in gobernanza}
+    detalle = []  # (codigo, columna, anio, fuente) de cada dato con valor
+    fuente_gobernanza = {"libertad_fh": "Freedom House vía Gapminder", "democracia_eiu": "EIU vía Gapminder",
+                         "corrupcion_cpi": "Transparencia Internacional vía Gapminder"}
     for fila in paises:
         codigo, clave = fila["codigo"], owid[fila["codigo"]]
+
+        def anotar(columna, anio, fuente):
+            if fila[columna]:
+                detalle.append((codigo, columna, anio, fuente))
         modernos = sorted(poblacion.get(clave, {}).items())
         antiguos = sorted((a, p) for a, p in maddison.get(clave, {}).items()
                           if not modernos or a < modernos[0][0])
@@ -274,10 +282,13 @@ def main(argv=None, carpeta=AQUI):
         fila["poblacion_millones"] = formato_millones(actual) if actual else ""
         if not actual:
             sin_pob.append(codigo)
+        anotar("poblacion_millones", ANIO_POBLACION,
+               "Banco Mundial" if clave in con_poblacion_bm else "Our World in Data")
         emigrados = emigrantes.get(clave, {}).get(ANIO_EMIGRANTES)
         fila["emigrantes_pct"] = f"{100 * emigrados / actual:.1f}" if emigrados and actual else ""
         if not fila["emigrantes_pct"]:
             sin_emigrantes.append(codigo)
+        anotar("emigrantes_pct", ANIO_EMIGRANTES, "ONU vía Gapminder")
         for columna, datos in gobernanza:
             dato = ultimo_dato(datos.get(clave, {}), ANIO_MINIMO_GOBERNANZA)
             if not dato:
@@ -285,10 +296,12 @@ def main(argv=None, carpeta=AQUI):
                 sin_gobernanza[columna].append(codigo)
             else:  # el estatus de libertad es texto; los índices, números
                 fila[columna] = dato[1] if isinstance(dato[1], str) else f"{dato[1]:g}"
+                anotar(columna, dato[0], fuente_gobernanza[columna])
         ppa = pib_ppa.get(clave, {}).get(ANIO_PIB_PPA)
         fila["pib_per_capita_ppa_usd"] = str(round(ppa)) if ppa else ""
         if not ppa:
             sin_pib.append(codigo)
+        anotar("pib_per_capita_ppa_usd", ANIO_PIB_PPA, "Gapminder (Banco Mundial)")
 
         nominal = pib_nominal(pib_pc_bm.get(codigo_bm(clave), {}))
         if not nominal:
@@ -296,19 +309,25 @@ def main(argv=None, carpeta=AQUI):
         fila["pib_per_capita_usd"] = str(round(nominal[1])) if nominal else ""
         if nominal and nominal[0] != ANIO_PIB_NOMINAL:
             nominal_anterior.append(f"{codigo} {nominal[0]}")
+        if nominal:
+            anotar("pib_per_capita_usd", nominal[0], "Banco Mundial")
 
         valor_idh = idh.get(clave, {}).get(ANIO_IDH)
         fila["idh"] = f"{valor_idh:.3f}" if valor_idh else ""
         if not fila["idh"]:
             sin_idh.append(codigo)
+        anotar("idh", ANIO_IDH, "PNUD vía Gapminder")
 
-        for columna, datos, minimo, faltan in (
-                ("alfabetizacion_adultos", alfabetizacion, ANIO_MINIMO_ALFABETIZACION, sin_alfabetizacion),
-                ("usuarios_internet", internet, ANIO_MINIMO_INTERNET, sin_internet)):
+        for columna, datos, minimo, faltan, fuente in (
+                ("alfabetizacion_adultos", alfabetizacion, ANIO_MINIMO_ALFABETIZACION, sin_alfabetizacion,
+                 "UNESCO vía Gapminder"),
+                ("usuarios_internet", internet, ANIO_MINIMO_INTERNET, sin_internet, "Banco Mundial vía Gapminder")):
             dato = ultimo_dato(datos.get(clave, {}), minimo)
             fila[columna] = f"{dato[1]:.1f}" if dato else ""
             if not dato:
                 faltan.append(codigo)
+            else:
+                anotar(columna, dato[0], fuente)
 
         natal = natalidad_pais(tasas.get(clave, {}), fecundidad.get(clave, {}))
         filas_natalidad += [(codigo, a, f"{v:.2f}") for a, v in sorted(natal.items())]
@@ -327,6 +346,10 @@ def main(argv=None, carpeta=AQUI):
         w = csv.DictWriter(f, fieldnames=columnas)
         w.writeheader()
         w.writerows(paises)
+    with (carpeta / "datos_detalle.csv").open("w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["codigo", "columna", "anio", "fuente"])
+        w.writerows(detalle)
 
     print(f"poblacion_larga.csv: {len(filas_larga)} filas; sin serie: {', '.join(sin_serie) or 'ninguno'}; "
           f"con puntos de Clio-Infra: {len(con_clio)}; Clio-Infra descartada en el empalme: "

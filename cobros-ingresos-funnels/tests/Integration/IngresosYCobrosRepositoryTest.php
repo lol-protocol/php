@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Database;
+use App\EstadoBoleta;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\IngresosYCobrosRepository;
@@ -62,7 +63,8 @@ final class IngresosYCobrosRepositoryTest extends IntegracionTestCase
                 'monto' => 1000,
                 'moneda_codigo' => $cliente['moneda_codigo'],
                 'fecha_emision' => date('Y-m-d', strtotime('-500 days')),
-                'fecha_vencimiento' => date('Y-m-d', strtotime("-{$diasVencida} days")),
+                // «%+d» pone el signo explicito: con «--5 days» (vence dentro de 5) el resultado depende de la version de PHP
+                'fecha_vencimiento' => date('Y-m-d', strtotime(sprintf('%+d days', -$diasVencida))),
             ]);
             $despues = $repo->carteraPorAntiguedad();
 
@@ -80,6 +82,39 @@ final class IngresosYCobrosRepositoryTest extends IntegracionTestCase
             );
             self::assertEqualsWithDelta(1000 * $tasa, reset($cambios), 0.05);
         }
+    }
+
+    /**
+     * «Un centavo o menos cuenta como cero» se mide en la moneda de la boleta, igual que en el listado (ESTADO_SQL y
+     * EstadoBoleta). La cartera lo medía ya convertido a dolares: 30 pesos colombianos (0,0075 USD) quedaban fuera
+     * aunque el listado los mostrara vencidos, y 0,01 dinares kuwaitíes (0,0325 USD) entraban aunque el listado los
+     * diera por pagados.
+     */
+    public function testElUmbralDeUnCentavoDeLaCarteraSeMideEnLaMonedaDeLaBoleta(): void
+    {
+        $repo = new IngresosYCobrosRepository();
+        $boletas = new BoletaRepository();
+        $vencimiento = date('Y-m-d', strtotime('-10 days'));
+        $nueva = fn (string $moneda, string $monto) => $boletas->crear([
+            'cliente_id' => 1,
+            'concepto' => 'Test del umbral de un centavo',
+            'monto' => $monto,
+            'moneda_codigo' => $moneda,
+            'fecha_emision' => date('Y-m-d', strtotime('-40 days')),
+            'fecha_vencimiento' => $vencimiento,
+        ]);
+        $tasa = fn (string $moneda): float => (float) Database::connection()->query("SELECT tasa_a_usd FROM monedas WHERE codigo = '{$moneda}'")->fetchColumn();
+
+        $antes = array_sum($repo->carteraPorAntiguedad());
+        $nueva('COP', '30.00');
+        $despuesDeLosPesos = array_sum($repo->carteraPorAntiguedad());
+        $nueva('KWD', '0.01');
+        $despuesDeLosDinares = array_sum($repo->carteraPorAntiguedad());
+
+        self::assertSame('vencida', EstadoBoleta::calcular(30.0, 0.0, $vencimiento)['estado'], 'el listado muestra los 30 pesos como vencidos');
+        self::assertEqualsWithDelta(30 * $tasa('COP'), $despuesDeLosPesos - $antes, 0.00001, '...y la cartera los cuenta, valgan lo que valgan en dolares');
+        self::assertSame('pagada', EstadoBoleta::calcular(0.01, 0.0, $vencimiento)['estado'], 'el listado da por pagado el centavo de dinar');
+        self::assertEqualsWithDelta(0.0, $despuesDeLosDinares - $despuesDeLosPesos, 0.00001, '...y la cartera no lo cuenta, aunque valga mas de un centavo de dolar');
     }
 
     public function testKpisTasaDeCobranzaEsCoherenteConFacturadoYCobrado(): void

@@ -175,6 +175,7 @@
     "similarity": "Storleksliknande: {percent} %",
     "resultsFormats": "{count} format hittades",
     "resultsPaperTypes": "{count} papperstyper hittades",
+    "resultsPaperTypes_one": "{count} papperstyp hittades",
     "noPaperTypes": "Inga papperstyper matchar dina kriterier.",
     "loadError": "CSV-filerna kunde inte läsas in ({message}).",
     "loadErrorHelp": "Webbläsare blockerar läsning av lokala filer från en sida som öppnats med dubbelklick. Kör i stället mappen via en server: kör {command} i {folder} och öppna {address}.",

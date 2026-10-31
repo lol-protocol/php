@@ -8,15 +8,13 @@ class ConfigValidator
 {
     public static function validate(array $config): void
     {
-        // Validate by_length entries
+        // A PHP array cannot repeat a key, so a repeated digit length cannot get here: the
+        // mistake that can is a key that is not a digit count at all.
         if (isset($config['by_length'])) {
-            $lengths = array_keys($config['by_length']);
-            $unique = array_unique($lengths);
-            if (count($lengths) !== count($unique)) {
-                throw new \InvalidArgumentException('Duplicate digit lengths in by_length config');
-            }
-
             foreach ($config['by_length'] as $length => $entry) {
+                if (!is_int($length) || $length < 1) {
+                    throw new \InvalidArgumentException("by_length key '{$length}' must be a positive number of digits");
+                }
                 if (!isset($entry['type']) || !isset($entry['controller'])) {
                     throw new \InvalidArgumentException("Invalid by_length entry at length {$length}");
                 }
@@ -28,6 +26,15 @@ class ConfigValidator
             foreach ($config['reserved'] as $key => $entry) {
                 if (!isset($entry['controller'])) {
                     throw new \InvalidArgumentException("Invalid reserved entry for key '{$key}'");
+                }
+                // The router asks by_length, then place, then reserved, and the first that matches wins:
+                // a reserved key one of them also matches would never be reached.
+                $segment = (string)$key;
+                if (ctype_digit($segment) && isset($config['by_length'][strlen($segment)])) {
+                    throw new \InvalidArgumentException("Reserved entry '{$segment}' is shadowed by by_length[" . strlen($segment) . ']');
+                }
+                if (isset($config['place']) && preg_match('/^[a-z]{2}$/', $segment) === 1) {
+                    throw new \InvalidArgumentException("Reserved entry '{$segment}' is shadowed by place: a 2-letter segment is a country");
                 }
                 if (isset($entry['ruta']) && (!is_int($entry['ruta']) || !isset($entry['method']))) {
                     throw new \InvalidArgumentException("Reserved entry '{$key}': ruta needs a segment count and a method");

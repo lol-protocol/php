@@ -14,6 +14,13 @@ final class DanishInflection extends NordicInflection
         };
     }
 
+    protected function definite(string $word, array $plurals): array
+    {
+        $vowel = preg_match('/[aeiouyæøå]$/u', $word) === 1;
+
+        return [$word . ($vowel ? 'n' : 'en'), $word . ($vowel ? 't' : 'et'), ...array_map(fn(string $p): string => $p . 'ne', $plurals)];
+    }
+
     protected function adjectiveEnding(): string
     {
         return 'e';

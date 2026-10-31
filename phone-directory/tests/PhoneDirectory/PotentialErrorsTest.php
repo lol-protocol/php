@@ -19,10 +19,10 @@ use PhoneDirectory\Privacy;
 class PotentialErrorsTest extends TestCase
 {
     /**
-     * ERROR #12: Database constraint violation on migration with NULL country_code
+     * ERROR #4 (docs/ERRORES_ENCONTRADOS.md): database constraint violation on migration with NULL country_code
      * Documents that legacy databases with NULL values fail to migrate.
      */
-    public function testError12_LegacyDatabaseWithNullCountryCodeFailsMigration(): void
+    public function testLegacyDatabaseWithNullCountryCodeFailsMigration(): void
     {
         $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
@@ -41,10 +41,10 @@ class PotentialErrorsTest extends TestCase
     }
 
     /**
-     * ERROR #13: PersonName rejects whitespace-only input
+     * ERROR #7 (docs/ERRORES_ENCONTRADOS.md): PersonName rejects whitespace-only input
      * Documents that constructor validates input properly.
      */
-    public function testError13_PersonNameRejectsWhitespaceOnlyName(): void
+    public function testPersonNameRejectsWhitespaceOnlyName(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/cannot be empty/i');

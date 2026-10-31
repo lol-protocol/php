@@ -25,7 +25,7 @@ graph TD
     SD -->|SQL específico del motor| F[PhoneDirectoryPDODatabase<br/>phone_directory table]
     SD -->|SQL específico del motor| G[JuridicalEntityPDODatabase<br/>juridical_entities table]
 
-    F -->|Consultas| H[PhoneDirectoryManager /<br/>PhoneDirectoryManagerV2]
+    F -->|Consultas| H[PhoneDirectoryManagerV2]
     G -->|Consultas| H
 
     F -.->|claves fonéticas| SK[SurnameKeys]

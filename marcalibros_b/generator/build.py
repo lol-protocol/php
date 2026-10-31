@@ -331,9 +331,11 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
         entrada["calma_cielo"] = calma
         frase = elegir_frase(entrada["id"], mov["id"], cargar_frases())
         if frase:
-            bloques, _ = tx.componer(frase["texto"], frase["autor"], esc.franja)
+            # las frases originales del proyecto no llevan firma: solo se dibuja la frase
+            bloques, _ = tx.componer(frase["texto"], "" if frase.get("original") else frase["autor"], esc.franja)
             esc.texto(bloques, TONOS_TEXTO[texto])
-        entrada["frase"] = ({k: frase[k] for k in ("texto", "autor", "obra", "idioma")} if frase else None)
+        entrada["frase"] = ({**{k: frase[k] for k in ("texto", "autor", "obra", "idioma")}, "firmada": not frase.get("original")}
+                            if frase else None)
         return entrada, esc, h, intento, None
     return entrada, esc, h, intento, problema
 

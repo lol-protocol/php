@@ -3,6 +3,10 @@
 
 const i18n = new LocalizationManager();
 const tr = (key, values) => formatMessage(i18n.t(key), values);
+// A text that says how many: the plural form of the language ("1 format found"), and the number
+// written the way the page writes numbers. num() is defined below; it is only called later.
+const trCount = (key, count, values = {}) =>
+    formatMessage(i18n.translateCount(key, count), {...values, count: num(count)});
 // Text that tr() had to take from English because the language lacks it: it must be
 // marked, or a screen reader would read it with the voice of the page's language.
 const fallbackLang = (key) =>
@@ -36,11 +40,57 @@ const addOptions = (select, entries) => {
     }
 };
 const sortedUnique = (values) => [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
-// Same-named formats in different countries share a size, so one entry per name.
-const formatSizeOptions = (formats) => {
-    const byName = indexByName(formats);
-    return sortedUnique([...byName.keys()])
-        .map(name => [name, `${name} (${byName.get(name).width_mm}×${byName.get(name).height_mm} mm)`]);
+
+// Numbers and country names in the language of the page. applyLanguage() replaces both formatters
+// when the language changes. Digits stay Latin everywhere (Arabic too), as in the data, the search
+// box and the downloaded CSV, and there is no thousands separator, so 1189 mm reads as one number.
+let numberFormat = new Intl.NumberFormat('en', {maximumFractionDigits: 2, useGrouping: false});
+let regionNames = null;
+const setLocaleFormatters = (lang) => {
+    try {
+        numberFormat = new Intl.NumberFormat(lang, {maximumFractionDigits: 2, useGrouping: false, numberingSystem: 'latn'});
+    } catch (error) { /* keep the previous one */ }
+    try {
+        regionNames = new Intl.DisplayNames([lang], {type: 'region'});
+    } catch (error) {
+        regionNames = null;
+    }
+};
+// 8.27 -> "8,27" in German; a value that isn't a number is shown as it is.
+const num = (value) => (value === '' || value === null || value === undefined || Number.isNaN(Number(value))
+    ? String(value ?? '') : numberFormat.format(Number(value)));
+const mm = () => i18n.t('format.millimeters', 'mm');
+const sizeText = (format) => `${num(format.width_mm)}×${num(format.height_mm)}`;
+
+// A country of the data in the language of the page, from its ISO code (Intl.DisplayNames).
+// International and Europe have no code; they are regions, translated like the region filter.
+const countryCodes = new Map();
+const countryLabel = (country) => {
+    const code = countryCodes.get(country);
+    return (code && regionNames?.of(code)) || vocabularyLabel('regions', country);
+};
+const countryLang = (country) => (countryCodes.get(country) && regionNames ? '' : vocabularyLang('regions', country));
+
+// The sheets a person can pick in the converter and the Paper Types tab: one per distinct size,
+// keyed by name, or by "name (country)" when one name means two sizes (formatChoices()).
+const sheetChoices = (formats) => {
+    const choices = new Map(formatChoices(formats).map(({key, format}) => [key, format]));
+    const keyOfSize = new Map([...choices].map(([key, f]) => [`${f.format_name}|${f.width_mm}×${f.height_mm}`, key]));
+    return {
+        choices,
+        keyOf: (format) => keyOfSize.get(`${format.format_name}|${format.width_mm}×${format.height_mm}`),
+        // An address written before a name was split ("from=Half Letter") still finds a sheet.
+        resolve: (value) => (choices.has(value) ? value : [...choices.keys()].find(key => key.startsWith(`${value} (`)) ?? '')
+    };
+};
+// Fills a select with the sheets, labelled "A4 (210×297 mm)" in the numbers of the page.
+const fillSheetSelect = (select, sheets) => {
+    const selected = select.value;
+    while (select.options.length > 1) select.remove(1);
+    addOptions(select, [...sheets.choices]
+        .map(([key, format]) => [key, `${key} (${sizeText(format)} ${mm()})`])
+        .sort((a, b) => a[0].localeCompare(b[0], i18n.getLanguage())));
+    select.value = selected;
 };
 
 // A list of cards that a search box and some selects narrow down. The page draws it,
@@ -74,7 +124,7 @@ class FilterableList {
         if (this.compare) filtered = [...filtered].sort(this.compare);
         if (this.reverse) filtered = [...filtered].reverse();
         this.render(filtered);
-        if (announceCount) announce(tr(this.countKey, {count: filtered.length}), this.countKey);
+        if (announceCount) announce(trCount(this.countKey, filtered.length), this.countKey);
     }
 
     refresh() { this.render(this.shown); }
@@ -98,13 +148,15 @@ const vocabularyLang = (group, value) =>
 
 // Fills a select with the given data values, labelled in the language of the page and sorted in
 // its alphabetical order. The first option (the "all" one) stays; so does the current choice.
-const fillVocabularySelect = (select, group, values) => {
+const fillLabelledSelect = (select, values, labelOf) => {
     const selected = select.value;
     while (select.options.length > 1) select.remove(1);
-    addOptions(select, values.map(value => [value, vocabularyLabel(group, value)])
+    addOptions(select, values.map(value => [value, labelOf(value)])
         .sort((a, b) => a[1].localeCompare(b[1], i18n.getLanguage())));
     select.value = selected;
 };
+const fillVocabularySelect = (select, group, values) =>
+    fillLabelledSelect(select, values, value => vocabularyLabel(group, value));
 
 // The comparison table shows this many rows at most, and says so when there are more.
 const COMPARE_LIMIT = 100;
@@ -127,6 +179,7 @@ class FormatBrowser extends FilterableList {
         this.formats = formats;
         this.statistics = new FormatStatistics(formats);
         this.converter = new FormatConverter(formats);
+        this.sheets = sheetChoices(formats);
         this.cacheElements();
         this.setupEventListeners();
         this.populateFilters();
@@ -209,26 +262,27 @@ class FormatBrowser extends FilterableList {
 
     populateFilters() {
         const {countryFilter, categoryFilter, regionFilter, fromFormat, toFormat} = this.els;
-        const distinct = (field) => sortedUnique(this.formats.map(f => f[field])).map(value => [value, value]);
-
-        addOptions(countryFilter, distinct('country'));
         this.vocabularyValues = {
+            countries: sortedUnique(this.formats.map(f => f.country)),
             categories: sortedUnique(this.formats.map(f => f.category)),
             regions: sortedUnique(this.formats.map(f => f.region))
         };
         this.fillVocabularyFilters();
-
-        const formatOptions = formatSizeOptions(this.formats);
-        addOptions(fromFormat, formatOptions);
-        addOptions(toFormat, formatOptions);
+        this.fillSheetSelects();
     }
 
     // The category and region lists, in the language of the page and in its alphabetical order.
     // The option value stays the CSV's word, because that is what the formats are compared with.
     fillVocabularyFilters() {
-        const {categoryFilter, regionFilter} = this.els;
+        const {countryFilter, categoryFilter, regionFilter} = this.els;
+        fillLabelledSelect(countryFilter, this.vocabularyValues.countries, countryLabel);
         fillVocabularySelect(categoryFilter, 'categories', this.vocabularyValues.categories);
         fillVocabularySelect(regionFilter, 'regions', this.vocabularyValues.regions);
+    }
+
+    fillSheetSelects() {
+        fillSheetSelect(this.els.fromFormat, this.sheets);
+        fillSheetSelect(this.els.toFormat, this.sheets);
     }
 
     filterFormats(options) {
@@ -242,7 +296,10 @@ class FormatBrowser extends FilterableList {
 
         this.filter(format =>
             matchesQuery(query, [format.format_name, format.description, format.common_use,
-                format.country, format.category, format.region]) &&
+                format.country, format.category, format.region,
+                // What the page shows in its own language is searchable too.
+                countryLabel(format.country), vocabularyLabel('categories', format.category),
+                vocabularyLabel('regions', format.region)]) &&
             (!country || format.country === country) &&
             (!category || format.category === category) &&
             (!region || format.region === region)
@@ -265,15 +322,15 @@ class FormatBrowser extends FilterableList {
                 <div class="format-info">
                     <div class="info-row">
                         <span class="info-label"${fallbackLang('demo.cardCountry')}>${escapeHtml(tr('demo.cardCountry'))}</span>
-                        <span class="info-value"${dataLang()}>${escapeHtml(format.country)}</span>
+                        <span class="info-value"${countryLang(format.country)}>${escapeHtml(countryLabel(format.country))}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label"${fallbackLang('demo.cardSizeMm')}>${escapeHtml(tr('demo.cardSizeMm'))}</span>
-                        <span class="info-value">${escapeHtml(format.width_mm)} × ${escapeHtml(format.height_mm)}</span>
+                        <span class="info-value">${escapeHtml(num(format.width_mm))} × ${escapeHtml(num(format.height_mm))}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label"${fallbackLang('demo.cardSizeIn')}>${escapeHtml(tr('demo.cardSizeIn'))}</span>
-                        <span class="info-value">${escapeHtml(format.width_inches)}" × ${escapeHtml(format.height_inches)}"</span>
+                        <span class="info-value">${escapeHtml(num(format.width_inches))}" × ${escapeHtml(num(format.height_inches))}"</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label"${fallbackLang('demo.cardAspect')}>${escapeHtml(tr('demo.cardAspect'))}</span>
@@ -320,73 +377,80 @@ class FormatBrowser extends FilterableList {
         // Say so when the table doesn't show every match, on screen and to a screen reader.
         const cut = all.length > matches.length;
         compareNote.hidden = !cut;
-        compareNote.textContent = cut ? tr('demo.compareShown', {shown: matches.length, count: all.length}) : '';
+        compareNote.textContent = cut ? tr('demo.compareShown', {shown: num(matches.length), count: num(all.length)}) : '';
         if (cut && fallbackLang('demo.compareShown')) compareNote.lang = 'en';
         else compareNote.removeAttribute('lang');
         if (announceCount && terms.length) {
             if (cut) announce(compareNote.textContent, 'demo.compareShown');
-            else announce(tr('demo.resultsFormats', {count: all.length}), 'demo.resultsFormats');
+            else announce(trCount('demo.resultsFormats', all.length), 'demo.resultsFormats');
         }
 
         this.els.compareBody.innerHTML = matches.map(format => `
             <tr>
                 <td>${escapeHtml(format.format_name)}</td>
-                <td>${escapeHtml(format.country)}</td>
-                <td>${escapeHtml(format.width_mm)}</td>
-                <td>${escapeHtml(format.height_mm)}</td>
+                <td${countryLang(format.country)}>${escapeHtml(countryLabel(format.country))}</td>
+                <td>${escapeHtml(num(format.width_mm))}</td>
+                <td>${escapeHtml(num(format.height_mm))}</td>
                 <td>${escapeHtml(format.aspect_ratio)}</td>
             </tr>
         `).join('');
     }
 
-    // The five formats closest in size to the one chosen as origin, each a button that makes it the target.
-    // Same-named formats of several countries share a size, so each name appears once.
-    updateEquivalents(fromName) {
+    // The five sheets closest in size to the one chosen as origin, each a button that makes it the
+    // target. A sheet listed by several countries appears once (one entry per choice of the select).
+    updateEquivalents(fromKey) {
         const {equivalents, equivalentsTitle, equivalentsList} = this.els;
-        if (!fromName) {
+        const sheet = this.sheets.choices.get(fromKey);
+        if (!sheet) {
             equivalents.hidden = true;
             return;
         }
-        const seen = new Set();
-        const closest = this.converter.findEquivalents(fromName, 0)
-            .filter(e => !seen.has(e.name) && seen.add(e.name))
+        const seen = new Set([fromKey]);
+        const closest = this.converter.closestTo(sheet)
+            .map(({format, similarity}) => ({key: this.sheets.keyOf(format), format, similarity}))
+            .filter(e => e.key && !seen.has(e.key) && seen.add(e.key))
             .slice(0, 5);
-        equivalentsTitle.textContent = tr('demo.closestTitle', {format: fromName});
+        equivalentsTitle.textContent = tr('demo.closestTitle', {format: fromKey});
         equivalentsList.innerHTML = closest.map(e => `
             <li>
-                <button type="button" class="equivalent-btn" data-format="${escapeHtml(e.name)}"
-                        aria-label="${escapeHtml(tr('demo.useAsTarget', {format: e.name, percent: e.similarity}))}">
-                    <strong>${escapeHtml(e.name)}</strong>
-                    <span class="equivalent-size">${escapeHtml(e.dimensions.mm)} mm · <span${dataLang()}>${escapeHtml(e.country)}</span></span>
-                    — ${escapeHtml(e.similarity)}%
+                <button type="button" class="equivalent-btn" data-format="${escapeHtml(e.key)}"
+                        aria-label="${escapeHtml(tr('demo.useAsTarget', {format: e.key, percent: num(e.similarity)}))}">
+                    <strong>${escapeHtml(e.key)}</strong>
+                    <span class="equivalent-size">${escapeHtml(sizeText(e.format))} ${escapeHtml(mm())} · <span${countryLang(e.format.country)}>${escapeHtml(countryLabel(e.format.country))}</span></span>
+                    — ${escapeHtml(num(e.similarity))}%
                 </button>
             </li>`).join('');
         equivalents.hidden = closest.length === 0;
     }
 
     updateConverter() {
-        const fromName = this.els.fromFormat.value;
-        const toName = this.els.toFormat.value;
+        const fromKey = this.els.fromFormat.value;
+        const toKey = this.els.toFormat.value;
         const result = document.getElementById('conversion-result');
-        this.updateEquivalents(fromName);
+        this.updateEquivalents(fromKey);
 
-        const conversion = fromName && toName ? this.converter.convert(fromName, toName) : null;
+        const from = this.sheets.choices.get(fromKey);
+        const to = this.sheets.choices.get(toKey);
+        const conversion = from && to ? this.converter.compare(from, to) : null;
         if (!conversion) {
             result.classList.remove('show');
             return;
         }
 
+        // In a right-to-left page the arrow points left, towards the target; <bdi> keeps each
+        // Latin name and size in one piece inside the Arabic sentence.
+        const arrow = document.documentElement.dir === 'rtl' ? '←' : '→';
         document.getElementById('conversion-info').innerHTML = `
-            <p><strong>${escapeHtml(fromName)}</strong> (${escapeHtml(conversion.fromSize.mm)} mm)
-                → <strong>${escapeHtml(toName)}</strong> (${escapeHtml(conversion.toSize.mm)} mm)</p>
+            <p><bdi><strong>${escapeHtml(fromKey)}</strong> (${escapeHtml(sizeText(from))} ${escapeHtml(mm())})</bdi>
+                ${arrow} <bdi><strong>${escapeHtml(toKey)}</strong> (${escapeHtml(sizeText(to))} ${escapeHtml(mm())})</bdi></p>
             <p class="similarity-note">
-                ${escapeHtml(tr('demo.similarity', {percent: conversion.similarity}))}
+                ${escapeHtml(tr('demo.similarity', {percent: num(conversion.similarity)}))}
             </p>
         `;
 
         const fill = document.getElementById('equivalence-fill');
         fill.style.width = conversion.similarity + '%';
-        fill.textContent = conversion.similarity + '%';
+        fill.textContent = `${num(conversion.similarity)}%`;
         result.classList.add('show');
     }
 
@@ -394,6 +458,7 @@ class FormatBrowser extends FilterableList {
     // with words in them (a name sort also depends on the language).
     refresh() {
         this.fillVocabularyFilters();
+        this.fillSheetSelects();
         this.filterFormats({announceCount: false});
         this.updateComparison();
         this.updateConverter();
@@ -410,6 +475,7 @@ class PaperTypeBrowser extends FilterableList {
         this.paperTypes = paperTypes;
         this.translations = new Map(translations.map(row => [row.type_name, row]));
         this.formats = formats;
+        this.sheets = sheetChoices(formats);
         this.cacheElements();
         this.setupEventListeners();
         this.populateFilters();
@@ -449,7 +515,7 @@ class PaperTypeBrowser extends FilterableList {
         const {categoryFilter, sizeSelect} = this.els;
         this.categories = sortedUnique(this.paperTypes.map(p => p.category));
         fillVocabularySelect(categoryFilter, 'paperCategories', this.categories);
-        addOptions(sizeSelect, formatSizeOptions(this.formats));
+        fillSheetSelect(sizeSelect, this.sheets);
     }
 
     applyFilters(options) {
@@ -458,7 +524,8 @@ class PaperTypeBrowser extends FilterableList {
         const category = categoryFilter.value;
 
         this.filter(p =>
-            matchesQuery(query, [p.type_name, p.type_name_en, this.name(p), p.common_use, p.notes]) &&
+            matchesQuery(query, [p.type_name, p.type_name_en, this.name(p), p.common_use, p.notes,
+                p.category, vocabularyLabel('paperCategories', p.category)]) &&
             (!category || p.category === category)
         , options);
     }
@@ -506,17 +573,15 @@ class PaperTypeBrowser extends FilterableList {
 
     updateCombined() {
         const {sizeSelect, combinedSection, combinedTitle, combinedBody} = this.els;
-        const formatName = sizeSelect.value;
+        const sheetKey = sizeSelect.value;
+        const format = this.sheets.choices.get(sheetKey);
 
-        if (!formatName) {
+        if (!format) {
             combinedSection.hidden = true;
             return;
         }
 
-        const format = this.formats.find(f => f.format_name === formatName);
-        combinedTitle.textContent = tr('paperTypes.combinedTitle', {
-            format: formatName, size: `${format.width_mm}×${format.height_mm}`
-        });
+        combinedTitle.textContent = tr('paperTypes.combinedTitle', {format: sheetKey, size: sizeText(format)});
         combinedBody.innerHTML = this.paperTypes.map(p => `
             <tr>
                 <td>${escapeHtml(this.name(p))}</td>
@@ -530,6 +595,7 @@ class PaperTypeBrowser extends FilterableList {
 
     refresh() {
         fillVocabularySelect(this.els.categoryFilter, 'paperCategories', this.categories);
+        fillSheetSelect(this.els.sizeSelect, this.sheets);
         super.refresh();
         this.updateCombined();
     }
@@ -590,7 +656,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const counts = {aboutFormats: formats?.length, aboutCountries: formatBrowser?.statistics.getStats().totalCountries};
         for (const [key, value] of Object.entries(counts)) {
             const item = document.getElementById(key === 'aboutFormats' ? 'about-formats' : 'about-countries');
-            item.innerHTML = formatMessage(escapeHtml(i18n.t(`demo.${key}`)), {count: `<strong>${value ?? '…'}</strong>`});
+            item.innerHTML = formatMessage(escapeHtml(i18n.translateCount(`demo.${key}`, value ?? 0)),
+                {count: `<strong>${value === undefined ? '…' : escapeHtml(num(value))}</strong>`});
             if (fallbackLang(`demo.${key}`)) item.lang = 'en';
             else item.removeAttribute('lang');
         }
@@ -617,6 +684,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const lang = i18n.getLanguage();
         document.documentElement.lang = lang;
         document.documentElement.dir = LocalizationManager.isRtl(lang) ? 'rtl' : 'ltr';
+        setLocaleFormatters(lang);
         document.title = tr('demo.title');
         i18n.translateElement(document.body);
         // A string the language lacks shows in English: say so, or a screen reader
@@ -666,6 +734,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    for (const format of formats) if (format.country_code) countryCodes.set(format.country, format.country_code);
     formatBrowser = new FormatBrowser(formats);
     showAboutCounts();
     showUpdated();
@@ -677,7 +746,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Now that every list has its options, put back what the URL says.
     for (const [key, id] of Object.entries(STATE_FIELDS)) {
-        if (urlState[key] !== undefined) document.getElementById(id).value = urlState[key];
+        if (urlState[key] === undefined) continue;
+        // The sheet lists may have split a name into "name (country)" since the address was written.
+        const value = ['from', 'to', 'size'].includes(key) ? formatBrowser.sheets.resolve(urlState[key]) : urlState[key];
+        document.getElementById(id).value = value;
     }
     if (urlState.desc === '1') document.getElementById('sort-reverse').setAttribute('aria-pressed', 'true');
     const quiet = {announceCount: false};

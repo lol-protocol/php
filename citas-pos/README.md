@@ -30,6 +30,8 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 | [`CRITERIOS.md`](CRITERIOS.md) | Qué citas usar: largo, idiomas, autores, derechos y cómo se verifica cada una. |
 | [`PLAN.md`](PLAN.md) | Las fases de trabajo, las preguntas abiertas, cómo se mide si sirve y los riesgos. |
 | [`REVISIONES.md`](REVISIONES.md) y [`revisiones.csv`](revisiones.csv) | Quién ha revisado qué, con el formato del registro de `Listado-colores/`. Empieza vacío. |
+| [`GUIA-REVISION.md`](GUIA-REVISION.md) | Guía para quien revisa en español: qué se mira en una cita, las convenciones de etiquetado de este proyecto, las frases de prueba para practicar y cómo dejar las filas en `revisiones.csv`. |
+| [`pruebas/`](pruebas/) | `ejecutar.php`: las pruebas de los validadores, de la paleta, del prototipo y del generador, incluida la puerta que impide generar una cita sin revisar (PHP sin dependencias). |
 | [`datos/paleta.json`](datos/paleta.json) | Un color por categoría UPOS, en modo claro y oscuro, y la marca (estilo de subrayado) de cada grupo. **Provisional.** |
 | [`datos/citas.json`](datos/citas.json) | Las 6 citas candidatas del piloto en español (Bécquer, Martí, Sor Juana, Darío, Quevedo y Calderón), con qué falta comprobar de cada una. **Todas `sin-verificar` y sin texto**: no se pudo abrir ninguna edición de dominio público desde el entorno donde se armó. |
 | [`datos/ejemplos.json`](datos/ejemplos.json) | Seis frases de prueba (no son citas) en `spa`, `eng` y `deu`, con sus etiquetas puestas a mano y sin revisión nativa. |
@@ -68,6 +70,7 @@ No depende de ningún proyecto en tiempo de ejecución.
 Desde la raíz del repositorio, con PHP 8.3 y sin instalar nada:
 
 ```bash
+php citas-pos/pruebas/ejecutar.php            # las pruebas: lo que cada comprobador debe aceptar y, sobre todo, rechazar (unos 3 s)
 php citas-pos/bin/comprobar-paleta.php        # las 17 categorías, contraste de 4,5:1 en claro y oscuro, colores confundibles (--lista para verlos)
 php citas-pos/bin/prototipo.php --comprobar   # prototipo/index.html al día con datos/ (sin --comprobar, lo regenera)
 php citas-pos/bin/render.php --comprobar      # salida/ al día (sin --comprobar, la regenera). Una cita solo sale si está verificada y revisada
@@ -75,7 +78,7 @@ php citas-pos/bin/comprobar-citas.php         # datos/citas.json: fichas complet
 php citas-pos/bin/comprobar-revisiones.php    # revisiones.csv válido
 ```
 
-El workflow [`pruebas-citas-pos.yml`](../.github/workflows/pruebas-citas-pos.yml) corre las cinco, con filtro de rutas, en cada PR que toque esta carpeta.
+El workflow [`pruebas-citas-pos.yml`](../.github/workflows/pruebas-citas-pos.yml) corre las pruebas y los cinco comprobadores, con filtro de rutas, en cada PR que toque esta carpeta.
 
 Para ver el prototipo, abre `citas-pos/prototipo/index.html` en un navegador: no necesita servidor ni conexión.
 

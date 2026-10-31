@@ -1,0 +1,1849 @@
+codigo,columna,anio,fuente
+AF,poblacion_millones,2024,Our World in Data
+AF,emigrantes_pct,2024,ONU vía Gapminder
+AF,libertad_fh,2022,Freedom House vía Gapminder
+AF,democracia_eiu,2020,EIU vía Gapminder
+AF,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AF,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AF,pib_per_capita_usd,2024,Banco Mundial
+AF,idh,2023,PNUD vía Gapminder
+AF,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+AF,usuarios_internet,2024,Banco Mundial vía Gapminder
+AL,poblacion_millones,2024,Our World in Data
+AL,emigrantes_pct,2024,ONU vía Gapminder
+AL,libertad_fh,2022,Freedom House vía Gapminder
+AL,democracia_eiu,2020,EIU vía Gapminder
+AL,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AL,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AL,pib_per_capita_usd,2024,Banco Mundial
+AL,idh,2023,PNUD vía Gapminder
+AL,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+AL,usuarios_internet,2024,Banco Mundial vía Gapminder
+DE,poblacion_millones,2024,Our World in Data
+DE,emigrantes_pct,2024,ONU vía Gapminder
+DE,libertad_fh,2022,Freedom House vía Gapminder
+DE,democracia_eiu,2020,EIU vía Gapminder
+DE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+DE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+DE,pib_per_capita_usd,2024,Banco Mundial
+DE,idh,2023,PNUD vía Gapminder
+DE,usuarios_internet,2024,Banco Mundial vía Gapminder
+AD,poblacion_millones,2024,Our World in Data
+AD,emigrantes_pct,2024,ONU vía Gapminder
+AD,libertad_fh,2022,Freedom House vía Gapminder
+AD,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AD,pib_per_capita_usd,2024,Banco Mundial
+AD,idh,2023,PNUD vía Gapminder
+AD,usuarios_internet,2024,Banco Mundial vía Gapminder
+AO,poblacion_millones,2024,Our World in Data
+AO,emigrantes_pct,2024,ONU vía Gapminder
+AO,libertad_fh,2022,Freedom House vía Gapminder
+AO,democracia_eiu,2020,EIU vía Gapminder
+AO,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AO,pib_per_capita_usd,2024,Banco Mundial
+AO,idh,2023,PNUD vía Gapminder
+AO,alfabetizacion_adultos,2015,UNESCO vía Gapminder
+AO,usuarios_internet,2024,Banco Mundial vía Gapminder
+AG,poblacion_millones,2024,Our World in Data
+AG,emigrantes_pct,2024,ONU vía Gapminder
+AG,libertad_fh,2022,Freedom House vía Gapminder
+AG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AG,pib_per_capita_usd,2024,Banco Mundial
+AG,idh,2023,PNUD vía Gapminder
+AG,usuarios_internet,2024,Banco Mundial vía Gapminder
+SA,poblacion_millones,2024,Our World in Data
+SA,emigrantes_pct,2024,ONU vía Gapminder
+SA,libertad_fh,2022,Freedom House vía Gapminder
+SA,democracia_eiu,2020,EIU vía Gapminder
+SA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SA,pib_per_capita_usd,2024,Banco Mundial
+SA,idh,2023,PNUD vía Gapminder
+SA,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+SA,usuarios_internet,2024,Banco Mundial vía Gapminder
+DZ,poblacion_millones,2024,Our World in Data
+DZ,emigrantes_pct,2024,ONU vía Gapminder
+DZ,libertad_fh,2022,Freedom House vía Gapminder
+DZ,democracia_eiu,2019,EIU vía Gapminder
+DZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+DZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+DZ,pib_per_capita_usd,2024,Banco Mundial
+DZ,idh,2023,PNUD vía Gapminder
+DZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+AR,poblacion_millones,2024,Our World in Data
+AR,emigrantes_pct,2024,ONU vía Gapminder
+AR,libertad_fh,2022,Freedom House vía Gapminder
+AR,democracia_eiu,2020,EIU vía Gapminder
+AR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AR,pib_per_capita_usd,2024,Banco Mundial
+AR,idh,2023,PNUD vía Gapminder
+AR,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+AR,usuarios_internet,2024,Banco Mundial vía Gapminder
+AM,poblacion_millones,2024,Our World in Data
+AM,emigrantes_pct,2024,ONU vía Gapminder
+AM,libertad_fh,2022,Freedom House vía Gapminder
+AM,democracia_eiu,2020,EIU vía Gapminder
+AM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AM,pib_per_capita_usd,2024,Banco Mundial
+AM,idh,2023,PNUD vía Gapminder
+AM,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+AM,usuarios_internet,2024,Banco Mundial vía Gapminder
+AU,poblacion_millones,2024,Our World in Data
+AU,emigrantes_pct,2024,ONU vía Gapminder
+AU,libertad_fh,2022,Freedom House vía Gapminder
+AU,democracia_eiu,2020,EIU vía Gapminder
+AU,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AU,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AU,pib_per_capita_usd,2024,Banco Mundial
+AU,idh,2023,PNUD vía Gapminder
+AU,usuarios_internet,2024,Banco Mundial vía Gapminder
+AT,poblacion_millones,2024,Our World in Data
+AT,emigrantes_pct,2024,ONU vía Gapminder
+AT,libertad_fh,2022,Freedom House vía Gapminder
+AT,democracia_eiu,2020,EIU vía Gapminder
+AT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AT,pib_per_capita_usd,2024,Banco Mundial
+AT,idh,2023,PNUD vía Gapminder
+AT,usuarios_internet,2025,Banco Mundial vía Gapminder
+AZ,poblacion_millones,2024,Our World in Data
+AZ,emigrantes_pct,2024,ONU vía Gapminder
+AZ,libertad_fh,2022,Freedom House vía Gapminder
+AZ,democracia_eiu,2020,EIU vía Gapminder
+AZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AZ,pib_per_capita_usd,2024,Banco Mundial
+AZ,idh,2023,PNUD vía Gapminder
+AZ,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+AZ,usuarios_internet,2025,Banco Mundial vía Gapminder
+BS,poblacion_millones,2024,Our World in Data
+BS,emigrantes_pct,2024,ONU vía Gapminder
+BS,libertad_fh,2022,Freedom House vía Gapminder
+BS,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BS,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BS,pib_per_capita_usd,2024,Banco Mundial
+BS,idh,2023,PNUD vía Gapminder
+BS,usuarios_internet,2024,Banco Mundial vía Gapminder
+BH,poblacion_millones,2024,Our World in Data
+BH,emigrantes_pct,2024,ONU vía Gapminder
+BH,libertad_fh,2022,Freedom House vía Gapminder
+BH,democracia_eiu,2020,EIU vía Gapminder
+BH,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BH,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BH,pib_per_capita_usd,2024,Banco Mundial
+BH,idh,2023,PNUD vía Gapminder
+BH,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+BH,usuarios_internet,2024,Banco Mundial vía Gapminder
+BD,poblacion_millones,2024,Our World in Data
+BD,emigrantes_pct,2024,ONU vía Gapminder
+BD,libertad_fh,2022,Freedom House vía Gapminder
+BD,democracia_eiu,2020,EIU vía Gapminder
+BD,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BD,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BD,pib_per_capita_usd,2024,Banco Mundial
+BD,idh,2023,PNUD vía Gapminder
+BD,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+BD,usuarios_internet,2024,Banco Mundial vía Gapminder
+BB,poblacion_millones,2024,Our World in Data
+BB,emigrantes_pct,2024,ONU vía Gapminder
+BB,libertad_fh,2022,Freedom House vía Gapminder
+BB,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BB,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BB,pib_per_capita_usd,2024,Banco Mundial
+BB,idh,2023,PNUD vía Gapminder
+BB,usuarios_internet,2024,Banco Mundial vía Gapminder
+BM,poblacion_millones,2024,Our World in Data
+BM,pib_per_capita_usd,2024,Banco Mundial
+BY,poblacion_millones,2024,Our World in Data
+BY,emigrantes_pct,2024,ONU vía Gapminder
+BY,libertad_fh,2022,Freedom House vía Gapminder
+BY,democracia_eiu,2020,EIU vía Gapminder
+BY,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BY,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BY,pib_per_capita_usd,2024,Banco Mundial
+BY,idh,2023,PNUD vía Gapminder
+BY,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+BY,usuarios_internet,2024,Banco Mundial vía Gapminder
+BE,poblacion_millones,2024,Our World in Data
+BE,emigrantes_pct,2024,ONU vía Gapminder
+BE,libertad_fh,2022,Freedom House vía Gapminder
+BE,democracia_eiu,2020,EIU vía Gapminder
+BE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BE,pib_per_capita_usd,2024,Banco Mundial
+BE,idh,2023,PNUD vía Gapminder
+BE,usuarios_internet,2024,Banco Mundial vía Gapminder
+BZ,poblacion_millones,2024,Our World in Data
+BZ,emigrantes_pct,2024,ONU vía Gapminder
+BZ,libertad_fh,2022,Freedom House vía Gapminder
+BZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BZ,pib_per_capita_usd,2024,Banco Mundial
+BZ,idh,2023,PNUD vía Gapminder
+BZ,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+BZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+BJ,poblacion_millones,2024,Our World in Data
+BJ,emigrantes_pct,2024,ONU vía Gapminder
+BJ,libertad_fh,2022,Freedom House vía Gapminder
+BJ,democracia_eiu,2020,EIU vía Gapminder
+BJ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BJ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BJ,pib_per_capita_usd,2024,Banco Mundial
+BJ,idh,2023,PNUD vía Gapminder
+BJ,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+BJ,usuarios_internet,2024,Banco Mundial vía Gapminder
+BT,poblacion_millones,2024,Our World in Data
+BT,emigrantes_pct,2024,ONU vía Gapminder
+BT,libertad_fh,2022,Freedom House vía Gapminder
+BT,democracia_eiu,2020,EIU vía Gapminder
+BT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BT,pib_per_capita_usd,2024,Banco Mundial
+BT,idh,2023,PNUD vía Gapminder
+BT,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+BT,usuarios_internet,2024,Banco Mundial vía Gapminder
+BO,poblacion_millones,2024,Our World in Data
+BO,emigrantes_pct,2024,ONU vía Gapminder
+BO,libertad_fh,2022,Freedom House vía Gapminder
+BO,democracia_eiu,2020,EIU vía Gapminder
+BO,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BO,pib_per_capita_usd,2024,Banco Mundial
+BO,idh,2023,PNUD vía Gapminder
+BO,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+BO,usuarios_internet,2024,Banco Mundial vía Gapminder
+BA,poblacion_millones,2024,Our World in Data
+BA,emigrantes_pct,2024,ONU vía Gapminder
+BA,libertad_fh,2022,Freedom House vía Gapminder
+BA,democracia_eiu,2020,EIU vía Gapminder
+BA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BA,pib_per_capita_usd,2024,Banco Mundial
+BA,idh,2023,PNUD vía Gapminder
+BA,alfabetizacion_adultos,2013,UNESCO vía Gapminder
+BA,usuarios_internet,2024,Banco Mundial vía Gapminder
+BW,poblacion_millones,2024,Our World in Data
+BW,emigrantes_pct,2024,ONU vía Gapminder
+BW,libertad_fh,2022,Freedom House vía Gapminder
+BW,democracia_eiu,2020,EIU vía Gapminder
+BW,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BW,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BW,pib_per_capita_usd,2024,Banco Mundial
+BW,idh,2023,PNUD vía Gapminder
+BW,usuarios_internet,2024,Banco Mundial vía Gapminder
+BR,poblacion_millones,2024,Our World in Data
+BR,emigrantes_pct,2024,ONU vía Gapminder
+BR,libertad_fh,2022,Freedom House vía Gapminder
+BR,democracia_eiu,2020,EIU vía Gapminder
+BR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BR,pib_per_capita_usd,2024,Banco Mundial
+BR,idh,2023,PNUD vía Gapminder
+BR,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+BR,usuarios_internet,2024,Banco Mundial vía Gapminder
+BN,poblacion_millones,2024,Our World in Data
+BN,emigrantes_pct,2024,ONU vía Gapminder
+BN,libertad_fh,2022,Freedom House vía Gapminder
+BN,corrupcion_cpi,2020,Transparencia Internacional vía Gapminder
+BN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BN,pib_per_capita_usd,2024,Banco Mundial
+BN,idh,2023,PNUD vía Gapminder
+BN,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+BN,usuarios_internet,2024,Banco Mundial vía Gapminder
+BG,poblacion_millones,2024,Our World in Data
+BG,emigrantes_pct,2024,ONU vía Gapminder
+BG,libertad_fh,2022,Freedom House vía Gapminder
+BG,democracia_eiu,2020,EIU vía Gapminder
+BG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BG,pib_per_capita_usd,2024,Banco Mundial
+BG,idh,2023,PNUD vía Gapminder
+BG,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+BG,usuarios_internet,2024,Banco Mundial vía Gapminder
+BF,poblacion_millones,2024,Our World in Data
+BF,emigrantes_pct,2024,ONU vía Gapminder
+BF,libertad_fh,2022,Freedom House vía Gapminder
+BF,democracia_eiu,2020,EIU vía Gapminder
+BF,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BF,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BF,pib_per_capita_usd,2024,Banco Mundial
+BF,idh,2023,PNUD vía Gapminder
+BF,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+BF,usuarios_internet,2024,Banco Mundial vía Gapminder
+BI,poblacion_millones,2024,Our World in Data
+BI,emigrantes_pct,2024,ONU vía Gapminder
+BI,libertad_fh,2022,Freedom House vía Gapminder
+BI,democracia_eiu,2020,EIU vía Gapminder
+BI,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+BI,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+BI,pib_per_capita_usd,2024,Banco Mundial
+BI,idh,2023,PNUD vía Gapminder
+BI,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+BI,usuarios_internet,2024,Banco Mundial vía Gapminder
+CV,poblacion_millones,2024,Our World in Data
+CV,emigrantes_pct,2024,ONU vía Gapminder
+CV,libertad_fh,2022,Freedom House vía Gapminder
+CV,democracia_eiu,2020,EIU vía Gapminder
+CV,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CV,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CV,pib_per_capita_usd,2024,Banco Mundial
+CV,idh,2023,PNUD vía Gapminder
+CV,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+CV,usuarios_internet,2024,Banco Mundial vía Gapminder
+KH,poblacion_millones,2024,Our World in Data
+KH,emigrantes_pct,2024,ONU vía Gapminder
+KH,libertad_fh,2022,Freedom House vía Gapminder
+KH,democracia_eiu,2020,EIU vía Gapminder
+KH,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+KH,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KH,pib_per_capita_usd,2024,Banco Mundial
+KH,idh,2023,PNUD vía Gapminder
+KH,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+KH,usuarios_internet,2024,Banco Mundial vía Gapminder
+CM,poblacion_millones,2024,Our World in Data
+CM,emigrantes_pct,2024,ONU vía Gapminder
+CM,libertad_fh,2022,Freedom House vía Gapminder
+CM,democracia_eiu,2020,EIU vía Gapminder
+CM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CM,pib_per_capita_usd,2024,Banco Mundial
+CM,idh,2023,PNUD vía Gapminder
+CM,alfabetizacion_adultos,2018,UNESCO vía Gapminder
+CM,usuarios_internet,2024,Banco Mundial vía Gapminder
+CA,poblacion_millones,2024,Our World in Data
+CA,emigrantes_pct,2024,ONU vía Gapminder
+CA,libertad_fh,2022,Freedom House vía Gapminder
+CA,democracia_eiu,2020,EIU vía Gapminder
+CA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CA,pib_per_capita_usd,2024,Banco Mundial
+CA,idh,2023,PNUD vía Gapminder
+CA,usuarios_internet,2024,Banco Mundial vía Gapminder
+QA,poblacion_millones,2024,Our World in Data
+QA,emigrantes_pct,2024,ONU vía Gapminder
+QA,libertad_fh,2022,Freedom House vía Gapminder
+QA,democracia_eiu,2020,EIU vía Gapminder
+QA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+QA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+QA,pib_per_capita_usd,2024,Banco Mundial
+QA,idh,2023,PNUD vía Gapminder
+QA,alfabetizacion_adultos,2014,UNESCO vía Gapminder
+QA,usuarios_internet,2024,Banco Mundial vía Gapminder
+TD,poblacion_millones,2024,Our World in Data
+TD,emigrantes_pct,2024,ONU vía Gapminder
+TD,libertad_fh,2022,Freedom House vía Gapminder
+TD,democracia_eiu,2020,EIU vía Gapminder
+TD,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TD,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TD,pib_per_capita_usd,2024,Banco Mundial
+TD,idh,2023,PNUD vía Gapminder
+TD,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+TD,usuarios_internet,2024,Banco Mundial vía Gapminder
+CZ,poblacion_millones,2024,Our World in Data
+CZ,emigrantes_pct,2024,ONU vía Gapminder
+CZ,libertad_fh,2022,Freedom House vía Gapminder
+CZ,democracia_eiu,2020,EIU vía Gapminder
+CZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CZ,pib_per_capita_usd,2024,Banco Mundial
+CZ,idh,2023,PNUD vía Gapminder
+CZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+CL,poblacion_millones,2024,Our World in Data
+CL,emigrantes_pct,2024,ONU vía Gapminder
+CL,libertad_fh,2022,Freedom House vía Gapminder
+CL,democracia_eiu,2020,EIU vía Gapminder
+CL,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CL,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CL,pib_per_capita_usd,2024,Banco Mundial
+CL,idh,2023,PNUD vía Gapminder
+CL,alfabetizacion_adultos,2017,UNESCO vía Gapminder
+CL,usuarios_internet,2024,Banco Mundial vía Gapminder
+CN,poblacion_millones,2024,Our World in Data
+CN,emigrantes_pct,2024,ONU vía Gapminder
+CN,libertad_fh,2022,Freedom House vía Gapminder
+CN,democracia_eiu,2020,EIU vía Gapminder
+CN,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CN,pib_per_capita_usd,2024,Banco Mundial
+CN,idh,2023,PNUD vía Gapminder
+CN,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+CN,usuarios_internet,2025,Banco Mundial vía Gapminder
+CY,poblacion_millones,2024,Our World in Data
+CY,emigrantes_pct,2024,ONU vía Gapminder
+CY,libertad_fh,2022,Freedom House vía Gapminder
+CY,democracia_eiu,2020,EIU vía Gapminder
+CY,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CY,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CY,pib_per_capita_usd,2024,Banco Mundial
+CY,idh,2023,PNUD vía Gapminder
+CY,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+CY,usuarios_internet,2024,Banco Mundial vía Gapminder
+CO,poblacion_millones,2024,Our World in Data
+CO,emigrantes_pct,2024,ONU vía Gapminder
+CO,libertad_fh,2022,Freedom House vía Gapminder
+CO,democracia_eiu,2020,EIU vía Gapminder
+CO,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CO,pib_per_capita_usd,2024,Banco Mundial
+CO,idh,2023,PNUD vía Gapminder
+CO,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+CO,usuarios_internet,2024,Banco Mundial vía Gapminder
+KM,poblacion_millones,2024,Our World in Data
+KM,emigrantes_pct,2024,ONU vía Gapminder
+KM,libertad_fh,2022,Freedom House vía Gapminder
+KM,democracia_eiu,2020,EIU vía Gapminder
+KM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+KM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KM,pib_per_capita_usd,2024,Banco Mundial
+KM,idh,2023,PNUD vía Gapminder
+KM,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+KM,usuarios_internet,2024,Banco Mundial vía Gapminder
+CG,poblacion_millones,2024,Our World in Data
+CG,emigrantes_pct,2024,ONU vía Gapminder
+CG,libertad_fh,2022,Freedom House vía Gapminder
+CG,democracia_eiu,2020,EIU vía Gapminder
+CG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CG,pib_per_capita_usd,2024,Banco Mundial
+CG,idh,2023,PNUD vía Gapminder
+CG,usuarios_internet,2024,Banco Mundial vía Gapminder
+KP,poblacion_millones,2024,Our World in Data
+KP,emigrantes_pct,2024,ONU vía Gapminder
+KP,libertad_fh,2022,Freedom House vía Gapminder
+KP,democracia_eiu,2020,EIU vía Gapminder
+KP,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+KP,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KR,poblacion_millones,2024,Our World in Data
+KR,emigrantes_pct,2024,ONU vía Gapminder
+KR,libertad_fh,2022,Freedom House vía Gapminder
+KR,democracia_eiu,2020,EIU vía Gapminder
+KR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+KR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KR,pib_per_capita_usd,2024,Banco Mundial
+KR,idh,2023,PNUD vía Gapminder
+KR,usuarios_internet,2024,Banco Mundial vía Gapminder
+CI,poblacion_millones,2024,Our World in Data
+CI,emigrantes_pct,2024,ONU vía Gapminder
+CI,libertad_fh,2022,Freedom House vía Gapminder
+CI,democracia_eiu,2020,EIU vía Gapminder
+CI,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CI,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CI,pib_per_capita_usd,2024,Banco Mundial
+CI,idh,2023,PNUD vía Gapminder
+CI,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+CI,usuarios_internet,2024,Banco Mundial vía Gapminder
+CR,poblacion_millones,2024,Our World in Data
+CR,emigrantes_pct,2024,ONU vía Gapminder
+CR,libertad_fh,2022,Freedom House vía Gapminder
+CR,democracia_eiu,2020,EIU vía Gapminder
+CR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CR,pib_per_capita_usd,2024,Banco Mundial
+CR,idh,2023,PNUD vía Gapminder
+CR,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+CR,usuarios_internet,2024,Banco Mundial vía Gapminder
+HR,poblacion_millones,2024,Our World in Data
+HR,emigrantes_pct,2024,ONU vía Gapminder
+HR,libertad_fh,2022,Freedom House vía Gapminder
+HR,democracia_eiu,2020,EIU vía Gapminder
+HR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+HR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+HR,pib_per_capita_usd,2024,Banco Mundial
+HR,idh,2023,PNUD vía Gapminder
+HR,usuarios_internet,2024,Banco Mundial vía Gapminder
+CU,poblacion_millones,2024,Our World in Data
+CU,emigrantes_pct,2024,ONU vía Gapminder
+CU,libertad_fh,2022,Freedom House vía Gapminder
+CU,democracia_eiu,2020,EIU vía Gapminder
+CU,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CU,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CU,idh,2023,PNUD vía Gapminder
+CU,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+CU,usuarios_internet,2024,Banco Mundial vía Gapminder
+CW,poblacion_millones,2024,Our World in Data
+CW,pib_per_capita_usd,2024,Banco Mundial
+DK,poblacion_millones,2024,Our World in Data
+DK,emigrantes_pct,2024,ONU vía Gapminder
+DK,libertad_fh,2022,Freedom House vía Gapminder
+DK,democracia_eiu,2020,EIU vía Gapminder
+DK,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+DK,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+DK,pib_per_capita_usd,2024,Banco Mundial
+DK,idh,2023,PNUD vía Gapminder
+DK,usuarios_internet,2024,Banco Mundial vía Gapminder
+DM,poblacion_millones,2024,Our World in Data
+DM,emigrantes_pct,2024,ONU vía Gapminder
+DM,libertad_fh,2022,Freedom House vía Gapminder
+DM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+DM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+DM,pib_per_capita_usd,2024,Banco Mundial
+DM,idh,2023,PNUD vía Gapminder
+DM,usuarios_internet,2024,Banco Mundial vía Gapminder
+EC,poblacion_millones,2024,Our World in Data
+EC,emigrantes_pct,2024,ONU vía Gapminder
+EC,libertad_fh,2022,Freedom House vía Gapminder
+EC,democracia_eiu,2020,EIU vía Gapminder
+EC,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+EC,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+EC,pib_per_capita_usd,2024,Banco Mundial
+EC,idh,2023,PNUD vía Gapminder
+EC,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+EC,usuarios_internet,2024,Banco Mundial vía Gapminder
+EG,poblacion_millones,2024,Our World in Data
+EG,emigrantes_pct,2024,ONU vía Gapminder
+EG,libertad_fh,2022,Freedom House vía Gapminder
+EG,democracia_eiu,2020,EIU vía Gapminder
+EG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+EG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+EG,pib_per_capita_usd,2024,Banco Mundial
+EG,idh,2023,PNUD vía Gapminder
+EG,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+EG,usuarios_internet,2024,Banco Mundial vía Gapminder
+SV,poblacion_millones,2024,Our World in Data
+SV,emigrantes_pct,2024,ONU vía Gapminder
+SV,libertad_fh,2022,Freedom House vía Gapminder
+SV,democracia_eiu,2020,EIU vía Gapminder
+SV,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SV,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SV,pib_per_capita_usd,2024,Banco Mundial
+SV,idh,2023,PNUD vía Gapminder
+SV,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+SV,usuarios_internet,2024,Banco Mundial vía Gapminder
+AE,poblacion_millones,2024,Our World in Data
+AE,emigrantes_pct,2024,ONU vía Gapminder
+AE,libertad_fh,2022,Freedom House vía Gapminder
+AE,democracia_eiu,2020,EIU vía Gapminder
+AE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+AE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+AE,pib_per_capita_usd,2024,Banco Mundial
+AE,idh,2023,PNUD vía Gapminder
+AE,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+AE,usuarios_internet,2024,Banco Mundial vía Gapminder
+ER,poblacion_millones,2024,Our World in Data
+ER,emigrantes_pct,2024,ONU vía Gapminder
+ER,libertad_fh,2022,Freedom House vía Gapminder
+ER,democracia_eiu,2020,EIU vía Gapminder
+ER,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ER,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ER,idh,2023,PNUD vía Gapminder
+ER,usuarios_internet,2020,Banco Mundial vía Gapminder
+SK,poblacion_millones,2024,Our World in Data
+SK,emigrantes_pct,2024,ONU vía Gapminder
+SK,libertad_fh,2022,Freedom House vía Gapminder
+SK,democracia_eiu,2020,EIU vía Gapminder
+SK,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SK,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SK,pib_per_capita_usd,2024,Banco Mundial
+SK,idh,2023,PNUD vía Gapminder
+SK,usuarios_internet,2024,Banco Mundial vía Gapminder
+SI,poblacion_millones,2024,Our World in Data
+SI,emigrantes_pct,2024,ONU vía Gapminder
+SI,libertad_fh,2022,Freedom House vía Gapminder
+SI,democracia_eiu,2020,EIU vía Gapminder
+SI,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SI,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SI,pib_per_capita_usd,2024,Banco Mundial
+SI,idh,2023,PNUD vía Gapminder
+SI,usuarios_internet,2024,Banco Mundial vía Gapminder
+ES,poblacion_millones,2024,Our World in Data
+ES,emigrantes_pct,2024,ONU vía Gapminder
+ES,libertad_fh,2022,Freedom House vía Gapminder
+ES,democracia_eiu,2020,EIU vía Gapminder
+ES,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ES,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ES,pib_per_capita_usd,2024,Banco Mundial
+ES,idh,2023,PNUD vía Gapminder
+ES,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+ES,usuarios_internet,2024,Banco Mundial vía Gapminder
+SZ,poblacion_millones,2024,Our World in Data
+SZ,emigrantes_pct,2024,ONU vía Gapminder
+SZ,libertad_fh,2022,Freedom House vía Gapminder
+SZ,democracia_eiu,2020,EIU vía Gapminder
+SZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SZ,pib_per_capita_usd,2024,Banco Mundial
+SZ,idh,2023,PNUD vía Gapminder
+SZ,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+SZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+US,poblacion_millones,2024,Our World in Data
+US,emigrantes_pct,2024,ONU vía Gapminder
+US,libertad_fh,2022,Freedom House vía Gapminder
+US,democracia_eiu,2020,EIU vía Gapminder
+US,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+US,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+US,pib_per_capita_usd,2024,Banco Mundial
+US,idh,2023,PNUD vía Gapminder
+US,usuarios_internet,2024,Banco Mundial vía Gapminder
+EE,poblacion_millones,2024,Our World in Data
+EE,emigrantes_pct,2024,ONU vía Gapminder
+EE,libertad_fh,2022,Freedom House vía Gapminder
+EE,democracia_eiu,2020,EIU vía Gapminder
+EE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+EE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+EE,pib_per_capita_usd,2024,Banco Mundial
+EE,idh,2023,PNUD vía Gapminder
+EE,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+EE,usuarios_internet,2024,Banco Mundial vía Gapminder
+ET,poblacion_millones,2024,Our World in Data
+ET,emigrantes_pct,2024,ONU vía Gapminder
+ET,libertad_fh,2022,Freedom House vía Gapminder
+ET,democracia_eiu,2020,EIU vía Gapminder
+ET,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ET,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ET,pib_per_capita_usd,2024,Banco Mundial
+ET,idh,2023,PNUD vía Gapminder
+ET,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+ET,usuarios_internet,2024,Banco Mundial vía Gapminder
+FJ,poblacion_millones,2024,Our World in Data
+FJ,emigrantes_pct,2024,ONU vía Gapminder
+FJ,libertad_fh,2022,Freedom House vía Gapminder
+FJ,democracia_eiu,2020,EIU vía Gapminder
+FJ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+FJ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+FJ,pib_per_capita_usd,2024,Banco Mundial
+FJ,idh,2023,PNUD vía Gapminder
+FJ,usuarios_internet,2024,Banco Mundial vía Gapminder
+PH,poblacion_millones,2024,Our World in Data
+PH,emigrantes_pct,2024,ONU vía Gapminder
+PH,libertad_fh,2022,Freedom House vía Gapminder
+PH,democracia_eiu,2020,EIU vía Gapminder
+PH,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+PH,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PH,pib_per_capita_usd,2024,Banco Mundial
+PH,idh,2023,PNUD vía Gapminder
+PH,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+PH,usuarios_internet,2024,Banco Mundial vía Gapminder
+FI,poblacion_millones,2024,Our World in Data
+FI,emigrantes_pct,2024,ONU vía Gapminder
+FI,libertad_fh,2022,Freedom House vía Gapminder
+FI,democracia_eiu,2020,EIU vía Gapminder
+FI,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+FI,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+FI,pib_per_capita_usd,2024,Banco Mundial
+FI,idh,2023,PNUD vía Gapminder
+FI,usuarios_internet,2024,Banco Mundial vía Gapminder
+FR,poblacion_millones,2024,Our World in Data
+FR,emigrantes_pct,2024,ONU vía Gapminder
+FR,libertad_fh,2022,Freedom House vía Gapminder
+FR,democracia_eiu,2020,EIU vía Gapminder
+FR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+FR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+FR,pib_per_capita_usd,2024,Banco Mundial
+FR,idh,2023,PNUD vía Gapminder
+FR,usuarios_internet,2024,Banco Mundial vía Gapminder
+GA,poblacion_millones,2024,Our World in Data
+GA,emigrantes_pct,2024,ONU vía Gapminder
+GA,libertad_fh,2022,Freedom House vía Gapminder
+GA,democracia_eiu,2020,EIU vía Gapminder
+GA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GA,pib_per_capita_usd,2024,Banco Mundial
+GA,idh,2023,PNUD vía Gapminder
+GA,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+GA,usuarios_internet,2024,Banco Mundial vía Gapminder
+GM,poblacion_millones,2024,Our World in Data
+GM,emigrantes_pct,2024,ONU vía Gapminder
+GM,libertad_fh,2022,Freedom House vía Gapminder
+GM,democracia_eiu,2020,EIU vía Gapminder
+GM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GM,pib_per_capita_usd,2024,Banco Mundial
+GM,idh,2023,PNUD vía Gapminder
+GM,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+GM,usuarios_internet,2024,Banco Mundial vía Gapminder
+GE,poblacion_millones,2024,Our World in Data
+GE,emigrantes_pct,2024,ONU vía Gapminder
+GE,libertad_fh,2022,Freedom House vía Gapminder
+GE,democracia_eiu,2020,EIU vía Gapminder
+GE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GE,pib_per_capita_usd,2024,Banco Mundial
+GE,idh,2023,PNUD vía Gapminder
+GE,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+GE,usuarios_internet,2024,Banco Mundial vía Gapminder
+GH,poblacion_millones,2024,Our World in Data
+GH,emigrantes_pct,2024,ONU vía Gapminder
+GH,libertad_fh,2022,Freedom House vía Gapminder
+GH,democracia_eiu,2020,EIU vía Gapminder
+GH,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GH,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GH,pib_per_capita_usd,2024,Banco Mundial
+GH,idh,2023,PNUD vía Gapminder
+GH,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+GH,usuarios_internet,2024,Banco Mundial vía Gapminder
+GI,poblacion_millones,2024,Banco Mundial
+GD,poblacion_millones,2024,Our World in Data
+GD,emigrantes_pct,2024,ONU vía Gapminder
+GD,libertad_fh,2022,Freedom House vía Gapminder
+GD,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GD,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GD,pib_per_capita_usd,2024,Banco Mundial
+GD,idh,2023,PNUD vía Gapminder
+GD,usuarios_internet,2024,Banco Mundial vía Gapminder
+GR,poblacion_millones,2024,Our World in Data
+GR,emigrantes_pct,2024,ONU vía Gapminder
+GR,libertad_fh,2022,Freedom House vía Gapminder
+GR,democracia_eiu,2020,EIU vía Gapminder
+GR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GR,pib_per_capita_usd,2024,Banco Mundial
+GR,idh,2023,PNUD vía Gapminder
+GR,usuarios_internet,2024,Banco Mundial vía Gapminder
+GL,poblacion_millones,2024,Our World in Data
+GL,pib_per_capita_usd,2023,Banco Mundial
+GT,poblacion_millones,2024,Our World in Data
+GT,emigrantes_pct,2024,ONU vía Gapminder
+GT,libertad_fh,2022,Freedom House vía Gapminder
+GT,democracia_eiu,2020,EIU vía Gapminder
+GT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GT,pib_per_capita_usd,2024,Banco Mundial
+GT,idh,2023,PNUD vía Gapminder
+GT,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+GT,usuarios_internet,2024,Banco Mundial vía Gapminder
+GN,poblacion_millones,2024,Our World in Data
+GN,emigrantes_pct,2024,ONU vía Gapminder
+GN,libertad_fh,2022,Freedom House vía Gapminder
+GN,democracia_eiu,2020,EIU vía Gapminder
+GN,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GN,pib_per_capita_usd,2024,Banco Mundial
+GN,idh,2023,PNUD vía Gapminder
+GN,alfabetizacion_adultos,2018,UNESCO vía Gapminder
+GN,usuarios_internet,2024,Banco Mundial vía Gapminder
+GQ,poblacion_millones,2024,Our World in Data
+GQ,emigrantes_pct,2024,ONU vía Gapminder
+GQ,libertad_fh,2022,Freedom House vía Gapminder
+GQ,democracia_eiu,2020,EIU vía Gapminder
+GQ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GQ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GQ,pib_per_capita_usd,2024,Banco Mundial
+GQ,idh,2023,PNUD vía Gapminder
+GQ,usuarios_internet,2024,Banco Mundial vía Gapminder
+GW,poblacion_millones,2024,Our World in Data
+GW,emigrantes_pct,2024,ONU vía Gapminder
+GW,libertad_fh,2022,Freedom House vía Gapminder
+GW,democracia_eiu,2020,EIU vía Gapminder
+GW,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GW,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GW,pib_per_capita_usd,2024,Banco Mundial
+GW,idh,2023,PNUD vía Gapminder
+GW,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+GW,usuarios_internet,2024,Banco Mundial vía Gapminder
+GY,poblacion_millones,2024,Our World in Data
+GY,emigrantes_pct,2024,ONU vía Gapminder
+GY,libertad_fh,2022,Freedom House vía Gapminder
+GY,democracia_eiu,2020,EIU vía Gapminder
+GY,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GY,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GY,pib_per_capita_usd,2024,Banco Mundial
+GY,idh,2023,PNUD vía Gapminder
+GY,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+GY,usuarios_internet,2024,Banco Mundial vía Gapminder
+HT,poblacion_millones,2024,Our World in Data
+HT,emigrantes_pct,2024,ONU vía Gapminder
+HT,libertad_fh,2022,Freedom House vía Gapminder
+HT,democracia_eiu,2020,EIU vía Gapminder
+HT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+HT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+HT,pib_per_capita_usd,2024,Banco Mundial
+HT,idh,2023,PNUD vía Gapminder
+HT,alfabetizacion_adultos,2017,UNESCO vía Gapminder
+HT,usuarios_internet,2024,Banco Mundial vía Gapminder
+HN,poblacion_millones,2024,Our World in Data
+HN,emigrantes_pct,2024,ONU vía Gapminder
+HN,libertad_fh,2022,Freedom House vía Gapminder
+HN,democracia_eiu,2020,EIU vía Gapminder
+HN,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+HN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+HN,pib_per_capita_usd,2024,Banco Mundial
+HN,idh,2023,PNUD vía Gapminder
+HN,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+HN,usuarios_internet,2024,Banco Mundial vía Gapminder
+HK,poblacion_millones,2024,Our World in Data
+HK,emigrantes_pct,2024,ONU vía Gapminder
+HK,democracia_eiu,2020,EIU vía Gapminder
+HK,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+HK,pib_per_capita_usd,2024,Banco Mundial
+HK,idh,2023,PNUD vía Gapminder
+HK,usuarios_internet,2024,Banco Mundial vía Gapminder
+HU,poblacion_millones,2024,Our World in Data
+HU,emigrantes_pct,2024,ONU vía Gapminder
+HU,libertad_fh,2022,Freedom House vía Gapminder
+HU,democracia_eiu,2020,EIU vía Gapminder
+HU,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+HU,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+HU,pib_per_capita_usd,2024,Banco Mundial
+HU,idh,2023,PNUD vía Gapminder
+HU,usuarios_internet,2024,Banco Mundial vía Gapminder
+IN,poblacion_millones,2024,Our World in Data
+IN,emigrantes_pct,2024,ONU vía Gapminder
+IN,libertad_fh,2022,Freedom House vía Gapminder
+IN,democracia_eiu,2020,EIU vía Gapminder
+IN,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+IN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+IN,pib_per_capita_usd,2024,Banco Mundial
+IN,idh,2023,PNUD vía Gapminder
+IN,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+IN,usuarios_internet,2025,Banco Mundial vía Gapminder
+ID,poblacion_millones,2024,Our World in Data
+ID,emigrantes_pct,2024,ONU vía Gapminder
+ID,libertad_fh,2022,Freedom House vía Gapminder
+ID,democracia_eiu,2020,EIU vía Gapminder
+ID,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ID,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ID,pib_per_capita_usd,2024,Banco Mundial
+ID,idh,2023,PNUD vía Gapminder
+ID,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+ID,usuarios_internet,2024,Banco Mundial vía Gapminder
+IQ,poblacion_millones,2024,Our World in Data
+IQ,emigrantes_pct,2024,ONU vía Gapminder
+IQ,libertad_fh,2022,Freedom House vía Gapminder
+IQ,democracia_eiu,2020,EIU vía Gapminder
+IQ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+IQ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+IQ,pib_per_capita_usd,2024,Banco Mundial
+IQ,idh,2023,PNUD vía Gapminder
+IQ,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+IQ,usuarios_internet,2024,Banco Mundial vía Gapminder
+IR,poblacion_millones,2024,Our World in Data
+IR,emigrantes_pct,2024,ONU vía Gapminder
+IR,libertad_fh,2022,Freedom House vía Gapminder
+IR,democracia_eiu,2019,EIU vía Gapminder
+IR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+IR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+IR,pib_per_capita_usd,2024,Banco Mundial
+IR,idh,2023,PNUD vía Gapminder
+IR,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+IR,usuarios_internet,2024,Banco Mundial vía Gapminder
+IE,poblacion_millones,2024,Our World in Data
+IE,emigrantes_pct,2024,ONU vía Gapminder
+IE,libertad_fh,2022,Freedom House vía Gapminder
+IE,democracia_eiu,2020,EIU vía Gapminder
+IE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+IE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+IE,pib_per_capita_usd,2024,Banco Mundial
+IE,idh,2023,PNUD vía Gapminder
+IE,usuarios_internet,2024,Banco Mundial vía Gapminder
+IM,poblacion_millones,2024,Banco Mundial
+IM,pib_per_capita_usd,2023,Banco Mundial
+IS,poblacion_millones,2024,Our World in Data
+IS,emigrantes_pct,2024,ONU vía Gapminder
+IS,libertad_fh,2022,Freedom House vía Gapminder
+IS,democracia_eiu,2020,EIU vía Gapminder
+IS,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+IS,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+IS,pib_per_capita_usd,2024,Banco Mundial
+IS,idh,2023,PNUD vía Gapminder
+IS,usuarios_internet,2024,Banco Mundial vía Gapminder
+FO,poblacion_millones,2024,Our World in Data
+FO,pib_per_capita_usd,2024,Banco Mundial
+MH,poblacion_millones,2024,Our World in Data
+MH,emigrantes_pct,2024,ONU vía Gapminder
+MH,libertad_fh,2022,Freedom House vía Gapminder
+MH,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MH,pib_per_capita_usd,2024,Banco Mundial
+MH,idh,2023,PNUD vía Gapminder
+MH,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+MH,usuarios_internet,2024,Banco Mundial vía Gapminder
+SB,poblacion_millones,2024,Our World in Data
+SB,emigrantes_pct,2024,ONU vía Gapminder
+SB,libertad_fh,2022,Freedom House vía Gapminder
+SB,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SB,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SB,pib_per_capita_usd,2024,Banco Mundial
+SB,idh,2023,PNUD vía Gapminder
+SB,usuarios_internet,2024,Banco Mundial vía Gapminder
+IL,poblacion_millones,2024,Our World in Data
+IL,emigrantes_pct,2024,ONU vía Gapminder
+IL,libertad_fh,2022,Freedom House vía Gapminder
+IL,democracia_eiu,2020,EIU vía Gapminder
+IL,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+IL,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+IL,pib_per_capita_usd,2024,Banco Mundial
+IL,idh,2023,PNUD vía Gapminder
+IL,usuarios_internet,2024,Banco Mundial vía Gapminder
+IT,poblacion_millones,2024,Our World in Data
+IT,emigrantes_pct,2024,ONU vía Gapminder
+IT,libertad_fh,2022,Freedom House vía Gapminder
+IT,democracia_eiu,2020,EIU vía Gapminder
+IT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+IT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+IT,pib_per_capita_usd,2024,Banco Mundial
+IT,idh,2023,PNUD vía Gapminder
+IT,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+IT,usuarios_internet,2024,Banco Mundial vía Gapminder
+JM,poblacion_millones,2024,Our World in Data
+JM,emigrantes_pct,2024,ONU vía Gapminder
+JM,libertad_fh,2022,Freedom House vía Gapminder
+JM,democracia_eiu,2020,EIU vía Gapminder
+JM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+JM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+JM,pib_per_capita_usd,2024,Banco Mundial
+JM,idh,2023,PNUD vía Gapminder
+JM,usuarios_internet,2024,Banco Mundial vía Gapminder
+JP,poblacion_millones,2024,Our World in Data
+JP,emigrantes_pct,2024,ONU vía Gapminder
+JP,libertad_fh,2022,Freedom House vía Gapminder
+JP,democracia_eiu,2020,EIU vía Gapminder
+JP,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+JP,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+JP,pib_per_capita_usd,2024,Banco Mundial
+JP,idh,2023,PNUD vía Gapminder
+JP,usuarios_internet,2024,Banco Mundial vía Gapminder
+JO,poblacion_millones,2024,Our World in Data
+JO,emigrantes_pct,2024,ONU vía Gapminder
+JO,libertad_fh,2022,Freedom House vía Gapminder
+JO,democracia_eiu,2020,EIU vía Gapminder
+JO,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+JO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+JO,pib_per_capita_usd,2024,Banco Mundial
+JO,idh,2023,PNUD vía Gapminder
+JO,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+JO,usuarios_internet,2024,Banco Mundial vía Gapminder
+KZ,poblacion_millones,2024,Our World in Data
+KZ,emigrantes_pct,2024,ONU vía Gapminder
+KZ,libertad_fh,2022,Freedom House vía Gapminder
+KZ,democracia_eiu,2020,EIU vía Gapminder
+KZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+KZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KZ,pib_per_capita_usd,2024,Banco Mundial
+KZ,idh,2023,PNUD vía Gapminder
+KZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+KE,poblacion_millones,2024,Our World in Data
+KE,emigrantes_pct,2024,ONU vía Gapminder
+KE,libertad_fh,2022,Freedom House vía Gapminder
+KE,democracia_eiu,2020,EIU vía Gapminder
+KE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+KE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KE,pib_per_capita_usd,2024,Banco Mundial
+KE,idh,2023,PNUD vía Gapminder
+KE,usuarios_internet,2024,Banco Mundial vía Gapminder
+KG,poblacion_millones,2024,Our World in Data
+KG,emigrantes_pct,2024,ONU vía Gapminder
+KG,libertad_fh,2022,Freedom House vía Gapminder
+KG,democracia_eiu,2020,EIU vía Gapminder
+KG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+KG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KG,pib_per_capita_usd,2024,Banco Mundial
+KG,idh,2023,PNUD vía Gapminder
+KG,usuarios_internet,2024,Banco Mundial vía Gapminder
+KI,poblacion_millones,2024,Our World in Data
+KI,emigrantes_pct,2024,ONU vía Gapminder
+KI,libertad_fh,2022,Freedom House vía Gapminder
+KI,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KI,pib_per_capita_usd,2024,Banco Mundial
+KI,idh,2023,PNUD vía Gapminder
+KI,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+KI,usuarios_internet,2024,Banco Mundial vía Gapminder
+XK,poblacion_millones,2024,Our World in Data
+XK,pib_per_capita_usd,2024,Banco Mundial
+KW,poblacion_millones,2024,Our World in Data
+KW,emigrantes_pct,2024,ONU vía Gapminder
+KW,libertad_fh,2022,Freedom House vía Gapminder
+KW,democracia_eiu,2020,EIU vía Gapminder
+KW,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+KW,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KW,pib_per_capita_usd,2024,Banco Mundial
+KW,idh,2023,PNUD vía Gapminder
+KW,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+KW,usuarios_internet,2025,Banco Mundial vía Gapminder
+LA,poblacion_millones,2024,Our World in Data
+LA,emigrantes_pct,2024,ONU vía Gapminder
+LA,libertad_fh,2022,Freedom House vía Gapminder
+LA,democracia_eiu,2020,EIU vía Gapminder
+LA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LA,pib_per_capita_usd,2024,Banco Mundial
+LA,idh,2023,PNUD vía Gapminder
+LA,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+LA,usuarios_internet,2024,Banco Mundial vía Gapminder
+LS,poblacion_millones,2024,Our World in Data
+LS,emigrantes_pct,2024,ONU vía Gapminder
+LS,libertad_fh,2022,Freedom House vía Gapminder
+LS,democracia_eiu,2020,EIU vía Gapminder
+LS,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LS,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LS,pib_per_capita_usd,2024,Banco Mundial
+LS,idh,2023,PNUD vía Gapminder
+LS,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+LS,usuarios_internet,2024,Banco Mundial vía Gapminder
+LV,poblacion_millones,2024,Our World in Data
+LV,emigrantes_pct,2024,ONU vía Gapminder
+LV,libertad_fh,2022,Freedom House vía Gapminder
+LV,democracia_eiu,2020,EIU vía Gapminder
+LV,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LV,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LV,pib_per_capita_usd,2024,Banco Mundial
+LV,idh,2023,PNUD vía Gapminder
+LV,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+LV,usuarios_internet,2024,Banco Mundial vía Gapminder
+LB,poblacion_millones,2024,Our World in Data
+LB,emigrantes_pct,2024,ONU vía Gapminder
+LB,libertad_fh,2022,Freedom House vía Gapminder
+LB,democracia_eiu,2020,EIU vía Gapminder
+LB,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LB,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LB,pib_per_capita_usd,2024,Banco Mundial
+LB,idh,2023,PNUD vía Gapminder
+LB,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+LB,usuarios_internet,2024,Banco Mundial vía Gapminder
+LR,poblacion_millones,2024,Our World in Data
+LR,emigrantes_pct,2024,ONU vía Gapminder
+LR,libertad_fh,2022,Freedom House vía Gapminder
+LR,democracia_eiu,2020,EIU vía Gapminder
+LR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LR,pib_per_capita_usd,2024,Banco Mundial
+LR,idh,2023,PNUD vía Gapminder
+LR,alfabetizacion_adultos,2010,UNESCO vía Gapminder
+LR,usuarios_internet,2024,Banco Mundial vía Gapminder
+LY,poblacion_millones,2024,Our World in Data
+LY,emigrantes_pct,2024,ONU vía Gapminder
+LY,libertad_fh,2022,Freedom House vía Gapminder
+LY,democracia_eiu,2020,EIU vía Gapminder
+LY,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LY,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LY,pib_per_capita_usd,2024,Banco Mundial
+LY,idh,2023,PNUD vía Gapminder
+LY,usuarios_internet,2024,Banco Mundial vía Gapminder
+LI,poblacion_millones,2024,Our World in Data
+LI,emigrantes_pct,2024,ONU vía Gapminder
+LI,libertad_fh,2022,Freedom House vía Gapminder
+LI,pib_per_capita_usd,2024,Banco Mundial
+LI,idh,2023,PNUD vía Gapminder
+LI,usuarios_internet,2024,Banco Mundial vía Gapminder
+LT,poblacion_millones,2024,Our World in Data
+LT,emigrantes_pct,2024,ONU vía Gapminder
+LT,libertad_fh,2022,Freedom House vía Gapminder
+LT,democracia_eiu,2019,EIU vía Gapminder
+LT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LT,pib_per_capita_usd,2024,Banco Mundial
+LT,idh,2023,PNUD vía Gapminder
+LT,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+LT,usuarios_internet,2024,Banco Mundial vía Gapminder
+LU,poblacion_millones,2024,Our World in Data
+LU,emigrantes_pct,2024,ONU vía Gapminder
+LU,libertad_fh,2022,Freedom House vía Gapminder
+LU,democracia_eiu,2020,EIU vía Gapminder
+LU,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LU,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LU,pib_per_capita_usd,2024,Banco Mundial
+LU,idh,2023,PNUD vía Gapminder
+LU,usuarios_internet,2025,Banco Mundial vía Gapminder
+MO,poblacion_millones,2024,Our World in Data
+MO,pib_per_capita_usd,2024,Banco Mundial
+MO,alfabetizacion_adultos,2016,UNESCO vía Gapminder
+MO,usuarios_internet,2024,Banco Mundial vía Gapminder
+MK,poblacion_millones,2024,Our World in Data
+MK,emigrantes_pct,2024,ONU vía Gapminder
+MK,libertad_fh,2022,Freedom House vía Gapminder
+MK,democracia_eiu,2020,EIU vía Gapminder
+MK,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MK,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MK,pib_per_capita_usd,2024,Banco Mundial
+MK,idh,2023,PNUD vía Gapminder
+MK,usuarios_internet,2025,Banco Mundial vía Gapminder
+MG,poblacion_millones,2024,Our World in Data
+MG,emigrantes_pct,2024,ONU vía Gapminder
+MG,libertad_fh,2022,Freedom House vía Gapminder
+MG,democracia_eiu,2020,EIU vía Gapminder
+MG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MG,pib_per_capita_usd,2024,Banco Mundial
+MG,idh,2023,PNUD vía Gapminder
+MG,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+MG,usuarios_internet,2024,Banco Mundial vía Gapminder
+MY,poblacion_millones,2024,Our World in Data
+MY,emigrantes_pct,2024,ONU vía Gapminder
+MY,libertad_fh,2022,Freedom House vía Gapminder
+MY,democracia_eiu,2020,EIU vía Gapminder
+MY,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MY,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MY,pib_per_capita_usd,2024,Banco Mundial
+MY,idh,2023,PNUD vía Gapminder
+MY,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+MY,usuarios_internet,2024,Banco Mundial vía Gapminder
+MW,poblacion_millones,2024,Our World in Data
+MW,emigrantes_pct,2024,ONU vía Gapminder
+MW,libertad_fh,2022,Freedom House vía Gapminder
+MW,democracia_eiu,2020,EIU vía Gapminder
+MW,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MW,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MW,pib_per_capita_usd,2024,Banco Mundial
+MW,idh,2023,PNUD vía Gapminder
+MW,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+MW,usuarios_internet,2024,Banco Mundial vía Gapminder
+MV,poblacion_millones,2024,Our World in Data
+MV,emigrantes_pct,2024,ONU vía Gapminder
+MV,libertad_fh,2022,Freedom House vía Gapminder
+MV,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MV,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MV,pib_per_capita_usd,2024,Banco Mundial
+MV,idh,2023,PNUD vía Gapminder
+MV,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+MV,usuarios_internet,2024,Banco Mundial vía Gapminder
+ML,poblacion_millones,2024,Our World in Data
+ML,emigrantes_pct,2024,ONU vía Gapminder
+ML,libertad_fh,2022,Freedom House vía Gapminder
+ML,democracia_eiu,2020,EIU vía Gapminder
+ML,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ML,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ML,pib_per_capita_usd,2024,Banco Mundial
+ML,idh,2023,PNUD vía Gapminder
+ML,alfabetizacion_adultos,2018,UNESCO vía Gapminder
+ML,usuarios_internet,2024,Banco Mundial vía Gapminder
+MT,poblacion_millones,2024,Our World in Data
+MT,emigrantes_pct,2024,ONU vía Gapminder
+MT,libertad_fh,2022,Freedom House vía Gapminder
+MT,democracia_eiu,2020,EIU vía Gapminder
+MT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MT,pib_per_capita_usd,2024,Banco Mundial
+MT,idh,2023,PNUD vía Gapminder
+MT,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+MT,usuarios_internet,2024,Banco Mundial vía Gapminder
+MA,poblacion_millones,2024,Our World in Data
+MA,emigrantes_pct,2024,ONU vía Gapminder
+MA,libertad_fh,2022,Freedom House vía Gapminder
+MA,democracia_eiu,2020,EIU vía Gapminder
+MA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MA,pib_per_capita_usd,2024,Banco Mundial
+MA,idh,2023,PNUD vía Gapminder
+MA,alfabetizacion_adultos,2014,UNESCO vía Gapminder
+MA,usuarios_internet,2024,Banco Mundial vía Gapminder
+MU,poblacion_millones,2024,Our World in Data
+MU,emigrantes_pct,2024,ONU vía Gapminder
+MU,libertad_fh,2022,Freedom House vía Gapminder
+MU,democracia_eiu,2020,EIU vía Gapminder
+MU,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MU,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MU,pib_per_capita_usd,2024,Banco Mundial
+MU,idh,2023,PNUD vía Gapminder
+MU,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+MU,usuarios_internet,2024,Banco Mundial vía Gapminder
+MR,poblacion_millones,2024,Our World in Data
+MR,emigrantes_pct,2024,ONU vía Gapminder
+MR,libertad_fh,2022,Freedom House vía Gapminder
+MR,democracia_eiu,2020,EIU vía Gapminder
+MR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MR,pib_per_capita_usd,2024,Banco Mundial
+MR,idh,2023,PNUD vía Gapminder
+MR,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+MR,usuarios_internet,2024,Banco Mundial vía Gapminder
+MX,poblacion_millones,2024,Our World in Data
+MX,emigrantes_pct,2024,ONU vía Gapminder
+MX,libertad_fh,2022,Freedom House vía Gapminder
+MX,democracia_eiu,2020,EIU vía Gapminder
+MX,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MX,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MX,pib_per_capita_usd,2024,Banco Mundial
+MX,idh,2023,PNUD vía Gapminder
+MX,alfabetizacion_adultos,2025,UNESCO vía Gapminder
+MX,usuarios_internet,2024,Banco Mundial vía Gapminder
+FM,poblacion_millones,2024,Our World in Data
+FM,emigrantes_pct,2024,ONU vía Gapminder
+FM,libertad_fh,2022,Freedom House vía Gapminder
+FM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+FM,pib_per_capita_usd,2024,Banco Mundial
+FM,idh,2023,PNUD vía Gapminder
+FM,usuarios_internet,2024,Banco Mundial vía Gapminder
+MD,poblacion_millones,2024,Our World in Data
+MD,emigrantes_pct,2024,ONU vía Gapminder
+MD,libertad_fh,2022,Freedom House vía Gapminder
+MD,democracia_eiu,2020,EIU vía Gapminder
+MD,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MD,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MD,pib_per_capita_usd,2024,Banco Mundial
+MD,idh,2023,PNUD vía Gapminder
+MD,alfabetizacion_adultos,2014,UNESCO vía Gapminder
+MD,usuarios_internet,2024,Banco Mundial vía Gapminder
+MC,poblacion_millones,2024,Our World in Data
+MC,emigrantes_pct,2024,ONU vía Gapminder
+MC,libertad_fh,2022,Freedom House vía Gapminder
+MC,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MC,pib_per_capita_usd,2024,Banco Mundial
+MC,usuarios_internet,2024,Banco Mundial vía Gapminder
+MN,poblacion_millones,2024,Our World in Data
+MN,emigrantes_pct,2024,ONU vía Gapminder
+MN,libertad_fh,2022,Freedom House vía Gapminder
+MN,democracia_eiu,2020,EIU vía Gapminder
+MN,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MN,pib_per_capita_usd,2024,Banco Mundial
+MN,idh,2023,PNUD vía Gapminder
+MN,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+MN,usuarios_internet,2024,Banco Mundial vía Gapminder
+ME,poblacion_millones,2024,Our World in Data
+ME,emigrantes_pct,2024,ONU vía Gapminder
+ME,libertad_fh,2022,Freedom House vía Gapminder
+ME,democracia_eiu,2020,EIU vía Gapminder
+ME,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ME,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ME,pib_per_capita_usd,2024,Banco Mundial
+ME,idh,2023,PNUD vía Gapminder
+ME,alfabetizacion_adultos,2018,UNESCO vía Gapminder
+ME,usuarios_internet,2024,Banco Mundial vía Gapminder
+MZ,poblacion_millones,2024,Our World in Data
+MZ,emigrantes_pct,2024,ONU vía Gapminder
+MZ,libertad_fh,2022,Freedom House vía Gapminder
+MZ,democracia_eiu,2020,EIU vía Gapminder
+MZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MZ,pib_per_capita_usd,2024,Banco Mundial
+MZ,idh,2023,PNUD vía Gapminder
+MZ,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+MZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+MM,poblacion_millones,2024,Our World in Data
+MM,emigrantes_pct,2024,ONU vía Gapminder
+MM,libertad_fh,2022,Freedom House vía Gapminder
+MM,democracia_eiu,2020,EIU vía Gapminder
+MM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+MM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+MM,pib_per_capita_usd,2024,Banco Mundial
+MM,idh,2023,PNUD vía Gapminder
+MM,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+MM,usuarios_internet,2020,Banco Mundial vía Gapminder
+NA,poblacion_millones,2024,Our World in Data
+NA,emigrantes_pct,2024,ONU vía Gapminder
+NA,libertad_fh,2022,Freedom House vía Gapminder
+NA,democracia_eiu,2020,EIU vía Gapminder
+NA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+NA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NA,pib_per_capita_usd,2024,Banco Mundial
+NA,idh,2023,PNUD vía Gapminder
+NA,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+NA,usuarios_internet,2024,Banco Mundial vía Gapminder
+NR,poblacion_millones,2024,Our World in Data
+NR,emigrantes_pct,2024,ONU vía Gapminder
+NR,libertad_fh,2022,Freedom House vía Gapminder
+NR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NR,pib_per_capita_usd,2024,Banco Mundial
+NR,idh,2023,PNUD vía Gapminder
+NR,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+NR,usuarios_internet,2024,Banco Mundial vía Gapminder
+NP,poblacion_millones,2024,Our World in Data
+NP,emigrantes_pct,2024,ONU vía Gapminder
+NP,libertad_fh,2022,Freedom House vía Gapminder
+NP,democracia_eiu,2020,EIU vía Gapminder
+NP,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+NP,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NP,pib_per_capita_usd,2024,Banco Mundial
+NP,idh,2023,PNUD vía Gapminder
+NP,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+NP,usuarios_internet,2024,Banco Mundial vía Gapminder
+NI,poblacion_millones,2024,Our World in Data
+NI,emigrantes_pct,2024,ONU vía Gapminder
+NI,libertad_fh,2022,Freedom House vía Gapminder
+NI,democracia_eiu,2020,EIU vía Gapminder
+NI,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+NI,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NI,pib_per_capita_usd,2024,Banco Mundial
+NI,idh,2023,PNUD vía Gapminder
+NI,alfabetizacion_adultos,2014,UNESCO vía Gapminder
+NI,usuarios_internet,2024,Banco Mundial vía Gapminder
+NE,poblacion_millones,2024,Our World in Data
+NE,emigrantes_pct,2024,ONU vía Gapminder
+NE,libertad_fh,2022,Freedom House vía Gapminder
+NE,democracia_eiu,2020,EIU vía Gapminder
+NE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+NE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NE,pib_per_capita_usd,2024,Banco Mundial
+NE,idh,2023,PNUD vía Gapminder
+NE,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+NE,usuarios_internet,2024,Banco Mundial vía Gapminder
+NG,poblacion_millones,2024,Our World in Data
+NG,emigrantes_pct,2024,ONU vía Gapminder
+NG,libertad_fh,2022,Freedom House vía Gapminder
+NG,democracia_eiu,2020,EIU vía Gapminder
+NG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+NG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NG,pib_per_capita_usd,2024,Banco Mundial
+NG,idh,2023,PNUD vía Gapminder
+NG,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+NG,usuarios_internet,2024,Banco Mundial vía Gapminder
+NO,poblacion_millones,2024,Our World in Data
+NO,emigrantes_pct,2024,ONU vía Gapminder
+NO,libertad_fh,2022,Freedom House vía Gapminder
+NO,democracia_eiu,2020,EIU vía Gapminder
+NO,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+NO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NO,pib_per_capita_usd,2024,Banco Mundial
+NO,idh,2023,PNUD vía Gapminder
+NO,usuarios_internet,2024,Banco Mundial vía Gapminder
+NZ,poblacion_millones,2024,Our World in Data
+NZ,emigrantes_pct,2024,ONU vía Gapminder
+NZ,libertad_fh,2022,Freedom House vía Gapminder
+NZ,democracia_eiu,2020,EIU vía Gapminder
+NZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+NZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NZ,pib_per_capita_usd,2024,Banco Mundial
+NZ,idh,2023,PNUD vía Gapminder
+NZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+OM,poblacion_millones,2024,Our World in Data
+OM,emigrantes_pct,2024,ONU vía Gapminder
+OM,libertad_fh,2022,Freedom House vía Gapminder
+OM,democracia_eiu,2020,EIU vía Gapminder
+OM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+OM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+OM,pib_per_capita_usd,2024,Banco Mundial
+OM,idh,2023,PNUD vía Gapminder
+OM,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+OM,usuarios_internet,2024,Banco Mundial vía Gapminder
+NL,poblacion_millones,2024,Our World in Data
+NL,emigrantes_pct,2024,ONU vía Gapminder
+NL,libertad_fh,2022,Freedom House vía Gapminder
+NL,democracia_eiu,2020,EIU vía Gapminder
+NL,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+NL,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+NL,pib_per_capita_usd,2024,Banco Mundial
+NL,idh,2023,PNUD vía Gapminder
+NL,usuarios_internet,2024,Banco Mundial vía Gapminder
+PK,poblacion_millones,2024,Our World in Data
+PK,emigrantes_pct,2024,ONU vía Gapminder
+PK,libertad_fh,2022,Freedom House vía Gapminder
+PK,democracia_eiu,2020,EIU vía Gapminder
+PK,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+PK,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PK,pib_per_capita_usd,2024,Banco Mundial
+PK,idh,2023,PNUD vía Gapminder
+PK,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+PK,usuarios_internet,2024,Banco Mundial vía Gapminder
+PW,poblacion_millones,2024,Our World in Data
+PW,emigrantes_pct,2024,ONU vía Gapminder
+PW,libertad_fh,2022,Freedom House vía Gapminder
+PW,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PW,pib_per_capita_usd,2024,Banco Mundial
+PW,idh,2023,PNUD vía Gapminder
+PW,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+PW,usuarios_internet,2024,Banco Mundial vía Gapminder
+PS,poblacion_millones,2024,Our World in Data
+PS,emigrantes_pct,2024,ONU vía Gapminder
+PS,democracia_eiu,2020,EIU vía Gapminder
+PS,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PS,pib_per_capita_usd,2024,Banco Mundial
+PS,idh,2023,PNUD vía Gapminder
+PS,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+PS,usuarios_internet,2023,Banco Mundial vía Gapminder
+PA,poblacion_millones,2024,Our World in Data
+PA,emigrantes_pct,2024,ONU vía Gapminder
+PA,libertad_fh,2022,Freedom House vía Gapminder
+PA,democracia_eiu,2020,EIU vía Gapminder
+PA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+PA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PA,pib_per_capita_usd,2024,Banco Mundial
+PA,idh,2023,PNUD vía Gapminder
+PA,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+PA,usuarios_internet,2024,Banco Mundial vía Gapminder
+PG,poblacion_millones,2024,Our World in Data
+PG,emigrantes_pct,2024,ONU vía Gapminder
+PG,libertad_fh,2022,Freedom House vía Gapminder
+PG,democracia_eiu,2020,EIU vía Gapminder
+PG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+PG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PG,pib_per_capita_usd,2024,Banco Mundial
+PG,idh,2023,PNUD vía Gapminder
+PG,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+PG,usuarios_internet,2024,Banco Mundial vía Gapminder
+PY,poblacion_millones,2024,Our World in Data
+PY,emigrantes_pct,2024,ONU vía Gapminder
+PY,libertad_fh,2022,Freedom House vía Gapminder
+PY,democracia_eiu,2020,EIU vía Gapminder
+PY,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+PY,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PY,pib_per_capita_usd,2024,Banco Mundial
+PY,idh,2023,PNUD vía Gapminder
+PY,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+PY,usuarios_internet,2024,Banco Mundial vía Gapminder
+PE,poblacion_millones,2024,Our World in Data
+PE,emigrantes_pct,2024,ONU vía Gapminder
+PE,libertad_fh,2022,Freedom House vía Gapminder
+PE,democracia_eiu,2020,EIU vía Gapminder
+PE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+PE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PE,pib_per_capita_usd,2024,Banco Mundial
+PE,idh,2023,PNUD vía Gapminder
+PE,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+PE,usuarios_internet,2024,Banco Mundial vía Gapminder
+PL,poblacion_millones,2024,Our World in Data
+PL,emigrantes_pct,2024,ONU vía Gapminder
+PL,libertad_fh,2022,Freedom House vía Gapminder
+PL,democracia_eiu,2020,EIU vía Gapminder
+PL,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+PL,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PL,pib_per_capita_usd,2024,Banco Mundial
+PL,idh,2023,PNUD vía Gapminder
+PL,usuarios_internet,2024,Banco Mundial vía Gapminder
+PT,poblacion_millones,2024,Our World in Data
+PT,emigrantes_pct,2024,ONU vía Gapminder
+PT,libertad_fh,2022,Freedom House vía Gapminder
+PT,democracia_eiu,2020,EIU vía Gapminder
+PT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+PT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+PT,pib_per_capita_usd,2024,Banco Mundial
+PT,idh,2023,PNUD vía Gapminder
+PT,alfabetizacion_adultos,2011,UNESCO vía Gapminder
+PT,usuarios_internet,2024,Banco Mundial vía Gapminder
+PR,poblacion_millones,2024,Banco Mundial
+PR,pib_per_capita_usd,2024,Banco Mundial
+PR,alfabetizacion_adultos,2017,UNESCO vía Gapminder
+GB,poblacion_millones,2024,Our World in Data
+GB,emigrantes_pct,2024,ONU vía Gapminder
+GB,libertad_fh,2022,Freedom House vía Gapminder
+GB,democracia_eiu,2020,EIU vía Gapminder
+GB,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+GB,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+GB,pib_per_capita_usd,2024,Banco Mundial
+GB,idh,2023,PNUD vía Gapminder
+GB,usuarios_internet,2024,Banco Mundial vía Gapminder
+CF,poblacion_millones,2024,Our World in Data
+CF,emigrantes_pct,2024,ONU vía Gapminder
+CF,libertad_fh,2022,Freedom House vía Gapminder
+CF,democracia_eiu,2020,EIU vía Gapminder
+CF,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CF,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CF,pib_per_capita_usd,2024,Banco Mundial
+CF,idh,2023,PNUD vía Gapminder
+CF,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+CF,usuarios_internet,2024,Banco Mundial vía Gapminder
+CD,poblacion_millones,2024,Our World in Data
+CD,emigrantes_pct,2024,ONU vía Gapminder
+CD,libertad_fh,2022,Freedom House vía Gapminder
+CD,democracia_eiu,2020,EIU vía Gapminder
+CD,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CD,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CD,pib_per_capita_usd,2024,Banco Mundial
+CD,idh,2023,PNUD vía Gapminder
+CD,alfabetizacion_adultos,2020,UNESCO vía Gapminder
+CD,usuarios_internet,2024,Banco Mundial vía Gapminder
+DO,poblacion_millones,2024,Our World in Data
+DO,emigrantes_pct,2024,ONU vía Gapminder
+DO,libertad_fh,2022,Freedom House vía Gapminder
+DO,democracia_eiu,2020,EIU vía Gapminder
+DO,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+DO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+DO,pib_per_capita_usd,2024,Banco Mundial
+DO,idh,2023,PNUD vía Gapminder
+DO,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+DO,usuarios_internet,2024,Banco Mundial vía Gapminder
+RW,poblacion_millones,2024,Our World in Data
+RW,emigrantes_pct,2024,ONU vía Gapminder
+RW,libertad_fh,2022,Freedom House vía Gapminder
+RW,democracia_eiu,2020,EIU vía Gapminder
+RW,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+RW,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+RW,pib_per_capita_usd,2024,Banco Mundial
+RW,idh,2023,PNUD vía Gapminder
+RW,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+RW,usuarios_internet,2024,Banco Mundial vía Gapminder
+RO,poblacion_millones,2024,Our World in Data
+RO,emigrantes_pct,2024,ONU vía Gapminder
+RO,libertad_fh,2022,Freedom House vía Gapminder
+RO,democracia_eiu,2020,EIU vía Gapminder
+RO,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+RO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+RO,pib_per_capita_usd,2024,Banco Mundial
+RO,idh,2023,PNUD vía Gapminder
+RO,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+RO,usuarios_internet,2024,Banco Mundial vía Gapminder
+RU,poblacion_millones,2024,Our World in Data
+RU,emigrantes_pct,2024,ONU vía Gapminder
+RU,libertad_fh,2022,Freedom House vía Gapminder
+RU,democracia_eiu,2020,EIU vía Gapminder
+RU,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+RU,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+RU,pib_per_capita_usd,2024,Banco Mundial
+RU,idh,2023,PNUD vía Gapminder
+RU,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+RU,usuarios_internet,2024,Banco Mundial vía Gapminder
+WS,poblacion_millones,2024,Our World in Data
+WS,emigrantes_pct,2024,ONU vía Gapminder
+WS,libertad_fh,2022,Freedom House vía Gapminder
+WS,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+WS,pib_per_capita_usd,2024,Banco Mundial
+WS,idh,2023,PNUD vía Gapminder
+WS,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+KN,poblacion_millones,2024,Our World in Data
+KN,emigrantes_pct,2024,ONU vía Gapminder
+KN,libertad_fh,2022,Freedom House vía Gapminder
+KN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+KN,pib_per_capita_usd,2024,Banco Mundial
+KN,idh,2023,PNUD vía Gapminder
+KN,usuarios_internet,2024,Banco Mundial vía Gapminder
+SM,poblacion_millones,2024,Our World in Data
+SM,emigrantes_pct,2024,ONU vía Gapminder
+SM,libertad_fh,2022,Freedom House vía Gapminder
+SM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SM,pib_per_capita_usd,2023,Banco Mundial
+SM,idh,2023,PNUD vía Gapminder
+SM,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+SM,usuarios_internet,2024,Banco Mundial vía Gapminder
+VC,poblacion_millones,2024,Our World in Data
+VC,emigrantes_pct,2024,ONU vía Gapminder
+VC,libertad_fh,2022,Freedom House vía Gapminder
+VC,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+VC,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+VC,pib_per_capita_usd,2024,Banco Mundial
+VC,idh,2023,PNUD vía Gapminder
+VC,usuarios_internet,2024,Banco Mundial vía Gapminder
+LC,poblacion_millones,2024,Our World in Data
+LC,emigrantes_pct,2024,ONU vía Gapminder
+LC,libertad_fh,2022,Freedom House vía Gapminder
+LC,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LC,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LC,pib_per_capita_usd,2024,Banco Mundial
+LC,idh,2023,PNUD vía Gapminder
+LC,usuarios_internet,2024,Banco Mundial vía Gapminder
+ST,poblacion_millones,2024,Our World in Data
+ST,emigrantes_pct,2024,ONU vía Gapminder
+ST,libertad_fh,2022,Freedom House vía Gapminder
+ST,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ST,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ST,pib_per_capita_usd,2024,Banco Mundial
+ST,idh,2023,PNUD vía Gapminder
+ST,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+ST,usuarios_internet,2024,Banco Mundial vía Gapminder
+SN,poblacion_millones,2024,Our World in Data
+SN,emigrantes_pct,2024,ONU vía Gapminder
+SN,libertad_fh,2022,Freedom House vía Gapminder
+SN,democracia_eiu,2020,EIU vía Gapminder
+SN,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SN,pib_per_capita_usd,2024,Banco Mundial
+SN,idh,2023,PNUD vía Gapminder
+SN,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+SN,usuarios_internet,2024,Banco Mundial vía Gapminder
+RS,poblacion_millones,2024,Our World in Data
+RS,emigrantes_pct,2024,ONU vía Gapminder
+RS,libertad_fh,2022,Freedom House vía Gapminder
+RS,democracia_eiu,2020,EIU vía Gapminder
+RS,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+RS,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+RS,pib_per_capita_usd,2024,Banco Mundial
+RS,idh,2023,PNUD vía Gapminder
+RS,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+RS,usuarios_internet,2024,Banco Mundial vía Gapminder
+SC,poblacion_millones,2024,Our World in Data
+SC,emigrantes_pct,2024,ONU vía Gapminder
+SC,libertad_fh,2022,Freedom House vía Gapminder
+SC,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SC,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SC,pib_per_capita_usd,2024,Banco Mundial
+SC,idh,2023,PNUD vía Gapminder
+SC,alfabetizacion_adultos,2010,UNESCO vía Gapminder
+SC,usuarios_internet,2024,Banco Mundial vía Gapminder
+SL,poblacion_millones,2024,Our World in Data
+SL,emigrantes_pct,2024,ONU vía Gapminder
+SL,libertad_fh,2022,Freedom House vía Gapminder
+SL,democracia_eiu,2020,EIU vía Gapminder
+SL,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SL,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SL,pib_per_capita_usd,2024,Banco Mundial
+SL,idh,2023,PNUD vía Gapminder
+SL,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+SL,usuarios_internet,2024,Banco Mundial vía Gapminder
+SG,poblacion_millones,2024,Our World in Data
+SG,emigrantes_pct,2024,ONU vía Gapminder
+SG,libertad_fh,2022,Freedom House vía Gapminder
+SG,democracia_eiu,2020,EIU vía Gapminder
+SG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SG,pib_per_capita_usd,2024,Banco Mundial
+SG,idh,2023,PNUD vía Gapminder
+SG,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+SG,usuarios_internet,2024,Banco Mundial vía Gapminder
+SY,poblacion_millones,2024,Our World in Data
+SY,emigrantes_pct,2024,ONU vía Gapminder
+SY,libertad_fh,2022,Freedom House vía Gapminder
+SY,democracia_eiu,2020,EIU vía Gapminder
+SY,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SY,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SY,pib_per_capita_usd,2022,Banco Mundial
+SY,idh,2023,PNUD vía Gapminder
+SY,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+SO,poblacion_millones,2024,Our World in Data
+SO,emigrantes_pct,2024,ONU vía Gapminder
+SO,libertad_fh,2022,Freedom House vía Gapminder
+SO,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SO,pib_per_capita_usd,2024,Banco Mundial
+SO,idh,2023,PNUD vía Gapminder
+SO,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+SO,usuarios_internet,2024,Banco Mundial vía Gapminder
+LK,poblacion_millones,2024,Our World in Data
+LK,emigrantes_pct,2024,ONU vía Gapminder
+LK,libertad_fh,2022,Freedom House vía Gapminder
+LK,democracia_eiu,2020,EIU vía Gapminder
+LK,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+LK,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+LK,pib_per_capita_usd,2024,Banco Mundial
+LK,idh,2023,PNUD vía Gapminder
+LK,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+LK,usuarios_internet,2024,Banco Mundial vía Gapminder
+ZA,poblacion_millones,2024,Our World in Data
+ZA,emigrantes_pct,2024,ONU vía Gapminder
+ZA,libertad_fh,2022,Freedom House vía Gapminder
+ZA,democracia_eiu,2020,EIU vía Gapminder
+ZA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ZA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ZA,pib_per_capita_usd,2024,Banco Mundial
+ZA,idh,2023,PNUD vía Gapminder
+ZA,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+ZA,usuarios_internet,2024,Banco Mundial vía Gapminder
+SD,poblacion_millones,2024,Our World in Data
+SD,emigrantes_pct,2024,ONU vía Gapminder
+SD,libertad_fh,2022,Freedom House vía Gapminder
+SD,democracia_eiu,2020,EIU vía Gapminder
+SD,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SD,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SD,pib_per_capita_usd,2024,Banco Mundial
+SD,idh,2023,PNUD vía Gapminder
+SS,poblacion_millones,2024,Our World in Data
+SS,emigrantes_pct,2024,ONU vía Gapminder
+SS,libertad_fh,2022,Freedom House vía Gapminder
+SS,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SS,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SS,idh,2023,PNUD vía Gapminder
+SE,poblacion_millones,2024,Our World in Data
+SE,emigrantes_pct,2024,ONU vía Gapminder
+SE,libertad_fh,2022,Freedom House vía Gapminder
+SE,democracia_eiu,2020,EIU vía Gapminder
+SE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SE,pib_per_capita_usd,2024,Banco Mundial
+SE,idh,2023,PNUD vía Gapminder
+SE,usuarios_internet,2025,Banco Mundial vía Gapminder
+CH,poblacion_millones,2024,Our World in Data
+CH,emigrantes_pct,2024,ONU vía Gapminder
+CH,libertad_fh,2022,Freedom House vía Gapminder
+CH,democracia_eiu,2020,EIU vía Gapminder
+CH,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+CH,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+CH,pib_per_capita_usd,2024,Banco Mundial
+CH,idh,2023,PNUD vía Gapminder
+CH,usuarios_internet,2025,Banco Mundial vía Gapminder
+SR,poblacion_millones,2024,Our World in Data
+SR,emigrantes_pct,2024,ONU vía Gapminder
+SR,libertad_fh,2022,Freedom House vía Gapminder
+SR,democracia_eiu,2020,EIU vía Gapminder
+SR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+SR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+SR,pib_per_capita_usd,2024,Banco Mundial
+SR,idh,2023,PNUD vía Gapminder
+SR,alfabetizacion_adultos,2012,UNESCO vía Gapminder
+SR,usuarios_internet,2023,Banco Mundial vía Gapminder
+TH,poblacion_millones,2024,Our World in Data
+TH,emigrantes_pct,2024,ONU vía Gapminder
+TH,libertad_fh,2022,Freedom House vía Gapminder
+TH,democracia_eiu,2020,EIU vía Gapminder
+TH,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TH,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TH,pib_per_capita_usd,2024,Banco Mundial
+TH,idh,2023,PNUD vía Gapminder
+TH,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+TH,usuarios_internet,2024,Banco Mundial vía Gapminder
+TW,poblacion_millones,2024,Our World in Data
+TW,emigrantes_pct,2024,ONU vía Gapminder
+TW,libertad_fh,2022,Freedom House vía Gapminder
+TW,democracia_eiu,2020,EIU vía Gapminder
+TW,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TZ,poblacion_millones,2024,Our World in Data
+TZ,emigrantes_pct,2024,ONU vía Gapminder
+TZ,libertad_fh,2022,Freedom House vía Gapminder
+TZ,democracia_eiu,2020,EIU vía Gapminder
+TZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TZ,pib_per_capita_usd,2024,Banco Mundial
+TZ,idh,2023,PNUD vía Gapminder
+TZ,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+TZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+TJ,poblacion_millones,2024,Our World in Data
+TJ,emigrantes_pct,2024,ONU vía Gapminder
+TJ,libertad_fh,2022,Freedom House vía Gapminder
+TJ,democracia_eiu,2020,EIU vía Gapminder
+TJ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TJ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TJ,pib_per_capita_usd,2024,Banco Mundial
+TJ,idh,2023,PNUD vía Gapminder
+TJ,usuarios_internet,2024,Banco Mundial vía Gapminder
+TL,poblacion_millones,2024,Our World in Data
+TL,emigrantes_pct,2024,ONU vía Gapminder
+TL,libertad_fh,2022,Freedom House vía Gapminder
+TL,democracia_eiu,2020,EIU vía Gapminder
+TL,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TL,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TL,pib_per_capita_usd,2024,Banco Mundial
+TL,idh,2023,PNUD vía Gapminder
+TL,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+TL,usuarios_internet,2021,Banco Mundial vía Gapminder
+TG,poblacion_millones,2024,Our World in Data
+TG,emigrantes_pct,2024,ONU vía Gapminder
+TG,libertad_fh,2022,Freedom House vía Gapminder
+TG,democracia_eiu,2020,EIU vía Gapminder
+TG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TG,pib_per_capita_usd,2024,Banco Mundial
+TG,idh,2023,PNUD vía Gapminder
+TG,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+TG,usuarios_internet,2024,Banco Mundial vía Gapminder
+TO,poblacion_millones,2024,Our World in Data
+TO,emigrantes_pct,2024,ONU vía Gapminder
+TO,libertad_fh,2022,Freedom House vía Gapminder
+TO,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TO,pib_per_capita_usd,2024,Banco Mundial
+TO,idh,2023,PNUD vía Gapminder
+TO,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+TO,usuarios_internet,2024,Banco Mundial vía Gapminder
+TT,poblacion_millones,2024,Our World in Data
+TT,emigrantes_pct,2024,ONU vía Gapminder
+TT,libertad_fh,2022,Freedom House vía Gapminder
+TT,democracia_eiu,2020,EIU vía Gapminder
+TT,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TT,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TT,pib_per_capita_usd,2024,Banco Mundial
+TT,idh,2023,PNUD vía Gapminder
+TT,usuarios_internet,2024,Banco Mundial vía Gapminder
+TN,poblacion_millones,2024,Our World in Data
+TN,emigrantes_pct,2024,ONU vía Gapminder
+TN,libertad_fh,2022,Freedom House vía Gapminder
+TN,democracia_eiu,2020,EIU vía Gapminder
+TN,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TN,pib_per_capita_usd,2024,Banco Mundial
+TN,idh,2023,PNUD vía Gapminder
+TN,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+TN,usuarios_internet,2024,Banco Mundial vía Gapminder
+TM,poblacion_millones,2024,Our World in Data
+TM,emigrantes_pct,2024,ONU vía Gapminder
+TM,libertad_fh,2022,Freedom House vía Gapminder
+TM,democracia_eiu,2020,EIU vía Gapminder
+TM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TM,pib_per_capita_usd,2024,Banco Mundial
+TM,idh,2023,PNUD vía Gapminder
+TM,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+TR,poblacion_millones,2024,Our World in Data
+TR,emigrantes_pct,2024,ONU vía Gapminder
+TR,libertad_fh,2022,Freedom House vía Gapminder
+TR,democracia_eiu,2020,EIU vía Gapminder
+TR,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+TR,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TR,pib_per_capita_usd,2024,Banco Mundial
+TR,idh,2023,PNUD vía Gapminder
+TR,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+TR,usuarios_internet,2025,Banco Mundial vía Gapminder
+TV,poblacion_millones,2024,Our World in Data
+TV,emigrantes_pct,2024,ONU vía Gapminder
+TV,libertad_fh,2022,Freedom House vía Gapminder
+TV,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+TV,pib_per_capita_usd,2023,Banco Mundial
+TV,idh,2023,PNUD vía Gapminder
+TV,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+UA,poblacion_millones,2024,Our World in Data
+UA,emigrantes_pct,2024,ONU vía Gapminder
+UA,libertad_fh,2022,Freedom House vía Gapminder
+UA,democracia_eiu,2019,EIU vía Gapminder
+UA,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+UA,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+UA,pib_per_capita_usd,2024,Banco Mundial
+UA,idh,2023,PNUD vía Gapminder
+UA,usuarios_internet,2024,Banco Mundial vía Gapminder
+UG,poblacion_millones,2024,Our World in Data
+UG,emigrantes_pct,2024,ONU vía Gapminder
+UG,libertad_fh,2022,Freedom House vía Gapminder
+UG,democracia_eiu,2020,EIU vía Gapminder
+UG,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+UG,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+UG,pib_per_capita_usd,2024,Banco Mundial
+UG,idh,2023,PNUD vía Gapminder
+UG,alfabetizacion_adultos,2021,UNESCO vía Gapminder
+UG,usuarios_internet,2024,Banco Mundial vía Gapminder
+UY,poblacion_millones,2024,Our World in Data
+UY,emigrantes_pct,2024,ONU vía Gapminder
+UY,libertad_fh,2022,Freedom House vía Gapminder
+UY,democracia_eiu,2020,EIU vía Gapminder
+UY,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+UY,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+UY,pib_per_capita_usd,2024,Banco Mundial
+UY,idh,2023,PNUD vía Gapminder
+UY,alfabetizacion_adultos,2024,UNESCO vía Gapminder
+UY,usuarios_internet,2024,Banco Mundial vía Gapminder
+UZ,poblacion_millones,2024,Our World in Data
+UZ,emigrantes_pct,2024,ONU vía Gapminder
+UZ,libertad_fh,2022,Freedom House vía Gapminder
+UZ,democracia_eiu,2020,EIU vía Gapminder
+UZ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+UZ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+UZ,pib_per_capita_usd,2024,Banco Mundial
+UZ,idh,2023,PNUD vía Gapminder
+UZ,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+UZ,usuarios_internet,2024,Banco Mundial vía Gapminder
+VU,poblacion_millones,2024,Our World in Data
+VU,emigrantes_pct,2024,ONU vía Gapminder
+VU,libertad_fh,2022,Freedom House vía Gapminder
+VU,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+VU,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+VU,pib_per_capita_usd,2024,Banco Mundial
+VU,idh,2023,PNUD vía Gapminder
+VU,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+VE,poblacion_millones,2024,Our World in Data
+VE,emigrantes_pct,2024,ONU vía Gapminder
+VE,libertad_fh,2022,Freedom House vía Gapminder
+VE,democracia_eiu,2020,EIU vía Gapminder
+VE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+VE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+VE,pib_per_capita_usd,2024,Banco Mundial
+VE,idh,2023,PNUD vía Gapminder
+VE,alfabetizacion_adultos,2017,UNESCO vía Gapminder
+VE,usuarios_internet,2024,Banco Mundial vía Gapminder
+VN,poblacion_millones,2024,Our World in Data
+VN,emigrantes_pct,2024,ONU vía Gapminder
+VN,libertad_fh,2022,Freedom House vía Gapminder
+VN,democracia_eiu,2020,EIU vía Gapminder
+VN,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+VN,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+VN,pib_per_capita_usd,2024,Banco Mundial
+VN,idh,2023,PNUD vía Gapminder
+VN,alfabetizacion_adultos,2022,UNESCO vía Gapminder
+VN,usuarios_internet,2024,Banco Mundial vía Gapminder
+YE,poblacion_millones,2024,Our World in Data
+YE,emigrantes_pct,2024,ONU vía Gapminder
+YE,libertad_fh,2022,Freedom House vía Gapminder
+YE,democracia_eiu,2020,EIU vía Gapminder
+YE,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+YE,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+YE,idh,2023,PNUD vía Gapminder
+DJ,poblacion_millones,2024,Our World in Data
+DJ,emigrantes_pct,2024,ONU vía Gapminder
+DJ,libertad_fh,2022,Freedom House vía Gapminder
+DJ,democracia_eiu,2020,EIU vía Gapminder
+DJ,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+DJ,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+DJ,pib_per_capita_usd,2024,Banco Mundial
+DJ,idh,2023,PNUD vía Gapminder
+DJ,usuarios_internet,2024,Banco Mundial vía Gapminder
+ZM,poblacion_millones,2024,Our World in Data
+ZM,emigrantes_pct,2024,ONU vía Gapminder
+ZM,libertad_fh,2022,Freedom House vía Gapminder
+ZM,democracia_eiu,2020,EIU vía Gapminder
+ZM,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ZM,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ZM,pib_per_capita_usd,2024,Banco Mundial
+ZM,idh,2023,PNUD vía Gapminder
+ZM,alfabetizacion_adultos,2023,UNESCO vía Gapminder
+ZM,usuarios_internet,2024,Banco Mundial vía Gapminder
+ZW,poblacion_millones,2024,Our World in Data
+ZW,emigrantes_pct,2024,ONU vía Gapminder
+ZW,libertad_fh,2022,Freedom House vía Gapminder
+ZW,democracia_eiu,2020,EIU vía Gapminder
+ZW,corrupcion_cpi,2023,Transparencia Internacional vía Gapminder
+ZW,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
+ZW,pib_per_capita_usd,2024,Banco Mundial
+ZW,idh,2023,PNUD vía Gapminder
+ZW,alfabetizacion_adultos,2019,UNESCO vía Gapminder
+ZW,usuarios_internet,2024,Banco Mundial vía Gapminder

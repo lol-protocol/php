@@ -36,7 +36,7 @@ class CheckoutController extends BaseController
     {
         $carrito = new Cart();
         [$lineas, $totales] = $carrito->revisar(
-            (new ProductoRepository($this->db()))->variantesPorSkus(array_keys($carrito->items()))
+            (new ProductoRepository($this->db()))->variantesPorSkus($carrito->skus())
         );
 
         if ($lineas === []) {
