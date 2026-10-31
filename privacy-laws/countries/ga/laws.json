@@ -15,9 +15,9 @@
     "enforcement_authority": "Authority for the Protection of Personal Data and Privacy (APDPVP)",
     "penalties_range": "Reported fines of CFA 1 million to 100 million (rising for repeat violations), suspension of processing and criminal penalties; secondary sources (unconfirmed)",
     "exemptions": "Not specified",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "Personal data definition covers physical, physiological and genetic characteristics; sensitive-data rules not confirmed (unconfirmed)",
+    "deceased_data": "Covered: the data subject definition includes deceased persons (art. 4); data on deceased persons may be processed unless they refused in writing in life (art. 147); spouse, children and heirs may exercise health-data access (art. 46)",
+    "research_exemption": "Erasure and objection rights do not apply to archiving and scientific, historical or statistical research (arts. 54, 65); further processing for such purposes is compatible (art. 66); information-duty exemption (art. 103)",
+    "genetic_data": "Genetic data are sensitive data under a stricter regime; automated processing of genetic data needs prior authorisation (official text; article numbers not located)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
     "language": "French",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-29",
+    "last_checked": "2026-10-31",
     "sources": {
       "law_name": {
         "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
@@ -80,12 +80,40 @@
         "checked": "2026-10-18"
       },
       "genetic_data": {
-        "url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
-        "confidence": "low",
-        "checked": "2026-10-29"
+        "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-31"
+      },
+      "deceased_data": {
+        "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-31"
+      },
+      "research_exemption": {
+        "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-31"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-31",
+        "field": "genetic_data",
+        "from": "Personal data definition covers physical, physiological and genetic characteristics; sensitive-data rules not confirmed (unconfirmed)",
+        "to": "Genetic data are sensitive data under a stricter regime; automated processing of genetic data needs prior authorisation (official text; article numbers not located)"
+      },
+      {
+        "date": "2026-10-31",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Erasure and objection rights do not apply to archiving and scientific, historical or statistical research (arts. 54, 65); further processing for such purposes is compatible (art. 66); information-duty exemption (art. 103)"
+      },
+      {
+        "date": "2026-10-31",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Covered: the data subject definition includes deceased persons (art. 4); data on deceased persons may be processed unless they refused in writing in life (art. 147); spouse, children and heirs may exercise health-data access (art. 46)"
+      },
       {
         "date": "2026-10-29",
         "field": "genetic_data",
