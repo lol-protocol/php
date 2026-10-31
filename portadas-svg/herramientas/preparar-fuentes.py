@@ -4,7 +4,7 @@
 Es una herramienta de desarrollo. El generador en PHP no la necesita para correr: solo lee lo que esta produce,
 
   fuentes/*.woff2        las fuentes cortadas en trozos por alfabeto (un archivo por cara y trozo),
-  fuentes/trazos/*.json  el contorno de cada letra de cada trozo, para la salida con el texto a trazos,
+  fuentes/trazos/*.json.gz  el contorno de cada letra de cada trozo (comprimido), para la salida con el texto a trazos,
   datos/fuentes.json     qué letras trae cada trozo (un `unicode-range` por archivo),
   datos/anchos.json      el ancho de cada letra, para medir el texto sin un navegador.
 
@@ -24,6 +24,7 @@ No se tiene en cuenta el kerning (el ajuste entre pares de letras) al medir: cas
 uno o dos por ciento, así que la medida sale igual o algo mayor que la de un navegador, no menor.
 """
 
+import gzip
 import json
 import sys
 from pathlib import Path
@@ -100,7 +101,7 @@ def main() -> int:
     (RAIZ / "fuentes").mkdir(exist_ok=True)
     (RAIZ / "datos").mkdir(exist_ok=True)
     (RAIZ / "fuentes" / "trazos").mkdir(exist_ok=True)
-    for viejo in [*(RAIZ / "fuentes").glob("*.woff2"), *(RAIZ / "fuentes" / "trazos").glob("*.json")]:
+    for viejo in [*(RAIZ / "fuentes").glob("*.woff2"), *(RAIZ / "fuentes" / "trazos").glob("*.json.gz")]:
         viejo.unlink()
 
     indice: dict = {}
@@ -141,9 +142,9 @@ def main() -> int:
                 cmap = fija.getBestCmap()
                 hmtx = fija["hmtx"]
                 por_em = fija["head"].unitsPerEm
-                (RAIZ / "fuentes" / "trazos" / nombre.replace(".woff2", ".json")).write_text(
-                    json.dumps(contornos(fija, sorted(disponibles), cmap, por_em), separators=(",", ":")) + "\n", encoding="utf-8"
-                )
+                # mtime=0: el mismo contenido da siempre los mismos bytes
+                with gzip.GzipFile(RAIZ / "fuentes" / "trazos" / nombre.replace(".woff2", ".json.gz"), "wb", compresslevel=9, mtime=0) as destino:
+                    destino.write(json.dumps(contornos(fija, sorted(disponibles), cmap, por_em), separators=(",", ":")).encode("utf-8"))
                 fija.flavor = "woff2"
                 fija.save(RAIZ / "fuentes" / nombre)
 
