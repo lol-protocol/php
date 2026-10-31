@@ -175,9 +175,47 @@ que prometen las secciones 5 y 6 del borrador de
   meses es un valor inicial: ⚖️ que lo confirme la abogada (`PREGUNTAS-PARA-ABOGADO.md`).
 - **Lo que falta.** No escribe a quien lo pidió (el propietario responde por
   correo, por su cuenta). Retirar una página
-  no borra los datos: para eso hay que corregirlos o borrarlos. Un apellido, una
+  no borra los datos: para borrar a una persona está `bin/persona.php suprimir` (ver
+  «Acceso y supresión de una persona»); lo demás se corrige o se borra a mano. Un apellido, una
   organización o una colección retirados sí salen de la búsqueda y del sitemap, pero
   siguen nombrados donde los enlaza una persona.
+
+## Acceso y supresión de una persona
+
+Cuando alguien pide **ver qué se tiene de él o de ella**, o que se **borre**, el propietario lo atiende
+desde la línea de comandos con `bin/persona.php`. La web no tiene una pantalla para esto a propósito:
+solo la usa quien administra el servidor.
+
+```
+php bin/persona.php acceso 6128473105                             # todo lo que hay de ella, en JSON
+php bin/persona.php suprimir 6128473105 --pedido=12               # muestra qué se quitaría y no cambia nada
+php bin/persona.php suprimir 6128473105 --pedido=12 --confirmar   # lo hace
+```
+
+- **`acceso`** imprime la ficha, sus sucesos con la descripción, los registros que los documentan, sus
+  colecciones y organizaciones, los ids que redirigen a ella y los pedidos de retiro que hay sobre ella (el
+  número, el motivo y el estado: **no** quién los pidió ni lo que escribió, que son datos de quien pidió). Los
+  parientes aparecen solo como cantidades: sus nombres son sus datos. Es lo que se le manda a quien lo pide.
+- **`suprimir`** quita a la persona y deja el resto del árbol en pie, en una transacción:
+  - se borran sus sucesos en los que **es la única participante**, con sus enlaces a registros;
+  - los sucesos que comparte con otras personas **se conservan** (también son datos de las otras) y a ella se la
+    quita de la lista; revisa su descripción;
+  - se borran sus vínculos, su lugar en colecciones y organizaciones y los ids que redirigían a ella;
+  - sus hijos **conservan su fila** y pierden el enlace a ella como padre o madre;
+  - se borra su fila.
+- **Lo que no puede hacer** es leer texto libre: una descripción, el título de un registro o una nota de una
+  colección puede nombrarla sin estar ligada a ella. Antes y después de suprimir, el script lista esos textos
+  (tabla, columna y ids) **para que alguien los lea y los corrija a mano**; no los toca. La búsqueda es una red
+  con agujeros (un apodo, «Quintana Soto, Rosa», una falta de ortografía): acota lo que hay que leer, no lo
+  reemplaza.
+- **`--pedido=N`** es el pedido de retiro que originó la supresión (tiene que ser sobre esa persona). Queda
+  anotado y el pedido pasa a «retirado» con una nota con la fecha.
+- **Queda un registro** en `supresiones_persona`: el id que desapareció, cuándo, el pedido y cuántas filas se
+  quitaron de cada tipo. **Nunca el nombre.**
+- **Es definitivo**: sin una copia de seguridad no se deshace. Y una copia vieja trae a la persona de vuelta: después de
+  restaurar una, `php bin/persona.php reaplicar` lista a quien volvió y `reaplicar --confirmar` la quita otra vez,
+  a partir de ese registro.
+- Los datos se corrigen (**rectificación**) todavía a mano en la base de datos.
 
 ## Lo que esto NO cubre
 
@@ -194,6 +232,7 @@ Esto hace privados los **objetos** que ya se presentaban como privados, oculta a
 
 - `tests/App/Support/PrivacidadSinAtajosTest.php`: cuenta, archivo por archivo, las veces que el código lee `personas`, `sucesos` o `registros` directamente, y falla si cambia. Una consulta nueva que salte `Privacidad` no pasa sin quedar escrita ahí, con el motivo.
 - `tests/App/Repositories/RetiroRendimientoTest.php`: que preguntar si una persona está retirada use su índice (se comprobó que falla sin él), que una página de la búsqueda no lea el catálogo ni los pedidos, y que la vista completa del visitante siga rápida con 3000 personas y 400 pedidos.
+- `tests/App/Repositories/SupresionRepositoryTest.php` y `tests/App/Integration/PersonaCliTest.php`: `bin/persona.php` en SQLite y PostgreSQL. Que el acceso no traiga datos de parientes ni de quien pidió, que suprimir quite a la persona y conserve lo que no es suyo (sucesos compartidos, hijos), que un pedido de otra persona se rechace antes de borrar nada, que el registro no lleve el nombre, y que `reaplicar` quite de nuevo a quien volvió con una copia vieja.
 - `tests/App/Integration/RetiroTest.php` también cubre los frenos (tope por visitante y por página, el campo trampa) y las marcas del filtro.
 
 - `tests/App/Support/AccessPolicyTest.php`: lectura de credenciales (Basic y Bearer), comparación del token, caducidad de la sesión y las dos formas de negar.

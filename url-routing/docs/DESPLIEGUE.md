@@ -215,6 +215,8 @@ Cambia `OWNER_TOKEN` en `.env` y recarga PHP-FPM. **Cierra todas las sesiones ab
 
 Los dos comandos se probaron: la copia de SQLite abre y pasa `integrity_check`, y el volcado de PostgreSQL se restauró en otra base (`pg_restore -d otra_base --no-owner`) con los mismos recuentos de filas. Lo que falta es una copia **automática** y ensayar la restauración en el servidor real, antes de abrir la plataforma al público (ver [`PRIVACIDAD-Y-HONRA.md`](../../PRIVACIDAD-Y-HONRA.md)).
 
+**Después de restaurar una copia, corre `php bin/persona.php reaplicar`.** Una copia anterior a una supresión trae de vuelta a la persona que se borró. `reaplicar` lista a quienes volvieron (la tabla `supresiones_persona` guarda sus ids, no sus nombres) y, con `--confirmar`, los quita otra vez. Ver «Acceso y supresión de una persona» en [`ACCESO.md`](./ACCESO.md).
+
 ## Cómo se probó
 
 Con el código de `master`, en un directorio aparte (`git archive` + `composer install --no-dev --optimize-autoloader`) y una base **vacía**, sin la demostración (salvo donde se dice):
