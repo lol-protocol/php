@@ -44,10 +44,17 @@ tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Ma
 - `historia_poblacion.py`: calcula los nacidos en la historia de cada país a partir de esos dos
   archivos, y escribe la columna de `paises.csv` y `poblacion_historica_detalle.csv` (con la banda
   de sensibilidad).
+- `escenarios.md`: el puesto de cada país con la regla vigente y con alternativas (otro umbral de
+  exclusión, más peso a un índice), para ver cuánto depende el ranking de esas decisiones.
+- `datos_detalle.csv`: año y fuente de cada dato de `paises.csv` (lo escribe `preparar_datos.py`).
+  Sirve para los datos que no son del mismo año en todos los países: alfabetización, internet,
+  PIB nominal, libertad, democracia y corrupción.
+- `descargar_fuentes.py` y `fuentes.sha256`: bajan todas las fuentes, fijadas por commit, y
+  comprueban su SHA-256; con `--rehacer` corren todos los scripts. Ver «Fuentes».
 - `pruebas.py`: pruebas del proyecto. La CI las corre junto con `generar_tabla.py --comprobar`
   (`.github/workflows/pruebas-listado-paises.yml`).
 
-`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
+`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv`, `vista.html` y `escenarios.md` son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
 
 ```bash
 python3 generar_tabla.py              # valida y regenera las tablas, priorizacion.csv y vista.html
@@ -57,6 +64,7 @@ python3 preparar_datos.py ...         # datos de los países; ver «Fuentes»
 python3 historia_poblacion.py         # recalcula los nacidos en la historia
 python3 preparar_lenguas.py ...       # recursos de cada lengua; ver «Fuentes»
 python3 preparar_mapa.py ...          # trazados del mapa; ver «Fuentes»
+python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer   # baja todo y rehace los datos
 ```
 
 Todos los scripts usan solo la biblioteca estándar de Python 3. `generar_tabla.py` se detiene con
@@ -149,11 +157,10 @@ puntaje por sí sola.
 **Libertad, democracia y corrupción** sirven para contrastar IO, sin cambiar ningún puntaje. IO
 coincide con ellas en general: la corrupción mediana (100 = sin corrupción) va de 20 en los países
 con IO 1 a unos 78 en los de IO 5, y entre los de IO 5 solo Singapur no es «libre» (es «parcial»).
-**Señales para revisar:**
-
-- Arabia Saudita, Baréin, Catar, Emiratos Árabes Unidos y Omán tienen IO 4 y son «no libres». Son
-  estables y con pagos sin fricción, pero la rúbrica pone el control estatal de internet en IO 2.
-- Paraguay (corrupción 28), Filipinas e Indonesia (34) tienen IO 4 con una corrupción alta.
+**Ajustes hechos al contrastar** (decididos): bajaron de IO 4 a IO 3 las cinco monarquías del
+Golfo (Arabia Saudita, Baréin, Catar, Emiratos Árabes Unidos y Omán), por el control estatal de
+internet, y Paraguay, Filipinas e Indonesia, por su corrupción alta (índice por debajo de 35). El
+comentario de cada uno nombra el factor.
 
 **Prioridad** = IG × IO (1 a 25). Ordena la tabla; no es un tercer índice.
 
@@ -420,6 +427,13 @@ Para los recursos de las lenguas y el mapa:
   `ca96624` (2 de junio de 2022), archivo `geojson/ne_50m_admin_0_countries.geojson`: fronteras de
   Natural Earth (dominio público), escala 1:50 millones.
 
+**Para reproducir todo de una vez:** `python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer`
+baja las 434 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
+`fuentes.sha256` y corre todos los scripts. Si las fuentes no cambiaron, el proyecto queda
+idéntico. El job `reproducir` de `pruebas-listado-paises.yml` lo hace en la CI cuando se lanza a
+mano (*Run workflow*) y falla si algún archivo cambia. Los comandos de abajo hacen lo mismo paso
+a paso.
+
 Para reproducir `poblacion_larga.csv`, `natalidad.csv` y las columnas de `paises.csv`:
 
 ```bash
@@ -530,5 +544,3 @@ Léelo antes de usar la tabla para decidir.
 3. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
 4. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-5. **Señales de IO para revisar:** las monarquías del Golfo y los países con IO 4 y corrupción
-   alta (ver «Libertad, democracia y corrupción» arriba).

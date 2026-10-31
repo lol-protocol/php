@@ -27,6 +27,23 @@ SALIDA_GENEALOGIA = AQUI / "tabla_genealogia.md"
 SALIDA_POS = AQUI / "tabla_pos.md"
 SALIDA_FINAL = AQUI / "priorizacion.csv"
 SALIDA_VISTA = AQUI / "vista.html"
+SALIDA_ESCENARIOS = AQUI / "escenarios.md"
+# Escenarios de ranking: (nombre, puntaje, excluido). El primero de cada grupo es la regla vigente.
+ESCENARIOS_GEN = [
+    ("Vigente: IG × IO, excluye IO ≤ 1", lambda d: d["ig"] * d["io"], lambda d: d["io"] <= 1),
+    ("Excluye IO ≤ 2", lambda d: d["ig"] * d["io"], lambda d: d["io"] <= 2),
+    ("Más peso al interés: IG² × IO", lambda d: d["ig"] ** 2 * d["io"], lambda d: d["io"] <= 1),
+    ("Más peso a operar: IG × IO²", lambda d: d["ig"] * d["io"] ** 2, lambda d: d["io"] <= 1),
+]
+ESCENARIOS_POS = [
+    ("Vigente: IL × IP local, excluye IP local ≤ 1 con IO ≤ 1", lambda d: d["il"] * d["ipl"],
+     lambda d: d["ipl"] <= 1 and d["io"] <= 1),
+    ("Excluye IP local ≤ 1 (la regla anterior)", lambda d: d["il"] * d["ipl"], lambda d: d["ipl"] <= 1),
+    ("IL × IP de la mejor lengua", lambda d: d["il"] * d["ip"], lambda d: d["ipl"] <= 1 and d["io"] <= 1),
+    ("Más peso a la lectura: IL² × IP local", lambda d: d["il"] ** 2 * d["ipl"],
+     lambda d: d["ipl"] <= 1 and d["io"] <= 1),
+]
+PUESTOS_MOSTRADOS = 25
 PLANTILLA_VISTA = AQUI / "vista_plantilla.html"
 MAPA = AQUI / "mapa_paises.csv"
 COLUMNAS_FINAL = [
@@ -147,6 +164,38 @@ def vista_html(registros, documento=True):
     return ('<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
             + cabeza + "\n</head>\n<body>\n<div class=\"pagina\">" + cuerpo + "</body>\n</html>\n")
+
+
+def puestos(registros, puntaje, excluido):
+    """codigo -> puesto (1 = mejor; los empates comparten puesto) o None si está excluido."""
+    validos = [d for d in registros if not excluido(d)]
+    valores = sorted((puntaje(d) for d in validos), reverse=True)
+    primero = {}
+    for i, v in enumerate(valores, start=1):
+        primero.setdefault(v, i)
+    return {d["c"]: (primero[puntaje(d)] if not excluido(d) else None) for d in registros}
+
+
+def escenarios_md(registros):
+    """Tabla de puestos por escenario: los países que entran entre los PUESTOS_MOSTRADOS primeros
+    de algún escenario, ordenados por el vigente."""
+    partes = ["# Escenarios de ranking", "",
+              "> Generado por `generar_tabla.py`. No editar a mano. Cada columna es un escenario; el "
+              "número es el puesto del país (los empates comparten puesto) y «excl.» indica que ese "
+              "escenario lo excluye. La primera columna es la regla vigente.", ""]
+    nombres = {d["c"]: d["n"] for d in registros}
+    for titulo, escenarios in (("Genealogía", ESCENARIOS_GEN), ("Etiquetador POS", ESCENARIOS_POS)):
+        tablas = [puestos(registros, puntaje, excluido) for _, puntaje, excluido in escenarios]
+        excluidos = [sum(1 for v in t.values() if v is None) for t in tablas]
+        codigos = [c for c in nombres if any(t[c] is not None and t[c] <= PUESTOS_MOSTRADOS for t in tablas)]
+        codigos.sort(key=lambda c: (tablas[0][c] is None, tablas[0][c] or 0, nombres[c]))
+        enc = ["País"] + [f"{nombre} ({n} excl.)" for (nombre, _, _), n in zip(escenarios, excluidos)]
+        partes += [f"## {titulo}", "", "| " + " | ".join(enc) + " |", "|" + "|".join(["---"] * len(enc)) + "|"]
+        for c in codigos:
+            partes.append("| " + " | ".join([nombres[c]] + [str(t[c]) if t[c] is not None else "excl."
+                                                            for t in tablas]) + " |")
+        partes.append("")
+    return "\n".join(partes)
 
 
 def tabla_md(titulo, nota, enc, filas):
@@ -345,7 +394,8 @@ def main(comprobar=False):
         pos_ordenado)
 
     salidas = [(SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos),
-               (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(registros))]
+               (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(registros)),
+               (SALIDA_ESCENARIOS, escenarios_md(registros))]
     desactualizadas = comprobar_o_escribir(salidas, comprobar)
     if comprobar and desactualizadas:
         sys.exit(f"No están al día: {', '.join(desactualizadas)}. "
@@ -353,8 +403,8 @@ def main(comprobar=False):
 
     accion = "al día" if comprobar else "escritas"
     print(f"{len(paises)} países. Genealogía: {excluidos_gen} excluidos ({SALIDA_GENEALOGIA.name}). "
-          f"POS: {excluidos_pos} excluidos ({SALIDA_POS.name}). Tablas, {SALIDA_FINAL.name} y "
-          f"{SALIDA_VISTA.name} {accion}.")
+          f"POS: {excluidos_pos} excluidos ({SALIDA_POS.name}). Tablas, {SALIDA_FINAL.name}, "
+          f"{SALIDA_VISTA.name} y {SALIDA_ESCENARIOS.name} {accion}.")
 
 
 if __name__ == "__main__":
