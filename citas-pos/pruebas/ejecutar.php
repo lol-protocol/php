@@ -75,11 +75,11 @@ function temporal(): string
     return $dir;
 }
 
-/** Una copia del proyecto para romperla: bin/, datos/, prototipo/, salida/ y revisiones.csv. */
+/** Una copia del proyecto para romperla: bin/, datos/, juego/, prototipo/, salida/ y revisiones.csv. */
 function proyecto(): string
 {
     $dir = temporal();
-    foreach (['bin', 'datos', 'prototipo', 'salida'] as $carpeta) {
+    foreach (['bin', 'datos', 'juego', 'prototipo', 'salida'] as $carpeta) {
         copiar(RAIZ . '/' . $carpeta, $dir . '/' . $carpeta);
     }
     copy(RAIZ . '/revisiones.csv', $dir . '/revisiones.csv');
@@ -97,6 +97,13 @@ function correr(string $script, array $argumentos = []): array
         $orden .= ' ' . escapeshellarg($a);
     }
     exec($orden . ' 2>&1', $lineas, $codigo);
+    return [$codigo, implode("\n", $lineas)];
+}
+
+/** @return array{int, string} */
+function correr_node(string $archivo): array
+{
+    exec('node --check ' . escapeshellarg($archivo) . ' 2>&1', $lineas, $codigo);
     return [$codigo, implode("\n", $lineas)];
 }
 
@@ -412,6 +419,75 @@ $pruebas['render: los fragmentos del sitio llevan lang y la categoría de cada p
     verdadero(str_contains($html, 'Frase de prueba; no es una cita.'), 'falta el aviso de que no es una cita');
 };
 
+// «Adivina la categoría»: lo que se puede comprobar sin un navegador. El comportamiento (pulsar, teclado, leyenda
+// que se llena) se probó a mano en Chromium; ver README.md.
+function fragmentoDeJuego(string $id = 'spa-2'): string
+{
+    return (string) file_get_contents(RAIZ . "/salida/ejemplos/$id.juego.html");
+}
+
+$pruebas['juego: hay una palabra .jw por cada palabra etiquetada (sin la puntuación) y una entrada de leyenda por categoría'] = function (): void {
+    $ejemplos = leerJson(RAIZ . '/datos/ejemplos.json');
+    $n = 0;
+    foreach ($ejemplos['ejemplos'] as $e) {
+        foreach ($e['frases'] as $f) {
+            $html = fragmentoDeJuego($f['id']);
+            $palabras = array_filter($f['palabras'], static fn (array $p): bool => $p[1] !== 'PUNCT');
+            $categorias = array_unique(array_column($palabras, 1));
+            igual(count($palabras), substr_count($html, 'class="w jw"'));
+            igual(count($categorias), substr_count($html, '<li data-c="'));
+            igual(count($categorias), substr_count($html, 'class="w jm"'));
+            $n++;
+        }
+    }
+    verdadero($n >= 6, 'debía probar al menos 6 frases');
+};
+$pruebas['juego: sin JavaScript no se oculta nada (la ayuda y los controles esperan al script; nada finge ser un botón)'] = function (): void {
+    $html = fragmentoDeJuego();
+    verdadero(str_contains($html, 'class="jayuda" lang="es" hidden'), 'la ayuda debe llevar hidden hasta que haya script');
+    verdadero(str_contains($html, 'class="jbar" lang="es" hidden'), 'los controles deben llevar hidden hasta que haya script');
+    foreach (['aria-pressed', 'role="button"', 'tabindex', 'aria-label', 'class="citas-pos citas-pos-juego js'] as $prohibido) {
+        verdadero(!str_contains($html, $prohibido), "el HTML estático no debe llevar $prohibido: lo pone el script");
+    }
+    verdadero(!preg_match('/<li[^>]*\shidden/', $html), 'la leyenda debe verse completa sin script');
+};
+$pruebas['juego: no regala la respuesta con un title, y la categoría de cada palabra va en data-nombre'] = function (): void {
+    $html = fragmentoDeJuego();
+    verdadero(!str_contains($html, 'title='), 'un title dejaría ver la categoría antes de descubrirla');
+    verdadero(preg_match('/data-c="VERB"[^>]*data-nombre="verbo"/', $html) === 1, 'falta data-nombre="verbo" en la palabra de categoría VERB');
+};
+$pruebas['juego: la ayuda, la leyenda y los controles van en español y la frase en su idioma'] = function (): void {
+    foreach (['spa-2' => 'es', 'eng-2' => 'en', 'deu-2' => 'de'] as $id => $lang) {
+        $html = fragmentoDeJuego($id);
+        verdadero(str_contains($html, "<figure class=\"citas-pos citas-pos-juego\" lang=\"$lang\">"), "$id: el fragmento debe llevar lang=\"$lang\"");
+        foreach (['class="jayuda" lang="es"', 'class="jleyenda" lang="es"', 'class="jbar" lang="es"'] as $parte) {
+            verdadero(str_contains($html, $parte), "$id: falta $parte");
+        }
+    }
+};
+$pruebas['juego: salida/ lleva la hoja y el script, iguales a las fuentes de juego/, y el demo no carga nada externo'] = function (): void {
+    igual(file_get_contents(RAIZ . '/juego/juego.css'), file_get_contents(RAIZ . '/salida/citas-pos-juego.css'));
+    igual(file_get_contents(RAIZ . '/juego/juego.js'), file_get_contents(RAIZ . '/salida/citas-pos-juego.js'));
+    $demo = (string) file_get_contents(RAIZ . '/salida/demo-juego.html');
+    foreach (['src=', 'href=', 'http', '@import', 'url('] as $externo) {
+        verdadero(!str_contains($demo, $externo), "el demo no debe llevar $externo");
+    }
+    verdadero(substr_count($demo, '<figure class="citas-pos citas-pos-juego"') >= 6, 'el demo debe traer todas las frases');
+};
+$pruebas['juego: el JavaScript es válido (si hay node)'] = function (): void {
+    exec('command -v node 2>/dev/null', $salida, $codigo);
+    if ($codigo !== 0) {
+        return;
+    }
+    $r = correr_node(RAIZ . '/juego/juego.js');
+    verdadero($r[0] === 0, 'node --check falló: ' . $r[1]);
+};
+$pruebas['render rechaza un juego.js que cierre el script del demo'] = function (): void {
+    $dir = proyecto();
+    file_put_contents($dir . '/juego/juego.js', "\n// </script>\n", FILE_APPEND);
+    rechaza(correr($dir . '/bin/render.php'), 'no puede contener');
+};
+
 // La puerta de revisión: una cita real solo sale con su texto y sus etiquetas aprobados.
 /** @return array{string, array<string, mixed>} */
 function proyectoConCita(): array
@@ -438,7 +514,7 @@ foreach ($casosDePuerta as $nombre => [$filas, $sale]) {
         file_put_contents($dir . '/revisiones.csv', $filas, FILE_APPEND);
         $r = correr($dir . '/bin/render.php');
         pasa($r);
-        $hay = is_file($dir . '/salida/citas/spa-v1.sitio.html') && is_file($dir . '/salida/citas/spa-v1.correo.html');
+        $hay = is_file($dir . '/salida/citas/spa-v1.sitio.html') && is_file($dir . '/salida/citas/spa-v1.correo.html') && is_file($dir . '/salida/citas/spa-v1.juego.html');
         if ($sale) {
             verdadero($hay, 'debía generar la cita y no lo hizo: ' . $r[1]);
             $sitio = (string) file_get_contents($dir . '/salida/citas/spa-v1.sitio.html');
@@ -459,6 +535,7 @@ $pruebas['render no genera una cita sin verificar aunque tenga todas las revisio
     file_put_contents($dir . '/revisiones.csv', "spa,cita,spa-s9,correcto,Ana,2026-10-26,\nspa,etiquetas,spa-s9,correcto,Ana,2026-10-26,\n", FILE_APPEND);
     pasa(correr($dir . '/bin/render.php'));
     verdadero(!is_file($dir . '/salida/citas/spa-s9.sitio.html'), 'generó una cita que no está verificada');
+    verdadero(!is_file($dir . '/salida/citas/spa-s9.juego.html'), 'generó el juego de una cita que no está verificada');
 };
 
 $fallidas = 0;
