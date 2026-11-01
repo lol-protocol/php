@@ -115,9 +115,9 @@ $entries = $parser->parseContent($textContent);
   ```
   Sin coma, el nombre se interpreta apellido-primero ("SMITH John" → "Smith, John"), la misma convención que usa el resto del proyecto.
 
-**Teléfonos reconocidos:** formatos numéricos estándar (`555-123-4567`, `5551234567`, `555.123.4567`, `555 123 4567`) y el formato de central telefónica con nombre, común en Estados Unidos y el Reino Unido hasta mediados del siglo XX (`BUtterfield 8-4521`).
+**Teléfonos reconocidos:** formatos numéricos estándar (`555-123-4567`, `5551234567`, `555.123.4567`, `555 123 4567`) y el formato de central telefónica con nombre, común en Estados Unidos y el Reino Unido hasta mediados del siglo XX (`BUtterfield 8-4521`). `MultiLanguagePhoneDirectoryParser` reconoce además los formatos de los países de cada idioma: francés `01 42 68 53 00` y `+33 1 42 68 53 00`; alemán `030 123456`, `(089) 654321` y `0711/12345`; italiano `06 1234567`; portugués `21 342 0000`; español `91 234 56 78`, `912 345 678`, `2-345-678` y `(2) 345 6789`. Van por idioma, y no juntos, porque los más sueltos tomarían el número de la calle como parte del teléfono en la guía de otro idioma.
 
-**Calles:** se detectan por palabra clave (Street, Avenue, Road, Drive, Lane...) o, si no hay ninguna reconocida, por un número seguido de texto. Una línea que es solo un número de teléfono nunca se toma como calle.
+**Calles:** se detectan por palabra clave (Street, Avenue, Road, Drive, Lane...) o, si no hay ninguna reconocida, cuando toda la línea es un número seguido solo de palabras (`9 Wexford Close`, `8 Clos Saint-Éloi`). Una línea que es solo un número de teléfono nunca se toma como calle.
 
 ### MultiLanguagePhoneDirectoryParser
 Detecta el idioma del contenido (o lo recibe explícito) y separa personas naturales de empresas.
@@ -471,6 +471,17 @@ PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `comp
 
 Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`.
 
+### Cuánto acierta el parser
+
+`tests/fixtures/parser-evaluation.json` es un conjunto fijo de guías cortas en los seis idiomas, cada una con lo que una persona leería en ella (nombre, calle, teléfono, persona o empresa). `bin/evaluate-parser.php` pasa `MultiLanguagePhoneDirectoryParser` por esos casos y dice cuántos salen bien, cuántas entradas encuentra y cuántas de ellas son correctas, y qué sigue fallando, agrupado por causa:
+
+```bash
+php bin/evaluate-parser.php            # resumen
+php bin/evaluate-parser.php --detail   # además, lo esperado y lo obtenido en cada caso que falla
+```
+
+Los casos que el parser todavía resuelve mal están marcados con `falla_conocida` y su motivo. `ParserEvaluationTest` (y el script, que corre también en la CI) exige que los demás salgan exactamente como dice el conjunto y que los marcados sigan fallando: un cambio que arregla uno tiene que quitarle la marca, y uno que rompe otro no pasa. Para medir una mejora, agrega primero los casos que la muestran.
+
 ## API Completa
 
 ### PhoneDirectoryParser / MultiLanguagePhoneDirectoryParser
@@ -520,6 +531,7 @@ Para directorios telefónicos grandes:
 - Con "viuda de" o "widow of", solo se guarda el tratamiento; el nombre del marido que sigue no se vuelve a separar en nombre/apellido
 - Ver «Privacidad: personas que podrían estar vivas» para lo que la base no devuelve por omisión y por qué
 - La detección automática de idioma es una heurística por palabras clave; con muy poco texto, o en un idioma no soportado, puede fallar (siempre se puede indicar el idioma explícitamente)
+- Los casos de `tests/fixtures/parser-evaluation.json` marcados con `falla_conocida` documentan lo que el parser multilingüe todavía no resuelve; entre ellos, que una calle sin palabra de calle y con el número al final («Los Aromos 123») no se reconoce, y que dos registros seguidos sin línea en blanco se leen como uno
 
 ## Licencia
 

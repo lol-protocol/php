@@ -54,6 +54,17 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual('Hauptstraße 5', entries[0]['location']['street'])
 
+    def test_street_without_street_word_keeps_accents_and_hyphens(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("Hélène Lefèvre\n8 Clos Saint-Éloi", 'fr')
+
+        self.assertEqual('8 Clos Saint-Éloi', entries[0]['location']['street'])
+
+    def test_number_inside_a_name_is_not_a_street(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("Restaurante 3 Hermanos\nCalle Larga 5", 'es')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('Calle Larga 5', entries[0]['location']['street'])
+
     def test_separator_lines_split_entries(self):
         entries = MultiLanguagePhoneDirectoryParser().parse_content("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St")
 

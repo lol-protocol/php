@@ -149,7 +149,7 @@ class MultiLanguagePhoneDirectoryParser
         }
 
         $this->detectedLanguage = $language;
-        $phoneRegex = PhonePattern::getValidatedRegex();
+        $phoneRegex = PhonePattern::regexFor($language);
 
         $buffer = [];
         $bufferStart = 0;
@@ -173,8 +173,11 @@ class MultiLanguagePhoneDirectoryParser
             // path, where finalizeEntry() reports the record as a parse error.
             $single = mb_check_encoding($trimmed, 'UTF-8') ? SingleLineEntrySplitter::split(
                 $trimmed,
-                fn($street) => $this->extractStreet($street, $language) !== null,
-                PersonName::LANGUAGE_SURNAME_COUNT[$language] ?? 1
+                // Only a street word, as PhoneDirectoryParser does: the number-first fallback alone would
+                // turn "Restaurante 3 Hermanos" or "Apt 4 Building 7" into a record of their own.
+                fn($street) => $this->hasStreetWord($street, $language),
+                PersonName::LANGUAGE_SURNAME_COUNT[$language] ?? 1,
+                $language
             ) : null;
             if ($single !== null) {
                 if (!empty($buffer)) {
@@ -373,15 +376,16 @@ class MultiLanguagePhoneDirectoryParser
             return $line;
         }
 
-        if (PhonePattern::isOnlyAPhoneNumber($line)) {
+        if (PhonePattern::isOnlyAPhoneNumber($line, $language)) {
             return null;
         }
 
-        if (preg_match('/\d+\s+[\w\s]+/', $line, $matches)) {
-            return $matches[0];
-        }
+        return StreetFallback::numberFirst($line);
+    }
 
-        return null;
+    private function hasStreetWord(string $line, string $language): bool
+    {
+        return mb_check_encoding($line, 'UTF-8') && preg_match($this->getStreetPattern($language), $line) === 1;
     }
 
     private function extractBusinessType(string $line, string $language): ?string

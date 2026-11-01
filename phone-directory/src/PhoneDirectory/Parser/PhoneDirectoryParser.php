@@ -239,11 +239,7 @@ class PhoneDirectoryParser
             return null;
         }
 
-        if (preg_match('/\d+\s+[\w\s]+/', $line, $matches)) {
-            return $matches[0];
-        }
-
-        return null;
+        return StreetFallback::numberFirst($line);
     }
 
     /** @param RawEntry $data */

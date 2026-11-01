@@ -26,6 +26,15 @@ public class PhoneDirectoryParserTest {
         entries = new MultiLanguagePhoneDirectoryParser().parseContent("Hans Müller\nHauptstraße 5", null);
         assertEquals("Hauptstraße 5", location(entries.get(0)).get("street"));
 
+        // A street with no street word: the whole line, accents and hyphens included.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("Hélène Lefèvre\n8 Clos Saint-Éloi", "fr");
+        assertEquals("8 Clos Saint-Éloi", location(entries.get(0)).get("street"));
+
+        // A number inside a name ("3 Hermanos") is not a street.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("Restaurante 3 Hermanos\nCalle Larga 5", "es");
+        assertEquals(1, entries.size());
+        assertEquals("Calle Larga 5", location(entries.get(0)).get("street"));
+
         entries = new MultiLanguagePhoneDirectoryParser().parseContent("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St", null);
         assertEquals(2, entries.size());
 
