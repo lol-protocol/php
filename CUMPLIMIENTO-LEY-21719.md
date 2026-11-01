@@ -39,6 +39,10 @@
   quien solo lee, el pedido de retiro no deja quién lo pidió en el log, la IP del
   limitador se guarda como hash y se borra a la hora.
 - **No se toman pagos** y la tienda solo recibe una dirección de envío.
+- **Se puede contestar «¿qué tienen de mí?» y «bórrenme»** con `bin/persona.php`
+  ([`url-routing/docs/ACCESO.md`](url-routing/docs/ACCESO.md)): lo primero imprime todo lo
+  que hay de una persona; lo segundo la borra, deja un registro sin su nombre y se puede
+  repetir si algún día se restaura una copia de seguridad vieja.
 
 **Lo que falta para poder abrir el sitio** (detalle en §5):
 
@@ -46,8 +50,9 @@
    (responsable, domicilio, correo, país del servidor, plazos).
 2. Solo los pedidos de retiro tienen un plazo de conservación (`--depurar`, 12 meses, y falta ponerlo en
    el cron); las direcciones de la tienda, los logs y las copias de seguridad no.
-3. Pedir que se **borre** algo no tiene herramienta: «retirar» solo oculta, y
-   corregir o borrar se hace a mano en la base.
+3. Para **borrar** a una persona hay herramienta (`bin/persona.php suprimir`), pero
+   falta ensayarla con datos reales y decidir cómo se comprueba quién la pide.
+   «Retirar» solo oculta; corregir sigue siendo a mano en la base.
 4. No hay un procedimiento escrito si hay una fuga de datos.
 5. Nadie ha decidido en qué país vive el servidor ni quién es el responsable ante
    la ley.
@@ -95,6 +100,7 @@ privacidad. Cada fila se comprobó en el código.
 | Árboles de personas con nombre de autor | `colecciones`, `usuarios` | Publicar un árbol | Los públicos, todos; los privados, solo el propietario | Sin plazo |
 | Correo y nombre de quien aportó | `usuarios` | Saber quién aportó | Solo el propietario | Sin plazo |
 | **Pedidos de retiro**: motivo, texto libre, **correo de contacto** | `pedidos_retiro`, `pedido_retiro_eventos` | Atender el reclamo y dejar el registro | Solo el propietario | El correo, el texto y las marcas se borran 12 meses después de resolverse **si el cron lleva `--depurar`** (opcional; [`url-routing/docs/ACCESO.md`](url-routing/docs/ACCESO.md)). Se conservan el número, la página, el motivo, el estado y el historial. Pendientes u ocultos no se tocan |
+| **Registro de supresiones**: el id que se borró, cuándo, el pedido y cuántas filas se quitaron. **Nunca el nombre** | `supresiones_persona` | Probar que se hizo y repetirlo tras restaurar una copia | Solo el propietario | Sin plazo |
 | Cookie de sesión (`PHPSESSID`) con el token CSRF, el carrito o mensajes | Archivo de sesión en el servidor | Que un formulario funcione | Nadie | Caduca a la hora sin actividad, o a las 12 horas |
 | IP de quien visita, como hash SHA-256 | Archivo del limitador, en el directorio temporal | Frenar el abuso (100 peticiones por minuto) | Nadie | Se borra a la hora |
 | Log de la aplicación: errores, y el número y la página de un pedido de retiro, **nunca quién lo pidió** | `LOG_FILE` | Operar el sitio | Quien administra el servidor | Lo que dure el archivo: no hay rotación definida para este |
@@ -125,9 +131,9 @@ propio es la issue #233, **sin resolver**.
 |---|---|---|---|---|
 | 1 | **Informar** quién trata los datos, para qué y con qué base | Hay un borrador de términos con huecos y **no hay política de privacidad** | ❌ | Escribirla (puedo redactar el borrador a partir de §3) y completar `[NOMBRE]`, `[CORREO]`, `[PLAZO]` |
 | 2 | **Base para tratar** los datos de cada persona | Solo se muestra a quien no puede estar vivo; no hay una base escrita (interés legítimo, fuente pública, investigación) | ◐ | Elegir y escribir la base **por tipo de dato**. Depende de las preguntas 2 y 3 de §7 |
-| 3 | **Acceso**: la persona pide ver qué se tiene de ella | Se atiende a mano escribiendo al correo. Es una búsqueda por nombre en la base; no hay una salida lista | ◐ | Una herramienta que junte todo lo que hay de una persona (la propongo junto con la de borrado, semana 3) |
+| 3 | **Acceso**: la persona pide ver qué se tiene de ella | `php bin/persona.php acceso <id>` imprime en JSON la ficha, sus sucesos, registros, colecciones y organizaciones. Los parientes salen como cantidades y de los pedidos de retiro no se dice quién los pidió ni qué escribió | ◐ | **Cómo se comprueba que quien pide es la persona** (o su familiar) antes de mandarle el resultado: imprime también lo que un visitante no ve. Y ensayarlo con datos reales |
 | 4 | **Rectificación** | Se corrige a mano en la base. No hay pantalla ni registro de qué se corrigió | ◐ | Procedimiento escrito; idealmente anotar qué y cuándo |
-| 5 | **Supresión** | «Retirar» **oculta** y deja los datos guardados. Borrar se hace a mano | ❌ | Herramienta de borrado o anonimización con registro. Decisión previa: qué se borra y qué se conserva (§5, punto 3) |
+| 5 | **Supresión** | «Retirar» **oculta**. Borrar de verdad: `php bin/persona.php suprimir <id> [--pedido=N] --confirmar`, en una transacción, con un registro sin el nombre y `reaplicar` si se restaura una copia vieja. Lista los textos libres que nombran a la persona **para leerlos a mano** (no los toca) | ◐ | Ensayarla con datos reales. Leer esos textos. Confirmar tres decisiones que tomé yo: se **borra** (no se anonimiza), los **registros** se conservan, los **sucesos compartidos** se conservan con ella fuera |
 | 6 | **Oposición** | El formulario `/r/{id}/` con el motivo «habla de mí» o «de un familiar fallecido» | ✅ | Solo atender dentro del plazo |
 | 7 | **Portabilidad** | Exporta a GEDCOM una colección (`/{id}/3/`) | ◐ | No hay salida para una persona suelta. Comprobar si aplica a estos datos (§7, pregunta 5) |
 | 8 | **Bloqueo temporal** mientras se revisa | El estado «oculto» hace justo eso. A las 24 horas se aplica solo, **cuando el cron del servidor lleve `--ocultar`** (decidido; falta instalarlo) | ✅ | Comprobar que la ley lo pide con ese nombre, e instalar el cron |
@@ -157,18 +163,19 @@ propio es la issue #233, **sin resolver**.
    de la aplicación y las copias de seguridad, y `--depurar` puesto en el cron de los
    pedidos de retiro (ya existe, con 12 meses como valor inicial).
 3. **Una forma de borrar de verdad** cuando alguien lo pida y corresponda, con
-   registro. Antes hay que decidir qué se borra y qué se conserva. Una propuesta
-   para empezar: se borra o anonimiza el nombre, las fechas y el lugar de la
-   persona y su rastro en sucesos y registros; se conserva, sin identificarla, el
-   número del pedido, la fecha y la decisión (para poder responder a un reclamo
-   sin guardar lo que se pidió borrar).
+   registro. Ya existe (`bin/persona.php suprimir`): se borra a la persona, sus sucesos
+   propios, sus vínculos y su lugar en colecciones y organizaciones; sus hijos conservan
+   su fila; se conservan los registros y los sucesos compartidos; el registro no lleva el
+   nombre. Falta **ensayarla con datos reales** y escribir **cómo se comprueba quién
+   pide** antes de actuar o de mandar un acceso.
 4. **País del servidor y responsable** (nombre, domicilio) decididos y puestos.
 5. **Una hoja de «si hay una fuga»** de una página.
 
 **Puede esperar a después de abrir:**
 
-- Una pantalla para rectificar y para pedir acceso (a mano sirve mientras haya
-  pocas solicitudes, si el procedimiento está escrito).
+- Una pantalla para rectificar y para pedir acceso (el acceso y la supresión ya tienen
+  una herramienta de línea de comandos; la rectificación sigue siendo a mano, y sirve
+  mientras haya pocas solicitudes si el procedimiento está escrito).
 - Cifrado de la base en reposo y copias automáticas.
 - Un registro de actividades más fino que el de §3.
 
@@ -180,7 +187,7 @@ propio es la issue #233, **sin resolver**.
 |---|---|---|
 | **Semana 1** (31 oct – 6 nov) | Abrir el texto oficial y responder las preguntas de §7. Decidir país del servidor, responsable y plazos de conservación | Persona a cargo |
 | **Semana 2** (7 – 13 nov) | Redactar la política de privacidad y completar los términos con los datos reales | Claude propone el borrador; la persona a cargo lo ajusta |
-| **Semana 3** (14 – 20 nov) | Herramienta de borrado o anonimización con registro, y el procedimiento escrito de acceso y rectificación | Claude |
+| **Semana 3** (14 – 20 nov) | Ensayar `bin/persona.php` con datos reales y escribir el procedimiento de acceso (incluida la comprobación de quién pide), de supresión y de rectificación | Claude propone el procedimiento; la persona a cargo prueba la herramienta |
 | **Semana 4** (21 – 27 nov) | La hoja de «si hay una fuga». Probar de punta a punta: pedir un retiro, recibir el aviso por correo de cron, atender una solicitud de borrado | Persona a cargo con Claude |
 | **28 nov – 1 dic** | Repasar este documento fila por fila y poner la fecha en cada ❌ que se decida dejar | Persona a cargo |
 
