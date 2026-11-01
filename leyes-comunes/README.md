@@ -1,27 +1,48 @@
-# Núcleo compartido del verificador de enlaces
+# Código compartido de `privacy-laws/` y `copyright-laws/`
 
-`check-links-core.js`: la lógica detrás de `privacy-laws/scripts/check-links.js` y
-`copyright-laws/scripts/check-links.js`. Hasta esta carpeta, los dos eran el mismo
-archivo mantenido sincronizado a mano (y ya se desincronizaron una vez: ver #140).
+Lo que los dos módulos hacían igual y se mantenía sincronizado a mano (y ya se desincronizó una vez: ver #140)
+vive aquí una sola vez. Cada script del proyecto queda como un envoltorio que dice solo lo suyo y llama al núcleo:
+
+| Núcleo | Lo usan | Qué hace |
+|---|---|---|
+| `check-links-core.js` | `scripts/check-links.js` | Comprueba que los enlaces de referencia siguen respondiendo. |
+| `cache-texts-core.php` y `html_to_text.php` | `scripts/cache-texts.php` | Guarda el texto de la página de cada ley (robots.txt, un pedido por URL, HTML a Markdown). |
+| `record-changes-core.js` | `scripts/record-changes.js` | Anota en `changes.csv` lo que cambió en el CSV maestro, o con `--check` falla si algo cambió sin anotarse. |
+| `translations-core.js` | `scripts/translations.js` | Cobertura de las traducciones automáticas, lo que falta por idioma e importación de las hechas. |
+| `validate-csv-core.js` | `scripts/validate-csv.js` | Corre la validación del proyecto, imprime los problemas y escribe el resumen de GitHub Actions. |
 
 ## Qué vive aquí y qué no
 
-Vive acá todo lo que no depende de qué módulo lo llama: cómo se hace cada pedido
-HTTP (`HEAD` primero, `GET` si lo rechaza, un reintento en los `5xx`), cómo se
-clasifica un resultado (`ok` / `warning` / `broken`, ver el comentario de
-`classify`), la concurrencia (`mapLimit`), el parseo de argumentos de la línea de
-comandos y el reporte (consola, JSON, resumen de GitHub Actions).
+Vive acá todo lo que no depende de qué módulo lo llama. Lo que sí depende del módulo lo pasa cada envoltorio:
 
-Lo que sí depende del módulo —la columna de la URL (`website_url` o
-`linked_resources`), la etiqueta de la unidad para el resumen (`country` o
-`jurisdiction`), el `User-Agent` y el propio `./lib/dataset.js` de cada
-proyecto (columnas distintas)— lo pasa cada `check-links.js` al llamar a
-`createCheckLinks({ urlField, unit, userAgent, dataset })`.
+- `check-links.js`: la columna de la URL (`website_url` o `linked_resources`), la etiqueta de la unidad para el
+  resumen (`country` o `jurisdiction`), el `User-Agent` y el propio `./lib/dataset.js` de cada proyecto
+  (columnas distintas), con `createCheckLinks({ urlField, unit, userAgent, dataset })`.
+- `record-changes.js` y `translations.js`: solo el `./lib/dataset.js` del proyecto, con
+  `createRecordChanges({ dataset })` y `createTranslations({ dataset })`.
+- `validate-csv.js`: el `loadAndValidate` del proyecto y el título del resumen, con
+  `validateCsv({ loadAndValidate, title })`.
+- `cache-texts.php`: seis constantes que define el envoltorio antes de hacer `require` del núcleo (`BUNDLE_KEY`,
+  `URL_FIELD`, `USER_AGENT`, `UNIT`, `DATA_DIR` y `SCRIPT_FILE`; las explica el encabezado de
+  `cache-texts-core.php`). La ayuda que imprime el script sale del comentario del envoltorio, así que cada proyecto
+  conserva la suya.
 
-No tiene pruebas propias: lo prueban las de `privacy-laws/tests/check-links.test.js`
-y `copyright-laws/tests/check-links.test.js`, que siguen corriendo contra el
-`check-links.js` de su propio proyecto (son 20 líneas que configuran y reexportan
-este archivo).
+Cada envoltorio conserva además el comentario de uso de su script y, en `record-changes.js` y `translations.js`,
+reexporta las funciones que usan las pruebas, para que los `import` de las pruebas no cambien.
+
+Ninguno tiene pruebas propias: los prueban las de `privacy-laws/tests/` y `copyright-laws/tests/`, que siguen
+corriendo contra el script de su propio proyecto.
+
+## Lo que sigue duplicado, y por qué
+
+- **`app/`** (`lib/chart.js`, `lib/filters.js`, `lib/util.js` y varias hojas de estilo son idénticos): la web se sirve
+  como archivos estáticos desde la carpeta `app/` de cada proyecto, sin paso de build. Compartir esos archivos
+  pediría un paso que los copie, o sacarlos de la carpeta que se sirve. No se hizo en la misma tanda.
+- **`scripts/lib/dataset.js`**: es el corazón de cada módulo y los campos de cada ley son distintos (los de
+  privacidad frente a los de derechos de autor, y `website_url` frente a `linked_resources`). Un núcleo
+  compartido sería un refactor más grande que el resto junto, con el riesgo de tocar cómo se valida cada CSV.
+- **`tests/`**: las pruebas son las que vigilan los envoltorios, así que cada proyecto conserva las suyas. Algunos
+  archivos auxiliares son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`).
 
 ## Sitios que rechazan a los runners
 
