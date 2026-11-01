@@ -20,7 +20,7 @@ Citas sobre la forma de las palabras, y citas cualesquiera con cada palabra en e
 
 Variantes, de menor a mayor esfuerzo:
 
-- **Adivina la categoría.** La cita en gris; al tocar cada palabra se revela su categoría y su color. Sirve para carruseles de redes.
+- **Adivina la categoría.** La cita en gris; al tocar cada palabra se revela su categoría y su color. **Hecha** (en `salida/` y `juego/`): para el sitio, no para redes, con una leyenda que se va llenando con las categorías descubiertas. Sin JavaScript sale coloreada y explicada. Aún con frases de prueba; falta probarla con un lector de pantalla y con gente.
 - **Leyenda en el idioma de la cita.** Cada tarjeta trae su leyenda con los nombres de las categorías en ese idioma. Conecta con los nombres de color en 30 idiomas de `Listado-colores/`.
 - **Palabras que cambian de color dentro de una cita.** Elegir un término con categorías distintas según el contexto (en inglés, *light*: sustantivo, adjetivo o verbo). Es la pieza que mejor muestra qué resuelve un etiquetador.
 - **Mapa completo.** Una frase corta en la que aparecen casi todas las categorías, como ejemplo de «mapa de la oración».

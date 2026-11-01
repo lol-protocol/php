@@ -8,6 +8,9 @@ declare(strict_types=1);
  *   salida/citas-pos.css                 la hoja de estilo del sitio (colores y marcas de datos/paleta.json)
  *   salida/<origen>/<id>.correo.html     fragmento para el correo: estilos en línea, sin CSS ni imágenes
  *   salida/<origen>/<id>.sitio.html      fragmento para el sitio: clases que usa citas-pos.css
+ *   salida/<origen>/<id>.juego.html      fragmento de «Adivina la categoría» (con citas-pos-juego.css y .js)
+ *   salida/citas-pos-juego.css y .js     copias de juego/juego.css y juego/juego.js, que se escriben a mano
+ *   salida/demo-juego.html               una página autónoma para probar el juego, con todas las frases
  *
  * <origen> es «ejemplos» (las frases de prueba de datos/ejemplos.json, que NO son citas) o «citas»
  * (las de datos/citas.json). Una cita solo se genera si está «verificada», tiene etiquetas y su
@@ -26,6 +29,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/lib/comun.php';
 
 const SALIDA = __DIR__ . '/../salida';
+const JUEGO = __DIR__ . '/../juego';
 const VEREDICTOS_QUE_APRUEBAN = ['correcto', 'corregido'];
 
 /**
@@ -185,6 +189,92 @@ function sitio(array $paleta, array $cats, array $f): string
         . "</figure>\n";
 }
 
+/**
+ * El fragmento de «Adivina la categoría». Sin JavaScript sale coloreado y con la leyenda completa; con
+ * juego/juego.js las palabras empiezan en gris y se revelan al tocarlas, y la leyenda se va llenando.
+ *
+ * @param array<string, mixed> $paleta
+ * @param array<string, array<string, mixed>> $cats
+ * @param array<string, mixed> $f
+ */
+function juego(array $paleta, array $cats, array $f): string
+{
+    $cuerpo = '';
+    $vistas = [];
+    foreach (trozos($f['id'], $f['texto'], $f['palabras']) as [$texto, $cat]) {
+        if ($cat === null) {
+            $cuerpo .= nl2br(h($texto), false);
+            continue;
+        }
+        $c = $cats[$cat] ?? throw new RuntimeException("Categoría desconocida $cat.");
+        if ($cat === 'PUNCT') {
+            $cuerpo .= '<span class="jp">' . h($texto) . '</span>';
+            continue;
+        }
+        $vistas[$cat] = true;
+        $cuerpo .= '<span class="w jw" data-c="' . h($cat) . '" data-g="' . h($c['grupo']) . '" data-nombre="' . h($c['nombre']) . '">' . h($texto) . '</span>';
+    }
+    $leyenda = '';
+    foreach (array_keys($vistas) as $cat) {
+        $c = $cats[$cat];
+        $leyenda .= '<li data-c="' . h($cat) . '"><span class="w jm" data-c="' . h($cat) . '" data-g="' . h($c['grupo']) . '">Aa</span> ' . h($c['nombre']) . "</li>\n";
+    }
+    return "<figure class=\"citas-pos citas-pos-juego\" lang=\"{$f['lang']}\">\n"
+        . "<p class=\"jayuda\" lang=\"es\" hidden>Toca cada palabra y descubre de qué color es.</p>\n"
+        . "<blockquote><p>$cuerpo</p></blockquote>\n"
+        . "<ul class=\"jleyenda\" lang=\"es\">\n$leyenda</ul>\n"
+        . '<p class="jbar" lang="es" hidden><button type="button" data-accion="todas">Descubrir todas</button> '
+        . '<button type="button" data-accion="ocultar">Volver a ocultar</button> '
+        . "<span class=\"jestado\" role=\"status\" aria-live=\"polite\"></span></p>\n"
+        . '<figcaption>' . pie($f['pie']) . "</figcaption>\n"
+        . "</figure>\n";
+}
+
+/**
+ * Una página de demostración, autónoma (con la hoja y el script dentro), para probar el juego sin montar nada.
+ * No es la forma de integrarlo: en un sitio, la hoja y el script van como archivos aparte.
+ *
+ * @param list<string> $fragmentos
+ */
+function demo(string $css, string $js, array $fragmentos): string
+{
+    if (str_contains($js, '</script')) {
+        throw new RuntimeException('juego/juego.js no puede contener «</script».');
+    }
+    $figuras = implode("\n", $fragmentos);
+    return <<<HTML
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Adivina la categoría</title>
+<!-- Generado por citas-pos/bin/render.php. No editar a mano. -->
+<style>
+body { margin: 0; padding: 24px 16px 48px; font-family: system-ui, sans-serif; background: #d9d9de; color: #1d1d22; }
+@media (prefers-color-scheme: dark) { body { background: #0c0c10; color: #ececf1; } }
+main { max-width: 52rem; margin: 0 auto; display: grid; gap: 20px; }
+h1 { font-size: 1.4rem; margin: 0; }
+.nota { margin: 0; font-size: 0.875rem; opacity: 0.8; }
+$css
+</style>
+</head>
+<body>
+<main>
+<h1>Adivina la categoría</h1>
+<p class="nota">Página de prueba. Las frases las escribió quien armó el prototipo y no son citas; sus etiquetas están puestas a mano y ningún hablante nativo las ha revisado.</p>
+$figuras
+</main>
+<script>
+$js
+</script>
+</body>
+</html>
+
+HTML;
+}
+
 /** @return array<string, string> ruta relativa a SALIDA => contenido */
 function generar(array &$pendientes): array
 {
@@ -196,11 +286,20 @@ function generar(array &$pendientes): array
     }
     $lista = frases(leer($base . 'ejemplos.json'), leer($base . 'citas.json'), leer($base . 'idiomas.json'), aprobadas(__DIR__ . '/../revisiones.csv'), $pendientes);
 
-    $archivos = ['citas-pos.css' => hoja($paleta) . "\n"];
+    $juegoCss = (string) file_get_contents(JUEGO . '/juego.css');
+    $juegoJs = (string) file_get_contents(JUEGO . '/juego.js');
+    $archivos = [
+        'citas-pos.css' => hoja($paleta) . "\n",
+        'citas-pos-juego.css' => $juegoCss,
+        'citas-pos-juego.js' => $juegoJs,
+    ];
+    $juegos = [];
     foreach ($lista as $f) {
         $archivos["{$f['carpeta']}/{$f['id']}.correo.html"] = correo($paleta, $cats, $f);
         $archivos["{$f['carpeta']}/{$f['id']}.sitio.html"] = sitio($paleta, $cats, $f);
+        $juegos[] = $archivos["{$f['carpeta']}/{$f['id']}.juego.html"] = juego($paleta, $cats, $f);
     }
+    $archivos['demo-juego.html'] = demo(hoja($paleta) . "\n" . $juegoCss, $juegoJs, $juegos);
     return $archivos;
 }
 
