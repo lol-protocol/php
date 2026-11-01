@@ -31,7 +31,10 @@ final class PersonaRepository extends Repository
             . $this->privacidad->siVisible($this->evento('fecha', 'defuncion')) . ' AS defuncion';
     }
 
-    /** @param array<string, mixed> $fila */
+    /**
+     * @param array<string, mixed> $fila
+     * @return array<string, mixed>
+     */
     private static function normalizar(array $fila): array
     {
         // SQLite returns 0/1 where PostgreSQL returns a real boolean.
@@ -40,6 +43,9 @@ final class PersonaRepository extends Repository
         return $fila;
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function find(int $id): ?array
     {
         $fila = $this->db->fetchOne(

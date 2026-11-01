@@ -13,12 +13,19 @@ final class OrdenRepository extends Repository
 
     private const COLUMNAS = 'id, codigo, usuario_id, estado, total_centavos, moneda, direccion_envio, numero_guia, creada_en';
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function find(int $id): ?array
     {
         return $this->db->fetchOne('SELECT ' . self::COLUMNAS . ' FROM ordenes WHERE id = ?', [$id]);
     }
 
-    /** By the public code in its URL (see migration 002_ordenes_codigo). */
+    /**
+     * By the public code in its URL (see migration 002_ordenes_codigo).
+     *
+     * @return array<string, mixed>|null
+     */
     public function porCodigo(int $codigo): ?array
     {
         return $this->db->fetchOne('SELECT ' . self::COLUMNAS . ' FROM ordenes WHERE codigo = ?', [$codigo]);
@@ -49,7 +56,10 @@ final class OrdenRepository extends Repository
         }
     }
 
-    /** @return array{id: int, codigo: string} */
+    /**
+     * @return array{id: int, codigo: string}
+     * @param array<int|string, int> $items
+     */
     private function insertar(array $items, string $direccion, int $usuarioId): array
     {
         $variantes = (new ProductoRepository($this->db))->variantesPorSkus(array_map('strval', array_keys($items)));

@@ -9,6 +9,7 @@ use App\Routing\ReservedMatchStrategy;
 use App\Routing\ByLengthMatchStrategy;
 use App\Routing\PlaceMatchStrategy;
 use App\Routing\ConfigValidator;
+use App\Routing\MatchStrategy;
 
 /**
  * URL Router — dispatches by the SHAPE of the first path segment
@@ -43,8 +44,13 @@ class Router
     /** First path segment reserved for the account area on every site. */
     public const ACCOUNT_SEGMENT = '0';
 
+    /** @var array<string, mixed> */
     protected $config = [];
+
+    /** @var list<string> */
     protected $segments = [];
+
+    /** @var list<MatchStrategy> */
     protected $strategies = [];
 
     public function __construct()
@@ -103,6 +109,9 @@ class Router
         return $destino . ($corte === false ? '' : substr($uri, $corte));
     }
 
+    /**
+     * @return list<string>
+     */
     protected function parseSegments(string $uri): array
     {
         $path = trim((string)strtok($uri, '?'), '/');
@@ -158,6 +167,9 @@ class Router
         return $this->callController($match);
     }
 
+    /**
+     * @return array{controller: string, method: string, params: array<string, mixed>}|null
+     */
     protected function resolve(): array|null
     {
         if (empty($this->segments)) {
@@ -177,6 +189,9 @@ class Router
         return null;
     }
 
+    /**
+     * @param array{controller: string, method: string, params: array<string, mixed>} $match
+     */
     protected function callController(array $match): string
     {
         $fullClass = 'App\\Controllers\\' . $match['controller'];
@@ -260,7 +275,11 @@ class Router
         };
     }
 
-    /** An id whose digit count no type uses: say so, and which padded ids it could have meant. */
+    /**
+     * An id whose digit count no type uses: say so, and which padded ids it could have meant.
+     *
+     * @param array<int, array<string, mixed>> $porLargo
+     */
     private function pistaDeLargo(string $id, array $porLargo): string
     {
         $largo = strlen($id);

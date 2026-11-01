@@ -13,8 +13,11 @@ namespace App\Support;
  */
 class QueryCache
 {
+    /** @var array<string, array<string, mixed>> */
     private static array $cache = [];
+    /** @var array<string, list<string>> */
     private static array $tags = [];
+    /** @var array<string, list<string>> */
     private static array $dependencies = [];
 
     public static function remember(string $key, int $ttl, callable $callback): mixed
@@ -32,6 +35,9 @@ class QueryCache
         return $value;
     }
 
+    /**
+     * @param list<string> $tags
+     */
     public static function set(string $key, mixed $value, int $ttl = 3600, array $tags = []): void
     {
         self::$cache[$key] = [
@@ -86,6 +92,9 @@ class QueryCache
         }
     }
 
+    /**
+     * @param list<string> $tags
+     */
     public static function flush(array $tags = []): void
     {
         if (empty($tags)) {
@@ -130,6 +139,9 @@ class QueryCache
         }
     }
 
+    /**
+     * @return array<string, int|float>
+     */
     public static function getStats(): array
     {
         $totalItems = count(self::$cache);

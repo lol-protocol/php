@@ -10,6 +10,9 @@ use App\Repositories\POS\CatalogoRepository;
 /** Grupo (category) — 4-digit id. */
 class GrupoController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = new CatalogoRepository($this->db());

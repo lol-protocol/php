@@ -22,6 +22,9 @@ class RequestValidator
         return (string)$code;
     }
 
+    /**
+     * @return list<string>|null
+     */
     public static function validateCodes(mixed $codes): array|null
     {
         if (!is_array($codes) || empty($codes)) {

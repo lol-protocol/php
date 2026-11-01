@@ -25,6 +25,8 @@ final class GrupoRepository extends Repository
      * A living persona's surname group is hidden (see Privacidad::personas()),
      * so living people count in no group, appear in no group's network and
      * weigh in no group's birthplaces.
+     *
+     * @return array<string, mixed>|null
      */
     public function find(int $id): ?array
     {

@@ -6,6 +6,9 @@ namespace App\Routing;
 
 class ConfigValidator
 {
+    /**
+     * @param array<string, mixed> $config
+     */
     public static function validate(array $config): void
     {
         // A PHP array cannot repeat a key, so a repeated digit length cannot get here: the

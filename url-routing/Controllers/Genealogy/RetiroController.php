@@ -29,6 +29,9 @@ class RetiroController extends BaseController
     /** The form's decoy field: invisible to a person, filled by a bot that fills every field. */
     private const CAMPO_TRAMPA = 'sitio_web';
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function pedir(array $params = []): string
     {
         $denegado = $this->exigirMetodo('GET', 'HEAD', 'POST');
@@ -95,7 +98,10 @@ class RetiroController extends BaseController
         return '<h1>429 - Demasiados pedidos</h1><p>' . htmlspecialchars($mensaje) . '</p>';
     }
 
-    /** @param array{motivo: string, detalle: string, contacto: string} $valores @return array<string, string> field => message */
+    /**
+     * @param array{motivo: string, detalle: string, contacto: string} $valores
+     * @return array<string, string> field => message
+     */
     private static function errores(array $valores): array
     {
         $errores = [];

@@ -98,7 +98,11 @@ final class AccessPolicy
         return hash_hmac('sha256', self::CLAVE_SESION, $token);
     }
 
-    /** Pure check of a session's contents, for the same reason as autoriza(). */
+    /**
+     * Pure check of a session's contents, for the same reason as autoriza().
+     *
+     * @param array<string, mixed> $sesion
+     */
     public static function sesionValida(array $sesion, ?string $token, int $ahora): bool
     {
         if (!self::tokenValido($token)) {

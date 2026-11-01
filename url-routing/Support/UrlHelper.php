@@ -37,6 +37,9 @@ class UrlHelper
         return rtrim($this->enlace($tipo, $id), '/') . '/' . $codigo . '/';
     }
 
+    /**
+     * @param list<string> $codes
+     */
     public function enlaceLugar(array $codes): string
     {
         if (empty($codes) || count($codes) > 3) {
@@ -58,6 +61,9 @@ class UrlHelper
         return '/' . implode('/', array_map('strtolower', $codes)) . '/';
     }
 
+    /**
+     * @param list<string> $codes
+     */
     public function accionLugar(array $codes, int|string $codigo): string
     {
         return rtrim($this->enlaceLugar($codes), '/') . '/' . $codigo . '/';

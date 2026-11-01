@@ -20,6 +20,9 @@ class ArchivosController extends Base
         return 'SITE_URL_POS';
     }
 
+    /**
+     * @return list<string>
+     */
     protected function excluidas(): array
     {
         return ['/0/', '/b/', '/c/', '/p/'];

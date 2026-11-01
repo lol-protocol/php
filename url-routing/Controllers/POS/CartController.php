@@ -16,13 +16,20 @@ class CartController extends BaseController
         return new Cart();
     }
 
-    /** A variant usable for buying: exists and is active; null otherwise. */
+    /**
+     * A variant usable for buying: exists and is active; null otherwise.
+     *
+     * @return array<string, mixed>|null
+     */
     private function variante(ProductoRepository $repo, string $sku): ?array
     {
         $variante = $repo->variantePorSku($sku);
         return ($variante === null || !$variante['activo']) ? null : $variante;
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $carrito = $this->carrito();
@@ -33,6 +40,9 @@ class CartController extends BaseController
         return view('pos/cart/show', ['lineas' => $lineas, 'totales' => $totales]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function agregar(array $params = []): string
     {
         $denegado = $this->exigirPost();
@@ -64,6 +74,9 @@ class CartController extends BaseController
         return $this->redirect('/c/');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function actualizar(array $params = []): string
     {
         $denegado = $this->exigirPost();
@@ -91,6 +104,9 @@ class CartController extends BaseController
         return $this->redirect('/c/');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function quitar(array $params = []): string
     {
         $denegado = $this->exigirPost();
@@ -103,6 +119,9 @@ class CartController extends BaseController
         return $this->redirect('/c/');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function vaciar(array $params = []): string
     {
         $denegado = $this->exigirPost();

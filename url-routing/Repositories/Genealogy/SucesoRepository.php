@@ -8,7 +8,11 @@ use App\Repositories\Repository;
 
 final class SucesoRepository extends Repository
 {
-    /** An event with a living participant is null here, as if it did not exist (see Privacidad::sucesos()). */
+    /**
+     * An event with a living participant is null here, as if it did not exist (see Privacidad::sucesos()).
+     *
+     * @return array<string, mixed>|null
+     */
     public function find(int $id): ?array
     {
         return $this->db->fetchOne(

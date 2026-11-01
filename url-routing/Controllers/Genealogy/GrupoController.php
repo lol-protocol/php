@@ -10,6 +10,9 @@ use App\Repositories\Genealogy\GrupoRepository;
 /** Grupo (surname) — 6-digit id. */
 class GrupoController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = new GrupoRepository($this->db(), $this->privacidad());
@@ -17,6 +20,9 @@ class GrupoController extends BaseController
             fn(int $id) => ['dispersion' => $repo->dispersion($id)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function red(array $params = []): string
     {
         $repo = new GrupoRepository($this->db(), $this->privacidad());
@@ -24,6 +30,9 @@ class GrupoController extends BaseController
             fn(int $id) => ['personas' => $repo->red($id)]);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function dispersion(array $params = []): string
     {
         $repo = new GrupoRepository($this->db(), $this->privacidad());

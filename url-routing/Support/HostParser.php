@@ -9,6 +9,9 @@ class HostParser
     /** Language subdomains (ISO 639-2, three letters) and their hreflang code (ISO 639-1). */
     public const IDIOMAS = ['spa' => 'es', 'eng' => 'en'];
 
+    /**
+     * @return array{host_without_port: string, parts: list<string>}
+     */
     public static function parse(string $host): array
     {
         $hostWithoutPort = explode(':', $host)[0];
@@ -20,6 +23,9 @@ class HostParser
         ];
     }
 
+    /**
+     * @param list<string> $domains
+     */
     public static function matchesDomain(string $host, array $domains): string|null
     {
         $parsed = self::parse($host);
@@ -34,6 +40,9 @@ class HostParser
         return null;
     }
 
+    /**
+     * @param list<string>|null $supportedLocales
+     */
     public static function getLocale(string $host, ?array $supportedLocales = null): string
     {
         $supportedLocales ??= array_keys(self::IDIOMAS);

@@ -8,6 +8,9 @@ use App\Repositories\Repository;
 
 final class OrganizacionRepository extends Repository
 {
+    /**
+     * @return array<string, mixed>|null
+     */
     public function find(int $id): ?array
     {
         return $this->db->fetchOne(

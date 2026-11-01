@@ -18,11 +18,17 @@ use App\Repositories\Genealogy\SucesoRepository;
  */
 class HomeController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function index(array $params = []): string
     {
         return $this->busquedaDeFormulario() ?? view('genealogy/home/index');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function buscar(array $params = []): string
     {
         return $this->listadoDeBusqueda($params, 'genealogy/home/listado', function (string $tipo, string $query, int $limite, int $offset): ?array {

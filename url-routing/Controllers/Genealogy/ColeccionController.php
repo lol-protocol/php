@@ -28,7 +28,8 @@ class ColeccionController extends BaseController
      * $soloPropietario) and the request isn't the owner's, a 404 for a private
      * tree or a 401 for the edit page of a public one.
      *
-     * @return array|string the colección row, or the response to send instead
+     * @param array<string, mixed> $params
+     * @return array<string, mixed>|string the colección row, or the response to send instead
      */
     private function accesible(array $params, bool $soloPropietario = false): array|string
     {
@@ -52,21 +53,33 @@ class ColeccionController extends BaseController
         return $coleccion;
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         return $this->renderAccesible($params, 'genealogy/coleccion/show');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function vista(array $params = []): string
     {
         return $this->renderAccesible($params, 'genealogy/coleccion/vista');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function editar(array $params = []): string
     {
         return $this->renderAccesible($params, 'genealogy/coleccion/editar', soloPropietario: true);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     private function renderAccesible(array $params, string $view, bool $soloPropietario = false): string
     {
         $coleccion = $this->accesible($params, $soloPropietario);
@@ -80,7 +93,11 @@ class ColeccionController extends BaseController
         ]);
     }
 
-    /** Downloads the tree as GEDCOM 5.5.1. */
+    /**
+     * Downloads the tree as GEDCOM 5.5.1.
+     *
+     * @param array<string, mixed> $params
+     */
     public function exportar(array $params = []): string
     {
         $coleccion = $this->accesible($params);

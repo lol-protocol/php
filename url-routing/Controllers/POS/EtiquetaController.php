@@ -10,12 +10,18 @@ use App\Repositories\POS\CatalogoRepository;
 /** Etiqueta (tag) — 6-digit id. */
 class EtiquetaController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = new CatalogoRepository($this->db());
         return $this->renderFound($params, $repo->etiqueta(...), 'pos/etiqueta/show', 'etiqueta');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function productos(array $params = []): string
     {
         $repo = new CatalogoRepository($this->db());

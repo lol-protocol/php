@@ -10,7 +10,11 @@ final class ProductoRepository extends Repository
 {
     public const RESUMEN = 'p.id, p.nombre, p.precio_centavos, p.moneda';
 
-    /** Returns discontinued products too — the page says so instead of 404ing old links. */
+    /**
+     * Returns discontinued products too — the page says so instead of 404ing old links.
+     *
+     * @return array<string, mixed>|null
+     */
     public function find(int $id): ?array
     {
         $row = $this->db->fetchOne(
@@ -28,7 +32,11 @@ final class ProductoRepository extends Repository
         return $row;
     }
 
-    /** The cart deals in SKUs: a variant plus the product it belongs to. */
+    /**
+     * The cart deals in SKUs: a variant plus the product it belongs to.
+     *
+     * @return array<string, mixed>|null
+     */
     public function variantePorSku(string $sku): ?array
     {
         $row = $this->db->fetchOne(
@@ -52,7 +60,7 @@ final class ProductoRepository extends Repository
      * (the cart) instead of one query per line.
      *
      * @param list<string> $skus
-     * @return array<string, array> sku => row, only for SKUs that exist
+     * @return array<string, array<string, mixed>> sku => row, only for SKUs that exist
      */
     public function variantesPorSkus(array $skus): array
     {

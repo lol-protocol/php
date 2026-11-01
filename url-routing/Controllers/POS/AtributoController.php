@@ -10,12 +10,18 @@ use App\Repositories\POS\CatalogoRepository;
 /** Atributo (color, size, material) — 5-digit id. */
 class AtributoController extends BaseController
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function show(array $params = []): string
     {
         $repo = new CatalogoRepository($this->db());
         return $this->renderFound($params, $repo->atributo(...), 'pos/atributo/show', 'atributo');
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function productos(array $params = []): string
     {
         $repo = new CatalogoRepository($this->db());

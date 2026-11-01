@@ -6,7 +6,9 @@ namespace App\Support;
 
 class Benchmark
 {
+    /** @var array<string, array{time: float, memory: int}> */
     private static array $marks = [];
+    /** @var array<string, array<string, mixed>> */
     private static array $results = [];
 
     public static function start(string $label): void
@@ -17,6 +19,9 @@ class Benchmark
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function end(string $label): array
     {
         if (!isset(self::$marks[$label])) {
@@ -49,11 +54,17 @@ class Benchmark
         return $result;
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public static function getResults(): array
     {
         return self::$results;
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public static function getResult(string $label): array|null
     {
         return self::$results[$label] ?? null;
