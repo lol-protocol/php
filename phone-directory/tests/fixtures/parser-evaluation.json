@@ -127,17 +127,13 @@
             "id": "es-calle-con-numero-al-final-sin-palabra-de-calle",
             "idioma": "es",
             "entrada": "PÉREZ SOTO, Ana\nLos Aromos 123\n555-123-4567",
-            "esperado": [{"tipo": "natural", "nombre": "PÉREZ SOTO, Ana", "calle": "Los Aromos 123", "telefono": "555-123-4567"}],
-            "falla_conocida": "Sin «calle», «avenida»… y con el número al final (lo normal en español), no se reconoce la calle y la entrada se pierde.",
-            "categoria": "calle-numero-al-final"
+            "esperado": [{"tipo": "natural", "nombre": "PÉREZ SOTO, Ana", "calle": "Los Aromos 123", "telefono": "555-123-4567"}]
         },
         {
             "id": "es-una-linea-sin-separadores",
             "idioma": "es",
             "entrada": "GARCÍA LÓPEZ Juan Calle Mayor 12 555-123-4567",
-            "esperado": [{"tipo": "natural", "nombre": "GARCÍA LÓPEZ, Juan", "calle": "Calle Mayor 12", "telefono": "555-123-4567"}],
-            "falla_conocida": "En una línea sin separadores se corta en el primer dígito, que en español es el final de la calle: el nombre se lleva «Calle Mayor» y la calle queda en «12».",
-            "categoria": "calle-numero-al-final"
+            "esperado": [{"tipo": "natural", "nombre": "GARCÍA LÓPEZ, Juan", "calle": "Calle Mayor 12", "telefono": "555-123-4567"}]
         },
         {
             "id": "es-telefono-chileno",
@@ -225,9 +221,7 @@
             "id": "de-una-linea-sin-separadores",
             "idioma": "de",
             "entrada": "MÜLLER Hans Hauptstraße 5 030 123456",
-            "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstraße 5", "telefono": "030 123456"}],
-            "falla_conocida": "Sin separadores, la línea se corta en el primer dígito, que en alemán es el final de la calle: el teléfono sale bien, pero el nombre se lleva «Hauptstraße» y la calle queda en «5» (lo mismo que es-una-linea-sin-separadores).",
-            "categoria": "calle-numero-al-final"
+            "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstraße 5", "telefono": "030 123456"}]
         },
         {
             "id": "de-deteccion-de-idioma",
@@ -294,6 +288,42 @@
             "idioma": "fr",
             "entrada": "MARTIN, Paul\n3 rue Victor Hugo\n+33 1 45 00 00 00",
             "esperado": [{"tipo": "natural", "nombre": "MARTIN, Paul", "calle": "3 rue Victor Hugo", "telefono": "+33 1 45 00 00 00"}]
+        },
+        {
+            "id": "pt-calle-con-numero-al-final-sin-palabra-de-calle",
+            "idioma": "pt",
+            "entrada": "COSTA, Rui\nTravessa do Carmo 5",
+            "esperado": [{"tipo": "natural", "nombre": "COSTA, Rui", "calle": "Travessa do Carmo 5", "telefono": null}]
+        },
+        {
+            "id": "it-calle-con-numero-al-final-sin-palabra-de-calle",
+            "idioma": "it",
+            "entrada": "BIANCHI, Anna\nVicolo Stretto 3",
+            "esperado": [{"tipo": "natural", "nombre": "BIANCHI, Anna", "calle": "Vicolo Stretto 3", "telefono": null}]
+        },
+        {
+            "id": "es-una-linea-apellido-que-es-palabra-de-calle",
+            "idioma": "es",
+            "entrada": "PLAZA ROJAS Juan Calle Mayor 12 555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "PLAZA ROJAS, Juan", "calle": "Calle Mayor 12", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "es-una-linea-segundo-apellido-que-es-palabra-de-calle",
+            "idioma": "es",
+            "entrada": "ROJAS PLAZA Juan Calle Mayor 12 555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "ROJAS PLAZA, Juan", "calle": "Calle Mayor 12", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "it-una-linea-sin-separadores",
+            "idioma": "it",
+            "entrada": "ROSSI Luigi Via Roma 10 06 1234567",
+            "esperado": [{"tipo": "natural", "nombre": "ROSSI, Luigi", "calle": "Via Roma 10", "telefono": "06 1234567"}]
+        },
+        {
+            "id": "es-empresa-con-numero-al-final-del-nombre",
+            "idioma": "es",
+            "entrada": "Restaurante Siglo 21\nCalle Larga 5\n555-123-4567",
+            "esperado": [{"tipo": "juridical", "nombre": "Restaurante Siglo 21", "calle": "Calle Larga 5", "telefono": "555-123-4567"}]
         }
     ]
 }

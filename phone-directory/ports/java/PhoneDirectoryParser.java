@@ -244,6 +244,12 @@ class MultiLanguagePhoneDirectoryParser {
         "\\d{1,5}[a-zA-Z]?\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*"
     );
 
+    private static final Pattern NUMBER_LAST_STREET = Pattern.compile(
+        "\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*\\s+\\d{1,5}[a-zA-Z]?"
+    );
+    // Languages that write the house number after the street ("Travessa do Carmo 5").
+    private static final Set<String> NUMBER_LAST_LANGUAGES = Set.of("es", "pt", "it", "de");
+
     private static final Pattern PHONE_PATTERN =
         Pattern.compile("\\b\\d{3}[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b");
 
@@ -348,6 +354,12 @@ class MultiLanguagePhoneDirectoryParser {
             }
 
             String street = extractStreet(line, language);
+            // Same rule as the PHP StreetFallback::numberLast, and only once the name is read:
+            // "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
+            if (street == null && data.get("name") != null && NUMBER_LAST_LANGUAGES.contains(language)
+                    && NUMBER_LAST_STREET.matcher(line.trim()).matches()) {
+                street = line.trim();
+            }
             if (data.get("street") == null && street != null) {
                 data.put("street", street);
             }

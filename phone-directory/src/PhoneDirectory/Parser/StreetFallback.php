@@ -16,10 +16,24 @@ final class StreetFallback
 {
     private const NUMBER_FIRST = "/^\\d{1,5}[a-z]?\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*$/iu";
 
+    private const NUMBER_LAST = "/^\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*\\s+\\d{1,5}[a-z]?$/iu";
+
     public static function numberFirst(string $line): ?string
     {
         $trimmed = trim($line);
 
         return mb_check_encoding($trimmed, 'UTF-8') && preg_match(self::NUMBER_FIRST, $trimmed) === 1 ? $trimmed : null;
+    }
+
+    /**
+     * "Los Aromos 123", "Travessa do Carmo 5": only words, then the house number. The usual order in Spanish,
+     * Portuguese, Italian and German addresses, but also the shape of a name like "Restaurante Siglo 21", so
+     * callers only ask once the record's name has been read.
+     */
+    public static function numberLast(string $line): ?string
+    {
+        $trimmed = trim($line);
+
+        return mb_check_encoding($trimmed, 'UTF-8') && preg_match(self::NUMBER_LAST, $trimmed) === 1 ? $trimmed : null;
     }
 }

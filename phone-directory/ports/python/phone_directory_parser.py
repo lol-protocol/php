@@ -236,6 +236,17 @@ class MultiLanguagePhoneDirectoryParser:
         trimmed = line.strip()
         return trimmed if re.fullmatch(rf"\d{{1,5}}[A-Za-z]?\s+{word}(?:\s+{word})*", trimmed) else None
 
+    # Languages that write the house number after the street ("Travessa do Carmo 5").
+    NUMBER_LAST_LANGUAGES = ('es', 'pt', 'it', 'de')
+
+    def _number_last_street(self, line: str, language: str) -> Optional[str]:
+        """Same rule as the PHP StreetFallback::numberLast: only words, then the house number."""
+        if language not in self.NUMBER_LAST_LANGUAGES:
+            return None
+        word = r"[^\W\d_](?:[^\W\d_]|['’.\-])*"
+        trimmed = line.strip()
+        return trimmed if re.fullmatch(rf"{word}(?:\s+{word})*\s+\d{{1,5}}[A-Za-z]?", trimmed) else None
+
     def _process_buffer(self, lines: List[str], start_line: int, language: str):
         """Process a buffer of lines into an entry."""
         data = {
@@ -251,13 +262,14 @@ class MultiLanguagePhoneDirectoryParser:
                 if match:
                     data['phone'] = match.group()
 
-            if not data['street']:
-                street = self._extract_street(line, language)
-                if street:
-                    data['street'] = street
+            street = self._extract_street(line, language)
+            # Only once the name is read: "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
+            if street is None and data['name']:
+                street = self._number_last_street(line, language)
+            if not data['street'] and street:
+                data['street'] = street
 
-            if not data['name'] and not re.search(self.PHONE_PATTERN, line) \
-                    and not self._extract_street(line, language):
+            if not data['name'] and not re.search(self.PHONE_PATTERN, line) and not street:
                 data['name'] = line
 
         if not data['name'] or not data['street']:

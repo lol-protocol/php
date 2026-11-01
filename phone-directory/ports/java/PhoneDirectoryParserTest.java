@@ -35,6 +35,16 @@ public class PhoneDirectoryParserTest {
         assertEquals(1, entries.size());
         assertEquals("Calle Larga 5", location(entries.get(0)).get("street"));
 
+        // A street with no street word and the house number last, once the name is read.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("COSTA, Rui\nTravessa do Carmo 5", "pt");
+        assertEquals(1, entries.size());
+        assertEquals("Travessa do Carmo 5", location(entries.get(0)).get("street"));
+
+        // A name ending in a number stays a name.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("Restaurante Siglo 21\nCalle Larga 5", "es");
+        assertEquals(1, entries.size());
+        assertEquals("Calle Larga 5", location(entries.get(0)).get("street"));
+
         entries = new MultiLanguagePhoneDirectoryParser().parseContent("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St", null);
         assertEquals(2, entries.size());
 

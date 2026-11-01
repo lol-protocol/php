@@ -36,5 +36,29 @@ class StreetFallbackTest extends TestCase
     public function testInvalidUtf8IsNotAStreet(): void
     {
         $this->assertNull(StreetFallback::numberFirst("12 Pe\xF1a"));
+        $this->assertNull(StreetFallback::numberLast("Pe\xF1a 12"));
+    }
+
+    /** @return array<string, array{string, string|null}> */
+    public static function numberLastLines(): array
+    {
+        return [
+            'palabras y número' => ['Los Aromos 123', 'Los Aromos 123'],
+            'con artículo' => ['Travessa do Carmo 5', 'Travessa do Carmo 5'],
+            'con tildes' => ['Paseo Ñuñoa 40', 'Paseo Ñuñoa 40'],
+            'número con letra' => ['Vicolo Stretto 3a', 'Vicolo Stretto 3a'],
+            'espacios alrededor' => ['  Los Aromos 123  ', 'Los Aromos 123'],
+            'número en medio' => ['Restaurante 3 Hermanos', null],
+            'número primero' => ['12 Oak', null],
+            'teléfono' => ['555-123-4567', null],
+            'solo un número' => ['12', null],
+            'número demasiado largo' => ['Los Aromos 123456', null],
+        ];
+    }
+
+    #[DataProvider('numberLastLines')]
+    public function testNumberLast(string $line, ?string $expected): void
+    {
+        $this->assertSame($expected, StreetFallback::numberLast($line));
     }
 }

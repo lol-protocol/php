@@ -58,6 +58,9 @@ class MultiLanguagePhoneDirectoryParser
 
     private const SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it'];
 
+    // Languages whose addresses put the house number after the street name ("Calle Mayor 12", "Via Roma 10").
+    private const NUMBER_LAST_LANGUAGES = ['es', 'pt', 'it', 'de'];
+
     private string $detectedLanguage = 'en';
     /** @var list<ParsedEntry> */
     private array $entries = [];
@@ -177,7 +180,8 @@ class MultiLanguagePhoneDirectoryParser
                 // turn "Restaurante 3 Hermanos" or "Apt 4 Building 7" into a record of their own.
                 fn($street) => $this->hasStreetWord($street, $language),
                 PersonName::LANGUAGE_SURNAME_COUNT[$language] ?? 1,
-                $language
+                $language,
+                in_array($language, self::NUMBER_LAST_LANGUAGES, true) ? fn($beforeNumber) => $this->streetWordOffset($beforeNumber, $language) : null
             ) : null;
             if ($single !== null) {
                 if (!empty($buffer)) {
@@ -269,7 +273,8 @@ class MultiLanguagePhoneDirectoryParser
 
         foreach ($lines as $line) {
             $isPhoneLine = preg_match($phoneRegex, $line, $matches) === 1;
-            $isStreetLine = $this->extractStreet($line, $language) !== null;
+            $street = $this->extractStreet($line, $language) ?? ($nameSet ? $this->numberLastStreet($line, $language) : null);
+            $isStreetLine = $street !== null;
 
             if (empty($data['phone']) && $isPhoneLine) {
                 $data['phone'] = $matches[0];
@@ -284,11 +289,8 @@ class MultiLanguagePhoneDirectoryParser
                 }
             }
 
-            if (empty($data['street'])) {
-                $streetMatch = $this->extractStreet($line, $language);
-                if ($streetMatch) {
-                    $data['street'] = $streetMatch;
-                }
+            if (empty($data['street']) && $street !== null) {
+                $data['street'] = $street;
             }
 
             if (!$nameSet && !$isPhoneLine && !$isStreetLine) {
@@ -381,6 +383,35 @@ class MultiLanguagePhoneDirectoryParser
         }
 
         return StreetFallback::numberFirst($line);
+    }
+
+    /** A street with no street word and the house number last, in a language that writes it that way. */
+    private function numberLastStreet(string $line, string $language): ?string
+    {
+        return in_array($language, self::NUMBER_LAST_LANGUAGES, true) ? StreetFallback::numberLast($line) : null;
+    }
+
+    /**
+     * Where the street starts in the text before a number-last house number ("GARCÍA Juan Calle Mayor"
+     * gives the offset of "Calle"): the first street word after the first two words, which belong to the
+     * name, so a surname that is also a street word ("PLAZA ROJAS Juan Calle Mayor") stays in the name.
+     * A street word that is a suffix ("Hauptstraße") starts the street at the beginning of its word.
+     */
+    private function streetWordOffset(string $text, string $language): ?int
+    {
+        if (!preg_match_all($this->getStreetPattern($language), $text, $matches, PREG_OFFSET_CAPTURE)) {
+            return null;
+        }
+
+        foreach ($matches[0] as [, $offset]) {
+            preg_match('/[\p{L}\p{M}\'’.\-]*$/u', substr($text, 0, $offset), $wordStart);
+            $offset -= strlen($wordStart[0]);
+            if (preg_match_all('/\S+/u', substr($text, 0, $offset)) >= 2) {
+                return $offset;
+            }
+        }
+
+        return null;
     }
 
     private function hasStreetWord(string $line, string $language): bool

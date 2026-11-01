@@ -65,6 +65,19 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(1, len(entries))
         self.assertEqual('Calle Larga 5', entries[0]['location']['street'])
 
+    def test_street_with_number_last_and_no_street_word(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("COSTA, Rui\nTravessa do Carmo 5", 'pt')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('COSTA, Rui', entries[0]['person_name']['full_name'])
+        self.assertEqual('Travessa do Carmo 5', entries[0]['location']['street'])
+
+    def test_name_ending_in_a_number_stays_a_name(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("Restaurante Siglo 21\nCalle Larga 5", 'es')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('Calle Larga 5', entries[0]['location']['street'])
+
     def test_separator_lines_split_entries(self):
         entries = MultiLanguagePhoneDirectoryParser().parse_content("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St")
 

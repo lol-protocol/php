@@ -117,7 +117,7 @@ $entries = $parser->parseContent($textContent);
 
 **Teléfonos reconocidos:** formatos numéricos estándar (`555-123-4567`, `5551234567`, `555.123.4567`, `555 123 4567`) y el formato de central telefónica con nombre, común en Estados Unidos y el Reino Unido hasta mediados del siglo XX (`BUtterfield 8-4521`). `MultiLanguagePhoneDirectoryParser` reconoce además los formatos de los países de cada idioma: francés `01 42 68 53 00` y `+33 1 42 68 53 00`; alemán `030 123456`, `(089) 654321` y `0711/12345`; italiano `06 1234567`; portugués `21 342 0000`; español `91 234 56 78`, `912 345 678`, `2-345-678` y `(2) 345 6789`. Van por idioma, y no juntos, porque los más sueltos tomarían el número de la calle como parte del teléfono en la guía de otro idioma.
 
-**Calles:** se detectan por palabra clave (Street, Avenue, Road, Drive, Lane...) o, si no hay ninguna reconocida, cuando toda la línea es un número seguido solo de palabras (`9 Wexford Close`, `8 Clos Saint-Éloi`). Una línea que es solo un número de teléfono nunca se toma como calle.
+**Calles:** se detectan por palabra clave (Street, Avenue, Road, Drive, Lane...) o, si no hay ninguna reconocida, cuando toda la línea es un número seguido solo de palabras (`9 Wexford Close`, `8 Clos Saint-Éloi`). En español, portugués, italiano y alemán, que escriben el número al final, `MultiLanguagePhoneDirectoryParser` acepta además una línea de solo palabras y luego el número (`Los Aromos 123`, `Travessa do Carmo 5`), pero solo después de leer el nombre del registro, porque «Restaurante Siglo 21» tiene la misma forma. En una sola línea sin separadores («GARCÍA LÓPEZ Juan Calle Mayor 12 555-123-4567»), en esos idiomas la calle empieza en la palabra de calle, no en el número; las dos primeras palabras se dejan siempre al nombre, para que un apellido como «Plaza» no se tome por calle. Una línea que es solo un número de teléfono nunca se toma como calle.
 
 ### MultiLanguagePhoneDirectoryParser
 Detecta el idioma del contenido (o lo recibe explícito) y separa personas naturales de empresas.
@@ -531,7 +531,8 @@ Para directorios telefónicos grandes:
 - Con "viuda de" o "widow of", solo se guarda el tratamiento; el nombre del marido que sigue no se vuelve a separar en nombre/apellido
 - Ver «Privacidad: personas que podrían estar vivas» para lo que la base no devuelve por omisión y por qué
 - La detección automática de idioma es una heurística por palabras clave; con muy poco texto, o en un idioma no soportado, puede fallar (siempre se puede indicar el idioma explícitamente)
-- Los casos de `tests/fixtures/parser-evaluation.json` marcados con `falla_conocida` documentan lo que el parser multilingüe todavía no resuelve; entre ellos, que una calle sin palabra de calle y con el número al final («Los Aromos 123») no se reconoce, y que dos registros seguidos sin línea en blanco se leen como uno
+- Los casos de `tests/fixtures/parser-evaluation.json` marcados con `falla_conocida` documentan lo que el parser multilingüe todavía no resuelve; entre ellos, que dos registros seguidos sin línea en blanco se leen como uno
+- En una sola línea sin separadores, la calle con el número al final necesita una palabra de calle (`Calle`, `Via`, `-straße`...) y al menos dos palabras de nombre antes; si no, se corta en el primer dígito como en inglés
 
 ## Licencia
 
