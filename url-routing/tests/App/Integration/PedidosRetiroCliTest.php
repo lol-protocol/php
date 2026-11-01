@@ -240,4 +240,34 @@ class PedidosRetiroCliTest extends TestCase
         [$codigo] = $this->correr(['--depurar', '--meses=0']);
         $this->assertSame(2, $codigo);
     }
+
+    public function testTheWholeLifeOfAPedidoAsCronAndTheOwnerLiveIt(): void
+    {
+        $numero = $this->pedido(30, 'Mi dirección es Calle Falsa 123.', 'secreto@example.com');
+
+        [$codigo, $salida] = $this->correr(['--ocultar', '--solo-ocultados', '--depurar']);
+        $this->assertSame(0, $codigo);
+        $this->assertStringContainsString('VENCIDO: oculto automáticamente', $salida, 'cron hid it and said so');
+        $this->assertTrue($this->repo->retirado('persona', 6128473105));
+
+        [, $salida] = $this->correr(['--depurar']);
+        $this->assertStringNotContainsString('datos personales', $salida, 'hidden is still under review: nothing is erased');
+        $this->assertSame('secreto@example.com', $this->db->fetchValue('SELECT contacto FROM pedidos_retiro WHERE id = ?', [$numero]));
+
+        $this->assertTrue($this->repo->decidir($numero, 'retirar', 'Se retira.'));
+        [, $salida] = $this->correr(['--depurar']);
+        $this->assertSame('', $salida, 'resolved today: kept for the retention period');
+
+        $this->db->execute('UPDATE pedido_retiro_eventos SET ocurrido_en = ? WHERE pedido_id = ?', [date('Y-m-d H:i:s', strtotime('-13 months')), $numero]);
+        [$codigo, $salida] = $this->correr(['--depurar']);
+        $this->assertSame(0, $codigo);
+        $this->assertStringContainsString('1 pedido resuelto hace más de 12 meses', $salida);
+
+        $fila = $this->repo->todos()[0];
+        $this->assertSame(['', ''], [$fila['detalle'], $fila['contacto']]);
+        $this->assertSame(['recibido', 'oculto', 'retirado'], array_column($fila['eventos'], 'estado'), 'the history is what stays');
+        $this->assertTrue($this->repo->retirado('persona', 6128473105), 'and the page stays withdrawn');
+        [, $salida] = $this->correr(['--ocultar', '--depurar']);
+        $this->assertSame('', $salida, 'a later run has nothing to say');
+    }
 }
