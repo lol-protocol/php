@@ -45,6 +45,17 @@ public class PhoneDirectoryParserTest {
         assertEquals(1, entries.size());
         assertEquals("Calle Larga 5", location(entries.get(0)).get("street"));
 
+        // Records with no blank line between them; a city line does not start a record.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("HALL, Ruth\n3 Main Street\n555-123-4567\nLEE, Ken\n8 Oak Lane\n555-987-6543", "en");
+        assertEquals(2, entries.size());
+        assertEquals("8 Oak Lane", location(entries.get(1)).get("street"));
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567", "en");
+        assertEquals(1, entries.size());
+
+        // "Via" counts as Italian only in the "Via Roma 10" shape.
+        assertEquals("it", new MultiLanguagePhoneDirectoryParser().detectLanguage("ROSSI, Luigi\nVia Roma 10"));
+        assertEquals("en", new MultiLanguagePhoneDirectoryParser().detectLanguage("SMITH, John\n12 Via Lane"));
+
         entries = new MultiLanguagePhoneDirectoryParser().parseContent("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St", null);
         assertEquals(2, entries.size());
 

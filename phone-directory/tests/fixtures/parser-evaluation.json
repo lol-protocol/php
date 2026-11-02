@@ -81,9 +81,32 @@
             "esperado": [
                 {"tipo": "natural", "nombre": "HALL, Ruth", "calle": "3 Main Street", "telefono": "555-123-4567"},
                 {"tipo": "natural", "nombre": "LEE, Ken", "calle": "8 Oak Lane", "telefono": "555-987-6543"}
-            ],
-            "falla_conocida": "Sin línea en blanco entre registros, todo cae en un mismo bloque: la segunda entrada desaparece sin dejar error.",
-            "categoria": "separacion-de-registros"
+            ]
+        },
+        {
+            "id": "en-tres-entradas-sin-linea-en-blanco-ni-telefono",
+            "idioma": "en",
+            "entrada": "HALL, Ruth\n3 Main Street\nLEE, Ken\n8 Oak Lane\nWEST, Amy\n15 Elm Road",
+            "esperado": [
+                {"tipo": "natural", "nombre": "HALL, Ruth", "calle": "3 Main Street", "telefono": null},
+                {"tipo": "natural", "nombre": "LEE, Ken", "calle": "8 Oak Lane", "telefono": null},
+                {"tipo": "natural", "nombre": "WEST, Amy", "calle": "15 Elm Road", "telefono": null}
+            ]
+        },
+        {
+            "id": "en-linea-de-ciudad-no-separa-el-registro",
+            "idioma": "en",
+            "entrada": "SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "es-dos-entradas-sin-linea-en-blanco-numero-al-final",
+            "idioma": "es",
+            "entrada": "ROJAS, Carmen\nLos Aromos 12\n2-345-678\nPÉREZ SOTO, Ana\nLas Lilas 4\n2-555-1212",
+            "esperado": [
+                {"tipo": "natural", "nombre": "ROJAS, Carmen", "calle": "Los Aromos 12", "telefono": "2-345-678"},
+                {"tipo": "natural", "nombre": "PÉREZ SOTO, Ana", "calle": "Las Lilas 4", "telefono": "2-555-1212"}
+            ]
         },
         {
             "id": "en-departamento-sin-palabra-de-calle",
@@ -260,9 +283,21 @@
             "idioma": null,
             "idioma_detectado": "it",
             "entrada": "ROSSI, Luigi\nVia Roma 10\n06 1234567",
-            "esperado": [{"tipo": "natural", "nombre": "ROSSI, Luigi", "calle": "Via Roma 10", "telefono": "06 1234567"}],
-            "falla_conocida": "«Via», la palabra de calle más común en italiano, queda fuera de la detección a propósito (también existe en inglés): la guía se lee como inglesa y, sin reconocer el teléfono, el teléfono se guarda como la calle.",
-            "categoria": "deteccion-de-idioma"
+            "esperado": [{"tipo": "natural", "nombre": "ROSSI, Luigi", "calle": "Via Roma 10", "telefono": "06 1234567"}]
+        },
+        {
+            "id": "it-deteccion-de-idioma-con-via-y-coma",
+            "idioma": null,
+            "idioma_detectado": "it",
+            "entrada": "BIANCHI, Anna\nVia Garibaldi, 7",
+            "esperado": [{"tipo": "natural", "nombre": "BIANCHI, Anna", "calle": "Via Garibaldi, 7", "telefono": null}]
+        },
+        {
+            "id": "en-deteccion-de-idioma-con-via-en-una-calle-inglesa",
+            "idioma": null,
+            "idioma_detectado": "en",
+            "entrada": "SMITH, John\n12 Via Lane\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Via Lane", "telefono": "555-123-4567"}]
         },
         {
             "id": "en-deteccion-de-idioma-por-omision",

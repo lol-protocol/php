@@ -171,12 +171,21 @@ class MultiLanguagePhoneDirectoryParser:
         parts.extend(re.escape(s) + r'\b' for s in suffixes)
         return re.compile('|'.join(parts), re.IGNORECASE) if parts else None
 
+    # Same as the PHP LANGUAGE_DETECTION_LINES: "Via Roma 10" opens the line and ends with the number,
+    # a shape English doesn't use ("12 Via Lane"), so "via" counts as Italian only there.
+    DETECTION_LINES = {
+        'it': re.compile(r"^[ \t]*via\s+[^\W\d_](?:[^\W\d_]|['’.\-])*(?:\s+[^\W\d_](?:[^\W\d_]|['’.\-])*)*,?\s+\d{1,5}[a-z]?\b",
+                         re.IGNORECASE | re.MULTILINE),
+    }
+
     def detect_language(self, content: str) -> str:
         """Auto-detect language from whole-word street vocabulary; defaults to English."""
         scores = {'en': 0}
         for lang, words in self.DETECTION_MARKERS.items():
             pattern = self._words_pattern(words, self.STREET_SUFFIXES.get(lang, []))
             scores[lang] = len(pattern.findall(content)) if pattern else 0
+            if lang in self.DETECTION_LINES:
+                scores[lang] += len(self.DETECTION_LINES[lang].findall(content))
 
         best = max(scores, key=scores.get)
         return best if scores[best] > 0 else 'en'
@@ -247,8 +256,29 @@ class MultiLanguagePhoneDirectoryParser:
         trimmed = line.strip()
         return trimmed if re.fullmatch(rf"{word}(?:\s+{word})*\s+\d{{1,5}}[A-Za-z]?", trimmed) else None
 
+    def _is_street_line(self, line: str, language: str, after_name: bool) -> bool:
+        return bool(self._extract_street(line, language) or (after_name and self._number_last_street(line, language)))
+
     def _process_buffer(self, lines: List[str], start_line: int, language: str):
-        """Process a buffer of lines into an entry."""
+        """Same rule as the PHP splitRecords(): once a record has its name and street, a line that is
+        neither street nor phone starts the next record if a street follows it right away."""
+        start = 0
+        has_name = has_street = False
+        for i, line in enumerate(lines):
+            is_phone = bool(re.search(self.PHONE_PATTERN, line))
+            is_street = self._is_street_line(line, language, has_name)
+            if has_name and has_street and not is_phone and not is_street \
+                    and i + 1 < len(lines) and self._is_street_line(lines[i + 1], language, True):
+                self._process_record(lines[start:i], start_line + start, language)
+                start = i
+                has_street = False
+                continue
+            has_name = has_name or (not is_phone and not is_street)
+            has_street = has_street or is_street
+        self._process_record(lines[start:], start_line + start, language)
+
+    def _process_record(self, lines: List[str], start_line: int, language: str):
+        """Process one record's lines into an entry."""
         data = {
             'name': None,
             'phone': None,

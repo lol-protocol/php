@@ -530,8 +530,9 @@ Para directorios telefónicos grandes:
 - Un tratamiento (Mrs., Dr...) insertado en medio de un nombre sin coma, en el formato de una entrada por línea, no se separa correctamente
 - Con "viuda de" o "widow of", solo se guarda el tratamiento; el nombre del marido que sigue no se vuelve a separar en nombre/apellido
 - Ver «Privacidad: personas que podrían estar vivas» para lo que la base no devuelve por omisión y por qué
-- La detección automática de idioma es una heurística por palabras clave; con muy poco texto, o en un idioma no soportado, puede fallar (siempre se puede indicar el idioma explícitamente)
-- Los casos de `tests/fixtures/parser-evaluation.json` marcados con `falla_conocida` documentan lo que el parser multilingüe todavía no resuelve; entre ellos, que dos registros seguidos sin línea en blanco se leen como uno
+- La detección automática de idioma es una heurística por palabras clave; con muy poco texto, o en un idioma no soportado, puede fallar (siempre se puede indicar el idioma explícitamente). «Via» cuenta como italiano solo con la forma «Via Roma 10» (al principio de la línea y con el número al final), porque también existe en inglés
+- `MultiLanguagePhoneDirectoryParser` separa dos registros seguidos sin línea en blanco cuando el primero ya tiene nombre y calle y la línea siguiente al nuevo nombre es una calle; una línea de ciudad o una nota después del teléfono se quedan en su registro. Si el segundo registro no trae calle justo después del nombre, los dos se siguen leyendo como uno (`PhoneDirectoryParser` no hace esta separación)
+- Los casos de `tests/fixtures/parser-evaluation.json` marcados con `falla_conocida` documentan lo que el parser multilingüe todavía no resuelve; hoy, un departamento sin palabra de calle («Apt 4 Building 7»)
 - En una sola línea sin separadores, la calle con el número al final necesita una palabra de calle (`Calle`, `Via`, `-straße`...) y al menos dos palabras de nombre antes; si no, se corta en el primer dígito como en inglés
 
 ## Licencia

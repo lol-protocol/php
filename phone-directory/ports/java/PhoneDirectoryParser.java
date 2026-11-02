@@ -284,6 +284,15 @@ class MultiLanguagePhoneDirectoryParser {
                 Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
     }
 
+    // Same as the PHP LANGUAGE_DETECTION_LINES: "Via Roma 10" opens the line and ends with the number,
+    // a shape English doesn't use ("12 Via Lane"), so "via" counts as Italian only there.
+    private static final Map<String, Pattern> DETECTION_LINES = Map.of(
+        "it", Pattern.compile(
+            "^[ \\t]*via\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*,?\\s+\\d{1,5}[a-z]?\\b",
+            Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.MULTILINE
+        )
+    );
+
     public String detectLanguage(String content) {
         String best = "en";
         int bestScore = 0;
@@ -294,6 +303,9 @@ class MultiLanguagePhoneDirectoryParser {
                 continue;
             }
             int score = (int) p.matcher(content).results().count();
+            if (DETECTION_LINES.containsKey(lang)) {
+                score += (int) DETECTION_LINES.get(lang).matcher(content).results().count();
+            }
             if (score > bestScore) {
                 best = lang;
                 bestScore = score;
@@ -339,7 +351,35 @@ class MultiLanguagePhoneDirectoryParser {
         return entries;
     }
 
+    private boolean isStreetLine(String line, String language, boolean afterName) {
+        return extractStreet(line, language) != null
+            || (afterName && NUMBER_LAST_LANGUAGES.contains(language) && NUMBER_LAST_STREET.matcher(line.trim()).matches());
+    }
+
+    // Same rule as the PHP splitRecords(): once a record has its name and street, a line that is neither
+    // street nor phone starts the next record if a street follows it right away.
     private void processBuffer(List<String> lines, int startLine, String language) {
+        int start = 0;
+        boolean hasName = false;
+        boolean hasStreet = false;
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            boolean isPhone = PHONE_PATTERN.matcher(line).find();
+            boolean isStreet = isStreetLine(line, language, hasName);
+            if (hasName && hasStreet && !isPhone && !isStreet
+                    && i + 1 < lines.size() && isStreetLine(lines.get(i + 1), language, true)) {
+                processRecord(lines.subList(start, i), startLine + start, language);
+                start = i;
+                hasStreet = false;
+                continue;
+            }
+            hasName = hasName || (!isPhone && !isStreet);
+            hasStreet = hasStreet || isStreet;
+        }
+        processRecord(lines.subList(start, lines.size()), startLine + start, language);
+    }
+
+    private void processRecord(List<String> lines, int startLine, String language) {
         Map<String, String> data = new HashMap<>();
         data.put("name", null);
         data.put("phone", null);

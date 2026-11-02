@@ -78,6 +78,24 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(1, len(entries))
         self.assertEqual('Calle Larga 5', entries[0]['location']['street'])
 
+    def test_records_without_blank_line_between_them(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content(
+            "HALL, Ruth\n3 Main Street\n555-123-4567\nLEE, Ken\n8 Oak Lane\n555-987-6543", 'en')
+
+        self.assertEqual(['3 Main Street', '8 Oak Lane'], [e['location']['street'] for e in entries])
+
+    def test_city_line_does_not_split_a_record(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567", 'en')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('555-123-4567', entries[0]['phone'])
+
+    def test_via_with_number_last_is_italian(self):
+        parser = MultiLanguagePhoneDirectoryParser()
+
+        self.assertEqual('it', parser.detect_language("ROSSI, Luigi\nVia Roma 10"))
+        self.assertEqual('en', parser.detect_language("SMITH, John\n12 Via Lane"))
+
     def test_separator_lines_split_entries(self):
         entries = MultiLanguagePhoneDirectoryParser().parse_content("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St")
 
