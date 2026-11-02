@@ -26,6 +26,28 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  # PHPStan (sistema-nuevo/phpstan.neon.dist): clases que no existen, tipos de argumentos, comparaciones
+  # que no cambian. Una sola version de PHP basta: la configuracion fija phpVersion.
+  analisis-estatico:
+    name: backoffice / análisis estático
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: sistema-nuevo
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: pdo_pgsql, curl, mbstring, intl
+          coverage: none
+          tools: phpstan:2.1
+
+      - name: Static analysis
+        run: phpstan analyse --no-progress
+
   pruebas:
     runs-on: ubuntu-24.04
     timeout-minutes: 20

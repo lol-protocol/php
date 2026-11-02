@@ -1,0 +1,19 @@
+# Analisis estatico: phpstan analyse. Lo corre la CI (job `analisis-estatico` de pruebas-backoffice.yml).
+#
+# Nivel 5: tipos de los argumentos, clases y metodos que no existen, comparaciones que nunca cambian y
+# propiedades que nadie lee. url-routing, phone-directory y defamatory-content-review estan en el 6
+# (ademas pide que cada array diga de que es): subir este es el siguiente paso, ver el README.
+#
+# Entra solo el servidor PHP. Las pruebas (pruebas/) son scripts sueltos con su propio marco y los
+# datos (datos/) generan semillas: PHPStan no les aporta lo que cuesta.
+parameters:
+    level: 5
+    # El PHP de la CI y de ejecutar.sh es 8.4; se fija 8.3 para que algo de 8.4 que no corra en un
+    # servidor mas viejo salga como error.
+    phpVersion: 80300
+    paths:
+        - servidor-php
+    # FiltroNotas.php usa las clases de defamatory-content-review, que se cargan en tiempo de
+    # ejecucion desde la carpeta hermana (no es una dependencia de composer): se las damos a PHPStan.
+    scanDirectories:
+        - ../defamatory-content-review/src

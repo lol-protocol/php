@@ -63,13 +63,12 @@ final class ClienteEstadisticas
             // alguna conexión -- no para esperar a un servicio caído de verdad. Un
             // solo reintento para todo el lote, no uno por tipo.
             usleep(self::ESPERA_ENTRE_INTENTOS_MS * 1000);
-            [$reintento, $huboRespuestaReintento] = self::pedirVarios(array_intersect_key($urls, array_flip($fallidos)));
+            [$reintento] = self::pedirVarios(array_intersect_key($urls, array_flip($fallidos)));
             foreach ($reintento as $type => $body) {
                 if ($body !== null) {
                     $cuerpos[$type] = $body;
                 }
             }
-            $huboRespuesta = $huboRespuesta || $huboRespuestaReintento;
         }
 
         $this->sinRespuesta = !$huboRespuesta;

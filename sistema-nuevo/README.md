@@ -516,6 +516,10 @@ php pruebas/ejecutar-php.php
 # con los datos semilla cargados (mismo framework, misma sintaxis assert_igual/verdadero)
 php pruebas/ejecutar-integracion.php
 
+# Análisis estático (PHPStan nivel 5, config en phpstan.neon.dist; lo corre la CI). Subirlo al 6 pide
+# describir de qué es cada array en los @param/@return (hoy unas 35 firmas): es el siguiente paso
+phpstan analyse --no-progress
+
 # Unit tests de JS (node:test + node:assert, nativos de Node)
 ./pruebas/ejecutar-js.sh
 
