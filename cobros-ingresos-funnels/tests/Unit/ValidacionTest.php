@@ -32,6 +32,24 @@ final class ValidacionTest extends TestCase
         self::assertFalse(Validacion::montoEnRango(NAN));
     }
 
+    /** El yen o el won no tienen fraccion: 100.50 JPY no existe. Las de 2 y 3 decimales no se tocan. */
+    public function testUnaMonedaSinDecimalesSoloAdmiteMontosEnteros(): void
+    {
+        self::assertTrue(Validacion::montoCabeEnLosDecimales(1500.0, 0));
+        self::assertTrue(Validacion::montoCabeEnLosDecimales(1.0, 0));
+        self::assertFalse(Validacion::montoCabeEnLosDecimales(1500.5, 0));
+        self::assertFalse(Validacion::montoCabeEnLosDecimales(0.01, 0));
+        self::assertTrue(Validacion::montoCabeEnLosDecimales(1500.5, 2));
+        self::assertTrue(Validacion::montoCabeEnLosDecimales(1500.55, 2));
+    }
+
+    /** 0.1 + 0.2 + 0.7 da 1.0000000000000002 en flotante: se compara en centavos, no con == sobre el float. */
+    public function testElRuidoDeLaComaFlotanteNoHaceFraccionario(): void
+    {
+        self::assertTrue(Validacion::montoCabeEnLosDecimales(0.1 + 0.2 + 0.7, 0));
+        self::assertTrue(Validacion::montoCabeEnLosDecimales(round(602.0 * 1.1 / 1.1, 2), 0));
+    }
+
     public function testFaltanCamposUsaElRangoDeMonto(): void
     {
         self::assertFalse(Validacion::faltanCampos(['x'], 10.0));

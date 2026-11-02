@@ -38,6 +38,18 @@ final class Validacion
     }
 
     /**
+     * true si el monto no trae mas decimales de los que tiene la moneda ($decimales, de
+     * MonedaRepository::decimales()): en yenes, wones o pesos chilenos no existe la fraccion. Se compara
+     * en centavos enteros, como el resto de las reglas de dinero. Es un bool, igual que montoEnRango() y
+     * fechaEsValida(), que son sus vecinas y con las que se compone en faltanCampos(). El monto ya paso
+     * por montoEnRango(): es finito y positivo.
+     */
+    public static function montoCabeEnLosDecimales(float $monto, int $decimales): bool
+    {
+        return $decimales > 0 || Dinero::centavos($monto) % 100 === 0;
+    }
+
+    /**
      * Largos maximos de los textos libres de los formularios. Las columnas son
      * TEXT, asi que sin tope cabia cualquier cosa: un nombre o una ciudad de
      * 100.000 caracteres se guardaban sin queja.

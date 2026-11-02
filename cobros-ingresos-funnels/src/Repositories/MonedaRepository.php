@@ -16,6 +16,9 @@ final class MonedaRepository
     /** @var array<string, string>|null */
     private static ?array $simbolos = null;
 
+    /** @var array<string, int>|null */
+    private static ?array $decimales = null;
+
     /** @return array<string, string> codigo => simbolo */
     public static function simbolos(): array
     {
@@ -32,6 +35,35 @@ final class MonedaRepository
     public static function simbolo(string $codigo): string
     {
         return self::simbolos()[$codigo] ?? $codigo;
+    }
+
+    /**
+     * Los decimales de la unidad menor de cada moneda, los de ISO 4217 (monedas.decimales, migracion 014):
+     * 0 para el yen o el won, 2 para casi todas, 3 para el dinar kuwaiti.
+     *
+     * @return array<string, int> codigo => decimales
+     */
+    public static function decimalesPorMoneda(): array
+    {
+        if (self::$decimales === null) {
+            self::$decimales = [];
+            $rows = Database::connection()->query('SELECT codigo, decimales FROM monedas')->fetchAll();
+            foreach ($rows as $row) {
+                self::$decimales[$row['codigo']] = (int) $row['decimales'];
+            }
+        }
+        return self::$decimales;
+    }
+
+    /**
+     * Cuantos decimales tiene un monto en esa moneda dentro de esta aplicacion: los de ISO, con tope en 2.
+     * boletas.monto, pagos.monto y notas_credito.monto son NUMERIC(14, 2), y la regla del centavo
+     * (Dinero::UN_CENTAVO) esta escrita en PHP y en SQL: las monedas de 3 decimales se guardan con 2.
+     * Una moneda que no esta en el catalogo: 2.
+     */
+    public static function decimales(string $codigo): int
+    {
+        return min(self::decimalesPorMoneda()[$codigo] ?? 2, 2);
     }
 
     /**

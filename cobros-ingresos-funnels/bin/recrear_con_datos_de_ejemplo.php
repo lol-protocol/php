@@ -164,6 +164,18 @@ $generoPesos = ['Femenino' => 48, 'Masculino' => 48, 'No especifica' => 4];
 $monedaPorPais = $pdo->query('SELECT codigo, moneda_codigo FROM paises')->fetchAll(PDO::FETCH_KEY_PAIR);
 // Y la edad desde la que se admite un cliente en cada pais (migracion 010): 18 casi siempre, 19 en Canada, 20 en Tailandia...
 $mayoriaPorPais = array_map('intval', $pdo->query('SELECT codigo, mayoria_de_edad FROM paises')->fetchAll(PDO::FETCH_KEY_PAIR));
+// Y los decimales de cada moneda (migracion 014): los montos de una moneda sin decimales (yen, won) son enteros.
+$decimalesPorMoneda = array_map('intval', $pdo->query('SELECT codigo, decimales FROM monedas')->fetchAll(PDO::FETCH_KEY_PAIR));
+
+/**
+ * Un monto redondeado a los decimales de su moneda, con tope en 2 (las columnas de monto son NUMERIC(14, 2)).
+ *
+ * @param array<string, int> $decimalesPorMoneda
+ */
+function enLaMoneda(float $monto, string $moneda, array $decimalesPorMoneda): float
+{
+    return round($monto, min($decimalesPorMoneda[$moneda] ?? 2, 2));
+}
 
 /** @return array{pais_codigo:string, ciudad:string, idioma:string, genero:string, fecha_nacimiento:string, moneda:string} */
 function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idiomaPorPais, array $monedaPorPais, array $mayoriaPorPais, array $generoPesos, DateTimeImmutable $hoy): array
@@ -320,7 +332,7 @@ foreach ($clientesInfo as $cliente) {
             break;
         }
         $vencimiento = $emision->modify('+30 days');
-        $monto = round(mt_rand(15000, 320000) / 100, 2);
+        $monto = enLaMoneda(mt_rand(15000, 320000) / 100, $cliente['moneda'], $decimalesPorMoneda);
         $concepto = $conceptos[array_rand($conceptos)];
 
         $insBoleta->execute([
@@ -338,7 +350,7 @@ foreach ($clientesInfo as $cliente) {
         if ($comportamiento !== 'pendiente') {
             $montoPago = $comportamiento === 'pagada'
                 ? $monto
-                : round($monto * (mt_rand(30, 70) / 100), 2);
+                : enLaMoneda($monto * (mt_rand(30, 70) / 100), $cliente['moneda'], $decimalesPorMoneda);
             $limitePago = min($hoy, $vencimiento->modify('+20 days'));
             $fPago = diasAleatorios($emision, max(1, (int) (($limitePago->getTimestamp() - $emision->getTimestamp()) / DIA)));
             if ($fPago <= $hoy) {
@@ -371,7 +383,7 @@ for ($i = 0; $i < 10; $i++) {
     $insPago->execute([
         ':boleta_id' => null,
         ':cliente_id' => $cliente['id'],
-        ':monto' => round(mt_rand(5000, 60000) / 100, 2),
+        ':monto' => enLaMoneda(mt_rand(5000, 60000) / 100, $cliente['moneda'], $decimalesPorMoneda),
         ':moneda_codigo' => $cliente['moneda'],
         ':fecha_pago' => fecha($fPago),
         ':metodo' => eleccionPonderada($metodoPesos),

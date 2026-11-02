@@ -27,11 +27,19 @@ function dinero_compacto(float $valor): string
     return \App\Config::dinero($valor);
 }
 
-/** Formatea un monto en su moneda original (no convertida), ej. 'MX$1,234.00'. */
+/**
+ * Formatea un monto en su moneda original (no convertida), ej. 'MX$1,234.00'. Una moneda sin decimales
+ * (el yen, el won) lo muestra entero: '¥1,234 JPY'. Si un monto de esas trae centavos (se cargo antes de que
+ * la aplicacion pidiera enteros), los muestra: redondearlo seria mostrar otra cifra de la que esta guardada.
+ */
 function dinero_en_moneda(float $monto, string $codigoMoneda): string
 {
     $simbolo = \App\Repositories\MonedaRepository::simbolo($codigoMoneda);
-    return ($monto < 0 ? '-' : '') . $simbolo . number_format(abs($monto), 2) . ' ' . $codigoMoneda;
+    $decimales = \App\Repositories\MonedaRepository::decimales($codigoMoneda);
+    if (!\App\Validacion::montoCabeEnLosDecimales(abs($monto), $decimales)) {
+        $decimales = 2;
+    }
+    return ($monto < 0 ? '-' : '') . $simbolo . number_format(abs($monto), $decimales) . ' ' . $codigoMoneda;
 }
 
 /**
@@ -39,16 +47,19 @@ function dinero_en_moneda(float $monto, string $codigoMoneda): string
  * servidor (Validacion::montoEnRango): de un centavo a Validacion::MONTO_MAXIMO, de a centavos. Asi el
  * navegador rechaza un monto fuera de rango antes de enviarlo, igual que maxlength lo hace con los
  * textos. $valor es lo que se muestra de entrada (lo ya escrito, o el monto guardado) y se escapa aca.
+ * $codigoMoneda, cuando la moneda ya esta fija (la edicion de una boleta o de un pago), hace que una moneda sin
+ * decimales (yen, won) pida enteros. En el alta de un pago no se pasa: la moneda la decide la boleta que elija.
  */
-function campo_monto(string|int|float|null $valor = null): string
+function campo_monto(string|int|float|null $valor = null, ?string $codigoMoneda = null): string
 {
-    $centavo = number_format(\App\Dinero::UN_CENTAVO, 2, '.', '');
+    $sinDecimales = $codigoMoneda !== null && \App\Repositories\MonedaRepository::decimales($codigoMoneda) === 0;
+    $minimo = $sinDecimales ? '1' : number_format(\App\Dinero::UN_CENTAVO, 2, '.', '');
 
     return sprintf(
         '<input type="number" name="monto" id="monto" required min="%s" max="%s" step="%s" value="%s">',
-        $centavo,
-        number_format(\App\Validacion::MONTO_MAXIMO, 2, '.', ''),
-        $centavo,
+        $minimo,
+        $sinDecimales ? (string) (int) floor(\App\Validacion::MONTO_MAXIMO) : number_format(\App\Validacion::MONTO_MAXIMO, 2, '.', ''),
+        $minimo,
         htmlspecialchars((string) $valor)
     );
 }

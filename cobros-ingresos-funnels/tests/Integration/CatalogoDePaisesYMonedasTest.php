@@ -20,6 +20,7 @@ use App\Migrador;
 final class CatalogoDePaisesYMonedasTest extends IntegracionTestCase
 {
     private const MIGRACION = __DIR__ . '/../../database/migraciones/005_catalogo_de_paises_y_monedas.sql';
+    private const MIGRACION_014 = __DIR__ . '/../../database/migraciones/014_correcciones_del_catalogo_de_monedas.sql';
 
     /** Deja la conexion apuntando a un esquema vacio con todas las migraciones del repo aplicadas. */
     private function migrarUnaBaseVacia(): void
@@ -84,5 +85,104 @@ final class CatalogoDePaisesYMonedasTest extends IntegracionTestCase
 
         self::assertSame('0.00123456', $this->tasa('ARS'), 'la tasa que alguien actualizo a mano se queda como esta');
         self::assertSame($paises, $this->contar('paises'), 'el pais que faltaba se vuelve a cargar');
+    }
+
+    private function monedaDelPais(string $pais): string
+    {
+        $stmt = Database::connection()->prepare('SELECT moneda_codigo FROM paises WHERE codigo = :codigo');
+        $stmt->execute([':codigo' => $pais]);
+
+        return (string) $stmt->fetchColumn();
+    }
+
+    /** Zimbabue y Bulgaria cambiaron de moneda; las viejas se quedan para las boletas que ya las usan. */
+    public function testZimbabueUsaElZigYBulgariaElEuro(): void
+    {
+        $this->migrarUnaBaseVacia();
+
+        self::assertSame('ZWG', $this->monedaDelPais('ZW'));
+        self::assertSame('EUR', $this->monedaDelPais('BG'));
+        self::assertNotSame('', $this->tasa('ZWL'), 'ZWL sigue en el catalogo: las boletas viejas la usan');
+        self::assertNotSame('', $this->tasa('BGN'), 'BGN sigue en el catalogo: las boletas viejas la usan');
+    }
+
+    /** Liechtenstein era el unico miembro de la ONU que faltaba; los territorios traen las monedas que no tenian pais. */
+    public function testLasMonedasQueFaltabanTienenAlgunPaisQueLasUse(): void
+    {
+        $this->migrarUnaBaseVacia();
+
+        self::assertSame('CHF', $this->monedaDelPais('LI'));
+        $sinPais = Database::connection()->query(
+            'SELECT codigo FROM monedas m WHERE NOT EXISTS (SELECT 1 FROM paises p WHERE p.moneda_codigo = m.codigo)
+              AND codigo NOT IN (\'ZWL\', \'BGN\') ORDER BY codigo'
+        )->fetchAll(\PDO::FETCH_COLUMN);
+        self::assertSame([], $sinPais, 'toda moneda del catalogo (salvo las dos retiradas) la usa algun pais');
+        foreach (['AWG' => 'AW', 'BMD' => 'BM', 'FKP' => 'FK', 'GIP' => 'GI', 'KYD' => 'KY', 'SHP' => 'SH', 'XCG' => 'CW', 'XPF' => 'PF'] as $moneda => $pais) {
+            self::assertSame($moneda, $this->monedaDelPais($pais));
+        }
+    }
+
+    /** Las monedas ligadas por ley a otra salen del par fijo, no de un numero suelto. */
+    public function testLasTasasDeLasMonedasLigadasSalenDelParFijo(): void
+    {
+        $this->migrarUnaBaseVacia();
+
+        self::assertSame($this->tasa('GBP'), $this->tasa('FKP'));
+        self::assertSame($this->tasa('GBP'), $this->tasa('GIP'));
+        self::assertSame($this->tasa('GBP'), $this->tasa('SHP'));
+        self::assertEqualsWithDelta((float) $this->tasa('EUR') / 119.33174, (float) $this->tasa('XPF'), 1e-8);
+        self::assertSame('1.00000000', $this->tasa('BMD'));
+    }
+
+    /** Los decimales de ISO 4217: 0 para el yen y los francos CFA, 3 para los dinares y el rial omani, 2 para el resto. */
+    public function testLosDecimalesDeCadaMonedaSonLosDeIso(): void
+    {
+        $this->migrarUnaBaseVacia();
+
+        $porDecimales = [];
+        foreach (Database::connection()->query('SELECT codigo, decimales FROM monedas ORDER BY codigo')->fetchAll() as $fila) {
+            $porDecimales[(int) $fila['decimales']][] = $fila['codigo'];
+        }
+        self::assertSame(['BIF', 'CLP', 'DJF', 'GNF', 'ISK', 'JPY', 'KMF', 'KRW', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF'], $porDecimales[0]);
+        self::assertSame(['BHD', 'IQD', 'JOD', 'KWD', 'LYD', 'OMR', 'TND'], $porDecimales[3]);
+        self::assertContains('USD', $porDecimales[2]);
+    }
+
+    /**
+     * La 014 corre sobre una base que ya tiene el catalogo: no pisa una tasa cambiada a mano ni deja
+     * a Zimbabue y a Bulgaria con la moneda vieja, y correrla dos veces es lo mismo que una.
+     */
+    public function testLa014SobreUnaBaseQueSoloLlegoHastaLa013PasaALaMonedaNuevaYNoPisaNada(): void
+    {
+        $this->migrarUnaBaseVacia();
+        $db = Database::connection();
+        $db->exec("UPDATE paises SET moneda_codigo = 'ZWL' WHERE codigo = 'ZW'");
+        $db->exec("UPDATE paises SET moneda_codigo = 'BGN' WHERE codigo = 'BG'");
+        $db->exec("UPDATE monedas SET tasa_a_usd = 0.04567 WHERE codigo = 'ZWG'");
+        $db->exec("DELETE FROM paises WHERE codigo = 'LI'");
+        $paises = $this->contar('paises') + 1;
+
+        $db->exec((string) file_get_contents(self::MIGRACION_014));
+        $db->exec((string) file_get_contents(self::MIGRACION_014));
+
+        self::assertSame('ZWG', $this->monedaDelPais('ZW'));
+        self::assertSame('EUR', $this->monedaDelPais('BG'));
+        self::assertSame('0.04567000', $this->tasa('ZWG'), 'la tasa que alguien actualizo a mano se queda como esta');
+        self::assertSame($paises, $this->contar('paises'), 'el pais que faltaba se vuelve a cargar, una sola vez');
+    }
+
+    /** Un cliente de Zimbabue ya cargado conserva su pais; su moneda de facturacion pasa a ser la nueva. */
+    public function testUnClienteDeZimbabueFacturaEnLaMonedaNueva(): void
+    {
+        $this->migrarUnaBaseVacia();
+        $db = Database::connection();
+        $db->exec(
+            "INSERT INTO clientes (nombre, email, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+             VALUES ('Cliente de Harare', 'harare@example.test', CURRENT_DATE, 'ZW', 'Harare', 'Ingles', 'Femenino', '1990-01-01')"
+        );
+
+        $moneda = $db->query("SELECT p.moneda_codigo FROM clientes c JOIN paises p ON p.codigo = c.pais_codigo WHERE c.email = 'harare@example.test'")->fetchColumn();
+
+        self::assertSame('ZWG', $moneda);
     }
 }

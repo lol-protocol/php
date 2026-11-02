@@ -26,7 +26,7 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Rango de fechas personalizado**: además del selector de últimos 3/6/12 meses,
   se puede fijar un Desde/Hasta exacto en Dashboard, Cobros, Pagos, Funnel y Cohortes.
 - **Multi-moneda**: cada cliente factura y paga en la moneda de su país (catálogo
-  de ~200 países/territorios); los totales y gráficos agregados se consolidan a USD.
+  de ~240 países/territorios); los totales y gráficos agregados se consolidan a USD.
 - **Clientes**: alta manual, buscador y ficha con su historial completo (boletas,
   pagos y su recorrido por el funnel si entró por ahí). Desde la ficha se carga una
   boleta o un pago con el cliente ya elegido. Los desplegables de "Nueva boleta" y
@@ -356,12 +356,36 @@ marca la migración inicial como aplicada sin ejecutarla (esas tablas ya existen
 aplica las demás.
 
 **Catálogo de países y monedas.** Lo carga la migración `005` junto con el resto del
-esquema (198 países y 146 monedas), así que una base nueva queda lista para dar de
-alta clientes sin ningún paso aparte. Una base migrada antes de la `005`, que quedó
-sin catálogo, lo recibe en la siguiente corrida de `migrar.php`; y aplicarla sobre
-una base que ya lo tiene no pisa nada. Las `tasa_a_usd` que carga son de ejemplo:
-antes de confiar en los reportes consolidados en USD hay que cargar las reales con
+esquema, y la `014` lo corrige (242 países y territorios y 155 monedas), así que una base
+nueva queda lista para dar de alta clientes sin ningún paso aparte. Una base migrada antes
+de la `005`, que quedó sin catálogo, lo recibe en la siguiente corrida de `migrar.php`; y
+aplicarla sobre una base que ya lo tiene no pisa nada. Las `tasa_a_usd` que carga son de
+ejemplo: antes de confiar en los reportes consolidados en USD hay que cargar las reales con
 `php bin/actualizar_tasas.php` (ver «Tasas de cambio»).
+
+La `014` corrige lo que la `005` tenía desactualizado o incompleto: Zimbabue pasa al ZiG
+(`ZWG`, que reemplazó al `ZWL` en 2024) y Bulgaria al euro (desde el 1 de enero de 2026);
+agrega a Liechtenstein, el único miembro de la ONU que faltaba, y los territorios habitados
+con código ISO 3166-1 propio (Puerto Rico, Guam, Aruba, Gibraltar, Polinesia Francesa…), con
+las monedas que usan. `ZWL` y `BGN` se quedan en el catálogo: las boletas y los pagos que ya
+se cobraron en ellas las siguen usando. Un cliente que ya existía conserva su país, y sus
+boletas nuevas salen en la moneda nueva. Los territorios sin población permanente y el Sahara
+Occidental no están. El catálogo sale de ISO 4217 y 3166-1 **tal como los conoce quien lo
+escribió, sin cotejarlos contra la fuente**: antes de usarlo en producción conviene
+compararlo con la lista vigente de ISO 4217 (el cambio de moneda de un país es un `UPDATE
+paises SET moneda_codigo = ...` en una migración nueva). La mayoría de edad de los países
+nuevos es 18, y hay dudas conocidas (Puerto Rico, 21 según su código civil).
+
+**Decimales de cada moneda.** `monedas.decimales` guarda los de ISO 4217: 0 para el yen, el
+won, el peso chileno o los francos CFA; 3 para los dinares y el rial omani; 2 para el resto.
+La aplicación hace con ellos lo siguiente: en las monedas **sin decimales** los montos de
+boletas y pagos tienen que ser enteros (`Validacion::montoCabeEnLosDecimales()`, el formulario
+de edición pide `step="1"`) y se muestran sin decimales (`dinero_en_moneda()`); un monto viejo
+que traiga centavos se sigue mostrando con ellos. **Límite conocido:** las monedas de 3
+decimales se guardan y se muestran con 2, porque `boletas.monto`, `pagos.monto` y
+`notas_credito.monto` son `NUMERIC(14, 2)` y la regla del centavo está en PHP y en SQL;
+pasarlas a 3 es un cambio de todo el sistema y no se hizo. `MonedaRepository::decimales()`
+devuelve el dato ISO con tope en 2.
 
 **Mayoría de edad.** La base rechaza a un cliente que no haya cumplido la edad de
 mayoría de **su país**, tanto al crearlo como al cambiarle la fecha de nacimiento o
@@ -532,13 +556,15 @@ src/
                         la redirección (?creada=ID, ?creado=ID...), testeado
   Router.php, View.php, funciones_de_vista.php   (los helpers que usan las vistas)
 database/
-  migraciones/          el esquema, el catálogo de ~200 países y sus monedas
+  migraciones/          el esquema, el catálogo de ~240 países y sus monedas
                         (ISO 4217), los índices y la regla de mayoría de edad,
                         en cambios numerados (001 = esquema inicial, 005 =
                         catálogo, 006 y 008 = índices, 007 = mayoría de edad,
                         009 = origen de las tasas de cambio, 010 = mayoría de
                         edad de cada país, 011 = la tasa de cambio de cada día,
-                        012 = la fecha de devolución de cada nota de crédito)
+                        012 = la fecha de devolución de cada nota de crédito,
+                        013 = las fechas del funnel en orden, 014 = correcciones
+                        del catálogo de países y monedas)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
@@ -592,9 +618,9 @@ phpstan.neon            configuracion del analisis estatico
 
 - `monedas` / `paises`: catálogo de referencia (código ISO, nombre, símbolo y
   `tasa_a_usd` — cuánto vale 1 unidad de esa moneda en USD, para consolidar
-  reportes). La migración `005` carga el catálogo (198 países y 146 monedas) con
-  tasas de ejemplo, no el seed: una base de producción lo tiene apenas se migra (ver
-  "Esquema de la base"). `bin/actualizar_tasas.php` las reemplaza por las reales
+  reportes) y `decimales` (los de ISO 4217, migración `014`). La migración `005` carga el
+  catálogo, y la `014` lo corrige (242 países y 155 monedas) con tasas de ejemplo, no el seed:
+  una base de producción lo tiene apenas se migra (ver "Esquema de la base"). `bin/actualizar_tasas.php` las reemplaza por las reales
   y deja en `tasa_actualizada_en` y `tasa_fuente` desde cuándo y de dónde (`NULL` es
   una tasa de ejemplo; ver «Tasas de cambio»). Cada país trae también
   `mayoria_de_edad` (migración `010`, ver «Mayoría de edad»).

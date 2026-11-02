@@ -21,7 +21,7 @@ use App\Etiquetas;
         <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="monto">Monto (<?= htmlspecialchars($pago['moneda_codigo']) ?>)</label>
-        <?= campo_monto($pago['monto']) ?>
+        <?= campo_monto($pago['monto'], $pago['moneda_codigo']) ?>
 
         <label for="fecha_pago">Fecha de pago</label>
         <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= htmlspecialchars($pago['fecha_pago']) ?>">
