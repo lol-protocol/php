@@ -23,7 +23,7 @@ y [`SECURITY.md`](SECURITY.md) (cómo avisar de una fuga de datos sin publicarla
 | [`document-formats/`](document-formats/) | Base de datos de formatos de documento y papel por país. |
 | [`privacy-laws/`](privacy-laws/) | Base de datos de leyes de privacidad por país, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
 | [`copyright-laws/`](copyright-laws/) | Base de datos de leyes de derechos de autor por jurisdicción, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
-| [`leyes-comunes/`](leyes-comunes/) | Núcleo compartido del verificador de enlaces de referencia de `privacy-laws/` y `copyright-laws/`: ninguno de los dos depende del otro, los dos dependen de esta carpeta. |
+| [`leyes-comunes/`](leyes-comunes/) | Código compartido de `privacy-laws/` y `copyright-laws/` (verificador de enlaces, caché de textos, registro de cambios, traducciones y validación del CSV): ninguno de los dos depende del otro, los dos dependen de esta carpeta. |
 | [`marketing/`](marketing/) | Frases y textos de marketing para un proyecto de genealogía: lemas, eslóganes, redes sociales y correo. |
 | [`citas-pos/`](citas-pos/) | Documentación y plan de un apoyo de marketing para Contrastocolor (el etiquetador POS): citas célebres de dominio público, en varios idiomas, con cada palabra en el color de su categoría gramatical, cada una con su fuente verificada y sus traducciones como borrador. Por ahora hay documentación (ideas, criterios y plan), una paleta de 17 colores con su prototipo web y el registro de revisiones; todavía no hay citas. |
 | [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |
@@ -50,9 +50,9 @@ también su propio código y tests; `landing-page/` es un solo archivo; `psychol
 es solo texto; `marketing/` es texto e imágenes con dos scripts PHP sueltos (`render.php` e
 `iconos/vista-previa.php`), sin tests ni CI; los sets de iconos son SVG más el
 generador/validador de `iconos-tools/` (ver "CI/CD" más abajo); y `privacy-laws/` y
-`copyright-laws/` comparten el núcleo de su verificador de enlaces en `leyes-comunes/`, sin que
-uno dependa del otro. Tres proyectos usan `defamatory-content-review/` y necesitan esa carpeta
-al lado:
+`copyright-laws/` comparten en `leyes-comunes/` el código que hacían igual (verificador de enlaces,
+caché de textos, registro de cambios, traducciones y validación del CSV), sin que uno dependa del
+otro. Tres proyectos usan `defamatory-content-review/` y necesitan esa carpeta al lado:
 
 - **`phone-directory/`** usa sus clases de plegado de acentos y claves fonéticas; su
   `composer.json` la declara como dependencia Composer (`lol-protocol/defamatory-content-review`,
