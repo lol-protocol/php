@@ -61,11 +61,17 @@ final class BoletasController
      * en la otra. Devuelve el mensaje y no un booleano porque el formulario lo
      * muestra tal cual, igual que Validacion::primerTextoLargo(); lo que es solo
      * de la edicion (lo ya cobrado, el primer pago) lo chequea editar().
+     *
+     * $moneda es la de la boleta: en una moneda sin decimales (yen, won) el monto tiene que ser entero.
+     * Sin ella solo se chequea el rango.
      */
-    public static function errorDeLosCampos(string $concepto, float $monto, string $fechaEmision, string $fechaVencimiento): ?string
+    public static function errorDeLosCampos(string $concepto, float $monto, string $fechaEmision, string $fechaVencimiento, ?string $moneda = null): ?string
     {
         if (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
             return 'Completá todos los campos con un monto válido.';
+        }
+        if ($moneda !== null && !Validacion::montoCabeEnLosDecimales($monto, MonedaRepository::decimales($moneda))) {
+            return sprintf('En %s los montos van sin decimales.', $moneda);
         }
         if (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
             return $largo;
@@ -192,7 +198,7 @@ final class BoletasController
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
             } elseif ($cliente === null) {
                 $error = 'Elegí un cliente válido.';
-            } elseif (($errorDeCampos = self::errorDeLosCampos($concepto, $monto, $fechaEmision, $fechaVencimiento)) !== null) {
+            } elseif (($errorDeCampos = self::errorDeLosCampos($concepto, $monto, $fechaEmision, $fechaVencimiento, $cliente['moneda_codigo'])) !== null) {
                 $error = $errorDeCampos;
             } else {
                 $destino = EnvioUnico::ejecutar($token, static function () use ($clienteId, $concepto, $monto, $cliente, $fechaEmision, $fechaVencimiento): string {
@@ -261,7 +267,7 @@ final class BoletasController
 
                 if ($boleta === null || $boleta['anulada']) {
                     return 'La boleta fue anulada mientras la editabas.';
-                } elseif (($errorDeCampos = self::errorDeLosCampos($concepto, $monto, $fechaEmision, $fechaVencimiento)) !== null) {
+                } elseif (($errorDeCampos = self::errorDeLosCampos($concepto, $monto, $fechaEmision, $fechaVencimiento, $boleta['moneda_codigo'])) !== null) {
                     return $errorDeCampos;
                 } elseif (!self::montoCubreLoYaCobrado($monto, $boleta)) {
                     return 'El monto no puede ser menor a lo ya cobrado (' . dinero_en_moneda((float) $boleta['pagado'], $boleta['moneda_codigo']) . ').';

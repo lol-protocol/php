@@ -139,20 +139,20 @@ final class PagosController
                         return ['redireccion' => $previa];
                     }
 
+                    // El saldo se valida en la moneda de la boleta: el pago tiene que
+                    // quedar en esa misma moneda, no en la que hoy tenga el pais
+                    // del cliente (si cambiara, se restarian monedas distintas).
+                    $moneda = $boleta !== null ? $boleta['moneda_codigo'] : ($clienteElegido['moneda_codigo'] ?? null);
+
                     if ($clienteElegido === null) {
                         return ['error' => 'Elegí un cliente válido.'];
-                    } elseif (($errorDeCampos = self::errorDeLosCampos($fechaPago, $metodo, $monto)) !== null) {
+                    } elseif (($errorDeCampos = self::errorDeLosCampos($fechaPago, $metodo, $monto, $moneda)) !== null) {
                         return ['error' => $errorDeCampos];
                     } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
                         return ['error' => 'La boleta elegida no es válida para este cliente.'];
                     } elseif ($boleta !== null && ($errorContraLaBoleta = self::errorContraLaBoleta($fechaPago, $monto, $boleta)) !== null) {
                         return ['error' => $errorContraLaBoleta];
                     }
-
-                    // El saldo se valido en la moneda de la boleta: el pago tiene que
-                    // quedar en esa misma moneda, no en la que hoy tenga el pais
-                    // del cliente (si cambiara, se restarian monedas distintas).
-                    $moneda = $boleta !== null ? $boleta['moneda_codigo'] : $clienteElegido['moneda_codigo'];
 
                     return ['redireccion' => EnvioUnico::ejecutar($token, static function () use ($boletaId, $clienteId, $monto, $moneda, $clienteElegido, $fechaPago, $metodo): string {
                         $id = (new PagoRepository())->crear([
@@ -265,11 +265,17 @@ final class PagosController
      * chequeos que comparten el alta y la edicion, con los mismos mensajes (antes
      * escritos dos veces). Devuelve el mensaje y no un booleano porque el
      * formulario lo muestra tal cual, igual que Validacion::primerTextoLargo().
+     *
+     * $moneda es la del pago: en una moneda sin decimales (yen, won) el monto tiene que ser entero.
+     * Sin ella solo se chequea el rango.
      */
-    public static function errorDeLosCampos(string $fechaPago, string $metodo, float $monto): ?string
+    public static function errorDeLosCampos(string $fechaPago, string $metodo, float $monto, ?string $moneda = null): ?string
     {
         if (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
             return 'Completá todos los campos con un monto válido.';
+        }
+        if ($moneda !== null && !Validacion::montoCabeEnLosDecimales($monto, MonedaRepository::decimales($moneda))) {
+            return sprintf('En %s los montos van sin decimales.', $moneda);
         }
         if (!self::metodoEsValido($metodo)) {
             return 'Elegí un método de pago válido.';
@@ -348,7 +354,7 @@ final class PagosController
 
                 if ($pago['anulada'] || self::boletaAnuladaCongelaElPago($boleta)) {
                     return 'El pago o su boleta fueron anulados mientras lo editabas.';
-                } elseif (($errorDeCampos = self::errorDeLosCampos($fechaPago, $metodo, $monto)) !== null) {
+                } elseif (($errorDeCampos = self::errorDeLosCampos($fechaPago, $metodo, $monto, $pago['moneda_codigo'])) !== null) {
                     return $errorDeCampos;
                 } elseif ($boleta !== null && ($errorContraLaBoleta = self::errorContraLaBoleta($fechaPago, $monto, $boleta, (float) $pago['monto'])) !== null) {
                     return $errorContraLaBoleta;

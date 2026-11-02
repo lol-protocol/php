@@ -784,6 +784,68 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
         self::assertStringContainsString('Cliente creado.', $seguir($cliente));
     }
 
+    /**
+     * Yen: no existe «medio yen». El alta y la edicion de una boleta de un cliente de Japon rechazan
+     * los centavos y aceptan los enteros; el mensaje dice la moneda.
+     */
+    public function testUnaBoletaEnYenesSoloAdmiteMontosEnteros(): void
+    {
+        $formularioCliente = $this->get('page=cliente-nuevo')['cuerpo'];
+        $envioCliente = self::campoOculto($formularioCliente, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioCliente);
+        $cliente = $this->post('page=cliente-nuevo', [
+            'csrf_token' => self::campoOculto($formularioCliente, 'csrf_token'), EnvioUnico::CAMPO => $envioCliente,
+            'nombre' => 'Cliente de Tokio', 'email' => 'cliente-tokio-' . uniqid() . '@example.com',
+            'pais_codigo' => 'JP', 'ciudad' => 'Tokio', 'idioma' => 'Japones', 'genero' => 'No especifica',
+            'fecha_nacimiento' => '1990-05-05', 'segmento' => 'general',
+            'sin_restricciones' => '1',
+        ]);
+        $this->assertStatus(302, $cliente, 'alta del cliente de Japon');
+        $clienteId = self::idDeLaRedireccion($cliente, 'id');
+        $this->alTerminar(static fn () => self::borrarEntidad('clientes', 'cliente', $clienteId));
+        // Corre antes que la de arriba (en orden inverso) y borra lo que el test haya dejado, aunque falle a mitad: un cliente con boletas no se puede borrar.
+        $this->alTerminar(static function () use ($clienteId): void {
+            $boletas = Database::connection()->prepare('SELECT id FROM boletas WHERE cliente_id = :id');
+            $boletas->execute([':id' => $clienteId]);
+            foreach ($boletas->fetchAll(\PDO::FETCH_COLUMN) as $id) {
+                self::borrarBoletaConTodo((int) $id);
+            }
+        });
+        $datosDeLaBoleta = function (string $monto) use ($clienteId): array {
+            $formulario = $this->get('page=boleta-nueva')['cuerpo'];
+            $envio = self::campoOculto($formulario, EnvioUnico::CAMPO);
+            $this->olvidarToken($envio);
+
+            return [
+                'csrf_token' => self::campoOculto($formulario, 'csrf_token'), EnvioUnico::CAMPO => $envio, 'cliente_id' => $clienteId,
+                'concepto' => 'Cuota en yenes', 'monto' => $monto, 'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+            ];
+        };
+        $mensaje = 'En JPY los montos van sin decimales.';
+
+        $conCentavos = $this->post('page=boleta-nueva', $datosDeLaBoleta('1500.50'));
+        $this->assertStatus(200, $conCentavos, 'una boleta en yenes con centavos');
+        self::assertStringContainsString($mensaje, $conCentavos['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM boletas WHERE cliente_id = :id', [':id' => $clienteId]));
+
+        $entera = $this->post('page=boleta-nueva', $datosDeLaBoleta('1500'));
+        $this->assertStatus(302, $entera, 'una boleta en yenes entera');
+        $boletaId = self::idDeLaRedireccion($entera, 'creada');
+        self::assertSame(1500.0, self::montoDeLaBoleta($boletaId));
+
+        $edicion = static fn (string $monto): array => [
+            'csrf_token' => '', 'concepto' => 'Cuota en yenes', 'monto' => $monto, 'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+        ];
+        $csrf = self::campoOculto($this->get("page=boleta-editar&id={$boletaId}")['cuerpo'], 'csrf_token');
+        $editadaConCentavos = $this->post("page=boleta-editar&id={$boletaId}", ['csrf_token' => $csrf] + $edicion('1600.25'));
+        $this->assertStatus(200, $editadaConCentavos, 'editar una boleta en yenes con centavos');
+        self::assertStringContainsString($mensaje, $editadaConCentavos['cuerpo']);
+        self::assertSame(1500.0, self::montoDeLaBoleta($boletaId));
+
+        $this->assertStatus(302, $this->post("page=boleta-editar&id={$boletaId}", ['csrf_token' => $csrf] + $edicion('1600')), 'editar una boleta en yenes con un entero');
+        self::assertSame(1600.0, self::montoDeLaBoleta($boletaId));
+    }
+
     public function testUnaPantallaSinRedireccionNoMuestraConfirmaciones(): void
     {
         foreach (['page=cobros', 'page=pagos', 'page=cliente&id=' . self::CLIENTE] as $query) {
