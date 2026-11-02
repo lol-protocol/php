@@ -1,0 +1,136 @@
+[
+  {
+    "archivo": "egipto-noble",
+    "opciones": {
+      "atuendo": "egipto-mujer-noble",
+      "semilla": 3,
+      "edad": 28
+    }
+  },
+  {
+    "archivo": "roma-senador",
+    "opciones": {
+      "atuendo": "roma-senador",
+      "semilla": 4,
+      "edad": 55
+    }
+  },
+  {
+    "archivo": "vikinga",
+    "opciones": {
+      "atuendo": "vikinga-mujer",
+      "semilla": 6,
+      "edad": 31
+    }
+  },
+  {
+    "archivo": "renacimiento-dama",
+    "opciones": {
+      "atuendo": "renacimiento-dama",
+      "semilla": 8,
+      "edad": 26
+    }
+  },
+  {
+    "archivo": "inca-hombre",
+    "opciones": {
+      "atuendo": "inca-noble",
+      "semilla": 11,
+      "edad": 40
+    }
+  },
+  {
+    "archivo": "mapuche-mujer",
+    "opciones": {
+      "atuendo": "mapuche-mujer",
+      "semilla": 2,
+      "edad": 36,
+      "rasgos": true
+    }
+  },
+  {
+    "archivo": "huaso",
+    "opciones": {
+      "atuendo": "huaso",
+      "semilla": 5,
+      "edad": 50
+    }
+  },
+  {
+    "archivo": "roto-chileno",
+    "opciones": {
+      "atuendo": "roto-chileno",
+      "semilla": 9,
+      "edad": 33
+    }
+  },
+  {
+    "archivo": "selknam",
+    "opciones": {
+      "atuendo": "selknam-cazador",
+      "semilla": 13,
+      "edad": 29
+    }
+  },
+  {
+    "archivo": "japon-kimono",
+    "opciones": {
+      "atuendo": "japon-mujer-kimono",
+      "semilla": 14,
+      "edad": 24
+    }
+  },
+  {
+    "archivo": "maasai",
+    "opciones": {
+      "atuendo": "maasai",
+      "semilla": 15,
+      "edad": 27
+    }
+  },
+  {
+    "archivo": "xix-victoriana",
+    "opciones": {
+      "atuendo": "xix-dama-victoriana",
+      "semilla": 16,
+      "edad": 41,
+      "detalle": "alto"
+    }
+  },
+  {
+    "archivo": "nina-andina",
+    "opciones": {
+      "atuendo": "andina-mujer",
+      "semilla": 17,
+      "edad": 8
+    }
+  },
+  {
+    "archivo": "abuelo-gaucho",
+    "opciones": {
+      "atuendo": "gaucho",
+      "semilla": 18,
+      "edad": 74
+    }
+  },
+  {
+    "archivo": "ropa-nueva-festiva",
+    "opciones": {
+      "ropaNueva": true,
+      "estilo": "festivo",
+      "semilla": 21,
+      "sexo": "f",
+      "edad": 30
+    }
+  },
+  {
+    "archivo": "ropa-nueva-trabajo",
+    "opciones": {
+      "ropaNueva": true,
+      "estilo": "trabajo",
+      "semilla": 22,
+      "sexo": "m",
+      "edad": 45
+    }
+  }
+]

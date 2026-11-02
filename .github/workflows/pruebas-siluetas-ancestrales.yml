@@ -1,0 +1,48 @@
+name: Pruebas siluetas-ancestrales
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "siluetas-ancestrales/**"
+      - ".github/workflows/pruebas-siluetas-ancestrales.yml"
+  pull_request:
+    paths:
+      - "siluetas-ancestrales/**"
+      - ".github/workflows/pruebas-siluetas-ancestrales.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  siluetas-ancestrales:
+    name: Siluetas ancestrales (Node)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: siluetas-ancestrales
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Pruebas
+        run: node --test 'pruebas/*.test.js'
+
+      # dist/ y ejemplos/ se generan desde src/: si alguien toca src/ y no regenera, falla aqui.
+      - name: dist/ y ejemplos/ al dia con src/
+        run: node bin/construir.js --comprobar
