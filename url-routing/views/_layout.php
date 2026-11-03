@@ -13,7 +13,7 @@ use App\Support\HostParser;
  * for search engines. Both go out as JSON-LD too. A site layout may set
  * $pedirRetiro, the URL to ask for the page to be withdrawn, shown at the foot.
  */
-$lang = get_locale() === 'eng' ? 'en' : 'es';
+$lang = HostParser::IDIOMAS_CONOCIDOS[get_locale()] ?? 'es';
 $flash = (new Flash())->consumir();
 // On a search page (/b/...), the box shows that search.
 $qActual = isset($query) && is_string($query) ? $query : '';

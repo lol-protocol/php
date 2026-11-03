@@ -45,7 +45,9 @@ Si el segundo segmento es numérico pero no está en el arreglo `actions` del ti
 
 ### Dominio e idioma
 
-`determineSite()` exige coincidencia exacta de dominio o un subdominio real (`.contrastocolor.local`), nunca un sufijo de cadena suelto — así `evilcontrastocolor.local` no se confunde con un subdominio legítimo. `determineLocale()` solo reconoce subdominios que están en la lista explícita de idiomas soportados (`spa`, `eng`); un subdominio de 3 letras que no sea un idioma real (`api.`, `cdn.`) nunca se interpreta como uno.
+`determineSite()` exige coincidencia exacta de dominio o un subdominio real (`.contrastocolor.local`), nunca un sufijo de cadena suelto — así `evilcontrastocolor.local` no se confunde con un subdominio legítimo. `HostParser::getLocale()` solo reconoce los subdominios de la lista de idiomas **activos**; un subdominio de 3 letras que no sea uno de ellos (`api.`, `cdn.`) nunca se interpreta como idioma.
+
+El URL conoce 30 idiomas (`HostParser::IDIOMAS_CONOCIDOS`, ISO 639-2/T, con su código `hreflang`), pero **sirve** solo los de `IDIOMAS_ACTIVOS` en `.env` (por omisión `spa,eng`; el español siempre está). Activar uno es una línea en `.env`: `hreflang`, `<html lang>` y el reconocimiento del subdominio salen solos. Lo que no sale solo: el DNS y el certificado del subdominio (un comodín `*.dominio` cubre todos; el ejemplo de nginx ya lo acepta), los textos de las vistas y los meses de `Format::MESES` (un idioma que no esté ahí muestra las fechas con meses en español). Por eso la lista es de **activos**: anunciar un idioma en `hreflang` antes de que sus páginas estén en ese idioma le miente al buscador.
 
 ### Headroom para tipos futuros
 

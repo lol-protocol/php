@@ -499,6 +499,25 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('hreflang="en" href="http://eng.contrastocolor.local/81372047/"', $pos);
     }
 
+    public function testALanguageIsServedOnlyOnceItIsListed(): void
+    {
+        $activos = ['IDIOMAS_ACTIVOS' => 'spa,eng,fra'];
+
+        [, $fr] = $this->get('fra.tudominio.local', '/6128473101/', entorno: $activos);
+        $this->assertStringContainsString('<html lang="fr">', $fr);
+        $this->assertStringContainsString('<link rel="alternate" hreflang="fr" href="http://fra.tudominio.local/6128473101/">', $fr);
+        $this->assertStringContainsString('<link rel="canonical" href="http://fra.tudominio.local/6128473101/">', $fr);
+
+        // Known but not listed: not a language here, so the Spanish page, with no hreflang for it.
+        [, $de] = $this->get('deu.tudominio.local', '/6128473101/', entorno: $activos);
+        $this->assertStringContainsString('<html lang="es">', $de);
+        $this->assertStringNotContainsString('hreflang="de"', $de);
+
+        // Without the setting, French is not announced either.
+        [, $sin] = $this->get('spa.tudominio.local', '/6128473101/');
+        $this->assertStringNotContainsString('hreflang="fr"', $sin);
+    }
+
     /** @return array<string, array{string, string, string}> host, uri, what the 404 must say */
     public static function pistas(): array
     {
