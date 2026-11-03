@@ -247,3 +247,161 @@ Huhusishwa na uaminifu na haki: mapokeo humwelezea kuwa mkweli, mlinzi na rafiki
 Mkarimu, mkweli na mwenye upendo.
 
 Huhusishwa na ukarimu na kufurahia maisha: mapokeo humwelezea kuwa mkweli, mchangamfu na mwenye moyo mwema, ingawa wakati mwingine mjinga.
+
+## Malaika 72
+
+Kutoka Shem ha-Mephorash, "jina la herufi 72" ambalo Kabbala huliandaa kutoka Kutoka 14:19-21. Kila malaika hutawala kipindi cha takriban siku 5 za zodiaki. Rejeleo la kitamaduni tu.
+
+| # | Jina | Daraja | Tarehe | Sifa |
+| --- | --- | --- | --- | --- |
+| 1 | Vehuiah | Maserafi | 21/03 – 25/03 | Nia, mwanzo, nguvu |
+| 2 | Jeliel | Maserafi | 26/03 – 30/03 | Upendo, uaminifu, amani |
+| 3 | Sitael | Maserafi | 31/03 – 04/04 | Ujenzi, ulinzi, utukufu |
+| 4 | Elemiah | Maserafi | 05/04 – 09/04 | Safari, siri, ulinzi |
+| 5 | Mahasiah | Maserafi | 10/04 – 14/04 | Upatanifu, amani, kujifunza |
+| 6 | Lelahel | Maserafi | 15/04 – 19/04 | Upendo, uponyaji, kipaji |
+| 7 | Achaiah | Maserafi | 20/04 – 25/04 | Subira, siri, asili |
+| 8 | Cahethel | Maserafi | 26/04 – 30/04 | Baraka, kilimo, ulinzi |
+| 9 | Haziel | Makerubi | 01/05 – 05/05 | Rehema, msamaha, urafiki |
+| 10 | Aladiah | Makerubi | 06/05 – 10/05 | Neema, msamaha, uponyaji |
+| 11 | Laoviah | Makerubi | 11/05 – 15/05 | Umaarufu, ushindi, akili |
+| 12 | Hahaiah | Makerubi | 16/05 – 20/05 | Kimbilio, ulinzi, ndoto |
+| 13 | Yesalel | Makerubi | 21/05 – 26/05 | Maridhiano, uaminifu, urafiki |
+| 14 | Mebahel | Makerubi | 27/05 – 31/05 | Haki, ukweli, ukombozi |
+| 15 | Hariel | Makerubi | 01/06 – 05/06 | Usafi, imani, ukombozi |
+| 16 | Hekamiah | Makerubi | 06/06 – 10/06 | Utii, ujasiri, ulinzi |
+| 17 | Lauviah | Viti vya Enzi | 11/06 – 15/06 | Ushindi, ndoto, ufunuo |
+| 18 | Caliel | Viti vya Enzi | 16/06 – 20/06 | Haki, ukweli, kutokuwa na hatia |
+| 19 | Leuviah | Viti vya Enzi | 21/06 – 26/06 | Kumbukumbu, akili, subira |
+| 20 | Pahaliah | Viti vya Enzi | 27/06 – 02/07 | Wito, usafi, fadhila |
+| 21 | Nelchael | Viti vya Enzi | 03/07 – 07/07 | Sayansi, masomo, ulinzi |
+| 22 | Yeiayel | Viti vya Enzi | 08/07 – 12/07 | Umaarufu, biashara, safari |
+| 23 | Melahel | Viti vya Enzi | 13/07 – 17/07 | Uponyaji, mimea, ulinzi |
+| 24 | Haheuiah | Viti vya Enzi | 18/07 – 22/07 | Ulinzi, haki, walioko uhamishoni |
+| 25 | Nith-Haiah | Utawala | 23/07 – 28/07 | Hekima, ufunuo, uchawi |
+| 26 | Haaiah | Utawala | 29/07 – 02/08 | Diplomasia, ukweli, haki |
+| 27 | Yerathel | Utawala | 03/08 – 07/08 | Uhuru, nuru, ukweli |
+| 28 | Seheiah | Utawala | 08/08 – 12/08 | Maisha marefu, afya, ulinzi |
+| 29 | Reiyel | Utawala | 13/08 – 17/08 | Imani, uhuru, sayansi |
+| 30 | Omael | Utawala | 18/08 – 22/08 | Uzazi, subira, wingi |
+| 31 | Lecabel | Utawala | 23/08 – 28/08 | Kipaji, kilimo, akili |
+| 32 | Vasariah | Utawala | 29/08 – 02/09 | Huruma, haki, kumbukumbu |
+| 33 | Yehuiah | Fadhila | 03/09 – 07/09 | Uaminifu, utii, busara |
+| 34 | Lehahiah | Fadhila | 08/09 – 12/09 | Utiifu, bahati, amani |
+| 35 | Chavakiah | Fadhila | 13/09 – 17/09 | Maridhiano, urithi, upatanifu |
+| 36 | Menadel | Fadhila | 18/09 – 22/09 | Kazi, uaminifu, ukombozi |
+| 37 | Aniel | Fadhila | 23/09 – 27/09 | Sayansi, ushindi, hekima |
+| 38 | Haamiah | Fadhila | 28/09 – 02/10 | Ukweli, ulinzi, imani |
+| 39 | Rehael | Fadhila | 03/10 – 07/10 | Afya, maisha marefu, utiifu |
+| 40 | Ieiazel | Fadhila | 08/10 – 12/10 | Faraja, ukombozi, sanaa |
+| 41 | Hahahel | Mamlaka | 13/10 – 17/10 | Imani, wito, ulinzi |
+| 42 | Mikael | Mamlaka | 18/10 – 22/10 | Utaratibu, safari, ulinzi |
+| 43 | Veuliah | Mamlaka | 23/10 – 27/10 | Ufanisi, amani, wingi |
+| 44 | Yelahiah | Mamlaka | 28/10 – 01/11 | Haki, ujasiri, ulinzi |
+| 45 | Sealiah | Mamlaka | 02/11 – 06/11 | Ari, nguvu, nia |
+| 46 | Ariel | Mamlaka | 07/11 – 11/11 | Utambuzi, ufunuo, angavu |
+| 47 | Asaliah | Mamlaka | 12/11 – 16/11 | Tafakuri, ukweli, haki |
+| 48 | Mihael | Mamlaka | 17/11 – 21/11 | Uzazi, upendo, upatanifu |
+| 49 | Vehuel | Falme | 22/11 – 26/11 | Ukuu, pongezi, kuinuliwa |
+| 50 | Daniel | Falme | 27/11 – 01/12 | Ufasaha, haki, ushauri |
+| 51 | Hahasiah | Falme | 02/12 – 06/12 | Hekima, uponyaji, siri |
+| 52 | Imamiah | Falme | 07/12 – 11/12 | Ukombozi, safari, ulinzi |
+| 53 | Nanael | Falme | 12/12 – 16/12 | Masomo, diplomasia, mawasiliano |
+| 54 | Nithael | Falme | 17/12 – 21/12 | Maisha marefu, utulivu, neema |
+| 55 | Mebahiah | Falme | 22/12 – 26/12 | Faraja, ufahamu, fadhila |
+| 56 | Poyel | Falme | 27/12 – 31/12 | Bahati, msaada, mafanikio |
+| 57 | Nemamiah | Malaika Wakuu | 01/01 – 05/01 | Ufanisi, mafanikio, ukombozi |
+| 58 | Yeialel | Malaika Wakuu | 06/01 – 10/01 | Ujasiri, uponyaji, utulivu wa moyo |
+| 59 | Harahel | Malaika Wakuu | 11/01 – 15/01 | Utajiri, fasihi, masomo |
+| 60 | Mitzrael | Malaika Wakuu | 16/01 – 19/01 | Utulivu wa moyo, uaminifu, uponyaji |
+| 61 | Umabel | Malaika Wakuu | 20/01 – 24/01 | Urafiki, ukaribu, astronomia |
+| 62 | Iah-Hel | Malaika Wakuu | 25/01 – 29/01 | Hekima, falsafa, utulivu wa moyo |
+| 63 | Anauel | Malaika Wakuu | 30/01 – 03/02 | Umoja, biashara, ufanisi |
+| 64 | Mehiel | Malaika Wakuu | 04/02 – 08/02 | Msukumo, uandishi, ulinzi |
+| 65 | Damabiah | Malaika | 09/02 – 13/02 | Hekima, ulinzi, bahari |
+| 66 | Manakel | Malaika | 14/02 – 18/02 | Huruma, ndoto, ustawi |
+| 67 | Eyael | Malaika | 19/02 – 23/02 | Mabadiliko, maridhiano, maisha marefu |
+| 68 | Habuhiah | Malaika | 24/02 – 28/02 | Uponyaji, uzazi, kilimo |
+| 69 | Rochel | Malaika | 01/03 – 05/03 | Haki, kurejesha, ukweli |
+| 70 | Yabamiah | Malaika | 06/03 – 10/03 | Upya, alkemia, uumbaji |
+| 71 | Haiaiel | Malaika | 11/03 – 15/03 | Ulinzi, ushindi, ujasiri |
+| 72 | Mumiah | Malaika | 16/03 – 20/03 | Kilele, kuzaliwa upya, ustawi |
+
+## Mashetani 72
+
+Kutoka Goetia (karne ya 17), kitabu cha uchawi kisicho sehemu ya Biblia. Kila roho hushiriki kipindi na malaika mwenye nambari ileile. Rejeleo la kitamaduni tu.
+
+| # | Jina | Cheo | Majeshi | Tarehe | Sifa |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bael | Mfalme | 66 | 21/03 – 25/03 | Kutoonekana, hekima |
+| 2 | Agares | Duki | 31 | 26/03 – 30/03 | Lugha, wakimbizi, matetemeko ya ardhi |
+| 3 | Vassago | Mwana wa mfalme | — | 31/03 – 04/04 | Yaliyopita na yajayo, vitu vilivyopotea |
+| 4 | Samigina | Markizi | 30 | 05/04 – 09/04 | Sanaa huru, roho za wafu |
+| 5 | Marbas | Rais | 36 | 10/04 – 14/04 | Siri, magonjwa, uponyaji, sanaa za ufundi |
+| 6 | Valefor | Duki | 10 | 15/04 – 19/04 | Pepo wasaidizi, wizi |
+| 7 | Amon | Markizi | 40 | 20/04 – 25/04 | Yaliyopita na yajayo, maridhiano, uadui |
+| 8 | Barbatos | Duki | 30 | 26/04 – 30/04 | Lugha ya wanyama, hazina, maridhiano |
+| 9 | Paimon | Mfalme | 200 | 01/05 – 05/05 | Sayansi mbalimbali, sanaa, siri, vyeo |
+| 10 | Buer | Rais | 50 | 06/05 – 10/05 | Falsafa, mimea, uponyaji, pepo wasaidizi |
+| 11 | Gusion | Duki | 40 | 11/05 – 15/05 | Yaliyopita na yajayo, maridhiano, heshima |
+| 12 | Sitri | Mwana wa mfalme | 60 | 16/05 – 20/05 | Upendo, tamaa, siri |
+| 13 | Beleth | Mfalme | 85 | 21/05 – 26/05 | Upendo, tamaa |
+| 14 | Leraje | Markizi | 30 | 27/05 – 31/05 | Migogoro, majeraha |
+| 15 | Eligos | Duki | 60 | 01/06 – 05/06 | Vita, yaliyopita na yajayo, upendeleo |
+| 16 | Zepar | Duki | 26 | 06/06 – 10/06 | Upendo, ugumba |
+| 17 | Botis | Rais / Kaunti | 60 | 11/06 – 15/06 | Yaliyopita na yajayo, maridhiano |
+| 18 | Bathin | Duki | 30 | 16/06 – 20/06 | Mimea, vito vya thamani, safari za haraka |
+| 19 | Sallos | Duki | 30 | 21/06 – 26/06 | Upendo |
+| 20 | Purson | Mfalme | 22 | 27/06 – 02/07 | Hazina, yaliyopita na yajayo, pepo wasaidizi |
+| 21 | Marax | Rais / Kaunti | 30 | 03/07 – 07/07 | Astronomia, sanaa huru, mimea |
+| 22 | Ipos | Kaunti / Mwana wa mfalme | 36 | 08/07 – 12/07 | Yaliyopita na yajayo, ujasiri, werevu |
+| 23 | Aim | Duki | 26 | 13/07 – 17/07 | Moto mkubwa, werevu, siri |
+| 24 | Naberius | Markizi | 19 | 18/07 – 22/07 | Balagha, sanaa, heshima |
+| 25 | Glasya-Labolas | Rais / Kaunti | 36 | 23/07 – 28/07 | Sayansi mbalimbali, ghasia, yaliyopita na yajayo, kutoonekana |
+| 26 | Bune | Duki | 30 | 29/07 – 02/08 | Utajiri, ufasaha, wafu |
+| 27 | Ronove | Markizi / Kaunti | 19 | 03/08 – 07/08 | Balagha, lugha, upendeleo |
+| 28 | Berith | Duki | 26 | 08/08 – 12/08 | Alkemia, heshima, yaliyopita na yajayo |
+| 29 | Astaroth | Duki | 40 | 13/08 – 17/08 | Yaliyopita na yajayo, sanaa huru, siri |
+| 30 | Forneus | Markizi | 29 | 18/08 – 22/08 | Balagha, lugha, sifa njema |
+| 31 | Foras | Rais | 29 | 23/08 – 28/08 | Mimea, mantiki, maadili |
+| 32 | Asmoday | Mfalme | 72 | 29/08 – 02/09 | Hisabati, astronomia, kutoonekana, hazina |
+| 33 | Gaap | Rais / Mwana wa mfalme | 66 | 03/09 – 07/09 | Falsafa, sanaa huru, upendo, uadui, safari za haraka |
+| 34 | Furfur | Kaunti | 26 | 08/09 – 12/09 | Upendo, dhoruba, siri |
+| 35 | Marchosias | Markizi | 30 | 13/09 – 17/09 | Mapigano, ukweli |
+| 36 | Stolas | Mwana wa mfalme | 26 | 18/09 – 22/09 | Astronomia, mimea, vito vya thamani |
+| 37 | Phenex | Markizi | 20 | 23/09 – 27/09 | Ushairi, sayansi mbalimbali |
+| 38 | Halphas | Kaunti | 26 | 28/09 – 02/10 | Ngome, vita, silaha |
+| 39 | Malphas | Rais | 40 | 03/10 – 07/10 | Ujenzi, udanganyifu |
+| 40 | Raum | Kaunti | 30 | 08/10 – 12/10 | Wizi, uharibifu, yaliyopita na yajayo |
+| 41 | Focalor | Duki | 30 | 13/10 – 17/10 | Bahari, pepo, ajali za meli |
+| 42 | Vepar | Duki | 29 | 18/10 – 22/10 | Bahari, dhoruba, majeraha |
+| 43 | Sabnock | Markizi | 50 | 23/10 – 27/10 | Ngome, majeraha, pepo wasaidizi |
+| 44 | Shax | Markizi | 30 | 28/10 – 01/11 | Upofu, uziwi, wizi |
+| 45 | Vine | Mfalme / Kaunti | 36 | 02/11 – 06/11 | Uchawi, dhoruba, ngome |
+| 46 | Bifrons | Kaunti | 6 | 07/11 – 11/11 | Unajimu, hisabati, mimea, wafu |
+| 47 | Vual | Duki | 37 | 12/11 – 16/11 | Upendo, urafiki, yaliyopita na yajayo |
+| 48 | Haagenti | Rais | 33 | 17/11 – 21/11 | Mabadiliko, hekima, alkemia |
+| 49 | Crocell | Duki | 48 | 22/11 – 26/11 | Hisabati, sanaa, maji |
+| 50 | Furcas | Shujaa | 20 | 27/11 – 01/12 | Falsafa, unajimu, usomaji wa mikono |
+| 51 | Balam | Mfalme | 40 | 02/12 – 06/12 | Yaliyopita na yajayo, kutoonekana, werevu |
+| 52 | Alloces | Duki | 36 | 07/12 – 11/12 | Astronomia, sanaa huru |
+| 53 | Caim | Rais | 30 | 12/12 – 16/12 | Lugha ya wanyama, yaliyopita na yajayo |
+| 54 | Murmur | Duki / Kaunti | 30 | 17/12 – 21/12 | Muziki, falsafa, roho za wafu |
+| 55 | Orobas | Mwana wa mfalme | 20 | 22/12 – 26/12 | Yaliyopita na yajayo, upendeleo, utii |
+| 56 | Gremory | Duki | 26 | 27/12 – 31/12 | Hazina, upendo, yaliyopita na yajayo |
+| 57 | Ose | Rais | 3 | 01/01 – 05/01 | Sanaa huru, mabadiliko, wazimu |
+| 58 | Amy | Rais | 36 | 06/01 – 10/01 | Unajimu, sanaa huru, hazina |
+| 59 | Orias | Markizi | 30 | 11/01 – 15/01 | Unajimu, mabadiliko, heshima |
+| 60 | Vapula | Duki | 36 | 16/01 – 19/01 | Sanaa za ufundi, falsafa, sayansi mbalimbali |
+| 61 | Zagan | Mfalme / Rais | 33 | 20/01 – 24/01 | Mabadiliko, werevu |
+| 62 | Valac | Rais | 30 | 25/01 – 29/01 | Hazina, nyoka |
+| 63 | Andras | Markizi | 30 | 30/01 – 03/02 | Mfarakano, ghasia |
+| 64 | Flauros | Duki | 20 | 04/02 – 08/02 | Yaliyopita na yajayo, moto |
+| 65 | Andrealphus | Markizi | 30 | 09/02 – 13/02 | Hisabati, astronomia, mabadiliko |
+| 66 | Kimaris | Markizi | 20 | 14/02 – 18/02 | Balagha, mantiki, vitu vilivyopotea |
+| 67 | Amdusias | Duki | 29 | 19/02 – 23/02 | Muziki, miti |
+| 68 | Belial | Mfalme | 50 | 24/02 – 28/02 | Upendeleo, vyeo, pepo wasaidizi |
+| 69 | Decarabia | Markizi | 30 | 01/03 – 05/03 | Ndege, vito vya thamani, mimea |
+| 70 | Seere | Mwana wa mfalme | 26 | 06/03 – 10/03 | Safari za haraka, wizi, vitu vilivyopotea |
+| 71 | Dantalion | Duki | 36 | 11/03 – 15/03 | Mawazo, sayansi mbalimbali, upendo |
+| 72 | Andromalius | Kaunti | 36 | 16/03 – 20/03 | Vitu vilivyopotea, hazina, wezi |

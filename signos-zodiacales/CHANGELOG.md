@@ -4,6 +4,14 @@ Los cambios de `datos/` y de lo que se calcula con ellos, de lo más reciente a 
 
 Versionado semántico: la **mayor** cambia si se rompe el esquema de `datos/signos.json` o lo que devuelven las consultas; la **menor** cuando se agregan datos, campos o funciones; la **parche** cuando se corrige un texto, una fecha o una figura sin cambiar la forma.
 
+## [1.2.0] - 2026-11-03
+
+### Agregado
+- `datos/espiritus.json`: los **72 ángeles** del Shem ha-Mephorash (de Éxodo 14:19-21, vía la Cábala) y los **72 demonios** de la Goetia (siglo XVII; un grimorio, no el canon bíblico), con sus cualidades en los 30 idiomas. Las cualidades son claves de un glosario de 158 conceptos traducidos, así que cada una se dice igual en todo el proyecto. Los demonios llevan rango(s) y legiones.
+- Cada ficha de `por-idioma/` termina con las dos tablas: número, nombre, coro o rango, fechas y cualidades.
+- `zodiaco.py` y `php/`: `angel_de_fecha`, `demonio_de_fecha`, `tramos_de_espiritus` y `cualidades_de`. Cada signo occidental se parte en seis tramos de unos 5 días; el ángel y el demonio del mismo número comparten tramo (zodiaco tropical).
+- `datos/vectores.json` cubre las funciones nuevas.
+
 ## [1.1.0] - 2026-10-26
 
 ### Agregado
