@@ -31,6 +31,12 @@ Cuando dos personas resultan ser la misma y una se fusiona en la otra, el id que
 
 La fusión se hace con `php bin/fusionar.php <duplicado> <que queda>`, que sin `--confirmar` solo muestra qué movería. En una transacción pasa a la que queda los hijos, vínculos, sucesos, organizaciones, colecciones y alias de la duplicada (sin duplicar lo que ya tenía), completa lo que le falte (padres, apellido, marca de vida), borra la duplicada y deja su id como alias. Se niega a fusionar a dos personas que no pueden ser la misma: madre o padre e hija o hijo, o dos que tienen un vínculo entre sí.
 
+### Grupos fusionados
+
+Un apellido se escribe de más de una forma («García» y «Garcia»), y el segundo grupo que alguien crea por error es el duplicado más probable de todo el catálogo. Funciona igual que con las personas: el id del grupo que desaparece queda en `grupo_alias` y `/{id viejo}/`, `/{id viejo}/1/` y `/{id viejo}/2/` dan **301** a la misma página del grupo que quedó. Un id que nunca existió sigue siendo 404.
+
+`php bin/fusionar.php grupo <duplicado> <que queda> [--confirmar]` (sin `--confirmar` solo muestra qué movería; sin la palabra `grupo` fusiona personas, como siempre). Pasa a las personas del duplicado al que queda, le completa el origen y la descripción que le falten, borra el duplicado y deja su id como alias. **Se niega** si uno de los dos tiene un pedido de retiro que lo oculta o lo retira: esa página sigue respondiendo 410 en su id viejo, y fusionarla antes enterraría la decisión.
+
 ### Contrato de generación de ids (importante)
 
 Un id **debe** generarse ya relleno con ceros al ancho fijo de su tipo. `persona #47` no es `/47/` (2 dígitos → caería en un tipo de 2 dígitos, que no existe, o peor, en uno que sí exista) — es `/0000000047/` (10 dígitos). El helper `enlace($tipo, $id)` en `index.php` hace este padding automáticamente consultando `Router::typeLength()`; nunca se debe construir un enlace concatenando el id "crudo" a mano.

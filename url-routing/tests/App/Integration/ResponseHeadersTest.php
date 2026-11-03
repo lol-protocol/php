@@ -44,6 +44,9 @@ class ResponseHeadersTest extends TestCase
             $migrator->seed();
         }
 
+        // 582399 was a duplicate of the grupo García (582317), merged into it (bin/fusionar.php grupo).
+        (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute('INSERT INTO grupo_alias (id, grupo_id) VALUES (582399, 582317)');
+
         // A free port: ask the OS for one, release it and hand it to the server.
         $socket = stream_socket_server('tcp://127.0.0.1:0');
         self::assertNotFalse($socket, 'No free port for the test server');
@@ -163,6 +166,70 @@ class ResponseHeadersTest extends TestCase
         $this->assertArrayHasKey('x-content-type-options', $faltaR['headers']);
 
         $this->assertSame(self::huella($faltaR), self::huella($ocultaR), "{$oculta} must look exactly like {$inexistente}");
+    }
+
+    /**
+     * robots.txt only keeps crawlers from walking these paths; the header keeps a URL that someone links to
+     * out of the results. The pages meant to be found (home, a persona, a producto) must not carry it.
+     *
+     * @return array<string, array{string, string, bool}> [host, uri, carries X-Robots-Tag: noindex]
+     */
+    public static function noindex(): array
+    {
+        return [
+            'genealogía: búsqueda' => [self::GENEALOGIA, '/b/10/', true],
+            'genealogía: la cuenta, aunque pida la clave' => [self::GENEALOGIA, '/0/', true],
+            'genealogía: pedir un retiro' => [self::GENEALOGIA, '/r/582317/', true],
+            'genealogía: inicio' => [self::GENEALOGIA, '/', false],
+            'genealogía: una persona' => [self::GENEALOGIA, '/6128473101/', false],
+            'genealogía: un lugar' => [self::GENEALOGIA, '/mx/jal/', false],
+            'POS: carrito' => [self::POS, '/c/', true],
+            'POS: pago' => [self::POS, '/p/', true],
+            'POS: búsqueda' => [self::POS, '/b/8/', true],
+            'POS: un producto' => [self::POS, '/81372047/', false],
+        ];
+    }
+
+    #[DataProvider('noindex')]
+    public function testFunctionalPagesCarryNoindex(string $host, string $uri, bool $lleva): void
+    {
+        $respuesta = $this->pedir($host, $uri);
+
+        $this->assertArrayHasKey('x-content-type-options', $respuesta['headers'], 'headers are not being observed');
+        $this->assertSame($lleva ? ['noindex'] : null, $respuesta['headers']['x-robots-tag'] ?? null, $uri);
+    }
+
+    /** A GEDCOM file is for whoever asked for it; a hidden collection's export must still look like a missing one (above). */
+    public function testTheGedcomExportCarriesNoindex(): void
+    {
+        $respuesta = $this->pedir(self::GENEALOGIA, '/1048293/3/', ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)]);
+
+        $this->assertSame(200, $respuesta['status']);
+        $this->assertSame(['noindex'], $respuesta['headers']['x-robots-tag']);
+    }
+
+    /** @return array<string, array{string, string}> the merged-away grupo's URL => where it moved to */
+    public static function grupoFusionado(): array
+    {
+        return [
+            'la página' => ['/582399/', '/582317/'],
+            'la red' => ['/582399/1/', '/582317/1/'],
+            'la dispersión' => ['/582399/2/', '/582317/2/'],
+        ];
+    }
+
+    #[DataProvider('grupoFusionado')]
+    public function testAMergedGroupRedirectsToTheOneThatStayed(string $vieja, string $nueva): void
+    {
+        $respuesta = $this->pedir(self::GENEALOGIA, $vieja);
+
+        $this->assertSame(301, $respuesta['status']);
+        $this->assertSame([$nueva], $respuesta['headers']['location']);
+    }
+
+    public function testAGroupThatNeverExistedIsStillA404(): void
+    {
+        $this->assertSame(404, $this->pedir(self::GENEALOGIA, '/582398/')['status']);
     }
 
     /** The owner's pages do depend on who asks, so a shared cache must not keep them. */
