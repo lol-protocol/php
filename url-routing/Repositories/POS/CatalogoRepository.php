@@ -93,15 +93,58 @@ final class CatalogoRepository extends Repository
         return $this->db->fetchAll('SELECT id, nombre FROM grupos WHERE padre_id = ? ORDER BY nombre', [$id]);
     }
 
-    /** @return list<array> products in the category or any of its direct subcategories */
-    public function productosDeGrupo(int $id): array
+    /**
+     * Products in the category or any of its direct subcategories, narrowed by each filter given: an atributo
+     * and/or an etiqueta the product has.
+     *
+     * @param array<string, int|string> $filtros type (atributo, etiqueta) => id
+     * @return list<array>
+     */
+    public function productosDeGrupo(int $id, array $filtros = []): array
     {
+        $donde = '';
+        $params = [true, $id, $id];
+        foreach ($filtros as $tipo => $filtro) {
+            $donde .= match ($tipo) {
+                'atributo' => ' AND EXISTS (SELECT 1 FROM producto_atributos f WHERE f.producto_id = p.id AND f.atributo_id = ?)',
+                'etiqueta' => ' AND EXISTS (SELECT 1 FROM producto_etiquetas f WHERE f.producto_id = p.id AND f.etiqueta_id = ?)',
+                default => throw new \InvalidArgumentException("Not a filter of a category: {$tipo}"),
+            };
+            $params[] = (int)$filtro;
+        }
+
         return $this->db->fetchAll(
             self::PRODUCTO . 'WHERE p.activo = ?
-                AND (p.grupo_id = ? OR p.grupo_id IN (SELECT id FROM grupos WHERE padre_id = ?))
+                AND (p.grupo_id = ? OR p.grupo_id IN (SELECT id FROM grupos WHERE padre_id = ?))' . $donde . '
               ORDER BY p.nombre, p.id',
-            [true, $id, $id]
+            $params
         );
+    }
+
+    /**
+     * The filters worth offering in a category: the atributos and etiquetas that some of its active products have
+     * (the same products productosDeGrupo() lists), so no filter leads to an empty page.
+     *
+     * @return array{atributo: list<array<string, mixed>>, etiqueta: list<array<string, mixed>>}
+     */
+    public function filtrosDeGrupo(int $id): array
+    {
+        $deLaCategoria = 'p.activo = ? AND (p.grupo_id = ? OR p.grupo_id IN (SELECT id FROM grupos WHERE padre_id = ?))';
+
+        return [
+            'atributo' => $this->db->fetchAll(
+                "SELECT DISTINCT a.id, a.tipo, a.nombre FROM atributos a
+                   JOIN producto_atributos f ON f.atributo_id = a.id JOIN productos p ON p.id = f.producto_id
+                  WHERE {$deLaCategoria} ORDER BY a.tipo, a.nombre, a.id",
+                [true, $id, $id]
+            ),
+            'etiqueta' => $this->db->fetchAll(
+                "SELECT DISTINCT e.id, e.nombre FROM etiquetas e
+                   JOIN producto_etiquetas f ON f.etiqueta_id = e.id JOIN productos p ON p.id = f.producto_id
+                  WHERE {$deLaCategoria} ORDER BY e.nombre, e.id",
+                [true, $id, $id]
+            ),
+        ];
     }
 
     /**

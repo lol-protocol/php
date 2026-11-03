@@ -213,7 +213,8 @@ class Router
         }
 
         // An id whose check digit does not add up was mistyped or invented: a 404 that needs no query.
-        if (isset($match['params']['id']) && $this->digitoNoCoincide((string)$match['params']['id'])) {
+        if (isset($match['params']['id'])
+            && array_filter([(string)$match['params']['id'], ...array_map('strval', $match['params']['filtros'] ?? [])], fn(string $id): bool => $this->digitoNoCoincide($id)) !== []) {
             return $this->handleNotFound();
         }
 
@@ -302,8 +303,15 @@ class Router
             if ($entrada === null) {
                 return $this->pistaDeLargo($primero, $porLargo);
             }
-            if ($this->digitoNoCoincide($primero)) {
-                return 'El último dígito de un id es de verificación y este no coincide: el id está mal copiado o mal escrito.';
+            // The id, and the filters after it when this type takes them (they are ids too).
+            $ids = [$primero];
+            if (($entrada['filtros'] ?? []) !== []) {
+                $ids = array_merge($ids, array_filter(array_slice($this->segments, 1), static fn(string $s): bool => ctype_digit($s) && strlen($s) >= 2));
+            }
+            foreach ($ids as $id) {
+                if ($this->digitoNoCoincide($id)) {
+                    return 'El último dígito de un id es de verificación y este no coincide: el id está mal copiado o mal escrito.';
+                }
             }
 
             $acciones = $entrada['actions'] ?? [];

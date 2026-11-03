@@ -21,6 +21,23 @@ class ConfigValidator
                 if (!isset($entry['type']) || !isset($entry['controller'])) {
                     throw new \InvalidArgumentException("Invalid by_length entry at length {$length}");
                 }
+                if (isset($entry['filtros'])) {
+                    $tipos = array_column($config['by_length'], 'type');
+                    if (!is_array($entry['filtros']) || $entry['filtros'] === [] || count(array_unique($entry['filtros'])) !== count($entry['filtros'])) {
+                        throw new \InvalidArgumentException("by_length entry at length {$length}: filtros must be a list of distinct types");
+                    }
+                    foreach ($entry['filtros'] as $filtro) {
+                        if (!in_array($filtro, $tipos, true) || $filtro === $entry['type']) {
+                            throw new \InvalidArgumentException("by_length entry at length {$length}: filtro '{$filtro}' is not another type of the site");
+                        }
+                    }
+                    // A filter is told from an action by its width: it needs 2 or more digits.
+                    foreach ($config['by_length'] as $otroLargo => $otra) {
+                        if (in_array($otra['type'], $entry['filtros'], true) && $otroLargo < 2) {
+                            throw new \InvalidArgumentException("by_length entry at length {$length}: filtro '{$otra['type']}' has 1 digit, which is an action");
+                        }
+                    }
+                }
                 if (isset($entry['verificador']) && !is_bool($entry['verificador'])) {
                     throw new \InvalidArgumentException("by_length entry at length {$length}: verificador must be true or false");
                 }

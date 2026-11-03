@@ -154,6 +154,14 @@ function enlace(string $tipo, int|string $id): string
     return ServiceLocator::getInstance()->getUrlHelper()->enlace($tipo, $id);
 }
 
+/**
+ * @param array<string, int|string> $filtros type => id
+ */
+function filtrado(string $tipo, int|string $id, array $filtros): string
+{
+    return ServiceLocator::getInstance()->getUrlHelper()->filtrado($tipo, $id, $filtros);
+}
+
 function accion(string $tipo, int|string $id, int|string $codigo): string
 {
     return ServiceLocator::getInstance()->getUrlHelper()->accion($tipo, $id, $codigo);

@@ -62,6 +62,9 @@ return [
             'type' => 'grupo',
             'controller' => 'POS\GrupoController',
             'actions' => [],
+            // /1001/48213/ is the category 1001 filtered by the atributo 48213 (a second segment of 2 or more digits is
+            // a filter, the entity its width names; 1 digit stays an action). In this order: shorter width first.
+            'filtros' => ['atributo', 'etiqueta'],
         ],
     ],
 
