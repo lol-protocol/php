@@ -26,6 +26,17 @@
     'Vassago'
     >>> zodiaco.cualidades_de("angel", 3, "es"), zodiaco.cualidades_de("demonio", 1, "en")
     ('Construcción, protección, nobleza', 'Invisibility, wisdom')
+    >>> c = zodiaco.arbol_celta(datetime.date(1990, 4, 3))
+    >>> c["mes"]["ogham"], c["arbol"]["nombres"]["es"], c["arbol"]["cientifico"]
+    ('Fearn', 'aliso', 'Alnus glutinosa')
+    >>> h = zodiaco.arbol_de_fecha(datetime.date(1990, 4, 3))
+    >>> h["arbol"]["nombres"]["es"], h["tramo"]
+    ('serbal', [[4, 1], [4, 10]])
+    >>> n = zodiaco.nakshatra_de_instante(datetime.datetime(1992, 4, 12, tzinfo=datetime.timezone.utc))
+    >>> n["nakshatra"]["nombre"], n["nakshatra"]["arbol"]
+    ('Ashlesha', 'Nagkesar')
+    >>> zodiaco.rasgos_de("horoscopo", "olivo", "es")
+    'Equilibrio, sabiduría, paz'
 
 Hay un port a PHP en php/ que da las mismas respuestas (datos/vectores.json las fija).
 
@@ -34,6 +45,7 @@ Las funciones devuelven los diccionarios de los datos tal cual (con nombres y de
 """
 import datetime
 import json
+import math
 import re
 from functools import lru_cache
 from pathlib import Path
@@ -41,6 +53,7 @@ from pathlib import Path
 DATOS = Path(__file__).resolve().parent / "datos" / "signos.json"
 ANIO_NUEVO = Path(__file__).resolve().parent / "datos" / "anio-nuevo-lunar.json"
 ESPIRITUS = Path(__file__).resolve().parent / "datos" / "espiritus.json"
+ARBOLES = Path(__file__).resolve().parent / "datos" / "arboles.json"
 
 SISTEMAS = ("tropical", "sideral")
 
@@ -57,6 +70,11 @@ CHOROS = ("serafines", "querubines", "tronos", "dominaciones", "virtudes", "pote
           "arcangeles", "angeles")
 TIPOS_DE_ESPIRITU = ("angel", "demonio")
 RANGOS = ("rey", "duque", "principe", "marques", "conde", "presidente", "caballero")
+SISTEMAS_DE_ARBOLES = ("celta", "horoscopo", "nakshatra")
+
+# Ayanamsa de Lahiri (la distancia entre el zodiaco tropical y el sideral): 23°51′11″ en J2000.0 y unos 50,29″ al año.
+_AYANAMSA_J2000 = 23.85306
+_AYANAMSA_POR_ANIO = 50.29 / 3600
 
 _COMPLEMENTARIOS = {frozenset({"fuego", "aire"}), frozenset({"tierra", "agua"})}
 
@@ -97,6 +115,13 @@ def revision(idioma, datos=None):
 def cargar_espiritus():
     """Lee datos/espiritus.json una sola vez: los 72 ángeles y los 72 demonios, con sus cualidades."""
     with ESPIRITUS.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+@lru_cache(maxsize=1)
+def cargar_arboles():
+    """Lee datos/arboles.json una sola vez: el calendario celta, el horóscopo de los árboles y los de los nakshatras."""
+    with ARBOLES.open(encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -442,6 +467,135 @@ def cualidades_de(tipo, numero, idioma):
     if idioma not in esp["terminos"]["separador"]:
         raise ValueError(f"idioma desconocido: {idioma!r}")
     entrada = esp["angeles" if tipo == "angel" else "demonios"][numero - 1]
-    texto = esp["terminos"]["separador"][idioma].join(esp["cualidades"][c][idioma] for c in entrada["cualidades"])
-    primera = "İ" if idioma == "tr" and texto[0] == "i" else texto[0].upper()  # en turco, i → İ
+    return _frase(entrada["cualidades"], idioma, [esp["cualidades"]], esp["terminos"]["separador"])
+
+
+def _frase(claves, idioma, glosarios, separador):
+    """Las claves de un glosario dichas en un idioma y unidas con su separador, con la primera letra en mayúscula."""
+    return mayuscula_inicial(separador[idioma].join(next(g[c][idioma] for g in glosarios if c in g) for c in claves), idioma)
+
+
+def mayuscula_inicial(texto, idioma):
+    """El texto con la primera letra en mayúscula; en turco, la i pasa a İ."""
+    primera = "İ" if idioma == "tr" and texto[0] == "i" else texto[0].upper()
     return primera + texto[1:]
+
+
+# --- Los árboles: el calendario celta, el horóscopo de los árboles y los árboles de los 27 nakshatras ---
+# Tres sistemas distintos que no vienen del mismo sitio ni son antiguos los dos primeros (ver el README).
+
+def _arbol(id_arbol):
+    return {"id": id_arbol, **cargar_arboles()["arboles"][id_arbol]}
+
+
+def arbol_celta(fecha):
+    """El mes del calendario celta de los árboles (el de Robert Graves, 1948) al que pertenece una fecha.
+
+    Devuelve {"mes": …, "arbol": …}: el mes de los datos (con su letra ogham, sus fechas y sus rasgos) y el árbol
+    ({"id", "cientifico", "nombres"}). Son 13 meses de 28 días; el 23 de diciembre no pertenece a ninguno
+    (es el «día del año») y devuelve None.
+    """
+    if not isinstance(fecha, datetime.date):
+        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    clave = (fecha.month, fecha.day)
+    celta = cargar_arboles()["calendario_celta"]
+    if list(clave) == celta["dia_sin_arbol"]:
+        return None
+    for mes in celta["meses"]:
+        if _en_rango(clave, mes["desde"], mes["hasta"]):
+            return {"mes": mes, "arbol": _arbol(mes["arbol"])}
+    raise LookupError(f"ningún mes celta cubre el {fecha.day:02d}/{fecha.month:02d}")
+
+
+def arbol_de_fecha(fecha):
+    """El árbol del horóscopo de los árboles (el «druídico» o «galo», popular y de creación moderna) de una fecha.
+
+    Devuelve {"arbol": …, "tramo": [[mes, día], [mes, día]], "rasgos": […]}: el árbol, el tramo de fechas que
+    contiene a `fecha` (un árbol tiene uno, dos o tres) y las claves de sus rasgos. Cubre todos los días del año.
+    """
+    if not isinstance(fecha, datetime.date):
+        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    clave = (fecha.month, fecha.day)
+    for entrada in cargar_arboles()["horoscopo"]:
+        for desde, hasta in entrada["tramos"]:
+            if _en_rango(clave, desde, hasta):
+                return {"arbol": _arbol(entrada["arbol"]), "tramo": [desde, hasta], "rasgos": entrada["rasgos"]}
+    raise LookupError(f"ningún árbol cubre el {fecha.day:02d}/{fecha.month:02d}")
+
+
+def _dia_juliano(instante):
+    if not isinstance(instante, datetime.date):
+        raise TypeError(f"instante debe ser datetime.date o datetime.datetime, no {type(instante).__name__}")
+    if not isinstance(instante, datetime.datetime):
+        instante = datetime.datetime(instante.year, instante.month, instante.day, 12, tzinfo=datetime.timezone.utc)
+    elif instante.tzinfo is None:
+        instante = instante.replace(tzinfo=datetime.timezone.utc)
+    return instante.timestamp() / 86400 + 2440587.5
+
+
+# Términos principales de la longitud de la Luna (Meeus, «Astronomical Algorithms», cap. 47):
+# (D, M, M', F, coeficiente en millonésimas de grado). D es la elongación media; M y M', las anomalías medias del
+# Sol y de la Luna; F, el argumento de latitud.
+_TERMINOS_LUNARES = (
+    (0, 0, 1, 0, 6288774), (2, 0, -1, 0, 1274027), (2, 0, 0, 0, 658314), (0, 0, 2, 0, 213618),
+    (0, 1, 0, 0, -185116), (0, 0, 0, 2, -114332), (2, 0, -2, 0, 58793), (2, -1, -1, 0, 57066),
+    (2, 0, 1, 0, 53322), (2, -1, 0, 0, 45758), (0, 1, -1, 0, -40923), (1, 0, 0, 0, -34720),
+    (0, 1, 1, 0, -30383), (2, 0, 0, -2, 15327), (0, 0, 1, 2, -12528), (0, 0, 1, -2, 10980),
+    (4, 0, -1, 0, 10675), (0, 0, 3, 0, 10034), (4, 0, -2, 0, 8548), (2, 1, -1, 0, -7888),
+    (2, 1, 0, 0, -6766), (1, 0, -1, 0, -5163), (1, 1, 0, 0, 4987), (2, -1, 1, 0, 4036),
+    (2, 0, 2, 0, 3994), (4, 0, 0, 0, 3861), (2, 0, -3, 0, 3665), (0, 1, -2, 0, -2689),
+    (2, 0, -1, 2, -2602), (2, -1, -2, 0, 2390), (1, 0, 1, 0, -2348), (2, -2, 0, 0, 2236),
+)
+
+
+def longitud_de_la_luna(instante):
+    """La longitud eclíptica tropical de la Luna, en grados (0 a 360), en un instante.
+
+    Es la serie abreviada de Meeus (32 términos): comparada con una efeméride real entre 1900 y 2100, no se
+    aleja más de 0,05° (unos 4 minutos de movimiento de la Luna). Un `date` se toma a las 12:00 UTC y un
+    `datetime` sin huso, como UTC. No corrige la diferencia entre el tiempo universal y el terrestre (≈ 1 minuto).
+    """
+    t = (_dia_juliano(instante) - 2451545.0) / 36525.0
+    media = 218.3164477 + 481267.88123421 * t - 0.0015786 * t * t
+    d = math.radians(297.8501921 + 445267.1114034 * t - 0.0018819 * t * t)
+    m = math.radians(357.5291092 + 35999.0502909 * t - 0.0001536 * t * t)
+    mp = math.radians(134.9633964 + 477198.8675055 * t + 0.0087414 * t * t)
+    f = math.radians(93.2720950 + 483202.0175233 * t - 0.0036539 * t * t)
+    e = 1 - 0.002516 * t - 0.0000074 * t * t
+    suma = sum(c * e ** abs(cm) * math.sin(cd * d + cm * m + cmp_ * mp + cf * f) for cd, cm, cmp_, cf, c in _TERMINOS_LUNARES)
+    a1 = math.radians(119.75 + 131.849 * t)
+    a2 = math.radians(53.09 + 479264.290 * t)
+    suma += 3958 * math.sin(a1) + 1962 * math.sin(math.radians(media) - f) + 318 * math.sin(a2)
+    return (media + suma / 1e6) % 360.0
+
+
+def nakshatra_de_instante(instante):
+    """El nakshatra (mansión lunar) por el que pasa la Luna en un instante, y su árbol (zodiaco sideral, Lahiri).
+
+    Devuelve {"nakshatra": …, "longitud_sideral": grados}. La Luna cambia de nakshatra casi cada día, así que
+    **la fecha no basta**: con un `date` se usa el mediodía UTC y puede salir el nakshatra del día anterior o
+    del siguiente. Para una persona, hace falta el instante del nacimiento (con su huso horario).
+    """
+    jd = _dia_juliano(instante)
+    sideral = (longitud_de_la_luna(instante) - (_AYANAMSA_J2000 + (jd - 2451545.0) / 365.25 * _AYANAMSA_POR_ANIO)) % 360.0
+    return {"nakshatra": cargar_arboles()["nakshatras"][int(sideral // (360 / 27))], "longitud_sideral": sideral}
+
+
+def rasgos_de(sistema, clave, idioma):
+    """Los rasgos de un mes celta, un árbol del horóscopo o un nakshatra en un idioma, en una frase.
+
+    sistema es "celta" (clave: el id del mes, «beth»), "horoscopo" (clave: el id del árbol, «olivo») o
+    "nakshatra" (clave: su id, «ashlesha»). Salen de los glosarios de arboles.json y de espiritus.json.
+    """
+    if sistema not in SISTEMAS_DE_ARBOLES:
+        raise ValueError(f"sistema debe ser uno de {SISTEMAS_DE_ARBOLES}, no {sistema!r}")
+    arb, esp = cargar_arboles(), cargar_espiritus()
+    if idioma not in arb["terminos"]["separador"]:
+        raise ValueError(f"idioma desconocido: {idioma!r}")
+    entradas = (arb["calendario_celta"]["meses"] if sistema == "celta" else arb["horoscopo"] if sistema == "horoscopo"
+                else arb["nakshatras"])
+    campo = "arbol" if sistema == "horoscopo" else "id"
+    for e in entradas:
+        if e[campo] == clave:
+            return _frase(e["rasgos"], idioma, [arb["rasgos"], esp["cualidades"]], arb["terminos"]["separador"])
+    raise ValueError(f"{sistema}: no hay ninguno con la clave {clave!r}")

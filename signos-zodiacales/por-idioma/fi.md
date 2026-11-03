@@ -405,3 +405,89 @@ Goetiasta (1600-luku), lumouskirjasta, joka ei kuulu Raamattuun. Jokainen henki 
 | 70 | Seere | Prinssi | 26 | 06/03 – 10/03 | Nopeat siirtymät, varkaus, kadonneet esineet |
 | 71 | Dantalion | Herttua | 36 | 11/03 – 15/03 | Ajatukset, tieteet, rakkaus |
 | 72 | Andromalius | Kreivi | 36 | 16/03 – 20/03 | Kadonneet esineet, aarteet, varkaat |
+
+## Keltalainen puukalenteri
+
+Kalenteri, jossa on 13 kuukautta, kukin 28 päivää ja yksi puu kutakin (23. joulukuuta on erillään). Runoilija Robert Graves keksi sen vuonna 1948 ogam-aakkostosta; se ei ole muinainen keltti-kalenteri. Vain kulttuurinen viite.
+
+| # | Puu | Tieteellinen nimi | Ogam | Päivät | Piirteet |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Koivu | *Betula pendula* | Beth | 24/12 – 20/01 | Alut, puhtaus, uudestisyntyminen |
+| 2 | Pihlaja | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Suojelu, intuitio, havaintokyky |
+| 3 | Saarni | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Yhtenäisyys, viestintä, luominen |
+| 4 | Leppä | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Rohkeus, erottelukyky, vakaus |
+| 5 | Paju | *Salix alba* | Saille | 15/04 – 12/05 | Intuitio, unet, parantaminen |
+| 6 | Orapihlaja | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Hedelmällisyys, kärsivällisyys, suojelu |
+| 7 | Tammi | *Quercus robur* | Duir | 10/06 – 07/07 | Voima, kestävyys, jalous |
+| 8 | Marjakuusi | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Tasapaino, rohkeus, oikeudenmukaisuus |
+| 9 | Pähkinäpensas | *Corylus avellana* | Coll | 05/08 – 01/09 | Viisaus, inspiraatio, opiskelu |
+| 10 | Viiniköynnös | *Vitis vinifera* | Muin | 02/09 – 29/09 | Ilo, yltäkylläisyys, inspiraatio |
+| 11 | Muratti | *Hedera helix* | Gort | 30/09 – 27/10 | Uskollisuus, sinnikkyys, suojelu |
+| 12 | Ruoko | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Totuus, järjestys, tahto |
+| 13 | Seljakuusi | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Muodonmuutos, täyttymys, uudestisyntyminen |
+
+23. joulukuuta jää 13 kuukauden ulkopuolelle: se on «vuoden päivä» ilman puuta.
+
+## Puuhoroskooppi
+
+Suosittu 21 puun horoskooppi, jota esitetään druidien tai gallialaisten perinteenä, mutta joka on nykyaikainen luomus. Päivämäärät ja puut vaihtelevat lähteen mukaan. Vain kulttuurinen viite.
+
+| Puu | Tieteellinen nimi | Päivät | Piirteet |
+| --- | --- | --- | --- |
+| Pihta | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Salaperäisyys, lojaalius, eleganssi |
+| Jalava | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Jalous, vakaus, johtajuus |
+| Sypressi | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Uskollisuus, sopeutumiskyky, kestävyys |
+| Poppeli | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Herkkyys, sopeutumiskyky, epävarmuus |
+| Setri | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Itseluottamus, optimismi, rohkeus |
+| Mänty | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Kuri, järjestys, sinnikkyys |
+| Itkupaju | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Herkkyys, intuitio, raskasmielisyys |
+| Lehmus | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Tyyneys, ystävyys, sopusointu |
+| Tammi | *Quercus robur* | 21/03 – 21/03 | Voima, rohkeus, itsenäisyys |
+| Pähkinäpensas | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Uteliaisuus, sukkeluus, omaperäisyys |
+| Pihlaja | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Herkkyys, viehätys, sopusointu |
+| Vaahtera | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Itsenäisyys, mielikuvitus, omaperäisyys |
+| Saksanpähkinäpuu | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Voima, intohimo, kunnianhimo |
+| Kastanja | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Oikeudenmukaisuus, rehellisyys, anteliaisuus |
+| Saarni | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Kunnianhimo, seikkailu, energia |
+| Valkoleppä | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Hienotunteisuus, käytännöllisyys, eleganssi |
+| Viikunapuu | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Aistillisuus, sosiaalisuus, yltäkylläisyys |
+| Koivu | *Betula pendula* | 24/06 – 24/06 | Eleganssi, hienotunteisuus, inspiraatio |
+| Omenapuu | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Rakkaus, viehätys, anteliaisuus |
+| Oliivipuu | *Olea europaea* | 23/09 – 23/09 | Tasapaino, viisaus, rauha |
+| Pyökki | *Fagus sylvatica* | 22/12 – 22/12 | Lahjakkuus, luominen, sinnikkyys |
+
+## 27 nakshatran puut
+
+Vedisessä astrologiassa jokaisella 27 kuuasunnolla (nakshatralla) on oma puunsa. Se riippuu Kuun asemasta syntymähetkellä, ei päivämäärästä, ja luettelot vaihtelevat alueittain. Vain kulttuurinen viite.
+
+| # | Nakshatra | Puu | Tieteellinen nimi | Piirteet |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Nopeus, aloitteellisuus, parantaminen |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Kestävyys, intohimo, muodonmuutos |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Terävyys, tuli, puhtaus |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Kauneus, hedelmällisyys, yltäkylläisyys |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Uteliaisuus, etsintä, ystävällisyys |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Tunteet, muodonmuutos, älykkyys |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Uudestisyntyminen, optimismi, koti |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Ravinto, suojelu, omistautuminen |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuitio, salaperäisyys, ovela viekkaus |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Suku, arvovalta, jalous |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Nautinto, luovuus, lepo |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Ystävyys, anteliaisuus, tuki |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Taito, sukkeluus, parantaminen |
+| 14 | Chitra | Bel | *Aegle marmelos* | Kauneus, luominen, loisto |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Itsenäisyys, joustavuus, kauppa |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Päättäväisyys, kunnianhimo, sinnikkyys |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Omistautuminen, ystävyys, yhteistyö |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Johtajuus, suojelu, rohkeus |
+| 19 | Mula | Sal \* | *Shorea robusta* | Juuret, tutkimus, muodonmuutos |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Voitto, innostus, puhtaus |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Voitto, eheys, sinnikkyys |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Kuuntelu, oppiminen, viestintä |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Rikkaus, musiikki, kunnianhimo |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Parantaminen, salaisuudet, yksinäisyys |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Intohimo, muodonmuutos, idealismi |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Syvällisyys, viisaus, myötätunto |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Hellyys, suojelu, myötätunto |
+
+\* Lähteet ovat eri mieltä tämän nakshatran puusta.

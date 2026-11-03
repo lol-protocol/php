@@ -405,3 +405,89 @@
 | 70 | Seere | 왕자 | 26 | 06/03 – 10/03 | 빠른 이동, 도둑질, 잃어버린 물건 |
 | 71 | Dantalion | 공작 | 36 | 11/03 – 15/03 | 생각, 학문, 사랑 |
 | 72 | Andromalius | 백작 | 36 | 16/03 – 20/03 | 잃어버린 물건, 보물, 도둑 |
+
+## 켈트 나무 달력
+
+28일씩 13개월로 이루어진 달력으로, 달마다 나무 하나가 대응합니다(12월 23일은 따로 둡니다). 시인 로버트 그레이브스가 1948년에 오검 문자를 바탕으로 만든 것이며, 고대 켈트 달력이 아닙니다. 문화적 참고 자료일 뿐입니다.
+
+| # | 나무 | 학명 | 오검 문자 | 기간 | 특징 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 자작나무 | *Betula pendula* | Beth | 24/12 – 20/01 | 시작, 순결, 부활 |
+| 2 | 마가목 | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | 보호, 직관, 인지 |
+| 3 | 물푸레나무 | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | 통합, 소통, 창조 |
+| 4 | 오리나무 | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | 용기, 분별력, 안정 |
+| 5 | 버드나무 | *Salix alba* | Saille | 15/04 – 12/05 | 직관, 꿈, 치유 |
+| 6 | 산사나무 | *Crataegus monogyna* | Uath | 13/05 – 09/06 | 다산, 인내, 보호 |
+| 7 | 참나무 | *Quercus robur* | Duir | 10/06 – 07/07 | 힘, 지구력, 고귀함 |
+| 8 | 호랑가시나무 | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | 균형, 용기, 정의 |
+| 9 | 개암나무 | *Corylus avellana* | Coll | 05/08 – 01/09 | 지혜, 영감, 학업 |
+| 10 | 포도나무 | *Vitis vinifera* | Muin | 02/09 – 29/09 | 기쁨, 풍요, 영감 |
+| 11 | 담쟁이덩굴 | *Hedera helix* | Gort | 30/09 – 27/10 | 충실, 끈기, 보호 |
+| 12 | 갈대 | *Phragmites australis* | Ngetal | 28/10 – 24/11 | 진실, 질서, 의지 |
+| 13 | 딱총나무 | *Sambucus nigra* | Ruis | 25/11 – 22/12 | 변모, 완성, 부활 |
+
+12월 23일은 13개월에 들지 않습니다. '한 해의 날'로, 나무가 없습니다.
+
+## 나무 별자리
+
+21그루의 나무로 이루어진 대중적인 별자리로, 드루이드나 갈리아의 전통이라고 소개되지만 현대에 만들어진 것입니다. 날짜와 나무는 자료마다 다릅니다. 문화적 참고 자료일 뿐입니다.
+
+| 나무 | 학명 | 기간 | 특징 |
+| --- | --- | --- | --- |
+| 전나무 | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | 신비, 충성, 우아함 |
+| 느릅나무 | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | 고귀함, 안정, 리더십 |
+| 사이프러스 | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | 충실, 적응력, 지구력 |
+| 포플러 | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | 감수성, 적응력, 불확실성 |
+| 백향목 | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | 자신감, 낙관, 대담함 |
+| 소나무 | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | 규율, 질서, 끈기 |
+| 수양버들 | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | 감수성, 직관, 우수 |
+| 피나무 | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | 평온, 우정, 조화 |
+| 참나무 | *Quercus robur* | 21/03 – 21/03 | 힘, 용기, 독립심 |
+| 개암나무 | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | 호기심, 재치, 독창성 |
+| 마가목 | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | 감수성, 매력, 조화 |
+| 단풍나무 | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | 독립심, 상상력, 독창성 |
+| 호두나무 | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | 힘, 열정적임, 야망 |
+| 밤나무 | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | 정의, 정직, 관대함 |
+| 물푸레나무 | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | 야망, 모험, 에너지 |
+| 서어나무 | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | 신중함, 실용성, 우아함 |
+| 무화과나무 | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | 관능, 사교성, 풍요 |
+| 자작나무 | *Betula pendula* | 24/06 – 24/06 | 우아함, 신중함, 영감 |
+| 사과나무 | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | 사랑, 매력, 관대함 |
+| 올리브나무 | *Olea europaea* | 23/09 – 23/09 | 균형, 지혜, 평화 |
+| 너도밤나무 | *Fagus sylvatica* | 22/12 – 22/12 | 재능, 창조, 끈기 |
+
+## 27낙샤트라의 나무
+
+베다 점성술에서는 27개의 달의 별자리(낙샤트라)마다 각자의 나무가 있습니다. 날짜가 아니라 태어날 때 달이 있던 위치로 정해지며, 목록은 지역마다 다릅니다. 문화적 참고 자료일 뿐입니다.
+
+| # | 낙샤트라 | 나무 | 학명 | 특징 |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | 민첩함, 주도성, 치유 |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | 지구력, 열정적임, 변모 |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | 예리함, 불, 순결 |
+| 4 | Rohini | Jamun | *Syzygium cumini* | 아름다움, 다산, 풍요 |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | 호기심, 탐색, 친절 |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | 감정, 변모, 지성 |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | 부활, 낙관, 가정 |
+| 8 | Pushya | Peepal | *Ficus religiosa* | 양육, 보호, 헌신 |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | 직관, 신비, 교활함 |
+| 10 | Magha | Baniano | *Ficus benghalensis* | 가문, 권위, 고귀함 |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | 즐거움, 창의성, 휴식 |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | 우정, 관대함, 지지 |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | 솜씨, 재치, 치유 |
+| 14 | Chitra | Bel | *Aegle marmelos* | 아름다움, 창조, 광채 |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | 독립심, 유연성, 무역 |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | 결단력, 야망, 끈기 |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | 헌신, 우정, 협력 |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | 리더십, 보호, 용기 |
+| 19 | Mula | Sal \* | *Shorea robusta* | 뿌리, 탐구, 변모 |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | 승리, 열정, 순결 |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | 승리, 청렴, 끈기 |
+| 22 | Shravana | Madar | *Calotropis gigantea* | 경청, 배움, 소통 |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | 부, 음악, 야망 |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | 치유, 비밀, 고독 |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | 열정적임, 변모, 이상주의 |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | 깊이, 지혜, 연민 |
+| 27 | Revati | Mahua | *Madhuca longifolia* | 다정함, 보호, 연민 |
+
+\* 이 낙샤트라의 나무는 자료마다 다릅니다.

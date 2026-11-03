@@ -405,3 +405,89 @@ De la Goétie (XVIIe siècle), un grimoire qui ne fait pas partie de la Bible. C
 | 70 | Seere | Prince | 26 | 06/03 – 10/03 | Déplacements rapides, vol, objets perdus |
 | 71 | Dantalion | Duc | 36 | 11/03 – 15/03 | Pensées, sciences, amour |
 | 72 | Andromalius | Comte | 36 | 16/03 – 20/03 | Objets perdus, trésors, voleurs |
+
+## Calendrier celtique des arbres
+
+Calendrier de 13 mois de 28 jours, un par arbre (le 23 décembre à part). Il a été inventé par le poète Robert Graves en 1948 à partir de l'alphabet ogham ; ce n'est pas un calendrier celtique ancien. Simple référence culturelle.
+
+| # | Arbre | Nom scientifique | Ogham | Dates | Traits |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bouleau | *Betula pendula* | Beth | 24/12 – 20/01 | Commencements, pureté, renaissance |
+| 2 | Sorbier | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Protection, intuition, perception |
+| 3 | Frêne | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Unité, communication, création |
+| 4 | Aulne | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Courage, discernement, stabilité |
+| 5 | Saule | *Salix alba* | Saille | 15/04 – 12/05 | Intuition, rêves, guérison |
+| 6 | Aubépine | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Fécondité, patience, protection |
+| 7 | Chêne | *Quercus robur* | Duir | 10/06 – 07/07 | Force, endurance, noblesse |
+| 8 | Houx | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Équilibre, courage, justice |
+| 9 | Noisetier | *Corylus avellana* | Coll | 05/08 – 01/09 | Sagesse, inspiration, étude |
+| 10 | Vigne | *Vitis vinifera* | Muin | 02/09 – 29/09 | Joie, abondance, inspiration |
+| 11 | Lierre | *Hedera helix* | Gort | 30/09 – 27/10 | Fidélité, persévérance, protection |
+| 12 | Roseau | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Vérité, ordre, volonté |
+| 13 | Sureau | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Transformation, aboutissement, renaissance |
+
+Le 23 décembre est en dehors des 13 mois : c'est le « jour de l'année », sans arbre.
+
+## Horoscope des arbres
+
+Horoscope populaire de 21 arbres, présenté comme druidique ou gaulois mais de création moderne. Les dates et les arbres varient selon les sources. Simple référence culturelle.
+
+| Arbre | Nom scientifique | Dates | Traits |
+| --- | --- | --- | --- |
+| Sapin | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Mystère, loyauté, élégance |
+| Orme | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Noblesse, stabilité, leadership |
+| Cyprès | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Fidélité, adaptabilité, endurance |
+| Peuplier | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Sensibilité, adaptabilité, incertitude |
+| Cèdre | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Confiance, optimisme, audace |
+| Pin | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Discipline, ordre, persévérance |
+| Saule pleureur | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Sensibilité, intuition, mélancolie |
+| Tilleul | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Sérénité, amitié, harmonie |
+| Chêne | *Quercus robur* | 21/03 – 21/03 | Force, courage, indépendance |
+| Noisetier | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Curiosité, esprit, originalité |
+| Sorbier | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Sensibilité, charme, harmonie |
+| Érable | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Indépendance, imagination, originalité |
+| Noyer | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Force, passion, ambition |
+| Châtaignier | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Justice, honnêteté, générosité |
+| Frêne | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Ambition, aventure, énergie |
+| Charme | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Discrétion, sens pratique, élégance |
+| Figuier | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Sensualité, sociabilité, abondance |
+| Bouleau | *Betula pendula* | 24/06 – 24/06 | Élégance, discrétion, inspiration |
+| Pommier | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Amour, charme, générosité |
+| Olivier | *Olea europaea* | 23/09 – 23/09 | Équilibre, sagesse, paix |
+| Hêtre | *Fagus sylvatica* | 22/12 – 22/12 | Talent, création, persévérance |
+
+## Les arbres des 27 nakshatras
+
+En astrologie védique, chacune des 27 demeures lunaires (nakshatras) a son arbre. Il dépend de la position de la Lune à la naissance, non de la date, et les listes varient selon les régions. Simple référence culturelle.
+
+| # | Nakshatra | Arbre | Nom scientifique | Traits |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Rapidité, initiative, guérison |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Endurance, passion, transformation |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Acuité, feu, pureté |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Beauté, fécondité, abondance |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Curiosité, quête, amabilité |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Émotion, transformation, intelligence |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Renaissance, optimisme, foyer |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Nourriture, protection, dévotion |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuition, mystère, ruse |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Lignée, autorité, noblesse |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Plaisir, créativité, repos |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Amitié, générosité, soutien |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Dextérité, esprit, guérison |
+| 14 | Chitra | Bel | *Aegle marmelos* | Beauté, création, éclat |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Indépendance, flexibilité, commerce |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Détermination, ambition, persévérance |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Dévotion, amitié, coopération |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Leadership, protection, courage |
+| 19 | Mula | Sal \* | *Shorea robusta* | Racines, recherche, transformation |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Victoire, enthousiasme, pureté |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Victoire, intégrité, persévérance |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Écoute, apprentissage, communication |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Richesse, musique, ambition |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Guérison, secrets, solitude |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Passion, transformation, idéalisme |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Profondeur, sagesse, compassion |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Tendresse, protection, compassion |
+
+\* Les sources ne s'accordent pas sur l'arbre de ce nakshatra.

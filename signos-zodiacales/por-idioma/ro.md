@@ -405,3 +405,89 @@ Din Goetia (secolul al XVII-lea), un grimoriu care nu face parte din Biblie. Fie
 | 70 | Seere | Prinț | 26 | 06/03 – 10/03 | Deplasări rapide, furt, obiecte pierdute |
 | 71 | Dantalion | Duce | 36 | 11/03 – 15/03 | Gânduri, științe, dragoste |
 | 72 | Andromalius | Conte | 36 | 16/03 – 20/03 | Obiecte pierdute, comori, hoți |
+
+## Calendarul celtic al copacilor
+
+Un calendar cu 13 luni de 28 de zile, câte un copac pentru fiecare (23 decembrie stă deoparte). L-a inventat poetul Robert Graves în 1948 pornind de la alfabetul ogham; nu este un calendar celtic străvechi. Doar referință culturală.
+
+| # | Copac | Denumire științifică | Ogham | Date | Trăsături |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Mesteacăn | *Betula pendula* | Beth | 24/12 – 20/01 | Începuturi, puritate, renaștere |
+| 2 | Scoruș | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Protecție, intuiție, percepție |
+| 3 | Frasin | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Unitate, comunicare, creație |
+| 4 | Arin | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Curaj, discernământ, stabilitate |
+| 5 | Salcie | *Salix alba* | Saille | 15/04 – 12/05 | Intuiție, vise, vindecare |
+| 6 | Păducel | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Fertilitate, răbdare, protecție |
+| 7 | Stejar | *Quercus robur* | Duir | 10/06 – 07/07 | Forță, rezistență, noblețe |
+| 8 | Ilice | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Echilibru, curaj, dreptate |
+| 9 | Alun | *Corylus avellana* | Coll | 05/08 – 01/09 | Înțelepciune, inspirație, studiu |
+| 10 | Viță-de-vie | *Vitis vinifera* | Muin | 02/09 – 29/09 | Bucurie, abundență, inspirație |
+| 11 | Iederă | *Hedera helix* | Gort | 30/09 – 27/10 | Fidelitate, perseverență, protecție |
+| 12 | Stuf | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Adevăr, ordine, voință |
+| 13 | Soc | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Transformare, împlinire, renaștere |
+
+23 decembrie rămâne în afara celor 13 luni: este «ziua anului», fără copac.
+
+## Horoscopul copacilor
+
+Un horoscop popular cu 21 de copaci, prezentat ca druidic sau galic, dar de creație modernă. Datele și copacii diferă în funcție de sursă. Doar referință culturală.
+
+| Copac | Denumire științifică | Date | Trăsături |
+| --- | --- | --- | --- |
+| Brad | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Mister, loialitate, eleganță |
+| Ulm | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Noblețe, stabilitate, conducere |
+| Chiparos | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Fidelitate, adaptabilitate, rezistență |
+| Plop | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Sensibilitate, adaptabilitate, incertitudine |
+| Cedru | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Încredere, optimism, îndrăzneală |
+| Pin | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Disciplină, ordine, perseverență |
+| Salcie pletoasă | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Sensibilitate, intuiție, melancolie |
+| Tei | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Seninătate, prietenie, armonie |
+| Stejar | *Quercus robur* | 21/03 – 21/03 | Forță, curaj, independență |
+| Alun | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Curiozitate, spirit, originalitate |
+| Scoruș | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Sensibilitate, farmec, armonie |
+| Arțar | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Independență, imaginație, originalitate |
+| Nuc | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Forță, pasiune, ambiție |
+| Castan | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Dreptate, onestitate, generozitate |
+| Frasin | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Ambiție, aventură, energie |
+| Carpen | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Discreție, simț practic, eleganță |
+| Smochin | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Senzualitate, sociabilitate, abundență |
+| Mesteacăn | *Betula pendula* | 24/06 – 24/06 | Eleganță, discreție, inspirație |
+| Măr | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Dragoste, farmec, generozitate |
+| Măslin | *Olea europaea* | 23/09 – 23/09 | Echilibru, înțelepciune, pace |
+| Fag | *Fagus sylvatica* | 22/12 – 22/12 | Talent, creație, perseverență |
+
+## Copacii celor 27 de nakshatra
+
+În astrologia vedică, fiecare dintre cele 27 de conace lunare (nakshatra) are copacul său. Depinde de poziția Lunii la naștere, nu de dată, iar listele diferă în funcție de regiune. Doar referință culturală.
+
+| # | Nakshatra | Copac | Denumire științifică | Trăsături |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Rapiditate, inițiativă, vindecare |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Rezistență, pasiune, transformare |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Perspicacitate, foc, puritate |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Frumusețe, fertilitate, abundență |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Curiozitate, căutare, amabilitate |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Emoție, transformare, inteligență |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Renaștere, optimism, cămin |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Hrană, protecție, devotament |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuiție, mister, vicleșug |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Neam, autoritate, noblețe |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Plăcere, creativitate, odihnă |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Prietenie, generozitate, sprijin |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Abilitate, spirit, vindecare |
+| 14 | Chitra | Bel | *Aegle marmelos* | Frumusețe, creație, strălucire |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Independență, flexibilitate, comerț |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Hotărâre, ambiție, perseverență |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Devotament, prietenie, cooperare |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Conducere, protecție, curaj |
+| 19 | Mula | Sal \* | *Shorea robusta* | Rădăcini, cercetare, transformare |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Victorie, entuziasm, puritate |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Victorie, integritate, perseverență |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Ascultare, învățare, comunicare |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Bogăție, muzică, ambiție |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Vindecare, secrete, singurătate |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Pasiune, transformare, idealism |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Profunzime, înțelepciune, compasiune |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Tandrețe, protecție, compasiune |
+
+\* Sursele nu se potrivesc în privința copacului acestei nakshatra.

@@ -405,3 +405,89 @@ Z Goetie (17. století), grimoáru, které není součástí Bible. Každý duch
 | 70 | Seere | Princ | 26 | 06/03 – 10/03 | Rychlé přesuny, krádež, ztracené předměty |
 | 71 | Dantalion | Vévoda | 36 | 11/03 – 15/03 | Myšlenky, vědy, láska |
 | 72 | Andromalius | Hrabě | 36 | 16/03 – 20/03 | Ztracené předměty, poklady, zloději |
+
+## Keltský kalendář stromů
+
+Kalendář o 13 měsících po 28 dnech, každý patří jednomu stromu (23. prosinec stojí stranou). Vymyslel ho básník Robert Graves roku 1948 podle písma ogam; není to starověký keltský kalendář. Pouze kulturní odkaz.
+
+| # | Strom | Odborný název | Ogam | Data | Rysy |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bříza | *Betula pendula* | Beth | 24/12 – 20/01 | Začátky, čistota, znovuzrození |
+| 2 | Jeřáb | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Ochrana, intuice, vnímání |
+| 3 | Jasan | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Jednota, komunikace, tvoření |
+| 4 | Olše | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Odvaha, rozlišování, stabilita |
+| 5 | Vrba | *Salix alba* | Saille | 15/04 – 12/05 | Intuice, sny, uzdravení |
+| 6 | Hloh | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Plodnost, trpělivost, ochrana |
+| 7 | Dub | *Quercus robur* | Duir | 10/06 – 07/07 | Síla, odolnost, ušlechtilost |
+| 8 | Cesmína | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Rovnováha, odvaha, spravedlnost |
+| 9 | Líska | *Corylus avellana* | Coll | 05/08 – 01/09 | Moudrost, inspirace, studium |
+| 10 | Réva | *Vitis vinifera* | Muin | 02/09 – 29/09 | Radost, hojnost, inspirace |
+| 11 | Břečťan | *Hedera helix* | Gort | 30/09 – 27/10 | Věrnost, vytrvalost, ochrana |
+| 12 | Rákos | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Pravda, pořádek, vůle |
+| 13 | Bez | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Proměna, završení, znovuzrození |
+
+23. prosinec leží mimo 13 měsíců: je to «den roku», bez stromu.
+
+## Horoskop stromů
+
+Oblíbený horoskop o 21 stromech, který se prezentuje jako druidský či galský, ale je moderním výmyslem. Data i stromy se podle zdroje liší. Pouze kulturní odkaz.
+
+| Strom | Odborný název | Data | Rysy |
+| --- | --- | --- | --- |
+| Jedle | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Tajemno, loajalita, elegance |
+| Jilm | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Ušlechtilost, stabilita, vedení |
+| Cypřiš | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Věrnost, přizpůsobivost, odolnost |
+| Topol | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Citlivost, přizpůsobivost, nejistota |
+| Cedr | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Sebedůvěra, optimismus, smělost |
+| Borovice | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Kázeň, pořádek, vytrvalost |
+| Vrba smuteční | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Citlivost, intuice, melancholie |
+| Lípa | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Vyrovnanost, přátelství, soulad |
+| Dub | *Quercus robur* | 21/03 – 21/03 | Síla, odvaha, nezávislost |
+| Líska | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Zvědavost, důvtip, originalita |
+| Jeřáb | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Citlivost, půvab, soulad |
+| Javor | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Nezávislost, představivost, originalita |
+| Ořešák | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Síla, vášeň, ambice |
+| Kaštan | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Spravedlnost, poctivost, štědrost |
+| Jasan | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Ambice, dobrodružství, energie |
+| Habr | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Diskrétnost, praktičnost, elegance |
+| Fíkovník | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Smyslnost, družnost, hojnost |
+| Bříza | *Betula pendula* | 24/06 – 24/06 | Elegance, diskrétnost, inspirace |
+| Jabloň | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Láska, půvab, štědrost |
+| Olivovník | *Olea europaea* | 23/09 – 23/09 | Rovnováha, moudrost, mír |
+| Buk | *Fagus sylvatica* | 22/12 – 22/12 | Nadání, tvoření, vytrvalost |
+
+## Stromy 27 nakšater
+
+Ve védské astrologii má každý z 27 měsíčních domů (nakšater) svůj strom. Závisí na poloze Měsíce při narození, nikoli na datu, a seznamy se liší podle oblasti. Pouze kulturní odkaz.
+
+| # | Nakšatra | Strom | Odborný název | Rysy |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Rychlost, iniciativa, uzdravení |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Odolnost, vášeň, proměna |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Bystrost, oheň, čistota |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Krása, plodnost, hojnost |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Zvědavost, hledání, vlídnost |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Emoce, proměna, inteligence |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Znovuzrození, optimismus, domov |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Výživa, ochrana, oddanost |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuice, tajemno, lstivost |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Rod, autorita, ušlechtilost |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Slast, kreativita, odpočinek |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Přátelství, štědrost, podpora |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Zručnost, důvtip, uzdravení |
+| 14 | Chitra | Bel | *Aegle marmelos* | Krása, tvoření, třpyt |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Nezávislost, pružnost, obchod |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Odhodlání, ambice, vytrvalost |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Oddanost, přátelství, spolupráce |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Vedení, ochrana, odvaha |
+| 19 | Mula | Sal \* | *Shorea robusta* | Kořeny, výzkum, proměna |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Vítězství, nadšení, čistota |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Vítězství, bezúhonnost, vytrvalost |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Naslouchání, učení, komunikace |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Bohatství, hudba, ambice |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Uzdravení, tajemství, samota |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Vášeň, proměna, idealismus |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Hloubka, moudrost, soucit |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Něha, ochrana, soucit |
+
+\* Zdroje se v tomto stromu nakšatry rozcházejí.

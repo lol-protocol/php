@@ -1,6 +1,6 @@
 # Signos del zodiaco y horóscopo chino
 
-Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 30 idiomas. Cada uno trae su nombre, una descripción breve y otra más larga de sus supuestas características, y sus rasgos: en el occidental, símbolo, fechas tropicales y siderales, elemento y modalidad; en el chino, rama terrestre, elemento y polaridad. `zodiaco.py` calcula el signo de una fecha y el animal y el elemento de un año. También trae los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia, con sus cualidades y el tramo del año de cada uno. Además, cada signo tiene una ilustración SVG en dos variantes: sobre cielo nocturno y transparente.
+Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 30 idiomas. Cada uno trae su nombre, una descripción breve y otra más larga de sus supuestas características, y sus rasgos: en el occidental, símbolo, fechas tropicales y siderales, elemento y modalidad; en el chino, rama terrestre, elemento y polaridad. `zodiaco.py` calcula el signo de una fecha y el animal y el elemento de un año. También trae los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia, con sus cualidades y el tramo del año de cada uno, y tres sistemas de árboles asociados a la fecha de nacimiento. Además, cada signo tiene una ilustración SVG en dos variantes: sobre cielo nocturno y transparente.
 
 > **Aviso.** Las descripciones recogen lo que la astrología y el horóscopo chino *atribuyen* a cada signo. No hay evidencia científica de que la fecha de nacimiento influya en el carácter. Las constelaciones occidentales son figuras de la tradición, no grupos de estrellas físicamente relacionados, y los animales chinos **no tienen constelaciones**: sus figuras estelares son un dibujo hecho para este proyecto.
 
@@ -13,6 +13,7 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 
 | `datos/signos.json` | La fuente de verdad: nombres, descripciones, rasgos, fechas, troncos celestes, términos traducidos y la figura de cada signo. |
 | `datos/anio-nuevo-lunar.json` | La fecha del Año Nuevo lunar de cada año, de 1900 a 2099. |
 | `datos/espiritus.json` | Los 72 ángeles y los 72 demonios: nombre, coro o rango, legiones y cualidades, más un glosario de 158 cualidades traducidas a los 30 idiomas y los textos de las tablas. |
+| `datos/arboles.json` | Tres sistemas de árboles: el calendario celta (13 meses), el horóscopo de los árboles (21) y los árboles de los 27 nakshatras, con nombres en 30 idiomas, nombre científico y rasgos. |
 | `datos/vectores.json` | Las respuestas de `zodiaco.py` a un conjunto fijo de entradas (cada día del año, cada año de 1900 a 2099, cada par de signos…), que comparten Python y PHP. Generado, no editar a mano. |
 | `CHANGELOG.md` | Historial de cambios de los datos. Su primera entrada tiene que coincidir con `version` de `datos/signos.json`. |
 | `zodiaco.py` | Consultas: `signo_occidental(fecha)`, `cuspide(fecha)`, `animal_chino(anio)`, `animal_chino_de_fecha(fecha)`, `anios_del_animal(id, desde, hasta)`, `version()` y `revision(idioma)`, entre otras (ver «Uso»). |
@@ -188,6 +189,38 @@ En PHP: `Zodiaco::angelDeFecha()`, `demonioDeFecha()`, `tramosDeEspiritus()` y `
 
 Para corregir una cualidad, edita su traducción en `cualidades`; para cambiar las de un ángel o un demonio, su lista de claves; luego `python3 generar.py`. `validar_espiritus()` exige 72 de cada uno numerados en orden, que cada clave esté en el glosario y que no sobre ninguna, los 30 idiomas en cada texto y rangos de la lista.
 
+### Los árboles
+
+`datos/arboles.json` reúne **tres sistemas distintos** que asocian árboles con la fecha de nacimiento. No vienen del mismo sitio, y **solo uno es una tradición antigua**:
+
+- **El calendario celta de los árboles** (`arbol_celta`). Trece meses de 28 días, cada uno con un árbol y una letra del alfabeto ogham (abedul/Beth del 24/12 al 20/01, serbal/Luis del 21/01 al 17/02…) y el 23 de diciembre aparte, sin árbol. **No es un calendario celta antiguo**: lo inventó el poeta Robert Graves en *La diosa blanca* (1948), tomando los nombres de árboles que el ogham, un alfabeto irlandés antiguo, daba a sus letras. Los estudiosos lo descartan como práctica histórica. Las fechas de arriba salen de la versión más repetida (varias fuentes coinciden); hay variantes, por ejemplo una que empieza en Samhain.
+- **El horóscopo de los árboles** (`arbol_de_fecha`). El más popular, que se presenta como «druídico» o «galo». Son 21 árboles con uno, dos o tres tramos de fechas cada uno (el álamo tiene tres), y cuatro de un solo día, los de los equinoccios y los solsticios: roble el 21/03, abedul el 24/06, olivo el 23/09 y haya el 22/12. Tampoco es antiguo: es una creación moderna del siglo XX. Las fuentes no se ponen de acuerdo en las fechas ni en los rasgos; la lista y los tramos de aquí son los de la versión más repetida, y el 29 de febrero se cuenta en el pino.
+- **Los árboles de los nakshatras** (`nakshatra_de_instante`). Aquí sí hay tradición: en la astrología védica cada una de las 27 mansiones lunares tiene un árbol, y existen jardines de los 27 (*nakshatravana*). Pero **no depende de la fecha, sino de dónde está la Luna al nacer**, y la Luna cambia de nakshatra casi cada día.
+
+**La Luna.** Para el tercer sistema, `longitud_de_la_luna()` calcula la longitud eclíptica de la Luna con la serie abreviada de Meeus (32 términos) y la pasa al zodiaco sideral con el ayanamsa de Lahiri. Comparada con una efeméride real (`ephem`) en 20 000 instantes entre 1900 y 2100, el error máximo fue de 0,05° (unos 4 minutos de movimiento de la Luna), frente a los 13,33° de cada nakshatra. Aun así, **hace falta el instante del nacimiento**: con solo una fecha se toma el mediodía UTC y puede salir el nakshatra del día anterior o del siguiente. Un `datetime` sin huso se toma como UTC.
+
+> **Lo que no está verificado.** Intenté contrastar las tres listas con la web, y solo pude en parte (el contenedor no deja abrir Wikipedia ni las páginas con las tablas completas; las búsquedas devolvieron resúmenes):
+> - **Calendario celta:** las fechas de los 13 meses coinciden con las de varias fuentes.
+> - **Horóscopo:** confirmé las fechas del abeto, el olmo, el ciprés, el álamo (los tres tramos), el cedro, el pino, el abedul y el manzano, y que son 21 árboles. Las de los otros 13 (sauce llorón, tilo, roble, avellano, serbal, arce, nogal, castaño, fresno, carpe, higuera, olivo y haya) las escribí de memoria. Hay fuentes que dan el manzano del 22/12 al 1/01 y otras el haya el 22/12.
+> - **Nakshatras:** las fuentes **no coinciden** en el árbol de muchos. En 11 de los 27 (Ardra, Ashlesha, Uttara Phalguni, Hasta, Vishakha, Jyeshtha, Mula, Purva Ashadha, Dhanishta y los dos Bhadrapada) el dato es `"variable": true` y las fichas los marcan con asterisco. Los otros 16 los dan la mayoría de las listas, pero tampoco los pude comprobar todos. Los rasgos de cada nakshatra son resúmenes habituales escritos de memoria.
+> - **Los rasgos** de los árboles del horóscopo y del calendario celta son los que repite la tradición popular, escritos de memoria y no contrastados.
+> - **Los nombres de los árboles en los 30 idiomas** no los revisó una persona nativa; en varios idiomas poco comunes usé la transliteración del nombre inglés cuando no conocía uno propio. Los nakshatras y sus árboles se muestran con su nombre sánscrito o hindi y su nombre científico, sin traducir.
+>
+> Como todo lo demás, son referencias culturales divertidas, sin respaldo científico.
+
+```python
+a = zodiaco.arbol_celta(datetime.date(1990, 4, 3))
+a["mes"]["ogham"], a["arbol"]["nombres"]["es"], a["arbol"]["cientifico"]   # ('Fearn', 'aliso', 'Alnus glutinosa')
+zodiaco.arbol_celta(datetime.date(2025, 12, 23))                           # None: el «día del año»
+h = zodiaco.arbol_de_fecha(datetime.date(1990, 4, 3))
+h["arbol"]["nombres"]["es"], h["tramo"]                                    # ('serbal', [[4, 1], [4, 10]])
+n = zodiaco.nakshatra_de_instante(datetime.datetime(1992, 4, 12, tzinfo=datetime.timezone.utc))
+n["nakshatra"]["nombre"], n["nakshatra"]["arbol"]                          # ('Ashlesha', 'Nagkesar')
+zodiaco.rasgos_de("horoscopo", "olivo", "es")                              # 'Equilibrio, sabiduría, paz'
+```
+
+En PHP: `Zodiaco::arbolCelta()`, `arbolDeFecha()`, `nakshatraDeInstante()`, `longitudDeLaLuna()` y `rasgosDe()`; un `DateTime` de PHP siempre es un instante. Cada ficha de `por-idioma/` termina con las tres tablas. Los rasgos usan los glosarios de `arboles.json` y de `espiritus.json` (los conceptos que ya estaban en el segundo no se repiten: `validar_arboles()` lo exige).
+
 ### Versión y revisión
 
 `datos/signos.json` lleva `version` (versionado semántico: mayor si cambia el esquema o lo que devuelven las consultas, menor si se agregan datos o funciones, parche si se corrige un texto) y `CHANGELOG.md` cuenta qué cambió. `generar.py --comprobar` falla si la primera entrada del `CHANGELOG.md` no coincide con `version`: no se puede cambiar una sin la otra.
@@ -214,6 +247,24 @@ Para corregir una cualidad, edita su traducción en `cualidades`; para cambiar l
 ```
 
 El coro de un ángel y su signo salen del número (de ocho en ocho y de seis en seis), por eso no se guardan.
+
+## Esquema de `datos/arboles.json`
+
+```jsonc
+{
+  "terminos": { "celta_titulo": { "es": "Calendario celta de los árboles", … }, "celta_nota": {…}, "col_arbol": {…}, "separador": {…}, … },
+  "rasgos":   { "fuerza": { "es": "fuerza", "en": "strength", … }, … },     // los 60 conceptos que no están en espiritus.json
+  "arboles":  { "roble": { "cientifico": "Quercus robur", "nombres": { "es": "roble", … } }, … },   // 29 árboles × 30 idiomas
+  "calendario_celta": { "dia_sin_arbol": [12, 23],
+                        "meses": [ { "id": "beth", "ogham": "Beth", "arbol": "abedul", "desde": [12, 24], "hasta": [1, 20],
+                                     "rasgos": ["comienzos", "pureza", "renacimiento"] }, … ] },
+  "horoscopo": [ { "arbol": "abeto", "tramos": [[[1, 2], [1, 11]], [[7, 5], [7, 14]]], "rasgos": ["misterio", …] }, … ],
+  "nakshatras": [ { "numero": 1, "id": "ashwini", "nombre": "Ashwini", "arbol": "Kuchila", "cientifico": "Strychnos nux-vomica",
+                    "variable": false, "rasgos": ["rapidez", "iniciativa", "curacion"] }, … ]
+}
+```
+
+`validar_arboles()` exige que los 13 meses cubran el año sin huecos ni solapes (cada uno de 28 días, y el 23/12 fuera), que el horóscopo cubra cada uno de los 366 días exactamente una vez, 27 nakshatras en orden, todos los idiomas en cada texto, que cada rasgo esté en un glosario y que no sobre ninguno.
 
 ## Esquema de `datos/signos.json`
 

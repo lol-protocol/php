@@ -405,3 +405,89 @@
 | 70 | Seere | 王子 | 26 | 06/03 – 10/03 | 瞬時の移動、窃盗、失せ物 |
 | 71 | Dantalion | 公爵 | 36 | 11/03 – 15/03 | 思考、諸科学、愛 |
 | 72 | Andromalius | 伯爵 | 36 | 16/03 – 20/03 | 失せ物、宝物、盗人 |
+
+## ケルトの樹木暦
+
+28日からなる13か月の暦で、各月に1本の木が割り当てられます（12月23日は別枠）。詩人ロバート・グレーヴズが1948年にオガム文字をもとに考案したもので、古代ケルトの暦ではありません。文化的な参考情報です。
+
+| # | 木 | 学名 | オガム文字 | 期間 | 特徴 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | カバノキ | *Betula pendula* | Beth | 24/12 – 20/01 | 始まり、清らかさ、復活 |
+| 2 | ナナカマド | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | 守護、直感、知覚 |
+| 3 | トネリコ | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | 統一、意思疎通、創造 |
+| 4 | ハンノキ | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | 勇気、分別力、安定 |
+| 5 | ヤナギ | *Salix alba* | Saille | 15/04 – 12/05 | 直感、夢、癒やし |
+| 6 | サンザシ | *Crataegus monogyna* | Uath | 13/05 – 09/06 | 多産、忍耐、守護 |
+| 7 | オーク | *Quercus robur* | Duir | 10/06 – 07/07 | 力、持久力、高潔 |
+| 8 | セイヨウヒイラギ | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | 均衡、勇気、正義 |
+| 9 | ハシバミ | *Corylus avellana* | Coll | 05/08 – 01/09 | 知恵、インスピレーション、学問 |
+| 10 | ブドウの木 | *Vitis vinifera* | Muin | 02/09 – 29/09 | 喜び、豊かさ、インスピレーション |
+| 11 | ツタ | *Hedera helix* | Gort | 30/09 – 27/10 | 貞節、粘り強さ、守護 |
+| 12 | アシ | *Phragmites australis* | Ngetal | 28/10 – 24/11 | 真実、秩序、意志 |
+| 13 | ニワトコ | *Sambucus nigra* | Ruis | 25/11 – 22/12 | 変容、成就、復活 |
+
+12月23日は13か月の外にあり、「一年の日」として木がありません。
+
+## 樹木占い
+
+21本の木からなる人気の占いで、ドルイドやガリアの伝統とされますが、実際は現代の創作です。日付や木は資料によって異なります。文化的な参考情報です。
+
+| 木 | 学名 | 期間 | 特徴 |
+| --- | --- | --- | --- |
+| モミ | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | 神秘性、忠誠、優雅さ |
+| ニレ | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | 高潔、安定、指導力 |
+| イトスギ | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | 貞節、適応力、持久力 |
+| ポプラ | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | 感受性、適応力、不確かさ |
+| ヒマラヤスギ | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | 自信、楽観、大胆さ |
+| マツ | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | 規律、秩序、粘り強さ |
+| シダレヤナギ | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | 感受性、直感、憂愁 |
+| シナノキ | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | 静けさ、友情、調和 |
+| オーク | *Quercus robur* | 21/03 – 21/03 | 力、勇気、自立 |
+| ハシバミ | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | 好奇心、機知、独創性 |
+| ナナカマド | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | 感受性、魅力、調和 |
+| カエデ | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | 自立、想像力、独創性 |
+| クルミ | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | 力、情熱、野心 |
+| クリ | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | 正義、誠実さ、寛大さ |
+| トネリコ | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | 野心、冒険、活力 |
+| クマシデ | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | 控えめ、実用性、優雅さ |
+| イチジク | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | 官能性、社交性、豊かさ |
+| カバノキ | *Betula pendula* | 24/06 – 24/06 | 優雅さ、控えめ、インスピレーション |
+| リンゴの木 | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | 愛、魅力、寛大さ |
+| オリーブ | *Olea europaea* | 23/09 – 23/09 | 均衡、知恵、平和 |
+| ブナ | *Fagus sylvatica* | 22/12 – 22/12 | 才能、創造、粘り強さ |
+
+## 27のナクシャトラの木
+
+ヴェーダ占星術では、27の月宿（ナクシャトラ）それぞれに木があります。生まれた日付ではなく出生時の月の位置で決まり、リストは地域によって異なります。文化的な参考情報です。
+
+| # | ナクシャトラ | 木 | 学名 | 特徴 |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | 素早さ、主導性、癒やし |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | 持久力、情熱、変容 |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | 鋭さ、火、清らかさ |
+| 4 | Rohini | Jamun | *Syzygium cumini* | 美、多産、豊かさ |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | 好奇心、探求、親切さ |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | 感情、変容、知性 |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | 復活、楽観、家庭 |
+| 8 | Pushya | Peepal | *Ficus religiosa* | 養い、守護、献身 |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | 直感、神秘性、狡猾さ |
+| 10 | Magha | Baniano | *Ficus benghalensis* | 家系、権威、高潔 |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | 楽しみ、創造性、休息 |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | 友情、寛大さ、支え |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | 腕前、機知、癒やし |
+| 14 | Chitra | Bel | *Aegle marmelos* | 美、創造、輝き |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | 自立、柔軟性、商業 |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | 決意、野心、粘り強さ |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | 献身、友情、協力 |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | 指導力、守護、勇気 |
+| 19 | Mula | Sal \* | *Shorea robusta* | 根っこ、探究、変容 |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | 勝利、熱意、清らかさ |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | 勝利、高潔さ、粘り強さ |
+| 22 | Shravana | Madar | *Calotropis gigantea* | 傾聴、学び、意思疎通 |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | 富、音楽、野心 |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | 癒やし、秘密、孤独 |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | 情熱、変容、理想主義 |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | 深さ、知恵、慈悲 |
+| 27 | Revati | Mahua | *Madhuca longifolia* | 優しさ、守護、慈悲 |
+
+\* このナクシャトラの木については資料によって説が分かれます。

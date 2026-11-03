@@ -405,3 +405,89 @@ Kutoka Goetia (karne ya 17), kitabu cha uchawi kisicho sehemu ya Biblia. Kila ro
 | 70 | Seere | Mwana wa mfalme | 26 | 06/03 – 10/03 | Safari za haraka, wizi, vitu vilivyopotea |
 | 71 | Dantalion | Duki | 36 | 11/03 – 15/03 | Mawazo, sayansi mbalimbali, upendo |
 | 72 | Andromalius | Kaunti | 36 | 16/03 – 20/03 | Vitu vilivyopotea, hazina, wezi |
+
+## Kalenda ya miti ya Wakelti
+
+Kalenda ya miezi 13 yenye siku 28 kila moja, kila mwezi na mti wake (tarehe 23 Desemba iko pembeni). Mshairi Robert Graves aliibuni mwaka 1948 kutoka alfabeti ya ogham; si kalenda ya kale ya Wakelti. Rejeleo la kitamaduni tu.
+
+| # | Mti | Jina la kisayansi | Ogham | Tarehe | Sifa |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Mbetula | *Betula pendula* | Beth | 24/12 – 20/01 | Mwanzo, usafi, kuzaliwa upya |
+| 2 | Rowan | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Ulinzi, angavu, utambuzi |
+| 3 | Ash | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Umoja, mawasiliano, uumbaji |
+| 4 | Alder | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Ujasiri, busara, utulivu |
+| 5 | Willow | *Salix alba* | Saille | 15/04 – 12/05 | Angavu, ndoto, uponyaji |
+| 6 | Hawthorn | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Uzazi, subira, ulinzi |
+| 7 | Mwaloni | *Quercus robur* | Duir | 10/06 – 07/07 | Nguvu za mwili, ustahimilivu, utukufu |
+| 8 | Holly | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Usawa, ujasiri, haki |
+| 9 | Hazel | *Corylus avellana* | Coll | 05/08 – 01/09 | Hekima, msukumo, masomo |
+| 10 | Mzabibu | *Vitis vinifera* | Muin | 02/09 – 29/09 | Furaha, wingi, msukumo |
+| 11 | Ivy | *Hedera helix* | Gort | 30/09 – 27/10 | Uaminifu, uvumilivu, ulinzi |
+| 12 | Mwanzi | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Ukweli, utaratibu, nia |
+| 13 | Elder | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Mabadiliko, kilele, kuzaliwa upya |
+
+Tarehe 23 Desemba iko nje ya miezi 13: ni «siku ya mwaka», bila mti.
+
+## Nyota ya miti
+
+Nyota maarufu ya miti 21, inayosemwa kuwa ya kidruidi au ya Wagaul lakini ni uvumbuzi wa kisasa. Tarehe na miti hutofautiana kulingana na chanzo. Rejeleo la kitamaduni tu.
+
+| Mti | Jina la kisayansi | Tarehe | Sifa |
+| --- | --- | --- | --- |
+| Fir | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Fumbo, utii, umaridadi |
+| Elm | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Utukufu, utulivu, uongozi |
+| Sipresi | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Uaminifu, kujirekebisha, ustahimilivu |
+| Poplar | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Unyeti, kujirekebisha, kutokuwa na uhakika |
+| Mwerezi | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Kujiamini, matumaini, ujasiri wa kuthubutu |
+| Msonobari | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Nidhamu, utaratibu, uvumilivu |
+| Willow linalolia | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Unyeti, angavu, huzuni |
+| Linden | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Utulivu wa moyo, urafiki, upatanifu |
+| Mwaloni | *Quercus robur* | 21/03 – 21/03 | Nguvu za mwili, ujasiri, uhuru wa kujitegemea |
+| Hazel | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Udadisi, werevu, upekee |
+| Rowan | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Unyeti, mvuto, upatanifu |
+| Maple | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Uhuru wa kujitegemea, mawazo ya kubuni, upekee |
+| Mjozi | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Nguvu za mwili, shauku kali, tamaa ya mafanikio |
+| Chestnut | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Haki, unyofu, ukarimu |
+| Ash | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Tamaa ya mafanikio, matukio, nguvu |
+| Hornbeam | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Busara ya kimya, vitendo, umaridadi |
+| Mtini | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Ashiki ya hisia, ushirikiano wa kijamii, wingi |
+| Mbetula | *Betula pendula* | 24/06 – 24/06 | Umaridadi, busara ya kimya, msukumo |
+| Mtofaa | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Upendo, mvuto, ukarimu |
+| Mzeituni | *Olea europaea* | 23/09 – 23/09 | Usawa, hekima, amani |
+| Beech | *Fagus sylvatica* | 22/12 – 22/12 | Kipaji, uumbaji, uvumilivu |
+
+## Miti ya nakshatra 27
+
+Katika nyota ya Kivedi, kila moja ya makazi 27 ya mwezi (nakshatra) ina mti wake. Inategemea mahali Mwezi ulipo wakati wa kuzaliwa, si tarehe, na orodha hutofautiana kulingana na eneo. Rejeleo la kitamaduni tu.
+
+| # | Nakshatra | Mti | Jina la kisayansi | Sifa |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Kasi, mpango, uponyaji |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Ustahimilivu, shauku kali, mabadiliko |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Makini, moto, usafi |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Uzuri, uzazi, wingi |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Udadisi, utafutaji, upole |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Hisia, mabadiliko, akili |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Kuzaliwa upya, matumaini, nyumbani |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Lishe, ulinzi, ibada |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Angavu, fumbo, ujanja |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Ukoo, mamlaka, utukufu |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Starehe, ubunifu, mapumziko |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Urafiki, ukarimu, msaada |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Ustadi, werevu, uponyaji |
+| 14 | Chitra | Bel | *Aegle marmelos* | Uzuri, uumbaji, mng'ao |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Uhuru wa kujitegemea, kubadilika, biashara |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Azimio, tamaa ya mafanikio, uvumilivu |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Ibada, urafiki, ushirikiano |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Uongozi, ulinzi, ujasiri |
+| 19 | Mula | Sal \* | *Shorea robusta* | Mizizi, utafiti, mabadiliko |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Ushindi, shauku, usafi |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Ushindi, uadilifu, uvumilivu |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Usikivu, kujifunza, mawasiliano |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Utajiri, muziki, tamaa ya mafanikio |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Uponyaji, siri, upweke |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Shauku kali, mabadiliko, udhanifu |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Kina, hekima, huruma |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Upole wa moyo, ulinzi, huruma |
+
+\* Vyanzo havikubaliani kuhusu mti wa nakshatra hii.

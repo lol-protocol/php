@@ -405,3 +405,89 @@ Fra Goetia (1600-tallet), en trolddomsbog, der ikke er en del af Bibelen. Hver �
 | 70 | Seere | Prins | 26 | 06/03 – 10/03 | Hurtige rejser, tyveri, mistede ting |
 | 71 | Dantalion | Hertug | 36 | 11/03 – 15/03 | Tanker, videnskaber, kærlighed |
 | 72 | Andromalius | Greve | 36 | 16/03 – 20/03 | Mistede ting, skatte, tyve |
+
+## Keltisk trækalender
+
+En kalender med 13 måneder à 28 dage, ét træ for hver (23. december står for sig). Digteren Robert Graves fandt på den i 1948 ud fra ogham-alfabetet; den er ikke en gammel keltisk kalender. Kun kulturel reference.
+
+| # | Træ | Videnskabeligt navn | Ogham | Datoer | Træk |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Birk | *Betula pendula* | Beth | 24/12 – 20/01 | Begyndelser, renhed, genfødsel |
+| 2 | Røn | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Beskyttelse, intuition, opfattelse |
+| 3 | Ask | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Enhed, kommunikation, skabelse |
+| 4 | El | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Mod, dømmekraft, stabilitet |
+| 5 | Pil | *Salix alba* | Saille | 15/04 – 12/05 | Intuition, drømme, helbredelse |
+| 6 | Tjørn | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Frugtbarhed, tålmodighed, beskyttelse |
+| 7 | Eg | *Quercus robur* | Duir | 10/06 – 07/07 | Styrke, udholdenhed i modgang, ædelhed |
+| 8 | Kristtjørn | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Balance, mod, retfærdighed |
+| 9 | Hassel | *Corylus avellana* | Coll | 05/08 – 01/09 | Visdom, inspiration, studier |
+| 10 | Vinranke | *Vitis vinifera* | Muin | 02/09 – 29/09 | Glæde, overflod, inspiration |
+| 11 | Vedbend | *Hedera helix* | Gort | 30/09 – 27/10 | Trofasthed, udholdenhed, beskyttelse |
+| 12 | Tagrør | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Sandhed, orden, vilje |
+| 13 | Hyld | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Forvandling, fuldendelse, genfødsel |
+
+23. december ligger uden for de 13 måneder: det er «årets dag», uden træ.
+
+## Trehoroskop
+
+Et populært horoskop med 21 træer, som præsenteres som druidisk eller gallisk, men er en moderne opfindelse. Datoer og træer varierer efter kilde. Kun kulturel reference.
+
+| Træ | Videnskabeligt navn | Datoer | Træk |
+| --- | --- | --- | --- |
+| Ædelgran | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Mystik, loyalitet, elegance |
+| Elm | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Ædelhed, stabilitet, lederskab |
+| Cypres | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Trofasthed, tilpasningsevne, udholdenhed i modgang |
+| Poppel | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Følsomhed, tilpasningsevne, usikkerhed |
+| Ceder | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Selvtillid, optimisme, dristighed |
+| Fyr | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Disciplin, orden, udholdenhed |
+| Hængepil | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Følsomhed, intuition, melankoli |
+| Lind | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Sindsro, venskab, harmoni |
+| Eg | *Quercus robur* | 21/03 – 21/03 | Styrke, mod, uafhængighed |
+| Hassel | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Nysgerrighed, vid, originalitet |
+| Røn | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Følsomhed, charme, harmoni |
+| Løn | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Uafhængighed, fantasi, originalitet |
+| Valnød | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Styrke, passion, ambition |
+| Kastanje | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Retfærdighed, ærlighed, generøsitet |
+| Ask | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Ambition, eventyr, energi |
+| Avnbøg | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Diskretion, praktisk sans, elegance |
+| Figen | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Sanselighed, omgængelighed, overflod |
+| Birk | *Betula pendula* | 24/06 – 24/06 | Elegance, diskretion, inspiration |
+| Æbletræ | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Kærlighed, charme, generøsitet |
+| Oliventræ | *Olea europaea* | 23/09 – 23/09 | Balance, visdom, fred |
+| Bøg | *Fagus sylvatica* | 22/12 – 22/12 | Talent, skabelse, udholdenhed |
+
+## Træerne for de 27 nakshatras
+
+I vedisk astrologi har hver af de 27 månehuse (nakshatras) sit eget træ. Det afhænger af, hvor Månen står ved fødslen, ikke af datoen, og listerne varierer fra region til region. Kun kulturel reference.
+
+| # | Nakshatra | Træ | Videnskabeligt navn | Træk |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Hurtighed, initiativ, helbredelse |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Udholdenhed i modgang, passion, forvandling |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Skarphed, ild, renhed |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Skønhed, frugtbarhed, overflod |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Nysgerrighed, søgen, venlighed |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Følelse, forvandling, intelligens |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Genfødsel, optimisme, hjem |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Næring, beskyttelse, hengivenhed |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuition, mystik, snuhed |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Slægt, autoritet, ædelhed |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Nydelse, kreativitet, hvile |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Venskab, generøsitet, støtte |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Færdighed, vid, helbredelse |
+| 14 | Chitra | Bel | *Aegle marmelos* | Skønhed, skabelse, glans |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Uafhængighed, fleksibilitet, handel |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Besluttsomhed, ambition, udholdenhed |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Hengivenhed, venskab, samarbejde |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Lederskab, beskyttelse, mod |
+| 19 | Mula | Sal \* | *Shorea robusta* | Rødder, forskning, forvandling |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Sejr, begejstring, renhed |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Sejr, integritet, udholdenhed |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Lytten, læring, kommunikation |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Rigdom, musik, ambition |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Helbredelse, hemmeligheder, ensomhed |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Passion, forvandling, idealisme |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Dybde, visdom, medfølelse |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Ømhed, beskyttelse, medfølelse |
+
+\* Kilderne er uenige om dette nakshatras træ.
