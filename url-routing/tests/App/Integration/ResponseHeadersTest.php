@@ -46,6 +46,15 @@ class ResponseHeadersTest extends TestCase
 
         // 582399 was a duplicate of the grupo García (582317), merged into it (bin/fusionar.php grupo).
         (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute('INSERT INTO grupo_alias (id, grupo_id) VALUES (582399, 582317)');
+        // 130 surnames «Zeta001»…«Zeta130»: three pages of a listing (50 per page).
+        $pdo = (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->pdo();
+        $pdo->beginTransaction();
+        $grupo = $pdo->prepare('INSERT INTO grupos (id, apellido) VALUES (?, ?)');
+        for ($i = 1; $i <= 130; $i++) {
+            $grupo->execute([600000 + $i, 'Zeta' . str_pad((string)$i, 3, '0', STR_PAD_LEFT)]);
+        }
+        $pdo->commit();
+
         // One persona whose page changed on a known day (the rest have no date).
         (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute("UPDATE personas SET actualizado_en = '2026-03-04 10:11:12' WHERE id = 6128473101");
 
@@ -294,6 +303,96 @@ class ResponseHeadersTest extends TestCase
         $this->assertStringNotContainsString('maria', $todo);
         $this->assertStringNotContainsString('6128473', $todo, 'no id survives');
         $this->assertStringNotContainsString('garcia', $todo);
+    }
+
+    /**
+     * The same URL, two answers: the page, or, with `X-Fragmento: 1`, only the list and its navigation (what the script
+     * at /b.js appends). No second URL shape, and a request without the header (a crawler, a browser without JavaScript)
+     * never gets a fragment.
+     */
+    public function testAListingAnswersThePageOrOnlyItsFragmentOnTheSameUrl(): void
+    {
+        $pagina = $this->pedir(self::GENEALOGIA, '/b/6/zeta/2/');
+        $fragmento = $this->pedir(self::GENEALOGIA, '/b/6/zeta/2/', ['X-Fragmento' => '1']);
+
+        $this->assertSame(200, $pagina['status']);
+        $this->assertSame(200, $fragmento['status']);
+        $this->assertStringContainsString('<html', $pagina['body']);
+        $this->assertStringContainsString('<h1>Apellidos</h1>', $pagina['body']);
+        $this->assertStringContainsString('<script src="/b.js"></script>', $pagina['body']);
+
+        $this->assertStringNotContainsString('<html', $fragmento['body']);
+        $this->assertStringNotContainsString('<h1>', $fragmento['body'], 'no page around it');
+        $this->assertStringNotContainsString('<script', $fragmento['body']);
+        $this->assertStringContainsString('<ul class="lista">', $fragmento['body']);
+        $this->assertStringContainsString('href="/600051/"', $fragmento['body'], 'the first row of page 2');
+        $this->assertStringContainsString('href="/600100/"', $fragmento['body']);
+        $this->assertStringNotContainsString('href="/600050/"', $fragmento['body'], 'only page 2');
+        $this->assertStringContainsString('rel="next"', $fragmento['body'], 'the fragment says where the next page is');
+        $this->assertStringContainsString('href="/b/6/zeta/3/"', $fragmento['body']);
+        $this->assertStringContainsString('rel="prev"', $fragmento['body']);
+    }
+
+    public function testTheFragmentOfTheLastPageHasNoNextLink(): void
+    {
+        $fragmento = $this->pedir(self::GENEALOGIA, '/b/6/zeta/3/', ['X-Fragmento' => '1']);
+
+        $this->assertStringContainsString('href="/600130/"', $fragmento['body']);
+        $this->assertStringNotContainsString('rel="next"', $fragmento['body']);
+    }
+
+    /** Only the exact value 1 asks for a fragment: anything else is the page. */
+    public function testOnlyTheExactHeaderValueAsksForAFragment(): void
+    {
+        foreach (['0', 'true', '11'] as $valor) {
+            $this->assertStringContainsString('<html', $this->pedir(self::GENEALOGIA, '/b/6/zeta/', ['X-Fragmento' => $valor])['body'], "X-Fragmento: {$valor}");
+        }
+    }
+
+    /** The same URL varies with a request header: a cache has to be told. */
+    public function testAListingVariesOnTheFragmentHeader(): void
+    {
+        foreach ([[], ['X-Fragmento' => '1']] as $cabeceras) {
+            $this->assertContains('X-Fragmento', $this->pedir(self::GENEALOGIA, '/b/6/zeta/', $cabeceras)['headers']['vary'] ?? [], json_encode($cabeceras) ?: '');
+        }
+    }
+
+    public function testThePosListingHasTheFragmentToo(): void
+    {
+        $pagina = $this->pedir(self::POS, '/b/8/');
+        $fragmento = $this->pedir(self::POS, '/b/8/', ['X-Fragmento' => '1']);
+
+        $this->assertStringContainsString('<html', $pagina['body']);
+        $this->assertStringNotContainsString('<html', $fragmento['body']);
+        $this->assertStringContainsString('<ul class="lista">', $fragmento['body']);
+    }
+
+    /** The script is a plain file under public/: a real web server serves it itself, the built-in one is let to. */
+    public function testTheScriptIsServedAndNothingElseUnderPublic(): void
+    {
+        $script = $this->pedir(self::GENEALOGIA, '/b.js');
+        $this->assertSame(200, $script['status']);
+        $this->assertStringContainsString('IntersectionObserver', $script['body']);
+        $this->assertMatchesRegularExpression('#javascript#', $script['headers']['content-type'][0] ?? '');
+
+        $this->assertSame(404, $this->pedir(self::GENEALOGIA, '/.htaccess')['status'], 'a dotfile');
+        $this->assertSame(404, $this->pedir(self::GENEALOGIA, '/index.php')['status'], 'the front controller is not a file to read');
+        foreach (['/../Support/Router.php', '/..%2fSupport%2fRouter.php', '/../.env.example'] as $fuera) {
+            $respuesta = $this->pedir(self::GENEALOGIA, $fuera);
+            $this->assertStringNotContainsString('<?php', $respuesta['body'], $fuera);
+            $this->assertStringNotContainsString('IDS_DIGITO_VERIFICADOR', $respuesta['body'], $fuera);
+        }
+    }
+
+    /** No browser here: at least that the script is valid JavaScript, when node is around. */
+    public function testTheScriptParses(): void
+    {
+        if (trim((string)shell_exec('command -v node')) === '') {
+            $this->markTestSkipped('node is not installed');
+        }
+        exec('node --check ' . escapeshellarg(dirname(__DIR__, 3) . '/public/b.js') . ' 2>&1', $salida, $codigo);
+
+        $this->assertSame(0, $codigo, implode("\n", $salida));
     }
 
     public function testAGroupThatNeverExistedIsStillA404(): void

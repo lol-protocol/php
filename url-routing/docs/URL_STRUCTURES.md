@@ -11,7 +11,7 @@ Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de 
 | 3 letras | `^[a-z]{3}$` | idioma (ISO 639-2): va en el subdominio (`spa.`, `eng.`), nunca en la ruta |
 | 4+ letras | `^[a-z]{4,}$` | texto libre: lo que se busca, detrás de `/b/{tipo}/` |
 | solo dígitos | `^\d+$` | una entidad: la cantidad de dígitos dice el tipo (ver tablas abajo); 1 dígito detrás de algo es una acción |
-| con punto | `\.` | un archivo para buscadores: `robots.txt` y los sitemaps |
+| con punto | `\.` | un archivo: para buscadores (`robots.txt` y los sitemaps) y el script de los listados (`/b.js`, un archivo de `public/` que sirve el servidor web) |
 
 La lista completa de rutas de cada sitio, generada desde `config/routes/*.php`, está en [`RUTAS.md`](./RUTAS.md) (`php bin/rutas.php > docs/RUTAS.md`; un test falla si queda desactualizada).
 
@@ -167,6 +167,16 @@ Cada petición vuelve a preguntar a la base, así que una página que se oculta 
   - Un cambio en una fila **relacionada** (el nombre de un pariente) no la mueve sola: la fecha es la de la fila de la página.
   - Los lugares y el POS no tienen la columna y no llevan fecha por página.
 - El estado son archivos chicos en `SITEMAP_ESTADO_DIR` (por omisión, una carpeta en el directorio temporal). Si se pierde, las fechas empiezan de nuevo; si no se puede escribir, no hay fechas y el sitemap se sirve igual.
+
+### Listados que cargan más al bajar (sin una URL nueva)
+
+`/b/{tipo}/[{texto}/][{página}/]` sigue siendo paginado: cada página tiene su URL, su enlace «← Anterior» y «Siguiente →» (con `rel="prev"` y `rel="next"`) y es lo que ve un buscador o un navegador sin JavaScript. Encima, el script `/b.js` (cargado por el listado) lo mejora: al llegar al final de la lista pide la página siguiente y la agrega, sin salir de la página en que está.
+
+- **Pide la misma URL** del enlace «Siguiente →», con la cabecera `X-Fragmento: 1`, y el servidor contesta **solo la lista y la navegación**, sin la página alrededor. No hay una forma de URL nueva que aprender ni que enlazar: sin la cabecera (un buscador, `curl`, un navegador sin JavaScript) la respuesta es la página de siempre. Solo el valor exacto `1` pide el fragmento.
+- Como la misma URL contesta de dos maneras, todo listado manda `Vary: X-Fragmento`. (Las páginas ya van con `Cache-Control: no-store`, así que ninguna caché las guarda; el `Vary` es por si algún día lo hacen.)
+- El fragmento tampoco consume el aviso de una sola vez (`Flash`) que el diseño completo sí muestra y borra, que es una razón para no pedir la página entera y extraerle la lista.
+- **El script es un archivo de `public/`**: nginx y Apache sirven un archivo que existe por su cuenta, sin pasar por PHP, y la política CSP (`script-src 'self'`) lo permite porque es del mismo origen. No hay scripts en línea. El servidor integrado de PHP (desarrollo y pruebas) entrega todo al router, así que `public/index.php` le cede los archivos que existen bajo `public/` (nunca uno oculto, un `.php`, ni uno fuera de la carpeta).
+- Se probó en Chromium: de 50 a 130 filas sin repetidas, la URL del navegador no cambia, sin JavaScript queda el enlace, y si el servidor falla el enlace vuelve a verse.
 
 ### Qué no se indexa
 

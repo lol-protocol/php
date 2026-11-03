@@ -24,6 +24,17 @@ use App\Support\RegistroDeUrls;
  * Loads the route registry for the current domain and dispatches the request.
  */
 
+// PHP's built-in server (development and the tests) hands EVERY request to this script when it is the router,
+// files included; a real web server (nginx, Apache) serves an existing file itself and never gets here. So that
+// /b.js works in both, let the built-in server serve a file that exists under public/ (never a dotfile or a .php).
+if (PHP_SAPI === 'cli-server') {
+    $estatico = realpath(__DIR__ . '/' . ltrim((string)parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'));
+    if ($estatico !== false && is_file($estatico) && str_starts_with($estatico, __DIR__ . DIRECTORY_SEPARATOR)
+        && !str_ends_with($estatico, '.php') && !str_starts_with(basename($estatico), '.')) {
+        return false;
+    }
+}
+
 define('APP_ROOT', dirname(__DIR__));
 
 require APP_ROOT . '/vendor/autoload.php';

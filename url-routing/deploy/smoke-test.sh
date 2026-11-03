@@ -351,6 +351,17 @@ contiene "pedir un retiro lleva noindex" 'x-robots-tag: noindex' "$(cabeceras "$
 no_contiene "el inicio no lleva noindex" 'x-robots-tag' "$(cabeceras "$H" "$HTTP/")"
 contiene "POS: el carrito lleva noindex" 'x-robots-tag: noindex' "$(cabeceras "$POS" "$HTTP/c/")"
 
+echo "== Los listados cargan la página siguiente sin salir (el script /b.js y el fragmento de la misma URL)"
+reiniciar_limitador
+CAB=$(cabeceras "$H" "$HTTP/b.js")
+contiene "nginx sirve /b.js él mismo" 'HTTP/1.1 200' "$CAB"
+contiene "como JavaScript" 'javascript' "$(printf '%s' "$CAB" | grep -i '^content-type')"
+contiene "el listado carga el script" '<script src="/b.js"></script>' "$(cuerpo "$H" "$HTTP/b/10/")"
+contiene "con la cabecera X-Fragmento, la misma URL da solo la lista" '<ul class="lista">' "$(cuerpo "$H" "$HTTP/b/10/" -H 'X-Fragmento: 1')"
+no_contiene "sin página alrededor" '<html' "$(cuerpo "$H" "$HTTP/b/10/" -H 'X-Fragmento: 1')"
+contiene "y avisa que varía con esa cabecera" 'x-fragmento' "$(cabeceras "$H" "$HTTP/b/10/" | grep -i '^vary')"
+ok "los archivos ocultos siguen negados" 403 "$(codigo "$H" "$HTTP/.htaccess")"
+
 echo "== /ready detecta un despliegue que olvidó migrar"
 # El código nuevo trae una migración y todavía nadie corrió bin/migrate.php.
 mkdir -p "$APP/database/pos/migrations"

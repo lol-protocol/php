@@ -12,6 +12,8 @@ use App\Support\HostParser;
  * breadcrumbs, and $estructurado, a schema.org object (Person, Product...)
  * for search engines. Both go out as JSON-LD too. A site layout may set
  * $pedirRetiro, the URL to ask for the page to be withdrawn, shown at the foot.
+ * A view may set $scripts, local paths of scripts (public/) to load at the end of the body: the CSP only
+ * allows scripts from this origin, so there are no inline ones.
  */
 $lang = HostParser::IDIOMAS_CONOCIDOS[get_locale()] ?? 'es';
 $flash = (new Flash())->consumir();
@@ -117,6 +119,9 @@ foreach ($jsonLd as $objeto): ?>
 <?php endif; ?>
 <?= $content ?>
 </main>
+<?php foreach ($scripts ?? [] as $script): ?>
+<script src="<?= esc($script) ?>"></script>
+<?php endforeach; ?>
 <?php if (!empty($pedirRetiro)): ?>
 <footer class="pie meta"><a href="<?= esc($pedirRetiro) ?>" rel="nofollow">Pedir el retiro de esta página</a></footer>
 <?php endif; ?>
