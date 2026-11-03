@@ -491,3 +491,22 @@ In de Vedische astrologie heeft elk van de 27 maanhuizen (nakshatra's) een eigen
 | 27 | Revati | Mahua | *Madhuca longifolia* | Tederheid, bescherming, medeleven |
 
 \* De bronnen zijn het niet eens over de boom van deze nakshatra.
+
+## Numerologie: het levenspad
+
+Alle cijfers van de geboortedatum worden steeds opnieuw opgeteld tot er één overblijft; 11, 22 en 33 („meestergetallen”) worden niet verder herleid. Ze wordt aan Pythagoras toegeschreven, maar de huidige numerologie stamt uit de 20e eeuw en heeft geen wetenschappelijke basis. Alleen culturele referentie.
+
+| Getal | Eigenschappen |
+| --- | --- |
+| 1 | Leiderschap, onafhankelijkheid, initiatief |
+| 2 | Samenwerking, gevoeligheid, harmonie |
+| 3 | Creativiteit, vreugde, communicatie |
+| 4 | Discipline, stabiliteit, werk |
+| 5 | Avontuur, vrijheid, aanpassingsvermogen |
+| 6 | Thuis, vrijgevigheid, liefde |
+| 7 | Wijsheid, eenzaamheid, onderzoek |
+| 8 | Ambitie, gezag, rijkdom |
+| 9 | Medeleven, vrijgevigheid, idealisme |
+| 11 | Intuïtie, inspiratie, idealisme |
+| 22 | Bouwen, vastberadenheid, leiderschap |
+| 33 | Medeleven, tederheid, toewijding |

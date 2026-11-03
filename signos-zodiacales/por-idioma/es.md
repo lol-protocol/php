@@ -491,3 +491,22 @@ En la astrología védica cada una de las 27 mansiones lunares (nakshatras) tien
 | 27 | Revati | Mahua | *Madhuca longifolia* | Ternura, protección, compasión |
 
 \* Las fuentes no coinciden en el árbol de este nakshatra.
+
+## Numerología: el camino de vida
+
+Se suman todos los dígitos de la fecha de nacimiento, una y otra vez, hasta quedar en uno solo; 11, 22 y 33 («números maestros») no se reducen más. Se atribuye a Pitágoras, pero la numerología actual es del siglo XX y no tiene respaldo científico. Solo referencia cultural.
+
+| Número | Rasgos |
+| --- | --- |
+| 1 | Liderazgo, independencia, iniciativa |
+| 2 | Cooperación, sensibilidad, armonía |
+| 3 | Creatividad, alegría, comunicación |
+| 4 | Disciplina, estabilidad, trabajo |
+| 5 | Aventura, libertad, adaptación |
+| 6 | Hogar, generosidad, amor |
+| 7 | Sabiduría, soledad, investigación |
+| 8 | Ambición, autoridad, riqueza |
+| 9 | Compasión, generosidad, idealismo |
+| 11 | Intuición, inspiración, idealismo |
+| 22 | Construcción, determinación, liderazgo |
+| 33 | Compasión, ternura, devoción |

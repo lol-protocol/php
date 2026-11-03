@@ -491,3 +491,22 @@ Un horoscop popular cu 21 de copaci, prezentat ca druidic sau galic, dar de crea
 | 27 | Revati | Mahua | *Madhuca longifolia* | Tandrețe, protecție, compasiune |
 
 \* Sursele nu se potrivesc în privința copacului acestei nakshatra.
+
+## Numerologie: calea vieții
+
+Se adună toate cifrele datei de naștere, din nou și din nou, până rămâne una singură; 11, 22 și 33 («numere maestre») nu se mai reduc. I se atribuie lui Pitagora, dar numerologia de azi este din secolul XX și nu are bază științifică. Doar referință culturală.
+
+| Număr | Trăsături |
+| --- | --- |
+| 1 | Conducere, independență, inițiativă |
+| 2 | Cooperare, sensibilitate, armonie |
+| 3 | Creativitate, bucurie, comunicare |
+| 4 | Disciplină, stabilitate, muncă |
+| 5 | Aventură, libertate, adaptabilitate |
+| 6 | Cămin, generozitate, dragoste |
+| 7 | Înțelepciune, singurătate, cercetare |
+| 8 | Ambiție, autoritate, bogăție |
+| 9 | Compasiune, generozitate, idealism |
+| 11 | Intuiție, inspirație, idealism |
+| 22 | Construcție, hotărâre, conducere |
+| 33 | Compasiune, tandrețe, devotament |

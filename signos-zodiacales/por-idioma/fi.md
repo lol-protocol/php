@@ -491,3 +491,22 @@ Vedisessä astrologiassa jokaisella 27 kuuasunnolla (nakshatralla) on oma puunsa
 | 27 | Revati | Mahua | *Madhuca longifolia* | Hellyys, suojelu, myötätunto |
 
 \* Lähteet ovat eri mieltä tämän nakshatran puusta.
+
+## Numerologia: elämänpolku
+
+Syntymäpäivän kaikki numerot lasketaan yhteen yhä uudelleen, kunnes jäljelle jää yksi; 11, 22 ja 33 («mestarilukuja») ei supisteta enempää. Se liitetään Pythagorakseen, mutta nykyinen numerologia on 1900-luvulta eikä sillä ole tieteellistä pohjaa. Vain kulttuurinen viite.
+
+| Luku | Piirteet |
+| --- | --- |
+| 1 | Johtajuus, itsenäisyys, aloitteellisuus |
+| 2 | Yhteistyö, herkkyys, sopusointu |
+| 3 | Luovuus, ilo, viestintä |
+| 4 | Kuri, vakaus, työ |
+| 5 | Seikkailu, vapaus, sopeutumiskyky |
+| 6 | Koti, anteliaisuus, rakkaus |
+| 7 | Viisaus, yksinäisyys, tutkimus |
+| 8 | Kunnianhimo, arvovalta, rikkaus |
+| 9 | Myötätunto, anteliaisuus, idealismi |
+| 11 | Intuitio, inspiraatio, idealismi |
+| 22 | Rakentaminen, päättäväisyys, johtajuus |
+| 33 | Myötätunto, hellyys, omistautuminen |

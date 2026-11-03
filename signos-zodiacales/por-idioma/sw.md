@@ -491,3 +491,22 @@ Katika nyota ya Kivedi, kila moja ya makazi 27 ya mwezi (nakshatra) ina mti wake
 | 27 | Revati | Mahua | *Madhuca longifolia* | Upole wa moyo, ulinzi, huruma |
 
 \* Vyanzo havikubaliani kuhusu mti wa nakshatra hii.
+
+## Numerolojia: njia ya maisha
+
+Tarakimu zote za tarehe ya kuzaliwa hujumlishwa tena na tena hadi ibaki moja; 11, 22 na 33 («nambari kuu») hazipunguzwi zaidi. Inahusishwa na Pythagoras, lakini numerolojia ya leo ni ya karne ya 20 na haina msingi wa kisayansi. Rejeleo la kitamaduni tu.
+
+| Nambari | Sifa |
+| --- | --- |
+| 1 | Uongozi, uhuru wa kujitegemea, mpango |
+| 2 | Ushirikiano, unyeti, upatanifu |
+| 3 | Ubunifu, furaha, mawasiliano |
+| 4 | Nidhamu, utulivu, kazi |
+| 5 | Matukio, uhuru, kujirekebisha |
+| 6 | Nyumbani, ukarimu, upendo |
+| 7 | Hekima, upweke, utafiti |
+| 8 | Tamaa ya mafanikio, mamlaka, utajiri |
+| 9 | Huruma, ukarimu, udhanifu |
+| 11 | Angavu, msukumo, udhanifu |
+| 22 | Ujenzi, azimio, uongozi |
+| 33 | Huruma, upole wa moyo, ibada |

@@ -491,3 +491,22 @@ Trong chiêm tinh Vệ Đà, mỗi một trong 27 cung trăng (nakshatra) có m�
 | 27 | Revati | Mahua | *Madhuca longifolia* | Sự dịu dàng, sự bảo hộ, lòng trắc ẩn |
 
 \* Các nguồn không thống nhất về cây của nakshatra này.
+
+## Thần số học: con số chủ đạo
+
+Cộng tất cả các chữ số của ngày sinh, lặp đi lặp lại cho đến khi còn một chữ số; 11, 22 và 33 («số bậc thầy») không rút gọn thêm. Người ta gán nó cho Pythagoras, nhưng thần số học ngày nay có từ thế kỷ 20 và không có cơ sở khoa học. Chỉ để tham khảo văn hóa.
+
+| Số | Đặc điểm |
+| --- | --- |
+| 1 | Khả năng lãnh đạo, sự độc lập, sự chủ động |
+| 2 | Sự hợp tác, sự nhạy cảm, sự hòa hợp |
+| 3 | Sự sáng tạo, niềm vui, giao tiếp |
+| 4 | Kỷ luật, sự ổn định, công việc |
+| 5 | Phiêu lưu, tự do, khả năng thích nghi |
+| 6 | Mái ấm, lòng hào phóng, tình yêu |
+| 7 | Trí tuệ, sự cô độc, sự nghiên cứu |
+| 8 | Tham vọng, uy quyền, sự giàu có |
+| 9 | Lòng trắc ẩn, lòng hào phóng, chủ nghĩa lý tưởng |
+| 11 | Trực giác, cảm hứng, chủ nghĩa lý tưởng |
+| 22 | Xây dựng, sự quyết tâm, khả năng lãnh đạo |
+| 33 | Lòng trắc ẩn, sự dịu dàng, lòng sùng kính |

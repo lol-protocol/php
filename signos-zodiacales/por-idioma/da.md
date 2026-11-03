@@ -491,3 +491,22 @@ I vedisk astrologi har hver af de 27 månehuse (nakshatras) sit eget træ. Det a
 | 27 | Revati | Mahua | *Madhuca longifolia* | Ømhed, beskyttelse, medfølelse |
 
 \* Kilderne er uenige om dette nakshatras træ.
+
+## Numerologi: livsvejen
+
+Man lægger alle cifrene i fødselsdatoen sammen igen og igen, til der kun er ét tilbage; 11, 22 og 33 («mestertal») reduceres ikke yderligere. Den tilskrives Pythagoras, men nutidens numerologi stammer fra det 20. århundrede og har intet videnskabeligt grundlag. Kun kulturel reference.
+
+| Tal | Træk |
+| --- | --- |
+| 1 | Lederskab, uafhængighed, initiativ |
+| 2 | Samarbejde, følsomhed, harmoni |
+| 3 | Kreativitet, glæde, kommunikation |
+| 4 | Disciplin, stabilitet, arbejde |
+| 5 | Eventyr, frihed, tilpasningsevne |
+| 6 | Hjem, generøsitet, kærlighed |
+| 7 | Visdom, ensomhed, forskning |
+| 8 | Ambition, autoritet, rigdom |
+| 9 | Medfølelse, generøsitet, idealisme |
+| 11 | Intuition, inspiration, idealisme |
+| 22 | Byggeri, besluttsomhed, lederskab |
+| 33 | Medfølelse, ømhed, hengivenhed |

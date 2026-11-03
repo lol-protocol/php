@@ -491,3 +491,22 @@ Dalam astrologi Weda, masing-masing dari 27 rumah bulan (nakshatra) punya pohonn
 | 27 | Revati | Mahua | *Madhuca longifolia* | Kelembutan, perlindungan, belas kasih |
 
 \* Sumber-sumber tidak sepakat tentang pohon nakshatra ini.
+
+## Numerologi: jalur kehidupan
+
+Semua angka pada tanggal lahir dijumlahkan berulang kali sampai tersisa satu angka; 11, 22, dan 33 («angka master») tidak direduksi lagi. Ini dikaitkan dengan Pythagoras, tetapi numerologi masa kini berasal dari abad ke-20 dan tidak punya dasar ilmiah. Hanya sebagai rujukan budaya.
+
+| Angka | Ciri |
+| --- | --- |
+| 1 | Kepemimpinan, kemandirian, inisiatif |
+| 2 | Kerja sama, kepekaan, keselarasan |
+| 3 | Kreativitas, sukacita, komunikasi |
+| 4 | Disiplin, stabilitas, pekerjaan |
+| 5 | Petualangan, kebebasan, kemampuan beradaptasi |
+| 6 | Rumah tangga, kedermawanan, cinta |
+| 7 | Kebijaksanaan, kesendirian, penelitian |
+| 8 | Ambisi, otoritas, kekayaan |
+| 9 | Belas kasih, kedermawanan, idealisme |
+| 11 | Intuisi, inspirasi, idealisme |
+| 22 | Pembangunan, tekad, kepemimpinan |
+| 33 | Belas kasih, kelembutan, pengabdian |

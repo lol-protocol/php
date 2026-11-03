@@ -37,6 +37,10 @@
     ('Ashlesha', 'Nagkesar')
     >>> zodiaco.rasgos_de("horoscopo", "olivo", "es")
     'Equilibrio, sabiduría, paz'
+    >>> zodiaco.camino_de_vida(datetime.date(1990, 4, 3)), zodiaco.camino_de_vida(datetime.date(1980, 1, 19))
+    (8, 11)
+    >>> zodiaco.anio_personal(datetime.date(1990, 4, 3), 2026), zodiaco.rasgos_de_numero(11, "es")
+    (8, 'Intuición, inspiración, idealismo')
 
 Hay un port a PHP en php/ que da las mismas respuestas (datos/vectores.json las fija).
 
@@ -54,6 +58,7 @@ DATOS = Path(__file__).resolve().parent / "datos" / "signos.json"
 ANIO_NUEVO = Path(__file__).resolve().parent / "datos" / "anio-nuevo-lunar.json"
 ESPIRITUS = Path(__file__).resolve().parent / "datos" / "espiritus.json"
 ARBOLES = Path(__file__).resolve().parent / "datos" / "arboles.json"
+NUMEROLOGIA = Path(__file__).resolve().parent / "datos" / "numerologia.json"
 
 SISTEMAS = ("tropical", "sideral")
 
@@ -71,6 +76,7 @@ CHOROS = ("serafines", "querubines", "tronos", "dominaciones", "virtudes", "pote
 TIPOS_DE_ESPIRITU = ("angel", "demonio")
 RANGOS = ("rey", "duque", "principe", "marques", "conde", "presidente", "caballero")
 SISTEMAS_DE_ARBOLES = ("celta", "horoscopo", "nakshatra")
+NUMEROS_MAESTROS = (11, 22, 33)
 
 # Ayanamsa de Lahiri (la distancia entre el zodiaco tropical y el sideral): 23°51′11″ en J2000.0 y unos 50,29″ al año.
 _AYANAMSA_J2000 = 23.85306
@@ -122,6 +128,13 @@ def cargar_espiritus():
 def cargar_arboles():
     """Lee datos/arboles.json una sola vez: el calendario celta, el horóscopo de los árboles y los de los nakshatras."""
     with ARBOLES.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+@lru_cache(maxsize=1)
+def cargar_numerologia():
+    """Lee datos/numerologia.json una sola vez: los 12 números del camino de vida (1–9, 11, 22 y 33) y sus rasgos."""
+    with NUMEROLOGIA.open(encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -599,3 +612,53 @@ def rasgos_de(sistema, clave, idioma):
         if e[campo] == clave:
             return _frase(e["rasgos"], idioma, [arb["rasgos"], esp["cualidades"]], arb["terminos"]["separador"])
     raise ValueError(f"{sistema}: no hay ninguno con la clave {clave!r}")
+
+
+# --- Numerología: el número del camino de vida y el año personal ---
+# La numerología actual se atribuye a Pitágoras, pero es del siglo XX y no tiene respaldo científico.
+
+def reducir_numero(n, maestros=True):
+    """Suma los dígitos de `n` una y otra vez hasta dejar uno solo. Con `maestros`, 11, 22 y 33 no se reducen."""
+    if isinstance(n, bool) or not isinstance(n, int) or n < 0:
+        raise ValueError(f"n debe ser un entero mayor o igual que 0, no {n!r}")
+    while n > 9 and not (maestros and n in NUMEROS_MAESTROS):
+        n = sum(int(c) for c in str(n))
+    return n
+
+
+def camino_de_vida(fecha):
+    """El número del camino de vida de una fecha de nacimiento: 1 a 9, o uno de los maestros 11, 22 y 33.
+
+    Se suman todos los dígitos del día, el mes y el año, y se repite con el resultado hasta quedar en un dígito,
+    salvo que salga 11, 22 o 33, que se conservan. Existen otras formas de calcularlo (reducir antes cada parte,
+    por ejemplo) que a veces dan otro número: esta es la de «sumar todos los dígitos».
+    """
+    if not isinstance(fecha, datetime.date):
+        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    return reducir_numero(sum(int(c) for c in f"{fecha.year}{fecha.month}{fecha.day}"))
+
+
+def anio_personal(fecha, anio):
+    """El número del año personal (1 a 9) de quien nació en `fecha`, en el año `anio`.
+
+    Se suman los dígitos del día y el mes de nacimiento y los del año que se consulta, y se reducen a uno solo
+    (aquí sin números maestros: el año personal va de 1 a 9).
+    """
+    if not isinstance(fecha, datetime.date):
+        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    if isinstance(anio, bool) or not isinstance(anio, int) or anio < 1:
+        raise ValueError(f"anio debe ser un entero positivo, no {anio!r}")
+    return reducir_numero(sum(int(c) for c in f"{fecha.day}{fecha.month}{anio}"), maestros=False)
+
+
+def rasgos_de_numero(numero, idioma):
+    """Los rasgos de un número de la numerología (1–9, 11, 22 o 33) en un idioma, en una frase."""
+    num, arb, esp = cargar_numerologia(), cargar_arboles(), cargar_espiritus()
+    if idioma not in num["terminos"]["separador"]:
+        raise ValueError(f"idioma desconocido: {idioma!r}")
+    if isinstance(numero, bool) or not isinstance(numero, int):
+        raise TypeError(f"numero debe ser int, no {type(numero).__name__}")
+    for n in num["numeros"]:
+        if n["numero"] == numero:
+            return _frase(n["rasgos"], idioma, [arb["rasgos"], esp["cualidades"]], num["terminos"]["separador"])
+    raise ValueError(f"no hay un número {numero} en la numerología (son 1–9, 11, 22 y 33)")

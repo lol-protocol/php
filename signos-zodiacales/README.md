@@ -1,6 +1,6 @@
 # Signos del zodiaco y horóscopo chino
 
-Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 30 idiomas. Cada uno trae su nombre, una descripción breve y otra más larga de sus supuestas características, y sus rasgos: en el occidental, símbolo, fechas tropicales y siderales, elemento y modalidad; en el chino, rama terrestre, elemento y polaridad. `zodiaco.py` calcula el signo de una fecha y el animal y el elemento de un año. También trae los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia, con sus cualidades y el tramo del año de cada uno, y tres sistemas de árboles asociados a la fecha de nacimiento. Además, cada signo tiene una ilustración SVG en dos variantes: sobre cielo nocturno y transparente.
+Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 30 idiomas. Cada uno trae su nombre, una descripción breve y otra más larga de sus supuestas características, y sus rasgos: en el occidental, símbolo, fechas tropicales y siderales, elemento y modalidad; en el chino, rama terrestre, elemento y polaridad. `zodiaco.py` calcula el signo de una fecha y el animal y el elemento de un año. También trae los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia, con sus cualidades y el tramo del año de cada uno, tres sistemas de árboles asociados a la fecha de nacimiento y un extra de numerología. Además, cada signo tiene una ilustración SVG en dos variantes: sobre cielo nocturno y transparente.
 
 > **Aviso.** Las descripciones recogen lo que la astrología y el horóscopo chino *atribuyen* a cada signo. No hay evidencia científica de que la fecha de nacimiento influya en el carácter. Las constelaciones occidentales son figuras de la tradición, no grupos de estrellas físicamente relacionados, y los animales chinos **no tienen constelaciones**: sus figuras estelares son un dibujo hecho para este proyecto.
 
@@ -14,6 +14,7 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 
 | `datos/anio-nuevo-lunar.json` | La fecha del Año Nuevo lunar de cada año, de 1900 a 2099. |
 | `datos/espiritus.json` | Los 72 ángeles y los 72 demonios: nombre, coro o rango, legiones y cualidades, más un glosario de 158 cualidades traducidas a los 30 idiomas y los textos de las tablas. |
 | `datos/arboles.json` | Tres sistemas de árboles: el calendario celta (13 meses), el horóscopo de los árboles (21) y los árboles de los 27 nakshatras, con nombres en 30 idiomas, nombre científico y rasgos. |
+| `datos/numerologia.json` | El número del camino de vida (1 a 9 y los maestros 11, 22 y 33) con sus rasgos en 30 idiomas, y los textos de su tabla. |
 | `datos/vectores.json` | Las respuestas de `zodiaco.py` a un conjunto fijo de entradas (cada día del año, cada año de 1900 a 2099, cada par de signos…), que comparten Python y PHP. Generado, no editar a mano. |
 | `CHANGELOG.md` | Historial de cambios de los datos. Su primera entrada tiene que coincidir con `version` de `datos/signos.json`. |
 | `zodiaco.py` | Consultas: `signo_occidental(fecha)`, `cuspide(fecha)`, `animal_chino(anio)`, `animal_chino_de_fecha(fecha)`, `anios_del_animal(id, desde, hasta)`, `version()` y `revision(idioma)`, entre otras (ver «Uso»). |
@@ -221,6 +222,26 @@ zodiaco.rasgos_de("horoscopo", "olivo", "es")                              # 'Eq
 
 En PHP: `Zodiaco::arbolCelta()`, `arbolDeFecha()`, `nakshatraDeInstante()`, `longitudDeLaLuna()` y `rasgosDe()`; un `DateTime` de PHP siempre es un instante. Cada ficha de `por-idioma/` termina con las tres tablas. Los rasgos usan los glosarios de `arboles.json` y de `espiritus.json` (los conceptos que ya estaban en el segundo no se repiten: `validar_arboles()` lo exige).
 
+### Numerología
+
+Un extra pequeño: `camino_de_vida(fecha)` da el **número del camino de vida** de una fecha de nacimiento, y `anio_personal(fecha, anio)`, el número del año personal de quien nació en ella.
+
+- **El camino de vida** se calcula sumando **todos los dígitos** del día, el mes y el año, y repitiendo con el resultado hasta quedar en uno solo; **11, 22 y 33 («números maestros») se conservan**. Sale uno de 12 números: 1 a 9, 11, 22 y 33. Por ejemplo, el 3/04/1990 suma 1+9+9+0+4+3 = 26 → 2+6 = 8, y el 19/01/1980 suma 1+9+8+0+1+1+9 = 29 → 2+9 = 11. **Hay otras formas de calcularlo**, como reducir antes el día, el mes y el año por separado, que a veces dan otro número; aquí se usa la de «sumar todos los dígitos».
+- **El año personal** suma los dígitos del día y el mes de nacimiento y los del año que se consulta, y se reduce a uno solo, sin números maestros: va de 1 a 9. Para 2026 y el 3/04, es 3+4+2+0+2+6 = 17 → 8.
+- **De dónde viene.** Se atribuye a Pitágoras, pero la numerología actual es del siglo XX y **no tiene respaldo científico**: no hay un texto antiguo que dé estos significados a los números.
+- **Qué no hay.** No calcula el número de un nombre (exigiría transliterar nombres de cualquier alfabeto), solo de fechas.
+- **Los rasgos** de cada número son los resúmenes habituales de la numerología popular, escritos de memoria y no contrastados con una fuente. Reutilizan los glosarios que ya estaban traducidos (no hay conceptos nuevos), así que las traducciones tampoco las revisó una persona nativa.
+
+```python
+zodiaco.camino_de_vida(datetime.date(1990, 4, 3))        # 8
+zodiaco.camino_de_vida(datetime.date(1980, 1, 19))       # 11
+zodiaco.anio_personal(datetime.date(1990, 4, 3), 2026)   # 8
+zodiaco.rasgos_de_numero(11, "es")                       # 'Intuición, inspiración, idealismo'
+zodiaco.reducir_numero(29), zodiaco.reducir_numero(29, maestros=False)   # (11, 2)
+```
+
+En PHP: `Zodiaco::caminoDeVida()`, `anioPersonal()`, `rasgosDeNumero()` y `reducirNumero()`. Cada ficha de `por-idioma/` termina con la tabla de los 12 números.
+
 ### Versión y revisión
 
 `datos/signos.json` lleva `version` (versionado semántico: mayor si cambia el esquema o lo que devuelven las consultas, menor si se agregan datos o funciones, parche si se corrige un texto) y `CHANGELOG.md` cuenta qué cambió. `generar.py --comprobar` falla si la primera entrada del `CHANGELOG.md` no coincide con `version`: no se puede cambiar una sin la otra.
@@ -265,6 +286,17 @@ El coro de un ángel y su signo salen del número (de ocho en ocho y de seis en 
 ```
 
 `validar_arboles()` exige que los 13 meses cubran el año sin huecos ni solapes (cada uno de 28 días, y el 23/12 fuera), que el horóscopo cubra cada uno de los 366 días exactamente una vez, 27 nakshatras en orden, todos los idiomas en cada texto, que cada rasgo esté en un glosario y que no sobre ninguno.
+
+## Esquema de `datos/numerologia.json`
+
+```jsonc
+{
+  "terminos": { "titulo": { "es": "Numerología: el camino de vida", … }, "nota": {…}, "col_numero": {…}, "col_rasgos": {…}, "separador": {…} },
+  "numeros":  [ { "numero": 1, "rasgos": ["liderazgo", "independencia", "iniciativa"] }, … ]   // 1 a 9, 11, 22 y 33
+}
+```
+
+Los rasgos son claves de los glosarios de `arboles.json` y `espiritus.json`; `validar_numerologia()` exige los 12 números en orden y que cada clave exista.
 
 ## Esquema de `datos/signos.json`
 

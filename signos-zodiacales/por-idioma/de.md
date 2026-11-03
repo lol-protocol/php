@@ -491,3 +491,22 @@ In der vedischen Astrologie hat jedes der 27 Mondhäuser (Nakshatras) seinen eig
 | 27 | Revati | Mahua | *Madhuca longifolia* | Zärtlichkeit, Schutz, Mitgefühl |
 
 \* Die Quellen sind sich über den Baum dieses Nakshatras nicht einig.
+
+## Numerologie: der Lebensweg
+
+Man addiert alle Ziffern des Geburtsdatums immer wieder, bis eine einzige übrig bleibt; 11, 22 und 33 („Meisterzahlen“) werden nicht weiter reduziert. Sie wird Pythagoras zugeschrieben, doch die heutige Numerologie stammt aus dem 20. Jahrhundert und hat keine wissenschaftliche Grundlage. Nur kulturelle Referenz.
+
+| Zahl | Wesenszüge |
+| --- | --- |
+| 1 | Führungsstärke, Unabhängigkeit, Initiative |
+| 2 | Zusammenarbeit, Feinfühligkeit, Harmonie |
+| 3 | Kreativität, Freude, Kommunikation |
+| 4 | Disziplin, Beständigkeit, Arbeit |
+| 5 | Abenteuer, Freiheit, Anpassungsfähigkeit |
+| 6 | Zuhause, Großzügigkeit, Liebe |
+| 7 | Weisheit, Einsamkeit, Forschung |
+| 8 | Ehrgeiz, Autorität, Reichtum |
+| 9 | Mitgefühl, Großzügigkeit, Idealismus |
+| 11 | Intuition, Inspiration, Idealismus |
+| 22 | Bauen, Entschlossenheit, Führungsstärke |
+| 33 | Mitgefühl, Zärtlichkeit, Hingabe |

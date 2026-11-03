@@ -491,3 +491,22 @@ In Vedic astrology each of the 27 lunar mansions (nakshatras) has its own tree. 
 | 27 | Revati | Mahua | *Madhuca longifolia* | Tenderness, protection, compassion |
 
 \* Sources disagree on this nakshatra's tree.
+
+## Numerology: the life path
+
+All the digits of the birth date are added, again and again, until one digit is left; 11, 22 and 33 ("master numbers") are not reduced further. It is attributed to Pythagoras, but today's numerology dates from the 20th century and has no scientific basis. Cultural reference only.
+
+| Number | Traits |
+| --- | --- |
+| 1 | Leadership, independence, initiative |
+| 2 | Cooperation, sensitivity, harmony |
+| 3 | Creativity, joy, communication |
+| 4 | Discipline, stability, work |
+| 5 | Adventure, freedom, adaptability |
+| 6 | Home, generosity, love |
+| 7 | Wisdom, solitude, research |
+| 8 | Ambition, authority, wealth |
+| 9 | Compassion, generosity, idealism |
+| 11 | Intuition, inspiration, idealism |
+| 22 | Building, determination, leadership |
+| 33 | Compassion, tenderness, devotion |

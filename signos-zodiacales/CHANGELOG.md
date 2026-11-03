@@ -12,7 +12,8 @@ Versionado semántico: la **mayor** cambia si se rompe el esquema de `datos/sign
   - **El horóscopo de los árboles** («druídico» o «galo»): 21 árboles con sus tramos de fechas, cuatro de un solo día (los equinoccios y los solsticios). Popular y de creación moderna; las fechas varían según la fuente.
   - **Los árboles de los 27 nakshatras** de la astrología védica. Depende de la posición de la Luna al nacer, no de la fecha; en 11 de ellos las fuentes no coinciden en el árbol y las fichas lo marcan.
 - `zodiaco.py` y `php/`: `arbol_celta`, `arbol_de_fecha`, `nakshatra_de_instante`, `longitud_de_la_luna` y `rasgos_de`. La Luna se calcula con la serie abreviada de Meeus (error de 0,05° como máximo entre 1900 y 2100, comprobado contra una efeméride) y el ayanamsa de Lahiri.
-- Cada ficha de `por-idioma/` termina con las tres tablas.
+- `datos/numerologia.json`: el número del camino de vida (1 a 9 y los maestros 11, 22 y 33) con sus rasgos en los 30 idiomas, y `camino_de_vida`, `anio_personal`, `reducir_numero` y `rasgos_de_numero` en `zodiaco.py` y `php/`. Se calcula sumando todos los dígitos de la fecha. Los rasgos reutilizan los glosarios existentes.
+- Cada ficha de `por-idioma/` termina con las tres tablas de árboles y la de numerología.
 - `datos/vectores.json` cubre las funciones nuevas.
 
 ## [1.2.0] - 2026-11-03

@@ -58,6 +58,10 @@ def textos_de(datos):
     for clave, a in arb["arboles"].items():
         for codigo, texto in a["nombres"].items():
             yield f"arboles/arboles/{clave}", codigo, texto
+    for clave, por_idioma in zodiaco.cargar_numerologia()["terminos"].items():
+        if clave != "separador":
+            for codigo, texto in por_idioma.items():
+                yield f"numerologia/terminos/{clave}", codigo, texto
 
 
 def dias_del_anio_bisiesto():
@@ -712,7 +716,8 @@ class PruebasDeTextosTraducidos(unittest.TestCase):
                                          esp["angeles_titulo"][codigo], esp["demonios_titulo"][codigo],
                                          zodiaco.cargar_arboles()["terminos"]["celta_titulo"][codigo],
                                          zodiaco.cargar_arboles()["terminos"]["horoscopo_titulo"][codigo],
-                                         zodiaco.cargar_arboles()["terminos"]["nakshatra_titulo"][codigo]], codigo)
+                                         zodiaco.cargar_arboles()["terminos"]["nakshatra_titulo"][codigo],
+                                         zodiaco.cargar_numerologia()["terminos"]["titulo"][codigo]], codigo)
 
     def test_cada_signo_occidental_trae_sus_decanatos_en_la_ficha(self):
         ficha = self.archivos[generar.SALIDA_MD / "es.md"]
@@ -766,6 +771,10 @@ class PruebasDeVectores(unittest.TestCase):
         self.assertEqual(len(v["nakshatra_de_instante"]), len(generar.INSTANTES_LUNARES))
         self.assertEqual(len(v["rasgos_de"]["es"]), 13 + 21 + 27)
         self.assertEqual(set(v["rasgos_de_sha256"]), set(generar.IDIOMAS))
+        self.assertEqual(len(v["camino_de_vida"]), len(generar.FECHAS_NUMEROLOGICAS))
+        self.assertEqual({n for _, n in v["camino_de_vida"]}, {1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33})
+        self.assertEqual(len(v["rasgos_de_numero"]["es"]), 12)
+        self.assertEqual({len(x) for c, x in v["rasgos_de_numero"].items() if c != "es"}, {3})
         self.assertEqual({len(x) for c, x in v["cualidades_de"].items() if c != "es"}, {len(generar.MUESTRA_DE_CUALIDADES)})
 
     def test_el_archivo_committeado_es_el_que_genera_generar_py(self):
@@ -773,7 +782,7 @@ class PruebasDeVectores(unittest.TestCase):
 
     def test_cada_caso_de_error_lanza_excepcion_en_python(self):
         con_fecha = {"signo_occidental", "cuspide", "animal_chino_de_fecha", "angel_de_fecha", "demonio_de_fecha",
-                     "arbol_celta", "arbol_de_fecha"}
+                     "arbol_celta", "arbol_de_fecha", "camino_de_vida", "anio_personal"}
         for caso in self.vectores["errores"]:
             args = list(caso["args"])
             if caso["funcion"] in con_fecha:
@@ -1188,6 +1197,116 @@ class PruebasDeValidacionDeArboles(unittest.TestCase):
     def test_detecta_un_termino_que_falta(self):
         del self.arb["terminos"]["celta_nota"]
         self.assertTrue(self.errores_con("arboles/terminos"))
+
+
+class PruebasDeNumerologia(unittest.TestCase):
+    """El número del camino de vida, el año personal y los rasgos de los 12 números."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.num = zodiaco.cargar_numerologia()
+
+    def test_los_datos_pasan_la_validacion(self):
+        self.assertEqual(generar.validar_numerologia(self.num, zodiaco.cargar_arboles(), zodiaco.cargar_espiritus()), [])
+
+    def test_reducir_numero(self):
+        for n, con_maestros, sin_maestros in ((0, 0, 0), (9, 9, 9), (10, 1, 1), (29, 11, 2), (38, 11, 2), (44, 8, 8), (22, 22, 4),
+                                              (33, 33, 6), (99, 9, 9), (1999, 1, 1)):  # 1999 → 28 → 10 → 1
+            self.assertEqual(zodiaco.reducir_numero(n), con_maestros, n)
+            self.assertEqual(zodiaco.reducir_numero(n, maestros=False), sin_maestros, n)
+
+    def test_reducir_numero_rechaza_negativos_y_lo_que_no_es_un_entero(self):
+        for malo in (-1, True, 2.5, "9"):
+            with self.assertRaises(ValueError):
+                zodiaco.reducir_numero(malo)
+
+    def test_el_camino_de_vida_en_fechas_conocidas(self):
+        casos = {(1990, 4, 3): 8, (1980, 1, 19): 11, (1980, 1, 3): 22, (1980, 4, 29): 33, (2000, 1, 1): 4, (1999, 12, 31): 8}
+        for (a, m, d), esperado in casos.items():
+            self.assertEqual(zodiaco.camino_de_vida(datetime.date(a, m, d)), esperado, (a, m, d))
+
+    def test_el_camino_de_vida_siempre_es_uno_de_los_12_y_salen_los_12(self):
+        vistos, dia = set(), datetime.date(1900, 1, 1)
+        while dia.year < 2100:
+            vistos.add(zodiaco.camino_de_vida(dia))
+            dia += datetime.timedelta(days=1)
+        self.assertEqual(vistos, {1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33})
+
+    def test_el_camino_de_vida_acepta_un_datetime(self):
+        self.assertEqual(zodiaco.camino_de_vida(datetime.datetime(1990, 4, 3, 23, 59)), 8)
+
+    def test_el_anio_personal_va_de_1_a_9(self):
+        self.assertEqual(zodiaco.anio_personal(datetime.date(1990, 4, 3), 2026), 8)   # 3+4+2+0+2+6 = 17 → 8
+        self.assertEqual(zodiaco.anio_personal(datetime.date(1990, 4, 3), 2027), 9)
+        self.assertEqual(zodiaco.anio_personal(datetime.date(1990, 4, 3), 2028), 1)   # 3+4+2+0+2+8 = 19 → 10 → 1
+        self.assertEqual({zodiaco.anio_personal(datetime.date(1990, 4, 3), a) for a in range(1990, 2100)}, set(range(1, 10)))
+        self.assertEqual(zodiaco.anio_personal(datetime.date(1980, 1, 19), 2026), 3)  # 1+9+1+2+0+2+6 = 21 → 3
+
+    def test_el_anio_personal_rechaza_entradas_no_validas(self):
+        with self.assertRaises(TypeError):
+            zodiaco.anio_personal("1990-04-03", 2026)
+        for malo in (0, -5, "2026", True):
+            with self.assertRaises(ValueError):
+                zodiaco.anio_personal(datetime.date(1990, 4, 3), malo)
+
+    def test_el_camino_de_vida_rechaza_lo_que_no_es_una_fecha(self):
+        with self.assertRaises(TypeError):
+            zodiaco.camino_de_vida("1990-04-03")
+
+    def test_los_rasgos_de_los_12_numeros_en_espanol(self):
+        esperados = {1: "Liderazgo, independencia, iniciativa", 11: "Intuición, inspiración, idealismo",
+                     22: "Construcción, determinación, liderazgo", 33: "Compasión, ternura, devoción"}
+        for numero, texto in esperados.items():
+            self.assertEqual(zodiaco.rasgos_de_numero(numero, "es"), texto)
+
+    def test_los_rasgos_salen_en_los_30_idiomas_con_su_separador(self):
+        for n in self.num["numeros"]:
+            for codigo in generar.IDIOMAS:
+                self.assertTrue(zodiaco.rasgos_de_numero(n["numero"], codigo).strip(), (n["numero"], codigo))
+        self.assertIn("،", zodiaco.rasgos_de_numero(1, "ar"))
+        self.assertIn("、", zodiaco.rasgos_de_numero(1, "ja"))
+
+    def test_rasgos_de_numero_rechaza_entradas_no_validas(self):
+        for args, error in (((10, "es"), ValueError), ((1, "xx"), ValueError), (("1", "es"), TypeError), ((True, "es"), TypeError)):
+            with self.assertRaises(error):
+                zodiaco.rasgos_de_numero(*args)
+
+    def test_cada_ficha_trae_la_tabla_con_los_12_numeros(self):
+        for codigo in generar.IDIOMAS:
+            ficha = generar.ficha_de(cargar_datos(), codigo)
+            tramo = ficha[ficha.index(self.num["terminos"]["titulo"][codigo]):]
+            filas = [l for l in tramo.splitlines() if re.match(r"\| \d+ \|", l)]
+            self.assertEqual([l.split(" | ")[0].strip("| ") for l in filas], ["1", "2", "3", "4", "5", "6", "7", "8", "9", "11", "22", "33"], codigo)
+            self.assertIn(self.num["terminos"]["nota"][codigo], ficha, codigo)
+
+
+class PruebasDeValidacionDeNumerologia(unittest.TestCase):
+    def setUp(self):
+        self.num = copy.deepcopy(zodiaco.cargar_numerologia())
+        self.arb, self.esp = zodiaco.cargar_arboles(), zodiaco.cargar_espiritus()
+
+    def errores_con(self, texto):
+        return [e for e in generar.validar_numerologia(self.num, self.arb, self.esp) if texto in e]
+
+    def test_detecta_un_numero_que_falta_o_esta_desordenado(self):
+        del self.num["numeros"][9]
+        self.assertTrue(self.errores_con("tienen que ser 1 a 9, 11, 22 y 33"))
+
+    def test_detecta_un_rasgo_que_no_esta_en_ningun_glosario(self):
+        self.num["numeros"][0]["rasgos"].append("inventado")
+        self.assertTrue(self.errores_con("'inventado' no está en ningún glosario"))
+
+    def test_detecta_un_texto_sin_un_idioma_o_vacio(self):
+        del self.num["terminos"]["nota"]["fi"]
+        self.assertTrue(self.errores_con("numerologia/terminos/nota: no tiene exactamente"))
+        self.num["terminos"]["titulo"]["es"] = " "
+        self.assertTrue(self.errores_con("numerologia/terminos/titulo/es"))
+
+    def test_detecta_un_termino_que_falta_y_rasgos_repetidos(self):
+        del self.num["terminos"]["col_numero"]
+        self.assertTrue(self.errores_con("numerologia/terminos"))
+        self.num["numeros"][1]["rasgos"] = ["armonia", "armonia"]
+        self.assertTrue(self.errores_con("numerologia/numeros/2: de 1 a 5 rasgos"))
 
 
 if __name__ == "__main__":

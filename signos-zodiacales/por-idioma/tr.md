@@ -491,3 +491,22 @@ Vedik astrolojide 27 ay konağının (nakshatra) her birinin bir ağacı vardır
 | 27 | Revati | Mahua | *Madhuca longifolia* | Şefkatli yumuşaklık, koruma, şefkat |
 
 \* Kaynaklar bu nakshatra'nın ağacı konusunda hemfikir değil.
+
+## Numeroloji: yaşam yolu
+
+Doğum tarihindeki tüm rakamlar tek bir rakam kalana kadar defalarca toplanır; 11, 22 ve 33 («usta sayılar») daha fazla indirgenmez. Pisagor'a atfedilir, ancak bugünkü numeroloji 20. yüzyıla aittir ve bilimsel dayanağı yoktur. Yalnızca kültürel bilgi.
+
+| Sayı | Özellikler |
+| --- | --- |
+| 1 | Liderlik, bağımsızlık, girişimcilik |
+| 2 | İş birliği, duyarlılık, uyum |
+| 3 | Yaratıcılık, neşe, iletişim |
+| 4 | Disiplin, istikrar, çalışma hayatı |
+| 5 | Macera, özgürlük, uyum sağlama |
+| 6 | Yuva, cömertlik, aşk |
+| 7 | Bilgelik, yalnızlık, araştırma |
+| 8 | Hırs, otorite, zenginlik |
+| 9 | Şefkat, cömertlik, idealizm |
+| 11 | Sezgi, ilham, idealizm |
+| 22 | İnşa, kararlılık, liderlik |
+| 33 | Şefkat, şefkatli yumuşaklık, bağlılık duygusu |

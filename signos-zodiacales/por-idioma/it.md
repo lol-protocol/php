@@ -491,3 +491,22 @@ Nell'astrologia vedica ognuna delle 27 dimore lunari (nakshatra) ha il suo alber
 | 27 | Revati | Mahua | *Madhuca longifolia* | Tenerezza, protezione, compassione |
 
 \* Le fonti non concordano sull'albero di questo nakshatra.
+
+## Numerologia: il cammino di vita
+
+Si sommano tutte le cifre della data di nascita, più volte, fino a ottenerne una sola; 11, 22 e 33 («numeri maestri») non si riducono ulteriormente. Si attribuisce a Pitagora, ma la numerologia attuale è del Novecento e non ha basi scientifiche. Solo riferimento culturale.
+
+| Numero | Tratti |
+| --- | --- |
+| 1 | Leadership, indipendenza, iniziativa |
+| 2 | Cooperazione, sensibilità, armonia |
+| 3 | Creatività, gioia, comunicazione |
+| 4 | Disciplina, stabilità, lavoro |
+| 5 | Avventura, libertà, adattabilità |
+| 6 | Casa, generosità, amore |
+| 7 | Saggezza, solitudine, ricerca |
+| 8 | Ambizione, autorità, ricchezza |
+| 9 | Compassione, generosità, idealismo |
+| 11 | Intuizione, ispirazione, idealismo |
+| 22 | Costruzione, determinazione, leadership |
+| 33 | Compassione, tenerezza, devozione |

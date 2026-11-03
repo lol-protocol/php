@@ -276,6 +276,34 @@ def validar_arboles(arb, esp):
     return errores
 
 
+TERMINOS_DE_NUMEROLOGIA = {"titulo", "nota", "col_numero", "col_rasgos", "separador"}
+
+
+def validar_numerologia(num, arb, esp):
+    """Devuelve la lista de problemas de datos/numerologia.json (vacía si está bien)."""
+    errores = []
+    if set(num) != {"terminos", "numeros"}:
+        return ["numerologia: tiene que tener terminos y numeros, y nada más"]
+    if set(num["terminos"]) != TERMINOS_DE_NUMEROLOGIA:
+        errores.append(f"numerologia/terminos: faltan o sobran {sorted(TERMINOS_DE_NUMEROLOGIA ^ set(num['terminos']))}")
+    for clave, por_idioma in num["terminos"].items():
+        if set(por_idioma) != set(IDIOMAS):
+            errores.append(f"numerologia/terminos/{clave}: no tiene exactamente los {len(IDIOMAS)} idiomas")
+        for codigo, texto in por_idioma.items():
+            if not isinstance(texto, str) or not texto.strip() or (texto != texto.strip() and clave != "separador"):
+                errores.append(f"numerologia/terminos/{clave}/{codigo}: texto vacío o con espacios de más")
+    if [n.get("numero") for n in num["numeros"]] != [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33]:
+        errores.append("numerologia/numeros: tienen que ser 1 a 9, 11, 22 y 33, en ese orden")
+    for n in num["numeros"]:
+        q = n.get("rasgos", [])
+        if not 1 <= len(q) <= 5 or len(set(q)) != len(q):
+            errores.append(f"numerologia/numeros/{n.get('numero')}: de 1 a 5 rasgos, sin repetir")
+        for c in q:
+            if c not in arb["rasgos"] and c not in esp["cualidades"]:
+                errores.append(f"numerologia/numeros/{n.get('numero')}: el rasgo {c!r} no está en ningún glosario")
+    return errores
+
+
 def validar(datos):
     """Devuelve la lista de problemas de datos/signos.json (vacía si está bien)."""
     errores = []
@@ -429,6 +457,7 @@ def cargar():
         anio_nuevo = json.load(f)["fechas"]
     errores = (validar(datos) + validar_anio_nuevo(anio_nuevo) + validar_espiritus(zodiaco.cargar_espiritus())
                + validar_arboles(zodiaco.cargar_arboles(), zodiaco.cargar_espiritus())
+               + validar_numerologia(zodiaco.cargar_numerologia(), zodiaco.cargar_arboles(), zodiaco.cargar_espiritus())
                + validar_changelog(CHANGELOG.read_text(encoding="utf-8") if CHANGELOG.exists() else "", datos.get("version")))
     if errores:
         sys.exit("Los datos no son válidos:\n  " + "\n  ".join(errores))
@@ -633,6 +662,16 @@ def seccion_de_arboles(codigo):
     return lineas + ["", t["variable_nota"].replace("*", "\\*", 1), ""]
 
 
+def seccion_de_numerologia(codigo):
+    """La tabla de numerología al final de cada ficha: los 12 números del camino de vida y sus rasgos."""
+    num = zodiaco.cargar_numerologia()
+    t = {k: v[codigo] for k, v in num["terminos"].items()}
+    lineas = [f"## {t['titulo']}", "", t["nota"], "", _fila(t["col_numero"], t["col_rasgos"]), "| --- | --- |"]
+    for n in num["numeros"]:
+        lineas.append(_fila(n["numero"], zodiaco.rasgos_de_numero(n["numero"], codigo)))
+    return lineas + [""]
+
+
 def texto_de_revision(estado):
     if estado["estado"] == "revisado":
         return f"Traducción revisada por {estado['por']} el {estado['fecha']}."
@@ -669,6 +708,7 @@ def ficha_de(datos, codigo):
             lineas += [s["descripciones"][codigo], "", s["descripciones_largas"][codigo], ""]
     lineas += seccion_de_espiritus(codigo)
     lineas += seccion_de_arboles(codigo)
+    lineas += seccion_de_numerologia(codigo)
     if rtl:
         lineas += ["</div>", ""]
     return "\n".join(lineas)
@@ -840,7 +880,21 @@ CASOS_DE_ERROR = (
     ("rasgos_de", ["celta", "beth", "xx"]),
     ("rasgos_de", ["horoscopo", "beth", "es"]),
     ("nakshatra_de_instante", ["1992-04-12"]),
+    ("rasgos_de_numero", [10, "es"]),
+    ("rasgos_de_numero", [1, "xx"]),
+    ("rasgos_de_numero", ["1", "es"]),
+    ("rasgos_de_numero", [True, "es"]),
+    ("anio_personal", ["1990-04-03", 0]),
+    ("anio_personal", ["1990-04-03", "2026"]),
+    ("anio_personal", ["1990-04-03", True]),
+    ("reducir_numero", [-5]),
+    ("reducir_numero", [True]),
 )
+
+# Fechas para camino_de_vida y anio_personal: una cada 53 días de 1900 a 2099, más algunas que dan los números maestros (22, 11 y 33).
+FECHAS_NUMEROLOGICAS = tuple(
+    (datetime.date(1900, 1, 1) + datetime.timedelta(days=53 * k)).isoformat() for k in range(1377)
+) + ("1980-01-03", "1980-01-19", "1980-04-29", "1999-12-31", "2000-01-01", "2024-02-29")
 
 # Instantes para nakshatra_de_instante: uno cada 243 días y 7 horas a partir de 1900, de 1900 a 2099.
 INSTANTES_LUNARES = tuple(
@@ -944,6 +998,15 @@ def vectores_de(datos):
         },
         "rasgos_de_sha256": {
             codigo: hashlib.sha256("\n".join(zodiaco.rasgos_de(s, k, codigo) for s, k in _claves_de_arboles()).encode("utf-8")).hexdigest()
+            for codigo in IDIOMAS
+        },
+        "camino_de_vida": [[f, zodiaco.camino_de_vida(datetime.date.fromisoformat(f))] for f in FECHAS_NUMEROLOGICAS],
+        "anio_personal": [[f, anio, zodiaco.anio_personal(datetime.date.fromisoformat(f), anio)]
+                          for f in FECHAS_NUMEROLOGICAS[::13] for anio in (1999, 2026)],
+        "reducir_numero": [[n, zodiaco.reducir_numero(n), zodiaco.reducir_numero(n, False)] for n in list(range(0, 200)) + [999, 1999, 29999]],
+        "rasgos_de_numero": {
+            codigo: [[n["numero"], zodiaco.rasgos_de_numero(n["numero"], codigo)]
+                     for n in zodiaco.cargar_numerologia()["numeros"][(0 if codigo == "es" else 9):]]
             for codigo in IDIOMAS
         },
         "errores": [{"funcion": f, "args": a} for f, a in CASOS_DE_ERROR],

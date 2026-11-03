@@ -491,3 +491,22 @@ Ve védské astrologii má každý z 27 měsíčních domů (nakšater) svůj st
 | 27 | Revati | Mahua | *Madhuca longifolia* | Něha, ochrana, soucit |
 
 \* Zdroje se v tomto stromu nakšatry rozcházejí.
+
+## Numerologie: životní cesta
+
+Sčítají se všechny číslice data narození, znovu a znovu, dokud nezbyde jediná; 11, 22 a 33 («mistrovská čísla») se dále nezkracují. Připisuje se Pythagorovi, ale dnešní numerologie pochází z 20. století a nemá vědecký základ. Pouze kulturní odkaz.
+
+| Číslo | Rysy |
+| --- | --- |
+| 1 | Vedení, nezávislost, iniciativa |
+| 2 | Spolupráce, citlivost, soulad |
+| 3 | Kreativita, radost, komunikace |
+| 4 | Kázeň, stabilita, práce |
+| 5 | Dobrodružství, svoboda, přizpůsobivost |
+| 6 | Domov, štědrost, láska |
+| 7 | Moudrost, samota, výzkum |
+| 8 | Ambice, autorita, bohatství |
+| 9 | Soucit, štědrost, idealismus |
+| 11 | Intuice, inspirace, idealismus |
+| 22 | Stavění, odhodlání, vedení |
+| 33 | Soucit, něha, oddanost |

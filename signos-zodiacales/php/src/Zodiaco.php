@@ -40,6 +40,8 @@ final class Zodiaco
 
     public const SISTEMAS_DE_ARBOLES = ['celta', 'horoscopo', 'nakshatra'];
 
+    public const NUMEROS_MAESTROS = [11, 22, 33];
+
     /** Ayanamsa de Lahiri (la distancia entre el zodiaco tropical y el sideral): 23°51′11″ en J2000.0 y unos 50,29″ al año. */
     private const AYANAMSA_J2000 = 23.85306;
     private const AYANAMSA_POR_ANIO = 50.29 / 3600;
@@ -77,6 +79,9 @@ final class Zodiaco
     /** @var array<string, mixed>|null */
     private static ?array $arboles = null;
 
+    /** @var array<string, mixed>|null */
+    private static ?array $numerologia = null;
+
     /** @return array<string, mixed> Lee datos/signos.json una sola vez. */
     public static function cargarDatos(): array
     {
@@ -93,6 +98,12 @@ final class Zodiaco
     public static function cargarArboles(): array
     {
         return self::$arboles ??= self::leerJson(__DIR__ . '/../../datos/arboles.json');
+    }
+
+    /** @return array<string, mixed> Lee datos/numerologia.json una sola vez: los 12 números del camino de vida y sus rasgos. */
+    public static function cargarNumerologia(): array
+    {
+        return self::$numerologia ??= self::leerJson(__DIR__ . '/../../datos/numerologia.json');
     }
 
     /** @return array<int, string> {año: fecha ISO del Año Nuevo lunar}, de 1900 a 2099. */
@@ -586,6 +597,59 @@ final class Zodiaco
         throw new InvalidArgumentException("$sistema: no hay ninguno con la clave '$clave'");
     }
 
+    // --- Numerología: el número del camino de vida y el año personal ---
+    // La numerología actual se atribuye a Pitágoras, pero es del siglo XX y no tiene respaldo científico.
+
+    /** Suma los dígitos de $n una y otra vez hasta dejar uno solo. Con $maestros, 11, 22 y 33 no se reducen. */
+    public static function reducirNumero(int $n, bool $maestros = true): int
+    {
+        if ($n < 0) {
+            throw new InvalidArgumentException("n debe ser un entero mayor o igual que 0, no $n");
+        }
+        while ($n > 9 && !($maestros && in_array($n, self::NUMEROS_MAESTROS, true))) {
+            $n = array_sum(array_map('intval', str_split((string) $n)));
+        }
+        return $n;
+    }
+
+    /**
+     * El número del camino de vida de una fecha de nacimiento: 1 a 9, o uno de los maestros 11, 22 y 33. Se suman
+     * todos los dígitos del día, el mes y el año, y se repite con el resultado hasta quedar en un dígito, salvo que
+     * salga 11, 22 o 33. Existen otras formas de calcularlo (reducir antes cada parte, por ejemplo) que a veces dan
+     * otro número: esta es la de «sumar todos los dígitos».
+     */
+    public static function caminoDeVida(DateTimeInterface $fecha): int
+    {
+        return self::reducirNumero(self::sumaDeDigitos($fecha->format('Y') . $fecha->format('n') . $fecha->format('j')));
+    }
+
+    /**
+     * El número del año personal (1 a 9) de quien nació en $fecha, en el año $anio: se suman los dígitos del día y el
+     * mes de nacimiento y los del año que se consulta, y se reducen a uno solo (aquí sin números maestros).
+     */
+    public static function anioPersonal(DateTimeInterface $fecha, int $anio): int
+    {
+        if ($anio < 1) {
+            throw new InvalidArgumentException("anio debe ser un entero positivo, no $anio");
+        }
+        return self::reducirNumero(self::sumaDeDigitos($fecha->format('j') . $fecha->format('n') . $anio), false);
+    }
+
+    /** Los rasgos de un número de la numerología (1–9, 11, 22 o 33) en un idioma, en una frase. */
+    public static function rasgosDeNumero(int $numero, string $idioma): string
+    {
+        $num = self::cargarNumerologia();
+        if (!isset($num['terminos']['separador'][$idioma])) {
+            throw new InvalidArgumentException("idioma desconocido: '$idioma'");
+        }
+        foreach ($num['numeros'] as $n) {
+            if ($n['numero'] === $numero) {
+                return self::frase($n['rasgos'], $idioma, [self::cargarArboles()['rasgos'], self::cargarEspiritus()['cualidades']], $num['terminos']['separador']);
+            }
+        }
+        throw new InvalidArgumentException("no hay un número $numero en la numerología (son 1–9, 11, 22 y 33)");
+    }
+
     // --- auxiliares ---
 
     /** @return array<string, mixed> */
@@ -775,5 +839,10 @@ final class Zodiaco
     private static function modulo360(float $grados): float
     {
         return $grados - 360.0 * floor($grados / 360.0);
+    }
+
+    private static function sumaDeDigitos(string $texto): int
+    {
+        return array_sum(array_map('intval', str_split($texto)));
     }
 }

@@ -192,8 +192,24 @@ foreach ($vectores['rasgos_de_sha256'] as $idioma => $huella) {
     igual($huella, hash('sha256', implode("\n", $frases)), "rasgos_de (los 61) $idioma");
 }
 
+// La numerología: el camino de vida de 1 377 fechas, el año personal, la reducción y los rasgos de los 12 números.
+foreach ($vectores['camino_de_vida'] as [$fecha, $esperado]) {
+    igual($esperado, Zodiaco::caminoDeVida(new DateTimeImmutable($fecha, new DateTimeZone('UTC'))), "camino_de_vida $fecha");
+}
+foreach ($vectores['anio_personal'] as [$fecha, $anio, $esperado]) {
+    igual($esperado, Zodiaco::anioPersonal(new DateTimeImmutable($fecha, new DateTimeZone('UTC')), $anio), "anio_personal $fecha $anio");
+}
+foreach ($vectores['reducir_numero'] as [$n, $conMaestros, $sinMaestros]) {
+    igual([$conMaestros, $sinMaestros], [Zodiaco::reducirNumero($n), Zodiaco::reducirNumero($n, false)], "reducir_numero $n");
+}
+foreach ($vectores['rasgos_de_numero'] as $idioma => $filas) {
+    foreach ($filas as [$numero, $texto]) {
+        igual($texto, Zodiaco::rasgosDeNumero($numero, $idioma), "rasgos_de_numero $numero $idioma");
+    }
+}
+
 // Los casos que tienen que fallar, los mismos que prueba Python.
-$conFecha = ['signo_occidental', 'cuspide', 'animal_chino_de_fecha', 'angel_de_fecha', 'demonio_de_fecha', 'arbol_celta', 'arbol_de_fecha'];
+$conFecha = ['signo_occidental', 'cuspide', 'animal_chino_de_fecha', 'angel_de_fecha', 'demonio_de_fecha', 'arbol_celta', 'arbol_de_fecha', 'camino_de_vida', 'anio_personal'];
 foreach ($vectores['errores'] as $caso) {
     $args = $caso['args'];
     if (in_array($caso['funcion'], $conFecha, true)) {
@@ -229,6 +245,10 @@ igual('serbal', Zodiaco::arbolDeFecha($tres)['arbol']['nombres']['es'], 'ejemplo
 $luna = Zodiaco::nakshatraDeInstante(new DateTimeImmutable('1992-04-12T00:00:00+00:00'));
 igual(['Ashlesha', 'Nagkesar'], [$luna['nakshatra']['nombre'], $luna['nakshatra']['arbol']], 'ejemplo: nakshatra del 12/04/1992');
 igual('Equilibrio, sabiduría, paz', Zodiaco::rasgosDe('horoscopo', 'olivo', 'es'), 'ejemplo: rasgos del olivo');
+// Ejemplos de la numerología, como los del README.
+igual([8, 11, 22, 33], array_map(fn (string $f): int => Zodiaco::caminoDeVida(new DateTimeImmutable($f, $u)), ['1990-04-03', '1980-01-19', '1980-01-03', '1980-04-29']), 'ejemplo: caminos de vida');
+igual(8, Zodiaco::anioPersonal($tres, 2026), 'ejemplo: año personal');
+igual('Intuición, inspiración, idealismo', Zodiaco::rasgosDeNumero(11, 'es'), 'ejemplo: rasgos del 11');
 // Un datetime con huso en animalChinoDeFecha cuenta por su día local, no por el de China.
 igual('serpiente', Zodiaco::animalChinoDeFecha(new DateTimeImmutable('2026-02-16T20:00:00+00:00'))['signo']['id'], 'ejemplo: el día local manda en animalChinoDeFecha');
 igual('caballo', Zodiaco::animalChinoDeInstante(new DateTimeImmutable('2026-02-16T20:00:00+00:00'))['signo']['id'], 'ejemplo: el instante pasa a la hora de China');

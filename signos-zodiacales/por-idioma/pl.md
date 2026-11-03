@@ -491,3 +491,22 @@ W astrologii wedyjskiej każdy z 27 domów księżycowych (nakszatr) ma swoje dr
 | 27 | Revati | Mahua | *Madhuca longifolia* | Czułość, ochrona, współczucie |
 
 \* Źródła nie zgadzają się co do drzewa tej nakszatry.
+
+## Numerologia: droga życia
+
+Dodaje się wszystkie cyfry daty urodzenia, raz po raz, aż zostanie jedna; 11, 22 i 33 („liczby mistrzowskie”) nie są dalej redukowane. Przypisuje się ją Pitagorasowi, ale dzisiejsza numerologia pochodzi z XX wieku i nie ma podstaw naukowych. Wyłącznie odniesienie kulturowe.
+
+| Liczba | Cechy |
+| --- | --- |
+| 1 | Przywództwo, niezależność, inicjatywa |
+| 2 | Współpraca, wrażliwość, harmonia |
+| 3 | Kreatywność, radość, komunikacja |
+| 4 | Dyscyplina, stabilność, praca |
+| 5 | Przygoda, wolność, zdolność przystosowania |
+| 6 | Dom, hojność, miłość |
+| 7 | Mądrość, samotność, badania |
+| 8 | Ambicja, autorytet, bogactwo |
+| 9 | Współczucie, hojność, idealizm |
+| 11 | Intuicja, natchnienie, idealizm |
+| 22 | Budowa, determinacja, przywództwo |
+| 33 | Współczucie, czułość, oddanie |
