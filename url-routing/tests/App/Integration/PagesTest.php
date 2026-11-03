@@ -518,6 +518,44 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString('hreflang="fr"', $sin);
     }
 
+    /**
+     * With the check digit on, an id that does not add up is a 404 that never reaches the database; one that does
+     * add up is looked up as always. 6128473101 happens to be valid (the demo's ids are plain numbers), 6128473105
+     * exists and is not: with the setting off both are the pages they are.
+     */
+    public function testACheckDigitTurnsAwayAMisspelledIdWithoutAQuery(): void
+    {
+        $activo = ['IDS_DIGITO_VERIFICADOR' => 'true'];
+
+        $this->assertSame(200, $this->get(self::GENEALOGIA, '/6128473101/', entorno: $activo)[0], 'valid and present');
+        [$codigo, $cuerpo] = $this->get(self::GENEALOGIA, '/6128473105/', entorno: $activo);
+        $this->assertSame(404, $codigo, 'present, but its digit does not add up');
+        $this->assertStringContainsString('dígito', $cuerpo);
+        $this->assertSame(404, $this->get(self::GENEALOGIA, '/6128473105/1/', entorno: $activo)[0], 'also its actions');
+
+        [$codigo, $cuerpo] = $this->get(self::GENEALOGIA, '/6128473107/', entorno: ['IDS_DIGITO_VERIFICADOR' => 'false']);
+        $this->assertSame(200, $codigo, 'off: ids are plain numbers');
+        $this->assertStringNotContainsString('dígito de verificación', $cuerpo);
+    }
+
+    public function testACheckDigitDoesNotTouchAnOrdersRandomCode(): void
+    {
+        $this->assertSame(200, $this->getComoPropietario(self::POS, '/4821937065182734/')[0]);
+        $this->assertSame(
+            200,
+            $this->get(self::POS, '/4821937065182734/', tokenConfigurado: self::TOKEN, autorizacion: self::basic(self::TOKEN), entorno: ['IDS_DIGITO_VERIFICADOR' => 'true'])[0]
+        );
+    }
+
+    public function testWithACheckDigitAShortIdIsNotOfferedPadded(): void
+    {
+        [, $con] = $this->get(self::GENEALOGIA, '/47/', entorno: ['IDS_DIGITO_VERIFICADOR' => 'true']);
+        [, $sin] = $this->get(self::GENEALOGIA, '/47/');
+
+        $this->assertStringContainsString('Quisiste decir', $sin);
+        $this->assertStringNotContainsString('Quisiste decir', $con, 'a padded guess would not be valid either');
+    }
+
     /** @return array<string, array{string, string, string}> host, uri, what the 404 must say */
     public static function pistas(): array
     {

@@ -21,6 +21,9 @@ class ConfigValidator
                 if (!isset($entry['type']) || !isset($entry['controller'])) {
                     throw new \InvalidArgumentException("Invalid by_length entry at length {$length}");
                 }
+                if (isset($entry['verificador']) && !is_bool($entry['verificador'])) {
+                    throw new \InvalidArgumentException("by_length entry at length {$length}: verificador must be true or false");
+                }
             }
         }
 

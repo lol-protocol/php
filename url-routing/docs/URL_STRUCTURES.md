@@ -41,6 +41,16 @@ Un apellido se escribe de más de una forma («García» y «Garcia»), y el seg
 
 Un id **debe** generarse ya relleno con ceros al ancho fijo de su tipo. `persona #47` no es `/47/` (2 dígitos → caería en un tipo de 2 dígitos, que no existe, o peor, en uno que sí exista) — es `/0000000047/` (10 dígitos). El helper `enlace($tipo, $id)` en `index.php` hace este padding automáticamente consultando `Router::typeLength()`; nunca se debe construir un enlace concatenando el id "crudo" a mano.
 
+### Dígito verificador (opcional, se decide antes de abrir el sitio)
+
+Hoy los ids son números corridos: `/6128473105/` y `/6128473106/` son dos personas vecinas, cualquiera puede recorrer el catálogo desde el 1 y un id mal copiado es indistinguible de uno que no existe. Con `IDS_DIGITO_VERIFICADOR=true` (apagado por omisión) **el último dígito de cada id es de verificación**, calculado con los anteriores (algoritmo de Damm: detecta todo error de un dígito y todo cambio de dos dígitos contiguos, lo que Luhn no hace con 09 y 90). Un id cuyo dígito no coincide da **404 sin consultar la base**, con la pista «el último dígito de un id es de verificación y este no coincide».
+
+- **No es un interruptor.** Encenderlo sobre ids que no lo traen hace que casi todos den 404. Cada id de la base tiene que terminar en su dígito, incluidos los de `persona_alias` y `grupo_alias`. Por eso se decide ahora, que solo hay datos de demostración: después de abrir, cambiar un id rompe los enlaces que ya circulan.
+- **Quien crea ids** los completa: `php bin/id.php completar <número> [<ancho>]` (`completar 612847310 10` da `6128473101`) y `php bin/id.php verificar <id>`; en PHP, `DigitoVerificador::completar()`. Tampoco cabe un id más corto: el ancho de cada tipo no cambia, el dígito ocupa el último lugar (una persona tiene 9 dígitos de número y 1 de verificación).
+- **Los códigos de las órdenes quedan fuera** (`'verificador' => false` en su entrada): son aleatorios, y su protección es no poder adivinarse.
+- **Qué NO hace:** no vuelve secretos los ids (con 9 dígitos libres siguen siendo recorribles; el dígito solo corta lo que se inventa o se escribe mal) ni protege nada privado: eso lo siguen haciendo `Privacidad` y `AccessPolicy`. Si lo que se quiere es que el catálogo no se pueda recorrer, la salida es un id aleatorio como el de las órdenes, y eso sí cambia las URL de otra forma.
+- El ancho fijo y el relleno con ceros no cambian (`enlace()` sigue igual); con la opción encendida, ya no se sugiere el id «rellenado» de un id corto, porque tampoco sería válido.
+
 ### Sufijo de acción desconocido
 
 Si el segundo segmento es numérico pero no está en el arreglo `actions` del tipo resuelto, el resultado es **404**, no un silencioso `show` del recurso base. Evita que una URL mal escrita parezca funcionar mostrando el contenido equivocado.

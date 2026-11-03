@@ -23,6 +23,8 @@ return [
             'controller' => 'POS\OrderController',
             // Never offered as a "did you mean" for a short id: a code is random, not a padded number.
             'sugerir' => false,
+            // Its own random code is its protection: no check digit (see Support/DigitoVerificador.php).
+            'verificador' => false,
             'actions' => [
                 1 => 'invoice',
                 2 => 'track',
