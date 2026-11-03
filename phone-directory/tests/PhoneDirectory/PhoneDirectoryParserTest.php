@@ -29,6 +29,26 @@ class PhoneDirectoryParserTest extends TestCase
         $this->assertStringContainsString('Main Street', $entries[0]->getStreet());
     }
 
+    public function testRecordsWithoutBlankLineBetweenThem(): void
+    {
+        $content = "HALL, Ruth\n3 Main Street\n555-123-4567\nLEE, Ken\n8 Oak Lane\n555-987-6543";
+
+        $entries = $this->parser->parseContent($content);
+
+        $this->assertCount(2, $entries);
+        $this->assertSame('8 Oak Lane', $entries[1]->getStreet());
+        $this->assertSame('555-987-6543', $entries[1]->getPhoneNumber());
+        $this->assertSame(4, $entries[1]->getSourceLine());
+    }
+
+    public function testCityLineStaysInItsRecord(): void
+    {
+        $entries = $this->parser->parseContent("SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567");
+
+        $this->assertCount(1, $entries);
+        $this->assertSame('555-123-4567', $entries[0]->getPhoneNumber());
+    }
+
     public function testParseMultipleEntries(): void
     {
         $content = <<<TXT

@@ -272,47 +272,14 @@ class MultiLanguagePhoneDirectoryParser
     /** @param list<string> $lines */
     private function processBuffer(array $lines, int $startLine, string $language, string $phoneRegex): void
     {
-        foreach ($this->splitRecords($lines, $language, $phoneRegex) as $offset => $record) {
+        $records = RecordSplitter::split(
+            $lines,
+            fn($line) => preg_match($phoneRegex, $line) === 1,
+            fn($line, $afterName) => $this->isStreetLine($line, $language, $afterName)
+        );
+        foreach ($records as $offset => $record) {
             $this->processRecord($record, $startLine + $offset, $language, $phoneRegex);
         }
-    }
-
-    /**
-     * Splits a block that holds several records with no blank line between them ("HALL, Ruth / 3 Main
-     * Street / 555-123-4567 / LEE, Ken / 8 Oak Lane"). Once a record has its name and its street, a line
-     * that is neither street nor phone starts the next record, but only if a street follows it right
-     * away: a note after the phone ("Abogado") or a city line stays in the record it closes.
-     *
-     * @param list<string> $lines
-     * @return array<int, list<string>> each record's lines, keyed by the offset of its first line in $lines
-     */
-    private function splitRecords(array $lines, string $language, string $phoneRegex): array
-    {
-        $records = [];
-        $start = 0;
-        $hasName = false;
-        $hasStreet = false;
-
-        foreach ($lines as $i => $line) {
-            $isPhoneLine = preg_match($phoneRegex, $line) === 1;
-            $isStreetLine = $this->isStreetLine($line, $language, $hasName);
-
-            $next = $lines[$i + 1] ?? null;
-            if ($hasName && $hasStreet && !$isPhoneLine && !$isStreetLine
-                && $next !== null && $this->isStreetLine($next, $language, true)) {
-                $records[$start] = array_slice($lines, $start, $i - $start);
-                $start = $i;
-                $hasStreet = false;
-                continue;
-            }
-
-            $hasName = $hasName || (!$isPhoneLine && !$isStreetLine);
-            $hasStreet = $hasStreet || $isStreetLine;
-        }
-
-        $records[$start] = array_slice($lines, $start);
-
-        return $records;
     }
 
     /** The street test processRecord() applies: a number-last street without a street word only counts after the name. */

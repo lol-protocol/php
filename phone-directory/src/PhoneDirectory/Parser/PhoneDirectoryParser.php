@@ -146,6 +146,20 @@ class PhoneDirectoryParser
     /** @param list<string> $lines */
     private function processBuffer(array $lines, int $startLine): void
     {
+        $phonePattern = $this->getPatterns()['phone_pattern'];
+        $records = RecordSplitter::split(
+            $lines,
+            fn($line) => preg_match($phonePattern, $line) === 1,
+            fn($line) => $this->extractStreet($line) !== null
+        );
+        foreach ($records as $offset => $record) {
+            $this->processRecord($record, $startLine + $offset);
+        }
+    }
+
+    /** @param list<string> $lines */
+    private function processRecord(array $lines, int $startLine): void
+    {
         $data = [
             'name' => null,
             'phone' => null,
