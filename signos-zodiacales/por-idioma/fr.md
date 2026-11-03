@@ -247,3 +247,161 @@ Signe de la loyauté et de la justice : la tradition lui attribue honnêteté, p
 Générosité, sincérité et affection.
 
 Signe de la générosité et du plaisir de vivre : la tradition lui attribue sincérité, affabilité et bon cœur, mais aussi naïveté.
+
+## Les 72 anges
+
+Du Shem ha-Mephorash, le « nom de 72 lettres » que la Kabbale tire d'Exode 14:19-21. Chaque ange gouverne une période d'environ 5 jours du zodiaque. Simple référence culturelle.
+
+| # | Nom | Chœur | Dates | Qualités |
+| --- | --- | --- | --- | --- |
+| 1 | Vehuiah | Séraphins | 21/03 – 25/03 | Volonté, commencements, énergie |
+| 2 | Jeliel | Séraphins | 26/03 – 30/03 | Amour, fidélité, paix |
+| 3 | Sitael | Séraphins | 31/03 – 04/04 | Construction, protection, noblesse |
+| 4 | Elemiah | Séraphins | 05/04 – 09/04 | Voyages, secrets, protection |
+| 5 | Mahasiah | Séraphins | 10/04 – 14/04 | Harmonie, paix, apprentissage |
+| 6 | Lelahel | Séraphins | 15/04 – 19/04 | Amour, guérison, talent |
+| 7 | Achaiah | Séraphins | 20/04 – 25/04 | Patience, secrets, nature |
+| 8 | Cahethel | Séraphins | 26/04 – 30/04 | Bénédiction, agriculture, protection |
+| 9 | Haziel | Chérubins | 01/05 – 05/05 | Miséricorde, pardon, amitié |
+| 10 | Aladiah | Chérubins | 06/05 – 10/05 | Grâce, pardon, guérison |
+| 11 | Laoviah | Chérubins | 11/05 – 15/05 | Renommée, victoire, intelligence |
+| 12 | Hahaiah | Chérubins | 16/05 – 20/05 | Refuge, protection, rêves |
+| 13 | Yesalel | Chérubins | 21/05 – 26/05 | Réconciliation, fidélité, amitié |
+| 14 | Mebahel | Chérubins | 27/05 – 31/05 | Justice, vérité, libération |
+| 15 | Hariel | Chérubins | 01/06 – 05/06 | Pureté, foi, libération |
+| 16 | Hekamiah | Chérubins | 06/06 – 10/06 | Loyauté, courage, protection |
+| 17 | Lauviah | Trônes | 11/06 – 15/06 | Victoire, rêves, révélation |
+| 18 | Caliel | Trônes | 16/06 – 20/06 | Justice, vérité, innocence |
+| 19 | Leuviah | Trônes | 21/06 – 26/06 | Mémoire, intelligence, patience |
+| 20 | Pahaliah | Trônes | 27/06 – 02/07 | Vocation, chasteté, vertu |
+| 21 | Nelchael | Trônes | 03/07 – 07/07 | Science, étude, protection |
+| 22 | Yeiayel | Trônes | 08/07 – 12/07 | Renommée, commerce, voyages |
+| 23 | Melahel | Trônes | 13/07 – 17/07 | Guérison, plantes, protection |
+| 24 | Haheuiah | Trônes | 18/07 – 22/07 | Protection, justice, exilés |
+| 25 | Nith-Haiah | Dominations | 23/07 – 28/07 | Sagesse, révélation, magie |
+| 26 | Haaiah | Dominations | 29/07 – 02/08 | Diplomatie, vérité, justice |
+| 27 | Yerathel | Dominations | 03/08 – 07/08 | Liberté, lumière, vérité |
+| 28 | Seheiah | Dominations | 08/08 – 12/08 | Longue vie, santé, protection |
+| 29 | Reiyel | Dominations | 13/08 – 17/08 | Foi, liberté, science |
+| 30 | Omael | Dominations | 18/08 – 22/08 | Fécondité, patience, abondance |
+| 31 | Lecabel | Dominations | 23/08 – 28/08 | Talent, agriculture, intelligence |
+| 32 | Vasariah | Dominations | 29/08 – 02/09 | Clémence, justice, mémoire |
+| 33 | Yehuiah | Vertus | 03/09 – 07/09 | Fidélité, loyauté, discernement |
+| 34 | Lehahiah | Vertus | 08/09 – 12/09 | Obéissance, fortune, paix |
+| 35 | Chavakiah | Vertus | 13/09 – 17/09 | Réconciliation, héritages, harmonie |
+| 36 | Menadel | Vertus | 18/09 – 22/09 | Travail, fidélité, libération |
+| 37 | Aniel | Vertus | 23/09 – 27/09 | Science, victoire, sagesse |
+| 38 | Haamiah | Vertus | 28/09 – 02/10 | Vérité, protection, foi |
+| 39 | Rehael | Vertus | 03/10 – 07/10 | Santé, longue vie, obéissance |
+| 40 | Ieiazel | Vertus | 08/10 – 12/10 | Réconfort, libération, arts |
+| 41 | Hahahel | Puissances | 13/10 – 17/10 | Foi, vocation, protection |
+| 42 | Mikael | Puissances | 18/10 – 22/10 | Ordre, voyages, protection |
+| 43 | Veuliah | Puissances | 23/10 – 27/10 | Prospérité, paix, abondance |
+| 44 | Yelahiah | Puissances | 28/10 – 01/11 | Justice, courage, protection |
+| 45 | Sealiah | Puissances | 02/11 – 06/11 | Entrain, énergie, volonté |
+| 46 | Ariel | Puissances | 07/11 – 11/11 | Perception, révélation, intuition |
+| 47 | Asaliah | Puissances | 12/11 – 16/11 | Contemplation, vérité, justice |
+| 48 | Mihael | Puissances | 17/11 – 21/11 | Fécondité, amour, harmonie |
+| 49 | Vehuel | Principautés | 22/11 – 26/11 | Grandeur, admiration, élévation |
+| 50 | Daniel | Principautés | 27/11 – 01/12 | Éloquence, justice, conseil |
+| 51 | Hahasiah | Principautés | 02/12 – 06/12 | Sagesse, guérison, secrets |
+| 52 | Imamiah | Principautés | 07/12 – 11/12 | Libération, voyages, protection |
+| 53 | Nanael | Principautés | 12/12 – 16/12 | Étude, diplomatie, communication |
+| 54 | Nithael | Principautés | 17/12 – 21/12 | Longue vie, stabilité, grâce |
+| 55 | Mebahiah | Principautés | 22/12 – 26/12 | Réconfort, lucidité, vertu |
+| 56 | Poyel | Principautés | 27/12 – 31/12 | Fortune, soutien, succès |
+| 57 | Nemamiah | Archanges | 01/01 – 05/01 | Prospérité, succès, libération |
+| 58 | Yeialel | Archanges | 06/01 – 10/01 | Courage, guérison, sérénité |
+| 59 | Harahel | Archanges | 11/01 – 15/01 | Richesse, littérature, étude |
+| 60 | Mitzrael | Archanges | 16/01 – 19/01 | Sérénité, fidélité, guérison |
+| 61 | Umabel | Archanges | 20/01 – 24/01 | Amitié, affinité, astronomie |
+| 62 | Iah-Hel | Archanges | 25/01 – 29/01 | Sagesse, philosophie, sérénité |
+| 63 | Anauel | Archanges | 30/01 – 03/02 | Unité, commerce, prospérité |
+| 64 | Mehiel | Archanges | 04/02 – 08/02 | Inspiration, écriture, protection |
+| 65 | Damabiah | Anges | 09/02 – 13/02 | Sagesse, protection, mer |
+| 66 | Manakel | Anges | 14/02 – 18/02 | Compassion, rêves, bien-être |
+| 67 | Eyael | Anges | 19/02 – 23/02 | Transformation, réconciliation, longue vie |
+| 68 | Habuhiah | Anges | 24/02 – 28/02 | Guérison, fécondité, agriculture |
+| 69 | Rochel | Anges | 01/03 – 05/03 | Justice, restitution, vérité |
+| 70 | Yabamiah | Anges | 06/03 – 10/03 | Régénération, alchimie, création |
+| 71 | Haiaiel | Anges | 11/03 – 15/03 | Protection, victoire, courage |
+| 72 | Mumiah | Anges | 16/03 – 20/03 | Aboutissement, renaissance, bien-être |
+
+## Les 72 démons
+
+De la Goétie (XVIIe siècle), un grimoire qui ne fait pas partie de la Bible. Chaque esprit partage la période de l'ange du même numéro. Simple référence culturelle.
+
+| # | Nom | Rang | Légions | Dates | Qualités |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bael | Roi | 66 | 21/03 – 25/03 | Invisibilité, sagesse |
+| 2 | Agares | Duc | 31 | 26/03 – 30/03 | Langues, fugitifs, tremblements de terre |
+| 3 | Vassago | Prince | — | 31/03 – 04/04 | Passé et avenir, objets perdus |
+| 4 | Samigina | Marquis | 30 | 05/04 – 09/04 | Arts libéraux, âmes des défunts |
+| 5 | Marbas | Président | 36 | 10/04 – 14/04 | Secrets, maladies, guérison, arts mécaniques |
+| 6 | Valefor | Duc | 10 | 15/04 – 19/04 | Esprits familiers, vol |
+| 7 | Amon | Marquis | 40 | 20/04 – 25/04 | Passé et avenir, réconciliation, inimitié |
+| 8 | Barbatos | Duc | 30 | 26/04 – 30/04 | Langage des animaux, trésors, réconciliation |
+| 9 | Paimon | Roi | 200 | 01/05 – 05/05 | Sciences, arts, secrets, dignités |
+| 10 | Buer | Président | 50 | 06/05 – 10/05 | Philosophie, plantes, guérison, esprits familiers |
+| 11 | Gusion | Duc | 40 | 11/05 – 15/05 | Passé et avenir, réconciliation, honneurs |
+| 12 | Sitri | Prince | 60 | 16/05 – 20/05 | Amour, désir, secrets |
+| 13 | Beleth | Roi | 85 | 21/05 – 26/05 | Amour, désir |
+| 14 | Leraje | Marquis | 30 | 27/05 – 31/05 | Conflits, blessures |
+| 15 | Eligos | Duc | 60 | 01/06 – 05/06 | Guerre, passé et avenir, faveur |
+| 16 | Zepar | Duc | 26 | 06/06 – 10/06 | Amour, stérilité |
+| 17 | Botis | Président / Comte | 60 | 11/06 – 15/06 | Passé et avenir, réconciliation |
+| 18 | Bathin | Duc | 30 | 16/06 – 20/06 | Plantes, pierres précieuses, déplacements rapides |
+| 19 | Sallos | Duc | 30 | 21/06 – 26/06 | Amour |
+| 20 | Purson | Roi | 22 | 27/06 – 02/07 | Trésors, passé et avenir, esprits familiers |
+| 21 | Marax | Président / Comte | 30 | 03/07 – 07/07 | Astronomie, arts libéraux, plantes |
+| 22 | Ipos | Comte / Prince | 36 | 08/07 – 12/07 | Passé et avenir, courage, esprit |
+| 23 | Aim | Duc | 26 | 13/07 – 17/07 | Incendies, esprit, secrets |
+| 24 | Naberius | Marquis | 19 | 18/07 – 22/07 | Rhétorique, arts, honneurs |
+| 25 | Glasya-Labolas | Président / Comte | 36 | 23/07 – 28/07 | Sciences, violence, passé et avenir, invisibilité |
+| 26 | Bune | Duc | 30 | 29/07 – 02/08 | Richesse, éloquence, morts |
+| 27 | Ronove | Marquis / Comte | 19 | 03/08 – 07/08 | Rhétorique, langues, faveur |
+| 28 | Berith | Duc | 26 | 08/08 – 12/08 | Alchimie, honneurs, passé et avenir |
+| 29 | Astaroth | Duc | 40 | 13/08 – 17/08 | Passé et avenir, arts libéraux, secrets |
+| 30 | Forneus | Marquis | 29 | 18/08 – 22/08 | Rhétorique, langues, réputation |
+| 31 | Foras | Président | 29 | 23/08 – 28/08 | Plantes, logique, éthique |
+| 32 | Asmoday | Roi | 72 | 29/08 – 02/09 | Mathématiques, astronomie, invisibilité, trésors |
+| 33 | Gaap | Président / Prince | 66 | 03/09 – 07/09 | Philosophie, arts libéraux, amour, inimitié, déplacements rapides |
+| 34 | Furfur | Comte | 26 | 08/09 – 12/09 | Amour, tempêtes, secrets |
+| 35 | Marchosias | Marquis | 30 | 13/09 – 17/09 | Combat, vérité |
+| 36 | Stolas | Prince | 26 | 18/09 – 22/09 | Astronomie, plantes, pierres précieuses |
+| 37 | Phenex | Marquis | 20 | 23/09 – 27/09 | Poésie, sciences |
+| 38 | Halphas | Comte | 26 | 28/09 – 02/10 | Forteresses, guerre, armes |
+| 39 | Malphas | Président | 40 | 03/10 – 07/10 | Construction, tromperie |
+| 40 | Raum | Comte | 30 | 08/10 – 12/10 | Vol, destruction, passé et avenir |
+| 41 | Focalor | Duc | 30 | 13/10 – 17/10 | Mer, vents, naufrages |
+| 42 | Vepar | Duc | 29 | 18/10 – 22/10 | Mer, tempêtes, blessures |
+| 43 | Sabnock | Marquis | 50 | 23/10 – 27/10 | Forteresses, blessures, esprits familiers |
+| 44 | Shax | Marquis | 30 | 28/10 – 01/11 | Cécité, surdité, vol |
+| 45 | Vine | Roi / Comte | 36 | 02/11 – 06/11 | Sorcellerie, tempêtes, forteresses |
+| 46 | Bifrons | Comte | 6 | 07/11 – 11/11 | Astrologie, mathématiques, plantes, morts |
+| 47 | Vual | Duc | 37 | 12/11 – 16/11 | Amour, amitié, passé et avenir |
+| 48 | Haagenti | Président | 33 | 17/11 – 21/11 | Transformation, sagesse, alchimie |
+| 49 | Crocell | Duc | 48 | 22/11 – 26/11 | Mathématiques, arts, eau |
+| 50 | Furcas | Chevalier | 20 | 27/11 – 01/12 | Philosophie, astrologie, chiromancie |
+| 51 | Balam | Roi | 40 | 02/12 – 06/12 | Passé et avenir, invisibilité, esprit |
+| 52 | Alloces | Duc | 36 | 07/12 – 11/12 | Astronomie, arts libéraux |
+| 53 | Caim | Président | 30 | 12/12 – 16/12 | Langage des animaux, passé et avenir |
+| 54 | Murmur | Duc / Comte | 30 | 17/12 – 21/12 | Musique, philosophie, âmes des défunts |
+| 55 | Orobas | Prince | 20 | 22/12 – 26/12 | Passé et avenir, faveur, loyauté |
+| 56 | Gremory | Duc | 26 | 27/12 – 31/12 | Trésors, amour, passé et avenir |
+| 57 | Ose | Président | 3 | 01/01 – 05/01 | Arts libéraux, transformation, folie |
+| 58 | Amy | Président | 36 | 06/01 – 10/01 | Astrologie, arts libéraux, trésors |
+| 59 | Orias | Marquis | 30 | 11/01 – 15/01 | Astrologie, transformation, honneurs |
+| 60 | Vapula | Duc | 36 | 16/01 – 19/01 | Arts mécaniques, philosophie, sciences |
+| 61 | Zagan | Roi / Président | 33 | 20/01 – 24/01 | Transformation, esprit |
+| 62 | Valac | Président | 30 | 25/01 – 29/01 | Trésors, serpents |
+| 63 | Andras | Marquis | 30 | 30/01 – 03/02 | Discorde, violence |
+| 64 | Flauros | Duc | 20 | 04/02 – 08/02 | Passé et avenir, feu |
+| 65 | Andrealphus | Marquis | 30 | 09/02 – 13/02 | Mathématiques, astronomie, transformation |
+| 66 | Kimaris | Marquis | 20 | 14/02 – 18/02 | Rhétorique, logique, objets perdus |
+| 67 | Amdusias | Duc | 29 | 19/02 – 23/02 | Musique, arbres |
+| 68 | Belial | Roi | 50 | 24/02 – 28/02 | Faveur, dignités, esprits familiers |
+| 69 | Decarabia | Marquis | 30 | 01/03 – 05/03 | Oiseaux, pierres précieuses, plantes |
+| 70 | Seere | Prince | 26 | 06/03 – 10/03 | Déplacements rapides, vol, objets perdus |
+| 71 | Dantalion | Duc | 36 | 11/03 – 15/03 | Pensées, sciences, amour |
+| 72 | Andromalius | Comte | 36 | 16/03 – 20/03 | Objets perdus, trésors, voleurs |
