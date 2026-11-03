@@ -5,7 +5,7 @@
 // `detalles` (trazos, botones, ribetes) se dibujan encima. Las medidas son fracciones de la altura (H).
 
 import { suavizar, espejo, poligono, tubo, lerp, limitar, oscurecer, aclarar } from './util.js';
-import { perfilTorso } from './cuerpo.js';
+import { perfilTorso, brazoEnU } from './cuerpo.js';
 
 // ---------- Ayudas ----------
 
@@ -128,18 +128,9 @@ function perfilVestido(M, o) {
 
 // ---------- Mangas ----------
 
-function brazoEnY(M, s, yy) {
-  const L = M.brazo.linea, A = M.brazo.anchos;
-  for (let i = 0; i < L.length - 1; i++) {
-    if (yy <= L[i + 1][1] || i === L.length - 2) {
-      const t = limitar((yy - L[i][1]) / ((L[i + 1][1] - L[i][1]) || 1), 0, 1.6);
-      return { x: M.cx + s * lerp(L[i][0], L[i + 1][0], t), y: yy, w: lerp(A[i], A[i + 1], t) };
-    }
-  }
-  return { x: M.cx, y: yy, w: A[0] };
-}
+const brazoEnY = brazoEnU;
 
-function finManga(M, tipo) {
+export function finManga(M, tipo) {
   const { y, H } = M;
   const y0 = y.hombro + H * 0.02;
   switch (tipo) {
@@ -166,7 +157,9 @@ function mangaForma(M, s, tipo, d, vuelo = 0) {
     else if (tipo === 'globo') f = 1.5 - 0.5 * Math.min(1, t * 2.2) + (t > 0.8 ? 0.1 : 0);
     else if (tipo === 'kimono') { f = 1.7 + 1.0 * t; desp = H * 0.028 * t; }
     else if (tipo === 'abullonada') f = 1.55 - 0.55 * Math.min(1, t * 1.6);
-    linea.push([q.x + s * desp, q.y]);
+    // Con el brazo levantado la manga ancha se recoge hacia el codo: menos vuelo.
+    if (s === M.saludoLado) f = 1 + (f - 1) * 0.55;
+    linea.push([q.x + (s === M.saludoLado ? 0 : s * desp), q.y]);
     anchos.push((q.w + d * (i === 0 ? 1.15 : 1)) * f);
   }
   const plana = tipo !== 'campana' && tipo !== 'kimono' && tipo !== 'ancha' ? 'plana' : 'plana';
@@ -677,7 +670,7 @@ function accesorio(M, p, k) {
     for (const s of [1, -1]) {
       for (const yy of p.alto ? [y.codo - H * 0.07] : [y.muneca - H * 0.008]) {
         const q = brazoEnY(M, s, yy);
-        det.push(linea(`M${q.x - q.w * 1.05} ${yy}L${q.x + q.w * 1.05} ${yy + 1}`, k.principal, Math.max(3, H * 0.008), 1, { cap: 'butt', contorno: oscurecer(k.principal, 0.5) }));
+        det.push(linea(`M${q.x - q.w * 1.05} ${q.y}L${q.x + q.w * 1.05} ${q.y + 1}`, k.principal, Math.max(3, H * 0.008), 1, { cap: 'butt', contorno: oscurecer(k.principal, 0.5) }));
       }
     }
   } else if (tipo === 'bolso') {

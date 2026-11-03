@@ -2,6 +2,8 @@
 
 Generador de **siluetas de frente de personas ancestrales** (nuestros antepasados), en **JavaScript y SVG**, sin dependencias. Son ilustraciones, no fotografías: cuerpo y cabeza con proporciones reales, sombreado suave y ropa con pliegues, ribetes y telas, pero sin rostro (los rasgos son opcionales y apenas se insinúan).
 
+Cada figura **saluda con una mano** (por defecto la derecha de la persona, que de frente queda a la izquierda de quien mira).
+
 Trae un **catálogo grande de ropa** organizado por región, época, sexo y clase social, y un **generador de ropa y colores nuevos** para cuando el catálogo no alcanza.
 
 | | |
@@ -9,6 +11,7 @@ Trae un **catálogo grande de ropa** organizado por región, época, sexo y clas
 | Atuendos completos | 120+ (Egipto, Mesopotamia, Grecia, Roma, Bizancio, Europa medieval a siglo XX, mundo eslavo, celta y vikingo, Medio Oriente, Asia, África, Polinesia, Rapa Nui, Andes, Mesoamérica, Norteamérica, Ártico, pueblo mapuche, Chile rural, Tierra del Fuego, Río de la Plata y la Hispanoamérica colonial) |
 | Prendas | 200+ (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 15 plantillas paramétricas |
 | Tintes con nombre | 80+, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, gualda, ocres…) |
+| Etnias y culturas | 42, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
 | Pieles, cabellos | 12 tonos de piel y 13 de cabello |
 | Peinados, barbas, tocados | 23, 8 y 29 |
 | Patrones de tela | 18 (rayas, tartán, grecas, escalonado, rombos, escamas…) |
@@ -21,8 +24,10 @@ Requiere Node 22 o más (el módulo `node:test` con patrones de archivo). No hay
 cd siluetas-ancestrales
 node bin/generar.js --semilla 7 --atuendo huaso -o huaso.svg
 node bin/generar.js --region andes --anio 1500 --sexo f --edad 30 -o andina.svg
+node bin/generar.js --etnia mapuche --sexo f --edad 34 --anio 1850 --avisos -o mapuche.svg   # estima lo demás
+node bin/generar.js --etnia mapuche,espanol --sexo m --edad 29 --anio 1800 --saludo izquierda -o mestizo.svg
 node bin/generar.js --nueva --estilo festivo --semilla 12 -o nueva.svg     # ropa inventada
-node bin/generar.js --listar atuendos        # también: regiones, prendas, tintes, resumen
+node bin/generar.js --listar etnias          # también: atuendos, regiones, prendas, tintes, resumen
 node bin/generar.js --ayuda
 ```
 
@@ -42,6 +47,11 @@ const svg = generarSVG({ semilla: 7, region: 'andes', anio: 1500, sexo: 'f', eda
 const persona = generarPersona({ atuendo: 'huaso', edad: 62, corpulencia: 'robusta' });
 const svg2 = renderizar(persona, { detalle: 'alto', fondo: '#efe9dd' });
 
+// Por etnia: se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura
+const p = generarPersona({ semilla: 3, etnia: 'aymara', sexo: 'm', edad: 48, anio: 1900 });
+console.log(p.estimaciones, p.avisos);        // qué se estimó y qué filtros hubo que aflojar
+const mezcla = generarSVG({ etnia: ['mapuche', 'espanol'], sexo: 'f', edad: 30, anio: 1800 });
+
 // Ropa que no está en el catálogo
 const nueva = generarSVG({ ropaNueva: true, estilo: 'ceremonial', esquema: 'complementario', semilla: 3 });
 const paleta = generarPaleta({ esquema: 'triada', semilla: 9 });   // { A, B, C, D } en hex
@@ -55,6 +65,9 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 |---|---|
 | `semilla` | número o texto; fija todo lo que no pidas |
 | `atuendo` | id de `src/datos/atuendos.js`; si falta se elige uno con `region`, `anio`, `sexo` y `clase` (si no hay coincidencia exacta se afloja un filtro a la vez) |
+| `etnia` | id, lista (`['mapuche','espanol']`), texto con comas o `{id: peso}`; `--listar etnias`. **Estima** todo lo que no des a mano: región y atuendo, piel, cabello, peinado, barba, complexión y estatura (ver abajo) |
+| `anio` | año (negativo = antes de nuestra era): filtra atuendos por época y tintes por disponibilidad, y ajusta un poco la estatura |
+| `saludo` | `derecha` (por defecto), `izquierda` o `ninguno`: la mano levantada es la de la persona; de frente, la derecha queda a la izquierda de quien mira |
 | `sexo` (`f`/`m`), `edad` (2–100), `corpulencia` (`delgada`, `media`, `robusta`, `corpulenta` o un número), `altura` (cm), `postura` (`firme`, `relajada`, `abierta`) | cuerpo; los niños tienen otras proporciones |
 | `piel`, `cabello` | id del catálogo o `#rrggbb` |
 | `barba`, `peinado`, `tocado`, `calzado` | ids para forzarlos |
@@ -73,6 +86,18 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 - `src/generador.js`: elige atuendo, colores y rasgos; inventa ropa nueva; arma paletas.
 - `src/svg.js`: capas, patrones y sombreado. El SVG resultante no lleva scripts, imágenes ni enlaces externos.
 
+### Cómo se estima a partir de la etnia
+
+`src/datos/etnias.js` guarda, por pueblo o cultura: de qué regiones salen sus atuendos, el rango de tonos de piel, la distribución de colores de cabello, peinados habituales, frecuencia de barba, estatura media (mujer y hombre) y complexión. Con `etnia`:
+
+- **Atuendo:** se busca en las regiones de esa etnia, para el `anio`, el `sexo` y la `clase`. Si no hay uno exacto se afloja un filtro a la vez (clase, año, pueblo, región) y **se avisa** en `persona.avisos`.
+- **Piel y cabello:** se sortea dentro del rango de la etnia, con variación individual, y el cabello encanece con la edad.
+- **Estatura:** media de la etnia y el sexo, ajustada por la edad (los niños son más bajos) y por la época (algo menor antes de 1800), con variación individual.
+- **Mezcla:** con varias etnias la piel es el promedio ponderado, el cabello se sortea con los pesos de todas y la **primera manda en la ropa**.
+- **Lo que des a mano manda:** `piel`, `cabello`, `altura`, `corpulencia`, `region`, `atuendo`… no se tocan, y `persona.estimaciones` solo cuenta lo que sí se estimó.
+
+Son **promedios aproximados de poblaciones, no reglas sobre una persona**, y «etnia» aquí es cultura de origen, no una categoría biológica. Los pueblos que el catálogo no cubre con trajes propios (por ejemplo los afrodescendientes de las Américas) usan los más cercanos y lo dicen en `nota` o en los avisos.
+
 ### Agregar ropa
 
 1. Una prenda nueva: una línea en `src/datos/prendas.js` con la plantilla, sus parámetros y los papeles de color (`A` principal, `B` secundario, `C` ribete, `D` detalle).
@@ -90,11 +115,12 @@ node bin/construir.js --comprobar   # dist/ y ejemplos/ al día con src/
 node bin/construir.js               # regenera dist/ y ejemplos/ tras cambiar src/
 ```
 
-Las pruebas revisan que cada atuendo apunte a prendas, tintes y peinados que existen; que **todo atuendo** se dibuje bien a seis edades y complexiones (SVG bien formado, sin `NaN`, sin scripts ni referencias externas, rellenos definidos); que la misma semilla dé el mismo SVG; que los filtros se respeten; que la ropa nueva sea válida y variada; y que `dist/` dé exactamente lo mismo que `src/`.
+Las pruebas revisan que cada etnia tenga datos válidos y que las estimaciones sigan a la etnia (estatura, piel, cabello), a la edad y al año, y avisen cuando el atuendo sea de otra región; que la mano en saludo quede del lado y a la altura correctos para todos los atuendos; que cada atuendo apunte a prendas, tintes y peinados que existen; que **todo atuendo** se dibuje bien a seis edades y complexiones (SVG bien formado, sin `NaN`, sin scripts ni referencias externas, rellenos definidos); que la misma semilla dé el mismo SVG; que los filtros se respeten; que la ropa nueva sea válida y variada; y que `dist/` dé exactamente lo mismo que `src/`.
 
 ## Límites, dicho con honestidad
 
 - Es **ilustración histórica aproximada**, no un estudio de indumentaria: las épocas son anchas y los trajes duraron más que las fechas. Los tintes traen época y costo para no vestir a un campesino medieval de púrpura de Tiro, pero no son una tesis.
 - Algunas prendas son una **simplificación de forma** (por ejemplo la toga, el sari o el kimono se resuelven con plantillas generales de manto, falda y túnica cruzada).
 - Los atuendos de pueblos vivos (mapuche, selk'nam, rapanui, maasái, pueblos de las llanuras…) son una representación genérica; antes de usarlos en algo publicado conviene revisarlos con personas de esos pueblos o con fuentes de su propia mano.
-- Solo vista frontal, de pie.
+- Solo vista frontal, de pie, con una mano levantada.
+- La **etnia** es una estimación estadística: sirve para ilustrar un linaje probable, no para afirmar cómo era una persona concreta.

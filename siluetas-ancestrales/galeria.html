@@ -43,6 +43,12 @@
 </header>
 <main>
   <div>
+    <fieldset><legend>Origen</legend>
+      <label for="etnia">Etnia o cultura</label><select id="etnia"></select>
+      <label for="etnia2">Mezclada con</label><select id="etnia2"></select>
+      <label for="anio">Año (negativo = antes de nuestra era)</label><input id="anio" type="number" min="-3500" max="2100" placeholder="cualquiera">
+      <p class="nota">Con una etnia se estiman región, atuendo, piel, cabello, peinado, barba y estatura. Lo que elijas a mano abajo manda sobre la estimación.</p>
+    </fieldset>
     <fieldset><legend>Atuendo</legend>
       <label for="modo">De dónde sale la ropa</label>
       <select id="modo"><option value="catalogo">Del catálogo</option><option value="nueva">Ropa nueva (generada)</option></select>
@@ -64,7 +70,9 @@
       <select id="corpulencia"><option value="delgada">Delgada</option><option value="media" selected>Media</option><option value="robusta">Robusta</option><option value="corpulenta">Corpulenta</option></select>
       <label for="postura">Postura de brazos</label>
       <select id="postura"><option value="firme">Firme</option><option value="relajada">Relajada</option><option value="abierta">Abierta (muestra la ropa)</option></select>
-      <label for="piel">Piel</label><select id="piel"><option value="">Según el atuendo</option></select>
+      <label for="saludo">Saludo</label>
+      <select id="saludo"><option value="derecha" selected>Mano derecha</option><option value="izquierda">Mano izquierda</option><option value="ninguno">Sin saludo</option></select>
+      <label for="piel">Piel</label><select id="piel"><option value="">Según el origen o el atuendo</option></select>
     </fieldset>
     <fieldset><legend>Dibujo</legend>
       <label for="detalle">Detalle</label>
@@ -79,6 +87,7 @@
   <div>
     <div class="escena" id="escena" aria-live="polite"></div>
     <p class="info" id="info"></p>
+    <ul class="info" id="estimaciones" style="text-align:left;max-width:70ch;margin:8px auto 0"></ul>
     <div class="paleta" id="paleta"></div>
     <h2 style="font-size:1rem;margin:20px 0 0">Más variantes con las mismas opciones</h2>
     <div class="mosaico" id="mosaico"></div>
@@ -92,6 +101,8 @@
   let semilla = 1;
   const regiones = S.REGIONES;
   $('region').innerHTML = '<option value="">Todas</option>' + Object.entries(regiones).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+  const opcionesEtnia = '<option value="">Ninguna (según el atuendo)</option>' + S.ETNIAS.map((e) => `<option value="${e.id}">${e.nombre}</option>`).join('');
+  $('etnia').innerHTML = opcionesEtnia; $('etnia2').innerHTML = opcionesEtnia.replace('Ninguna (según el atuendo)', 'Nadie');
   $('piel').innerHTML += S.PIELES.map((p) => `<option value="${p.hex}">${p.nombre}</option>`).join('');
 
   const atuendosDe = () => S.ATUENDOS.filter((a) => (!$('region').value || a.region === $('region').value) && a.sexo === $('sexo').value);
@@ -102,9 +113,11 @@
     if (lista.some((a) => a.id === previo)) $('atuendo').value = previo;
   }
   function opciones(extra = {}) {
-    const o = { semilla, sexo: $('sexo').value, edad: Number($('edad').value) || 30, corpulencia: $('corpulencia').value, postura: $('postura').value,
+    const o = { semilla, saludo: $('saludo').value, sexo: $('sexo').value, edad: Number($('edad').value) || 30, corpulencia: $('corpulencia').value, postura: $('postura').value,
       detalle: $('detalle').value, rasgos: $('rasgos').checked, fondo: $('fondo').value, ...extra };
     if ($('piel').value) o.piel = $('piel').value;
+    if ($('anio').value !== '') o.anio = Number($('anio').value);
+    if ($('etnia').value) o.etnia = $('etnia2').value && $('etnia2').value !== $('etnia').value ? [$('etnia').value, $('etnia2').value] : $('etnia').value;
     if ($('modo').value === 'nueva') { o.ropaNueva = true; o.estilo = $('estilo').value; if ($('esquema').value) o.esquema = $('esquema').value; }
     else { if ($('atuendo').value) o.atuendo = $('atuendo').value; else if ($('region').value) o.region = $('region').value; }
     return o;
@@ -116,6 +129,8 @@
     ultimo = S.renderizar(persona, { detalle: $('detalle').value, fondo: $('fondo').value });
     $('escena').innerHTML = ultimo;
     $('info').textContent = persona.descripcion;
+    const lista = $('estimaciones'); lista.innerHTML = '';
+    for (const t of [...(persona.estimaciones || []), ...(persona.avisos || []).map((a) => 'Aviso: ' + a)]) { const li = document.createElement('li'); li.textContent = t; lista.appendChild(li); }
     const nombres = persona.nombresPaleta;
     $('paleta').innerHTML = ['A', 'B', 'C', 'D'].filter((l) => persona.paleta[l]).map((l) => `<span><i style="background:${persona.paleta[l]}"></i>${nombres ? nombres[l] ?? '' : persona.paleta[l]}</span>`).join('');
     const mos = $('mosaico'); mos.innerHTML = '';
@@ -127,7 +142,7 @@
       mos.appendChild(b);
     }
   }
-  for (const id of ['modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
+  for (const id of ['etnia', 'etnia2', 'anio', 'saludo', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
   $('modo').addEventListener('change', () => { $('grupo-catalogo').hidden = $('modo').value === 'nueva'; $('grupo-nueva').hidden = $('modo').value !== 'nueva'; });
   $('region').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
   $('sexo').addEventListener('change', () => { llenarAtuendos(); dibujar(); });

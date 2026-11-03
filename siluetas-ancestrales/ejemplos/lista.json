@@ -132,5 +132,79 @@
       "sexo": "m",
       "edad": 45
     }
+  },
+  {
+    "archivo": "etnia-mapuche-1850",
+    "opciones": {
+      "etnia": "mapuche",
+      "sexo": "f",
+      "edad": 34,
+      "anio": 1850,
+      "semilla": 31,
+      "rasgos": true
+    }
+  },
+  {
+    "archivo": "etnia-aymara-hombre",
+    "opciones": {
+      "etnia": "aymara",
+      "sexo": "m",
+      "edad": 48,
+      "anio": 1900,
+      "semilla": 32
+    }
+  },
+  {
+    "archivo": "etnia-mezcla-mapuche-espanol",
+    "opciones": {
+      "etnia": [
+        "mapuche",
+        "espanol"
+      ],
+      "sexo": "m",
+      "edad": 29,
+      "anio": 1800,
+      "semilla": 33
+    }
+  },
+  {
+    "archivo": "etnia-selknam-1890",
+    "opciones": {
+      "etnia": "selknam",
+      "sexo": "m",
+      "edad": 38,
+      "anio": 1890,
+      "semilla": 34
+    }
+  },
+  {
+    "archivo": "etnia-europeo-norte-vikingo",
+    "opciones": {
+      "etnia": "europeo-del-norte",
+      "sexo": "m",
+      "edad": 35,
+      "anio": 900,
+      "semilla": 35
+    }
+  },
+  {
+    "archivo": "saludo-izquierda",
+    "opciones": {
+      "etnia": "japones",
+      "sexo": "f",
+      "edad": 22,
+      "anio": 1700,
+      "semilla": 36,
+      "saludo": "izquierda"
+    }
+  },
+  {
+    "archivo": "sin-saludo",
+    "opciones": {
+      "atuendo": "huaso",
+      "semilla": 5,
+      "edad": 50,
+      "saludo": "ninguno"
+    }
   }
 ]

@@ -9,21 +9,24 @@ import { MANDIBULAS_ID, PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
 import { PATRONES_ID } from './patrones.js';
 import { CORPULENCIAS, POSTURAS } from './cuerpo.js';
 import { renderizar } from './svg.js';
+import { ETNIAS, ETNIAS_POR_ID } from './datos/etnias.js';
+import { medidas } from './cuerpo.js';
 
 // ---------- Consulta del catálogo ----------
 
 const contiene = (epoca, anio) => anio === undefined || anio === null || (anio >= epoca[0] && anio <= epoca[1]);
 
 /** Atuendos que cumplen los filtros: { region, anio, sexo, clase }. */
-export function buscarAtuendos({ region, anio, sexo, clase } = {}) {
+export function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase } = {}) {
+  const rs = regiones ?? (region ? [region] : null);
   return ATUENDOS.filter((a) =>
-    (!region || a.region === region) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase));
+    (!rs || rs.includes(a.region)) && (!prefijos || prefijos.some((p) => a.id.startsWith(p))) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase));
 }
 
 export function listarRegiones() { return { ...REGIONES }; }
 export function listarCatalogo() {
   return { atuendos: ATUENDOS.length, prendas: PRENDAS.length, tintes: TINTES.length, pieles: PIELES.length, cabellos: CABELLOS.length,
-    peinados: Object.keys(PEINADOS).length, barbas: Object.keys(BARBAS).length, tocados: Object.keys(TOCADOS).length, patrones: PATRONES_ID.length };
+    etnias: ETNIAS.length, peinados: Object.keys(PEINADOS).length, barbas: Object.keys(BARBAS).length, tocados: Object.keys(TOCADOS).length, patrones: PATRONES_ID.length };
 }
 
 // ---------- Paletas ----------
@@ -116,11 +119,20 @@ function edadAleatoria(azar) {
   return Math.round(azar.ponderado([[azar.entre(3, 12), 1.2], [azar.entre(13, 19), 1], [azar.entre(20, 39), 3.4], [azar.entre(40, 59), 2.4], [azar.entre(60, 88), 1.2]]));
 }
 
-function elegirPiel(azar, atuendo, opc) {
+function elegirPiel(azar, atuendo, opc, etnia) {
   if (opc.piel) return esHex(opc.piel) ? opc.piel : (PIELES.find((x) => x.id === opc.piel)?.hex ?? PIELES[4].hex);
-  const ids = atuendo.pieles ?? PIELES.map((p) => p.id);
-  const id = azar.elegir(ids);
-  const base = (PIELES.find((p) => p.id === id) ?? PIELES[4]).hex;
+  const hexDe = (ids) => (PIELES.find((p) => p.id === azar.elegir(ids)) ?? PIELES[4]).hex;
+  if (etnia) {
+    // Una mezcla promedia un tono de cada pueblo, según su peso.
+    let acum = null, peso = 0;
+    for (const x of etnia) {
+      const h = hexDe(x.e.pieles);
+      acum = acum === null ? h : mezclar(acum, h, x.peso / (peso + x.peso));
+      peso += x.peso;
+    }
+    return variar(acum, azar, { tono: 3, sat: 0.03, luz: 0.025 });
+  }
+  const base = hexDe(atuendo.pieles ?? PIELES.map((p) => p.id));
   return variar(base, azar, { tono: 3, sat: 0.03, luz: 0.025 });
 }
 
@@ -131,11 +143,12 @@ function indicePiel(hex) {
   return mejor;
 }
 
-function elegirCabello(azar, piel, edad, opc) {
+function elegirCabello(azar, piel, edad, opc, etnia) {
   if (opc.cabello) return esHex(opc.cabello) ? opc.cabello : (CABELLOS.find((c) => c.id === opc.cabello)?.hex ?? CABELLOS[0].hex);
   const ip = indicePiel(piel);
   let pesos;
-  if (ip >= 7) pesos = [['negro', 6], ['negro-azulado', 2], ['castano-oscuro', 1]];
+  if (etnia) pesos = sumaPesos(etnia, (e) => e.cabellos);
+  else if (ip >= 7) pesos = [['negro', 6], ['negro-azulado', 2], ['castano-oscuro', 1]];
   else if (ip >= 3) pesos = [['negro', 5], ['negro-azulado', 2], ['castano-oscuro', 3], ['castano', 2], ['cobrizo', 0.2]];
   else pesos = [['negro', 2], ['castano-oscuro', 3], ['castano', 3], ['castano-claro', 2], ['rubio-oscuro', 1.5], ['rubio', 1.5], ['rubio-ceniza', 0.7], ['pelirrojo', 0.8], ['cobrizo', 0.6]];
   let id = azar.ponderado(pesos);
@@ -145,6 +158,42 @@ function elegirCabello(azar, piel, edad, opc) {
   const base = CABELLOS.find((c) => c.id === id).hex;
   return variar(base, azar, { tono: 3, sat: 0.03, luz: 0.03 });
 }
+
+// ---------- Etnia ----------
+
+/** Etnia como texto, lista o {id: peso}: devuelve [{ e, peso }] con los pesos sumando 1. La primera manda en la ropa. */
+function normalizarEtnia(spec) {
+  if (spec === undefined || spec === null || spec === '') return null;
+  let pares;
+  if (typeof spec === 'string') pares = spec.split(',').map((x) => [x.trim(), 1]);
+  else if (Array.isArray(spec)) pares = spec.map((x) => [x, 1]);
+  else pares = Object.entries(spec);
+  const lista = pares.filter(([id]) => id).map(([id, peso]) => {
+    const e = ETNIAS_POR_ID[id];
+    if (!e) throw new Error(`Etnia desconocida: ${id}. Disponibles: ${ETNIAS.map((x) => x.id).join(', ')}`);
+    return { e, peso: Number(peso) > 0 ? Number(peso) : 1 };
+  });
+  if (!lista.length) return null;
+  const total = lista.reduce((t, x) => t + x.peso, 0);
+  return lista.map((x) => ({ e: x.e, peso: x.peso / total }));
+}
+
+const sumaPesos = (lista, fn) => {
+  const m = new Map();
+  for (const { e, peso } of lista) for (const [id, w] of fn(e)) m.set(id, (m.get(id) ?? 0) + w * peso);
+  return [...m.entries()];
+};
+
+/** Ajuste de estatura por época (poblaciones más bajas antes del siglo XX), aproximado. */
+function ajusteEstaturaAnio(anio) {
+  if (anio === undefined || anio === null) return 0;
+  if (anio < 1000) return -0.02;
+  if (anio < 1800) return -0.015;
+  if (anio < 1950) return -0.005;
+  return 0.01;
+}
+
+const ESTATURA_REF = { f: 161, m: 174 }; // los promedios con los que medidas() calcula la altura por edad
 
 // ---------- Persona ----------
 
@@ -161,25 +210,45 @@ export function generarPersona(opc = {}) {
   const edad = Math.round(opc.edad ?? edadAleatoria(azar));
   const anio = opc.anio;
 
-  // Atuendo: se afloja un filtro a la vez si no hay coincidencias.
+  const etnia = normalizarEtnia(opc.etnia);
+  const estimaciones = [], avisos = [];
+
+  // Atuendo: se afloja un filtro a la vez si no hay coincidencias, y se avisa de cuáles.
   let atuendo;
   if (opc.atuendo) {
     atuendo = ATUENDOS_POR_ID[opc.atuendo];
     if (!atuendo) throw new Error(`Atuendo desconocido: ${opc.atuendo}`);
   } else {
+    const regiones = opc.region ? [opc.region] : (etnia ? etnia[0].e.regiones : null);
+    const prefijos = opc.region ? null : (etnia ? etnia[0].e.prefijos : null);
+    const f = (extra) => ({ regiones, prefijos, anio, sexo, clase: opc.clase, ...extra });
     const intentos = [
-      { region: opc.region, anio, sexo, clase: opc.clase }, { region: opc.region, anio, sexo }, { region: opc.region, sexo, clase: opc.clase },
-      { region: opc.region, sexo }, { anio, sexo, clase: opc.clase }, { anio, sexo }, { sexo },
-    ];
-    for (const f of intentos) { const r = buscarAtuendos(f); if (r.length) { atuendo = azar.elegir(r); break; } }
+      [f({}), null],
+      [f({ clase: undefined }), 'la clase social'],
+      [f({ anio: undefined }), 'el año'],
+      [f({ clase: undefined, anio: undefined }), 'el año y la clase social'],
+      [f({ prefijos: null, clase: undefined, anio: undefined }), 'el año, la clase social ni el pueblo concreto: es un atuendo de otro pueblo de la misma región'],
+      [{ anio, sexo, clase: opc.clase }, 'la región'],
+      [{ anio, sexo }, 'la región y la clase social'],
+      [{ sexo }, 'la región, el año y la clase social'],
+    ].filter(([filtro], i, todos) => i === 0 || JSON.stringify(filtro) !== JSON.stringify(todos[i - 1][0]));
+    for (const [filtro, relajado] of intentos) {
+      const r = buscarAtuendos(filtro);
+      if (r.length) {
+        atuendo = azar.elegir(r);
+        if (relajado) avisos.push(`No hay atuendo que cumpla ${relajado}${etnia ? ` para ${etnia[0].e.nombre}` : ''}: se eligió «${atuendo.nombre}» (${atuendo.epoca[0]} a ${atuendo.epoca[1]}).`);
+        break;
+      }
+    }
+    if (etnia && !opc.region) estimaciones.push(`Atuendo: «${atuendo.nombre}» (${REGIONES[atuendo.region]}), elegido por ser ${etnia.map((x) => x.e.nombre).join(' y ')}.`);
   }
   const anioPaleta = anio ?? Math.round((atuendo.epoca[0] + atuendo.epoca[1]) / 2);
 
   // Colores
   const pal = opc.paleta ?? paletaDeAtuendo(atuendo, azar.hijo('paleta'), anioPaleta).colores;
   const nombresPaleta = opc.paleta ? null : paletaDeAtuendo(atuendo, azar.hijo('paleta'), anioPaleta).nombres;
-  const piel = elegirPiel(azar.hijo('piel'), atuendo, opc);
-  const colorPelo = elegirCabello(azar.hijo('cabello'), piel, edad, opc);
+  const piel = elegirPiel(azar.hijo('piel'), atuendo, opc, etnia);
+  const colorPelo = elegirCabello(azar.hijo('cabello'), piel, edad, opc, etnia);
 
   // Prendas
   const az = azar.hijo('prendas');
@@ -195,14 +264,20 @@ export function generarPersona(opc = {}) {
 
   // Cabeza
   const ah = azar.hijo('cabeza');
-  const peinadoId = opc.peinado ?? ah.elegir(atuendo.peinados);
+  const peinadosEtnia = etnia ? atuendo.peinados.filter((p) => etnia[0].e.peinados.includes(p)) : [];
+  const peinadoId = opc.peinado ?? ah.elegir(peinadosEtnia.length ? peinadosEtnia : atuendo.peinados);
   let estilo = PEINADOS[peinadoId] ? peinadoId : 'corto';
   // Los mayores a veces pierden el pelo; la tonsura y las pelucas no se tocan.
   if (!opc.peinado && edad > 55 && sexo === 'm' && !['tonsura', 'peluca-barroca', 'peluca-egipcia'].includes(estilo) && ah.bool(0.25)) estilo = 'calvo';
   const quiereBarba = opc.barba === undefined ? true : opc.barba;
   let barbaId = 'ninguna';
   if (sexo === 'm' && edad >= 17 && quiereBarba) {
-    barbaId = typeof opc.barba === 'string' ? opc.barba : ah.elegir(atuendo.barbas);
+    if (typeof opc.barba === 'string') barbaId = opc.barba;
+    else if (etnia) {
+      const prob = etnia.reduce((t, x) => t + x.e.barba * x.peso, 0);
+      const con = atuendo.barbas.filter((b) => b !== 'ninguna');
+      barbaId = con.length && ah.bool(prob) ? ah.elegir(con) : 'ninguna';
+    } else barbaId = ah.elegir(atuendo.barbas);
     if (typeof opc.barba !== 'string' && edad < 22 && ah.bool(0.6)) barbaId = 'ninguna';
   }
   const tocadoId = opc.tocado ?? ah.elegir(atuendo.tocados);
@@ -216,12 +291,28 @@ export function generarPersona(opc = {}) {
   if (tocado && ['trarilonko'].includes(tocado.id)) tocado.colores.principal = '#b9bec6';
 
   const rostro = { ancho: 0.96 + ah.n() * 0.12, mandibula: ah.elegir(MANDIBULAS_ID), rasgos: !!opc.rasgos };
+  const az2 = azar.hijo('cuerpo');
+  const corpulenciaEstimada = etnia ? az2.ponderado(sumaPesos(etnia, (e) => e.corpulencia)) : az2.elegir(['delgada', 'media', 'media', 'media', 'robusta']);
+  let escalaAltura;
+  if (etnia && opc.altura === undefined) {
+    const media = etnia.reduce((t, x) => t + x.e.altura[sexo === 'f' ? 0 : 1] * x.peso, 0);
+    escalaAltura = (media / ESTATURA_REF[sexo]) * (1 + ajusteEstaturaAnio(anio)) * az2.entre(0.97, 1.03);
+  }
   const cuerpo = {
-    sexo, edad,
-    corpulencia: opc.corpulencia ?? azar.hijo('cuerpo').elegir(['delgada', 'media', 'media', 'media', 'robusta']),
+    sexo, edad, escalaAltura,
+    corpulencia: opc.corpulencia ?? corpulenciaEstimada,
     altura: opc.altura, postura: opc.postura ?? 'firme',
+    saludo: opc.saludo === false || opc.saludo === 'ninguno' || opc.saludo === 'ninguna' ? null : (opc.saludo ?? 'derecha'),
   };
 
+  if (etnia) {
+    const nombres = etnia.map((x) => x.e.nombre).join(' y ');
+    if (!opc.piel) estimaciones.push(`Piel: ${etnia.length > 1 ? `promedio de ${nombres}` : `rango habitual de ${nombres}`}, con variación individual.`);
+    if (!opc.cabello) estimaciones.push(`Cabello: color habitual de ${nombres}${edad > 45 ? ', con canas según la edad' : ''}.`);
+    if (opc.altura === undefined) estimaciones.push(`Estatura: unos ${Math.round(medidas(cuerpo).cm)} cm, estimada con el promedio de ${nombres}, la edad${anio !== undefined ? ' y el año' : ''}.`);
+    if (!opc.corpulencia) estimaciones.push(`Complexión: ${cuerpo.corpulencia}, la más frecuente en ${nombres}.`);
+    if (sexo === 'm' && edad >= 17 && opc.barba === undefined) estimaciones.push(`Barba: ${barbaId === 'ninguna' ? 'sin barba' : barbaId}, según la frecuencia en ${nombres}.`);
+  }
   const decada = (n) => (n < 0 ? `${-n} a. C.` : `${n}`);
   return {
     semilla, titulo: `${atuendo.nombre}`,
@@ -230,6 +321,8 @@ export function generarPersona(opc = {}) {
     cuerpo, rostro, piel,
     cabello: { estilo, color: colorPelo }, barba: { estilo: barbaId, color: colorPelo }, tocado,
     prendas, paleta: pal, nombresPaleta,
+    etnia: etnia ? etnia.map((x) => ({ id: x.e.id, nombre: x.e.nombre, peso: Math.round(x.peso * 100) / 100 })) : null,
+    estimaciones, avisos,
     detalle: opc.detalle ?? 'medio', fondo: opc.fondo ?? 'ninguno',
   };
 }
@@ -329,6 +422,6 @@ export function generarSVG(opc = {}) {
   return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo });
 }
 
-export { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS };
+export { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS };
 export { PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
 export { PATRONES_ID } from './patrones.js';

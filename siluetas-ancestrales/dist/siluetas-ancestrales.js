@@ -1159,7 +1159,8 @@ function medidas(opc = {}) {
   const sexo = opc.sexo === 'f' ? 'f' : 'm';
   const edad = limitar(Number(opc.edad ?? 30), 2, 100);
   const corp = typeof opc.corpulencia === 'number' ? opc.corpulencia : (CORPULENCIAS[opc.corpulencia] ?? 1);
-  const cm = limitar(Number(opc.altura ?? porTabla(ALTURA[sexo], Math.min(edad, 20)) * (edad > 60 ? 1 - (edad - 60) * 0.0009 : 1)), 70, 190);
+  const escalaAltura = limitar(Number(opc.escalaAltura ?? 1), 0.8, 1.2);
+  const cm = limitar(Number(opc.altura ?? porTabla(ALTURA[sexo], Math.min(edad, 20)) * escalaAltura * (edad > 60 ? 1 - (edad - 60) * 0.0009 : 1)), 70, 190);
   const H = cm * 4.9;
   const cabezas = porTabla(CABEZAS, Math.min(edad, 18));
   // u = 0 niño pequeño, 1 adulto (según proporción de la cabeza)
@@ -1215,6 +1216,17 @@ function medidas(opc = {}) {
     mano: { x: bx(y.muneca) + (grados > 9 ? H * 0.006 : 0), y0: y.muneca, y1: y.puntaMano },
   };
 
+  // Saludo: `saludo` 'derecha' levanta la mano derecha de la persona, que de frente queda a la izquierda de quien mira.
+  const saludoLado = opc.saludo === 'derecha' ? -1 : opc.saludo === 'izquierda' ? 1 : 0;
+  const S0 = brazo.linea[0];
+  const codoS = [S0[0] + H * 0.092, S0[1] + H * 0.131];
+  const munS = [codoS[0] + H * 0.028, codoS[1] - H * 0.104];
+  brazo.u = brazo.linea.map((p) => p[1]);
+  const brazoSal = {
+    linea: [S0, [(S0[0] + codoS[0]) / 2, (S0[1] + codoS[1]) / 2], codoS, [(codoS[0] + munS[0]) / 2, (codoS[1] + munS[1]) / 2], munS],
+    anchos: brazo.anchos, u: brazo.u,
+  };
+
   // Pierna derecha.
   const sep = (typeof opc.piernas === 'number' ? opc.piernas : 1) * 0.0;
   const piernaX = (yy) => {
@@ -1233,7 +1245,7 @@ function medidas(opc = {}) {
     pie: { x: piernaX(y.tobillo) + H * 0.004, y0: y.tobillo, y1: suelo, ancho: H * 0.021 + w.tobillo * 0.7, largo: H * 0.045 },
   };
 
-  return { sexo, edad, corpulencia: corp, cm, H, cx, top, suelo, y, w, grados, tan, brazo, pierna, cabezas, u, hombroX };
+  return { sexo, edad, corpulencia: corp, cm, H, cx, top, suelo, y, w, grados, tan, brazo, brazoSal, saludoLado, pierna, cabezas, u, hombroX };
 }
 
 /** Mitad derecha del contorno del torso (de la base del cuello a la entrepierna), desplazada `d` hacia afuera. */
@@ -1265,9 +1277,28 @@ function trazoTorso(M, d = 0) {
 
 const lado = (pts, s, cx) => pts.map((p) => [cx + s * (p[0]), p[1], p[2]]);
 
-/** Líneas centrales del brazo y de la pierna en el lado `s` (+1 derecha de la figura, -1 izquierda). */
+/**
+ * Líneas centrales del brazo y de la pierna en el lado `s` (+1 a la derecha de quien mira, -1 a su izquierda).
+ * Si ese lado es el del saludo, el brazo sale levantado.
+ */
 function brazoLado(M, s) {
-  return { linea: lado(M.brazo.linea, s, M.cx), anchos: M.brazo.anchos };
+  const b = s === M.saludoLado ? M.brazoSal : M.brazo;
+  return { linea: lado(b.linea, s, M.cx), anchos: b.anchos, u: b.u };
+}
+
+/**
+ * Punto del brazo (x, y absolutos y semiancho) según el parámetro `uu`, que para el brazo caído es la altura y
+ * y para el levantado recorre los mismos tramos. Más allá de la muñeca sigue la dirección del antebrazo.
+ */
+function brazoEnU(M, s, uu) {
+  const { linea: L, anchos: A, u: U } = brazoLado(M, s);
+  for (let i = 0; i < L.length - 1; i++) {
+    if (uu <= U[i + 1] || i === L.length - 2) {
+      const t = limitar((uu - U[i]) / ((U[i + 1] - U[i]) || 1), 0, 1.6);
+      return { x: lerp(L[i][0], L[i + 1][0], t), y: lerp(L[i][1], L[i + 1][1], t), w: lerp(A[i], A[i + 1], t) };
+    }
+  }
+  return { x: L[0][0], y: L[0][1], w: A[0] };
 }
 function piernaLado(M, s) {
   return { linea: lado(M.pierna.linea, s, M.cx), anchos: M.pierna.anchos };
@@ -1282,7 +1313,47 @@ function trazoPierna(M, s, holgura = 0) {
   return suavizar(tubo(p.linea, p.anchos.map((a) => a + holgura)));
 }
 
+/** Piezas (rutas) de la mano: una sola si cuelga; palma, cuatro dedos y pulgar si saluda. */
 function trazoMano(M, s) {
+  return s === M.saludoLado ? manoSaludo(M, s) : [manoCaida(M, s)];
+}
+
+/** Mano abierta, con la palma hacia quien mira, al final del antebrazo levantado. */
+function manoSaludo(M, s) {
+  const { linea: L } = brazoLado(M, s);
+  const W = L[L.length - 1], P = L[L.length - 2];
+  const l = Math.hypot(W[0] - P[0], W[1] - P[1]) || 1;
+  const u = [(W[0] - P[0]) / l, (W[1] - P[1]) / l];
+  const v = [-u[1], u[0]];
+  const wm = M.w.muneca, largo = M.y.puntaMano - M.y.muneca, palma = largo * 0.5, pw = wm * 1.45;
+  const ts = -s; // el pulgar queda del lado del cuerpo
+  const loc = (a, c) => [W[0] + u[0] * a + v[0] * c, W[1] + u[1] * a + v[1] * c];
+  const dir = (ang) => [u[0] * Math.cos(ang) + v[0] * Math.sin(ang) * ts, u[1] * Math.cos(ang) + v[1] * Math.sin(ang) * ts];
+  const partes = [suavizar([loc(-3, -wm), loc(palma * 0.45, -pw), loc(palma, -pw * 0.92), loc(palma, pw * 0.92), loc(palma * 0.45, pw), loc(-3, wm)], true)];
+  const dedos = [[0.72, 0.9, 0.12], [0.25, 1.0, 0.03], [-0.22, 0.93, -0.06], [-0.68, 0.74, -0.16]];
+  const fl = largo * 0.54, wf = pw * 0.27;
+  for (const [c, f, ang] of dedos) {
+    const base = loc(palma * 0.85, ts * pw * c), d = dir(ang);
+    const fin = [base[0] + d[0] * fl * f, base[1] + d[1] * fl * f];
+    partes.push(suavizar(tubo([base, fin], [wf, wf * 0.82], 'redonda'), true));
+  }
+  const bp = loc(palma * 0.25, ts * pw * 0.95), dp = dir(0.9);
+  partes.push(suavizar(tubo([bp, [bp[0] + dp[0] * largo * 0.4, bp[1] + dp[1] * largo * 0.4]], [wf * 1.15, wf * 0.9], 'redonda'), true));
+  return partes;
+}
+
+/** Antebrazo levantado desde el parámetro `uDesde` hasta la muñeca (se dibuja sobre mantos que lo taparían). */
+function trazoAntebrazo(M, s, uDesde) {
+  const n = 4, linea = [], anchos = [];
+  const uFin = M.brazo.u[M.brazo.u.length - 1];
+  for (let i = 0; i <= n; i++) {
+    const q = brazoEnU(M, s, lerp(uDesde, uFin, i / n));
+    linea.push([q.x, q.y]); anchos.push(q.w);
+  }
+  return suavizar(tubo(linea, anchos, 'plana'));
+}
+
+function manoCaida(M, s) {
   const { x, y0, y1 } = M.brazo.mano;
   const wm = M.w.muneca;
   const xx = M.cx + s * x;
@@ -1328,7 +1399,7 @@ function trazoCuello(M) {
   return suavizar(pts, true);
 }
 
-Object.assign(__e, { LIENZO, CORPULENCIAS, POSTURAS, medidas, perfilTorso, trazoTorso, brazoLado, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello });
+Object.assign(__e, { LIENZO, CORPULENCIAS, POSTURAS, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello });
 return __e;
 })();
 
@@ -1341,7 +1412,7 @@ const __e = {};
 // `detalles` (trazos, botones, ribetes) se dibujan encima. Las medidas son fracciones de la altura (H).
 
 const { suavizar, espejo, poligono, tubo, lerp, limitar, oscurecer, aclarar } = __m['util'];
-const { perfilTorso } = __m['cuerpo'];
+const { perfilTorso, brazoEnU } = __m['cuerpo'];
 
 // ---------- Ayudas ----------
 
@@ -1464,16 +1535,7 @@ function perfilVestido(M, o) {
 
 // ---------- Mangas ----------
 
-function brazoEnY(M, s, yy) {
-  const L = M.brazo.linea, A = M.brazo.anchos;
-  for (let i = 0; i < L.length - 1; i++) {
-    if (yy <= L[i + 1][1] || i === L.length - 2) {
-      const t = limitar((yy - L[i][1]) / ((L[i + 1][1] - L[i][1]) || 1), 0, 1.6);
-      return { x: M.cx + s * lerp(L[i][0], L[i + 1][0], t), y: yy, w: lerp(A[i], A[i + 1], t) };
-    }
-  }
-  return { x: M.cx, y: yy, w: A[0] };
-}
+const brazoEnY = brazoEnU;
 
 function finManga(M, tipo) {
   const { y, H } = M;
@@ -1502,7 +1564,9 @@ function mangaForma(M, s, tipo, d, vuelo = 0) {
     else if (tipo === 'globo') f = 1.5 - 0.5 * Math.min(1, t * 2.2) + (t > 0.8 ? 0.1 : 0);
     else if (tipo === 'kimono') { f = 1.7 + 1.0 * t; desp = H * 0.028 * t; }
     else if (tipo === 'abullonada') f = 1.55 - 0.55 * Math.min(1, t * 1.6);
-    linea.push([q.x + s * desp, q.y]);
+    // Con el brazo levantado la manga ancha se recoge hacia el codo: menos vuelo.
+    if (s === M.saludoLado) f = 1 + (f - 1) * 0.55;
+    linea.push([q.x + (s === M.saludoLado ? 0 : s * desp), q.y]);
     anchos.push((q.w + d * (i === 0 ? 1.15 : 1)) * f);
   }
   const plana = tipo !== 'campana' && tipo !== 'kimono' && tipo !== 'ancha' ? 'plana' : 'plana';
@@ -2013,7 +2077,7 @@ function accesorio(M, p, k) {
     for (const s of [1, -1]) {
       for (const yy of p.alto ? [y.codo - H * 0.07] : [y.muneca - H * 0.008]) {
         const q = brazoEnY(M, s, yy);
-        det.push(linea(`M${q.x - q.w * 1.05} ${yy}L${q.x + q.w * 1.05} ${yy + 1}`, k.principal, Math.max(3, H * 0.008), 1, { cap: 'butt', contorno: oscurecer(k.principal, 0.5) }));
+        det.push(linea(`M${q.x - q.w * 1.05} ${q.y}L${q.x + q.w * 1.05} ${q.y + 1}`, k.principal, Math.max(3, H * 0.008), 1, { cap: 'butt', contorno: oscurecer(k.principal, 0.5) }));
       }
     }
   } else if (tipo === 'bolso') {
@@ -2034,7 +2098,7 @@ const ORDEN_RANURAS = {
   capa_atras: 10, calzado: 20, inferior: 30, torso: 40, sobre: 50, faja: 60, capa: 70, cuello: 80, accesorio: 90,
 };
 
-Object.assign(__e, { yLargo, anchoEn, PLANTILLAS, PLANTILLAS_ID, ORDEN_RANURAS });
+Object.assign(__e, { yLargo, anchoEn, finManga, PLANTILLAS, PLANTILLAS_ID, ORDEN_RANURAS });
 return __e;
 })();
 
@@ -2042,9 +2106,9 @@ __m['svg'] = (() => {
 const __e = {};
 // Dibuja una persona descrita por `generarPersona` como SVG.
 
-const { LIENZO, medidas, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello } = __m['cuerpo'];
+const { LIENZO, medidas, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello, trazoAntebrazo } = __m['cuerpo'];
 const { geometriaCabeza, trazoCabeza, trazoOrejas, rasgosRostro, PEINADOS, BARBAS, TOCADOS } = __m['cabeza'];
-const { PLANTILLAS, ORDEN_RANURAS } = __m['prendas'];
+const { PLANTILLAS, ORDEN_RANURAS, finManga } = __m['prendas'];
 const { PATRONES } = __m['patrones'];
 const { oscurecer, aclarar, escapar, num } = __m['util'];
 
@@ -2167,7 +2231,7 @@ function renderizar(persona, opciones = {}) {
     ...[1, -1].map((s) => ({ d: trazoPie(M, s), ...sp })),
     { d: trazoTorso(M), ...sp },
     ...[1, -1].map((s) => ({ d: trazoBrazo(M, s), ...sp })),
-    ...[1, -1].map((s) => ({ d: trazoMano(M, s), ...sp })),
+    ...[1, -1].filter((s) => s !== M.saludoLado).flatMap((s) => trazoMano(M, s).map((d) => ({ d, ...sp }))),
     { d: trazoCuello(M), ...sp },
   ];
   cuerpo += dibujarGrupo(partesPiel, nivel);
@@ -2183,6 +2247,18 @@ function renderizar(persona, opciones = {}) {
     cuerpo += dibujarGrupo(p.r.partes, nivel);
     for (const s of p.r.detalles) cuerpo += dibujarDetalle(s);
     cuerpo += '</g>';
+  }
+
+  // 3b. Mano en saludo: encima de la ropa para que ni mangas ni mantos la tapen.
+  if (M.saludoLado) {
+    const piezas = [];
+    const tieneManto = prendas.some((p) => p.ranura === 'capa');
+    if (tieneManto) {
+      const finMax = Math.max(M.y.codo, ...prendas.filter((p) => p.params?.manga && p.params.manga !== 'sin').map((p) => finManga(M, p.params.manga)));
+      if (finMax < M.y.muneca - 2) piezas.push({ d: trazoAntebrazo(M, M.saludoLado, finMax), ...sp });
+    }
+    for (const d of trazoMano(M, M.saludoLado)) piezas.push({ d, ...sp });
+    cuerpo += `<g data-saludo="${M.saludoLado === -1 ? 'derecha' : 'izquierda'}">${dibujarGrupo(piezas, nivel)}</g>`;
   }
 
   // 4. Cabeza
@@ -2218,6 +2294,87 @@ Object.assign(__e, { renderizar });
 return __e;
 })();
 
+__m['datos/etnias'] = (() => {
+const __e = {};
+// Pueblos y culturas para estimar, a partir de la etnia, la región del atuendo, la piel, el cabello, los peinados,
+// la barba y la estatura. Son promedios aproximados de poblaciones, no reglas sobre una persona: dentro de cada pueblo
+// hay mucha variación y por eso el generador siempre elige al azar dentro de un rango. «Etnia» aquí es cultura de
+// origen y no una categoría biológica.
+//
+// pieles/peinados: listas de ids (colores.js, cabeza.js). cabellos: [id, peso]. altura: [mujer, hombre] en cm de adultos.
+// regiones: de dónde salen los atuendos (atuendos.js). prefijos: para separar pueblos que comparten región por el id del atuendo.
+// barba: probabilidad de que un adulto lleve barba o bigote. corpulencia: [nombre, peso].
+
+const L = (s) => s.split(/\s+/).filter(Boolean);
+const E = (id, nombre, d) => ({
+  id, nombre, grupo: d.grupo, regiones: L(d.regiones), prefijos: d.prefijos ? L(d.prefijos) : null,
+  pieles: L(d.pieles), cabellos: d.cabellos, peinados: L(d.peinados ?? ''), barba: d.barba ?? 0.3,
+  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? '',
+});
+
+const OSC = [['negro', 7], ['negro-azulado', 2], ['castano-oscuro', 1]];
+const MORENO = [['negro', 5], ['negro-azulado', 1.5], ['castano-oscuro', 3], ['castano', 1.5]];
+const CLARO = [['castano', 3], ['castano-claro', 3], ['rubio-oscuro', 2], ['rubio', 2], ['castano-oscuro', 2], ['pelirrojo', 0.8], ['negro', 1]];
+const MED = [['negro', 4], ['castano-oscuro', 4], ['castano', 2], ['castano-claro', 0.5]];
+const MESTIZO = [['negro', 4], ['castano-oscuro', 4], ['castano', 2], ['castano-claro', 1]];
+
+const ETNIAS = [
+  // ----- Chile y el cono sur -----
+  E('mapuche', 'Mapuche', { grupo: 'Pueblos originarios de Chile y Argentina', regiones: 'mapuche', pieles: 'canela bronce cobre oliva', cabellos: OSC, peinados: 'trenzas-dos largo-liso flequillo corto', barba: 0.08, altura: [153, 165], corpulencia: [['delgada', 1], ['media', 3], ['robusta', 2]], nota: 'Incluye pehuenche, huilliche y lafkenche cuando no hay un traje propio en el catálogo.' }),
+  E('huilliche', 'Huilliche', { grupo: 'Pueblos originarios de Chile y Argentina', regiones: 'mapuche chile-rural', pieles: 'canela bronce cobre oliva', cabellos: OSC, peinados: 'trenzas-dos largo-liso flequillo corto', barba: 0.08, altura: [153, 165] }),
+  E('aymara', 'Aymara', { grupo: 'Pueblos andinos', regiones: 'andes', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'trenzas-dos largo-liso flequillo corto', barba: 0.06, altura: [150, 162], corpulencia: [['media', 3], ['robusta', 3], ['delgada', 0.7]], nota: 'Pecho ancho por la altura; la estimación de estatura es de poblaciones del altiplano.' }),
+  E('quechua', 'Quechua', { grupo: 'Pueblos andinos', regiones: 'andes', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'trenzas-dos largo-liso flequillo corto', barba: 0.06, altura: [151, 163], corpulencia: [['media', 3], ['robusta', 2.5], ['delgada', 0.8]] }),
+  E('inca', 'Inca (histórico)', { grupo: 'Pueblos andinos', regiones: 'andes', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'flequillo largo-liso trenzas-dos corto', barba: 0.04, altura: [150, 162] }),
+  E('atacameno', 'Atacameño (lickanantay)', { grupo: 'Pueblos andinos', regiones: 'andes', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'trenzas-dos largo-liso corto', barba: 0.06, altura: [152, 164] }),
+  E('selknam', 'Selk\'nam (ona)', { grupo: 'Pueblos de la Patagonia y Tierra del Fuego', regiones: 'patagonia-fueguina', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'largo-liso corto', barba: 0.05, altura: [165, 178], corpulencia: [['media', 4], ['robusta', 2]], nota: 'Se cuentan entre los pueblos más altos de América en los registros del siglo XIX.' }),
+  E('kawesqar', 'Kawésqar y yagán', { grupo: 'Pueblos de la Patagonia y Tierra del Fuego', regiones: 'patagonia-fueguina', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'largo-liso corto', barba: 0.05, altura: [148, 160], nota: 'Pueblos canoeros; el catálogo los representa con trajes de piel genéricos de la región.' }),
+  E('rapanui', 'Rapanui', { grupo: 'Polinesia', regiones: 'rapa-nui polinesia', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'corto largo-ondulado trenza-una mono-alto', barba: 0.3, altura: [160, 172], corpulencia: [['media', 3], ['robusta', 3]] }),
+  E('polinesio', 'Polinesio', { grupo: 'Polinesia', regiones: 'polinesia rapa-nui', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'corto largo-ondulado trenza-una mono-alto', barba: 0.3, altura: [160, 173], corpulencia: [['media', 3], ['robusta', 3]] }),
+  E('criollo-chileno', 'Criollo y mestizo chileno', { grupo: 'Chile', regiones: 'chile-rural hispanoamerica-colonial', pieles: 'clara-calida oliva-clara oliva canela', cabellos: MESTIZO, peinados: 'corto trenzas-dos recogido bob', barba: 0.4, altura: [155, 167], nota: 'Mezcla de ascendencia europea e indígena; la piel se estima en un rango amplio.' }),
+  E('espanol', 'Español y vasco', { grupo: 'Europa', regiones: 'hispanoamerica-colonial europa-moderna europa-xix europa-medieval', pieles: 'porcelana clara clara-calida oliva-clara', cabellos: MED, peinados: 'corto recogido bob', barba: 0.45, altura: [157, 168] }),
+  E('rioplatense', 'Criollo rioplatense', { grupo: 'Río de la Plata', regiones: 'rio-de-la-plata', pieles: 'clara clara-calida oliva-clara oliva', cabellos: MESTIZO, peinados: 'corto', barba: 0.5, altura: [158, 170] }),
+  E('afrodescendiente', 'Afrodescendiente de las Américas', { grupo: 'Pueblos africanos y afrodescendientes', regiones: 'hispanoamerica-colonial africa-oeste', pieles: 'castana ebano-claro ebano', cabellos: [['negro', 9], ['castano-oscuro', 1]], peinados: 'afro rizos trenzas-dos rapado corto', barba: 0.4, altura: [158, 170], nota: 'El catálogo no tiene trajes específicos de comunidades afrodescendientes de las Américas: usa los coloniales y los de África occidental.' }),
+  // ----- Mesoamérica y Norteamérica -----
+  E('maya', 'Maya', { grupo: 'Pueblos de Mesoamérica', regiones: 'mesoamerica', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'trenzas-dos largo-liso flequillo', barba: 0.05, altura: [145, 157] }),
+  E('nahua', 'Nahua (azteca)', { grupo: 'Pueblos de Mesoamérica', regiones: 'mesoamerica', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'coletas corona-trenzas flequillo corto', barba: 0.05, altura: [147, 160] }),
+  E('pueblos-llanuras', 'Pueblos de las llanuras norteamericanas', { grupo: 'Pueblos de Norteamérica', regiones: 'norteamerica', pieles: 'canela bronce cobre oliva', cabellos: OSC, peinados: 'trenzas-dos largo-liso', barba: 0.05, altura: [160, 174] }),
+  E('inuit', 'Inuit', { grupo: 'Pueblos del Ártico', regiones: 'artico', pieles: 'clara-calida oliva-clara oliva', cabellos: OSC, peinados: 'trenzas-dos largo-liso corto', barba: 0.08, altura: [150, 160], corpulencia: [['media', 3], ['robusta', 3]] }),
+  // ----- Europa -----
+  E('europeo-occidental', 'Europeo occidental', { grupo: 'Europa', regiones: 'europa-medieval europa-moderna europa-xix', pieles: 'porcelana clara clara-calida', cabellos: CLARO, peinados: 'corto bob trenza-una recogido', barba: 0.4, altura: [160, 171] }),
+  E('europeo-mediterraneo', 'Europeo mediterráneo (italiano, griego)', { grupo: 'Europa', regiones: 'roma grecia bizancio europa-moderna europa-xix europa-medieval', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto recogido romano', barba: 0.5, altura: [157, 169] }),
+  E('europeo-del-norte', 'Europeo del norte (nórdico, germano)', { grupo: 'Europa', regiones: 'germano europa-medieval europa-moderna', pieles: 'porcelana clara', cabellos: [['rubio', 4], ['rubio-oscuro', 3], ['castano-claro', 2], ['pelirrojo', 1.5], ['castano', 1]], peinados: 'trenza-una largo-liso corto recogido', barba: 0.5, altura: [166, 178] }),
+  E('celta', 'Celta (Irlanda, Escocia, Gales)', { grupo: 'Europa', regiones: 'germano', pieles: 'porcelana clara', cabellos: [['pelirrojo', 2.5], ['castano', 3], ['castano-claro', 2], ['castano-oscuro', 2], ['negro', 1], ['rubio-oscuro', 1]], peinados: 'largo-liso corto largo-ondulado', barba: 0.45, altura: [160, 172] }),
+  E('eslavo', 'Eslavo', { grupo: 'Europa', regiones: 'eslavo', pieles: 'porcelana clara clara', cabellos: [['rubio-oscuro', 3], ['castano-claro', 3], ['rubio', 2], ['castano', 2], ['rubio-ceniza', 1]], peinados: 'trenza-una coletas bob corto', barba: 0.55, altura: [162, 174] }),
+  E('judio-askenazi', 'Judío askenazi', { grupo: 'Comunidades judías', regiones: 'judio', pieles: 'porcelana clara clara-calida oliva-clara', cabellos: MED, peinados: 'corto', barba: 0.7, altura: [157, 168] }),
+  E('hebreo-antiguo', 'Hebreo antiguo', { grupo: 'Comunidades judías', regiones: 'judio', pieles: 'oliva-clara oliva canela', cabellos: [['negro', 6], ['castano-oscuro', 3]], peinados: 'corto largo-ondulado trenzas-dos', barba: 0.75, altura: [152, 164] }),
+  E('egipcio-antiguo', 'Egipcio antiguo', { grupo: 'Mundo antiguo', regiones: 'egipto', pieles: 'oliva canela bronce', cabellos: [['negro', 8], ['castano-oscuro', 1]], peinados: 'peluca-egipcia bob rapado', barba: 0.05, altura: [152, 165] }),
+  E('mesopotamico', 'Sumerio, acadio y asirio', { grupo: 'Mundo antiguo', regiones: 'mesopotamia', pieles: 'oliva-clara oliva canela', cabellos: [['negro', 7], ['castano-oscuro', 2]], peinados: 'rizos recogido corto', barba: 0.85, altura: [152, 165] }),
+  E('griego-antiguo', 'Griego antiguo', { grupo: 'Mundo antiguo', regiones: 'grecia', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto rizos recogido corona-trenzas', barba: 0.6, altura: [153, 167] }),
+  E('romano-antiguo', 'Romano antiguo', { grupo: 'Mundo antiguo', regiones: 'roma', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'romano corto recogido', barba: 0.15, altura: [154, 168], nota: 'Los hombres romanos solían ir afeitados.' }),
+  E('bizantino', 'Bizantino', { grupo: 'Mundo antiguo', regiones: 'bizancio', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto recogido', barba: 0.55, altura: [154, 167] }),
+  // ----- Medio Oriente y África del norte -----
+  E('arabe', 'Árabe', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente africa-norte', pieles: 'oliva-clara oliva canela bronce', cabellos: [['negro', 7], ['castano-oscuro', 2]], peinados: 'corto recogido', barba: 0.7, altura: [157, 169] }),
+  E('persa', 'Persa', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente', pieles: 'oliva-clara oliva', cabellos: [['negro', 6], ['castano-oscuro', 3]], peinados: 'corto largo-liso', barba: 0.65, altura: [157, 170] }),
+  E('turco-otomano', 'Turco y otomano', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto', barba: 0.7, altura: [158, 171] }),
+  E('bereber', 'Bereber y magrebí', { grupo: 'Medio Oriente y África del norte', regiones: 'africa-norte', pieles: 'oliva-clara oliva canela bronce', cabellos: [['negro', 6], ['castano-oscuro', 3]], peinados: 'corto trenzas-dos recogido', barba: 0.65, altura: [157, 169] }),
+  // ----- Asia -----
+  E('indio-subcontinente', 'Indio del subcontinente', { grupo: 'Asia', regiones: 'asia-sur', pieles: 'oliva canela bronce cobre castana', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'trenza-una recogido corto', barba: 0.55, altura: [151, 164] }),
+  E('chino-han', 'Chino han', { grupo: 'Asia', regiones: 'asia-este', prefijos: 'china-', pieles: 'clara clara-calida oliva-clara', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'mono-alto recogido trenza-una bob', barba: 0.2, altura: [155, 167] }),
+  E('japones', 'Japonés', { grupo: 'Asia', regiones: 'asia-este', prefijos: 'japon-', pieles: 'porcelana clara clara-calida', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'mono-chonmage recogido mono-alto', barba: 0.2, altura: [153, 165] }),
+  E('coreano', 'Coreano', { grupo: 'Asia', regiones: 'asia-este', prefijos: 'corea-', pieles: 'porcelana clara clara-calida', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'recogido trenza-una mono-chonmage', barba: 0.2, altura: [155, 167] }),
+  E('malayo-indonesio', 'Malayo e indonesio', { grupo: 'Asia', regiones: 'sudeste-asiatico', pieles: 'oliva canela bronce', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'recogido corto mono-alto', barba: 0.25, altura: [148, 160] }),
+  // ----- África subsahariana -----
+  E('africano-occidental', 'Africano occidental', { grupo: 'África subsahariana', regiones: 'africa-oeste', pieles: 'castana ebano-claro ebano ebano-profundo', cabellos: [['negro', 10]], peinados: 'rapado corto afro trenzas-dos rizos', barba: 0.4, altura: [160, 172] }),
+  E('zulu', 'Zulú y bantú austral', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'zulu-', pieles: 'castana ebano-claro ebano', cabellos: [['negro', 10]], peinados: 'rapado corto', barba: 0.3, altura: [157, 169] }),
+  E('maasai', 'Maasái', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'maasai', pieles: 'ebano-claro ebano ebano-profundo', cabellos: [['negro', 10]], peinados: 'rapado rastas', barba: 0.05, altura: [165, 178], corpulencia: [['delgada', 3], ['media', 3]], nota: 'Estatura alta y complexión delgada son típicas de los registros de pastores de África oriental.' }),
+];
+
+const ETNIAS_POR_ID = Object.fromEntries(ETNIAS.map((e) => [e.id, e]));
+
+Object.assign(__e, { ETNIAS, ETNIAS_POR_ID });
+return __e;
+})();
+
 __m['generador'] = (() => {
 const __e = {};
 // Generador de personas: elige un atuendo del catálogo (o inventa uno), le pone colores y devuelve la
@@ -2231,21 +2388,24 @@ const { MANDIBULAS_ID, PEINADOS, BARBAS, TOCADOS } = __m['cabeza'];
 const { PATRONES_ID } = __m['patrones'];
 const { CORPULENCIAS, POSTURAS } = __m['cuerpo'];
 const { renderizar } = __m['svg'];
+const { ETNIAS, ETNIAS_POR_ID } = __m['datos/etnias'];
+const { medidas } = __m['cuerpo'];
 
 // ---------- Consulta del catálogo ----------
 
 const contiene = (epoca, anio) => anio === undefined || anio === null || (anio >= epoca[0] && anio <= epoca[1]);
 
 /** Atuendos que cumplen los filtros: { region, anio, sexo, clase }. */
-function buscarAtuendos({ region, anio, sexo, clase } = {}) {
+function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase } = {}) {
+  const rs = regiones ?? (region ? [region] : null);
   return ATUENDOS.filter((a) =>
-    (!region || a.region === region) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase));
+    (!rs || rs.includes(a.region)) && (!prefijos || prefijos.some((p) => a.id.startsWith(p))) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase));
 }
 
 function listarRegiones() { return { ...REGIONES }; }
 function listarCatalogo() {
   return { atuendos: ATUENDOS.length, prendas: PRENDAS.length, tintes: TINTES.length, pieles: PIELES.length, cabellos: CABELLOS.length,
-    peinados: Object.keys(PEINADOS).length, barbas: Object.keys(BARBAS).length, tocados: Object.keys(TOCADOS).length, patrones: PATRONES_ID.length };
+    etnias: ETNIAS.length, peinados: Object.keys(PEINADOS).length, barbas: Object.keys(BARBAS).length, tocados: Object.keys(TOCADOS).length, patrones: PATRONES_ID.length };
 }
 
 // ---------- Paletas ----------
@@ -2338,11 +2498,20 @@ function edadAleatoria(azar) {
   return Math.round(azar.ponderado([[azar.entre(3, 12), 1.2], [azar.entre(13, 19), 1], [azar.entre(20, 39), 3.4], [azar.entre(40, 59), 2.4], [azar.entre(60, 88), 1.2]]));
 }
 
-function elegirPiel(azar, atuendo, opc) {
+function elegirPiel(azar, atuendo, opc, etnia) {
   if (opc.piel) return esHex(opc.piel) ? opc.piel : (PIELES.find((x) => x.id === opc.piel)?.hex ?? PIELES[4].hex);
-  const ids = atuendo.pieles ?? PIELES.map((p) => p.id);
-  const id = azar.elegir(ids);
-  const base = (PIELES.find((p) => p.id === id) ?? PIELES[4]).hex;
+  const hexDe = (ids) => (PIELES.find((p) => p.id === azar.elegir(ids)) ?? PIELES[4]).hex;
+  if (etnia) {
+    // Una mezcla promedia un tono de cada pueblo, según su peso.
+    let acum = null, peso = 0;
+    for (const x of etnia) {
+      const h = hexDe(x.e.pieles);
+      acum = acum === null ? h : mezclar(acum, h, x.peso / (peso + x.peso));
+      peso += x.peso;
+    }
+    return variar(acum, azar, { tono: 3, sat: 0.03, luz: 0.025 });
+  }
+  const base = hexDe(atuendo.pieles ?? PIELES.map((p) => p.id));
   return variar(base, azar, { tono: 3, sat: 0.03, luz: 0.025 });
 }
 
@@ -2353,11 +2522,12 @@ function indicePiel(hex) {
   return mejor;
 }
 
-function elegirCabello(azar, piel, edad, opc) {
+function elegirCabello(azar, piel, edad, opc, etnia) {
   if (opc.cabello) return esHex(opc.cabello) ? opc.cabello : (CABELLOS.find((c) => c.id === opc.cabello)?.hex ?? CABELLOS[0].hex);
   const ip = indicePiel(piel);
   let pesos;
-  if (ip >= 7) pesos = [['negro', 6], ['negro-azulado', 2], ['castano-oscuro', 1]];
+  if (etnia) pesos = sumaPesos(etnia, (e) => e.cabellos);
+  else if (ip >= 7) pesos = [['negro', 6], ['negro-azulado', 2], ['castano-oscuro', 1]];
   else if (ip >= 3) pesos = [['negro', 5], ['negro-azulado', 2], ['castano-oscuro', 3], ['castano', 2], ['cobrizo', 0.2]];
   else pesos = [['negro', 2], ['castano-oscuro', 3], ['castano', 3], ['castano-claro', 2], ['rubio-oscuro', 1.5], ['rubio', 1.5], ['rubio-ceniza', 0.7], ['pelirrojo', 0.8], ['cobrizo', 0.6]];
   let id = azar.ponderado(pesos);
@@ -2367,6 +2537,42 @@ function elegirCabello(azar, piel, edad, opc) {
   const base = CABELLOS.find((c) => c.id === id).hex;
   return variar(base, azar, { tono: 3, sat: 0.03, luz: 0.03 });
 }
+
+// ---------- Etnia ----------
+
+/** Etnia como texto, lista o {id: peso}: devuelve [{ e, peso }] con los pesos sumando 1. La primera manda en la ropa. */
+function normalizarEtnia(spec) {
+  if (spec === undefined || spec === null || spec === '') return null;
+  let pares;
+  if (typeof spec === 'string') pares = spec.split(',').map((x) => [x.trim(), 1]);
+  else if (Array.isArray(spec)) pares = spec.map((x) => [x, 1]);
+  else pares = Object.entries(spec);
+  const lista = pares.filter(([id]) => id).map(([id, peso]) => {
+    const e = ETNIAS_POR_ID[id];
+    if (!e) throw new Error(`Etnia desconocida: ${id}. Disponibles: ${ETNIAS.map((x) => x.id).join(', ')}`);
+    return { e, peso: Number(peso) > 0 ? Number(peso) : 1 };
+  });
+  if (!lista.length) return null;
+  const total = lista.reduce((t, x) => t + x.peso, 0);
+  return lista.map((x) => ({ e: x.e, peso: x.peso / total }));
+}
+
+const sumaPesos = (lista, fn) => {
+  const m = new Map();
+  for (const { e, peso } of lista) for (const [id, w] of fn(e)) m.set(id, (m.get(id) ?? 0) + w * peso);
+  return [...m.entries()];
+};
+
+/** Ajuste de estatura por época (poblaciones más bajas antes del siglo XX), aproximado. */
+function ajusteEstaturaAnio(anio) {
+  if (anio === undefined || anio === null) return 0;
+  if (anio < 1000) return -0.02;
+  if (anio < 1800) return -0.015;
+  if (anio < 1950) return -0.005;
+  return 0.01;
+}
+
+const ESTATURA_REF = { f: 161, m: 174 }; // los promedios con los que medidas() calcula la altura por edad
 
 // ---------- Persona ----------
 
@@ -2383,25 +2589,45 @@ function generarPersona(opc = {}) {
   const edad = Math.round(opc.edad ?? edadAleatoria(azar));
   const anio = opc.anio;
 
-  // Atuendo: se afloja un filtro a la vez si no hay coincidencias.
+  const etnia = normalizarEtnia(opc.etnia);
+  const estimaciones = [], avisos = [];
+
+  // Atuendo: se afloja un filtro a la vez si no hay coincidencias, y se avisa de cuáles.
   let atuendo;
   if (opc.atuendo) {
     atuendo = ATUENDOS_POR_ID[opc.atuendo];
     if (!atuendo) throw new Error(`Atuendo desconocido: ${opc.atuendo}`);
   } else {
+    const regiones = opc.region ? [opc.region] : (etnia ? etnia[0].e.regiones : null);
+    const prefijos = opc.region ? null : (etnia ? etnia[0].e.prefijos : null);
+    const f = (extra) => ({ regiones, prefijos, anio, sexo, clase: opc.clase, ...extra });
     const intentos = [
-      { region: opc.region, anio, sexo, clase: opc.clase }, { region: opc.region, anio, sexo }, { region: opc.region, sexo, clase: opc.clase },
-      { region: opc.region, sexo }, { anio, sexo, clase: opc.clase }, { anio, sexo }, { sexo },
-    ];
-    for (const f of intentos) { const r = buscarAtuendos(f); if (r.length) { atuendo = azar.elegir(r); break; } }
+      [f({}), null],
+      [f({ clase: undefined }), 'la clase social'],
+      [f({ anio: undefined }), 'el año'],
+      [f({ clase: undefined, anio: undefined }), 'el año y la clase social'],
+      [f({ prefijos: null, clase: undefined, anio: undefined }), 'el año, la clase social ni el pueblo concreto: es un atuendo de otro pueblo de la misma región'],
+      [{ anio, sexo, clase: opc.clase }, 'la región'],
+      [{ anio, sexo }, 'la región y la clase social'],
+      [{ sexo }, 'la región, el año y la clase social'],
+    ].filter(([filtro], i, todos) => i === 0 || JSON.stringify(filtro) !== JSON.stringify(todos[i - 1][0]));
+    for (const [filtro, relajado] of intentos) {
+      const r = buscarAtuendos(filtro);
+      if (r.length) {
+        atuendo = azar.elegir(r);
+        if (relajado) avisos.push(`No hay atuendo que cumpla ${relajado}${etnia ? ` para ${etnia[0].e.nombre}` : ''}: se eligió «${atuendo.nombre}» (${atuendo.epoca[0]} a ${atuendo.epoca[1]}).`);
+        break;
+      }
+    }
+    if (etnia && !opc.region) estimaciones.push(`Atuendo: «${atuendo.nombre}» (${REGIONES[atuendo.region]}), elegido por ser ${etnia.map((x) => x.e.nombre).join(' y ')}.`);
   }
   const anioPaleta = anio ?? Math.round((atuendo.epoca[0] + atuendo.epoca[1]) / 2);
 
   // Colores
   const pal = opc.paleta ?? paletaDeAtuendo(atuendo, azar.hijo('paleta'), anioPaleta).colores;
   const nombresPaleta = opc.paleta ? null : paletaDeAtuendo(atuendo, azar.hijo('paleta'), anioPaleta).nombres;
-  const piel = elegirPiel(azar.hijo('piel'), atuendo, opc);
-  const colorPelo = elegirCabello(azar.hijo('cabello'), piel, edad, opc);
+  const piel = elegirPiel(azar.hijo('piel'), atuendo, opc, etnia);
+  const colorPelo = elegirCabello(azar.hijo('cabello'), piel, edad, opc, etnia);
 
   // Prendas
   const az = azar.hijo('prendas');
@@ -2417,14 +2643,20 @@ function generarPersona(opc = {}) {
 
   // Cabeza
   const ah = azar.hijo('cabeza');
-  const peinadoId = opc.peinado ?? ah.elegir(atuendo.peinados);
+  const peinadosEtnia = etnia ? atuendo.peinados.filter((p) => etnia[0].e.peinados.includes(p)) : [];
+  const peinadoId = opc.peinado ?? ah.elegir(peinadosEtnia.length ? peinadosEtnia : atuendo.peinados);
   let estilo = PEINADOS[peinadoId] ? peinadoId : 'corto';
   // Los mayores a veces pierden el pelo; la tonsura y las pelucas no se tocan.
   if (!opc.peinado && edad > 55 && sexo === 'm' && !['tonsura', 'peluca-barroca', 'peluca-egipcia'].includes(estilo) && ah.bool(0.25)) estilo = 'calvo';
   const quiereBarba = opc.barba === undefined ? true : opc.barba;
   let barbaId = 'ninguna';
   if (sexo === 'm' && edad >= 17 && quiereBarba) {
-    barbaId = typeof opc.barba === 'string' ? opc.barba : ah.elegir(atuendo.barbas);
+    if (typeof opc.barba === 'string') barbaId = opc.barba;
+    else if (etnia) {
+      const prob = etnia.reduce((t, x) => t + x.e.barba * x.peso, 0);
+      const con = atuendo.barbas.filter((b) => b !== 'ninguna');
+      barbaId = con.length && ah.bool(prob) ? ah.elegir(con) : 'ninguna';
+    } else barbaId = ah.elegir(atuendo.barbas);
     if (typeof opc.barba !== 'string' && edad < 22 && ah.bool(0.6)) barbaId = 'ninguna';
   }
   const tocadoId = opc.tocado ?? ah.elegir(atuendo.tocados);
@@ -2438,12 +2670,28 @@ function generarPersona(opc = {}) {
   if (tocado && ['trarilonko'].includes(tocado.id)) tocado.colores.principal = '#b9bec6';
 
   const rostro = { ancho: 0.96 + ah.n() * 0.12, mandibula: ah.elegir(MANDIBULAS_ID), rasgos: !!opc.rasgos };
+  const az2 = azar.hijo('cuerpo');
+  const corpulenciaEstimada = etnia ? az2.ponderado(sumaPesos(etnia, (e) => e.corpulencia)) : az2.elegir(['delgada', 'media', 'media', 'media', 'robusta']);
+  let escalaAltura;
+  if (etnia && opc.altura === undefined) {
+    const media = etnia.reduce((t, x) => t + x.e.altura[sexo === 'f' ? 0 : 1] * x.peso, 0);
+    escalaAltura = (media / ESTATURA_REF[sexo]) * (1 + ajusteEstaturaAnio(anio)) * az2.entre(0.97, 1.03);
+  }
   const cuerpo = {
-    sexo, edad,
-    corpulencia: opc.corpulencia ?? azar.hijo('cuerpo').elegir(['delgada', 'media', 'media', 'media', 'robusta']),
+    sexo, edad, escalaAltura,
+    corpulencia: opc.corpulencia ?? corpulenciaEstimada,
     altura: opc.altura, postura: opc.postura ?? 'firme',
+    saludo: opc.saludo === false || opc.saludo === 'ninguno' || opc.saludo === 'ninguna' ? null : (opc.saludo ?? 'derecha'),
   };
 
+  if (etnia) {
+    const nombres = etnia.map((x) => x.e.nombre).join(' y ');
+    if (!opc.piel) estimaciones.push(`Piel: ${etnia.length > 1 ? `promedio de ${nombres}` : `rango habitual de ${nombres}`}, con variación individual.`);
+    if (!opc.cabello) estimaciones.push(`Cabello: color habitual de ${nombres}${edad > 45 ? ', con canas según la edad' : ''}.`);
+    if (opc.altura === undefined) estimaciones.push(`Estatura: unos ${Math.round(medidas(cuerpo).cm)} cm, estimada con el promedio de ${nombres}, la edad${anio !== undefined ? ' y el año' : ''}.`);
+    if (!opc.corpulencia) estimaciones.push(`Complexión: ${cuerpo.corpulencia}, la más frecuente en ${nombres}.`);
+    if (sexo === 'm' && edad >= 17 && opc.barba === undefined) estimaciones.push(`Barba: ${barbaId === 'ninguna' ? 'sin barba' : barbaId}, según la frecuencia en ${nombres}.`);
+  }
   const decada = (n) => (n < 0 ? `${-n} a. C.` : `${n}`);
   return {
     semilla, titulo: `${atuendo.nombre}`,
@@ -2452,6 +2700,8 @@ function generarPersona(opc = {}) {
     cuerpo, rostro, piel,
     cabello: { estilo, color: colorPelo }, barba: { estilo: barbaId, color: colorPelo }, tocado,
     prendas, paleta: pal, nombresPaleta,
+    etnia: etnia ? etnia.map((x) => ({ id: x.e.id, nombre: x.e.nombre, peso: Math.round(x.peso * 100) / 100 })) : null,
+    estimaciones, avisos,
     detalle: opc.detalle ?? 'medio', fondo: opc.fondo ?? 'ninguno',
   };
 }
@@ -2555,7 +2805,7 @@ function generarSVG(opc = {}) {
 
 
 
-Object.assign(__e, { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, buscarAtuendos, listarRegiones, listarCatalogo, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
+Object.assign(__e, { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, buscarAtuendos, listarRegiones, listarCatalogo, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
 __e.PEINADOS = __m['cabeza'].PEINADOS;
 __e.BARBAS = __m['cabeza'].BARBAS;
 __e.TOCADOS = __m['cabeza'].TOCADOS;

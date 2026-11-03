@@ -1,8 +1,8 @@
 // Dibuja una persona descrita por `generarPersona` como SVG.
 
-import { LIENZO, medidas, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello } from './cuerpo.js';
+import { LIENZO, medidas, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello, trazoAntebrazo } from './cuerpo.js';
 import { geometriaCabeza, trazoCabeza, trazoOrejas, rasgosRostro, PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
-import { PLANTILLAS, ORDEN_RANURAS } from './prendas.js';
+import { PLANTILLAS, ORDEN_RANURAS, finManga } from './prendas.js';
 import { PATRONES } from './patrones.js';
 import { oscurecer, aclarar, escapar, num } from './util.js';
 
@@ -125,7 +125,7 @@ export function renderizar(persona, opciones = {}) {
     ...[1, -1].map((s) => ({ d: trazoPie(M, s), ...sp })),
     { d: trazoTorso(M), ...sp },
     ...[1, -1].map((s) => ({ d: trazoBrazo(M, s), ...sp })),
-    ...[1, -1].map((s) => ({ d: trazoMano(M, s), ...sp })),
+    ...[1, -1].filter((s) => s !== M.saludoLado).flatMap((s) => trazoMano(M, s).map((d) => ({ d, ...sp }))),
     { d: trazoCuello(M), ...sp },
   ];
   cuerpo += dibujarGrupo(partesPiel, nivel);
@@ -141,6 +141,18 @@ export function renderizar(persona, opciones = {}) {
     cuerpo += dibujarGrupo(p.r.partes, nivel);
     for (const s of p.r.detalles) cuerpo += dibujarDetalle(s);
     cuerpo += '</g>';
+  }
+
+  // 3b. Mano en saludo: encima de la ropa para que ni mangas ni mantos la tapen.
+  if (M.saludoLado) {
+    const piezas = [];
+    const tieneManto = prendas.some((p) => p.ranura === 'capa');
+    if (tieneManto) {
+      const finMax = Math.max(M.y.codo, ...prendas.filter((p) => p.params?.manga && p.params.manga !== 'sin').map((p) => finManga(M, p.params.manga)));
+      if (finMax < M.y.muneca - 2) piezas.push({ d: trazoAntebrazo(M, M.saludoLado, finMax), ...sp });
+    }
+    for (const d of trazoMano(M, M.saludoLado)) piezas.push({ d, ...sp });
+    cuerpo += `<g data-saludo="${M.saludoLado === -1 ? 'derecha' : 'izquierda'}">${dibujarGrupo(piezas, nivel)}</g>`;
   }
 
   // 4. Cabeza
