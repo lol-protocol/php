@@ -1,0 +1,254 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\App\Integration;
+
+use App\Support\Database;
+use App\Support\Migrator;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Follows every link of the seeded sites, page by page, the way a crawler does, and asks that none of them
+ * redirect or answer 404. The canonical 301 makes a link written by hand work anyway, at the cost of one more
+ * request (and of a URL that is not the one a search engine should see); `enlace()` and `accion()` exist so
+ * nobody writes one, and this is what notices when somebody does. A broken link here is a bug in a view.
+ *
+ * Real requests, to PHP's built-in server (headers are invisible from the CLI: see ResponseHeadersTest).
+ */
+class EnlacesTest extends TestCase
+{
+    private const GENEALOGIA = 'tudominio.local';
+    private const POS = 'contrastocolor.local';
+    private const TOKEN = 'token-de-prueba-0123456789';
+    /** A crawl that does not end is a bug too (a link that makes a new one every time). */
+    private const MAX_PAGINAS = 600;
+
+    private static string $dir;
+    private static int $puerto;
+    /** @var resource|null */
+    private static $servidor = null;
+
+    public static function setUpBeforeClass(): void
+    {
+        self::$dir = sys_get_temp_dir() . '/url-routing-enlaces-' . getmypid();
+        @mkdir(self::$dir . '/sesiones', 0777, true);
+
+        foreach (['genealogy', 'pos'] as $site) {
+            $migrator = Migrator::forSite(new Database('sqlite:' . self::$dir . "/{$site}.sqlite"), $site);
+            $migrator->migrate();
+            $migrator->seed();
+        }
+
+        $socket = stream_socket_server('tcp://127.0.0.1:0');
+        self::assertNotFalse($socket, 'No free port for the test server');
+        self::$puerto = (int)substr((string)stream_socket_get_name($socket, false), strlen('127.0.0.1:'));
+        fclose($socket);
+
+        $publico = dirname(__DIR__, 3) . '/public';
+        self::$servidor = proc_open(
+            [PHP_BINARY, '-d', 'session.save_path=' . self::$dir . '/sesiones', '-S', '127.0.0.1:' . self::$puerto, '-t', $publico, $publico . '/index.php'],
+            [1 => ['file', self::$dir . '/server.out', 'w'], 2 => ['file', self::$dir . '/server.err', 'w']],
+            $pipes,
+            null,
+            [
+                'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
+                'DB_DSN_POS' => 'sqlite:' . self::$dir . '/pos.sqlite',
+                'LOG_FILE' => self::$dir . '/app.log',
+                'URL_LOG_DIR' => 'off',
+                'OWNER_TOKEN' => self::TOKEN,
+                'PATH' => (string)getenv('PATH'),
+            ]
+        );
+        for ($intento = 0; $intento < 50; $intento++) {
+            $conexion = @fsockopen('127.0.0.1', self::$puerto, $errno, $error, 0.1);
+            if ($conexion !== false) {
+                fclose($conexion);
+                return;
+            }
+            usleep(100_000);
+        }
+
+        self::fail('The built-in server did not start: ' . (string)@file_get_contents(self::$dir . '/server.err'));
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        if (is_resource(self::$servidor)) {
+            proc_terminate(self::$servidor);
+            proc_close(self::$servidor);
+        }
+        exec('rm -rf ' . escapeshellarg(self::$dir));
+    }
+
+    /**
+     * One GET, without following redirects.
+     *
+     * @return array{int, string} status, body
+     */
+    private function pedir(string $host, string $ruta, bool $propietario): array
+    {
+        // The limiter allows 100 requests a minute per IP and a crawl makes hundreds: start each one fresh.
+        foreach (glob(sys_get_temp_dir() . '/rate_limit_*') ?: [] as $archivo) {
+            if (preg_match('/^rate_limit_[0-9a-f]{64}$/', basename($archivo)) === 1) {
+                @unlink($archivo);
+            }
+        }
+
+        $cabeceras = ["Host: {$host}"];
+        if ($propietario) {
+            $cabeceras[] = 'Authorization: Basic ' . base64_encode('propietario:' . self::TOKEN);
+        }
+        $contexto = stream_context_create(['http' => [
+            'method' => 'GET',
+            'header' => implode("\r\n", $cabeceras),
+            'ignore_errors' => true,
+            'follow_location' => 0,
+            'timeout' => 10,
+        ]]);
+        $cuerpo = file_get_contents('http://127.0.0.1:' . self::$puerto . $ruta, false, $contexto);
+        $this->assertNotFalse($cuerpo, "No response for {$ruta}");
+
+        preg_match('#^HTTP/\S+ (\d{3})#', (string)($http_response_header[0] ?? ''), $m);
+
+        return [(int)($m[1] ?? 0), $cuerpo];
+    }
+
+    /**
+     * The local links of a page: href="/..." of an <a>, without the fragment. Absolute URLs, mailto: and the like
+     * are not this site's to check.
+     *
+     * @return list<string>
+     */
+    private static function enlacesDe(string $html): array
+    {
+        preg_match_all('/<a\s[^>]*href="(\/[^"#]*)"/i', $html, $m);
+
+        return array_values(array_unique(array_map(static fn(string $h): string => html_entity_decode($h, ENT_QUOTES), $m[1])));
+    }
+
+    /**
+     * Where a crawler starts: the home page, the listings (the search form is not a link) and every URL the sitemap
+     * gives, which is how a search engine finds the pages. So the sitemap's own URLs are checked too: each must exist
+     * and be the canonical one.
+     *
+     * @param list<string> $extra
+     * @return list<string>
+     */
+    private function semillas(string $host, array $extra, bool $propietario): array
+    {
+        $rutas = [];
+        [, $indice] = $this->pedir($host, '/sitemap.xml', $propietario);
+        preg_match_all('#<loc>([^<]+)</loc>#', $indice, $partes);
+        foreach ($partes[1] as $parte) {
+            $rutas[] = (string)parse_url($parte, PHP_URL_PATH);
+            [, $xml] = $this->pedir($host, (string)parse_url($parte, PHP_URL_PATH), $propietario);
+            preg_match_all('#<loc>([^<]+)</loc>#', $xml, $paginas);
+            foreach ($paginas[1] as $pagina) {
+                $rutas[] = (string)parse_url($pagina, PHP_URL_PATH);
+            }
+        }
+        $this->assertNotSame([], $rutas, 'the sitemap gave nothing');
+
+        return array_values(array_unique(array_merge(['/'], $extra, $rutas)));
+    }
+
+    /**
+     * Breadth-first from $inicio. Returns the pages that were reached and the links that were not what they should be.
+     *
+     * @param list<string> $inicio
+     * @return array{list<string>, list<string>}
+     */
+    private function recorrer(string $host, array $inicio, bool $propietario): array
+    {
+        $porVisitar = $inicio;
+        $vistas = [];
+        $mal = [];
+        $origen = array_fill_keys($inicio, '(inicio)');
+
+        while ($porVisitar !== [] && count($vistas) < self::MAX_PAGINAS) {
+            $ruta = array_shift($porVisitar);
+            if (isset($vistas[$ruta])) {
+                continue;
+            }
+            [$estado, $cuerpo] = $this->pedir($host, $ruta, $propietario);
+            $vistas[$ruta] = $estado;
+
+            // Every page links «Mi cuenta». For a visitor the account answers 401 (it asks for the token): that is
+            // the design, not a broken link. Nothing behind it is followed.
+            if (!$propietario && ($ruta === '/0/' || str_starts_with($ruta, '/0/'))) {
+                if ($estado !== 401) {
+                    $mal[] = "{$ruta} -> {$estado}, y a un visitante la cuenta le pide la clave (401) (enlazada desde {$origen[$ruta]})";
+                }
+                continue;
+            }
+            if ($estado !== 200) {
+                $mal[] = "{$ruta} -> {$estado} (enlazada desde {$origen[$ruta]})";
+                continue;
+            }
+            if (!str_contains($cuerpo, '<html')) {
+                continue; // a file (GEDCOM, XML): nothing to follow
+            }
+            foreach (self::enlacesDe($cuerpo) as $enlace) {
+                if (!isset($vistas[$enlace]) && !isset($origen[$enlace])) {
+                    $origen[$enlace] = $ruta;
+                    $porVisitar[] = $enlace;
+                }
+            }
+        }
+        $this->assertLessThan(self::MAX_PAGINAS, count($vistas), 'the crawl did not end: a link makes a new link every time');
+
+        return [array_keys($vistas), $mal];
+    }
+
+    /**
+     * The kinds of page a crawl reached: «#10» (an id of 10 digits), «0» (the account), a letter or a country.
+     *
+     * @param list<string> $paginas
+     * @return list<string>
+     */
+    private static function tipos(array $paginas): array
+    {
+        $tipos = [];
+        foreach ($paginas as $ruta) {
+            $primero = explode('/', trim($ruta, '/'))[0];
+            $tipos[ctype_digit($primero) && $primero !== '0' ? '#' . strlen($primero) : $primero] = true;
+        }
+
+        // PHP turns the key '0' into the integer 0.
+        return array_map('strval', array_keys($tipos));
+    }
+
+    public function testGenealogyLinksAreAllCanonicalAndAllExist(): void
+    {
+        [$paginas, $mal] = $this->recorrer(self::GENEALOGIA, $this->semillas(self::GENEALOGIA, ['/b/10/', '/b/9/', '/b/8/', '/b/7/', '/b/6/', '/b/5/'], false), false);
+
+        $this->assertSame([], $mal, "Enlaces que redirigen o no existen:\n" . implode("\n", $mal));
+        $this->assertGreaterThan(40, count($paginas), 'the crawl found almost nothing: is it following links?');
+        foreach (['#10', '#9', '#8', '#7', '#6', '#5', 'mx', 'b'] as $tipo) {
+            $this->assertContains($tipo, self::tipos($paginas), "the crawl never reached a page of type {$tipo}");
+        }
+    }
+
+    public function testPosLinksAreAllCanonicalAndAllExist(): void
+    {
+        [$paginas, $mal] = $this->recorrer(self::POS, $this->semillas(self::POS, ['/b/8/', '/b/7/', '/b/6/', '/b/5/', '/b/4/', '/c/'], false), false);
+
+        $this->assertSame([], $mal, "Enlaces que redirigen o no existen:\n" . implode("\n", $mal));
+        $this->assertGreaterThan(15, count($paginas));
+        foreach (['#8', '#7', '#6', '#5', '#4', 'b'] as $tipo) {
+            $this->assertContains($tipo, self::tipos($paginas), "the crawl never reached a page of type {$tipo}");
+        }
+    }
+
+    /** The owner sees more (edit, privacy, the account): her links must be as good as a visitor's. */
+    public function testTheOwnersLinksAreAllCanonicalAndAllExist(): void
+    {
+        [$paginas, $mal] = $this->recorrer(self::GENEALOGIA, $this->semillas(self::GENEALOGIA, ['/0/', '/b/10/', '/b/7/'], true), true);
+        [$paginasPos, $malPos] = $this->recorrer(self::POS, $this->semillas(self::POS, ['/0/', '/b/8/'], true), true);
+
+        $this->assertSame([], array_merge($mal, $malPos), "Enlaces que redirigen o no existen:\n" . implode("\n", array_merge($mal, $malPos)));
+        $this->assertContains('0', self::tipos($paginas), 'the owner reached the account');
+        $this->assertContains('0', self::tipos($paginasPos));
+    }
+}

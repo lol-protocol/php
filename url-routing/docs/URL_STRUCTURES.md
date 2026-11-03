@@ -59,6 +59,12 @@ Cada respuesta 404 o 301 se anota como **la forma** de su URL, nunca la URL: un 
 - `php bin/urls-informe.php [--dias=7] [--maximo=20]` lo resume: qué formas dan 404 y cuáles se redirigen, de más a menos frecuentes. Sirve para dos cosas: encontrar enlaces rotos (un `#10` que se repite es un id que alguien sigue enlazando), y saber cuándo una redirección vieja (`/cart/` → `/c/`) ya no recibe visitas y se puede quitar del mapa `redirect`.
 - La forma conserva si la ruta terminaba en barra, porque es lo que distingue `/6128473105` de `/6128473105/` en un 301 de URL no canónica.
 
+### Los enlaces de las páginas son canónicos
+
+`tests/App/Integration/EnlacesTest.php` recorre, con un servidor real, todas las páginas de los dos sitios sembrados como lo hace un buscador: parte de la portada, de los listados y de **todas las URL del sitemap** (que así quedan comprobadas: cada una existe y es la canónica) y sigue cada enlace `<a href="/…">`. Falla si alguno redirige (un 301 es un enlace escrito a mano: `enlace()` y `accion()` existen para que nadie lo haga) o da 404. Lo hace como visitante y como propietario. Lo único que no sigue: la cuenta, que a un visitante le responde 401 (es el diseño, y esa prueba exige el 401).
+
+Ya encontró un defecto: al propietario se le ofrecía «Pedir el retiro de esta página» en sucesos y registros que un visitante no puede ver, y ese formulario responde 404.
+
 ### Sufijo de acción desconocido
 
 Si el segundo segmento es numérico pero no está en el arreglo `actions` del tipo resuelto, el resultado es **404**, no un silencioso `show` del recurso base. Evita que una URL mal escrita parezca funcionar mostrando el contenido equivocado.

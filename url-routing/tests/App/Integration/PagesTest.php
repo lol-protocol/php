@@ -518,6 +518,16 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString('hreflang="fr"', $sin);
     }
 
+    /** The form answers 404 for what a visitor can't see, and the owner sees those pages: her footer must not lead nowhere. */
+    public function testTheOwnerIsNotOfferedTheWithdrawalFormButAVisitorIs(): void
+    {
+        $enlace = 'Pedir el retiro de esta página';
+
+        $this->assertStringContainsString($enlace, $this->get(self::GENEALOGIA, '/6128473101/')[1], 'a visitor');
+        $this->assertStringNotContainsString($enlace, $this->getComoPropietario(self::GENEALOGIA, '/6128473101/')[1], 'the owner');
+        $this->assertStringNotContainsString($enlace, $this->getComoPropietario(self::GENEALOGIA, '/412000007/')[1], 'an event a visitor cannot see');
+    }
+
     /**
      * With the check digit on, an id that does not add up is a 404 that never reaches the database; one that does
      * add up is looked up as always. 6128473101 happens to be valid (the demo's ids are plain numbers), 6128473105
