@@ -157,6 +157,26 @@ class Router
     }
 
     /**
+     * The words this site routes itself: the files for crawlers, the reserved paths and the segments of the old URLs
+     * it redirects. They are in the route config, not typed by a visitor, so RegistroDeUrls can keep them as they are.
+     *
+     * @return list<string>
+     */
+    public function palabras(): array
+    {
+        $palabras = array_merge(
+            array_map('strval', array_keys($this->config['archivos'] ?? [])),
+            array_map('strval', array_keys($this->config['reserved'] ?? [])),
+            array_map('strval', array_keys($this->config['redirect'] ?? []))
+        );
+        foreach ($this->config['redirect'] ?? [] as $desde => $hacia) {
+            $palabras = array_merge($palabras, explode('/', (string)$desde), explode('/', (string)$hacia));
+        }
+
+        return array_values(array_unique(array_filter(array_map('strtolower', $palabras), static fn(string $p): bool => $p !== '' && !str_contains($p, '/'))));
+    }
+
+    /**
      * Whether ids carry a check digit here (IDS_DIGITO_VERIFICADOR, see DigitoVerificador) and this one's does not
      * add up. A type whose entry says `'verificador' => false` (an order's random code) is never checked.
      */

@@ -51,6 +51,14 @@ Hoy los ids son números corridos: `/6128473105/` y `/6128473106/` son dos perso
 - **Qué NO hace:** no vuelve secretos los ids (con 9 dígitos libres siguen siendo recorribles; el dígito solo corta lo que se inventa o se escribe mal) ni protege nada privado: eso lo siguen haciendo `Privacidad` y `AccessPolicy`. Si lo que se quiere es que el catálogo no se pueda recorrer, la salida es un id aleatorio como el de las órdenes, y eso sí cambia las URL de otra forma.
 - El ancho fijo y el relleno con ceros no cambian (`enlace()` sigue igual); con la opción encendida, ya no se sugiere el id «rellenado» de un id corto, porque tampoco sería válido.
 
+### Qué URLs dan 404 o 301 (y cuántas veces)
+
+Cada respuesta 404 o 301 se anota como **la forma** de su URL, nunca la URL: un 404 es justo donde el nombre de alguien termina escrito en una ruta (`/maria-garcia/`). La forma dice de qué tipo era cada segmento y nada más: un id de 10 dígitos es `#10`, la cuenta es `0`, una letra queda como está (`b`, `c`), 2 y 3 letras son `aa` y `aaa`, 4 o más `a4+`, un archivo que suele pedir un escáner (`wp-login.php`, `.env`) es `*.php` o `*.env` (lista cerrada de extensiones: `juan.perez` no es una extensión, es un `?`), una palabra que el propio sitio enruta (`robots.txt`, `cart`) queda tal cual, y cualquier otra cosa es `?`. No se guarda la query, ni la IP, ni el navegador. Un 301 anota también la forma de adonde fue.
+
+- Es un archivo por día en `URL_LOG_DIR` (por omisión una carpeta del directorio temporal), con una línea por petición. Un día deja de crecer a los 5 MB (una inundación de 404 no llena el disco), se guardan 60 días y escribir nunca rompe una página. `URL_LOG_DIR=off` lo apaga.
+- `php bin/urls-informe.php [--dias=7] [--maximo=20]` lo resume: qué formas dan 404 y cuáles se redirigen, de más a menos frecuentes. Sirve para dos cosas: encontrar enlaces rotos (un `#10` que se repite es un id que alguien sigue enlazando), y saber cuándo una redirección vieja (`/cart/` → `/c/`) ya no recibe visitas y se puede quitar del mapa `redirect`.
+- La forma conserva si la ruta terminaba en barra, porque es lo que distingue `/6128473105` de `/6128473105/` en un 301 de URL no canónica.
+
 ### Sufijo de acción desconocido
 
 Si el segundo segmento es numérico pero no está en el arreglo `actions` del tipo resuelto, el resultado es **404**, no un silencioso `show` del recurso base. Evita que una URL mal escrita parezca funcionar mostrando el contenido equivocado.

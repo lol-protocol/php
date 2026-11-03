@@ -68,6 +68,7 @@ class ResponseHeadersTest extends TestCase
                 'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
                 'DB_DSN_POS' => 'sqlite:' . self::$dir . '/pos.sqlite',
                 'LOG_FILE' => self::$dir . '/app.log',
+                'URL_LOG_DIR' => self::$dir . '/urls',
                 'OWNER_TOKEN' => self::TOKEN,
                 'PATH' => (string)getenv('PATH'),
             ]
@@ -83,6 +84,19 @@ class ResponseHeadersTest extends TestCase
         }
 
         self::fail('The built-in server did not start: ' . (string)@file_get_contents(self::$dir . '/server.err'));
+    }
+
+    /**
+     * Every request in this class comes from 127.0.0.1, and the limiter allows 100 a minute per IP: the whole class
+     * makes more than that, so each test starts with a fresh allowance (only the limiter's own files go).
+     */
+    protected function setUp(): void
+    {
+        foreach (glob(sys_get_temp_dir() . '/rate_limit_*') ?: [] as $archivo) {
+            if (preg_match('/^rate_limit_[0-9a-f]{64}$/', basename($archivo)) === 1) {
+                @unlink($archivo);
+            }
+        }
     }
 
     public static function tearDownAfterClass(): void
@@ -236,6 +250,50 @@ class ResponseHeadersTest extends TestCase
         $this->assertSame(200, $respuesta['status']);
         $this->assertStringContainsString('<loc>http://tudominio.local/6128473101/</loc><lastmod>2026-03-04</lastmod>', $respuesta['body']);
         $this->assertStringContainsString('<loc>http://tudominio.local/6128473104/</loc></url>', $respuesta['body'], 'a row without a date says nothing');
+    }
+
+    /**
+     * Every 404 and 301 is counted by the shape of its URL. The server writes the file as the request ends, so the
+     * test asks again (briefly) until the line is there.
+     *
+     * @return list<string> the lines of today's file
+     */
+    private function lineasDeUrls(): array
+    {
+        $archivo = self::$dir . '/urls/urls-' . gmdate('Y-m-d') . '.tsv';
+        for ($intento = 0; $intento < 20; $intento++) {
+            clearstatcache();
+            if (is_file($archivo)) {
+                return file($archivo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+            }
+            usleep(50_000);
+        }
+
+        return [];
+    }
+
+    public function testA404AndA301AreCountedByShapeAndNeverByPath(): void
+    {
+        $this->pedir(self::GENEALOGIA, '/6128473777/');                    // a persona that does not exist
+        $this->pedir(self::GENEALOGIA, '/maria-del-carmen-garcia/');       // a name typed into a URL
+        $this->pedir(self::GENEALOGIA, '/6128473105');                     // not canonical: 301
+        $this->pedir(self::GENEALOGIA, '/582399/1/');                      // a merged grupo: 301 to the one that stays
+        $this->pedir(self::POS, '/cart/');                                 // an old URL: 301 to /c/
+        $this->pedir(self::GENEALOGIA, '/wp-login.php');
+        $this->pedir(self::GENEALOGIA, '/6128473101/');                    // 200: not counted
+
+        $lineas = $this->lineasDeUrls();
+        $todo = implode("\n", $lineas);
+
+        $this->assertContains("404\t/#10/\t-", $lineas);
+        $this->assertContains("404\t/?/\t-", $lineas, 'a name with hyphens is a «?»');
+        $this->assertContains("301\t/#10\t/#10/", $lineas);
+        $this->assertContains("301\t/#6/#1/\t/#6/#1/", $lineas);
+        $this->assertContains("301\t/cart/\t/c/", $lineas, 'the old URL is a word the site routes itself');
+        $this->assertContains("404\t/*.php\t-", $lineas);
+        $this->assertStringNotContainsString('maria', $todo);
+        $this->assertStringNotContainsString('6128473', $todo, 'no id survives');
+        $this->assertStringNotContainsString('garcia', $todo);
     }
 
     public function testAGroupThatNeverExistedIsStillA404(): void

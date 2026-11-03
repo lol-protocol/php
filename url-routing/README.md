@@ -29,6 +29,8 @@ La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de 
 | `php bin/rutas.php > docs/RUTAS.md` | Regenera la lista de rutas desde `config/routes/`. No edites `RUTAS.md` a mano. |
 | `php bin/fusionar.php [grupo] <duplicado> <vigente> [--confirmar]` | Fusiona una persona (o, con `grupo`, un apellido) duplicada en la que queda y deja su id como alias con un 301; sin `--confirmar` solo muestra qué movería. |
 | `php bin/persona.php acceso <id>` · `suprimir <id> [--pedido=N] [--confirmar]` · `reaplicar [--confirmar]` | Responde a quien pide ver o borrar sus datos: imprime lo que hay de una persona, la suprime (sin `--confirmar` solo muestra qué quitaría) o vuelve a quitar a quien volvió con una copia de seguridad. Ver `docs/ACCESO.md`. |
+| `php bin/urls-informe.php [--dias=7] [--maximo=20]` | Resume qué formas de URL dieron 404 o 301 (nunca la URL: ver `docs/URL_STRUCTURES.md`), para encontrar enlaces rotos y saber cuándo quitar una redirección vieja. |
+| `php bin/id.php completar <número> [<ancho>]` · `verificar <id>` | Completa un id con su dígito de verificación o comprueba que lo tiene bien (ver `IDS_DIGITO_VERIFICADOR`). |
 | `php bin/pedidos-retiro.php [--ocultar [--solo-ocultados]] [--horas=N]` | Lista los pedidos de retiro que esperan al propietario; pensado para cron (no imprime nada si no hay). Con `--ocultar` oculta los que pasaron del plazo; con `--solo-ocultados`, solo imprime en la corrida que ocultó algo. |
 
 La base de datos sale de `DB_DSN_<SITIO>` (o de `.env`), igual que en la aplicación web; sin ella, un SQLite local en `var/`. No existe un `DB_DSN` compartido a propósito: los dos sitios tienen tablas con los mismos nombres (ver [`docs/DATABASE.md`](docs/DATABASE.md)).

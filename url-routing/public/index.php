@@ -17,6 +17,7 @@ use App\Support\Logger;
 use App\Support\SessionManager;
 use App\Support\HttpSecurityHeaders;
 use App\Support\RateLimiter;
+use App\Support\RegistroDeUrls;
 
 /**
  * Main Application Entry Point
@@ -71,7 +72,32 @@ if (!RateLimiter::getInstance()->checkLimit(100, 60)) {
 HealthCheck::handleReady($container->get('db'), Migrator::forSite($container->get('db'), $site), $locator->getLogger());
 
 $response = $locator->getRouter()->dispatch();
+registrar_url($locator->getRouter());
 echo $response;
+
+/**
+ * Counts a 404 or a 301 by the shape of its URL (see RegistroDeUrls: never the path, the query or who asked).
+ * Whatever goes wrong here must not reach the visitor.
+ */
+function registrar_url(Router $router): void
+{
+    try {
+        $estado = http_response_code() ?: 200;
+        if ($estado !== 301 && $estado !== 404) {
+            return;
+        }
+
+        $destino = null;
+        foreach (headers_list() as $cabecera) {
+            if (stripos($cabecera, 'Location:') === 0) {
+                $destino = trim(substr($cabecera, 9));
+            }
+        }
+        RegistroDeUrls::desdeConfig()->registrar($estado, $_SERVER['REQUEST_URI'] ?? '/', $destino, $router->palabras());
+    } catch (\Throwable) {
+        // A counter that fails is not worth a failed page.
+    }
+}
 
 /**
  * @param array<string, mixed> $data
