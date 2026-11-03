@@ -244,6 +244,7 @@ final class SupresionRepository extends Repository
     {
         $resumen = $this->resumen($id);
         $propios = $this->sucesosSoloDeEllas($id);
+        $this->marcarCambiadas($id);
 
         $this->db->execute('DELETE FROM suceso_participantes WHERE persona_id = ?', [$id]);
         foreach ($propios as $suceso) {
@@ -259,6 +260,25 @@ final class SupresionRepository extends Repository
         $this->db->execute('DELETE FROM personas WHERE id = ?', [$id]);
 
         return $resumen;
+    }
+
+    /**
+     * Moves the `actualizado_en` of the pages that lose something when she goes (her children's, the people she was
+     * linked to, the organizations and colecciones she was in, the events she shared), so a search engine is told
+     * to read them again. Before the deletes: it finds them through the rows that are about to go.
+     */
+    private function marcarCambiadas(int $id): void
+    {
+        $ahora = 'actualizado_en = CURRENT_TIMESTAMP';
+        $this->db->execute("UPDATE personas SET {$ahora} WHERE padre_id = ? OR madre_id = ?", [$id, $id]);
+        $this->db->execute(
+            "UPDATE personas SET {$ahora} WHERE id IN (SELECT persona_b FROM vinculos WHERE persona_a = ?
+                                                       UNION SELECT persona_a FROM vinculos WHERE persona_b = ?)",
+            [$id, $id]
+        );
+        $this->db->execute("UPDATE organizaciones SET {$ahora} WHERE id IN (SELECT organizacion_id FROM organizacion_miembros WHERE persona_id = ?)", [$id]);
+        $this->db->execute("UPDATE colecciones SET {$ahora} WHERE id IN (SELECT coleccion_id FROM coleccion_personas WHERE persona_id = ?)", [$id]);
+        $this->db->execute("UPDATE sucesos SET {$ahora} WHERE id IN (SELECT suceso_id FROM suceso_participantes WHERE persona_id = ?)", [$id]);
     }
 
     /** @return list<int> events whose only participant is the persona */

@@ -136,7 +136,12 @@ Cada petición vuelve a preguntar a la base, así que una página que se oculta 
 
 - Cada archivo sale con `ETag` y `Cache-Control: no-cache` (se puede guardar, pero se pregunta cada vez). Una petición con el `If-None-Match` de la copia actual recibe un **304** sin cuerpo.
 - `Support/SitemapEstado.php` recuerda, por archivo, una huella de lo que lista y **desde cuándo lista exactamente eso**. Esa fecha es el `<lastmod>` de cada parte en el índice y el `Last-Modified` del archivo (y `If-Modified-Since` también da 304). Se mueve cuando entra o sale una página, no cuando se vuelve a generar el archivo.
-- Una parte que nunca se sirvió no lleva `<lastmod>` en el índice hasta que alguien la pida: mejor sin fecha que con una inventada. Las páginas mismas no llevan `<lastmod>`, porque las tablas no guardan fechas de modificación.
+- Una parte que nunca se sirvió no lleva `<lastmod>` en el índice hasta que alguien la pida: mejor sin fecha que con una inventada. Cada página lleva además su propio `<lastmod>` (un día, `AAAA-MM-DD`) si su fila tiene `actualizado_en` (migración 010; genealogía: personas, sucesos, registros, colecciones, grupos y organizaciones). Reglas de esa columna:
+  - **Está vacía hasta que alguien la escribe**, y una fila sin fecha no lleva `<lastmod>`: un buscador deja de creerle a un sitio cuyas fechas no se mueven, así que mejor ninguna que una inventada.
+  - **La mueve quien cambia el contenido de la página**: una importación o una edición pone `actualizado_en = CURRENT_TIMESTAMP` en esa fila (este repositorio no trae importador ni editor: ese es el contrato para quien los escriba). Las herramientas de `bin/` ya lo hacen: al fusionar personas se mueven la que queda y sus hijos; al fusionar grupos, el que queda y las personas que recibe; y al suprimir una persona, las páginas que pierden algo (sus hijos, sus vínculos, las organizaciones y colecciones en que estaba y los sucesos que compartía).
+  - **No la mueve** un cambio de quién puede ver la página (marcar una persona como viva, un pedido de retiro): no cambia lo que la página dice, y la fecha delataría el cambio.
+  - Un cambio en una fila **relacionada** (el nombre de un pariente) no la mueve sola: la fecha es la de la fila de la página.
+  - Los lugares y el POS no tienen la columna y no llevan fecha por página.
 - El estado son archivos chicos en `SITEMAP_ESTADO_DIR` (por omisión, una carpeta en el directorio temporal). Si se pierde, las fechas empiezan de nuevo; si no se puede escribir, no hay fechas y el sitemap se sirve igual.
 
 ### Qué no se indexa

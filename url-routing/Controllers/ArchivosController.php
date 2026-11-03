@@ -22,8 +22,8 @@ use App\Support\SitemapEstado;
  * file goes out with an ETag and, when SitemapEstado knows it, a
  * Last-Modified, and a request that already has the current copy gets a 304.
  * The index gives each part the <lastmod> SitemapEstado remembers for it (the
- * last time its list of pages changed); the pages themselves carry no
- * <lastmod>, because the tables keep no modification dates.
+ * last time its list of pages changed). A page carries its own <lastmod> when
+ * its row has an `actualizado_en` (genealogy: see migration 010), as a day.
  */
 abstract class ArchivosController extends BaseController
 {
@@ -77,7 +77,8 @@ abstract class ArchivosController extends BaseController
             for ($n = 1; $n <= $total; $n++) {
                 $url = "{$base}/sitemap/{$tipo}/{$n}.xml";
                 // Known once the part has been served: until then, no date rather than a made-up one.
-                $partes[] = [$url, $estado->desde($url)];
+                $desde = $estado->desde($url);
+                $partes[] = [$url, $desde === null ? null : gmdate('Y-m-d\TH:i:s\Z', $desde)];
             }
         }
 
@@ -96,13 +97,17 @@ abstract class ArchivosController extends BaseController
             return $this->handleNotFound();
         }
 
-        $claves = $repo->claves($ruta[0], (int)$m[1]);
-        if ($claves === []) {
+        $entradas = $repo->entradas($ruta[0], (int)$m[1]);
+        if ($entradas === []) {
             return $this->handleNotFound();
         }
 
         $base = $this->base();
-        $xml = self::xml('urlset', 'url', array_map(fn(string $clave): array => [$base . $this->enlaceDe($ruta[0], $clave), null], $claves));
+        // A page's own <lastmod> is the day its row says its content changed; a row with no date carries none.
+        $xml = self::xml('urlset', 'url', array_map(
+            fn(array $e): array => [$base . $this->enlaceDe($ruta[0], $e['clave']), $e['fecha']],
+            $entradas
+        ));
 
         return self::servir(SitemapEstado::desdeConfig(), "{$base}/sitemap/{$ruta[0]}/{$m[1]}.xml", $xml);
     }
@@ -132,13 +137,13 @@ abstract class ArchivosController extends BaseController
         return $xml;
     }
 
-    /** @param list<array{string, int|null}> $entradas each file or page: its URL and, if known, since when it is what it is */
+    /** @param list<array{string, string|null}> $entradas each file or page: its URL and, if known, its <lastmod> (already formatted) */
     private static function xml(string $raiz, string $elemento, array $entradas): string
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
             . "<{$raiz} xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
-        foreach ($entradas as [$url, $desde]) {
-            $fecha = $desde === null ? '' : '<lastmod>' . gmdate('Y-m-d\\TH:i:s\\Z', $desde) . '</lastmod>';
+        foreach ($entradas as [$url, $lastmod]) {
+            $fecha = $lastmod === null ? '' : "<lastmod>{$lastmod}</lastmod>";
             $xml .= "  <{$elemento}><loc>" . htmlspecialchars($url, ENT_XML1 | ENT_QUOTES, 'UTF-8') . "</loc>{$fecha}</{$elemento}>\n";
         }
 

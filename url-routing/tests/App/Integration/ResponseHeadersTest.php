@@ -46,6 +46,8 @@ class ResponseHeadersTest extends TestCase
 
         // 582399 was a duplicate of the grupo García (582317), merged into it (bin/fusionar.php grupo).
         (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute('INSERT INTO grupo_alias (id, grupo_id) VALUES (582399, 582317)');
+        // One persona whose page changed on a known day (the rest have no date).
+        (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute("UPDATE personas SET actualizado_en = '2026-03-04 10:11:12' WHERE id = 6128473101");
 
         // A free port: ask the OS for one, release it and hand it to the server.
         $socket = stream_socket_server('tcp://127.0.0.1:0');
@@ -225,6 +227,15 @@ class ResponseHeadersTest extends TestCase
 
         $this->assertSame(301, $respuesta['status']);
         $this->assertSame([$nueva], $respuesta['headers']['location']);
+    }
+
+    public function testASitemapGivesAPageItsDayOnlyWhenItsRowHasOne(): void
+    {
+        $respuesta = $this->pedir(self::GENEALOGIA, '/sitemap/10/1.xml');
+
+        $this->assertSame(200, $respuesta['status']);
+        $this->assertStringContainsString('<loc>http://tudominio.local/6128473101/</loc><lastmod>2026-03-04</lastmod>', $respuesta['body']);
+        $this->assertStringContainsString('<loc>http://tudominio.local/6128473104/</loc></url>', $respuesta['body'], 'a row without a date says nothing');
     }
 
     public function testAGroupThatNeverExistedIsStillA404(): void

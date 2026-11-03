@@ -36,11 +36,12 @@ final class FusionGrupoRepository extends Repository
             $this->db->execute(
                 'UPDATE grupos SET
                         origen = COALESCE(origen, (SELECT d.origen FROM grupos d WHERE d.id = ?)),
-                        descripcion = COALESCE(descripcion, (SELECT d.descripcion FROM grupos d WHERE d.id = ?))
+                        descripcion = COALESCE(descripcion, (SELECT d.descripcion FROM grupos d WHERE d.id = ?)),
+                        actualizado_en = CURRENT_TIMESTAMP
                   WHERE id = ?',
                 [$duplicado, $duplicado, $vigente]
             );
-            $this->db->execute('UPDATE personas SET grupo_id = ? WHERE grupo_id = ?', [$vigente, $duplicado]);
+            $this->db->execute('UPDATE personas SET grupo_id = ?, actualizado_en = CURRENT_TIMESTAMP WHERE grupo_id = ?', [$vigente, $duplicado]);
             $this->db->execute('UPDATE grupo_alias SET grupo_id = ? WHERE grupo_id = ?', [$vigente, $duplicado]);
             $this->db->execute('DELETE FROM grupos WHERE id = ?', [$duplicado]);
             $this->db->execute('INSERT INTO grupo_alias (id, grupo_id) VALUES (?, ?)', [$duplicado, $vigente]);
