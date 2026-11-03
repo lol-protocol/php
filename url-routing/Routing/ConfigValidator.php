@@ -39,6 +39,9 @@ class ConfigValidator
                 if (isset($config['place']) && preg_match('/^[a-z]{2}$/', $segment) === 1) {
                     throw new \InvalidArgumentException("Reserved entry '{$segment}' is shadowed by place: a 2-letter segment is a country");
                 }
+                if (isset($entry['noindex']) && !is_bool($entry['noindex'])) {
+                    throw new \InvalidArgumentException("Reserved entry '{$key}': noindex must be true or false");
+                }
                 if (isset($entry['ruta']) && (!is_int($entry['ruta']) || !isset($entry['method']))) {
                     throw new \InvalidArgumentException("Reserved entry '{$key}': ruta needs a segment count and a method");
                 }

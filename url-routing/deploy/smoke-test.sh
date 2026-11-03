@@ -343,6 +343,14 @@ ok "y sin cuerpo" '' "$(cuerpo "$H" "$HTTP/sitemap/l/1.xml" -H "If-None-Match: $
 ok "con otra copia, 200" 200 "$(codigo "$H" "$HTTP/sitemap/l/1.xml" -H 'If-None-Match: "otra"')"
 contiene "el índice da la fecha de la parte ya servida" '/sitemap/l/1.xml</loc><lastmod>' "$(cuerpo "$H" "$HTTP/sitemap.xml")"
 
+echo "== Las páginas funcionales no se indexan (X-Robots-Tag: noindex)"
+reiniciar_limitador
+contiene "la búsqueda lleva noindex" 'x-robots-tag: noindex' "$(cabeceras "$H" "$HTTP/b/10/")"
+contiene "la cuenta lleva noindex aunque pida la clave" 'x-robots-tag: noindex' "$(cabeceras "$H" "$HTTP/0/")"
+contiene "pedir un retiro lleva noindex" 'x-robots-tag: noindex' "$(cabeceras "$H" "$HTTP/r/582317/")"
+no_contiene "el inicio no lleva noindex" 'x-robots-tag' "$(cabeceras "$H" "$HTTP/")"
+contiene "POS: el carrito lleva noindex" 'x-robots-tag: noindex' "$(cabeceras "$POS" "$HTTP/c/")"
+
 echo "== /ready detecta un despliegue que olvidó migrar"
 # El código nuevo trae una migración y todavía nadie corrió bin/migrate.php.
 mkdir -p "$APP/database/pos/migrations"

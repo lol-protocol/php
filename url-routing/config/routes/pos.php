@@ -65,13 +65,15 @@ return [
 
     // Lengths 1-3 are deliberately unused below grupo (4) — headroom for
     // future low-cardinality types without renumbering anything above.
+    // `noindex` => true: a functional page that sends `X-Robots-Tag: noindex` (see config/routes/genealogy.php).
     'reserved' => [
         '' => ['controller' => 'POS\HomeController', 'method' => 'index'],
         // Search: /b/{digit width of the type}/[{text}/][{page}/].
-        'b' => ['controller' => 'POS\HomeController', 'method' => 'buscar', 'ruta' => 3],
+        'b' => ['controller' => 'POS\HomeController', 'method' => 'buscar', 'ruta' => 3, 'noindex' => true],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'POS\CuentaController',
             'method' => 'index',
+            'noindex' => true,
             'actions' => [
                 1 => 'perfil',
                 2 => 'ordenes',
@@ -84,6 +86,7 @@ return [
         'c' => [
             'controller' => 'POS\CartController',
             'method' => 'show',
+            'noindex' => true,
             'actions' => [
                 1 => 'agregar',
                 2 => 'actualizar',
@@ -94,6 +97,7 @@ return [
         'p' => [
             'controller' => 'POS\CheckoutController',
             'method' => 'index',
+            'noindex' => true,
             'actions' => [
                 1 => 'shipping',
                 2 => 'payment',

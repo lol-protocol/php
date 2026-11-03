@@ -131,6 +131,12 @@ Cada petición vuelve a preguntar a la base, así que una página que se oculta 
 - Una parte que nunca se sirvió no lleva `<lastmod>` en el índice hasta que alguien la pida: mejor sin fecha que con una inventada. Las páginas mismas no llevan `<lastmod>`, porque las tablas no guardan fechas de modificación.
 - El estado son archivos chicos en `SITEMAP_ESTADO_DIR` (por omisión, una carpeta en el directorio temporal). Si se pierde, las fechas empiezan de nuevo; si no se puede escribir, no hay fechas y el sitemap se sirve igual.
 
+### Qué no se indexa
+
+`robots.txt` deja fuera `/0/`, `/b/` (y en el POS `/c/` y `/p/`), pero eso solo le dice a un buscador que no recorra esos caminos: una URL que alguien enlace desde otro sitio puede aparecer igual en los resultados. Por eso cada ruta funcional lleva `'noindex' => true` en su entrada de `reserved` (`config/routes/*.php`) y el router responde con `X-Robots-Tag: noindex`: la cuenta, la búsqueda, el carrito, el pago y pedir un retiro (`/r/{id}/`). La exportación GEDCOM (`/{colección}/3/`) la manda también, porque es un archivo y no una página. Una prueba exige que todo lo que `robots.txt` excluye lleve `noindex`, para que las dos listas no se separen.
+
+Una cabecera sirve donde un `<meta>` no puede (un archivo que no es HTML). La excepción son las páginas de una persona oculta, que ya llevan el `<meta name="robots" content="noindex">` en su HTML.
+
 ---
 
 ## 2. POS — Contrastocolor

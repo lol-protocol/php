@@ -146,6 +146,16 @@ class Router
         return $this->config['by_length'][$length]['type'] ?? null;
     }
 
+    /**
+     * Whether this request is for a functional page (the account, search, the cart...) that must stay out
+     * of search results: its `reserved` entry says `noindex`. robots.txt only keeps crawlers from walking
+     * those paths, it does not stop a search engine from listing a URL that someone links to.
+     */
+    public function noindex(): bool
+    {
+        return ($this->config['reserved'][$this->segments[0] ?? '']['noindex'] ?? false) === true;
+    }
+
     public function dispatch(): string
     {
         // Only GET/HEAD: a 301 turns a POST into a GET and would drop its body.
@@ -162,6 +172,10 @@ class Router
 
         if (!$match) {
             return $this->handleNotFound();
+        }
+
+        if ($this->noindex()) {
+            header('X-Robots-Tag: noindex');
         }
 
         return $this->callController($match);
