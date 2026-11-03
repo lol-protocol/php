@@ -292,5 +292,69 @@
       "semilla": 50,
       "edad": 26
     }
+  },
+  {
+    "archivo": "color-vaquero-jeans",
+    "opciones": {
+      "atuendo": "eeuu-vaquero",
+      "semilla": 61,
+      "edad": 34
+    }
+  },
+  {
+    "archivo": "color-chile-oficinista-1930",
+    "opciones": {
+      "atuendo": "chile-oficinista-1930",
+      "semilla": 62,
+      "edad": 41
+    }
+  },
+  {
+    "archivo": "color-chile-dama-1955",
+    "opciones": {
+      "atuendo": "chile-dama-1955",
+      "semilla": 63,
+      "edad": 36
+    }
+  },
+  {
+    "archivo": "color-huaso-fiesta",
+    "opciones": {
+      "atuendo": "huaso-fiesta",
+      "semilla": 64,
+      "edad": 44
+    }
+  },
+  {
+    "archivo": "color-obrero-overol",
+    "opciones": {
+      "atuendo": "eeuu-granjero-1930",
+      "semilla": 65,
+      "edad": 39
+    }
+  },
+  {
+    "archivo": "color-novia-1940",
+    "opciones": {
+      "atuendo": "chile-novia-1940",
+      "semilla": 66,
+      "edad": 26
+    }
+  },
+  {
+    "archivo": "color-abuela-1960",
+    "opciones": {
+      "atuendo": "chile-abuela-1960",
+      "semilla": 67,
+      "edad": 72
+    }
+  },
+  {
+    "archivo": "color-estudiante-1955",
+    "opciones": {
+      "atuendo": "eeuu-estudiante-1955",
+      "semilla": 68,
+      "edad": 15
+    }
   }
 ]

@@ -594,6 +594,13 @@ function cuello(M, p, k, ctx) {
     case 'cuentas-largas':
       for (let i = 0; i < 3; i++) det.push(linea(arc(y.hombro - H * 0.002, w.cuello * 1.4, H * (0.1 + i * 0.045)), i % 2 ? k.secundario : k.principal, 4, 1, { dash: '0.1 7' }));
       break;
+    case 'corbata': {
+      const yk = y.hombro + H * 0.035;
+      partes.push(parte(poligono([[cx - 5, yk - 3], [cx + 5, yk - 3], [cx + 3.5, yk + 5], [cx - 3.5, yk + 5]]), k.principal, k, { volumen: false }));
+      partes.push(parte(poligono([[cx - 3.5, yk + 4], [cx + 3.5, yk + 4], [cx + 7, yk + H * 0.12], [cx, yk + H * 0.135], [cx - 7, yk + H * 0.12]]), k.principal, k, { volumen: false }));
+      if (p.rayas !== false) det.push(linea(`M${cx - 4} ${yk + H * 0.06}L${cx + 4} ${yk + H * 0.05}M${cx - 5} ${yk + H * 0.085}L${cx + 5} ${yk + H * 0.075}`, k.secundario, 1.6, 0.9));
+      break;
+    }
     case 'gargantilla':
       det.push(linea(arc(yn + H * 0.012, w.cuello * 1.05, H * 0.02), k.principal, 4, 1, { dash: '0.1 6' }));
       break;

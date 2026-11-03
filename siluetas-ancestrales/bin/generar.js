@@ -6,7 +6,7 @@
 //   node bin/generar.js --listar atuendos|regiones|prendas|tintes
 
 import { writeFileSync } from 'node:fs';
-import { generarSVG, generarPersona, generarPersonaConRopaNueva, ATUENDOS, PRENDAS, TINTES, REGIONES, ETNIAS, listarCatalogo } from '../src/index.js';
+import { generarSVG, generarPersona, generarPersonaConRopaNueva, ATUENDOS, PRENDAS, TINTES, REGIONES, ETNIAS, listarCatalogo, distribucionColor, catalogoColores } from '../src/index.js';
 
 const args = process.argv.slice(2);
 const val = (n) => { const i = args.findIndex((a) => a === `--${n}` || (n === 'o' && a === '-o')); return i >= 0 ? args[i + 1] : undefined; };
@@ -24,8 +24,22 @@ if (flag('ayuda') || flag('help')) {
   --postura firme|relajada|abierta  --piel ID|#hex  --cabello ID|#hex
   --detalle minimo|medio|alto  --rasgos  --fondo '#efe9dd'
   --nueva [--estilo sobrio|trabajo|festivo|ceremonial] [--esquema analogo|complementario|triada|monocromo|tierra|festivo]
-  --listar atuendos|regiones|etnias|prendas|tintes|resumen|auditoria   (auditoria: lo que conviene revisar con fuentes del propio pueblo)
+  --colores ID       catálogo de colores de una prenda, con el % de cada color (usa --anio para quitar tintes que aún no existían)
+  --colores-modo atuendo   los colores salen de la paleta del atuendo en vez de los perfiles de cada prenda
+  --listar atuendos|regiones|etnias|prendas|tintes|colores|resumen|auditoria   (auditoria: lo que conviene revisar con fuentes del propio pueblo)
   -o archivo.svg`);
+  process.exit(0);
+}
+const prendaColores = val('colores');
+if (prendaColores) {
+  const anioC = val('anio') === undefined ? undefined : Number(val('anio'));
+  const pr = PRENDAS.find((p) => p.id === prendaColores);
+  if (!pr) { console.error(`Prenda desconocida: ${prendaColores}. Usa --listar prendas.`); process.exit(2); }
+  console.log(`${pr.nombre} (${pr.id})${anioC === undefined ? '' : ` en el año ${anioC}`}`);
+  for (const [rol, lista] of Object.entries(catalogoColores(prendaColores, { anio: anioC }))) {
+    console.log(`\n  ${rol}:`);
+    for (const x of lista) console.log(`    ${String(x.pct.toFixed(1)).padStart(5)} %  ${x.hex}  ${x.nombre}  [${x.origen}]`);
+  }
   process.exit(0);
 }
 const listar = val('listar');
@@ -36,6 +50,7 @@ if (listar) {
     regiones: () => Object.entries(REGIONES).map(([k, v]) => `${k}\t${v}`),
     prendas: () => PRENDAS.map((p) => `${p.id}\t${p.ranura}\t${p.nombre}`),
     tintes: () => TINTES.map((t) => `${t.id}\t${t.hex}\t${t.nombre}`),
+    colores: () => PRENDAS.map((p) => `${p.id}\t${distribucionColor(p.id, 'principal').slice(0, 3).map((x) => `${x.nombre} ${x.pct.toFixed(0)}%`).join(', ')}`),
     resumen: () => Object.entries(listarCatalogo()).map(([k, v]) => `${k}\t${v}`) }[listar];
   if (!f) { console.error('Nada que listar con ese nombre.'); process.exit(2); }
   console.log(f().join('\n'));
@@ -48,14 +63,14 @@ const opc = {
   atuendo: val('atuendo'), region: val('region'), anio: num('anio'), clase: val('clase'), sexo: val('sexo'), edad: num('edad'),
   corpulencia: val('corpulencia'), altura: num('altura'), postura: val('postura'), piel: val('piel'), cabello: val('cabello'),
   detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'),
-  ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'),
+  ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
   etnia: val('etnia'), saludo: val('saludo'),
 };
 for (const k of Object.keys(opc)) if (opc[k] === undefined) delete opc[k];
 const svg = generarSVG(opc);
 if (flag('avisos')) {
   const p = opc.ropaNueva ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
-  for (const t of [...(p.estimaciones ?? []), ...(p.avisos ?? []).map((a) => `Aviso: ${a}`)]) console.error(t);
+  for (const t of [...(p.estimaciones ?? []), ...(p.avisos ?? []).map((a) => `Aviso: ${a}`), ...(p.coloresPrendas ?? []).map((c) => `Color de ${c.nombre}: ${Object.entries(c.roles).map(([r, x]) => `${r} ${x.nombre}${x.pct == null ? '' : ` (${x.pct} %)`}`).join(', ')}`)]) console.error(t);
 }
 const salida = val('o');
 if (salida) { writeFileSync(salida, svg + '\n'); console.error(`Escrito ${salida} (${svg.length} bytes)`); } else console.log(svg);

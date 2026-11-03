@@ -8,12 +8,12 @@ Trae un **catálogo grande de ropa** organizado por región, época, sexo y clas
 
 | | |
 |---|---|
-| Atuendos completos | 270, por región, época, sexo y clase social: mundo antiguo (Egipto, Mesopotamia, Grecia, Roma, Bizancio, minoicos, fenicios, persas, escitas, etruscos, íberos, hititas, kushitas), Europa medieval, moderna y rural (vascos, andaluces, gallegos, italianos, croatas, bávaros…), Cáucaso, Asia central, Siberia y el Himalaya, Medio Oriente, la India y el sudeste asiático por regiones, Asia oriental, África (Magreb, Sahel, Cuerno, oeste, este y sur, Nilo), Amazonia y Caribe, Norteamérica, México regional, los Andes, el pueblo mapuche, Chile rural y colonial, Patagonia y Tierra del Fuego, el Río de la Plata, Hispanoamérica colonial, Polinesia y Oceanía |
-| Prendas | 316 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 15 plantillas paramétricas |
-| Tintes con nombre | 80+, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, gualda, ocres…) |
-| Etnias y culturas | 112, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
+| Atuendos completos | 438, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
+| Prendas | 414 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 15 plantillas paramétricas, cada una con su **catálogo de colores y la probabilidad de cada color** |
+| Tintes con nombre | 110, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, denim, anilinas…) y 47 perfiles de color reutilizables |
+| Etnias y culturas | 116, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
 | Pieles, cabellos | 12 tonos de piel y 13 de cabello |
-| Peinados, barbas, tocados | 25, 8 y 35 |
+| Peinados, barbas, tocados | 26, 8 y 40 |
 | Patrones de tela | 19 (rayas, tartán, grecas, escalonado, rombos, escamas, diseños geométricos amazónicos…) |
 
 ## Uso rápido
@@ -86,6 +86,31 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 - `src/generador.js`: elige atuendo, colores y rasgos; inventa ropa nueva; arma paletas.
 - `src/svg.js`: capas, patrones y sombreado. El SVG resultante no lleva scripts, imágenes ni enlaces externos.
 
+### Catálogo de colores por prenda y probabilidad de cada color
+
+Cada prenda tiene su propio conjunto de colores posibles, cada uno con su **porcentaje**: los jeans solo salen en azules y grises, la camisa blanca casi siempre es blanca, el calzado va en cueros y negros, el vestido de novia en blancos y marfiles. Los porcentajes suman 100 por prenda y papel de color (`principal`, `secundario`, `ribete`, `detalle`).
+
+```bash
+node bin/generar.js --colores pantalon-vaquero            # azul denim 40 %, denim oscuro 25 %, denim claro 18 %…
+node bin/generar.js --colores pantalon-vaquero --anio 1880  # solo los tintes que existían: azul denim 61,5 %, denim oscuro 38,5 %
+node bin/generar.js --listar colores                      # los tres colores más probables de cada prenda
+```
+
+```js
+import { distribucionColor, catalogoColores, generarPersona } from './src/index.js';
+distribucionColor('pantalon-vaquero', 'principal', { anio: 1950 });   // [{ id, nombre, hex, pct, origen }, …]
+catalogoColores('camisa-blanca');                                      // todos los papeles de color con datos
+generarPersona({ atuendo: 'eeuu-vaquero' }).coloresPrendas;            // qué color salió en cada prenda y con qué probabilidad
+```
+
+De dónde salen los porcentajes:
+
+- **Perfil propio** (`origen: "perfil …"`): la prenda tiene colores y pesos propios (`src/datos/colores-prendas.js`: `PERFILES` y las asignaciones por prenda). Es el caso de la ropa moderna y de las prendas universales (camisas, calzado, joyas, uniformes…). Los pesos son una **estimación razonada, no una estadística medida**: sirven para que la ropa se vea verosímil y para poder ver y cambiar con qué frecuencia sale cada color.
+- **Atuendo** (`origen: "atuendo"`): las prendas propias de una cultura (el chamal mapuche, el kimono…) toman el color de la paleta del atuendo donde aparecen; su porcentaje se calcula con lo que el generador hace de verdad (el reparto entre los atuendos que la llevan y, dentro de cada uno, entre los tintes de su letra de la paleta).
+- **Época:** con `anio` se descartan los tintes que no existían (el denim es posterior a 1873; las anilinas, a 1856).
+- **Coherencia con el atuendo:** al elegir, los tintes que la paleta del atuendo ya usa pesan 2,5 veces más; el `pct` informado es el del catálogo, sin ese refuerzo.
+- `colores: 'atuendo'` en las opciones (o `--colores-modo atuendo`) usa solo la paleta del atuendo; si das una `paleta` propia, tampoco se usan los perfiles.
+
 ### Cómo se estima a partir de la etnia
 
 `src/datos/etnias.js` guarda, por pueblo o cultura: de qué regiones salen sus atuendos, el rango de tonos de piel, la distribución de colores de cabello, peinados habituales, frecuencia de barba, estatura media (mujer y hombre) y complexión. Con `etnia`:
@@ -100,7 +125,7 @@ Son **promedios aproximados de poblaciones, no reglas sobre una persona**, y «e
 
 ### Agregar ropa
 
-1. Una prenda nueva: una línea en `src/datos/prendas.js` con la plantilla, sus parámetros y los papeles de color (`A` principal, `B` secundario, `C` ribete, `D` detalle).
+1. Una prenda nueva: una línea en `src/datos/prendas*.js` con la plantilla, sus parámetros y los papeles de color (`A` principal, `B` secundario, `C` ribete, `D` detalle). Para darle colores y porcentajes propios, agrégala a un grupo de `src/datos/colores-prendas.js` (o crea un perfil nuevo); si no, tomará el color del atuendo.
 2. Un atuendo nuevo: una entrada en `src/datos/atuendos.js` con región, años, sexo, clase, prendas y los tintes posibles de cada letra de la paleta.
 3. Una plantilla nueva (otra forma de prenda): una función en `src/prendas.js` que devuelva `{ atras, partes, detalles }` y se agregue a `PLANTILLAS`.
 
@@ -115,7 +140,7 @@ node bin/construir.js --comprobar   # dist/ y ejemplos/ al día con src/
 node bin/construir.js               # regenera dist/ y ejemplos/ tras cambiar src/
 ```
 
-Las pruebas revisan que cada etnia tenga datos válidos y que las estimaciones sigan a la etnia (estatura, piel, cabello), a la edad y al año, y avisen cuando el atuendo sea de otra región; que la mano en saludo quede del lado y a la altura correctos para todos los atuendos; que cada atuendo apunte a prendas, tintes y peinados que existen; que **todo atuendo** se dibuje bien a seis edades y complexiones (SVG bien formado, sin `NaN`, sin scripts ni referencias externas, rellenos definidos); que la misma semilla dé el mismo SVG; que los filtros se respeten; que la ropa nueva sea válida y variada; y que `dist/` dé exactamente lo mismo que `src/`.
+Las pruebas revisan que todo el catálogo de colores sume 100 % por prenda, que los jeans solo salgan en azules y grises, que el filtro por año quite los tintes que no existían, que el muestreo siga los porcentajes (4000 muestras) y que ninguna prenda quede sin usar; que cada etnia tenga datos válidos y que las estimaciones sigan a la etnia (estatura, piel, cabello), a la edad y al año, y avisen cuando el atuendo sea de otra región; que la mano en saludo quede del lado y a la altura correctos para todos los atuendos; que cada atuendo apunte a prendas, tintes y peinados que existen; que **todo atuendo** se dibuje bien a seis edades y complexiones (SVG bien formado, sin `NaN`, sin scripts ni referencias externas, rellenos definidos); que la misma semilla dé el mismo SVG; que los filtros se respeten; que la ropa nueva sea válida y variada; y que `dist/` dé exactamente lo mismo que `src/`.
 
 ## Confianza y revisión (para uso antropológico)
 

@@ -61,9 +61,9 @@ test('cada atuendo apunta a prendas, tintes, peinados, barbas y tocados que exis
 });
 
 test('el catálogo es grande y cubre las regiones', () => {
-  assert.ok(PRENDAS.length >= 300, `prendas: ${PRENDAS.length}`);
-  assert.ok(ATUENDOS.length >= 250, `atuendos: ${ATUENDOS.length}`);
-  assert.ok(TINTES.length >= 80, `tintes: ${TINTES.length}`);
+  assert.ok(PRENDAS.length >= 400, `prendas: ${PRENDAS.length}`);
+  assert.ok(ATUENDOS.length >= 430, `atuendos: ${ATUENDOS.length}`);
+  assert.ok(TINTES.length >= 110, `tintes: ${TINTES.length}`);
   for (const r of Object.keys(REGIONES)) assert.ok(ATUENDOS.some((a) => a.region === r), `región sin atuendos: ${r}`);
 });
 
@@ -86,4 +86,10 @@ test('cada atuendo trae un nivel de confianza válido y los de confianza baja o 
   assert.ok(bajos.length >= 30, `pocos marcados como baja: ${bajos.length}`);
   // Los pueblos vivos con trajes genéricos deben decirlo.
   for (const id of ['himba-hombre', 'aborigen-mujer', 'papu-hombre', 'kawesqar-mujer']) assert.ok(ATUENDOS.find((a) => a.id === id).nota.length > 20, id);
+});
+
+test('toda prenda del catálogo se usa en algún atuendo (no hay prendas huérfanas)', () => {
+  const usadas = new Set(ATUENDOS.flatMap((a) => a.prendas));
+  const huerfanas = PRENDAS.filter((p) => !usadas.has(p.id)).map((p) => p.id);
+  assert.deepEqual(huerfanas, []);
 });

@@ -196,6 +196,14 @@ export const PEINADOS = {
     atras: [S(G.C(-0.95, -0.08, 0.3, 0.24), c), S(G.C(0.95, -0.08, 0.3, 0.24), c)],
     frente: [S(casquete(G, { vol: 0.05, frente: 0.18, lat: 0.36 }), c)],
   }),
+  ondas: (G, c) => {
+    const o = [];
+    // Ondas solo sobre el pelo: en los lados (fuera de la cara) y arriba.
+    for (const s of [-1, 1]) for (let i = 0; i < 3; i++) o.push(S(suavizar([G.P(s * 1.02, 0.34 + i * 0.17), G.P(s * 1.15, 0.42 + i * 0.17), G.P(s * 1.04, 0.5 + i * 0.17)], false), 'none', { stroke: oscurecer(c, 0.35), sw: 1.5, op: 0.8, cap: 'round' }));
+    o.push(S(suavizar([G.P(-0.7, 0.03), G.P(-0.4, 0.1), G.P(-0.1, 0.05)], false), 'none', { stroke: oscurecer(c, 0.35), sw: 1.4, op: 0.7, cap: 'round' }));
+    o.push(S(suavizar([G.P(0.1, 0.05), G.P(0.4, 0.1), G.P(0.7, 0.03)], false), 'none', { stroke: oscurecer(c, 0.35), sw: 1.4, op: 0.7, cap: 'round' }));
+    return { atras: [S(G.E([[0, -0.05], [0.95, 0.0], [1.14, 0.4], [1.16, 0.85], [0.8, 0.95], [0, 0.95]]), c)], frente: [S(casquete(G, { vol: 0.08, frente: 0.17, lat: 0.5, ancho: 0.04 }), c), ...o] };
+  },
 };
 export const PEINADOS_ID = Object.keys(PEINADOS);
 
@@ -356,6 +364,26 @@ export const TOCADOS = {
     pts.push(G.P(1.45, 0.9), G.P(-1.45, 0.9));
     return { atras: [S(suavizar(pts, true, 0.6), k.principal, { stroke: oscurecer(k.principal, 0.25), sw: 1 })], frente: [] };
   },
+  fedora: (G, k) => ({ atras: [], frente: [
+    S(ala(G, 1.35, 0.1, 0.075), k.principal), S(G.E([[0, -0.52], [0.72, -0.48], [0.86, 0.0], [0.9, 0.09], [0, 0.11]]), k.principal),
+    S(suavizar([G.P(-0.2, -0.5), G.P(0, -0.42), G.P(0.2, -0.5)], false), 'none', { stroke: oscurecer(k.principal, 0.4), sw: 2 }),
+    S(G.E([[0, 0.0], [0.89, 0.0], [0.9, 0.09], [0, 0.11]]), k.secundario)] }),
+  cloche: (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.42], [0.7, -0.36], [1.1, 0.05], [1.12, 0.3], [0.75, 0.38], [0, 0.34]]), k.principal),
+    S(suavizar([G.P(-1.05, 0.22), G.P(0, 0.3), G.P(1.05, 0.22)], false), 'none', { stroke: k.secundario, sw: 4, cap: 'round' })] }),
+  'gorra-visera': (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.3], [0.8, -0.28], [1.12, 0.0], [1.08, 0.17], [0, 0.14]]), k.principal),
+    S(G.E([[0, 0.1], [0.95, 0.1], [1.0, 0.3], [0, 0.34]]), k.secundario),
+    S(G.C(0, -0.3, 0.07, 0.04), k.detalle)] }),
+  'casco-obra': (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.38], [0.7, -0.33], [1.05, 0.0], [1.1, 0.14], [0, 0.14]]), k.principal),
+    S(G.E([[0, 0.06], [1.3, 0.1], [1.32, 0.2], [0, 0.2]]), k.principal),
+    S(suavizar([G.P(0, -0.38), G.P(0.02, 0.1)], false), 'none', { stroke: oscurecer(k.principal, 0.35), sw: 2 })] }),
+  kepi: (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.5], [0.75, -0.46], [0.95, 0.1], [0, 0.12]]), k.principal),
+    S(G.E([[0, 0.05], [0.95, 0.05], [1.0, 0.2], [0, 0.22]]), k.secundario),
+    S(G.E([[0, 0.14], [0.95, 0.16], [1.05, 0.32], [0, 0.3]]), k.detalle),
+    S(G.C(0, -0.1, 0.07, 0.05), k.detalle)] }),
 };
 export const TOCADOS_ID = Object.keys(TOCADOS);
 

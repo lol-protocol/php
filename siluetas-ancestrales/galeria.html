@@ -34,6 +34,14 @@
   .mosaico button { padding:4px; background:var(--panel); border:1px solid var(--linea); border-radius:8px; }
   .mosaico svg { width:100%; height:auto; display:block; }
   .nota { font-size:.8rem; color:var(--suave); margin-top:10px; }
+  .colores { display:grid; gap:6px; text-align:left; }
+  .colores div.p { background:var(--panel); border:1px solid var(--linea); border-radius:8px; padding:6px 10px; font-size:.85rem; }
+  .colores .chip { display:inline-flex; align-items:center; gap:5px; margin:2px 10px 2px 0; color:var(--suave); }
+  .chip i { width:14px; height:14px; border-radius:50%; border:1px solid var(--linea); display:inline-block; }
+  .barras { display:grid; gap:4px; text-align:left; margin-top:6px; }
+  .barra { display:grid; grid-template-columns: 150px 1fr 56px; align-items:center; gap:8px; font-size:.82rem; }
+  .barra b { display:block; height:14px; border-radius:3px; border:1px solid var(--linea); }
+  .barra span:last-child { text-align:right; color:var(--suave); }
 </style>
 </head>
 <body>
@@ -89,6 +97,12 @@
     <p class="info" id="info"></p>
     <ul class="info" id="estimaciones" style="text-align:left;max-width:70ch;margin:8px auto 0"></ul>
     <div class="paleta" id="paleta"></div>
+    <h2 style="font-size:1rem;margin:20px 0 6px">Colores de la ropa de esta persona</h2>
+    <div id="colores-persona" class="colores"></div>
+    <h2 style="font-size:1rem;margin:20px 0 6px">Catálogo de colores por prenda</h2>
+    <div class="fila"><div><label for="prenda-catalogo">Prenda</label><select id="prenda-catalogo"></select></div><div><label for="rol-catalogo">Papel del color</label><select id="rol-catalogo"><option value="principal">Principal</option><option value="secundario">Secundario</option><option value="ribete">Ribete</option><option value="detalle">Detalle</option></select></div></div>
+    <p class="nota" id="nota-catalogo"></p>
+    <div id="barras" class="barras"></div>
     <h2 style="font-size:1rem;margin:20px 0 0">Más variantes con las mismas opciones</h2>
     <div class="mosaico" id="mosaico"></div>
   </div>
@@ -136,6 +150,17 @@
     for (const t of [...(persona.estimaciones || []), ...(persona.avisos || []).map((a) => 'Aviso: ' + a), ...extra]) { const li = document.createElement('li'); li.textContent = t; lista.appendChild(li); }
     const nombres = persona.nombresPaleta;
     $('paleta').innerHTML = ['A', 'B', 'C', 'D'].filter((l) => persona.paleta[l]).map((l) => `<span><i style="background:${persona.paleta[l]}"></i>${nombres ? nombres[l] ?? '' : persona.paleta[l]}</span>`).join('');
+    const cp = $('colores-persona'); cp.innerHTML = '';
+    for (const c of persona.coloresPrendas || []) {
+      const d = document.createElement('div'); d.className = 'p';
+      const t = document.createElement('strong'); t.textContent = c.nombre; d.appendChild(t); d.appendChild(document.createElement('br'));
+      for (const [rol, x] of Object.entries(c.roles)) {
+        const sp = document.createElement('span'); sp.className = 'chip';
+        const sw = S.TINTES_POR_ID[x.id]; const i = document.createElement('i'); i.style.background = sw ? sw.hex : '#ccc';
+        sp.appendChild(i); sp.appendChild(document.createTextNode(`${rol}: ${x.nombre}${x.pct == null ? '' : ' (' + x.pct + ' %)'}`)); d.appendChild(sp);
+      }
+      cp.appendChild(d);
+    }
     const mos = $('mosaico'); mos.innerHTML = '';
     for (let i = 1; i <= 12; i++) {
       const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', `Semilla ${semilla * 100 + i}`);
@@ -155,8 +180,28 @@
     a.href = URL.createObjectURL(new Blob([ultimo], { type: 'image/svg+xml' }));
     a.download = `silueta-${semilla}.svg`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
+  // Catálogo de colores por prenda
+  const porRanura = {};
+  for (const p of S.PRENDAS) (porRanura[p.ranura] ||= []).push(p);
+  $('prenda-catalogo').innerHTML = Object.entries(porRanura).map(([r, l]) => `<optgroup label="${r}">${l.map((p) => `<option value="${p.id}">${p.nombre}</option>`).join('')}</optgroup>`).join('');
+  $('prenda-catalogo').value = 'pantalon-vaquero';
+  function barras() {
+    const anio = $('anio').value === '' ? undefined : Number($('anio').value);
+    const d = S.distribucionColor($('prenda-catalogo').value, $('rol-catalogo').value, { anio });
+    const cont = $('barras'); cont.innerHTML = '';
+    $('nota-catalogo').textContent = d.length ? (d[0].origen.startsWith('perfil') ? 'Colores propios de la prenda (' + d[0].origen + ').' : 'Esta prenda toma el color de la paleta del atuendo: el porcentaje sale del reparto entre los atuendos que la llevan.') + (anio === undefined ? '' : ' Solo tintes que existían en ' + anio + '.') : 'Esta prenda no usa ese papel de color.';
+    for (const x of d) {
+      const f = document.createElement('div'); f.className = 'barra';
+      const n = document.createElement('span'); n.textContent = x.nombre;
+      const w = document.createElement('div'); const b = document.createElement('b'); b.style.width = Math.max(2, x.pct) + '%'; b.style.background = x.hex; w.appendChild(b);
+      const pc = document.createElement('span'); pc.textContent = x.pct.toFixed(1) + ' %';
+      f.append(n, w, pc); cont.appendChild(f);
+    }
+  }
+  for (const id of ['prenda-catalogo', 'rol-catalogo', 'anio']) $(id).addEventListener('change', barras);
   llenarAtuendos();
   dibujar();
+  barras();
 })();
 </script>
 </body>

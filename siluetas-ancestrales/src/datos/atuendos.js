@@ -4,6 +4,8 @@
 
 import { A } from './ayuda.js';
 import { ATUENDOS_AMPLIADOS } from './atuendos-ampliados.js';
+import { ATUENDOS_SIGLO20 } from './atuendos-siglo20.js';
+import { ATUENDOS_MAS } from './atuendos-mas.js';
 
 export const REGIONES = {
   egipto: 'Egipto antiguo', mesopotamia: 'Mesopotamia', grecia: 'Grecia antigua', roma: 'Roma', bizancio: 'Bizancio',
@@ -11,11 +13,11 @@ export const REGIONES = {
   'europa-xix': 'Europa, siglos XIX y XX', judio: 'Comunidades judías', 'medio-oriente': 'Medio Oriente y Persia', 'asia-sur': 'Asia del Sur',
   'asia-este': 'Asia oriental', 'sudeste-asiatico': 'Sudeste asiático', 'africa-norte': 'África del norte', 'africa-oeste': 'África occidental',
   'africa-este-sur': 'África oriental y austral', polinesia: 'Polinesia', andes: 'Andes', mesoamerica: 'Mesoamérica', 'norteamerica': 'Norteamérica',
-  artico: 'Ártico', mapuche: 'Pueblo mapuche', 'chile-rural': 'Chile rural y colonial', 'patagonia-fueguina': 'Patagonia y Tierra del Fuego',
+  artico: 'Ártico', mapuche: 'Pueblo mapuche', 'chile-rural': 'Chile (campo, ciudad y colonia)', 'patagonia-fueguina': 'Patagonia y Tierra del Fuego',
   'rio-de-la-plata': 'Río de la Plata', 'hispanoamerica-colonial': 'Hispanoamérica colonial', 'rapa-nui': 'Rapa Nui',
   'europa-campesina': 'Europa rural y regional', 'asia-central': 'Asia central y Mongolia', siberia: 'Siberia', caucaso: 'Cáucaso', 'mundo-antiguo': 'Mundo antiguo del Mediterráneo y Asia occidental',
   'africa-cuerno': 'Cuerno de África', 'africa-sahel': 'Sahel y Sahara', 'africa-nilo': 'Valle del Nilo (Nubia y Sudán)', 'asia-himalaya': 'Himalaya y Tíbet', amazonia: 'Amazonia y tierras bajas', caribe: 'Caribe indígena',
-  oceania: 'Oceanía (Australia, Nueva Zelanda y Melanesia)', 'mexico-regional': 'México regional', 'asia-sur-regional': 'India: trajes regionales', 'sudeste-regional': 'Sudeste asiático: trajes regionales',
+  oceania: 'Oceanía (Australia, Nueva Zelanda y Melanesia)', 'mexico-regional': 'México regional', 'latinoamerica-moderna': 'Latinoamérica, 1850 a 1980', 'norteamerica-moderna': 'Estados Unidos y Canadá, 1840 a 1980', 'asia-sur-regional': 'India: trajes regionales', 'sudeste-regional': 'Sudeste asiático: trajes regionales',
 };
 
 export const ATUENDOS = [
@@ -164,6 +166,8 @@ export const ATUENDOS = [
   A('colonial-mestizo', 'Artesano mestizo colonial', 'hispanoamerica-colonial', [1550, 1820], 'm', 'baja', 'camisa-rotos chaleco-corto calzones-rodilla poncho-liso sandalias-cuero', { A: 'lana-parda nogal indigo alpaca-cafe', B: 'crudo', C: 'rojo-tierra', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'sombrero-ala-ancha gorro-lana', pieles: 'oliva oliva-clara canela bronce' }),
   A('colonial-mujer-mestiza', 'Mujer mestiza colonial', 'hispanoamerica-colonial', [1550, 1820], 'f', 'baja', 'blusa-campesina falda-larga rebozo delantal-blanco zapatos-cuero', { A: 'azul-andino rojo-granza verde-musgo lana-parda', B: 'blanco-lino', C: 'blanco-lino', D: 'cobre' }, { peinados: 'trenzas-dos recogido', tocados: 'panuelo ninguno', pieles: 'oliva oliva-clara canela bronce' }),
   ...ATUENDOS_AMPLIADOS,
+  ...ATUENDOS_SIGLO20,
+  ...ATUENDOS_MAS,
 ];
 
 export const ATUENDOS_POR_ID = Object.fromEntries(ATUENDOS.map((a) => [a.id, a]));

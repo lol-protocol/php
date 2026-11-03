@@ -10,6 +10,7 @@ import { PATRONES_ID } from './patrones.js';
 import { CORPULENCIAS, POSTURAS } from './cuerpo.js';
 import { renderizar } from './svg.js';
 import { ETNIAS, ETNIAS_POR_ID } from './datos/etnias.js';
+import { distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES } from './datos/colores-prendas.js';
 import { medidas } from './cuerpo.js';
 
 // ---------- Consulta del catálogo ----------
@@ -25,7 +26,7 @@ export function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase }
 
 export function listarRegiones() { return { ...REGIONES }; }
 export function listarCatalogo() {
-  return { atuendos: ATUENDOS.length, prendas: PRENDAS.length, tintes: TINTES.length, pieles: PIELES.length, cabellos: CABELLOS.length,
+  return { perfilesDeColor: Object.keys(PERFILES).length, atuendos: ATUENDOS.length, prendas: PRENDAS.length, tintes: TINTES.length, pieles: PIELES.length, cabellos: CABELLOS.length,
     etnias: ETNIAS.length, peinados: Object.keys(PEINADOS).length, barbas: Object.keys(BARBAS).length, tocados: Object.keys(TOCADOS).length, patrones: PATRONES_ID.length };
 }
 
@@ -66,27 +67,64 @@ export function generarPaleta({ esquema = 'analogo', semilla = 1, base } = {}) {
 
 /** Paleta histórica: un tinte por letra, de las listas del atuendo, respetando la época. */
 function paletaDeAtuendo(a, azar, anio) {
-  const p = {}, nombres = {};
-  for (const [letra, ids] of Object.entries(a.paleta)) {
-    const t = tinteDe(ids, azar, anio);
-    p[letra] = t.hex; nombres[letra] = t.nombre;
+  const p = {}, nombres = {}, ids = {};
+  for (const [letra, lista] of Object.entries(a.paleta)) {
+    const t = tinteDe(lista, azar, anio);
+    p[letra] = t.hex; nombres[letra] = t.nombre; ids[letra] = t.id;
   }
-  return { colores: p, nombres };
+  return { colores: p, nombres, ids };
 }
 
-function coloresDePrenda(pr, pal) {
+/**
+ * Colores de una prenda. Si tiene perfil propio para un rol se elige según su %, con los tintes que el atuendo ya usa
+ * pesando 2,5 veces más; si no, se usa el color de la letra de la paleta del atuendo.
+ * ctx: { azar, anio, usarPerfiles, idsPaleta, preferidos }. Devuelve { k, info } con info[rol] = { id, nombre, pct, origen }.
+ */
+function coloresDePrenda(pr, pal, ctx) {
   const A = pal.A ?? '#c9b99a';
   const B = pal.B ?? mezclar(A, '#ffffff', 0.3);
   const C = pal.C ?? oscurecer(A, 0.28);
   const D = pal.D ?? '#caa24a';
   const letra = { A, B, C, D };
-  const k = {};
-  for (const [rol, l] of Object.entries(pr.col)) k[rol] = letra[l] ?? A;
+  const k = {}, info = {};
+  for (const [rol, l] of Object.entries(pr.col)) {
+    const elegido = ctx.usarPerfiles ? muestrearColor(pr.id, rol, ctx.azar, { anio: ctx.anio, preferidos: ctx.preferidos }) : null;
+    if (elegido) {
+      k[rol] = variar(elegido.hex, ctx.azar, { tono: 3, sat: 0.04, luz: 0.04 });
+      info[rol] = { id: elegido.id, nombre: elegido.nombre, pct: elegido.pct, origen: 'perfil' };
+    } else {
+      k[rol] = letra[l] ?? A;
+      const id = ctx.idsPaleta?.[l];
+      if (id) {
+        const d = distribucionColor(pr.id, rol, { anio: ctx.anio });
+        info[rol] = { id, nombre: TINTES_POR_ID[id]?.nombre ?? id, pct: d.find((x) => x.id === id)?.pct ?? null, origen: 'atuendo' };
+      }
+    }
+  }
   // Que el ribete y el detalle se distingan del color principal.
   if (Math.abs(luminancia(k.ribete) - luminancia(k.principal)) < 0.04 && k.ribete === k.principal) {
     k.ribete = luminancia(k.principal) > 0.35 ? oscurecer(k.principal, 0.35) : aclarar(k.principal, 0.35);
   }
-  return k;
+  return { k, info };
+}
+
+/** Prendas que van juntas y suelen ser del mismo color: [prenda que manda, prenda que copia, probabilidad]. */
+const CONJUNTOS = [
+  ['pantalon-overol', 'overol-peto', 1],
+  ['saco-terno', 'pantalon-vestir', 0.7],
+  ['saco-terno', 'chaleco-terno', 0.8],
+  ['saco-cruzado', 'pantalon-vestir', 0.7],
+  ['traje-sastre', 'falda-lapiz', 0.75],
+  ['saco-terno', 'pantalon-militar', 0.7],
+];
+
+function enlazarConjuntos(prendas, azar) {
+  for (const [a, b, prob] of CONJUNTOS) {
+    const pa = prendas.find((p) => p.id === a), pb = prendas.find((p) => p.id === b);
+    if (!pa || !pb || !pa.colorInfo?.principal || azar.n() >= prob) continue;
+    pb.colores = { ...pb.colores, principal: pa.colores.principal };
+    pb.colorInfo = { ...pb.colorInfo, principal: { ...pa.colorInfo.principal, origen: `igual que ${pa.nombre}` } };
+  }
 }
 
 /** Una sobreprenda o un manto con el mismo color que la túnica de debajo se pierde: se pasa al color secundario o se oscurece. */
@@ -251,8 +289,10 @@ export function generarPersona(opc = {}) {
   const anioPaleta = anio ?? Math.round((atuendo.epoca[0] + atuendo.epoca[1]) / 2);
 
   // Colores
-  const pal = opc.paleta ?? paletaDeAtuendo(atuendo, azar.hijo('paleta'), anioPaleta).colores;
-  const nombresPaleta = opc.paleta ? null : paletaDeAtuendo(atuendo, azar.hijo('paleta'), anioPaleta).nombres;
+  const paletaAtuendo = paletaDeAtuendo(atuendo, azar.hijo('paleta'), anioPaleta);
+  const pal = opc.paleta ?? paletaAtuendo.colores;
+  const nombresPaleta = opc.paleta ? null : paletaAtuendo.nombres;
+  const paletaIds = paletaAtuendo.ids;
   const piel = elegirPiel(azar.hijo('piel'), atuendo, opc, etnia);
   const colorPelo = elegirCabello(azar.hijo('cabello'), piel, edad, opc, etnia);
 
@@ -261,12 +301,17 @@ export function generarPersona(opc = {}) {
   const variacion = opc.variacion ?? 0.5;
   let ids = atuendo.prendas.slice();
   if (opc.calzado) ids = ids.filter((id) => PRENDAS_POR_ID[id].ranura !== 'calzado').concat(opc.calzado);
+  const usarPerfiles = !opc.paleta && opc.colores !== 'atuendo';
+  const idsPaleta = opc.paleta ? {} : paletaIds;
+  const preferidos = Object.values(atuendo.paleta).flat();
+  const ctxColor = { azar: az.hijo('colores'), anio: opc.anio ?? anioPaleta, usarPerfiles, idsPaleta, preferidos };
   const prendas = opc.prendas ?? ids.map((id) => {
     const pr = PRENDAS_POR_ID[id];
     if (!pr) throw new Error(`Prenda desconocida en ${atuendo.id}: ${id}`);
-    return { id, nombre: pr.nombre, ranura: pr.ranura, plantilla: pr.plantilla, params: variarParams(pr.params, az, variacion), colores: coloresDePrenda(pr, pal) };
+    const { k, info } = coloresDePrenda(pr, pal, ctxColor);
+    return { id, nombre: pr.nombre, ranura: pr.ranura, plantilla: pr.plantilla, params: variarParams(pr.params, az, variacion), colores: k, colorInfo: info };
   });
-  if (!opc.prendas) distinguirCapas(prendas, pal);
+  if (!opc.prendas) { enlazarConjuntos(prendas, az.hijo('conjuntos')); distinguirCapas(prendas, pal); }
 
   // Cabeza
   const ah = azar.hijo('cabeza');
@@ -327,6 +372,7 @@ export function generarPersona(opc = {}) {
     cuerpo, rostro, piel,
     cabello: { estilo, color: colorPelo }, barba: { estilo: barbaId, color: colorPelo }, tocado,
     prendas, paleta: pal, nombresPaleta,
+    coloresPrendas: prendas.filter((p) => p.colorInfo).map((p) => ({ prenda: p.id, nombre: p.nombre, roles: p.colorInfo })),
     etnia: etnia ? etnia.map((x) => ({ id: x.e.id, nombre: x.e.nombre, peso: Math.round(x.peso * 100) / 100 })) : null,
     estimaciones, avisos,
     confianza: menorConfianza([atuendo.confianza, ...(etnia ? etnia.map((x) => x.e.confianza) : [])]),
@@ -430,6 +476,7 @@ export function generarSVG(opc = {}) {
   return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo });
 }
 
-export { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS };
+export { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID };
+export { distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES };
 export { PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
 export { PATRONES_ID } from './patrones.js';
