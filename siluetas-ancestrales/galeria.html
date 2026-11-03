@@ -101,7 +101,9 @@
   let semilla = 1;
   const regiones = S.REGIONES;
   $('region').innerHTML = '<option value="">Todas</option>' + Object.entries(regiones).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
-  const opcionesEtnia = '<option value="">Ninguna (según el atuendo)</option>' + S.ETNIAS.map((e) => `<option value="${e.id}">${e.nombre}</option>`).join('');
+  const grupos = {};
+  for (const e of S.ETNIAS) (grupos[e.grupo] ||= []).push(e);
+  const opcionesEtnia = '<option value="">Ninguna (según el atuendo)</option>' + Object.entries(grupos).map(([g, lista]) => `<optgroup label="${g}">${lista.map((e) => `<option value="${e.id}">${e.nombre}${e.confianza === 'baja' ? ' (genérico)' : ''}</option>`).join('')}</optgroup>`).join('');
   $('etnia').innerHTML = opcionesEtnia; $('etnia2').innerHTML = opcionesEtnia.replace('Ninguna (según el atuendo)', 'Nadie');
   $('piel').innerHTML += S.PIELES.map((p) => `<option value="${p.hex}">${p.nombre}</option>`).join('');
 
@@ -130,7 +132,8 @@
     $('escena').innerHTML = ultimo;
     $('info').textContent = persona.descripcion;
     const lista = $('estimaciones'); lista.innerHTML = '';
-    for (const t of [...(persona.estimaciones || []), ...(persona.avisos || []).map((a) => 'Aviso: ' + a)]) { const li = document.createElement('li'); li.textContent = t; lista.appendChild(li); }
+    const extra = [`Confianza de la representación: ${persona.confianza}${persona.confianza === 'baja' ? ' (imagen genérica o muy simplificada: conviene revisarla con fuentes del propio pueblo)' : ''}.`, ...(persona.notas || []).map((n) => 'Nota: ' + n)];
+    for (const t of [...(persona.estimaciones || []), ...(persona.avisos || []).map((a) => 'Aviso: ' + a), ...extra]) { const li = document.createElement('li'); li.textContent = t; lista.appendChild(li); }
     const nombres = persona.nombresPaleta;
     $('paleta').innerHTML = ['A', 'B', 'C', 'D'].filter((l) => persona.paleta[l]).map((l) => `<span><i style="background:${persona.paleta[l]}"></i>${nombres ? nombres[l] ?? '' : persona.paleta[l]}</span>`).join('');
     const mos = $('mosaico'); mos.innerHTML = '';

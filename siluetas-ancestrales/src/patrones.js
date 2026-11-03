@@ -20,6 +20,7 @@ export const PATRONES = {
   piel: (a, b, e) => [30 * e, 30 * e, r(0, 0, 30 * e, 30 * e, a) + `<ellipse cx="${8 * e}" cy="${9 * e}" rx="${4 * e}" ry="${2.6 * e}" fill="${b}" opacity=".7"/><ellipse cx="${22 * e}" cy="${20 * e}" rx="${3 * e}" ry="${4 * e}" fill="${b}" opacity=".7"/><ellipse cx="${6 * e}" cy="${24 * e}" rx="${2.4 * e}" ry="${1.8 * e}" fill="${b}" opacity=".6"/>`],
   malla: (a, b, e) => [10 * e, 10 * e, r(0, 0, 10 * e, 10 * e, a) + `<path d="M0 0l${5 * e} ${5 * e}l${5 * e} ${-5 * e}M0 ${10 * e}l${5 * e} ${-5 * e}l${5 * e} ${5 * e}" fill="none" stroke="${b}" stroke-width="${1 * e}" opacity=".7"/>`],
   escamas: (a, b, e) => [14 * e, 10 * e, r(0, 0, 14 * e, 10 * e, a) + `<path d="M0 ${6 * e}Q${3.5 * e} ${12 * e} ${7 * e} ${6 * e}Q${10.5 * e} ${12 * e} ${14 * e} ${6 * e}" fill="none" stroke="${b}" stroke-width="${1.2 * e}" opacity=".8"/>`],
+  kene: (a, b, e) => [30 * e, 30 * e, r(0, 0, 30 * e, 30 * e, a) + `<path d="M4 4h${22 * e}v${22 * e}h${-16 * e}v${-14 * e}h${10 * e}v${6 * e}h${-4 * e}" fill="none" stroke="${b}" stroke-width="${2.2 * e}" transform="scale(1)"/>`],
   jaspe: (a, b, e) => [26 * e, 26 * e, r(0, 0, 26 * e, 26 * e, a) + `<path d="M0 ${6 * e}Q${8 * e} ${2 * e} ${13 * e} ${8 * e}T${26 * e} ${6 * e}M0 ${18 * e}Q${9 * e} ${14 * e} ${14 * e} ${20 * e}T${26 * e} ${18 * e}" fill="none" stroke="${b}" stroke-width="${2 * e}" opacity=".5"/>`],
 };
 export const PATRONES_ID = Object.keys(PATRONES);

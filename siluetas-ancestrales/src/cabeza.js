@@ -187,6 +187,15 @@ export const PEINADOS = {
     for (const s of [-1, 1]) for (let i = 0; i < 5; i++) rizos.push(S(G.C(s * (1.15 + (i % 2) * 0.08), 0.35 + i * 0.28, 0.3, 0.17), c, { stroke: oscurecer(c, 0.25), sw: 1 }));
     return { atras: [S(G.E([[0, -0.1], [1, 0], [1.45, 0.8], [1.5, 1.7], [0, 1.8]]), c)], frente: [S(casquete(G, { vol: 0.14, frente: 0.15, lat: 0.4, ancho: 0.06 }), c), ...rizos] };
   },
+  'trenzas-pegadas': (G, c) => {
+    const rayas = [];
+    for (let i = -3; i <= 3; i++) rayas.push(S(suavizar([G.P(i * 0.26, 0.17 - Math.abs(i) * 0.015), G.P(i * 0.3, -0.02), G.P(i * 0.42, -0.1)], false), 'none', { stroke: oscurecer(c, 0.5), sw: 1.6, op: 0.85, cap: 'round' }));
+    return { atras: [], frente: [S(casquete(G, { vol: 0.07, frente: 0.15, lat: 0.4 }), c), ...rayas] };
+  },
+  'monos-laterales': (G, c) => ({
+    atras: [S(G.C(-0.95, -0.08, 0.3, 0.24), c), S(G.C(0.95, -0.08, 0.3, 0.24), c)],
+    frente: [S(casquete(G, { vol: 0.05, frente: 0.18, lat: 0.36 }), c)],
+  }),
 };
 export const PEINADOS_ID = Object.keys(PEINADOS);
 
@@ -311,6 +320,42 @@ export const TOCADOS = {
   ushanka: (G, k) => ({ atras: [], frente: [
     S(G.E([[0, -0.4], [0.7, -0.35], [1.2, 0.0], [1.28, 0.3], [1.1, 0.55], [1.0, 0.1], [0.9, 0.2], [0, 0.2]]), k.principal),
     S(G.E([[0, -0.4], [0.7, -0.35], [1.2, 0.0], [1.28, 0.3], [1.1, 0.55], [1.0, 0.1], [0.9, 0.2], [0, 0.2]]), k.secundario, { op: 0.55 })] }),
+  kufiya: (G, k) => ({
+    atras: [S(G.E([[0, -0.3], [0.95, -0.2], [1.35, 0.5], [1.42, 1.35], [0, 1.45]]), k.principal)],
+    frente: [S(G.E([[0, -0.34], [0.9, -0.26], [1.25, 0.1], [1.12, 0.32], [0.85, 0.2], [0, 0.2]]), k.principal),
+      S(suavizar([G.P(-1.12, 0.22), G.P(-0.5, 0.06), G.P(0.5, 0.06), G.P(1.12, 0.22)], false), 'none', { stroke: k.detalle, sw: G.headH * 0.06, cap: 'round' }),
+      S(suavizar([G.P(-1.2, 0.5), G.P(-1.3, 1.2)], false), 'none', { stroke: k.secundario, sw: 2, op: 0.8 })],
+  }),
+  'gorro-mongol': (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.52], [0.6, -0.46], [0.96, -0.04], [0, 0.04]]), k.principal),
+    S(G.E([[0, -0.05], [1.2, 0.0], [1.38, 0.26], [0.95, 0.22], [0, 0.18]]), k.secundario),
+    S(G.C(0, -0.55, 0.08, 0.06), k.detalle)] }),
+  kalpak: (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.82], [0.8, -0.8], [0.9, 0.1], [0, 0.14]]), k.principal),
+    S(G.E([[0, -0.84], [0.82, -0.82], [0.8, -0.6], [0, -0.58]]), k.secundario),
+    S(G.E([[0, 0.0], [0.92, 0.0], [0.93, 0.13], [0, 0.15]]), k.secundario, { op: 0.8 })] }),
+  'corona-flores': (G, k) => {
+    const f = [];
+    for (let i = 0; i < 9; i++) {
+      const a = Math.PI * (0.05 + (i / 8) * 0.9), x = -Math.cos(a) * 1.0, y = 0.2 - Math.sin(a) * 0.3;
+      f.push(S(G.C(x, y, 0.13, 0.1), i % 2 ? k.secundario : k.detalle, { stroke: oscurecer(k.principal, 0.2), sw: 0.8 }));
+    }
+    return { atras: [], frente: [S(suavizar([G.P(-1.02, 0.28), G.P(-0.6, -0.02), G.P(0, -0.12), G.P(0.6, -0.02), G.P(1.02, 0.28)], false), 'none', { stroke: k.principal, sw: 4, cap: 'round' }), ...f] };
+  },
+  gele: (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.85], [0.9, -0.78], [1.55, -0.3], [1.6, 0.15], [1.1, 0.24], [0, 0.22]]), k.principal),
+    S(suavizar([G.P(-1.2, 0.0), G.P(-0.3, -0.5), G.P(0.5, -0.65), G.P(1.2, -0.2)], false), 'none', { stroke: oscurecer(k.principal, 0.3), sw: 1.6, op: 0.7 }),
+    S(suavizar([G.P(-1.3, 0.1), G.P(-0.2, -0.3), G.P(0.9, -0.4)], false), 'none', { stroke: oscurecer(k.principal, 0.3), sw: 1.6, op: 0.7 })] }),
+  resplandor: (G, k) => {
+    const pts = [];
+    const n = 26;
+    for (let i = 0; i <= n; i++) {
+      const a = Math.PI * (i / n), r = i % 2 ? 1.55 : 1.75;
+      pts.push(G.P(-Math.cos(a) * r, 0.55 - Math.sin(a) * r * 0.78));
+    }
+    pts.push(G.P(1.45, 0.9), G.P(-1.45, 0.9));
+    return { atras: [S(suavizar(pts, true, 0.6), k.principal, { stroke: oscurecer(k.principal, 0.25), sw: 1 })], frente: [] };
+  },
 };
 export const TOCADOS_ID = Object.keys(TOCADOS);
 

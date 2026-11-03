@@ -2,17 +2,8 @@
 // un sexo y una clase social. Las épocas son años (negativos = antes de nuestra era) y aproximadas: los trajes
 // duraron más que sus reglas. La paleta nombra tintes de colores.js; el generador elige uno por letra.
 
-const L = (s) => s.split(/\s+/).filter(Boolean);
-const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) => ({
-  id, nombre, region, epoca, sexo, clase,
-  prendas: L(prendas),
-  paleta: Object.fromEntries(Object.entries(paleta).map(([k, v]) => [k, L(v)])),
-  peinados: L(extra.peinados ?? 'corto'),
-  barbas: L(extra.barbas ?? 'ninguna'),
-  tocados: L(extra.tocados ?? 'ninguno'),
-  pieles: extra.pieles ? L(extra.pieles) : null,
-  nota: extra.nota ?? '',
-});
+import { A } from './ayuda.js';
+import { ATUENDOS_AMPLIADOS } from './atuendos-ampliados.js';
 
 export const REGIONES = {
   egipto: 'Egipto antiguo', mesopotamia: 'Mesopotamia', grecia: 'Grecia antigua', roma: 'Roma', bizancio: 'Bizancio',
@@ -22,6 +13,9 @@ export const REGIONES = {
   'africa-este-sur': 'África oriental y austral', polinesia: 'Polinesia', andes: 'Andes', mesoamerica: 'Mesoamérica', 'norteamerica': 'Norteamérica',
   artico: 'Ártico', mapuche: 'Pueblo mapuche', 'chile-rural': 'Chile rural y colonial', 'patagonia-fueguina': 'Patagonia y Tierra del Fuego',
   'rio-de-la-plata': 'Río de la Plata', 'hispanoamerica-colonial': 'Hispanoamérica colonial', 'rapa-nui': 'Rapa Nui',
+  'europa-campesina': 'Europa rural y regional', 'asia-central': 'Asia central y Mongolia', siberia: 'Siberia', caucaso: 'Cáucaso', 'mundo-antiguo': 'Mundo antiguo del Mediterráneo y Asia occidental',
+  'africa-cuerno': 'Cuerno de África', 'africa-sahel': 'Sahel y Sahara', 'africa-nilo': 'Valle del Nilo (Nubia y Sudán)', 'asia-himalaya': 'Himalaya y Tíbet', amazonia: 'Amazonia y tierras bajas', caribe: 'Caribe indígena',
+  oceania: 'Oceanía (Australia, Nueva Zelanda y Melanesia)', 'mexico-regional': 'México regional', 'asia-sur-regional': 'India: trajes regionales', 'sudeste-regional': 'Sudeste asiático: trajes regionales',
 };
 
 export const ATUENDOS = [
@@ -169,6 +163,7 @@ export const ATUENDOS = [
   A('colonial-dama', 'Dama colonial', 'hispanoamerica-colonial', [1520, 1810], 'f', 'alta', 'vestido-barroco mantilla collar-colgante zapatos-hebilla', { A: 'lana-negra borravino verde-botella azul-prusia', B: 'blanco-lino', C: 'oro plata', D: 'oro' }, { peinados: 'recogido', tocados: 'velo ninguno', pieles: 'porcelana clara clara clara-calida' }),
   A('colonial-mestizo', 'Artesano mestizo colonial', 'hispanoamerica-colonial', [1550, 1820], 'm', 'baja', 'camisa-rotos chaleco-corto calzones-rodilla poncho-liso sandalias-cuero', { A: 'lana-parda nogal indigo alpaca-cafe', B: 'crudo', C: 'rojo-tierra', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'sombrero-ala-ancha gorro-lana', pieles: 'oliva oliva-clara canela bronce' }),
   A('colonial-mujer-mestiza', 'Mujer mestiza colonial', 'hispanoamerica-colonial', [1550, 1820], 'f', 'baja', 'blusa-campesina falda-larga rebozo delantal-blanco zapatos-cuero', { A: 'azul-andino rojo-granza verde-musgo lana-parda', B: 'blanco-lino', C: 'blanco-lino', D: 'cobre' }, { peinados: 'trenzas-dos recogido', tocados: 'panuelo ninguno', pieles: 'oliva oliva-clara canela bronce' }),
+  ...ATUENDOS_AMPLIADOS,
 ];
 
 export const ATUENDOS_POR_ID = Object.fromEntries(ATUENDOS.map((a) => [a.id, a]));

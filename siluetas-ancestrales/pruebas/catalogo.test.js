@@ -61,14 +61,14 @@ test('cada atuendo apunta a prendas, tintes, peinados, barbas y tocados que exis
 });
 
 test('el catálogo es grande y cubre las regiones', () => {
-  assert.ok(PRENDAS.length >= 200, `prendas: ${PRENDAS.length}`);
-  assert.ok(ATUENDOS.length >= 100, `atuendos: ${ATUENDOS.length}`);
+  assert.ok(PRENDAS.length >= 300, `prendas: ${PRENDAS.length}`);
+  assert.ok(ATUENDOS.length >= 250, `atuendos: ${ATUENDOS.length}`);
   assert.ok(TINTES.length >= 80, `tintes: ${TINTES.length}`);
   for (const r of Object.keys(REGIONES)) assert.ok(ATUENDOS.some((a) => a.region === r), `región sin atuendos: ${r}`);
 });
 
 test('hay atuendos de mujer y de hombre en las regiones principales', () => {
-  for (const r of ['egipto', 'grecia', 'roma', 'europa-medieval', 'andes', 'mapuche', 'chile-rural', 'asia-este', 'africa-oeste', 'mesoamerica']) {
+  for (const r of Object.keys(REGIONES).filter((x) => !['patagonia-fueguina', 'africa-nilo'].includes(x))) {
     for (const sexo of ['f', 'm']) assert.ok(ATUENDOS.some((a) => a.region === r && a.sexo === sexo), `${r} sin atuendo ${sexo}`);
   }
 });
@@ -78,4 +78,12 @@ test('las fechas de los tintes son coherentes', () => {
     assert.ok(t.desde < t.hasta, t.id);
     assert.ok(t.costo >= 1 && t.costo <= 5, t.id);
   }
+});
+
+test('cada atuendo trae un nivel de confianza válido y los de confianza baja o sensibles llevan nota o explicación en su nombre', () => {
+  for (const a of ATUENDOS) assert.ok(['alta', 'media', 'baja'].includes(a.confianza), `${a.id}: confianza ${a.confianza}`);
+  const bajos = ATUENDOS.filter((a) => a.confianza === 'baja');
+  assert.ok(bajos.length >= 30, `pocos marcados como baja: ${bajos.length}`);
+  // Los pueblos vivos con trajes genéricos deben decirlo.
+  for (const id of ['himba-hombre', 'aborigen-mujer', 'papu-hombre', 'kawesqar-mujer']) assert.ok(ATUENDOS.find((a) => a.id === id).nota.length > 20, id);
 });

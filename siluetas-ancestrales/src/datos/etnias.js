@@ -7,18 +7,8 @@
 // regiones: de dónde salen los atuendos (atuendos.js). prefijos: para separar pueblos que comparten región por el id del atuendo.
 // barba: probabilidad de que un adulto lleve barba o bigote. corpulencia: [nombre, peso].
 
-const L = (s) => s.split(/\s+/).filter(Boolean);
-const E = (id, nombre, d) => ({
-  id, nombre, grupo: d.grupo, regiones: L(d.regiones), prefijos: d.prefijos ? L(d.prefijos) : null,
-  pieles: L(d.pieles), cabellos: d.cabellos, peinados: L(d.peinados ?? ''), barba: d.barba ?? 0.3,
-  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? '',
-});
-
-const OSC = [['negro', 7], ['negro-azulado', 2], ['castano-oscuro', 1]];
-const MORENO = [['negro', 5], ['negro-azulado', 1.5], ['castano-oscuro', 3], ['castano', 1.5]];
-const CLARO = [['castano', 3], ['castano-claro', 3], ['rubio-oscuro', 2], ['rubio', 2], ['castano-oscuro', 2], ['pelirrojo', 0.8], ['negro', 1]];
-const MED = [['negro', 4], ['castano-oscuro', 4], ['castano', 2], ['castano-claro', 0.5]];
-const MESTIZO = [['negro', 4], ['castano-oscuro', 4], ['castano', 2], ['castano-claro', 1]];
+import { E, OSC, MORENO, CLARO, MED, MESTIZO } from './ayuda.js';
+import { ETNIAS_AMPLIADAS } from './etnias-ampliadas.js';
 
 export const ETNIAS = [
   // ----- Chile y el cono sur -----
@@ -28,9 +18,9 @@ export const ETNIAS = [
   E('quechua', 'Quechua', { grupo: 'Pueblos andinos', regiones: 'andes', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'trenzas-dos largo-liso flequillo corto', barba: 0.06, altura: [151, 163], corpulencia: [['media', 3], ['robusta', 2.5], ['delgada', 0.8]] }),
   E('inca', 'Inca (histórico)', { grupo: 'Pueblos andinos', regiones: 'andes', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'flequillo largo-liso trenzas-dos corto', barba: 0.04, altura: [150, 162] }),
   E('atacameno', 'Atacameño (lickanantay)', { grupo: 'Pueblos andinos', regiones: 'andes', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'trenzas-dos largo-liso corto', barba: 0.06, altura: [152, 164] }),
-  E('selknam', 'Selk\'nam (ona)', { grupo: 'Pueblos de la Patagonia y Tierra del Fuego', regiones: 'patagonia-fueguina', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'largo-liso corto', barba: 0.05, altura: [165, 178], corpulencia: [['media', 4], ['robusta', 2]], nota: 'Se cuentan entre los pueblos más altos de América en los registros del siglo XIX.' }),
-  E('kawesqar', 'Kawésqar y yagán', { grupo: 'Pueblos de la Patagonia y Tierra del Fuego', regiones: 'patagonia-fueguina', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'largo-liso corto', barba: 0.05, altura: [148, 160], nota: 'Pueblos canoeros; el catálogo los representa con trajes de piel genéricos de la región.' }),
-  E('rapanui', 'Rapanui', { grupo: 'Polinesia', regiones: 'rapa-nui polinesia', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'corto largo-ondulado trenza-una mono-alto', barba: 0.3, altura: [160, 172], corpulencia: [['media', 3], ['robusta', 3]] }),
+  E('selknam', 'Selk\'nam (ona)', { grupo: 'Pueblos de la Patagonia y Tierra del Fuego', regiones: 'patagonia-fueguina', prefijos: 'selknam', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'largo-liso corto', barba: 0.05, altura: [165, 178], corpulencia: [['media', 4], ['robusta', 2]], nota: 'Se cuentan entre los pueblos más altos de América en los registros del siglo XIX.' }),
+  E('kawesqar', 'Kawésqar y yagán', { grupo: 'Pueblos de la Patagonia y Tierra del Fuego', regiones: 'patagonia-fueguina', prefijos: 'kawesqar', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'largo-liso corto', barba: 0.05, altura: [148, 160], nota: 'Pueblos canoeros; el catálogo los representa con trajes de piel genéricos de la región.' }),
+  E('rapanui', 'Rapanui', { grupo: 'Polinesia', regiones: 'rapa-nui', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'corto largo-ondulado trenza-una mono-alto', barba: 0.3, altura: [160, 172], corpulencia: [['media', 3], ['robusta', 3]] }),
   E('polinesio', 'Polinesio', { grupo: 'Polinesia', regiones: 'polinesia rapa-nui', pieles: 'canela bronce cobre', cabellos: OSC, peinados: 'corto largo-ondulado trenza-una mono-alto', barba: 0.3, altura: [160, 173], corpulencia: [['media', 3], ['robusta', 3]] }),
   E('criollo-chileno', 'Criollo y mestizo chileno', { grupo: 'Chile', regiones: 'chile-rural hispanoamerica-colonial', pieles: 'clara-calida oliva-clara oliva canela', cabellos: MESTIZO, peinados: 'corto trenzas-dos recogido bob', barba: 0.4, altura: [155, 167], nota: 'Mezcla de ascendencia europea e indígena; la piel se estima en un rango amplio.' }),
   E('espanol', 'Español y vasco', { grupo: 'Europa', regiones: 'hispanoamerica-colonial europa-moderna europa-xix europa-medieval', pieles: 'porcelana clara clara-calida oliva-clara', cabellos: MED, peinados: 'corto recogido bob', barba: 0.45, altura: [157, 168] }),
@@ -55,20 +45,21 @@ export const ETNIAS = [
   E('romano-antiguo', 'Romano antiguo', { grupo: 'Mundo antiguo', regiones: 'roma', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'romano corto recogido', barba: 0.15, altura: [154, 168], nota: 'Los hombres romanos solían ir afeitados.' }),
   E('bizantino', 'Bizantino', { grupo: 'Mundo antiguo', regiones: 'bizancio', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto recogido', barba: 0.55, altura: [154, 167] }),
   // ----- Medio Oriente y África del norte -----
-  E('arabe', 'Árabe', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente africa-norte', pieles: 'oliva-clara oliva canela bronce', cabellos: [['negro', 7], ['castano-oscuro', 2]], peinados: 'corto recogido', barba: 0.7, altura: [157, 169] }),
-  E('persa', 'Persa', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente', pieles: 'oliva-clara oliva', cabellos: [['negro', 6], ['castano-oscuro', 3]], peinados: 'corto largo-liso', barba: 0.65, altura: [157, 170] }),
-  E('turco-otomano', 'Turco y otomano', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto', barba: 0.7, altura: [158, 171] }),
+  E('arabe', 'Árabe', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente africa-norte', prefijos: 'beduino mujer-arabe maghreb palestin liban yemenit', pieles: 'oliva-clara oliva canela bronce', cabellos: [['negro', 7], ['castano-oscuro', 2]], peinados: 'corto recogido', barba: 0.7, altura: [157, 169] }),
+  E('persa', 'Persa', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente', prefijos: 'persa', pieles: 'oliva-clara oliva', cabellos: [['negro', 6], ['castano-oscuro', 3]], peinados: 'corto largo-liso', barba: 0.65, altura: [157, 170] }),
+  E('turco-otomano', 'Turco y otomano', { grupo: 'Medio Oriente y África del norte', regiones: 'medio-oriente', prefijos: 'otomano otomana', pieles: 'clara-calida oliva-clara oliva', cabellos: MED, peinados: 'corto', barba: 0.7, altura: [158, 171] }),
   E('bereber', 'Bereber y magrebí', { grupo: 'Medio Oriente y África del norte', regiones: 'africa-norte', pieles: 'oliva-clara oliva canela bronce', cabellos: [['negro', 6], ['castano-oscuro', 3]], peinados: 'corto trenzas-dos recogido', barba: 0.65, altura: [157, 169] }),
   // ----- Asia -----
-  E('indio-subcontinente', 'Indio del subcontinente', { grupo: 'Asia', regiones: 'asia-sur', pieles: 'oliva canela bronce cobre castana', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'trenza-una recogido corto', barba: 0.55, altura: [151, 164] }),
+  E('indio-subcontinente', 'Indio del subcontinente', { grupo: 'Asia', regiones: 'asia-sur asia-sur-regional', pieles: 'oliva canela bronce cobre castana', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'trenza-una recogido corto', barba: 0.55, altura: [151, 164] }),
   E('chino-han', 'Chino han', { grupo: 'Asia', regiones: 'asia-este', prefijos: 'china-', pieles: 'clara clara-calida oliva-clara', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'mono-alto recogido trenza-una bob', barba: 0.2, altura: [155, 167] }),
   E('japones', 'Japonés', { grupo: 'Asia', regiones: 'asia-este', prefijos: 'japon-', pieles: 'porcelana clara clara-calida', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'mono-chonmage recogido mono-alto', barba: 0.2, altura: [153, 165] }),
   E('coreano', 'Coreano', { grupo: 'Asia', regiones: 'asia-este', prefijos: 'corea-', pieles: 'porcelana clara clara-calida', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'recogido trenza-una mono-chonmage', barba: 0.2, altura: [155, 167] }),
-  E('malayo-indonesio', 'Malayo e indonesio', { grupo: 'Asia', regiones: 'sudeste-asiatico', pieles: 'oliva canela bronce', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'recogido corto mono-alto', barba: 0.25, altura: [148, 160] }),
+  E('malayo-indonesio', 'Malayo e indonesio', { grupo: 'Asia', regiones: 'sudeste-asiatico', prefijos: 'sudeste', pieles: 'oliva canela bronce', cabellos: [['negro', 8], ['negro-azulado', 2]], peinados: 'recogido corto mono-alto', barba: 0.25, altura: [148, 160] }),
   // ----- África subsahariana -----
   E('africano-occidental', 'Africano occidental', { grupo: 'África subsahariana', regiones: 'africa-oeste', pieles: 'castana ebano-claro ebano ebano-profundo', cabellos: [['negro', 10]], peinados: 'rapado corto afro trenzas-dos rizos', barba: 0.4, altura: [160, 172] }),
   E('zulu', 'Zulú y bantú austral', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'zulu-', pieles: 'castana ebano-claro ebano', cabellos: [['negro', 10]], peinados: 'rapado corto', barba: 0.3, altura: [157, 169] }),
   E('maasai', 'Maasái', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'maasai', pieles: 'ebano-claro ebano ebano-profundo', cabellos: [['negro', 10]], peinados: 'rapado rastas', barba: 0.05, altura: [165, 178], corpulencia: [['delgada', 3], ['media', 3]], nota: 'Estatura alta y complexión delgada son típicas de los registros de pastores de África oriental.' }),
+  ...ETNIAS_AMPLIADAS,
 ];
 
 export const ETNIAS_POR_ID = Object.fromEntries(ETNIAS.map((e) => [e.id, e]));

@@ -11,7 +11,8 @@ const media = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
 const muestra = (opc, n = 60) => Array.from({ length: n }, (_, i) => generarPersona({ ...opc, semilla: i + 1 }));
 
 test('los datos de cada etnia son válidos', () => {
-  assert.ok(ETNIAS.length >= 40);
+  assert.ok(ETNIAS.length >= 100, `etnias: ${ETNIAS.length}`);
+  for (const e of ETNIAS) assert.ok(['alta', 'media', 'baja'].includes(e.confianza), `${e.id}: confianza`);
   assert.equal(new Set(ETNIAS.map((e) => e.id)).size, ETNIAS.length);
   for (const e of ETNIAS) {
     assert.match(e.id, /^[a-z0-9-]+$/);
@@ -109,4 +110,14 @@ test('sin etnia no hay estimaciones y una etnia desconocida falla con la lista',
 test('la misma semilla y etnia dan siempre lo mismo', () => {
   const o = { semilla: 77, etnia: ['aymara', 'espanol'], sexo: 'f', edad: 52, anio: 1920 };
   assert.equal(generarSVG(o), generarSVG(o));
+});
+
+test('la confianza de una persona es la menor entre su atuendo y sus etnias, y las notas se propagan', () => {
+  const p = generarPersona({ semilla: 1, etnia: 'himba', sexo: 'f' });
+  assert.equal(p.confianza, 'baja');
+  assert.ok(p.notas.some((n) => /otjize/.test(n)));
+  const q = generarPersona({ semilla: 1, atuendo: 'roma-senador' });
+  assert.equal(q.confianza, 'media');
+  const m = generarPersona({ semilla: 1, etnia: ['mapuche', 'himba'], sexo: 'f' });
+  assert.equal(m.confianza, 'baja', 'una mezcla con una etnia de confianza baja es de confianza baja');
 });

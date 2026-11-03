@@ -8,13 +8,13 @@ Trae un **catálogo grande de ropa** organizado por región, época, sexo y clas
 
 | | |
 |---|---|
-| Atuendos completos | 120+ (Egipto, Mesopotamia, Grecia, Roma, Bizancio, Europa medieval a siglo XX, mundo eslavo, celta y vikingo, Medio Oriente, Asia, África, Polinesia, Rapa Nui, Andes, Mesoamérica, Norteamérica, Ártico, pueblo mapuche, Chile rural, Tierra del Fuego, Río de la Plata y la Hispanoamérica colonial) |
-| Prendas | 200+ (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 15 plantillas paramétricas |
+| Atuendos completos | 270, por región, época, sexo y clase social: mundo antiguo (Egipto, Mesopotamia, Grecia, Roma, Bizancio, minoicos, fenicios, persas, escitas, etruscos, íberos, hititas, kushitas), Europa medieval, moderna y rural (vascos, andaluces, gallegos, italianos, croatas, bávaros…), Cáucaso, Asia central, Siberia y el Himalaya, Medio Oriente, la India y el sudeste asiático por regiones, Asia oriental, África (Magreb, Sahel, Cuerno, oeste, este y sur, Nilo), Amazonia y Caribe, Norteamérica, México regional, los Andes, el pueblo mapuche, Chile rural y colonial, Patagonia y Tierra del Fuego, el Río de la Plata, Hispanoamérica colonial, Polinesia y Oceanía |
+| Prendas | 316 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 15 plantillas paramétricas |
 | Tintes con nombre | 80+, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, gualda, ocres…) |
-| Etnias y culturas | 42, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
+| Etnias y culturas | 112, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
 | Pieles, cabellos | 12 tonos de piel y 13 de cabello |
-| Peinados, barbas, tocados | 23, 8 y 29 |
-| Patrones de tela | 18 (rayas, tartán, grecas, escalonado, rombos, escamas…) |
+| Peinados, barbas, tocados | 25, 8 y 35 |
+| Patrones de tela | 19 (rayas, tartán, grecas, escalonado, rombos, escamas, diseños geométricos amazónicos…) |
 
 ## Uso rápido
 
@@ -117,10 +117,21 @@ node bin/construir.js               # regenera dist/ y ejemplos/ tras cambiar sr
 
 Las pruebas revisan que cada etnia tenga datos válidos y que las estimaciones sigan a la etnia (estatura, piel, cabello), a la edad y al año, y avisen cuando el atuendo sea de otra región; que la mano en saludo quede del lado y a la altura correctos para todos los atuendos; que cada atuendo apunte a prendas, tintes y peinados que existen; que **todo atuendo** se dibuje bien a seis edades y complexiones (SVG bien formado, sin `NaN`, sin scripts ni referencias externas, rellenos definidos); que la misma semilla dé el mismo SVG; que los filtros se respeten; que la ropa nueva sea válida y variada; y que `dist/` dé exactamente lo mismo que `src/`.
 
+## Confianza y revisión (para uso antropológico)
+
+Cada atuendo y cada etnia trae un nivel de **confianza**: `media` es una aproximación razonable de un traje o un pueblo conocido; `baja` es una imagen genérica o muy simplificada (por ejemplo los pueblos amazónicos, los himba, los aborígenes australianos o los taínos, de los que el catálogo no tiene un traje concreto o las fuentes son escasas). Ninguno está marcado `alta`: nada de esto reemplaza una fuente primaria.
+
+- `persona.confianza` es la menor de las del atuendo y las etnias; `persona.notas` trae las advertencias propias de cada entrada (por ejemplo que no se reproduce la pintura corporal himba ni el tā moko maorí). La galería las muestra.
+- `node bin/generar.js --listar auditoria` lista todo lo marcado `baja`, para revisarlo con fuentes del propio pueblo o con sus miembros antes de publicar.
+- `node bin/generar.js --listar etnias` y `--listar atuendos` incluyen la confianza.
+
+Para un proyecto de genealogía conviene tratar la etnia como una **pista estadística** y no como un dato de la persona: sirve para ilustrar un linaje probable.
+
 ## Límites, dicho con honestidad
 
 - Es **ilustración histórica aproximada**, no un estudio de indumentaria: las épocas son anchas y los trajes duraron más que las fechas. Los tintes traen época y costo para no vestir a un campesino medieval de púrpura de Tiro, pero no son una tesis.
 - Algunas prendas son una **simplificación de forma** (por ejemplo la toga, el sari o el kimono se resuelven con plantillas generales de manto, falda y túnica cruzada).
-- Los atuendos de pueblos vivos (mapuche, selk'nam, rapanui, maasái, pueblos de las llanuras…) son una representación genérica; antes de usarlos en algo publicado conviene revisarlos con personas de esos pueblos o con fuentes de su propia mano.
+- Los atuendos de pueblos vivos o con comunidades vivas (mapuche, selk'nam, rapanui, maasái, pueblos de las llanuras, maoríes, aborígenes australianos, himba, wixárika…) son una representación genérica; antes de usarlos en algo publicado conviene revisarlos con personas de esos pueblos o con fuentes de su propia mano. Los objetos y adornos ceremoniales o de rango (por ejemplo los tocados de plumas) se usan aquí como elementos de ilustración y no sustituyen su significado.
+- No hay siluetas de pueblos de los que no existan trajes en el catálogo: si una etnia no tiene atuendo propio para el año pedido, el generador usa el más cercano y lo avisa en `persona.avisos`.
 - Solo vista frontal, de pie, con una mano levantada.
 - La **etnia** es una estimación estadística: sirve para ilustrar un linaje probable, no para afirmar cómo era una persona concreta.

@@ -193,6 +193,12 @@ function ajusteEstaturaAnio(anio) {
   return 0.01;
 }
 
+const RANGO_CONFIANZA = { baja: 0, media: 1, alta: 2 };
+/** La menor confianza de las que se combinan: una representación es tan sólida como su parte más débil. */
+function menorConfianza(lista) {
+  return lista.reduce((m, c) => (RANGO_CONFIANZA[c] < RANGO_CONFIANZA[m] ? c : m), 'alta');
+}
+
 const ESTATURA_REF = { f: 161, m: 174 }; // los promedios con los que medidas() calcula la altura por edad
 
 // ---------- Persona ----------
@@ -323,6 +329,8 @@ export function generarPersona(opc = {}) {
     prendas, paleta: pal, nombresPaleta,
     etnia: etnia ? etnia.map((x) => ({ id: x.e.id, nombre: x.e.nombre, peso: Math.round(x.peso * 100) / 100 })) : null,
     estimaciones, avisos,
+    confianza: menorConfianza([atuendo.confianza, ...(etnia ? etnia.map((x) => x.e.confianza) : [])]),
+    notas: [atuendo.nota, ...(etnia ? etnia.map((x) => x.e.nota) : [])].filter(Boolean),
     detalle: opc.detalle ?? 'medio', fondo: opc.fondo ?? 'ninguno',
   };
 }

@@ -2,8 +2,8 @@
 // pone y qué color de la paleta del atuendo usa en cada papel: A = principal, B = secundario, C = ribete,
 // D = detalle. Las fechas y regiones viven en los atuendos (atuendos.js), no aquí.
 
-const COL = { principal: 'A', secundario: 'B', ribete: 'C', detalle: 'D' };
-const P = (id, nombre, ranura, plantilla, params = {}, col = {}) => ({ id, nombre, ranura, plantilla, params, col: { ...COL, ...col } });
+import { P } from './ayuda.js';
+import { PRENDAS_AMPLIADAS } from './prendas-ampliadas.js';
 
 export const PRENDAS = [
   // ===== Egipto y Mesopotamia =====
@@ -174,7 +174,7 @@ export const PRENDAS = [
   P('kebaya', 'Kebaya', 'torso', 'tunica', { largo: 'cadera', manga: 'larga', escote: 'v', prof: 1.1, cintura: 0.2, holgura: 0.004, puños: true, ribete: true, bandaPatron: 'flores' }),
   // ===== África =====
   P('boubou', 'Boubou', 'torso', 'tunica', { largo: 'tobillo', manga: 'kimono', escote: 'ojal', cintura: 1, holgura: 0.05, bordadoPecho: 'rombos', pliegues: 4, ribete: true }),
-  P('agbada', 'Agbada', 'sobre', 'tunica', { largo: 'pantorrilla', manga: 'kimono', escote: 'redondo', prof: 0.8, cintura: 1, holgura: 0.06, bordadoPecho: 'zigzag', ribete: true }),
+  P('agbada', 'Agbada', 'sobre', 'tunica', { largo: 'pantorrilla', manga: 'kimono', escote: 'redondo', prof: 0.8, cintura: 1, holgura: 0.045, bordadoPecho: 'zigzag', ribete: true }),
   P('dashiki', 'Dashiki', 'torso', 'tunica', { largo: 'cadera', manga: 'corta', escote: 'v', prof: 0.9, cintura: 1, holgura: 0.02, bordadoPecho: 'rombos', ribete: true, patron: { tipo: 'rombos', escala: 1.2, rol: 'secundario' } }),
   P('kente', 'Kente', 'capa', 'drapeado', { largo: 'tobillo', lado: 'izq', pliegues: 4, orla: false, patron: { tipo: 'bandas', escala: 0.9, rol: 'secundario' } }),
   P('kente-falda', 'Falda de kente', 'inferior', 'falda', { largo: 'tobillo', vuelo: 0.03, pliegues: 3, patron: { tipo: 'bandas', escala: 0.8, rol: 'secundario' } }),
@@ -231,6 +231,7 @@ export const PRENDAS = [
   P('top-fibra', 'Corpiño de fibra', 'torso', 'tunica', { largo: 'pecho', manga: 'sin', escote: 'barco', cintura: 0, holgura: 0.002, ribete: false }),
   P('guirnalda', 'Collar de flores (lei)', 'cuello', 'cuello', { tipo: 'cuentas-largas' }),
   P('maro', 'Maro (taparrabo de tapa)', 'inferior', 'taparrabo', { largo: 'muslo', ancho: 0.035, punta: 0.01 }),
+  ...PRENDAS_AMPLIADAS,
 ];
 
 export const PRENDAS_POR_ID = Object.fromEntries(PRENDAS.map((p) => [p.id, p]));

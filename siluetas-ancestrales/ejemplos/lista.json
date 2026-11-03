@@ -206,5 +206,91 @@
       "edad": 50,
       "saludo": "ninguno"
     }
+  },
+  {
+    "archivo": "nuevo-mongol",
+    "opciones": {
+      "atuendo": "mongola-mujer",
+      "semilla": 41,
+      "edad": 30
+    }
+  },
+  {
+    "archivo": "nuevo-tehuana",
+    "opciones": {
+      "atuendo": "tehuana-mujer",
+      "semilla": 42,
+      "edad": 35
+    }
+  },
+  {
+    "archivo": "nuevo-maori",
+    "opciones": {
+      "atuendo": "maori-hombre",
+      "semilla": 43,
+      "edad": 45
+    }
+  },
+  {
+    "archivo": "nuevo-yoruba",
+    "opciones": {
+      "atuendo": "yoruba-mujer",
+      "semilla": 44,
+      "edad": 38
+    }
+  },
+  {
+    "archivo": "nuevo-navajo",
+    "opciones": {
+      "atuendo": "navajo-mujer",
+      "semilla": 45,
+      "edad": 33
+    }
+  },
+  {
+    "archivo": "nuevo-croata-chile",
+    "opciones": {
+      "etnia": "croata",
+      "sexo": "m",
+      "edad": 52,
+      "anio": 1900,
+      "semilla": 46
+    }
+  },
+  {
+    "archivo": "nuevo-palestina",
+    "opciones": {
+      "etnia": "palestino",
+      "sexo": "f",
+      "edad": 40,
+      "anio": 1920,
+      "semilla": 47
+    }
+  },
+  {
+    "archivo": "nuevo-vasca",
+    "opciones": {
+      "etnia": "vasco",
+      "sexo": "f",
+      "edad": 60,
+      "anio": 1880,
+      "semilla": 48
+    }
+  },
+  {
+    "archivo": "nuevo-tibetana",
+    "opciones": {
+      "atuendo": "tibetana-mujer",
+      "semilla": 49,
+      "edad": 28
+    }
+  },
+  {
+    "archivo": "nuevo-minoica",
+    "opciones": {
+      "atuendo": "minoica-mujer",
+      "semilla": 50,
+      "edad": 26
+    }
   }
 ]

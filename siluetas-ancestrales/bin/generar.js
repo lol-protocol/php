@@ -24,14 +24,15 @@ if (flag('ayuda') || flag('help')) {
   --postura firme|relajada|abierta  --piel ID|#hex  --cabello ID|#hex
   --detalle minimo|medio|alto  --rasgos  --fondo '#efe9dd'
   --nueva [--estilo sobrio|trabajo|festivo|ceremonial] [--esquema analogo|complementario|triada|monocromo|tierra|festivo]
-  --listar atuendos|regiones|etnias|prendas|tintes|resumen
+  --listar atuendos|regiones|etnias|prendas|tintes|resumen|auditoria   (auditoria: lo que conviene revisar con fuentes del propio pueblo)
   -o archivo.svg`);
   process.exit(0);
 }
 const listar = val('listar');
 if (listar) {
-  const f = { atuendos: () => ATUENDOS.map((a) => `${a.id}\t${a.sexo}\t${a.region}\t${a.epoca.join('..')}\t${a.nombre}`),
-    etnias: () => ETNIAS.map((e) => `${e.id}\t${e.grupo}\t${e.nombre}`),
+  const f = { atuendos: () => ATUENDOS.map((a) => `${a.id}\t${a.sexo}\t${a.region}\t${a.epoca.join('..')}\t${a.confianza}\t${a.nombre}`),
+    etnias: () => ETNIAS.map((e) => `${e.id}\t${e.confianza}\t${e.grupo}\t${e.nombre}`),
+    auditoria: () => [...ETNIAS.filter((e) => e.confianza === 'baja').map((e) => `etnia\t${e.id}\t${e.nombre}\t${e.nota}`), ...ATUENDOS.filter((a) => a.confianza === 'baja').map((a) => `atuendo\t${a.id}\t${a.nombre}\t${a.nota}`)],
     regiones: () => Object.entries(REGIONES).map(([k, v]) => `${k}\t${v}`),
     prendas: () => PRENDAS.map((p) => `${p.id}\t${p.ranura}\t${p.nombre}`),
     tintes: () => TINTES.map((t) => `${t.id}\t${t.hex}\t${t.nombre}`),
