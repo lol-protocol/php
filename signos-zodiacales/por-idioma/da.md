@@ -247,3 +247,161 @@ Forbindes med loyalitet og retfærdighed: traditionen beskriver den som ærlig, 
 Generøs, oprigtig og kærlig.
 
 Forbindes med generøsitet og livsglæde: traditionen beskriver den som oprigtig, venlig og godhjertet, men nogle gange naiv.
+
+## De 72 engle
+
+Fra Shem ha-Mephorash, "navnet på 72 bogstaver", som kabbalaen udleder af 2. Mosebog 14,19-21. Hver engel hersker over et stykke af zodiaken på omkring 5 dage. Kun kulturel reference.
+
+| # | Navn | Kor | Datoer | Egenskaber |
+| --- | --- | --- | --- | --- |
+| 1 | Vehuiah | Serafer | 21/03 – 25/03 | Vilje, begyndelser, energi |
+| 2 | Jeliel | Serafer | 26/03 – 30/03 | Kærlighed, trofasthed, fred |
+| 3 | Sitael | Serafer | 31/03 – 04/04 | Byggeri, beskyttelse, ædelhed |
+| 4 | Elemiah | Serafer | 05/04 – 09/04 | Rejser, hemmeligheder, beskyttelse |
+| 5 | Mahasiah | Serafer | 10/04 – 14/04 | Harmoni, fred, læring |
+| 6 | Lelahel | Serafer | 15/04 – 19/04 | Kærlighed, helbredelse, talent |
+| 7 | Achaiah | Serafer | 20/04 – 25/04 | Tålmodighed, hemmeligheder, natur |
+| 8 | Cahethel | Serafer | 26/04 – 30/04 | Velsignelse, landbrug, beskyttelse |
+| 9 | Haziel | Keruber | 01/05 – 05/05 | Barmhjertighed, tilgivelse, venskab |
+| 10 | Aladiah | Keruber | 06/05 – 10/05 | Nåde, tilgivelse, helbredelse |
+| 11 | Laoviah | Keruber | 11/05 – 15/05 | Berømmelse, sejr, intelligens |
+| 12 | Hahaiah | Keruber | 16/05 – 20/05 | Tilflugt, beskyttelse, drømme |
+| 13 | Yesalel | Keruber | 21/05 – 26/05 | Forsoning, trofasthed, venskab |
+| 14 | Mebahel | Keruber | 27/05 – 31/05 | Retfærdighed, sandhed, befrielse |
+| 15 | Hariel | Keruber | 01/06 – 05/06 | Renhed, tro, befrielse |
+| 16 | Hekamiah | Keruber | 06/06 – 10/06 | Loyalitet, mod, beskyttelse |
+| 17 | Lauviah | Troner | 11/06 – 15/06 | Sejr, drømme, åbenbaring |
+| 18 | Caliel | Troner | 16/06 – 20/06 | Retfærdighed, sandhed, uskyld |
+| 19 | Leuviah | Troner | 21/06 – 26/06 | Hukommelse, intelligens, tålmodighed |
+| 20 | Pahaliah | Troner | 27/06 – 02/07 | Kald, kyskhed, dyd |
+| 21 | Nelchael | Troner | 03/07 – 07/07 | Videnskab, studier, beskyttelse |
+| 22 | Yeiayel | Troner | 08/07 – 12/07 | Berømmelse, handel, rejser |
+| 23 | Melahel | Troner | 13/07 – 17/07 | Helbredelse, planter, beskyttelse |
+| 24 | Haheuiah | Troner | 18/07 – 22/07 | Beskyttelse, retfærdighed, landsforviste |
+| 25 | Nith-Haiah | Herredømmer | 23/07 – 28/07 | Visdom, åbenbaring, magi |
+| 26 | Haaiah | Herredømmer | 29/07 – 02/08 | Diplomati, sandhed, retfærdighed |
+| 27 | Yerathel | Herredømmer | 03/08 – 07/08 | Frihed, lys, sandhed |
+| 28 | Seheiah | Herredømmer | 08/08 – 12/08 | Et langt liv, sundhed, beskyttelse |
+| 29 | Reiyel | Herredømmer | 13/08 – 17/08 | Tro, frihed, videnskab |
+| 30 | Omael | Herredømmer | 18/08 – 22/08 | Frugtbarhed, tålmodighed, overflod |
+| 31 | Lecabel | Herredømmer | 23/08 – 28/08 | Talent, landbrug, intelligens |
+| 32 | Vasariah | Herredømmer | 29/08 – 02/09 | Mildhed, retfærdighed, hukommelse |
+| 33 | Yehuiah | Kræfter | 03/09 – 07/09 | Trofasthed, loyalitet, dømmekraft |
+| 34 | Lehahiah | Kræfter | 08/09 – 12/09 | Lydighed, held, fred |
+| 35 | Chavakiah | Kræfter | 13/09 – 17/09 | Forsoning, arv, harmoni |
+| 36 | Menadel | Kræfter | 18/09 – 22/09 | Arbejde, trofasthed, befrielse |
+| 37 | Aniel | Kræfter | 23/09 – 27/09 | Videnskab, sejr, visdom |
+| 38 | Haamiah | Kræfter | 28/09 – 02/10 | Sandhed, beskyttelse, tro |
+| 39 | Rehael | Kræfter | 03/10 – 07/10 | Sundhed, et langt liv, lydighed |
+| 40 | Ieiazel | Kræfter | 08/10 – 12/10 | Trøst, befrielse, kunst |
+| 41 | Hahahel | Magter | 13/10 – 17/10 | Tro, kald, beskyttelse |
+| 42 | Mikael | Magter | 18/10 – 22/10 | Orden, rejser, beskyttelse |
+| 43 | Veuliah | Magter | 23/10 – 27/10 | Velstand, fred, overflod |
+| 44 | Yelahiah | Magter | 28/10 – 01/11 | Retfærdighed, mod, beskyttelse |
+| 45 | Sealiah | Magter | 02/11 – 06/11 | Gåpåmod, energi, vilje |
+| 46 | Ariel | Magter | 07/11 – 11/11 | Opfattelse, åbenbaring, intuition |
+| 47 | Asaliah | Magter | 12/11 – 16/11 | Kontemplation, sandhed, retfærdighed |
+| 48 | Mihael | Magter | 17/11 – 21/11 | Frugtbarhed, kærlighed, harmoni |
+| 49 | Vehuel | Fyrstendømmer | 22/11 – 26/11 | Storhed, beundring, ophøjelse |
+| 50 | Daniel | Fyrstendømmer | 27/11 – 01/12 | Veltalenhed, retfærdighed, råd |
+| 51 | Hahasiah | Fyrstendømmer | 02/12 – 06/12 | Visdom, helbredelse, hemmeligheder |
+| 52 | Imamiah | Fyrstendømmer | 07/12 – 11/12 | Befrielse, rejser, beskyttelse |
+| 53 | Nanael | Fyrstendømmer | 12/12 – 16/12 | Studier, diplomati, kommunikation |
+| 54 | Nithael | Fyrstendømmer | 17/12 – 21/12 | Et langt liv, stabilitet, nåde |
+| 55 | Mebahiah | Fyrstendømmer | 22/12 – 26/12 | Trøst, klarhed, dyd |
+| 56 | Poyel | Fyrstendømmer | 27/12 – 31/12 | Held, støtte, succes |
+| 57 | Nemamiah | Ærkeengle | 01/01 – 05/01 | Velstand, succes, befrielse |
+| 58 | Yeialel | Ærkeengle | 06/01 – 10/01 | Mod, helbredelse, sindsro |
+| 59 | Harahel | Ærkeengle | 11/01 – 15/01 | Rigdom, litteratur, studier |
+| 60 | Mitzrael | Ærkeengle | 16/01 – 19/01 | Sindsro, trofasthed, helbredelse |
+| 61 | Umabel | Ærkeengle | 20/01 – 24/01 | Venskab, samhørighed, astronomi |
+| 62 | Iah-Hel | Ærkeengle | 25/01 – 29/01 | Visdom, filosofi, sindsro |
+| 63 | Anauel | Ærkeengle | 30/01 – 03/02 | Enhed, handel, velstand |
+| 64 | Mehiel | Ærkeengle | 04/02 – 08/02 | Inspiration, skrivning, beskyttelse |
+| 65 | Damabiah | Engle | 09/02 – 13/02 | Visdom, beskyttelse, hav |
+| 66 | Manakel | Engle | 14/02 – 18/02 | Medfølelse, drømme, trivsel |
+| 67 | Eyael | Engle | 19/02 – 23/02 | Forvandling, forsoning, et langt liv |
+| 68 | Habuhiah | Engle | 24/02 – 28/02 | Helbredelse, frugtbarhed, landbrug |
+| 69 | Rochel | Engle | 01/03 – 05/03 | Retfærdighed, tilbagelevering, sandhed |
+| 70 | Yabamiah | Engle | 06/03 – 10/03 | Fornyelse, alkymi, skabelse |
+| 71 | Haiaiel | Engle | 11/03 – 15/03 | Beskyttelse, sejr, mod |
+| 72 | Mumiah | Engle | 16/03 – 20/03 | Fuldendelse, genfødsel, trivsel |
+
+## De 72 dæmoner
+
+Fra Goetia (1600-tallet), en trolddomsbog, der ikke er en del af Bibelen. Hver ånd deler perioden med englen med samme nummer. Kun kulturel reference.
+
+| # | Navn | Rang | Legioner | Datoer | Egenskaber |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bael | Konge | 66 | 21/03 – 25/03 | Usynlighed, visdom |
+| 2 | Agares | Hertug | 31 | 26/03 – 30/03 | Sprog, flygtninge, jordskælv |
+| 3 | Vassago | Prins | — | 31/03 – 04/04 | Fortid og fremtid, mistede ting |
+| 4 | Samigina | Markis | 30 | 05/04 – 09/04 | De frie kunster, de dødes sjæle |
+| 5 | Marbas | President | 36 | 10/04 – 14/04 | Hemmeligheder, sygdomme, helbredelse, mekaniske kunster |
+| 6 | Valefor | Hertug | 10 | 15/04 – 19/04 | Hjælpeånder, tyveri |
+| 7 | Amon | Markis | 40 | 20/04 – 25/04 | Fortid og fremtid, forsoning, fjendskab |
+| 8 | Barbatos | Hertug | 30 | 26/04 – 30/04 | Dyrenes sprog, skatte, forsoning |
+| 9 | Paimon | Konge | 200 | 01/05 – 05/05 | Videnskaber, kunst, hemmeligheder, værdigheder |
+| 10 | Buer | President | 50 | 06/05 – 10/05 | Filosofi, planter, helbredelse, hjælpeånder |
+| 11 | Gusion | Hertug | 40 | 11/05 – 15/05 | Fortid og fremtid, forsoning, hædersbevisninger |
+| 12 | Sitri | Prins | 60 | 16/05 – 20/05 | Kærlighed, begær, hemmeligheder |
+| 13 | Beleth | Konge | 85 | 21/05 – 26/05 | Kærlighed, begær |
+| 14 | Leraje | Markis | 30 | 27/05 – 31/05 | Konflikter, sår |
+| 15 | Eligos | Hertug | 60 | 01/06 – 05/06 | Krig, fortid og fremtid, yndest |
+| 16 | Zepar | Hertug | 26 | 06/06 – 10/06 | Kærlighed, ufrugtbarhed |
+| 17 | Botis | President / Greve | 60 | 11/06 – 15/06 | Fortid og fremtid, forsoning |
+| 18 | Bathin | Hertug | 30 | 16/06 – 20/06 | Planter, ædelsten, hurtige rejser |
+| 19 | Sallos | Hertug | 30 | 21/06 – 26/06 | Kærlighed |
+| 20 | Purson | Konge | 22 | 27/06 – 02/07 | Skatte, fortid og fremtid, hjælpeånder |
+| 21 | Marax | President / Greve | 30 | 03/07 – 07/07 | Astronomi, de frie kunster, planter |
+| 22 | Ipos | Greve / Prins | 36 | 08/07 – 12/07 | Fortid og fremtid, mod, vid |
+| 23 | Aim | Hertug | 26 | 13/07 – 17/07 | Brande, vid, hemmeligheder |
+| 24 | Naberius | Markis | 19 | 18/07 – 22/07 | Retorik, kunst, hædersbevisninger |
+| 25 | Glasya-Labolas | President / Greve | 36 | 23/07 – 28/07 | Videnskaber, vold, fortid og fremtid, usynlighed |
+| 26 | Bune | Hertug | 30 | 29/07 – 02/08 | Rigdom, veltalenhed, døde |
+| 27 | Ronove | Markis / Greve | 19 | 03/08 – 07/08 | Retorik, sprog, yndest |
+| 28 | Berith | Hertug | 26 | 08/08 – 12/08 | Alkymi, hædersbevisninger, fortid og fremtid |
+| 29 | Astaroth | Hertug | 40 | 13/08 – 17/08 | Fortid og fremtid, de frie kunster, hemmeligheder |
+| 30 | Forneus | Markis | 29 | 18/08 – 22/08 | Retorik, sprog, omdømme |
+| 31 | Foras | President | 29 | 23/08 – 28/08 | Planter, logik, etik |
+| 32 | Asmoday | Konge | 72 | 29/08 – 02/09 | Matematik, astronomi, usynlighed, skatte |
+| 33 | Gaap | President / Prins | 66 | 03/09 – 07/09 | Filosofi, de frie kunster, kærlighed, fjendskab, hurtige rejser |
+| 34 | Furfur | Greve | 26 | 08/09 – 12/09 | Kærlighed, storme, hemmeligheder |
+| 35 | Marchosias | Markis | 30 | 13/09 – 17/09 | Kamp, sandhed |
+| 36 | Stolas | Prins | 26 | 18/09 – 22/09 | Astronomi, planter, ædelsten |
+| 37 | Phenex | Markis | 20 | 23/09 – 27/09 | Poesi, videnskaber |
+| 38 | Halphas | Greve | 26 | 28/09 – 02/10 | Fæstninger, krig, våben |
+| 39 | Malphas | President | 40 | 03/10 – 07/10 | Byggeri, bedrag |
+| 40 | Raum | Greve | 30 | 08/10 – 12/10 | Tyveri, ødelæggelse, fortid og fremtid |
+| 41 | Focalor | Hertug | 30 | 13/10 – 17/10 | Hav, vinde, skibbrud |
+| 42 | Vepar | Hertug | 29 | 18/10 – 22/10 | Hav, storme, sår |
+| 43 | Sabnock | Markis | 50 | 23/10 – 27/10 | Fæstninger, sår, hjælpeånder |
+| 44 | Shax | Markis | 30 | 28/10 – 01/11 | Blindhed, døvhed, tyveri |
+| 45 | Vine | Konge / Greve | 36 | 02/11 – 06/11 | Hekseri, storme, fæstninger |
+| 46 | Bifrons | Greve | 6 | 07/11 – 11/11 | Astrologi, matematik, planter, døde |
+| 47 | Vual | Hertug | 37 | 12/11 – 16/11 | Kærlighed, venskab, fortid og fremtid |
+| 48 | Haagenti | President | 33 | 17/11 – 21/11 | Forvandling, visdom, alkymi |
+| 49 | Crocell | Hertug | 48 | 22/11 – 26/11 | Matematik, kunst, vand |
+| 50 | Furcas | Ridder | 20 | 27/11 – 01/12 | Filosofi, astrologi, håndlæsning |
+| 51 | Balam | Konge | 40 | 02/12 – 06/12 | Fortid og fremtid, usynlighed, vid |
+| 52 | Alloces | Hertug | 36 | 07/12 – 11/12 | Astronomi, de frie kunster |
+| 53 | Caim | President | 30 | 12/12 – 16/12 | Dyrenes sprog, fortid og fremtid |
+| 54 | Murmur | Hertug / Greve | 30 | 17/12 – 21/12 | Musik, filosofi, de dødes sjæle |
+| 55 | Orobas | Prins | 20 | 22/12 – 26/12 | Fortid og fremtid, yndest, loyalitet |
+| 56 | Gremory | Hertug | 26 | 27/12 – 31/12 | Skatte, kærlighed, fortid og fremtid |
+| 57 | Ose | President | 3 | 01/01 – 05/01 | De frie kunster, forvandling, vanvid |
+| 58 | Amy | President | 36 | 06/01 – 10/01 | Astrologi, de frie kunster, skatte |
+| 59 | Orias | Markis | 30 | 11/01 – 15/01 | Astrologi, forvandling, hædersbevisninger |
+| 60 | Vapula | Hertug | 36 | 16/01 – 19/01 | Mekaniske kunster, filosofi, videnskaber |
+| 61 | Zagan | Konge / President | 33 | 20/01 – 24/01 | Forvandling, vid |
+| 62 | Valac | President | 30 | 25/01 – 29/01 | Skatte, slanger |
+| 63 | Andras | Markis | 30 | 30/01 – 03/02 | Splid, vold |
+| 64 | Flauros | Hertug | 20 | 04/02 – 08/02 | Fortid og fremtid, ild |
+| 65 | Andrealphus | Markis | 30 | 09/02 – 13/02 | Matematik, astronomi, forvandling |
+| 66 | Kimaris | Markis | 20 | 14/02 – 18/02 | Retorik, logik, mistede ting |
+| 67 | Amdusias | Hertug | 29 | 19/02 – 23/02 | Musik, træer |
+| 68 | Belial | Konge | 50 | 24/02 – 28/02 | Yndest, værdigheder, hjælpeånder |
+| 69 | Decarabia | Markis | 30 | 01/03 – 05/03 | Fugle, ædelsten, planter |
+| 70 | Seere | Prins | 26 | 06/03 – 10/03 | Hurtige rejser, tyveri, mistede ting |
+| 71 | Dantalion | Hertug | 36 | 11/03 – 15/03 | Tanker, videnskaber, kærlighed |
+| 72 | Andromalius | Greve | 36 | 16/03 – 20/03 | Mistede ting, skatte, tyve |

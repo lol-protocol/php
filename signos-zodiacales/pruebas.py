@@ -43,6 +43,12 @@ def textos_de(datos):
     for clave, por_idioma in datos["terminos"].items():
         for codigo, texto in por_idioma.items():
             yield f"terminos/{clave}", codigo, texto
+    esp = zodiaco.cargar_espiritus()
+    for grupo in ("terminos", "cualidades"):
+        for clave, por_idioma in esp[grupo].items():
+            if clave != "separador":
+                for codigo, texto in por_idioma.items():
+                    yield f"espiritus/{grupo}/{clave}", codigo, texto
 
 
 def dias_del_anio_bisiesto():
@@ -692,7 +698,9 @@ class PruebasDeTextosTraducidos(unittest.TestCase):
         for codigo in generar.IDIOMAS:
             ficha = self.archivos[generar.SALIDA_MD / f"{codigo}.md"]
             secciones = [l[3:] for l in ficha.splitlines() if l.startswith("## ")]
-            self.assertEqual(secciones, [t["zodiaco_occidental"][codigo], t["horoscopo_chino"][codigo]], codigo)
+            esp = zodiaco.cargar_espiritus()["terminos"]
+            self.assertEqual(secciones, [t["zodiaco_occidental"][codigo], t["horoscopo_chino"][codigo],
+                                         esp["angeles_titulo"][codigo], esp["demonios_titulo"][codigo]], codigo)
 
     def test_cada_signo_occidental_trae_sus_decanatos_en_la_ficha(self):
         ficha = self.archivos[generar.SALIDA_MD / "es.md"]
@@ -739,12 +747,16 @@ class PruebasDeVectores(unittest.TestCase):
         self.assertEqual(len(v["compatibilidad"]), 2 * 12 * 12)
         self.assertEqual({k: len(x) for k, x in v["decanato"].items()}, {"tropical": 366, "sideral": 366})
         self.assertEqual(set(v["revision"]), set(generar.IDIOMAS))
+        self.assertEqual(len(v["espiritu_de_fecha"]), 366)
+        self.assertEqual(set(v["tramos_de_espiritus"]), {"2024", "2025"})
+        self.assertEqual(len(v["cualidades_de"]["es"]), 144)
+        self.assertEqual({len(x) for c, x in v["cualidades_de"].items() if c != "es"}, {len(generar.MUESTRA_DE_CUALIDADES)})
 
     def test_el_archivo_committeado_es_el_que_genera_generar_py(self):
         self.assertEqual(generar.VECTORES.read_text(encoding="utf-8"), generar.vectores_de(self.datos))
 
     def test_cada_caso_de_error_lanza_excepcion_en_python(self):
-        con_fecha = {"signo_occidental", "cuspide", "animal_chino_de_fecha"}
+        con_fecha = {"signo_occidental", "cuspide", "animal_chino_de_fecha", "angel_de_fecha", "demonio_de_fecha"}
         for caso in self.vectores["errores"]:
             args = list(caso["args"])
             if caso["funcion"] in con_fecha:
@@ -763,6 +775,192 @@ class PruebasDeVectores(unittest.TestCase):
         sin_convertir = zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 16))["anio_lunar"]
         convertido = zodiaco.animal_chino_de_fecha(datetime.datetime(2026, 2, 16, 20, tzinfo=datetime.timezone.utc))["anio_lunar"]
         self.assertEqual((sin_convertir, convertido), (2025, 2026))
+
+
+class PruebasDeEspiritus(unittest.TestCase):
+    """Los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.esp = zodiaco.cargar_espiritus()
+        cls.datos = cargar_datos()
+
+    def test_los_datos_pasan_la_validacion(self):
+        self.assertEqual(generar.validar_espiritus(self.esp), [])
+
+    def test_son_72_de_cada_uno_con_sus_extremos_conocidos(self):
+        a, d = self.esp["angeles"], self.esp["demonios"]
+        self.assertEqual((len(a), len(d)), (72, 72))
+        self.assertEqual((a[0]["nombre"], a[-1]["nombre"]), ("Vehuiah", "Mumiah"))
+        self.assertEqual((d[0]["nombre"], d[-1]["nombre"]), ("Bael", "Andromalius"))
+        self.assertEqual(self.esp["demonios"][8]["nombre"], "Paimon")  # el noveno, uno de los nueve reyes
+
+    def test_los_demonios_traen_los_rangos_de_la_tradicion(self):
+        rangos = [r for d in self.esp["demonios"] for r in d["rangos"]]
+        self.assertEqual(rangos.count("rey"), 9)
+        self.assertEqual(rangos.count("caballero"), 1)
+        self.assertEqual([d["nombre"] for d in self.esp["demonios"] if "caballero" in d["rangos"]], ["Furcas"])
+        self.assertEqual({r for r in rangos}, set(zodiaco.RANGOS))
+        self.assertEqual(self.esp["demonios"][0]["legiones"], 66)   # Bael
+        self.assertEqual(self.esp["demonios"][8]["legiones"], 200)  # Paimon
+
+    def test_los_ids_no_se_repiten_ni_dentro_ni_entre_las_dos_listas(self):
+        ids = [e["id"] for e in self.esp["angeles"] + self.esp["demonios"]]
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_cada_signo_tiene_seis_tramos_seguidos_que_cubren_sus_fechas(self):
+        for anio in (2024, 2025):
+            for s in (x for x in self.datos["signos"] if x["tipo"] == "occidental"):
+                tramos = zodiaco.tramos_de_espiritus(s["id"], anio)
+                self.assertEqual(len(tramos), 6, s["id"])
+                inicio = datetime.date(anio, *s["tropical"]["desde"])
+                fin = datetime.date(anio + (1 if s["tropical"]["hasta"] < s["tropical"]["desde"] else 0), *s["tropical"]["hasta"])
+                esperado, dias = inicio, []
+                for (m1, d1), (m2, d2) in tramos:
+                    desde = datetime.date(esperado.year, m1, d1)
+                    self.assertEqual(desde, esperado, f"{s['id']} {anio}: el tramo no empieza donde acabó el anterior")
+                    hasta = datetime.date(esperado.year + (1 if (m2, d2) < (m1, d1) else 0), m2, d2)
+                    dias.append((hasta - desde).days + 1)
+                    esperado = hasta + datetime.timedelta(days=1)
+                self.assertEqual(esperado, fin + datetime.timedelta(days=1), f"{s['id']} {anio}: no cubren hasta el final")
+                self.assertTrue(4 <= min(dias) and max(dias) <= 6, f"{s['id']} {anio}: {dias}")
+
+    def test_los_angeles_de_fechas_conocidas(self):
+        casos = {
+            (2025, 3, 21): (1, "Vehuiah"), (2025, 3, 25): (1, "Vehuiah"), (2025, 3, 26): (2, "Jeliel"),
+            (1990, 4, 3): (3, "Sitael"), (2025, 3, 20): (72, "Mumiah"), (2025, 12, 31): (56, "Poyel"),
+            (2024, 2, 29): (68, "Habuhiah"), (2025, 2, 28): (68, "Habuhiah"),
+        }
+        for (a, m, d), (numero, nombre) in casos.items():
+            x = zodiaco.angel_de_fecha(datetime.date(a, m, d))
+            self.assertEqual((x["angel"]["numero"], x["angel"]["nombre"]), (numero, nombre), (a, m, d))
+
+    def test_el_demonio_de_una_fecha_tiene_el_numero_de_su_angel(self):
+        for dia in dias_del_anio_bisiesto():
+            self.assertEqual(zodiaco.demonio_de_fecha(dia)["demonio"]["numero"], zodiaco.angel_de_fecha(dia)["angel"]["numero"], dia)
+        x = zodiaco.demonio_de_fecha(datetime.date(2025, 3, 21))
+        self.assertEqual((x["demonio"]["nombre"], x["signo"]["id"], x["tramo"]), ("Bael", "aries", [[3, 21], [3, 25]]))
+
+    def test_de_un_equinoccio_al_siguiente_salen_los_72_en_orden(self):
+        dia, vistos = datetime.date(2025, 3, 21), []
+        while dia <= datetime.date(2026, 3, 20):
+            n = zodiaco.angel_de_fecha(dia)["angel"]["numero"]
+            if not vistos or vistos[-1] != n:
+                vistos.append(n)
+            dia += datetime.timedelta(days=1)
+        self.assertEqual(vistos, list(range(1, 73)))
+
+    def test_el_coro_va_de_ocho_en_ocho(self):
+        self.assertEqual(zodiaco.angel_de_fecha(datetime.date(2025, 3, 21))["coro"], "serafines")
+        self.assertEqual(zodiaco.angel_de_fecha(datetime.date(2025, 3, 20))["coro"], "angeles")
+        coros = [zodiaco.CHOROS[(n - 1) // 8] for n in range(1, 73)]
+        self.assertEqual([coros.count(c) for c in zodiaco.CHOROS], [8] * 9)
+
+    def test_las_consultas_por_fecha_rechazan_lo_que_no_es_una_fecha(self):
+        for funcion in (zodiaco.angel_de_fecha, zodiaco.demonio_de_fecha):
+            with self.assertRaises(TypeError):
+                funcion("2025-03-21")
+
+    def test_los_tramos_rechazan_un_signo_chino_y_un_anio_que_no_es_int(self):
+        with self.assertRaises(ValueError):
+            zodiaco.tramos_de_espiritus("rata")
+        with self.assertRaises(TypeError):
+            zodiaco.tramos_de_espiritus("aries", "2025")
+
+    def test_las_cualidades_se_dicen_en_cada_idioma(self):
+        self.assertEqual(zodiaco.cualidades_de("angel", 3, "es"), "Construcción, protección, nobleza")
+        self.assertEqual(zodiaco.cualidades_de("demonio", 1, "en"), "Invisibility, wisdom")
+        self.assertEqual(zodiaco.cualidades_de("angel", 1, "de"), "Wille, Anfänge, Energie")
+        self.assertEqual(zodiaco.cualidades_de("angel", 1, "ar"), "إرادة، بدايات، طاقة")  # coma árabe
+        self.assertEqual(zodiaco.cualidades_de("angel", 1, "ja"), "意志、始まり、活力")      # coma japonesa
+
+    def test_la_primera_letra_en_turco_es_la_i_con_punto(self):
+        # «irade» (voluntad) empieza por i: en turco la mayúscula es İ, no I.
+        self.assertTrue(zodiaco.cualidades_de("angel", 1, "tr").startswith("İrade"))
+
+    def test_todas_las_cualidades_salen_en_los_30_idiomas(self):
+        for tipo in zodiaco.TIPOS_DE_ESPIRITU:
+            for n in range(1, 73):
+                for codigo in generar.IDIOMAS:
+                    self.assertTrue(zodiaco.cualidades_de(tipo, n, codigo).strip(), (tipo, n, codigo))
+
+    def test_cualidades_rechaza_entradas_no_validas(self):
+        for args, error in ((("arcangel", 1, "es"), ValueError), (("angel", 0, "es"), ValueError),
+                            (("angel", 73, "es"), ValueError), (("angel", 1, "xx"), ValueError),
+                            (("angel", "1", "es"), TypeError), (("angel", True, "es"), TypeError)):
+            with self.assertRaises(error):
+                zodiaco.cualidades_de(*args)
+
+    def test_cada_ficha_trae_las_dos_tablas_con_72_filas(self):
+        for codigo in generar.IDIOMAS:
+            ficha = generar.ficha_de(self.datos, codigo)
+            filas = [l for l in ficha.splitlines() if re.match(r"\| \d+ \|", l)]
+            self.assertEqual(len(filas), 144, codigo)
+            self.assertIn(self.esp["terminos"]["angeles_nota"][codigo], ficha, codigo)
+            self.assertIn(self.esp["terminos"]["demonios_nota"][codigo], ficha, codigo)
+
+    def test_la_ficha_en_espanol_trae_una_fila_conocida_de_cada_tabla(self):
+        ficha = generar.ficha_de(self.datos, "es")
+        self.assertIn("| 1 | Vehuiah | Serafines | 21/03 – 25/03 | Voluntad, comienzos, energía |", ficha)
+        self.assertIn("| 17 | Botis | Presidente / Conde | 60 | 11/06 – 15/06 |", ficha)
+        self.assertIn("| 3 | Vassago | Príncipe | — | 31/03 – 04/04 |", ficha)  # sin legiones en la fuente
+
+    def test_las_tablas_van_dentro_del_bloque_de_derecha_a_izquierda(self):
+        ficha = generar.ficha_de(self.datos, "ar")
+        self.assertLess(ficha.index('<div dir="rtl"'), ficha.index(self.esp["terminos"]["angeles_titulo"]["ar"]))
+        self.assertLess(ficha.index(self.esp["terminos"]["demonios_titulo"]["ar"]), ficha.index("</div>"))
+
+
+class PruebasDeValidacionDeEspiritus(unittest.TestCase):
+    def setUp(self):
+        self.esp = copy.deepcopy(zodiaco.cargar_espiritus())
+
+    def errores_con(self, texto):
+        return [e for e in generar.validar_espiritus(self.esp) if texto in e]
+
+    def test_detecta_un_angel_que_falta(self):
+        del self.esp["angeles"][10]
+        self.assertTrue(self.errores_con("espiritus/angeles: tienen que ser 72"))
+
+    def test_detecta_numeros_desordenados(self):
+        self.esp["demonios"][0]["numero"], self.esp["demonios"][1]["numero"] = 2, 1
+        self.assertTrue(self.errores_con("espiritus/demonios: tienen que ser 72"))
+
+    def test_detecta_una_cualidad_que_no_esta_en_el_glosario(self):
+        self.esp["angeles"][0]["cualidades"].append("inventada")
+        self.assertTrue(self.errores_con("'inventada' no está en el glosario"))
+
+    def test_detecta_una_cualidad_que_nadie_usa(self):
+        self.esp["cualidades"]["sobrante"] = dict(self.esp["cualidades"]["amor"])
+        self.assertTrue(self.errores_con("espiritus/cualidades/sobrante: nadie la usa"))
+
+    def test_detecta_una_cualidad_sin_un_idioma(self):
+        del self.esp["cualidades"]["amor"]["sw"]
+        self.assertTrue(self.errores_con("espiritus/cualidades/amor: no tiene exactamente"))
+
+    def test_detecta_un_texto_vacio(self):
+        self.esp["cualidades"]["amor"]["fi"] = "  "
+        self.assertTrue(self.errores_con("espiritus/cualidades/amor/fi"))
+
+    def test_detecta_un_termino_que_falta(self):
+        del self.esp["terminos"]["rango_rey"]
+        self.assertTrue(self.errores_con("espiritus/terminos"))
+
+    def test_detecta_un_rango_desconocido_y_legiones_invalidas(self):
+        self.esp["demonios"][0]["rangos"] = ["emperador"]
+        self.assertTrue(self.errores_con("espiritus/demonios/1: rangos"))
+        self.esp["demonios"][0]["rangos"] = ["rey"]
+        self.esp["demonios"][0]["legiones"] = 0
+        self.assertTrue(self.errores_con("espiritus/demonios/1: legiones"))
+        self.esp["demonios"][0]["legiones"] = None
+        self.assertEqual(self.errores_con("legiones"), [])
+
+    def test_detecta_ids_repetidos_y_cualidades_repetidas(self):
+        self.esp["angeles"][1]["id"] = self.esp["angeles"][0]["id"]
+        self.assertTrue(self.errores_con("ids repetidos"))
+        self.esp["angeles"][1]["id"] = "jeliel"
+        self.esp["angeles"][0]["cualidades"] = ["amor", "amor"]
+        self.assertTrue(self.errores_con("espiritus/angeles/1: de 1 a 5 cualidades"))
 
 
 if __name__ == "__main__":

@@ -247,3 +247,161 @@ Teken van trouw en rechtvaardigheid: de traditie verbindt het met eerlijkheid, b
 Royaal, oprecht en hartelijk.
 
 Teken van vrijgevigheid en levensvreugde: de traditie verbindt het met oprechtheid, vriendelijkheid en een goed hart, maar ook met naïviteit.
+
+## De 72 engelen
+
+Uit de Shem ha-Mephorash, de „naam van 72 letters” die de Kabbala afleidt uit Exodus 14:19-21. Elke engel heerst over een periode van ongeveer 5 dagen van de dierenriem. Alleen culturele referentie.
+
+| # | Naam | Koor | Periode | Eigenschappen |
+| --- | --- | --- | --- | --- |
+| 1 | Vehuiah | Serafijnen | 21/03 – 25/03 | Wil, beginnen, energie |
+| 2 | Jeliel | Serafijnen | 26/03 – 30/03 | Liefde, trouw, vrede |
+| 3 | Sitael | Serafijnen | 31/03 – 04/04 | Bouwen, bescherming, adel |
+| 4 | Elemiah | Serafijnen | 05/04 – 09/04 | Reizen, geheimen, bescherming |
+| 5 | Mahasiah | Serafijnen | 10/04 – 14/04 | Harmonie, vrede, leren |
+| 6 | Lelahel | Serafijnen | 15/04 – 19/04 | Liefde, genezing, talent |
+| 7 | Achaiah | Serafijnen | 20/04 – 25/04 | Geduld, geheimen, natuur |
+| 8 | Cahethel | Serafijnen | 26/04 – 30/04 | Zegen, landbouw, bescherming |
+| 9 | Haziel | Cherubijnen | 01/05 – 05/05 | Barmhartigheid, vergeving, vriendschap |
+| 10 | Aladiah | Cherubijnen | 06/05 – 10/05 | Genade, vergeving, genezing |
+| 11 | Laoviah | Cherubijnen | 11/05 – 15/05 | Roem, overwinning, intelligentie |
+| 12 | Hahaiah | Cherubijnen | 16/05 – 20/05 | Toevlucht, bescherming, dromen |
+| 13 | Yesalel | Cherubijnen | 21/05 – 26/05 | Verzoening, trouw, vriendschap |
+| 14 | Mebahel | Cherubijnen | 27/05 – 31/05 | Gerechtigheid, waarheid, bevrijding |
+| 15 | Hariel | Cherubijnen | 01/06 – 05/06 | Zuiverheid, geloof, bevrijding |
+| 16 | Hekamiah | Cherubijnen | 06/06 – 10/06 | Loyaliteit, moed, bescherming |
+| 17 | Lauviah | Tronen | 11/06 – 15/06 | Overwinning, dromen, openbaring |
+| 18 | Caliel | Tronen | 16/06 – 20/06 | Gerechtigheid, waarheid, onschuld |
+| 19 | Leuviah | Tronen | 21/06 – 26/06 | Geheugen, intelligentie, geduld |
+| 20 | Pahaliah | Tronen | 27/06 – 02/07 | Roeping, kuisheid, deugd |
+| 21 | Nelchael | Tronen | 03/07 – 07/07 | Wetenschap, studie, bescherming |
+| 22 | Yeiayel | Tronen | 08/07 – 12/07 | Roem, handel, reizen |
+| 23 | Melahel | Tronen | 13/07 – 17/07 | Genezing, planten, bescherming |
+| 24 | Haheuiah | Tronen | 18/07 – 22/07 | Bescherming, gerechtigheid, ballingen |
+| 25 | Nith-Haiah | Heerschappijen | 23/07 – 28/07 | Wijsheid, openbaring, magie |
+| 26 | Haaiah | Heerschappijen | 29/07 – 02/08 | Diplomatie, waarheid, gerechtigheid |
+| 27 | Yerathel | Heerschappijen | 03/08 – 07/08 | Vrijheid, licht, waarheid |
+| 28 | Seheiah | Heerschappijen | 08/08 – 12/08 | Lang leven, gezondheid, bescherming |
+| 29 | Reiyel | Heerschappijen | 13/08 – 17/08 | Geloof, vrijheid, wetenschap |
+| 30 | Omael | Heerschappijen | 18/08 – 22/08 | Vruchtbaarheid, geduld, overvloed |
+| 31 | Lecabel | Heerschappijen | 23/08 – 28/08 | Talent, landbouw, intelligentie |
+| 32 | Vasariah | Heerschappijen | 29/08 – 02/09 | Clementie, gerechtigheid, geheugen |
+| 33 | Yehuiah | Krachten | 03/09 – 07/09 | Trouw, loyaliteit, onderscheidingsvermogen |
+| 34 | Lehahiah | Krachten | 08/09 – 12/09 | Gehoorzaamheid, fortuin, vrede |
+| 35 | Chavakiah | Krachten | 13/09 – 17/09 | Verzoening, erfenissen, harmonie |
+| 36 | Menadel | Krachten | 18/09 – 22/09 | Werk, trouw, bevrijding |
+| 37 | Aniel | Krachten | 23/09 – 27/09 | Wetenschap, overwinning, wijsheid |
+| 38 | Haamiah | Krachten | 28/09 – 02/10 | Waarheid, bescherming, geloof |
+| 39 | Rehael | Krachten | 03/10 – 07/10 | Gezondheid, lang leven, gehoorzaamheid |
+| 40 | Ieiazel | Krachten | 08/10 – 12/10 | Troost, bevrijding, kunsten |
+| 41 | Hahahel | Machten | 13/10 – 17/10 | Geloof, roeping, bescherming |
+| 42 | Mikael | Machten | 18/10 – 22/10 | Orde, reizen, bescherming |
+| 43 | Veuliah | Machten | 23/10 – 27/10 | Welvaart, vrede, overvloed |
+| 44 | Yelahiah | Machten | 28/10 – 01/11 | Gerechtigheid, moed, bescherming |
+| 45 | Sealiah | Machten | 02/11 – 06/11 | Moed, energie, wil |
+| 46 | Ariel | Machten | 07/11 – 11/11 | Waarneming, openbaring, intuïtie |
+| 47 | Asaliah | Machten | 12/11 – 16/11 | Contemplatie, waarheid, gerechtigheid |
+| 48 | Mihael | Machten | 17/11 – 21/11 | Vruchtbaarheid, liefde, harmonie |
+| 49 | Vehuel | Overheden | 22/11 – 26/11 | Grootheid, bewondering, verheffing |
+| 50 | Daniel | Overheden | 27/11 – 01/12 | Welsprekendheid, gerechtigheid, raad |
+| 51 | Hahasiah | Overheden | 02/12 – 06/12 | Wijsheid, genezing, geheimen |
+| 52 | Imamiah | Overheden | 07/12 – 11/12 | Bevrijding, reizen, bescherming |
+| 53 | Nanael | Overheden | 12/12 – 16/12 | Studie, diplomatie, communicatie |
+| 54 | Nithael | Overheden | 17/12 – 21/12 | Lang leven, stabiliteit, genade |
+| 55 | Mebahiah | Overheden | 22/12 – 26/12 | Troost, helderheid, deugd |
+| 56 | Poyel | Overheden | 27/12 – 31/12 | Fortuin, steun, succes |
+| 57 | Nemamiah | Aartsengelen | 01/01 – 05/01 | Welvaart, succes, bevrijding |
+| 58 | Yeialel | Aartsengelen | 06/01 – 10/01 | Moed, genezing, sereniteit |
+| 59 | Harahel | Aartsengelen | 11/01 – 15/01 | Rijkdom, literatuur, studie |
+| 60 | Mitzrael | Aartsengelen | 16/01 – 19/01 | Sereniteit, trouw, genezing |
+| 61 | Umabel | Aartsengelen | 20/01 – 24/01 | Vriendschap, verwantschap, sterrenkunde |
+| 62 | Iah-Hel | Aartsengelen | 25/01 – 29/01 | Wijsheid, filosofie, sereniteit |
+| 63 | Anauel | Aartsengelen | 30/01 – 03/02 | Eenheid, handel, welvaart |
+| 64 | Mehiel | Aartsengelen | 04/02 – 08/02 | Inspiratie, schrijven, bescherming |
+| 65 | Damabiah | Engelen | 09/02 – 13/02 | Wijsheid, bescherming, zee |
+| 66 | Manakel | Engelen | 14/02 – 18/02 | Medeleven, dromen, welzijn |
+| 67 | Eyael | Engelen | 19/02 – 23/02 | Gedaanteverandering, verzoening, lang leven |
+| 68 | Habuhiah | Engelen | 24/02 – 28/02 | Genezing, vruchtbaarheid, landbouw |
+| 69 | Rochel | Engelen | 01/03 – 05/03 | Gerechtigheid, teruggave, waarheid |
+| 70 | Yabamiah | Engelen | 06/03 – 10/03 | Regeneratie, alchemie, schepping |
+| 71 | Haiaiel | Engelen | 11/03 – 15/03 | Bescherming, overwinning, moed |
+| 72 | Mumiah | Engelen | 16/03 – 20/03 | Voltooiing, wedergeboorte, welzijn |
+
+## De 72 demonen
+
+Uit de Goetia (17e eeuw), een grimoire dat geen deel van de Bijbel uitmaakt. Elke geest deelt de periode van de engel met hetzelfde nummer. Alleen culturele referentie.
+
+| # | Naam | Rang | Legioenen | Periode | Eigenschappen |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bael | Koning | 66 | 21/03 – 25/03 | Onzichtbaarheid, wijsheid |
+| 2 | Agares | Hertog | 31 | 26/03 – 30/03 | Talen, voortvluchtigen, aardbevingen |
+| 3 | Vassago | Prins | — | 31/03 – 04/04 | Verleden en toekomst, verloren voorwerpen |
+| 4 | Samigina | Markies | 30 | 05/04 – 09/04 | Vrije kunsten, zielen van overledenen |
+| 5 | Marbas | President | 36 | 10/04 – 14/04 | Geheimen, ziekten, genezing, werktuigkunde |
+| 6 | Valefor | Hertog | 10 | 15/04 – 19/04 | Huisgeesten, diefstal |
+| 7 | Amon | Markies | 40 | 20/04 – 25/04 | Verleden en toekomst, verzoening, vijandschap |
+| 8 | Barbatos | Hertog | 30 | 26/04 – 30/04 | Taal van de dieren, schatten, verzoening |
+| 9 | Paimon | Koning | 200 | 01/05 – 05/05 | Wetenschappen, kunsten, geheimen, waardigheden |
+| 10 | Buer | President | 50 | 06/05 – 10/05 | Filosofie, planten, genezing, huisgeesten |
+| 11 | Gusion | Hertog | 40 | 11/05 – 15/05 | Verleden en toekomst, verzoening, eerbewijzen |
+| 12 | Sitri | Prins | 60 | 16/05 – 20/05 | Liefde, verlangen, geheimen |
+| 13 | Beleth | Koning | 85 | 21/05 – 26/05 | Liefde, verlangen |
+| 14 | Leraje | Markies | 30 | 27/05 – 31/05 | Conflicten, wonden |
+| 15 | Eligos | Hertog | 60 | 01/06 – 05/06 | Oorlog, verleden en toekomst, gunst |
+| 16 | Zepar | Hertog | 26 | 06/06 – 10/06 | Liefde, onvruchtbaarheid |
+| 17 | Botis | President / Graaf | 60 | 11/06 – 15/06 | Verleden en toekomst, verzoening |
+| 18 | Bathin | Hertog | 30 | 16/06 – 20/06 | Planten, edelstenen, snelle verplaatsingen |
+| 19 | Sallos | Hertog | 30 | 21/06 – 26/06 | Liefde |
+| 20 | Purson | Koning | 22 | 27/06 – 02/07 | Schatten, verleden en toekomst, huisgeesten |
+| 21 | Marax | President / Graaf | 30 | 03/07 – 07/07 | Sterrenkunde, vrije kunsten, planten |
+| 22 | Ipos | Graaf / Prins | 36 | 08/07 – 12/07 | Verleden en toekomst, moed, vernuft |
+| 23 | Aim | Hertog | 26 | 13/07 – 17/07 | Branden, vernuft, geheimen |
+| 24 | Naberius | Markies | 19 | 18/07 – 22/07 | Retoriek, kunsten, eerbewijzen |
+| 25 | Glasya-Labolas | President / Graaf | 36 | 23/07 – 28/07 | Wetenschappen, geweld, verleden en toekomst, onzichtbaarheid |
+| 26 | Bune | Hertog | 30 | 29/07 – 02/08 | Rijkdom, welsprekendheid, doden |
+| 27 | Ronove | Markies / Graaf | 19 | 03/08 – 07/08 | Retoriek, talen, gunst |
+| 28 | Berith | Hertog | 26 | 08/08 – 12/08 | Alchemie, eerbewijzen, verleden en toekomst |
+| 29 | Astaroth | Hertog | 40 | 13/08 – 17/08 | Verleden en toekomst, vrije kunsten, geheimen |
+| 30 | Forneus | Markies | 29 | 18/08 – 22/08 | Retoriek, talen, reputatie |
+| 31 | Foras | President | 29 | 23/08 – 28/08 | Planten, logica, ethiek |
+| 32 | Asmoday | Koning | 72 | 29/08 – 02/09 | Wiskunde, sterrenkunde, onzichtbaarheid, schatten |
+| 33 | Gaap | President / Prins | 66 | 03/09 – 07/09 | Filosofie, vrije kunsten, liefde, vijandschap, snelle verplaatsingen |
+| 34 | Furfur | Graaf | 26 | 08/09 – 12/09 | Liefde, stormen, geheimen |
+| 35 | Marchosias | Markies | 30 | 13/09 – 17/09 | Gevecht, waarheid |
+| 36 | Stolas | Prins | 26 | 18/09 – 22/09 | Sterrenkunde, planten, edelstenen |
+| 37 | Phenex | Markies | 20 | 23/09 – 27/09 | Poëzie, wetenschappen |
+| 38 | Halphas | Graaf | 26 | 28/09 – 02/10 | Vestingen, oorlog, wapens |
+| 39 | Malphas | President | 40 | 03/10 – 07/10 | Bouwen, bedrog |
+| 40 | Raum | Graaf | 30 | 08/10 – 12/10 | Diefstal, vernietiging, verleden en toekomst |
+| 41 | Focalor | Hertog | 30 | 13/10 – 17/10 | Zee, winden, schipbreuken |
+| 42 | Vepar | Hertog | 29 | 18/10 – 22/10 | Zee, stormen, wonden |
+| 43 | Sabnock | Markies | 50 | 23/10 – 27/10 | Vestingen, wonden, huisgeesten |
+| 44 | Shax | Markies | 30 | 28/10 – 01/11 | Blindheid, doofheid, diefstal |
+| 45 | Vine | Koning / Graaf | 36 | 02/11 – 06/11 | Hekserij, stormen, vestingen |
+| 46 | Bifrons | Graaf | 6 | 07/11 – 11/11 | Astrologie, wiskunde, planten, doden |
+| 47 | Vual | Hertog | 37 | 12/11 – 16/11 | Liefde, vriendschap, verleden en toekomst |
+| 48 | Haagenti | President | 33 | 17/11 – 21/11 | Gedaanteverandering, wijsheid, alchemie |
+| 49 | Crocell | Hertog | 48 | 22/11 – 26/11 | Wiskunde, kunsten, water |
+| 50 | Furcas | Ridder | 20 | 27/11 – 01/12 | Filosofie, astrologie, handlezen |
+| 51 | Balam | Koning | 40 | 02/12 – 06/12 | Verleden en toekomst, onzichtbaarheid, vernuft |
+| 52 | Alloces | Hertog | 36 | 07/12 – 11/12 | Sterrenkunde, vrije kunsten |
+| 53 | Caim | President | 30 | 12/12 – 16/12 | Taal van de dieren, verleden en toekomst |
+| 54 | Murmur | Hertog / Graaf | 30 | 17/12 – 21/12 | Muziek, filosofie, zielen van overledenen |
+| 55 | Orobas | Prins | 20 | 22/12 – 26/12 | Verleden en toekomst, gunst, loyaliteit |
+| 56 | Gremory | Hertog | 26 | 27/12 – 31/12 | Schatten, liefde, verleden en toekomst |
+| 57 | Ose | President | 3 | 01/01 – 05/01 | Vrije kunsten, gedaanteverandering, waanzin |
+| 58 | Amy | President | 36 | 06/01 – 10/01 | Astrologie, vrije kunsten, schatten |
+| 59 | Orias | Markies | 30 | 11/01 – 15/01 | Astrologie, gedaanteverandering, eerbewijzen |
+| 60 | Vapula | Hertog | 36 | 16/01 – 19/01 | Werktuigkunde, filosofie, wetenschappen |
+| 61 | Zagan | Koning / President | 33 | 20/01 – 24/01 | Gedaanteverandering, vernuft |
+| 62 | Valac | President | 30 | 25/01 – 29/01 | Schatten, slangen |
+| 63 | Andras | Markies | 30 | 30/01 – 03/02 | Tweedracht, geweld |
+| 64 | Flauros | Hertog | 20 | 04/02 – 08/02 | Verleden en toekomst, vuur |
+| 65 | Andrealphus | Markies | 30 | 09/02 – 13/02 | Wiskunde, sterrenkunde, gedaanteverandering |
+| 66 | Kimaris | Markies | 20 | 14/02 – 18/02 | Retoriek, logica, verloren voorwerpen |
+| 67 | Amdusias | Hertog | 29 | 19/02 – 23/02 | Muziek, bomen |
+| 68 | Belial | Koning | 50 | 24/02 – 28/02 | Gunst, waardigheden, huisgeesten |
+| 69 | Decarabia | Markies | 30 | 01/03 – 05/03 | Vogels, edelstenen, planten |
+| 70 | Seere | Prins | 26 | 06/03 – 10/03 | Snelle verplaatsingen, diefstal, verloren voorwerpen |
+| 71 | Dantalion | Hertog | 36 | 11/03 – 15/03 | Gedachten, wetenschappen, liefde |
+| 72 | Andromalius | Graaf | 36 | 16/03 – 20/03 | Verloren voorwerpen, schatten, dieven |

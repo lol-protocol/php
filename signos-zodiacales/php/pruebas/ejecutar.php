@@ -118,8 +118,39 @@ foreach ($vectores['revision'] as $idioma => $estado) {
     igual($estado, Zodiaco::revision($idioma), "revision $idioma");
 }
 
+// Los 72 ángeles y los 72 demonios: el de cada día del año bisiesto, con su coro y su tramo.
+igual(366, count($vectores['espiritu_de_fecha']), 'espiritu_de_fecha: días');
+foreach ($vectores['espiritu_de_fecha'] as [$mesDia, $numero, $idAngel, $coro, $idDemonio, $tramo]) {
+    $a = Zodiaco::angelDeFecha(dia($mesDia));
+    $d = Zodiaco::demonioDeFecha(dia($mesDia));
+    igual([$numero, $idAngel, $coro, $tramo], [$a['angel']['numero'], $a['angel']['id'], $a['coro'], $a['tramo']], "angel_de_fecha $mesDia");
+    igual([$numero, $idDemonio, $tramo], [$d['demonio']['numero'], $d['demonio']['id'], $d['tramo']], "demonio_de_fecha $mesDia");
+}
+
+foreach ($vectores['tramos_de_espiritus'] as $anio => $porSigno) {
+    foreach ($porSigno as $id => $tramos) {
+        igual($tramos, Zodiaco::tramosDeEspiritus($id, (int) $anio), "tramos_de_espiritus $anio $id");
+    }
+}
+
+// Las cualidades: las muestras de cada idioma, las 144 en español y la huella de las 144 de cada idioma.
+foreach ($vectores['cualidades_de'] as $idioma => $filas) {
+    foreach ($filas as [$tipo, $numero, $texto]) {
+        igual($texto, Zodiaco::cualidadesDe($tipo, $numero, $idioma), "cualidades_de $tipo $numero $idioma");
+    }
+}
+foreach ($vectores['cualidades_de_sha256'] as $idioma => $huella) {
+    $frases = [];
+    foreach (Zodiaco::TIPOS_DE_ESPIRITU as $tipo) {
+        for ($n = 1; $n <= 72; $n++) {
+            $frases[] = Zodiaco::cualidadesDe($tipo, $n, $idioma);
+        }
+    }
+    igual($huella, hash('sha256', implode("\n", $frases)), "cualidades_de (las 144) $idioma");
+}
+
 // Los casos que tienen que fallar, los mismos que prueba Python.
-$conFecha = ['signo_occidental', 'cuspide', 'animal_chino_de_fecha'];
+$conFecha = ['signo_occidental', 'cuspide', 'animal_chino_de_fecha', 'angel_de_fecha', 'demonio_de_fecha'];
 foreach ($vectores['errores'] as $caso) {
     $args = $caso['args'];
     if (in_array($caso['funcion'], $conFecha, true)) {
@@ -142,6 +173,12 @@ igual('Caballo de Fuego', Zodiaco::nombreDelAnio(2026, 'es'), 'ejemplo: nombre e
 igual('火马', Zodiaco::nombreDelAnio(2026, 'zh'), 'ejemplo: nombre en chino');
 igual('alta', Zodiaco::compatibilidad('rata', 'dragon')['afinidad'], 'ejemplo: rata y dragón');
 igual('baja', Zodiaco::compatibilidad('rata', 'caballo')['afinidad'], 'ejemplo: rata y caballo');
+// Ejemplos de los ángeles y demonios, como los del README.
+$tres = new DateTimeImmutable('1990-04-03', $u);
+igual(['Sitael', 'serafines', [[3, 31], [4, 4]]], [Zodiaco::angelDeFecha($tres)['angel']['nombre'], Zodiaco::angelDeFecha($tres)['coro'], Zodiaco::angelDeFecha($tres)['tramo']], 'ejemplo: ángel del 3 de abril');
+igual('Vassago', Zodiaco::demonioDeFecha($tres)['demonio']['nombre'], 'ejemplo: demonio del 3 de abril');
+igual('Construcción, protección, nobleza', Zodiaco::cualidadesDe('angel', 3, 'es'), 'ejemplo: cualidades de Sitael');
+igual('İrade, başlangıçlar, enerji', Zodiaco::cualidadesDe('angel', 1, 'tr'), 'ejemplo: la i con punto en turco');
 // Un datetime con huso en animalChinoDeFecha cuenta por su día local, no por el de China.
 igual('serpiente', Zodiaco::animalChinoDeFecha(new DateTimeImmutable('2026-02-16T20:00:00+00:00'))['signo']['id'], 'ejemplo: el día local manda en animalChinoDeFecha');
 igual('caballo', Zodiaco::animalChinoDeInstante(new DateTimeImmutable('2026-02-16T20:00:00+00:00'))['signo']['id'], 'ejemplo: el instante pasa a la hora de China');

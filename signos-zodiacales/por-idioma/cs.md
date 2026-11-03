@@ -247,3 +247,161 @@ Znamení věrnosti a spravedlnosti: tradice mu připisuje poctivost, ochranitels
 Štědrost, upřímnost a vřelost.
 
 Znamení štědrosti a radosti ze života: tradice mu připisuje upřímnost, vlídnost a dobré srdce, ale také naivitu.
+
+## 72 andělů
+
+Ze Šem ha-Meforaš, „72písmenného jména“, které kabala odvozuje z Exodu 14,19–21. Každý anděl vládne úseku zhruba pěti dnů zvěrokruhu. Pouze kulturní odkaz.
+
+| # | Jméno | Kůr | Data | Vlastnosti |
+| --- | --- | --- | --- | --- |
+| 1 | Vehuiah | Serafové | 21/03 – 25/03 | Vůle, začátky, energie |
+| 2 | Jeliel | Serafové | 26/03 – 30/03 | Láska, věrnost, mír |
+| 3 | Sitael | Serafové | 31/03 – 04/04 | Stavění, ochrana, ušlechtilost |
+| 4 | Elemiah | Serafové | 05/04 – 09/04 | Cestování, tajemství, ochrana |
+| 5 | Mahasiah | Serafové | 10/04 – 14/04 | Soulad, mír, učení |
+| 6 | Lelahel | Serafové | 15/04 – 19/04 | Láska, uzdravení, nadání |
+| 7 | Achaiah | Serafové | 20/04 – 25/04 | Trpělivost, tajemství, příroda |
+| 8 | Cahethel | Serafové | 26/04 – 30/04 | Požehnání, zemědělství, ochrana |
+| 9 | Haziel | Cherubové | 01/05 – 05/05 | Milosrdenství, odpuštění, přátelství |
+| 10 | Aladiah | Cherubové | 06/05 – 10/05 | Milost, odpuštění, uzdravení |
+| 11 | Laoviah | Cherubové | 11/05 – 15/05 | Sláva, vítězství, inteligence |
+| 12 | Hahaiah | Cherubové | 16/05 – 20/05 | Útočiště, ochrana, sny |
+| 13 | Yesalel | Cherubové | 21/05 – 26/05 | Usmíření, věrnost, přátelství |
+| 14 | Mebahel | Cherubové | 27/05 – 31/05 | Spravedlnost, pravda, osvobození |
+| 15 | Hariel | Cherubové | 01/06 – 05/06 | Čistota, víra, osvobození |
+| 16 | Hekamiah | Cherubové | 06/06 – 10/06 | Loajalita, odvaha, ochrana |
+| 17 | Lauviah | Trůny | 11/06 – 15/06 | Vítězství, sny, zjevení |
+| 18 | Caliel | Trůny | 16/06 – 20/06 | Spravedlnost, pravda, nevinnost |
+| 19 | Leuviah | Trůny | 21/06 – 26/06 | Paměť, inteligence, trpělivost |
+| 20 | Pahaliah | Trůny | 27/06 – 02/07 | Povolání, cudnost, ctnost |
+| 21 | Nelchael | Trůny | 03/07 – 07/07 | Věda, studium, ochrana |
+| 22 | Yeiayel | Trůny | 08/07 – 12/07 | Sláva, obchod, cestování |
+| 23 | Melahel | Trůny | 13/07 – 17/07 | Uzdravení, rostliny, ochrana |
+| 24 | Haheuiah | Trůny | 18/07 – 22/07 | Ochrana, spravedlnost, vyhnanci |
+| 25 | Nith-Haiah | Panstva | 23/07 – 28/07 | Moudrost, zjevení, magie |
+| 26 | Haaiah | Panstva | 29/07 – 02/08 | Diplomacie, pravda, spravedlnost |
+| 27 | Yerathel | Panstva | 03/08 – 07/08 | Svoboda, světlo, pravda |
+| 28 | Seheiah | Panstva | 08/08 – 12/08 | Dlouhověkost, zdraví, ochrana |
+| 29 | Reiyel | Panstva | 13/08 – 17/08 | Víra, svoboda, věda |
+| 30 | Omael | Panstva | 18/08 – 22/08 | Plodnost, trpělivost, hojnost |
+| 31 | Lecabel | Panstva | 23/08 – 28/08 | Nadání, zemědělství, inteligence |
+| 32 | Vasariah | Panstva | 29/08 – 02/09 | Shovívavost, spravedlnost, paměť |
+| 33 | Yehuiah | Mocnosti | 03/09 – 07/09 | Věrnost, loajalita, rozlišování |
+| 34 | Lehahiah | Mocnosti | 08/09 – 12/09 | Poslušnost, štěstí, mír |
+| 35 | Chavakiah | Mocnosti | 13/09 – 17/09 | Usmíření, dědictví, soulad |
+| 36 | Menadel | Mocnosti | 18/09 – 22/09 | Práce, věrnost, osvobození |
+| 37 | Aniel | Mocnosti | 23/09 – 27/09 | Věda, vítězství, moudrost |
+| 38 | Haamiah | Mocnosti | 28/09 – 02/10 | Pravda, ochrana, víra |
+| 39 | Rehael | Mocnosti | 03/10 – 07/10 | Zdraví, dlouhověkost, poslušnost |
+| 40 | Ieiazel | Mocnosti | 08/10 – 12/10 | Útěcha, osvobození, umění |
+| 41 | Hahahel | Moci | 13/10 – 17/10 | Víra, povolání, ochrana |
+| 42 | Mikael | Moci | 18/10 – 22/10 | Pořádek, cestování, ochrana |
+| 43 | Veuliah | Moci | 23/10 – 27/10 | Prosperita, mír, hojnost |
+| 44 | Yelahiah | Moci | 28/10 – 01/11 | Spravedlnost, odvaha, ochrana |
+| 45 | Sealiah | Moci | 02/11 – 06/11 | Elán, energie, vůle |
+| 46 | Ariel | Moci | 07/11 – 11/11 | Vnímání, zjevení, intuice |
+| 47 | Asaliah | Moci | 12/11 – 16/11 | Rozjímání, pravda, spravedlnost |
+| 48 | Mihael | Moci | 17/11 – 21/11 | Plodnost, láska, soulad |
+| 49 | Vehuel | Knížectví | 22/11 – 26/11 | Velikost, obdiv, povznesení |
+| 50 | Daniel | Knížectví | 27/11 – 01/12 | Výmluvnost, spravedlnost, rada |
+| 51 | Hahasiah | Knížectví | 02/12 – 06/12 | Moudrost, uzdravení, tajemství |
+| 52 | Imamiah | Knížectví | 07/12 – 11/12 | Osvobození, cestování, ochrana |
+| 53 | Nanael | Knížectví | 12/12 – 16/12 | Studium, diplomacie, komunikace |
+| 54 | Nithael | Knížectví | 17/12 – 21/12 | Dlouhověkost, stabilita, milost |
+| 55 | Mebahiah | Knížectví | 22/12 – 26/12 | Útěcha, jasnost mysli, ctnost |
+| 56 | Poyel | Knížectví | 27/12 – 31/12 | Štěstí, podpora, úspěch |
+| 57 | Nemamiah | Archandělé | 01/01 – 05/01 | Prosperita, úspěch, osvobození |
+| 58 | Yeialel | Archandělé | 06/01 – 10/01 | Odvaha, uzdravení, vyrovnanost |
+| 59 | Harahel | Archandělé | 11/01 – 15/01 | Bohatství, literatura, studium |
+| 60 | Mitzrael | Archandělé | 16/01 – 19/01 | Vyrovnanost, věrnost, uzdravení |
+| 61 | Umabel | Archandělé | 20/01 – 24/01 | Přátelství, spřízněnost, astronomie |
+| 62 | Iah-Hel | Archandělé | 25/01 – 29/01 | Moudrost, filozofie, vyrovnanost |
+| 63 | Anauel | Archandělé | 30/01 – 03/02 | Jednota, obchod, prosperita |
+| 64 | Mehiel | Archandělé | 04/02 – 08/02 | Inspirace, psaní, ochrana |
+| 65 | Damabiah | Andělé | 09/02 – 13/02 | Moudrost, ochrana, moře |
+| 66 | Manakel | Andělé | 14/02 – 18/02 | Soucit, sny, pohoda |
+| 67 | Eyael | Andělé | 19/02 – 23/02 | Proměna, usmíření, dlouhověkost |
+| 68 | Habuhiah | Andělé | 24/02 – 28/02 | Uzdravení, plodnost, zemědělství |
+| 69 | Rochel | Andělé | 01/03 – 05/03 | Spravedlnost, navrácení, pravda |
+| 70 | Yabamiah | Andělé | 06/03 – 10/03 | Obnova, alchymie, tvoření |
+| 71 | Haiaiel | Andělé | 11/03 – 15/03 | Ochrana, vítězství, odvaha |
+| 72 | Mumiah | Andělé | 16/03 – 20/03 | Završení, znovuzrození, pohoda |
+
+## 72 démonů
+
+Z Goetie (17. století), grimoáru, které není součástí Bible. Každý duch sdílí úsek s andělem téhož čísla. Pouze kulturní odkaz.
+
+| # | Jméno | Hodnost | Legie | Data | Vlastnosti |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bael | Král | 66 | 21/03 – 25/03 | Neviditelnost, moudrost |
+| 2 | Agares | Vévoda | 31 | 26/03 – 30/03 | Jazyky, uprchlíci, zemětřesení |
+| 3 | Vassago | Princ | — | 31/03 – 04/04 | Minulost a budoucnost, ztracené předměty |
+| 4 | Samigina | Markýz | 30 | 05/04 – 09/04 | Svobodná umění, duše zesnulých |
+| 5 | Marbas | Prezident | 36 | 10/04 – 14/04 | Tajemství, nemoci, uzdravení, mechanická umění |
+| 6 | Valefor | Vévoda | 10 | 15/04 – 19/04 | Domácí duchové, krádež |
+| 7 | Amon | Markýz | 40 | 20/04 – 25/04 | Minulost a budoucnost, usmíření, nepřátelství |
+| 8 | Barbatos | Vévoda | 30 | 26/04 – 30/04 | Řeč zvířat, poklady, usmíření |
+| 9 | Paimon | Král | 200 | 01/05 – 05/05 | Vědy, umění, tajemství, hodnosti |
+| 10 | Buer | Prezident | 50 | 06/05 – 10/05 | Filozofie, rostliny, uzdravení, domácí duchové |
+| 11 | Gusion | Vévoda | 40 | 11/05 – 15/05 | Minulost a budoucnost, usmíření, pocty |
+| 12 | Sitri | Princ | 60 | 16/05 – 20/05 | Láska, touha, tajemství |
+| 13 | Beleth | Král | 85 | 21/05 – 26/05 | Láska, touha |
+| 14 | Leraje | Markýz | 30 | 27/05 – 31/05 | Konflikty, rány |
+| 15 | Eligos | Vévoda | 60 | 01/06 – 05/06 | Válka, minulost a budoucnost, přízeň |
+| 16 | Zepar | Vévoda | 26 | 06/06 – 10/06 | Láska, neplodnost |
+| 17 | Botis | Prezident / Hrabě | 60 | 11/06 – 15/06 | Minulost a budoucnost, usmíření |
+| 18 | Bathin | Vévoda | 30 | 16/06 – 20/06 | Rostliny, drahokamy, rychlé přesuny |
+| 19 | Sallos | Vévoda | 30 | 21/06 – 26/06 | Láska |
+| 20 | Purson | Král | 22 | 27/06 – 02/07 | Poklady, minulost a budoucnost, domácí duchové |
+| 21 | Marax | Prezident / Hrabě | 30 | 03/07 – 07/07 | Astronomie, svobodná umění, rostliny |
+| 22 | Ipos | Hrabě / Princ | 36 | 08/07 – 12/07 | Minulost a budoucnost, odvaha, důvtip |
+| 23 | Aim | Vévoda | 26 | 13/07 – 17/07 | Požáry, důvtip, tajemství |
+| 24 | Naberius | Markýz | 19 | 18/07 – 22/07 | Rétorika, umění, pocty |
+| 25 | Glasya-Labolas | Prezident / Hrabě | 36 | 23/07 – 28/07 | Vědy, násilí, minulost a budoucnost, neviditelnost |
+| 26 | Bune | Vévoda | 30 | 29/07 – 02/08 | Bohatství, výmluvnost, mrtví |
+| 27 | Ronove | Markýz / Hrabě | 19 | 03/08 – 07/08 | Rétorika, jazyky, přízeň |
+| 28 | Berith | Vévoda | 26 | 08/08 – 12/08 | Alchymie, pocty, minulost a budoucnost |
+| 29 | Astaroth | Vévoda | 40 | 13/08 – 17/08 | Minulost a budoucnost, svobodná umění, tajemství |
+| 30 | Forneus | Markýz | 29 | 18/08 – 22/08 | Rétorika, jazyky, pověst |
+| 31 | Foras | Prezident | 29 | 23/08 – 28/08 | Rostliny, logika, etika |
+| 32 | Asmoday | Král | 72 | 29/08 – 02/09 | Matematika, astronomie, neviditelnost, poklady |
+| 33 | Gaap | Prezident / Princ | 66 | 03/09 – 07/09 | Filozofie, svobodná umění, láska, nepřátelství, rychlé přesuny |
+| 34 | Furfur | Hrabě | 26 | 08/09 – 12/09 | Láska, bouře, tajemství |
+| 35 | Marchosias | Markýz | 30 | 13/09 – 17/09 | Boj, pravda |
+| 36 | Stolas | Princ | 26 | 18/09 – 22/09 | Astronomie, rostliny, drahokamy |
+| 37 | Phenex | Markýz | 20 | 23/09 – 27/09 | Poezie, vědy |
+| 38 | Halphas | Hrabě | 26 | 28/09 – 02/10 | Pevnosti, válka, zbraně |
+| 39 | Malphas | Prezident | 40 | 03/10 – 07/10 | Stavění, klam |
+| 40 | Raum | Hrabě | 30 | 08/10 – 12/10 | Krádež, zkáza, minulost a budoucnost |
+| 41 | Focalor | Vévoda | 30 | 13/10 – 17/10 | Moře, větry, ztroskotání lodí |
+| 42 | Vepar | Vévoda | 29 | 18/10 – 22/10 | Moře, bouře, rány |
+| 43 | Sabnock | Markýz | 50 | 23/10 – 27/10 | Pevnosti, rány, domácí duchové |
+| 44 | Shax | Markýz | 30 | 28/10 – 01/11 | Slepota, hluchota, krádež |
+| 45 | Vine | Král / Hrabě | 36 | 02/11 – 06/11 | Čarodějnictví, bouře, pevnosti |
+| 46 | Bifrons | Hrabě | 6 | 07/11 – 11/11 | Astrologie, matematika, rostliny, mrtví |
+| 47 | Vual | Vévoda | 37 | 12/11 – 16/11 | Láska, přátelství, minulost a budoucnost |
+| 48 | Haagenti | Prezident | 33 | 17/11 – 21/11 | Proměna, moudrost, alchymie |
+| 49 | Crocell | Vévoda | 48 | 22/11 – 26/11 | Matematika, umění, voda |
+| 50 | Furcas | Rytíř | 20 | 27/11 – 01/12 | Filozofie, astrologie, chiromantie |
+| 51 | Balam | Král | 40 | 02/12 – 06/12 | Minulost a budoucnost, neviditelnost, důvtip |
+| 52 | Alloces | Vévoda | 36 | 07/12 – 11/12 | Astronomie, svobodná umění |
+| 53 | Caim | Prezident | 30 | 12/12 – 16/12 | Řeč zvířat, minulost a budoucnost |
+| 54 | Murmur | Vévoda / Hrabě | 30 | 17/12 – 21/12 | Hudba, filozofie, duše zesnulých |
+| 55 | Orobas | Princ | 20 | 22/12 – 26/12 | Minulost a budoucnost, přízeň, loajalita |
+| 56 | Gremory | Vévoda | 26 | 27/12 – 31/12 | Poklady, láska, minulost a budoucnost |
+| 57 | Ose | Prezident | 3 | 01/01 – 05/01 | Svobodná umění, proměna, šílenství |
+| 58 | Amy | Prezident | 36 | 06/01 – 10/01 | Astrologie, svobodná umění, poklady |
+| 59 | Orias | Markýz | 30 | 11/01 – 15/01 | Astrologie, proměna, pocty |
+| 60 | Vapula | Vévoda | 36 | 16/01 – 19/01 | Mechanická umění, filozofie, vědy |
+| 61 | Zagan | Král / Prezident | 33 | 20/01 – 24/01 | Proměna, důvtip |
+| 62 | Valac | Prezident | 30 | 25/01 – 29/01 | Poklady, hadi |
+| 63 | Andras | Markýz | 30 | 30/01 – 03/02 | Svár, násilí |
+| 64 | Flauros | Vévoda | 20 | 04/02 – 08/02 | Minulost a budoucnost, oheň |
+| 65 | Andrealphus | Markýz | 30 | 09/02 – 13/02 | Matematika, astronomie, proměna |
+| 66 | Kimaris | Markýz | 20 | 14/02 – 18/02 | Rétorika, logika, ztracené předměty |
+| 67 | Amdusias | Vévoda | 29 | 19/02 – 23/02 | Hudba, stromy |
+| 68 | Belial | Král | 50 | 24/02 – 28/02 | Přízeň, hodnosti, domácí duchové |
+| 69 | Decarabia | Markýz | 30 | 01/03 – 05/03 | Ptáci, drahokamy, rostliny |
+| 70 | Seere | Princ | 26 | 06/03 – 10/03 | Rychlé přesuny, krádež, ztracené předměty |
+| 71 | Dantalion | Vévoda | 36 | 11/03 – 15/03 | Myšlenky, vědy, láska |
+| 72 | Andromalius | Hrabě | 36 | 16/03 – 20/03 | Ztracené předměty, poklady, zloději |

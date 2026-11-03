@@ -19,6 +19,13 @@
     >>> d = zodiaco.decanato(datetime.date(1990, 4, 3))
     >>> d["signo"]["id"], d["numero"], d["regente"], d["signo_regente"]["id"]
     ('aries', 2, 'sol', 'leo')
+    >>> a = zodiaco.angel_de_fecha(datetime.date(1990, 4, 3))
+    >>> a["angel"]["nombre"], a["coro"], a["tramo"]
+    ('Sitael', 'serafines', [[3, 31], [4, 4]])
+    >>> zodiaco.demonio_de_fecha(datetime.date(1990, 4, 3))["demonio"]["nombre"]
+    'Vassago'
+    >>> zodiaco.cualidades_de("angel", 3, "es"), zodiaco.cualidades_de("demonio", 1, "en")
+    ('Construcción, protección, nobleza', 'Invisibility, wisdom')
 
 Hay un port a PHP en php/ que da las mismas respuestas (datos/vectores.json las fija).
 
@@ -33,6 +40,7 @@ from pathlib import Path
 
 DATOS = Path(__file__).resolve().parent / "datos" / "signos.json"
 ANIO_NUEVO = Path(__file__).resolve().parent / "datos" / "anio-nuevo-lunar.json"
+ESPIRITUS = Path(__file__).resolve().parent / "datos" / "espiritus.json"
 
 SISTEMAS = ("tropical", "sideral")
 
@@ -43,6 +51,12 @@ HORA_DE_CHINA = datetime.timezone(datetime.timedelta(hours=8))
 ORDEN_CALDEO = ("marte", "sol", "venus", "mercurio", "luna", "saturno", "jupiter")
 
 AFINIDADES = ("alta", "media", "neutra", "baja")
+
+# Los 72 ángeles van de ocho en ocho en nueve coros, de los Serafines a los Ángeles.
+CHOROS = ("serafines", "querubines", "tronos", "dominaciones", "virtudes", "potestades", "principados",
+          "arcangeles", "angeles")
+TIPOS_DE_ESPIRITU = ("angel", "demonio")
+RANGOS = ("rey", "duque", "principe", "marques", "conde", "presidente", "caballero")
 
 _COMPLEMENTARIOS = {frozenset({"fuego", "aire"}), frozenset({"tierra", "agua"})}
 
@@ -77,6 +91,13 @@ def revision(idioma, datos=None):
     if idioma not in datos["revision"]:
         raise ValueError(f"idioma desconocido: {idioma!r}")
     return datos["revision"][idioma]
+
+
+@lru_cache(maxsize=1)
+def cargar_espiritus():
+    """Lee datos/espiritus.json una sola vez: los 72 ángeles y los 72 demonios, con sus cualidades."""
+    with ESPIRITUS.open(encoding="utf-8") as f:
+        return json.load(f)
 
 
 def _en_rango(mes_dia, desde, hasta):
@@ -316,3 +337,111 @@ def anios_del_animal(id_animal, desde, hasta, datos=None):
         raise ValueError(f"animal desconocido: {id_animal!r}")
     indice = ids.index(id_animal)
     return [a for a in range(desde, hasta + 1) if (a - _ANIO_BASE) % 12 == indice]
+
+
+# --- Los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia ---
+# Cada uno se atribuye a un tramo de 5° del zodiaco tropical: seis por signo, desde Aries. Aquí cada signo se
+# parte en seis tramos de fechas casi iguales (los primeros se llevan el día que sobre en los signos de 31 o 32
+# días). Un ángel y el demonio del mismo número comparten tramo.
+
+def _signo_occidental_por_id(id_signo, datos):
+    for s in datos["signos"]:
+        if s["tipo"] == "occidental" and s["id"] == id_signo:
+            return s
+    raise ValueError(f"signo occidental desconocido: {id_signo!r}")
+
+
+def _largos_de_tramos(dias):
+    """Los días de cada uno de los seis tramos de un signo de `dias` días: los primeros se llevan el sobrante."""
+    base, sobra = divmod(dias, 6)
+    return [base + 1] * sobra + [base] * (6 - sobra)
+
+
+def _fin_del_signo(inicio, signo):
+    mes, dia = signo["tropical"]["hasta"]
+    fin = datetime.date(inicio.year, mes, dia)
+    return fin if fin >= inicio else datetime.date(inicio.year + 1, mes, dia)
+
+
+def _tramos_desde(inicio, signo):
+    """[(desde, hasta)] como fechas: los seis tramos del signo que empieza en `inicio`."""
+    tramos, desde = [], inicio
+    for dias in _largos_de_tramos((_fin_del_signo(inicio, signo) - inicio).days + 1):
+        hasta = desde + datetime.timedelta(days=dias - 1)
+        tramos.append((desde, hasta))
+        desde = hasta + datetime.timedelta(days=1)
+    return tramos
+
+
+def tramos_de_espiritus(id_signo, anio=2025, datos=None):
+    """Los seis tramos de un signo occidental como [[mes, día] desde, [mes, día] hasta] en un año dado.
+
+    Los ángeles y demonios del signo son los seis números que empiezan en (posición del signo × 6 + 1):
+    Aries tiene del 1 al 6, Tauro del 7 al 12… El año importa en Piscis (febrero tiene 28 o 29 días) y en
+    Capricornio, que empieza el 22/12 de ese año.
+    """
+    if isinstance(anio, bool) or not isinstance(anio, int):
+        raise TypeError(f"anio debe ser int, no {type(anio).__name__}")
+    datos = datos or cargar_datos()
+    signo = _signo_occidental_por_id(id_signo, datos)
+    inicio = datetime.date(anio, *signo["tropical"]["desde"])
+    return [[[d.month, d.day], [h.month, h.day]] for d, h in _tramos_desde(inicio, signo)]
+
+
+def _espiritu_de_fecha(fecha, datos):
+    """(número 1–72, signo, [desde, hasta] del tramo) de una fecha, en el zodiaco tropical."""
+    if not isinstance(fecha, datetime.date):
+        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    signo = signo_occidental(fecha, "tropical", datos)
+    dia = datetime.date(fecha.year, fecha.month, fecha.day)
+    inicio = _inicio_del_signo(dia, signo, "tropical")
+    tramos = _tramos_desde(inicio, signo)
+    k = next(n for n, (desde, hasta) in enumerate(tramos) if desde <= dia <= hasta)
+    occidentales = [s["id"] for s in datos["signos"] if s["tipo"] == "occidental"]
+    desde, hasta = tramos[k]
+    return occidentales.index(signo["id"]) * 6 + k + 1, signo, [[desde.month, desde.day], [hasta.month, hasta.day]]
+
+
+def angel_de_fecha(fecha, datos=None):
+    """El ángel del Shem ha-Mephorash que rige una fecha (zodiaco tropical).
+
+    Devuelve {"angel": …, "signo": …, "coro": …, "tramo": [[mes, día], [mes, día]]}: el ángel y el signo son
+    los diccionarios de los datos, el coro es una de CHOROS y el tramo, las fechas de ese ángel en el año de
+    `fecha`. Las fechas son aproximadas, como las de los signos.
+    """
+    datos = datos or cargar_datos()
+    numero, signo, tramo = _espiritu_de_fecha(fecha, datos)
+    return {"angel": cargar_espiritus()["angeles"][numero - 1], "signo": signo,
+            "coro": CHOROS[(numero - 1) // 8], "tramo": tramo}
+
+
+def demonio_de_fecha(fecha, datos=None):
+    """El demonio de la Goetia que se atribuye a una fecha: el del mismo número que su ángel.
+
+    Devuelve {"demonio": …, "signo": …, "tramo": [[mes, día], [mes, día]]}. Esa correspondencia es de la
+    esoterología moderna, no de los grimorios.
+    """
+    datos = datos or cargar_datos()
+    numero, signo, tramo = _espiritu_de_fecha(fecha, datos)
+    return {"demonio": cargar_espiritus()["demonios"][numero - 1], "signo": signo, "tramo": tramo}
+
+
+def cualidades_de(tipo, numero, idioma):
+    """Las cualidades de un ángel o demonio en un idioma, en una frase: «Construcción, protección, nobleza».
+
+    tipo es "angel" o "demonio"; numero, de 1 a 72. Las cualidades salen del glosario de espiritus.json, así
+    que cada una se dice igual en todas las fichas.
+    """
+    if tipo not in TIPOS_DE_ESPIRITU:
+        raise ValueError(f"tipo debe ser uno de {TIPOS_DE_ESPIRITU}, no {tipo!r}")
+    if isinstance(numero, bool) or not isinstance(numero, int):
+        raise TypeError(f"numero debe ser int, no {type(numero).__name__}")
+    if not 1 <= numero <= 72:
+        raise ValueError(f"numero debe estar entre 1 y 72, no {numero}")
+    esp = cargar_espiritus()
+    if idioma not in esp["terminos"]["separador"]:
+        raise ValueError(f"idioma desconocido: {idioma!r}")
+    entrada = esp["angeles" if tipo == "angel" else "demonios"][numero - 1]
+    texto = esp["terminos"]["separador"][idioma].join(esp["cualidades"][c][idioma] for c in entrada["cualidades"])
+    primera = "İ" if idioma == "tr" and texto[0] == "i" else texto[0].upper()  # en turco, i → İ
+    return primera + texto[1:]
