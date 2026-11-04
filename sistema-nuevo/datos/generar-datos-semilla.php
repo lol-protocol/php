@@ -66,6 +66,16 @@ $saneado = sanear_acciones(
 );
 $acciones = $saneado['acciones'];
 
+// PostgreSQL es la fuente de datos del backend en vivo (ver AlmacenDatos.php);
+// los JSON de abajo quedan como artefacto legible + lo que consume el CSV para Java.
+cargar_en_postgres(
+    $users, $acciones, $catalogoPaises['countryNames'], $catalogoMonedas['currencyByCountry'],
+    $catalogoMonedas['rateToUsd'], $catalogoRed['offsetPorPais'], $catalogoPaises['presets'],
+    $tiposAccionData['tiposAccion']
+);
+
+// Los archivos se escriben DESPUÉS de cargar: si la carga falla, el CSV que lee Java y los JSON siguen siendo
+// los de la base anterior (que la transacción dejó intacta), en vez de quedar nuevos con la base vieja.
 $dataDir = __DIR__;
 escribir_json($dataDir . '/usuarios.json', $users);
 escribir_json($dataDir . '/acciones-crudas.json', $crudas);
@@ -86,14 +96,6 @@ escribir_json($dataDir . '/monedas.json', [
     'rate_per_usd' => $catalogoMonedas['rateToUsd'],
 ]);
 escribir_csv_acciones($dataDir . '/acciones-planas.csv', $acciones, $usersById);
-
-// PostgreSQL es la fuente de datos del backend en vivo (ver AlmacenDatos.php);
-// los JSON de arriba quedan como artefacto legible + lo que consume el CSV para Java.
-cargar_en_postgres(
-    $users, $acciones, $catalogoPaises['countryNames'], $catalogoMonedas['currencyByCountry'],
-    $catalogoMonedas['rateToUsd'], $catalogoRed['offsetPorPais'], $catalogoPaises['presets'],
-    $tiposAccionData['tiposAccion']
-);
 
 fwrite(STDERR, sprintf(
     "Generados %d usuarios, %d acciones crudas -> %d saneadas, %d descartadas por datos inválidos. Cargado en PostgreSQL.\n",

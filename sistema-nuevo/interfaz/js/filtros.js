@@ -45,8 +45,9 @@ export async function aplicarFiltroGuardado(filtroId) {
     // scope se guarda tal cual viene del desplegable de país (ya trae "country:XX"/"preset:XX").
     escribirFiltros({
       scope: filtro.scope === "all_countries" ? "all" : filtro.scope,
-      ageMin: filtro.age_min ?? 18,
-      ageMax: filtro.age_max ?? 65,
+      // Sin edad guardada = sin límite (lo mismo que hace aplicacion.js con el campo vacío), no 18 a 65.
+      ageMin: filtro.age_min ?? 0,
+      ageMax: filtro.age_max ?? 150,
       gender: filtro.gender || "all",
       type: filtro.tipo_accion || "all",
     });

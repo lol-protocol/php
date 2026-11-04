@@ -29,11 +29,12 @@ function cargar_en_postgres(
     $pdo = ConexionBd::obtener();
     $dataDir = __DIR__ . '/..';
 
-    $pdo->exec((string) file_get_contents($dataDir . '/esquema.sql'));
-    $pdo->exec((string) file_get_contents($dataDir . '/esquema-nucleo.sql'));
-
+    // El DROP/CREATE va DENTRO de la transacción (PostgreSQL tiene DDL transaccional): si la carga falla,
+    // vuelven las tablas de antes y no queda la base vacía con las notas ya borradas.
     $pdo->beginTransaction();
     try {
+        $pdo->exec((string) file_get_contents($dataDir . '/esquema.sql'));
+        $pdo->exec((string) file_get_contents($dataDir . '/esquema-nucleo.sql'));
         cargar_monedas($pdo, $rateToUsd);
         cargar_paises($pdo, $countryNames, $currencyByCountry, $offsetPorPais);
         cargar_grupos($pdo, $presets);
