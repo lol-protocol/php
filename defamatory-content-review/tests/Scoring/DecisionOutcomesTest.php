@@ -26,6 +26,18 @@ class DecisionOutcomesTest extends TestCase
         $this->assertSame('review', $this->reviewer->decide($result));
     }
 
+    public function testACollisionOnAnotherTermDoesNotLowerTheGraveOne(): void
+    {
+        // «puta» es grave y no es apellido; «cerda» y «moro» sí: sólo la colisión que causa el rechazo lo baja a revisión.
+        foreach ([['Puta', 'Cerda'], ['Cabron', 'Moro']] as [$first, $last]) {
+            $result = $this->reviewer->validateFullName($first, $last);
+            $this->assertSame('high', $result->getSeverity());
+            $this->assertTrue($result->hasNameCollision());
+            $this->assertFalse($result->nameCollisionExplainsSeverity());
+            $this->assertSame('reject', $this->reviewer->decide($result), "$first $last");
+        }
+    }
+
     public function testHighSeverityWithoutCollisionIsRejected(): void
     {
         $result = $this->reviewer->validateFullName('Luis', 'Gilipollas');

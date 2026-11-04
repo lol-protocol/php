@@ -90,7 +90,7 @@ class DefamatoryContentReviewer
     /** Colisión de apellido o fusión fonética nunca rechazan solas: bajan a revisión. Ver ScoringPolicy::decisionFor(). */
     public function decide(ValidationResult $result): string
     {
-        return $this->policy->decisionFor($result->getSeverity(), $result->hasNameCollision(), $result->hasOnlyPhoneticDetections());
+        return $this->policy->decisionFor($result->getSeverity(), $result->nameCollisionExplainsSeverity(), $result->hasOnlyPhoneticDetections());
     }
 
     /** @return array<string,mixed> */ public function getDetailedReport(ValidationResult $result): array

@@ -340,9 +340,9 @@ la primera vez que sólo una de ellas se actualizó.
 
 | Nivel | Idiomas | Términos c/u |
 |---|---|---|
-| `comprehensive` | spa, eng, por, fra, ita, deu (6) | 282 – 601 |
-| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 138 – 316 |
-| `basic` | isl, swa, tgl (3) | 85 – 101 |
+| `comprehensive` | spa, eng, por, fra, ita, deu (6) | 292 – 679 |
+| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 149 – 329 |
+| `basic` | isl, swa, tgl (3) | 94 – 109 |
 
 ```php
 $reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive

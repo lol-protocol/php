@@ -2,6 +2,24 @@
 
 ## [Sin publicar]
 
+### Corregido
+
+- **Rellenos invisibles entre letras** (`EvasionCleaner`): el Hangul filler
+  (U+3164, U+115F, U+1160, U+FFA0) y el braille en blanco (U+2800) dentro de una
+  palabra latina («pu\u{3164}ta») dejaban pasar el insulto y la amenaza. Se quitan
+  sólo entre letras latinas; en coreano siguen siendo letras. `FillerEvasionTest`.
+- **Datos personales con arroba o dígitos de ancho completo** (`PersonalData::findIn`):
+  «juan＠gmail.com» daba `approve` porque los datos personales se buscaban en la
+  línea sin limpiar. Ahora también en la línea limpia.
+- **Un apellido ambiguo ya no rebaja un insulto grave** (`ValidationResult::nameCollisionExplainsSeverity`):
+  «Puta Cerda» y «Cabron Moro» daban `review` porque «cerda» y «moro» son
+  apellidos, aunque «puta» y «cabron» son graves por sí solos. La colisión sólo baja a
+  revisión el rechazo que ella misma causa.
+- **Letras en cuadros** (`StyledLetters`): sólo los tres bloques A–Z; las siglas de
+  entre medias («🅪»…) ya no se convierten en puntuación ASCII.
+- **README**: conteos de términos por nivel de cobertura al día (292–679, 149–329 y
+  94–109; 8.206 en total) y el comentario del ejemplo 10.
+
 ### Añadido
 
 - **Frases que no deben dar alerta** (`tests/fixtures/safe-phrases.php`,

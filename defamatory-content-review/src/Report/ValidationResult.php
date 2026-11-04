@@ -45,6 +45,8 @@ class ValidationResult
     public function getPrimaryLanguageTerms(): array { return $this->getTermsByLanguage($this->language); }
 
     public function hasNameCollision(): bool { return $this->terms->hasNameCollision(); }
+    /** La colisión de nombre explica la severidad del resultado: no hay otro término igual de grave sin colisión. */
+    public function nameCollisionExplainsSeverity(): bool { $at = array_filter($this->terms->all(), fn(array $t): bool => $t['severity'] === $this->getSeverity()); return $at !== [] && !in_array(false, array_column($at, 'nameCollision'), true); }
     /** @return array<int,FlaggedEntry> */ public function getNameCollisionTerms(): array { return $this->terms->nameCollisionTerms(); }
     /** @return array<int,FlaggedEntry> */ public function getTermsByDetectionMethod(string $method): array { return $this->terms->byDetectionMethod($method); }
     /** @return array<int,FlaggedEntry> */ public function getPhoneticFusionTerms(): array { return $this->getTermsByDetectionMethod('phonetic_fusion'); }
