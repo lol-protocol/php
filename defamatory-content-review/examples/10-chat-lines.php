@@ -35,7 +35,7 @@ foreach ($lines as $line) {
     );
 }
 
-// En otro idioma: las listas de temas existen para spa y eng; los demás idiomas detectan igualmente los insultos.
+// En otro idioma: hay listas de temas para los 33 idiomas; en cada uno se detectan los insultos y los datos personales.
 $english = ChatLineReviewer::create(__DIR__ . '/../config', 'eng');
 $result = $english->review("i'm gonna kill you");
 

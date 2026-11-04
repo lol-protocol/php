@@ -40,12 +40,13 @@ final class ChatLineReviewer
         $topics = $this->topicsFor($language = $this->reviewer->getLanguage());
         $targeting = $topics?->targeting() ?? [];
         $matches = TargetContext::apply($line, $this->find($line, $topics), $targeting, $language);
-        if (($clean = EvasionCleaner::clean($line, $language)) !== $line) { // lo que sólo se ve con la línea entera limpia
+        $clean = EvasionCleaner::clean($line, $language);
+        if ($clean !== $line) { // lo que sólo se ve con la línea entera limpia
             $seen = array_map(fn(array $m): string => $m['original'] ?? $m['found'], $matches);
             $extra = array_filter($this->find($clean, $topics), fn(array $m): bool => !in_array($m['original'] ?? $m['found'], $seen, true));
             $matches = [...$matches, ...TargetContext::apply($clean, array_values($extra), $targeting, $language)];
         }
-        $matches = [...$matches, ...PersonalData::find($line)];
+        $matches = [...$matches, ...PersonalData::findIn($line, $clean)];
 
         return new ChatLineResult($line, $matches, ChatMatches::decision($matches));
     }
