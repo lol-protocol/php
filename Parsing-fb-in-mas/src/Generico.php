@@ -35,6 +35,10 @@ final class Generico extends Analizador
             'titular' => $p['titular'] ?? null,
             'lugar' => $p['lugar'] ?? null,
             'descripcion' => $p['descripcion'] ?? null,
+            'nacimiento' => $p['nacimiento'] ?? null,
+            'muerte' => $p['muerte'] ?? null,
+            'lugar_nacimiento' => $p['lugar_nacimiento'] ?? null,
+            'lugar_muerte' => $p['lugar_muerte'] ?? null,
         ];
     }
 }

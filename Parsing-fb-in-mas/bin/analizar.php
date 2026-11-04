@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
-// Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] pagina1.html [pagina2.html …]
-// Lee páginas YA GUARDADAS en disco y escribe un JSON. No descarga nada, a propósito.
+// Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] pagina.html|carpeta …
+// Lee páginas YA GUARDADAS en disco (una carpeta se recorre entera) y escribe un JSON, o un
+// objeto por línea con --jsonl. No descarga nada, a propósito. Una misma URL sale una vez.
 
 require __DIR__ . '/../src/cargar.php';
 
 use ParsingFbInMas\Detector;
+use ParsingFbInMas\Lote;
 
 $capturado = null;
-$archivos = [];
+$jsonl = false;
+$rutas = [];
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--capturado=')) {
         $capturado = substr($arg, 12);
@@ -18,18 +21,20 @@ foreach (array_slice($argv, 1) as $arg) {
             fwrite(STDERR, "--capturado pide AAAA-MM-DD\n");
             exit(2);
         }
+    } elseif ($arg === '--jsonl') {
+        $jsonl = true;
     } else {
-        $archivos[] = $arg;
+        $rutas[] = $arg;
     }
 }
-if ($archivos === []) {
-    fwrite(STDERR, "Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] pagina.html …\n");
+if ($rutas === []) {
+    fwrite(STDERR, "Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] pagina.html|carpeta …\n");
     exit(2);
 }
 
-$salida = [];
+$perfiles = [];
 $fallos = 0;
-foreach ($archivos as $archivo) {
+foreach (Lote::archivos($rutas) as $archivo) {
     if (preg_match('#^[a-z][a-z0-9+.-]*://#i', $archivo) === 1) {
         fwrite(STDERR, "$archivo: esto no descarga páginas; guarda el HTML y pásame el archivo.\n");
         $fallos++;
@@ -42,12 +47,23 @@ foreach ($archivos as $archivo) {
         continue;
     }
     try {
-        $salida[] = ['archivo' => basename($archivo)] + Detector::analizar($html, $capturado)->aArreglo();
+        $perfiles[] = ['archivo' => basename($archivo)] + Detector::analizar($html, $capturado)->aArreglo();
     } catch (RuntimeException $e) {
         fwrite(STDERR, "$archivo: {$e->getMessage()}\n");
         $fallos++;
     }
 }
 
-echo json_encode($salida, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
+['perfiles' => $perfiles, 'repetidos' => $repetidos] = Lote::sinRepetidos($perfiles);
+if ($repetidos > 0) {
+    fwrite(STDERR, "$repetidos páginas repetidas (misma URL) omitidas\n");
+}
+$flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+if ($jsonl) {
+    foreach ($perfiles as $p) {
+        echo json_encode($p, $flags), "\n";
+    }
+} else {
+    echo json_encode($perfiles, $flags | JSON_PRETTY_PRINT), "\n";
+}
 exit($fallos > 0 ? 1 : 0);

@@ -14,7 +14,9 @@ final class Detector
      */
     public static function analizadores(): array
     {
-        return [new Facebook(), new LinkedIn(), new Twitter(), new Instagram(), new Generico()];
+        return [new Facebook(), new LinkedIn(), new Twitter(), new Instagram(),
+            new TikTok(), new YouTube(), new GitHub(), new Pinterest(),
+            new WikiTree(), new FindAGrave(), new Generico()];
     }
 
     /**

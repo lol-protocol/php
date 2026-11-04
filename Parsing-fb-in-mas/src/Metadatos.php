@@ -62,6 +62,8 @@ final class Metadatos
             }
         }
 
+        $persona ??= self::microdatos($xp);
+
         return ['meta' => $meta, 'canonica' => $canonica, 'titulo' => $titulo, 'persona' => $persona];
     }
 
@@ -91,6 +93,71 @@ final class Metadatos
     }
 
     /**
+     * Persona en microdatos (`itemtype=…schema.org/Person`, `itemprop=…`), que usan sitios de
+     * genealogía como WikiTree y Find a Grave. Solo cuentan las propiedades de esa persona,
+     * no las de un objeto anidado (un lugar con su propio `name`).
+     *
+     * @return ?array<string, string>
+     */
+    private static function microdatos(DOMXPath $xp): ?array
+    {
+        foreach ($xp->query('//*[@itemscope and contains(@itemtype, "schema.org/Person")]') ?: [] as $raiz) {
+            $p = [];
+            foreach ($xp->query('.//*[@itemprop]', $raiz) ?: [] as $nodo) {
+                /** @var \DOMElement $nodo */
+                $dueno = $xp->query('ancestor::*[@itemscope][1]', $nodo)?->item(0);
+                if ($dueno === null || !$dueno->isSameNode($raiz)) {
+                    continue;
+                }
+                $prop = $nodo->getAttribute('itemprop');
+                if (isset($p[$prop])) {
+                    continue;
+                }
+                $valor = $nodo->getAttribute('content') !== '' ? $nodo->getAttribute('content')
+                    : ($nodo->getAttribute('datetime') !== '' ? $nodo->getAttribute('datetime') : $nodo->textContent);
+                $p[$prop] = self::limpiar($valor);
+            }
+            if ($p !== []) {
+                $p['@type'] = 'Person';
+                return self::filtrarPersona($p);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Fecha de schema.org reducida a año, año-mes o año-mes-día; lo demás se descarta.
+     */
+    private static function fecha(mixed $valor): ?string
+    {
+        if (is_string($valor) && preg_match('/^(\d{4}(?:-\d{2}(?:-\d{2})?)?)/', trim($valor), $m) === 1) {
+            return $m[1];
+        }
+        return null;
+    }
+
+    private static function lugar(mixed $valor): string
+    {
+        if (is_string($valor)) {
+            return self::limpiar($valor);
+        }
+        if (is_array($valor)) {
+            if (isset($valor['name']) && is_string($valor['name'])) {
+                return self::limpiar($valor['name']);
+            }
+            $partes = [];
+            foreach (['addressLocality', 'addressRegion', 'addressCountry'] as $campo) {
+                $v = $valor['address'][$campo] ?? ($valor[$campo] ?? null);
+                if (is_string($v) && self::limpiar($v) !== '') {
+                    $partes[] = self::limpiar($v);
+                }
+            }
+            return implode(', ', $partes);
+        }
+        return '';
+    }
+
+    /**
      * @param array<mixed> $p
      * @return array<string, string>
      */
@@ -102,22 +169,27 @@ final class Metadatos
                 $salida[$destino] = self::limpiar($p[$origen]);
             }
         }
-        $dir = $p['address'] ?? null;
-        if (is_string($dir)) {
-            $lugar = self::limpiar($dir);
-        } elseif (is_array($dir)) {
-            $partes = [];
-            foreach (['addressLocality', 'addressRegion', 'addressCountry'] as $campo) {
-                if (isset($dir[$campo]) && is_string($dir[$campo]) && self::limpiar($dir[$campo]) !== '') {
-                    $partes[] = self::limpiar($dir[$campo]);
-                }
-            }
-            $lugar = implode(', ', $partes);
-        } else {
-            $lugar = '';
-        }
+        $lugar = self::lugar($p['address'] ?? null);
         if ($lugar !== '') {
             $salida['lugar'] = $lugar;
+        }
+
+        // Fechas y lugares de vida y muerte: solo si la fuente da fecha de muerte.
+        $muerte = self::fecha($p['deathDate'] ?? null);
+        if ($muerte !== null) {
+            $salida['muerte'] = $muerte;
+            foreach (['birthDate' => 'nacimiento'] as $origen => $destino) {
+                $f = self::fecha($p[$origen] ?? null);
+                if ($f !== null) {
+                    $salida[$destino] = $f;
+                }
+            }
+            foreach (['birthPlace' => 'lugar_nacimiento', 'deathPlace' => 'lugar_muerte'] as $origen => $destino) {
+                $l = self::lugar($p[$origen] ?? null);
+                if ($l !== '') {
+                    $salida[$destino] = $l;
+                }
+            }
         }
         return $salida;
     }

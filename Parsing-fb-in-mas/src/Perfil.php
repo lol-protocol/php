@@ -8,14 +8,16 @@ namespace ParsingFbInMas;
  * Lo único que estos analizadores devuelven de una persona. Es a propósito poco:
  * no hay correo, teléfono, fecha de nacimiento, contactos ni publicaciones.
  *
- * Todo perfil sale con `posiblemente_vivo` y `revision_humana` en verdadero: un
- * perfil de red social casi siempre es de una persona viva, y nada de esto se
- * publica sin que una persona lo revise (ver PRIVACIDAD-Y-HONRA.md en la raíz).
+ * `revision_humana` sale siempre en verdadero. `posiblemente_vivo` también, salvo que la
+ * propia fuente diga que la persona murió (hay fecha de muerte): solo entonces se
+ * guardan fechas, lugares y parientes. De una persona viva no se guarda ninguno.
+ * Nada de esto se publica sin que una persona lo revise (ver PRIVACIDAD-Y-HONRA.md).
  */
 final class Perfil
 {
     /**
      * @param list<string> $avisos
+     * @param list<array{relacion: string, nombre: ?string, id: ?string}> $parientes
      */
     public function __construct(
         public readonly string $red,
@@ -27,7 +29,17 @@ final class Perfil
         public readonly ?string $descripcion,
         public readonly ?string $capturado,
         public readonly array $avisos = [],
+        public readonly ?string $nacimiento = null,
+        public readonly ?string $muerte = null,
+        public readonly ?string $lugarNacimiento = null,
+        public readonly ?string $lugarMuerte = null,
+        public readonly array $parientes = [],
     ) {
+    }
+
+    public function fallecido(): bool
+    {
+        return $this->muerte !== null;
     }
 
     /**
@@ -44,7 +56,12 @@ final class Perfil
             'lugar' => $this->lugar,
             'descripcion' => $this->descripcion,
             'capturado' => $this->capturado,
-            'posiblemente_vivo' => true,
+            'nacimiento' => $this->nacimiento,
+            'muerte' => $this->muerte,
+            'lugar_nacimiento' => $this->lugarNacimiento,
+            'lugar_muerte' => $this->lugarMuerte,
+            'parientes' => $this->parientes,
+            'posiblemente_vivo' => !$this->fallecido(),
             'revision_humana' => true,
             'avisos' => $this->avisos,
         ];

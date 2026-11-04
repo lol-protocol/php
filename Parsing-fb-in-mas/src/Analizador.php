@@ -27,7 +27,7 @@ abstract class Analizador
      *
      * @param array{meta: array<string, string>, canonica: ?string, titulo: ?string, persona: ?array<string, string>} $d
      * @param ?string $url dirección de la página, si se conoce
-     * @return array{usuario?: ?string, nombre?: ?string, titular?: ?string, lugar?: ?string, descripcion?: ?string}
+     * @return array{usuario?: ?string, nombre?: ?string, titular?: ?string, lugar?: ?string, descripcion?: ?string, nacimiento?: ?string, muerte?: ?string, lugar_nacimiento?: ?string, lugar_muerte?: ?string}
      */
     abstract protected function extraer(array $d, ?string $url): array;
 
@@ -78,6 +78,12 @@ abstract class Analizador
             $avisos[] = 'sin fecha de captura: anótala al citar la fuente';
         }
 
+        // Sin fecha de muerte no se guarda ninguna fecha ni lugar de vida: puede estar viva.
+        $muerte = self::texto($c['muerte'] ?? null);
+        $nacimiento = $muerte === null ? null : self::texto($c['nacimiento'] ?? null);
+        $lugarNacimiento = $muerte === null ? null : self::texto($c['lugar_nacimiento'] ?? null);
+        $lugarMuerte = $muerte === null ? null : self::texto($c['lugar_muerte'] ?? null);
+
         return new Perfil(
             $this->red(),
             $url,
@@ -88,6 +94,10 @@ abstract class Analizador
             $descripcion,
             $capturado,
             $avisos,
+            $nacimiento,
+            $muerte,
+            $lugarNacimiento,
+            $lugarMuerte,
         );
     }
 
