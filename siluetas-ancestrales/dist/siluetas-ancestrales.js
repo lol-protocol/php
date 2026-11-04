@@ -1978,6 +1978,41 @@ const A = {
 const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta: 1.34 };
 const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
+/** Pose simétrica y rígida (la de las primeras versiones). */
+const POSE_FIRME = Object.freeze({ modo: 'firme', cabeza: 0, inclinacion: 0, carga: 0, abre: 1, giro: 10, brazoLibre: 'abajo', angulos: null, saludo: { codo: 55, antebrazo: 15, mano: 0 } });
+
+const redondear = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d;
+
+/**
+ * Pose casual y distinta cada vez: la cabeza inclinada, el cuerpo apoyado en una pierna, los pies más o menos abiertos,
+ * el brazo libre caído, en la cintura o en el bolsillo, y el saludo con otro ángulo de codo, antebrazo y mano.
+ * `carga`: -1 o 1 es el lado (de quien mira) que carga el peso; 0, ambos.
+ */
+function poseAleatoria(azar) {
+  return {
+    modo: 'casual',
+    cabeza: redondear(azar.entre(-6, 6)),
+    inclinacion: redondear(azar.entre(-1.4, 1.4), 2),
+    carga: azar.ponderado([[-1, 3], [1, 3], [0, 2]]),
+    abre: redondear(azar.entre(0.85, 1.5), 2),
+    giro: redondear(azar.entre(6, 20)),
+    brazoLibre: azar.ponderado([['abajo', 58], ['cintura', 27], ['bolsillo', 15]]),
+    angulos: { 1: redondear(azar.entre(5, 17)), '-1': redondear(azar.entre(5, 17)) },
+    saludo: { codo: redondear(azar.entre(40, 62)), antebrazo: redondear(azar.entre(2, 24)), mano: redondear(azar.entre(-14, 14)) },
+  };
+}
+
+/** Completa una pose parcial con la rígida; sin pose, la rígida. */
+function normalizarPose(spec) {
+  if (!spec || spec === 'firme') return POSE_FIRME;
+  const o = typeof spec === 'object' ? spec : {};
+  return {
+    ...POSE_FIRME, ...o,
+    angulos: o.angulos ? { 1: o.angulos[1] ?? 8, '-1': o.angulos['-1'] ?? 8 } : null,
+    saludo: { ...POSE_FIRME.saludo, ...(o.saludo ?? {}) },
+  };
+}
+
 /**
  * Calcula todas las medidas del cuerpo.
  * opc: { sexo: 'f'|'m', edad (años), corpulencia (nombre o número), altura (cm, opcional), postura }
@@ -2024,55 +2059,81 @@ function medidas(opc = {}) {
     muneca: ancho('muneca', c(0.35)),
   };
 
-  const grados = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.firme);
-  const tan = Math.tan((grados * Math.PI) / 180);
+  const grados0 = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.firme);
+  const pose = normalizarPose(opc.pose);
 
-  // Brazo derecho de la figura (x positiva). Nace dentro del hombro y cae con la inclinación pedida.
-  const hombroX = w.hombro;
+  // Brazos. Las coordenadas son relativas al eje (x positiva hacia afuera); `lado()` las espeja según el lado.
   const brazoY0 = y.hombro + H * 0.02;
-  const bx = (yy) => hombroX - w.brazoSup * 0.95 + (yy - brazoY0) * tan;
-  const brazo = {
-    linea: [
-      [bx(brazoY0), brazoY0],
-      [bx((brazoY0 + y.codo) / 2), (brazoY0 + y.codo) / 2],
-      [bx(y.codo), y.codo],
-      [bx((y.codo + y.muneca) / 2) + (grados > 9 ? H * 0.004 : 0), (y.codo + y.muneca) / 2],
-      [bx(y.muneca) + (grados > 9 ? H * 0.006 : 0), y.muneca],
-    ],
-    anchos: [w.brazoSup * 1.08, w.brazoSup, w.codo, (w.codo + w.muneca) / 2 * 1.04, w.muneca],
-    mano: { x: bx(y.muneca) + (grados > 9 ? H * 0.006 : 0), y0: y.muneca, y1: y.puntaMano },
+  const S0 = [w.hombro - w.brazoSup * 0.95, brazoY0];
+  const anchosBrazo = [w.brazoSup * 1.08, w.brazoSup, w.codo, ((w.codo + w.muneca) / 2) * 1.04, w.muneca];
+  const uBrazo = [brazoY0, (brazoY0 + y.codo) / 2, y.codo, (y.codo + y.muneca) / 2, y.muneca];
+  const unit = (v) => { const l = Math.hypot(v[0], v[1]) || 1; return [v[0] / l, v[1] / l]; };
+  const mitad = (p, q) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+
+  const brazoCaido = (grados) => {
+    const tan = Math.tan((grados * Math.PI) / 180);
+    const bx = (yy) => S0[0] + (yy - brazoY0) * tan;
+    const dd = grados > 9 ? 1 : 0;
+    const linea = [
+      [bx(uBrazo[0]), uBrazo[0]], [bx(uBrazo[1]), uBrazo[1]], [bx(uBrazo[2]), uBrazo[2]],
+      [bx(uBrazo[3]) + dd * H * 0.004, uBrazo[3]], [bx(uBrazo[4]) + dd * H * 0.006, uBrazo[4]],
+    ];
+    return { tipo: 'caido', linea, anchos: anchosBrazo, u: uBrazo, tan, mano: { x: linea[4][0], y0: y.muneca, y1: y.puntaMano } };
+  };
+  // Mano en la cintura: codo hacia afuera y muñeca sobre la cadera.
+  const brazoCintura = () => {
+    const codo = [S0[0] + H * 0.064, lerp(y.axila, y.cintura, 0.5)];
+    const mun = [w.cadera * 0.98 + H * 0.004, y.cintura + (y.cadera - y.cintura) * 0.72];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: unit([mun[0] - m2[0], mun[1] - m2[1]]) };
+  };
+  // Mano en el bolsillo: el antebrazo baja hacia la cadera y la mano no se ve.
+  const brazoBolsillo = () => {
+    const codo = [S0[0] + H * 0.03, lerp(y.axila, y.cintura, 0.75)];
+    const mun = [w.cadera * 0.92, y.cadera + H * 0.012];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    return { tipo: 'bolsillo', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo };
+  };
+  // Saludo: el codo baja `codo` grados bajo la horizontal y el antebrazo sube inclinado `antebrazo` grados hacia afuera.
+  const brazoSaludo = () => {
+    const rad = (g) => (g * Math.PI) / 180;
+    const Lu = H * 0.16, Lf = H * 0.105;
+    const codo = [S0[0] + Lu * Math.cos(rad(pose.saludo.codo)), S0[1] + Lu * Math.sin(rad(pose.saludo.codo))];
+    const mun = [codo[0] + Lf * Math.sin(rad(pose.saludo.antebrazo)), codo[1] - Lf * Math.cos(rad(pose.saludo.antebrazo))];
+    return { tipo: 'saludo', linea: [S0, mitad(S0, codo), codo, mitad(codo, mun), mun], anchos: anchosBrazo, u: uBrazo, manoRot: pose.saludo.mano };
   };
 
   // Saludo: `saludo` 'derecha' levanta la mano derecha de la persona, que de frente queda a la izquierda de quien mira.
   const saludoLado = opc.saludo === 'derecha' ? -1 : opc.saludo === 'izquierda' ? 1 : 0;
-  const S0 = brazo.linea[0];
-  const codoS = [S0[0] + H * 0.092, S0[1] + H * 0.131];
-  const munS = [codoS[0] + H * 0.028, codoS[1] - H * 0.104];
-  brazo.u = brazo.linea.map((p) => p[1]);
-  const brazoSal = {
-    linea: [S0, [(S0[0] + codoS[0]) / 2, (S0[1] + codoS[1]) / 2], codoS, [(codoS[0] + munS[0]) / 2, (codoS[1] + munS[1]) / 2], munS],
-    anchos: brazo.anchos, u: brazo.u,
-  };
+  const ladoLibre = saludoLado ? -saludoLado : 1; // el brazo que lleva la pose especial (cintura, bolsillo)
+  const anguloDe = (s) => (pose.angulos ? pose.angulos[s] : grados0);
+  const brazos = {};
+  for (const s of [1, -1]) {
+    if (s === saludoLado) brazos[s] = brazoSaludo();
+    else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();
+    else if (s === ladoLibre && pose.brazoLibre === 'bolsillo') brazos[s] = brazoBolsillo();
+    else brazos[s] = brazoCaido(anguloDe(s));
+  }
 
-  // Pierna derecha.
-  const sep = (typeof opc.piernas === 'number' ? opc.piernas : 1) * 0.0;
-  const piernaX = (yy) => {
-    const t = (yy - y.cadera) / (y.tobillo - y.cadera);
-    return w.cadera * 0.5 + (H * 0.006) * t + sep;
+  // Piernas. La que no carga el peso se abre un poco más y gira más el pie; `abre` ensancha la postura.
+  const baseX = (yy) => w.cadera * 0.5 + H * 0.006 * ((yy - y.cadera) / (y.tobillo - y.cadera));
+  const piernaDe = (s) => {
+    const libre = pose.carga !== 0 && s !== pose.carga ? 1 : 0;
+    const abre = (pose.abre - 1) * H * 0.02;
+    const dxTob = abre + libre * H * 0.016, dxRod = abre * 0.5 + libre * H * 0.008;
+    const yMuslo = lerp(y.cadera, y.rodilla, 0.5), yPant = lerp(y.rodilla, y.tobillo, 0.35);
+    return {
+      linea: [
+        [baseX(y.cadera), y.cadera], [baseX(yMuslo) + dxRod * 0.25, yMuslo], [baseX(y.rodilla) + dxRod, y.rodilla],
+        [baseX(yPant) + (dxRod + dxTob) * 0.6, yPant], [baseX(y.tobillo) + dxTob, y.tobillo],
+      ],
+      anchos: [w.muslo * 1.05, w.muslo * 0.9, w.rodilla, w.pantorrilla, w.tobillo],
+      pie: { x: baseX(y.tobillo) + dxTob + H * 0.004, y0: y.tobillo, y1: suelo, ancho: H * 0.021 + w.tobillo * 0.7, largo: H * 0.045, giro: pose.giro * (libre ? 1.35 : 1) },
+    };
   };
-  const pierna = {
-    linea: [
-      [piernaX(y.cadera), y.cadera],
-      [piernaX(lerp(y.cadera, y.rodilla, 0.5)), lerp(y.cadera, y.rodilla, 0.5)],
-      [piernaX(y.rodilla), y.rodilla],
-      [piernaX(lerp(y.rodilla, y.tobillo, 0.35)), lerp(y.rodilla, y.tobillo, 0.35)],
-      [piernaX(y.tobillo), y.tobillo],
-    ],
-    anchos: [w.muslo * 1.05, w.muslo * 0.9, w.rodilla, w.pantorrilla, w.tobillo],
-    pie: { x: piernaX(y.tobillo) + H * 0.004, y0: y.tobillo, y1: suelo, ancho: H * 0.021 + w.tobillo * 0.7, largo: H * 0.045 },
-  };
+  const piernas = { 1: piernaDe(1), '-1': piernaDe(-1) };
 
-  return { sexo, edad, corpulencia: corp, cm, H, cx, top, suelo, y, w, grados, tan, brazo, brazoSal, saludoLado, pierna, cabezas, u, hombroX };
+  return { sexo, edad, corpulencia: corp, cm, H, cx, top, suelo, y, w, grados: grados0, pose, brazos, saludoLado, piernas, cabezas, u, hombroX: w.hombro };
 }
 
 /** Mitad derecha del contorno del torso (de la base del cuello a la entrepierna), desplazada `d` hacia afuera. */
@@ -2105,17 +2166,17 @@ function trazoTorso(M, d = 0) {
 const lado = (pts, s, cx) => pts.map((p) => [cx + s * (p[0]), p[1], p[2]]);
 
 /**
- * Líneas centrales del brazo y de la pierna en el lado `s` (+1 a la derecha de quien mira, -1 a su izquierda).
- * Si ese lado es el del saludo, el brazo sale levantado.
+ * Línea central del brazo en el lado `s` (+1 a la derecha de quien mira, -1 a su izquierda), con la pose que le toca:
+ * caído, en la cintura, en el bolsillo o saludando.
  */
 function brazoLado(M, s) {
-  const b = s === M.saludoLado ? M.brazoSal : M.brazo;
-  return { linea: lado(b.linea, s, M.cx), anchos: b.anchos, u: b.u };
+  const b = M.brazos[s];
+  return { ...b, linea: lado(b.linea, s, M.cx) };
 }
 
 /**
  * Punto del brazo (x, y absolutos y semiancho) según el parámetro `uu`, que para el brazo caído es la altura y
- * y para el levantado recorre los mismos tramos. Más allá de la muñeca sigue la dirección del antebrazo.
+ * y para los demás recorre los mismos tramos. Más allá de la muñeca sigue la dirección del antebrazo.
  */
 function brazoEnU(M, s, uu) {
   const { linea: L, anchos: A, u: U } = brazoLado(M, s);
@@ -2127,8 +2188,11 @@ function brazoEnU(M, s, uu) {
   }
   return { x: L[0][0], y: L[0][1], w: A[0] };
 }
+
+/** Línea central de la pierna del lado `s` con su pie, en coordenadas absolutas. */
 function piernaLado(M, s) {
-  return { linea: lado(M.pierna.linea, s, M.cx), anchos: M.pierna.anchos };
+  const p = M.piernas[s];
+  return { linea: lado(p.linea, s, M.cx), anchos: p.anchos, pie: { ...p.pie, x: M.cx + s * p.pie.x } };
 }
 
 function trazoBrazo(M, s, holgura = 0) {
@@ -2140,17 +2204,25 @@ function trazoPierna(M, s, holgura = 0) {
   return suavizar(tubo(p.linea, p.anchos.map((a) => a + holgura)));
 }
 
-/** Piezas (rutas) de la mano: una sola si cuelga; palma, cuatro dedos y pulgar si saluda. */
+/** Piezas (rutas) de la mano; vacío si el brazo está en el bolsillo (la mano no se ve). */
 function trazoMano(M, s) {
-  return s === M.saludoLado ? manoSaludo(M, s) : [manoCaida(M, s)];
+  const b = M.brazos[s];
+  if (b.tipo === 'saludo') return manoSaludo(M, s);
+  if (b.tipo === 'bolsillo') return [];
+  if (b.tipo === 'cintura') return [manoCerrada(M, s)];
+  return [manoCaida(M, s)];
 }
 
 /** Mano abierta, con la palma hacia quien mira, al final del antebrazo levantado. */
 function manoSaludo(M, s) {
-  const { linea: L } = brazoLado(M, s);
+  const b = brazoLado(M, s);
+  const L = b.linea;
   const W = L[L.length - 1], P = L[L.length - 2];
   const l = Math.hypot(W[0] - P[0], W[1] - P[1]) || 1;
-  const u = [(W[0] - P[0]) / l, (W[1] - P[1]) / l];
+  let u = [(W[0] - P[0]) / l, (W[1] - P[1]) / l];
+  // La mano puede ir girada respecto del antebrazo: positivo la inclina hacia afuera.
+  const rot = ((b.manoRot ?? 0) * Math.PI) / 180 * (s > 0 ? -1 : 1);
+  u = [u[0] * Math.cos(rot) - u[1] * Math.sin(rot), u[0] * Math.sin(rot) + u[1] * Math.cos(rot)];
   const v = [-u[1], u[0]];
   const wm = M.w.muneca, largo = M.y.puntaMano - M.y.muneca, palma = largo * 0.5, pw = wm * 1.45;
   const ts = -s; // el pulgar queda del lado del cuerpo
@@ -2169,10 +2241,10 @@ function manoSaludo(M, s) {
   return partes;
 }
 
-/** Antebrazo levantado desde el parámetro `uDesde` hasta la muñeca (se dibuja sobre mantos que lo taparían). */
+/** Antebrazo desde el parámetro `uDesde` hasta la muñeca (se dibuja sobre mantos que lo taparían). */
 function trazoAntebrazo(M, s, uDesde) {
   const n = 4, linea = [], anchos = [];
-  const uFin = M.brazo.u[M.brazo.u.length - 1];
+  const uFin = M.brazos[s].u[M.brazos[s].u.length - 1];
   for (let i = 0; i <= n; i++) {
     const q = brazoEnU(M, s, lerp(uDesde, uFin, i / n));
     linea.push([q.x, q.y]); anchos.push(q.w);
@@ -2180,11 +2252,23 @@ function trazoAntebrazo(M, s, uDesde) {
   return suavizar(tubo(linea, anchos, 'plana'));
 }
 
+/** Mano cerrada apoyada en la cintura. */
+function manoCerrada(M, s) {
+  const b = brazoLado(M, s);
+  const W = b.linea[b.linea.length - 1];
+  const d = [b.manoDir[0] * s, b.manoDir[1]];
+  const v = [-d[1], d[0]];
+  const wm = M.w.muneca, largo = (M.y.puntaMano - M.y.muneca) * 0.62;
+  const loc = (a, c) => [W[0] + d[0] * a + v[0] * c, W[1] + d[1] * a + v[1] * c];
+  return suavizar([loc(-2, -wm), loc(largo * 0.35, -wm * 1.45), loc(largo * 0.8, -wm * 1.2), loc(largo, 0), loc(largo * 0.8, wm * 1.2), loc(largo * 0.35, wm * 1.45), loc(-2, wm)], true);
+}
+
 function manoCaida(M, s) {
-  const { x, y0, y1 } = M.brazo.mano;
+  const b = M.brazos[s];
+  const { x, y0, y1 } = b.mano;
   const wm = M.w.muneca;
   const xx = M.cx + s * x;
-  const lx = s * (y1 - y0) * M.tan * 0.5;
+  const lx = s * (y1 - y0) * b.tan * 0.5;
   const pts = [
     [xx - wm * 1.0, y0 - 2],
     [xx - wm * 1.25 + lx * 0.3, y0 + (y1 - y0) * 0.35],
@@ -2197,15 +2281,16 @@ function manoCaida(M, s) {
   return suavizar(pts, true);
 }
 
+/** Pie visto de frente; `giro` abre la punta hacia afuera. */
 function trazoPie(M, s) {
-  const { x, y0, y1, ancho, largo } = M.pierna.pie;
-  const xx = M.cx + s * x;
+  const { x: xx, y0, y1, ancho, largo, giro } = piernaLado(M, s).pie;
+  const punta = s * largo * Math.tan(((giro ?? 10) * Math.PI) / 180);
   const pts = [
     [xx - ancho * 0.78, y0 - 4],
     [xx - ancho * 0.9, y0 + (y1 - y0) * 0.55],
-    [xx - ancho * 1.25 + s * ancho * 0.1, y1 - largo * 0.15],
-    [xx + s * ancho * 0.3, y1 + 0.5],
-    [xx + ancho * 1.25 + s * ancho * 0.1, y1 - largo * 0.15],
+    [xx - ancho * 1.25 + punta, y1 - largo * 0.15],
+    [xx + punta * 1.3, y1 + 0.5],
+    [xx + ancho * 1.25 + punta, y1 - largo * 0.15],
     [xx + ancho * 0.9, y0 + (y1 - y0) * 0.55],
     [xx + ancho * 0.78, y0 - 4],
   ];
@@ -2226,7 +2311,7 @@ function trazoCuello(M) {
   return suavizar(pts, true);
 }
 
-Object.assign(__e, { LIENZO, CORPULENCIAS, POSTURAS, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello });
+Object.assign(__e, { LIENZO, CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello });
 return __e;
 })();
 
@@ -2239,7 +2324,7 @@ const __e = {};
 // `detalles` (trazos, botones, ribetes) se dibujan encima. Las medidas son fracciones de la altura (H).
 
 const { suavizar, espejo, poligono, tubo, lerp, limitar, oscurecer, aclarar } = __m['util'];
-const { perfilTorso, brazoEnU } = __m['cuerpo'];
+const { perfilTorso, brazoEnU, piernaLado } = __m['cuerpo'];
 
 // ---------- Ayudas ----------
 
@@ -2280,14 +2365,17 @@ const parte = (d, fill, k, extra = {}) => ({ d, fill, contorno: oscurecer(k.prin
 const linea = (d, stroke, sw, op = 1, extra = {}) => ({ d, fill: 'none', stroke, sw, op, cap: 'round', ...extra });
 const sombraDe = (c) => oscurecer(c, 0.32);
 
-/** Pliegues verticales entre dos alturas, siguiendo el ancho del perfil. */
+/** Pliegues verticales entre dos alturas: una línea de sombra y, al lado, otra de luz, ambas suaves, para dar relieve sin dibujar bordes. */
 function pliegues(M, perfil, yA, yB, n, color, amp = 0.012) {
   const out = [];
   for (let i = 1; i <= n; i++) {
     const f = (i / (n + 1)) * 2 - 1;
     const xa = f * anchoEn(perfil, yA) * 0.92, xb = f * anchoEn(perfil, yB) * 0.96;
     const mx = (xa + xb) / 2 + (i % 2 ? 1 : -1) * M.H * amp;
-    out.push(linea(`M${M.cx + xa} ${yA}Q${M.cx + mx} ${(yA + yB) / 2} ${M.cx + xb} ${yB - (i % 2) * M.H * 0.006}`, sombraDe(color), 1.3, 0.38));
+    const fin = yB - (i % 2) * M.H * 0.006;
+    const ruta = (dx) => `M${M.cx + xa + dx} ${yA}Q${M.cx + mx + dx} ${(yA + yB) / 2} ${M.cx + xb + dx} ${fin}`;
+    out.push(linea(ruta(0), sombraDe(color), 2.2, 0.34, { suave: true }));
+    out.push(linea(ruta(2.6), aclarar(color, 0.28), 1.6, 0.32, { suave: true }));
   }
   return out;
 }
@@ -2389,7 +2477,7 @@ function mangaForma(M, s, tipo, d, vuelo = 0) {
     if (tipo === 'campana') f = 1 + (1.2 + vuelo * 10) * t ** 1.6;
     else if (tipo === 'ancha') f = 1 + 0.7 * t;
     else if (tipo === 'globo') f = 1.5 - 0.5 * Math.min(1, t * 2.2) + (t > 0.8 ? 0.1 : 0);
-    else if (tipo === 'kimono') { f = 1.7 + 1.0 * t; desp = H * 0.028 * t; }
+    else if (tipo === 'kimono') { f = 1.55 + 0.85 * t; desp = H * 0.026 * t; }
     else if (tipo === 'abullonada') f = 1.55 - 0.55 * Math.min(1, t * 1.6);
     // Con el brazo levantado la manga ancha se recoge hacia el codo: menos vuelo.
     if (s === M.saludoLado) f = 1 + (f - 1) * 0.55;
@@ -2405,7 +2493,7 @@ function mangas(M, tipo, d, k, F, vuelo, puño) {
   if (!tipo || tipo === 'sin') return { partes, detalles };
   for (const s of [1, -1]) {
     const m = mangaForma(M, s, tipo, d, vuelo);
-    partes.push(parte(suavizar(m.pts), F, k));
+    partes.push(parte(suavizar(m.pts), F, k, { proyecta: true }));
     if (puño) {
       const { x, y, w } = m.fin;
       detalles.push(linea(`M${x - w * 0.97} ${y - 1.5}L${x + w * 0.97} ${y - 1.5}`, k.ribete, Math.max(3, M.H * 0.011), 1, { cap: 'butt' }));
@@ -2502,7 +2590,7 @@ function pantalon(M, p, k, ctx) {
   const half = [[0, alto, true], [w.cintura + d * 1.2, alto, true], [lerp(w.cintura, w.cadera, 0.7) + d, lerp(alto, y.cadera, 0.6)], [w.cadera + d * 1.3, y.cadera], [w.cadera * 0.98 + d, lerp(y.cadera, y.entrepierna, 0.7)], [0, y.entrepierna + H * 0.012, true]];
   partes.push(parte(suavizar(espejo(half, cx)), F, k));
   for (const s of [1, -1]) {
-    const Lg = M.pierna;
+    const Lg = piernaLado(M, s);
     const pts = [], ws = [];
     const yy0 = y.cadera, n = 6;
     for (let i = 0; i < n; i++) {
@@ -2519,7 +2607,7 @@ function pantalon(M, p, k, ctx) {
       }
       let f = 1 + (factor - 1) * (p.ancho === 'bombacho' ? Math.sin(Math.min(1, t * 1.4) * Math.PI * 0.5) * (t > 0.78 ? 1 - (t - 0.78) * 3.4 : 1) : p.ancho === 'campana' ? t ** 2 : Math.min(1, t * 2));
       if (p.ancho === 'ajustado') f = 1;
-      pts.push([cx + s * q.x, yy]);
+      pts.push([q.x, yy]);
       ws.push(q.w * f + d);
     }
     partes.push(parte(suavizar(tubo(pts, ws, 'plana')), F, k));
@@ -2527,7 +2615,7 @@ function pantalon(M, p, k, ctx) {
   const detalles = [linea(`M${cx - w.cintura - d} ${alto + 3}L${cx + w.cintura + d} ${alto + 3}`, k.ribete ? k.ribete : sombraDe(k.principal), Math.max(3, H * 0.008), 0.9, { cap: 'butt' }),
     linea(`M${cx} ${alto + 5}L${cx} ${y.entrepierna + H * 0.01}`, sombraDe(k.principal), 1.2, 0.5)];
   if (p.cordon) detalles.push(linea(`M${cx - 4} ${alto + 6}q4 10 -2 18M${cx + 4} ${alto + 6}q-4 10 2 18`, k.detalle, 1.6, 0.9));
-  if (p.puños && k.ribete) for (const s of [1, -1]) detalles.push(linea(`M${cx + s * (M.pierna.linea[4][0] - M.pierna.anchos[4] * 1.5)} ${yHem - 2}L${cx + s * (M.pierna.linea[4][0] + M.pierna.anchos[4] * 1.5)} ${yHem - 2}`, k.ribete, 4, 1, { cap: 'butt' }));
+  if (p.puños && k.ribete) for (const s of [1, -1]) { const Lp = piernaLado(M, s); detalles.push(linea(`M${Lp.linea[4][0] - Lp.anchos[4] * 1.5} ${yHem - 2}L${Lp.linea[4][0] + Lp.anchos[4] * 1.5} ${yHem - 2}`, k.ribete, 4, 1, { cap: 'butt' })); }
   return { atras: [], partes, detalles };
 }
 
@@ -2854,34 +2942,36 @@ function calzado(M, p, k, ctx) {
   const { H, y, cx, w } = M;
   const tipo = p.tipo ?? 'zapatos';
   const partes = [], detalles = [];
-  const pie = M.pierna.pie;
   for (const s of [1, -1]) {
-    const x = cx + s * pie.x;
+    const PL = piernaLado(M, s);
+    const pie = PL.pie;
+    const x = pie.x;
+    const giro = s * pie.largo * Math.tan(((pie.giro ?? 10) * Math.PI) / 180);
     const aw = pie.ancho, yT = y.tobillo - H * 0.01;
     const suelaY = M.suelo;
     const zap = (altoY) => [
-      [x - aw * 0.92, altoY], [x - aw * 1.0, lerp(altoY, suelaY, 0.6)], [x - aw * 1.36 + s * aw * 0.1, suelaY - pie.largo * 0.2],
-      [x + s * aw * 0.35, suelaY + 1], [x + aw * 1.36 + s * aw * 0.1, suelaY - pie.largo * 0.2], [x + aw * 1.0, lerp(altoY, suelaY, 0.6)], [x + aw * 0.92, altoY],
+      [x - aw * 0.92, altoY], [x - aw * 1.0, lerp(altoY, suelaY, 0.6)], [x - aw * 1.36 + giro, suelaY - pie.largo * 0.2],
+      [x + giro * 1.3, suelaY + 1], [x + aw * 1.36 + giro, suelaY - pie.largo * 0.2], [x + aw * 1.0, lerp(altoY, suelaY, 0.6)], [x + aw * 0.92, altoY],
     ];
     switch (tipo) {
       case 'descalzo': break;
       case 'sandalias': case 'sandalia-romana': {
         partes.push(parte(suavizar(zap(suelaY - H * 0.012), true), k.principal, k, { plano: true, volumen: false }));
         for (let i = 0; i < 3; i++) detalles.push(linea(`M${x - aw * 0.95} ${suelaY - H * (0.014 + i * 0.011)}L${x + aw * 0.95} ${suelaY - H * (0.014 + i * 0.011) - 2}`, k.secundario ?? k.principal, 2, 1));
-        if (tipo === 'sandalia-romana') for (let i = 0; i < 6; i++) detalles.push(linea(`M${x - M.pierna.anchos[4] * 1.1} ${yT - i * H * 0.018}L${x + M.pierna.anchos[4] * 1.1} ${yT - i * H * 0.018 - 6}`, k.secundario ?? k.principal, 1.8, 0.95));
+        if (tipo === 'sandalia-romana') for (let i = 0; i < 6; i++) detalles.push(linea(`M${x - PL.anchos[4] * 1.1} ${yT - i * H * 0.018}L${x + PL.anchos[4] * 1.1} ${yT - i * H * 0.018 - 6}`, k.secundario ?? k.principal, 1.8, 0.95));
         break;
       }
       case 'mocasines': case 'zapatos': case 'zuecos': case 'zapatillas': {
         const pts = zap(tipo === 'zapatillas' ? y.tobillo + H * 0.01 : yT - H * 0.004);
         partes.push(parte(suavizar(pts, true), k.principal, k));
-        detalles.push(linea(`M${x - aw * 1.25} ${suelaY - 2}L${x + aw * 1.25} ${suelaY - 2}`, k.ribete ?? oscurecer(k.principal, 0.5), 2.4, 1, { cap: 'butt' }));
+        detalles.push(linea(`M${x - aw * 1.25} ${suelaY - 2}L${x + aw * 1.25} ${suelaY - 2}`, k.ribete ?? oscurecer(k.principal, 0.5), 2.4, 0.55, { cap: 'butt', suave: true }));
         if (tipo === 'zapatos') detalles.push(linea(`M${x - aw * 0.5} ${suelaY - H * 0.026}Q${x} ${suelaY - H * 0.034} ${x + aw * 0.5} ${suelaY - H * 0.026}`, sombraDe(k.principal), 1.3, 0.7));
         if (p.hebilla) detalles.push({ d: poligono([[x - 4, suelaY - H * 0.03], [x + 4, suelaY - H * 0.03], [x + 4, suelaY - H * 0.018], [x - 4, suelaY - H * 0.018]]), fill: k.detalle, stroke: oscurecer(k.detalle, 0.4), sw: 0.9 });
         break;
       }
       case 'botas': case 'botas-altas': case 'polainas': {
         const yTop = tipo === 'botas' ? lerp(y.rodilla, y.tobillo, 0.45) : tipo === 'polainas' ? lerp(y.rodilla, y.tobillo, 0.3) : y.rodilla + H * 0.01;
-        const L = M.pierna;
+        const L = PL;
         const linePts = [], ws = [];
         for (let i = 0; i <= 4; i++) {
           const yy = lerp(yTop, y.tobillo, i / 4);
@@ -2889,7 +2979,7 @@ function calzado(M, p, k, ctx) {
           for (let j = 0; j < L.linea.length - 1; j++) {
             if (yy <= L.linea[j + 1][1]) { const tt = (yy - L.linea[j][1]) / ((L.linea[j + 1][1] - L.linea[j][1]) || 1); q = { x: lerp(L.linea[j][0], L.linea[j + 1][0], tt), w: lerp(L.anchos[j], L.anchos[j + 1], tt) }; break; }
           }
-          linePts.push([cx + s * q.x, yy]); ws.push(q.w * 1.12 + H * 0.003);
+          linePts.push([q.x, yy]); ws.push(q.w * 1.12 + H * 0.003);
         }
         partes.push(parte(suavizar(tubo(linePts, ws, 'plana')), k.principal, k));
         partes.push(parte(suavizar(zap(y.tobillo - H * 0.02), true), k.principal, k));
@@ -2939,21 +3029,25 @@ return __e;
 __m['svg'] = (() => {
 const __e = {};
 // Dibuja una persona descrita por `generarPersona` como SVG.
+//
+// Sin bordes: el volumen sale de degradados propios de cada color (luz desde arriba a la izquierda, sombra y calor
+// en el lado opuesto) y de sombras suaves que cada capa proyecta sobre las de abajo (la manga sobre el torso, la
+// cabeza sobre el cuello, el pelo sobre la frente). Cada forma se define una vez y se reutiliza con <use>.
 
 const { LIENZO, medidas, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello, trazoAntebrazo } = __m['cuerpo'];
 const { geometriaCabeza, trazoCabeza, trazoOrejas, rasgosRostro, PEINADOS, BARBAS, TOCADOS } = __m['cabeza'];
 const { PLANTILLAS, ORDEN_RANURAS, finManga } = __m['prendas'];
 const { PATRONES } = __m['patrones'];
-const { oscurecer, aclarar, escapar, num } = __m['util'];
+const { mezclar, escapar, num } = __m['util'];
 
-function contexto() {
+function contexto(pref) {
   const defs = new Map();
   return {
     defs,
     patron(tipo, a, b, escala = 1) {
       const f = PATRONES[tipo] ?? PATRONES.rayas;
       const e = Math.round(escala * 100) / 100;
-      const id = `p-${tipo}-${a.slice(1)}-${b.slice(1)}-${String(e).replace('.', '_')}`;
+      const id = `${pref}-p-${tipo}-${a.slice(1)}-${b.slice(1)}-${String(e).replace('.', '_')}`;
       if (!defs.has(id)) {
         const [w, h, cuerpo] = f(a, b, e);
         defs.set(id, `<pattern id="${id}" width="${num(w)}" height="${num(h)}" patternUnits="userSpaceOnUse">${cuerpo}</pattern>`);
@@ -2963,7 +3057,23 @@ function contexto() {
   };
 }
 
+/** Hash corto y determinista (FNV-1a) para que los id de cada figura no choquen con los de otra en la misma página. */
+function hashCorto(texto) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < texto.length; i++) { h ^= texto.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h.toString(36);
+}
+
 const attr = (o) => Object.entries(o).filter(([, v]) => v !== undefined && v !== null && v !== false).map(([k, v]) => ` ${k}="${escapar(v)}"`).join('');
+
+/** Gira una ruta de comandos absolutos (M, L, C, Z) `ang` grados alrededor de (cx, cy). */
+function rotarRuta(d, ang, cx, cy) {
+  const r = (ang * Math.PI) / 180, co = Math.cos(r), si = Math.sin(r);
+  return d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_, a, b) => {
+    const x = Number(a) - cx, y = Number(b) - cy;
+    return `${num(cx + x * co - y * si)} ${num(cy + x * si + y * co)}`;
+  });
+}
 
 function trazoDe(s) {
   const o = { d: s.d, fill: s.fill ?? 'none' };
@@ -2978,50 +3088,89 @@ function trazoDe(s) {
   return o;
 }
 
-/** Dibuja un detalle; si trae `contorno` pone antes un trazo más grueso oscuro. */
-function dibujarDetalle(s) {
-  let out = '';
-  if (s.contorno && s.stroke) out += `<path${attr({ d: s.d, fill: 'none', stroke: s.contorno, 'stroke-width': (s.sw ?? 1) + 2.2, 'stroke-linecap': s.cap === 'butt' ? 'butt' : 'round', 'stroke-dasharray': s.dash })}/>`;
-  out += `<path${attr(trazoDe(s))}/>`;
-  return out;
-}
-
-/** Grupo de piezas unidas: primero el contorno de todas, luego el relleno, luego el sombreado. */
-function dibujarGrupo(piezas, nivel, esquema) {
-  if (!piezas.length) return '';
-  let out = '';
-  for (const s of piezas) out += `<path${attr({ d: s.d, fill: s.fill, stroke: s.contorno, 'stroke-width': s.swContorno ?? 3, 'stroke-linejoin': 'round', opacity: s.op !== undefined && s.op !== 1 ? s.op : undefined })}/>`;
-  for (const s of piezas) out += `<path${attr({ d: s.d, fill: s.fill, opacity: s.op !== undefined && s.op !== 1 ? s.op : undefined })}/>`;
-  if (nivel !== 'minimo') {
-    for (const s of piezas) {
-      if (s.volumen === false || s.plano) continue;
-      out += `<path${attr({ d: s.d, fill: 'url(#sombra-h)', opacity: s.sombra ?? (nivel === 'alto' ? 1 : 0.75) })}/>`;
-      if (nivel === 'alto') out += `<path${attr({ d: s.d, fill: 'url(#sombra-v)', opacity: 0.55 })}/>`;
-    }
-  }
-  return out;
-}
-
-function pielDe(piel) {
-  return { fill: piel, contorno: oscurecer(piel, 0.42), swContorno: 2.8 };
-}
-
 /** Devuelve el SVG (texto) de la persona descrita. */
 function renderizar(persona, opciones = {}) {
   const nivel = opciones.detalle ?? persona.detalle ?? 'medio';
+  const contorno = opciones.contorno ?? persona.contorno ?? 'ninguno'; // 'ninguno' | 'suave'
   const fondo = opciones.fondo ?? persona.fondo ?? 'ninguno';
   const M = medidas(persona.cuerpo);
   const G = geometriaCabeza(M, persona.rostro);
-  const ctx = contexto();
   const piel = persona.piel;
   const { cx } = M;
+  const alto = nivel === 'alto';
+  const plano = nivel === 'minimo';
 
-  const capas = []; // [orden, svg]
-  // --- Sombra en el suelo ---
-  let suelo = '';
-  if (nivel !== 'minimo') {
-    suelo = `<ellipse cx="${cx}" cy="${LIENZO.suelo + 4}" rx="${num(M.H * 0.17)}" ry="${num(M.H * 0.014)}" fill="#000" opacity="0.16"/>`;
-  }
+  // --- Formas, degradados y sombras ---
+  // Las formas y el recorte son propios de cada figura: llevan un prefijo derivado de su contenido.
+  const pref = `x${hashCorto(JSON.stringify([persona.semilla, persona.piel, persona.cuerpo, persona.cabello, persona.tocado, persona.barba, persona.prendas.map((q) => [q.id, q.colores, q.params]), nivel, contorno]))}`;
+  const ctx = contexto(pref);
+  const caminos = [], idsSilueta = [], degradados = new Map();
+  let nForma = 0;
+  const reg = (d) => { const id = `${pref}f${nForma++}`; caminos.push(`<path id="${id}" d="${d}"/>`); idsSilueta.push(id); return id; };
+
+  const TONOS = {
+    piel: { sombra: '#5a1c10', luz: '#ffe6c4' },
+    pelo: { sombra: '#0c0710', luz: '#eadfcf' },
+    tela: { sombra: '#1a1230', luz: '#fff3da' },
+  };
+  /** Degradado propio de un color: luz a la izquierda, terminador y sombra cálida a la derecha. */
+  const grad = (hex, tipo) => {
+    const id = `${pref}-g-${alto ? 'a' : 'm'}-${tipo}-${hex.slice(1)}`;
+    if (!degradados.has(id)) {
+      const t = TONOS[tipo] ?? TONOS.tela, e = alto ? 1.2 : 1;
+      const st = (o, c) => `<stop offset="${o}" stop-color="${c}"/>`;
+      degradados.set(id, `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0.22">${st(0, mezclar(hex, t.sombra, 0.12 * e))}${st(0.13, mezclar(hex, t.luz, 0.14))}${st(0.33, mezclar(hex, t.luz, 0.28 * e))}${st(0.58, hex)}${st(0.82, mezclar(hex, t.sombra, 0.3 * e))}${st(1, mezclar(hex, t.sombra, 0.52 * e))}</linearGradient>`);
+    }
+    return `url(#${id})`;
+  };
+
+  const sombraProyectada = (ids) =>
+    `<g clip-path="url(#${pref}s)" opacity="${alto ? 0.44 : 0.34}"><g filter="url(#${pref}-bl)" transform="translate(3.5 5)" fill="#1c0f0c">${ids.map((id) => `<use href="#${id}"/>`).join('')}</g></g>`;
+
+  /** Capa de formas: su sombra proyectada sobre lo de abajo y luego los rellenos con degradado. */
+  const capa = (piezas, tipo = 'tela') => {
+    if (!piezas.length) return '';
+    const ids = piezas.map((p) => reg(p.d));
+    let out = plano ? '' : sombraProyectada(ids);
+    piezas.forEach((p, i) => {
+      const op = p.op !== undefined && p.op !== 1 ? p.op : undefined;
+      const esHex = typeof p.fill === 'string' && p.fill.startsWith('#');
+      const rellena = plano || p.plano || !esHex ? p.fill : grad(p.fill, tipo);
+      out += `<use${attr({ href: `#${ids[i]}`, fill: rellena, opacity: op })}/>`;
+      if (!plano && !p.plano && p.volumen !== false) {
+        if (!esHex) out += `<use href="#${ids[i]}" fill="url(#${pref}-sh)" opacity="0.6"/>`;
+        if (alto) out += `<use href="#${ids[i]}" fill="url(#${pref}-sv)" opacity="0.5"/>`;
+      }
+      if (contorno === 'suave' && esHex) out += `<use${attr({ href: `#${ids[i]}`, fill: 'none', stroke: mezclar(p.fill, '#000000', 0.35), 'stroke-width': 1, opacity: 0.35 })}/>`;
+    });
+    return out;
+  };
+
+  /** Detalles (trazos, botones, ribetes): se dibujan tal cual; los marcados `suave` van desenfocados, como pliegues. */
+  const detalles = (lista) => {
+    let duros = '', suaves = '';
+    for (const s of lista) {
+      const trazo = `<path${attr(trazoDe(s))}/>`;
+      if (s.suave && !plano) suaves += trazo; else duros += trazo;
+    }
+    return duros + (suaves ? `<g filter="url(#${pref}-bs)">${suaves}</g>` : '');
+  };
+
+  /** Capas con relleno y trazos sueltos (cabello, barba, tocado). */
+  const figuras = (lista, tipo, girar) => {
+    let out = '';
+    for (const s0 of lista) {
+      const s = girar ? { ...s0, d: girar(s0.d) } : s0;
+      if (s.fill === 'none') out += detalles([s]);
+      else out += capa([s], tipo);
+    }
+    return out;
+  };
+
+  // --- Pose de la cabeza: se giran las formas (no un grupo) para que sombras y recortes sigan coincidiendo ---
+  const angCabeza = M.pose.cabeza ?? 0;
+  const girar = Math.abs(angCabeza) > 0.05 ? (d) => rotarRuta(d, angCabeza, cx, M.y.cuello) : null;
+  const giraLista = (l) => (girar ? l.map((s) => ({ ...s, d: girar(s.d) })) : l);
 
   // --- Prendas ---
   const prendas = persona.prendas.map((pr) => {
@@ -3033,95 +3182,81 @@ function renderizar(persona, opciones = {}) {
   // --- Cabello, barba y tocado ---
   const colorPelo = persona.cabello?.color ?? '#3b2a20';
   const peinado = (PEINADOS[persona.cabello?.estilo] ?? PEINADOS.calvo)(G, colorPelo);
-  const barbaFn = BARBAS[persona.barba?.estilo] ?? BARBAS.ninguna;
-  const barba = barbaFn(G, persona.barba?.color ?? colorPelo);
+  const barba = (BARBAS[persona.barba?.estilo] ?? BARBAS.ninguna)(G, persona.barba?.color ?? colorPelo).flat();
   const toc = persona.tocado ? (TOCADOS[persona.tocado.id] ?? TOCADOS.ninguno)(G, persona.tocado.colores) : { atras: [], frente: [] };
-
-  const pelo = (lista) => lista.map((s) => ({ ...s, contorno: oscurecer(typeof s.fill === 'string' && s.fill.startsWith('#') ? s.fill : colorPelo, 0.5), swContorno: 2.4 }));
 
   let cuerpo = '';
   // 1. Detrás: capas, cabello largo, tocado trasero
-  const atrasPrendas = prendas.filter((p) => p.r.atras?.length);
-  for (const p of atrasPrendas) {
-    const piezas = p.r.atras.filter((s) => !s.atras);
-    cuerpo += dibujarGrupo(piezas, nivel);
-    for (const s of p.r.atras.filter((q) => q.atras)) cuerpo += dibujarDetalle(s);
+  for (const p of prendas.filter((q) => q.r.atras?.length)) {
+    cuerpo += capa(p.r.atras.filter((s) => !s.atras));
+    cuerpo += detalles(p.r.atras.filter((s) => s.atras));
   }
-  const dibujarLista = (lista, op) => {
-    let o = '';
-    for (const s of lista) {
-      if (s.stroke && s.fill === 'none') o += dibujarDetalle(s);
-      else o += dibujarGrupo([{ ...s, contorno: s.stroke ?? oscurecer(s.fill, 0.5), swContorno: 2.4, sombra: op }], nivel);
-    }
-    return o;
-  };
-  cuerpo += dibujarLista(toc.atras);
-  cuerpo += dibujarLista(pelo(peinado.atras), 0.5);
+  cuerpo += figuras(toc.atras, 'tela', girar);
+  cuerpo += figuras(peinado.atras, 'pelo', girar);
 
-  // 2. Piel
-  const sp = pielDe(piel);
-  const partesPiel = [
-    ...[1, -1].map((s) => ({ d: trazoPierna(M, s), ...sp })),
-    ...[1, -1].map((s) => ({ d: trazoPie(M, s), ...sp })),
-    { d: trazoTorso(M), ...sp },
-    ...[1, -1].map((s) => ({ d: trazoBrazo(M, s), ...sp })),
-    ...[1, -1].filter((s) => s !== M.saludoLado).flatMap((s) => trazoMano(M, s).map((d) => ({ d, ...sp }))),
-    { d: trazoCuello(M), ...sp },
-  ];
-  cuerpo += dibujarGrupo(partesPiel, nivel);
-  if (nivel === 'alto') {
-    // Sombra del mentón sobre el cuello.
-    cuerpo += `<path d="${suavizar2(G)}" fill="#000" opacity="0.18"/>`;
-  }
+  // 2. Piel: piernas y pies, torso, brazos, manos y cuello, cada uno proyectando su sombra sobre lo anterior
+  const sp = { fill: piel };
+  const brazosPiel = [1, -1].map((s) => ({ d: trazoBrazo(M, s), ...sp }));
+  const manosPiel = [1, -1].filter((s) => s !== M.saludoLado).flatMap((s) => trazoMano(M, s).map((d) => ({ d, ...sp })));
+  cuerpo += capa([...[1, -1].map((s) => ({ d: trazoPierna(M, s), ...sp })), ...[1, -1].map((s) => ({ d: trazoPie(M, s), ...sp }))], 'piel');
+  cuerpo += capa([{ d: trazoTorso(M), ...sp }], 'piel');
+  for (const b of brazosPiel) cuerpo += capa([b], 'piel');
+  cuerpo += capa(manosPiel, 'piel');
+  cuerpo += capa([{ d: trazoCuello(M), ...sp }], 'piel');
 
-  // 3. Ropa por ranura
+  // 3. Ropa por ranura; las mangas proyectan su propia sombra sobre el torso
   const ordenadas = prendas.slice().sort((a, b) => (ORDEN_RANURAS[a.ranura] ?? 50) - (ORDEN_RANURAS[b.ranura] ?? 50));
   for (const p of ordenadas) {
     cuerpo += `<g data-prenda="${escapar(p.id)}">`;
-    cuerpo += dibujarGrupo(p.r.partes, nivel);
-    for (const s of p.r.detalles) cuerpo += dibujarDetalle(s);
+    let lote = [];
+    for (const pieza of p.r.partes) {
+      if (pieza.proyecta) { cuerpo += capa(lote); lote = []; cuerpo += capa([pieza]); } else lote.push(pieza);
+    }
+    cuerpo += capa(lote);
+    cuerpo += detalles(p.r.detalles);
     cuerpo += '</g>';
   }
 
   // 3b. Mano en saludo: encima de la ropa para que ni mangas ni mantos la tapen.
   if (M.saludoLado) {
     const piezas = [];
-    const tieneManto = prendas.some((p) => p.ranura === 'capa');
-    if (tieneManto) {
+    if (prendas.some((p) => p.ranura === 'capa')) {
       const finMax = Math.max(M.y.codo, ...prendas.filter((p) => p.params?.manga && p.params.manga !== 'sin').map((p) => finManga(M, p.params.manga)));
       if (finMax < M.y.muneca - 2) piezas.push({ d: trazoAntebrazo(M, M.saludoLado, finMax), ...sp });
     }
     for (const d of trazoMano(M, M.saludoLado)) piezas.push({ d, ...sp });
-    cuerpo += `<g data-saludo="${M.saludoLado === -1 ? 'derecha' : 'izquierda'}">${dibujarGrupo(piezas, nivel)}</g>`;
+    cuerpo += `<g data-saludo="${M.saludoLado === -1 ? 'derecha' : 'izquierda'}">${capa(piezas, 'piel')}</g>`;
   }
 
   // 4. Cabeza
   const cabezaPieza = { d: trazoCabeza(G), ...sp };
   const orejas = trazoOrejas(G).map((d) => ({ d, ...sp }));
-  cuerpo += dibujarGrupo([...orejas, cabezaPieza], nivel);
-  if (nivel !== 'minimo') {
-    cuerpo += `<path d="${G.E([[0, 0.5], [0.9, 0.6], [0.92, 0.64], [0.74, 0.82], [0.44, 0.96], [0, 1.0]])}" fill="#000" opacity="0.07"/>`;
-  }
-  if (persona.rostro?.rasgos) for (const s of rasgosRostro(G, piel)) cuerpo += dibujarDetalle(s);
-  cuerpo += dibujarLista(pelo(barba.flat()), 0.5);
-  cuerpo += dibujarLista(pelo(peinado.frente), 0.5);
-  cuerpo += dibujarLista(toc.frente);
+  cuerpo += capa(giraLista([...orejas, cabezaPieza]), 'piel');
+  if (persona.rostro?.rasgos) cuerpo += detalles(giraLista(rasgosRostro(G, piel)));
+  cuerpo += figuras(barba, 'pelo', girar);
+  cuerpo += figuras(peinado.frente, 'pelo', girar);
+  cuerpo += figuras(toc.frente, 'tela', girar);
 
-  const alto = LIENZO.alto;
+  // --- Sombra en el suelo ---
+  const suelo = plano ? '' : `<ellipse cx="${cx}" cy="${LIENZO.suelo + 1}" rx="${num(M.H * 0.2)}" ry="${num(M.H * 0.017)}" fill="url(#${pref}-su)"/>`;
+
+  const inclina = M.pose.inclinacion ?? 0;
   const defs = [
-    '<linearGradient id="sombra-h" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0.34"/><stop offset="0.2" stop-color="#000" stop-opacity="0"/><stop offset="0.58" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></linearGradient>',
-    '<linearGradient id="sombra-v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.12"/><stop offset="0.5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.2"/></linearGradient>',
+    `<linearGradient id="${pref}-sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0.18"/><stop offset="0.25" stop-color="#fff" stop-opacity="0.16"/><stop offset="0.6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></linearGradient>`,
+    `<linearGradient id="${pref}-sv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.14"/><stop offset="0.5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.22"/></linearGradient>`,
+    `<radialGradient id="${pref}-su"><stop offset="0" stop-color="#1c0f0c" stop-opacity="0.34"/><stop offset="0.6" stop-color="#1c0f0c" stop-opacity="0.14"/><stop offset="1" stop-color="#1c0f0c" stop-opacity="0"/></radialGradient>`,
+    `<filter id="${pref}-bl" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3.6"/></filter>`,
+    `<filter id="${pref}-bs" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="0.9"/></filter>`,
+    ...degradados.values(),
     ...ctx.defs.values(),
+    ...caminos,
+    `<clipPath id="${pref}s">${idsSilueta.map((id) => `<use href="#${id}"/>`).join('')}</clipPath>`,
   ].join('');
-  const bg = fondo && fondo !== 'ninguno' ? `<rect width="${LIENZO.ancho}" height="${alto}" fill="${escapar(fondo)}"/>` : '';
+  const bg = fondo && fondo !== 'ninguno' ? `<rect width="${LIENZO.ancho}" height="${LIENZO.alto}" fill="${escapar(fondo)}"/>` : '';
   const titulo = persona.titulo ? `<title>${escapar(persona.titulo)}</title>` : '';
   const desc = persona.descripcion ? `<desc>${escapar(persona.descripcion)}</desc>` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LIENZO.ancho} ${alto}" role="img">${titulo}${desc}<defs>${defs}</defs>${bg}${suelo}${cuerpo}</svg>`;
-}
-
-function suavizar2(G) {
-  // Sombra bajo el mentón: elipse achatada sobre el cuello.
-  return G.C(0, 1.05, 0.62, 0.1);
+  const figura = Math.abs(inclina) > 0.02 ? `<g transform="rotate(${num(inclina)} ${cx} ${LIENZO.suelo})">${cuerpo}</g>` : cuerpo;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LIENZO.ancho} ${LIENZO.alto}" role="img">${titulo}${desc}<defs>${defs}</defs>${bg}${suelo}${figura}</svg>`;
 }
 
 Object.assign(__e, { renderizar });
@@ -3537,7 +3672,7 @@ const { PRENDAS_POR_ID, PRENDAS } = __m['datos/prendas'];
 const { ATUENDOS, ATUENDOS_POR_ID, REGIONES } = __m['datos/atuendos'];
 const { MANDIBULAS_ID, PEINADOS, BARBAS, TOCADOS } = __m['cabeza'];
 const { PATRONES_ID } = __m['patrones'];
-const { CORPULENCIAS, POSTURAS } = __m['cuerpo'];
+const { CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria } = __m['cuerpo'];
 const { renderizar } = __m['svg'];
 const { ETNIAS, ETNIAS_POR_ID } = __m['datos/etnias'];
 const { distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES } = __m['datos/colores-prendas'];
@@ -3872,6 +4007,17 @@ function generarPersona(opc = {}) {
   if (tocado && ['trarilonko'].includes(tocado.id)) tocado.colores.principal = '#b9bec6';
 
   const rostro = { ancho: 0.96 + ah.n() * 0.12, mandibula: ah.elegir(MANDIBULAS_ID), rasgos: !!opc.rasgos };
+  // Pose: casual y distinta con cada semilla, salvo que se pida 'firme' (simétrica) o una pose a medida.
+  let pose;
+  if (opc.pose === 'firme') pose = POSE_FIRME;
+  else {
+    pose = poseAleatoria(azar.hijo('pose'));
+    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
+    if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
+      const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
+      pose.angulos = { 1: base + pose.angulos[1] * 0.2 - 1, '-1': base + pose.angulos['-1'] * 0.2 - 1 };
+    }
+  }
   const az2 = azar.hijo('cuerpo');
   const corpulenciaEstimada = etnia ? az2.ponderado(sumaPesos(etnia, (e) => e.corpulencia)) : az2.elegir(['delgada', 'media', 'media', 'media', 'robusta']);
   let escalaAltura;
@@ -3882,7 +4028,7 @@ function generarPersona(opc = {}) {
   const cuerpo = {
     sexo, edad, escalaAltura,
     corpulencia: opc.corpulencia ?? corpulenciaEstimada,
-    altura: opc.altura, postura: opc.postura ?? 'firme',
+    altura: opc.altura, postura: opc.postura ?? 'firme', pose,
     saludo: opc.saludo === false || opc.saludo === 'ninguno' || opc.saludo === 'ninguna' ? null : (opc.saludo ?? 'derecha'),
   };
 
@@ -3907,7 +4053,7 @@ function generarPersona(opc = {}) {
     estimaciones, avisos,
     confianza: menorConfianza([atuendo.confianza, ...(etnia ? etnia.map((x) => x.e.confianza) : [])]),
     notas: [atuendo.nota, ...(etnia ? etnia.map((x) => x.e.nota) : [])].filter(Boolean),
-    detalle: opc.detalle ?? 'medio', fondo: opc.fondo ?? 'ninguno',
+    detalle: opc.detalle ?? 'medio', contorno: opc.contorno ?? 'ninguno', fondo: opc.fondo ?? 'ninguno',
   };
 }
 
@@ -4003,7 +4149,7 @@ function generarPersonaConRopaNueva(opc = {}) {
 
 function generarSVG(opc = {}) {
   const persona = opc.ropaNueva || opc.estilo ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
-  return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo });
+  return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno });
 }
 
 
@@ -4011,7 +4157,8 @@ function generarSVG(opc = {}) {
 
 
 
-Object.assign(__e, { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, buscarAtuendos, listarRegiones, listarCatalogo, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
+
+Object.assign(__e, { POSE_FIRME, poseAleatoria, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, buscarAtuendos, listarRegiones, listarCatalogo, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
 __e.PEINADOS = __m['cabeza'].PEINADOS;
 __e.BARBAS = __m['cabeza'].BARBAS;
 __e.TOCADOS = __m['cabeza'].TOCADOS;

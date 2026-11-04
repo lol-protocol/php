@@ -356,5 +356,60 @@
       "semilla": 68,
       "edad": 15
     }
+  },
+  {
+    "archivo": "pose-mano-en-cintura",
+    "opciones": {
+      "atuendo": "chile-dama-1955",
+      "semilla": 71,
+      "edad": 38,
+      "pose": {
+        "brazoLibre": "cintura",
+        "carga": 1,
+        "cabeza": 4
+      }
+    }
+  },
+  {
+    "archivo": "pose-brazo-en-bolsillo",
+    "opciones": {
+      "atuendo": "eeuu-jeans-1965",
+      "semilla": 72,
+      "edad": 24,
+      "pose": {
+        "brazoLibre": "bolsillo",
+        "carga": -1,
+        "cabeza": -5,
+        "abre": 1.35
+      }
+    }
+  },
+  {
+    "archivo": "pose-firme",
+    "opciones": {
+      "atuendo": "roma-senador",
+      "semilla": 73,
+      "edad": 55,
+      "pose": "firme"
+    }
+  },
+  {
+    "archivo": "borde-suave",
+    "opciones": {
+      "atuendo": "huaso-fiesta",
+      "semilla": 74,
+      "edad": 44,
+      "contorno": "suave"
+    }
+  },
+  {
+    "archivo": "detalle-alto-rasgos",
+    "opciones": {
+      "atuendo": "mapuche-mujer",
+      "semilla": 75,
+      "edad": 36,
+      "detalle": "alto",
+      "rasgos": true
+    }
   }
 ]

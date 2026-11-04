@@ -76,7 +76,9 @@
       <div><label for="edad">Edad</label><input id="edad" type="number" min="2" max="100" value="32"></div></div>
       <label for="corpulencia">Complexión</label>
       <select id="corpulencia"><option value="delgada">Delgada</option><option value="media" selected>Media</option><option value="robusta">Robusta</option><option value="corpulenta">Corpulenta</option></select>
-      <label for="postura">Postura de brazos</label>
+      <label for="pose">Pose</label>
+      <select id="pose"><option value="casual" selected>Casual (cambia con la semilla)</option><option value="firme">Firme (simétrica)</option></select>
+      <label for="postura">Brazos caídos (solo en pose firme)</label>
       <select id="postura"><option value="firme">Firme</option><option value="relajada">Relajada</option><option value="abierta">Abierta (muestra la ropa)</option></select>
       <label for="saludo">Saludo</label>
       <select id="saludo"><option value="derecha" selected>Mano derecha</option><option value="izquierda">Mano izquierda</option><option value="ninguno">Sin saludo</option></select>
@@ -86,6 +88,8 @@
       <label for="detalle">Detalle</label>
       <select id="detalle"><option value="minimo">Plano</option><option value="medio" selected>Medio</option><option value="alto">Alto</option></select>
       <label><input id="rasgos" type="checkbox"> Rasgos suaves en el rostro</label>
+      <label for="contorno">Bordes</label>
+      <select id="contorno"><option value="ninguno" selected>Sin bordes</option><option value="suave">Bordes suaves</option></select>
       <label for="fondo">Fondo</label>
       <select id="fondo"><option value="ninguno">Transparente</option><option value="#efe9dd" selected>Crema</option><option value="#c9d6d4">Verde agua</option><option value="#2f3a46">Pizarra</option></select>
     </fieldset>
@@ -129,8 +133,9 @@
     if (lista.some((a) => a.id === previo)) $('atuendo').value = previo;
   }
   function opciones(extra = {}) {
-    const o = { semilla, saludo: $('saludo').value, sexo: $('sexo').value, edad: Number($('edad').value) || 30, corpulencia: $('corpulencia').value, postura: $('postura').value,
+    const o = { semilla, saludo: $('saludo').value, contorno: $('contorno').value, sexo: $('sexo').value, edad: Number($('edad').value) || 30, corpulencia: $('corpulencia').value, postura: $('postura').value,
       detalle: $('detalle').value, rasgos: $('rasgos').checked, fondo: $('fondo').value, ...extra };
+    if ($('pose').value === 'firme') o.pose = 'firme';
     if ($('piel').value) o.piel = $('piel').value;
     if ($('anio').value !== '') o.anio = Number($('anio').value);
     if ($('etnia').value) o.etnia = $('etnia2').value && $('etnia2').value !== $('etnia').value ? [$('etnia').value, $('etnia2').value] : $('etnia').value;
@@ -142,7 +147,7 @@
   function dibujar() {
     $('semilla').textContent = semilla;
     const persona = $('modo').value === 'nueva' ? S.generarPersonaConRopaNueva(opciones()) : S.generarPersona(opciones());
-    ultimo = S.renderizar(persona, { detalle: $('detalle').value, fondo: $('fondo').value });
+    ultimo = S.renderizar(persona, { detalle: $('detalle').value, fondo: $('fondo').value, contorno: $('contorno').value });
     $('escena').innerHTML = ultimo;
     $('info').textContent = persona.descripcion;
     const lista = $('estimaciones'); lista.innerHTML = '';
@@ -170,7 +175,7 @@
       mos.appendChild(b);
     }
   }
-  for (const id of ['etnia', 'etnia2', 'anio', 'saludo', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
+  for (const id of ['etnia', 'etnia2', 'anio', 'saludo', 'pose', 'contorno', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
   $('modo').addEventListener('change', () => { $('grupo-catalogo').hidden = $('modo').value === 'nueva'; $('grupo-nueva').hidden = $('modo').value !== 'nueva'; });
   $('region').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
   $('sexo').addEventListener('change', () => { llenarAtuendos(); dibujar(); });

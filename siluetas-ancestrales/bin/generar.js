@@ -21,6 +21,8 @@ if (flag('ayuda') || flag('help')) {
   --saludo derecha|izquierda|ninguno   mano en saludo (por defecto derecha: la de la persona, a la izquierda de quien mira)
   --avisos           imprime en la salida de error lo que se estimó y los filtros que hubo que aflojar
   --sexo f|m  --edad N  --corpulencia delgada|media|robusta|corpulenta  --altura CM
+  --pose casual|firme   casual (por defecto): cabeza inclinada, peso en una pierna, brazo libre en la cintura o el bolsillo… distinto con cada semilla; firme: simétrica
+  --contorno suave   por defecto no hay bordes; 'suave' añade un borde fino y tenue
   --postura firme|relajada|abierta  --piel ID|#hex  --cabello ID|#hex
   --detalle minimo|medio|alto  --rasgos  --fondo '#efe9dd'
   --nueva [--estilo sobrio|trabajo|festivo|ceremonial] [--esquema analogo|complementario|triada|monocromo|tierra|festivo]
@@ -62,7 +64,7 @@ const opc = {
   semilla: val('semilla') === undefined ? 1 : (Number.isNaN(Number(val('semilla'))) ? val('semilla') : Number(val('semilla'))),
   atuendo: val('atuendo'), region: val('region'), anio: num('anio'), clase: val('clase'), sexo: val('sexo'), edad: num('edad'),
   corpulencia: val('corpulencia'), altura: num('altura'), postura: val('postura'), piel: val('piel'), cabello: val('cabello'),
-  detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'),
+  detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'), pose: val('pose') === 'casual' ? undefined : val('pose'), contorno: val('contorno'),
   ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
   etnia: val('etnia'), saludo: val('saludo'),
 };

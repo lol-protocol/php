@@ -7,7 +7,7 @@ import { PRENDAS_POR_ID, PRENDAS } from './datos/prendas.js';
 import { ATUENDOS, ATUENDOS_POR_ID, REGIONES } from './datos/atuendos.js';
 import { MANDIBULAS_ID, PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
 import { PATRONES_ID } from './patrones.js';
-import { CORPULENCIAS, POSTURAS } from './cuerpo.js';
+import { CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria } from './cuerpo.js';
 import { renderizar } from './svg.js';
 import { ETNIAS, ETNIAS_POR_ID } from './datos/etnias.js';
 import { distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES } from './datos/colores-prendas.js';
@@ -342,6 +342,17 @@ export function generarPersona(opc = {}) {
   if (tocado && ['trarilonko'].includes(tocado.id)) tocado.colores.principal = '#b9bec6';
 
   const rostro = { ancho: 0.96 + ah.n() * 0.12, mandibula: ah.elegir(MANDIBULAS_ID), rasgos: !!opc.rasgos };
+  // Pose: casual y distinta con cada semilla, salvo que se pida 'firme' (simétrica) o una pose a medida.
+  let pose;
+  if (opc.pose === 'firme') pose = POSE_FIRME;
+  else {
+    pose = poseAleatoria(azar.hijo('pose'));
+    if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
+    if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
+      const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
+      pose.angulos = { 1: base + pose.angulos[1] * 0.2 - 1, '-1': base + pose.angulos['-1'] * 0.2 - 1 };
+    }
+  }
   const az2 = azar.hijo('cuerpo');
   const corpulenciaEstimada = etnia ? az2.ponderado(sumaPesos(etnia, (e) => e.corpulencia)) : az2.elegir(['delgada', 'media', 'media', 'media', 'robusta']);
   let escalaAltura;
@@ -352,7 +363,7 @@ export function generarPersona(opc = {}) {
   const cuerpo = {
     sexo, edad, escalaAltura,
     corpulencia: opc.corpulencia ?? corpulenciaEstimada,
-    altura: opc.altura, postura: opc.postura ?? 'firme',
+    altura: opc.altura, postura: opc.postura ?? 'firme', pose,
     saludo: opc.saludo === false || opc.saludo === 'ninguno' || opc.saludo === 'ninguna' ? null : (opc.saludo ?? 'derecha'),
   };
 
@@ -377,7 +388,7 @@ export function generarPersona(opc = {}) {
     estimaciones, avisos,
     confianza: menorConfianza([atuendo.confianza, ...(etnia ? etnia.map((x) => x.e.confianza) : [])]),
     notas: [atuendo.nota, ...(etnia ? etnia.map((x) => x.e.nota) : [])].filter(Boolean),
-    detalle: opc.detalle ?? 'medio', fondo: opc.fondo ?? 'ninguno',
+    detalle: opc.detalle ?? 'medio', contorno: opc.contorno ?? 'ninguno', fondo: opc.fondo ?? 'ninguno',
   };
 }
 
@@ -473,9 +484,10 @@ export function generarPersonaConRopaNueva(opc = {}) {
 
 export function generarSVG(opc = {}) {
   const persona = opc.ropaNueva || opc.estilo ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
-  return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo });
+  return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno });
 }
 
+export { POSE_FIRME, poseAleatoria };
 export { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID };
 export { distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES };
 export { PEINADOS, BARBAS, TOCADOS } from './cabeza.js';

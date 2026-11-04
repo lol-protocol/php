@@ -20,9 +20,14 @@ function revisar(svg, etiqueta) {
   assert.ok(svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1000"'), etiqueta);
   bienFormado(svg);
   assert.ok(!/NaN|undefined|Infinity|null/.test(svg), `${etiqueta}: valor inválido en el SVG`);
-  assert.ok(!/<script|javascript:|\son\w+=|<foreignObject|<image|href=/i.test(svg), `${etiqueta}: contenido activo o externo`);
+  assert.ok(!/<script|javascript:|\son\w+=|<foreignObject|<image|href="(?!#)/i.test(svg), `${etiqueta}: contenido activo o externo`);
+  // Toda referencia interna (href="#x", url(#x)) debe apuntar a un id definido, y ningún id se repite.
+  const idsDef = [...svg.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(new Set(idsDef).size, idsDef.length, `${etiqueta}: ids repetidos`);
+  const defIds = new Set(idsDef);
+  for (const m of svg.matchAll(/href="#([^"]+)"|url\(#([^)]+)\)/g)) assert.ok(defIds.has(m[1] ?? m[2]), `${etiqueta}: referencia a un id que no existe: ${m[1] ?? m[2]}`);
   // Todos los fill/stroke son colores, none o patrones definidos.
-  const ids = new Set([...svg.matchAll(/<(?:pattern|linearGradient) id="([^"]+)"/g)].map((m) => m[1]));
+  const ids = new Set([...svg.matchAll(/<(?:pattern|linearGradient|radialGradient) id="([^"]+)"/g)].map((m) => m[1]));
   for (const m of svg.matchAll(/(?:fill|stroke)="([^"]*)"/g)) {
     const v = m[1];
     if (v === 'none' || /^#[0-9a-f]{6}$/i.test(v) || v === '#000') continue;
@@ -49,8 +54,11 @@ test('los tres niveles de detalle, los rasgos y las tres posturas dibujan', () =
     revisar(generarSVG({ semilla: 3, detalle, postura, rasgos: detalle === 'alto' }), `${detalle}/${postura}`);
   }
   const plano = generarSVG({ semilla: 3, detalle: 'minimo' });
+  const medio = generarSVG({ semilla: 3, detalle: 'medio' });
   const alto = generarSVG({ semilla: 3, detalle: 'alto' });
-  assert.ok(!plano.includes('url(#sombra-h)') && alto.includes('url(#sombra-v)'));
+  assert.ok(!plano.includes('-g-m-') && !plano.includes('filter='), 'el nivel plano no lleva degradados ni sombras');
+  assert.ok(medio.includes('-g-m-') && /filter="url\(#x\w+-bl\)"/.test(medio), 'el nivel medio lleva degradados y sombras proyectadas');
+  assert.ok(alto.includes('-g-a-') && /url\(#x\w+-sv\)/.test(alto));
 });
 
 test('el fondo y el título salen en el SVG y se escapan', () => {
@@ -75,4 +83,30 @@ test('la figura queda dentro del lienzo (comprobación aproximada por las coorde
       }
     }
   }
+});
+
+test('por defecto no hay bordes: ninguna forma de la figura lleva trazo; con contorno suave sí, y tenue', () => {
+  const sin = generarSVG({ semilla: 6, atuendo: 'huaso' });
+  assert.ok(!/<use[^>]*stroke=/.test(sin), 'una forma lleva trazo');
+  const con = generarSVG({ semilla: 6, atuendo: 'huaso', contorno: 'suave' });
+  const trazos = [...con.matchAll(/<use[^>]*stroke="([^"]+)"[^>]*stroke-width="([\d.]+)"[^>]*opacity="([\d.]+)"/g)];
+  assert.ok(trazos.length > 10);
+  for (const [, , ancho, op] of trazos) assert.ok(Number(ancho) <= 1 && Number(op) <= 0.5, 'el contorno suave debe ser fino y tenue');
+});
+
+test('el volumen: cada color usa su degradado y las capas proyectan sombra recortada a la silueta', () => {
+  const svg = generarSVG({ semilla: 6, atuendo: 'huaso' });
+  assert.ok((svg.match(/<linearGradient id="x\w+-g-m-/g) ?? []).length >= 5);
+  assert.ok((svg.match(/clip-path="url\(#x/g) ?? []).length >= 10);
+  assert.ok(/<clipPath id="x[\w]+s">/.test(svg));
+});
+
+test('varias figuras en una misma página no comparten ids de forma (cada una lleva su prefijo)', () => {
+  const ids = (svg) => new Set([...svg.matchAll(/ id="(x[^"]+)"/g)].map((m) => m[1]));
+  const todos = (svg) => [...svg.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(todos(generarSVG({ semilla: 1 })).every((id) => id.startsWith('x')), 'todo id de una figura lleva su prefijo');
+  const a = ids(generarSVG({ semilla: 1 })), b = ids(generarSVG({ semilla: 2 }));
+  assert.ok(a.size > 20 && b.size > 20);
+  for (const id of a) assert.ok(!b.has(id), `id compartido: ${id}`);
+  assert.deepEqual([...ids(generarSVG({ semilla: 1 }))], [...a], 'el prefijo debe ser determinista');
 });

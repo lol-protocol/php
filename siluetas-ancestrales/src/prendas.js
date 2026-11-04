@@ -5,7 +5,7 @@
 // `detalles` (trazos, botones, ribetes) se dibujan encima. Las medidas son fracciones de la altura (H).
 
 import { suavizar, espejo, poligono, tubo, lerp, limitar, oscurecer, aclarar } from './util.js';
-import { perfilTorso, brazoEnU } from './cuerpo.js';
+import { perfilTorso, brazoEnU, piernaLado } from './cuerpo.js';
 
 // ---------- Ayudas ----------
 
@@ -46,14 +46,17 @@ const parte = (d, fill, k, extra = {}) => ({ d, fill, contorno: oscurecer(k.prin
 const linea = (d, stroke, sw, op = 1, extra = {}) => ({ d, fill: 'none', stroke, sw, op, cap: 'round', ...extra });
 const sombraDe = (c) => oscurecer(c, 0.32);
 
-/** Pliegues verticales entre dos alturas, siguiendo el ancho del perfil. */
+/** Pliegues verticales entre dos alturas: una línea de sombra y, al lado, otra de luz, ambas suaves, para dar relieve sin dibujar bordes. */
 function pliegues(M, perfil, yA, yB, n, color, amp = 0.012) {
   const out = [];
   for (let i = 1; i <= n; i++) {
     const f = (i / (n + 1)) * 2 - 1;
     const xa = f * anchoEn(perfil, yA) * 0.92, xb = f * anchoEn(perfil, yB) * 0.96;
     const mx = (xa + xb) / 2 + (i % 2 ? 1 : -1) * M.H * amp;
-    out.push(linea(`M${M.cx + xa} ${yA}Q${M.cx + mx} ${(yA + yB) / 2} ${M.cx + xb} ${yB - (i % 2) * M.H * 0.006}`, sombraDe(color), 1.3, 0.38));
+    const fin = yB - (i % 2) * M.H * 0.006;
+    const ruta = (dx) => `M${M.cx + xa + dx} ${yA}Q${M.cx + mx + dx} ${(yA + yB) / 2} ${M.cx + xb + dx} ${fin}`;
+    out.push(linea(ruta(0), sombraDe(color), 2.2, 0.34, { suave: true }));
+    out.push(linea(ruta(2.6), aclarar(color, 0.28), 1.6, 0.32, { suave: true }));
   }
   return out;
 }
@@ -155,7 +158,7 @@ function mangaForma(M, s, tipo, d, vuelo = 0) {
     if (tipo === 'campana') f = 1 + (1.2 + vuelo * 10) * t ** 1.6;
     else if (tipo === 'ancha') f = 1 + 0.7 * t;
     else if (tipo === 'globo') f = 1.5 - 0.5 * Math.min(1, t * 2.2) + (t > 0.8 ? 0.1 : 0);
-    else if (tipo === 'kimono') { f = 1.7 + 1.0 * t; desp = H * 0.028 * t; }
+    else if (tipo === 'kimono') { f = 1.55 + 0.85 * t; desp = H * 0.026 * t; }
     else if (tipo === 'abullonada') f = 1.55 - 0.55 * Math.min(1, t * 1.6);
     // Con el brazo levantado la manga ancha se recoge hacia el codo: menos vuelo.
     if (s === M.saludoLado) f = 1 + (f - 1) * 0.55;
@@ -171,7 +174,7 @@ function mangas(M, tipo, d, k, F, vuelo, puño) {
   if (!tipo || tipo === 'sin') return { partes, detalles };
   for (const s of [1, -1]) {
     const m = mangaForma(M, s, tipo, d, vuelo);
-    partes.push(parte(suavizar(m.pts), F, k));
+    partes.push(parte(suavizar(m.pts), F, k, { proyecta: true }));
     if (puño) {
       const { x, y, w } = m.fin;
       detalles.push(linea(`M${x - w * 0.97} ${y - 1.5}L${x + w * 0.97} ${y - 1.5}`, k.ribete, Math.max(3, M.H * 0.011), 1, { cap: 'butt' }));
@@ -268,7 +271,7 @@ function pantalon(M, p, k, ctx) {
   const half = [[0, alto, true], [w.cintura + d * 1.2, alto, true], [lerp(w.cintura, w.cadera, 0.7) + d, lerp(alto, y.cadera, 0.6)], [w.cadera + d * 1.3, y.cadera], [w.cadera * 0.98 + d, lerp(y.cadera, y.entrepierna, 0.7)], [0, y.entrepierna + H * 0.012, true]];
   partes.push(parte(suavizar(espejo(half, cx)), F, k));
   for (const s of [1, -1]) {
-    const Lg = M.pierna;
+    const Lg = piernaLado(M, s);
     const pts = [], ws = [];
     const yy0 = y.cadera, n = 6;
     for (let i = 0; i < n; i++) {
@@ -285,7 +288,7 @@ function pantalon(M, p, k, ctx) {
       }
       let f = 1 + (factor - 1) * (p.ancho === 'bombacho' ? Math.sin(Math.min(1, t * 1.4) * Math.PI * 0.5) * (t > 0.78 ? 1 - (t - 0.78) * 3.4 : 1) : p.ancho === 'campana' ? t ** 2 : Math.min(1, t * 2));
       if (p.ancho === 'ajustado') f = 1;
-      pts.push([cx + s * q.x, yy]);
+      pts.push([q.x, yy]);
       ws.push(q.w * f + d);
     }
     partes.push(parte(suavizar(tubo(pts, ws, 'plana')), F, k));
@@ -293,7 +296,7 @@ function pantalon(M, p, k, ctx) {
   const detalles = [linea(`M${cx - w.cintura - d} ${alto + 3}L${cx + w.cintura + d} ${alto + 3}`, k.ribete ? k.ribete : sombraDe(k.principal), Math.max(3, H * 0.008), 0.9, { cap: 'butt' }),
     linea(`M${cx} ${alto + 5}L${cx} ${y.entrepierna + H * 0.01}`, sombraDe(k.principal), 1.2, 0.5)];
   if (p.cordon) detalles.push(linea(`M${cx - 4} ${alto + 6}q4 10 -2 18M${cx + 4} ${alto + 6}q-4 10 2 18`, k.detalle, 1.6, 0.9));
-  if (p.puños && k.ribete) for (const s of [1, -1]) detalles.push(linea(`M${cx + s * (M.pierna.linea[4][0] - M.pierna.anchos[4] * 1.5)} ${yHem - 2}L${cx + s * (M.pierna.linea[4][0] + M.pierna.anchos[4] * 1.5)} ${yHem - 2}`, k.ribete, 4, 1, { cap: 'butt' }));
+  if (p.puños && k.ribete) for (const s of [1, -1]) { const Lp = piernaLado(M, s); detalles.push(linea(`M${Lp.linea[4][0] - Lp.anchos[4] * 1.5} ${yHem - 2}L${Lp.linea[4][0] + Lp.anchos[4] * 1.5} ${yHem - 2}`, k.ribete, 4, 1, { cap: 'butt' })); }
   return { atras: [], partes, detalles };
 }
 
@@ -620,34 +623,36 @@ function calzado(M, p, k, ctx) {
   const { H, y, cx, w } = M;
   const tipo = p.tipo ?? 'zapatos';
   const partes = [], detalles = [];
-  const pie = M.pierna.pie;
   for (const s of [1, -1]) {
-    const x = cx + s * pie.x;
+    const PL = piernaLado(M, s);
+    const pie = PL.pie;
+    const x = pie.x;
+    const giro = s * pie.largo * Math.tan(((pie.giro ?? 10) * Math.PI) / 180);
     const aw = pie.ancho, yT = y.tobillo - H * 0.01;
     const suelaY = M.suelo;
     const zap = (altoY) => [
-      [x - aw * 0.92, altoY], [x - aw * 1.0, lerp(altoY, suelaY, 0.6)], [x - aw * 1.36 + s * aw * 0.1, suelaY - pie.largo * 0.2],
-      [x + s * aw * 0.35, suelaY + 1], [x + aw * 1.36 + s * aw * 0.1, suelaY - pie.largo * 0.2], [x + aw * 1.0, lerp(altoY, suelaY, 0.6)], [x + aw * 0.92, altoY],
+      [x - aw * 0.92, altoY], [x - aw * 1.0, lerp(altoY, suelaY, 0.6)], [x - aw * 1.36 + giro, suelaY - pie.largo * 0.2],
+      [x + giro * 1.3, suelaY + 1], [x + aw * 1.36 + giro, suelaY - pie.largo * 0.2], [x + aw * 1.0, lerp(altoY, suelaY, 0.6)], [x + aw * 0.92, altoY],
     ];
     switch (tipo) {
       case 'descalzo': break;
       case 'sandalias': case 'sandalia-romana': {
         partes.push(parte(suavizar(zap(suelaY - H * 0.012), true), k.principal, k, { plano: true, volumen: false }));
         for (let i = 0; i < 3; i++) detalles.push(linea(`M${x - aw * 0.95} ${suelaY - H * (0.014 + i * 0.011)}L${x + aw * 0.95} ${suelaY - H * (0.014 + i * 0.011) - 2}`, k.secundario ?? k.principal, 2, 1));
-        if (tipo === 'sandalia-romana') for (let i = 0; i < 6; i++) detalles.push(linea(`M${x - M.pierna.anchos[4] * 1.1} ${yT - i * H * 0.018}L${x + M.pierna.anchos[4] * 1.1} ${yT - i * H * 0.018 - 6}`, k.secundario ?? k.principal, 1.8, 0.95));
+        if (tipo === 'sandalia-romana') for (let i = 0; i < 6; i++) detalles.push(linea(`M${x - PL.anchos[4] * 1.1} ${yT - i * H * 0.018}L${x + PL.anchos[4] * 1.1} ${yT - i * H * 0.018 - 6}`, k.secundario ?? k.principal, 1.8, 0.95));
         break;
       }
       case 'mocasines': case 'zapatos': case 'zuecos': case 'zapatillas': {
         const pts = zap(tipo === 'zapatillas' ? y.tobillo + H * 0.01 : yT - H * 0.004);
         partes.push(parte(suavizar(pts, true), k.principal, k));
-        detalles.push(linea(`M${x - aw * 1.25} ${suelaY - 2}L${x + aw * 1.25} ${suelaY - 2}`, k.ribete ?? oscurecer(k.principal, 0.5), 2.4, 1, { cap: 'butt' }));
+        detalles.push(linea(`M${x - aw * 1.25} ${suelaY - 2}L${x + aw * 1.25} ${suelaY - 2}`, k.ribete ?? oscurecer(k.principal, 0.5), 2.4, 0.55, { cap: 'butt', suave: true }));
         if (tipo === 'zapatos') detalles.push(linea(`M${x - aw * 0.5} ${suelaY - H * 0.026}Q${x} ${suelaY - H * 0.034} ${x + aw * 0.5} ${suelaY - H * 0.026}`, sombraDe(k.principal), 1.3, 0.7));
         if (p.hebilla) detalles.push({ d: poligono([[x - 4, suelaY - H * 0.03], [x + 4, suelaY - H * 0.03], [x + 4, suelaY - H * 0.018], [x - 4, suelaY - H * 0.018]]), fill: k.detalle, stroke: oscurecer(k.detalle, 0.4), sw: 0.9 });
         break;
       }
       case 'botas': case 'botas-altas': case 'polainas': {
         const yTop = tipo === 'botas' ? lerp(y.rodilla, y.tobillo, 0.45) : tipo === 'polainas' ? lerp(y.rodilla, y.tobillo, 0.3) : y.rodilla + H * 0.01;
-        const L = M.pierna;
+        const L = PL;
         const linePts = [], ws = [];
         for (let i = 0; i <= 4; i++) {
           const yy = lerp(yTop, y.tobillo, i / 4);
@@ -655,7 +660,7 @@ function calzado(M, p, k, ctx) {
           for (let j = 0; j < L.linea.length - 1; j++) {
             if (yy <= L.linea[j + 1][1]) { const tt = (yy - L.linea[j][1]) / ((L.linea[j + 1][1] - L.linea[j][1]) || 1); q = { x: lerp(L.linea[j][0], L.linea[j + 1][0], tt), w: lerp(L.anchos[j], L.anchos[j + 1], tt) }; break; }
           }
-          linePts.push([cx + s * q.x, yy]); ws.push(q.w * 1.12 + H * 0.003);
+          linePts.push([q.x, yy]); ws.push(q.w * 1.12 + H * 0.003);
         }
         partes.push(parte(suavizar(tubo(linePts, ws, 'plana')), k.principal, k));
         partes.push(parte(suavizar(zap(y.tobillo - H * 0.02), true), k.principal, k));
