@@ -1,0 +1,40 @@
+name: Pruebas Parsing-fb-in-mas
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "Parsing-fb-in-mas/**"
+      - ".github/workflows/pruebas-parsing-fb-in-mas.yml"
+  pull_request:
+    paths:
+      - "Parsing-fb-in-mas/**"
+      - ".github/workflows/pruebas-parsing-fb-in-mas.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: Parsing-fb-in-mas
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: dom, mbstring
+          coverage: none
+
+      - name: Pruebas
+        run: php pruebas/ejecutar.php
