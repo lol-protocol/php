@@ -80,6 +80,46 @@ final class PhonePattern
         return self::$languageRegexCache[$language];
     }
 
+    /**
+     * Undoes the usual OCR misreadings inside what looks like a phone number: "l" or "I" for 1 and "O" or
+     * "o" for 0 ("555-l23-4567" gives "555-123-4567"). Only in a run of digits and separators with at least
+     * 6 real digits and at most 2 such letters, so words ("Oil", "Ollie") and exchange names
+     * ("BUtterfield 8-4521") are left alone. Returns the line unchanged when there is nothing to repair.
+     */
+    public static function repairOcrDigits(string $line): string
+    {
+        // Cheap test first: most lines have no such letter next to a digit, and this runs on every line.
+        if (preg_match('/\d[ .\-]?[OolI]|[OolI][ .\-]?\d/', $line) !== 1) {
+            return $line;
+        }
+
+        return (string) preg_replace_callback(
+            '/(?<![\p{L}\d])[\dOolI](?:[ .\-]?[\dOolI])+(?![\p{L}\d])/u',
+            function (array $m): string {
+                $digits = preg_match_all('/\d/', $m[0]);
+                $letters = preg_match_all('/[OolI]/', $m[0]);
+                return $letters > 0 && $letters <= 2 && $digits >= 6 ? strtr($m[0], 'OolI', '0011') : $m[0];
+            },
+            $line
+        );
+    }
+
+    /**
+     * What a line says besides its phone, when that could be a name: "SMITH, John ........ 555-123-4567"
+     * gives "SMITH, John". Null when nothing is left or what is left has a digit ("555-123-4567 ext. 12").
+     */
+    public static function nameBesidePhone(string $line, string $phone): ?string
+    {
+        $offset = strpos($line, $phone);
+        if ($offset === false) {
+            return null;
+        }
+
+        $rest = trim(substr($line, 0, $offset) . ' ' . substr($line, $offset + strlen($phone)), " \t.,:;-\u{2013}\u{2014}");
+
+        return preg_match('/\p{L}/u', $rest) === 1 && preg_match('/\d/', $rest) !== 1 ? $rest : null;
+    }
+
     /** True when $text, trimmed, is nothing but a single phone match (so it should not also be read as a street). */
     public static function isOnlyAPhoneNumber(string $text, ?string $language = null): bool
     {

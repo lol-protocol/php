@@ -41,6 +41,18 @@ class RecordSplitterTest extends TestCase
                 [0 => ['ACME Corp', 'Hardware', '3 Main Street']],
             ],
             'vacío' => [[], [0 => []]],
+            'palabra partida con guion' => [
+                ['WASHING-', 'TON, George', '1 High Street'],
+                [0 => ['WASHINGTON, George', '1 High Street']],
+            ],
+            'palabra partida en el segundo registro' => [
+                ['HALL, Ruth', '3 Main Street', 'WASHING-', 'TON, George', '1 High Street'],
+                [0 => ['HALL, Ruth', '3 Main Street'], 2 => ['WASHINGTON, George', '1 High Street']],
+            ],
+            'guion antes de un número no une' => [
+                ['SMITH, John', '12 Oak Street', 'Tel.-', '555-123-4567'],
+                [0 => ['SMITH, John', '12 Oak Street', 'Tel.-', '555-123-4567']],
+            ],
             'menos de 4 líneas, sin mirar' => [['HALL, Ruth', '3 Main Street', 'LEE, Ken'], [0 => ['HALL, Ruth', '3 Main Street', 'LEE, Ken']]],
         ];
     }

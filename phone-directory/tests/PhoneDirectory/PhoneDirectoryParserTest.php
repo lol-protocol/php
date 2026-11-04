@@ -49,6 +49,15 @@ class PhoneDirectoryParserTest extends TestCase
         $this->assertSame('Apt 4 Building 7', $entries[0]->getStreet());
     }
 
+    public function testPhoneOnTheNameLineAndMisreadDigits(): void
+    {
+        $entries = $this->parser->parseContent("SMITH, John ........ 555-l23-4567\n12 Oak Street");
+
+        $this->assertCount(1, $entries);
+        $this->assertSame('Smith, John', $entries[0]->getFormattedName());
+        $this->assertSame('555-123-4567', $entries[0]->getPhoneNumber());
+    }
+
     public function testCityLineStaysInItsRecord(): void
     {
         $entries = $this->parser->parseContent("SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567");

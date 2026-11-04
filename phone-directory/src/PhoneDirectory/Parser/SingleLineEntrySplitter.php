@@ -53,6 +53,8 @@ final class SingleLineEntrySplitter
         ?callable $streetStart = null
     ): ?array
     {
+        // A phone the scan misread ("555-l23-4567") would otherwise pass for a street starting with a digit.
+        $line = PhonePattern::repairOcrDigits($line);
         $fields = array_map('trim', preg_split(self::FIELD_DELIMITER, $line, -1, PREG_SPLIT_NO_EMPTY));
 
         if (count($fields) >= 2) {
@@ -136,7 +138,12 @@ final class SingleLineEntrySplitter
         $name = implode(', ', $nameFields);
         $street = $fields[$streetIndex];
 
-        return $name === '' || $street === '' ? null : ['name' => $name, 'street' => $street, 'phone' => $phone];
+        // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
+        if (!self::hasLetter($name) || $street === '') {
+            return null;
+        }
+
+        return ['name' => $name, 'street' => $street, 'phone' => $phone];
     }
 
     /**
@@ -151,6 +158,10 @@ final class SingleLineEntrySplitter
         if (preg_match(PhonePattern::regexFor($language), $line, $match, PREG_OFFSET_CAPTURE)) {
             $phone = $match[0][0];
             $offset = $match[0][1];
+            // A line that opens with the phone ("555-123-4567 ext. 12") is the end of a record, not a whole one.
+            if (!self::hasLetter(substr($line, 0, $offset))) {
+                return null;
+            }
             $rest = substr($line, 0, $offset) . substr($line, $offset + strlen($phone));
         }
 
@@ -178,6 +189,11 @@ final class SingleLineEntrySplitter
         }
 
         return ['name' => $name, 'street' => $street, 'phone' => $phone];
+    }
+
+    private static function hasLetter(string $text): bool
+    {
+        return preg_match('/\p{L}/u', $text) === 1;
     }
 
     private static function trimLeaders(string $text): string

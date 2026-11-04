@@ -149,7 +149,7 @@ class PhoneDirectoryParser
         $phonePattern = $this->getPatterns()['phone_pattern'];
         $records = RecordSplitter::split(
             $lines,
-            fn($line) => preg_match($phonePattern, $line) === 1,
+            fn($line) => $this->phoneIn($line, $phonePattern) !== null,
             fn($line, $afterName) => $this->extractStreet($line, $afterName) !== null
         );
         foreach ($records as $offset => $record) {
@@ -170,8 +170,9 @@ class PhoneDirectoryParser
         $patterns = $this->getPatterns();
 
         foreach ($lines as $line) {
-            if (empty($data['phone']) && preg_match($patterns['phone_pattern'], $line, $matches)) {
-                $data['phone'] = $matches[0];
+            $phone = $this->phoneIn($line, $patterns['phone_pattern']);
+            if (empty($data['phone']) && $phone !== null) {
+                $data['phone'] = $phone;
             }
 
             if (empty($data['street'])) {
@@ -181,10 +182,11 @@ class PhoneDirectoryParser
                 }
             }
 
-            if (!$nameSet && !preg_match($patterns['phone_pattern'], $line)) {
-                $streetMatch = $this->extractStreet($line, false);
-                if (!$streetMatch) {
-                    $data['name'] = $line;
+            if (!$nameSet && $this->extractStreet($line, false) === null) {
+                // A phone line can also carry the name ("SMITH, John ........ 555-123-4567").
+                $name = $phone === null ? $line : PhonePattern::nameBesidePhone(PhonePattern::repairOcrDigits($line), $phone);
+                if ($name !== null) {
+                    $data['name'] = $name;
                     $nameSet = true;
                 }
             }
@@ -234,6 +236,18 @@ class PhoneDirectoryParser
                 'data' => $data,
             ];
         }
+    }
+
+    /** The line's phone, also when the scan misread a digit as a letter ("555-l23-4567"); null if it has none. */
+    private function phoneIn(string $line, string $phonePattern): ?string
+    {
+        if (preg_match($phonePattern, $line, $matches) === 1) {
+            return $matches[0];
+        }
+
+        $repaired = PhonePattern::repairOcrDigits($line);
+
+        return $repaired !== $line && preg_match($phonePattern, $repaired, $matches) === 1 ? $matches[0] : null;
     }
 
     private function isStreet(string $line): bool

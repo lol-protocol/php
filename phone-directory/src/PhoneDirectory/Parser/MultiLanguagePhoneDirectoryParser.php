@@ -20,7 +20,7 @@ class MultiLanguagePhoneDirectoryParser
 {
     use InputValidator;
     private const LANGUAGE_STREET_MARKERS = [
-        'es' => ['calle', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
+        'es' => ['calle', 'c/', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
         'en' => ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln', 'boulevard', 'blvd', 'circle', 'cir'],
         'fr' => ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
         'pt' => ['rua', 'avenida', 'av', 'praça', 'alameda', 'estrada', 'largo'],
@@ -274,7 +274,7 @@ class MultiLanguagePhoneDirectoryParser
     {
         $records = RecordSplitter::split(
             $lines,
-            fn($line) => preg_match($phoneRegex, $line) === 1,
+            fn($line) => $this->phoneIn($line, $phoneRegex) !== null,
             fn($line, $afterName) => $this->isStreetLine($line, $language, $afterName)
         );
         foreach ($records as $offset => $record) {
@@ -301,12 +301,24 @@ class MultiLanguagePhoneDirectoryParser
         $nameSet = false;
 
         foreach ($lines as $line) {
-            $isPhoneLine = preg_match($phoneRegex, $line, $matches) === 1;
+            $phone = $this->phoneIn($line, $phoneRegex);
+            $isPhoneLine = $phone !== null;
             $street = $this->extractStreet($line, $language) ?? ($nameSet ? $this->afterNameStreet($line, $language) : null);
             $isStreetLine = $street !== null;
 
-            if (empty($data['phone']) && $isPhoneLine) {
-                $data['phone'] = $matches[0];
+            if (empty($data['phone']) && $phone !== null) {
+                $data['phone'] = $phone;
+            }
+
+            // Before the name, a phone line can also carry it ("SMITH, John ........ 555-123-4567").
+            if (!$nameSet && $isPhoneLine && !$isStreetLine) {
+                $nameText = PhonePattern::nameBesidePhone(PhonePattern::repairOcrDigits($line), $phone);
+                if ($nameText !== null) {
+                    $data['type'] ??= $this->businessTypeOfName($nameText, $language);
+                    $data['name'] = $nameText;
+                    $nameSet = true;
+                }
+                continue;
             }
 
             // Only the name (and any line of text that is neither street nor phone) can say it is a business:
@@ -414,6 +426,18 @@ class MultiLanguagePhoneDirectoryParser
         return StreetFallback::numberFirst($line);
     }
 
+    /** The line's phone, also when the scan misread a digit as a letter ("555-l23-4567"); null if it has none. */
+    private function phoneIn(string $line, string $phoneRegex): ?string
+    {
+        if (preg_match($phoneRegex, $line, $matches) === 1) {
+            return $matches[0];
+        }
+
+        $repaired = PhonePattern::repairOcrDigits($line);
+
+        return $repaired !== $line && preg_match($phoneRegex, $repaired, $matches) === 1 ? $matches[0] : null;
+    }
+
     /**
      * An address that only counts once the name is read: in a language that writes the house number last,
      * a street with no street word ("Los Aromos 123"); in English, a dwelling line ("Apt 4 Building 7").
@@ -503,7 +527,8 @@ class MultiLanguagePhoneDirectoryParser
             $words = implode('|', array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_MARKERS[$language]));
             $suffixes = array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_SUFFIXES[$language] ?? []);
 
-            $pattern = '\\b(?:' . $words . ')\\b';
+            // Not \b: "c/" ends in a slash, and \b only sees a word edge after a letter or digit.
+            $pattern = '(?<![\\p{L}\\d])(?:' . $words . ')(?![\\p{L}\\d])';
             if ($suffixes) {
                 $pattern .= '|(?:' . implode('|', $suffixes) . ')\\b';
             }
