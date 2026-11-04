@@ -36,8 +36,7 @@ Ejemplo: `02_A-install-java.sh` y `02_B-install-php.sh` pueden ejecutarse en cua
 
 ## 🧰 `lib.sh`
 
-Todos los scripts (excepto `01-system-update.sh`, que activa UFW antes de que
-exista un firewall al que aplicarle reglas) sourcean `lib.sh`, que centraliza
+Todos los scripts sourcean `lib.sh`, que centraliza
 patrones repetidos: `print_header`, `service_start_enable`, `ufw_allow`
 (agrega una regla solo si UFW está realmente activo), `check_dependency`,
 `setup_app_directories`, `deploy_files` (copia + permisos correctos),
@@ -159,10 +158,10 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
 | 06_A | `06_A-setup-php-app.sh <app> <dominio>` | *(Opcional)* Configura una app PHP adicional. Si la carpeta ya tiene tu código, re-correrlo (p. ej. para cambiar el límite de subida) **no lo reemplaza**: solo crea la página de prueba en una carpeta vacía. Permite subidas de hasta `MAX_UPLOAD` (20M por defecto) en Nginx y en PHP |
 | 06_B | `06_B-setup-python-app.sh <app> <dominio> [puerto]` | *(Opcional)* Configura una app Python (Flask + Gunicorn). Cada app necesita su propio puerto local (por defecto 8000): el script rechaza uno que ya use otra app. Como en `06_A`, re-correrlo no pisa tu `app.py`: solo actualiza el servicio y el proxy. `MAX_UPLOAD` (20M) y `PROXY_TIMEOUT` (120s, igual en Nginx y gunicorn) son configurables Cada app Python corre con **su propio usuario de sistema** (`app-<nombre>`), en una carpeta 750 solo suya, y con **su propia base de datos y rol** PostgreSQL (`app_<nombre>`, sin acceso a las demás): su `DATABASE_URL` queda en un `.env` modo 600 que el servicio carga. `APP_DB=0` omite la base |
-| 06_C | `06_C-setup-dns-server.sh <dominio> [ip]` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`), con registro CAA (solo Let's Encrypt) y AAAA si das `VPS_IP6=`. Sin IP usa la pública detectada — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
+| 06_C | `06_C-setup-dns-server.sh <dominio> [ip] [secundario-ovh]` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`), con registro CAA (solo Let's Encrypt) y AAAA si das `VPS_IP6=`. Sin IP usa la pública detectada — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
 | 06_D | `06_D-setup-tomcat-app.sh <dominio> [context]` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho. Admite `MAX_UPLOAD` y `PROXY_TIMEOUT` como 06_B |
 | 06_E | `06_E-setup-marcalibros-app.sh <dominio> [--png] [--repo DIR]` | *(Opcional)* Instala la app Marcalibros (`marcalibros-plataforma-pos-brand-identity/app`) copiando el código del monorepo a `/var/www/marcalibros/` (de root, con dos renombres seguidos, sin copiar sobre el sitio en uso), sus datos en `/var/lib/marcalibros` (solo `www-data`), un vhost que manda todo a `public/index.php` y la limpieza diaria en `/etc/cron.d/marcalibros`. Re-correrlo actualiza el código y conserva datos y PNG. `--png` genera los PNG del catálogo (necesita Pillow y numpy). `MAX_UPLOAD` es 6M; `MARCALIBROS_RETENTION_DAYS` fija los días de conservación (por defecto 0: no se borran nunca). Solo admite un dominio |
-| 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat, `--ssl` y `--port` opcionales) encadenando los scripts anteriores |
+| 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat/marcalibros, `--ssl` y `--port` opcionales) encadenando los scripts anteriores |
 | 10_B | `10_B-remove-domain.sh` | Quita un dominio **archivando** (no borrando) su vhost, sitio y logs |
 | — | `remote-run.sh` | Desde TU equipo: sube `vps-setup/` por SSH (solo llave) y ejecuta un script en el VPS. Config en `vps.env` (ver `vps.env.example`) |
 | — | `install-all.sh` | Ejecuta 01 → 02_A..F (+02_J con `--with-webmin`) → 03 → 04 (salvo `--skip-ssl`) → 05 → 07_A → 07_B → 07_D → 07_E en orden y termina corriendo 08. Admite `--dry-run`, `--resume`, `--yes`, `--with-webmin` y `--skip-ssl`. Guarda un log de cada corrida en `~/.local/state/vps-setup/install-all-<fecha>.log` y no deja correr dos a la vez (candado con `flock`) |

@@ -1,11 +1,15 @@
 #!/bin/bash
 # Verificacion post-instalacion. Solo lee el estado: no cambia nada del servidor.
-# Uso: ./08-healthcheck.sh [dominio]   (sin dominio, omite las pruebas web)
+# Uso: ./08-healthcheck.sh [dominio] [--sin-ssl]   (sin dominio, omite las pruebas web)
+#   --sin-ssl  el dominio aun no tiene certificado (install-all --skip-ssl): se prueba HTTP y se omiten
+#              HTTPS, redireccion, certificado y headers (los headers de seguridad van sobre HTTPS)
 # Sale con codigo 1 si algo FALLA; los AVISOS (cosas opcionales) no cuentan.
 
 source "$(dirname "$0")/lib.sh"
 
 DOMAIN=${1:-""}
+NO_SSL=0
+if [ "${2:-}" = "--sin-ssl" ]; then NO_SSL=1; elif [ -n "${2:-}" ]; then echo "Opcion desconocida: $2 (uso: $0 [dominio] [--sin-ssl])" >&2; exit 2; fi
 [ -n "$DOMAIN" ] && require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 FAILS=0
 WARNS=0
@@ -57,6 +61,12 @@ else
         fail "DNS de $DOMAIN o www.$DOMAIN no apunta a $MY_IP (puede estar propagando)"
     fi
 
+    if [ "$NO_SSL" -eq 1 ]; then
+        echo "HTTP:"
+        CODE=$(curl -s -o /dev/null -m 10 -w '%{http_code}' "http://$DOMAIN/" || true)
+        if [ "$CODE" = "200" ]; then ok "http://$DOMAIN responde 200"; else fail "http://$DOMAIN responde '${CODE:-sin respuesta}'"; fi
+        warn "sin SSL (--sin-ssl): se omiten HTTPS, certificado y headers; cuando el DNS apunte aqui corre 04-setup-ssl.sh"
+    else
     echo "HTTPS:"
     CODE=$(curl -s -o /dev/null -m 10 -w '%{http_code}' "https://$DOMAIN/" || true)
     if [ "$CODE" = "200" ]; then ok "https://$DOMAIN responde 200"; else fail "https://$DOMAIN responde '${CODE:-sin respuesta}'"; fi
@@ -82,6 +92,7 @@ else
     for h in Strict-Transport-Security X-Frame-Options X-Content-Type-Options Referrer-Policy; do
         if echo "$HDRS" | grep -qi "^$h:"; then ok "$h"; else warn "falta $h (corre 07_B-nginx-security-headers.sh)"; fi
     done
+    fi
 fi
 
 echo ""

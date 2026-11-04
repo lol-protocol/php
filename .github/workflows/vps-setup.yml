@@ -3,10 +3,21 @@ name: vps-setup
 on:
   push:
     branches: ['**']
-    paths: ['vps-setup/**', '.github/workflows/vps-setup.yml']
+    paths:
+      - 'vps-setup/**'
+      # Las pruebas leen estas carpetas hermanas (05 copia landing-page/; 06_E copia la app y su filtro).
+      - 'landing-page/**'
+      - 'marcalibros-plataforma-pos-brand-identity/**'
+      - 'defamatory-content-review/**'
+      - '.github/workflows/vps-setup.yml'
   pull_request:
     branches: ['**']
-    paths: ['vps-setup/**', '.github/workflows/vps-setup.yml']
+    paths:
+      - 'vps-setup/**'
+      - 'landing-page/**'
+      - 'marcalibros-plataforma-pos-brand-identity/**'
+      - 'defamatory-content-review/**'
+      - '.github/workflows/vps-setup.yml'
 
 permissions:
   contents: read

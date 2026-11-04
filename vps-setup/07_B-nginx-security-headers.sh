@@ -39,6 +39,9 @@ printf 'server_tokens off;\n' | sudo tee "$TOKENS_CONF" > /dev/null
 # Vhost por defecto: una peticion por IP o con un Host que no es de ningun dominio nuestro
 # (escaneos, bots) caeria en el PRIMER vhost y le mostraria su contenido. Con esto se corta
 # la conexion (444) en HTTP y se rechaza el handshake TLS en 443 (nginx >= 1.19.4).
+# El sitio "default" de Ubuntu (sites-enabled/default) ya declara default_server: con los dos, nginx -t falla
+# con "duplicate default server". Solo se quita el enlace; sites-available/default queda.
+sudo rm -f "$NGINX_DIR/sites-enabled/default"
 sudo tee "$DEFAULT_CONF" > /dev/null <<'EODEF'
 server {
     listen 80 default_server;
@@ -54,7 +57,13 @@ server {
 }
 EODEF
 
-sudo nginx -t              # valida ANTES de recargar, para no tumbar los sitios que ya funcionan
+# Valida ANTES de recargar, para no tumbar los sitios que ya funcionan. Si nginx lo rechaza, se quita el vhost
+# por defecto: un archivo malo en conf.d/ haria fallar el nginx -t de todos los sitios que se agreguen despues.
+if ! sudo nginx -t; then
+    sudo rm -f "$DEFAULT_CONF"
+    echo "ERROR: nginx rechazo la configuracion; se quito $DEFAULT_CONF (los headers y server_tokens quedaron escritos)." >&2
+    exit 1
+fi
 sudo systemctl reload nginx
 
 echo ""
