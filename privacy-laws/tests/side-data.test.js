@@ -14,6 +14,7 @@ import {
   diffRecords,
   loadAndValidate,
   loadSide,
+  newerSourceWarnings,
   validateChanges,
   validateRecords,
   validateSources,
@@ -35,10 +36,10 @@ test("researched rows need a confidence level", () => {
 test("a pending change needs a description, and a passed date is a warning", () => {
   assert.match(check({ pending_change: "", pending_date: "2027-01-01" }).errors[0], /pending_change is empty/);
   assert.match(check({ pending_change: "x", pending_date: "2027-02-30" }).errors[0], /pending_date must be empty or a real/);
-  const passed = check({ pending_change: "New law", pending_date: "2026-01-01" }, { today: "2026-06-01" });
+  const passed = check({ pending_change: "New law", pending_date: "2026-01-01" }, { today: "2026-11-01" });
   assert.deepEqual(passed.errors, []);
   assert.match(passed.warnings[0], /pending change was due on 2026-01-01/);
-  assert.deepEqual(check({ pending_change: "New law", pending_date: "2027-01-01" }, { today: "2026-06-01" }).warnings, []);
+  assert.deepEqual(check({ pending_change: "New law", pending_date: "2027-01-01" }, { today: "2026-11-01" }).warnings, []);
 });
 
 test("a row last checked more than a year ago is flagged for review", () => {
@@ -132,4 +133,40 @@ test("--check names the differences that changes.csv does not record", () => {
   assert.deepEqual(unrecorded(entries, recorded), []);
   // Another value of the same field is not the edit that was made.
   assert.equal(unrecorded(entries, [{ ...recorded[0], new_value: "3" }]).length, 1);
+});
+
+test("a last_checked in the future is an error (it would hide the row from the review reminder)", () => {
+  assert.match(check({ last_checked: "2099-01-01" }).errors[0], /last_checked is in the future/);
+  assert.deepEqual(check({ last_checked: "2026-10-17" }, { today: "2026-10-17" }).errors, []);
+});
+
+test("a URL with spaces or backslashes is rejected (browsers repair them, a data file should not rely on it)", () => {
+  assert.match(check({ website_url: "https://example.org/a b.pdf" }).errors.join("\n"), /website_url|url/i);
+  assert.match(check({ website_url: "https://example.org/a\\b.pdf" }).errors.join("\n"), /website_url|url/i);
+});
+
+test("a source checked after its row's last_checked is flagged", () => {
+  const law = { ...records[0], last_checked: "2026-01-01" };
+  const sources = [{ country_code: law.country_code, law_name: law.law_name, field: "notes", url: "https://example.org/", confidence: "low", checked: "2026-02-01" }];
+  assert.match(newerSourceWarnings(sources, [law])[0], /bring last_checked up to date/);
+  assert.deepEqual(newerSourceWarnings([{ ...sources[0], checked: "2026-01-01" }], [law]), []);
+  assert.deepEqual(newerSourceWarnings(sources, records), [], "the committed data has no source newer than its row");
+});
+
+test("record-changes is idempotent: running it again on the same edit adds nothing", () => {
+  const dir = mkdtempSync(join(tmpdir(), "changes-twice-"));
+  const master = join(dir, "master.csv");
+  const before = [{ ...base, country_code: "AA", law_name: "Act", penalties_range: "1" }];
+  writeCsv(master, COLUMNS, before);
+  const committed = readFileSync(master, "utf-8");
+  writeCsv(master, COLUMNS, [{ ...before[0], penalties_range: "2" }]);
+  const first = recordChanges({ since: "HEAD", date: "2026-10-15", masterPath: master, gitShow: () => committed });
+  assert.equal(first.entries.length, 1);
+  writeCsv(first.changes.path, CHANGE_COLUMNS, first.all);
+  const second = recordChanges({ since: "HEAD", date: "2026-10-15", masterPath: master, gitShow: () => committed });
+  assert.equal(second.entries.length, 0, "the edit is already in changes.csv");
+  assert.equal(second.all.length, 1);
+  // Rows repeated by an older run collapse to one.
+  writeCsv(first.changes.path, CHANGE_COLUMNS, [...first.all, ...first.all]);
+  assert.equal(recordChanges({ since: "HEAD", date: "2026-10-15", masterPath: master, gitShow: () => committed }).all.length, 1);
 });

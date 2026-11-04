@@ -117,6 +117,8 @@ export const todayIso = () => new Date().toISOString().slice(0, 10);
 const daysBetween = (from, to) => (Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000;
 
 const isHttpUrl = (value) => {
+  // new URL() acepta espacios y barras invertidas (los navegadores los arreglan solos); en una fuente de datos son un error de tipeo.
+  if (/[\s\\]/.test(value)) return false;
   try {
     const u = new URL(value);
     return u.protocol === "http:" || u.protocol === "https:";
@@ -255,6 +257,9 @@ export function validateRecords(records, header = COLUMNS, { today = todayIso() 
     if (record.last_checked && !isRealDate(record.last_checked)) {
       fail(`last_checked must be a real YYYY-MM-DD date, got ${JSON.stringify(record.last_checked)}`);
     }
+    if (isRealDate(record.last_checked) && record.last_checked > today) {
+      fail(`last_checked is in the future (${record.last_checked}); it would hide the row from the review reminder`);
+    }
     if (record.data_status !== "curated" && !record.last_checked) {
       fail(`last_checked is required when data_status is ${record.data_status}`);
     }
@@ -309,6 +314,7 @@ export function validateSources(sources, records, header = SOURCE_COLUMNS) {
     if (!isHttpUrl(s.url) || isPrivateHost(s.url)) fail(`url must be a public http(s) URL, got ${JSON.stringify(s.url)}`);
     if (s.confidence && !CONFIDENCE_LEVELS.includes(s.confidence)) fail(`confidence must be empty or one of ${CONFIDENCE_LEVELS.join("|")}`);
     if (!isRealDate(s.checked)) fail(`checked must be a real YYYY-MM-DD date, got ${JSON.stringify(s.checked)}`);
+    else if (s.checked > todayIso()) fail(`checked is in the future (${s.checked})`);
     const key = `${s.country_code}|${law?.law_name ?? s.law_name}|${s.field}`;
     if (seen.has(key)) fail(`second source for ${s.country_code} ${s.field}`);
     seen.add(key);
@@ -320,6 +326,17 @@ export function validateSources(sources, records, header = SOURCE_COLUMNS) {
  * A value that changed after its source was last looked at may no longer be backed by it.
  * Entries recorded for the day the source was checked are fine: the check came with the edit.
  */
+export function newerSourceWarnings(sources, records) {
+  const warnings = [];
+  for (const s of sources) {
+    const law = findLaw(records, s.country_code, s.law_name);
+    if (law?.last_checked && isRealDate(s.checked) && s.checked > law.last_checked) {
+      warnings.push(`${law.country_code} "${law.law_name}" ${s.field}: its source was checked on ${s.checked}, after the row's last_checked (${law.last_checked}); bring last_checked up to date`);
+    }
+  }
+  return warnings;
+}
+
 export function staleSourceWarnings(sources, records, changes) {
   const warnings = [];
   for (const s of sources) {
@@ -406,7 +423,7 @@ export function loadAndValidate(path = MASTER_CSV, options = {}) {
     errors.push(...t.errors);
     warnings.push(...t.warnings);
     errors.push(...validateSources(sources.rows, records, sources.header), ...validateChanges(changes.rows, changes.header));
-    if (!errors.length) warnings.push(...staleSourceWarnings(sources.rows, records, changes.rows));
+    if (!errors.length) warnings.push(...staleSourceWarnings(sources.rows, records, changes.rows), ...newerSourceWarnings(sources.rows, records));
   }
   return { records, errors, warnings, sources: sources.rows, changes: changes.rows, translations: translations.rows };
 }
