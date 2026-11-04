@@ -59,10 +59,14 @@
     </fieldset>
     <fieldset><legend>Atuendo</legend>
       <label for="modo">De dónde sale la ropa</label>
-      <select id="modo"><option value="catalogo">Del catálogo</option><option value="nueva">Ropa nueva (generada)</option></select>
+      <select id="modo"><option value="catalogo">Del catálogo</option><option value="nueva">Ropa nueva (generada)</option><option value="medida">Vestuario a medida (prenda por prenda)</option></select>
       <div id="grupo-catalogo">
         <label for="region">Región</label><select id="region"></select>
         <label for="atuendo">Atuendo</label><select id="atuendo"></select>
+      </div>
+      <div id="grupo-medida" hidden>
+        <p class="nota">Elige una prenda por cada ranura; los colores salen del catálogo de cada prenda (con su probabilidad) y cambian con «Otra semilla».</p>
+        <div id="selectores-medida"></div>
       </div>
       <div id="grupo-nueva" hidden>
         <label for="estilo">Estilo</label>
@@ -83,6 +87,11 @@
       <label for="saludo">Saludo</label>
       <select id="saludo"><option value="derecha" selected>Mano derecha</option><option value="izquierda">Mano izquierda</option><option value="ninguno">Sin saludo</option></select>
       <label for="piel">Piel</label><select id="piel"><option value="">Según el origen o el atuendo</option></select>
+    </fieldset>
+    <fieldset><legend>Cabeza</legend>
+      <label for="peinado">Peinado</label><select id="peinado"><option value="">Según el atuendo</option></select>
+      <label for="tocado">Tocado o sombrero</label><select id="tocado"><option value="">Según el atuendo</option></select>
+      <label for="barba">Barba</label><select id="barba"><option value="">Según el atuendo</option></select>
     </fieldset>
     <fieldset><legend>Dibujo</legend>
       <label for="detalle">Detalle</label>
@@ -139,7 +148,13 @@
     if ($('piel').value) o.piel = $('piel').value;
     if ($('anio').value !== '') o.anio = Number($('anio').value);
     if ($('etnia').value) o.etnia = $('etnia2').value && $('etnia2').value !== $('etnia').value ? [$('etnia').value, $('etnia2').value] : $('etnia').value;
-    if ($('modo').value === 'nueva') { o.ropaNueva = true; o.estilo = $('estilo').value; if ($('esquema').value) o.esquema = $('esquema').value; }
+    if ($('peinado').value) o.peinado = $('peinado').value;
+    if ($('tocado').value) o.tocado = $('tocado').value;
+    if ($('barba').value) o.barba = $('barba').value;
+    if ($('modo').value === 'medida') {
+      o.vestir = [...document.querySelectorAll('#selectores-medida select')].map((x) => x.value).filter(Boolean);
+      if ($('region').value) o.region = $('region').value;
+    } else if ($('modo').value === 'nueva') { o.ropaNueva = true; o.estilo = $('estilo').value; if ($('esquema').value) o.esquema = $('esquema').value; }
     else { if ($('atuendo').value) o.atuendo = $('atuendo').value; else if ($('region').value) o.region = $('region').value; }
     return o;
   }
@@ -175,8 +190,8 @@
       mos.appendChild(b);
     }
   }
-  for (const id of ['etnia', 'etnia2', 'anio', 'saludo', 'pose', 'contorno', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
-  $('modo').addEventListener('change', () => { $('grupo-catalogo').hidden = $('modo').value === 'nueva'; $('grupo-nueva').hidden = $('modo').value !== 'nueva'; });
+  for (const id of ['peinado', 'tocado', 'barba', 'etnia', 'etnia2', 'anio', 'saludo', 'pose', 'contorno', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
+  $('modo').addEventListener('change', () => { $('grupo-catalogo').hidden = $('modo').value !== 'catalogo'; $('grupo-nueva').hidden = $('modo').value !== 'nueva'; $('grupo-medida').hidden = $('modo').value !== 'medida'; });
   $('region').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
   $('sexo').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
   $('otra').addEventListener('click', () => { semilla = Math.floor(Math.random() * 90000) + 2; dibujar(); });
@@ -185,6 +200,14 @@
     a.href = URL.createObjectURL(new Blob([ultimo], { type: 'image/svg+xml' }));
     a.download = `silueta-${semilla}.svg`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
+  // Vestuario a medida: un selector por ranura
+  const RANURAS = [['torso', 'Torso (camisa, vestido, blusa…)'], ['inferior', 'Pantalón o falda'], ['sobre', 'Chaqueta, abrigo o chaleco'], ['capa', 'Capa, manto o poncho'], ['faja', 'Faja o cinturón'], ['cuello', 'Cuello y collares'], ['calzado', 'Calzado'], ['accesorio', 'Accesorios']];
+  const predeterminadas = { torso: 'camisa-blanca', inferior: 'pantalon-vestir', calzado: 'zapatos-vestir' };
+  $('selectores-medida').innerHTML = RANURAS.map(([r, nombre]) => `<label for="med-${r}">${nombre}</label><select id="med-${r}"><option value="">Ninguna</option>${S.PRENDAS.filter((p) => p.ranura === r).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')).map((p) => `<option value="${p.id}"${predeterminadas[r] === p.id ? ' selected' : ''}>${p.nombre}</option>`).join('')}</select>`).join('');
+  for (const [r] of RANURAS) $(`med-${r}`).addEventListener('change', dibujar);
+  $('peinado').innerHTML += Object.keys(S.PEINADOS).map((x) => `<option value="${x}">${x}</option>`).join('');
+  $('tocado').innerHTML += Object.keys(S.TOCADOS).map((x) => `<option value="${x}">${x}</option>`).join('');
+  $('barba').innerHTML += Object.keys(S.BARBAS).map((x) => `<option value="${x}">${x}</option>`).join('');
   // Catálogo de colores por prenda
   const porRanura = {};
   for (const p of S.PRENDAS) (porRanura[p.ranura] ||= []).push(p);

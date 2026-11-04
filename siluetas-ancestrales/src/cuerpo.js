@@ -40,26 +40,41 @@ export const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta:
 export const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
 /** Pose simétrica y rígida (la de las primeras versiones). */
-export const POSE_FIRME = Object.freeze({ modo: 'firme', cabeza: 0, inclinacion: 0, carga: 0, abre: 1, giro: 10, brazoLibre: 'abajo', angulos: null, saludo: { codo: 55, antebrazo: 15, mano: 0 } });
+export const POSE_FIRME = Object.freeze({
+  modo: 'firme', cabeza: 0, inclinacion: 0, carga: 0, abre: 1, giro: 10, brazoLibre: 'abajo', angulos: null,
+  saludo: { codo: 55, antebrazo: 15, mano: 0 },
+  // Articulaciones: hombros inclinados (grados), columna curvada (fracción de la altura), codos y muñecas por lado (grados).
+  hombros: 0, columna: 0, codos: { 1: 0, '-1': 0 }, munecas: { 1: 0, '-1': 0 }, cinturaCodo: 1, dedos: 1,
+});
 
-const redondear = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d;
+const redondear = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d + 0; // + 0 evita el -0
 
 /**
  * Pose casual y distinta cada vez: la cabeza inclinada, el cuerpo apoyado en una pierna, los pies más o menos abiertos,
  * el brazo libre caído, en la cintura o en el bolsillo, y el saludo con otro ángulo de codo, antebrazo y mano.
+ * Además, y siempre levemente: un hombro más alto que el otro, la columna con una curva suave, los codos algo doblados,
+ * las muñecas flexionadas y los dedos más o menos abiertos. `intensidad` (0 a 1) escala todas esas variaciones.
  * `carga`: -1 o 1 es el lado (de quien mira) que carga el peso; 0, ambos.
  */
-export function poseAleatoria(azar) {
+export function poseAleatoria(azar, intensidad = 1) {
+  const k = limitar(intensidad, 0, 1.5);
+  const v = (a, b, d = 1) => redondear(azar.entre(a, b) * k, d);
   return {
     modo: 'casual',
-    cabeza: redondear(azar.entre(-6, 6)),
-    inclinacion: redondear(azar.entre(-1.4, 1.4), 2),
+    cabeza: v(-7, 7),
+    inclinacion: v(-1.4, 1.4, 2),
     carga: azar.ponderado([[-1, 3], [1, 3], [0, 2]]),
-    abre: redondear(azar.entre(0.85, 1.5), 2),
+    abre: redondear(1 + (azar.entre(0.85, 1.5) - 1) * k, 2),
     giro: redondear(azar.entre(6, 20)),
     brazoLibre: azar.ponderado([['abajo', 58], ['cintura', 27], ['bolsillo', 15]]),
     angulos: { 1: redondear(azar.entre(5, 17)), '-1': redondear(azar.entre(5, 17)) },
-    saludo: { codo: redondear(azar.entre(40, 62)), antebrazo: redondear(azar.entre(2, 24)), mano: redondear(azar.entre(-14, 14)) },
+    saludo: { codo: redondear(azar.entre(40, 62)), antebrazo: v(2, 24), mano: v(-16, 16) },
+    hombros: v(-2.8, 2.8),
+    columna: v(-0.008, 0.008, 4),
+    codos: { 1: v(-4, 12), '-1': v(-4, 12) },
+    munecas: { 1: v(-14, 14), '-1': v(-14, 14) },
+    cinturaCodo: redondear(1 + (azar.entre(0.85, 1.2) - 1) * k, 2),
+    dedos: redondear(1 + (azar.entre(0.8, 1.25) - 1) * k, 2),
   };
 }
 
@@ -67,9 +82,12 @@ export function poseAleatoria(azar) {
 export function normalizarPose(spec) {
   if (!spec || spec === 'firme') return POSE_FIRME;
   const o = typeof spec === 'object' ? spec : {};
+  const porLado = (v, por) => ({ 1: v?.[1] ?? por, '-1': v?.['-1'] ?? por });
   return {
     ...POSE_FIRME, ...o,
-    angulos: o.angulos ? { 1: o.angulos[1] ?? 8, '-1': o.angulos['-1'] ?? 8 } : null,
+    angulos: o.angulos ? porLado(o.angulos, 8) : null,
+    codos: porLado(o.codos, 0),
+    munecas: porLado(o.munecas, 0),
     saludo: { ...POSE_FIRME.saludo, ...(o.saludo ?? {}) },
   };
 }
@@ -131,22 +149,24 @@ export function medidas(opc = {}) {
   const unit = (v) => { const l = Math.hypot(v[0], v[1]) || 1; return [v[0] / l, v[1] / l]; };
   const mitad = (p, q) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
 
-  const brazoCaido = (grados) => {
-    const tan = Math.tan((grados * Math.PI) / 180);
-    const bx = (yy) => S0[0] + (yy - brazoY0) * tan;
-    const dd = grados > 9 ? 1 : 0;
-    const linea = [
-      [bx(uBrazo[0]), uBrazo[0]], [bx(uBrazo[1]), uBrazo[1]], [bx(uBrazo[2]), uBrazo[2]],
-      [bx(uBrazo[3]) + dd * H * 0.004, uBrazo[3]], [bx(uBrazo[4]) + dd * H * 0.006, uBrazo[4]],
-    ];
-    return { tipo: 'caido', linea, anchos: anchosBrazo, u: uBrazo, tan, mano: { x: linea[4][0], y0: y.muneca, y1: y.puntaMano } };
+  // Brazo caído: el codo puede doblarse hacia afuera (`bend`, grados) y la muñeca flexionarse (`flex`).
+  const rad = (g) => (g * Math.PI) / 180;
+  const brazoCaido = (grados, bend = 0, flex = 0) => {
+    const a1 = rad(grados), a2 = rad(grados + bend);
+    const codo = [S0[0] + (y.codo - brazoY0) * Math.tan(a1), y.codo];
+    const mun = [codo[0] + (y.muneca - y.codo) * Math.tan(a2), y.muneca];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dd = bend > 3 ? H * 0.003 : 0; // el antebrazo abulta un poco al doblar
+    const linea = [S0, [m1[0], m1[1]], codo, [m2[0] + dd, m2[1]], mun];
+    return { tipo: 'caido', linea, anchos: anchosBrazo, u: uBrazo, mano: { ang: grados + bend + flex } };
   };
   // Mano en la cintura: codo hacia afuera y muñeca sobre la cadera.
   const brazoCintura = () => {
-    const codo = [S0[0] + H * 0.064, lerp(y.axila, y.cintura, 0.5)];
+    const codo = [S0[0] + H * 0.064 * pose.cinturaCodo, lerp(y.axila, y.cintura, 0.5)];
     const mun = [w.cadera * 0.98 + H * 0.004, y.cintura + (y.cadera - y.cintura) * 0.72];
     const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
-    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: unit([mun[0] - m2[0], mun[1] - m2[1]]) };
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
   };
   // Mano en el bolsillo: el antebrazo baja hacia la cadera y la mano no se ve.
   const brazoBolsillo = () => {
@@ -157,11 +177,10 @@ export function medidas(opc = {}) {
   };
   // Saludo: el codo baja `codo` grados bajo la horizontal y el antebrazo sube inclinado `antebrazo` grados hacia afuera.
   const brazoSaludo = () => {
-    const rad = (g) => (g * Math.PI) / 180;
     const Lu = H * 0.16, Lf = H * 0.105;
     const codo = [S0[0] + Lu * Math.cos(rad(pose.saludo.codo)), S0[1] + Lu * Math.sin(rad(pose.saludo.codo))];
     const mun = [codo[0] + Lf * Math.sin(rad(pose.saludo.antebrazo)), codo[1] - Lf * Math.cos(rad(pose.saludo.antebrazo))];
-    return { tipo: 'saludo', linea: [S0, mitad(S0, codo), codo, mitad(codo, mun), mun], anchos: anchosBrazo, u: uBrazo, manoRot: pose.saludo.mano };
+    return { tipo: 'saludo', linea: [S0, mitad(S0, codo), codo, mitad(codo, mun), mun], anchos: anchosBrazo, u: uBrazo, manoRot: pose.saludo.mano, dedos: pose.dedos };
   };
 
   // Saludo: `saludo` 'derecha' levanta la mano derecha de la persona, que de frente queda a la izquierda de quien mira.
@@ -173,7 +192,7 @@ export function medidas(opc = {}) {
     if (s === saludoLado) brazos[s] = brazoSaludo();
     else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();
     else if (s === ladoLibre && pose.brazoLibre === 'bolsillo') brazos[s] = brazoBolsillo();
-    else brazos[s] = brazoCaido(anguloDe(s));
+    else brazos[s] = brazoCaido(anguloDe(s), pose.codos[s] ?? 0, pose.munecas[s] ?? 0);
   }
 
   // Piernas. La que no carga el peso se abre un poco más y gira más el pie; `abre` ensancha la postura.
@@ -271,7 +290,7 @@ export function trazoMano(M, s) {
   if (b.tipo === 'saludo') return manoSaludo(M, s);
   if (b.tipo === 'bolsillo') return [];
   if (b.tipo === 'cintura') return [manoCerrada(M, s)];
-  return [manoCaida(M, s)];
+  return manoCaida(M, s);
 }
 
 /** Mano abierta, con la palma hacia quien mira, al final del antebrazo levantado. */
@@ -290,7 +309,8 @@ function manoSaludo(M, s) {
   const loc = (a, c) => [W[0] + u[0] * a + v[0] * c, W[1] + u[1] * a + v[1] * c];
   const dir = (ang) => [u[0] * Math.cos(ang) + v[0] * Math.sin(ang) * ts, u[1] * Math.cos(ang) + v[1] * Math.sin(ang) * ts];
   const partes = [suavizar([loc(-3, -wm), loc(palma * 0.45, -pw), loc(palma, -pw * 0.92), loc(palma, pw * 0.92), loc(palma * 0.45, pw), loc(-3, wm)], true)];
-  const dedos = [[0.72, 0.9, 0.12], [0.25, 1.0, 0.03], [-0.22, 0.93, -0.06], [-0.68, 0.74, -0.16]];
+  const ab = b.dedos ?? 1; // apertura de los dedos
+  const dedos = [[0.72, 0.9, 0.12 * ab], [0.25, 1.0, 0.03 * ab], [-0.22, 0.93, -0.06 * ab], [-0.68, 0.74, -0.16 * ab]];
   const fl = largo * 0.54, wf = pw * 0.27;
   for (const [c, f, ang] of dedos) {
     const base = loc(palma * 0.85, ts * pw * c), d = dir(ang);
@@ -317,29 +337,29 @@ export function trazoAntebrazo(M, s, uDesde) {
 function manoCerrada(M, s) {
   const b = brazoLado(M, s);
   const W = b.linea[b.linea.length - 1];
-  const d = [b.manoDir[0] * s, b.manoDir[1]];
+  const fx = ((b.manoFlex ?? 0) * Math.PI) / 180 * s;
+  const d0 = [b.manoDir[0] * s, b.manoDir[1]];
+  const d = [d0[0] * Math.cos(fx) - d0[1] * Math.sin(fx), d0[0] * Math.sin(fx) + d0[1] * Math.cos(fx)];
   const v = [-d[1], d[0]];
   const wm = M.w.muneca, largo = (M.y.puntaMano - M.y.muneca) * 0.62;
   const loc = (a, c) => [W[0] + d[0] * a + v[0] * c, W[1] + d[1] * a + v[1] * c];
   return suavizar([loc(-2, -wm), loc(largo * 0.35, -wm * 1.45), loc(largo * 0.8, -wm * 1.2), loc(largo, 0), loc(largo * 0.8, wm * 1.2), loc(largo * 0.35, wm * 1.45), loc(-2, wm)], true);
 }
 
+/** Mano que cuelga, orientada según el antebrazo y la flexión de la muñeca, con el pulgar hacia el cuerpo. */
 function manoCaida(M, s) {
-  const b = M.brazos[s];
-  const { x, y0, y1 } = b.mano;
-  const wm = M.w.muneca;
-  const xx = M.cx + s * x;
-  const lx = s * (y1 - y0) * b.tan * 0.5;
-  const pts = [
-    [xx - wm * 1.0, y0 - 2],
-    [xx - wm * 1.25 + lx * 0.3, y0 + (y1 - y0) * 0.35],
-    [xx - wm * 1.1 + lx * 0.7, y0 + (y1 - y0) * 0.75],
-    [xx + lx, y1],
-    [xx + wm * 1.1 + lx * 0.7, y0 + (y1 - y0) * 0.75],
-    [xx + wm * 1.25 + lx * 0.3, y0 + (y1 - y0) * 0.35],
-    [xx + wm * 1.0, y0 - 2],
-  ];
-  return suavizar(pts, true);
+  const b = brazoLado(M, s);
+  const W = b.linea[b.linea.length - 1];
+  const a = (b.mano.ang * Math.PI) / 180;
+  const d = [s * Math.sin(a), Math.cos(a)]; // hacia abajo, abierta hacia afuera
+  const v = [-d[1], d[0]];
+  const wm = M.w.muneca, largo = M.y.puntaMano - M.y.muneca;
+  const loc = (t, c) => [W[0] + d[0] * t + v[0] * c, W[1] + d[1] * t + v[1] * c];
+  const palma = suavizar([loc(-2, -wm), loc(largo * 0.35, -wm * 1.25), loc(largo * 0.75, -wm * 1.1), loc(largo, 0), loc(largo * 0.75, wm * 1.1), loc(largo * 0.35, wm * 1.25), loc(-2, wm)], true);
+  // Pulgar: asoma por el lado del cuerpo.
+  const lado = s; // v apunta hacia -x: el lado del cuerpo es +v para el brazo derecho de quien mira y -v para el otro
+  const bp = loc(largo * 0.18, lado * wm * 1.0), fin = loc(largo * 0.56, lado * wm * 1.55);
+  return [palma, suavizar(tubo([bp, fin], [wm * 0.62, wm * 0.5], 'redonda'), true)];
 }
 
 /** Pie visto de frente; `giro` abre la punta hacia afuera. */
@@ -361,13 +381,36 @@ export function trazoPie(M, s) {
 export function trazoCuello(M) {
   const { cx, y, w, H } = M;
   const top = y.menton - H * 0.025;
+  // El cuello se inclina con la cabeza: la parte de arriba gira alrededor del arranque en los hombros.
+  const ang = ((M.pose.cabeza ?? 0) * Math.PI) / 180;
+  const girar = (p, peso) => {
+    const a = ang * peso, c = Math.cos(a), n = Math.sin(a), dx = p[0] - cx, dy = p[1] - y.hombro;
+    return [cx + dx * c - dy * n, y.hombro + dx * n + dy * c, p[2]];
+  };
   const pts = [
-    [cx - w.cuello, top], [cx + w.cuello, top, true],
-    [cx + w.cuello * 1.05, lerp(top, y.hombro, 0.5)],
+    girar([cx - w.cuello, top], 1), girar([cx + w.cuello, top, true], 1),
+    girar([cx + w.cuello * 1.05, lerp(top, y.hombro, 0.5)], 0.5),
     [cx + w.cuello * 1.35, y.hombro - H * 0.012],
     [cx, y.hombro + H * 0.012, true],
     [cx - w.cuello * 1.35, y.hombro - H * 0.012],
-    [cx - w.cuello * 1.05, lerp(top, y.hombro, 0.5)],
+    girar([cx - w.cuello * 1.05, lerp(top, y.hombro, 0.5)], 0.5),
   ];
   return suavizar(pts, true);
+}
+
+/**
+ * Deformación suave de la figura por su pose: un hombro más bajo que el otro y la columna con una curva (la cabeza
+ * se desplaza sobre las caderas). Se aplica a todas las formas, ropa incluida, y deja quietos los pies y las caderas.
+ */
+export function deformar(M) {
+  const { cx, y, H } = M;
+  const tilt = Math.tan(((M.pose.hombros ?? 0) * Math.PI) / 180);
+  const sway = (M.pose.columna ?? 0) * H;
+  if (Math.abs(tilt) < 1e-6 && Math.abs(sway) < 1e-6) return null;
+  const paso = (t) => { const c = limitar(t, 0, 1); return c * c * (3 - 2 * c); };
+  return (x, yy) => {
+    const wTilt = paso((y.cintura - yy) / (y.cintura - y.hombro));
+    const wSway = paso((y.cadera - yy) / (y.cadera - y.menton)) ** 1.3;
+    return [x + sway * wSway, yy + (x - cx) * tilt * wTilt];
+  };
 }

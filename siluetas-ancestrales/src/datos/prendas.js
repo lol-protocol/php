@@ -6,6 +6,7 @@ import { P } from './ayuda.js';
 import { PRENDAS_AMPLIADAS } from './prendas-ampliadas.js';
 import { PRENDAS_SIGLO20 } from './prendas-siglo20.js';
 import { PRENDAS_REGIONALES_2 } from './prendas-regionales-2.js';
+import { PRENDAS_MODA } from './prendas-moda.js';
 
 export const PRENDAS = [
   // ===== Egipto y Mesopotamia =====
@@ -236,6 +237,7 @@ export const PRENDAS = [
   ...PRENDAS_AMPLIADAS,
   ...PRENDAS_SIGLO20,
   ...PRENDAS_REGIONALES_2,
+  ...PRENDAS_MODA,
 ];
 
 export const PRENDAS_POR_ID = Object.fromEntries(PRENDAS.map((p) => [p.id, p]));

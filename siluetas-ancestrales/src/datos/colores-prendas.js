@@ -64,6 +64,29 @@ export const PERFILES = {
   COSTURA_DENIM: [['mostaza', 35], ['ocre-amarillo', 30], ['crudo', 20], ['cobre', 15]],
   BOTONES: [['marfil', 30], ['crudo', 18], ['cuero-oscuro', 14], ['negro-humo', 14], ['bronce', 10], ['plata', 8], ['cobre', 6]],
   BOTONES_METAL: [['cobre', 45], ['bronce', 30], ['hierro', 15], ['plata', 10]],
+  CAMISA_VESTIR: [['blanco-optico', 30], ['azul-celeste', 20], ['crema', 12], ['rosa-viejo', 8], ['gris-claro', 8], ['lila', 5], ['verde-agua', 5], ['mostaza', 4], ['azul-marino', 4], ['burdeos', 4]],
+  SAFARI: [['beige', 30], ['caqui-militar', 25], ['crema', 15], ['kaki', 12], ['verde-oliva-oscuro', 10], ['blanco-lino', 8]],
+  SUDADERA: [['gris-claro', 24], ['azul-marino', 16], ['gris-oscuro', 14], ['burdeos', 10], ['verde-bosque', 10], ['negro-carbon', 10], ['rojo-vivo', 6], ['mostaza', 5], ['azul-real', 5]],
+  PARKA: [['verde-militar', 24], ['azul-marino', 20], ['caqui-militar', 15], ['negro-carbon', 14], ['burdeos', 10], ['gris-oscuro', 10], ['mostaza', 7]],
+  BOMBER: [['negro-carbon', 28], ['verde-militar', 20], ['azul-marino', 20], ['burdeos', 12], ['gris-oscuro', 10], ['rojo-vivo', 5], ['mostaza', 5]],
+  ABRIGOS_LUJO: [['camel', 22], ['lana-negra', 18], ['burdeos', 14], ['chocolate', 14], ['gris-oscuro', 12], ['verde-oliva-oscuro', 8], ['crema', 6], ['azul-marino', 6]],
+  SASTRE: [['azul-marino', 22], ['lana-negra', 20], ['gris-oscuro', 15], ['crema', 10], ['burdeos', 10], ['camel', 10], ['verde-bosque', 7], ['rosa-viejo', 6]],
+  BATA: [['crema', 20], ['rosa-viejo', 16], ['azul-celeste', 14], ['burdeos', 12], ['verde-agua', 12], ['lila', 10], ['gris-claro', 8], ['azul-marino', 8]],
+  BATIN: [['burdeos', 24], ['azul-marino', 20], ['verde-bosque', 16], ['violeta', 12], ['lana-negra', 14], ['mostaza', 7], ['azul-real', 7]],
+  CORSE: [['negro-carbon', 28], ['burdeos', 22], ['crema', 14], ['rosa-viejo', 12], ['azul-marino', 10], ['verde-bosque', 8], ['marfil', 6]],
+  CARGO: [['caqui-militar', 28], ['verde-militar', 22], ['kaki', 18], ['beige', 14], ['gris-oscuro', 10], ['azul-marino', 8]],
+  CAPRI: [['azul-denim', 20], ['crema', 18], ['rosa-viejo', 12], ['beige', 12], ['blanco-optico', 12], ['azul-marino', 10], ['negro-carbon', 8], ['rojo-vivo', 8]],
+  PESCADOR: [['crudo', 30], ['beige', 25], ['azul-denim', 15], ['caqui-militar', 12], ['indigo', 10], ['blanco-optico', 8]],
+  LEGGINGS: [['negro-carbon', 55], ['gris-oscuro', 15], ['azul-marino', 12], ['burdeos', 8], ['verde-bosque', 5], ['lana-negra', 5]],
+  SAROUEL: [['crema', 20], ['terracota', 15], ['azul-marino', 12], ['verde-oliva-oscuro', 12], ['burdeos', 10], ['mostaza', 10], ['gris-claro', 10], ['rosa-viejo', 6], ['camel', 5]],
+  PALAZZO: [['negro-carbon', 24], ['crema', 16], ['azul-marino', 14], ['burdeos', 12], ['verde-esmeralda', 10], ['blanco-optico', 10], ['rosa-viejo', 8], ['camel', 6]],
+  JODHPUR: [['beige', 40], ['crema', 20], ['camel', 15], ['kaki', 15], ['blanco-optico', 10]],
+  MONO: [['azul-marino', 25], ['caqui-militar', 20], ['verde-militar', 15], ['gris-oscuro', 15], ['indigo', 10], ['kaki', 10], ['blanco-optico', 5]],
+  ACCESORIO_TELA: [['crema', 20], ['burdeos', 12], ['azul-marino', 12], ['rosa-viejo', 10], ['verde-bosque', 10], ['lana-negra', 10], ['mostaza', 8], ['camel', 8], ['gris-claro', 5], ['rojo-vivo', 5]],
+  PIEL_CLARA: [['crema', 25], ['camel', 20], ['gris-claro', 18], ['chocolate', 15], ['lana-negra', 12], ['blanco-optico', 10]],
+  TIRANTES: [['negro-carbon', 24], ['cuero-oscuro', 20], ['burdeos', 16], ['azul-marino', 14], ['verde-bosque', 10], ['mostaza', 8], ['rojo-vivo', 8]],
+  TACONES: [['negro-carbon', 28], ['cuero-oscuro', 18], ['burdeos', 14], ['crema', 10], ['rojo-vivo', 8], ['azul-marino', 8], ['nogal', 8], ['marfil', 6]],
+  CHANCLETAS: [['azul-real', 15], ['negro-carbon', 15], ['rojo-vivo', 12], ['crema', 12], ['verde-lima', 10], ['cuero', 12], ['blanco-optico', 10], ['naranja-vivo', 7], ['rosa-fucsia', 7]],
 };
 
 // Asignación: [rol, perfil, ids de prenda separados por espacios]. La primera coincidencia de (prenda, rol) manda.
@@ -123,6 +146,44 @@ const GRUPOS = [
   ['principal', 'SEDA', 'kaftan-corto'],
   ['principal', 'CHAMANTO', 'quechquemitl'],
   ['principal', 'CUENTAS', 'obijime'],
+  // Ropa de los tipos nuevos
+  ['principal', 'VESTIDOS_DIA', 'vestido-tirantes vestido-halter vestido-asimetrico vestido-corazon vestido-trapecio vestido-globo vestido-tubo vestido-camisero vestido-volantes vestido-pico falda-mini falda-capas'],
+  ['principal', 'VESTIDOS_GALA', 'vestido-tirantes-largo vestido-corazon-gala vestido-sirena vestido-sirena-tirantes falda-sirena'],
+  ['principal', 'SEDA', 'blusa-farol blusa-pagoda top-tirantes top-halter'],
+  ['principal', 'CAMISA_VESTIR', 'camisa-clasica camisa-ajustada'],
+  ['principal', 'SAFARI', 'camisa-safari chaqueta-safari'],
+  ['principal', 'POLERAS', 'polo camiseta-cap camiseta-sisa'],
+  ['principal', 'SUDADERA', 'sudadera-capucha'],
+  ['principal', 'SUETERES', 'sueter-oversize'],
+  ['principal', 'PARKA', 'parka-capucha anorak chaleco-acolchado'],
+  ['principal', 'BOMBER', 'bomber'],
+  ['principal', 'ABRIGOS_LUJO', 'abrigo-piel-total abrigo-punos-piel'],
+  ['principal', 'SASTRE', 'blazer-ajustado'],
+  ['principal', 'CUERO_CHAQUETA', 'chaqueta-motera'],
+  ['principal', 'BATA', 'bata-casa'],
+  ['principal', 'BATIN', 'batin-seda'],
+  ['principal', 'CORSE', 'corse'],
+  ['principal', 'DENIM', 'jeans-clasicos'],
+  ['principal', 'PANTALON_VESTIR', 'pantalon-pliegues pantalon-tubo'],
+  ['principal', 'PANTALON_70', 'pantalon-pitillo'],
+  ['principal', 'CARGO', 'pantalon-cargo bermuda'],
+  ['principal', 'CAPRI', 'pantalon-capri'],
+  ['principal', 'PESCADOR', 'pantalon-pescador'],
+  ['principal', 'LEGGINGS', 'leggings'],
+  ['principal', 'SAROUEL', 'sarouel'],
+  ['principal', 'FALDAS_CIUDAD', 'culotte falda-globo falda-trapecio falda-abertura falda-abertura-lado falda-midi'],
+  ['principal', 'PALAZZO', 'pantalon-palazzo mono-elegante'],
+  ['principal', 'JODHPUR', 'pantalon-jodhpur'],
+  ['principal', 'MONO', 'mono-trabajo'],
+  ['principal', 'PIEL_CLARA', 'cuello-piel'],
+  ['principal', 'ACCESORIO_TELA', 'esclavina chalina panuelo-triangulo babero-cuello'],
+  ['principal', 'TIRANTES', 'tirantes-pantalon'],
+  ['principal', 'TACONES', 'tacones'],
+  ['principal', 'CHANCLETAS', 'chancletas'],
+  ['principal', 'CALZADO_CUERO', 'botines zapatos-oxford'],
+  ['ribete', 'COSTURA_DENIM', 'jeans-clasicos'],
+  ['detalle', 'BOTONES_METAL', 'jeans-clasicos'],
+  ['detalle', 'BOTONES', 'camisa-clasica camisa-ajustada camisa-safari polo vestido-camisero chaqueta-safari parka-capucha anorak abrigo-piel-total abrigo-punos-piel blazer-ajustado chaleco-acolchado vestido-tirantes vestido-halter'],
   // Costuras y botones
   ['ribete', 'COSTURA_DENIM', 'pantalon-vaquero chaqueta-denim camisa-denim pantalon-overol overol-peto'],
   ['detalle', 'BOTONES_METAL', 'pantalon-vaquero chaqueta-denim camisa-denim pantalon-overol overol-peto'],
@@ -215,4 +276,15 @@ export function muestrearColor(prendaId, rol, azar, { anio, preferidos = [], ref
   const pesos = base.map((x) => [x, x.pct * (preferidos.includes(x.id) ? refuerzo : 1)]);
   const elegido = azar.ponderado(pesos);
   return { id: elegido.id, nombre: elegido.nombre, hex: elegido.hex, pct: elegido.pct };
+}
+
+/**
+ * Elige un color para cualquier prenda: del perfil propio si lo tiene y, si no, del reparto derivado de los atuendos
+ * que la llevan (para vestir una prenda suelta, sin atuendo). Devuelve null si la prenda no tiene colores para ese papel.
+ */
+export function muestrearColorLibre(prendaId, rol, azar, { anio, preferidos = [], refuerzo = 2.5 } = {}) {
+  const lista = distribucionColor(prendaId, rol, { anio });
+  if (!lista.length) return null;
+  const elegido = azar.ponderado(lista.map((x) => [x, x.pct * (preferidos.includes(x.id) ? refuerzo : 1)]));
+  return { id: elegido.id, nombre: elegido.nombre, hex: elegido.hex, pct: elegido.pct, origen: elegido.origen };
 }

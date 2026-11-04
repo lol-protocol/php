@@ -1,6 +1,6 @@
 # siluetas-ancestrales
 
-Generador de **siluetas de frente de personas ancestrales** (nuestros antepasados), en **JavaScript y SVG**, sin dependencias. Son ilustraciones, no fotografías: cuerpo y cabeza con proporciones reales y ropa con pliegues, ribetes y telas, pero sin rostro (los rasgos son opcionales y apenas se insinúan). **Sin bordes negros ni grises:** el volumen sale de degradados propios de cada color (luz desde arriba a la izquierda, sombra cálida del otro lado) y de sombras suaves que cada capa proyecta sobre las de abajo (la manga sobre el torso, la cabeza sobre el cuello, el pelo sobre la frente). Cada figura tiene una **pose casual y distinta con cada semilla**.
+Generador de **siluetas de frente de personas ancestrales** (nuestros antepasados), en **JavaScript y SVG**, sin dependencias. Son ilustraciones, no fotografías: cuerpo y cabeza con proporciones reales y ropa con pliegues, ribetes y telas, pero sin rostro (los rasgos son opcionales y apenas se insinúan). **Sin bordes negros ni grises:** el volumen sale de degradados propios de cada color (luz desde arriba a la izquierda, sombra cálida del otro lado) y de sombras suaves que cada capa proyecta sobre las de abajo (la manga sobre el torso, la cabeza sobre el cuello, el pelo sobre la frente). Cada figura tiene una **pose casual y distinta con cada semilla**, con hombros, columna, codos, muñecas, manos y cuello levemente inclinados.
 
 Cada figura **saluda con una mano** (por defecto la derecha de la persona, que de frente queda a la izquierda de quien mira).
 
@@ -8,12 +8,12 @@ Trae un **catálogo grande de ropa** organizado por región, época, sexo y clas
 
 | | |
 |---|---|
-| Atuendos completos | 438, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
-| Prendas | 414 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 15 plantillas paramétricas, cada una con su **catálogo de colores y la probabilidad de cada color** |
-| Tintes con nombre | 110, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, denim, anilinas…) y 47 perfiles de color reutilizables |
+| Atuendos completos | 492, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
+| Prendas | 485 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 16 plantillas paramétricas con decenas de variantes (escotes, mangas, formas, bolsillos, capuchas, pieles…), cada una con su **catálogo de colores y la probabilidad de cada color** |
+| Tintes con nombre | 110, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, denim, anilinas…) y 70 perfiles de color reutilizables |
 | Etnias y culturas | 116, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
 | Pieles, cabellos | 12 tonos de piel y 13 de cabello |
-| Peinados, barbas, tocados | 26, 8 y 40 |
+| Peinados, barbas, tocados | 26, 8 y 44 |
 | Patrones de tela | 19 (rayas, tartán, grecas, escalonado, rombos, escamas, diseños geométricos amazónicos…) |
 
 ## Uso rápido
@@ -68,6 +68,7 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 | `etnia` | id, lista (`['mapuche','espanol']`), texto con comas o `{id: peso}`; `--listar etnias`. **Estima** todo lo que no des a mano: región y atuendo, piel, cabello, peinado, barba, complexión y estatura (ver abajo) |
 | `anio` | año (negativo = antes de nuestra era): filtra atuendos por época y tintes por disponibilidad, y ajusta un poco la estatura |
 | `pose` | `casual` (por defecto, distinta con cada semilla), `'firme'` (simétrica, como las primeras versiones) o un objeto parcial para fijar partes: `{ brazoLibre: 'abajo'\|'cintura'\|'bolsillo', carga: -1\|0\|1 (la pierna que carga el peso, vista de frente), cabeza: grados, inclinacion: grados, abre: 0,85 a 1,5 (apertura de los pies), giro: grados de los pies, saludo: { codo, antebrazo, mano } }`; la pose casual sale en `persona.cuerpo.pose` |
+| `vestir` | lista de ids de prenda o `{ ranura: id }`: viste prenda por prenda (ver «Vestir prenda por prenda») |
 | `contorno` | `'ninguno'` (por defecto: sin bordes) o `'suave'` (un borde fino y tenue, por si se prefiere) |
 | `saludo` | `derecha` (por defecto), `izquierda` o `ninguno`: la mano levantada es la de la persona; de frente, la derecha queda a la izquierda de quien mira |
 | `sexo` (`f`/`m`), `edad` (2–100), `corpulencia` (`delgada`, `media`, `robusta`, `corpulenta` o un número), `altura` (cm), `postura` (`firme`, `relajada`, `abierta`) | cuerpo; los niños tienen otras proporciones |
@@ -78,6 +79,37 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 | `detalle` | `minimo` (plano, sin degradados ni sombras), `medio` (degradados y sombras proyectadas), `alto` (más contraste y luz) |
 | `rasgos` | `true` insinúa ojos, cejas, nariz y boca |
 | `ropaNueva`, `estilo`, `esquema` | ropa inventada (`sobrio`, `trabajo`, `festivo`, `ceremonial`) con un esquema de color (`analogo`, `complementario`, `triada`, `monocromo`, `tierra`, `festivo`) |
+
+## Vestir prenda por prenda
+
+Además de elegir un atuendo completo, se puede **armar el vestuario eligiendo cada prenda**: `vestir` recibe una lista de ids (o `{ ranura: id }`), y los colores salen del catálogo de cada prenda, con su probabilidad.
+
+```bash
+node bin/generar.js --vestir vestido-sirena,estola,tacones,perlas --sexo f --tocado pamela --peinado ondas -o gala.svg
+node bin/generar.js --listar prendas     # id, ranura y nombre de las 480+ prendas
+node bin/generar.js --listar peinados    # también: barbas, tocados
+```
+
+```js
+generarSVG({ sexo: 'm', vestir: { torso: 'polo', inferior: 'pantalon-pliegues', calzado: 'zapatos-oxford' }, tocado: 'canotier' });
+```
+
+La galería tiene un modo «Vestuario a medida» con un selector por ranura (torso, pantalón o falda, chaqueta, capa, faja, cuello, calzado, accesorios) y selectores de peinado, tocado y barba. Si eliges dos prendas de la misma ranura se dibujan superpuestas y `persona.avisos` lo dice; una lista vacía usa el atuendo.
+
+## Tipos de ropa (parámetros de las plantillas)
+
+Cada prenda es una plantilla con parámetros; estas son las variantes que se combinan en el catálogo (y que puedes usar al agregar prendas):
+
+| Tipo | Variantes |
+|---|---|
+| Escotes (`escote`) | `redondo`, `v`, `cuadrado`, `barco`, `alto`, `ojal`, y sin hombro: `tirantes`, `corazon`, `halter`, `asimetrico` (con `lado`) |
+| Mangas (`manga`) | `sin`, `cap`, `corta`, `codo`, `tres-cuartos`, `larga`, `ajustada`, `larga-mano`, `ancha`, `campana`, `pagoda`, `globo`, `abullonada`, `farol`, `kimono` |
+| Forma del vestido o la falda (`forma`) | `campana` (por defecto), `sirena`, `trapecio`, `globo`, `tubo`; además `vuelo`, `volantes`, `pliegues`, `abertura` (`frente`, `lado`) y bajos `recto`, `curvo`, `ondulado`, `dentado`, `pico` |
+| Adornos de torso | `capucha`, `cuelloCamisa`, `bolsillos` (`pecho`, `cadera`, `canguro`, `ambos`), `pieles` (`cuello`, `puños`, `bajo`, `todo`), `cinturon`, `cordones` (corsé), `botones`, `bandas`, `bordadoPecho`, `ribeteBajo` |
+| Pantalones (`ancho`) | `ajustado`, `pitillo`, `tubo`, `recto`, `amplio`, `palazzo`, `bombacho`, `jodhpur`, `campana`; cintura `baja`, `natural`, `alta`; `bolsillos` (`cargo`, `jean`, `pliegues`) |
+| Cuellos (`tipo`) | `collar`, `gargantilla`, `cuentas-largas`, `pectoral`, `gorguera`, `alto`, `bufanda`, `lazo`, `corbata`, `piel`, `esclavina`, `chalina`, `triangulo`, `babero` |
+| Calzado (`tipo`) | `descalzo`, `sandalias`, `sandalia-romana`, `chancletas`, `zapatos`, `oxford`, `tacones`, `mocasines`, `zuecos`, `zapatillas`, `botines`, `botas`, `botas-altas`, `polainas` |
+| Otras plantillas | `mono` (torso y pantalón de una pieza), `poncho`, `drapeado`, `capa`, `chal`, `delantal`, `faja`, `accesorio` (brazaletes, bolso, tirantes) |
 
 ## Cómo está hecho
 
@@ -142,7 +174,7 @@ node bin/construir.js --comprobar   # dist/ y ejemplos/ al día con src/
 node bin/construir.js               # regenera dist/ y ejemplos/ tras cambiar src/
 ```
 
-Las pruebas revisan que no haya bordes por defecto, que los degradados y las sombras estén en cada nivel de detalle, que los `id` no choquen entre figuras, que la pose varíe con la semilla y se mantenga en rangos naturales (mano en la cintura sobre la cadera, pierna libre más abierta, pose firme simétrica); que todo el catálogo de colores sume 100 % por prenda, que los jeans solo salgan en azules y grises, que el filtro por año quite los tintes que no existían, que el muestreo siga los porcentajes (4000 muestras) y que ninguna prenda quede sin usar; que cada etnia tenga datos válidos y que las estimaciones sigan a la etnia (estatura, piel, cabello), a la edad y al año, y avisen cuando el atuendo sea de otra región; que la mano en saludo quede del lado y a la altura correctos para todos los atuendos; que cada atuendo apunte a prendas, tintes y peinados que existen; que **todo atuendo** se dibuje bien a seis edades y complexiones (SVG bien formado, sin `NaN`, sin scripts ni referencias externas, rellenos definidos); que la misma semilla dé el mismo SVG; que los filtros se respeten; que la ropa nueva sea válida y variada; y que `dist/` dé exactamente lo mismo que `src/`.
+Las pruebas revisan que cada tipo de ropa nuevo (escotes, mangas, formas, bolsillos, capuchas, pantalones, calzado) haga lo que dice, que `vestir` use los colores de cada prenda, que la deformación de la pose (hombros y columna) deje quietos los pies y las caderas y que todas las rutas usen solo comandos absolutos; que no haya bordes por defecto, que los degradados y las sombras estén en cada nivel de detalle, que los `id` no choquen entre figuras, que la pose varíe con la semilla y se mantenga en rangos naturales (mano en la cintura sobre la cadera, pierna libre más abierta, pose firme simétrica); que todo el catálogo de colores sume 100 % por prenda, que los jeans solo salgan en azules y grises, que el filtro por año quite los tintes que no existían, que el muestreo siga los porcentajes (4000 muestras) y que ninguna prenda quede sin usar; que cada etnia tenga datos válidos y que las estimaciones sigan a la etnia (estatura, piel, cabello), a la edad y al año, y avisen cuando el atuendo sea de otra región; que la mano en saludo quede del lado y a la altura correctos para todos los atuendos; que cada atuendo apunte a prendas, tintes y peinados que existen; que **todo atuendo** se dibuje bien a seis edades y complexiones (SVG bien formado, sin `NaN`, sin scripts ni referencias externas, rellenos definidos); que la misma semilla dé el mismo SVG; que los filtros se respeten; que la ropa nueva sea válida y variada; y que `dist/` dé exactamente lo mismo que `src/`.
 
 ## Confianza y revisión (para uso antropológico)
 

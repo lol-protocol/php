@@ -4,7 +4,7 @@
 // en el lado opuesto) y de sombras suaves que cada capa proyecta sobre las de abajo (la manga sobre el torso, la
 // cabeza sobre el cuello, el pelo sobre la frente). Cada forma se define una vez y se reutiliza con <use>.
 
-import { LIENZO, medidas, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello, trazoAntebrazo } from './cuerpo.js';
+import { LIENZO, medidas, deformar, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello, trazoAntebrazo } from './cuerpo.js';
 import { geometriaCabeza, trazoCabeza, trazoOrejas, rasgosRostro, PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
 import { PLANTILLAS, ORDEN_RANURAS, finManga } from './prendas.js';
 import { PATRONES } from './patrones.js';
@@ -45,6 +45,11 @@ function rotarRuta(d, ang, cx, cy) {
   });
 }
 
+/** Aplica una deformación (x, y) → (x', y') a todos los puntos de una ruta de comandos absolutos. */
+function deformarRuta(d, f) {
+  return d.replace(/(-?\d+(?:\.\d+)?(?:e[-+]?\d+)?) (-?\d+(?:\.\d+)?(?:e[-+]?\d+)?)/g, (_, a, b) => { const [x, y] = f(Number(a), Number(b)); return `${num(x)} ${num(y)}`; });
+}
+
 function trazoDe(s) {
   const o = { d: s.d, fill: s.fill ?? 'none' };
   if (s.stroke) {
@@ -76,7 +81,9 @@ export function renderizar(persona, opciones = {}) {
   const ctx = contexto(pref);
   const caminos = [], idsSilueta = [], degradados = new Map();
   let nForma = 0;
-  const reg = (d) => { const id = `${pref}f${nForma++}`; caminos.push(`<path id="${id}" d="${d}"/>`); idsSilueta.push(id); return id; };
+  const def = deformar(M);
+  const W = def ? (d) => deformarRuta(d, def) : (d) => d;
+  const reg = (d0) => { const d = W(d0); const id = `${pref}f${nForma++}`; caminos.push(`<path id="${id}" d="${d}"/>`); idsSilueta.push(id); return id; };
 
   const TONOS = {
     piel: { sombra: '#5a1c10', luz: '#ffe6c4' },
@@ -120,7 +127,7 @@ export function renderizar(persona, opciones = {}) {
   const detalles = (lista) => {
     let duros = '', suaves = '';
     for (const s of lista) {
-      const trazo = `<path${attr(trazoDe(s))}/>`;
+      const trazo = `<path${attr(trazoDe({ ...s, d: W(s.d) }))}/>`;
       if (s.suave && !plano) suaves += trazo; else duros += trazo;
     }
     return duros + (suaves ? `<g filter="url(#${pref}-bs)">${suaves}</g>` : '');
@@ -139,7 +146,7 @@ export function renderizar(persona, opciones = {}) {
 
   // --- Pose de la cabeza: se giran las formas (no un grupo) para que sombras y recortes sigan coincidiendo ---
   const angCabeza = M.pose.cabeza ?? 0;
-  const girar = Math.abs(angCabeza) > 0.05 ? (d) => rotarRuta(d, angCabeza, cx, M.y.cuello) : null;
+  const girar = Math.abs(angCabeza) > 0.05 ? (d) => rotarRuta(d, angCabeza, cx, M.y.hombro) : null;
   const giraLista = (l) => (girar ? l.map((s) => ({ ...s, d: girar(s.d) })) : l);
 
   // --- Prendas ---

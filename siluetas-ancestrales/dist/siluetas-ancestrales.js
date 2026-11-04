@@ -663,6 +663,101 @@ Object.assign(__e, { PRENDAS_REGIONALES_2 });
 return __e;
 })();
 
+__m['datos/prendas-moda'] = (() => {
+const __e = {};
+// Prendas con los tipos de ropa nuevos: escotes de tirantes, halter, asimétrico y corazón; mangas farol, pagoda, cap y
+// ajustada; vestidos y faldas de sirena, trapecio y globo; capuchas, bolsillos, cuellos de camisa, ribetes de piel y
+// cordones; pantalones pitillo, palazzo, cargo y jodhpur; monos; cuellos, calzado y accesorios nuevos.
+// Misma forma que prendas.js; sus colores están en colores-prendas.js.
+
+const { P } = __m['datos/ayuda'];
+
+const pat = (tipo, escala = 1, rol = 'secundario') => ({ tipo, escala, rol });
+
+const PRENDAS_MODA = [
+  // ===== Vestidos =====
+  P('vestido-tirantes', 'Vestido de tirantes', 'torso', 'tunica', { largo: 'rodilla', manga: 'sin', escote: 'tirantes', cintura: 0.2, holgura: 0.004, vuelo: 0.07, pliegues: 4, ribete: false }),
+  P('vestido-tirantes-largo', 'Vestido largo de tirantes', 'torso', 'tunica', { largo: 'suelo', manga: 'sin', escote: 'tirantes', cintura: 0.1, holgura: 0.004, vuelo: 0.12, pliegues: 6, ribete: false }),
+  P('vestido-halter', 'Vestido halter', 'torso', 'tunica', { largo: 'rodilla', manga: 'sin', escote: 'halter', cintura: 0.1, holgura: 0.004, vuelo: 0.09, pliegues: 4, ribete: false }),
+  P('vestido-asimetrico', 'Vestido de un hombro', 'torso', 'tunica', { largo: 'pantorrilla', manga: 'sin', escote: 'asimetrico', lado: 'der', cintura: 0.1, holgura: 0.004, vuelo: 0.06, pliegues: 4, ribete: false }),
+  P('vestido-corazon', 'Vestido de escote corazón', 'torso', 'tunica', { largo: 'pantorrilla', manga: 'sin', escote: 'corazon', cintura: 0, holgura: 0.003, vuelo: 0.11, pliegues: 5, ribete: true }),
+  P('vestido-corazon-gala', 'Vestido de gala de escote corazón', 'torso', 'tunica', { largo: 'suelo', manga: 'sin', escote: 'corazon', cintura: 0, holgura: 0.003, vuelo: 0.16, pliegues: 7, ribeteBajo: 0.03, ribete: true }),
+  P('vestido-sirena', 'Vestido de sirena', 'torso', 'tunica', { largo: 'suelo', manga: 'sin', escote: 'redondo', prof: 0.6, cintura: 0, holgura: 0.002, vuelo: 0.13, forma: 'sirena', pliegues: 4, ribete: false }),
+  P('vestido-sirena-tirantes', 'Vestido de sirena con tirantes', 'torso', 'tunica', { largo: 'suelo', manga: 'sin', escote: 'tirantes', cintura: 0, holgura: 0.002, vuelo: 0.15, forma: 'sirena', pliegues: 4, ribete: false }),
+  P('vestido-trapecio', 'Vestido trapecio', 'torso', 'tunica', { largo: 'rodilla', manga: 'corta', escote: 'redondo', prof: 0.4, cintura: 1, holgura: 0.01, vuelo: 0.14, forma: 'trapecio', ribete: true, pliegues: 0 }),
+  P('vestido-globo', 'Vestido globo', 'torso', 'tunica', { largo: 'rodilla', manga: 'sin', escote: 'v', prof: 0.7, cintura: 0.5, holgura: 0.004, vuelo: 0.075, forma: 'globo', ribete: false }),
+  P('vestido-tubo', 'Vestido recto', 'torso', 'tunica', { largo: 'pantorrilla', manga: 'tres-cuartos', escote: 'barco', cintura: 0, holgura: 0.002, vuelo: 0, forma: 'tubo', ribete: false }),
+  P('vestido-camisero', 'Vestido camisero', 'torso', 'tunica', { largo: 'pantorrilla', manga: 'corta', escote: 'alto', cuelloCamisa: true, botones: 8, cinturon: true, cintura: 0.5, holgura: 0.01, vuelo: 0.06, ribete: false }),
+  P('vestido-volantes', 'Vestido de volantes', 'torso', 'tunica', { largo: 'pantorrilla', manga: 'corta', escote: 'cuadrado', cintura: 0.3, holgura: 0.004, vuelo: 0.1, volantes: 3, ribete: false }),
+  P('vestido-pico', 'Vestido de bajo en pico', 'torso', 'tunica', { largo: 'rodilla', manga: 'corta', escote: 'v', cintura: 0.5, holgura: 0.006, vuelo: 0.08, bajo: 'pico', ribete: false }),
+  // ===== Blusas, camisas y poleras =====
+  P('blusa-farol', 'Blusa de manga farol', 'torso', 'tunica', { largo: 'cadera', manga: 'farol', escote: 'cuadrado', cintura: 0.8, holgura: 0.012, puños: true, ribete: true }),
+  P('blusa-pagoda', 'Blusa de manga pagoda', 'torso', 'tunica', { largo: 'cadera', manga: 'pagoda', escote: 'v', prof: 0.7, cintura: 0.7, holgura: 0.012, ribete: false }),
+  P('camisa-clasica', 'Camisa clásica de cuello', 'torso', 'tunica', { largo: 'muslo-alto', manga: 'larga', escote: 'alto', cuelloCamisa: true, botones: 7, bolsillos: 'pecho', puños: true, cintura: 0.9, holgura: 0.014, ribete: false }),
+  P('camisa-ajustada', 'Camisa ajustada', 'torso', 'tunica', { largo: 'muslo-alto', manga: 'ajustada', escote: 'alto', cuelloCamisa: true, botones: 7, puños: true, cintura: 0.3, holgura: 0.004, ribete: false }),
+  P('camisa-safari', 'Camisa safari', 'torso', 'tunica', { largo: 'muslo-alto', manga: 'corta', escote: 'alto', cuelloCamisa: true, botones: 5, bolsillos: 'pecho', cinturon: true, cintura: 0.7, holgura: 0.016, ribete: false }),
+  P('polo', 'Polo', 'torso', 'tunica', { largo: 'cadera', manga: 'corta', escote: 'ojal', cuelloCamisa: true, botones: 3, cintura: 1, holgura: 0.012, ribete: false }),
+  P('camiseta-cap', 'Camiseta de manga corta ajustada', 'torso', 'tunica', { largo: 'cadera', manga: 'cap', escote: 'redondo', prof: 0.4, cintura: 0.8, holgura: 0.008, ribete: false }),
+  P('camiseta-sisa', 'Camiseta sin mangas', 'torso', 'tunica', { largo: 'cadera', manga: 'sin', escote: 'redondo', prof: 0.8, cintura: 0.8, holgura: 0.01, ribete: false }),
+  P('top-tirantes', 'Top de tirantes', 'torso', 'tunica', { largo: 'cintura', manga: 'sin', escote: 'tirantes', cintura: 0, holgura: 0.003, ribete: false }),
+  P('top-halter', 'Top halter', 'torso', 'tunica', { largo: 'cintura', manga: 'sin', escote: 'halter', cintura: 0, holgura: 0.003, ribete: false }),
+  P('sudadera-capucha', 'Sudadera con capucha', 'torso', 'tunica', { largo: 'cadera', manga: 'larga', escote: 'redondo', prof: 0.4, capucha: true, bolsillos: 'canguro', puños: true, cintura: 1, holgura: 0.03, ribete: false }),
+  P('sueter-oversize', 'Suéter holgado', 'torso', 'tunica', { largo: 'muslo-alto', manga: 'larga', escote: 'redondo', prof: 0.4, cintura: 1, holgura: 0.042, puños: true, ribete: true }),
+  // ===== Sacos, chaquetas y abrigos =====
+  P('bomber', 'Chaqueta bomber', 'sobre', 'chaqueta', { largo: 'cintura', manga: 'larga', botones: 0, cintura: 0.7, abertura: 0.008, aberturaBajo: 0.01, puños: true, ribete: true, bolsillos: 'pecho' }),
+  P('parka-capucha', 'Parka con capucha', 'sobre', 'chaqueta', { largo: 'muslo', manga: 'larga', botones: 5, capucha: true, pieles: 'cuello', bolsillos: 'cadera', cintura: 0.9, holgura: 0.032, abertura: 0.01, aberturaBajo: 0.014, ribete: true }),
+  P('anorak', 'Anorak', 'sobre', 'chaqueta', { largo: 'cadera', manga: 'larga', botones: 3, capucha: true, bolsillos: 'pecho', cinturon: true, cintura: 0.9, holgura: 0.028, abertura: 0.01, aberturaBajo: 0.012, puños: true }),
+  P('abrigo-piel-total', 'Abrigo con ribetes de piel', 'sobre', 'chaqueta', { largo: 'pantorrilla', manga: 'larga', botones: 6, solapa: true, pieles: 'todo', cintura: 0.7, vuelo: 0.06, abertura: 0.012, aberturaBajo: 0.02, holgura: 0.022, ribete: true }),
+  P('abrigo-punos-piel', 'Abrigo con puños de piel', 'sobre', 'chaqueta', { largo: 'rodilla', manga: 'larga', botones: 6, solapa: true, pieles: 'puños', cintura: 0.6, vuelo: 0.05, abertura: 0.012, aberturaBajo: 0.02, holgura: 0.02, ribete: false }),
+  P('blazer-ajustado', 'Blazer ajustado', 'sobre', 'chaqueta', { largo: 'cadera', manga: 'larga', botones: 2, solapa: true, cintura: 0.1, abertura: 0.012, aberturaBajo: 0.03, puños: false, bolsillos: 'cadera', ribete: false }),
+  P('chaqueta-safari', 'Chaqueta safari', 'sobre', 'chaqueta', { largo: 'cadera', manga: 'larga', botones: 5, bolsillos: 'ambos', cinturon: true, cintura: 0.7, abertura: 0.01, aberturaBajo: 0.012, puños: true }),
+  P('chaqueta-motera', 'Chaqueta de motociclista', 'sobre', 'chaqueta', { largo: 'cintura', manga: 'larga', botones: 0, solapa: true, cinturon: true, bolsillos: 'pecho', cintura: 0.5, abertura: 0.008, aberturaBajo: 0.01, puños: true, ribete: false }),
+  P('bata-casa', 'Bata de casa', 'sobre', 'chaqueta', { largo: 'tobillo', manga: 'larga', botones: 0, solapa: true, cinturon: true, cintura: 0.9, holgura: 0.03, abertura: 0.012, aberturaBajo: 0.05, ribete: true }),
+  P('batin-seda', 'Batín de seda', 'sobre', 'chaqueta', { largo: 'pantorrilla', manga: 'ancha', botones: 0, solapa: true, cinturon: true, cintura: 0.8, holgura: 0.03, abertura: 0.012, aberturaBajo: 0.05, ribete: true }),
+  P('corse', 'Corsé con cordones', 'sobre', 'chaqueta', { largo: 'cadera', manga: 'sin', botones: 0, cordones: true, cintura: 0, abertura: 0.006, aberturaBajo: 0.008, ribete: true }),
+  P('chaleco-acolchado', 'Chaleco acolchado', 'sobre', 'chaqueta', { largo: 'cadera', manga: 'sin', botones: 5, bolsillos: 'cadera', cintura: 0.9, holgura: 0.03, abertura: 0.01, aberturaBajo: 0.012, ribete: false }),
+  // ===== Pantalones, faldas y monos =====
+  P('pantalon-pitillo', 'Pantalón pitillo', 'inferior', 'pantalon', { largo: 'tobillo', ancho: 'pitillo', cintura: 'natural', bolsillos: 'jean' }),
+  P('pantalon-palazzo', 'Pantalón palazzo', 'inferior', 'pantalon', { largo: 'suelo', ancho: 'palazzo', cintura: 'alta', holgura: 0.006 }),
+  P('pantalon-jodhpur', 'Pantalón de montar (jodhpur)', 'inferior', 'pantalon', { largo: 'tobillo', ancho: 'jodhpur', cintura: 'natural' }),
+  P('pantalon-cargo', 'Pantalón cargo', 'inferior', 'pantalon', { largo: 'tobillo', ancho: 'recto', cintura: 'natural', bolsillos: 'cargo', puños: false }),
+  P('jeans-clasicos', 'Jeans de cinco bolsillos', 'inferior', 'pantalon', { largo: 'tobillo', ancho: 'recto', cintura: 'natural', bolsillos: 'jean', puños: true }),
+  P('pantalon-pliegues', 'Pantalón de pinzas', 'inferior', 'pantalon', { largo: 'tobillo', ancho: 'recto', cintura: 'alta', bolsillos: 'pliegues' }),
+  P('pantalon-tubo', 'Pantalón recto estrecho', 'inferior', 'pantalon', { largo: 'tobillo', ancho: 'tubo', cintura: 'natural' }),
+  P('bermuda', 'Bermudas', 'inferior', 'pantalon', { largo: 'rodilla', ancho: 'recto', cintura: 'natural', bolsillos: 'cargo' }),
+  P('pantalon-capri', 'Pantalón capri', 'inferior', 'pantalon', { largo: 'pantorrilla', ancho: 'pitillo', cintura: 'natural' }),
+  P('pantalon-pescador', 'Pantalón de pescador', 'inferior', 'pantalon', { largo: 'pantorrilla', ancho: 'amplio', cintura: 'baja', cordon: true }),
+  P('leggings', 'Mallas', 'inferior', 'pantalon', { largo: 'tobillo', ancho: 'ajustado', cintura: 'alta', holgura: 0.001 }),
+  P('sarouel', 'Pantalón sarouel', 'inferior', 'pantalon', { largo: 'tobillo', ancho: 'bombacho', cintura: 'baja' }),
+  P('culotte', 'Pantalón culotte', 'inferior', 'pantalon', { largo: 'pantorrilla', ancho: 'amplio', cintura: 'alta' }),
+  P('falda-sirena', 'Falda de sirena', 'inferior', 'falda', { largo: 'tobillo', vuelo: 0.12, forma: 'sirena', cintura: 'natural', pliegues: 3 }),
+  P('falda-globo', 'Falda globo', 'inferior', 'falda', { largo: 'rodilla', vuelo: 0.07, forma: 'globo', cintura: 'natural', pliegues: 4 }),
+  P('falda-trapecio', 'Falda trapecio', 'inferior', 'falda', { largo: 'rodilla', vuelo: 0.12, forma: 'trapecio', cintura: 'natural', pliegues: 0 }),
+  P('falda-abertura', 'Falda recta con abertura', 'inferior', 'falda', { largo: 'pantorrilla', vuelo: 0.01, forma: 'tubo', cintura: 'natural', abertura: 'frente', pliegues: 0 }),
+  P('falda-abertura-lado', 'Falda larga con abertura lateral', 'inferior', 'falda', { largo: 'tobillo', vuelo: 0.05, cintura: 'natural', abertura: 'lado', pliegues: 3 }),
+  P('falda-mini', 'Minifalda', 'inferior', 'falda', { largo: 'muslo-alto', vuelo: 0.04, forma: 'trapecio', cintura: 'baja', pliegues: 0 }),
+  P('falda-midi', 'Falda midi', 'inferior', 'falda', { largo: 'pantorrilla', vuelo: 0.1, cintura: 'natural', pliegues: 6 }),
+  P('falda-capas', 'Falda de capas', 'inferior', 'falda', { largo: 'tobillo', vuelo: 0.14, volantes: 4, cintura: 'natural', pliegues: 2 }),
+  P('mono-trabajo', 'Mono de trabajo', 'torso', 'mono', { torso: { manga: 'larga', escote: 'alto', cuelloCamisa: true, botones: 6, bolsillos: 'pecho', cinturon: true, largo: 'cadera', puños: true }, pantalon: { ancho: 'recto', largo: 'tobillo', cintura: 'alta' } }),
+  P('mono-elegante', 'Mono de noche', 'torso', 'mono', { torso: { manga: 'sin', escote: 'halter', largo: 'cintura', cintura: 0 }, pantalon: { ancho: 'palazzo', largo: 'suelo', cintura: 'alta', holgura: 0.006 } }),
+  // ===== Cuello y accesorios =====
+  P('cuello-piel', 'Cuello de piel', 'cuello', 'cuello', { tipo: 'piel' }),
+  P('esclavina', 'Esclavina', 'cuello', 'cuello', { tipo: 'esclavina' }),
+  P('chalina', 'Chalina', 'cuello', 'cuello', { tipo: 'chalina' }),
+  P('panuelo-triangulo', 'Pañuelo anudado al cuello', 'cuello', 'cuello', { tipo: 'triangulo' }),
+  P('babero-cuello', 'Cuello ancho redondeado', 'cuello', 'cuello', { tipo: 'babero' }),
+  P('tirantes-pantalon', 'Tirantes', 'accesorio', 'accesorio', { tipo: 'tirantes' }),
+  // ===== Calzado =====
+  P('botines', 'Botines', 'calzado', 'calzado', { tipo: 'botines' }),
+  P('tacones', 'Zapatos de taco', 'calzado', 'calzado', { tipo: 'tacones' }),
+  P('chancletas', 'Chancletas', 'calzado', 'calzado', { tipo: 'chancletas' }),
+  P('zapatos-oxford', 'Zapatos oxford', 'calzado', 'calzado', { tipo: 'oxford' }),
+];
+
+Object.assign(__e, { PRENDAS_MODA });
+return __e;
+})();
+
 __m['datos/prendas'] = (() => {
 const __e = {};
 // Catálogo de prendas. Cada una es una plantilla (src/prendas.js) con sus parámetros, la ranura donde se
@@ -673,6 +768,7 @@ const { P } = __m['datos/ayuda'];
 const { PRENDAS_AMPLIADAS } = __m['datos/prendas-ampliadas'];
 const { PRENDAS_SIGLO20 } = __m['datos/prendas-siglo20'];
 const { PRENDAS_REGIONALES_2 } = __m['datos/prendas-regionales-2'];
+const { PRENDAS_MODA } = __m['datos/prendas-moda'];
 
 const PRENDAS = [
   // ===== Egipto y Mesopotamia =====
@@ -903,6 +999,7 @@ const PRENDAS = [
   ...PRENDAS_AMPLIADAS,
   ...PRENDAS_SIGLO20,
   ...PRENDAS_REGIONALES_2,
+  ...PRENDAS_MODA,
 ];
 
 const PRENDAS_POR_ID = Object.fromEntries(PRENDAS.map((p) => [p.id, p]));
@@ -1323,6 +1420,87 @@ Object.assign(__e, { ATUENDOS_MAS });
 return __e;
 })();
 
+__m['datos/atuendos-moda'] = (() => {
+const __e = {};
+// Atuendos que usan los tipos de ropa nuevos (tirantes, halter, sirena, trapecio, capuchas, pieles, pantalones y faldas
+// variados, monos…). Misma forma que atuendos.js. Los colores de cada prenda vienen de su perfil (colores-prendas.js).
+
+const { A } = __m['datos/ayuda'];
+
+const CLAROS = 'porcelana clara clara-calida';
+const MEST = 'clara-calida oliva-clara oliva canela';
+const CIUDAD = { A: 'lana-negra gris-oscuro azul-marino', B: 'crema', C: 'lana-negra', D: 'plata' };
+const TRAB = { A: 'caqui-militar azul-marino kaki', B: 'crudo', C: 'lana-negra', D: 'cobre' };
+const VEST = { A: 'azul-marino burdeos verde-bosque rosa-viejo', B: 'crema', C: 'lana-negra', D: 'plata' };
+const GALA = { A: 'negro-carbon burdeos azul-marino verde-esmeralda', B: 'crema', C: 'plata', D: 'oro' };
+
+const F = (id, n, region, ep, clase, prendas, paleta, extra) => A(id, n, region, ep, 'f', clase, prendas, paleta, extra);
+const M = (id, n, region, ep, clase, prendas, paleta, extra) => A(id, n, region, ep, 'm', clase, prendas, paleta, extra);
+
+const ATUENDOS_MODA = [
+  // ===== Mujeres: vestidos =====
+  F('moda-chile-verano-1955', 'Chilena de verano con vestido de tirantes (1955)', 'chile-rural', [1948, 1978], 'media', 'vestido-tirantes cardigan tacones perlas', VEST, { peinados: 'ondas bob', tocados: 'pamela ninguno', pieles: MEST }),
+  F('moda-chile-gala-1960', 'Chilena de gala con vestido largo de tirantes (1960)', 'chile-rural', [1955, 1985], 'alta', 'vestido-tirantes-largo estola tacones perlas', GALA, { peinados: 'ondas recogido', pieles: MEST }),
+  F('moda-chile-halter-1970', 'Chilena con vestido halter (1970)', 'chile-rural', [1965, 1985], 'media', 'vestido-halter chancletas collar-cuentas', VEST, { peinados: 'largo-liso bob', pieles: MEST }),
+  F('moda-latam-asimetrico', 'Latinoamericana con vestido de un hombro', 'latinoamerica-moderna', [1960, 1985], 'alta', 'vestido-asimetrico tacones collar-colgante', GALA, { peinados: 'recogido largo-liso', pieles: MEST + ' canela bronce' }),
+  F('moda-eeuu-corazon-1955', 'Estadounidense de escote corazón (1955)', 'norteamerica-moderna', [1945, 1965], 'media', 'vestido-corazon tacones perlas', VEST, { peinados: 'ondas', tocados: 'cloche ninguno', pieles: CLAROS }),
+  F('moda-gala-corazon', 'Dama de gala con escote corazón', 'europa-xix', [1935, 1975], 'alta', 'vestido-corazon-gala estola tacones perlas', GALA, { peinados: 'ondas recogido', pieles: CLAROS }),
+  F('moda-sirena-gala', 'Dama con vestido de sirena y capa de gala', 'europa-xix', [1930, 1985], 'alta', 'vestido-sirena capa-opera tacones perlas', GALA, { peinados: 'ondas recogido', pieles: CLAROS }),
+  F('moda-sirena-tirantes', 'Joven con vestido de sirena de tirantes', 'norteamerica-moderna', [1935, 1985], 'alta', 'vestido-sirena-tirantes estola tacones', GALA, { peinados: 'ondas largo-liso', pieles: CLAROS + ' ' + MEST }),
+  F('moda-trapecio-1965', 'Joven con vestido trapecio (1965)', 'norteamerica-moderna', [1960, 1975], 'media', 'vestido-trapecio botines perlas', VEST, { peinados: 'bob largo-liso', tocados: 'beanie ninguno', pieles: CLAROS }),
+  F('moda-globo', 'Mujer con vestido globo', 'europa-xix', [1955, 1985], 'media', 'vestido-globo botines collar-colgante', VEST, { peinados: 'bob recogido', pieles: CLAROS }),
+  F('moda-tubo-1960', 'Ejecutiva con vestido recto y blazer (1960)', 'norteamerica-moderna', [1955, 1975], 'media', 'vestido-tubo blazer-ajustado tacones perlas', CIUDAD, { peinados: 'ondas recogido', pieles: CLAROS }),
+  F('moda-chile-camisero-1950', 'Chilena con vestido camisero', 'chile-rural', [1945, 1975], 'media', 'vestido-camisero zapatos-oxford panuelo-triangulo', VEST, { peinados: 'ondas recogido', pieles: MEST }),
+  F('moda-latam-volantes', 'Mujer con vestido de volantes y chal', 'latinoamerica-moderna', [1900, 1985], 'media', 'vestido-volantes chal-seda alpargatas', VEST, { peinados: 'trenzas-dos recogido', pieles: MEST + ' canela bronce' }),
+  F('moda-pico', 'Mujer con vestido de bajo en pico', 'europa-xix', [1950, 1980], 'media', 'vestido-pico botines panuelo-triangulo', VEST, { peinados: 'bob ondas', pieles: CLAROS }),
+  // ===== Mujeres: blusas, faldas y pantalones =====
+  F('moda-blusa-farol', 'Mujer con blusa de manga farol', 'europa-xix', [1925, 1965], 'media', 'blusa-farol falda-midi tacones perlas', VEST, { peinados: 'ondas bob', pieles: CLAROS }),
+  F('moda-blusa-pagoda', 'Mujer con blusa de manga pagoda', 'norteamerica-moderna', [1950, 1985], 'media', 'blusa-pagoda falda-lapiz tacones panuelo-triangulo', VEST, { peinados: 'ondas recogido', pieles: CLAROS }),
+  F('moda-camisa-clasica', 'Chilena con camisa y falda con abertura', 'chile-rural', [1940, 1985], 'media', 'camisa-clasica falda-abertura zapatos-oxford', VEST, { peinados: 'ondas recogido', pieles: MEST }),
+  F('moda-camisa-ajustada', 'Joven con camisa ajustada y pitillo', 'norteamerica-moderna', [1955, 1985], 'media', 'camisa-ajustada pantalon-pitillo botines', VEST, { peinados: 'bob largo-liso', pieles: CLAROS + ' ' + MEST }),
+  F('moda-camiseta-cap', 'Mujer con camiseta y pantalón capri', 'norteamerica-moderna', [1950, 1985], 'baja', 'camiseta-cap pantalon-capri chancletas', VEST, { peinados: 'bob largo-liso trenza-una', pieles: CLAROS + ' ' + MEST }),
+  F('moda-top-tirantes', 'Joven con top de tirantes y culotte', 'latinoamerica-moderna', [1965, 1985], 'baja', 'top-tirantes culotte chancletas', VEST, { peinados: 'largo-liso trenza-una', pieles: MEST + ' canela bronce' }),
+  F('moda-top-halter', 'Joven con top halter y pantalón palazzo', 'norteamerica-moderna', [1965, 1985], 'media', 'top-halter pantalon-palazzo tacones', GALA, { peinados: 'largo-liso rizos', pieles: CLAROS + ' ' + MEST }),
+  F('moda-sueter-leggings', 'Mujer con suéter holgado y mallas', 'europa-xix', [1970, 1985], 'baja', 'sueter-oversize leggings botines', VEST, { peinados: 'largo-liso bob', tocados: 'beanie ninguno', pieles: CLAROS }),
+  F('moda-anorak', 'Mujer con anorak y pantalón de pinzas', 'europa-xix', [1950, 1985], 'baja', 'anorak pantalon-pliegues botines', TRAB, { peinados: 'bob trenza-una', tocados: 'beanie ninguno', pieles: CLAROS }),
+  F('moda-abrigo-piel', 'Dama con abrigo de piel y vestido de 1950', 'europa-xix', [1920, 1965], 'alta', 'vestido-50 abrigo-piel-total tacones perlas', GALA, { peinados: 'ondas recogido', tocados: 'cloche ninguno', pieles: CLAROS }),
+  F('moda-cuello-piel', 'Mujer con abrigo corto y cuello de piel', 'europa-xix', [1930, 1975], 'alta', 'vestido-40 abrigo-corto cuello-piel tacones perlas', GALA, { peinados: 'ondas recogido', tocados: 'cloche ninguno', pieles: CLAROS }),
+  F('moda-blazer', 'Mujer con blazer, blusa y falda', 'norteamerica-moderna', [1950, 1985], 'media', 'blazer-ajustado blusa-seda falda-lapiz tacones perlas', CIUDAD, { peinados: 'ondas recogido bob', pieles: CLAROS + ' ' + MEST }),
+  F('moda-bata-casa', 'Mujer en bata de casa', 'europa-xix', [1900, 1980], 'media', 'camison bata-casa descalzo', { A: 'crema rosa-viejo azul-celeste', B: 'crema', C: 'rosa-viejo', D: 'plata' }, { peinados: 'trenza-una largo-liso recogido', pieles: CLAROS }),
+  F('moda-corse', 'Mujer con corsé y falda de capas', 'europa-xix', [1850, 1915], 'media', 'blusa-regional corse falda-capas botines', VEST, { peinados: 'recogido', pieles: CLAROS }),
+  F('moda-falda-globo', 'Joven con falda globo', 'europa-xix', [1950, 1985], 'media', 'blusa-cuello-bebe falda-globo botines', VEST, { peinados: 'bob ondas', pieles: CLAROS }),
+  F('moda-falda-trapecio', 'Joven con falda trapecio', 'norteamerica-moderna', [1960, 1980], 'media', 'polera falda-trapecio botines', VEST, { peinados: 'bob largo-liso', pieles: CLAROS + ' ' + MEST }),
+  F('moda-falda-lado', 'Mujer con falda larga de abertura lateral', 'latinoamerica-moderna', [1960, 1985], 'media', 'blusa-seda falda-abertura-lado tacones', VEST, { peinados: 'recogido largo-liso', pieles: MEST }),
+  F('moda-mini-1967', 'Joven con minifalda (1967)', 'norteamerica-moderna', [1963, 1975], 'baja', 'polera falda-mini botines', VEST, { peinados: 'bob largo-liso', pieles: CLAROS + ' ' + MEST }),
+  F('moda-falda-sirena', 'Mujer con falda de sirena y blusa de seda', 'europa-xix', [1930, 1985], 'alta', 'blusa-seda falda-sirena tacones perlas', GALA, { peinados: 'ondas recogido', pieles: CLAROS }),
+  F('moda-mono-gala', 'Mujer con mono de noche', 'norteamerica-moderna', [1970, 1985], 'alta', 'mono-elegante tacones perlas', GALA, { peinados: 'largo-liso recogido', pieles: CLAROS + ' ' + MEST }),
+  F('moda-esclavina', 'Dama con vestido y esclavina', 'europa-xix', [1850, 1920], 'alta', 'vestido-victoriano esclavina zapatos-cuero perlas', { A: 'borravino verde-botella azul-prusia lana-negra', B: 'crema', C: 'lana-negra', D: 'plata' }, { peinados: 'recogido', tocados: 'velo ninguno', pieles: CLAROS }),
+  F('moda-panuelo', 'Mujer con pañuelo al cuello', 'europa-xix', [1945, 1975], 'media', 'blusa-cuello-bebe falda-lapiz panuelo-triangulo zapatos-vestir', VEST, { peinados: 'ondas bob', pieles: CLAROS }),
+  F('moda-babero', 'Mujer con cuello ancho redondeado', 'europa-xix', [1900, 1960], 'media', 'vestido-casa babero-cuello zapatos-vestir', VEST, { peinados: 'recogido ondas', pieles: CLAROS }),
+  F('moda-sarouel', 'Mujer con sarouel y camiseta', 'norteamerica-moderna', [1970, 1985], 'baja', 'sarouel camiseta-sisa chancletas', VEST, { peinados: 'largo-liso trenza-una', pieles: CLAROS + ' ' + MEST }),
+  // ===== Hombres =====
+  M('moda-safari-latam', 'Hombre con camisa safari y bermudas', 'latinoamerica-moderna', [1930, 1975], 'media', 'camisa-safari bermuda zapatillas-lona', TRAB, { peinados: 'corto-raya corto', barbas: 'bigote ninguna', tocados: 'canotier gorra-visera', pieles: MEST }),
+  M('moda-polo', 'Hombre con polo y pantalón de pinzas', 'norteamerica-moderna', [1945, 1985], 'media', 'polo pantalon-pliegues zapatos-oxford', CIUDAD, { peinados: 'corto-raya corto', barbas: 'bigote ninguna', pieles: CLAROS }),
+  M('moda-camiseta-sisa', 'Hombre con camiseta sin mangas y pantalón cargo', 'norteamerica-moderna', [1950, 1985], 'baja', 'camiseta-sisa pantalon-cargo botas-trabajo', TRAB, { peinados: 'corto rapado', barbas: 'bigote barba-corta ninguna', pieles: CLAROS + ' ' + MEST }),
+  M('moda-sudadera', 'Joven con sudadera con capucha y jeans', 'norteamerica-moderna', [1965, 1985], 'baja', 'sudadera-capucha jeans-clasicos zapatillas-lona', TRAB, { peinados: 'corto largo-liso', barbas: 'ninguna', tocados: 'beanie ninguno', pieles: CLAROS + ' ' + MEST }),
+  M('moda-bomber', 'Hombre con chaqueta bomber', 'norteamerica-moderna', [1950, 1985], 'baja', 'bomber pantalon-cargo botas-trabajo', TRAB, { peinados: 'corto rapado', barbas: 'bigote ninguna', tocados: 'gorra-visera ninguno', pieles: CLAROS + ' ' + MEST }),
+  M('moda-parka', 'Hombre con parka de capucha', 'europa-xix', [1950, 1985], 'baja', 'parka-capucha pantalon-tubo botas-trabajo', TRAB, { peinados: 'corto', barbas: 'barba-corta ninguna', tocados: 'beanie ninguno', pieles: CLAROS }),
+  M('moda-abrigo-punos-piel', 'Caballero con abrigo de puños de piel', 'europa-xix', [1900, 1960], 'alta', 'camisa-blanca corbata abrigo-punos-piel pantalon-vestir zapatos-oxford', CIUDAD, { peinados: 'corto-raya', barbas: 'bigote barba-corta', tocados: 'sombrero-copa fedora', pieles: CLAROS }),
+  M('moda-chaqueta-safari', 'Hombre con chaqueta safari', 'latinoamerica-moderna', [1950, 1985], 'media', 'chaqueta-safari camisa-cuadros pantalon-cargo botas-trabajo', TRAB, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-visera', pieles: MEST }),
+  M('moda-motera', 'Motociclista con chaqueta de cuero', 'norteamerica-moderna', [1950, 1985], 'baja', 'chaqueta-motera polera jeans-clasicos botas-trabajo', TRAB, { peinados: 'corto', barbas: 'bigote barba-corta ninguna', pieles: CLAROS + ' ' + MEST }),
+  M('moda-batin', 'Hombre en batín de seda', 'europa-xix', [1900, 1975], 'alta', 'batin-seda pantalon-vestir chancletas', { A: 'burdeos azul-marino verde-bosque', B: 'crema', C: 'oro', D: 'oro' }, { peinados: 'corto-raya', barbas: 'bigote ninguna', pieles: CLAROS }),
+  M('moda-chaleco-acolchado', 'Hombre con chaleco acolchado', 'norteamerica-moderna', [1970, 1985], 'baja', 'chaleco-acolchado camisa-cuadros jeans-clasicos botas-trabajo', TRAB, { peinados: 'corto largo-liso', barbas: 'bigote barba-corta ninguna', pieles: CLAROS }),
+  M('moda-jinete', 'Jinete con pantalón de montar', 'europa-xix', [1880, 1960], 'alta', 'camisa-clasica pantalon-jodhpur botas-altas cinturon-fino', { A: 'beige crema', B: 'crema', C: 'cuero-oscuro', D: 'plata' }, { peinados: 'corto-raya', barbas: 'bigote ninguna', tocados: 'gorra-plana ninguno', pieles: CLAROS }),
+  M('moda-pescador', 'Hombre con pantalón de pescador', 'latinoamerica-moderna', [1950, 1985], 'baja', 'camiseta-sisa pantalon-pescador chancletas', TRAB, { peinados: 'corto rapado', barbas: 'bigote ninguna', tocados: 'bucket gorra-visera', pieles: MEST + ' canela bronce' }),
+  M('moda-mono-trabajo', 'Obrero con mono de trabajo', 'europa-xix', [1930, 1985], 'baja', 'mono-trabajo botas-trabajo', TRAB, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'casco-obra gorra-plana', pieles: CLAROS }),
+  M('moda-chalina', 'Hombre con chalina', 'europa-xix', [1930, 1985], 'media', 'camisa-blanca chaleco-terno pantalon-vestir chalina zapatos-oxford', CIUDAD, { peinados: 'corto-raya', barbas: 'bigote ninguna', tocados: 'fedora ninguno', pieles: CLAROS }),
+  M('moda-tirantes', 'Hombre con tirantes', 'europa-xix', [1920, 1960], 'baja', 'camisa-cuadros pantalon-pliegues tirantes-pantalon zapatos-oxford', TRAB, { peinados: 'corto-raya corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS }),
+];
+
+Object.assign(__e, { ATUENDOS_MODA });
+return __e;
+})();
+
 __m['datos/atuendos'] = (() => {
 const __e = {};
 // Atuendos completos: una combinación de prendas del catálogo (prendas.js) típica de una región, una época,
@@ -1333,6 +1511,7 @@ const { A } = __m['datos/ayuda'];
 const { ATUENDOS_AMPLIADOS } = __m['datos/atuendos-ampliados'];
 const { ATUENDOS_SIGLO20 } = __m['datos/atuendos-siglo20'];
 const { ATUENDOS_MAS } = __m['datos/atuendos-mas'];
+const { ATUENDOS_MODA } = __m['datos/atuendos-moda'];
 
 const REGIONES = {
   egipto: 'Egipto antiguo', mesopotamia: 'Mesopotamia', grecia: 'Grecia antigua', roma: 'Roma', bizancio: 'Bizancio',
@@ -1495,6 +1674,7 @@ const ATUENDOS = [
   ...ATUENDOS_AMPLIADOS,
   ...ATUENDOS_SIGLO20,
   ...ATUENDOS_MAS,
+  ...ATUENDOS_MODA,
 ];
 
 const ATUENDOS_POR_ID = Object.fromEntries(ATUENDOS.map((a) => [a.id, a]));
@@ -1891,6 +2071,22 @@ const TOCADOS = {
     S(G.E([[0, 0.05], [0.95, 0.05], [1.0, 0.2], [0, 0.22]]), k.secundario),
     S(G.E([[0, 0.14], [0.95, 0.16], [1.05, 0.32], [0, 0.3]]), k.detalle),
     S(G.C(0, -0.1, 0.07, 0.05), k.detalle)] }),
+  canotier: (G, k) => ({ atras: [], frente: [
+    S(ala(G, 1.25, 0.1, 0.07), k.principal),
+    S(G.E([[0, -0.34], [0.78, -0.33], [0.82, 0.04], [0.85, 0.1], [0, 0.12]]), k.principal),
+    S(G.E([[0, 0.0], [0.84, 0.0], [0.85, 0.09], [0, 0.11]]), k.secundario)] }),
+  pamela: (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.1], [1.0, -0.06], [2.1, 0.12], [2.2, 0.26], [1.2, 0.2], [0, 0.17]]), k.principal),
+    S(G.E([[0, -0.4], [0.62, -0.36], [0.8, 0.0], [0.82, 0.14], [0, 0.15]]), k.principal),
+    S(G.E([[0, 0.03], [0.8, 0.04], [0.82, 0.14], [0, 0.15]]), k.secundario)] }),
+  bucket: (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.46], [0.74, -0.42], [0.92, 0.04], [1.0, 0.12], [0, 0.14]]), k.principal),
+    S(G.E([[0, 0.06], [1.15, 0.1], [1.45, 0.24], [0, 0.22]]), k.principal),
+    S(suavizar([G.P(-0.95, 0.04), G.P(0, 0.1), G.P(0.95, 0.04)], false), 'none', { stroke: oscurecer(k.principal, 0.25), sw: 1.4, op: 0.7 })] }),
+  beanie: (G, k) => ({ atras: [], frente: [
+    S(G.E([[0, -0.46], [0.6, -0.4], [1.04, -0.02], [1.08, 0.2], [0, 0.22]]), k.principal),
+    S(G.E([[0, 0.08], [1.08, 0.1], [1.1, 0.24], [0, 0.26]]), k.secundario),
+    S(G.C(0, -0.5, 0.1, 0.07), k.detalle)] }),
 };
 const TOCADOS_ID = Object.keys(TOCADOS);
 
@@ -1979,26 +2175,41 @@ const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta: 1.34 }
 const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
 /** Pose simétrica y rígida (la de las primeras versiones). */
-const POSE_FIRME = Object.freeze({ modo: 'firme', cabeza: 0, inclinacion: 0, carga: 0, abre: 1, giro: 10, brazoLibre: 'abajo', angulos: null, saludo: { codo: 55, antebrazo: 15, mano: 0 } });
+const POSE_FIRME = Object.freeze({
+  modo: 'firme', cabeza: 0, inclinacion: 0, carga: 0, abre: 1, giro: 10, brazoLibre: 'abajo', angulos: null,
+  saludo: { codo: 55, antebrazo: 15, mano: 0 },
+  // Articulaciones: hombros inclinados (grados), columna curvada (fracción de la altura), codos y muñecas por lado (grados).
+  hombros: 0, columna: 0, codos: { 1: 0, '-1': 0 }, munecas: { 1: 0, '-1': 0 }, cinturaCodo: 1, dedos: 1,
+});
 
-const redondear = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d;
+const redondear = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d + 0; // + 0 evita el -0
 
 /**
  * Pose casual y distinta cada vez: la cabeza inclinada, el cuerpo apoyado en una pierna, los pies más o menos abiertos,
  * el brazo libre caído, en la cintura o en el bolsillo, y el saludo con otro ángulo de codo, antebrazo y mano.
+ * Además, y siempre levemente: un hombro más alto que el otro, la columna con una curva suave, los codos algo doblados,
+ * las muñecas flexionadas y los dedos más o menos abiertos. `intensidad` (0 a 1) escala todas esas variaciones.
  * `carga`: -1 o 1 es el lado (de quien mira) que carga el peso; 0, ambos.
  */
-function poseAleatoria(azar) {
+function poseAleatoria(azar, intensidad = 1) {
+  const k = limitar(intensidad, 0, 1.5);
+  const v = (a, b, d = 1) => redondear(azar.entre(a, b) * k, d);
   return {
     modo: 'casual',
-    cabeza: redondear(azar.entre(-6, 6)),
-    inclinacion: redondear(azar.entre(-1.4, 1.4), 2),
+    cabeza: v(-7, 7),
+    inclinacion: v(-1.4, 1.4, 2),
     carga: azar.ponderado([[-1, 3], [1, 3], [0, 2]]),
-    abre: redondear(azar.entre(0.85, 1.5), 2),
+    abre: redondear(1 + (azar.entre(0.85, 1.5) - 1) * k, 2),
     giro: redondear(azar.entre(6, 20)),
     brazoLibre: azar.ponderado([['abajo', 58], ['cintura', 27], ['bolsillo', 15]]),
     angulos: { 1: redondear(azar.entre(5, 17)), '-1': redondear(azar.entre(5, 17)) },
-    saludo: { codo: redondear(azar.entre(40, 62)), antebrazo: redondear(azar.entre(2, 24)), mano: redondear(azar.entre(-14, 14)) },
+    saludo: { codo: redondear(azar.entre(40, 62)), antebrazo: v(2, 24), mano: v(-16, 16) },
+    hombros: v(-2.8, 2.8),
+    columna: v(-0.008, 0.008, 4),
+    codos: { 1: v(-4, 12), '-1': v(-4, 12) },
+    munecas: { 1: v(-14, 14), '-1': v(-14, 14) },
+    cinturaCodo: redondear(1 + (azar.entre(0.85, 1.2) - 1) * k, 2),
+    dedos: redondear(1 + (azar.entre(0.8, 1.25) - 1) * k, 2),
   };
 }
 
@@ -2006,9 +2217,12 @@ function poseAleatoria(azar) {
 function normalizarPose(spec) {
   if (!spec || spec === 'firme') return POSE_FIRME;
   const o = typeof spec === 'object' ? spec : {};
+  const porLado = (v, por) => ({ 1: v?.[1] ?? por, '-1': v?.['-1'] ?? por });
   return {
     ...POSE_FIRME, ...o,
-    angulos: o.angulos ? { 1: o.angulos[1] ?? 8, '-1': o.angulos['-1'] ?? 8 } : null,
+    angulos: o.angulos ? porLado(o.angulos, 8) : null,
+    codos: porLado(o.codos, 0),
+    munecas: porLado(o.munecas, 0),
     saludo: { ...POSE_FIRME.saludo, ...(o.saludo ?? {}) },
   };
 }
@@ -2070,22 +2284,24 @@ function medidas(opc = {}) {
   const unit = (v) => { const l = Math.hypot(v[0], v[1]) || 1; return [v[0] / l, v[1] / l]; };
   const mitad = (p, q) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
 
-  const brazoCaido = (grados) => {
-    const tan = Math.tan((grados * Math.PI) / 180);
-    const bx = (yy) => S0[0] + (yy - brazoY0) * tan;
-    const dd = grados > 9 ? 1 : 0;
-    const linea = [
-      [bx(uBrazo[0]), uBrazo[0]], [bx(uBrazo[1]), uBrazo[1]], [bx(uBrazo[2]), uBrazo[2]],
-      [bx(uBrazo[3]) + dd * H * 0.004, uBrazo[3]], [bx(uBrazo[4]) + dd * H * 0.006, uBrazo[4]],
-    ];
-    return { tipo: 'caido', linea, anchos: anchosBrazo, u: uBrazo, tan, mano: { x: linea[4][0], y0: y.muneca, y1: y.puntaMano } };
+  // Brazo caído: el codo puede doblarse hacia afuera (`bend`, grados) y la muñeca flexionarse (`flex`).
+  const rad = (g) => (g * Math.PI) / 180;
+  const brazoCaido = (grados, bend = 0, flex = 0) => {
+    const a1 = rad(grados), a2 = rad(grados + bend);
+    const codo = [S0[0] + (y.codo - brazoY0) * Math.tan(a1), y.codo];
+    const mun = [codo[0] + (y.muneca - y.codo) * Math.tan(a2), y.muneca];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dd = bend > 3 ? H * 0.003 : 0; // el antebrazo abulta un poco al doblar
+    const linea = [S0, [m1[0], m1[1]], codo, [m2[0] + dd, m2[1]], mun];
+    return { tipo: 'caido', linea, anchos: anchosBrazo, u: uBrazo, mano: { ang: grados + bend + flex } };
   };
   // Mano en la cintura: codo hacia afuera y muñeca sobre la cadera.
   const brazoCintura = () => {
-    const codo = [S0[0] + H * 0.064, lerp(y.axila, y.cintura, 0.5)];
+    const codo = [S0[0] + H * 0.064 * pose.cinturaCodo, lerp(y.axila, y.cintura, 0.5)];
     const mun = [w.cadera * 0.98 + H * 0.004, y.cintura + (y.cadera - y.cintura) * 0.72];
     const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
-    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: unit([mun[0] - m2[0], mun[1] - m2[1]]) };
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
   };
   // Mano en el bolsillo: el antebrazo baja hacia la cadera y la mano no se ve.
   const brazoBolsillo = () => {
@@ -2096,11 +2312,10 @@ function medidas(opc = {}) {
   };
   // Saludo: el codo baja `codo` grados bajo la horizontal y el antebrazo sube inclinado `antebrazo` grados hacia afuera.
   const brazoSaludo = () => {
-    const rad = (g) => (g * Math.PI) / 180;
     const Lu = H * 0.16, Lf = H * 0.105;
     const codo = [S0[0] + Lu * Math.cos(rad(pose.saludo.codo)), S0[1] + Lu * Math.sin(rad(pose.saludo.codo))];
     const mun = [codo[0] + Lf * Math.sin(rad(pose.saludo.antebrazo)), codo[1] - Lf * Math.cos(rad(pose.saludo.antebrazo))];
-    return { tipo: 'saludo', linea: [S0, mitad(S0, codo), codo, mitad(codo, mun), mun], anchos: anchosBrazo, u: uBrazo, manoRot: pose.saludo.mano };
+    return { tipo: 'saludo', linea: [S0, mitad(S0, codo), codo, mitad(codo, mun), mun], anchos: anchosBrazo, u: uBrazo, manoRot: pose.saludo.mano, dedos: pose.dedos };
   };
 
   // Saludo: `saludo` 'derecha' levanta la mano derecha de la persona, que de frente queda a la izquierda de quien mira.
@@ -2112,7 +2327,7 @@ function medidas(opc = {}) {
     if (s === saludoLado) brazos[s] = brazoSaludo();
     else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();
     else if (s === ladoLibre && pose.brazoLibre === 'bolsillo') brazos[s] = brazoBolsillo();
-    else brazos[s] = brazoCaido(anguloDe(s));
+    else brazos[s] = brazoCaido(anguloDe(s), pose.codos[s] ?? 0, pose.munecas[s] ?? 0);
   }
 
   // Piernas. La que no carga el peso se abre un poco más y gira más el pie; `abre` ensancha la postura.
@@ -2210,7 +2425,7 @@ function trazoMano(M, s) {
   if (b.tipo === 'saludo') return manoSaludo(M, s);
   if (b.tipo === 'bolsillo') return [];
   if (b.tipo === 'cintura') return [manoCerrada(M, s)];
-  return [manoCaida(M, s)];
+  return manoCaida(M, s);
 }
 
 /** Mano abierta, con la palma hacia quien mira, al final del antebrazo levantado. */
@@ -2229,7 +2444,8 @@ function manoSaludo(M, s) {
   const loc = (a, c) => [W[0] + u[0] * a + v[0] * c, W[1] + u[1] * a + v[1] * c];
   const dir = (ang) => [u[0] * Math.cos(ang) + v[0] * Math.sin(ang) * ts, u[1] * Math.cos(ang) + v[1] * Math.sin(ang) * ts];
   const partes = [suavizar([loc(-3, -wm), loc(palma * 0.45, -pw), loc(palma, -pw * 0.92), loc(palma, pw * 0.92), loc(palma * 0.45, pw), loc(-3, wm)], true)];
-  const dedos = [[0.72, 0.9, 0.12], [0.25, 1.0, 0.03], [-0.22, 0.93, -0.06], [-0.68, 0.74, -0.16]];
+  const ab = b.dedos ?? 1; // apertura de los dedos
+  const dedos = [[0.72, 0.9, 0.12 * ab], [0.25, 1.0, 0.03 * ab], [-0.22, 0.93, -0.06 * ab], [-0.68, 0.74, -0.16 * ab]];
   const fl = largo * 0.54, wf = pw * 0.27;
   for (const [c, f, ang] of dedos) {
     const base = loc(palma * 0.85, ts * pw * c), d = dir(ang);
@@ -2256,29 +2472,29 @@ function trazoAntebrazo(M, s, uDesde) {
 function manoCerrada(M, s) {
   const b = brazoLado(M, s);
   const W = b.linea[b.linea.length - 1];
-  const d = [b.manoDir[0] * s, b.manoDir[1]];
+  const fx = ((b.manoFlex ?? 0) * Math.PI) / 180 * s;
+  const d0 = [b.manoDir[0] * s, b.manoDir[1]];
+  const d = [d0[0] * Math.cos(fx) - d0[1] * Math.sin(fx), d0[0] * Math.sin(fx) + d0[1] * Math.cos(fx)];
   const v = [-d[1], d[0]];
   const wm = M.w.muneca, largo = (M.y.puntaMano - M.y.muneca) * 0.62;
   const loc = (a, c) => [W[0] + d[0] * a + v[0] * c, W[1] + d[1] * a + v[1] * c];
   return suavizar([loc(-2, -wm), loc(largo * 0.35, -wm * 1.45), loc(largo * 0.8, -wm * 1.2), loc(largo, 0), loc(largo * 0.8, wm * 1.2), loc(largo * 0.35, wm * 1.45), loc(-2, wm)], true);
 }
 
+/** Mano que cuelga, orientada según el antebrazo y la flexión de la muñeca, con el pulgar hacia el cuerpo. */
 function manoCaida(M, s) {
-  const b = M.brazos[s];
-  const { x, y0, y1 } = b.mano;
-  const wm = M.w.muneca;
-  const xx = M.cx + s * x;
-  const lx = s * (y1 - y0) * b.tan * 0.5;
-  const pts = [
-    [xx - wm * 1.0, y0 - 2],
-    [xx - wm * 1.25 + lx * 0.3, y0 + (y1 - y0) * 0.35],
-    [xx - wm * 1.1 + lx * 0.7, y0 + (y1 - y0) * 0.75],
-    [xx + lx, y1],
-    [xx + wm * 1.1 + lx * 0.7, y0 + (y1 - y0) * 0.75],
-    [xx + wm * 1.25 + lx * 0.3, y0 + (y1 - y0) * 0.35],
-    [xx + wm * 1.0, y0 - 2],
-  ];
-  return suavizar(pts, true);
+  const b = brazoLado(M, s);
+  const W = b.linea[b.linea.length - 1];
+  const a = (b.mano.ang * Math.PI) / 180;
+  const d = [s * Math.sin(a), Math.cos(a)]; // hacia abajo, abierta hacia afuera
+  const v = [-d[1], d[0]];
+  const wm = M.w.muneca, largo = M.y.puntaMano - M.y.muneca;
+  const loc = (t, c) => [W[0] + d[0] * t + v[0] * c, W[1] + d[1] * t + v[1] * c];
+  const palma = suavizar([loc(-2, -wm), loc(largo * 0.35, -wm * 1.25), loc(largo * 0.75, -wm * 1.1), loc(largo, 0), loc(largo * 0.75, wm * 1.1), loc(largo * 0.35, wm * 1.25), loc(-2, wm)], true);
+  // Pulgar: asoma por el lado del cuerpo.
+  const lado = s; // v apunta hacia -x: el lado del cuerpo es +v para el brazo derecho de quien mira y -v para el otro
+  const bp = loc(largo * 0.18, lado * wm * 1.0), fin = loc(largo * 0.56, lado * wm * 1.55);
+  return [palma, suavizar(tubo([bp, fin], [wm * 0.62, wm * 0.5], 'redonda'), true)];
 }
 
 /** Pie visto de frente; `giro` abre la punta hacia afuera. */
@@ -2300,18 +2516,41 @@ function trazoPie(M, s) {
 function trazoCuello(M) {
   const { cx, y, w, H } = M;
   const top = y.menton - H * 0.025;
+  // El cuello se inclina con la cabeza: la parte de arriba gira alrededor del arranque en los hombros.
+  const ang = ((M.pose.cabeza ?? 0) * Math.PI) / 180;
+  const girar = (p, peso) => {
+    const a = ang * peso, c = Math.cos(a), n = Math.sin(a), dx = p[0] - cx, dy = p[1] - y.hombro;
+    return [cx + dx * c - dy * n, y.hombro + dx * n + dy * c, p[2]];
+  };
   const pts = [
-    [cx - w.cuello, top], [cx + w.cuello, top, true],
-    [cx + w.cuello * 1.05, lerp(top, y.hombro, 0.5)],
+    girar([cx - w.cuello, top], 1), girar([cx + w.cuello, top, true], 1),
+    girar([cx + w.cuello * 1.05, lerp(top, y.hombro, 0.5)], 0.5),
     [cx + w.cuello * 1.35, y.hombro - H * 0.012],
     [cx, y.hombro + H * 0.012, true],
     [cx - w.cuello * 1.35, y.hombro - H * 0.012],
-    [cx - w.cuello * 1.05, lerp(top, y.hombro, 0.5)],
+    girar([cx - w.cuello * 1.05, lerp(top, y.hombro, 0.5)], 0.5),
   ];
   return suavizar(pts, true);
 }
 
-Object.assign(__e, { LIENZO, CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello });
+/**
+ * Deformación suave de la figura por su pose: un hombro más bajo que el otro y la columna con una curva (la cabeza
+ * se desplaza sobre las caderas). Se aplica a todas las formas, ropa incluida, y deja quietos los pies y las caderas.
+ */
+function deformar(M) {
+  const { cx, y, H } = M;
+  const tilt = Math.tan(((M.pose.hombros ?? 0) * Math.PI) / 180);
+  const sway = (M.pose.columna ?? 0) * H;
+  if (Math.abs(tilt) < 1e-6 && Math.abs(sway) < 1e-6) return null;
+  const paso = (t) => { const c = limitar(t, 0, 1); return c * c * (3 - 2 * c); };
+  return (x, yy) => {
+    const wTilt = paso((y.cintura - yy) / (y.cintura - y.hombro));
+    const wSway = paso((y.cadera - yy) / (y.cadera - y.menton)) ** 1.3;
+    return [x + sway * wSway, yy + (x - cx) * tilt * wTilt];
+  };
+}
+
+Object.assign(__e, { LIENZO, CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello, deformar });
 return __e;
 })();
 
@@ -2401,20 +2640,42 @@ function puntosBajo(estilo, xH, yH, H) {
     case 'curvo': return [base(), [xH * 0.5, yH + H * 0.011], [0, yH + H * 0.015, true]];
     case 'ondulado': return [base(), [xH * 0.75, yH + H * 0.012], [xH * 0.5, yH - H * 0.004], [xH * 0.25, yH + H * 0.012], [0, yH + H * 0.002, true]];
     case 'dentado': return [base(), [xH * 0.8, yH + H * 0.022, true], [xH * 0.6, yH, true], [xH * 0.4, yH + H * 0.022, true], [xH * 0.2, yH, true], [0, yH + H * 0.018, true]];
+    case 'pico': return [base(), [xH * 0.5, yH + H * 0.02], [0, yH + H * 0.055, true]];
+    case 'curvo-alto': return [base(), [xH * 0.5, yH - H * 0.008], [0, yH - H * 0.02, true]];
     case 'flecos': return [base(), [0, yH + H * 0.004, true]];
     default: return [base(), [0, yH + H * 0.004, true]];
   }
 }
 
 /** Mitad derecha del contorno de una prenda de torso, del escote al bajo. Devuelve también el perfil sin el bajo. */
+/** Escotes que dejan los hombros al aire: el corpiño termina arriba del pecho y los tirantes van aparte. */
+const ESCOTES_SIN_HOMBRO = ['tirantes', 'corazon', 'asimetrico', 'halter'];
+
+/** Cuánto se abre la falda hacia el bajo según la forma (t de 0 en la cadera a 1 en el bajo). */
+function vueloSegunForma(forma, t) {
+  switch (forma) {
+    case 'sirena': return t ** 4;
+    case 'trapecio': return t ** 0.75;
+    case 'globo': return Math.sin(Math.PI * t) * 0.85;
+    case 'tubo': return 0;
+    default: return t ** 1.15;
+  }
+}
+
 function perfilVestido(M, o) {
   const { w, y, H } = M;
-  const { d = 0, cin = 1, vuelo = 0, yHem, sinMangas = false, escote = 'redondo', prof = 1, bajo = 'recto' } = o;
+  const { d = 0, cin = 1, vuelo = 0, yHem, sinMangas = false, escote = 'redondo', prof = 1, bajo = 'recto', forma } = o;
   const T = perfilTorso(M, 0);
-  const E = escotePts(M, escote, prof);
+  const sinHombro = ESCOTES_SIN_HOMBRO.includes(escote);
+  const yTop = y.pecho - H * 0.02 + (prof - 1) * H * 0.02, xTop = w.pecho * 0.95 + d;
+  const E = sinHombro
+    ? [[0, yTop + (escote === 'corazon' ? H * 0.022 : 0)], [xTop * 0.5, yTop - H * 0.006], [xTop, yTop + H * 0.004, true]]
+    : escotePts(M, escote, prof);
   const pts = E.slice();
   const wd = (i, peso) => d * lerp(1, cin, peso);
-  if (sinMangas) {
+  if (sinHombro) {
+    pts.push([w.pecho * 0.97 + d, lerp(yTop, y.pecho, 0.7) + H * 0.004]);
+  } else if (sinMangas) {
     const xs = lerp(w.cuello * 1.08, w.hombro, 0.5);
     pts.push([xs, y.hombro - H * 0.006], [xs + H * 0.003, y.hombro + H * 0.03], [w.pecho * 0.9 + d * 0.3, y.axila + H * 0.008]);
   } else if (escote !== 'barco') {
@@ -2431,7 +2692,7 @@ function perfilVestido(M, o) {
   pts.push([T[10][0] + d, T[10][1]]);
   if (yHem > y.cadera) {
     for (const t of [0.25, 0.55, 0.8, 1]) {
-      pts.push([w.cadera + d + vuelo * H * t ** 1.15, lerp(y.cadera, yHem, t)]);
+      pts.push([w.cadera + d + vuelo * H * vueloSegunForma(forma, t), lerp(y.cadera, yHem, t)]);
     }
   }
   // Cortar en el bajo.
@@ -2459,6 +2720,7 @@ function finManga(M, tipo) {
     case 'corta': return lerp(y0, y.codo, 0.55);
     case 'tres-cuartos': return lerp(y.codo, y.muneca, 0.5);
     case 'codo': return y.codo + H * 0.012;
+    case 'cap': return lerp(y0, y.codo, 0.28);
     case 'larga-mano': return y.muneca + H * 0.035;
     case 'kimono': return y.muneca + H * 0.045;
     default: return y.muneca - H * 0.006;
@@ -2479,6 +2741,10 @@ function mangaForma(M, s, tipo, d, vuelo = 0) {
     else if (tipo === 'globo') f = 1.5 - 0.5 * Math.min(1, t * 2.2) + (t > 0.8 ? 0.1 : 0);
     else if (tipo === 'kimono') { f = 1.55 + 0.85 * t; desp = H * 0.026 * t; }
     else if (tipo === 'abullonada') f = 1.55 - 0.55 * Math.min(1, t * 1.6);
+    else if (tipo === 'farol') f = 1.5 - 0.5 * Math.min(1, t / 0.3) + 0.42 * Math.max(0, (t - 0.7) / 0.3) ** 1.3; // abullonada arriba y en el puño
+    else if (tipo === 'pagoda') f = 1 + 1.5 * Math.max(0, (t - 0.4) / 0.6) ** 1.4;
+    else if (tipo === 'ajustada') f = 0.9;
+    else if (tipo === 'cap') f = 1.1;
     // Con el brazo levantado la manga ancha se recoge hacia el codo: menos vuelo.
     if (s === M.saludoLado) f = 1 + (f - 1) * 0.55;
     linea.push([q.x + (s === M.saludoLado ? 0 : s * desp), q.y]);
@@ -2489,17 +2755,104 @@ function mangaForma(M, s, tipo, d, vuelo = 0) {
 }
 
 function mangas(M, tipo, d, k, F, vuelo, puño) {
-  const partes = [], detalles = [];
-  if (!tipo || tipo === 'sin') return { partes, detalles };
+  const partes = [], detalles = [], fins = [];
+  if (!tipo || tipo === 'sin') return { partes, detalles, fins };
   for (const s of [1, -1]) {
     const m = mangaForma(M, s, tipo, d, vuelo);
     partes.push(parte(suavizar(m.pts), F, k, { proyecta: true }));
+    fins.push({ s, ...m.fin });
     if (puño) {
       const { x, y, w } = m.fin;
       detalles.push(linea(`M${x - w * 0.97} ${y - 1.5}L${x + w * 0.97} ${y - 1.5}`, k.ribete, Math.max(3, M.H * 0.011), 1, { cap: 'butt' }));
     }
   }
-  return { partes, detalles };
+  return { partes, detalles, fins };
+}
+
+
+// ---------- Adornos comunes de las prendas de torso ----------
+
+/** Franja de piel (puntitos mullidos) a lo largo de una ruta. */
+const pielRuta = (d, color, ancho = 7) => linea(d, color, ancho, 0.95, { dash: '0.1 5.2', cap: 'round' });
+
+/**
+ * Capucha, bolsillos, cuello de camisa, ribetes de piel, cinturón y cordones: lo comparten túnicas, vestidos y chaquetas.
+ * `per`: perfil de la prenda; `fins`: extremos de las mangas (para los puños de piel).
+ */
+function adornosTorso(M, p, k, per, fins = []) {
+  const { H, y, cx, w } = M;
+  const atras = [], detalles = [], partes = [];
+  const prof = per.perfil;
+  const sombra = sombraDe(k.principal), luz = aclarar(k.principal, 0.3);
+  const piel = k.ribete ?? aclarar(k.principal, 0.35);
+  const rect = (x0, y0, x1, y1, ahusa = 0) => poligono([[x0, y0], [x1, y0], [x1 - ahusa, y1], [x0 + ahusa, y1]]);
+
+  if (p.capucha) {
+    const mitad = [[0, y.menton - H * 0.004, true], [w.cuello * 1.6, y.menton + H * 0.012], [w.cuello * 2.5, y.cuello + H * 0.012], [w.hombro * 0.8, y.hombro + H * 0.012], [w.cuello * 1.8, y.hombro + H * 0.036], [0, y.hombro + H * 0.038, true]];
+    atras.push({ d: suavizar(espejo(mitad, cx)), fill: aclarar(k.principal, 0.04), contorno: sombra, proyecta: true });
+    for (const sg of [-1, 1]) detalles.push(linea(`M${cx + sg * w.cuello * 0.8} ${y.hombro + H * 0.02}Q${cx + sg * w.cuello * 0.9} ${y.pecho} ${cx + sg * w.cuello * 0.7} ${y.pecho + H * 0.05}`, k.ribete ?? k.detalle, 1.8, 0.9));
+  }
+  if (p.cuelloCamisa) {
+    for (const sg of [-1, 1]) {
+      partes.push({ d: poligono([[cx + sg * w.cuello * 0.15, y.hombro - H * 0.017], [cx + sg * w.cuello * 1.5, y.hombro - H * 0.012], [cx + sg * w.cuello * 1.25, y.hombro + H * 0.03]]), fill: aclarar(k.principal, 0.06), proyecta: true });
+    }
+  }
+  const bol = p.bolsillos;
+  if (bol === 'pecho' || bol === 'ambos') {
+    for (const sg of [-1, 1]) {
+      const x0 = cx + sg * w.pecho * 0.55 - H * 0.019, y0 = y.pecho + H * 0.018;
+      detalles.push(linea(`M${x0} ${y0}L${x0 + H * 0.038} ${y0}L${x0 + H * 0.036} ${y0 + H * 0.034}L${x0 + H * 0.002} ${y0 + H * 0.034}Z`, sombra, 1.3, 0.5, { suave: true }));
+      detalles.push(linea(`M${x0 + 1} ${y0 + 1.5}L${x0 + H * 0.037} ${y0 + 1.5}`, luz, 1.2, 0.5, { suave: true }));
+    }
+  }
+  if (bol === 'cadera' || bol === 'ambos') {
+    for (const sg of [-1, 1]) {
+      const xa = cx + sg * anchoEn(prof, y.cadera - H * 0.03) * 0.78, ya = y.cintura + H * 0.045;
+      detalles.push(linea(`M${xa} ${ya}L${xa - sg * H * 0.035} ${ya + H * 0.04}`, sombra, 1.6, 0.55, { suave: true }));
+      detalles.push(linea(`M${xa + sg * 2} ${ya + 1}L${xa - sg * H * 0.033} ${ya + H * 0.041}`, luz, 1.2, 0.5, { suave: true }));
+    }
+  }
+  if (bol === 'canguro') {
+    const ya = y.cintura + H * 0.01, yb = Math.min(per.yBajo - H * 0.02, y.cadera + H * 0.035), xa = anchoEn(prof, ya) * 0.62;
+    detalles.push(linea(`M${cx - xa} ${ya}L${cx + xa} ${ya}L${cx + xa * 0.8} ${yb}L${cx - xa * 0.8} ${yb}Z`, sombra, 1.6, 0.5, { suave: true }));
+    detalles.push(linea(`M${cx - xa + 2} ${ya + 2}L${cx + xa - 2} ${ya + 2}`, luz, 1.3, 0.5, { suave: true }));
+  }
+  if (p.pieles) {
+    const todo = p.pieles === 'todo';
+    if (todo || p.pieles === 'cuello') {
+      const E = per.escote;
+      const ruta = suavizar([...E.slice().reverse().map(([x, yy, c]) => [cx - x, yy, c]).slice(0, -1), ...E.map(([x, yy, c]) => [cx + x, yy, c])], false);
+      detalles.push(pielRuta(ruta, piel, 9));
+    }
+    if (todo || p.pieles === 'puños') for (const f of fins) detalles.push(pielRuta(`M${f.x - f.w} ${f.y - 2}L${f.x + f.w} ${f.y - 2}`, piel, 8));
+    if (todo || p.pieles === 'bajo') detalles.push(pielRuta(`M${cx - per.xBajo} ${per.yBajo - 3}L${cx + per.xBajo} ${per.yBajo - 3}`, piel, 8));
+  }
+  if (p.cinturon) {
+    const yc = y.cintura, xa = anchoEn(prof, yc) + 1;
+    partes.push({ d: rect(cx - xa, yc - H * 0.008, cx + xa, yc + H * 0.008), fill: k.secundario ?? sombra, plano: false, volumen: false, op: 0.95 });
+    detalles.push({ d: suavizar([[cx - 5, yc - 5], [cx + 5, yc - 5], [cx + 5, yc + 5], [cx - 5, yc + 5]], true, 0.2), fill: k.detalle, stroke: oscurecer(k.detalle, 0.4), sw: 0.8 });
+  }
+  if (p.cordones) {
+    const y0 = y.pecho - H * 0.005, y1 = y.cadera - H * 0.01, n = 7;
+    let ruta = '';
+    for (let i = 0; i < n; i++) { const yy = lerp(y0, y1, i / (n - 1)); ruta += `${i ? 'L' : 'M'}${cx + (i % 2 ? 7 : -7)} ${yy}`; }
+    detalles.push(linea(ruta, k.detalle, 1.4, 0.95, { cap: 'round' }));
+    for (let i = 0; i < n; i++) { const yy = lerp(y0, y1, i / (n - 1)); detalles.push({ d: suavizar([[cx - 8, yy], [cx - 6, yy + 1.5], [cx - 4, yy], [cx - 6, yy - 1.5]], true, 0.4), fill: k.detalle }); detalles.push({ d: suavizar([[cx + 8, yy], [cx + 6, yy + 1.5], [cx + 4, yy], [cx + 6, yy - 1.5]], true, 0.4), fill: k.detalle }); }
+  }
+  return { atras, partes, detalles };
+}
+
+/** Tirantes de los escotes sin hombro. */
+function tirantesDe(M, escote, p, F, k, ladoUno = 1) {
+  const { H, y, cx, w } = M;
+  const yTop = y.pecho - H * 0.02 + ((p.prof ?? 1) - 1) * H * 0.02, xTop = w.pecho * 0.95 + (p.holgura ?? 0.004) * H;
+  const tubo2 = (a, b, anchoPx) => parte(suavizar(tubo([a, b], [anchoPx, anchoPx], 'plana')), F, k, { volumen: false, proyecta: false });
+  const out = [];
+  const an = Math.max(2.5, H * 0.0075);
+  if (escote === 'tirantes' || escote === 'corazon') for (const sg of [-1, 1]) out.push(tubo2([cx + sg * xTop * 0.62, yTop + 2], [cx + sg * w.cuello * 1.55, y.hombro - H * 0.008], an));
+  if (escote === 'asimetrico') out.push(tubo2([cx + ladoUno * xTop * 0.9, yTop + 2], [cx + ladoUno * w.hombro * 0.85, y.hombro + H * 0.004], an * 2.2));
+  if (escote === 'halter') for (const sg of [-1, 1]) out.push(tubo2([cx + sg * xTop * 0.72, yTop + 2], [cx + sg * w.cuello * 0.9, y.cuello + H * 0.005], an));
+  return out;
 }
 
 // ---------- Plantillas ----------
@@ -2509,13 +2862,17 @@ function tunica(M, p, k, ctx) {
   const d = (p.holgura ?? 0.012) * H;
   const yHem = yLargo(M, p.largo ?? 'rodilla');
   const F = relleno(p, k, ctx);
-  const sinM = p.manga === 'sin';
-  const per = perfilVestido(M, { d, cin: p.cintura ?? 1, vuelo: p.vuelo ?? 0.03, yHem, sinMangas: sinM, escote: p.escote ?? 'redondo', prof: p.prof ?? 1, bajo: p.bajo ?? 'recto' });
+  const sinHombro = ESCOTES_SIN_HOMBRO.includes(p.escote);
+  const sinM = p.manga === 'sin' || sinHombro;
+  const per = perfilVestido(M, { d, cin: p.cintura ?? 1, vuelo: p.vuelo ?? 0.03, yHem, sinMangas: sinM, escote: p.escote ?? 'redondo', prof: p.prof ?? 1, bajo: p.bajo ?? 'recto', forma: p.forma });
   const partes = [parte(suavizar(espejo(per.completo, cx)), F, k)];
-  const m = mangas(M, p.manga ?? 'larga', d * 0.9, k, F, p.vuelo ?? 0.03, p.puños !== false && p.ribete !== false && !!k.ribete && p.puños);
+  if (sinHombro) partes.push(...tirantesDe(M, p.escote, p, F, k, p.lado === 'izq' ? -1 : 1));
+  const m = mangas(M, sinHombro ? 'sin' : (p.manga ?? 'larga'), d * 0.9, k, F, p.vuelo ?? 0.03, p.puños !== false && p.ribete !== false && !!k.ribete && p.puños);
   partes.push(...m.partes);
   const detalles = [...m.detalles];
   const prof = per.perfil;
+  const ad = adornosTorso(M, p, k, per, m.fins);
+  partes.push(...ad.partes); detalles.push(...ad.detalles);
   const lado = (pts) => pts.map(([x, yy]) => [cx + x, yy]);
   // Ribete del escote.
   if (p.ribete !== false && k.ribete) {
@@ -2565,7 +2922,7 @@ function tunica(M, p, k, ctx) {
     const yy = y.pecho + H * 0.02;
     detalles.push({ d: poligono([[cx - M.w.pecho * 0.6, yy], [cx + M.w.pecho * 0.6, yy], [cx + M.w.pecho * 0.6, yy + H * 0.03], [cx - M.w.pecho * 0.6, yy + H * 0.03]]), fill: ctx.patron(p.bordadoPecho, k.ribete, k.detalle, 0.7) });
   }
-  return { atras: [], partes, detalles };
+  return { atras: ad.atras, partes, detalles };
 }
 
 function flecos(M, yH, xH, color) {
@@ -2583,10 +2940,10 @@ function pantalon(M, p, k, ctx) {
   const d = (p.holgura ?? 0.004) * H;
   const yHem = yLargo(M, p.largo ?? 'tobillo');
   const F = relleno(p, k, ctx);
-  const factor = { ajustado: 1, recto: 1.28, amplio: 1.7, bombacho: 1.55, campana: 1.3 }[p.ancho ?? 'recto'] ?? 1.28;
+  const factor = { ajustado: 1, recto: 1.28, amplio: 1.7, bombacho: 1.55, campana: 1.3, palazzo: 2.3 }[p.ancho ?? 'recto'] ?? 1.28;
   const partes = [];
   const T = perfilTorso(M, 0);
-  const alto = p.cintura === 'baja' ? y.cintura + H * 0.045 : y.cintura - H * 0.005;
+  const alto = p.cintura === 'baja' ? y.cintura + H * 0.045 : p.cintura === 'alta' ? y.cintura - H * 0.035 : y.cintura - H * 0.005;
   const half = [[0, alto, true], [w.cintura + d * 1.2, alto, true], [lerp(w.cintura, w.cadera, 0.7) + d, lerp(alto, y.cadera, 0.6)], [w.cadera + d * 1.3, y.cadera], [w.cadera * 0.98 + d, lerp(y.cadera, y.entrepierna, 0.7)], [0, y.entrepierna + H * 0.012, true]];
   partes.push(parte(suavizar(espejo(half, cx)), F, k));
   for (const s of [1, -1]) {
@@ -2607,6 +2964,9 @@ function pantalon(M, p, k, ctx) {
       }
       let f = 1 + (factor - 1) * (p.ancho === 'bombacho' ? Math.sin(Math.min(1, t * 1.4) * Math.PI * 0.5) * (t > 0.78 ? 1 - (t - 0.78) * 3.4 : 1) : p.ancho === 'campana' ? t ** 2 : Math.min(1, t * 2));
       if (p.ancho === 'ajustado') f = 1;
+      else if (p.ancho === 'pitillo') f = 0.93;
+      else if (p.ancho === 'tubo') f = 1.1;
+      else if (p.ancho === 'jodhpur') f = 0.98 + 0.38 * (1 - Math.min(1, t * 1.7)) ** 1.4; // ancho en el muslo, ajustado bajo la rodilla
       pts.push([q.x, yy]);
       ws.push(q.w * f + d);
     }
@@ -2614,7 +2974,26 @@ function pantalon(M, p, k, ctx) {
   }
   const detalles = [linea(`M${cx - w.cintura - d} ${alto + 3}L${cx + w.cintura + d} ${alto + 3}`, k.ribete ? k.ribete : sombraDe(k.principal), Math.max(3, H * 0.008), 0.9, { cap: 'butt' }),
     linea(`M${cx} ${alto + 5}L${cx} ${y.entrepierna + H * 0.01}`, sombraDe(k.principal), 1.2, 0.5)];
-  if (p.cordon) detalles.push(linea(`M${cx - 4} ${alto + 6}q4 10 -2 18M${cx + 4} ${alto + 6}q-4 10 2 18`, k.detalle, 1.6, 0.9));
+  const somb = sombraDe(k.principal), luz = aclarar(k.principal, 0.3);
+  for (const s of [1, -1]) {
+    const Lg = piernaLado(M, s);
+    if (p.bolsillos === 'cargo') {
+      const x0 = Lg.linea[1][0] + s * Lg.anchos[1] * 0.78, ya = lerp(y.cadera, y.rodilla, 0.32), yb = lerp(y.cadera, y.rodilla, 0.62), an = H * 0.03;
+      detalles.push(linea(`M${x0} ${ya}L${x0 - s * an} ${ya}L${x0 - s * an} ${yb}L${x0} ${yb}`, somb, 1.4, 0.55, { suave: true }));
+      detalles.push(linea(`M${x0} ${ya + H * 0.01}L${x0 - s * an} ${ya + H * 0.01}`, somb, 1.2, 0.5, { suave: true }));
+      detalles.push(linea(`M${x0 - s * 2} ${ya + 2}L${x0 - s * an + s * 2} ${ya + 2}`, luz, 1.2, 0.45, { suave: true }));
+    }
+    if (p.bolsillos === 'jean') {
+      const xa = cx + s * (w.cintura * 0.45), xb = cx + s * (w.cadera * 0.98 + d);
+      detalles.push(linea(`M${xa} ${alto + 8}Q${xa + s * H * 0.02} ${alto + H * 0.06} ${xb} ${alto + H * 0.075}`, somb, 1.5, 0.55, { suave: true }));
+      detalles.push(linea(`M${xa + s * 2} ${alto + 10}Q${xa + s * H * 0.02 + s * 2} ${alto + H * 0.062} ${xb} ${alto + H * 0.077}`, luz, 1.1, 0.4, { suave: true }));
+    }
+    if (p.bolsillos === 'pliegues') {
+      detalles.push(linea(`M${Lg.linea[0][0]} ${y.cadera + H * 0.02}L${Lg.linea[4][0]} ${yHem - 3}`, luz, 1.6, 0.45, { suave: true }));
+      detalles.push(linea(`M${Lg.linea[0][0] + 2.4} ${y.cadera + H * 0.02}L${Lg.linea[4][0] + 2.4} ${yHem - 3}`, somb, 1.3, 0.35, { suave: true }));
+    }
+  }
+  if (p.cordon) detalles.push(linea(`M${cx - 4} ${alto + 6}Q${cx} ${alto + 16} ${cx - 6} ${alto + 24}M${cx + 4} ${alto + 6}Q${cx} ${alto + 16} ${cx + 6} ${alto + 24}`, k.detalle, 1.6, 0.9));
   if (p.puños && k.ribete) for (const s of [1, -1]) { const Lp = piernaLado(M, s); detalles.push(linea(`M${Lp.linea[4][0] - Lp.anchos[4] * 1.5} ${yHem - 2}L${Lp.linea[4][0] + Lp.anchos[4] * 1.5} ${yHem - 2}`, k.ribete, 4, 1, { cap: 'butt' })); }
   return { atras: [], partes, detalles };
 }
@@ -2628,7 +3007,7 @@ function falda(M, p, k, ctx) {
   const vuelo = (p.vuelo ?? 0.06) * H;
   const wA = alto < y.cintura ? lerp(w.cintura, w.pecho, limitar((y.cintura - alto) / (y.cintura - y.pecho), 0, 1)) : w.cintura;
   const pts = [[0, alto, true], [wA + d, alto, true], [w.cintura + d, y.cintura], [lerp(w.cintura, w.cadera, 0.7) + d, lerp(y.cintura, y.cadera, 0.6)], [w.cadera + d * 1.3, y.cadera]];
-  for (const t of [0.3, 0.6, 0.85, 1]) pts.push([w.cadera + d * 1.3 + vuelo * t ** 1.2, lerp(y.cadera, yHem, t)]);
+  for (const t of [0.3, 0.6, 0.85, 1]) pts.push([w.cadera + d * 1.3 + vuelo * vueloSegunForma(p.forma ?? 'campana', t), lerp(y.cadera, yHem, t)]);
   const ult = pts[pts.length - 1];
   const half = pts.slice(0, -1).concat(puntosBajo(p.bajo ?? 'curvo', ult[0], ult[1], H));
   const prof = pts.map(([x, yy]) => [x, yy]);
@@ -2648,6 +3027,11 @@ function falda(M, p, k, ctx) {
     detalles.push({ d: poligono([[cx - xa, yHem - bh], [cx + xa, yHem - bh], [cx + xb, yHem], [cx - xb, yHem]]), fill: pat });
   }
   if (p.flecos) detalles.push(...flecos(M, ult[1], ult[0], k.ribete ?? k.detalle));
+  if (p.abertura) {
+    const largoAb = (yHem - y.cadera) * 0.38, xAb = p.abertura === 'lado' ? anchoEn(prof, yHem - largoAb) * 0.55 : 0;
+    detalles.push(linea(`M${cx + xAb} ${yHem - 1}L${cx + xAb + (p.abertura === 'lado' ? 2 : 0)} ${yHem - largoAb}`, sombraDe(k.principal), 2.6, 0.55, { suave: true }));
+    detalles.push(linea(`M${cx + xAb + 3} ${yHem - 1}L${cx + xAb + 4} ${yHem - largoAb + 4}`, aclarar(k.principal, 0.3), 1.6, 0.4, { suave: true }));
+  }
   return { atras: [], partes, detalles };
 }
 
@@ -2790,6 +3174,8 @@ function chaqueta(M, p, k, ctx) {
   }
   const m = mangas(M, p.manga ?? 'sin', d * 0.9, k, F, p.vuelo ?? 0.03, p.puños && k.ribete);
   partes.push(...m.partes); detalles.push(...m.detalles);
+  const ad = adornosTorso(M, p, k, per, m.fins);
+  partes.push(...ad.partes); detalles.push(...ad.detalles);
   if (p.ribete !== false && k.ribete) {
     for (const s of [1, -1]) detalles.push(linea(`M${cx + s * gapA} ${y.hombro}L${cx + s * gapB} ${per.yBajo - 1}`, k.ribete, Math.max(2, H * 0.005), 1, { cap: 'butt' }));
   }
@@ -2803,7 +3189,7 @@ function chaqueta(M, p, k, ctx) {
   if (p.bordadoBorde) {
     for (const s of [1, -1]) detalles.push(linea(`M${cx + s * (gapA + 4)} ${y.hombro + H * 0.03}L${cx + s * (gapB + 4)} ${per.yBajo - 3}`, k.detalle, 1.3, 0.9, { dash: '2 3' }));
   }
-  return { atras: [], partes, detalles };
+  return { atras: ad.atras, partes, detalles };
 }
 
 function delantal(M, p, k, ctx) {
@@ -2916,6 +3302,37 @@ function cuello(M, p, k, ctx) {
     case 'cuentas-largas':
       for (let i = 0; i < 3; i++) det.push(linea(arc(y.hombro - H * 0.002, w.cuello * 1.4, H * (0.1 + i * 0.045)), i % 2 ? k.secundario : k.principal, 4, 1, { dash: '0.1 7' }));
       break;
+    case 'piel': { // cuello de piel: puntitos mullidos alrededor del cuello y sobre los hombros
+      det.push(linea(`M${cx - w.cuello * 2.6} ${y.hombro - H * 0.002}Q${cx} ${y.hombro + H * 0.085} ${cx + w.cuello * 2.6} ${y.hombro - H * 0.002}`, k.principal, 15, 1, { dash: '0.1 7', cap: 'round' }));
+      det.push(linea(`M${cx - w.cuello * 3.1} ${y.hombro + H * 0.012}Q${cx} ${y.hombro + H * 0.1} ${cx + w.cuello * 3.1} ${y.hombro + H * 0.012}`, aclarar(k.principal, 0.1), 13, 1, { dash: '0.1 7.5', cap: 'round' }));
+      break;
+    }
+    case 'esclavina': { // capita corta sobre los hombros
+      const mitad = [[0, y.hombro + H * 0.036, true], [w.cuello * 1.3, y.hombro - H * 0.016], [w.hombro + H * 0.025, y.hombro + H * 0.008], [w.hombro + H * 0.045, y.axila + H * 0.03], [w.pecho * 0.85, y.pecho + H * 0.03], [0, y.pecho + H * 0.055, true]];
+      partes.push(parte(suavizar(espejo(mitad, cx)), k.principal, k, { proyecta: true }));
+      det.push(linea(`M${cx - w.pecho * 0.85} ${y.pecho + H * 0.03}Q${cx} ${y.pecho + H * 0.075} ${cx + w.pecho * 0.85} ${y.pecho + H * 0.03}`, k.ribete ?? k.secundario, 3, 1, { cap: 'butt' }));
+      break;
+    }
+    case 'chalina': { // bufanda larga con dos puntas colgando
+      partes.push(parte(suavizar([[cx - w.cuello * 1.5, yn - H * 0.004], [cx + w.cuello * 1.5, yn - H * 0.004], [cx + w.cuello * 1.8, yn + H * 0.04], [cx - w.cuello * 1.8, yn + H * 0.04]], true, 0.7), k.principal, k));
+      for (const [sg, largo] of [[-1, 0.15], [1, 0.2]]) {
+        const x0 = cx + sg * w.cuello * 0.6;
+        partes.push(parte(poligono([[x0 - 8, yn + H * 0.03], [x0 + 8, yn + H * 0.03], [x0 + 9, yn + H * largo], [x0 - 7, yn + H * largo]]), k.principal, k, { proyecta: true }));
+        det.push(linea(`M${x0 - 7} ${yn + H * largo - 4}L${x0 + 9} ${yn + H * largo - 4}`, k.secundario ?? k.ribete, 3, 1, { cap: 'butt' }));
+        det.push(...flecos({ ...M, cx: x0 + 1 }, yn + H * largo, 8, k.secundario ?? k.principal).slice(0, 5));
+      }
+      break;
+    }
+    case 'triangulo': { // pañuelo anudado al cuello
+      partes.push(parte(poligono([[cx - w.cuello * 1.5, y.hombro - H * 0.014], [cx + w.cuello * 1.5, y.hombro - H * 0.014], [cx, y.pecho + H * 0.02]]), k.principal, k, { proyecta: true }));
+      det.push({ d: suavizar([[cx - 6, yn + H * 0.03], [cx, yn + H * 0.045], [cx + 6, yn + H * 0.03], [cx, yn + H * 0.018]], true, 0.4), fill: aclarar(k.principal, 0.1), stroke: sombraDe(k.principal), sw: 0.8 });
+      break;
+    }
+    case 'babero': { // cuello ancho y redondeado
+      const mitad = [[0, y.hombro + H * 0.062, true], [w.cuello * 1.2, y.hombro + H * 0.04], [w.cuello * 2.6, y.hombro + H * 0.034], [w.cuello * 3.3, y.hombro + H * 0.006], [w.cuello * 1.3, y.hombro - H * 0.016], [0, y.hombro - H * 0.012, true]];
+      partes.push(parte(suavizar(espejo(mitad, cx)), aclarar(k.principal, 0.1), k, { proyecta: true }));
+      break;
+    }
     case 'corbata': {
       const yk = y.hombro + H * 0.035;
       partes.push(parte(poligono([[cx - 5, yk - 3], [cx + 5, yk - 3], [cx + 3.5, yk + 5], [cx - 3.5, yk + 5]]), k.principal, k, { volumen: false }));
@@ -2955,22 +3372,29 @@ function calzado(M, p, k, ctx) {
     ];
     switch (tipo) {
       case 'descalzo': break;
+      case 'chancletas': {
+        partes.push(parte(suavizar(zap(suelaY - H * 0.012), true), k.principal, k, { plano: true, volumen: false }));
+        detalles.push(linea(`M${x - aw * 0.55} ${suelaY - H * 0.012}L${x} ${suelaY - H * 0.038}L${x + aw * 0.55} ${suelaY - H * 0.012}`, k.secundario ?? k.detalle, 2.6, 1));
+        break;
+      }
       case 'sandalias': case 'sandalia-romana': {
         partes.push(parte(suavizar(zap(suelaY - H * 0.012), true), k.principal, k, { plano: true, volumen: false }));
         for (let i = 0; i < 3; i++) detalles.push(linea(`M${x - aw * 0.95} ${suelaY - H * (0.014 + i * 0.011)}L${x + aw * 0.95} ${suelaY - H * (0.014 + i * 0.011) - 2}`, k.secundario ?? k.principal, 2, 1));
         if (tipo === 'sandalia-romana') for (let i = 0; i < 6; i++) detalles.push(linea(`M${x - PL.anchos[4] * 1.1} ${yT - i * H * 0.018}L${x + PL.anchos[4] * 1.1} ${yT - i * H * 0.018 - 6}`, k.secundario ?? k.principal, 1.8, 0.95));
         break;
       }
-      case 'mocasines': case 'zapatos': case 'zuecos': case 'zapatillas': {
-        const pts = zap(tipo === 'zapatillas' ? y.tobillo + H * 0.01 : yT - H * 0.004);
+      case 'mocasines': case 'zapatos': case 'zuecos': case 'zapatillas': case 'tacones': case 'oxford': {
+        const pts = zap(tipo === 'zapatillas' ? y.tobillo + H * 0.01 : tipo === 'tacones' ? yT + H * 0.022 : yT - H * 0.004);
         partes.push(parte(suavizar(pts, true), k.principal, k));
         detalles.push(linea(`M${x - aw * 1.25} ${suelaY - 2}L${x + aw * 1.25} ${suelaY - 2}`, k.ribete ?? oscurecer(k.principal, 0.5), 2.4, 0.55, { cap: 'butt', suave: true }));
+        if (tipo === 'oxford') for (let i = 0; i < 3; i++) detalles.push(linea(`M${x - aw * 0.38} ${suelaY - H * (0.026 + i * 0.01)}L${x + aw * 0.38} ${suelaY - H * (0.026 + i * 0.01)}`, k.detalle ?? sombraDe(k.principal), 1.4, 0.8));
+        if (tipo === 'tacones') detalles.push(linea(`M${x - aw * 0.5} ${suelaY - H * 0.005}L${x + aw * 0.5} ${suelaY - H * 0.005}`, k.ribete ?? oscurecer(k.principal, 0.3), 3, 0.9, { cap: 'butt' }));
         if (tipo === 'zapatos') detalles.push(linea(`M${x - aw * 0.5} ${suelaY - H * 0.026}Q${x} ${suelaY - H * 0.034} ${x + aw * 0.5} ${suelaY - H * 0.026}`, sombraDe(k.principal), 1.3, 0.7));
         if (p.hebilla) detalles.push({ d: poligono([[x - 4, suelaY - H * 0.03], [x + 4, suelaY - H * 0.03], [x + 4, suelaY - H * 0.018], [x - 4, suelaY - H * 0.018]]), fill: k.detalle, stroke: oscurecer(k.detalle, 0.4), sw: 0.9 });
         break;
       }
-      case 'botas': case 'botas-altas': case 'polainas': {
-        const yTop = tipo === 'botas' ? lerp(y.rodilla, y.tobillo, 0.45) : tipo === 'polainas' ? lerp(y.rodilla, y.tobillo, 0.3) : y.rodilla + H * 0.01;
+      case 'botas': case 'botas-altas': case 'polainas': case 'botines': {
+        const yTop = tipo === 'botines' ? y.tobillo - H * 0.034 : tipo === 'botas' ? lerp(y.rodilla, y.tobillo, 0.45) : tipo === 'polainas' ? lerp(y.rodilla, y.tobillo, 0.3) : y.rodilla + H * 0.01;
         const L = PL;
         const linePts = [], ws = [];
         for (let i = 0; i <= 4; i++) {
@@ -3008,13 +3432,25 @@ function accesorio(M, p, k) {
     const bx = cx + (p.lado === 'der' ? 1 : -1) * (M.w.cadera + H * 0.035), by = y.cadera + H * 0.02;
     det.push(linea(`M${cx - (p.lado === 'der' ? 1 : -1) * M.w.cuello * 1.3} ${y.hombro}L${bx} ${by}`, k.secundario ?? k.principal, 2.5, 1));
     det.push({ d: poligono([[bx - 14, by], [bx + 14, by], [bx + 16, by + H * 0.08], [bx - 16, by + H * 0.08]]), fill: k.principal, stroke: oscurecer(k.principal, 0.45), sw: 1.3 });
+  } else if (tipo === 'tirantes') {
+    for (const sg of [-1, 1]) {
+      det.push(linea(`M${cx + sg * M.w.pecho * 0.55} ${y.cintura - H * 0.004}L${cx + sg * M.w.cuello * 1.6} ${y.hombro - H * 0.01}`, k.principal, Math.max(4, H * 0.011), 1, { cap: 'butt' }));
+      det.push({ d: poligono([[cx + sg * M.w.pecho * 0.55 - 5, y.cintura - 5], [cx + sg * M.w.pecho * 0.55 + 5, y.cintura - 5], [cx + sg * M.w.pecho * 0.55 + 5, y.cintura + 5], [cx + sg * M.w.pecho * 0.55 - 5, y.cintura + 5]]), fill: k.detalle ?? sombraDe(k.principal), stroke: oscurecer(k.detalle ?? k.principal, 0.4), sw: 0.8 });
+    }
   } else if (tipo === 'cinta-frente') {
     det.push(linea(`M${cx - M.hombroX * 0.5} ${y.menton - H * 0.04}L${cx + M.hombroX * 0.5} ${y.menton - H * 0.04}`, k.principal, 3, 1));
   }
   return { atras: [], partes: [], detalles: det };
 }
 
-const PLANTILLAS = { tunica, pantalon, falda, taparrabo, capa, poncho, drapeado, chaqueta, delantal, faja, bandolera, chal, cuello, calzado, accesorio };
+/** Mono (jumpsuit) y ropa de trabajo de una pieza: torso y pantalón del mismo color y tela. */
+function mono(M, p, k, ctx) {
+  const t = tunica(M, { escote: 'alto', manga: 'larga', largo: 'cadera', cintura: 0.9, ...(p.torso ?? {}) }, k, ctx);
+  const pa = pantalon(M, { largo: 'tobillo', ancho: 'recto', cintura: 'alta', ...(p.pantalon ?? {}) }, k, ctx);
+  return { atras: t.atras, partes: [...pa.partes, ...t.partes], detalles: [...pa.detalles, ...t.detalles] };
+}
+
+const PLANTILLAS = { tunica, pantalon, falda, taparrabo, capa, poncho, drapeado, chaqueta, delantal, faja, bandolera, chal, cuello, calzado, accesorio, mono };
 const PLANTILLAS_ID = Object.keys(PLANTILLAS);
 
 /** Orden de dibujo por ranura (menor = más al fondo). */
@@ -3022,7 +3458,7 @@ const ORDEN_RANURAS = {
   capa_atras: 10, calzado: 20, inferior: 30, torso: 40, sobre: 50, faja: 60, capa: 70, cuello: 80, accesorio: 90,
 };
 
-Object.assign(__e, { yLargo, anchoEn, finManga, PLANTILLAS, PLANTILLAS_ID, ORDEN_RANURAS });
+Object.assign(__e, { yLargo, anchoEn, ESCOTES_SIN_HOMBRO, finManga, PLANTILLAS, PLANTILLAS_ID, ORDEN_RANURAS });
 return __e;
 })();
 
@@ -3034,7 +3470,7 @@ const __e = {};
 // en el lado opuesto) y de sombras suaves que cada capa proyecta sobre las de abajo (la manga sobre el torso, la
 // cabeza sobre el cuello, el pelo sobre la frente). Cada forma se define una vez y se reutiliza con <use>.
 
-const { LIENZO, medidas, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello, trazoAntebrazo } = __m['cuerpo'];
+const { LIENZO, medidas, deformar, trazoTorso, trazoBrazo, trazoPierna, trazoMano, trazoPie, trazoCuello, trazoAntebrazo } = __m['cuerpo'];
 const { geometriaCabeza, trazoCabeza, trazoOrejas, rasgosRostro, PEINADOS, BARBAS, TOCADOS } = __m['cabeza'];
 const { PLANTILLAS, ORDEN_RANURAS, finManga } = __m['prendas'];
 const { PATRONES } = __m['patrones'];
@@ -3075,6 +3511,11 @@ function rotarRuta(d, ang, cx, cy) {
   });
 }
 
+/** Aplica una deformación (x, y) → (x', y') a todos los puntos de una ruta de comandos absolutos. */
+function deformarRuta(d, f) {
+  return d.replace(/(-?\d+(?:\.\d+)?(?:e[-+]?\d+)?) (-?\d+(?:\.\d+)?(?:e[-+]?\d+)?)/g, (_, a, b) => { const [x, y] = f(Number(a), Number(b)); return `${num(x)} ${num(y)}`; });
+}
+
 function trazoDe(s) {
   const o = { d: s.d, fill: s.fill ?? 'none' };
   if (s.stroke) {
@@ -3106,7 +3547,9 @@ function renderizar(persona, opciones = {}) {
   const ctx = contexto(pref);
   const caminos = [], idsSilueta = [], degradados = new Map();
   let nForma = 0;
-  const reg = (d) => { const id = `${pref}f${nForma++}`; caminos.push(`<path id="${id}" d="${d}"/>`); idsSilueta.push(id); return id; };
+  const def = deformar(M);
+  const W = def ? (d) => deformarRuta(d, def) : (d) => d;
+  const reg = (d0) => { const d = W(d0); const id = `${pref}f${nForma++}`; caminos.push(`<path id="${id}" d="${d}"/>`); idsSilueta.push(id); return id; };
 
   const TONOS = {
     piel: { sombra: '#5a1c10', luz: '#ffe6c4' },
@@ -3150,7 +3593,7 @@ function renderizar(persona, opciones = {}) {
   const detalles = (lista) => {
     let duros = '', suaves = '';
     for (const s of lista) {
-      const trazo = `<path${attr(trazoDe(s))}/>`;
+      const trazo = `<path${attr(trazoDe({ ...s, d: W(s.d) }))}/>`;
       if (s.suave && !plano) suaves += trazo; else duros += trazo;
     }
     return duros + (suaves ? `<g filter="url(#${pref}-bs)">${suaves}</g>` : '');
@@ -3169,7 +3612,7 @@ function renderizar(persona, opciones = {}) {
 
   // --- Pose de la cabeza: se giran las formas (no un grupo) para que sombras y recortes sigan coincidiendo ---
   const angCabeza = M.pose.cabeza ?? 0;
-  const girar = Math.abs(angCabeza) > 0.05 ? (d) => rotarRuta(d, angCabeza, cx, M.y.cuello) : null;
+  const girar = Math.abs(angCabeza) > 0.05 ? (d) => rotarRuta(d, angCabeza, cx, M.y.hombro) : null;
   const giraLista = (l) => (girar ? l.map((s) => ({ ...s, d: girar(s.d) })) : l);
 
   // --- Prendas ---
@@ -3504,6 +3947,29 @@ const PERFILES = {
   COSTURA_DENIM: [['mostaza', 35], ['ocre-amarillo', 30], ['crudo', 20], ['cobre', 15]],
   BOTONES: [['marfil', 30], ['crudo', 18], ['cuero-oscuro', 14], ['negro-humo', 14], ['bronce', 10], ['plata', 8], ['cobre', 6]],
   BOTONES_METAL: [['cobre', 45], ['bronce', 30], ['hierro', 15], ['plata', 10]],
+  CAMISA_VESTIR: [['blanco-optico', 30], ['azul-celeste', 20], ['crema', 12], ['rosa-viejo', 8], ['gris-claro', 8], ['lila', 5], ['verde-agua', 5], ['mostaza', 4], ['azul-marino', 4], ['burdeos', 4]],
+  SAFARI: [['beige', 30], ['caqui-militar', 25], ['crema', 15], ['kaki', 12], ['verde-oliva-oscuro', 10], ['blanco-lino', 8]],
+  SUDADERA: [['gris-claro', 24], ['azul-marino', 16], ['gris-oscuro', 14], ['burdeos', 10], ['verde-bosque', 10], ['negro-carbon', 10], ['rojo-vivo', 6], ['mostaza', 5], ['azul-real', 5]],
+  PARKA: [['verde-militar', 24], ['azul-marino', 20], ['caqui-militar', 15], ['negro-carbon', 14], ['burdeos', 10], ['gris-oscuro', 10], ['mostaza', 7]],
+  BOMBER: [['negro-carbon', 28], ['verde-militar', 20], ['azul-marino', 20], ['burdeos', 12], ['gris-oscuro', 10], ['rojo-vivo', 5], ['mostaza', 5]],
+  ABRIGOS_LUJO: [['camel', 22], ['lana-negra', 18], ['burdeos', 14], ['chocolate', 14], ['gris-oscuro', 12], ['verde-oliva-oscuro', 8], ['crema', 6], ['azul-marino', 6]],
+  SASTRE: [['azul-marino', 22], ['lana-negra', 20], ['gris-oscuro', 15], ['crema', 10], ['burdeos', 10], ['camel', 10], ['verde-bosque', 7], ['rosa-viejo', 6]],
+  BATA: [['crema', 20], ['rosa-viejo', 16], ['azul-celeste', 14], ['burdeos', 12], ['verde-agua', 12], ['lila', 10], ['gris-claro', 8], ['azul-marino', 8]],
+  BATIN: [['burdeos', 24], ['azul-marino', 20], ['verde-bosque', 16], ['violeta', 12], ['lana-negra', 14], ['mostaza', 7], ['azul-real', 7]],
+  CORSE: [['negro-carbon', 28], ['burdeos', 22], ['crema', 14], ['rosa-viejo', 12], ['azul-marino', 10], ['verde-bosque', 8], ['marfil', 6]],
+  CARGO: [['caqui-militar', 28], ['verde-militar', 22], ['kaki', 18], ['beige', 14], ['gris-oscuro', 10], ['azul-marino', 8]],
+  CAPRI: [['azul-denim', 20], ['crema', 18], ['rosa-viejo', 12], ['beige', 12], ['blanco-optico', 12], ['azul-marino', 10], ['negro-carbon', 8], ['rojo-vivo', 8]],
+  PESCADOR: [['crudo', 30], ['beige', 25], ['azul-denim', 15], ['caqui-militar', 12], ['indigo', 10], ['blanco-optico', 8]],
+  LEGGINGS: [['negro-carbon', 55], ['gris-oscuro', 15], ['azul-marino', 12], ['burdeos', 8], ['verde-bosque', 5], ['lana-negra', 5]],
+  SAROUEL: [['crema', 20], ['terracota', 15], ['azul-marino', 12], ['verde-oliva-oscuro', 12], ['burdeos', 10], ['mostaza', 10], ['gris-claro', 10], ['rosa-viejo', 6], ['camel', 5]],
+  PALAZZO: [['negro-carbon', 24], ['crema', 16], ['azul-marino', 14], ['burdeos', 12], ['verde-esmeralda', 10], ['blanco-optico', 10], ['rosa-viejo', 8], ['camel', 6]],
+  JODHPUR: [['beige', 40], ['crema', 20], ['camel', 15], ['kaki', 15], ['blanco-optico', 10]],
+  MONO: [['azul-marino', 25], ['caqui-militar', 20], ['verde-militar', 15], ['gris-oscuro', 15], ['indigo', 10], ['kaki', 10], ['blanco-optico', 5]],
+  ACCESORIO_TELA: [['crema', 20], ['burdeos', 12], ['azul-marino', 12], ['rosa-viejo', 10], ['verde-bosque', 10], ['lana-negra', 10], ['mostaza', 8], ['camel', 8], ['gris-claro', 5], ['rojo-vivo', 5]],
+  PIEL_CLARA: [['crema', 25], ['camel', 20], ['gris-claro', 18], ['chocolate', 15], ['lana-negra', 12], ['blanco-optico', 10]],
+  TIRANTES: [['negro-carbon', 24], ['cuero-oscuro', 20], ['burdeos', 16], ['azul-marino', 14], ['verde-bosque', 10], ['mostaza', 8], ['rojo-vivo', 8]],
+  TACONES: [['negro-carbon', 28], ['cuero-oscuro', 18], ['burdeos', 14], ['crema', 10], ['rojo-vivo', 8], ['azul-marino', 8], ['nogal', 8], ['marfil', 6]],
+  CHANCLETAS: [['azul-real', 15], ['negro-carbon', 15], ['rojo-vivo', 12], ['crema', 12], ['verde-lima', 10], ['cuero', 12], ['blanco-optico', 10], ['naranja-vivo', 7], ['rosa-fucsia', 7]],
 };
 
 // Asignación: [rol, perfil, ids de prenda separados por espacios]. La primera coincidencia de (prenda, rol) manda.
@@ -3563,6 +4029,44 @@ const GRUPOS = [
   ['principal', 'SEDA', 'kaftan-corto'],
   ['principal', 'CHAMANTO', 'quechquemitl'],
   ['principal', 'CUENTAS', 'obijime'],
+  // Ropa de los tipos nuevos
+  ['principal', 'VESTIDOS_DIA', 'vestido-tirantes vestido-halter vestido-asimetrico vestido-corazon vestido-trapecio vestido-globo vestido-tubo vestido-camisero vestido-volantes vestido-pico falda-mini falda-capas'],
+  ['principal', 'VESTIDOS_GALA', 'vestido-tirantes-largo vestido-corazon-gala vestido-sirena vestido-sirena-tirantes falda-sirena'],
+  ['principal', 'SEDA', 'blusa-farol blusa-pagoda top-tirantes top-halter'],
+  ['principal', 'CAMISA_VESTIR', 'camisa-clasica camisa-ajustada'],
+  ['principal', 'SAFARI', 'camisa-safari chaqueta-safari'],
+  ['principal', 'POLERAS', 'polo camiseta-cap camiseta-sisa'],
+  ['principal', 'SUDADERA', 'sudadera-capucha'],
+  ['principal', 'SUETERES', 'sueter-oversize'],
+  ['principal', 'PARKA', 'parka-capucha anorak chaleco-acolchado'],
+  ['principal', 'BOMBER', 'bomber'],
+  ['principal', 'ABRIGOS_LUJO', 'abrigo-piel-total abrigo-punos-piel'],
+  ['principal', 'SASTRE', 'blazer-ajustado'],
+  ['principal', 'CUERO_CHAQUETA', 'chaqueta-motera'],
+  ['principal', 'BATA', 'bata-casa'],
+  ['principal', 'BATIN', 'batin-seda'],
+  ['principal', 'CORSE', 'corse'],
+  ['principal', 'DENIM', 'jeans-clasicos'],
+  ['principal', 'PANTALON_VESTIR', 'pantalon-pliegues pantalon-tubo'],
+  ['principal', 'PANTALON_70', 'pantalon-pitillo'],
+  ['principal', 'CARGO', 'pantalon-cargo bermuda'],
+  ['principal', 'CAPRI', 'pantalon-capri'],
+  ['principal', 'PESCADOR', 'pantalon-pescador'],
+  ['principal', 'LEGGINGS', 'leggings'],
+  ['principal', 'SAROUEL', 'sarouel'],
+  ['principal', 'FALDAS_CIUDAD', 'culotte falda-globo falda-trapecio falda-abertura falda-abertura-lado falda-midi'],
+  ['principal', 'PALAZZO', 'pantalon-palazzo mono-elegante'],
+  ['principal', 'JODHPUR', 'pantalon-jodhpur'],
+  ['principal', 'MONO', 'mono-trabajo'],
+  ['principal', 'PIEL_CLARA', 'cuello-piel'],
+  ['principal', 'ACCESORIO_TELA', 'esclavina chalina panuelo-triangulo babero-cuello'],
+  ['principal', 'TIRANTES', 'tirantes-pantalon'],
+  ['principal', 'TACONES', 'tacones'],
+  ['principal', 'CHANCLETAS', 'chancletas'],
+  ['principal', 'CALZADO_CUERO', 'botines zapatos-oxford'],
+  ['ribete', 'COSTURA_DENIM', 'jeans-clasicos'],
+  ['detalle', 'BOTONES_METAL', 'jeans-clasicos'],
+  ['detalle', 'BOTONES', 'camisa-clasica camisa-ajustada camisa-safari polo vestido-camisero chaqueta-safari parka-capucha anorak abrigo-piel-total abrigo-punos-piel blazer-ajustado chaleco-acolchado vestido-tirantes vestido-halter'],
   // Costuras y botones
   ['ribete', 'COSTURA_DENIM', 'pantalon-vaquero chaqueta-denim camisa-denim pantalon-overol overol-peto'],
   ['detalle', 'BOTONES_METAL', 'pantalon-vaquero chaqueta-denim camisa-denim pantalon-overol overol-peto'],
@@ -3657,7 +4161,18 @@ function muestrearColor(prendaId, rol, azar, { anio, preferidos = [], refuerzo =
   return { id: elegido.id, nombre: elegido.nombre, hex: elegido.hex, pct: elegido.pct };
 }
 
-Object.assign(__e, { PERFILES, IDS_DE_GRUPOS, perfilDe, distribucionColor, catalogoColores, muestrearColor });
+/**
+ * Elige un color para cualquier prenda: del perfil propio si lo tiene y, si no, del reparto derivado de los atuendos
+ * que la llevan (para vestir una prenda suelta, sin atuendo). Devuelve null si la prenda no tiene colores para ese papel.
+ */
+function muestrearColorLibre(prendaId, rol, azar, { anio, preferidos = [], refuerzo = 2.5 } = {}) {
+  const lista = distribucionColor(prendaId, rol, { anio });
+  if (!lista.length) return null;
+  const elegido = azar.ponderado(lista.map((x) => [x, x.pct * (preferidos.includes(x.id) ? refuerzo : 1)]));
+  return { id: elegido.id, nombre: elegido.nombre, hex: elegido.hex, pct: elegido.pct, origen: elegido.origen };
+}
+
+Object.assign(__e, { PERFILES, IDS_DE_GRUPOS, perfilDe, distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre });
 return __e;
 })();
 
@@ -3675,7 +4190,7 @@ const { PATRONES_ID } = __m['patrones'];
 const { CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria } = __m['cuerpo'];
 const { renderizar } = __m['svg'];
 const { ETNIAS, ETNIAS_POR_ID } = __m['datos/etnias'];
-const { distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES } = __m['datos/colores-prendas'];
+const { distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre, perfilDe, PERFILES } = __m['datos/colores-prendas'];
 const { medidas } = __m['cuerpo'];
 
 // ---------- Consulta del catálogo ----------
@@ -3753,10 +4268,11 @@ function coloresDePrenda(pr, pal, ctx) {
   const letra = { A, B, C, D };
   const k = {}, info = {};
   for (const [rol, l] of Object.entries(pr.col)) {
-    const elegido = ctx.usarPerfiles ? muestrearColor(pr.id, rol, ctx.azar, { anio: ctx.anio, preferidos: ctx.preferidos }) : null;
+    const elegido = ctx.libre ? muestrearColorLibre(pr.id, rol, ctx.azar, { anio: ctx.anio, preferidos: ctx.preferidos })
+      : ctx.usarPerfiles ? muestrearColor(pr.id, rol, ctx.azar, { anio: ctx.anio, preferidos: ctx.preferidos }) : null;
     if (elegido) {
       k[rol] = variar(elegido.hex, ctx.azar, { tono: 3, sat: 0.04, luz: 0.04 });
-      info[rol] = { id: elegido.id, nombre: elegido.nombre, pct: elegido.pct, origen: 'perfil' };
+      info[rol] = { id: elegido.id, nombre: elegido.nombre, pct: elegido.pct, origen: ctx.libre ? (elegido.origen === 'atuendo' ? 'catálogo (reparto de atuendos)' : 'perfil') : 'perfil' };
     } else {
       k[rol] = letra[l] ?? A;
       const id = ctx.idsPaleta?.[l];
@@ -3964,19 +4480,30 @@ function generarPersona(opc = {}) {
   // Prendas
   const az = azar.hijo('prendas');
   const variacion = opc.variacion ?? 0.5;
+  // `vestir`: prendas elegidas una por una (lista de ids o { ranura: id }); los colores salen del catálogo de cada prenda.
   let ids = atuendo.prendas.slice();
+  const vestir = opc.vestir ? (Array.isArray(opc.vestir) ? opc.vestir : Object.values(opc.vestir)).filter(Boolean) : null;
+  if (vestir && !vestir.length) avisos.push('Sin prendas elegidas: se usó el atuendo.');
+  if (vestir && vestir.length) {
+    ids = vestir.slice();
+    for (const id of ids) if (!PRENDAS_POR_ID[id]) throw new Error(`Prenda desconocida: ${id}`);
+    const porRanura = {};
+    for (const id of ids) { const r = PRENDAS_POR_ID[id].ranura; (porRanura[r] ||= []).push(id); }
+    for (const [r, l] of Object.entries(porRanura)) if (l.length > 1 && !['accesorio', 'cuello'].includes(r)) avisos.push(`Hay ${l.length} prendas en la ranura «${r}» (${l.join(', ')}): se dibujan superpuestas.`);
+  }
   if (opc.calzado) ids = ids.filter((id) => PRENDAS_POR_ID[id].ranura !== 'calzado').concat(opc.calzado);
+  const vestirReal = !!vestir && vestir.length > 0;
   const usarPerfiles = !opc.paleta && opc.colores !== 'atuendo';
   const idsPaleta = opc.paleta ? {} : paletaIds;
   const preferidos = Object.values(atuendo.paleta).flat();
-  const ctxColor = { azar: az.hijo('colores'), anio: opc.anio ?? anioPaleta, usarPerfiles, idsPaleta, preferidos };
+  const ctxColor = { azar: az.hijo('colores'), anio: opc.anio ?? anioPaleta, usarPerfiles, idsPaleta, preferidos, libre: vestirReal && !opc.paleta && opc.colores !== 'atuendo' };
   const prendas = opc.prendas ?? ids.map((id) => {
     const pr = PRENDAS_POR_ID[id];
     if (!pr) throw new Error(`Prenda desconocida en ${atuendo.id}: ${id}`);
     const { k, info } = coloresDePrenda(pr, pal, ctxColor);
     return { id, nombre: pr.nombre, ranura: pr.ranura, plantilla: pr.plantilla, params: variarParams(pr.params, az, variacion), colores: k, colorInfo: info };
   });
-  if (!opc.prendas) { enlazarConjuntos(prendas, az.hijo('conjuntos')); distinguirCapas(prendas, pal); }
+  if (!opc.prendas) { enlazarConjuntos(prendas, az.hijo('conjuntos')); if (!vestirReal) distinguirCapas(prendas, pal); }
 
   // Cabeza
   const ah = azar.hijo('cabeza');
@@ -4042,8 +4569,8 @@ function generarPersona(opc = {}) {
   }
   const decada = (n) => (n < 0 ? `${-n} a. C.` : `${n}`);
   return {
-    semilla, titulo: `${atuendo.nombre}`,
-    descripcion: `${SEXOS[sexo][0].toUpperCase() + SEXOS[sexo].slice(1)} de ${edad} años; ${atuendo.nombre} (${REGIONES[atuendo.region]}, ${decada(atuendo.epoca[0])} a ${decada(atuendo.epoca[1])}).`,
+    semilla, titulo: vestirReal ? 'Vestuario a medida' : `${atuendo.nombre}`,
+    descripcion: vestirReal ? `${SEXOS[sexo][0].toUpperCase() + SEXOS[sexo].slice(1)} de ${edad} años con vestuario a medida (${ids.map((i) => PRENDAS_POR_ID[i].nombre).join(', ')}).` : `${SEXOS[sexo][0].toUpperCase() + SEXOS[sexo].slice(1)} de ${edad} años; ${atuendo.nombre} (${REGIONES[atuendo.region]}, ${decada(atuendo.epoca[0])} a ${decada(atuendo.epoca[1])}).`,
     sexo, edad, atuendo: atuendo.id, region: atuendo.region, epoca: atuendo.epoca, clase: atuendo.clase,
     cuerpo, rostro, piel,
     cabello: { estilo, color: colorPelo }, barba: { estilo: barbaId, color: colorPelo }, tocado,
@@ -4158,7 +4685,7 @@ function generarSVG(opc = {}) {
 
 
 
-Object.assign(__e, { POSE_FIRME, poseAleatoria, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, buscarAtuendos, listarRegiones, listarCatalogo, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
+Object.assign(__e, { POSE_FIRME, poseAleatoria, muestrearColorLibre, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, buscarAtuendos, listarRegiones, listarCatalogo, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
 __e.PEINADOS = __m['cabeza'].PEINADOS;
 __e.BARBAS = __m['cabeza'].BARBAS;
 __e.TOCADOS = __m['cabeza'].TOCADOS;

@@ -6,7 +6,7 @@
 //   node bin/generar.js --listar atuendos|regiones|prendas|tintes
 
 import { writeFileSync } from 'node:fs';
-import { generarSVG, generarPersona, generarPersonaConRopaNueva, ATUENDOS, PRENDAS, TINTES, REGIONES, ETNIAS, listarCatalogo, distribucionColor, catalogoColores } from '../src/index.js';
+import { generarSVG, generarPersona, generarPersonaConRopaNueva, PEINADOS, BARBAS, TOCADOS, ATUENDOS, PRENDAS, TINTES, REGIONES, ETNIAS, listarCatalogo, distribucionColor, catalogoColores } from '../src/index.js';
 
 const args = process.argv.slice(2);
 const val = (n) => { const i = args.findIndex((a) => a === `--${n}` || (n === 'o' && a === '-o')); return i >= 0 ? args[i + 1] : undefined; };
@@ -25,10 +25,12 @@ if (flag('ayuda') || flag('help')) {
   --contorno suave   por defecto no hay bordes; 'suave' añade un borde fino y tenue
   --postura firme|relajada|abierta  --piel ID|#hex  --cabello ID|#hex
   --detalle minimo|medio|alto  --rasgos  --fondo '#efe9dd'
+  --vestir ID,ID,…   viste prenda por prenda (--listar prendas); los colores salen del catálogo de cada una
+  --peinado ID --barba ID --tocado ID   cabeza a mano (--listar peinados|barbas|tocados)
   --nueva [--estilo sobrio|trabajo|festivo|ceremonial] [--esquema analogo|complementario|triada|monocromo|tierra|festivo]
   --colores ID       catálogo de colores de una prenda, con el % de cada color (usa --anio para quitar tintes que aún no existían)
   --colores-modo atuendo   los colores salen de la paleta del atuendo en vez de los perfiles de cada prenda
-  --listar atuendos|regiones|etnias|prendas|tintes|colores|resumen|auditoria   (auditoria: lo que conviene revisar con fuentes del propio pueblo)
+  --listar atuendos|regiones|etnias|prendas|tintes|colores|peinados|barbas|tocados|resumen|auditoria   (auditoria: lo que conviene revisar con fuentes del propio pueblo)
   -o archivo.svg`);
   process.exit(0);
 }
@@ -52,6 +54,9 @@ if (listar) {
     regiones: () => Object.entries(REGIONES).map(([k, v]) => `${k}\t${v}`),
     prendas: () => PRENDAS.map((p) => `${p.id}\t${p.ranura}\t${p.nombre}`),
     tintes: () => TINTES.map((t) => `${t.id}\t${t.hex}\t${t.nombre}`),
+    peinados: () => Object.keys(PEINADOS),
+    barbas: () => Object.keys(BARBAS),
+    tocados: () => Object.keys(TOCADOS),
     colores: () => PRENDAS.map((p) => `${p.id}\t${distribucionColor(p.id, 'principal').slice(0, 3).map((x) => `${x.nombre} ${x.pct.toFixed(0)}%`).join(', ')}`),
     resumen: () => Object.entries(listarCatalogo()).map(([k, v]) => `${k}\t${v}`) }[listar];
   if (!f) { console.error('Nada que listar con ese nombre.'); process.exit(2); }
@@ -66,7 +71,7 @@ const opc = {
   corpulencia: val('corpulencia'), altura: num('altura'), postura: val('postura'), piel: val('piel'), cabello: val('cabello'),
   detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'), pose: val('pose') === 'casual' ? undefined : val('pose'), contorno: val('contorno'),
   ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
-  etnia: val('etnia'), saludo: val('saludo'),
+  etnia: val('etnia'), saludo: val('saludo'), vestir: val('vestir') ? val('vestir').split(',').map((x) => x.trim()).filter(Boolean) : undefined, peinado: val('peinado'), barba: val('barba'), tocado: val('tocado'),
 };
 for (const k of Object.keys(opc)) if (opc[k] === undefined) delete opc[k];
 const svg = generarSVG(opc);

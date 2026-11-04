@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generarPersona, generarSVG, POSE_FIRME, poseAleatoria } from '../src/index.js';
-import { medidas, piernaLado, brazoLado, trazoMano, trazoPie } from '../src/cuerpo.js';
+import { medidas, piernaLado, brazoLado, trazoMano, trazoPie, trazoCuello, deformar } from '../src/cuerpo.js';
 import { crearAzar } from '../src/util.js';
 
 test('por defecto la pose es casual y cambia con la semilla; con la misma semilla es igual', () => {
@@ -16,9 +16,12 @@ test('la pose casual recorre todas las variantes y se mantiene en rangos natural
   for (let i = 0; i < 300; i++) {
     const p = poseAleatoria(crearAzar(`pose${i}`));
     brazos.add(p.brazoLibre); cargas.add(p.carga);
-    assert.ok(Math.abs(p.cabeza) <= 6 && Math.abs(p.inclinacion) <= 1.4);
+    assert.ok(Math.abs(p.cabeza) <= 7 && Math.abs(p.inclinacion) <= 1.4);
+    assert.ok(Math.abs(p.hombros) <= 2.8 && Math.abs(p.columna) <= 0.008, 'hombros o columna fuera de rango');
+    for (const l of [1, '-1']) assert.ok(p.codos[l] >= -4 && p.codos[l] <= 12 && Math.abs(p.munecas[l]) <= 14, 'codo o muñeca fuera de rango');
+    assert.ok(p.cinturaCodo >= 0.85 && p.cinturaCodo <= 1.2 && p.dedos >= 0.8 && p.dedos <= 1.25 && Math.abs(p.saludo.mano) <= 16);
     assert.ok(p.abre >= 0.85 && p.abre <= 1.5 && p.giro >= 6 && p.giro <= 20);
-    assert.ok(p.saludo.codo >= 40 && p.saludo.codo <= 62 && p.saludo.antebrazo >= 2 && p.saludo.antebrazo <= 24 && Math.abs(p.saludo.mano) <= 14);
+    assert.ok(p.saludo.codo >= 40 && p.saludo.codo <= 62 && p.saludo.antebrazo >= 2 && p.saludo.antebrazo <= 24 && Math.abs(p.saludo.mano) <= 16);
     for (const a of [p.angulos[1], p.angulos['-1']]) assert.ok(a >= 5 && a <= 17);
   }
   assert.deepEqual([...brazos].sort(), ['abajo', 'bolsillo', 'cintura']);
@@ -76,4 +79,37 @@ test('la cabeza inclinada y el cuerpo ladeado cambian el dibujo pero no rompen e
   assert.notEqual(a, b);
   assert.ok(b.includes('rotate('));
   assert.ok(!a.includes('rotate('));
+});
+
+test('los hombros se inclinan y la columna se curva: la deformación deja quietos los pies y las caderas', () => {
+  const M = medidas({ sexo: 'f', edad: 30, pose: { hombros: 3, columna: 0.008 }, saludo: 'ninguno' });
+  const f = deformar(M);
+  assert.ok(f, 'sin deformación con hombros inclinados');
+  const der = f(M.cx + 100, M.y.hombro), izq = f(M.cx - 100, M.y.hombro);
+  assert.ok(der[1] > izq[1] + 8, 'el hombro derecho debe quedar más bajo');
+  assert.deepEqual(f(M.cx + 60, M.y.rodilla), [M.cx + 60, M.y.rodilla], 'las rodillas no se mueven');
+  assert.deepEqual(f(M.cx - 90, M.y.cadera), [M.cx - 90, M.y.cadera], 'las caderas no se mueven');
+  assert.ok(Math.abs(f(M.cx, M.y.menton)[0] - M.cx) > M.H * 0.006, 'la cabeza se desplaza sobre las caderas');
+  assert.equal(deformar(medidas({ sexo: 'f', edad: 30, pose: 'firme' })), null, 'la pose firme no deforma');
+});
+
+test('codos doblados y muñecas flexionadas cambian la forma del brazo y de la mano', () => {
+  const muneca = (codo) => brazoLado(medidas({ sexo: 'm', edad: 30, pose: { brazoLibre: 'abajo', angulos: { 1: 8, '-1': 8 }, codos: { 1: codo, '-1': codo } }, saludo: 'ninguno' }), 1).linea[4];
+  assert.ok(Math.abs(muneca(12)[0] - muneca(0)[0]) > 4, 'doblar el codo debe mover la muñeca');
+  const M0 = medidas({ sexo: 'm', edad: 30, pose: { munecas: { 1: 0, '-1': 0 } }, saludo: 'ninguno' });
+  const M1 = medidas({ sexo: 'm', edad: 30, pose: { munecas: { 1: 14, '-1': 14 } }, saludo: 'ninguno' });
+  assert.notDeepEqual(trazoMano(M0, 1), trazoMano(M1, 1), 'flexionar la muñeca debe girar la mano');
+  assert.equal(trazoMano(M0, 1).length, 2, 'la mano que cuelga trae palma y pulgar');
+});
+
+test('el cuello sigue a la cabeza inclinada', () => {
+  const a = trazoCuello(medidas({ sexo: 'f', edad: 30, pose: { cabeza: 0 } })), b = trazoCuello(medidas({ sexo: 'f', edad: 30, pose: { cabeza: 7 } }));
+  assert.notEqual(a, b);
+});
+
+test('la intensidad escala todas las variaciones de la pose', () => {
+  const suave = poseAleatoria(crearAzar('i1'), 0.3), fuerte = poseAleatoria(crearAzar('i1'), 1);
+  assert.ok(Math.abs(suave.hombros) <= Math.abs(fuerte.hombros) + 1e-9 && Math.abs(suave.cabeza) <= Math.abs(fuerte.cabeza) + 1e-9);
+  const nula = poseAleatoria(crearAzar('i1'), 0);
+  assert.equal(nula.hombros, 0); assert.equal(nula.cabeza, 0); assert.equal(nula.codos[1], 0);
 });

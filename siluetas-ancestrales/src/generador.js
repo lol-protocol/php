@@ -10,7 +10,7 @@ import { PATRONES_ID } from './patrones.js';
 import { CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria } from './cuerpo.js';
 import { renderizar } from './svg.js';
 import { ETNIAS, ETNIAS_POR_ID } from './datos/etnias.js';
-import { distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES } from './datos/colores-prendas.js';
+import { distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre, perfilDe, PERFILES } from './datos/colores-prendas.js';
 import { medidas } from './cuerpo.js';
 
 // ---------- Consulta del catálogo ----------
@@ -88,10 +88,11 @@ function coloresDePrenda(pr, pal, ctx) {
   const letra = { A, B, C, D };
   const k = {}, info = {};
   for (const [rol, l] of Object.entries(pr.col)) {
-    const elegido = ctx.usarPerfiles ? muestrearColor(pr.id, rol, ctx.azar, { anio: ctx.anio, preferidos: ctx.preferidos }) : null;
+    const elegido = ctx.libre ? muestrearColorLibre(pr.id, rol, ctx.azar, { anio: ctx.anio, preferidos: ctx.preferidos })
+      : ctx.usarPerfiles ? muestrearColor(pr.id, rol, ctx.azar, { anio: ctx.anio, preferidos: ctx.preferidos }) : null;
     if (elegido) {
       k[rol] = variar(elegido.hex, ctx.azar, { tono: 3, sat: 0.04, luz: 0.04 });
-      info[rol] = { id: elegido.id, nombre: elegido.nombre, pct: elegido.pct, origen: 'perfil' };
+      info[rol] = { id: elegido.id, nombre: elegido.nombre, pct: elegido.pct, origen: ctx.libre ? (elegido.origen === 'atuendo' ? 'catálogo (reparto de atuendos)' : 'perfil') : 'perfil' };
     } else {
       k[rol] = letra[l] ?? A;
       const id = ctx.idsPaleta?.[l];
@@ -299,19 +300,30 @@ export function generarPersona(opc = {}) {
   // Prendas
   const az = azar.hijo('prendas');
   const variacion = opc.variacion ?? 0.5;
+  // `vestir`: prendas elegidas una por una (lista de ids o { ranura: id }); los colores salen del catálogo de cada prenda.
   let ids = atuendo.prendas.slice();
+  const vestir = opc.vestir ? (Array.isArray(opc.vestir) ? opc.vestir : Object.values(opc.vestir)).filter(Boolean) : null;
+  if (vestir && !vestir.length) avisos.push('Sin prendas elegidas: se usó el atuendo.');
+  if (vestir && vestir.length) {
+    ids = vestir.slice();
+    for (const id of ids) if (!PRENDAS_POR_ID[id]) throw new Error(`Prenda desconocida: ${id}`);
+    const porRanura = {};
+    for (const id of ids) { const r = PRENDAS_POR_ID[id].ranura; (porRanura[r] ||= []).push(id); }
+    for (const [r, l] of Object.entries(porRanura)) if (l.length > 1 && !['accesorio', 'cuello'].includes(r)) avisos.push(`Hay ${l.length} prendas en la ranura «${r}» (${l.join(', ')}): se dibujan superpuestas.`);
+  }
   if (opc.calzado) ids = ids.filter((id) => PRENDAS_POR_ID[id].ranura !== 'calzado').concat(opc.calzado);
+  const vestirReal = !!vestir && vestir.length > 0;
   const usarPerfiles = !opc.paleta && opc.colores !== 'atuendo';
   const idsPaleta = opc.paleta ? {} : paletaIds;
   const preferidos = Object.values(atuendo.paleta).flat();
-  const ctxColor = { azar: az.hijo('colores'), anio: opc.anio ?? anioPaleta, usarPerfiles, idsPaleta, preferidos };
+  const ctxColor = { azar: az.hijo('colores'), anio: opc.anio ?? anioPaleta, usarPerfiles, idsPaleta, preferidos, libre: vestirReal && !opc.paleta && opc.colores !== 'atuendo' };
   const prendas = opc.prendas ?? ids.map((id) => {
     const pr = PRENDAS_POR_ID[id];
     if (!pr) throw new Error(`Prenda desconocida en ${atuendo.id}: ${id}`);
     const { k, info } = coloresDePrenda(pr, pal, ctxColor);
     return { id, nombre: pr.nombre, ranura: pr.ranura, plantilla: pr.plantilla, params: variarParams(pr.params, az, variacion), colores: k, colorInfo: info };
   });
-  if (!opc.prendas) { enlazarConjuntos(prendas, az.hijo('conjuntos')); distinguirCapas(prendas, pal); }
+  if (!opc.prendas) { enlazarConjuntos(prendas, az.hijo('conjuntos')); if (!vestirReal) distinguirCapas(prendas, pal); }
 
   // Cabeza
   const ah = azar.hijo('cabeza');
@@ -377,8 +389,8 @@ export function generarPersona(opc = {}) {
   }
   const decada = (n) => (n < 0 ? `${-n} a. C.` : `${n}`);
   return {
-    semilla, titulo: `${atuendo.nombre}`,
-    descripcion: `${SEXOS[sexo][0].toUpperCase() + SEXOS[sexo].slice(1)} de ${edad} años; ${atuendo.nombre} (${REGIONES[atuendo.region]}, ${decada(atuendo.epoca[0])} a ${decada(atuendo.epoca[1])}).`,
+    semilla, titulo: vestirReal ? 'Vestuario a medida' : `${atuendo.nombre}`,
+    descripcion: vestirReal ? `${SEXOS[sexo][0].toUpperCase() + SEXOS[sexo].slice(1)} de ${edad} años con vestuario a medida (${ids.map((i) => PRENDAS_POR_ID[i].nombre).join(', ')}).` : `${SEXOS[sexo][0].toUpperCase() + SEXOS[sexo].slice(1)} de ${edad} años; ${atuendo.nombre} (${REGIONES[atuendo.region]}, ${decada(atuendo.epoca[0])} a ${decada(atuendo.epoca[1])}).`,
     sexo, edad, atuendo: atuendo.id, region: atuendo.region, epoca: atuendo.epoca, clase: atuendo.clase,
     cuerpo, rostro, piel,
     cabello: { estilo, color: colorPelo }, barba: { estilo: barbaId, color: colorPelo }, tocado,
@@ -487,7 +499,7 @@ export function generarSVG(opc = {}) {
   return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno });
 }
 
-export { POSE_FIRME, poseAleatoria };
+export { POSE_FIRME, poseAleatoria, muestrearColorLibre };
 export { renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID };
 export { distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES };
 export { PEINADOS, BARBAS, TOCADOS } from './cabeza.js';

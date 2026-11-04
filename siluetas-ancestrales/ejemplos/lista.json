@@ -411,5 +411,113 @@
       "detalle": "alto",
       "rasgos": true
     }
+  },
+  {
+    "archivo": "ropa-a-medida-sirena",
+    "opciones": {
+      "sexo": "f",
+      "edad": 31,
+      "semilla": 81,
+      "vestir": [
+        "vestido-sirena",
+        "estola",
+        "tacones",
+        "perlas"
+      ],
+      "tocado": "pamela",
+      "peinado": "ondas"
+    }
+  },
+  {
+    "archivo": "ropa-a-medida-safari",
+    "opciones": {
+      "sexo": "m",
+      "edad": 42,
+      "semilla": 82,
+      "vestir": [
+        "camisa-safari",
+        "bermuda",
+        "zapatos-oxford"
+      ],
+      "tocado": "canotier"
+    }
+  },
+  {
+    "archivo": "ropa-a-medida-sudadera",
+    "opciones": {
+      "sexo": "m",
+      "edad": 19,
+      "semilla": 83,
+      "vestir": [
+        "sudadera-capucha",
+        "jeans-clasicos",
+        "zapatillas-lona"
+      ],
+      "tocado": "beanie"
+    }
+  },
+  {
+    "archivo": "ropa-a-medida-parka",
+    "opciones": {
+      "sexo": "f",
+      "edad": 35,
+      "semilla": 84,
+      "vestir": [
+        "parka-capucha",
+        "pantalon-pliegues",
+        "botines"
+      ]
+    }
+  },
+  {
+    "archivo": "tipo-halter-palazzo",
+    "opciones": {
+      "atuendo": "moda-top-halter",
+      "semilla": 85,
+      "edad": 27
+    }
+  },
+  {
+    "archivo": "tipo-abrigo-piel",
+    "opciones": {
+      "atuendo": "moda-abrigo-piel",
+      "semilla": 86,
+      "edad": 44
+    }
+  },
+  {
+    "archivo": "pose-natural-1",
+    "opciones": {
+      "atuendo": "huaso-fiesta",
+      "semilla": 87,
+      "edad": 50,
+      "pose": {
+        "hombros": 2.6,
+        "columna": 0.007,
+        "cabeza": 6,
+        "codos": {
+          "1": 10,
+          "-1": 8
+        }
+      }
+    }
+  },
+  {
+    "archivo": "pose-natural-2",
+    "opciones": {
+      "atuendo": "chile-dama-1955",
+      "semilla": 88,
+      "edad": 39,
+      "pose": {
+        "hombros": -2.4,
+        "columna": -0.007,
+        "cabeza": -6,
+        "brazoLibre": "cintura",
+        "munecas": {
+          "1": 12,
+          "-1": -10
+        }
+      }
+    }
   }
 ]
