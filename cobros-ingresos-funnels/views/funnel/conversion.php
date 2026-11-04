@@ -51,7 +51,7 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
         <span class="delta">Visitante &rarr; cliente</span>
     </div>
     <div class="panel stat-tile">
-        <span class="label">Tiempo promedio de conversión</span>
+        <span class="label">Tiempo promedio de conversión (período)</span>
         <span class="value"><?= number_format($tiempoPromedioConversion, 1) ?> días</span>
     </div>
 </div>

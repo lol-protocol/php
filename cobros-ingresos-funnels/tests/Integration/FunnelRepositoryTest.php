@@ -40,6 +40,27 @@ final class FunnelRepositoryTest extends IntegracionTestCase
         }
     }
 
+    public function testCohortesDicenCuantosMesesLlevanCerrados(): void
+    {
+        $filas = (new FunnelRepository())->cohortes('2000-01-01', '2100-01-01');
+        if ($filas === []) {
+            self::markTestSkipped('No hay usuarios de funnel seedeados.');
+        }
+
+        $esteMes = (int) date('Y') * 12 + (int) date('n');
+        foreach ($filas as $fila) {
+            [$anio, $mes] = array_map('intval', explode('-', $fila['cohorte']));
+            self::assertSame($esteMes - ($anio * 12 + $mes), (int) $fila['meses_cerrados'], "cohorte {$fila['cohorte']}");
+        }
+    }
+
+    public function testTiempoPromedioDeConversionObedeceAlPeriodo(): void
+    {
+        $repo = new FunnelRepository();
+        self::assertGreaterThan(0.0, $repo->tiempoPromedioConversionDias('2000-01-01', '2100-01-01'));
+        self::assertSame(0.0, $repo->tiempoPromedioConversionDias('2000-01-01', '2000-01-31'), 'sin visitas en el periodo no hay promedio');
+    }
+
     public function testPorCanalSumaLoMismoQueElResumenGeneral(): void
     {
         $funnelRepo = new FunnelRepository();
