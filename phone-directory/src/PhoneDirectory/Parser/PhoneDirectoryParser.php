@@ -150,7 +150,7 @@ class PhoneDirectoryParser
         $records = RecordSplitter::split(
             $lines,
             fn($line) => preg_match($phonePattern, $line) === 1,
-            fn($line) => $this->extractStreet($line) !== null
+            fn($line, $afterName) => $this->extractStreet($line, $afterName) !== null
         );
         foreach ($records as $offset => $record) {
             $this->processRecord($record, $startLine + $offset);
@@ -175,14 +175,14 @@ class PhoneDirectoryParser
             }
 
             if (empty($data['street'])) {
-                $streetMatch = $this->extractStreet($line);
+                $streetMatch = $this->extractStreet($line, $nameSet);
                 if ($streetMatch) {
                     $data['street'] = $streetMatch;
                 }
             }
 
             if (!$nameSet && !preg_match($patterns['phone_pattern'], $line)) {
-                $streetMatch = $this->extractStreet($line);
+                $streetMatch = $this->extractStreet($line, false);
                 if (!$streetMatch) {
                     $data['name'] = $line;
                     $nameSet = true;
@@ -242,7 +242,8 @@ class PhoneDirectoryParser
         return preg_match($patterns['street_marker'], $line) === 1;
     }
 
-    private function extractStreet(string $line): ?string
+    /** $afterName: the record's name has been read, so a dwelling line ("Apt 4 Building 7") also counts. */
+    private function extractStreet(string $line, bool $afterName = false): ?string
     {
         if ($this->isStreet($line)) {
             return $line;
@@ -253,7 +254,7 @@ class PhoneDirectoryParser
             return null;
         }
 
-        return StreetFallback::numberFirst($line);
+        return StreetFallback::numberFirst($line) ?? ($afterName ? StreetFallback::dwelling($line) : null);
     }
 
     /** @param RawEntry $data */

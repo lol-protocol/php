@@ -247,6 +247,11 @@ class MultiLanguagePhoneDirectoryParser {
     private static final Pattern NUMBER_LAST_STREET = Pattern.compile(
         "\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*\\s+\\d{1,5}[a-zA-Z]?"
     );
+    // Same as the PHP StreetFallback::dwelling: "Apt 4 Building 7", only once the name is read, in English.
+    private static final Pattern DWELLING = Pattern.compile(
+        "(?:apt|apartment|unit|flat|suite|ste|bldg|building)\\.?\\s*#?\\d{1,5}[a-z]?(?:\\s+[\\p{L}\\d#][\\p{L}\\p{M}\\d'’.\\-#]*)*",
+        Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE
+    );
     // Languages that write the house number after the street ("Travessa do Carmo 5").
     private static final Set<String> NUMBER_LAST_LANGUAGES = Set.of("es", "pt", "it", "de");
 
@@ -352,8 +357,16 @@ class MultiLanguagePhoneDirectoryParser {
     }
 
     private boolean isStreetLine(String line, String language, boolean afterName) {
-        return extractStreet(line, language) != null
-            || (afterName && NUMBER_LAST_LANGUAGES.contains(language) && NUMBER_LAST_STREET.matcher(line.trim()).matches());
+        return extractStreet(line, language) != null || (afterName && afterNameStreet(line, language) != null);
+    }
+
+    // Same as the PHP afterNameStreet(): a dwelling line in English, a number-last street without a street word elsewhere.
+    private String afterNameStreet(String line, String language) {
+        String trimmed = line.trim();
+        if ("en".equals(language)) {
+            return DWELLING.matcher(trimmed).matches() ? trimmed : null;
+        }
+        return NUMBER_LAST_LANGUAGES.contains(language) && NUMBER_LAST_STREET.matcher(trimmed).matches() ? trimmed : null;
     }
 
     // Same rule as the PHP splitRecords(): once a record has its name and street, a line that is neither
@@ -396,9 +409,8 @@ class MultiLanguagePhoneDirectoryParser {
             String street = extractStreet(line, language);
             // Same rule as the PHP StreetFallback::numberLast, and only once the name is read:
             // "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
-            if (street == null && data.get("name") != null && NUMBER_LAST_LANGUAGES.contains(language)
-                    && NUMBER_LAST_STREET.matcher(line.trim()).matches()) {
-                street = line.trim();
+            if (street == null && data.get("name") != null) {
+                street = afterNameStreet(line, language);
             }
             if (data.get("street") == null && street != null) {
                 data.put("street", street);

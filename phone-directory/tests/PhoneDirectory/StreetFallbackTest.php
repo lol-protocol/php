@@ -56,6 +56,28 @@ class StreetFallbackTest extends TestCase
         ];
     }
 
+    /** @return array<string, array{string, string|null}> */
+    public static function dwellingLines(): array
+    {
+        return [
+            'departamento y edificio' => ['Apt 4 Building 7', 'Apt 4 Building 7'],
+            'abreviatura con punto' => ['Apt. 12', 'Apt. 12'],
+            'con almohadilla' => ['Unit #3', 'Unit #3'],
+            'número con letra y nombre' => ['Flat 2B Rose Court', 'Flat 2B Rose Court'],
+            'suite' => ['Suite 300', 'Suite 300'],
+            'sin número' => ['Apartment Rose Court', null],
+            'no empieza con la vivienda' => ['Rose Court Apt 4', null],
+            'palabra que empieza igual' => ['Units 4', null],
+            'teléfono' => ['555-123-4567', null],
+        ];
+    }
+
+    #[DataProvider('dwellingLines')]
+    public function testDwelling(string $line, ?string $expected): void
+    {
+        $this->assertSame($expected, StreetFallback::dwelling($line));
+    }
+
     #[DataProvider('numberLastLines')]
     public function testNumberLast(string $line, ?string $expected): void
     {

@@ -40,6 +40,11 @@ public class PhoneDirectoryParserTest {
         assertEquals(1, entries.size());
         assertEquals("Travessa do Carmo 5", location(entries.get(0)).get("street"));
 
+        // A dwelling line is the street once the name is read.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("TAYLOR, Jim\nApt 4 Building 7\n555-123-4567", "en");
+        assertEquals(1, entries.size());
+        assertEquals("Apt 4 Building 7", location(entries.get(0)).get("street"));
+
         // A name ending in a number stays a name.
         entries = new MultiLanguagePhoneDirectoryParser().parseContent("Restaurante Siglo 21\nCalle Larga 5", "es");
         assertEquals(1, entries.size());

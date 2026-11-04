@@ -285,7 +285,7 @@ class MultiLanguagePhoneDirectoryParser
     /** The street test processRecord() applies: a number-last street without a street word only counts after the name. */
     private function isStreetLine(string $line, string $language, bool $afterName): bool
     {
-        return $this->extractStreet($line, $language) !== null || ($afterName && $this->numberLastStreet($line, $language) !== null);
+        return $this->extractStreet($line, $language) !== null || ($afterName && $this->afterNameStreet($line, $language) !== null);
     }
 
     /** @param list<string> $lines */
@@ -302,7 +302,7 @@ class MultiLanguagePhoneDirectoryParser
 
         foreach ($lines as $line) {
             $isPhoneLine = preg_match($phoneRegex, $line, $matches) === 1;
-            $street = $this->extractStreet($line, $language) ?? ($nameSet ? $this->numberLastStreet($line, $language) : null);
+            $street = $this->extractStreet($line, $language) ?? ($nameSet ? $this->afterNameStreet($line, $language) : null);
             $isStreetLine = $street !== null;
 
             if (empty($data['phone']) && $isPhoneLine) {
@@ -414,9 +414,16 @@ class MultiLanguagePhoneDirectoryParser
         return StreetFallback::numberFirst($line);
     }
 
-    /** A street with no street word and the house number last, in a language that writes it that way. */
-    private function numberLastStreet(string $line, string $language): ?string
+    /**
+     * An address that only counts once the name is read: in a language that writes the house number last,
+     * a street with no street word ("Los Aromos 123"); in English, a dwelling line ("Apt 4 Building 7").
+     */
+    private function afterNameStreet(string $line, string $language): ?string
     {
+        if ($language === 'en') {
+            return StreetFallback::dwelling($line);
+        }
+
         return in_array($language, self::NUMBER_LAST_LANGUAGES, true) ? StreetFallback::numberLast($line) : null;
     }
 

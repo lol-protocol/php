@@ -41,6 +41,14 @@ class PhoneDirectoryParserTest extends TestCase
         $this->assertSame(4, $entries[1]->getSourceLine());
     }
 
+    public function testDwellingLineIsTheStreetAfterTheName(): void
+    {
+        $entries = $this->parser->parseContent("TAYLOR, Jim\nApt 4 Building 7\n555-123-4567");
+
+        $this->assertCount(1, $entries);
+        $this->assertSame('Apt 4 Building 7', $entries[0]->getStreet());
+    }
+
     public function testCityLineStaysInItsRecord(): void
     {
         $entries = $this->parser->parseContent("SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567");

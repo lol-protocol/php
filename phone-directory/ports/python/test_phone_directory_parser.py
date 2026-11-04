@@ -72,6 +72,12 @@ class ParserTest(unittest.TestCase):
         self.assertEqual('COSTA, Rui', entries[0]['person_name']['full_name'])
         self.assertEqual('Travessa do Carmo 5', entries[0]['location']['street'])
 
+    def test_dwelling_line_is_the_street_after_the_name(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("TAYLOR, Jim\nApt 4 Building 7\n555-123-4567", 'en')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('Apt 4 Building 7', entries[0]['location']['street'])
+
     def test_name_ending_in_a_number_stays_a_name(self):
         entries = MultiLanguagePhoneDirectoryParser().parse_content("Restaurante Siglo 21\nCalle Larga 5", 'es')
 

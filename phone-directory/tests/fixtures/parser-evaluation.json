@@ -112,9 +112,19 @@
             "id": "en-departamento-sin-palabra-de-calle",
             "idioma": "en",
             "entrada": "TAYLOR, Jim\nApt 4 Building 7\n555-123-4567",
-            "esperado": [{"tipo": "natural", "nombre": "TAYLOR, Jim", "calle": "Apt 4 Building 7", "telefono": "555-123-4567"}],
-            "falla_conocida": "La calle no empieza con número ni tiene palabra de calle, así que no se reconoce y la entrada queda como error de parsing (antes, además, salía un registro inventado con «Apt» de nombre).",
-            "categoria": "calle-de-respaldo"
+            "esperado": [{"tipo": "natural", "nombre": "TAYLOR, Jim", "calle": "Apt 4 Building 7", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-departamento-con-letra",
+            "idioma": "en",
+            "entrada": "WARD, Lily\nFlat 2B Rose Court\n555-222-3333",
+            "esperado": [{"tipo": "natural", "nombre": "WARD, Lily", "calle": "Flat 2B Rose Court", "telefono": "555-222-3333"}]
+        },
+        {
+            "id": "en-nombre-que-empieza-como-departamento",
+            "idioma": "en",
+            "entrada": "Suite 16 Lounge\n12 Oak Street\n555-444-5555",
+            "esperado": [{"tipo": "natural", "nombre": "Suite 16 Lounge", "calle": "12 Oak Street", "telefono": "555-444-5555"}]
         },
         {
             "id": "es-bloque",

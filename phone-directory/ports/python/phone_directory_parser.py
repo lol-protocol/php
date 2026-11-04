@@ -248,8 +248,15 @@ class MultiLanguagePhoneDirectoryParser:
     # Languages that write the house number after the street ("Travessa do Carmo 5").
     NUMBER_LAST_LANGUAGES = ('es', 'pt', 'it', 'de')
 
-    def _number_last_street(self, line: str, language: str) -> Optional[str]:
-        """Same rule as the PHP StreetFallback::numberLast: only words, then the house number."""
+    DWELLING = re.compile(r"(?:apt|apartment|unit|flat|suite|ste|bldg|building)\.?\s*#?\d{1,5}[a-z]?"
+                          r"(?:\s+[^\W_](?:[^\W_]|['’.\-#])*)*", re.IGNORECASE)
+
+    def _after_name_street(self, line: str, language: str) -> Optional[str]:
+        """Same rules as the PHP afterNameStreet(): in English a dwelling line ("Apt 4 Building 7", as
+        StreetFallback::dwelling); in a number-last language only words, then the house number."""
+        if language == 'en':
+            trimmed = line.strip()
+            return trimmed if self.DWELLING.fullmatch(trimmed) else None
         if language not in self.NUMBER_LAST_LANGUAGES:
             return None
         word = r"[^\W\d_](?:[^\W\d_]|['’.\-])*"
@@ -257,7 +264,7 @@ class MultiLanguagePhoneDirectoryParser:
         return trimmed if re.fullmatch(rf"{word}(?:\s+{word})*\s+\d{{1,5}}[A-Za-z]?", trimmed) else None
 
     def _is_street_line(self, line: str, language: str, after_name: bool) -> bool:
-        return bool(self._extract_street(line, language) or (after_name and self._number_last_street(line, language)))
+        return bool(self._extract_street(line, language) or (after_name and self._after_name_street(line, language)))
 
     def _process_buffer(self, lines: List[str], start_line: int, language: str):
         """Same rule as the PHP splitRecords(): once a record has its name and street, a line that is
@@ -295,7 +302,7 @@ class MultiLanguagePhoneDirectoryParser:
             street = self._extract_street(line, language)
             # Only once the name is read: "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
             if street is None and data['name']:
-                street = self._number_last_street(line, language)
+                street = self._after_name_street(line, language)
             if not data['street'] and street:
                 data['street'] = street
 
