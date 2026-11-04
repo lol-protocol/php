@@ -1,7 +1,7 @@
 # Parsing-fb-in-mas
 
-Analizadores de **páginas de perfil ya guardadas** de Facebook (`fb`), LinkedIn (`in`) y
-Twitter/X, y de cualquier sitio que declare una `Person` de schema.org (`más`), para
+Analizadores de **páginas de perfil ya guardadas** de Facebook (`fb`), LinkedIn (`in`),
+Twitter/X e Instagram, y de cualquier sitio que declare una `Person` de schema.org (`más`), para
 tener un punto de partida al buscar a una persona en un proyecto de genealogía.
 PHP 8.3, sin dependencias.
 

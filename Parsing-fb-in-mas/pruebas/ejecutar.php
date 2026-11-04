@@ -54,6 +54,14 @@ igual('twitter: nombre', 'Dana Ejemplo', $t['nombre']);
 igual('twitter: usuario', 'danaejemplo', $t['usuario']);
 igual('twitter: descripción', 'Historia familiar y registros parroquiales.', $t['descripcion']);
 
+// Instagram
+$i = Detector::analizar(muestra('instagram'))->aArreglo();
+igual('instagram: red', 'instagram', $i['red']);
+igual('instagram: nombre', 'Ana Ejemplo', $i['nombre']);
+igual('instagram: usuario con punto', 'ana.ejemplo', $i['usuario']);
+igual('instagram: solo la biografía', 'Fotos de archivos y abuelos.', $i['descripcion']);
+igual('instagram: los contadores no salen', false, str_contains((string) json_encode($i), 'Followers'));
+
 // Genérico (schema.org Person)
 $g = Detector::analizar(muestra('generico'))->aArreglo();
 igual('genérico: red', 'generico', $g['red']);
@@ -68,7 +76,7 @@ igual('privacidad: el teléfono no sale', false, str_contains($json, '+56 9'));
 igual('privacidad: la fecha de nacimiento no sale', false, str_contains($json, '1980'));
 $persona = Metadatos::leer(muestra('generico'))['persona'];
 igual('privacidad: la lista blanca de Metadatos', ['nombre', 'titular', 'descripcion', 'lugar'], array_keys($persona ?? []));
-foreach ([$f, $l, $t, $g] as $perfil) {
+foreach ([$f, $l, $t, $i, $g] as $perfil) {
     igual('todo perfil sale como posiblemente vivo', true, $perfil['posiblemente_vivo']);
     igual('todo perfil sale pendiente de revisión humana', true, $perfil['revision_humana']);
 }
