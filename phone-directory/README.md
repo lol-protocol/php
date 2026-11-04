@@ -217,7 +217,8 @@ $visitante->filter($entries);          // solo las que se pueden mostrar, en su 
 Dónde se aplica:
 
 - **`PhoneDirectoryPDODatabase`**: `findById`, `findByName`, `findByStreet`, `findByPhone`, `findBySurnameSound`, `findBySourceDirectory`, `search` y `getAll`. Un número de teléfono reusado en una edición posterior sigue encontrando la entrada antigua. `count()` cuenta todo lo guardado, y `update()`, `delete()` y `clear()` no cambian: ocultar es sobre lo que se muestra, no sobre lo que se guarda.
-- **`PhoneDirectoryManagerV2`**: contesta con lo que su base puede mostrar.
+- **`JuridicalEntityPDODatabase`** (empresas): con la misma vista por omisión y en los mismos métodos (`findById`, `findByBusinessName`, `findByStreet`, `findByPhone`, `findByBusinessType`, `search`, `getAll`), oculta la empresa que **lleva un nombre de pila** en su nombre o razón social («Panadería Juan Pérez», «Chez Marie», «Jürgen Weber GmbH») cuando su guía es reciente o no tiene año: es el nombre, la dirección y el teléfono de una persona igual (issue #233). Las demás se muestran siempre. Los nombres salen de `GivenNames`, una lista de los más comunes entre 1930 y 1975 en los seis idiomas, que se mira toda junta sea cual sea el país.
+- **`PhoneDirectoryManagerV2`**: contesta con lo que sus bases pueden mostrar.
 - **`RecordLinker`**: `new RecordLinker(privacy: …)`. Descarta antes de enlazar toda entrada que pueda ser de una persona viva, porque unir a una persona de dos ediciones arma un perfil (dónde vivía, y cuándo) que ninguna guía tenía por sí sola.
 - **`bin/phonedir`** usa la vista del propietario: quien corre el comando tiene la base. `--publico` muestra lo que vería un visitante (y lo dice al final), y `--hoy=AAAA-MM-DD` fija la fecha de referencia.
 
@@ -252,7 +253,7 @@ Límites, a propósito:
 
 - **Una guía sin año conocido se oculta.** Sin fuente, o con un id fuera del catálogo que no trae un año de cuatro cifras (como `custom_1990_x`): no se sabe cuántos años tiene esa gente, y un error publica el teléfono de alguien que vive. Si el id trae dos años (`scan_1925_reimpresion_1985`), vale el más reciente. `url-routing/` hace lo contrario con las personas sin fechas, porque ahí los datos son de antepasados.
 - **La edad mínima de 18 años es un supuesto.** Un abonado más joven (raro) quedaría fuera de lo que esta regla cubre.
-- **Las empresas (`JuridicalEntity`) no se filtran:** no son personas. Una razón social que lleva un nombre propio sí podría delatar a alguien.
+- **Una empresa con solo el apellido no se oculta** («Panadería Pérez»), ni una con un nombre de pila que no está en la lista. Y se oculta de más la que tiene una palabra que también es nombre («Farmacia San José», «Florería Rosa»). No hay marca para publicar una de esas: el propietario las ve todas.
 - **Qué es una empresa lo decide una lista corta de palabras** (`hotel`, `banco`, `Ltd`, `GmbH`…, por idioma) que solo se busca en el nombre, no en la calle ni en el teléfono. Un apellido que es una de esas palabras, escrito «APELLIDO, Nombre» (`BANK, Henry`), es una persona. Lo que la lista no conoce (`Smith & Sons`, `Hermanos García`, `Plumbing`) se guarda como persona, con un apellido que no lo es: es el lado seguro para la privacidad (se oculta de más), pero ensucia la búsqueda fonética y el enlace de registros.
 
 ### PersonName / SurnameKeys — búsqueda fonética

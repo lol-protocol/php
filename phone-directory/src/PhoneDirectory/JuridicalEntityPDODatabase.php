@@ -39,6 +39,24 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         'business_name_folded', 'street_folded',
     ];
 
+    private readonly Privacy $privacy;
+
+    /**
+     * @param Privacy|null $privacy who is asking: by default a visitor, who gets no business named after
+     *        someone who may be alive (see Privacy::mayNameALivingPerson). Pass Privacy::forOwner() to read
+     *        everything that is stored.
+     */
+    public function __construct(string $dsn = 'sqlite::memory:', ?string $username = null, ?string $password = null, ?Privacy $privacy = null)
+    {
+        parent::__construct($dsn, $username, $password);
+        $this->privacy = $privacy ?? Privacy::forVisitors();
+    }
+
+    public function getPrivacy(): Privacy
+    {
+        return $this->privacy;
+    }
+
     protected function getTableName(): string
     {
         return self::TABLE_NAME;
@@ -111,7 +129,8 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
     public function findById(int $id): ?JuridicalEntity
     {
         $row = $this->findOneById($id);
-        return $row ? $this->rowToEntity($row) : null;
+
+        return $row ? $this->shown([$row])[0] ?? null : null;
     }
 
     /** @return list<JuridicalEntity> */
@@ -123,7 +142,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':name' => $this->dialect->containsValue($this->fold($name))]);
 
-        return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     /** @return list<JuridicalEntity> */
@@ -135,13 +154,22 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':street' => $this->dialect->containsValue($this->fold($street))]);
 
-        return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     public function findByPhone(string $phone): ?JuridicalEntity
     {
-        $row = $this->findOneByPhone($phone);
-        return $row ? $this->rowToEntity($row) : null;
+        if (!$this->privacy->hidesLiving()) {
+            $row = $this->findOneByPhone($phone);
+            return $row ? $this->rowToEntity($row) : null;
+        }
+
+        // A number is reused from one edition to the next: the first row may be hidden and a later one shown.
+        $this->ensureConnection();
+        $stmt = $this->pdo->prepare('SELECT * FROM juridical_entities WHERE phone_number = :phone ORDER BY id');
+        $stmt->execute([':phone' => $phone]);
+
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC))[0] ?? null;
     }
 
     /** @return list<JuridicalEntity> */
@@ -149,13 +177,13 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
     {
         $this->ensureConnection();
         $sql = $this->dialect->containsCondition('business_type', ':type');
-        return $this->findMany($sql, [':type' => $this->dialect->containsValue($type)], 'business_name');
+        return $this->privacy->filterBusinesses($this->findMany($sql, [':type' => $this->dialect->containsValue($type)], 'business_name'));
     }
 
     /** @return list<JuridicalEntity> */
     public function getAll(): array
     {
-        return $this->getAllOrdered('business_name');
+        return $this->privacy->filterBusinesses($this->getAllOrdered('business_name'));
     }
 
     public function update(JuridicalEntity $entity): bool
@@ -211,12 +239,21 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
-        return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     public function clear(): bool
     {
         return $this->clearTable();
+    }
+
+    /**
+     * @param list<Row> $rows
+     * @return list<JuridicalEntity>
+     */
+    private function shown(array $rows): array
+    {
+        return $this->privacy->filterBusinesses(array_map([$this, 'rowToEntity'], $rows));
     }
 
     /** @param Row $row */
