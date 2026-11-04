@@ -55,6 +55,10 @@ require_arg() {
 claim_nginx_vhost() {
     local domain=$1 mark=$2 f other existing re
     f="$NGINX_DIR/sites-available/$domain"
+    # Si 04 ya le puso HTTPS (certbot agrega los bloques 443), el script reescribe el vhost solo en HTTP:
+    # enable_nginx_site vuelve a instalar el certificado despues (ver restore_ssl).
+    VHOST_HAD_SSL=0
+    if grep -qs '^[[:space:]]*ssl_certificate[[:space:]]' "$f"; then VHOST_HAD_SSL=1; fi
     if [ -f "$f" ] && ! grep -qxF "# vps-setup: $mark" "$f"; then
         existing=$(grep -m1 '^# vps-setup:' "$f" | sed 's/^# vps-setup: //')
         echo "ERROR: $domain ya tiene un sitio (${existing:-creado a mano}) en $f." >&2
@@ -73,6 +77,17 @@ claim_nginx_vhost() {
     done
 }
 
+# restore_ssl <dominio>: vuelve a instalar en el vhost el certificado que ya existe (sin pedir otro a Let's
+# Encrypt) despues de reescribirlo. Si falla, el sitio sigue en HTTP y se dice como arreglarlo.
+restore_ssl() {
+    local domain=$1
+    echo "El dominio ya tenia HTTPS: reinstalando su certificado en el vhost..."
+    if ! sudo certbot install --nginx --cert-name "$domain" --redirect --non-interactive; then
+        echo "AVISO: no se pudo reinstalar el certificado de $domain: el sitio quedo solo en HTTP." >&2
+        echo "Arreglalo con: ./04-setup-ssl.sh $domain admin@$domain" >&2
+    fi
+}
+
 # enable_nginx_site <nombre>: activa sites-available/<nombre>, valida con "nginx -t" y recarga.
 # Si nginx rechaza la configuracion, DESACTIVA el sitio nuevo (el archivo queda en
 # sites-available para revisarlo): un enlace roto en sites-enabled impediria que Nginx
@@ -87,6 +102,7 @@ enable_nginx_site() {
         return 1
     fi
     sudo systemctl reload nginx
+    if [ "${VHOST_HAD_SSL:-0}" = 1 ]; then restore_ssl "$name"; fi
     # fail2ban resuelve el glob de logs por dominio (/var/log/nginx/*/...) al arrancar: un
     # dominio nuevo no queda vigilado hasta que recarga.
     if systemctl is-active --quiet fail2ban 2>/dev/null; then

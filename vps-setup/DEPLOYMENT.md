@@ -81,8 +81,9 @@ de Let's Encrypt (hay un límite semanal). `--staging` pide un certificado de pr
 ## 5. Endurecer y vigilar (recomendado)
 
 ```bash
-# SSH solo con llave y sin root. ANTES comprueba en otra terminal que entras con la llave.
-./remote-run.sh 07_C-harden-ssh.sh "$(cat ~/.ssh/id_ed25519.pub)" --yes
+# SSH solo con llave y sin root. ANTES comprueba en otra terminal que entras con la llave:
+# sin --yes, el script te pide confirmar que ya la probaste (--yes se salta esa pregunta).
+./remote-run.sh 07_C-harden-ssh.sh "$(cat ~/.ssh/id_ed25519.pub)"
 
 # Alertas cada 15 min (disco, RAM, carga, certificados, servicios caídos) a un webhook y/o email
 ./remote-run.sh 09_A-setup-monitoring.sh 'https://hooks.slack.com/...' tu@email.com
