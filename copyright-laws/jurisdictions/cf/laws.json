@@ -15,7 +15,7 @@
     "enforcement_body": "UNKNOWN (Bureau Centrafricain du Droit d'Auteur, BCDA, not confirmed by any result) (unconfirmed)",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "",
-    "linked_resources": "",
+    "linked_resources": "https://www.adams.africa/?p=3496",
     "notes": "Berne member since 3 Sep 1977, Bangui Agreement since 8 Feb 1982, WTO since 31 May 1995 (Commons). WCT/WPPT not checked: no list seen. Not verified against primary text.",
     "pending_change": "",
     "pending_date": "",
@@ -60,6 +60,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-05",
+        "field": "linked_resources",
+        "from": "",
+        "to": "https://www.adams.africa/?p=3496"
+      },
       {
         "date": "2026-10-16",
         "field": "linked_resources",

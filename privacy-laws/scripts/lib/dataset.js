@@ -273,8 +273,8 @@ export function validateRecords(records, header = COLUMNS, { today = todayIso() 
     if (isRealDate(record.last_checked) && record.last_checked > today) {
       fail(`last_checked is in the future (${record.last_checked}); it would hide the row from the review reminder`);
     }
-    if (record.data_status !== "curated" && !record.last_checked) {
-      fail(`last_checked is required when data_status is ${record.data_status}`);
+    if (!record.last_checked) {
+      fail(`last_checked is required (data_status is ${record.data_status})`);
     }
     if (record.data_status !== "curated" && !record.confidence) {
       fail(`confidence is required when data_status is ${record.data_status}`);
