@@ -70,7 +70,7 @@ genealogía (ver `iconos-genealogia/README.md`).
 Los `id` internos (los gradientes, con el nombre del icono y, en `gris`, el
 sufijo `_g`) son únicos entre los iconos y las variantes del set, así que puedes
 incrustar varios SVG en línea en la misma página, también `color` y `gris` de un
-mismo icono. Los iconos con el mismo nombre en los dos sets (`ui_menu`...) sí
+mismo icono. Los iconos con el mismo nombre en más de un set (`ui_menu`...) sí
 comparten ids.
 
 ## Sprite

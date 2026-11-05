@@ -265,6 +265,11 @@ def check_workflow(folders):
     text = workflow.read_text(encoding='utf-8')
     paths = re.findall(r'^\s+- "([^"]+)"\s*$', text, re.M)
     drift = re.search(r'git status --porcelain --([^\n")]*)', text)
+    # La galeria la escribe build.py: si cambia, hay que correr el workflow, y el git status tiene que vigilarla.
+    if paths.count('galeria-iconos.html') != 2:
+        fail('.github/workflows/iconos.yml: galeria-iconos.html debe estar en los filtros de rutas de push y de pull_request')
+    if not drift or 'galeria-iconos.html' not in drift.group(1).split():
+        fail('.github/workflows/iconos.yml: galeria-iconos.html debe estar en el git status que detecta lo que build.py cambia')
     for folder in folders:
         if paths.count(f'{folder}/**') != 2:
             fail(f'.github/workflows/iconos.yml: {folder}/** debe estar en los filtros de rutas de push y de pull_request')
