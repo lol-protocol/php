@@ -779,6 +779,18 @@ class Categorias(PruebaConErrores):
             self.assertIn(f"`{nombre}`", informe.split("Nueve nombres CSS")[1].split("\n")[0])
             self.assertIn(f"`{nombre}`", readme.split("Nueve nombres CSS")[1].split("\n")[0])
 
+    def test_las_cifras_del_lexico_en_el_readme_son_las_de_los_datos(self):
+        # El README repetia 18 conceptos de suajili, 2.400 filas y 5.785 patrones de spaCy cuando los datos ya decian otra cosa.
+        readme = (AQUI / "README.md").read_text(encoding="utf-8")
+        miles = lambda n: f"{n:,}".replace(",", ".")
+        filas = real("lexico")
+        conceptos_sw = len({f["concepto"] for f in filas if f["idioma"] == "sw"})
+        lemas = sum(1 for f in filas if f["tipo"] == "lema")
+        self.assertIn(f"El suajili tiene {conceptos_sw} conceptos", readme)
+        self.assertIn(f"Hay {miles(len(filas))} filas: {miles(lemas)} lemas", readme)
+        patrones = sum(len((AQUI / "exportes" / "spacy" / f"{i}.jsonl").read_text(encoding="utf-8").splitlines()) for i, _ in gt.IDIOMAS)
+        self.assertIn(f"{miles(patrones)} en total", readme)
+
     def test_el_informe_escapa_la_barra_vertical(self):
         filas = [dict(real("categorias")[0], ejemplo="Una | barra.")]
         self.assertIn("Una &#124; barra.", categorias.informe(filas, gt.IDIOMAS))
