@@ -29,7 +29,7 @@ const check = (patch, options) => validateRecords([{ ...base, ...patch }], COLUM
 
 test("researched rows need a confidence level", () => {
   assert.match(check({ confidence: "" }).errors[0], /confidence is required when data_status is researched/);
-  assert.deepEqual(check({ data_status: "curated", confidence: "", last_checked: "" }).errors, []);
+  assert.deepEqual(check({ data_status: "curated", confidence: "" }).errors, [], "curated rows do not need a confidence level");
   assert.ok(records.filter((r) => r.data_status !== "curated").every((r) => r.confidence), "every researched row has a confidence");
 });
 

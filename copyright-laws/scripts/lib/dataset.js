@@ -266,6 +266,12 @@ export function validateRecords(records, header = COLUMNS, { today = todayIso() 
     if (record.data_status !== "curated" && !record.confidence) {
       fail(`confidence is required when data_status is ${record.data_status}`);
     }
+    if (record.data_status === "curated" && !record.last_checked) {
+      warn(`${record.country_code} "${record.law_name}" is curated and has never been checked: add last_checked once its sources are verified`);
+    }
+    if (!record.linked_resources) {
+      fail("linked_resources is required: every row needs the source it comes from");
+    }
     if (isRealDate(record.last_checked) && daysBetween(record.last_checked, today) > STALE_AFTER_DAYS) {
       warn(`${record.country_code} "${record.law_name}" was last checked on ${record.last_checked}: due for review`);
     }

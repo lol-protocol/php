@@ -137,6 +137,13 @@ test("--check names the differences that changes.csv does not record", () => {
   assert.equal(unrecorded(entries, [{ ...recorded[0], new_value: "3" }]).length, 1);
 });
 
+test("a curated row with no last_checked is a warning, not an error", () => {
+  const curated = check({ data_status: "curated", confidence: "", last_checked: "" });
+  assert.deepEqual(curated.errors, []);
+  assert.match(curated.warnings[0], /curated and has never been checked/);
+  assert.deepEqual(check({ data_status: "curated", confidence: "", last_checked: "2026-10-01" }, { today: "2026-11-01" }).warnings, []);
+});
+
 test("a last_checked in the future is an error (it would hide the row from the review reminder)", () => {
   assert.match(check({ last_checked: "2099-01-01" }).errors[0], /last_checked is in the future/);
   assert.deepEqual(check({ last_checked: "2026-10-17" }, { today: "2026-10-17" }).errors, []);
