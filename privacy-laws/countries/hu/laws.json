@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-10-22",
     "sources": {
       "enforcement_authority": {
         "url": "https://edpb.europa.eu/about-edpb/our-members_en",
@@ -73,18 +73,6 @@
         "field": "deceased_data",
         "from": "",
         "to": "Rights of deceased may be exercised for 5 years after death by designated person or, failing that, a close relative (s. 25 Infotv)"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "law_name",
-        "from": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
-        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "law_name",
-        "from": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
-        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)"
       },
       {
         "date": "2026-10-16",
