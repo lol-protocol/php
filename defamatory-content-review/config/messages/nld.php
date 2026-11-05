@@ -37,4 +37,12 @@ return [
     'category.etnico.description' => 'Beledigingen op grond van etniciteit of herkomst',
     'category.fonetico.name' => 'Fonetisch',
     'category.fonetico.description' => 'Voor- en achternaam vormen, aaneengelezen en zonder pauze, een woord of andere (vaak vulgaire) term die in geen van beide afzonderlijk zit',
+    'error.metodo_no_permitido' => 'Gebruik POST.',
+    'error.tipo_no_soportado' => 'Stuur de body met Content-Type: application/json.',
+    'error.cuerpo_demasiado_grande' => 'De body is groter dan %d bytes.',
+    'error.texto_requerido' => 'Stuur een JSON-object in UTF-8 met een tekenreeks "text".',
+    'error.texto_demasiado_largo' => 'De tekst is langer dan %d tekens.',
+    'error.idioma_no_soportado' => 'Gebruik een ondersteunde taalcode, zoals "spa" of "es".',
+    'error.demasiadas_peticiones' => 'Te veel opeenvolgende verzoeken. Wacht even.',
+    'error.error_interno' => 'De tekst kon niet worden beoordeeld.',
 ];

@@ -37,4 +37,12 @@ return [
     'category.etnico.description' => 'Оскорбления по признаку этнической принадлежности или происхождения',
     'category.fonetico.name' => 'Фонетическое',
     'category.fonetico.description' => 'Имя и фамилия при слитном чтении без паузы образуют слово или другой (часто вульгарный) термин, которого нет ни в одном из них по отдельности',
+    'error.metodo_no_permitido' => 'Используйте POST.',
+    'error.tipo_no_soportado' => 'Отправьте тело с заголовком Content-Type: application/json.',
+    'error.cuerpo_demasiado_grande' => 'Тело превышает %d байт.',
+    'error.texto_requerido' => 'Отправьте JSON-объект в UTF-8 со строковым полем "text".',
+    'error.texto_demasiado_largo' => 'Текст превышает %d символов.',
+    'error.idioma_no_soportado' => 'Укажите поддерживаемый код языка, например "spa" или "es".',
+    'error.demasiadas_peticiones' => 'Слишком много запросов подряд. Подождите немного.',
+    'error.error_interno' => 'Не удалось проверить текст.',
 ];

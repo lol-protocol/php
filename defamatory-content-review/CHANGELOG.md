@@ -4,6 +4,17 @@
 
 ### Añadido
 
+- **Más idiomas de salida del informe**: `ara`, `heb`, `jpn`, `kor`, `hin`, `tur`, `ukr`, `ces`,
+  `swe` y `ron` se suman a los ocho de antes (18 en total, borradores sin revisión nativa).
+- **Errores del endpoint en el idioma del cliente** (`ModerationEndpoint::handle(…, $locale)`,
+  `Messages::negotiate()`): `public/moderar.php` lee `Accept-Language` y los mensajes de error
+  (`error.message`) salen en ese idioma; el `code` no cambia. Español por defecto.
+- **Flexión del islandés** (`IcelandicInflection`): sustantivos por terminación y con artículo
+  pospuesto (62 % de precisión y 64 % de cobertura contra UniMorph; antes no había reglas).
+- **Rumano mejorado contra UniMorph**: artículo («idiotul», «idiotului»), vocativo («idiotule») y
+  los plurales con artículo; sustantivos de 37 % / 22 % a 46 % / 37 % (precisión / cobertura) y
+  adjetivos de 71 % / 20 % a 80 % / 77 %.
+
 - **Idioma de salida del informe** (`Messages`, `config/messages/`): la explicación de cada
   término, la recomendación y la descripción de cada categoría de riesgo se pueden pedir en
   `eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol` o `rus` con

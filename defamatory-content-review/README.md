@@ -814,7 +814,8 @@ blanco y juntos mientras quepan, y un párrafo muy largo por oraciones, cortando
 cualquier tipo; la costura de cada corte se revisa también, para que una frase
 que cae sobre él («heil hitler») no quede repartida. Manda la parte más grave y
 los hallazgos de todas salen juntos. Los errores responden
-`{"error": {"code": "texto_demasiado_largo", "message": "…"}}`; un fallo
+`{"error": {"code": "texto_demasiado_largo", "message": "…"}}` (el `message` sale en el idioma de
+`Accept-Language` si hay mensajes en él, en español si no; el `code` no cambia); un fallo
 interno, un 500 genérico (`error_interno`) sin rutas ni trazas, con el detalle
 en el log de PHP. La lógica vive
 en `ModerationEndpoint`, que no toca superglobales: para montarlo en otro
@@ -909,9 +910,10 @@ palabras no entiende contexto:
   (un nombre no se declina). También tienen reglas el finés (casos con armonía
   vocálica y alternancia de consonantes: «paskaa», «vittuun», «idiootin»), el árabe
   (plurales sanos y los rotos de las palabras más comunes), el hindi (casos
-  oblicuos y plurales) y el tagalo (el ligamento «-ng»: «tangang»). No tienen reglas:
-  islandés (declinación con cambios de vocal que no se deducen de la forma) y suajili
-  (clases nominales; no hay lista de frecuencias para medir falsos positivos); el
+  oblicuos y plurales), el tagalo (el ligamento «-ng»: «tangang») y el islandés (sustantivos
+  con artículo pospuesto, por terminación: «hundur» → «hundinn»; sin cambios de vocal ni adjetivos).
+  No tienen reglas: suajili (clases nominales; UniMorph trae solo 2 sustantivos, no se puede medir, y
+  no hay lista de frecuencias para medir falsos positivos); el
   indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   Los idiomas sin reglas no tienen plurales, géneros ni conjugaciones automáticos —sólo la
@@ -954,11 +956,12 @@ sistemático se ve enseguida: con ella se vio que los adjetivos búlgaros en «-
 | noruego | 48 % / 88 % | 51 % / 62 % |
 | danés | 42 % / 33 % | 59 % / 53 % |
 | sueco | 46 % / 39 % | 53 % / 27 % |
-| rumano | 37 % / 22 % | 71 % / 20 % |
+| rumano | 46 % / 37 % | 80 % / 77 % |
+| islandés | 62 % / 64 % | — |
 | árabe | 30 % / 8 % | 61 % / 6 % |
 | hebreo | 46 % / 4 % | — |
 
-Los más flojos son rumano, árabe y hebreo (cobertura baja: UniMorph trae formas con posesivos,
+Los más flojos son árabe y hebreo (el árabe, por los plurales rotos, que no se deducen de la forma; UniMorph hebreo trae solo 124 lemas; cobertura baja: UniMorph trae formas con posesivos,
 vocales y estados constructos que no se generan). Sin datos de sustantivos en UniMorph, no se pudo
 validar el hindi, el tagalo ni los sustantivos neerlandeses; finés y eslovaco no están en UniMorph
 con esos nombres. Ninguna cifra sustituye a la revisión nativa de lo ofensivo.
@@ -996,7 +999,7 @@ $result->getExplanations('eng')[0];
 // “Elba Gina” read together sounds like “vagina” (dictionary spa, type fonetico, severity medium).
 ```
 
-Hay mensajes en `eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol` y `rus` (`Messages::locales()`);
+Hay mensajes en 18 idiomas (`eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol`, `rus`, `tur`, `ara`, `heb`, `jpn`, `kor`, `hin`, `ukr`, `ces`, `swe` y `ron`; `Messages::locales()`);
 con otro idioma, o con una clave que falte, sale el español. Los textos viven en
 `config/messages/<código>.php` con claves planas, y `spa` es el origen: añadir un idioma es copiar
 ese archivo y traducir; `MessagesTest` exige las mismas claves y los mismos marcadores

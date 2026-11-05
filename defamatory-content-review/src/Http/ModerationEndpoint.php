@@ -4,6 +4,7 @@ namespace DefamatoryContentReview\Http;
 
 use DefamatoryContentReview\Chat\{ChatLineResult, ChatLineReviewer, CombinedReview};
 use DefamatoryContentReview\Language\LanguageRegistry;
+use DefamatoryContentReview\Report\Messages;
 
 /**
  * Endpoint HTTP de moderación de chat, sin framework: recibe el cuerpo JSON
@@ -36,27 +37,27 @@ final class ModerationEndpoint
     }
 
     /** @return array{status:int, headers:array<string,string>, body:array<string,mixed>} */
-    public function handle(string $method, string $body, string $contentType = 'application/json'): array
+    public function handle(string $method, string $body, string $contentType = 'application/json', string $locale = Messages::DEFAULT_LOCALE): array
     {
         if (strtoupper($method) !== 'POST') {
-            return self::error(405, 'metodo_no_permitido', 'Usa POST.', ['Allow' => 'POST']);
+            return self::error(405, 'metodo_no_permitido', $locale, [], ['Allow' => 'POST']);
         }
         if (strtolower(trim(explode(';', $contentType)[0])) !== 'application/json') {
-            return self::error(415, 'tipo_no_soportado', 'Envía el cuerpo con Content-Type: application/json.');
+            return self::error(415, 'tipo_no_soportado', $locale);
         }
         if (strlen($body) > self::MAX_BODY_BYTES) {
-            return self::error(413, 'cuerpo_demasiado_grande', 'El cuerpo supera ' . self::MAX_BODY_BYTES . ' bytes.');
+            return self::error(413, 'cuerpo_demasiado_grande', $locale, [self::MAX_BODY_BYTES]);
         }
         $input = json_decode($body, true);
         if (!is_array($input) || !is_string($input['text'] ?? null)) {
-            return self::error(400, 'texto_requerido', 'Envía un objeto JSON en UTF-8 con "text" de tipo string.');
+            return self::error(400, 'texto_requerido', $locale);
         }
         if (mb_strlen($input['text']) > self::MAX_TEXT_CHARS) {
-            return self::error(413, 'texto_demasiado_largo', 'El texto supera ' . self::MAX_TEXT_CHARS . ' caracteres.');
+            return self::error(413, 'texto_demasiado_largo', $locale, [self::MAX_TEXT_CHARS]);
         }
         $language = $input['language'] ?? $this->defaultLanguage;
         if (!is_string($language) || !$this->registry->isSupported($language)) {
-            return self::error(400, 'idioma_no_soportado', 'Usa un código de idioma soportado, como "spa" o "es".');
+            return self::error(400, 'idioma_no_soportado', $locale);
         }
         $checked = array_values(array_unique([$language = $this->registry->resolve($language), ...$this->alwaysLanguages]));
         $result = LongText::review($input['text'], fn(string $piece): ChatLineResult => CombinedReview::of(
@@ -85,11 +86,14 @@ final class ModerationEndpoint
     }
 
     /**
+     * @param array<int,int> $args números del mensaje
      * @param array<string,string> $headers
      * @return array{status:int, headers:array<string,string>, body:array<string,mixed>}
      */
-    private static function error(int $status, string $code, string $message, array $headers = []): array
+    public static function error(int $status, string $code, string $locale = Messages::DEFAULT_LOCALE, array $args = [], array $headers = []): array
     {
+        $message = Messages::get('error.' . $code, $locale, $args);
+
         return ['status' => $status, 'headers' => $headers, 'body' => ['error' => ['code' => $code, 'message' => $message]]];
     }
 }

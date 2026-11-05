@@ -37,4 +37,12 @@ return [
     'category.etnico.description' => 'Insultos baseados em etnia ou origem',
     'category.fonetico.name' => 'Fonético',
     'category.fonetico.description' => 'Nome e sobrenome, lidos em seguida e sem pausa, formam uma palavra ou outro termo (muitas vezes vulgar) que não está em nenhum dos dois separadamente',
+    'error.metodo_no_permitido' => 'Use POST.',
+    'error.tipo_no_soportado' => 'Envie o corpo com Content-Type: application/json.',
+    'error.cuerpo_demasiado_grande' => 'O corpo excede %d bytes.',
+    'error.texto_requerido' => 'Envie um objeto JSON em UTF-8 com "text" do tipo string.',
+    'error.texto_demasiado_largo' => 'O texto excede %d caracteres.',
+    'error.idioma_no_soportado' => 'Use um código de idioma suportado, como "spa" ou "es".',
+    'error.demasiadas_peticiones' => 'Muitas requisições seguidas. Aguarde um momento.',
+    'error.error_interno' => 'Não foi possível revisar o texto.',
 ];
