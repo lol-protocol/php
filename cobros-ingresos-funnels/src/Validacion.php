@@ -85,6 +85,15 @@ final class Validacion
         return $d !== false && $d->format('Y-m-d') === $fecha;
     }
 
+    /**
+     * true si $fecha (Y-m-d, ya validada) no es posterior a $hoy. Un solo lugar para "no puede ser futura": nacimientos,
+     * pagos y devoluciones lo usaban cada uno por su lado. Sin $hoy se usa el dia real.
+     */
+    public static function fechaNoEsFutura(string $fecha, ?string $hoy = null): bool
+    {
+        return $fecha <= ($hoy ?? date('Y-m-d'));
+    }
+
     /** El formato del email: el <input type="email"> solo lo revisa el navegador. */
     public static function emailEsValido(string $email): bool
     {
