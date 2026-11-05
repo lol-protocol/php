@@ -384,12 +384,15 @@ the CSV parser, HTML escaping, the loaders and converters in `document-formats.j
 and checks every CSV file for rows with the wrong number of fields (usually
 an unquoted comma), duplicate entries, and mm/inch values that disagree.
 
-Three more tests keep the pieces in step:
+Two more tests keep the pieces in step:
 
 - `tests/coherence.test.js` checks that the importer reads every column of every CSV it loads
   (the ones it leaves out are listed with a reason), that its `INSERT`s only name columns of
   `database_schema.sql`, and that the examples in `api_reference.json` equal their CSV rows.
-  If a CSV changes, run `node generate_api_examples.js` to refresh them.
+  If a CSV changes, run `node generate_api_examples.js` to refresh them. It also checks that the
+  primary format of each country in `country_compatibility_guide.csv` is a catalog format name
+  (otherwise the importer left it empty) and that the tagline of every language gives the
+  number of countries in `countries_200_complete.csv`.
 - `tests/docs.test.js` checks that every JavaScript example in this README and in `docs/` is valid
   JavaScript and only calls methods the library has. It doesn't run them.
 
