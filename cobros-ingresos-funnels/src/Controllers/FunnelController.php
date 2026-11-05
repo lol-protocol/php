@@ -24,7 +24,7 @@ final class FunnelController
             'porGenero' => $funnelRepo->porGenero($desde, $hasta),
             'porRangoEdad' => $funnelRepo->porRangoEdad($desde, $hasta),
             'serieMensual' => $funnelRepo->serieMensual($desde, $hasta),
-            'tiempoPromedioConversion' => $funnelRepo->tiempoPromedioConversionDias(),
+            'tiempoPromedioConversion' => $funnelRepo->tiempoPromedioConversionDias($desde, $hasta),
             'activePage' => 'funnel',
             'titulo' => 'Funnel de conversión',
         ]);

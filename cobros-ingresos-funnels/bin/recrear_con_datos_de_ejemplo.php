@@ -267,9 +267,9 @@ for ($i = 0; $i < 320; $i++) {
     $clienteId = null;
 
     if (mt_rand(1, 100) <= 55) {
-        $fRegistro = diasAleatorios($fVisita, 5);
+        $fRegistro = min(diasAleatorios($fVisita, 5), $hoy);   // ninguna etapa cae en el futuro
         if (mt_rand(1, 100) <= 50) {
-            $fLead = diasAleatorios($fRegistro, 10);
+            $fLead = min(diasAleatorios($fRegistro, 10), $hoy);
             if (mt_rand(1, 100) <= 45 && $fLead < $hoy) {
                 $fConversion = diasAleatorios($fLead, 14);
                 if ($fConversion > $hoy) {
