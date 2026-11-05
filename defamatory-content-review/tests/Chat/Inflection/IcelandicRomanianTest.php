@@ -6,7 +6,7 @@ use DefamatoryContentReview\Chat\Inflection\TopicInflector;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** IcelandicInflection y las clases de RomanianInflection medidas contra UniMorph (bin/inflection-check.php). */
+/** IcelandicInflection y RomanianInflection (medidas contra UniMorph con bin/inflection-check.php) y ArabicPlurals. */
 class IcelandicRomanianTest extends TestCase
 {
     /** @return array<string,array{string,string,string,list<string>}> idioma, lema, tipo, formas que deben estar */
@@ -21,6 +21,7 @@ class IcelandicRomanianTest extends TestCase
             'rumano -ă: plural indefinido y artículo' => ['ron', 'târfă', 'noun', ['târfa', 'târfe', 'târfei', 'târfele']],
             'rumano -e' => ['ron', 'câine', 'noun', ['câini', 'câinii', 'câinilor']],
             'rumano -u' => ['ron', 'dobitoc', 'noun', ['dobitoci', 'dobitocul', 'dobitocule']],
+            'árabe: plurales rotos añadidos' => ['ara', 'مخنث', 'noun', ['مخانيث']],
             'rumano adjetivo -st' => ['ron', 'prost', 'adj', ['proști', 'prostă', 'prostul', 'prostului', 'proștilor']],
             'rumano adjetivo -t' => ['ron', 'tâmpit', 'adj', ['tâmpită', 'tâmpite', 'tâmpiți', 'tâmpitul', 'tâmpiților']],
         ];

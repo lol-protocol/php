@@ -304,14 +304,14 @@ revisión.
 
 ## Idiomas
 
-Identificados por **ISO 639-3** (tres letras). Los códigos de dos letras se
-aceptan como alias de entrada y se normalizan al entrar, de modo que una
-integración existente puede seguir pasando `es` o `pt`.
+Identificados por **ISO 639-3** (tres letras), siempre: `spa`, `por`, `deu`. Los códigos de dos letras
+(`es`, `pt`) **no se aceptan** en ninguna parte de la API ni en el campo `language` del endpoint. La única
+excepción es la cabecera `Accept-Language` del endpoint, que los navegadores mandan de dos letras y se traduce
+a tres al elegir el idioma de los mensajes de error (`LanguageRegistry::fromHeaderTag()`).
 
 ```php
-$registry->resolve('es');   // 'spa'
-$registry->resolve('zh');   // 'yue'
-$registry->resolve('SPA');  // 'spa'
+$registry->resolve('SPA');  // 'spa': mayúsculas y espacios se normalizan
+$registry->resolve('es');   // InvalidArgumentException
 ```
 
 | Familia | Idiomas |
@@ -912,9 +912,8 @@ palabras no entiende contexto:
   (plurales sanos y los rotos de las palabras más comunes), el hindi (casos
   oblicuos y plurales), el tagalo (el ligamento «-ng»: «tangang») y el islandés (sustantivos
   con artículo pospuesto, por terminación: «hundur» → «hundinn»; sin cambios de vocal ni adjetivos).
-  No tienen reglas: suajili (clases nominales; UniMorph trae solo 2 sustantivos, no se puede medir, y
-  no hay lista de frecuencias para medir falsos positivos); el
-  indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
+  El suajili no tiene reglas (UniMorph trae 2 sustantivos y no hay lista de frecuencias para medir
+  falsos positivos), y el indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   Los idiomas sin reglas no tienen plurales, géneros ni conjugaciones automáticos —sólo la
   forma base y las que se añadan a mano con `also`—, y se escribieron
@@ -1211,8 +1210,8 @@ review/                             Planillas generadas, una por idioma (ver rev
 _Garbage/                           Obsoleto, conservado sin borrar (ver su README)
 ```
 
-Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas
-(lo verifica `FileSizeLimitTest`) — cuando una clase
+Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas de código
+—sin contar las vacías ni las de comentario— (lo verifica `FileSizeLimitTest`) — cuando una clase
 crece más allá de eso, se descompone en colaboradores internos (mismo
 patrón en todo el proyecto: `ScoringPolicy`/`WordList`/`ValidationResult`/
 `LanguageRegistry` conservan su API pública intacta; sólo

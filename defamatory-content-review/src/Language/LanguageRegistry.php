@@ -4,14 +4,15 @@ namespace DefamatoryContentReview\Language;
 
 use InvalidArgumentException;
 
-/** Resuelve códigos de idioma (ISO 639-3; los de dos letras se aceptan como alias) y modela
+/** Resuelve códigos de idioma (siempre ISO 639-3, tres letras) y modela
  * el parentesco entre ellos. La afinidad en sí vive en `LanguageAffinity` — esta clase es
  * sólo identidad más los métodos que la usan. */
 class LanguageRegistry
 {
     /** @var array<string,array<string,mixed>> */ private array $languages;
     /** @var array<string,array<string,mixed>> */ private array $families;
-    /** @var array<string,string> */ private array $aliases = [];
+    /** @var array<string,string> ISO 639-1 => ISO 639-3: solo para las etiquetas de Accept-Language, ver `fromHeaderTag()` */
+    private array $headerTags = [];
     private LanguageAffinity $affinity;
 
     /** @param array<string,array<string,mixed>> $languages
@@ -27,7 +28,7 @@ class LanguageRegistry
 
         foreach ($languages as $code => $meta) {
             if (!empty($meta['iso639_1'])) {
-                $this->aliases[$meta['iso639_1']] = $code;
+                $this->headerTags[$meta['iso639_1']] = $code;
             }
         }
     }
@@ -40,7 +41,7 @@ class LanguageRegistry
         );
     }
 
-    /** Normaliza cualquier código aceptado a ISO 639-3. */
+    /** Normaliza mayúsculas y espacios de un código ISO 639-3; los de dos letras no se aceptan. */
     public function resolve(string $code): string
     {
         $code = strtolower(trim($code));
@@ -49,17 +50,20 @@ class LanguageRegistry
             return $code;
         }
 
-        if (isset($this->aliases[$code])) {
-            return $this->aliases[$code];
-        }
-
-        throw new InvalidArgumentException("Código de idioma no soportado: '{$code}'.");
+        throw new InvalidArgumentException("Código de idioma no soportado: '{$code}' (usa ISO 639-3, tres letras).");
     }
 
     public function isSupported(string $code): bool
     {
-        $code = strtolower(trim($code));
-        return isset($this->languages[$code]) || isset($this->aliases[$code]);
+        return isset($this->languages[strtolower(trim($code))]);
+    }
+
+    /** El idioma de una etiqueta de Accept-Language («pt», «es», «deu»), o null. Único lugar donde entra un código de dos letras. */
+    public function fromHeaderTag(string $tag): ?string
+    {
+        $tag = strtolower(trim($tag));
+
+        return isset($this->languages[$tag]) ? $tag : ($this->headerTags[$tag] ?? null);
     }
 
     /** @return array<string,mixed> */

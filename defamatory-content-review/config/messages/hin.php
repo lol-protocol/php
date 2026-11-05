@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '“%1$s” को जोड़कर पढ़ने पर “%2$s” जैसा सुनाई देता है (%3$s)',
     'explanation.variant' => '“%1$s” की ध्वनि “%2$s” जैसी ही है, केवल वर्तनी अलग है (%3$s)',
     'explanation.match' => '“%1$s” “%2$s” से मेल खाता है (%3$s)',
-    'explanation.related' => '; संबंधित भाषा, विश्वसनीयता %.2f',
+    'explanation.related' => '; संबंधित भाषा, विश्वसनीयता %.2F',
     'explanation.collision' => '; यह प्रलेखित असली नाम या उपनाम भी है, इसलिए मानवीय समीक्षा में जाता है',
     'explanation.end' => '।',
     'recommendation.reject' => 'अस्वीकार करें: अत्यंत आपत्तिजनक सामग्री (जोखिम के प्रकार: %s)।',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'बॉडी %d बाइट से अधिक है।',
     'error.texto_requerido' => 'UTF-8 में एक JSON ऑब्जेक्ट भेजें, जिसमें "text" स्ट्रिंग प्रकार का हो।',
     'error.texto_demasiado_largo' => 'पाठ %d अक्षरों से अधिक है।',
-    'error.idioma_no_soportado' => 'समर्थित भाषा कोड का उपयोग करें, जैसे "spa" या "es"।',
+    'error.idioma_no_soportado' => 'समर्थित भाषा कोड का उपयोग करें, जैसे "spa"।',
     'error.demasiadas_peticiones' => 'लगातार बहुत अधिक अनुरोध। कृपया थोड़ी देर प्रतीक्षा करें।',
     'error.error_interno' => 'पाठ की समीक्षा नहीं हो सकी।',
 ];

@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '„%1$s” klinkt aaneengelezen als „%2$s” (%3$s)',
     'explanation.variant' => '„%1$s” klinkt hetzelfde als „%2$s” met een andere spelling (%3$s)',
     'explanation.match' => '„%1$s” komt overeen met „%2$s” (%3$s)',
-    'explanation.related' => '; verwante taal, betrouwbaarheid %.2f',
+    'explanation.related' => '; verwante taal, betrouwbaarheid %.2F',
     'explanation.collision' => '; is ook een gedocumenteerde echte voor- of achternaam en gaat naar menselijke beoordeling',
     'explanation.end' => '.',
     'recommendation.reject' => 'Afwijzen: ernstig beledigende inhoud (risicotypen: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'De body is groter dan %d bytes.',
     'error.texto_requerido' => 'Stuur een JSON-object in UTF-8 met een tekenreeks "text".',
     'error.texto_demasiado_largo' => 'De tekst is langer dan %d tekens.',
-    'error.idioma_no_soportado' => 'Gebruik een ondersteunde taalcode, zoals "spa" of "es".',
+    'error.idioma_no_soportado' => 'Gebruik een ondersteunde taalcode, zoals "spa".',
     'error.demasiadas_peticiones' => 'Te veel opeenvolgende verzoeken. Wacht even.',
     'error.error_interno' => 'De tekst kon niet worden beoordeeld.',
 ];

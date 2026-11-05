@@ -22,28 +22,17 @@ class MessagesTest extends TestCase
     /** @return array<int,string> los marcadores de sprintf de un texto, ordenados */
     private static function placeholders(string $text): array
     {
-        preg_match_all('/%(?:\d+\$)?(?:\.\d+)?[sdf]/', $text, $m);
+        preg_match_all('/%(?:\d+\$)?(?:\.\d+)?[sdfF]/', $text, $m);
         sort($m[0]);
 
         return $m[0];
-    }
-
-    /** @return array<int,string> */
-    private static function expectedKeys(): array
-    {
-        $keys = array_keys(Messages::table('spa'));
-        foreach (array_keys(require self::CONFIG . '/risk-categories.php') as $id) {
-            array_push($keys, "category.$id.name", "category.$id.description");
-        }
-
-        return $keys;
     }
 
     #[DataProvider('locales')]
     public function testEveryLocaleHasTheSameKeysAndPlaceholdersAsSpanish(string $locale): void
     {
         $table = Messages::table($locale);
-        $expected = self::expectedKeys();
+        $expected = Messages::requiredKeys(self::CONFIG . '/risk-categories.php');
 
         $this->assertSame([], array_values(array_diff($expected, array_keys($table))), "$locale: faltan claves");
         $this->assertSame([], array_values(array_diff(array_keys($table), $expected)), "$locale: sobran claves");

@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '“%1$s” read together sounds like “%2$s” (%3$s)',
     'explanation.variant' => '“%1$s” sounds the same as “%2$s” with another spelling (%3$s)',
     'explanation.match' => '“%1$s” matches “%2$s” (%3$s)',
-    'explanation.related' => '; related language, confidence %.2f',
+    'explanation.related' => '; related language, confidence %.2F',
     'explanation.collision' => '; it is also a documented real first or last name, so it goes to human review',
     'explanation.end' => '.',
     'recommendation.reject' => 'Reject: seriously offensive content (risk types: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'The body exceeds %d bytes.',
     'error.texto_requerido' => 'Send a UTF-8 JSON object with a string "text".',
     'error.texto_demasiado_largo' => 'The text exceeds %d characters.',
-    'error.idioma_no_soportado' => 'Use a supported language code, such as "spa" or "es".',
+    'error.idioma_no_soportado' => 'Use a supported language code, such as "spa".',
     'error.demasiadas_peticiones' => 'Too many requests in a row. Wait a moment.',
     'error.error_interno' => 'The text could not be reviewed.',
 ];

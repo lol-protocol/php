@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '«%1$s» lido em seguida soa como «%2$s» (%3$s)',
     'explanation.variant' => '«%1$s» soa igual a «%2$s» com outra grafia (%3$s)',
     'explanation.match' => '«%1$s» coincide com «%2$s» (%3$s)',
-    'explanation.related' => '; idioma aparentado, confiança %.2f',
+    'explanation.related' => '; idioma aparentado, confiança %.2F',
     'explanation.collision' => '; também é nome ou sobrenome real documentado, vai para revisão humana',
     'explanation.end' => '.',
     'recommendation.reject' => 'Rejeitar: conteúdo gravemente ofensivo (tipos de risco: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'O corpo excede %d bytes.',
     'error.texto_requerido' => 'Envie um objeto JSON em UTF-8 com "text" do tipo string.',
     'error.texto_demasiado_largo' => 'O texto excede %d caracteres.',
-    'error.idioma_no_soportado' => 'Use um código de idioma suportado, como "spa" ou "es".',
+    'error.idioma_no_soportado' => 'Use um código de idioma suportado, como "spa".',
     'error.demasiadas_peticiones' => 'Muitas requisições seguidas. Aguarde um momento.',
     'error.error_interno' => 'Não foi possível revisar o texto.',
 ];

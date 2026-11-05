@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '“%1$s” birleşik okunduğunda “%2$s” gibi duyuluyor (%3$s)',
     'explanation.variant' => '“%1$s”, “%2$s” ile aynı sesleniyor, yazımı farklı (%3$s)',
     'explanation.match' => '“%1$s”, “%2$s” ile eşleşiyor (%3$s)',
-    'explanation.related' => '; akraba dil, güven %.2f',
+    'explanation.related' => '; akraba dil, güven %.2F',
     'explanation.collision' => '; aynı zamanda belgelenmiş gerçek bir ad veya soyadı, insan incelemesine gider',
     'explanation.end' => '.',
     'recommendation.reject' => 'Reddet: ağır derecede saldırgan içerik (risk türleri: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'Gövde %d baytı aşıyor.',
     'error.texto_requerido' => 'UTF-8 bir JSON nesnesi gönderin; "text" alanı dize olmalı.',
     'error.texto_demasiado_largo' => 'Metin %d karakteri aşıyor.',
-    'error.idioma_no_soportado' => 'Desteklenen bir dil kodu kullanın, örneğin "spa" veya "es".',
+    'error.idioma_no_soportado' => 'Desteklenen bir dil kodu kullanın, örneğin "spa".',
     'error.demasiadas_peticiones' => 'Art arda çok fazla istek. Biraz bekleyin.',
     'error.error_interno' => 'Metin incelenemedi.',
 ];

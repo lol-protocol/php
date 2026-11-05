@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '“%1$s”을(를) 이어서 읽으면 “%2$s”처럼 들립니다(%3$s)',
     'explanation.variant' => '“%1$s”은(는) 철자만 다를 뿐 “%2$s”와 소리가 같습니다(%3$s)',
     'explanation.match' => '“%1$s”은(는) “%2$s”와 일치합니다(%3$s)',
-    'explanation.related' => '; 계통이 가까운 언어, 신뢰도 %.2f',
+    'explanation.related' => '; 계통이 가까운 언어, 신뢰도 %.2F',
     'explanation.collision' => '; 문서로 확인된 실제 이름 또는 성이기도 하므로 사람이 검토합니다',
     'explanation.end' => '.',
     'recommendation.reject' => '거부: 매우 심하게 모욕적인 내용입니다(위험 유형: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => '본문이 %d바이트를 초과합니다.',
     'error.texto_requerido' => '문자열 형식의 "text"가 있는 UTF-8 JSON 객체를 보내세요.',
     'error.texto_demasiado_largo' => '텍스트가 %d자를 초과합니다.',
-    'error.idioma_no_soportado' => '"spa"나 "es" 같은 지원되는 언어 코드를 사용하세요.',
+    'error.idioma_no_soportado' => '"spa"와 같은 지원되는 언어 코드를 사용하세요.',
     'error.demasiadas_peticiones' => '연속 요청이 너무 많습니다. 잠시 기다려 주세요.',
     'error.error_interno' => '텍스트를 검토하지 못했습니다.',
 ];

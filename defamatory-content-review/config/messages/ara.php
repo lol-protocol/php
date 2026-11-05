@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '«%1$s» عند قراءتها متصلة تبدو مثل «%2$s» (%3$s)',
     'explanation.variant' => '«%1$s» تُنطق مثل «%2$s» بإملاء آخر (%3$s)',
     'explanation.match' => '«%1$s» تطابق «%2$s» (%3$s)',
-    'explanation.related' => '؛ لغة قريبة، الثقة %.2f',
+    'explanation.related' => '؛ لغة قريبة، الثقة %.2F',
     'explanation.collision' => '؛ وهي أيضًا اسم أو لقب حقيقي موثّق، لذا تُحال إلى مراجعة بشرية',
     'explanation.end' => '.',
     'recommendation.reject' => 'رفض: محتوى مسيء بشدة (أنواع الخطر: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'حجم المحتوى يتجاوز %d بايت.',
     'error.texto_requerido' => 'أرسل كائن JSON بترميز UTF-8 فيه الحقل "text" من نوع نص.',
     'error.texto_demasiado_largo' => 'النص يتجاوز %d حرفًا.',
-    'error.idioma_no_soportado' => 'استخدم رمز لغة مدعومًا، مثل "spa" أو "es".',
+    'error.idioma_no_soportado' => 'استخدم رمز لغة مدعومًا، مثل "spa".',
     'error.demasiadas_peticiones' => 'طلبات متتالية كثيرة. انتظر قليلًا.',
     'error.error_interno' => 'تعذّرت مراجعة النص.',
 ];
