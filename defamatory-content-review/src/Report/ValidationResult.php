@@ -66,8 +66,11 @@ class ValidationResult
     /** @param array<string,float> $languages */ public function setLanguagesChecked(array $languages): self { $this->languagesChecked = $languages; return $this; }
     /** @return array<string,float> */ public function getLanguagesChecked(): array { return $this->languagesChecked; }
 
-    /** @return array<int,string> una frase por término marcado, para quien revise el caso */
-    public function getExplanations(): array { return array_map([TermExplanation::class, 'of'], $this->getFlaggedTerms()); }
+    /** @return array<int,string> una frase por término marcado, en el idioma `$locale` (ISO 639-3, `Messages::locales()`) */
+    public function getExplanations(string $locale = Messages::DEFAULT_LOCALE): array
+    {
+        return array_map(static fn(array $t): string => TermExplanation::of($t, $locale), $this->getFlaggedTerms());
+    }
 
     /** @return array<string,mixed> */
     public function toArray(): array

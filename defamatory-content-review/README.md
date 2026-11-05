@@ -979,11 +979,29 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa', ?
 | `batchValidateNames(array $names)` | `ValidationResult[]` |
 | `batchValidateFullNames(array $names)` | `ValidationResult[]` |
 | `decide(ValidationResult $r)` | `accept` \| `accept_with_flag` \| `review` \| `reject` |
-| `getDetailedReport(ValidationResult $r)` | `array` |
+| `getDetailedReport(ValidationResult $r, string $locale = 'spa')` | `array` — frases en el idioma de salida (ver «Idioma de salida») |
 | `getLanguage()` / `setLanguage(string $l)` | `string` / `self` |
 | `getPolicy()` / `setPolicy(ScoringPolicy $p)` | `ScoringPolicy` / `self` |
 | `languages()` | `LanguageAccess` — diccionarios y cobertura |
 | `related()` | `RelatedLanguageValidator` — validación contra idiomas emparentados |
+
+### Idioma de salida
+
+Las frases legibles del informe (la explicación de cada término, la recomendación y la
+descripción de cada categoría de riesgo) salen en español por defecto. Pásale otro idioma
+(ISO 639-3) a `getDetailedReport($result, 'eng')` o a `$result->getExplanations('eng')`:
+
+```php
+$result->getExplanations('eng')[0];
+// “Elba Gina” read together sounds like “vagina” (dictionary spa, type fonetico, severity medium).
+```
+
+Hay mensajes en `eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol` y `rus` (`Messages::locales()`);
+con otro idioma, o con una clave que falte, sale el español. Los textos viven en
+`config/messages/<código>.php` con claves planas, y `spa` es el origen: añadir un idioma es copiar
+ese archivo y traducir; `MessagesTest` exige las mismas claves y los mismos marcadores
+(`%1$s`, `%.2f`…). Son borradores sin revisión de hablante nativo. Los códigos de riesgo
+(`fonetico`), las decisiones (`review`) y los nombres de campo no se traducen.
 
 Los métodos que antes vivían directo en `DefamatoryContentReviewer` para
 idiomas emparentados y acceso a diccionarios ahora cuelgan de dos objetos
@@ -1016,7 +1034,7 @@ $reviewer->getLanguagesByCoverage($level);           $reviewer->languages()->byC
 | `getTermsByDetectionMethod(string $m)` | `array` (`'literal'` \| `'phonetic_fusion'` \| `'phonetic_variant'`) |
 | `getLanguagesChecked()` | `array<string,float>` |
 | `getExplanations()` | `string[]` — una frase por término: qué coincidió, con qué entrada, idioma, tipo y severidad |
-| `toArray()` | `array` (incluye `explanations`) |
+| `toArray()` | `array` (incluye `explanations`, en español) |
 
 Cada término de `getFlaggedTerms()` trae también `matchedEntry` (la forma del
 diccionario que coincidió) y, en fusiones, `fusedFrom` (el nombre completo):
@@ -1129,6 +1147,7 @@ src/                                Namespace DefamatoryContentReview\ (cada car
 │   ├── ValidationResult.php        Resultado con trazabilidad por idioma y método
 │   ├── FlaggedTermCollection.php   Términos marcados y sus consultas — colaborador de ValidationResult
 │   ├── TermExplanation.php         Frase legible de por qué se marcó cada término
+│   ├── Messages.php                Frases del informe por idioma (config/messages/)
 │   └── RiskReportBuilder.php       Arma getDetailedReport() (interno)
 ├── Review/                         Planillas de revisión nativa → config/ (bin/apply-review.php)
 │   ├── ReviewSheet.php             Respuestas del revisor → cambios

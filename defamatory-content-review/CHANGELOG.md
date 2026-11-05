@@ -2,6 +2,15 @@
 
 ## [Sin publicar]
 
+### Añadido
+
+- **Idioma de salida del informe** (`Messages`, `config/messages/`): la explicación de cada
+  término, la recomendación y la descripción de cada categoría de riesgo se pueden pedir en
+  `eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol` o `rus` con
+  `getDetailedReport($result, $locale)` y `getExplanations($locale)`. Español por defecto (la
+  salida de siempre) y como respaldo de lo que falte. Borradores sin revisión nativa;
+  `MessagesTest` comprueba que cada idioma tiene las mismas claves y marcadores que el español.
+
 ### Corregido
 
 - **Rellenos invisibles entre letras** (`EvasionCleaner`): el Hangul filler
