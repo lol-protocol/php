@@ -912,9 +912,9 @@ palabras no entiende contexto:
   (plurales sanos y los rotos de las palabras más comunes), el hindi (casos
   oblicuos y plurales), el tagalo (el ligamento «-ng»: «tangang») y el islandés (sustantivos
   con artículo pospuesto, por terminación: «hundur» → «hundinn»; sin cambios de vocal ni adjetivos).
-  No tienen reglas: suajili (clases nominales; UniMorph trae solo 2 sustantivos, no se puede medir, y
-  no hay lista de frecuencias para medir falsos positivos); el
-  indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
+  El suajili solo pluraliza por el prefijo de la clase («mjinga» → «wajinga», «kibaka» → «vibaka»),
+  **sin medir**: UniMorph trae 2 sustantivos y no hay lista de frecuencias para los falsos positivos.
+  No flexionan el indonesio, el vietnamita, el japonés, el coreano, el tailandés ni el cantonés. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   Los idiomas sin reglas no tienen plurales, géneros ni conjugaciones automáticos —sólo la
   forma base y las que se añadan a mano con `also`—, y se escribieron

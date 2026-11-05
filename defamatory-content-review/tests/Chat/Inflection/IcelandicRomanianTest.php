@@ -6,7 +6,7 @@ use DefamatoryContentReview\Chat\Inflection\TopicInflector;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** IcelandicInflection y las clases de RomanianInflection medidas contra UniMorph (bin/inflection-check.php). */
+/** IcelandicInflection y RomanianInflection (medidas contra UniMorph con bin/inflection-check.php), SwahiliInflection y ArabicPlurals. */
 class IcelandicRomanianTest extends TestCase
 {
     /** @return array<string,array{string,string,string,list<string>}> idioma, lema, tipo, formas que deben estar */
@@ -21,6 +21,13 @@ class IcelandicRomanianTest extends TestCase
             'rumano -ă: plural indefinido y artículo' => ['ron', 'târfă', 'noun', ['târfa', 'târfe', 'târfei', 'târfele']],
             'rumano -e' => ['ron', 'câine', 'noun', ['câini', 'câinii', 'câinilor']],
             'rumano -u' => ['ron', 'dobitoc', 'noun', ['dobitoci', 'dobitocul', 'dobitocule']],
+            'suajili: personas m- → wa-' => ['swa', 'mjinga', 'noun', ['wajinga']],
+            'suajili: mw- → wa-, mwi- → we-, mu- → wa-' => ['swa', 'mwongo', 'noun', ['waongo']],
+            'suajili: mwe- → we-' => ['swa', 'mwembamba', 'noun', ['wembamba']],
+            'suajili: mwizi' => ['swa', 'mwizi', 'noun', ['wezi']],
+            'suajili: ki- → vi-, ji- → ma-ji-' => ['swa', 'kibaka', 'noun', ['vibaka']],
+            'suajili ji-' => ['swa', 'jitu', 'noun', ['majitu']],
+            'árabe: plurales rotos añadidos' => ['ara', 'مخنث', 'noun', ['مخانيث']],
             'rumano adjetivo -st' => ['ron', 'prost', 'adj', ['proști', 'prostă', 'prostul', 'prostului', 'proștilor']],
             'rumano adjetivo -t' => ['ron', 'tâmpit', 'adj', ['tâmpită', 'tâmpite', 'tâmpiți', 'tâmpitul', 'tâmpiților']],
         ];
@@ -41,5 +48,12 @@ class IcelandicRomanianTest extends TestCase
     {
         $this->assertSame(['heimskur'], array_keys(TopicInflector::tagged('isl', 'heimskur', 'adj')));
         $this->assertSame(['bölva'], array_keys(TopicInflector::tagged('isl', 'bölva', 'verb')));
+    }
+
+    public function testSwahiliKeepsNClassAndOtherKindsLiteral(): void
+    {
+        $this->assertSame(['mbwa'], array_keys(TopicInflector::tagged('swa', 'mbwa', 'noun')));
+        $this->assertSame(['nguruwe'], array_keys(TopicInflector::tagged('swa', 'nguruwe', 'noun')));
+        $this->assertSame(['mnene'], array_keys(TopicInflector::tagged('swa', 'mnene', 'adj')));
     }
 }

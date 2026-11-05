@@ -4,6 +4,10 @@
 
 ### Añadido
 
+- **Suajili** (`SwahiliInflection`): plural de los sustantivos por el prefijo de la clase («m-» → «wa-»,
+  «ki-» → «vi-», «ji-» → «ma-ji-»). Sin medir: no hay datos de UniMorph ni lista de frecuencias.
+- **Árabe**: 13 plurales más en `ArabicPlurals` (rotos y sanos irregulares de palabras del diccionario).
+
 - **Más idiomas de salida del informe**: `ara`, `heb`, `jpn`, `kor`, `hin`, `tur`, `ukr`, `ces`,
   `swe` y `ron` se suman a los ocho de antes (18 en total, borradores sin revisión nativa).
 - **Errores del endpoint en el idioma del cliente** (`ModerationEndpoint::handle(…, $locale)`,
