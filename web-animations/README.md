@@ -83,7 +83,8 @@ hablar de la misma animación; además, la dificultad de cada tarjeta tiene que
 tener color en el modal de detalles. Después `tests/smoke.mjs` abre las 37
 páginas en Chromium y falla si alguna tiene un error de JavaScript, un recurso
 que no carga, `common.css`/`common.js` sin aplicar, o un botón de pausa que no
-responde. Por último `tests/particles-in-bounds.mjs` avanza la lluvia de
+responde. Si ya tienes un Chromium instalado (en los contenedores de la nube la versión no es
+la que baja Playwright), pásalo con `CHROMIUM=/ruta/al/chromium npm test`. Por último `tests/particles-in-bounds.mjs` avanza la lluvia de
 partículas (G) 1.500 cuadros, con números al azar de semilla fija, y falla si
 alguna partícula queda bajo el piso o fuera de una pared. Corre en CI en cada
 push.
