@@ -53,7 +53,7 @@ es solo texto; `marketing/` es texto e imágenes con dos scripts PHP sueltos (`r
 generador/validador de `iconos-tools/` (ver "CI/CD" más abajo); y `privacy-laws/` y
 `copyright-laws/` comparten en `leyes-comunes/` el código que hacían igual (verificador de enlaces,
 caché de textos, registro de cambios, traducciones y validación del CSV), sin que uno dependa del
-otro. Tres proyectos usan `defamatory-content-review/` y necesitan esa carpeta al lado:
+otro. Cuatro proyectos usan `defamatory-content-review/` y necesitan esa carpeta al lado:
 
 - **`phone-directory/`** usa sus clases de plegado de acentos y claves fonéticas; su
   `composer.json` la declara como dependencia Composer (`lol-protocol/defamatory-content-review`,
@@ -62,8 +62,10 @@ otro. Tres proyectos usan `defamatory-content-review/` y necesitan esa carpeta a
   `../defamatory-content-review` o en la carpeta de `FILTRO_DIFAMACION_DIR`.
 - **`marcalibros-plataforma-pos-brand-identity/`** revisa con su filtro el texto que cada persona
   escribe en su marcalibro; su aplicación carga las clases desde `../defamatory-content-review/src/`.
+- **`url-routing/`** pasa por su filtro los pedidos de retiro (`url-routing/Support/FiltroPedidos.php`).
 
-Por eso los workflows de esos tres corren también cuando cambia `defamatory-content-review/`. El
+Por eso los workflows de esos cuatro corren también cuando cambia `defamatory-content-review/`
+(`pruebas-url-routing.yml` solo mira su `src/` y su `config/`). El
 resto de proyectos no depende de ningún otro.
 
 ## Desarrollo
@@ -101,7 +103,7 @@ Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando camb
 - `pruebas-phone-directory.yml` (también corre si cambia `defamatory-content-review/`, que `phone-directory/` usa como dependencia): `phone-directory` (tests de `phone-directory/`, incluidos los ejemplos, contra SQLite y PostgreSQL, y el benchmark) y `phone-directory-ports` (tests de sus ports a Python y Java).
 - `pruebas-url-routing.yml`: tests de `url-routing/` contra SQLite y PostgreSQL, que sus migraciones corran limpias en PostgreSQL, y `despliegue`: una prueba de humo del despliegue de su guía con nginx y PHP-FPM de verdad (`url-routing/deploy/smoke-test.sh`: permisos, migraciones, `/ready`, cabeceras, HTTPS, el ciclo de un pedido de retiro y el limitador).
 - `pruebas-document-formats.yml`: `document-formats` (tests en Node de `document-formats/`) y `document-formats-database` (importa `document-formats/` a MySQL, dos veces para comprobar que no duplica filas, y lo valida contra los CSV).
-- `pruebas-web-animations.yml`: prueba de humo de las animaciones.
+- `pruebas-web-animations.yml`: comprueba que la galería, cada página y su fila de la tabla hablen de la misma animación (`gallery-metadata`), abre las 37 páginas en Chromium (`smoke`) y avanza la lluvia de partículas 1.500 cuadros para comprobar que no sale de la ventana (`particles-in-bounds`).
 - `pruebas-siluetas-ancestrales.yml`: pruebas en Node 22 de `siluetas-ancestrales/` (`node --test 'pruebas/*.test.js'`: catálogo, que todo atuendo se dibuje bien, determinismo, ropa nueva y que el paquete `dist/` dé lo mismo que `src/`) y que `dist/` y `ejemplos/` coincidan con lo que genera el código (`node bin/construir.js --comprobar`).
 - `pruebas-listado-colores.yml`: valida los nueve CSV y `CHANGELOG.md` de `Listado-colores/` y que la tabla del README, `colores-por-idioma.md`, las páginas de `por-idioma/`, `referencias.md`, `ambiguedad.md`, `auditoria-nombres.md`, `categorias.md`, `revisiones.md`, `visor-revision.html` y `exportes/` (con los patrones de spaCy y el manifiesto) estén al día, y construye una base SQLite en memoria (`python3 generar-tabla.py --comprobar`); corre además las pruebas del generador (`python3 -m unittest pruebas`) y repite las dos cosas en Python 3.10 y 3.14 sobre Ubuntu 24.04 y en Python 3.13 sobre macOS 15.
 - `pruebas-listado-paises.yml`: valida los CSV de `Listado-paises/` y que `tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` estén al día (`python3 generar_tabla.py --comprobar`), y corre sus pruebas (`python3 -m unittest pruebas`).
@@ -110,7 +112,7 @@ Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando camb
 - `pruebas-citas-pos.yml`: corre las pruebas de los validadores y del generador de `citas-pos/` (`php citas-pos/pruebas/ejecutar.php`), comprueba la paleta de `citas-pos/` (las 17 categorías, contraste de 4,5:1 en modo claro y oscuro y que ningún par de colores se parezca demasiado), que `prototipo/index.html` y `salida/` (las piezas de cita coloreada para el correo y el sitio, y el juego «Adivina la categoría») coincidan con lo que genera el código, que cada cita de `datos/citas.json` tenga su ficha completa y ninguna figure como verificada sin texto, edición y dos fuentes, y que el registro de revisiones sea válido, en PHP 8.3.
 - `marcalibros-b.yml`: genera los 1000 marcalibros de `marcalibros_b/` con Chromium para el QA, pasa sus pruebas (determinismo, hashes de referencia, modelo de datos y editor) y sube el catálogo como artefacto `marcalibros-catalogo`. Se puede lanzar a mano con `workflow_dispatch` (entrada `forzar` para ignorar la caché).
 
-`sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`, que también corre si cambia `defamatory-content-review/`, del que depende). `vps-setup/` tiene además `vps-setup-e2e.yml`: instala todo de verdad (`apt`, `systemd`, servicios) en un Ubuntu 24.04 desechable; solo corre si cambian los scripts, cada lunes o a mano.
+`sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`, que también corre si cambia `defamatory-content-review/`, del que depende). `vps-setup.yml` corre además si cambian `landing-page/`, Marcalibros o `defamatory-content-review/`, que sus pruebas leen. `vps-setup/` tiene además `vps-setup-e2e.yml`: instala todo de verdad (`apt`, `systemd`, servicios) en un Ubuntu 24.04 desechable; solo corre si cambian los scripts o `landing-page/`, cada lunes o a mano.
 
 `iconos.yml` valida los tres sets de iconos: que los SVG commiteados coincidan con lo que produce
 `iconos-tools/build.py`, `iconos-tools/validate.py` y `iconos-tools/similares.py` (iconos casi
