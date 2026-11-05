@@ -205,6 +205,15 @@ final class PagosControllerTest extends TestCase
         self::assertSame('La fecha de pago no es válida.', PagosController::errorDeLosCampos('2026-02-30', 'tarjeta', 50.0));
     }
 
+    public function testUnPagoNoPuedeTenerFechaFutura(): void
+    {
+        $mensaje = 'La fecha de pago no puede ser futura.';
+        self::assertSame($mensaje, PagosController::errorDeLosCampos('2026-06-16', 'tarjeta', 50.0, null, '2026-06-15'));
+        self::assertNull(PagosController::errorDeLosCampos('2026-06-15', 'tarjeta', 50.0, null, '2026-06-15'), 'el mismo dia de hoy esta bien');
+        self::assertNull(PagosController::errorDeLosCampos('2026-06-14', 'tarjeta', 50.0, null, '2026-06-15'));
+        self::assertSame($mensaje, PagosController::errorDeLosCampos('2999-01-01', 'tarjeta', 50.0), 'sin $hoy se usa el dia real');
+    }
+
     public function testConVariosErroresDeUnPagoGanaElPrimeroDelOrden(): void
     {
         self::assertSame(
