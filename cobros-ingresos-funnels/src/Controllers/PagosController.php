@@ -284,7 +284,7 @@ final class PagosController
             return 'La fecha de pago no es válida.';
         }
         // Un pago es algo que ya ocurrió: con fecha futura entraría en los ingresos de un mes que no termina.
-        if ($fechaPago > ($hoy ?? date('Y-m-d'))) {
+        if (!Validacion::fechaNoEsFutura($fechaPago, $hoy)) {
             return 'La fecha de pago no puede ser futura.';
         }
 
