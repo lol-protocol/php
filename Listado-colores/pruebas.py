@@ -49,7 +49,7 @@ gt = importlib.util.module_from_spec(_especificacion)
 _especificacion.loader.exec_module(gt)
 
 ARCHIVOS_DE_ENTRADA = ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
-                       "significados-culturales.csv", "categorias.csv", "referencias.csv", "revisiones.csv", "visor-plantilla.html",
+                       "significados-culturales.csv", "categorias.csv", "referencias.csv", "revisiones.csv", "colisiones-revisadas.csv", "visor-plantilla.html",
                        "CHANGELOG.md", "README.md"]
 REAL = {}  # los CSV reales, leídos una vez; cada prueba trabaja con copias (ver real())
 BASE = {}  # la carpeta temporal con el proyecto reducido ya generado
@@ -65,6 +65,7 @@ def setUpModule():
     REAL["culturales"] = gt.leer(gt.CULTURALES, gt.COLUMNAS_CULTURALES)
     REAL["categorias"] = gt.leer(gt.CATEGORIAS, categorias.COLUMNAS)
     REAL["revisiones"] = gt.leer(gt.REVISIONES, revision.COLUMNAS)
+    REAL["colisiones_revisadas"] = gt.leer(gt.COLISIONES_REVISADAS, gt.COLUMNAS_COLISIONES)
     BASE["temporal"] = tempfile.TemporaryDirectory()
     BASE["carpeta"] = Path(BASE["temporal"].name)
     preparar_proyecto_reducido(BASE["carpeta"])
@@ -105,7 +106,7 @@ def rutas_para(carpeta):
         "SIGNIFICADOS": carpeta / "significados-idiomas.csv", "LEXICO": carpeta / "lexico-basico.csv",
         "REFERENCIAS": carpeta / "referencias.csv", "EVIDENCIA": carpeta / "evidencia.csv",
         "CULTURALES": carpeta / "significados-culturales.csv", "CATEGORIAS": carpeta / "categorias.csv",
-        "CATEGORIAS_MD": carpeta / "categorias.md", "COBERTURA": carpeta / "cobertura.md", "REVISIONES": carpeta / "revisiones.csv",
+        "CATEGORIAS_MD": carpeta / "categorias.md", "COBERTURA": carpeta / "cobertura.md", "REVISIONES": carpeta / "revisiones.csv", "COLISIONES_REVISADAS": carpeta / "colisiones-revisadas.csv",
         "REVISIONES_MD": carpeta / "revisiones.md", "VISOR_PLANTILLA": carpeta / "visor-plantilla.html",
         "VISOR": carpeta / "visor-revision.html", "REFS_MD": carpeta / "referencias.md",
         "AMBIGUEDAD": carpeta / "ambiguedad.md", "AUDITORIA": carpeta / "auditoria-nombres.md", "CHANGELOG": carpeta / "CHANGELOG.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
@@ -1164,6 +1165,28 @@ class Cobertura(unittest.TestCase):
         anotada = [{"nombre_ingles": "a", "forma_natural_en": "a", "nombre_es": "Azul", "hex": "#000001"},
                    {"nombre_ingles": "b", "forma_natural_en": "b", "nombre_es": "azul", "hex": "#000002"}]
         self.assertEqual(cobertura.colisiones_nombres([("es", "Español")], anotada), {"es": [("Azul", ["a", "b"])]})
+
+    def test_una_colision_nueva_o_corregida_hace_fallar_la_lista_revisada(self):
+        anotada = [{"nombre_ingles": n, "forma_natural_en": n, "nombre_es": "Azul", "hex": h} for n, h in (("a", "#000001"), ("b", "#000002"))]
+        gt_idiomas, gt.IDIOMAS = gt.IDIOMAS, [("es", "Español")]
+        try:
+            def errores(revisadas):
+                salida = []
+                gt.validar_colisiones(revisadas, anotada, salida)
+                return salida
+            self.assertEqual(errores([{"idioma": "es", "nombre": "azul", "colores": "a|b"}]), [])
+            self.assertIn("colisión nueva sin revisar", errores([])[0])
+            self.assertIn("ya no existe", errores([{"idioma": "es", "nombre": "azul", "colores": "a|b"},
+                                                    {"idioma": "es", "nombre": "rojo", "colores": "c|d"}])[0])
+            self.assertIn("repetidas", errores([{"idioma": "es", "nombre": "azul", "colores": "a|b"}] * 2)[0])
+        finally:
+            gt.IDIOMAS = gt_idiomas
+
+    def test_las_colisiones_reales_estan_todas_revisadas(self):
+        errores = []
+        gt.validar_colisiones(REAL["colisiones_revisadas"], REAL["anotada"], errores)
+        self.assertEqual(errores, [])
+        self.assertEqual(len(REAL["colisiones_revisadas"]), 29)
 
     def test_lemas_compartidos_reales(self):
         compartidos = cobertura.lemas_compartidos(gt.IDIOMAS, REAL["lexico"], self.hex_concepto())
