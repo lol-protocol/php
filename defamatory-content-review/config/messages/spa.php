@@ -15,4 +15,12 @@ return [
     'recommendation.review' => 'Revisión humana: términos potencialmente ofensivos (%s).',
     'recommendation.accept_with_flag' => 'Aceptar con marca: términos de bajo riesgo (%s).',
     'recommendation.accept' => 'Aceptar: sin contenido difamatorio detectado.',
+    'error.metodo_no_permitido' => 'Usa POST.',
+    'error.tipo_no_soportado' => 'Envía el cuerpo con Content-Type: application/json.',
+    'error.cuerpo_demasiado_grande' => 'El cuerpo supera %d bytes.',
+    'error.texto_requerido' => 'Envía un objeto JSON en UTF-8 con "text" de tipo string.',
+    'error.texto_demasiado_largo' => 'El texto supera %d caracteres.',
+    'error.idioma_no_soportado' => 'Usa un código de idioma soportado, como "spa" o "es".',
+    'error.demasiadas_peticiones' => 'Demasiadas peticiones seguidas. Espera un momento.',
+    'error.error_interno' => 'No se pudo revisar el texto.',
 ];

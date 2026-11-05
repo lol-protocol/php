@@ -28,6 +28,32 @@ final class Messages
         return self::table($locale)[$key] ?? self::table(self::DEFAULT_LOCALE)[$key] ?? null;
     }
 
+    /**
+     * El primer idioma de una cabecera Accept-Language («pt-BR,pt;q=0.9,en;q=0.8») que tenga mensajes,
+     * por código de 2 o 3 letras; español si ninguno. Respeta el orden de la cabecera, no los pesos q.
+     */
+    public static function negotiate(string $header): string
+    {
+        static $byIso1 = null;
+        if ($byIso1 === null) {
+            $byIso1 = [];
+            foreach (require dirname(__DIR__, 2) . '/config/supported-languages.php' as $code => $language) {
+                $byIso1[$language['iso639_1'] ?? ''] ??= $code;
+            }
+        }
+        $have = self::locales();
+
+        foreach (explode(',', strtolower(substr($header, 0, 200))) as $part) {
+            $tag = explode('-', trim(explode(';', $part)[0]))[0];
+            $code = in_array($tag, $have, true) ? $tag : ($byIso1[$tag] ?? '');
+            if (in_array($code, $have, true)) {
+                return $code;
+            }
+        }
+
+        return self::DEFAULT_LOCALE;
+    }
+
     /** @return array<int,string> idiomas con mensajes propios, ordenados */
     public static function locales(): array
     {

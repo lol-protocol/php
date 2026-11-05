@@ -22,7 +22,7 @@ class MessagesTest extends TestCase
     /** @return array<int,string> los marcadores de sprintf de un texto, ordenados */
     private static function placeholders(string $text): array
     {
-        preg_match_all('/%(?:\d+\$)?(?:\.\d+)?[sf]/', $text, $m);
+        preg_match_all('/%(?:\d+\$)?(?:\.\d+)?[sdf]/', $text, $m);
         sort($m[0]);
 
         return $m[0];

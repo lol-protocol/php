@@ -37,4 +37,12 @@ return [
     'category.etnico.description' => 'Obelgi oparte na pochodzeniu etnicznym',
     'category.fonetico.name' => 'Fonetyczne',
     'category.fonetico.description' => 'Imię i nazwisko czytane razem, bez przerwy, tworzą słowo lub inny (często wulgarny) termin, którego nie ma w żadnym z nich osobno',
+    'error.metodo_no_permitido' => 'Użyj POST.',
+    'error.tipo_no_soportado' => 'Wyślij treść z nagłówkiem Content-Type: application/json.',
+    'error.cuerpo_demasiado_grande' => 'Treść przekracza %d bajtów.',
+    'error.texto_requerido' => 'Wyślij obiekt JSON w UTF-8 z polem "text" typu string.',
+    'error.texto_demasiado_largo' => 'Tekst przekracza %d znaków.',
+    'error.idioma_no_soportado' => 'Użyj obsługiwanego kodu języka, na przykład "spa" lub "es".',
+    'error.demasiadas_peticiones' => 'Zbyt wiele żądań z rzędu. Poczekaj chwilę.',
+    'error.error_interno' => 'Nie udało się sprawdzić tekstu.',
 ];
