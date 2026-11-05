@@ -8,7 +8,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const animationsDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'animations');
 const pages = readdirSync(animationsDir).filter(f => f.endsWith('.html')).sort();
 
-const browser = await chromium.launch();
+// CHROMIUM = un Chromium ya instalado (los contenedores de la nube traen otra version que la que baja Playwright).
+const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
 const failures = [];
 
 for (const file of pages) {

@@ -2,6 +2,7 @@
   "name": "web-animations",
   "private": true,
   "type": "module",
+  "engines": { "node": ">=22" },
   "scripts": {
     "test": "node tests/gallery-metadata.mjs && node tests/smoke.mjs && node tests/particles-in-bounds.mjs"
   },
