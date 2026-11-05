@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '“%1$s” כשקוראים ברצף נשמע כמו “%2$s” (%3$s)',
     'explanation.variant' => '“%1$s” נשמע כמו “%2$s” באיות אחר (%3$s)',
     'explanation.match' => '“%1$s” תואם ל“%2$s” (%3$s)',
-    'explanation.related' => '; שפה קרובה, ביטחון %.2f',
+    'explanation.related' => '; שפה קרובה, ביטחון %.2F',
     'explanation.collision' => '; זהו גם שם פרטי או שם משפחה אמיתי ומתועד, ולכן עובר לבדיקה אנושית',
     'explanation.end' => '.',
     'recommendation.reject' => 'דחייה: תוכן פוגעני מאוד (סוגי סיכון: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'הגוף חורג מ-%d בייטים.',
     'error.texto_requerido' => 'שלחו אובייקט JSON בקידוד UTF-8 עם "text" מסוג מחרוזת.',
     'error.texto_demasiado_largo' => 'הטקסט חורג מ-%d תווים.',
-    'error.idioma_no_soportado' => 'השתמשו בקוד שפה נתמך, כמו "spa" או "es".',
+    'error.idioma_no_soportado' => 'השתמשו בקוד שפה נתמך, כמו "spa".',
     'error.demasiadas_peticiones' => 'יותר מדי בקשות ברצף. המתינו רגע.',
     'error.error_interno' => 'לא ניתן היה לבדוק את הטקסט.',
 ];

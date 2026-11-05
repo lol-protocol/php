@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '„%1$s“ klingt zusammengesprochen wie „%2$s“ (%3$s)',
     'explanation.variant' => '„%1$s“ klingt wie „%2$s“ in anderer Schreibweise (%3$s)',
     'explanation.match' => '„%1$s“ stimmt mit „%2$s“ überein (%3$s)',
-    'explanation.related' => '; verwandte Sprache, Konfidenz %.2f',
+    'explanation.related' => '; verwandte Sprache, Konfidenz %.2F',
     'explanation.collision' => '; ist auch ein dokumentierter echter Vor- oder Nachname und geht zur menschlichen Prüfung',
     'explanation.end' => '.',
     'recommendation.reject' => 'Ablehnen: schwer beleidigender Inhalt (Risikotypen: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'Der Body überschreitet %d Bytes.',
     'error.texto_requerido' => 'Sende ein JSON-Objekt in UTF-8 mit einem String-Feld "text".',
     'error.texto_demasiado_largo' => 'Der Text überschreitet %d Zeichen.',
-    'error.idioma_no_soportado' => 'Verwende einen unterstützten Sprachcode, etwa "spa" oder "es".',
+    'error.idioma_no_soportado' => 'Verwende einen unterstützten Sprachcode, etwa "spa".',
     'error.demasiadas_peticiones' => 'Zu viele Anfragen in Folge. Warte einen Moment.',
     'error.error_interno' => 'Der Text konnte nicht geprüft werden.',
 ];

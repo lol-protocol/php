@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '「%1$s」は続けて読むと「%2$s」に聞こえます（%3$s）',
     'explanation.variant' => '「%1$s」は別の表記で「%2$s」と同じ音です（%3$s）',
     'explanation.match' => '「%1$s」は「%2$s」と一致します（%3$s）',
-    'explanation.related' => '。近縁言語、信頼度 %.2f',
+    'explanation.related' => '。近縁言語、信頼度 %.2F',
     'explanation.collision' => '。実在が確認されている名前または姓でもあるため、人による確認に回します',
     'explanation.end' => '。',
     'recommendation.reject' => '拒否：重大に不快な内容です（リスクの種類：%s）。',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => '本文が %d バイトを超えています。',
     'error.texto_requerido' => 'UTF-8 の JSON オブジェクトで、文字列型の "text" を送信してください。',
     'error.texto_demasiado_largo' => 'テキストが %d 文字を超えています。',
-    'error.idioma_no_soportado' => '対応している言語コード（"spa" や "es" など）を指定してください。',
+    'error.idioma_no_soportado' => '対応している言語コード（"spa" など）を指定してください。',
     'error.demasiadas_peticiones' => 'リクエストが連続しすぎています。しばらくお待ちください。',
     'error.error_interno' => 'テキストを確認できませんでした。',
 ];

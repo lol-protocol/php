@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '„%1$s“ čtené vcelku zní jako „%2$s“ (%3$s)',
     'explanation.variant' => '„%1$s“ zní stejně jako „%2$s“, ale píše se jinak (%3$s)',
     'explanation.match' => '„%1$s“ odpovídá „%2$s“ (%3$s)',
-    'explanation.related' => '; příbuzný jazyk, jistota %.2f',
+    'explanation.related' => '; příbuzný jazyk, jistota %.2F',
     'explanation.collision' => '; je to také doložené skutečné jméno nebo příjmení, proto jde k lidské kontrole',
     'explanation.end' => '.',
     'recommendation.reject' => 'Zamítnout: vážně urážlivý obsah (typy rizika: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'Tělo přesahuje %d bajtů.',
     'error.texto_requerido' => 'Pošlete objekt JSON v UTF-8 s textovým polem "text".',
     'error.texto_demasiado_largo' => 'Text přesahuje %d znaků.',
-    'error.idioma_no_soportado' => 'Použijte podporovaný kód jazyka, například "spa" nebo "es".',
+    'error.idioma_no_soportado' => 'Použijte podporovaný kód jazyka, například "spa".',
     'error.demasiadas_peticiones' => 'Příliš mnoho požadavků za sebou. Chvíli počkejte.',
     'error.error_interno' => 'Text se nepodařilo zkontrolovat.',
 ];

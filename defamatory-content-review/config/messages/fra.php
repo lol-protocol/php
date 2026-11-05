@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '« %1$s » lu d’un trait sonne comme « %2$s » (%3$s)',
     'explanation.variant' => '« %1$s » sonne comme « %2$s » avec une autre graphie (%3$s)',
     'explanation.match' => '« %1$s » correspond à « %2$s » (%3$s)',
-    'explanation.related' => ' ; langue apparentée, confiance %.2f',
+    'explanation.related' => ' ; langue apparentée, confiance %.2F',
     'explanation.collision' => ' ; c’est aussi un prénom ou un nom de famille réel documenté, il va en revue humaine',
     'explanation.end' => '.',
     'recommendation.reject' => 'Rejeter : contenu gravement offensant (types de risque : %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'Le corps dépasse %d octets.',
     'error.texto_requerido' => 'Envoyez un objet JSON en UTF-8 avec "text" de type chaîne.',
     'error.texto_demasiado_largo' => 'Le texte dépasse %d caractères.',
-    'error.idioma_no_soportado' => 'Utilisez un code de langue pris en charge, comme "spa" ou "es".',
+    'error.idioma_no_soportado' => 'Utilisez un code de langue pris en charge, comme "spa".',
     'error.demasiadas_peticiones' => 'Trop de requêtes consécutives. Patientez un instant.',
     'error.error_interno' => 'Le texte n’a pas pu être examiné.',
 ];

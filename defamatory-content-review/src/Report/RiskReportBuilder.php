@@ -20,9 +20,11 @@ final class RiskReportBuilder
      * @var array<string,string>
      */
     private readonly array $descriptions;
+    private readonly string $messagesDir;
 
     public function __construct(string $riskCategoriesFile)
     {
+        $this->messagesDir = dirname($riskCategoriesFile) . '/messages';
         $this->descriptions = array_map(static fn(array $c) => $c['description'], require $riskCategoriesFile);
     }
 
@@ -30,7 +32,7 @@ final class RiskReportBuilder
     public function build(ValidationResult $result, string $decision, ScoringPolicy $policy, string $locale = Messages::DEFAULT_LOCALE): array
     {
         return array_merge($result->toArray(), [
-            'explanations' => $result->getExplanations($locale),
+            'explanations' => $result->getExplanations($locale, $this->messagesDir),
             'decision' => $decision,
             'recommendation' => $this->recommendationFor($decision, $result, $locale),
             'riskAnalysis' => $this->analyzeRisks($result, $policy, $locale),
@@ -51,7 +53,7 @@ final class RiskReportBuilder
             default => 'accept',
         };
 
-        return Messages::get('recommendation.' . $key, $locale, [implode(', ', $result->getFlaggedRiskTypes())]);
+        return Messages::get('recommendation.' . $key, $locale, [implode(', ', $result->getFlaggedRiskTypes())], $this->messagesDir);
     }
 
     /** @return array<string,array<string,mixed>> */
@@ -70,7 +72,7 @@ final class RiskReportBuilder
             }
 
             $analysis[$riskType] = [
-                'description' => Messages::find("category.$riskType.description", $locale) ?? $this->descriptions[$riskType] ?? $riskType,
+                'description' => Messages::find("category.$riskType.description", $locale, $this->messagesDir) ?? $this->descriptions[$riskType] ?? $riskType,
                 'level' => $worst,
                 'isSevere' => $this->isTopWeight($worst, $policy),
                 'termCount' => count($terms),

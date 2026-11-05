@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '”%1$s” uttalat i ett stycke låter som ”%2$s” (%3$s)',
     'explanation.variant' => '”%1$s” låter som ”%2$s” med annan stavning (%3$s)',
     'explanation.match' => '”%1$s” matchar ”%2$s” (%3$s)',
-    'explanation.related' => '; besläktat språk, säkerhet %.2f',
+    'explanation.related' => '; besläktat språk, säkerhet %.2F',
     'explanation.collision' => '; det är också ett dokumenterat verkligt förnamn eller efternamn och går till mänsklig granskning',
     'explanation.end' => '.',
     'recommendation.reject' => 'Avvisa: allvarligt kränkande innehåll (risktyper: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'Innehållet överstiger %d byte.',
     'error.texto_requerido' => 'Skicka ett JSON-objekt i UTF-8 med strängfältet "text".',
     'error.texto_demasiado_largo' => 'Texten överstiger %d tecken.',
-    'error.idioma_no_soportado' => 'Använd en språkkod som stöds, till exempel "spa" eller "es".',
+    'error.idioma_no_soportado' => 'Använd en språkkod som stöds, till exempel "spa".',
     'error.demasiadas_peticiones' => 'För många förfrågningar i rad. Vänta ett ögonblick.',
     'error.error_interno' => 'Texten kunde inte granskas.',
 ];

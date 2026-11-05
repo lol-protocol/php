@@ -18,7 +18,6 @@ final class InflectionLanguages
         'slk' => SlovakInflection::class, 'bul' => BulgarianInflection::class, 'ron' => RomanianInflection::class,
         'hun' => HungarianInflection::class, 'ell' => GreekInflection::class, 'heb' => HebrewInflection::class,
         'isl' => IcelandicInflection::class, 'fin' => FinnishInflection::class, 'ara' => ArabicInflection::class, 'hin' => HindiInflection::class, 'tgl' => TagalogInflection::class,
-        'swa' => SwahiliInflection::class,
     ];
     /** Sustantivo y adjetivo declinan por casos. */
     private const CASES = ['rus', 'ukr', 'pol', 'ces', 'slk', 'bul', 'ron', 'hun', 'ell', 'heb', 'isl', 'fin', 'ara', 'hin', 'tgl'];

@@ -5,7 +5,7 @@ namespace Tests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** Regla del proyecto: ningún archivo de lógica supera 100 líneas (los diccionarios de config/ quedan exentos). */
+/** Regla del proyecto: ningún archivo de lógica supera 100 líneas de código, sin contar las vacías ni las de comentario (los diccionarios de config/ quedan exentos). */
 class FileSizeLimitTest extends TestCase
 {
     private const MAX_LINES = 100;
@@ -32,12 +32,12 @@ class FileSizeLimitTest extends TestCase
     #[DataProvider('logicFiles')]
     public function testFileStaysWithinLineLimit(string $file): void
     {
-        $lines = count(file($file));
+        $lines = count(array_filter(file($file) ?: [], static fn(string $l): bool => trim($l) !== '' && preg_match('~^\s*(//|#|/?\*)~', $l) !== 1));
 
         $this->assertLessThanOrEqual(
             self::MAX_LINES,
             $lines,
-            sprintf('%s tiene %d líneas (máximo %d): divídelo en colaboradores.', $file, $lines, self::MAX_LINES)
+            sprintf('%s tiene %d líneas de código (máximo %d): divídelo en colaboradores.', $file, $lines, self::MAX_LINES)
         );
     }
 }

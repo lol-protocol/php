@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '„%1$s” citit legat sună ca „%2$s” (%3$s)',
     'explanation.variant' => '„%1$s” sună la fel ca „%2$s”, dar se scrie altfel (%3$s)',
     'explanation.match' => '„%1$s” coincide cu „%2$s” (%3$s)',
-    'explanation.related' => '; limbă înrudită, încredere %.2f',
+    'explanation.related' => '; limbă înrudită, încredere %.2F',
     'explanation.collision' => '; este și un prenume sau nume de familie real, documentat, deci merge la verificare umană',
     'explanation.end' => '.',
     'recommendation.reject' => 'Respinge: conținut grav ofensator (tipuri de risc: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'Corpul depășește %d octeți.',
     'error.texto_requerido' => 'Trimite un obiect JSON în UTF-8 cu "text" de tip șir.',
     'error.texto_demasiado_largo' => 'Textul depășește %d caractere.',
-    'error.idioma_no_soportado' => 'Folosește un cod de limbă acceptat, precum "spa" sau "es".',
+    'error.idioma_no_soportado' => 'Folosește un cod de limbă acceptat, precum "spa".',
     'error.demasiadas_peticiones' => 'Prea multe cereri la rând. Așteaptă puțin.',
     'error.error_interno' => 'Textul nu a putut fi verificat.',
 ];

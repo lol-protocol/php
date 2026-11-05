@@ -2,10 +2,19 @@
 
 ## [Sin publicar]
 
+### Cambiado
+
+- **El código de idioma es siempre de tres letras** (ISO 639-3): `LanguageRegistry::resolve()` e
+  `isSupported()` ya no aceptan `es`, `de`, `zh`… (el campo `language` del endpoint tampoco). Las etiquetas de
+  dos letras solo se leen en `Accept-Language`, con `LanguageRegistry::fromHeaderTag()`.
+- **`Messages` lee de la carpeta de configuración del revisor** (`<configDir>/messages`), no de la del
+  paquete; `negotiate()` respeta los pesos `q` de `Accept-Language`. Los textos de `explanation.related` usan
+  `%.2F` (no dependen del locale).
+- **`FileSizeLimitTest` cuenta líneas de código** (sin vacías ni comentarios), con el mismo límite de 100.
+- `RomanianInflection` genera sus clases palatalizables de una tabla (mismas formas que antes).
+
 ### Añadido
 
-- **Suajili** (`SwahiliInflection`): plural de los sustantivos por el prefijo de la clase («m-» → «wa-»,
-  «ki-» → «vi-», «ji-» → «ma-ji-»). Sin medir: no hay datos de UniMorph ni lista de frecuencias.
 - **Árabe**: 13 plurales más en `ArabicPlurals` (rotos y sanos irregulares de palabras del diccionario).
 
 - **Más idiomas de salida del informe**: `ara`, `heb`, `jpn`, `kor`, `hin`, `tur`, `ukr`, `ces`,

@@ -17,7 +17,7 @@ class ModerationEndpointTest extends TestCase
 
     public function testRejectsAThreatWithItsMatchesAndTheCensoredLine(): void
     {
-        $response = $this->post(['text' => 'te voy a matar, puta', 'language' => 'es']);
+        $response = $this->post(['text' => 'te voy a matar, puta', 'language' => 'spa']);
 
         $this->assertSame(200, $response['status']);
         $this->assertSame('spa', $response['body']['language']);

@@ -6,7 +6,7 @@ return [
     'explanation.fusion' => '«%1$s» при злитому читанні звучить як «%2$s» (%3$s)',
     'explanation.variant' => '«%1$s» звучить так само, як «%2$s», але пишеться інакше (%3$s)',
     'explanation.match' => '«%1$s» збігається з «%2$s» (%3$s)',
-    'explanation.related' => '; споріднена мова, впевненість %.2f',
+    'explanation.related' => '; споріднена мова, впевненість %.2F',
     'explanation.collision' => '; це також задокументоване справжнє ім’я або прізвище, тому випадок іде на перевірку людиною',
     'explanation.end' => '.',
     'recommendation.reject' => 'Відхилити: вкрай образливий вміст (типи ризику: %s).',
@@ -42,7 +42,7 @@ return [
     'error.cuerpo_demasiado_grande' => 'Тіло перевищує %d байт.',
     'error.texto_requerido' => 'Надішліть JSON-об’єкт у UTF-8 з рядковим полем "text".',
     'error.texto_demasiado_largo' => 'Текст перевищує %d символів.',
-    'error.idioma_no_soportado' => 'Вкажіть підтримуваний код мови, наприклад "spa" або "es".',
+    'error.idioma_no_soportado' => 'Вкажіть підтримуваний код мови, наприклад "spa".',
     'error.demasiadas_peticiones' => 'Забагато запитів поспіль. Зачекайте трохи.',
     'error.error_interno' => 'Не вдалося перевірити текст.',
 ];
