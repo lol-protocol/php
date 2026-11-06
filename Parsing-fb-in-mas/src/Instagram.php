@@ -24,13 +24,7 @@ final class Instagram extends Analizador
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (@ana.ejemplo) • Fotos y videos de Instagram»
-        $nombre = null;
-        $usuario = null;
-        $titulo = $d['meta']['og:title'] ?? ($d['titulo'] ?? null);
-        if ($titulo !== null && preg_match('/^(.*?)\s*\(@([\w.]{1,30})\)/u', $titulo, $m) === 1) {
-            $nombre = $m[1] !== '' ? $m[1] : null;
-            $usuario = $m[2];
-        }
+        [$nombre, $usuario] = self::nombreYUsuario($d['meta']['og:title'] ?? ($d['titulo'] ?? null));
         $usuario ??= $this->usuarioDeRuta($url);
 
         // «1,234 Followers, 56 Following, 78 Posts - Ana (@ana) on Instagram: "la biografía"».

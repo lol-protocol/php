@@ -152,6 +152,18 @@ igual('perfil: sin muerte sigue como posiblemente vivo', true, $a['posiblemente_
 $conMuerte = new Perfil('x', null, null, 'Fulano', null, null, null, null, [], '1850', '1920', 'Temuco', 'Santiago', [['relacion' => 'madre', 'nombre' => null, 'id' => 'Q2']]);
 igual('perfil: con muerte conserva todo', ['1850', 'Temuco', 1], [$conMuerte->nacimiento, $conMuerte->lugarNacimiento, count($conMuerte->parientes)]);
 
+// --- Etapa 2: helpers compartidos ---
+igual('esUrl: https', true, Lote::esUrl('https://www.facebook.com/ana'));
+igual('esUrl: ftp', true, Lote::esUrl('ftp://x/y'));
+igual('esUrl: una ruta', false, Lote::esUrl('muestras/facebook.html'));
+igual('esUrl: una ruta de Windows', false, Lote::esUrl('C:\\datos\\a.html'));
+igual('JSON: sin escapar tildes ni barras', 'María https://x/y', json_decode(json_encode('María https://x/y', Lote::JSON)));
+igual('JSON: la salida literal conserva la tilde y la barra', '"María https://x/y"', json_encode('María https://x/y', Lote::JSON));
+igual('tiktok: usuario desde la ruta si el título no lo trae', 'ana.ejemplo', Detector::analizar('<link rel="canonical" href="https://www.tiktok.com/@ana.ejemplo"><meta property="og:title" content="TikTok">')->usuario);
+igual('youtube: una ruta sin @ no da usuario', null, Detector::analizar('<link rel="canonical" href="https://www.youtube.com/channel/UC123"><meta property="og:title" content="Canal">')->usuario);
+igual('pinterest: sin paréntesis cae al usuario de la ruta', 'anaejemplo', Detector::analizar('<link rel="canonical" href="https://www.pinterest.com/anaejemplo/"><meta property="og:title" content="Ana Ejemplo | Pinterest">')->usuario);
+igual('genérico: el titular también sale', 'Paleógrafa', Detector::analizar(muestra('generico'))->titular);
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);

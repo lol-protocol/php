@@ -24,15 +24,10 @@ final class Pinterest extends Analizador
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (anaejemplo) - Perfil | Pinterest»
-        $nombre = null;
-        $usuario = $this->usuarioDeRuta($url);
-        $titulo = $d['meta']['og:title'] ?? ($d['titulo'] ?? null);
-        if ($titulo !== null && preg_match('/^(.*?)\s*\((\w{3,30})\)/u', $titulo, $m) === 1) {
-            $nombre = $m[1] !== '' ? $m[1] : null;
-            $usuario = $m[2];
-        }
+        [$nombre, $usuario] = self::nombreYUsuario($d['meta']['og:title'] ?? ($d['titulo'] ?? null), '\w{3,30}', false);
+
         return [
-            'usuario' => $usuario,
+            'usuario' => $usuario ?? $this->usuarioDeRuta($url),
             'nombre' => $nombre,
             'descripcion' => $d['meta']['og:description'] ?? null,
         ];

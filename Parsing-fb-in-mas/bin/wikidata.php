@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/cargar.php';
 
+use ParsingFbInMas\Lote;
 use ParsingFbInMas\Perfil;
 use ParsingFbInMas\Wikidata;
 
@@ -30,14 +31,14 @@ foreach (array_slice($argv, 1) as $arg) {
         $ruta = $arg;
     }
 }
-if ($ruta === null || preg_match('#^[a-z][a-z0-9+.-]*://#i', $ruta) === 1) {
+if ($ruta === null || Lote::esUrl($ruta)) {
     fwrite(STDERR, "Uso: php bin/wikidata.php volcado.json[.gz] [--pais=Q298] [--max=N] [--capturado=AAAA-MM-DD]\nEsto no descarga el volcado: bájalo tú.\n");
     exit(2);
 }
 
 try {
     $r = Wikidata::recorrer($ruta, static function (Perfil $p): void {
-        echo json_encode($p->aArreglo(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
+        echo json_encode($p->aArreglo(), Lote::JSON), "\n";
     }, $pais, $maximo, $capturado);
 } catch (RuntimeException $e) {
     fwrite(STDERR, $e->getMessage() . "\n");

@@ -19,9 +19,8 @@ final class YouTube extends Analizador
 
     protected function extraer(array $d, ?string $url): array
     {
-        $seg = self::primerSegmento($url);
         return [
-            'usuario' => $seg !== null && str_starts_with($seg, '@') ? substr($seg, 1) : null,
+            'usuario' => self::usuarioConArroba($url),
             'nombre' => $d['meta']['og:title'] ?? ($d['persona']['nombre'] ?? null),
             'descripcion' => $d['meta']['og:description'] ?? null,
         ];

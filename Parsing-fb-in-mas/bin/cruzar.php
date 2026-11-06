@@ -10,6 +10,7 @@ declare(strict_types=1);
 require __DIR__ . '/../src/cargar.php';
 
 use ParsingFbInMas\Cruce;
+use ParsingFbInMas\Lote;
 
 $archivos = [];
 $idioma = 'spa';
@@ -44,6 +45,6 @@ foreach ($archivos as $archivo) {
 
 $r = Cruce::candidatos($listas[0], $listas[1], $idioma);
 foreach ($r['candidatos'] as $c) {
-    echo json_encode($c, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
+    echo json_encode($c, Lote::JSON), "\n";
 }
 fwrite(STDERR, count($r['candidatos']) . " candidatos; {$r['excluidos_vivos']} perfiles omitidos por poder estar vivos\n");

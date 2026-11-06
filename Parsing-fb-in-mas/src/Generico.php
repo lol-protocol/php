@@ -28,17 +28,6 @@ final class Generico extends Analizador
 
     protected function extraer(array $d, ?string $url): array
     {
-        $p = $d['persona'] ?? [];
-        return [
-            'usuario' => null,
-            'nombre' => $p['nombre'] ?? null,
-            'titular' => $p['titular'] ?? null,
-            'lugar' => $p['lugar'] ?? null,
-            'descripcion' => $p['descripcion'] ?? null,
-            'nacimiento' => $p['nacimiento'] ?? null,
-            'muerte' => $p['muerte'] ?? null,
-            'lugar_nacimiento' => $p['lugar_nacimiento'] ?? null,
-            'lugar_muerte' => $p['lugar_muerte'] ?? null,
-        ];
+        return ['usuario' => null] + self::camposDePersona($d['persona']);
     }
 }

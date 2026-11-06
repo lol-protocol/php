@@ -7,6 +7,15 @@ namespace ParsingFbInMas;
 /** Procesar muchas páginas ya guardadas: carpetas enteras y sin repetir la misma URL. */
 final class Lote
 {
+    /** Formato JSON de todo lo que escriben los programas de `bin/`. */
+    public const JSON = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+
+    /** Si el argumento es una dirección (`https://…`): los programas de `bin/` no descargan nada. */
+    public static function esUrl(string $texto): bool
+    {
+        return preg_match('#^[a-z][a-z0-9+.-]*://#i', $texto) === 1;
+    }
+
     /**
      * Expande carpetas (de forma recursiva) a sus archivos `.html` y `.htm`, en orden.
      *

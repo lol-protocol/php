@@ -19,24 +19,15 @@ final class FindAGrave extends Analizador
 
     protected function extraer(array $d, ?string $url): array
     {
-        $p = $d['persona'] ?? [];
-        $nombre = $p['nombre'] ?? null;
-        if ($nombre === null && isset($d['meta']['og:title'])) {
-            $nombre = trim((string) preg_replace('/\s*(\(.*|[-|–].*)$/u', '', $d['meta']['og:title']));
+        $campos = self::camposDePersona($d['persona']);
+        if ($campos['nombre'] === null && isset($d['meta']['og:title'])) {
+            $campos['nombre'] = trim((string) preg_replace('/\s*(\(.*|[-|–].*)$/u', '', $d['meta']['og:title']));
         }
         // /memorial/12345/ana-ejemplo → «12345», el número del memorial
         $id = null;
         if ($url !== null && preg_match('#/memorial/(\d+)#i', $url, $m) === 1) {
             $id = $m[1];
         }
-        return [
-            'usuario' => $id,
-            'nombre' => $nombre,
-            'descripcion' => $p['descripcion'] ?? null,
-            'nacimiento' => $p['nacimiento'] ?? null,
-            'muerte' => $p['muerte'] ?? null,
-            'lugar_nacimiento' => $p['lugar_nacimiento'] ?? null,
-            'lugar_muerte' => $p['lugar_muerte'] ?? null,
-        ];
+        return ['usuario' => $id] + $campos;
     }
 }

@@ -143,6 +143,50 @@ abstract class Analizador
         return str_starts_with($host, 'www.') ? substr($host, 4) : $host;
     }
 
+    /**
+     * Separa «Ana Ejemplo (@anaejemplo) / X» en nombre y usuario. Con `$arroba` en falso busca
+     * «Ana Ejemplo (anaejemplo)», como Pinterest.
+     *
+     * @param string $usuario expresión del usuario, sin delimitadores
+     * @return array{0: ?string, 1: ?string} nombre y usuario, o dos null si el título no tiene esa forma
+     */
+    protected static function nombreYUsuario(?string $titulo, string $usuario = '[\w.]{1,30}', bool $arroba = true): array
+    {
+        $patron = '/^(.*?)\s*\(' . ($arroba ? '@' : '') . '(' . $usuario . ')\)/u';
+        if ($titulo !== null && preg_match($patron, $titulo, $m) === 1) {
+            return [$m[1] !== '' ? $m[1] : null, $m[2]];
+        }
+        return [null, null];
+    }
+
+    /** El usuario de una ruta que lo lleva con arroba (`/@ana`), o null si la ruta no empieza por «@». */
+    protected static function usuarioConArroba(?string $url): ?string
+    {
+        $segmento = self::primerSegmento($url);
+        return $segmento !== null && str_starts_with($segmento, '@') && strlen($segmento) > 1 ? substr($segmento, 1) : null;
+    }
+
+    /**
+     * Los campos de una persona de schema.org (JSON-LD o microdatos) tal como los pide `extraer()`.
+     * Agregar un campo a `Metadatos` pide cambiarlo aquí y en ningún otro sitio.
+     *
+     * @param ?array<string, string> $p
+     * @return array{nombre: ?string, titular: ?string, lugar: ?string, descripcion: ?string, nacimiento: ?string, muerte: ?string, lugar_nacimiento: ?string, lugar_muerte: ?string}
+     */
+    protected static function camposDePersona(?array $p): array
+    {
+        return [
+            'nombre' => $p['nombre'] ?? null,
+            'titular' => $p['titular'] ?? null,
+            'lugar' => $p['lugar'] ?? null,
+            'descripcion' => $p['descripcion'] ?? null,
+            'nacimiento' => $p['nacimiento'] ?? null,
+            'muerte' => $p['muerte'] ?? null,
+            'lugar_nacimiento' => $p['lugar_nacimiento'] ?? null,
+            'lugar_muerte' => $p['lugar_muerte'] ?? null,
+        ];
+    }
+
     /** Primer segmento de la ruta de una dirección: `/ana.ejemplo/about` da `ana.ejemplo`. */
     protected static function primerSegmento(?string $url): ?string
     {

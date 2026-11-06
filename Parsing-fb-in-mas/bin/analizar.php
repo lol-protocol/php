@@ -35,7 +35,7 @@ if ($rutas === []) {
 $perfiles = [];
 $fallos = 0;
 foreach (Lote::archivos($rutas) as $archivo) {
-    if (preg_match('#^[a-z][a-z0-9+.-]*://#i', $archivo) === 1) {
+    if (Lote::esUrl($archivo)) {
         fwrite(STDERR, "$archivo: esto no descarga páginas; guarda el HTML y pásame el archivo.\n");
         $fallos++;
         continue;
@@ -58,12 +58,11 @@ foreach (Lote::archivos($rutas) as $archivo) {
 if ($repetidos > 0) {
     fwrite(STDERR, "$repetidos páginas repetidas (misma URL) omitidas\n");
 }
-$flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 if ($jsonl) {
     foreach ($perfiles as $p) {
-        echo json_encode($p, $flags), "\n";
+        echo json_encode($p, Lote::JSON), "\n";
     }
 } else {
-    echo json_encode($perfiles, $flags | JSON_PRETTY_PRINT), "\n";
+    echo json_encode($perfiles, Lote::JSON | JSON_PRETTY_PRINT), "\n";
 }
 exit($fallos > 0 ? 1 : 0);
