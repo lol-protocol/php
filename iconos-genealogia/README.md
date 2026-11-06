@@ -80,7 +80,7 @@ Las demás parejas con género tienen su versión sin especificar (rombo) con un
 Los `id` internos (los gradientes, con el nombre del icono y, en `gris`, el
 sufijo `_g`) son únicos entre los iconos y las variantes del set, así que puedes
 incrustar varios SVG en línea en la misma página, también `color` y `gris` de un
-mismo icono. Los iconos con el mismo nombre en los dos sets (`ui_menu`...) sí
+mismo icono. Los iconos con el mismo nombre en más de un set (`ui_menu`...) sí
 comparten ids.
 
 ## Sprite
@@ -141,7 +141,9 @@ Los SVG son salida generada, no se editan a mano — se definen en
   por una pequeña marca sobre el enlace (punto, cuadrado, anillo).
 - El efecto 2.5D es una extrusión hacia abajo y a la derecha con sombra
   proyectada; no es una proyección isométrica estricta.
-- A 24 px los pares más cercanos entre sí son adopción y acogida
+- A 24 px los pares más cercanos entre sí son ex cónyuge y pareja
+  (`person_ex_spouse` y `person_partner`, 1,44), adopción y acogida
   (`relationship_adoption` y `relationship_fostering`, 1,50) y los
   masculino/femenino de `person_` (`person_grandson` y `person_granddaughter`,
-  1,51), frente a 1,2 de límite. `iconos-tools/similares.py` los lista.
+  1,51), frente a 1,2 de límite. `iconos-tools/similares.py` los lista y da las
+  cifras de hoy: las de aquí son de cuando se escribió esto.

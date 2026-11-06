@@ -141,8 +141,9 @@ test("framework data has three states and adequacy is never 'no' for EU/EEA stat
 test("every row says where its data comes from", () => {
   const statuses = new Set(records.map((r) => r.data_status));
   assert.ok(statuses.has("curated") && statuses.has("researched"));
-  for (const r of records.filter((x) => x.data_status !== "curated")) {
+  for (const r of records) {
     assert.match(r.last_checked, /^\d{4}-\d{2}-\d{2}$/, r.country_code);
+    assert.ok(r.website_url, `${r.country_code} has a source`);
   }
   const base = records.find((r) => r.data_status === "researched");
   const only = (patch) => validateRecords([{ ...base, ...patch }], COLUMNS).errors;
@@ -150,5 +151,6 @@ test("every row says where its data comes from", () => {
   assert.match(only({ confidence: "certain" })[0], /confidence must be empty or one of/);
   assert.match(only({ last_checked: "2026-02-30" })[0], /last_checked must be a real/);
   assert.match(only({ last_checked: "" })[0], /last_checked is required/);
-  assert.deepEqual(only({ data_status: "curated", confidence: "", last_checked: "" }), []);
+  assert.match(only({ data_status: "curated", confidence: "", last_checked: "" })[0], /last_checked is required/, "curated rows need a date too");
+  assert.match(only({ website_url: "" })[0], /missing required field website_url/);
 });

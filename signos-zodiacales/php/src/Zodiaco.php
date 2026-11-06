@@ -31,6 +31,13 @@ final class Zodiaco
 
     public const AFINIDADES = ['alta', 'media', 'neutra', 'baja'];
 
+    /** Los 72 ángeles van de ocho en ocho en nueve coros, de los Serafines a los Ángeles. */
+    public const CHOROS = ['serafines', 'querubines', 'tronos', 'dominaciones', 'virtudes', 'potestades', 'principados', 'arcangeles', 'angeles'];
+
+    public const TIPOS_DE_ESPIRITU = ['angel', 'demonio'];
+
+    public const RANGOS = ['rey', 'duque', 'principe', 'marques', 'conde', 'presidente', 'caballero'];
+
     /** 1984 fue 甲子 (madera, rata): el ciclo de 60 años empieza en el año 4 de la era común. */
     private const ANIO_BASE = 4;
 
@@ -42,10 +49,19 @@ final class Zodiaco
     /** @var array<int, string>|null */
     private static ?array $anioNuevo = null;
 
+    /** @var array<string, mixed>|null */
+    private static ?array $espiritus = null;
+
     /** @return array<string, mixed> Lee datos/signos.json una sola vez. */
     public static function cargarDatos(): array
     {
         return self::$datos ??= self::leerJson(__DIR__ . '/../../datos/signos.json');
+    }
+
+    /** @return array<string, mixed> Lee datos/espiritus.json una sola vez: los 72 ángeles y los 72 demonios. */
+    public static function cargarEspiritus(): array
+    {
+        return self::$espiritus ??= self::leerJson(__DIR__ . '/../../datos/espiritus.json');
     }
 
     /** @return array<int, string> {año: fecha ISO del Año Nuevo lunar}, de 1900 a 2099. */
@@ -351,6 +367,83 @@ final class Zodiaco
         return $anios;
     }
 
+    // --- Los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia ---
+    // Cada uno se atribuye a un tramo de 5° del zodiaco tropical: seis por signo, desde Aries. Cada signo se parte
+    // en seis tramos de fechas casi iguales (los primeros se llevan el día que sobre en los signos de 31 o 32
+    // días). Un ángel y el demonio del mismo número comparten tramo.
+
+    /**
+     * Los seis tramos de un signo occidental como [[mes, día] desde, [mes, día] hasta] en un año dado. Aries
+     * tiene los números 1 a 6, Tauro del 7 al 12… El año importa en Piscis (febrero tiene 28 o 29 días) y en
+     * Capricornio, que empieza el 22/12 de ese año.
+     *
+     * @return list<array{0: array{0: int, 1: int}, 1: array{0: int, 1: int}}>
+     */
+    public static function tramosDeEspiritus(string $idSigno, int $anio = 2025): array
+    {
+        $signo = self::signoOccidentalPorId($idSigno);
+        $inicio = self::fecha($anio, $signo['tropical']['desde'][0], $signo['tropical']['desde'][1]);
+        return array_map(
+            fn (array $t): array => [self::mesDia($t[0]), self::mesDia($t[1])],
+            self::tramosDesde($inicio, $signo),
+        );
+    }
+
+    /**
+     * El ángel del Shem ha-Mephorash que rige una fecha (zodiaco tropical): «angel», «signo», «coro» (una de
+     * CHOROS) y «tramo» (las fechas de ese ángel en el año de $fecha). Las fechas son aproximadas.
+     *
+     * @return array{angel: array<string, mixed>, signo: array<string, mixed>, coro: string, tramo: array<int, array<int, int>>}
+     */
+    public static function angelDeFecha(DateTimeInterface $fecha): array
+    {
+        [$numero, $signo, $tramo] = self::espirituDeFecha($fecha);
+        return [
+            'angel' => self::cargarEspiritus()['angeles'][$numero - 1],
+            'signo' => $signo,
+            'coro' => self::CHOROS[intdiv($numero - 1, 8)],
+            'tramo' => $tramo,
+        ];
+    }
+
+    /**
+     * El demonio de la Goetia que se atribuye a una fecha: el del mismo número que su ángel. Esa correspondencia
+     * es de la esoterología moderna, no de los grimorios.
+     *
+     * @return array{demonio: array<string, mixed>, signo: array<string, mixed>, tramo: array<int, array<int, int>>}
+     */
+    public static function demonioDeFecha(DateTimeInterface $fecha): array
+    {
+        [$numero, $signo, $tramo] = self::espirituDeFecha($fecha);
+        return ['demonio' => self::cargarEspiritus()['demonios'][$numero - 1], 'signo' => $signo, 'tramo' => $tramo];
+    }
+
+    /**
+     * Las cualidades de un ángel o demonio en un idioma, en una frase: «Construcción, protección, nobleza».
+     * $tipo es «angel» o «demonio»; $numero, de 1 a 72.
+     */
+    public static function cualidadesDe(string $tipo, int $numero, string $idioma): string
+    {
+        if (!in_array($tipo, self::TIPOS_DE_ESPIRITU, true)) {
+            throw new InvalidArgumentException("tipo debe ser uno de angel, demonio, no '$tipo'");
+        }
+        if ($numero < 1 || $numero > 72) {
+            throw new InvalidArgumentException("numero debe estar entre 1 y 72, no $numero");
+        }
+        $esp = self::cargarEspiritus();
+        if (!isset($esp['terminos']['separador'][$idioma])) {
+            throw new InvalidArgumentException("idioma desconocido: '$idioma'");
+        }
+        $entrada = $esp[$tipo === 'angel' ? 'angeles' : 'demonios'][$numero - 1];
+        $texto = implode(
+            $esp['terminos']['separador'][$idioma],
+            array_map(fn (string $c): string => $esp['cualidades'][$c][$idioma], $entrada['cualidades']),
+        );
+        $primera = mb_substr($texto, 0, 1);
+        $primera = $idioma === 'tr' && $primera === 'i' ? 'İ' : mb_strtoupper($primera); // en turco, i → İ
+        return $primera . mb_substr($texto, 1);
+    }
+
     // --- auxiliares ---
 
     /** @return array<string, mixed> */
@@ -433,5 +526,75 @@ final class Zodiaco
         [$mes, $dia] = $signo[$sistema]['desde'];
         $inicio = self::fecha((int) $fecha->format('Y'), $mes, $dia);
         return $inicio <= $fecha ? $inicio : self::fecha((int) $fecha->format('Y') - 1, $mes, $dia);
+    }
+
+    /** @return array<string, mixed> */
+    private static function signoOccidentalPorId(string $id): array
+    {
+        foreach (self::occidentales() as $signo) {
+            if ($signo['id'] === $id) {
+                return $signo;
+            }
+        }
+        throw new InvalidArgumentException("signo occidental desconocido: '$id'");
+    }
+
+    /** @return list<int> Los días de cada uno de los seis tramos de un signo de $dias días: los primeros se llevan el sobrante. */
+    private static function largosDeTramos(int $dias): array
+    {
+        $sobra = $dias % 6;
+        return array_merge(array_fill(0, $sobra, intdiv($dias, 6) + 1), array_fill(0, 6 - $sobra, intdiv($dias, 6)));
+    }
+
+    /** @param array<string, mixed> $signo */
+    private static function finDelSigno(DateTimeImmutable $inicio, array $signo): DateTimeImmutable
+    {
+        [$mes, $dia] = $signo['tropical']['hasta'];
+        $anio = (int) $inicio->format('Y');
+        $fin = self::fecha($anio, $mes, $dia);
+        return $fin >= $inicio ? $fin : self::fecha($anio + 1, $mes, $dia);
+    }
+
+    /**
+     * Los seis tramos del signo que empieza en $inicio, como [desde, hasta].
+     *
+     * @param array<string, mixed> $signo
+     * @return list<array{0: DateTimeImmutable, 1: DateTimeImmutable}>
+     */
+    private static function tramosDesde(DateTimeImmutable $inicio, array $signo): array
+    {
+        $tramos = [];
+        $desde = $inicio;
+        foreach (self::largosDeTramos(self::diasEntre($inicio, self::finDelSigno($inicio, $signo)) + 1) as $dias) {
+            $hasta = $desde->modify('+' . ($dias - 1) . ' days');
+            $tramos[] = [$desde, $hasta];
+            $desde = $hasta->modify('+1 day');
+        }
+        return $tramos;
+    }
+
+    /** @return array{0: int, 1: int} */
+    private static function mesDia(DateTimeImmutable $fecha): array
+    {
+        return [(int) $fecha->format('n'), (int) $fecha->format('j')];
+    }
+
+    /**
+     * El número (1–72), el signo y el tramo de una fecha, en el zodiaco tropical.
+     *
+     * @return array{0: int, 1: array<string, mixed>, 2: array{0: array{0: int, 1: int}, 1: array{0: int, 1: int}}}
+     */
+    private static function espirituDeFecha(DateTimeInterface $fecha): array
+    {
+        $signo = self::signoOccidental($fecha, 'tropical');
+        $dia = self::dia($fecha);
+        $tramos = self::tramosDesde(self::inicioDelSigno($dia, $signo, 'tropical'), $signo);
+        foreach ($tramos as $k => [$desde, $hasta]) {
+            if ($desde <= $dia && $dia <= $hasta) {
+                $posicion = (int) array_search($signo['id'], array_column(self::occidentales(), 'id'), true);
+                return [$posicion * 6 + $k + 1, $signo, [self::mesDia($desde), self::mesDia($hasta)]];
+            }
+        }
+        throw new LogicException('la fecha no cae en ninguno de los seis tramos de su signo');
     }
 }

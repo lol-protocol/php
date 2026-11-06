@@ -90,11 +90,11 @@ class DefamatoryContentReviewer
     /** Colisión de apellido o fusión fonética nunca rechazan solas: bajan a revisión. Ver ScoringPolicy::decisionFor(). */
     public function decide(ValidationResult $result): string
     {
-        return $this->policy->decisionFor($result->getSeverity(), $result->hasNameCollision(), $result->hasOnlyPhoneticDetections());
+        return $this->policy->decisionFor($result->getSeverity(), $result->nameCollisionExplainsSeverity(), $result->hasOnlyPhoneticDetections());
     }
 
-    /** @return array<string,mixed> */ public function getDetailedReport(ValidationResult $result): array
+    /** @return array<string,mixed> frases en `$locale` (ISO 639-3, `Messages::locales()`; español por defecto) */ public function getDetailedReport(ValidationResult $result, string $locale = 'spa'): array
     {
-        return $this->reports->build($result, $this->decide($result), $this->policy);
+        return $this->reports->build($result, $this->decide($result), $this->policy, $locale);
     }
 }

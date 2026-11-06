@@ -28,6 +28,11 @@ final class EvasionCleaner
     ];
     /** Invisibles (formato, selectores de variante); ZWJ y ZWNJ aparte: unen letras en árabe o devanagari. */
     private const INVISIBLE = '/[^\P{Cf}\x{200C}\x{200D}]|[\x{FE00}-\x{FE0F}\x{E0100}-\x{E01EF}]/u';
+    /**
+     * Rellenos que no se ven y no son de formato (Lo): Hangul filler (U+3164, U+115F, U+1160, U+FFA0) y el braille en
+     * blanco (U+2800). En coreano son letras, así que sólo se quitan entre dos letras latinas: «pu\u{3164}ta».
+     */
+    private const FILLER_IN_LATIN = '/(?<=\p{Latin})[\x{3164}\x{115F}\x{1160}\x{FFA0}\x{2800}]+(?=\p{Latin})/u';
     private const JOINER_IN_LATIN = '/(?<=\p{Latin})[\x{200C}\x{200D}]+(?=\p{Latin})/u';
     /** Emoji y símbolos metidos entre dos letras: «pu🙂ta», «pu´ta». */
     private const SYMBOL_INSIDE = '/(?<=\p{L})[\p{So}\p{Sk}\x{200D}]+(?=\p{L})/u';
@@ -50,8 +55,8 @@ final class EvasionCleaner
             $text = \Normalizer::normalize($text, \Normalizer::FORM_KC) ?: $text;
         }
         $text = preg_replace(self::MARKS_ON_ASCII, '', $text) ?? $text;
-        if (preg_match('/[\p{Cf}\p{So}\p{Sk}\x{FE00}-\x{FE0F}]/u', $text) === 1) {
-            $text = preg_replace([self::INVISIBLE, self::JOINER_IN_LATIN, self::SYMBOL_INSIDE], '', $text) ?? $text;
+        if (preg_match('/[\p{Cf}\p{So}\p{Sk}\x{FE00}-\x{FE0F}\x{3164}\x{115F}\x{1160}\x{FFA0}]/u', $text) === 1) {
+            $text = preg_replace([self::INVISIBLE, self::FILLER_IN_LATIN, self::JOINER_IN_LATIN, self::SYMBOL_INSIDE], '', $text) ?? $text;
         }
         $latin = !in_array($language, self::NON_LATIN, true);
         if (preg_match('/[\p{Cyrillic}\p{Greek}]/u', $text) !== 1 || (!$latin && preg_match('/\p{Latin}/u', $text) !== 1)) {

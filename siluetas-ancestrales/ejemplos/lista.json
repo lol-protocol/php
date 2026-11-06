@@ -1,0 +1,523 @@
+[
+  {
+    "archivo": "egipto-noble",
+    "opciones": {
+      "atuendo": "egipto-mujer-noble",
+      "semilla": 3,
+      "edad": 28
+    }
+  },
+  {
+    "archivo": "roma-senador",
+    "opciones": {
+      "atuendo": "roma-senador",
+      "semilla": 4,
+      "edad": 55
+    }
+  },
+  {
+    "archivo": "vikinga",
+    "opciones": {
+      "atuendo": "vikinga-mujer",
+      "semilla": 6,
+      "edad": 31
+    }
+  },
+  {
+    "archivo": "renacimiento-dama",
+    "opciones": {
+      "atuendo": "renacimiento-dama",
+      "semilla": 8,
+      "edad": 26
+    }
+  },
+  {
+    "archivo": "inca-hombre",
+    "opciones": {
+      "atuendo": "inca-noble",
+      "semilla": 11,
+      "edad": 40
+    }
+  },
+  {
+    "archivo": "mapuche-mujer",
+    "opciones": {
+      "atuendo": "mapuche-mujer",
+      "semilla": 2,
+      "edad": 36,
+      "rasgos": true
+    }
+  },
+  {
+    "archivo": "huaso",
+    "opciones": {
+      "atuendo": "huaso",
+      "semilla": 5,
+      "edad": 50
+    }
+  },
+  {
+    "archivo": "roto-chileno",
+    "opciones": {
+      "atuendo": "roto-chileno",
+      "semilla": 9,
+      "edad": 33
+    }
+  },
+  {
+    "archivo": "selknam",
+    "opciones": {
+      "atuendo": "selknam-cazador",
+      "semilla": 13,
+      "edad": 29
+    }
+  },
+  {
+    "archivo": "japon-kimono",
+    "opciones": {
+      "atuendo": "japon-mujer-kimono",
+      "semilla": 14,
+      "edad": 24
+    }
+  },
+  {
+    "archivo": "maasai",
+    "opciones": {
+      "atuendo": "maasai",
+      "semilla": 15,
+      "edad": 27
+    }
+  },
+  {
+    "archivo": "xix-victoriana",
+    "opciones": {
+      "atuendo": "xix-dama-victoriana",
+      "semilla": 16,
+      "edad": 41,
+      "detalle": "alto"
+    }
+  },
+  {
+    "archivo": "nina-andina",
+    "opciones": {
+      "atuendo": "andina-mujer",
+      "semilla": 17,
+      "edad": 8
+    }
+  },
+  {
+    "archivo": "abuelo-gaucho",
+    "opciones": {
+      "atuendo": "gaucho",
+      "semilla": 18,
+      "edad": 74
+    }
+  },
+  {
+    "archivo": "ropa-nueva-festiva",
+    "opciones": {
+      "ropaNueva": true,
+      "estilo": "festivo",
+      "semilla": 21,
+      "sexo": "f",
+      "edad": 30
+    }
+  },
+  {
+    "archivo": "ropa-nueva-trabajo",
+    "opciones": {
+      "ropaNueva": true,
+      "estilo": "trabajo",
+      "semilla": 22,
+      "sexo": "m",
+      "edad": 45
+    }
+  },
+  {
+    "archivo": "etnia-mapuche-1850",
+    "opciones": {
+      "etnia": "mapuche",
+      "sexo": "f",
+      "edad": 34,
+      "anio": 1850,
+      "semilla": 31,
+      "rasgos": true
+    }
+  },
+  {
+    "archivo": "etnia-aymara-hombre",
+    "opciones": {
+      "etnia": "aymara",
+      "sexo": "m",
+      "edad": 48,
+      "anio": 1900,
+      "semilla": 32
+    }
+  },
+  {
+    "archivo": "etnia-mezcla-mapuche-espanol",
+    "opciones": {
+      "etnia": [
+        "mapuche",
+        "espanol"
+      ],
+      "sexo": "m",
+      "edad": 29,
+      "anio": 1800,
+      "semilla": 33
+    }
+  },
+  {
+    "archivo": "etnia-selknam-1890",
+    "opciones": {
+      "etnia": "selknam",
+      "sexo": "m",
+      "edad": 38,
+      "anio": 1890,
+      "semilla": 34
+    }
+  },
+  {
+    "archivo": "etnia-europeo-norte-vikingo",
+    "opciones": {
+      "etnia": "europeo-del-norte",
+      "sexo": "m",
+      "edad": 35,
+      "anio": 900,
+      "semilla": 35
+    }
+  },
+  {
+    "archivo": "saludo-izquierda",
+    "opciones": {
+      "etnia": "japones",
+      "sexo": "f",
+      "edad": 22,
+      "anio": 1700,
+      "semilla": 36,
+      "saludo": "izquierda"
+    }
+  },
+  {
+    "archivo": "sin-saludo",
+    "opciones": {
+      "atuendo": "huaso",
+      "semilla": 5,
+      "edad": 50,
+      "saludo": "ninguno"
+    }
+  },
+  {
+    "archivo": "nuevo-mongol",
+    "opciones": {
+      "atuendo": "mongola-mujer",
+      "semilla": 41,
+      "edad": 30
+    }
+  },
+  {
+    "archivo": "nuevo-tehuana",
+    "opciones": {
+      "atuendo": "tehuana-mujer",
+      "semilla": 42,
+      "edad": 35
+    }
+  },
+  {
+    "archivo": "nuevo-maori",
+    "opciones": {
+      "atuendo": "maori-hombre",
+      "semilla": 43,
+      "edad": 45
+    }
+  },
+  {
+    "archivo": "nuevo-yoruba",
+    "opciones": {
+      "atuendo": "yoruba-mujer",
+      "semilla": 44,
+      "edad": 38
+    }
+  },
+  {
+    "archivo": "nuevo-navajo",
+    "opciones": {
+      "atuendo": "navajo-mujer",
+      "semilla": 45,
+      "edad": 33
+    }
+  },
+  {
+    "archivo": "nuevo-croata-chile",
+    "opciones": {
+      "etnia": "croata",
+      "sexo": "m",
+      "edad": 52,
+      "anio": 1900,
+      "semilla": 46
+    }
+  },
+  {
+    "archivo": "nuevo-palestina",
+    "opciones": {
+      "etnia": "palestino",
+      "sexo": "f",
+      "edad": 40,
+      "anio": 1920,
+      "semilla": 47
+    }
+  },
+  {
+    "archivo": "nuevo-vasca",
+    "opciones": {
+      "etnia": "vasco",
+      "sexo": "f",
+      "edad": 60,
+      "anio": 1880,
+      "semilla": 48
+    }
+  },
+  {
+    "archivo": "nuevo-tibetana",
+    "opciones": {
+      "atuendo": "tibetana-mujer",
+      "semilla": 49,
+      "edad": 28
+    }
+  },
+  {
+    "archivo": "nuevo-minoica",
+    "opciones": {
+      "atuendo": "minoica-mujer",
+      "semilla": 50,
+      "edad": 26
+    }
+  },
+  {
+    "archivo": "color-vaquero-jeans",
+    "opciones": {
+      "atuendo": "eeuu-vaquero",
+      "semilla": 61,
+      "edad": 34
+    }
+  },
+  {
+    "archivo": "color-chile-oficinista-1930",
+    "opciones": {
+      "atuendo": "chile-oficinista-1930",
+      "semilla": 62,
+      "edad": 41
+    }
+  },
+  {
+    "archivo": "color-chile-dama-1955",
+    "opciones": {
+      "atuendo": "chile-dama-1955",
+      "semilla": 63,
+      "edad": 36
+    }
+  },
+  {
+    "archivo": "color-huaso-fiesta",
+    "opciones": {
+      "atuendo": "huaso-fiesta",
+      "semilla": 64,
+      "edad": 44
+    }
+  },
+  {
+    "archivo": "color-obrero-overol",
+    "opciones": {
+      "atuendo": "eeuu-granjero-1930",
+      "semilla": 65,
+      "edad": 39
+    }
+  },
+  {
+    "archivo": "color-novia-1940",
+    "opciones": {
+      "atuendo": "chile-novia-1940",
+      "semilla": 66,
+      "edad": 26
+    }
+  },
+  {
+    "archivo": "color-abuela-1960",
+    "opciones": {
+      "atuendo": "chile-abuela-1960",
+      "semilla": 67,
+      "edad": 72
+    }
+  },
+  {
+    "archivo": "color-estudiante-1955",
+    "opciones": {
+      "atuendo": "eeuu-estudiante-1955",
+      "semilla": 68,
+      "edad": 15
+    }
+  },
+  {
+    "archivo": "pose-mano-en-cintura",
+    "opciones": {
+      "atuendo": "chile-dama-1955",
+      "semilla": 71,
+      "edad": 38,
+      "pose": {
+        "brazoLibre": "cintura",
+        "carga": 1,
+        "cabeza": 4
+      }
+    }
+  },
+  {
+    "archivo": "pose-brazo-en-bolsillo",
+    "opciones": {
+      "atuendo": "eeuu-jeans-1965",
+      "semilla": 72,
+      "edad": 24,
+      "pose": {
+        "brazoLibre": "bolsillo",
+        "carga": -1,
+        "cabeza": -5,
+        "abre": 1.35
+      }
+    }
+  },
+  {
+    "archivo": "pose-firme",
+    "opciones": {
+      "atuendo": "roma-senador",
+      "semilla": 73,
+      "edad": 55,
+      "pose": "firme"
+    }
+  },
+  {
+    "archivo": "borde-suave",
+    "opciones": {
+      "atuendo": "huaso-fiesta",
+      "semilla": 74,
+      "edad": 44,
+      "contorno": "suave"
+    }
+  },
+  {
+    "archivo": "detalle-alto-rasgos",
+    "opciones": {
+      "atuendo": "mapuche-mujer",
+      "semilla": 75,
+      "edad": 36,
+      "detalle": "alto",
+      "rasgos": true
+    }
+  },
+  {
+    "archivo": "ropa-a-medida-sirena",
+    "opciones": {
+      "sexo": "f",
+      "edad": 31,
+      "semilla": 81,
+      "vestir": [
+        "vestido-sirena",
+        "estola",
+        "tacones",
+        "perlas"
+      ],
+      "tocado": "pamela",
+      "peinado": "ondas"
+    }
+  },
+  {
+    "archivo": "ropa-a-medida-safari",
+    "opciones": {
+      "sexo": "m",
+      "edad": 42,
+      "semilla": 82,
+      "vestir": [
+        "camisa-safari",
+        "bermuda",
+        "zapatos-oxford"
+      ],
+      "tocado": "canotier"
+    }
+  },
+  {
+    "archivo": "ropa-a-medida-sudadera",
+    "opciones": {
+      "sexo": "m",
+      "edad": 19,
+      "semilla": 83,
+      "vestir": [
+        "sudadera-capucha",
+        "jeans-clasicos",
+        "zapatillas-lona"
+      ],
+      "tocado": "beanie"
+    }
+  },
+  {
+    "archivo": "ropa-a-medida-parka",
+    "opciones": {
+      "sexo": "f",
+      "edad": 35,
+      "semilla": 84,
+      "vestir": [
+        "parka-capucha",
+        "pantalon-pliegues",
+        "botines"
+      ]
+    }
+  },
+  {
+    "archivo": "tipo-halter-palazzo",
+    "opciones": {
+      "atuendo": "moda-top-halter",
+      "semilla": 85,
+      "edad": 27
+    }
+  },
+  {
+    "archivo": "tipo-abrigo-piel",
+    "opciones": {
+      "atuendo": "moda-abrigo-piel",
+      "semilla": 86,
+      "edad": 44
+    }
+  },
+  {
+    "archivo": "pose-natural-1",
+    "opciones": {
+      "atuendo": "huaso-fiesta",
+      "semilla": 87,
+      "edad": 50,
+      "pose": {
+        "hombros": 2.6,
+        "columna": 0.007,
+        "cabeza": 6,
+        "codos": {
+          "1": 10,
+          "-1": 8
+        }
+      }
+    }
+  },
+  {
+    "archivo": "pose-natural-2",
+    "opciones": {
+      "atuendo": "chile-dama-1955",
+      "semilla": 88,
+      "edad": 39,
+      "pose": {
+        "hombros": -2.4,
+        "columna": -0.007,
+        "cabeza": -6,
+        "brazoLibre": "cintura",
+        "munecas": {
+          "1": 12,
+          "-1": -10
+        }
+      }
+    }
+  }
+]

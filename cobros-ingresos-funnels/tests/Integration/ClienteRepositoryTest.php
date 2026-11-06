@@ -104,4 +104,24 @@ final class ClienteRepositoryTest extends IntegracionTestCase
         );
         self::assertContains('Klingon', $repo->idiomasEnUso(), 'un idioma nuevo aparece apenas tiene un cliente');
     }
+
+    public function testElEmailEsUnicoSinImportarLasMayusculas(): void
+    {
+        $repo = new ClienteRepository();
+        $datos = [
+            'nombre' => 'Prueba Mayusculas', 'email' => 'Prueba.Mayusculas@Example.COM', 'segmento' => 'general',
+            'fecha_alta' => date('Y-m-d'), 'pais_codigo' => 'AR', 'ciudad' => 'Rosario', 'idioma' => 'Espanol',
+            'genero' => 'No especifica', 'fecha_nacimiento' => '1990-01-01',
+        ];
+        $id = $repo->crear($datos);
+        $guardado = Database::connection()->query("SELECT email FROM clientes WHERE id = $id")->fetchColumn();
+        self::assertSame('prueba.mayusculas@example.com', $guardado, 'el alta guarda el email en minusculas');
+
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionCode('23505');
+        Database::connection()->prepare(
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+             VALUES ('Otro', 'PRUEBA.MAYUSCULAS@example.com', 'general', CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', DATE '1990-01-01')"
+        )->execute();
+    }
 }

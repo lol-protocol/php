@@ -23,8 +23,8 @@
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
     "notes": "CPRA amendments effective 2023-01-01; ADMT and opt-out-signal rules due 2027-01-01",
-    "pending_change": "",
-    "pending_date": "",
+    "pending_change": "California Privacy Protection Agency rules on automated decision-making technology (ADMT), risk assessments and opt-out preference signals take effect",
+    "pending_date": "2027-01-01",
     "data_status": "researched",
     "confidence": "low",
     "last_checked": "2026-10-17",
@@ -66,6 +66,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-06",
+        "field": "pending_date",
+        "from": "",
+        "to": "2027-01-01"
+      },
+      {
+        "date": "2026-11-06",
+        "field": "pending_change",
+        "from": "",
+        "to": "California Privacy Protection Agency rules on automated decision-making technology (ADMT), risk assessments and opt-out preference signals take effect"
+      },
       {
         "date": "2026-10-17",
         "field": "genetic_data",
@@ -289,18 +301,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -411,18 +411,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -543,18 +531,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -665,18 +641,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -797,18 +761,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -919,18 +871,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -1057,18 +997,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -1184,18 +1112,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -1306,18 +1222,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -1444,18 +1348,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -1556,18 +1448,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -1678,18 +1558,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -1785,18 +1653,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -1907,18 +1763,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -2024,18 +1868,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -2063,8 +1895,8 @@
     "frameworks": "",
     "frameworks_not": "",
     "notes": "Law took effect 2025-10-01 but applies to processing from 2026-04-01; cure period (60 days, if AG finds cure possible) sunsets 2027-04-01",
-    "pending_change": "",
-    "pending_date": "",
+    "pending_change": "The 60-day cure period sunsets",
+    "pending_date": "2027-04-01",
     "data_status": "researched",
     "confidence": "medium",
     "last_checked": "2026-10-16",
@@ -2132,16 +1964,16 @@
     },
     "changes": [
       {
-        "date": "2026-10-16",
-        "field": "row",
+        "date": "2026-11-06",
+        "field": "pending_date",
         "from": "",
-        "to": "added"
+        "to": "2027-04-01"
       },
       {
-        "date": "2026-10-16",
-        "field": "row",
+        "date": "2026-11-06",
+        "field": "pending_change",
         "from": "",
-        "to": "added"
+        "to": "The 60-day cure period sunsets"
       },
       {
         "date": "2026-10-16",
@@ -2253,18 +2085,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -2365,18 +2185,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -2492,18 +2300,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -2604,18 +2400,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -2736,18 +2520,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -2848,18 +2620,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -2970,18 +2730,6 @@
         "field": "row",
         "from": "",
         "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
       }
     ]
   },
@@ -3082,18 +2830,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -3204,18 +2940,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",

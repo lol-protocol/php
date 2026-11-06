@@ -11,6 +11,20 @@ hc() { run bash "$VPS_DIR/08-healthcheck.sh" "$@"; }
     [[ "$output" == *"0 falla(s), 0 aviso(s)"* ]]
 }
 
+@test "--sin-ssl prueba HTTP y omite HTTPS, certificado y headers" {
+    REDIR=200 hc ejemplo.com --sin-ssl     # el stub de curl contesta REDIR a las direcciones http://
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"http://ejemplo.com responde 200"* ]]
+    [[ "$output" != *"https://"* ]] && [[ "$output" != *"Certificado:"* ]]
+    REDIR=502 hc ejemplo.com --sin-ssl
+    [ "$status" -eq 1 ]
+}
+
+@test "una opcion desconocida se rechaza" {
+    hc ejemplo.com --nada
+    [ "$status" -eq 2 ]
+}
+
 @test "sin dominio omite las pruebas web y sale 0" {
     hc
     [ "$status" -eq 0 ]

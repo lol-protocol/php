@@ -7,10 +7,17 @@ VENV_PATH="/opt/venvs/whisper"
 
 print_header "02_I" "Python: Whisper + librerias basicas"
 echo "NOTA: requiere Python ya instalado (script 02_C-install-python.sh)."
-echo "AVISO: esto descarga PyTorch (~200-500 MB). Puede tardar varios minutos."
+echo "AVISO: esto descarga PyTorch (varios GB en x86 con CUDA). Puede tardar varios minutos."
 echo ""
 
 check_dependency python3 "./02_C-install-python.sh"
+# python3 viene de fabrica en Ubuntu: lo que hace falta es el modulo venv (lo instala 02_C), y sin el
+# "python3 -m venv" fallaria mas abajo, despues de bajar ffmpeg.
+if ! python3 -m venv --help > /dev/null 2>&1; then
+    echo "ERROR: falta python3-venv." >&2
+    echo "Corre primero: ./02_C-install-python.sh" >&2
+    exit 1
+fi
 
 # ffmpeg es requerido por Whisper para decodificar audio/video
 echo "[1/3] Instalando ffmpeg..."

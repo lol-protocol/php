@@ -50,6 +50,14 @@ su shell es `nologin`). Si una carpeta ya tiene código de otro dueño (de `www-
 toca: se detiene y te dice el `chown -R` para migrarla. `10_B --app` archiva la carpeta (con el `.env`, en una ruta
 solo de root) pero **no borra** la base ni el usuario: te indica los comandos, y un `pg_dump` por si lo necesitas.
 
+**Todo vhost responde también a `www.<dominio>`, y `04` y `08` lo exigen**: con un subdominio
+(`tienda.nuevo.com`) hace falta además el registro A de `www.tienda.nuevo.com`; si no, `04` aborta por el DNS
+y `08` da `[FALLA]`.
+
+**Re-correr un script sobre un dominio que ya tiene HTTPS** (por ejemplo para cambiar `MAX_UPLOAD`) reescribe el
+vhost en HTTP y vuelve a instalar su certificado con `certbot install` (no pide otro a Let's Encrypt). Si eso
+falla, avisa y el sitio queda en HTTP hasta que corras `04`.
+
 Cada app Python necesita **su propio puerto** (por defecto 8000). `06_B` rechaza uno que ya use otra
 app o en el que algo ya escuche.
 

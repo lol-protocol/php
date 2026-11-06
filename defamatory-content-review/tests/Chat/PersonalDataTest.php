@@ -14,6 +14,13 @@ class PersonalDataTest extends TestCase
 {
     private const CONFIG_DIR = __DIR__ . '/../../config';
 
+    public function testAFullWidthAtSignDoesNotHideAnEmail(): void
+    {
+        $chat = ChatLineReviewer::create(self::CONFIG_DIR, 'spa');
+        $this->assertSame('review', $chat->review("su correo es juan\u{FF20}gmail.com")->getDecision());
+        $this->assertSame('review', $chat->review("su RUT es \u{FF11}\u{FF12}.\u{FF13}\u{FF14}\u{FF15}.\u{FF16}\u{FF17}\u{FF18}-\u{FF15}")->getDecision());
+    }
+
     /** @return array<string,array{string,string,string}> idioma, línea, dato */
     public static function exposed(): array
     {

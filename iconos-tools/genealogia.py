@@ -245,6 +245,7 @@ for suffix, gender in (('stepbrother', 'm'), ('stepsister', 'f'), ('stepsibling'
     done(s)
 
 # adopcion, acogida, padrinos, tutela
+# @deprecated Sin uso: cada marca lleva su escala en MARK_SIZE (comprobado 2026-11-05). Se deja como referencia.
 MARK = 1.5
 MARK_SIZE = {'dot': 1.5, 'square': 1.5, 'ring': 1.5, 'arrow': 1.8}  # escala de cada marca sobre el enlace
 for stem, gender, up, style, mark in (

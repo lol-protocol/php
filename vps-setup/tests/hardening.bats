@@ -138,6 +138,7 @@ esac'
 @test "07_B escribe los 4 headers con 'always' y sin directivas obsoletas" {
     export HEADERS_CONF="$BATS_TEST_TMPDIR/security-headers.conf"
     export TOKENS_CONF="$BATS_TEST_TMPDIR/server-tokens.conf" DEFAULT_CONF="$BATS_TEST_TMPDIR/00-default.conf"
+    export NGINX_DIR="$BATS_TEST_TMPDIR/nginx"
     run bash "$VPS_DIR/07_B-nginx-security-headers.sh"
     [ "$status" -eq 0 ]
     for h in Strict-Transport-Security X-Frame-Options X-Content-Type-Options Referrer-Policy; do
@@ -204,11 +205,34 @@ esac'
 
 @test "07_B oculta la version de Nginx y define un vhost por defecto que corta el trafico ajeno" {
     export HEADERS_CONF="$BATS_TEST_TMPDIR/h.conf" TOKENS_CONF="$BATS_TEST_TMPDIR/t.conf" DEFAULT_CONF="$BATS_TEST_TMPDIR/d.conf"
+    export NGINX_DIR="$BATS_TEST_TMPDIR/nginx"
     run bash "$VPS_DIR/07_B-nginx-security-headers.sh"
     [ "$status" -eq 0 ]
     grep -q '^server_tokens off;' "$TOKENS_CONF"
     grep -q 'listen 80 default_server;' "$DEFAULT_CONF" && grep -q 'return 444;' "$DEFAULT_CONF"
     grep -q 'listen 443 ssl default_server;' "$DEFAULT_CONF" && grep -q 'ssl_reject_handshake on;' "$DEFAULT_CONF"
+}
+
+@test "07_B quita el sitio default de Ubuntu (duplicaria default_server) y deja sites-available" {
+    export HEADERS_CONF="$BATS_TEST_TMPDIR/h.conf" TOKENS_CONF="$BATS_TEST_TMPDIR/t.conf" DEFAULT_CONF="$BATS_TEST_TMPDIR/d.conf"
+    export NGINX_DIR="$BATS_TEST_TMPDIR/nginx"
+    mkdir -p "$NGINX_DIR/sites-available" "$NGINX_DIR/sites-enabled"
+    echo 'server { listen 80 default_server; }' > "$NGINX_DIR/sites-available/default"
+    ln -s "$NGINX_DIR/sites-available/default" "$NGINX_DIR/sites-enabled/default"
+    run bash "$VPS_DIR/07_B-nginx-security-headers.sh"
+    [ "$status" -eq 0 ]
+    [ ! -e "$NGINX_DIR/sites-enabled/default" ] && [ -f "$NGINX_DIR/sites-available/default" ]
+}
+
+@test "07_B: si nginx rechaza la configuracion, quita el vhost por defecto y falla" {
+    export HEADERS_CONF="$BATS_TEST_TMPDIR/h.conf" TOKENS_CONF="$BATS_TEST_TMPDIR/t.conf" DEFAULT_CONF="$BATS_TEST_TMPDIR/d.conf"
+    export NGINX_DIR="$BATS_TEST_TMPDIR/nginx"; mkdir -p "$NGINX_DIR/sites-enabled"
+    make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in nginx) exit 1;; systemctl) exit 0;; esac; exec "$@"'
+    run bash "$VPS_DIR/07_B-nginx-security-headers.sh"
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"nginx rechazo la configuracion"* ]]
+    [ ! -e "$DEFAULT_CONF" ]
+    ! grep -q "reload nginx" "$SUDO_LOG"
 }
 
 # ---- 02_J: Webmin ----

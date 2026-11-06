@@ -304,14 +304,14 @@ revisión.
 
 ## Idiomas
 
-Identificados por **ISO 639-3** (tres letras). Los códigos de dos letras se
-aceptan como alias de entrada y se normalizan al entrar, de modo que una
-integración existente puede seguir pasando `es` o `pt`.
+Identificados por **ISO 639-3** (tres letras), siempre: `spa`, `por`, `deu`. Los códigos de dos letras
+(`es`, `pt`) **no se aceptan** en ninguna parte de la API ni en el campo `language` del endpoint. La única
+excepción es la cabecera `Accept-Language` del endpoint, que los navegadores mandan de dos letras y se traduce
+a tres al elegir el idioma de los mensajes de error (`LanguageRegistry::fromHeaderTag()`).
 
 ```php
-$registry->resolve('es');   // 'spa'
-$registry->resolve('zh');   // 'yue'
-$registry->resolve('SPA');  // 'spa'
+$registry->resolve('SPA');  // 'spa': mayúsculas y espacios se normalizan
+$registry->resolve('es');   // InvalidArgumentException
 ```
 
 | Familia | Idiomas |
@@ -340,9 +340,9 @@ la primera vez que sólo una de ellas se actualizó.
 
 | Nivel | Idiomas | Términos c/u |
 |---|---|---|
-| `comprehensive` | spa, eng, por, fra, ita, deu (6) | 282 – 601 |
-| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 138 – 316 |
-| `basic` | isl, swa, tgl (3) | 85 – 101 |
+| `comprehensive` | spa, eng, por, fra, ita, deu (6) | 292 – 679 |
+| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 149 – 329 |
+| `basic` | isl, swa, tgl (3) | 94 – 109 |
 
 ```php
 $reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive
@@ -814,7 +814,8 @@ blanco y juntos mientras quepan, y un párrafo muy largo por oraciones, cortando
 cualquier tipo; la costura de cada corte se revisa también, para que una frase
 que cae sobre él («heil hitler») no quede repartida. Manda la parte más grave y
 los hallazgos de todas salen juntos. Los errores responden
-`{"error": {"code": "texto_demasiado_largo", "message": "…"}}`; un fallo
+`{"error": {"code": "texto_demasiado_largo", "message": "…"}}` (el `message` sale en el idioma de
+`Accept-Language` si hay mensajes en él, en español si no; el `code` no cambia); un fallo
 interno, un 500 genérico (`error_interno`) sin rutas ni trazas, con el detalle
 en el log de PHP. La lógica vive
 en `ModerationEndpoint`, que no toca superglobales: para montarlo en otro
@@ -909,10 +910,10 @@ palabras no entiende contexto:
   (un nombre no se declina). También tienen reglas el finés (casos con armonía
   vocálica y alternancia de consonantes: «paskaa», «vittuun», «idiootin»), el árabe
   (plurales sanos y los rotos de las palabras más comunes), el hindi (casos
-  oblicuos y plurales) y el tagalo (el ligamento «-ng»: «tangang»). No tienen reglas:
-  islandés (declinación con cambios de vocal que no se deducen de la forma) y suajili
-  (clases nominales; no hay lista de frecuencias para medir falsos positivos); el
-  indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
+  oblicuos y plurales), el tagalo (el ligamento «-ng»: «tangang») y el islandés (sustantivos
+  con artículo pospuesto, por terminación: «hundur» → «hundinn»; sin cambios de vocal ni adjetivos).
+  El suajili no tiene reglas (UniMorph trae 2 sustantivos y no hay lista de frecuencias para medir
+  falsos positivos), y el indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   Los idiomas sin reglas no tienen plurales, géneros ni conjugaciones automáticos —sólo la
   forma base y las que se añadan a mano con `also`—, y se escribieron
@@ -954,11 +955,12 @@ sistemático se ve enseguida: con ella se vio que los adjetivos búlgaros en «-
 | noruego | 48 % / 88 % | 51 % / 62 % |
 | danés | 42 % / 33 % | 59 % / 53 % |
 | sueco | 46 % / 39 % | 53 % / 27 % |
-| rumano | 37 % / 22 % | 71 % / 20 % |
+| rumano | 46 % / 37 % | 80 % / 77 % |
+| islandés | 62 % / 64 % | — |
 | árabe | 30 % / 8 % | 61 % / 6 % |
 | hebreo | 46 % / 4 % | — |
 
-Los más flojos son rumano, árabe y hebreo (cobertura baja: UniMorph trae formas con posesivos,
+Los más flojos son árabe y hebreo (el árabe, por los plurales rotos, que no se deducen de la forma; UniMorph hebreo trae solo 124 lemas; cobertura baja: UniMorph trae formas con posesivos,
 vocales y estados constructos que no se generan). Sin datos de sustantivos en UniMorph, no se pudo
 validar el hindi, el tagalo ni los sustantivos neerlandeses; finés y eslovaco no están en UniMorph
 con esos nombres. Ninguna cifra sustituye a la revisión nativa de lo ofensivo.
@@ -979,11 +981,29 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa', ?
 | `batchValidateNames(array $names)` | `ValidationResult[]` |
 | `batchValidateFullNames(array $names)` | `ValidationResult[]` |
 | `decide(ValidationResult $r)` | `accept` \| `accept_with_flag` \| `review` \| `reject` |
-| `getDetailedReport(ValidationResult $r)` | `array` |
+| `getDetailedReport(ValidationResult $r, string $locale = 'spa')` | `array` — frases en el idioma de salida (ver «Idioma de salida») |
 | `getLanguage()` / `setLanguage(string $l)` | `string` / `self` |
 | `getPolicy()` / `setPolicy(ScoringPolicy $p)` | `ScoringPolicy` / `self` |
 | `languages()` | `LanguageAccess` — diccionarios y cobertura |
 | `related()` | `RelatedLanguageValidator` — validación contra idiomas emparentados |
+
+### Idioma de salida
+
+Las frases legibles del informe (la explicación de cada término, la recomendación y la
+descripción de cada categoría de riesgo) salen en español por defecto. Pásale otro idioma
+(ISO 639-3) a `getDetailedReport($result, 'eng')` o a `$result->getExplanations('eng')`:
+
+```php
+$result->getExplanations('eng')[0];
+// “Elba Gina” read together sounds like “vagina” (dictionary spa, type fonetico, severity medium).
+```
+
+Hay mensajes en 18 idiomas (`eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol`, `rus`, `tur`, `ara`, `heb`, `jpn`, `kor`, `hin`, `ukr`, `ces`, `swe` y `ron`; `Messages::locales()`);
+con otro idioma, o con una clave que falte, sale el español. Los textos viven en
+`config/messages/<código>.php` con claves planas, y `spa` es el origen: añadir un idioma es copiar
+ese archivo y traducir; `MessagesTest` exige las mismas claves y los mismos marcadores
+(`%1$s`, `%.2f`…). Son borradores sin revisión de hablante nativo. Los códigos de riesgo
+(`fonetico`), las decisiones (`review`) y los nombres de campo no se traducen.
 
 Los métodos que antes vivían directo en `DefamatoryContentReviewer` para
 idiomas emparentados y acceso a diccionarios ahora cuelgan de dos objetos
@@ -1016,7 +1036,7 @@ $reviewer->getLanguagesByCoverage($level);           $reviewer->languages()->byC
 | `getTermsByDetectionMethod(string $m)` | `array` (`'literal'` \| `'phonetic_fusion'` \| `'phonetic_variant'`) |
 | `getLanguagesChecked()` | `array<string,float>` |
 | `getExplanations()` | `string[]` — una frase por término: qué coincidió, con qué entrada, idioma, tipo y severidad |
-| `toArray()` | `array` (incluye `explanations`) |
+| `toArray()` | `array` (incluye `explanations`, en español) |
 
 Cada término de `getFlaggedTerms()` trae también `matchedEntry` (la forma del
 diccionario que coincidió) y, en fusiones, `fusedFrom` (el nombre completo):
@@ -1129,6 +1149,7 @@ src/                                Namespace DefamatoryContentReview\ (cada car
 │   ├── ValidationResult.php        Resultado con trazabilidad por idioma y método
 │   ├── FlaggedTermCollection.php   Términos marcados y sus consultas — colaborador de ValidationResult
 │   ├── TermExplanation.php         Frase legible de por qué se marcó cada término
+│   ├── Messages.php                Frases del informe por idioma (config/messages/)
 │   └── RiskReportBuilder.php       Arma getDetailedReport() (interno)
 ├── Review/                         Planillas de revisión nativa → config/ (bin/apply-review.php)
 │   ├── ReviewSheet.php             Respuestas del revisor → cambios
@@ -1189,8 +1210,8 @@ review/                             Planillas generadas, una por idioma (ver rev
 _Garbage/                           Obsoleto, conservado sin borrar (ver su README)
 ```
 
-Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas
-(lo verifica `FileSizeLimitTest`) — cuando una clase
+Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas de código
+—sin contar las vacías ni las de comentario— (lo verifica `FileSizeLimitTest`) — cuando una clase
 crece más allá de eso, se descompone en colaboradores internos (mismo
 patrón en todo el proyecto: `ScoringPolicy`/`WordList`/`ValidationResult`/
 `LanguageRegistry` conservan su API pública intacta; sólo

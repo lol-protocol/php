@@ -5,6 +5,12 @@ carries the details. Dates are those of the merge.
 
 ## Unreleased
 
+- Fixed: the tagline of the 30 languages said "more than 300 countries and territories"; the data has 197,
+  and now the tagline says so (a test compares it with `countries_200_complete.csv`).
+- Fixed: Mexico, Brazil and China had no primary format in `country_compatibility`, because the guide
+  wrote "Carta/Oficio", "Carta" and "16K" and the catalog calls them "Carta (Letter)", "Letter" and
+  "16K (Chinese)". The guide now uses the catalog names, the importer reports a name it cannot find in
+  `skipped`, and a test checks all of them.
 - Fixed: picking two languages quickly could leave the page in the first one when its file arrived
   last; `loadLanguage()` now ignores a stale answer.
 - Fixed: `getStats().totalTypes` was always 1, because the catalogs have no type column; the type now

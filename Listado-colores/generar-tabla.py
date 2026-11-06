@@ -51,6 +51,7 @@ ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
 SIGNIFICADOS = CARPETA / "significados-idiomas.csv"
 LEXICO = CARPETA / "lexico-basico.csv"
+COLISIONES_REVISADAS = CARPETA / "colisiones-revisadas.csv"
 REFERENCIAS = CARPETA / "referencias.csv"
 EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
@@ -128,6 +129,7 @@ AMBITOS = {
     "mediterraneo-oriental-y-oriente-medio": ("Mediterráneo oriental y Oriente Medio", ["el", "tr", "ar", "he", "fa"]),
 }
 RE_ID_REFERENCIA = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")
+COLUMNAS_COLISIONES = ["idioma", "nombre", "colores"]
 COLUMNAS_LEXICO = ["concepto", "idioma", "forma", "tipo", "rasgos"]
 # Conceptos del léxico básico: el nombre del color CSS si existe; si no, un nombre de nombres-completos.csv.
 # Los once primeros son los términos básicos de color y deben estar en los 30 idiomas.
@@ -431,6 +433,21 @@ def alias_de(anotada):
     return alias
 
 
+def validar_colisiones(revisadas, anotada, errores):
+    """Un idioma que llama igual a dos colores de distinto hex tiene que estar en colisiones-revisadas.csv, y esa lista no puede
+    guardar casos que ya no existen: así una colisión nueva (o una corregida) no pasa sin que alguien la vea."""
+    actuales = {(codigo, nombre.casefold(), "|".join(colores))
+                for codigo, casos in cobertura.colisiones_nombres(IDIOMAS, anotada).items() for nombre, colores in casos
+                if nombre.strip()}  # un nombre vacío ya lo marca validar_anotada
+    listadas = {(f["idioma"], f["nombre"].casefold(), f["colores"]) for f in revisadas}
+    if len(listadas) != len(revisadas):
+        errores.append("colisiones-revisadas.csv: hay filas repetidas")
+    for codigo, nombre, colores in sorted(actuales - listadas):
+        errores.append(f"colisión nueva sin revisar: en {codigo}, «{nombre}» nombra a {colores.replace('|', ', ')} (añádela a colisiones-revisadas.csv si es correcta)")
+    for codigo, nombre, colores in sorted(listadas - actuales):
+        errores.append(f"colisiones-revisadas.csv: ya no existe el caso {codigo} «{nombre}» ({colores.replace('|', ', ')}); quítalo")
+
+
 def validar_alias(anotada, traducidos, errores):
     """Dos colores con el mismo hex (aqua y cyan, gray y grey) dicen lo mismo: los dos significados, en español y en cada idioma."""
     significados = {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"]) for f in traducidos}
@@ -676,13 +693,14 @@ def comprobar_o_escribir(base, archivos, comprobar, sobrantes=()):
 
 
 def leer_todos():
-    """Lee los nueve CSV. Si varios están mal (cabecera inesperada, fila con campos de más o de menos), los cuenta todos."""
+    """Lee los diez CSV. Si varios están mal (cabecera inesperada, fila con campos de más o de menos), los cuenta todos."""
     fallos, leidos = [], {}
     pedidos = (("anotada", leer, (ANOTADA, COLUMNAS_ANOTADA)), ("completa", leer_completa, ()),
                ("traducidos", leer, (SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)), ("lexico", leer, (LEXICO, COLUMNAS_LEXICO)),
                ("referencias", leer, (REFERENCIAS, COLUMNAS_REFERENCIAS)), ("evidencia", leer, (EVIDENCIA, COLUMNAS_EVIDENCIA)),
                ("culturales", leer, (CULTURALES, COLUMNAS_CULTURALES)), ("gramaticales", leer, (CATEGORIAS, categorias.COLUMNAS)),
-               ("revisiones", leer, (REVISIONES, revision.COLUMNAS)))
+               ("revisiones", leer, (REVISIONES, revision.COLUMNAS)),
+               ("colisiones_revisadas", leer, (COLISIONES_REVISADAS, COLUMNAS_COLISIONES)))
     for nombre, lector, argumentos in pedidos:
         try:
             leidos[nombre] = lector(*argumentos)
@@ -706,6 +724,7 @@ def main():
     validar_completa(completa, errores)
     validar_significados(traducidos, anotada, errores)
     validar_alias(anotada, traducidos, errores)
+    validar_colisiones(leidos["colisiones_revisadas"], anotada, errores)
     validar_lexico(lexico, anotada, completa, errores)
     ids = validar_referencias(referencias, errores)
     usadas = set()

@@ -269,7 +269,7 @@ final class PagosController
      * $moneda es la del pago: en una moneda sin decimales (yen, won) el monto tiene que ser entero.
      * Sin ella solo se chequea el rango.
      */
-    public static function errorDeLosCampos(string $fechaPago, string $metodo, float $monto, ?string $moneda = null): ?string
+    public static function errorDeLosCampos(string $fechaPago, string $metodo, float $monto, ?string $moneda = null, ?string $hoy = null): ?string
     {
         if (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
             return 'Completá todos los campos con un monto válido.';
@@ -282,6 +282,10 @@ final class PagosController
         }
         if (!Validacion::fechaEsValida($fechaPago)) {
             return 'La fecha de pago no es válida.';
+        }
+        // Un pago es algo que ya ocurrió: con fecha futura entraría en los ingresos de un mes que no termina.
+        if (!Validacion::fechaNoEsFutura($fechaPago, $hoy)) {
+            return 'La fecha de pago no puede ser futura.';
         }
 
         return null;

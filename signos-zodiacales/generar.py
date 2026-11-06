@@ -98,6 +98,66 @@ def validar_changelog(texto, version):
     return errores
 
 
+TERMINOS_DE_ESPIRITUS = ({f"coro_{c}" for c in zodiaco.CHOROS} | {f"rango_{r}" for r in zodiaco.RANGOS}
+                         | {"col_nombre", "col_coro", "col_rango", "col_legiones", "col_tramo", "col_cualidades",
+                            "separador", "angeles_titulo", "demonios_titulo", "angeles_nota", "demonios_nota"})
+
+
+def validar_espiritus(esp):
+    """Devuelve la lista de problemas de datos/espiritus.json (vacía si está bien)."""
+    errores = []
+    idiomas = set(IDIOMAS)
+    if set(esp) != {"terminos", "cualidades", "angeles", "demonios"}:
+        return ["espiritus: tiene que tener terminos, cualidades, angeles y demonios, y nada más"]
+
+    def traducciones(donde, por_idioma):
+        if set(por_idioma) != idiomas:
+            errores.append(f"{donde}: no tiene exactamente los {len(IDIOMAS)} idiomas")
+        for codigo, texto in por_idioma.items():
+            if not isinstance(texto, str) or not texto.strip() or texto != texto.strip() and "separador" not in donde:
+                errores.append(f"{donde}/{codigo}: texto vacío o con espacios de más")
+
+    if set(esp["terminos"]) != TERMINOS_DE_ESPIRITUS:
+        faltan = sorted(TERMINOS_DE_ESPIRITUS ^ set(esp["terminos"]))
+        errores.append(f"espiritus/terminos: faltan o sobran {faltan}")
+    for clave, por_idioma in esp["terminos"].items():
+        traducciones(f"espiritus/terminos/{clave}", por_idioma)
+    for clave, por_idioma in esp["cualidades"].items():
+        if not re.fullmatch(r"[a-z_]+", clave):
+            errores.append(f"espiritus/cualidades/{clave}: la clave son minúsculas y guiones bajos")
+        traducciones(f"espiritus/cualidades/{clave}", por_idioma)
+
+    usadas = set()
+    for tipo, lista in (("angeles", esp["angeles"]), ("demonios", esp["demonios"])):
+        if [e.get("numero") for e in lista] != list(range(1, 73)):
+            errores.append(f"espiritus/{tipo}: tienen que ser 72, numerados del 1 al 72 en orden")
+        ids = [e.get("id") for e in lista]
+        if len(set(ids)) != len(ids):
+            errores.append(f"espiritus/{tipo}: ids repetidos")
+        for e in lista:
+            donde = f"espiritus/{tipo}/{e.get('numero')}"
+            if not re.fullmatch(r"[a-z]+(-[a-z]+)?", str(e.get("id", ""))) or not str(e.get("nombre", "")).strip():
+                errores.append(f"{donde}: id (minúsculas) o nombre no válidos")
+            q = e.get("cualidades", [])
+            if not 1 <= len(q) <= 5 or len(set(q)) != len(q):
+                errores.append(f"{donde}: de 1 a 5 cualidades, sin repetir")
+            usadas |= set(q)
+            for c in q:
+                if c not in esp["cualidades"]:
+                    errores.append(f"{donde}: la cualidad {c!r} no está en el glosario")
+            if tipo == "demonios":
+                if not e.get("rangos") or not set(e["rangos"]) <= set(zodiaco.RANGOS) or len(set(e["rangos"])) != len(e["rangos"]):
+                    errores.append(f"{donde}: rangos tiene que ser una lista sin repetir de {zodiaco.RANGOS}")
+                legiones = e.get("legiones")
+                if legiones is not None and (isinstance(legiones, bool) or not isinstance(legiones, int) or legiones < 1):
+                    errores.append(f"{donde}: legiones es un entero positivo o null")
+            elif set(e) != {"numero", "id", "nombre", "cualidades"}:
+                errores.append(f"{donde}: un ángel solo lleva numero, id, nombre y cualidades")
+    for c in sorted(set(esp["cualidades"]) - usadas):
+        errores.append(f"espiritus/cualidades/{c}: nadie la usa (bórrala del glosario)")
+    return errores
+
+
 def validar(datos):
     """Devuelve la lista de problemas de datos/signos.json (vacía si está bien)."""
     errores = []
@@ -249,7 +309,7 @@ def cargar():
         datos = json.load(f)
     with zodiaco.ANIO_NUEVO.open(encoding="utf-8") as f:
         anio_nuevo = json.load(f)["fechas"]
-    errores = (validar(datos) + validar_anio_nuevo(anio_nuevo)
+    errores = (validar(datos) + validar_anio_nuevo(anio_nuevo) + validar_espiritus(zodiaco.cargar_espiritus())
                + validar_changelog(CHANGELOG.read_text(encoding="utf-8") if CHANGELOG.exists() else "", datos.get("version")))
     if errores:
         sys.exit("Los datos no son válidos:\n  " + "\n  ".join(errores))
@@ -390,6 +450,36 @@ def decanatos(signo, datos, codigo):
     return f"{terminos['decanatos'][codigo]}: " + " · ".join(partes)
 
 
+def _fila(*celdas):
+    return "| " + " | ".join(str(c).replace("|", "\\|") for c in celdas) + " |"
+
+
+def seccion_de_espiritus(codigo):
+    """Las dos tablas al final de cada ficha: los 72 ángeles y los 72 demonios, en el idioma de la ficha."""
+    esp = zodiaco.cargar_espiritus()
+    t = {k: v[codigo] for k, v in esp["terminos"].items()}
+    occidentales = [s["id"] for s in zodiaco.cargar_datos()["signos"] if s["tipo"] == "occidental"]
+    tramos = [t_ for i in occidentales for t_ in zodiaco.tramos_de_espiritus(i)]
+
+    def fechas(numero):
+        desde, hasta = tramos[numero - 1]
+        return f"{_dia(desde)} – {_dia(hasta)}"
+
+    lineas = [f"## {t['angeles_titulo']}", "", t["angeles_nota"], "",
+              _fila("#", t["col_nombre"], t["col_coro"], t["col_tramo"], t["col_cualidades"]), "| --- | --- | --- | --- | --- |"]
+    for a in esp["angeles"]:
+        coro = t[f"coro_{zodiaco.CHOROS[(a['numero'] - 1) // 8]}"]
+        lineas.append(_fila(a["numero"], a["nombre"], coro, fechas(a["numero"]), zodiaco.cualidades_de("angel", a["numero"], codigo)))
+    lineas += ["", f"## {t['demonios_titulo']}", "", t["demonios_nota"], "",
+               _fila("#", t["col_nombre"], t["col_rango"], t["col_legiones"], t["col_tramo"], t["col_cualidades"]),
+               "| --- | --- | --- | --- | --- | --- |"]
+    for d in esp["demonios"]:
+        rangos = " / ".join(t[f"rango_{r}"] for r in d["rangos"])
+        legiones = "—" if d["legiones"] is None else d["legiones"]
+        lineas.append(_fila(d["numero"], d["nombre"], rangos, legiones, fechas(d["numero"]), zodiaco.cualidades_de("demonio", d["numero"], codigo)))
+    return lineas + [""]
+
+
 def texto_de_revision(estado):
     if estado["estado"] == "revisado":
         return f"Traducción revisada por {estado['por']} el {estado['fecha']}."
@@ -424,6 +514,7 @@ def ficha_de(datos, codigo):
             if tipo == "chino":
                 lineas += [anios(s, datos, codigo), ""]
             lineas += [s["descripciones"][codigo], "", s["descripciones_largas"][codigo], ""]
+    lineas += seccion_de_espiritus(codigo)
     if rtl:
         lineas += ["</div>", ""]
     return "\n".join(lineas)
@@ -583,7 +674,17 @@ CASOS_DE_ERROR = (
     ("regentes_de_decanatos", ["rata"]),
     ("anios_del_animal", ["aries", 2000, 2030]),
     ("revision", ["xx"]),
+    ("tramos_de_espiritus", ["rata"]),
+    ("tramos_de_espiritus", ["aries", "2025"]),
+    ("cualidades_de", ["arcangel", 1, "es"]),
+    ("cualidades_de", ["angel", 0, "es"]),
+    ("cualidades_de", ["angel", 73, "es"]),
+    ("cualidades_de", ["angel", True, "es"]),
+    ("cualidades_de", ["angel", 1, "xx"]),
 )
+
+# Entradas de cualidades_de que se prueban en los 30 idiomas (en español se prueban las 144).
+MUESTRA_DE_CUALIDADES = (("angel", 1), ("angel", 25), ("demonio", 1), ("demonio", 25), ("demonio", 46))
 
 # Instantes con huso horario: animal_chino_de_instante los pasa a la hora de China (UTC+8).
 INSTANTES = (
@@ -640,8 +741,30 @@ def vectores_de(datos):
             s["id"]: zodiaco.anios_del_animal(s["id"], 1900, 2099, datos) for s in datos["signos"] if s["tipo"] == "chino"
         },
         "revision": {c: datos["revision"][c] for c in IDIOMAS},
+        "espiritu_de_fecha": [],
+        "tramos_de_espiritus": {
+            str(anio): {s["id"]: zodiaco.tramos_de_espiritus(s["id"], anio, datos)
+                        for s in datos["signos"] if s["tipo"] == "occidental"}
+            for anio in (2024, 2025)
+        },
+        "cualidades_de": {
+            codigo: [[t, n, zodiaco.cualidades_de(t, n, codigo)]
+                     for t, n in (MUESTRA_DE_CUALIDADES if codigo != "es" else
+                                  [(t, n) for t in zodiaco.TIPOS_DE_ESPIRITU for n in range(1, 73)])]
+            for codigo in IDIOMAS
+        },
+        # Huella de las 144 frases de cada idioma: comprueba todas sin guardarlas (las muestras de arriba dicen cuál).
+        "cualidades_de_sha256": {
+            codigo: hashlib.sha256("\n".join(zodiaco.cualidades_de(t, n, codigo) for t in zodiaco.TIPOS_DE_ESPIRITU
+                                             for n in range(1, 73)).encode("utf-8")).hexdigest()
+            for codigo in IDIOMAS
+        },
         "errores": [{"funcion": f, "args": a} for f, a in CASOS_DE_ERROR],
     }
+    for d in dias:
+        a, x = zodiaco.angel_de_fecha(d, datos), zodiaco.demonio_de_fecha(d, datos)
+        cuerpo["espiritu_de_fecha"].append([d.strftime("%m-%d"), a["angel"]["numero"], a["angel"]["id"], a["coro"],
+                                            x["demonio"]["id"], a["tramo"]])
     for anio in range(1900, 2100):
         a = zodiaco.animal_chino(anio, datos)
         cuerpo["animal_chino"].append([anio, a["signo"]["id"], a["tronco"]["hanzi"], a["elemento_del_anio"], a["polaridad"]])

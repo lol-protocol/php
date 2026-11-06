@@ -55,7 +55,7 @@ final class ClientesController
      */
     public static function nacimientoNoEsFuturo(string $fechaNacimiento, string $hoy): bool
     {
-        return $fechaNacimiento <= $hoy;
+        return Validacion::fechaNoEsFutura($fechaNacimiento, $hoy);
     }
 
     /**

@@ -287,6 +287,10 @@ pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
   tasa exacta de cada fecha, falta una tabla de cotizaciones por día (y una importación
   que las use: las filas aceptan una tasa explícita).
 
+### Pagos con fecha futura
+
+El alta y la edición de un pago rechazan una fecha posterior a hoy. Una base que ya tenía datos puede traer alguno de antes; `php bin/pagos_futuros.php` los lista (no escribe nada y termina con 1 si hay alguno). Corregirlos —editar la fecha o anular el pago— lo decide una persona.
+
 ### Respaldos
 
 Con `boletas`, `pagos` y clientes reales adentro, la base no se puede perder. El respaldo es

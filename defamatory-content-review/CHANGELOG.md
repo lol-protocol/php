@@ -2,6 +2,57 @@
 
 ## [Sin publicar]
 
+### Cambiado
+
+- **El código de idioma es siempre de tres letras** (ISO 639-3): `LanguageRegistry::resolve()` e
+  `isSupported()` ya no aceptan `es`, `de`, `zh`… (el campo `language` del endpoint tampoco). Las etiquetas de
+  dos letras solo se leen en `Accept-Language`, con `LanguageRegistry::fromHeaderTag()`.
+- **`Messages` lee de la carpeta de configuración del revisor** (`<configDir>/messages`), no de la del
+  paquete; `negotiate()` respeta los pesos `q` de `Accept-Language`. Los textos de `explanation.related` usan
+  `%.2F` (no dependen del locale).
+- **`FileSizeLimitTest` cuenta líneas de código** (sin vacías ni comentarios), con el mismo límite de 100.
+- `RomanianInflection` genera sus clases palatalizables de una tabla (mismas formas que antes).
+
+### Añadido
+
+- **Árabe**: 13 plurales más en `ArabicPlurals` (rotos y sanos irregulares de palabras del diccionario).
+
+- **Más idiomas de salida del informe**: `ara`, `heb`, `jpn`, `kor`, `hin`, `tur`, `ukr`, `ces`,
+  `swe` y `ron` se suman a los ocho de antes (18 en total, borradores sin revisión nativa).
+- **Errores del endpoint en el idioma del cliente** (`ModerationEndpoint::handle(…, $locale)`,
+  `Messages::negotiate()`): `public/moderar.php` lee `Accept-Language` y los mensajes de error
+  (`error.message`) salen en ese idioma; el `code` no cambia. Español por defecto.
+- **Flexión del islandés** (`IcelandicInflection`): sustantivos por terminación y con artículo
+  pospuesto (62 % de precisión y 64 % de cobertura contra UniMorph; antes no había reglas).
+- **Rumano mejorado contra UniMorph**: artículo («idiotul», «idiotului»), vocativo («idiotule») y
+  los plurales con artículo; sustantivos de 37 % / 22 % a 46 % / 37 % (precisión / cobertura) y
+  adjetivos de 71 % / 20 % a 80 % / 77 %.
+
+- **Idioma de salida del informe** (`Messages`, `config/messages/`): la explicación de cada
+  término, la recomendación y la descripción de cada categoría de riesgo se pueden pedir en
+  `eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol` o `rus` con
+  `getDetailedReport($result, $locale)` y `getExplanations($locale)`. Español por defecto (la
+  salida de siempre) y como respaldo de lo que falte. Borradores sin revisión nativa;
+  `MessagesTest` comprueba que cada idioma tiene las mismas claves y marcadores que el español.
+
+### Corregido
+
+- **Rellenos invisibles entre letras** (`EvasionCleaner`): el Hangul filler
+  (U+3164, U+115F, U+1160, U+FFA0) y el braille en blanco (U+2800) dentro de una
+  palabra latina («pu\u{3164}ta») dejaban pasar el insulto y la amenaza. Se quitan
+  sólo entre letras latinas; en coreano siguen siendo letras. `FillerEvasionTest`.
+- **Datos personales con arroba o dígitos de ancho completo** (`PersonalData::findIn`):
+  «juan＠gmail.com» daba `approve` porque los datos personales se buscaban en la
+  línea sin limpiar. Ahora también en la línea limpia.
+- **Un apellido ambiguo ya no rebaja un insulto grave** (`ValidationResult::nameCollisionExplainsSeverity`):
+  «Puta Cerda» y «Cabron Moro» daban `review` porque «cerda» y «moro» son
+  apellidos, aunque «puta» y «cabron» son graves por sí solos. La colisión sólo baja a
+  revisión el rechazo que ella misma causa.
+- **Letras en cuadros** (`StyledLetters`): sólo los tres bloques A–Z; las siglas de
+  entre medias («🅪»…) ya no se convierten en puntuación ASCII.
+- **README**: conteos de términos por nivel de cobertura al día (292–679, 149–329 y
+  94–109; 8.206 en total) y el comentario del ejemplo 10.
+
 ### Añadido
 
 - **Frases que no deben dar alerta** (`tests/fixtures/safe-phrases.php`,

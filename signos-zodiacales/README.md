@@ -1,6 +1,6 @@
 # Signos del zodiaco y horóscopo chino
 
-Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 30 idiomas. Cada uno trae su nombre, una descripción breve y otra más larga de sus supuestas características, y sus rasgos: en el occidental, símbolo, fechas tropicales y siderales, elemento y modalidad; en el chino, rama terrestre, elemento y polaridad. `zodiaco.py` calcula el signo de una fecha y el animal y el elemento de un año. Además, cada signo tiene una ilustración SVG en dos variantes: sobre cielo nocturno y transparente.
+Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 30 idiomas. Cada uno trae su nombre, una descripción breve y otra más larga de sus supuestas características, y sus rasgos: en el occidental, símbolo, fechas tropicales y siderales, elemento y modalidad; en el chino, rama terrestre, elemento y polaridad. `zodiaco.py` calcula el signo de una fecha y el animal y el elemento de un año. También trae los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia, con sus cualidades y el tramo del año de cada uno. Además, cada signo tiene una ilustración SVG en dos variantes: sobre cielo nocturno y transparente.
 
 > **Aviso.** Las descripciones recogen lo que la astrología y el horóscopo chino *atribuyen* a cada signo. No hay evidencia científica de que la fecha de nacimiento influya en el carácter. Las constelaciones occidentales son figuras de la tradición, no grupos de estrellas físicamente relacionados, y los animales chinos **no tienen constelaciones**: sus figuras estelares son un dibujo hecho para este proyecto.
 
@@ -12,6 +12,7 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 
 |---|---|
 | `datos/signos.json` | La fuente de verdad: nombres, descripciones, rasgos, fechas, troncos celestes, términos traducidos y la figura de cada signo. |
 | `datos/anio-nuevo-lunar.json` | La fecha del Año Nuevo lunar de cada año, de 1900 a 2099. |
+| `datos/espiritus.json` | Los 72 ángeles y los 72 demonios: nombre, coro o rango, legiones y cualidades, más un glosario de 158 cualidades traducidas a los 30 idiomas y los textos de las tablas. |
 | `datos/vectores.json` | Las respuestas de `zodiaco.py` a un conjunto fijo de entradas (cada día del año, cada año de 1900 a 2099, cada par de signos…), que comparten Python y PHP. Generado, no editar a mano. |
 | `CHANGELOG.md` | Historial de cambios de los datos. Su primera entrada tiene que coincidir con `version` de `datos/signos.json`. |
 | `zodiaco.py` | Consultas: `signo_occidental(fecha)`, `cuspide(fecha)`, `animal_chino(anio)`, `animal_chino_de_fecha(fecha)`, `anios_del_animal(id, desde, hasta)`, `version()` y `revision(idioma)`, entre otras (ver «Uso»). |
@@ -161,6 +162,32 @@ Los nombres pasan a camelCase (`signo_occidental` → `signoOccidental`, `anios_
 
 **Los dos se prueban contra los mismos vectores.** `generar.py` calcula con `zodiaco.py` las respuestas a unas 3 700 entradas y las guarda en `datos/vectores.json`; `python3 generar.py --comprobar` falla si el archivo no está al día, y `php php/pruebas/ejecutar.php` falla si PHP da una sola respuesta distinta. Si cambias una consulta de Python, regenera los vectores y el port tiene que seguirla (el diff de `vectores.json` dice qué cambió). El primer día que se probó, los vectores atraparon un fallo del port: dos signos del mismo elemento contaban también como «elementos complementarios».
 
+### Los 72 ángeles y los 72 demonios
+
+`datos/espiritus.json` guarda dos listas de 72, que la tradición esotérica reparte por el zodiaco. **No son lo mismo y no vienen del mismo sitio:**
+
+- **Los 72 ángeles** son los del *Shem ha-Mephorash*, «el nombre de 72 letras». La Cábala medieval lo deriva de tres versículos de Éxodo 14:19-21 que tienen 72 letras cada uno; los nombres de los ángeles salen de combinar esas letras. Los versículos son bíblicos; **los nombres de los ángeles, no**: son de la tradición cabalística y cristiano-hermética. Van de ocho en ocho en nueve coros, de los Serafines a los Ángeles.
+- **Los 72 demonios** son los de la *Goetia* (*Ars Goetia*), el primer libro de la *Llave Menor de Salomón* (siglo XVII). Es un grimorio, **no forma parte de la Biblia** ni de su tradición canónica, aunque suele nombrarse junto a los ángeles. Cada uno trae un rango (rey, duque, príncipe, marqués, conde, presidente o caballero; algunos tienen dos) y un número de legiones, que en un caso (Vassago) la fuente no da.
+
+**El tramo del año.** Cada uno se atribuye a 5° del zodiaco tropical (72 × 5° = 360°), seis por signo desde Aries. Aquí cada signo occidental se parte en seis tramos de fechas casi iguales, y el ángel y el demonio del mismo número comparten tramo: el 1 va del 21/03 al 25/03 (Vehuiah y Bael), y el 72, del 16/03 al 20/03 (Mumiah y Andromalius). Los signos de 31 o 32 días dan un día más a los primeros tramos, y en Piscis cuenta si el año es bisiesto. La correspondencia de los demonios con los mismos tramos es de la esoterología moderna (siglos XIX y XX), no de los grimorios, y cada autor reparte las fechas de los ángeles a su manera: son aproximadas, como las de los signos.
+
+**Las cualidades** son lo que la tradición atribuye a cada uno (virtudes y dones en los ángeles; oficios y poderes en los demonios), en tres o cuatro palabras. Cada una es una clave de un **glosario** (`cualidades` en `espiritus.json`) con su traducción a los 30 idiomas, así que «protección» se dice igual en todas las fichas, y se ven y se corrigen en un solo sitio. Se unen con el separador de cada idioma (`، ` en árabe, persa y urdu; `、` en chino y japonés).
+
+> **Lo que no está verificado.** Escribí los nombres, los rangos, las legiones y las cualidades **de memoria**, a partir de lo que circula de estas dos tradiciones, y **no los contrasté con las fuentes primarias**. Las grafías de los nombres varían entre autores (Haziel, Hasiel; Samigina, Gamigin; Uvall, Vual…), los resúmenes de cualidades también, y las traducciones a los 30 idiomas, como todas, **no las revisó una persona nativa**. Antes de mostrarlo a usuarios hay que contrastarlo con una fuente, y las fichas lo dicen en cada tabla («Solo referencia cultural»). Es contenido cultural e histórico: no tiene respaldo científico.
+
+```python
+a = zodiaco.angel_de_fecha(datetime.date(1990, 4, 3))
+a["angel"]["nombre"], a["coro"], a["tramo"]        # ('Sitael', 'serafines', [[3, 31], [4, 4]])
+zodiaco.demonio_de_fecha(datetime.date(1990, 4, 3))["demonio"]["nombre"]   # 'Vassago'
+zodiaco.tramos_de_espiritus("aries")               # [[[3, 21], [3, 25]], [[3, 26], [3, 30]], …]
+zodiaco.cualidades_de("angel", 3, "es")            # 'Construcción, protección, nobleza'
+zodiaco.cualidades_de("demonio", 1, "en")          # 'Invisibility, wisdom'
+```
+
+En PHP: `Zodiaco::angelDeFecha()`, `demonioDeFecha()`, `tramosDeEspiritus()` y `cualidadesDe()`. Cada ficha de `por-idioma/` termina con las dos tablas (número, nombre, coro o rango, legiones, fechas y cualidades) en su idioma.
+
+Para corregir una cualidad, edita su traducción en `cualidades`; para cambiar las de un ángel o un demonio, su lista de claves; luego `python3 generar.py`. `validar_espiritus()` exige 72 de cada uno numerados en orden, que cada clave esté en el glosario y que no sobre ninguna, los 30 idiomas en cada texto y rangos de la lista.
+
 ### Versión y revisión
 
 `datos/signos.json` lleva `version` (versionado semántico: mayor si cambia el esquema o lo que devuelven las consultas, menor si se agregan datos o funciones, parche si se corrige un texto) y `CHANGELOG.md` cuenta qué cambió. `generar.py --comprobar` falla si la primera entrada del `CHANGELOG.md` no coincide con `version`: no se puede cambiar una sin la otra.
@@ -172,6 +199,21 @@ Los nombres pasan a camelCase (`signo_occidental` → `signoOccidental`, `anios_
 ```
 
 `por` y `fecha` (AAAA-MM-DD) son obligatorios si el estado es `revisado`. Luego `python3 generar.py` actualiza la ficha y el índice, y se apunta en `CHANGELOG.md` (versión menor, o parche si solo cambia esto) con la misma versión en `datos/signos.json`.
+
+## Esquema de `datos/espiritus.json`
+
+```jsonc
+{
+  "terminos": { "coro_serafines": { "es": "Serafines", … }, "rango_rey": {…}, "col_nombre": {…}, "separador": {…},
+                "angeles_titulo": {…}, "angeles_nota": {…}, … },       // textos de las tablas × 30 idiomas
+  "cualidades": { "proteccion": { "es": "protección", "en": "protection", … }, … },   // el glosario: 158 claves
+  "angeles":  [ { "numero": 1, "id": "vehuiah", "nombre": "Vehuiah", "cualidades": ["voluntad", "comienzos", "energia"] }, … ],
+  "demonios": [ { "numero": 1, "id": "bael", "nombre": "Bael", "rangos": ["rey"], "legiones": 66,
+                 "cualidades": ["invisibilidad", "sabiduria"] }, … ]
+}
+```
+
+El coro de un ángel y su signo salen del número (de ocho en ocho y de seis en seis), por eso no se guardan.
 
 ## Esquema de `datos/signos.json`
 
