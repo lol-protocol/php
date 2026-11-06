@@ -7,12 +7,13 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 
 | Archivo | Nombre | Cuándo corre | Jobs |
 |---|---|---|---|
+| [`borrar-ramas-fusionadas.yml`](workflows/borrar-ramas-fusionadas.yml) | Borrar ramas fusionadas | `pull_request`, `workflow_dispatch` | `probar`, `borrar` |
 | [`estructura.yml`](workflows/estructura.yml) | Estructura del repo | `push`, `pull_request`, `workflow_dispatch` | `readme-projects`, `readme-workflows`, `workflows-listado`, `claude-md-rutas`, `enlaces-md`, `composer-validate`, `landing-page` |
 | [`iconos.yml`](workflows/iconos.yml) | Iconos | `push`, `pull_request`, `workflow_dispatch` | `iconos` |
 | [`informe-de-ramas.yml`](workflows/informe-de-ramas.yml) | Informe de ramas | `push`, `pull_request`, `schedule`, `workflow_dispatch` | `ramas` |
 | [`laws-freshness.yml`](workflows/laws-freshness.yml) | Leyes - vigencia de los datos | `push`, `schedule`, `workflow_dispatch` | `freshness`, `issue` |
 | [`laws-links.yml`](workflows/laws-links.yml) | Leyes - enlaces de referencia | `pull_request`, `schedule`, `workflow_dispatch` | `links`, `issue` |
-| [`laws-modules.yml`](workflows/laws-modules.yml) | Leyes (privacidad y copyright) | `push`, `pull_request` | `test`, `database` |
+| [`laws-modules.yml`](workflows/laws-modules.yml) | Leyes (privacidad y copyright) | `push`, `pull_request` | `copias`, `test`, `database` |
 | [`marcalibros-b.yml`](workflows/marcalibros-b.yml) | Marcalibros (generar catalogo y pruebas) | `push`, `pull_request`, `workflow_dispatch` | `catalogo` |
 | [`pruebas-backoffice.yml`](workflows/pruebas-backoffice.yml) | Pruebas backoffice | `push`, `pull_request`, `workflow_dispatch` | `analisis-estatico`, `pruebas` |
 | [`pruebas-citas-pos.yml`](workflows/pruebas-citas-pos.yml) | Pruebas citas POS | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
