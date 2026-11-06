@@ -77,6 +77,7 @@ The full workflow, with the rules for sources and history, is in [CONTRIBUTING.m
 $EDITOR jurisdictions/copyright_laws_master.csv
 npm run changes       # records what changed since the last commit in changes.csv
 npm run replace-url -- <old> <new>   # swaps a dead reference URL in the master CSV and field_sources.csv (--dry to count)
+npm run apply-research -- findings.csv --batch=batch.txt   # writes researched facts (code,field,value,conf,source) as new rows / patched cells, each with its source
 npm run validate      # strict checks: columns, treaties, types, URLs, regions, duplicates…
 npm run build         # regenerates {tld}/ folders and index.json (idempotent)
 npm test              # also fails if generated files are out of date

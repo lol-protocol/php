@@ -17,7 +17,8 @@
     "changes": "node scripts/record-changes.js",
     "translations": "node scripts/translations.js",
     "replace-url": "node scripts/replace-url.js",
-    "sync:app": "node scripts/sync-app.js"
+    "sync:app": "node scripts/sync-app.js",
+    "apply-research": "node scripts/apply-research.js"
   },
   "keywords": [
     "copyright",

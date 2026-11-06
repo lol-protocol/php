@@ -127,7 +127,8 @@ export const PROTECTION_TYPES = [
 
 export const TREATIES = ["Berne", "TRIPS", "WCT", "WPPT"];
 
-const REQUIRED = [
+/** Columns that cannot be empty in a law row. */
+export const REQUIRED_FIELDS = [
   "country_code",
   "country_name",
   "region",
@@ -179,7 +180,7 @@ export function validateRecords(records, header = COLUMNS, { today = todayIso() 
         fail(`${field} has leading/trailing whitespace: ${JSON.stringify(value)}`);
       }
     }
-    for (const field of REQUIRED) {
+    for (const field of REQUIRED_FIELDS) {
       if (!record[field]) fail(`missing required field ${field}`);
     }
 
