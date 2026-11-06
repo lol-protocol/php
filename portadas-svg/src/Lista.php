@@ -220,10 +220,8 @@ final class Lista
             $degradado['tipo'] = mb_strtolower($celdas['degradado_tipo']);
         }
         if (isset($celdas['degradado_angulo'])) {
-            if (preg_match('/^-?\d+(?:[.,]\d+)?$/', $celdas['degradado_angulo']) !== 1) {
-                throw new \InvalidArgumentException("'degradado_angulo' debe ser un número de grados, no «{$celdas['degradado_angulo']}».");
-            }
-            $degradado['angulo'] = (float) str_replace(',', '.', $celdas['degradado_angulo']);
+            $degradado['angulo'] = Numeros::decimal($celdas['degradado_angulo'], true)
+                ?? throw new \InvalidArgumentException("'degradado_angulo' debe ser un número de grados, no «{$celdas['degradado_angulo']}».");
         }
         $colores = $celdas['degradado'] ?? 'auto';
         if (mb_strtolower($colores) !== 'auto') {
@@ -236,11 +234,7 @@ final class Lista
     /** Un número de mm, con punto o coma decimal. */
     private static function numero(string $columna, string $valor): float
     {
-        if (preg_match('/^\d+(?:[.,]\d+)?$/', $valor) !== 1) {
-            throw new \InvalidArgumentException("'$columna' debe ser un número en milímetros, no «{$valor}».");
-        }
-
-        return (float) str_replace(',', '.', $valor);
+        return Numeros::decimal($valor) ?? throw new \InvalidArgumentException("'$columna' debe ser un número en milímetros, no «{$valor}».");
     }
 
     /**
