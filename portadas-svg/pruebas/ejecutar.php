@@ -1430,8 +1430,8 @@ $pruebas = [
                 $ids[$camino->getAttribute('id')] = true;
             }
             foreach ($doc->getElementsByTagName('use') as $uso) {
-                verdadero(isset($ids[ltrim($uso->getAttribute('href'), '#')]), "$pieza: un <use> apunta a un contorno que no está");
-                igual($uso->getAttribute('href'), $uso->getAttribute('xlink:href'));
+                verdadero(isset($ids[ltrim($uso->getAttribute('xlink:href'), '#')]), "$pieza: un <use> apunta a un contorno que no está");
+                igual('', $uso->getAttribute('href')); // Inkscape 1.2 solo lee xlink:href: el href suelto sobra
             }
         }
         $portada = new DOMDocument();
@@ -1527,7 +1527,7 @@ $pruebas = [
 
             Generador::escribir($libro, "$dir/trazos", true);
             $svg = (string) file_get_contents("$dir/trazos/lomo.svg");
-            verdadero(str_contains($svg, 'id="gserif-normal-400-36947"') && str_contains($svg, 'M100 0L900 0'), 'el lomo no dibuja la letra extra');
+            verdadero(str_contains($svg, 'id="ga36947"') && str_contains($svg, 'M100 0L900 0'), 'el lomo no dibuja la letra extra');
 
             [$codigo] = correrCli(['ejemplos/platon-apologia.json', '--trazos', "--extra=$dir/extra", "--salida=$dir/cli"]);
             igual(0, $codigo);
@@ -1551,7 +1551,7 @@ $pruebas = [
             'אב' => [1200, 1, [[0, 0, $primera], [600, 0, $segunda]]],
             'גד' => [1000, 1, [[0, 0, $tercera], [500, 0, $cuarta]]],
         ], JSON_UNESCAPED_UNICODE));
-        $id = static fn (string $contorno): string => 'f' . substr(md5($contorno), 0, 10);
+        $id = static fn (string $contorno): string => 'f' . substr(md5($contorno), 0, 8);
         try {
             Fuentes::usarExtras("$dir/extra");
             $medida = Anchos::de('serif', 'normal', 400);
@@ -1570,7 +1570,7 @@ $pruebas = [
             // El lomo escribe «título · autor»: el tramo de derecha a izquierda se invierte dentro de la frase.
             Generador::escribir(libroDeEjemplo(['titulo' => 'אב גד', 'autor' => 'Ana']), "$dir/mixta", true);
             $x = static function (string $svg, string $contorno) use ($id): ?float {
-                return preg_match('/<use href="#' . $id($contorno) . '"[^>]* x="([\d.]+)"/', $svg, $m) === 1 ? (float) $m[1] : null;
+                return preg_match('/<use xlink:href="#' . $id($contorno) . '"[^>]* x="([\d.]+)"/', $svg, $m) === 1 ? (float) $m[1] : null;
             };
             $lomo = (string) file_get_contents("$dir/mixta/lomo.svg");
             $alef = $x($lomo, $primera);
