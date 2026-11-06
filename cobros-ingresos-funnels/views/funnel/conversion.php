@@ -106,7 +106,7 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
                 <tbody>
                 <?php foreach ($porCanal as $c): $tasa = $c['visitantes'] > 0 ? $c['clientes'] / $c['visitantes'] * 100 : 0; ?>
                     <tr>
-                        <td><?= htmlspecialchars(Etiquetas::canal($c['etiqueta'])) ?></td>
+                        <td><?= e(Etiquetas::canal($c['etiqueta'])) ?></td>
                         <td class="num"><?= $c['visitantes'] ?></td>
                         <td class="num"><?= $c['registrados'] ?></td>
                         <td class="num"><?= $c['leads'] ?></td>

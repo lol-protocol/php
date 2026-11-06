@@ -21,6 +21,6 @@ use App\FiltroDePeriodo;
     <?php endforeach; ?>
 </select>
 <label for="desde">Desde</label>
-<input type="date" name="desde" id="desde" value="<?= htmlspecialchars($desdeIngresado) ?>">
+<input type="date" name="desde" id="desde" value="<?= e($desdeIngresado) ?>">
 <label for="hasta">Hasta</label>
-<input type="date" name="hasta" id="hasta" value="<?= htmlspecialchars($hastaIngresado) ?>">
+<input type="date" name="hasta" id="hasta" value="<?= e($hastaIngresado) ?>">

@@ -35,7 +35,7 @@ use App\Etiquetas;
         <?php endforeach; ?>
     </select>
     <label for="cliente">Cliente</label>
-    <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= htmlspecialchars($cliente) ?>">
+    <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= e($cliente) ?>">
     <button type="submit">Aplicar</button>
     <a href="?page=boleta-nueva" style="margin-left:auto;">+ Nueva boleta</a>
 </form>
@@ -79,7 +79,7 @@ use App\Etiquetas;
 
 <div class="panel">
     <h2>Boletas (<?= $totalBoletas ?>)</h2>
-    <p class="subtitulo"><a href="<?= htmlspecialchars(url_con_parametros(['page' => 'cobros-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todas las filas con estos filtros, no solo esta página</p>
+    <p class="subtitulo"><a href="<?= e(url_con_parametros(['page' => 'cobros-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todas las filas con estos filtros, no solo esta página</p>
     <div class="table-wrap">
         <table>
             <thead>
@@ -91,10 +91,10 @@ use App\Etiquetas;
             <tbody>
             <?php foreach ($boletas as $b): ?>
                 <tr>
-                    <td><a href="?page=cliente&id=<?= (int) $b['cliente_id'] ?>"><?= htmlspecialchars($b['cliente']) ?></a></td>
-                    <td><?= htmlspecialchars($b['concepto']) ?></td>
-                    <td><?= htmlspecialchars($b['fecha_emision']) ?></td>
-                    <td><?= htmlspecialchars($b['fecha_vencimiento']) ?></td>
+                    <td><a href="?page=cliente&id=<?= (int) $b['cliente_id'] ?>"><?= e($b['cliente']) ?></a></td>
+                    <td><?= e($b['concepto']) ?></td>
+                    <td><?= e($b['fecha_emision']) ?></td>
+                    <td><?= e($b['fecha_vencimiento']) ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
                     <td><span class="badge <?= $b['estado'] ?>"><?= Etiquetas::estadoBoleta($b['estado']) ?></span></td>

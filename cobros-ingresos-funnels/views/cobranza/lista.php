@@ -59,8 +59,8 @@ $claseDelTramo = ['Al día' => 'pagada', '1-30 días' => 'pendiente', '31-60 dí
 </div>
 
 <div class="panel">
-    <h2><?= htmlspecialchars(CobranzaRepository::ALCANCES[$alcance]) ?> (<?= $totalClientes ?>)</h2>
-    <p class="subtitulo"><a href="<?= htmlspecialchars(url_con_parametros(['page' => 'cobranza-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todas las filas con estos filtros, no solo esta página</p>
+    <h2><?= e(CobranzaRepository::ALCANCES[$alcance]) ?> (<?= $totalClientes ?>)</h2>
+    <p class="subtitulo"><a href="<?= e(url_con_parametros(['page' => 'cobranza-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todas las filas con estos filtros, no solo esta página</p>
     <div class="table-wrap">
         <table>
             <thead>
@@ -73,9 +73,9 @@ $claseDelTramo = ['Al día' => 'pagada', '1-30 días' => 'pendiente', '31-60 dí
                 $tramo = IngresosYCobrosRepository::tramoDeAntiguedad($dias);
                 ?>
                 <tr>
-                    <td><a href="?page=cliente&id=<?= (int) $c['cliente_id'] ?>"><?= htmlspecialchars($c['nombre']) ?></a></td>
-                    <td><a href="mailto:<?= htmlspecialchars($c['email']) ?>"><?= htmlspecialchars($c['email']) ?></a></td>
-                    <td><?= htmlspecialchars($c['pais']) ?> · <?= htmlspecialchars($c['ciudad']) ?></td>
+                    <td><a href="?page=cliente&id=<?= (int) $c['cliente_id'] ?>"><?= e($c['nombre']) ?></a></td>
+                    <td><a href="mailto:<?= e($c['email']) ?>"><?= e($c['email']) ?></a></td>
+                    <td><?= e($c['pais']) ?> · <?= e($c['ciudad']) ?></td>
                     <td class="num"><?= (int) $c['boletas'] ?></td>
                     <td class="num"><?= Config::dinero((float) $c['saldo_usd']) ?></td>
                     <td class="num"><?= (float) $c['vencido_usd'] > 0 ? Config::dinero((float) $c['vencido_usd']) : '—' ?></td>
