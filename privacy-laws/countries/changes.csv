@@ -705,3 +705,9 @@ date,country_code,law_name,field,old_value,new_value
 2026-10-31,SV,Personal Data Protection Law (Decree No. 144 of 2024),deceased_data,,Rights over a deceased person's data are exercised by heirs or successors who prove their status (art. 6)
 2026-10-31,SV,Personal Data Protection Law (Decree No. 144 of 2024),research_exemption,,"Erasure exception for scientific, historical or statistical research if data are pseudonymised or dissociated, and for public-interest archiving (art. 10(e)-(f)); information-duty exemption for historical archives and research (art. 28(h)); sensitive data may be processed for statistics or science if dissociated (art. 38)"
 2026-10-31,SV,Personal Data Protection Law (Decree No. 144 of 2024),genetic_data,Sensitive data need express written consent (press summary; exceptions for medical emergency); genetic data category not confirmed (unconfirmed),Genetic information is listed among sensitive personal data (art. 4(g)); sensitive data may only be processed in cases set by law (art. 38)
+2026-11-06,AL,Law on Personal Data Protection (Law No. 124/2024),pending_change,,DPIA and prior-consultation obligations start to apply
+2026-11-06,AL,Law on Personal Data Protection (Law No. 124/2024),pending_date,,2027-01-17
+2026-11-06,US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),pending_change,,"California Privacy Protection Agency rules on automated decision-making technology (ADMT), risk assessments and opt-out preference signals take effect"
+2026-11-06,US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),pending_date,,2027-01-01
+2026-11-06,US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",pending_change,,The 60-day cure period sunsets
+2026-11-06,US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",pending_date,,2027-04-01

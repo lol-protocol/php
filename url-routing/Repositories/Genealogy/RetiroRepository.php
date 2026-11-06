@@ -37,6 +37,9 @@ final class RetiroRepository extends Repository
     /** How many months a resolved pedido keeps the requester's email and text before bin/pedidos-retiro.php --depurar erases them. */
     public const CONSERVAR_MESES = 12;
 
+    /** How many decided pedidos todos() lists (the pending ones are always all there). */
+    public const RESUELTOS_VISIBLES = 100;
+
     /** How many times crear() asks for a number when someone else took the one it read. Each retry reads the new maximum, so one is enough in practice. */
     private const INTENTOS_DE_NUMERO = 5;
 
@@ -97,18 +100,18 @@ final class RetiroRepository extends Repository
      * be lost, so the whole transaction is tried again and reads the maximum the winner left. Only that error is
      * retried (a CHECK that refuses the data, or a database that is down, would fail the same way every time).
      */
-    public function crear(string $tipo, int $id, string $motivo, string $detalle, string $contacto, ?string $marcas = null): int
+    public function crear(string $tipo, int $id, string $motivo, string $detalle, string $contacto, ?string $marcas = null, ?int $ahora = null): int
     {
+        $cuando = self::fecha($ahora);
         for ($intento = 1; ; $intento++) {
             try {
-                return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto, $marcas): int {
+                return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto, $marcas, $cuando): int {
                     $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(id), 0) + 1 FROM pedidos_retiro');
-                    $ahora = date('Y-m-d H:i:s');
                     $this->db->execute(
                         'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en, marcas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                        [$numero, $tipo, $id, $motivo, $detalle, $contacto, $ahora, $marcas]
+                        [$numero, $tipo, $id, $motivo, $detalle, $contacto, $cuando, $marcas]
                     );
-                    $this->evento($numero, 'recibido', null, $ahora);
+                    $this->evento($numero, 'recibido', null, $cuando);
 
                     return $numero;
                 });
@@ -131,16 +134,33 @@ final class RetiroRepository extends Repository
     /** The owner's decision ($decision a DECISIONES key) on pedido $numero; false when there is no such pedido. */
     public function decidir(int $numero, string $decision, ?string $nota): bool
     {
-        $estado = self::DECISIONES[$decision];
+        return $this->cambiarEstado($numero, self::DECISIONES[$decision], $nota, time());
+    }
 
-        return $this->db->transaction(function () use ($numero, $estado, $nota): bool {
-            if ($this->db->execute('UPDATE pedidos_retiro SET estado = ? WHERE id = ?', [$estado, $numero]) !== 1) {
+    /**
+     * Moves pedido $numero to $estado and appends the event, together: a state with no event would leave the record
+     * without the line that explains it. With $solo the pedido must still be in that state (the cron's hiding must
+     * not override what the owner decided meanwhile). False when no pedido changed.
+     */
+    private function cambiarEstado(int $numero, string $estado, ?string $nota, int $ahora, ?string $solo = null): bool
+    {
+        return $this->db->transaction(function () use ($numero, $estado, $nota, $ahora, $solo): bool {
+            $cambiados = $solo === null
+                ? $this->db->execute('UPDATE pedidos_retiro SET estado = ? WHERE id = ?', [$estado, $numero])
+                : $this->db->execute('UPDATE pedidos_retiro SET estado = ? WHERE id = ? AND estado = ?', [$estado, $numero, $solo]);
+            if ($cambiados !== 1) {
                 return false;
             }
-            $this->evento($numero, $estado, $nota, date('Y-m-d H:i:s'));
+            $this->evento($numero, $estado, $nota, self::fecha($ahora));
 
             return true;
         });
+    }
+
+    /** A unix time ($ahora, else now) as the TIMESTAMP text every column of this repository holds. */
+    private static function fecha(?int $ahora = null): string
+    {
+        return date('Y-m-d H:i:s', $ahora ?? time());
     }
 
     /**
@@ -182,15 +202,7 @@ final class RetiroRepository extends Repository
                 continue;
             }
             $nota = "Oculto automáticamente: pasaron {$pedido['horas']} horas sin respuesta (plazo de {$horas} h).";
-            $hecho = $this->db->transaction(function () use ($pedido, $nota, $ahora): bool {
-                if ($this->db->execute("UPDATE pedidos_retiro SET estado = 'oculto' WHERE id = ? AND estado = 'pendiente'", [$pedido['id']]) !== 1) {
-                    return false;
-                }
-                $this->evento($pedido['id'], 'oculto', $nota, date('Y-m-d H:i:s', $ahora));
-
-                return true;
-            });
-            if ($hecho) {
+            if ($this->cambiarEstado($pedido['id'], 'oculto', $nota, $ahora, 'pendiente')) {
                 $ocultados[] = $pedido['id'];
             }
         }
@@ -208,38 +220,61 @@ final class RetiroRepository extends Repository
     public function depurar(int $meses, ?int $ahora = null): array
     {
         $ahora ??= time();
-        $limite = date('Y-m-d H:i:s', strtotime("-{$meses} months", $ahora));
-        $filas = $this->db->fetchAll(
-            "SELECT p.id FROM pedidos_retiro p
-              WHERE p.estado IN ('retirado', 'rechazado') AND p.depurado_en IS NULL
-                AND (SELECT MAX(e.ocurrido_en) FROM pedido_retiro_eventos e WHERE e.pedido_id = p.id) <= ?
-              ORDER BY p.id",
-            [$limite]
-        );
-        $depurados = [];
-        foreach ($filas as $fila) {
-            $this->db->execute(
-                "UPDATE pedidos_retiro SET detalle = '', contacto = '', marcas = NULL, depurado_en = ? WHERE id = ? AND depurado_en IS NULL",
-                [date('Y-m-d H:i:s', $ahora), $fila['id']]
-            );
-            $depurados[] = (int)$fila['id'];
-        }
+        $limite = self::fecha(strtotime("-{$meses} months", $ahora));
 
-        return $depurados;
+        return $this->db->transaction(function () use ($limite, $ahora): array {
+            $ids = $this->db->fetchAll(
+                "SELECT p.id FROM pedidos_retiro p
+                  WHERE p.estado IN ('retirado', 'rechazado') AND p.depurado_en IS NULL
+                    AND (SELECT MAX(e.ocurrido_en) FROM pedido_retiro_eventos e WHERE e.pedido_id = p.id) <= ?
+                  ORDER BY p.id",
+                [$limite]
+            );
+            $depurados = [];
+            foreach (array_column($ids, 'id') as $id) {
+                // The guard makes a run that overlaps another leave the rows to whoever got there first, and not count them.
+                $filas = $this->db->execute(
+                    "UPDATE pedidos_retiro SET detalle = '', contacto = '', marcas = NULL, depurado_en = ? WHERE id = ? AND depurado_en IS NULL",
+                    [self::fecha($ahora), $id]
+                );
+                if ($filas === 1) {
+                    $depurados[] = (int)$id;
+                }
+            }
+
+            return $depurados;
+        });
     }
 
-    /** @return list<array> every pedido, the pending ones first, then the newest, each with its 'eventos' */
-    public function todos(): array
+    /**
+     * Every pedido still pending, then the $resueltos most recent decided ones (the newest first), each with its
+     * 'eventos'. The decided ones are capped because nothing ever removes them: the queue in /0/3/ would get slower
+     * with every year. Three queries whatever the number of pedidos.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function todos(int $resueltos = self::RESUELTOS_VISIBLES): array
     {
-        $pedidos = $this->db->fetchAll(
-            "SELECT id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en, marcas, depurado_en FROM pedidos_retiro
-              ORDER BY CASE WHEN estado = 'pendiente' THEN 0 ELSE 1 END, creado_en DESC, id DESC"
-        );
+        $columnas = 'id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en, marcas, depurado_en';
+        $pedidos = [
+            ...$this->db->fetchAll("SELECT {$columnas} FROM pedidos_retiro WHERE estado = 'pendiente' ORDER BY creado_en DESC, id DESC"),
+            ...$this->db->fetchAll(
+                "SELECT {$columnas} FROM pedidos_retiro WHERE estado <> 'pendiente' ORDER BY creado_en DESC, id DESC LIMIT " . max(0, $resueltos)
+            ),
+        ];
+
+        $eventos = [];
+        foreach (array_chunk(array_column($pedidos, 'id'), 500) as $ids) {
+            $marcas = implode(', ', array_fill(0, count($ids), '?'));
+            foreach ($this->db->fetchAll(
+                "SELECT pedido_id, ocurrido_en, estado, nota FROM pedido_retiro_eventos WHERE pedido_id IN ({$marcas}) ORDER BY pedido_id, orden",
+                $ids
+            ) as $e) {
+                $eventos[$e['pedido_id']][] = ['ocurrido_en' => $e['ocurrido_en'], 'estado' => $e['estado'], 'nota' => $e['nota']];
+            }
+        }
         foreach ($pedidos as &$pedido) {
-            $pedido['eventos'] = $this->db->fetchAll(
-                'SELECT ocurrido_en, estado, nota FROM pedido_retiro_eventos WHERE pedido_id = ? ORDER BY orden',
-                [$pedido['id']]
-            );
+            $pedido['eventos'] = $eventos[$pedido['id']] ?? [];
         }
 
         return $pedidos;

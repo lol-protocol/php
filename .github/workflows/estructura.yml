@@ -76,6 +76,20 @@ jobs:
             exit 1
           fi
 
+  workflows-listado:
+    name: .github/WORKFLOWS.md al día
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # La tabla de workflows (nombre, cuándo corren, jobs) se genera de los propios workflows. Si
+      # agregas, renombras o cambias un disparador o un job, corre el script y sube el resultado.
+      - name: Comprobar que la lista generada está al día
+        run: python3 .github/scripts/listar-workflows.py --comprobar
+
   claude-md-rutas:
     name: CLAUDE.md cita rutas que existen
     runs-on: ubuntu-24.04

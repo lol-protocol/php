@@ -95,4 +95,30 @@ class SitemapEstadoTest extends TestCase
 
         $this->assertCount(1, glob($this->dir . '/*') ?: []);
     }
+
+    public function testAFolderThatCannotBeWrittenGivesNoDateAndSaysWhyOnce(): void
+    {
+        $avisos = [];
+        $estado = new SitemapEstado(
+            '/proc/no-se-puede-escribir/aqui',
+            fn(): int => $this->ahora,
+            function (string $mensaje, array $contexto) use (&$avisos): void {
+                $avisos[] = [$mensaje, $contexto];
+            }
+        );
+
+        $this->assertNull($estado->registrar('https://conce.com/sitemap/10/1.xml', '<a/>'), 'no date is better than a false one');
+        $this->assertNull($estado->registrar('https://conce.com/sitemap/10/2.xml', '<b/>'));
+
+        $this->assertCount(1, $avisos, 'one line in the log, not one per file of the index');
+        $this->assertSame('sitemap sin fechas: no se pudo crear la carpeta', $avisos[0][0]);
+        $this->assertSame('/proc/no-se-puede-escribir/aqui', $avisos[0][1]['dir']);
+    }
+
+    public function testAnUnwritableFolderStaysSilentWhenNobodyListens(): void
+    {
+        $estado = new SitemapEstado('/proc/no-se-puede-escribir/aqui');
+
+        $this->assertNull($estado->registrar('https://conce.com/sitemap/10/1.xml', '<a/>'));
+    }
 }

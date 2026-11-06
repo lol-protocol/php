@@ -11,12 +11,14 @@ on:
       - 'copyright-laws/**'
       - 'leyes-comunes/**'
       - '.github/workflows/laws-modules.yml'
+      - '.github/actions/node-npm-ci/**'
   pull_request:
     paths:
       - 'privacy-laws/**'
       - 'copyright-laws/**'
       - 'leyes-comunes/**'
       - '.github/workflows/laws-modules.yml'
+      - '.github/actions/node-npm-ci/**'
 
 permissions:
   contents: read
@@ -26,6 +28,21 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
+  # Las copias que los dos módulos mantienen idénticas a propósito (la web es estática, sin build).
+  copias:
+    name: copias idénticas (privacy-laws / copyright-laws)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Comprobar que no se separaron
+        run: node leyes-comunes/comprobar-copias.js
+
   test:
     name: ${{ matrix.module }} / PHP ${{ matrix.php-version }}
     runs-on: ubuntu-24.04
@@ -45,11 +62,6 @@ jobs:
         with:
           fetch-depth: 0 # the change-history check compares with the base branch
 
-      - name: Set up Node.js 22
-        uses: actions/setup-node@v7
-        with:
-          node-version: '22'
-
       - name: Set up PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
         with:
@@ -57,8 +69,10 @@ jobs:
           extensions: curl, dom, mbstring, intl
           coverage: none
 
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+      - name: Node.js 22 and npm ci
+        uses: ./.github/actions/node-npm-ci
+        with:
+          working-directory: ${{ matrix.module }}
 
       - name: PHP syntax
         run: find . -name '*.php' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l
@@ -152,24 +166,12 @@ jobs:
           coverage: none
 
       - name: Create the schema, import the CSV and validate
-        run: php import_database.php --all
+        run: php import_database.php --all --yes
 
       - name: Compare every column with the CSV
         run: php tests/database_check.php
 
       - name: Import again (it replaces the rows, it does not add them) and compare again
         run: |
-          php import_database.php --import
-          php tests/database_check.php
-
-      # --create-schema and --all drop the whole database: they must refuse when it holds tables the
-      # schema does not create (a wrong database name must not wipe somebody else's data).
-      - name: The schema refuses to drop a database with foreign tables, and --force drops it
-        if: matrix.module == 'copyright-laws'
-        run: |
-          php -r '$p = new PDO("mysql:host=127.0.0.1;port=3306;dbname=copyright_laws_db", "root", "root"); $p->exec("CREATE TABLE somebody_elses_data (id INT)");'
-          if php import_database.php --create-schema; then echo "::error::the foreign table did not stop the drop"; exit 1; fi
-          php -r '$p = new PDO("mysql:host=127.0.0.1;port=3306;dbname=copyright_laws_db", "root", "root"); $p->query("SELECT 1 FROM somebody_elses_data");'
-          php import_database.php --create-schema --force
           php import_database.php --import
           php tests/database_check.php

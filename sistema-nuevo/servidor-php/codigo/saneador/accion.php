@@ -20,9 +20,9 @@ const SANEADOR_TIPOS_CON_MONTO = ['payment', 'refund'];
  * Sanea un registro crudo de acción hacia el esquema canónico. Devuelve null si
  * el registro no es recuperable (le faltan campos esenciales o son inválidos).
  *
- * @param array $crudo Registro tal como "llegó", con formatos inconsistentes
+ * @param array<string,mixed> $crudo Registro tal como "llegó", con formatos inconsistentes
  * @param array{
- *   usuarios_por_id: array<string,array>,
+ *   usuarios_por_id: array<string,array{country: string}>,
  *   monedas_validas: string[],
  *   moneda_por_pais: array<string,string>,
  *   tasa_por_moneda: array<string,float>,
@@ -31,6 +31,7 @@ const SANEADOR_TIPOS_CON_MONTO = ['payment', 'refund'];
  *   paises_validos: string[],
  *   offset_por_pais: array<string,float>
  * } $contexto
+ * @return array<string,mixed>|null
  */
 function saneador_accion(array $crudo, array $contexto): ?array
 {

@@ -18,6 +18,8 @@ function api_responder(mixed $datos): void
  * (datos/ejemplos/peticiones-api.http); `codigo` es un identificador estable que la interfaz traduce
  * al idioma elegido (claves err_<codigo> en interfaz/js/i18n/). $extra suma datos propios del error,
  * p. ej. retry_after. Todo error de la API sale por acá: pruebas/php/api-error-test.php lo exige.
+ *
+ * @param array<string,mixed> $extra
  */
 function api_error(int $status, string $codigo, string $mensaje, array $extra = []): void
 {
@@ -53,6 +55,8 @@ function api_exigir_csrf(): bool
 /**
  * El cuerpo JSON del pedido como array: siempre un array, también si viene vacío, mal formado o no es un
  * objeto (un número, un string). $crudo es para las pruebas; sin él se lee php://input.
+ *
+ * @return array<array-key,mixed>
  */
 function api_cuerpo_json(?string $crudo = null): array
 {
@@ -90,7 +94,10 @@ function api_delta_pct(int|float $value, int|float|null $average): ?float
     return (($value - $average) / $average) * 100;
 }
 
-/** @return string[]|null null = sin filtro de país (todos los países) */
+/**
+ * @param array{presets: list<array{key: string, label: string, countries: list<string>}>, countries: array<string,string>} $groups lo que devuelve AlmacenDatos::groups()
+ * @return string[]|null null = sin filtro de país (todos los países)
+ */
 function api_resolve_scope_countries(string $scope, array $groups): ?array
 {
     if ($scope === '' || $scope === 'all') {
@@ -117,6 +124,8 @@ function api_resolve_scope_countries(string $scope, array $groups): ?array
  * ("all", vacío, preset desconocido, formato no reconocido). "Todos los países"
  * es texto de interfaz, no dato: lo pone el frontend en el idioma elegido, así
  * el resumen de filtros no mezcla español con el resto en inglés.
+ *
+ * @param array{presets: list<array{key: string, label: string, countries: list<string>}>, countries: array<string,string>} $groups lo que devuelve AlmacenDatos::groups()
  */
 function api_scope_label(string $scope, array $groups): ?string
 {

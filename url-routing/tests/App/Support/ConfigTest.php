@@ -120,4 +120,25 @@ class ConfigTest extends TestCase
         $this->assertSame('real', getenv($set), 'An existing variable is never overwritten');
         $this->assertSame('pgsql:host=x;dbname=y', getenv("DSN_{$unset}"), 'Values may contain "="');
     }
+
+    public function testTheTimeZoneIsPinnedToUtcUnlessAppTimezoneSaysOtherwise(): void
+    {
+        $antes = date_default_timezone_get();
+        $this->envKeysToClean[] = 'APP_TIMEZONE';
+        try {
+            date_default_timezone_set('Pacific/Auckland');
+            Config::load();
+            $this->assertSame('UTC', date_default_timezone_get(), 'not left to each php.ini: web and cron must agree');
+
+            putenv('APP_TIMEZONE=America/Santiago');
+            Config::load();
+            $this->assertSame('America/Santiago', date_default_timezone_get());
+
+            putenv('APP_TIMEZONE=Mars/Olympus');
+            Config::load();
+            $this->assertSame('UTC', date_default_timezone_get(), 'a name that is not a zone falls back instead of breaking every request');
+        } finally {
+            date_default_timezone_set($antes);
+        }
+    }
 }

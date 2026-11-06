@@ -17,6 +17,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/laws-links.yml'
+      - '.github/actions/node-npm-ci/**'
       - 'privacy-laws/scripts/check-links.js'
       - 'copyright-laws/scripts/check-links.js'
       - 'leyes-comunes/check-links-core.js'
@@ -74,15 +75,11 @@ jobs:
             echo "${{ matrix.module }}: checking only the jurisdictions this PR touches: $codes" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Set up Node.js 22
+      - name: Node.js 22 and npm ci
         if: steps.scope.outputs.skip != 'true'
-        uses: actions/setup-node@v7
+        uses: ./.github/actions/node-npm-ci
         with:
-          node-version: '22'
-
-      - name: Install dependencies
-        if: steps.scope.outputs.skip != 'true'
-        run: npm ci --no-audit --no-fund
+          working-directory: ${{ matrix.module }}
 
       - name: Check reference links
         if: steps.scope.outputs.skip != 'true'

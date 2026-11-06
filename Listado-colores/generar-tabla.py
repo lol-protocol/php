@@ -29,6 +29,7 @@ Uso:
   python3 generar-tabla.py --comprobar       valida y sale con error si los archivos generados no están al día
   python3 generar-tabla.py --sqlite ruta.db  valida los CSV y construye una base SQLite (no regenera nada más)
 """
+import bisect
 import csv
 import io
 import re
@@ -45,6 +46,7 @@ import cobertura  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
+from md import texto_valido  # noqa: E402
 import revision  # noqa: E402
 
 ANOTADA = CARPETA / "colores.csv"
@@ -283,7 +285,7 @@ def validar_referencias(filas, errores):
         ids.append(i)
         if fila["tipo"] not in TIPOS_REFERENCIA or fila["verificacion"] not in VERIFICACION:
             errores.append(f"referencias.csv línea {n}: tipo o verificacion no válidos ({fila['tipo']}, {fila['verificacion']})")
-        if not fila["cita"].strip() or any(c in fila["cita"] for c in "|\n"):
+        if not texto_valido(fila["cita"]):
             errores.append(f"referencias.csv línea {n}: cita vacía o con '|' o saltos de línea")
         if fila["url"] and not fila["url"].startswith("https://"):
             errores.append(f"referencias.csv línea {n}: la url debe empezar por https://")
@@ -333,7 +335,7 @@ def validar_culturales(filas, anotada, ids, errores, usadas):
             errores.append(f"significados-culturales.csv línea {n}: color, ámbito o solidez no válidos ({fila['color']}, {fila['ambito']}, {fila['solidez']})")
             continue
         claves.append((orden[fila["color"]], fila["ambito"]))
-        if not fila["matiz"].strip() or any(c in fila["matiz"] for c in "|\n"):
+        if not texto_valido(fila["matiz"]):
             errores.append(f"significados-culturales.csv línea {n}: matiz vacío o con '|' o saltos de línea")
         lista = ids_de(fila["referencias"])
         if not lista:
@@ -357,15 +359,17 @@ def hex_de_concepto(concepto, anotada, completa):
     return None
 
 
-def hex_cotidiano_de_concepto(concepto, completa):
+def hex_cotidiano_de_concepto(concepto, completa, anotada):
     """Hex del nombre de uso corriente (la entrada curada de la lista completa con el mismo nombre) o "" si no hay.
 
     No sustituye al hex de referencia: el color CSS `lime` es verde puro y `khaki` un amarillo pálido, y quien dice «lima» o
-    «caqui» piensa en otro matiz. Es el que da la lista completa, con sus defectos (allí `green` es #00FF00).
+    «caqui» piensa en otro matiz. Se descarta (queda "") si la entrada es el hex de *otro* color CSS: en la lista completa
+    `green` es #00FF00, que es `lime` de CSS, y eso no es un verde de uso corriente sino otro color con el mismo nombre.
     """
     for f in completa:
         if f["nombre_ingles"].lower() == concepto and f["curada"] == "x":
-            return f["hex"]
+            de_otro = any(c["hex"] == f["hex"] and c["nombre_ingles"] != concepto for c in anotada)
+            return "" if de_otro else f["hex"]
     return ""
 
 
@@ -384,7 +388,7 @@ def validar_lexico(filas, anotada, completa, errores):
             errores.append(f"lexico-basico.csv línea {n}: concepto, idioma o tipo desconocido ({concepto}, {idioma}, {tipo})")
             continue
         claves.append((CONCEPTOS.index(concepto), codigos.index(idioma), orden_tipo[tipo]))
-        if not forma.strip() or forma != forma.strip() or any(c in forma for c in '|\n"'):
+        if not texto_valido(forma, '|\n"', sin_espacios_sobrantes=True):
             errores.append(f"lexico-basico.csv línea {n}: forma vacía, con espacios sobrantes o con '|', comillas o saltos de línea")
         if idioma in SIN_LETRAS_LATINAS and re.search(r"[A-Za-z]", forma):
             errores.append(f"lexico-basico.csv línea {n}: letras latinas en {idioma}: {forma!r}")
@@ -448,10 +452,10 @@ def validar_colisiones(revisadas, anotada, errores):
         errores.append(f"colisiones-revisadas.csv: ya no existe el caso {codigo} «{nombre}» ({colores.replace('|', ', ')}); quítalo")
 
 
-def validar_alias(anotada, traducidos, errores):
+def validar_alias(anotada, traducidos, errores, alias=None):
     """Dos colores con el mismo hex (aqua y cyan, gray y grey) dicen lo mismo: los dos significados, en español y en cada idioma."""
     significados = {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"]) for f in traducidos}
-    for nombre, otros in alias_de(anotada).items():
+    for nombre, otros in (alias_de(anotada) if alias is None else alias).items():
         for otro, _ in otros:
             if nombre >= otro:  # cada par una vez
                 continue
@@ -473,6 +477,37 @@ def cercania_de(delta, mismo_hex):
     return "baja"
 
 
+# CIEDE2000 nunca es menor que |ΔL| / S_L, y S_L = 1 + 0,015 (L̄-50)² / raíz(20 + (L̄-50)²) vale a lo sumo 1,7471 para L entre 0
+# y 100; con 1,75 el tope es seguro. Sirve para no calcular la distancia a los colores CSS que ya no pueden ganar.
+COTA_SL = 1.75
+
+
+def color_css_mas_cercano(lab, referencias):
+    """(distancia redondeada a 9 decimales, nombre, hex) del color CSS más cercano a `lab`.
+
+    `referencias` va ordenada por luminosidad: [(L, nombre, hex, lab)]. Se recorre desde la luminosidad más parecida y se
+    para cuando |ΔL| / COTA_SL ya supera la mejor distancia: el resultado es el de calcular las 148, sin ese trabajo.
+    """
+    luminosidades = [r[0] for r in referencias]
+    abajo = bisect.bisect_left(luminosidades, lab[0]) - 1
+    arriba = abajo + 1
+    mejor = None
+    while abajo >= 0 or arriba < len(referencias):
+        paso_abajo = abajo >= 0 and (arriba >= len(referencias) or lab[0] - luminosidades[abajo] <= luminosidades[arriba] - lab[0])
+        indice = abajo if paso_abajo else arriba
+        if mejor is not None and abs(luminosidades[indice] - lab[0]) / COTA_SL > mejor[0] + 1e-6:
+            break  # esta y todas las demás están más lejos en luminosidad: ninguna puede ganar ni empatar
+        if paso_abajo:
+            abajo -= 1
+        else:
+            arriba += 1
+        _, nombre, hex_, lab_ref = referencias[indice]
+        candidato = (round(colorimetria.ciede2000(lab, lab_ref), 9), nombre, hex_)
+        if mejor is None or candidato < mejor:
+            mejor = candidato
+    return mejor
+
+
 def calcular_cercanias(completa, anotada):
     """Para cada nombre de la lista completa: color CSS más cercano (CIEDE2000), distancia y banda.
 
@@ -480,14 +515,11 @@ def calcular_cercanias(completa, anotada):
     primero por orden alfabético. La comparación redondea a 9 decimales para que el desempate no
     dependa del ruido de coma flotante entre plataformas.
     """
-    referencias = sorted((f["nombre_ingles"], f["hex"], colorimetria.hex_a_lab(f["hex"])) for f in anotada)
+    referencias = sorted((colorimetria.hex_a_lab(f["hex"])[0], f["nombre_ingles"], f["hex"], colorimetria.hex_a_lab(f["hex"]))
+                         for f in anotada)
     resultado = []
     for fila in completa:
-        lab = colorimetria.hex_a_lab(fila["hex"])
-        distancia, nombre, color = min(
-            (round(colorimetria.ciede2000(lab, ref_lab), 9), ref_nombre, ref_hex)
-            for ref_nombre, ref_hex, ref_lab in referencias
-        )
+        distancia, nombre, color = color_css_mas_cercano(colorimetria.hex_a_lab(fila["hex"]), referencias)
         resultado.append((nombre, distancia, cercania_de(distancia, color == fila["hex"])))
     return resultado
 
@@ -591,10 +623,10 @@ def tabla_lexico(codigo, lexico, anotada, completa):
     return "\n".join(lineas)
 
 
-def pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales):
+def pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales, alias=None):
     """Página con nombre, hex, alias y los dos significados de los 148 colores en un idioma."""
     es = codigo == "es"
-    alias = alias_de(anotada)
+    alias = alias_de(anotada) if alias is None else alias
     # En inglés la columna de nombre es la forma natural (con espacios); en los demás, la traducción.
     columna_nombre = "Forma natural" if codigo == "en" else "Nombre"
     cabecera = (f"| Inglés | {columna_nombre} | Hex | Alias | Significado psicológico | Significado místico "
@@ -692,6 +724,22 @@ def comprobar_o_escribir(base, archivos, comprobar, sobrantes=()):
     return []
 
 
+def construir_datos(anotada, completa, traducidos, lexico, referencias, evidencia_filas, culturales, gramaticales, alias, cercanias):
+    """El diccionario `d` que reciben exportes.py, revision.py y los informes, a partir de los CSV ya leídos y validados.
+
+    Un solo lugar: pruebas.py lo usa también, para no armar una copia que se desfase de la de main().
+    """
+    return {
+        "idiomas": IDIOMAS, "anotada": anotada, "completa": completa, "cercanias": cercanias,
+        "significados": {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
+                         for f in traducidos},
+        "lexico": lexico, "referencias": referencias, "evidencia": {f["nombre_ingles"]: f for f in evidencia_filas},
+        "culturales": culturales, "categorias": gramaticales, "alias": alias,
+        "hex_concepto": {c: hex_de_concepto(c, anotada, completa) for c in CONCEPTOS},
+        "hex_cotidiano": {c: hex_cotidiano_de_concepto(c, completa, anotada) for c in CONCEPTOS},
+    }
+
+
 def leer_todos():
     """Lee los diez CSV. Si varios están mal (cabecera inesperada, fila con campos de más o de menos), los cuenta todos."""
     fallos, leidos = [], {}
@@ -723,7 +771,8 @@ def main():
     validar_anotada(anotada, errores)
     validar_completa(completa, errores)
     validar_significados(traducidos, anotada, errores)
-    validar_alias(anotada, traducidos, errores)
+    alias = alias_de(anotada)  # una vez: lo usan la validación, los datos y las 30 páginas por idioma
+    validar_alias(anotada, traducidos, errores, alias)
     validar_colisiones(leidos["colisiones_revisadas"], anotada, errores)
     validar_lexico(lexico, anotada, completa, errores)
     ids = validar_referencias(referencias, errores)
@@ -734,7 +783,7 @@ def main():
         errores.append(f"referencias.csv: la referencia {i!r} no la usa ningún otro CSV")
     categorias.validar(gramaticales, anotada, lexico, [c for c, _ in IDIOMAS], CONCEPTOS, errores)
     revisable = revision.universo({"idiomas": IDIOMAS, "anotada": anotada, "lexico": lexico, "categorias": gramaticales})
-    revision.validar(revisiones, revisable, [c for c, _ in IDIOMAS], errores)
+    revision.validar(revisiones, [c for c, _ in IDIOMAS], errores)
     version = None
     if CHANGELOG.exists():
         version = manifiesto.leer_changelog(CHANGELOG.read_text(encoding="utf-8"), errores)
@@ -750,17 +799,9 @@ def main():
     if not patron.search(texto):
         sys.exit(f"README.md: faltan los marcadores {INICIO} y {FIN}")
 
-    significados = {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
-                    for f in traducidos}
-    evidencia = {f["nombre_ingles"]: f for f in evidencia_filas}
     cercanias = calcular_cercanias(completa, anotada)
-    datos = {
-        "idiomas": IDIOMAS, "anotada": anotada, "completa": completa, "cercanias": cercanias,
-        "significados": significados, "lexico": lexico, "referencias": referencias, "evidencia": evidencia,
-        "culturales": culturales, "categorias": gramaticales, "alias": alias_de(anotada),
-        "hex_concepto": {c: hex_de_concepto(c, anotada, completa) for c in CONCEPTOS},
-        "hex_cotidiano": {c: hex_cotidiano_de_concepto(c, completa) for c in CONCEPTOS},
-    }
+    datos = construir_datos(anotada, completa, traducidos, lexico, referencias, evidencia_filas, culturales, gramaticales, alias, cercanias)
+    significados, evidencia = datos["significados"], datos["evidencia"]
     if "--sqlite" in sys.argv:
         indice = sys.argv.index("--sqlite")
         if indice + 1 >= len(sys.argv):
@@ -772,8 +813,9 @@ def main():
         print(f"Base SQLite en {ruta} con las tablas: {', '.join(tablas)}.")
         return 0
     completa_texto = texto_completa(completa, cercanias)
-    jsonl, tsv = exportes.colores_jsonl(datos), exportes.gazetteer_tsv(datos)
-    patrones, lexico_ud, conllu = exportes.spacy_patrones(datos), exportes.lexico_ud(datos), exportes.ejemplos_conllu(datos)
+    filas_gazetteer = exportes.filas_gazetteer(datos)  # ordenarlas cuesta: una vez para el TSV, los patrones y el informe
+    jsonl, tsv = exportes.colores_jsonl(datos), exportes.gazetteer_tsv(datos, filas_gazetteer)
+    patrones, lexico_ud, conllu = exportes.spacy_patrones(datos, filas_gazetteer), exportes.lexico_ud(datos), exportes.ejemplos_conllu(datos)
     # Las entradas del manifiesto, en el orden del README. nombres-completos.csv va con el texto que genera este programa.
     entradas = [(ruta.name, filas, ruta.read_text(encoding="utf-8"), None) for ruta, filas in (
         (ANOTADA, len(anotada)), (SIGNIFICADOS, len(traducidos)), (LEXICO, len(lexico)), (EVIDENCIA, len(evidencia_filas)),
@@ -788,7 +830,7 @@ def main():
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
         REFS_MD: referencias_md(referencias),
-        AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
+        AMBIGUEDAD: ambiguedad.informe(filas_gazetteer, IDIOMAS),
         AUDITORIA: auditoria.informe(completa),
         CATEGORIAS_MD: categorias.informe(gramaticales, IDIOMAS),
         COBERTURA: cobertura.informe(IDIOMAS, anotada, lexico, gramaticales, CONCEPTOS, datos["hex_concepto"]),
@@ -805,7 +847,7 @@ def main():
         generados[DIR_EXPORTES / "spacy" / f"{codigo}.jsonl"] = texto
     for codigo, etiqueta in IDIOMAS:
         generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(
-            codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales)
+            codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales, alias)
     sobrantes = sorted(p for carpeta in (DIR_IDIOMAS, DIR_EXPORTES) if carpeta.exists()
                        for p in carpeta.rglob("*") if p.is_file() and p not in generados)
 
