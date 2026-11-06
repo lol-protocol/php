@@ -470,7 +470,7 @@ phpstan analyse
 
 PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `composer global require phpstan/phpstan:^2.1`) y la CI lo trae con `shivammathur/setup-php`. Revisa `src/`, `bin/` (incluido `bin/phonedir`) y `examples/`, no los tests.
 
-Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`. Además corren el mismo conjunto de evaluación que el parser de PHP (`tests/fixtures/parser-evaluation.json`): todo caso tiene que salir bien salvo los que lista `ports/fallas-conocidas.txt`, que tienen que seguir fallando (hoy 24 de 80, agrupados por causa: el formato de una línea, las empresas y las reglas de PHP que los puertos no tienen todavía). Si agregas un caso al conjunto y los puertos no lo resuelven, va a esa lista; si un cambio en un puerto arregla uno, sale de ella.
+Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`. Siguen las reglas de calle, de separación de registros, de detección de idioma y de teléfonos (los formatos de cada idioma, la central con nombre, la corrección de dígitos del OCR y el teléfono en la línea del nombre) del parser multilingüe en formato de bloque. Además corren el mismo conjunto de evaluación que el parser de PHP (`tests/fixtures/parser-evaluation.json`): todo caso tiene que salir bien salvo los que lista `ports/fallas-conocidas.txt`, que tienen que seguir fallando (hoy 24 de 80, agrupados por causa: el formato de una línea, las empresas y las reglas de PHP que los puertos no tienen todavía). Si agregas un caso al conjunto y los puertos no lo resuelven, va a esa lista; si un cambio en un puerto arregla uno, sale de ella.
 
 ### Cuánto acierta el parser
 
