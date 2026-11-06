@@ -19,10 +19,7 @@ $pagina_url = static fn(int $p): string => busqueda($digitos, $query, $p);
 <?php endforeach; ?>
 </ul>
 <?php endif; ?>
-<nav class="acciones" aria-label="Páginas">
-<?php if ($pagina > 1): ?><a href="<?= esc($pagina_url($pagina - 1)) ?>" rel="prev">← Anterior</a><?php endif; ?>
-<?php if ($hayMas): ?><a href="<?= esc($pagina_url($pagina + 1)) ?>" rel="next">Siguiente →</a><?php endif; ?>
-</nav>
+<?php include __DIR__ . '/../../_partials/paginacion.php'; ?>
 <?php $content = ob_get_clean();
 // Only the list and the navigation: what the script at /b.js appends to the page it is on.
 if (!empty($fragmento)) {
