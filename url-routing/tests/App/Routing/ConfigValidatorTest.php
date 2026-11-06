@@ -122,4 +122,12 @@ class ConfigValidatorTest extends TestCase
 
         $this->addToAssertionCount(1);
     }
+
+    public function testVerificadorTieneQueSerUnBooleano(): void
+    {
+        ConfigValidator::validate(['by_length' => [16 => ['type' => 'orden', 'controller' => 'X\Y', 'verificador' => false]]]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        ConfigValidator::validate(['by_length' => [16 => ['type' => 'orden', 'controller' => 'X\Y', 'verificador' => 'no']]]);
+    }
 }
