@@ -96,6 +96,16 @@ public class PhoneDirectoryParserTest {
         assertEquals("Smith, John", person(entries.get(0)).get("formatted"));
         assertEquals(null, MultiLanguagePhoneDirectoryParser.nameBesidePhone("555-123-4567 ext. 12", "555-123-4567"));
 
+        // The PHP parser's evaluation set, with this port's known failures (see EvaluationSetCheck).
+        try {
+            assertEquals(List.of(), EvaluationSetCheck.wrongCases(
+                java.nio.file.Path.of("..", "..", "tests", "fixtures", "parser-evaluation.json"),
+                java.nio.file.Path.of("..", "fallas-conocidas.txt")
+            ));
+        } catch (java.io.IOException e) {
+            throw new java.io.UncheckedIOException(e);
+        }
+
         System.out.println("All Java port checks passed");
     }
 

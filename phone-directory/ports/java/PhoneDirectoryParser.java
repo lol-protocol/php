@@ -129,6 +129,11 @@ class PersonName {
         return lastNames.isEmpty() ? "" : lastNames.get(0);
     }
 
+    /** The name as the directory prints it ("SMITH, John"), like getRawName() in PHP. */
+    public String getRawName() {
+        return fullName;
+    }
+
     public String getFullName() {
         List<String> all = new ArrayList<>(firstNames);
         all.addAll(lastNames);
@@ -147,6 +152,7 @@ class PersonName {
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("fullName", getFullName());
+        map.put("rawName", getRawName());
         map.put("firstNames", getFirstNames());
         map.put("lastNames", getLastNames());
         map.put("primaryLastName", getPrimaryLastName());
