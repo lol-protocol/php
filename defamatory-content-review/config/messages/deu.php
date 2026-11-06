@@ -8,7 +8,6 @@ return [
     'explanation.match' => '„%1$s“ stimmt mit „%2$s“ überein (%3$s)',
     'explanation.related' => '; verwandte Sprache, Konfidenz %.2F',
     'explanation.collision' => '; ist auch ein dokumentierter echter Vor- oder Nachname und geht zur menschlichen Prüfung',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Ablehnen: schwer beleidigender Inhalt (Risikotypen: %s).',
     'recommendation.review_collision' => 'Menschliche Prüfung: stimmt mit beleidigenden Begriffen (%s), aber auch mit dokumentierten Nachnamen überein.',
     'recommendation.review_phonetic' => 'Menschliche Prüfung: Vor- und Nachname ergeben zusammen einen beleidigenden Begriff (%s), den keiner von beiden allein hat.',

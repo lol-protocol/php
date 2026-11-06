@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'ukr', 'iso639_1' => 'uk', 'name' => 'Ukrainian',
-        'nativeName' => 'Українська', 'family' => 'slavic', 'coverage' => 'moderate',
+        'code' => 'ukr',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

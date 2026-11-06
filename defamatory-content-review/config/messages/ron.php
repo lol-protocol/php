@@ -8,7 +8,6 @@ return [
     'explanation.match' => '„%1$s” coincide cu „%2$s” (%3$s)',
     'explanation.related' => '; limbă înrudită, încredere %.2F',
     'explanation.collision' => '; este și un prenume sau nume de familie real, documentat, deci merge la verificare umană',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Respinge: conținut grav ofensator (tipuri de risc: %s).',
     'recommendation.review_collision' => 'Verificare umană: coincide cu termeni ofensatori (%s), dar și cu nume de familie documentate.',
     'recommendation.review_phonetic' => 'Verificare umană: prenumele și numele, citite legat, formează un termen ofensator (%s) pe care niciunul nu îl are separat.',

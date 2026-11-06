@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'ell', 'iso639_1' => 'el', 'name' => 'Greek',
-        'nativeName' => 'Ελληνικά', 'family' => 'hellenic', 'coverage' => 'moderate',
+        'code' => 'ell',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

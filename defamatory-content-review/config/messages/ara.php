@@ -8,7 +8,6 @@ return [
     'explanation.match' => '«%1$s» تطابق «%2$s» (%3$s)',
     'explanation.related' => '؛ لغة قريبة، الثقة %.2F',
     'explanation.collision' => '؛ وهي أيضًا اسم أو لقب حقيقي موثّق، لذا تُحال إلى مراجعة بشرية',
-    'explanation.end' => '.',
     'recommendation.reject' => 'رفض: محتوى مسيء بشدة (أنواع الخطر: %s).',
     'recommendation.review_collision' => 'مراجعة بشرية: تطابق مصطلحات مسيئة (%s) وتطابق أيضًا ألقابًا موثّقة.',
     'recommendation.review_phonetic' => 'مراجعة بشرية: الاسم واللقب معًا يكوّنان مصطلحًا مسيئًا (%s) لا يوجد في أي منهما على حدة.',
