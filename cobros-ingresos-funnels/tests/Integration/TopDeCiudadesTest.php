@@ -101,7 +101,10 @@ final class TopDeCiudadesTest extends IntegracionTestCase
 
     public function testElTopDeCiudadesSigueOrdenadoPorFacturacionYRespetaElLimite(): void
     {
-        // Montos enormes para quedar por encima de cualquier ciudad que traiga el seed.
+        // Montos enormes para quedar por encima de cualquier ciudad que traiga el seed. Una grafia
+        // tiene mas clientes que la otra: con un empate la base elige segun su orden de texto, que
+        // cambia de un servidor a otro (la CI y un entorno local no coinciden).
+        $this->clienteConBoleta('CL', 'Ciudad Grande', 400_000_000);
         $this->clienteConBoleta('CL', 'Ciudad Grande', 400_000_000);
         $this->clienteConBoleta('CL', 'ciudad grande', 400_000_000);
         $this->clienteConBoleta('DO', 'Ciudad Chica', 10);
@@ -110,7 +113,7 @@ final class TopDeCiudadesTest extends IntegracionTestCase
 
         self::assertCount(1, $top);
         self::assertSame('Ciudad Grande (' . $this->nombreDelPais('CL') . ')', $top[0]['etiqueta']);
-        self::assertSame(2, (int) $top[0]['clientes']);
+        self::assertSame(3, (int) $top[0]['clientes']);
     }
 
     /**
