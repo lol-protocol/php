@@ -39,21 +39,48 @@ final class OrdenRepository extends Repository
      * from its id. A clash with another order being placed at the same moment
      * (same id or code) is retried.
      *
+     * Only that clash is tried again (see choqueDeIdOCodigo()): a CHECK that refuses the data, a missing
+     * user or a database that is down would fail the same way every time. SQLite reports every constraint
+     * (23000) under one code, so the code alone can't tell them apart.
+     *
      * @param array<string, int> $items
      * @return array{id: int, codigo: string}
+     * @throws \InvalidArgumentException when there are no lines or one asks for fewer than one unit
      * @throws SinStock when a line can't be sold; nothing is changed then
      */
     public function crear(array $items, string $direccion, int $usuarioId): array
     {
+        if ($items === []) {
+            throw new \InvalidArgumentException('Una orden necesita al menos una línea.');
+        }
+        foreach ($items as $sku => $cantidad) {
+            if ($cantidad < 1) {
+                throw new \InvalidArgumentException("Cantidad inválida para {$sku}: {$cantidad}");
+            }
+        }
+
         for ($intento = 1; ; $intento++) {
             try {
                 return $this->db->transaction(fn(): array => $this->insertar($items, $direccion, $usuarioId));
             } catch (\PDOException $e) {
-                if ($intento >= self::INTENTOS || !in_array((string)$e->getCode(), ['23000', '23505'], true)) {
+                if ($intento >= self::INTENTOS || !self::choqueDeIdOCodigo($e)) {
                     throw $e;
                 }
             }
         }
+    }
+
+    /**
+     * Whether the database refused the INSERT of the order because its id or its code already exists
+     * (PostgreSQL and SQLite word it differently; the message names the table, `ordenes`). The same words
+     * about orden_items or orden_eventos are not this clash and retrying would not fix them.
+     */
+    private static function choqueDeIdOCodigo(\PDOException $e): bool
+    {
+        $mensaje = strtolower($e->getMessage());
+
+        return (str_contains($mensaje, 'duplicate key') || str_contains($mensaje, 'unique constraint failed'))
+            && str_contains($mensaje, 'ordenes');
     }
 
     /**
@@ -108,6 +135,12 @@ final class OrdenRepository extends Repository
     /**
      * Anota un paso de la orden con el número que le toca (1, 2, 3...): dos en el mismo segundo siguen
      * en el orden en que se anotaron, que la hora no distingue (ver la migración 003).
+     *
+     * El número es MAX(orden) + 1, como el id de la orden: dos llamadas a la vez para la misma orden leerían
+     * el mismo máximo y la segunda chocaría con la clave (orden_id, orden). Hoy solo la llama crear(), dentro
+     * de su transacción y para una orden recién creada que nadie más conoce, así que no puede pasar; el día
+     * que algo más anote pasos (confirmar un pago, una guía de envío), esa llamada tiene que reintentar el
+     * choque como lo hace crear() con el id y el código.
      */
     public function agregarEvento(int $ordenId, string $estado, ?string $detalle = null, ?string $cuando = null): void
     {
