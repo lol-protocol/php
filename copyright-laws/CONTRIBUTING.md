@@ -46,7 +46,7 @@ The weekly link check (`.github/workflows/laws-links.yml`) keeps one open issue,
 
 1. Find the page that replaces it, preferably an official one (the law's text or the authority's own page), and open it. The URL in `field_sources.csv` or `linked_resources` must be a page you actually read.
 2. Replace the URL in every place it appears: `field_sources.csv` (and set `checked` to today) and, if it is a law's own link, `linked_resources` in the master CSV.
-3. Run `npm run changes` and `npm run build` (an edit of `linked_resources` is a recorded change), then `npm run validate`, `npm run build:check` and `npm test`.
+3. (A dead link: `npm run replace-url -- <old URL> <new URL>` swaps it in the master CSV and in `field_sources.csv` at once.) Run `npm run changes` and `npm run build` (an edit of `linked_resources` is a recorded change), then `npm run validate`, `npm run build:check` and `npm test`.
 4. Run the "Leyes - enlaces de referencia" workflow by hand (`workflow_dispatch`) on your branch: from some machines the sites are unreachable, and this is the check that tells you the new URL answers. The issue closes itself on the next run where every link answers.
 
 A 401, 403, 429, a 5xx that persists, a timeout or a redirect loop is only a warning, not a broken link: leave it unless the page is really gone.

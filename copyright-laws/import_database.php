@@ -46,7 +46,7 @@ class CopyrightLawsImporter {
     /**
      * Create fresh database schema
      */
-    public function createSchema() {
+    public function createSchema($force = false) {
         if (!file_exists($this->schemaPath)) {
             $this->error("Schema file not found: {$this->schemaPath}");
         }
@@ -54,7 +54,13 @@ class CopyrightLawsImporter {
         $this->log("📋 Creating database schema...");
 
         try {
-            // Drop existing database
+            // Drop existing database, but never one that holds tables this schema does not create:
+            // a wrong database name must not wipe somebody else's data. --force overrides the check.
+            $foreign = $force ? [] : $this->foreignTables();
+            if ($foreign) {
+                $this->error("Database {$this->dbName} already holds tables that are not part of this schema (" .
+                    implode(', ', $foreign) . "). Nothing was dropped; use --force to drop it anyway.");
+            }
             $this->pdo->exec("DROP DATABASE IF EXISTS {$this->dbName}");
             $this->log("  ✓ Dropped existing database");
 
@@ -81,6 +87,19 @@ class CopyrightLawsImporter {
     /**
      * Import data from CSV file
      */
+    /**
+     * Tables of the existing database that the schema file does not create (none when the database
+     * does not exist yet).
+     */
+    private function foreignTables() {
+        preg_match_all('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', (string) file_get_contents($this->schemaPath), $m);
+        $own = array_map('strtolower', $m[1]);
+        $stmt = $this->pdo->prepare('SELECT table_name FROM information_schema.tables WHERE table_schema = ?');
+        $stmt->execute([$this->dbName]);
+        $found = array_map('strtolower', $stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+        return array_values(array_diff($found, $own));
+    }
+
     public function importData() {
         if (!file_exists($this->csvPath)) {
             $this->error("CSV file not found: {$this->csvPath}");
@@ -300,10 +319,11 @@ class CopyrightLawsImporter {
 // Main execution
 $importer = new CopyrightLawsImporter();
 $action = $argv[1] ?? 'help';
+$force = in_array('--force', $argv, true);
 
 switch ($action) {
     case '--create-schema':
-        $importer->createSchema();
+        $importer->createSchema($force);
         break;
     case '--import':
         $importer->importData();
@@ -312,7 +332,7 @@ switch ($action) {
         $importer->validate();
         break;
     case '--all':
-        $importer->createSchema();
+        $importer->createSchema($force);
         $importer->importData();
         $importer->validate();
         break;
@@ -323,5 +343,7 @@ switch ($action) {
         echo "  php import_database.php --import            Import data from CSV\n";
         echo "  php import_database.php --validate          Validate data integrity\n";
         echo "  php import_database.php --all               All of the above\n";
+        echo "\n--create-schema and --all drop the copyright_laws_db database first, and refuse to when it holds\n";
+        echo "tables this schema does not create; add --force to drop it anyway.\n";
 }
 ?>

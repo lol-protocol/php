@@ -76,6 +76,7 @@ The full workflow, with the rules for sources and history, is in [CONTRIBUTING.m
 ```bash
 $EDITOR jurisdictions/copyright_laws_master.csv
 npm run changes       # records what changed since the last commit in changes.csv
+npm run replace-url -- <old> <new>   # swaps a dead reference URL in the master CSV and field_sources.csv (--dry to count)
 npm run validate      # strict checks: columns, treaties, types, URLs, regions, duplicates…
 npm run build         # regenerates {tld}/ folders and index.json (idempotent)
 npm test              # also fails if generated files are out of date
@@ -114,7 +115,7 @@ php import_database.php --all               # schema + import + validation
 php tests/database_check.php                # compares every column of the database with the CSV
 ```
 
-Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `copyright_laws_db` database.** `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV.
+Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `copyright_laws_db` database**, but refuse to when it holds tables this schema does not create (add `--force` to drop it anyway). `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV.
 
 ## Tests
 

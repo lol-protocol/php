@@ -161,3 +161,15 @@ jobs:
         run: |
           php import_database.php --import
           php tests/database_check.php
+
+      # --create-schema and --all drop the whole database: they must refuse when it holds tables the
+      # schema does not create (a wrong database name must not wipe somebody else's data).
+      - name: The schema refuses to drop a database with foreign tables, and --force drops it
+        if: matrix.module == 'copyright-laws'
+        run: |
+          php -r '$p = new PDO("mysql:host=127.0.0.1;port=3306;dbname=copyright_laws_db", "root", "root"); $p->exec("CREATE TABLE somebody_elses_data (id INT)");'
+          if php import_database.php --create-schema; then echo "::error::the foreign table did not stop the drop"; exit 1; fi
+          php -r '$p = new PDO("mysql:host=127.0.0.1;port=3306;dbname=copyright_laws_db", "root", "root"); $p->query("SELECT 1 FROM somebody_elses_data");'
+          php import_database.php --create-schema --force
+          php import_database.php --import
+          php tests/database_check.php
