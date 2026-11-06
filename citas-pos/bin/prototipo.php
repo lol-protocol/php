@@ -24,8 +24,8 @@ const DALTONISMO = [
 function generar(): string
 {
     $base = __DIR__ . '/../datos/';
-    $paleta = leer($base . 'paleta.json');
-    $ejemplos = leer($base . 'ejemplos.json');
+    $paleta = leerJson($base . 'paleta.json');
+    $ejemplos = leerJson($base . 'ejemplos.json');
 
     $cats = [];
     foreach ($paleta['categorias'] as $c) {
@@ -82,6 +82,9 @@ function generar(): string
     // Frases.
     $frases = '';
     foreach ($ejemplos['ejemplos'] as $e) {
+        if (!langValido((string) $e['html'])) {
+            throw new RuntimeException('datos/ejemplos.json: «' . $e['html'] . '» no es un valor válido para lang (por ejemplo es, o zh-Hans).');
+        }
         $frases .= '<section class="idioma" lang="' . h($e['html']) . '"><h3 lang="es">' . h($e['nombre']) . ' <small>· <code>' . h($e['idioma']) . "</code></small></h3>\n";
         foreach ($e['frases'] as $f) {
             $frases .= '<p class="frase" id="' . h($f['id']) . '">';

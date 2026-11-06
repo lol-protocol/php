@@ -1,5 +1,5 @@
 {
-  "descripcion": "Los 30 idiomas de Listado-colores/, con código de 3 letras (ISO 639-3) y el de 2 letras que usa Listado-colores/. Fuente única de los códigos de citas-pos/. El chino simplificado se distingue por su escritura (campo escritura), no por el código.",
+  "descripcion": "Los 30 idiomas de Listado-colores/, con código de 3 letras (ISO 639-3) y el de 2 letras que usa Listado-colores/. Fuente única de los códigos de citas-pos/. El chino simplificado se distingue por su escritura (campo escritura), no por el código. sin_espacios marca los idiomas que no separan las palabras con espacios (el largo de una cita se cuenta de otra forma).",
   "idiomas": [
     {
       "codigo": "ara",
@@ -79,7 +79,8 @@
     {
       "codigo": "jpn",
       "codigo2": "ja",
-      "nombre": "Japonés"
+      "nombre": "Japonés",
+      "sin_espacios": true
     },
     {
       "codigo": "kor",
@@ -129,7 +130,8 @@
     {
       "codigo": "tha",
       "codigo2": "th",
-      "nombre": "Tailandés"
+      "nombre": "Tailandés",
+      "sin_espacios": true
     },
     {
       "codigo": "tur",
@@ -149,7 +151,8 @@
     {
       "codigo": "zho",
       "codigo2": "zh",
-      "nombre": "Chino simplificado"
+      "nombre": "Chino simplificado",
+      "sin_espacios": true
     }
   ]
 }

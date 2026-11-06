@@ -42,6 +42,9 @@ function frases(array $ejemplos, array $citas, array $idiomas, array $aprobadas,
 {
     $salida = [];
     foreach ($ejemplos['ejemplos'] as $e) {
+        if (!langValido((string) $e['html'])) {
+            throw new RuntimeException('datos/ejemplos.json: «' . $e['html'] . '» no es un valor válido para lang (por ejemplo es, o zh-Hans).');
+        }
         foreach ($e['frases'] as $f) {
             $salida[] = ['carpeta' => 'ejemplos', 'id' => $f['id'], 'lang' => $e['html'], 'texto' => $f['texto'], 'palabras' => $f['palabras'], 'pie' => null];
         }
@@ -57,6 +60,9 @@ function frases(array $ejemplos, array $citas, array $idiomas, array $aprobadas,
             continue;
         }
         $lang = $dosLetras[$c['idioma']] . (isset($c['escritura']) ? '-' . $c['escritura'] : '');
+        if (!langValido($lang)) {
+            throw new RuntimeException("{$c['id']}: «{$lang}» no es un valor válido para lang: revisa idioma y escritura.");
+        }
         $salida[] = ['carpeta' => 'citas', 'id' => $c['id'], 'lang' => $lang, 'texto' => $c['texto'], 'palabras' => $c['etiquetas'], 'pie' => [$c['autor'], $c['obra']]];
     }
     return $salida;
@@ -143,7 +149,7 @@ function correo(array $paleta, array $cats, array $f): string
 {
     $fondo = $paleta['fondo']['claro'];
     $cuerpo = palabras($cats, trozos($f['id'], $f['texto'], $f['palabras']), true, $paleta['grupos']);
-    $html = "<div lang=\"{$f['lang']}\" style=\"background:$fondo;padding:16px 20px;border-radius:8px;\">\n"
+    $html = '<div lang="' . h($f['lang']) . "\" style=\"background:$fondo;padding:16px 20px;border-radius:8px;\">\n"
         . "<p style=\"margin:0;font:22px/2 Georgia,'Times New Roman',serif;color:#1d1d22;\">$cuerpo</p>\n"
         . '<p style="margin:8px 0 0;font:13px/1.4 Arial,Helvetica,sans-serif;color:#55555e;">' . pie($f['pie']) . "</p>\n"
         . "</div>\n";
@@ -162,7 +168,7 @@ function correo(array $paleta, array $cats, array $f): string
 function sitio(array $paleta, array $cats, array $f): string
 {
     $cuerpo = palabras($cats, trozos($f['id'], $f['texto'], $f['palabras']), false, $paleta['grupos']);
-    return "<figure class=\"citas-pos\" lang=\"{$f['lang']}\">\n"
+    return '<figure class="citas-pos" lang="' . h($f['lang']) . "\">\n"
         . "<blockquote><p>$cuerpo</p></blockquote>\n"
         . '<figcaption>' . pie($f['pie']) . "</figcaption>\n"
         . "</figure>\n";
@@ -198,7 +204,7 @@ function juego(array $paleta, array $cats, array $f): string
         $c = $cats[$cat];
         $leyenda .= '<li data-c="' . h($cat) . '"><span class="w jm" data-c="' . h($cat) . '" data-g="' . h($c['grupo']) . '">Aa</span> ' . h($c['nombre']) . "</li>\n";
     }
-    return "<figure class=\"citas-pos citas-pos-juego\" lang=\"{$f['lang']}\">\n"
+    return '<figure class="citas-pos citas-pos-juego" lang="' . h($f['lang']) . "\">\n"
         . "<p class=\"jayuda\" lang=\"es\" hidden>Toca cada palabra y descubre de qué color es.</p>\n"
         . "<blockquote><p>$cuerpo</p></blockquote>\n"
         . "<ul class=\"jleyenda\" lang=\"es\">\n$leyenda</ul>\n"
@@ -258,12 +264,12 @@ HTML;
 function generar(array &$pendientes): array
 {
     $base = __DIR__ . '/../datos/';
-    $paleta = leer($base . 'paleta.json');
+    $paleta = leerJson($base . 'paleta.json');
     $cats = [];
     foreach ($paleta['categorias'] as $c) {
         $cats[$c['codigo']] = $c;
     }
-    $lista = frases(leer($base . 'ejemplos.json'), leer($base . 'citas.json'), leer($base . 'idiomas.json'), aprobadas(__DIR__ . '/../revisiones.csv'), $pendientes);
+    $lista = frases(leerJson($base . 'ejemplos.json'), leerJson($base . 'citas.json'), leerJson($base . 'idiomas.json'), aprobadas(__DIR__ . '/../revisiones.csv'), $pendientes);
 
     $juegoCss = (string) file_get_contents(JUEGO . '/juego.css');
     $juegoJs = (string) file_get_contents(JUEGO . '/juego.js');

@@ -23,6 +23,7 @@ Una cita no se publica en un idioma hasta que su traducción y sus etiquetas ten
 - Idioma, alcance, elemento y veredicto tienen que existir; revisor y fecha son obligatorios.
 - Una fila por revisor, idioma, alcance y elemento: si vuelves a revisar, edita tu fila (el historial queda en git).
 - El orden de las filas no importa.
+- **Un «corregir» o un «dudoso» bloquea la publicación, venga de quien venga.** El generador solo crea las piezas de una cita si su texto y sus etiquetas tienen al menos un «correcto» o «corregido» **y ninguna fila abierta** («corregir» o «dudoso») de ningún revisor. Un «correcto» de Ana no tapa el «corregir» de Bob: hasta que quien mantiene el proyecto aplique la corrección y cambie esa fila a «corregido» (o su autor la edite), la cita no sale.
 - Un elemento de un idioma solo se puede revisar con el código de ese idioma: `spa-1` va con `spa`.
 - Quien mantiene el proyecto aplica las correcciones a los datos y cambia esas filas de `corregir` a `corregido`.
 
