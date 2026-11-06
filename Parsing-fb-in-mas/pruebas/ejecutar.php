@@ -8,6 +8,7 @@ use ParsingFbInMas\Cruce;
 use ParsingFbInMas\Detector;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Metadatos;
+use ParsingFbInMas\Perfil;
 use ParsingFbInMas\Wikidata;
 
 $fallos = 0;
@@ -107,6 +108,49 @@ foreach (['', '<<<', "\0\0", '<script type="application/ld+json">{no es json</sc
     }
     igual("entrada rara $i no revienta", true, true);
 }
+
+// --- Regresiones de la etapa 1 ---
+// (1) Partículas y nombre de pila en el cruce
+$fallecido = static fn (string $nombre, string $nac, ?string $lugar = null): array => [
+    'red' => 'x', 'url' => 'u-' . $nombre, 'nombre' => $nombre, 'nacimiento' => $nac, 'muerte' => '1920',
+    'lugar_nacimiento' => $lugar, 'posiblemente_vivo' => false,
+];
+igual('cruce: «María de la Cruz» no es «José de la Cruz»', 0,
+    count(Cruce::candidatos([$fallecido('María de la Cruz', '1850')], [$fallecido('José de la Cruz', '1850')])['candidatos']));
+igual('cruce: «María de la Cruz Soto» sí es «Maria Cruz Soto»', 1,
+    count(Cruce::candidatos([$fallecido('María de la Cruz Soto', '1850')], [$fallecido('Maria Cruz Soto', '1850')])['candidatos']));
+igual('cruce: el orden «Apellido, Nombre» no estorba', 1,
+    count(Cruce::candidatos([$fallecido('González, María', '1850')], [$fallecido('María González', '1850')])['candidatos']));
+
+// (2) El país solo no es evidencia de lugar
+$solo = Cruce::candidatos([$fallecido('Ana Pérez', '1850', 'Chile')], [$fallecido('Ana Pérez Soto', '1850', 'Chile')])['candidatos'];
+igual('cruce: «Chile» contra «Chile» no suma evidencia de lugar', false, str_contains(implode('|', $solo[0]['evidencia'] ?? []), 'lugar'));
+$ciudad = Cruce::candidatos([$fallecido('Ana Pérez', '1850', 'Valparaíso, Chile')], [$fallecido('Ana Pérez Soto', '1850', 'Valparaiso, Chile')])['candidatos'];
+igual('cruce: la misma ciudad sí suma', true, str_contains(implode('|', $ciudad[0]['evidencia'] ?? []), 'lugar'));
+$q = Cruce::candidatos([$fallecido('Ana Pérez', '1850', 'Q2887')], [$fallecido('Ana Pérez Soto', '1850', 'Q2887')])['candidatos'];
+igual('cruce: el mismo identificador de Wikidata suma', true, str_contains(implode('|', $q[0]['evidencia'] ?? []), 'lugar'));
+
+// (3) Rutas que no son perfiles
+$pagina = static fn (string $url, string $titulo): array => Detector::analizar(
+    '<link rel="canonical" href="' . $url . '"><meta property="og:title" content="' . $titulo . '">'
+)->aArreglo();
+igual('facebook /people/: usuario por número', 'id:100000000000001', $pagina('https://www.facebook.com/people/Ana-Ejemplo/100000000000001/', 'Ana Ejemplo')['usuario']);
+$home = $pagina('https://x.com/home', 'Ana Ejemplo');
+igual('twitter /home: sin usuario', null, $home['usuario']);
+igual('twitter /home: avisa que no es un perfil', true, in_array('la dirección parece una publicación u otra página, no un perfil: sin usuario', $home['avisos'], true));
+igual('instagram /p/: sin usuario', null, $pagina('https://www.instagram.com/p/ABC123/', 'Ana Ejemplo')['usuario']);
+igual('github /orgs/: sin usuario', null, $pagina('https://github.com/orgs/acme/people', 'Acme')['usuario']);
+igual('instagram: un usuario normal sigue saliendo', 'ana.ejemplo', $pagina('https://www.instagram.com/ana.ejemplo/', 'Ana (@ana.ejemplo)')['usuario']);
+
+// (4) Perfil hace cumplir la regla de las fechas
+$sinMuerte = new Perfil('x', null, null, 'Fulano', null, null, null, null, [], '1985-05-05', null, 'Temuco', 'Santiago', [['relacion' => 'madre', 'nombre' => null, 'id' => 'Q2']]);
+$a = $sinMuerte->aArreglo();
+igual('perfil: sin muerte descarta el nacimiento', null, $a['nacimiento']);
+igual('perfil: sin muerte descarta ambos lugares', [null, null], [$a['lugar_nacimiento'], $a['lugar_muerte']]);
+igual('perfil: sin muerte descarta los parientes', [], $a['parientes']);
+igual('perfil: sin muerte sigue como posiblemente vivo', true, $a['posiblemente_vivo']);
+$conMuerte = new Perfil('x', null, null, 'Fulano', null, null, null, null, [], '1850', '1920', 'Temuco', 'Santiago', [['relacion' => 'madre', 'nombre' => null, 'id' => 'Q2']]);
+igual('perfil: con muerte conserva todo', ['1850', 'Temuco', 1], [$conMuerte->nacimiento, $conMuerte->lugarNacimiento, count($conMuerte->parientes)]);
 
 // CLI: no descarga de la red
 $salida = [];

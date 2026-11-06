@@ -17,6 +17,11 @@ final class Twitter extends Analizador
         return ['twitter.com', 'x.com'];
     }
 
+    protected function reservados(): array
+    {
+        return ['home', 'i', 'search', 'explore', 'hashtag', 'intent', 'share', 'settings', 'login', 'notifications', 'messages', 'compose', 'tos', 'privacy'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (@anaejemplo) / X», «Ana Ejemplo (@anaejemplo) on Twitter»
@@ -27,7 +32,7 @@ final class Twitter extends Analizador
             $nombre = $m[1];
             $usuario = $m[2];
         }
-        $usuario ??= self::primerSegmento($url);
+        $usuario ??= $this->usuarioDeRuta($url);
 
         return [
             'usuario' => $usuario,

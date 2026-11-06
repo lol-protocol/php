@@ -32,6 +32,24 @@ abstract class Analizador
     abstract protected function extraer(array $d, ?string $url): array;
 
     /**
+     * Primeros segmentos de la ruta que no son el nombre de un usuario (`p`, `home`, `people`…),
+     * en minúsculas. Por defecto, ninguno.
+     *
+     * @return list<string>
+     */
+    protected function reservados(): array
+    {
+        return [];
+    }
+
+    /** El usuario que dice la ruta de la dirección, o null si ese segmento está reservado. */
+    protected function usuarioDeRuta(?string $url): ?string
+    {
+        $segmento = self::primerSegmento($url);
+        return $segmento !== null && in_array(strtolower($segmento), $this->reservados(), true) ? null : $segmento;
+    }
+
+    /**
      * @param array{meta: array<string, string>, canonica: ?string, titulo: ?string, persona: ?array<string, string>} $d
      */
     public function reconoce(array $d): bool
@@ -77,12 +95,10 @@ abstract class Analizador
         if ($capturado === null) {
             $avisos[] = 'sin fecha de captura: anótala al citar la fuente';
         }
-
-        // Sin fecha de muerte no se guarda ninguna fecha ni lugar de vida: puede estar viva.
-        $muerte = self::texto($c['muerte'] ?? null);
-        $nacimiento = $muerte === null ? null : self::texto($c['nacimiento'] ?? null);
-        $lugarNacimiento = $muerte === null ? null : self::texto($c['lugar_nacimiento'] ?? null);
-        $lugarMuerte = $muerte === null ? null : self::texto($c['lugar_muerte'] ?? null);
+        $segmento = self::primerSegmento($url);
+        if ($segmento !== null && in_array(strtolower($segmento), $this->reservados(), true)) {
+            $avisos[] = 'la dirección parece una publicación u otra página, no un perfil: sin usuario';
+        }
 
         return new Perfil(
             $this->red(),
@@ -94,10 +110,10 @@ abstract class Analizador
             $descripcion,
             $capturado,
             $avisos,
-            $nacimiento,
-            $muerte,
-            $lugarNacimiento,
-            $lugarMuerte,
+            self::texto($c['nacimiento'] ?? null),
+            self::texto($c['muerte'] ?? null),
+            self::texto($c['lugar_nacimiento'] ?? null),
+            self::texto($c['lugar_muerte'] ?? null),
         );
     }
 

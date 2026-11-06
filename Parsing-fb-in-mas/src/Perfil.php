@@ -15,7 +15,17 @@ namespace ParsingFbInMas;
  */
 final class Perfil
 {
+    public readonly ?string $nacimiento;
+    public readonly ?string $muerte;
+    public readonly ?string $lugarNacimiento;
+    public readonly ?string $lugarMuerte;
+    /** @var list<array{relacion: string, nombre: ?string, id: ?string}> */
+    public readonly array $parientes;
+
     /**
+     * La regla «fechas, lugares y parientes solo si consta una muerte» se cumple aquí y en
+     * ningún otro sitio: sin `$muerte`, esos cinco datos se descartan, lleguen de donde lleguen.
+     *
      * @param list<string> $avisos
      * @param list<array{relacion: string, nombre: ?string, id: ?string}> $parientes
      */
@@ -29,12 +39,18 @@ final class Perfil
         public readonly ?string $descripcion,
         public readonly ?string $capturado,
         public readonly array $avisos = [],
-        public readonly ?string $nacimiento = null,
-        public readonly ?string $muerte = null,
-        public readonly ?string $lugarNacimiento = null,
-        public readonly ?string $lugarMuerte = null,
-        public readonly array $parientes = [],
+        ?string $nacimiento = null,
+        ?string $muerte = null,
+        ?string $lugarNacimiento = null,
+        ?string $lugarMuerte = null,
+        array $parientes = [],
     ) {
+        $consta = $muerte !== null;
+        $this->muerte = $muerte;
+        $this->nacimiento = $consta ? $nacimiento : null;
+        $this->lugarNacimiento = $consta ? $lugarNacimiento : null;
+        $this->lugarMuerte = $consta ? $lugarMuerte : null;
+        $this->parientes = $consta ? $parientes : [];
     }
 
     public function fallecido(): bool

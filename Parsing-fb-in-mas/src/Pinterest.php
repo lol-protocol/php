@@ -16,11 +16,16 @@ final class Pinterest extends Analizador
         return ['pinterest.com', 'pin.it'];
     }
 
+    protected function reservados(): array
+    {
+        return ['pin', 'search', 'ideas', 'today', 'business', 'login', 'explore'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (anaejemplo) - Perfil | Pinterest»
         $nombre = null;
-        $usuario = self::primerSegmento($url);
+        $usuario = $this->usuarioDeRuta($url);
         $titulo = $d['meta']['og:title'] ?? ($d['titulo'] ?? null);
         if ($titulo !== null && preg_match('/^(.*?)\s*\((\w{3,30})\)/u', $titulo, $m) === 1) {
             $nombre = $m[1] !== '' ? $m[1] : null;

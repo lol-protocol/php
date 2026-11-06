@@ -16,11 +16,16 @@ final class GitHub extends Analizador
         return ['github.com'];
     }
 
+    protected function reservados(): array
+    {
+        return ['orgs', 'settings', 'topics', 'marketplace', 'explore', 'features', 'pricing', 'login', 'search', 'sponsors', 'notifications', 'pulls', 'issues', 'collections', 'trending', 'about', 'new', 'enterprise', 'apps'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «octocat (Ana Ejemplo)» o solo «octocat»
         $nombre = null;
-        $usuario = self::primerSegmento($url);
+        $usuario = $this->usuarioDeRuta($url);
         $titulo = $d['meta']['og:title'] ?? null;
         if ($titulo !== null) {
             $titulo = (string) preg_replace('/\s*[·|]\s*GitHub\s*$/u', '', $titulo);

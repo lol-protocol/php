@@ -20,6 +20,10 @@ final class Cruce
 {
     private const PUNTAJE_MINIMO = 0.6;
 
+    /** Partículas de nombres: no cuentan como coincidencia («de la Cruz» no hace parecidas a dos personas). */
+    private const PARTICULAS = ['de', 'del', 'la', 'las', 'los', 'el', 'y', 'e', 'da', 'das', 'do', 'dos', 'di', 'du', 'le',
+        'van', 'von', 'der', 'den', 'ten', 'ter', 'bin', 'ibn', 'al'];
+
     /**
      * @param list<array<string, mixed>> $a perfiles (la salida de `aArreglo()`)
      * @param list<array<string, mixed>> $b
@@ -56,7 +60,8 @@ final class Cruce
                 $union = count(array_unique([...$x['palabras'], ...$y['palabras']]));
                 $puntaje = $cuantas / $union;
                 $evidencia = [$cuantas . ' palabras del nombre coinciden (plegado fonético)'];
-                if ($cuantas < 2) {
+                // El nombre de pila de cada uno debe estar en el otro: «María de la Cruz» no es «José de la Cruz».
+                if ($cuantas < 2 || !in_array($x['primero'], $y['palabras'], true) || !in_array($y['primero'], $x['palabras'], true)) {
                     continue;
                 }
                 if ($x['anio'] !== null && $y['anio'] !== null) {
@@ -108,7 +113,7 @@ final class Cruce
 
     /**
      * @param array<string, mixed> $p
-     * @return array{palabras: list<string>, anio: ?int, lugares: list<string>}
+     * @return array{palabras: list<string>, primero: ?string, anio: ?int, lugares: list<string>}
      */
     private static function ficha(array $p, string $idioma): array
     {
@@ -116,21 +121,42 @@ final class Cruce
         if (is_string($p['nacimiento'] ?? null) && preg_match('/^(\d{4})/', $p['nacimiento'], $m) === 1) {
             $anio = (int) $m[1];
         }
+        $palabras = self::plegar(is_string($p['nombre'] ?? null) ? $p['nombre'] : '', $idioma);
         return [
-            'palabras' => self::plegar(is_string($p['nombre'] ?? null) ? $p['nombre'] : '', $idioma),
+            'palabras' => $palabras,
+            'primero' => $palabras[0] ?? null,
             'anio' => $anio,
-            'lugares' => self::plegar(is_string($p['lugar_nacimiento'] ?? null) ? $p['lugar_nacimiento'] : '', $idioma),
+            'lugares' => self::lugarEspecifico(is_string($p['lugar_nacimiento'] ?? null) ? $p['lugar_nacimiento'] : '', $idioma),
         ];
     }
 
     /**
+     * Solo la parte más específica del lugar («Valparaíso» de «Valparaíso, Chile»). Un lugar que
+     * es solo un país o una región no prueba nada, y un identificador de Wikidata (`Q2887`) se
+     * compara entero.
+     *
+     * @return list<string>
+     */
+    private static function lugarEspecifico(string $lugar, string $idioma): array
+    {
+        $lugar = trim($lugar);
+        if (preg_match('/^Q\d+$/', $lugar) === 1) {
+            return [$lugar];
+        }
+        $partes = array_map('trim', explode(',', $lugar));
+        return count($partes) < 2 ? [] : self::plegar($partes[0], $idioma);
+    }
+
+    /**
+     * Palabras del texto sin partículas, plegadas fonéticamente y sin repetir, en orden.
+     *
      * @return list<string>
      */
     private static function plegar(string $texto, string $idioma): array
     {
         $palabras = [];
         foreach (preg_split('/[\s,.\-]+/u', mb_strtolower($texto)) ?: [] as $palabra) {
-            if (mb_strlen($palabra) >= 2) {
+            if (mb_strlen($palabra) >= 2 && !in_array($palabra, self::PARTICULAS, true)) {
                 $palabras[] = PhoneticFolderRegistry::fold($idioma, $palabra);
             }
         }

@@ -16,6 +16,11 @@ final class Instagram extends Analizador
         return ['instagram.com', 'instagr.am'];
     }
 
+    protected function reservados(): array
+    {
+        return ['p', 'reel', 'reels', 'tv', 'explore', 'stories', 'accounts', 'direct', 'about', 'web'];
+    }
+
     protected function extraer(array $d, ?string $url): array
     {
         // «Ana Ejemplo (@ana.ejemplo) • Fotos y videos de Instagram»
@@ -26,7 +31,7 @@ final class Instagram extends Analizador
             $nombre = $m[1] !== '' ? $m[1] : null;
             $usuario = $m[2];
         }
-        $usuario ??= self::primerSegmento($url);
+        $usuario ??= $this->usuarioDeRuta($url);
 
         // «1,234 Followers, 56 Following, 78 Posts - Ana (@ana) on Instagram: "la biografía"».
         // Los contadores de seguidores no se guardan: solo la biografía, si viene.
