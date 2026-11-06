@@ -16,6 +16,7 @@ de internet (TOPE_IO_INTERNET).
 import csv
 import io
 import json
+import statistics
 import sys
 from collections import Counter
 from pathlib import Path
@@ -50,6 +51,9 @@ PUESTOS_MOSTRADOS = 25
 PLANTILLA_VISTA = AQUI / "vista_plantilla.html"
 MAPA = AQUI / "mapa_paises.csv"
 DETALLE = AQUI / "datos_detalle.csv"
+README = AQUI / "README.md"
+INICIO_RESUMEN = "<!-- resumen: lo escribe generar_tabla.py; no editar a mano -->"
+FIN_RESUMEN = "<!-- fin del resumen -->"
 COLUMNAS_FINAL = [
     "codigo", "pais", "tipo", "region",
     "indice_genealogia", "indice_operabilidad", "prioridad_genealogia", "excluido_genealogia",
@@ -210,6 +214,48 @@ def escenarios_md(registros):
                                                             for t in tablas]) + " |")
         partes.append("")
     return "\n".join(partes)
+
+
+def resumen_md(registros, niveles):
+    """Las cifras que cambian con los datos, para el bloque «Resumen» del README."""
+    def reparto(valores):
+        return ", ".join(f"{n}: {sum(1 for v in valores if v == n)}" for n in range(5, 0, -1))
+
+    def nombres(filtro):
+        lista = sorted((d["n"] for d in registros if filtro(d)), key=str.casefold)
+        return ", ".join(lista[:-1]) + " y " + lista[-1] if len(lista) > 1 else "".join(lista)
+
+    tipos = Counter(d["t"] for d in registros)
+    medianas = []
+    for nivel_io in range(1, 6):
+        cpi = [d["cpi"] for d in registros if d["io"] == nivel_io and d["cpi"] is not None]
+        if cpi:
+            medianas.append(f"IO {nivel_io}: {statistics.median(cpi):g}")
+    sin_corpus_dentro = sum(1 for d in registros if d["ipl"] <= UMBRAL_POS and not d["xp"])
+    lineas = [
+        f"- **Filas:** {len(registros)} ({tipos['estado']} estados, {tipos['territorio']} territorios y "
+        f"{tipos['entidad disputada']} entidades disputadas).",
+        f"- **Excluidos de genealogía** (IO ≤ {UMBRAL_GENEALOGIA}): {sum(d['xg'] for d in registros)}: "
+        f"{nombres(lambda d: d['xg'])}. Con IO ≤ {UMBRAL_GENEALOGIA + 1} serían "
+        f"{sum(1 for d in registros if d['io'] <= UMBRAL_GENEALOGIA + 1)}.",
+        f"- **Excluidos del etiquetador POS:** {sum(d['xp'] for d in registros)}: "
+        f"{nombres(lambda d: d['xp'])}. Otros {sin_corpus_dentro} no tienen corpus anotado en su lengua "
+        "local y siguen dentro, con prioridad baja.",
+        f"- **IP de la mejor lengua**, países por nivel: {reparto([d['ip'] for d in registros])}.",
+        f"- **IP local**, países por nivel: {reparto([d['ipl'] for d in registros])}.",
+        f"- **Lenguas por nivel:** {reparto(list(niveles.values()))}.",
+        f"- **Corrupción mediana por IO** (100 = sin corrupción): {'; '.join(medianas)}.",
+    ]
+    return "\n".join(lineas)
+
+
+def readme_con_resumen(resumen):
+    texto = README.read_text(encoding="utf-8")
+    if INICIO_RESUMEN not in texto or FIN_RESUMEN not in texto:
+        sys.exit(f"README.md no tiene las marcas del resumen: {INICIO_RESUMEN} y {FIN_RESUMEN}")
+    antes, resto = texto.split(INICIO_RESUMEN, 1)
+    _, despues = resto.split(FIN_RESUMEN, 1)
+    return f"{antes}{INICIO_RESUMEN}\n{resumen}\n{FIN_RESUMEN}{despues}"
 
 
 def tabla_md(titulo, nota, enc, filas):
@@ -413,7 +459,8 @@ def main(comprobar=False):
 
     salidas = [(SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos),
                (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(registros, anios_vista)),
-               (SALIDA_ESCENARIOS, escenarios_md(registros))]
+               (SALIDA_ESCENARIOS, escenarios_md(registros)),
+               (README, readme_con_resumen(resumen_md(registros, niveles)))]
     desactualizadas = comprobar_o_escribir(salidas, comprobar)
     if comprobar and desactualizadas:
         sys.exit(f"No están al día: {', '.join(desactualizadas)}. "

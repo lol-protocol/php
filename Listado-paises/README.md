@@ -16,6 +16,21 @@ desde la prehistoria.
 tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Markdown
 (`tabla_genealogia.md` y `tabla_pos.md`) tienen todas las columnas.
 
+## Resumen
+
+Cifras que cambian con los datos. Las escribe `generar_tabla.py` y `--comprobar` falla si no
+están al día, así que el resto del README las remite aquí en vez de repetirlas.
+
+<!-- resumen: lo escribe generar_tabla.py; no editar a mano -->
+- **Filas:** 208 (193 estados, 12 territorios y 3 entidades disputadas).
+- **Excluidos de genealogía** (IO ≤ 1): 23: Afganistán, Bielorrusia, Burkina Faso, Corea del Norte, Cuba, Eritrea, Haití, Irán, Libia, Malí, Myanmar, Níger, Palestina, República Centroafricana, República Democrática del Congo, Rusia, Siria, Somalia, Sudán, Sudán del Sur, Turkmenistán, Venezuela y Yemen. Con IO ≤ 2 serían 54.
+- **Excluidos del etiquetador POS:** 7: Eritrea, Myanmar, República Centroafricana, República Democrática del Congo, Somalia, Sudán del Sur y Turkmenistán. Otros 33 no tienen corpus anotado en su lengua local y siguen dentro, con prioridad baja.
+- **IP de la mejor lengua**, países por nivel: 5: 181, 4: 16, 3: 7, 2: 1, 1: 3.
+- **IP local**, países por nivel: 5: 107, 4: 23, 3: 31, 2: 7, 1: 40.
+- **Lenguas por nivel:** 5: 21, 4: 26, 3: 35, 2: 11, 1: 70.
+- **Corrupción mediana por IO** (100 = sin corrupción): IO 1: 20; IO 2: 26; IO 3: 37.5; IO 4: 54; IO 5: 77.5.
+<!-- fin del resumen -->
+
 ## Archivos
 
 - `paises.csv`: datos generales, una fila por país. Es la fuente de verdad de genealogía.
@@ -41,6 +56,7 @@ tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Ma
   generó con `pycountry` para que los scripts no dependan de él.
 - `poblacion_larga.csv` y `natalidad.csv`: datos de entrada de la población histórica, generados
   por `preparar_datos.py`.
+- `comun.py`: lectura y escritura de CSV y años de los datos, compartidos por todos los scripts.
 - `historia_poblacion.py`: calcula los nacidos en la historia de cada país a partir de esos dos
   archivos, y escribe la columna de `paises.csv` y `poblacion_historica_detalle.csv` (con la banda
   de sensibilidad).
@@ -54,16 +70,16 @@ tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Ma
 - `pruebas.py`: pruebas del proyecto. La CI las corre junto con `generar_tabla.py --comprobar`
   (`.github/workflows/pruebas-listado-paises.yml`).
 
-`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv`, `vista.html` y `escenarios.md` son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
+`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv`, `vista.html`, `escenarios.md` y el bloque «Resumen» de este README son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
 
 ```bash
 python3 generar_tabla.py              # valida y regenera las tablas, priorizacion.csv y vista.html
 python3 generar_tabla.py --comprobar  # valida y falla si alguna salida no está al día (no escribe)
 python3 -m unittest -v pruebas        # pruebas
-python3 preparar_datos.py ...         # datos de los países; ver «Fuentes»
+python3 preparar_datos.py ...         # datos de los países; argumentos en descargar_fuentes.py
 python3 historia_poblacion.py         # recalcula los nacidos en la historia
-python3 preparar_lenguas.py ...       # recursos de cada lengua; ver «Fuentes»
-python3 preparar_mapa.py ...          # trazados del mapa; ver «Fuentes»
+python3 preparar_lenguas.py ...       # recursos de cada lengua; ídem
+python3 preparar_mapa.py ...          # trazados del mapa; ídem
 python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer   # baja todo y rehace los datos
 ```
 
@@ -155,8 +171,8 @@ abajo).
 puntaje por sí sola.
 
 **Libertad, democracia y corrupción** sirven para contrastar IO, sin cambiar ningún puntaje. IO
-coincide con ellas en general: la corrupción mediana (100 = sin corrupción) va de 20 en los países
-con IO 1 a unos 78 en los de IO 5, y entre los de IO 5 solo Singapur no es «libre» (es «parcial»).
+coincide con ellas en general: la corrupción mediana sube con IO (ver «Resumen»), y entre los de
+IO 5 solo Singapur no es «libre» (es «parcial»).
 **Ajustes hechos al contrastar** (decididos): bajaron de IO 4 a IO 3 las cinco monarquías del
 Golfo (Arabia Saudita, Baréin, Catar, Emiratos Árabes Unidos y Omán), por el control estatal de
 internet, y Paraguay, Filipinas e Indonesia, por su corrupción alta (índice por debajo de 35). El
@@ -164,10 +180,8 @@ comentario de cada uno nombra el factor.
 
 **Prioridad** = IG × IO (1 a 25). Ordena la tabla; no es un tercer índice.
 
-**Excluido** = IO ≤ 1. Quedan fuera **23 países**, cerca del objetivo de unos 20: Afganistán,
-Bielorrusia, Burkina Faso, Corea del Norte, Cuba, Eritrea, Haití, Irán, Libia, Malí, Myanmar,
-Níger, República Centroafricana, República Democrática del Congo, Rusia, Siria, Somalia, Sudán,
-Sudán del Sur, Turkmenistán, Venezuela, Yemen y Palestina.
+**Excluido** = IO ≤ 1, con el objetivo de dejar fuera unos 20 países. Cuántos y cuáles, en
+«Resumen».
 
 Nicaragua tenía IO = 1 y ahora tiene IO = 2: sus sanciones son parciales y sus factores (control
 de medios e internet) son los mismos que los de Vietnam, que la rúbrica ya marca como «difícil».
@@ -227,8 +241,8 @@ africanas). **No usa sanciones ni política**: eso lo cubre IO.
 | alguna | 2 | recursos mínimos |
 | ninguna | 1 | sin corpus anotado abierto |
 
-Los umbrales están en `UMBRALES_NIVEL` de `generar_tabla.py`. Hoy hay 21 lenguas en el nivel 5, 26
-en el 4, 35 en el 3, 11 en el 2 y 70 en el 1. El porcentaje de texto web (Common Crawl) va al lado
+Los umbrales están en `UMBRALES_NIVEL` de `generar_tabla.py`; cuántas lenguas hay en cada nivel,
+en «Resumen». El porcentaje de texto web (Common Crawl) va al lado
 como contexto: no cambia el nivel. Antes los niveles venían de memoria; entre la medición y el
 nuevo orden de lenguas (árabe y criollos, ver abajo) cambió el IP local de 93 de los 199 países que
 ya estaban. Varias descripciones viejas resultaron falsas (el islandés, por ejemplo, tiene 1,2
@@ -239,17 +253,15 @@ Hay **dos versiones**, porque responden a preguntas distintas:
 
 - **IP (mejor lengua):** el nivel de la lengua con más recursos entre las listadas en
   `idioma_principal`. Dice si se puede etiquetar *algún* texto del país con recursos existentes.
-  Casi todos los países listan inglés, francés, español o portugués, así que **181 de 208** tienen
-  IP = 5 (y 16 con 4, 7 con 3, 1 con 2 y 3 con 1). Por eso casi no distingue entre países.
+  Casi todos los países listan inglés, francés, español o portugués, así que casi todos tienen
+  IP = 5 (ver «Resumen»). Por eso casi no distingue entre países.
 - **IP local:** el nivel de la primera lengua listada, que es la lengua local. Dice si se puede
-  etiquetar el texto que el país escribe en su propia lengua. Se reparte mejor: 107 países con 5,
-  23 con 4, 31 con 3, 7 con 2 y 40 con 1.
+  etiquetar el texto que el país escribe en su propia lengua. Se reparte mucho mejor.
 
 **La prioridad y la exclusión POS usan IP local** (decisión tomada). **Prioridad POS** =
 IL × IP local. **Excluido POS** (decidido) = la lengua local no tiene ninguna palabra anotada en
-esas fuentes (IP local ≤ 1) **y además** el país es inviable para operar (IO ≤ 1). Quedan fuera
-**7**: Eritrea, Myanmar, República Centroafricana, República Democrática del Congo, Somalia, Sudán
-del Sur y Turkmenistán. Los otros 33 países cuya lengua local no tiene corpus anotado (birmano,
+esas fuentes (IP local ≤ 1) **y además** el país es inviable para operar (IO ≤ 1); los
+excluidos, en «Resumen». Los demás países cuya lengua local no tiene corpus anotado (birmano,
 jemer, malgache, mongol, tok pisin…) siguen dentro, con prioridad baja: su IP local de 1 los deja
 al final. Los umbrales están en `UMBRAL_POS` y `UMBRAL_GENEALOGIA`.
 
@@ -371,7 +383,9 @@ daba 61 600 millones. **Las cifras sirven para comparar países entre sí, no co
   en el total: con 40 por mil fijo, el total mundial baja un tercio.
 - Puerto Rico usa Maddison de 1820 a 1959 y el Banco Mundial desde 1960, porque Our World in Data
   no lo incluye. Gibraltar e Isla de Man usan el Banco Mundial desde 1960. Jersey y Reunión usan la
-  población de Gapminder hasta 2015 (después es proyección). Guernsey no tiene ninguna serie y
+  población de Gapminder hasta 2015 (después es proyección): la de Jersey termina en 2008 y la de
+  Reunión en 2013. Desde ahí siguen la evolución de su continente (Our World in Data) hasta 2024,
+  en vez de quedar congeladas. Guernsey no tiene ninguna serie y
   queda vacío.
 
 ## Fuentes
@@ -431,66 +445,10 @@ Para los recursos de las lenguas y el mapa:
 baja las 434 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
 `fuentes.sha256` y corre todos los scripts. Si las fuentes no cambiaron, el proyecto queda
 idéntico. El job `reproducir` de `pruebas-listado-paises.yml` lo hace en la CI cuando se lanza a
-mano (*Run workflow*) y falla si algún archivo cambia. Los comandos de abajo hacen lo mismo paso
-a paso.
+mano (*Run workflow*) y falla si algún archivo cambia.
 
-Para reproducir `poblacion_larga.csv`, `natalidad.csv` y las columnas de `paises.csv`:
-
-```bash
-git clone --depth 1 https://github.com/owid/co2-data
-git clone --depth 1 --filter=blob:none --no-checkout https://github.com/owid/owid-datasets
-d="owid-datasets"; m="Maddison Project Database 2020 (Bolt and van Zanden (2020))"
-h="Global Population by Region with projections - HYDE (2016) & UN (2017)"
-git -C $d show "HEAD:datasets/$m/$m.csv" > maddison-2020.csv
-git -C $d show "HEAD:datasets/$h/$h.csv" > hyde-regiones.csv
-c="Population (Clio-infra (2016)), with Island of Ireland (Rep. + Northern)"
-git -C $d show "HEAD:datasets/$c/$c.csv" > clio-infra.csv
-r=https://raw.githubusercontent.com
-sg=$r/open-numbers/ddf--gapminder--systema_globalis/ee190605fdec9d1c35c38e18e869a400a5818fe6/countries-etc-datapoints
-ft=$r/open-numbers/ddf--gapminder--fasttrack/dee8978535ee563526704d2793497f8537280469/countries_etc_datapoints
-curl -so natalidad-gapminder.csv $sg/ddf--datapoints--crude_birth_rate_births_per_1000_population--by--geo--time.csv
-curl -so idh-gapminder.csv $sg/ddf--datapoints--hdi_human_development_index--by--geo--time.csv
-curl -so alfabetizacion-gapminder.csv \
-    $sg/ddf--datapoints--literacy_rate_adult_total_percent_of_people_ages_15_and_above--by--geo--time.csv
-curl -so internet-gapminder.csv $sg/ddf--datapoints--internet_users--by--geo--time.csv
-curl -so fecundidad-gapminder.csv $ft/ddf--datapoints--children_per_woman_total_fertility--by--country--time.csv
-curl -so pib-ppa-gapminder.csv $ft/ddf--datapoints--gdp_pcap--by--country--time.csv
-curl -so emigrantes-gapminder.csv $ft/ddf--datapoints--emigrant_n--by--country--time.csv
-curl -so libertad-gapminder.csv $ft/ddf--datapoints--freedstatus_fh--by--country--time.csv
-curl -so democracia-gapminder.csv $ft/ddf--datapoints--demox_eiu--by--country--time.csv
-curl -so corrupcion-gapminder.csv $ft/ddf--datapoints--corruption_perception_index_cpi--by--country--time.csv
-curl -so poblacion-gapminder.csv $sg/ddf--datapoints--total_population_with_projections--by--geo--time.csv
-curl -so pib-pc.csv $r/datasets/world-development-indicators/4ebec5a2273f531ba238a34dbe440394dc5a6c4b/indicators/ny.gdp.pcap.cd/data.csv
-curl -sO $r/datasets/population/d4b1a4a9a17e2123baf0ef119de05bceced1ab1b/data/population.csv
-python3 preparar_datos.py --co2 co2-data/owid-co2-data.csv --maddison maddison-2020.csv \
-    --hyde hyde-regiones.csv --clio clio-infra.csv --natalidad-gapminder natalidad-gapminder.csv \
-    --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \
-    --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \
-    --emigrantes emigrantes-gapminder.csv --poblacion-gapminder poblacion-gapminder.csv \
-    --libertad libertad-gapminder.csv --democracia democracia-gapminder.csv \
-    --corrupcion corrupcion-gapminder.csv \
-    --pib-ppa pib-ppa-gapminder.csv --pib-pc-bm pib-pc.csv --poblacion-bm population.csv
-python3 historia_poblacion.py && python3 generar_tabla.py
-```
-
-Para reproducir las columnas medidas de `niveles_lenguas.csv`, los IP y `mapa_paises.csv`:
-
-```bash
-git clone --depth 1 --filter=blob:none --no-checkout https://github.com/UniversalDependencies/docs-automation
-git -C docs-automation show dd6111b:codes_and_flags.yaml > codes_and_flags.yaml
-git -C docs-automation show dd6111b:valdan/releases.json \
-    | python3 -c "import json,sys; print('\n'.join(json.load(sys.stdin)['releases']['2.18']['treebanks']))" \
-    > treebanks.txt
-mkdir -p ud-stats && xargs -P 8 -I{} curl -sfo ud-stats/{}.xml \
-    https://raw.githubusercontent.com/UniversalDependencies/{}/r2.18/stats.xml < treebanks.txt
-git clone https://github.com/masakhane-io/masakhane-pos && git -C masakhane-pos checkout 376f416
-curl -so languages.csv https://raw.githubusercontent.com/commoncrawl/cc-crawl-statistics/ea9a79ea09b492cd2a0afcafbe93daf8fee45564/plots/languages.csv
-python3 preparar_lenguas.py --ud-stats ud-stats --ud-codigos codes_and_flags.yaml \
-    --masakhapos masakhane-pos/data --common-crawl languages.csv
-curl -sO https://raw.githubusercontent.com/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19/geojson/ne_50m_admin_0_countries.geojson
-python3 preparar_mapa.py --natural-earth ne_50m_admin_0_countries.geojson
-python3 generar_tabla.py
-```
+`descargar_fuentes.py` es la única lista de fuentes: tiene la URL fija de cada archivo y los
+argumentos con que se llama a cada script. Para correr un paso suelto, mira ahí sus argumentos.
 
 Cuando los dominios estén accesibles, conviene reemplazar la serie compuesta por la serie por país
 de Our World in Data desde el 10 000 a. C., y extender la natalidad después de 2015 con la de la
@@ -542,5 +500,5 @@ Léelo antes de usar la tabla para decidir.
 2. **Natalidad antes de 1800:** contrastar con el PRB las tasas por época, que se cargaron de
    memoria.
 3. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
-4. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
-   54. Camboya y Vietnam siguen dentro, por decisión tomada.
+4. **Umbral de exclusión de genealogía:** IO ≤ 1 (vigente) o IO ≤ 2; cuántos deja fuera cada uno,
+   en «Resumen» y en `escenarios.md`. Camboya y Vietnam siguen dentro, por decisión tomada.
