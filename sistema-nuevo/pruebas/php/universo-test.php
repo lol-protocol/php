@@ -60,3 +60,12 @@ foreach (
         'universo desde la query: scope ' . var_export($scope, true) . ' -> ' . json_encode($paises)
     );
 }
+
+// Un parámetro mal formado (una lista: ?scope[]=x) vale como si faltara: antes era un TypeError, o sea un 500 (y
+// ?age_min[]=x pasaba a edad 1 sin avisar).
+$malFormado = api_universo_desde_query(['scope' => ['x'], 'gender' => ['x'], 'age_min' => ['x'], 'age_max' => ['x']], $grupos, 'u001');
+assert_igual(
+    [null, 0, 150, 'all'],
+    [$malFormado->paises, $malFormado->edadMin, $malFormado->edadMax, $malFormado->genero],
+    'universo desde la query: scope, gender y edades que vienen como lista valen como si faltaran'
+);
