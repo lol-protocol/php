@@ -150,4 +150,159 @@ class DatabaseTest extends TestCase
             putenv('DB_DSN_TESTSITE');
         }
     }
+
+    // --- nested transactions ------------------------------------------------------------------------
+
+    private function grupos(Database $db): array
+    {
+        return array_map('intval', array_column($db->fetchAll('SELECT id FROM grupos ORDER BY id'), 'id'));
+    }
+
+    private function grupo(Database $db, int $id): void
+    {
+        $db->execute('INSERT INTO grupos (id, apellido) VALUES (?, ?)', [$id, "Apellido {$id}"]);
+    }
+
+    #[DataProvider('drivers')]
+    public function testUnaTransaccionDentroDeOtraSeConfirmaConLaExterna(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+
+        $devuelto = $db->transaction(function (Database $db): string {
+            $this->grupo($db, 100001);
+            $interno = $db->transaction(function (Database $db): string {
+                $this->grupo($db, 100002);
+
+                return 'interno';
+            });
+            $this->grupo($db, 100003);
+
+            return "externo+{$interno}";
+        });
+
+        $this->assertSame('externo+interno', $devuelto);
+        $this->assertSame([100001, 100002, 100003], $this->grupos($db), $driver);
+        $this->assertFalse($db->pdo()->inTransaction(), 'the outer one committed');
+    }
+
+    #[DataProvider('drivers')]
+    public function testSiLaInternaFallaLaExternaPuedeSeguir(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+
+        $db->transaction(function (Database $db): void {
+            $this->grupo($db, 100001);
+            try {
+                $db->transaction(function (Database $db): void {
+                    $this->grupo($db, 100002);
+                    throw new \RuntimeException('falla la interna');
+                });
+                $this->fail('the inner exception must reach the outer work');
+            } catch (\RuntimeException $e) {
+                $this->assertSame('falla la interna', $e->getMessage());
+            }
+            $this->grupo($db, 100003);
+        });
+
+        $this->assertSame([100001, 100003], $this->grupos($db), "{$driver}: only the inner one's rows are undone");
+    }
+
+    #[DataProvider('drivers')]
+    public function testSiLaInternaFallaYNadieLaAtrapaTodoSeDeshaceYLlegaElErrorOriginal(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+
+        try {
+            $db->transaction(function (Database $db): void {
+                $this->grupo($db, 100001);
+                $db->transaction(function (Database $db): void {
+                    $this->grupo($db, 100002);
+                    throw new \DomainException('original');
+                });
+            });
+            $this->fail('the exception must reach the caller');
+        } catch (\DomainException $e) {
+            $this->assertSame('original', $e->getMessage());
+        }
+
+        $this->assertSame([], $this->grupos($db), $driver);
+        $this->assertFalse($db->pdo()->inTransaction());
+    }
+
+    #[DataProvider('drivers')]
+    public function testSiLaExternaFallaDespuesDeLaInternaTambienSeDeshaceLaInterna(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+
+        try {
+            $db->transaction(function (Database $db): void {
+                $db->transaction(fn(Database $db) => $this->grupo($db, 100001));
+                throw new \LogicException('falla la externa');
+            });
+            $this->fail('the exception must reach the caller');
+        } catch (\LogicException) {
+        }
+
+        $this->assertSame([], $this->grupos($db), $driver);
+    }
+
+    #[DataProvider('drivers')]
+    public function testUnaTransaccionAbiertaEnElPDOTambienLaAdmite(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+        $pdo = $db->pdo();
+
+        $pdo->beginTransaction();
+        $this->grupo($db, 100001);
+        $db->transaction(fn(Database $db) => $this->grupo($db, 100002));
+        try {
+            $db->transaction(function (Database $db): void {
+                $this->grupo($db, 100003);
+                throw new \RuntimeException('x');
+            });
+        } catch (\RuntimeException) {
+        }
+        $this->assertTrue($pdo->inTransaction(), 'the one the caller opened is still theirs to end');
+        $pdo->commit();
+
+        $this->assertSame([100001, 100002], $this->grupos($db), $driver);
+    }
+
+    #[DataProvider('drivers')]
+    public function testSiElTrabajoYaTerminoLaTransaccionElErrorNoSeTapa(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+
+        // $work that ends the transaction itself and then fails: rollBack() would throw "no active
+        // transaction" and bury the real error.
+        try {
+            $db->transaction(function (Database $db): void {
+                $db->pdo()->rollBack();
+                throw new \RuntimeException('el error de verdad');
+            });
+            $this->fail('the exception must reach the caller');
+        } catch (\RuntimeException $e) {
+            $this->assertSame('el error de verdad', $e->getMessage(), $driver);
+        }
+    }
+
+    #[DataProvider('drivers')]
+    public function testDespuesDeUnFalloLasTransaccionesSiguenFuncionando(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+
+        foreach ([1, 2, 3] as $vuelta) {
+            try {
+                $db->transaction(function (Database $db): void {
+                    $db->transaction(function (): void {
+                        throw new \RuntimeException('x');
+                    });
+                });
+            } catch (\RuntimeException) {
+            }
+        }
+        $db->transaction(fn(Database $db) => $db->transaction(fn(Database $db) => $this->grupo($db, 100001)));
+
+        $this->assertSame([100001], $this->grupos($db), "{$driver}: the depth went back to zero each time");
+    }
 }

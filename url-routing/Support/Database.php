@@ -17,6 +17,9 @@ final class Database
 {
     private ?\PDO $pdo = null;
 
+    /** How many transaction() calls are open inside each other right now: names the savepoint of each inner one. */
+    private int $profundidad = 0;
+
     public function __construct(
         private readonly string $dsn,
         private readonly string $user = '',
@@ -138,6 +141,15 @@ final class Database
     }
 
     /**
+     * Runs $work in a transaction: it commits if $work returns and rolls everything back if it throws,
+     * and the exception goes on.
+     *
+     * It can be nested. A call inside another one (or inside a transaction somebody opened on the PDO
+     * itself) does not begin a second transaction, which both engines refuse; it opens a SAVEPOINT. If the
+     * inner $work throws, only what it did is undone, and the outer one can catch that and go on, or let it
+     * through and undo everything. So a repository method that opens its own transaction can be called from
+     * another that already did.
+     *
      * @template T
      * @param callable(self): T $work
      * @return T
@@ -145,14 +157,52 @@ final class Database
     public function transaction(callable $work): mixed
     {
         $pdo = $this->pdo();
-        $pdo->beginTransaction();
+        $anidada = $pdo->inTransaction();
+        $punto = 'sp_' . $this->profundidad;
+
+        if ($anidada) {
+            $pdo->exec("SAVEPOINT {$punto}");
+        } else {
+            $pdo->beginTransaction();
+        }
+        $this->profundidad++;
+
         try {
             $result = $work($this);
-            $pdo->commit();
+            $this->profundidad--;
+            if ($anidada) {
+                $pdo->exec("RELEASE SAVEPOINT {$punto}");
+            } else {
+                $pdo->commit();
+            }
+
             return $result;
         } catch (\Throwable $e) {
-            $pdo->rollBack();
+            $this->profundidad = max(0, $this->profundidad - 1);
+            $this->deshacer($pdo, $anidada, $punto);
             throw $e;
+        }
+    }
+
+    /**
+     * Undoes a failed transaction() without hiding why it failed: if the engine already ended the
+     * transaction (a COMMIT that failed on a deferred constraint, $work that rolled back itself) there is
+     * nothing to undo, and a rollBack() would throw "There is no active transaction" over the real error.
+     */
+    private function deshacer(\PDO $pdo, bool $anidada, string $punto): void
+    {
+        try {
+            if (!$pdo->inTransaction()) {
+                return;
+            }
+            if ($anidada) {
+                $pdo->exec("ROLLBACK TO SAVEPOINT {$punto}");
+                $pdo->exec("RELEASE SAVEPOINT {$punto}");
+            } else {
+                $pdo->rollBack();
+            }
+        } catch (\PDOException) {
+            // The error that matters is the one $work threw, which the caller is about to get.
         }
     }
 
