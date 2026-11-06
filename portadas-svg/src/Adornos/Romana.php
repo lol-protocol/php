@@ -28,8 +28,7 @@ final class Romana extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
         $svg = '';
         // Doce hojas de laurel, todas inclinadas hacia fuera, alrededor de un círculo.
         for ($i = 0; $i < 12; $i++) {

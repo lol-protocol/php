@@ -33,8 +33,7 @@ final class Egipcia extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
         $svg = self::circulo($cx, $cy, $r * 0.27, $color, $grosor);
         foreach ([-1, 1] as $lado) {
             // Tres plumas por ala, que suben hacia la punta.

@@ -38,6 +38,8 @@ abstract class Plantilla
     /** Subtítulo: espacio libre mínimo bajo el título, y fracción del tamaño del título que se deja libre. */
     protected const SUBTITULO_ESPACIO_MIN = 3.0;
     protected const SUBTITULO_ESPACIO = 0.35;
+    /** Subtítulo: tamaño mínimo de letra, el mismo en todas las plantillas. */
+    protected const SUBTITULO_TAMANO_MIN = 3.2;
 
     /** Contratapa: raya de acento (distancia al borde superior del corte, largo y grosor). */
     protected const CONTRATAPA_RAYA_Y = 22.0;
@@ -433,6 +435,28 @@ abstract class Plantilla
         $visible = ($lineas - 1) * $tamano * self::INTERLINEADO + $tamano;
 
         return $y + ($alto - $visible) / 2 + $tamano * self::ASCENDENTE;
+    }
+
+    /**
+     * El título de la portada y, si hay, el subtítulo debajo, ajustados a su zona y con el reparto en líneas
+     * parejas. El título empieza en `$arriba` o, con `$centrar`, se centra en la zona de `$alto` que empieza ahí.
+     *
+     * @param array{max: float, min: float, estilo: array<string, string>, color: string} $titulo tamaños de letra (de `max` a `min`), atributos y color
+     * @param array{alto: float, max: float, estilo: array<string, string>, color: string} $subtitulo alto disponible, tamaño máximo (el mínimo es SUBTITULO_TAMANO_MIN), atributos y color
+     */
+    protected function tituloYSubtitulo(Libro $libro, float $x, float $ancho, string $anclaje, float $arriba, float $alto, bool $centrar, array $titulo, array $subtitulo): string
+    {
+        $ajuste = Texto::ajustar($libro->textos->titulo, $ancho, $alto, $titulo['max'], $titulo['min'], $this->medidaDe($titulo['estilo']), self::INTERLINEADO, true);
+        $y = $centrar ? $this->baseline($arriba, $alto, count($ajuste['lineas']), $ajuste['tamano']) : $arriba + $ajuste['tamano'] * self::ASCENDENTE;
+        $svg = $this->parrafo($ajuste['lineas'], $x, $y, $ajuste['tamano'], $anclaje, $titulo['color'], $titulo['estilo']);
+        if ($libro->textos->subtitulo === '') {
+            return $svg;
+        }
+
+        $fin = $y + (count($ajuste['lineas']) - 1) * $ajuste['tamano'] * self::INTERLINEADO;
+        $menor = Texto::ajustar($libro->textos->subtitulo, $ancho, $subtitulo['alto'], $subtitulo['max'], self::SUBTITULO_TAMANO_MIN, $this->medidaDe($subtitulo['estilo']), self::INTERLINEADO, true);
+
+        return $svg . $this->parrafo($menor['lineas'], $x, $this->bajoElTitulo($fin, $ajuste['tamano'], $menor['tamano']), $menor['tamano'], $anclaje, $subtitulo['color'], $subtitulo['estilo']);
     }
 
     /**
