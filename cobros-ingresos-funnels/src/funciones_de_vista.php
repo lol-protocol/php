@@ -2,6 +2,18 @@
 
 declare(strict_types=1);
 
+/**
+ * Escapa $valor para ponerlo en el HTML de una vista, tanto entre etiquetas como dentro de un atributo
+ * (con comillas simples o dobles). Es la unica forma de escapar en las vistas: antes eran 122 llamadas
+ * a htmlspecialchars(), y olvidar una es un XSS. Con una sola funcion, revisar que no falte ninguna es
+ * buscar las salidas que empiezan con `<?=` y no llaman a e(). Los flags son los que PHP 8.1 aplica por
+ * omision; null sale vacio.
+ */
+function e(string|int|float|null $valor): string
+{
+    return htmlspecialchars((string) $valor, ENT_QUOTES | ENT_SUBSTITUTE);
+}
+
 /** Convierte 'YYYY-MM' a una etiqueta corta en espanol, ej. 'mar 2026'. */
 function etiqueta_de_mes(string $ym): string
 {
@@ -60,7 +72,7 @@ function campo_monto(string|int|float|null $valor = null, ?string $codigoMoneda 
         $minimo,
         $sinDecimales ? (string) (int) floor(\App\Validacion::MONTO_MAXIMO) : number_format(\App\Validacion::MONTO_MAXIMO, 2, '.', ''),
         $minimo,
-        htmlspecialchars((string) $valor)
+        e($valor)
     );
 }
 
@@ -94,12 +106,12 @@ function color_celda_cohorte(float $pct): array
 function insignia_de_variacion(?float $pct, bool $subirEsBueno = true, string $etiqueta = 'vs. período anterior', string $unidad = '%'): string
 {
     if ($pct === null) {
-        return '<span class="delta">Sin datos para comparar (' . htmlspecialchars($etiqueta) . ')</span>';
+        return '<span class="delta">Sin datos para comparar (' . e($etiqueta) . ')</span>';
     }
     $bueno = $subirEsBueno ? $pct >= 0 : $pct <= 0;
     $clase = $bueno ? 'good' : 'critical';
     $signo = $pct >= 0 ? '+' : '';
-    return '<span class="delta ' . $clase . '">' . $signo . number_format($pct, 1) . $unidad . ' ' . htmlspecialchars($etiqueta) . '</span>';
+    return '<span class="delta ' . $clase . '">' . $signo . number_format($pct, 1) . $unidad . ' ' . e($etiqueta) . '</span>';
 }
 
 /** URL actual (?page=...&filtro=...) con un parametro reemplazado, para los links de paginacion. */
@@ -146,10 +158,10 @@ function altura_en_pct(float $valor, float $max): float
  */
 function barra_svg(string $clase, string $estilo, string $color, string $tooltip, int $radio = 4): string
 {
-    $tituloEsc = htmlspecialchars($tooltip, ENT_QUOTES);
-    return '<svg class="' . htmlspecialchars($clase, ENT_QUOTES) . '" style="' . htmlspecialchars($estilo, ENT_QUOTES) . '"'
+    $tituloEsc = e($tooltip);
+    return '<svg class="' . e($clase) . '" style="' . e($estilo) . '"'
         . ' role="img" aria-label="' . $tituloEsc . '" tabindex="0">'
-        . '<rect width="100%" height="100%" rx="' . $radio . '" ry="' . $radio . '" fill="' . htmlspecialchars($color, ENT_QUOTES) . '"></rect>'
+        . '<rect width="100%" height="100%" rx="' . $radio . '" ry="' . $radio . '" fill="' . e($color) . '"></rect>'
         . '<title>' . $tituloEsc . '</title>'
         . '</svg>';
 }

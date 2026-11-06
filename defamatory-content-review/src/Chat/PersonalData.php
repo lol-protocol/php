@@ -19,6 +19,25 @@ final class PersonalData
         'dirección' => '/\b(?:viven?|viv[ií]a|lives|lived)\s+(?:en|at|on)\s+(?:la\s+|el\s+)?(?:calle|avenida|av\.?|pasaje|psje\.?|villa|poblaci[oó]n|block|depto\.?|departamento)\b|\b(?:lives|lived)\s+at\s+\d+\s+\p{L}|\b(?:su|la)\s+direcci[oó]n\s+es\b|\b(?:his|her|their)\s+(?:home\s+)?address\s+is\b/iu',
     ];
 
+    /**
+     * Los datos de la línea y de su versión limpia: «juan＠gmail.com» (arroba de ancho completo) sólo es un
+     * correo después de limpiarla, y se publicaría igual con la forma original.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    public static function findIn(string $line, string $clean): array
+    {
+        $found = self::find($line);
+        $seen = array_column($found, 'found');
+        foreach ($clean === $line ? [] : self::find($clean) as $match) {
+            if (!in_array($match['found'], $seen, true)) {
+                $found[] = $match;
+            }
+        }
+
+        return $found;
+    }
+
     /** @return array<int,array<string,mixed>> */
     public static function find(string $line): array
     {

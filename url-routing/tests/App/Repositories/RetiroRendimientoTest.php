@@ -58,16 +58,18 @@ class RetiroRendimientoTest extends TestCase
         $db = $this->catalogo();
         $pdo = $db->pdo();
         $llamadas = 0;
-        $pdo->sqliteCreateFunction('translate', static function (?string $texto, string $de, string $a) use (&$llamadas): ?string {
+        // One octet_length() per row the search reads (see Repository::sinAcentos()): the count is the rows read.
+        $pdo->sqliteCreateFunction('octet_length', static function (?string $texto) use (&$llamadas): ?int {
             $llamadas++;
 
-            return \App\Support\Database::traducir($texto, $de, $a);
-        }, 3);
+            return \App\Support\Database::bytes($texto);
+        }, 1);
 
         $filas = (new PersonaRepository($db, Privacidad::publica()))->buscar('', 50);
 
         $this->assertCount(50, $filas);
         // Half of the first pedidos withdrew their persona: the 50 rows come from further down, still a handful of reads.
+        $this->assertGreaterThanOrEqual(50, $llamadas, 'the probe counts nothing, the bound below proves nothing');
         $this->assertLessThan(500, $llamadas, "read {$llamadas} rows of " . self::PERSONAS . ' to return 50');
         $retiradas = array_column(array_filter($db->fetchAll("SELECT recurso_id FROM pedidos_retiro WHERE estado = 'retirado'")), 'recurso_id');
         $this->assertSame([], array_intersect(array_map('intval', array_column($filas, 'id')), array_map('intval', $retiradas)), 'none of the 50 is withdrawn');

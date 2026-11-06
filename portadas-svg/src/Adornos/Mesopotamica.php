@@ -29,8 +29,7 @@ final class Mesopotamica extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
         $svg = self::circulo($cx, $cy, $r, $color, $grosor);
         // Ocho pétalos redondos alrededor de un botón central.
         for ($i = 0; $i < 8; $i++) {

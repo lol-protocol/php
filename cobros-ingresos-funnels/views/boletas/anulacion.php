@@ -28,11 +28,11 @@ $botonTexto = 'Sí, anular esta boleta';
         <?php endif; ?>
     <?php endif; ?>
     <table style="margin-bottom:20px;">
-        <tr><th>Cliente</th><td><?= htmlspecialchars($boleta['cliente']) ?></td></tr>
-        <tr><th>Concepto</th><td><?= htmlspecialchars($boleta['concepto']) ?></td></tr>
+        <tr><th>Cliente</th><td><?= e($boleta['cliente']) ?></td></tr>
+        <tr><th>Concepto</th><td><?= e($boleta['concepto']) ?></td></tr>
         <tr><th>Monto</th><td><?= dinero_en_moneda((float) $boleta['monto'], $boleta['moneda_codigo']) ?></td></tr>
         <tr><th>Cobrado</th><td><?= dinero_en_moneda($pagado, $boleta['moneda_codigo']) ?></td></tr>
-        <tr><th>Emisión</th><td><?= htmlspecialchars($boleta['fecha_emision']) ?></td></tr>
+        <tr><th>Emisión</th><td><?= e($boleta['fecha_emision']) ?></td></tr>
     </table>
     <?php include __DIR__ . '/../_accion_confirmar.php'; ?>
 </div>

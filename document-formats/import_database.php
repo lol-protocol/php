@@ -288,6 +288,10 @@ function import(PDO $db): array
                 return null;
             }
             $primary = explode('/', $guide['primary_format'])[0];
+            if (!isset($formatIds[$primary])) {
+                // Sin esto la columna quedaba en NULL y nadie se enteraba de que el nombre no coincide con el catalogo.
+                $report['skipped'][] = "country_compatibility_guide: {$guide['country']}: primary format \"{$primary}\" is not in the catalog";
+            }
             return [$country, $formatIds[$primary] ?? null, $guide['measurement_system'],
                 nullIfEmpty($guide['recommended_for_export']), nullIfEmpty($guide['challenges']), nullIfEmpty($guide['notes'])];
         });

@@ -209,9 +209,10 @@ class BusquedaDePersonasTest extends TestCase
 
     /**
      * What this fixes: answering a page meant asking, for every persona of the catalog, whether she may be
-     * seen, before sorting and cutting. SQLite calls the TRANSLATE() that ignores accents once per row it
-     * looks at, so counting its calls counts the rows a search reads: a page reads about as many as it
-     * returns, not the whole table.
+     * seen, before sorting and cutting. The search that ignores accents (Repository::sinAcentos()) asks
+     * octet_length() once per row it looks at, so counting its calls counts the rows a search reads: a page
+     * reads about as many as it returns, not the whole table. (TRANSLATE() can't be the probe: it is skipped
+     * for a text that is all ASCII, as these are.)
      */
     public function testUnaPaginaNoLeeToDoElCatalogo(): void
     {
@@ -230,17 +231,18 @@ class BusquedaDePersonasTest extends TestCase
         $pdo->commit();
 
         $llamadas = 0;
-        $pdo->sqliteCreateFunction('translate', static function (?string $texto, string $de, string $a) use (&$llamadas): ?string {
+        $pdo->sqliteCreateFunction('octet_length', static function (?string $texto) use (&$llamadas): ?int {
             $llamadas++;
 
-            return Database::traducir($texto, $de, $a);
-        }, 3);
+            return Database::bytes($texto);
+        }, 1);
 
         foreach ([Privacidad::publica(self::hoy()), Privacidad::propietario()] as $quien => $privacidad) {
             $llamadas = 0;
             $filas = (new PersonaRepository($db, $privacidad))->buscar('', 50);
 
             $this->assertCount(50, $filas);
+            $this->assertGreaterThanOrEqual(50, $llamadas, "quien {$quien}: the probe counts nothing, the bound below proves nothing");
             $this->assertLessThan(120, $llamadas, "quien {$quien}: read {$llamadas} rows of {$total} to return 50");
         }
     }

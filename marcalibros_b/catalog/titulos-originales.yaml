@@ -1,0 +1,82 @@
+# Títulos en el idioma original de las obras del catálogo, para que el lector reconozca el libro que se abre
+# (Gutenberg titula en el idioma del texto: «The Raven», no «El cuervo»). Es opcional y parcial: una obra
+# sin entrada se reconoce solo por su título en español y por su autor. Escritos de memoria, sin verificar.
+# Clave: id del autor → id de la obra (como en taxonomia.yaml) → lista de títulos.
+version: '0.1'
+autores:
+  poe:
+    el-cuervo: [The Raven]
+    annabel-lee: [Annabel Lee]
+    la-caida-de-la-casa-usher: [The Fall of the House of Usher]
+    el-corazon-delator: [The Tell-Tale Heart]
+    el-gato-negro: [The Black Cat]
+    ligeia: [Ligeia]
+    berenice: [Berenice]
+    el-barril-de-amontillado: [The Cask of Amontillado]
+    lenore: [Lenore]
+    un-descenso-al-maelstrom: [A Descent into the Maelström]
+  byron:
+    la-peregrinacion-de-childe-harold: [Childe Harold's Pilgrimage]
+    don-juan: [Don Juan]
+    manfred: [Manfred]
+    cain: [Cain]
+    la-novia-de-abydos: [The Bride of Abydos]
+    el-corsario: [The Corsair]
+    lara: [Lara]
+    el-prisionero-de-chillon: [The Prisoner of Chillon]
+    ella-camina-en-belleza: [She Walks in Beauty]
+    oscuridad: [Darkness]
+  shelley-mary:
+    frankenstein-o-el-moderno-prometeo: ['Frankenstein; Or, The Modern Prometheus', Frankenstein]
+    el-ultimo-hombre: [The Last Man]
+    mathilda: [Mathilda]
+    valperga: [Valperga]
+    el-inmortal-mortal: [The Mortal Immortal]
+    transformacion: [Transformation]
+  stoker:
+    dracula: [Dracula]
+    el-invitado-de-dracula: [Dracula's Guest]
+    el-joyero-de-las-siete-estrellas: [The Jewel of Seven Stars]
+    la-guarida-del-gusano-blanco: [The Lair of the White Worm]
+    la-dama-de-la-mortaja: [The Lady of the Shroud]
+    bajo-el-crepusculo: [Under the Sunset]
+  dickens:
+    grandes-esperanzas: [Great Expectations]
+    oliver-twist: [Oliver Twist]
+    david-copperfield: [David Copperfield]
+    historia-de-dos-ciudades: [A Tale of Two Cities]
+    cuento-de-navidad: [A Christmas Carol]
+    casa-desolada: [Bleak House]
+    tiempos-dificiles: [Hard Times]
+    la-pequena-dorrit: [Little Dorrit]
+    nicholas-nickleby: [Nicholas Nickleby]
+    los-papeles-postumos-del-club-pickwick: [The Pickwick Papers, The Posthumous Papers of the Pickwick Club]
+  zola:
+    germinal: [Germinal]
+    la-taberna: [L'Assommoir]
+    nana: [Nana]
+    la-bestia-humana: [La Bête humaine]
+    el-vientre-de-paris: [Le Ventre de Paris]
+    la-tierra: [La Terre]
+    teresa-raquin: [Thérèse Raquin]
+    la-obra: [L'Œuvre]
+    el-dinero: [L'Argent]
+    yo-acuso: [J'accuse]
+  baudelaire:
+    las-flores-del-mal: [Les Fleurs du mal, The Flowers of Evil]
+    el-spleen-de-paris: [Le Spleen de Paris, Paris Spleen]
+    los-paraisos-artificiales: [Les Paradis artificiels, Artificial Paradises]
+    el-albatros: [L'Albatros]
+    correspondencias: [Correspondances]
+    la-invitacion-al-viaje: [L'Invitation au voyage]
+    el-cisne: [Le Cygne]
+    los-ciegos: [Les Aveugles]
+    himno-a-la-belleza: [Hymne à la Beauté]
+    elevacion: [Élévation]
+  homero:
+    iliada: [Iliad, Ilias]
+    odisea: [Odyssey, Odyssea]
+  virgilio:
+    eneida: [Aeneid, Aeneis]
+    bucolicas: [Eclogues, Bucolics]
+    georgicas: [Georgics]

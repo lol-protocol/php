@@ -30,7 +30,7 @@ final class FechaDeDevolucion
         if ($fecha < $fechaDeLaNota) {
             throw new InvalidArgumentException("La fecha de devolución no puede ser anterior a la nota de crédito ({$fechaDeLaNota}).");
         }
-        if ($fecha > $hoy) {
+        if (!Validacion::fechaNoEsFutura($fecha, $hoy)) {
             throw new InvalidArgumentException('La fecha de devolución no puede ser futura.');
         }
 

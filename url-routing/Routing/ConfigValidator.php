@@ -21,6 +21,26 @@ class ConfigValidator
                 if (!isset($entry['type']) || !isset($entry['controller'])) {
                     throw new \InvalidArgumentException("Invalid by_length entry at length {$length}");
                 }
+                if (isset($entry['filtros'])) {
+                    $tipos = array_column($config['by_length'], 'type');
+                    if (!is_array($entry['filtros']) || $entry['filtros'] === [] || count(array_unique($entry['filtros'])) !== count($entry['filtros'])) {
+                        throw new \InvalidArgumentException("by_length entry at length {$length}: filtros must be a list of distinct types");
+                    }
+                    foreach ($entry['filtros'] as $filtro) {
+                        if (!in_array($filtro, $tipos, true) || $filtro === $entry['type']) {
+                            throw new \InvalidArgumentException("by_length entry at length {$length}: filtro '{$filtro}' is not another type of the site");
+                        }
+                    }
+                    // A filter is told from an action by its width: it needs 2 or more digits.
+                    foreach ($config['by_length'] as $otroLargo => $otra) {
+                        if (in_array($otra['type'], $entry['filtros'], true) && $otroLargo < 2) {
+                            throw new \InvalidArgumentException("by_length entry at length {$length}: filtro '{$otra['type']}' has 1 digit, which is an action");
+                        }
+                    }
+                }
+                if (isset($entry['verificador']) && !is_bool($entry['verificador'])) {
+                    throw new \InvalidArgumentException("by_length entry at length {$length}: verificador must be true or false");
+                }
             }
         }
 
@@ -38,6 +58,9 @@ class ConfigValidator
                 }
                 if (isset($config['place']) && preg_match('/^[a-z]{2}$/', $segment) === 1) {
                     throw new \InvalidArgumentException("Reserved entry '{$segment}' is shadowed by place: a 2-letter segment is a country");
+                }
+                if (isset($entry['noindex']) && !is_bool($entry['noindex'])) {
+                    throw new \InvalidArgumentException("Reserved entry '{$key}': noindex must be true or false");
                 }
                 if (isset($entry['ruta']) && (!is_int($entry['ruta']) || !isset($entry['method']))) {
                     throw new \InvalidArgumentException("Reserved entry '{$key}': ruta needs a segment count and a method");

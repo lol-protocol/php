@@ -163,5 +163,7 @@ test("every row says where its data comes from", () => {
   assert.match(only({ confidence: "certain" })[0], /confidence must be empty or one of/);
   assert.match(only({ last_checked: "2026-02-30" })[0], /last_checked must be a real/);
   assert.match(only({ last_checked: "" })[0], /last_checked is required/);
-  assert.deepEqual(only({ data_status: "curated", confidence: "", last_checked: "" }), []);
+  assert.deepEqual(only({ data_status: "curated", confidence: "", last_checked: "" }), [], "a curated row may lack a date (it only warns)");
+  assert.match(only({ linked_resources: "" })[0], /linked_resources is required/);
+  assert.ok(records.every((r) => r.linked_resources), "every row has a source");
 });

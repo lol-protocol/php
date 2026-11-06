@@ -17,7 +17,9 @@ Pequeño sistema en PHP (sin framework) para analizar:
   etapa, por canal de adquisición y por país/género/rango de edad.
 - **Cohortes**: qué % de cada cohorte (mes de primera visita) convirtió a cliente
   dentro de 0, 1, 2 o 3 meses.
-- **Segmentación de clientes**: top país, ciudad, idioma, género y rango de edad por facturación.
+- **Segmentación de clientes**: top país, ciudad, idioma, género y rango de edad por facturación. La ciudad
+  se escribe a mano, así que se agrupa por país y por su clave sin mayúsculas, tildes ni espacios de más
+  («Bogotá» y «bogota » son una sola; «Santiago» de Chile y de República Dominicana, dos).
 - **LTV (valor de vida)** promedio por cliente, agrupado por cohorte de alta —
   histórico y sin filtrar por período, para no distorsionar la comparación entre
   cohortes viejas y nuevas.
@@ -287,6 +289,10 @@ pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
   tasa exacta de cada fecha, falta una tabla de cotizaciones por día (y una importación
   que las use: las filas aceptan una tasa explícita).
 
+### Pagos con fecha futura
+
+El alta y la edición de un pago rechazan una fecha posterior a hoy. Una base que ya tenía datos puede traer alguno de antes; `php bin/pagos_futuros.php` los lista (no escribe nada y termina con 1 si hay alguno). Corregirlos —editar la fecha o anular el pago— lo decide una persona.
+
 ### Respaldos
 
 Con `boletas`, `pagos` y clientes reales adentro, la base no se puede perder. El respaldo es
@@ -477,7 +483,9 @@ src/
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
                       por separado. AuditoriaRepository también concentra el
                       `auditar()` que usan todos los controllers
-                      en vez de repetirlo cada uno.
+                      en vez de repetirlo cada uno. El trait `ConsultasEnRango`
+                      es el prepare + execute con `:desde`/`:hasta` + fetch que
+                      comparten las consultas de reporting por periodo.
   Database.php         conexión PDO a PostgreSQL (config por env vars, misma zona
                         horaria para PHP y Postgres) y transaccion(), anidable
   Config.php           variables de entorno: obligatorias fuera de desarrollo,
@@ -496,7 +504,8 @@ src/
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
   Dinero.php            montos en centavos enteros, para compararlos sin el ruido de
-                        la coma flotante (testeado)
+                        la coma flotante, y el monto de un texto de formulario
+                        (solo digitos y punto decimal) (testeado)
   MayoriaDeEdad.php     la regla de que no se admiten clientes que no hayan cumplido
                         la edad de mayoría de su país (años cumplidos, como age()
                         de Postgres) y el tope del campo de fecha de nacimiento del
@@ -520,9 +529,21 @@ src/
   CabecerasDeSeguridad.php   headers de seguridad de cada respuesta, testeado
   ManejadorDeErrores.php      red de seguridad para excepciones no capturadas
                         (loguea el detalle, nunca lo muestra), testeado
-  Peticion.php           guard clauses de los controllers: id de la ruta,
-                        404 si no existe, 409 si hay conflicto (ej. anulado),
+  Peticion.php           lo que comparten los controllers: id de la ruta, 404 si
+                        no existe, 409 si hay conflicto (ej. anulado), el monto
+                        del formulario (0 si no es un monto) y redirigir() (la
+                        redirección y el exit en un solo lugar),
                         testeado
+  Filtros.php            lo que una lista lee de la URL: el texto del cliente y una
+                        opción de una lista cerrada (estado, alcance, orden), con
+                        el valor por defecto y si hay que avisar que no existe,
+                        testeado
+  ReglasDePago.php,
+  ReglasDeBoleta.php     las reglas de negocio de un pago y de una boleta (que el
+                        monto no pase del saldo, que la fecha cuadre, los campos
+                        del formulario...) como funciones puras que comparten el
+                        alta y la edición; los controllers solo deciden qué hacer
+                        con el resultado, testeado sin HTTP ni base
   Validacion.php         chequeos repetidos entre formularios: campos
                         obligatorios vacios, largos maximos de los textos,
                         formato de email, fechas que existen y mensaje de
@@ -554,7 +575,9 @@ src/
                         (views/_avisos.php): los avisos de filtro y la
                         confirmación de lo que acaba de hacerse, que llega por
                         la redirección (?creada=ID, ?creado=ID...), testeado
-  Router.php, View.php, funciones_de_vista.php   (los helpers que usan las vistas)
+  Router.php, View.php, funciones_de_vista.php   (los helpers que usan las vistas,
+                        entre ellos e(), la única forma de escapar HTML en una vista:
+                        EscapadoDeLasVistasTest falla si vuelve htmlspecialchars())
 database/
   migraciones/          el esquema, el catálogo de ~240 países y sus monedas
                         (ISO 4217), los índices y la regla de mayoría de edad,
@@ -593,9 +616,10 @@ views/                  plantillas PHP: una carpeta por sección o entidad (dash
                         que se repetian en dashboard, cobros, pagos y funnel);
                         el funnel tiene además el suyo, funnel/_tabla_dimension.php
 tests/
-  Unit/                 sin base de datos (calculo de estado, filtros, funciones de vista,
-                        paginación, CSRF, router, headers de seguridad, deteccion
-                        de HTTPS, el comprobador de acceso)
+  Unit/                 sin base de datos (calculo de estado, las reglas de pago y de
+                        boleta, filtros, el escapado de las vistas, funciones de
+                        vista, paginación, CSRF, router, headers de seguridad,
+                        deteccion de HTTPS, el comprobador de acceso)
   Integration/           contra la base real, casi todos en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
                         auditoría, zona horaria, conexión persistente, que una
@@ -701,11 +725,17 @@ cliente) muestran el monto en su moneda original.
 **Dinero.** La base guarda los montos como `NUMERIC(14, 2)`, exactos. En PHP viajan
 como `float`, que arrastra ruido (`0.1 + 0.2` da `0.30000000000000004`), así que las
 validaciones que comparan montos de una boleta o de un pago
-(`BoletasController::montoCubreLoYaCobrado` y `PagosController::montoNoSuperaElSaldo`,
+(`ReglasDeBoleta::montoCubreLoYaCobrado` y `ReglasDePago::montoNoSuperaElSaldo`,
 con su versión al editar un pago) los pasan a centavos enteros con
 `App\Dinero::centavos()` y comparan ahí, sin margen: un pago no puede pasarse del saldo
 ni por un centavo, y el monto de una boleta no puede quedar un centavo por debajo de lo
 ya cobrado.
+
+El monto que llega de un formulario se lee con `Dinero::deTexto()` (a través de
+`Peticion::monto()`): solo dígitos y punto decimal. `(float) "1.500,50"` da `1.5` sin
+avisar, porque PHP corta en la primera coma, y un script que mandara el formato latino
+creaba una boleta o un pago por una milésima parte. Lo que no es un monto vale 0 y el
+formulario vuelve con «monto válido»; el navegador (`type="number"`) siempre manda punto.
 
 Otra cosa es la regla deliberada de que **un centavo o menos cuenta como cero**, para que
 un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con saldo de
@@ -721,6 +751,11 @@ antes de enviarlo, y el servidor lo vuelve a validar.
 
 ## Notas de diseño
 
+- «Conversión por país» (funnel) nombra los 10 países con más visitantes y junta el resto en
+  una fila «Otros (N países)», para que la tabla sume lo mismo que el resumen; a igual cantidad
+  va primero el de nombre menor, así el corte no cambia entre una consulta y otra.
+- Las vistas escapan todo con `e()` (`htmlspecialchars` con `ENT_QUOTES | ENT_SUBSTITUTE`).
+  Revisar que no falte ninguno es buscar una salida `<?=` sin `e(`.
 - Sin JavaScript ni librerías de gráficos externas: los mini-gráficos son SVG
   inline (barras con `<rect>` redondeado + `<title>` como tooltip nativo),
   pensado para funcionar sin build step ni conexión a internet. El tamaño lo

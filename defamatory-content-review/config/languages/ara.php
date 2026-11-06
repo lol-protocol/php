@@ -10,8 +10,8 @@
 
 return [
     'meta' => [
-        'code' => 'ara', 'iso639_1' => 'ar', 'name' => 'Arabic',
-        'nativeName' => 'العربية', 'family' => 'semitic', 'coverage' => 'moderate',
+        'code' => 'ara',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

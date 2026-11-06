@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
-use App\Controllers\BoletasController;
-use App\Controllers\PagosController;
+use App\ReglasDeBoleta;
+use App\ReglasDePago;
 use App\Repositories\MonedaRepository;
 
 /**
@@ -69,11 +69,11 @@ final class MontosSinDecimalesTest extends IntegracionTestCase
     {
         self::assertSame(
             'En JPY los montos van sin decimales.',
-            BoletasController::errorDeLosCampos('Cuota', 1500.5, '2026-01-01', '2026-02-01', 'JPY')
+            ReglasDeBoleta::errorDeLosCampos('Cuota', 1500.5, '2026-01-01', '2026-02-01', 'JPY')
         );
-        self::assertNull(BoletasController::errorDeLosCampos('Cuota', 1500.0, '2026-01-01', '2026-02-01', 'JPY'));
-        self::assertNull(BoletasController::errorDeLosCampos('Cuota', 1500.5, '2026-01-01', '2026-02-01', 'USD'));
-        self::assertNull(BoletasController::errorDeLosCampos('Cuota', 1500.5, '2026-01-01', '2026-02-01'), 'sin moneda solo se chequea el rango');
+        self::assertNull(ReglasDeBoleta::errorDeLosCampos('Cuota', 1500.0, '2026-01-01', '2026-02-01', 'JPY'));
+        self::assertNull(ReglasDeBoleta::errorDeLosCampos('Cuota', 1500.5, '2026-01-01', '2026-02-01', 'USD'));
+        self::assertNull(ReglasDeBoleta::errorDeLosCampos('Cuota', 1500.5, '2026-01-01', '2026-02-01'), 'sin moneda solo se chequea el rango');
     }
 
     /** El rango se chequea primero: un monto de cero en yenes es «monto invalido», no «sin decimales». */
@@ -81,14 +81,14 @@ final class MontosSinDecimalesTest extends IntegracionTestCase
     {
         self::assertSame(
             'Completá todos los campos con un monto válido.',
-            BoletasController::errorDeLosCampos('Cuota', 0.0, '2026-01-01', '2026-02-01', 'JPY')
+            ReglasDeBoleta::errorDeLosCampos('Cuota', 0.0, '2026-01-01', '2026-02-01', 'JPY')
         );
     }
 
     public function testUnPagoEnWonesNoAdmiteCentavos(): void
     {
-        self::assertSame('En KRW los montos van sin decimales.', PagosController::errorDeLosCampos('2026-01-01', 'tarjeta', 100.25, 'KRW'));
-        self::assertNull(PagosController::errorDeLosCampos('2026-01-01', 'tarjeta', 100.0, 'KRW'));
-        self::assertNull(PagosController::errorDeLosCampos('2026-01-01', 'tarjeta', 100.25, 'EUR'));
+        self::assertSame('En KRW los montos van sin decimales.', ReglasDePago::errorDeLosCampos('2026-01-01', 'tarjeta', 100.25, 'KRW'));
+        self::assertNull(ReglasDePago::errorDeLosCampos('2026-01-01', 'tarjeta', 100.0, 'KRW'));
+        self::assertNull(ReglasDePago::errorDeLosCampos('2026-01-01', 'tarjeta', 100.25, 'EUR'));
     }
 }

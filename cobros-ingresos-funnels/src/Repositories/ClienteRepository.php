@@ -51,12 +51,7 @@ final class ClienteRepository
      */
     public function buscar(string $query = '', int $pagina = 1): array
     {
-        $where = '';
-        $params = [];
-        if ($query !== '') {
-            $where = ' WHERE c.nombre ILIKE :q OR c.email ILIKE :q';
-            $params[':q'] = Busqueda::contiene($query);
-        }
+        [$where, $params] = Busqueda::filtro($query, ['c.nombre', 'c.email'], 'q', ' WHERE ');
 
         return Paginacion::consultar(
             $this->db,
@@ -119,7 +114,7 @@ final class ClienteRepository
         );
         $stmt->execute([
             ':nombre' => $datos['nombre'],
-            ':email' => $datos['email'],
+            ':email' => mb_strtolower($datos['email']),   // el unico es sobre lower(email): se guarda ya en minusculas
             ':segmento' => $datos['segmento'],
             ':fecha_alta' => $datos['fecha_alta'],
             ':pais_codigo' => $datos['pais_codigo'],

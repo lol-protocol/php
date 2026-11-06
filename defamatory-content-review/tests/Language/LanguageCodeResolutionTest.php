@@ -26,18 +26,27 @@ class LanguageCodeResolutionTest extends TestCase
         $this->assertSame('deu', $this->registry->resolve('deu'));
     }
 
-    public function testAcceptsTwoLetterCodeAsAlias(): void
+    public function testTwoLetterCodesAreNotAccepted(): void
     {
-        $this->assertSame('spa', $this->registry->resolve('es'));
-        $this->assertSame('deu', $this->registry->resolve('de'));
-        $this->assertSame('yue', $this->registry->resolve('zh'));
-        $this->assertSame('ell', $this->registry->resolve('el'));
+        foreach (['es', 'de', 'zh', 'el'] as $code) {
+            $this->assertFalse($this->registry->isSupported($code), $code);
+        }
+        $this->expectException(InvalidArgumentException::class);
+        $this->registry->resolve('es');
+    }
+
+    public function testHeaderTagsMapTwoLetterToThreeLetter(): void
+    {
+        $this->assertSame('spa', $this->registry->fromHeaderTag('es'));
+        $this->assertSame('deu', $this->registry->fromHeaderTag('DE'));
+        $this->assertSame('deu', $this->registry->fromHeaderTag('deu'));
+        $this->assertNull($this->registry->fromHeaderTag('xx'));
     }
 
     public function testResolveIsCaseInsensitive(): void
     {
         $this->assertSame('spa', $this->registry->resolve('SPA'));
-        $this->assertSame('por', $this->registry->resolve('PT'));
+        $this->assertSame('por', $this->registry->resolve('POR'));
     }
 
     public function testUnknownCodeThrows(): void
@@ -46,9 +55,14 @@ class LanguageCodeResolutionTest extends TestCase
         $this->registry->resolve('xyz');
     }
 
-    public function testAllThirtyThreeLanguagesAreRegistered(): void
+    public function testRegisteredLanguagesAreExactlyTheDictionaryFiles(): void
     {
-        $this->assertCount(33, $this->registry->getCodes());
+        $files = array_map(static fn(string $f): string => basename($f, '.php'), glob(self::CONFIG_DIR . '/languages/*.php') ?: []);
+        $codes = $this->registry->getCodes();
+        sort($files);
+        sort($codes);
+
+        $this->assertSame($files, $codes);
     }
 
     public function testEveryRegisteredLanguageHasADictionaryFile(): void

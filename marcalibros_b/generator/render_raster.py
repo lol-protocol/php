@@ -8,20 +8,16 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 import texto as tx
+from color import rgb
 from scene import ALTO, ANCHO
 
 ESCALA = 2
 
 
-def _rgb(hex_color):
-    h = hex_color.lstrip("#")
-    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
-
-
 def _degradado(arriba, abajo, w, h, paradas=()):
     """Degradado vertical; `paradas` son (posición 0–1, color) intermedias, en orden."""
     pos = [0.0] + [o for o, _ in paradas] + [1.0]
-    cols = np.array([_rgb(arriba)] + [_rgb(c) for _, c in paradas] + [_rgb(abajo)], dtype=float)
+    cols = np.array([rgb(arriba)] + [rgb(c) for _, c in paradas] + [rgb(abajo)], dtype=float)
     t = np.linspace(0, 1, h)
     fila = np.stack([np.interp(t, pos, cols[:, k]) for k in range(3)], axis=1)[:, None, :]  # (h, 1, 3)
     return np.broadcast_to(fila, (h, w, 3)).copy()
@@ -30,7 +26,7 @@ def _degradado(arriba, abajo, w, h, paradas=()):
 def _pintar_texto(lienzo, prim, f):
     """Rellena los contornos de cada glifo (par-impar, para que los huecos de la «o» queden vacíos)."""
     e = ESCALA * f
-    color = _rgb(prim["color"])
+    color = rgb(prim["color"])
     for b in prim["bloques"]:
         k = b["tam"] / tx.UNIDADES * e  # unidades de glifo -> píxeles del lienzo
         for c, x, y in b["glifos"]:
@@ -69,7 +65,7 @@ def a_imagen(esc, escala=1.0):
         tipo = prim["tipo"]
         if tipo == "circulo":
             cx, cy, r = prim["cx"] * ESCALA * f, prim["cy"] * ESCALA * f, prim["r"] * ESCALA * f
-            dibujo.ellipse([cx - r, cy - r, cx + r, cy + r], fill=_rgb(prim["color"]))
+            dibujo.ellipse([cx - r, cy - r, cx + r, cy + r], fill=rgb(prim["color"]))
         elif tipo == "texto":
             lienzo = _pintar_texto(lienzo, prim, f)
             dibujo = ImageDraw.Draw(lienzo)
@@ -80,11 +76,11 @@ def a_imagen(esc, escala=1.0):
             # 1 px mida 1 px, como en el SVG (si no, los filetes finos salen más gruesos).
             ImageDraw.Draw(capa).rounded_rectangle(
                 [prim["x0"] * e, prim["y0"] * e, max(prim["x0"] * e, prim["x1"] * e - 1), max(prim["y0"] * e, prim["y1"] * e - 1)],
-                radius=prim["radio"] * ESCALA * f, fill=_rgb(prim["color"]) + (round(255 * prim["opacidad"]),))
+                radius=prim["radio"] * ESCALA * f, fill=rgb(prim["color"]) + (round(255 * prim["opacidad"]),))
             lienzo = Image.alpha_composite(lienzo, capa)
             dibujo = ImageDraw.Draw(lienzo)
         elif tipo == "poligono":
-            dibujo.polygon([(x * ESCALA * f, y * ESCALA * f) for x, y in prim["puntos"]], fill=_rgb(prim["color"]))
+            dibujo.polygon([(x * ESCALA * f, y * ESCALA * f) for x, y in prim["puntos"]], fill=rgb(prim["color"]))
 
     img = lienzo.convert("RGB").resize((round(ANCHO * f), round(ALTO * f)), Image.Resampling.LANCZOS)
 

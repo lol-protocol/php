@@ -43,6 +43,25 @@ def textos_de(datos):
     for clave, por_idioma in datos["terminos"].items():
         for codigo, texto in por_idioma.items():
             yield f"terminos/{clave}", codigo, texto
+    esp = zodiaco.cargar_espiritus()
+    for grupo in ("terminos", "cualidades"):
+        for clave, por_idioma in esp[grupo].items():
+            if clave != "separador":
+                for codigo, texto in por_idioma.items():
+                    yield f"espiritus/{grupo}/{clave}", codigo, texto
+    arb = zodiaco.cargar_arboles()
+    for grupo in ("terminos", "rasgos"):
+        for clave, por_idioma in arb[grupo].items():
+            if clave != "separador":
+                for codigo, texto in por_idioma.items():
+                    yield f"arboles/{grupo}/{clave}", codigo, texto
+    for clave, a in arb["arboles"].items():
+        for codigo, texto in a["nombres"].items():
+            yield f"arboles/arboles/{clave}", codigo, texto
+    for clave, por_idioma in zodiaco.cargar_numerologia()["terminos"].items():
+        if clave != "separador":
+            for codigo, texto in por_idioma.items():
+                yield f"numerologia/terminos/{clave}", codigo, texto
 
 
 def dias_del_anio_bisiesto():
@@ -692,7 +711,13 @@ class PruebasDeTextosTraducidos(unittest.TestCase):
         for codigo in generar.IDIOMAS:
             ficha = self.archivos[generar.SALIDA_MD / f"{codigo}.md"]
             secciones = [l[3:] for l in ficha.splitlines() if l.startswith("## ")]
-            self.assertEqual(secciones, [t["zodiaco_occidental"][codigo], t["horoscopo_chino"][codigo]], codigo)
+            esp = zodiaco.cargar_espiritus()["terminos"]
+            self.assertEqual(secciones, [t["zodiaco_occidental"][codigo], t["horoscopo_chino"][codigo],
+                                         esp["angeles_titulo"][codigo], esp["demonios_titulo"][codigo],
+                                         zodiaco.cargar_arboles()["terminos"]["celta_titulo"][codigo],
+                                         zodiaco.cargar_arboles()["terminos"]["horoscopo_titulo"][codigo],
+                                         zodiaco.cargar_arboles()["terminos"]["nakshatra_titulo"][codigo],
+                                         zodiaco.cargar_numerologia()["terminos"]["titulo"][codigo]], codigo)
 
     def test_cada_signo_occidental_trae_sus_decanatos_en_la_ficha(self):
         ficha = self.archivos[generar.SALIDA_MD / "es.md"]
@@ -739,12 +764,25 @@ class PruebasDeVectores(unittest.TestCase):
         self.assertEqual(len(v["compatibilidad"]), 2 * 12 * 12)
         self.assertEqual({k: len(x) for k, x in v["decanato"].items()}, {"tropical": 366, "sideral": 366})
         self.assertEqual(set(v["revision"]), set(generar.IDIOMAS))
+        self.assertEqual(len(v["espiritu_de_fecha"]), 366)
+        self.assertEqual(set(v["tramos_de_espiritus"]), {"2024", "2025"})
+        self.assertEqual(len(v["cualidades_de"]["es"]), 144)
+        self.assertEqual((len(v["arbol_celta"]), len(v["arbol_de_fecha"])), (366, 366))
+        self.assertEqual(len(v["nakshatra_de_instante"]), len(generar.INSTANTES_LUNARES))
+        self.assertEqual(len(v["rasgos_de"]["es"]), 13 + 21 + 27)
+        self.assertEqual(set(v["rasgos_de_sha256"]), set(generar.IDIOMAS))
+        self.assertEqual(len(v["camino_de_vida"]), len(generar.FECHAS_NUMEROLOGICAS))
+        self.assertEqual({n for _, n in v["camino_de_vida"]}, {1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33})
+        self.assertEqual(len(v["rasgos_de_numero"]["es"]), 12)
+        self.assertEqual({len(x) for c, x in v["rasgos_de_numero"].items() if c != "es"}, {3})
+        self.assertEqual({len(x) for c, x in v["cualidades_de"].items() if c != "es"}, {len(generar.MUESTRA_DE_CUALIDADES)})
 
     def test_el_archivo_committeado_es_el_que_genera_generar_py(self):
         self.assertEqual(generar.VECTORES.read_text(encoding="utf-8"), generar.vectores_de(self.datos))
 
     def test_cada_caso_de_error_lanza_excepcion_en_python(self):
-        con_fecha = {"signo_occidental", "cuspide", "animal_chino_de_fecha"}
+        con_fecha = {"signo_occidental", "cuspide", "animal_chino_de_fecha", "angel_de_fecha", "demonio_de_fecha",
+                     "arbol_celta", "arbol_de_fecha", "camino_de_vida", "anio_personal"}
         for caso in self.vectores["errores"]:
             args = list(caso["args"])
             if caso["funcion"] in con_fecha:
@@ -763,6 +801,512 @@ class PruebasDeVectores(unittest.TestCase):
         sin_convertir = zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 16))["anio_lunar"]
         convertido = zodiaco.animal_chino_de_fecha(datetime.datetime(2026, 2, 16, 20, tzinfo=datetime.timezone.utc))["anio_lunar"]
         self.assertEqual((sin_convertir, convertido), (2025, 2026))
+
+
+class PruebasDeEspiritus(unittest.TestCase):
+    """Los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.esp = zodiaco.cargar_espiritus()
+        cls.datos = cargar_datos()
+
+    def test_los_datos_pasan_la_validacion(self):
+        self.assertEqual(generar.validar_espiritus(self.esp), [])
+
+    def test_son_72_de_cada_uno_con_sus_extremos_conocidos(self):
+        a, d = self.esp["angeles"], self.esp["demonios"]
+        self.assertEqual((len(a), len(d)), (72, 72))
+        self.assertEqual((a[0]["nombre"], a[-1]["nombre"]), ("Vehuiah", "Mumiah"))
+        self.assertEqual((d[0]["nombre"], d[-1]["nombre"]), ("Bael", "Andromalius"))
+        self.assertEqual(self.esp["demonios"][8]["nombre"], "Paimon")  # el noveno, uno de los nueve reyes
+
+    def test_los_demonios_traen_los_rangos_de_la_tradicion(self):
+        rangos = [r for d in self.esp["demonios"] for r in d["rangos"]]
+        self.assertEqual(rangos.count("rey"), 9)
+        self.assertEqual(rangos.count("caballero"), 1)
+        self.assertEqual([d["nombre"] for d in self.esp["demonios"] if "caballero" in d["rangos"]], ["Furcas"])
+        self.assertEqual({r for r in rangos}, set(zodiaco.RANGOS))
+        self.assertEqual(self.esp["demonios"][0]["legiones"], 66)   # Bael
+        self.assertEqual(self.esp["demonios"][8]["legiones"], 200)  # Paimon
+
+    def test_los_ids_no_se_repiten_ni_dentro_ni_entre_las_dos_listas(self):
+        ids = [e["id"] for e in self.esp["angeles"] + self.esp["demonios"]]
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_cada_signo_tiene_seis_tramos_seguidos_que_cubren_sus_fechas(self):
+        for anio in (2024, 2025):
+            for s in (x for x in self.datos["signos"] if x["tipo"] == "occidental"):
+                tramos = zodiaco.tramos_de_espiritus(s["id"], anio)
+                self.assertEqual(len(tramos), 6, s["id"])
+                inicio = datetime.date(anio, *s["tropical"]["desde"])
+                fin = datetime.date(anio + (1 if s["tropical"]["hasta"] < s["tropical"]["desde"] else 0), *s["tropical"]["hasta"])
+                esperado, dias = inicio, []
+                for (m1, d1), (m2, d2) in tramos:
+                    desde = datetime.date(esperado.year, m1, d1)
+                    self.assertEqual(desde, esperado, f"{s['id']} {anio}: el tramo no empieza donde acabó el anterior")
+                    hasta = datetime.date(esperado.year + (1 if (m2, d2) < (m1, d1) else 0), m2, d2)
+                    dias.append((hasta - desde).days + 1)
+                    esperado = hasta + datetime.timedelta(days=1)
+                self.assertEqual(esperado, fin + datetime.timedelta(days=1), f"{s['id']} {anio}: no cubren hasta el final")
+                self.assertTrue(4 <= min(dias) and max(dias) <= 6, f"{s['id']} {anio}: {dias}")
+
+    def test_los_angeles_de_fechas_conocidas(self):
+        casos = {
+            (2025, 3, 21): (1, "Vehuiah"), (2025, 3, 25): (1, "Vehuiah"), (2025, 3, 26): (2, "Jeliel"),
+            (1990, 4, 3): (3, "Sitael"), (2025, 3, 20): (72, "Mumiah"), (2025, 12, 31): (56, "Poyel"),
+            (2024, 2, 29): (68, "Habuhiah"), (2025, 2, 28): (68, "Habuhiah"),
+        }
+        for (a, m, d), (numero, nombre) in casos.items():
+            x = zodiaco.angel_de_fecha(datetime.date(a, m, d))
+            self.assertEqual((x["angel"]["numero"], x["angel"]["nombre"]), (numero, nombre), (a, m, d))
+
+    def test_el_demonio_de_una_fecha_tiene_el_numero_de_su_angel(self):
+        for dia in dias_del_anio_bisiesto():
+            self.assertEqual(zodiaco.demonio_de_fecha(dia)["demonio"]["numero"], zodiaco.angel_de_fecha(dia)["angel"]["numero"], dia)
+        x = zodiaco.demonio_de_fecha(datetime.date(2025, 3, 21))
+        self.assertEqual((x["demonio"]["nombre"], x["signo"]["id"], x["tramo"]), ("Bael", "aries", [[3, 21], [3, 25]]))
+
+    def test_de_un_equinoccio_al_siguiente_salen_los_72_en_orden(self):
+        dia, vistos = datetime.date(2025, 3, 21), []
+        while dia <= datetime.date(2026, 3, 20):
+            n = zodiaco.angel_de_fecha(dia)["angel"]["numero"]
+            if not vistos or vistos[-1] != n:
+                vistos.append(n)
+            dia += datetime.timedelta(days=1)
+        self.assertEqual(vistos, list(range(1, 73)))
+
+    def test_el_coro_va_de_ocho_en_ocho(self):
+        self.assertEqual(zodiaco.angel_de_fecha(datetime.date(2025, 3, 21))["coro"], "serafines")
+        self.assertEqual(zodiaco.angel_de_fecha(datetime.date(2025, 3, 20))["coro"], "angeles")
+        coros = [zodiaco.CHOROS[(n - 1) // 8] for n in range(1, 73)]
+        self.assertEqual([coros.count(c) for c in zodiaco.CHOROS], [8] * 9)
+
+    def test_las_consultas_por_fecha_rechazan_lo_que_no_es_una_fecha(self):
+        for funcion in (zodiaco.angel_de_fecha, zodiaco.demonio_de_fecha):
+            with self.assertRaises(TypeError):
+                funcion("2025-03-21")
+
+    def test_los_tramos_rechazan_un_signo_chino_y_un_anio_que_no_es_int(self):
+        with self.assertRaises(ValueError):
+            zodiaco.tramos_de_espiritus("rata")
+        with self.assertRaises(TypeError):
+            zodiaco.tramos_de_espiritus("aries", "2025")
+
+    def test_las_cualidades_se_dicen_en_cada_idioma(self):
+        self.assertEqual(zodiaco.cualidades_de("angel", 3, "es"), "Construcción, protección, nobleza")
+        self.assertEqual(zodiaco.cualidades_de("demonio", 1, "en"), "Invisibility, wisdom")
+        self.assertEqual(zodiaco.cualidades_de("angel", 1, "de"), "Wille, Anfänge, Energie")
+        self.assertEqual(zodiaco.cualidades_de("angel", 1, "ar"), "إرادة، بدايات، طاقة")  # coma árabe
+        self.assertEqual(zodiaco.cualidades_de("angel", 1, "ja"), "意志、始まり、活力")      # coma japonesa
+
+    def test_la_primera_letra_en_turco_es_la_i_con_punto(self):
+        # «irade» (voluntad) empieza por i: en turco la mayúscula es İ, no I.
+        self.assertTrue(zodiaco.cualidades_de("angel", 1, "tr").startswith("İrade"))
+
+    def test_todas_las_cualidades_salen_en_los_30_idiomas(self):
+        for tipo in zodiaco.TIPOS_DE_ESPIRITU:
+            for n in range(1, 73):
+                for codigo in generar.IDIOMAS:
+                    self.assertTrue(zodiaco.cualidades_de(tipo, n, codigo).strip(), (tipo, n, codigo))
+
+    def test_cualidades_rechaza_entradas_no_validas(self):
+        for args, error in ((("arcangel", 1, "es"), ValueError), (("angel", 0, "es"), ValueError),
+                            (("angel", 73, "es"), ValueError), (("angel", 1, "xx"), ValueError),
+                            (("angel", "1", "es"), TypeError), (("angel", True, "es"), TypeError)):
+            with self.assertRaises(error):
+                zodiaco.cualidades_de(*args)
+
+    def test_cada_ficha_trae_las_dos_tablas_con_72_filas(self):
+        for codigo in generar.IDIOMAS:
+            ficha = generar.ficha_de(self.datos, codigo)
+            # Solo las dos tablas de los 72: desde su primer título hasta el del calendario celta.
+            tramo = ficha[ficha.index(self.esp["terminos"]["angeles_titulo"][codigo]):
+                          ficha.index(zodiaco.cargar_arboles()["terminos"]["celta_titulo"][codigo])]
+            filas = [l for l in tramo.splitlines() if re.match(r"\| \d+ \|", l)]
+            self.assertEqual(len(filas), 144, codigo)
+            self.assertIn(self.esp["terminos"]["angeles_nota"][codigo], ficha, codigo)
+            self.assertIn(self.esp["terminos"]["demonios_nota"][codigo], ficha, codigo)
+
+    def test_la_ficha_en_espanol_trae_una_fila_conocida_de_cada_tabla(self):
+        ficha = generar.ficha_de(self.datos, "es")
+        self.assertIn("| 1 | Vehuiah | Serafines | 21/03 – 25/03 | Voluntad, comienzos, energía |", ficha)
+        self.assertIn("| 17 | Botis | Presidente / Conde | 60 | 11/06 – 15/06 |", ficha)
+        self.assertIn("| 3 | Vassago | Príncipe | — | 31/03 – 04/04 |", ficha)  # sin legiones en la fuente
+
+    def test_las_tablas_van_dentro_del_bloque_de_derecha_a_izquierda(self):
+        ficha = generar.ficha_de(self.datos, "ar")
+        self.assertLess(ficha.index('<div dir="rtl"'), ficha.index(self.esp["terminos"]["angeles_titulo"]["ar"]))
+        self.assertLess(ficha.index(self.esp["terminos"]["demonios_titulo"]["ar"]), ficha.index("</div>"))
+
+
+class PruebasDeValidacionDeEspiritus(unittest.TestCase):
+    def setUp(self):
+        self.esp = copy.deepcopy(zodiaco.cargar_espiritus())
+
+    def errores_con(self, texto):
+        return [e for e in generar.validar_espiritus(self.esp) if texto in e]
+
+    def test_detecta_un_angel_que_falta(self):
+        del self.esp["angeles"][10]
+        self.assertTrue(self.errores_con("espiritus/angeles: tienen que ser 72"))
+
+    def test_detecta_numeros_desordenados(self):
+        self.esp["demonios"][0]["numero"], self.esp["demonios"][1]["numero"] = 2, 1
+        self.assertTrue(self.errores_con("espiritus/demonios: tienen que ser 72"))
+
+    def test_detecta_una_cualidad_que_no_esta_en_el_glosario(self):
+        self.esp["angeles"][0]["cualidades"].append("inventada")
+        self.assertTrue(self.errores_con("'inventada' no está en el glosario"))
+
+    def test_detecta_una_cualidad_que_nadie_usa(self):
+        self.esp["cualidades"]["sobrante"] = dict(self.esp["cualidades"]["amor"])
+        self.assertTrue(self.errores_con("espiritus/cualidades/sobrante: nadie la usa"))
+
+    def test_detecta_una_cualidad_sin_un_idioma(self):
+        del self.esp["cualidades"]["amor"]["sw"]
+        self.assertTrue(self.errores_con("espiritus/cualidades/amor: no tiene exactamente"))
+
+    def test_detecta_un_texto_vacio(self):
+        self.esp["cualidades"]["amor"]["fi"] = "  "
+        self.assertTrue(self.errores_con("espiritus/cualidades/amor/fi"))
+
+    def test_detecta_un_termino_que_falta(self):
+        del self.esp["terminos"]["rango_rey"]
+        self.assertTrue(self.errores_con("espiritus/terminos"))
+
+    def test_detecta_un_rango_desconocido_y_legiones_invalidas(self):
+        self.esp["demonios"][0]["rangos"] = ["emperador"]
+        self.assertTrue(self.errores_con("espiritus/demonios/1: rangos"))
+        self.esp["demonios"][0]["rangos"] = ["rey"]
+        self.esp["demonios"][0]["legiones"] = 0
+        self.assertTrue(self.errores_con("espiritus/demonios/1: legiones"))
+        self.esp["demonios"][0]["legiones"] = None
+        self.assertEqual(self.errores_con("legiones"), [])
+
+    def test_detecta_ids_repetidos_y_cualidades_repetidas(self):
+        self.esp["angeles"][1]["id"] = self.esp["angeles"][0]["id"]
+        self.assertTrue(self.errores_con("ids repetidos"))
+        self.esp["angeles"][1]["id"] = "jeliel"
+        self.esp["angeles"][0]["cualidades"] = ["amor", "amor"]
+        self.assertTrue(self.errores_con("espiritus/angeles/1: de 1 a 5 cualidades"))
+
+
+class PruebasDeArboles(unittest.TestCase):
+    """El calendario celta, el horóscopo de los árboles y los árboles de los 27 nakshatras."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.arb = zodiaco.cargar_arboles()
+        cls.esp = zodiaco.cargar_espiritus()
+
+    def test_los_datos_pasan_la_validacion(self):
+        self.assertEqual(generar.validar_arboles(self.arb, self.esp), [])
+
+    def test_el_calendario_celta_tiene_13_meses_y_el_23_de_diciembre_aparte(self):
+        meses = self.arb["calendario_celta"]["meses"]
+        self.assertEqual([m["ogham"] for m in meses], ["Beth", "Luis", "Nion", "Fearn", "Saille", "Uath", "Duir", "Tinne",
+                                                       "Coll", "Muin", "Gort", "Ngetal", "Ruis"])
+        self.assertEqual([m["arbol"] for m in meses[:3]], ["abedul", "serbal", "fresno"])
+        self.assertEqual(self.arb["calendario_celta"]["dia_sin_arbol"], [12, 23])
+
+    def test_el_celta_en_fechas_conocidas(self):
+        casos = {(2025, 12, 24): "beth", (2026, 1, 20): "beth", (2026, 1, 21): "luis", (2025, 6, 10): "duir",
+                 (2025, 12, 22): "ruis", (2024, 2, 29): "nion", (1990, 4, 3): "fearn"}
+        for (a, m, d), mes in casos.items():
+            self.assertEqual(zodiaco.arbol_celta(datetime.date(a, m, d))["mes"]["id"], mes, (a, m, d))
+        self.assertIsNone(zodiaco.arbol_celta(datetime.date(2025, 12, 23)))
+
+    def test_cada_dia_cae_en_un_mes_celta_salvo_el_23_de_diciembre_y_cada_mes_dura_28_dias(self):
+        cuenta = {}
+        for dia in (datetime.date(2025, 1, 1) + datetime.timedelta(days=n) for n in range(365)):
+            r = zodiaco.arbol_celta(dia)
+            if (dia.month, dia.day) == (12, 23):
+                self.assertIsNone(r)
+            else:
+                cuenta[r["mes"]["id"]] = cuenta.get(r["mes"]["id"], 0) + 1
+        self.assertEqual(set(cuenta.values()), {28})
+        self.assertEqual(len(cuenta), 13)
+
+    def test_el_horoscopo_tiene_21_arboles_y_cubre_cada_dia_una_sola_vez(self):
+        self.assertEqual(len(self.arb["horoscopo"]), 21)
+        for dia in dias_del_anio_bisiesto():
+            h = zodiaco.arbol_de_fecha(dia)
+            self.assertTrue(zodiaco._en_rango((dia.month, dia.day), h["tramo"][0], h["tramo"][1]), dia)
+
+    def test_los_cuatro_arboles_de_un_solo_dia_son_los_de_los_equinoccios_y_los_solsticios(self):
+        casos = {(3, 21): "roble", (6, 24): "abedul", (9, 23): "olivo", (12, 22): "haya"}
+        for (m, d), arbol in casos.items():
+            r = zodiaco.arbol_de_fecha(datetime.date(2025, m, d))
+            self.assertEqual((r["arbol"]["id"], r["tramo"]), (arbol, [[m, d], [m, d]]), (m, d))
+        unicos = [h["arbol"] for h in self.arb["horoscopo"] if h["tramos"][0][0] == h["tramos"][0][1] and len(h["tramos"]) == 1]
+        self.assertEqual(sorted(unicos), ["abedul", "haya", "olivo", "roble"])
+
+    def test_el_horoscopo_en_fechas_conocidas(self):
+        casos = {(2025, 1, 1): "manzano", (2025, 1, 2): "abeto", (2024, 2, 29): "pino", (2025, 5, 10): "alamo",
+                 (2025, 7, 10): "abeto", (2025, 12, 31): "manzano", (1990, 4, 3): "serbal", (2025, 8, 10): "alamo"}
+        for (a, m, d), arbol in casos.items():
+            self.assertEqual(zodiaco.arbol_de_fecha(datetime.date(a, m, d))["arbol"]["id"], arbol, (a, m, d))
+        self.assertEqual(len(self.arb["horoscopo"][3]["tramos"]), 3)  # el álamo, en tres tramos
+
+    def test_los_arboles_traen_nombre_cientifico_y_30_idiomas(self):
+        a = zodiaco.arbol_celta(datetime.date(2025, 6, 10))["arbol"]
+        self.assertEqual((a["id"], a["cientifico"], a["nombres"]["en"], a["nombres"]["de"]), ("roble", "Quercus robur", "oak", "Eiche"))
+        self.assertEqual(set(a["nombres"]), set(generar.IDIOMAS))
+
+    def test_hay_27_nakshatras_y_en_11_las_fuentes_no_coinciden(self):
+        naks = self.arb["nakshatras"]
+        self.assertEqual([n["numero"] for n in naks], list(range(1, 28)))
+        self.assertEqual((naks[0]["nombre"], naks[-1]["nombre"]), ("Ashwini", "Revati"))
+        self.assertEqual(sum(n["variable"] for n in naks), 11)
+        self.assertFalse(naks[7]["variable"])  # Pushya: el peepal, que no se discute
+        self.assertEqual((naks[7]["arbol"], naks[7]["cientifico"]), ("Peepal", "Ficus religiosa"))
+
+    def test_la_longitud_de_la_luna_coincide_con_el_ejemplo_de_meeus(self):
+        # Meeus, ej. 47.a: 12/04/1992 a las 0 h TD, 133,1627°. Aquí el instante es UTC, ~1 minuto de diferencia (0,009°).
+        lon = zodiaco.longitud_de_la_luna(datetime.datetime(1992, 4, 12, tzinfo=datetime.timezone.utc))
+        self.assertAlmostEqual(lon, 133.1627, delta=0.02)
+
+    def test_la_luna_en_una_luna_nueva_y_una_llena_conocidas(self):
+        # Luna nueva del 6/01/2000 a las 18:14 UTC: la Luna y el Sol en la misma longitud (≈ 285,3°).
+        nueva = zodiaco.longitud_de_la_luna(datetime.datetime(2000, 1, 6, 18, 14, tzinfo=datetime.timezone.utc))
+        self.assertAlmostEqual(nueva, 285.3, delta=0.7)
+        # Luna llena del 21/01/2000 a las 04:40 UTC: 180° más allá (≈ 120,9° - Sol en 300,9°).
+        llena = zodiaco.longitud_de_la_luna(datetime.datetime(2000, 1, 21, 4, 40, tzinfo=datetime.timezone.utc))
+        self.assertAlmostEqual(llena, 120.9, delta=0.7)
+
+    def test_el_nakshatra_de_un_instante_conocido(self):
+        n = zodiaco.nakshatra_de_instante(datetime.datetime(1992, 4, 12, tzinfo=datetime.timezone.utc))
+        self.assertEqual((n["nakshatra"]["nombre"], n["nakshatra"]["arbol"]), ("Ashlesha", "Nagkesar"))
+        self.assertAlmostEqual(n["longitud_sideral"], 109.4, delta=0.1)  # Ashlesha va de 106,67° a 120°
+
+    def test_la_luna_recorre_los_27_nakshatras_en_orden_y_cada_uno_dura_de_20_a_29_horas(self):
+        inicio = datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc)
+        anterior, duraciones, horas, cambios = None, [], 0, 0
+        for h in range(0, 24 * 60):
+            n = zodiaco.nakshatra_de_instante(inicio + datetime.timedelta(hours=h))["nakshatra"]["numero"]
+            if anterior is None:
+                anterior = n
+            elif n != anterior:
+                self.assertEqual(n, anterior % 27 + 1, f"salto de {anterior} a {n}")
+                cambios += 1
+                if cambios > 1:  # el primero empezó antes de la ventana y no se mide entero
+                    duraciones.append(horas)
+                anterior, horas = n, 0
+            horas += 1
+        self.assertGreaterEqual(len(duraciones), 50)
+        self.assertTrue(all(20 <= d <= 29 for d in duraciones), sorted(set(duraciones)))
+
+    def test_una_fecha_sola_se_toma_a_mediodia_utc_y_los_husos_se_respetan(self):
+        a = zodiaco.nakshatra_de_instante(datetime.date(2025, 5, 5))
+        b = zodiaco.nakshatra_de_instante(datetime.datetime(2025, 5, 5, 12, tzinfo=datetime.timezone.utc))
+        self.assertEqual(a, b)
+        sin_huso = zodiaco.nakshatra_de_instante(datetime.datetime(2025, 5, 5, 12))
+        self.assertEqual(sin_huso, a)  # un datetime sin huso se toma como UTC
+        india = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+        self.assertEqual(zodiaco.nakshatra_de_instante(datetime.datetime(2025, 5, 5, 17, 30, tzinfo=india)), a)
+
+    def test_nakshatra_rechaza_lo_que_no_es_un_instante(self):
+        with self.assertRaises(TypeError):
+            zodiaco.nakshatra_de_instante("1992-04-12")
+
+    def test_los_rasgos_se_dicen_en_cada_idioma(self):
+        self.assertEqual(zodiaco.rasgos_de("horoscopo", "olivo", "es"), "Equilibrio, sabiduría, paz")
+        self.assertEqual(zodiaco.rasgos_de("celta", "beth", "ja"), "始まり、清らかさ、復活")
+        self.assertEqual(zodiaco.rasgos_de("nakshatra", "ashlesha", "ar"), "حدس، غموض، دهاء")
+        self.assertEqual(zodiaco.rasgos_de("celta", "duir", "de"), "Stärke, Durchhaltevermögen, Edelmut")
+
+    def test_los_rasgos_salen_en_los_30_idiomas_para_los_61(self):
+        for sistema, clave in generar._claves_de_arboles():
+            for codigo in generar.IDIOMAS:
+                self.assertTrue(zodiaco.rasgos_de(sistema, clave, codigo).strip(), (sistema, clave, codigo))
+
+    def test_rasgos_rechaza_entradas_no_validas(self):
+        for args in (("bosque", "beth", "es"), ("celta", "no-existe", "es"), ("celta", "beth", "xx"), ("horoscopo", "beth", "es")):
+            with self.assertRaises(ValueError):
+                zodiaco.rasgos_de(*args)
+
+    def test_cada_ficha_trae_las_tres_tablas_de_arboles(self):
+        for codigo in generar.IDIOMAS:
+            ficha = generar.ficha_de(cargar_datos(), codigo)
+            t = self.arb["terminos"]
+            for clave in ("celta_nota", "horoscopo_nota", "nakshatra_nota", "dia_nota"):
+                self.assertIn(t[clave][codigo], ficha, (codigo, clave))
+            self.assertEqual(ficha.count("*Betula pendula*"), 2, codigo)  # el abedul, en el calendario y en el horóscopo
+            self.assertEqual(ficha.count("\\*"), 11 + 1, codigo)           # 11 nakshatras marcados y su nota
+
+    def test_la_ficha_en_espanol_trae_una_fila_de_cada_tabla(self):
+        ficha = generar.ficha_de(cargar_datos(), "es")
+        self.assertIn("| 4 | Aliso | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Valentía, discernimiento, estabilidad |", ficha)
+        self.assertIn("| Álamo | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Sensibilidad, adaptación, incertidumbre |", ficha)
+        self.assertIn("| 9 | Ashlesha | Nagkesar \\* | *Mesua ferrea* | Intuición, misterio, astucia |", ficha)
+        self.assertIn("\\* Las fuentes no coinciden en el árbol de este nakshatra.", ficha)
+
+
+class PruebasDeValidacionDeArboles(unittest.TestCase):
+    def setUp(self):
+        self.arb = copy.deepcopy(zodiaco.cargar_arboles())
+        self.esp = zodiaco.cargar_espiritus()
+
+    def errores_con(self, texto):
+        return [e for e in generar.validar_arboles(self.arb, self.esp) if texto in e]
+
+    def test_detecta_un_mes_que_se_solapa_o_deja_un_hueco(self):
+        self.arb["calendario_celta"]["meses"][1]["desde"] = [1, 25]
+        self.assertTrue(self.errores_con("arboles/calendario_celta"))
+
+    def test_detecta_un_mes_que_no_dura_28_dias(self):
+        self.arb["calendario_celta"]["meses"][3]["hasta"] = [4, 15]
+        self.assertTrue(self.errores_con("arboles/calendario_celta"))
+
+    def test_detecta_un_dia_del_horoscopo_sin_arbol_o_con_dos(self):
+        self.arb["horoscopo"][0]["tramos"][0] = [[1, 2], [1, 10]]
+        self.assertTrue(self.errores_con("arboles/horoscopo: el"))
+        self.arb["horoscopo"][0]["tramos"][0] = [[1, 2], [1, 13]]
+        self.assertTrue(self.errores_con("arboles/horoscopo: el"))
+
+    def test_detecta_un_arbol_del_horoscopo_que_falta(self):
+        del self.arb["horoscopo"][5]
+        self.assertTrue(self.errores_con("arboles/horoscopo: tienen que ser 21"))
+
+    def test_detecta_un_rasgo_que_no_esta_en_ningun_glosario_o_que_ya_esta_en_el_de_los_72(self):
+        self.arb["horoscopo"][0]["rasgos"].append("inventado")
+        self.assertTrue(self.errores_con("'inventado' no está en ningún glosario"))
+        self.arb["horoscopo"][0]["rasgos"].pop()
+        self.arb["rasgos"]["proteccion"] = dict(self.arb["rasgos"]["fuerza"])
+        self.assertTrue(self.errores_con("ya está en el glosario de espiritus.json"))
+
+    def test_detecta_un_rasgo_que_nadie_usa_y_un_arbol_que_nadie_usa(self):
+        self.arb["rasgos"]["sobrante"] = dict(self.arb["rasgos"]["fuerza"])
+        self.assertTrue(self.errores_con("arboles/rasgos/sobrante: nadie lo usa"))
+        self.arb["arboles"]["huerfano"] = copy.deepcopy(self.arb["arboles"]["roble"])
+        self.assertTrue(self.errores_con("arboles/arboles/huerfano: ningún sistema lo usa"))
+
+    def test_detecta_un_nombre_sin_un_idioma_y_un_nombre_cientifico_vacio(self):
+        del self.arb["arboles"]["roble"]["nombres"]["fi"]
+        self.assertTrue(self.errores_con("arboles/arboles/roble/nombres: no tiene exactamente"))
+        self.arb["arboles"]["roble"]["cientifico"] = " "
+        self.assertTrue(self.errores_con("arboles/arboles/roble: id"))
+
+    def test_detecta_nakshatras_que_faltan_o_con_variable_mal(self):
+        del self.arb["nakshatras"][26]
+        self.assertTrue(self.errores_con("arboles/nakshatras: tienen que ser 27"))
+        self.arb["nakshatras"].append({**self.arb["nakshatras"][0], "numero": 27, "id": "revati", "variable": "si"})
+        self.assertTrue(self.errores_con("variable true o false"))
+
+    def test_detecta_un_termino_que_falta(self):
+        del self.arb["terminos"]["celta_nota"]
+        self.assertTrue(self.errores_con("arboles/terminos"))
+
+
+class PruebasDeNumerologia(unittest.TestCase):
+    """El número del camino de vida, el año personal y los rasgos de los 12 números."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.num = zodiaco.cargar_numerologia()
+
+    def test_los_datos_pasan_la_validacion(self):
+        self.assertEqual(generar.validar_numerologia(self.num, zodiaco.cargar_arboles(), zodiaco.cargar_espiritus()), [])
+
+    def test_reducir_numero(self):
+        for n, con_maestros, sin_maestros in ((0, 0, 0), (9, 9, 9), (10, 1, 1), (29, 11, 2), (38, 11, 2), (44, 8, 8), (22, 22, 4),
+                                              (33, 33, 6), (99, 9, 9), (1999, 1, 1)):  # 1999 → 28 → 10 → 1
+            self.assertEqual(zodiaco.reducir_numero(n), con_maestros, n)
+            self.assertEqual(zodiaco.reducir_numero(n, maestros=False), sin_maestros, n)
+
+    def test_reducir_numero_rechaza_negativos_y_lo_que_no_es_un_entero(self):
+        for malo in (-1, True, 2.5, "9"):
+            with self.assertRaises(ValueError):
+                zodiaco.reducir_numero(malo)
+
+    def test_el_camino_de_vida_en_fechas_conocidas(self):
+        casos = {(1990, 4, 3): 8, (1980, 1, 19): 11, (1980, 1, 3): 22, (1980, 4, 29): 33, (2000, 1, 1): 4, (1999, 12, 31): 8}
+        for (a, m, d), esperado in casos.items():
+            self.assertEqual(zodiaco.camino_de_vida(datetime.date(a, m, d)), esperado, (a, m, d))
+
+    def test_el_camino_de_vida_siempre_es_uno_de_los_12_y_salen_los_12(self):
+        vistos, dia = set(), datetime.date(1900, 1, 1)
+        while dia.year < 2100:
+            vistos.add(zodiaco.camino_de_vida(dia))
+            dia += datetime.timedelta(days=1)
+        self.assertEqual(vistos, {1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33})
+
+    def test_el_camino_de_vida_acepta_un_datetime(self):
+        self.assertEqual(zodiaco.camino_de_vida(datetime.datetime(1990, 4, 3, 23, 59)), 8)
+
+    def test_el_anio_personal_va_de_1_a_9(self):
+        self.assertEqual(zodiaco.anio_personal(datetime.date(1990, 4, 3), 2026), 8)   # 3+4+2+0+2+6 = 17 → 8
+        self.assertEqual(zodiaco.anio_personal(datetime.date(1990, 4, 3), 2027), 9)
+        self.assertEqual(zodiaco.anio_personal(datetime.date(1990, 4, 3), 2028), 1)   # 3+4+2+0+2+8 = 19 → 10 → 1
+        self.assertEqual({zodiaco.anio_personal(datetime.date(1990, 4, 3), a) for a in range(1990, 2100)}, set(range(1, 10)))
+        self.assertEqual(zodiaco.anio_personal(datetime.date(1980, 1, 19), 2026), 3)  # 1+9+1+2+0+2+6 = 21 → 3
+
+    def test_el_anio_personal_rechaza_entradas_no_validas(self):
+        with self.assertRaises(TypeError):
+            zodiaco.anio_personal("1990-04-03", 2026)
+        for malo in (0, -5, "2026", True):
+            with self.assertRaises(ValueError):
+                zodiaco.anio_personal(datetime.date(1990, 4, 3), malo)
+
+    def test_el_camino_de_vida_rechaza_lo_que_no_es_una_fecha(self):
+        with self.assertRaises(TypeError):
+            zodiaco.camino_de_vida("1990-04-03")
+
+    def test_los_rasgos_de_los_12_numeros_en_espanol(self):
+        esperados = {1: "Liderazgo, independencia, iniciativa", 11: "Intuición, inspiración, idealismo",
+                     22: "Construcción, determinación, liderazgo", 33: "Compasión, ternura, devoción"}
+        for numero, texto in esperados.items():
+            self.assertEqual(zodiaco.rasgos_de_numero(numero, "es"), texto)
+
+    def test_los_rasgos_salen_en_los_30_idiomas_con_su_separador(self):
+        for n in self.num["numeros"]:
+            for codigo in generar.IDIOMAS:
+                self.assertTrue(zodiaco.rasgos_de_numero(n["numero"], codigo).strip(), (n["numero"], codigo))
+        self.assertIn("،", zodiaco.rasgos_de_numero(1, "ar"))
+        self.assertIn("、", zodiaco.rasgos_de_numero(1, "ja"))
+
+    def test_rasgos_de_numero_rechaza_entradas_no_validas(self):
+        for args, error in (((10, "es"), ValueError), ((1, "xx"), ValueError), (("1", "es"), TypeError), ((True, "es"), TypeError)):
+            with self.assertRaises(error):
+                zodiaco.rasgos_de_numero(*args)
+
+    def test_cada_ficha_trae_la_tabla_con_los_12_numeros(self):
+        for codigo in generar.IDIOMAS:
+            ficha = generar.ficha_de(cargar_datos(), codigo)
+            tramo = ficha[ficha.index(self.num["terminos"]["titulo"][codigo]):]
+            filas = [l for l in tramo.splitlines() if re.match(r"\| \d+ \|", l)]
+            self.assertEqual([l.split(" | ")[0].strip("| ") for l in filas], ["1", "2", "3", "4", "5", "6", "7", "8", "9", "11", "22", "33"], codigo)
+            self.assertIn(self.num["terminos"]["nota"][codigo], ficha, codigo)
+
+
+class PruebasDeValidacionDeNumerologia(unittest.TestCase):
+    def setUp(self):
+        self.num = copy.deepcopy(zodiaco.cargar_numerologia())
+        self.arb, self.esp = zodiaco.cargar_arboles(), zodiaco.cargar_espiritus()
+
+    def errores_con(self, texto):
+        return [e for e in generar.validar_numerologia(self.num, self.arb, self.esp) if texto in e]
+
+    def test_detecta_un_numero_que_falta_o_esta_desordenado(self):
+        del self.num["numeros"][9]
+        self.assertTrue(self.errores_con("tienen que ser 1 a 9, 11, 22 y 33"))
+
+    def test_detecta_un_rasgo_que_no_esta_en_ningun_glosario(self):
+        self.num["numeros"][0]["rasgos"].append("inventado")
+        self.assertTrue(self.errores_con("'inventado' no está en ningún glosario"))
+
+    def test_detecta_un_texto_sin_un_idioma_o_vacio(self):
+        del self.num["terminos"]["nota"]["fi"]
+        self.assertTrue(self.errores_con("numerologia/terminos/nota: no tiene exactamente"))
+        self.num["terminos"]["titulo"]["es"] = " "
+        self.assertTrue(self.errores_con("numerologia/terminos/titulo/es"))
+
+    def test_detecta_un_termino_que_falta_y_rasgos_repetidos(self):
+        del self.num["terminos"]["col_numero"]
+        self.assertTrue(self.errores_con("numerologia/terminos"))
+        self.num["numeros"][1]["rasgos"] = ["armonia", "armonia"]
+        self.assertTrue(self.errores_con("numerologia/numeros/2: de 1 a 5 rasgos"))
 
 
 if __name__ == "__main__":

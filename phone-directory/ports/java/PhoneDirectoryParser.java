@@ -129,6 +129,11 @@ class PersonName {
         return lastNames.isEmpty() ? "" : lastNames.get(0);
     }
 
+    /** The name as the directory prints it ("SMITH, John"), like getRawName() in PHP. */
+    public String getRawName() {
+        return fullName;
+    }
+
     public String getFullName() {
         List<String> all = new ArrayList<>(firstNames);
         all.addAll(lastNames);
@@ -147,6 +152,7 @@ class PersonName {
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("fullName", getFullName());
+        map.put("rawName", getRawName());
         map.put("firstNames", getFirstNames());
         map.put("lastNames", getLastNames());
         map.put("primaryLastName", getPrimaryLastName());
@@ -244,8 +250,99 @@ class MultiLanguagePhoneDirectoryParser {
         "\\d{1,5}[a-zA-Z]?\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*"
     );
 
-    private static final Pattern PHONE_PATTERN =
-        Pattern.compile("\\b\\d{3}[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b");
+    private static final Pattern NUMBER_LAST_STREET = Pattern.compile(
+        "\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*\\s+\\d{1,5}[a-zA-Z]?"
+    );
+    // Same as the PHP StreetFallback::dwelling: "Apt 4 Building 7", only once the name is read, in English.
+    private static final Pattern DWELLING = Pattern.compile(
+        "(?:apt|apartment|unit|flat|suite|ste|bldg|building)\\.?\\s*#?\\d{1,5}[a-z]?(?:\\s+[\\p{L}\\d#][\\p{L}\\p{M}\\d'’.\\-#]*)*",
+        Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE
+    );
+    // Languages that write the house number after the street ("Travessa do Carmo 5").
+    private static final Set<String> NUMBER_LAST_LANGUAGES = Set.of("es", "pt", "it", "de");
+
+    // Same as PhonePattern::REGEX: digit groups (555-123-4567, 5551234567) and the named exchange of early
+    // directories ("BUtterfield 8-4521"), which needs a separator on both sides of the word.
+    private static final String BASE_PHONE =
+        "\\b[A-Za-z]{3,}[ .-]\\d[ -]\\d{4}\\b|\\b\\d{3}[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b";
+
+    // Same as PhonePattern::LANGUAGE_FORMATS: the formats of each language's countries, kept per language
+    // because the looser ones would read a house number as part of a phone in another language's directory.
+    private static final Map<String, List<String>> LANGUAGE_PHONE_FORMATS = Map.of(
+        "fr", List.of("(?:\\+33[ .]?[1-9]|0[1-9])(?:[ .]?\\d{2}){4}"),
+        "de", List.of("(?:\\+49[ ]?[1-9]\\d{1,3}|\\(0\\d{2,4}\\)|0\\d{2,4})[ /-]?\\d{3,8}(?:-\\d{1,4})?"),
+        "it", List.of("(?:\\+39[ ]?)?0\\d{1,3}[ /-]?\\d{4,8}"),
+        "pt", List.of("(?:\\+351[ ]?)?(?:[2-9]\\d[ ]\\d{3}[ ]\\d{4}|[2-9]\\d{2}[ ]\\d{3}[ ]\\d{3})"),
+        "es", List.of("(?:\\+34[ ]?)?[6-9]\\d[ ]\\d{3}(?:[ ]\\d{2}){2}",
+                      "(?:\\(\\d{1,3}\\)[ ]?|\\d{1,3}[ -])\\d{3}[ -]\\d{3,4}")
+    );
+    // Not preceded by a digit or a "+", not followed by a separator and a digit.
+    private static final String PHONE_BEFORE = "(?<![\\d+])";
+    private static final String PHONE_AFTER = "(?![ ./-]?\\d)";
+    private static final Map<String, Pattern> PHONE_REGEXES = new HashMap<>();
+
+    /** The base formats plus those of {@code language}'s countries (English and unknown languages: the base). */
+    static synchronized Pattern phoneRegex(String language) {
+        String key = language != null && LANGUAGE_PHONE_FORMATS.containsKey(language) ? language : "";
+        return PHONE_REGEXES.computeIfAbsent(key, k -> {
+            StringBuilder regex = new StringBuilder(BASE_PHONE);
+            for (String format : LANGUAGE_PHONE_FORMATS.getOrDefault(k, List.of())) {
+                regex.append('|').append(PHONE_BEFORE).append("(?:").append(format).append(')').append(PHONE_AFTER);
+            }
+            return Pattern.compile(regex.toString());
+        });
+    }
+
+    private static final Pattern OCR_CHEAP_TEST = Pattern.compile("\\d[ .\\-]?[OolI]|[OolI][ .\\-]?\\d");
+    private static final Pattern OCR_RUN =
+        Pattern.compile("(?<![\\p{L}\\d])[\\dOolI](?:[ .\\-]?[\\dOolI])+(?![\\p{L}\\d])");
+
+    /**
+     * Same as PhonePattern::repairOcrDigits: "l" or "I" for 1 and "O" or "o" for 0 inside what looks like a phone
+     * number ("555-l23-4567" gives "555-123-4567"), only in a run with at least 6 real digits and at most 2 such
+     * letters, so words ("Oil") and exchange names ("BUtterfield 8-4521") are left alone.
+     */
+    static String repairOcrDigits(String line) {
+        if (!OCR_CHEAP_TEST.matcher(line).find()) {
+            return line;
+        }
+        return OCR_RUN.matcher(line).replaceAll(m -> {
+            String run = m.group();
+            long digits = run.chars().filter(c -> c >= '0' && c <= '9').count();
+            long letters = run.chars().filter(c -> "OolI".indexOf(c) >= 0).count();
+            return Matcher.quoteReplacement(letters > 0 && letters <= 2 && digits >= 6
+                ? run.replace('O', '0').replace('o', '0').replace('l', '1').replace('I', '1') : run);
+        });
+    }
+
+    /** The line's phone, also when the scan misread a digit as a letter ("555-l23-4567"); null if it has none. */
+    static String phoneIn(String line, String language) {
+        Pattern regex = phoneRegex(language);
+        Matcher match = regex.matcher(line);
+        if (match.find()) {
+            return match.group();
+        }
+        String repaired = repairOcrDigits(line);
+        if (repaired.equals(line)) {
+            return null;
+        }
+        match = regex.matcher(repaired);
+        return match.find() ? match.group() : null;
+    }
+
+    /**
+     * What a line says besides its phone, when that could be a name: "SMITH, John ........ 555-123-4567" gives
+     * "SMITH, John". Null when nothing is left or what is left has a digit ("555-123-4567 ext. 12").
+     */
+    static String nameBesidePhone(String line, String phone) {
+        int offset = line.indexOf(phone);
+        if (offset < 0) {
+            return null;
+        }
+        String rest = (line.substring(0, offset) + " " + line.substring(offset + phone.length()))
+            .replaceAll("^[ \\t.,:;\\-\\u2013\\u2014]+|[ \\t.,:;\\-\\u2013\\u2014]+$", "");
+        return Pattern.compile("\\p{L}").matcher(rest).find() && !Pattern.compile("\\d").matcher(rest).find() ? rest : null;
+    }
 
     private final String countryCode;
     private List<Map<String, Object>> entries;
@@ -278,6 +375,15 @@ class MultiLanguagePhoneDirectoryParser {
                 Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
     }
 
+    // Same as the PHP LANGUAGE_DETECTION_LINES: "Via Roma 10" opens the line and ends with the number,
+    // a shape English doesn't use ("12 Via Lane"), so "via" counts as Italian only there.
+    private static final Map<String, Pattern> DETECTION_LINES = Map.of(
+        "it", Pattern.compile(
+            "^[ \\t]*via\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*,?\\s+\\d{1,5}[a-z]?\\b",
+            Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.MULTILINE
+        )
+    );
+
     public String detectLanguage(String content) {
         String best = "en";
         int bestScore = 0;
@@ -288,6 +394,9 @@ class MultiLanguagePhoneDirectoryParser {
                 continue;
             }
             int score = (int) p.matcher(content).results().count();
+            if (DETECTION_LINES.containsKey(lang)) {
+                score += (int) DETECTION_LINES.get(lang).matcher(content).results().count();
+            }
             if (score > bestScore) {
                 best = lang;
                 bestScore = score;
@@ -333,7 +442,43 @@ class MultiLanguagePhoneDirectoryParser {
         return entries;
     }
 
+    private boolean isStreetLine(String line, String language, boolean afterName) {
+        return extractStreet(line, language) != null || (afterName && afterNameStreet(line, language) != null);
+    }
+
+    // Same as the PHP afterNameStreet(): a dwelling line in English, a number-last street without a street word elsewhere.
+    private String afterNameStreet(String line, String language) {
+        String trimmed = line.trim();
+        if ("en".equals(language)) {
+            return DWELLING.matcher(trimmed).matches() ? trimmed : null;
+        }
+        return NUMBER_LAST_LANGUAGES.contains(language) && NUMBER_LAST_STREET.matcher(trimmed).matches() ? trimmed : null;
+    }
+
+    // Same rule as the PHP splitRecords(): once a record has its name and street, a line that is neither
+    // street nor phone starts the next record if a street follows it right away.
     private void processBuffer(List<String> lines, int startLine, String language) {
+        int start = 0;
+        boolean hasName = false;
+        boolean hasStreet = false;
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            boolean isPhone = phoneIn(line, language) != null;
+            boolean isStreet = isStreetLine(line, language, hasName);
+            if (hasName && hasStreet && !isPhone && !isStreet
+                    && i + 1 < lines.size() && isStreetLine(lines.get(i + 1), language, true)) {
+                processRecord(lines.subList(start, i), startLine + start, language);
+                start = i;
+                hasStreet = false;
+                continue;
+            }
+            hasName = hasName || (!isPhone && !isStreet);
+            hasStreet = hasStreet || isStreet;
+        }
+        processRecord(lines.subList(start, lines.size()), startLine + start, language);
+    }
+
+    private void processRecord(List<String> lines, int startLine, String language) {
         Map<String, String> data = new HashMap<>();
         data.put("name", null);
         data.put("phone", null);
@@ -341,19 +486,27 @@ class MultiLanguagePhoneDirectoryParser {
         data.put("country", countryCode);
 
         for (String line : lines) {
-            Matcher phone = PHONE_PATTERN.matcher(line);
-            boolean hasPhone = phone.find();
-            if (data.get("phone") == null && hasPhone) {
-                data.put("phone", phone.group());
+            String phone = phoneIn(line, language);
+            if (data.get("phone") == null && phone != null) {
+                data.put("phone", phone);
             }
 
             String street = extractStreet(line, language);
+            // Same rule as the PHP StreetFallback::numberLast, and only once the name is read:
+            // "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
+            if (street == null && data.get("name") != null) {
+                street = afterNameStreet(line, language);
+            }
             if (data.get("street") == null && street != null) {
                 data.put("street", street);
             }
 
-            if (data.get("name") == null && !hasPhone && street == null) {
-                data.put("name", line);
+            if (data.get("name") == null && street == null) {
+                // A phone line can also carry the name ("SMITH, John ........ 555-123-4567").
+                String name = phone == null ? line : nameBesidePhone(repairOcrDigits(line), phone);
+                if (name != null) {
+                    data.put("name", name);
+                }
             }
         }
 

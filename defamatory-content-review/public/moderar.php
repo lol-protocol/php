@@ -18,19 +18,22 @@ if (getenv('MODERAR_CONFIAR_X_FORWARDED_FOR') === '1' && isset($_SERVER['HTTP_X_
     $cliente = trim((string) array_slice(explode(',', (string) $_SERVER['HTTP_X_FORWARDED_FOR']), -1)[0]);
 }
 
+$endpoint = new ModerationEndpoint(__DIR__ . '/../config');
+// Idioma de los mensajes de error: el de mayor peso en Accept-Language que tengamos, español si no.
+$idioma = $endpoint->negotiateLocale((string) ($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? ''));
+
 try {
     $limite = $porMinuto > 0 ? new RateLimiter(getenv('MODERAR_LIMITES_DIR') ?: sys_get_temp_dir() . '/moderar-limites') : null;
     if ($limite !== null && !$limite->attempt($cliente, $porMinuto, 60, time())) {
-        $response = ['status' => 429, 'headers' => ['Retry-After' => (string) $limite->retryAfter($cliente, 60, time())],
-            'body' => ['error' => ['code' => 'demasiadas_peticiones', 'message' => 'Demasiadas peticiones seguidas. Espera un momento.']]];
+        $response = ModerationEndpoint::error(429, 'demasiadas_peticiones', $idioma, [], ['Retry-After' => (string) $limite->retryAfter($cliente, 60, time())], __DIR__ . '/../config/messages');
     }
     // Se lee un byte más del límite: basta para saber que lo supera sin cargar todo el cuerpo.
     $body = (string) file_get_contents('php://input', false, null, 0, ModerationEndpoint::MAX_BODY_BYTES + 1);
-    $response ??= (new ModerationEndpoint(__DIR__ . '/../config'))
-        ->handle($_SERVER['REQUEST_METHOD'] ?? 'GET', $body, $_SERVER['CONTENT_TYPE'] ?? '');
+    $response ??= $endpoint
+        ->handle($_SERVER['REQUEST_METHOD'] ?? 'GET', $body, $_SERVER['CONTENT_TYPE'] ?? '', $idioma);
 } catch (Throwable $e) {
     error_log('moderar.php: ' . $e);
-    $response = ['status' => 500, 'headers' => [], 'body' => ['error' => ['code' => 'error_interno', 'message' => 'No se pudo revisar el texto.']]];
+    $response = ModerationEndpoint::error(500, 'error_interno', $idioma, [], [], __DIR__ . '/../config/messages');
 }
 
 http_response_code($response['status']);

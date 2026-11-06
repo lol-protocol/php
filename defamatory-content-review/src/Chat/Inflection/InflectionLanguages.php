@@ -3,36 +3,40 @@
 namespace DefamatoryContentReview\Chat\Inflection;
 
 /**
- * Qué idiomas tienen reglas de flexión (TopicInflection) y cómo se etiquetan sus formas:
- * en los que declinan por casos (ruso, polaco…) toda forma distinta del lema es `infl`
- * (no se sabe si es plural); en los que solo declinan el adjetivo (alemán, nórdicos), el adjetivo.
+ * Qué idiomas tienen reglas de flexión (TopicInflection) y cómo se etiquetan sus formas, en una sola tabla
+ * `idioma => [clase, etiqueta]`. La etiqueta es la de toda forma distinta del lema: `null` si se distingue
+ * singular y plural (`sg`/`pl`, géneros del adjetivo); `infl` en los que declinan por casos (ruso, polaco…:
+ * no se sabe si es plural); `adj:infl` si solo el adjetivo se declina (alemán, nórdicos); `lig` en tagalo,
+ * donde la única forma nueva es el ligamento «-ng» («tangang»), que no es un caso ni un plural.
  */
 final class InflectionLanguages
 {
-    private const BY_LANGUAGE = [
-        'spa' => SpanishInflection::class, 'eng' => EnglishInflection::class, 'por' => PortugueseInflection::class,
-        'ita' => ItalianInflection::class, 'fra' => FrenchInflection::class, 'deu' => GermanInflection::class,
-        'nld' => DutchInflection::class, 'tur' => TurkishInflection::class, 'swe' => SwedishInflection::class,
-        'dan' => DanishInflection::class, 'nor' => NorwegianInflection::class, 'rus' => RussianInflection::class,
-        'ukr' => UkrainianInflection::class, 'pol' => PolishInflection::class, 'ces' => CzechInflection::class,
-        'slk' => SlovakInflection::class, 'bul' => BulgarianInflection::class, 'ron' => RomanianInflection::class,
-        'hun' => HungarianInflection::class, 'ell' => GreekInflection::class, 'heb' => HebrewInflection::class,
-        'fin' => FinnishInflection::class, 'ara' => ArabicInflection::class, 'hin' => HindiInflection::class, 'tgl' => TagalogInflection::class,
+    private const TABLE = [
+        'spa' => [SpanishInflection::class, null], 'eng' => [EnglishInflection::class, null], 'por' => [PortugueseInflection::class, null],
+        'ita' => [ItalianInflection::class, null], 'fra' => [FrenchInflection::class, null], 'tur' => [TurkishInflection::class, null],
+        'deu' => [GermanInflection::class, 'adj:infl'], 'nld' => [DutchInflection::class, 'adj:infl'], 'swe' => [SwedishInflection::class, 'adj:infl'],
+        'dan' => [DanishInflection::class, 'adj:infl'], 'nor' => [NorwegianInflection::class, 'adj:infl'],
+        'rus' => [RussianInflection::class, 'infl'], 'ukr' => [UkrainianInflection::class, 'infl'], 'pol' => [PolishInflection::class, 'infl'],
+        'ces' => [CzechInflection::class, 'infl'], 'slk' => [SlovakInflection::class, 'infl'], 'bul' => [BulgarianInflection::class, 'infl'],
+        'ron' => [RomanianInflection::class, 'infl'], 'hun' => [HungarianInflection::class, 'infl'], 'ell' => [GreekInflection::class, 'infl'],
+        'heb' => [HebrewInflection::class, 'infl'], 'isl' => [IcelandicInflection::class, 'infl'], 'fin' => [FinnishInflection::class, 'infl'],
+        'ara' => [ArabicInflection::class, 'infl'], 'hin' => [HindiInflection::class, 'infl'], 'tgl' => [TagalogInflection::class, 'lig'],
     ];
-    /** Sustantivo y adjetivo declinan por casos. */
-    private const CASES = ['rus', 'ukr', 'pol', 'ces', 'slk', 'bul', 'ron', 'hun', 'ell', 'heb', 'fin', 'ara', 'hin', 'tgl'];
-    /** Solo el adjetivo se declina sin cambiar de género. */
-    private const ADJECTIVE_ONLY = ['deu', 'nld', 'swe', 'dan', 'nor'];
 
     /** @return class-string<TopicInflection>|null */
     public static function classFor(string $language): ?string
     {
-        return self::BY_LANGUAGE[$language] ?? null;
+        return self::TABLE[$language][0] ?? null;
     }
 
-    /** ¿Las formas de este tipo se etiquetan todas `infl`? */
-    public static function inflects(string $language, string $kind): bool
+    /** La etiqueta de las formas distintas del lema de este tipo, o null si se etiquetan `sg`/`pl` según su número. */
+    public static function tagFor(string $language, string $kind): ?string
     {
-        return ($kind === 'adj' && in_array($language, self::ADJECTIVE_ONLY, true)) || (in_array($language, self::CASES, true) && $kind !== 'verb');
+        $tag = self::TABLE[$language][1] ?? null;
+        if ($kind === 'verb' || $tag === null) {
+            return null;
+        }
+
+        return $tag === 'adj:infl' ? ($kind === 'adj' ? 'infl' : null) : $tag;
     }
 }

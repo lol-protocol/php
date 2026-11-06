@@ -23,10 +23,10 @@ ud-stats contiene el stats.xml de cada treebank, con el nombre del treebank
 (UD_Spanish-AnCora.xml). Solo biblioteca estándar.
 """
 import argparse
-import csv
 import re
 from pathlib import Path
 
+from comun import escribir_dicts, filas_csv, leer_csv
 from generar_tabla import nivel_por_palabras, prefijo_ip
 
 AQUI = Path(__file__).resolve().parent
@@ -76,16 +76,13 @@ def palabras_masakhapos(carpeta):
 
 def paginas_web(ruta):
     """código ISO 639-3 -> porcentaje de páginas del rastreo CRAWL de Common Crawl."""
-    with Path(ruta).open(encoding="utf-8", newline="") as f:
-        return {fila["primary_language"]: float(fila["%pages/crawl"])
-                for fila in csv.DictReader(f) if fila["crawl"] == CRAWL}
+    return {fila["primary_language"]: float(fila["%pages/crawl"])
+            for fila in filas_csv(ruta) if fila["crawl"] == CRAWL}
 
 
 def escribir(ruta, columnas, filas):
-    with ruta.open("w", encoding="utf-8", newline="") as f:
-        escritor = csv.DictWriter(f, fieldnames=columnas)
-        escritor.writeheader()
-        escritor.writerows(filas)
+    """@deprecated desde noviembre de 2026: usa comun.escribir_dicts, que comparten todos los scripts."""
+    escribir_dicts(ruta, columnas, filas)
 
 
 def main(argv=None, carpeta=AQUI):
@@ -101,9 +98,7 @@ def main(argv=None, carpeta=AQUI):
         raise SystemExit(f"{args.common_crawl} no tiene el rastreo {CRAWL}")
 
     ruta = carpeta / "niveles_lenguas.csv"
-    with ruta.open(encoding="utf-8", newline="") as f:
-        lector = csv.DictReader(f)
-        columnas, lenguas = lector.fieldnames, list(lector)
+    columnas, lenguas = leer_csv(ruta)
     niveles = {}
     for fila in lenguas:
         codigos = fila["codigos"].split()
@@ -114,19 +109,17 @@ def main(argv=None, carpeta=AQUI):
         fila["paginas_web_pct"] = f"{sum(presentes):.4f}" if presentes else ""
         fila["nivel"] = str(nivel_por_palabras(palabras))
         niveles[fila["lengua"]] = int(fila["nivel"])
-    escribir(ruta, columnas, lenguas)
+    escribir_dicts(ruta, columnas, lenguas)
 
     ruta = carpeta / "paises_pos.csv"
-    with ruta.open(encoding="utf-8", newline="") as f:
-        lector = csv.DictReader(f)
-        columnas, paises = lector.fieldnames, list(lector)
+    columnas, paises = leer_csv(ruta)
     for fila in paises:
         lenguas_pais = [l.strip() for l in fila["idioma_principal"].split(";")]
         fila["indice_pos"] = str(max(niveles[l] for l in lenguas_pais))
         fila["indice_pos_local"] = str(niveles[lenguas_pais[0]])
         resto = PREFIJO.sub("", fila["comentarios_pos"])
         fila["comentarios_pos"] = (prefijo_ip(lenguas_pais, niveles) + " " + resto).strip()
-    escribir(ruta, columnas, paises)
+    escribir_dicts(ruta, columnas, paises)
 
     print(f"{len(lenguas)} lenguas; por nivel: "
           + ", ".join(f"{n}: {sum(1 for v in niveles.values() if v == n)}" for n in range(5, 0, -1)))

@@ -7,12 +7,13 @@ namespace App\Controllers;
 use App\Avisos;
 use App\Database;
 use App\Descarga;
-use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\FiltroDePeriodo;
+use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
+use App\ReglasDePago;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
@@ -20,18 +21,20 @@ use App\Repositories\IngresosYCobrosRepository;
 use App\Repositories\MonedaRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
-use App\Validacion;
 use App\View;
 use Generator;
 
 final class PagosController
 {
+    /** Por que no se anula un pago cuya boleta ya se anulo: la nota de credito ya devolvio lo cobrado. */
+    private const NO_SE_ANULA_UN_PAGO_DE_BOLETA_ANULADA = 'La boleta de este pago está anulada y ya tiene su nota de crédito: anularlo descontaría la plata dos veces.';
+
     public function index(): void
     {
         $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
         $filtros['avisos'] = [...Avisos::confirmaciones('pagos'), ...$filtros['avisos']];
-        $cliente = trim((string) ($_GET['cliente'] ?? ''));
+        $cliente = Filtros::texto('cliente');
         $pagina = Paginacion::pagina();
 
         $ingresosRepo = new IngresosYCobrosRepository();
@@ -60,7 +63,7 @@ final class PagosController
     public function exportar(): void
     {
         ['desde' => $desde, 'hasta' => $hasta] = FiltroDePeriodo::rangoActivo();
-        $cliente = trim((string) ($_GET['cliente'] ?? ''));
+        $cliente = Filtros::texto('cliente');
 
         Descarga::csv(
             'pagos',
@@ -107,11 +110,10 @@ final class PagosController
             if ($reenvio !== null) {
                 // Mismo formulario enviado otra vez (doble clic): el pago ya se
                 // registro. Sin esto se volvia a validar y a crear otro igual.
-                header('Location: ' . $reenvio);
-                exit;
+                Peticion::redirigir($reenvio);
             }
 
-            $monto = round((float) ($_POST['monto'] ?? 0), 2);
+            $monto = Peticion::monto();
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
             $boletaId = (int) ($_POST['boleta_id'] ?? 0);
@@ -146,11 +148,11 @@ final class PagosController
 
                     if ($clienteElegido === null) {
                         return ['error' => 'Elegí un cliente válido.'];
-                    } elseif (($errorDeCampos = self::errorDeLosCampos($fechaPago, $metodo, $monto, $moneda)) !== null) {
+                    } elseif (($errorDeCampos = ReglasDePago::errorDeLosCampos($fechaPago, $metodo, $monto, $moneda)) !== null) {
                         return ['error' => $errorDeCampos];
-                    } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
+                    } elseif ($boletaId > 0 && !ReglasDePago::boletaEsValidaParaCliente($boleta, $clienteId)) {
                         return ['error' => 'La boleta elegida no es válida para este cliente.'];
-                    } elseif ($boleta !== null && ($errorContraLaBoleta = self::errorContraLaBoleta($fechaPago, $monto, $boleta)) !== null) {
+                    } elseif ($boleta !== null && ($errorContraLaBoleta = ReglasDePago::errorContraLaBoleta($fechaPago, $monto, $boleta)) !== null) {
                         return ['error' => $errorContraLaBoleta];
                     }
 
@@ -176,8 +178,7 @@ final class PagosController
                 });
 
                 if (isset($resultado['redireccion'])) {
-                    header('Location: ' . $resultado['redireccion']);
-                    exit;
+                    Peticion::redirigir($resultado['redireccion']);
                 }
                 $error = $resultado['error'];
             }
@@ -195,122 +196,6 @@ final class PagosController
         ]);
     }
 
-    /**
-     * Una boleta solo es un origen valido para el pago de $clienteId si
-     * existe, es de ese mismo cliente y no esta anulada (evita registrar un
-     * cobro contra una boleta ajena o ya sin efecto).
-     */
-    public static function boletaEsValidaParaCliente(?array $boleta, int $clienteId): bool
-    {
-        return $boleta !== null && (int) $boleta['cliente_id'] === $clienteId && !$boleta['anulada'];
-    }
-
-    /** No se puede registrar un pago con fecha anterior a que la boleta fue emitida. */
-    public static function fechaPagoEsValida(string $fechaPago, array $boleta): bool
-    {
-        return $fechaPago >= $boleta['fecha_emision'];
-    }
-
-    /**
-     * Un pago cuya boleta ya fue anulada queda congelado: al anularla se
-     * emitio una nota de credito por lo que estaba cobrado en ese momento, y
-     * esa nota no se recalcula. Si despues se pudiera anular o editar el
-     * pago, la plata se contaria dos veces (el pago sale de la caja y la
-     * nota lo sigue devolviendo) o la devolucion quedaria corta. Es la regla
-     * simetrica de boletaEsValidaParaCliente(), que ya impide cargar un pago
-     * nuevo contra una boleta anulada.
-     */
-    public static function boletaAnuladaCongelaElPago(?array $boleta): bool
-    {
-        return $boleta !== null && (bool) $boleta['anulada'];
-    }
-
-    /**
-     * Un pago no puede pasarse del saldo, ni por un centavo. Se compara en
-     * centavos enteros (ver Dinero): el margen de un centavo que tenia antes
-     * evitaba que el ruido de la coma flotante rechazara pagar justo el saldo,
-     * pero dejaba cobrar un centavo de mas.
-     */
-    public static function montoNoSuperaElSaldo(float $monto, array $boleta): bool
-    {
-        return Dinero::centavos($monto) <= Dinero::centavos($boleta['saldo']);
-    }
-
-    /**
-     * Misma regla que montoNoSuperaElSaldo() pero al EDITAR un pago ya
-     * existente: BoletaRepository::porId() calcula el saldo restando todos
-     * los pagos vigentes de la boleta, este mismo pago incluido, asi que
-     * hay que sumarle de vuelta $montoViejo antes de comparar contra el
-     * monto nuevo (si no, el pago se estaria descontando a si mismo).
-     *
-     * Dejar el monto como estaba (o bajarlo) nunca se rechaza, ni en una boleta
-     * que ya estaba sobrecobrada, con saldo negativo: sin eso un pago de esa
-     * boleta no se podria editar ni para corregirle la fecha.
-     */
-    public static function montoNoSuperaElSaldoAlEditar(float $montoNuevo, array $boleta, float $montoViejo): bool
-    {
-        $viejo = Dinero::centavos($montoViejo);
-
-        return Dinero::centavos($montoNuevo) <= max($viejo, Dinero::centavos($boleta['saldo']) + $viejo);
-    }
-
-    /** El metodo tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
-    public static function metodoEsValido(string $metodo): bool
-    {
-        return array_key_exists($metodo, Etiquetas::metodosPago());
-    }
-
-    /**
-     * El primer error en los campos sueltos de un pago, o null si estan bien: los
-     * chequeos que comparten el alta y la edicion, con los mismos mensajes (antes
-     * escritos dos veces). Devuelve el mensaje y no un booleano porque el
-     * formulario lo muestra tal cual, igual que Validacion::primerTextoLargo().
-     *
-     * $moneda es la del pago: en una moneda sin decimales (yen, won) el monto tiene que ser entero.
-     * Sin ella solo se chequea el rango.
-     */
-    public static function errorDeLosCampos(string $fechaPago, string $metodo, float $monto, ?string $moneda = null): ?string
-    {
-        if (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
-            return 'Completá todos los campos con un monto válido.';
-        }
-        if ($moneda !== null && !Validacion::montoCabeEnLosDecimales($monto, MonedaRepository::decimales($moneda))) {
-            return sprintf('En %s los montos van sin decimales.', $moneda);
-        }
-        if (!self::metodoEsValido($metodo)) {
-            return 'Elegí un método de pago válido.';
-        }
-        if (!Validacion::fechaEsValida($fechaPago)) {
-            return 'La fecha de pago no es válida.';
-        }
-
-        return null;
-    }
-
-    /**
-     * El primer error de un pago contra su boleta, o null: la fecha no puede ser
-     * anterior a la emision y el monto no puede pasarse del saldo. Al editar se
-     * pasa $montoViejo, lo que el pago ya tenia, porque el saldo de la boleta ya
-     * lo descuenta (ver montoNoSuperaElSaldoAlEditar()); al dar de alta, null.
-     *
-     * @param array<string, mixed> $boleta
-     */
-    public static function errorContraLaBoleta(string $fechaPago, float $monto, array $boleta, ?float $montoViejo = null): ?string
-    {
-        if (!self::fechaPagoEsValida($fechaPago, $boleta)) {
-            return 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
-        }
-
-        $cabe = $montoViejo === null
-            ? self::montoNoSuperaElSaldo($monto, $boleta)
-            : self::montoNoSuperaElSaldoAlEditar($monto, $boleta, $montoViejo);
-        if (!$cabe) {
-            return 'El monto supera el saldo pendiente de la boleta.';
-        }
-
-        return null;
-    }
-
     public function editar(): void
     {
         $id = Peticion::id();
@@ -325,7 +210,7 @@ final class PagosController
 
         $boleta = $pago['boleta_id'] ? (new BoletaRepository())->porId($pago['boleta_id']) : null;
         if (Peticion::abortarSiConflicto(
-            self::boletaAnuladaCongelaElPago($boleta),
+            ReglasDePago::boletaAnuladaCongelaElPago($boleta),
             'La boleta de este pago está anulada y ya tiene su nota de crédito: editarlo descuadraría la devolución.'
         )) {
             return;
@@ -333,7 +218,7 @@ final class PagosController
 
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $monto = round((float) ($_POST['monto'] ?? 0), 2);
+            $monto = Peticion::monto();
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
 
@@ -352,11 +237,11 @@ final class PagosController
                 }
                 $boleta = $pago['boleta_id'] ? $boletaRepo->porId((int) $pago['boleta_id']) : null;
 
-                if ($pago['anulada'] || self::boletaAnuladaCongelaElPago($boleta)) {
+                if ($pago['anulada'] || ReglasDePago::boletaAnuladaCongelaElPago($boleta)) {
                     return 'El pago o su boleta fueron anulados mientras lo editabas.';
-                } elseif (($errorDeCampos = self::errorDeLosCampos($fechaPago, $metodo, $monto, $pago['moneda_codigo'])) !== null) {
+                } elseif (($errorDeCampos = ReglasDePago::errorDeLosCampos($fechaPago, $metodo, $monto, $pago['moneda_codigo'])) !== null) {
                     return $errorDeCampos;
-                } elseif ($boleta !== null && ($errorContraLaBoleta = self::errorContraLaBoleta($fechaPago, $monto, $boleta, (float) $pago['monto'])) !== null) {
+                } elseif ($boleta !== null && ($errorContraLaBoleta = ReglasDePago::errorContraLaBoleta($fechaPago, $monto, $boleta, (float) $pago['monto'])) !== null) {
                     return $errorContraLaBoleta;
                 }
 
@@ -368,8 +253,7 @@ final class PagosController
             });
 
             if ($resultado === null) {
-                header('Location: ?page=pagos&editado=' . $id);
-                exit;
+                Peticion::redirigir('?page=pagos&editado=' . $id);
             }
             $error = $resultado;
             $pago = array_merge($pago, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
@@ -394,8 +278,8 @@ final class PagosController
 
         $boleta = $pago['boleta_id'] ? (new BoletaRepository())->porId($pago['boleta_id']) : null;
         if (Peticion::abortarSiConflicto(
-            self::boletaAnuladaCongelaElPago($boleta),
-            'La boleta de este pago está anulada y ya tiene su nota de crédito: anularlo descontaría la plata dos veces.'
+            ReglasDePago::boletaAnuladaCongelaElPago($boleta),
+            self::NO_SE_ANULA_UN_PAGO_DE_BOLETA_ANULADA
         )) {
             return;
         }
@@ -412,7 +296,7 @@ final class PagosController
                 if ($pago['boleta_id']) {
                     $boletaRepo = new BoletaRepository();
                     $boletaRepo->bloquear((int) $pago['boleta_id']);
-                    if (self::boletaAnuladaCongelaElPago($boletaRepo->porId((int) $pago['boleta_id']))) {
+                    if (ReglasDePago::boletaAnuladaCongelaElPago($boletaRepo->porId((int) $pago['boleta_id']))) {
                         return true;
                     }
                 }
@@ -426,11 +310,10 @@ final class PagosController
                 ));
                 return false;
             });
-            if (Peticion::abortarSiConflicto($congelado, 'La boleta de este pago está anulada y ya tiene su nota de crédito: anularlo descontaría la plata dos veces.')) {
+            if (Peticion::abortarSiConflicto($congelado, self::NO_SE_ANULA_UN_PAGO_DE_BOLETA_ANULADA)) {
                 return;
             }
-            header('Location: ?page=pagos&anulado=' . $id);
-            exit;
+            Peticion::redirigir('?page=pagos&anulado=' . $id);
         }
 
         View::render('pagos/anulacion', [

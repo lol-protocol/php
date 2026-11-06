@@ -57,12 +57,13 @@ final class FusionRepository extends Repository
                         padre_id = COALESCE(padre_id, (SELECT d.padre_id FROM personas d WHERE d.id = ?)),
                         madre_id = COALESCE(madre_id, (SELECT d.madre_id FROM personas d WHERE d.id = ?)),
                         grupo_id = COALESCE(grupo_id, (SELECT d.grupo_id FROM personas d WHERE d.id = ?)),
-                        viva = COALESCE(viva, (SELECT d.viva FROM personas d WHERE d.id = ?))
+                        viva = COALESCE(viva, (SELECT d.viva FROM personas d WHERE d.id = ?)),
+                        actualizado_en = CURRENT_TIMESTAMP
                   WHERE id = ?',
                 [$duplicado, $duplicado, $duplicado, $duplicado, $vigente]
             );
-            $this->db->execute('UPDATE personas SET padre_id = ? WHERE padre_id = ?', [$vigente, $duplicado]);
-            $this->db->execute('UPDATE personas SET madre_id = ? WHERE madre_id = ?', [$vigente, $duplicado]);
+            $this->db->execute('UPDATE personas SET padre_id = ?, actualizado_en = CURRENT_TIMESTAMP WHERE padre_id = ?', [$vigente, $duplicado]);
+            $this->db->execute('UPDATE personas SET madre_id = ?, actualizado_en = CURRENT_TIMESTAMP WHERE madre_id = ?', [$vigente, $duplicado]);
 
             // A link both had (spouse of the same person) is kept once; a symmetric
             // one counts in either order, (Juan, Elena) is (Elena, Juan).

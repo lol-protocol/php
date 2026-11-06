@@ -41,7 +41,7 @@ use App\Repositories\NotaCreditoRepository;
 </div>
 
 <div class="panel">
-    <h2><?= htmlspecialchars(NotaCreditoRepository::ESTADOS[$estado]) ?> (<?= $totalNotas ?>)</h2>
+    <h2><?= e(NotaCreditoRepository::ESTADOS[$estado]) ?> (<?= $totalNotas ?>)</h2>
     <div class="table-wrap">
         <table>
             <thead>
@@ -50,16 +50,16 @@ use App\Repositories\NotaCreditoRepository;
             <tbody>
             <?php foreach ($notas as $n): ?>
                 <tr>
-                    <td><?= htmlspecialchars($n['fecha']) ?></td>
-                    <td><a href="?page=cliente&id=<?= (int) $n['cliente_id'] ?>"><?= htmlspecialchars($n['cliente']) ?></a></td>
+                    <td><?= e($n['fecha']) ?></td>
+                    <td><a href="?page=cliente&id=<?= (int) $n['cliente_id'] ?>"><?= e($n['cliente']) ?></a></td>
                     <td>Boleta #<?= (int) $n['boleta_id'] ?></td>
-                    <td><?= htmlspecialchars($n['motivo']) ?></td>
+                    <td><?= e($n['motivo']) ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $n['monto'], $n['moneda_codigo']) ?></td>
                     <td>
                         <?php if ($n['fecha_devolucion'] === null): ?>
                             <span class="badge pendiente">Pendiente</span>
                         <?php else: ?>
-                            <span class="badge pagada">Devuelta el <?= htmlspecialchars($n['fecha_devolucion']) ?></span>
+                            <span class="badge pagada">Devuelta el <?= e($n['fecha_devolucion']) ?></span>
                         <?php endif; ?>
                     </td>
                     <td class="acciones">

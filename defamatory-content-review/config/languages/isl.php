@@ -6,8 +6,8 @@
 
 return [
     'meta' => [
-        'code' => 'isl', 'iso639_1' => 'is', 'name' => 'Icelandic',
-        'nativeName' => 'Íslenska', 'family' => 'germanic', 'coverage' => 'basic',
+        'code' => 'isl',
+        'coverage' => 'basic',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

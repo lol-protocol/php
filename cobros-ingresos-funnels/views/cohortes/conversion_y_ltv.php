@@ -38,14 +38,15 @@ use App\Config;
                 <tr>
                     <td><?= etiqueta_de_mes($fila['cohorte']) ?></td>
                     <td class="num"><?= $total ?></td>
-                    <?php foreach (['m0', 'm1', 'm2', 'm3'] as $col): ?>
+                    <?php foreach (['m0' => 0, 'm1' => 1, 'm2' => 2, 'm3' => 3] as $col => $mesesNecesarios): ?>
                         <?php
+                        $definitivo = (int) $fila['meses_cerrados'] > $mesesNecesarios;   // la ventana de la columna ya termino
                         $valor = (int) $fila[$col];
                         $pct = $total > 0 ? $valor / $total * 100 : 0.0;
                         [$fondo, $texto] = color_celda_cohorte($pct);
                         ?>
-                        <td class="num cohorte-celda" style="background: <?= $fondo ?>; color: <?= $texto ?>;">
-                            <?= $valor ?> (<?= number_format($pct, 0) ?>%)
+                        <td class="num cohorte-celda" style="background: <?= $fondo ?>; color: <?= $texto ?>;"<?= $definitivo ? '' : ' title="Todavía no pasó el tiempo de esta columna: el dato puede seguir subiendo."' ?>>
+                            <?= $valor ?> (<?= number_format($pct, 0) ?>%)<?= $definitivo ? '' : ' *' ?>
                         </td>
                     <?php endforeach; ?>
                 </tr>
@@ -56,7 +57,7 @@ use App\Config;
             </tbody>
         </table>
     </div>
-    <p class="subtitulo" style="margin-top:14px;">"+1 mes", por ejemplo, es el % que ya había convertido a más tardar un mes después de su primera visita (acumulado, no solo ese mes).</p>
+    <p class="subtitulo" style="margin-top:14px;">"+1 mes", por ejemplo, es el % que ya había convertido a más tardar un mes después de su primera visita (acumulado, no solo ese mes). Un asterisco (*) marca que aún no pasó el tiempo de esa columna para esa cohorte: el dato puede seguir subiendo.</p>
 </div>
 
 <div class="panel">

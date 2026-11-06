@@ -1,0 +1,13 @@
+{
+  "name": "siluetas-ancestrales",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Generador de siluetas de frente de personas ancestrales, en JS y SVG, con un catálogo grande de ropa y un generador de prendas y colores.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test 'pruebas/*.test.js'",
+    "generar": "node bin/generar.js",
+    "comprobar": "node bin/generar.js --comprobar"
+  }
+}

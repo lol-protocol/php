@@ -7,10 +7,6 @@
 return [
     'meta' => [
         'code' => 'fra',
-        'iso639_1' => 'fr',
-        'name' => 'French',
-        'nativeName' => 'Français',
-        'family' => 'romance',
         'coverage' => 'comprehensive',
     ],
 

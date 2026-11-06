@@ -138,3 +138,23 @@ test("cached reference texts: list, read as Markdown/plain text, validate the sl
     assert.equal((await get(sandbox, `action=text&tld=xa&slug=${encodeURIComponent(slug)}`)).status, 400, `slug=${slug}`);
   }
 });
+
+test("a 304 for the list does not read the dataset: the validators come from the file alone", { skip }, async () => {
+  // index.json here is not even JSON: decoding it would fail, so only a 304 that never reads it can pass.
+  const broken = mkdtempSync(join(tmpdir(), "laws-api-304-"));
+  let server;
+  try {
+    cpSync(join(root, "api.php"), join(broken, "api.php"));
+    mkdirSync(join(broken, "jurisdictions"), { recursive: true });
+    writeFileSync(join(broken, "jurisdictions", "index.json"), "not json at all\n");
+    server = await startPhpServer(broken);
+    const head = await get(server, "action=jurisdictions", { method: "HEAD" });
+    const etag = head.headers.get("etag");
+    assert.ok(etag, "HEAD already carries the ETag");
+    const revalidated = await get(server, "action=jurisdictions", { headers: { "If-None-Match": etag } });
+    assert.equal(revalidated.status, 304);
+  } finally {
+    await server?.stop();
+    rmSync(broken, { recursive: true, force: true });
+  }
+});

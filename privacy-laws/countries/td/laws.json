@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
@@ -101,18 +101,6 @@
       }
     },
     "changes": [
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
-      {
-        "date": "2026-10-16",
-        "field": "row",
-        "from": "",
-        "to": "added"
-      },
       {
         "date": "2026-10-16",
         "field": "row",

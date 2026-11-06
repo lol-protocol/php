@@ -103,6 +103,14 @@ final class ValidacionTest extends TestCase
         self::assertTrue(Validacion::fechaEsValida('2024-02-29'), '2024 es bisiesto');
     }
 
+    public function testFechaNoEsFuturaAceptaHoyYElPasadoPeroNoManana(): void
+    {
+        self::assertTrue(Validacion::fechaNoEsFutura('2026-01-15', '2026-06-15'));
+        self::assertTrue(Validacion::fechaNoEsFutura('2026-06-15', '2026-06-15'), 'hoy vale');
+        self::assertFalse(Validacion::fechaNoEsFutura('2026-06-16', '2026-06-15'), 'mañana no');
+        self::assertFalse(Validacion::fechaNoEsFutura('2999-01-01'), 'sin $hoy se usa el dia real');
+    }
+
     public function testFechaEsValidaRechazaTextoSuelto(): void
     {
         self::assertFalse(Validacion::fechaEsValida('esto-no-es-una-fecha'));

@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'vie', 'iso639_1' => 'vi', 'name' => 'Vietnamese',
-        'nativeName' => 'Tiếng Việt', 'family' => 'austroasiatic', 'coverage' => 'moderate',
+        'code' => 'vie',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

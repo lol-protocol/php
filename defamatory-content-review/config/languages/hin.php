@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'hin', 'iso639_1' => 'hi', 'name' => 'Hindi',
-        'nativeName' => 'हिन्दी', 'family' => 'indo_aryan', 'coverage' => 'moderate',
+        'code' => 'hin',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

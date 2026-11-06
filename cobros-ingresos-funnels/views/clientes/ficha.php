@@ -19,7 +19,7 @@ $totalDevuelto = array_sum(array_column($notasCredito, 'monto'));
 $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelto;
 ?>
 
-<h1><?= htmlspecialchars($cliente['nombre']) ?></h1>
+<h1><?= e($cliente['nombre']) ?></h1>
 <p class="subtitulo"><a href="?page=clientes">&larr; Volver a Clientes</a></p>
 <?php include __DIR__ . '/../_avisos.php'; ?>
 <p class="acciones-ficha">
@@ -30,15 +30,15 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
 <div class="panel">
     <h2>Perfil</h2>
     <div class="perfil-grid">
-        <div class="campo"><span class="label">Email</span><span class="valor"><?= htmlspecialchars($cliente['email']) ?></span></div>
-        <div class="campo"><span class="label">País</span><span class="valor"><?= htmlspecialchars($cliente['pais_nombre']) ?></span></div>
-        <div class="campo"><span class="label">Ciudad</span><span class="valor"><?= htmlspecialchars($cliente['ciudad']) ?></span></div>
-        <div class="campo"><span class="label">Idioma</span><span class="valor"><?= htmlspecialchars($cliente['idioma']) ?></span></div>
-        <div class="campo"><span class="label">Género</span><span class="valor"><?= htmlspecialchars($cliente['genero']) ?></span></div>
+        <div class="campo"><span class="label">Email</span><span class="valor"><?= e($cliente['email']) ?></span></div>
+        <div class="campo"><span class="label">País</span><span class="valor"><?= e($cliente['pais_nombre']) ?></span></div>
+        <div class="campo"><span class="label">Ciudad</span><span class="valor"><?= e($cliente['ciudad']) ?></span></div>
+        <div class="campo"><span class="label">Idioma</span><span class="valor"><?= e($cliente['idioma']) ?></span></div>
+        <div class="campo"><span class="label">Género</span><span class="valor"><?= e($cliente['genero']) ?></span></div>
         <div class="campo"><span class="label">Edad</span><span class="valor"><?= $edad ?> años</span></div>
-        <div class="campo"><span class="label">Segmento</span><span class="valor"><?= htmlspecialchars($cliente['segmento']) ?></span></div>
-        <div class="campo"><span class="label">Cliente desde</span><span class="valor"><?= htmlspecialchars($cliente['fecha_alta']) ?></span></div>
-        <div class="campo"><span class="label">Moneda</span><span class="valor"><?= htmlspecialchars($cliente['moneda_codigo']) ?> (<?= htmlspecialchars($cliente['moneda_simbolo']) ?>)</span></div>
+        <div class="campo"><span class="label">Segmento</span><span class="valor"><?= e($cliente['segmento']) ?></span></div>
+        <div class="campo"><span class="label">Cliente desde</span><span class="valor"><?= e($cliente['fecha_alta']) ?></span></div>
+        <div class="campo"><span class="label">Moneda</span><span class="valor"><?= e($cliente['moneda_codigo']) ?> (<?= e($cliente['moneda_simbolo']) ?>)</span></div>
     </div>
 </div>
 
@@ -46,13 +46,13 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
 <div class="panel">
     <h2>Recorrido por el funnel</h2>
     <p class="subtitulo">
-        Llegó por canal <strong><?= htmlspecialchars(Etiquetas::canal($viajeFunnel['canal'])) ?></strong>.
+        Llegó por canal <strong><?= e(Etiquetas::canal($viajeFunnel['canal'])) ?></strong>.
     </p>
     <div class="perfil-grid">
-        <div class="campo"><span class="label">Visita</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_visita']) ?></span></div>
-        <div class="campo"><span class="label">Registro</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_registro'] ?? '—') ?></span></div>
-        <div class="campo"><span class="label">Lead</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_lead'] ?? '—') ?></span></div>
-        <div class="campo"><span class="label">Conversión</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_conversion'] ?? '—') ?></span></div>
+        <div class="campo"><span class="label">Visita</span><span class="valor"><?= e($viajeFunnel['fecha_visita']) ?></span></div>
+        <div class="campo"><span class="label">Registro</span><span class="valor"><?= e($viajeFunnel['fecha_registro'] ?? '—') ?></span></div>
+        <div class="campo"><span class="label">Lead</span><span class="valor"><?= e($viajeFunnel['fecha_lead'] ?? '—') ?></span></div>
+        <div class="campo"><span class="label">Conversión</span><span class="valor"><?= e($viajeFunnel['fecha_conversion'] ?? '—') ?></span></div>
     </div>
 </div>
 <?php endif; ?>
@@ -80,9 +80,9 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
             <tbody>
             <?php foreach ($boletas as $b): ?>
                 <tr>
-                    <td><?= htmlspecialchars($b['concepto']) ?></td>
-                    <td><?= htmlspecialchars($b['fecha_emision']) ?></td>
-                    <td><?= htmlspecialchars($b['fecha_vencimiento']) ?></td>
+                    <td><?= e($b['concepto']) ?></td>
+                    <td><?= e($b['fecha_emision']) ?></td>
+                    <td><?= e($b['fecha_vencimiento']) ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
                     <td><span class="badge <?= $b['estado'] ?>"><?= Etiquetas::estadoBoleta($b['estado']) ?></span></td>
@@ -106,8 +106,8 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
             <tbody>
             <?php foreach ($pagos as $p): ?>
                 <tr>
-                    <td><?= htmlspecialchars($p['fecha_pago']) ?></td>
-                    <td><?= htmlspecialchars(Etiquetas::metodoPago($p['metodo'])) ?></td>
+                    <td><?= e($p['fecha_pago']) ?></td>
+                    <td><?= e(Etiquetas::metodoPago($p['metodo'])) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
                     <td>
@@ -139,16 +139,16 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
             <tbody>
             <?php foreach ($notasCredito as $n): ?>
                 <tr>
-                    <td><?= htmlspecialchars($n['fecha']) ?></td>
+                    <td><?= e($n['fecha']) ?></td>
                     <td>Boleta #<?= (int) $n['boleta_id'] ?></td>
-                    <td><?= htmlspecialchars($n['motivo']) ?></td>
+                    <td><?= e($n['motivo']) ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $n['monto'], $n['moneda_codigo']) ?></td>
                     <td class="acciones">
                         <?php if ($n['fecha_devolucion'] === null): ?>
                             <span class="badge pendiente">Pendiente</span>
                             <a href="?page=nota-devolver&amp;id=<?= (int) $n['id'] ?>">Registrar devolución</a>
                         <?php else: ?>
-                            <span class="badge pagada">Devuelta el <?= htmlspecialchars($n['fecha_devolucion']) ?></span>
+                            <span class="badge pagada">Devuelta el <?= e($n['fecha_devolucion']) ?></span>
                         <?php endif; ?>
                     </td>
                 </tr>

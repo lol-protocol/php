@@ -169,7 +169,7 @@ Tao Te King,,Lao Tsé,siglo IV a. C.,china,libros-sagrados,96,,Edición de ejemp
 |---|---|
 | `titulo`, `autor` | Obligatorias: tienen que estar en los encabezados y llenas en cada fila. |
 | `paginas` | Número entero. Obligatoria salvo que la fila dé `lomo_mm`. |
-| `id` | Nombre de la carpeta del libro: minúsculas sin tilde, cifras y guiones. Si falta, sale del autor y el título (`marco-aurelio-meditaciones`). |
+| `id` | Nombre de la carpeta del libro: minúsculas sin tilde, cifras y guiones. Si falta, sale del autor y el título (`marco-aurelio-meditaciones`); si el título no tiene letras latinas (chino, árabe…), se le añade un sufijo sacado de él (`lao-tse-3f9a1c`), así que dos libros del mismo autor no chocan. |
 | `subtitulo`, `traductor`, `editorial`, `coleccion`, `isbn` | Como en el JSON. |
 | `epoca`, `tradicion`, `categoria`, `cita` | Ver «Clasificación y ficha». |
 | `contratapa`, `solapa_portada`, `solapa_contratapa` | Texto a mano; manda sobre la ficha. Un salto de línea doble separa párrafos. |
@@ -358,7 +358,7 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 ```
 bin/generar.php          línea de comandos
 src/Adornos/             un adorno por tradición, el Generico, los 27 Motivo de las categorías y los Trazos que comparten
-src/                     Libro (con Formato y Textos), Lista (CSV), Catalogo, Ficha, Nombres, Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
+src/                     Libro (con Formato y Textos), Lista (CSV), Catalogo, Ficha, Nombres, Numeros, TextoATrazos, Medidas, Texto, Medida (con FactorFijo y MedidaFuente), Anchos, Fuentes, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
 fuentes/                 las fuentes en trozos woff2 que se incrustan en los SVG, con sus licencias
 fuentes/trazos/          el contorno de cada letra de esos trozos (comprimido), para --trazos
 fuentes/extra/           los contornos de otras letras, de una fuente tuya (ver «Alfabetos sin fuente»)
@@ -370,7 +370,9 @@ herramientas/            preparar-fuentes.py (genera fuentes/, datos/fuentes.jso
 ejemplos/*.json          libros de ejemplo
 ejemplos/lista.csv       lista de ejemplo, con la ficha armada a partir de los datos
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
-pruebas/ejecutar.php     pruebas unitarias, sin dependencias
+pruebas/ejecutar.php     corre las pruebas, sin dependencias
+pruebas/temas/           las pruebas, por temas (libro, lista, fuentes, dibujos, color, texto)
+pruebas/ayudas.php       aserciones y funciones que comparten las pruebas
 pruebas/dibujos.json     huellas de los dibujos, para que no cambien sin querer
 ```
 

@@ -431,7 +431,8 @@ y `filtros_guardados`, que no dependen de `usuarios`/`acciones`) y
 `notas_acciones`, con `CHECK`/`FOREIGN KEY` según el tipo) son el DDL real que
 corre cada vez que se generan los datos —
 `datos/generador/cargar-postgres*.php`, orquestado desde `cargar-postgres.php`, dropea
-y recrea las tablas y carga todo dentro de una transacción. Los siete `cargar_*` arman
+y recrea las tablas y carga todo dentro de una transacción (el `DROP`/`CREATE` también: si la carga falla,
+vuelven las tablas de antes, y los JSON y el CSV de `datos/` se escriben solo después de cargar). Los siete `cargar_*` arman
 sus filas ("columna => valor", los nombres de las columnas junto a lo que reciben) y las
 insertan con `insertar_filas()` (`generador/insertar-filas.php`), en vez de repetir cada
 uno el `prepare`/bucle/`execute`. `preparar-postgres.sh`
@@ -442,8 +443,10 @@ correrlo de nuevo). Variables de entorno (con default si no están seteadas):
 `BACKOFFICE_BD_CLAVE` (`backoffice_dev_2026`).
 
 **Sembrar es destructivo.** Ese `DROP` alcanza a todas las tablas, también a las que el
-usuario escribe desde el panel (`notas_acciones`, `filtros_guardados`,
-`configuracion_alertas`) y al bloqueo de login (`intentos_login`). Por eso `ejecutar.sh`
+usuario escribe desde el panel (`notas_acciones`, su registro de auditoría
+`registro_notas`, `filtros_guardados`, `configuracion_alertas`) y al bloqueo de login
+(`intentos_login`). Así que **`--regenerar` también borra el registro de auditoría**: si
+hace falta conservarlo, expórtalo antes (`registro_notas` no tiene otra copia). Por eso `ejecutar.sh`
 no corre `generar-datos-semilla.php` directamente sino `sembrar-si-falta.php`
 (criterio en `datos/generador/base-sembrada.php`), que solo siembra si la base está
 vacía, si le falta alguna tabla de los esquemas (el esquema cambió desde la última vez;
@@ -516,8 +519,8 @@ php pruebas/ejecutar-php.php
 # con los datos semilla cargados (mismo framework, misma sintaxis assert_igual/verdadero)
 php pruebas/ejecutar-integracion.php
 
-# Análisis estático (PHPStan nivel 5, config en phpstan.neon.dist; lo corre la CI). Subirlo al 6 pide
-# describir de qué es cada array en los @param/@return (hoy unas 35 firmas): es el siguiente paso
+# Análisis estático (PHPStan nivel 6, config en phpstan.neon.dist; lo corre la CI). Es el mismo nivel que
+# url-routing, phone-directory y defamatory-content-review: cada array dice de qué es en el @param/@return
 phpstan analyse --no-progress
 
 # Unit tests de JS (node:test + node:assert, nativos de Node)

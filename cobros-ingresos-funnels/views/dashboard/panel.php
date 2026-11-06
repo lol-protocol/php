@@ -35,7 +35,7 @@ $coloresSegmento = [
 ];
 ?>
 
-<h1><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></h1>
+<h1><?= e(Config::NOMBRE_SISTEMA) ?></h1>
 <p class="subtitulo">Vista general de ingresos, cobros y conversión de usuarios a clientes.</p>
 <?php include __DIR__ . '/../_tasas_de_cambio.php'; ?>
 
@@ -131,11 +131,11 @@ $coloresSegmento = [
     <div class="grid grid-segmentos">
         <?php foreach ($segmentacion as $titulo => $filas): ?>
             <div class="subpanel">
-                <h3><?= htmlspecialchars($titulo) ?></h3>
+                <h3><?= e($titulo) ?></h3>
                 <?php $maxSeg = $filas ? max(1.0, ...array_column($filas, 'total_facturado')) : 1.0; ?>
                 <?php foreach ($filas as $fila): ?>
                     <div class="hbar-row compacto">
-                        <span class="hbar-label" title="<?= htmlspecialchars($fila['etiqueta']) ?>"><?= htmlspecialchars($fila['etiqueta']) ?></span>
+                        <span class="hbar-label" title="<?= e($fila['etiqueta']) ?>"><?= e($fila['etiqueta']) ?></span>
                         <span class="hbar-track">
                             <?= barra_svg(
                                 'hbar-fill',

@@ -77,6 +77,9 @@ Qué cambiar (el resto tiene un valor razonable; cada variable está explicada e
 | `LOG_FILE` | Una ruta que PHP-FPM pueda escribir, por ejemplo `/var/log/app/app.log` (el directorio hay que crearlo) |
 | `TRUSTED_PROXIES` | Solo si hay un proxy inverso delante: sus IP, para que el limitador de peticiones vea la IP real |
 | `DEBUG` | `false` |
+| `IDS_DIGITO_VERIFICADOR` | `false`, salvo que **todos** los ids de la base terminen en su dígito de verificación (`bin/id.php`). Se decide antes de abrir el sitio: ver [`URL_STRUCTURES.md`](./URL_STRUCTURES.md#dígito-verificador-opcional-se-decide-antes-de-abrir-el-sitio) |
+| `IDIOMAS_ACTIVOS` | Los subdominios de idioma que sirves (`spa,eng` por omisión). Cada idioma que agregues necesita su DNS y su certificado, y sus páginas ya escritas en ese idioma |
+| `URL_LOG_DIR` | Dónde se cuentan los 404 y 301 por la forma de la URL (nunca la URL). Por ejemplo `/var/lib/url-routing/urls` para conservar el historial; vacío usa el directorio temporal; `off` lo apaga. Se lee con `php bin/urls-informe.php` |
 
 Las variables del entorno real tienen prioridad sobre `.env`.
 

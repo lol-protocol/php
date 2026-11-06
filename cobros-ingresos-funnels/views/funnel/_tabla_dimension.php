@@ -3,7 +3,7 @@
 /** @var array $filas */
 ?>
 <div class="panel">
-    <h2><?= htmlspecialchars($titulo) ?></h2>
+    <h2><?= e($titulo) ?></h2>
     <div class="table-wrap">
         <table>
             <thead>
@@ -12,7 +12,7 @@
             <tbody>
             <?php foreach ($filas as $f): $tasa = $f['visitantes'] > 0 ? $f['clientes'] / $f['visitantes'] * 100 : 0; ?>
                 <tr>
-                    <td><?= htmlspecialchars($f['etiqueta']) ?></td>
+                    <td><?= e($f['etiqueta']) ?></td>
                     <td class="num"><?= $f['visitantes'] ?></td>
                     <td class="num"><?= $f['registrados'] ?></td>
                     <td class="num"><?= $f['leads'] ?></td>

@@ -245,7 +245,15 @@ Conventions the classes follow:
   `specs/technical_specifications.csv` (`validateForPrinting` judges a format by its own `recommended_dpi`:
   the low end is the recommended DPI and half of it the minimum). Without them, the general 20 mm margins and
   300/150 DPI apply.
-- **`search()` breaks ties** by exact name first, then alphabetically, so the order doesn't depend on the CSV files.
+- **Sizes are compared with the sheet turned or not**: `convert()` / `compare()` report no difference between
+  Ledger and Tabloid (`rotated: true`), and `validateDimensions(297, 210)` finds A4. Its units are `mm`, `cm`
+  and `in` / `inch` / `inches`; any other unit is reported (`isValid: false` and a message), not taken for mm.
+- **`findEquivalents()` lists a sheet once** (the same name and size from many countries is one entry, with the
+  first country that lists it) and looks a name up for each size it has.
+- **`generatePrintCSS()` and `generateHTML()` use the recommended margins** in the `@page` rule, and the print body
+  takes the printable area left inside them.
+- **`search()` ignores the punctuation around a word** (`(Letter)`, `Letter,`) and breaks ties
+  by exact name first, then alphabetically, so the order doesn't depend on the CSV files.
 - **Rows from `SpecificationManager` are frozen**: they are shared by every caller.
 - **Units**: `MM_PER_INCH`, `mmToInches()` and `inchesToMm()` are the one place for the factor;
   reports keep their fixed decimals as text (`"21.0"`), through `fixed()`.
@@ -384,12 +392,15 @@ the CSV parser, HTML escaping, the loaders and converters in `document-formats.j
 and checks every CSV file for rows with the wrong number of fields (usually
 an unquoted comma), duplicate entries, and mm/inch values that disagree.
 
-Three more tests keep the pieces in step:
+Two more tests keep the pieces in step:
 
 - `tests/coherence.test.js` checks that the importer reads every column of every CSV it loads
   (the ones it leaves out are listed with a reason), that its `INSERT`s only name columns of
   `database_schema.sql`, and that the examples in `api_reference.json` equal their CSV rows.
-  If a CSV changes, run `node generate_api_examples.js` to refresh them.
+  If a CSV changes, run `node generate_api_examples.js` to refresh them. It also checks that the
+  primary format of each country in `country_compatibility_guide.csv` is a catalog format name
+  (otherwise the importer left it empty) and that the tagline of every language gives the
+  number of countries in `countries_200_complete.csv`.
 - `tests/docs.test.js` checks that every JavaScript example in this README and in `docs/` is valid
   JavaScript and only calls methods the library has. It doesn't run them.
 

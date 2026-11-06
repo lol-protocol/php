@@ -30,8 +30,7 @@ final class China extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor; // el trazo tiene ancho: se resta para que todo quede dentro de `$radio`
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
 
         // Disco bi: dos círculos con un cuadrado girado entre ellos.
         return self::circulo($cx, $cy, $r, $color, $grosor)

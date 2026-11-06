@@ -42,7 +42,7 @@ function motivo_para_sembrar(PDO $pdo, string $dirDatos): ?string
     }
     if ($faltan !== []) {
         return 'el esquema cambió (faltan las tablas ' . implode(', ', $faltan) . '): se recrea todo, '
-            . 'y eso borra las notas, los filtros guardados y la configuración de alertas';
+            . 'y eso borra las notas y su registro de auditoría (registro_notas), los filtros guardados y la configuración de alertas';
     }
     if ((int) $pdo->query('SELECT COUNT(*) FROM acciones')->fetchColumn() === 0) {
         return 'no hay acciones cargadas';
@@ -56,7 +56,7 @@ function hay_que_sembrar(PDO $pdo, string $dirDatos): bool
     $motivo = motivo_para_sembrar($pdo, $dirDatos);
     if ($motivo === null) {
         fwrite(STDERR, "Los datos semilla ya están en PostgreSQL: no se vuelven a sembrar, así se conservan las notas, "
-            . "los filtros guardados y la configuración de alertas. Para recrearlos desde cero: ./ejecutar.sh --regenerar\n");
+            . "el registro de notas, los filtros guardados y la configuración de alertas. Para recrearlos desde cero: ./ejecutar.sh --regenerar\n");
         return false;
     }
     fwrite(STDERR, "Sembrando los datos: $motivo.\n");

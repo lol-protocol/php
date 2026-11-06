@@ -1,0 +1,107 @@
+name: Leyes - textos de las fuentes
+
+# A MANO (workflow_dispatch). Descarga el texto de las páginas de referencia de las leyes que elijas con
+# privacy-laws/scripts/cache-texts.php o copyright-laws/scripts/cache-texts.php (una petición por URL,
+# robots.txt respetado, solo texto: nunca HTML) y lo publica en una rama de datos:
+#
+#     datos/leyes-textos-privacy-laws   o   datos/leyes-textos-copyright-laws
+#
+# Para qué: el contenedor de las sesiones en la nube no llega a esos sitios y un runner sí, así que esa rama
+# permite leer las fuentes con `git fetch origin <rama>` y comprobar un dato contra ellas. La rama no tiene
+# historia común con master, nunca se fusiona y se reescribe entera en cada corrida (.github/scripts/publicar-textos.sh).
+# Son páginas de terceros, a veces guías de despachos: sirven para comprobar un dato, no son la fuente oficial.
+#
+# En un PR que toca estos archivos solo corre la prueba del script de publicación (remoto de juguete).
+on:
+  workflow_dispatch:
+    inputs:
+      modulo:
+        description: 'Módulo'
+        type: choice
+        options: [privacy-laws, copyright-laws]
+        default: privacy-laws
+      solo:
+        description: 'Códigos de las carpetas a descargar, separados por comas (p. ej. us,pe,br). Obligatorio: así no se baja todo sin querer'
+        type: string
+        required: true
+      forzar:
+        description: 'Volver a descargar aunque la página no haya cambiado'
+        type: boolean
+        default: false
+  pull_request:
+    paths:
+      - '.github/workflows/laws-textos-oficiales.yml'
+      - '.github/scripts/publicar-textos.sh'
+      - '.github/scripts/pruebas-publicar-textos.sh'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.modulo || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  probar:
+    name: prueba de publicar-textos.sh (remoto de juguete)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Probar el script
+        run: bash .github/scripts/pruebas-publicar-textos.sh
+
+  textos:
+    name: '${{ inputs.modulo }}: ${{ inputs.solo }}'
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    # contents: write solo para empujar la rama de datos (datos/leyes-textos-*), nunca otra.
+    permissions:
+      contents: write
+    env:
+      MODULO: ${{ inputs.modulo }}
+      SOLO: ${{ inputs.solo }}
+      FORZAR: ${{ inputs.forzar }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Las entradas llegan como texto y acaban en una línea de comandos: solo códigos de dos letras.
+      - name: Validar las entradas
+        run: |
+          if ! [[ "$SOLO" =~ ^[a-z]{2}(,[a-z]{2})*$ ]]; then
+            echo "::error::«solo» son códigos de dos letras separados por comas (p. ej. us,pe,br); llegó «$SOLO»"
+            exit 1
+          fi
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: curl, dom, mbstring, intl
+          coverage: none
+
+      - name: Descargar los textos
+        working-directory: ${{ inputs.modulo }}
+        run: |
+          args="--only=$SOLO"
+          if [ "$FORZAR" = true ]; then args="$args --force"; fi
+          php scripts/cache-texts.php $args | tee "$RUNNER_TEMP/cache-texts.log"
+          {
+            echo "### Textos de $MODULO ($SOLO)"
+            echo
+            echo '```'
+            tail -n 40 "$RUNNER_TEMP/cache-texts.log"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publicar en la rama de datos
+        run: >-
+          bash .github/scripts/publicar-textos.sh "$MODULO"
+          "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          "datos/leyes-textos-$MODULO"

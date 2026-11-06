@@ -203,3 +203,21 @@ test('the library and the importer derive the format type from the category in t
     const importer = Object.fromEntries([...php.matchAll(/'([^']+)'\s*=>\s*'([^']+)'/g)].map(m => [m[1], m[2]]));
     assert.deepEqual(TYPE_BY_CATEGORY, importer);
 });
+
+test('country_compatibility_guide.csv: the primary format of every country is a catalog format', () => {
+    const names = catalogNames();
+    rows('countries/country_compatibility_guide.csv').forEach((row, i) => {
+        // "Carta (Letter)/Oficio" lists alternatives; the first is the primary one (as import_database.php reads it).
+        const primary = row.primary_format.split('/')[0];
+        assert.ok(names.has(primary),
+            `country_compatibility_guide.csv line ${i + 2} (${row.country}): "${primary}" is not a catalog format name`);
+    });
+});
+
+test('the tagline of every language gives the country count the data has', () => {
+    const countries = rows('countries/countries_200_complete.csv').length;
+    for (const file of fs.readdirSync(path.join(ROOT, 'app/translations'))) {
+        const tagline = JSON.parse(read(`app/translations/${file}`)).header.tagline;
+        assert.ok(tagline.includes(String(countries)), `${file}: the tagline must mention ${countries} countries, got "${tagline}"`);
+    }
+});

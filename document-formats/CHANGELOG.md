@@ -5,6 +5,31 @@ carries the details. Dates are those of the merge.
 
 ## Unreleased
 
+- Fixed: `findEquivalents('A4')` listed "A4 ISO" about 30 times (one per country) and, for a name with two
+  sizes, looked up only one of them; it now works on rows like `closestTo()` and lists each sheet once.
+  `calculateSimilarity()` and `_calcSimilarity()` are marked `@deprecated` (nothing uses them now).
+- Fixed: `convert()` / `compare()` reported 152.4 mm of difference between Ledger and Tabloid, the same sheet
+  turned, next to 100 % alike; the turned sheet is compared in the orientation of the first (`rotated` says so).
+- Fixed: `validateDimensions(297, 210)` did not find A4, and a unit it didn't know (`'in'`, `'inches'`, a typo)
+  was taken for millimetres. It ignores orientation, knows `in` / `inches`, and reports an unknown unit.
+- Fixed: the search index kept punctuation on the words (`(letter)`, `letter,`), so searching `letter` missed
+  "Carta (Letter)"; the index and the query now strip it.
+- Fixed: `generatePrintCSS()` printed `3.4000000000000004cm` for an A7 and put 2 cm of padding inside a 2 cm page
+  margin; both outputs now use `getRecommendedMargins()` and the print body takes the printable area.
+- Fixed: `exportAsHTML()` returned a broken table when nothing matched, and cells could sit under another
+  column's header when rows had their keys in a different order.
+- Faster: `translateElement()` applied every descendant once per ancestor (an element five levels deep was
+  translated five times on each language change); it now applies each once.
+- Demo: one helper for the `lang="en"` mark, `fillSheetSelect()` built on `fillLabelledSelect()`, and the sheet
+  list built once and shared by the Browser and Paper Types tabs. `ScreenDeviceManager`'s unused `devices`
+  parameter is marked `@deprecated`.
+
+- Fixed: the tagline of the 30 languages said "more than 300 countries and territories"; the data has 197,
+  and now the tagline says so (a test compares it with `countries_200_complete.csv`).
+- Fixed: Mexico, Brazil and China had no primary format in `country_compatibility`, because the guide
+  wrote "Carta/Oficio", "Carta" and "16K" and the catalog calls them "Carta (Letter)", "Letter" and
+  "16K (Chinese)". The guide now uses the catalog names, the importer reports a name it cannot find in
+  `skipped`, and a test checks all of them.
 - Fixed: picking two languages quickly could leave the page in the first one when its file arrived
   last; `loadLanguage()` now ignores a stale answer.
 - Fixed: `getStats().totalTypes` was always 1, because the catalogs have no type column; the type now

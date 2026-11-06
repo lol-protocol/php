@@ -63,7 +63,7 @@ Folder names are ISO 3166-1 alpha-2 codes in lowercase (`eu`, `us`, `gb`, `br`�
 
 `jurisdictions/copyright_laws_master.csv` — one row per law. Columns:
 
-`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `protection_type` (`Copyright`, `Related rights`, `Database rights`, `Moral rights`) · `term_of_protection` (should read like `Author's life + 70 years`; the term filter and chart use the *life + N years* part) · `author_rights` · `moral_rights` · `orphan_works` · `digital_protection` · `fair_use_exceptions` · `registration_required` (`No`, `Yes` or `Not specified`, optionally followed by a note) · `enforcement_body` · `treaties_signatory` (confirmed memberships, `Berne/TRIPS/WCT`; allowed: Berne, TRIPS, WCT, WPPT) · `treaties_not_party` (treaties confirmed **not** joined, same values; a treaty in neither list is "not confirmed") · `linked_resources` (URL) · `notes` (optional caveats: disputed terms, pending amendments) · `pending_change` (a known upcoming change: bill, amendment, entry into force) · `pending_date` (`YYYY-MM-DD` when it is expected, optional) · `data_status` (`curated` original list, `researched` web research from secondary sources, `verified` checked against the official text) · `confidence` (`high`, `medium` or `low`; required unless curated) · `last_checked` (`YYYY-MM-DD`, required unless curated)
+`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `protection_type` (`Copyright`, `Related rights`, `Database rights`, `Moral rights`) · `term_of_protection` (should read like `Author's life + 70 years`; the term filter and chart use the *life + N years* part) · `author_rights` · `moral_rights` · `orphan_works` · `digital_protection` · `fair_use_exceptions` · `registration_required` (`No`, `Yes` or `Not specified`, optionally followed by a note) · `enforcement_body` · `treaties_signatory` (confirmed memberships, `Berne/TRIPS/WCT`; allowed: Berne, TRIPS, WCT, WPPT) · `treaties_not_party` (treaties confirmed **not** joined, same values; a treaty in neither list is "not confirmed") · `linked_resources` (URL, required: every row names its source) · `notes` (optional caveats: disputed terms, pending amendments) · `pending_change` (a known upcoming change: bill, amendment, entry into force) · `pending_date` (`YYYY-MM-DD` when it is expected, optional) · `data_status` (`curated` original list, `researched` web research from secondary sources, `verified` checked against the official text) · `confidence` (`high`, `medium` or `low`; required unless curated) · `last_checked` (`YYYY-MM-DD`, required unless curated: a curated row without a date only gives a warning until someone verifies it)
 
 Fields that contain a comma **must be quoted** (`"Law No. 9,610/1998"`). The tooling refuses rows with the wrong number of columns instead of guessing.
 
@@ -76,6 +76,8 @@ The full workflow, with the rules for sources and history, is in [CONTRIBUTING.m
 ```bash
 $EDITOR jurisdictions/copyright_laws_master.csv
 npm run changes       # records what changed since the last commit in changes.csv
+npm run replace-url -- <old> <new>   # swaps a dead reference URL in the master CSV and field_sources.csv (--dry to count)
+npm run apply-research -- findings.csv --batch=batch.txt   # writes researched facts (code,field,value,conf,source) as new rows / patched cells, each with its source
 npm run validate      # strict checks: columns, treaties, types, URLs, regions, duplicates…
 npm run build         # regenerates {tld}/ folders and index.json (idempotent)
 npm test              # also fails if generated files are out of date
@@ -110,11 +112,11 @@ Needs PHP with `curl`, `dom`, `mbstring` and `intl` (the last one keeps file nam
 MySQL 8.0 and MariaDB 10.11 (both are tested in CI).
 
 ```bash
-php import_database.php --all               # schema + import + validation
+php import_database.php --all --yes         # schema + import + validation (--yes: it drops the database)
 php tests/database_check.php                # compares every column of the database with the CSV
 ```
 
-Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `copyright_laws_db` database.** `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV.
+Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `copyright_laws_db` database, so they refuse to run without `--yes`** (before connecting). `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV, and a date that is not `YYYY-MM-DD` (or empty / `N/A`, which become `NULL`) stops the import with its line and column instead of turning into `NULL`. The importer code is shared with the other module in `leyes-comunes/importador-core.php`. Besides the laws it loads the three side files, `field_sources.csv` into `field_sources`, `changes.csv` into `law_changes` and `value_translations.csv` into `value_translations`, so the provenance, the history and the translations are in the database too; `tests/database_check.php` compares them with the CSVs row by row.
 
 ## Tests
 

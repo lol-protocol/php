@@ -21,12 +21,12 @@ final class TopicInflector
         return $class === null ? [$lemma] : (new $class())->forms($lemma, $kind);
     }
 
-    /** @return array<string,string> forma => rasgos: `sg`/`pl` (sustantivo), `m.sg`… `f.pl` (adjetivo), `infl` (adjetivo declinado), `verb` */
+    /** @return array<string,string> forma => rasgos: `sg`/`pl` (sustantivo), `m.sg`… `f.pl` (adjetivo), `infl` (declinado por casos), `lig` (ligamento del tagalo), `verb` */
     public static function tagged(string $language, string $lemma, string $kind, bool $diminutives = false): array
     {
         $forms = self::forms($language, $lemma, $kind);
         if ($kind === 'verb') { return array_fill_keys($forms, 'verb'); }
-        if (InflectionLanguages::inflects($language, $kind)) { return [$lemma => 'sg'] + array_fill_keys($forms, 'infl'); }
+        if (($tag = InflectionLanguages::tagFor($language, $kind)) !== null) { return [$lemma => 'sg'] + array_fill_keys($forms, $tag); }
         $masculine = $kind === 'adj' ? self::forms($language, $lemma, 'noun') : $forms;
         $feminine = array_values(array_diff($forms, $masculine));
         $gender = $feminine === [] ? '' : 'm.';

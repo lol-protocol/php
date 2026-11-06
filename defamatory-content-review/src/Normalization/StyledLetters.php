@@ -10,7 +10,8 @@ namespace DefamatoryContentReview\Normalization;
  */
 final class StyledLetters
 {
-    private const STYLED = '/[\x{FF01}-\x{FF5E}\x{1D400}-\x{1D6A3}\x{1D7CE}-\x{1D7FF}\x{1F130}-\x{1F189}]/u';
+    /** Letras en cuadros: sólo los tres bloques A–Z; los que quedan entre ellos («🅪», «🅫»…) son siglas, no letras. */
+    private const STYLED = '/[\x{FF01}-\x{FF5E}\x{1D400}-\x{1D6A3}\x{1D7CE}-\x{1D7FF}\x{1F130}-\x{1F149}\x{1F150}-\x{1F169}\x{1F170}-\x{1F189}]/u';
     /** Indicadores regionales sueltos: se ven como letras en cuadros. */
     private const REGIONAL = '/[\x{1F1E6}-\x{1F1FF}]+/u';
     /**

@@ -15,6 +15,8 @@ from pathlib import Path
 
 import yaml
 
+from modelo import autor_del_libro, obras_del_libro
+
 RAIZ = Path(__file__).resolve().parent.parent
 API = "https://gutendex.com/books/"
 
@@ -30,9 +32,11 @@ def consultar(busqueda):
     return libros
 
 
-def _fila(libro):
+def _fila(libro, autor):
+    """Fila del informe. «Coincide con» lista las obras del catálogo cuyo título se parece al del libro."""
     autores = "; ".join(f"{a['name']} ({a.get('birth_year')}–{a.get('death_year')})" for a in libro["authors"])
-    return f"| {libro['id']} | {libro['title']} | {', '.join(libro['languages'])} | {autores} |"
+    obras = ", ".join(o["titulo"] for o, ok in zip(autor["obras"], obras_del_libro(libro, autor)) if ok)
+    return f"| {libro['id']} | {libro['title']} | {', '.join(libro['languages'])} | {autores} | {obras} |"
 
 
 def informe(config, movimiento=None, buscar=consultar):
@@ -43,11 +47,12 @@ def informe(config, movimiento=None, buscar=consultar):
         if movimiento and mov["id"] != movimiento:
             continue
         for autor in mov["autores"]:
-            libros = buscar(autor["nombre"])
-            lineas += [f"## {autor['nombre']} ({mov['id']}/{autor['id']}) — {len(libros)} resultados", "",
+            todos = buscar(autor["nombre"])
+            libros = [b for b in todos if autor_del_libro(b, autor)]  # la búsqueda por nombre trae también a otros
+            lineas += [f"## {autor['nombre']} ({mov['id']}/{autor['id']}) — {len(libros)} del autor, {len(todos) - len(libros)} descartados", "",
                        "Obras de la taxonomía: " + (", ".join(o["titulo"] for o in autor["obras"]) or "(ninguna aún)"),
-                       "", "| id | título | idiomas | autores |", "|---|---|---|---|"]
-            lineas += [_fila(b) for b in libros] + [""]
+                       "", "| id | título | idiomas | autores | coincide con |", "|---|---|---|---|---|"]
+            lineas += [_fila(b, autor) for b in libros] + [""]
     return "\n".join(lineas) + "\n"
 
 

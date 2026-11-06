@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Siluetas ancestrales</title>
+<style>
+  :root { --fondo:#f4f0e6; --panel:#fffdf8; --tinta:#2b2620; --suave:#6e655a; --linea:#d9d1c0; --acento:#8a4b2a; }
+  @media (prefers-color-scheme: dark) { :root { --fondo:#1c1916; --panel:#26221e; --tinta:#efe8da; --suave:#a89f90; --linea:#3d3731; --acento:#e0a070; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--fondo); color:var(--tinta); font:15px/1.45 system-ui, sans-serif; }
+  header { padding:20px 16px 8px; max-width:1200px; margin:0 auto; }
+  h1 { margin:0 0 4px; font-size:1.5rem; }
+  header p { margin:0; color:var(--suave); max-width:70ch; }
+  main { display:grid; grid-template-columns: minmax(260px, 340px) 1fr; gap:20px; max-width:1200px; margin:0 auto; padding:16px; }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
+  fieldset { border:1px solid var(--linea); background:var(--panel); border-radius:10px; margin:0 0 12px; padding:10px 12px 12px; }
+  legend { padding:0 6px; font-weight:600; font-size:.85rem; color:var(--suave); }
+  label { display:block; margin:8px 0 2px; font-size:.85rem; color:var(--suave); }
+  select, input[type=number], input[type=text], input[type=range] { width:100%; font:inherit; padding:6px 8px; border:1px solid var(--linea); border-radius:6px; background:var(--fondo); color:var(--tinta); }
+  input[type=range] { padding:0; }
+  .fila { display:flex; gap:8px; } .fila > * { flex:1; }
+  button { font:inherit; padding:8px 12px; border-radius:8px; border:1px solid var(--acento); background:var(--acento); color:#fff; cursor:pointer; }
+  button.sec { background:transparent; color:var(--acento); }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline:3px solid var(--acento); outline-offset:1px; }
+  .escena { background:var(--panel); border:1px solid var(--linea); border-radius:12px; padding:12px; text-align:center; }
+  .escena svg { height:min(78vh, 760px); width:auto; max-width:100%; }
+  .info { margin:8px 0 0; color:var(--suave); font-size:.9rem; }
+  .paleta { display:flex; gap:6px; justify-content:center; margin:8px 0 0; flex-wrap:wrap; }
+  .paleta span { display:inline-flex; align-items:center; gap:6px; font-size:.78rem; color:var(--suave); }
+  .paleta i { width:18px; height:18px; border-radius:50%; border:1px solid var(--linea); display:inline-block; }
+  .acciones { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; justify-content:center; }
+  .mosaico { display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap:8px; margin-top:16px; }
+  .mosaico button { padding:4px; background:var(--panel); border:1px solid var(--linea); border-radius:8px; }
+  .mosaico svg { width:100%; height:auto; display:block; }
+  .nota { font-size:.8rem; color:var(--suave); margin-top:10px; }
+  .colores { display:grid; gap:6px; text-align:left; }
+  .colores div.p { background:var(--panel); border:1px solid var(--linea); border-radius:8px; padding:6px 10px; font-size:.85rem; }
+  .colores .chip { display:inline-flex; align-items:center; gap:5px; margin:2px 10px 2px 0; color:var(--suave); }
+  .chip i { width:14px; height:14px; border-radius:50%; border:1px solid var(--linea); display:inline-block; }
+  .barras { display:grid; gap:4px; text-align:left; margin-top:6px; }
+  .barra { display:grid; grid-template-columns: 150px 1fr 56px; align-items:center; gap:8px; font-size:.82rem; }
+  .barra b { display:block; height:14px; border-radius:3px; border:1px solid var(--linea); }
+  .barra span:last-child { text-align:right; color:var(--suave); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Siluetas ancestrales</h1>
+  <p>Personas de frente, como ilustración y no como fotografía, con un catálogo de ropa por región y época y un generador de ropa y colores nuevos. Misma semilla, misma persona.</p>
+</header>
+<main>
+  <div>
+    <fieldset><legend>Origen</legend>
+      <label for="etnia">Etnia o cultura</label><select id="etnia"></select>
+      <label for="etnia2">Mezclada con</label><select id="etnia2"></select>
+      <label for="anio">Año (negativo = antes de nuestra era)</label><input id="anio" type="number" min="-3500" max="2100" placeholder="cualquiera">
+      <p class="nota">Con una etnia se estiman región, atuendo, piel, cabello, peinado, barba y estatura. Lo que elijas a mano abajo manda sobre la estimación.</p>
+    </fieldset>
+    <fieldset><legend>Atuendo</legend>
+      <label for="modo">De dónde sale la ropa</label>
+      <select id="modo"><option value="catalogo">Del catálogo</option><option value="nueva">Ropa nueva (generada)</option><option value="medida">Vestuario a medida (prenda por prenda)</option></select>
+      <div id="grupo-catalogo">
+        <label for="region">Región</label><select id="region"></select>
+        <label for="atuendo">Atuendo</label><select id="atuendo"></select>
+      </div>
+      <div id="grupo-medida" hidden>
+        <p class="nota">Elige una prenda por cada ranura; los colores salen del catálogo de cada prenda (con su probabilidad) y cambian con «Otra semilla».</p>
+        <div id="selectores-medida"></div>
+      </div>
+      <div id="grupo-nueva" hidden>
+        <label for="estilo">Estilo</label>
+        <select id="estilo"><option>sobrio</option><option>trabajo</option><option>festivo</option><option>ceremonial</option></select>
+        <label for="esquema">Esquema de color</label>
+        <select id="esquema"><option value="">según el estilo</option><option>analogo</option><option>complementario</option><option>triada</option><option>monocromo</option><option>tierra</option><option>festivo</option></select>
+      </div>
+    </fieldset>
+    <fieldset><legend>Persona</legend>
+      <div class="fila"><div><label for="sexo">Sexo</label><select id="sexo"><option value="f">Mujer</option><option value="m">Hombre</option></select></div>
+      <div><label for="edad">Edad</label><input id="edad" type="number" min="2" max="100" value="32"></div></div>
+      <label for="corpulencia">Complexión</label>
+      <select id="corpulencia"><option value="delgada">Delgada</option><option value="media" selected>Media</option><option value="robusta">Robusta</option><option value="corpulenta">Corpulenta</option></select>
+      <label for="pose">Pose</label>
+      <select id="pose"><option value="casual" selected>Casual (cambia con la semilla)</option><option value="firme">Firme (simétrica)</option></select>
+      <label for="postura">Brazos caídos (solo en pose firme)</label>
+      <select id="postura"><option value="firme">Firme</option><option value="relajada">Relajada</option><option value="abierta">Abierta (muestra la ropa)</option></select>
+      <label for="saludo">Saludo</label>
+      <select id="saludo"><option value="derecha" selected>Mano derecha</option><option value="izquierda">Mano izquierda</option><option value="ninguno">Sin saludo</option></select>
+      <label for="piel">Piel</label><select id="piel"><option value="">Según el origen o el atuendo</option></select>
+    </fieldset>
+    <fieldset><legend>Cabeza</legend>
+      <label for="peinado">Peinado</label><select id="peinado"><option value="">Según el atuendo</option></select>
+      <label for="tocado">Tocado o sombrero</label><select id="tocado"><option value="">Según el atuendo</option></select>
+      <label for="barba">Barba</label><select id="barba"><option value="">Según el atuendo</option></select>
+    </fieldset>
+    <fieldset><legend>Dibujo</legend>
+      <label for="detalle">Detalle</label>
+      <select id="detalle"><option value="minimo">Plano</option><option value="medio" selected>Medio</option><option value="alto">Alto</option></select>
+      <label><input id="rasgos" type="checkbox"> Rasgos suaves en el rostro</label>
+      <label for="contorno">Bordes</label>
+      <select id="contorno"><option value="ninguno" selected>Sin bordes</option><option value="suave">Bordes suaves</option></select>
+      <label for="fondo">Fondo</label>
+      <select id="fondo"><option value="ninguno">Transparente</option><option value="#efe9dd" selected>Crema</option><option value="#c9d6d4">Verde agua</option><option value="#2f3a46">Pizarra</option></select>
+    </fieldset>
+    <div class="fila"><button id="otra" type="button">Otra semilla</button><button id="descargar" type="button" class="sec">Descargar SVG</button></div>
+    <p class="nota">Semilla: <output id="semilla">1</output>. Las prendas y los tintes son una aproximación histórica pensada para ilustrar, no un estudio de indumentaria.</p>
+  </div>
+  <div>
+    <div class="escena" id="escena" aria-live="polite"></div>
+    <p class="info" id="info"></p>
+    <ul class="info" id="estimaciones" style="text-align:left;max-width:70ch;margin:8px auto 0"></ul>
+    <div class="paleta" id="paleta"></div>
+    <h2 style="font-size:1rem;margin:20px 0 6px">Colores de la ropa de esta persona</h2>
+    <div id="colores-persona" class="colores"></div>
+    <h2 style="font-size:1rem;margin:20px 0 6px">Catálogo de colores por prenda</h2>
+    <div class="fila"><div><label for="prenda-catalogo">Prenda</label><select id="prenda-catalogo"></select></div><div><label for="rol-catalogo">Papel del color</label><select id="rol-catalogo"><option value="principal">Principal</option><option value="secundario">Secundario</option><option value="ribete">Ribete</option><option value="detalle">Detalle</option></select></div></div>
+    <p class="nota" id="nota-catalogo"></p>
+    <div id="barras" class="barras"></div>
+    <h2 style="font-size:1rem;margin:20px 0 0">Más variantes con las mismas opciones</h2>
+    <div class="mosaico" id="mosaico"></div>
+  </div>
+</main>
+<script src="dist/siluetas-ancestrales.js"></script>
+<script>
+(() => {
+  const S = window.SiluetasAncestrales;
+  const $ = (id) => document.getElementById(id);
+  let semilla = 1;
+  const regiones = S.REGIONES;
+  $('region').innerHTML = '<option value="">Todas</option>' + Object.entries(regiones).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+  const grupos = {};
+  for (const e of S.ETNIAS) (grupos[e.grupo] ||= []).push(e);
+  const opcionesEtnia = '<option value="">Ninguna (según el atuendo)</option>' + Object.entries(grupos).map(([g, lista]) => `<optgroup label="${g}">${lista.map((e) => `<option value="${e.id}">${e.nombre}${e.confianza === 'baja' ? ' (genérico)' : ''}</option>`).join('')}</optgroup>`).join('');
+  $('etnia').innerHTML = opcionesEtnia; $('etnia2').innerHTML = opcionesEtnia.replace('Ninguna (según el atuendo)', 'Nadie');
+  $('piel').innerHTML += S.PIELES.map((p) => `<option value="${p.hex}">${p.nombre}</option>`).join('');
+
+  const atuendosDe = () => S.ATUENDOS.filter((a) => (!$('region').value || a.region === $('region').value) && a.sexo === $('sexo').value);
+  function llenarAtuendos() {
+    const lista = atuendosDe();
+    const previo = $('atuendo').value;
+    $('atuendo').innerHTML = '<option value="">Cualquiera de la región</option>' + lista.map((a) => `<option value="${a.id}">${a.nombre} (${a.epoca[0]} a ${a.epoca[1]})</option>`).join('');
+    if (lista.some((a) => a.id === previo)) $('atuendo').value = previo;
+  }
+  function opciones(extra = {}) {
+    const o = { semilla, saludo: $('saludo').value, contorno: $('contorno').value, sexo: $('sexo').value, edad: Number($('edad').value) || 30, corpulencia: $('corpulencia').value, postura: $('postura').value,
+      detalle: $('detalle').value, rasgos: $('rasgos').checked, fondo: $('fondo').value, ...extra };
+    if ($('pose').value === 'firme') o.pose = 'firme';
+    if ($('piel').value) o.piel = $('piel').value;
+    if ($('anio').value !== '') o.anio = Number($('anio').value);
+    if ($('etnia').value) o.etnia = $('etnia2').value && $('etnia2').value !== $('etnia').value ? [$('etnia').value, $('etnia2').value] : $('etnia').value;
+    if ($('peinado').value) o.peinado = $('peinado').value;
+    if ($('tocado').value) o.tocado = $('tocado').value;
+    if ($('barba').value) o.barba = $('barba').value;
+    if ($('modo').value === 'medida') {
+      o.vestir = [...document.querySelectorAll('#selectores-medida select')].map((x) => x.value).filter(Boolean);
+      if ($('region').value) o.region = $('region').value;
+    } else if ($('modo').value === 'nueva') { o.ropaNueva = true; o.estilo = $('estilo').value; if ($('esquema').value) o.esquema = $('esquema').value; }
+    else { if ($('atuendo').value) o.atuendo = $('atuendo').value; else if ($('region').value) o.region = $('region').value; }
+    return o;
+  }
+  let ultimo = '';
+  function dibujar() {
+    $('semilla').textContent = semilla;
+    const persona = $('modo').value === 'nueva' ? S.generarPersonaConRopaNueva(opciones()) : S.generarPersona(opciones());
+    ultimo = S.renderizar(persona, { detalle: $('detalle').value, fondo: $('fondo').value, contorno: $('contorno').value });
+    $('escena').innerHTML = ultimo;
+    $('info').textContent = persona.descripcion;
+    const lista = $('estimaciones'); lista.innerHTML = '';
+    const extra = [`Confianza de la representación: ${persona.confianza}${persona.confianza === 'baja' ? ' (imagen genérica o muy simplificada: conviene revisarla con fuentes del propio pueblo)' : ''}.`, ...(persona.notas || []).map((n) => 'Nota: ' + n)];
+    for (const t of [...(persona.estimaciones || []), ...(persona.avisos || []).map((a) => 'Aviso: ' + a), ...extra]) { const li = document.createElement('li'); li.textContent = t; lista.appendChild(li); }
+    const nombres = persona.nombresPaleta;
+    $('paleta').innerHTML = ['A', 'B', 'C', 'D'].filter((l) => persona.paleta[l]).map((l) => `<span><i style="background:${persona.paleta[l]}"></i>${nombres ? nombres[l] ?? '' : persona.paleta[l]}</span>`).join('');
+    const cp = $('colores-persona'); cp.innerHTML = '';
+    for (const c of persona.coloresPrendas || []) {
+      const d = document.createElement('div'); d.className = 'p';
+      const t = document.createElement('strong'); t.textContent = c.nombre; d.appendChild(t); d.appendChild(document.createElement('br'));
+      for (const [rol, x] of Object.entries(c.roles)) {
+        const sp = document.createElement('span'); sp.className = 'chip';
+        const sw = S.TINTES_POR_ID[x.id]; const i = document.createElement('i'); i.style.background = sw ? sw.hex : '#ccc';
+        sp.appendChild(i); sp.appendChild(document.createTextNode(`${rol}: ${x.nombre}${x.pct == null ? '' : ' (' + x.pct + ' %)'}`)); d.appendChild(sp);
+      }
+      cp.appendChild(d);
+    }
+    const mos = $('mosaico'); mos.innerHTML = '';
+    for (let i = 1; i <= 12; i++) {
+      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', `Semilla ${semilla * 100 + i}`);
+      const o = opciones({ semilla: semilla * 100 + i, detalle: 'medio', fondo: 'ninguno' });
+      b.innerHTML = S.generarSVG(o);
+      b.addEventListener('click', () => { semilla = semilla * 100 + i; dibujar(); });
+      mos.appendChild(b);
+    }
+  }
+  for (const id of ['peinado', 'tocado', 'barba', 'etnia', 'etnia2', 'anio', 'saludo', 'pose', 'contorno', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
+  $('modo').addEventListener('change', () => { $('grupo-catalogo').hidden = $('modo').value !== 'catalogo'; $('grupo-nueva').hidden = $('modo').value !== 'nueva'; $('grupo-medida').hidden = $('modo').value !== 'medida'; });
+  $('region').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
+  $('sexo').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
+  $('otra').addEventListener('click', () => { semilla = Math.floor(Math.random() * 90000) + 2; dibujar(); });
+  $('descargar').addEventListener('click', () => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([ultimo], { type: 'image/svg+xml' }));
+    a.download = `silueta-${semilla}.svg`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+  // Vestuario a medida: un selector por ranura
+  const RANURAS = [['torso', 'Torso (camisa, vestido, blusa…)'], ['inferior', 'Pantalón o falda'], ['sobre', 'Chaqueta, abrigo o chaleco'], ['capa', 'Capa, manto o poncho'], ['faja', 'Faja o cinturón'], ['cuello', 'Cuello y collares'], ['calzado', 'Calzado'], ['accesorio', 'Accesorios']];
+  const predeterminadas = { torso: 'camisa-blanca', inferior: 'pantalon-vestir', calzado: 'zapatos-vestir' };
+  $('selectores-medida').innerHTML = RANURAS.map(([r, nombre]) => `<label for="med-${r}">${nombre}</label><select id="med-${r}"><option value="">Ninguna</option>${S.PRENDAS.filter((p) => p.ranura === r).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')).map((p) => `<option value="${p.id}"${predeterminadas[r] === p.id ? ' selected' : ''}>${p.nombre}</option>`).join('')}</select>`).join('');
+  for (const [r] of RANURAS) $(`med-${r}`).addEventListener('change', dibujar);
+  $('peinado').innerHTML += Object.keys(S.PEINADOS).map((x) => `<option value="${x}">${x}</option>`).join('');
+  $('tocado').innerHTML += Object.keys(S.TOCADOS).map((x) => `<option value="${x}">${x}</option>`).join('');
+  $('barba').innerHTML += Object.keys(S.BARBAS).map((x) => `<option value="${x}">${x}</option>`).join('');
+  // Catálogo de colores por prenda
+  const porRanura = {};
+  for (const p of S.PRENDAS) (porRanura[p.ranura] ||= []).push(p);
+  $('prenda-catalogo').innerHTML = Object.entries(porRanura).map(([r, l]) => `<optgroup label="${r}">${l.map((p) => `<option value="${p.id}">${p.nombre}</option>`).join('')}</optgroup>`).join('');
+  $('prenda-catalogo').value = 'pantalon-vaquero';
+  function barras() {
+    const anio = $('anio').value === '' ? undefined : Number($('anio').value);
+    const d = S.distribucionColor($('prenda-catalogo').value, $('rol-catalogo').value, { anio });
+    const cont = $('barras'); cont.innerHTML = '';
+    $('nota-catalogo').textContent = d.length ? (d[0].origen.startsWith('perfil') ? 'Colores propios de la prenda (' + d[0].origen + ').' : 'Esta prenda toma el color de la paleta del atuendo: el porcentaje sale del reparto entre los atuendos que la llevan.') + (anio === undefined ? '' : ' Solo tintes que existían en ' + anio + '.') : 'Esta prenda no usa ese papel de color.';
+    for (const x of d) {
+      const f = document.createElement('div'); f.className = 'barra';
+      const n = document.createElement('span'); n.textContent = x.nombre;
+      const w = document.createElement('div'); const b = document.createElement('b'); b.style.width = Math.max(2, x.pct) + '%'; b.style.background = x.hex; w.appendChild(b);
+      const pc = document.createElement('span'); pc.textContent = x.pct.toFixed(1) + ' %';
+      f.append(n, w, pc); cont.appendChild(f);
+    }
+  }
+  for (const id of ['prenda-catalogo', 'rol-catalogo', 'anio']) $(id).addEventListener('change', barras);
+  llenarAtuendos();
+  dibujar();
+  barras();
+})();
+</script>
+</body>
+</html>

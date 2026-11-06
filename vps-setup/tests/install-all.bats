@@ -153,6 +153,14 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     steps_run | grep -q 05-deploy-landing-page
     [[ "$output" == *"./04-setup-ssl.sh ejemplo.com a@ejemplo.com"* ]]
     ! grep -q 04-setup-ssl "$INSTALL_STATE_FILE"     # no queda como "hecho": --resume sin el flag lo correra
+    grep -q "08-healthcheck.sh ejemplo.com --sin-ssl" "$RUN_LOG"   # sin certificado, HTTPS fallaria siempre
+    [[ "$output" == *"http://ejemplo.com"* ]] && [[ "$output" != *"https://ejemplo.com"* ]]
+}
+
+@test "con SSL el healthcheck no lleva --sin-ssl y el resumen da las direcciones https" {
+    ia ejemplo.com a@ejemplo.com --yes
+    ! grep -q -- "--sin-ssl" "$RUN_LOG"
+    [[ "$output" == *"https://ejemplo.com"* ]]
 }
 
 @test "una sola corrida a la vez: con el candado tomado, otra corrida sale con error sin hacer nada" {

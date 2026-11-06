@@ -2,6 +2,7 @@
 
 namespace PhoneDirectory;
 
+use PhoneDirectory\Entity\JuridicalEntity;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 
 /**
@@ -29,7 +30,9 @@ use PhoneDirectory\Entity\PhoneDirectoryEntry;
  *    forgetting to say who is asking hides too much, never too little.
  *  - forOwner(): everything, for whoever holds the database (the command-line tool, a local analysis).
  *
- * Only natural persons are covered. A JuridicalEntity is a business, not a person.
+ * A business (JuridicalEntity) is not a person, but one named after a person ("Panadería Juan Pérez")
+ * gives that person's name, address and phone all the same: it is hidden on the same terms as a person
+ * when its name holds a given name (GivenNames), and shown otherwise (issue #233).
  */
 final class Privacy
 {
@@ -80,6 +83,30 @@ final class Privacy
         return $this->latestPublishableYear;
     }
 
+    /**
+     * The catalog's directories too recent to show, so a database can leave their rows out in SQL instead of
+     * fetching them to drop them here. Empty for the owner. Ids outside the catalog are not in it: their
+     * year comes from the id itself (PhoneDirectoryCatalog::yearOfDirectory), and mayBeAlive() still decides.
+     *
+     * @return list<string>
+     */
+    public function hiddenCatalogDirectories(): array
+    {
+        $latest = $this->latestPublishableYear;
+        if ($latest === null) {
+            return [];
+        }
+
+        $hidden = [];
+        foreach ($this->catalog->getAll() as $id => $directory) {
+            if ($directory['year'] > $latest) {
+                $hidden[] = $id;
+            }
+        }
+
+        return $hidden;
+    }
+
     /** Whether the person in this entry may still be alive, and so must not be shown. */
     public function mayBeAlive(PhoneDirectoryEntry $entry): bool
     {
@@ -91,6 +118,44 @@ final class Privacy
         $year = $this->catalog->yearOfDirectory($entry->getSourceDirectoryId());
 
         return $year === null || $year > $latest;
+    }
+
+    /**
+     * Whether this business is named after someone who may still be alive, and so must not be shown: its
+     * name (or legal name) holds a given name and its directory is not old enough, or has no known year.
+     */
+    public function mayNameALivingPerson(JuridicalEntity $business): bool
+    {
+        $latest = $this->latestPublishableYear;
+        if ($latest === null) {
+            return false;
+        }
+
+        if (!GivenNames::appearsIn($business->getBusinessName() . ' ' . ($business->getLegalName() ?? ''))) {
+            return false;
+        }
+
+        $year = $this->catalog->yearOfDirectory($business->getSourceDirectoryId());
+
+        return $year === null || $year > $latest;
+    }
+
+    /**
+     * The businesses that may be shown, in their order.
+     *
+     * @param iterable<JuridicalEntity> $businesses
+     * @return list<JuridicalEntity>
+     */
+    public function filterBusinesses(iterable $businesses): array
+    {
+        $shown = [];
+        foreach ($businesses as $business) {
+            if (!$this->mayNameALivingPerson($business)) {
+                $shown[] = $business;
+            }
+        }
+
+        return $shown;
     }
 
     public function allows(PhoneDirectoryEntry $entry): bool

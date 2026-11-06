@@ -34,8 +34,7 @@ final class Hebrea extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
         $svg = '';
         for ($i = 0; $i < 12; $i++) {
             $angulo = 30 * $i;

@@ -67,6 +67,10 @@ wait_http "$D_PHP" / 200
 check "una subida de 5 MB llega a PHP (sin limite seria 413)" bash -c "head -c 5000000 /dev/zero > /tmp/e2e-state/5mb && test \"\$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: $D_PHP' -F f=@/tmp/e2e-state/5mb http://127.0.0.1/)\" = 200"
 check "PHP acepta subidas de 20M (90-vps-setup-uploads.ini)" bash -c "php-fpm8.3 -i 2>/dev/null | grep -q 'upload_max_filesize => 20M' || grep -q 'upload_max_filesize = 20M' /etc/php/8.3/fpm/conf.d/90-vps-setup-uploads.ini"
 check "PHP-FPM ejecuta la pagina de prueba" bash -c "curl -s -H 'Host: $D_PHP' http://127.0.0.1/ | grep -q 'PHP-FPM + Nginx funcionando'"
+check "la carpeta es de app-$APP_PHP, grupo www-data, 750" test "$(stat -c '%U:%G:%a' /var/www/$APP_PHP)" = "app-$APP_PHP:www-data:750"
+check "el pool propio tiene su socket" test -S "/run/php/app-$APP_PHP.sock"
+check "el proceso PHP-FPM de la app corre como app-$APP_PHP (no www-data)" bash -c "curl -s -H 'Host: $D_PHP' http://127.0.0.1/ >/dev/null; pgrep -u app-$APP_PHP -f 'php-fpm: pool app-$APP_PHP' >/dev/null"
+check "otra app no lee el codigo de esta" bash -c "! sudo -u app-$APP_PY cat /var/www/$APP_PHP/index.php"
 
 step "App Python (06_B, servicio systemd real en el puerto $PY_PORT)"
 check "06_B termina bien" ./06_B-setup-python-app.sh "$APP_PY" "$D_PY" "$PY_PORT"

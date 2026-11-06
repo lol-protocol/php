@@ -247,3 +247,266 @@ Tecken för lojalitet och rättvisa: traditionen förknippar det med ärlighet, 
 Generös, uppriktig och kärleksfull.
 
 Tecken för generositet och livsglädje: traditionen förknippar det med uppriktighet, vänlighet och ett gott hjärta, men också med naivitet.
+
+## De 72 änglarna
+
+Ur Shem ha-Mephorash, det ”72-bokstaviga namnet” som kabbalan härleder ur 2 Mosebok 14:19–21. Varje ängel styr en period på ungefär 5 dagar i zodiaken. Endast kulturell referens.
+
+| # | Namn | Kör | Period | Egenskaper |
+| --- | --- | --- | --- | --- |
+| 1 | Vehuiah | Serafer | 21/03 – 25/03 | Vilja, begynnelser, energi |
+| 2 | Jeliel | Serafer | 26/03 – 30/03 | Kärlek, trohet, fred |
+| 3 | Sitael | Serafer | 31/03 – 04/04 | Byggande, skydd, ädelhet |
+| 4 | Elemiah | Serafer | 05/04 – 09/04 | Resor, hemligheter, skydd |
+| 5 | Mahasiah | Serafer | 10/04 – 14/04 | Harmoni, fred, lärande |
+| 6 | Lelahel | Serafer | 15/04 – 19/04 | Kärlek, helande, talang |
+| 7 | Achaiah | Serafer | 20/04 – 25/04 | Tålamod, hemligheter, natur |
+| 8 | Cahethel | Serafer | 26/04 – 30/04 | Välsignelse, jordbruk, skydd |
+| 9 | Haziel | Keruber | 01/05 – 05/05 | Barmhärtighet, förlåtelse, vänskap |
+| 10 | Aladiah | Keruber | 06/05 – 10/05 | Nåd, förlåtelse, helande |
+| 11 | Laoviah | Keruber | 11/05 – 15/05 | Berömmelse, seger, intelligens |
+| 12 | Hahaiah | Keruber | 16/05 – 20/05 | Tillflykt, skydd, drömmar |
+| 13 | Yesalel | Keruber | 21/05 – 26/05 | Försoning, trohet, vänskap |
+| 14 | Mebahel | Keruber | 27/05 – 31/05 | Rättvisa, sanning, befrielse |
+| 15 | Hariel | Keruber | 01/06 – 05/06 | Renhet, tro, befrielse |
+| 16 | Hekamiah | Keruber | 06/06 – 10/06 | Lojalitet, mod, skydd |
+| 17 | Lauviah | Troner | 11/06 – 15/06 | Seger, drömmar, uppenbarelse |
+| 18 | Caliel | Troner | 16/06 – 20/06 | Rättvisa, sanning, oskuld |
+| 19 | Leuviah | Troner | 21/06 – 26/06 | Minne, intelligens, tålamod |
+| 20 | Pahaliah | Troner | 27/06 – 02/07 | Kallelse, kyskhet, dygd |
+| 21 | Nelchael | Troner | 03/07 – 07/07 | Vetenskap, studier, skydd |
+| 22 | Yeiayel | Troner | 08/07 – 12/07 | Berömmelse, handel, resor |
+| 23 | Melahel | Troner | 13/07 – 17/07 | Helande, växter, skydd |
+| 24 | Haheuiah | Troner | 18/07 – 22/07 | Skydd, rättvisa, de landsflyktiga |
+| 25 | Nith-Haiah | Herradömen | 23/07 – 28/07 | Vishet, uppenbarelse, magi |
+| 26 | Haaiah | Herradömen | 29/07 – 02/08 | Diplomati, sanning, rättvisa |
+| 27 | Yerathel | Herradömen | 03/08 – 07/08 | Frihet, ljus, sanning |
+| 28 | Seheiah | Herradömen | 08/08 – 12/08 | Långt liv, hälsa, skydd |
+| 29 | Reiyel | Herradömen | 13/08 – 17/08 | Tro, frihet, vetenskap |
+| 30 | Omael | Herradömen | 18/08 – 22/08 | Fruktsamhet, tålamod, överflöd |
+| 31 | Lecabel | Herradömen | 23/08 – 28/08 | Talang, jordbruk, intelligens |
+| 32 | Vasariah | Herradömen | 29/08 – 02/09 | Mildhet, rättvisa, minne |
+| 33 | Yehuiah | Krafter | 03/09 – 07/09 | Trohet, lojalitet, omdöme |
+| 34 | Lehahiah | Krafter | 08/09 – 12/09 | Lydnad, lycka, fred |
+| 35 | Chavakiah | Krafter | 13/09 – 17/09 | Försoning, arv, harmoni |
+| 36 | Menadel | Krafter | 18/09 – 22/09 | Arbete, trohet, befrielse |
+| 37 | Aniel | Krafter | 23/09 – 27/09 | Vetenskap, seger, vishet |
+| 38 | Haamiah | Krafter | 28/09 – 02/10 | Sanning, skydd, tro |
+| 39 | Rehael | Krafter | 03/10 – 07/10 | Hälsa, långt liv, lydnad |
+| 40 | Ieiazel | Krafter | 08/10 – 12/10 | Tröst, befrielse, konster |
+| 41 | Hahahel | Makter | 13/10 – 17/10 | Tro, kallelse, skydd |
+| 42 | Mikael | Makter | 18/10 – 22/10 | Ordning, resor, skydd |
+| 43 | Veuliah | Makter | 23/10 – 27/10 | Välstånd, fred, överflöd |
+| 44 | Yelahiah | Makter | 28/10 – 01/11 | Rättvisa, mod, skydd |
+| 45 | Sealiah | Makter | 02/11 – 06/11 | Livsmod, energi, vilja |
+| 46 | Ariel | Makter | 07/11 – 11/11 | Varseblivning, uppenbarelse, intuition |
+| 47 | Asaliah | Makter | 12/11 – 16/11 | Kontemplation, sanning, rättvisa |
+| 48 | Mihael | Makter | 17/11 – 21/11 | Fruktsamhet, kärlek, harmoni |
+| 49 | Vehuel | Furstendömen | 22/11 – 26/11 | Storhet, beundran, upphöjelse |
+| 50 | Daniel | Furstendömen | 27/11 – 01/12 | Vältalighet, rättvisa, råd |
+| 51 | Hahasiah | Furstendömen | 02/12 – 06/12 | Vishet, helande, hemligheter |
+| 52 | Imamiah | Furstendömen | 07/12 – 11/12 | Befrielse, resor, skydd |
+| 53 | Nanael | Furstendömen | 12/12 – 16/12 | Studier, diplomati, kommunikation |
+| 54 | Nithael | Furstendömen | 17/12 – 21/12 | Långt liv, stabilitet, nåd |
+| 55 | Mebahiah | Furstendömen | 22/12 – 26/12 | Tröst, klarsyn, dygd |
+| 56 | Poyel | Furstendömen | 27/12 – 31/12 | Lycka, stöd, framgång |
+| 57 | Nemamiah | Ärkeänglar | 01/01 – 05/01 | Välstånd, framgång, befrielse |
+| 58 | Yeialel | Ärkeänglar | 06/01 – 10/01 | Mod, helande, sinnesro |
+| 59 | Harahel | Ärkeänglar | 11/01 – 15/01 | Rikedom, litteratur, studier |
+| 60 | Mitzrael | Ärkeänglar | 16/01 – 19/01 | Sinnesro, trohet, helande |
+| 61 | Umabel | Ärkeänglar | 20/01 – 24/01 | Vänskap, samhörighet, astronomi |
+| 62 | Iah-Hel | Ärkeänglar | 25/01 – 29/01 | Vishet, filosofi, sinnesro |
+| 63 | Anauel | Ärkeänglar | 30/01 – 03/02 | Enighet, handel, välstånd |
+| 64 | Mehiel | Ärkeänglar | 04/02 – 08/02 | Inspiration, skrivande, skydd |
+| 65 | Damabiah | Änglar | 09/02 – 13/02 | Vishet, skydd, hav |
+| 66 | Manakel | Änglar | 14/02 – 18/02 | Medkänsla, drömmar, välbefinnande |
+| 67 | Eyael | Änglar | 19/02 – 23/02 | Förvandling, försoning, långt liv |
+| 68 | Habuhiah | Änglar | 24/02 – 28/02 | Helande, fruktsamhet, jordbruk |
+| 69 | Rochel | Änglar | 01/03 – 05/03 | Rättvisa, upprättelse, sanning |
+| 70 | Yabamiah | Änglar | 06/03 – 10/03 | Förnyelse, alkemi, skapelse |
+| 71 | Haiaiel | Änglar | 11/03 – 15/03 | Skydd, seger, mod |
+| 72 | Mumiah | Änglar | 16/03 – 20/03 | Fullbordan, pånyttfödelse, välbefinnande |
+
+## De 72 demonerna
+
+Ur Goetia (1600-talet), en trollbok som inte ingår i Bibeln. Varje ande delar perioden med ängeln som har samma nummer. Endast kulturell referens.
+
+| # | Namn | Rang | Legioner | Period | Egenskaper |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Bael | Kung | 66 | 21/03 – 25/03 | Osynlighet, vishet |
+| 2 | Agares | Hertig | 31 | 26/03 – 30/03 | Språk, flyktingar, jordbävningar |
+| 3 | Vassago | Prins | — | 31/03 – 04/04 | Det förflutna och framtiden, förlorade föremål |
+| 4 | Samigina | Markis | 30 | 05/04 – 09/04 | De fria konsterna, de dödas själar |
+| 5 | Marbas | President | 36 | 10/04 – 14/04 | Hemligheter, sjukdomar, helande, mekaniska konster |
+| 6 | Valefor | Hertig | 10 | 15/04 – 19/04 | Följeslagare av andar, stöld |
+| 7 | Amon | Markis | 40 | 20/04 – 25/04 | Det förflutna och framtiden, försoning, fiendskap |
+| 8 | Barbatos | Hertig | 30 | 26/04 – 30/04 | Djurens språk, skatter, försoning |
+| 9 | Paimon | Kung | 200 | 01/05 – 05/05 | Vetenskaper, konster, hemligheter, värdigheter |
+| 10 | Buer | President | 50 | 06/05 – 10/05 | Filosofi, växter, helande, följeslagare av andar |
+| 11 | Gusion | Hertig | 40 | 11/05 – 15/05 | Det förflutna och framtiden, försoning, hedersbetygelser |
+| 12 | Sitri | Prins | 60 | 16/05 – 20/05 | Kärlek, begär, hemligheter |
+| 13 | Beleth | Kung | 85 | 21/05 – 26/05 | Kärlek, begär |
+| 14 | Leraje | Markis | 30 | 27/05 – 31/05 | Konflikter, sår |
+| 15 | Eligos | Hertig | 60 | 01/06 – 05/06 | Krig, det förflutna och framtiden, ynnest |
+| 16 | Zepar | Hertig | 26 | 06/06 – 10/06 | Kärlek, ofruktsamhet |
+| 17 | Botis | President / Greve | 60 | 11/06 – 15/06 | Det förflutna och framtiden, försoning |
+| 18 | Bathin | Hertig | 30 | 16/06 – 20/06 | Växter, ädelstenar, snabba förflyttningar |
+| 19 | Sallos | Hertig | 30 | 21/06 – 26/06 | Kärlek |
+| 20 | Purson | Kung | 22 | 27/06 – 02/07 | Skatter, det förflutna och framtiden, följeslagare av andar |
+| 21 | Marax | President / Greve | 30 | 03/07 – 07/07 | Astronomi, de fria konsterna, växter |
+| 22 | Ipos | Greve / Prins | 36 | 08/07 – 12/07 | Det förflutna och framtiden, mod, kvickhet |
+| 23 | Aim | Hertig | 26 | 13/07 – 17/07 | Bränder, kvickhet, hemligheter |
+| 24 | Naberius | Markis | 19 | 18/07 – 22/07 | Retorik, konster, hedersbetygelser |
+| 25 | Glasya-Labolas | President / Greve | 36 | 23/07 – 28/07 | Vetenskaper, våld, det förflutna och framtiden, osynlighet |
+| 26 | Bune | Hertig | 30 | 29/07 – 02/08 | Rikedom, vältalighet, döda |
+| 27 | Ronove | Markis / Greve | 19 | 03/08 – 07/08 | Retorik, språk, ynnest |
+| 28 | Berith | Hertig | 26 | 08/08 – 12/08 | Alkemi, hedersbetygelser, det förflutna och framtiden |
+| 29 | Astaroth | Hertig | 40 | 13/08 – 17/08 | Det förflutna och framtiden, de fria konsterna, hemligheter |
+| 30 | Forneus | Markis | 29 | 18/08 – 22/08 | Retorik, språk, rykte |
+| 31 | Foras | President | 29 | 23/08 – 28/08 | Växter, logik, etik |
+| 32 | Asmoday | Kung | 72 | 29/08 – 02/09 | Matematik, astronomi, osynlighet, skatter |
+| 33 | Gaap | President / Prins | 66 | 03/09 – 07/09 | Filosofi, de fria konsterna, kärlek, fiendskap, snabba förflyttningar |
+| 34 | Furfur | Greve | 26 | 08/09 – 12/09 | Kärlek, stormar, hemligheter |
+| 35 | Marchosias | Markis | 30 | 13/09 – 17/09 | Strid, sanning |
+| 36 | Stolas | Prins | 26 | 18/09 – 22/09 | Astronomi, växter, ädelstenar |
+| 37 | Phenex | Markis | 20 | 23/09 – 27/09 | Poesi, vetenskaper |
+| 38 | Halphas | Greve | 26 | 28/09 – 02/10 | Fästningar, krig, vapen |
+| 39 | Malphas | President | 40 | 03/10 – 07/10 | Byggande, bedrägeri |
+| 40 | Raum | Greve | 30 | 08/10 – 12/10 | Stöld, förstörelse, det förflutna och framtiden |
+| 41 | Focalor | Hertig | 30 | 13/10 – 17/10 | Hav, vindar, skeppsbrott |
+| 42 | Vepar | Hertig | 29 | 18/10 – 22/10 | Hav, stormar, sår |
+| 43 | Sabnock | Markis | 50 | 23/10 – 27/10 | Fästningar, sår, följeslagare av andar |
+| 44 | Shax | Markis | 30 | 28/10 – 01/11 | Blindhet, dövhet, stöld |
+| 45 | Vine | Kung / Greve | 36 | 02/11 – 06/11 | Häxkonst, stormar, fästningar |
+| 46 | Bifrons | Greve | 6 | 07/11 – 11/11 | Astrologi, matematik, växter, döda |
+| 47 | Vual | Hertig | 37 | 12/11 – 16/11 | Kärlek, vänskap, det förflutna och framtiden |
+| 48 | Haagenti | President | 33 | 17/11 – 21/11 | Förvandling, vishet, alkemi |
+| 49 | Crocell | Hertig | 48 | 22/11 – 26/11 | Matematik, konster, vatten |
+| 50 | Furcas | Riddare | 20 | 27/11 – 01/12 | Filosofi, astrologi, handtydning |
+| 51 | Balam | Kung | 40 | 02/12 – 06/12 | Det förflutna och framtiden, osynlighet, kvickhet |
+| 52 | Alloces | Hertig | 36 | 07/12 – 11/12 | Astronomi, de fria konsterna |
+| 53 | Caim | President | 30 | 12/12 – 16/12 | Djurens språk, det förflutna och framtiden |
+| 54 | Murmur | Hertig / Greve | 30 | 17/12 – 21/12 | Musik, filosofi, de dödas själar |
+| 55 | Orobas | Prins | 20 | 22/12 – 26/12 | Det förflutna och framtiden, ynnest, lojalitet |
+| 56 | Gremory | Hertig | 26 | 27/12 – 31/12 | Skatter, kärlek, det förflutna och framtiden |
+| 57 | Ose | President | 3 | 01/01 – 05/01 | De fria konsterna, förvandling, galenskap |
+| 58 | Amy | President | 36 | 06/01 – 10/01 | Astrologi, de fria konsterna, skatter |
+| 59 | Orias | Markis | 30 | 11/01 – 15/01 | Astrologi, förvandling, hedersbetygelser |
+| 60 | Vapula | Hertig | 36 | 16/01 – 19/01 | Mekaniska konster, filosofi, vetenskaper |
+| 61 | Zagan | Kung / President | 33 | 20/01 – 24/01 | Förvandling, kvickhet |
+| 62 | Valac | President | 30 | 25/01 – 29/01 | Skatter, ormar |
+| 63 | Andras | Markis | 30 | 30/01 – 03/02 | Split, våld |
+| 64 | Flauros | Hertig | 20 | 04/02 – 08/02 | Det förflutna och framtiden, eld |
+| 65 | Andrealphus | Markis | 30 | 09/02 – 13/02 | Matematik, astronomi, förvandling |
+| 66 | Kimaris | Markis | 20 | 14/02 – 18/02 | Retorik, logik, förlorade föremål |
+| 67 | Amdusias | Hertig | 29 | 19/02 – 23/02 | Musik, träd |
+| 68 | Belial | Kung | 50 | 24/02 – 28/02 | Ynnest, värdigheter, följeslagare av andar |
+| 69 | Decarabia | Markis | 30 | 01/03 – 05/03 | Fåglar, ädelstenar, växter |
+| 70 | Seere | Prins | 26 | 06/03 – 10/03 | Snabba förflyttningar, stöld, förlorade föremål |
+| 71 | Dantalion | Hertig | 36 | 11/03 – 15/03 | Tankar, vetenskaper, kärlek |
+| 72 | Andromalius | Greve | 36 | 16/03 – 20/03 | Förlorade föremål, skatter, tjuvar |
+
+## Keltisk trädkalender
+
+En kalender med 13 månader om 28 dagar, en per träd (den 23 december står för sig). Poeten Robert Graves hittade på den 1948 utifrån ogham-alfabetet; den är ingen forntida keltisk kalender. Endast kulturell referens.
+
+| # | Träd | Vetenskapligt namn | Ogham | Period | Drag |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Björk | *Betula pendula* | Beth | 24/12 – 20/01 | Begynnelser, renhet, pånyttfödelse |
+| 2 | Rönn | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Skydd, intuition, varseblivning |
+| 3 | Ask | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Enighet, kommunikation, skapelse |
+| 4 | Al | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Mod, omdöme, stabilitet |
+| 5 | Pil | *Salix alba* | Saille | 15/04 – 12/05 | Intuition, drömmar, helande |
+| 6 | Hagtorn | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Fruktsamhet, tålamod, skydd |
+| 7 | Ek | *Quercus robur* | Duir | 10/06 – 07/07 | Styrka, uthållighet i motgång, ädelhet |
+| 8 | Järnek | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Balans, mod, rättvisa |
+| 9 | Hassel | *Corylus avellana* | Coll | 05/08 – 01/09 | Vishet, inspiration, studier |
+| 10 | Vinranka | *Vitis vinifera* | Muin | 02/09 – 29/09 | Glädje, överflöd, inspiration |
+| 11 | Murgröna | *Hedera helix* | Gort | 30/09 – 27/10 | Trohet, uthållighet, skydd |
+| 12 | Vass | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Sanning, ordning, vilja |
+| 13 | Fläder | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Förvandling, fullbordan, pånyttfödelse |
+
+Den 23 december ligger utanför de 13 månaderna: det är ”årets dag”, utan träd.
+
+## Trädhoroskop
+
+Ett populärt horoskop med 21 träd, som framställs som druidiskt eller galliskt men är en modern skapelse. Datum och träd varierar mellan källor. Endast kulturell referens.
+
+| Träd | Vetenskapligt namn | Period | Drag |
+| --- | --- | --- | --- |
+| Silvergran | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Mystik, lojalitet, elegans |
+| Alm | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Ädelhet, stabilitet, ledarskap |
+| Cypress | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Trohet, anpassningsförmåga, uthållighet i motgång |
+| Poppel | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Känslighet, anpassningsförmåga, osäkerhet |
+| Ceder | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Självförtroende, optimism, djärvhet |
+| Tall | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Disciplin, ordning, uthållighet |
+| Tårpil | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Känslighet, intuition, vemod |
+| Lind | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Sinnesro, vänskap, harmoni |
+| Ek | *Quercus robur* | 21/03 – 21/03 | Styrka, mod, oberoende |
+| Hassel | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Nyfikenhet, kvickhet, originalitet |
+| Rönn | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Känslighet, charm, harmoni |
+| Lönn | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Oberoende, fantasi, originalitet |
+| Valnöt | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Styrka, passion, ambition |
+| Kastanj | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Rättvisa, ärlighet, generositet |
+| Ask | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Ambition, äventyr, energi |
+| Avenbok | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Diskretion, praktisk sinne, elegans |
+| Fikonträd | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Sinnlighet, sällskaplighet, överflöd |
+| Björk | *Betula pendula* | 24/06 – 24/06 | Elegans, diskretion, inspiration |
+| Äppelträd | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Kärlek, charm, generositet |
+| Olivträd | *Olea europaea* | 23/09 – 23/09 | Balans, vishet, fred |
+| Bok | *Fagus sylvatica* | 22/12 – 22/12 | Talang, skapelse, uthållighet |
+
+## Träden för de 27 nakshatras
+
+I den vediska astrologin har var och en av de 27 månhusen (nakshatras) sitt eget träd. Det beror på var månen står vid födseln, inte på datumet, och listorna varierar mellan regioner. Endast kulturell referens.
+
+| # | Nakshatra | Träd | Vetenskapligt namn | Drag |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Snabbhet, initiativ, helande |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Uthållighet i motgång, passion, förvandling |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Skarpsinne, eld, renhet |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Skönhet, fruktsamhet, överflöd |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Nyfikenhet, sökande, vänlighet |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Känsla, förvandling, intelligens |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Pånyttfödelse, optimism, hem |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Näring, skydd, hängivenhet |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuition, mystik, slughet |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Släkt, auktoritet, ädelhet |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Njutning, kreativitet, vila |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Vänskap, generositet, stöd |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Skicklighet, kvickhet, helande |
+| 14 | Chitra | Bel | *Aegle marmelos* | Skönhet, skapelse, glans |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Oberoende, flexibilitet, handel |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Beslutsamhet, ambition, uthållighet |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Hängivenhet, vänskap, samarbete |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Ledarskap, skydd, mod |
+| 19 | Mula | Sal \* | *Shorea robusta* | Rötter, forskning, förvandling |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Seger, entusiasm, renhet |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Seger, integritet, uthållighet |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Lyssnande, lärande, kommunikation |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Rikedom, musik, ambition |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Helande, hemligheter, ensamhet |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Passion, förvandling, idealism |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Djup, vishet, medkänsla |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Ömhet, skydd, medkänsla |
+
+\* Källorna är oeniga om detta nakshatras träd.
+
+## Numerologi: livsvägen
+
+Alla siffror i födelsedatumet adderas om och om igen tills en enda återstår; 11, 22 och 33 (”mästartal”) reduceras inte vidare. Den tillskrivs Pythagoras, men dagens numerologi härstammar från 1900-talet och saknar vetenskapligt stöd. Endast kulturell referens.
+
+| Tal | Drag |
+| --- | --- |
+| 1 | Ledarskap, oberoende, initiativ |
+| 2 | Samarbete, känslighet, harmoni |
+| 3 | Kreativitet, glädje, kommunikation |
+| 4 | Disciplin, stabilitet, arbete |
+| 5 | Äventyr, frihet, anpassningsförmåga |
+| 6 | Hem, generositet, kärlek |
+| 7 | Vishet, ensamhet, forskning |
+| 8 | Ambition, auktoritet, rikedom |
+| 9 | Medkänsla, generositet, idealism |
+| 11 | Intuition, inspiration, idealism |
+| 22 | Byggande, beslutsamhet, ledarskap |
+| 33 | Medkänsla, ömhet, hängivenhet |

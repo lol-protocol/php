@@ -77,7 +77,8 @@ filtrar...) usa los de `iconos-genealogia/` o `iconos-biblioteca/`.
 Los `id` internos (los gradientes, con el nombre del icono y, en `gris`, el
 sufijo `_g`) son únicos entre los iconos y las variantes del set, así que puedes
 incrustar varios SVG en línea en la misma página, también `color` y `gris` de un
-mismo icono.
+mismo icono. Los iconos con el mismo nombre en más de un set (`ui_profile`,
+`ui_settings`, `action_search`…) sí comparten ids.
 
 ## Sprite
 

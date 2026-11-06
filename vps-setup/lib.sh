@@ -55,6 +55,10 @@ require_arg() {
 claim_nginx_vhost() {
     local domain=$1 mark=$2 f other existing re
     f="$NGINX_DIR/sites-available/$domain"
+    # Si 04 ya le puso HTTPS (certbot agrega los bloques 443), el script reescribe el vhost solo en HTTP:
+    # enable_nginx_site vuelve a instalar el certificado despues (ver restore_ssl).
+    VHOST_HAD_SSL=0
+    if grep -qs '^[[:space:]]*ssl_certificate[[:space:]]' "$f"; then VHOST_HAD_SSL=1; fi
     if [ -f "$f" ] && ! grep -qxF "# vps-setup: $mark" "$f"; then
         existing=$(grep -m1 '^# vps-setup:' "$f" | sed 's/^# vps-setup: //')
         echo "ERROR: $domain ya tiene un sitio (${existing:-creado a mano}) en $f." >&2
@@ -73,6 +77,17 @@ claim_nginx_vhost() {
     done
 }
 
+# restore_ssl <dominio>: vuelve a instalar en el vhost el certificado que ya existe (sin pedir otro a Let's
+# Encrypt) despues de reescribirlo. Si falla, el sitio sigue en HTTP y se dice como arreglarlo.
+restore_ssl() {
+    local domain=$1
+    echo "El dominio ya tenia HTTPS: reinstalando su certificado en el vhost..."
+    if ! sudo certbot install --nginx --cert-name "$domain" --redirect --non-interactive; then
+        echo "AVISO: no se pudo reinstalar el certificado de $domain: el sitio quedo solo en HTTP." >&2
+        echo "Arreglalo con: ./04-setup-ssl.sh $domain admin@$domain" >&2
+    fi
+}
+
 # enable_nginx_site <nombre>: activa sites-available/<nombre>, valida con "nginx -t" y recarga.
 # Si nginx rechaza la configuracion, DESACTIVA el sitio nuevo (el archivo queda en
 # sites-available para revisarlo): un enlace roto en sites-enabled impediria que Nginx
@@ -87,6 +102,7 @@ enable_nginx_site() {
         return 1
     fi
     sudo systemctl reload nginx
+    if [ "${VHOST_HAD_SSL:-0}" = 1 ]; then restore_ssl "$name"; fi
     # fail2ban resuelve el glob de logs por dominio (/var/log/nginx/*/...) al arrancar: un
     # dominio nuevo no queda vigilado hasta que recarga.
     if systemctl is-active --quiet fail2ban 2>/dev/null; then
@@ -166,23 +182,74 @@ create_app_user() {
     sudo useradd --system --user-group --home-dir "$home" --no-create-home --shell /usr/sbin/nologin "$user"
 }
 
-# own_app_dir <carpeta> <usuario>: la carpeta (y su contenido) pasa a ser del usuario de la app, modo 750.
+# own_app_dir <carpeta> <usuario> [grupo]: la carpeta (y su contenido) pasa a ser del usuario de la app, modo 750.
+# El grupo es el del usuario salvo que se indique otro (las apps PHP usan www-data: asi Nginx lee lo estatico).
 # Solo cambia el dueno de TODO el arbol si la carpeta esta vacia o ya es del usuario: sobre una app con
 # codigo de OTRO dueno no se toca nada (chown -R cambiaria permisos de todos sus archivos) y se explica
 # como migrarla a mano.
 own_app_dir() {
-    local path=$1 user=$2 cur
+    local path=$1 user=$2 group=${3:-$2} cur
     cur=$(stat -c %U "$path" 2> /dev/null || echo "")
     if [ "$cur" = "$user" ]; then
         :
     elif app_has_code "$path"; then
         echo "ERROR: $path ya tiene codigo y es de '$cur', no de '$user'." >&2
-        echo "Para aislarla, pasala a su usuario (revisa antes que nada la use mas): sudo chown -R $user:$user $path" >&2
+        echo "Para aislarla, pasala a su usuario (revisa antes que nada la use mas): sudo chown -R $user:$group $path" >&2
         exit 1
     else
-        sudo chown -R "$user:$user" "$path"
+        sudo chown -R "$user:$group" "$path"
     fi
     sudo chmod 750 "$path"
+}
+
+# ---------------------------------------------------------------------------
+# Memoria: un VPS chico (1-2 GB) se queda sin RAM con los workers "por CPU" de gunicorn, sobre todo
+# con varias apps. mem_total_mb lee la RAM real; gunicorn_workers acota los workers por app.
+# ---------------------------------------------------------------------------
+mem_total_mb() { awk '/^MemTotal:/ {print int($2 / 1024)}' "${MEMINFO_FILE:-/proc/meminfo}" 2> /dev/null || echo 0; }
+
+# gunicorn_workers: (2 x CPU + 1), pero no mas de RAM_MB/512 (minimo 2) por app. 1 GB -> 2, 2 GB -> 3 o 4,
+# 4 GB -> 8. GUNICORN_WORKERS=<n> fija el numero a mano (entero positivo).
+gunicorn_workers() {
+    local by_cpu=$(($(nproc) * 2 + 1)) mem cap
+    if [ -n "${GUNICORN_WORKERS:-}" ]; then echo "$GUNICORN_WORKERS"; return 0; fi
+    mem=$(mem_total_mb); cap=$((mem / 512)); [ "$cap" -ge 2 ] || cap=2
+    [ "$by_cpu" -le "$cap" ] && echo "$by_cpu" || echo "$cap"
+}
+
+# setup_php_pool <usuario>: pool PHP-FPM propio de la app. Sus procesos corren como <usuario> (no como
+# www-data), con su propio socket /run/php/<usuario>.sock, que solo Nginx (www-data) puede abrir. Asi una app
+# PHP comprometida no lee las demas. "ondemand": sin procesos mientras nadie visita (poca RAM);
+# PHP_MAX_CHILDREN (5 por defecto) acota cuantos puede abrir a la vez. Si la configuracion no valida, se quita
+# el pool y se aborta sin tocar el resto de pools.
+PHP_MAX_CHILDREN=${PHP_MAX_CHILDREN:-5}
+setup_php_pool() {
+    local user=$1 dir conf
+    dir=${PHP_POOL_DIR:-/etc/php/$PHP_VERSION/fpm/pool.d}
+    conf="$dir/$user.conf"
+    if [ ! -d "$dir" ]; then
+        echo "ERROR: no existe $dir (¿falta 02_B-install-php.sh?)." >&2
+        exit 1
+    fi
+    sudo tee "$conf" > /dev/null <<EOFPOOL
+; vps-setup: pool de la app $user (lo regenera 06_A; no lo edites a mano)
+[$user]
+user = $user
+group = $user
+listen = /run/php/$user.sock
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 0660
+pm = ondemand
+pm.max_children = $PHP_MAX_CHILDREN
+pm.process_idle_timeout = 10s
+EOFPOOL
+    if command -v "php-fpm$PHP_VERSION" > /dev/null 2>&1 && ! sudo "php-fpm$PHP_VERSION" -t > /dev/null 2>&1; then
+        sudo rm -f "$conf"
+        echo "ERROR: PHP-FPM rechazo el pool de $user; se quito $conf. Revisa: sudo php-fpm$PHP_VERSION -t" >&2
+        exit 1
+    fi
+    sudo systemctl reload "$PHP_FPM_SERVICE"
 }
 
 # setup_app_database <app> <archivo .env> <usuario dueno del .env>: crea (si PostgreSQL esta instalado)
@@ -219,12 +286,14 @@ setup_app_database() {
     [ "$exists" = 1 ] || (cd / && sudo -u postgres createdb --owner="$db" "$db")
     printf 'REVOKE ALL ON DATABASE %s FROM PUBLIC;\n' "$db" | (cd / && sudo -u postgres psql -q -v ON_ERROR_STOP=1)
     printf 'DATABASE_URL=postgresql://%s:%s@localhost:5432/%s\n' "$db" "$pw" "$db" \
-        | sudo sh -c 'umask 077; cat > "$1"' sh "$env_file"
+        | sudo sh -c 'umask 077; [ -z "$(tail -c1 "$1" 2> /dev/null)" ] || echo >> "$1"; cat >> "$1"' sh "$env_file"   # AGREGA: no pisa otras variables del .env
     sudo chown "$owner:$owner" "$env_file"
     sudo chmod 600 "$env_file"
     echo "  Base de datos '$db' creada; la conexion (DATABASE_URL) esta en $env_file (solo la lee $owner)."
 }
 
+# @deprecated desde PR 3 de vps-setup (aislamiento por app): 06_A ya no deja la app a www-data sino a su
+# usuario (create_app_user + own_app_dir). Se conserva como referencia; no la usa ningun script.
 # Setup app directories with correct ownership
 setup_app_directories() {
     local app_path=$1
@@ -340,6 +409,7 @@ validate_ipv4() {
 }
 
 # Puerto TCP local para una app (fuera del rango privilegiado).
+validate_workers() { [[ "$1" =~ ^[1-9][0-9]{0,2}$ ]]; }
 validate_port() {
     [[ "$1" =~ ^[0-9]{4,5}$ ]] && [ "$1" -ge 1024 ] && [ "$1" -le 65535 ]
 }
@@ -394,6 +464,7 @@ require_valid() {
         port)         hint="un numero entre 1024 y 65535" ;;
         appuser)      hint="como maximo $((32 - ${#APP_USER_PREFIX})) caracteres (su usuario de sistema es ${APP_USER_PREFIX}<nombre>, y Linux admite 32)" ;;
         size)         hint="un numero seguido de K, M o G (ej. 20M)" ;;
+        workers)      hint="un entero positivo (ej. 3)" ;;
         duration)     hint="un numero seguido de s o m (ej. 120s)" ;;
         name)         hint="minusculas, digitos, '_' y '-' (max. 63), debe empezar con letra o digito" ;;
         context_path) hint="letras, digitos, '.', '_' y '-' (sin '/' ni '..'); vacio = raiz" ;;
