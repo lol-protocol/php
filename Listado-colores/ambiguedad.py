@@ -12,6 +12,7 @@ Cuatro listas:
 En la 3 y la 4 solo entran los casos que no estén ya en la 1 y la 2.
 """
 import colorimetria
+from md import celda
 
 # Distancia CIEDE2000 máxima entre los colores de una forma, en bandas. Son los umbrales de cercanía del proyecto
 # (3 y 8, ver README), no un estándar.
@@ -119,16 +120,12 @@ def calcular(filas, codigos):
     return resultado
 
 
-def _celda(texto):
-    return str(texto).replace("|", "&#124;")
-
-
 def _colores_md(colores):
     return " · ".join(f"{', '.join('`' + c + '`' for c in conceptos)} `{color}`" for color, conceptos in colores)
 
 
 def _formas_md(formas):
-    return ", ".join(f"«{_celda(f)}»" for f in formas)
+    return ", ".join(f"«{celda(f)}»" for f in formas)
 
 
 def _idiomas_md(idiomas, con_formas):
@@ -179,11 +176,11 @@ def informe(filas, idiomas):
                      lambda e: f"| {_formas_md([e['forma']])} | {_idiomas_md(e['idiomas'], False)} | {e['delta']:.1f} | {banda(e['delta'])} |")
     partes += ["## 3. Dentro de un idioma, solo al normalizar", ""]
     partes += _tabla(listas["dentro_normalizada"], "| Idioma | Formas | Normalizada | Colores | ΔE máx. | Banda |", "|---|---|---|---|---|---|",
-                     lambda e: f"| `{e['idioma']}` | {_formas_md(e['formas'])} | `{_celda(e['clave'])}` | {_colores_md(e['colores'])} "
+                     lambda e: f"| `{e['idioma']}` | {_formas_md(e['formas'])} | `{celda(e['clave'])}` | {_colores_md(e['colores'])} "
                                f"| {e['delta']:.1f} | {banda(e['delta'])} |")
     partes += ["## 4. Entre idiomas, solo al normalizar", ""]
     partes += _tabla(listas["entre_normalizada"], "| Normalizada | Formas y colores por idioma | ΔE máx. | Banda |", "|---|---|---|---|",
-                     lambda e: f"| `{_celda(e['clave'])}` | {_idiomas_md(e['idiomas'], True)} | {e['delta']:.1f} | {banda(e['delta'])} |")
+                     lambda e: f"| `{celda(e['clave'])}` | {_idiomas_md(e['idiomas'], True)} | {e['delta']:.1f} | {banda(e['delta'])} |")
     return "\n".join(partes)
 
 
