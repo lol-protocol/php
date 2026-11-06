@@ -24,7 +24,7 @@ final class AlmacenAcciones
         return array_map(fn ($f) => ['key' => $f['clave'], 'label' => $f['etiqueta']], $filas);
     }
 
-    /** @return array{items: array, total: int} */
+    /** @return array{items: list<array<string,mixed>>, total: int} las acciones de la página (con amount_local, amount_usd y file_size_kb como float o null) y cuántas hay en total */
     public function pagina(string $userId, ?string $tipo, int $pagina, int $porPagina): array
     {
         $pdo = $this->pdo;
@@ -50,7 +50,11 @@ final class AlmacenAcciones
         return ['items' => array_map(self::castNumeros(...), $stmt->fetchAll()), 'total' => (int) $stmtTotal->fetchColumn()];
     }
 
-    /** Acciones por día + gasto acumulado en USD, para el gráfico de evolución. */
+    /**
+     * Acciones por día + gasto acumulado en USD, para el gráfico de evolución.
+     *
+     * @return list<array{date: string, count: int, cumulative_spend_usd: float}>
+     */
     public function resumenDiario(string $userId, ?string $tipo): array
     {
         $condicionTipo = $tipo !== null ? 'AND tipo_clave = :tipo' : '';
@@ -83,6 +87,10 @@ final class AlmacenAcciones
         }
     }
 
+    /**
+     * @param array<string,mixed> $accion una fila de acciones tal como sale de la consulta
+     * @return array<string,mixed> la misma fila con los montos y el tamaño como float (o null)
+     */
     private static function castNumeros(array $accion): array
     {
         foreach (['amount_local', 'amount_usd', 'file_size_kb'] as $campo) {

@@ -6,6 +6,11 @@ declare(strict_types=1);
  * Sanea el monto (pagos/reembolsos) de un registro y lo escribe en $limpio.
  * Si la moneda cruda es inválida, se asume la del país del usuario en vez de
  * descartar el pago entero: el monto sí se registró.
+ *
+ * @param array<string,mixed> $limpio
+ * @param array<string,mixed> $crudo
+ * @param array{country: string} $usuario
+ * @param array{monedas_validas: string[], moneda_por_pais: array<string,string>, tasa_por_moneda: array<string,float>} $contexto
  */
 function saneador_aplicar_monto(array &$limpio, array $crudo, string $tipo, array $usuario, array $contexto): void
 {
