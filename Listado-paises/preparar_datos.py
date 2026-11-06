@@ -52,20 +52,15 @@ Emigrantes: los de ANIO_EMIGRANTES (ONU, vía Gapminder), en porcentaje de la po
 Solo biblioteca estándar.
 """
 import argparse
-import csv
 from pathlib import Path
 
+from comun import (ANIO_EMIGRANTES, ANIO_IDH, ANIO_PIB_NOMINAL, ANIO_PIB_NOMINAL_MINIMO, ANIO_PIB_PPA,
+                   ANIO_POBLACION, escribir_dicts, escribir_filas, filas_csv, leer_csv)
 from historia_poblacion import ANIO_FIN, poblacion_en
 
 AQUI = Path(__file__).resolve().parent
-ANIO_POBLACION = "2024"
-ANIO_PIB_PPA = 2023
-ANIO_PIB_NOMINAL = 2024
-ANIO_PIB_NOMINAL_MINIMO = 2021  # un dato más viejo no se usa: el país queda vacío
-ANIO_IDH = 2023
 ANIO_MINIMO_ALFABETIZACION = 2010  # la UNESCO no publica todos los años, y casi nunca en países ricos
 ANIO_MINIMO_INTERNET = 2020
-ANIO_EMIGRANTES = 2024
 ANIO_MINIMO_GOBERNANZA = 2019  # libertad, democracia y corrupción
 LIBERTAD = {"F": "libre", "PF": "parcial", "NF": "no libre"}  # estatus de Freedom House
 ANIO_MAXIMO_GAPMINDER = 2015  # después, la población de Gapminder es proyección
@@ -73,14 +68,16 @@ FACTOR_NATALIDAD = 7.0  # tasa bruta por mil ~ 7 x fecundidad total, para paíse
 SUDAMERICA = {"AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE"}
 EMPALME_MAXIMO = 1.5  # Clio-Infra se descarta si difiere más que esto (o su inversa) en el empalme
 REGION_HYDE = {"África": "Africa", "Asia": "Asia", "Europa": "Europe", "Oceanía": "Oceania"}
+# Las mismas regiones en co2-data, que llega hasta ANIO_POBLACION (HYDE, hasta 2015).
+REGION_OWID = {"North and Central America": "North America"}
 # Nombres que la fuente usa distinto de co2-data.
 ALIAS = {"Czech Republic": "CZE", "Macedonia": "MKD", "Swaziland": "SWZ", "Timor": "TLS",
          "Puerto Rico": "PRI", "Kosovo": "OWID_KOS"}
 
 
 def leer(ruta):
-    with Path(ruta).open(encoding="utf-8", newline="") as f:
-        return list(csv.DictReader(f))
+    """@deprecated desde noviembre de 2026: usa comun.filas_csv, que comparten todos los scripts."""
+    return filas_csv(ruta)
 
 
 def region_hyde(fila):
@@ -89,12 +86,29 @@ def region_hyde(fila):
     return REGION_HYDE[fila["region"]]
 
 
+def con_cuota(anio0, pob0, region, incluir):
+    """Los puntos de la región cuyo año cumple incluir(año), por la cuota del país en anio0."""
+    anios, pobs = [a for a, _ in region], [p for _, p in region]
+    referencia = poblacion_en(anios, pobs, anio0)
+    if referencia <= 0:
+        raise SystemExit(f"La región no tiene población en {anio0}: no hay cuota con la que proyectar")
+    return [(a, pob0 / referencia * p) for a, p in region if incluir(a)]
+
+
 def retroproyectar(conocidos, region):
     """Puntos anteriores al primer año conocido: región HYDE x cuota del país en ese año."""
     anio0, pob0 = conocidos[0]
-    anios, pobs = [a for a, _ in region], [p for _, p in region]
-    cuota = pob0 / poblacion_en(anios, pobs, anio0)
-    return [(a, cuota * p) for a, p in region if a < anio0]
+    return con_cuota(anio0, pob0, region, lambda a: a < anio0)
+
+
+def extender(conocidos, region, hasta=ANIO_POBLACION):
+    """Puntos posteriores al último año conocido, hasta `hasta`: región x cuota del país en ese año.
+
+    Así una serie que termina antes (Jersey en 2008, Reunión en 2013) sigue la evolución de su
+    región en vez de quedar congelada en su último valor.
+    """
+    anio1, pob1 = conocidos[-1]
+    return con_cuota(anio1, pob1, region, lambda a: anio1 < a <= hasta)
 
 
 def codigo_bm(clave):
@@ -105,7 +119,7 @@ def codigo_bm(clave):
 def leer_bm(ruta):
     """Archivo del Banco Mundial (Country Code, Year, Value) -> codigo -> {anio: valor}."""
     datos = {}
-    for f in leer(ruta):
+    for f in filas_csv(ruta):
         if f["Value"]:
             datos.setdefault(f["Country Code"], {})[int(f["Year"])] = float(f["Value"])
     return datos
@@ -114,7 +128,7 @@ def leer_bm(ruta):
 def leer_gapminder(ruta, convertir=float):
     """Archivo DDF de Gapminder (geo o country, time, valor) -> código ISO alfa-3 -> {anio: valor}."""
     datos = {}
-    for f in leer(ruta):
+    for f in filas_csv(ruta):
         geo = f.get("geo") or f["country"]
         (columna,) = set(f) - {"geo", "country", "time"}
         if f[columna]:
@@ -186,29 +200,30 @@ def main(argv=None, carpeta=AQUI):
         ap.add_argument(f"--{nombre}", required=True)
     args = ap.parse_args(argv)
 
-    paises = leer(carpeta / "paises.csv")
-    columnas = list(paises[0].keys())
-    owid = {f["codigo"]: f["codigo_owid"] for f in leer(carpeta / "codigos_iso.csv")}
+    columnas, paises = leer_csv(carpeta / "paises.csv")
+    owid = {f["codigo"]: f["codigo_owid"] for f in filas_csv(carpeta / "codigos_iso.csv")}
 
     # co2-data: población hasta 2024.
-    poblacion = {}
+    poblacion, regiones = {}, {}
     nombre_a_codigo = dict(ALIAS)
-    for f in leer(args.co2):
+    for f in filas_csv(args.co2):
         clave = f["iso_code"] or ("OWID_KOS" if f["country"] == "Kosovo" else "")
         if not clave:
+            if f["population"] and f["country"] in set(REGION_HYDE.values()) | {"North America", "South America"}:
+                regiones.setdefault(f["country"], []).append((int(f["year"]), float(f["population"])))
             continue
         nombre_a_codigo.setdefault(f["country"], clave)
         if f["population"]:
             poblacion.setdefault(clave, {})[int(f["year"])] = float(f["population"])
 
     maddison = {}
-    for f in leer(args.maddison):
+    for f in filas_csv(args.maddison):
         clave = nombre_a_codigo.get(f["Entity"])
         if clave and f["Population"]:
             maddison.setdefault(clave, {})[int(f["Year"])] = float(f["Population"])
 
     clio = {}
-    for f in leer(args.clio):
+    for f in filas_csv(args.clio):
         clave = nombre_a_codigo.get(f["Entity"])
         valor = next(v for k, v in f.items() if k.startswith("Population"))
         if clave and valor:
@@ -216,7 +231,7 @@ def main(argv=None, carpeta=AQUI):
 
     columna_hyde = "Global Population by Region (HYDE (2016) and UN (2017))"
     hyde = {}
-    for f in leer(args.hyde):
+    for f in filas_csv(args.hyde):
         if f[columna_hyde]:
             hyde.setdefault(f["Entity"], []).append((int(f["Year"]), float(f[columna_hyde])))
     for serie in hyde.values():
@@ -241,14 +256,14 @@ def main(argv=None, carpeta=AQUI):
     for clave in owid.values():
         if clave not in poblacion and codigo_bm(clave) in poblacion_bm:
             poblacion[clave] = {a: p for a, p in poblacion_bm[codigo_bm(clave)].items()
-                                if a <= int(ANIO_POBLACION)}
+                                if a <= ANIO_POBLACION}
             con_poblacion_bm.append(clave)
         elif clave not in poblacion and clave in poblacion_gapminder:
             poblacion[clave] = {a: p for a, p in poblacion_gapminder[clave].items()
                                 if a <= ANIO_MAXIMO_GAPMINDER}
             con_poblacion_gapminder.append(clave)
 
-    con_clio, clio_descartada = [], []
+    con_clio, clio_descartada, extendidas = [], [], []
     filas_larga, filas_natalidad, sin_serie, sin_pob, sin_pib, sin_natalidad = [], [], [], [], [], []
     sin_idh, sin_nominal, nominal_anterior, sin_alfabetizacion, sin_internet = [], [], [], [], []
     sin_emigrantes, sin_gobernanza = [], {columna: [] for columna, _ in gobernanza}
@@ -273,12 +288,18 @@ def main(argv=None, carpeta=AQUI):
                 clio_descartada.append(codigo)
             conocidos = de_clio + conocidos
         if conocidos:
-            serie = retroproyectar(conocidos, hyde[region_hyde(fila)]) + conocidos
+            region = region_hyde(fila)
+            despues = []
+            if conocidos[-1][0] < ANIO_POBLACION:
+                despues = extender(conocidos, sorted(regiones[REGION_OWID.get(region, region)]))
+            if despues:
+                extendidas.append(f"{codigo} desde {conocidos[-1][0]}")
+            serie = retroproyectar(conocidos, hyde[region]) + conocidos + despues
             filas_larga += [(codigo, a, round(p)) for a, p in serie]
         else:
             sin_serie.append(codigo)
 
-        actual = poblacion.get(clave, {}).get(int(ANIO_POBLACION))
+        actual = poblacion.get(clave, {}).get(ANIO_POBLACION)
         fila["poblacion_millones"] = formato_millones(actual) if actual else ""
         if not actual:
             sin_pob.append(codigo)
@@ -334,26 +355,15 @@ def main(argv=None, carpeta=AQUI):
         if clave not in tasas:
             sin_natalidad.append(f"{codigo} ({'fecundidad' if natal else 'la de su época'})")
 
-    with (carpeta / "poblacion_larga.csv").open("w", encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["codigo", "anio", "poblacion"])
-        w.writerows(filas_larga)
-    with (carpeta / "natalidad.csv").open("w", encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["codigo", "anio", "tasa_por_mil"])
-        w.writerows(filas_natalidad)
-    with (carpeta / "paises.csv").open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=columnas)
-        w.writeheader()
-        w.writerows(paises)
-    with (carpeta / "datos_detalle.csv").open("w", encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["codigo", "columna", "anio", "fuente"])
-        w.writerows(detalle)
+    escribir_filas(carpeta / "poblacion_larga.csv", ["codigo", "anio", "poblacion"], filas_larga)
+    escribir_filas(carpeta / "natalidad.csv", ["codigo", "anio", "tasa_por_mil"], filas_natalidad)
+    escribir_dicts(carpeta / "paises.csv", columnas, paises)
+    escribir_filas(carpeta / "datos_detalle.csv", ["codigo", "columna", "anio", "fuente"], detalle)
 
     print(f"poblacion_larga.csv: {len(filas_larga)} filas; sin serie: {', '.join(sin_serie) or 'ninguno'}; "
           f"con puntos de Clio-Infra: {len(con_clio)}; Clio-Infra descartada en el empalme: "
-          f"{', '.join(clio_descartada) or 'ninguno'}")
+          f"{', '.join(clio_descartada) or 'ninguno'}; extendidas con su región hasta {ANIO_POBLACION}: "
+          f"{', '.join(extendidas) or 'ninguna'}")
     print(f"natalidad.csv: {len(filas_natalidad)} filas; sin tasa de Gapminder (qué usan): "
           f"{', '.join(sin_natalidad) or 'ninguno'}")
     print(f"paises.csv: población {ANIO_POBLACION} sin dato (vacía): {', '.join(sin_pob) or 'ninguno'}")

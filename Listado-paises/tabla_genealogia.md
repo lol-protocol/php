@@ -1,6 +1,6 @@
 # Listado de países: genealogía
 
-> Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población 2024 de Our World in Data; PIB nominal del Banco Mundial; PIB PPA (Banco Mundial), IDH 2023 (PNUD), libertad (Freedom House 2022), democracia (EIU 2020) y corrupción (Transparencia Internacional 2023) vía Gapminder. Ver `README.md`, «Estado de los datos».
+> Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población 2024 de Our World in Data; PIB nominal del Banco Mundial; PIB PPA (Banco Mundial), IDH 2023 (PNUD), libertad (Freedom House 2022), democracia (EIU 2020) y corrupción (Transparencia Internacional 2023) vía Gapminder. El año de cada dato está en `datos_detalle.csv`. Ver `README.md`, «Estado de los datos».
 
 | País | Tipo | Región | Población 2024 (M) | Nacidos en la historia (M) | IDH 2023 | PIB pc nominal 2024 (USD) | PIB pc PPA 2023 ($ int. 2021) | Internet (% pob.) | Emigrantes (% pob.) | Libertad (Freedom House) | Democracia (EIU, 0–100) | Corrupción (CPI, 100 = limpio) | Genealogía (IG) | Operabilidad (IO) | Prioridad | Excluido | Comentarios |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -33,7 +33,7 @@
 | Jersey | territorio | Europa | — | 1.71 | — | — | — | — | — | — | — | — | 4 | 4 | 16 | no | Dependencia de la Corona británica; registros parroquiales anglicanos y archivo de Jersey Heritage en línea; diáspora en Canadá y EE. UU.; inglés; ley de protección de datos propia, equivalente al RGPD; mercado muy pequeño |
 | Polonia | estado | Europa | 38.5 | 391.98 | 0.906 | 25104 | 43673 | 88.6 | 11.9 | libre | 68.5 | 54 | 4 | 4 | 16 | no | Índice de registros parroquiales Geneteka; gran diáspora en EE. UU., Brasil y Argentina; polaco; RGPD |
 | Puerto Rico | territorio | América | 3.20 | 56.17 | — | 39353 | — | — | — | — | — | — | 4 | 4 | 16 | no | Territorio de EE. UU.; dólar; registros coloniales españoles y civiles de buena calidad; español e inglés |
-| Reunión | territorio | África | — | 9.65 | — | — | — | — | — | — | — | — | 4 | 4 | 16 | no | Departamento francés de ultramar; estado civil francés en línea (Archivos nacionales de ultramar); registros de la esclavitud y de los trabajadores contratados; francés y criollo reunionés; regulación de datos (CNIL) estricta |
+| Reunión | territorio | África | — | 9.68 | — | — | — | — | — | — | — | — | 4 | 4 | 16 | no | Departamento francés de ultramar; estado civil francés en línea (Archivos nacionales de ultramar); registros de la esclavitud y de los trabajadores contratados; francés y criollo reunionés; regulación de datos (CNIL) estricta |
 | Sudáfrica | estado | África | 64.0 | 162.60 | 0.741 | 6267 | 13690 | 78.4 | 1.6 | libre | 70.5 | 41 | 4 | 4 | 16 | no | Diáspora europea y británica; archivos y registros accesibles; inglés; apagones y crimen; ley de datos (POPIA) |
 | Estonia | estado | Europa | 1.36 | 21.24 | 0.905 | 31428 | 41707 | 92.2 | 9.1 | libre | 78.4 | 76 | 3 | 5 | 15 | no | Gobierno digital muy avanzado; registros digitalizados; inglés; RGPD |
 | Japón | estado | Asia | 123.8 | 1673.53 | 0.925 | 33797 | 45859 | 85.5 | 0.8 | libre | 81.3 | 73 | 3 | 5 | 15 | no | Registro familiar koseki muy estructurado; interés cultural alto pero mercado genealógico pequeño; japonés; APPI |
