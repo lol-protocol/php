@@ -101,12 +101,16 @@ final class FunnelRepository
         return $stmt->fetchAll();
     }
 
-    public function tiempoPromedioConversionDias(): float
+    /** Dias promedio de la primera visita a la conversion, de los usuarios cuya visita cae en el periodo. */
+    public function tiempoPromedioConversionDias(string $desde, string $hasta): float
     {
-        $valor = $this->db->query(
+        $stmt = $this->db->prepare(
             'SELECT AVG(fecha_conversion - fecha_visita)
-             FROM usuarios_funnel WHERE fecha_conversion IS NOT NULL'
-        )->fetchColumn();
+             FROM usuarios_funnel
+             WHERE fecha_conversion IS NOT NULL AND fecha_visita BETWEEN :desde AND :hasta'
+        );
+        $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
+        $valor = $stmt->fetchColumn();
 
         return $valor !== null ? round((float) $valor, 1) : 0.0;
     }
@@ -129,6 +133,10 @@ final class FunnelRepository
     /**
      * Cohortes por mes de primera visita: cuantos de cada cohorte convirtieron
      * a cliente dentro de 0, 1, 2 o 3 meses desde su fecha_visita (acumulado).
+     *
+     * Ademas de m0..m3 cada fila trae meses_cerrados: cuantos meses hay entre su mes y el actual
+     * (0 si es el mes en curso). La columna mN es definitiva solo si meses_cerrados > N (la ventana de N meses
+     * despues de su mes ya termino): una cohorte reciente muestra porcentajes bajos porque su ventana sigue abierta.
      */
     public function cohortes(string $desde, string $hasta): array
     {
@@ -143,6 +151,8 @@ final class FunnelRepository
                 WHERE fecha_visita BETWEEN :desde AND :hasta
              )
              SELECT cohorte,
+                    (EXTRACT(YEAR FROM CURRENT_DATE)::int * 12 + EXTRACT(MONTH FROM CURRENT_DATE)::int)
+                      - (substr(cohorte, 1, 4)::int * 12 + substr(cohorte, 6, 2)::int) AS meses_cerrados,
                     COUNT(*) AS total,
                     COUNT(*) FILTER (WHERE offset_meses IS NOT NULL AND offset_meses <= 0) AS m0,
                     COUNT(*) FILTER (WHERE offset_meses IS NOT NULL AND offset_meses <= 1) AS m1,

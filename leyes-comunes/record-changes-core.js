@@ -17,6 +17,10 @@ export function followRenames(entries, side, nameField = "law_name") {
   return side;
 }
 
+/** Todas las columnas iguales: la misma fila ya esta en changes.csv, asi que volver a anotarla no agrega nada. */
+const sameRow = (a, b) =>
+  a.date === b.date && a.country_code === b.country_code && a.law_name === b.law_name && a.field === b.field && a.old_value === b.old_value && a.new_value === b.new_value;
+
 const sameChange = (entry, recorded) =>
   recorded.country_code === entry.country_code &&
   recorded.law_name === entry.law_name &&
@@ -47,12 +51,14 @@ export function createRecordChanges({ dataset }) {
   function recordChanges({ since, date, masterPath = MASTER_CSV, gitShow }) {
     const before = parseMaster(gitShow(since, relative(ROOT, masterPath))).records;
     const after = loadMaster(masterPath).records;
-    const entries = diffRecords(before, after, date);
     const changes = loadSide(masterPath, CHANGES_FILE, CHANGE_COLUMNS);
+    // Correrlo dos veces sin commitear entre medias comparaba con el mismo HEAD y anotaba todo otra vez: solo
+    // se agrega lo que changes.csv todavia no tiene (y, si hay filas repetidas de antes, se quedan una).
+    const entries = diffRecords(before, after, date).filter((e) => !changes.rows.some((r) => sameRow(e, r)));
     const sources = loadSide(masterPath, SOURCES_FILE, SOURCE_COLUMNS);
     followRenames(entries, changes.rows);
     followRenames(entries, sources.rows);
-    const all = [...changes.rows, ...entries].sort(
+    const all = [...changes.rows, ...entries].filter((row, i, rows) => rows.findIndex((other) => sameRow(row, other)) === i).sort(
       (a, b) => a.date.localeCompare(b.date) || a.country_code.localeCompare(b.country_code) || a.law_name.localeCompare(b.law_name)
     );
     return { entries, all, changes, sources };

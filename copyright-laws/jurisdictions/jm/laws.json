@@ -15,7 +15,7 @@
     "enforcement_body": "Jamaica Intellectual Property Office (JIPO)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.jipo.gov.jm/node/25",
+    "linked_resources": "https://www.wipo.int/en/web/wipolex/w/news/2015/article_0015",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -35,6 +35,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-05",
+        "field": "linked_resources",
+        "from": "https://www.jipo.gov.jm/node/25",
+        "to": "https://www.wipo.int/en/web/wipolex/w/news/2015/article_0015"
+      },
       {
         "date": "2026-10-14",
         "field": "digital_protection",

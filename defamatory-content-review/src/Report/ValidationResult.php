@@ -45,6 +45,8 @@ class ValidationResult
     public function getPrimaryLanguageTerms(): array { return $this->getTermsByLanguage($this->language); }
 
     public function hasNameCollision(): bool { return $this->terms->hasNameCollision(); }
+    /** La colisión de nombre explica la severidad del resultado: no hay otro término igual de grave sin colisión. */
+    public function nameCollisionExplainsSeverity(): bool { $at = array_filter($this->terms->all(), fn(array $t): bool => $t['severity'] === $this->getSeverity()); return $at !== [] && !in_array(false, array_column($at, 'nameCollision'), true); }
     /** @return array<int,FlaggedEntry> */ public function getNameCollisionTerms(): array { return $this->terms->nameCollisionTerms(); }
     /** @return array<int,FlaggedEntry> */ public function getTermsByDetectionMethod(string $method): array { return $this->terms->byDetectionMethod($method); }
     /** @return array<int,FlaggedEntry> */ public function getPhoneticFusionTerms(): array { return $this->getTermsByDetectionMethod('phonetic_fusion'); }
@@ -64,8 +66,11 @@ class ValidationResult
     /** @param array<string,float> $languages */ public function setLanguagesChecked(array $languages): self { $this->languagesChecked = $languages; return $this; }
     /** @return array<string,float> */ public function getLanguagesChecked(): array { return $this->languagesChecked; }
 
-    /** @return array<int,string> una frase por término marcado, para quien revise el caso */
-    public function getExplanations(): array { return array_map([TermExplanation::class, 'of'], $this->getFlaggedTerms()); }
+    /** @return array<int,string> una frase por término marcado, en el idioma `$locale` (ISO 639-3, `Messages::locales()`); `$dir`: carpeta de mensajes */
+    public function getExplanations(string $locale = Messages::DEFAULT_LOCALE, ?string $dir = null): array
+    {
+        return array_map(static fn(array $t): string => TermExplanation::of($t, $locale, $dir), $this->getFlaggedTerms());
+    }
 
     /** @return array<string,mixed> */
     public function toArray(): array

@@ -1,314 +1,43 @@
 <?php
 /**
  * Privacy Laws Database Importer
- * Imports CSV data into normalized MySQL / MariaDB database
- *
- * Connection: DB_HOST (localhost), DB_PORT (3306), DB_USER (root), DB_PASSWORD (empty).
- * --import replaces the contents of the tables with the CSV (it can be run again).
+ * Imports the master CSV into a normalized MySQL / MariaDB database.
  *
  * Usage:
- *   php import_database.php --create-schema     # Create fresh schema
- *   php import_database.php --import            # Import data from CSV
- *   php import_database.php --validate          # Validate data integrity
- *   php import_database.php --all               # Create schema + import
+ *   php import_database.php --create-schema --yes   # Drop and recreate the database schema
+ *   php import_database.php --import                # Replace the tables' contents with the CSV (can be repeated)
+ *   php import_database.php --validate              # Validate data integrity
+ *   php import_database.php --all --yes             # All of the above
+ *
+ * Connection: DB_HOST (localhost), DB_PORT (3306), DB_USER (root), DB_PASSWORD (empty).
+ * The importer itself is shared with copyright-laws/: leyes-comunes/importador-core.php.
  */
 
-class PrivacyLawsImporter {
-    private $pdo;
-    private $dbName = 'privacy_laws_db';
-    private $csvPath = './countries/privacy_laws_master.csv';
-    private $schemaPath = './database_schema.sql';
+require __DIR__ . '/../leyes-comunes/importador-core.php';
 
-    /**
-     * Connection settings: the arguments, else DB_HOST / DB_PORT / DB_USER / DB_PASSWORD from the
-     * environment, else localhost:3306 as root without a password.
-     */
-    public function __construct($dbHost = null, $dbUser = null, $dbPass = null, $dbPort = null) {
-        $dbHost = $dbHost ?? (getenv('DB_HOST') ?: 'localhost');
-        $dbPort = $dbPort ?? (getenv('DB_PORT') ?: '3306');
-        $dbUser = $dbUser ?? (getenv('DB_USER') ?: 'root');
-        $dbPass = $dbPass ?? (getenv('DB_PASSWORD') ?: '');
-        try {
-            $this->pdo = new PDO(
-                "mysql:host=$dbHost;port=$dbPort;charset=utf8mb4",
-                $dbUser,
-                $dbPass,
-                [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                ]
-            );
-        } catch (PDOException $e) {
-            $this->error("Database connection failed: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Create fresh database schema
-     */
-    public function createSchema() {
-        if (!file_exists($this->schemaPath)) {
-            $this->error("Schema file not found: {$this->schemaPath}");
-        }
-
-        $this->log("📋 Creating database schema...");
-
-        try {
-            // Drop existing database
-            $this->pdo->exec("DROP DATABASE IF EXISTS {$this->dbName}");
-            $this->log("  ✓ Dropped existing database");
-
-            // Read and execute schema file
-            $schema = file_get_contents($this->schemaPath);
-
-            // Split SQL statements and execute them
-            $statements = preg_split('/;(?=\s*$)/m', $schema);
-
-            foreach ($statements as $statement) {
-                $statement = trim($statement);
-                if (!empty($statement)) {
-                    $this->pdo->exec($statement);
-                }
-            }
-
-            $this->log("  ✓ Schema created successfully");
-            return true;
-        } catch (Exception $e) {
-            $this->error("Schema creation failed: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Import data from CSV file
-     */
-    public function importData() {
-        if (!file_exists($this->csvPath)) {
-            $this->error("CSV file not found: {$this->csvPath}");
-        }
-
-        $this->log("📥 Importing data from CSV...");
-
-        try {
-            $this->pdo->exec("USE {$this->dbName}");
-
-            // All or nothing, and re-runnable: the tables end up holding exactly the CSV, never a
-            // half import or the same rows twice. The child tables go with their law (ON DELETE CASCADE).
-            $this->pdo->beginTransaction();
-            $this->pdo->exec("DELETE FROM privacy_laws");
-            $this->pdo->exec("DELETE FROM countries");
-
-            // Read CSV
-            $file = fopen($this->csvPath, 'r');
-            if (!$file) {
-                $this->error("Cannot open CSV file: {$this->csvPath}");
-            }
-
-            $headers = fgetcsv($file);
-            if ($headers === false) {
-                $this->error("CSV file is empty: {$this->csvPath}");
-            }
-            // A UTF-8 BOM would otherwise end up in the name of the first column.
-            $headers[0] = preg_replace('/^\xEF\xBB\xBF/', '', $headers[0]);
-            $line = 1;
-            $imported = 0;
-            $countries = [];
-
-            // Prepare statements
-            $countryStmt = $this->pdo->prepare(
-                "INSERT IGNORE INTO countries (code, name, tld, region) VALUES (?, ?, ?, ?)"
-            );
-            $lawStmt = $this->pdo->prepare(
-                "INSERT INTO privacy_laws
-                (country_id, law_name, jurisdiction, enactment_date, effective_date,
-                 scope, applies_to, key_requirements, data_categories, retention_period,
-                 enforcement_authority, penalties_range, exemptions, deceased_data, research_exemption, genetic_data, website_url, language, frameworks, frameworks_not, notes, pending_change, pending_date, data_status, confidence, last_checked)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            );
-
-            // Read and import rows
-            while (($row = fgetcsv($file)) !== false) {
-                $line++;
-                if ($row === [null]) {
-                    continue; // blank line (the Node tooling skips these too)
-                }
-                if (count($row) !== count($headers)) {
-                    $this->error("Line $line: expected " . count($headers) . ' columns, got ' . count($row));
-                }
-                $data = array_combine($headers, $row);
-
-                // Insert country if not exists
-                $countryCode = trim($data['country_code']);
-                if (!isset($countries[$countryCode])) {
-                    $region = trim($data['region']);
-                    $tld = strtolower($countryCode);
-
-                    $countryStmt->execute([
-                        $countryCode,
-                        $data['country_name'],
-                        $tld,
-                        $region
-                    ]);
-
-                    // Get country_id
-                    $idStmt = $this->pdo->prepare("SELECT country_id FROM countries WHERE code = ?");
-                    $idStmt->execute([$countryCode]);
-                    $countries[$countryCode] = $idStmt->fetch()['country_id'];
-                }
-
-                // Insert law
-                $lawStmt->execute([
-                    $countries[$countryCode],
-                    $data['law_name'],
-                    $data['jurisdiction'],
-                    $this->parseDate($data['enactment_date']),
-                    $this->parseDate($data['effective_date']),
-                    $data['scope'],
-                    $data['applies_to'],
-                    $data['key_requirements'],
-                    $data['data_categories'],
-                    $data['retention_period'],
-                    $data['enforcement_authority'],
-                    $data['penalties_range'],
-                    $data['exemptions'],
-                    $data['deceased_data'] ?? '',
-                    $data['research_exemption'] ?? '',
-                    $data['genetic_data'] ?? '',
-                    $data['website_url'],
-                    $data['language'],
-                    $data['frameworks'] ?? '',
-                    $data['frameworks_not'] ?? '',
-                    $data['notes'] ?? '',
-                    $data['pending_change'] ?? '',
-                    ($data['pending_date'] ?? '') !== '' ? $data['pending_date'] : null,
-                    $data['data_status'] ?? 'curated',
-                    $data['confidence'] ?? '',
-                    ($data['last_checked'] ?? '') !== '' ? $data['last_checked'] : null
-                ]);
-
-                $imported++;
-            }
-
-            fclose($file);
-            $this->pdo->commit();
-
-            $this->log("  ✓ Imported {$imported} laws from " . count($countries) . " countries");
-            return true;
-        } catch (Exception $e) {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->rollBack();
-            }
-            $this->error("Import failed: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Validate data integrity
-     */
-    public function validate() {
-        $this->log("✅ Validating data...");
-
-        try {
-            $this->pdo->exec("USE {$this->dbName}");
-
-            // Check country count
-            $countryCount = $this->pdo->query("SELECT COUNT(*) as count FROM countries")
-                ->fetch()['count'];
-            $this->log("  ✓ Countries: $countryCount");
-
-            // Check law count
-            $lawCount = $this->pdo->query("SELECT COUNT(*) as count FROM privacy_laws")
-                ->fetch()['count'];
-            $this->log("  ✓ Privacy Laws: $lawCount");
-
-            // Check for orphaned laws
-            $orphaned = $this->pdo->query(
-                "SELECT COUNT(*) as count FROM privacy_laws WHERE country_id NOT IN (SELECT country_id FROM countries)"
-            )->fetch()['count'];
-
-            if ($orphaned > 0) {
-                $this->warn("  ⚠ Orphaned laws found: $orphaned");
-            } else {
-                $this->log("  ✓ No orphaned records");
-            }
-
-            // Check for null enforcement_authority
-            $nulls = $this->pdo->query(
-                "SELECT COUNT(*) as count FROM privacy_laws WHERE enforcement_authority IS NULL OR enforcement_authority = ''"
-            )->fetch()['count'];
-
-            if ($nulls > 0) {
-                $this->warn("  ⚠ Missing enforcement_authority: $nulls");
-            }
-
-            // Laws by region
-            $regions = $this->pdo->query(
-                "SELECT region, COUNT(*) as count FROM countries GROUP BY region ORDER BY region"
-            )->fetchAll();
-
-            foreach ($regions as $r) {
-                $this->log("  ✓ {$r['region']}: {$r['count']} countries");
-            }
-
-            $this->log("  ✓ Validation complete!");
-            return true;
-        } catch (Exception $e) {
-            $this->error("Validation failed: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Helper: Parse date from various formats
-     */
-    private function parseDate($date) {
-        if (empty($date) || $date === 'N/A') {
-            return null;
-        }
-        $timestamp = strtotime($date);
-        return $timestamp ? date('Y-m-d', $timestamp) : null;
-    }
-
-    /**
-     * Logging helpers
-     */
-    private function log($message) {
-        echo "[" . date('H:i:s') . "] $message\n";
-    }
-
-    private function warn($message) {
-        echo "\033[33m[" . date('H:i:s') . "] $message\033[0m\n";
-    }
-
-    private function error($message) {
-        echo "\033[31m[" . date('H:i:s') . "] ERROR: $message\033[0m\n";
-        exit(1);
-    }
-}
-
-// Main execution
-$importer = new PrivacyLawsImporter();
-$action = $argv[1] ?? 'help';
-
-switch ($action) {
-    case '--create-schema':
-        $importer->createSchema();
-        break;
-    case '--import':
-        $importer->importData();
-        break;
-    case '--validate':
-        $importer->validate();
-        break;
-    case '--all':
-        $importer->createSchema();
-        $importer->importData();
-        $importer->validate();
-        break;
-    default:
-        echo "Privacy Laws Database Importer\n\n";
-        echo "Usage:\n";
-        echo "  php import_database.php --create-schema     Create fresh database schema\n";
-        echo "  php import_database.php --import            Import data from CSV\n";
-        echo "  php import_database.php --validate          Validate data integrity\n";
-        echo "  php import_database.php --all               All of the above\n";
-}
-?>
+ImportadorLeyes::ejecutar([
+    'titulo' => 'Privacy Laws',
+    'db' => 'privacy_laws_db',
+    'csv' => './countries/privacy_laws_master.csv',
+    'esquema' => './database_schema.sql',
+    'padre' => 'countries',
+    'clavePadre' => 'country_id',
+    'unidad' => 'countries',
+    'ley' => 'privacy_laws',
+    'leyes' => 'laws',
+    'columnas' => [
+        'law_name', 'jurisdiction', 'enactment_date', 'effective_date', 'scope', 'applies_to',
+        'key_requirements', 'data_categories', 'retention_period', 'enforcement_authority',
+        'penalties_range', 'exemptions', 'deceased_data', 'research_exemption', 'genetic_data',
+        'website_url', 'language', 'frameworks', 'frameworks_not', 'notes', 'pending_change',
+        'pending_date', 'data_status', 'confidence', 'last_checked',
+    ],
+    'obligatorias' => [
+        'country_code', 'country_name', 'region', 'law_name', 'jurisdiction', 'enactment_date',
+        'effective_date', 'scope', 'applies_to', 'key_requirements', 'data_categories',
+        'retention_period', 'enforcement_authority', 'penalties_range', 'exemptions', 'website_url', 'language',
+    ],
+    'fechas' => ['enactment_date', 'effective_date', 'pending_date', 'last_checked'],
+    'porDefecto' => ['data_status' => 'curated'],
+    'campoNoVacio' => 'enforcement_authority',
+], $argv);

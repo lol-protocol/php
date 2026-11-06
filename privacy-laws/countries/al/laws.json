@@ -23,8 +23,8 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced Law 9887/2008; DPIA & prior-consultation rules apply from 17 Jan 2027",
-    "pending_change": "",
-    "pending_date": "",
+    "pending_change": "DPIA and prior-consultation obligations start to apply",
+    "pending_date": "2027-01-17",
     "data_status": "researched",
     "confidence": "high",
     "last_checked": "2026-10-21",
@@ -46,6 +46,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-06",
+        "field": "pending_date",
+        "from": "",
+        "to": "2027-01-17"
+      },
+      {
+        "date": "2026-11-06",
+        "field": "pending_change",
+        "from": "",
+        "to": "DPIA and prior-consultation obligations start to apply"
+      },
       {
         "date": "2026-10-21",
         "field": "genetic_data",

@@ -219,7 +219,11 @@ fi
 # eso abortaria antes del resumen final. Aqui un fallo solo se avisa (por
 # ejemplo, el DNS puede seguir propagando aunque la instalacion este bien).
 HEALTH_OK=1
-bash ./08-healthcheck.sh "$DOMAIN" || HEALTH_OK=0
+if [ "$SKIP_SSL" -eq 1 ]; then
+    bash ./08-healthcheck.sh "$DOMAIN" --sin-ssl || HEALTH_OK=0   # sin certificado, HTTPS siempre falla
+else
+    bash ./08-healthcheck.sh "$DOMAIN" || HEALTH_OK=0
+fi
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
@@ -236,11 +240,17 @@ if [ "$HEALTH_OK" -eq 0 ]; then
 fi
 echo ""
 echo "Tu landing page esta disponible en:"
-echo "  🔗 https://$DOMAIN"
-echo "  🔗 https://www.$DOMAIN"
-echo ""
-sudo certbot certificates -d "$DOMAIN" 2>/dev/null || echo "Verificando certificado..."
-echo ""
+if [ "$SKIP_SSL" -eq 1 ]; then
+    echo "  🔗 http://$DOMAIN   (sin HTTPS todavia)"
+    echo "  🔗 http://www.$DOMAIN"
+    echo ""
+else
+    echo "  🔗 https://$DOMAIN"
+    echo "  🔗 https://www.$DOMAIN"
+    echo ""
+    sudo certbot certificates -d "$DOMAIN" 2>/dev/null || echo "Verificando certificado..."
+    echo ""
+fi
 echo "Logs de Nginx:"
 echo "  Access: /var/log/nginx/$DOMAIN/access.log"
 echo "  Error:  /var/log/nginx/$DOMAIN/error.log"

@@ -20,7 +20,7 @@ esac
 ./preparar-postgres.sh
 
 if [ "$regenerar" = 1 ]; then
-    echo "Regenerando los datos semilla desde cero (se borran las notas, los filtros guardados y la configuración de alertas)..."
+    echo "Regenerando los datos semilla desde cero (se borran las notas y su registro de auditoría, los filtros guardados y la configuración de alertas)..."
     php datos/generar-datos-semilla.php
 else
     php datos/sembrar-si-falta.php

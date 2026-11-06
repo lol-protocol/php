@@ -101,6 +101,13 @@ def test_la_clave_cambia_con_el_codigo_del_generador(catalogo):
     assert base != build.clave_pieza("gen-b", config, mov, autor, 1, animos, {})
 
 
+def test_las_previas_de_un_movimiento_no_incluyen_a_los_de_prefijo_parecido():
+    ids = ["realismo", "realismo-magico", "gotico"]
+    huellas = {"realismo-galdos-01": 1, "realismo-magico-garro-01": 2, "gotico-poe-01": 3}
+    assert build._huellas_del_movimiento(huellas, "realismo", ids) == {"realismo-galdos-01": 1}
+    assert build._huellas_del_movimiento(huellas, "realismo-magico", ids) == {"realismo-magico-garro-01": 2}
+
+
 def test_movimiento_de_no_confunde_prefijos():
     ids = ["realismo", "realismo-magico"]
     assert build._movimiento_de("realismo-magico-garro-01", ids) == "realismo-magico"

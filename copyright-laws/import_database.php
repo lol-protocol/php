@@ -1,327 +1,69 @@
 <?php
 /**
  * Copyright Laws Database Importer
- * Imports CSV data into normalized MySQL / MariaDB database
- *
- * Connection: DB_HOST (localhost), DB_PORT (3306), DB_USER (root), DB_PASSWORD (empty).
- * --import replaces the contents of the tables with the CSV (it can be run again).
+ * Imports the master CSV into a normalized MySQL / MariaDB database.
  *
  * Usage:
- *   php import_database.php --create-schema     # Create fresh schema
- *   php import_database.php --import            # Import data from CSV
- *   php import_database.php --validate          # Validate data integrity
- *   php import_database.php --all               # Create schema + import
+ *   php import_database.php --create-schema --yes   # Drop and recreate the database schema
+ *   php import_database.php --import                # Replace the tables' contents with the CSV (can be repeated)
+ *   php import_database.php --validate              # Validate data integrity
+ *   php import_database.php --all --yes             # All of the above
+ *
+ * Connection: DB_HOST (localhost), DB_PORT (3306), DB_USER (root), DB_PASSWORD (empty).
+ * The importer itself is shared with privacy-laws/: leyes-comunes/importador-core.php.
  */
 
-class CopyrightLawsImporter {
-    private $pdo;
-    private $dbName = 'copyright_laws_db';
-    private $csvPath = './jurisdictions/copyright_laws_master.csv';
-    private $schemaPath = './database_schema.sql';
+require __DIR__ . '/../leyes-comunes/importador-core.php';
 
-    /**
-     * Connection settings: the arguments, else DB_HOST / DB_PORT / DB_USER / DB_PASSWORD from the
-     * environment, else localhost:3306 as root without a password.
-     */
-    public function __construct($dbHost = null, $dbUser = null, $dbPass = null, $dbPort = null) {
-        $dbHost = $dbHost ?? (getenv('DB_HOST') ?: 'localhost');
-        $dbPort = $dbPort ?? (getenv('DB_PORT') ?: '3306');
-        $dbUser = $dbUser ?? (getenv('DB_USER') ?: 'root');
-        $dbPass = $dbPass ?? (getenv('DB_PASSWORD') ?: '');
-        try {
-            $this->pdo = new PDO(
-                "mysql:host=$dbHost;port=$dbPort;charset=utf8mb4",
-                $dbUser,
-                $dbPass,
-                [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                ]
-            );
-        } catch (PDOException $e) {
-            $this->error("Database connection failed: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Create fresh database schema
-     */
-    public function createSchema() {
-        if (!file_exists($this->schemaPath)) {
-            $this->error("Schema file not found: {$this->schemaPath}");
+ImportadorLeyes::ejecutar([
+    'titulo' => 'Copyright Laws',
+    'db' => 'copyright_laws_db',
+    'csv' => './jurisdictions/copyright_laws_master.csv',
+    'esquema' => './database_schema.sql',
+    'padre' => 'jurisdictions',
+    'clavePadre' => 'jurisdiction_id',
+    'unidad' => 'jurisdictions',
+    'ley' => 'copyright_laws',
+    'leyes' => 'copyright laws',
+    'columnas' => [
+        'law_name', 'protection_type', 'term_of_protection', 'author_rights', 'moral_rights',
+        'orphan_works', 'digital_protection', 'fair_use_exceptions', 'registration_required',
+        'enforcement_body', 'treaties_signatory', 'treaties_not_party', 'linked_resources', 'notes',
+        'pending_change', 'pending_date', 'data_status', 'confidence', 'last_checked',
+    ],
+    'obligatorias' => [
+        'country_code', 'country_name', 'region', 'law_name', 'protection_type', 'term_of_protection',
+        'author_rights', 'moral_rights', 'orphan_works', 'digital_protection', 'fair_use_exceptions',
+        'registration_required', 'enforcement_body', 'treaties_signatory', 'linked_resources',
+    ],
+    'fechas' => ['pending_date', 'last_checked'],
+    'porDefecto' => ['data_status' => 'curated'],
+    'campoNoVacio' => 'enforcement_body',
+    // Lo que solo valida este módulo: tipos de protección y pertenencia a tratados.
+    'validacionExtra' => function (PDO $pdo, callable $log): void {
+        foreach ($pdo->query(
+            'SELECT protection_type, COUNT(*) AS count FROM copyright_laws GROUP BY protection_type ORDER BY count DESC'
+        )->fetchAll() as $t) {
+            $log("  ✓ {$t['protection_type']}: {$t['count']} laws");
         }
 
-        $this->log("📋 Creating database schema...");
-
-        try {
-            // Drop existing database
-            $this->pdo->exec("DROP DATABASE IF EXISTS {$this->dbName}");
-            $this->log("  ✓ Dropped existing database");
-
-            // Read and execute schema file
-            $schema = file_get_contents($this->schemaPath);
-
-            // Split SQL statements and execute them
-            $statements = preg_split('/;(?=\s*$)/m', $schema);
-
-            foreach ($statements as $statement) {
-                $statement = trim($statement);
-                if (!empty($statement)) {
-                    $this->pdo->exec($statement);
-                }
+        // treaties_signatory es una lista separada por «/» de hasta cuatro valores.
+        $tratados = $pdo->query(
+            "SELECT
+                TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(treaties_signatory, '/', numbers.n), '/', -1)) AS treaty,
+                COUNT(*) AS count
+            FROM copyright_laws
+            CROSS JOIN (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) numbers
+            WHERE treaties_signatory <> ''
+              AND numbers.n <= 1 + LENGTH(treaties_signatory) - LENGTH(REPLACE(treaties_signatory, '/', ''))
+            GROUP BY treaty
+            ORDER BY count DESC"
+        )->fetchAll();
+        if ($tratados) {
+            $log('  ✓ Treaty memberships:');
+            foreach ($tratados as $t) {
+                $log("    - {$t['treaty']}: {$t['count']}");
             }
-
-            $this->log("  ✓ Schema created successfully");
-            return true;
-        } catch (Exception $e) {
-            $this->error("Schema creation failed: " . $e->getMessage());
         }
-    }
-
-    /**
-     * Import data from CSV file
-     */
-    public function importData() {
-        if (!file_exists($this->csvPath)) {
-            $this->error("CSV file not found: {$this->csvPath}");
-        }
-
-        $this->log("📥 Importing data from CSV...");
-
-        try {
-            $this->pdo->exec("USE {$this->dbName}");
-
-            // All or nothing, and re-runnable: the tables end up holding exactly the CSV, never a
-            // half import or the same rows twice. The child tables go with their law (ON DELETE CASCADE).
-            $this->pdo->beginTransaction();
-            $this->pdo->exec("DELETE FROM copyright_laws");
-            $this->pdo->exec("DELETE FROM jurisdictions");
-
-            // Read CSV
-            $file = fopen($this->csvPath, 'r');
-            if (!$file) {
-                $this->error("Cannot open CSV file: {$this->csvPath}");
-            }
-
-            $headers = fgetcsv($file);
-            if ($headers === false) {
-                $this->error("CSV file is empty: {$this->csvPath}");
-            }
-            // A UTF-8 BOM would otherwise end up in the name of the first column.
-            $headers[0] = preg_replace('/^\xEF\xBB\xBF/', '', $headers[0]);
-            $line = 1;
-            $imported = 0;
-            $jurisdictions = [];
-
-            // Prepare statements
-            $jurisdictionStmt = $this->pdo->prepare(
-                "INSERT IGNORE INTO jurisdictions (code, name, tld, region) VALUES (?, ?, ?, ?)"
-            );
-            $lawStmt = $this->pdo->prepare(
-                "INSERT INTO copyright_laws
-                (jurisdiction_id, law_name, protection_type, term_of_protection,
-                 author_rights, moral_rights, orphan_works, digital_protection,
-                 fair_use_exceptions, registration_required, enforcement_body,
-                 treaties_signatory, treaties_not_party, linked_resources, notes, pending_change, pending_date, data_status, confidence, last_checked)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            );
-
-            // Read and import rows
-            while (($row = fgetcsv($file)) !== false) {
-                $line++;
-                if ($row === [null]) {
-                    continue; // blank line (the Node tooling skips these too)
-                }
-                if (count($row) !== count($headers)) {
-                    $this->error("Line $line: expected " . count($headers) . ' columns, got ' . count($row));
-                }
-                $data = array_combine($headers, $row);
-
-                // Insert jurisdiction if not exists
-                $countryCode = trim($data['country_code']);
-                if (!isset($jurisdictions[$countryCode])) {
-                    $region = trim($data['region']);
-                    $tld = strtolower($countryCode);
-
-                    $jurisdictionStmt->execute([
-                        $countryCode,
-                        $data['country_name'],
-                        $tld,
-                        $region
-                    ]);
-
-                    // Get jurisdiction_id
-                    $idStmt = $this->pdo->prepare("SELECT jurisdiction_id FROM jurisdictions WHERE code = ?");
-                    $idStmt->execute([$countryCode]);
-                    $jurisdictions[$countryCode] = $idStmt->fetch()['jurisdiction_id'];
-                }
-
-                // Insert law
-                $lawStmt->execute([
-                    $jurisdictions[$countryCode],
-                    $data['law_name'],
-                    $data['protection_type'],
-                    $data['term_of_protection'],
-                    $data['author_rights'],
-                    $data['moral_rights'],
-                    $data['orphan_works'],
-                    $data['digital_protection'],
-                    $data['fair_use_exceptions'],
-                    $data['registration_required'],
-                    $data['enforcement_body'],
-                    $data['treaties_signatory'],
-                    $data['treaties_not_party'] ?? '',
-                    $data['linked_resources'],
-                    $data['notes'] ?? '',
-                    $data['pending_change'] ?? '',
-                    ($data['pending_date'] ?? '') !== '' ? $data['pending_date'] : null,
-                    $data['data_status'] ?? 'curated',
-                    $data['confidence'] ?? '',
-                    ($data['last_checked'] ?? '') !== '' ? $data['last_checked'] : null
-                ]);
-
-                $imported++;
-            }
-
-            fclose($file);
-            $this->pdo->commit();
-
-            $this->log("  ✓ Imported {$imported} copyright laws from " . count($jurisdictions) . " jurisdictions");
-            return true;
-        } catch (Exception $e) {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->rollBack();
-            }
-            $this->error("Import failed: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Validate data integrity
-     */
-    public function validate() {
-        $this->log("✅ Validating data...");
-
-        try {
-            $this->pdo->exec("USE {$this->dbName}");
-
-            // Check jurisdiction count
-            $jurisdictionCount = $this->pdo->query("SELECT COUNT(*) as count FROM jurisdictions")
-                ->fetch()['count'];
-            $this->log("  ✓ Jurisdictions: $jurisdictionCount");
-
-            // Check law count
-            $lawCount = $this->pdo->query("SELECT COUNT(*) as count FROM copyright_laws")
-                ->fetch()['count'];
-            $this->log("  ✓ Copyright Laws: $lawCount");
-
-            // Check for orphaned laws
-            $orphaned = $this->pdo->query(
-                "SELECT COUNT(*) as count FROM copyright_laws WHERE jurisdiction_id NOT IN (SELECT jurisdiction_id FROM jurisdictions)"
-            )->fetch()['count'];
-
-            if ($orphaned > 0) {
-                $this->warn("  ⚠ Orphaned laws found: $orphaned");
-            } else {
-                $this->log("  ✓ No orphaned records");
-            }
-
-            // Check for null enforcement_body
-            $nulls = $this->pdo->query(
-                "SELECT COUNT(*) as count FROM copyright_laws WHERE enforcement_body IS NULL OR enforcement_body = ''"
-            )->fetch()['count'];
-
-            if ($nulls > 0) {
-                $this->warn("  ⚠ Missing enforcement_body: $nulls");
-            }
-
-            // Laws by region
-            $regions = $this->pdo->query(
-                "SELECT region, COUNT(*) as count FROM jurisdictions GROUP BY region ORDER BY region"
-            )->fetchAll();
-
-            foreach ($regions as $r) {
-                $this->log("  ✓ {$r['region']}: {$r['count']} jurisdictions");
-            }
-
-            // Protection types
-            $types = $this->pdo->query(
-                "SELECT protection_type, COUNT(*) as count FROM copyright_laws GROUP BY protection_type ORDER BY count DESC"
-            )->fetchAll();
-
-            foreach ($types as $t) {
-                $this->log("  ✓ {$t['protection_type']}: {$t['count']} laws");
-            }
-
-            // Treaty memberships (treaties_signatory is a '/'-separated list of up to four values)
-            $treaties = $this->pdo->query(
-                "SELECT
-                    TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(treaties_signatory, '/', numbers.n), '/', -1)) as treaty,
-                    COUNT(*) as count
-                FROM copyright_laws
-                CROSS JOIN (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) numbers
-                WHERE treaties_signatory <> ''
-                  AND numbers.n <= 1 + LENGTH(treaties_signatory) - LENGTH(REPLACE(treaties_signatory, '/', ''))
-                GROUP BY treaty
-                ORDER BY count DESC"
-            )->fetchAll();
-
-            if (!empty($treaties)) {
-                $this->log("  ✓ Treaty memberships:");
-                foreach ($treaties as $t) {
-                    $this->log("    - {$t['treaty']}: {$t['count']}");
-                }
-            }
-
-            $this->log("  ✓ Validation complete!");
-            return true;
-        } catch (Exception $e) {
-            $this->error("Validation failed: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Logging helpers
-     */
-    private function log($message) {
-        echo "[" . date('H:i:s') . "] $message\n";
-    }
-
-    private function warn($message) {
-        echo "\033[33m[" . date('H:i:s') . "] $message\033[0m\n";
-    }
-
-    private function error($message) {
-        echo "\033[31m[" . date('H:i:s') . "] ERROR: $message\033[0m\n";
-        exit(1);
-    }
-}
-
-// Main execution
-$importer = new CopyrightLawsImporter();
-$action = $argv[1] ?? 'help';
-
-switch ($action) {
-    case '--create-schema':
-        $importer->createSchema();
-        break;
-    case '--import':
-        $importer->importData();
-        break;
-    case '--validate':
-        $importer->validate();
-        break;
-    case '--all':
-        $importer->createSchema();
-        $importer->importData();
-        $importer->validate();
-        break;
-    default:
-        echo "Copyright Laws Database Importer\n\n";
-        echo "Usage:\n";
-        echo "  php import_database.php --create-schema     Create fresh database schema\n";
-        echo "  php import_database.php --import            Import data from CSV\n";
-        echo "  php import_database.php --validate          Validate data integrity\n";
-        echo "  php import_database.php --all               All of the above\n";
-}
-?>
+    },
+], $argv);

@@ -13,7 +13,8 @@ const pagina = pathToFileURL(join(dirname(fileURLToPath(import.meta.url)), '..',
 const CUADROS = 1500; // unos 25 s a 60 cuadros por segundo: de sobra para que caigan, reboten y se asienten
 const TOLERANCIA = 0.01; // px
 
-const browser = await chromium.launch();
+// CHROMIUM = un Chromium ya instalado (los contenedores de la nube traen otra version que la que baja Playwright).
+const browser = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
 const page = await browser.newPage({ viewport: { width: 900, height: 600 } });
 const errores = [];
 page.on('pageerror', err => errores.push(`JS: ${err.message}`));

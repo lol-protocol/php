@@ -2,7 +2,13 @@
 
 declare(strict_types=1);
 
-/** Rate limiting simple de /api/login por IP: N intentos fallidos → bloqueo temporal. */
+/**
+ * Rate limiting simple de /api/login por IP: N intentos fallidos → bloqueo temporal.
+ * Los fallos cuentan dentro de una ventana de BLOQUEO_MINUTOS desde el último: si la IP lleva más tiempo
+ * sin fallar (haya estado bloqueada o no), el siguiente fallo vuelve a contar desde 1. Sin eso, el
+ * contador no bajaba nunca: pasado el bloqueo, un solo fallo volvía a bloquear otros 15 minutos, y
+ * cuatro fallos de hace horas más uno nuevo también.
+ */
 final class AlmacenIntentosLogin
 {
     private const MAX_INTENTOS = 5;
@@ -53,15 +59,22 @@ final class AlmacenIntentosLogin
             "INSERT INTO intentos_login (ip, intentos, ultimo_intento, bloqueado_hasta)
              VALUES (:ip, 1, NOW(), NULL)
              ON CONFLICT (ip) DO UPDATE SET
-                intentos = intentos_login.intentos + 1,
+                intentos = CASE
+                    WHEN intentos_login.ultimo_intento < NOW() - (:ventana1 || ' minutes')::interval THEN 1
+                    ELSE intentos_login.intentos + 1
+                END,
                 ultimo_intento = NOW(),
                 bloqueado_hasta = CASE
+                    WHEN intentos_login.ultimo_intento < NOW() - (:ventana2 || ' minutes')::interval THEN NULL
                     WHEN intentos_login.intentos + 1 >= :max THEN NOW() + (:min || ' minutes')::interval
                     ELSE intentos_login.bloqueado_hasta
                 END
              RETURNING intentos, bloqueado_hasta"
         );
-        $stmt->execute(['ip' => $ip, 'max' => self::MAX_INTENTOS, 'min' => self::BLOQUEO_MINUTOS]);
+        $stmt->execute([
+            'ip' => $ip, 'max' => self::MAX_INTENTOS, 'min' => self::BLOQUEO_MINUTOS,
+            'ventana1' => self::BLOQUEO_MINUTOS, 'ventana2' => self::BLOQUEO_MINUTOS,
+        ]);
         $fila = $stmt->fetch();
         return ($fila['intentos'] > self::MAX_INTENTOS) ? $fila['bloqueado_hasta'] : null;
     }

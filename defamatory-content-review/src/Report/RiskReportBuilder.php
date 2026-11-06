@@ -20,43 +20,44 @@ final class RiskReportBuilder
      * @var array<string,string>
      */
     private readonly array $descriptions;
+    private readonly string $messagesDir;
 
     public function __construct(string $riskCategoriesFile)
     {
+        $this->messagesDir = dirname($riskCategoriesFile) . '/messages';
         $this->descriptions = array_map(static fn(array $c) => $c['description'], require $riskCategoriesFile);
     }
 
     /** @return array<string,mixed> */
-    public function build(ValidationResult $result, string $decision, ScoringPolicy $policy): array
+    public function build(ValidationResult $result, string $decision, ScoringPolicy $policy, string $locale = Messages::DEFAULT_LOCALE): array
     {
-        return $result->toArray() + [
+        return array_merge($result->toArray(), [
+            'explanations' => $result->getExplanations($locale, $this->messagesDir),
             'decision' => $decision,
-            'recommendation' => $this->recommendationFor($decision, $result),
-            'riskAnalysis' => $this->analyzeRisks($result, $policy),
-        ];
+            'recommendation' => $this->recommendationFor($decision, $result, $locale),
+            'riskAnalysis' => $this->analyzeRisks($result, $policy, $locale),
+        ]);
     }
 
     /** Un término que además es apellido documentado nunca se rechaza solo: baja a revisión humana. Lo mismo para una fusión fonética — es inferencia, no coincidencia literal. */
-    private function recommendationFor(string $decision, ValidationResult $result): string
+    private function recommendationFor(string $decision, ValidationResult $result, string $locale): string
     {
-        $types = implode(', ', $result->getFlaggedRiskTypes());
-
-        return match ($decision) {
-            'reject' => "Rechazar: contenido gravemente ofensivo (tipos de riesgo: {$types}).",
+        $key = match ($decision) {
+            'reject' => 'reject',
             'review' => match (true) {
-                $result->hasNameCollision() => "Revisión humana: coincide con términos ofensivos ({$types}) " .
-                    "pero también con apellidos documentados.",
-                $result->hasOnlyPhoneticDetections() => "Revisión humana: nombre y apellido, fusionados, " .
-                    "componen un término ofensivo ({$types}) que ninguno de los dos tiene por separado.",
-                default => "Revisión humana: términos potencialmente ofensivos ({$types}).",
+                $result->hasNameCollision() => 'review_collision',
+                $result->hasOnlyPhoneticDetections() => 'review_phonetic',
+                default => 'review',
             },
-            'accept_with_flag' => "Aceptar con marca: términos de bajo riesgo ({$types}).",
-            default => 'Aceptar: sin contenido difamatorio detectado.',
+            'accept_with_flag' => 'accept_with_flag',
+            default => 'accept',
         };
+
+        return Messages::get('recommendation.' . $key, $locale, [implode(', ', $result->getFlaggedRiskTypes())], $this->messagesDir);
     }
 
     /** @return array<string,array<string,mixed>> */
-    private function analyzeRisks(ValidationResult $result, ScoringPolicy $policy): array
+    private function analyzeRisks(ValidationResult $result, ScoringPolicy $policy, string $locale): array
     {
         $analysis = [];
 
@@ -71,7 +72,7 @@ final class RiskReportBuilder
             }
 
             $analysis[$riskType] = [
-                'description' => $this->descriptions[$riskType] ?? $riskType,
+                'description' => Messages::find("category.$riskType.description", $locale, $this->messagesDir) ?? $this->descriptions[$riskType] ?? $riskType,
                 'level' => $worst,
                 'isSevere' => $this->isTopWeight($worst, $policy),
                 'termCount' => count($terms),

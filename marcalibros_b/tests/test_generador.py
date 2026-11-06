@@ -65,9 +65,11 @@ def test_hashes_de_referencia():
 def test_sin_duplicados_visuales():
     _, huellas = _piezas()
     ids = list(huellas)
+    movimientos = [m["id"] for m in CONFIG["movimientos"]]
     for i, a in enumerate(ids):
         for b in ids[i + 1:]:
-            if a.split("-")[0] == b.split("-")[0]:
+            # el movimiento se saca con _movimiento_de: «realismo» y «realismo-magico» comparten el primer trozo
+            if build._movimiento_de(a, movimientos) == build._movimiento_de(b, movimientos):
                 assert np.abs(huellas[a] - huellas[b]).mean() >= UMBRAL_DUPLICADO, f"{a} ≈ {b}"
 
 

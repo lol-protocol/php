@@ -20,6 +20,7 @@ y [`SECURITY.md`](SECURITY.md) (cómo avisar de una fuga de datos sin publicarla
 | [`defamatory-content-review/`](defamatory-content-review/) | Librería PHP — detección de insultos y ridiculización en nombres, y de insultos, amenazas y acusaciones contra personas en textos libres, para plataformas genealógicas. El proyecto principal del repositorio. |
 | [`url-routing/`](url-routing/docs/README_URLS.md) | Routing de URLs para los sitios de genealogía y POS (Contrastocolor): el tipo de recurso se infiere de la forma del primer segmento (cantidad de dígitos, letras de lugar), no de palabras. |
 | [`web-animations/`](web-animations/) | Galería de demostración de 36 animaciones HTML/CSS/JS. |
+| [`siluetas-ancestrales/`](siluetas-ancestrales/) | Generador de siluetas de frente de personas ancestrales, en JS y SVG y sin dependencias: ilustraciones con proporciones reales por edad, sexo y complexión, un catálogo de 492 atuendos (485 prendas, 110 tintes con época) por región, época y pueblo —de Egipto y Roma a los Andes, el pueblo mapuche, el Chile de 1850 a 1980 y la ropa de abuelos y bisabuelos, y de Asia, África, Oceanía y las Américas indígenas— con 116 etnias que permiten estimar región, piel, cabello, estatura y atuendo a partir de la etnia, la edad, el sexo y el año; cada figura saluda con una mano. Se puede vestir prenda por prenda, con poses naturales y distintas. Cada prenda trae su catálogo de colores con la probabilidad de cada uno (los jeans solo en azules y grises). Trae un generador de ropa y colores nuevos, galería HTML y CLI, y un nivel de confianza por entrada para su revisión antropológica. Es una aproximación histórica para ilustrar, no un estudio de indumentaria. |
 | [`document-formats/`](document-formats/) | Base de datos de formatos de documento y papel por país. |
 | [`privacy-laws/`](privacy-laws/) | Base de datos de leyes de privacidad por país, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
 | [`copyright-laws/`](copyright-laws/) | Base de datos de leyes de derechos de autor por jurisdicción, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
@@ -53,7 +54,7 @@ es solo texto; `marketing/` es texto e imágenes con dos scripts PHP sueltos (`r
 generador/validador de `iconos-tools/` (ver "CI/CD" más abajo); y `privacy-laws/` y
 `copyright-laws/` comparten en `leyes-comunes/` el código que hacían igual (verificador de enlaces,
 caché de textos, registro de cambios, traducciones y validación del CSV), sin que uno dependa del
-otro. Tres proyectos usan `defamatory-content-review/` y necesitan esa carpeta al lado:
+otro. Cuatro proyectos usan `defamatory-content-review/` y necesitan esa carpeta al lado:
 
 - **`phone-directory/`** usa sus clases de plegado de acentos y claves fonéticas; su
   `composer.json` la declara como dependencia Composer (`lol-protocol/defamatory-content-review`,
@@ -62,8 +63,10 @@ otro. Tres proyectos usan `defamatory-content-review/` y necesitan esa carpeta a
   `../defamatory-content-review` o en la carpeta de `FILTRO_DIFAMACION_DIR`.
 - **`marcalibros-plataforma-pos-brand-identity/`** revisa con su filtro el texto que cada persona
   escribe en su marcalibro; su aplicación carga las clases desde `../defamatory-content-review/src/`.
+- **`url-routing/`** pasa por su filtro los pedidos de retiro (`url-routing/Support/FiltroPedidos.php`).
 
-Por eso los workflows de esos tres corren también cuando cambia `defamatory-content-review/`. El
+Por eso los workflows de esos cuatro corren también cuando cambia `defamatory-content-review/`
+(`pruebas-url-routing.yml` solo mira su `src/` y su `config/`). El
 resto de proyectos no depende de ningún otro.
 
 ## Desarrollo
@@ -94,14 +97,17 @@ proyecto.
 
 ## CI/CD
 
+La tabla de todos los workflows (nombre, cuándo corre cada uno y sus jobs) se genera de los propios archivos en [`.github/WORKFLOWS.md`](.github/WORKFLOWS.md) con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml` falla si no está al día; lo de abajo explica para qué sirve cada uno.
+
 Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando cambia su carpeta (o el archivo del propio workflow), en los pull requests y en `master`: un PR que toca una sola carpeta dispara solo lo suyo. Si un proyecto usa a otro, su workflow también mira la carpeta del otro. Las carpetas sin workflow (`landing-page/`, `marketing/`, `psychology-and-marketing/`) solo disparan `estructura.yml`, que corre siempre.
 
-- `estructura.yml`: seis jobs sobre la estructura del repo. `readme-projects` comprueba que la tabla de proyectos de este README liste todas las carpetas de la raíz; `readme-workflows`, que este apartado nombre todos los archivos de `.github/workflows/` (y ninguno que no exista); `claude-md-rutas`, que las rutas que cita `CLAUDE.md` existan (`python3 .github/scripts/comprobar-rutas-de-claude-md.py`); `enlaces-md`, que los enlaces relativos de los `.md` apunten a algo que exista (`python3 .github/scripts/comprobar-enlaces-md.py`); `composer-validate`, `composer validate` en cada `composer.json` (estricto, salvo el de la raíz); y `landing-page`, que esa carpeta no tenga documentación, scripts ni archivos ocultos, porque `vps-setup/` la copia entera a la raíz del servidor web.
+- `estructura.yml`: siete jobs sobre la estructura del repo. `readme-projects` comprueba que la tabla de proyectos de este README liste todas las carpetas de la raíz; `readme-workflows`, que este apartado nombre todos los archivos de `.github/workflows/` (y ninguno que no exista); `workflows-listado`, que `.github/WORKFLOWS.md` (la tabla de nombre, disparadores y jobs de cada workflow) esté al día con ellos (`python3 .github/scripts/listar-workflows.py --comprobar`); `claude-md-rutas`, que las rutas que cita `CLAUDE.md` existan (`python3 .github/scripts/comprobar-rutas-de-claude-md.py`); `enlaces-md`, que los enlaces relativos de los `.md` apunten a algo que exista (`python3 .github/scripts/comprobar-enlaces-md.py`); `composer-validate`, `composer validate` en cada `composer.json` (estricto, salvo el de la raíz); y `landing-page`, que esa carpeta no tenga documentación, scripts ni archivos ocultos, porque `vps-setup/` la copia entera a la raíz del servidor web.
 - `pruebas-defamatory-content-review.yml`: `phpunit` (tests, PHPStan y benchmark de `defamatory-content-review/`) y `chat-front-guard` (tests en Node del tope de letras repetidas para el front, `defamatory-content-review/js/`).
 - `pruebas-phone-directory.yml` (también corre si cambia `defamatory-content-review/`, que `phone-directory/` usa como dependencia): `phone-directory` (tests de `phone-directory/`, incluidos los ejemplos, contra SQLite y PostgreSQL, y el benchmark) y `phone-directory-ports` (tests de sus ports a Python y Java).
 - `pruebas-url-routing.yml`: tests de `url-routing/` contra SQLite y PostgreSQL, que sus migraciones corran limpias en PostgreSQL, y `despliegue`: una prueba de humo del despliegue de su guía con nginx y PHP-FPM de verdad (`url-routing/deploy/smoke-test.sh`: permisos, migraciones, `/ready`, cabeceras, HTTPS, el ciclo de un pedido de retiro y el limitador).
 - `pruebas-document-formats.yml`: `document-formats` (tests en Node de `document-formats/`) y `document-formats-database` (importa `document-formats/` a MySQL, dos veces para comprobar que no duplica filas, y lo valida contra los CSV).
-- `pruebas-web-animations.yml`: prueba de humo de las animaciones.
+- `pruebas-web-animations.yml`: comprueba que la galería, cada página y su fila de la tabla hablen de la misma animación (`gallery-metadata`), abre las 37 páginas en Chromium (`smoke`) y avanza la lluvia de partículas 1.500 cuadros para comprobar que no sale de la ventana (`particles-in-bounds`).
+- `pruebas-siluetas-ancestrales.yml`: pruebas en Node 22 de `siluetas-ancestrales/` (`node --test 'pruebas/*.test.js'`: catálogo, que todo atuendo se dibuje bien, determinismo, ropa nueva y que el paquete `dist/` dé lo mismo que `src/`) y que `dist/` y `ejemplos/` coincidan con lo que genera el código (`node bin/construir.js --comprobar`).
 - `pruebas-listado-colores.yml`: valida los nueve CSV y `CHANGELOG.md` de `Listado-colores/` y que la tabla del README, `colores-por-idioma.md`, las páginas de `por-idioma/`, `referencias.md`, `ambiguedad.md`, `auditoria-nombres.md`, `categorias.md`, `revisiones.md`, `visor-revision.html` y `exportes/` (con los patrones de spaCy y el manifiesto) estén al día, y construye una base SQLite en memoria (`python3 generar-tabla.py --comprobar`); corre además las pruebas del generador (`python3 -m unittest pruebas`) y repite las dos cosas en Python 3.10 y 3.14 sobre Ubuntu 24.04 y en Python 3.13 sobre macOS 15.
 - `pruebas-listado-paises.yml`: valida los CSV de `Listado-paises/` y que `tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` estén al día (`python3 generar_tabla.py --comprobar`), y corre sus pruebas (`python3 -m unittest pruebas`).
 - `pruebas-portadas-svg.yml`: pruebas unitarias de `portadas-svg/` (`php pruebas/ejecutar.php`), que `ejemplos/salida/` coincida con lo que genera el código (`php bin/generar.php --comprobar`), PHPStan 2.1 y `composer validate`, en PHP 8.3.
@@ -110,7 +116,7 @@ Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando camb
 - `pruebas-citas-pos.yml`: corre las pruebas de los validadores y del generador de `citas-pos/` (`php citas-pos/pruebas/ejecutar.php`), comprueba la paleta de `citas-pos/` (las 17 categorías, contraste de 4,5:1 en modo claro y oscuro y que ningún par de colores se parezca demasiado), que `prototipo/index.html` y `salida/` (las piezas de cita coloreada para el correo y el sitio, y el juego «Adivina la categoría») coincidan con lo que genera el código, que cada cita de `datos/citas.json` tenga su ficha completa y ninguna figure como verificada sin texto, edición y dos fuentes, y que el registro de revisiones sea válido, en PHP 8.3.
 - `marcalibros-b.yml`: genera los 1000 marcalibros de `marcalibros_b/` con Chromium para el QA, pasa sus pruebas (determinismo, hashes de referencia, modelo de datos y editor) y sube el catálogo como artefacto `marcalibros-catalogo`. Se puede lanzar a mano con `workflow_dispatch` (entrada `forzar` para ignorar la caché).
 
-`sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`, que también corre si cambia `defamatory-content-review/`, del que depende). `vps-setup/` tiene además `vps-setup-e2e.yml`: instala todo de verdad (`apt`, `systemd`, servicios) en un Ubuntu 24.04 desechable; solo corre si cambian los scripts, cada lunes o a mano.
+`sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`, que también corre si cambia `defamatory-content-review/`, del que depende). `vps-setup.yml` corre además si cambian `landing-page/`, Marcalibros o `defamatory-content-review/`, que sus pruebas leen. `vps-setup/` tiene además `vps-setup-e2e.yml`: instala todo de verdad (`apt`, `systemd`, servicios) en un Ubuntu 24.04 desechable; solo corre si cambian los scripts o `landing-page/`, cada lunes o a mano.
 
 `iconos.yml` valida los tres sets de iconos: que los SVG commiteados coincidan con lo que produce
 `iconos-tools/build.py`, `iconos-tools/validate.py` y `iconos-tools/similares.py` (iconos casi
@@ -118,7 +124,7 @@ idénticos). Solo corre si cambia algo de `iconos-genealogia/`, `iconos-bibliote
 `iconos-tools/` o `galeria-iconos.html`.
 
 `informe-de-ramas.yml` lista cada lunes, en el resumen de la corrida, las ramas remotas vacías o ya fusionadas y, si sobran 10 o más, mantiene una issue con la lista
-(`.github/scripts/informe-de-ramas.sh`). Solo informa: borrarlas lo decide una persona.
+(`.github/scripts/informe-de-ramas.sh`). Solo informa: borrarlas lo decide una persona. Si esa persona prefiere no hacerlo rama por rama, `borrar-ramas-fusionadas.yml` (solo a mano, con un simulacro por defecto) borra esa misma lista cuando se lanza con «borrar» marcado (`.github/scripts/borrar-ramas.sh`).
 
 `privacy-laws/` y `copyright-laws/` también tienen los suyos: `laws-modules.yml` (validación de los CSV maestros, archivos generados al día, pruebas unitarias, de la API y de la caché de textos en PHP 8.1 y 8.4, pruebas en navegador con axe-core, y la importación a MySQL 8.0 y MariaDB 10.11 comparada columna por columna con el CSV), `laws-links.yml` (cada lunes comprueba que los enlaces de referencia sigan respondiendo, y mantiene una issue con los que fallan; en un PR revisa los países que toca, y no corre en cada push a `master`) y `laws-freshness.yml` (cada lunes busca datos que quedaron viejos: filas sin revisar hace más de un año, cambios previstos cuya fecha ya pasó, valores que cambiaron después de revisar la fuente, y mantiene una issue con lo que encuentre).
 

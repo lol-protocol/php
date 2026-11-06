@@ -49,7 +49,7 @@ gt = importlib.util.module_from_spec(_especificacion)
 _especificacion.loader.exec_module(gt)
 
 ARCHIVOS_DE_ENTRADA = ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
-                       "significados-culturales.csv", "categorias.csv", "referencias.csv", "revisiones.csv", "visor-plantilla.html",
+                       "significados-culturales.csv", "categorias.csv", "referencias.csv", "revisiones.csv", "colisiones-revisadas.csv", "visor-plantilla.html",
                        "CHANGELOG.md", "README.md"]
 REAL = {}  # los CSV reales, leídos una vez; cada prueba trabaja con copias (ver real())
 BASE = {}  # la carpeta temporal con el proyecto reducido ya generado
@@ -65,6 +65,7 @@ def setUpModule():
     REAL["culturales"] = gt.leer(gt.CULTURALES, gt.COLUMNAS_CULTURALES)
     REAL["categorias"] = gt.leer(gt.CATEGORIAS, categorias.COLUMNAS)
     REAL["revisiones"] = gt.leer(gt.REVISIONES, revision.COLUMNAS)
+    REAL["colisiones_revisadas"] = gt.leer(gt.COLISIONES_REVISADAS, gt.COLUMNAS_COLISIONES)
     BASE["temporal"] = tempfile.TemporaryDirectory()
     BASE["carpeta"] = Path(BASE["temporal"].name)
     preparar_proyecto_reducido(BASE["carpeta"])
@@ -105,7 +106,7 @@ def rutas_para(carpeta):
         "SIGNIFICADOS": carpeta / "significados-idiomas.csv", "LEXICO": carpeta / "lexico-basico.csv",
         "REFERENCIAS": carpeta / "referencias.csv", "EVIDENCIA": carpeta / "evidencia.csv",
         "CULTURALES": carpeta / "significados-culturales.csv", "CATEGORIAS": carpeta / "categorias.csv",
-        "CATEGORIAS_MD": carpeta / "categorias.md", "COBERTURA": carpeta / "cobertura.md", "REVISIONES": carpeta / "revisiones.csv",
+        "CATEGORIAS_MD": carpeta / "categorias.md", "COBERTURA": carpeta / "cobertura.md", "REVISIONES": carpeta / "revisiones.csv", "COLISIONES_REVISADAS": carpeta / "colisiones-revisadas.csv",
         "REVISIONES_MD": carpeta / "revisiones.md", "VISOR_PLANTILLA": carpeta / "visor-plantilla.html",
         "VISOR": carpeta / "visor-revision.html", "REFS_MD": carpeta / "referencias.md",
         "AMBIGUEDAD": carpeta / "ambiguedad.md", "AUDITORIA": carpeta / "auditoria-nombres.md", "CHANGELOG": carpeta / "CHANGELOG.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
@@ -163,7 +164,7 @@ class DatosReales(unittest.TestCase):
         gt.validar_evidencia(real("evidencia"), real("anotada"), ids, errores, usadas)
         gt.validar_culturales(real("culturales"), real("anotada"), ids, errores, usadas)
         categorias.validar(real("categorias"), real("anotada"), real("lexico"), [c for c, _ in gt.IDIOMAS], gt.CONCEPTOS, errores)
-        revision.validar(real("revisiones"), universo_revisable(), [c for c, _ in gt.IDIOMAS], errores)
+        revision.validar(real("revisiones"), [c for c, _ in gt.IDIOMAS], errores)
         self.assertEqual(errores, [])
         self.assertEqual(usadas, ids, "ninguna referencia sin usar")
 
@@ -779,6 +780,51 @@ class Categorias(PruebaConErrores):
             self.assertIn(f"`{nombre}`", informe.split("Nueve nombres CSS")[1].split("\n")[0])
             self.assertIn(f"`{nombre}`", readme.split("Nueve nombres CSS")[1].split("\n")[0])
 
+    def test_las_cifras_del_lexico_en_el_readme_son_las_de_los_datos(self):
+        # El README repetia 18 conceptos de suajili, 2.400 filas y 5.785 patrones de spaCy cuando los datos ya decian otra cosa.
+        readme = (AQUI / "README.md").read_text(encoding="utf-8")
+        miles = lambda n: f"{n:,}".replace(",", ".")
+        filas = real("lexico")
+        conceptos_sw = len({f["concepto"] for f in filas if f["idioma"] == "sw"})
+        lemas = sum(1 for f in filas if f["tipo"] == "lema")
+        self.assertIn(f"El suajili tiene {conceptos_sw} conceptos", readme)
+        self.assertIn(f"Hay {miles(len(filas))} filas: {miles(lemas)} lemas", readme)
+        patrones = sum(len((AQUI / "exportes" / "spacy" / f"{i}.jsonl").read_text(encoding="utf-8").splitlines()) for i, _ in gt.IDIOMAS)
+        self.assertIn(f"{miles(patrones)} en total", readme)
+
+    def test_las_demas_cifras_del_readme_son_las_de_los_datos(self):
+        # Cada cifra que el README repite a mano se compara con la calculada: si un dato cambia y el README no, falla aquí.
+        readme = (AQUI / "README.md").read_text(encoding="utf-8")
+        miles = lambda n: f"{n:,}".replace(",", ".")
+        datos = datos_reales()
+        gazetteer = len(exportes.filas_gazetteer(datos))
+        colisiones = cobertura.colisiones_nombres(gt.IDIOMAS, REAL["anotada"])
+        compartidos = cobertura.lemas_compartidos(gt.IDIOMAS, REAL["lexico"], datos["hex_concepto"])
+        huecos = cobertura.huecos_lexico(gt.IDIOMAS, REAL["lexico"], gt.CONCEPTOS)
+        sin_categorias = len({c for c, _ in gt.IDIOMAS} - {f["idioma"] for f in REAL["categorias"]})
+        palabras = {(f["idioma"], f["concepto"]) for f in REAL["categorias"]}
+        esperadas = [
+            f"{miles(gazetteer)} filas separadas",
+            f"({miles(len(REAL['significados']))} filas)",
+            f"{len(REAL['categorias'])} filas: las categorías gramaticales",
+            f"Las {len(REAL['referencias'])} fuentes",
+            f"{len(REAL['culturales'])} matices por ámbito cultural",
+            f"{miles(len(REAL['completa']))} nombres de color con su hex",
+            f"{len(palabras)} palabras y {len(REAL['categorias'])} filas",
+            f"({sin_categorias} de {len(gt.IDIOMAS)})",
+            f"{sum(len(v) for v in colisiones.values())} casos en {len(colisiones)} idiomas",
+            f"{sum(len(v) for v in compartidos.values())} casos en {len(compartidos)} idiomas",
+            f"`sw` tiene {len(gt.CONCEPTOS) - len(huecos['sw'])} de {len(gt.CONCEPTOS)}",
+            f"{len(cobertura.propuestas_ia(REAL['lexico']))} de los huecos",
+        ]
+        for frase in esperadas:
+            self.assertIn(frase, readme, frase)
+
+    def test_el_readme_dice_los_mismos_casos_de_colision_que_el_archivo_revisado(self):
+        with (AQUI / "colisiones-revisadas.csv").open(encoding="utf-8", newline="") as archivo:
+            revisadas = len(list(csv.DictReader(archivo)))
+        self.assertIn(f"los {revisadas} casos en que un idioma llama igual", (AQUI / "README.md").read_text(encoding="utf-8"))
+
     def test_el_informe_escapa_la_barra_vertical(self):
         filas = [dict(real("categorias")[0], ejemplo="Una | barra.")]
         self.assertIn("Una &#124; barra.", categorias.informe(filas, gt.IDIOMAS))
@@ -789,12 +835,9 @@ FILA_REVISADA = {"idioma": "es", "alcance": "nombres", "elemento": "aliceblue", 
 
 
 def datos_reales():
-    """Lo que generar-tabla.py le pasa a revision.py y a exportes.py, con los CSV reales."""
-    return {"idiomas": gt.IDIOMAS, "anotada": real("anotada"), "lexico": real("lexico"), "categorias": real("categorias"),
-            "significados": {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
-                             for f in REAL["significados"]},
-            "hex_concepto": {c: gt.hex_de_concepto(c, REAL["anotada"], REAL["completa"]) for c in gt.CONCEPTOS},
-            "hex_cotidiano": {c: gt.hex_cotidiano_de_concepto(c, REAL["completa"]) for c in gt.CONCEPTOS}}
+    """Lo que generar-tabla.py le pasa a revision.py y a exportes.py, con los CSV reales (construir_datos, el mismo de main())."""
+    return gt.construir_datos(real("anotada"), REAL["completa"], real("significados"), real("lexico"), real("referencias"),
+                              real("evidencia"), real("culturales"), real("categorias"), gt.alias_de(REAL["anotada"]), cercanias=[])
 
 
 def huellas_reales():
@@ -806,7 +849,7 @@ def huellas_reales():
 class Revision(PruebaConErrores):
     def validar(self, filas, **cambios):
         errores = []
-        revision.validar(filas, universo_revisable(**cambios), [c for c, _ in gt.IDIOMAS], errores)
+        revision.validar(filas, [c for c, _ in gt.IDIOMAS], errores)
         return errores
 
     def fila(self, **campos):
@@ -836,17 +879,34 @@ class Revision(PruebaConErrores):
         self.assertEqual(self.validar(filas), [])
         self.assertEqual(self.validar(filas[::-1]), [])
 
-    def test_idioma_alcance_o_elemento_desconocidos(self):
+    def test_idioma_o_alcance_desconocidos_son_errores(self):
         self.assertSoloError(self.validar([self.fila(idioma="xx")]), "idioma desconocido 'xx'")
         self.assertSoloError(self.validar([self.fila(alcance="todo")]), "alcance desconocido 'todo'")
-        self.assertSoloError(self.validar([self.fila(elemento="nocolor")]), "'nocolor' no es un elemento de nombres en es")
-        # El léxico solo tiene conceptos propios: un color CSS que no está en él no vale.
-        self.assertSoloError(self.validar([self.fila(alcance="lexico", elemento="aliceblue")]),
-                             "'aliceblue' no es un elemento de lexico en es")
 
-    def test_categorias_solo_en_los_idiomas_que_las_tienen(self):
-        self.assertSoloError(self.validar([self.fila(alcance="categorias", idioma="fr", elemento="white")]),
-                             "categorias no tiene datos en fr")
+    def test_un_elemento_que_ya_no_existe_no_es_un_error_sino_una_revision_huerfana(self):
+        # Se renombró o se quitó: romper la generación obligaría a borrar historia. Sale en revisiones.md.
+        huerfanas = [self.fila(elemento="nocolor", huella="0123abcd"),
+                     self.fila(alcance="lexico", elemento="aliceblue", huella="0123abcd"),  # un color CSS que no es del léxico
+                     self.fila(alcance="categorias", idioma="fr", elemento="white", huella="0123abcd")]  # fr no tiene categorías
+        self.assertEqual(self.validar(huerfanas), [])
+        atencion, revisados = revision.situacion(huerfanas, huellas_reales())
+        self.assertEqual(atencion["huerfana"], huerfanas)
+        self.assertEqual(revisados, {}, "una revisión huérfana no cuenta como revisada")
+
+    def test_el_informe_lista_las_huerfanas_sin_romperse_por_el_orden(self):
+        filas = [self.fila(elemento="zzz", huella="0123abcd"), self.fila(elemento="aaa", huella="0123abcd", revisor="Luis"),
+                 self.fila(elemento="red", veredicto="dudoso", nota="x"), self.fila(alcance="categorias", idioma="fr", elemento="white", huella="0123abcd")]
+        texto = revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales())
+        seccion = texto.split("### Revisiones de elementos que ya no existen")[1]
+        self.assertLess(seccion.index("`aaa`"), seccion.index("`zzz`"), "al final de su lista, por nombre")
+        self.assertIn("`fr` | `categorias` | `white`", seccion)
+        self.assertIn("Estado: 1 de ", texto, "solo cuenta la que existe")
+
+    def test_las_huerfanas_no_cuentan_en_conflictos_ni_en_caducadas(self):
+        atencion, _ = revision.situacion([self.fila(elemento="nocolor", huella="0123abcd"),
+                                          self.fila(elemento="nocolor", revisor="Luis", veredicto="corregir", nota="x", huella="0123abcd")],
+                                         huellas_reales())
+        self.assertEqual((len(atencion["huerfana"]), atencion["conflicto"], atencion["caducada"]), (2, [], []))
 
     def test_veredicto_desconocido(self):
         self.assertSoloError(self.validar([self.fila(veredicto="quizá")]), "veredicto desconocido 'quizá'")
@@ -957,7 +1017,7 @@ class Revision(PruebaConErrores):
 
     def test_un_correcto_vigente_cuenta_y_no_pide_atencion(self):
         atencion, revisados = revision.situacion([self.fila()], huellas_reales())
-        self.assertEqual(atencion, {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": []})
+        self.assertEqual(atencion, {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": [], "huerfana": []})
         self.assertEqual(revisados, {("es", "nombres"): {"aliceblue"}})
 
     def test_un_corregir_cuyo_dato_cambio_pide_marcarlo_corregido(self):
@@ -983,7 +1043,7 @@ class Revision(PruebaConErrores):
 
     def test_un_corregido_con_el_dato_distinto_esta_bien(self):
         atencion, revisados = revision.situacion([self.fila(veredicto="corregido", huella="0123abcd")], huellas_reales())
-        self.assertEqual(atencion, {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": []})
+        self.assertEqual(atencion, {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": [], "huerfana": []})
         self.assertEqual(revisados, {("es", "nombres"): {"aliceblue"}})
 
     def test_revisores_en_desacuerdo(self):
@@ -1073,27 +1133,93 @@ class HexCotidiano(unittest.TestCase):
         completa = [{"nombre_ingles": "Lime", "hex": "#AAFF32", "curada": "x"},
                     {"nombre_ingles": "Navy", "hex": "#01153E", "curada": ""},
                     {"nombre_ingles": "limes", "hex": "#000000", "curada": "x"}]
-        self.assertEqual(gt.hex_cotidiano_de_concepto("lime", completa), "#AAFF32", "sin distinguir mayúsculas")
-        self.assertEqual(gt.hex_cotidiano_de_concepto("navy", completa), "", "una entrada no curada no vale")
-        self.assertEqual(gt.hex_cotidiano_de_concepto("red", completa), "", "sin entrada: vacío, no el hex CSS")
+        anotada = [{"nombre_ingles": "lime", "hex": "#00FF00"}, {"nombre_ingles": "green", "hex": "#008000"}]
+        self.assertEqual(gt.hex_cotidiano_de_concepto("lime", completa, anotada), "#AAFF32", "sin distinguir mayúsculas")
+        self.assertEqual(gt.hex_cotidiano_de_concepto("navy", completa, anotada), "", "una entrada no curada no vale")
+        self.assertEqual(gt.hex_cotidiano_de_concepto("red", completa, anotada), "", "sin entrada: vacío, no el hex CSS")
+
+    def test_una_entrada_que_es_el_hex_de_otro_color_css_se_descarta(self):
+        anotada = [{"nombre_ingles": "lime", "hex": "#00FF00"}, {"nombre_ingles": "green", "hex": "#008000"}]
+        completa = [{"nombre_ingles": "Green", "hex": "#00FF00", "curada": "x"}, {"nombre_ingles": "Lime", "hex": "#00FF00", "curada": "x"}]
+        self.assertEqual(gt.hex_cotidiano_de_concepto("green", completa, anotada), "", "#00FF00 es lime de CSS, no un verde corriente")
+        self.assertEqual(gt.hex_cotidiano_de_concepto("lime", completa, anotada), "#00FF00", "el propio color CSS no se descarta")
 
     def test_valores_reales_que_motivan_la_columna(self):
-        for concepto, esperado in (("lime", "#AAFF32"), ("khaki", "#C3B091"), ("violet", "#9A0EEA"), ("green", "#00FF00")):
-            self.assertEqual(gt.hex_cotidiano_de_concepto(concepto, REAL["completa"]), esperado, concepto)
-        self.assertEqual(gt.hex_cotidiano_de_concepto("navy", REAL["completa"]), "", "navy no está curado")
+        for concepto, esperado in (("lime", "#AAFF32"), ("khaki", "#C3B091"), ("violet", "#9A0EEA"), ("green", "")):
+            self.assertEqual(gt.hex_cotidiano_de_concepto(concepto, REAL["completa"], REAL["anotada"]), esperado, concepto)
+        self.assertEqual(gt.hex_cotidiano_de_concepto("navy", REAL["completa"], REAL["anotada"]), "", "navy no está curado")
 
     def test_el_hex_de_referencia_no_cambia(self):
         # El hex CSS sigue siendo el de referencia: la columna nueva no lo reemplaza.
         self.assertEqual(gt.hex_de_concepto("lime", REAL["anotada"], REAL["completa"]), "#00FF00")
 
     def test_sqlite_lleva_la_columna_en_conceptos(self):
-        conexion = exportes.construir_sqlite(":memory:", {**datos_reales(), "completa": REAL["completa"], "cercanias": [],
-                                                           "significados": datos_reales()["significados"],
-                                                           "referencias": REAL["referencias"], "evidencia": {f["nombre_ingles"]: f for f in REAL["evidencia"]},
-                                                           "culturales": REAL["culturales"], "alias": gt.alias_de(REAL["anotada"])})
+        conexion = exportes.construir_sqlite(":memory:", {**datos_reales(), "completa": [], "cercanias": []})
         self.addCleanup(conexion.close)
         self.assertEqual(conexion.execute("SELECT hex, hex_cotidiano FROM conceptos WHERE concepto = 'lime'").fetchone(), ("#00FF00", "#AAFF32"))
         self.assertEqual(conexion.execute("SELECT hex_cotidiano FROM conceptos WHERE concepto = 'navy'").fetchone(), ("",))
+
+
+class UnaSolaVez(unittest.TestCase):
+    """Lo que main() calcula una vez y reparte da lo mismo que calcularlo cada quien por su cuenta."""
+
+    def test_el_gazetteer_y_los_patrones_con_filas_ya_calculadas_son_iguales(self):
+        datos = datos_reales()
+        filas = exportes.filas_gazetteer(datos)
+        self.assertEqual(exportes.gazetteer_tsv(datos, filas), exportes.gazetteer_tsv(datos))
+        self.assertEqual(exportes.spacy_patrones(datos, filas), exportes.spacy_patrones(datos))
+
+    def test_una_pagina_y_la_validacion_de_alias_con_el_alias_ya_calculado_son_iguales(self):
+        datos = datos_reales()
+        for codigo, etiqueta in (("es", "Español"), ("ja", "Japonés")):
+            args = (codigo, etiqueta, datos["anotada"], datos["significados"], datos["lexico"], REAL["completa"], datos["evidencia"],
+                    datos["culturales"])
+            self.assertEqual(gt.pagina_idioma(*args, datos["alias"]), gt.pagina_idioma(*args))
+        e1, e2 = [], []
+        gt.validar_alias(datos["anotada"], real("significados"), e1, datos["alias"])
+        gt.validar_alias(datos["anotada"], real("significados"), e2)
+        self.assertEqual((e1, e2), ([], []))
+
+    def test_construir_datos_trae_todo_lo_que_piden_los_consumidores(self):
+        datos = datos_reales()
+        self.assertEqual(sorted(datos), ["alias", "anotada", "categorias", "cercanias", "completa", "culturales", "evidencia",
+                                          "hex_concepto", "hex_cotidiano", "idiomas", "lexico", "referencias", "significados"])
+        self.assertEqual(set(datos["hex_concepto"]), set(gt.CONCEPTOS))
+        self.assertEqual(set(datos["hex_cotidiano"]), set(gt.CONCEPTOS))
+
+
+class CeldaMarkdown(unittest.TestCase):
+    def test_escapa_la_barra_y_los_saltos_de_linea(self):
+        import md  # noqa: PLC0415
+        self.assertEqual(md.celda("a|b\nc"), "a&#124;b c")
+        self.assertEqual(md.celda(5), "5")
+
+    def test_texto_valido(self):
+        import md  # noqa: PLC0415
+        for valor, kwargs, esperado in (
+                ("hola", {}, True), ("", {}, False), ("   ", {}, False), ("a|b", {}, False), ("a\nb", {}, False),
+                (" hola", {}, True), (" hola", {"sin_espacios_sobrantes": True}, False), ("hola ", {"sin_espacios_sobrantes": True}, False),
+                ("a|b", {"prohibidos": "\n"}, True), ("a\nb", {"prohibidos": "\n"}, False), ('di "x"', {"prohibidos": '|\n"'}, False),
+                ('di "x"', {}, True)):
+            self.assertEqual(md.texto_valido(valor, **kwargs), esperado, (valor, kwargs))
+
+    def test_los_validadores_siguen_dando_los_mismos_avisos(self):
+        # Antes de usar md.texto_valido cada uno tenía su condición; los casos límite no cambian.
+        errores = []
+        filas = real("lexico")
+        filas[0]["forma"] = " blanco"
+        gt.validar_lexico(filas, real("anotada"), REAL["completa"], errores)
+        self.assertTrue(any("forma vacía, con espacios sobrantes" in e for e in errores))
+        errores = []
+        revision.validar([{"idioma": "es", "alcance": "nombres", "elemento": "red", "veredicto": "correcto", "revisor": "A|na",
+                           "fecha": "2026-10-23", "huella": "0123abcd", "nota": "ok | si"}], ["es"], errores)
+        self.assertEqual(errores, [], "la barra vertical es válida en el revisor y en la nota")
+
+    def test_los_cuatro_informes_usan_la_misma_funcion(self):
+        import md  # noqa: PLC0415
+        for modulo in (ambiguedad, auditoria, categorias, revision):
+            self.assertIs(modulo.celda, md.celda, modulo.__name__)
+            self.assertFalse(hasattr(modulo, "_celda"), f"{modulo.__name__} conserva su copia")
 
 
 class Cobertura(unittest.TestCase):
@@ -1153,6 +1279,28 @@ class Cobertura(unittest.TestCase):
                    {"nombre_ingles": "b", "forma_natural_en": "b", "nombre_es": "azul", "hex": "#000002"}]
         self.assertEqual(cobertura.colisiones_nombres([("es", "Español")], anotada), {"es": [("Azul", ["a", "b"])]})
 
+    def test_una_colision_nueva_o_corregida_hace_fallar_la_lista_revisada(self):
+        anotada = [{"nombre_ingles": n, "forma_natural_en": n, "nombre_es": "Azul", "hex": h} for n, h in (("a", "#000001"), ("b", "#000002"))]
+        gt_idiomas, gt.IDIOMAS = gt.IDIOMAS, [("es", "Español")]
+        try:
+            def errores(revisadas):
+                salida = []
+                gt.validar_colisiones(revisadas, anotada, salida)
+                return salida
+            self.assertEqual(errores([{"idioma": "es", "nombre": "azul", "colores": "a|b"}]), [])
+            self.assertIn("colisión nueva sin revisar", errores([])[0])
+            self.assertIn("ya no existe", errores([{"idioma": "es", "nombre": "azul", "colores": "a|b"},
+                                                    {"idioma": "es", "nombre": "rojo", "colores": "c|d"}])[0])
+            self.assertIn("repetidas", errores([{"idioma": "es", "nombre": "azul", "colores": "a|b"}] * 2)[0])
+        finally:
+            gt.IDIOMAS = gt_idiomas
+
+    def test_las_colisiones_reales_estan_todas_revisadas(self):
+        errores = []
+        gt.validar_colisiones(REAL["colisiones_revisadas"], REAL["anotada"], errores)
+        self.assertEqual(errores, [])
+        self.assertEqual(len(REAL["colisiones_revisadas"]), 29)
+
     def test_lemas_compartidos_reales(self):
         compartidos = cobertura.lemas_compartidos(gt.IDIOMAS, REAL["lexico"], self.hex_concepto())
         self.assertEqual(sum(len(v) for v in compartidos.values()), 25)  # las propuestas de IA no agregan ambigüedad
@@ -1174,6 +1322,60 @@ class Cobertura(unittest.TestCase):
         self.assertIn("| Suajili (`sw`) | `turquoise` | feruzi |", texto)
         self.assertIn("| Español (`es`) | 38 de 38 | — |", texto)
         self.assertIn("| Hebreo (`he`) | סגול | `purple`, `violet` |", texto)
+
+
+class CercaniaConCota(unittest.TestCase):
+    """calcular_cercanias deja de calcular los colores que no pueden ganar; el resultado tiene que ser el de calcularlos todos."""
+
+    @staticmethod
+    def por_fuerza_bruta(completa, anotada):
+        referencias = sorted((f["nombre_ingles"], f["hex"], colorimetria.hex_a_lab(f["hex"])) for f in anotada)
+        resultado = []
+        for fila in completa:
+            lab = colorimetria.hex_a_lab(fila["hex"])
+            distancia, nombre, color = min((round(colorimetria.ciede2000(lab, rl), 9), rn, rh) for rn, rh, rl in referencias)
+            resultado.append((nombre, distancia, gt.cercania_de(distancia, color == fila["hex"])))
+        return resultado
+
+    def test_la_cota_es_segura_para_toda_la_luminosidad(self):
+        for décima in range(0, 1001):
+            l_media = décima / 10
+            s_l = 1 + 0.015 * (l_media - 50) ** 2 / (20 + (l_media - 50) ** 2) ** 0.5
+            self.assertLess(s_l, gt.COTA_SL, l_media)
+
+    def test_da_lo_mismo_que_calcular_las_148_en_una_muestra_con_extremos(self):
+        completa = REAL["completa"][::97]  # unos 330 nombres repartidos
+        completa += [{"nombre_ingles": "negro", "hex": "#000000", "curada": ""}, {"nombre_ingles": "blanco", "hex": "#FFFFFF", "curada": ""},
+                     {"nombre_ingles": "gris", "hex": "#808080", "curada": ""}, {"nombre_ingles": "azul", "hex": "#0000FF", "curada": ""}]
+        completa += [{"nombre_ingles": f["nombre_ingles"], "hex": f["hex"], "curada": ""} for f in REAL["anotada"]]  # los propios CSS: distancia 0
+        self.assertEqual(gt.calcular_cercanias(completa, REAL["anotada"]), self.por_fuerza_bruta(completa, REAL["anotada"]))
+
+    def test_la_cota_de_verdad_evita_calcular_la_mayoria_de_las_distancias(self):
+        muestra = REAL["completa"][::97]
+        llamadas = []
+        original = colorimetria.ciede2000
+        with mock.patch.object(colorimetria, "ciede2000", lambda a, b: llamadas.append(1) or original(a, b)):
+            gt.calcular_cercanias(muestra, REAL["anotada"])
+        por_nombre = len(llamadas) / len(muestra)
+        self.assertLess(por_nombre, 148 / 2, f"{por_nombre:.0f} distancias por nombre: la poda no está funcionando")
+        self.assertGreaterEqual(por_nombre, 1)
+
+    def test_con_empate_gana_el_primero_por_nombre(self):
+        anotada = [{"nombre_ingles": n, "hex": "#808080"} for n in ("grey", "gray")]
+        self.assertEqual(gt.calcular_cercanias([{"nombre_ingles": "x", "hex": "#808081", "curada": ""}], anotada)[0][0], "gray")
+
+    def test_un_solo_color_de_referencia(self):
+        anotada = [{"nombre_ingles": "a", "hex": "#123456"}]
+        self.assertEqual(gt.calcular_cercanias([{"nombre_ingles": "x", "hex": "#FEDCBA", "curada": ""}], anotada)[0][0], "a")
+
+    def test_comprobar_recalcula_las_31935_distancias(self):
+        # El tiempo no se prueba, pero sí que el archivo guardado coincide con el cálculo con cota (lo hace --comprobar).
+        with (AQUI / "nombres-completos.csv").open(encoding="utf-8", newline="") as archivo:
+            guardado = {f["nombre_ingles"]: f for f in csv.DictReader(archivo)}
+        muestra = REAL["completa"][::499]
+        for fila, (css, distancia, cercania) in zip(muestra, gt.calcular_cercanias(muestra, REAL["anotada"])):
+            g = guardado[fila["nombre_ingles"]]
+            self.assertEqual((g["css_cercano"], g["delta_e"], g["cercania"]), (css, f"{distancia:.2f}", cercania))
 
 
 class AliasYCercania(unittest.TestCase):

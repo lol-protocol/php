@@ -81,8 +81,9 @@ de Let's Encrypt (hay un límite semanal). `--staging` pide un certificado de pr
 ## 5. Endurecer y vigilar (recomendado)
 
 ```bash
-# SSH solo con llave y sin root. ANTES comprueba en otra terminal que entras con la llave.
-./remote-run.sh 07_C-harden-ssh.sh "$(cat ~/.ssh/id_ed25519.pub)" --yes
+# SSH solo con llave y sin root. ANTES comprueba en otra terminal que entras con la llave:
+# sin --yes, el script te pide confirmar que ya la probaste (--yes se salta esa pregunta).
+./remote-run.sh 07_C-harden-ssh.sh "$(cat ~/.ssh/id_ed25519.pub)"
 
 # Alertas cada 15 min (disco, RAM, carga, certificados, servicios caídos) a un webhook y/o email
 ./remote-run.sh 09_A-setup-monitoring.sh 'https://hooks.slack.com/...' tu@email.com
@@ -111,13 +112,13 @@ Whisper (`02_I`, descarga varios GB).
 
 ## 7. Base de datos de una app
 
-Las **apps Python** (`06_B`) ya traen la suya: el script crea, si PostgreSQL está instalado, el rol y la base
+Las **apps Python** (`06_B`) y **PHP** (`06_A`) ya traen la suya: el script crea, si PostgreSQL está instalado, el rol y la base
 `app_<nombre>` con una contraseña aleatoria, y deja la conexión en `/var/www/<app>/.env` (modo 600, solo la lee el
 usuario de esa app) como `DATABASE_URL=postgresql://app_<nombre>:<clave>@localhost:5432/app_<nombre>`. El servicio
 la recibe como variable de entorno. La clave nunca se imprime ni queda en el historial, y re-correr el script no la
 cambia. Cada rol solo puede entrar a su base (se revoca `CONNECT` a los demás). `APP_DB=0` omite todo esto.
 
-Para una app **PHP** (hasta que tenga su propio usuario) o una base extra, a mano:
+Si necesitas una base extra, a mano:
 
 ```bash
 sudo -u postgres createuser --pwprompt tienda      # pide la contraseña: no la escribas en el historial
