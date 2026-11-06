@@ -21,6 +21,8 @@ use PDO;
  */
 final class NotaCreditoRepository
 {
+    use ConsultasEnRango;
+
     /** Los filtros de la pantalla de notas; el primero es el que se ve si no se pide otro. */
     public const ESTADOS = ['pendientes' => 'Pendientes de devolver', 'devueltas' => 'Ya devueltas', 'todas' => 'Todas'];
 
@@ -169,28 +171,29 @@ final class NotaCreditoRepository
     /** Total devuelto en el rango, en USD a la tasa de cada nota (para netear los cobros del periodo). */
     public function totalEnRangoUsd(string $desde, string $hasta): float
     {
-        $stmt = $this->db->prepare(
+        return (float) $this->valorEnRango(
             'SELECT COALESCE(SUM(n.monto * n.tasa_a_usd), 0)
              FROM notas_credito n
-             WHERE n.fecha BETWEEN :desde AND :hasta'
+             WHERE n.fecha BETWEEN :desde AND :hasta',
+            $desde,
+            $hasta
         );
-        $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
-        return (float) $stmt->fetchColumn();
     }
 
     /** Total devuelto por mes en el rango, en USD a la tasa de cada nota. @return array<string, float> mes => total */
     public function porMesUsd(string $desde, string $hasta): array
     {
-        $stmt = $this->db->prepare(
+        $filas = $this->filasEnRango(
             "SELECT to_char(n.fecha, 'YYYY-MM') AS mes, SUM(n.monto * n.tasa_a_usd) AS total
              FROM notas_credito n
              WHERE n.fecha BETWEEN :desde AND :hasta
-             GROUP BY mes"
+             GROUP BY mes",
+            $desde,
+            $hasta
         );
-        $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
 
         $porMes = [];
-        foreach ($stmt->fetchAll() as $fila) {
+        foreach ($filas as $fila) {
             $porMes[$fila['mes']] = (float) $fila['total'];
         }
         return $porMes;

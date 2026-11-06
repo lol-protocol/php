@@ -155,6 +155,37 @@ final class FunnelRepositoryTest extends IntegracionTestCase
         self::assertSame('Otros (2 países)', $filas[10]['etiqueta']);
     }
 
+    /**
+     * Las tablas «por canal / pais / genero / rango de edad» y el resumen comparten las columnas de
+     * etapa (FunnelRepository::ETAPAS_SQL): cada tabla tiene que repartir exactamente lo mismo que
+     * el resumen, etapa por etapa. «Otros» de la de paises cuenta como una fila mas.
+     */
+    public function testTodasLasTablasPorDimensionSumanLoMismoQueElResumen(): void
+    {
+        $repo = new FunnelRepository();
+        $resumen = $repo->resumenEtapas('2000-01-01', '2100-01-01');
+        $tablas = [
+            'canal' => $repo->porCanal('2000-01-01', '2100-01-01'),
+            'pais' => $repo->porPais('2000-01-01', '2100-01-01'),
+            'genero' => $repo->porGenero('2000-01-01', '2100-01-01'),
+            'rango de edad' => $repo->porRangoEdad('2000-01-01', '2100-01-01'),
+        ];
+
+        foreach ($tablas as $nombre => $filas) {
+            self::assertNotEmpty($filas, "por {$nombre} tiene que traer filas");
+            foreach (['visitantes', 'registrados', 'leads', 'clientes'] as $etapa) {
+                self::assertSame($resumen[$etapa], array_sum(array_map('intval', array_column($filas, $etapa))), "por {$nombre}: {$etapa}");
+            }
+
+            // «Otros» suma lo que quedo fuera y puede pesar mas que la ultima nombrada: no entra en el orden.
+            $nombradas = array_filter($filas, static fn (array $fila): bool => !str_starts_with((string) $fila['etiqueta'], 'Otros ('));
+            $visitantes = array_map('intval', array_column($nombradas, 'visitantes'));
+            $ordenados = $visitantes;
+            rsort($ordenados);
+            self::assertSame($ordenados, $visitantes, "por {$nombre}: de mas a menos visitantes");
+        }
+    }
+
     public function testPorCanalSumaLoMismoQueElResumenGeneral(): void
     {
         $funnelRepo = new FunnelRepository();
