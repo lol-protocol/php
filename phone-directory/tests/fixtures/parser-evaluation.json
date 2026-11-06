@@ -487,8 +487,8 @@
         {
             "id": "en-santo-st-en-el-nombre-de-una-empresa",
             "idioma": "en",
-            "entrada": "St. Mary Bakery\n12 Oak Street\n555-123-4567",
-            "esperado": [{"tipo": "natural", "nombre": "St. Mary Bakery", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+            "entrada": "St. Mary Lodge\n12 Oak Street\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "St. Mary Lodge", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
         },
         {
             "id": "en-calle-st-sin-numero",
@@ -499,8 +499,8 @@
         {
             "id": "es-calle-sin-palabra-cede-ante-una-con-palabra",
             "idioma": "es",
-            "entrada": "Ferretería Sur\nDivisión 2\nCalle Mayor 5\n91 234 56 78",
-            "esperado": [{"tipo": "natural", "nombre": "Ferretería Sur", "calle": "Calle Mayor 5", "telefono": "91 234 56 78"}]
+            "entrada": "Luis Sur\nDivisión 2\nCalle Mayor 5\n91 234 56 78",
+            "esperado": [{"tipo": "natural", "nombre": "Luis Sur", "calle": "Calle Mayor 5", "telefono": "91 234 56 78"}]
         },
         {
             "id": "en-dos-entradas-con-telefono-en-la-linea-del-nombre",
