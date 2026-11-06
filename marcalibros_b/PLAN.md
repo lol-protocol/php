@@ -254,3 +254,16 @@ Las 14 frases originales del Realismo mágico se dibujan sin «— Marcalibros»
 
 ## Otro enfoque para Gutenberg: reconocer al autor por los metadatos (hecho)
 Verificar a mano 1000 ids de obra bloquea el lector. `modelo.sugerencias_por_metadatos(libro, taxonomia)` no necesita ids: recibe los metadatos del libro abierto (título, autores con años, como los da Gutendex) y reconoce al autor del catálogo por nombre (sin tildes, «Apellido, Nombre» o al revés, Virgil ~ Virgilio) y por años de vida (a. C. incluidos). Devuelve sus diseños, con primero los que se parecen al título. Si el nombre es una sola palabra y no hay años que comparar, no sugiere nada (evita falsos positivos). El flujo de ids verificados (`gutenberg_manual.py`) sigue sirviendo para el vínculo exacto obra→texto. Cubierto por tests con registros simulados; falta probarlo con la API real cuando haya red.
+
+## Revisión de errores y DRY (hecha)
+Nueve mejoras, sin cambiar ni una pieza del catálogo (las 1000 salen byte a byte iguales, incluidos los JPG a 400×2800):
+1. **Caché:** `hash_generador()` solo mira `MODULOS_DE_RENDER` (build, color, movimientos, plantillas, qa, render_*, scene, texto) más fuentes y yaml. Cambiar editor, modelo, marca, revisión o Gutenberg ya no rehace las 1000 piezas. La clave de caché de la CI usa los mismos archivos. `tests/test_hash_cache.py` comprueba que la lista cubre todo lo que importa `build.py`.
+2. **Versiones:** `tests/test_versiones.py` falla con un mensaje claro si Pillow, numpy, PyYAML o fonttools instalados no son los fijados en `requirements.txt` (de ellos depende qué semilla sale). No se ignora a dependabot: la CI ya detecta si una subida cambia los hashes (la de fonttools del PR #351 pasó).
+3. **Sugerencias por obra:** `catalog/titulos-originales.yaml` (67 obras de Poe, Byron, M. Shelley, Stoker, Dickens, Zola, Baudelaire, Homero y Virgilio; de memoria, sin verificar) permite reconocer «The Raven» como «El cuervo». Una sola regla de coincidencia (≥60 % de las palabras) y los temas «de» una obra heredan sus títulos.
+4. **Windows:** `editor.py` ya no importa `fcntl` a ciegas: usa `msvcrt` o, sin ninguno, un candado entre hilos.
+5. **Página del editor:** `generator/editor_datos.py` escribe en `editor/index.html` las paletas (las «legibles», como las dibuja el catálogo), la franja, los tonos, el contraste y los límites; `--comprobar` lo verifica y una prueba lo exige.
+6. **Color:** `generator/color.py` (rgb, luminancia, razón de contraste, mezcla) sustituye a cuatro copias.
+7. **Medidas:** la franja de texto y la celda de revisión se definen solo en `scene.py`.
+8. **Gutenberg:** `verificar_gutenberg.py` reutiliza `modelo` (descarta resultados de otros autores y marca las obras que coinciden).
+9. **Pruebas rápidas:** `pytest -m "not lento"` (~45 s); la CI corre todo.
+Pendiente de la sugerencia 2: decidir los reintentos de semilla con rasgos vectoriales en vez de píxeles (cambio grande, regenera el catálogo).

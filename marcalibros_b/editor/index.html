@@ -153,27 +153,147 @@
 <script>
 (function () {
   "use strict";
-  var W = 200, H = 1400, ESC = 2;
-  var FRANJA = { x0: 16, y0: 440, x1: 184, y1: 860 };
-  var MIN_CONTRASTE = 4.5, VELOS = [0.35, 0.5, 0.65, 0.8];
-  var TONOS = { claro: "#FFFFFF", oscuro: "#111111" };
-  var MAX_BYTES = 5 * 1024 * 1024, MAX_PIXELES = 24e6, LADO_GUARDADO = 4000;
-
-  // Paletas del catálogo (generator/plantillas.py).
-  var PALETAS = {
-    atardecer: { n: "Atardecer", a: "#1E2A38", b: "#C98B3A", s: "#F4EEE1", l: "#7A9CB0", c: "#3E5C4A", f: "#1E2A38" },
-    amanecer: { n: "Amanecer", a: "#7A9CB0", b: "#F4EEE1", s: "#C98B3A", l: "#A7BCC7", c: "#3E5C4A", f: "#1E2A38" },
-    noche: { n: "Noche", a: "#0F1822", b: "#2B3D52", s: "#F4EEE1", l: "#3A4D63", c: "#16202B", f: "#080D13" },
-    niebla: { n: "Niebla", a: "#B9C4C6", b: "#E8E6DD", s: "#FFFFFF", l: "#9AA9AB", c: "#5E7172", f: "#2F3C3D" },
-    otono: { n: "Otoño", a: "#5B3A29", b: "#E3A857", s: "#FBE9C6", l: "#A8683A", c: "#4A2E1F", f: "#26150D" },
-    rosa: { n: "Rosa", a: "#4B2E4F", b: "#E9A5A0", s: "#FFF1DC", l: "#8C5A7A", c: "#2E1B38", f: "#170D1E" },
-    esmeralda: { n: "Esmeralda", a: "#14332F", b: "#9FC9A2", s: "#F6F1C9", l: "#4F8C73", c: "#1B4237", f: "#0B1F1A" },
-    medianoche: { n: "Medianoche", a: "#120E2B", b: "#4A3F7A", s: "#EDE7FF", l: "#2E2A5E", c: "#0F0B22", f: "#06040F" },
-    ceniza: { n: "Ceniza", a: "#6E6A66", b: "#D9D3C7", s: "#FBF7EE", l: "#8F8A82", c: "#4D4944", f: "#1F1D1A" },
-    dorada: { n: "Dorada", a: "#F2C879", b: "#FBEFD5", s: "#D9772B", l: "#C9A15E", c: "#6B4E2A", f: "#2E1F0F" },
-    tempestad: { n: "Tempestad", a: "#1B2B2A", b: "#5E7F7A", s: "#E6F2EE", l: "#36524F", c: "#12201F", f: "#070F0E" },
-    cripta: { n: "Cripta", a: "#060A0D", b: "#1F3A3A", s: "#D6EBDD", l: "#14292A", c: "#070F10", f: "#030708" }
-  };
+  var ESC = 2;
+  // Datos del generador (franja, tonos, paletas legibles, límites): los escribe generator/editor_datos.py.
+  var D = /* DATOS:inicio */{
+  "ancho": 200,
+  "alto": 1400,
+  "paletas": {
+    "atardecer": {
+      "n": "Atardecer",
+      "a": "#1E2A38",
+      "b": "#C98B3A",
+      "s": "#F4EEE1",
+      "l": "#7A9CB0",
+      "c": "#3E5C4A",
+      "f": "#1E2A38"
+    },
+    "amanecer": {
+      "n": "Amanecer",
+      "a": "#7A9CB0",
+      "b": "#F4EEE1",
+      "s": "#C98B3A",
+      "l": "#A7BCC7",
+      "c": "#3E5C4A",
+      "f": "#1E2A38"
+    },
+    "noche": {
+      "n": "Noche",
+      "a": "#0F1822",
+      "b": "#2B3D52",
+      "s": "#F4EEE1",
+      "l": "#3A4D63",
+      "c": "#16202B",
+      "f": "#F4EEE1"
+    },
+    "niebla": {
+      "n": "Niebla",
+      "a": "#B9C4C6",
+      "b": "#E8E6DD",
+      "s": "#FFFFFF",
+      "l": "#9AA9AB",
+      "c": "#5E7172",
+      "f": "#2F3C3D"
+    },
+    "otono": {
+      "n": "Otoño",
+      "a": "#5B3A29",
+      "b": "#E3A857",
+      "s": "#FBE9C6",
+      "l": "#A8683A",
+      "c": "#4A2E1F",
+      "f": "#26150D"
+    },
+    "rosa": {
+      "n": "Rosa",
+      "a": "#4B2E4F",
+      "b": "#E9A5A0",
+      "s": "#FFF1DC",
+      "l": "#8C5A7A",
+      "c": "#2E1B38",
+      "f": "#170D1E"
+    },
+    "esmeralda": {
+      "n": "Esmeralda",
+      "a": "#14332F",
+      "b": "#9FC9A2",
+      "s": "#F6F1C9",
+      "l": "#4F8C73",
+      "c": "#1B4237",
+      "f": "#0B1F1A"
+    },
+    "medianoche": {
+      "n": "Medianoche",
+      "a": "#120E2B",
+      "b": "#4A3F7A",
+      "s": "#EDE7FF",
+      "l": "#2E2A5E",
+      "c": "#0F0B22",
+      "f": "#EDE7FF"
+    },
+    "ceniza": {
+      "n": "Ceniza",
+      "a": "#6E6A66",
+      "b": "#D9D3C7",
+      "s": "#FBF7EE",
+      "l": "#8F8A82",
+      "c": "#4D4944",
+      "f": "#1F1D1A"
+    },
+    "dorada": {
+      "n": "Dorada",
+      "a": "#F2C879",
+      "b": "#FBEFD5",
+      "s": "#D9772B",
+      "l": "#C9A15E",
+      "c": "#6B4E2A",
+      "f": "#2E1F0F"
+    },
+    "tempestad": {
+      "n": "Tempestad",
+      "a": "#1B2B2A",
+      "b": "#5E7F7A",
+      "s": "#E6F2EE",
+      "l": "#36524F",
+      "c": "#12201F",
+      "f": "#E6F2EE"
+    },
+    "cripta": {
+      "n": "Cripta",
+      "a": "#060A0D",
+      "b": "#1F3A3A",
+      "s": "#D6EBDD",
+      "l": "#14292A",
+      "c": "#070F10",
+      "f": "#D6EBDD"
+    }
+  },
+  "franja": {
+    "x0": 16,
+    "y0": 440,
+    "x1": 184,
+    "y1": 860
+  },
+  "tonos": {
+    "claro": "#FFFFFF",
+    "oscuro": "#111111"
+  },
+  "minContraste": 4.5,
+  "velos": [
+    0.35,
+    0.5,
+    0.65,
+    0.8
+  ],
+  "maxBytes": 5242880,
+  "maxPixeles": 24000000,
+  "ladoGuardado": 4000
+}/* DATOS:fin */;
+  var W = D.ancho, H = D.alto;
+  var FRANJA = D.franja;
+  var MIN_CONTRASTE = D.minContraste, VELOS = D.velos, TONOS = D.tonos;
+  var MAX_BYTES = D.maxBytes, MAX_PIXELES = D.maxPixeles, LADO_GUARDADO = D.ladoGuardado;
+  var PALETAS = D.paletas;
 
   var $ = function (id) { return document.getElementById(id); };
   var lienzo = $("lienzo"), ctx = lienzo.getContext("2d");
