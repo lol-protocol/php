@@ -187,6 +187,41 @@ class PosRepositoriesTest extends TestCase
     }
 
     #[DataProvider('drivers')]
+    public function testCambiarEstadoMovesTheOrderAndAnotaElPaso(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'pos', seed: true);
+        $repo = new OrdenRepository($db);
+        $orden = $repo->crear(['CAM-AZ-M' => 1], 'Calle Prueba 123, Ciudad', 1);
+
+        $this->assertTrue($repo->cambiarEstado($orden['id'], 'pagada', 'Pago confirmado.'));
+        $this->assertTrue($repo->cambiarEstado($orden['id'], 'enviada', null, 'GUIA-123'));
+
+        $guardada = $repo->find($orden['id']);
+        $this->assertSame('enviada', $guardada['estado']);
+        $this->assertSame('GUIA-123', $guardada['numero_guia']);
+        $this->assertSame(['pendiente', 'pagada', 'enviada'], array_column($repo->eventos($orden['id']), 'estado'));
+        $this->assertSame('Pago confirmado.', $repo->eventos($orden['id'])[1]['detalle']);
+    }
+
+    #[DataProvider('drivers')]
+    public function testCambiarEstadoRefusesAnUnknownStateAndAMissingOrder(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'pos', seed: true);
+        $repo = new OrdenRepository($db);
+        $orden = $repo->crear(['CAM-AZ-M' => 1], 'Calle Prueba 123, Ciudad', 1);
+
+        $this->assertFalse($repo->cambiarEstado(999999, 'pagada'));
+        $this->assertSame(0, (int)$db->fetchValue('SELECT COUNT(*) FROM orden_eventos WHERE orden_id = 999999'));
+
+        try {
+            $repo->cambiarEstado($orden['id'], 'volando');
+            $this->fail('"volando" is not a state');
+        } catch (\InvalidArgumentException) {
+            $this->assertSame('pendiente', $repo->find($orden['id'])['estado']);
+        }
+    }
+
+    #[DataProvider('drivers')]
     public function testCrearChangesNothingWhenALineIsOutOfStock(string $driver): void
     {
         $db = TestDatabases::fresh($driver, 'pos', seed: true);

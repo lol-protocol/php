@@ -11,6 +11,9 @@ final class OrdenRepository extends Repository
     /** Ways to retry an order that lost a race for its id or code against another one. */
     private const INTENTOS = 3;
 
+    /** The states the table accepts (its CHECK, migration 001), in the order an order normally goes through. */
+    public const ESTADOS = ['pendiente', 'pagada', 'enviada', 'entregada', 'cancelada', 'devuelta'];
+
     private const COLUMNAS = 'id, codigo, usuario_id, estado, total_centavos, moneda, direccion_envio, numero_guia, creada_en';
 
     /**
@@ -45,15 +48,7 @@ final class OrdenRepository extends Repository
      */
     public function crear(array $items, string $direccion, int $usuarioId): array
     {
-        for ($intento = 1; ; $intento++) {
-            try {
-                return $this->db->transaction(fn(): array => $this->insertar($items, $direccion, $usuarioId));
-            } catch (\PDOException $e) {
-                if ($intento >= self::INTENTOS || !in_array((string)$e->getCode(), ['23000', '23505'], true)) {
-                    throw $e;
-                }
-            }
-        }
+        return $this->db->transaccionConReintento(fn(): array => $this->insertar($items, $direccion, $usuarioId), self::INTENTOS);
     }
 
     /**
@@ -87,7 +82,7 @@ final class OrdenRepository extends Repository
             $lineas[] = [$sku, $variante['producto_id'], $nombre, $cantidad, $variante['precio_centavos']];
         }
 
-        $id = (int)$this->db->fetchValue('SELECT COALESCE(MAX(id), 0) + 1 FROM ordenes');
+        $id = $this->db->siguienteNumero('ordenes', 'id');
         $codigo = random_int(1000000000000000, 9999999999999999);
         $this->db->execute(
             "INSERT INTO ordenes (id, codigo, usuario_id, estado, total_centavos, moneda, direccion_envio)
@@ -106,12 +101,39 @@ final class OrdenRepository extends Repository
     }
 
     /**
+     * Moves order $ordenId to $estado and anota the step in its history, in one transaction ($numeroGuia, if
+     * given, is saved as the shipment's tracking number). Any state may follow any other: whoever runs the shop
+     * knows what happened to the parcel, and a wrong step is fixed with another one. Nothing here puts the
+     * stock back of an order that is cancelled or returned.
+     *
+     * @return bool false when there is no such order
+     * @throws \InvalidArgumentException when $estado is not one of ESTADOS
+     */
+    public function cambiarEstado(int $ordenId, string $estado, ?string $detalle = null, ?string $numeroGuia = null): bool
+    {
+        if (!in_array($estado, self::ESTADOS, true)) {
+            throw new \InvalidArgumentException("Estado desconocido: {$estado} (los válidos: " . implode(', ', self::ESTADOS) . ').');
+        }
+
+        return $this->db->transaccionConReintento(function () use ($ordenId, $estado, $detalle, $numeroGuia): bool {
+            $guia = $numeroGuia === null ? '' : ', numero_guia = ?';
+            $params = $numeroGuia === null ? [$estado, $ordenId] : [$estado, $numeroGuia, $ordenId];
+            if ($this->db->execute("UPDATE ordenes SET estado = ?{$guia} WHERE id = ?", $params) !== 1) {
+                return false;
+            }
+            $this->agregarEvento($ordenId, $estado, $detalle);
+
+            return true;
+        });
+    }
+
+    /**
      * Anota un paso de la orden con el número que le toca (1, 2, 3...): dos en el mismo segundo siguen
      * en el orden en que se anotaron, que la hora no distingue (ver la migración 003).
      */
     public function agregarEvento(int $ordenId, string $estado, ?string $detalle = null, ?string $cuando = null): void
     {
-        $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(orden), 0) + 1 FROM orden_eventos WHERE orden_id = ?', [$ordenId]);
+        $numero = $this->db->siguienteNumero('orden_eventos', 'orden', ['orden_id' => $ordenId]);
         $this->db->execute(
             'INSERT INTO orden_eventos (orden_id, orden, ocurrido_en, estado, detalle) VALUES (?, ?, ?, ?, ?)',
             [$ordenId, $numero, $cuando ?? date('Y-m-d H:i:s'), $estado, $detalle]
