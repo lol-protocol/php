@@ -254,7 +254,7 @@ Límites, a propósito:
 - **Una guía sin año conocido se oculta.** Sin fuente, o con un id fuera del catálogo que no trae un año de cuatro cifras (como `custom_1990_x`): no se sabe cuántos años tiene esa gente, y un error publica el teléfono de alguien que vive. Si el id trae dos años (`scan_1925_reimpresion_1985`), vale el más reciente. `url-routing/` hace lo contrario con las personas sin fechas, porque ahí los datos son de antepasados.
 - **La edad mínima de 18 años es un supuesto.** Un abonado más joven (raro) quedaría fuera de lo que esta regla cubre.
 - **Una empresa con solo el apellido no se oculta** («Panadería Pérez»), ni una con un nombre de pila que no está en la lista. Y se oculta de más la que tiene una palabra que también es nombre («Farmacia San José», «Florería Rosa»). No hay marca para publicar una de esas: el propietario las ve todas.
-- **Qué es una empresa lo decide una lista corta de palabras** (`hotel`, `banco`, `Ltd`, `GmbH`…, por idioma) que solo se busca en el nombre, no en la calle ni en el teléfono. Un apellido que es una de esas palabras, escrito «APELLIDO, Nombre» (`BANK, Henry`), es una persona. Lo que la lista no conoce (`Smith & Sons`, `Hermanos García`, `Plumbing`) se guarda como persona, con un apellido que no lo es: es el lado seguro para la privacidad (se oculta de más), pero ensucia la búsqueda fonética y el enlace de registros.
+- **Qué es una empresa lo decide una lista corta de palabras** (`hotel`, `banco`, `Ltd`, `GmbH`…, por idioma) que solo se busca en el nombre, no en la calle ni en el teléfono. Un apellido que es una de esas palabras, escrito «APELLIDO, Nombre» (`BANK, Henry`), es una persona. La lista incluye también palabras de negocios de familia y de oficios que casi nadie tiene de apellido (`Smith & Sons`, `Hermanos García`, `Hnos.`, `Plumbing`, `Taller`, `Frères`, `Söhne`, `Fratelli`…). Lo que la lista no conoce se guarda como persona, con un apellido que no lo es: es el lado seguro para la privacidad (se oculta de más), pero ensucia la búsqueda fonética y el enlace de registros. Una palabra que muchos llevan de apellido (`Baker`, `Miller`) no entra en la lista, por el mismo motivo. Lo ya importado conserva su clasificación hasta que se vuelva a importar.
 
 ### PersonName / SurnameKeys — búsqueda fonética
 Cada entrada guarda, junto con su apellido, dos claves fonéticas calculadas al insertarla: un código Soundex (sirve para cualquier idioma, encuentra variantes como Smith/Smyth) y una clave por idioma, basada en las reglas fonéticas específicas de cada uno, que encuentra confusiones que Soundex no ve (Valdez/Baldez en español). `findBySurnameSound()` busca por cualquiera de las dos.
@@ -539,3 +539,13 @@ Para directorios telefónicos grandes:
 ## Licencia
 
 MIT
+
+## Documentación (`docs/`)
+
+| Archivo | Qué trae |
+|---|---|
+| `PHONE_DIRECTORY_SUMMARY.md` | Descripción funcional, uso y esquema de base de datos |
+| `ARCHITECTURE.md` | Diagramas de arquitectura y flujo |
+| `PROJECT_COMPLETION_REPORT.md` | Estado del proyecto, tests por archivo y pendientes |
+| `ESTIMATES_AND_SCALABILITY.md` | Rendimiento medido y proyecciones de volumen |
+| `ERRORES_ENCONTRADOS.md`, `POTENTIAL_ERRORS_ANALYSIS.md` | Los 14 errores de la revisión estática, su estado y el análisis detallado |
