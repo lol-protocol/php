@@ -92,9 +92,12 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    entrada por entrada para mostrar una guía reciente (`markDeceased`): pide el
    comprobante y un año verosímil, solo la hace quien tiene la base, y el
    comprobante no sale con la entrada. Eso no resuelve a los parientes que
-   siguen viviendo en esa dirección o con ese teléfono. Falta decidir qué hacer
-   con las razones sociales que llevan un nombre propio (las empresas no se
-   filtran).
+   siguen viviendo en esa dirección o con ese teléfono. Las razones sociales
+   que llevan un nombre de pila («Panadería Juan Pérez») se ocultan igual que
+   una persona (#233): se reconocen por una lista de los nombres más comunes
+   entre 1930 y 1975 en los seis idiomas (`GivenNames`). Se escapa la empresa
+   con solo el apellido («Panadería Pérez») y se oculta de más la que tiene una
+   palabra que también es nombre («Farmacia San José»).
 3. **Textos largos.** Resuelto: el endpoint de moderación acepta hasta 10.000
    caracteres y revisa por párrafos lo que pasa de 2.000 (`LongText`). Un texto
    más largo que eso hay que mandarlo en varias partes.
