@@ -430,6 +430,12 @@ def _movimiento_de(nombre_archivo, ids_movimientos):
     return max(candidatos, key=len) if candidatos else None
 
 
+def _huellas_del_movimiento(huellas, movimiento, ids_movimientos):
+    """Las huellas de las piezas de un movimiento. Con _movimiento_de y no con startswith:
+    «realismo-» también prefija a «realismo-magico-…», y esas piezas no son sus vecinas."""
+    return {k: h for k, h in huellas.items() if _movimiento_de(k, ids_movimientos) == movimiento}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Genera marcalibros desde la taxonomía.")
     ap.add_argument("--all", action="store_true", help="genera todos los movimientos")
@@ -449,6 +455,7 @@ def main(argv=None):
     if problemas:
         return 1
     filtro = None if args.all else args.movimiento
+    ids_movimientos = [m["id"] for m in config["movimientos"]]
 
     gen = hash_generador()
     cache = {} if args.forzar else cargar_cache()
@@ -461,7 +468,7 @@ def main(argv=None):
         ident = f"{mov['id']}-{autor['id']}-{v:02d}"
         # Los duplicados se comparan dentro de cada movimiento, así el resultado
         # no depende de qué movimientos se generen en la misma ejecución.
-        previas = {k: h for k, h in huellas.items() if k.startswith(mov["id"] + "-")}
+        previas = _huellas_del_movimiento(huellas, mov["id"], ids_movimientos)
         clave = clave_pieza(gen, config, mov, autor, v, animos, previas)
         hit = cache.get(ident)
         mini_ruta, rev_ruta = _rutas_cache(ident)
@@ -523,7 +530,6 @@ def main(argv=None):
     guardar_cache(nueva_cache)
 
     # Archivos huérfanos (obras quitadas de la taxonomía) de los movimientos regenerados
-    ids_movimientos = [m["id"] for m in config["movimientos"]]
     vigentes = {e["id"] for e in generados}
     for sub in ("svg", "jpg", "jpg2x"):
         for f in sorted((CATALOGO / sub).glob("*")) if (CATALOGO / sub).exists() else []:
