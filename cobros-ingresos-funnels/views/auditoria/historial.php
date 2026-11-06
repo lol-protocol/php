@@ -20,13 +20,13 @@ $entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente',
             <tbody>
             <?php foreach ($registros as $r): ?>
                 <tr>
-                    <td><?= htmlspecialchars(substr($r['creado_en'], 0, 16)) ?></td>
-                    <td><?= htmlspecialchars($r['usuario']) ?></td>
+                    <td><?= e(substr($r['creado_en'], 0, 16)) ?></td>
+                    <td><?= e($r['usuario']) ?></td>
                     <td>
-                        <?= $accionLabel[$r['accion']] ?? htmlspecialchars($r['accion']) ?>
-                        <?= $entidadLabel[$r['entidad']] ?? htmlspecialchars($r['entidad']) ?>
+                        <?= $accionLabel[$r['accion']] ?? e($r['accion']) ?>
+                        <?= $entidadLabel[$r['entidad']] ?? e($r['entidad']) ?>
                     </td>
-                    <td><?= htmlspecialchars($r['detalle']) ?></td>
+                    <td><?= e($r['detalle']) ?></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$registros): ?>
