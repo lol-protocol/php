@@ -75,6 +75,31 @@ function api_unauthorized(): void
     api_error(401, 'no_autenticado', 'no autenticado');
 }
 
+/**
+ * Un parámetro de la query como texto. Si falta, o viene como lista (?scope[]=x) o como cualquier cosa que no sea un
+ * texto, vale $defecto: así un parámetro mal formado no revienta con un TypeError (500) más abajo. Todo endpoint lee
+ * la query por acá, no indexando la superglobal de la query a mano.
+ *
+ * @param array<string,mixed> $query
+ */
+function api_texto_de_query(array $query, string $clave, string $defecto = ''): string
+{
+    $valor = $query[$clave] ?? null;
+    return is_string($valor) ? $valor : $defecto;
+}
+
+/**
+ * Un parámetro de la query como entero. Si falta o no es un texto/número (una lista, p. ej.), vale $defecto, en vez
+ * de que (int) de una lista dé 1 sin avisar.
+ *
+ * @param array<string,mixed> $query
+ */
+function api_entero_de_query(array $query, string $clave, int $defecto): int
+{
+    $valor = $query[$clave] ?? null;
+    return is_string($valor) || is_int($valor) ? (int) $valor : $defecto;
+}
+
 /** @return array{total:int,page:int,per_page:int,total_pages:int} Forma común de paginación de /api/users y /api/timeline. */
 function api_pagination_meta(int $total, int $page, int $perPage): array
 {
