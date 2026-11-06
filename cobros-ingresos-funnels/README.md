@@ -500,7 +500,8 @@ src/
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
   Dinero.php            montos en centavos enteros, para compararlos sin el ruido de
-                        la coma flotante (testeado)
+                        la coma flotante, y el monto de un texto de formulario
+                        (solo digitos y punto decimal) (testeado)
   MayoriaDeEdad.php     la regla de que no se admiten clientes que no hayan cumplido
                         la edad de mayoría de su país (años cumplidos, como age()
                         de Postgres) y el tope del campo de fecha de nacimiento del
@@ -526,6 +527,7 @@ src/
                         (loguea el detalle, nunca lo muestra), testeado
   Peticion.php           guard clauses de los controllers: id de la ruta,
                         404 si no existe, 409 si hay conflicto (ej. anulado),
+                        el monto del formulario (0 si no es un monto),
                         testeado
   Validacion.php         chequeos repetidos entre formularios: campos
                         obligatorios vacios, largos maximos de los textos,
@@ -710,6 +712,12 @@ con su versión al editar un pago) los pasan a centavos enteros con
 `App\Dinero::centavos()` y comparan ahí, sin margen: un pago no puede pasarse del saldo
 ni por un centavo, y el monto de una boleta no puede quedar un centavo por debajo de lo
 ya cobrado.
+
+El monto que llega de un formulario se lee con `Dinero::deTexto()` (a través de
+`Peticion::monto()`): solo dígitos y punto decimal. `(float) "1.500,50"` da `1.5` sin
+avisar, porque PHP corta en la primera coma, y un script que mandara el formato latino
+creaba una boleta o un pago por una milésima parte. Lo que no es un monto vale 0 y el
+formulario vuelve con «monto válido»; el navegador (`type="number"`) siempre manda punto.
 
 Otra cosa es la regla deliberada de que **un centavo o menos cuenta como cero**, para que
 un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con saldo de
