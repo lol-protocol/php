@@ -16,8 +16,12 @@ de internet (TOPE_IO_INTERNET).
 import csv
 import io
 import json
+import statistics
 import sys
+from collections import Counter
 from pathlib import Path
+
+from comun import filas_csv, leer_csv
 
 AQUI = Path(__file__).resolve().parent
 PAISES = AQUI / "paises.csv"
@@ -46,6 +50,10 @@ ESCENARIOS_POS = [
 PUESTOS_MOSTRADOS = 25
 PLANTILLA_VISTA = AQUI / "vista_plantilla.html"
 MAPA = AQUI / "mapa_paises.csv"
+DETALLE = AQUI / "datos_detalle.csv"
+README = AQUI / "README.md"
+INICIO_RESUMEN = "<!-- resumen: lo escribe generar_tabla.py; no editar a mano -->"
+FIN_RESUMEN = "<!-- fin del resumen -->"
 COLUMNAS_FINAL = [
     "codigo", "pais", "tipo", "region",
     "indice_genealogia", "indice_operabilidad", "prioridad_genealogia", "excluido_genealogia",
@@ -102,11 +110,21 @@ def prefijo_ip(lenguas, niveles):
 
 
 def leer(ruta, columnas):
-    with ruta.open(encoding="utf-8", newline="") as f:
-        lector = csv.DictReader(f)
-        if lector.fieldnames != columnas:
-            sys.exit(f"Encabezado inesperado en {ruta.name}: {lector.fieldnames}")
-        return list(enumerate(lector, start=2))
+    encabezado, filas = leer_csv(ruta)
+    if encabezado != columnas:
+        sys.exit(f"Encabezado inesperado en {ruta.name}: {encabezado}")
+    return list(enumerate(filas, start=2))
+
+
+def anios_tipicos():
+    """columna -> año más frecuente en datos_detalle.csv: el que vale para casi todos los países.
+
+    Los encabezados lo usan en vez de repetir los años de preparar_datos.py.
+    """
+    por_columna = {}
+    for f in filas_csv(DETALLE):
+        por_columna.setdefault(f["columna"], Counter())[f["anio"]] += 1
+    return {columna: int(cuenta.most_common(1)[0][0]) for columna, cuenta in por_columna.items()}
 
 
 def errores_de(nombre, linea, fila, escalas, numericas):
@@ -147,17 +165,17 @@ def texto_csv(columnas, filas):
     return salida.getvalue()
 
 
-def vista_html(registros, documento=True):
+def vista_html(registros, anios, documento=True):
     """La vista web: la plantilla con los datos y el mapa. documento=False da el fragmento sin
     <!doctype>, <head> ni <body>, para publicarlo donde se agregan solos."""
-    with MAPA.open(encoding="utf-8", newline="") as f:
-        mapa = [[fila["codigo"], fila["trazado"], float(fila["x"]), float(fila["y"])] for fila in csv.DictReader(f)]
+    mapa = [[fila["codigo"], fila["trazado"], float(fila["x"]), float(fila["y"])] for fila in filas_csv(MAPA)]
 
     def a_json(valor):  # "</" no puede aparecer dentro de <script>
         return json.dumps(valor, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
     texto = PLANTILLA_VISTA.read_text(encoding="utf-8")
-    texto = texto.replace("/*DATOS*/null", a_json(registros)).replace("/*MAPA*/null", a_json(mapa))
+    texto = (texto.replace("/*DATOS*/null", a_json(registros)).replace("/*MAPA*/null", a_json(mapa))
+             .replace("/*ANIOS*/null", a_json(anios)))
     if not documento:
         return texto
     cabeza, cuerpo = texto.split('\n<div class="pagina">', 1)
@@ -196,6 +214,48 @@ def escenarios_md(registros):
                                                             for t in tablas]) + " |")
         partes.append("")
     return "\n".join(partes)
+
+
+def resumen_md(registros, niveles):
+    """Las cifras que cambian con los datos, para el bloque «Resumen» del README."""
+    def reparto(valores):
+        return ", ".join(f"{n}: {sum(1 for v in valores if v == n)}" for n in range(5, 0, -1))
+
+    def nombres(filtro):
+        lista = sorted((d["n"] for d in registros if filtro(d)), key=str.casefold)
+        return ", ".join(lista[:-1]) + " y " + lista[-1] if len(lista) > 1 else "".join(lista)
+
+    tipos = Counter(d["t"] for d in registros)
+    medianas = []
+    for nivel_io in range(1, 6):
+        cpi = [d["cpi"] for d in registros if d["io"] == nivel_io and d["cpi"] is not None]
+        if cpi:
+            medianas.append(f"IO {nivel_io}: {statistics.median(cpi):g}")
+    sin_corpus_dentro = sum(1 for d in registros if d["ipl"] <= UMBRAL_POS and not d["xp"])
+    lineas = [
+        f"- **Filas:** {len(registros)} ({tipos['estado']} estados, {tipos['territorio']} territorios y "
+        f"{tipos['entidad disputada']} entidades disputadas).",
+        f"- **Excluidos de genealogía** (IO ≤ {UMBRAL_GENEALOGIA}): {sum(d['xg'] for d in registros)}: "
+        f"{nombres(lambda d: d['xg'])}. Con IO ≤ {UMBRAL_GENEALOGIA + 1} serían "
+        f"{sum(1 for d in registros if d['io'] <= UMBRAL_GENEALOGIA + 1)}.",
+        f"- **Excluidos del etiquetador POS:** {sum(d['xp'] for d in registros)}: "
+        f"{nombres(lambda d: d['xp'])}. Otros {sin_corpus_dentro} no tienen corpus anotado en su lengua "
+        "local y siguen dentro, con prioridad baja.",
+        f"- **IP de la mejor lengua**, países por nivel: {reparto([d['ip'] for d in registros])}.",
+        f"- **IP local**, países por nivel: {reparto([d['ipl'] for d in registros])}.",
+        f"- **Lenguas por nivel:** {reparto(list(niveles.values()))}.",
+        f"- **Corrupción mediana por IO** (100 = sin corrupción): {'; '.join(medianas)}.",
+    ]
+    return "\n".join(lineas)
+
+
+def readme_con_resumen(resumen):
+    texto = README.read_text(encoding="utf-8")
+    if INICIO_RESUMEN not in texto or FIN_RESUMEN not in texto:
+        sys.exit(f"README.md no tiene las marcas del resumen: {INICIO_RESUMEN} y {FIN_RESUMEN}")
+    antes, resto = texto.split(INICIO_RESUMEN, 1)
+    _, despues = resto.split(FIN_RESUMEN, 1)
+    return f"{antes}{INICIO_RESUMEN}\n{resumen}\n{FIN_RESUMEN}{despues}"
 
 
 def tabla_md(titulo, nota, enc, filas):
@@ -290,7 +350,7 @@ def main(comprobar=False):
     codigos_paises = [f["codigo"] for _, f in paises]
     codigos_pos = [f["codigo"] for _, f in pos]
     for nombre, codigos in (("paises.csv", codigos_paises), ("paises_pos.csv", codigos_pos)):
-        repetidos = {c for c in codigos if codigos.count(c) > 1}
+        repetidos = {c for c, n in Counter(codigos).items() if n > 1}
         if repetidos:
             errores.append(f"{nombre}: códigos repetidos {sorted(repetidos)}")
     alfabetizacion = {f["codigo"]: numero(f.get("alfabetizacion_adultos")) for _, f in paises}
@@ -368,15 +428,19 @@ def main(comprobar=False):
     gen_ordenado = [c for *_, c in sorted(filas_gen, key=lambda x: (x[0], x[1], x[2]))]
     pos_ordenado = [c for *_, c in sorted(filas_pos, key=lambda x: (x[0], x[1], x[2]))]
 
+    anios = anios_tipicos()
+    anios_vista = {"pob": anios["poblacion_millones"], "idh": anios["idh"]}
     texto_gen = tabla_md(
         "Listado de países: genealogía",
-        "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población 2024 de Our "
-        "World in Data; PIB nominal del Banco Mundial; PIB PPA (Banco Mundial), IDH 2023 (PNUD), "
-        "libertad (Freedom House 2022), democracia (EIU 2020) y corrupción (Transparencia "
-        "Internacional 2023) vía Gapminder. "
+        "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población "
+        f"{anios['poblacion_millones']} de Our World in Data; PIB nominal del Banco Mundial; PIB PPA "
+        f"(Banco Mundial), IDH {anios['idh']} (PNUD), libertad (Freedom House {anios['libertad_fh']}), "
+        f"democracia (EIU {anios['democracia_eiu']}) y corrupción (Transparencia Internacional "
+        f"{anios['corrupcion_cpi']}) vía Gapminder. El año de cada dato está en `datos_detalle.csv`. "
         "Ver `README.md`, «Estado de los datos».",
-        ["País", "Tipo", "Región", "Población 2024 (M)", "Nacidos en la historia (M)",
-         "IDH 2023", "PIB pc nominal 2024 (USD)", "PIB pc PPA 2023 ($ int. 2021)",
+        ["País", "Tipo", "Región", f"Población {anios['poblacion_millones']} (M)", "Nacidos en la historia (M)",
+         f"IDH {anios['idh']}", f"PIB pc nominal {anios['pib_per_capita_usd']} (USD)",
+         f"PIB pc PPA {anios['pib_per_capita_ppa_usd']} ($ int. 2021)",
          "Internet (% pob.)", "Emigrantes (% pob.)", "Libertad (Freedom House)",
          "Democracia (EIU, 0–100)", "Corrupción (CPI, 100 = limpio)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
@@ -394,8 +458,9 @@ def main(comprobar=False):
         pos_ordenado)
 
     salidas = [(SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos),
-               (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(registros)),
-               (SALIDA_ESCENARIOS, escenarios_md(registros))]
+               (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(registros, anios_vista)),
+               (SALIDA_ESCENARIOS, escenarios_md(registros)),
+               (README, readme_con_resumen(resumen_md(registros, niveles)))]
     desactualizadas = comprobar_o_escribir(salidas, comprobar)
     if comprobar and desactualizadas:
         sys.exit(f"No están al día: {', '.join(desactualizadas)}. "
