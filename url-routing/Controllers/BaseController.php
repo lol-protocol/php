@@ -213,12 +213,22 @@ class BaseController
             default => [null, ''],
         };
 
-        if (!ctype_digit($digitos) || strlen($digitos) > 2 || $texto === null || !mb_check_encoding($texto, 'UTF-8')
-            || !ctype_digit($pagina) || strlen($pagina) > 6 || (int)$pagina < 1) {
+        $ancho = self::entero($digitos, 2);
+        $numero = self::entero($pagina, 6);
+        if ($ancho === null || $texto === null || !mb_check_encoding($texto, 'UTF-8') || $numero === null || $numero < 1) {
             return null;
         }
 
-        return [(int)$digitos, mb_substr($texto, 0, 255), (int)$pagina];
+        return [$ancho, mb_substr($texto, 0, 255), $numero];
+    }
+
+    /**
+     * $valor as an int when it is nothing but 1 to $maxDigitos digits, else null: the one check behind the
+     * digit width (2 digits at most) and the page number (6) of a search, in its path and in its form.
+     */
+    private static function entero(mixed $valor, int $maxDigitos): ?int
+    {
+        return is_string($valor) && ctype_digit($valor) && strlen($valor) <= $maxDigitos ? (int)$valor : null;
     }
 
     /**
@@ -228,21 +238,21 @@ class BaseController
      */
     protected function busquedaDeFormulario(): ?string
     {
-        $t = $_GET['t'] ?? null;
-        if ($t === null) {
+        if (!isset($_GET['t'])) {
             return null;
         }
-        if (!is_string($t) || !ctype_digit($t) || strlen($t) > 2) {
+        $t = self::entero($_GET['t'], 2);
+        if ($t === null) {
             return $this->handleBadRequest('Tipo de listado inválido');
         }
 
         $q = is_string($_GET['q'] ?? null) ? mb_substr($_GET['q'], 0, 255) : '';
-        $p = is_string($_GET['p'] ?? null) && ctype_digit($_GET['p']) && strlen($_GET['p']) <= 6 ? max(1, (int)$_GET['p']) : 1;
+        $p = max(1, self::entero($_GET['p'] ?? null, 6) ?? 1);
         if (!mb_check_encoding($q, 'UTF-8')) {
             return $this->handleBadRequest('Texto inválido');
         }
 
-        return $this->redirect(busqueda((int)$t, $q, $p), 301);
+        return $this->redirect(busqueda($t, $q, $p), 301);
     }
 
     /** A 301 to the canonical spelling of this search, when the request used another one. */
