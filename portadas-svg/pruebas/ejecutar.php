@@ -1591,6 +1591,49 @@ $pruebas = [
         igual([], Fuentes::formas());
     },
 
+    'Los títulos sin letras latinas no chocan de id, y una fila rota no se queda con el suyo' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        file_put_contents("$dir/lista.csv", "titulo,autor,paginas\n道德經,Lao Tsé,96\n莊子,Lao Tsé,120\n論語,Anónimo,80\n");
+        $libros = Lista::leer("$dir/lista.csv", true);
+        igual(3, count($libros));
+        $ids = array_map(static fn (Libro $libro): string => $libro->id, $libros);
+        igual(3, count(array_unique($ids)));
+        verdadero(preg_match('/^lao-tse-[0-9a-f]{6}$/', $ids[0]) === 1, $ids[0]);
+        verdadero(preg_match('/^anonimo-[0-9a-f]{6}$/', $ids[2]) === 1, $ids[2]);
+        // El nombre sale del texto, no de la posición: cambiar el orden no lo cambia.
+        file_put_contents("$dir/otra.csv", "titulo,autor,paginas\n莊子,Lao Tsé,120\n道德經,Lao Tsé,96\n");
+        $otra = Lista::leer("$dir/otra.csv");
+        igual($ids[1], $otra[0]->id);
+
+        // Una fila con un error no reserva su nombre: la buena que viene después no es «duplicada» de ella.
+        file_put_contents("$dir/rota.csv", "titulo,autor,paginas,tradicion,id\nMala,Ana,100,marciana,libro\nBuena,Beto,100,,libro\n");
+        $avisos = [];
+        $buenos = Lista::leer("$dir/rota.csv", true, static function (string $aviso) use (&$avisos): void {
+            $avisos[] = $aviso;
+        });
+        igual(['libro'], array_map(static fn (Libro $libro): string => $libro->id, $buenos));
+        igual('Buena', $buenos[0]->textos->titulo);
+        igual(1, count($avisos));
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'font-weight acepta palabras de CSS y números, y rechaza lo demás con un mensaje claro' => function (): void {
+        $plantilla = Plantilla::crear('sobria');
+        igual(Anchos::de('sans', 'normal', 700)->em('Hola'), $plantilla->medidaDe(['font-weight' => 'bolder'])->em('Hola'));
+        igual(Anchos::de('sans', 'normal', 400)->em('Hola'), $plantilla->medidaDe(['font-weight' => 'lighter'])->em('Hola'));
+        igual(Anchos::de('sans', 'normal', 700)->em('Hola'), $plantilla->medidaDe(['font-weight' => '700'])->em('Hola'));
+        igual(Anchos::de('sans', 'normal', 700)->em('Hola'), $plantilla->medidaDe(['font-weight' => 700])->em('Hola'));
+        foreach (['semi', '', 0, 1001, -5] as $malo) {
+            try {
+                $plantilla->medidaDe(['font-weight' => $malo]);
+                throw new RuntimeException("aceptó «{$malo}»");
+            } catch (InvalidArgumentException $error) {
+                verdadero(str_contains($error->getMessage(), 'font-weight no válido'), $error->getMessage());
+            }
+        }
+    },
+
     'Los libros de ejemplo se cargan' => function (): void {
         $ejemplos = glob(__DIR__ . '/../ejemplos/*.json') ?: [];
         verdadero(count($ejemplos) >= 2, 'faltan ejemplos');

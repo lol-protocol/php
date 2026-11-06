@@ -217,16 +217,24 @@ abstract class Plantilla
         return ($extra['font-style'] ?? 'normal') === 'italic' ? 'italic' : 'normal';
     }
 
-    /** @param array<string, float|int|string> $extra */
+    /**
+     * Peso de la letra de `font-weight`: las palabras de CSS (`normal`, `bold`, `lighter`, `bolder`) o un número de
+     * 1 a 1000. `lighter` y `bolder` no dependen del texto de alrededor, así que valen 400 y 700.
+     *
+     * @param array<string, float|int|string> $extra
+     */
     private static function pesoDe(array $extra): int
     {
         $peso = $extra['font-weight'] ?? 400;
+        $palabras = ['normal' => 400, 'lighter' => 400, 'bold' => 700, 'bolder' => 700];
+        if (is_string($peso) && isset($palabras[$peso])) {
+            return $palabras[$peso];
+        }
+        if (is_numeric($peso) && $peso >= 1 && $peso <= 1000) {
+            return (int) $peso;
+        }
 
-        return match ($peso) {
-            'normal' => 400,
-            'bold' => 700,
-            default => (int) $peso,
-        };
+        throw new \InvalidArgumentException("font-weight no válido: «{$peso}». Usa normal, bold, lighter, bolder o un número de 1 a 1000.");
     }
 
     /**
