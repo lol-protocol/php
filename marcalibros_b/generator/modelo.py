@@ -12,6 +12,7 @@ import unicodedata
 from functools import lru_cache
 from pathlib import Path
 
+import yaml
 from jsonschema import Draft202012Validator, FormatChecker
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -71,11 +72,15 @@ def sugerencias_por_gutenberg(manifiesto):
 # reconocer al autor del catálogo en el momento de abrir el texto, sin tener que verificar antes
 # los ids de Gutenberg de 1000 obras: basta el nombre y los años de vida.
 
+PALABRAS_VACIAS = {"de", "del", "la", "los", "las", "el", "y", "e", "van", "von", "da", "di", "le", "les", "l", "d", "du", "des",
+                   "un", "une", "et", "the", "of", "a", "an", "or", "and", "der", "die", "das"}
+
+
 def _tokens(nombre):
-    """Palabras significativas de un nombre, sin tildes ni mayúsculas. «Apellido, Nombre» se ordena igual."""
+    """Palabras significativas, sin tildes ni mayúsculas. «Apellido, Nombre» queda igual que «Nombre Apellido»."""
     t = unicodedata.normalize("NFKD", nombre.lower())
     t = "".join(c for c in t if not unicodedata.combining(c))
-    return [w for w in re.findall(r"[a-z]+", t) if w not in {"de", "del", "la", "los", "las", "y", "van", "von", "da", "di"}]
+    return [w for w in re.findall(r"[a-z]+", t) if w not in PALABRAS_VACIAS]
 
 
 def _mismo_token(a, b):
@@ -96,7 +101,10 @@ def _anios(epoca):
     return (a, b)
 
 
-def _mismo_autor(nombre_cat, epoca_cat, nombre_libro, nac, mue):
+def reconoce_autor(nombre_cat, epoca_cat, nombre_libro, nac=None, mue=None):
+    """¿El autor de un libro (nombre y años como los da Gutendex) es este autor del catálogo?
+    Exige que cada palabra del nombre más corto aparezca en el otro (con grafías cercanas) y, si hay años
+    a ambos lados, que coincidan con un año de margen. Sin años, un nombre de una sola palabra no basta."""
     a, b = _tokens(nombre_cat), _tokens(nombre_libro)
     if not a or not b:
         return False
@@ -107,25 +115,64 @@ def _mismo_autor(nombre_cat, epoca_cat, nombre_libro, nac, mue):
     anios = _anios(epoca_cat)
     if anios and nac is not None and mue is not None:
         return abs(anios[0] - nac) <= 1 and abs(anios[1] - mue) <= 1
-    return comunes >= 2  # sin años que comparar, un solo apellido no basta
+    return comunes >= 2
 
 
-def sugerencias_por_metadatos(libro, config):
+@lru_cache(maxsize=1)
+def cargar_titulos_originales():
+    """{id de autor: {id de obra: [títulos en el idioma original]}} (catalog/titulos-originales.yaml, opcional)."""
+    ruta = RAIZ / "catalog" / "titulos-originales.yaml"
+    if not ruta.exists():
+        return {}
+    return (yaml.safe_load(ruta.read_text(encoding="utf-8")) or {}).get("autores", {})
+
+
+def _parecido(referencias, titulo):
+    """¿Alguna referencia (título en español u original) está contenida, casi entera, en el título del libro?"""
+    for ref in referencias:
+        r = _tokens(ref)
+        if not r:
+            continue
+        comunes = sum(1 for t in r if any(_mismo_token(t, u) for u in titulo))
+        if comunes >= min(2, len(r)) and comunes / len(r) >= 0.6:
+            return True
+    return False
+
+
+def autor_del_libro(libro, autor):
+    """¿Alguno de los autores del libro (metadatos de Gutendex) es este autor del catálogo?"""
+    return any(reconoce_autor(autor["nombre"], autor.get("epoca"), a.get("name", ""), a.get("birth_year"), a.get("death_year"))
+               for a in libro.get("authors", []))
+
+
+def obras_del_libro(libro, autor, titulos_originales=None):
+    """Para cada obra del autor (en orden de variante), True si el título del libro se parece a su título en
+    español, al original (catalog/titulos-originales.yaml) o, en un tema «de» otra obra, al de esa obra."""
+    originales = cargar_titulos_originales() if titulos_originales is None else titulos_originales
+    titulo = _tokens(libro.get("title", ""))
+    propios = originales.get(autor["id"], {})
+    por_titulo = {o["titulo"]: propios.get(o["id"], []) for o in autor.get("obras", [])}
+    salida = []
+    for obra in autor.get("obras", []):
+        refs = [obra["titulo"], *propios.get(obra["id"], [])]
+        if obra.get("de"):
+            refs += [obra["de"], *por_titulo.get(obra["de"], [])]
+        salida.append(_parecido(refs, titulo))
+    return salida
+
+
+def sugerencias_por_metadatos(libro, config, titulos_originales=None):
     """Piezas del catálogo sugeribles para un libro de Gutenberg, a partir de sus metadatos
     (`{"title": ..., "authors": [{"name": "Bécquer, Gustavo Adolfo", "birth_year": 1836, "death_year": 1870}]}`,
     como lo da Gutendex). Devuelve [{"diseno": "cat:<pieza>", "nivel": "obra"|"autor"}]: primero las piezas
-    cuya obra o tema se parece al título del libro, luego las demás del mismo autor, en orden de variante."""
-    titulo = set(_tokens(libro.get("title", "")))
+    cuya obra o tema se parece al título del libro (en español o en el idioma original, si está en
+    catalog/titulos-originales.yaml), luego las demás del mismo autor, en orden de variante."""
     salida = []
     for mov in config["movimientos"]:
         for autor in mov["autores"]:
-            if not any(_mismo_autor(autor["nombre"], autor.get("epoca"), a.get("name", ""), a.get("birth_year"), a.get("death_year"))
-                       for a in libro.get("authors", [])):
+            if not autor_del_libro(libro, autor):
                 continue
-            propias = []
-            for v, obra in enumerate(autor.get("obras", []), 1):
-                ref = set(_tokens(obra.get("de") or obra["titulo"]))
-                coincide = len(ref & titulo) >= min(2, len(ref)) and bool(ref & titulo) and len(ref & titulo) / len(ref) >= 0.5
-                propias.append({"diseno": f"cat:{mov['id']}-{autor['id']}-{v:02d}", "nivel": "obra" if coincide else "autor"})
+            propias = [{"diseno": f"cat:{mov['id']}-{autor['id']}-{v:02d}", "nivel": "obra" if coincide else "autor"}
+                       for v, coincide in enumerate(obras_del_libro(libro, autor, titulos_originales), 1)]
             salida += sorted(propias, key=lambda x: x["nivel"] != "obra")
     return salida

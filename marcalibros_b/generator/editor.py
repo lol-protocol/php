@@ -14,11 +14,12 @@ Cómo servirlo (fuera de este módulo): los archivos de `AlmacenSubidas` se publ
 origen (dominio sin cookies), solo como `<img>`, con `Content-Type: image/jpeg`,
 `X-Content-Type-Options: nosniff` y `Content-Disposition: inline`.
 """
-import fcntl
+import contextlib
 import io
 import json
 import os
 import secrets
+import threading
 from functools import lru_cache
 from pathlib import Path
 
@@ -30,9 +31,20 @@ import texto as tx
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
 from qa import MIN_CONTRASTE_TEXTO, OPACIDADES_VELO, TONOS_TEXTO, contraste_texto, mejor_texto
 from render_raster import ESCALA, _pintar_texto, a_imagen
-from scene import ALTO, ANCHO, Escena
+from scene import ALTO, ANCHO, FRANJA_CENTRAL, Escena
 
 RAIZ = Path(__file__).resolve().parent.parent
+
+try:  # exclusión entre procesos: flock en Linux y macOS, msvcrt en Windows
+    import fcntl
+    msvcrt = None
+except ImportError:
+    fcntl = None
+    try:
+        import msvcrt
+    except ImportError:
+        msvcrt = None
+_HILOS = threading.Lock()  # sin ninguno de los dos, al menos exclusión entre hilos del mismo proceso
 
 MAX_BYTES = 5 * 1024 * 1024          # tamaño del archivo subido
 MAX_PIXELES = 24_000_000             # ancho × alto, comprobado antes de decodificar
@@ -41,8 +53,28 @@ LADO_MAXIMO_GUARDADO = 4000          # se reduce al recodificar
 CUOTA_IMAGENES = 50                  # por usuario
 CUOTA_BYTES = 100 * 1024 * 1024      # por usuario, ya recodificado
 FORMATOS = {"JPEG", "PNG", "WEBP"}
-FRANJA = (16, 440, 184, 860)         # misma franja de texto que el catálogo (168×420)
+FRANJA = FRANJA_CENTRAL              # misma franja de texto que el catálogo (168×420)
 
+
+
+@contextlib.contextmanager
+def _exclusion(ruta):
+    """Bloqueo exclusivo sobre un archivo: entre procesos si el sistema lo permite, y siempre entre hilos."""
+    with _HILOS:
+        with open(ruta, "a+b") as f:
+            if fcntl:
+                fcntl.flock(f, fcntl.LOCK_EX)
+            elif msvcrt:
+                f.seek(0)
+                msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                if fcntl:
+                    fcntl.flock(f, fcntl.LOCK_UN)
+                elif msvcrt:
+                    f.seek(0)
+                    msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
 
 
 class ErrorEditor(ValueError):
@@ -119,15 +151,8 @@ class AlmacenSubidas:
         os.replace(tmp, self._indice)  # atómico: nunca queda un JSON a medias
 
     def _bloqueo(self):
-        """Exclusión entre procesos para leer-modificar-escribir el índice y la cuota."""
-        class _B:
-            def __enter__(b):
-                b.f = open(self.dir / ".lock", "w")
-                fcntl.flock(b.f, fcntl.LOCK_EX)
-            def __exit__(b, *a):
-                fcntl.flock(b.f, fcntl.LOCK_UN)
-                b.f.close()
-        return _B()
+        """Exclusión para leer-modificar-escribir el índice y la cuota."""
+        return _exclusion(self.dir / ".lock")
 
     def uso(self, usuario):
         mias = [v for v in self._leer().values() if v["usuario"] == usuario]

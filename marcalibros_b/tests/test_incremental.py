@@ -15,7 +15,7 @@ sys.path.insert(0, str(RAIZ / "generator"))
 
 import build  # noqa: E402
 
-pytestmark = pytest.mark.skipif(build.chromium() is None, reason="hace falta Chromium")
+pytestmark = [pytest.mark.lento, pytest.mark.skipif(build.chromium() is None, reason="hace falta Chromium")]
 
 MOV = "romanticismo"
 

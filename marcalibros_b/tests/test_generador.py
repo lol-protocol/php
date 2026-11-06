@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pytest
 import yaml
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -48,6 +49,7 @@ def _hash_pieza(entrada, esc):
     return hashlib.sha256(a_imagen(esc).tobytes()).hexdigest()  # píxeles, no el códec JPEG
 
 
+@pytest.mark.lento
 def test_determinista():
     a, _ = _piezas()
     _piezas.cache_clear()  # de verdad otra vez, no la copia en caché
@@ -55,6 +57,7 @@ def test_determinista():
     assert {k: _hash_pieza(*v) for k, v in a.items()} == {k: _hash_pieza(*v) for k, v in b.items()}
 
 
+@pytest.mark.lento
 def test_hashes_de_referencia():
     piezas, _ = _piezas()
     esperado = json.loads(REFERENCIA.read_text(encoding="utf-8"))
@@ -62,6 +65,7 @@ def test_hashes_de_referencia():
     assert obtenido == esperado, "la salida cambió: revisa y regenera con --actualizar si es intencional"
 
 
+@pytest.mark.lento
 def test_sin_duplicados_visuales():
     _, huellas = _piezas()
     ids = list(huellas)
@@ -145,6 +149,7 @@ def test_franja_de_texto_en_el_manifest():
             assert e["contraste_texto"] >= MIN_CONTRASTE_TEXTO, e["id"]
 
 
+@pytest.mark.lento
 def test_motivo_no_invade_la_franja_de_texto():
     import plantillas
     piezas, _ = _piezas()
@@ -237,6 +242,7 @@ def test_frases_originales_van_sin_firma_y_las_demas_firmadas():
     assert len(solo) == 1 and len(con) == 2  # sin autoría no hay segundo bloque
 
 
+@pytest.mark.lento
 def test_archivos_del_catalogo_validos():
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
     for e in manifiesto["entradas"]:

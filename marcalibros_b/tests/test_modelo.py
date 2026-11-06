@@ -117,3 +117,42 @@ def test_sugerencias_por_metadatos_no_confunden_autores():
     assert homero == []  # sin años ni nombre completo: un solo nombre no basta
     virgilio = modelo.sugerencias_por_metadatos({"title": "Aeneid", "authors": [{"name": "Virgil", "birth_year": -70, "death_year": -19}]}, config)
     assert len(virgilio) == 10 and all("-virgilio-" in x["diseno"] for x in virgilio)  # Virgil ~ Virgilio, y los años a. C. coinciden
+
+
+def test_titulos_en_idioma_original_reconocen_la_obra():
+    config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    poe = {"name": "Poe, Edgar Allan", "birth_year": 1809, "death_year": 1849}
+    primero = modelo.sugerencias_por_metadatos({"title": "The Raven", "authors": [poe]}, config)[0]
+    assert primero == {"diseno": "cat:romanticismo-poe-01", "nivel": "obra"}
+    usher = modelo.sugerencias_por_metadatos({"title": "The Fall of the House of Usher", "authors": [poe]}, config)[0]
+    assert usher["diseno"] == "cat:romanticismo-poe-03" and usher["nivel"] == "obra"
+    # un título con subtítulo y un tema «de» la obra (La criatura en el bosque, de Frankenstein) también
+    shelley = {"name": "Shelley, Mary Wollstonecraft", "birth_year": 1797, "death_year": 1851}
+    s = modelo.sugerencias_por_metadatos({"title": "Frankenstein; Or, The Modern Prometheus", "authors": [shelley]}, config)
+    assert [x["nivel"] for x in s[:5]] == ["obra"] * 5 and s[0]["diseno"] == "cat:gotico-shelley-mary-01"
+    # Dracula (sin tilde) ~ Drácula; un título cualquiera no sube ninguna obra
+    stoker = {"name": "Stoker, Bram", "birth_year": 1847, "death_year": 1912}
+    assert modelo.sugerencias_por_metadatos({"title": "Dracula", "authors": [stoker]}, config)[0]["nivel"] == "obra"
+    assert all(x["nivel"] == "autor" for x in modelo.sugerencias_por_metadatos({"title": "A Different Book", "authors": [stoker]}, config))
+
+
+def test_los_titulos_originales_apuntan_a_obras_que_existen():
+    config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    ids = {a["id"]: {o["id"] for o in a["obras"]} for m in config["movimientos"] for a in m["autores"]}
+    for autor, obras in modelo.cargar_titulos_originales().items():
+        assert autor in ids, autor
+        for obra, titulos in obras.items():
+            assert obra in ids[autor], f"{autor}/{obra}"
+            assert titulos and all(isinstance(t, str) and t for t in titulos), f"{autor}/{obra}"
+
+
+def test_informe_de_candidatos_filtra_por_autor_y_marca_las_obras():
+    import verificar_gutenberg
+    config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    poe = {"id": 2147, "title": "The Raven", "languages": ["en"], "authors": [{"name": "Poe, Edgar Allan", "birth_year": 1809, "death_year": 1849}]}
+    otro = {"id": 99, "title": "Poe Studies", "languages": ["en"], "authors": [{"name": "Smith, Jane", "birth_year": 1900, "death_year": 1990}]}
+    informe = verificar_gutenberg.informe(config, "romanticismo", buscar=lambda nombre: [poe, otro] if "Poe" in nombre else [])
+    bloque = informe.split("## Edgar Allan Poe")[1].split("##")[0]
+    assert "1 del autor, 1 descartados" in bloque
+    assert "| 2147 | The Raven | en | Poe, Edgar Allan (1809–1849) | El cuervo |" in bloque
+    assert "Poe Studies" not in bloque
