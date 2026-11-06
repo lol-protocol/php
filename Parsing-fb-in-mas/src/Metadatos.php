@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ParsingFbInMas;
 
 use DOMDocument;
+use DOMElement;
 use DOMXPath;
 
 /**
@@ -31,8 +32,7 @@ final class Metadatos
         $xp = new DOMXPath($doc);
 
         $meta = [];
-        foreach ($xp->query('//meta[@content and (@property or @name)]') ?: [] as $nodo) {
-            /** @var \DOMElement $nodo */
+        foreach (self::elementos($xp, '//meta[@content and (@property or @name)]') as $nodo) {
             $clave = strtolower($nodo->getAttribute('property') !== '' ? $nodo->getAttribute('property') : $nodo->getAttribute('name'));
             $valor = self::limpiar($nodo->getAttribute('content'));
             if ($clave !== '' && $valor !== '' && !isset($meta[$clave])) {
@@ -41,20 +41,19 @@ final class Metadatos
         }
 
         $canonica = null;
-        foreach ($xp->query('//link[@rel="canonical" and @href]') ?: [] as $nodo) {
-            /** @var \DOMElement $nodo */
+        foreach (self::elementos($xp, '//link[@rel="canonical" and @href]') as $nodo) {
             $canonica = trim($nodo->getAttribute('href'));
             break;
         }
 
         $titulo = null;
-        foreach ($xp->query('//title') ?: [] as $nodo) {
+        foreach (self::elementos($xp, '//title') as $nodo) {
             $titulo = self::limpiar($nodo->textContent);
             break;
         }
 
         $persona = null;
-        foreach ($xp->query('//script[@type="application/ld+json"]') ?: [] as $nodo) {
+        foreach (self::elementos($xp, '//script[@type="application/ld+json"]') as $nodo) {
             $json = json_decode($nodo->textContent, true);
             if (is_array($json) && ($p = self::buscarPersona($json)) !== null) {
                 $persona = self::filtrarPersona($p);
@@ -65,6 +64,24 @@ final class Metadatos
         $persona ??= self::microdatos($xp);
 
         return ['meta' => $meta, 'canonica' => $canonica, 'titulo' => $titulo, 'persona' => $persona];
+    }
+
+    /**
+     * Los elementos que devuelve una consulta XPath, en orden. `DOMXPath::query()` puede devolver
+     * `false` o nodos que no son elementos (texto, atributos): aquí se descartan.
+     *
+     * @return list<DOMElement>
+     */
+    private static function elementos(DOMXPath $xp, string $consulta, ?DOMElement $contexto = null): array
+    {
+        $nodos = $xp->query($consulta, $contexto);
+        $salida = [];
+        foreach ($nodos === false ? [] : $nodos as $nodo) {
+            if ($nodo instanceof DOMElement) {
+                $salida[] = $nodo;
+            }
+        }
+        return $salida;
     }
 
     public static function limpiar(string $texto): string
@@ -101,12 +118,11 @@ final class Metadatos
      */
     private static function microdatos(DOMXPath $xp): ?array
     {
-        foreach ($xp->query('//*[@itemscope and contains(@itemtype, "schema.org/Person")]') ?: [] as $raiz) {
+        foreach (self::elementos($xp, '//*[@itemscope and contains(@itemtype, "schema.org/Person")]') as $raiz) {
             $p = [];
-            foreach ($xp->query('.//*[@itemprop]', $raiz) ?: [] as $nodo) {
-                /** @var \DOMElement $nodo */
-                $duenos = $xp->query('ancestor::*[@itemscope][1]', $nodo);
-                $dueno = $duenos === false ? null : $duenos->item(0);
+            foreach (self::elementos($xp, './/*[@itemprop]', $raiz) as $nodo) {
+                // Solo cuentan las propiedades cuyo dueño más cercano es esta persona.
+                $dueno = self::elementos($xp, 'ancestor::*[@itemscope][1]', $nodo)[0] ?? null;
                 if ($dueno === null || !$dueno->isSameNode($raiz)) {
                     continue;
                 }
