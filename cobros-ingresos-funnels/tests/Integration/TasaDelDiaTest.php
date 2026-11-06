@@ -326,13 +326,17 @@ final class TasaDelDiaTest extends IntegracionTestCase
             return array_column($repo->topPorDimensiones(1000000)['ciudad'], 'total_facturado', 'etiqueta');
         };
 
+        // El top de ciudades muestra cada una con su pais: «Ciudad de la tasa del dia (Argentina)».
+        $pais = Database::connection()->query("SELECT nombre FROM paises WHERE codigo = 'AR'")->fetchColumn();
+        $etiquetaDeLaCiudad = "Ciudad de la tasa del dia ({$pais})";
+
         self::assertEqualsWithDelta(625.0, (float) $ltv()['2091-02'], 0.001, '(400 + 100) * 1.25');
-        self::assertEqualsWithDelta(1250.0, (float) $ciudad()['Ciudad de la tasa del dia'], 0.001);
+        self::assertEqualsWithDelta(1250.0, (float) $ciudad()[$etiquetaDeLaCiudad], 0.001);
 
         $this->fijarTasa('4.00000000');
 
         self::assertEqualsWithDelta(625.0, (float) $ltv()['2091-02'], 0.001, 'el LTV de la cohorte no cambia');
-        self::assertEqualsWithDelta(1250.0, (float) $ciudad()['Ciudad de la tasa del dia'], 0.001, 'tampoco lo facturado por el cliente');
+        self::assertEqualsWithDelta(1250.0, (float) $ciudad()[$etiquetaDeLaCiudad], 0.001, 'tampoco lo facturado por el cliente');
     }
 
     public function testElLtvDescuentaLasNotasDeCreditoConSuPropiaTasa(): void
