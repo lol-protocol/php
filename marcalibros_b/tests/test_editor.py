@@ -195,3 +195,22 @@ def test_subidas_concurrentes_respetan_la_cuota(tmp_path, monkeypatch):
     with ThreadPoolExecutor(8) as ex:
         ok = [r for r in ex.map(subir, range(8)) if r]
     assert len(ok) == 3 and a.uso("u1")[0] == 3
+
+
+def test_la_cuota_aguanta_sin_flock_ni_msvcrt(tmp_path, monkeypatch):
+    # sistema sin bloqueo de archivos (o import fallido): sigue habiendo exclusión entre hilos
+    from concurrent.futures import ThreadPoolExecutor
+    monkeypatch.setattr(editor, "fcntl", None)
+    monkeypatch.setattr(editor, "msvcrt", None)
+    monkeypatch.setattr(editor, "CUOTA_IMAGENES", 3)
+    a = editor.AlmacenSubidas(tmp_path)
+    datos = _bytes(_foto(), "JPEG")
+
+    def subir(_):
+        try:
+            return a.guardar("u1", datos)
+        except editor.ErrorEditor:
+            return None
+    with ThreadPoolExecutor(8) as ex:
+        ok = [r for r in ex.map(subir, range(8)) if r]
+    assert len(ok) == 3 and a.uso("u1")[0] == 3

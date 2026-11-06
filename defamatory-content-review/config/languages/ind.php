@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'ind', 'iso639_1' => 'id', 'name' => 'Indonesian',
-        'nativeName' => 'Bahasa Indonesia', 'family' => 'austronesian', 'coverage' => 'moderate',
+        'code' => 'ind',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

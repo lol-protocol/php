@@ -405,3 +405,108 @@ De la Goetia (siglo XVII), un grimorio que no forma parte de la Biblia. Cada esp
 | 70 | Seere | Príncipe | 26 | 06/03 – 10/03 | Traslados veloces, robo, objetos perdidos |
 | 71 | Dantalion | Duque | 36 | 11/03 – 15/03 | Pensamientos, ciencias, amor |
 | 72 | Andromalius | Conde | 36 | 16/03 – 20/03 | Objetos perdidos, tesoros, ladrones |
+
+## Calendario celta de los árboles
+
+Calendario de 13 meses de 28 días, uno por árbol (y el 23 de diciembre aparte). Lo inventó el poeta Robert Graves en 1948 a partir del alfabeto ogham; no es un calendario celta antiguo. Solo referencia cultural.
+
+| # | Árbol | Nombre científico | Ogham | Fechas | Rasgos |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Abedul | *Betula pendula* | Beth | 24/12 – 20/01 | Comienzos, pureza, renacimiento |
+| 2 | Serbal | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Protección, intuición, percepción |
+| 3 | Fresno | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Unidad, comunicación, creación |
+| 4 | Aliso | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Valentía, discernimiento, estabilidad |
+| 5 | Sauce | *Salix alba* | Saille | 15/04 – 12/05 | Intuición, sueños, curación |
+| 6 | Espino | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Fecundidad, paciencia, protección |
+| 7 | Roble | *Quercus robur* | Duir | 10/06 – 07/07 | Fuerza, resistencia, nobleza |
+| 8 | Acebo | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Equilibrio, valentía, justicia |
+| 9 | Avellano | *Corylus avellana* | Coll | 05/08 – 01/09 | Sabiduría, inspiración, estudio |
+| 10 | Vid | *Vitis vinifera* | Muin | 02/09 – 29/09 | Alegría, abundancia, inspiración |
+| 11 | Hiedra | *Hedera helix* | Gort | 30/09 – 27/10 | Fidelidad, perseverancia, protección |
+| 12 | Carrizo | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Verdad, orden, voluntad |
+| 13 | Saúco | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Transformación, culminación, renacimiento |
+
+El 23 de diciembre queda fuera de los 13 meses: es el «día del año», sin árbol.
+
+## Horóscopo de los árboles
+
+Horóscopo popular de 21 árboles, que se presenta como druídico o galo pero es una creación moderna. Las fechas y los árboles varían según la fuente. Solo referencia cultural.
+
+| Árbol | Nombre científico | Fechas | Rasgos |
+| --- | --- | --- | --- |
+| Abeto | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Misterio, lealtad, elegancia |
+| Olmo | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Nobleza, estabilidad, liderazgo |
+| Ciprés | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Fidelidad, adaptación, resistencia |
+| Álamo | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Sensibilidad, adaptación, incertidumbre |
+| Cedro | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Confianza, optimismo, audacia |
+| Pino | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Disciplina, orden, perseverancia |
+| Sauce llorón | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Sensibilidad, intuición, melancolía |
+| Tilo | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Serenidad, amistad, armonía |
+| Roble | *Quercus robur* | 21/03 – 21/03 | Fuerza, valentía, independencia |
+| Avellano | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Curiosidad, ingenio, originalidad |
+| Serbal | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Sensibilidad, encanto, armonía |
+| Arce | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Independencia, imaginación, originalidad |
+| Nogal | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Fuerza, pasión, ambición |
+| Castaño | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Justicia, honestidad, generosidad |
+| Fresno | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Ambición, aventura, energía |
+| Carpe | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Discreción, sentido práctico, elegancia |
+| Higuera | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Sensualidad, sociabilidad, abundancia |
+| Abedul | *Betula pendula* | 24/06 – 24/06 | Elegancia, discreción, inspiración |
+| Manzano | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Amor, encanto, generosidad |
+| Olivo | *Olea europaea* | 23/09 – 23/09 | Equilibrio, sabiduría, paz |
+| Haya | *Fagus sylvatica* | 22/12 – 22/12 | Talento, creación, perseverancia |
+
+## Los árboles de los 27 nakshatras
+
+En la astrología védica cada una de las 27 mansiones lunares (nakshatras) tiene su árbol. Depende de dónde está la Luna al nacer, no de la fecha, y las listas varían según la región. Solo referencia cultural.
+
+| # | Nakshatra | Árbol | Nombre científico | Rasgos |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Rapidez, iniciativa, curación |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Resistencia, pasión, transformación |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Agudeza, fuego, pureza |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Belleza, fecundidad, abundancia |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Curiosidad, búsqueda, amabilidad |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Emoción, transformación, inteligencia |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Renacimiento, optimismo, hogar |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Nutrición, protección, devoción |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuición, misterio, astucia |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Linaje, autoridad, nobleza |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Placer, creatividad, descanso |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Amistad, generosidad, apoyo |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Habilidad, ingenio, curación |
+| 14 | Chitra | Bel | *Aegle marmelos* | Belleza, creación, brillo |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Independencia, flexibilidad, comercio |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Determinación, ambición, perseverancia |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Devoción, amistad, cooperación |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Liderazgo, protección, valentía |
+| 19 | Mula | Sal \* | *Shorea robusta* | Raíces, investigación, transformación |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Victoria, entusiasmo, pureza |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Victoria, integridad, perseverancia |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Escucha, aprendizaje, comunicación |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Riqueza, música, ambición |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Curación, secretos, soledad |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Pasión, transformación, idealismo |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Profundidad, sabiduría, compasión |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Ternura, protección, compasión |
+
+\* Las fuentes no coinciden en el árbol de este nakshatra.
+
+## Numerología: el camino de vida
+
+Se suman todos los dígitos de la fecha de nacimiento, una y otra vez, hasta quedar en uno solo; 11, 22 y 33 («números maestros») no se reducen más. Se atribuye a Pitágoras, pero la numerología actual es del siglo XX y no tiene respaldo científico. Solo referencia cultural.
+
+| Número | Rasgos |
+| --- | --- |
+| 1 | Liderazgo, independencia, iniciativa |
+| 2 | Cooperación, sensibilidad, armonía |
+| 3 | Creatividad, alegría, comunicación |
+| 4 | Disciplina, estabilidad, trabajo |
+| 5 | Aventura, libertad, adaptación |
+| 6 | Hogar, generosidad, amor |
+| 7 | Sabiduría, soledad, investigación |
+| 8 | Ambición, autoridad, riqueza |
+| 9 | Compasión, generosidad, idealismo |
+| 11 | Intuición, inspiración, idealismo |
+| 22 | Construcción, determinación, liderazgo |
+| 33 | Compasión, ternura, devoción |

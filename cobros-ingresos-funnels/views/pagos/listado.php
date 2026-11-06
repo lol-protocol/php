@@ -35,7 +35,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
     <input type="hidden" name="page" value="pagos">
     <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <label for="cliente">Cliente</label>
-    <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= htmlspecialchars($cliente) ?>">
+    <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= e($cliente) ?>">
     <button type="submit">Aplicar</button>
     <a href="?page=pago-nuevo" style="margin-left:auto;">+ Nuevo pago</a>
 </form>
@@ -75,7 +75,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
         <h2>Por método de pago</h2>
         <?php foreach ($porMetodo as $fila): ?>
             <div class="hbar-row">
-                <span class="hbar-label"><?= htmlspecialchars(Etiquetas::metodoPago($fila['metodo'])) ?></span>
+                <span class="hbar-label"><?= e(Etiquetas::metodoPago($fila['metodo'])) ?></span>
                 <span class="hbar-track">
                     <?= barra_svg(
                         'hbar-fill',
@@ -96,7 +96,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
 
 <div class="panel">
     <h2>Detalle de pagos (<?= $totalPagos ?>)</h2>
-    <p class="subtitulo"><a href="<?= htmlspecialchars(url_con_parametros(['page' => 'pagos-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todas las filas con estos filtros, no solo esta página</p>
+    <p class="subtitulo"><a href="<?= e(url_con_parametros(['page' => 'pagos-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todas las filas con estos filtros, no solo esta página</p>
     <div class="table-wrap">
         <table>
             <thead>
@@ -105,9 +105,9 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
             <tbody>
             <?php foreach ($pagos as $p): ?>
                 <tr>
-                    <td><a href="?page=cliente&id=<?= (int) $p['cliente_id'] ?>"><?= htmlspecialchars($p['cliente']) ?></a></td>
-                    <td><?= htmlspecialchars($p['fecha_pago']) ?></td>
-                    <td><?= htmlspecialchars(Etiquetas::metodoPago($p['metodo'])) ?></td>
+                    <td><a href="?page=cliente&id=<?= (int) $p['cliente_id'] ?>"><?= e($p['cliente']) ?></a></td>
+                    <td><?= e($p['fecha_pago']) ?></td>
+                    <td><?= e(Etiquetas::metodoPago($p['metodo'])) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
                     <td class="num"><?= dinero_en_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
                     <td class="acciones">

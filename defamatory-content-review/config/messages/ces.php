@@ -8,7 +8,6 @@ return [
     'explanation.match' => '„%1$s“ odpovídá „%2$s“ (%3$s)',
     'explanation.related' => '; příbuzný jazyk, jistota %.2F',
     'explanation.collision' => '; je to také doložené skutečné jméno nebo příjmení, proto jde k lidské kontrole',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Zamítnout: vážně urážlivý obsah (typy rizika: %s).',
     'recommendation.review_collision' => 'Lidská kontrola: odpovídá urážlivým výrazům (%s), ale také doloženým příjmením.',
     'recommendation.review_phonetic' => 'Lidská kontrola: jméno a příjmení dohromady tvoří urážlivý výraz (%s), který žádné z nich samo nemá.',

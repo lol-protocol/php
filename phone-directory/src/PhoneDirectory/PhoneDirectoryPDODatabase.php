@@ -154,11 +154,11 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
     {
         $this->ensureConnection();
 
-        $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('full_name_folded', ':name') . ' ORDER BY full_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => $this->dialect->containsValue($this->fold($name))]);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(
+            $this->dialect->containsCondition('full_name_folded', ':name'),
+            [':name' => $this->dialect->containsValue($this->fold($name))],
+            'full_name'
+        );
     }
 
     /** @return list<PhoneDirectoryEntry> */
@@ -166,11 +166,11 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
     {
         $this->ensureConnection();
 
-        $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('street_folded', ':street') . ' ORDER BY street, full_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => $this->dialect->containsValue($this->fold($street))]);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(
+            $this->dialect->containsCondition('street_folded', ':street'),
+            [':street' => $this->dialect->containsValue($this->fold($street))],
+            'street, full_name'
+        );
     }
 
     public function findByPhone(string $phone): ?PhoneDirectoryEntry
@@ -182,11 +182,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
 
         // A number is reused from one edition to the next: the first row may be a hidden 1960 entry
         // and the next an old one that may be shown.
-        $this->ensureConnection();
-        $stmt = $this->pdo->prepare('SELECT * FROM phone_directory WHERE phone_number = :phone ORDER BY id');
-        $stmt->execute([':phone' => $phone]);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC))[0] ?? null;
+        return $this->queryShown('phone_number = :phone', [':phone' => $phone], 'id')[0] ?? null;
     }
 
     /** @return list<PhoneDirectoryEntry> */
@@ -211,10 +207,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
             $params[':phonetic'] = $phonetic;
         }
 
-        $stmt = $this->pdo->prepare("SELECT * FROM phone_directory WHERE {$where} ORDER BY full_name");
-        $stmt->execute($params);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown($where, $params, 'full_name');
     }
 
     /** @return list<PhoneDirectoryEntry> */
@@ -222,16 +215,13 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
     {
         $this->ensureConnection();
 
-        $stmt = $this->pdo->prepare('SELECT * FROM phone_directory WHERE source_directory_id = :source ORDER BY source_line, id');
-        $stmt->execute([':source' => $sourceDirectoryId]);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown('source_directory_id = :source', [':source' => $sourceDirectoryId], 'source_line, id');
     }
 
     /** @return list<PhoneDirectoryEntry> */
     public function getAll(): array
     {
-        return $this->privacy->filter($this->getAllOrdered('full_name'));
+        return $this->queryShown('1 = 1', [], 'full_name');
     }
 
     /**
@@ -361,9 +351,13 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         }
     }
 
+    /**
+     * How many entries this reader can see: everything stored for the owner, only what may be shown for a
+     * visitor (counting the hidden ones too would tell a visitor how many recent entries there are).
+     */
     public function count(): int
     {
-        return $this->countAll();
+        return $this->privacy->hidesLiving() ? count($this->getAll()) : $this->countAll();
     }
 
     /**
@@ -384,16 +378,41 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
             return $this->getAll();
         }
 
-        $sql = 'SELECT * FROM phone_directory WHERE ' . implode(' AND ', $where) . ' ORDER BY full_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(implode(' AND ', $where), $params, 'full_name');
     }
 
     public function clear(): bool
     {
         return $this->clearTable();
+    }
+
+    /**
+     * The entries matching $where that this reader may see. For a visitor, the rows that cannot be shown
+     * whatever their content (a catalog directory that is too recent, or no directory at all, and no death
+     * recorded) are left out in SQL; Privacy::filter() then decides the rest, such as an id outside the catalog.
+     *
+     * @param SqlParams $params
+     * @return list<PhoneDirectoryEntry>
+     */
+    private function queryShown(string $where, array $params, string $orderBy): array
+    {
+        $this->ensureConnection();
+
+        $sql = "SELECT * FROM phone_directory WHERE ({$where})";
+        if ($this->privacy->hidesLiving()) {
+            $hidden = [];
+            foreach ($this->privacy->hiddenCatalogDirectories() as $i => $id) {
+                $hidden[] = ":hidden{$i}";
+                $params[":hidden{$i}"] = $id;
+            }
+            $notHidden = $hidden === [] ? '' : ' AND source_directory_id NOT IN (' . implode(', ', $hidden) . ')';
+            $sql .= " AND (deceased_year IS NOT NULL OR (source_directory_id IS NOT NULL{$notHidden}))";
+        }
+
+        $stmt = $this->pdo->prepare("{$sql} ORDER BY {$orderBy}");
+        $stmt->execute($params);
+
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     /**

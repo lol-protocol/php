@@ -17,8 +17,8 @@
 
 return [
     'meta' => [
-        'code' => 'yue', 'iso639_1' => 'zh', 'name' => 'Cantonese',
-        'nativeName' => '廣東話', 'family' => 'sinitic', 'coverage' => 'moderate',
+        'code' => 'yue',
+        'coverage' => 'moderate',
         'requiresTokenizer' => true,
     ],
     'words' => [

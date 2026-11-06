@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'bul', 'iso639_1' => 'bg', 'name' => 'Bulgarian',
-        'nativeName' => 'Български', 'family' => 'slavic', 'coverage' => 'moderate',
+        'code' => 'bul',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

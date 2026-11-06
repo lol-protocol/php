@@ -57,6 +57,16 @@ assert_igual([false, 403], [$r['resultado'], $r['estado']], 'csrf: sin token en 
 unset($_SERVER['HTTP_X_CSRF_TOKEN']);
 http_response_code(200);
 
+// api_texto_de_query / api_entero_de_query: un parámetro que falta o viene como lista vale el valor por defecto.
+assert_igual('abc', api_texto_de_query(['k' => 'abc'], 'k', 'x'), 'query texto: un texto se devuelve tal cual');
+assert_igual('x', api_texto_de_query([], 'k', 'x'), 'query texto: si falta vale el defecto');
+assert_igual('x', api_texto_de_query(['k' => ['a']], 'k', 'x'), 'query texto: una lista (?k[]=a) vale el defecto, no un TypeError');
+assert_igual('', api_texto_de_query(['k' => ['a']], 'k'), 'query texto: el defecto por omisión es el texto vacío');
+assert_igual(25, api_entero_de_query(['k' => '25'], 'k', 7), 'query entero: un número escrito se convierte');
+assert_igual(0, api_entero_de_query(['k' => 'abc'], 'k', 7), 'query entero: un texto no numérico da 0, como (int) \'abc\'; acotarlo es cosa del endpoint');
+assert_igual(7, api_entero_de_query([], 'k', 7), 'query entero: si falta vale el defecto');
+assert_igual(7, api_entero_de_query(['k' => ['1']], 'k', 7), 'query entero: una lista vale el defecto, no 1');
+
 // Que ningún endpoint vuelva a armar lo suyo: cada cosa se hace en un solo lugar.
 $fuentes = fuentes_php(realpath(__DIR__ . '/../../servidor-php'));
 $endpoints = array_filter($fuentes, fn ($ruta) => str_starts_with($ruta, 'codigo/api/') || str_starts_with($ruta, 'publico/'), ARRAY_FILTER_USE_KEY);
@@ -69,3 +79,4 @@ assert_igual(
     archivos_con_patron($endpoints, "/'csrf_invalido'|'metodo_no_permitido'/", ['api_exigir_csrf', 'api_metodo_no_permitido']),
     'api: el 403 de CSRF y el 405 de método salen de sus helpers, ningún endpoint repite el par código/mensaje'
 );
+assert_igual([], archivos_con_patron($endpoints, '/\$_GET\[/'), 'api: la query se lee con api_texto_de_query() / api_entero_de_query(), ningún $_GET[...] suelto');

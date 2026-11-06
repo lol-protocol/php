@@ -13,18 +13,29 @@ namespace App\Support;
  * Nothing is cached here: every request still asks the database, so a page that is hidden or
  * withdrawn leaves the sitemap at once. A small JSON file per sitemap file, in SITEMAP_ESTADO_DIR
  * (by default a folder in the system temp dir). If that folder is lost the dates start over, and
- * if it cannot be written there are none: no date is better than a false one.
+ * if it cannot be written there are none: no date is better than a false one. That silence is for the
+ * visitor only: the reason it could not be written (a full disk, a folder PHP may not write) goes to the
+ * log, once per process, or the dates would be missing for good with nobody knowing why.
  */
 final class SitemapEstado
 {
-    /** @param \Closure(): int|null $reloj the current time, for the tests */
-    public function __construct(private string $dir, private ?\Closure $reloj = null)
+    private bool $avisado = false;
+
+    /**
+     * @param \Closure(): int|null $reloj the current time, for the tests
+     * @param \Closure(string, array<string, mixed>): void|null $avisar where to say a write failed (the log); nowhere by default
+     */
+    public function __construct(private string $dir, private ?\Closure $reloj = null, private ?\Closure $avisar = null)
     {
     }
 
     public static function desdeConfig(): self
     {
-        return new self(rtrim((string)Config::get('SITEMAP_ESTADO_DIR', ''), '/') ?: sys_get_temp_dir() . '/url-routing-sitemaps');
+        return new self(
+            rtrim((string)Config::get('SITEMAP_ESTADO_DIR', ''), '/') ?: sys_get_temp_dir() . '/url-routing-sitemaps',
+            null,
+            static fn(string $mensaje, array $contexto) => log_error($mensaje, $contexto)
+        );
     }
 
     /**
@@ -63,20 +74,31 @@ final class SitemapEstado
     private function escribir(string $archivo, array $estado): bool
     {
         if (!is_dir($this->dir) && !@mkdir($this->dir, 0700, true) && !is_dir($this->dir)) {
-            return false;
+            return $this->fallo('no se pudo crear la carpeta');
         }
         // Written aside and renamed, so a request that reads at the same time never sees half a file.
         $temporal = @tempnam($this->dir, 'tmp');
         if ($temporal === false || @file_put_contents($temporal, json_encode($estado)) === false) {
-            return false;
+            return $this->fallo('no se pudo escribir el archivo de estado');
         }
 
         if (!@rename($temporal, $this->ruta($archivo))) {
             @unlink($temporal);
-            return false;
+            return $this->fallo('no se pudo reemplazar el archivo de estado');
         }
 
         return true;
+    }
+
+    /** Says once per process why the state cannot be kept (PHP's own message, no sitemap URL) and returns false. */
+    private function fallo(string $que): bool
+    {
+        if (!$this->avisado && $this->avisar !== null) {
+            $this->avisado = true;
+            ($this->avisar)("sitemap sin fechas: {$que}", ['dir' => $this->dir, 'php' => error_get_last()['message'] ?? '']);
+        }
+
+        return false;
     }
 
     /** One file per sitemap URL: the site's address is part of it, so two sites (or a test copy) never share one. */

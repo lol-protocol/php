@@ -8,22 +8,39 @@ use DefamatoryContentReview\Language\LanguageRegistry;
  * Frases legibles del informe (explicaciones, recomendaciones, categorías, errores del endpoint) en el idioma
  * de salida. Cada idioma es un `<carpeta>/<iso639-3>.php` con claves planas (por omisión `config/messages/`);
  * `spa` es el origen y el respaldo: una clave o un idioma que falta devuelve el español, nunca una clave a medias.
+ * Las categorías de riesgo en español (`category.<id>.name|description`) no se repiten en `spa.php`: salen de
+ * `risk-categories.php`, la carpeta hermana de la de mensajes.
  */
 final class Messages
 {
     public const DEFAULT_LOCALE = 'spa';
+    /** Claves que un idioma puede omitir: valen las de `spa` (el punto final solo cambia en japonés, hindi…). */
+    public const OPTIONAL_KEYS = ['explanation.end'];
 
     /** @var array<string,array<string,string>> */
     private static array $tables = [];
     /** @var array<string,array<int,string>> */
     private static array $locales = [];
 
-    /** @param array<int,string|int|float> $args argumentos de sprintf */
+    /**
+     * El texto de la clave con sus argumentos de sprintf. Si la plantilla del idioma no casa con los argumentos
+     * (un archivo propio con un marcador de más o de menos), se usa la española; y si tampoco, la clave:
+     * un mensaje roto no debe tumbar la respuesta.
+     *
+     * @param array<int,string|int|float> $args
+     */
     public static function get(string $key, string $locale, array $args = [], ?string $dir = null): string
     {
-        $text = self::find($key, $locale, $dir) ?? $key;
+        $templates = [self::table($locale, $dir)[$key] ?? null, self::table(self::DEFAULT_LOCALE, $dir)[$key] ?? null];
+        foreach (array_unique(array_filter($templates, 'is_string')) as $text) {
+            try {
+                return $args === [] ? $text : vsprintf($text, $args);
+            } catch (\ValueError | \ArgumentCountError) {
+                continue;
+            }
+        }
 
-        return $args === [] ? $text : vsprintf($text, $args);
+        return $key;
     }
 
     /** El texto de la clave en ese idioma, o en español; null si ninguno la tiene. */
@@ -77,23 +94,34 @@ final class Messages
         $dir = self::dir($dir);
         $file = $dir . '/' . $locale . '.php';
 
-        return self::$tables[$file] ??= preg_match('/^[a-z]{3}$/', $locale) === 1 && is_file($file) ? require $file : [];
+        if (!isset(self::$tables[$file])) {
+            $table = preg_match('/^[a-z]{3}$/', $locale) === 1 && is_file($file) ? require $file : [];
+            self::$tables[$file] = $locale === self::DEFAULT_LOCALE ? $table + self::spanishCategories(dirname($dir) . '/risk-categories.php') : $table;
+        }
+
+        return self::$tables[$file];
+    }
+
+    /** @return array<string,string> */
+    private static function spanishCategories(string $file): array
+    {
+        $texts = [];
+        foreach (is_file($file) ? require $file : [] as $id => $category) {
+            $texts["category.$id.name"] = $category['name'];
+            $texts["category.$id.description"] = $category['description'];
+        }
+
+        return $texts;
     }
 
     /**
-     * Las claves que debe tener cada idioma: las de `spa` y el nombre y la descripción de cada categoría de
-     * `risk-categories.php` (el español de las categorías vive ahí, no en `spa.php`).
+     * Las claves que debe tener cada idioma: las de `spa` (las categorías incluidas) salvo `OPTIONAL_KEYS`.
      *
      * @return array<int,string>
      */
-    public static function requiredKeys(string $riskCategoriesFile, ?string $dir = null): array
+    public static function requiredKeys(?string $dir = null): array
     {
-        $keys = array_keys(self::table(self::DEFAULT_LOCALE, $dir));
-        foreach (array_keys(require $riskCategoriesFile) as $id) {
-            array_push($keys, "category.$id.name", "category.$id.description");
-        }
-
-        return $keys;
+        return array_values(array_diff(array_keys(self::table(self::DEFAULT_LOCALE, $dir)), self::OPTIONAL_KEYS));
     }
 
     private static function dir(?string $dir): string

@@ -41,6 +41,9 @@ MASAKHAPOS = f"{RAW}/masakhane-io/masakhane-pos/376f4161f0425584d4bd7664122b56fa
 MASAKHAPOS_LENGUAS = ["bam", "bbj", "ewe", "fon", "hau", "ibo", "kin", "lug", "luo", "mos",
                       "nya", "pcm", "sna", "swa", "tsn", "twi", "wol", "xho", "yor", "zul"]
 COMMON_CRAWL = f"{RAW}/commoncrawl/cc-crawl-statistics/ea9a79ea09b492cd2a0afcafbe93daf8fee45564/plots/languages.csv"
+# El grapher de Our World in Data no tiene versiones fijas: fuentes.sha256 guarda la que se usó.
+POBLACION_OWID = ("https://ourworldindata.org/grapher/population.csv"
+                  "?v=1&csvType=full&useColumnShortNames=true")
 NATURAL_EARTH = (f"{RAW}/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19"
                  "/geojson/ne_50m_admin_0_countries.geojson")
 
@@ -56,6 +59,7 @@ def gapminder(base, indicador, por):
 # archivo local -> URL
 FIJAS = {
     "owid-co2-data.csv": f"{CO2}/owid-co2-data.csv",
+    "poblacion-owid.csv": POBLACION_OWID,
     "maddison-2020.csv": owid("Maddison Project Database 2020 (Bolt and van Zanden (2020))"),
     "hyde-regiones.csv": owid("Global Population by Region with projections - HYDE (2016) & UN (2017)"),
     "clio-infra.csv": owid("Population (Clio-infra (2016)), with Island of Ireland (Rep. + Northern)"),
@@ -111,7 +115,7 @@ def rehacer(destino):
          "--natalidad-gapminder", d("natalidad-gapminder.csv"), "--fecundidad-gapminder", d("fecundidad-gapminder.csv"),
          "--idh", d("idh-gapminder.csv"), "--alfabetizacion", d("alfabetizacion-gapminder.csv"),
          "--internet", d("internet-gapminder.csv"), "--emigrantes", d("emigrantes-gapminder.csv"),
-         "--poblacion-gapminder", d("poblacion-gapminder.csv"), "--libertad", d("libertad-gapminder.csv"),
+         "--poblacion-gapminder", d("poblacion-gapminder.csv"), "--poblacion-owid", d("poblacion-owid.csv"), "--libertad", d("libertad-gapminder.csv"),
          "--democracia", d("democracia-gapminder.csv"), "--corrupcion", d("corrupcion-gapminder.csv"),
          "--pib-ppa", d("pib-ppa-gapminder.csv"), "--pib-pc-bm", d("pib-pc.csv"), "--poblacion-bm", d("population.csv")],
         ["historia_poblacion.py"],

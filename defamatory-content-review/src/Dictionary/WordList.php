@@ -68,8 +68,10 @@ class WordList
     public function findInText(string $text): array { return WordListScanner::scan($text, fn(string $phrase) => $this->search($phrase)); }
     /** @return array<string,WordEntry> */
     public function getByRiskType(string $riskType): array { return $this->index->byRiskType($riskType); }
+    /** @deprecated desde 2026-11: nada de la librería ni del monorepo lo llama; se conserva como API pública (usa getByRiskType()). */
     /** @return array<string,WordEntry> */
     public function getByCategory(string $category): array { return $this->index->byCategory($category); }
+    /** @deprecated desde 2026-11: nada de la librería ni del monorepo lo llama; se conserva como API pública. */
     /** @return array<string,WordEntry> */
     public function getBySeverity(string $severity): array { return $this->index->bySeverity($severity); }
     /** @return array<string,WordEntry> */
@@ -80,9 +82,11 @@ class WordList
     /** @return array<string,mixed> */
     public function getStatistics(): array { return $this->index->statistics($this->language, $this->getCoverage()); }
     public function getLanguage(): string { return $this->language; }
+    /** @deprecated desde 2026-11: nada de la librería ni del monorepo lo llama; se conserva como API pública (usa getCoverage()). */
     /** @return array<string,mixed> */
     public function getMeta(): array { return $this->meta; }
     public function getCoverage(): string { return $this->meta['coverage'] ?? 'basic'; }
+    /** @deprecated desde 2026-11: nada de la librería ni del monorepo lo llama; el dato sigue en `meta.requiresTokenizer` de cada diccionario. */
     /** Idiomas sin separación por espacios que necesitan segmentador externo. */
     public function requiresTokenizer(): bool { return (bool) ($this->meta['requiresTokenizer'] ?? false); }
     /** Si este idioma tiene reglas de plegado fonético (ver PhoneticFolderRegistry). */

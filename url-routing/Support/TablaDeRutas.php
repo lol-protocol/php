@@ -27,7 +27,7 @@ final class TablaDeRutas
             . "| 3 letras | `^[a-z]{3}$` | idioma (ISO 639-2): va en el subdominio, nunca en la ruta |\n"
             . "| 4+ letras | `^[a-z]{4,}$` | texto libre (p. ej. lo que se busca, detrás de `/b/{tipo}/`) |\n"
             . "| solo dígitos | `^\\d+$` | una entidad: la cantidad de dígitos dice el tipo; 1 dígito detrás de algo es una acción |\n"
-            . "| con punto | `\\.` | un archivo para buscadores (`robots.txt`, sitemaps) |\n";
+            . "| con punto | `\\.` | un archivo: para buscadores (`robots.txt`, sitemaps) y el script de los listados (`/b.js`) |\n";
 
         foreach (self::SITIOS as $sitio => $nombre) {
             $md .= "\n" . self::sitio($nombre, require "{$dirRutas}/{$sitio}.php");
@@ -41,11 +41,13 @@ final class TablaDeRutas
      */
     private static function sitio(string $nombre, array $config): string
     {
-        $md = "## {$nombre}\n\n### Entidades (solo dígitos)\n\n| Dígitos | Tipo | Acciones |\n|---|---|---|\n";
+        $md = "## {$nombre}\n\n### Entidades (solo dígitos)\n\n| Dígitos | Tipo | Acciones | Filtros |\n|---|---|---|---|\n";
         $porLargo = $config['by_length'] ?? [];
         krsort($porLargo);
         foreach ($porLargo as $largo => $entrada) {
-            $md .= "| {$largo} | {$entrada['type']} | " . self::acciones($entrada['actions'] ?? []) . " |\n";
+            $filtros = $entrada['filtros'] ?? [];
+            $md .= "| {$largo} | {$entrada['type']} | " . self::acciones($entrada['actions'] ?? []) . ' | '
+                . ($filtros === [] ? '—' : implode(' · ', $filtros) . ' (`/{id}/{filtro}/`)') . " |\n";
         }
 
         if (isset($config['place'])) {

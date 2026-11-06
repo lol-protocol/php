@@ -79,6 +79,8 @@ The full workflow, with the rules for sources and history, is in [CONTRIBUTING.m
 ```bash
 $EDITOR countries/privacy_laws_master.csv
 npm run changes       # records what changed since the last commit in changes.csv
+npm run replace-url -- <old> <new>   # swaps a dead reference URL in the master CSV and field_sources.csv (--dry to count)
+npm run apply-research -- findings.csv --batch=batch.txt   # writes researched facts (code,field,value,conf,source) as new rows / patched cells, each with its source
 npm run validate      # strict checks: columns, dates, URLs, regions, duplicates…
 npm run build         # regenerates {tld}/ folders and index.json (idempotent)
 npm test              # also fails if generated files are out of date
@@ -117,7 +119,7 @@ php import_database.php --all --yes         # schema + import + validation (--ye
 php tests/database_check.php                # compares every column of the database with the CSV
 ```
 
-Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `privacy_laws_db` database, so they refuse to run without `--yes`** (before connecting). `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV, and a date that is not `YYYY-MM-DD` (or empty / `N/A`, which become `NULL`) stops the import with its line and column instead of turning into `NULL`. The importer code is shared with the other module in `leyes-comunes/importador-core.php`.
+Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `privacy_laws_db` database, so they refuse to run without `--yes`** (before connecting). `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV, and a date that is not `YYYY-MM-DD` (or empty / `N/A`, which become `NULL`) stops the import with its line and column instead of turning into `NULL`. The importer code is shared with the other module in `leyes-comunes/importador-core.php`. Besides the laws it loads the three side files, `field_sources.csv` into `field_sources`, `changes.csv` into `law_changes` and `value_translations.csv` into `value_translations`, so the provenance, the history and the translations are in the database too; `tests/database_check.php` compares them with the CSVs row by row.
 
 ## Data provenance
 

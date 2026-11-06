@@ -33,13 +33,12 @@ from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXE
                 validar_frases, validar_svg, validar_taxonomia)
 from render_raster import a_imagen
 from render_svg import a_svg
-from scene import ALTO, ANCHO
+from scene import ALTO, ANCHO, ESCALA_REVISION
 
 VERSION_GENERADOR = "0.8.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
-ESCALA_REVISION = 0.4  # tamaño de las vistas guardadas en caché para las hojas de contacto
 RESUMEN = {}  # recuento de la última ejecución (reutilizadas / rehechas), para los tests
 MAX_DIF_CHROMIUM = 3.0  # diferencia media tolerada entre Chromium y el renderer raster
 DENSIDAD_ALTA = 2  # los JPG se entregan también a 400×2800
@@ -360,10 +359,17 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
 # detección de duplicados las compara. La clave de caché reúne las tres cosas: si coincide
 # y los archivos siguen ahí, la pieza se reutiliza sin dibujarla ni pasar por Chromium.
 
+# Módulos que dibujan las piezas. Los demás (editor, modelo, marca, revisión, Gutenberg) no cambian el
+# catálogo: tocarlos no debe invalidar la caché de las 1000 piezas. tests/test_incremental.py comprueba
+# que esta lista cubre todo lo que build.py importa.
+MODULOS_DE_RENDER = ("build", "color", "movimientos", "plantillas", "qa", "render_raster", "render_svg", "scene", "texto")
+
+
 def hash_generador():
-    """Hash del código del generador, su fuente y los catálogos que lo parametrizan."""
+    """Hash del código que dibuja las piezas, su fuente y los catálogos que lo parametrizan."""
     h = hashlib.sha256()
-    for ruta in (sorted((RAIZ / "generator").glob("*.py")) + sorted((RAIZ / "generator" / "fuentes").glob("*.ttf"))
+    for ruta in ([RAIZ / "generator" / f"{m}.py" for m in MODULOS_DE_RENDER]
+                 + sorted((RAIZ / "generator" / "fuentes").glob("*.ttf"))
                  + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml", CATALOGO / "frases.yaml"]):
         h.update(ruta.name.encode() + b"\0" + ruta.read_bytes() + b"\0")
     return h.hexdigest()

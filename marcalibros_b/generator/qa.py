@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
+from color import luminancia_rgb, razon, rgb
 from scene import ALTO, ANCHO
 
 UMBRAL_DUPLICADO = 6.0  # diferencia media (0–255) bajo la cual dos piezas se consideran casi iguales
@@ -114,23 +115,13 @@ def pixeles_de_motivo(con, sin):
     return int((d.max(axis=2) > UMBRAL_CAMBIO).sum())
 
 
-def _luminancias(img):
-    a = np.asarray(img.convert("RGB"), dtype=float) / 255
-    a = np.where(a <= 0.03928, a / 12.92, ((a + 0.055) / 1.055) ** 2.4)
-    return 0.2126 * a[..., 0] + 0.7152 * a[..., 1] + 0.0722 * a[..., 2]
-
-
 def contraste_texto(img, tono):
     """Contraste que alcanza el 90 % de los píxeles (percentil 10) de `img` con el tono de
     texto dado. Se usa el percentil, no la media: un solo tono medio ya vuelve ilegible
     el texto en esa zona."""
-    lum = _luminancias(img)
-    h = TONOS_TEXTO[tono].lstrip("#")
-    c = [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
-    c = [v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in c]
-    lt = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
-    hi, lo = np.maximum(lum, lt), np.minimum(lum, lt)
-    return float(np.percentile((hi + 0.05) / (lo + 0.05), 10))
+    lum = luminancia_rgb(np.asarray(img.convert("RGB")))
+    lt = luminancia_rgb(np.array(rgb(TONOS_TEXTO[tono])))
+    return float(np.percentile(razon(lum, lt), 10))
 
 
 def mejor_texto(img):

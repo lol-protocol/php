@@ -60,7 +60,8 @@ final class ModerationEndpoint
         if (!is_string($language) || !$this->registry->isSupported($language)) {
             return $fail(400, 'idioma_no_soportado');
         }
-        $checked = array_values(array_unique([$language = $this->registry->resolve($language), ...$this->alwaysLanguages]));
+        $language = $this->registry->resolve($language);
+        $checked = array_values(array_unique([$language, ...$this->alwaysLanguages]));
         $result = LongText::review($input['text'], fn(string $piece): ChatLineResult => CombinedReview::of(
             $piece,
             array_map(fn(string $code): ChatLineResult => $this->reviewer($code)->review($piece), $checked)

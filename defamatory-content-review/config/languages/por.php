@@ -8,10 +8,6 @@
 return [
     'meta' => [
         'code' => 'por',
-        'iso639_1' => 'pt',
-        'name' => 'Portuguese',
-        'nativeName' => 'Português',
-        'family' => 'romance',
         'coverage' => 'comprehensive',
     ],
 

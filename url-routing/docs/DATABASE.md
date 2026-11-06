@@ -123,6 +123,14 @@ php bin/migrate.php pos --seed         # aplica y carga datos de demostración (
   política de privacidad del POS tiene que decir que estas direcciones se
   guardan mientras exista la orden y por qué.
 
+## Zona horaria
+
+Las columnas de fecha son `TIMESTAMP` sin zona: PHP escribe el texto que le da `date()` y lo lee con `strtotime()`,
+así que quien escribe y quien lee tienen que usar la misma zona. `Config::load()` la fija en todos los puntos de
+entrada (el sitio y los `bin/`) con `APP_TIMEZONE`, `UTC` por omisión, y no deja que decida el `php.ini` de cada
+proceso: con uno distinto para PHP-FPM y para cron, un pedido de retiro parecería llevar horas de más o de menos y
+`--ocultar` ocultaría antes o después del plazo. Cambiarla en un sitio que ya tiene filas mueve esas fechas.
+
 ## Tests
 
 La suite corre siempre contra SQLite en memoria y, si `TEST_PG_DSN` está
@@ -148,8 +156,21 @@ TEST_PG_USER=routing_test TEST_PG_PASSWORD=routing_test \
 - La búsqueda ignora mayúsculas y acentos (`Repository::sinAcentos()`): compara
   `TRANSLATE(LOWER(columna), 'áéí…', 'aei…') LIKE ?` contra el texto normalizado
   igual, así que «garcia» encuentra «García» y «ÁLVAREZ» encuentra «Álvarez».
+  El mapa (`Repository::ACENTOS`) cubre las letras de los apellidos latinos, no
+  solo las del español: «aberg» encuentra «Åberg», «lukasz» «Łukasz», «dvorak»
+  «Dvořák». Y borra las marcas combinantes (U+0300–U+0328): da igual si «í»
+  está guardada o escrita como un solo carácter o como la «i» más la marca del
+  acento (así llega el texto pegado desde macOS), las dos formas se encuentran.
+  Es una letra a una letra: `ß`, `æ` y `œ` (que serían «ss», «ae», «oe») quedan fuera.
   `TRANSLATE` es de PostgreSQL; en SQLite, `Database` registra una función
   equivalente al conectar, así que el SQL es el mismo en los dos motores.
+  `TRANSLATE` es lo caro (PostgreSQL recorre toda la lista por cada carácter de
+  cada fila: 4 µs por fila con 48 entradas, 10 µs con las 137 de hoy), y ninguna
+  entrada del mapa es ASCII, así que un texto que sea todo ASCII (el que tiene
+  tantos bytes como caracteres) solo se pasa a minúsculas, sin `TRANSLATE`:
+  0,4 µs por fila. Agregar una letra al mapa solo le cuesta a las filas con acentos.
+  Para eso la consulta usa `octet_length()`: SQLite la trae desde la 3.43; en una
+  anterior, `Database` registra la suya.
   Para búsqueda seria en genealogía conviene `pg_trgm` o búsqueda de texto
   completo en PostgreSQL, en una migración específica de ese motor.
 - `LIKE '%texto%'` no usa índices; con millones de personas hará falta un

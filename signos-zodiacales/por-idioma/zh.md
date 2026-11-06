@@ -405,3 +405,108 @@
 | 70 | Seere | 亲王 | 26 | 06/03 – 10/03 | 急速移动、盗窃、失物 |
 | 71 | Dantalion | 公爵 | 36 | 11/03 – 15/03 | 思想、各门科学、爱 |
 | 72 | Andromalius | 伯爵 | 36 | 16/03 – 20/03 | 失物、宝藏、盗贼 |
+
+## 凯尔特树历
+
+由13个月组成的历法，每月28天，各对应一种树（12月23日单独列出）。诗人罗伯特·格雷夫斯于1948年依据欧甘字母设计，并非古代凯尔特历法。仅作文化参考。
+
+| # | 树 | 学名 | 欧甘文 | 日期 | 特征 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 桦树 | *Betula pendula* | Beth | 24/12 – 20/01 | 开端、纯净、重生 |
+| 2 | 花楸 | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | 保护、直觉、感知 |
+| 3 | 白蜡树 | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | 团结、沟通、创造 |
+| 4 | 桤木 | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | 勇气、明辨、稳定 |
+| 5 | 柳树 | *Salix alba* | Saille | 15/04 – 12/05 | 直觉、梦境、疗愈 |
+| 6 | 山楂树 | *Crataegus monogyna* | Uath | 13/05 – 09/06 | 生育力、耐心、保护 |
+| 7 | 橡树 | *Quercus robur* | Duir | 10/06 – 07/07 | 力量、耐力、高贵 |
+| 8 | 冬青 | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | 平衡、勇气、正义 |
+| 9 | 榛树 | *Corylus avellana* | Coll | 05/08 – 01/09 | 智慧、灵感、学业 |
+| 10 | 葡萄藤 | *Vitis vinifera* | Muin | 02/09 – 29/09 | 喜悦、丰盛、灵感 |
+| 11 | 常春藤 | *Hedera helix* | Gort | 30/09 – 27/10 | 忠贞、毅力、保护 |
+| 12 | 芦苇 | *Phragmites australis* | Ngetal | 28/10 – 24/11 | 真理、秩序、意志 |
+| 13 | 接骨木 | *Sambucus nigra* | Ruis | 25/11 – 22/12 | 变化、圆满、重生 |
+
+12月23日不属于这13个月：它是"年之日"，没有对应的树。
+
+## 树木星座
+
+一种流行的21棵树星座，常被说成德鲁伊或高卢传统，实为现代创造。日期和树种因资料来源而异。仅作文化参考。
+
+| 树 | 学名 | 日期 | 特征 |
+| --- | --- | --- | --- |
+| 冷杉 | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | 神秘、忠诚、优雅 |
+| 榆树 | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | 高贵、稳定、领导力 |
+| 柏树 | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | 忠贞、适应力、耐力 |
+| 杨树 | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | 敏感、适应力、不确定 |
+| 雪松 | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | 自信、乐观、大胆 |
+| 松树 | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | 纪律、秩序、毅力 |
+| 垂柳 | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | 敏感、直觉、忧郁 |
+| 椴树 | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | 宁静、友谊、和谐 |
+| 橡树 | *Quercus robur* | 21/03 – 21/03 | 力量、勇气、独立 |
+| 榛树 | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | 好奇心、机智、独创 |
+| 花楸 | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | 敏感、魅力、和谐 |
+| 枫树 | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | 独立、想象力、独创 |
+| 核桃树 | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | 力量、激情、雄心 |
+| 栗树 | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | 正义、诚实、慷慨 |
+| 白蜡树 | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | 雄心、冒险、能量 |
+| 鹅耳枥 | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | 低调、务实、优雅 |
+| 无花果树 | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | 感官享受、善交际、丰盛 |
+| 桦树 | *Betula pendula* | 24/06 – 24/06 | 优雅、低调、灵感 |
+| 苹果树 | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | 爱、魅力、慷慨 |
+| 橄榄树 | *Olea europaea* | 23/09 – 23/09 | 平衡、智慧、和平 |
+| 山毛榉 | *Fagus sylvatica* | 22/12 – 22/12 | 才华、创造、毅力 |
+
+## 二十七宿之树
+
+在吠陀占星中，27个月宿（纳克沙特拉）各有一种树。它取决于出生时月亮所在的位置，而不是日期，各地的名单也有出入。仅作文化参考。
+
+| # | 月宿 | 树 | 学名 | 特征 |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | 迅捷、主动、疗愈 |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | 耐力、激情、变化 |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | 敏锐、火、纯净 |
+| 4 | Rohini | Jamun | *Syzygium cumini* | 美丽、生育力、丰盛 |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | 好奇心、探寻、和善 |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | 情感、变化、智力 |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | 重生、乐观、家庭 |
+| 8 | Pushya | Peepal | *Ficus religiosa* | 滋养、保护、虔诚 |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | 直觉、神秘、机巧 |
+| 10 | Magha | Baniano | *Ficus benghalensis* | 血统、权威、高贵 |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | 愉悦、创造力、休息 |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | 友谊、慷慨、支持 |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | 技艺、机智、疗愈 |
+| 14 | Chitra | Bel | *Aegle marmelos* | 美丽、创造、光彩 |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | 独立、灵活、贸易 |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | 决心、雄心、毅力 |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | 虔诚、友谊、合作 |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | 领导力、保护、勇气 |
+| 19 | Mula | Sal \* | *Shorea robusta* | 根源、研究、变化 |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | 胜利、热情、纯净 |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | 胜利、正直、毅力 |
+| 22 | Shravana | Madar | *Calotropis gigantea* | 倾听、学习、沟通 |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | 财富、音乐、雄心 |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | 疗愈、秘密、独处 |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | 激情、变化、理想主义 |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | 深度、智慧、慈悲 |
+| 27 | Revati | Mahua | *Madhuca longifolia* | 温柔、保护、慈悲 |
+
+\* 关于这个月宿的树，各种资料说法不一。
+
+## 数字命理：生命之路
+
+把出生日期的所有数字不断相加，直到只剩一位数；11、22、33（“大师数”）不再继续化简。它被归于毕达哥拉斯，但今天的数字命理源于20世纪，没有科学依据。仅作文化参考。
+
+| 数字 | 特征 |
+| --- | --- |
+| 1 | 领导力、独立、主动 |
+| 2 | 合作、敏感、和谐 |
+| 3 | 创造力、喜悦、沟通 |
+| 4 | 纪律、稳定、工作 |
+| 5 | 冒险、自由、适应力 |
+| 6 | 家庭、慷慨、爱 |
+| 7 | 智慧、独处、研究 |
+| 8 | 雄心、权威、财富 |
+| 9 | 慈悲、慷慨、理想主义 |
+| 11 | 直觉、灵感、理想主义 |
+| 22 | 建造、决心、领导力 |
+| 33 | 慈悲、温柔、虔诚 |

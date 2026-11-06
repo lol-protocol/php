@@ -15,10 +15,12 @@ from pathlib import Path
 import yaml
 from PIL import Image
 
+from scene import CELDA_REVISION
+
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
 SALIDA = CATALOGO / "revision" / "web"
-CELDA = (80, 560)  # vistas de revisión guardadas por el build (ESCALA_REVISION = 0.4)
+CELDA = CELDA_REVISION  # vistas de revisión que guarda el build
 COLUMNAS = 20
 
 

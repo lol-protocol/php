@@ -499,6 +499,176 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('hreflang="en" href="http://eng.contrastocolor.local/81372047/"', $pos);
     }
 
+    public function testALanguageIsServedOnlyOnceItIsListed(): void
+    {
+        $activos = ['IDIOMAS_ACTIVOS' => 'spa,eng,fra'];
+
+        [, $fr] = $this->get('fra.tudominio.local', '/6128473101/', entorno: $activos);
+        $this->assertStringContainsString('<html lang="fr">', $fr);
+        $this->assertStringContainsString('<link rel="alternate" hreflang="fr" href="http://fra.tudominio.local/6128473101/">', $fr);
+        $this->assertStringContainsString('<link rel="canonical" href="http://fra.tudominio.local/6128473101/">', $fr);
+
+        // Known but not listed: not a language here, so the Spanish page, with no hreflang for it.
+        [, $de] = $this->get('deu.tudominio.local', '/6128473101/', entorno: $activos);
+        $this->assertStringContainsString('<html lang="es">', $de);
+        $this->assertStringNotContainsString('hreflang="de"', $de);
+
+        // Without the setting, French is not announced either.
+        [, $sin] = $this->get('spa.tudominio.local', '/6128473101/');
+        $this->assertStringNotContainsString('hreflang="fr"', $sin);
+    }
+
+    /** The form answers 404 for what a visitor can't see, and the owner sees those pages: her footer must not lead nowhere. */
+    public function testTheOwnerIsNotOfferedTheWithdrawalFormButAVisitorIs(): void
+    {
+        $enlace = 'Pedir el retiro de esta página';
+
+        $this->assertStringContainsString($enlace, $this->get(self::GENEALOGIA, '/6128473101/')[1], 'a visitor');
+        $this->assertStringNotContainsString($enlace, $this->getComoPropietario(self::GENEALOGIA, '/6128473101/')[1], 'the owner');
+        $this->assertStringNotContainsString($enlace, $this->getComoPropietario(self::GENEALOGIA, '/412000007/')[1], 'an event a visitor cannot see');
+    }
+
+    /** @return array<string, array{string, int, list<string>, list<string>}> uri, status, product ids it lists, ids it does not */
+    public static function categoriasFiltradas(): array
+    {
+        return [
+            'sin filtros: Ropa trae sus dos subcategorías' => ['/1001/', 200, ['81372047', '81372048'], ['81372049']],
+            'por color azul marino' => ['/1001/48213/', 200, ['81372047', '81372048'], ['81372049']],
+            'por color rojo' => ['/1001/48215/', 200, ['81372048'], ['81372047', '81372049']],
+            'por color blanco' => ['/1001/48214/', 200, ['81372047'], ['81372048']],
+            'por material' => ['/1001/48400/', 200, ['81372047'], ['81372048']],
+            'por etiqueta' => ['/1001/520002/', 200, ['81372047', '81372048'], []],
+            'por color y etiqueta' => ['/1001/48215/520002/', 200, ['81372048'], ['81372047']],
+            'una combinación sin productos' => ['/1001/48214/520003/', 200, [], ['81372047', '81372048']],
+        ];
+    }
+
+    /**
+     * @param list<string> $lista
+     * @param list<string> $noLista
+     */
+    #[DataProvider('categoriasFiltradas')]
+    public function testACategoryFilteredByASlashSegment(string $uri, int $estado, array $lista, array $noLista): void
+    {
+        [$codigo, $cuerpo] = $this->get(self::POS, $uri);
+
+        $this->assertSame($estado, $codigo, $uri);
+        foreach ($lista as $id) {
+            $this->assertStringContainsString("href=\"/{$id}/\"", $cuerpo, "{$uri} should list {$id}");
+        }
+        foreach ($noLista as $id) {
+            $this->assertStringNotContainsString("href=\"/{$id}/\">", $cuerpo, "{$uri} should not list {$id}");
+        }
+        if ($lista === [] && $estado === 200) {
+            $this->assertStringContainsString('Sin productos disponibles', $cuerpo);
+        }
+    }
+
+    public function testAFilteredCategoryShowsItsFiltersAndHowToDropThem(): void
+    {
+        [, $cuerpo] = $this->get(self::POS, '/1001/48215/520002/');
+
+        $this->assertStringContainsString('aria-label="Filtros aplicados"', $cuerpo);
+        $this->assertStringContainsString('color: Rojo', $cuerpo);
+        $this->assertStringContainsString('href="/1001/520002/" aria-current="true" title="Quitar este filtro">color: Rojo', $cuerpo, 'dropping the color keeps the etiqueta');
+        $this->assertStringContainsString('href="/1001/48215/" aria-current="true" title="Quitar este filtro">etiqueta: Nuevo', $cuerpo, 'dropping the etiqueta keeps the color');
+        // What is still on offer adds a filter, in the canonical order; what is applied is not offered again.
+        $this->assertStringContainsString('href="/1001/48215/520001/" rel="nofollow">etiqueta: Algodón orgánico', $this->get(self::POS, '/1001/48215/')[1]);
+        $this->assertStringNotContainsString('rel="nofollow">color: Rojo', $cuerpo);
+    }
+
+    public function testACategoryOffersOnlyFiltersThatLeadToProducts(): void
+    {
+        [, $cuerpo] = $this->get(self::POS, '/1001/');
+
+        $this->assertStringContainsString('href="/1001/48215/" rel="nofollow">color: Rojo', $cuerpo);
+        $this->assertStringNotContainsString('520003', $cuerpo, 'Oferta is only on a product outside Ropa');
+        $this->assertStringNotContainsString('aria-label="Filtros aplicados"', $cuerpo, 'nothing applied yet');
+    }
+
+    /** A filtered page is one of many combinations of the same products: out of the search results. */
+    public function testAFilteredCategoryIsNoindexAndAnUnfilteredOneIsNot(): void
+    {
+        $this->assertStringContainsString('<meta name="robots" content="noindex">', $this->get(self::POS, '/1001/48213/')[1]);
+        $this->assertStringNotContainsString('<meta name="robots" content="noindex">', $this->get(self::POS, '/1001/')[1]);
+    }
+
+    public function testFiltersInTheWrongOrderRedirectToTheCanonicalOne(): void
+    {
+        $this->assertSame(301, $this->get(self::POS, '/1001/520002/48215/')[0]);
+        $this->assertSame(200, $this->get(self::POS, '/1001/48215/520002/')[0]);
+    }
+
+    /** @return array<string, array{string}> */
+    public static function filtrosQueNoExisten(): array
+    {
+        return [
+            'un color que no existe' => ['/1001/48999/'],
+            'una etiqueta que no existe' => ['/1001/520999/'],
+            'una categoría que no existe' => ['/1099/48213/'],
+            'dos colores' => ['/1001/48213/48214/'],
+            'un producto como filtro' => ['/1001/81372047/'],
+            'un ancho que no es ningún tipo' => ['/1001/482/'],
+            'una acción: la categoría no tiene' => ['/1001/1/'],
+            'un filtro a un color (no los filtran)' => ['/48213/1001/'],
+            'un filtro a un producto' => ['/81372047/48213/'],
+            'más allá de los filtros' => ['/1001/48213/520002/48214/'],
+        ];
+    }
+
+    #[DataProvider('filtrosQueNoExisten')]
+    public function testAFilterThatCannotBeIsA404(string $uri): void
+    {
+        $this->assertSame(404, $this->get(self::POS, $uri)[0], $uri);
+    }
+
+    /** The filters are ids too: with the check digit on, one that does not add up is turned away without a query. */
+    public function testWithACheckDigitAFilterIdIsCheckedToo(): void
+    {
+        [$codigo, $cuerpo] = $this->get(self::POS, '/1007/48213/', entorno: ['IDS_DIGITO_VERIFICADOR' => 'true']);
+
+        $this->assertSame(404, $codigo);
+        $this->assertStringContainsString('dígito', $cuerpo, '1007 adds up, 48213 does not: the filter is what is refused');
+    }
+
+    /**
+     * With the check digit on, an id that does not add up is a 404 that never reaches the database; one that does
+     * add up is looked up as always. 6128473101 happens to be valid (the demo's ids are plain numbers), 6128473105
+     * exists and is not: with the setting off both are the pages they are.
+     */
+    public function testACheckDigitTurnsAwayAMisspelledIdWithoutAQuery(): void
+    {
+        $activo = ['IDS_DIGITO_VERIFICADOR' => 'true'];
+
+        $this->assertSame(200, $this->get(self::GENEALOGIA, '/6128473101/', entorno: $activo)[0], 'valid and present');
+        [$codigo, $cuerpo] = $this->get(self::GENEALOGIA, '/6128473105/', entorno: $activo);
+        $this->assertSame(404, $codigo, 'present, but its digit does not add up');
+        $this->assertStringContainsString('dígito', $cuerpo);
+        $this->assertSame(404, $this->get(self::GENEALOGIA, '/6128473105/1/', entorno: $activo)[0], 'also its actions');
+
+        [$codigo, $cuerpo] = $this->get(self::GENEALOGIA, '/6128473107/', entorno: ['IDS_DIGITO_VERIFICADOR' => 'false']);
+        $this->assertSame(200, $codigo, 'off: ids are plain numbers');
+        $this->assertStringNotContainsString('dígito de verificación', $cuerpo);
+    }
+
+    public function testACheckDigitDoesNotTouchAnOrdersRandomCode(): void
+    {
+        $this->assertSame(200, $this->getComoPropietario(self::POS, '/4821937065182734/')[0]);
+        $this->assertSame(
+            200,
+            $this->get(self::POS, '/4821937065182734/', tokenConfigurado: self::TOKEN, autorizacion: self::basic(self::TOKEN), entorno: ['IDS_DIGITO_VERIFICADOR' => 'true'])[0]
+        );
+    }
+
+    public function testWithACheckDigitAShortIdIsNotOfferedPadded(): void
+    {
+        [, $con] = $this->get(self::GENEALOGIA, '/47/', entorno: ['IDS_DIGITO_VERIFICADOR' => 'true']);
+        [, $sin] = $this->get(self::GENEALOGIA, '/47/');
+
+        $this->assertStringContainsString('Quisiste decir', $sin);
+        $this->assertStringNotContainsString('Quisiste decir', $con, 'a padded guess would not be valid either');
+    }
+
     /** @return array<string, array{string, string, string}> host, uri, what the 404 must say */
     public static function pistas(): array
     {

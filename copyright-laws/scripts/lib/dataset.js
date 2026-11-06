@@ -128,7 +128,8 @@ export const PROTECTION_TYPES = [
 
 export const TREATIES = ["Berne", "TRIPS", "WCT", "WPPT"];
 
-const REQUIRED = [
+/** Columns that cannot be empty in a law row. */
+export const REQUIRED_FIELDS = [
   "country_code",
   "country_name",
   "region",
@@ -194,7 +195,7 @@ export function validateRecords(records, header = COLUMNS, { today = todayIso() 
         fail(`${field} has leading/trailing whitespace: ${JSON.stringify(value)}`);
       }
     }
-    for (const field of REQUIRED) {
+    for (const field of REQUIRED_FIELDS) {
       if (!record[field]) fail(`missing required field ${field}`);
     }
 
@@ -314,6 +315,10 @@ export function validateSources(sources, records, header = SOURCE_COLUMNS) {
     if (s.confidence && !CONFIDENCE_LEVELS.includes(s.confidence)) fail(`confidence must be empty or one of ${CONFIDENCE_LEVELS.join("|")}`);
     if (!isRealDate(s.checked)) fail(`checked must be a real YYYY-MM-DD date, got ${JSON.stringify(s.checked)}`);
     else if (s.checked > todayIso()) fail(`checked is in the future (${s.checked})`);
+    // The "(unconfirmed)" mark in the text and the source's confidence say the same thing: they cannot disagree.
+    if (law && COLUMNS.includes(s.field) && /\(unconfirmed\)\s*$/i.test(law[s.field] ?? "") && (s.confidence === "medium" || s.confidence === "high")) {
+      fail(`${s.country_code} ${s.field} ends in "(unconfirmed)" but its source says confidence ${s.confidence}: fix the text or the confidence`);
+    }
     const key = `${s.country_code}|${law?.law_name ?? s.law_name}|${s.field}`;
     if (seen.has(key)) fail(`second source for ${s.country_code} ${s.field}`);
     seen.add(key);

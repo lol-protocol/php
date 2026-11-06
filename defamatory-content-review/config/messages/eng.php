@@ -8,7 +8,6 @@ return [
     'explanation.match' => '“%1$s” matches “%2$s” (%3$s)',
     'explanation.related' => '; related language, confidence %.2F',
     'explanation.collision' => '; it is also a documented real first or last name, so it goes to human review',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Reject: seriously offensive content (risk types: %s).',
     'recommendation.review_collision' => 'Human review: matches offensive terms (%s) but also documented surnames.',
     'recommendation.review_phonetic' => 'Human review: first and last name, run together, form an offensive term (%s) that neither has on its own.',

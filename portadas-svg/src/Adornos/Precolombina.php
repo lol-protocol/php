@@ -26,8 +26,7 @@ final class Precolombina extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
         $unidad = [
             [-0.2, -1.0], [0.2, -1.0], [0.2, -0.6], [0.6, -0.6], [0.6, -0.2], [1.0, -0.2], [1.0, 0.2], [0.6, 0.2], [0.6, 0.6], [0.2, 0.6],
             [0.2, 1.0], [-0.2, 1.0], [-0.2, 0.6], [-0.6, 0.6], [-0.6, 0.2], [-1.0, 0.2], [-1.0, -0.2], [-0.6, -0.2], [-0.6, -0.6], [-0.2, -0.6],

@@ -33,7 +33,7 @@ final class FiltroPedidos
         }
         self::cargar($dir);
 
-        $revisores = array_map(static fn(string $idioma): ChatLineReviewer => ChatLineReviewer::create("{$dir}/config", $idioma), self::IDIOMAS);
+        $revisores = self::revisores($dir);
         $resultado = LongText::review($texto, static fn(string $parte): ChatLineResult => CombinedReview::of(
             $parte,
             array_map(static fn(ChatLineReviewer $revisor): ChatLineResult => $revisor->review($parte), $revisores)
@@ -44,6 +44,22 @@ final class FiltroPedidos
         );
 
         return $marcas === [] ? null : implode(', ', array_values(array_unique($marcas)));
+    }
+
+    /**
+     * One reviewer per language, built once per process: ChatLineReviewer::create() reads and compiles the word lists
+     * of the language (hundreds of lines each), and a burst of pedidos would redo it for every one.
+     *
+     * @return list<ChatLineReviewer>
+     */
+    private static function revisores(string $dir): array
+    {
+        static $porCarpeta = [];
+
+        return $porCarpeta[$dir] ??= array_map(
+            static fn(string $idioma): ChatLineReviewer => ChatLineReviewer::create("{$dir}/config", $idioma),
+            self::IDIOMAS
+        );
     }
 
     private static function cargar(string $dir): void

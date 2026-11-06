@@ -147,6 +147,7 @@ tbody tr:hover { background: var(--bg); }
 <script>
 const DATOS = /*DATOS*/null;
 const MAPA = /*MAPA*/null;
+const ANIOS = /*ANIOS*/null;
 
 const nf = (d) => new Intl.NumberFormat("es-ES", { minimumFractionDigits: d, maximumFractionDigits: d });
 const fmt = (v, d = 0) => (v === null || v === undefined || v === "") ? null : nf(d).format(v);
@@ -160,14 +161,14 @@ const MODOS = {
     motivo: (d) => `IO ${d.io}`, formula: (d) => `IG ${d.ig} × IO ${d.io}`,
     bajada: "Prioridad para operar un servicio de genealogía: interés en la genealogía (IG) por operabilidad (IO). Se excluye con IO ≤ 1.",
     columnas: [
-      ["pais", "País", false], ["r", "Región", false], ["pob", "Población 2024 (M)", true, 2],
-      ["nac", "Nacidos en la historia (M)", true, 0], ["idh", "IDH 2023", true, 3], ["net", "Internet (%)", true, 1],
+      ["pais", "País", false], ["r", "Región", false], ["pob", `Población ${ANIOS.pob} (M)`, true, 2],
+      ["nac", "Nacidos en la historia (M)", true, 0], ["idh", `IDH ${ANIOS.idh}`, true, 3], ["net", "Internet (%)", true, 1],
       ["emi", "Emigrantes (%)", true, 1], ["fh", "Libertad (FH)", false], ["cpi", "Corrupción (CPI)", true, 0],
       ["ig", "IG", true, 0], ["io", "IO", true, 0], ["prio", "Prioridad", true, 0],
       ["excl", "Excluido", false],
     ],
-    tip: (d) => [["Población 2024", fmt(d.pob, 2) && fmt(d.pob, 2) + " M"], ["Nacidos en la historia", fmt(d.nac, 0) && fmt(d.nac, 0) + " M"],
-      ["IDH 2023", fmt(d.idh, 3)], ["Internet", fmt(d.net, 1) && fmt(d.net, 1) + " %"], ["Emigrantes", fmt(d.emi, 1) && fmt(d.emi, 1) + " %"],
+    tip: (d) => [[`Población ${ANIOS.pob}`, fmt(d.pob, 2) && fmt(d.pob, 2) + " M"], ["Nacidos en la historia", fmt(d.nac, 0) && fmt(d.nac, 0) + " M"],
+      [`IDH ${ANIOS.idh}`, fmt(d.idh, 3)], ["Internet", fmt(d.net, 1) && fmt(d.net, 1) + " %"], ["Emigrantes", fmt(d.emi, 1) && fmt(d.emi, 1) + " %"],
       ["Libertad (Freedom House)", d.fh], ["Democracia (EIU)", fmt(d.eiu, 1)], ["Corrupción (CPI, 100 = limpio)", fmt(d.cpi, 0)]],
   },
   pos: {
@@ -341,7 +342,10 @@ for (const r of [...new Set(DATOS.map((d) => d.r))].sort((a, b) => a.localeCompa
 document.querySelectorAll('input[name="modo"]').forEach((el) => el.addEventListener("change", () => {
   modo = el.value; orden = { clave: "prio", desc: true }; fijo = null; ocultarTip(); todo();
 }));
-["buscar", "region", "ver-excluidos"].forEach((id) => document.getElementById(id).addEventListener("input", dibujarTabla));
+// Al filtrar se suelta el país fijado: podría haber quedado fuera de la selección.
+["buscar", "region", "ver-excluidos"].forEach((id) => document.getElementById(id).addEventListener("input", () => {
+  fijo = null; ocultarTip(); dibujarTabla();
+}));
 document.querySelector("#tabla thead").addEventListener("click", (e) => {
   const b = e.target.closest("button[data-clave]");
   if (!b) return;

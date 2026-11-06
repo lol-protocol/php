@@ -74,6 +74,11 @@ final class Database
             // PostgreSQL's TRANSLATE(), which SQLite lacks: the searches use it
             // to ignore accents (Repository::sinAcentos()), so both engines run the same SQL.
             $pdo->sqliteCreateFunction('translate', [self::class, 'traducir'], 3, \PDO::SQLITE_DETERMINISTIC);
+            // And octet_length(), which PostgreSQL has and SQLite only since 3.43: sinAcentos() asks it whether a
+            // text is all ASCII, to skip the translation. A newer SQLite brings its own, which is faster.
+            if (version_compare((string)$pdo->getAttribute(\PDO::ATTR_SERVER_VERSION), '3.43.0', '<')) {
+                $pdo->sqliteCreateFunction('octet_length', [self::class, 'bytes'], 1, \PDO::SQLITE_DETERMINISTIC);
+            }
         }
 
         if ($this->driver($pdo) === 'pgsql') {
@@ -91,10 +96,38 @@ final class Database
         return $this->pdo = $pdo;
     }
 
-    /** TRANSLATE($texto, $de, $a): each character of $de becomes the one at the same place in $a. */
+    /** octet_length($texto): how many bytes the text takes. */
+    public static function bytes(?string $texto): ?int
+    {
+        return $texto === null ? null : strlen($texto);
+    }
+
+    /**
+     * TRANSLATE($texto, $de, $a): each character of $de becomes the one at the same place in $a, and the
+     * characters of $de that have none (when $de is longer) are deleted, as PostgreSQL does. A character
+     * repeated in $de keeps its first meaning, also as in PostgreSQL.
+     *
+     * SQLite calls this once per row a search reads, always with the same two strings, so the map is built
+     * once and reused: building it (array_combine of two mb_str_split) used to cost nine times the translation.
+     */
     public static function traducir(?string $texto, string $de, string $a): ?string
     {
-        return $texto === null ? null : strtr($texto, array_combine(mb_str_split($de), mb_str_split($a)));
+        static $de0 = null, $a0 = null, $mapa = [];
+
+        if ($texto === null) {
+            return null;
+        }
+
+        if ($de !== $de0 || $a !== $a0) {
+            $nuevos = mb_str_split($a);
+            $mapa = [];
+            foreach (mb_str_split($de) as $i => $caracter) {
+                $mapa[$caracter] ??= $nuevos[$i] ?? '';
+            }
+            [$de0, $a0] = [$de, $a];
+        }
+
+        return $mapa === [] ? $texto : strtr($texto, $mapa);
     }
 
     public function driver(?\PDO $pdo = null): string

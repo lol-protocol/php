@@ -405,3 +405,108 @@ Uit de Goetia (17e eeuw), een grimoire dat geen deel van de Bijbel uitmaakt. Elk
 | 70 | Seere | Prins | 26 | 06/03 – 10/03 | Snelle verplaatsingen, diefstal, verloren voorwerpen |
 | 71 | Dantalion | Hertog | 36 | 11/03 – 15/03 | Gedachten, wetenschappen, liefde |
 | 72 | Andromalius | Graaf | 36 | 16/03 – 20/03 | Verloren voorwerpen, schatten, dieven |
+
+## Keltische boomkalender
+
+Een kalender van 13 maanden van 28 dagen, één per boom (23 december staat apart). De dichter Robert Graves bedacht hem in 1948 op basis van het ogham-alfabet; het is geen oude Keltische kalender. Alleen culturele referentie.
+
+| # | Boom | Wetenschappelijke naam | Ogham | Periode | Eigenschappen |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Berk | *Betula pendula* | Beth | 24/12 – 20/01 | Beginnen, zuiverheid, wedergeboorte |
+| 2 | Lijsterbes | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Bescherming, intuïtie, waarneming |
+| 3 | Es | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Eenheid, communicatie, schepping |
+| 4 | Els | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Moed, onderscheidingsvermogen, stabiliteit |
+| 5 | Wilg | *Salix alba* | Saille | 15/04 – 12/05 | Intuïtie, dromen, genezing |
+| 6 | Meidoorn | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Vruchtbaarheid, geduld, bescherming |
+| 7 | Eik | *Quercus robur* | Duir | 10/06 – 07/07 | Kracht, uithoudingsvermogen, adel |
+| 8 | Hulst | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Evenwicht, moed, gerechtigheid |
+| 9 | Hazelaar | *Corylus avellana* | Coll | 05/08 – 01/09 | Wijsheid, inspiratie, studie |
+| 10 | Wijnstok | *Vitis vinifera* | Muin | 02/09 – 29/09 | Vreugde, overvloed, inspiratie |
+| 11 | Klimop | *Hedera helix* | Gort | 30/09 – 27/10 | Trouw, doorzettingsvermogen, bescherming |
+| 12 | Riet | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Waarheid, orde, wil |
+| 13 | Vlier | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Gedaanteverandering, voltooiing, wedergeboorte |
+
+23 december valt buiten de 13 maanden: het is de „dag van het jaar”, zonder boom.
+
+## Boomhoroscoop
+
+Een populaire horoscoop van 21 bomen, gepresenteerd als druïdisch of Gallisch maar een moderne creatie. Data en bomen verschillen per bron. Alleen culturele referentie.
+
+| Boom | Wetenschappelijke naam | Periode | Eigenschappen |
+| --- | --- | --- | --- |
+| Zilverspar | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Mysterie, loyaliteit, elegantie |
+| Iep | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Adel, stabiliteit, leiderschap |
+| Cipres | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Trouw, aanpassingsvermogen, uithoudingsvermogen |
+| Populier | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Gevoeligheid, aanpassingsvermogen, onzekerheid |
+| Ceder | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Vertrouwen, optimisme, durf |
+| Den | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Discipline, orde, doorzettingsvermogen |
+| Treurwilg | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Gevoeligheid, intuïtie, melancholie |
+| Linde | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Sereniteit, vriendschap, harmonie |
+| Eik | *Quercus robur* | 21/03 – 21/03 | Kracht, moed, onafhankelijkheid |
+| Hazelaar | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Nieuwsgierigheid, vernuft, originaliteit |
+| Lijsterbes | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Gevoeligheid, charme, harmonie |
+| Esdoorn | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Onafhankelijkheid, verbeelding, originaliteit |
+| Notenboom | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Kracht, passie, ambitie |
+| Kastanje | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Gerechtigheid, eerlijkheid, vrijgevigheid |
+| Es | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Ambitie, avontuur, energie |
+| Haagbeuk | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Discretie, praktisch inzicht, elegantie |
+| Vijgenboom | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Zinnelijkheid, gezelligheid, overvloed |
+| Berk | *Betula pendula* | 24/06 – 24/06 | Elegantie, discretie, inspiratie |
+| Appelboom | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Liefde, charme, vrijgevigheid |
+| Olijfboom | *Olea europaea* | 23/09 – 23/09 | Evenwicht, wijsheid, vrede |
+| Beuk | *Fagus sylvatica* | 22/12 – 22/12 | Talent, schepping, doorzettingsvermogen |
+
+## De bomen van de 27 nakshatra's
+
+In de Vedische astrologie heeft elk van de 27 maanhuizen (nakshatra's) een eigen boom. Die hangt af van waar de maan staat bij de geboorte, niet van de datum, en de lijsten verschillen per regio. Alleen culturele referentie.
+
+| # | Nakshatra | Boom | Wetenschappelijke naam | Eigenschappen |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Snelheid, initiatief, genezing |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Uithoudingsvermogen, passie, gedaanteverandering |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Scherpzinnigheid, vuur, zuiverheid |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Schoonheid, vruchtbaarheid, overvloed |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Nieuwsgierigheid, zoektocht, vriendelijkheid |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Emotie, gedaanteverandering, intelligentie |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Wedergeboorte, optimisme, thuis |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Voeding, bescherming, toewijding |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuïtie, mysterie, sluwheid |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Afstamming, gezag, adel |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Genot, creativiteit, rust |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Vriendschap, vrijgevigheid, steun |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Vaardigheid, vernuft, genezing |
+| 14 | Chitra | Bel | *Aegle marmelos* | Schoonheid, schepping, schittering |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Onafhankelijkheid, flexibiliteit, handel |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Vastberadenheid, ambitie, doorzettingsvermogen |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Toewijding, vriendschap, samenwerking |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Leiderschap, bescherming, moed |
+| 19 | Mula | Sal \* | *Shorea robusta* | Wortels, onderzoek, gedaanteverandering |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Overwinning, enthousiasme, zuiverheid |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Overwinning, integriteit, doorzettingsvermogen |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Luisteren, leren, communicatie |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Rijkdom, muziek, ambitie |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Genezing, geheimen, eenzaamheid |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Passie, gedaanteverandering, idealisme |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Diepgang, wijsheid, medeleven |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Tederheid, bescherming, medeleven |
+
+\* De bronnen zijn het niet eens over de boom van deze nakshatra.
+
+## Numerologie: het levenspad
+
+Alle cijfers van de geboortedatum worden steeds opnieuw opgeteld tot er één overblijft; 11, 22 en 33 („meestergetallen”) worden niet verder herleid. Ze wordt aan Pythagoras toegeschreven, maar de huidige numerologie stamt uit de 20e eeuw en heeft geen wetenschappelijke basis. Alleen culturele referentie.
+
+| Getal | Eigenschappen |
+| --- | --- |
+| 1 | Leiderschap, onafhankelijkheid, initiatief |
+| 2 | Samenwerking, gevoeligheid, harmonie |
+| 3 | Creativiteit, vreugde, communicatie |
+| 4 | Discipline, stabiliteit, werk |
+| 5 | Avontuur, vrijheid, aanpassingsvermogen |
+| 6 | Thuis, vrijgevigheid, liefde |
+| 7 | Wijsheid, eenzaamheid, onderzoek |
+| 8 | Ambitie, gezag, rijkdom |
+| 9 | Medeleven, vrijgevigheid, idealisme |
+| 11 | Intuïtie, inspiratie, idealisme |
+| 22 | Bouwen, vastberadenheid, leiderschap |
+| 33 | Medeleven, tederheid, toewijding |

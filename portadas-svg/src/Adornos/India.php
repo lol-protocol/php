@@ -33,8 +33,7 @@ final class India extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
         $svg = '';
         // Ocho pétalos de loto con su centro.
         for ($i = 0; $i < 8; $i++) {

@@ -17,6 +17,9 @@ namespace PhoneDirectory\Parser;
  *    "SMITH John 12 Oak Street 555-123-4567"). Here the first digit in the line, once any phone number is
  *    removed, is assumed to start the street — true for the number-first convention this covers, since
  *    names in this project's supported languages essentially never contain digits.
+ *    Where the house number comes last ("GARCÍA Juan Calle Mayor 12"), the first digit is the end of the
+ *    street instead: a $streetStart callback, given the text before that digit, says where the street
+ *    really begins (its street word), and that part moves from the name to the street.
  *
  * @phpstan-type SplitEntry array{name: string, street: string, phone: string|null}
  */
@@ -35,10 +38,23 @@ final class SingleLineEntrySplitter
      * read as the surname and the rest as the given name(s). Field splitting doesn't need this: its
      * fields already come out in surname-first order through the comma join in splitByFields().
      *
+     * $streetStart: for a language that writes the house number after the street, a function that takes
+     * the text before the first digit and returns the byte offset where the street starts in it, or null
+     * if it finds none (the line is then split as before).
+     *
+     * @param (callable(string): ?int)|null $streetStart
      * @return SplitEntry|null
      */
-    public static function split(string $line, callable $looksLikeStreet, int $surnameWordCount = 1, ?string $language = null): ?array
+    public static function split(
+        string $line,
+        callable $looksLikeStreet,
+        int $surnameWordCount = 1,
+        ?string $language = null,
+        ?callable $streetStart = null
+    ): ?array
     {
+        // A phone the scan misread ("555-l23-4567") would otherwise pass for a street starting with a digit.
+        $line = PhonePattern::repairOcrDigits($line);
         $fields = array_map('trim', preg_split(self::FIELD_DELIMITER, $line, -1, PREG_SPLIT_NO_EMPTY));
 
         if (count($fields) >= 2) {
@@ -48,7 +64,7 @@ final class SingleLineEntrySplitter
             }
         }
 
-        $result = self::splitByDigitBoundary($line, $looksLikeStreet, $language);
+        $result = self::splitByDigitBoundary($line, $looksLikeStreet, $language, $streetStart);
         if ($result !== null) {
             $result['name'] = self::assumeSurnameFirst($result['name'], $surnameWordCount);
         }
@@ -122,11 +138,19 @@ final class SingleLineEntrySplitter
         $name = implode(', ', $nameFields);
         $street = $fields[$streetIndex];
 
-        return $name === '' || $street === '' ? null : ['name' => $name, 'street' => $street, 'phone' => $phone];
+        // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
+        if (!self::hasLetter($name) || $street === '') {
+            return null;
+        }
+
+        return ['name' => $name, 'street' => $street, 'phone' => $phone];
     }
 
-    /** @return SplitEntry|null */
-    private static function splitByDigitBoundary(string $line, callable $looksLikeStreet, ?string $language): ?array
+    /**
+     * @param (callable(string): ?int)|null $streetStart
+     * @return SplitEntry|null
+     */
+    private static function splitByDigitBoundary(string $line, callable $looksLikeStreet, ?string $language, ?callable $streetStart): ?array
     {
         $rest = $line;
         $phone = null;
@@ -134,6 +158,10 @@ final class SingleLineEntrySplitter
         if (preg_match(PhonePattern::regexFor($language), $line, $match, PREG_OFFSET_CAPTURE)) {
             $phone = $match[0][0];
             $offset = $match[0][1];
+            // A line that opens with the phone ("555-123-4567 ext. 12") is the end of a record, not a whole one.
+            if (!self::hasLetter(substr($line, 0, $offset))) {
+                return null;
+            }
             $rest = substr($line, 0, $offset) . substr($line, $offset + strlen($phone));
         }
 
@@ -143,6 +171,12 @@ final class SingleLineEntrySplitter
 
         $name = self::trimLeaders(substr($rest, 0, $tail[0][1]));
         $street = self::trimLeaders($tail[0][0]);
+
+        $cut = $streetStart !== null && $name !== '' ? $streetStart($name) : null;
+        if ($cut !== null && $cut > 0 && $cut < strlen($name)) {
+            $street = substr($name, $cut) . ' ' . $street;
+            $name = self::trimLeaders(substr($name, 0, $cut));
+        }
 
         if ($name === '' || $street === '') {
             return null;
@@ -155,6 +189,11 @@ final class SingleLineEntrySplitter
         }
 
         return ['name' => $name, 'street' => $street, 'phone' => $phone];
+    }
+
+    private static function hasLetter(string $text): bool
+    {
+        return preg_match('/\p{L}/u', $text) === 1;
     }
 
     private static function trimLeaders(string $text): string

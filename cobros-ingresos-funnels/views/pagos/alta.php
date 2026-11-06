@@ -27,7 +27,7 @@ $hoy = date('Y-m-d');
             <select name="cliente_id" id="cliente_id" required>
                 <option value="">Seleccioná un cliente...</option>
                 <?php foreach ($clientes as $c): ?>
-                    <option value="<?= (int) $c['id'] ?>"><?= htmlspecialchars($c['nombre']) ?> (<?= htmlspecialchars($c['email']) ?>)</option>
+                    <option value="<?= (int) $c['id'] ?>"><?= e($c['nombre']) ?> (<?= e($c['email']) ?>)</option>
                 <?php endforeach; ?>
             </select>
             <?php if ($clientesTruncados): ?>
@@ -37,8 +37,8 @@ $hoy = date('Y-m-d');
         </form>
     <?php else: ?>
         <p class="subtitulo">
-            Cliente: <strong><?= htmlspecialchars($clienteElegido['nombre']) ?></strong>
-            (<?= htmlspecialchars($clienteElegido['pais_nombre']) ?>, paga en <?= htmlspecialchars($clienteElegido['moneda_codigo']) ?>)
+            Cliente: <strong><?= e($clienteElegido['nombre']) ?></strong>
+            (<?= e($clienteElegido['pais_nombre']) ?>, paga en <?= e($clienteElegido['moneda_codigo']) ?>)
             &middot; <a href="?page=pago-nuevo">cambiar cliente</a>
         </p>
         <form class="form-alta" method="post">
@@ -53,17 +53,17 @@ $hoy = date('Y-m-d');
                 <?php foreach ($boletasCliente as $b): ?>
                     <?php if ($b['anulada'] || Dinero::cuentaComoCero((float) $b['saldo'])): continue; endif; ?>
                     <option value="<?= (int) $b['id'] ?>" <?= (string) ($valores['boleta_id'] ?? '') === (string) $b['id'] ? 'selected' : '' ?>>
-                        #<?= (int) $b['id'] ?> · <?= htmlspecialchars($b['concepto']) ?> ·
+                        #<?= (int) $b['id'] ?> · <?= e($b['concepto']) ?> ·
                         <?= dinero_en_moneda((float) $b['saldo'], $b['moneda_codigo']) ?> pendiente
                     </option>
                 <?php endforeach; ?>
             </select>
 
-            <label for="monto">Monto (en <?= htmlspecialchars($clienteElegido['moneda_codigo']) ?>)</label>
+            <label for="monto">Monto (en <?= e($clienteElegido['moneda_codigo']) ?>)</label>
             <?= campo_monto($valores['monto'] ?? '') ?>
 
             <label for="fecha_pago">Fecha de pago</label>
-            <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= htmlspecialchars($valores['fecha_pago'] ?? $hoy) ?>">
+            <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= e($valores['fecha_pago'] ?? $hoy) ?>">
 
             <label for="metodo">Método</label>
             <select name="metodo" id="metodo" required>

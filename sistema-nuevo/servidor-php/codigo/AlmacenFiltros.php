@@ -8,12 +8,14 @@ final class AlmacenFiltros
     {
     }
 
+    /** @return list<array<string,mixed>> */
     public function obtenerTodos(): array
     {
         $stmt = $this->pdo->query('SELECT * FROM filtros_guardados ORDER BY nombre');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /** @return array<string,mixed>|null */
     public function obtener(int $id): ?array
     {
         $stmt = $this->pdo->prepare('SELECT * FROM filtros_guardados WHERE id = ?');

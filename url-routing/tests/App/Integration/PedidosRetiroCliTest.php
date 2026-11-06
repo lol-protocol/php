@@ -32,11 +32,11 @@ class PedidosRetiroCliTest extends TestCase
         @unlink(substr($this->archivo, 0, -7));
     }
 
-    /** @return array{0: int, 1: string, 2: string} exit code, stdout, stderr */
-    private function correr(array $args = [], array $env = []): array
+    /** @param list<string> $php options for the php binary itself (-d ...) @return array{0: int, 1: string, 2: string} exit code, stdout, stderr */
+    private function correr(array $args = [], array $env = [], array $php = []): array
     {
         $proceso = proc_open(
-            ['php', dirname(__DIR__, 3) . '/bin/pedidos-retiro.php', ...$args],
+            ['php', ...$php, dirname(__DIR__, 3) . '/bin/pedidos-retiro.php', ...$args],
             [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             null,
@@ -269,5 +269,17 @@ class PedidosRetiroCliTest extends TestCase
         $this->assertTrue($this->repo->retirado('persona', 6128473105), 'and the page stays withdrawn');
         [, $salida] = $this->correr(['--ocultar', '--depurar']);
         $this->assertSame('', $salida, 'a later run has nothing to say');
+    }
+
+    public function testACronWithAnotherPhpIniTimeZoneReadsTheSameWaitingTime(): void
+    {
+        date_default_timezone_set('UTC');
+        $this->pedido(5);
+
+        // Written here in UTC and read by a php whose ini says Auckland (+12/+13): unpinned, it would read 17 or 18 hours.
+        [$codigo, $salida] = $this->correr([], [], ['-d', 'date.timezone=Pacific/Auckland']);
+
+        $this->assertSame(0, $codigo, 'on time');
+        $this->assertStringContainsString('espera hace 5 h', $salida);
     }
 }

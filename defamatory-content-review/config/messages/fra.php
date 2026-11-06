@@ -8,7 +8,6 @@ return [
     'explanation.match' => '« %1$s » correspond à « %2$s » (%3$s)',
     'explanation.related' => ' ; langue apparentée, confiance %.2F',
     'explanation.collision' => ' ; c’est aussi un prénom ou un nom de famille réel documenté, il va en revue humaine',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Rejeter : contenu gravement offensant (types de risque : %s).',
     'recommendation.review_collision' => 'Revue humaine : correspond à des termes offensants (%s) mais aussi à des noms de famille documentés.',
     'recommendation.review_phonetic' => 'Revue humaine : prénom et nom, enchaînés, forment un terme offensant (%s) qu’aucun des deux n’a seul.',

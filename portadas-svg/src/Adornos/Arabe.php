@@ -34,8 +34,7 @@ final class Arabe extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor; // el trazo tiene ancho, y las puntas de la estrella más
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
 
         return self::linea(self::poligono($cx, $cy, $r, 4, 0), $color, $grosor, true)
             . self::linea(self::poligono($cx, $cy, $r, 4, 45), $color, $grosor, true)

@@ -33,7 +33,7 @@ final class Medieval extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
+        $grosor = self::trazoDe($radio, $trazo);
         $lobulo = ($radio - $grosor / 2) / 2; // cada lóbulo mide la mitad del radio, con su trazo dentro
         $svg = '';
         foreach ([0, 90, 180, 270] as $angulo) {

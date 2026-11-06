@@ -14,6 +14,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`laws-freshness.yml`](workflows/laws-freshness.yml) | Leyes - vigencia de los datos | `push`, `schedule`, `workflow_dispatch` | `freshness`, `issue` |
 | [`laws-links.yml`](workflows/laws-links.yml) | Leyes - enlaces de referencia | `pull_request`, `schedule`, `workflow_dispatch` | `links`, `issue` |
 | [`laws-modules.yml`](workflows/laws-modules.yml) | Leyes (privacidad y copyright) | `push`, `pull_request` | `copias`, `test`, `database` |
+| [`laws-textos-oficiales.yml`](workflows/laws-textos-oficiales.yml) | Leyes - textos de las fuentes | `pull_request`, `workflow_dispatch` | `probar`, `textos` |
 | [`marcalibros-b.yml`](workflows/marcalibros-b.yml) | Marcalibros (generar catalogo y pruebas) | `push`, `pull_request`, `workflow_dispatch` | `catalogo` |
 | [`pruebas-backoffice.yml`](workflows/pruebas-backoffice.yml) | Pruebas backoffice | `push`, `pull_request`, `workflow_dispatch` | `analisis-estatico`, `pruebas` |
 | [`pruebas-citas-pos.yml`](workflows/pruebas-citas-pos.yml) | Pruebas citas POS | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
@@ -23,6 +24,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`pruebas-listado-colores.yml`](workflows/pruebas-listado-colores.yml) | Pruebas Listado-colores | `push`, `pull_request`, `workflow_dispatch` | `listado-colores`, `listado-colores-matriz` |
 | [`pruebas-listado-paises.yml`](workflows/pruebas-listado-paises.yml) | Pruebas Listado-paises | `push`, `pull_request`, `workflow_dispatch` | `listado-paises`, `reproducir` |
 | [`pruebas-marcalibros.yml`](workflows/pruebas-marcalibros.yml) | Pruebas marcalibros | `push`, `pull_request`, `workflow_dispatch` | `php`, `catalogo`, `navegador` |
+| [`pruebas-parsing-fb-in-mas.yml`](workflows/pruebas-parsing-fb-in-mas.yml) | Pruebas Parsing-fb-in-mas | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
 | [`pruebas-phone-directory.yml`](workflows/pruebas-phone-directory.yml) | Pruebas phone-directory | `push`, `pull_request`, `workflow_dispatch` | `phone-directory`, `phone-directory-ports` |
 | [`pruebas-portadas-svg.yml`](workflows/pruebas-portadas-svg.yml) | Pruebas portadas SVG | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
 | [`pruebas-signos-zodiacales.yml`](workflows/pruebas-signos-zodiacales.yml) | Pruebas signos-zodiacales | `push`, `pull_request`, `workflow_dispatch` | `signos-zodiacales`, `galeria`, `php` |

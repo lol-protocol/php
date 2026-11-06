@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'ron', 'iso639_1' => 'ro', 'name' => 'Romanian',
-        'nativeName' => 'Română', 'family' => 'romance', 'coverage' => 'moderate',
+        'code' => 'ron',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
