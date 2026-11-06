@@ -186,7 +186,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - ✅ Marcalibros (`06_E`): el código es de root (la app no puede reescribirse), los datos van fuera de la carpeta web en `/var/lib/marcalibros` (750, `www-data`) y Nginx solo expone `public/`
 - ✅ Webmin (si se instala, `02_J`) escucha solo en `127.0.0.1`: no hay puerto 10000 abierto; se entra por túnel SSH. `WEBMIN_ALLOW_FROM=<IP fija>` o `WEBMIN_PUBLIC=1` lo abren a propósito
 - ✅ Apps Python (`06_B`): usuario de sistema, carpeta 750 y base de datos propios (`app-<nombre>` / `app_<nombre>`): una app comprometida no lee el código, el `.env` ni la base de otra
-- ⚠️ Las apps PHP comparten todavía el usuario `www-data` (pool de PHP-FPM compartido); ver "Límites conocidos" en el README
+- ✅ Apps PHP y Python: usuario propio `app-<nombre>`, carpeta 750 y base propia; las PHP con su pool de PHP-FPM. ⚠️ Marcalibros (`06_E`) sigue como `www-data`; ver "Límites conocidos" en el README
 
 ### Base de Datos
 - ✅ PostgreSQL sin acceso externo
