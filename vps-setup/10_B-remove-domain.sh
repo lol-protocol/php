@@ -7,7 +7,7 @@
 #   --dry-run  muestra que se archivaria sin tocar nada
 # Todo va a $REMOVED_DIR/<dominio>-<fecha>/ (por defecto /var/backups/vps-setup/removed).
 # NO toca el certificado de Let's Encrypt ni la zona DNS: al final se indican los comandos.
-# Rutas reemplazables para pruebas: NGINX_DIR, WWW_DIR, NGINX_LOG_DIR, SYSTEMD_DIR, REMOVED_DIR, CRON_DIR.
+# Rutas reemplazables para pruebas: NGINX_DIR, PHP_POOL_DIR, WWW_DIR, NGINX_LOG_DIR, SYSTEMD_DIR, REMOVED_DIR, CRON_DIR.
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -59,6 +59,7 @@ if [ -n "$APP" ]; then
     add_item "$NGINX_DIR/sites-available/$APP" "sites-available/$APP"
     add_item "$WWW_DIR/$APP" "www/$APP"
     add_item "$SYSTEMD_DIR/$APP.service" "systemd/$APP.service"
+    add_item "${PHP_POOL_DIR:-/etc/php/$PHP_VERSION/fpm/pool.d}/$(app_user_name "$APP").conf" "php-pool/$(app_user_name "$APP").conf"
     # Marcalibros (06_E) deja ademas su limpieza diaria en cron.d.
     if [ "$APP" = marcalibros ] && grep -qF '# vps-setup: 06_E-marcalibros' "$CRON_DIR/marcalibros" 2>/dev/null; then
         add_item "$CRON_DIR/marcalibros" "cron/marcalibros"
@@ -124,6 +125,8 @@ for it in "${ITEMS[@]}"; do
     sudo mv "$src" "$DEST/$rel"
 done
 [ -z "$APP" ] || sudo systemctl daemon-reload
+# Una app PHP deja su pool en PHP-FPM: ya archivado, se recarga para que deje de ejecutarlo.
+if [ -n "$APP" ] && [ -e "$DEST/php-pool/$(app_user_name "$APP").conf" ]; then sudo systemctl reload "$PHP_FPM_SERVICE"; fi
 sudo systemctl reload nginx
 # Lo archivado puede incluir el .env de la app (con la contrasena de su base de datos): solo root entra.
 sudo chmod 700 "$REMOVED_DIR" "$DEST"
