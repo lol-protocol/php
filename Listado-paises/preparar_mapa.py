@@ -15,10 +15,11 @@ Los países que Natural Earth no tiene por separado se marcan solo con un punto 
 Solo biblioteca estándar.
 """
 import argparse
-import csv
 import json
 import math
 from pathlib import Path
+
+from comun import escribir_filas, filas_csv
 
 AQUI = Path(__file__).resolve().parent
 ANCHO = 1000
@@ -79,8 +80,7 @@ def main(argv=None, carpeta=AQUI):
     ap.add_argument("--natural-earth", required=True)
     args = ap.parse_args(argv)
 
-    with (carpeta / "codigos_iso.csv").open(encoding="utf-8", newline="") as f:
-        nuestros = {fila["codigo"] for fila in csv.DictReader(f)}
+    nuestros = {fila["codigo"] for fila in filas_csv(carpeta / "codigos_iso.csv")}
     datos = json.loads(Path(args.natural_earth).read_text(encoding="utf-8"))
 
     anillos = {}  # codigo -> lista de anillos proyectados
@@ -109,10 +109,7 @@ def main(argv=None, carpeta=AQUI):
         x, y = proyectar(lon, lat)
         filas.append([codigo, "", f"{x:.1f}", f"{y:.1f}"])
 
-    with (carpeta / "mapa_paises.csv").open("w", encoding="utf-8", newline="") as f:
-        escritor = csv.writer(f)
-        escritor.writerow(["codigo", "trazado", "x", "y"])
-        escritor.writerows(sorted(filas))
+    escribir_filas(carpeta / "mapa_paises.csv", ["codigo", "trazado", "x", "y"], sorted(filas))
     faltan = sorted(nuestros - {fila[0] for fila in filas})
     print(f"mapa_paises.csv: {len(filas)} filas; países de la tabla sin mapa: {', '.join(faltan) or 'ninguno'}")
 

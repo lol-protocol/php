@@ -104,6 +104,49 @@ CREATE TABLE treaties (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================================
+-- FIELD SOURCES TABLE (field_sources.csv)
+-- Where each value comes from and how sure it is: one source per law and field.
+-- ============================================================================
+CREATE TABLE field_sources (
+  source_id INT PRIMARY KEY AUTO_INCREMENT,
+  law_id INT NOT NULL,
+  field VARCHAR(50) NOT NULL COMMENT 'Column of the law table the source backs',
+  url TEXT NOT NULL,
+  confidence VARCHAR(10) NOT NULL DEFAULT '' COMMENT 'high | medium | low',
+  checked DATE NULL COMMENT 'When the source was last looked at',
+  FOREIGN KEY (law_id) REFERENCES privacy_laws(law_id) ON DELETE CASCADE,
+  UNIQUE KEY uq_law_field (law_id, field)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================================
+-- LAW CHANGES TABLE (changes.csv)
+-- What changed in each row and when. No foreign key: an entry outlives a law that was removed or renamed.
+-- ============================================================================
+CREATE TABLE law_changes (
+  change_id INT PRIMARY KEY AUTO_INCREMENT,
+  changed_on DATE NOT NULL,
+  jurisdiction_code VARCHAR(2) NOT NULL,
+  law_name VARCHAR(512) NOT NULL,
+  field VARCHAR(50) NOT NULL COMMENT 'A column of the law table, or "row" for a law added or removed',
+  old_value TEXT,
+  new_value TEXT,
+  INDEX idx_changed_on (changed_on),
+  INDEX idx_jurisdiction_code (jurisdiction_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================================
+-- VALUE TRANSLATIONS TABLE (value_translations.csv)
+-- Machine translations of the descriptive values, keyed by the exact English text.
+-- ============================================================================
+CREATE TABLE value_translations (
+  translation_id INT PRIMARY KEY AUTO_INCREMENT,
+  lang CHAR(3) NOT NULL COMMENT 'spa | fra | deu | por',
+  source_text TEXT NOT NULL,
+  translated_text TEXT NOT NULL,
+  INDEX idx_lang (lang)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================================
 -- COMPARATIVE VIEWS
 -- ============================================================================
 

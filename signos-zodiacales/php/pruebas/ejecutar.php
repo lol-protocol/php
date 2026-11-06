@@ -149,8 +149,67 @@ foreach ($vectores['cualidades_de_sha256'] as $idioma => $huella) {
     igual($huella, hash('sha256', implode("\n", $frases)), "cualidades_de (las 144) $idioma");
 }
 
+// Los árboles: el mes celta y el árbol del horóscopo de cada día del año bisiesto.
+igual(366, count($vectores['arbol_celta']), 'arbol_celta: días');
+foreach ($vectores['arbol_celta'] as [$mesDia, $esperado]) {
+    $c = Zodiaco::arbolCelta(dia($mesDia));
+    igual($esperado, $c === null ? null : [$c['mes']['id'], $c['arbol']['id']], "arbol_celta $mesDia");
+}
+foreach ($vectores['arbol_de_fecha'] as [$mesDia, $idArbol, $tramo]) {
+    $h = Zodiaco::arbolDeFecha(dia($mesDia));
+    igual([$idArbol, $tramo], [$h['arbol']['id'], $h['tramo']], "arbol_de_fecha $mesDia");
+}
+
+// La Luna: el nakshatra de 300 instantes entre 1900 y 2099 y su longitud sideral (las dos lenguas calculan en coma flotante,
+// por eso la longitud se compara con una tolerancia de una millonésima de grado y el número, exacto).
+foreach ($vectores['nakshatra_de_instante'] as [$texto, $numero, $longitud]) {
+    $n = Zodiaco::nakshatraDeInstante(new DateTimeImmutable($texto));
+    igual($numero, $n['nakshatra']['numero'], "nakshatra_de_instante $texto");
+    $comprobaciones++;
+    if (abs($n['longitud_sideral'] - $longitud) > 1e-5) {
+        $fallos[] = "nakshatra_de_instante $texto: longitud " . $n['longitud_sideral'] . ", esperada $longitud";
+    }
+}
+
+// Los rasgos: las muestras de cada idioma, los 61 en español y la huella de los 61 de cada idioma.
+foreach ($vectores['rasgos_de'] as $idioma => $filas) {
+    foreach ($filas as [$sistema, $clave, $texto]) {
+        igual($texto, Zodiaco::rasgosDe($sistema, $clave, $idioma), "rasgos_de $sistema $clave $idioma");
+    }
+}
+$claves = [];
+foreach (Zodiaco::cargarArboles()['calendario_celta']['meses'] as $m) {
+    $claves[] = ['celta', $m['id']];
+}
+foreach (Zodiaco::cargarArboles()['horoscopo'] as $h) {
+    $claves[] = ['horoscopo', $h['arbol']];
+}
+foreach (Zodiaco::cargarArboles()['nakshatras'] as $n) {
+    $claves[] = ['nakshatra', $n['id']];
+}
+foreach ($vectores['rasgos_de_sha256'] as $idioma => $huella) {
+    $frases = array_map(fn (array $k): string => Zodiaco::rasgosDe($k[0], $k[1], $idioma), $claves);
+    igual($huella, hash('sha256', implode("\n", $frases)), "rasgos_de (los 61) $idioma");
+}
+
+// La numerología: el camino de vida de 1 377 fechas, el año personal, la reducción y los rasgos de los 12 números.
+foreach ($vectores['camino_de_vida'] as [$fecha, $esperado]) {
+    igual($esperado, Zodiaco::caminoDeVida(new DateTimeImmutable($fecha, new DateTimeZone('UTC'))), "camino_de_vida $fecha");
+}
+foreach ($vectores['anio_personal'] as [$fecha, $anio, $esperado]) {
+    igual($esperado, Zodiaco::anioPersonal(new DateTimeImmutable($fecha, new DateTimeZone('UTC')), $anio), "anio_personal $fecha $anio");
+}
+foreach ($vectores['reducir_numero'] as [$n, $conMaestros, $sinMaestros]) {
+    igual([$conMaestros, $sinMaestros], [Zodiaco::reducirNumero($n), Zodiaco::reducirNumero($n, false)], "reducir_numero $n");
+}
+foreach ($vectores['rasgos_de_numero'] as $idioma => $filas) {
+    foreach ($filas as [$numero, $texto]) {
+        igual($texto, Zodiaco::rasgosDeNumero($numero, $idioma), "rasgos_de_numero $numero $idioma");
+    }
+}
+
 // Los casos que tienen que fallar, los mismos que prueba Python.
-$conFecha = ['signo_occidental', 'cuspide', 'animal_chino_de_fecha', 'angel_de_fecha', 'demonio_de_fecha'];
+$conFecha = ['signo_occidental', 'cuspide', 'animal_chino_de_fecha', 'angel_de_fecha', 'demonio_de_fecha', 'arbol_celta', 'arbol_de_fecha', 'camino_de_vida', 'anio_personal'];
 foreach ($vectores['errores'] as $caso) {
     $args = $caso['args'];
     if (in_array($caso['funcion'], $conFecha, true)) {
@@ -179,6 +238,17 @@ igual(['Sitael', 'serafines', [[3, 31], [4, 4]]], [Zodiaco::angelDeFecha($tres)[
 igual('Vassago', Zodiaco::demonioDeFecha($tres)['demonio']['nombre'], 'ejemplo: demonio del 3 de abril');
 igual('Construcción, protección, nobleza', Zodiaco::cualidadesDe('angel', 3, 'es'), 'ejemplo: cualidades de Sitael');
 igual('İrade, başlangıçlar, enerji', Zodiaco::cualidadesDe('angel', 1, 'tr'), 'ejemplo: la i con punto en turco');
+// Ejemplos de los árboles y la Luna, como los del README.
+igual(['Fearn', 'aliso'], [Zodiaco::arbolCelta($tres)['mes']['ogham'], Zodiaco::arbolCelta($tres)['arbol']['nombres']['es']], 'ejemplo: mes celta del 3 de abril');
+igual(null, Zodiaco::arbolCelta(new DateTimeImmutable('2025-12-23', $u)), 'ejemplo: el 23 de diciembre no tiene árbol');
+igual('serbal', Zodiaco::arbolDeFecha($tres)['arbol']['nombres']['es'], 'ejemplo: árbol del horóscopo del 3 de abril');
+$luna = Zodiaco::nakshatraDeInstante(new DateTimeImmutable('1992-04-12T00:00:00+00:00'));
+igual(['Ashlesha', 'Nagkesar'], [$luna['nakshatra']['nombre'], $luna['nakshatra']['arbol']], 'ejemplo: nakshatra del 12/04/1992');
+igual('Equilibrio, sabiduría, paz', Zodiaco::rasgosDe('horoscopo', 'olivo', 'es'), 'ejemplo: rasgos del olivo');
+// Ejemplos de la numerología, como los del README.
+igual([8, 11, 22, 33], array_map(fn (string $f): int => Zodiaco::caminoDeVida(new DateTimeImmutable($f, $u)), ['1990-04-03', '1980-01-19', '1980-01-03', '1980-04-29']), 'ejemplo: caminos de vida');
+igual(8, Zodiaco::anioPersonal($tres, 2026), 'ejemplo: año personal');
+igual('Intuición, inspiración, idealismo', Zodiaco::rasgosDeNumero(11, 'es'), 'ejemplo: rasgos del 11');
 // Un datetime con huso en animalChinoDeFecha cuenta por su día local, no por el de China.
 igual('serpiente', Zodiaco::animalChinoDeFecha(new DateTimeImmutable('2026-02-16T20:00:00+00:00'))['signo']['id'], 'ejemplo: el día local manda en animalChinoDeFecha');
 igual('caballo', Zodiaco::animalChinoDeInstante(new DateTimeImmutable('2026-02-16T20:00:00+00:00'))['signo']['id'], 'ejemplo: el instante pasa a la hora de China');

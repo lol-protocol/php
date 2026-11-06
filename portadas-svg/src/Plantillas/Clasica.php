@@ -8,7 +8,6 @@ use PortadasSvg\Libro;
 use PortadasSvg\Plantilla;
 use PortadasSvg\Color;
 use PortadasSvg\Rectangulo;
-use PortadasSvg\Texto;
 
 /** Libro clásico: marco doble, título centrado en serif y un rombo entre el título y el autor. */
 final class Clasica extends Plantilla
@@ -26,7 +25,6 @@ final class Clasica extends Plantilla
     /** Subtítulo: alto disponible y tamaño. */
     private const SUBTITULO_ALTO = 16.0;
     private const SUBTITULO_TAMANO_MAX = 5.0;
-    private const SUBTITULO_TAMANO_MIN = 3.2;
     /** Friso del adorno de la tradición, arriba dentro del marco: distancia al borde superior del corte, margen a cada lado y alto. */
     private const FRISO_Y = 17.0;
     private const FRISO_MARGEN = 18.0;
@@ -73,16 +71,11 @@ final class Clasica extends Plantilla
 
         $svg .= $adorno->friso(new Rectangulo($panel->x + self::FRISO_MARGEN, $panel->y + self::FRISO_Y, $panel->ancho - 2 * self::FRISO_MARGEN, self::FRISO_ALTO), $colores['acento']);
 
-        $zonaAlto = $panel->alto * self::TITULO_ALTO;
-        $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $zonaAlto, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO, true);
-        $y = $this->baseline($panel->y + $panel->alto * self::TITULO_Y, $zonaAlto, count($titulo['lineas']), $titulo['tamano']);
-        $svg .= $this->parrafo($titulo['lineas'], $cx, $y, $titulo['tamano'], 'middle', $colores['texto']);
-        $fin = $y + (count($titulo['lineas']) - 1) * $titulo['tamano'] * self::INTERLINEADO;
-
-        if ($libro->textos->subtitulo !== '') {
-            $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->medidaDe(['font-style' => 'italic']), self::INTERLINEADO, true);
-            $svg .= $this->parrafo($subtitulo['lineas'], $cx, $this->bajoElTitulo($fin, $titulo['tamano'], $subtitulo['tamano']), $subtitulo['tamano'], 'middle', $colores['texto'], ['font-style' => 'italic']);
-        }
+        $svg .= $this->tituloYSubtitulo(
+            $libro, $cx, $ancho, 'middle', $panel->y + $panel->alto * self::TITULO_Y, $panel->alto * self::TITULO_ALTO, true,
+            ['max' => self::TITULO_TAMANO_MAX, 'min' => self::TITULO_TAMANO_MIN, 'estilo' => [], 'color' => $colores['texto']],
+            ['alto' => self::SUBTITULO_ALTO, 'max' => self::SUBTITULO_TAMANO_MAX, 'estilo' => ['font-style' => 'italic'], 'color' => $colores['texto']],
+        );
 
         $ornamento = $panel->y + $panel->alto * self::ORNAMENTO_Y;
         $desde = self::EMBLEMA_RADIO * $adorno->ocupa() + self::ORNAMENTO_LINEA_SEPARACION;

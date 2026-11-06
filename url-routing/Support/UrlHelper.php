@@ -32,6 +32,28 @@ class UrlHelper
         return '/' . str_pad((string) $id, $largo, '0', STR_PAD_LEFT) . '/';
     }
 
+    /**
+     * A page filtered by other entities: /1001/48213/ is the category 1001 with the atributo 48213. The filters
+     * come in a fixed order (the narrower id first), so a page has one URL however its filters were added.
+     *
+     * @param array<string, int|string> $filtros type => id
+     */
+    public function filtrado(string $tipo, int|string $id, array $filtros): string
+    {
+        $anchos = [];
+        foreach (array_keys($filtros) as $tipoFiltro) {
+            $anchos[$tipoFiltro] = $this->router->typeLength($tipoFiltro) ?? throw new \InvalidArgumentException("Tipo desconocido: {$tipoFiltro}");
+        }
+        asort($anchos);
+
+        $url = $this->enlace($tipo, $id);
+        foreach (array_keys($anchos) as $tipoFiltro) {
+            $url .= ltrim($this->enlace($tipoFiltro, $filtros[$tipoFiltro]), '/');
+        }
+
+        return $url;
+    }
+
     public function accion(string $tipo, int|string $id, int|string $codigo): string
     {
         return rtrim($this->enlace($tipo, $id), '/') . '/' . $codigo . '/';

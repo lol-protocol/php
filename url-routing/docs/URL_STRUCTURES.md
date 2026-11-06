@@ -11,7 +11,7 @@ Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de 
 | 3 letras | `^[a-z]{3}$` | idioma (ISO 639-2): va en el subdominio (`spa.`, `eng.`), nunca en la ruta |
 | 4+ letras | `^[a-z]{4,}$` | texto libre: lo que se busca, detrás de `/b/{tipo}/` |
 | solo dígitos | `^\d+$` | una entidad: la cantidad de dígitos dice el tipo (ver tablas abajo); 1 dígito detrás de algo es una acción |
-| con punto | `\.` | un archivo para buscadores: `robots.txt` y los sitemaps |
+| con punto | `\.` | un archivo: para buscadores (`robots.txt` y los sitemaps) y el script de los listados (`/b.js`, un archivo de `public/` que sirve el servidor web) |
 
 La lista completa de rutas de cada sitio, generada desde `config/routes/*.php`, está en [`RUTAS.md`](./RUTAS.md) (`php bin/rutas.php > docs/RUTAS.md`; un test falla si queda desactualizada).
 
@@ -31,9 +31,49 @@ Cuando dos personas resultan ser la misma y una se fusiona en la otra, el id que
 
 La fusión se hace con `php bin/fusionar.php <duplicado> <que queda>`, que sin `--confirmar` solo muestra qué movería. En una transacción pasa a la que queda los hijos, vínculos, sucesos, organizaciones, colecciones y alias de la duplicada (sin duplicar lo que ya tenía), completa lo que le falte (padres, apellido, marca de vida), borra la duplicada y deja su id como alias. Se niega a fusionar a dos personas que no pueden ser la misma: madre o padre e hija o hijo, o dos que tienen un vínculo entre sí.
 
+### Grupos fusionados
+
+Un apellido se escribe de más de una forma («García» y «Garcia»), y el segundo grupo que alguien crea por error es el duplicado más probable de todo el catálogo. Funciona igual que con las personas: el id del grupo que desaparece queda en `grupo_alias` y `/{id viejo}/`, `/{id viejo}/1/` y `/{id viejo}/2/` dan **301** a la misma página del grupo que quedó. Un id que nunca existió sigue siendo 404.
+
+`php bin/fusionar.php grupo <duplicado> <que queda> [--confirmar]` (sin `--confirmar` solo muestra qué movería; sin la palabra `grupo` fusiona personas, como siempre). Pasa a las personas del duplicado al que queda, le completa el origen y la descripción que le falten, borra el duplicado y deja su id como alias. **Se niega** si uno de los dos tiene un pedido de retiro que lo oculta o lo retira: esa página sigue respondiendo 410 en su id viejo, y fusionarla antes enterraría la decisión.
+
 ### Contrato de generación de ids (importante)
 
 Un id **debe** generarse ya relleno con ceros al ancho fijo de su tipo. `persona #47` no es `/47/` (2 dígitos → caería en un tipo de 2 dígitos, que no existe, o peor, en uno que sí exista) — es `/0000000047/` (10 dígitos). El helper `enlace($tipo, $id)` en `index.php` hace este padding automáticamente consultando `Router::typeLength()`; nunca se debe construir un enlace concatenando el id "crudo" a mano.
+
+### Dígito verificador (opcional, se decide antes de abrir el sitio)
+
+Hoy los ids son números corridos: `/6128473105/` y `/6128473106/` son dos personas vecinas, cualquiera puede recorrer el catálogo desde el 1 y un id mal copiado es indistinguible de uno que no existe. Con `IDS_DIGITO_VERIFICADOR=true` (apagado por omisión) **el último dígito de cada id es de verificación**, calculado con los anteriores (algoritmo de Damm: detecta todo error de un dígito y todo cambio de dos dígitos contiguos, lo que Luhn no hace con 09 y 90). Un id cuyo dígito no coincide da **404 sin consultar la base**, con la pista «el último dígito de un id es de verificación y este no coincide».
+
+- **No es un interruptor.** Encenderlo sobre ids que no lo traen hace que casi todos den 404. Cada id de la base tiene que terminar en su dígito, incluidos los de `persona_alias` y `grupo_alias`. Por eso se decide ahora, que solo hay datos de demostración: después de abrir, cambiar un id rompe los enlaces que ya circulan.
+- **Quien crea ids** los completa: `php bin/id.php completar <número> [<ancho>]` (`completar 612847310 10` da `6128473101`) y `php bin/id.php verificar <id>`; en PHP, `DigitoVerificador::completar()`. Tampoco cabe un id más corto: el ancho de cada tipo no cambia, el dígito ocupa el último lugar (una persona tiene 9 dígitos de número y 1 de verificación).
+- **Los códigos de las órdenes quedan fuera** (`'verificador' => false` en su entrada): son aleatorios, y su protección es no poder adivinarse.
+- **Qué NO hace:** no vuelve secretos los ids (con 9 dígitos libres siguen siendo recorribles; el dígito solo corta lo que se inventa o se escribe mal) ni protege nada privado: eso lo siguen haciendo `Privacidad` y `AccessPolicy`. Si lo que se quiere es que el catálogo no se pueda recorrer, la salida es un id aleatorio como el de las órdenes, y eso sí cambia las URL de otra forma.
+- El ancho fijo y el relleno con ceros no cambian (`enlace()` sigue igual); con la opción encendida, ya no se sugiere el id «rellenado» de un id corto, porque tampoco sería válido.
+
+### Filtros con barra: `/1001/48213/`
+
+Una categoría se puede estrechar con más entidades **como segmentos de la ruta**, no como `?color=…`: `/1001/48213/` es la categoría 1001 (Ropa) con el atributo 48213 (azul marino), y `/1001/48213/520002/` suma la etiqueta 520002. Qué es cada segmento lo dice su **ancho**, como en cualquier otro id; y un segundo segmento de **un dígito sigue siendo una acción**, así que no chocan (los filtros tienen 2 o más).
+
+- **Qué tipos filtran qué se declara en la configuración**: `'filtros' => ['atributo', 'etiqueta']` en la entrada de `by_length` (hoy solo la categoría del POS; la gramática vale para cualquier tipo). Un tipo que no la declara sigue sin aceptar nada tras el id (`/48213/1001/` es 404), y la configuración se valida al cargarla.
+- **Una sola URL por página**: los filtros van en un orden fijo (el id más corto primero: atributo, luego etiqueta), `filtrado()` / `UrlHelper::filtrado()` los escribe así, y cualquier otro orden da **301** a ese. Un filtro que no existe, un tipo repetido (dos colores), un tipo que no filtra o más filtros que tipos son **404**; una combinación válida sin productos es una página vacía (200), no un error.
+- **Solo se ofrecen filtros que llevan a algo**: la categoría muestra los atributos y etiquetas que algún producto activo suyo tiene (nada que termine en una página vacía), los aplicados con un ✕ que quita ese filtro y conserva los demás.
+- **Una página filtrada no se indexa** (`noindex`) ni va en el sitemap: es una combinación más de los mismos productos. Los enlaces para agregar un filtro llevan `rel="nofollow"`. El dígito verificador, si está activo, también revisa los ids de los filtros.
+- **En la búsqueda (`/b/…`) no hay filtros por ahora**: allí el segmento tras el texto ya es la página, y un texto de solo dígitos también lleva la suya (`/b/8/2026/1/`), así que un filtro de 4 dígitos chocaría con una página 2026. Habría que fijar otra posición antes de agregarlos.
+
+### Qué URLs dan 404 o 301 (y cuántas veces)
+
+Cada respuesta 404 o 301 se anota como **la forma** de su URL, nunca la URL: un 404 es justo donde el nombre de alguien termina escrito en una ruta (`/maria-garcia/`). La forma dice de qué tipo era cada segmento y nada más: un id de 10 dígitos es `#10`, la cuenta es `0`, una letra queda como está (`b`, `c`), 2 y 3 letras son `aa` y `aaa`, 4 o más `a4+`, un archivo que suele pedir un escáner (`wp-login.php`, `.env`) es `*.php` o `*.env` (lista cerrada de extensiones: `juan.perez` no es una extensión, es un `?`), una palabra que el propio sitio enruta (`robots.txt`, `cart`) queda tal cual, y cualquier otra cosa es `?`. No se guarda la query, ni la IP, ni el navegador. Un 301 anota también la forma de adonde fue.
+
+- Es un archivo por día en `URL_LOG_DIR` (por omisión una carpeta del directorio temporal), con una línea por petición. Un día deja de crecer a los 5 MB (una inundación de 404 no llena el disco), se guardan 60 días y escribir nunca rompe una página. `URL_LOG_DIR=off` lo apaga.
+- `php bin/urls-informe.php [--dias=7] [--maximo=20]` lo resume: qué formas dan 404 y cuáles se redirigen, de más a menos frecuentes. Sirve para dos cosas: encontrar enlaces rotos (un `#10` que se repite es un id que alguien sigue enlazando), y saber cuándo una redirección vieja (`/cart/` → `/c/`) ya no recibe visitas y se puede quitar del mapa `redirect`.
+- La forma conserva si la ruta terminaba en barra, porque es lo que distingue `/6128473105` de `/6128473105/` en un 301 de URL no canónica.
+
+### Los enlaces de las páginas son canónicos
+
+`tests/App/Integration/EnlacesTest.php` recorre, con un servidor real, todas las páginas de los dos sitios sembrados como lo hace un buscador: parte de la portada, de los listados y de **todas las URL del sitemap** (que así quedan comprobadas: cada una existe y es la canónica) y sigue cada enlace `<a href="/…">`. Falla si alguno redirige (un 301 es un enlace escrito a mano: `enlace()` y `accion()` existen para que nadie lo haga) o da 404. Lo hace como visitante y como propietario. Lo único que no sigue: la cuenta, que a un visitante le responde 401 (es el diseño, y esa prueba exige el 401).
+
+Ya encontró un defecto: al propietario se le ofrecía «Pedir el retiro de esta página» en sucesos y registros que un visitante no puede ver, y ese formulario responde 404.
 
 ### Sufijo de acción desconocido
 
@@ -45,7 +85,9 @@ Si el segundo segmento es numérico pero no está en el arreglo `actions` del ti
 
 ### Dominio e idioma
 
-`determineSite()` exige coincidencia exacta de dominio o un subdominio real (`.contrastocolor.local`), nunca un sufijo de cadena suelto — así `evilcontrastocolor.local` no se confunde con un subdominio legítimo. `determineLocale()` solo reconoce subdominios que están en la lista explícita de idiomas soportados (`spa`, `eng`); un subdominio de 3 letras que no sea un idioma real (`api.`, `cdn.`) nunca se interpreta como uno.
+`determineSite()` exige coincidencia exacta de dominio o un subdominio real (`.contrastocolor.local`), nunca un sufijo de cadena suelto — así `evilcontrastocolor.local` no se confunde con un subdominio legítimo. `HostParser::getLocale()` solo reconoce los subdominios de la lista de idiomas **activos**; un subdominio de 3 letras que no sea uno de ellos (`api.`, `cdn.`) nunca se interpreta como idioma.
+
+El URL conoce 30 idiomas (`HostParser::IDIOMAS_CONOCIDOS`, ISO 639-2/T, con su código `hreflang`), pero **sirve** solo los de `IDIOMAS_ACTIVOS` en `.env` (por omisión `spa,eng`; el español siempre está). Activar uno es una línea en `.env`: `hreflang`, `<html lang>` y el reconocimiento del subdominio salen solos. Lo que no sale solo: el DNS y el certificado del subdominio (un comodín `*.dominio` cubre todos; el ejemplo de nginx ya lo acepta), los textos de las vistas y los meses de `Format::MESES` (un idioma que no esté ahí muestra las fechas con meses en español). Por eso la lista es de **activos**: anunciar un idioma en `hreflang` antes de que sus páginas estén en ese idioma le miente al buscador.
 
 ### Headroom para tipos futuros
 
@@ -128,8 +170,29 @@ Cada petición vuelve a preguntar a la base, así que una página que se oculta 
 
 - Cada archivo sale con `ETag` y `Cache-Control: no-cache` (se puede guardar, pero se pregunta cada vez). Una petición con el `If-None-Match` de la copia actual recibe un **304** sin cuerpo.
 - `Support/SitemapEstado.php` recuerda, por archivo, una huella de lo que lista y **desde cuándo lista exactamente eso**. Esa fecha es el `<lastmod>` de cada parte en el índice y el `Last-Modified` del archivo (y `If-Modified-Since` también da 304). Se mueve cuando entra o sale una página, no cuando se vuelve a generar el archivo.
-- Una parte que nunca se sirvió no lleva `<lastmod>` en el índice hasta que alguien la pida: mejor sin fecha que con una inventada. Las páginas mismas no llevan `<lastmod>`, porque las tablas no guardan fechas de modificación.
+- Una parte que nunca se sirvió no lleva `<lastmod>` en el índice hasta que alguien la pida: mejor sin fecha que con una inventada. Cada página lleva además su propio `<lastmod>` (un día, `AAAA-MM-DD`) si su fila tiene `actualizado_en` (migración 010; genealogía: personas, sucesos, registros, colecciones, grupos y organizaciones). Reglas de esa columna:
+  - **Está vacía hasta que alguien la escribe**, y una fila sin fecha no lleva `<lastmod>`: un buscador deja de creerle a un sitio cuyas fechas no se mueven, así que mejor ninguna que una inventada.
+  - **La mueve quien cambia el contenido de la página**: una importación o una edición pone `actualizado_en = CURRENT_TIMESTAMP` en esa fila (este repositorio no trae importador ni editor: ese es el contrato para quien los escriba). Las herramientas de `bin/` ya lo hacen: al fusionar personas se mueven la que queda y sus hijos; al fusionar grupos, el que queda y las personas que recibe; y al suprimir una persona, las páginas que pierden algo (sus hijos, sus vínculos, las organizaciones y colecciones en que estaba y los sucesos que compartía).
+  - **No la mueve** un cambio de quién puede ver la página (marcar una persona como viva, un pedido de retiro): no cambia lo que la página dice, y la fecha delataría el cambio.
+  - Un cambio en una fila **relacionada** (el nombre de un pariente) no la mueve sola: la fecha es la de la fila de la página.
+  - Los lugares y el POS no tienen la columna y no llevan fecha por página.
 - El estado son archivos chicos en `SITEMAP_ESTADO_DIR` (por omisión, una carpeta en el directorio temporal). Si se pierde, las fechas empiezan de nuevo; si no se puede escribir, no hay fechas y el sitemap se sirve igual.
+
+### Listados que cargan más al bajar (sin una URL nueva)
+
+`/b/{tipo}/[{texto}/][{página}/]` sigue siendo paginado: cada página tiene su URL, su enlace «← Anterior» y «Siguiente →» (con `rel="prev"` y `rel="next"`) y es lo que ve un buscador o un navegador sin JavaScript. Encima, el script `/b.js` (cargado por el listado) lo mejora: al llegar al final de la lista pide la página siguiente y la agrega, sin salir de la página en que está.
+
+- **Pide la misma URL** del enlace «Siguiente →», con la cabecera `X-Fragmento: 1`, y el servidor contesta **solo la lista y la navegación**, sin la página alrededor. No hay una forma de URL nueva que aprender ni que enlazar: sin la cabecera (un buscador, `curl`, un navegador sin JavaScript) la respuesta es la página de siempre. Solo el valor exacto `1` pide el fragmento.
+- Como la misma URL contesta de dos maneras, todo listado manda `Vary: X-Fragmento`. (Las páginas ya van con `Cache-Control: no-store`, así que ninguna caché las guarda; el `Vary` es por si algún día lo hacen.)
+- El fragmento tampoco consume el aviso de una sola vez (`Flash`) que el diseño completo sí muestra y borra, que es una razón para no pedir la página entera y extraerle la lista.
+- **El script es un archivo de `public/`**: nginx y Apache sirven un archivo que existe por su cuenta, sin pasar por PHP, y la política CSP (`script-src 'self'`) lo permite porque es del mismo origen. No hay scripts en línea. El servidor integrado de PHP (desarrollo y pruebas) entrega todo al router, así que `public/index.php` le cede los archivos que existen bajo `public/` (nunca uno oculto, un `.php`, ni uno fuera de la carpeta).
+- Se probó en Chromium: de 50 a 130 filas sin repetidas, la URL del navegador no cambia, sin JavaScript queda el enlace, y si el servidor falla el enlace vuelve a verse.
+
+### Qué no se indexa
+
+`robots.txt` deja fuera `/0/`, `/b/` (y en el POS `/c/` y `/p/`), pero eso solo le dice a un buscador que no recorra esos caminos: una URL que alguien enlace desde otro sitio puede aparecer igual en los resultados. Por eso cada ruta funcional lleva `'noindex' => true` en su entrada de `reserved` (`config/routes/*.php`) y el router responde con `X-Robots-Tag: noindex`: la cuenta, la búsqueda, el carrito, el pago y pedir un retiro (`/r/{id}/`). La exportación GEDCOM (`/{colección}/3/`) la manda también, porque es un archivo y no una página. Una prueba exige que todo lo que `robots.txt` excluye lleve `noindex`, para que las dos listas no se separen.
+
+Una cabecera sirve donde un `<meta>` no puede (un archivo que no es HTML). La excepción son las páginas de una persona oculta, que ya llevan el `<meta name="robots" content="noindex">` en su HTML.
 
 ---
 

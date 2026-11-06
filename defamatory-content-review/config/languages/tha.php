@@ -9,8 +9,8 @@
 
 return [
     'meta' => [
-        'code' => 'tha', 'iso639_1' => 'th', 'name' => 'Thai',
-        'nativeName' => 'ไทย', 'family' => 'tai_kadai', 'coverage' => 'moderate',
+        'code' => 'tha',
+        'coverage' => 'moderate',
         'requiresTokenizer' => true,
     ],
     'words' => [

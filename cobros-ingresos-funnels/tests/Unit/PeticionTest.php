@@ -64,4 +64,27 @@ final class PeticionTest extends TestCase
 
         self::assertSame(['page' => 'cobros', 'meses' => '6', 'pagina' => '3'], $_GET);
     }
+
+    public function testMontoLeeElCampoDelFormulario(): void
+    {
+        $_POST['monto'] = '1500.50';
+        self::assertSame(1500.5, Peticion::monto());
+    }
+
+    public function testMontoRedondeaAlCentavo(): void
+    {
+        $_POST['monto'] = '10.005';
+        self::assertSame(10.01, Peticion::monto());
+    }
+
+    /** 0 es lo que Validacion::faltanCampos() ya rechaza como "monto valido": el formulario vuelve con su error. */
+    public function testMontoQueNoEsUnMontoEsCero(): void
+    {
+        foreach (['1.500,50', '1500,50', 'abc', '', '1e3'] as $texto) {
+            $_POST['monto'] = $texto;
+            self::assertSame(0.0, Peticion::monto(), "'{$texto}'");
+        }
+        $_POST = [];
+        self::assertSame(0.0, Peticion::monto(), 'sin el campo');
+    }
 }

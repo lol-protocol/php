@@ -23,6 +23,8 @@ return [
             'controller' => 'POS\OrderController',
             // Never offered as a "did you mean" for a short id: a code is random, not a padded number.
             'sugerir' => false,
+            // Its own random code is its protection: no check digit (see Support/DigitoVerificador.php).
+            'verificador' => false,
             'actions' => [
                 1 => 'invoice',
                 2 => 'track',
@@ -60,18 +62,23 @@ return [
             'type' => 'grupo',
             'controller' => 'POS\GrupoController',
             'actions' => [],
+            // /1001/48213/ is the category 1001 filtered by the atributo 48213 (a second segment of 2 or more digits is
+            // a filter, the entity its width names; 1 digit stays an action). In this order: shorter width first.
+            'filtros' => ['atributo', 'etiqueta'],
         ],
     ],
 
     // Lengths 1-3 are deliberately unused below grupo (4) — headroom for
     // future low-cardinality types without renumbering anything above.
+    // `noindex` => true: a functional page that sends `X-Robots-Tag: noindex` (see config/routes/genealogy.php).
     'reserved' => [
         '' => ['controller' => 'POS\HomeController', 'method' => 'index'],
         // Search: /b/{digit width of the type}/[{text}/][{page}/].
-        'b' => ['controller' => 'POS\HomeController', 'method' => 'buscar', 'ruta' => 3],
+        'b' => ['controller' => 'POS\HomeController', 'method' => 'buscar', 'ruta' => 3, 'noindex' => true],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'POS\CuentaController',
             'method' => 'index',
+            'noindex' => true,
             'actions' => [
                 1 => 'perfil',
                 2 => 'ordenes',
@@ -84,6 +91,7 @@ return [
         'c' => [
             'controller' => 'POS\CartController',
             'method' => 'show',
+            'noindex' => true,
             'actions' => [
                 1 => 'agregar',
                 2 => 'actualizar',
@@ -94,6 +102,7 @@ return [
         'p' => [
             'controller' => 'POS\CheckoutController',
             'method' => 'index',
+            'noindex' => true,
             'actions' => [
                 1 => 'shipping',
                 2 => 'payment',

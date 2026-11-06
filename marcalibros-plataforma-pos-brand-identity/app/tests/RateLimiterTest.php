@@ -81,6 +81,18 @@ final class RateLimiterTest extends AppTestCase
         $this->assertCount(1, glob($this->dir . '/intentos/*.json') ?: [], 'La misma persona debe caer en el mismo registro.');
     }
 
+    public function testAShortLeftoverSecretIsReplacedInsteadOfBreakingEveryRequest(): void
+    {
+        mkdir($this->dir . '/intentos', 0700, true);
+        file_put_contents($this->dir . '/intentos/.clave', '');
+
+        $this->assertTrue($this->limiter()->attempt('s', 5, 3600, $this->now));
+        $secret = (string) file_get_contents($this->dir . '/intentos/.clave');
+        $this->assertSame(64, strlen($secret));
+        $this->assertSame('600', substr(sprintf('%o', fileperms($this->dir . '/intentos/.clave')), -3));
+        $this->assertSame([], glob($this->dir . '/intentos/.tmp-*') ?: [], 'No debe quedar ningún temporal.');
+    }
+
     public function testPurgeRemovesOnlyStaleRecords(): void
     {
         $limiter = $this->limiter();

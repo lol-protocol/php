@@ -17,11 +17,23 @@ use App\Support\Logger;
 use App\Support\SessionManager;
 use App\Support\HttpSecurityHeaders;
 use App\Support\RateLimiter;
+use App\Support\RegistroDeUrls;
 
 /**
  * Main Application Entry Point
  * Loads the route registry for the current domain and dispatches the request.
  */
+
+// PHP's built-in server (development and the tests) hands EVERY request to this script when it is the router,
+// files included; a real web server (nginx, Apache) serves an existing file itself and never gets here. So that
+// /b.js works in both, let the built-in server serve a file that exists under public/ (never a dotfile or a .php).
+if (PHP_SAPI === 'cli-server') {
+    $estatico = realpath(__DIR__ . '/' . ltrim((string)parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'));
+    if ($estatico !== false && is_file($estatico) && str_starts_with($estatico, __DIR__ . DIRECTORY_SEPARATOR)
+        && !str_ends_with($estatico, '.php') && !str_starts_with(basename($estatico), '.')) {
+        return false;
+    }
+}
 
 define('APP_ROOT', dirname(__DIR__));
 
@@ -71,7 +83,32 @@ if (!RateLimiter::getInstance()->checkLimit(100, 60)) {
 HealthCheck::handleReady($container->get('db'), Migrator::forSite($container->get('db'), $site), $locator->getLogger());
 
 $response = $locator->getRouter()->dispatch();
+registrar_url($locator->getRouter());
 echo $response;
+
+/**
+ * Counts a 404 or a 301 by the shape of its URL (see RegistroDeUrls: never the path, the query or who asked).
+ * Whatever goes wrong here must not reach the visitor.
+ */
+function registrar_url(Router $router): void
+{
+    try {
+        $estado = http_response_code() ?: 200;
+        if ($estado !== 301 && $estado !== 404) {
+            return;
+        }
+
+        $destino = null;
+        foreach (headers_list() as $cabecera) {
+            if (stripos($cabecera, 'Location:') === 0) {
+                $destino = trim(substr($cabecera, 9));
+            }
+        }
+        RegistroDeUrls::desdeConfig()->registrar($estado, $_SERVER['REQUEST_URI'] ?? '/', $destino, $router->palabras());
+    } catch (\Throwable) {
+        // A counter that fails is not worth a failed page.
+    }
+}
 
 /**
  * @param array<string, mixed> $data
@@ -115,6 +152,14 @@ function view(string $name, array $data = []): string
 function enlace(string $tipo, int|string $id): string
 {
     return ServiceLocator::getInstance()->getUrlHelper()->enlace($tipo, $id);
+}
+
+/**
+ * @param array<string, int|string> $filtros type => id
+ */
+function filtrado(string $tipo, int|string $id, array $filtros): string
+{
+    return ServiceLocator::getInstance()->getUrlHelper()->filtrado($tipo, $id, $filtros);
 }
 
 function accion(string $tipo, int|string $id, int|string $codigo): string

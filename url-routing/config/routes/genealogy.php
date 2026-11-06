@@ -85,15 +85,18 @@ return [
 
     // Lengths 1-4 are deliberately unused below organizacion (5) — headroom
     // for future low-cardinality types without renumbering anything above.
+    // `noindex` => true: a functional page that sends `X-Robots-Tag: noindex` (robots.txt only keeps crawlers
+    // from walking it; it does not keep a URL that someone links from showing up in a search engine).
     'reserved' => [
         '' => ['controller' => 'Genealogy\HomeController', 'method' => 'index'],
         // Search: /b/{digit width of the type}/[{text}/][{page}/].
-        'b' => ['controller' => 'Genealogy\HomeController', 'method' => 'buscar', 'ruta' => 3],
+        'b' => ['controller' => 'Genealogy\HomeController', 'method' => 'buscar', 'ruta' => 3, 'noindex' => true],
         // Asking to withdraw a page: /r/{id}/, open to anyone (see RetiroController).
-        'r' => ['controller' => 'Genealogy\RetiroController', 'method' => 'pedir', 'ruta' => 1],
+        'r' => ['controller' => 'Genealogy\RetiroController', 'method' => 'pedir', 'ruta' => 1, 'noindex' => true],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'Genealogy\CuentaController',
             'method' => 'index',
+            'noindex' => true,
             'actions' => [
                 1 => 'colecciones',
                 2 => 'aportes',

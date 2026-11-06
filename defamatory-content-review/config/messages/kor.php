@@ -8,7 +8,6 @@ return [
     'explanation.match' => '“%1$s”은(는) “%2$s”와 일치합니다(%3$s)',
     'explanation.related' => '; 계통이 가까운 언어, 신뢰도 %.2F',
     'explanation.collision' => '; 문서로 확인된 실제 이름 또는 성이기도 하므로 사람이 검토합니다',
-    'explanation.end' => '.',
     'recommendation.reject' => '거부: 매우 심하게 모욕적인 내용입니다(위험 유형: %s).',
     'recommendation.review_collision' => '사람 검토: 모욕적인 용어(%s)와 일치하지만 문서로 확인된 성과도 일치합니다.',
     'recommendation.review_phonetic' => '사람 검토: 이름과 성을 이어 읽으면 둘 중 어느 쪽에도 따로는 없는 모욕적인 용어(%s)가 됩니다.',

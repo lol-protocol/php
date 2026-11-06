@@ -89,6 +89,21 @@ class CargaYCalculo(unittest.TestCase):
 
 
 class DatosPreparados(unittest.TestCase):
+    def test_extension_sigue_a_la_region_y_falla_claro_sin_poblacion_regional(self):
+        import preparar_datos
+        region = [(2000, 100.0), (2010, 200.0), (2024, 300.0)]
+        self.assertEqual(preparar_datos.extender([(1990, 5.0), (2010, 20.0)], region, hasta=2024), [(2024, 30.0)])
+        with self.assertRaises(SystemExit):
+            preparar_datos.retroproyectar([(1500, 10.0)], [(1000, 0.0), (1600, 0.0)])
+
+    def test_poblamiento_es_una_serie_que_empieza_antes_de_1800_con_poca_gente(self):
+        import preparar_datos as pd
+        self.assertTrue(pd.empieza_poblado([(1500, 373.0), (1600, 2000.0)]))
+        self.assertFalse(pd.empieza_poblado([(1600, 859_300.0)]))  # Sudán del Sur: hay gente antes
+        self.assertFalse(pd.empieza_poblado([(1800, 5000.0)]))  # micro-estado sin dato anterior
+        self.assertFalse(pd.empieza_poblado([(-10000, 10.0)]))
+        self.assertFalse(pd.empieza_poblado([]))
+
     def test_retroproyeccion_usa_la_cuota_del_pais_en_su_region(self):
         import preparar_datos
         # La región tiene 100 en el año 0 y 200 en el año 100; el país tiene 20 en el año 100
@@ -185,15 +200,22 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         with (self.d / "paises.csv").open("w", encoding="utf-8", newline="") as f:
             w = csv.DictWriter(f, fieldnames=generar_tabla.COLUMNAS_PAISES)
             w.writeheader()
-            for codigo in ("AA", "BB", "CC"):
+            for codigo in ("AA", "BB", "CC", "DD", "EE"):
                 w.writerow({**vacia, "codigo": codigo, "pais": codigo, "region": "Europa"})
         self.csv("codigos_iso.csv", ("codigo", "codigo_owid", "nombre_iso"),
-                 [("AA", "AAA", "A"), ("BB", "BBB", "B"), ("CC", "CCC", "C")])
+                 [("AA", "AAA", "A"), ("BB", "BBB", "B"), ("CC", "CCC", "C"),
+                  ("DD", "DDD", "D"), ("EE", "EEE", "E")])
         hyde = "Global Population by Region (HYDE (2016) and UN (2017))"
         a = {
             "--co2": self.csv("co2.csv", ("iso_code", "country", "year", "population"),
-                              [("AAA", "Aland", 1850, 1_000_000), ("AAA", "Aland", 2024, 4_000_000)]),
-            "--maddison": self.csv("mad.csv", ("Entity", "Year", "Population"), [("Aland", 1700, 800_000)]),
+                              [("AAA", "Aland", 1850, 1_000_000), ("AAA", "Aland", 2024, 4_000_000),
+                               ("", "Europe", 2010, 1e8), ("", "Europe", 2024, 1.2e8)]),
+            # DD empieza en 1600 con 500 personas (su poblamiento); EE en 1800, con un hueco antes.
+            "--poblacion-owid": self.csv("owid.csv", ("entity", "code", "year", "population_historical"),
+                                         [("D", "DDD", 1600, 500), ("D", "DDD", 2023, 50_000),
+                                          ("E", "EEE", 1800, 10_000), ("E", "EEE", 2023, 30_000)]),
+            "--maddison": self.csv("mad.csv", ("Entity", "Year", "Population"),
+                                   [("Aland", 1700, 800_000), ("D", 1000, 100)]),
             "--hyde": self.csv("hyde.csv", ("Entity", "Year", hyde), [("Europe", -10000, 1e6), ("Europe", 1500, 1e8)]),
             "--clio": self.csv("clio.csv", ("Entity", "Year", "Population (Clio)"),
                                [("Aland", 1500, 300_000), ("Aland", 1700, 640_000)]),
@@ -252,6 +274,9 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(larga["BB"][1960], 100_000)
         self.assertNotIn(2030, larga["CC"])  # la proyección de Gapminder no entra
         self.assertEqual(larga["CC"][2010], 5000)
+        self.assertEqual(larga["CC"][2024], 6000)  # extendida con Europa: 5000 x 1,2e8 / 1e8
+        self.assertEqual(min(larga["DD"]), 1600)  # nada antes del poblamiento, ni Maddison ni HYDE
+        self.assertEqual(min(larga["EE"]), -10000)  # empieza en 1800: HYDE completa hacia atrás
 
         natalidad = {(f["codigo"], int(f["anio"])): float(f["tasa_por_mil"])
                      for f in leer_csv(self.d / "natalidad.csv")}

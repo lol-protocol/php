@@ -9,21 +9,22 @@ declare(strict_types=1);
  * edad y el género, sin el usuario que se está mirando ($excluirUsuario).
  *
  * @param array<string,mixed> $query
+ * @param array{presets: list<array{key: string, label: string, countries: list<string>}>, countries: array<string,string>} $groups lo que devuelve AlmacenDatos::groups()
  */
 function api_universo_desde_query(array $query, array $groups, string $excluirUsuario): Universo
 {
     return new Universo(
-        api_resolve_scope_countries($query['scope'] ?? 'all', $groups),
-        isset($query['age_min']) ? (int) $query['age_min'] : 0,
-        isset($query['age_max']) ? (int) $query['age_max'] : 150,
-        $query['gender'] ?? 'all',
+        api_resolve_scope_countries(api_texto_de_query($query, 'scope', 'all'), $groups),
+        api_entero_de_query($query, 'age_min', 0),
+        api_entero_de_query($query, 'age_max', 150),
+        api_texto_de_query($query, 'gender', 'all'),
         $excluirUsuario
     );
 }
 
 function api_timeline(): void
 {
-    $userId = $_GET['user_id'] ?? '';
+    $userId = api_texto_de_query($_GET, 'user_id');
     if ($userId === '') {
         api_error(400, 'user_id_requerido', 'user_id es requerido');
         return;
@@ -40,10 +41,10 @@ function api_timeline(): void
     }
 
     $groups = $datos->groups();
-    $scope = $_GET['scope'] ?? 'all';
+    $scope = api_texto_de_query($_GET, 'scope', 'all');
     $universo = api_universo_desde_query($_GET, $groups, $userId);
 
-    $tipoRaw = trim((string) ($_GET['type'] ?? ''));
+    $tipoRaw = trim(api_texto_de_query($_GET, 'type'));
     $tipo = ($tipoRaw === '' || $tipoRaw === 'all') ? null : $tipoRaw;
 
     $pagina = api_pagina_desde_query();

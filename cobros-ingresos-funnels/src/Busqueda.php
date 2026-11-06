@@ -19,4 +19,25 @@ final class Busqueda
     {
         return '%' . addcslashes($texto, '\\%_') . '%';
     }
+
+    /**
+     * El pedazo de WHERE de un buscador de texto y sus parametros, para que los listados no repitan la
+     * condicion ni el escape: ['', []] si no se busco nada, y si no
+     * [$conector . '(col1 ILIKE :param OR col2 ILIKE :param)', [':param' => '%texto%']].
+     *
+     * @param list<string> $columnas con su alias, p. ej. ['c.nombre', 'c.email']: las pone el codigo, nunca la persona
+     * @param string $parametro sin los dos puntos
+     * @param string $conector lo que va delante, con sus espacios: ' AND ' o ' WHERE '
+     * @return array{0: string, 1: array<string, string>}
+     */
+    public static function filtro(?string $texto, array $columnas, string $parametro, string $conector): array
+    {
+        if ($texto === null || $texto === '') {
+            return ['', []];
+        }
+
+        $condiciones = array_map(static fn (string $columna): string => "{$columna} ILIKE :{$parametro}", $columnas);
+
+        return [$conector . '(' . implode(' OR ', $condiciones) . ')', [":{$parametro}" => self::contiene($texto)]];
+    }
 }

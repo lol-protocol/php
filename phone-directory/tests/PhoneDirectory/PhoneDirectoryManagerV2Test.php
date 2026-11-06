@@ -39,9 +39,9 @@ class PhoneDirectoryManagerV2Test extends TestCase
 
     public function testStatisticsWithoutJuridicalEntities(): void
     {
-        $this->manager->addNaturalPerson(new PhoneDirectoryEntry('SMITH, John', 'US', '123 Main Street'));
+        $this->owner->addNaturalPerson(new PhoneDirectoryEntry('SMITH, John', 'US', '123 Main Street'));
 
-        $stats = $this->manager->getStatistics();
+        $stats = $this->owner->getStatistics();
 
         $this->assertSame(1, $stats['total']);
         $this->assertSame(1, $stats['natural_people']);
@@ -65,7 +65,9 @@ class PhoneDirectoryManagerV2Test extends TestCase
         $id = $manager->addNaturalPerson(new PhoneDirectoryEntry('SMITH, John', 'US', '123 Main Street'));
 
         $this->assertGreaterThan(0, $id);
-        $this->assertSame(1, $manager->getTotalCount());
+        // Stored, but with no directory year a visitor (the manager's default) cannot see or count it.
+        $this->assertSame(0, $manager->getTotalCount());
+        $this->assertSame([], $manager->getNaturalDatabase()->findByName('Smith'));
     }
 
     public function testFindNaturalPeopleByNameWorksWithoutCallingProcessFileFirst(): void

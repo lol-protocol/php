@@ -25,7 +25,7 @@ final class Nordica extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
+        $grosor = self::trazoDe($radio, $trazo);
         $r = $radio - $grosor / 2;
         $svg = self::circulo($cx, $cy, $r, $color, $grosor);
         // Seis círculos de radio mitad, cada uno por el centro del anterior: la flor trazada con compás.

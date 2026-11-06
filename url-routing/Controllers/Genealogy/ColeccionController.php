@@ -109,6 +109,8 @@ class ColeccionController extends BaseController
         $gedcom = (new GedcomExporter())->export($this->repo()->personasParaExportar($id), $coleccion['nombre']);
 
         header('Content-Type: text/vnd.familysearch.gedcom; charset=UTF-8');
+        // A file for whoever asked for it, not a page for a search engine.
+        header('X-Robots-Tag: noindex');
         header("Content-Disposition: attachment; filename=\"coleccion-{$id}.ged\"");
 
         return $gedcom;

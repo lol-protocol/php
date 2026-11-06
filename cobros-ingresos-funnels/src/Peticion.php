@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use InvalidArgumentException;
+
 /** Guard clauses repetidas en los controllers que buscan una entidad por id antes de operar sobre ella. */
 final class Peticion
 {
@@ -66,5 +68,20 @@ final class Peticion
         http_response_code(409);
         echo $mensaje;
         return true;
+    }
+
+    /**
+     * El monto del formulario, redondeado al centavo. Si el campo falta o no es un monto
+     * (Dinero::deTexto()) devuelve 0: Validacion::faltanCampos() ya rechaza un monto fuera de rango con
+     * el mismo mensaje de "monto valido", asi que el formulario vuelve con su error en vez de guardar
+     * otra cantidad.
+     */
+    public static function monto(string $campo = 'monto'): float
+    {
+        try {
+            return round(Dinero::deTexto((string) ($_POST[$campo] ?? '')), 2);
+        } catch (InvalidArgumentException) {
+            return 0.0;
+        }
     }
 }

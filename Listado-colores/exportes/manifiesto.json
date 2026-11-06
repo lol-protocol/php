@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "idiomas": [
     "en",
     "es",
@@ -95,7 +95,7 @@
         "categorias",
         "hex_cotidiano"
       ],
-      "sha256": "679af9b6b61746f07658989b013a583813736ab52a9696dc0947b7dd4e817cb1"
+      "sha256": "85b7f97ad627c4a165f234b8ea9bffe64e09bdfafc0e9b787b5283c18b6c75b2"
     },
     {
       "archivo": "exportes/spacy/en.jsonl",

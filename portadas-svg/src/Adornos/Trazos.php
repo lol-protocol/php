@@ -132,6 +132,26 @@ abstract class Trazos
         return $puntos;
     }
 
+    /**
+     * El grosor de línea de un emblema de `$radio` mm (el que se pide con `$trazo`, o el que le toca por su tamaño)
+     * y el radio que queda para dibujar: un trazo tiene ancho, así que, para que el dibujo no se salga de su cuadrado
+     * (ni las puntas de una estrella), se le resta al radio.
+     *
+     * @return array{float, float} [grosor, radio útil]
+     */
+    protected static function trazoYRadio(float $radio, ?float $trazo): array
+    {
+        $grosor = self::trazoDe($radio, $trazo);
+
+        return [$grosor, $radio - $grosor];
+    }
+
+    /** Solo el grosor, para los emblemas que restan al radio otra cosa. */
+    protected static function trazoDe(float $radio, ?float $trazo): float
+    {
+        return $trazo ?? self::grosor($radio);
+    }
+
     /** Grosor de línea para un adorno de `$alto` mm: fino, pero no tanto que se pierda en pantalla. */
     protected static function grosor(float $alto): float
     {

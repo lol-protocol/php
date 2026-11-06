@@ -217,4 +217,42 @@ class RetiroRepositoryTest extends TestCase
         $this->assertSame(['recibido', 'retirado'], array_column($porId[$resuelto]['eventos'], 'estado'));
         $this->assertTrue($repo->retirado('persona', 6128473105), 'the page stays withdrawn');
     }
+
+    #[DataProvider('drivers')]
+    public function testTodosListsEveryPendingOneAndOnlyTheNewestDecidedOnes(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $base = strtotime('2026-01-01 12:00:00');
+        $resueltos = [];
+        foreach ([0, 1, 2, 3] as $dia) {
+            $n = $repo->crear('persona', 6128473105, 'otro', "Pedido {$dia}.", 'a@example.com', null, $base + $dia * 86400);
+            $repo->decidir($n, 'rechazar', "Nota {$dia}.");
+            $resueltos[] = $n;
+        }
+        $pendiente = $repo->crear('grupo', 582317, 'otro', 'Espera.', 'b@example.com', null, $base - 86400);
+
+        $todos = $repo->todos(2);
+
+        $this->assertSame([$pendiente, $resueltos[3], $resueltos[2]], array_map('intval', array_column($todos, 'id')), 'pending first, then the newest two');
+        $this->assertSame(['recibido'], array_column($todos[0]['eventos'], 'estado'));
+        $this->assertSame(['recibido', 'rechazado'], array_column($todos[1]['eventos'], 'estado'));
+        $this->assertSame('Nota 3.', $todos[1]['eventos'][1]['nota'], 'each pedido gets its own events, not its neighbour\'s');
+        $this->assertCount(5, $repo->todos(), 'the default shows them all while there are few');
+        $this->assertCount(1, $repo->todos(0), 'zero decided ones leaves the pending one');
+    }
+
+    #[DataProvider('drivers')]
+    public function testCrearTakesTheTimeItIsGivenForThePedidoAndItsFirstEvent(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+
+        $n = $repo->crear('persona', 6128473105, 'otro', 'Hola.', 'a@example.com', null, strtotime('2026-03-04 05:06:07'));
+
+        $this->assertSame('2026-03-04 05:06:07', (string)$db->fetchValue('SELECT creado_en FROM pedidos_retiro WHERE id = ?', [$n]));
+        $this->assertSame('2026-03-04 05:06:07', (string)$db->fetchValue('SELECT ocurrido_en FROM pedido_retiro_eventos WHERE pedido_id = ?', [$n]));
+        $this->assertSame([$n], array_column($repo->pendientes(strtotime('2026-03-04 07:06:07')), 'id'));
+        $this->assertSame(2, $repo->pendientes(strtotime('2026-03-04 07:06:07'))[0]['horas']);
+    }
 }

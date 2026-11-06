@@ -8,6 +8,7 @@ gramaticales de un concepto) y con qué resultado. El archivo empieza vacío: mi
 import datetime
 import json
 import re
+from md import celda, texto_valido
 
 COLUMNAS = ["idioma", "alcance", "elemento", "veredicto", "revisor", "fecha", "huella", "nota"]
 # alcance -> qué se revisa. El elemento es el id del color CSS (nombres, significados) o el concepto (lexico, categorias).
@@ -79,7 +80,7 @@ def universo(d):
     return resultado
 
 
-def validar(filas, universo_revisable, codigos, errores):
+def validar(filas, codigos, errores):
     vistos = set()
     for n, fila in enumerate(filas, start=2):
         idioma, alcance, elemento, veredicto, revisor, fecha, huella_revisada, nota = (fila[c] for c in COLUMNAS)
@@ -88,13 +89,11 @@ def validar(filas, universo_revisable, codigos, errores):
             errores.append(f"{donde}: idioma desconocido {idioma!r}")
         elif alcance not in ALCANCES:
             errores.append(f"{donde}: alcance desconocido {alcance!r} (debe ser {', '.join(ALCANCES)})")
-        elif (idioma, alcance) not in universo_revisable:
-            errores.append(f"{donde}: {alcance} no tiene datos en {idioma} (categorias.csv solo cubre algunos idiomas)")
-        elif elemento not in universo_revisable[(idioma, alcance)]:
-            errores.append(f"{donde}: {elemento!r} no es un elemento de {alcance} en {idioma}")
+        # Un elemento que ya no existe (se renombró o se quitó) no es un error: la revisión queda como «huérfana» en
+        # revisiones.md. Romper la generación por eso obligaría a borrar un registro que sigue siendo historia.
         if veredicto not in VEREDICTOS:
             errores.append(f"{donde}: veredicto desconocido {veredicto!r} (debe ser {', '.join(VEREDICTOS)})")
-        if not revisor.strip() or revisor != revisor.strip() or "\n" in revisor:
+        if not texto_valido(revisor, "\n", sin_espacios_sobrantes=True):
             errores.append(f"{donde}: revisor vacío, con espacios sobrantes o con saltos de línea")
         if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", fecha):
             errores.append(f"{donde}: la fecha debe ser AAAA-MM-DD: {fecha!r}")
@@ -105,7 +104,7 @@ def validar(filas, universo_revisable, codigos, errores):
                 errores.append(f"{donde}: fecha que no existe: {fecha!r}")
         if not re.fullmatch(r"[0-9a-f]{8}", huella_revisada):
             errores.append(f"{donde}: la huella debe ser de 8 cifras hexadecimales en minúscula (la da el visor): {huella_revisada!r}")
-        if nota != nota.strip() or "\n" in nota:
+        if nota != nota.strip() or (nota and not texto_valido(nota, "\n")):
             errores.append(f"{donde}: nota con espacios sobrantes o con saltos de línea")
         if veredicto in ("corregir", "dudoso") and not nota:
             errores.append(f"{donde}: un veredicto {veredicto!r} necesita una nota que diga qué corregir o de qué se duda")
@@ -115,8 +114,10 @@ def validar(filas, universo_revisable, codigos, errores):
         vistos.add(clave)
 
 
-def _celda(texto):
-    return str(texto).replace("|", "&#124;").replace("\n", " ")
+def _lugar(universo_revisable, f):
+    """Posición de un elemento en su lista; los que ya no existen van al final, por nombre."""
+    lista = universo_revisable.get((f["idioma"], f["alcance"]), [])
+    return (lista.index(f["elemento"]) if f["elemento"] in lista else len(lista), f["elemento"])
 
 
 def situacion(filas, huellas_actuales):
@@ -126,12 +127,16 @@ def situacion(filas, huellas_actuales):
     - `ya_cambio`: un `corregir` o `dudoso` cuyo dato cambió: quizá se corrigió, falta marcarlo `corregido`.
     - `sin_cambio`: un `corregido` cuyo dato sigue igual que cuando se revisó: la corrección no está aplicada.
     - `conflicto`: un elemento con un `correcto` vigente de una persona y un `corregir` o `dudoso` de otra.
+    - `huerfana`: la fila habla de un elemento que ya no existe (se renombró o se quitó): no cuenta como revisado.
     """
-    atencion = {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": []}
+    atencion = {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": [], "huerfana": []}
     revisados = {}
     vigentes = {}
     for f in filas:
-        actual = huellas_actuales[(f["idioma"], f["alcance"])][f["elemento"]]
+        actual = huellas_actuales.get((f["idioma"], f["alcance"]), {}).get(f["elemento"])
+        if actual is None:
+            atencion["huerfana"].append(f)
+            continue
         igual = f["huella"] == actual
         if f["veredicto"] == "correcto" and not igual:
             atencion["caducada"].append(f)
@@ -213,9 +218,9 @@ def informe(filas, universo_revisable, idiomas, huellas_actuales):
         orden_alcance = {a: n for n, a in enumerate(ALCANCES)}
         partes += ["| Idioma | Alcance | Elemento | Veredicto | Nota | Revisor | Fecha |", "|---|---|---|---|---|---|---|"]
         for f in sorted(pendientes, key=lambda f: (orden_idioma[f["idioma"]], orden_alcance[f["alcance"]],
-                                                    universo_revisable[(f["idioma"], f["alcance"])].index(f["elemento"]), f["revisor"].casefold())):
-            partes.append(f"| `{f['idioma']}` | `{f['alcance']}` | `{f['elemento']}` | `{f['veredicto']}` | {_celda(f['nota'])} | "
-                          f"{_celda(f['revisor'])} | {f['fecha']} |")
+                                                    _lugar(universo_revisable, f), f["revisor"].casefold())):
+            partes.append(f"| `{f['idioma']}` | `{f['alcance']}` | `{f['elemento']}` | `{f['veredicto']}` | {celda(f['nota'])} | "
+                          f"{celda(f['revisor'])} | {f['fecha']} |")
     partes += ["", "## Atención", ""]
     avisos = [
         ("caducada", "Revisiones `correcto` caducadas",
@@ -226,6 +231,9 @@ def informe(filas, universo_revisable, idiomas, huellas_actuales):
          "El dato sigue igual que cuando se revisó: la corrección no parece aplicada."),
         ("conflicto", "Revisores en desacuerdo",
          "Un elemento con `correcto` de una persona y `corregir` o `dudoso` de otra, sobre el dato de hoy."),
+        ("huerfana", "Revisiones de elementos que ya no existen",
+         "Se renombró o se quitó el elemento (o hay un error de escritura en `elemento`): no cuentan como revisadas. "
+         "Corrige la fila o bórrala."),
     ]
     orden_idioma = {c: n for n, (c, _) in enumerate(idiomas)}
     orden_alcance = {a: n for n, a in enumerate(ALCANCES)}
@@ -236,8 +244,8 @@ def informe(filas, universo_revisable, idiomas, huellas_actuales):
         hay = True
         partes += [f"### {titulo}", "", texto, "", "| Idioma | Alcance | Elemento | Veredicto | Revisor | Fecha |", "|---|---|---|---|---|---|"]
         for f in sorted(atencion[clave], key=lambda f: (orden_idioma[f["idioma"]], orden_alcance[f["alcance"]],
-                                                         universo_revisable[(f["idioma"], f["alcance"])].index(f["elemento"]), f["revisor"].casefold())):
-            partes.append(f"| `{f['idioma']}` | `{f['alcance']}` | `{f['elemento']}` | `{f['veredicto']}` | {_celda(f['revisor'])} | {f['fecha']} |")
+                                                         _lugar(universo_revisable, f), f["revisor"].casefold())):
+            partes.append(f"| `{f['idioma']}` | `{f['alcance']}` | `{f['elemento']}` | `{f['veredicto']}` | {celda(f['revisor'])} | {f['fecha']} |")
         partes.append("")
     if not hay:
         partes += ["Nada que atender: ninguna revisión caducada, sin aplicar ni en conflicto.", ""]

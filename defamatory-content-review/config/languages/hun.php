@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'hun', 'iso639_1' => 'hu', 'name' => 'Hungarian',
-        'nativeName' => 'Magyar', 'family' => 'uralic', 'coverage' => 'moderate',
+        'code' => 'hun',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

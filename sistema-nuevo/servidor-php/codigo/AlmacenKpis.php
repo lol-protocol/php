@@ -9,6 +9,7 @@ final class AlmacenKpis
     {
     }
 
+    /** @return array{total_users: int, total_actions: int, total_spend_usd: float, last_action_at: ?string, active_alerts_users: int, top_action_types: list<array{type: string, count: int}>, top_countries: list<array{country: string, count: int}>} */
     public function resumen(): array
     {
         $totales = $this->pdo->query(

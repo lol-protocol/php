@@ -6,6 +6,10 @@ declare(strict_types=1);
  * Sanea la IP y sus datos derivados (país de la IP, proveedor, hora local) y
  * los escribe en $limpio. La hora local se deriva del huso horario del país de
  * la IP aplicado sobre el timestamp UTC ya saneado — no viene del crudo.
+ *
+ * @param array<string,mixed> $limpio
+ * @param array<string,mixed> $crudo
+ * @param array{paises_validos: string[], offset_por_pais: array<string,float>} $contexto
  */
 function saneador_aplicar_ip(array &$limpio, array $crudo, string $timestampUtc, array $contexto): void
 {

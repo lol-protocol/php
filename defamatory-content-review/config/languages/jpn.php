@@ -11,8 +11,8 @@
 
 return [
     'meta' => [
-        'code' => 'jpn', 'iso639_1' => 'ja', 'name' => 'Japanese',
-        'nativeName' => '日本語', 'family' => 'japonic', 'coverage' => 'moderate',
+        'code' => 'jpn',
+        'coverage' => 'moderate',
         'requiresTokenizer' => true,
     ],
     'words' => [

@@ -22,12 +22,12 @@ final class SitemapRepository extends Base
         $sin = static fn(string $tipo, string $columna): string => ' NOT ' . RetiroRepository::sqlRetirado($tipo, $columna);
 
         return [
-            '10' => 'SELECT q.id AS clave FROM personas q WHERE NOT ' . $p->sqlOculta('q') . ' AND' . $sin('persona', 'q.id'),
-            '9' => "SELECT e.id AS clave FROM {$p->sucesos()} e WHERE" . $sin('suceso', 'e.id'),
-            '8' => "SELECT g.id AS clave FROM {$p->registros()} g WHERE" . $sin('registro', 'g.id'),
-            '7' => 'SELECT c.id AS clave FROM colecciones c WHERE c.publica AND' . $sin('coleccion', 'c.id'),
-            '6' => 'SELECT o.id AS clave FROM grupos o WHERE' . $sin('grupo', 'o.id'),
-            '5' => 'SELECT o.id AS clave FROM organizaciones o WHERE' . $sin('organizacion', 'o.id'),
+            '10' => 'SELECT q.id AS clave, q.actualizado_en AS fecha FROM personas q WHERE NOT ' . $p->sqlOculta('q') . ' AND' . $sin('persona', 'q.id'),
+            '9' => "SELECT e.id AS clave, e.actualizado_en AS fecha FROM {$p->sucesos()} e WHERE" . $sin('suceso', 'e.id'),
+            '8' => "SELECT g.id AS clave, g.actualizado_en AS fecha FROM {$p->registros()} g WHERE" . $sin('registro', 'g.id'),
+            '7' => 'SELECT c.id AS clave, c.actualizado_en AS fecha FROM colecciones c WHERE c.publica AND' . $sin('coleccion', 'c.id'),
+            '6' => 'SELECT o.id AS clave, o.actualizado_en AS fecha FROM grupos o WHERE' . $sin('grupo', 'o.id'),
+            '5' => 'SELECT o.id AS clave, o.actualizado_en AS fecha FROM organizaciones o WHERE' . $sin('organizacion', 'o.id'),
             'l' => 'SELECT ruta AS clave FROM lugares',
         ];
     }

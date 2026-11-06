@@ -6,8 +6,8 @@
 
 return [
     'meta' => [
-        'code' => 'tgl', 'iso639_1' => 'tl', 'name' => 'Tagalog',
-        'nativeName' => 'Tagalog', 'family' => 'austronesian', 'coverage' => 'basic',
+        'code' => 'tgl',
+        'coverage' => 'basic',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

@@ -39,6 +39,7 @@ final class AlmacenAlertas
         return $paisDeLaIp !== null && $paisDeLaIp !== $paisDelUsuario;
     }
 
+    /** @return array{total_events: int, total_users_affected: int, top: list<array<string,mixed>>} */
     public function ipMismatches(): array
     {
         $resumen = $this->resumenIpFueraDelPais();
@@ -57,7 +58,10 @@ final class AlmacenAlertas
         return self::alerta($resumen, $stmt->fetchAll(), fn (array $f) => ['country' => $f['pais_codigo']]);
     }
 
-    /** @param int $umbral Sensibilidad 0-100: más alto = ventana de tiempo más amplia cuenta como "cambio imposible". */
+    /**
+     * @param int $umbral Sensibilidad 0-100: más alto = ventana de tiempo más amplia cuenta como "cambio imposible".
+     * @return array{total_events: int, total_users_affected: int, top: list<array<string,mixed>>}
+     */
     public function cambiosPaisImposibles(int $umbral = 50): array
     {
         $resumen = $this->resumenCambiosDePais($umbral);
@@ -140,6 +144,7 @@ final class AlmacenAlertas
      * @param array{total:int, usuarios:int} $resumen
      * @param array<int,array<string,mixed>> $filas id, nombre, cantidad y last_seen, más lo que lea $detalle
      * @param callable(array<string,mixed>): array<string,mixed> $detalle
+     * @return array{total_events: int, total_users_affected: int, top: list<array<string,mixed>>}
      */
     private static function alerta(array $resumen, array $filas, callable $detalle): array
     {

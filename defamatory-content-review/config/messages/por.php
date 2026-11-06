@@ -8,7 +8,6 @@ return [
     'explanation.match' => '«%1$s» coincide com «%2$s» (%3$s)',
     'explanation.related' => '; idioma aparentado, confiança %.2F',
     'explanation.collision' => '; também é nome ou sobrenome real documentado, vai para revisão humana',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Rejeitar: conteúdo gravemente ofensivo (tipos de risco: %s).',
     'recommendation.review_collision' => 'Revisão humana: coincide com termos ofensivos (%s), mas também com sobrenomes documentados.',
     'recommendation.review_phonetic' => 'Revisão humana: nome e sobrenome, unidos, formam um termo ofensivo (%s) que nenhum dos dois tem separadamente.',

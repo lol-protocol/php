@@ -258,12 +258,12 @@ azure	en	css	identificador	azure	#F0FFFF		azure	ADJ,NOUN,PROPN
 azuriu	ro	css	nombre	azure	#F0FFFF		azuriu		
 azuriu	ro	lexico	sinonimo	skyblue	#87CEEB		azuriu		
 azurová	cs	css	nombre	azure	#F0FFFF		azurova		
-azurová	cs	lexico	flexion	cyan	#00FFFF	Gender=Fem;Number=Sing	azurova		#00FFFF
-azurová	cs	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Plur	azurova		#00FFFF
-azurové	cs	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Sing	azurove		#00FFFF
-azurové	cs	lexico	flexion	cyan	#00FFFF	Number=Plur	azurove		#00FFFF
-azuroví	cs	lexico	flexion	cyan	#00FFFF	Number=Plur;Animacy=Anim	azurovi		#00FFFF
-azurový	cs	lexico	lema	cyan	#00FFFF		azurovy		#00FFFF
+azurová	cs	lexico	flexion	cyan	#00FFFF	Gender=Fem;Number=Sing	azurova		
+azurová	cs	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Plur	azurova		
+azurové	cs	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Sing	azurove		
+azurové	cs	lexico	flexion	cyan	#00FFFF	Number=Plur	azurove		
+azuroví	cs	lexico	flexion	cyan	#00FFFF	Number=Plur;Animacy=Anim	azurovi		
+azurový	cs	lexico	lema	cyan	#00FFFF		azurovy		
 azuur	nl	css	nombre	azure	#F0FFFF		azuur		
 azzurra	it	lexico	flexion	lightblue	#ADD8E6	Gender=Fem;Number=Sing	azzurra		
 azzurre	it	lexico	flexion	lightblue	#ADD8E6	Gender=Fem;Number=Plur	azzurre		
@@ -709,8 +709,8 @@ café	es	lexico	variante	brown	#A52A2A	region=LATAM	cafe		#653700
 cam	vi	css	nombre	orange	#FFA500		cam		#FFA500
 cam	vi	lexico	lema	orange	#FFA500		cam		#FFA500
 cam đậm	vi	css	nombre	darkorange	#FF8C00		cam dam		
-camgöbeği	tr	css	nombre	cyan	#00FFFF		camgobegi		#00FFFF
-camgöbeği	tr	lexico	lema	cyan	#00FFFF		camgobegi		#00FFFF
+camgöbeği	tr	css	nombre	cyan	#00FFFF		camgobegi		
+camgöbeği	tr	lexico	lema	cyan	#00FFFF		camgobegi		
 caqui	es	css	nombre	khaki	#F0E68C		caqui	ADJ,NOUN	#C3B091
 caqui	es	lexico	lema	khaki	#F0E68C		caqui	ADJ,NOUN	#C3B091
 caqui oscuro	es	css	nombre	darkkhaki	#BDB76B		caqui oscuro		
@@ -777,15 +777,15 @@ chungwa iliyokolea	sw	css	nombre	darkorange	#FF8C00		chungwa iliyokolea
 chungwa-nyekundu	sw	css	nombre	orangered	#FF4500		chungwa nyekundu		
 chàm	vi	css	nombre	indigo	#4B0082		cham		#4B0082
 chàm	vi	lexico	lema	indigo	#4B0082		cham		#4B0082
-cian	es	css	nombre	cyan	#00FFFF		cian	ADJ,NOUN	#00FFFF
-cian	es	lexico	lema	cyan	#00FFFF		cian	ADJ,NOUN	#00FFFF
-cian	ro	lexico	lema	cyan	#00FFFF		cian		#00FFFF
+cian	es	css	nombre	cyan	#00FFFF		cian	ADJ,NOUN	
+cian	es	lexico	lema	cyan	#00FFFF		cian	ADJ,NOUN	
+cian	ro	lexico	lema	cyan	#00FFFF		cian		
 cian claro	es	css	nombre	lightcyan	#E0FFFF		cian claro		
 cian oscuro	es	css	nombre	darkcyan	#008B8B		cian oscuro		
-ciano	pt	css	nombre	cyan	#00FFFF		ciano		#00FFFF
-ciano	pt	lexico	lema	cyan	#00FFFF		ciano		#00FFFF
-ciano	it	css	nombre	cyan	#00FFFF		ciano		#00FFFF
-ciano	it	lexico	lema	cyan	#00FFFF		ciano		#00FFFF
+ciano	pt	css	nombre	cyan	#00FFFF		ciano		
+ciano	pt	lexico	lema	cyan	#00FFFF		ciano		
+ciano	it	css	nombre	cyan	#00FFFF		ciano		
+ciano	it	lexico	lema	cyan	#00FFFF		ciano		
 ciano chiaro	it	css	nombre	lightcyan	#E0FFFF		ciano chiaro		
 ciano claro	pt	css	nombre	lightcyan	#E0FFFF		ciano claro		
 ciano escuro	pt	css	nombre	darkcyan	#008B8B		ciano escuro		
@@ -847,8 +847,8 @@ citron vert	fr	css	nombre	lime	#00FF00		citron vert		#AAFF32
 citronchiffon	da	css	nombre	lemonchiffon	#FFFACD		citronchiffon		
 citronchiffong	sv	css	nombre	lemonchiffon	#FFFACD		citronchiffong		
 citronová šifonová	cs	css	nombre	lemonchiffon	#FFFACD		citronova sifonova		
-ciánkék	hu	css	nombre	cyan	#00FFFF		ciankek		#00FFFF
-ciánkék	hu	lexico	lema	cyan	#00FFFF		ciankek		#00FFFF
+ciánkék	hu	css	nombre	cyan	#00FFFF		ciankek		
+ciánkék	hu	lexico	lema	cyan	#00FFFF		ciankek		
 cokelat	id	css	nombre	brown	#A52A2A		cokelat		#653700
 cokelat	id	css	nombre	chocolate	#D2691E		cokelat		
 cokelat	id	lexico	lema	brown	#A52A2A		cokelat		#653700
@@ -918,31 +918,31 @@ crème	nl	lexico	lema	cream	#FFFFC2		creme		#FFFFC2
 crème de papaye	fr	css	nombre	papayawhip	#FFEFD5		creme de papaye		
 crème menthe	fr	css	nombre	mintcream	#F5FFFA		creme menthe		
 csokoládé	hu	css	nombre	chocolate	#D2691E		csokolade		
-cyaan	nl	css	nombre	cyan	#00FFFF		cyaan		#00FFFF
-cyaan	nl	lexico	lema	cyan	#00FFFF		cyaan		#00FFFF
-Cyan	de	css	nombre	cyan	#00FFFF		cyan		#00FFFF
-cyan	en	css	forma_natural	cyan	#00FFFF		cyan	ADJ,NOUN	#00FFFF
-cyan	en	css	identificador	cyan	#00FFFF		cyan	ADJ,NOUN	#00FFFF
-cyan	en	lexico	lema	cyan	#00FFFF		cyan	ADJ,NOUN	#00FFFF
-cyan	fr	css	nombre	cyan	#00FFFF		cyan		#00FFFF
-cyan	fr	lexico	lema	cyan	#00FFFF		cyan		#00FFFF
-cyan	de	lexico	lema	cyan	#00FFFF		cyan		#00FFFF
-cyan	sv	css	nombre	cyan	#00FFFF		cyan		#00FFFF
-cyan	sv	lexico	lema	cyan	#00FFFF		cyan		#00FFFF
-cyan	da	css	nombre	cyan	#00FFFF		cyan		#00FFFF
-cyan	da	lexico	lema	cyan	#00FFFF		cyan		#00FFFF
-cyan	ro	css	nombre	cyan	#00FFFF		cyan		#00FFFF
+cyaan	nl	css	nombre	cyan	#00FFFF		cyaan		
+cyaan	nl	lexico	lema	cyan	#00FFFF		cyaan		
+Cyan	de	css	nombre	cyan	#00FFFF		cyan		
+cyan	en	css	forma_natural	cyan	#00FFFF		cyan	ADJ,NOUN	
+cyan	en	css	identificador	cyan	#00FFFF		cyan	ADJ,NOUN	
+cyan	en	lexico	lema	cyan	#00FFFF		cyan	ADJ,NOUN	
+cyan	fr	css	nombre	cyan	#00FFFF		cyan		
+cyan	fr	lexico	lema	cyan	#00FFFF		cyan		
+cyan	de	lexico	lema	cyan	#00FFFF		cyan		
+cyan	sv	css	nombre	cyan	#00FFFF		cyan		
+cyan	sv	lexico	lema	cyan	#00FFFF		cyan		
+cyan	da	css	nombre	cyan	#00FFFF		cyan		
+cyan	da	lexico	lema	cyan	#00FFFF		cyan		
+cyan	ro	css	nombre	cyan	#00FFFF		cyan		
 cyan clair	fr	css	nombre	lightcyan	#E0FFFF		cyan clair		
 cyan deschis	ro	css	nombre	lightcyan	#E0FFFF		cyan deschis		
 cyan foncé	fr	css	nombre	darkcyan	#008B8B		cyan fonce		
 cyan închis	ro	css	nombre	darkcyan	#008B8B		cyan inchis		
-cyanová	cs	css	nombre	cyan	#00FFFF		cyanova		#00FFFF
-cyjan	pl	css	nombre	cyan	#00FFFF		cyjan		#00FFFF
-cyjanowa	pl	lexico	flexion	cyan	#00FFFF	Gender=Fem;Number=Sing	cyjanowa		#00FFFF
-cyjanowe	pl	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Sing	cyjanowe		#00FFFF
-cyjanowe	pl	lexico	flexion	cyan	#00FFFF	Number=Plur	cyjanowe		#00FFFF
-cyjanowi	pl	lexico	flexion	cyan	#00FFFF	Number=Plur;Animacy=Anim	cyjanowi		#00FFFF
-cyjanowy	pl	lexico	lema	cyan	#00FFFF		cyjanowy		#00FFFF
+cyanová	cs	css	nombre	cyan	#00FFFF		cyanova		
+cyjan	pl	css	nombre	cyan	#00FFFF		cyjan		
+cyjanowa	pl	lexico	flexion	cyan	#00FFFF	Gender=Fem;Number=Sing	cyjanowa		
+cyjanowe	pl	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Sing	cyjanowe		
+cyjanowe	pl	lexico	flexion	cyan	#00FFFF	Number=Plur	cyjanowe		
+cyjanowi	pl	lexico	flexion	cyan	#00FFFF	Number=Plur;Animacy=Anim	cyjanowi		
+cyjanowy	pl	lexico	lema	cyan	#00FFFF		cyjanowy		
 cytrynowy szyfon	pl	css	nombre	lemonchiffon	#FFFACD		cytrynowy szyfon		
 czarna	pl	lexico	flexion	black	#000000	Gender=Fem;Number=Sing	czarna		#000000
 czarne	pl	lexico	flexion	black	#000000	Gender=Neut;Number=Sing	czarne		#000000
@@ -1342,9 +1342,9 @@ graues	de	lexico	flexion	gray	#808080	Terminacion=-es	graues
 gray	en	css	forma_natural	gray	#808080		gray	ADJ,NOUN,VERB	
 gray	en	css	identificador	gray	#808080		gray	ADJ,NOUN,VERB	
 gray	en	lexico	lema	gray	#808080		gray	ADJ,NOUN,VERB	
-green	en	css	forma_natural	green	#008000		green	ADJ,NOUN,VERB	#00FF00
-green	en	css	identificador	green	#008000		green	ADJ,NOUN,VERB	#00FF00
-green	en	lexico	lema	green	#008000		green	ADJ,NOUN,VERB	#00FF00
+green	en	css	forma_natural	green	#008000		green	ADJ,NOUN,VERB	
+green	en	css	identificador	green	#008000		green	ADJ,NOUN,VERB	
+green	en	lexico	lema	green	#008000		green	ADJ,NOUN,VERB	
 green yellow	en	css	forma_natural	greenyellow	#ADFF2F		green yellow		
 green-yellow	en	css	forma_con_guion	greenyellow	#ADFF2F		green yellow		
 greenyellow	en	css	identificador	greenyellow	#ADFF2F		greenyellow		
@@ -1430,9 +1430,9 @@ gris tenue	es	css	nombre	dimgrey	#696969		gris tenue
 grise	fr	lexico	flexion	gray	#808080	Gender=Fem;Number=Sing	grise		
 grises	es	lexico	flexion	gray	#808080	Number=Plur	grises		
 grises	fr	lexico	flexion	gray	#808080	Gender=Fem;Number=Plur	grises		
-groen	nl	css	nombre	green	#008000		groen		#00FF00
-groen	nl	lexico	lema	green	#008000		groen		#00FF00
-groene	nl	lexico	flexion	green	#008000	Terminacion=-e	groene		#00FF00
+groen	nl	css	nombre	green	#008000		groen		
+groen	nl	lexico	lema	green	#008000		groen		
+groene	nl	lexico	flexion	green	#008000	Terminacion=-e	groene		
 groengeel	nl	css	nombre	greenyellow	#ADFF2F		groengeel		
 grâu	ro	css	nombre	wheat	#F5DEB3		grau		
 gräddfärgad	sv	lexico	sinonimo	cream	#FFFFC2		graddfargad		#FFFFC2
@@ -1446,23 +1446,23 @@ grå	sv	lexico	lema	gray	#808080		gra
 grå	da	css	nombre	gray	#808080		gra		
 grå	da	css	nombre	grey	#808080		gra		
 grå	da	lexico	lema	gray	#808080		gra		
-grön	sv	css	nombre	green	#008000		gron		#00FF00
-grön	sv	lexico	lema	green	#008000		gron		#00FF00
-gröna	sv	lexico	flexion	green	#008000	Number=Plur	grona		#00FF00
+grön	sv	css	nombre	green	#008000		gron		
+grön	sv	lexico	lema	green	#008000		gron		
+gröna	sv	lexico	flexion	green	#008000	Number=Plur	grona		
 gröngul	sv	css	nombre	greenyellow	#ADFF2F		grongul		
-grönt	sv	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	gront		#00FF00
-grøn	da	css	nombre	green	#008000		gron		#00FF00
-grøn	da	lexico	lema	green	#008000		gron		#00FF00
-grønne	da	lexico	flexion	green	#008000	Number=Plur	gronne		#00FF00
+grönt	sv	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	gront		
+grøn	da	css	nombre	green	#008000		gron		
+grøn	da	lexico	lema	green	#008000		gron		
+grønne	da	lexico	flexion	green	#008000	Number=Plur	gronne		
 grønngul	da	css	nombre	greenyellow	#ADFF2F		gronngul		
-grønt	da	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	gront		#00FF00
-Grün	de	css	nombre	green	#008000		grun		#00FF00
-grün	de	lexico	lema	green	#008000		grun		#00FF00
-grüne	de	lexico	flexion	green	#008000	Terminacion=-e	grune		#00FF00
-grünem	de	lexico	flexion	green	#008000	Terminacion=-em	grunem		#00FF00
-grünen	de	lexico	flexion	green	#008000	Terminacion=-en	grunen		#00FF00
-grüner	de	lexico	flexion	green	#008000	Terminacion=-er	gruner		#00FF00
-grünes	de	lexico	flexion	green	#008000	Terminacion=-es	grunes		#00FF00
+grønt	da	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	gront		
+Grün	de	css	nombre	green	#008000		grun		
+grün	de	lexico	lema	green	#008000		grun		
+grüne	de	lexico	flexion	green	#008000	Terminacion=-e	grune		
+grünem	de	lexico	flexion	green	#008000	Terminacion=-em	grunem		
+grünen	de	lexico	flexion	green	#008000	Terminacion=-en	grunen		
+grüner	de	lexico	flexion	green	#008000	Terminacion=-er	gruner		
+grünes	de	lexico	flexion	green	#008000	Terminacion=-es	grunes		
 Grüngelb	de	css	nombre	greenyellow	#ADFF2F		grungelb		
 gul	sv	css	nombre	yellow	#FFFF00		gul		#FFFF00
 gul	sv	lexico	lema	yellow	#FFFF00		gul		#FFFF00
@@ -1540,8 +1540,8 @@ hemelsblauw	nl	css	nombre	skyblue	#87CEEB		hemelsblauw
 hemelsblauw	nl	lexico	lema	skyblue	#87CEEB		hemelsblauw		
 hemelsblauwe	nl	lexico	flexion	skyblue	#87CEEB	Terminacion=-e	hemelsblauwe		
 hiekanruskea	fi	css	nombre	sandybrown	#F4A460		hiekanruskea		
-hijau	id	css	nombre	green	#008000		hijau		#00FF00
-hijau	id	lexico	lema	green	#008000		hijau		#00FF00
+hijau	id	css	nombre	green	#008000		hijau		
+hijau	id	lexico	lema	green	#008000		hijau		
 hijau hutan	id	css	nombre	forestgreen	#228B22		hijau hutan		
 hijau jeruk nipis	id	css	nombre	limegreen	#32CD32		hijau jeruk nipis		
 hijau kekuningan	id	css	nombre	greenyellow	#ADFF2F		hijau kekuningan		
@@ -1867,8 +1867,8 @@ khaki	id	lexico	lema	khaki	#F0E68C		khaki		#C3B091
 khaki	sw	css	nombre	khaki	#F0E68C		khaki		#C3B091
 khaki iliyokolea	sw	css	nombre	darkkhaki	#BDB76B		khaki iliyokolea		
 khaki tua	id	css	nombre	darkkhaki	#BDB76B		khaki tua		
-kijani	sw	css	nombre	green	#008000		kijani		#00FF00
-kijani	sw	lexico	lema	green	#008000		kijani		#00FF00
+kijani	sw	css	nombre	green	#008000		kijani		
+kijani	sw	lexico	lema	green	#008000		kijani		
 kijani cha bahari	sw	css	nombre	seagreen	#2E8B57		kijani cha bahari		
 kijani cha bahari hafifu	sw	css	nombre	lightseagreen	#20B2AA		kijani cha bahari hafifu		
 kijani cha bahari iliyokolea	sw	css	nombre	darkseagreen	#8FBC8F		kijani cha bahari iliyokolea		
@@ -2354,43 +2354,43 @@ lyslaks	da	css	nombre	lightsalmon	#FFA07A		lyslaks
 lærred	da	css	nombre	linen	#FAF0E6		laerred		
 lúa mì	vi	css	nombre	wheat	#F5DEB3		lua mi		
 lụa ngô	vi	css	nombre	cornsilk	#FFF8DC		lua ngo		
-lục lam	vi	lexico	sinonimo	cyan	#00FFFF		luc lam		#00FFFF
-macenta	tr	css	nombre	magenta	#FF00FF		macenta		#FF00FF
-macenta	tr	lexico	lema	magenta	#FF00FF		macenta		#FF00FF
+lục lam	vi	lexico	sinonimo	cyan	#00FFFF		luc lam		
+macenta	tr	css	nombre	magenta	#FF00FF		macenta		
+macenta	tr	lexico	lema	magenta	#FF00FF		macenta		
 madeira clara	pt	css	nombre	burlywood	#DEB887		madeira clara		
 madera clara	es	css	nombre	burlywood	#DEB887		madera clara		
-Magenta	de	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	en	css	forma_natural	magenta	#FF00FF		magenta	ADJ,NOUN	#FF00FF
-magenta	en	css	identificador	magenta	#FF00FF		magenta	ADJ,NOUN	#FF00FF
-magenta	en	lexico	lema	magenta	#FF00FF		magenta	ADJ,NOUN	#FF00FF
-magenta	es	css	nombre	magenta	#FF00FF		magenta	ADJ,NOUN	#FF00FF
-magenta	es	lexico	lema	magenta	#FF00FF		magenta	ADJ,NOUN	#FF00FF
-magenta	fr	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	fr	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	pt	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	pt	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	it	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	it	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	de	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	nl	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	nl	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	sv	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	sv	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	da	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	da	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	fi	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	fi	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	pl	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	pl	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	ro	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	ro	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	hu	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	hu	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	vi	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	id	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	id	lexico	lema	magenta	#FF00FF		magenta		#FF00FF
-magenta	sw	css	nombre	magenta	#FF00FF		magenta		#FF00FF
-magenta	sw	lexico	lema	magenta	#FF00FF	origen=ia	magenta		#FF00FF
+Magenta	de	css	nombre	magenta	#FF00FF		magenta		
+magenta	en	css	forma_natural	magenta	#FF00FF		magenta	ADJ,NOUN	
+magenta	en	css	identificador	magenta	#FF00FF		magenta	ADJ,NOUN	
+magenta	en	lexico	lema	magenta	#FF00FF		magenta	ADJ,NOUN	
+magenta	es	css	nombre	magenta	#FF00FF		magenta	ADJ,NOUN	
+magenta	es	lexico	lema	magenta	#FF00FF		magenta	ADJ,NOUN	
+magenta	fr	css	nombre	magenta	#FF00FF		magenta		
+magenta	fr	lexico	lema	magenta	#FF00FF		magenta		
+magenta	pt	css	nombre	magenta	#FF00FF		magenta		
+magenta	pt	lexico	lema	magenta	#FF00FF		magenta		
+magenta	it	css	nombre	magenta	#FF00FF		magenta		
+magenta	it	lexico	lema	magenta	#FF00FF		magenta		
+magenta	de	lexico	lema	magenta	#FF00FF		magenta		
+magenta	nl	css	nombre	magenta	#FF00FF		magenta		
+magenta	nl	lexico	lema	magenta	#FF00FF		magenta		
+magenta	sv	css	nombre	magenta	#FF00FF		magenta		
+magenta	sv	lexico	lema	magenta	#FF00FF		magenta		
+magenta	da	css	nombre	magenta	#FF00FF		magenta		
+magenta	da	lexico	lema	magenta	#FF00FF		magenta		
+magenta	fi	css	nombre	magenta	#FF00FF		magenta		
+magenta	fi	lexico	lema	magenta	#FF00FF		magenta		
+magenta	pl	css	nombre	magenta	#FF00FF		magenta		
+magenta	pl	lexico	lema	magenta	#FF00FF		magenta		
+magenta	ro	css	nombre	magenta	#FF00FF		magenta		
+magenta	ro	lexico	lema	magenta	#FF00FF		magenta		
+magenta	hu	css	nombre	magenta	#FF00FF		magenta		
+magenta	hu	lexico	lema	magenta	#FF00FF		magenta		
+magenta	vi	lexico	lema	magenta	#FF00FF		magenta		
+magenta	id	css	nombre	magenta	#FF00FF		magenta		
+magenta	id	lexico	lema	magenta	#FF00FF		magenta		
+magenta	sw	css	nombre	magenta	#FF00FF		magenta		
+magenta	sw	lexico	lema	magenta	#FF00FF	origen=ia	magenta		
 magenta escuro	pt	css	nombre	darkmagenta	#8B008B		magenta escuro		
 magenta foncé	fr	css	nombre	darkmagenta	#8B008B		magenta fonce		
 magenta iliyokolea	sw	css	nombre	darkmagenta	#8B008B		magenta iliyokolea		
@@ -3099,14 +3099,14 @@ purppura	fi	lexico	sinonimo	purple	#800080		purppura		#800080
 Purpur	de	css	nombre	purple	#800080		purpur		#800080
 purpur	sv	lexico	sinonimo	purple	#800080		purpur		#800080
 purpuriu mediu	ro	css	nombre	mediumpurple	#9370DB		purpuriu mediu		
-purpurová	cs	css	nombre	magenta	#FF00FF		purpurova		#FF00FF
+purpurová	cs	css	nombre	magenta	#FF00FF		purpurova		
 purpurová	cs	css	nombre	purple	#800080		purpurova		#800080
-purpurová	cs	lexico	flexion	magenta	#FF00FF	Gender=Fem;Number=Sing	purpurova		#FF00FF
-purpurová	cs	lexico	flexion	magenta	#FF00FF	Gender=Neut;Number=Plur	purpurova		#FF00FF
-purpurové	cs	lexico	flexion	magenta	#FF00FF	Gender=Neut;Number=Sing	purpurove		#FF00FF
-purpurové	cs	lexico	flexion	magenta	#FF00FF	Number=Plur	purpurove		#FF00FF
-purpuroví	cs	lexico	flexion	magenta	#FF00FF	Number=Plur;Animacy=Anim	purpurovi		#FF00FF
-purpurový	cs	lexico	lema	magenta	#FF00FF		purpurovy		#FF00FF
+purpurová	cs	lexico	flexion	magenta	#FF00FF	Gender=Fem;Number=Sing	purpurova		
+purpurová	cs	lexico	flexion	magenta	#FF00FF	Gender=Neut;Number=Plur	purpurova		
+purpurové	cs	lexico	flexion	magenta	#FF00FF	Gender=Neut;Number=Sing	purpurove		
+purpurové	cs	lexico	flexion	magenta	#FF00FF	Number=Plur	purpurove		
+purpuroví	cs	lexico	flexion	magenta	#FF00FF	Number=Plur;Animacy=Anim	purpurovi		
+purpurový	cs	lexico	lema	magenta	#FF00FF		purpurovy		
 purpurowy	pl	css	nombre	purple	#800080		purpurowy		#800080
 putih	id	css	nombre	white	#FFFFFF		putih		#FFFFFF
 putih	id	lexico	lema	white	#FFFFFF		putih		#FFFFFF
@@ -3410,9 +3410,9 @@ seda de maíz	es	css	nombre	cornsilk	#FFF8DC		seda de maiz
 seda de milho	pt	css	nombre	cornsilk	#FFF8DC		seda de milho		
 sedlová hnědá	cs	css	nombre	saddlebrown	#8B4513		sedlova hneda		
 seta di mais	it	css	nombre	cornsilk	#FFF8DC		seta di mais		
-sian	id	css	nombre	cyan	#00FFFF		sian		#00FFFF
-sian	id	lexico	lema	cyan	#00FFFF		sian		#00FFFF
-sian	sw	css	nombre	cyan	#00FFFF		sian		#00FFFF
+sian	id	css	nombre	cyan	#00FFFF		sian		
+sian	id	lexico	lema	cyan	#00FFFF		sian		
+sian	sw	css	nombre	cyan	#00FFFF		sian		
 sian hafifu	sw	css	nombre	lightcyan	#E0FFFF		sian hafifu		
 sian iliyokolea	sw	css	nombre	darkcyan	#008B8B		sian iliyokolea		
 sian muda	id	css	nombre	lightcyan	#E0FFFF		sian muda		
@@ -3571,8 +3571,8 @@ světle šedá	cs	css	nombre	lightgrey	#D3D3D3		svetle seda
 světle žlutá	cs	css	nombre	lightyellow	#FFFFE0		svetle zluta		
 světlemodrý	cs	lexico	variante	lightblue	#ADD8E6	ortografia=jedno_slovo	svetlemodry		
 světlezelený	cs	lexico	variante	lightgreen	#90EE90	ortografia=jedno_slovo	svetlezeleny		
-syaani	fi	css	nombre	cyan	#00FFFF		syaani		#00FFFF
-syaani	fi	lexico	lema	cyan	#00FFFF		syaani		#00FFFF
+syaani	fi	css	nombre	cyan	#00FFFF		syaani		
+syaani	fi	lexico	lema	cyan	#00FFFF		syaani		
 sytě růžová	cs	css	nombre	hotpink	#FF69B4		syte ruzova		
 syvä taivaansininen	fi	css	nombre	deepskyblue	#00BFFF		syva taivaansininen		
 syvänpinkki	fi	css	nombre	deeppink	#FF1493		syvanpinkki		
@@ -3859,14 +3859,14 @@ vara-de-ouro pálido	pt	css	nombre	palegoldenrod	#EEE8AA		vara de ouro palido
 varm pink	da	css	nombre	hotpink	#FF69B4		varm pink		
 varmrosa	sv	css	nombre	hotpink	#FF69B4		varmrosa		
 vehnä	fi	css	nombre	wheat	#F5DEB3		vehna		
-verde	es	css	nombre	green	#008000		verde	ADJ,NOUN	#00FF00
-verde	es	lexico	lema	green	#008000		verde	ADJ,NOUN	#00FF00
-verde	pt	css	nombre	green	#008000		verde		#00FF00
-verde	pt	lexico	lema	green	#008000		verde		#00FF00
-verde	it	css	nombre	green	#008000		verde		#00FF00
-verde	it	lexico	lema	green	#008000		verde		#00FF00
-verde	ro	css	nombre	green	#008000		verde		#00FF00
-verde	ro	lexico	lema	green	#008000		verde		#00FF00
+verde	es	css	nombre	green	#008000		verde	ADJ,NOUN	
+verde	es	lexico	lema	green	#008000		verde	ADJ,NOUN	
+verde	pt	css	nombre	green	#008000		verde		
+verde	pt	lexico	lema	green	#008000		verde		
+verde	it	css	nombre	green	#008000		verde		
+verde	it	lexico	lema	green	#008000		verde		
+verde	ro	css	nombre	green	#008000		verde		
+verde	ro	lexico	lema	green	#008000		verde		
 verde amarillento	es	css	nombre	greenyellow	#ADFF2F		verde amarillento		
 verde amarillo	es	css	nombre	yellowgreen	#9ACD32		verde amarillo		
 verde azulado	es	css	nombre	teal	#008080		verde azulado		
@@ -3947,9 +3947,9 @@ verde-oliva escuro	pt	css	nombre	darkolivegreen	#556B2F		verde oliva escuro
 verde-primavera	pt	css	nombre	springgreen	#00FF7F		verde primavera		
 verde-primavera médio	pt	css	nombre	mediumspringgreen	#00FA9A		verde primavera medio		
 verde-pálido	pt	css	nombre	palegreen	#98FB98		verde palido		
-verdes	es	lexico	flexion	green	#008000	Number=Plur	verdes		#00FF00
-verdes	pt	lexico	flexion	green	#008000	Number=Plur	verdes		#00FF00
-verdi	it	lexico	flexion	green	#008000	Number=Plur	verdi		#00FF00
+verdes	es	lexico	flexion	green	#008000	Number=Plur	verdes		
+verdes	pt	lexico	flexion	green	#008000	Number=Plur	verdes		
+verdi	it	lexico	flexion	green	#008000	Number=Plur	verdi		
 verga d'oro	it	css	nombre	goldenrod	#DAA520		verga d'oro		
 verga d'oro pallido	it	css	nombre	palegoldenrod	#EEE8AA		verga d'oro pallido		
 verge d'or	fr	css	nombre	goldenrod	#DAA520		verge d'or		
@@ -3964,8 +3964,8 @@ vermelho-tijolo	pt	css	nombre	firebrick	#B22222		vermelho tijolo
 vermelho-violeta médio	pt	css	nombre	mediumvioletred	#C71585		vermelho violeta medio		
 vermelho-violeta pálido	pt	css	nombre	palevioletred	#DB7093		vermelho violeta palido		
 vermelhos	pt	lexico	flexion	red	#FF0000	Gender=Masc;Number=Plur	vermelhos		#FF0000
-vert	fr	css	nombre	green	#008000		vert		#00FF00
-vert	fr	lexico	lema	green	#008000		vert		#00FF00
+vert	fr	css	nombre	green	#008000		vert		
+vert	fr	lexico	lema	green	#008000		vert		
 vert citron	fr	css	nombre	limegreen	#32CD32		vert citron		
 vert clair	fr	css	nombre	lightgreen	#90EE90		vert clair		
 vert clair	fr	lexico	lema	lightgreen	#90EE90		vert clair		
@@ -3984,15 +3984,15 @@ vert printemps	fr	css	nombre	springgreen	#00FF7F		vert printemps
 vert printemps moyen	fr	css	nombre	mediumspringgreen	#00FA9A		vert printemps moyen		
 vert pâle	fr	css	nombre	palegreen	#98FB98		vert pale		
 vert-jaune	fr	css	nombre	greenyellow	#ADFF2F		vert jaune		
-verte	fr	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	verte		#00FF00
-vertes	fr	lexico	flexion	green	#008000	Gender=Fem;Number=Plur	vertes		#00FF00
-verts	fr	lexico	flexion	green	#008000	Gender=Masc;Number=Plur	verts		#00FF00
-verzi	ro	lexico	flexion	green	#008000	Number=Plur	verzi		#00FF00
+verte	fr	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	verte		
+vertes	fr	lexico	flexion	green	#008000	Gender=Fem;Number=Plur	vertes		
+verts	fr	lexico	flexion	green	#008000	Gender=Masc;Number=Plur	verts		
+verzi	ro	lexico	flexion	green	#008000	Number=Plur	verzi		
 vete	sv	css	nombre	wheat	#F5DEB3		vete		
-vihreä	fi	css	nombre	green	#008000		vihrea		#00FF00
-vihreä	fi	lexico	lema	green	#008000		vihrea		#00FF00
+vihreä	fi	css	nombre	green	#008000		vihrea		
+vihreä	fi	lexico	lema	green	#008000		vihrea		
 vihreänkeltainen	fi	css	nombre	greenyellow	#ADFF2F		vihreankeltainen		
-vihreät	fi	lexico	flexion	green	#008000	Number=Plur	vihreat		#00FF00
+vihreät	fi	lexico	flexion	green	#008000	Number=Plur	vihreat		
 viininpunainen	fi	lexico	lema	burgundy	#900020		viininpunainen		
 viininpunaiset	fi	lexico	flexion	burgundy	#900020	Number=Plur	viininpunaiset		
 világos acélkék	hu	css	nombre	lightsteelblue	#B0C4DE		vilagos acelkek		
@@ -4181,19 +4181,19 @@ xanh hoàng gia	vi	css	nombre	royalblue	#4169E1		xanh hoang gia
 xanh hải quân	vi	css	nombre	navy	#000080		xanh hai quan		
 xanh hải quân	vi	lexico	sinonimo	navy	#000080		xanh hai quan		
 xanh lam	vi	lexico	sinonimo	blue	#0000FF		xanh lam		#0000FF
-xanh lá	vi	css	nombre	green	#008000		xanh la		#00FF00
-xanh lá	vi	lexico	sinonimo	green	#008000		xanh la		#00FF00
-xanh lá cây	vi	lexico	lema	green	#008000		xanh la cay		#00FF00
+xanh lá	vi	css	nombre	green	#008000		xanh la		
+xanh lá	vi	lexico	sinonimo	green	#008000		xanh la		
+xanh lá cây	vi	lexico	lema	green	#008000		xanh la cay		
 xanh lá nhạt	vi	css	nombre	lightgreen	#90EE90		xanh la nhat		
 xanh lá nhạt	vi	lexico	lema	lightgreen	#90EE90		xanh la nhat		
 xanh lá non	vi	css	nombre	palegreen	#98FB98		xanh la non		
 xanh lá đậm	vi	css	nombre	darkgreen	#006400		xanh la dam		
 xanh lá đậm	vi	lexico	lema	darkgreen	#006400		xanh la dam		
-xanh lơ	vi	css	nombre	cyan	#00FFFF		xanh lo		#00FFFF
-xanh lơ	vi	lexico	lema	cyan	#00FFFF		xanh lo		#00FFFF
+xanh lơ	vi	css	nombre	cyan	#00FFFF		xanh lo		
+xanh lơ	vi	lexico	lema	cyan	#00FFFF		xanh lo		
 xanh lơ nhạt	vi	css	nombre	lightcyan	#E0FFFF		xanh lo nhat		
 xanh lơ đậm	vi	css	nombre	darkcyan	#008B8B		xanh lo dam		
-xanh lục	vi	lexico	sinonimo	green	#008000		xanh luc		#00FF00
+xanh lục	vi	lexico	sinonimo	green	#008000		xanh luc		
 xanh mòng két	vi	css	nombre	teal	#008080		xanh mong ket		
 xanh navy	vi	lexico	lema	navy	#000080		xanh navy		
 xanh ngọc	vi	lexico	sinonimo	turquoise	#40E0D0		xanh ngoc		#06C2AC
@@ -4229,8 +4229,8 @@ yellow	en	lexico	lema	yellow	#FFFF00		yellow	ADJ,NOUN,VERB	#FFFF00
 yellow green	en	css	forma_natural	yellowgreen	#9ACD32		yellow green		
 yellow-green	en	css	forma_con_guion	yellowgreen	#9ACD32		yellow green		
 yellowgreen	en	css	identificador	yellowgreen	#9ACD32		yellowgreen		
-yeşil	tr	css	nombre	green	#008000		yesil		#00FF00
-yeşil	tr	lexico	lema	green	#008000		yesil		#00FF00
+yeşil	tr	css	nombre	green	#008000		yesil		
+yeşil	tr	lexico	lema	green	#008000		yesil		
 yeşil sarı	tr	css	nombre	greenyellow	#ADFF2F		yesil sari		
 zadelbruin	nl	css	nombre	saddlebrown	#8B4513		zadelbruin		
 zaitun	id	css	nombre	olive	#808000		zaitun		#808010
@@ -4248,23 +4248,23 @@ zandbruin	nl	css	nombre	sandybrown	#F4A460		zandbruin
 zeegroen	nl	css	nombre	seagreen	#2E8B57		zeegroen		
 zeituni	sw	lexico	lema	olive	#808000	origen=ia	zeituni		#808010
 zelenožlutá	cs	css	nombre	greenyellow	#ADFF2F		zelenozluta		
-zelená	cs	css	nombre	green	#008000		zelena		#00FF00
-zelená	cs	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	zelena		#00FF00
-zelená	cs	lexico	flexion	green	#008000	Gender=Neut;Number=Plur	zelena		#00FF00
-zelené	cs	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	zelene		#00FF00
-zelené	cs	lexico	flexion	green	#008000	Number=Plur	zelene		#00FF00
-zelení	cs	lexico	flexion	green	#008000	Number=Plur;Animacy=Anim	zeleni		#00FF00
-zelený	cs	lexico	lema	green	#008000		zeleny		#00FF00
+zelená	cs	css	nombre	green	#008000		zelena		
+zelená	cs	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	zelena		
+zelená	cs	lexico	flexion	green	#008000	Gender=Neut;Number=Plur	zelena		
+zelené	cs	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	zelene		
+zelené	cs	lexico	flexion	green	#008000	Number=Plur	zelene		
+zelení	cs	lexico	flexion	green	#008000	Number=Plur;Animacy=Anim	zeleni		
+zelený	cs	lexico	lema	green	#008000		zeleny		
 zeytin drab	tr	css	nombre	olivedrab	#6B8E23		zeytin drab		
 zeytin yeşili	tr	css	nombre	olive	#808000		zeytin yesili		#808010
 zeytin yeşili	tr	lexico	lema	olive	#808000		zeytin yesili		#808010
-zielona	pl	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	zielona		#00FF00
-zielone	pl	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	zielone		#00FF00
-zielone	pl	lexico	flexion	green	#008000	Number=Plur	zielone		#00FF00
-zieloni	pl	lexico	flexion	green	#008000	Number=Plur;Animacy=Anim	zieloni		#00FF00
+zielona	pl	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	zielona		
+zielone	pl	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	zielone		
+zielone	pl	lexico	flexion	green	#008000	Number=Plur	zielone		
+zieloni	pl	lexico	flexion	green	#008000	Number=Plur;Animacy=Anim	zieloni		
 zielonkawo-żółty	pl	css	nombre	greenyellow	#ADFF2F		zielonkawo zolty		
-zielony	pl	css	nombre	green	#008000		zielony		#00FF00
-zielony	pl	lexico	lema	green	#008000		zielony		#00FF00
+zielony	pl	css	nombre	green	#008000		zielony		
+zielony	pl	lexico	lema	green	#008000		zielony		
 zilver	nl	css	nombre	silver	#C0C0C0		zilver		#C0C0C0
 zilver	nl	lexico	lema	silver	#C0C0C0		zilver		#C0C0C0
 zilveren	nl	lexico	sinonimo	silver	#C0C0C0		zilveren		#C0C0C0
@@ -4281,8 +4281,8 @@ zlatý	cs	lexico	lema	gold	#FFD700		zlaty		#FFD700
 zwart	nl	css	nombre	black	#000000		zwart		#000000
 zwart	nl	lexico	lema	black	#000000		zwart		#000000
 zwarte	nl	lexico	flexion	black	#000000	Terminacion=-e	zwarte		#000000
-zöld	hu	css	nombre	green	#008000		zold		#00FF00
-zöld	hu	lexico	lema	green	#008000		zold		#00FF00
+zöld	hu	css	nombre	green	#008000		zold		
+zöld	hu	lexico	lema	green	#008000		zold		
 zöldessárga	hu	css	nombre	greenyellow	#ADFF2F		zoldessarga		
 zăpadă	ro	css	nombre	snow	#FFFAFA		zapada		
 złoci	pl	lexico	flexion	gold	#FFD700	Number=Plur;Animacy=Anim	zloci		#FFD700
@@ -4341,7 +4341,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 đỏ thẫm	vi	lexico	lema	crimson	#DC143C		do tham		
 đỏ tím nhạt	vi	css	nombre	palevioletred	#DB7093		do tim nhat		
 đỏ tím vừa	vi	css	nombre	mediumvioletred	#C71585		do tim vua		
-đỏ tươi	vi	css	nombre	magenta	#FF00FF		do tuoi		#FF00FF
+đỏ tươi	vi	css	nombre	magenta	#FF00FF		do tuoi		
 đỏ tươi	vi	lexico	lema	scarlet	#FF2400		do tuoi		#FF2400
 đỏ tươi đậm	vi	css	nombre	darkmagenta	#8B008B		do tuoi dam		
 đỏ đô	vi	lexico	lema	burgundy	#900020		do do		
@@ -4497,13 +4497,13 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 κρέμα μέντας	el	css	nombre	mintcream	#F5FFFA		κρεμα μεντασ		
 κρέμα παπάγιας	el	css	nombre	papayawhip	#FFEFD5		κρεμα παπαγιασ		
 κρεμ	el	lexico	lema	cream	#FFFFC2		κρεμ		#FFFFC2
-κυανά	el	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Plur	κυανα		#00FFFF
-κυανές	el	lexico	flexion	cyan	#00FFFF	Gender=Fem;Number=Plur	κυανεσ		#00FFFF
-κυανή	el	lexico	flexion	cyan	#00FFFF	Gender=Fem;Number=Sing	κυανη		#00FFFF
-κυανοί	el	lexico	flexion	cyan	#00FFFF	Gender=Masc;Number=Plur	κυανοι		#00FFFF
-κυανό	el	css	nombre	cyan	#00FFFF		κυανο		#00FFFF
-κυανό	el	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Sing	κυανο		#00FFFF
-κυανός	el	lexico	lema	cyan	#00FFFF		κυανοσ		#00FFFF
+κυανά	el	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Plur	κυανα		
+κυανές	el	lexico	flexion	cyan	#00FFFF	Gender=Fem;Number=Plur	κυανεσ		
+κυανή	el	lexico	flexion	cyan	#00FFFF	Gender=Fem;Number=Sing	κυανη		
+κυανοί	el	lexico	flexion	cyan	#00FFFF	Gender=Masc;Number=Plur	κυανοι		
+κυανό	el	css	nombre	cyan	#00FFFF		κυανο		
+κυανό	el	lexico	flexion	cyan	#00FFFF	Gender=Neut;Number=Sing	κυανο		
+κυανός	el	lexico	lema	cyan	#00FFFF		κυανοσ		
 κόκκινα	el	lexico	flexion	red	#FF0000	Gender=Neut;Number=Plur	κοκκινα		#FF0000
 κόκκινες	el	lexico	flexion	red	#FF0000	Gender=Fem;Number=Plur	κοκκινεσ		#FF0000
 κόκκινη	el	lexico	flexion	red	#FF0000	Gender=Fem;Number=Sing	κοκκινη		#FF0000
@@ -4523,8 +4523,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 λευκός	el	lexico	sinonimo	white	#FFFFFF		λευκοσ		#FFFFFF
 λιλά	el	lexico	lema	lilac	#CEA2FD		λιλα		#CEA2FD
 λινό	el	css	nombre	linen	#FAF0E6		λινο		
-ματζέντα	el	css	nombre	magenta	#FF00FF		ματζεντα		#FF00FF
-ματζέντα	el	lexico	lema	magenta	#FF00FF		ματζεντα		#FF00FF
+ματζέντα	el	css	nombre	magenta	#FF00FF		ματζεντα		
+ματζέντα	el	lexico	lema	magenta	#FF00FF		ματζεντα		
 μαυρισμένο	el	css	nombre	tan	#D2B48C		μαυρισμενο		
 μαύρα	el	lexico	flexion	black	#000000	Gender=Neut;Number=Plur	μαυρα		#000000
 μαύρες	el	lexico	flexion	black	#000000	Gender=Fem;Number=Plur	μαυρεσ		#000000
@@ -4574,17 +4574,17 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 πορτοκαλί	el	css	nombre	orange	#FFA500		πορτοκαλι		#FFA500
 πορτοκαλί	el	lexico	lema	orange	#FFA500		πορτοκαλι		#FFA500
 πορτοκαλοκόκκινο	el	css	nombre	orangered	#FF4500		πορτοκαλοκοκκινο		
-πράσινα	el	lexico	flexion	green	#008000	Gender=Neut;Number=Plur	πρασινα		#00FF00
-πράσινες	el	lexico	flexion	green	#008000	Gender=Fem;Number=Plur	πρασινεσ		#00FF00
-πράσινη	el	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	πρασινη		#00FF00
-πράσινο	el	css	nombre	green	#008000		πρασινο		#00FF00
-πράσινο	el	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	πρασινο		#00FF00
+πράσινα	el	lexico	flexion	green	#008000	Gender=Neut;Number=Plur	πρασινα		
+πράσινες	el	lexico	flexion	green	#008000	Gender=Fem;Number=Plur	πρασινεσ		
+πράσινη	el	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	πρασινη		
+πράσινο	el	css	nombre	green	#008000		πρασινο		
+πράσινο	el	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	πρασινο		
 πράσινο γκαζόν	el	css	nombre	lawngreen	#7CFC00		πρασινο γκαζον		
 πράσινο δάσους	el	css	nombre	forestgreen	#228B22		πρασινο δασουσ		
 πράσινο λαχανί	el	css	nombre	limegreen	#32CD32		πρασινο λαχανι		
 πράσινο-κίτρινο	el	css	nombre	greenyellow	#ADFF2F		πρασινο κιτρινο		
-πράσινοι	el	lexico	flexion	green	#008000	Gender=Masc;Number=Plur	πρασινοι		#00FF00
-πράσινος	el	lexico	lema	green	#008000		πρασινοσ		#00FF00
+πράσινοι	el	lexico	flexion	green	#008000	Gender=Masc;Number=Plur	πρασινοι		
+πράσινος	el	lexico	lema	green	#008000		πρασινοσ		
 πυροτούβλο	el	css	nombre	firebrick	#B22222		πυροτουβλο		
 Ρεμπέκα μωβ	el	css	nombre	rebeccapurple	#663399		ρεμπεκα μωβ		
 ροδάκινο	el	css	nombre	peachpuff	#FFDAB9		ροδακινο		
@@ -4765,19 +4765,19 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 жёлтый	ru	lexico	lema	yellow	#FFFF00		жёлтый		#FFFF00
 загар	ru	css	nombre	tan	#D2B48C		загар		
 засмага	uk	css	nombre	tan	#D2B48C		засмага		
-зелена	uk	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	зелена		#00FF00
-зелене	uk	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	зелене		#00FF00
-зелений	uk	css	nombre	green	#008000		зелений		#00FF00
-зелений	uk	lexico	lema	green	#008000		зелений		#00FF00
+зелена	uk	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	зелена		
+зелене	uk	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	зелене		
+зелений	uk	css	nombre	green	#008000		зелений		
+зелений	uk	lexico	lema	green	#008000		зелений		
 зелено-жовтий	uk	css	nombre	greenyellow	#ADFF2F		зелено жовтий		
-зеленый	ru	lexico	variante	green	#008000	ortografia=sin_dieresis	зеленый		#00FF00
-зелені	uk	lexico	flexion	green	#008000	Number=Plur	зелені		#00FF00
-зелёная	ru	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	зелёная		#00FF00
+зеленый	ru	lexico	variante	green	#008000	ortografia=sin_dieresis	зеленый		
+зелені	uk	lexico	flexion	green	#008000	Number=Plur	зелені		
+зелёная	ru	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	зелёная		
 зелёно-жёлтый	ru	css	nombre	greenyellow	#ADFF2F		зелёно жёлтый		
-зелёное	ru	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	зелёное		#00FF00
-зелёные	ru	lexico	flexion	green	#008000	Number=Plur	зелёные		#00FF00
-зелёный	ru	css	nombre	green	#008000		зелёный		#00FF00
-зелёный	ru	lexico	lema	green	#008000		зелёный		#00FF00
+зелёное	ru	lexico	flexion	green	#008000	Gender=Neut;Number=Sing	зелёное		
+зелёные	ru	lexico	flexion	green	#008000	Number=Plur	зелёные		
+зелёный	ru	css	nombre	green	#008000		зелёный		
+зелёный	ru	lexico	lema	green	#008000		зелёный		
 золота	uk	lexico	flexion	gold	#FFD700	Gender=Fem;Number=Sing	золота		#FFD700
 золотарник	ru	css	nombre	goldenrod	#DAA520		золотарник		
 золотарник	uk	css	nombre	goldenrod	#DAA520		золотарник		
@@ -4890,8 +4890,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 лілові	uk	lexico	flexion	lilac	#CEA2FD	Number=Plur	лілові		#CEA2FD
 лісовий зелений	uk	css	nombre	forestgreen	#228B22		лісовий зелений		
 м'ятний крем	uk	css	nombre	mintcream	#F5FFFA		м'ятний крем		
-маджента	ru	lexico	lema	magenta	#FF00FF		маджента		#FF00FF
-маджента	uk	lexico	lema	magenta	#FF00FF		маджента		#FF00FF
+маджента	ru	lexico	lema	magenta	#FF00FF		маджента		
+маджента	uk	lexico	lema	magenta	#FF00FF		маджента		
 малинова	uk	lexico	flexion	crimson	#DC143C	Gender=Fem;Number=Sing	малинова		
 малиновая	ru	lexico	flexion	crimson	#DC143C	Gender=Fem;Number=Sing	малиновая		
 малинове	uk	lexico	flexion	crimson	#DC143C	Gender=Neut;Number=Sing	малинове		
@@ -4956,8 +4956,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 призрачно-белый	ru	css	nombre	ghostwhite	#F8F8FF		призрачно белый		
 примарно-білий	uk	css	nombre	ghostwhite	#F8F8FF		примарно білий		
 пудровий	uk	css	nombre	powderblue	#B0E0E6		пудровий		
-пурпурный	ru	css	nombre	magenta	#FF00FF		пурпурный		#FF00FF
-пурпуровий	uk	css	nombre	magenta	#FF00FF		пурпуровий		#FF00FF
+пурпурный	ru	css	nombre	magenta	#FF00FF		пурпурный		
+пурпуровий	uk	css	nombre	magenta	#FF00FF		пурпуровий		
 пшеничний	uk	css	nombre	wheat	#F5DEB3		пшеничний		
 пшеничный	ru	css	nombre	wheat	#F5DEB3		пшеничный		
 піщано-коричневий	uk	css	nombre	sandybrown	#F4A460		піщано коричневий		
@@ -5170,10 +5170,10 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 хакі	uk	lexico	lema	khaki	#F0E68C		хакі		#C3B091
 цветочно-белый	ru	css	nombre	floralwhite	#FFFAF0		цветочно белый		
 цегляний	uk	css	nombre	firebrick	#B22222		цегляний		
-циан	ru	css	nombre	cyan	#00FFFF		циан		#00FFFF
-циан	ru	lexico	lema	cyan	#00FFFF	origen=ia	циан		#00FFFF
-ціан	uk	css	nombre	cyan	#00FFFF		ціан		#00FFFF
-ціан	uk	lexico	lema	cyan	#00FFFF	origen=ia	ціан		#00FFFF
+циан	ru	css	nombre	cyan	#00FFFF		циан		
+циан	ru	lexico	lema	cyan	#00FFFF	origen=ia	циан		
+ціан	uk	css	nombre	cyan	#00FFFF		ціан		
+ціан	uk	lexico	lema	cyan	#00FFFF	origen=ia	ціан		
 червона	uk	lexico	flexion	red	#FF0000	Gender=Fem;Number=Sing	червона		#FF0000
 червоне	uk	lexico	flexion	red	#FF0000	Gender=Neut;Number=Sing	червоне		#FF0000
 червоний	uk	css	nombre	red	#FF0000		червоний		#FF0000
@@ -5286,8 +5286,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 טורקיז חיוור	he	css	nombre	paleturquoise	#AFEEEE		טורקיז חיוור		
 טורקיז כהה	he	css	nombre	darkturquoise	#00CED1		טורקיז כהה		
 טל דבש	he	css	nombre	honeydew	#F0FFF0		טל דבש		
-ירוק	he	css	nombre	green	#008000		ירוק		#00FF00
-ירוק	he	lexico	lema	green	#008000		ירוק		#00FF00
+ירוק	he	css	nombre	green	#008000		ירוק		
+ירוק	he	lexico	lema	green	#008000		ירוק		
 ירוק אביב	he	css	nombre	springgreen	#00FF7F		ירוק אביב		
 ירוק אביב בינוני	he	css	nombre	mediumspringgreen	#00FA9A		ירוק אביב בינוני		
 ירוק בהיר	he	css	nombre	lightgreen	#90EE90		ירוק בהיר		
@@ -5305,9 +5305,9 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 ירוק ליים	he	css	nombre	limegreen	#32CD32		ירוק ליים		
 ירוק-כחול	he	css	nombre	teal	#008080		ירוק כחול		
 ירוק-צהוב	he	css	nombre	greenyellow	#ADFF2F		ירוק צהוב		
-ירוקה	he	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	ירוקה		#00FF00
-ירוקות	he	lexico	flexion	green	#008000	Gender=Fem;Number=Plur	ירוקות		#00FF00
-ירוקים	he	lexico	flexion	green	#008000	Gender=Masc;Number=Plur	ירוקים		#00FF00
+ירוקה	he	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	ירוקה		
+ירוקות	he	lexico	flexion	green	#008000	Gender=Fem;Number=Plur	ירוקות		
+ירוקים	he	lexico	flexion	green	#008000	Gender=Masc;Number=Plur	ירוקים		
 כחול	he	css	nombre	blue	#0000FF		כחול		#0000FF
 כחול	he	lexico	lema	blue	#0000FF		כחול		#0000FF
 כחול אבקה	he	css	nombre	powderblue	#B0E0E6		כחול אבקה		
@@ -5358,9 +5358,9 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 ליים	he	css	nombre	lime	#00FF00		ליים		#AAFF32
 ליים	he	lexico	lema	lime	#00FF00		ליים		#AAFF32
 לילך	he	lexico	lema	lilac	#CEA2FD		לילך		#CEA2FD
-מג'נטה	he	css	nombre	magenta	#FF00FF		מג'נטה		#FF00FF
+מג'נטה	he	css	nombre	magenta	#FF00FF		מג'נטה		
 מג'נטה כהה	he	css	nombre	darkmagenta	#8B008B		מג'נטה כהה		
-מגנטה	he	lexico	lema	magenta	#FF00FF		מגנטה		#FF00FF
+מגנטה	he	lexico	lema	magenta	#FF00FF		מגנטה		
 מוקסין	he	css	nombre	moccasin	#FFE4B5		מוקסין		
 משי תירס	he	css	nombre	cornsilk	#FFF8DC		משי תירס		
 סגול	he	css	nombre	purple	#800080		סגול		#800080
@@ -5399,8 +5399,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 צהובה	he	lexico	flexion	yellow	#FFFF00	Gender=Fem;Number=Sing	צהובה		#FFFF00
 צהובות	he	lexico	flexion	yellow	#FFFF00	Gender=Fem;Number=Plur	צהובות		#FFFF00
 צהובים	he	lexico	flexion	yellow	#FFFF00	Gender=Masc;Number=Plur	צהובים		#FFFF00
-ציאן	he	css	nombre	cyan	#00FFFF		ציאן		#00FFFF
-ציאן	he	lexico	lema	cyan	#00FFFF		ציאן		#00FFFF
+ציאן	he	css	nombre	cyan	#00FFFF		ציאן		
+ציאן	he	lexico	lema	cyan	#00FFFF		ציאן		
 ציאן בהיר	he	css	nombre	lightcyan	#E0FFFF		ציאן בהיר		
 ציאן כהה	he	css	nombre	darkcyan	#008B8B		ציאן כהה		
 קרם	he	lexico	lema	cream	#FFFFC2		קרם		#FFFFC2
@@ -5466,8 +5466,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 أحمر داكن	ar	css	nombre	darkred	#8B0000		أحمر داكن		
 أحمر طوبي	ar	css	nombre	firebrick	#B22222		أحمر طوبي		
 أحمر هندي	ar	css	nombre	indianred	#CD5C5C		أحمر هندي		
-أخضر	ar	css	nombre	green	#008000		أخضر		#00FF00
-أخضر	ar	lexico	lema	green	#008000		أخضر		#00FF00
+أخضر	ar	css	nombre	green	#008000		أخضر		
+أخضر	ar	lexico	lema	green	#008000		أخضر		
 أخضر العشب	ar	css	nombre	lawngreen	#7CFC00		أخضر العشب		
 أخضر الغابة	ar	css	nombre	forestgreen	#228B22		أخضر الغابة		
 أخضر بحري	ar	css	nombre	seagreen	#2E8B57		أخضر بحري		
@@ -5601,8 +5601,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 خزامي	ar	lexico	lema	lavender	#E6E6FA		خزامي		#B56EDC
 خزامية	ar	lexico	flexion	lavender	#E6E6FA	Gender=Fem;Number=Sing	خزامية		#B56EDC
 خشبي	ar	css	nombre	burlywood	#DEB887		خشبي		
-خضر	ar	lexico	flexion	green	#008000	Number=Plur	خضر		#00FF00
-خضراء	ar	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	خضراء		#00FF00
+خضر	ar	lexico	flexion	green	#008000	Number=Plur	خضر		
+خضراء	ar	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	خضراء		
 خوخي	ar	css	nombre	peachpuff	#FFDAB9		خوخي		
 دانتيل قديم	ar	css	nombre	oldlace	#FDF5E6		دانتيل قديم		
 ذهبي	ar	css	nombre	gold	#FFD700		ذهبي		#FFD700
@@ -5648,8 +5648,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 سالمون تیره	fa	css	nombre	darksalmon	#E9967A		سالمون تیره		
 سالمون روشن	fa	css	nombre	lightsalmon	#FFA07A		سالمون روشن		
 سالمونی	fa	lexico	lema	salmon	#FA8072		سالمونی		#FF796C
-سبز	fa	css	nombre	green	#008000		سبز		#00FF00
-سبز	fa	lexico	lema	green	#008000		سبز		#00FF00
+سبز	fa	css	nombre	green	#008000		سبز		
+سبز	fa	lexico	lema	green	#008000		سبز		
 سبز آبی	fa	css	nombre	teal	#008080		سبز آبی		
 سبز بهاری	fa	css	nombre	springgreen	#00FF7F		سبز بهاری		
 سبز بهاری متوسط	fa	css	nombre	mediumspringgreen	#00FA9A		سبز بهاری متوسط		
@@ -5667,7 +5667,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 سبز چمن	fa	css	nombre	lawngreen	#7CFC00		سبز چمن		
 سبز کم‌رنگ	fa	css	nombre	palegreen	#98FB98		سبز کم‌رنگ		
 سرخ	fa	lexico	sinonimo	red	#FF0000		سرخ		#FF0000
-سرخابی	fa	css	nombre	magenta	#FF00FF		سرخابی		#FF00FF
+سرخابی	fa	css	nombre	magenta	#FF00FF		سرخابی		
 سرخابی تیره	fa	css	nombre	darkmagenta	#8B008B		سرخابی تیره		
 سرمه‌ای	fa	css	nombre	navy	#000080		سرمه‌ای		
 سرمه‌ای	fa	lexico	lema	navy	#000080		سرمه‌ای		
@@ -5684,16 +5684,16 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 سلموني داكن	ar	css	nombre	darksalmon	#E9967A		سلموني داكن		
 سلموني فاتح	ar	css	nombre	lightsalmon	#FFA07A		سلموني فاتح		
 سلمونية	ar	lexico	flexion	salmon	#FA8072	Gender=Fem;Number=Sing	سلمونية		#FF796C
-سماوي	ar	css	nombre	cyan	#00FFFF		سماوي		#00FFFF
+سماوي	ar	css	nombre	cyan	#00FFFF		سماوي		
 سماوي	ar	lexico	lema	skyblue	#87CEEB		سماوي		
 سماوي داكن	ar	css	nombre	darkcyan	#008B8B		سماوي داكن		
 سماوي فاتح	ar	css	nombre	lightcyan	#E0FFFF		سماوي فاتح		
 سماوية	ar	lexico	flexion	skyblue	#87CEEB	Gender=Fem;Number=Sing	سماوية		
 سود	ar	lexico	flexion	black	#000000	Number=Plur	سود		#000000
 سوداء	ar	lexico	flexion	black	#000000	Gender=Fem;Number=Sing	سوداء		#000000
-سيان	ar	lexico	lema	cyan	#00FFFF		سيان		#00FFFF
+سيان	ar	lexico	lema	cyan	#00FFFF		سيان		
 سيينا	ar	css	nombre	sienna	#A0522D		سيينا		
-سیان	fa	lexico	lema	cyan	#00FFFF		سیان		#00FFFF
+سیان	fa	lexico	lema	cyan	#00FFFF		سیان		
 سیاه	fa	css	nombre	black	#000000		سیاه		#000000
 سیاه	fa	lexico	lema	black	#000000		سیاه		#000000
 سیِنا	fa	css	nombre	sienna	#A0522D		سیِنا		
@@ -5745,7 +5745,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 فيروزي شاحب	ar	css	nombre	paleturquoise	#AFEEEE		فيروزي شاحب		
 فيروزي متوسط	ar	css	nombre	mediumturquoise	#48D1CC		فيروزي متوسط		
 فيروزية	ar	lexico	flexion	turquoise	#40E0D0	Gender=Fem;Number=Sing	فيروزية		#06C2AC
-فیروزه‌ای	fa	css	nombre	cyan	#00FFFF		فیروزه‌ای		#00FFFF
+فیروزه‌ای	fa	css	nombre	cyan	#00FFFF		فیروزه‌ای		
 فیروزه‌ای	fa	css	nombre	turquoise	#40E0D0		فیروزه‌ای		#06C2AC
 فیروزه‌ای	fa	lexico	lema	turquoise	#40E0D0		فیروزه‌ای		#06C2AC
 فیروزه‌ای تیره	fa	css	nombre	darkcyan	#008B8B		فیروزه‌ای تیره		
@@ -5793,8 +5793,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 ليمونية	ar	lexico	flexion	lime	#00FF00	Gender=Fem;Number=Sing	ليمونية		#AAFF32
 لیمویی	fa	css	nombre	lime	#00FF00		لیمویی		#AAFF32
 لیمویی	fa	lexico	lema	lime	#00FF00		لیمویی		#AAFF32
-ماجنتا	ar	css	nombre	magenta	#FF00FF		ماجنتا		#FF00FF
-ماجنتا	ar	lexico	lema	magenta	#FF00FF		ماجنتا		#FF00FF
+ماجنتا	ar	css	nombre	magenta	#FF00FF		ماجنتا		
+ماجنتا	ar	lexico	lema	magenta	#FF00FF		ماجنتا		
 مرجاني	ar	css	nombre	coral	#FF7F50		مرجاني		#FF7F50
 مرجاني	ar	lexico	lema	coral	#FF7F50		مرجاني		#FF7F50
 مرجاني فاتح	ar	css	nombre	lightcoral	#F08080		مرجاني فاتح		
@@ -5969,8 +5969,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 मध्यरात्रि नीला	hi	css	nombre	midnightblue	#191970		मध्यरात्रि नीला		
 मूंगा	hi	css	nombre	coral	#FF7F50		मूंगा		#FF7F50
 मूंगिया	hi	lexico	lema	coral	#FF7F50		मूंगिया		#FF7F50
-मैजेंटा	hi	css	nombre	magenta	#FF00FF		मैजेंटा		#FF00FF
-मैजेंटा	hi	lexico	lema	magenta	#FF00FF		मैजेंटा		#FF00FF
+मैजेंटा	hi	css	nombre	magenta	#FF00FF		मैजेंटा		
+मैजेंटा	hi	lexico	lema	magenta	#FF00FF		मैजेंटा		
 मैरून	hi	css	nombre	maroon	#800000		मैरून		#800000
 मैरून	hi	lexico	lema	maroon	#800000		मैरून		#800000
 मोकासिन	hi	css	nombre	moccasin	#FFE4B5		मोकासिन		
@@ -5996,9 +5996,9 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 सफ़ेद	hi	lexico	variante	white	#FFFFFF	ortografia=con_nukta	सफ़ेद		#FFFFFF
 सफेद	hi	lexico	lema	white	#FFFFFF		सफेद		#FFFFFF
 समुद्री हरा	hi	css	nombre	seagreen	#2E8B57		समुद्री हरा		
-सायन	hi	css	nombre	cyan	#00FFFF		सायन		#00FFFF
+सायन	hi	css	nombre	cyan	#00FFFF		सायन		
 सिएना	hi	css	nombre	sienna	#A0522D		सिएना		
-सियान	hi	lexico	lema	cyan	#00FFFF		सियान		#00FFFF
+सियान	hi	lexico	lema	cyan	#00FFFF		सियान		
 सीप	hi	css	nombre	seashell	#FFF5EE		सीप		
 सुनहरा	hi	css	nombre	gold	#FFD700		सुनहरा		#FFD700
 सुनहरा	hi	lexico	lema	gold	#FFD700		सुनहरा		#FFD700
@@ -6014,11 +6014,11 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 स्लेटी	hi	css	nombre	gray	#808080		स्लेटी		
 स्लेटी	hi	css	nombre	grey	#808080		स्लेटी		
 स्लेटी	hi	lexico	lema	gray	#808080		स्लेटी		
-हरा	hi	css	nombre	green	#008000		हरा		#00FF00
-हरा	hi	lexico	lema	green	#008000		हरा		#00FF00
+हरा	hi	css	nombre	green	#008000		हरा		
+हरा	hi	lexico	lema	green	#008000		हरा		
 हरा-पीला	hi	css	nombre	greenyellow	#ADFF2F		हरा पीला		
-हरी	hi	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	हरी		#00FF00
-हरे	hi	lexico	flexion	green	#008000	Gender=Masc;Number=Plur	हरे		#00FF00
+हरी	hi	lexico	flexion	green	#008000	Gender=Fem;Number=Sing	हरी		
+हरे	hi	lexico	flexion	green	#008000	Gender=Masc;Number=Plur	हरे		
 हल्का आसमानी नीला	hi	css	nombre	lightskyblue	#87CEFA		हल्का आसमानी नीला		
 हल्का गुलाबी	hi	css	nombre	lightpink	#FFB6C1		हल्का गुलाबी		
 हल्का गोल्डनरोड	hi	css	nombre	palegoldenrod	#EEE8AA		हल्का गोल्डनरोड		
@@ -6162,8 +6162,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 মাঝারি স্লেট নীল	bn	css	nombre	mediumslateblue	#7B68EE		মাঝারি স্লেট নীল		
 মেরুন	bn	lexico	lema	maroon	#800000		মেরুন		#800000
 মোকাসিন	bn	css	nombre	moccasin	#FFE4B5		মোকাসিন		
-ম্যাজেন্টা	bn	css	nombre	magenta	#FF00FF		ম্যাজেন্টা		#FF00FF
-ম্যাজেন্টা	bn	lexico	lema	magenta	#FF00FF		ম্যাজেন্টা		#FF00FF
+ম্যাজেন্টা	bn	css	nombre	magenta	#FF00FF		ম্যাজেন্টা		
+ম্যাজেন্টা	bn	lexico	lema	magenta	#FF00FF		ম্যাজেন্টা		
 ম্যারুন	bn	css	nombre	maroon	#800000		ম্যারুন		#800000
 ম্লান ধূসর	bn	css	nombre	dimgray	#696969		ম্লান ধূসর		
 ম্লান ধূসর	bn	css	nombre	dimgrey	#696969		ম্লান ধূসর		
@@ -6184,15 +6184,15 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 ল্যাভেন্ডার	bn	lexico	lema	lavender	#E6E6FA		ল্যাভেন্ডার		#B56EDC
 ল্যাভেন্ডার ব্লাশ	bn	css	nombre	lavenderblush	#FFF0F5		ল্যাভেন্ডার ব্লাশ		
 শার্ত্রুজ	bn	css	nombre	chartreuse	#7FFF00		শার্ত্রুজ		
-সবুজ	bn	css	nombre	green	#008000		সবুজ		#00FF00
-সবুজ	bn	lexico	lema	green	#008000		সবুজ		#00FF00
+সবুজ	bn	css	nombre	green	#008000		সবুজ		
+সবুজ	bn	lexico	lema	green	#008000		সবুজ		
 সবুজ-হলুদ	bn	css	nombre	greenyellow	#ADFF2F		সবুজ হলুদ		
 সাদা	bn	css	nombre	white	#FFFFFF		সাদা		#FFFFFF
 সাদা	bn	lexico	lema	white	#FFFFFF		সাদা		#FFFFFF
 সামুদ্রিক শামুক	bn	css	nombre	seashell	#FFF5EE		সামুদ্রিক শামুক		
 সামুদ্রিক সবুজ	bn	css	nombre	seagreen	#2E8B57		সামুদ্রিক সবুজ		
-সায়ান	bn	css	nombre	cyan	#00FFFF		সায়ান		#00FFFF
-সায়ান	bn	lexico	lema	cyan	#00FFFF		সায়ান		#00FFFF
+সায়ান	bn	css	nombre	cyan	#00FFFF		সায়ান		
+সায়ান	bn	lexico	lema	cyan	#00FFFF		সায়ান		
 সিয়েনা	bn	css	nombre	sienna	#A0522D		সিয়েনা		
 সোনালি	bn	css	nombre	gold	#FFD700		সোনালি		#FFD700
 সোনালি	bn	lexico	lema	gold	#FFD700		সোনালি		#FFD700
@@ -6300,7 +6300,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 ฟ้า	th	lexico	lema	lightblue	#ADD8E6		ฟ้า		
 ฟ้า	th	lexico	lema	skyblue	#87CEEB		ฟ้า		
 ฟ้าคราม	th	css	nombre	azure	#F0FFFF		ฟ้าคราม		
-ฟ้าอมเขียว	th	css	nombre	cyan	#00FFFF		ฟ้าอมเขียว		#00FFFF
+ฟ้าอมเขียว	th	css	nombre	cyan	#00FFFF		ฟ้าอมเขียว		
 ฟ้าอมเขียวอ่อน	th	css	nombre	lightcyan	#E0FFFF		ฟ้าอมเขียวอ่อน		
 ฟ้าอมเขียวเข้ม	th	css	nombre	darkcyan	#008B8B		ฟ้าอมเขียวเข้ม		
 ฟ้าอ่อน	th	css	nombre	lightblue	#ADD8E6		ฟ้าอ่อน		
@@ -6310,9 +6310,9 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 มะกอก	th	css	nombre	olive	#808000		มะกอก		#808010
 มะนาว	th	css	nombre	lime	#00FF00		มะนาว		#AAFF32
 มะเขือเทศ	th	css	nombre	tomato	#FF6347		มะเขือเทศ		
-มาเจนตา	th	css	nombre	magenta	#FF00FF		มาเจนตา		#FF00FF
+มาเจนตา	th	css	nombre	magenta	#FF00FF		มาเจนตา		
 มาเจนตาเข้ม	th	css	nombre	darkmagenta	#8B008B		มาเจนตาเข้ม		
-มาเจนต้า	th	lexico	lema	magenta	#FF00FF		มาเจนต้า		#FF00FF
+มาเจนต้า	th	lexico	lema	magenta	#FF00FF		มาเจนต้า		
 ม่วง	th	css	nombre	purple	#800080		ม่วง		#800080
 ม่วง	th	lexico	lema	purple	#800080		ม่วง		#800080
 ม่วง	th	lexico	lema	violet	#EE82EE		ม่วง		#9A0EEA
@@ -6333,7 +6333,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 สีฟ้า	th	lexico	variante	skyblue	#87CEEB	forma=con_prefijo_si	สีฟ้า		
 สีม่วง	th	lexico	variante	purple	#800080	forma=con_prefijo_si	สีม่วง		#800080
 สีส้ม	th	lexico	variante	orange	#FFA500	forma=con_prefijo_si	สีส้ม		#FFA500
-สีเขียว	th	lexico	variante	green	#008000	forma=con_prefijo_si	สีเขียว		#00FF00
+สีเขียว	th	lexico	variante	green	#008000	forma=con_prefijo_si	สีเขียว		
 สีเงิน	th	lexico	variante	silver	#C0C0C0	forma=con_prefijo_si	สีเงิน		#C0C0C0
 สีเทา	th	lexico	variante	gray	#808080	forma=con_prefijo_si	สีเทา		
 สีเหลือง	th	lexico	variante	yellow	#FFFF00	forma=con_prefijo_si	สีเหลือง		#FFFF00
@@ -6351,8 +6351,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 อะความารีนกลาง	th	css	nombre	mediumaquamarine	#66CDAA		อะความารีนกลาง		
 อัลมอนด์ขาว	th	css	nombre	blanchedalmond	#FFEBCD		อัลมอนด์ขาว		
 อำพัน	th	lexico	lema	amber	#FFBF00		อําพัน		#FFBF00
-เขียว	th	css	nombre	green	#008000		เขียว		#00FF00
-เขียว	th	lexico	lema	green	#008000		เขียว		#00FF00
+เขียว	th	css	nombre	green	#008000		เขียว		
+เขียว	th	lexico	lema	green	#008000		เขียว		
 เขียวซีด	th	css	nombre	palegreen	#98FB98		เขียวซีด		
 เขียวทะเล	th	css	nombre	seagreen	#2E8B57		เขียวทะเล		
 เขียวทะเลกลาง	th	css	nombre	mediumseagreen	#3CB371		เขียวทะเลกลาง		
@@ -6420,7 +6420,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 โกลเดนรอด	th	css	nombre	goldenrod	#DAA520		โกลเดนรอด		
 โกลเดนรอดซีด	th	css	nombre	palegoldenrod	#EEE8AA		โกลเดนรอดซีด		
 โกลเดนรอดเข้ม	th	css	nombre	darkgoldenrod	#B8860B		โกลเดนรอดเข้ม		
-ไซแอน	th	lexico	lema	cyan	#00FFFF		ไซแอน		#00FFFF
+ไซแอน	th	lexico	lema	cyan	#00FFFF		ไซแอน		
 ไลแลค	th	lexico	lema	lilac	#CEA2FD		ไลแลค		#CEA2FD
 ไหมข้าวโพด	th	css	nombre	cornsilk	#FFF8DC		ไหมข้าวโพด		
 えんじ色	ja	lexico	lema	maroon	#800000		えんじ色		#800000
@@ -6456,7 +6456,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 クリムゾン	ja	lexico	sinonimo	crimson	#DC143C		クリムゾン		
 クリーム	ja	lexico	lema	cream	#FFFFC2		クリーム		#FFFFC2
 クリーム色	ja	lexico	sinonimo	cream	#FFFFC2		クリーム色		#FFFFC2
-グリーン	ja	lexico	sinonimo	green	#008000		グリーン		#00FF00
+グリーン	ja	lexico	sinonimo	green	#008000		グリーン		
 グリーンイエロー	ja	css	nombre	greenyellow	#ADFF2F		グリーンイエロー		
 グレイ	ja	lexico	variante	gray	#808080	ortografia=alternativa	グレイ		
 グレー	ja	css	nombre	gray	#808080		グレー		
@@ -6474,8 +6474,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 サンディブラウン	ja	css	nombre	sandybrown	#F4A460		サンディブラウン		
 サーモン	ja	css	nombre	salmon	#FA8072		サーモン		#FF796C
 サーモンピンク	ja	lexico	lema	salmon	#FA8072		サーモンピンク		#FF796C
-シアン	ja	css	nombre	cyan	#00FFFF		シアン		#00FFFF
-シアン	ja	lexico	lema	cyan	#00FFFF		シアン		#00FFFF
+シアン	ja	css	nombre	cyan	#00FFFF		シアン		
+シアン	ja	lexico	lema	cyan	#00FFFF		シアン		
 シエナ	ja	css	nombre	sienna	#A0522D		シエナ		
 シスル	ja	css	nombre	thistle	#D8BFD8		シスル		
 シャルトルーズ	ja	css	nombre	chartreuse	#7FFF00		シャルトルーズ		
@@ -6536,8 +6536,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 ホットピンク	ja	css	nombre	hotpink	#FF69B4		ホットピンク		
 ホワイト	ja	lexico	sinonimo	white	#FFFFFF		ホワイト		#FFFFFF
 ホワイトスモーク	ja	css	nombre	whitesmoke	#F5F5F5		ホワイトスモーク		
-マゼンタ	ja	css	nombre	magenta	#FF00FF		マゼンタ		#FF00FF
-マゼンタ	ja	lexico	lema	magenta	#FF00FF		マゼンタ		#FF00FF
+マゼンタ	ja	css	nombre	magenta	#FF00FF		マゼンタ		
+マゼンタ	ja	lexico	lema	magenta	#FF00FF		マゼンタ		
 マルーン	ja	css	nombre	maroon	#800000		マルーン		#800000
 マルーン	ja	lexico	sinonimo	maroon	#800000		マルーン		#800000
 ミスティローズ	ja	css	nombre	mistyrose	#FFE4E1		ミスティローズ		
@@ -6608,8 +6608,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 印度红	zh	css	nombre	indianred	#CD5C5C		印度红		
 古董白	zh	css	nombre	antiquewhite	#FAEBD7		古董白		
 咖啡色	zh	lexico	sinonimo	brown	#A52A2A		咖啡色		#653700
-品红色	zh	css	nombre	magenta	#FF00FF		品红色		#FF00FF
-品红色	zh	lexico	lema	magenta	#FF00FF		品红色		#FF00FF
+品红色	zh	css	nombre	magenta	#FF00FF		品红色		
+品红色	zh	lexico	lema	magenta	#FF00FF		品红色		
 天蓝色	zh	css	nombre	skyblue	#87CEEB		天蓝色		
 天蓝色	zh	lexico	lema	skyblue	#87CEEB		天蓝色		
 奶油白	zh	css	nombre	bisque	#FFE4C4		奶油白		
@@ -6649,7 +6649,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 水色	ja	lexico	lema	lightblue	#ADD8E6		水色		
 水青色	zh	css	nombre	aqua	#00FFFF		水青色		
 沙褐色	zh	css	nombre	sandybrown	#F4A460		沙褐色		
-洋红色	zh	lexico	sinonimo	magenta	#FF00FF		洋红色		#FF00FF
+洋红色	zh	lexico	sinonimo	magenta	#FF00FF		洋红色		
 浅天蓝色	zh	css	nombre	lightskyblue	#87CEFA		浅天蓝色		
 浅海绿	zh	css	nombre	lightseagreen	#20B2AA		浅海绿		
 浅灰色	zh	css	nombre	lightgray	#D3D3D3		浅灰色		
@@ -6777,20 +6777,20 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 紺色	ja	lexico	lema	darkblue	#00008B		紺色		
 紺色	ja	lexico	sinonimo	navy	#000080		紺色		
 緋色	ja	lexico	lema	scarlet	#FF2400		緋色		#FF2400
-緑	ja	css	nombre	green	#008000		緑		#00FF00
-緑	ja	lexico	lema	green	#008000		緑		#00FF00
-緑色	ja	lexico	sinonimo	green	#008000		緑色		#00FF00
+緑	ja	css	nombre	green	#008000		緑		
+緑	ja	lexico	lema	green	#008000		緑		
+緑色	ja	lexico	sinonimo	green	#008000		緑色		
 红	zh	lexico	sinonimo	red	#FF0000		红		#FF0000
 红色	zh	css	nombre	red	#FF0000		红色		#FF0000
 红色	zh	lexico	lema	red	#FF0000		红色		#FF0000
 纳瓦霍白	zh	css	nombre	navajowhite	#FFDEAD		纳瓦霍白		
 绯红	zh	lexico	sinonimo	crimson	#DC143C		绯红		
 绯红色	zh	css	nombre	crimson	#DC143C		绯红色		
-绿	zh	lexico	sinonimo	green	#008000		绿		#00FF00
+绿	zh	lexico	sinonimo	green	#008000		绿		
 绿松石色	zh	css	nombre	turquoise	#40E0D0		绿松石色		#06C2AC
 绿松石色	zh	lexico	lema	turquoise	#40E0D0		绿松石色		#06C2AC
-绿色	zh	css	nombre	green	#008000		绿色		#00FF00
-绿色	zh	lexico	lema	green	#008000		绿色		#00FF00
+绿色	zh	css	nombre	green	#008000		绿色		
+绿色	zh	lexico	lema	green	#008000		绿色		
 绿黄色	zh	css	nombre	greenyellow	#ADFF2F		绿黄色		
 艳粉色	zh	css	nombre	hotpink	#FF69B4		艳粉色		
 花白	zh	css	nombre	floralwhite	#FFFAF0		花白		
@@ -6843,8 +6843,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 青紫	ja	css	nombre	blueviolet	#8A2BE2		青紫		
 青緑	ja	lexico	sinonimo	turquoise	#40E0D0		青緑		#06C2AC
 青绿色	zh	lexico	sinonimo	turquoise	#40E0D0		青绿色		#06C2AC
-青色	zh	css	nombre	cyan	#00FFFF		青色		#00FFFF
-青色	zh	lexico	lema	cyan	#00FFFF		青色		#00FFFF
+青色	zh	css	nombre	cyan	#00FFFF		青色		
+青色	zh	lexico	lema	cyan	#00FFFF		青色		
 青色	ja	lexico	sinonimo	blue	#0000FF		青色		#0000FF
 靛蓝	zh	css	nombre	indigo	#4B0082		靛蓝		#4B0082
 靛蓝色	zh	lexico	lema	indigo	#4B0082		靛蓝色		#4B0082
@@ -6891,7 +6891,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 노란색	ko	lexico	lema	yellow	#FFFF00		노란색		#FFFF00
 노랑	ko	css	nombre	yellow	#FFFF00		노랑		#FFFF00
 노랑	ko	lexico	sinonimo	yellow	#FFFF00		노랑		#FFFF00
-녹색	ko	lexico	sinonimo	green	#008000		녹색		#00FF00
+녹색	ko	lexico	sinonimo	green	#008000		녹색		
 눈	ko	css	nombre	snow	#FFFAFA		눈		
 다저 블루	ko	css	nombre	dodgerblue	#1E90FF		다저 블루		
 담청색	ko	css	nombre	azure	#F0FFFF		담청색		
@@ -6909,8 +6909,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 로열 블루	ko	css	nombre	royalblue	#4169E1		로열 블루		
 리넨	ko	css	nombre	linen	#FAF0E6		리넨		
 마룬	ko	css	nombre	maroon	#800000		마룬		#800000
-마젠타	ko	css	nombre	magenta	#FF00FF		마젠타		#FF00FF
-마젠타	ko	lexico	lema	magenta	#FF00FF		마젠타		#FF00FF
+마젠타	ko	css	nombre	magenta	#FF00FF		마젠타		
+마젠타	ko	lexico	lema	magenta	#FF00FF		마젠타		
 모래 갈색	ko	css	nombre	sandybrown	#F4A460		모래 갈색		
 모카신	ko	css	nombre	moccasin	#FFE4B5		모카신		
 미드나이트 블루	ko	css	nombre	midnightblue	#191970		미드나이트 블루		
@@ -6949,8 +6949,8 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 슬레이트 그레이	ko	css	nombre	slategray	#708090		슬레이트 그레이		
 슬레이트 그레이	ko	css	nombre	slategrey	#708090		슬레이트 그레이		
 슬레이트 블루	ko	css	nombre	slateblue	#6A5ACD		슬레이트 블루		
-시안	ko	css	nombre	cyan	#00FFFF		시안		#00FFFF
-시안	ko	lexico	lema	cyan	#00FFFF		시안		#00FFFF
+시안	ko	css	nombre	cyan	#00FFFF		시안		
+시안	ko	lexico	lema	cyan	#00FFFF		시안		
 시에나	ko	css	nombre	sienna	#A0522D		시에나		
 실버	ko	lexico	sinonimo	silver	#C0C0C0		실버		#C0C0C0
 아이보리	ko	css	nombre	ivory	#FFFFF0		아이보리		
@@ -7050,9 +7050,9 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 청록색	ko	lexico	lema	turquoise	#40E0D0		청록색		#06C2AC
 청보라	ko	css	nombre	blueviolet	#8A2BE2		청보라		
 청색	ko	lexico	sinonimo	blue	#0000FF		청색		#0000FF
-초록	ko	css	nombre	green	#008000		초록		#00FF00
-초록	ko	lexico	sinonimo	green	#008000		초록		#00FF00
-초록색	ko	lexico	lema	green	#008000		초록색		#00FF00
+초록	ko	css	nombre	green	#008000		초록		
+초록	ko	lexico	sinonimo	green	#008000		초록		
+초록색	ko	lexico	lema	green	#008000		초록색		
 초콜릿	ko	css	nombre	chocolate	#D2691E		초콜릿		
 카뎃 블루	ko	css	nombre	cadetblue	#5F9EA0		카뎃 블루		
 카키	ko	css	nombre	khaki	#F0E68C		카키		#C3B091

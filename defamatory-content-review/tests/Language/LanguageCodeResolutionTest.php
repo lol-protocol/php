@@ -55,9 +55,14 @@ class LanguageCodeResolutionTest extends TestCase
         $this->registry->resolve('xyz');
     }
 
-    public function testAllThirtyThreeLanguagesAreRegistered(): void
+    public function testRegisteredLanguagesAreExactlyTheDictionaryFiles(): void
     {
-        $this->assertCount(33, $this->registry->getCodes());
+        $files = array_map(static fn(string $f): string => basename($f, '.php'), glob(self::CONFIG_DIR . '/languages/*.php') ?: []);
+        $codes = $this->registry->getCodes();
+        sort($files);
+        sort($codes);
+
+        $this->assertSame($files, $codes);
     }
 
     public function testEveryRegisteredLanguageHasADictionaryFile(): void

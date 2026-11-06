@@ -51,12 +51,7 @@ final class ClienteRepository
      */
     public function buscar(string $query = '', int $pagina = 1): array
     {
-        $where = '';
-        $params = [];
-        if ($query !== '') {
-            $where = ' WHERE c.nombre ILIKE :q OR c.email ILIKE :q';
-            $params[':q'] = Busqueda::contiene($query);
-        }
+        [$where, $params] = Busqueda::filtro($query, ['c.nombre', 'c.email'], 'q', ' WHERE ');
 
         return Paginacion::consultar(
             $this->db,

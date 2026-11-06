@@ -405,3 +405,108 @@ Kutsal Kitap'ın parçası olmayan bir büyü kitabı olan Goetia'dan (17. yüzy
 | 70 | Seere | Prens | 26 | 06/03 – 10/03 | Hızlı yolculuklar, hırsızlık, kayıp eşyalar |
 | 71 | Dantalion | Dük | 36 | 11/03 – 15/03 | Düşünceler, bilimler, aşk |
 | 72 | Andromalius | Kont | 36 | 16/03 – 20/03 | Kayıp eşyalar, hazineler, hırsızlar |
+
+## Kelt ağaç takvimi
+
+Her biri bir ağaca ait 28 günlük 13 aydan oluşan bir takvim (23 Aralık ayrı tutulur). Şair Robert Graves 1948'de ogham alfabesinden yola çıkarak uydurdu; eski bir Kelt takvimi değildir. Yalnızca kültürel bilgi.
+
+| # | Ağaç | Bilimsel ad | Ogham | Tarihler | Özellikler |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Huş | *Betula pendula* | Beth | 24/12 – 20/01 | Başlangıçlar, saflık, yeniden doğuş |
+| 2 | Üvez | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Koruma, sezgi, algı |
+| 3 | Dişbudak | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Birlik, iletişim, yaratım |
+| 4 | Kızılağaç | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Cesaret, ferasat, istikrar |
+| 5 | Söğüt | *Salix alba* | Saille | 15/04 – 12/05 | Sezgi, rüyalar, şifa |
+| 6 | Alıç | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Bereket, sabır, koruma |
+| 7 | Meşe | *Quercus robur* | Duir | 10/06 – 07/07 | Güç, dayanıklılık, asalet |
+| 8 | Çobanpüskülü | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Denge, cesaret, adalet |
+| 9 | Fındık | *Corylus avellana* | Coll | 05/08 – 01/09 | Bilgelik, ilham, çalışma |
+| 10 | Asma | *Vitis vinifera* | Muin | 02/09 – 29/09 | Neşe, bolluk, ilham |
+| 11 | Sarmaşık | *Hedera helix* | Gort | 30/09 – 27/10 | Sadakat, azim, koruma |
+| 12 | Kamış | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Hakikat, düzen, irade |
+| 13 | Mürver | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Dönüşüm, olgunlaşma, yeniden doğuş |
+
+23 Aralık 13 ayın dışında kalır: ağacı olmayan «yılın günü»dür.
+
+## Ağaç burcu
+
+21 ağaçlık, druidlere ya da Galyalılara ait gibi sunulan ama modern bir icat olan yaygın bir burç sistemi. Tarihler ve ağaçlar kaynağa göre değişir. Yalnızca kültürel bilgi.
+
+| Ağaç | Bilimsel ad | Tarihler | Özellikler |
+| --- | --- | --- | --- |
+| Köknar | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Gizem, bağlılık, zarafet |
+| Karaağaç | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Asalet, istikrar, liderlik |
+| Servi | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Sadakat, uyum sağlama, dayanıklılık |
+| Kavak | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Duyarlılık, uyum sağlama, belirsizlik |
+| Sedir | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Özgüven, iyimserlik, cüret |
+| Çam | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Disiplin, düzen, azim |
+| Salkım söğüt | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Duyarlılık, sezgi, hüzün |
+| Ihlamur | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Dinginlik, dostluk, uyum |
+| Meşe | *Quercus robur* | 21/03 – 21/03 | Güç, cesaret, bağımsızlık |
+| Fındık | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Merak, zekâ, özgünlük |
+| Üvez | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Duyarlılık, çekicilik, uyum |
+| Akçaağaç | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Bağımsızlık, hayal gücü, özgünlük |
+| Ceviz | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Güç, tutku, hırs |
+| Kestane | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Adalet, dürüstlük, cömertlik |
+| Dişbudak | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Hırs, macera, enerji |
+| Gürgen | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Ketumluk, pratiklik, zarafet |
+| İncir | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Şehvet, sosyallik, bolluk |
+| Huş | *Betula pendula* | 24/06 – 24/06 | Zarafet, ketumluk, ilham |
+| Elma ağacı | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Aşk, çekicilik, cömertlik |
+| Zeytin ağacı | *Olea europaea* | 23/09 – 23/09 | Denge, bilgelik, barış |
+| Kayın | *Fagus sylvatica* | 22/12 – 22/12 | Yetenek, yaratım, azim |
+
+## 27 nakshatra'nın ağaçları
+
+Vedik astrolojide 27 ay konağının (nakshatra) her birinin bir ağacı vardır. Doğumda Ay'ın konumuna bağlıdır, tarihe değil; listeler bölgeye göre değişir. Yalnızca kültürel bilgi.
+
+| # | Nakshatra | Ağaç | Bilimsel ad | Özellikler |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Çabukluk, girişimcilik, şifa |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Dayanıklılık, tutku, dönüşüm |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Keskinlik, ateş, saflık |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Güzellik, bereket, bolluk |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Merak, arayış, nezaket |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Duygu, dönüşüm, zekâ |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Yeniden doğuş, iyimserlik, yuva |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Besleme, koruma, bağlılık duygusu |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Sezgi, gizem, kurnazlık |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Soy, otorite, asalet |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Zevk, yaratıcılık, dinlenme |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Dostluk, cömertlik, destek |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Beceri, zekâ, şifa |
+| 14 | Chitra | Bel | *Aegle marmelos* | Güzellik, yaratım, parlaklık |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Bağımsızlık, esneklik, ticaret |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Kararlılık, hırs, azim |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Bağlılık duygusu, dostluk, iş birliği |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Liderlik, koruma, cesaret |
+| 19 | Mula | Sal \* | *Shorea robusta* | Kökler, araştırma, dönüşüm |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Zafer, coşku, saflık |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Zafer, doğruluk, azim |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Dinleme, öğrenme, iletişim |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Zenginlik, müzik, hırs |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Şifa, sırlar, yalnızlık |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Tutku, dönüşüm, idealizm |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Derinlik, bilgelik, şefkat |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Şefkatli yumuşaklık, koruma, şefkat |
+
+\* Kaynaklar bu nakshatra'nın ağacı konusunda hemfikir değil.
+
+## Numeroloji: yaşam yolu
+
+Doğum tarihindeki tüm rakamlar tek bir rakam kalana kadar defalarca toplanır; 11, 22 ve 33 («usta sayılar») daha fazla indirgenmez. Pisagor'a atfedilir, ancak bugünkü numeroloji 20. yüzyıla aittir ve bilimsel dayanağı yoktur. Yalnızca kültürel bilgi.
+
+| Sayı | Özellikler |
+| --- | --- |
+| 1 | Liderlik, bağımsızlık, girişimcilik |
+| 2 | İş birliği, duyarlılık, uyum |
+| 3 | Yaratıcılık, neşe, iletişim |
+| 4 | Disiplin, istikrar, çalışma hayatı |
+| 5 | Macera, özgürlük, uyum sağlama |
+| 6 | Yuva, cömertlik, aşk |
+| 7 | Bilgelik, yalnızlık, araştırma |
+| 8 | Hırs, otorite, zenginlik |
+| 9 | Şefkat, cömertlik, idealizm |
+| 11 | Sezgi, ilham, idealizm |
+| 22 | İnşa, kararlılık, liderlik |
+| 33 | Şefkat, şefkatli yumuşaklık, bağlılık duygusu |
