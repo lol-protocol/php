@@ -10,7 +10,6 @@ vive aquí una sola vez. Cada script del proyecto queda como un envoltorio que d
 | `record-changes-core.js` | `scripts/record-changes.js` | Anota en `changes.csv` lo que cambió en el CSV maestro, o con `--check` falla si algo cambió sin anotarse. |
 | `replace-url-core.js` | `scripts/replace-url.js` | Cambia una URL de referencia muerta por otra en el CSV maestro y en `field_sources.csv` de una vez (`npm run replace-url -- <vieja> <nueva>`). |
 | `apply-research-core.js` | `scripts/apply-research.js` | Convierte un CSV de hallazgos (`code,field,value,conf,source`) en filas nuevas y celdas corregidas, cada una con su fuente en `field_sources.csv`; marca `(unconfirmed)` lo de confianza baja y no escribe nada que la validación del proyecto rechace. |
-| `sync-app-core.js` y `app/` | `scripts/sync-app.js` | Copia a la carpeta `app/` de cada proyecto los archivos de la web que los dos usan (`npm run sync:app`; con `--check` falla si una copia difiere). |
 | `translations-core.js` | `scripts/translations.js` | Cobertura de las traducciones automáticas, lo que falta por idioma e importación de las hechas. |
 | `dataset-core.js` | `scripts/lib/dataset.js` (los dos re-exportan lo suyo) | Nombres de los archivos de datos, niveles de confianza, `isRealDate`, `isHttpUrl`, `isPrivateHost`, los avisos de fuentes más nuevas o viejas que su fila, `toCsv`/`writeCsv`, `findLaw` y `withSideData`. Solo usa módulos de Node, sin paquetes. Además trae `createDataset({ masterCsv, dataDir, columns, metaFields, translatedFields, parseMaster, validateRecords, validateSources })`, que arma lo que es igual pero necesita algo de cada módulo (`loadMaster`, `loadSide`, `loadAndValidate`, `diffRecords`, `validateTranslations`, `validateChanges`, `translationDictionaries`, `translatableValues`, `applyWrites`); cada `dataset.js` lo llama una vez y re-exporta el resultado. Lo que sí cambia entre módulos (columnas, regiones, reglas de cada fila y de las fuentes, `parseMaster`, que usa `csv-parse`) se queda en cada `dataset.js`. |
 | `validate-csv-core.js` | `scripts/validate-csv.js` | Corre la validación del proyecto, imprime los problemas y escribe el resumen de GitHub Actions. |
@@ -43,10 +42,9 @@ corriendo contra el script de su propio proyecto.
 
 ## Lo que sigue duplicado, y por qué
 
-- **`app/`**: la web se sirve como archivos estáticos desde la carpeta `app/` de cada proyecto, sin paso de build, así que
-  los archivos que usan los dos (`lib/chart.js`, `lib/filters.js`, `lib/util.js` y las hojas `base.css`, `comparison.css` y
-  `search.css`) viven una vez en `leyes-comunes/app/` y se copian a cada `app/` con `npm run sync:app`. La copia que se
-  edita es la de aquí; una prueba de cada proyecto (`tests/shared-app.test.js`) falla si una copia se tocó a mano.
+- **`app/`** (`lib/chart.js`, `lib/filters.js`, `lib/util.js` y varias hojas de estilo son idénticos): la web se sirve
+  como archivos estáticos desde la carpeta `app/` de cada proyecto, sin paso de build. Compartir esos archivos
+  pediría un paso que los copie, o sacarlos de la carpeta que se sirve. No se hizo en la misma tanda.
 - **`scripts/lib/dataset.js`**: es el corazón de cada módulo y los campos de cada ley son distintos (los de
   privacidad frente a los de derechos de autor, y `website_url` frente a `linked_resources`). Un núcleo
   compartido sería un refactor más grande que el resto junto, con el riesgo de tocar cómo se valida cada CSV.

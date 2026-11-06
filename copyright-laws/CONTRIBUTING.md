@@ -59,10 +59,6 @@ A 401, 403, 429, a 5xx that persists, a timeout or a redirect loop is only a war
 
 See [README.md](README.md) for the columns, the API and the web app.
 
-## Shared web files
-
-`app/lib/chart.js`, `app/lib/filters.js`, `app/lib/util.js` and `app/styles/{base,comparison,search}.css` are the same in `privacy-laws/` and `copyright-laws/`. Edit the copy in `../leyes-comunes/app/`, then run `npm run sync:app` in both projects; `tests/shared-app.test.js` fails when a copy was edited by hand.
-
 ## Research files
 
 Findings collected by searching go in as a CSV with the header `code,field,value,conf,source` (`conf` is `high`, `medium` or `low`; one URL you saw per row; `UNKNOWN` for what was not found; `CODE,status,NOLAW,conf,url` when there is no law). `npm run apply-research -- findings.csv --batch=batch.txt` turns it into new rows (the batch file has lines `CODE | name | region`) and patched cells with their field sources, marks low-confidence values `(unconfirmed)` and refuses anything the validation would reject; use `--dry` to see what it would do. Then run `npm run build` and `npm run changes`.
