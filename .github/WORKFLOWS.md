@@ -14,6 +14,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`laws-freshness.yml`](workflows/laws-freshness.yml) | Leyes - vigencia de los datos | `push`, `schedule`, `workflow_dispatch` | `freshness`, `issue` |
 | [`laws-links.yml`](workflows/laws-links.yml) | Leyes - enlaces de referencia | `pull_request`, `schedule`, `workflow_dispatch` | `links`, `issue` |
 | [`laws-modules.yml`](workflows/laws-modules.yml) | Leyes (privacidad y copyright) | `push`, `pull_request` | `copias`, `test`, `database` |
+| [`laws-textos-oficiales.yml`](workflows/laws-textos-oficiales.yml) | Leyes - textos de las fuentes | `pull_request`, `workflow_dispatch` | `probar`, `textos` |
 | [`marcalibros-b.yml`](workflows/marcalibros-b.yml) | Marcalibros (generar catalogo y pruebas) | `push`, `pull_request`, `workflow_dispatch` | `catalogo` |
 | [`pruebas-backoffice.yml`](workflows/pruebas-backoffice.yml) | Pruebas backoffice | `push`, `pull_request`, `workflow_dispatch` | `analisis-estatico`, `pruebas` |
 | [`pruebas-citas-pos.yml`](workflows/pruebas-citas-pos.yml) | Pruebas citas POS | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
