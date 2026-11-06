@@ -120,6 +120,75 @@ foreach (array_diff_key($expected, $seen) as $key => $row) {
     $fail(str_replace("\t", ' / ', $key) . ': in the CSV but not in the database');
 }
 
+// 4. The side files: field sources, recorded changes and translations, row by row. The key of a row is all its
+// columns joined; a source is identified with the law it belongs to, so its law name is read back through the join.
+$side = function (string $file) use ($settings) {
+    $path = __DIR__ . '/../' . dirname($settings['csv']) . '/' . $file;
+    if (!file_exists($path)) {
+        return [];
+    }
+    $handle = fopen($path, 'r');
+    $names = fgetcsv($handle);
+    $names[0] = preg_replace('/^\xEF\xBB\xBF/', '', $names[0]);
+    $rows = [];
+    while (($row = fgetcsv($handle)) !== false) {
+        if ($row !== [null]) {
+            $rows[] = array_combine($names, $row);
+        }
+    }
+    fclose($handle);
+    return $rows;
+};
+$compare = function (string $label, array $csvKeys, array $dbKeys) use ($fail) {
+    $csvCount = array_count_values($csvKeys);
+    $dbCount = array_count_values($dbKeys);
+    foreach ($csvCount as $key => $n) {
+        if (($dbCount[$key] ?? 0) !== $n) {
+            $fail("$label: \"" . mb_strimwidth(str_replace("\t", ' | ', $key), 0, 90, '…') . "\" appears $n time(s) in the CSV, " . ($dbCount[$key] ?? 0) . ' in the database');
+        }
+    }
+    foreach (array_diff_key($dbCount, $csvCount) as $key => $n) {
+        $fail("$label: \"" . mb_strimwidth(str_replace("\t", ' | ', $key), 0, 90, '…') . '" is in the database but not in the CSV');
+    }
+};
+$nullable = fn ($v) => $v === null ? '' : (string) $v;
+
+$onlyLaw = [];
+foreach ($expected as $key => $row) {
+    $onlyLaw[$row['country_code']][] = $row['law_name'];
+}
+$csvSources = [];
+foreach ($side('field_sources.csv') as $row) {
+    $law = $row['law_name'] !== '' ? $row['law_name'] : ($onlyLaw[$row['country_code']][0] ?? '');
+    $csvSources[] = implode("\t", [$row['country_code'], $law, $row['field'], $row['url'], $row['confidence'], $row['checked']]);
+}
+$dbSources = [];
+foreach ($pdo->query("SELECT p.code AS code, l.law_name AS law_name, s.field AS field, s.url AS url, s.confidence AS confidence, s.checked AS checked
+    FROM field_sources s JOIN {$settings['laws']} l ON l.law_id = s.law_id JOIN {$settings['parent']} p ON p.{$settings['parentKey']} = l.{$settings['parentKey']}") as $row) {
+    $dbSources[] = implode("\t", [$row['code'], $row['law_name'], $row['field'], $row['url'], $row['confidence'], $nullable($row['checked'])]);
+}
+$compare('field_sources', $csvSources, $dbSources);
+
+$csvChanges = [];
+foreach ($side('changes.csv') as $row) {
+    $csvChanges[] = implode("\t", [$row['date'], $row['country_code'], $row['law_name'], $row['field'], $row['old_value'], $row['new_value']]);
+}
+$dbChanges = [];
+foreach ($pdo->query('SELECT changed_on, jurisdiction_code, law_name, field, old_value, new_value FROM law_changes') as $row) {
+    $dbChanges[] = implode("\t", [$row['changed_on'], $row['jurisdiction_code'], $row['law_name'], $row['field'], $nullable($row['old_value']), $nullable($row['new_value'])]);
+}
+$compare('law_changes', $csvChanges, $dbChanges);
+
+$csvTranslations = [];
+foreach ($side('value_translations.csv') as $row) {
+    $csvTranslations[] = implode("\t", [$row['lang'], $row['source'], $row['text']]);
+}
+$dbTranslations = [];
+foreach ($pdo->query('SELECT lang, source_text, translated_text FROM value_translations') as $row) {
+    $dbTranslations[] = implode("\t", [$row['lang'], $row['source_text'], $row['translated_text']]);
+}
+$compare('value_translations', $csvTranslations, $dbTranslations);
+
 if ($problems) {
     fwrite(STDERR, count($problems) . " difference(s) between the database and the CSV:\n");
     foreach (array_slice($problems, 0, 15) as $problem) {
@@ -130,4 +199,5 @@ if ($problems) {
     }
     exit(1);
 }
-echo "$module: $lawCount laws in $parentCount " . $settings['parent'] . ", every column equal to the CSV\n";
+echo "$module: $lawCount laws in $parentCount " . $settings['parent'] . ', every column equal to the CSV; '
+    . count($csvSources) . ' field sources, ' . count($csvChanges) . ' changes and ' . count($csvTranslations) . " translations match too\n";

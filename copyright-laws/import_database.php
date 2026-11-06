@@ -88,16 +88,73 @@ class CopyrightLawsImporter {
      * Import data from CSV file
      */
     /**
-     * Tables of the existing database that the schema file does not create (none when the database
+     * Tables and views of the existing database that the schema file does not create (none when the database
      * does not exist yet).
      */
     private function foreignTables() {
-        preg_match_all('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', (string) file_get_contents($this->schemaPath), $m);
+        preg_match_all('/CREATE\s+(?:OR\s+REPLACE\s+)?(?:TABLE|VIEW)\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', (string) file_get_contents($this->schemaPath), $m);
         $own = array_map('strtolower', $m[1]);
         $stmt = $this->pdo->prepare('SELECT table_name FROM information_schema.tables WHERE table_schema = ?');
         $stmt->execute([$this->dbName]);
         $found = array_map('strtolower', $stmt->fetchAll(PDO::FETCH_COLUMN, 0));
         return array_values(array_diff($found, $own));
+    }
+
+    /** Rows of a CSV that sits next to the master, as arrays keyed by its header; a missing file is empty. */
+    private function readSideCsv($file) {
+        $path = dirname($this->csvPath) . '/' . $file;
+        if (!file_exists($path)) {
+            return [];
+        }
+        $handle = fopen($path, 'r');
+        $headers = fgetcsv($handle);
+        $headers[0] = preg_replace('/^\xEF\xBB\xBF/', '', $headers[0]);
+        $rows = [];
+        while (($row = fgetcsv($handle)) !== false) {
+            if ($row !== [null]) {
+                $rows[] = array_combine($headers, $row);
+            }
+        }
+        fclose($handle);
+        return $rows;
+    }
+
+    /**
+     * field_sources.csv, changes.csv and value_translations.csv (inside the import's transaction).
+     * An empty law_name means the jurisdiction's only law. Returns the three row counts.
+     */
+    private function importSideFiles(array $lawIds) {
+        $lawOf = function (array $row, $file) use ($lawIds) {
+            $code = $row['country_code'];
+            $laws = $lawIds[$code] ?? [];
+            if ($row['law_name'] === '' && count($laws) === 1) {
+                return reset($laws);
+            }
+            if (!isset($laws[$row['law_name']])) {
+                throw new Exception("$file: no law {$code} \"{$row['law_name']}\" in the master CSV");
+            }
+            return $laws[$row['law_name']];
+        };
+
+        $stmt = $this->pdo->prepare("INSERT INTO field_sources (law_id, field, url, confidence, checked) VALUES (?, ?, ?, ?, ?)");
+        $sources = $this->readSideCsv('field_sources.csv');
+        foreach ($sources as $row) {
+            $stmt->execute([$lawOf($row, 'field_sources.csv'), $row['field'], $row['url'], $row['confidence'], $row['checked'] !== '' ? $row['checked'] : null]);
+        }
+
+        $stmt = $this->pdo->prepare("INSERT INTO law_changes (changed_on, jurisdiction_code, law_name, field, old_value, new_value) VALUES (?, ?, ?, ?, ?, ?)");
+        $changes = $this->readSideCsv('changes.csv');
+        foreach ($changes as $row) {
+            $stmt->execute([$row['date'], $row['country_code'], $row['law_name'], $row['field'], $row['old_value'], $row['new_value']]);
+        }
+
+        $stmt = $this->pdo->prepare("INSERT INTO value_translations (lang, source_text, translated_text) VALUES (?, ?, ?)");
+        $translations = $this->readSideCsv('value_translations.csv');
+        foreach ($translations as $row) {
+            $stmt->execute([$row['lang'], $row['source'], $row['text']]);
+        }
+
+        return [count($sources), count($changes), count($translations)];
     }
 
     public function importData() {
@@ -113,6 +170,8 @@ class CopyrightLawsImporter {
             // All or nothing, and re-runnable: the tables end up holding exactly the CSV, never a
             // half import or the same rows twice. The child tables go with their law (ON DELETE CASCADE).
             $this->pdo->beginTransaction();
+            $this->pdo->exec("DELETE FROM law_changes");
+            $this->pdo->exec("DELETE FROM value_translations");
             $this->pdo->exec("DELETE FROM copyright_laws");
             $this->pdo->exec("DELETE FROM jurisdictions");
 
@@ -131,6 +190,7 @@ class CopyrightLawsImporter {
             $line = 1;
             $imported = 0;
             $jurisdictions = [];
+            $lawIds = []; // code => [law_name => law_id], for the side files
 
             // Prepare statements
             $jurisdictionStmt = $this->pdo->prepare(
@@ -199,13 +259,16 @@ class CopyrightLawsImporter {
                     ($data['last_checked'] ?? '') !== '' ? $data['last_checked'] : null
                 ]);
 
+                $lawIds[$countryCode][$data['law_name']] = (int) $this->pdo->lastInsertId();
                 $imported++;
             }
 
             fclose($file);
+            [$sources, $changes, $translations] = $this->importSideFiles($lawIds);
             $this->pdo->commit();
 
             $this->log("  ✓ Imported {$imported} copyright laws from " . count($jurisdictions) . " jurisdictions");
+            $this->log("  ✓ Imported {$sources} field sources, {$changes} recorded changes and {$translations} translations");
             return true;
         } catch (Exception $e) {
             if ($this->pdo->inTransaction()) {

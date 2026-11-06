@@ -6,11 +6,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { MASTER_CSV, ROOT, loadMaster } from "../scripts/lib/dataset.js";
+import { CHANGE_COLUMNS, MASTER_CSV, MODULE, ROOT, SOURCE_COLUMNS, TRANSLATION_COLUMNS, loadMaster } from "../scripts/lib/dataset.js";
 
 const php = readFileSync(join(ROOT, "import_database.php"), "utf-8");
 const schema = readFileSync(join(ROOT, "database_schema.sql"), "utf-8");
-const lawTable = php.match(/INSERT INTO (\w+)\s*\(/)[1];
+const lawTable = `${MODULE.replace("-laws", "")}_laws`; // copyright_laws / privacy_laws
 const tableSql = schema.match(new RegExp(`CREATE TABLE ${lawTable} \\(([\\s\\S]*?)\\n\\) ENGINE`))[1];
 
 test("every VARCHAR column of the law table is wide enough for the longest CSV value", () => {
@@ -37,4 +37,19 @@ test("--import is all-or-nothing and can run again", () => {
   assert.match(php, /commit\(\)/);
   assert.match(php, /rollBack\(\)/);
   assert.match(php, new RegExp(`DELETE FROM ${lawTable}`));
+});
+
+test("the side files (field sources, changes, translations) have their tables and the importer reads them", () => {
+  for (const [table, file, columns] of [
+    ["field_sources", "field_sources.csv", SOURCE_COLUMNS],
+    ["law_changes", "changes.csv", CHANGE_COLUMNS],
+    ["value_translations", "value_translations.csv", TRANSLATION_COLUMNS],
+  ]) {
+    assert.match(schema, new RegExp(`CREATE TABLE ${table} \\(`), `${table} is not in the schema`);
+    assert.match(php, new RegExp(`INSERT INTO ${table}\\b`), `${table} is never filled`);
+    assert.match(php, new RegExp(file.replace(".", "\\.")), `${file} is never read`);
+    assert.ok(columns.length > 0);
+  }
+  assert.match(php, /DELETE FROM law_changes/);
+  assert.match(php, /DELETE FROM value_translations/);
 });

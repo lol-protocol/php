@@ -115,7 +115,7 @@ php import_database.php --all               # schema + import + validation
 php tests/database_check.php                # compares every column of the database with the CSV
 ```
 
-Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `copyright_laws_db` database**, but refuse to when it holds tables this schema does not create (add `--force` to drop it anyway). `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV.
+Connection: `DB_HOST` (default `localhost`), `DB_PORT` (`3306`), `DB_USER` (`root`) and `DB_PASSWORD` (empty). **`--create-schema` and `--all` drop and recreate the `copyright_laws_db` database**, but refuse to when it holds tables this schema does not create (add `--force` to drop it anyway). `--import` replaces the contents of the tables with the CSV inside one transaction, so it can be run again and a failed import leaves nothing half done. The importer reads `region` straight from the CSV. Besides the laws it loads the three side files, `field_sources.csv` into `field_sources`, `changes.csv` into `law_changes` and `value_translations.csv` into `value_translations`, so the provenance, the history and the translations are in the database too; `tests/database_check.php` compares them with the CSVs row by row.
 
 ## Tests
 
