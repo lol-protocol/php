@@ -253,75 +253,21 @@ class MultiLanguagePhoneDirectoryParser
     /** @param list<string> $lines */
     private function processBuffer(array $lines, int $startLine, string $language, string $phoneRegex): void
     {
-        $records = RecordSplitter::split(
-            $lines,
-            fn($line) => PhonePattern::find($line, $phoneRegex) !== null,
-            fn($line, $afterName) => $this->isStreetLine($line, $language, $afterName)
-        );
-        foreach ($records as $offset => $record) {
-            $this->processRecord($record, $startLine + $offset, $language, $phoneRegex);
+        $records = BlockReader::read($lines, fn($line) => LineFacts::of($line, $language, $phoneRegex));
+        foreach ($records as $record) {
+            // Only the name and the notes can say it is a business: "12 Bank Street" or "Calle del Banco 4"
+            // say where someone lives, not what they are.
+            $type = $record['name'] !== null ? $this->businessTypeOfName($record['name'], $language) : null;
+            foreach ($record['notes'] as $note) {
+                $type ??= $this->extractBusinessType($note, $language);
+            }
+
+            $this->finalizeEntry(
+                ['name' => $record['name'], 'phone' => $record['phone'], 'street' => $record['street'], 'type' => $type],
+                $startLine + $record['offset'],
+                $language
+            );
         }
-    }
-
-    /** The street test processRecord() applies: a number-last street without a street word only counts after the name. */
-    private function isStreetLine(string $line, string $language, bool $afterName): bool
-    {
-        return StreetRules::strong($line, $language) !== null || ($afterName && StreetRules::afterName($line, $language) !== null);
-    }
-
-    /** @param list<string> $lines */
-    private function processRecord(array $lines, int $startLine, string $language, string $phoneRegex): void
-    {
-        $data = [
-            'name' => null,
-            'phone' => null,
-            'street' => null,
-            'type' => null,
-        ];
-
-        $nameSet = false;
-
-        foreach ($lines as $line) {
-            $phone = PhonePattern::find($line, $phoneRegex);
-            $isPhoneLine = $phone !== null;
-            $street = StreetRules::strong($line, $language) ?? ($nameSet ? StreetRules::afterName($line, $language) : null);
-            $isStreetLine = $street !== null;
-
-            if (empty($data['phone']) && $phone !== null) {
-                $data['phone'] = $phone;
-            }
-
-            // Before the name, a phone line can also carry it ("SMITH, John ........ 555-123-4567").
-            if (!$nameSet && $isPhoneLine && !$isStreetLine) {
-                $nameText = PhonePattern::nameBesidePhone(PhonePattern::repairOcrDigits($line), $phone);
-                if ($nameText !== null) {
-                    $data['type'] ??= $this->businessTypeOfName($nameText, $language);
-                    $data['name'] = $nameText;
-                    $nameSet = true;
-                }
-                continue;
-            }
-
-            // Only the name (and any line of text that is neither street nor phone) can say it is a business:
-            // "12 Bank Street" or "Calle del Banco 4" say where someone lives, not what they are.
-            if (empty($data['type']) && !$isPhoneLine && !$isStreetLine) {
-                $typeMatch = $nameSet ? $this->extractBusinessType($line, $language) : $this->businessTypeOfName($line, $language);
-                if ($typeMatch) {
-                    $data['type'] = $typeMatch;
-                }
-            }
-
-            if (empty($data['street']) && $street !== null) {
-                $data['street'] = $street;
-            }
-
-            if (!$nameSet && !$isPhoneLine && !$isStreetLine) {
-                $data['name'] = $line;
-                $nameSet = true;
-            }
-        }
-
-        $this->finalizeEntry($data, $startLine, $language);
     }
 
     /** @param RawEntry $data */

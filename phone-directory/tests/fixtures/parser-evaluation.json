@@ -495,6 +495,21 @@
             "idioma": "en",
             "entrada": "BROWN, Alice\nOak St\n555-123-4567",
             "esperado": [{"tipo": "natural", "nombre": "BROWN, Alice", "calle": "Oak St", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "es-calle-sin-palabra-cede-ante-una-con-palabra",
+            "idioma": "es",
+            "entrada": "Ferretería Sur\nDivisión 2\nCalle Mayor 5\n91 234 56 78",
+            "esperado": [{"tipo": "natural", "nombre": "Ferretería Sur", "calle": "Calle Mayor 5", "telefono": "91 234 56 78"}]
+        },
+        {
+            "id": "en-dos-entradas-con-telefono-en-la-linea-del-nombre",
+            "idioma": "en",
+            "entrada": "SMITH, John ..... 555-123-4567\n12 Oak Street\nLEE, Ken ..... 555-987-6543\n8 Oak Lane",
+            "esperado": [
+                {"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"},
+                {"tipo": "natural", "nombre": "LEE, Ken", "calle": "8 Oak Lane", "telefono": "555-987-6543"}
+            ]
         }
     ]
 }

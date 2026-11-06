@@ -146,52 +146,12 @@ class PhoneDirectoryParser
     private function processBuffer(array $lines, int $startLine): void
     {
         $phonePattern = $this->getPatterns()['phone_pattern'];
-        $records = RecordSplitter::split(
-            $lines,
-            fn($line) => PhonePattern::find($line, $phonePattern) !== null,
-            fn($line, $afterName) => $this->extractStreet($line, $afterName) !== null
-        );
-        foreach ($records as $offset => $record) {
-            $this->processRecord($record, $startLine + $offset);
+        foreach (BlockReader::read($lines, fn($line) => LineFacts::of($line, 'en', $phonePattern)) as $record) {
+            $this->finalizeEntry(
+                ['name' => $record['name'], 'phone' => $record['phone'], 'street' => $record['street']],
+                $startLine + $record['offset']
+            );
         }
-    }
-
-    /** @param list<string> $lines */
-    private function processRecord(array $lines, int $startLine): void
-    {
-        $data = [
-            'name' => null,
-            'phone' => null,
-            'street' => null,
-        ];
-
-        $nameSet = false;
-        $patterns = $this->getPatterns();
-
-        foreach ($lines as $line) {
-            $phone = PhonePattern::find($line, $patterns['phone_pattern']);
-            if (empty($data['phone']) && $phone !== null) {
-                $data['phone'] = $phone;
-            }
-
-            if (empty($data['street'])) {
-                $streetMatch = $this->extractStreet($line, $nameSet);
-                if ($streetMatch) {
-                    $data['street'] = $streetMatch;
-                }
-            }
-
-            if (!$nameSet && $this->extractStreet($line, false) === null) {
-                // A phone line can also carry the name ("SMITH, John ........ 555-123-4567").
-                $name = $phone === null ? $line : PhonePattern::nameBesidePhone(PhonePattern::repairOcrDigits($line), $phone);
-                if ($name !== null) {
-                    $data['name'] = $name;
-                    $nameSet = true;
-                }
-            }
-        }
-
-        $this->finalizeEntry($data, $startLine);
     }
 
     /** @param RawEntry $data */
@@ -237,7 +197,13 @@ class PhoneDirectoryParser
         }
     }
 
-    /** $afterName: the record's name has been read, so a dwelling line ("Apt 4 Building 7") also counts. */
+    /**
+     * $afterName: the record's name has been read, so a dwelling line ("Apt 4 Building 7") also counts.
+     *
+     * @deprecated since 2026-11: BlockReader reads the street from LineFacts, which asks StreetRules directly.
+     *             Kept, not deleted, by the repository's rule on unused code (CLAUDE.md).
+     */
+    // @phpstan-ignore method.unused
     private function extractStreet(string $line, bool $afterName = false): ?string
     {
         return StreetRules::strong($line, 'en') ?? ($afterName ? StreetRules::afterName($line, 'en') : null);
