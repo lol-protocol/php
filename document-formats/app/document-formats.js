@@ -46,6 +46,13 @@ const fixed = (value, decimals = 1) => Number(value).toFixed(decimals);
 const normalizeText = (value) =>
     String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').normalize('NFC').toLowerCase();
 
+// The words of a text as the search compares them: normalised, split on spaces, and without the
+// punctuation around each one, so "(Letter)" and "Letter," are both "letter" while "8.5x11" and
+// "U.S" keep their inner marks. Marks and digits count as part of a word (Thai, Devanagari).
+const searchWords = (text) => normalizeText(text).split(/\s+/)
+    .map(word => word.replace(/^[^\p{L}\p{M}\p{N}]+|[^\p{L}\p{M}\p{N}]+$/gu, ''))
+    .filter(Boolean);
+
 const HTML_ESCAPES = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPES[char]);
 
@@ -304,16 +311,12 @@ class FormatSearcher {
         const index = {};
 
         this.formats.forEach((format, idx) => {
-            const words = [
+            const words = searchWords([
                 format.format_name,
                 format.country,
                 format.category,
                 format.description
-            ]
-            .filter(Boolean)
-            .join(' ')
-            .split(/\s+/)
-            .map(normalizeText)
+            ].filter(Boolean).join(' '))
             .filter(w => w.length >= MIN_WORD_LENGTH && !STOP_WORDS.has(w));
 
             words.forEach(word => {
@@ -330,7 +333,7 @@ class FormatSearcher {
     }
 
     search(query) {
-        const terms = normalizeText(query).split(/\s+/);
+        const terms = searchWords(query);
         const results = new Map();
 
         terms.forEach(term => {
@@ -391,12 +394,14 @@ class FormatConverter {
     constructor(formats) {
         this.formats = formats;
         this.byName = indexByName(formats);
+        /** @deprecated since 2026-11: looks a sheet up by name, which can mean two sizes; use compare() or closestTo(). */
         this.calculateSimilarity = memoize(
             (f1Name, f2Name) => this._calcSimilarity(f1Name, f2Name),
             (f1, f2) => [f1, f2].sort().join('|')
         );
     }
 
+    /** @deprecated since 2026-11: only calculateSimilarity() uses it, and findEquivalents() no longer does. */
     _calcSimilarity(f1Name, f2Name) {
         const f1 = this.byName.get(f1Name);
         const f2 = this.byName.get(f2Name);
@@ -414,20 +419,23 @@ class FormatConverter {
             .sort((a, b) => b.similarity - a.similarity);
     }
 
+    // The sheets of other names that are at least `threshold` % alike, closest first. A name that
+    // means two sizes (see formatChoices) is looked up for each size, and a candidate listed by
+    // several countries with the same size appears once, with the first country that lists it.
     findEquivalents(formatName, threshold = 90) {
-        if (!this.byName.has(formatName)) return [];
-
-        const candidates = [];
-        for (const format of this.formats) {
-            if (format.format_name !== formatName && format.width_mm && format.height_mm) {
-                const sim = this.calculateSimilarity(formatName, format.format_name);
-                if (sim >= threshold) candidates.push({format, similarity: sim});
+        const own = formatChoices(this.formats.filter(f => f.format_name === formatName && f.width_mm && f.height_mm));
+        const best = new Map();
+        for (const {format: sheet} of own) {
+            for (const item of this.closestTo(sheet)) {
+                const {format} = item;
+                if (item.similarity < threshold) break;
+                if (format.format_name === formatName) continue;
+                const key = `${format.format_name}|${format.width_mm}×${format.height_mm}`;
+                if ((best.get(key)?.similarity ?? -1) < item.similarity) best.set(key, item);
             }
         }
 
-        candidates.sort((a, b) => b.similarity - a.similarity);
-
-        return candidates.map(item => ({
+        return [...best.values()].sort((a, b) => b.similarity - a.similarity).map(item => ({
             name: item.format.format_name,
             country: item.format.country,
             similarity: item.similarity,
@@ -452,14 +460,19 @@ class FormatConverter {
         const fromName = from.format_name;
         const toName = to.format_name;
 
+        // The same sheet turned (Ledger and Tabloid) differs by nothing: `to` is compared in the
+        // orientation of `from`, as sizeSimilarity() already does.
+        const rotated = (from.width_mm >= from.height_mm) !== (to.width_mm >= to.height_mm);
+        const [toWidth, toHeight] = rotated ? [to.height_mm, to.width_mm] : [to.width_mm, to.height_mm];
         const similarity = Math.round(sizeSimilarity(from, to));
-        const widthDiff = Math.abs(from.width_mm - to.width_mm);
-        const heightDiff = Math.abs(from.height_mm - to.height_mm);
+        const widthDiff = Math.abs(from.width_mm - toWidth);
+        const heightDiff = Math.abs(from.height_mm - toHeight);
 
         return {
             from: fromName,
             to: toName,
             similarity: similarity,
+            rotated,
             fromSize: {
                 mm: `${from.width_mm}×${from.height_mm}`,
                 inches: `${from.width_inches}"×${from.height_inches}"`
@@ -553,7 +566,8 @@ class DocumentGenerator {
             right: 20
         };
 
-        // Adjust for different formats
+        // Adjust for different formats. No shipped catalog has the category 'Business' today; the
+        // branch stays for catalogs that do (a test covers it).
         if (format.category === 'Business') {
             margins.top = 25;
             margins.bottom = 25;
@@ -565,8 +579,21 @@ class DocumentGenerator {
         return margins;
     }
 
-    generateHTML(formatName, title = '', body = '') {
+    // The page size and margins both print outputs use: the margins are the recommended ones for
+    // the format, and the printable area is what is left inside them.
+    _pageBox(formatName) {
         const dims = this._getFormatInCM(formatName);
+        const m = this.getRecommendedMargins(this._requireFormat(formatName));
+        return {
+            size: `${dims.widthCm}cm ${dims.heightCm}cm`,
+            margin: `${m.top}mm ${m.right}mm ${m.bottom}mm ${m.left}mm`,
+            printableWidthCm: fixed(dims.widthCm - (m.left + m.right) / 10),
+            printableHeightCm: fixed(dims.heightCm - (m.top + m.bottom) / 10)
+        };
+    }
+
+    generateHTML(formatName, title = '', body = '') {
+        const page = this._pageBox(formatName);
 
         return `
 <!DOCTYPE html>
@@ -576,8 +603,8 @@ class DocumentGenerator {
     <title>${escapeHtml(title || formatName)}</title>
     <style>
         @page {
-            size: ${dims.widthCm}cm ${dims.heightCm}cm;
-            margin: 2cm;
+            size: ${page.size};
+            margin: ${page.margin};
         }
         body {
             font-family: Arial, sans-serif;
@@ -593,21 +620,23 @@ class DocumentGenerator {
         `;
     }
 
+    // The page margin already leaves the printable area, so the body takes exactly that and
+    // has no padding of its own (it used to add 2 cm of padding inside a 2 cm page margin).
     generatePrintCSS(formatName) {
-        const dims = this._getFormatInCM(formatName);
+        const page = this._pageBox(formatName);
 
         return `
 @media print {
     @page {
-        size: ${dims.widthCm}cm ${dims.heightCm}cm;
-        margin: 2cm;
+        size: ${page.size};
+        margin: ${page.margin};
     }
 
     body {
         margin: 0;
-        padding: 2cm;
-        width: ${dims.widthCm - 4}cm;
-        height: ${dims.heightCm - 4}cm;
+        padding: 0;
+        width: ${page.printableWidthCm}cm;
+        height: ${page.printableHeightCm}cm;
     }
 }
         `;
@@ -629,23 +658,25 @@ class FormatValidator {
         this.byName = indexByName(formats);
         this.validateDimensions = memoize(
             (w, h, u) => this._validateDimensions(w, h, u),
-            (w, h, u) => `${w}|${h}|${u}`
+            (w, h, u = 'mm') => `${w}|${h}|${u}`
         );
     }
 
+    // Millimetres per unit, by the names a caller may use. An unknown unit is reported, not
+    // taken for millimetres.
+    static UNITS = { mm: 1, cm: 10, in: MM_PER_INCH, inch: MM_PER_INCH, inches: MM_PER_INCH };
+
+    // A sheet turned (297×210) is the same sheet, so both are compared short side to long side.
     _validateDimensions(width, height, unit = 'mm') {
-        const conversions = { mm: 1, cm: 10, inch: MM_PER_INCH };
-        const factor = conversions[unit] || 1;
+        const factor = FormatValidator.UNITS[String(unit).toLowerCase()];
+        if (factor === undefined) {
+            return {isValid: false, matches: [], message: `Unknown unit ${unit} (use mm, cm or inch)`};
+        }
 
-        const normalizedWidth = width * factor;
-        const normalizedHeight = height * factor;
-
+        const [short, long] = [width * factor, height * factor].sort((a, b) => a - b);
         const matches = this.formats.filter(f => {
-            const fWidth = parseFloat(f.width_mm);
-            const fHeight = parseFloat(f.height_mm);
-
-            return Math.abs(fWidth - normalizedWidth) < 1 &&
-                   Math.abs(fHeight - normalizedHeight) < 1;
+            const [fShort, fLong] = [parseFloat(f.width_mm), parseFloat(f.height_mm)].sort((a, b) => a - b);
+            return Math.abs(fShort - short) < 1 && Math.abs(fLong - long) < 1;
         });
 
         return {
@@ -829,28 +860,14 @@ class FormatBatchProcessor {
 
     exportAsHTML(filters = {}) {
         const data = this._applyFilters(filters);
+        if (data.length === 0) return '<table border="1"></table>';
 
-        const rows = [];
-        rows.push('<table border="1"><thead><tr>');
-
-        if (data.length > 0) {
-            const headers = Object.keys(data[0]);
-            headers.forEach(key => {
-                rows.push(`<th>${escapeHtml(key)}</th>`);
-            });
-            rows.push('</tr></thead><tbody>');
-
-            data.forEach(row => {
-                rows.push('<tr>');
-                Object.values(row).forEach(value => {
-                    rows.push(`<td>${escapeHtml(value)}</td>`);
-                });
-                rows.push('</tr>');
-            });
-        }
-
-        rows.push('</tbody></table>');
-        return rows.join('');
+        // The columns of the first row, as in exportAsCSV(), so every cell sits under its header.
+        const headers = Object.keys(data[0]);
+        const head = headers.map(key => `<th>${escapeHtml(key)}</th>`).join('');
+        const body = data.map(row =>
+            `<tr>${headers.map(key => `<td>${escapeHtml(row[key])}</td>`).join('')}</tr>`).join('');
+        return `<table border="1"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
     }
 }
 
@@ -1038,7 +1055,8 @@ class LocalizationManager {
     translateElement(element) {
         this._apply(element, element.getAttribute('data-translate'));
 
-        element.querySelectorAll('[data-translate]').forEach(el => this.translateElement(el));
+        // querySelectorAll already returns every descendant, so each is applied once, not recursed into.
+        element.querySelectorAll('[data-translate]').forEach(el => this._apply(el, el.getAttribute('data-translate')));
     }
 
     translatePage() {
@@ -1141,6 +1159,7 @@ class ScreenDeviceManager {
         {list: 'ereaders', idField: 'device_name', type: 'ereader'}
     ];
 
+    /** @param {Array} [devices] @deprecated since 2026-11: ignored, the lists come from loadAllDevices(). */
     constructor(devices = []) {
         this.monitors = [];
         this.smartphones = [];
@@ -1298,6 +1317,7 @@ class SpecificationManager {
             ));
         } else {
             const index = this.indexes.get(specType);
+            // Without an index the spec failed to load and `data` is empty, so this is null either way.
             result = (index ? index.get(key) : data.find(item =>
                 item[SpecificationManager.SPECS[specType].key] === key
             )) ?? null;
