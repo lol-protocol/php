@@ -20,14 +20,20 @@ Escribe:
                          alfabetización de adultos, usuarios de internet, emigrantes,
                          libertad (Freedom House), democracia (EIU) y corrupción (CPI)
 
-Serie larga de cada país (método compuesto). Cada fuente solo cubre los años anteriores al
-primero de las de arriba:
-    OWID (co2-data)   población anual hasta 2024; empieza en 1850 en la mayoría de los países y
-                      en 1750 en 35.
-    Maddison 2020     puntos desde el año 1 (1, 1000, 1500, 1600, 1700...), si los hay.
+Serie larga de cada país. Cada fuente solo cubre los años anteriores al primero de las de arriba:
+    OWID histórica    población por país de Our World in Data (HYDE 2023, Gapminder y ONU), desde
+                      el 10 000 a. C. en la mayoría, hasta 2023; la completa co2-data (2024).
+    Maddison 2020     puntos anteriores (años 1, 1000, 1500...), si los hay.
     Clio-Infra        puntos cada 50 años desde 1500, empalmados (ver empalmar).
     HYDE              la serie regional multiplicada por la cuota del país en su región en el
                       primer año conocido. Supone que esa cuota fue constante hacia atrás.
+Con la serie de OWID, Maddison, Clio-Infra y HYDE solo entran en los países cuya serie empieza
+después del 10 000 a. C. Si empieza antes de 1800 con menos de POBLACION_POBLAMIENTO personas,
+ese primer año es el poblamiento (islas del Caribe, Mauricio, Reunión, Tonga...; ver
+empieza_poblado) y no se le agrega nada antes: la cuota de la región inventaría gente donde no
+la había. Si empieza en 1800 o después (micro-estados y territorios sin dato propio antes), o
+antes con mucha gente (Sudán del Sur, 859 000 en 1600), se completa hacia atrás, salvo los de
+SIN_GENTE_ANTES.
 Un país que OWID no tiene usa la población del Banco Mundial desde 1960 (Puerto Rico, Gibraltar,
 Isla de Man) y, si tampoco está ahí, la de Gapminder hasta ANIO_MAXIMO_GAPMINDER (Jersey, Reunión);
 esta última solo entra en la serie larga, no en la población actual.
@@ -66,6 +72,9 @@ LIBERTAD = {"F": "libre", "PF": "parcial", "NF": "no libre"}  # estatus de Freed
 ANIO_MAXIMO_GAPMINDER = 2015  # después, la población de Gapminder es proyección
 FACTOR_NATALIDAD = 7.0  # tasa bruta por mil ~ 7 x fecundidad total, para países sin tasa
 SUDAMERICA = {"AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE"}
+POBLACION_POBLAMIENTO = 100_000  # ver empieza_poblado
+# Deshabitados hasta poco antes del primer año de OWID, aunque la serie empiece en 1800 (Seychelles, 1770).
+SIN_GENTE_ANTES = {"SC"}
 EMPALME_MAXIMO = 1.5  # Clio-Infra se descarta si difiere más que esto (o su inversa) en el empalme
 REGION_HYDE = {"África": "Africa", "Asia": "Asia", "Europa": "Europe", "Oceanía": "Oceania"}
 # Las mismas regiones en co2-data, que llega hasta ANIO_POBLACION (HYDE, hasta 2015).
@@ -93,6 +102,18 @@ def con_cuota(anio0, pob0, region, incluir):
     if referencia <= 0:
         raise SystemExit(f"La región no tiene población en {anio0}: no hay cuota con la que proyectar")
     return [(a, pob0 / referencia * p) for a, p in region if incluir(a)]
+
+
+def empieza_poblado(historica):
+    """True si la serie de OWID (pares año, población) empieza con el poblamiento del país.
+
+    OWID (HYDE) arranca en el 10 000 a. C. salvo donde no había nadie: una serie que empieza
+    antes de 1800 con poca gente marca la llegada de los primeros pobladores.
+    """
+    if not historica:
+        return False
+    anio0, pob0 = historica[0]
+    return -10000 < anio0 < 1800 and pob0 < POBLACION_POBLAMIENTO
 
 
 def retroproyectar(conocidos, region):
@@ -194,7 +215,7 @@ def formato_millones(personas):
 def main(argv=None, carpeta=AQUI):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     for nombre in ("co2", "maddison", "hyde", "clio", "natalidad-gapminder", "fecundidad-gapminder", "idh",
-                   "alfabetizacion", "internet", "emigrantes", "poblacion-gapminder", "libertad", "democracia", "corrupcion",
+                   "alfabetizacion", "internet", "emigrantes", "poblacion-gapminder", "poblacion-owid", "libertad", "democracia", "corrupcion",
                    "pib-ppa", "pib-pc-bm",
                    "poblacion-bm"):
         ap.add_argument(f"--{nombre}", required=True)
@@ -252,6 +273,12 @@ def main(argv=None, carpeta=AQUI):
     # Sin población de OWID, la del Banco Mundial hasta el mismo año. Sin esa, la de Gapminder hasta
     # ANIO_MAXIMO_GAPMINDER, que solo sirve para la serie larga (no tiene ANIO_POBLACION).
     poblacion_gapminder = leer_gapminder(args.poblacion_gapminder)
+    # Serie histórica por país de Our World in Data (HYDE 2023, Gapminder y ONU), desde el
+    # 10 000 a. C. en la mayoría. Es la base de la serie larga.
+    historica = {}
+    for f in filas_csv(args.poblacion_owid):
+        if f["population_historical"]:
+            historica.setdefault(f["code"], {})[int(f["year"])] = float(f["population_historical"])
     con_poblacion_bm, con_poblacion_gapminder = [], []
     for clave in owid.values():
         if clave not in poblacion and codigo_bm(clave) in poblacion_bm:
@@ -263,7 +290,7 @@ def main(argv=None, carpeta=AQUI):
                                 if a <= ANIO_MAXIMO_GAPMINDER}
             con_poblacion_gapminder.append(clave)
 
-    con_clio, clio_descartada, extendidas = [], [], []
+    con_clio, clio_descartada, extendidas, poblados = [], [], [], []
     filas_larga, filas_natalidad, sin_serie, sin_pob, sin_pib, sin_natalidad = [], [], [], [], [], []
     sin_idh, sin_nominal, nominal_anterior, sin_alfabetizacion, sin_internet = [], [], [], [], []
     sin_emigrantes, sin_gobernanza = [], {columna: [] for columna, _ in gobernanza}
@@ -276,11 +303,17 @@ def main(argv=None, carpeta=AQUI):
         def anotar(columna, anio, fuente):
             if fila[columna]:
                 detalle.append((codigo, columna, anio, fuente))
-        modernos = sorted(poblacion.get(clave, {}).items())
-        antiguos = sorted((a, p) for a, p in maddison.get(clave, {}).items()
-                          if not modernos or a < modernos[0][0])
+        modernos = sorted(historica.get(clave, {}).items())
+        # La serie histórica termina un año antes que la población actual: se completa con ella.
+        modernos += [(a, p) for a, p in sorted(poblacion.get(clave, {}).items())
+                     if not modernos or a > modernos[-1][0]]
+        poblado = empieza_poblado(modernos) or (codigo in SIN_GENTE_ANTES and bool(modernos))
+        if poblado:
+            poblados.append(f"{codigo} ({modernos[0][0]})")
+        antiguos = [] if poblado else sorted((a, p) for a, p in maddison.get(clave, {}).items()
+                                             if not modernos or a < modernos[0][0])
         conocidos = antiguos + modernos
-        if conocidos and clave in clio:
+        if conocidos and clave in clio and not poblado:
             de_clio = empalmar(sorted(clio[clave]), conocidos)
             if de_clio:
                 con_clio.append(codigo)
@@ -294,7 +327,8 @@ def main(argv=None, carpeta=AQUI):
                 despues = extender(conocidos, sorted(regiones[REGION_OWID.get(region, region)]))
             if despues:
                 extendidas.append(f"{codigo} desde {conocidos[-1][0]}")
-            serie = retroproyectar(conocidos, hyde[region]) + conocidos + despues
+            antes = [] if poblado else retroproyectar(conocidos, hyde[region])
+            serie = antes + conocidos + despues
             filas_larga += [(codigo, a, round(p)) for a, p in serie]
         else:
             sin_serie.append(codigo)
@@ -363,7 +397,8 @@ def main(argv=None, carpeta=AQUI):
     print(f"poblacion_larga.csv: {len(filas_larga)} filas; sin serie: {', '.join(sin_serie) or 'ninguno'}; "
           f"con puntos de Clio-Infra: {len(con_clio)}; Clio-Infra descartada en el empalme: "
           f"{', '.join(clio_descartada) or 'ninguno'}; extendidas con su región hasta {ANIO_POBLACION}: "
-          f"{', '.join(extendidas) or 'ninguna'}")
+          f"{', '.join(extendidas) or 'ninguna'}; desde su poblamiento, sin nada antes: "
+          f"{', '.join(poblados) or 'ninguno'}")
     print(f"natalidad.csv: {len(filas_natalidad)} filas; sin tasa de Gapminder (qué usan): "
           f"{', '.join(sin_natalidad) or 'ninguno'}")
     print(f"paises.csv: población {ANIO_POBLACION} sin dato (vacía): {', '.join(sin_pob) or 'ninguno'}")

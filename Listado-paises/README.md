@@ -322,20 +322,25 @@ Sudamérica, que tuvieron poblaciones muy pequeñas durante casi toda la histori
 - Banda de sensibilidad: `N` se recalcula con `b` × 0,9 y `b` × 1,1, y el resultado queda en
   `poblacion_historica_detalle.csv`.
 
-**Serie larga de cada país** (`preparar_datos.py`, método compuesto, decidido). Cada fuente cubre
-solo los años anteriores al primero de las fuentes de arriba:
+**Serie larga de cada país** (`preparar_datos.py`, decidido). La base es la población por país
+de Our World in Data, y las demás fuentes solo cubren los años anteriores a su primer dato:
 
-- **Our World in Data:** población anual hasta 2024. Empieza en 1850 en la mayoría de los países
-  (132) y en 1750 en 35.
-- **Maddison 2020:** sus puntos anteriores (años 1, 1000, 1500, 1600, 1700, 1820…). Aporta en 77
-  países; en 45, alguno anterior a 1750.
-- **Clio-Infra (2016):** puntos cada 50 años desde 1500, en 121 países. Se empalma: se escala para
-  coincidir con la fuente de arriba en su primer año (el factor casi siempre es 1, porque
-  Clio-Infra coincide con Maddison y Our World in Data donde se solapan). Si difieren más de un
-  50 %, se descarta: Bolivia, Chipre, Dominica y Fiyi.
-- **Antes del primer año conocido:** la población de la región del país según HYDE (seis
-  regiones), multiplicada por la cuota del país en esa región en su primer año conocido. Supone
-  que esa cuota fue constante hacia atrás.
+- **Our World in Data** (grapher `population`: HYDE 2023, Gapminder y ONU *World Population
+  Prospects 2024*): población de cada país hasta 2023, completada con la de 2024. Empieza en el
+  10 000 a. C. en 163 de los 208 países.
+- **Donde empieza más tarde, es el poblamiento si empieza antes de 1800 con menos de 100 000
+  personas** (`empieza_poblado`): islas del Caribe, Malta, Mauricio, Reunión, Nueva Zelanda,
+  Tonga, Samoa… (25 países, con las Seychelles, que HYDE da desde 1800 pero se poblaron en 1770).
+  A esos no se les agrega nada antes: la cuota de su región inventaría gente donde no la había.
+- **Los demás que empiezan tarde** (18 micro-estados y territorios desde 1800, Irlanda y Curazao
+  desde 1950, y Sudán del Sur, con 859 000 personas en 1600) se completan hacia atrás:
+  - **Maddison 2020:** sus puntos anteriores (años 1, 1000, 1500, 1600, 1700, 1820…), si los hay.
+  - **Clio-Infra (2016):** puntos cada 50 años desde 1500, empalmados: se escalan para coincidir
+    con la fuente de arriba en su primer año, y se descartan si difieren más de un 50 %. Con la
+    serie de Our World in Data ya no aporta en ningún país.
+  - **Antes del primer año conocido:** la población de la región del país según HYDE (seis
+    regiones), multiplicada por la cuota del país en esa región en su primer año conocido. Supone
+    que esa cuota fue constante hacia atrás.
 
 **Natalidad desde 1800** (`natalidad.csv`):
 
@@ -351,9 +356,9 @@ solo los años anteriores al primero de las fuentes de arriba:
 **Natalidad antes de 1800, por épocas** (decidido), como el Population Reference Bureau en *How
 Many People Have Ever Lived on Earth?*: 80 por mil antes del año 1, 60 hasta 1650, 50 hasta 1750 y
 40 desde entonces. Las tasas altas de la antigüedad reflejan una mortalidad infantil enorme: para
-que la población apenas creciera, tenían que nacer muchos. **Las cifras se cargaron de memoria**,
-porque el sitio del PRB no era accesible; conviene contrastarlas (`EPOCAS` en
-`historia_poblacion.py`).
+que la población apenas creciera, tenían que nacer muchos. Las cifras (`EPOCAS` en
+`historia_poblacion.py`) se contrastaron con la versión de noviembre de 2022 de ese artículo y
+coinciden.
 
 **Reglas del cálculo:**
 
@@ -361,40 +366,48 @@ porque el sitio del PRB no era accesible; conviene contrastarlas (`EPOCAS` en
 - Si una serie termina antes del año 2000, el país se salta y queda vacío. No se extiende la
   última población hasta 2025, ni se conserva un valor de un cálculo anterior.
 
-**Resultados y comprobación de cordura.** El total mundial da unos **90 200 millones** de
-personas nacidas desde el 10 000 a. C. Los mayores son India (22 800 millones) y China (20 100
-millones). Irán (1 150), Egipto (1 470) y Japón (1 670) suman muchas veces su población actual, y
-Australia (350) casi toda en su población aborigen. El Population Reference Bureau estima unos
-107 000 millones con las mismas natalidades por época; la diferencia viene sobre todo de que el
-PRB cuenta desde la aparición del ser humano moderno, decenas de miles de años antes del 10 000
-a. C., y de sus propias estimaciones de población. Con una natalidad fija de 40 por mil, el total
-daba 61 600 millones. **Las cifras sirven para comparar países entre sí, no como conteo exacto.**
+**Resultados y comprobación de cordura.** El total mundial da unos **89 700 millones** de
+personas nacidas desde el 10 000 a. C. Los mayores son India (24 100 millones) y China (16 100
+millones). Irán (1 330), Egipto (1 170) y Japón (1 100) suman muchas veces su población actual, y
+Australia (315) casi toda en su población aborigen. El Population Reference Bureau estima unos
+117 000 millones desde la aparición del ser humano moderno (190 000 a. C.), y unos 108 000
+millones desde el 8000 a. C., con las mismas natalidades por época; la diferencia viene sobre
+todo de sus propias estimaciones de la población mundial antigua, más altas que las de HYDE. Con
+una natalidad fija de 40 por mil, el total daría 61 400 millones. **Las cifras sirven para
+comparar países entre sí, no como conteo exacto.**
 
 **Limitaciones que hay que conocer:**
 
-- La retroproyección con cuota constante es gruesa: un país que antes tuvo más peso en su región
-  (por ejemplo, Irak o Egipto frente al resto de Asia y África) queda subestimado, y uno que lo
-  ganó después queda sobreestimado. Por eso importa que el primer año conocido sea antiguo: con
-  Clio-Infra, la cuota de Argentina o Chile se toma de 1500 y no de 1820, cuando ya reflejaba la
-  conquista y la inmigración, y sus nacidos en la historia bajaron a la mitad (de unos 200 a unos
-  100 millones).
+- Antes de 1500, casi todo viene de las estimaciones de HYDE por país, que son gruesas. En
+  América son altas para la época precolombina: México tiene 24,5 millones en 1500 y Brasil 18,7,
+  y por eso suman 3 900 y 3 100 millones de nacidos, más que Japón o Irán.
+- La retroproyección con cuota constante, que ahora solo usan los 20 países que Our World in Data
+  empieza tarde sin ser su poblamiento, es gruesa: un país que antes tuvo más peso en su región
+  queda subestimado, y uno que lo ganó después, sobreestimado. Pesa poco: son micro-estados,
+  territorios, Irlanda, Serbia, Kosovo, Montenegro, Palestina, Curazao y Sudán del Sur.
 - La banda de ±10 % solo cubre la natalidad, no las poblaciones de hace miles de años.
 - Antes de 1800 la natalidad es la misma para todos los países en cada época. Es lo que más pesa
   en el total: con 40 por mil fijo, el total mundial baja un tercio.
-- Puerto Rico usa Maddison de 1820 a 1959 y el Banco Mundial desde 1960, porque Our World in Data
-  no lo incluye. Gibraltar e Isla de Man usan el Banco Mundial desde 1960. Jersey y Reunión usan la
-  población de Gapminder hasta 2015 (después es proyección): la de Jersey termina en 2008 y la de
-  Reunión en 2013. Desde ahí siguen la evolución de su continente (Our World in Data) hasta 2024,
-  en vez de quedar congeladas. Guernsey no tiene ninguna serie y
-  queda vacío.
+- La serie de Our World in Data termina en 2023. El año 2024 sale de la población actual (Our
+  World in Data, o el Banco Mundial en Gibraltar, Isla de Man y Puerto Rico). Guernsey, Jersey y
+  Reunión, sin población actual, siguen la evolución de su continente (Our World in Data) de 2023
+  a 2024.
 
 ## Fuentes
 
-Los dominios de las fuentes (`ourworldindata.org`, `api.worldbank.org`, `hdr.undp.org`) están
-bloqueados por el proxy del entorno donde se trabajó: responden 403. Por eso se usaron copias
-publicadas en GitHub, que sí son accesibles: los repositorios de Our World in Data, los de
-Gapminder (`open-numbers`) y los de `datasets` (de datahub.io), que copian los indicadores del
-Banco Mundial.
+Los dominios del Banco Mundial y del PNUD (`api.worldbank.org`, `hdr.undp.org`) están bloqueados
+por el proxy del entorno donde se trabajó: responden 403. Por eso se usaron copias publicadas en
+GitHub, que sí son accesibles: los repositorios de Our World in Data, los de Gapminder
+(`open-numbers`) y los de `datasets` (de datahub.io), que copian los indicadores del Banco
+Mundial. `ourworldindata.org` y `www.prb.org` se habilitaron después.
+
+- [Our World in Data, *Population*](https://ourworldindata.org/grapher/population)
+  (`population.csv`, columna `population_historical`; datos actualizados el 15 de julio de 2024):
+  población por país desde el 10 000 a. C. hasta 2023 (HYDE 2023, Gapminder y ONU WPP 2024). El
+  grapher no tiene versiones fijas: `fuentes.sha256` guarda el SHA-256 del archivo usado.
+- Population Reference Bureau, [*How Many People Have Ever Lived on
+  Earth?*](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) (noviembre de
+  2022): natalidad por época antes de 1800 y total de comparación. No lo lee ningún script.
 
 - [`owid/co2-data`](https://github.com/owid/co2-data), commit `382ee6c` (2 de junio de 2026),
   archivo `owid-co2-data.csv`: población por país hasta 2024.
@@ -442,7 +455,7 @@ Para los recursos de las lenguas y el mapa:
   Natural Earth (dominio público), escala 1:50 millones.
 
 **Para reproducir todo de una vez:** `python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer`
-baja las 434 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
+baja las 435 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
 `fuentes.sha256` y corre todos los scripts. Si las fuentes no cambiaron, el proyecto queda
 idéntico. El job `reproducir` de `pruebas-listado-paises.yml` lo hace en la CI cuando se lanza a
 mano (*Run workflow*) y falla si algún archivo cambia.
@@ -450,9 +463,8 @@ mano (*Run workflow*) y falla si algún archivo cambia.
 `descargar_fuentes.py` es la única lista de fuentes: tiene la URL fija de cada archivo y los
 argumentos con que se llama a cada script. Para correr un paso suelto, mira ahí sus argumentos.
 
-Cuando los dominios estén accesibles, conviene reemplazar la serie compuesta por la serie por país
-de Our World in Data desde el 10 000 a. C., y extender la natalidad después de 2015 con la de la
-ONU o el Banco Mundial (`SP.DYN.CBRT.IN`) en vez de escalarla.
+Cuando `api.worldbank.org` esté accesible, conviene extender la natalidad después de 2015 con la
+del Banco Mundial (`SP.DYN.CBRT.IN`) en vez de escalarla.
 
 ## Estado de los datos
 
@@ -478,7 +490,7 @@ Léelo antes de usar la tabla para decidir.
   usaba Maddison 2023 (vía Our World in Data), que dejaba 35 vacíos. Mónaco (unos 463 000) es una
   estimación de Gapminder: el Banco Mundial no publica su PIB en PPA. Vacío en 13, entre ellos los
   territorios nuevos.
-- **Población histórica acumulada: estimada** con el método compuesto de arriba. Sirve para
+- **Población histórica acumulada: estimada** con el método de arriba. Sirve para
   comparar países, no como conteo exacto.
 - **Alfabetización, internet y emigrantes: de fuente** (UNESCO, Banco Mundial y ONU, vía
   Gapminder). En alfabetización e internet el año varía por país; es el último disponible.
@@ -494,11 +506,8 @@ Léelo antes de usar la tabla para decidir.
 
 ## Pendientes
 
-1. **Población histórica:** reemplazar la serie compuesta por la de Our World in Data por país
-   desde el 10 000 a. C., y la natalidad posterior a 2015 por la de la ONU o el Banco Mundial,
-   cuando haya acceso.
-2. **Natalidad antes de 1800:** contrastar con el PRB las tasas por época, que se cargaron de
-   memoria.
-3. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
-4. **Umbral de exclusión de genealogía:** IO ≤ 1 (vigente) o IO ≤ 2; cuántos deja fuera cada uno,
+1. **Natalidad después de 2015:** usar la de la ONU o el Banco Mundial en vez de escalarla con la
+   fecundidad, cuando haya acceso.
+2. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
+3. **Umbral de exclusión de genealogía:** IO ≤ 1 (vigente) o IO ≤ 2; cuántos deja fuera cada uno,
    en «Resumen» y en `escenarios.md`. Camboya y Vietnam siguen dentro, por decisión tomada.
