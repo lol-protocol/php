@@ -189,7 +189,7 @@ final class BoletasController
 
             $clienteId = (int) ($_POST['cliente_id'] ?? 0);
             $concepto = trim((string) ($_POST['concepto'] ?? ''));
-            $monto = round((float) ($_POST['monto'] ?? 0), 2);
+            $monto = Peticion::monto();
             $fechaEmision = (string) ($_POST['fecha_emision'] ?? '');
             $fechaVencimiento = (string) ($_POST['fecha_vencimiento'] ?? '');
 
@@ -254,7 +254,7 @@ final class BoletasController
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $concepto = trim((string) ($_POST['concepto'] ?? ''));
-            $monto = round((float) ($_POST['monto'] ?? 0), 2);
+            $monto = Peticion::monto();
             $fechaEmision = (string) ($_POST['fecha_emision'] ?? '');
             $fechaVencimiento = (string) ($_POST['fecha_vencimiento'] ?? '');
 

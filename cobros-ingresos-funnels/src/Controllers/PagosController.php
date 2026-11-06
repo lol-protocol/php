@@ -111,7 +111,7 @@ final class PagosController
                 exit;
             }
 
-            $monto = round((float) ($_POST['monto'] ?? 0), 2);
+            $monto = Peticion::monto();
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
             $boletaId = (int) ($_POST['boleta_id'] ?? 0);
@@ -337,7 +337,7 @@ final class PagosController
 
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $monto = round((float) ($_POST['monto'] ?? 0), 2);
+            $monto = Peticion::monto();
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
 
