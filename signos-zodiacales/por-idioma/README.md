@@ -2,7 +2,7 @@
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
-Versión de los datos: 1.2.0. La columna «Revisión» sale de `revision` en `datos/signos.json`.
+Versión de los datos: 1.3.0. La columna «Revisión» sale de `revision` en `datos/signos.json`.
 
 | Idioma | Código | Ficha | Revisión |
 | --- | --- | --- | --- |
