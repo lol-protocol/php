@@ -22,7 +22,7 @@ class RetiroController extends BaseController
 {
     private const MAX_DETALLE = 2000;
     private const MAX_CONTACTO = 254;
-    /** A pedido a visitor may send per hour (RETIRO_MAX_POR_HORA). One hour is the longest window RateLimiter remembers. */
+    /** A pedido a visitor may send per hour (RETIRO_MAX_POR_HORA). One hour is RateLimiter::VENTANA_MAXIMA, the longest window it remembers. */
     private const MAX_POR_HORA = 3;
     /** Pedidos waiting on one page before it stops taking more (RETIRO_MAX_PENDIENTES). */
     private const MAX_PENDIENTES = 10;
@@ -74,7 +74,7 @@ class RetiroController extends BaseController
         }
 
         $limitador = RateLimiter::getInstance();
-        if (!$limitador->isAllowed('retiro:' . $limitador->getClientIp(), Config::getInt('RETIRO_MAX_POR_HORA', self::MAX_POR_HORA), 3600)) {
+        if (!$limitador->isAllowed('retiro:' . $limitador->getClientIp(), Config::getInt('RETIRO_MAX_POR_HORA', self::MAX_POR_HORA), RateLimiter::VENTANA_MAXIMA)) {
             return $this->demasiados('Enviaste varios pedidos seguidos. Vuelve a intentarlo más tarde.', $limitador->retryAfter());
         }
         if ($repo->pendientesDe($tipo, (int)$id) >= Config::getInt('RETIRO_MAX_PENDIENTES', self::MAX_PENDIENTES)) {
