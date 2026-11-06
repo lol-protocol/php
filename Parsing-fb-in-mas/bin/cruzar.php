@@ -37,7 +37,8 @@ foreach ($archivos as $archivo) {
     foreach ($lineas as $linea) {
         $p = json_decode($linea, true);
         if (is_array($p)) {
-            $lista[] = $p;
+            // Un objeto JSON: se descartan las claves numéricas que no son de un perfil.
+            $lista[] = array_filter($p, 'is_string', ARRAY_FILTER_USE_KEY);
         }
     }
     $listas[] = $lista;

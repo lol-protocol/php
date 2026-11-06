@@ -44,4 +44,4 @@ try {
     fwrite(STDERR, $e->getMessage() . "\n");
     exit(1);
 }
-fwrite(STDERR, "{$r['leidas']} líneas con fecha de muerte revisadas, {$r['aceptadas']} personas escritas\n");
+fwrite(STDERR, "{$r['leidas']} líneas con fecha de muerte, {$r['decodificadas']} decodificadas, {$r['aceptadas']} personas escritas\n");

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 // Sin Composer: el proyecto no tiene dependencias propias.
 foreach ([
-    'Perfil', 'Metadatos', 'Analizador',
+    'Json', 'Perfil', 'Metadatos', 'Analizador',
     'Facebook', 'LinkedIn', 'Twitter', 'Instagram', 'TikTok', 'YouTube', 'GitHub', 'Pinterest',
     'WikiTree', 'FindAGrave', 'Generico', 'Detector', 'Lote', 'Wikidata', 'Cruce',
 ] as $clase) {

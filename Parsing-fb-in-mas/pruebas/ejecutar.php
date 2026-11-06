@@ -11,15 +11,18 @@ use ParsingFbInMas\Metadatos;
 use ParsingFbInMas\Perfil;
 use ParsingFbInMas\Wikidata;
 
-$fallos = 0;
-$total = 0;
+/** Contadores de las comprobaciones (estáticos para que `igual()` no dependa de variables globales). */
+final class Cuenta
+{
+    public static int $total = 0;
+    public static int $fallos = 0;
+}
 
 function igual(string $que, mixed $esperado, mixed $real): void
 {
-    global $fallos, $total;
-    $total++;
+    Cuenta::$total++;
     if ($esperado !== $real) {
-        $fallos++;
+        Cuenta::$fallos++;
         echo "FALLA: $que\n  esperado: " . var_export($esperado, true) . "\n  real:     " . var_export($real, true) . "\n";
     }
 }
@@ -157,12 +160,33 @@ igual('esUrl: https', true, Lote::esUrl('https://www.facebook.com/ana'));
 igual('esUrl: ftp', true, Lote::esUrl('ftp://x/y'));
 igual('esUrl: una ruta', false, Lote::esUrl('muestras/facebook.html'));
 igual('esUrl: una ruta de Windows', false, Lote::esUrl('C:\\datos\\a.html'));
-igual('JSON: sin escapar tildes ni barras', 'María https://x/y', json_decode(json_encode('María https://x/y', Lote::JSON)));
+igual('JSON: sin escapar tildes ni barras', 'María https://x/y', json_decode((string) json_encode('María https://x/y', Lote::JSON)));
 igual('JSON: la salida literal conserva la tilde y la barra', '"María https://x/y"', json_encode('María https://x/y', Lote::JSON));
 igual('tiktok: usuario desde la ruta si el título no lo trae', 'ana.ejemplo', Detector::analizar('<link rel="canonical" href="https://www.tiktok.com/@ana.ejemplo"><meta property="og:title" content="TikTok">')->usuario);
 igual('youtube: una ruta sin @ no da usuario', null, Detector::analizar('<link rel="canonical" href="https://www.youtube.com/channel/UC123"><meta property="og:title" content="Canal">')->usuario);
 igual('pinterest: sin paréntesis cae al usuario de la ruta', 'anaejemplo', Detector::analizar('<link rel="canonical" href="https://www.pinterest.com/anaejemplo/"><meta property="og:title" content="Ana Ejemplo | Pinterest">')->usuario);
 igual('genérico: el titular también sale', 'Paleógrafa', Detector::analizar(muestra('generico'))->titular);
+
+// --- Etapa 3: prefiltro de Wikidata ---
+$cuenta = Wikidata::recorrer(__DIR__ . '/muestras/wikidata-muestra.json', static function (): void {
+});
+igual('wikidata: 3 líneas con muerte, 2 decodificadas (el gato no), 2 personas', [3, 2, 2], [$cuenta['leidas'], $cuenta['decodificadas'], $cuenta['aceptadas']]);
+$cuentaPais = Wikidata::recorrer(__DIR__ . '/muestras/wikidata-muestra.json', static function (): void {
+}, 'Q298');
+igual('wikidata: con país solo se decodifica la chilena', [1, 1], [$cuentaPais['decodificadas'], $cuentaPais['aceptadas']]);
+// Un volcado con espacios («"id": "Q5"») no puede perder personas en silencio
+$espaciado = sys_get_temp_dir() . '/pfm-espaciado-' . getmypid() . '.json';
+file_put_contents($espaciado, str_replace(['"id":"', '":"'], ['"id": "', '": "'], (string) file_get_contents(__DIR__ . '/muestras/wikidata-muestra.json')));
+$vistas = [];
+Wikidata::recorrer($espaciado, static function ($p) use (&$vistas): void {
+    $vistas[] = $p->usuario;
+}, 'Q298');
+unlink($espaciado);
+igual('wikidata: el prefiltro tolera JSON con espacios', ['Q1'], $vistas);
+// Una línea con el identificador del país en otro lugar no cambia el resultado (el prefiltro solo descarta)
+$otro = Wikidata::recorrer(__DIR__ . '/muestras/wikidata-muestra.json', static function (): void {
+}, 'Q99999');
+igual('wikidata: un país que nadie tiene no devuelve a nadie', [0, 0], [$otro['decodificadas'], $otro['aceptadas']]);
 
 // CLI: no descarga de la red
 $salida = [];
@@ -210,6 +234,7 @@ igual('vivo: sin lugar de nacimiento', null, $vv['lugar_nacimiento']);
 igual('vivo: sigue como posiblemente vivo', true, $vv['posiblemente_vivo']);
 
 // Wikidata
+/** @var list<array<string, mixed>> $leidas */
 $leidas = [];
 $r = Wikidata::recorrer(__DIR__ . '/muestras/wikidata-muestra.json', static function ($p) use (&$leidas): void {
     $leidas[] = $p->aArreglo();
@@ -243,7 +268,10 @@ try {
 
 // Lote
 $archivos = Lote::archivos([__DIR__ . '/muestras']);
-igual('lote: la carpeta se expande a sus .html', true, count($archivos) >= 10 && str_ends_with($archivos[0], '.html'));
+$esperados = glob(__DIR__ . '/muestras/*.html') ?: [];
+sort($esperados, SORT_STRING);
+igual('lote: la carpeta se expande exactamente a sus .html, en orden', $esperados, $archivos);
+igual('lote: hay muestras que probar', true, $esperados !== []);
 igual('lote: no incluye el volcado .json', false, in_array(__DIR__ . '/muestras/wikidata-muestra.json', $archivos, true));
 $dup = Lote::sinRepetidos([
     ['url' => 'https://www.Facebook.com/ana/', 'n' => 1],
@@ -282,10 +310,26 @@ exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata.php') . ' ' . escapeshe
 igual('wikidata.php: una persona chilena', [0, 1], [$codigo, count($salida)]);
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata.php') . ' https://dumps.wikimedia.org/x.json 2>&1', $salida, $codigo);
 igual('wikidata.php: rechaza una URL', 2, $codigo);
-exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl ' . escapeshellarg(__DIR__ . '/muestras') . ' 2>/dev/null', $salida, $codigo);
-igual('analizar.php: una carpeta entera sale con 1 (hay muestras que fallan a propósito)', 1, $codigo);
+// analizar.php sobre carpetas: una buena (con una página repetida) sale con 0; con una página ilegible, con 1
+mkdir("$tmp/buenas");
+copy(__DIR__ . '/muestras/facebook.html', "$tmp/buenas/uno.html");
+copy(__DIR__ . '/muestras/facebook.html', "$tmp/buenas/copia-del-uno.html");
+copy(__DIR__ . '/muestras/twitter.html', "$tmp/buenas/dos.html");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl ' . escapeshellarg("$tmp/buenas") . ' 2>/dev/null', $salida, $codigo);
+igual('analizar.php: carpeta buena sale con 0', 0, $codigo);
+igual('analizar.php: la misma URL sale una vez (2 de 3 páginas)', 2, count($salida));
+mkdir("$tmp/mala");
+copy(__DIR__ . '/muestras/desconocida.html', "$tmp/mala/rara.html");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl ' . escapeshellarg("$tmp/mala") . ' 2>/dev/null', $salida, $codigo);
+igual('analizar.php: una página que no se reconoce sale con 1', [1, 0], [$codigo, count($salida)]);
+foreach (['buenas', 'mala'] as $carpeta) {
+    array_map('unlink', glob("$tmp/$carpeta/*") ?: []);
+    rmdir("$tmp/$carpeta");
+}
 array_map('unlink', glob("$tmp/*") ?: []);
 rmdir($tmp);
 
-echo "$total comprobaciones, $fallos fallos\n";
-exit($fallos > 0 ? 1 : 0);
+echo Cuenta::$total . " comprobaciones, " . Cuenta::$fallos . " fallos\n";
+exit(Cuenta::$fallos > 0 ? 1 : 0);

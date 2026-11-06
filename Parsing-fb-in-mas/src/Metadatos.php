@@ -105,7 +105,8 @@ final class Metadatos
             $p = [];
             foreach ($xp->query('.//*[@itemprop]', $raiz) ?: [] as $nodo) {
                 /** @var \DOMElement $nodo */
-                $dueno = $xp->query('ancestor::*[@itemscope][1]', $nodo)?->item(0);
+                $duenos = $xp->query('ancestor::*[@itemscope][1]', $nodo);
+                $dueno = $duenos === false ? null : $duenos->item(0);
                 if ($dueno === null || !$dueno->isSameNode($raiz)) {
                     continue;
                 }
@@ -142,13 +143,14 @@ final class Metadatos
             return self::limpiar($valor);
         }
         if (is_array($valor)) {
-            if (isset($valor['name']) && is_string($valor['name'])) {
-                return self::limpiar($valor['name']);
+            $nombre = Json::texto($valor, 'name');
+            if ($nombre !== null) {
+                return self::limpiar($nombre);
             }
             $partes = [];
             foreach (['addressLocality', 'addressRegion', 'addressCountry'] as $campo) {
-                $v = $valor['address'][$campo] ?? ($valor[$campo] ?? null);
-                if (is_string($v) && self::limpiar($v) !== '') {
+                $v = Json::texto($valor, 'address', $campo) ?? Json::texto($valor, $campo);
+                if ($v !== null && self::limpiar($v) !== '') {
                     $partes[] = self::limpiar($v);
                 }
             }

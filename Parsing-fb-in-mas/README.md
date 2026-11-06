@@ -52,7 +52,7 @@ php bin/wikidata.php latest-all.json.gz --pais=Q298 --capturado=2026-11-04 > wik
 php bin/cruzar.php wikidata.jsonl perfiles.jsonl --idioma=spa
 ```
 
-Pruebas: `php pruebas/ejecutar.php`.
+Pruebas: `php pruebas/ejecutar.php`; análisis estático: `phpstan analyse` (nivel `max`, ver `phpstan.neon.dist`; la CI usa PHPStan 2.1).
 
 Los lugares y los parientes de Wikidata salen como identificadores (`Q2887`): resolverlos pide
 un segundo recorrido del volcado, que todavía no está.

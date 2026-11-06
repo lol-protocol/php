@@ -28,7 +28,7 @@ final class Cruce
      * @param list<array<string, mixed>> $a perfiles (la salida de `aArreglo()`)
      * @param list<array<string, mixed>> $b
      * @param string $idioma código de tres letras del plegado fonético (`spa`, `eng`…)
-     * @return array{candidatos: list<array<string, mixed>>, excluidos_vivos: int}
+     * @return array{candidatos: list<array{a: array<string, mixed>, b: array<string, mixed>, puntaje: float, evidencia: list<string>, estado: string}>, excluidos_vivos: int}
      */
     public static function candidatos(array $a, array $b, string $idioma = 'spa'): array
     {

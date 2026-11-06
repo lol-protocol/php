@@ -21,7 +21,10 @@ final class Wikidata
     /**
      * @param callable(Perfil): void $cada
      * @param ?string $pais identificador del país de ciudadanía (`Q298` es Chile), o null para todos
-     * @return array{leidas: int, aceptadas: int}
+     * `leidas` son las líneas con fecha de muerte; `decodificadas`, las que pasaron el prefiltro de
+     * texto (humano y, si se pidió, país) y costaron un `json_decode`; `aceptadas`, las personas entregadas.
+     *
+     * @return array{leidas: int, decodificadas: int, aceptadas: int}
      */
     public static function recorrer(string $ruta, callable $cada, ?string $pais = null, ?int $maximo = null, ?string $capturado = null): array
     {
@@ -31,7 +34,12 @@ final class Wikidata
             throw new RuntimeException("No se pudo abrir $ruta");
         }
         $leidas = 0;
+        $decodificadas = 0;
         $aceptadas = 0;
+        // Prefiltros de texto: nunca descartan a alguien que luego `persona()` aceptaría (esperan el
+        // identificador, con o sin espacios), solo evitan decodificar lo que seguro no sirve.
+        $humano = '/"id"\s*:\s*"Q5"/';
+        $delPais = $pais === null ? null : '/"id"\s*:\s*"' . preg_quote($pais, '/') . '"/';
         while (($linea = fgets($f)) !== false) {
             $linea = rtrim($linea, ",\r\n ");
             // Casi ninguna línea es de una persona fallecida: se descarta antes de decodificar.
@@ -39,6 +47,10 @@ final class Wikidata
                 continue;
             }
             $leidas++;
+            if (preg_match($humano, $linea) !== 1 || ($delPais !== null && preg_match($delPais, $linea) !== 1)) {
+                continue;
+            }
+            $decodificadas++;
             $entidad = json_decode($linea, true);
             $perfil = is_array($entidad) ? self::persona($entidad, $pais, $capturado) : null;
             if ($perfil === null) {
@@ -51,7 +63,7 @@ final class Wikidata
             }
         }
         fclose($f);
-        return ['leidas' => $leidas, 'aceptadas' => $aceptadas];
+        return ['leidas' => $leidas, 'decodificadas' => $decodificadas, 'aceptadas' => $aceptadas];
     }
 
     /**
@@ -109,8 +121,8 @@ final class Wikidata
     {
         $ids = [];
         foreach (self::declaraciones($e, $propiedad) as $d) {
-            $id = $d['mainsnak']['datavalue']['value']['id'] ?? null;
-            if (is_string($id)) {
+            $id = Json::texto($d, 'mainsnak', 'datavalue', 'value', 'id');
+            if ($id !== null) {
                 $ids[] = $id;
             }
         }
@@ -126,12 +138,12 @@ final class Wikidata
     private static function fecha(array $e, string $propiedad): ?string
     {
         foreach (self::declaraciones($e, $propiedad) as $d) {
-            $v = $d['mainsnak']['datavalue']['value'] ?? null;
-            if (!is_array($v) || !isset($v['time']) || !is_string($v['time'])
-                || preg_match('/^([+-])(\d{1,})-(\d{2})-(\d{2})T/', $v['time'], $m) !== 1) {
+            $hora = Json::texto($d, 'mainsnak', 'datavalue', 'value', 'time');
+            if ($hora === null || preg_match('/^([+-])(\d{1,})-(\d{2})-(\d{2})T/', $hora, $m) !== 1) {
                 continue;
             }
-            $precision = is_int($v['precision'] ?? null) ? $v['precision'] : 9;
+            $p = Json::en($d, 'mainsnak', 'datavalue', 'value', 'precision');
+            $precision = is_int($p) ? $p : 9;
             $anio = ($m[1] === '-' ? '-' : '') . str_pad(ltrim($m[2], '0') === '' ? '0' : ltrim($m[2], '0'), 4, '0', STR_PAD_LEFT);
             return match (true) {
                 $precision >= 11 && $m[3] !== '00' && $m[4] !== '00' => "$anio-$m[3]-$m[4]",
@@ -149,10 +161,10 @@ final class Wikidata
     private static function declaraciones(array $e, string $propiedad): array
     {
         $salida = [];
-        $lista = $e['claims'][$propiedad] ?? [];
+        $lista = Json::en($e, 'claims', $propiedad);
         if (is_array($lista)) {
             foreach ($lista as $d) {
-                if (is_array($d) && ($d['rank'] ?? 'normal') !== 'deprecated') {
+                if (is_array($d) && Json::texto($d, 'rank') !== 'deprecated') {
                     $salida[] = $d;
                 }
             }
@@ -167,16 +179,16 @@ final class Wikidata
      */
     private static function texto(array $e, string $campo): ?string
     {
-        $m = $e[$campo] ?? null;
+        $m = Json::en($e, $campo);
         if (!is_array($m)) {
             return null;
         }
         foreach (['es', 'en'] as $idioma) {
-            if (isset($m[$idioma]['value']) && is_string($m[$idioma]['value'])) {
-                return $m[$idioma]['value'];
+            $texto = Json::texto($m, $idioma, 'value');
+            if ($texto !== null) {
+                return $texto;
             }
         }
-        $primero = reset($m);
-        return is_array($primero) && is_string($primero['value'] ?? null) ? $primero['value'] : null;
+        return Json::texto(reset($m), 'value');
     }
 }

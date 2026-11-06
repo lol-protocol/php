@@ -59,7 +59,7 @@ final class Perfil
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{red: string, url: ?string, usuario: ?string, nombre: ?string, titular: ?string, lugar: ?string, descripcion: ?string, capturado: ?string, nacimiento: ?string, muerte: ?string, lugar_nacimiento: ?string, lugar_muerte: ?string, parientes: list<array{relacion: string, nombre: ?string, id: ?string}>, posiblemente_vivo: bool, revision_humana: bool, avisos: list<string>}
      */
     public function aArreglo(): array
     {

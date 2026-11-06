@@ -37,6 +37,10 @@ jobs:
           php-version: "8.3"
           extensions: dom, mbstring
           coverage: none
+          tools: phpstan:2.1
 
       - name: Pruebas
         run: php pruebas/ejecutar.php
+
+      - name: Análisis estático (PHPStan)
+        run: phpstan analyse --no-progress
