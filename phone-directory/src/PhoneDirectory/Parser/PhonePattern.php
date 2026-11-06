@@ -81,6 +81,21 @@ final class PhonePattern
     }
 
     /**
+     * The phone in $line under $regex (regexFor() of the directory's language), also when the scan misread a
+     * digit as a letter ("555-l23-4567" gives "555-123-4567"); null if it has none.
+     */
+    public static function find(string $line, string $regex): ?string
+    {
+        if (preg_match($regex, $line, $matches) === 1) {
+            return $matches[0];
+        }
+
+        $repaired = self::repairOcrDigits($line);
+
+        return $repaired !== $line && preg_match($regex, $repaired, $matches) === 1 ? $matches[0] : null;
+    }
+
+    /**
      * Undoes the usual OCR misreadings inside what looks like a phone number: "l" or "I" for 1 and "O" or
      * "o" for 0 ("555-l23-4567" gives "555-123-4567"). Only in a run of digits and separators with at least
      * 6 real digits and at most 2 such letters, so words ("Oil", "Ollie") and exchange names

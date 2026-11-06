@@ -86,6 +86,15 @@ class PhonePatternTest extends TestCase
         $this->assertFalse(PhonePattern::isOnlyAPhoneNumber('01 42 68 53 00'), 'sin idioma, solo formatos de EE. UU.');
     }
 
+    public function testFindRepairsMisreadDigitsOnlyWhenNeeded(): void
+    {
+        $regex = PhonePattern::regexFor('en');
+
+        $this->assertSame('555-123-4567', PhonePattern::find('KING, Mary 555-l23-4567', $regex));
+        $this->assertSame('555-123-4567', PhonePattern::find('555-123-4567', $regex));
+        $this->assertNull(PhonePattern::find('KING, Mary', $regex));
+    }
+
     /** @return array<string, array{string, string}> */
     public static function ocrLines(): array
     {

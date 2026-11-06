@@ -477,6 +477,24 @@
             "idioma": "en",
             "entrada": "ACME Corp ........ 555-999-0000\n10 Main Street",
             "esperado": [{"tipo": "juridical", "nombre": "ACME Corp", "calle": "10 Main Street", "telefono": "555-999-0000"}]
+        },
+        {
+            "id": "en-tratamiento-dr-antes-del-nombre",
+            "idioma": "en",
+            "entrada": "Dr. SMITH, John\n12 Oak Street\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "Dr. SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-santo-st-en-el-nombre-de-una-empresa",
+            "idioma": "en",
+            "entrada": "St. Mary Bakery\n12 Oak Street\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "St. Mary Bakery", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-calle-st-sin-numero",
+            "idioma": "en",
+            "entrada": "BROWN, Alice\nOak St\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "BROWN, Alice", "calle": "Oak St", "telefono": "555-123-4567"}]
         }
     ]
 }

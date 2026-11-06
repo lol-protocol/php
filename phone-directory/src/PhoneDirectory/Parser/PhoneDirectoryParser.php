@@ -9,7 +9,7 @@ use PhoneDirectory\Validation\InputValidator;
 /**
  * @phpstan-type RawEntry array{name: string|null, phone: string|null, street: string|null}
  * @phpstan-type ParseError array{line: int, reason: string, data: RawEntry}
- * @phpstan-type Patterns array{line_separator: string, phone_pattern: string, street_marker: string}
+ * @phpstan-type Patterns array{line_separator: string, phone_pattern: string}
  */
 class PhoneDirectoryParser
 {
@@ -62,7 +62,6 @@ class PhoneDirectoryParser
         $this->patterns = [
             'line_separator' => '/^(?:[-=_*]\s*){2,}$/',
             'phone_pattern' => PhonePattern::getValidatedRegex(),
-            'street_marker' => '/\b(?:st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|cir|circle)\b/iu',
         ];
 
         return $this->patterns;
@@ -119,7 +118,7 @@ class PhoneDirectoryParser
             // Invalid UTF-8 would crash the splitter's /u regex; such lines fall through to the block
             // path, where finalizeEntry() reports the record as a parse error.
             $single = mb_check_encoding($trimmed, 'UTF-8')
-                ? SingleLineEntrySplitter::split($trimmed, fn($street) => $this->isStreet($street), 1)
+                ? SingleLineEntrySplitter::split($trimmed, fn($street) => StreetRules::hasStreetWord($street, 'en'), 1)
                 : null;
             if ($single !== null) {
                 if (!empty($buffer)) {
@@ -149,7 +148,7 @@ class PhoneDirectoryParser
         $phonePattern = $this->getPatterns()['phone_pattern'];
         $records = RecordSplitter::split(
             $lines,
-            fn($line) => $this->phoneIn($line, $phonePattern) !== null,
+            fn($line) => PhonePattern::find($line, $phonePattern) !== null,
             fn($line, $afterName) => $this->extractStreet($line, $afterName) !== null
         );
         foreach ($records as $offset => $record) {
@@ -170,7 +169,7 @@ class PhoneDirectoryParser
         $patterns = $this->getPatterns();
 
         foreach ($lines as $line) {
-            $phone = $this->phoneIn($line, $patterns['phone_pattern']);
+            $phone = PhonePattern::find($line, $patterns['phone_pattern']);
             if (empty($data['phone']) && $phone !== null) {
                 $data['phone'] = $phone;
             }
@@ -238,37 +237,10 @@ class PhoneDirectoryParser
         }
     }
 
-    /** The line's phone, also when the scan misread a digit as a letter ("555-l23-4567"); null if it has none. */
-    private function phoneIn(string $line, string $phonePattern): ?string
-    {
-        if (preg_match($phonePattern, $line, $matches) === 1) {
-            return $matches[0];
-        }
-
-        $repaired = PhonePattern::repairOcrDigits($line);
-
-        return $repaired !== $line && preg_match($phonePattern, $repaired, $matches) === 1 ? $matches[0] : null;
-    }
-
-    private function isStreet(string $line): bool
-    {
-        $patterns = $this->getPatterns();
-        return preg_match($patterns['street_marker'], $line) === 1;
-    }
-
     /** $afterName: the record's name has been read, so a dwelling line ("Apt 4 Building 7") also counts. */
     private function extractStreet(string $line, bool $afterName = false): ?string
     {
-        if ($this->isStreet($line)) {
-            return $line;
-        }
-
-        // A line that is only a phone number is not also a street, even though it starts with digits.
-        if (PhonePattern::isOnlyAPhoneNumber($line)) {
-            return null;
-        }
-
-        return StreetFallback::numberFirst($line) ?? ($afterName ? StreetFallback::dwelling($line) : null);
+        return StreetRules::strong($line, 'en') ?? ($afterName ? StreetRules::afterName($line, 'en') : null);
     }
 
     /** @param RawEntry $data */

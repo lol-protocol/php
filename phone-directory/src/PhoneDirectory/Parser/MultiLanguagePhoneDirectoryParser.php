@@ -19,31 +19,17 @@ use PhoneDirectory\PhoneDirectoryCatalog;
 class MultiLanguagePhoneDirectoryParser
 {
     use InputValidator;
-    private const LANGUAGE_STREET_MARKERS = [
-        'es' => ['calle', 'c/', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
-        'en' => ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln', 'boulevard', 'blvd', 'circle', 'cir'],
-        'fr' => ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
-        'pt' => ['rua', 'avenida', 'av', 'praça', 'alameda', 'estrada', 'largo'],
-        'de' => ['ring', 'hof'],
-        'it' => ['via', 'viale', 'corso', 'piazza', 'largo', 'strada'],
-    ];
-
-    // German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
-    private const LANGUAGE_STREET_SUFFIXES = [
-        'de' => ['straße', 'strasse', 'allee', 'weg', 'platz'],
-    ];
-
-    // Subset of LANGUAGE_STREET_MARKERS used only to detect the language, deliberately excluding words
+    // Subset of StreetRules' street words used only to detect the language, deliberately excluding words
     // that are also ordinary English words or English street types ("plaza", "avenue", "boulevard",
     // "square", "via", "ring"): one of those appearing in an otherwise-English directory would otherwise
     // outscore English's own (zero) count and misdetect the whole file. English is this project's
     // baseline language, so detection only overrides it on genuinely distinctive vocabulary. Street
-    // *extraction* for an already-known language still uses the full LANGUAGE_STREET_MARKERS list.
+    // *extraction* for an already-known language still uses all of StreetRules' words.
     private const LANGUAGE_DETECTION_MARKERS = [
         'es' => ['calle', 'avenida', 'pasaje', 'camino', 'ruta', 'carrera'],
         'fr' => ['rue', 'allée', 'cours'],
         'pt' => ['rua', 'avenida', 'praça', 'alameda', 'estrada', 'largo'],
-        'de' => [], // detected via LANGUAGE_STREET_SUFFIXES only; its own marker words are too ambiguous
+        'de' => [], // detected via StreetRules::SUFFIXES only; its own marker words are too ambiguous
         'it' => ['viale', 'corso', 'piazza', 'largo', 'strada'],
     ];
 
@@ -63,10 +49,7 @@ class MultiLanguagePhoneDirectoryParser
         'it' => ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel', 'banca', 'farmacia', 'ospedale'],
     ];
 
-    private const SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it'];
-
-    // Languages whose addresses put the house number after the street name ("Calle Mayor 12", "Via Roma 10").
-    private const NUMBER_LAST_LANGUAGES = ['es', 'pt', 'it', 'de'];
+    private const SUPPORTED_LANGUAGES = StreetRules::SUPPORTED_LANGUAGES;
 
     private string $detectedLanguage = 'en';
     /** @var list<ParsedEntry> */
@@ -76,8 +59,6 @@ class MultiLanguagePhoneDirectoryParser
     private string $countryCode;
     private ?string $sourceDirectoryId;
 
-    /** @var array<string, string> */
-    private array $streetPatternCache = [];
     /** @var array<string, string|null> */
     private array $entityTypePatternCache = [];
     /** @var array<string, string|null> */
@@ -185,10 +166,10 @@ class MultiLanguagePhoneDirectoryParser
                 $trimmed,
                 // Only a street word, as PhoneDirectoryParser does: the number-first fallback alone would
                 // turn "Restaurante 3 Hermanos" or "Apt 4 Building 7" into a record of their own.
-                fn($street) => $this->hasStreetWord($street, $language),
+                fn($street) => StreetRules::hasStreetWord($street, $language),
                 PersonName::LANGUAGE_SURNAME_COUNT[$language] ?? 1,
                 $language,
-                in_array($language, self::NUMBER_LAST_LANGUAGES, true) ? fn($beforeNumber) => $this->streetWordOffset($beforeNumber, $language) : null
+                in_array($language, StreetRules::NUMBER_LAST_LANGUAGES, true) ? fn($beforeNumber) => StreetRules::streetWordOffset($beforeNumber, $language) : null
             ) : null;
             if ($single !== null) {
                 if (!empty($buffer)) {
@@ -249,7 +230,7 @@ class MultiLanguagePhoneDirectoryParser
     private function getDetectionPattern(string $language, array $words): ?string
     {
         if (!isset($this->detectionPatternCache[$language])) {
-            $suffixes = self::LANGUAGE_STREET_SUFFIXES[$language] ?? [];
+            $suffixes = StreetRules::SUFFIXES[$language] ?? [];
             if ($words === [] && $suffixes === []) {
                 $this->detectionPatternCache[$language] = null;
                 return null;
@@ -274,7 +255,7 @@ class MultiLanguagePhoneDirectoryParser
     {
         $records = RecordSplitter::split(
             $lines,
-            fn($line) => $this->phoneIn($line, $phoneRegex) !== null,
+            fn($line) => PhonePattern::find($line, $phoneRegex) !== null,
             fn($line, $afterName) => $this->isStreetLine($line, $language, $afterName)
         );
         foreach ($records as $offset => $record) {
@@ -285,7 +266,7 @@ class MultiLanguagePhoneDirectoryParser
     /** The street test processRecord() applies: a number-last street without a street word only counts after the name. */
     private function isStreetLine(string $line, string $language, bool $afterName): bool
     {
-        return $this->extractStreet($line, $language) !== null || ($afterName && $this->afterNameStreet($line, $language) !== null);
+        return StreetRules::strong($line, $language) !== null || ($afterName && StreetRules::afterName($line, $language) !== null);
     }
 
     /** @param list<string> $lines */
@@ -301,9 +282,9 @@ class MultiLanguagePhoneDirectoryParser
         $nameSet = false;
 
         foreach ($lines as $line) {
-            $phone = $this->phoneIn($line, $phoneRegex);
+            $phone = PhonePattern::find($line, $phoneRegex);
             $isPhoneLine = $phone !== null;
-            $street = $this->extractStreet($line, $language) ?? ($nameSet ? $this->afterNameStreet($line, $language) : null);
+            $street = StreetRules::strong($line, $language) ?? ($nameSet ? StreetRules::afterName($line, $language) : null);
             $isStreetLine = $street !== null;
 
             if (empty($data['phone']) && $phone !== null) {
@@ -409,76 +390,6 @@ class MultiLanguagePhoneDirectoryParser
         }
     }
 
-    private function extractStreet(string $line, string $language): ?string
-    {
-        if (!mb_check_encoding($line, 'UTF-8')) {
-            return null;
-        }
-
-        if (preg_match($this->getStreetPattern($language), $line)) {
-            return $line;
-        }
-
-        if (PhonePattern::isOnlyAPhoneNumber($line, $language)) {
-            return null;
-        }
-
-        return StreetFallback::numberFirst($line);
-    }
-
-    /** The line's phone, also when the scan misread a digit as a letter ("555-l23-4567"); null if it has none. */
-    private function phoneIn(string $line, string $phoneRegex): ?string
-    {
-        if (preg_match($phoneRegex, $line, $matches) === 1) {
-            return $matches[0];
-        }
-
-        $repaired = PhonePattern::repairOcrDigits($line);
-
-        return $repaired !== $line && preg_match($phoneRegex, $repaired, $matches) === 1 ? $matches[0] : null;
-    }
-
-    /**
-     * An address that only counts once the name is read: in a language that writes the house number last,
-     * a street with no street word ("Los Aromos 123"); in English, a dwelling line ("Apt 4 Building 7").
-     */
-    private function afterNameStreet(string $line, string $language): ?string
-    {
-        if ($language === 'en') {
-            return StreetFallback::dwelling($line);
-        }
-
-        return in_array($language, self::NUMBER_LAST_LANGUAGES, true) ? StreetFallback::numberLast($line) : null;
-    }
-
-    /**
-     * Where the street starts in the text before a number-last house number ("GARCÍA Juan Calle Mayor"
-     * gives the offset of "Calle"): the first street word after the first two words, which belong to the
-     * name, so a surname that is also a street word ("PLAZA ROJAS Juan Calle Mayor") stays in the name.
-     * A street word that is a suffix ("Hauptstraße") starts the street at the beginning of its word.
-     */
-    private function streetWordOffset(string $text, string $language): ?int
-    {
-        if (!preg_match_all($this->getStreetPattern($language), $text, $matches, PREG_OFFSET_CAPTURE)) {
-            return null;
-        }
-
-        foreach ($matches[0] as [, $offset]) {
-            preg_match('/[\p{L}\p{M}\'’.\-]*$/u', substr($text, 0, $offset), $wordStart);
-            $offset -= strlen($wordStart[0]);
-            if (preg_match_all('/\S+/u', substr($text, 0, $offset)) >= 2) {
-                return $offset;
-            }
-        }
-
-        return null;
-    }
-
-    private function hasStreetWord(string $line, string $language): bool
-    {
-        return mb_check_encoding($line, 'UTF-8') && preg_match($this->getStreetPattern($language), $line) === 1;
-    }
-
     private function extractBusinessType(string $line, string $language): ?string
     {
         $markers = self::ENTITY_TYPE_MARKERS[$language] ?? [];
@@ -515,28 +426,6 @@ class MultiLanguagePhoneDirectoryParser
             && $this->extractBusinessType($parts[1], $language) === null;
 
         return $isSurnameAndGivenName ? null : $type;
-    }
-
-    private function getStreetPattern(string $language): string
-    {
-        if (!isset($this->streetPatternCache[$language])) {
-            if (!isset(self::LANGUAGE_STREET_MARKERS[$language])) {
-                throw new InvalidLanguageException("Unsupported language for street pattern: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
-            }
-
-            $words = implode('|', array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_MARKERS[$language]));
-            $suffixes = array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_SUFFIXES[$language] ?? []);
-
-            // Not \b: "c/" ends in a slash, and \b only sees a word edge after a letter or digit.
-            $pattern = '(?<![\\p{L}\\d])(?:' . $words . ')(?![\\p{L}\\d])';
-            if ($suffixes) {
-                $pattern .= '|(?:' . implode('|', $suffixes) . ')\\b';
-            }
-
-            $this->streetPatternCache[$language] = '/' . $pattern . '/iu';
-        }
-
-        return $this->streetPatternCache[$language];
     }
 
     private function getEntityTypePattern(string $language): ?string
