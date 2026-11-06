@@ -23,4 +23,26 @@ final class BusquedaTest extends TestCase
         self::assertSame('%a\\\\b%', Busqueda::contiene('a\\b'));
         self::assertSame('%\%\_\\\\%', Busqueda::contiene('%_\\'));
     }
+
+    public function testSinTextoElFiltroNoAgregaNadaALaConsulta(): void
+    {
+        self::assertSame(['', []], Busqueda::filtro(null, ['c.nombre'], 'cliente', ' AND '));
+        self::assertSame(['', []], Busqueda::filtro('', ['c.nombre'], 'cliente', ' AND '));
+    }
+
+    public function testElFiltroDeUnaColumnaUsaElConectorYElParametroDados(): void
+    {
+        self::assertSame(
+            [' AND (c.nombre ILIKE :cliente)', [':cliente' => '%garcia%']],
+            Busqueda::filtro('garcia', ['c.nombre'], 'cliente', ' AND '),
+        );
+    }
+
+    public function testElFiltroDeVariasColumnasLasUneConOrBajoUnSoloParametro(): void
+    {
+        self::assertSame(
+            [' WHERE (c.nombre ILIKE :q OR c.email ILIKE :q)', [':q' => '%50\%%']],
+            Busqueda::filtro('50%', ['c.nombre', 'c.email'], 'q', ' WHERE '),
+        );
+    }
 }

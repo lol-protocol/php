@@ -127,11 +127,8 @@ final class PagoRepository
     private function consultaDelListado(string $desde, string $hasta, ?string $cliente): array
     {
         $params = [':desde' => $desde, ':hasta' => $hasta];
-        $filtroCliente = '';
-        if ($cliente !== null && $cliente !== '') {
-            $filtroCliente = ' AND c.nombre ILIKE :cliente';
-            $params[':cliente'] = Busqueda::contiene($cliente);
-        }
+        [$filtroCliente, $paramsCliente] = Busqueda::filtro($cliente, ['c.nombre'], 'cliente', ' AND ');
+        $params += $paramsCliente;
 
         return [
             'columnas' => 'p.id, p.monto, p.moneda_codigo, p.fecha_pago, p.metodo, p.boleta_id, p.anulada,
