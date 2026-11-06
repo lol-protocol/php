@@ -8,7 +8,6 @@ return [
     'explanation.match' => '„%1$s” pasuje do „%2$s” (%3$s)',
     'explanation.related' => '; język pokrewny, pewność %.2F',
     'explanation.collision' => '; to także udokumentowane prawdziwe imię lub nazwisko, trafia do kontroli człowieka',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Odrzucić: treść poważnie obraźliwa (typy ryzyka: %s).',
     'recommendation.review_collision' => 'Kontrola człowieka: pasuje do obraźliwych terminów (%s), ale także do udokumentowanych nazwisk.',
     'recommendation.review_phonetic' => 'Kontrola człowieka: imię i nazwisko razem tworzą obraźliwy termin (%s), którego żadne z nich nie ma osobno.',

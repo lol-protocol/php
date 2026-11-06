@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'fin', 'iso639_1' => 'fi', 'name' => 'Finnish',
-        'nativeName' => 'Suomi', 'family' => 'uralic', 'coverage' => 'moderate',
+        'code' => 'fin',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

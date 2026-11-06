@@ -11,10 +11,6 @@
 return [
     'meta' => [
         'code' => 'eng',
-        'iso639_1' => 'en',
-        'name' => 'English',
-        'nativeName' => 'English',
-        'family' => 'germanic',
         'coverage' => 'comprehensive',
     ],
 

@@ -8,7 +8,6 @@ return [
     'explanation.match' => '“%1$s” תואם ל“%2$s” (%3$s)',
     'explanation.related' => '; שפה קרובה, ביטחון %.2F',
     'explanation.collision' => '; זהו גם שם פרטי או שם משפחה אמיתי ומתועד, ולכן עובר לבדיקה אנושית',
-    'explanation.end' => '.',
     'recommendation.reject' => 'דחייה: תוכן פוגעני מאוד (סוגי סיכון: %s).',
     'recommendation.review_collision' => 'בדיקה אנושית: תואם למונחים פוגעניים (%s) אך גם לשמות משפחה מתועדים.',
     'recommendation.review_phonetic' => 'בדיקה אנושית: שם פרטי ושם משפחה ברצף יוצרים מונח פוגעני (%s) שאין באף אחד מהם לבדו.',

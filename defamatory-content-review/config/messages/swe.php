@@ -8,7 +8,6 @@ return [
     'explanation.match' => '”%1$s” matchar ”%2$s” (%3$s)',
     'explanation.related' => '; besläktat språk, säkerhet %.2F',
     'explanation.collision' => '; det är också ett dokumenterat verkligt förnamn eller efternamn och går till mänsklig granskning',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Avvisa: allvarligt kränkande innehåll (risktyper: %s).',
     'recommendation.review_collision' => 'Mänsklig granskning: matchar kränkande termer (%s) men också dokumenterade efternamn.',
     'recommendation.review_phonetic' => 'Mänsklig granskning: förnamn och efternamn bildar tillsammans en kränkande term (%s) som ingetdera har för sig.',

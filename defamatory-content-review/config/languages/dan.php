@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'dan', 'iso639_1' => 'da', 'name' => 'Danish',
-        'nativeName' => 'Dansk', 'family' => 'germanic', 'coverage' => 'moderate',
+        'code' => 'dan',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
