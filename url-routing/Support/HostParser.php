@@ -35,15 +35,23 @@ class HostParser
      */
     public static function idiomas(): array
     {
+        // A page asks three times (locale, <html lang>, hreflang): the list is parsed once per value of the setting.
+        /** @var array<string, array<string, string>> $porValor */
+        static $porValor = [];
+        $valor = strtolower((string)Config::get('IDIOMAS_ACTIVOS', self::IDIOMAS_POR_OMISION));
+        if (isset($porValor[$valor])) {
+            return $porValor[$valor];
+        }
+
         $activos = [self::IDIOMA_BASE => self::IDIOMAS_CONOCIDOS[self::IDIOMA_BASE]];
-        foreach (explode(',', strtolower((string)Config::get('IDIOMAS_ACTIVOS', self::IDIOMAS_POR_OMISION))) as $codigo) {
+        foreach (explode(',', $valor) as $codigo) {
             $codigo = trim($codigo);
             if (isset(self::IDIOMAS_CONOCIDOS[$codigo])) {
                 $activos[$codigo] = self::IDIOMAS_CONOCIDOS[$codigo];
             }
         }
 
-        return $activos;
+        return $porValor[$valor] = $activos;
     }
 
     /**
