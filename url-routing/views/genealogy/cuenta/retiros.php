@@ -13,6 +13,11 @@ retirada» a quien no es el propietario; tú la sigues viendo. Cada decisión qu
 <?php if ($pedidos === []): ?>
 <p class="vacio">No hay pedidos.</p>
 <?php endif; ?>
+<?php
+$resueltos = count(array_filter($pedidos, static fn(array $p): bool => $p['estado'] !== 'pendiente'));
+if ($resueltos >= RetiroRepository::RESUELTOS_VISIBLES): ?>
+<p class="meta">Se muestran los <?= RetiroRepository::RESUELTOS_VISIBLES ?> pedidos resueltos más recientes; los pendientes salen todos.</p>
+<?php endif; ?>
 <?php foreach ($pedidos as $p): ?>
 <section>
 <?php $dias = intdiv(time() - (int)strtotime((string)$p['creado_en']), 86400); ?>
