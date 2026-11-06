@@ -272,6 +272,14 @@ def ids_de(campo):
     return [i for i in campo.split(";") if i]
 
 
+def marcar_referencias(lista, ids, usadas, errores, archivo, n):
+    """Marca cada id de `lista` como usada y reporta en `errores` los que no estén en `ids`."""
+    for i in lista:
+        usadas.add(i)
+        if i not in ids:
+            errores.append(f"{archivo} línea {n}: referencia desconocida {i!r}")
+
+
 def validar_referencias(filas, errores):
     ids = []
     for n, fila in enumerate(filas, start=2):
@@ -309,10 +317,7 @@ def validar_evidencia(filas, anotada, ids, errores, usadas):
             lista = ids_de(fila[campo])
             if lista != sorted(set(lista)):
                 errores.append(f"evidencia.csv línea {n}: {campo} debe ir ordenado y sin repetidos")
-            for i in lista:
-                usadas.add(i)
-                if i not in ids:
-                    errores.append(f"evidencia.csv línea {n}: referencia desconocida {i!r}")
+            marcar_referencias(lista, ids, usadas, errores, "evidencia.csv", n)
         if fila["base_psicologico"] == "hay_estudios" and "jonauskaite2020" not in ids_de(fila["referencias_psicologico"]):
             errores.append(f"evidencia.csv línea {n}: {nombre} tiene estudios pero no cita jonauskaite2020")
         if fila["base_psicologico"] == "derivado" and fila["referencias_psicologico"]:
@@ -338,10 +343,7 @@ def validar_culturales(filas, anotada, ids, errores, usadas):
         lista = ids_de(fila["referencias"])
         if not lista:
             errores.append(f"significados-culturales.csv línea {n}: cada matiz necesita al menos una referencia")
-        for i in lista:
-            usadas.add(i)
-            if i not in ids:
-                errores.append(f"significados-culturales.csv línea {n}: referencia desconocida {i!r}")
+        marcar_referencias(lista, ids, usadas, errores, "significados-culturales.csv", n)
     if claves != sorted(claves):
         errores.append("significados-culturales.csv: las filas deben ir ordenadas por color (orden de colores.csv) y ámbito")
 
