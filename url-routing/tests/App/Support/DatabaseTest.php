@@ -150,4 +150,55 @@ class DatabaseTest extends TestCase
             putenv('DB_DSN_TESTSITE');
         }
     }
+
+    // --- TRANSLATE() and octet_length() on SQLite ---------------------------------------------------
+
+    public function testTraducirCambiaCadaCaracterPorSuPareja(): void
+    {
+        $this->assertSame('garcia nunez', Database::traducir('garcía nuñez', 'íñ', 'in'));
+        $this->assertSame('aberg', Database::traducir('åberg', 'å', 'a'));
+        $this->assertNull(Database::traducir(null, 'á', 'a'));
+        $this->assertSame('sin cambios', Database::traducir('sin cambios', 'á', 'a'));
+    }
+
+    public function testTraducirBorraLosCaracteresSinParejaComoPostgreSQL(): void
+    {
+        // $de is longer than $a: the extra characters are deleted
+        $this->assertSame('garcia', Database::traducir("garci\u{0301}a", "í\u{0301}", 'i'));
+        $this->assertSame('ab', Database::traducir('a-b-', '-', ''));
+    }
+
+    public function testTraducirConUnCaracterRepetidoEnDeGanaElPrimero(): void
+    {
+        $this->assertSame('x', Database::traducir('a', 'aa', 'xy'));
+    }
+
+    public function testTraducirNoMezclaLosMapasDeDosLlamadasSeguidas(): void
+    {
+        // The map is kept between calls; a call with other strings must not use the previous one
+        $this->assertSame('b', Database::traducir('a', 'a', 'b'));
+        $this->assertSame('c', Database::traducir('a', 'a', 'c'));
+        $this->assertSame('a', Database::traducir('a', 'x', 'y'));
+        $this->assertSame('b', Database::traducir('a', 'a', 'b'));
+        $this->assertSame('abc', Database::traducir('abc', '', ''));
+    }
+
+    public function testElCatalogoVieneConUnTranslateYUnOctetLengthEnSQLite(): void
+    {
+        $db = $this->db();
+
+        $this->assertSame('garcia', $db->fetchValue("SELECT translate('garcía', 'í', 'i')"));
+        $this->assertSame(2, (int)$db->fetchValue("SELECT octet_length('é')"));
+        $this->assertSame(1, (int)$db->fetchValue("SELECT length('é')"));
+        $this->assertNull($db->fetchValue('SELECT octet_length(NULL)'));
+    }
+
+    public function testBytesCuentaBytesNoCaracteres(): void
+    {
+        $this->assertSame(0, Database::bytes(''));
+        $this->assertSame(3, Database::bytes('abc'));
+        $this->assertSame(2, Database::bytes('é'));
+        $this->assertSame(3, Database::bytes('ł '));
+        $this->assertNull(Database::bytes(null));
+    }
 }

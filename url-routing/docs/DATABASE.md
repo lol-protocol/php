@@ -140,8 +140,21 @@ TEST_PG_USER=routing_test TEST_PG_PASSWORD=routing_test \
 - La búsqueda ignora mayúsculas y acentos (`Repository::sinAcentos()`): compara
   `TRANSLATE(LOWER(columna), 'áéí…', 'aei…') LIKE ?` contra el texto normalizado
   igual, así que «garcia» encuentra «García» y «ÁLVAREZ» encuentra «Álvarez».
+  El mapa (`Repository::ACENTOS`) cubre las letras de los apellidos latinos, no
+  solo las del español: «aberg» encuentra «Åberg», «lukasz» «Łukasz», «dvorak»
+  «Dvořák». Y borra las marcas combinantes (U+0300–U+0328): da igual si «í»
+  está guardada o escrita como un solo carácter o como la «i» más la marca del
+  acento (así llega el texto pegado desde macOS), las dos formas se encuentran.
+  Es una letra a una letra: `ß`, `æ` y `œ` (que serían «ss», «ae», «oe») quedan fuera.
   `TRANSLATE` es de PostgreSQL; en SQLite, `Database` registra una función
   equivalente al conectar, así que el SQL es el mismo en los dos motores.
+  `TRANSLATE` es lo caro (PostgreSQL recorre toda la lista por cada carácter de
+  cada fila: 4 µs por fila con 48 entradas, 10 µs con las 137 de hoy), y ninguna
+  entrada del mapa es ASCII, así que un texto que sea todo ASCII (el que tiene
+  tantos bytes como caracteres) solo se pasa a minúsculas, sin `TRANSLATE`:
+  0,4 µs por fila. Agregar una letra al mapa solo le cuesta a las filas con acentos.
+  Para eso la consulta usa `octet_length()`: SQLite la trae desde la 3.43; en una
+  anterior, `Database` registra la suya.
   Para búsqueda seria en genealogía conviene `pg_trgm` o búsqueda de texto
   completo en PostgreSQL, en una migración específica de ese motor.
 - `LIKE '%texto%'` no usa índices; con millones de personas hará falta un
