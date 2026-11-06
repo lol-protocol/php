@@ -79,7 +79,12 @@ final class NotaCreditoRepository
         return $stmt->fetchAll();
     }
 
-    /** El filtro pedido por URL si es uno de los que existen, y '' si no es ninguno (la pantalla avisa y muestra las pendientes). */
+    /**
+     * El filtro pedido por URL si es uno de los que existen, y '' si no es ninguno (la pantalla avisa y muestra las pendientes).
+     *
+     * @deprecated Desde 2026-11-06: la pantalla usa Filtros::opcion() y Filtros::opcionInexistente(),
+     *             los mismos de todas las listas. Sin llamadores; se conserva como referencia.
+     */
     public static function estadoPedido(string $estado): string
     {
         return array_key_exists($estado, self::ESTADOS) ? $estado : '';

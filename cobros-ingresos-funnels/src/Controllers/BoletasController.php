@@ -11,6 +11,7 @@ use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\FiltroDePeriodo;
+use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
 use App\Repositories\AuditoriaRepository;
@@ -91,13 +92,12 @@ final class BoletasController
         $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
         $filtros['avisos'] = [...Avisos::confirmaciones('cobros'), ...$filtros['avisos']];
-        $pedido = (string) ($_GET['estado'] ?? '');
-        $estado = self::estadoDelFiltro($pedido);
-        if ($pedido !== '' && $estado === '') {
+        $estado = Filtros::opcion('estado', Etiquetas::estadosBoleta(), '');
+        if (Filtros::opcionInexistente('estado', Etiquetas::estadosBoleta())) {
             // Antes un estado inventado daba la tabla vacia con el selector en "Todos".
             $filtros['avisos'][] = Avisos::atencion('El estado pedido no existe; se muestran las boletas de todos los estados.');
         }
-        $cliente = trim((string) ($_GET['cliente'] ?? ''));
+        $cliente = Filtros::texto('cliente');
         $pagina = Paginacion::pagina();
 
         $ingresosRepo = new IngresosYCobrosRepository();
@@ -130,8 +130,8 @@ final class BoletasController
     public function exportar(): void
     {
         ['desde' => $desde, 'hasta' => $hasta] = FiltroDePeriodo::rangoActivo();
-        $estado = self::estadoDelFiltro((string) ($_GET['estado'] ?? ''));
-        $cliente = trim((string) ($_GET['cliente'] ?? ''));
+        $estado = Filtros::opcion('estado', Etiquetas::estadosBoleta(), '');
+        $cliente = Filtros::texto('cliente');
 
         Descarga::csv(
             'cobros',
@@ -164,12 +164,6 @@ final class BoletasController
                 Etiquetas::estadoBoleta($b['estado']),
             ];
         }
-    }
-
-    /** El estado pedido por URL si es uno de los que existen, y '' (todos) si no. */
-    private static function estadoDelFiltro(string $pedido): string
-    {
-        return array_key_exists($pedido, Etiquetas::estadosBoleta()) ? $pedido : '';
     }
 
     public function nueva(): void

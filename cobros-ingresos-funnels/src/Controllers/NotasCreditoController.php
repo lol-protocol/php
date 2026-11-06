@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Avisos;
 use App\Database;
 use App\FechaDeDevolucion;
+use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
 use App\Repositories\AuditoriaRepository;
@@ -24,12 +25,10 @@ final class NotasCreditoController
     public function index(): void
     {
         $avisos = Avisos::confirmaciones('notas');
-        $pedido = (string) ($_GET['estado'] ?? '');
-        $estado = NotaCreditoRepository::estadoPedido($pedido);
-        if ($pedido !== '' && $estado === '') {
+        $estado = Filtros::opcion('estado', NotaCreditoRepository::ESTADOS);   // sin pedido, el primero: 'pendientes'
+        if (Filtros::opcionInexistente('estado', NotaCreditoRepository::ESTADOS)) {
             $avisos[] = Avisos::atencion('El estado pedido no existe; se muestran las notas pendientes de devolver.');
         }
-        $estado = $estado ?: 'pendientes';
 
         $repo = new NotaCreditoRepository();
         $listado = $repo->listado($estado, Paginacion::pagina());

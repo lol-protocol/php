@@ -11,6 +11,7 @@ use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\FiltroDePeriodo;
+use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
 use App\Repositories\AuditoriaRepository;
@@ -31,7 +32,7 @@ final class PagosController
         $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
         $filtros['avisos'] = [...Avisos::confirmaciones('pagos'), ...$filtros['avisos']];
-        $cliente = trim((string) ($_GET['cliente'] ?? ''));
+        $cliente = Filtros::texto('cliente');
         $pagina = Paginacion::pagina();
 
         $ingresosRepo = new IngresosYCobrosRepository();
@@ -60,7 +61,7 @@ final class PagosController
     public function exportar(): void
     {
         ['desde' => $desde, 'hasta' => $hasta] = FiltroDePeriodo::rangoActivo();
-        $cliente = trim((string) ($_GET['cliente'] ?? ''));
+        $cliente = Filtros::texto('cliente');
 
         Descarga::csv(
             'pagos',
