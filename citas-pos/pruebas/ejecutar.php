@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 const RAIZ = __DIR__ . '/..';
 
+require_once RAIZ . '/bin/lib/comun.php';
+
 /** @var list<string> carpetas temporales por borrar al terminar */
 $GLOBALS['temporales'] = [];
 
@@ -217,6 +219,13 @@ $pasan = [
     'una cita descartada de un autor reciente, con motivo' => [cita('spa-d1', ['estado' => 'descartada', 'fallecimiento' => 1976, 'motivo_descarte' => 'protegido'])],
     'una cita sin verificar, sin texto y con lo que falta' => [cita('spa-s1')],
 ];
+// Chino: sin espacios, el largo se cuenta con las etiquetas que no son puntuación.
+const ETIQUETAS_ZHO = [['春眠', 'NOUN'], ['不', 'ADV'], ['觉', 'VERB'], ['晓', 'NOUN'], ['，', 'PUNCT'], ['处处', 'ADV'], ['闻', 'VERB'], ['啼鸟', 'NOUN']];
+function verificadaEnChino(array $cambios = []): array
+{
+    return verificada('zho-v1', array_merge(['idioma' => 'zho', 'texto' => '春眠不觉晓，处处闻啼鸟', 'etiquetas' => ETIQUETAS_ZHO], $cambios));
+}
+$pasan['una verificada en chino de 7 palabras (la coma no cuenta)'] = [verificadaEnChino()];
 foreach ($pasan as $nombre => $citas) {
     $pruebas["comprobar-citas acepta $nombre"] = function () use ($citas): void {
         pasa(validarCitas($citas), 'Citas correctas');
@@ -252,11 +261,27 @@ $rechazan = [
     'un dominio público sin explicar' => [[cita('spa-m1', ['dominio_publico' => ''])], 'dominio_publico debe explicar'],
     'un campo que falta' => [[$sinAutor], 'faltan campos: autor'],
 ];
+$rechazan['una verificada en chino con 3 palabras'] = [[verificadaEnChino(['texto' => '春眠不', 'etiquetas' => [['春眠', 'NOUN'], ['不', 'ADV']]])], 'el texto tiene 2 palabras'];
 foreach ($rechazan as $nombre => [$citas, $mensaje]) {
     $pruebas["comprobar-citas rechaza $nombre"] = function () use ($citas, $mensaje): void {
         rechaza(validarCitas($citas), $mensaje);
     };
 }
+
+// aprobadas(): lo que cuenta como revisado para el generador.
+$pruebas['aprobadas: correcto y corregido aprueban'] = function (): void {
+    $archivo = temporal() . '/r.csv';
+    file_put_contents($archivo, "idioma,alcance,elemento,veredicto,revisor,fecha,nota\nspa,cita,spa-1,correcto,Ana,2026-10-26,\nspa,cita,spa-2,corregido,Ana,2026-10-26,\n");
+    igual(['spa|cita|spa-1' => true, 'spa|cita|spa-2' => true], aprobadas($archivo));
+};
+$pruebas['aprobadas: un «corregir» o «dudoso» de otro revisor bloquea aunque haya un «correcto»'] = function (): void {
+    $archivo = temporal() . '/r.csv';
+    file_put_contents($archivo, "idioma,alcance,elemento,veredicto,revisor,fecha,nota\n"
+        . "spa,cita,spa-1,correcto,Ana,2026-10-26,\nspa,cita,spa-1,corregir,Bob,2026-10-26,cambia una coma\n"
+        . "spa,cita,spa-2,dudoso,Bob,2026-10-26,no sé\nspa,cita,spa-2,correcto,Ana,2026-10-26,\n"
+        . "spa,cita,spa-3,correcto,Ana,2026-10-26,\n");
+    igual(['spa|cita|spa-3' => true], aprobadas($archivo));
+};
 
 // Revisiones.
 $pruebas['comprobar-revisiones acepta filas correctas, con comillas y comas en la nota'] = function (): void {

@@ -19,6 +19,9 @@ const CAMPOS = ['id', 'idioma', 'texto', 'autor', 'fallecimiento', 'obra', 'ubic
 const ULTIMO_ANIO_DE_FALLECIMIENTO = 1925; // vida+100 ya cumplida en 2026; ver CRITERIOS.md
 const PALABRAS_MIN = 6;
 const PALABRAS_MAX = 20;
+/** Idiomas que no separan las palabras con espacios: ahí el largo se cuenta con las etiquetas (o con intl), no con espacios. */
+const IDIOMAS_SIN_ESPACIOS = ['zho', 'jpn', 'tha'];
+const SIN_PALABRA = ['PUNCT', 'SYM'];
 
 function fechaValida(mixed $f): bool
 {
@@ -32,6 +35,39 @@ function fechaValida(mixed $f): bool
 function textoNoVacio(mixed $v): bool
 {
     return is_string($v) && trim($v) !== '';
+}
+
+/**
+ * Cuántas palabras tiene el texto de la cita, o null si en ese idioma no se puede contar.
+ *
+ * En los idiomas con espacios son los trozos separados por espacios. En chino, japonés y tailandés un
+ * texto entero sería «una palabra»: se cuentan las etiquetas que no son puntuación (la segmentación que
+ * ya hizo quien etiquetó) y, si aún no hay etiquetas, las palabras que separa intl; sin ninguna de las dos, null.
+ *
+ * @param array<string, mixed> $c
+ */
+function contarPalabras(array $c, string $idioma): ?int
+{
+    $texto = trim((string) $c['texto']);
+    if (!in_array($idioma, IDIOMAS_SIN_ESPACIOS, true)) {
+        return count(preg_split('/\s+/u', $texto) ?: []);
+    }
+    $etiquetas = $c['etiquetas'] ?? null;
+    if (is_array($etiquetas) && $etiquetas !== []) {
+        return count(array_filter($etiquetas, static fn (mixed $par): bool => is_array($par) && is_string($par[1] ?? null) && !in_array($par[1], SIN_PALABRA, true)));
+    }
+    if (class_exists(IntlBreakIterator::class)) {
+        $cortador = IntlBreakIterator::createWordInstance(['zho' => 'zh', 'jpn' => 'ja', 'tha' => 'th'][$idioma]);
+        $cortador->setText($texto);
+        $n = 0;
+        while ($cortador->next() !== IntlBreakIterator::DONE) {
+            if ($cortador->getRuleStatus() >= IntlBreakIterator::WORD_NONE_LIMIT) {
+                $n++;
+            }
+        }
+        return $n;
+    }
+    return null;
 }
 
 /**
@@ -80,8 +116,10 @@ function errores(array $c, string $donde, string $idioma): array
         if (!textoNoVacio($c['texto'])) {
             $e[] = "$donde: una cita verificada necesita su texto exacto.";
         } else {
-            $n = count(preg_split('/\s+/u', trim($c['texto'])) ?: []);
-            if ($n < PALABRAS_MIN || $n > PALABRAS_MAX) {
+            $n = contarPalabras($c, $idioma);
+            if ($n === null) {
+                $e[] = "$donde: en $idioma las palabras no van separadas por espacios; para contarlas hacen falta las etiquetas (o la extensión intl de PHP).";
+            } elseif ($n < PALABRAS_MIN || $n > PALABRAS_MAX) {
                 $e[] = "$donde: el texto tiene $n palabras; debe tener entre " . PALABRAS_MIN . ' y ' . PALABRAS_MAX . '.';
             }
         }

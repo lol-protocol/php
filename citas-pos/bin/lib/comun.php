@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 /**
- * Lo que comparten prototipo.php y render.php: escapar HTML, leer JSON y repartir el texto de una
- * frase entre sus palabras etiquetadas.
+ * Lo que comparten prototipo.php y render.php: escapar HTML, leer JSON, saber qué revisiones aprueban
+ * y repartir el texto de una frase entre sus palabras etiquetadas.
  */
 
 const ESTILO_DE_MARCA = [
@@ -14,6 +14,38 @@ const ESTILO_DE_MARCA = [
     'discontinuo' => 'dashed',
     'ninguna' => 'none',
 ];
+
+const VEREDICTOS_QUE_APRUEBAN = ['correcto', 'corregido'];
+/** Mientras una fila diga esto, el elemento no se da por bueno aunque otro revisor haya puesto «correcto». */
+const VEREDICTOS_QUE_BLOQUEAN = ['corregir', 'dudoso'];
+
+/**
+ * Lo que un revisor dio por bueno y nadie ha dejado pendiente: aprueba «correcto» o «corregido», y bloquea
+ * un «corregir» o un «dudoso» de cualquier revisor hasta que quien mantiene el proyecto lo resuelva.
+ *
+ * @return array<string, true> "idioma|alcance|elemento"
+ */
+function aprobadas(string $ruta): array
+{
+    $fh = fopen($ruta, 'rb');
+    if ($fh === false) {
+        throw new RuntimeException("No se pudo abrir $ruta");
+    }
+    fgetcsv($fh, 0, ',', '"', '');
+    $ok = $bloqueadas = [];
+    while (($f = fgetcsv($fh, 0, ',', '"', '')) !== false) {
+        if (count($f) !== 7) {
+            continue;
+        }
+        if (in_array($f[3], VEREDICTOS_QUE_APRUEBAN, true)) {
+            $ok["{$f[0]}|{$f[1]}|{$f[2]}"] = true;
+        } elseif (in_array($f[3], VEREDICTOS_QUE_BLOQUEAN, true)) {
+            $bloqueadas["{$f[0]}|{$f[1]}|{$f[2]}"] = true;
+        }
+    }
+    fclose($fh);
+    return array_diff_key($ok, $bloqueadas);
+}
 
 function h(string $s): string
 {

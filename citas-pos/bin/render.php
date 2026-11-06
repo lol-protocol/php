@@ -30,34 +30,12 @@ require_once __DIR__ . '/lib/comun.php';
 
 const SALIDA = __DIR__ . '/../salida';
 const JUEGO = __DIR__ . '/../juego';
-const VEREDICTOS_QUE_APRUEBAN = ['correcto', 'corregido'];
-
-/**
- * @return array<string, true> "idioma|alcance|elemento" de lo que un revisor dio por bueno
- */
-function aprobadas(string $ruta): array
-{
-    $fh = fopen($ruta, 'rb');
-    if ($fh === false) {
-        throw new RuntimeException("No se pudo abrir $ruta");
-    }
-    fgetcsv($fh, 0, ',', '"', '');
-    $ok = [];
-    while (($f = fgetcsv($fh, 0, ',', '"', '')) !== false) {
-        if (count($f) === 7 && in_array($f[3], VEREDICTOS_QUE_APRUEBAN, true)) {
-            $ok["{$f[0]}|{$f[1]}|{$f[2]}"] = true;
-        }
-    }
-    fclose($fh);
-    return $ok;
-}
-
 /**
  * @param array<string, mixed> $ejemplos
  * @param array<string, mixed> $citas
  * @param array<string, mixed> $idiomas
  * @param array<string, true> $aprobadas
- * @param list<string> $pendientes ids de citas verificadas a las que aún les falta revisión
+ * @param list<string> $pendientes ids de citas verificadas a las que aún les falta revisión o etiquetas
  * @return list<array{carpeta: string, id: string, lang: string, texto: string, palabras: list<array{string, string}>, pie: array{string, string}|null}>
  */
 function frases(array $ejemplos, array $citas, array $idiomas, array $aprobadas, array &$pendientes): array
@@ -70,10 +48,11 @@ function frases(array $ejemplos, array $citas, array $idiomas, array $aprobadas,
     }
     $dosLetras = array_column($idiomas['idiomas'], 'codigo2', 'codigo');
     foreach ($citas['citas'] as $c) {
-        if ($c['estado'] !== 'verificada' || !is_array($c['etiquetas'])) {
+        if ($c['estado'] !== 'verificada') {
             continue;
         }
-        if (!isset($aprobadas["{$c['idioma']}|cita|{$c['id']}"], $aprobadas["{$c['idioma']}|etiquetas|{$c['id']}"])) {
+        // Una verificada sin etiquetas tampoco se puede dibujar: se avisa igual que la que espera revisión.
+        if (!is_array($c['etiquetas']) || !isset($aprobadas["{$c['idioma']}|cita|{$c['id']}"], $aprobadas["{$c['idioma']}|etiquetas|{$c['id']}"])) {
             $pendientes[] = $c['id'];
             continue;
         }
