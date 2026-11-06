@@ -19,20 +19,23 @@ class HostParser
         'tha' => 'th', 'tur' => 'tr', 'ukr' => 'uk', 'urd' => 'ur', 'vie' => 'vi', 'zho' => 'zh',
     ];
 
+    /** The language of the bare domain and of every fallback: always served, always first. */
+    public const IDIOMA_BASE = 'spa';
+
     /** The languages served when IDIOMAS_ACTIVOS says nothing. */
     public const IDIOMAS_POR_OMISION = 'spa,eng';
 
     /**
      * The languages this deployment serves: subdomain => hreflang code. They come from IDIOMAS_ACTIVOS (a
-     * comma-separated list of subdomains, in .env), and only a known one counts. Spanish is always there, first:
-     * it is the language of the bare domain. These are the only subdomains read as a language, and the only
+     * comma-separated list of subdomains, in .env), and only a known one counts. Spanish (IDIOMA_BASE) is always there,
+     * first: it is the language of the bare domain. These are the only subdomains read as a language, and the only
      * ones announced in hreflang, so a language must be listed here only once its pages are in that language.
      *
      * @return array<string, string>
      */
     public static function idiomas(): array
     {
-        $activos = ['spa' => 'es'];
+        $activos = [self::IDIOMA_BASE => self::IDIOMAS_CONOCIDOS[self::IDIOMA_BASE]];
         foreach (explode(',', strtolower((string)Config::get('IDIOMAS_ACTIVOS', self::IDIOMAS_POR_OMISION))) as $codigo) {
             $codigo = trim($codigo);
             if (isset(self::IDIOMAS_CONOCIDOS[$codigo])) {
@@ -89,7 +92,7 @@ class HostParser
             return $sub;
         }
 
-        return 'spa';
+        return self::IDIOMA_BASE;
     }
 
     /** This request's scheme://host, for absolute URLs. Only a plain host name is trusted from the Host header. */

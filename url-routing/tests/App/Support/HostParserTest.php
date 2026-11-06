@@ -92,4 +92,13 @@ class HostParserTest extends TestCase
         $this->assertSame('http://spa.tudominio.com/mx/', HostParser::alternos('/mx/')['es']);
         $this->assertSame('http://tudominio.com/mx/', HostParser::alternos('/mx/')['x-default']);
     }
+
+    public function testElIdiomaBaseEsElDelDominioSinSubdominioYElPrimeroDeLosActivos(): void
+    {
+        putenv('IDIOMAS_ACTIVOS=fra');
+
+        $this->assertSame(HostParser::IDIOMA_BASE, HostParser::getLocale('tudominio.com'));
+        $this->assertSame(HostParser::IDIOMA_BASE, array_key_first(HostParser::idiomas()));
+        $this->assertArrayHasKey(HostParser::IDIOMA_BASE, HostParser::IDIOMAS_CONOCIDOS);
+    }
 }

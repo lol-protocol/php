@@ -16,7 +16,7 @@ final class Format
      * "1925-02-14" -> "14 feb 1925"; timestamps keep hours and minutes.
      * Anything unparseable is returned as-is rather than guessed at.
      */
-    public static function fecha(?string $valor, string $locale = 'spa'): string
+    public static function fecha(?string $valor, string $locale = HostParser::IDIOMA_BASE): string
     {
         if ($valor === null || $valor === '') {
             return '—';
@@ -26,7 +26,7 @@ final class Format
             return $valor;
         }
 
-        $meses = self::MESES[$locale] ?? self::MESES['spa'];
+        $meses = self::MESES[$locale] ?? self::MESES[HostParser::IDIOMA_BASE];
         $texto = (int)$m[3] . ' ' . $meses[(int)$m[2] - 1] . ' ' . $m[1];
 
         return isset($m[4]) ? "{$texto}, {$m[4]}:{$m[5]}" : $texto;
