@@ -8,7 +8,6 @@ return [
     'explanation.match' => '“%1$s”, “%2$s” ile eşleşiyor (%3$s)',
     'explanation.related' => '; akraba dil, güven %.2F',
     'explanation.collision' => '; aynı zamanda belgelenmiş gerçek bir ad veya soyadı, insan incelemesine gider',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Reddet: ağır derecede saldırgan içerik (risk türleri: %s).',
     'recommendation.review_collision' => 'İnsan incelemesi: saldırgan terimlerle (%s) ama aynı zamanda belgelenmiş soyadlarıyla da eşleşiyor.',
     'recommendation.review_phonetic' => 'İnsan incelemesi: ad ve soyad birleşince, ikisinde de ayrı ayrı bulunmayan saldırgan bir terim (%s) oluşuyor.',

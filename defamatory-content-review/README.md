@@ -905,7 +905,7 @@ palabras no entiende contexto:
   «seggfejek», «אידיוטים»). Ver `SuffixInflection`, `NordicInflection` y
   las clases de cada idioma. En esos idiomas la forma declinada lleva el rasgo
   `infl` (no se sabe si es plural), y `'by' => ['infl' => 'none']` las descarta
-  todas. Lo irregular (vocales fugaces raras, cambios de raíz) va a mano en
+  todas; en tagalo, donde lo único nuevo es el ligamento «-ng», el rasgo es `lig`. Lo irregular (vocales fugaces raras, cambios de raíz) va a mano en
   `also`. Las formas generadas no entran en la búsqueda fonética de nombres
   (un nombre no se declina). También tienen reglas el finés (casos con armonía
   vocálica y alternancia de consonantes: «paskaa», «vittuun», «idiootin»), el árabe
@@ -1030,7 +1030,7 @@ $reviewer->getLanguagesByCoverage($level);           $reviewer->languages()->byC
 | `getFlaggedRiskTypes()` / `getFlaggedCategories()` | `string[]` |
 | `getTermsByRiskType(string $t)` | `array` |
 | `getTermsByLanguage(string $l)` / `getPrimaryLanguageTerms()` | `array` |
-| `hasNameCollision()` / `getNameCollisionTerms()` | `bool` / `array` |
+| `hasNameCollision()` / `getNameCollisionTerms()` (obsoleto) | `bool` / `array` |
 | `hasOnlyPhoneticDetections()` | `bool` |
 | `getPhoneticFusionTerms()` / `getPhoneticVariantTerms()` | `array` |
 | `getTermsByDetectionMethod(string $m)` | `array` (`'literal'` \| `'phonetic_fusion'` \| `'phonetic_variant'`) |
@@ -1063,7 +1063,7 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 | `withAggregation('max' \| 'sum')` | `self` — el peor término, o la suma de todos |
 | `scoreOf(array $match)` / `aggregate(array $scores)` | `float` |
 | `severityFromScore(float $s)` / `decisionFor(...)` | `string` |
-| `getSeverityWeights()` / `getRiskTypeWeights()` / `getBands()` / `getDecisionRules()` / `getPhoneticCapLabels()` / `getAggregation()` | introspección |
+| `getSeverityWeights()` / `getRiskTypeWeights()` / `getBands()` / `getDecisionRules()` / `getPhoneticCapLabels()` / `getAggregation()` (obsoleto) | introspección |
 
 ### `LanguageAccess` (`$reviewer->languages()`)
 
@@ -1098,7 +1098,8 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 
 `search()`, `findInText()` (detecta frases de hasta 5 palabras),
 `getByRiskType()`, `getByCategory()`, `getBySeverity()`, `getNameCollisions()`,
-`getStatistics()`, `requiresTokenizer()`, `getCoverage()`,
+`getStatistics()`, `requiresTokenizer()`, `getCoverage()` (`getByCategory()`, `getBySeverity()`,
+`getMeta()` y `requiresTokenizer()` están obsoletos),
 `supportsPhoneticFolding()`, `fold()`, `searchPhoneticExact()`,
 `getFusionCandidates()`.
 
@@ -1227,8 +1228,8 @@ datos, no lógica.
 ```php
 return [
     'meta' => [
-        'code' => 'cat', 'iso639_1' => 'ca', 'name' => 'Catalan',
-        'nativeName' => 'Català', 'family' => 'romance', 'coverage' => 'basic',
+        'code' => 'cat',
+        'coverage' => 'basic',
     ],
     'words' => [
         'animal' => [
@@ -1238,7 +1239,7 @@ return [
 ];
 ```
 
-2. Registrarlo en `config/supported-languages.php`.
+2. Registrarlo en `config/supported-languages.php`, que es donde viven su nombre, su nombre nativo, su familia y su código de dos letras (el `meta` del diccionario solo lleva `code`, `coverage` y, si hace falta, `requiresTokenizer`: `LanguageMetaTest` rechaza los campos duplicados).
 3. Añadirlo a su familia y declarar afinidades en `config/language-families.php`.
 
 Los tests verifican automáticamente que todo idioma registrado tenga

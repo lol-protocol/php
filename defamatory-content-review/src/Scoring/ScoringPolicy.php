@@ -94,5 +94,6 @@ final class ScoringPolicy
     /** @return array<int,array{0:float,1:string}> */ public function getBands(): array { return $this->bands->all(); }
     /** @return array<string,string> */ public function getDecisionRules(): array { return $this->decisions->getDecisionRules(); }
     /** @return array<int,string> */ public function getPhoneticCapLabels(): array { return $this->decisions->getPhoneticCapLabels(); }
+    /** @deprecated desde 2026-11: nada de la librería ni del monorepo lo llama; se conserva como API pública. */
     public function getAggregation(): string { return $this->aggregation; }
 }

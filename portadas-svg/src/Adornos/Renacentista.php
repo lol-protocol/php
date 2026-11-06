@@ -32,8 +32,7 @@ final class Renacentista extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
 
         return self::linea(self::elipse($cx, $cy, $r, $r * 0.72), $color, $grosor, true)
             . self::linea(self::elipse($cx, $cy, $r * 0.82, $r * 0.58), $color, $grosor, true)

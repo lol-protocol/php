@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'slk', 'iso639_1' => 'sk', 'name' => 'Slovak',
-        'nativeName' => 'Slovenčina', 'family' => 'slavic', 'coverage' => 'moderate',
+        'code' => 'slk',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

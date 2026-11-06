@@ -81,15 +81,7 @@ final class BookmarkMaker
             $written = [];
             try {
                 foreach ($files as $size => $name) {
-                    $temp = tempnam($directory, '.tmp-');
-                    if ($temp === false) {
-                        throw new BookmarkRejectedException(RejectionReason::StorageFailed);
-                    }
-                    if (file_put_contents($temp, $bytes[$size]) === false
-                        || !chmod($temp, 0644)
-                        || !rename($temp, "$directory/$name")
-                    ) {
-                        @unlink($temp);
+                    if (!AtomicFile::write("$directory/$name", $bytes[$size])) {
                         throw new BookmarkRejectedException(RejectionReason::StorageFailed);
                     }
                     $written[] = "$directory/$name";

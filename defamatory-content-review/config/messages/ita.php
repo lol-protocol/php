@@ -8,7 +8,6 @@ return [
     'explanation.match' => '«%1$s» coincide con «%2$s» (%3$s)',
     'explanation.related' => '; lingua affine, confidenza %.2F',
     'explanation.collision' => '; è anche un nome o cognome reale documentato, va a revisione umana',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Rifiutare: contenuto gravemente offensivo (tipi di rischio: %s).',
     'recommendation.review_collision' => 'Revisione umana: coincide con termini offensivi (%s) ma anche con cognomi documentati.',
     'recommendation.review_phonetic' => 'Revisione umana: nome e cognome, uniti, formano un termine offensivo (%s) che nessuno dei due ha da solo.',

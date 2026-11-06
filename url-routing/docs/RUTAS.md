@@ -13,20 +13,20 @@
 | 3 letras | `^[a-z]{3}$` | idioma (ISO 639-2): va en el subdominio, nunca en la ruta |
 | 4+ letras | `^[a-z]{4,}$` | texto libre (p. ej. lo que se busca, detrás de `/b/{tipo}/`) |
 | solo dígitos | `^\d+$` | una entidad: la cantidad de dígitos dice el tipo; 1 dígito detrás de algo es una acción |
-| con punto | `\.` | un archivo para buscadores (`robots.txt`, sitemaps) |
+| con punto | `\.` | un archivo: para buscadores (`robots.txt`, sitemaps) y el script de los listados (`/b.js`) |
 
 ## Genealogía
 
 ### Entidades (solo dígitos)
 
-| Dígitos | Tipo | Acciones |
-|---|---|---|
-| 10 | persona | 1 ascendencia · 2 descendencia · 3 vinculos · 4 cronologia · 5 viva |
-| 9 | suceso | — |
-| 8 | registro | 1 fuente |
-| 7 | coleccion | 1 vista · 2 editar · 3 exportar |
-| 6 | grupo | 1 red · 2 dispersion |
-| 5 | organizacion | 1 miembros · 2 registros |
+| Dígitos | Tipo | Acciones | Filtros |
+|---|---|---|---|
+| 10 | persona | 1 ascendencia · 2 descendencia · 3 vinculos · 4 cronologia · 5 viva | — |
+| 9 | suceso | — | — |
+| 8 | registro | 1 fuente | — |
+| 7 | coleccion | 1 vista · 2 editar · 3 exportar | — |
+| 6 | grupo | 1 red · 2 dispersion | — |
+| 5 | organizacion | 1 miembros · 2 registros | — |
 
 ### Lugares
 
@@ -51,14 +51,14 @@
 
 ### Entidades (solo dígitos)
 
-| Dígitos | Tipo | Acciones |
-|---|---|---|
-| 16 | orden | 1 invoice · 2 track · 3 devolucion |
-| 8 | producto | 1 variantes · 2 atributos |
-| 7 | coleccion | — |
-| 6 | etiqueta | 1 productos |
-| 5 | atributo | 1 productos |
-| 4 | grupo | — |
+| Dígitos | Tipo | Acciones | Filtros |
+|---|---|---|---|
+| 16 | orden | 1 invoice · 2 track · 3 devolucion | — |
+| 8 | producto | 1 variantes · 2 atributos | — |
+| 7 | coleccion | — | — |
+| 6 | etiqueta | 1 productos | — |
+| 5 | atributo | 1 productos | — |
+| 4 | grupo | — | atributo · etiqueta (`/{id}/{filtro}/`) |
 
 ### Rutas reservadas
 

@@ -34,6 +34,17 @@ final class View
         return $this->render('layout', $options + ['content' => $content, 'title' => $title, 'private' => false, 'scripts' => [], 'section' => '', 'description' => '', 'share' => null]);
     }
 
+    /**
+     * Un trozo de plantilla que se repite (por ejemplo, la celda de una rejilla), para llamarlo desde otra
+     * plantilla: `<?= $this->partial('_celda', ['item' => $item]) ?>`. Se nombra con guion bajo delante.
+     *
+     * @param array<string, mixed> $data
+     */
+    public function partial(string $template, array $data = []): string
+    {
+        return $this->render($template, $data);
+    }
+
     /** @param array<string, mixed> $data */
     private function render(string $template, array $data): string
     {

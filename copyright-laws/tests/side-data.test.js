@@ -58,6 +58,10 @@ test("field sources must point at a real law, a content column and a public URL"
   assert.match(validateSources([{ ...ok, checked: "yesterday" }], records)[0], /checked must be a real/);
   assert.match(validateSources([{ ...ok, country_code: "ZZ" }], records)[0], /no law ZZ/);
   assert.match(validateSources([ok, ok], records)[0], /second source/);
+  // "(unconfirmed)" in the text and a medium/high confidence in the source cannot both hold.
+  const marked = records.map((r) => (r === single ? { ...r, fair_use_exceptions: "Private copy (unconfirmed)" } : r));
+  assert.match(validateSources([ok], marked)[0], /ends in "\(unconfirmed\)" but its source says confidence medium/);
+  assert.deepEqual(validateSources([{ ...ok, confidence: "low" }], marked), []);
   // A jurisdiction with two laws: an entry must say which one.
   const two = [...records, { ...single, law_name: "Second Act" }];
   assert.match(validateSources([ok], two)[0], /law_name is required/);

@@ -109,7 +109,9 @@ La guía paso a paso, con las comprobaciones, está en [`DESPLIEGUE.md`](./DESPL
 
 Cada página de una persona, un suceso, un registro, una colección, un apellido o
 una organización, con sus acciones, lleva al pie «Pedir el retiro de esta
-página», que lleva a `/r/{id}/`. Ahí **cualquiera, con cuenta o sin ella**,
+página», que lleva a `/r/{id}/` (al propietario no se le ofrece: el formulario es para un
+visitante y responde 404 sobre lo que un visitante no ve, y el propietario sí ve esas páginas; ella
+decide desde la cola de `/0/3/`). Ahí **cualquiera, con cuenta o sin ella**,
 elige un motivo (habla de mí, de un familiar fallecido, infringe los términos de
 uso u otro), cuenta qué hay que retirar y deja un correo para la respuesta. Es lo
 que prometen las secciones 5 y 6 del borrador de

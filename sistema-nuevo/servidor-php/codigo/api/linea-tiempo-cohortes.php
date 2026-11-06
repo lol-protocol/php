@@ -2,7 +2,13 @@
 
 declare(strict_types=1);
 
-/** Le agrega a cada acción de una página su "guía": comparación contra el universo elegido. */
+/**
+ * Le agrega a cada acción de una página su "guía": comparación contra el universo elegido.
+ *
+ * @param list<array<string,mixed>> $acciones las de la página, ya saneadas (esquema canónico)
+ * @return array{timeline: list<array<string,mixed>>, stats_service_available: bool} timeline: las mismas acciones, con cohort,
+ *         duration_delta_pct, amount_delta_pct e ip_mismatch; stats_service_available: false si el servicio no respondió para algún tipo
+ */
 
 function api_timeline_con_cohortes(array $acciones, string $userCountry, Universo $universo): array
 {

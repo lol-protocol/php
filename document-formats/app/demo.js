@@ -9,15 +9,20 @@ const trCount = (key, count, values = {}) =>
     formatMessage(i18n.translateCount(key, count), {...values, count: num(count)});
 // Text that tr() had to take from English because the language lacks it: it must be
 // marked, or a screen reader would read it with the voice of the page's language.
-const fallbackLang = (key) =>
-    i18n.getLanguage() !== 'en' && LocalizationManager.lookup(i18n.translations, key) === null ? ' lang="en"' : '';
+const isFallback = (key) =>
+    i18n.getLanguage() !== 'en' && LocalizationManager.lookup(i18n.translations, key) === null;
+const fallbackLang = (key) => (isFallback(key) ? ' lang="en"' : '');
+// The same mark on an element that JavaScript fills: English when it is, the page's language when not.
+const markLang = (element, english) => {
+    if (english) element.lang = 'en';
+    else element.removeAttribute('lang');
+};
 // The CSV files hold their category, country, color and use texts in English.
 const dataLang = () => (i18n.getLanguage() === 'en' ? '' : ' lang="en"');
 const announce = (text, key) => {
     const status = document.getElementById('status');
     status.textContent = text;
-    if (key && fallbackLang(key)) status.lang = 'en';
-    else status.removeAttribute('lang');
+    markLang(status, key && isFallback(key));
 };
 // Saves a file made in the page, the way a link with a download attribute would.
 const downloadText = (filename, text, type) => {
@@ -83,15 +88,6 @@ const sheetChoices = (formats) => {
         resolve: (value) => (choices.has(value) ? value : [...choices.keys()].find(key => key.startsWith(`${value} (`)) ?? '')
     };
 };
-// Fills a select with the sheets, labelled "A4 (210×297 mm)" in the numbers of the page.
-const fillSheetSelect = (select, sheets) => {
-    const selected = select.value;
-    while (select.options.length > 1) select.remove(1);
-    addOptions(select, [...sheets.choices]
-        .map(([key, format]) => [key, `${key} (${sizeText(format)} ${mm()})`])
-        .sort((a, b) => a[0].localeCompare(b[0], i18n.getLanguage())));
-    select.value = selected;
-};
 
 // A list of cards that a search box and some selects narrow down. The page draws it,
 // announces how many are left, and redraws it when the language changes.
@@ -148,13 +144,16 @@ const vocabularyLang = (group, value) =>
 
 // Fills a select with the given data values, labelled in the language of the page and sorted in
 // its alphabetical order. The first option (the "all" one) stays; so does the current choice.
-const fillLabelledSelect = (select, values, labelOf) => {
+const fillLabelledSelect = (select, values, labelOf, sortOf = labelOf) => {
     const selected = select.value;
     while (select.options.length > 1) select.remove(1);
-    addOptions(select, values.map(value => [value, labelOf(value)])
-        .sort((a, b) => a[1].localeCompare(b[1], i18n.getLanguage())));
+    addOptions(select, [...values].sort((a, b) => sortOf(a).localeCompare(sortOf(b), i18n.getLanguage()))
+        .map(value => [value, labelOf(value)]));
     select.value = selected;
 };
+// The sheets, labelled "A4 (210×297 mm)" in the numbers of the page and ordered by name.
+const fillSheetSelect = (select, sheets) => fillLabelledSelect(select, sheets.choices.keys(),
+    key => `${key} (${sizeText(sheets.choices.get(key))} ${mm()})`, key => key);
 const fillVocabularySelect = (select, group, values) =>
     fillLabelledSelect(select, values, value => vocabularyLabel(group, value));
 
@@ -378,8 +377,7 @@ class FormatBrowser extends FilterableList {
         const cut = all.length > matches.length;
         compareNote.hidden = !cut;
         compareNote.textContent = cut ? tr('demo.compareShown', {shown: num(matches.length), count: num(all.length)}) : '';
-        if (cut && fallbackLang('demo.compareShown')) compareNote.lang = 'en';
-        else compareNote.removeAttribute('lang');
+        markLang(compareNote, cut && isFallback('demo.compareShown'));
         if (announceCount && terms.length) {
             if (cut) announce(compareNote.textContent, 'demo.compareShown');
             else announce(trCount('demo.resultsFormats', all.length), 'demo.resultsFormats');
@@ -466,7 +464,7 @@ class FormatBrowser extends FilterableList {
 }
 
 class PaperTypeBrowser extends FilterableList {
-    constructor(paperTypes, translations, formats) {
+    constructor(paperTypes, translations, sheets) {
         super(paperTypes, {
             container: document.getElementById('paper-types-container'),
             emptyKey: 'demo.noPaperTypes',
@@ -474,8 +472,7 @@ class PaperTypeBrowser extends FilterableList {
         });
         this.paperTypes = paperTypes;
         this.translations = new Map(translations.map(row => [row.type_name, row]));
-        this.formats = formats;
-        this.sheets = sheetChoices(formats);
+        this.sheets = sheets;
         this.cacheElements();
         this.setupEventListeners();
         this.populateFilters();
@@ -622,8 +619,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // The URL keeps the tab, the language (when it isn't English) and every search box and filter.
     const saveState = () => {
         if (restoring) return;
+        const activeTab = document.querySelector('.tab-btn.active')?.dataset.tab;
         const state = {lang: i18n.getLanguage() === 'en' ? '' : i18n.getLanguage(),
-            tab: document.querySelector('.tab-btn.active')?.dataset.tab === 'browser' ? '' : document.querySelector('.tab-btn.active')?.dataset.tab};
+            tab: activeTab === 'browser' ? '' : activeTab};
         for (const [key, id] of Object.entries(STATE_FIELDS)) state[key] = document.getElementById(id).value;
         state.desc = document.getElementById('sort-reverse').getAttribute('aria-pressed') === 'true' ? '1' : '';
         const hash = encodeState(state);
@@ -647,8 +645,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         updated.textContent = lastModified
             ? lastModified.toLocaleDateString(i18n.getLanguage(), {year: 'numeric', month: 'long', day: 'numeric'})
             : tr('demo.updatedUnknown');
-        if (!lastModified && fallbackLang('demo.updatedUnknown')) updated.lang = 'en';
-        else updated.removeAttribute('lang');
+        markLang(updated, !lastModified && isFallback('demo.updatedUnknown'));
     };
 
     // The two lines of the About tab that carry a number: {count} sits where the language wants it.
@@ -658,8 +655,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const item = document.getElementById(key === 'aboutFormats' ? 'about-formats' : 'about-countries');
             item.innerHTML = formatMessage(escapeHtml(i18n.translateCount(`demo.${key}`, value ?? 0)),
                 {count: `<strong>${value === undefined ? '…' : escapeHtml(num(value))}</strong>`});
-            if (fallbackLang(`demo.${key}`)) item.lang = 'en';
-            else item.removeAttribute('lang');
+            markLang(item, isFallback(`demo.${key}`));
         }
     };
 
@@ -690,9 +686,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // A string the language lacks shows in English: say so, or a screen reader
         // would read it with the voice of the page's language.
         document.querySelectorAll('[data-translate]').forEach(el => {
-            const key = el.dataset.translate.split(':')[0];
-            if (fallbackLang(key)) el.lang = 'en';
-            else el.removeAttribute('lang');
+            markLang(el, isFallback(el.dataset.translate.split(':')[0]));
         });
         languageSelect.value = lang;
         if (loadError) showLoadError();
@@ -742,7 +736,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const specs = new SpecificationManager();
     await specs.loadAllSpecifications();
     paperBrowser = new PaperTypeBrowser(
-        specs.getAllPaperTypes(), specs.specifications.get('paperTypeTranslations') ?? [], formats);
+        specs.getAllPaperTypes(), specs.specifications.get('paperTypeTranslations') ?? [], formatBrowser.sheets);
 
     // Now that every list has its options, put back what the URL says.
     for (const [key, id] of Object.entries(STATE_FIELDS)) {

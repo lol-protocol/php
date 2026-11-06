@@ -146,6 +146,50 @@ class Router
         return $this->config['by_length'][$length]['type'] ?? null;
     }
 
+    /**
+     * Whether this request is for a functional page (the account, search, the cart...) that must stay out
+     * of search results: its `reserved` entry says `noindex`. robots.txt only keeps crawlers from walking
+     * those paths, it does not stop a search engine from listing a URL that someone links to.
+     */
+    public function noindex(): bool
+    {
+        return ($this->config['reserved'][$this->segments[0] ?? '']['noindex'] ?? false) === true;
+    }
+
+    /**
+     * The words this site routes itself: the files for crawlers, the reserved paths and the segments of the old URLs
+     * it redirects. They are in the route config, not typed by a visitor, so RegistroDeUrls can keep them as they are.
+     *
+     * @return list<string>
+     */
+    public function palabras(): array
+    {
+        $palabras = array_merge(
+            array_map('strval', array_keys($this->config['archivos'] ?? [])),
+            array_map('strval', array_keys($this->config['reserved'] ?? [])),
+            array_map('strval', array_keys($this->config['redirect'] ?? []))
+        );
+        foreach ($this->config['redirect'] ?? [] as $desde => $hacia) {
+            $palabras = array_merge($palabras, explode('/', (string)$desde), explode('/', (string)$hacia));
+        }
+
+        return array_values(array_unique(array_filter(array_map('strtolower', $palabras), static fn(string $p): bool => $p !== '' && !str_contains($p, '/'))));
+    }
+
+    /**
+     * Whether ids carry a check digit here (IDS_DIGITO_VERIFICADOR, see DigitoVerificador) and this one's does not
+     * add up. A type whose entry says `'verificador' => false` (an order's random code) is never checked.
+     */
+    private function digitoNoCoincide(string $id): bool
+    {
+        if (!ctype_digit($id) || !DigitoVerificador::activo()) {
+            return false;
+        }
+        $entrada = $this->config['by_length'][strlen($id)] ?? null;
+
+        return $entrada !== null && ($entrada['verificador'] ?? true) !== false && !DigitoVerificador::esValido($id);
+    }
+
     public function dispatch(): string
     {
         // Only GET/HEAD: a 301 turns a POST into a GET and would drop its body.
@@ -161,6 +205,16 @@ class Router
         $match = $this->resolve();
 
         if (!$match) {
+            return $this->handleNotFound();
+        }
+
+        if ($this->noindex()) {
+            header('X-Robots-Tag: noindex');
+        }
+
+        // An id whose check digit does not add up was mistyped or invented: a 404 that needs no query.
+        if (isset($match['params']['id'])
+            && array_filter([(string)$match['params']['id'], ...array_map('strval', $match['params']['filtros'] ?? [])], fn(string $id): bool => $this->digitoNoCoincide($id)) !== []) {
             return $this->handleNotFound();
         }
 
@@ -249,6 +303,16 @@ class Router
             if ($entrada === null) {
                 return $this->pistaDeLargo($primero, $porLargo);
             }
+            // The id, and the filters after it when this type takes them (they are ids too).
+            $ids = [$primero];
+            if (($entrada['filtros'] ?? []) !== []) {
+                $ids = array_merge($ids, array_filter(array_slice($this->segments, 1), static fn(string $s): bool => ctype_digit($s) && strlen($s) >= 2));
+            }
+            foreach ($ids as $id) {
+                if ($this->digitoNoCoincide($id)) {
+                    return 'El último dígito de un id es de verificación y este no coincide: el id está mal copiado o mal escrito.';
+                }
+            }
 
             $acciones = $entrada['actions'] ?? [];
             $lista = implode(', ', array_map(
@@ -286,7 +350,8 @@ class Router
         $opciones = [];
         foreach ($porLargo as $ancho => $entrada) {
             // A random code (an order's) padded from a guess is never the right one: don't suggest it.
-            if ($ancho > $largo && ($entrada['sugerir'] ?? true)) {
+            // (With a check digit, a padded guess would not be valid either.)
+            if ($ancho > $largo && ($entrada['sugerir'] ?? true) && !DigitoVerificador::activo()) {
                 $url = '/' . str_pad($id, $ancho, '0', STR_PAD_LEFT) . '/';
                 $opciones[] = '<a href="' . $url . '">' . $url . '</a> (' . htmlspecialchars($entrada['type']) . ')';
             }

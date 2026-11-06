@@ -147,6 +147,65 @@ class ImportadorLeyes
         }
     }
 
+    /** Filas de un CSV que está junto al maestro, con la cabecera como claves; si falta el archivo, ninguna. */
+    private function leerLateral(string $archivo): array
+    {
+        $ruta = dirname($this->config['csv']) . '/' . $archivo;
+        if (!file_exists($ruta)) {
+            return [];
+        }
+        $f = fopen($ruta, 'r');
+        $cabecera = fgetcsv($f);
+        $cabecera[0] = preg_replace('/^\xEF\xBB\xBF/', '', $cabecera[0]);
+        $filas = [];
+        while (($fila = fgetcsv($f)) !== false) {
+            if ($fila !== [null]) {
+                $filas[] = array_combine($cabecera, $fila);
+            }
+        }
+        fclose($f);
+        return $filas;
+    }
+
+    /**
+     * field_sources.csv, changes.csv y value_translations.csv, dentro de la transacción de la importación: de
+     * dónde sale cada valor, qué cambió y cuándo, y las traducciones. Un law_name vacío es la única ley del
+     * país. Devuelve cuántas filas entraron de cada uno.
+     */
+    private function importarLaterales(PDO $pdo, array $leyesId): array
+    {
+        $leyDe = function (array $fila, string $archivo) use ($leyesId): int {
+            $leyes = $leyesId[$fila['country_code']] ?? [];
+            if ($fila['law_name'] === '' && count($leyes) === 1) {
+                return (int) reset($leyes);
+            }
+            if (!isset($leyes[$fila['law_name']])) {
+                throw new Exception("$archivo: no law {$fila['country_code']} \"{$fila['law_name']}\" in the master CSV");
+            }
+            return $leyes[$fila['law_name']];
+        };
+
+        $insertar = $pdo->prepare('INSERT INTO field_sources (law_id, field, url, confidence, checked) VALUES (?, ?, ?, ?, ?)');
+        $fuentes = $this->leerLateral('field_sources.csv');
+        foreach ($fuentes as $f) {
+            $insertar->execute([$leyDe($f, 'field_sources.csv'), $f['field'], $f['url'], $f['confidence'], $f['checked'] !== '' ? self::parseFecha($f['checked']) : null]);
+        }
+
+        $insertar = $pdo->prepare('INSERT INTO law_changes (changed_on, jurisdiction_code, law_name, field, old_value, new_value) VALUES (?, ?, ?, ?, ?, ?)');
+        $cambios = $this->leerLateral('changes.csv');
+        foreach ($cambios as $f) {
+            $insertar->execute([self::parseFecha($f['date']), $f['country_code'], $f['law_name'], $f['field'], $f['old_value'], $f['new_value']]);
+        }
+
+        $insertar = $pdo->prepare('INSERT INTO value_translations (lang, source_text, translated_text) VALUES (?, ?, ?)');
+        $traducciones = $this->leerLateral('value_translations.csv');
+        foreach ($traducciones as $f) {
+            $insertar->execute([$f['lang'], $f['source'], $f['text']]);
+        }
+
+        return [count($fuentes), count($cambios), count($traducciones)];
+    }
+
     public function importar(): bool
     {
         $c = $this->config;
@@ -161,6 +220,8 @@ class ImportadorLeyes
             // Todo o nada y repetible: las tablas quedan con exactamente el CSV, nunca a medias ni con las
             // mismas filas dos veces. Las tablas hijas se van con su ley (ON DELETE CASCADE).
             $pdo->beginTransaction();
+            $pdo->exec('DELETE FROM law_changes');
+            $pdo->exec('DELETE FROM value_translations');
             $pdo->exec("DELETE FROM {$c['ley']}");
             $pdo->exec("DELETE FROM {$c['padre']}");
 
@@ -190,6 +251,7 @@ class ImportadorLeyes
             $linea = 1;
             $importadas = 0;
             $padres = [];
+            $leyesId = []; // código => [nombre de la ley => id], para los archivos laterales
             while (($fila = fgetcsv($archivo)) !== false) {
                 $linea++;
                 if ($fila === [null]) {
@@ -220,12 +282,15 @@ class ImportadorLeyes
                     $valores[] = $valor;
                 }
                 $insertarLey->execute($valores);
+                $leyesId[$codigo][$dato['law_name']] = (int) $pdo->lastInsertId();
                 $importadas++;
             }
             fclose($archivo);
+            [$fuentes, $cambios, $traducciones] = $this->importarLaterales($pdo, $leyesId);
             $pdo->commit();
 
             $this->log("  ✓ Imported {$importadas} {$c['leyes']} from " . count($padres) . " {$c['unidad']}");
+            $this->log("  ✓ Imported {$fuentes} field sources, {$cambios} recorded changes and {$traducciones} translations");
             return true;
         } catch (Exception $e) {
             if ($pdo->inTransaction()) {

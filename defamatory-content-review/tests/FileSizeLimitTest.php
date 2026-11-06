@@ -32,12 +32,23 @@ class FileSizeLimitTest extends TestCase
     #[DataProvider('logicFiles')]
     public function testFileStaysWithinLineLimit(string $file): void
     {
-        $lines = count(array_filter(file($file) ?: [], static fn(string $l): bool => trim($l) !== '' && preg_match('~^\s*(//|#|/?\*)~', $l) !== 1));
+        $lines = count(array_filter(file($file) ?: [], static fn(string $l): bool => trim($l) !== '' && preg_match('~^\s*(//|#(?!\[)|/?\*)~', $l) !== 1));
 
         $this->assertLessThanOrEqual(
             self::MAX_LINES,
             $lines,
             sprintf('%s tiene %d líneas de código (máximo %d): divídelo en colaboradores.', $file, $lines, self::MAX_LINES)
         );
+    }
+
+    /** @param array<int,string> $lines */
+    private static function codeLines(array $lines): int
+    {
+        return count(array_filter($lines, static fn(string $l): bool => trim($l) !== '' && preg_match('~^\\s*(//|#(?!\\[)|/?\\*)~', $l) !== 1));
+    }
+
+    public function testCountsAttributesButNotCommentsOrBlankLines(): void
+    {
+        $this->assertSame(3, self::codeLines(["#[DataProvider('x')]\n", "public function f() {}\n", "\n", "// nota\n", "# nota\n", "/** doc */\n", " * doc\n", "return 1;\n"]));
     }
 }

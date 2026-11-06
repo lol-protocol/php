@@ -44,7 +44,7 @@ class LanguageRegistry
     /** Normaliza mayúsculas y espacios de un código ISO 639-3; los de dos letras no se aceptan. */
     public function resolve(string $code): string
     {
-        $code = strtolower(trim($code));
+        $code = self::normalize($code);
 
         if (isset($this->languages[$code])) {
             return $code;
@@ -55,15 +55,20 @@ class LanguageRegistry
 
     public function isSupported(string $code): bool
     {
-        return isset($this->languages[strtolower(trim($code))]);
+        return isset($this->languages[self::normalize($code)]);
     }
 
     /** El idioma de una etiqueta de Accept-Language («pt», «es», «deu»), o null. Único lugar donde entra un código de dos letras. */
     public function fromHeaderTag(string $tag): ?string
     {
-        $tag = strtolower(trim($tag));
+        $tag = self::normalize($tag);
 
         return isset($this->languages[$tag]) ? $tag : ($this->headerTags[$tag] ?? null);
+    }
+
+    private static function normalize(string $code): string
+    {
+        return strtolower(trim($code));
     }
 
     /** @return array<string,mixed> */

@@ -91,20 +91,41 @@ final class RateLimiter
         $path = $this->directory . '/.clave';
         $stored = @file_get_contents($path);
         if ($stored === false || strlen($stored) < 32) {
-            $stored = bin2hex(random_bytes(32));
-            // "x" no pisa una clave que otro proceso haya creado un instante antes.
-            $handle = @fopen($path, 'x');
-            if ($handle !== false) {
-                fwrite($handle, $stored);
-                fclose($handle);
-                chmod($path, 0600);
-            } else {
-                $stored = (string) @file_get_contents($path);
-            }
+            $stored = $this->createSecret($path);
         }
         if (strlen($stored) < 32) {
             throw new \RuntimeException('No se pudo leer la clave del registro de intentos.');
         }
         return $this->secret = $stored;
+    }
+
+    /**
+     * Escribe la clave completa en un temporal y la publica con link(), que no pisa una clave
+     * que otro proceso haya creado un instante antes. Así `.clave` nunca aparece vacía o a
+     * medias, y una falla a mitad de camino no deja el registro de intentos roto para siempre.
+     * Si ya había una clave corta (la dejó una versión anterior), la reemplaza.
+     */
+    private function createSecret(string $path): string
+    {
+        $secret = bin2hex(random_bytes(32));
+        $temp = tempnam($this->directory, '.tmp-');
+        if ($temp === false || file_put_contents($temp, $secret) === false || !chmod($temp, 0600)) {
+            if ($temp !== false) {
+                @unlink($temp);
+            }
+            throw new \RuntimeException('No se pudo crear la clave del registro de intentos.');
+        }
+        try {
+            if (is_file($path) && strlen((string) @file_get_contents($path)) < 32) {
+                rename($temp, $path);
+                return $secret;
+            }
+            if (@link($temp, $path)) {
+                return $secret;
+            }
+            return (string) @file_get_contents($path);
+        } finally {
+            @unlink($temp);
+        }
     }
 }

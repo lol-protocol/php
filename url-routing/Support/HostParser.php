@@ -6,8 +6,42 @@ namespace App\Support;
 
 class HostParser
 {
-    /** Language subdomains (ISO 639-2, three letters) and their hreflang code (ISO 639-1). */
-    public const IDIOMAS = ['spa' => 'es', 'eng' => 'en'];
+    /**
+     * Every language subdomain the URL layer knows (ISO 639-2/T, three letters) and its hreflang code
+     * (ISO 639-1): the 30 languages the other projects of this repository work in. Knowing a language is not
+     * serving it: see idiomas().
+     */
+    public const IDIOMAS_CONOCIDOS = [
+        'ara' => 'ar', 'ben' => 'bn', 'ces' => 'cs', 'dan' => 'da', 'deu' => 'de', 'ell' => 'el',
+        'eng' => 'en', 'fas' => 'fa', 'fin' => 'fi', 'fra' => 'fr', 'heb' => 'he', 'hin' => 'hi',
+        'ind' => 'id', 'ita' => 'it', 'jpn' => 'ja', 'kor' => 'ko', 'nld' => 'nl', 'pol' => 'pl',
+        'por' => 'pt', 'ron' => 'ro', 'rus' => 'ru', 'spa' => 'es', 'swa' => 'sw', 'swe' => 'sv',
+        'tha' => 'th', 'tur' => 'tr', 'ukr' => 'uk', 'urd' => 'ur', 'vie' => 'vi', 'zho' => 'zh',
+    ];
+
+    /** The languages served when IDIOMAS_ACTIVOS says nothing. */
+    public const IDIOMAS_POR_OMISION = 'spa,eng';
+
+    /**
+     * The languages this deployment serves: subdomain => hreflang code. They come from IDIOMAS_ACTIVOS (a
+     * comma-separated list of subdomains, in .env), and only a known one counts. Spanish is always there, first:
+     * it is the language of the bare domain. These are the only subdomains read as a language, and the only
+     * ones announced in hreflang, so a language must be listed here only once its pages are in that language.
+     *
+     * @return array<string, string>
+     */
+    public static function idiomas(): array
+    {
+        $activos = ['spa' => 'es'];
+        foreach (explode(',', strtolower((string)Config::get('IDIOMAS_ACTIVOS', self::IDIOMAS_POR_OMISION))) as $codigo) {
+            $codigo = trim($codigo);
+            if (isset(self::IDIOMAS_CONOCIDOS[$codigo])) {
+                $activos[$codigo] = self::IDIOMAS_CONOCIDOS[$codigo];
+            }
+        }
+
+        return $activos;
+    }
 
     /**
      * @return array{host_without_port: string, parts: list<string>}
@@ -45,7 +79,7 @@ class HostParser
      */
     public static function getLocale(string $host, ?array $supportedLocales = null): string
     {
-        $supportedLocales ??= array_keys(self::IDIOMAS);
+        $supportedLocales ??= array_keys(self::idiomas());
         $parsed = self::parse($host);
         $parts = $parsed['parts'];
         $sub = strtolower($parts[0] ?? '');
@@ -79,13 +113,13 @@ class HostParser
     {
         [$esquema, $host] = explode('://', self::origen(), 2);
         $parts = explode('.', $host);
-        if (count($parts) > 2 && isset(self::IDIOMAS[$parts[0]])) {
+        if (count($parts) > 2 && isset(self::idiomas()[$parts[0]])) {
             array_shift($parts);
         }
         $base = implode('.', $parts);
 
         $urls = [];
-        foreach (self::IDIOMAS as $subdominio => $hreflang) {
+        foreach (self::idiomas() as $subdominio => $hreflang) {
             $urls[$hreflang] = "{$esquema}://{$subdominio}.{$base}{$ruta}";
         }
         $urls['x-default'] = "{$esquema}://{$base}{$ruta}";

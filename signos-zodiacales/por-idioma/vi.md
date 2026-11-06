@@ -405,3 +405,108 @@ Lấy từ Goetia (thế kỷ 17), một cuốn grimoire không thuộc Kinh Th�
 | 70 | Seere | Hoàng tử | 26 | 06/03 – 10/03 | Di chuyển nhanh, trộm cắp, đồ vật thất lạc |
 | 71 | Dantalion | Công tước | 36 | 11/03 – 15/03 | Suy nghĩ, các ngành khoa học, tình yêu |
 | 72 | Andromalius | Bá tước | 36 | 16/03 – 20/03 | Đồ vật thất lạc, kho báu, kẻ trộm |
+
+## Lịch cây của người Celt
+
+Lịch gồm 13 tháng, mỗi tháng 28 ngày và ứng với một loài cây (ngày 23/12 để riêng). Nhà thơ Robert Graves đặt ra năm 1948 dựa trên bảng chữ cái ogham; đây không phải lịch Celt cổ. Chỉ để tham khảo văn hóa.
+
+| # | Cây | Tên khoa học | Ogham | Ngày | Đặc điểm |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Cây bạch dương | *Betula pendula* | Beth | 24/12 – 20/01 | Khởi đầu, sự thanh khiết, sự tái sinh |
+| 2 | Cây thanh lương trà | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Sự bảo hộ, trực giác, nhận thức |
+| 3 | Cây tần bì | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Sự đoàn kết, giao tiếp, sự sáng tạo |
+| 4 | Cây tống quán sủi | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Lòng dũng cảm, sự sáng suốt, sự ổn định |
+| 5 | Cây liễu | *Salix alba* | Saille | 15/04 – 12/05 | Trực giác, giấc mơ, sự chữa lành |
+| 6 | Cây táo gai | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Sự sinh sôi, sự kiên nhẫn, sự bảo hộ |
+| 7 | Cây sồi | *Quercus robur* | Duir | 10/06 – 07/07 | Sức mạnh, sức bền, sự cao quý |
+| 8 | Cây nhựa ruồi | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Sự cân bằng, lòng dũng cảm, công lý |
+| 9 | Cây phỉ | *Corylus avellana* | Coll | 05/08 – 01/09 | Trí tuệ, cảm hứng, việc học |
+| 10 | Cây nho | *Vitis vinifera* | Muin | 02/09 – 29/09 | Niềm vui, sự dồi dào, cảm hứng |
+| 11 | Cây thường xuân | *Hedera helix* | Gort | 30/09 – 27/10 | Sự chung thủy, sự bền bỉ, sự bảo hộ |
+| 12 | Cây sậy | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Sự thật, trật tự, ý chí |
+| 13 | Cây cơm cháy | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Sự biến đổi, sự viên mãn, sự tái sinh |
+
+Ngày 23/12 nằm ngoài 13 tháng: đó là «ngày của năm», không có cây.
+
+## Tử vi cây cối
+
+Một loại tử vi dân gian gồm 21 loài cây, thường được giới thiệu là của người druid hay Gaul nhưng thực ra mới có gần đây. Ngày tháng và loài cây khác nhau tùy nguồn. Chỉ để tham khảo văn hóa.
+
+| Cây | Tên khoa học | Ngày | Đặc điểm |
+| --- | --- | --- | --- |
+| Cây linh sam | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Sự huyền bí, lòng trung thành, sự thanh lịch |
+| Cây du | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Sự cao quý, sự ổn định, khả năng lãnh đạo |
+| Cây bách | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Sự chung thủy, khả năng thích nghi, sức bền |
+| Cây dương | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Sự nhạy cảm, khả năng thích nghi, sự bất định |
+| Cây tuyết tùng | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Sự tự tin, sự lạc quan, sự táo bạo |
+| Cây thông | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Kỷ luật, trật tự, sự bền bỉ |
+| Cây liễu rủ | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Sự nhạy cảm, trực giác, nỗi u sầu |
+| Cây đoạn | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Sự thanh thản, tình bạn, sự hòa hợp |
+| Cây sồi | *Quercus robur* | 21/03 – 21/03 | Sức mạnh, lòng dũng cảm, sự độc lập |
+| Cây phỉ | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Sự tò mò, sự thông minh, sự độc đáo |
+| Cây thanh lương trà | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Sự nhạy cảm, sức quyến rũ, sự hòa hợp |
+| Cây phong | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Sự độc lập, trí tưởng tượng, sự độc đáo |
+| Cây óc chó | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Sức mạnh, niềm đam mê, tham vọng |
+| Cây hạt dẻ | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Công lý, sự trung thực, lòng hào phóng |
+| Cây tần bì | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Tham vọng, phiêu lưu, năng lượng |
+| Cây hornbeam | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Sự kín đáo, tính thực tế, sự thanh lịch |
+| Cây sung | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Sự gợi cảm, tính hòa đồng, sự dồi dào |
+| Cây bạch dương | *Betula pendula* | 24/06 – 24/06 | Sự thanh lịch, sự kín đáo, cảm hứng |
+| Cây táo | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Tình yêu, sức quyến rũ, lòng hào phóng |
+| Cây ô liu | *Olea europaea* | 23/09 – 23/09 | Sự cân bằng, trí tuệ, hòa bình |
+| Cây dẻ gai | *Fagus sylvatica* | 22/12 – 22/12 | Tài năng, sự sáng tạo, sự bền bỉ |
+
+## Cây của 27 nakshatra
+
+Trong chiêm tinh Vệ Đà, mỗi một trong 27 cung trăng (nakshatra) có một loài cây riêng. Cây phụ thuộc vào vị trí Mặt Trăng lúc sinh chứ không theo ngày, và danh sách khác nhau tùy vùng. Chỉ để tham khảo văn hóa.
+
+| # | Nakshatra | Cây | Tên khoa học | Đặc điểm |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Sự nhanh nhẹn, sự chủ động, sự chữa lành |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Sức bền, niềm đam mê, sự biến đổi |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Sự sắc sảo, lửa, sự thanh khiết |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Vẻ đẹp, sự sinh sôi, sự dồi dào |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Sự tò mò, sự tìm kiếm, sự thân thiện |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Cảm xúc, sự biến đổi, trí tuệ |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Sự tái sinh, sự lạc quan, mái ấm |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Sự nuôi dưỡng, sự bảo hộ, lòng sùng kính |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Trực giác, sự huyền bí, sự khôn khéo |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Dòng dõi, uy quyền, sự cao quý |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Niềm vui thú, sự sáng tạo, sự nghỉ ngơi |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Tình bạn, lòng hào phóng, sự hỗ trợ |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Sự khéo léo, sự thông minh, sự chữa lành |
+| 14 | Chitra | Bel | *Aegle marmelos* | Vẻ đẹp, sự sáng tạo, sự rực rỡ |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Sự độc lập, sự linh hoạt, thương mại |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Sự quyết tâm, tham vọng, sự bền bỉ |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Lòng sùng kính, tình bạn, sự hợp tác |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Khả năng lãnh đạo, sự bảo hộ, lòng dũng cảm |
+| 19 | Mula | Sal \* | *Shorea robusta* | Cội rễ, sự nghiên cứu, sự biến đổi |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Chiến thắng, sự nhiệt huyết, sự thanh khiết |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Chiến thắng, sự chính trực, sự bền bỉ |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Sự lắng nghe, sự học hỏi, giao tiếp |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Sự giàu có, âm nhạc, tham vọng |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Sự chữa lành, bí mật, sự cô độc |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Niềm đam mê, sự biến đổi, chủ nghĩa lý tưởng |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Chiều sâu, trí tuệ, lòng trắc ẩn |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Sự dịu dàng, sự bảo hộ, lòng trắc ẩn |
+
+\* Các nguồn không thống nhất về cây của nakshatra này.
+
+## Thần số học: con số chủ đạo
+
+Cộng tất cả các chữ số của ngày sinh, lặp đi lặp lại cho đến khi còn một chữ số; 11, 22 và 33 («số bậc thầy») không rút gọn thêm. Người ta gán nó cho Pythagoras, nhưng thần số học ngày nay có từ thế kỷ 20 và không có cơ sở khoa học. Chỉ để tham khảo văn hóa.
+
+| Số | Đặc điểm |
+| --- | --- |
+| 1 | Khả năng lãnh đạo, sự độc lập, sự chủ động |
+| 2 | Sự hợp tác, sự nhạy cảm, sự hòa hợp |
+| 3 | Sự sáng tạo, niềm vui, giao tiếp |
+| 4 | Kỷ luật, sự ổn định, công việc |
+| 5 | Phiêu lưu, tự do, khả năng thích nghi |
+| 6 | Mái ấm, lòng hào phóng, tình yêu |
+| 7 | Trí tuệ, sự cô độc, sự nghiên cứu |
+| 8 | Tham vọng, uy quyền, sự giàu có |
+| 9 | Lòng trắc ẩn, lòng hào phóng, chủ nghĩa lý tưởng |
+| 11 | Trực giác, cảm hứng, chủ nghĩa lý tưởng |
+| 22 | Xây dựng, sự quyết tâm, khả năng lãnh đạo |
+| 33 | Lòng trắc ẩn, sự dịu dàng, lòng sùng kính |

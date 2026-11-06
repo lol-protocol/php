@@ -578,3 +578,102 @@ test('every catalog country has an ISO code for Intl.DisplayNames, except the tw
     assert.equal(formats.find(f => f.country === 'USA').country_code, 'US');
     assert.equal(new Intl.DisplayNames(['es'], { type: 'region' }).of('US'), 'Estados Unidos');
 });
+
+// ---- Logic fixes: equivalents, orientation, units, search words, print CSS, HTML export ----
+
+test('findEquivalents lists a sheet once however many countries list it, and sees both sizes of a split name', () => {
+    const row = (format_name, country, width_mm, height_mm) => ({ format_name, country, width_mm, height_mm });
+    const converter = new FormatConverter([
+        row('X', 'USA', 100, 200),
+        row('Y', 'UK', 100, 200), row('Y', 'Germany', 100, 200), row('Y', 'Japan', 100, 200),
+    ]);
+    assert.deepEqual(converter.findEquivalents('X', 90).map(f => [f.name, f.country]), [['Y', 'UK']]);
+
+    // H is 100×200 in one country and 150×300 in another: the old lookup by name kept only the last row.
+    const split = new FormatConverter([
+        row('H', 'USA', 100, 200), row('H', 'Intl', 150, 300),
+        row('Small', 'USA', 100, 200), row('Big', 'USA', 150, 300),
+    ]);
+    assert.deepEqual(split.findEquivalents('H', 90).map(f => f.name).sort(), ['Big', 'Small']);
+});
+
+test('compare() sees a turned sheet as the same size', () => {
+    const converter = new FormatConverter([]);
+    const result = converter.compare(
+        { format_name: 'Ledger', width_mm: 431.8, height_mm: 279.4 },
+        { format_name: 'Tabloid', width_mm: 279.4, height_mm: 431.8 });
+    assert.equal(result.similarity, 100);
+    assert.deepEqual(result.differences, { width: '0.0', height: '0.0' });
+    assert.equal(result.rotated, true);
+    assert.equal(converter.compare({ format_name: 'A', width_mm: 100, height_mm: 200 },
+        { format_name: 'B', width_mm: 100, height_mm: 250 }).rotated, false);
+});
+
+test('validateDimensions ignores orientation, knows the usual unit names and reports an unknown one', () => {
+    const validator = new FormatValidator([{ format_name: 'A4', width_mm: 210, height_mm: 297 },
+        { format_name: 'Letter', width_mm: 215.9, height_mm: 279.4 }]);
+    assert.ok(validator.validateDimensions(297, 210, 'mm').isValid, 'A4 turned is still A4');
+    for (const unit of ['in', 'inch', 'inches', 'IN']) {
+        assert.deepEqual(validator.validateDimensions(8.5, 11, unit).matches.map(m => m.format_name), ['Letter'], unit);
+    }
+    const unknown = validator.validateDimensions(210, 297, 'furlong');
+    assert.equal(unknown.isValid, false);
+    assert.match(unknown.message, /Unknown unit furlong/);
+    assert.ok(validator.validateDimensions(210, 297).isValid, 'millimetres by default');
+});
+
+test('search ignores the punctuation around a word', () => {
+    const searcher = new FormatSearcher([
+        { format_name: 'Carta (Letter)', country: 'Mexico', category: 'Standard', description: 'Oficio, letter. U.S. 8.5x11' },
+        { format_name: 'Other', country: 'Chile', category: 'Standard', description: '' },
+    ]);
+    for (const query of ['letter', '(letter)', 'Letter,', 'oficio', '"Oficio"', 'u.s.', '8.5x11']) {
+        assert.deepEqual(searcher.search(query).map(f => f.format_name), ['Carta (Letter)'], query);
+    }
+    assert.deepEqual(searcher.search('   '), []);
+});
+
+test('print CSS uses the recommended margins and a body that fits inside them', async () => {
+    const bookMargins = new BookMarginManager([]);
+    await bookMargins.load();
+    const generator = new DocumentGenerator([
+        { format_name: 'A7', category: 'Standard', width_mm: 74, height_mm: 105 },
+        { format_name: 'Trade Paperback', category: 'Book', width_mm: 152.4, height_mm: 228.6 },
+    ]);
+    const css = generator.generatePrintCSS('A7');
+    assert.doesNotMatch(css, /\d\.\d{3,}/, 'no floating-point noise');
+    assert.match(css, /size: 7\.4cm 10\.5cm/);
+    assert.match(css, /margin: 20mm 20mm 20mm 20mm/);
+    assert.match(css, /width: 3\.4cm/, '7.4 cm less 2 × 2 cm');
+    assert.match(css, /height: 6\.5cm/);
+    assert.match(css, /padding: 0/, 'the page margin is the only margin');
+
+    generator.setBookMargins(bookMargins.getAllMargins());
+    // Trade Paperback: top 19, bottom 19, inner 16, outer 13.
+    assert.match(generator.generatePrintCSS('Trade Paperback'), /margin: 19mm 13mm 19mm 16mm/);
+    assert.match(generator.generateHTML('Trade Paperback'), /margin: 19mm 13mm 19mm 16mm/);
+});
+
+test('exportAsHTML is a valid table when nothing matches, and keeps each cell under its header', () => {
+    const processor = new FormatBatchProcessor([
+        { format_name: 'A4', country: 'ISO' },
+        { country: 'USA', format_name: 'Letter', extra: 'ignored' },
+    ]);
+    assert.equal(processor.exportAsHTML({ country: 'Nowhere' }), '<table border="1"></table>');
+    const html = processor.exportAsHTML();
+    assert.ok(html.includes('<td>Letter</td><td>USA</td>'), html);
+});
+
+test('translateElement applies each element once, however deep it sits', async () => {
+    const i18n = new LocalizationManager('../app/translations');
+    await i18n.init();
+    const applied = [];
+    const node = (name, children = []) => ({
+        name, children,
+        getAttribute() { return 'header.title'; },
+        set textContent(value) { applied.push(name); },
+        querySelectorAll() { return this.children.flatMap(c => [c, ...c.querySelectorAll()]); },
+    });
+    i18n.translateElement(node('root', [node('a', [node('b', [node('c')])]), node('d')]));
+    assert.deepEqual(applied.sort(), ['a', 'b', 'c', 'd', 'root']);
+});

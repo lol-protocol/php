@@ -2,6 +2,7 @@
 
 namespace MarcalibrosApp;
 
+use Marcalibros\AtomicFile;
 use Marcalibros\Bookmark;
 
 /**
@@ -28,15 +29,7 @@ final class BookmarkStore
     public function save(Bookmark $bookmark, int $createdAt): void
     {
         $json = json_encode($bookmark->toArray() + ['created' => $createdAt], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
-        $temp = tempnam($this->directory, '.tmp-');
-        if ($temp === false
-            || file_put_contents($temp, $json) === false
-            || !chmod($temp, 0644)
-            || !rename($temp, $this->metaPath($bookmark->id))
-        ) {
-            if ($temp !== false) {
-                @unlink($temp);
-            }
+        if (!AtomicFile::write($this->metaPath($bookmark->id), $json)) {
             $this->removeFiles($bookmark->id);
             throw new \RuntimeException('No se pudo guardar el marcalibro.');
         }

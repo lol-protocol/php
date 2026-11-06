@@ -38,6 +38,8 @@ abstract class Plantilla
     /** Subtítulo: espacio libre mínimo bajo el título, y fracción del tamaño del título que se deja libre. */
     protected const SUBTITULO_ESPACIO_MIN = 3.0;
     protected const SUBTITULO_ESPACIO = 0.35;
+    /** Subtítulo: tamaño mínimo de letra, el mismo en todas las plantillas. */
+    protected const SUBTITULO_TAMANO_MIN = 3.2;
 
     /** Contratapa: raya de acento (distancia al borde superior del corte, largo y grosor). */
     protected const CONTRATAPA_RAYA_Y = 22.0;
@@ -113,12 +115,12 @@ abstract class Plantilla
      */
     public bool $textoATrazos = false;
 
-    /**
-     * Contornos de las letras que ha dibujado la pieza en curso, por identificador (ver `aTrazos`).
-     *
-     * @var array<string, string>
-     */
-    private array $glifos = [];
+    private ?TextoATrazos $trazos = null;
+
+    private function trazos(): TextoATrazos
+    {
+        return $this->trazos ??= new TextoATrazos();
+    }
 
     /** @return array<string, class-string<Plantilla>> */
     public static function disponibles(): array
@@ -171,7 +173,7 @@ abstract class Plantilla
     public function dibujar(Libro $libro, Medidas $medidas, string $vista = 'sobrelomo'): string
     {
         $this->usadas = [];
-        $this->glifos = [];
+        $this->trazos()->reiniciar();
         $paneles = '';
         foreach ($medidas->paneles($vista) as $panel) {
             $zona = $medidas->pieza($panel);
@@ -186,7 +188,7 @@ abstract class Plantilla
         }
 
         return ($libro->degradado?->defs($medidas->lienzo()) ?? '')
-            . ($this->textoATrazos ? $this->defsDeGlifos() : Fuentes::estilo($this->usadas))
+            . ($this->textoATrazos ? $this->trazos()->defs() : Fuentes::estilo($this->usadas))
             . $this->rectangulo($medidas->vista($vista), ['fill' => $this->relleno($libro)])
             . $paneles;
     }
@@ -217,16 +219,24 @@ abstract class Plantilla
         return ($extra['font-style'] ?? 'normal') === 'italic' ? 'italic' : 'normal';
     }
 
-    /** @param array<string, float|int|string> $extra */
+    /**
+     * Peso de la letra de `font-weight`: las palabras de CSS (`normal`, `bold`, `lighter`, `bolder`) o un número de
+     * 1 a 1000. `lighter` y `bolder` no dependen del texto de alrededor, así que valen 400 y 700.
+     *
+     * @param array<string, float|int|string> $extra
+     */
     private static function pesoDe(array $extra): int
     {
         $peso = $extra['font-weight'] ?? 400;
+        $palabras = ['normal' => 400, 'lighter' => 400, 'bold' => 700, 'bolder' => 700];
+        if (is_string($peso) && isset($palabras[$peso])) {
+            return $palabras[$peso];
+        }
+        if (is_numeric($peso) && $peso >= 1 && $peso <= 1000) {
+            return (int) $peso;
+        }
 
-        return match ($peso) {
-            'normal' => 400,
-            'bold' => 700,
-            default => (int) $peso,
-        };
+        throw new \InvalidArgumentException("font-weight no válido: «{$peso}». Usa normal, bold, lighter, bolder o un número de 1 a 1000.");
     }
 
     /**
@@ -346,7 +356,7 @@ abstract class Plantilla
         $this->usar([], $texto['texto']);
 
         if ($this->textoATrazos) {
-            return $svg . $this->aTrazos([$texto['texto']], 0.0, 0.0, $texto['tamano'], 'middle', $colores['texto'], [], 'translate(' . Svg::n($x) . ' ' . Svg::n($y) . ') rotate(' . (90 * $sentido) . ') ');
+            return $svg . $this->trazos()->escribir([$texto['texto']], 0.0, 0.0, $texto['tamano'], 'middle', $colores['texto'], $this->familia(), 'normal', 400, $this->medidaDe(), 0.0, self::INTERLINEADO, 'translate(' . Svg::n($x) . ' ' . Svg::n($y) . ') rotate(' . (90 * $sentido) . ') ');
         }
 
         return $svg . Svg::elemento('text', [
@@ -403,7 +413,7 @@ abstract class Plantilla
     {
         $this->usar($extra, implode('', $lineas));
         if ($this->textoATrazos) {
-            return $this->aTrazos($lineas, $x, $y, $tamano, $anclaje, $color, $extra);
+            return $this->trazos()->escribir($lineas, $x, $y, $tamano, $anclaje, $color, $this->familia(), self::estiloDe($extra), self::pesoDe($extra), $this->medidaDe($extra), (float) ($extra['letter-spacing'] ?? 0.0), self::INTERLINEADO);
         }
 
         return Svg::elemento('text', [
@@ -417,145 +427,6 @@ abstract class Plantilla
     }
 
     /**
-     * El mismo texto que `parrafo`, pero como contornos: una línea es un grupo escalado al tamaño de letra, y
-     * cada letra un `<use>` de su trazado, colocado según su avance. No aplica kerning, igual que la medida
-     * del texto. Una letra que la fuente no tiene deja su hueco (con el ancho medio) y no se dibuja.
-     *
-     * @param list<string> $lineas
-     * @param array<string, float|int|string> $extra
-     * @param string $antes transformación previa del grupo, para el texto girado del lomo
-     */
-    private function aTrazos(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra, string $antes = ''): string
-    {
-        $familia = $this->familia();
-        $estilo = self::estiloDe($extra);
-        $peso = self::pesoDe($extra);
-        $medida = $this->medidaDe($extra);
-        $escala = $tamano / 1000;
-        $espaciado = (float) ($extra['letter-spacing'] ?? 0.0) / $escala; // en milésimas de em
-
-        $formas = Fuentes::formas();
-        $svg = '';
-        foreach ($lineas as $indice => $linea) {
-            $trozos = $this->enOrdenVisual(Fuentes::trozos($linea, $formas), $formas);
-
-            $letras = '';
-            $avance = 0.0;
-            foreach ($trozos as $trozo) {
-                if (isset($formas[$trozo])) {
-                    [$ancho, , $piezas] = $formas[$trozo];
-                    foreach ($piezas as [$px, $py, $contorno]) {
-                        $id = 'f' . substr(md5($contorno), 0, 10);
-                        $this->glifos[$id] = $contorno;
-                        $letras .= Svg::elemento('use', ['href' => "#$id", 'xlink:href' => "#$id", 'x' => $avance + $px, 'y' => $py]);
-                    }
-                    $avance += $ancho;
-                    continue;
-                }
-                foreach (mb_str_split($trozo) as $letra) {
-                    $codigo = mb_ord($letra);
-                    if ($codigo < 0x20) {
-                        continue;
-                    }
-                    $contorno = Fuentes::contorno($familia, $estilo, $peso, $codigo);
-                    if ($contorno === null) {
-                        $avance += $medida->em($letra) * 1000 + $espaciado;
-                        continue;
-                    }
-                    if ($contorno[1] !== '') {
-                        $id = "g$familia-$estilo-$peso-$codigo";
-                        $this->glifos[$id] = $contorno[1];
-                        $letras .= Svg::elemento('use', ['href' => "#$id", 'xlink:href' => "#$id", 'x' => $avance]);
-                    }
-                    $avance += $contorno[0] + $espaciado;
-                }
-            }
-            if ($letras === '') {
-                continue;
-            }
-            $ancho = $avance * $escala;
-            $inicio = match ($anclaje) {
-                'middle' => $x - $ancho / 2,
-                'end' => $x - $ancho,
-                default => $x,
-            };
-            $base = $y + $indice * $tamano * self::INTERLINEADO;
-            $svg .= Svg::elemento('g', [
-                'transform' => $antes . 'translate(' . Svg::n($inicio) . ' ' . Svg::n($base) . ') scale(' . rtrim(rtrim(number_format($escala, 6, '.', ''), '0'), '.') . ')',
-                'fill' => $color,
-            ], "\n" . $letras);
-        }
-
-        return $svg;
-    }
-
-    /**
-     * Pone en orden visual los trozos de una línea: las palabras de derecha a izquierda compuestas de antemano
-     * (árabe, hebreo…) se leen de derecha a izquierda, así que una línea hecha solo de ellas se invierte entera, y
-     * en una frase mezclada se invierte cada tramo seguido de ellas, con los espacios de en medio. Es un bidi
-     * mínimo: no resuelve números ni paréntesis dentro de un tramo, ni más de un nivel de mezcla.
-     *
-     * @param list<string> $trozos palabras, signos y espacios, en el orden en que se escribieron
-     * @param array<string, array{int, bool, list<array{int, int, string}>}> $formas
-     * @return list<string>
-     */
-    private function enOrdenVisual(array $trozos, array $formas): array
-    {
-        $derechaAIzquierda = static fn (string $trozo): bool => $formas[$trozo][1] ?? false;
-        $palabras = array_filter($trozos, static fn (string $trozo): bool => trim($trozo) !== '');
-        if ($palabras !== [] && array_filter($palabras, $derechaAIzquierda) === $palabras) {
-            return array_reverse($trozos);
-        }
-
-        $resultado = [];
-        $tramo = [];
-        foreach ($trozos as $trozo) {
-            if ($derechaAIzquierda($trozo) || ($tramo !== [] && trim($trozo) === '')) {
-                $tramo[] = $trozo;
-                continue;
-            }
-            array_push($resultado, ...self::invertirTramo($tramo));
-            $tramo = [];
-            $resultado[] = $trozo;
-        }
-        array_push($resultado, ...self::invertirTramo($tramo));
-
-        return $resultado;
-    }
-
-    /**
-     * Invierte un tramo de palabras de derecha a izquierda. Un tramo termina en palabra: los espacios del final
-     * no son parte de él y se quedan donde estaban.
-     *
-     * @param list<string> $tramo
-     * @return list<string>
-     */
-    private static function invertirTramo(array $tramo): array
-    {
-        $cola = [];
-        while ($tramo !== [] && trim(end($tramo)) === '') {
-            array_unshift($cola, (string) array_pop($tramo));
-        }
-
-        return [...array_reverse($tramo), ...$cola];
-    }
-
-    /** Los contornos que usan las letras de la pieza, una sola vez cada uno, para referirse a ellos con `<use>`. */
-    private function defsDeGlifos(): string
-    {
-        if ($this->glifos === []) {
-            return '';
-        }
-        ksort($this->glifos);
-        $trazados = '';
-        foreach ($this->glifos as $id => $contorno) {
-            $trazados .= Svg::elemento('path', ['id' => $id, 'd' => $contorno]);
-        }
-
-        return "<defs>\n" . $trazados . "</defs>\n";
-    }
-
-    /**
      * Línea base de la primera línea para que un bloque de `lineas` líneas quede centrado en la zona
      * que va de `y` a `y + alto`.
      */
@@ -564,6 +435,28 @@ abstract class Plantilla
         $visible = ($lineas - 1) * $tamano * self::INTERLINEADO + $tamano;
 
         return $y + ($alto - $visible) / 2 + $tamano * self::ASCENDENTE;
+    }
+
+    /**
+     * El título de la portada y, si hay, el subtítulo debajo, ajustados a su zona y con el reparto en líneas
+     * parejas. El título empieza en `$arriba` o, con `$centrar`, se centra en la zona de `$alto` que empieza ahí.
+     *
+     * @param array{max: float, min: float, estilo: array<string, string>, color: string} $titulo tamaños de letra (de `max` a `min`), atributos y color
+     * @param array{alto: float, max: float, estilo: array<string, string>, color: string} $subtitulo alto disponible, tamaño máximo (el mínimo es SUBTITULO_TAMANO_MIN), atributos y color
+     */
+    protected function tituloYSubtitulo(Libro $libro, float $x, float $ancho, string $anclaje, float $arriba, float $alto, bool $centrar, array $titulo, array $subtitulo): string
+    {
+        $ajuste = Texto::ajustar($libro->textos->titulo, $ancho, $alto, $titulo['max'], $titulo['min'], $this->medidaDe($titulo['estilo']), self::INTERLINEADO, true);
+        $y = $centrar ? $this->baseline($arriba, $alto, count($ajuste['lineas']), $ajuste['tamano']) : $arriba + $ajuste['tamano'] * self::ASCENDENTE;
+        $svg = $this->parrafo($ajuste['lineas'], $x, $y, $ajuste['tamano'], $anclaje, $titulo['color'], $titulo['estilo']);
+        if ($libro->textos->subtitulo === '') {
+            return $svg;
+        }
+
+        $fin = $y + (count($ajuste['lineas']) - 1) * $ajuste['tamano'] * self::INTERLINEADO;
+        $menor = Texto::ajustar($libro->textos->subtitulo, $ancho, $subtitulo['alto'], $subtitulo['max'], self::SUBTITULO_TAMANO_MIN, $this->medidaDe($subtitulo['estilo']), self::INTERLINEADO, true);
+
+        return $svg . $this->parrafo($menor['lineas'], $x, $this->bajoElTitulo($fin, $ajuste['tamano'], $menor['tamano']), $menor['tamano'], $anclaje, $subtitulo['color'], $subtitulo['estilo']);
     }
 
     /**

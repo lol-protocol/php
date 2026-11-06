@@ -32,10 +32,10 @@ class MessagesTest extends TestCase
     public function testEveryLocaleHasTheSameKeysAndPlaceholdersAsSpanish(string $locale): void
     {
         $table = Messages::table($locale);
-        $expected = Messages::requiredKeys(self::CONFIG . '/risk-categories.php');
+        $expected = Messages::requiredKeys();
 
         $this->assertSame([], array_values(array_diff($expected, array_keys($table))), "$locale: faltan claves");
-        $this->assertSame([], array_values(array_diff(array_keys($table), $expected)), "$locale: sobran claves");
+        $this->assertSame([], array_values(array_diff(array_keys($table), $expected, Messages::OPTIONAL_KEYS)), "$locale: sobran claves");
         foreach ($table as $key => $text) {
             $this->assertNotSame('', trim($text), "$locale $key vacío");
             if (isset(Messages::table('spa')[$key])) {
@@ -68,5 +68,23 @@ class MessagesTest extends TestCase
         foreach (['xxx', '../spa', ''] as $locale) {
             $this->assertSame($result->getExplanations(), $result->getExplanations($locale));
         }
+    }
+
+    public function testBrokenTemplateFallsBackToSpanishInsteadOfThrowing(): void
+    {
+        $dir = sys_get_temp_dir() . '/msgs-' . bin2hex(random_bytes(4));
+        mkdir($dir . '/messages', 0777, true);
+        copy(self::CONFIG . '/messages/spa.php', $dir . '/messages/spa.php');
+        file_put_contents($dir . '/messages/eng.php', "<?php return ['error.cuerpo_demasiado_grande' => 'Too big: %s and %s bytes.'];");
+        $messages = $dir . '/messages';
+
+        $this->assertSame('El cuerpo supera 10 bytes.', Messages::get('error.cuerpo_demasiado_grande', 'eng', [10], $messages));
+        $this->assertSame('no.existe', Messages::get('no.existe', 'eng', [10], $messages));
+    }
+
+    public function testSpanishCategoriesComeFromRiskCategories(): void
+    {
+        $this->assertSame('Animal', Messages::find('category.animal.name', 'spa'));
+        $this->assertArrayNotHasKey('category.animal.name', require self::CONFIG . '/messages/spa.php');
     }
 }

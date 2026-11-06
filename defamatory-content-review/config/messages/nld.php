@@ -8,7 +8,6 @@ return [
     'explanation.match' => '„%1$s” komt overeen met „%2$s” (%3$s)',
     'explanation.related' => '; verwante taal, betrouwbaarheid %.2F',
     'explanation.collision' => '; is ook een gedocumenteerde echte voor- of achternaam en gaat naar menselijke beoordeling',
-    'explanation.end' => '.',
     'recommendation.reject' => 'Afwijzen: ernstig beledigende inhoud (risicotypen: %s).',
     'recommendation.review_collision' => 'Menselijke beoordeling: komt overeen met beledigende termen (%s) maar ook met gedocumenteerde achternamen.',
     'recommendation.review_phonetic' => 'Menselijke beoordeling: voor- en achternaam vormen samen een beledigende term (%s) die geen van beide op zich heeft.',

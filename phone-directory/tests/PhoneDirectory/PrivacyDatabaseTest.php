@@ -122,17 +122,37 @@ class PrivacyDatabaseTest extends TestCase
         $owner->disconnect();
     }
 
-    /** Hiding is about what is shown, not about what is stored: the owner can still count, edit and delete. */
+    /**
+     * Hiding is about what is shown, not about what is stored: the owner still counts everything and can
+     * edit and delete. The visitor counts only what it can see (the old García): counting the hidden rows
+     * would tell a visitor how many recent entries there are.
+     */
     #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
     public function testHidingDoesNotChangeWhatIsStoredOrCounted(string $dsn, ?string $user, ?string $password): void
     {
         [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
 
-        $this->assertSame(4, $visitor->count());
+        $this->assertSame(1, $visitor->count());
+        $this->assertSame(4, $owner->count());
         $recent = $owner->findById($ids['recent']);
         $this->assertTrue($owner->delete($ids['recent']));
         $this->assertSame(3, $owner->count());
         $this->assertNotNull($recent);
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    /** Rows the SQL cannot judge (an id outside the catalog, with its year in the id) still reach Privacy. */
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testDirectoriesOutsideTheCatalogAreJudgedByTheYearInTheirId(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner] = $this->loaded($dsn, $user, $password);
+        foreach (['custom_1920_pueblo' => 'ROJAS, Ana', 'custom_1990_pueblo' => 'ROJAS, Eva'] as $directory => $name) {
+            $owner->insert(new PhoneDirectoryEntry(fullName: $name, countryCode: 'ES', street: 'Calle Real 1', sourceDirectoryId: $directory, language: 'es'));
+        }
+
+        $this->assertSame(['custom_1920_pueblo'], array_map(fn($e) => $e->getSourceDirectoryId(), $visitor->findByName('rojas')));
+        $this->assertSame(2, $visitor->count(), 'el García antiguo y la Rojas de 1920');
         $visitor->disconnect();
         $owner->disconnect();
     }
