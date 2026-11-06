@@ -53,6 +53,7 @@ function saneador_numero(mixed $valor): ?float
     return ($limpio !== '' && is_numeric($limpio)) ? (float) $limpio : null;
 }
 
+/** @param string[] $monedasValidas */
 function saneador_moneda(mixed $valor, array $monedasValidas): ?string
 {
     if (!is_string($valor)) {
@@ -88,6 +89,7 @@ function saneador_ip(mixed $valor): ?string
     return filter_var($sinPuerto, FILTER_VALIDATE_IP) !== false ? $sinPuerto : null;
 }
 
+/** @param string[] $paisesValidos */
 function saneador_codigo_pais(mixed $valor, array $paisesValidos): ?string
 {
     if (!is_string($valor)) {

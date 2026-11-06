@@ -25,6 +25,7 @@ final class AlmacenConfiguracion
         $stmt->execute([$clave, $valor]);
     }
 
+    /** @return array<string,string> clave => valor de cada configuración guardada */
     public function obtenerTodos(): array
     {
         $stmt = $this->pdo->query('SELECT clave, valor FROM configuracion_alertas ORDER BY clave');
