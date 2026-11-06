@@ -83,6 +83,30 @@ final class Privacy
         return $this->latestPublishableYear;
     }
 
+    /**
+     * The catalog's directories too recent to show, so a database can leave their rows out in SQL instead of
+     * fetching them to drop them here. Empty for the owner. Ids outside the catalog are not in it: their
+     * year comes from the id itself (PhoneDirectoryCatalog::yearOfDirectory), and mayBeAlive() still decides.
+     *
+     * @return list<string>
+     */
+    public function hiddenCatalogDirectories(): array
+    {
+        $latest = $this->latestPublishableYear;
+        if ($latest === null) {
+            return [];
+        }
+
+        $hidden = [];
+        foreach ($this->catalog->getAll() as $id => $directory) {
+            if ($directory['year'] > $latest) {
+                $hidden[] = $id;
+            }
+        }
+
+        return $hidden;
+    }
+
     /** Whether the person in this entry may still be alive, and so must not be shown. */
     public function mayBeAlive(PhoneDirectoryEntry $entry): bool
     {

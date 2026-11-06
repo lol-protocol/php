@@ -211,9 +211,13 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return $this->deleteById($id);
     }
 
+    /**
+     * How many businesses this reader can see: everything stored for the owner, only what may be shown for a
+     * visitor (as PhoneDirectoryPDODatabase::count()).
+     */
     public function count(): int
     {
-        return $this->countAll();
+        return $this->privacy->hidesLiving() ? count($this->getAll()) : $this->countAll();
     }
 
     /**

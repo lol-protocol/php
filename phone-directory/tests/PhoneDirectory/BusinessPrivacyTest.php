@@ -63,6 +63,8 @@ class BusinessPrivacyTest extends TestCase
 
         $this->assertSame([['Panadería Juan Pérez', self::OLD], ['Restaurante Siglo 21', self::RECENT]], $shown);
         $this->assertCount(4, $owner->getAll());
+        $this->assertSame(2, $visitor->count(), 'no cuenta las ocultas');
+        $this->assertSame(4, $owner->count());
     }
 
     public function testEveryFinderFilters(): void
