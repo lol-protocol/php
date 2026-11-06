@@ -35,6 +35,32 @@ public class PhoneDirectoryParserTest {
         assertEquals(1, entries.size());
         assertEquals("Calle Larga 5", location(entries.get(0)).get("street"));
 
+        // A street with no street word and the house number last, once the name is read.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("COSTA, Rui\nTravessa do Carmo 5", "pt");
+        assertEquals(1, entries.size());
+        assertEquals("Travessa do Carmo 5", location(entries.get(0)).get("street"));
+
+        // A dwelling line is the street once the name is read.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("TAYLOR, Jim\nApt 4 Building 7\n555-123-4567", "en");
+        assertEquals(1, entries.size());
+        assertEquals("Apt 4 Building 7", location(entries.get(0)).get("street"));
+
+        // A name ending in a number stays a name.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("Restaurante Siglo 21\nCalle Larga 5", "es");
+        assertEquals(1, entries.size());
+        assertEquals("Calle Larga 5", location(entries.get(0)).get("street"));
+
+        // Records with no blank line between them; a city line does not start a record.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("HALL, Ruth\n3 Main Street\n555-123-4567\nLEE, Ken\n8 Oak Lane\n555-987-6543", "en");
+        assertEquals(2, entries.size());
+        assertEquals("8 Oak Lane", location(entries.get(1)).get("street"));
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567", "en");
+        assertEquals(1, entries.size());
+
+        // "Via" counts as Italian only in the "Via Roma 10" shape.
+        assertEquals("it", new MultiLanguagePhoneDirectoryParser().detectLanguage("ROSSI, Luigi\nVia Roma 10"));
+        assertEquals("en", new MultiLanguagePhoneDirectoryParser().detectLanguage("SMITH, John\n12 Via Lane"));
+
         entries = new MultiLanguagePhoneDirectoryParser().parseContent("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St", null);
         assertEquals(2, entries.size());
 
@@ -44,6 +70,41 @@ public class PhoneDirectoryParserTest {
 
         entries = new MultiLanguagePhoneDirectoryParser("mx").parseContent("Juan Pérez\nCalle Hidalgo 4", null);
         assertEquals("MX", location(entries.get(0)).get("countryCode"));
+
+        // Each language reads its own countries' phone formats, and only its own.
+        assertEquals("01 42 68 53 00", MultiLanguagePhoneDirectoryParser.phoneIn("Tel 01 42 68 53 00", "fr"));
+        assertEquals("+33 1 42 68 53 00", MultiLanguagePhoneDirectoryParser.phoneIn("+33 1 42 68 53 00", "fr"));
+        assertEquals("(089) 654321", MultiLanguagePhoneDirectoryParser.phoneIn("(089) 654321", "de"));
+        assertEquals("0711/12345", MultiLanguagePhoneDirectoryParser.phoneIn("0711/12345", "de"));
+        assertEquals("06 1234567", MultiLanguagePhoneDirectoryParser.phoneIn("06 1234567", "it"));
+        assertEquals("21 342 0000", MultiLanguagePhoneDirectoryParser.phoneIn("21 342 0000", "pt"));
+        assertEquals("91 234 56 78", MultiLanguagePhoneDirectoryParser.phoneIn("91 234 56 78", "es"));
+        assertEquals("2-345-678", MultiLanguagePhoneDirectoryParser.phoneIn("2-345-678", "es"));
+        assertEquals(null, MultiLanguagePhoneDirectoryParser.phoneIn("Tel 01 42 68 53 00", "en"));
+        assertEquals("555-123-4567", MultiLanguagePhoneDirectoryParser.phoneIn("Calle Mayor 12 555-123-4567", "es"));
+        assertEquals("030 123456", MultiLanguagePhoneDirectoryParser.phoneIn("Hauptstraße 5 030 123456", "de"));
+        assertEquals("BUtterfield 8-4521", MultiLanguagePhoneDirectoryParser.phoneIn("BUtterfield 8-4521", "en"));
+
+        // OCR misreadings inside a phone are repaired; words and exchange names are left alone.
+        assertEquals("555-123-4567", MultiLanguagePhoneDirectoryParser.repairOcrDigits("555-l23-4567"));
+        assertEquals("555-123-4567", MultiLanguagePhoneDirectoryParser.phoneIn("555-l23-4567", "en"));
+        assertEquals("Oil BUtterfield 8-4521", MultiLanguagePhoneDirectoryParser.repairOcrDigits("Oil BUtterfield 8-4521"));
+
+        // The phone can share the line with the name.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("SMITH, John ........ 555-123-4567\n12 Main Street", "en");
+        assertEquals("555-123-4567", entries.get(0).get("phone"));
+        assertEquals("Smith, John", person(entries.get(0)).get("formatted"));
+        assertEquals(null, MultiLanguagePhoneDirectoryParser.nameBesidePhone("555-123-4567 ext. 12", "555-123-4567"));
+
+        // The PHP parser's evaluation set, with this port's known failures (see EvaluationSetCheck).
+        try {
+            assertEquals(List.of(), EvaluationSetCheck.wrongCases(
+                java.nio.file.Path.of("..", "..", "tests", "fixtures", "parser-evaluation.json"),
+                java.nio.file.Path.of("..", "fallas-conocidas.txt")
+            ));
+        } catch (java.io.IOException e) {
+            throw new java.io.UncheckedIOException(e);
+        }
 
         System.out.println("All Java port checks passed");
     }
@@ -59,7 +120,7 @@ public class PhoneDirectoryParserTest {
     }
 
     private static void assertEquals(Object expected, Object actual) {
-        if (!expected.equals(actual)) {
+        if (!java.util.Objects.equals(expected, actual)) {
             System.err.println("FAIL: expected <" + expected + "> but was <" + actual + ">");
             System.exit(1);
         }

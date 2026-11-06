@@ -65,6 +65,43 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(1, len(entries))
         self.assertEqual('Calle Larga 5', entries[0]['location']['street'])
 
+    def test_street_with_number_last_and_no_street_word(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("COSTA, Rui\nTravessa do Carmo 5", 'pt')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('COSTA, Rui', entries[0]['person_name']['full_name'])
+        self.assertEqual('Travessa do Carmo 5', entries[0]['location']['street'])
+
+    def test_dwelling_line_is_the_street_after_the_name(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("TAYLOR, Jim\nApt 4 Building 7\n555-123-4567", 'en')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('Apt 4 Building 7', entries[0]['location']['street'])
+
+    def test_name_ending_in_a_number_stays_a_name(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("Restaurante Siglo 21\nCalle Larga 5", 'es')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('Calle Larga 5', entries[0]['location']['street'])
+
+    def test_records_without_blank_line_between_them(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content(
+            "HALL, Ruth\n3 Main Street\n555-123-4567\nLEE, Ken\n8 Oak Lane\n555-987-6543", 'en')
+
+        self.assertEqual(['3 Main Street', '8 Oak Lane'], [e['location']['street'] for e in entries])
+
+    def test_city_line_does_not_split_a_record(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567", 'en')
+
+        self.assertEqual(1, len(entries))
+        self.assertEqual('555-123-4567', entries[0]['phone'])
+
+    def test_via_with_number_last_is_italian(self):
+        parser = MultiLanguagePhoneDirectoryParser()
+
+        self.assertEqual('it', parser.detect_language("ROSSI, Luigi\nVia Roma 10"))
+        self.assertEqual('en', parser.detect_language("SMITH, John\n12 Via Lane"))
+
     def test_separator_lines_split_entries(self):
         entries = MultiLanguagePhoneDirectoryParser().parse_content("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St")
 
@@ -80,6 +117,43 @@ class ParserTest(unittest.TestCase):
         entries = MultiLanguagePhoneDirectoryParser('mx').parse_content("Juan Pérez\nCalle Hidalgo 4")
 
         self.assertEqual('MX', entries[0]['location']['country_code'])
+
+
+class PhoneFormatsTest(unittest.TestCase):
+    P = MultiLanguagePhoneDirectoryParser
+
+    def test_each_language_reads_its_own_countries_formats(self):
+        cases = [('fr', 'Tel 01 42 68 53 00', '01 42 68 53 00'), ('fr', '+33 1 42 68 53 00', '+33 1 42 68 53 00'),
+                 ('de', '(089) 654321', '(089) 654321'), ('de', '0711/12345', '0711/12345'),
+                 ('it', '06 1234567', '06 1234567'), ('pt', '21 342 0000', '21 342 0000'),
+                 ('es', '91 234 56 78', '91 234 56 78'), ('es', '2-345-678', '2-345-678')]
+        for language, line, expected in cases:
+            self.assertEqual(expected, self.P().phone_in(line, language), (language, line))
+
+    def test_a_looser_format_is_not_read_in_another_languages_directory(self):
+        self.assertIsNone(self.P().phone_in('Tel 01 42 68 53 00', 'en'))
+        self.assertIsNone(self.P().phone_in('Tel 01 42 68 53 00', None))
+
+    def test_a_phone_never_starts_or_ends_next_to_another_digit_group(self):
+        self.assertEqual('555-123-4567', self.P().phone_in('Calle Mayor 12 555-123-4567', 'es'))
+        self.assertEqual('030 123456', self.P().phone_in('Hauptstraße 5 030 123456', 'de'))
+
+    def test_the_named_exchange_form(self):
+        self.assertEqual('BUtterfield 8-4521', self.P().phone_in('BUtterfield 8-4521', 'en'))
+
+    def test_ocr_misreadings_inside_a_phone_are_repaired(self):
+        self.assertEqual('555-123-4567', self.P().repair_ocr_digits('555-l23-4567'))
+        self.assertEqual('555-123-4567', self.P().phone_in('555-l23-4567', 'en'))
+        self.assertEqual('Oil BUtterfield 8-4521', self.P().repair_ocr_digits('Oil BUtterfield 8-4521'))
+
+    def test_the_phone_can_share_the_line_with_the_name(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("SMITH, John ........ 555-123-4567\n12 Main Street")
+
+        self.assertEqual('555-123-4567', entries[0]['phone'])
+        self.assertEqual('Smith, John', entries[0]['person_name']['formatted'])
+
+    def test_text_left_beside_a_phone_with_a_digit_is_not_a_name(self):
+        self.assertIsNone(self.P.name_beside_phone('555-123-4567 ext. 12', '555-123-4567'))
 
 
 class ManagerTest(unittest.TestCase):

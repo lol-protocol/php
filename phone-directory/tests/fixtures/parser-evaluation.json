@@ -81,17 +81,50 @@
             "esperado": [
                 {"tipo": "natural", "nombre": "HALL, Ruth", "calle": "3 Main Street", "telefono": "555-123-4567"},
                 {"tipo": "natural", "nombre": "LEE, Ken", "calle": "8 Oak Lane", "telefono": "555-987-6543"}
-            ],
-            "falla_conocida": "Sin línea en blanco entre registros, todo cae en un mismo bloque: la segunda entrada desaparece sin dejar error.",
-            "categoria": "separacion-de-registros"
+            ]
+        },
+        {
+            "id": "en-tres-entradas-sin-linea-en-blanco-ni-telefono",
+            "idioma": "en",
+            "entrada": "HALL, Ruth\n3 Main Street\nLEE, Ken\n8 Oak Lane\nWEST, Amy\n15 Elm Road",
+            "esperado": [
+                {"tipo": "natural", "nombre": "HALL, Ruth", "calle": "3 Main Street", "telefono": null},
+                {"tipo": "natural", "nombre": "LEE, Ken", "calle": "8 Oak Lane", "telefono": null},
+                {"tipo": "natural", "nombre": "WEST, Amy", "calle": "15 Elm Road", "telefono": null}
+            ]
+        },
+        {
+            "id": "en-linea-de-ciudad-no-separa-el-registro",
+            "idioma": "en",
+            "entrada": "SMITH, John\n12 Oak Street\nSpringfield\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "es-dos-entradas-sin-linea-en-blanco-numero-al-final",
+            "idioma": "es",
+            "entrada": "ROJAS, Carmen\nLos Aromos 12\n2-345-678\nPÉREZ SOTO, Ana\nLas Lilas 4\n2-555-1212",
+            "esperado": [
+                {"tipo": "natural", "nombre": "ROJAS, Carmen", "calle": "Los Aromos 12", "telefono": "2-345-678"},
+                {"tipo": "natural", "nombre": "PÉREZ SOTO, Ana", "calle": "Las Lilas 4", "telefono": "2-555-1212"}
+            ]
         },
         {
             "id": "en-departamento-sin-palabra-de-calle",
             "idioma": "en",
             "entrada": "TAYLOR, Jim\nApt 4 Building 7\n555-123-4567",
-            "esperado": [{"tipo": "natural", "nombre": "TAYLOR, Jim", "calle": "Apt 4 Building 7", "telefono": "555-123-4567"}],
-            "falla_conocida": "La calle no empieza con número ni tiene palabra de calle, así que no se reconoce y la entrada queda como error de parsing (antes, además, salía un registro inventado con «Apt» de nombre).",
-            "categoria": "calle-de-respaldo"
+            "esperado": [{"tipo": "natural", "nombre": "TAYLOR, Jim", "calle": "Apt 4 Building 7", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-departamento-con-letra",
+            "idioma": "en",
+            "entrada": "WARD, Lily\nFlat 2B Rose Court\n555-222-3333",
+            "esperado": [{"tipo": "natural", "nombre": "WARD, Lily", "calle": "Flat 2B Rose Court", "telefono": "555-222-3333"}]
+        },
+        {
+            "id": "en-nombre-que-empieza-como-departamento",
+            "idioma": "en",
+            "entrada": "Suite 16 Lounge\n12 Oak Street\n555-444-5555",
+            "esperado": [{"tipo": "natural", "nombre": "Suite 16 Lounge", "calle": "12 Oak Street", "telefono": "555-444-5555"}]
         },
         {
             "id": "es-bloque",
@@ -127,17 +160,13 @@
             "id": "es-calle-con-numero-al-final-sin-palabra-de-calle",
             "idioma": "es",
             "entrada": "PÉREZ SOTO, Ana\nLos Aromos 123\n555-123-4567",
-            "esperado": [{"tipo": "natural", "nombre": "PÉREZ SOTO, Ana", "calle": "Los Aromos 123", "telefono": "555-123-4567"}],
-            "falla_conocida": "Sin «calle», «avenida»… y con el número al final (lo normal en español), no se reconoce la calle y la entrada se pierde.",
-            "categoria": "calle-numero-al-final"
+            "esperado": [{"tipo": "natural", "nombre": "PÉREZ SOTO, Ana", "calle": "Los Aromos 123", "telefono": "555-123-4567"}]
         },
         {
             "id": "es-una-linea-sin-separadores",
             "idioma": "es",
             "entrada": "GARCÍA LÓPEZ Juan Calle Mayor 12 555-123-4567",
-            "esperado": [{"tipo": "natural", "nombre": "GARCÍA LÓPEZ, Juan", "calle": "Calle Mayor 12", "telefono": "555-123-4567"}],
-            "falla_conocida": "En una línea sin separadores se corta en el primer dígito, que en español es el final de la calle: el nombre se lleva «Calle Mayor» y la calle queda en «12».",
-            "categoria": "calle-numero-al-final"
+            "esperado": [{"tipo": "natural", "nombre": "GARCÍA LÓPEZ, Juan", "calle": "Calle Mayor 12", "telefono": "555-123-4567"}]
         },
         {
             "id": "es-telefono-chileno",
@@ -225,9 +254,7 @@
             "id": "de-una-linea-sin-separadores",
             "idioma": "de",
             "entrada": "MÜLLER Hans Hauptstraße 5 030 123456",
-            "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstraße 5", "telefono": "030 123456"}],
-            "falla_conocida": "Sin separadores, la línea se corta en el primer dígito, que en alemán es el final de la calle: el teléfono sale bien, pero el nombre se lleva «Hauptstraße» y la calle queda en «5» (lo mismo que es-una-linea-sin-separadores).",
-            "categoria": "calle-numero-al-final"
+            "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstraße 5", "telefono": "030 123456"}]
         },
         {
             "id": "de-deteccion-de-idioma",
@@ -266,9 +293,21 @@
             "idioma": null,
             "idioma_detectado": "it",
             "entrada": "ROSSI, Luigi\nVia Roma 10\n06 1234567",
-            "esperado": [{"tipo": "natural", "nombre": "ROSSI, Luigi", "calle": "Via Roma 10", "telefono": "06 1234567"}],
-            "falla_conocida": "«Via», la palabra de calle más común en italiano, queda fuera de la detección a propósito (también existe en inglés): la guía se lee como inglesa y, sin reconocer el teléfono, el teléfono se guarda como la calle.",
-            "categoria": "deteccion-de-idioma"
+            "esperado": [{"tipo": "natural", "nombre": "ROSSI, Luigi", "calle": "Via Roma 10", "telefono": "06 1234567"}]
+        },
+        {
+            "id": "it-deteccion-de-idioma-con-via-y-coma",
+            "idioma": null,
+            "idioma_detectado": "it",
+            "entrada": "BIANCHI, Anna\nVia Garibaldi, 7",
+            "esperado": [{"tipo": "natural", "nombre": "BIANCHI, Anna", "calle": "Via Garibaldi, 7", "telefono": null}]
+        },
+        {
+            "id": "en-deteccion-de-idioma-con-via-en-una-calle-inglesa",
+            "idioma": null,
+            "idioma_detectado": "en",
+            "entrada": "SMITH, John\n12 Via Lane\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Via Lane", "telefono": "555-123-4567"}]
         },
         {
             "id": "en-deteccion-de-idioma-por-omision",
@@ -294,6 +333,183 @@
             "idioma": "fr",
             "entrada": "MARTIN, Paul\n3 rue Victor Hugo\n+33 1 45 00 00 00",
             "esperado": [{"tipo": "natural", "nombre": "MARTIN, Paul", "calle": "3 rue Victor Hugo", "telefono": "+33 1 45 00 00 00"}]
+        },
+        {
+            "id": "pt-calle-con-numero-al-final-sin-palabra-de-calle",
+            "idioma": "pt",
+            "entrada": "COSTA, Rui\nTravessa do Carmo 5",
+            "esperado": [{"tipo": "natural", "nombre": "COSTA, Rui", "calle": "Travessa do Carmo 5", "telefono": null}]
+        },
+        {
+            "id": "it-calle-con-numero-al-final-sin-palabra-de-calle",
+            "idioma": "it",
+            "entrada": "BIANCHI, Anna\nVicolo Stretto 3",
+            "esperado": [{"tipo": "natural", "nombre": "BIANCHI, Anna", "calle": "Vicolo Stretto 3", "telefono": null}]
+        },
+        {
+            "id": "es-una-linea-apellido-que-es-palabra-de-calle",
+            "idioma": "es",
+            "entrada": "PLAZA ROJAS Juan Calle Mayor 12 555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "PLAZA ROJAS, Juan", "calle": "Calle Mayor 12", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "es-una-linea-segundo-apellido-que-es-palabra-de-calle",
+            "idioma": "es",
+            "entrada": "ROJAS PLAZA Juan Calle Mayor 12 555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "ROJAS PLAZA, Juan", "calle": "Calle Mayor 12", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "it-una-linea-sin-separadores",
+            "idioma": "it",
+            "entrada": "ROSSI Luigi Via Roma 10 06 1234567",
+            "esperado": [{"tipo": "natural", "nombre": "ROSSI, Luigi", "calle": "Via Roma 10", "telefono": "06 1234567"}]
+        },
+        {
+            "id": "es-empresa-con-numero-al-final-del-nombre",
+            "idioma": "es",
+            "entrada": "Restaurante Siglo 21\nCalle Larga 5\n555-123-4567",
+            "esperado": [{"tipo": "juridical", "nombre": "Restaurante Siglo 21", "calle": "Calle Larga 5", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-calle-abreviada-con-punto",
+            "idioma": "en",
+            "entrada": "BROWN, Alice\n12 Oak St.\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "BROWN, Alice", "calle": "12 Oak St.", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-calle-ordinal",
+            "idioma": "en",
+            "entrada": "GREEN, Paul\n250 5th Ave\n555-321-7654",
+            "esperado": [{"tipo": "natural", "nombre": "GREEN, Paul", "calle": "250 5th Ave", "telefono": "555-321-7654"}]
+        },
+        {
+            "id": "en-telefono-con-extension",
+            "idioma": "en",
+            "entrada": "ACME Corp\n10 Main Street\n555-123-4567 ext. 12",
+            "esperado": [{"tipo": "juridical", "nombre": "ACME Corp", "calle": "10 Main Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-telefono-en-la-linea-del-nombre",
+            "idioma": "en",
+            "entrada": "SMITH, John ........ 555-123-4567\n12 Oak Street",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-ocr-ele-por-uno-en-el-telefono",
+            "idioma": "en",
+            "entrada": "KING, Mary\n7 Elm Road\n555-l23-4567",
+            "esperado": [{"tipo": "natural", "nombre": "KING, Mary", "calle": "7 Elm Road", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-apellido-con-apostrofo",
+            "idioma": "en",
+            "entrada": "O'BRIEN, Sean\n3 Mill Lane\n555-777-8888",
+            "esperado": [{"tipo": "natural", "nombre": "O'BRIEN, Sean", "calle": "3 Mill Lane", "telefono": "555-777-8888"}]
+        },
+        {
+            "id": "en-apellido-partido-con-guion",
+            "idioma": "en",
+            "entrada": "WASHING-\nTON, George\n1 High Street\n555-111-2222",
+            "esperado": [{"tipo": "natural", "nombre": "WASHINGTON, George", "calle": "1 High Street", "telefono": "555-111-2222"}]
+        },
+        {
+            "id": "fr-numero-con-coma",
+            "idioma": "fr",
+            "entrada": "DUPONT, Marie\n12, rue de la Paix\n01 42 68 53 00",
+            "esperado": [{"tipo": "natural", "nombre": "DUPONT, Marie", "calle": "12, rue de la Paix", "telefono": "01 42 68 53 00"}]
+        },
+        {
+            "id": "fr-boulevard-abreviado",
+            "idioma": "fr",
+            "entrada": "MARTIN, Paul\n8 bd Haussmann\n01 45 23 11 00",
+            "esperado": [{"tipo": "natural", "nombre": "MARTIN, Paul", "calle": "8 bd Haussmann", "telefono": "01 45 23 11 00"}]
+        },
+        {
+            "id": "es-calle-abreviada-c-barra",
+            "idioma": "es",
+            "entrada": "LÓPEZ RUIZ, Marta\nC/ Mayor 12\n91 234 56 78",
+            "esperado": [{"tipo": "natural", "nombre": "LÓPEZ RUIZ, Marta", "calle": "C/ Mayor 12", "telefono": "91 234 56 78"}]
+        },
+        {
+            "id": "es-avenida-abreviada",
+            "idioma": "es",
+            "entrada": "SOTO VERA, Luis\nAvda. Libertad 40\n2-345-678",
+            "esperado": [{"tipo": "natural", "nombre": "SOTO VERA, Luis", "calle": "Avda. Libertad 40", "telefono": "2-345-678"}]
+        },
+        {
+            "id": "de-strasse-abreviada",
+            "idioma": "de",
+            "entrada": "SCHMIDT, Anna\nHauptstr. 5\n030 123456",
+            "esperado": [{"tipo": "natural", "nombre": "SCHMIDT, Anna", "calle": "Hauptstr. 5", "telefono": "030 123456"}]
+        },
+        {
+            "id": "de-strasse-sin-eszett",
+            "idioma": "de",
+            "entrada": "WEBER, Karl\nBahnhofstrasse 12\n089 654321",
+            "esperado": [{"tipo": "natural", "nombre": "WEBER, Karl", "calle": "Bahnhofstrasse 12", "telefono": "089 654321"}]
+        },
+        {
+            "id": "it-viale-abreviado",
+            "idioma": "it",
+            "entrada": "VERDI, Giulia\nV.le Mazzini 22\n06 7654321",
+            "esperado": [{"tipo": "natural", "nombre": "VERDI, Giulia", "calle": "V.le Mazzini 22", "telefono": "06 7654321"}]
+        },
+        {
+            "id": "pt-rua-abreviada",
+            "idioma": "pt",
+            "entrada": "SILVA SANTOS, Ana\nR. Augusta 100\n21 342 0000",
+            "esperado": [{"tipo": "natural", "nombre": "SILVA SANTOS, Ana", "calle": "R. Augusta 100", "telefono": "21 342 0000"}]
+        },
+        {
+            "id": "pt-avenida-abreviada",
+            "idioma": "pt",
+            "entrada": "COSTA, Rui\nAv. da Liberdade 5\n21 555 1234",
+            "esperado": [{"tipo": "natural", "nombre": "COSTA, Rui", "calle": "Av. da Liberdade 5", "telefono": "21 555 1234"}]
+        },
+        {
+            "id": "en-nombres-que-parecen-digitos-y-central-con-nombre",
+            "idioma": "en",
+            "entrada": "OLIVER, Ollie\n10 Oil Lane\nBUtterfield 8-4521",
+            "esperado": [{"tipo": "natural", "nombre": "OLIVER, Ollie", "calle": "10 Oil Lane", "telefono": "BUtterfield 8-4521"}]
+        },
+        {
+            "id": "en-empresa-con-telefono-en-la-linea-del-nombre",
+            "idioma": "en",
+            "entrada": "ACME Corp ........ 555-999-0000\n10 Main Street",
+            "esperado": [{"tipo": "juridical", "nombre": "ACME Corp", "calle": "10 Main Street", "telefono": "555-999-0000"}]
+        },
+        {
+            "id": "en-tratamiento-dr-antes-del-nombre",
+            "idioma": "en",
+            "entrada": "Dr. SMITH, John\n12 Oak Street\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "Dr. SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-santo-st-en-el-nombre-de-una-empresa",
+            "idioma": "en",
+            "entrada": "St. Mary Bakery\n12 Oak Street\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "St. Mary Bakery", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-calle-st-sin-numero",
+            "idioma": "en",
+            "entrada": "BROWN, Alice\nOak St\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "BROWN, Alice", "calle": "Oak St", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "es-calle-sin-palabra-cede-ante-una-con-palabra",
+            "idioma": "es",
+            "entrada": "Ferretería Sur\nDivisión 2\nCalle Mayor 5\n91 234 56 78",
+            "esperado": [{"tipo": "natural", "nombre": "Ferretería Sur", "calle": "Calle Mayor 5", "telefono": "91 234 56 78"}]
+        },
+        {
+            "id": "en-dos-entradas-con-telefono-en-la-linea-del-nombre",
+            "idioma": "en",
+            "entrada": "SMITH, John ..... 555-123-4567\n12 Oak Street\nLEE, Ken ..... 555-987-6543\n8 Oak Lane",
+            "esperado": [
+                {"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"},
+                {"tipo": "natural", "nombre": "LEE, Ken", "calle": "8 Oak Lane", "telefono": "555-987-6543"}
+            ]
         }
     ]
 }

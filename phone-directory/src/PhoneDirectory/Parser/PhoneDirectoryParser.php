@@ -9,7 +9,7 @@ use PhoneDirectory\Validation\InputValidator;
 /**
  * @phpstan-type RawEntry array{name: string|null, phone: string|null, street: string|null}
  * @phpstan-type ParseError array{line: int, reason: string, data: RawEntry}
- * @phpstan-type Patterns array{line_separator: string, phone_pattern: string, street_marker: string}
+ * @phpstan-type Patterns array{line_separator: string, phone_pattern: string}
  */
 class PhoneDirectoryParser
 {
@@ -62,7 +62,6 @@ class PhoneDirectoryParser
         $this->patterns = [
             'line_separator' => '/^(?:[-=_*]\s*){2,}$/',
             'phone_pattern' => PhonePattern::getValidatedRegex(),
-            'street_marker' => '/\b(?:st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|cir|circle)\b/iu',
         ];
 
         return $this->patterns;
@@ -119,7 +118,7 @@ class PhoneDirectoryParser
             // Invalid UTF-8 would crash the splitter's /u regex; such lines fall through to the block
             // path, where finalizeEntry() reports the record as a parse error.
             $single = mb_check_encoding($trimmed, 'UTF-8')
-                ? SingleLineEntrySplitter::split($trimmed, fn($street) => $this->isStreet($street), 1)
+                ? SingleLineEntrySplitter::split($trimmed, fn($street) => StreetRules::hasStreetWord($street, 'en'), 1)
                 : null;
             if ($single !== null) {
                 if (!empty($buffer)) {
@@ -146,37 +145,13 @@ class PhoneDirectoryParser
     /** @param list<string> $lines */
     private function processBuffer(array $lines, int $startLine): void
     {
-        $data = [
-            'name' => null,
-            'phone' => null,
-            'street' => null,
-        ];
-
-        $nameSet = false;
-        $patterns = $this->getPatterns();
-
-        foreach ($lines as $line) {
-            if (empty($data['phone']) && preg_match($patterns['phone_pattern'], $line, $matches)) {
-                $data['phone'] = $matches[0];
-            }
-
-            if (empty($data['street'])) {
-                $streetMatch = $this->extractStreet($line);
-                if ($streetMatch) {
-                    $data['street'] = $streetMatch;
-                }
-            }
-
-            if (!$nameSet && !preg_match($patterns['phone_pattern'], $line)) {
-                $streetMatch = $this->extractStreet($line);
-                if (!$streetMatch) {
-                    $data['name'] = $line;
-                    $nameSet = true;
-                }
-            }
+        $phonePattern = $this->getPatterns()['phone_pattern'];
+        foreach (BlockReader::read($lines, fn($line) => LineFacts::of($line, 'en', $phonePattern)) as $record) {
+            $this->finalizeEntry(
+                ['name' => $record['name'], 'phone' => $record['phone'], 'street' => $record['street']],
+                $startLine + $record['offset']
+            );
         }
-
-        $this->finalizeEntry($data, $startLine);
     }
 
     /** @param RawEntry $data */
@@ -222,24 +197,16 @@ class PhoneDirectoryParser
         }
     }
 
-    private function isStreet(string $line): bool
+    /**
+     * $afterName: the record's name has been read, so a dwelling line ("Apt 4 Building 7") also counts.
+     *
+     * @deprecated since 2026-11: BlockReader reads the street from LineFacts, which asks StreetRules directly.
+     *             Kept, not deleted, by the repository's rule on unused code (CLAUDE.md).
+     */
+    // @phpstan-ignore method.unused
+    private function extractStreet(string $line, bool $afterName = false): ?string
     {
-        $patterns = $this->getPatterns();
-        return preg_match($patterns['street_marker'], $line) === 1;
-    }
-
-    private function extractStreet(string $line): ?string
-    {
-        if ($this->isStreet($line)) {
-            return $line;
-        }
-
-        // A line that is only a phone number is not also a street, even though it starts with digits.
-        if (PhonePattern::isOnlyAPhoneNumber($line)) {
-            return null;
-        }
-
-        return StreetFallback::numberFirst($line);
+        return StreetRules::strong($line, 'en') ?? ($afterName ? StreetRules::afterName($line, 'en') : null);
     }
 
     /** @param RawEntry $data */
