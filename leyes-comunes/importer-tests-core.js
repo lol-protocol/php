@@ -6,6 +6,7 @@
 // laws-modules.yml con tests/database_check.php; esto vigila lo que se puede ver sin base:
 //   - las columnas que inserta son las del CSV y existen en el esquema,
 //   - ningún valor del CSV excede su VARCHAR (el modo estricto lo rechazaría: «Data too long»),
+//   - los archivos laterales (fuentes por campo, historial, traducciones) tienen su tabla y se importan,
 //   - borrar la base exige --yes y se niega antes de conectarse,
 //   - una fecha mal escrita es un error, no un NULL.
 import { test } from "node:test";
@@ -60,6 +61,20 @@ export function defineImporterTests({ root, loadMaster, masterCsv, columns }) {
       assert.match(core, new RegExp(`getenv\\('${nombre}'\\)`), `${nombre} no se lee`);
     }
     assert.match(core, /charset=utf8mb4/);
+  });
+
+  test("los archivos laterales tienen su tabla en el esquema y el importador los lee", () => {
+    for (const [tabla, archivo] of [
+      ["field_sources", "field_sources.csv"],
+      ["law_changes", "changes.csv"],
+      ["value_translations", "value_translations.csv"],
+    ]) {
+      assert.match(schema, new RegExp(`CREATE TABLE ${tabla} \\(`), `${tabla} no está en el esquema`);
+      assert.match(core, new RegExp(`INSERT INTO ${tabla}\\b`), `${tabla} no se llena nunca`);
+      assert.match(core, new RegExp(archivo.replace(".", "\\.")), `${archivo} no se lee nunca`);
+    }
+    assert.match(core, /DELETE FROM law_changes/);
+    assert.match(core, /DELETE FROM value_translations/);
   });
 
   test("--import es todo o nada y se puede repetir", () => {
