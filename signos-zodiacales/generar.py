@@ -98,6 +98,40 @@ def validar_changelog(texto, version):
     return errores
 
 
+def _errores_de_traducciones(donde, por_idioma, permite_espacios=False):
+    """Problemas de un texto traducido: tiene que estar en los 30 idiomas, sin textos vacíos (ni con espacios de más)."""
+    errores = []
+    if set(por_idioma) != set(IDIOMAS):
+        errores.append(f"{donde}: no tiene exactamente los {len(IDIOMAS)} idiomas")
+    for codigo, texto in por_idioma.items():
+        if not isinstance(texto, str) or not texto.strip() or (texto != texto.strip() and not permite_espacios):
+            errores.append(f"{donde}/{codigo}: texto vacío o con espacios de más")
+    return errores
+
+
+def _errores_de_terminos(donde, terminos, esperados):
+    """Problemas de un bloque de términos traducidos: las claves que tiene que haber, cada una en los 30 idiomas.
+
+    El separador de las listas sí puede llevar un espacio al final («, »).
+    """
+    errores = []
+    if set(terminos) != set(esperados):
+        errores.append(f"{donde}: faltan o sobran {sorted(set(esperados) ^ set(terminos))}")
+    for clave, por_idioma in terminos.items():
+        errores += _errores_de_traducciones(f"{donde}/{clave}", por_idioma, permite_espacios=(clave == "separador"))
+    return errores
+
+
+def _errores_de_glosario(donde, glosario):
+    """Problemas de un glosario de conceptos: claves en minúsculas y cada una traducida a los 30 idiomas."""
+    errores = []
+    for clave, por_idioma in glosario.items():
+        if not re.fullmatch(r"[a-z_]+", clave):
+            errores.append(f"{donde}/{clave}: la clave son minúsculas y guiones bajos")
+        errores += _errores_de_traducciones(f"{donde}/{clave}", por_idioma)
+    return errores
+
+
 TERMINOS_DE_ESPIRITUS = ({f"coro_{c}" for c in zodiaco.CHOROS} | {f"rango_{r}" for r in zodiaco.RANGOS}
                          | {"col_nombre", "col_coro", "col_rango", "col_legiones", "col_tramo", "col_cualidades",
                             "separador", "angeles_titulo", "demonios_titulo", "angeles_nota", "demonios_nota"})
@@ -105,27 +139,10 @@ TERMINOS_DE_ESPIRITUS = ({f"coro_{c}" for c in zodiaco.CHOROS} | {f"rango_{r}" f
 
 def validar_espiritus(esp):
     """Devuelve la lista de problemas de datos/espiritus.json (vacía si está bien)."""
-    errores = []
-    idiomas = set(IDIOMAS)
     if set(esp) != {"terminos", "cualidades", "angeles", "demonios"}:
         return ["espiritus: tiene que tener terminos, cualidades, angeles y demonios, y nada más"]
-
-    def traducciones(donde, por_idioma):
-        if set(por_idioma) != idiomas:
-            errores.append(f"{donde}: no tiene exactamente los {len(IDIOMAS)} idiomas")
-        for codigo, texto in por_idioma.items():
-            if not isinstance(texto, str) or not texto.strip() or texto != texto.strip() and "separador" not in donde:
-                errores.append(f"{donde}/{codigo}: texto vacío o con espacios de más")
-
-    if set(esp["terminos"]) != TERMINOS_DE_ESPIRITUS:
-        faltan = sorted(TERMINOS_DE_ESPIRITUS ^ set(esp["terminos"]))
-        errores.append(f"espiritus/terminos: faltan o sobran {faltan}")
-    for clave, por_idioma in esp["terminos"].items():
-        traducciones(f"espiritus/terminos/{clave}", por_idioma)
-    for clave, por_idioma in esp["cualidades"].items():
-        if not re.fullmatch(r"[a-z_]+", clave):
-            errores.append(f"espiritus/cualidades/{clave}: la clave son minúsculas y guiones bajos")
-        traducciones(f"espiritus/cualidades/{clave}", por_idioma)
+    errores = (_errores_de_terminos("espiritus/terminos", esp["terminos"], TERMINOS_DE_ESPIRITUS)
+               + _errores_de_glosario("espiritus/cualidades", esp["cualidades"]))
 
     usadas = set()
     for tipo, lista in (("angeles", esp["angeles"]), ("demonios", esp["demonios"])):
@@ -170,32 +187,17 @@ def _dias_del_anio(anio):
 
 def validar_arboles(arb, esp):
     """Devuelve la lista de problemas de datos/arboles.json (vacía si está bien); `esp` es espiritus.json."""
-    errores = []
-    idiomas = set(IDIOMAS)
     if set(arb) != {"terminos", "rasgos", "arboles", "calendario_celta", "horoscopo", "nakshatras"}:
         return ["arboles: tiene que tener terminos, rasgos, arboles, calendario_celta, horoscopo y nakshatras, y nada más"]
-
-    def traducciones(donde, por_idioma):
-        if set(por_idioma) != idiomas:
-            errores.append(f"{donde}: no tiene exactamente los {len(IDIOMAS)} idiomas")
-        for codigo, texto in por_idioma.items():
-            if not isinstance(texto, str) or not texto.strip() or (texto != texto.strip() and "separador" not in donde):
-                errores.append(f"{donde}/{codigo}: texto vacío o con espacios de más")
-
-    if set(arb["terminos"]) != TERMINOS_DE_ARBOLES:
-        errores.append(f"arboles/terminos: faltan o sobran {sorted(TERMINOS_DE_ARBOLES ^ set(arb['terminos']))}")
-    for clave, por_idioma in arb["terminos"].items():
-        traducciones(f"arboles/terminos/{clave}", por_idioma)
-    for clave, por_idioma in arb["rasgos"].items():
-        if not re.fullmatch(r"[a-z_]+", clave):
-            errores.append(f"arboles/rasgos/{clave}: la clave son minúsculas y guiones bajos")
+    errores = (_errores_de_terminos("arboles/terminos", arb["terminos"], TERMINOS_DE_ARBOLES)
+               + _errores_de_glosario("arboles/rasgos", arb["rasgos"]))
+    for clave in arb["rasgos"]:
         if clave in esp["cualidades"]:
             errores.append(f"arboles/rasgos/{clave}: ya está en el glosario de espiritus.json (úsalo desde ahí)")
-        traducciones(f"arboles/rasgos/{clave}", por_idioma)
     for clave, a in arb["arboles"].items():
         if not re.fullmatch(r"[a-z_]+", clave) or not str(a.get("cientifico", "")).strip():
             errores.append(f"arboles/arboles/{clave}: id (minúsculas) o nombre científico no válidos")
-        traducciones(f"arboles/arboles/{clave}/nombres", a.get("nombres", {}))
+        errores += _errores_de_traducciones(f"arboles/arboles/{clave}/nombres", a.get("nombres", {}))
 
     usadas, arboles_usados = set(), set()
 
@@ -281,17 +283,9 @@ TERMINOS_DE_NUMEROLOGIA = {"titulo", "nota", "col_numero", "col_rasgos", "separa
 
 def validar_numerologia(num, arb, esp):
     """Devuelve la lista de problemas de datos/numerologia.json (vacía si está bien)."""
-    errores = []
     if set(num) != {"terminos", "numeros"}:
         return ["numerologia: tiene que tener terminos y numeros, y nada más"]
-    if set(num["terminos"]) != TERMINOS_DE_NUMEROLOGIA:
-        errores.append(f"numerologia/terminos: faltan o sobran {sorted(TERMINOS_DE_NUMEROLOGIA ^ set(num['terminos']))}")
-    for clave, por_idioma in num["terminos"].items():
-        if set(por_idioma) != set(IDIOMAS):
-            errores.append(f"numerologia/terminos/{clave}: no tiene exactamente los {len(IDIOMAS)} idiomas")
-        for codigo, texto in por_idioma.items():
-            if not isinstance(texto, str) or not texto.strip() or (texto != texto.strip() and clave != "separador"):
-                errores.append(f"numerologia/terminos/{clave}/{codigo}: texto vacío o con espacios de más")
+    errores = _errores_de_terminos("numerologia/terminos", num["terminos"], TERMINOS_DE_NUMEROLOGIA)
     if [n.get("numero") for n in num["numeros"]] != [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33]:
         errores.append("numerologia/numeros: tienen que ser 1 a 9, 11, 22 y 33, en ese orden")
     for n in num["numeros"]:
@@ -328,8 +322,7 @@ def validar(datos):
     necesarios = (ELEMENTOS_OCCIDENTALES | ELEMENTOS_CHINOS | MODALIDADES | POLARIDADES
                   | TERMINOS_DE_INTERFAZ | set(zodiaco.ORDEN_CALDEO))
     for t in sorted(necesarios):
-        if set(terminos.get(t, {})) != esperados_idiomas:
-            errores.append(f"terminos/{t}: no tiene exactamente los {len(IDIOMAS)} idiomas")
+        errores += _errores_de_traducciones(f"terminos/{t}", terminos.get(t, {}))
 
     ciclo = datos.get("nombres_del_ciclo", {})
     if set(ciclo) != esperados_idiomas:
@@ -585,7 +578,7 @@ def anios(signo, datos, codigo):
     lista = zodiaco.anios_del_animal(signo["id"], *ANIOS_FICHA, datos=datos)
     terminos = datos["terminos"]
     return " · ".join(
-        f"{a} {terminos[zodiaco.animal_chino(a, datos=datos)['elemento_del_anio']][codigo]}" for a in lista
+        f"{a} {terminos[zodiaco._animal_chino(a, datos)['elemento_del_anio']][codigo]}" for a in lista  # solo lee: sin copiar
     )
 
 
@@ -969,9 +962,7 @@ def vectores_de(datos):
         "revision": {c: datos["revision"][c] for c in IDIOMAS},
         "espiritu_de_fecha": [],
         "tramos_de_espiritus": {
-            str(anio): {s["id"]: zodiaco.tramos_de_espiritus(s["id"], anio, datos)
-                        for s in datos["signos"] if s["tipo"] == "occidental"}
-            for anio in (2024, 2025)
+            s["id"]: zodiaco.tramos_de_espiritus(s["id"], datos=datos) for s in datos["signos"] if s["tipo"] == "occidental"
         },
         "cualidades_de": {
             codigo: [[t, n, zodiaco.cualidades_de(t, n, codigo)]
