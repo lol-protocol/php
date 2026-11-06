@@ -48,7 +48,7 @@ run_lib() { run bash -c "source '$VPS_DIR/lib.sh'; $1"; }
     ! grep -q "chown" "$SUDO_LOG"
 }
 
-@test "setup_app_directories da la app a www-data pero no los logs" {
+@test "setup_app_directories (en desuso) da la app a www-data pero no los logs" {
     run_lib 'setup_app_directories /var/www/app ejemplo.com'
     grep -q "chown -R www-data:www-data /var/www/app" "$SUDO_LOG"
     ! grep -q "chown.*/var/log/nginx" "$SUDO_LOG"

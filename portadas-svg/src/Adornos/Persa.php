@@ -35,8 +35,7 @@ final class Persa extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
         $rayos = [];
         for ($i = 0; $i < 32; $i++) {
             $angulo = deg2rad(360 * $i / 32);

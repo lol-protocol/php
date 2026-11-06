@@ -10,6 +10,7 @@ import re
 import unicodedata
 
 from normalizacion import normalizar
+from md import celda
 
 # Cuántos ejemplos se muestran por comprobación, y cuántos casos de las listas largas.
 EJEMPLOS = 5
@@ -75,12 +76,8 @@ def analizar(completa):
     }
 
 
-def _celda(texto):
-    return str(texto).replace("|", "&#124;")
-
-
 def _nombres_md(nombres):
-    return ", ".join(f"«{_celda(n)}»" for n in nombres)
+    return ", ".join(f"«{celda(n)}»" for n in nombres)
 
 
 def _miles(n):
@@ -148,7 +145,7 @@ def informe(completa):
         "| Carácter | Nombre Unicode | Nombres | Ejemplo |", "|---|---|---|---|",
     ]
     for c, lista in sorted(a["signos"].items(), key=lambda par: (-len(par[1]), par[0])):
-        mostrado = c if c == "0-9" else f"`{_celda(c)}` U+{ord(c):04X}"
+        mostrado = c if c == "0-9" else f"`{celda(c)}` U+{ord(c):04X}"
         partes.append(f"| {mostrado} | {_nombre_del_signo(c)} | {len(lista)} | {_nombres_md(lista[:1])} |")
     partes += ["", "## Los más largos", "", _nombres_md(a["mas_largos"]) + ".", ""]
     return "\n".join(partes)

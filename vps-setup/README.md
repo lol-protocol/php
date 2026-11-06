@@ -156,7 +156,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 07_E | `07_E-nginx-performance.sh` | Amplía gzip (CSS/JS/JSON/XML/SVG, también respuestas de apps tras proxy) y activa `open_file_cache` para todos los dominios. Si `nginx -t` rechaza la config, quita su archivo |
 | 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
 | 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
-| 06_A | `06_A-setup-php-app.sh <app> <dominio>` | *(Opcional)* Configura una app PHP adicional. Si la carpeta ya tiene tu código, re-correrlo (p. ej. para cambiar el límite de subida) **no lo reemplaza**: solo crea la página de prueba en una carpeta vacía. Permite subidas de hasta `MAX_UPLOAD` (20M por defecto) en Nginx y en PHP |
+| 06_A | `06_A-setup-php-app.sh <app> <dominio>` | *(Opcional)* Configura una app PHP adicional. Si la carpeta ya tiene tu código, re-correrlo (p. ej. para cambiar el límite de subida) **no lo reemplaza**: solo crea la página de prueba en una carpeta vacía. Permite subidas de hasta `MAX_UPLOAD` (20M por defecto) en Nginx y en PHP. Cada app corre con su usuario `app-<app>` y su pool de PHP-FPM (`PHP_MAX_CHILDREN`, 5 por defecto), y trae su base PostgreSQL en `.env` (`APP_DB=0` la omite) |
 | 06_B | `06_B-setup-python-app.sh <app> <dominio> [puerto]` | *(Opcional)* Configura una app Python (Flask + Gunicorn). Cada app necesita su propio puerto local (por defecto 8000): el script rechaza uno que ya use otra app. Como en `06_A`, re-correrlo no pisa tu `app.py`: solo actualiza el servicio y el proxy. `MAX_UPLOAD` (20M) y `PROXY_TIMEOUT` (120s, igual en Nginx y gunicorn) son configurables Cada app Python corre con **su propio usuario de sistema** (`app-<nombre>`), en una carpeta 750 solo suya, y con **su propia base de datos y rol** PostgreSQL (`app_<nombre>`, sin acceso a las demás): su `DATABASE_URL` queda en un `.env` modo 600 que el servicio carga. `APP_DB=0` omite la base |
 | 06_C | `06_C-setup-dns-server.sh <dominio> [ip] [secundario-ovh]` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`), con registro CAA (solo Let's Encrypt) y AAAA si das `VPS_IP6=`. Sin IP usa la pública detectada — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
 | 06_D | `06_D-setup-tomcat-app.sh <dominio> [context]` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho. Admite `MAX_UPLOAD` y `PROXY_TIMEOUT` como 06_B |
@@ -255,9 +255,9 @@ autoritativo (06_C), unidades systemd de apps Python con sandbox básico (06_B),
 privados (02_J), entradas validadas con listas blancas y `remote-run.sh` solo por llave.
 
 Límites conocidos (decisiones de diseño, no bugs):
-- Las apps **PHP** corren todavía como `www-data` (pool de PHP-FPM compartido): una app PHP comprometida puede leer los
-  archivos de las demás apps PHP. Las apps **Python** ya están aisladas (usuario, carpeta 750 y base propios). El pool
-  de PHP-FPM por app es el siguiente paso.
+- Las apps **PHP** (`06_A`) y **Python** (`06_B`) están aisladas: usuario `app-<nombre>`, carpeta 750 y base propia
+  (las PHP, además, con su pool de PHP-FPM y su socket). **Marcalibros** (`06_E`) sigue corriendo como `www-data`
+  en el pool compartido.
 - `remote-run.sh` usa `StrictHostKeyChecking=accept-new`: confía en la huella del VPS en la primera conexión. Verifícala
   con la consola del proveedor si te preocupa un MITM en esa primera vez.
 - Webmin (02_J) escucha solo en localhost; el instalador `setup-repos.sh` y el propio paquete se descargan de `raw.githubusercontent.com/.../master` sin verificar

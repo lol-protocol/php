@@ -116,11 +116,12 @@ def filas_gazetteer(d):
                                   d["hex_cotidiano"].get(fila[4], "")) for fila in unicas]
 
 
-def gazetteer_tsv(d):
+def gazetteer_tsv(d, filas=None):
+    """El gazetteer como TSV. `filas` son las de filas_gazetteer(d) si ya se calcularon (ordenarlas cuesta)."""
     salida = io.StringIO()
     escritor = csv.writer(salida, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE, escapechar="\\")
     escritor.writerow(COLUMNAS_GAZETTEER)
-    escritor.writerows(filas_gazetteer(d))
+    escritor.writerows(filas_gazetteer(d) if filas is None else filas)
     return salida.getvalue()
 
 
@@ -131,14 +132,14 @@ COLUMNAS_LEXICO_UD = ["forma", "lema", "upos", "feats", "idioma", "concepto"]
 ETIQUETA_SPACY = "COLOR"
 
 
-def spacy_patrones(d):
+def spacy_patrones(d, filas=None):
     """{código: texto JSONL} con un patrón de EntityRuler de spaCy por cada forma de cada idioma, sacadas del gazetteer.
 
     El patrón es el texto de la forma (spaCy lo parte con el tokenizador del idioma del texto) y `id` lleva el concepto
     (el id del color CSS o del léxico); si la forma sirve para más de uno van separados por «;» y en orden alfabético.
     """
     conceptos = {}
-    for forma, idioma, _, _, concepto, *_ in filas_gazetteer(d):
+    for forma, idioma, _, _, concepto, *_ in (filas_gazetteer(d) if filas is None else filas):
         conceptos.setdefault(idioma, {}).setdefault(forma, set()).add(concepto)
     return {codigo: "".join(
         _json({"label": ETIQUETA_SPACY, "pattern": forma, "id": ";".join(sorted(ids))}) + "\n"

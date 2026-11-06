@@ -23,8 +23,7 @@ final class Moderna extends Adorno
 
     public function emblema(float $cx, float $cy, float $radio, string $color, ?float $trazo = null): string
     {
-        $grosor = $trazo ?? self::grosor($radio);
-        $r = $radio - $grosor;
+        [$grosor, $r] = self::trazoYRadio($radio, $trazo);
         $puntas = [];
         for ($i = 0; $i < 8; $i++) {
             $angulo = deg2rad(45 * $i - 90);

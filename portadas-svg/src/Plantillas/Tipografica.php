@@ -8,7 +8,6 @@ use PortadasSvg\Color;
 use PortadasSvg\Libro;
 use PortadasSvg\Plantilla;
 use PortadasSvg\Rectangulo;
-use PortadasSvg\Texto;
 
 /**
  * Libro tipográfico: sin marco, el autor y el título a la izquierda en serif, y el emblema de la tradición
@@ -33,7 +32,6 @@ final class Tipografica extends Plantilla
     /** Subtítulo: alto disponible y tamaño. */
     private const SUBTITULO_ALTO = 16.0;
     private const SUBTITULO_TAMANO_MAX = 5.2;
-    private const SUBTITULO_TAMANO_MIN = 3.2;
     /** Traductor: distancia de su línea base al borde inferior del emblema, y tamaño. */
     private const TRADUCTOR_TAMANO_MAX = 3.4;
     private const TRADUCTOR_TAMANO_MIN = 2.4;
@@ -63,15 +61,11 @@ final class Tipografica extends Plantilla
         $svg = $this->rectangulo(new Rectangulo($x, $panel->y + self::BARRA_Y, self::BARRA_ANCHO, self::BARRA_ALTO), ['fill' => $colores['acento']]);
         $svg .= $this->rotulo(mb_strtoupper($libro->textos->autor), $x, $panel->y + self::AUTOR_Y, $ancho, self::AUTOR_TAMANO_MAX, self::AUTOR_TAMANO_MIN, 'start', $colores['acento'], ['letter-spacing' => self::AUTOR_ESPACIADO]);
 
-        $titulo = Texto::ajustar($libro->textos->titulo, $ancho, $panel->alto * self::TITULO_ALTO, self::TITULO_TAMANO_MAX, self::TITULO_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO, true);
-        $y = $panel->y + self::TITULO_Y + $titulo['tamano'] * self::ASCENDENTE;
-        $svg .= $this->parrafo($titulo['lineas'], $x, $y, $titulo['tamano'], 'start', $colores['texto']);
-        $fin = $y + (count($titulo['lineas']) - 1) * $titulo['tamano'] * self::INTERLINEADO;
-
-        if ($libro->textos->subtitulo !== '') {
-            $subtitulo = Texto::ajustar($libro->textos->subtitulo, $ancho, self::SUBTITULO_ALTO, self::SUBTITULO_TAMANO_MAX, self::SUBTITULO_TAMANO_MIN, $this->medidaDe(['font-style' => 'italic']), self::INTERLINEADO, true);
-            $svg .= $this->parrafo($subtitulo['lineas'], $x, $this->bajoElTitulo($fin, $titulo['tamano'], $subtitulo['tamano']), $subtitulo['tamano'], 'start', $colores['texto'], ['font-style' => 'italic']);
-        }
+        $svg .= $this->tituloYSubtitulo(
+            $libro, $x, $ancho, 'start', $panel->y + self::TITULO_Y, $panel->alto * self::TITULO_ALTO, false,
+            ['max' => self::TITULO_TAMANO_MAX, 'min' => self::TITULO_TAMANO_MIN, 'estilo' => [], 'color' => $colores['texto']],
+            ['alto' => self::SUBTITULO_ALTO, 'max' => self::SUBTITULO_TAMANO_MAX, 'estilo' => ['font-style' => 'italic'], 'color' => $colores['texto']],
+        );
 
         // Abajo, el emblema de la tradición en grande y de línea fina, centrado.
         $radio = min(self::EMBLEMA_RADIO, $ancho / 2);

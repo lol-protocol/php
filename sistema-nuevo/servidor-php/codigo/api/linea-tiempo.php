@@ -9,6 +9,7 @@ declare(strict_types=1);
  * edad y el género, sin el usuario que se está mirando ($excluirUsuario).
  *
  * @param array<string,mixed> $query
+ * @param array{presets: list<array{key: string, label: string, countries: list<string>}>, countries: array<string,string>} $groups lo que devuelve AlmacenDatos::groups()
  */
 function api_universo_desde_query(array $query, array $groups, string $excluirUsuario): Universo
 {

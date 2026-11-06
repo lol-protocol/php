@@ -115,6 +115,14 @@ php bin/migrate.php pos --seed         # aplica y carga datos de demostración (
   política de privacidad del POS tiene que decir que estas direcciones se
   guardan mientras exista la orden y por qué.
 
+## Zona horaria
+
+Las columnas de fecha son `TIMESTAMP` sin zona: PHP escribe el texto que le da `date()` y lo lee con `strtotime()`,
+así que quien escribe y quien lee tienen que usar la misma zona. `Config::load()` la fija en todos los puntos de
+entrada (el sitio y los `bin/`) con `APP_TIMEZONE`, `UTC` por omisión, y no deja que decida el `php.ini` de cada
+proceso: con uno distinto para PHP-FPM y para cron, un pedido de retiro parecería llevar horas de más o de menos y
+`--ocultar` ocultaría antes o después del plazo. Cambiarla en un sitio que ya tiene filas mueve esas fechas.
+
 ## Tests
 
 La suite corre siempre contra SQLite en memoria y, si `TEST_PG_DSN` está

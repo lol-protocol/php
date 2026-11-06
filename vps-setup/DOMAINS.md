@@ -27,7 +27,7 @@ existe pero se hizo a mano (sin marca).
 | Tipo | Script | Archivos | Proceso |
 |------|--------|----------|---------|
 | Landing estática | `03` | `/var/www/landing-page/<dominio>/` (copia de `landing-page/` del repo) | Nginx; `.php` responde 404 |
-| App PHP | `06_A <app> <dominio>` | `/var/www/<app>/` | PHP-FPM 8.3 (`/run/php/php8.3-fpm.sock`) |
+| App PHP | `06_A <app> <dominio>` | `/var/www/<app>/` (750, del usuario `app-<app>`, grupo `www-data`) | pool PHP-FPM propio (`/run/php/app-<app>.sock`) |
 | App Python | `06_B <app> <dominio> [puerto]` | `/var/www/<app>/` (750, del usuario `app-<app>`) con su `venv/` y su `.env` | servicio systemd `<app>` como `app-<app>` (gunicorn en `127.0.0.1:<puerto>`) |
 | App Java | `06_D <dominio> [context]` | `.war` en `/var/lib/tomcat10/webapps/` | Tomcat en `127.0.0.1:8080`; `/manager` da 404 si la app va en la raíz |
 | Marcalibros | `06_E <dominio> [--png]` | `/var/www/marcalibros/` (código) y `/var/lib/marcalibros` (datos) | PHP-FPM; limpieza diaria en `/etc/cron.d/marcalibros`; `10_A --type marcalibros` |
@@ -42,11 +42,11 @@ la configuración (límite de subida, puerto, timeouts, vhost). Tampoco hacen `c
 código: solo ajustan el dueño de la carpeta, para no cambiar los permisos de tus archivos. Ojo con `06_B`:
 si tu app escucha en un puerto fijo propio, el servicio y el proxy usan el que pasaste al script, no el de tu código.
 
-**Aislamiento de las apps Python.** Cada una tiene: su usuario de sistema `app-<nombre>` (sin login; el nombre
+**Aislamiento de las apps Python y PHP.** Cada una tiene: su usuario de sistema `app-<nombre>` (sin login; el nombre
 admite hasta 28 caracteres, porque Linux limita el usuario a 32), una carpeta 750 que solo ese usuario entra, y su
 base de datos y rol PostgreSQL `app_<nombre>` (sin `CONNECT` para los demás). Una app comprometida no puede leer el
-código, el `.env` ni la base de otra. Para trabajar como ese usuario: `sudo -u app-<nombre> bash` (con `-s` no entra:
-su shell es `nologin`). Si una carpeta ya tiene código de otro dueño (de `www-data`, por ejemplo), `06_B` no la
+código, el `.env` ni la base de otra (en las PHP, `www-data` solo entra a la carpeta para servir lo estático; el `.env` es 600). Para trabajar como ese usuario: `sudo -u app-<nombre> bash` (con `-s` no entra:
+su shell es `nologin`). Si una carpeta ya tiene código de otro dueño (de `www-data`, por ejemplo), `06_A` y `06_B` no la
 toca: se detiene y te dice el `chown -R` para migrarla. `10_B --app` archiva la carpeta (con el `.env`, en una ruta
 solo de root) pero **no borra** la base ni el usuario: te indica los comandos, y un `pg_dump` por si lo necesitas.
 
