@@ -56,6 +56,17 @@ final class FunnelRepository
         return $stmt->fetchAll();
     }
 
+    /** Cuantos paises nombra la tabla «Conversion por pais» antes de juntar el resto en una fila «Otros». */
+    public const PAISES_EN_LA_TABLA = 10;
+
+    /**
+     * Los PAISES_EN_LA_TABLA con mas visitantes, mas una fila «Otros (N paises)» con la suma de
+     * los demas: sin ella la tabla no cuadraba con los visitantes del periodo. Un unico pais
+     * sobrante se nombra en vez de esconderlo en «Otros (1 pais)». A igual cantidad de visitantes
+     * va primero el de nombre menor, para que el corte no dependa del orden en que la base
+     * devuelva los empates. Son pocas filas (a lo sumo el catalogo de paises), asi que el corte
+     * se hace aca y no con un LIMIT.
+     */
     public function porPais(string $desde, string $hasta): array
     {
         $stmt = $this->db->prepare(
@@ -67,11 +78,33 @@ final class FunnelRepository
              FROM usuarios_funnel uf
              JOIN paises p ON p.codigo = uf.pais_codigo
              WHERE uf.fecha_visita BETWEEN :desde AND :hasta
-             GROUP BY p.nombre ORDER BY visitantes DESC
-             LIMIT 10"
+             GROUP BY p.nombre ORDER BY visitantes DESC, etiqueta"
         );
         $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
-        return $stmt->fetchAll();
+
+        return self::conFilaDeOtros($stmt->fetchAll(), self::PAISES_EN_LA_TABLA);
+    }
+
+    /**
+     * Deja las primeras $nombradas filas y suma las demas en una «Otros (N paises)». Si sobra una
+     * sola, la deja como esta.
+     *
+     * @param list<array<string, mixed>> $filas ya ordenadas, con etiqueta, visitantes, registrados, leads y clientes
+     * @return list<array<string, mixed>>
+     */
+    private static function conFilaDeOtros(array $filas, int $nombradas): array
+    {
+        if (count($filas) <= $nombradas + 1) {
+            return $filas;
+        }
+
+        $resto = array_slice($filas, $nombradas);
+        $otros = ['etiqueta' => sprintf('Otros (%d países)', count($resto))];
+        foreach (['visitantes', 'registrados', 'leads', 'clientes'] as $columna) {
+            $otros[$columna] = array_sum(array_map('intval', array_column($resto, $columna)));
+        }
+
+        return [...array_slice($filas, 0, $nombradas), $otros];
     }
 
     public function porGenero(string $desde, string $hasta): array
