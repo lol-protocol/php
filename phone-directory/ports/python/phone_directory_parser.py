@@ -155,7 +155,71 @@ class MultiLanguagePhoneDirectoryParser:
 
     SEPARATOR_PATTERN = re.compile(r'^(?:[-=_*]\s*){2,}$')
 
-    PHONE_PATTERN = r'\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b'
+    # Same as PhonePattern::REGEX: digit groups (555-123-4567, 5551234567) and the named exchange of early
+    # directories ("BUtterfield 8-4521"), which needs a separator on both sides of the word.
+    PHONE_PATTERN = r'\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b|\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b'
+
+    # Same as PhonePattern::LANGUAGE_FORMATS: the formats of each language's countries, kept per language
+    # because the looser ones would read a house number as part of a phone in another language's directory.
+    LANGUAGE_PHONE_FORMATS = {
+        'fr': [r'(?:\+33[ .]?[1-9]|0[1-9])(?:[ .]?\d{2}){4}'],
+        'de': [r'(?:\+49[ ]?[1-9]\d{1,3}|\(0\d{2,4}\)|0\d{2,4})[ /-]?\d{3,8}(?:-\d{1,4})?'],
+        'it': [r'(?:\+39[ ]?)?0\d{1,3}[ /-]?\d{4,8}'],
+        'pt': [r'(?:\+351[ ]?)?(?:[2-9]\d[ ]\d{3}[ ]\d{4}|[2-9]\d{2}[ ]\d{3}[ ]\d{3})'],
+        'es': [r'(?:\+34[ ]?)?[6-9]\d[ ]\d{3}(?:[ ]\d{2}){2}',
+               r'(?:\(\d{1,3}\)[ ]?|\d{1,3}[ -])\d{3}[ -]\d{3,4}'],
+    }
+    # Not preceded by a digit or a "+", not followed by a separator and a digit.
+    _PHONE_BEFORE = r'(?<![\d+])'
+    _PHONE_AFTER = r'(?![ ./-]?\d)'
+    _phone_regexes = {}
+
+    @classmethod
+    def phone_regex(cls, language: Optional[str] = None) -> 're.Pattern':
+        """The base formats plus those of `language`'s countries (English and unknown languages: the base)."""
+        key = language if language in cls.LANGUAGE_PHONE_FORMATS else ''
+        if key not in cls._phone_regexes:
+            parts = [cls.PHONE_PATTERN] + [cls._PHONE_BEFORE + '(?:' + f + ')' + cls._PHONE_AFTER
+                                           for f in cls.LANGUAGE_PHONE_FORMATS.get(key, [])]
+            cls._phone_regexes[key] = re.compile('|'.join(parts))
+        return cls._phone_regexes[key]
+
+    _OCR_CHEAP_TEST = re.compile(r'\d[ .\-]?[OolI]|[OolI][ .\-]?\d')
+    _OCR_RUN = re.compile(r'(?<![^\W_])[\dOolI](?:[ .\-]?[\dOolI])+(?![^\W_])')
+
+    @classmethod
+    def repair_ocr_digits(cls, line: str) -> str:
+        """Same as PhonePattern::repairOcrDigits: "l" or "I" for 1 and "O" or "o" for 0 inside what looks like a
+        phone number ("555-l23-4567" gives "555-123-4567"), only in a run with at least 6 real digits and at
+        most 2 such letters, so words ("Oil") and exchange names ("BUtterfield 8-4521") are left alone."""
+        if not cls._OCR_CHEAP_TEST.search(line):
+            return line
+
+        def fix(m):
+            digits = len(re.findall(r'\d', m.group()))
+            letters = len(re.findall(r'[OolI]', m.group()))
+            return m.group().translate(str.maketrans('OolI', '0011')) if 0 < letters <= 2 and digits >= 6 else m.group()
+        return cls._OCR_RUN.sub(fix, line)
+
+    def phone_in(self, line: str, language: Optional[str] = None) -> Optional[str]:
+        """The line's phone, also when the scan misread a digit as a letter ("555-l23-4567"); None if it has none."""
+        regex = self.phone_regex(language)
+        match = regex.search(line)
+        if match:
+            return match.group()
+        repaired = self.repair_ocr_digits(line)
+        match = regex.search(repaired) if repaired != line else None
+        return match.group() if match else None
+
+    @staticmethod
+    def name_beside_phone(line: str, phone: str) -> Optional[str]:
+        """What a line says besides its phone, when that could be a name: "SMITH, John ........ 555-123-4567"
+        gives "SMITH, John". None when nothing is left or what is left has a digit ("555-123-4567 ext. 12")."""
+        offset = line.find(phone)
+        if offset < 0:
+            return None
+        rest = (line[:offset] + ' ' + line[offset + len(phone):]).strip(' \t.,:;-\u2013\u2014')
+        return rest if re.search(r'[^\W\d_]', rest) and not re.search(r'\d', rest) else None
 
     def __init__(self, country_code: str = 'US'):
         self.country_code = country_code.upper()
@@ -272,7 +336,7 @@ class MultiLanguagePhoneDirectoryParser:
         start = 0
         has_name = has_street = False
         for i, line in enumerate(lines):
-            is_phone = bool(re.search(self.PHONE_PATTERN, line))
+            is_phone = self.phone_in(line, language) is not None
             is_street = self._is_street_line(line, language, has_name)
             if has_name and has_street and not is_phone and not is_street \
                     and i + 1 < len(lines) and self._is_street_line(lines[i + 1], language, True):
@@ -294,10 +358,9 @@ class MultiLanguagePhoneDirectoryParser:
         }
 
         for line in lines:
-            if not data['phone']:
-                match = re.search(self.PHONE_PATTERN, line)
-                if match:
-                    data['phone'] = match.group()
+            phone = self.phone_in(line, language)
+            if not data['phone'] and phone:
+                data['phone'] = phone
 
             street = self._extract_street(line, language)
             # Only once the name is read: "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
@@ -306,8 +369,11 @@ class MultiLanguagePhoneDirectoryParser:
             if not data['street'] and street:
                 data['street'] = street
 
-            if not data['name'] and not re.search(self.PHONE_PATTERN, line) and not street:
-                data['name'] = line
+            if not data['name'] and not street:
+                # A phone line can also carry the name ("SMITH, John ........ 555-123-4567").
+                name = line if phone is None else self.name_beside_phone(self.repair_ocr_digits(line), phone)
+                if name is not None:
+                    data['name'] = name
 
         if not data['name'] or not data['street']:
             self.errors.append({

@@ -470,7 +470,7 @@ phpstan analyse
 
 PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `composer global require phpstan/phpstan:^2.1`) y la CI lo trae con `shivammathur/setup-php`. Revisa `src/`, `bin/` (incluido `bin/phonedir`) y `examples/`, no los tests.
 
-Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`. Siguen las reglas de calle, de separación de registros y de detección de idioma del parser multilingüe en formato de bloque, pero no las de esta tanda para guías escaneadas (corrección de dígitos del OCR, teléfono en la línea del nombre, `C/`, palabras partidas con guion).
+Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`. Siguen las reglas de calle, de separación de registros, de detección de idioma y de teléfonos (los formatos de cada idioma, la central con nombre, la corrección de dígitos del OCR y el teléfono en la línea del nombre) del parser multilingüe en formato de bloque, pero no las otras de la tanda para guías escaneadas (`C/` y las palabras partidas con guion).
 
 ### Cuánto acierta el parser
 
