@@ -16,7 +16,8 @@
     "check:links": "node scripts/check-links.js",
     "changes": "node scripts/record-changes.js",
     "translations": "node scripts/translations.js",
-    "replace-url": "node scripts/replace-url.js"
+    "replace-url": "node scripts/replace-url.js",
+    "sync:app": "node scripts/sync-app.js"
   },
   "keywords": [
     "copyright",

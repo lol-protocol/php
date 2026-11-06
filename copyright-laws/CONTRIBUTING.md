@@ -58,3 +58,7 @@ A 401, 403, 429, a 5xx that persists, a timeout or a redirect loop is only a war
 - Do not mark rows `verified` from search results or summaries.
 
 See [README.md](README.md) for the columns, the API and the web app.
+
+## Shared web files
+
+`app/lib/chart.js`, `app/lib/filters.js`, `app/lib/util.js` and `app/styles/{base,comparison,search}.css` are the same in `privacy-laws/` and `copyright-laws/`. Edit the copy in `../leyes-comunes/app/`, then run `npm run sync:app` in both projects; `tests/shared-app.test.js` fails when a copy was edited by hand.
