@@ -66,7 +66,7 @@ final class FunnelRepositoryTest extends IntegracionTestCase
      * Un periodo que el seed no usa (1950), para contar exacto sin sumarle los datos de ejemplo.
      * Los primeros $cuantos nombres del catalogo de paises, en orden alfabetico.
      *
-     * @return list<array{codigo: string, nombre: string}>
+     * @return array<int, array{codigo: string, nombre: string}>
      */
     private function paisesDelCatalogo(int $cuantos): array
     {

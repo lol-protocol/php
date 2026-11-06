@@ -89,8 +89,8 @@ final class FunnelRepository
      * Deja las primeras $nombradas filas y suma las demas en una «Otros (N paises)». Si sobra una
      * sola, la deja como esta.
      *
-     * @param list<array<string, mixed>> $filas ya ordenadas, con etiqueta, visitantes, registrados, leads y clientes
-     * @return list<array<string, mixed>>
+     * @param array<int, array<string, mixed>> $filas ya ordenadas, con etiqueta, visitantes, registrados, leads y clientes
+     * @return array<int, array<string, mixed>>
      */
     private static function conFilaDeOtros(array $filas, int $nombradas): array
     {
