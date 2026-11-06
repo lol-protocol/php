@@ -63,8 +63,7 @@ final class NotasCreditoController
             if ($nota['fecha_devolucion'] !== null) {
                 // Ya estaba devuelta (un doble clic, o un formulario viejo): no se
                 // registra ni se audita otra vez, y se va a donde fue la primera.
-                header('Location: ?page=notas&devuelta=' . $id);
-                exit;
+                Peticion::redirigir('?page=notas&devuelta=' . $id);
             }
 
             $fecha = (string) ($_POST['fecha_devolucion'] ?? '');
@@ -92,8 +91,7 @@ final class NotasCreditoController
                         $valida
                     ));
                 });
-                header('Location: ?page=notas&devuelta=' . $id);
-                exit;
+                Peticion::redirigir('?page=notas&devuelta=' . $id);
             }
         }
 

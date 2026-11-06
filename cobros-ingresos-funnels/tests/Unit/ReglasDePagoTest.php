@@ -4,71 +4,71 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit;
 
-use App\Controllers\PagosController;
+use App\ReglasDePago;
 use PHPUnit\Framework\TestCase;
 
-final class PagosControllerTest extends TestCase
+final class ReglasDePagoTest extends TestCase
 {
     public function testBoletaValidaDelMismoClienteYSinAnular(): void
     {
         $boleta = ['cliente_id' => 5, 'anulada' => false];
 
-        self::assertTrue(PagosController::boletaEsValidaParaCliente($boleta, 5));
+        self::assertTrue(ReglasDePago::boletaEsValidaParaCliente($boleta, 5));
     }
 
     public function testBoletaInexistenteNoEsValida(): void
     {
-        self::assertFalse(PagosController::boletaEsValidaParaCliente(null, 5));
+        self::assertFalse(ReglasDePago::boletaEsValidaParaCliente(null, 5));
     }
 
     public function testBoletaDeOtroClienteNoEsValida(): void
     {
         $boleta = ['cliente_id' => 5, 'anulada' => false];
 
-        self::assertFalse(PagosController::boletaEsValidaParaCliente($boleta, 9));
+        self::assertFalse(ReglasDePago::boletaEsValidaParaCliente($boleta, 9));
     }
 
     public function testBoletaAnuladaNoEsValidaAunSiendoDelMismoCliente(): void
     {
         $boleta = ['cliente_id' => 5, 'anulada' => true];
 
-        self::assertFalse(PagosController::boletaEsValidaParaCliente($boleta, 5));
+        self::assertFalse(ReglasDePago::boletaEsValidaParaCliente($boleta, 5));
     }
 
     public function testFechaPagoIgualOPosteriorALaEmisionEsValida(): void
     {
         $boleta = ['fecha_emision' => '2026-01-15'];
 
-        self::assertTrue(PagosController::fechaPagoEsValida('2026-01-15', $boleta));
-        self::assertTrue(PagosController::fechaPagoEsValida('2026-02-01', $boleta));
+        self::assertTrue(ReglasDePago::fechaPagoEsValida('2026-01-15', $boleta));
+        self::assertTrue(ReglasDePago::fechaPagoEsValida('2026-02-01', $boleta));
     }
 
     public function testFechaPagoAnteriorALaEmisionNoEsValida(): void
     {
         $boleta = ['fecha_emision' => '2026-01-15'];
 
-        self::assertFalse(PagosController::fechaPagoEsValida('2026-01-14', $boleta));
+        self::assertFalse(ReglasDePago::fechaPagoEsValida('2026-01-14', $boleta));
     }
 
     public function testMontoMenorAlSaldoNoLoSupera(): void
     {
         $boleta = ['saldo' => 100.0];
 
-        self::assertTrue(PagosController::montoNoSuperaElSaldo(50.0, $boleta));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldo(50.0, $boleta));
     }
 
     public function testMontoExactoAlSaldoNoLoSupera(): void
     {
         $boleta = ['saldo' => 100.0];
 
-        self::assertTrue(PagosController::montoNoSuperaElSaldo(100.0, $boleta), 'pagar exactamente el saldo restante debe ser valido');
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldo(100.0, $boleta), 'pagar exactamente el saldo restante debe ser valido');
     }
 
     public function testMontoMayorAlSaldoLoSupera(): void
     {
         $boleta = ['saldo' => 100.0];
 
-        self::assertFalse(PagosController::montoNoSuperaElSaldo(100.02, $boleta));
+        self::assertFalse(ReglasDePago::montoNoSuperaElSaldo(100.02, $boleta));
     }
 
     /** Antes tenia un margen de un centavo: pasarse por 0.01 se cobraba y dejaba la boleta con saldo negativo. */
@@ -76,16 +76,16 @@ final class PagosControllerTest extends TestCase
     {
         $boleta = ['saldo' => 100.0];
 
-        self::assertFalse(PagosController::montoNoSuperaElSaldo(100.01, $boleta));
-        self::assertTrue(PagosController::montoNoSuperaElSaldo(100.00, $boleta));
+        self::assertFalse(ReglasDePago::montoNoSuperaElSaldo(100.01, $boleta));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldo(100.00, $boleta));
     }
 
     public function testElSaldoLlegaComoTextoODeUnaSumaConRuido(): void
     {
-        self::assertTrue(PagosController::montoNoSuperaElSaldo(0.3, ['saldo' => 0.1 + 0.2]), 'saldo con ruido: 0.30000000000000004');
-        self::assertFalse(PagosController::montoNoSuperaElSaldo(0.31, ['saldo' => 0.1 + 0.2]));
-        self::assertTrue(PagosController::montoNoSuperaElSaldo(602.85, ['saldo' => '602.85']));
-        self::assertFalse(PagosController::montoNoSuperaElSaldo(602.86, ['saldo' => '602.85']));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldo(0.3, ['saldo' => 0.1 + 0.2]), 'saldo con ruido: 0.30000000000000004');
+        self::assertFalse(ReglasDePago::montoNoSuperaElSaldo(0.31, ['saldo' => 0.1 + 0.2]));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldo(602.85, ['saldo' => '602.85']));
+        self::assertFalse(ReglasDePago::montoNoSuperaElSaldo(602.86, ['saldo' => '602.85']));
     }
 
     /**
@@ -100,14 +100,14 @@ final class PagosControllerTest extends TestCase
         $montoViejo = 562824.39;
 
         self::assertLessThan(1370575.84, 807751.45 + 562824.39, 'el caso es real: el float queda corto');
-        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(1370575.84, $boleta, $montoViejo));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldoAlEditar(1370575.84, $boleta, $montoViejo));
     }
 
     public function testEditarUnPagoUnCentavoPorEncimaDelDisponibleLoSupera(): void
     {
         $boleta = ['saldo' => 807751.45];
 
-        self::assertFalse(PagosController::montoNoSuperaElSaldoAlEditar(1370575.85, $boleta, 562824.39));
+        self::assertFalse(ReglasDePago::montoNoSuperaElSaldoAlEditar(1370575.85, $boleta, 562824.39));
     }
 
     /**
@@ -119,9 +119,9 @@ final class PagosControllerTest extends TestCase
     {
         $boleta = ['saldo' => -0.01];
 
-        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(484.10, $boleta, 484.10));
-        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(484.09, $boleta, 484.10));
-        self::assertFalse(PagosController::montoNoSuperaElSaldoAlEditar(484.11, $boleta, 484.10));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldoAlEditar(484.10, $boleta, 484.10));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldoAlEditar(484.09, $boleta, 484.10));
+        self::assertFalse(ReglasDePago::montoNoSuperaElSaldoAlEditar(484.11, $boleta, 484.10));
     }
 
     /**
@@ -134,14 +134,14 @@ final class PagosControllerTest extends TestCase
     {
         $boleta = ['saldo' => 789.86];
 
-        self::assertFalse(PagosController::montoNoSuperaElSaldoAlEditar(5000.0, $boleta, 484.10));
+        self::assertFalse(ReglasDePago::montoNoSuperaElSaldoAlEditar(5000.0, $boleta, 484.10));
     }
 
     public function testEditarUnPagoDentroDelSaldoDisponibleNoLoSupera(): void
     {
         $boleta = ['saldo' => 789.86];
 
-        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(600.0, $boleta, 484.10));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldoAlEditar(600.0, $boleta, 484.10));
     }
 
     public function testEditarUnPagoAlMismoMontoSiempreEsValido(): void
@@ -150,7 +150,7 @@ final class PagosControllerTest extends TestCase
         // sea cual sea el saldo restante de la boleta.
         $boleta = ['saldo' => 0.0];
 
-        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(484.10, $boleta, 484.10));
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldoAlEditar(484.10, $boleta, 484.10));
     }
 
     /**
@@ -161,24 +161,24 @@ final class PagosControllerTest extends TestCase
      */
     public function testUnPagoDeBoletaAnuladaQuedaCongelado(): void
     {
-        self::assertTrue(PagosController::boletaAnuladaCongelaElPago(['anulada' => true]));
+        self::assertTrue(ReglasDePago::boletaAnuladaCongelaElPago(['anulada' => true]));
     }
 
     public function testUnPagoDeBoletaVigenteSePuedeTocar(): void
     {
-        self::assertFalse(PagosController::boletaAnuladaCongelaElPago(['anulada' => false]));
+        self::assertFalse(ReglasDePago::boletaAnuladaCongelaElPago(['anulada' => false]));
     }
 
     /** Un anticipo (pago sin boleta) no tiene nota de credito que descuadrar. */
     public function testUnPagoSinBoletaNoQuedaCongelado(): void
     {
-        self::assertFalse(PagosController::boletaAnuladaCongelaElPago(null));
+        self::assertFalse(ReglasDePago::boletaAnuladaCongelaElPago(null));
     }
 
     public function testLosMetodosQueOfreceElFormularioSonValidos(): void
     {
         foreach (['transferencia', 'tarjeta', 'efectivo'] as $metodo) {
-            self::assertTrue(PagosController::metodoEsValido($metodo), $metodo);
+            self::assertTrue(ReglasDePago::metodoEsValido($metodo), $metodo);
         }
     }
 
@@ -186,43 +186,43 @@ final class PagosControllerTest extends TestCase
     public function testUnMetodoFueraDeLaListaNoEsValido(): void
     {
         foreach (['bitcoin', '', 'Tarjeta', 'tarjeta ', 'transferencia;'] as $metodo) {
-            self::assertFalse(PagosController::metodoEsValido($metodo), "'{$metodo}'");
+            self::assertFalse(ReglasDePago::metodoEsValido($metodo), "'{$metodo}'");
         }
     }
 
     public function testLosCamposDeUnPagoBienNoDanError(): void
     {
-        self::assertNull(PagosController::errorDeLosCampos('2026-01-15', 'tarjeta', 50.0));
+        self::assertNull(ReglasDePago::errorDeLosCampos('2026-01-15', 'tarjeta', 50.0));
     }
 
     public function testCadaCampoMalDeUnPagoDaSuMensaje(): void
     {
         $faltan = 'Completá todos los campos con un monto válido.';
-        self::assertSame($faltan, PagosController::errorDeLosCampos('', 'tarjeta', 50.0), 'sin fecha');
-        self::assertSame($faltan, PagosController::errorDeLosCampos('2026-01-15', '', 50.0), 'sin metodo');
-        self::assertSame($faltan, PagosController::errorDeLosCampos('2026-01-15', 'tarjeta', 0.0), 'monto en cero');
-        self::assertSame('Elegí un método de pago válido.', PagosController::errorDeLosCampos('2026-01-15', 'bitcoin', 50.0));
-        self::assertSame('La fecha de pago no es válida.', PagosController::errorDeLosCampos('2026-02-30', 'tarjeta', 50.0));
+        self::assertSame($faltan, ReglasDePago::errorDeLosCampos('', 'tarjeta', 50.0), 'sin fecha');
+        self::assertSame($faltan, ReglasDePago::errorDeLosCampos('2026-01-15', '', 50.0), 'sin metodo');
+        self::assertSame($faltan, ReglasDePago::errorDeLosCampos('2026-01-15', 'tarjeta', 0.0), 'monto en cero');
+        self::assertSame('Elegí un método de pago válido.', ReglasDePago::errorDeLosCampos('2026-01-15', 'bitcoin', 50.0));
+        self::assertSame('La fecha de pago no es válida.', ReglasDePago::errorDeLosCampos('2026-02-30', 'tarjeta', 50.0));
     }
 
     public function testUnPagoNoPuedeTenerFechaFutura(): void
     {
         $mensaje = 'La fecha de pago no puede ser futura.';
-        self::assertSame($mensaje, PagosController::errorDeLosCampos('2026-06-16', 'tarjeta', 50.0, null, '2026-06-15'));
-        self::assertNull(PagosController::errorDeLosCampos('2026-06-15', 'tarjeta', 50.0, null, '2026-06-15'), 'el mismo dia de hoy esta bien');
-        self::assertNull(PagosController::errorDeLosCampos('2026-06-14', 'tarjeta', 50.0, null, '2026-06-15'));
-        self::assertSame($mensaje, PagosController::errorDeLosCampos('2999-01-01', 'tarjeta', 50.0), 'sin $hoy se usa el dia real');
+        self::assertSame($mensaje, ReglasDePago::errorDeLosCampos('2026-06-16', 'tarjeta', 50.0, null, '2026-06-15'));
+        self::assertNull(ReglasDePago::errorDeLosCampos('2026-06-15', 'tarjeta', 50.0, null, '2026-06-15'), 'el mismo dia de hoy esta bien');
+        self::assertNull(ReglasDePago::errorDeLosCampos('2026-06-14', 'tarjeta', 50.0, null, '2026-06-15'));
+        self::assertSame($mensaje, ReglasDePago::errorDeLosCampos('2999-01-01', 'tarjeta', 50.0), 'sin $hoy se usa el dia real');
     }
 
     public function testConVariosErroresDeUnPagoGanaElPrimeroDelOrden(): void
     {
         self::assertSame(
             'Completá todos los campos con un monto válido.',
-            PagosController::errorDeLosCampos('2026-02-30', 'bitcoin', 0.0)
+            ReglasDePago::errorDeLosCampos('2026-02-30', 'bitcoin', 0.0)
         );
         self::assertSame(
             'Elegí un método de pago válido.',
-            PagosController::errorDeLosCampos('2026-02-30', 'bitcoin', 50.0)
+            ReglasDePago::errorDeLosCampos('2026-02-30', 'bitcoin', 50.0)
         );
     }
 
@@ -230,18 +230,18 @@ final class PagosControllerTest extends TestCase
     {
         $boleta = ['fecha_emision' => '2026-01-15', 'saldo' => 100.0];
 
-        self::assertNull(PagosController::errorContraLaBoleta('2026-01-15', 100.0, $boleta), 'justo el saldo, el mismo dia de la emision');
+        self::assertNull(ReglasDePago::errorContraLaBoleta('2026-01-15', 100.0, $boleta), 'justo el saldo, el mismo dia de la emision');
         self::assertSame(
             'La fecha de pago no puede ser anterior a la emisión de la boleta.',
-            PagosController::errorContraLaBoleta('2026-01-14', 50.0, $boleta)
+            ReglasDePago::errorContraLaBoleta('2026-01-14', 50.0, $boleta)
         );
         self::assertSame(
             'El monto supera el saldo pendiente de la boleta.',
-            PagosController::errorContraLaBoleta('2026-01-15', 100.01, $boleta)
+            ReglasDePago::errorContraLaBoleta('2026-01-15', 100.01, $boleta)
         );
         self::assertSame(
             'La fecha de pago no puede ser anterior a la emisión de la boleta.',
-            PagosController::errorContraLaBoleta('2026-01-14', 100.01, $boleta),
+            ReglasDePago::errorContraLaBoleta('2026-01-14', 100.01, $boleta),
             'la fecha se chequea antes que el saldo'
         );
     }
@@ -251,14 +251,14 @@ final class PagosControllerTest extends TestCase
     {
         $boleta = ['fecha_emision' => '2026-01-15', 'saldo' => 40.0]; // quedan 40 despues de un pago de 60
 
-        self::assertNull(PagosController::errorContraLaBoleta('2026-01-20', 100.0, $boleta, 60.0), '60 + 40 disponibles');
+        self::assertNull(ReglasDePago::errorContraLaBoleta('2026-01-20', 100.0, $boleta, 60.0), '60 + 40 disponibles');
         self::assertSame(
             'El monto supera el saldo pendiente de la boleta.',
-            PagosController::errorContraLaBoleta('2026-01-20', 100.01, $boleta, 60.0)
+            ReglasDePago::errorContraLaBoleta('2026-01-20', 100.01, $boleta, 60.0)
         );
         self::assertSame(
             'El monto supera el saldo pendiente de la boleta.',
-            PagosController::errorContraLaBoleta('2026-01-20', 100.0, $boleta),
+            ReglasDePago::errorContraLaBoleta('2026-01-20', 100.0, $boleta),
             'sin monto viejo (el alta) esos 100 no caben en un saldo de 40'
         );
     }

@@ -118,8 +118,7 @@ final class ClientesController
             if ($reenvio !== null) {
                 // Mismo formulario enviado otra vez (doble clic): el cliente ya
                 // se creo, se redirige igual que la primera vez.
-                header('Location: ' . $reenvio);
-                exit;
+                Peticion::redirigir($reenvio);
             }
 
             $nombre = trim((string) ($_POST['nombre'] ?? ''));
@@ -183,8 +182,7 @@ final class ClientesController
 
                         return '?page=cliente&id=' . $id . '&creado=1';
                     });
-                    header('Location: ' . $destino);
-                    exit;
+                    Peticion::redirigir($destino);
                 } catch (\PDOException $e) {
                     $error = Validacion::mensajeDeConflicto($e, 'cliente');
                 }
