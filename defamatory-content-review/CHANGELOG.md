@@ -15,6 +15,11 @@
 
 ### Añadido
 
+- **`Loader` y `Http\TextMarks`, para quien usa la librería sin Composer** (url-routing y sistema-nuevo, que
+  tenían cada uno su copia del cargador de clases, de la lista de categorías descriptivas y del mapeo a
+  etiquetas). `Loader::register($dir)` carga las clases una vez; `TextMarks::of($texto, $configDir, ['spa',
+  'eng'])` devuelve `decision` y las etiquetas sin repetir («acusación de delito», «insulto»…), revisando los
+  textos largos por trozos y creando cada revisor una sola vez por proceso.
 - **Árabe**: 13 plurales más en `ArabicPlurals` (rotos y sanos irregulares de palabras del diccionario).
 
 - **Más idiomas de salida del informe**: `ara`, `heb`, `jpn`, `kor`, `hin`, `tur`, `ukr`, `ces`,
