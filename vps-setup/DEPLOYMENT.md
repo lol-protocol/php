@@ -13,6 +13,8 @@ En los comandos, `<IP_DEL_VPS>`, `tudominio.com` y `tu@email.com` son tuyos.
 
 ## 1. Antes de crear nada
 
+- **RAM:** con 1–2 GB alcanza para Nginx, PHP-FPM, PostgreSQL y pocas apps. `install-all` avisa si hay menos de 2 GB;
+  en ese caso no instales Tomcat ni Whisper. Los workers de gunicorn se limitan solos según la RAM.
 - **VPS con Ubuntu 24.04 LTS.** Es la única versión soportada: `01` se niega a correr en otra
   (Ubuntu 26.04 trae PHP 8.5 y los paquetes `php8.3-*` no existen allí).
 - **Una llave SSH en tu equipo:** `ssh-keygen -t ed25519`. La privada nunca sale de tu equipo ni va al repo.
