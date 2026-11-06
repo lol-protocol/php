@@ -123,6 +123,26 @@ class BaseController
     }
 
     /**
+     * What renderFound() takes as $movida for an entity that can be merged into another: an id that was
+     * merged away ($aliasDe gives the id it became, null if it is not an alias) leads to the same page of
+     * the one that stays. $accion is that page's action code, null for the entity's own page.
+     *
+     * @param callable(int): ?int $aliasDe
+     * @return callable(int): ?string
+     */
+    protected static function movida(string $entidad, callable $aliasDe, ?int $accion): callable
+    {
+        return static function (int $id) use ($entidad, $aliasDe, $accion): ?string {
+            $destino = $aliasDe($id);
+            if ($destino === null) {
+                return null;
+            }
+
+            return $accion === null ? enlace($entidad, $destino) : accion($entidad, $destino, $accion);
+        };
+    }
+
+    /**
      * The standard read action: validate the route id (400), load the
      * resource with $find (404 when missing) and render $view with it under
      * $key, plus whatever $extra returns for that id. When the id is missing
