@@ -69,8 +69,10 @@ final class Lista
                 if (isset($ids[$id])) {
                     throw new \InvalidArgumentException("el id '$id' ya lo usa la fila {$ids[$id]}; da una columna 'id' distinta.");
                 }
+                $libro = Libro::desdeArray($id, $datos);
+                // El id se reserva cuando el libro es bueno: una fila con errores no le quita el nombre a otra.
                 $ids[$id] = $numero;
-                $libros[] = Libro::desdeArray($id, $datos);
+                $libros[] = $libro;
             } catch (\InvalidArgumentException $error) {
                 // Los errores de Libro empiezan por el id, que aquí es un nombre inventado: no aporta.
                 $mensaje = $id !== null && str_starts_with($error->getMessage(), "$id: ") ? substr($error->getMessage(), strlen($id) + 2) : $error->getMessage();
@@ -218,10 +220,8 @@ final class Lista
             $degradado['tipo'] = mb_strtolower($celdas['degradado_tipo']);
         }
         if (isset($celdas['degradado_angulo'])) {
-            if (preg_match('/^-?\d+(?:[.,]\d+)?$/', $celdas['degradado_angulo']) !== 1) {
-                throw new \InvalidArgumentException("'degradado_angulo' debe ser un número de grados, no «{$celdas['degradado_angulo']}».");
-            }
-            $degradado['angulo'] = (float) str_replace(',', '.', $celdas['degradado_angulo']);
+            $degradado['angulo'] = Numeros::decimal($celdas['degradado_angulo'], true)
+                ?? throw new \InvalidArgumentException("'degradado_angulo' debe ser un número de grados, no «{$celdas['degradado_angulo']}».");
         }
         $colores = $celdas['degradado'] ?? 'auto';
         if (mb_strtolower($colores) !== 'auto') {
@@ -234,27 +234,31 @@ final class Lista
     /** Un número de mm, con punto o coma decimal. */
     private static function numero(string $columna, string $valor): float
     {
-        if (preg_match('/^\d+(?:[.,]\d+)?$/', $valor) !== 1) {
-            throw new \InvalidArgumentException("'$columna' debe ser un número en milímetros, no «{$valor}».");
-        }
-
-        return (float) str_replace(',', '.', $valor);
+        return Numeros::decimal($valor) ?? throw new \InvalidArgumentException("'$columna' debe ser un número en milímetros, no «{$valor}».");
     }
 
     /**
-     * Nombre de carpeta a partir del autor y el título, para el libro que no trae `id`.
+     * Nombre de carpeta a partir del autor y el título, para el libro que no trae `id`. Un texto sin letras
+     * latinas (un título en chino, en árabe…) no aporta nada al nombre, así que se le añade un sufijo corto sacado
+     * de él: dos libros del mismo autor con títulos así no chocan, y el nombre no cambia si cambia el orden de la lista.
      *
      * @param array<string, mixed> $datos
      */
     private static function idDe(array $datos): string
     {
         $texto = static fn (string $campo): string => is_string($datos[$campo] ?? null) ? $datos[$campo] : '';
-        $id = Nombres::slug($texto('autor') . ' ' . $texto('titulo'), self::ID_MAXIMO);
-        if ($id === '') {
-            throw new \InvalidArgumentException("no se pudo sacar un nombre de carpeta del autor y el título (¿están vacíos o sin letras latinas?); da una columna 'id'.");
+        $autor = $texto('autor');
+        $titulo = $texto('titulo');
+        $base = Nombres::slug("$autor $titulo", self::ID_MAXIMO);
+        $sinLetras = $texto('titulo') !== '' && Nombres::slug($titulo) === '';
+        if ($base === '' || $sinLetras) {
+            $sufijo = substr(md5("$autor\0$titulo"), 0, 6);
+            $base = Nombres::slug($autor, self::ID_MAXIMO - 7) ?: 'libro';
+
+            return "$base-$sufijo";
         }
 
-        return $id;
+        return $base;
     }
 
     /**
