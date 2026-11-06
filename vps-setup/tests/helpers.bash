@@ -31,6 +31,8 @@ exit 0'
     for c in useradd userdel usermod groupadd groupdel dropdb dropuser createdb createuser; do
         make_stub "$c" 'echo "'"$c"' $*" >> "$SUDO_LOG"'
     done
+    # php-fpm -t validaria la configuracion REAL de la maquina (en CI esta instalado), no el pool de prueba.
+    make_stub php-fpm8.3 'exit 0'
     export PATH="$STUB_BIN:$PATH"
 }
 

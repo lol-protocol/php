@@ -11,6 +11,10 @@ vive aquí una sola vez. Cada script del proyecto queda como un envoltorio que d
 | `translations-core.js` | `scripts/translations.js` | Cobertura de las traducciones automáticas, lo que falta por idioma e importación de las hechas. |
 | `dataset-core.js` | `scripts/lib/dataset.js` (los dos re-exportan lo suyo) | Nombres de los archivos de datos, niveles de confianza, `isRealDate`, `isHttpUrl`, `isPrivateHost`, los avisos de fuentes más nuevas o viejas que su fila, `toCsv`/`writeCsv`, `findLaw` y `withSideData`. Solo usa módulos de Node, sin paquetes. Lo que sí cambia entre módulos (columnas, regiones, reglas de cada fila, `parseMaster`, que usa `csv-parse`) se queda en cada `dataset.js`. |
 | `validate-csv-core.js` | `scripts/validate-csv.js` | Corre la validación del proyecto, imprime los problemas y escribe el resumen de GitHub Actions. |
+| `importador-core.php` | `import_database.php` | Importa el CSV a MySQL / MariaDB: conexión por `DB_*`, esquema, transacción (`--import` reemplaza y se puede repetir), fechas estrictas y los comandos. `--create-schema` y `--all` piden `--yes`, porque borran la base. |
+| `database-check-core.php` | `tests/database_check.php` | Compara la base con el CSV maestro, columna por columna. Lo corre el job `database` de `laws-modules.yml`. |
+| `importer-tests-core.js` | `tests/importer.test.js` | Pruebas del importador que no necesitan servidor: columnas, anchos de `VARCHAR`, `--yes` y fechas. |
+| `comprobar-copias.js` | el job `copias` de `laws-modules.yml` | Comprueba que las copias que se mantienen idénticas a propósito (ver abajo) lo siguen siendo. |
 
 ## Qué vive aquí y qué no
 
@@ -44,6 +48,9 @@ corriendo contra el script de su propio proyecto.
   compartido sería un refactor más grande que el resto junto, con el riesgo de tocar cómo se valida cada CSV.
 - **`tests/`**: las pruebas son las que vigilan los envoltorios, así que cada proyecto conserva las suyas. Algunos
   archivos auxiliares son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`).
+
+No se pueden compartir, pero sí vigilar: `comprobar-copias.js` falla en CI si una de esas copias (`app/lib/chart.js`,
+`filters.js`, `util.js`, `tests/helpers/php-server.js`, `tests/fixtures/law-page.html`) deja de ser igual en los dos módulos.
 
 ## Sitios que rechazan a los runners
 

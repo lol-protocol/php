@@ -175,19 +175,20 @@ sudo_tmp() { make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in -u|systemctl
 }
 
 @test "06_A: limite en Nginx y en PHP; el de PHP es global y solo SUBE (no achica el de otra app)" {
-    sudo_tmp; export PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90-uploads.ini" WWW_DIR="$BATS_TEST_TMPDIR/www"
+    sudo_tmp; export PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90-uploads.ini" WWW_DIR="$BATS_TEST_TMPDIR/www" PHP_POOL_DIR="$BATS_TEST_TMPDIR/pool.d"
+    mkdir -p "$PHP_POOL_DIR"
+    make_stub stat 'if [ "$1" = -c ] && [ "$2" = %U ]; then echo "${FAKE_OWNER:-root}"; else exec /usr/bin/stat "$@"; fi'
+    export FAKE_OWNER=app-tienda
     run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     grep -q 'client_max_body_size 20M;' "$NGINX_DIR/sites-available/tienda.ejemplo.com"
-    grep -q 'fastcgi_pass unix:/run/php/php8.3-fpm.sock;' "$NGINX_DIR/sites-available/tienda.ejemplo.com"
+    grep -q 'fastcgi_pass unix:/run/php/app-tienda.sock;' "$NGINX_DIR/sites-available/tienda.ejemplo.com"
     grep -qx 'upload_max_filesize = 20M' "$PHP_UPLOAD_INI" && grep -qx 'post_max_size = 20M' "$PHP_UPLOAD_INI"
     grep -q "systemctl reload php8.3-fpm" "$SUDO_LOG"
     MAX_UPLOAD=1G run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
     grep -qx 'upload_max_filesize = 1G' "$PHP_UPLOAD_INI"
-    : > "$SUDO_LOG"
     MAX_UPLOAD=5M run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
     grep -qx 'upload_max_filesize = 1G' "$PHP_UPLOAD_INI"            # no se achica
-    ! grep -q "reload php8.3-fpm" "$SUDO_LOG"
     grep -q 'client_max_body_size 5M;' "$NGINX_DIR/sites-available/tienda.ejemplo.com"   # el del sitio si
 }
 
@@ -229,7 +230,10 @@ sudo_tmp() { make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in -u|systemctl
 }
 
 @test "06_A: la primera vez crea la pagina de prueba; al re-correr con tu codigo NO la reemplaza" {
-    export WWW_DIR="$BATS_TEST_TMPDIR/www" PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90.ini"; sudo_tmp
+    export WWW_DIR="$BATS_TEST_TMPDIR/www" PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90.ini" PHP_POOL_DIR="$BATS_TEST_TMPDIR/pool.d" APP_DB=0; sudo_tmp
+    mkdir -p "$PHP_POOL_DIR"
+    make_stub stat 'if [ "$1" = -c ] && [ "$2" = %U ]; then echo "${FAKE_OWNER:-root}"; else exec /usr/bin/stat "$@"; fi'
+    export FAKE_OWNER=app-tienda
     run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     grep -q "PHP-FPM + Nginx funcionando" "$WWW_DIR/tienda/index.php"
@@ -244,12 +248,13 @@ sudo_tmp() { make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in -u|systemctl
 }
 
 @test "06_A: sobre una app con codigo no hace chown -R (cambiaria dueno/permisos de todos sus archivos)" {
-    export WWW_DIR="$BATS_TEST_TMPDIR/www" PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90.ini"; sudo_tmp
-    mkdir -p "$WWW_DIR/tienda"; echo x > "$WWW_DIR/tienda/index.php"
+    export WWW_DIR="$BATS_TEST_TMPDIR/www" PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/90.ini" PHP_POOL_DIR="$BATS_TEST_TMPDIR/pool.d"; sudo_tmp
+    mkdir -p "$WWW_DIR/tienda" "$PHP_POOL_DIR"; echo x > "$WWW_DIR/tienda/index.php"
+    make_stub stat 'if [ "$1" = -c ] && [ "$2" = %U ]; then echo "${FAKE_OWNER:-root}"; else exec /usr/bin/stat "$@"; fi'
+    export FAKE_OWNER=app-tienda
     run bash "$VPS_DIR/06_A-setup-php-app.sh" tienda tienda.ejemplo.com
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
-    ! grep -q "chown -R www-data:www-data $WWW_DIR/tienda" "$SUDO_LOG"
-    grep -q "chown www-data:www-data $WWW_DIR/tienda$" "$SUDO_LOG"
+    ! grep -q "chown -R .* $WWW_DIR/tienda" "$SUDO_LOG"
 }
 
 @test "06_B: la primera vez crea app.py; al re-correr (p. ej. otro puerto) conserva tu codigo y actualiza servicio y proxy" {

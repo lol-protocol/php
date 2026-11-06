@@ -1,0 +1,23 @@
+name: Node.js 22 y npm ci
+description: >-
+  Instala Node.js 22 y las dependencias de una carpeta con `npm ci`. Lo usan los workflows de
+  privacy-laws/ y copyright-laws/ (laws-modules.yml, laws-links.yml y laws-freshness.yml), que repetían
+  los dos pasos tal cual. Hace falta un checkout antes: una acción local se lee del repositorio.
+
+inputs:
+  working-directory:
+    description: Carpeta con el package.json y el package-lock.json (`defaults.run` no se aplica a una acción)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Node.js 22
+      uses: actions/setup-node@v7
+      with:
+        node-version: '22'
+
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: npm ci --no-audit --no-fund

@@ -5,7 +5,10 @@ load helpers
 setup() {
     setup_stubs
     export NGINX_DIR="$BATS_TEST_TMPDIR/nginx" WWW_DIR="$BATS_TEST_TMPDIR/www" PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/php/90-uploads.ini"
-    mkdir -p "$NGINX_DIR/sites-available" "$NGINX_DIR/sites-enabled" "$WWW_DIR" "$BATS_TEST_TMPDIR/php"
+    export PHP_POOL_DIR="$BATS_TEST_TMPDIR/pool.d" APP_DB=0   # sin base: estas pruebas son del vhost/HTTPS
+    mkdir -p "$NGINX_DIR/sites-available" "$NGINX_DIR/sites-enabled" "$WWW_DIR" "$BATS_TEST_TMPDIR/php" "$PHP_POOL_DIR"
+    make_stub stat 'if [ "$1" = -c ] && [ "$2" = %U ]; then echo "${FAKE_OWNER:-root}"; else exec /usr/bin/stat "$@"; fi'
+    export FAKE_OWNER=app-tienda
     # sudo falso: ejecuta de verdad en las carpetas temporales y se salta lo que apunte a /var o /etc reales
     make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in certbot) exit "${CERTBOT_EXIT:-0}";; systemctl|nginx|chown|fail2ban-client) exit 0;; esac; for a in "$@"; do case "$a" in /var/*|/etc/*) exit 0;; esac; done; exec "$@"'
 }

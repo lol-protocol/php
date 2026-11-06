@@ -32,23 +32,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # Valida los nueve CSV y CHANGELOG.md, y falla si algun archivo generado
-      # (la tabla de README.md, nombres-completos.csv, colores-por-idioma.md, por-idioma/,
-      # referencias.md, ambiguedad.md, auditoria-nombres.md, categorias.md,
-      # cobertura.md, revisiones.md, visor-revision.html o exportes/, con los patrones
-      # de spaCy y su manifiesto) no coincide con lo que generan; construye
+      # Valida los CSV y CHANGELOG.md, y falla si algun archivo generado no coincide
+      # con lo que generan (la lista esta en el README de Listado-colores, «Archivos»;
+      # no se repite aqui para que no quede vieja); construye
       # ademas una base SQLite en memoria y comprueba que los recuentos coincidan.
       # Tarda entre 13 y 20 s porque recalcula el color CSS mas cercano de cada nombre.
       - name: Comprobar datos y tabla
         working-directory: Listado-colores
         run: python3 generar-tabla.py --comprobar
 
+      # spaCy solo para una prueba: que los patrones de exportes/spacy/ carguen en un
+      # EntityRuler. Sin el, esa prueba se omite y nadie la corre en la CI. En un venv
+      # porque el Python del runner no deja instalar paquetes (PEP 668). La version es
+      # la que se probo a mano (3.8.16); la matriz de abajo no lo instala (spaCy no
+      # tiene ruedas para todas esas versiones de Python) y omite la prueba.
+      - name: Instalar spaCy
+        run: python3 -m venv "$RUNNER_TEMP/venv" && "$RUNNER_TEMP/venv/bin/pip" install --quiet spacy==3.8.16
+
       # Pruebas del generador: cada regla de validacion rota a proposito sobre una
       # copia de los CSV, y main() de punta a punta en una carpeta temporal con
-      # nombres-completos.csv reducido. Entre 8 y 16 s; no escribe en el proyecto.
+      # nombres-completos.csv reducido. Unos 40 s; no escribe en el proyecto.
       - name: Pruebas del generador
         working-directory: Listado-colores
-        run: python3 -m unittest -v pruebas
+        run: '"$RUNNER_TEMP/venv/bin/python" -m unittest -v pruebas'
+
 
   # Lo mismo en otras versiones de Python y en macOS. El README dice que el desempate del
   # color CSS mas cercano redondea a 9 decimales para no depender de la coma flotante entre
