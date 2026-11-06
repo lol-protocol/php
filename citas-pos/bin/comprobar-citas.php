@@ -15,10 +15,9 @@ declare(strict_types=1);
  * anotado en la ficha): comprueba que la ficha diga lo que hace falta para poder comprobarlo.
  */
 
-require_once __DIR__ . '/lib/comun.php';
+require_once __DIR__ . '/lib/paleta.php';
 
 const ESTADOS = ['sin-verificar', 'verificada', 'descartada'];
-const UPOS = ['ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM', 'VERB', 'X'];
 const CAMPOS = ['id', 'idioma', 'texto', 'autor', 'fallecimiento', 'obra', 'ubicacion', 'edicion', 'fuentes', 'dominio_publico', 'tema', 'etiquetas', 'estado'];
 const PALABRAS_MIN = 6;
 const PALABRAS_MAX = 20;

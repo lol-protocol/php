@@ -8,14 +8,6 @@ declare(strict_types=1);
  * texto de una frase entre sus palabras etiquetadas.
  */
 
-const ESTILO_DE_MARCA = [
-    'subrayado' => 'solid',
-    'ondulado' => 'wavy',
-    'punteado' => 'dotted',
-    'discontinuo' => 'dashed',
-    'ninguna' => 'none',
-];
-
 const VEREDICTOS_QUE_APRUEBAN = ['correcto', 'corregido'];
 /** Mientras una fila diga esto, el elemento no se da por bueno aunque otro revisor haya puesto «correcto». */
 const VEREDICTOS_QUE_BLOQUEAN = ['corregir', 'dudoso'];

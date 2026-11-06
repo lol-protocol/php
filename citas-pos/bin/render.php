@@ -26,7 +26,7 @@ declare(strict_types=1);
  * subrayado, los grupos se distinguen solo por el color.
  */
 
-require_once __DIR__ . '/lib/comun.php';
+require_once __DIR__ . '/lib/paleta.php';
 
 const SALIDA = __DIR__ . '/../salida';
 const JUEGO = __DIR__ . '/../juego';
@@ -71,18 +71,10 @@ function frases(array $ejemplos, array $citas, array $idiomas, array $aprobadas,
 /** @param array<string, mixed> $paleta */
 function hoja(array $paleta): string
 {
-    $claro = $oscuro = $colores = $marcas = '';
-    foreach ($paleta['categorias'] as $c) {
-        $claro .= "  --cp-{$c['codigo']}: {$c['claro']};\n";
-        $oscuro .= "    --cp-{$c['codigo']}: {$c['oscuro']};\n";
-        $colores .= ".citas-pos .w[data-c=\"{$c['codigo']}\"] { --color: var(--cp-{$c['codigo']}); }\n";
-    }
-    foreach ($paleta['grupos'] as $id => $g) {
-        $estilo = ESTILO_DE_MARCA[$g['marca']];
-        $marcas .= $estilo === 'none'
-            ? ".citas-pos .w[data-g=\"$id\"] { --marca: none; }\n"
-            : ".citas-pos .w[data-g=\"$id\"] { --marca: underline $estilo; }\n";
-    }
+    $claro = variablesCss($paleta, 'claro', 'cp', '  ');
+    $oscuro = variablesCss($paleta, 'oscuro', 'cp', '    ');
+    $colores = reglasDeColor($paleta, '.citas-pos .w', 'cp', '');
+    $marcas = reglasDeMarca($paleta, '.citas-pos .w', '');
     $fc = $paleta['fondo']['claro'];
     $fo = $paleta['fondo']['oscuro'];
     return <<<CSS
@@ -109,27 +101,28 @@ CSS;
 
 /**
  * @param array<string, array<string, mixed>> $cats
- * @param list<array{string, string|null}> $trozos
+ * @param array<string, mixed> $f
+ * @param array<string, array<string, mixed>> $grupos
  */
-function palabras(array $cats, array $trozos, bool $enLinea, array $grupos): string
+function palabras(array $cats, array $f, bool $enLinea, array $grupos): string
 {
     $html = '';
-    foreach ($trozos as [$texto, $cat]) {
-        if ($cat === null) {
-            $html .= nl2br(h($texto), false);
+    foreach (piezas($cats, $f['id'], $f['texto'], $f['palabras']) as $p) {
+        if ($p['c'] === null) {
+            $html .= nl2br(h($p['texto']), false);
             continue;
         }
-        $c = $cats[$cat] ?? throw new RuntimeException("Categoría desconocida $cat.");
-        $titulo = h($cat . ' · ' . $c['nombre']);
+        $c = $p['c'];
+        $titulo = h($p['cat'] . ' · ' . $c['nombre']);
         if ($enLinea) {
             $estilo = ESTILO_DE_MARCA[$grupos[$c['grupo']]['marca']];
             $css = "color:{$c['claro']}";
             if ($estilo !== 'none') {
                 $css .= ";text-decoration:underline;text-decoration-style:$estilo;text-decoration-thickness:2px;text-underline-offset:5px";
             }
-            $html .= "<span style=\"$css\" title=\"$titulo\">" . h($texto) . '</span>';
+            $html .= "<span style=\"$css\" title=\"$titulo\">" . h($p['texto']) . '</span>';
         } else {
-            $html .= '<span class="w" data-c="' . h($cat) . '" data-g="' . h($c['grupo']) . "\" title=\"$titulo\">" . h($texto) . '</span>';
+            $html .= '<span class="w" data-c="' . h($p['cat']) . '" data-g="' . h($c['grupo']) . "\" title=\"$titulo\">" . h($p['texto']) . '</span>';
         }
     }
     return $html;
@@ -148,7 +141,7 @@ function pie(?array $pie): string
 function correo(array $paleta, array $cats, array $f): string
 {
     $fondo = $paleta['fondo']['claro'];
-    $cuerpo = palabras($cats, trozos($f['id'], $f['texto'], $f['palabras']), true, $paleta['grupos']);
+    $cuerpo = palabras($cats, $f, true, $paleta['grupos']);
     $html = '<div lang="' . h($f['lang']) . "\" style=\"background:$fondo;padding:16px 20px;border-radius:8px;\">\n"
         . "<p style=\"margin:0;font:22px/2 Georgia,'Times New Roman',serif;color:#1d1d22;\">$cuerpo</p>\n"
         . '<p style="margin:8px 0 0;font:13px/1.4 Arial,Helvetica,sans-serif;color:#55555e;">' . pie($f['pie']) . "</p>\n"
@@ -167,7 +160,7 @@ function correo(array $paleta, array $cats, array $f): string
  */
 function sitio(array $paleta, array $cats, array $f): string
 {
-    $cuerpo = palabras($cats, trozos($f['id'], $f['texto'], $f['palabras']), false, $paleta['grupos']);
+    $cuerpo = palabras($cats, $f, false, $paleta['grupos']);
     return '<figure class="citas-pos" lang="' . h($f['lang']) . "\">\n"
         . "<blockquote><p>$cuerpo</p></blockquote>\n"
         . '<figcaption>' . pie($f['pie']) . "</figcaption>\n"
@@ -186,18 +179,17 @@ function juego(array $paleta, array $cats, array $f): string
 {
     $cuerpo = '';
     $vistas = [];
-    foreach (trozos($f['id'], $f['texto'], $f['palabras']) as [$texto, $cat]) {
-        if ($cat === null) {
-            $cuerpo .= nl2br(h($texto), false);
+    foreach (piezas($cats, $f['id'], $f['texto'], $f['palabras']) as $p) {
+        if ($p['c'] === null) {
+            $cuerpo .= nl2br(h($p['texto']), false);
             continue;
         }
-        $c = $cats[$cat] ?? throw new RuntimeException("Categoría desconocida $cat.");
-        if ($cat === 'PUNCT') {
-            $cuerpo .= '<span class="jp">' . h($texto) . '</span>';
+        if ($p['cat'] === 'PUNCT') {
+            $cuerpo .= '<span class="jp">' . h($p['texto']) . '</span>';
             continue;
         }
-        $vistas[$cat] = true;
-        $cuerpo .= '<span class="w jw" data-c="' . h($cat) . '" data-g="' . h($c['grupo']) . '" data-nombre="' . h($c['nombre']) . '">' . h($texto) . '</span>';
+        $vistas[$p['cat']] = true;
+        $cuerpo .= '<span class="w jw" data-c="' . h($p['cat']) . '" data-g="' . h($p['c']['grupo']) . '" data-nombre="' . h($p['c']['nombre']) . '">' . h($p['texto']) . '</span>';
     }
     $leyenda = '';
     foreach (array_keys($vistas) as $cat) {
@@ -263,13 +255,9 @@ HTML;
 /** @return array<string, string> ruta relativa a SALIDA => contenido */
 function generar(array &$pendientes): array
 {
-    $base = __DIR__ . '/../datos/';
-    $paleta = leerJson($base . 'paleta.json');
-    $cats = [];
-    foreach ($paleta['categorias'] as $c) {
-        $cats[$c['codigo']] = $c;
-    }
-    $lista = frases(leerJson($base . 'ejemplos.json'), leerJson($base . 'citas.json'), leerJson($base . 'idiomas.json'), aprobadas(__DIR__ . '/../revisiones.csv'), $pendientes);
+    $paleta = leerJson(DATOS . '/paleta.json');
+    $cats = categoriasPorCodigo($paleta);
+    $lista = frases(leerJson(DATOS . '/ejemplos.json'), leerJson(DATOS . '/citas.json'), leerJson(DATOS . '/idiomas.json'), aprobadas(__DIR__ . '/../revisiones.csv'), $pendientes);
 
     $juegoCss = (string) file_get_contents(JUEGO . '/juego.css');
     $juegoJs = (string) file_get_contents(JUEGO . '/juego.js');

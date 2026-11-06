@@ -12,48 +12,22 @@ declare(strict_types=1);
  * Es un prototipo para ver la paleta, no una pieza final: las frases no son citas.
  */
 
-require_once __DIR__ . '/lib/comun.php';
-
-// Matrices de Machado, Oliveira y Fernandes (2009), severidad 1,0. Las mismas de comprobar-paleta.php.
-const DALTONISMO = [
-    'protanopia' => ['Protanopía', [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]]],
-    'deuteranopia' => ['Deuteranopía', [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]]],
-    'tritanopia' => ['Tritanopía', [[1.255528, -0.076749, -0.178779], [-0.078411, 0.930809, 0.147602], [0.004733, 0.691367, 0.303900]]],
-];
+require_once __DIR__ . '/lib/paleta.php';
 
 function generar(): string
 {
-    $base = __DIR__ . '/../datos/';
-    $paleta = leerJson($base . 'paleta.json');
-    $ejemplos = leerJson($base . 'ejemplos.json');
+    $paleta = leerJson(DATOS . '/paleta.json');
+    $ejemplos = leerJson(DATOS . '/ejemplos.json');
+    $cats = categoriasPorCodigo($paleta);
 
-    $cats = [];
-    foreach ($paleta['categorias'] as $c) {
-        $cats[$c['codigo']] = $c;
-    }
-
-    $vars = ['claro' => '', 'oscuro' => ''];
-    foreach ($paleta['categorias'] as $c) {
-        foreach (['claro', 'oscuro'] as $modo) {
-            $vars[$modo] .= "    --c-{$c['codigo']}: {$c[$modo]};\n";
-        }
-    }
-    $marcas = '';
-    foreach ($paleta['grupos'] as $id => $g) {
-        $estilo = ESTILO_DE_MARCA[$g['marca']];
-        $marcas .= $estilo === 'none'
-            ? "  .w[data-g=\"$id\"] { --marca: none; }\n"
-            : "  .w[data-g=\"$id\"] { --marca: underline $estilo; }\n";
-    }
-    $colores = '';
-    foreach (array_keys($cats) as $cod) {
-        $colores .= "  .w[data-c=\"$cod\"] { --color: var(--c-$cod); }\n";
-    }
+    $vars = ['claro' => variablesCss($paleta, 'claro', 'c', '    '), 'oscuro' => variablesCss($paleta, 'oscuro', 'c', '    ')];
+    $colores = reglasDeColor($paleta, '.w', 'c', '  ');
+    $marcas = reglasDeMarca($paleta, '.w', '  ');
 
     $filtros = '';
-    foreach (DALTONISMO as $id => [$nombre, $m]) {
+    foreach (DALTONISMO as $id => $d) {
         $v = [];
-        foreach ($m as $fila) {
+        foreach ($d['matriz'] as $fila) {
             $v[] = implode(' ', array_map(static fn (float $x): string => (string) $x, $fila)) . ' 0 0';
         }
         $v[] = '0 0 0 1 0';
@@ -88,21 +62,18 @@ function generar(): string
         $frases .= '<section class="idioma" lang="' . h($e['html']) . '"><h3 lang="es">' . h($e['nombre']) . ' <small>· <code>' . h($e['idioma']) . "</code></small></h3>\n";
         foreach ($e['frases'] as $f) {
             $frases .= '<p class="frase" id="' . h($f['id']) . '">';
-            foreach (trozos($f['id'], $f['texto'], $f['palabras']) as [$texto, $cat]) {
-                if ($cat === null) {
-                    $frases .= h($texto);
+            foreach (piezas($cats, $f['id'], $f['texto'], $f['palabras']) as $p) {
+                if ($p['c'] === null) {
+                    $frases .= h($p['texto']);
                     continue;
-                }
-                if (!isset($cats[$cat])) {
-                    throw new RuntimeException("{$f['id']}: categoría desconocida $cat.");
                 }
                 $frases .= sprintf(
                     '<span class="w" data-c="%s" data-g="%s" title="%s · %s">%s</span>',
-                    h($cat),
-                    h($cats[$cat]['grupo']),
-                    h($cat),
-                    h($cats[$cat]['nombre']),
-                    h($texto)
+                    h($p['cat']),
+                    h($p['c']['grupo']),
+                    h($p['cat']),
+                    h($p['c']['nombre']),
+                    h($p['texto'])
                 );
             }
             $frases .= "</p>\n";

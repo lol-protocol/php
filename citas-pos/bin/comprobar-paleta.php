@@ -19,17 +19,11 @@ declare(strict_types=1);
  *    mismo grupo que se confunda es un aviso: se distingue por la etiqueta y no por el color.
  */
 
+require_once __DIR__ . '/lib/paleta.php';
+
 const UMBRAL_CONTRASTE = 4.5;
 const UMBRAL_NORMAL = 18.0;
 const UMBRAL_DALTONISMO = 10.0;
-
-const UPOS = ['ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM', 'VERB', 'X'];
-
-const DALTONISMO = [
-    'protanopía' => [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]],
-    'deuteranopía' => [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]],
-    'tritanopía' => [[1.255528, -0.076749, -0.178779], [-0.078411, 0.930809, 0.147602], [0.004733, 0.691367, 0.303900]],
-];
 
 /** @return array{float, float, float} RGB lineal */
 function rgbLineal(string $hex): array
@@ -98,16 +92,12 @@ function deltaE(array $a, array $b): float
 
 function main(array $argv): int
 {
-    $ruta = __DIR__ . '/../datos/paleta.json';
-    $paleta = json_decode((string) file_get_contents($ruta), true, 512, JSON_THROW_ON_ERROR);
+    $paleta = leerJson(DATOS . '/paleta.json');
     $errores = [];
     $avisos = [];
     $lista = in_array('--lista', $argv, true);
 
-    $cats = [];
-    foreach ($paleta['categorias'] as $c) {
-        $cats[$c['codigo']] = $c;
-    }
+    $cats = categoriasPorCodigo($paleta);
     $faltan = array_diff(UPOS, array_keys($cats));
     $sobran = array_diff(array_keys($cats), UPOS);
     if ($faltan !== [] || $sobran !== [] || count($paleta['categorias']) !== count(UPOS)) {
@@ -148,7 +138,10 @@ function main(array $argv): int
         }
         printf("Modo %-6s contraste mínimo %.2f:1 (%s)\n", $modo, $peor[1], $peor[0]);
 
-        $vistas = ['visión normal' => null] + DALTONISMO;
+        $vistas = ['visión normal' => null];
+        foreach (DALTONISMO as $d) {
+            $vistas[mb_strtolower($d['nombre'])] = $d['matriz'];
+        }
         foreach ($vistas as $nombre => $matriz) {
             $confundidos = [];
             $minimo = [999.0, '', ''];
