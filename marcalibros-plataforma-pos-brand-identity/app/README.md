@@ -123,7 +123,7 @@ Las pruebas armen la aplicación con el catálogo real y una carpeta temporal; n
 app/
 ├── public/          index.php y assets/ (app.css, crear.js, catalogo.js, mio.js)
 ├── src/             Application, Request, Response, View, Config, BookmarkStore, RateLimiter
-├── templates/       layout, catalogo, detalle, crear, mio, error
+├── templates/       layout, catalogo, detalle, crear, mio, error y _celda (el parcial de una celda de la rejilla)
 ├── bin/limpiar.php  borra lo vencido
 ├── storage/         marcalibros/ e intentos/ (se crean solas; fuera de git)
 └── tests/

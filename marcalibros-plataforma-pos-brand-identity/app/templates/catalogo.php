@@ -99,12 +99,7 @@ $pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'motivo
       </div>
       <ul class="rejilla">
 <?php foreach ($group['items'] as $item): ?>
-        <li class="celda">
-          <a href="/marcalibro/<?= $this->e($item['id']) ?>">
-            <img class="tira" src="/catalogo/<?= $this->e($item['id']) ?>.svg" width="1400" height="200" alt="<?= $this->e($item['alt']) ?>" loading="lazy" decoding="async">
-            <span class="celda__nombre" aria-hidden="true"><?= $this->e($item['motif']) ?></span>
-          </a>
-        </li>
+<?= $this->partial('_celda', ['item' => $item]) ?>
 <?php endforeach ?>
       </ul>
     </section>
@@ -130,12 +125,7 @@ $pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'motivo
       </li>
 <?php endif ?>
 <?php foreach ($items as $item): ?>
-      <li class="celda">
-        <a href="/marcalibro/<?= $this->e($item['id']) ?>">
-          <img class="tira" src="/catalogo/<?= $this->e($item['id']) ?>.svg" width="1400" height="200" alt="<?= $this->e($item['alt']) ?>" loading="lazy" decoding="async">
-          <span class="celda__nombre" aria-hidden="true"><?= $this->e($item['motif']) ?></span>
-        </a>
-      </li>
+<?= $this->partial('_celda', ['item' => $item]) ?>
 <?php endforeach ?>
     </ul>
 <?php endif ?>
