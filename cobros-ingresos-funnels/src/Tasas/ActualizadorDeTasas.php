@@ -27,6 +27,10 @@ use PDO;
  *   la fuente): --forzar la acepta. Una tasa de ejemplo, que nadie actualizo,
  *   puede cambiar lo que sea: es la primera carga.
  * - Una moneda que la fuente no trae queda como estaba, con la fecha que tenia.
+ * - Una moneda que otra reemplazo (monedas.reemplazada_por, migracion 016: el ZWL por el
+ *   ZWG, el BGN por el euro) no se toma de la fuente: vale su equivalencia fija con
+ *   el reemplazo, que si trae la fuente. Asi no queda sin dato ni vieja para siempre, y
+ *   pasa por las mismas reglas que las demas.
  * - Todo va en una transaccion, con una entrada en la auditoria.
  * - $simular hace las mismas cuentas y dice que haria, sin escribir nada.
  *
@@ -84,7 +88,8 @@ final class ActualizadorDeTasas
 
         /** @var list<string> $catalogo */
         $catalogo = $this->db->query("SELECT codigo FROM monedas WHERE codigo <> 'USD' ORDER BY codigo")->fetchAll(PDO::FETCH_COLUMN);
-        $presentes = count(array_filter($catalogo, static fn (string $codigo): bool => isset($respuesta->unidadesPorUsd[$codigo])));
+        ['unidades' => $unidadesPorUsd, 'rechazadas' => $rechazadas] = $this->conLasReemplazadas($respuesta);
+        $presentes = count(array_filter($catalogo, static fn (string $codigo): bool => isset($unidadesPorUsd[$codigo])));
         if ($presentes < self::COBERTURA_MINIMA * count($catalogo)) {
             throw new TasasInvalidas(sprintf(
                 'La fuente solo trae %d de las %d monedas del catálogo: no alcanza para fiarse de ella. No se actualizó nada.',
@@ -119,19 +124,19 @@ final class ActualizadorDeTasas
             'UPDATE monedas SET tasa_a_usd = :tasa, tasa_actualizada_en = :cuando, tasa_fuente = :fuente WHERE codigo = :codigo'
         );
 
-        $trabajo = function () use ($catalogo, $respuesta, $fuente, $simular, $forzar, $cuando, $decidir, $guardar, &$informe): void {
+        $trabajo = function () use ($catalogo, $unidadesPorUsd, $rechazadas, $fuente, $simular, $forzar, $cuando, $decidir, $guardar, &$informe): void {
             /** @var array<string, array{anterior: string, nueva: string}> $primeras las monedas que pasan de la tasa de ejemplo a una real */
             $primeras = [];
             foreach ($catalogo as $codigo) {
-                if (isset($respuesta->rechazadas[$codigo])) {
-                    $informe['rechazadas'][$codigo] = $respuesta->rechazadas[$codigo];
+                if (isset($rechazadas[$codigo])) {
+                    $informe['rechazadas'][$codigo] = $rechazadas[$codigo];
                     continue;
                 }
-                if (!isset($respuesta->unidadesPorUsd[$codigo])) {
+                if (!isset($unidadesPorUsd[$codigo])) {
                     $informe['sinDato'][] = $codigo;
                     continue;
                 }
-                $unidades = $respuesta->unidadesPorUsd[$codigo];
+                $unidades = $unidadesPorUsd[$codigo];
                 $enUsd = 1.0 / (float) $unidades;
                 if ($enUsd < self::TASA_MINIMA || $enUsd >= self::TASA_MAXIMA) {
                     $informe['rechazadas'][$codigo] = 'queda fuera de lo que entra en la base';
@@ -202,6 +207,37 @@ final class ActualizadorDeTasas
         }
 
         return $informe;
+    }
+
+    /**
+     * Las tasas de la fuente con las de las monedas reemplazadas ya derivadas: unidades de la reemplazada por USD =
+     * unidades de su reemplazo por USD x unidades_por_reemplazo (si 1 USD = 0,86 EUR, 1 USD = 0,86 x 1,95583 BGN).
+     * Lo que la fuente diga de la reemplazada, y lo que haya rechazado de ella, se descarta: manda la equivalencia.
+     * Si la fuente no trae el reemplazo (o lo rechazo), la reemplazada queda como la dijo la fuente: sin dato.
+     *
+     * @return array{unidades: array<string, string>, rechazadas: array<string, string>}
+     */
+    private function conLasReemplazadas(RespuestaDeTasas $respuesta): array
+    {
+        $unidades = $respuesta->unidadesPorUsd;
+        $rechazadas = $respuesta->rechazadas;
+
+        /** @var list<array{codigo: string, reemplazada_por: string, unidades_por_reemplazo: string}> $reemplazadas */
+        $reemplazadas = $this->db->query(
+            'SELECT codigo, reemplazada_por, unidades_por_reemplazo FROM monedas WHERE reemplazada_por IS NOT NULL ORDER BY codigo'
+        )->fetchAll();
+        $multiplicar = $this->db->prepare('SELECT (:unidades::numeric * :equivalencia::numeric)::text');
+        foreach ($reemplazadas as $moneda) {
+            $reemplazo = $moneda['reemplazada_por'];
+            if (!isset($respuesta->unidadesPorUsd[$reemplazo])) {
+                continue;
+            }
+            $multiplicar->execute([':unidades' => $respuesta->unidadesPorUsd[$reemplazo], ':equivalencia' => $moneda['unidades_por_reemplazo']]);
+            $unidades[$moneda['codigo']] = (string) $multiplicar->fetchColumn();
+            unset($rechazadas[$moneda['codigo']]);
+        }
+
+        return ['unidades' => $unidades, 'rechazadas' => $rechazadas];
     }
 
     /**
