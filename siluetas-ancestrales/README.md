@@ -111,6 +111,12 @@ Cada prenda es una plantilla con parámetros; estas son las variantes que se com
 | Calzado (`tipo`) | `descalzo`, `sandalias`, `sandalia-romana`, `chancletas`, `zapatos`, `oxford`, `tacones`, `mocasines`, `zuecos`, `zapatillas`, `botines`, `botas`, `botas-altas`, `polainas` |
 | Otras plantillas | `mono` (torso y pantalón de una pieza), `poncho`, `drapeado`, `capa`, `chal`, `delantal`, `faja`, `accesorio` (brazaletes, bolso, tirantes) |
 
+## Validación y errores
+
+Las opciones se comprueban antes de generar (`src/validacion.js`): un valor mal escrito o fuera de rango lanza un `Error` que dice qué valores hay, en vez de caer en silencio en uno por defecto. Cubre `sexo`, `edad` (2 a 100), `altura` (70 a 190 cm), `corpulencia`, `postura`, `saludo`, `pose`, `detalle`, `contorno`, `clase`, `anio`, `region`, `piel`, `cabello`, `peinado`, `barba`, `tocado`, `calzado`, `colores`, `variacion`, `estilo`, `esquema`, `paleta` y `vestir`. En `etnia`, un peso 0 excluye a ese pueblo; un peso negativo o no numérico, o todos en 0, es un error.
+
+Al dibujar, `renderizar` también revisa cada prenda contra `src/tipos-de-ropa.js` (qué parámetros lee cada plantilla y qué valores admite cada uno): `manga: 'larg0'` falla con «¿quisiste decir «larga»?». Si agregas una variante a una plantilla, agrégala en ese archivo; el generador de ropa nueva usa las mismas listas. La CLI imprime `Error: …` y sale con código 2.
+
 ## Cómo está hecho
 
 - `src/cuerpo.js`: proporciones por edad, sexo y complexión; el cuerpo se dibuja con curvas suaves a partir de puntos de referencia (hombro, cintura, cadera, rodilla…).
