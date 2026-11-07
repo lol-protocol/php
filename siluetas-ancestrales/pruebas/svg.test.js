@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generarSVG, generarPersona, renderizar, ATUENDOS } from '../src/index.js';
+import { puntosDeRuta } from './ayuda.js';
 
 /** Comprobación mínima de que el XML está bien formado: etiquetas balanceadas y atributos entre comillas. */
 function bienFormado(svg) {
@@ -74,10 +75,8 @@ test('la figura queda dentro del lienzo (comprobación aproximada por las coorde
   for (const a of ATUENDOS.slice(0, 40)) {
     const svg = generarSVG({ atuendo: a.id, sexo: a.sexo, edad: 35, corpulencia: 'media', semilla: 1 });
     for (const m of svg.matchAll(/ d="([^"]+)"/g)) {
-      if (/[a-z]/.test(m[1].replace(/[MLCQZ]/g, '').replace(/[a-z](?=[^a-z]*$)/g, ''))) { /* trazos relativos: se saltan */ }
-      for (const par of m[1].matchAll(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g)) {
-        const x = Number(par[1]), y = Number(par[2]);
-        if (/[a-z]/.test(m[1])) continue;
+      if (/[a-z]/.test(m[1])) continue; // trazos relativos: se saltan
+      for (const [x, y] of puntosDeRuta(m[1])) {
         assert.ok(x > -30 && x < 630, `${a.id}: x fuera del lienzo (${x})`);
         assert.ok(y > -60 && y < 1040, `${a.id}: y fuera del lienzo (${y})`);
       }

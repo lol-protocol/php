@@ -222,7 +222,10 @@ export function medidas(opc = {}) {
   return { sexo, edad, corpulencia: corp, cm, H, cx, top, suelo, y, w, grados: grados0, pose, brazos, saludoLado, piernas, cabezas, u, hombroX: w.hombro };
 }
 
-/** Mitad derecha del contorno del torso (de la base del cuello a la entrepierna), desplazada `d` hacia afuera. */
+/**
+ * Mitad derecha del contorno del torso (de la base del cuello a la entrepierna), desplazada `d` hacia afuera.
+ * @deprecated `desde` y `hasta` (desde 2026-11, PR de limpieza) no se usan: ninguna llamada los pasa y la función siempre devuelve el torso completo. Se conservan como referencia.
+ */
 export function perfilTorso(M, d = 0, { desde = 'cuello', hasta = 'entrepierna' } = {}) {
   const { y, w, H } = M;
   const f = M.sexo === 'f' && M.u > 0.6 ? 1 : 0;
@@ -273,6 +276,21 @@ export function brazoEnU(M, s, uu) {
     }
   }
   return { x: L[0][0], y: L[0][1], w: A[0] };
+}
+
+/**
+ * Centro y ancho de una línea con anchos (pierna o brazo) a la altura `yy`, interpolando entre sus puntos.
+ * `tope` es cuánto se deja extrapolar por debajo del último punto (1 = nada).
+ */
+export function lineaEnY(Lg, yy, tope = 1.3) {
+  const { linea, anchos } = Lg;
+  for (let j = 0; j < linea.length - 1; j++) {
+    if (yy <= linea[j + 1][1] || j === linea.length - 2) {
+      const tt = limitar((yy - linea[j][1]) / ((linea[j + 1][1] - linea[j][1]) || 1), 0, tope);
+      return { x: lerp(linea[j][0], linea[j + 1][0], tt), w: lerp(anchos[j], anchos[j + 1], tt) };
+    }
+  }
+  return { x: linea[0][0], w: anchos[0] };
 }
 
 /** Línea central de la pierna del lado `s` con su pie, en coordenadas absolutas. */
