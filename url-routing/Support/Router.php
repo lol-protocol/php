@@ -140,6 +140,23 @@ class Router
         return null;
     }
 
+    /**
+     * The code of the action $method of $type's pages, the digit after the id (/{id}/{code}/), as the routes
+     * config says it; null when the type has no such action. So a controller that has to build the URL of one
+     * of its own actions asks for the code instead of repeating the number the config already holds.
+     */
+    public function actionCode(string $type, string $method): int|null
+    {
+        $largo = $this->typeLength($type);
+        if ($largo === null) {
+            return null;
+        }
+
+        $codigo = array_search($method, $this->config['by_length'][$largo]['actions'] ?? [], true);
+
+        return $codigo === false ? null : (int)$codigo;
+    }
+
     /** Reverse of typeLength(): the type a digit count selects, if any. */
     public function typeForLength(int $length): string|null
     {

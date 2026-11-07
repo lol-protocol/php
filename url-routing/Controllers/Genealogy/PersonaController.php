@@ -7,6 +7,7 @@ namespace App\Controllers\Genealogy;
 use App\Controllers\BaseController;
 use App\Repositories\Genealogy\PersonaRepository;
 use App\Support\Privacidad;
+use App\Support\ServiceLocator;
 
 /**
  * Persona — 10-digit id. A living persona is hidden from anyone but the owner
@@ -57,16 +58,51 @@ class PersonaController extends BaseController
     }
 
     /**
+     * The code of one of the persona's own actions in config/routes (/{id}/{code}/), asked of the router
+     * that dispatched the request: the number is the config's to say, not this class's to repeat.
+     */
+    private static function codigoDe(string $accion): int
+    {
+        $codigo = ServiceLocator::getInstance()->getRouter()->actionCode('persona', $accion);
+        if ($codigo === null) {
+            throw new \LogicException("La acción «{$accion}» de persona no está en config/routes.");
+        }
+
+        return $codigo;
+    }
+
+    /**
+     * One of the persona's pages: the standard read action (see renderFound()) with what $datos lists about
+     * her ($vacio, with the same keys, when she is hidden). $accion is the name of the page's action in
+     * config/routes, null for the persona's own page: a merged-away id leads to the same page of the persona
+     * it was merged into.
+     *
+     * @param array<string, mixed> $params
+     * @param callable(PersonaRepository, int): array<string, list<array<string, mixed>>> $datos
+     * @param array<string, list<array<string, mixed>>> $vacio
+     */
+    private function pestana(array $params, ?string $accion, string $vista, callable $datos, array $vacio): string
+    {
+        $repo = $this->repo();
+
+        return $this->renderFound(
+            $params,
+            $repo->find(...),
+            "genealogy/persona/{$vista}",
+            'persona',
+            self::salvoOculta(static fn(int $id): array => $datos($repo, $id), $vacio),
+            self::movida($repo, $accion === null ? null : self::codigoDe($accion))
+        );
+    }
+
+    /**
      * @param array<string, mixed> $params
      */
     public function show(array $params = []): string
     {
-        $repo = $this->repo();
-        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/show', 'persona',
-            self::salvoOculta(
-                fn(int $id) => ['vinculos' => $repo->vinculos($id), 'cronologia' => $repo->cronologia($id)],
-                ['vinculos' => [], 'cronologia' => []]
-            ), self::movida($repo, null));
+        return $this->pestana($params, null, 'show',
+            static fn(PersonaRepository $repo, int $id): array => ['vinculos' => $repo->vinculos($id), 'cronologia' => $repo->cronologia($id)],
+            ['vinculos' => [], 'cronologia' => []]);
     }
 
     /**
@@ -74,10 +110,9 @@ class PersonaController extends BaseController
      */
     public function ascendencia(array $params = []): string
     {
-        $repo = $this->repo();
-        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/ascendencia', 'persona',
-            self::salvoOculta(fn(int $id) => ['ancestros' => $repo->ascendencia($id)], ['ancestros' => []]),
-            self::movida($repo, 1));
+        return $this->pestana($params, 'ascendencia', 'ascendencia',
+            static fn(PersonaRepository $repo, int $id): array => ['ancestros' => $repo->ascendencia($id)],
+            ['ancestros' => []]);
     }
 
     /**
@@ -85,10 +120,9 @@ class PersonaController extends BaseController
      */
     public function descendencia(array $params = []): string
     {
-        $repo = $this->repo();
-        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/descendencia', 'persona',
-            self::salvoOculta(fn(int $id) => ['descendientes' => $repo->descendencia($id)], ['descendientes' => []]),
-            self::movida($repo, 2));
+        return $this->pestana($params, 'descendencia', 'descendencia',
+            static fn(PersonaRepository $repo, int $id): array => ['descendientes' => $repo->descendencia($id)],
+            ['descendientes' => []]);
     }
 
     /**
@@ -96,10 +130,9 @@ class PersonaController extends BaseController
      */
     public function vinculos(array $params = []): string
     {
-        $repo = $this->repo();
-        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/vinculos', 'persona',
-            self::salvoOculta(fn(int $id) => ['vinculos' => $repo->vinculos($id)], ['vinculos' => []]),
-            self::movida($repo, 3));
+        return $this->pestana($params, 'vinculos', 'vinculos',
+            static fn(PersonaRepository $repo, int $id): array => ['vinculos' => $repo->vinculos($id)],
+            ['vinculos' => []]);
     }
 
     /**
@@ -107,10 +140,9 @@ class PersonaController extends BaseController
      */
     public function cronologia(array $params = []): string
     {
-        $repo = $this->repo();
-        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/cronologia', 'persona',
-            self::salvoOculta(fn(int $id) => ['eventos' => $repo->cronologia($id)], ['eventos' => []]),
-            self::movida($repo, 4));
+        return $this->pestana($params, 'cronologia', 'cronologia',
+            static fn(PersonaRepository $repo, int $id): array => ['eventos' => $repo->cronologia($id)],
+            ['eventos' => []]);
     }
 
     /**
@@ -136,7 +168,7 @@ class PersonaController extends BaseController
         $repo = $this->repo();
         $persona = $repo->find((int)$id);
         if ($persona === null) {
-            $destino = self::movida($repo, 5)((int)$id);
+            $destino = self::movida($repo, self::codigoDe('viva'))((int)$id);
             return $destino === null ? $this->handleNotFound() : $this->redirect($destino, 301);
         }
 
