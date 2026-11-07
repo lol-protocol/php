@@ -67,6 +67,14 @@ php bin/migrate.php pos --seed         # aplica y carga datos de demostración (
   aplicados en orden y **una sola vez** (se registran en `schema_migrations`).
 - Cada archivo corre dentro de una transacción: si una sentencia falla, no
   queda nada a medias (ambos motores soportan DDL transaccional).
+- `Database::transaction()` se puede anidar: la de dentro abre un `SAVEPOINT`
+  en vez de una segunda transacción (que los dos motores rechazan). Si la de
+  dentro falla, solo se deshace lo suyo y la de fuera puede atrapar el error y
+  seguir, o dejarlo pasar y deshacer todo. Así un método de un repositorio que
+  abre su propia transacción puede llamarse desde otro que ya abrió una (por
+  ejemplo, `SupresionRepository::suprimir()` y `RetiroRepository::decidir()`).
+  Si el trabajo ya terminó la transacción por su cuenta, el error que llega es
+  el suyo, no un «There is no active transaction».
 - Para cambiar el esquema, agrega un archivo nuevo con el siguiente número;
   nunca edites uno ya aplicado.
 - Reglas para que el SQL siga siendo portable: nada de `SERIAL`,
