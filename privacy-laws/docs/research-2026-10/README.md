@@ -6,6 +6,7 @@ Treat it as a to-do list for verification, not as verified data.
 | File | What it is |
 |---|---|
 | `frameworks-membership.csv` | Per-country answers (`yes` / `no` / `unknown`) for GDPR, EU adequacy, Convention 108, APEC CBPR, with a confidence level and a note. Only the `yes` values were copied into the `frameworks` column of the master CSV. |
+| `verificacion-us-2026-11-06.md` | Primera pasada de las filas de EE. UU. contra el texto de sus fuentes, bajado por `laws-textos-oficiales.yml`: qué confirma el texto, qué no dice y qué no se pudo descargar. No cambió ningún dato. |
 | `M-privacy-notes.md` | How each membership list was obtained, disagreements between sources, URLs. |
 | `P1-eu-eea-notes.md`, `P4-asia-pacific-notes.md`, `P5-mena-notes.md` | Sources and confidence for the new law rows (EU/EEA, Asia-Pacific, Middle East). |
 
