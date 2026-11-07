@@ -8,10 +8,13 @@ use App\Repositories\Genealogy\RetiroRepository;
 use App\Support\Database;
 use App\Support\Migrator;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\ComandoDePrueba;
 
 /** bin/pedidos-retiro.php as cron runs it: a real subprocess, a real SQLite file, and its exit code. */
 class PedidosRetiroCliTest extends TestCase
 {
+    use ComandoDePrueba;
+
     private string $archivo;
     private Database $db;
     private RetiroRepository $repo;
@@ -35,20 +38,7 @@ class PedidosRetiroCliTest extends TestCase
     /** @param list<string> $php options for the php binary itself (-d ...) @return array{0: int, 1: string, 2: string} exit code, stdout, stderr */
     private function correr(array $args = [], array $env = [], array $php = []): array
     {
-        $proceso = proc_open(
-            ['php', ...$php, dirname(__DIR__, 3) . '/bin/pedidos-retiro.php', ...$args],
-            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-            $pipes,
-            null,
-            $env + ['PATH' => (string)getenv('PATH'), 'DB_DSN_GENEALOGY' => 'sqlite:' . $this->archivo]
-        );
-        $this->assertIsResource($proceso);
-        $salida = stream_get_contents($pipes[1]);
-        $error = stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        return [proc_close($proceso), (string)$salida, (string)$error];
+        return $this->ejecutarComando('pedidos-retiro', $args, $env + ['DB_DSN_GENEALOGY' => 'sqlite:' . $this->archivo], $php);
     }
 
     private function pedido(int $horas, string $detalle = 'Es falso.', string $contacto = 'quien@example.com'): int

@@ -103,32 +103,17 @@ final class RetiroRepository extends Repository
     public function crear(string $tipo, int $id, string $motivo, string $detalle, string $contacto, ?string $marcas = null, ?int $ahora = null): int
     {
         $cuando = self::fecha($ahora);
-        for ($intento = 1; ; $intento++) {
-            try {
-                return $this->db->transaction(function () use ($tipo, $id, $motivo, $detalle, $contacto, $marcas, $cuando): int {
-                    $numero = (int)$this->db->fetchValue('SELECT COALESCE(MAX(id), 0) + 1 FROM pedidos_retiro');
-                    $this->db->execute(
-                        'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en, marcas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                        [$numero, $tipo, $id, $motivo, $detalle, $contacto, $cuando, $marcas]
-                    );
-                    $this->evento($numero, 'recibido', null, $cuando);
 
-                    return $numero;
-                });
-            } catch (\PDOException $e) {
-                if ($intento >= self::INTENTOS_DE_NUMERO || !self::numeroTomado($e)) {
-                    throw $e;
-                }
-            }
-        }
-    }
+        return $this->db->transaccionConReintento(function () use ($tipo, $id, $motivo, $detalle, $contacto, $marcas, $cuando): int {
+            $numero = $this->db->siguienteNumero('pedidos_retiro', 'id');
+            $this->db->execute(
+                'INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en, marcas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [$numero, $tipo, $id, $motivo, $detalle, $contacto, $cuando, $marcas]
+            );
+            $this->evento($numero, 'recibido', null, $cuando);
 
-    /** Whether the database refused the INSERT because that pedido number already exists (PostgreSQL and SQLite word it differently). */
-    private static function numeroTomado(\PDOException $e): bool
-    {
-        $mensaje = strtolower($e->getMessage());
-
-        return str_contains($mensaje, 'duplicate key') || str_contains($mensaje, 'unique constraint failed');
+            return $numero;
+        }, self::INTENTOS_DE_NUMERO);
     }
 
     /** The owner's decision ($decision a DECISIONES key) on pedido $numero; false when there is no such pedido. */
@@ -282,7 +267,7 @@ final class RetiroRepository extends Repository
 
     private function evento(int $numero, string $estado, ?string $nota, string $cuando): void
     {
-        $orden = (int)$this->db->fetchValue('SELECT COALESCE(MAX(orden), 0) + 1 FROM pedido_retiro_eventos WHERE pedido_id = ?', [$numero]);
+        $orden = $this->db->siguienteNumero('pedido_retiro_eventos', 'orden', ['pedido_id' => $numero]);
         $this->db->execute(
             'INSERT INTO pedido_retiro_eventos (pedido_id, orden, ocurrido_en, estado, nota) VALUES (?, ?, ?, ?, ?)',
             [$numero, $orden, $cuando, $estado, $nota]

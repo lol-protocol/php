@@ -10,13 +10,13 @@ class ServiceLocator
     private Container $container;
     private string $locale;
 
-    private function __construct(Container $container, string $locale = 'spa')
+    private function __construct(Container $container, string $locale = HostParser::IDIOMA_BASE)
     {
         $this->container = $container;
         $this->locale = $locale;
     }
 
-    public static function initialize(Container $container, string $locale = 'spa'): ServiceLocator
+    public static function initialize(Container $container, string $locale = HostParser::IDIOMA_BASE): ServiceLocator
     {
         self::$instance = new self($container, $locale);
         return self::$instance;

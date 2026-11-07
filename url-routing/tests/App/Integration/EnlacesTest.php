@@ -7,6 +7,7 @@ namespace Tests\App\Integration;
 use App\Support\Database;
 use App\Support\Migrator;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\ServidorDePrueba;
 
 /**
  * Follows every link of the seeded sites, page by page, the way a crawler does, and asks that none of them
@@ -18,67 +19,22 @@ use PHPUnit\Framework\TestCase;
  */
 class EnlacesTest extends TestCase
 {
+    use ServidorDePrueba;
+
     private const GENEALOGIA = 'tudominio.local';
     private const POS = 'contrastocolor.local';
     private const TOKEN = 'token-de-prueba-0123456789';
     /** A crawl that does not end is a bug too (a link that makes a new one every time). */
     private const MAX_PAGINAS = 600;
 
-    private static string $dir;
-    private static int $puerto;
-    /** @var resource|null */
-    private static $servidor = null;
-
     public static function setUpBeforeClass(): void
     {
-        self::$dir = sys_get_temp_dir() . '/url-routing-enlaces-' . getmypid();
-        @mkdir(self::$dir . '/sesiones', 0777, true);
-
-        foreach (['genealogy', 'pos'] as $site) {
-            $migrator = Migrator::forSite(new Database('sqlite:' . self::$dir . "/{$site}.sqlite"), $site);
-            $migrator->migrate();
-            $migrator->seed();
-        }
-
-        $socket = stream_socket_server('tcp://127.0.0.1:0');
-        self::assertNotFalse($socket, 'No free port for the test server');
-        self::$puerto = (int)substr((string)stream_socket_get_name($socket, false), strlen('127.0.0.1:'));
-        fclose($socket);
-
-        $publico = dirname(__DIR__, 3) . '/public';
-        self::$servidor = proc_open(
-            [PHP_BINARY, '-d', 'session.save_path=' . self::$dir . '/sesiones', '-S', '127.0.0.1:' . self::$puerto, '-t', $publico, $publico . '/index.php'],
-            [1 => ['file', self::$dir . '/server.out', 'w'], 2 => ['file', self::$dir . '/server.err', 'w']],
-            $pipes,
-            null,
-            [
-                'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
-                'DB_DSN_POS' => 'sqlite:' . self::$dir . '/pos.sqlite',
-                'LOG_FILE' => self::$dir . '/app.log',
-                'URL_LOG_DIR' => 'off',
-                'OWNER_TOKEN' => self::TOKEN,
-                'PATH' => (string)getenv('PATH'),
-            ]
-        );
-        for ($intento = 0; $intento < 50; $intento++) {
-            $conexion = @fsockopen('127.0.0.1', self::$puerto, $errno, $error, 0.1);
-            if ($conexion !== false) {
-                fclose($conexion);
-                return;
-            }
-            usleep(100_000);
-        }
-
-        self::fail('The built-in server did not start: ' . (string)@file_get_contents(self::$dir . '/server.err'));
+        self::servidorIniciar('enlaces', ['OWNER_TOKEN' => self::TOKEN]);
     }
 
     public static function tearDownAfterClass(): void
     {
-        if (is_resource(self::$servidor)) {
-            proc_terminate(self::$servidor);
-            proc_close(self::$servidor);
-        }
-        exec('rm -rf ' . escapeshellarg(self::$dir));
+        self::servidorDetener();
     }
 
     /**
@@ -88,30 +44,11 @@ class EnlacesTest extends TestCase
      */
     private function pedir(string $host, string $ruta, bool $propietario): array
     {
-        // The limiter allows 100 requests a minute per IP and a crawl makes hundreds: start each one fresh.
-        foreach (glob(sys_get_temp_dir() . '/rate_limit_*') ?: [] as $archivo) {
-            if (preg_match('/^rate_limit_[0-9a-f]{64}$/', basename($archivo)) === 1) {
-                @unlink($archivo);
-            }
-        }
+        // A crawl makes hundreds of requests and the limiter allows 100 a minute per IP: start each one fresh.
+        self::reiniciarLimitador();
+        $respuesta = $this->pedirAlServidor($host, $ruta, $propietario ? ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)] : []);
 
-        $cabeceras = ["Host: {$host}"];
-        if ($propietario) {
-            $cabeceras[] = 'Authorization: Basic ' . base64_encode('propietario:' . self::TOKEN);
-        }
-        $contexto = stream_context_create(['http' => [
-            'method' => 'GET',
-            'header' => implode("\r\n", $cabeceras),
-            'ignore_errors' => true,
-            'follow_location' => 0,
-            'timeout' => 10,
-        ]]);
-        $cuerpo = file_get_contents('http://127.0.0.1:' . self::$puerto . $ruta, false, $contexto);
-        $this->assertNotFalse($cuerpo, "No response for {$ruta}");
-
-        preg_match('#^HTTP/\S+ (\d{3})#', (string)($http_response_header[0] ?? ''), $m);
-
-        return [(int)($m[1] ?? 0), $cuerpo];
+        return [$respuesta['status'], $respuesta['body']];
     }
 
     /**
