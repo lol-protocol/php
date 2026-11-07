@@ -201,7 +201,7 @@ function es_propietario(): bool
 
 function esc(mixed $text): string
 {
-    return ServiceLocator::getInstance()->getUrlHelper()->esc($text);
+    return UrlHelper::escape($text);
 }
 
 /**
