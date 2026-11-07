@@ -127,6 +127,21 @@ function rechaza(array $r, string $trozo): void
     verdadero(str_contains($r[1], $trozo), 'no dice «' . $trozo . '»: ' . $r[1]);
 }
 
+/**
+ * Rompe la primera frase de datos/ejemplos.json de una copia del proyecto con $cambio y comprueba que $script la
+ * rechaza con un mensaje que contenga $trozo.
+ *
+ * @param callable(array<string, mixed>): array<string, mixed> $cambio recibe la primera frase y devuelve la rota
+ */
+function romperFrase(string $script, callable $cambio, string $trozo): void
+{
+    $dir = proyecto();
+    $e = leerJson($dir . '/datos/ejemplos.json');
+    $e['ejemplos'][0]['frases'][0] = $cambio($e['ejemplos'][0]['frases'][0]);
+    escribirJson($dir . '/datos/ejemplos.json', $e);
+    rechaza(correr($dir . '/bin/' . $script), $trozo);
+}
+
 function escribirJson(string $ruta, mixed $datos): void
 {
     file_put_contents($ruta, json_encode($datos, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n");
@@ -524,25 +539,22 @@ foreach ($cambiosDePaleta as $nombre => [$cambio, $mensaje]) {
 
 // Prototipo, sobre una copia.
 $pruebas['prototipo rechaza una palabra etiquetada que no está en el texto'] = function (): void {
-    $dir = proyecto();
-    $e = leerJson($dir . '/datos/ejemplos.json');
-    $e['ejemplos'][0]['frases'][0]['palabras'][1][0] = 'gato';
-    escribirJson($dir . '/datos/ejemplos.json', $e);
-    rechaza(correr($dir . '/bin/prototipo.php'), 'no aparece en el texto');
+    romperFrase('prototipo.php', static function (array $f): array {
+        $f['palabras'][1][0] = 'gato';
+        return $f;
+    }, 'no aparece en el texto');
 };
 $pruebas['prototipo rechaza texto sin etiquetar'] = function (): void {
-    $dir = proyecto();
-    $e = leerJson($dir . '/datos/ejemplos.json');
-    $e['ejemplos'][0]['frases'][0]['texto'] = 'El gran perro pequeño lee despacio un libro rojo.';
-    escribirJson($dir . '/datos/ejemplos.json', $e);
-    rechaza(correr($dir . '/bin/prototipo.php'), 'texto sin etiquetar');
+    romperFrase('prototipo.php', static function (array $f): array {
+        $f['texto'] = 'El gran perro pequeño lee despacio un libro rojo.';
+        return $f;
+    }, 'texto sin etiquetar');
 };
 $pruebas['prototipo rechaza una categoría desconocida'] = function (): void {
-    $dir = proyecto();
-    $e = leerJson($dir . '/datos/ejemplos.json');
-    $e['ejemplos'][0]['frases'][0]['palabras'][1][1] = 'FOO';
-    escribirJson($dir . '/datos/ejemplos.json', $e);
-    rechaza(correr($dir . '/bin/prototipo.php'), 'categoría desconocida');
+    romperFrase('prototipo.php', static function (array $f): array {
+        $f['palabras'][1][1] = 'FOO';
+        return $f;
+    }, 'categoría desconocida');
 };
 $pruebas['prototipo --comprobar falla si el HTML guardado no está al día'] = function (): void {
     $dir = proyecto();
@@ -576,11 +588,10 @@ $pruebas['render: el fragmento del correo no lleva estilos ni clases, enlaces, i
     }
 };
 $pruebas['render rechaza una palabra etiquetada que no está en el texto'] = function (): void {
-    $dir = proyecto();
-    $e = leerJson($dir . '/datos/ejemplos.json');
-    $e['ejemplos'][0]['frases'][0]['palabras'][1][0] = 'gato';
-    escribirJson($dir . '/datos/ejemplos.json', $e);
-    rechaza(correr($dir . '/bin/render.php'), 'no aparece en el texto');
+    romperFrase('render.php', static function (array $f): array {
+        $f['palabras'][1][0] = 'gato';
+        return $f;
+    }, 'no aparece en el texto');
 };
 $pruebas['render: los fragmentos del sitio llevan lang y la categoría de cada palabra'] = function (): void {
     $html = (string) file_get_contents(RAIZ . '/salida/ejemplos/spa-1.sitio.html');
