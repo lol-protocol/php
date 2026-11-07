@@ -6,6 +6,7 @@ use App\Support\AccessPolicy;
 use App\Support\Config;
 use App\Support\Container;
 use App\Support\Database;
+use App\Support\ErrorPage;
 use App\Support\Format;
 use App\Support\HealthCheck;
 use App\Support\HostParser;
@@ -75,7 +76,7 @@ ServiceLocator::initialize($container, $locale);
 $locator = ServiceLocator::getInstance();
 
 if (!RateLimiter::getInstance()->checkLimit(100, 60)) {
-    echo '<h1>429 - Too Many Requests</h1>';
+    echo ErrorPage::body(429, 'Demasiadas solicitudes');
     exit;
 }
 

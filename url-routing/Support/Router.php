@@ -292,7 +292,7 @@ class Router
         http_response_code(404);
         $pista = $this->pista();
 
-        return '<h1>404 - Página no encontrada</h1>' . ($pista === null ? '' : "\n<p>{$pista}</p>");
+        return ErrorPage::body(404, ErrorPage::NOT_FOUND, $pista ?? '');
     }
 
     /**
@@ -378,6 +378,6 @@ class Router
         http_response_code(500);
 
         $debug = defined('DEBUG_MODE') && DEBUG_MODE;
-        return '<h1>500 - ' . htmlspecialchars($debug ? $detail : 'Error interno del servidor') . '</h1>';
+        return ErrorPage::body(500, $debug ? $detail : 'Error interno del servidor');
     }
 }
