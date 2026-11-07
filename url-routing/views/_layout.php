@@ -15,7 +15,7 @@ use App\Support\HostParser;
  * A view may set $scripts, local paths of scripts (public/) to load at the end of the body: the CSP only
  * allows scripts from this origin, so there are no inline ones.
  */
-$lang = HostParser::IDIOMAS_CONOCIDOS[get_locale()] ?? 'es';
+$lang = HostParser::IDIOMAS_CONOCIDOS[get_locale()] ?? HostParser::IDIOMAS_CONOCIDOS[HostParser::IDIOMA_BASE];
 $flash = (new Flash())->consumir();
 // On a search page (/b/...), the box shows that search.
 $qActual = isset($query) && is_string($query) ? $query : '';

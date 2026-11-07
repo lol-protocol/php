@@ -31,7 +31,7 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 | [`PLAN.md`](PLAN.md) | Las fases de trabajo, las preguntas abiertas, cómo se mide si sirve y los riesgos. |
 | [`REVISIONES.md`](REVISIONES.md) y [`revisiones.csv`](revisiones.csv) | Quién ha revisado qué, con el formato del registro de `Listado-colores/`. Empieza vacío. |
 | [`GUIA-REVISION.md`](GUIA-REVISION.md) | Guía para quien revisa en español: qué se mira en una cita, las convenciones de etiquetado de este proyecto, las frases de prueba para practicar y cómo dejar las filas en `revisiones.csv`. |
-| [`pruebas/`](pruebas/) | `ejecutar.php`: las pruebas de los validadores, de la paleta, del prototipo y del generador, incluida la puerta que impide generar una cita sin revisar (PHP sin dependencias). |
+| [`pruebas/`](pruebas/) | `ejecutar.php`: las pruebas de los validadores, de la paleta, del prototipo y del generador, incluida la puerta que impide generar una cita sin revisar (PHP sin dependencias). `navegador/`: las pruebas en Chromium con Playwright, del comportamiento del juego y de su accesibilidad con axe-core (Node; ver «Accesibilidad»). |
 | [`datos/paleta.json`](datos/paleta.json) | Un color por categoría UPOS, en modo claro y oscuro, y la marca (estilo de subrayado) de cada grupo. **Provisional.** |
 | [`datos/citas.json`](datos/citas.json) | Las 6 citas candidatas del piloto en español (Bécquer, Martí, Sor Juana, Darío, Quevedo y Calderón), con qué falta comprobar de cada una. **Todas `sin-verificar` y sin texto**: no se pudo abrir ninguna edición de dominio público desde el entorno donde se armó. |
 | [`datos/ejemplos.json`](datos/ejemplos.json) | Seis frases de prueba (no son citas) en `spa`, `eng` y `deu`, con sus etiquetas puestas a mano y sin revisión nativa. |
@@ -39,7 +39,7 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 | [`prototipo/index.html`](prototipo/index.html) | La paleta en una sola página, sin servidor: leyenda, frases de prueba, tema claro y oscuro, simulación de daltonismo y marcas. Generado: no se edita a mano. |
 | [`salida/`](salida/) | Las piezas de cita coloreada: `citas-pos.css` (la hoja del sitio) y, por cada frase, un fragmento para el **correo** (`*.correo.html`, estilos en línea, fondo propio, sin imágenes), otro para el **sitio** (`*.sitio.html`, con las clases de la hoja) y otro del juego **«Adivina la categoría»** (`*.juego.html`, que además necesita `citas-pos-juego.css` y `citas-pos-juego.js`). `demo-juego.html` es una página autónoma para probar el juego. Hoy solo hay las de `ejemplos/`, que son frases de prueba y **no son citas**; las de `citas/` aparecerán cuando una cita esté verificada y revisada. Generado: no se edita a mano. |
 | [`juego/`](juego/) | `juego.css` y `juego.js`: las fuentes, escritas a mano, de «Adivina la categoría». `render.php` las copia a `salida/` (CSS sin dependencias, JavaScript sin dependencias). |
-| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php`, `render.php`, `comprobar-citas.php` y `comprobar-revisiones.php`, y `lib/comun.php` con lo que comparten (PHP sin dependencias). |
+| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php`, `render.php`, `comprobar-citas.php` y `comprobar-revisiones.php`, y `lib/` con lo que comparten: `comun.php` (JSON, fechas, dominios, registro de revisiones) y `paleta.php` (categorías UPOS, daltonismo, CSS de colores y marcas, piezas de una frase). PHP sin dependencias. |
 
 ## Idea central
 
@@ -57,6 +57,20 @@ Heredamos la disciplina de [`marketing/`](../marketing/): ninguna frase entra si
 4. **Los colores no son hechos.** `Listado-colores/` aclara que los significados psicológicos y místicos de los colores son tradición o hipótesis. Ninguna pieza presenta un significado de color como un efecto comprobado.
 5. **Derechos.** Solo autores de dominio público, y traducciones propias. Los criterios y el límite de fechas están en `CRITERIOS.md`; el caso de la marca «Contrastocolor» está en [`PREGUNTAS-PARA-ABOGADO.md`](../PREGUNTAS-PARA-ABOGADO.md), pregunta 30. Como las piezas llevan el nombre directamente, si esa pregunta acaba en un cambio de nombre hay que reescribirlas.
 
+## Accesibilidad
+
+El juego y los fragmentos se auditaron con **axe-core 4.14.0** (reglas WCAG 2.0, 2.1 y 2.2 de nivel A y AA, y buenas prácticas) en claro y en oscuro, y en todos los estados del juego (al empezar, con una palabra revelada, con todas, y sin JavaScript), el prototipo y los fragmentos de sitio y de correo: **0 violaciones**. Lo repite `pruebas/navegador/` en la CI. Además comprueba lo que axe no mide: el reflujo a 320 px (un zoom del 400 %), el espaciado de texto de WCAG 1.4.12, el modo de alto contraste, el foco del teclado y el comportamiento (pulsar, Intro y Espacio, la leyenda).
+
+La auditoría encontró y corrigió tres problemas reales, que axe **no** detecta y salieron de mirar el árbol de accesibilidad y el modo de alto contraste:
+
+1. La raya que invita a tocar una palabra era un `box-shadow`, que el modo de alto contraste elimina: ahora es un borde.
+2. Hasta que se descubría algo, la leyenda era una lista vacía que el lector de pantalla anuncia como «lista»: ahora se oculta entera.
+3. Con JavaScript, cada palabra es un botón y la frase no se podía oír de corrido: ahora el script añade la frase entera como texto solo para lectores de pantalla.
+
+**Un falso positivo conocido.** axe marca como «por revisar» `label-content-name-mismatch` en las palabras de un solo carácter («y», «a»), porque no sabe si es una letra o un símbolo. El nombre accesible de cada palabra revelada empieza por su texto visible («y, conjunción coordinante»), así que cumple el criterio 2.5.3; la prueba lo permite expresamente y falla ante cualquier otro «por revisar».
+
+**Lo que no se hizo ni se probó:** un lector de pantalla real (lo más parecido que hay es el árbol de accesibilidad de Chromium), Firefox y Safari. Una frase de 15 palabras son 15 paradas de tabulador; un `tabindex` itinerante con las flechas lo reduciría, y no se implementó.
+
 ## Relación con otros proyectos
 
 - [`marketing/`](../marketing/): es el apoyo de marketing de **conce.com** (genealogía) y su README dice que Contrastocolor no usa esos textos. Esta carpeta es el equivalente para Contrastocolor y toma de allí el patrón (traducciones como borrador, guía de revisión nativa y un documento de verificación).
@@ -71,7 +85,8 @@ No depende de ningún proyecto en tiempo de ejecución.
 Desde la raíz del repositorio, con PHP 8.3 y sin instalar nada:
 
 ```bash
-php citas-pos/pruebas/ejecutar.php            # las pruebas: lo que cada comprobador debe aceptar y, sobre todo, rechazar (unos 3 s)
+php citas-pos/pruebas/ejecutar.php            # las pruebas: lo que cada comprobador debe aceptar y, sobre todo, rechazar (unos 3 s; fijan «hoy» con `CITAS_POS_HOY=AAAA-MM-DD`, que también sirve para probar a mano las fechas y el año de corte de los derechos)
+(cd citas-pos/pruebas/navegador && npm ci && npx playwright install chromium && npm test)   # el juego en Chromium y axe-core (unos 25 s)
 php citas-pos/bin/comprobar-paleta.php        # las 17 categorías, contraste de 4,5:1 en claro y oscuro, colores confundibles (--lista para verlos)
 php citas-pos/bin/prototipo.php --comprobar   # prototipo/index.html al día con datos/ (sin --comprobar, lo regenera)
 php citas-pos/bin/render.php --comprobar      # salida/ al día (sin --comprobar, la regenera). Una cita solo sale si está verificada y revisada
@@ -85,4 +100,4 @@ Para ver el prototipo, abre `citas-pos/prototipo/index.html` en un navegador: no
 
 **Usar el juego en una página.** Carga `citas-pos.css` y `citas-pos-juego.css` en el `<head>`, `citas-pos-juego.js` con `defer`, y pega el contenido de un `*.juego.html`. Sin el script la frase sale coloreada y con su leyenda completa, así que se puede leer aunque falle; con el script, las palabras empiezan en gris y se descubren al tocarlas (con el ratón, el dedo o el teclado: Intro y Espacio), y la leyenda se va llenando.
 
-**Lo que estas comprobaciones no cubren:** el comportamiento del juego en el navegador (pulsar, el teclado, la leyenda que se llena): se probó a mano en Chromium (claro, oscuro, móvil de 390 px y sin JavaScript) y las pruebas solo comprueban el HTML y que el JavaScript compile; no se ha probado con un lector de pantalla real, ni en Firefox ni en Safari; que el fragmento del correo se vea bien en clientes de correo reales (no se ha probado en ninguno; lleva su propio fondo claro, pero un cliente que invierta los colores o ignore el estilo del subrayado lo cambiaría), que el texto de una cita coincida con su fuente (lo hace una persona al verificar; el validador solo exige que quede anotado con qué), ni hay pruebas de las traducciones (aún no existen), la paleta no se ha probado con personas con daltonismo ni en un correo real, y la simulación de daltonismo es una aproximación.
+**Lo que estas comprobaciones no cubren:** el juego solo se prueba en Chromium: no se ha probado con un lector de pantalla real, ni en Firefox ni en Safari; que el fragmento del correo se vea bien en clientes de correo reales (no se ha probado en ninguno; lleva su propio fondo claro, pero un cliente que invierta los colores o ignore el estilo del subrayado lo cambiaría), que el texto de una cita coincida con su fuente (lo hace una persona al verificar; el validador solo exige que quede anotado con qué), ni hay pruebas de las traducciones (aún no existen), la paleta no se ha probado con personas con daltonismo ni en un correo real, y la simulación de daltonismo es una aproximación.

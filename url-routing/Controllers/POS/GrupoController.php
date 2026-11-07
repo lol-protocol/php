@@ -23,12 +23,6 @@ class GrupoController extends BaseController
         /** @var array<string, string> $filtros */
         $filtros = $params['filtros'] ?? [];
 
-        if ($filtros === []) {
-            return $this->renderFound($params, $repo->grupo(...), 'pos/grupo/show', 'grupo',
-                fn(int $id) => ['subgrupos' => $repo->subgrupos($id), 'productos' => $repo->productosDeGrupo($id),
-                    'filtros' => [], 'ofrecidos' => $repo->filtrosDeGrupo($id)]);
-        }
-
         $id = $this->validateId($params['id'] ?? null);
         if ($id === null) {
             return $this->handleBadRequest('Identificador inválido');
@@ -46,14 +40,17 @@ class GrupoController extends BaseController
             $aplicados[$tipo] = $fila;
         }
 
-        $canonica = filtrado('grupo', $id, $filtros);
-        if ($canonica !== (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?')) {
-            return $this->redirect($canonica, 301);
+        if ($filtros !== []) {
+            $canonica = filtrado('grupo', $id, $filtros);
+            if ($canonica !== (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?')) {
+                return $this->redirect($canonica, 301);
+            }
         }
 
         return view('pos/grupo/show', [
             'grupo' => $grupo,
-            'subgrupos' => [],
+            // Narrowed to a filter, the category lists its products only: its subcategories are the unfiltered page's.
+            'subgrupos' => $filtros === [] ? $repo->subgrupos((int)$id) : [],
             'productos' => $repo->productosDeGrupo((int)$id, $filtros),
             'filtros' => $aplicados,
             'ofrecidos' => $repo->filtrosDeGrupo((int)$id),

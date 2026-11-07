@@ -61,15 +61,25 @@ export function createRecordChanges({ dataset }) {
     const all = [...changes.rows, ...entries].filter((row, i, rows) => rows.findIndex((other) => sameRow(row, other)) === i).sort(
       (a, b) => a.date.localeCompare(b.date) || a.country_code.localeCompare(b.country_code) || a.law_name.localeCompare(b.law_name)
     );
-    return { entries, all, changes, sources };
+    // Lo que --check compara: una fila de changes.csv de antes de `since` no es evidencia de que el cambio de
+    // hoy esté anotado, aunque coincida en pais+ley+campo+valor nuevo (un valor puede volver a repetirse). Una
+    // fila que no existia todavia en `since` no se puede perder (CHANGES_FILE puede no haber existido ahi).
+    let recordedBefore;
+    try {
+      recordedBefore = parseMaster(gitShow(since, relative(ROOT, changes.path))).records;
+    } catch {
+      recordedBefore = [];
+    }
+    const addedSince = changes.rows.filter((r) => !recordedBefore.some((s) => sameRow(r, s)));
+    return { entries, all, changes, sources, addedSince };
   }
 
   function main(argv = process.argv.slice(2)) {
     const options = parseArgs(argv);
     const gitShow = (rev, path) => execFileSync("git", ["show", `${rev}:./${path}`], { cwd: ROOT, encoding: "utf-8", maxBuffer: 64 * 1024 * 1024 });
-    const { entries, all, changes, sources } = recordChanges({ ...options, gitShow });
+    const { entries, all, changes, sources, addedSince } = recordChanges({ ...options, gitShow });
     if (options.check) {
-      const missing = unrecorded(entries, changes.rows);
+      const missing = unrecorded(entries, addedSince);
       if (!missing.length) {
         console.log(`✔ every change since ${options.since} is in ${CHANGES_FILE} (${entries.length} compared)`);
         return 0;

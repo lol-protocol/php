@@ -190,6 +190,60 @@ final class Database
     }
 
     /**
+     * The next number of $columna in $tabla (MAX + 1, 1 for an empty table), among the rows where every
+     * $donde column (column => value) matches. Two people asking at the same moment read the same maximum:
+     * call it inside transaccionConReintento(), so the one that loses the race tries again.
+     *
+     * @param array<string, int|string> $donde
+     */
+    public function siguienteNumero(string $tabla, string $columna, array $donde = []): int
+    {
+        $this->assertIdentifiers($tabla, [$columna => 1], $donde);
+        $sql = "SELECT COALESCE(MAX({$columna}), 0) + 1 FROM {$tabla}";
+        if ($donde !== []) {
+            $sql .= ' WHERE ' . implode(' AND ', array_map(static fn(string $c): string => "{$c} = ?", array_keys($donde)));
+        }
+
+        return (int)$this->fetchValue($sql, array_values($donde));
+    }
+
+    /**
+     * Whether the database refused a write because the row already exists (PostgreSQL gives SQLSTATE 23505;
+     * SQLite gives the generic 23000, so its message is read). A CHECK, a foreign key or a database that is
+     * down is not this: it would fail the same way every time.
+     */
+    public static function esChoqueDeUnicidad(\PDOException $e): bool
+    {
+        if ((string)$e->getCode() === '23505') {
+            return true;
+        }
+        $mensaje = strtolower($e->getMessage());
+
+        return str_contains($mensaje, 'duplicate key') || str_contains($mensaje, 'unique constraint failed');
+    }
+
+    /**
+     * transaction(), tried again (the whole of it, so it reads the numbers the winner left) when it loses a
+     * race for a unique value (see esChoqueDeUnicidad()); any other error, or the last attempt's, is thrown.
+     *
+     * @template T
+     * @param callable(self): T $work
+     * @return T
+     */
+    public function transaccionConReintento(callable $work, int $intentos = 3): mixed
+    {
+        for ($intento = 1; ; $intento++) {
+            try {
+                return $this->transaction($work);
+            } catch (\PDOException $e) {
+                if ($intento >= $intentos || !self::esChoqueDeUnicidad($e)) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
+    /**
      * @param array<string, mixed> $data
      */
     public function insert(string $table, array $data): void

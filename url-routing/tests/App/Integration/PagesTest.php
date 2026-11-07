@@ -194,6 +194,42 @@ class PagesTest extends TestCase
         $this->assertSame($status, $codigo);
     }
 
+    /**
+     * The three lists of registros (a suceso's, an organización's and "Mis aportes") share one partial: with rows
+     * they link each registro, and without any each page says its own thing.
+     */
+    public function testTheListsOfRegistrosShareOnePartialAndEachSaysItsOwnEmptyMessage(): void
+    {
+        // Como propietario: un visitante no ve los registros que documentan a personas vivas o privadas.
+        $paginas = [
+            'suceso' => ['/412000006/', 'Ningún registro documenta este suceso todavía.'],
+            'organizacion' => ['/10232/2/', 'No custodia registros cargados.'],
+            'aportes' => ['/0/2/', 'No has aportado registros.'],
+        ];
+        $sinRegistros = self::$dir . '/sin-registros.sqlite';
+        copy(self::$dir . '/genealogy.sqlite', $sinRegistros);
+        $pdo = new \PDO('sqlite:' . $sinRegistros);
+        $pdo->exec('DELETE FROM registro_sucesos; DELETE FROM registros;');
+
+        foreach ($paginas as $nombre => [$uri, $vacio]) {
+            $pedir = fn(array $entorno) => $this->get(
+                self::GENEALOGIA,
+                $uri,
+                tokenConfigurado: self::TOKEN,
+                autorizacion: self::basic(self::TOKEN),
+                entorno: $entorno
+            )[1];
+
+            $con = $pedir([]);
+            $this->assertStringContainsString('<ul class="lista">', $con, $nombre);
+            $this->assertStringContainsString('<span class="meta">', $con, $nombre);
+            $this->assertStringNotContainsString($vacio, $con, "{$nombre}: con registros no dice que no hay");
+
+            $sin = $pedir(['DB_DSN_GENEALOGY' => 'sqlite:' . $sinRegistros]);
+            $this->assertStringContainsString('<p class="vacio">' . htmlspecialchars($vacio) . '</p>', $sin, $nombre);
+        }
+    }
+
     /** The brand comes from .env, not from the view: the genealogy header and title follow SITE_NAME_GENEALOGY. */
     public function testTheGenealogyHeaderShowsTheConfiguredBrand(): void
     {

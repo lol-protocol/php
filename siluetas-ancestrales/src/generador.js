@@ -12,6 +12,8 @@ import { renderizar } from './svg.js';
 import { ETNIAS, ETNIAS_POR_ID } from './datos/etnias.js';
 import { distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre, perfilDe, PERFILES } from './datos/colores-prendas.js';
 import { medidas } from './cuerpo.js';
+import { validarOpciones } from './validacion.js';
+import { TIPOS } from './tipos-de-ropa.js';
 
 // ---------- Consulta del catálogo ----------
 
@@ -210,9 +212,14 @@ function normalizarEtnia(spec) {
   const lista = pares.filter(([id]) => id).map(([id, peso]) => {
     const e = ETNIAS_POR_ID[id];
     if (!e) throw new Error(`Etnia desconocida: ${id}. Disponibles: ${ETNIAS.map((x) => x.id).join(', ')}`);
-    return { e, peso: Number(peso) > 0 ? Number(peso) : 1 };
-  });
-  if (!lista.length) return null;
+    const w = Number(peso);
+    if (!Number.isFinite(w) || w < 0) throw new Error(`Peso no válido para la etnia ${id}: ${JSON.stringify(peso)}. Debe ser un número mayor o igual que 0.`);
+    return { e, peso: w };
+  }).filter((x) => x.peso > 0); // peso 0: esa etnia no cuenta
+  if (!lista.length) {
+    if (pares.some(([id]) => id)) throw new Error('Todas las etnias tienen peso 0: al menos una debe pesar más que 0.');
+    return null;
+  }
   const total = lista.reduce((t, x) => t + x.peso, 0);
   return lista.map((x) => ({ e: x.e, peso: x.peso / total }));
 }
@@ -249,6 +256,7 @@ const ESTATURA_REF = { f: 161, m: 174 }; // los promedios con los que medidas() 
  * rasgos (true: ojos, cejas y boca suaves), fondo, prendas (lista propia de prendas ya armadas).
  */
 export function generarPersona(opc = {}) {
+  validarOpciones(opc);
   const semilla = opc.semilla ?? 1;
   const azar = crearAzar(`persona:${semilla}`);
   const sexo = opc.sexo ?? (azar.bool() ? 'f' : 'm');
@@ -329,7 +337,7 @@ export function generarPersona(opc = {}) {
   const ah = azar.hijo('cabeza');
   const peinadosEtnia = etnia ? atuendo.peinados.filter((p) => etnia[0].e.peinados.includes(p)) : [];
   const peinadoId = opc.peinado ?? ah.elegir(peinadosEtnia.length ? peinadosEtnia : atuendo.peinados);
-  let estilo = PEINADOS[peinadoId] ? peinadoId : 'corto';
+  let estilo = PEINADOS[peinadoId] ? peinadoId : 'corto'; // un peinado del atuendo que no exista se cambia por 'corto'; el pedido a mano ya se validó
   // Los mayores a veces pierden el pelo; la tonsura y las pelucas no se tocan.
   if (!opc.peinado && edad > 55 && sexo === 'm' && !['tonsura', 'peluca-barroca', 'peluca-egipcia'].includes(estilo) && ah.bool(0.25)) estilo = 'calvo';
   const quiereBarba = opc.barba === undefined ? true : opc.barba;
@@ -407,13 +415,11 @@ export function generarPersona(opc = {}) {
 // ---------- Ropa nueva ----------
 
 const L = (a, b) => [a, b];
-const LARGOS_TORSO = ['pecho', 'cintura', 'cadera', 'muslo-alto', 'muslo', 'rodilla', 'pantorrilla', 'tobillo', 'suelo'];
-const MANGAS = ['sin', 'corta', 'codo', 'tres-cuartos', 'larga', 'campana', 'ancha', 'globo', 'abullonada', 'kimono'];
-const ESCOTES = ['redondo', 'v', 'cuadrado', 'barco', 'alto', 'ojal'];
-const BAJOS = ['recto', 'curvo', 'ondulado', 'dentado'];
-const ANCHOS_PANTALON = ['ajustado', 'recto', 'amplio', 'bombacho', 'campana'];
-const CALZADOS = ['sandalias', 'zapatos', 'botas', 'botas-altas', 'mocasines', 'zuecos', 'polainas', 'descalzo', 'zapatillas'];
-const CUELLOS = ['collar', 'gorguera', 'alto', 'bufanda', 'pectoral', 'cuentas-largas', 'gargantilla', 'lazo'];
+// Las variantes salen de tipos-de-ropa.js, la fuente única que también valida las prendas.
+// 'trapelacucha' es un adorno de un pueblo concreto (mapuche): no se mezcla al azar con otros estilos.
+const sinEspecificos = (lista) => lista.filter((x) => x !== 'trapelacucha');
+const MANGAS = TIPOS.manga, ESCOTES = TIPOS.escote, BAJOS = TIPOS.bajo, ANCHOS_PANTALON = TIPOS.anchoPantalon;
+const CALZADOS = TIPOS.calzado, CUELLOS = sinEspecificos(TIPOS.cuello);
 const ROLES_PATRON = PATRONES_ID.filter((p) => !['piel', 'jaspe', 'malla', 'escamas'].includes(p));
 
 function patronAzar(azar, prob) {
@@ -425,6 +431,7 @@ function patronAzar(azar, prob) {
  * estilo: 'sobrio' | 'trabajo' | 'festivo' | 'ceremonial'. Devuelve { prendas, paleta, nombre }.
  */
 export function generarRopaNueva({ semilla = 1, sexo = 'f', estilo = 'sobrio', esquema, paleta } = {}) {
+  validarOpciones({ sexo, estilo, esquema, paleta });
   const azar = crearAzar(`ropa:${semilla}:${sexo}:${estilo}`);
   const festivo = estilo === 'festivo' || estilo === 'ceremonial';
   const pal = paleta ?? generarPaleta({ semilla, esquema: esquema ?? (estilo === 'trabajo' ? 'tierra' : festivo ? 'festivo' : azar.elegir(['analogo', 'monocromo', 'complementario'])) });
@@ -452,6 +459,14 @@ export function generarRopaNueva({ semilla = 1, sexo = 'f', estilo = 'sobrio', e
     patron: patronAzar(azar, festivo ? 0.35 : 0.15),
     bandaPatron: azar.bool(ornato * 0.5) ? azar.elegir(ROLES_PATRON) : undefined,
   };
+  // Variantes extra con su propio azar: no cambian los valores de arriba.
+  const extra = azar.hijo('variantes');
+  if (extra.bool(0.2)) torso.forma = extra.elegir(TIPOS.forma);
+  if (extra.bool(0.12)) torso.capucha = true;
+  if (extra.bool(0.15)) torso.bolsillos = extra.elegir(TIPOS.bolsillosTorso);
+  if (extra.bool(0.15)) torso.cuelloCamisa = true;
+  if (extra.bool(0.15)) torso.cinturon = true;
+  if (extra.bool(0.1)) torso.pieles = extra.elegir(TIPOS.pieles);
   add('torso', 'tunica', torso, col(), vestido ? 'Vestido nuevo' : 'Túnica nueva');
 
   if (!vestido) {
@@ -485,6 +500,7 @@ export function generarRopaNueva({ semilla = 1, sexo = 'f', estilo = 'sobrio', e
 /** Una persona con ropa inventada en lugar de un atuendo del catálogo. */
 export function generarPersonaConRopaNueva(opc = {}) {
   const semilla = opc.semilla ?? 1;
+  validarOpciones(opc);
   const sexo = opc.sexo ?? (crearAzar(`persona:${semilla}`).bool() ? 'f' : 'm');
   const ropa = generarRopaNueva({ semilla, sexo, estilo: opc.estilo ?? 'sobrio', esquema: opc.esquema, paleta: opc.paleta });
   const base = generarPersona({ ...opc, sexo, prendas: ropa.prendas, paleta: ropa.paleta });

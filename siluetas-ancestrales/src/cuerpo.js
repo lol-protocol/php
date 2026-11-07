@@ -36,6 +36,11 @@ const A = {
   brazoSup: [0.022, 0.026, 0.022], codo: [0.018, 0.020, 0.017], muneca: [0.0125, 0.0135, 0.0115],
 };
 
+/** Rangos que acepta el cuerpo; el generador y las opciones los validan con estos mismos valores. */
+export const EDAD_MIN = 2, EDAD_MAX = 100;
+export const ALTURA_MIN = 70, ALTURA_MAX = 190; // cm
+export const CORPULENCIA_MIN = 0.6, CORPULENCIA_MAX = 1.6; // si se da como número
+
 export const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta: 1.34 };
 export const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
@@ -97,11 +102,12 @@ export function normalizarPose(spec) {
  * opc: { sexo: 'f'|'m', edad (años), corpulencia (nombre o número), altura (cm, opcional), postura }
  */
 export function medidas(opc = {}) {
+  if (opc.sexo !== undefined && opc.sexo !== 'f' && opc.sexo !== 'm') throw new Error(`Sexo no válido: ${JSON.stringify(opc.sexo)}. Valores posibles: 'f' o 'm'.`);
   const sexo = opc.sexo === 'f' ? 'f' : 'm';
-  const edad = limitar(Number(opc.edad ?? 30), 2, 100);
+  const edad = limitar(Number(opc.edad ?? 30), EDAD_MIN, EDAD_MAX);
   const corp = typeof opc.corpulencia === 'number' ? opc.corpulencia : (CORPULENCIAS[opc.corpulencia] ?? 1);
   const escalaAltura = limitar(Number(opc.escalaAltura ?? 1), 0.8, 1.2);
-  const cm = limitar(Number(opc.altura ?? porTabla(ALTURA[sexo], Math.min(edad, 20)) * escalaAltura * (edad > 60 ? 1 - (edad - 60) * 0.0009 : 1)), 70, 190);
+  const cm = limitar(Number(opc.altura ?? porTabla(ALTURA[sexo], Math.min(edad, 20)) * escalaAltura * (edad > 60 ? 1 - (edad - 60) * 0.0009 : 1)), ALTURA_MIN, ALTURA_MAX);
   const H = cm * 4.9;
   const cabezas = porTabla(CABEZAS, Math.min(edad, 18));
   // u = 0 niño pequeño, 1 adulto (según proporción de la cabeza)
