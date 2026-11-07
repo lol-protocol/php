@@ -115,8 +115,18 @@ class UrlHelper
         return $codigo === null ? $base : "{$base}{$codigo}/";
     }
 
-    public function esc(mixed $text): string
+    /** Escapes text for HTML (also inside quoted attributes). Needs no state, so it is static. */
+    public static function escape(mixed $text): string
     {
         return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * @deprecated since 2026-11-07: use the static UrlHelper::escape(). The global esc() no longer goes
+     *             through the ServiceLocator and this method; it stays as a reference.
+     */
+    public function esc(mixed $text): string
+    {
+        return self::escape($text);
     }
 }
