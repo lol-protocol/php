@@ -183,3 +183,29 @@ test("record-changes is idempotent: running it again on the same edit adds nothi
   writeCsv(first.changes.path, CHANGE_COLUMNS, [...first.all, ...first.all]);
   assert.equal(recordChanges({ since: "HEAD", date: "2026-10-15", masterPath: master, gitShow: () => committed }).all.length, 1);
 });
+
+test("--check is not fooled by an old entry whose value the field has cycled back to", () => {
+  const dir = mkdtempSync(join(tmpdir(), "changes-cycle-"));
+  const master = join(dir, "master.csv");
+  const row = { ...base, country_code: "AA", law_name: "Act", fair_use_exceptions: "1" };
+  writeCsv(master, COLUMNS, [row]);
+  const committedMaster = readFileSync(master, "utf-8");
+  // Already recorded, both before `since`: the field went 0 -> 2, then back to 1.
+  const oldHistory = [
+    { date: "2020-01-01", country_code: "AA", law_name: "Act", field: "fair_use_exceptions", old_value: "0", new_value: "2" },
+    { date: "2021-01-01", country_code: "AA", law_name: "Act", field: "fair_use_exceptions", old_value: "2", new_value: "1" },
+  ];
+  writeCsv(join(dir, "changes.csv"), CHANGE_COLUMNS, oldHistory);
+  const committedChanges = readFileSync(join(dir, "changes.csv"), "utf-8");
+  // Since `since`, the field goes back to "2" — the same value the 2020 row already used — but nobody recorded
+  // this new change: changes.csv on disk still only has the two old rows.
+  writeCsv(master, COLUMNS, [{ ...row, fair_use_exceptions: "2" }]);
+  const gitShow = (rev, path) => (path.endsWith("changes.csv") ? committedChanges : committedMaster);
+  const { entries, addedSince } = recordChanges({ since: "HEAD", date: "2026-10-15", masterPath: master, gitShow });
+  assert.equal(entries.length, 1);
+  assert.deepEqual(addedSince, [], "nothing was added to changes.csv since the base revision");
+  assert.equal(unrecorded(entries, addedSince).length, 1, "the new change back to an old value still needs its own entry");
+  // What this guards against: matching against the whole history, not just what changes.csv gained since
+  // `since`, would let the 2020 row (same country/law/field/new_value) hide this unrelated, unrecorded change.
+  assert.equal(unrecorded(entries, oldHistory).length, 0, "the loose match alone wrongly treats it as already recorded");
+});
