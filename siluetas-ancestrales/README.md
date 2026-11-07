@@ -115,7 +115,7 @@ Cada prenda es una plantilla con parámetros; estas son las variantes que se com
 
 - `src/cuerpo.js`: proporciones por edad, sexo y complexión; el cuerpo se dibuja con curvas suaves a partir de puntos de referencia (hombro, cintura, cadera, rodilla…).
 - `src/cabeza.js`: cabeza, orejas, peinados, barbas y tocados, dibujados en unidades de la cabeza.
-- `src/prendas.js`: las plantillas de prenda. Cada una se **ancla a las medidas del cuerpo**, así que la misma túnica sirve para un niño y para un anciano corpulento.
+- `src/prendas.js` y `src/prendas/`: las plantillas de prenda, una por archivo (`tunica.js`, `pantalon.js`…) con lo que comparten en `comun.js`; `prendas.js` las reúne en `PLANTILLAS`. Cada una se **ancla a las medidas del cuerpo**, así que la misma túnica sirve para un niño y para un anciano corpulento.
 - `src/datos/`: los datos. `prendas.js` (cada prenda es una plantilla con sus parámetros), `atuendos.js` (combinaciones por región y época, con su paleta de tintes), `colores.js` (tintes, pieles, cabellos).
 - `src/generador.js`: elige atuendo, colores y rasgos; inventa ropa nueva; arma paletas.
 - `src/svg.js`: capas, degradados, patrones y sombras. Cada forma se define una vez y se reutiliza con `<use>`; todos los `id` de una figura llevan un prefijo propio, así que se pueden poner varias figuras en una misma página sin que choquen. El SVG resultante no lleva scripts, imágenes ni enlaces externos.
@@ -161,7 +161,7 @@ Son **promedios aproximados de poblaciones, no reglas sobre una persona**, y «e
 
 1. Una prenda nueva: una línea en `src/datos/prendas*.js` con la plantilla, sus parámetros y los papeles de color (`A` principal, `B` secundario, `C` ribete, `D` detalle). Para darle colores y porcentajes propios, agrégala a un grupo de `src/datos/colores-prendas.js` (o crea un perfil nuevo); si no, tomará el color del atuendo.
 2. Un atuendo nuevo: una entrada en `src/datos/atuendos.js` con región, años, sexo, clase, prendas y los tintes posibles de cada letra de la paleta.
-3. Una plantilla nueva (otra forma de prenda): una función en `src/prendas.js` que devuelva `{ atras, partes, detalles }` y se agregue a `PLANTILLAS`.
+3. Una plantilla nueva (otra forma de prenda): un archivo en `src/prendas/` con una función que devuelva `{ atras, partes, detalles }`, agregada a `PLANTILLAS` en `src/prendas.js`.
 
 Después corre las pruebas y `node bin/construir.js`.
 
