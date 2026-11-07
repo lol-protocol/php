@@ -22,13 +22,5 @@
 <?php endif; ?>
 
 <h2>Documentado en</h2>
-<?php if ($registros === []): ?>
-<p class="vacio">Ningún registro documenta este suceso todavía.</p>
-<?php else: ?>
-<ul class="lista">
-<?php foreach ($registros as $r): ?>
-    <li><a href="<?= esc(enlace('registro', $r['id'])) ?>"><?= esc($r['titulo']) ?></a> <span class="meta"><?= esc(fecha($r['fecha'])) ?></span></li>
-<?php endforeach; ?>
-</ul>
-<?php endif; ?>
+<?php $lista = $registros; $vacio = 'Ningún registro documenta este suceso todavía.'; include __DIR__ . '/../_partials/registros.php'; ?>
 <?php $content = ob_get_clean(); $title = Etiquetas::suceso($suceso['tipo']) . ' · ' . fecha($suceso['fecha']); include __DIR__ . '/../_layout.php';
