@@ -7,14 +7,6 @@ if (!container || !ball1 || !ball2) {
     throw new Error('Animation setup failed: missing elements');
 }
 
-// Refleja lo que atravesó la pared en vez de recortarlo: recortar le quita
-// altura en cada rebote y, con gravedad, las bolas terminan quietas en el piso.
-function reflect(pos, vel, min, max) {
-    if (pos < min) return [2 * min - pos, Math.abs(vel)];
-    if (pos > max) return [2 * max - pos, -Math.abs(vel)];
-    return [pos, vel];
-}
-
 class Ball extends PhysicsObject {
     constructor(element, bounds, radius) {
         super(element, {
@@ -24,21 +16,9 @@ class Ball extends PhysicsObject {
             vy: (Math.random() - 0.5) * 4,
             radius: radius,
             bounceCoeff: 1,
+            bounceMode: 'reflect',
             bounds: bounds
         });
-        this.render();
-    }
-
-    checkBounds() {
-        [this.x, this.vx] = reflect(this.x, this.vx, this.radius, this.bounds.width - this.radius);
-        [this.y, this.vy] = reflect(this.y, this.vy, this.radius, this.bounds.height - this.radius);
-    }
-
-    update() {
-        this.vy += Physics.gravity;
-        this.x += this.vx;
-        this.y += this.vy;
-        this.checkBounds();
         this.render();
     }
 }

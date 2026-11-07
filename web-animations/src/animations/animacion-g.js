@@ -7,7 +7,8 @@ if (!container) {
 }
 
 // Only what is its own: how a particle is born. Gravity, bouncing and drawing come from PhysicsObject,
-// whose x, y are the centre of the circle.
+// whose x, y are the centre of the circle. It bounces against the window (PhysicsObject's default bounds),
+// which follows a resize.
 class Particle extends PhysicsObject {
     constructor() {
         const size = Math.random() * 20 + 5;
@@ -23,8 +24,7 @@ class Particle extends PhysicsObject {
             vx: (Math.random() - 0.5) * 4,
             vy: Math.random() * 2 + 1,
             radius: size / 2,
-            bounceCoeff: 0.8,
-            bounds: { width: window.innerWidth, height: window.innerHeight }
+            bounceCoeff: 0.8
         });
     }
 }

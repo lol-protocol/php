@@ -4,7 +4,7 @@
   "type": "module",
   "engines": { "node": ">=22" },
   "scripts": {
-    "test": "node tests/gallery-metadata.mjs && node tests/smoke.mjs && node tests/particles-in-bounds.mjs"
+    "test": "node tests/gallery-metadata.mjs && node tests/smoke.mjs && node tests/particles-in-bounds.mjs && node tests/physics-object.mjs"
   },
   "devDependencies": {
     "playwright": "1.64.1"
