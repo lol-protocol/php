@@ -34,6 +34,25 @@ final class Dinero
     }
 
     /**
+     * El monto de un texto de formulario: solo digitos con punto decimal opcional ("1500.50", "100").
+     * Un formulario del navegador siempre lo manda asi (type="number"); un script puede mandar "1.500,50",
+     * y (float) lo lee como 1.5 sin avisar, porque corta en la primera coma: una boleta 1.000 veces menor.
+     * Por eso no se acepta nada que no sea exactamente un monto: ni coma decimal, ni separador de miles,
+     * ni signo, ni exponente.
+     *
+     * @throws InvalidArgumentException si el texto no es un monto
+     */
+    public static function deTexto(string $texto): float
+    {
+        $texto = trim($texto);
+        if (preg_match('/^\d+(\.\d+)?$/D', $texto) !== 1) {
+            throw new InvalidArgumentException("«{$texto}» no es un monto: use solo dígitos y punto decimal.");
+        }
+
+        return (float) $texto;
+    }
+
+    /**
      * El monto en centavos enteros: 602.85 -> 60285. Redondea al centavo mas
      * cercano (no trunca: 0.57 * 100 da 56.99999999999999), asi que tambien
      * absorbe el ruido de una suma o resta de floats. Acepta el texto que

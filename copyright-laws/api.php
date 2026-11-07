@@ -89,11 +89,9 @@ function conditional(string $seed, int $mtime): void
     }
 }
 
-/** Sends a file, or a body derived from it (`$prefix . file . $suffix`), with caching + gzip. */
-function sendFile(string $path, string $contentType, string $prefix = '', string $suffix = ''): never
+/** Starts the gzip-compressed output, when the extension is there. */
+function startOutput(string $contentType): void
 {
-    $mtime = (int) filemtime($path);
-    conditional(dechex($mtime) . '-' . dechex((int) filesize($path)) . '-' . dechex(crc32($prefix . $suffix)), $mtime);
     header('Content-Type: ' . $contentType);
     if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'HEAD') {
         exit;
@@ -101,6 +99,21 @@ function sendFile(string $path, string $contentType, string $prefix = '', string
     if (function_exists('ob_gzhandler')) {
         ob_start('ob_gzhandler');
     }
+}
+
+/** Validators of a response made from one file: its modification time, size and a variant tag. */
+function fileSeed(string $path, string $variant): array
+{
+    $mtime = (int) filemtime($path);
+    return [dechex($mtime) . '-' . dechex((int) filesize($path)) . '-' . $variant, $mtime];
+}
+
+/** Sends a file, or a body derived from it (`$prefix . file . $suffix`), with caching + gzip. */
+function sendFile(string $path, string $contentType, string $prefix = '', string $suffix = ''): never
+{
+    [$seed, $mtime] = fileSeed($path, dechex(crc32($prefix . $suffix)));
+    conditional($seed, $mtime);
+    startOutput($contentType);
     echo $prefix;
     readfile($path);
     echo $suffix;
@@ -117,18 +130,17 @@ function sendWrappedJsonFile(string $path): never
     sendFile($path, 'application/json; charset=utf-8', '{"data":', '}');
 }
 
-function sendJsonPayload(string $sourcePath, array $payload): never
+/**
+ * Sends a JSON body computed from a file. The validators come from the file alone, so a client whose
+ * copy is still good gets its 304 without the file being read or decoded: `$build` only runs for a
+ * full response.
+ */
+function sendJsonPayload(string $sourcePath, callable $build): never
 {
-    $mtime = (int) filemtime($sourcePath);
-    conditional(dechex($mtime) . '-' . dechex((int) filesize($sourcePath)) . '-list', $mtime);
-    header('Content-Type: application/json; charset=utf-8');
-    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'HEAD') {
-        exit;
-    }
-    if (function_exists('ob_gzhandler')) {
-        ob_start('ob_gzhandler');
-    }
-    echo json_encode($payload, JSON_FLAGS);
+    [$seed, $mtime] = fileSeed($sourcePath, 'list');
+    conditional($seed, $mtime);
+    startOutput('application/json; charset=utf-8');
+    echo json_encode($build(), JSON_FLAGS);
     exit;
 }
 
@@ -152,21 +164,22 @@ $action = (string) ($_GET['action'] ?? '');
 switch ($action) {
     case 'jurisdictions':
         $path = bundlePath();
-        $bundle = json_decode((string) file_get_contents($path), true);
-        $list = array_map(
-            static fn(array $j): array => [
-                'code' => $j['code'],
-                'name' => $j['name'],
-                'tld' => $j['tld'],
-                'region' => $j['region'],
-                'lawCount' => $j['lawCount'],
-            ],
-            $bundle[BUNDLE_KEY]
-        );
-        sendJsonPayload($path, [
-            'data' => $list,
-            'meta' => ['version' => $bundle['version'], 'generatedAt' => $bundle['generatedAt']],
-        ]);
+        sendJsonPayload($path, static function () use ($path): array {
+            $bundle = json_decode((string) file_get_contents($path), true);
+            return [
+                'data' => array_map(
+                    static fn(array $j): array => [
+                        'code' => $j['code'],
+                        'name' => $j['name'],
+                        'tld' => $j['tld'],
+                        'region' => $j['region'],
+                        'lawCount' => $j['lawCount'],
+                    ],
+                    $bundle[BUNDLE_KEY]
+                ),
+                'meta' => ['version' => $bundle['version'], 'generatedAt' => $bundle['generatedAt']],
+            ];
+        });
 
     case 'bundle':
         sendJsonFile(bundlePath());

@@ -38,6 +38,14 @@ final class GrupoRepository extends Repository
         );
     }
 
+    /** The grupo an id that was merged away now points to (see grupo_alias); null if it isn't an alias. */
+    public function aliasDe(int $id): ?int
+    {
+        $destino = $this->db->fetchValue('SELECT grupo_id FROM grupo_alias WHERE id = ?', [$id]);
+
+        return $destino === null ? null : (int)$destino;
+    }
+
     /** @return list<array> the surname's personas with parent ids (its family network) */
     public function red(int $id): array
     {

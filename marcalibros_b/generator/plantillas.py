@@ -8,7 +8,9 @@ import random
 
 from movimientos import (ADORNOS_NUEVOS, AMBIENTALES_NUEVOS, ESCALAS_NUEVAS, FRENTE_NUEVOS, MOTIVOS_NUEVOS,
                          PALETAS_NUEVAS)
-from scene import ALTO, ANCHO, Escena, bezier, mover, suave
+from color import contraste, luminancia  # noqa: F401  (se reexportan: los usan marca y los tests)
+from scene import (ALTO, ANCHO, FRANJA_ALTO, FRANJA_X, FRANJAS_Y, MARGEN_FRANJA, Escena, bezier, mover,
+                   suave)
 
 PALETAS = {
     "atardecer": {
@@ -91,21 +93,6 @@ PALETAS = {
 
 
 PALETAS.update(PALETAS_NUEVAS)
-
-
-def luminancia(hex_color):
-    """Luminancia relativa WCAG de un color #RRGGBB."""
-    def canal(v):
-        v /= 255
-        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
-    h = hex_color.lstrip("#")
-    r, g, b = (canal(int(h[i:i + 2], 16)) for i in (0, 2, 4))
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b
-
-
-def contraste(a, b):
-    la, lb = sorted((luminancia(a), luminancia(b)), reverse=True)
-    return (la + 0.05) / (lb + 0.05)
 
 
 MIN_CONTRASTE_FIGURA = 3.0
@@ -953,12 +940,7 @@ ARQUETIPOS = {
 NOMBRES_ARQUETIPOS = list(ARQUETIPOS)
 
 
-# --- Franja reservada para texto -------------------------------------------------
-FRANJA_X = (16, ANCHO - 16)  # 168 px de ancho
-FRANJA_ALTO = 420
-FRANJAS_Y = ((440, "medio"), (110, "arriba"), (700, "abajo"))  # orden de preferencia
-MARGEN_FRANJA = 20
-
+# --- Franja reservada para texto (medidas en scene.py) ---------------------------
 
 def elegir_franja(obstaculos):
     """Primera franja vertical, por orden de preferencia, que no toca ningún obstáculo

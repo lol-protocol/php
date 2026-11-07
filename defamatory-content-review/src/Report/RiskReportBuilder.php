@@ -12,20 +12,12 @@ use DefamatoryContentReview\Scoring\ScoringPolicy;
  */
 final class RiskReportBuilder
 {
-    /**
-     * riskType => descripción corta, para el desglose de getDetailedReport().
-     * Antes era una copia propia que divergió en texto de
-     * `config/risk-categories.php` pese a que el README dice que las
-     * definiciones "viven" ahí: ahora lee de ese archivo, única fuente real.
-     * @var array<string,string>
-     */
-    private readonly array $descriptions;
     private readonly string $messagesDir;
 
+    /** @param string $riskCategoriesFile `config/risk-categories.php`: de su carpeta salen los mensajes (`messages/`) */
     public function __construct(string $riskCategoriesFile)
     {
         $this->messagesDir = dirname($riskCategoriesFile) . '/messages';
-        $this->descriptions = array_map(static fn(array $c) => $c['description'], require $riskCategoriesFile);
     }
 
     /** @return array<string,mixed> */
@@ -72,7 +64,7 @@ final class RiskReportBuilder
             }
 
             $analysis[$riskType] = [
-                'description' => Messages::find("category.$riskType.description", $locale, $this->messagesDir) ?? $this->descriptions[$riskType] ?? $riskType,
+                'description' => Messages::find("category.$riskType.description", $locale, $this->messagesDir) ?? $riskType,
                 'level' => $worst,
                 'isSevere' => $this->isTopWeight($worst, $policy),
                 'termCount' => count($terms),

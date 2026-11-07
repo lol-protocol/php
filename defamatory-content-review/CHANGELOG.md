@@ -2,7 +2,27 @@
 
 ## [Sin publicar]
 
+### Corregido
+
+- **`FileSizeLimitTest` tomaba `#[Atributo]` por un comentario** y contaba de menos las líneas de código de los
+  archivos con atributos de PHP.
+- **Un archivo de mensajes con marcadores que no casan** (un `%s` de más o de menos) ya no lanza una excepción:
+  `Messages::get()` usa la plantilla española, y si tampoco, la clave.
+- **Tagalo**: la forma con ligamento («tangang») lleva el rasgo `lig`, no `infl` (que sugería un caso).
+- `ModerationEndpoint` ya no reasigna `$language` dentro de un literal de array.
+
 ### Cambiado
+
+- **`config/languages/*.php`: el `meta` ya no repite `iso639_1`, `name`, `nativeName` ni `family`** (viven solo
+  en `supported-languages.php`); `LanguageMetaTest` lo comprueba.
+- **`Messages`**: las categorías en español salen de `risk-categories.php` (ya no hay que tratarlas aparte en las
+  pruebas); `explanation.end` es opcional (por omisión, el punto de `spa`); `requiredKeys()` no recibe archivo.
+- **`InflectionLanguages`**: una sola tabla `idioma => [clase, etiqueta]` en vez de tres listas.
+- `LanguageRegistry` normaliza el código en un único método.
+- Obsoletos (`@deprecated`, siguen funcionando): `WordList::getByCategory()`, `getBySeverity()`, `getMeta()`,
+  `requiresTokenizer()`, `ScoringPolicy::getAggregation()` y `ValidationResult::getNameCollisionTerms()`: nada
+  de la librería ni del monorepo los llama.
+- La prueba de «33 idiomas» compara el registro con los archivos de `config/languages/`, sin número fijo.
 
 - **El código de idioma es siempre de tres letras** (ISO 639-3): `LanguageRegistry::resolve()` e
   `isSupported()` ya no aceptan `es`, `de`, `zh`… (el campo `language` del endpoint tampoco). Las etiquetas de
@@ -15,6 +35,11 @@
 
 ### Añadido
 
+- **`Loader` y `Http\TextMarks`, para quien usa la librería sin Composer** (url-routing y sistema-nuevo, que
+  tenían cada uno su copia del cargador de clases, de la lista de categorías descriptivas y del mapeo a
+  etiquetas). `Loader::register($dir)` carga las clases una vez; `TextMarks::of($texto, $configDir, ['spa',
+  'eng'])` devuelve `decision` y las etiquetas sin repetir («acusación de delito», «insulto»…), revisando los
+  textos largos por trozos y creando cada revisor una sola vez por proceso.
 - **Árabe**: 13 plurales más en `ArabicPlurals` (rotos y sanos irregulares de palabras del diccionario).
 
 - **Más idiomas de salida del informe**: `ara`, `heb`, `jpn`, `kor`, `hin`, `tur`, `ukr`, `ces`,

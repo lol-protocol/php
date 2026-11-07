@@ -235,6 +235,17 @@ class BaseController
     }
 
     /**
+     * Whether the request asks for the fragment of a listing (its list and its navigation, with no page around
+     * them) instead of the page: the header `X-Fragmento: 1`, which the script at /b.js sends to load the next
+     * page without leaving this one. The URL is the same either way, so there is no second shape to learn or to
+     * link; a request without the header, such as a crawler's or a browser without JavaScript, gets the page.
+     */
+    protected static function pideFragmento(): bool
+    {
+        return ($_SERVER['HTTP_X_FRAGMENTO'] ?? '') === '1';
+    }
+
+    /**
      * The listing/search page /b/{digitos}/[{texto}/][{pagina}/] of either site: a 404 when the path
      * isn't one, a 301 to the canonical spelling when it was written another way, a 400 when the digit
      * width names no type (or one of $noListables, which have a width but are never listed), and
@@ -242,7 +253,8 @@ class BaseController
      *
      * $buscar receives the type, the text, how many rows to fetch and from which one. It is asked for
      * one row more than a page: having it tells whether a next page exists without a COUNT(*) (hayMas).
-     * It returns null for a type that has no listing, which is a 404.
+     * It returns null for a type that has no listing, which is a 404. With `X-Fragmento: 1` (see pideFragmento())
+     * the view renders only its list and navigation.
      *
      * @param array<string, mixed> $params the route's parameters ('ruta': the segments after "b")
      * @param callable(string, string, int, int): (list<array<string, mixed>>|null) $buscar [tipo, texto, limite, desplazamiento] => rows
@@ -270,7 +282,11 @@ class BaseController
             return $this->handleNotFound('Este tipo no tiene listado');
         }
 
+        // The same URL answers two ways, so the answer depends on a request header: a cache must know it.
+        header('Vary: X-Fragmento', false);
+
         return view($vista, [
+            'fragmento' => self::pideFragmento(),
             'tipo' => $tipo,
             'digitos' => $digitos,
             'query' => $query,

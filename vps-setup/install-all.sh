@@ -62,6 +62,15 @@ echo "║   Email: $EMAIL"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 
+# RAM: con menos de ~2 GB conviene instalar solo lo necesario. Solo avisa (tambien en --dry-run).
+RAM_MB=$(mem_total_mb)
+if [ "$RAM_MB" -gt 0 ] && [ "$RAM_MB" -lt "${LOW_RAM_MB:-1800}" ]; then
+    echo "AVISO: este servidor tiene ${RAM_MB} MB de RAM (menos de 2 GB). Alcanza para Nginx, PHP-FPM, PostgreSQL y"
+    echo "       pocas apps; Tomcat y Whisper (02_H, 02_I) no los instales aqui. Los workers de gunicorn se limitan"
+    echo "       solos segun la RAM (GUNICORN_WORKERS=<n> para fijarlos) y los pools PHP son 'ondemand'."
+    echo ""
+fi
+
 # Only prompt if stdin is a TTY (interactive mode)
 if [ "$DRY_RUN" -eq 0 ] && [ "$ASSUME_YES" -eq 0 ]; then
     if [ -t 0 ]; then

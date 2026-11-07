@@ -9,6 +9,17 @@ from dataclasses import dataclass, field
 ANCHO = 200
 ALTO = 1400  # proporción 1:7, solo vertical (decisión del plan)
 
+# Franja reservada para el texto: una sola definición para el catálogo, el editor y la página del editor.
+FRANJA_X = (16, ANCHO - 16)  # 168 px de ancho
+FRANJA_ALTO = 420
+FRANJAS_Y = ((440, "medio"), (110, "arriba"), (700, "abajo"))  # orden de preferencia
+MARGEN_FRANJA = 20
+FRANJA_CENTRAL = (FRANJA_X[0], FRANJAS_Y[0][0], FRANJA_X[1], FRANJAS_Y[0][0] + FRANJA_ALTO)
+
+# Vistas reducidas guardadas para las hojas de contacto y la página de revisión.
+ESCALA_REVISION = 0.4
+CELDA_REVISION = (round(ANCHO * ESCALA_REVISION), round(ALTO * ESCALA_REVISION))
+
 
 @dataclass
 class Escena:

@@ -17,8 +17,10 @@ $detalle = static fn(array $r): string => match ($tipo) {
 };
 $pagina_url = static fn(int $p): string => busqueda($digitos, $query, $p);
 ?>
+<?php if (empty($fragmento)): ?>
 <h1><?= esc($nombres[$tipo] ?? ucfirst($tipo)) ?></h1>
 <p class="sub"><?= $query !== '' ? 'Resultados para «' . esc($query) . '»' : 'Todos' ?><?= $pagina > 1 ? ' · página ' . $pagina : '' ?></p>
+<?php endif; ?>
 <?php if ($resultados === []): ?>
 <p class="vacio">Sin resultados.</p>
 <?php else: ?>
@@ -30,7 +32,14 @@ $pagina_url = static fn(int $p): string => busqueda($digitos, $query, $p);
 </ul>
 <?php endif; ?>
 <nav class="acciones" aria-label="Páginas">
-<?php if ($pagina > 1): ?><a href="<?= esc($pagina_url($pagina - 1)) ?>">← Anterior</a><?php endif; ?>
-<?php if ($hayMas): ?><a href="<?= esc($pagina_url($pagina + 1)) ?>">Siguiente →</a><?php endif; ?>
+<?php if ($pagina > 1): ?><a href="<?= esc($pagina_url($pagina - 1)) ?>" rel="prev">← Anterior</a><?php endif; ?>
+<?php if ($hayMas): ?><a href="<?= esc($pagina_url($pagina + 1)) ?>" rel="next">Siguiente →</a><?php endif; ?>
 </nav>
-<?php $content = ob_get_clean(); $title = $nombres[$tipo] ?? ucfirst($tipo); include __DIR__ . '/../_layout.php';
+<?php $content = ob_get_clean();
+// Only the list and the navigation: what the script at /b.js appends to the page it is on.
+if (!empty($fragmento)) {
+    echo $content;
+    return;
+}
+$scripts = ['/b.js'];
+$title = $nombres[$tipo] ?? ucfirst($tipo); include __DIR__ . '/../_layout.php';

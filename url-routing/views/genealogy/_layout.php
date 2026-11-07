@@ -6,9 +6,12 @@ use App\Support\Config;
 $sitio = trim((string)Config::get('SITE_NAME_GENEALOGY', '')) ?: 'Genealogía';
 $tiposBusqueda = [10 => 'Personas', 6 => 'Apellidos', 9 => 'Sucesos', 8 => 'Registros', 7 => 'Colecciones', 5 => 'Organizaciones'];
 // Every page of a person, event, record, tree, surname or organization links to /r/{id}/ to ask
-// for it to be withdrawn (RetiroController). Not on an error page: there is nothing to withdraw.
+// for it to be withdrawn (RetiroController). Not on an error page: there is nothing to withdraw. Not for the
+// owner either: the form is for a visitor, it answers 404 for what a visitor can't see (an event with a living
+// participant, a private colección) and the owner sees those pages, so her link would lead nowhere; she decides
+// from the queue at /0/3/.
 $primero = explode('/', trim((string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?'), '/'))[0];
-if (ctype_digit($primero) && (http_response_code() ?: 200) === 200
+if (ctype_digit($primero) && (http_response_code() ?: 200) === 200 && !\App\Support\AccessPolicy::esPropietario()
     && \App\Support\ServiceLocator::getInstance()->getRouter()->typeForLength(strlen($primero)) !== null) {
     $pedirRetiro = '/r/' . $primero . '/';
 }

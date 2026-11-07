@@ -10,6 +10,14 @@ Cuándo subir cada número es decisión de quien cambia los datos; el generador 
 
 Cada entrada empieza por `## X.Y.Z - AAAA-MM-DD`, va de la más reciente a la más antigua y dice qué cambió. `generar-tabla.py` comprueba el formato.
 
+## 1.2.1 - 2026-11-06
+
+Corrige datos y reglas de la 1.2.0; no cambia la estructura de ningún CSV.
+
+- **`hex_cotidiano` de `green` queda vacío.** La entrada curada de la lista completa para `green` es `#00FF00`, que es el hex de `lime` de CSS: no es un verde de uso corriente. Ahora se descarta toda entrada que sea el hex de *otro* color CSS (solo afectaba a `green`).
+- **Una revisión de un elemento que ya no existe no rompe la generación.** Sale como «huérfana» en `revisiones.md` y no cuenta como revisada, en vez de ser un error que obligaba a borrar la fila.
+- El resultado es el mismo en lo demás: el cálculo del color CSS más cercano se acelera con una cota exacta (de unos 10 s a unos 4 s) y los archivos generados no cambian.
+
 ## 1.2.0 - 2026-10-29
 
 Añade datos y una columna; ninguna columna existente cambia de lugar.

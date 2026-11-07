@@ -189,11 +189,8 @@ final class BoletaRepository
     private function consultaDelListado(string $desde, string $hasta, ?string $estado, ?string $cliente): array
     {
         $params = [':desde' => $desde, ':hasta' => $hasta];
-        $filtroCliente = '';
-        if ($cliente !== null && $cliente !== '') {
-            $filtroCliente = ' AND c.nombre ILIKE :cliente';
-            $params[':cliente'] = Busqueda::contiene($cliente);
-        }
+        [$filtroCliente, $paramsCliente] = Busqueda::filtro($cliente, ['c.nombre'], 'cliente', ' AND ');
+        $params += $paramsCliente;
 
         // Sin filtro de estado el conteo no necesita los pagos (ni la vista que los suma por boleta).
         $filtroEstado = '';

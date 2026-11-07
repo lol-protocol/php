@@ -29,7 +29,7 @@ final class Csrf
     /** Input oculto listo para pegar dentro de cualquier <form method="post">. */
     public static function campo(): string
     {
-        return '<input type="hidden" name="csrf_token" value="' . htmlspecialchars(self::token(), ENT_QUOTES) . '">';
+        return '<input type="hidden" name="csrf_token" value="' . e(self::token()) . '">';
     }
 
     /** true si el token recibido por POST coincide con el de la sesion. */

@@ -16,6 +16,21 @@ desde la prehistoria.
 tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Markdown
 (`tabla_genealogia.md` y `tabla_pos.md`) tienen todas las columnas.
 
+## Resumen
+
+Cifras que cambian con los datos. Las escribe `generar_tabla.py` y `--comprobar` falla si no
+están al día, así que el resto del README las remite aquí en vez de repetirlas.
+
+<!-- resumen: lo escribe generar_tabla.py; no editar a mano -->
+- **Filas:** 208 (193 estados, 12 territorios y 3 entidades disputadas).
+- **Excluidos de genealogía** (IO ≤ 1): 23: Afganistán, Bielorrusia, Burkina Faso, Corea del Norte, Cuba, Eritrea, Haití, Irán, Libia, Malí, Myanmar, Níger, Palestina, República Centroafricana, República Democrática del Congo, Rusia, Siria, Somalia, Sudán, Sudán del Sur, Turkmenistán, Venezuela y Yemen. Con IO ≤ 2 serían 54.
+- **Excluidos del etiquetador POS:** 7: Eritrea, Myanmar, República Centroafricana, República Democrática del Congo, Somalia, Sudán del Sur y Turkmenistán. Otros 33 no tienen corpus anotado en su lengua local y siguen dentro, con prioridad baja.
+- **IP de la mejor lengua**, países por nivel: 5: 181, 4: 16, 3: 7, 2: 1, 1: 3.
+- **IP local**, países por nivel: 5: 107, 4: 23, 3: 31, 2: 7, 1: 40.
+- **Lenguas por nivel:** 5: 21, 4: 26, 3: 35, 2: 11, 1: 70.
+- **Corrupción mediana por IO** (100 = sin corrupción): IO 1: 20; IO 2: 26; IO 3: 37.5; IO 4: 54; IO 5: 77.5.
+<!-- fin del resumen -->
+
 ## Archivos
 
 - `paises.csv`: datos generales, una fila por país. Es la fuente de verdad de genealogía.
@@ -41,6 +56,7 @@ tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Ma
   generó con `pycountry` para que los scripts no dependan de él.
 - `poblacion_larga.csv` y `natalidad.csv`: datos de entrada de la población histórica, generados
   por `preparar_datos.py`.
+- `comun.py`: lectura y escritura de CSV y años de los datos, compartidos por todos los scripts.
 - `historia_poblacion.py`: calcula los nacidos en la historia de cada país a partir de esos dos
   archivos, y escribe la columna de `paises.csv` y `poblacion_historica_detalle.csv` (con la banda
   de sensibilidad).
@@ -54,16 +70,16 @@ tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Ma
 - `pruebas.py`: pruebas del proyecto. La CI las corre junto con `generar_tabla.py --comprobar`
   (`.github/workflows/pruebas-listado-paises.yml`).
 
-`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv`, `vista.html` y `escenarios.md` son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
+`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv`, `vista.html`, `escenarios.md` y el bloque «Resumen» de este README son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
 
 ```bash
 python3 generar_tabla.py              # valida y regenera las tablas, priorizacion.csv y vista.html
 python3 generar_tabla.py --comprobar  # valida y falla si alguna salida no está al día (no escribe)
 python3 -m unittest -v pruebas        # pruebas
-python3 preparar_datos.py ...         # datos de los países; ver «Fuentes»
+python3 preparar_datos.py ...         # datos de los países; argumentos en descargar_fuentes.py
 python3 historia_poblacion.py         # recalcula los nacidos en la historia
-python3 preparar_lenguas.py ...       # recursos de cada lengua; ver «Fuentes»
-python3 preparar_mapa.py ...          # trazados del mapa; ver «Fuentes»
+python3 preparar_lenguas.py ...       # recursos de cada lengua; ídem
+python3 preparar_mapa.py ...          # trazados del mapa; ídem
 python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer   # baja todo y rehace los datos
 ```
 
@@ -155,8 +171,8 @@ abajo).
 puntaje por sí sola.
 
 **Libertad, democracia y corrupción** sirven para contrastar IO, sin cambiar ningún puntaje. IO
-coincide con ellas en general: la corrupción mediana (100 = sin corrupción) va de 20 en los países
-con IO 1 a unos 78 en los de IO 5, y entre los de IO 5 solo Singapur no es «libre» (es «parcial»).
+coincide con ellas en general: la corrupción mediana sube con IO (ver «Resumen»), y entre los de
+IO 5 solo Singapur no es «libre» (es «parcial»).
 **Ajustes hechos al contrastar** (decididos): bajaron de IO 4 a IO 3 las cinco monarquías del
 Golfo (Arabia Saudita, Baréin, Catar, Emiratos Árabes Unidos y Omán), por el control estatal de
 internet, y Paraguay, Filipinas e Indonesia, por su corrupción alta (índice por debajo de 35). El
@@ -164,10 +180,8 @@ comentario de cada uno nombra el factor.
 
 **Prioridad** = IG × IO (1 a 25). Ordena la tabla; no es un tercer índice.
 
-**Excluido** = IO ≤ 1. Quedan fuera **23 países**, cerca del objetivo de unos 20: Afganistán,
-Bielorrusia, Burkina Faso, Corea del Norte, Cuba, Eritrea, Haití, Irán, Libia, Malí, Myanmar,
-Níger, República Centroafricana, República Democrática del Congo, Rusia, Siria, Somalia, Sudán,
-Sudán del Sur, Turkmenistán, Venezuela, Yemen y Palestina.
+**Excluido** = IO ≤ 1, con el objetivo de dejar fuera unos 20 países. Cuántos y cuáles, en
+«Resumen».
 
 Nicaragua tenía IO = 1 y ahora tiene IO = 2: sus sanciones son parciales y sus factores (control
 de medios e internet) son los mismos que los de Vietnam, que la rúbrica ya marca como «difícil».
@@ -227,8 +241,8 @@ africanas). **No usa sanciones ni política**: eso lo cubre IO.
 | alguna | 2 | recursos mínimos |
 | ninguna | 1 | sin corpus anotado abierto |
 
-Los umbrales están en `UMBRALES_NIVEL` de `generar_tabla.py`. Hoy hay 21 lenguas en el nivel 5, 26
-en el 4, 35 en el 3, 11 en el 2 y 70 en el 1. El porcentaje de texto web (Common Crawl) va al lado
+Los umbrales están en `UMBRALES_NIVEL` de `generar_tabla.py`; cuántas lenguas hay en cada nivel,
+en «Resumen». El porcentaje de texto web (Common Crawl) va al lado
 como contexto: no cambia el nivel. Antes los niveles venían de memoria; entre la medición y el
 nuevo orden de lenguas (árabe y criollos, ver abajo) cambió el IP local de 93 de los 199 países que
 ya estaban. Varias descripciones viejas resultaron falsas (el islandés, por ejemplo, tiene 1,2
@@ -239,17 +253,15 @@ Hay **dos versiones**, porque responden a preguntas distintas:
 
 - **IP (mejor lengua):** el nivel de la lengua con más recursos entre las listadas en
   `idioma_principal`. Dice si se puede etiquetar *algún* texto del país con recursos existentes.
-  Casi todos los países listan inglés, francés, español o portugués, así que **181 de 208** tienen
-  IP = 5 (y 16 con 4, 7 con 3, 1 con 2 y 3 con 1). Por eso casi no distingue entre países.
+  Casi todos los países listan inglés, francés, español o portugués, así que casi todos tienen
+  IP = 5 (ver «Resumen»). Por eso casi no distingue entre países.
 - **IP local:** el nivel de la primera lengua listada, que es la lengua local. Dice si se puede
-  etiquetar el texto que el país escribe en su propia lengua. Se reparte mejor: 107 países con 5,
-  23 con 4, 31 con 3, 7 con 2 y 40 con 1.
+  etiquetar el texto que el país escribe en su propia lengua. Se reparte mucho mejor.
 
 **La prioridad y la exclusión POS usan IP local** (decisión tomada). **Prioridad POS** =
 IL × IP local. **Excluido POS** (decidido) = la lengua local no tiene ninguna palabra anotada en
-esas fuentes (IP local ≤ 1) **y además** el país es inviable para operar (IO ≤ 1). Quedan fuera
-**7**: Eritrea, Myanmar, República Centroafricana, República Democrática del Congo, Somalia, Sudán
-del Sur y Turkmenistán. Los otros 33 países cuya lengua local no tiene corpus anotado (birmano,
+esas fuentes (IP local ≤ 1) **y además** el país es inviable para operar (IO ≤ 1); los
+excluidos, en «Resumen». Los demás países cuya lengua local no tiene corpus anotado (birmano,
 jemer, malgache, mongol, tok pisin…) siguen dentro, con prioridad baja: su IP local de 1 los deja
 al final. Los umbrales están en `UMBRAL_POS` y `UMBRAL_GENEALOGIA`.
 
@@ -310,20 +322,25 @@ Sudamérica, que tuvieron poblaciones muy pequeñas durante casi toda la histori
 - Banda de sensibilidad: `N` se recalcula con `b` × 0,9 y `b` × 1,1, y el resultado queda en
   `poblacion_historica_detalle.csv`.
 
-**Serie larga de cada país** (`preparar_datos.py`, método compuesto, decidido). Cada fuente cubre
-solo los años anteriores al primero de las fuentes de arriba:
+**Serie larga de cada país** (`preparar_datos.py`, decidido). La base es la población por país
+de Our World in Data, y las demás fuentes solo cubren los años anteriores a su primer dato:
 
-- **Our World in Data:** población anual hasta 2024. Empieza en 1850 en la mayoría de los países
-  (132) y en 1750 en 35.
-- **Maddison 2020:** sus puntos anteriores (años 1, 1000, 1500, 1600, 1700, 1820…). Aporta en 77
-  países; en 45, alguno anterior a 1750.
-- **Clio-Infra (2016):** puntos cada 50 años desde 1500, en 121 países. Se empalma: se escala para
-  coincidir con la fuente de arriba en su primer año (el factor casi siempre es 1, porque
-  Clio-Infra coincide con Maddison y Our World in Data donde se solapan). Si difieren más de un
-  50 %, se descarta: Bolivia, Chipre, Dominica y Fiyi.
-- **Antes del primer año conocido:** la población de la región del país según HYDE (seis
-  regiones), multiplicada por la cuota del país en esa región en su primer año conocido. Supone
-  que esa cuota fue constante hacia atrás.
+- **Our World in Data** (grapher `population`: HYDE 2023, Gapminder y ONU *World Population
+  Prospects 2024*): población de cada país hasta 2023, completada con la de 2024. Empieza en el
+  10 000 a. C. en 163 de los 208 países.
+- **Donde empieza más tarde, es el poblamiento si empieza antes de 1800 con menos de 100 000
+  personas** (`empieza_poblado`): islas del Caribe, Malta, Mauricio, Reunión, Nueva Zelanda,
+  Tonga, Samoa… (25 países, con las Seychelles, que HYDE da desde 1800 pero se poblaron en 1770).
+  A esos no se les agrega nada antes: la cuota de su región inventaría gente donde no la había.
+- **Los demás que empiezan tarde** (18 micro-estados y territorios desde 1800, Irlanda y Curazao
+  desde 1950, y Sudán del Sur, con 859 000 personas en 1600) se completan hacia atrás:
+  - **Maddison 2020:** sus puntos anteriores (años 1, 1000, 1500, 1600, 1700, 1820…), si los hay.
+  - **Clio-Infra (2016):** puntos cada 50 años desde 1500, empalmados: se escalan para coincidir
+    con la fuente de arriba en su primer año, y se descartan si difieren más de un 50 %. Con la
+    serie de Our World in Data ya no aporta en ningún país.
+  - **Antes del primer año conocido:** la población de la región del país según HYDE (seis
+    regiones), multiplicada por la cuota del país en esa región en su primer año conocido. Supone
+    que esa cuota fue constante hacia atrás.
 
 **Natalidad desde 1800** (`natalidad.csv`):
 
@@ -339,9 +356,9 @@ solo los años anteriores al primero de las fuentes de arriba:
 **Natalidad antes de 1800, por épocas** (decidido), como el Population Reference Bureau en *How
 Many People Have Ever Lived on Earth?*: 80 por mil antes del año 1, 60 hasta 1650, 50 hasta 1750 y
 40 desde entonces. Las tasas altas de la antigüedad reflejan una mortalidad infantil enorme: para
-que la población apenas creciera, tenían que nacer muchos. **Las cifras se cargaron de memoria**,
-porque el sitio del PRB no era accesible; conviene contrastarlas (`EPOCAS` en
-`historia_poblacion.py`).
+que la población apenas creciera, tenían que nacer muchos. Las cifras (`EPOCAS` en
+`historia_poblacion.py`) se contrastaron con la versión de noviembre de 2022 de ese artículo y
+coinciden.
 
 **Reglas del cálculo:**
 
@@ -349,38 +366,48 @@ porque el sitio del PRB no era accesible; conviene contrastarlas (`EPOCAS` en
 - Si una serie termina antes del año 2000, el país se salta y queda vacío. No se extiende la
   última población hasta 2025, ni se conserva un valor de un cálculo anterior.
 
-**Resultados y comprobación de cordura.** El total mundial da unos **90 200 millones** de
-personas nacidas desde el 10 000 a. C. Los mayores son India (22 800 millones) y China (20 100
-millones). Irán (1 150), Egipto (1 470) y Japón (1 670) suman muchas veces su población actual, y
-Australia (350) casi toda en su población aborigen. El Population Reference Bureau estima unos
-107 000 millones con las mismas natalidades por época; la diferencia viene sobre todo de que el
-PRB cuenta desde la aparición del ser humano moderno, decenas de miles de años antes del 10 000
-a. C., y de sus propias estimaciones de población. Con una natalidad fija de 40 por mil, el total
-daba 61 600 millones. **Las cifras sirven para comparar países entre sí, no como conteo exacto.**
+**Resultados y comprobación de cordura.** El total mundial da unos **89 700 millones** de
+personas nacidas desde el 10 000 a. C. Los mayores son India (24 100 millones) y China (16 100
+millones). Irán (1 330), Egipto (1 170) y Japón (1 100) suman muchas veces su población actual, y
+Australia (315) casi toda en su población aborigen. El Population Reference Bureau estima unos
+117 000 millones desde la aparición del ser humano moderno (190 000 a. C.), y unos 108 000
+millones desde el 8000 a. C., con las mismas natalidades por época; la diferencia viene sobre
+todo de sus propias estimaciones de la población mundial antigua, más altas que las de HYDE. Con
+una natalidad fija de 40 por mil, el total daría 61 400 millones. **Las cifras sirven para
+comparar países entre sí, no como conteo exacto.**
 
 **Limitaciones que hay que conocer:**
 
-- La retroproyección con cuota constante es gruesa: un país que antes tuvo más peso en su región
-  (por ejemplo, Irak o Egipto frente al resto de Asia y África) queda subestimado, y uno que lo
-  ganó después queda sobreestimado. Por eso importa que el primer año conocido sea antiguo: con
-  Clio-Infra, la cuota de Argentina o Chile se toma de 1500 y no de 1820, cuando ya reflejaba la
-  conquista y la inmigración, y sus nacidos en la historia bajaron a la mitad (de unos 200 a unos
-  100 millones).
+- Antes de 1500, casi todo viene de las estimaciones de HYDE por país, que son gruesas. En
+  América son altas para la época precolombina: México tiene 24,5 millones en 1500 y Brasil 18,7,
+  y por eso suman 3 900 y 3 100 millones de nacidos, más que Japón o Irán.
+- La retroproyección con cuota constante, que ahora solo usan los 20 países que Our World in Data
+  empieza tarde sin ser su poblamiento, es gruesa: un país que antes tuvo más peso en su región
+  queda subestimado, y uno que lo ganó después, sobreestimado. Pesa poco: son micro-estados,
+  territorios, Irlanda, Serbia, Kosovo, Montenegro, Palestina, Curazao y Sudán del Sur.
 - La banda de ±10 % solo cubre la natalidad, no las poblaciones de hace miles de años.
 - Antes de 1800 la natalidad es la misma para todos los países en cada época. Es lo que más pesa
   en el total: con 40 por mil fijo, el total mundial baja un tercio.
-- Puerto Rico usa Maddison de 1820 a 1959 y el Banco Mundial desde 1960, porque Our World in Data
-  no lo incluye. Gibraltar e Isla de Man usan el Banco Mundial desde 1960. Jersey y Reunión usan la
-  población de Gapminder hasta 2015 (después es proyección). Guernsey no tiene ninguna serie y
-  queda vacío.
+- La serie de Our World in Data termina en 2023. El año 2024 sale de la población actual (Our
+  World in Data, o el Banco Mundial en Gibraltar, Isla de Man y Puerto Rico). Guernsey, Jersey y
+  Reunión, sin población actual, siguen la evolución de su continente (Our World in Data) de 2023
+  a 2024.
 
 ## Fuentes
 
-Los dominios de las fuentes (`ourworldindata.org`, `api.worldbank.org`, `hdr.undp.org`) están
-bloqueados por el proxy del entorno donde se trabajó: responden 403. Por eso se usaron copias
-publicadas en GitHub, que sí son accesibles: los repositorios de Our World in Data, los de
-Gapminder (`open-numbers`) y los de `datasets` (de datahub.io), que copian los indicadores del
-Banco Mundial.
+Los dominios del Banco Mundial y del PNUD (`api.worldbank.org`, `hdr.undp.org`) están bloqueados
+por el proxy del entorno donde se trabajó: responden 403. Por eso se usaron copias publicadas en
+GitHub, que sí son accesibles: los repositorios de Our World in Data, los de Gapminder
+(`open-numbers`) y los de `datasets` (de datahub.io), que copian los indicadores del Banco
+Mundial. `ourworldindata.org` y `www.prb.org` se habilitaron después.
+
+- [Our World in Data, *Population*](https://ourworldindata.org/grapher/population)
+  (`population.csv`, columna `population_historical`; datos actualizados el 15 de julio de 2024):
+  población por país desde el 10 000 a. C. hasta 2023 (HYDE 2023, Gapminder y ONU WPP 2024). El
+  grapher no tiene versiones fijas: `fuentes.sha256` guarda el SHA-256 del archivo usado.
+- Population Reference Bureau, [*How Many People Have Ever Lived on
+  Earth?*](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) (noviembre de
+  2022): natalidad por época antes de 1800 y total de comparación. No lo lee ningún script.
 
 - [`owid/co2-data`](https://github.com/owid/co2-data), commit `382ee6c` (2 de junio de 2026),
   archivo `owid-co2-data.csv`: población por país hasta 2024.
@@ -428,73 +455,16 @@ Para los recursos de las lenguas y el mapa:
   Natural Earth (dominio público), escala 1:50 millones.
 
 **Para reproducir todo de una vez:** `python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer`
-baja las 434 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
+baja las 435 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
 `fuentes.sha256` y corre todos los scripts. Si las fuentes no cambiaron, el proyecto queda
 idéntico. El job `reproducir` de `pruebas-listado-paises.yml` lo hace en la CI cuando se lanza a
-mano (*Run workflow*) y falla si algún archivo cambia. Los comandos de abajo hacen lo mismo paso
-a paso.
+mano (*Run workflow*) y falla si algún archivo cambia.
 
-Para reproducir `poblacion_larga.csv`, `natalidad.csv` y las columnas de `paises.csv`:
+`descargar_fuentes.py` es la única lista de fuentes: tiene la URL fija de cada archivo y los
+argumentos con que se llama a cada script. Para correr un paso suelto, mira ahí sus argumentos.
 
-```bash
-git clone --depth 1 https://github.com/owid/co2-data
-git clone --depth 1 --filter=blob:none --no-checkout https://github.com/owid/owid-datasets
-d="owid-datasets"; m="Maddison Project Database 2020 (Bolt and van Zanden (2020))"
-h="Global Population by Region with projections - HYDE (2016) & UN (2017)"
-git -C $d show "HEAD:datasets/$m/$m.csv" > maddison-2020.csv
-git -C $d show "HEAD:datasets/$h/$h.csv" > hyde-regiones.csv
-c="Population (Clio-infra (2016)), with Island of Ireland (Rep. + Northern)"
-git -C $d show "HEAD:datasets/$c/$c.csv" > clio-infra.csv
-r=https://raw.githubusercontent.com
-sg=$r/open-numbers/ddf--gapminder--systema_globalis/ee190605fdec9d1c35c38e18e869a400a5818fe6/countries-etc-datapoints
-ft=$r/open-numbers/ddf--gapminder--fasttrack/dee8978535ee563526704d2793497f8537280469/countries_etc_datapoints
-curl -so natalidad-gapminder.csv $sg/ddf--datapoints--crude_birth_rate_births_per_1000_population--by--geo--time.csv
-curl -so idh-gapminder.csv $sg/ddf--datapoints--hdi_human_development_index--by--geo--time.csv
-curl -so alfabetizacion-gapminder.csv \
-    $sg/ddf--datapoints--literacy_rate_adult_total_percent_of_people_ages_15_and_above--by--geo--time.csv
-curl -so internet-gapminder.csv $sg/ddf--datapoints--internet_users--by--geo--time.csv
-curl -so fecundidad-gapminder.csv $ft/ddf--datapoints--children_per_woman_total_fertility--by--country--time.csv
-curl -so pib-ppa-gapminder.csv $ft/ddf--datapoints--gdp_pcap--by--country--time.csv
-curl -so emigrantes-gapminder.csv $ft/ddf--datapoints--emigrant_n--by--country--time.csv
-curl -so libertad-gapminder.csv $ft/ddf--datapoints--freedstatus_fh--by--country--time.csv
-curl -so democracia-gapminder.csv $ft/ddf--datapoints--demox_eiu--by--country--time.csv
-curl -so corrupcion-gapminder.csv $ft/ddf--datapoints--corruption_perception_index_cpi--by--country--time.csv
-curl -so poblacion-gapminder.csv $sg/ddf--datapoints--total_population_with_projections--by--geo--time.csv
-curl -so pib-pc.csv $r/datasets/world-development-indicators/4ebec5a2273f531ba238a34dbe440394dc5a6c4b/indicators/ny.gdp.pcap.cd/data.csv
-curl -sO $r/datasets/population/d4b1a4a9a17e2123baf0ef119de05bceced1ab1b/data/population.csv
-python3 preparar_datos.py --co2 co2-data/owid-co2-data.csv --maddison maddison-2020.csv \
-    --hyde hyde-regiones.csv --clio clio-infra.csv --natalidad-gapminder natalidad-gapminder.csv \
-    --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \
-    --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \
-    --emigrantes emigrantes-gapminder.csv --poblacion-gapminder poblacion-gapminder.csv \
-    --libertad libertad-gapminder.csv --democracia democracia-gapminder.csv \
-    --corrupcion corrupcion-gapminder.csv \
-    --pib-ppa pib-ppa-gapminder.csv --pib-pc-bm pib-pc.csv --poblacion-bm population.csv
-python3 historia_poblacion.py && python3 generar_tabla.py
-```
-
-Para reproducir las columnas medidas de `niveles_lenguas.csv`, los IP y `mapa_paises.csv`:
-
-```bash
-git clone --depth 1 --filter=blob:none --no-checkout https://github.com/UniversalDependencies/docs-automation
-git -C docs-automation show dd6111b:codes_and_flags.yaml > codes_and_flags.yaml
-git -C docs-automation show dd6111b:valdan/releases.json \
-    | python3 -c "import json,sys; print('\n'.join(json.load(sys.stdin)['releases']['2.18']['treebanks']))" \
-    > treebanks.txt
-mkdir -p ud-stats && xargs -P 8 -I{} curl -sfo ud-stats/{}.xml \
-    https://raw.githubusercontent.com/UniversalDependencies/{}/r2.18/stats.xml < treebanks.txt
-git clone https://github.com/masakhane-io/masakhane-pos && git -C masakhane-pos checkout 376f416
-curl -so languages.csv https://raw.githubusercontent.com/commoncrawl/cc-crawl-statistics/ea9a79ea09b492cd2a0afcafbe93daf8fee45564/plots/languages.csv
-python3 preparar_lenguas.py --ud-stats ud-stats --ud-codigos codes_and_flags.yaml \
-    --masakhapos masakhane-pos/data --common-crawl languages.csv
-curl -sO https://raw.githubusercontent.com/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19/geojson/ne_50m_admin_0_countries.geojson
-python3 preparar_mapa.py --natural-earth ne_50m_admin_0_countries.geojson
-python3 generar_tabla.py
-```
-
-Cuando los dominios estén accesibles, conviene reemplazar la serie compuesta por la serie por país
-de Our World in Data desde el 10 000 a. C., y extender la natalidad después de 2015 con la de la
-ONU o el Banco Mundial (`SP.DYN.CBRT.IN`) en vez de escalarla.
+Cuando `api.worldbank.org` esté accesible, conviene extender la natalidad después de 2015 con la
+del Banco Mundial (`SP.DYN.CBRT.IN`) en vez de escalarla.
 
 ## Estado de los datos
 
@@ -520,7 +490,7 @@ Léelo antes de usar la tabla para decidir.
   usaba Maddison 2023 (vía Our World in Data), que dejaba 35 vacíos. Mónaco (unos 463 000) es una
   estimación de Gapminder: el Banco Mundial no publica su PIB en PPA. Vacío en 13, entre ellos los
   territorios nuevos.
-- **Población histórica acumulada: estimada** con el método compuesto de arriba. Sirve para
+- **Población histórica acumulada: estimada** con el método de arriba. Sirve para
   comparar países, no como conteo exacto.
 - **Alfabetización, internet y emigrantes: de fuente** (UNESCO, Banco Mundial y ONU, vía
   Gapminder). En alfabetización e internet el año varía por país; es el último disponible.
@@ -536,11 +506,8 @@ Léelo antes de usar la tabla para decidir.
 
 ## Pendientes
 
-1. **Población histórica:** reemplazar la serie compuesta por la de Our World in Data por país
-   desde el 10 000 a. C., y la natalidad posterior a 2015 por la de la ONU o el Banco Mundial,
-   cuando haya acceso.
-2. **Natalidad antes de 1800:** contrastar con el PRB las tasas por época, que se cargaron de
-   memoria.
-3. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
-4. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
-   54. Camboya y Vietnam siguen dentro, por decisión tomada.
+1. **Natalidad después de 2015:** usar la de la ONU o el Banco Mundial en vez de escalarla con la
+   fecundidad, cuando haya acceso.
+2. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
+3. **Umbral de exclusión de genealogía:** IO ≤ 1 (vigente) o IO ≤ 2; cuántos deja fuera cada uno,
+   en «Resumen» y en `escenarios.md`. Camboya y Vietnam siguen dentro, por decisión tomada.

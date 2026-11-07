@@ -17,7 +17,7 @@ final class AlmacenDatos
     {
     }
 
-    /** @return array{items: array, total: int} */
+    /** @return array{items: list<array<string,mixed>>, total: int} */
     public function usersPage(int $pagina, int $porPagina, string $busqueda): array
     {
         $pdo = $this->pdo;
@@ -44,6 +44,7 @@ final class AlmacenDatos
         return ['items' => $stmt->fetchAll(), 'total' => (int) $stmtTotal->fetchColumn()];
     }
 
+    /** @return array<string,mixed>|null la fila del usuario, o null si no existe */
     public function userById(string $id): ?array
     {
         $stmt = $this->pdo->prepare(
@@ -55,6 +56,7 @@ final class AlmacenDatos
         return $fila === false ? null : $fila;
     }
 
+    /** @return array{presets: list<array{key: string, label: string, countries: list<string>}>, countries: array<string,string>} countries: código => nombre */
     public function groups(): array
     {
         $pdo = $this->pdo;

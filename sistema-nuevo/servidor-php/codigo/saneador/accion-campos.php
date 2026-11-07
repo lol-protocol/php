@@ -5,6 +5,9 @@ declare(strict_types=1);
 /**
  * Sanea los campos específicos de cada tipo de acción (comentario, endpoint +
  * código HTTP, tamaño de archivo) y los escribe en $limpio.
+ *
+ * @param array<string,mixed> $limpio
+ * @param array<string,mixed> $crudo
  */
 function saneador_aplicar_campos_tipo(array &$limpio, array $crudo, string $tipo): void
 {

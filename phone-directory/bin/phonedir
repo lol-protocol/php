@@ -173,7 +173,7 @@ function buildManager(array $options, ?MultiLanguagePhoneDirectoryParser $parser
     return new PhoneDirectoryManagerV2(
         parser: $parser,
         naturalDatabase: naturalDatabaseFrom($options, privacyFrom($options)),
-        juridicalDatabase: new JuridicalEntityPDODatabase($dsn, $user, $password)
+        juridicalDatabase: new JuridicalEntityPDODatabase($dsn, $user, $password, privacyFrom($options))
     );
 }
 

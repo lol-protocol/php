@@ -405,3 +405,108 @@ Dari Goetia (abad ke-17), sebuah grimoar yang bukan bagian dari Alkitab. Setiap 
 | 70 | Seere | Pangeran | 26 | 06/03 – 10/03 | Perjalanan cepat, pencurian, barang hilang |
 | 71 | Dantalion | Adipati | 36 | 11/03 – 15/03 | Pikiran, ilmu pengetahuan, cinta |
 | 72 | Andromalius | Earl | 36 | 16/03 – 20/03 | Barang hilang, harta karun, pencuri |
+
+## Kalender pohon Kelt
+
+Kalender 13 bulan yang masing-masing 28 hari, satu pohon per bulan (23 Desember dipisah). Penyair Robert Graves menciptakannya pada 1948 dari aksara ogham; ini bukan kalender Kelt kuno. Hanya sebagai rujukan budaya.
+
+| # | Pohon | Nama ilmiah | Ogham | Tanggal | Ciri |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Birk | *Betula pendula* | Beth | 24/12 – 20/01 | Permulaan, kemurnian, kelahiran kembali |
+| 2 | Ara | *Sorbus aucuparia* | Luis | 21/01 – 17/02 | Perlindungan, intuisi, persepsi |
+| 3 | Ash | *Fraxinus excelsior* | Nion | 18/02 – 17/03 | Persatuan, komunikasi, penciptaan |
+| 4 | Alder | *Alnus glutinosa* | Fearn | 18/03 – 14/04 | Keberanian, kearifan menilai, stabilitas |
+| 5 | Dedalu | *Salix alba* | Saille | 15/04 – 12/05 | Intuisi, mimpi, penyembuhan |
+| 6 | Hawthorn | *Crataegus monogyna* | Uath | 13/05 – 09/06 | Kesuburan, kesabaran, perlindungan |
+| 7 | Pohon ek | *Quercus robur* | Duir | 10/06 – 07/07 | Kekuatan, daya tahan, kemuliaan |
+| 8 | Holly | *Ilex aquifolium* | Tinne | 08/07 – 04/08 | Keseimbangan, keberanian, keadilan |
+| 9 | Hazel | *Corylus avellana* | Coll | 05/08 – 01/09 | Kebijaksanaan, inspirasi, studi |
+| 10 | Pohon anggur | *Vitis vinifera* | Muin | 02/09 – 29/09 | Sukacita, kelimpahan, inspirasi |
+| 11 | Ivy | *Hedera helix* | Gort | 30/09 – 27/10 | Kesetiaan, ketekunan, perlindungan |
+| 12 | Reed | *Phragmites australis* | Ngetal | 28/10 – 24/11 | Kebenaran, ketertiban, kehendak |
+| 13 | Elder | *Sambucus nigra* | Ruis | 25/11 – 22/12 | Transformasi, puncak, kelahiran kembali |
+
+Tanggal 23 Desember berada di luar 13 bulan: itu «hari tahunan», tanpa pohon.
+
+## Horoskop pohon
+
+Horoskop populer berisi 21 pohon yang disebut berasal dari druid atau Galia, padahal ciptaan modern. Tanggal dan pohonnya berbeda-beda menurut sumber. Hanya sebagai rujukan budaya.
+
+| Pohon | Nama ilmiah | Tanggal | Ciri |
+| --- | --- | --- | --- |
+| Fir | *Abies alba* | 02/01 – 11/01 · 05/07 – 14/07 | Misteri, loyalitas, keanggunan |
+| Elm | *Ulmus minor* | 12/01 – 24/01 · 15/07 – 25/07 | Kemuliaan, stabilitas, kepemimpinan |
+| Sipres | *Cupressus sempervirens* | 25/01 – 03/02 · 26/07 – 04/08 | Kesetiaan, kemampuan beradaptasi, daya tahan |
+| Poplar | *Populus nigra* | 04/02 – 08/02 · 01/05 – 14/05 · 05/08 – 13/08 | Kepekaan, kemampuan beradaptasi, ketidakpastian |
+| Aras | *Cedrus libani* | 09/02 – 18/02 · 14/08 – 23/08 | Kepercayaan diri, optimisme, keberanian bertindak |
+| Pinus | *Pinus sylvestris* | 19/02 – 29/02 · 24/08 – 02/09 | Disiplin, ketertiban, ketekunan |
+| Dedalu menangis | *Salix babylonica* | 01/03 – 10/03 · 03/09 – 12/09 | Kepekaan, intuisi, kemurungan |
+| Linden | *Tilia cordata* | 11/03 – 20/03 · 13/09 – 22/09 | Ketenangan, persahabatan, keselarasan |
+| Pohon ek | *Quercus robur* | 21/03 – 21/03 | Kekuatan, keberanian, kemandirian |
+| Hazel | *Corylus avellana* | 22/03 – 31/03 · 24/09 – 03/10 | Rasa ingin tahu, kecerdikan, orisinalitas |
+| Ara | *Sorbus aucuparia* | 01/04 – 10/04 · 04/10 – 13/10 | Kepekaan, pesona, keselarasan |
+| Maple | *Acer campestre* | 11/04 – 20/04 · 14/10 – 23/10 | Kemandirian, imajinasi, orisinalitas |
+| Kenari | *Juglans regia* | 21/04 – 30/04 · 24/10 – 11/11 | Kekuatan, gairah, ambisi |
+| Kastanye | *Castanea sativa* | 15/05 – 24/05 · 12/11 – 21/11 | Keadilan, kejujuran, kedermawanan |
+| Ash | *Fraxinus excelsior* | 25/05 – 03/06 · 22/11 – 01/12 | Ambisi, petualangan, energi |
+| Hornbeam | *Carpinus betulus* | 04/06 – 13/06 · 02/12 – 11/12 | Kehati-hatian, kepraktisan, keanggunan |
+| Pohon ara | *Ficus carica* | 14/06 – 23/06 · 12/12 – 21/12 | Sensualitas, keramahan sosial, kelimpahan |
+| Birk | *Betula pendula* | 24/06 – 24/06 | Keanggunan, kehati-hatian, inspirasi |
+| Pohon apel | *Malus domestica* | 25/06 – 04/07 · 23/12 – 01/01 | Cinta, pesona, kedermawanan |
+| Pohon zaitun | *Olea europaea* | 23/09 – 23/09 | Keseimbangan, kebijaksanaan, perdamaian |
+| Beech | *Fagus sylvatica* | 22/12 – 22/12 | Bakat, penciptaan, ketekunan |
+
+## Pohon dari 27 nakshatra
+
+Dalam astrologi Weda, masing-masing dari 27 rumah bulan (nakshatra) punya pohonnya sendiri. Ditentukan oleh posisi Bulan saat lahir, bukan oleh tanggal, dan daftarnya berbeda-beda menurut daerah. Hanya sebagai rujukan budaya.
+
+| # | Nakshatra | Pohon | Nama ilmiah | Ciri |
+| --- | --- | --- | --- | --- |
+| 1 | Ashwini | Kuchila | *Strychnos nux-vomica* | Kecepatan, inisiatif, penyembuhan |
+| 2 | Bharani | Amla | *Phyllanthus emblica* | Daya tahan, gairah, transformasi |
+| 3 | Krittika | Udumbara (Gular) | *Ficus racemosa* | Ketajaman, api, kemurnian |
+| 4 | Rohini | Jamun | *Syzygium cumini* | Keindahan, kesuburan, kelimpahan |
+| 5 | Mrigashira | Khair | *Senegalia catechu* | Rasa ingin tahu, pencarian, keramahan |
+| 6 | Ardra | Agar \* | *Aquilaria malaccensis* | Emosi, transformasi, kecerdasan |
+| 7 | Punarvasu | Bambú | *Bambusa bambos* | Kelahiran kembali, optimisme, rumah tangga |
+| 8 | Pushya | Peepal | *Ficus religiosa* | Asupan gizi, perlindungan, pengabdian |
+| 9 | Ashlesha | Nagkesar \* | *Mesua ferrea* | Intuisi, misteri, kelicikan |
+| 10 | Magha | Baniano | *Ficus benghalensis* | Garis keturunan, otoritas, kemuliaan |
+| 11 | Purva Phalguni | Palash | *Butea monosperma* | Kenikmatan, kreativitas, istirahat |
+| 12 | Uttara Phalguni | Pakar \* | *Ficus virens* | Persahabatan, kedermawanan, dukungan |
+| 13 | Hasta | Jai \* | *Jasminum officinale* | Keterampilan, kecerdikan, penyembuhan |
+| 14 | Chitra | Bel | *Aegle marmelos* | Keindahan, penciptaan, kemilau |
+| 15 | Swati | Arjuna | *Terminalia arjuna* | Kemandirian, fleksibilitas, perdagangan |
+| 16 | Vishakha | Kaith \* | *Limonia acidissima* | Tekad, ambisi, ketekunan |
+| 17 | Anuradha | Bakul | *Mimusops elengi* | Pengabdian, persahabatan, kerja sama |
+| 18 | Jyeshtha | Semal \* | *Bombax ceiba* | Kepemimpinan, perlindungan, keberanian |
+| 19 | Mula | Sal \* | *Shorea robusta* | Akar, penelitian, transformasi |
+| 20 | Purva Ashadha | Ashoka \* | *Saraca asoca* | Kemenangan, antusiasme, kemurnian |
+| 21 | Uttara Ashadha | Yaca | *Artocarpus heterophyllus* | Kemenangan, integritas, ketekunan |
+| 22 | Shravana | Madar | *Calotropis gigantea* | Mendengarkan, pembelajaran, komunikasi |
+| 23 | Dhanishta | Shami \* | *Prosopis cineraria* | Kekayaan, musik, ambisi |
+| 24 | Shatabhisha | Kadamba | *Neolamarckia cadamba* | Penyembuhan, rahasia, kesendirian |
+| 25 | Purva Bhadrapada | Mango \* | *Mangifera indica* | Gairah, transformasi, idealisme |
+| 26 | Uttara Bhadrapada | Neem \* | *Azadirachta indica* | Kedalaman, kebijaksanaan, belas kasih |
+| 27 | Revati | Mahua | *Madhuca longifolia* | Kelembutan, perlindungan, belas kasih |
+
+\* Sumber-sumber tidak sepakat tentang pohon nakshatra ini.
+
+## Numerologi: jalur kehidupan
+
+Semua angka pada tanggal lahir dijumlahkan berulang kali sampai tersisa satu angka; 11, 22, dan 33 («angka master») tidak direduksi lagi. Ini dikaitkan dengan Pythagoras, tetapi numerologi masa kini berasal dari abad ke-20 dan tidak punya dasar ilmiah. Hanya sebagai rujukan budaya.
+
+| Angka | Ciri |
+| --- | --- |
+| 1 | Kepemimpinan, kemandirian, inisiatif |
+| 2 | Kerja sama, kepekaan, keselarasan |
+| 3 | Kreativitas, sukacita, komunikasi |
+| 4 | Disiplin, stabilitas, pekerjaan |
+| 5 | Petualangan, kebebasan, kemampuan beradaptasi |
+| 6 | Rumah tangga, kedermawanan, cinta |
+| 7 | Kebijaksanaan, kesendirian, penelitian |
+| 8 | Ambisi, otoritas, kekayaan |
+| 9 | Belas kasih, kedermawanan, idealisme |
+| 11 | Intuisi, inspirasi, idealisme |
+| 22 | Pembangunan, tekad, kepemimpinan |
+| 33 | Belas kasih, kelembutan, pengabdian |

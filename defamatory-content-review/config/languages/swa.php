@@ -6,8 +6,8 @@
 
 return [
     'meta' => [
-        'code' => 'swa', 'iso639_1' => 'sw', 'name' => 'Swahili',
-        'nativeName' => 'Kiswahili', 'family' => 'bantu', 'coverage' => 'basic',
+        'code' => 'swa',
+        'coverage' => 'basic',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

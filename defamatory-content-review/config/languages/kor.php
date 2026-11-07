@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'kor', 'iso639_1' => 'ko', 'name' => 'Korean',
-        'nativeName' => '한국어', 'family' => 'koreanic', 'coverage' => 'moderate',
+        'code' => 'kor',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: sólo las consignas. Sin espacios entre palabras no se sabe

@@ -218,6 +218,46 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
     }
 
     /**
+     * Regresion: (float) "1.500,50" daba 1.5 y el monto pasaba por valido, asi que un script que mandara la
+     * coma decimal creaba la boleta o el pago por una milesima parte, sin ningun aviso. Ahora el formulario
+     * vuelve con su error y no se guarda nada.
+     */
+    public function testUnMontoConComaDecimalNoSeGuardaComoOtraCantidad(): void
+    {
+        $formulario = $this->get('page=boleta-nueva')['cuerpo'];
+        $concepto = 'Boleta con coma ' . uniqid();
+        $respuesta = $this->post('page=boleta-nueva', [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'cliente_id' => self::CLIENTE,
+            'concepto' => $concepto,
+            'monto' => '1.500,50',
+            'fecha_emision' => '2020-03-01',
+            'fecha_vencimiento' => '2020-04-01',
+        ]);
+
+        $this->assertStatus(200, $respuesta);
+        self::assertStringContainsString('Completá todos los campos con un monto válido.', $respuesta['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM boletas WHERE concepto = :c', [':c' => $concepto]));
+
+        $boletaId = $this->boletaDePrueba();
+        $formulario = $this->get('page=pago-nuevo&cliente_id=' . self::CLIENTE)['cuerpo'];
+        $respuesta = $this->post('page=pago-nuevo&cliente_id=' . self::CLIENTE, [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'cliente_id' => self::CLIENTE,
+            'boleta_id' => $boletaId,
+            'monto' => '1.500,50',
+            'fecha_pago' => '2020-03-05',
+            'metodo' => 'tarjeta',
+        ]);
+
+        $this->assertStatus(200, $respuesta);
+        self::assertStringContainsString('monto válido', $respuesta['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM pagos WHERE boleta_id = :id', [':id' => $boletaId]));
+    }
+
+    /**
      * Regresion: tras un error de validacion, "Nuevo pago" devolvia el formulario
      * vacio y la boleta elegida volvia a "Anticipo": quien corregia solo el
      * monto y reenviaba registraba el pago sin boleta, sin ningun aviso.

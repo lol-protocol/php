@@ -6,6 +6,7 @@ namespace App\Tests\Unit;
 
 use App\Dinero;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Random\Engine\Mt19937;
 use Random\Randomizer;
@@ -25,6 +26,46 @@ final class DineroTest extends TestCase
     {
         // NUMERIC(14, 2): Validacion::MONTO_MAXIMO es el mayor monto que acepta la base.
         self::assertSame(99_999_999_999_999, Dinero::centavos(999_999_999_999.99));
+    }
+
+    public function testDeTextoLeeElPuntoDecimal(): void
+    {
+        self::assertSame(1500.5, Dinero::deTexto('1500.50'));
+        self::assertSame(100.0, Dinero::deTexto('100'));
+        self::assertSame(602.85, Dinero::deTexto(' 602.85 '), 'los espacios de los bordes no cuentan');
+        self::assertSame(0.0, Dinero::deTexto('0'));
+    }
+
+    /**
+     * (float) "1.500,50" da 1.5: PHP lee hasta la primera coma y calla. Un script que mande el formato
+     * latino creaba una boleta 1.000 veces menor sin ningun aviso, porque 1.5 es un monto valido.
+     *
+     * @return array<string, array{string}>
+     */
+    public static function textosQueNoSonUnMonto(): array
+    {
+        return [
+            'coma decimal' => ['1500,50'],
+            'miles con punto y coma decimal' => ['1.500,50'],
+            'miles con coma' => ['1,500.50'],
+            'miles con espacio' => ['1 500.50'],
+            'exponente' => ['1e3'],
+            'signo' => ['-5'],
+            'mas' => ['+5'],
+            'sin parte entera' => ['.5'],
+            'punto suelto' => ['5.'],
+            'texto' => ['abc'],
+            'vacio' => [''],
+            'infinito' => ['INF'],
+            'hexadecimal' => ['0x10'],
+        ];
+    }
+
+    #[DataProvider('textosQueNoSonUnMonto')]
+    public function testDeTextoRechazaLoQueNoEsUnMonto(string $texto): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Dinero::deTexto($texto);
     }
 
     public function testAceptaElTextoQueDevuelveLaBase(): void

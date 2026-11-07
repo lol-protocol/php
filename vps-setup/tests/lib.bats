@@ -48,7 +48,7 @@ run_lib() { run bash -c "source '$VPS_DIR/lib.sh'; $1"; }
     ! grep -q "chown" "$SUDO_LOG"
 }
 
-@test "setup_app_directories da la app a www-data pero no los logs" {
+@test "setup_app_directories (en desuso) da la app a www-data pero no los logs" {
     run_lib 'setup_app_directories /var/www/app ejemplo.com'
     grep -q "chown -R www-data:www-data /var/www/app" "$SUDO_LOG"
     ! grep -q "chown.*/var/log/nginx" "$SUDO_LOG"
@@ -134,4 +134,50 @@ run_lib() { run bash -c "source '$VPS_DIR/lib.sh'; $1"; }
     make_stub curl 'echo 203.0.113.9'
     run bash -c "source '$VPS_DIR/lib.sh'; get_public_ip; get_public_ip > /dev/null; echo \"cache=[\$CACHED_PUBLIC_IP]\""
     [[ "$output" == *"cache=[203.0.113.9]"* ]]
+}
+
+# ---- RAM y workers de gunicorn ----
+meminfo() { printf 'MemTotal:       %s kB\nMemFree: 1 kB\n' "$(( $1 * 1024 ))" > "$BATS_TEST_TMPDIR/meminfo"; export MEMINFO_FILE="$BATS_TEST_TMPDIR/meminfo"; }
+
+@test "mem_total_mb lee la RAM en MB" {
+    meminfo 1987; run_lib 'mem_total_mb'
+    [ "$output" = 1987 ]
+}
+
+@test "gunicorn_workers: la RAM acota los workers (1 GB -> 2, 2 GB -> 3, mucha RAM -> los de CPU)" {
+    make_stub nproc 'echo 4'                       # por CPU serian 9
+    meminfo 1000; run_lib 'gunicorn_workers'; [ "$output" = 2 ]
+    meminfo 2000; run_lib 'gunicorn_workers'; [ "$output" = 3 ]
+    meminfo 4000; run_lib 'gunicorn_workers'; [ "$output" = 7 ]
+    meminfo 64000; run_lib 'gunicorn_workers'; [ "$output" = 9 ]
+}
+
+@test "gunicorn_workers: nunca menos de 2, y GUNICORN_WORKERS manda" {
+    make_stub nproc 'echo 1'
+    meminfo 300; run_lib 'gunicorn_workers'; [ "$output" = 2 ]
+    meminfo 300; GUNICORN_WORKERS=6 run_lib 'gunicorn_workers'; [ "$output" = 6 ]
+}
+
+@test "06_B usa los workers acotados por RAM en la unidad systemd, y rechaza GUNICORN_WORKERS invalido" {
+    export NGINX_DIR="$BATS_TEST_TMPDIR/nginx" SYSTEMD_DIR="$BATS_TEST_TMPDIR/systemd" WWW_DIR="$BATS_TEST_TMPDIR/www"
+    mkdir -p "$NGINX_DIR/sites-available" "$NGINX_DIR/sites-enabled" "$SYSTEMD_DIR"
+    make_stub nproc 'echo 4'; meminfo 1000
+    GUNICORN_WORKERS='3; rm' run bash "$VPS_DIR/06_B-setup-python-app.sh" blog blog.ejemplo.com 8001
+    [ "$status" -eq 2 ]
+    [ ! -s "$SUDO_LOG" ]
+    export APP_DB=0 NOPORT="8001"
+    make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in systemctl|nginx|chown|chmod|useradd|ufw|fail2ban-client) exit 0;; -u) exit 0;; esac; for a in "$@"; do case "$a" in /var/*|/etc/*) exit 0;; esac; done; exec "$@"'
+    make_stub stat 'if [ "$1" = -c ] && [ "$2" = %U ]; then echo "${FAKE_OWNER:-root}"; else exec /usr/bin/stat "$@"; fi'
+    run bash "$VPS_DIR/06_B-setup-python-app.sh" blog blog.ejemplo.com 8001
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q -- '--workers 2 ' "$SYSTEMD_DIR/blog.service"
+}
+
+@test "install-all avisa con menos de 2 GB de RAM (tambien en --dry-run) y no avisa con mas" {
+    meminfo 1000
+    cd "$VPS_DIR" && run bash install-all.sh ejemplo.com a@ejemplo.com --dry-run
+    [[ "$output" == *"menos de 2 GB"* ]]
+    meminfo 8000
+    run bash install-all.sh ejemplo.com a@ejemplo.com --dry-run
+    [[ "$output" != *"menos de 2 GB"* ]]
 }

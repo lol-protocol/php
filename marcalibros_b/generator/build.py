@@ -33,13 +33,12 @@ from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXE
                 validar_frases, validar_svg, validar_taxonomia)
 from render_raster import a_imagen
 from render_svg import a_svg
-from scene import ALTO, ANCHO
+from scene import ALTO, ANCHO, ESCALA_REVISION
 
 VERSION_GENERADOR = "0.8.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
-ESCALA_REVISION = 0.4  # tamaño de las vistas guardadas en caché para las hojas de contacto
 RESUMEN = {}  # recuento de la última ejecución (reutilizadas / rehechas), para los tests
 MAX_DIF_CHROMIUM = 3.0  # diferencia media tolerada entre Chromium y el renderer raster
 DENSIDAD_ALTA = 2  # los JPG se entregan también a 400×2800
@@ -360,10 +359,17 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
 # detección de duplicados las compara. La clave de caché reúne las tres cosas: si coincide
 # y los archivos siguen ahí, la pieza se reutiliza sin dibujarla ni pasar por Chromium.
 
+# Módulos que dibujan las piezas. Los demás (editor, modelo, marca, revisión, Gutenberg) no cambian el
+# catálogo: tocarlos no debe invalidar la caché de las 1000 piezas. tests/test_incremental.py comprueba
+# que esta lista cubre todo lo que build.py importa.
+MODULOS_DE_RENDER = ("build", "color", "movimientos", "plantillas", "qa", "render_raster", "render_svg", "scene", "texto")
+
+
 def hash_generador():
-    """Hash del código del generador, su fuente y los catálogos que lo parametrizan."""
+    """Hash del código que dibuja las piezas, su fuente y los catálogos que lo parametrizan."""
     h = hashlib.sha256()
-    for ruta in (sorted((RAIZ / "generator").glob("*.py")) + sorted((RAIZ / "generator" / "fuentes").glob("*.ttf"))
+    for ruta in ([RAIZ / "generator" / f"{m}.py" for m in MODULOS_DE_RENDER]
+                 + sorted((RAIZ / "generator" / "fuentes").glob("*.ttf"))
                  + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml", CATALOGO / "frases.yaml"]):
         h.update(ruta.name.encode() + b"\0" + ruta.read_bytes() + b"\0")
     return h.hexdigest()
@@ -430,6 +436,12 @@ def _movimiento_de(nombre_archivo, ids_movimientos):
     return max(candidatos, key=len) if candidatos else None
 
 
+def _huellas_del_movimiento(huellas, movimiento, ids_movimientos):
+    """Las huellas de las piezas de un movimiento. Con _movimiento_de y no con startswith:
+    «realismo-» también prefija a «realismo-magico-…», y esas piezas no son sus vecinas."""
+    return {k: h for k, h in huellas.items() if _movimiento_de(k, ids_movimientos) == movimiento}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Genera marcalibros desde la taxonomía.")
     ap.add_argument("--all", action="store_true", help="genera todos los movimientos")
@@ -449,6 +461,7 @@ def main(argv=None):
     if problemas:
         return 1
     filtro = None if args.all else args.movimiento
+    ids_movimientos = [m["id"] for m in config["movimientos"]]
 
     gen = hash_generador()
     cache = {} if args.forzar else cargar_cache()
@@ -461,7 +474,7 @@ def main(argv=None):
         ident = f"{mov['id']}-{autor['id']}-{v:02d}"
         # Los duplicados se comparan dentro de cada movimiento, así el resultado
         # no depende de qué movimientos se generen en la misma ejecución.
-        previas = {k: h for k, h in huellas.items() if k.startswith(mov["id"] + "-")}
+        previas = _huellas_del_movimiento(huellas, mov["id"], ids_movimientos)
         clave = clave_pieza(gen, config, mov, autor, v, animos, previas)
         hit = cache.get(ident)
         mini_ruta, rev_ruta = _rutas_cache(ident)
@@ -523,7 +536,6 @@ def main(argv=None):
     guardar_cache(nueva_cache)
 
     # Archivos huérfanos (obras quitadas de la taxonomía) de los movimientos regenerados
-    ids_movimientos = [m["id"] for m in config["movimientos"]]
     vigentes = {e["id"] for e in generados}
     for sub in ("svg", "jpg", "jpg2x"):
         for f in sorted((CATALOGO / sub).glob("*")) if (CATALOGO / sub).exists() else []:

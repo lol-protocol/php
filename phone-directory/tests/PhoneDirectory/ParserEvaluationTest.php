@@ -45,12 +45,16 @@ class ParserEvaluationTest extends TestCase
 
     public function testEveryKnownFailureSaysWhyAndHasACategory(): void
     {
+        // Collected rather than asserted one by one, so the test still checks something with no known failure left.
+        $incomplete = [];
         foreach (ParserEvaluation::fromFile(self::SET)->cases() as $case) {
-            if (isset($case['falla_conocida'])) {
-                $this->assertNotSame('', trim($case['falla_conocida']), $case['id']);
-                $this->assertNotEmpty($case['categoria'] ?? null, "{$case['id']}: falta 'categoria'");
+            if (isset($case['falla_conocida'])
+                && (trim($case['falla_conocida']) === '' || empty($case['categoria']))) {
+                $incomplete[] = $case['id'];
             }
         }
+
+        $this->assertSame([], $incomplete, "falta el motivo o la 'categoria' de estas fallas conocidas");
     }
 
     public function testCaseIdsAreUnique(): void

@@ -13,7 +13,7 @@
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="clientes">
     <label for="q">Buscar</label>
-    <input type="search" name="q" id="q" placeholder="Nombre o email..." value="<?= htmlspecialchars($q) ?>">
+    <input type="search" name="q" id="q" placeholder="Nombre o email..." value="<?= e($q) ?>">
     <button type="submit">Buscar</button>
     <a href="?page=cliente-nuevo" style="margin-left:auto;">+ Nuevo cliente</a>
 </form>
@@ -28,11 +28,11 @@
             <tbody>
             <?php foreach ($clientes as $c): ?>
                 <tr>
-                    <td><a href="?page=cliente&id=<?= (int) $c['id'] ?>"><?= htmlspecialchars($c['nombre']) ?></a></td>
-                    <td><?= htmlspecialchars($c['email']) ?></td>
-                    <td><?= htmlspecialchars($c['pais_nombre']) ?></td>
-                    <td><?= htmlspecialchars($c['segmento']) ?></td>
-                    <td><?= htmlspecialchars($c['fecha_alta']) ?></td>
+                    <td><a href="?page=cliente&id=<?= (int) $c['id'] ?>"><?= e($c['nombre']) ?></a></td>
+                    <td><?= e($c['email']) ?></td>
+                    <td><?= e($c['pais_nombre']) ?></td>
+                    <td><?= e($c['segmento']) ?></td>
+                    <td><?= e($c['fecha_alta']) ?></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$clientes): ?>

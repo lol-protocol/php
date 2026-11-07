@@ -12,7 +12,7 @@ use App\Etiquetas;
 
 <div class="panel">
     <p class="subtitulo">
-        Cliente: <strong><?= htmlspecialchars($pago['cliente']) ?></strong>
+        Cliente: <strong><?= e($pago['cliente']) ?></strong>
         &middot; <?= $pago['boleta_id'] ? 'Boleta #' . (int) $pago['boleta_id'] : 'Anticipo' ?>
         (no se puede reasignar desde acá)
     </p>
@@ -20,11 +20,11 @@ use App\Etiquetas;
         <?= Csrf::campo() ?>
         <?php include __DIR__ . '/../_error.php'; ?>
 
-        <label for="monto">Monto (<?= htmlspecialchars($pago['moneda_codigo']) ?>)</label>
+        <label for="monto">Monto (<?= e($pago['moneda_codigo']) ?>)</label>
         <?= campo_monto($pago['monto'], $pago['moneda_codigo']) ?>
 
         <label for="fecha_pago">Fecha de pago</label>
-        <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= htmlspecialchars($pago['fecha_pago']) ?>">
+        <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= e($pago['fecha_pago']) ?>">
 
         <label for="metodo">Método</label>
         <select name="metodo" id="metodo" required>

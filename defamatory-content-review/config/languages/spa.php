@@ -12,10 +12,6 @@
 return [
     'meta' => [
         'code' => 'spa',
-        'iso639_1' => 'es',
-        'name' => 'Spanish',
-        'nativeName' => 'Español',
-        'family' => 'romance',
         'coverage' => 'comprehensive',
     ],
 

@@ -85,4 +85,53 @@ class PhonePatternTest extends TestCase
         $this->assertSame(PhonePattern::getValidatedRegex(), PhonePattern::regexFor(null));
         $this->assertFalse(PhonePattern::isOnlyAPhoneNumber('01 42 68 53 00'), 'sin idioma, solo formatos de EE. UU.');
     }
+
+    public function testFindRepairsMisreadDigitsOnlyWhenNeeded(): void
+    {
+        $regex = PhonePattern::regexFor('en');
+
+        $this->assertSame('555-123-4567', PhonePattern::find('KING, Mary 555-l23-4567', $regex));
+        $this->assertSame('555-123-4567', PhonePattern::find('555-123-4567', $regex));
+        $this->assertNull(PhonePattern::find('KING, Mary', $regex));
+    }
+
+    /** @return array<string, array{string, string}> */
+    public static function ocrLines(): array
+    {
+        return [
+            'ele por uno' => ['555-l23-4567', '555-123-4567'],
+            'i mayúscula y o' => ['555-I23-456O', '555-123-4560'],
+            'dentro de una línea' => ['KING, Mary 555-l23-4567', 'KING, Mary 555-123-4567'],
+            'palabra' => ['Oil Lane', 'Oil Lane'],
+            'nombre' => ['OLIVER, Ollie', 'OLIVER, Ollie'],
+            'central con nombre' => ['BUtterfield 8-4521', 'BUtterfield 8-4521'],
+            'número de calle corto' => ['1O Main Street', '1O Main Street'],
+            'demasiadas letras' => ['5l5-lll-4567', '5l5-lll-4567'],
+            'sin nada que arreglar' => ['555-123-4567', '555-123-4567'],
+        ];
+    }
+
+    #[DataProvider('ocrLines')]
+    public function testRepairOcrDigits(string $line, string $expected): void
+    {
+        $this->assertSame($expected, PhonePattern::repairOcrDigits($line));
+    }
+
+    /** @return array<string, array{string, string, string|null}> */
+    public static function linesWithAPhone(): array
+    {
+        return [
+            'con puntos guía' => ['SMITH, John ........ 555-123-4567', '555-123-4567', 'SMITH, John'],
+            'con dos puntos' => ['ACME Corp: 555-123-4567', '555-123-4567', 'ACME Corp'],
+            'solo el teléfono' => ['555-123-4567', '555-123-4567', null],
+            'con extensión' => ['555-123-4567 ext. 12', '555-123-4567', null],
+            'teléfono que no está' => ['SMITH, John', '555-123-4567', null],
+        ];
+    }
+
+    #[DataProvider('linesWithAPhone')]
+    public function testNameBesidePhone(string $line, string $phone, ?string $expected): void
+    {
+        $this->assertSame($expected, PhonePattern::nameBesidePhone($line, $phone));
+    }
 }

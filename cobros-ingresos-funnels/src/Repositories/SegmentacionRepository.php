@@ -37,7 +37,9 @@ final class SegmentacionRepository
      * Los clientes sin boletas vigentes no aparecen: no facturaron. La
      * etiqueta de cada fila es el valor tal cual esta guardado (el rango de
      * edad sale de RangoEdad); los titulos que se muestran los pone quien
-     * dibuja.
+     * dibuja. La ciudad es la excepcion: se escribe a mano, asi que se agrupa
+     * por su clave (claveDeCiudadSql()) y por pais, y se muestra con la grafia
+     * que mas clientes usan y el pais entre parentesis: «Santiago (Chile)».
      *
      * @return array<string, list<array{etiqueta: string, clientes: int|string, total_facturado: string}>>
      *         con las claves 'pais', 'ciudad', 'idioma', 'genero' y 'rango_edad', siempre las cinco
@@ -46,6 +48,7 @@ final class SegmentacionRepository
     {
         $limite = max(0, $limite);   // se interpola: es un entero, nunca entrada de usuario
         $edad = RangoEdad::expresionSql('base.fecha_nacimiento');
+        $claveCiudad = self::claveDeCiudadSql('base.ciudad');
         $filas = $this->db->query(
             "WITH f AS MATERIALIZED (
                  SELECT b.cliente_id, SUM(b.monto * b.tasa_a_usd) AS total
@@ -58,7 +61,9 @@ final class SegmentacionRepository
              (SELECT 'pais' AS dimension, p.nombre AS etiqueta, COUNT(*) AS clientes, SUM(base.total) AS total_facturado
                 FROM base JOIN paises p ON p.codigo = base.pais_codigo
                 GROUP BY p.nombre ORDER BY total_facturado DESC LIMIT {$limite})
-             UNION ALL (SELECT 'ciudad', base.ciudad, COUNT(*), SUM(base.total) AS t FROM base GROUP BY base.ciudad ORDER BY t DESC LIMIT {$limite})
+             UNION ALL (SELECT 'ciudad', mode() WITHIN GROUP (ORDER BY base.ciudad) || ' (' || p.nombre || ')', COUNT(*), SUM(base.total) AS t
+                FROM base JOIN paises p ON p.codigo = base.pais_codigo
+                GROUP BY base.pais_codigo, p.nombre, {$claveCiudad} ORDER BY t DESC, 2 LIMIT {$limite})
              UNION ALL (SELECT 'idioma', base.idioma, COUNT(*), SUM(base.total) AS t FROM base GROUP BY base.idioma ORDER BY t DESC LIMIT {$limite})
              UNION ALL (SELECT 'genero', base.genero, COUNT(*), SUM(base.total) AS t FROM base GROUP BY base.genero ORDER BY t DESC LIMIT {$limite})
              UNION ALL (SELECT 'rango_edad', {$edad} AS e, COUNT(*), SUM(base.total) AS t FROM base GROUP BY e ORDER BY t DESC LIMIT {$limite})"
@@ -72,6 +77,30 @@ final class SegmentacionRepository
         }
 
         return $porDimension;
+    }
+
+    /** Las letras con tilde del espanol y el portugues, y la letra simple en que se pliegan (mismo largo, una a una). */
+    private const CON_TILDE = 'ÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÑÇáàâãäéèêëíìîïóòôõöúùûüñç';
+    private const SIN_TILDE = 'AAAAAEEEEIIIIOOOOOUUUUNCaaaaaeeeeiiiiooooouuuunc';
+
+    /**
+     * La clave por la que se agrupan las ciudades: en minusculas, sin tildes y con los
+     * espacios de los bordes y los repetidos de adentro fuera, para que «Bogotá», «bogota» y
+     * « BOGOTA » sean la misma. La ciudad se escribe a mano y la base no la normaliza.
+     *
+     * Solo funciones que trae PostgreSQL: unaccent es una extension y pide permisos que la base
+     * de produccion puede no dar (ver la migracion 006). El plegado de tildes va antes de pasar a
+     * minusculas para que no dependa del idioma de la base: lower() con la configuracion "C" no
+     * toca las mayusculas con tilde. $columna es siempre una expresion fija del codigo.
+     */
+    public static function claveDeCiudadSql(string $columna): string
+    {
+        return sprintf(
+            "lower(translate(btrim(regexp_replace(%s, '\\s+', ' ', 'g')), '%s', '%s'))",
+            $columna,
+            self::CON_TILDE,
+            self::SIN_TILDE
+        );
     }
 
     /**

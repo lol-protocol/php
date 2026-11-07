@@ -41,7 +41,12 @@ final class CobranzaRepository
         $this->db = Database::connection();
     }
 
-    /** El valor pedido por URL si es uno de $permitidos, y '' si no es ninguno (la pantalla avisa y usa el primero). */
+    /**
+     * El valor pedido por URL si es uno de $permitidos, y '' si no es ninguno (la pantalla avisa y usa el primero).
+     *
+     * @deprecated Desde 2026-11-06: la pantalla usa Filtros::opcion() y Filtros::opcionInexistente(),
+     *             los mismos de todas las listas. Sin llamadores; se conserva como referencia.
+     */
     public static function opcionPedida(string $pedido, array $permitidos): string
     {
         return array_key_exists($pedido, $permitidos) ? $pedido : '';

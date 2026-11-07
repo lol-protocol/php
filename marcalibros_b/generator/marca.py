@@ -24,7 +24,8 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import texto as tx  # noqa: E402
-from plantillas import PALETAS, contraste  # noqa: E402
+from color import contraste, mezclar as _mezcla  # noqa: E402
+from plantillas import PALETAS  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 SALIDA = RAIZ / "marca"
@@ -40,12 +41,6 @@ MIN_ACENTO = 4.5  # contraste mínimo del acento sobre papel (texto de interfaz)
 
 def _n(v):
     return f"{v:.1f}".rstrip("0").rstrip(".")
-
-
-def _mezcla(a, b, t):
-    ca = [int(a[i:i + 2], 16) for i in (1, 3, 5)]
-    cb = [int(b[i:i + 2], 16) for i in (1, 3, 5)]
-    return "#" + "".join(f"{round(x + (y - x) * t):02X}" for x, y in zip(ca, cb))
 
 
 def acento_sobre_papel(pal):

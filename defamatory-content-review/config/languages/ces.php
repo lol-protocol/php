@@ -4,8 +4,8 @@
 
 return [
     'meta' => [
-        'code' => 'ces', 'iso639_1' => 'cs', 'name' => 'Czech',
-        'nativeName' => 'Čeština', 'family' => 'slavic', 'coverage' => 'moderate',
+        'code' => 'ces',
+        'coverage' => 'moderate',
     ],
     'words' => [
         // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia

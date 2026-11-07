@@ -14,15 +14,15 @@ $devuelta = $nota['fecha_devolucion'] !== null;
 
 <div class="panel">
     <table style="margin-bottom:20px;">
-        <tr><th>Cliente</th><td><a href="?page=cliente&id=<?= (int) $nota['cliente_id'] ?>"><?= htmlspecialchars($nota['cliente']) ?></a></td></tr>
+        <tr><th>Cliente</th><td><a href="?page=cliente&id=<?= (int) $nota['cliente_id'] ?>"><?= e($nota['cliente']) ?></a></td></tr>
         <tr><th>Boleta</th><td>Boleta #<?= (int) $nota['boleta_id'] ?></td></tr>
-        <tr><th>Motivo</th><td><?= htmlspecialchars($nota['motivo']) ?></td></tr>
-        <tr><th>Emitida</th><td><?= htmlspecialchars($nota['fecha']) ?></td></tr>
+        <tr><th>Motivo</th><td><?= e($nota['motivo']) ?></td></tr>
+        <tr><th>Emitida</th><td><?= e($nota['fecha']) ?></td></tr>
         <tr><th>Monto a devolver</th><td><?= dinero_en_moneda((float) $nota['monto'], $nota['moneda_codigo']) ?></td></tr>
     </table>
 
     <?php if ($devuelta): ?>
-        <p>Esta devolución ya se registró: la plata se devolvió el <strong><?= htmlspecialchars($nota['fecha_devolucion']) ?></strong>.</p>
+        <p>Esta devolución ya se registró: la plata se devolvió el <strong><?= e($nota['fecha_devolucion']) ?></strong>.</p>
     <?php else: ?>
         <p class="subtitulo">Anotá el día en que le devolviste la plata al cliente. No cambia los reportes de cobros (la nota ya los descuenta desde que se emitió): sirve para saber qué devoluciones siguen pendientes.</p>
         <form class="form-alta" method="post">
@@ -31,8 +31,8 @@ $devuelta = $nota['fecha_devolucion'] !== null;
 
             <label for="fecha_devolucion">Fecha de la devolución</label>
             <input type="date" name="fecha_devolucion" id="fecha_devolucion" required
-                   min="<?= htmlspecialchars($nota['fecha']) ?>" max="<?= htmlspecialchars($hoy) ?>"
-                   value="<?= htmlspecialchars($fecha) ?>">
+                   min="<?= e($nota['fecha']) ?>" max="<?= e($hoy) ?>"
+                   value="<?= e($fecha) ?>">
 
             <button type="submit">Registrar devolución</button>
         </form>

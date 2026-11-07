@@ -76,6 +76,25 @@ final class ViewTest extends TestCase
         $this->assertStringContainsString('se guardan 45 días', $view->page('error', ['status' => 404, 'heading' => 'x', 'message' => 'y'], 'T'));
     }
 
+    public function testPartialRendersAnItemCellWithEscapedData(): void
+    {
+        $html = $this->view()->partial('_celda', ['item' => ['id' => 'mb-x-01', 'alt' => 'Con "comillas" & <b>', 'motif' => 'Ondas <i>']]);
+        $this->assertStringContainsString('<li class="celda">', $html);
+        $this->assertStringContainsString('href="/marcalibro/mb-x-01"', $html);
+        $this->assertStringContainsString('src="/catalogo/mb-x-01.svg"', $html);
+        $this->assertStringContainsString('alt="Con &quot;comillas&quot; &amp; &lt;b&gt;"', $html);
+        $this->assertStringContainsString('>Ondas &lt;i&gt;</span>', $html);
+        $this->assertStringNotContainsString('<b>', $html);
+    }
+
+    /** La portada (celdas por categoría) y las listas filtradas pintan la misma celda: está en un solo parcial. */
+    public function testTheCatalogPageUsesThePartialInBothLayouts(): void
+    {
+        $source = (string) file_get_contents(dirname(__DIR__) . '/templates/catalogo.php');
+        $this->assertSame(2, substr_count($source, "partial('_celda'"));
+        $this->assertStringNotContainsString('class="celda"', $source, 'la celda no se vuelve a escribir en la plantilla');
+    }
+
     public function testNoInlineStylesOrScriptsAreEverEmitted(): void
     {
         // La política de seguridad (style-src 'self') los bloquearía; esta prueba avisa antes de que alguien los agregue.

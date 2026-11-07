@@ -7,6 +7,7 @@ palabra de dos idiomas: inglés (los nombres CSS de una palabra y los términos 
 lemas de una palabra del léxico básico). Lo escribió un asistente de IA y nadie con dominio nativo lo ha revisado.
 """
 import re
+from md import celda, texto_valido
 
 COLUMNAS = ["idioma", "concepto", "forma", "categoria", "ocurrencia", "ejemplo"]
 UPOS = ["ADJ", "NOUN", "PROPN", "VERB"]
@@ -69,7 +70,7 @@ def validar(filas, anotada, lexico, codigos, conceptos, errores):
             errores.append(f"{donde}: la ocurrencia {ocurrencia!r} debe ser la forma {forma!r} con a lo sumo {MAXIMO_SUFIJO} letras más")
         if categoria == "PROPN" and not ocurrencia[:1].isupper():
             errores.append(f"{donde}: un nombre propio se escribe con mayúscula inicial: {ocurrencia!r}")
-        if not ejemplo.strip() or ejemplo != ejemplo.strip() or any(c in ejemplo for c in "|\n"):
+        if not texto_valido(ejemplo, sin_espacios_sobrantes=True):
             errores.append(f"{donde}: ejemplo vacío, con espacios sobrantes o con '|' o saltos de línea")
         elif ejemplo[-1] not in ".!?":
             errores.append(f"{donde}: la frase de ejemplo debe terminar en '.', '!' o '?'")
@@ -104,10 +105,6 @@ def por_concepto(filas):
     for f in filas:
         resultado.setdefault((f["idioma"], f["concepto"]), []).append(f)
     return resultado
-
-
-def _celda(texto):
-    return str(texto).replace("|", "&#124;")
 
 
 def informe(filas, idiomas):
@@ -152,6 +149,6 @@ def informe(filas, idiomas):
     for codigo in presentes:
         partes += [f"## {nombres[codigo]} (`{codigo}`)", "", "| Concepto | Forma | Categoría | Ejemplo |", "|---|---|---|---|"]
         for f in (f for f in filas if f["idioma"] == codigo):
-            partes.append(f"| `{f['concepto']}` | {_celda(f['forma'])} | `{f['categoria']}` | {_celda(f['ejemplo'])} |")
+            partes.append(f"| `{f['concepto']}` | {celda(f['forma'])} | `{f['categoria']}` | {celda(f['ejemplo'])} |")
         partes.append("")
     return "\n".join(partes)
