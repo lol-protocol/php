@@ -7,7 +7,7 @@ Qué cita entra, en qué idioma, de quién y con qué comprobaciones. **Ninguna 
 | Criterio | Recomendación | Por qué |
 |---|---|---|
 | **Largo** | De 6 a 20 palabras (unos 40 a 120 caracteres), una sola frase o un pareado | Con menos de 6 palabras no aparecen varias categorías. Con más de 20 no se lee bien en una tarjeta de 1080×1080 con color. |
-| **Derechos** | Autores fallecidos hasta 1925 | Con vida+100 (el plazo más largo que ofrece el filtro de `copyright-laws/`), ya son de dominio público desde el 1 de enero de 2026. |
+| **Derechos** | Autores fallecidos hasta 1925 (en 2026: el año de hoy menos 101) | Con vida+100 (el plazo más largo que ofrece el filtro de `copyright-laws/`), la obra de quien murió en el año A es libre desde el 1 de enero de A+101. El validador calcula el límite con la fecha de hoy y avanza un año cada 1 de enero. |
 | **Traducción** | Solo del original, y solo si la traducción es nuestra | Una traducción ajena tiene sus propios derechos aunque el original esté libre. |
 | **Idioma** | Los 30 de `Listado-colores/`, con códigos de 3 letras; las oleadas de abajo fijan el orden de entrada | Un idioma se publica solo cuando tiene revisor nativo. |
 | **Temas** | Palabras, nombres, traducción, color, ver | Encajan con lo que hace el etiquetador. |
@@ -15,7 +15,7 @@ Qué cita entra, en qué idioma, de quién y con qué comprobaciones. **Ninguna 
 
 ## Derechos de autor
 
-La heurística «fallecido hasta 1925» cubre incluso los plazos de vida+100. Es un atajo para descartar, **no una autorización**:
+La heurística «fallecido hasta 1925» (en 2026; el año de hoy menos 101) cubre incluso los plazos de vida+100. Es un atajo para descartar, **no una autorización**:
 
 - Hay que comprobar el caso en [`copyright-laws/`](../copyright-laws/). Esa base se declara informativa y no es asesoría legal; está compilada sin revisión de abogado.
 - Una **edición** moderna de un texto antiguo puede tener derechos propios (notas, ortografía modernizada, texto fijado por un editor). Se cita una edición concreta, y se prefiere una de dominio público.
@@ -133,7 +133,7 @@ Cada cita de [`datos/citas.json`](datos/citas.json) tiene estos campos, y [`bin/
 | `idioma` | Código de 3 letras del original (ISO 639-3) |
 | `escritura` | Solo si hace falta distinguirla, por ejemplo `Hans` en chino simplificado |
 | `texto` | El texto exacto, con la ortografía de la edición citada. `null` mientras no se haya verificado. |
-| `autor`, `fallecimiento` | Autor y año de su muerte (solo entran fallecidos hasta 1925) |
+| `autor`, `fallecimiento` | Autor y año de su muerte (solo entran fallecidos hasta el año de hoy menos 101: 1925 en 2026) |
 | `obra`, `ubicacion`, `edicion` | Obra, dónde está (verso, capítulo, página) y la edición exacta. `edicion` es `null` hasta verificar. |
 | `fuentes` | Las dos o más fuentes consultadas: `nombre`, `url` (`https://`), `consultada` (`AAAA-MM-DD`) y `coincide: true` |
 | `dominio_publico` | Cómo se comprobó (ver «Derechos de autor») |
@@ -145,9 +145,10 @@ Cada cita de [`datos/citas.json`](datos/citas.json) tiene estos campos, y [`bin/
 
 ### Reglas que el validador hace cumplir
 
-- Una cita `verificada` tiene **texto exacto de entre 6 y 20 palabras**, **edición** y **al menos dos fuentes de sitios distintos** que coinciden con el texto.
+- Una cita `verificada` tiene **texto exacto de entre 6 y 20 palabras**, **edición** y **al menos dos fuentes de sitios distintos** que coinciden con el texto. Se cuenta el dominio principal, sin mayúsculas, sin `www.` ni subdominios: `es.wikisource.org` y `en.wikisource.org` son el mismo sitio. La fecha `consultada` no puede ser posterior a hoy.
+- En los idiomas que no separan las palabras con espacios (`jpn`, `tha`, `zho`; `sin_espacios` en `datos/idiomas.json`) las palabras se cuentan por las etiquetas que no son puntuación y, si aún no hay etiquetas, con la extensión `intl` de PHP.
 - Una cita `sin-verificar` dice qué falta (`por_comprobar`) y **nunca se publica**.
-- Una cita de un autor fallecido después de 1925 no entra, salvo como `descartada`.
+- Una cita de un autor fallecido después del límite (1925 en 2026) no entra, salvo como `descartada`.
 - Las etiquetas, si hay, reconstruyen el texto palabra por palabra.
 
 El validador **no comprueba que el texto coincida con la fuente**: eso lo hace una persona al verificar, y queda anotado en `fuentes`. Lo que impide es declarar «verificada» una cita sin haber anotado con qué.

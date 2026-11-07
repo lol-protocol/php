@@ -483,6 +483,51 @@ $pruebas['comprobar-revisiones rechaza una cabecera incorrecta'] = function (): 
     rechaza(validarRevisiones("spa,etiquetas,spa-1,correcto,Ana,2026-10-26,\n", 'idioma,alcance,elemento'), 'Cabecera incorrecta');
 };
 
+// Los documentos repiten datos y reglas del código: que no se desalineen sin que nada falle.
+$pruebas['CRITERIOS.md: la tabla de idiomas coincide con datos/idiomas.json'] = function (): void {
+    $doc = (string) file_get_contents(RAIZ . '/CRITERIOS.md');
+    preg_match_all('/`([a-z]{3})` · `([a-z]{2})` \| ([^|]+?) \|/u', $doc . ' |', $m, PREG_SET_ORDER);
+    $enDoc = [];
+    foreach ($m as [, $c3, $c2, $nombre]) {
+        $enDoc[$c3] = [$c2, trim($nombre)];
+    }
+    // La última columna de cada fila cierra con « |» y no con « | »: se lee aparte.
+    preg_match_all('/`([a-z]{3})` · `([a-z]{2})` \| ([^|\n]+?)\s*\|?\s*$/mu', $doc, $m2, PREG_SET_ORDER);
+    foreach ($m2 as [, $c3, $c2, $nombre]) {
+        $enDoc[$c3] = [$c2, trim($nombre)];
+    }
+    $enDatos = [];
+    foreach (leerJson(RAIZ . '/datos/idiomas.json')['idiomas'] as $i) {
+        $enDatos[$i['codigo']] = [$i['codigo2'], $i['nombre']];
+    }
+    ksort($enDoc);
+    ksort($enDatos);
+    igual($enDatos, $enDoc, 'la tabla de idiomas de CRITERIOS.md no coincide con datos/idiomas.json');
+};
+$pruebas['CRITERIOS.md: las 17 categorías UPOS figuran en la tabla'] = function (): void {
+    $doc = (string) file_get_contents(RAIZ . '/CRITERIOS.md');
+    $paleta = leerJson(RAIZ . '/datos/paleta.json');
+    foreach (array_column($paleta['categorias'], 'codigo') as $codigo) {
+        verdadero(str_contains($doc, "`$codigo`"), "CRITERIOS.md no menciona la categoría $codigo");
+    }
+};
+$pruebas['CRITERIOS.md: el largo de 6 a 20 palabras es el del validador'] = function (): void {
+    $codigo = (string) file_get_contents(RAIZ . '/bin/comprobar-citas.php');
+    preg_match('/const PALABRAS_MIN = (\d+);/', $codigo, $min);
+    preg_match('/const PALABRAS_MAX = (\d+);/', $codigo, $max);
+    verdadero(isset($min[1], $max[1]), 'no se encuentran PALABRAS_MIN y PALABRAS_MAX');
+    $doc = (string) file_get_contents(RAIZ . '/CRITERIOS.md');
+    verdadero(str_contains($doc, "De {$min[1]} a {$max[1]} palabras"), 'el resumen de CRITERIOS.md no dice «De N a M palabras» con los valores del validador');
+    verdadero(str_contains($doc, "entre {$min[1]} y {$max[1]} palabras"), 'las reglas de CRITERIOS.md no dicen «entre N y M palabras» con los valores del validador');
+};
+$pruebas['CRITERIOS.md: el año de corte de los derechos es el que calcula el validador'] = function (): void {
+    $doc = (string) file_get_contents(RAIZ . '/CRITERIOS.md');
+    $limite = ultimoAnioDeFallecimiento(); // con «hoy» fijado en las pruebas
+    $anio = substr(HOY_EN_PRUEBAS, 0, 4);
+    verdadero(str_contains($doc, "hasta $limite (en $anio"), "CRITERIOS.md no dice «hasta $limite (en {$anio}…»");
+    verdadero(str_contains($doc, 'año de hoy menos 101'), 'CRITERIOS.md no explica que el límite es el año de hoy menos 101');
+};
+
 $pruebas['GUIA-REVISION.md: las filas de ejemplo del CSV pasan el validador del registro'] = function (): void {
     $guia = (string) file_get_contents(RAIZ . '/GUIA-REVISION.md');
     verdadero(preg_match('/```csv\n(.+?)```/s', $guia, $m) === 1, 'no encuentra el bloque csv de la guía');

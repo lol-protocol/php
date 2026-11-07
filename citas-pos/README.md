@@ -39,7 +39,7 @@ Apoyo de marketing para el etiquetador POS **Contrastocolor** (el proyecto de et
 | [`prototipo/index.html`](prototipo/index.html) | La paleta en una sola página, sin servidor: leyenda, frases de prueba, tema claro y oscuro, simulación de daltonismo y marcas. Generado: no se edita a mano. |
 | [`salida/`](salida/) | Las piezas de cita coloreada: `citas-pos.css` (la hoja del sitio) y, por cada frase, un fragmento para el **correo** (`*.correo.html`, estilos en línea, fondo propio, sin imágenes), otro para el **sitio** (`*.sitio.html`, con las clases de la hoja) y otro del juego **«Adivina la categoría»** (`*.juego.html`, que además necesita `citas-pos-juego.css` y `citas-pos-juego.js`). `demo-juego.html` es una página autónoma para probar el juego. Hoy solo hay las de `ejemplos/`, que son frases de prueba y **no son citas**; las de `citas/` aparecerán cuando una cita esté verificada y revisada. Generado: no se edita a mano. |
 | [`juego/`](juego/) | `juego.css` y `juego.js`: las fuentes, escritas a mano, de «Adivina la categoría». `render.php` las copia a `salida/` (CSS sin dependencias, JavaScript sin dependencias). |
-| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php`, `render.php`, `comprobar-citas.php` y `comprobar-revisiones.php`, y `lib/comun.php` con lo que comparten (PHP sin dependencias). |
+| [`bin/`](bin/) | `comprobar-paleta.php`, `prototipo.php`, `render.php`, `comprobar-citas.php` y `comprobar-revisiones.php`, y `lib/` con lo que comparten: `comun.php` (JSON, fechas, dominios, registro de revisiones) y `paleta.php` (categorías UPOS, daltonismo, CSS de colores y marcas, piezas de una frase). PHP sin dependencias. |
 
 ## Idea central
 
@@ -85,7 +85,7 @@ No depende de ningún proyecto en tiempo de ejecución.
 Desde la raíz del repositorio, con PHP 8.3 y sin instalar nada:
 
 ```bash
-php citas-pos/pruebas/ejecutar.php            # las pruebas: lo que cada comprobador debe aceptar y, sobre todo, rechazar (unos 3 s)
+php citas-pos/pruebas/ejecutar.php            # las pruebas: lo que cada comprobador debe aceptar y, sobre todo, rechazar (unos 3 s; fijan «hoy» con `CITAS_POS_HOY=AAAA-MM-DD`, que también sirve para probar a mano las fechas y el año de corte de los derechos)
 (cd citas-pos/pruebas/navegador && npm ci && npx playwright install chromium && npm test)   # el juego en Chromium y axe-core (unos 25 s)
 php citas-pos/bin/comprobar-paleta.php        # las 17 categorías, contraste de 4,5:1 en claro y oscuro, colores confundibles (--lista para verlos)
 php citas-pos/bin/prototipo.php --comprobar   # prototipo/index.html al día con datos/ (sin --comprobar, lo regenera)
