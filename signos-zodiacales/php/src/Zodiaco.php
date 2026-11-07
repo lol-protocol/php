@@ -337,15 +337,15 @@ final class Zodiaco
     /**
      * El decanato de una fecha: cada signo se parte en tres tramos de unos 10 días. «signo», «numero» (1 a 3),
      * «regente» (el astro en el orden caldeo; clave de «terminos») y «signo_regente» (el del mismo elemento que
-     * lo rige por triplicidad: Aries, Leo, Sagitario).
+     * lo rige por triplicidad: Aries, Leo, Sagitario). Los tramos son los mismos todos los años: el 29/02 cuenta con
+     * el 28/02.
      *
      * @return array{signo: array<string, mixed>, numero: int, regente: string, signo_regente: array<string, mixed>}
      */
     public static function decanato(DateTimeInterface $fecha, string $sistema = 'tropical'): array
     {
         $signo = self::signoOccidental($fecha, $sistema);
-        $dia = self::dia($fecha);
-        $numero = min(intdiv(self::diasEntre(self::inicioDelSigno($dia, $signo, $sistema), $dia), 10), 2) + 1;
+        $numero = self::tramoQueContiene($fecha, self::tramosDelSigno($signo, $sistema, self::largosDeDecanatos(...))) + 1;
         $occidentales = self::occidentales();
         $indice = (int) array_search($signo['id'], array_column($occidentales, 'id'), true);
         return [
@@ -367,29 +367,17 @@ final class Zodiaco
     }
 
     /**
-     * Los tres tramos de un signo como [[mes, día] desde, [mes, día] hasta] en un año dado.
+     * Los tres tramos de un signo como [[mes, día] desde, [mes, día] hasta]. Son los mismos todos los años (el 29/02
+     * cuenta con el 28/02). El parámetro $anio está @deprecated desde 1.3.1: antes elegía el año con que se calculaban
+     * las fechas, y ahora no cambia nada; se conserva para no romper quien lo pasaba.
      *
      * @param array<string, mixed> $signo
      * @return list<array{0: array{0: int, 1: int}, 1: array{0: int, 1: int}}>
      */
-    public static function tramosDeDecanatos(array $signo, string $sistema = 'tropical', int $anio = 2025): array
+    public static function tramosDeDecanatos(array $signo, string $sistema = 'tropical', ?int $anio = null): array
     {
         self::sistemaValido($sistema);
-        $desde = self::fecha($anio, $signo[$sistema]['desde'][0], $signo[$sistema]['desde'][1]);
-        $hasta = self::fecha($anio, $signo[$sistema]['hasta'][0], $signo[$sistema]['hasta'][1]);
-        if ($hasta < $desde) { // cruza el fin de año (Capricornio, y Sagitario en el sideral)
-            $hasta = $hasta->modify('+1 year');
-        }
-        $cortes = [$desde, $desde->modify('+10 days'), $desde->modify('+20 days'), $hasta->modify('+1 day')];
-        $tramos = [];
-        for ($n = 0; $n < 3; $n++) {
-            $fin = $cortes[$n + 1]->modify('-1 day');
-            $tramos[] = [
-                [(int) $cortes[$n]->format('n'), (int) $cortes[$n]->format('j')],
-                [(int) $fin->format('n'), (int) $fin->format('j')],
-            ];
-        }
-        return $tramos;
+        return self::tramosDelSigno($signo, $sistema, self::largosDeDecanatos(...));
     }
 
     /** @return list<int> Los años lunares entre $desde y $hasta (inclusive) que corresponden a un animal. */
@@ -412,28 +400,23 @@ final class Zodiaco
     // --- Los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia ---
     // Cada uno se atribuye a un tramo de 5° del zodiaco tropical: seis por signo, desde Aries. Cada signo se parte
     // en seis tramos de fechas casi iguales (los primeros se llevan el día que sobre en los signos de 31 o 32
-    // días). Un ángel y el demonio del mismo número comparten tramo.
+    // días), los mismos todos los años. Un ángel y el demonio del mismo número comparten tramo.
 
     /**
-     * Los seis tramos de un signo occidental como [[mes, día] desde, [mes, día] hasta] en un año dado. Aries
-     * tiene los números 1 a 6, Tauro del 7 al 12… El año importa en Piscis (febrero tiene 28 o 29 días) y en
-     * Capricornio, que empieza el 22/12 de ese año.
+     * Los seis tramos de un signo occidental como [[mes, día] desde, [mes, día] hasta]. Aries tiene los números 1 a
+     * 6, Tauro del 7 al 12… Son los mismos todos los años: el 29/02 cuenta con el 28/02. El parámetro $anio está
+     * @deprecated desde 1.3.1: antes elegía el año de las fechas y ahora no cambia nada.
      *
      * @return list<array{0: array{0: int, 1: int}, 1: array{0: int, 1: int}}>
      */
-    public static function tramosDeEspiritus(string $idSigno, int $anio = 2025): array
+    public static function tramosDeEspiritus(string $idSigno, ?int $anio = null): array
     {
-        $signo = self::signoOccidentalPorId($idSigno);
-        $inicio = self::fecha($anio, $signo['tropical']['desde'][0], $signo['tropical']['desde'][1]);
-        return array_map(
-            fn (array $t): array => [self::mesDia($t[0]), self::mesDia($t[1])],
-            self::tramosDesde($inicio, $signo),
-        );
+        return self::tramosDelSigno(self::signoOccidentalPorId($idSigno), 'tropical', self::largosDeTramos(...));
     }
 
     /**
      * El ángel del Shem ha-Mephorash que rige una fecha (zodiaco tropical): «angel», «signo», «coro» (una de
-     * CHOROS) y «tramo» (las fechas de ese ángel en el año de $fecha). Las fechas son aproximadas.
+     * CHOROS) y «tramo» (las fechas de ese ángel; el 29/02 cuenta con el 28/02). Las fechas son aproximadas.
      *
      * @return array{angel: array<string, mixed>, signo: array<string, mixed>, coro: string, tramo: array<int, array<int, int>>}
      */
@@ -721,12 +704,16 @@ final class Zodiaco
         return self::fecha((int) $fecha->format('Y'), (int) $fecha->format('n'), (int) $fecha->format('j'));
     }
 
+    /** @deprecated desde 1.3.1: los tramos ya no se calculan con fechas reales; se conserva como referencia. */
     private static function diasEntre(DateTimeImmutable $desde, DateTimeImmutable $hasta): int
     {
         return intdiv($hasta->getTimestamp() - $desde->getTimestamp(), 86400);
     }
 
-    /** La fecha en que empezó el tramo del signo que contiene a $fecha. */
+    /**
+     * @deprecated desde 1.3.1: los tramos ya no se calculan con fechas reales (dependían del año bisiesto); se conserva
+     * como referencia. La fecha en que empezó el tramo del signo que contiene a $fecha.
+     */
     private static function inicioDelSigno(DateTimeImmutable $fecha, array $signo, string $sistema): DateTimeImmutable
     {
         [$mes, $dia] = $signo[$sistema]['desde'];
@@ -752,7 +739,11 @@ final class Zodiaco
         return array_merge(array_fill(0, $sobra, intdiv($dias, 6) + 1), array_fill(0, 6 - $sobra, intdiv($dias, 6)));
     }
 
-    /** @param array<string, mixed> $signo */
+    /**
+     * @deprecated desde 1.3.1: los tramos ya no se calculan con fechas reales; se conserva como referencia.
+     *
+     * @param array<string, mixed> $signo
+     */
     private static function finDelSigno(DateTimeImmutable $inicio, array $signo): DateTimeImmutable
     {
         [$mes, $dia] = $signo['tropical']['hasta'];
@@ -762,7 +753,8 @@ final class Zodiaco
     }
 
     /**
-     * Los seis tramos del signo que empieza en $inicio, como [desde, hasta].
+     * @deprecated desde 1.3.1: los tramos ya no se calculan con fechas reales; se conserva como referencia. Los seis
+     * tramos del signo que empieza en $inicio, como [desde, hasta].
      *
      * @param array<string, mixed> $signo
      * @return list<array{0: DateTimeImmutable, 1: DateTimeImmutable}>
@@ -779,7 +771,11 @@ final class Zodiaco
         return $tramos;
     }
 
-    /** @return array{0: int, 1: int} */
+    /**
+     * @deprecated desde 1.3.1: se conserva como referencia; los tramos usan mesDiaDelDia().
+     *
+     * @return array{0: int, 1: int}
+     */
     private static function mesDia(DateTimeImmutable $fecha): array
     {
         return [(int) $fecha->format('n'), (int) $fecha->format('j')];
@@ -793,15 +789,84 @@ final class Zodiaco
     private static function espirituDeFecha(DateTimeInterface $fecha): array
     {
         $signo = self::signoOccidental($fecha, 'tropical');
-        $dia = self::dia($fecha);
-        $tramos = self::tramosDesde(self::inicioDelSigno($dia, $signo, 'tropical'), $signo);
+        $tramos = self::tramosDelSigno($signo, 'tropical', self::largosDeTramos(...));
+        $k = self::tramoQueContiene($fecha, $tramos);
+        $posicion = (int) array_search($signo['id'], array_column(self::occidentales(), 'id'), true);
+        return [$posicion * 6 + $k + 1, $signo, $tramos[$k]];
+    }
+
+    // Para repartir un signo en tramos (decanatos, los 72) se usa un año de 365 días: el 29/02 cuenta como el 28/02. Así
+    // un tramo es el mismo todos los años y su día no se corre en los bisiestos.
+    private const DIAS_POR_MES = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    /**
+     * El día 1–365 de un [mes, día] en un año sin 29 de febrero (el 29/02 cuenta como el 28/02).
+     *
+     * @param array{0: int, 1: int} $mesDia
+     */
+    private static function diaDelAnio(array $mesDia): int
+    {
+        [$mes, $dia] = $mesDia;
+        return array_sum(array_slice(self::DIAS_POR_MES, 0, $mes - 1)) + min($dia, self::DIAS_POR_MES[$mes - 1]);
+    }
+
+    /**
+     * Lo inverso de diaDelAnio(): el [mes, día] de un día 1–365 (pasarse de 365 da la vuelta al año).
+     *
+     * @return array{0: int, 1: int}
+     */
+    private static function mesDiaDelDia(int $diaDelAnio): array
+    {
+        $n = self::modulo($diaDelAnio - 1, 365) + 1;
+        foreach (self::DIAS_POR_MES as $i => $dias) {
+            if ($n <= $dias) {
+                return [$i + 1, $n];
+            }
+            $n -= $dias;
+        }
+        throw new LogicException('un día del año tiene que estar entre 1 y 365');
+    }
+
+    /**
+     * Parte un signo en tramos de los largos que dé $largos(días del signo): [[mes, día] desde, [mes, día] hasta].
+     *
+     * @param array<string, mixed> $signo
+     * @param callable(int): list<int> $largos
+     * @return list<array{0: array{0: int, 1: int}, 1: array{0: int, 1: int}}>
+     */
+    private static function tramosDelSigno(array $signo, string $sistema, callable $largos): array
+    {
+        $inicio = self::diaDelAnio($signo[$sistema]['desde']);
+        $dias = self::modulo(self::diaDelAnio($signo[$sistema]['hasta']) - $inicio, 365) + 1;
+        $tramos = [];
+        $acumulado = 0;
+        foreach ($largos($dias) as $n) {
+            $tramos[] = [self::mesDiaDelDia($inicio + $acumulado), self::mesDiaDelDia($inicio + $acumulado + $n - 1)];
+            $acumulado += $n;
+        }
+        return $tramos;
+    }
+
+    /**
+     * La posición (desde 0) del tramo que contiene el día de $fecha; el 29/02 cuenta como el 28/02.
+     *
+     * @param list<array{0: array{0: int, 1: int}, 1: array{0: int, 1: int}}> $tramos
+     */
+    private static function tramoQueContiene(DateTimeInterface $fecha, array $tramos): int
+    {
+        $clave = self::mesDiaDelDia(self::diaDelAnio([(int) $fecha->format('n'), (int) $fecha->format('j')]));
         foreach ($tramos as $k => [$desde, $hasta]) {
-            if ($desde <= $dia && $dia <= $hasta) {
-                $posicion = (int) array_search($signo['id'], array_column(self::occidentales(), 'id'), true);
-                return [$posicion * 6 + $k + 1, $signo, [self::mesDia($desde), self::mesDia($hasta)]];
+            if (self::enRango($clave, $desde, $hasta)) {
+                return $k;
             }
         }
-        throw new LogicException('la fecha no cae en ninguno de los seis tramos de su signo');
+        throw new LogicException('la fecha no cae en ninguno de los tramos de su signo');
+    }
+
+    /** @return list<int> Los días de los tres decanatos de un signo de $dias días: 10, 10 y los que queden (de 9 a 12). */
+    private static function largosDeDecanatos(int $dias): array
+    {
+        return [10, 10, $dias - 20];
     }
 
     /**
@@ -818,9 +883,10 @@ final class Zodiaco
             foreach ($glosarios as $g) {
                 if (isset($g[$c])) {
                     $textos[] = $g[$c][$idioma];
-                    break;
+                    continue 2;
                 }
             }
+            throw new InvalidArgumentException("la clave '$c' no está en ningún glosario");
         }
         return self::mayusculaInicial(implode($separador[$idioma], $textos), $idioma);
     }
