@@ -7,6 +7,7 @@ namespace App\Controllers\Genealogy;
 use App\Controllers\BaseController;
 use App\Repositories\Genealogy\RetiroRepository;
 use App\Support\Config;
+use App\Support\ErrorPage;
 use App\Support\FiltroPedidos;
 use App\Support\RateLimiter;
 use App\Support\ServiceLocator;
@@ -95,7 +96,7 @@ class RetiroController extends BaseController
         http_response_code(429);
         header('Retry-After: ' . max(1, $segundos));
 
-        return '<h1>429 - Demasiados pedidos</h1><p>' . htmlspecialchars($mensaje) . '</p>';
+        return ErrorPage::body(429, 'Demasiados pedidos', htmlspecialchars($mensaje));
     }
 
     /**
