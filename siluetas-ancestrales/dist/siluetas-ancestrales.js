@@ -808,7 +808,7 @@ const PRENDAS = [
   // ===== Europa medieval =====
   P('camisa-medieval', 'Camisa de lino con escote atado', 'torso', 'tunica', { largo: 'muslo', manga: 'larga', escote: 'ojal', cintura: 1, holgura: 0.016, puños: false, ribete: false }),
   P('cota-campesina', 'Cota de lana de campesino', 'torso', 'tunica', { largo: 'rodilla', manga: 'larga', escote: 'redondo', cintura: 1, holgura: 0.02, ribete: false, bajo: 'curvo' }),
-  P('bliaut', 'Bliaut de manga de campana', 'torso', 'tunica', { largo: 'suelo', manga: 'campana', escote: 'redondo', prof: 1.2, cintura: 0.1, holgura: 0.004, vuelo: 0.09, pliegues: 4, ribeteBajo: 0.03, vuelo2: 0 }),
+  P('bliaut', 'Bliaut de manga de campana', 'torso', 'tunica', { largo: 'suelo', manga: 'campana', escote: 'redondo', prof: 1.2, cintura: 0.1, holgura: 0.004, vuelo: 0.09, pliegues: 4, ribeteBajo: 0.03 }),
   P('sobreveste', 'Sobrevesta sin mangas', 'sobre', 'tunica', { largo: 'pantorrilla', manga: 'sin', escote: 'redondo', cintura: 0.8, holgura: 0.03, vuelo: 0.05, ribeteBajo: 0.015 }),
   P('surcote', 'Sobrecota de damas con aberturas', 'sobre', 'tunica', { largo: 'suelo', manga: 'sin', escote: 'redondo', prof: 1.4, cintura: 0.2, holgura: 0.03, vuelo: 0.08, ribete: true }),
   P('jubon-medieval', 'Jubón acolchado', 'sobre', 'chaqueta', { largo: 'cadera', manga: 'larga', botones: 6, cintura: 0.5, solapa: false, abertura: 0.004, aberturaBajo: 0.006 }),
@@ -2171,6 +2171,11 @@ const A = {
   brazoSup: [0.022, 0.026, 0.022], codo: [0.018, 0.020, 0.017], muneca: [0.0125, 0.0135, 0.0115],
 };
 
+/** Rangos que acepta el cuerpo; el generador y las opciones los validan con estos mismos valores. */
+const EDAD_MIN = 2, EDAD_MAX = 100;
+const ALTURA_MIN = 70, ALTURA_MAX = 190; // cm
+const CORPULENCIA_MIN = 0.6, CORPULENCIA_MAX = 1.6; // si se da como número
+
 const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta: 1.34 };
 const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
@@ -2232,11 +2237,12 @@ function normalizarPose(spec) {
  * opc: { sexo: 'f'|'m', edad (años), corpulencia (nombre o número), altura (cm, opcional), postura }
  */
 function medidas(opc = {}) {
+  if (opc.sexo !== undefined && opc.sexo !== 'f' && opc.sexo !== 'm') throw new Error(`Sexo no válido: ${JSON.stringify(opc.sexo)}. Valores posibles: 'f' o 'm'.`);
   const sexo = opc.sexo === 'f' ? 'f' : 'm';
-  const edad = limitar(Number(opc.edad ?? 30), 2, 100);
+  const edad = limitar(Number(opc.edad ?? 30), EDAD_MIN, EDAD_MAX);
   const corp = typeof opc.corpulencia === 'number' ? opc.corpulencia : (CORPULENCIAS[opc.corpulencia] ?? 1);
   const escalaAltura = limitar(Number(opc.escalaAltura ?? 1), 0.8, 1.2);
-  const cm = limitar(Number(opc.altura ?? porTabla(ALTURA[sexo], Math.min(edad, 20)) * escalaAltura * (edad > 60 ? 1 - (edad - 60) * 0.0009 : 1)), 70, 190);
+  const cm = limitar(Number(opc.altura ?? porTabla(ALTURA[sexo], Math.min(edad, 20)) * escalaAltura * (edad > 60 ? 1 - (edad - 60) * 0.0009 : 1)), ALTURA_MIN, ALTURA_MAX);
   const H = cm * 4.9;
   const cabezas = porTabla(CABEZAS, Math.min(edad, 18));
   // u = 0 niño pequeño, 1 adulto (según proporción de la cabeza)
@@ -2550,7 +2556,7 @@ function deformar(M) {
   };
 }
 
-Object.assign(__e, { LIENZO, CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello, deformar });
+Object.assign(__e, { LIENZO, EDAD_MIN, ALTURA_MIN, CORPULENCIA_MIN, CORPULENCIAS, POSTURAS, POSE_FIRME, poseAleatoria, normalizarPose, medidas, perfilTorso, trazoTorso, brazoLado, brazoEnU, piernaLado, trazoBrazo, trazoPierna, trazoMano, trazoAntebrazo, trazoPie, trazoCuello, deformar });
 return __e;
 })();
 
@@ -3462,6 +3468,115 @@ Object.assign(__e, { yLargo, anchoEn, ESCOTES_SIN_HOMBRO, finManga, PLANTILLAS, 
 return __e;
 })();
 
+__m['tipos-de-ropa'] = (() => {
+const __e = {};
+// Fuente única de los tipos de ropa que entienden las plantillas (src/prendas.js): qué parámetros acepta cada una y
+// qué valores puede tomar cada parámetro enumerado. Sirve para validar las prendas (un `manga: 'larg0'` ya no se
+// dibuja en silencio con la manga por defecto) y para que el generador de ropa nueva use todas las variantes.
+// Si agregas una variante a una plantilla, agrégala aquí; una prueba comprueba que todo el catálogo la cumple.
+
+const { PATRONES_ID } = __m['patrones'];
+
+const LARGOS = ['pecho', 'cintura', 'cadera', 'muslo-alto', 'muslo', 'rodilla', 'bajo-rodilla', 'pantorrilla', 'tobillo', 'suelo'];
+
+/** Valores permitidos de cada parámetro enumerado (los demás son números, booleanos o textos libres). */
+const TIPOS = {
+  escote: ['redondo', 'v', 'cuadrado', 'barco', 'alto', 'ojal', 'tirantes', 'corazon', 'halter', 'asimetrico'],
+  manga: ['sin', 'cap', 'corta', 'codo', 'tres-cuartos', 'larga', 'ajustada', 'larga-mano', 'ancha', 'campana', 'pagoda', 'globo', 'abullonada', 'farol', 'kimono'],
+  bajo: ['recto', 'curvo', 'ondulado', 'dentado', 'flecos', 'pico', 'curvo-alto'],
+  forma: ['campana', 'sirena', 'trapecio', 'globo', 'tubo'],
+  cintura: ['natural', 'baja', 'alta'],
+  anchoPantalon: ['ajustado', 'pitillo', 'tubo', 'recto', 'amplio', 'palazzo', 'bombacho', 'jodhpur', 'campana'],
+  bolsillosPantalon: ['cargo', 'jean', 'pliegues'],
+  bolsillosTorso: ['pecho', 'cadera', 'canguro', 'ambos'],
+  pieles: ['cuello', 'puños', 'bajo', 'todo'],
+  lado: ['izq', 'der'],
+  abertura: ['frente', 'lado'],
+  cierre: ['broche', 'fibula', 'abierta'],
+  cuello: ['collar', 'gargantilla', 'cuentas-largas', 'pectoral', 'gorguera', 'alto', 'bufanda', 'lazo', 'corbata', 'piel', 'esclavina', 'chalina', 'triangulo', 'babero', 'trapelacucha'],
+  calzado: ['descalzo', 'sandalias', 'sandalia-romana', 'chancletas', 'zapatos', 'oxford', 'tacones', 'mocasines', 'zuecos', 'zapatillas', 'botines', 'botas', 'botas-altas', 'polainas'],
+  accesorio: ['brazaletes', 'bolso', 'tirantes', 'cinta-frente'],
+  fajaY: ['cintura', 'cadera', 'pecho'],
+};
+
+const COMUNES = ['patron']; // todas las plantillas que rellenan con tela aceptan un patrón
+
+/** Parámetros que lee cada plantilla. `mono` contiene dos juegos de parámetros anidados (torso y pantalon). */
+const PARAMS = {
+  tunica: ['bajo', 'bandaPatron', 'bandas', 'bandasAncho', 'bolsillos', 'bordadoPecho', 'botones', 'capucha', 'cintura', 'cinturon', 'cordones', 'cruzada', 'cuelloCamisa', 'escote', 'flecos', 'forma', 'holgura', 'lado', 'largo', 'manga', 'pieles', 'pliegues', 'prof', 'puños', 'ribete', 'ribeteBajo', 'volantes', 'vuelo', ...COMUNES],
+  pantalon: ['ancho', 'bolsillos', 'cintura', 'cordon', 'holgura', 'largo', 'puños', ...COMUNES],
+  falda: ['abertura', 'bajo', 'bandaPatron', 'cintura', 'flecos', 'forma', 'holgura', 'largo', 'pliegues', 'ribeteBajo', 'volantes', 'vuelo', ...COMUNES],
+  taparrabo: ['ancho', 'largo', 'punta', 'ribeteBajo', ...COMUNES],
+  capa: ['ancho', 'bajo', 'cierre', 'largo', 'ribete', 'ribeteBajo', ...COMUNES],
+  poncho: ['ancho', 'flecos', 'largo', 'listas', 'punta', ...COMUNES],
+  drapeado: ['lado', 'largo', 'orla', 'pliegues', ...COMUNES],
+  chaqueta: ['abertura', 'aberturaBajo', 'bajo', 'bolsillos', 'bordadoBorde', 'botones', 'capucha', 'cintura', 'cinturon', 'cordones', 'cuelloCamisa', 'holgura', 'largo', 'manga', 'pieles', 'pliegues', 'puños', 'ribete', 'solapa', 'solapaColor', 'vuelo', ...COMUNES],
+  delantal: ['largo', 'peto', 'vuelo', ...COMUNES],
+  faja: ['ancho', 'cuelga', 'doble', 'hebilla', 'y', ...COMUNES],
+  bandolera: ['ancho', 'bolsa', 'lado'],
+  chal: ['flecos', 'largo', ...COMUNES],
+  cuello: ['colgante', 'cuentas', 'rayas', 'tipo'],
+  calzado: ['hebilla', 'tipo'],
+  accesorio: ['alto', 'lado', 'tipo'],
+  mono: ['pantalon', 'torso'],
+};
+
+// Enumeraciones por plantilla y parámetro: [plantilla][parámetro] = lista de valores.
+const ENUMS = {
+  tunica: { escote: TIPOS.escote, manga: TIPOS.manga, bajo: TIPOS.bajo, forma: TIPOS.forma, bolsillos: TIPOS.bolsillosTorso, pieles: TIPOS.pieles, cruzada: TIPOS.lado, lado: TIPOS.lado },
+  pantalon: { ancho: TIPOS.anchoPantalon, cintura: TIPOS.cintura, bolsillos: TIPOS.bolsillosPantalon },
+  falda: { bajo: TIPOS.bajo, forma: TIPOS.forma, cintura: TIPOS.cintura, abertura: TIPOS.abertura },
+  capa: { bajo: TIPOS.bajo, cierre: TIPOS.cierre },
+  drapeado: { lado: TIPOS.lado },
+  chaqueta: { manga: TIPOS.manga, bajo: TIPOS.bajo, bolsillos: TIPOS.bolsillosTorso, pieles: TIPOS.pieles },
+  faja: { y: TIPOS.fajaY, cuelga: TIPOS.lado },
+  bandolera: { lado: TIPOS.lado },
+  cuello: { tipo: TIPOS.cuello },
+  calzado: { tipo: TIPOS.calzado },
+  accesorio: { tipo: TIPOS.accesorio, lado: TIPOS.lado },
+};
+
+const PARAMS_DE_PATRON = ['bandaPatron', 'bordadoPecho'];
+
+/** Distancia de edición entre dos textos cortos, para sugerir «¿quisiste decir…?». */
+function distancia(a, b) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return d[a.length][b.length];
+}
+const parecido = (x, lista) => { const m = lista.map((v) => [v, distancia(String(x), v)]).sort((p, q) => p[1] - q[1])[0]; return m && m[1] <= 2 ? m[0] : null; };
+
+/**
+ * Revisa los parámetros de una prenda y devuelve la lista de problemas (vacía si está bien):
+ * parámetros que la plantilla no lee, valores fuera de las listas y patrones que no existen.
+ */
+function problemasDeParams(plantilla, params = {}, ruta = plantilla) {
+  const permitidos = PARAMS[plantilla];
+  if (!permitidos) return [`Plantilla desconocida: ${plantilla}`];
+  const out = [];
+  for (const [k, v] of Object.entries(params)) {
+    if (!permitidos.includes(k)) { const sug = parecido(k, permitidos); out.push(`${ruta}: la plantilla no lee el parámetro «${k}»${sug ? ` (¿quisiste decir «${sug}»?)` : ''}.`); continue; }
+    if (plantilla === 'mono') { out.push(...problemasDeParams(k === 'torso' ? 'tunica' : 'pantalon', v, `${ruta}.${k}`)); continue; }
+    const lista = ENUMS[plantilla]?.[k];
+    if (lista && v !== undefined && v !== false && v !== null && !lista.includes(v)) { const sug = typeof v === 'string' ? parecido(v, lista) : null; out.push(`${ruta}: «${k}» = ${JSON.stringify(v)} no es un valor válido${sug ? ` (¿quisiste decir «${sug}»?)` : ''}. Valores posibles: ${lista.join(', ')}.`); }
+    if (k === 'largo' && v !== undefined && typeof v !== 'number' && !LARGOS.includes(v)) { const sug = typeof v === 'string' ? parecido(v, LARGOS) : null; out.push(`${ruta}: «largo» = ${JSON.stringify(v)} no es un largo válido${sug ? ` (¿quisiste decir «${sug}»?)` : ''}. Valores posibles: ${LARGOS.join(', ')} o un número.`); }
+    if (k === 'patron' && v) { const t = v.tipo ?? v; if (!PATRONES_ID.includes(t)) out.push(`${ruta}: el patrón «${t}» no existe. Patrones: ${PATRONES_ID.join(', ')}.`); }
+    if (PARAMS_DE_PATRON.includes(k) && v && !PATRONES_ID.includes(v)) out.push(`${ruta}: el patrón «${v}» de «${k}» no existe.`);
+  }
+  return out;
+}
+
+/** Lanza un error con todos los problemas de una prenda `{ id, plantilla, params }`, si los hay. */
+function validarPrenda(prenda) {
+  const problemas = problemasDeParams(prenda.plantilla, prenda.params ?? {}, `Prenda «${prenda.id ?? prenda.plantilla}»`);
+  if (problemas.length) throw new Error(problemas.join(' '));
+}
+
+Object.assign(__e, { LARGOS, TIPOS, PARAMS, problemasDeParams, validarPrenda });
+return __e;
+})();
+
 __m['svg'] = (() => {
 const __e = {};
 // Dibuja una persona descrita por `generarPersona` como SVG.
@@ -3474,6 +3589,7 @@ const { LIENZO, medidas, deformar, trazoTorso, trazoBrazo, trazoPierna, trazoMan
 const { geometriaCabeza, trazoCabeza, trazoOrejas, rasgosRostro, PEINADOS, BARBAS, TOCADOS } = __m['cabeza'];
 const { PLANTILLAS, ORDEN_RANURAS, finManga } = __m['prendas'];
 const { PATRONES } = __m['patrones'];
+const { validarPrenda } = __m['tipos-de-ropa'];
 const { mezclar, escapar, num } = __m['util'];
 
 function contexto(pref) {
@@ -3529,10 +3645,24 @@ function trazoDe(s) {
   return o;
 }
 
+// Campos que solo describen a la persona en texto: no cambian el dibujo, así que no entran en el prefijo de ids.
+const CAMPOS_DESCRIPTIVOS = new Set(['titulo', 'descripcion', 'estimaciones', 'avisos', 'notas', 'coloresPrendas', 'nombresPaleta', 'confianza', 'fondo', 'colorInfo', 'nombre']);
+
+/** Un estilo de peinado, barba o tocado que no existe, o una prenda con parámetros mal escritos, lanza un error en vez de dibujarse distinto. */
+function validarPersona(persona) {
+  const quiero = (campo, id, tabla, extra = []) => { if (id !== undefined && id !== null && !(id in tabla) && !extra.includes(id)) throw new Error(`${campo} desconocido: ${JSON.stringify(id)}. Disponibles: ${Object.keys(tabla).join(', ')}.`); };
+  quiero('Peinado', persona.cabello?.estilo, PEINADOS);
+  quiero('Barba', persona.barba?.estilo, BARBAS);
+  quiero('Tocado', persona.tocado?.id, TOCADOS);
+  for (const prenda of persona.prendas ?? []) validarPrenda(prenda);
+}
+
 /** Devuelve el SVG (texto) de la persona descrita. */
 function renderizar(persona, opciones = {}) {
+  validarPersona(persona);
   const nivel = opciones.detalle ?? persona.detalle ?? 'medio';
   const contorno = opciones.contorno ?? persona.contorno ?? 'ninguno'; // 'ninguno' | 'suave'
+  validarPersona(persona);
   const fondo = opciones.fondo ?? persona.fondo ?? 'ninguno';
   const M = medidas(persona.cuerpo);
   const G = geometriaCabeza(M, persona.rostro);
@@ -3543,7 +3673,7 @@ function renderizar(persona, opciones = {}) {
 
   // --- Formas, degradados y sombras ---
   // Las formas y el recorte son propios de cada figura: llevan un prefijo derivado de su contenido.
-  const pref = `x${hashCorto(JSON.stringify([persona.semilla, persona.piel, persona.cuerpo, persona.cabello, persona.tocado, persona.barba, persona.prendas.map((q) => [q.id, q.colores, q.params]), nivel, contorno]))}`;
+  const pref = `x${hashCorto(JSON.stringify([persona, nivel, contorno], (k, v) => (CAMPOS_DESCRIPTIVOS.has(k) ? undefined : v)))}`;
   const ctx = contexto(pref);
   const caminos = [], idsSilueta = [], degradados = new Map();
   let nForma = 0;
@@ -4176,6 +4306,81 @@ Object.assign(__e, { PERFILES, IDS_DE_GRUPOS, perfilDe, distribucionColor, catal
 return __e;
 })();
 
+__m['validacion'] = (() => {
+const __e = {};
+// Validación de las opciones que recibe el generador. Un valor mal escrito (`sexo: 'z'`, `peinado: 'corot'`,
+// `edad: 150`) lanza un Error que dice qué valores hay, en vez de caer en silencio en uno por defecto o
+// fallar más adelante con un mensaje que no ayuda. Es la misma forma que ya usan `etnia` y `atuendo`.
+
+const { PIELES, CABELLOS } = __m['datos/colores'];
+const { PRENDAS } = __m['datos/prendas'];
+const { REGIONES } = __m['datos/atuendos'];
+const { PEINADOS_ID, BARBAS_ID, TOCADOS_ID } = __m['cabeza'];
+const { CORPULENCIAS, POSTURAS, EDAD_MIN, EDAD_MAX, ALTURA_MIN, ALTURA_MAX, CORPULENCIA_MIN, CORPULENCIA_MAX } = __m['cuerpo'];
+const { esHex } = __m['util'];
+
+const lista = (v) => v.join(', ');
+const falla = (campo, valor, validos) => { throw new Error(`${campo} no válido: ${JSON.stringify(valor)}. Valores posibles: ${lista(validos)}.`); };
+const enLista = (campo, valor, validos) => { if (!validos.includes(valor)) falla(campo, valor, validos); };
+const numero = (campo, valor, min, max, unidad = '') => {
+  if (typeof valor !== 'number' || !Number.isFinite(valor) || valor < min || valor > max) {
+    throw new Error(`${campo} no válido: ${JSON.stringify(valor)}. Debe ser un número entre ${min} y ${max}${unidad}.`);
+  }
+};
+const hexOId = (campo, valor, ids) => { if (!esHex(valor) && !ids.includes(valor)) falla(campo, valor, [...ids, '#rrggbb']); };
+
+const ESTILOS_ROPA_NUEVA = ['sobrio', 'trabajo', 'festivo', 'ceremonial'];
+const ESQUEMAS = ['analogo', 'complementario', 'triada', 'monocromo', 'tierra', 'festivo'];
+const SALUDOS = ['derecha', 'izquierda', 'ninguno', 'ninguna'];
+const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo'];
+
+/** Comprueba las opciones de `generarPersona` (y de `generarRopaNueva`); no cambia nada, solo lanza si algo no vale. */
+function validarOpciones(opc = {}) {
+  if (opc === null || typeof opc !== 'object') throw new Error('Las opciones deben ser un objeto.');
+  const dado = (k) => opc[k] !== undefined && opc[k] !== null;
+  if (opc.sexo !== undefined) enLista('Sexo', opc.sexo, ['f', 'm']);
+  if (opc.edad !== undefined) numero('Edad', opc.edad, EDAD_MIN, EDAD_MAX, ' años');
+  if (opc.altura !== undefined) numero('Altura', opc.altura, ALTURA_MIN, ALTURA_MAX, ' cm');
+  if (opc.corpulencia !== undefined) {
+    if (typeof opc.corpulencia === 'number') numero('Corpulencia', opc.corpulencia, CORPULENCIA_MIN, CORPULENCIA_MAX);
+    else enLista('Corpulencia', opc.corpulencia, Object.keys(CORPULENCIAS));
+  }
+  if (opc.postura !== undefined && typeof opc.postura !== 'number') enLista('Postura', opc.postura, Object.keys(POSTURAS));
+  if (opc.saludo !== undefined && opc.saludo !== false && opc.saludo !== null) enLista('Saludo', opc.saludo, SALUDOS);
+  if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme']);
+  if (opc.pose && typeof opc.pose === 'object') {
+    if (opc.pose.brazoLibre !== undefined) enLista('pose.brazoLibre', opc.pose.brazoLibre, BRAZOS_LIBRES);
+    if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
+  }
+  if (opc.detalle !== undefined) enLista('Detalle', opc.detalle, ['minimo', 'medio', 'alto']);
+  if (opc.contorno !== undefined) enLista('Contorno', opc.contorno, ['ninguno', 'suave']);
+  if (opc.clase !== undefined) enLista('Clase', opc.clase, ['baja', 'media', 'alta']);
+  if (opc.anio !== undefined) numero('Año', opc.anio, -100000, 3000);
+  if (opc.region !== undefined) enLista('Región', opc.region, Object.keys(REGIONES));
+  if (dado('piel')) hexOId('Piel', opc.piel, PIELES.map((p) => p.id));
+  if (dado('cabello')) hexOId('Cabello', opc.cabello, CABELLOS.map((c) => c.id));
+  if (dado('peinado')) enLista('Peinado', opc.peinado, PEINADOS_ID);
+  if (opc.barba !== undefined && typeof opc.barba !== 'boolean') enLista('Barba', opc.barba, [...BARBAS_ID, true, false]);
+  if (dado('tocado')) enLista('Tocado', opc.tocado, TOCADOS_ID);
+  if (dado('calzado')) enLista('Calzado', opc.calzado, PRENDAS.filter((p) => p.ranura === 'calzado').map((p) => p.id));
+  if (opc.colores !== undefined) enLista('Colores', opc.colores, ['atuendo', 'prenda']);
+  if (opc.variacion !== undefined) numero('Variación', opc.variacion, 0, 1);
+  if (opc.estilo !== undefined) enLista('Estilo', opc.estilo, ESTILOS_ROPA_NUEVA);
+  if (opc.esquema !== undefined) enLista('Esquema', opc.esquema, ESQUEMAS);
+  if (opc.paleta !== undefined) {
+    if (opc.paleta === null || typeof opc.paleta !== 'object') throw new Error('La paleta debe ser un objeto {A, B, C, D} con colores #rrggbb.');
+    for (const [k, v] of Object.entries(opc.paleta)) if (!esHex(v)) throw new Error(`Color de paleta no válido en ${k}: ${JSON.stringify(v)}. Debe ser #rrggbb.`);
+  }
+  if (opc.vestir !== undefined && opc.vestir !== null) {
+    const v = Array.isArray(opc.vestir) ? opc.vestir : (typeof opc.vestir === 'object' ? Object.values(opc.vestir) : null);
+    if (!v) throw new Error('`vestir` debe ser una lista de ids de prenda o un objeto { ranura: id }.');
+  }
+}
+
+Object.assign(__e, { ESTILOS_ROPA_NUEVA, ESQUEMAS, SALUDOS, validarOpciones });
+return __e;
+})();
+
 __m['generador'] = (() => {
 const __e = {};
 // Generador de personas: elige un atuendo del catálogo (o inventa uno), le pone colores y devuelve la
@@ -4192,6 +4397,8 @@ const { renderizar } = __m['svg'];
 const { ETNIAS, ETNIAS_POR_ID } = __m['datos/etnias'];
 const { distribucionColor, catalogoColores, muestrearColor, muestrearColorLibre, perfilDe, PERFILES } = __m['datos/colores-prendas'];
 const { medidas } = __m['cuerpo'];
+const { validarOpciones } = __m['validacion'];
+const { TIPOS } = __m['tipos-de-ropa'];
 
 // ---------- Consulta del catálogo ----------
 
@@ -4390,9 +4597,14 @@ function normalizarEtnia(spec) {
   const lista = pares.filter(([id]) => id).map(([id, peso]) => {
     const e = ETNIAS_POR_ID[id];
     if (!e) throw new Error(`Etnia desconocida: ${id}. Disponibles: ${ETNIAS.map((x) => x.id).join(', ')}`);
-    return { e, peso: Number(peso) > 0 ? Number(peso) : 1 };
-  });
-  if (!lista.length) return null;
+    const w = Number(peso);
+    if (!Number.isFinite(w) || w < 0) throw new Error(`Peso no válido para la etnia ${id}: ${JSON.stringify(peso)}. Debe ser un número mayor o igual que 0.`);
+    return { e, peso: w };
+  }).filter((x) => x.peso > 0); // peso 0: esa etnia no cuenta
+  if (!lista.length) {
+    if (pares.some(([id]) => id)) throw new Error('Todas las etnias tienen peso 0: al menos una debe pesar más que 0.');
+    return null;
+  }
   const total = lista.reduce((t, x) => t + x.peso, 0);
   return lista.map((x) => ({ e: x.e, peso: x.peso / total }));
 }
@@ -4429,6 +4641,7 @@ const ESTATURA_REF = { f: 161, m: 174 }; // los promedios con los que medidas() 
  * rasgos (true: ojos, cejas y boca suaves), fondo, prendas (lista propia de prendas ya armadas).
  */
 function generarPersona(opc = {}) {
+  validarOpciones(opc);
   const semilla = opc.semilla ?? 1;
   const azar = crearAzar(`persona:${semilla}`);
   const sexo = opc.sexo ?? (azar.bool() ? 'f' : 'm');
@@ -4509,7 +4722,7 @@ function generarPersona(opc = {}) {
   const ah = azar.hijo('cabeza');
   const peinadosEtnia = etnia ? atuendo.peinados.filter((p) => etnia[0].e.peinados.includes(p)) : [];
   const peinadoId = opc.peinado ?? ah.elegir(peinadosEtnia.length ? peinadosEtnia : atuendo.peinados);
-  let estilo = PEINADOS[peinadoId] ? peinadoId : 'corto';
+  let estilo = PEINADOS[peinadoId] ? peinadoId : 'corto'; // un peinado del atuendo que no exista se cambia por 'corto'; el pedido a mano ya se validó
   // Los mayores a veces pierden el pelo; la tonsura y las pelucas no se tocan.
   if (!opc.peinado && edad > 55 && sexo === 'm' && !['tonsura', 'peluca-barroca', 'peluca-egipcia'].includes(estilo) && ah.bool(0.25)) estilo = 'calvo';
   const quiereBarba = opc.barba === undefined ? true : opc.barba;
@@ -4587,13 +4800,11 @@ function generarPersona(opc = {}) {
 // ---------- Ropa nueva ----------
 
 const L = (a, b) => [a, b];
-const LARGOS_TORSO = ['pecho', 'cintura', 'cadera', 'muslo-alto', 'muslo', 'rodilla', 'pantorrilla', 'tobillo', 'suelo'];
-const MANGAS = ['sin', 'corta', 'codo', 'tres-cuartos', 'larga', 'campana', 'ancha', 'globo', 'abullonada', 'kimono'];
-const ESCOTES = ['redondo', 'v', 'cuadrado', 'barco', 'alto', 'ojal'];
-const BAJOS = ['recto', 'curvo', 'ondulado', 'dentado'];
-const ANCHOS_PANTALON = ['ajustado', 'recto', 'amplio', 'bombacho', 'campana'];
-const CALZADOS = ['sandalias', 'zapatos', 'botas', 'botas-altas', 'mocasines', 'zuecos', 'polainas', 'descalzo', 'zapatillas'];
-const CUELLOS = ['collar', 'gorguera', 'alto', 'bufanda', 'pectoral', 'cuentas-largas', 'gargantilla', 'lazo'];
+// Las variantes salen de tipos-de-ropa.js, la fuente única que también valida las prendas.
+// 'trapelacucha' es un adorno de un pueblo concreto (mapuche): no se mezcla al azar con otros estilos.
+const sinEspecificos = (lista) => lista.filter((x) => x !== 'trapelacucha');
+const MANGAS = TIPOS.manga, ESCOTES = TIPOS.escote, BAJOS = TIPOS.bajo, ANCHOS_PANTALON = TIPOS.anchoPantalon;
+const CALZADOS = TIPOS.calzado, CUELLOS = sinEspecificos(TIPOS.cuello);
 const ROLES_PATRON = PATRONES_ID.filter((p) => !['piel', 'jaspe', 'malla', 'escamas'].includes(p));
 
 function patronAzar(azar, prob) {
@@ -4605,6 +4816,7 @@ function patronAzar(azar, prob) {
  * estilo: 'sobrio' | 'trabajo' | 'festivo' | 'ceremonial'. Devuelve { prendas, paleta, nombre }.
  */
 function generarRopaNueva({ semilla = 1, sexo = 'f', estilo = 'sobrio', esquema, paleta } = {}) {
+  validarOpciones({ sexo, estilo, esquema, paleta });
   const azar = crearAzar(`ropa:${semilla}:${sexo}:${estilo}`);
   const festivo = estilo === 'festivo' || estilo === 'ceremonial';
   const pal = paleta ?? generarPaleta({ semilla, esquema: esquema ?? (estilo === 'trabajo' ? 'tierra' : festivo ? 'festivo' : azar.elegir(['analogo', 'monocromo', 'complementario'])) });
@@ -4632,6 +4844,14 @@ function generarRopaNueva({ semilla = 1, sexo = 'f', estilo = 'sobrio', esquema,
     patron: patronAzar(azar, festivo ? 0.35 : 0.15),
     bandaPatron: azar.bool(ornato * 0.5) ? azar.elegir(ROLES_PATRON) : undefined,
   };
+  // Variantes extra con su propio azar: no cambian los valores de arriba.
+  const extra = azar.hijo('variantes');
+  if (extra.bool(0.2)) torso.forma = extra.elegir(TIPOS.forma);
+  if (extra.bool(0.12)) torso.capucha = true;
+  if (extra.bool(0.15)) torso.bolsillos = extra.elegir(TIPOS.bolsillosTorso);
+  if (extra.bool(0.15)) torso.cuelloCamisa = true;
+  if (extra.bool(0.15)) torso.cinturon = true;
+  if (extra.bool(0.1)) torso.pieles = extra.elegir(TIPOS.pieles);
   add('torso', 'tunica', torso, col(), vestido ? 'Vestido nuevo' : 'Túnica nueva');
 
   if (!vestido) {
@@ -4665,6 +4885,7 @@ function generarRopaNueva({ semilla = 1, sexo = 'f', estilo = 'sobrio', esquema,
 /** Una persona con ropa inventada en lugar de un atuendo del catálogo. */
 function generarPersonaConRopaNueva(opc = {}) {
   const semilla = opc.semilla ?? 1;
+  validarOpciones(opc);
   const sexo = opc.sexo ?? (crearAzar(`persona:${semilla}`).bool() ? 'f' : 'm');
   const ropa = generarRopaNueva({ semilla, sexo, estilo: opc.estilo ?? 'sobrio', esquema: opc.esquema, paleta: opc.paleta });
   const base = generarPersona({ ...opc, sexo, prendas: ropa.prendas, paleta: ropa.paleta });

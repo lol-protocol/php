@@ -6,7 +6,7 @@
 //   node bin/generar.js --listar atuendos|regiones|prendas|tintes
 
 import { writeFileSync } from 'node:fs';
-import { generarSVG, generarPersona, generarPersonaConRopaNueva, PEINADOS, BARBAS, TOCADOS, ATUENDOS, PRENDAS, TINTES, REGIONES, ETNIAS, listarCatalogo, distribucionColor, catalogoColores } from '../src/index.js';
+import { renderizar, generarPersona, generarPersonaConRopaNueva, PEINADOS, BARBAS, TOCADOS, ATUENDOS, PRENDAS, TINTES, REGIONES, ETNIAS, listarCatalogo, distribucionColor, catalogoColores } from '../src/index.js';
 
 const args = process.argv.slice(2);
 const val = (n) => { const i = args.findIndex((a) => a === `--${n}` || (n === 'o' && a === '-o')); return i >= 0 ? args[i + 1] : undefined; };
@@ -68,15 +68,18 @@ const num = (n) => (val(n) === undefined ? undefined : Number(val(n)));
 const opc = {
   semilla: val('semilla') === undefined ? 1 : (Number.isNaN(Number(val('semilla'))) ? val('semilla') : Number(val('semilla'))),
   atuendo: val('atuendo'), region: val('region'), anio: num('anio'), clase: val('clase'), sexo: val('sexo'), edad: num('edad'),
-  corpulencia: val('corpulencia'), altura: num('altura'), postura: val('postura'), piel: val('piel'), cabello: val('cabello'),
+  corpulencia: val('corpulencia') !== undefined && val('corpulencia') !== '' && !Number.isNaN(Number(val('corpulencia'))) ? Number(val('corpulencia')) : val('corpulencia'), altura: num('altura'), postura: val('postura'), piel: val('piel'), cabello: val('cabello'),
   detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'), pose: val('pose') === 'casual' ? undefined : val('pose'), contorno: val('contorno'),
   ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
   etnia: val('etnia'), saludo: val('saludo'), vestir: val('vestir') ? val('vestir').split(',').map((x) => x.trim()).filter(Boolean) : undefined, peinado: val('peinado'), barba: val('barba'), tocado: val('tocado'),
 };
 for (const k of Object.keys(opc)) if (opc[k] === undefined) delete opc[k];
-const svg = generarSVG(opc);
+let svg, p;
+try {
+  p = opc.ropaNueva ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
+  svg = renderizar(p, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno });
+} catch (e) { console.error(`Error: ${e.message}`); process.exit(2); }
 if (flag('avisos')) {
-  const p = opc.ropaNueva ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
   for (const t of [...(p.estimaciones ?? []), ...(p.avisos ?? []).map((a) => `Aviso: ${a}`), ...(p.coloresPrendas ?? []).map((c) => `Color de ${c.nombre}: ${Object.entries(c.roles).map(([r, x]) => `${r} ${x.nombre}${x.pct == null ? '' : ` (${x.pct} %)`}`).join(', ')}`)]) console.error(t);
 }
 const salida = val('o');
