@@ -17,7 +17,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`laws-textos-oficiales.yml`](workflows/laws-textos-oficiales.yml) | Leyes - textos de las fuentes | `pull_request`, `workflow_dispatch` | `probar`, `textos` |
 | [`marcalibros-b.yml`](workflows/marcalibros-b.yml) | Marcalibros (generar catalogo y pruebas) | `push`, `pull_request`, `workflow_dispatch` | `catalogo` |
 | [`pruebas-backoffice.yml`](workflows/pruebas-backoffice.yml) | Pruebas backoffice | `push`, `pull_request`, `workflow_dispatch` | `analisis-estatico`, `pruebas` |
-| [`pruebas-citas-pos.yml`](workflows/pruebas-citas-pos.yml) | Pruebas citas POS | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
+| [`pruebas-citas-pos.yml`](workflows/pruebas-citas-pos.yml) | Pruebas citas POS | `push`, `pull_request`, `workflow_dispatch` | `pruebas`, `navegador` |
 | [`pruebas-cobros-ingresos-funnels.yml`](workflows/pruebas-cobros-ingresos-funnels.yml) | Pruebas cobros, ingresos y funnels | `push`, `pull_request`, `workflow_dispatch` | `tests` |
 | [`pruebas-defamatory-content-review.yml`](workflows/pruebas-defamatory-content-review.yml) | Pruebas defamatory-content-review | `push`, `pull_request`, `workflow_dispatch` | `phpunit`, `chat-front-guard` |
 | [`pruebas-document-formats.yml`](workflows/pruebas-document-formats.yml) | Pruebas document-formats | `push`, `pull_request`, `workflow_dispatch` | `document-formats`, `document-formats-database` |
