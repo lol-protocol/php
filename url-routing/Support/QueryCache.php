@@ -10,6 +10,13 @@ namespace App\Support;
  * PHP-FPM/Swoole) — it is not shared across requests or servers. Use it to
  * avoid recomputing the same query within a single request, not as a
  * substitute for a real shared cache (Redis/Memcached).
+ *
+ * @deprecated Sin uso desde que se comprobó (2026-11-07): solo su propia prueba (QueryCacheTest) la llama; ningún
+ *             código de la aplicación. Se conserva como referencia, no se borra. Tres rarezas comprobadas que
+ *             no se arreglan porque nada depende de ellas: has() da falso para un null guardado (get() no
+ *             distingue «no está» de «es null»); set() sobre la misma llave repite la llave en la lista de su
+ *             etiqueta; getStats() lanza TypeError con un valor que json_encode() no puede codificar (texto
+ *             que no es UTF-8). Quien la use de nuevo debe arreglarlas antes.
  */
 class QueryCache
 {

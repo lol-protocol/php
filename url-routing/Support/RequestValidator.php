@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+/**
+ * @deprecated Sin uso desde que se comprobó (2026-11-07): solo su propia prueba (RequestValidatorTest) la llama.
+ *             Los controladores validan con BaseController::validateId() y los ids que el router ya fijó a
+ *             un ancho. Se conserva como referencia, no se borra.
+ */
 class RequestValidator
 {
     public static function validateNumericId(mixed $id): string|null

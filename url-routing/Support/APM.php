@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+/**
+ * @deprecated Sin uso desde que se comprobó (2026-11-07): ningún código del repositorio llama a esta clase, ni
+ *             las variables APM_* de .env.example tienen efecto en otra parte. Se conserva como referencia,
+ *             no se borra.
+ */
 class APM
 {
     private static ?APM $instance = null;
