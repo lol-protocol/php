@@ -11,8 +11,12 @@ use DefamatoryContentReview\Chat\ChatLineResult;
  */
 final class LongTextSeam
 {
-    /** Cuánto de cada lado entra: de sobra para el texto más largo de config/ (166 caracteres). */
-    public const CHARS = 200;
+    /**
+     * Cuánto de cada lado entra. Lo más largo que una sola coincidencia puede abarcar es la frase más larga
+     * del diccionario (27 caracteres) o unas letras deletreadas (24 letras, unos 48), más 3 palabras de
+     * contexto por lado (TargetWindow): cabe de sobra en 100, y cada caracter de más se paga en cada corte.
+     */
+    public const CHARS = 100;
 
     /**
      * Lo que sólo aparece al juntar el final de $before con el principio de $after. La costura
