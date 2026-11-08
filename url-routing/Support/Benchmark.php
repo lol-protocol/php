@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+/**
+ * @deprecated Sin uso desde que se comprobó (2026-11-07): ningún código del repositorio llama a esta clase,
+ *             ni siquiera una prueba. Se conserva como referencia, no se borra.
+ */
 class Benchmark
 {
     /** @var array<string, array{time: float, memory: int}> */

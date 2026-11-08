@@ -41,7 +41,7 @@ final class AccessPolicy
     private const CLAVE_SESION = 'propietario';
 
     /** Byte for byte what BaseController::handleNotFound() sends, so a hidden page is indistinguishable from a missing one. */
-    public const CUERPO_404 = '<h1>404 - Página no encontrada</h1>';
+    public const CUERPO_404 = '<h1>404 - ' . ErrorPage::NOT_FOUND . '</h1>';
 
     /** Whether $token is a usable OWNER_TOKEN. */
     public static function tokenValido(?string $token): bool
@@ -254,6 +254,6 @@ final class AccessPolicy
         }
         http_response_code(401);
 
-        return '<h1>401 - Acceso restringido</h1>';
+        return ErrorPage::body(401, 'Acceso restringido');
     }
 }

@@ -129,14 +129,18 @@
   cortando en un espacio, una frase cuyas palabras sueltas son inocentes
   («heil hitler», «white power», «concha de tu madre») quedaba repartida en
   dos partes. Ahora se corta en el último espacio de cualquier tipo, y la
-  costura de cada corte —200 caracteres de cada lado, `LongTextSeam`— se
+  costura de cada corte —100 caracteres de cada lado, `LongTextSeam`— se
   revisa también; de ella sólo se suma lo que ninguna de sus dos mitades
   tiene por separado, para no contar dos veces lo que ya halló cada parte.
   Para que las costuras sean pocas, los párrafos seguidos comparten parte
   mientras quepan en 2.000 caracteres (antes cada párrafo era una parte), y
-  una costura sin hallazgos no revisa sus mitades. Cuesta algo más: una
-  biografía de 10.000 caracteres pasa de unos 310 a unos 480 ms, y el texto
-  deletreado más adversario, de 20 a 170 ms. `LongTextCutsTest`.
+  una costura sin hallazgos no revisa sus mitades. Cien caracteres bastan:
+  la frase más larga de los diccionarios mide 27, unas letras deletreadas
+  unos 48, y el contexto son 3 palabras por lado; `LongTextSeamTest` lo
+  comprueba y parte cada frase por cada uno de sus huecos. Cuesta algo más
+  (mejor de 5, textos de 10.000 caracteres): una biografía pasa de unos 215 a
+  unos 310 ms, y el texto deletreado adversario, de 14 a 62 ms (con 200
+  caracteres de ventana eran 345 y 113). `LongTextCutsTest`.
 
 ## [5.0.0] - 2026-10-15
 

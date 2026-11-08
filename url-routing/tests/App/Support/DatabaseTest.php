@@ -21,6 +21,69 @@ class DatabaseTest extends TestCase
         return new Database('sqlite::memory:');
     }
 
+    public function testSiguienteNumeroEmpiezaEnUnoYSigueAlMayorDeSuGrupo(): void
+    {
+        $db = $this->db();
+        $db->execute('CREATE TABLE t (grupo INTEGER NOT NULL, n INTEGER NOT NULL)');
+
+        $this->assertSame(1, $db->siguienteNumero('t', 'n'));
+        $db->execute('INSERT INTO t (grupo, n) VALUES (1, 1), (1, 2), (2, 7)');
+        $this->assertSame(8, $db->siguienteNumero('t', 'n'));
+        $this->assertSame(3, $db->siguienteNumero('t', 'n', ['grupo' => 1]));
+        $this->assertSame(1, $db->siguienteNumero('t', 'n', ['grupo' => 9]));
+    }
+
+    public function testSiguienteNumeroRechazaUnNombreInyectado(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->db()->siguienteNumero('t; DROP TABLE t', 'n');
+    }
+
+    public function testSoloUnChoqueDeUnicidadSeReintenta(): void
+    {
+        $db = $this->db();
+        $db->execute('CREATE TABLE u (id INTEGER PRIMARY KEY, n INTEGER NOT NULL CHECK (n > 0))');
+        $db->execute('INSERT INTO u (id, n) VALUES (1, 1)');
+
+        // Pierde la carrera por el 1 la primera vez; la segunda lee el máximo que dejó el ganador.
+        $intentos = 0;
+        $id = $db->transaccionConReintento(function (Database $db) use (&$intentos): int {
+            $intentos++;
+            $id = $intentos === 1 ? 1 : $db->siguienteNumero('u', 'id');
+            $db->execute('INSERT INTO u (id, n) VALUES (?, 1)', [$id]);
+
+            return $id;
+        });
+        $this->assertSame([2, 2], [$id, $intentos]);
+
+        // Un CHECK que rechaza el dato falla igual cada vez: se lanza al primer intento.
+        $intentos = 0;
+        try {
+            $db->transaccionConReintento(function (Database $db) use (&$intentos): void {
+                $intentos++;
+                $db->execute('INSERT INTO u (id, n) VALUES (9, 0)');
+            });
+            $this->fail('El CHECK debió fallar');
+        } catch (\PDOException $e) {
+            $this->assertSame(1, $intentos);
+            $this->assertFalse(Database::esChoqueDeUnicidad($e));
+        }
+
+        // Y si el choque no se va, tras los intentos se lanza.
+        $intentos = 0;
+        try {
+            $db->transaccionConReintento(function (Database $db) use (&$intentos): void {
+                $intentos++;
+                $db->execute('INSERT INTO u (id, n) VALUES (1, 1)');
+            }, 2);
+            $this->fail('El choque debió lanzarse');
+        } catch (\PDOException $e) {
+            $this->assertSame(2, $intentos);
+            $this->assertTrue(Database::esChoqueDeUnicidad($e));
+        }
+    }
+
     public function testInsertRejectsInjectedColumnName(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -355,5 +418,32 @@ class DatabaseTest extends TestCase
         $this->assertSame(2, Database::bytes('é'));
         $this->assertSame(3, Database::bytes('ł '));
         $this->assertNull(Database::bytes(null));
+    }
+
+    /**
+     * transaccionConReintento() asks again when it loses a race for a unique value, and it is called from
+     * inside other transactions (OrdenRepository::crear() from a caller that already opened one): the retry
+     * has to undo only its own attempt, which on PostgreSQL means getting out of the aborted state with
+     * ROLLBACK TO SAVEPOINT. Before transaction() could be nested, this threw "already an active transaction".
+     */
+    #[DataProvider('drivers')]
+    public function testElReintentoFuncionaDentroDeUnaTransaccionExterna(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+        $this->grupo($db, 100001);
+        $intentos = 0;
+
+        $db->transaction(function (Database $db) use (&$intentos): void {
+            $this->grupo($db, 100002);
+            $db->transaccionConReintento(function (Database $db) use (&$intentos): void {
+                $intentos++;
+                // The first attempt loses the race (that id exists), the second takes the next one
+                $this->grupo($db, $intentos === 1 ? 100001 : 100003);
+            });
+        });
+
+        $this->assertSame(2, $intentos);
+        $this->assertSame([100001, 100002, 100003], $this->grupos($db), $driver);
+        $this->assertFalse($db->pdo()->inTransaction());
     }
 }

@@ -235,6 +235,13 @@ class Ball extends PhysicsObject {
 - update(), checkBounds(), render() automáticos
 - Herencia reutilizable
 
+**Opciones de `config`** (todas opcionales, y un `0` se respeta: `bounceCoeff: 0` es «sin rebote»):
+- `bounds`: el rectángulo contra el que rebota (`{ width, height }`). Sin él usa el tamaño de la
+  ventana, que `Physics.viewportBounds()` mantiene al día con `resize`; si pasas el tuyo (como el
+  contenedor de B), te encargas de actualizarlo.
+- `bounceMode`: `'clamp'` (por defecto) recorta contra el borde y rebota con `bounceCoeff`;
+  `'reflect'` refleja lo que atravesó la pared y no pierde velocidad (la bola de B).
+
 #### AnimationManager
 ```javascript
 const manager = new AnimationManager(objects);

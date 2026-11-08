@@ -30,7 +30,9 @@ web-animations/
 ├── tests/
 │   ├── gallery-metadata.mjs           Test automático: la galería, las páginas y esta tabla cuentan lo mismo
 │   ├── smoke.mjs                      Test automático (corre en CI)
-│   ├── particles-in-bounds.mjs        Test automático: las partículas de G no se hunden en el piso ni en las paredes
+│   ├── particles-in-bounds.mjs        Test automático: las partículas de G no se hunden en el piso ni en las paredes,
+│   │                                  tampoco al achicar o agrandar la ventana
+│   ├── physics-object.mjs             Test automático: PhysicsObject (ceros, modos clamp y reflect, bordes de la ventana)
 │   └── index.html                     Tests manuales en navegador: validación,
 │                                      accesibilidad y rendimiento
 ├── docs/
@@ -75,7 +77,7 @@ npm ci
 npm test
 ```
 
-`npm test` corre tres chequeos y falla si alguno falla. Primero
+`npm test` corre cuatro chequeos y falla si alguno falla. Primero
 `tests/gallery-metadata.mjs` (sin navegador): cada animación se nombra en tres
 lugares, la tarjeta de la galería (`data.js`), la propia página (su `<title>`,
 su encabezado y su descripción) y la tabla de más abajo, y los tres tienen que
@@ -84,10 +86,13 @@ tener color en el modal de detalles. Después `tests/smoke.mjs` abre las 37
 páginas en Chromium y falla si alguna tiene un error de JavaScript, un recurso
 que no carga, `common.css`/`common.js` sin aplicar, o un botón de pausa que no
 responde. Si ya tienes un Chromium instalado (en los contenedores de la nube la versión no es
-la que baja Playwright), pásalo con `CHROMIUM=/ruta/al/chromium npm test`. Por último `tests/particles-in-bounds.mjs` avanza la lluvia de
-partículas (G) 1.500 cuadros, con números al azar de semilla fija, y falla si
-alguna partícula queda bajo el piso o fuera de una pared. Corre en CI en cada
-push.
+la que baja Playwright), pásalo con `CHROMIUM=/ruta/al/chromium npm test`. Después
+`tests/particles-in-bounds.mjs` avanza la lluvia de partículas (G) 1.500 cuadros, con
+números al azar de semilla fija, y falla si alguna partícula queda bajo el piso o fuera
+de una pared; lo repite al achicar y al agrandar la ventana, porque los bordes siguen
+su tamaño. Por último `tests/physics-object.mjs` prueba `PhysicsObject` en una página
+mínima: que un `0` pasado como configuración se respete, los dos modos de rebote y que
+los bordes por defecto sean los de la ventana. Corre en CI en cada push.
 
 `tests/index.html` tiene además suites manuales (validación, accesibilidad
 WCAG 2.1 AA, rendimiento) — ver [`tests/README.md`](tests/README.md).

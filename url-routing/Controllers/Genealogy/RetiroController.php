@@ -7,6 +7,7 @@ namespace App\Controllers\Genealogy;
 use App\Controllers\BaseController;
 use App\Repositories\Genealogy\RetiroRepository;
 use App\Support\Config;
+use App\Support\ErrorPage;
 use App\Support\FiltroPedidos;
 use App\Support\RateLimiter;
 use App\Support\ServiceLocator;
@@ -22,7 +23,7 @@ class RetiroController extends BaseController
 {
     private const MAX_DETALLE = 2000;
     private const MAX_CONTACTO = 254;
-    /** A pedido a visitor may send per hour (RETIRO_MAX_POR_HORA). One hour is the longest window RateLimiter remembers. */
+    /** A pedido a visitor may send per hour (RETIRO_MAX_POR_HORA). One hour is RateLimiter::VENTANA_MAXIMA, the longest window it remembers. */
     private const MAX_POR_HORA = 3;
     /** Pedidos waiting on one page before it stops taking more (RETIRO_MAX_PENDIENTES). */
     private const MAX_PENDIENTES = 10;
@@ -74,7 +75,7 @@ class RetiroController extends BaseController
         }
 
         $limitador = RateLimiter::getInstance();
-        if (!$limitador->isAllowed('retiro:' . $limitador->getClientIp(), Config::getInt('RETIRO_MAX_POR_HORA', self::MAX_POR_HORA), 3600)) {
+        if (!$limitador->isAllowed('retiro:' . $limitador->getClientIp(), Config::getInt('RETIRO_MAX_POR_HORA', self::MAX_POR_HORA), RateLimiter::VENTANA_MAXIMA)) {
             return $this->demasiados('Enviaste varios pedidos seguidos. Vuelve a intentarlo más tarde.', $limitador->retryAfter());
         }
         if ($repo->pendientesDe($tipo, (int)$id) >= Config::getInt('RETIRO_MAX_PENDIENTES', self::MAX_PENDIENTES)) {
@@ -95,7 +96,7 @@ class RetiroController extends BaseController
         http_response_code(429);
         header('Retry-After: ' . max(1, $segundos));
 
-        return '<h1>429 - Demasiados pedidos</h1><p>' . htmlspecialchars($mensaje) . '</p>';
+        return ErrorPage::body(429, 'Demasiados pedidos', htmlspecialchars($mensaje));
     }
 
     /**

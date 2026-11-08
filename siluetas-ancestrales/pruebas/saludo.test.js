@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generarSVG, ATUENDOS } from '../src/index.js';
 import { medidas } from '../src/cuerpo.js';
+import { puntosDeRuta } from './ayuda.js';
 
 /** Contenido del grupo `<g data-saludo>` (con sus grupos anidados bien cerrados), o null. */
 function grupoSaludo(svg) {
@@ -25,7 +26,7 @@ function puntosSaludo(svg) {
   const pts = [];
   for (const id of ids) {
     const d = svg.match(new RegExp(`<path id="${id}" d="([^"]+)"`))[1];
-    for (const m of d.matchAll(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g)) pts.push([Number(m[1]), Number(m[2])]);
+    pts.push(...puntosDeRuta(d));
   }
   return { lado: g.lado, pts, formas: ids.length };
 }

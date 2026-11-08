@@ -36,6 +36,11 @@ const A = {
   brazoSup: [0.022, 0.026, 0.022], codo: [0.018, 0.020, 0.017], muneca: [0.0125, 0.0135, 0.0115],
 };
 
+/** Rangos que acepta el cuerpo; el generador y las opciones los validan con estos mismos valores. */
+export const EDAD_MIN = 2, EDAD_MAX = 100;
+export const ALTURA_MIN = 70, ALTURA_MAX = 190; // cm
+export const CORPULENCIA_MIN = 0.6, CORPULENCIA_MAX = 1.6; // si se da como número
+
 export const CORPULENCIAS = { delgada: 0.86, media: 1, robusta: 1.2, corpulenta: 1.34 };
 export const POSTURAS = { firme: 7, relajada: 11, abierta: 22 };
 
@@ -97,11 +102,12 @@ export function normalizarPose(spec) {
  * opc: { sexo: 'f'|'m', edad (años), corpulencia (nombre o número), altura (cm, opcional), postura }
  */
 export function medidas(opc = {}) {
+  if (opc.sexo !== undefined && opc.sexo !== 'f' && opc.sexo !== 'm') throw new Error(`Sexo no válido: ${JSON.stringify(opc.sexo)}. Valores posibles: 'f' o 'm'.`);
   const sexo = opc.sexo === 'f' ? 'f' : 'm';
-  const edad = limitar(Number(opc.edad ?? 30), 2, 100);
+  const edad = limitar(Number(opc.edad ?? 30), EDAD_MIN, EDAD_MAX);
   const corp = typeof opc.corpulencia === 'number' ? opc.corpulencia : (CORPULENCIAS[opc.corpulencia] ?? 1);
   const escalaAltura = limitar(Number(opc.escalaAltura ?? 1), 0.8, 1.2);
-  const cm = limitar(Number(opc.altura ?? porTabla(ALTURA[sexo], Math.min(edad, 20)) * escalaAltura * (edad > 60 ? 1 - (edad - 60) * 0.0009 : 1)), 70, 190);
+  const cm = limitar(Number(opc.altura ?? porTabla(ALTURA[sexo], Math.min(edad, 20)) * escalaAltura * (edad > 60 ? 1 - (edad - 60) * 0.0009 : 1)), ALTURA_MIN, ALTURA_MAX);
   const H = cm * 4.9;
   const cabezas = porTabla(CABEZAS, Math.min(edad, 18));
   // u = 0 niño pequeño, 1 adulto (según proporción de la cabeza)
@@ -216,7 +222,10 @@ export function medidas(opc = {}) {
   return { sexo, edad, corpulencia: corp, cm, H, cx, top, suelo, y, w, grados: grados0, pose, brazos, saludoLado, piernas, cabezas, u, hombroX: w.hombro };
 }
 
-/** Mitad derecha del contorno del torso (de la base del cuello a la entrepierna), desplazada `d` hacia afuera. */
+/**
+ * Mitad derecha del contorno del torso (de la base del cuello a la entrepierna), desplazada `d` hacia afuera.
+ * @deprecated `desde` y `hasta` (desde 2026-11, PR de limpieza) no se usan: ninguna llamada los pasa y la función siempre devuelve el torso completo. Se conservan como referencia.
+ */
 export function perfilTorso(M, d = 0, { desde = 'cuello', hasta = 'entrepierna' } = {}) {
   const { y, w, H } = M;
   const f = M.sexo === 'f' && M.u > 0.6 ? 1 : 0;
@@ -267,6 +276,21 @@ export function brazoEnU(M, s, uu) {
     }
   }
   return { x: L[0][0], y: L[0][1], w: A[0] };
+}
+
+/**
+ * Centro y ancho de una línea con anchos (pierna o brazo) a la altura `yy`, interpolando entre sus puntos.
+ * `tope` es cuánto se deja extrapolar por debajo del último punto (1 = nada).
+ */
+export function lineaEnY(Lg, yy, tope = 1.3) {
+  const { linea, anchos } = Lg;
+  for (let j = 0; j < linea.length - 1; j++) {
+    if (yy <= linea[j + 1][1] || j === linea.length - 2) {
+      const tt = limitar((yy - linea[j][1]) / ((linea[j + 1][1] - linea[j][1]) || 1), 0, tope);
+      return { x: lerp(linea[j][0], linea[j + 1][0], tt), w: lerp(anchos[j], anchos[j + 1], tt) };
+    }
+  }
+  return { x: linea[0][0], w: anchos[0] };
 }
 
 /** Línea central de la pierna del lado `s` con su pie, en coordenadas absolutas. */

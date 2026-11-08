@@ -8,6 +8,7 @@ use App\Support\Database;
 use App\Support\Migrator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\ServidorDePrueba;
 
 /**
  * The headers of a response, which PagesTest cannot see: the CLI has no real
@@ -21,6 +22,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ResponseHeadersTest extends TestCase
 {
+    use ServidorDePrueba;
+
     private const GENEALOGIA = 'tudominio.local';
     private const POS = 'contrastocolor.local';
     private const TOKEN = 'token-de-prueba-0123456789';
@@ -28,71 +31,23 @@ class ResponseHeadersTest extends TestCase
     /** Headers that legitimately differ between two requests to the same page. */
     private const VARIABLES = ['date', 'set-cookie'];
 
-    private static string $dir;
-    private static int $puerto;
-    /** @var resource|null */
-    private static $servidor = null;
-
     public static function setUpBeforeClass(): void
     {
-        self::$dir = sys_get_temp_dir() . '/url-routing-headers-' . getmypid();
-        @mkdir(self::$dir, 0777, true);
-
-        foreach (['genealogy', 'pos'] as $site) {
-            $migrator = Migrator::forSite(new Database('sqlite:' . self::$dir . "/{$site}.sqlite"), $site);
-            $migrator->migrate();
-            $migrator->seed();
-        }
-
-        // 582399 was a duplicate of the grupo García (582317), merged into it (bin/fusionar.php grupo).
-        (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute('INSERT INTO grupo_alias (id, grupo_id) VALUES (582399, 582317)');
-        // 130 surnames «Zeta001»…«Zeta130»: three pages of a listing (50 per page).
-        $pdo = (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->pdo();
-        $pdo->beginTransaction();
-        $grupo = $pdo->prepare('INSERT INTO grupos (id, apellido) VALUES (?, ?)');
-        for ($i = 1; $i <= 130; $i++) {
-            $grupo->execute([600000 + $i, 'Zeta' . str_pad((string)$i, 3, '0', STR_PAD_LEFT)]);
-        }
-        $pdo->commit();
-
-        // One persona whose page changed on a known day (the rest have no date).
-        (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute("UPDATE personas SET actualizado_en = '2026-03-04 10:11:12' WHERE id = 6128473101");
-
-        // A free port: ask the OS for one, release it and hand it to the server.
-        $socket = stream_socket_server('tcp://127.0.0.1:0');
-        self::assertNotFalse($socket, 'No free port for the test server');
-        self::$puerto = (int)substr((string)stream_socket_get_name($socket, false), strlen('127.0.0.1:'));
-        fclose($socket);
-
-        // Sessions go to a folder of their own, to count what a request leaves behind.
-        @mkdir(self::$dir . '/sesiones', 0777, true);
-
-        $publico = dirname(__DIR__, 3) . '/public';
-        self::$servidor = proc_open(
-            [PHP_BINARY, '-d', 'session.save_path=' . self::$dir . '/sesiones', '-S', '127.0.0.1:' . self::$puerto, '-t', $publico, $publico . '/index.php'],
-            [1 => ['file', self::$dir . '/server.out', 'w'], 2 => ['file', self::$dir . '/server.err', 'w']],
-            $pipes,
-            null,
-            [
-                'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
-                'DB_DSN_POS' => 'sqlite:' . self::$dir . '/pos.sqlite',
-                'LOG_FILE' => self::$dir . '/app.log',
-                'URL_LOG_DIR' => self::$dir . '/urls',
-                'OWNER_TOKEN' => self::TOKEN,
-                'PATH' => (string)getenv('PATH'),
-            ]
-        );
-
-        for ($intento = 0; $intento < 50; $intento++) {
-            $conexion = @fsockopen('127.0.0.1', self::$puerto, $errno, $error, 0.1);
-            if ($conexion !== false) {
-                fclose($conexion);
-                return;
+        self::servidorIniciar('headers', ['OWNER_TOKEN' => self::TOKEN, 'URL_LOG_DIR' => '{dir}/urls'], static function (string $dir): void {
+            // 582399 was a duplicate of the grupo García (582317), merged into it (bin/fusionar.php grupo).
+            (new Database('sqlite:' . $dir . '/genealogy.sqlite'))->execute('INSERT INTO grupo_alias (id, grupo_id) VALUES (582399, 582317)');
+            // 130 surnames «Zeta001»…«Zeta130»: three pages of a listing (50 per page).
+            $pdo = (new Database('sqlite:' . $dir . '/genealogy.sqlite'))->pdo();
+            $pdo->beginTransaction();
+            $grupo = $pdo->prepare('INSERT INTO grupos (id, apellido) VALUES (?, ?)');
+            for ($i = 1; $i <= 130; $i++) {
+                $grupo->execute([600000 + $i, 'Zeta' . str_pad((string)$i, 3, '0', STR_PAD_LEFT)]);
             }
-            usleep(100_000);
-        }
+            $pdo->commit();
 
-        self::fail('The built-in server did not start: ' . (string)@file_get_contents(self::$dir . '/server.err'));
+            // One persona whose page changed on a known day (the rest have no date).
+            (new Database('sqlite:' . $dir . '/genealogy.sqlite'))->execute("UPDATE personas SET actualizado_en = '2026-03-04 10:11:12' WHERE id = 6128473101");
+        });
     }
 
     /**
@@ -101,54 +56,12 @@ class ResponseHeadersTest extends TestCase
      */
     protected function setUp(): void
     {
-        foreach (glob(sys_get_temp_dir() . '/rate_limit_*') ?: [] as $archivo) {
-            if (preg_match('/^rate_limit_[0-9a-f]{64}$/', basename($archivo)) === 1) {
-                @unlink($archivo);
-            }
-        }
+        self::reiniciarLimitador();
     }
 
     public static function tearDownAfterClass(): void
     {
-        if (is_resource(self::$servidor)) {
-            proc_terminate(self::$servidor);
-            proc_close(self::$servidor);
-        }
-        exec('rm -rf ' . escapeshellarg(self::$dir));
-    }
-
-    /**
-     * @param array<string, string> $cabeceras request headers
-     * @return array{status: int, headers: array<string, list<string>>, body: string}
-     */
-    private function pedir(string $host, string $uri, array $cabeceras = []): array
-    {
-        $lineas = ["Host: {$host}"];
-        foreach ($cabeceras as $nombre => $valor) {
-            $lineas[] = "{$nombre}: {$valor}";
-        }
-
-        $contexto = stream_context_create(['http' => [
-            'method' => 'GET',
-            'header' => implode("\r\n", $lineas),
-            'ignore_errors' => true,
-            'follow_location' => 0,
-            'timeout' => 10,
-        ]]);
-        $cuerpo = file_get_contents('http://127.0.0.1:' . self::$puerto . $uri, false, $contexto);
-        $this->assertNotFalse($cuerpo, "No response for {$uri}");
-
-        $respuesta = ['status' => 0, 'headers' => [], 'body' => $cuerpo];
-        foreach ($http_response_header as $linea) {
-            if (preg_match('#^HTTP/\S+ (\d{3})#', $linea, $m) === 1) {
-                $respuesta['status'] = (int)$m[1];
-            } elseif (str_contains($linea, ':')) {
-                [$nombre, $valor] = explode(':', $linea, 2);
-                $respuesta['headers'][strtolower(trim($nombre))][] = trim($valor);
-            }
-        }
-
-        return $respuesta;
+        self::servidorDetener();
     }
 
     /**
@@ -182,8 +95,8 @@ class ResponseHeadersTest extends TestCase
     #[DataProvider('paginasOcultas')]
     public function testAHiddenPageAnswersExactlyLikeAMissingOne(string $host, string $oculta, string $inexistente): void
     {
-        $ocultaR = $this->pedir($host, $oculta);
-        $faltaR = $this->pedir($host, $inexistente);
+        $ocultaR = $this->pedirAlServidor($host, $oculta);
+        $faltaR = $this->pedirAlServidor($host, $inexistente);
 
         // The comparison below is only worth something if headers are being observed at all.
         $this->assertSame(404, $faltaR['status']);
@@ -218,7 +131,7 @@ class ResponseHeadersTest extends TestCase
     #[DataProvider('noindex')]
     public function testFunctionalPagesCarryNoindex(string $host, string $uri, bool $lleva): void
     {
-        $respuesta = $this->pedir($host, $uri);
+        $respuesta = $this->pedirAlServidor($host, $uri);
 
         $this->assertArrayHasKey('x-content-type-options', $respuesta['headers'], 'headers are not being observed');
         $this->assertSame($lleva ? ['noindex'] : null, $respuesta['headers']['x-robots-tag'] ?? null, $uri);
@@ -227,7 +140,7 @@ class ResponseHeadersTest extends TestCase
     /** A GEDCOM file is for whoever asked for it; a hidden collection's export must still look like a missing one (above). */
     public function testTheGedcomExportCarriesNoindex(): void
     {
-        $respuesta = $this->pedir(self::GENEALOGIA, '/1048293/3/', ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)]);
+        $respuesta = $this->pedirAlServidor(self::GENEALOGIA, '/1048293/3/', ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)]);
 
         $this->assertSame(200, $respuesta['status']);
         $this->assertSame(['noindex'], $respuesta['headers']['x-robots-tag']);
@@ -246,7 +159,7 @@ class ResponseHeadersTest extends TestCase
     #[DataProvider('grupoFusionado')]
     public function testAMergedGroupRedirectsToTheOneThatStayed(string $vieja, string $nueva): void
     {
-        $respuesta = $this->pedir(self::GENEALOGIA, $vieja);
+        $respuesta = $this->pedirAlServidor(self::GENEALOGIA, $vieja);
 
         $this->assertSame(301, $respuesta['status']);
         $this->assertSame([$nueva], $respuesta['headers']['location']);
@@ -254,7 +167,7 @@ class ResponseHeadersTest extends TestCase
 
     public function testASitemapGivesAPageItsDayOnlyWhenItsRowHasOne(): void
     {
-        $respuesta = $this->pedir(self::GENEALOGIA, '/sitemap/10/1.xml');
+        $respuesta = $this->pedirAlServidor(self::GENEALOGIA, '/sitemap/10/1.xml');
 
         $this->assertSame(200, $respuesta['status']);
         $this->assertStringContainsString('<loc>http://tudominio.local/6128473101/</loc><lastmod>2026-03-04</lastmod>', $respuesta['body']);
@@ -283,13 +196,13 @@ class ResponseHeadersTest extends TestCase
 
     public function testA404AndA301AreCountedByShapeAndNeverByPath(): void
     {
-        $this->pedir(self::GENEALOGIA, '/6128473777/');                    // a persona that does not exist
-        $this->pedir(self::GENEALOGIA, '/maria-del-carmen-garcia/');       // a name typed into a URL
-        $this->pedir(self::GENEALOGIA, '/6128473105');                     // not canonical: 301
-        $this->pedir(self::GENEALOGIA, '/582399/1/');                      // a merged grupo: 301 to the one that stays
-        $this->pedir(self::POS, '/cart/');                                 // an old URL: 301 to /c/
-        $this->pedir(self::GENEALOGIA, '/wp-login.php');
-        $this->pedir(self::GENEALOGIA, '/6128473101/');                    // 200: not counted
+        $this->pedirAlServidor(self::GENEALOGIA, '/6128473777/');                    // a persona that does not exist
+        $this->pedirAlServidor(self::GENEALOGIA, '/maria-del-carmen-garcia/');       // a name typed into a URL
+        $this->pedirAlServidor(self::GENEALOGIA, '/6128473105');                     // not canonical: 301
+        $this->pedirAlServidor(self::GENEALOGIA, '/582399/1/');                      // a merged grupo: 301 to the one that stays
+        $this->pedirAlServidor(self::POS, '/cart/');                                 // an old URL: 301 to /c/
+        $this->pedirAlServidor(self::GENEALOGIA, '/wp-login.php');
+        $this->pedirAlServidor(self::GENEALOGIA, '/6128473101/');                    // 200: not counted
 
         $lineas = $this->lineasDeUrls();
         $todo = implode("\n", $lineas);
@@ -312,8 +225,8 @@ class ResponseHeadersTest extends TestCase
      */
     public function testAListingAnswersThePageOrOnlyItsFragmentOnTheSameUrl(): void
     {
-        $pagina = $this->pedir(self::GENEALOGIA, '/b/6/zeta/2/');
-        $fragmento = $this->pedir(self::GENEALOGIA, '/b/6/zeta/2/', ['X-Fragmento' => '1']);
+        $pagina = $this->pedirAlServidor(self::GENEALOGIA, '/b/6/zeta/2/');
+        $fragmento = $this->pedirAlServidor(self::GENEALOGIA, '/b/6/zeta/2/', ['X-Fragmento' => '1']);
 
         $this->assertSame(200, $pagina['status']);
         $this->assertSame(200, $fragmento['status']);
@@ -335,7 +248,7 @@ class ResponseHeadersTest extends TestCase
 
     public function testTheFragmentOfTheLastPageHasNoNextLink(): void
     {
-        $fragmento = $this->pedir(self::GENEALOGIA, '/b/6/zeta/3/', ['X-Fragmento' => '1']);
+        $fragmento = $this->pedirAlServidor(self::GENEALOGIA, '/b/6/zeta/3/', ['X-Fragmento' => '1']);
 
         $this->assertStringContainsString('href="/600130/"', $fragmento['body']);
         $this->assertStringNotContainsString('rel="next"', $fragmento['body']);
@@ -345,7 +258,7 @@ class ResponseHeadersTest extends TestCase
     public function testOnlyTheExactHeaderValueAsksForAFragment(): void
     {
         foreach (['0', 'true', '11'] as $valor) {
-            $this->assertStringContainsString('<html', $this->pedir(self::GENEALOGIA, '/b/6/zeta/', ['X-Fragmento' => $valor])['body'], "X-Fragmento: {$valor}");
+            $this->assertStringContainsString('<html', $this->pedirAlServidor(self::GENEALOGIA, '/b/6/zeta/', ['X-Fragmento' => $valor])['body'], "X-Fragmento: {$valor}");
         }
     }
 
@@ -353,14 +266,14 @@ class ResponseHeadersTest extends TestCase
     public function testAListingVariesOnTheFragmentHeader(): void
     {
         foreach ([[], ['X-Fragmento' => '1']] as $cabeceras) {
-            $this->assertContains('X-Fragmento', $this->pedir(self::GENEALOGIA, '/b/6/zeta/', $cabeceras)['headers']['vary'] ?? [], json_encode($cabeceras) ?: '');
+            $this->assertContains('X-Fragmento', $this->pedirAlServidor(self::GENEALOGIA, '/b/6/zeta/', $cabeceras)['headers']['vary'] ?? [], json_encode($cabeceras) ?: '');
         }
     }
 
     public function testThePosListingHasTheFragmentToo(): void
     {
-        $pagina = $this->pedir(self::POS, '/b/8/');
-        $fragmento = $this->pedir(self::POS, '/b/8/', ['X-Fragmento' => '1']);
+        $pagina = $this->pedirAlServidor(self::POS, '/b/8/');
+        $fragmento = $this->pedirAlServidor(self::POS, '/b/8/', ['X-Fragmento' => '1']);
 
         $this->assertStringContainsString('<html', $pagina['body']);
         $this->assertStringNotContainsString('<html', $fragmento['body']);
@@ -370,15 +283,15 @@ class ResponseHeadersTest extends TestCase
     /** The script is a plain file under public/: a real web server serves it itself, the built-in one is let to. */
     public function testTheScriptIsServedAndNothingElseUnderPublic(): void
     {
-        $script = $this->pedir(self::GENEALOGIA, '/b.js');
+        $script = $this->pedirAlServidor(self::GENEALOGIA, '/b.js');
         $this->assertSame(200, $script['status']);
         $this->assertStringContainsString('IntersectionObserver', $script['body']);
         $this->assertMatchesRegularExpression('#javascript#', $script['headers']['content-type'][0] ?? '');
 
-        $this->assertSame(404, $this->pedir(self::GENEALOGIA, '/.htaccess')['status'], 'a dotfile');
-        $this->assertSame(404, $this->pedir(self::GENEALOGIA, '/index.php')['status'], 'the front controller is not a file to read');
+        $this->assertSame(404, $this->pedirAlServidor(self::GENEALOGIA, '/.htaccess')['status'], 'a dotfile');
+        $this->assertSame(404, $this->pedirAlServidor(self::GENEALOGIA, '/index.php')['status'], 'the front controller is not a file to read');
         foreach (['/../Support/Router.php', '/..%2fSupport%2fRouter.php', '/../.env.example'] as $fuera) {
-            $respuesta = $this->pedir(self::GENEALOGIA, $fuera);
+            $respuesta = $this->pedirAlServidor(self::GENEALOGIA, $fuera);
             $this->assertStringNotContainsString('<?php', $respuesta['body'], $fuera);
             $this->assertStringNotContainsString('IDS_DIGITO_VERIFICADOR', $respuesta['body'], $fuera);
         }
@@ -397,13 +310,13 @@ class ResponseHeadersTest extends TestCase
 
     public function testAGroupThatNeverExistedIsStillA404(): void
     {
-        $this->assertSame(404, $this->pedir(self::GENEALOGIA, '/582398/')['status']);
+        $this->assertSame(404, $this->pedirAlServidor(self::GENEALOGIA, '/582398/')['status']);
     }
 
     /** The owner's pages do depend on who asks, so a shared cache must not keep them. */
     public function testTheOwnersPagesAreMarkedPrivate(): void
     {
-        $respuesta = $this->pedir(self::GENEALOGIA, '/1048294/', ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)]);
+        $respuesta = $this->pedirAlServidor(self::GENEALOGIA, '/1048294/', ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)]);
 
         $this->assertSame(200, $respuesta['status']);
         $this->assertSame(['private, no-store'], $respuesta['headers']['cache-control']);
@@ -413,7 +326,7 @@ class ResponseHeadersTest extends TestCase
     /** What is known to exist does ask for the credentials; only its absence is a 404. */
     public function testTheAccountAreaAsksForCredentialsInsteadOfPretendingNotToExist(): void
     {
-        $respuesta = $this->pedir(self::GENEALOGIA, '/0/');
+        $respuesta = $this->pedirAlServidor(self::GENEALOGIA, '/0/');
 
         $this->assertSame(401, $respuesta['status']);
         $this->assertArrayHasKey('www-authenticate', $respuesta['headers']);
@@ -439,7 +352,7 @@ class ResponseHeadersTest extends TestCase
             'pagina del propietario, comprimida' => ['/1048294/', $propietario + ['Accept-Encoding' => 'gzip']],
         ];
         foreach ($casos as $nombre => [$uri, $cabeceras]) {
-            $respuesta = $this->pedir(self::GENEALOGIA, $uri, $cabeceras);
+            $respuesta = $this->pedirAlServidor(self::GENEALOGIA, $uri, $cabeceras);
 
             $valores = [];
             foreach ($respuesta['headers']['vary'] ?? [] as $linea) {
@@ -493,7 +406,7 @@ class ResponseHeadersTest extends TestCase
     {
         $antes = self::archivosDeSesion();
 
-        $respuesta = $this->pedir($host, $uri);
+        $respuesta = $this->pedirAlServidor($host, $uri);
 
         $this->assertNotSame(0, $respuesta['status']);
         $this->assertArrayNotHasKey('set-cookie', $respuesta['headers'], "{$uri} must not set a cookie");
@@ -507,7 +420,7 @@ class ResponseHeadersTest extends TestCase
     #[DataProvider('paginasQueSoloSeLeen')]
     public function testWithoutASessionEveryResponseIsStillNotCacheable(string $host, string $uri): void
     {
-        $respuesta = $this->pedir($host, $uri);
+        $respuesta = $this->pedirAlServidor($host, $uri);
 
         $this->assertSame(['no-store, no-cache, must-revalidate'], $respuesta['headers']['cache-control'], $uri);
         $this->assertSame(['no-cache'], $respuesta['headers']['pragma'], $uri);
@@ -519,7 +432,7 @@ class ResponseHeadersTest extends TestCase
     {
         $antes = self::archivosDeSesion();
 
-        $respuesta = $this->pedir(self::GENEALOGIA, '/r/6128473105/');
+        $respuesta = $this->pedirAlServidor(self::GENEALOGIA, '/r/6128473105/');
 
         $this->assertSame(200, $respuesta['status']);
         $this->assertStringContainsString('name="csrf_token"', $respuesta['body']);
@@ -536,17 +449,17 @@ class ResponseHeadersTest extends TestCase
      */
     public function testTheOwnerGetsASessionWhenLoggingInAndItIsResumedWithJustTheCookie(): void
     {
-        $respuesta = $this->pedir(self::GENEALOGIA, '/0/', ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)]);
+        $respuesta = $this->pedirAlServidor(self::GENEALOGIA, '/0/', ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)]);
         $this->assertSame(200, $respuesta['status']);
         $cookie = self::cookieDeSesion($respuesta);
         $this->assertNotNull($cookie, 'logging in opens the session');
 
         // Only the cookie now: no credentials. The collection is private, so this is the owner or a 404.
-        $conCookie = $this->pedir(self::GENEALOGIA, '/1048294/', ['Cookie' => "PHPSESSID={$cookie}"]);
+        $conCookie = $this->pedirAlServidor(self::GENEALOGIA, '/1048294/', ['Cookie' => "PHPSESSID={$cookie}"]);
         $this->assertSame(200, $conCookie['status'], 'the session is the owner\'s');
         $this->assertSame(['private, no-store'], $conCookie['headers']['cache-control']);
 
-        $sinCookie = $this->pedir(self::GENEALOGIA, '/1048294/');
+        $sinCookie = $this->pedirAlServidor(self::GENEALOGIA, '/1048294/');
         $this->assertSame(404, $sinCookie['status'], 'without the cookie it is the visitor\'s 404');
     }
 }

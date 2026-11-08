@@ -89,8 +89,9 @@ Estas etiquetas las puso a mano quien armó el prototipo, sin revisión de nadie
    ```csv
    spa,etiquetas,spa-1,correcto,TuAlias,2026-10-27,
    spa,etiquetas,spa-2,corregir,TuAlias,2026-10-27,"palabra → ETIQUETA, porque ..."
-   spa,cita,spa-c1,dudoso,TuAlias,2026-10-27,"palabra: de qué dudas"
    ```
+
+   Con «dudoso» la nota dice de qué dudas, por ejemplo `"palabra: de qué dudas"`. Solo se puede revisar lo que ya existe: una cita sin texto, o sin etiquetas, todavía no admite una fila.
 
 2. **`correcto`** si no cambiarías nada. **`corregir`** si hay un cambio: escribe la palabra, la etiqueta que propones y por qué. **`dudoso`** si no estás seguro: di de qué dudas. Con `corregir` y `dudoso` la nota es obligatoria.
 3. Comprueba el registro:
@@ -104,6 +105,8 @@ Estas etiquetas las puso a mano quien armó el prototipo, sin revisión de nadie
 Si vuelves a revisar lo mismo, **edita tu fila** en lugar de añadir otra (el historial queda en git).
 
 ## Qué significa tu «correcto»
+
+Una cita solo se publica si **nadie** ha dejado un «corregir» o un «dudoso» sin resolver sobre ella. Tu «correcto» no anula el «corregir» o el «dudoso» de otra persona, y el «correcto» de otra persona no anula los tuyos. Por eso conviene usar «dudoso» cuando de verdad dudes: bloquea hasta que se aclare.
 
 Es **tu juicio como persona que lee español**, no una garantía de que la etiqueta sea la única posible: el registro no comprueba quién eres ni tu relación con el idioma. Si quieres dejar constancia (lengua materna, nivel), ponla en `revisor` o en la nota.
 

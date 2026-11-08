@@ -6,6 +6,11 @@
  * Con JavaScript, las palabras empiezan en gris, se revelan al tocarlas y la leyenda se va llenando.
  */
 
+.citas-pos-juego { position: relative; }
+
+/* La frase entera, solo para lectores de pantalla (con JavaScript cada palabra es un botón y no se lee de corrido). */
+.citas-pos-juego .jsr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
 .citas-pos-juego .jayuda { margin: 0 0 8px; font: 0.875rem/1.4 system-ui, sans-serif; color: var(--cp-suave); }
 .citas-pos-juego .jayuda[hidden] { display: none; }
 
@@ -14,13 +19,14 @@
 
 /* Con JavaScript: se pueden tocar, y las no reveladas van en gris, con una raya que invita a tocarlas. */
 .citas-pos-juego.js .jw { cursor: pointer; }
-.citas-pos-juego.js .jw[aria-pressed="false"] { color: var(--cp-suave); text-decoration: none; box-shadow: inset 0 -2px 0 0 var(--cp-suave); }
+/* La raya es un borde, no una sombra: el modo de alto contraste quita las sombras y deja los bordes. */
+.citas-pos-juego.js .jw[aria-pressed="false"] { color: var(--cp-suave); text-decoration: none; border-bottom: 2px solid var(--cp-suave); }
 .citas-pos-juego.js .jw[aria-pressed="false"]:hover { background: color-mix(in srgb, var(--cp-suave) 18%, transparent); }
 .citas-pos-juego .jw:focus-visible { outline: 2px solid var(--cp-tinta); outline-offset: 2px; }
 
 /* La leyenda: una muestra del color y la marca de cada categoría, con su nombre. Con JavaScript solo salen las descubiertas. */
 .citas-pos-juego .jleyenda { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; font: 0.875rem/1.5 system-ui, sans-serif; color: var(--cp-tinta); }
-.citas-pos-juego .jleyenda li[hidden] { display: none; }
+.citas-pos-juego .jleyenda[hidden], .citas-pos-juego .jleyenda li[hidden] { display: none; }
 .citas-pos-juego .jm { font: 700 1.125rem/1.5 Georgia, "Times New Roman", serif; margin-right: 0.15em; }
 
 .citas-pos-juego .jbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 0; font: 0.8125rem/1.4 system-ui, sans-serif; color: var(--cp-suave); }

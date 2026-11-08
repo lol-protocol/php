@@ -15,6 +15,8 @@
     }
     var palabras = Array.prototype.slice.call(juego.querySelectorAll('.jw'));
     var leyenda = Array.prototype.slice.call(juego.querySelectorAll('.jleyenda li'));
+    var lista = juego.querySelector('.jleyenda');
+    var frase = juego.querySelector('blockquote');
     var ayuda = juego.querySelector('.jayuda');
     var barra = juego.querySelector('.jbar');
     var estado = juego.querySelector('.jestado');
@@ -34,11 +36,17 @@
       estado.textContent = mensaje ? mensaje + ' ' + resumen : resumen;
     }
 
+    // Una lista vacía se anuncia como «lista» sin nada dentro: se oculta entera hasta que haya algo que decir.
     function actualizarLeyenda() {
+      var alguna = false;
       leyenda.forEach(function (item) {
         var categoria = item.getAttribute('data-c');
         item.hidden = !palabras.some(function (p) { return revelada(p) && p.getAttribute('data-c') === categoria; });
+        alguna = alguna || !item.hidden;
       });
+      if (lista) {
+        lista.hidden = !alguna;
+      }
     }
 
     // La categoría entra en el nombre accesible de la palabra solo cuando se ha descubierto.
@@ -83,6 +91,14 @@
         avisar('Todas ocultas.');
       }
     });
+
+    // Con JavaScript cada palabra es un botón: la frase entera, para quien la oye con un lector de pantalla, va aparte.
+    if (frase) {
+      var lectura = document.createElement('p');
+      lectura.className = 'jsr';
+      lectura.textContent = frase.textContent;
+      frase.parentNode.insertBefore(lectura, frase);
+    }
 
     juego.classList.add('js');
     if (ayuda) {

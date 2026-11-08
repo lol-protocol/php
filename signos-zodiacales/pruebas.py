@@ -765,7 +765,7 @@ class PruebasDeVectores(unittest.TestCase):
         self.assertEqual({k: len(x) for k, x in v["decanato"].items()}, {"tropical": 366, "sideral": 366})
         self.assertEqual(set(v["revision"]), set(generar.IDIOMAS))
         self.assertEqual(len(v["espiritu_de_fecha"]), 366)
-        self.assertEqual(set(v["tramos_de_espiritus"]), {"2024", "2025"})
+        self.assertEqual(len(v["tramos_de_espiritus"]), 12)
         self.assertEqual(len(v["cualidades_de"]["es"]), 144)
         self.assertEqual((len(v["arbol_celta"]), len(v["arbol_de_fecha"])), (366, 366))
         self.assertEqual(len(v["nakshatra_de_instante"]), len(generar.INSTANTES_LUNARES))
@@ -835,21 +835,18 @@ class PruebasDeEspiritus(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
 
     def test_cada_signo_tiene_seis_tramos_seguidos_que_cubren_sus_fechas(self):
-        for anio in (2024, 2025):
-            for s in (x for x in self.datos["signos"] if x["tipo"] == "occidental"):
-                tramos = zodiaco.tramos_de_espiritus(s["id"], anio)
-                self.assertEqual(len(tramos), 6, s["id"])
-                inicio = datetime.date(anio, *s["tropical"]["desde"])
-                fin = datetime.date(anio + (1 if s["tropical"]["hasta"] < s["tropical"]["desde"] else 0), *s["tropical"]["hasta"])
-                esperado, dias = inicio, []
-                for (m1, d1), (m2, d2) in tramos:
-                    desde = datetime.date(esperado.year, m1, d1)
-                    self.assertEqual(desde, esperado, f"{s['id']} {anio}: el tramo no empieza donde acabó el anterior")
-                    hasta = datetime.date(esperado.year + (1 if (m2, d2) < (m1, d1) else 0), m2, d2)
-                    dias.append((hasta - desde).days + 1)
-                    esperado = hasta + datetime.timedelta(days=1)
-                self.assertEqual(esperado, fin + datetime.timedelta(days=1), f"{s['id']} {anio}: no cubren hasta el final")
-                self.assertTrue(4 <= min(dias) and max(dias) <= 6, f"{s['id']} {anio}: {dias}")
+        for s in (x for x in self.datos["signos"] if x["tipo"] == "occidental"):
+            tramos = zodiaco.tramos_de_espiritus(s["id"])
+            self.assertEqual(len(tramos), 6, s["id"])
+            self.assertEqual(tramos[0][0], s["tropical"]["desde"], s["id"])
+            self.assertEqual(tramos[-1][1], s["tropical"]["hasta"], s["id"])
+            dias = [(zodiaco._dia_del_anio(hasta) - zodiaco._dia_del_anio(desde)) % 365 + 1 for desde, hasta in tramos]
+            for (_, hasta), (desde, _) in zip(tramos, tramos[1:]):
+                self.assertEqual(zodiaco._dia_del_anio(desde), zodiaco._dia_del_anio(hasta) % 365 + 1,
+                                 f"{s['id']}: un tramo no empieza donde acabó el anterior")
+            largo_del_signo = (zodiaco._dia_del_anio(s["tropical"]["hasta"]) - zodiaco._dia_del_anio(s["tropical"]["desde"])) % 365 + 1
+            self.assertEqual(sum(dias), largo_del_signo, s["id"])
+            self.assertTrue(4 <= min(dias) and max(dias) <= 6, f"{s['id']}: {dias}")
 
     def test_los_angeles_de_fechas_conocidas(self):
         casos = {
@@ -1307,6 +1304,167 @@ class PruebasDeValidacionDeNumerologia(unittest.TestCase):
         self.assertTrue(self.errores_con("numerologia/terminos"))
         self.num["numeros"][1]["rasgos"] = ["armonia", "armonia"]
         self.assertTrue(self.errores_con("numerologia/numeros/2: de 1 a 5 rasgos"))
+
+
+class PruebasDeCorrecciones(unittest.TestCase):
+    """Los errores que se corrigieron: tramos que se corrían en los bisiestos, datos cacheados que se podían corromper,
+    un error ilegible en _frase y los comprobadores de traducciones que antes estaban repetidos."""
+
+    def test_el_decanato_y_los_72_son_los_mismos_en_un_bisiesto_y_en_un_ano_normal(self):
+        for sistema in zodiaco.SISTEMAS:
+            for n in range(365):
+                d25 = datetime.date(2025, 1, 1) + datetime.timedelta(days=n)
+                d24 = datetime.date(2024, d25.month, d25.day)
+                self.assertEqual(zodiaco.decanato(d24, sistema)["numero"], zodiaco.decanato(d25, sistema)["numero"], (sistema, d25))
+        for n in range(365):
+            d25 = datetime.date(2025, 1, 1) + datetime.timedelta(days=n)
+            d24 = datetime.date(2024, d25.month, d25.day)
+            self.assertEqual(zodiaco.angel_de_fecha(d24)["angel"]["numero"], zodiaco.angel_de_fecha(d25)["angel"]["numero"], d25)
+            self.assertEqual(zodiaco.angel_de_fecha(d24)["tramo"], zodiaco.angel_de_fecha(d25)["tramo"], d25)
+
+    def test_el_29_de_febrero_cuenta_con_el_28(self):
+        feb28, feb29 = datetime.date(2025, 2, 28), datetime.date(2024, 2, 29)
+        self.assertEqual(zodiaco.angel_de_fecha(feb29)["angel"]["numero"], zodiaco.angel_de_fecha(feb28)["angel"]["numero"])
+        self.assertEqual(zodiaco.demonio_de_fecha(feb29)["demonio"]["numero"], zodiaco.demonio_de_fecha(feb28)["demonio"]["numero"])
+        self.assertEqual(zodiaco.decanato(feb29)["numero"], zodiaco.decanato(feb28)["numero"])
+        self.assertEqual(zodiaco.decanato(feb29, "sideral")["numero"], zodiaco.decanato(feb28, "sideral")["numero"])
+
+    def test_el_10_de_marzo_de_un_bisiesto_ya_no_cambia_de_decanato(self):
+        # Antes daba el decanato 3 en 2024 y el 2 en 2025 (y la ficha, calculada para 2025, decía el 2).
+        self.assertEqual(zodiaco.decanato(datetime.date(2024, 3, 10))["numero"], 2)
+        self.assertEqual(zodiaco.decanato(datetime.date(2025, 3, 10))["numero"], 2)
+
+    def test_la_funcion_y_la_tabla_de_la_ficha_coinciden_cada_dia_de_un_bisiesto(self):
+        occidentales = [s for s in cargar_datos()["signos"] if s["tipo"] == "occidental"]
+        for dia in dias_del_anio_bisiesto():
+            x = zodiaco.angel_de_fecha(dia)
+            tabla = zodiaco.tramos_de_espiritus(x["signo"]["id"])
+            indice = [s["id"] for s in occidentales].index(x["signo"]["id"])
+            self.assertEqual(tabla[x["angel"]["numero"] - 1 - indice * 6], x["tramo"], dia)
+            desde, hasta = zodiaco.tramos_de_decanatos(x["signo"])[zodiaco.decanato(dia)["numero"] - 1]
+            normalizado = tuple(zodiaco._mes_dia(zodiaco._dia_del_anio((dia.month, dia.day))))
+            self.assertTrue(zodiaco._en_rango(normalizado, desde, hasta), f"{dia}: el decanato no está en su tramo de la ficha")
+
+    def test_el_parametro_anio_de_los_tramos_esta_obsoleto_y_no_cambia_nada(self):
+        piscis = next(s for s in cargar_datos()["signos"] if s["id"] == "piscis")
+        self.assertEqual(zodiaco.tramos_de_decanatos(piscis, "tropical", 2024), zodiaco.tramos_de_decanatos(piscis))
+        self.assertEqual(zodiaco.tramos_de_espiritus("piscis", 2024), zodiaco.tramos_de_espiritus("piscis", 2025))
+        self.assertEqual(zodiaco.tramos_de_espiritus("piscis", 2024), zodiaco.tramos_de_espiritus("piscis"))
+        for malo in ("2025", True, 2.5):
+            with self.assertRaises(TypeError):
+                zodiaco.tramos_de_espiritus("piscis", malo)
+
+    def test_los_tramos_de_los_decanatos_dan_los_mismos_valores_que_antes_para_un_ano_normal(self):
+        piscis = next(s for s in cargar_datos()["signos"] if s["id"] == "piscis")
+        self.assertEqual(zodiaco.tramos_de_decanatos(piscis), [([2, 19], [2, 28]), ([3, 1], [3, 10]), ([3, 11], [3, 20])])
+        capricornio = next(s for s in cargar_datos()["signos"] if s["id"] == "capricornio")
+        self.assertEqual(zodiaco.tramos_de_decanatos(capricornio), [([12, 22], [12, 31]), ([1, 1], [1, 10]), ([1, 11], [1, 19])])
+
+    def test_dia_del_anio_y_su_inverso(self):
+        self.assertEqual((zodiaco._dia_del_anio([1, 1]), zodiaco._dia_del_anio([12, 31]), zodiaco._dia_del_anio([2, 29])), (1, 365, 59))
+        self.assertEqual(zodiaco._dia_del_anio([2, 29]), zodiaco._dia_del_anio([2, 28]))
+        for n in range(1, 366):
+            self.assertEqual(zodiaco._dia_del_anio(zodiaco._mes_dia(n)), n)
+        self.assertEqual(zodiaco._mes_dia(366), [1, 1])  # pasarse de 365 da la vuelta al año
+
+    @staticmethod
+    def _destruir(x):
+        """Vacía un valor por dentro (dicts y listas, incluso dentro de tuplas) para ver si corrompe los datos."""
+        if isinstance(x, dict):
+            for v in list(x.values()):
+                PruebasDeCorrecciones._destruir(v)
+            x.clear()
+        elif isinstance(x, list):
+            for v in x:
+                PruebasDeCorrecciones._destruir(v)
+            x.clear()
+        elif isinstance(x, tuple):
+            for v in x:
+                PruebasDeCorrecciones._destruir(v)
+
+    def test_modificar_lo_que_devuelve_una_consulta_no_corrompe_las_siguientes(self):
+        d = datetime.date
+        utc = datetime.timezone.utc
+        consultas = {
+            "signo_occidental": lambda: zodiaco.signo_occidental(d(2025, 4, 1)),
+            "cuspide": lambda: zodiaco.cuspide(d(2025, 4, 19)),
+            "animal_chino": lambda: zodiaco.animal_chino(2026),
+            "animal_chino_de_fecha": lambda: zodiaco.animal_chino_de_fecha(d(2026, 3, 1)),
+            "decanato": lambda: zodiaco.decanato(d(2025, 4, 1)),
+            "angel_de_fecha": lambda: zodiaco.angel_de_fecha(d(2025, 4, 1)),
+            "demonio_de_fecha": lambda: zodiaco.demonio_de_fecha(d(2025, 4, 1)),
+            "arbol_celta": lambda: zodiaco.arbol_celta(d(2025, 6, 10)),
+            "arbol_de_fecha": lambda: zodiaco.arbol_de_fecha(d(2025, 6, 10)),
+            "nakshatra_de_instante": lambda: zodiaco.nakshatra_de_instante(datetime.datetime(1992, 4, 12, tzinfo=utc)),
+            "revision": lambda: zodiaco.revision("es"),
+            "fechas_anio_nuevo": lambda: zodiaco.fechas_anio_nuevo(),
+            "tramos_de_espiritus": lambda: zodiaco.tramos_de_espiritus("aries"),
+        }
+        for nombre, consulta in consultas.items():
+            antes = json.dumps(consulta(), ensure_ascii=False, sort_keys=True, default=str)
+            self._destruir(consulta())
+            despues = json.dumps(consulta(), ensure_ascii=False, sort_keys=True, default=str)
+            self.assertEqual(antes, despues, f"{nombre}: modificar el resultado corrompió los datos")
+            self.assertNotEqual(antes, "{}", nombre)
+
+    def test_las_cargas_comparten_los_datos_y_las_consultas_no(self):
+        self.assertIs(zodiaco.cargar_datos(), zodiaco.cargar_datos())
+        self.assertIsNot(zodiaco.signo_occidental(datetime.date(2025, 4, 1)), zodiaco.signo_occidental(datetime.date(2025, 4, 1)))
+
+    def test_copia_conserva_el_tipo_y_no_comparte_nada(self):
+        original = {"a": [1, [2, 3]], "b": ({"c": 4}, 5), "d": "texto"}
+        copia = zodiaco._copia(original)
+        self.assertEqual(copia, original)
+        self.assertIsInstance(copia["b"], tuple)
+        self.assertIsNot(copia["a"][1], original["a"][1])
+        self.assertIsNot(copia["b"][0], original["b"][0])
+
+    def test_frase_con_una_clave_que_no_esta_en_ningun_glosario_lanza_keyerror_claro(self):
+        with self.assertRaisesRegex(KeyError, "inventada"):
+            zodiaco._frase(["inventada"], "es", [{}], {"es": ", "})
+        with self.assertRaisesRegex(KeyError, "inventada"):
+            zodiaco._frase(["amor", "inventada"], "es", [zodiaco.cargar_espiritus()["cualidades"]], {"es": ", "})
+
+    def test_frase_busca_en_varios_glosarios_en_orden(self):
+        a, b = {"x": {"es": "uno"}}, {"x": {"es": "otro"}, "y": {"es": "dos"}}
+        self.assertEqual(zodiaco._frase(["x", "y"], "es", [a, b], {"es": ", "}), "Uno, dos")
+
+    def test_todas_las_consultas_con_fecha_rechazan_lo_que_no_es_una_fecha(self):
+        funciones = (zodiaco.signo_occidental, zodiaco.cuspide, zodiaco.animal_chino_de_fecha, zodiaco.decanato,
+                     zodiaco.angel_de_fecha, zodiaco.demonio_de_fecha, zodiaco.arbol_celta, zodiaco.arbol_de_fecha,
+                     zodiaco.camino_de_vida)
+        for f in funciones:
+            with self.assertRaises(TypeError, msg=f.__name__):
+                f("2025-04-01")
+        with self.assertRaises(TypeError):
+            zodiaco.anio_personal("2025-04-01", 2026)
+
+    def test_errores_de_traducciones(self):
+        bien = {c: "texto" for c in generar.IDIOMAS}
+        self.assertEqual(generar._errores_de_traducciones("x", bien), [])
+        sin_uno = dict(bien); del sin_uno["fi"]
+        self.assertIn("x: no tiene exactamente los 30 idiomas", generar._errores_de_traducciones("x", sin_uno))
+        vacio = dict(bien, es="  ")
+        self.assertIn("x/es: texto vacío o con espacios de más", generar._errores_de_traducciones("x", vacio))
+        con_espacio = dict(bien, es="texto ")
+        self.assertTrue(generar._errores_de_traducciones("x", con_espacio))
+        self.assertEqual(generar._errores_de_traducciones("x", con_espacio, permite_espacios=True), [])
+        self.assertTrue(generar._errores_de_traducciones("x", dict(bien, es=5)))
+
+    def test_errores_de_terminos_solo_deja_espacios_al_final_al_separador(self):
+        bien = {c: ", " for c in generar.IDIOMAS}
+        texto = {c: "texto" for c in generar.IDIOMAS}
+        self.assertEqual(generar._errores_de_terminos("t", {"separador": bien, "otro": texto}, {"separador", "otro"}), [])
+        self.assertTrue(generar._errores_de_terminos("t", {"separador": texto, "otro": bien}, {"separador", "otro"}))
+        # una ruta que contiene la palabra «separador» ya no se salta la comprobación
+        self.assertTrue(generar._errores_de_terminos("t/separador", {"otro": bien}, {"otro"}))
+        self.assertTrue(generar._errores_de_terminos("t", {"otro": texto}, {"otro", "falta"}))
+
+    def test_errores_de_glosario(self):
+        texto = {c: "texto" for c in generar.IDIOMAS}
+        self.assertEqual(generar._errores_de_glosario("g", {"amor": texto}), [])
+        self.assertTrue(generar._errores_de_glosario("g", {"Amor": texto}))
+        self.assertTrue(generar._errores_de_glosario("g", {"amor": {"es": "x"}}))
 
 
 if __name__ == "__main__":

@@ -21,7 +21,9 @@ final class AlmacenDatos
     public function usersPage(int $pagina, int $porPagina, string $busqueda): array
     {
         $pdo = $this->pdo;
-        $patron = '%' . $busqueda . '%';
+        // Un % o un _ de lo que se tipea es un carácter como cualquier otro, no un comodín de ILIKE: con «%» se listaba a
+        // todos. La barra invertida es el escape por omisión de LIKE e ILIKE en PostgreSQL.
+        $patron = '%' . addcslashes($busqueda, '\\%_') . '%';
 
         $stmtTotal = $pdo->prepare(
             'SELECT COUNT(*) FROM usuarios u JOIN paises p ON p.codigo = u.pais_codigo

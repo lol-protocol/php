@@ -53,3 +53,28 @@ jobs:
 
       - name: Registro de revisiones válido
         run: php citas-pos/bin/comprobar-revisiones.php
+
+  # El comportamiento de «Adivina la categoría» y una auditoría de accesibilidad con axe-core, en Chromium.
+  # Lee salida/, que el job de arriba comprueba que esté al día.
+  navegador:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: citas-pos/pruebas/navegador
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Instalar Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Pruebas en el navegador
+        run: npm test

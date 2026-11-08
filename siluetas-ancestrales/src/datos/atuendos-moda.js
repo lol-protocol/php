@@ -1,17 +1,9 @@
 // Atuendos que usan los tipos de ropa nuevos (tirantes, halter, sirena, trapecio, capuchas, pieles, pantalones y faldas
 // variados, monos…). Misma forma que atuendos.js. Los colores de cada prenda vienen de su perfil (colores-prendas.js).
 
-import { A } from './ayuda.js';
+import { A, CLAROS, MEST, CIUDAD, TRAB, VEST, GALA, F, M } from './ayuda.js';
 
-const CLAROS = 'porcelana clara clara-calida';
-const MEST = 'clara-calida oliva-clara oliva canela';
-const CIUDAD = { A: 'lana-negra gris-oscuro azul-marino', B: 'crema', C: 'lana-negra', D: 'plata' };
-const TRAB = { A: 'caqui-militar azul-marino kaki', B: 'crudo', C: 'lana-negra', D: 'cobre' };
-const VEST = { A: 'azul-marino burdeos verde-bosque rosa-viejo', B: 'crema', C: 'lana-negra', D: 'plata' };
-const GALA = { A: 'negro-carbon burdeos azul-marino verde-esmeralda', B: 'crema', C: 'plata', D: 'oro' };
 
-const F = (id, n, region, ep, clase, prendas, paleta, extra) => A(id, n, region, ep, 'f', clase, prendas, paleta, extra);
-const M = (id, n, region, ep, clase, prendas, paleta, extra) => A(id, n, region, ep, 'm', clase, prendas, paleta, extra);
 
 export const ATUENDOS_MODA = [
   // ===== Mujeres: vestidos =====

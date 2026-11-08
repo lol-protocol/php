@@ -2,13 +2,8 @@
 // representación: 'media' es una aproximación razonable de un traje conocido; 'baja' es genérica o muy simplificada y
 // conviene revisarla con fuentes del propio pueblo antes de publicarla.
 
-import { A } from './ayuda.js';
+import { A, BL, CLAROS, OLIVA, OSCURA, EBANO } from './ayuda.js';
 
-const CLAROS = 'porcelana clara clara-calida';
-const OLIVA = 'clara-calida oliva-clara oliva';
-const OSCURA = 'canela bronce cobre';
-const EBANO = 'castana ebano-claro ebano ebano-profundo';
-const BL = 'blanco-lino crudo';
 
 export const ATUENDOS_AMPLIADOS = [
   // ===== Europa rural y regional =====

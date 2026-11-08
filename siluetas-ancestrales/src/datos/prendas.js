@@ -46,7 +46,7 @@ export const PRENDAS = [
   // ===== Europa medieval =====
   P('camisa-medieval', 'Camisa de lino con escote atado', 'torso', 'tunica', { largo: 'muslo', manga: 'larga', escote: 'ojal', cintura: 1, holgura: 0.016, puños: false, ribete: false }),
   P('cota-campesina', 'Cota de lana de campesino', 'torso', 'tunica', { largo: 'rodilla', manga: 'larga', escote: 'redondo', cintura: 1, holgura: 0.02, ribete: false, bajo: 'curvo' }),
-  P('bliaut', 'Bliaut de manga de campana', 'torso', 'tunica', { largo: 'suelo', manga: 'campana', escote: 'redondo', prof: 1.2, cintura: 0.1, holgura: 0.004, vuelo: 0.09, pliegues: 4, ribeteBajo: 0.03, vuelo2: 0 }),
+  P('bliaut', 'Bliaut de manga de campana', 'torso', 'tunica', { largo: 'suelo', manga: 'campana', escote: 'redondo', prof: 1.2, cintura: 0.1, holgura: 0.004, vuelo: 0.09, pliegues: 4, ribeteBajo: 0.03 }),
   P('sobreveste', 'Sobrevesta sin mangas', 'sobre', 'tunica', { largo: 'pantorrilla', manga: 'sin', escote: 'redondo', cintura: 0.8, holgura: 0.03, vuelo: 0.05, ribeteBajo: 0.015 }),
   P('surcote', 'Sobrecota de damas con aberturas', 'sobre', 'tunica', { largo: 'suelo', manga: 'sin', escote: 'redondo', prof: 1.4, cintura: 0.2, holgura: 0.03, vuelo: 0.08, ribete: true }),
   P('jubon-medieval', 'Jubón acolchado', 'sobre', 'chaqueta', { largo: 'cadera', manga: 'larga', botones: 6, cintura: 0.5, solapa: false, abertura: 0.004, aberturaBajo: 0.006 }),

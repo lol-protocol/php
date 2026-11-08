@@ -1,17 +1,7 @@
 // Más atuendos: invierno y abrigo, gala, viaje, oficios y ceremonias, de la Antigüedad a 1985. Misma forma que atuendos.js.
 
-import { A } from './ayuda.js';
+import { A, BL, CLAROS, MEST, OSCURA, EBANO, CIUDAD, TRAB, VEST, GALA, TIERRA } from './ayuda.js';
 
-const BL = 'blanco-lino crudo';
-const CLAROS = 'porcelana clara clara-calida';
-const MEST = 'clara-calida oliva-clara oliva canela';
-const OSC = 'canela bronce cobre';
-const EBA = 'castana ebano-claro ebano ebano-profundo';
-const CIUDAD = { A: 'lana-negra gris-oscuro azul-marino', B: 'crema', C: 'lana-negra', D: 'plata' };
-const TRAB = { A: 'caqui-militar azul-marino kaki', B: 'crudo', C: 'lana-negra', D: 'cobre' };
-const VEST = { A: 'azul-marino burdeos verde-bosque rosa-viejo', B: 'crema', C: 'lana-negra', D: 'plata' };
-const GALA = { A: 'negro-carbon burdeos azul-marino verde-esmeralda', B: 'crema', C: 'plata', D: 'oro' };
-const TIERRA = { A: 'lana-parda umbra nogal', B: 'crudo', C: 'rojo-ocre', D: 'cobre' };
 
 export const ATUENDOS_MAS = [
   // ===== Chile: invierno, gala, ciudad y juventud =====
@@ -25,16 +15,16 @@ export const ATUENDOS_MAS = [
   A('chile-joven-1970-f', 'Joven chilena de 1970', 'chile-rural', [1960, 1985], 'f', 'baja', 'blusa-seda pantalon-campana cardigan zapatillas-lona', VEST, { peinados: 'largo-liso trenzas-dos', pieles: MEST }),
   A('chile-novia-1900', 'Novia chilena de 1900', 'chile-rural', [1860, 1920], 'f', 'alta', 'vestido-novia enaguas perlas zapatos-vestir', { A: 'blanco-optico marfil crema', B: 'crema', C: 'marfil', D: 'plata' }, { peinados: 'recogido', tocados: 'velo', pieles: MEST }),
   A('huaso-chamanto', 'Huaso con chamanto de diario', 'chile-rural', [1800, 1960], 'm', 'media', 'camisa-rotos chamanto pantalon-ajustado faja-huasa botas-cuero', { A: 'rojo-granza azul-andino lana-negra', B: BL, C: 'rojo-granza', D: 'plata' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'chupalla', pieles: MEST }),
-  A('mapuche-kepam', 'Mujer mapuche con küpam', 'mapuche', [1500, 1950], 'f', 'media', 'kepam trariwe ukulla trapelacucha collar-cuentas descalzo', { A: 'lana-negra azul-andino', B: 'rojo-mapuche', C: 'rojo-mapuche', D: 'plata' }, { peinados: 'trenzas-dos', tocados: 'trarilonko', pieles: OSC }),
+  A('mapuche-kepam', 'Mujer mapuche con küpam', 'mapuche', [1500, 1950], 'f', 'media', 'kepam trariwe ukulla trapelacucha collar-cuentas descalzo', { A: 'lana-negra azul-andino', B: 'rojo-mapuche', C: 'rojo-mapuche', D: 'plata' }, { peinados: 'trenzas-dos', tocados: 'trarilonko', pieles: OSCURA }),
   // ===== Latinoamérica y Estados Unidos: abrigo, viaje y gala =====
   A('latam-impermeable-1950', 'Hombre de ciudad con gabardina (1950)', 'latinoamerica-moderna', [1930, 1975], 'm', 'media', 'camisa-blanca corbata gabardina pantalon-vestir zapatos-vestir', CIUDAD, { peinados: 'corto-raya', barbas: 'bigote ninguna', tocados: 'fedora', pieles: MEST }),
-  A('latam-gala-1950', 'Dama latinoamericana de gala (1950)', 'latinoamerica-moderna', [1935, 1975], 'f', 'alta', 'vestido-fiesta-manga estola perlas zapatos-vestir', GALA, { peinados: 'ondas recogido', pieles: MEST + ' ' + OSC }),
+  A('latam-gala-1950', 'Dama latinoamericana de gala (1950)', 'latinoamerica-moderna', [1935, 1975], 'f', 'alta', 'vestido-fiesta-manga estola perlas zapatos-vestir', GALA, { peinados: 'ondas recogido', pieles: MEST + ' ' + OSCURA }),
   A('eeuu-detective-1940', 'Hombre con gabardina (1940)', 'norteamerica-moderna', [1925, 1960], 'm', 'media', 'camisa-blanca corbata gabardina pantalon-vestir zapatos-vestir', CIUDAD, { peinados: 'corto-raya', barbas: 'bigote ninguna', tocados: 'fedora', pieles: CLAROS + ' clara-calida' }),
   A('eeuu-dama-abrigo-1940', 'Dama con abrigo de piel (1940)', 'norteamerica-moderna', [1930, 1960], 'f', 'alta', 'vestido-40 abrigo-pieles perlas zapatos-vestir', VEST, { peinados: 'ondas', tocados: 'cloche ninguno', pieles: CLAROS + ' clara-calida' }),
-  A('eeuu-motociclista-1955', 'Motociclista de 1955', 'norteamerica-moderna', [1945, 1975], 'm', 'baja', 'polera chaqueta-cuero pantalon-vaquero botas-trabajo', TRAB, { peinados: 'corto', barbas: 'ninguna bigote', pieles: CLAROS + ' clara-calida ' + OSC }),
+  A('eeuu-motociclista-1955', 'Motociclista de 1955', 'norteamerica-moderna', [1945, 1975], 'm', 'baja', 'polera chaqueta-cuero pantalon-vaquero botas-trabajo', TRAB, { peinados: 'corto', barbas: 'ninguna bigote', pieles: CLAROS + ' clara-calida ' + OSCURA }),
   A('eeuu-secretaria-1955', 'Secretaria de 1955', 'norteamerica-moderna', [1945, 1975], 'f', 'media', 'blusa-seda falda-lapiz traje-sastre perlas zapatos-vestir', VEST, { peinados: 'ondas recogido', pieles: CLAROS + ' clara-calida' }),
-  A('eeuu-baile-1950', 'Joven en un baile (1950)', 'norteamerica-moderna', [1940, 1965], 'f', 'media', 'vestido-fiesta estola zapatos-vestir', GALA, { peinados: 'ondas', pieles: CLAROS + ' clara-calida ' + OSC }),
-  A('eeuu-1970-campana', 'Joven con pantalón de campana (1970)', 'norteamerica-moderna', [1965, 1985], 'm', 'baja', 'sueter-cuello-alto pantalon-campana chaqueta-cuero zapatillas-lona', TRAB, { peinados: 'largo-liso rizos', barbas: 'bigote barba-corta ninguna', pieles: CLAROS + ' ' + OSC }),
+  A('eeuu-baile-1950', 'Joven en un baile (1950)', 'norteamerica-moderna', [1940, 1965], 'f', 'media', 'vestido-fiesta estola zapatos-vestir', GALA, { peinados: 'ondas', pieles: CLAROS + ' clara-calida ' + OSCURA }),
+  A('eeuu-1970-campana', 'Joven con pantalón de campana (1970)', 'norteamerica-moderna', [1965, 1985], 'm', 'baja', 'sueter-cuello-alto pantalon-campana chaqueta-cuero zapatillas-lona', TRAB, { peinados: 'largo-liso rizos', barbas: 'bigote barba-corta ninguna', pieles: CLAROS + ' ' + OSCURA }),
   A('eeuu-granjero-invierno', 'Granjero en invierno', 'norteamerica-moderna', [1900, 1975], 'm', 'baja', 'camisa-cuadros abrigo-corto pantalon-vaquero botas-trabajo', TRAB, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-visera', pieles: CLAROS + ' clara-calida' }),
   // ===== Europa, 1860 a 1975 =====
   A('xx-viaje-1930-f', 'Viajera de 1930', 'europa-xix', [1920, 1950], 'f', 'media', 'blusa-seda falda-plisada gabardina zapatos-vestir', VEST, { peinados: 'ondas bob', tocados: 'cloche', pieles: CLAROS }),
@@ -61,14 +51,14 @@ export const ATUENDOS_MAS = [
   A('judio-oracion', 'Hombre en oración con talit', 'judio', [1000, 1950], 'm', 'media', 'caftan-askenazi tallit pantalon-recto botas-cuero', { A: 'lana-negra gris-oscuro', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'barba-larga patillas barba-completa', tocados: 'kufi gorra-plana', pieles: CLAROS + ' oliva-clara' }),
   A('beduino-dishdasha', 'Hombre árabe con dishdasha', 'medio-oriente', [1700, 1980], 'm', 'media', 'dishdasha faja-turbante sandalias-cuero', { A: 'blanco-lino crudo marfil', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'bigote barba-corta', tocados: 'kufiya', pieles: 'oliva-clara oliva canela' }),
   A('persa-chador-mujer', 'Mujer persa con chador', 'medio-oriente', [1700, 1980], 'f', 'media', 'vestido-regional chador zapatillas', { A: 'lana-negra azul-marino', B: 'crema', C: 'plata', D: 'plata' }, { peinados: 'largo-liso', tocados: 'velo', pieles: 'oliva-clara oliva' }),
-  A('nahua-quechquemitl', 'Mujer nahua con quechquémitl', 'mesoamerica', [1000, 1950], 'f', 'media', 'huipil quechquemitl enagua-maya collar-cuentas descalzo', { A: 'blanco-lino algodon-crudo azul-egipcio', B: 'rojo-cochinilla', C: 'rojo-cochinilla', D: 'verde-jade' }, { peinados: 'trenzas-dos coletas', pieles: OSC }),
-  A('hawaiano-kihei', 'Hawaiano con kihei', 'polinesia', [1200, 1850], 'm', 'media', 'malo kihei guirnalda descalzo', { A: 'crudo barro rojo-ocre', B: 'rojo-ocre', C: 'rojo-ocre', D: 'rojo-cartamo' }, { peinados: 'corto rizos', barbas: 'bigote ninguna', pieles: OSC }),
-  A('hawaiana-pareo', 'Hawaiana con pareo', 'polinesia', [1200, 1980], 'f', 'baja', 'wrap-top pareo-estampado guirnalda descalzo', { A: 'azul-real rojo-vivo turquesa', B: BL, C: 'blanco-optico', D: 'rojo-cartamo' }, { peinados: 'largo-ondulado largo-liso', tocados: 'corona-flores', pieles: OSC }),
+  A('nahua-quechquemitl', 'Mujer nahua con quechquémitl', 'mesoamerica', [1000, 1950], 'f', 'media', 'huipil quechquemitl enagua-maya collar-cuentas descalzo', { A: 'blanco-lino algodon-crudo azul-egipcio', B: 'rojo-cochinilla', C: 'rojo-cochinilla', D: 'verde-jade' }, { peinados: 'trenzas-dos coletas', pieles: OSCURA }),
+  A('hawaiano-kihei', 'Hawaiano con kihei', 'polinesia', [1200, 1850], 'm', 'media', 'malo kihei guirnalda descalzo', { A: 'crudo barro rojo-ocre', B: 'rojo-ocre', C: 'rojo-ocre', D: 'rojo-cartamo' }, { peinados: 'corto rizos', barbas: 'bigote ninguna', pieles: OSCURA }),
+  A('hawaiana-pareo', 'Hawaiana con pareo', 'polinesia', [1200, 1980], 'f', 'baja', 'wrap-top pareo-estampado guirnalda descalzo', { A: 'azul-real rojo-vivo turquesa', B: BL, C: 'blanco-optico', D: 'rojo-cartamo' }, { peinados: 'largo-ondulado largo-liso', tocados: 'corona-flores', pieles: OSCURA }),
   A('japon-ceremonia-mujer', 'Mujer japonesa de ceremonia', 'asia-este', [1600, 1960], 'f', 'alta', 'kimono obi obijime geta', { A: 'rojo-cartamo azul-ultramar verde-hoja malva', B: BL, C: 'oro', D: 'oro' }, { peinados: 'recogido mono-alto', pieles: 'porcelana clara clara-calida' }),
   A('japon-campesino-lluvia', 'Campesino japonés bajo la lluvia', 'asia-este', [1200, 1950], 'm', 'baja', 'tunica-plebeya pantalon-chino capa-lluvia-paja zapatos-tela', { A: 'indigo crudo lana-parda', B: 'crudo', C: 'indigo', D: 'cobre' }, { peinados: 'rapado corto', barbas: 'ninguna', tocados: 'sombrero-conico', pieles: 'clara clara-calida' }),
   A('vietnamita-lluvia', 'Vietnamita con capa de paja', 'sudeste-regional', [1000, 1950], 'f', 'baja', 'chaqueta-mao pantalon-chino sombrero-paja-capa sandalias-cuero', { A: 'indigo lana-negra crudo', B: BL, C: 'indigo', D: 'cobre' }, { peinados: 'largo-liso recogido', tocados: 'sombrero-conico', pieles: 'clara-calida oliva-clara oliva' }),
   A('tibetano-invierno', 'Tibetano con manto de lana', 'asia-himalaya', [1000, 1950], 'm', 'baja', 'chuba-tibetana manto-lana-ancho botas-tibetanas', { A: 'lana-parda lana-negra borravino', B: 'lana-negra', C: 'azafran', D: 'plata' }, { peinados: 'trenza-una corto', barbas: 'ninguna bigote', pieles: 'clara-calida oliva-clara oliva canela' }),
   A('croata-invierno-mujer', 'Croata en invierno', 'europa-campesina', [1700, 1960], 'f', 'baja', 'vestido-regional falda-lana-gruesa chal-lana opanke', { A: 'lana-negra azul-plomo borravino', B: BL, C: 'rojo-granza', D: 'plata' }, { peinados: 'trenza-una recogido', tocados: 'panuelo', pieles: CLAROS }),
   A('siberiano-verano', 'Cazador siberiano en verano', 'siberia', [1000, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-pieles pantalon-piel botas-piel', { A: 'crudo lana-parda cuero-claro', B: 'piel-nutria', C: 'rojo-ocre', D: 'cobre' }, { peinados: 'corto largo-liso', barbas: 'ninguna', tocados: 'ushanka', pieles: 'clara clara-calida oliva-clara' }),
-  A('africa-kaftan-1970', 'Hombre africano con kaftán (1970)', 'africa-oeste', [1950, 1985], 'm', 'media', 'kaftan-corto sokoto sandalias-cuero', { A: 'azul-real verde-bosque burdeos terracota', B: 'azafran', C: 'oro', D: 'oro' }, { peinados: 'afro rapado corto', barbas: 'bigote ninguna', tocados: 'kufi ninguno', pieles: EBA }),
+  A('africa-kaftan-1970', 'Hombre africano con kaftán (1970)', 'africa-oeste', [1950, 1985], 'm', 'media', 'kaftan-corto sokoto sandalias-cuero', { A: 'azul-real verde-bosque burdeos terracota', B: 'azafran', C: 'oro', D: 'oro' }, { peinados: 'afro rapado corto', barbas: 'bigote ninguna', tocados: 'kufi ninguno', pieles: EBANO }),
 ];

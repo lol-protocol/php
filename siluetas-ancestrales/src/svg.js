@@ -8,6 +8,7 @@ import { LIENZO, medidas, deformar, trazoTorso, trazoBrazo, trazoPierna, trazoMa
 import { geometriaCabeza, trazoCabeza, trazoOrejas, rasgosRostro, PEINADOS, BARBAS, TOCADOS } from './cabeza.js';
 import { PLANTILLAS, ORDEN_RANURAS, finManga } from './prendas.js';
 import { PATRONES } from './patrones.js';
+import { validarPrenda } from './tipos-de-ropa.js';
 import { mezclar, escapar, num } from './util.js';
 
 function contexto(pref) {
@@ -63,10 +64,24 @@ function trazoDe(s) {
   return o;
 }
 
+// Campos que solo describen a la persona en texto: no cambian el dibujo, así que no entran en el prefijo de ids.
+const CAMPOS_DESCRIPTIVOS = new Set(['titulo', 'descripcion', 'estimaciones', 'avisos', 'notas', 'coloresPrendas', 'nombresPaleta', 'confianza', 'fondo', 'colorInfo', 'nombre']);
+
+/** Un estilo de peinado, barba o tocado que no existe, o una prenda con parámetros mal escritos, lanza un error en vez de dibujarse distinto. */
+function validarPersona(persona) {
+  const quiero = (campo, id, tabla, extra = []) => { if (id !== undefined && id !== null && !(id in tabla) && !extra.includes(id)) throw new Error(`${campo} desconocido: ${JSON.stringify(id)}. Disponibles: ${Object.keys(tabla).join(', ')}.`); };
+  quiero('Peinado', persona.cabello?.estilo, PEINADOS);
+  quiero('Barba', persona.barba?.estilo, BARBAS);
+  quiero('Tocado', persona.tocado?.id, TOCADOS);
+  for (const prenda of persona.prendas ?? []) validarPrenda(prenda);
+}
+
 /** Devuelve el SVG (texto) de la persona descrita. */
 export function renderizar(persona, opciones = {}) {
+  validarPersona(persona);
   const nivel = opciones.detalle ?? persona.detalle ?? 'medio';
   const contorno = opciones.contorno ?? persona.contorno ?? 'ninguno'; // 'ninguno' | 'suave'
+  validarPersona(persona);
   const fondo = opciones.fondo ?? persona.fondo ?? 'ninguno';
   const M = medidas(persona.cuerpo);
   const G = geometriaCabeza(M, persona.rostro);
@@ -77,7 +92,7 @@ export function renderizar(persona, opciones = {}) {
 
   // --- Formas, degradados y sombras ---
   // Las formas y el recorte son propios de cada figura: llevan un prefijo derivado de su contenido.
-  const pref = `x${hashCorto(JSON.stringify([persona.semilla, persona.piel, persona.cuerpo, persona.cabello, persona.tocado, persona.barba, persona.prendas.map((q) => [q.id, q.colores, q.params]), nivel, contorno]))}`;
+  const pref = `x${hashCorto(JSON.stringify([persona, nivel, contorno], (k, v) => (CAMPOS_DESCRIPTIVOS.has(k) ? undefined : v)))}`;
   const ctx = contexto(pref);
   const caminos = [], idsSilueta = [], degradados = new Map();
   let nForma = 0;

@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-use DefamatoryContentReview\Chat\ChatLineResult;
-use DefamatoryContentReview\Chat\ChatLineReviewer;
-use DefamatoryContentReview\Chat\CombinedReview;
-use DefamatoryContentReview\Http\LongText;
+use DefamatoryContentReview\Http\TextMarks;
+use DefamatoryContentReview\Loader;
 
 /**
  * Revisa el texto de una nota con el filtro de ../defamatory-content-review (o la carpeta de
@@ -17,11 +15,6 @@ use DefamatoryContentReview\Http\LongText;
 final class FiltroNotas
 {
     private const IDIOMAS = ['spa', 'eng'];
-    /** Categorías cuyo 'original' describe el hallazgo («acusación de delito»); en las demás es el insulto mismo. */
-    private const DESCRIPTIVAS = ['patterns', 'datos personales'];
-
-    /** @var array<string,ChatLineReviewer> */
-    private array $revisores = [];
 
     public function __construct(private readonly string $dirConfig)
     {
@@ -31,16 +24,11 @@ final class FiltroNotas
     public static function desdeEntorno(): self
     {
         $dir = getenv('FILTRO_DIFAMACION_DIR') ?: __DIR__ . '/../../../defamatory-content-review';
-        if (!is_file("$dir/src/Chat/ChatLineReviewer.php")) {
+        if (!is_file("$dir/src/Loader.php") || !is_file("$dir/src/Chat/ChatLineReviewer.php")) {
             throw new RuntimeException("no está la librería del filtro en $dir (FILTRO_DIFAMACION_DIR)");
         }
-        spl_autoload_register(static function (string $clase) use ($dir): void {
-            $prefijo = 'DefamatoryContentReview\\';
-            $archivo = $dir . '/src/' . str_replace('\\', '/', substr($clase, strlen($prefijo))) . '.php';
-            if (str_starts_with($clase, $prefijo) && is_file($archivo)) {
-                require $archivo;
-            }
-        });
+        require_once "$dir/src/Loader.php";
+        Loader::register($dir);
         return new self("$dir/config");
     }
 
@@ -50,19 +38,7 @@ final class FiltroNotas
      */
     public function revisar(string $texto): array
     {
-        $resultado = LongText::review($texto, fn(string $parte): ChatLineResult => CombinedReview::of(
-            $parte,
-            array_map(fn(string $idioma): ChatLineResult => $this->revisor($idioma)->review($parte), self::IDIOMAS)
-        ));
-        $motivos = array_map(
-            fn(array $m): string => in_array($m['category'] ?? null, self::DESCRIPTIVAS, true) ? (string) $m['original'] : 'insulto',
-            $resultado->getMatches()
-        );
-        return ['decision' => $resultado->getDecision(), 'motivos' => array_values(array_unique($motivos))];
-    }
-
-    private function revisor(string $idioma): ChatLineReviewer
-    {
-        return $this->revisores[$idioma] ??= ChatLineReviewer::create($this->dirConfig, $idioma);
+        ['decision' => $decision, 'marks' => $motivos] = TextMarks::of($texto, $this->dirConfig, self::IDIOMAS);
+        return ['decision' => $decision, 'motivos' => $motivos];
     }
 }

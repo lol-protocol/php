@@ -36,3 +36,20 @@ export const MORENO = [['negro', 5], ['negro-azulado', 1.5], ['castano-oscuro', 
 export const CLARO = [['castano', 3], ['castano-claro', 3], ['rubio-oscuro', 2], ['rubio', 2], ['castano-oscuro', 2], ['pelirrojo', 0.8], ['negro', 1]];
 export const MED = [['negro', 4], ['castano-oscuro', 4], ['castano', 2], ['castano-claro', 0.5]];
 export const MESTIZO = [['negro', 4], ['castano-oscuro', 4], ['castano', 2], ['castano-claro', 1]];
+
+// Paletas de tintes y tonos de piel que comparten varios archivos de atuendos (antes copiadas en cada uno).
+export const BL = 'blanco-lino crudo';
+export const CLAROS = 'porcelana clara clara-calida';
+export const MEST = 'clara-calida oliva-clara oliva canela';
+export const OLIVA = 'clara-calida oliva-clara oliva';
+export const OSCURA = 'canela bronce cobre';
+export const EBANO = 'castana ebano-claro ebano ebano-profundo';
+export const CIUDAD = { A: 'lana-negra gris-oscuro azul-marino', B: 'crema', C: 'lana-negra', D: 'plata' };
+export const TRAB = { A: 'caqui-militar azul-marino kaki', B: 'crudo', C: 'lana-negra', D: 'cobre' };
+export const VEST = { A: 'azul-marino burdeos verde-bosque rosa-viejo', B: 'crema', C: 'lana-negra', D: 'plata' };
+export const GALA = { A: 'negro-carbon burdeos azul-marino verde-esmeralda', B: 'crema', C: 'plata', D: 'oro' };
+export const TIERRA = { A: 'lana-parda umbra nogal', B: 'crudo', C: 'rojo-ocre', D: 'cobre' };
+
+/** Atuendo de mujer o de hombre: igual que A con el sexo ya puesto. */
+export const F = (id, n, region, ep, clase, prendas, paleta, extra) => A(id, n, region, ep, 'f', clase, prendas, paleta, extra);
+export const M = (id, n, region, ep, clase, prendas, paleta, extra) => A(id, n, region, ep, 'm', clase, prendas, paleta, extra);
