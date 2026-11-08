@@ -40,14 +40,30 @@ final class OrdenRepository extends Repository
      * both take the last unit), and the order copies each line's name and
      * price as they are now. Its URL code is random (random_int), never derived
      * from its id. A clash with another order being placed at the same moment
-     * (same id or code) is retried.
+     * (same id or code) is retried (Database::transaccionConReintento()).
+     *
+     * What could never be an order is refused before anything is touched: no lines, or a line that asks for
+     * fewer than one unit. With a negative quantity `stock = stock - ?` would RAISE the stock; the CHECK
+     * (cantidad > 0) of orden_items and the rollback used to save it, with a PDOException that said nothing.
+     * Cart::actualizar() keeps the quantity between 1 and 99, so this is not reached today: the repository
+     * does not depend on that.
      *
      * @param array<string, int> $items
      * @return array{id: int, codigo: string}
+     * @throws \InvalidArgumentException when there are no lines or one asks for fewer than one unit
      * @throws SinStock when a line can't be sold; nothing is changed then
      */
     public function crear(array $items, string $direccion, int $usuarioId): array
     {
+        if ($items === []) {
+            throw new \InvalidArgumentException('Una orden necesita al menos una línea.');
+        }
+        foreach ($items as $sku => $cantidad) {
+            if ($cantidad < 1) {
+                throw new \InvalidArgumentException("Cantidad inválida para {$sku}: {$cantidad}");
+            }
+        }
+
         return $this->db->transaccionConReintento(fn(): array => $this->insertar($items, $direccion, $usuarioId), self::INTENTOS);
     }
 
