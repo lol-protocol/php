@@ -23,6 +23,17 @@ final class Peticion
         $_POST = array_filter($_POST, is_scalar(...));
     }
 
+    /**
+     * Manda al navegador a $destino y termina la peticion. Es lo ultimo que hace una pantalla despues de
+     * guardar (o de reconocer un reenvio): sin esto, cada una repetia header('Location: ...') seguido de
+     * un exit que nadie podia olvidar. Al devolver `never`, el analisis sabe que el codigo de abajo no corre.
+     */
+    public static function redirigir(string $destino): never
+    {
+        header('Location: ' . $destino);
+        exit;
+    }
+
     /** El id de la ruta actual, ya sea de un link (?id=) o de un form (name="id"). */
     public static function id(): int
     {

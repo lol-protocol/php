@@ -6,10 +6,13 @@ namespace Tests\App\Integration;
 
 use App\Support\RegistroDeUrls;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\ComandoDePrueba;
 
 /** bin/urls-informe.php as the owner runs it: a subprocess reading the day files of a folder. */
 class UrlsInformeCliTest extends TestCase
 {
+    use ComandoDePrueba;
+
     private string $dir;
 
     protected function setUp(): void
@@ -25,20 +28,7 @@ class UrlsInformeCliTest extends TestCase
     /** @return array{0: int, 1: string, 2: string} exit code, stdout, stderr */
     private function correr(string ...$args): array
     {
-        $proceso = proc_open(
-            [PHP_BINARY, dirname(__DIR__, 3) . '/bin/urls-informe.php', ...$args],
-            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-            $pipes,
-            null,
-            ['PATH' => (string)getenv('PATH'), 'URL_LOG_DIR' => $this->dir]
-        );
-        $this->assertIsResource($proceso);
-        $salida = stream_get_contents($pipes[1]);
-        $error = stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        return [proc_close($proceso), (string)$salida, (string)$error];
+        return $this->ejecutarComando('urls-informe', $args, ['URL_LOG_DIR' => $this->dir]);
     }
 
     public function testWithoutAnythingRecordedItSaysSo(): void

@@ -70,7 +70,7 @@ jobs:
             marcalibros_b/catalog/jpg
             marcalibros_b/catalog/jpg2x
             marcalibros_b/catalog/revision
-          key: marcalibros-${{ runner.os }}-py3.13-${{ hashFiles('marcalibros_b/generator/*.py', 'marcalibros_b/catalog/*.yaml') }}
+          key: marcalibros-${{ runner.os }}-py3.13-${{ hashFiles('marcalibros_b/generator/build.py', 'marcalibros_b/generator/color.py', 'marcalibros_b/generator/movimientos.py', 'marcalibros_b/generator/plantillas.py', 'marcalibros_b/generator/qa.py', 'marcalibros_b/generator/render_raster.py', 'marcalibros_b/generator/render_svg.py', 'marcalibros_b/generator/scene.py', 'marcalibros_b/generator/texto.py', 'marcalibros_b/generator/fuentes/*.ttf', 'marcalibros_b/catalog/*.yaml') }}
           restore-keys: |
             marcalibros-${{ runner.os }}-py3.13-
 

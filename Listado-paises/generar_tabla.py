@@ -376,27 +376,32 @@ def main(comprobar=False):
 
     filas_gen, filas_pos, filas_final, registros = [], [], [], []
     excluidos_gen = excluidos_pos = 0
+    # La regla vigente es ESCENARIOS_GEN[0]/ESCENARIOS_POS[0]: puntaje y exclusión salen de ahí, no de una
+    # copia aparte, para que no puedan desincronizarse (escenarios.md los etiqueta "Vigente").
+    _, puntaje_gen, excluido_gen = ESCENARIOS_GEN[0]
+    _, puntaje_pos, excluido_pos = ESCENARIOS_POS[0]
     for _, f in paises:
         ig, io = int(f["indice_genealogia"]), int(f["indice_operabilidad"])
         p = pos_por_codigo[f["codigo"]]
         il, ip, ipl = int(p["indice_lectura"]), int(p["indice_pos"]), int(p["indice_pos_local"])
-        excl_gen = io <= UMBRAL_GENEALOGIA
-        excl_pos = ipl <= UMBRAL_POS and excl_gen  # sin recursos y, además, inviable para operar
+        d = {"ig": ig, "io": io, "il": il, "ip": ip, "ipl": ipl}
+        pg, pp = puntaje_gen(d), puntaje_pos(d)
+        excl_gen, excl_pos = excluido_gen(d), excluido_pos(d)
         excluidos_gen += excl_gen
         excluidos_pos += excl_pos
-        filas_gen.append((excl_gen, -ig * io, f["pais"], [
+        filas_gen.append((excl_gen, -pg, f["pais"], [
             f["pais"], f["tipo"], f["region"], celda(f["poblacion_millones"]),
             celda(f["poblacion_historica_acumulada"]),
             celda(f["idh"]), celda(f["pib_per_capita_usd"]),
             celda(f["pib_per_capita_ppa_usd"]), celda(f["usuarios_internet"]), celda(f["emigrantes_pct"]),
-            celda(f["libertad_fh"]), celda(f["democracia_eiu"]), celda(f["corrupcion_cpi"]), str(ig), str(io), str(ig * io), "sí" if excl_gen else "no", f["comentarios"],
+            celda(f["libertad_fh"]), celda(f["democracia_eiu"]), celda(f["corrupcion_cpi"]), str(ig), str(io), str(pg), "sí" if excl_gen else "no", f["comentarios"],
         ]))
         local = lenguas[p["idioma_principal"].split(";")[0].strip()]
-        filas_pos.append((excl_pos, -il * ipl, f["pais"], [
+        filas_pos.append((excl_pos, -pp, f["pais"], [
             f["pais"], p["idioma_principal"], f["tipo"],
             celda(f["alfabetizacion_adultos"]), celda(f["usuarios_internet"]), str(il), str(ip), str(ipl),
             f"{int(local['palabras_anotadas']):,}".replace(",", " "), celda(local["paginas_web_pct"]),
-            str(il * ipl), "sí" if excl_pos else "no", p["comentarios_pos"],
+            str(pp), "sí" if excl_pos else "no", p["comentarios_pos"],
         ]))
         registros.append({
             "c": f["codigo"], "n": f["pais"], "t": f["tipo"], "r": f["region"],
@@ -406,18 +411,18 @@ def main(comprobar=False):
                 ("alf", "alfabetizacion_adultos"), ("net", "usuarios_internet"), ("emi", "emigrantes_pct"),
                 ("eiu", "democracia_eiu"), ("cpi", "corrupcion_cpi"))},
             "fh": f["libertad_fh"],
-            "ig": ig, "io": io, "pg": ig * io, "xg": excl_gen, "cg": f["comentarios"],
+            "ig": ig, "io": io, "pg": pg, "xg": excl_gen, "cg": f["comentarios"],
             "lenguas": p["idioma_principal"], "local": local["lengua"], "il": il, "ip": ip, "ipl": ipl,
             "pal": int(local["palabras_anotadas"]), "web": numero(local["paginas_web_pct"]),
-            "pp": il * ipl, "xp": excl_pos, "cp": p["comentarios_pos"],
+            "pp": pp, "xp": excl_pos, "cp": p["comentarios_pos"],
         })
         filas_final.append({
             "codigo": f["codigo"], "pais": f["pais"], "tipo": f["tipo"], "region": f["region"],
-            "indice_genealogia": ig, "indice_operabilidad": io, "prioridad_genealogia": ig * io,
+            "indice_genealogia": ig, "indice_operabilidad": io, "prioridad_genealogia": pg,
             "excluido_genealogia": "si" if excl_gen else "no",
             "motivo_exclusion_genealogia":
                 f"IO {io} (se excluye con IO <= {UMBRAL_GENEALOGIA}): {f['comentarios']}" if excl_gen else "",
-            "indice_lectura": il, "indice_pos_local": ipl, "prioridad_pos": il * ipl,
+            "indice_lectura": il, "indice_pos_local": ipl, "prioridad_pos": pp,
             "excluido_pos": "si" if excl_pos else "no",
             "motivo_exclusion_pos":
                 f"IP local {ipl} e IO {io}: la lengua local ({local['lengua']}) no tiene palabras "

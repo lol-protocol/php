@@ -21,6 +21,8 @@ use PDO;
  */
 final class IngresosYCobrosRepository
 {
+    use ConsultasEnRango;
+
     private PDO $db;
 
     public function __construct()
@@ -36,21 +38,20 @@ final class IngresosYCobrosRepository
      */
     public function kpis(string $desde, string $hasta): array
     {
-        $stmtFacturado = $this->db->prepare(
+        $facturado = (float) $this->valorEnRango(
             "SELECT COALESCE(SUM(b.monto * b.tasa_a_usd), 0)
              FROM boletas b
-             WHERE b.fecha_emision BETWEEN :desde AND :hasta AND NOT b.anulada"
+             WHERE b.fecha_emision BETWEEN :desde AND :hasta AND NOT b.anulada",
+            $desde,
+            $hasta
         );
-        $stmtFacturado->execute([':desde' => $desde, ':hasta' => $hasta]);
-        $facturado = (float) $stmtFacturado->fetchColumn();
-
-        $stmtCobrado = $this->db->prepare(
+        $cobradoBruto = (float) $this->valorEnRango(
             "SELECT COALESCE(SUM(p.monto * p.tasa_a_usd), 0)
              FROM pagos p
-             WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada"
+             WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada",
+            $desde,
+            $hasta
         );
-        $stmtCobrado->execute([':desde' => $desde, ':hasta' => $hasta]);
-        $cobradoBruto = (float) $stmtCobrado->fetchColumn();
 
         $devoluciones = (new NotaCreditoRepository())->totalEnRangoUsd($desde, $hasta);
         $cobrado = $cobradoBruto - $devoluciones;
@@ -67,14 +68,14 @@ final class IngresosYCobrosRepository
     /** Ingresos devengados (boletas emitidas, sin anular), en USD a la tasa del dia de cada boleta, agrupados por mes de emision. */
     public function ingresosPorMes(string $desde, string $hasta): array
     {
-        $stmt = $this->db->prepare(
+        return $this->filasEnRango(
             "SELECT to_char(b.fecha_emision, 'YYYY-MM') AS mes, SUM(b.monto * b.tasa_a_usd) AS total
              FROM boletas b
              WHERE b.fecha_emision BETWEEN :desde AND :hasta AND NOT b.anulada
-             GROUP BY mes ORDER BY mes"
+             GROUP BY mes ORDER BY mes",
+            $desde,
+            $hasta
         );
-        $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
-        return $stmt->fetchAll();
     }
 
     /**
@@ -198,16 +199,17 @@ final class IngresosYCobrosRepository
      */
     public function cobrosPorMes(string $desde, string $hasta): array
     {
-        $stmt = $this->db->prepare(
+        $filas = $this->filasEnRango(
             "SELECT to_char(p.fecha_pago, 'YYYY-MM') AS mes, SUM(p.monto * p.tasa_a_usd) AS total
              FROM pagos p
              WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada
-             GROUP BY mes"
+             GROUP BY mes",
+            $desde,
+            $hasta
         );
-        $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
 
         $porMes = [];
-        foreach ($stmt->fetchAll() as $fila) {
+        foreach ($filas as $fila) {
             $porMes[$fila['mes']] = (float) $fila['total'];
         }
         foreach ((new NotaCreditoRepository())->porMesUsd($desde, $hasta) as $mes => $devuelto) {
@@ -226,13 +228,13 @@ final class IngresosYCobrosRepository
     /** Total por metodo de pago (sin anulados), en USD a la tasa del dia de cada pago. */
     public function porMetodo(string $desde, string $hasta): array
     {
-        $stmt = $this->db->prepare(
+        return $this->filasEnRango(
             "SELECT p.metodo, SUM(p.monto * p.tasa_a_usd) AS total, COUNT(*) AS cantidad
              FROM pagos p
              WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada
-             GROUP BY p.metodo ORDER BY total DESC"
+             GROUP BY p.metodo ORDER BY total DESC",
+            $desde,
+            $hasta
         );
-        $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
-        return $stmt->fetchAll();
     }
 }

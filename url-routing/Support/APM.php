@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+/**
+ * @deprecated Sin uso desde que se comprobó (2026-11-07): ningún código del repositorio llama a esta clase, ni
+ *             las variables APM_* de .env.example tienen efecto en otra parte. Se conserva como referencia,
+ *             no se borra.
+ */
 class APM
 {
     private static ?APM $instance = null;
@@ -21,7 +26,7 @@ class APM
         $this->config = [
             'service_name' => getenv('APM_SERVICE_NAME') ?: 'php-app',
             'environment' => getenv('APM_ENVIRONMENT') ?: 'development',
-            'sample_rate' => (float)getenv('APM_SAMPLE_RATE') ?: 1.0,
+            'sample_rate' => self::sampleRate(getenv('APM_SAMPLE_RATE')),
             'endpoint' => getenv('APM_ENDPOINT') ?: '',
             'api_key' => getenv('APM_API_KEY') ?: '',
         ];
@@ -29,6 +34,19 @@ class APM
         if ($this->enabled) {
             register_shutdown_function([$this, 'flush']);
         }
+    }
+
+    /**
+     * APM_SAMPLE_RATE, de 0 a 1: 0 es «no muestrear nada» y 1 «todo». Sin la variable (o vacía, o con algo que no es un
+     * número) se muestrea todo. `(float)getenv(...) ?: 1.0` convertía el 0 en 1.0, justo lo contrario de lo pedido.
+     */
+    private static function sampleRate(string|false $valor): float
+    {
+        if ($valor === false || !is_numeric($valor)) {
+            return 1.0;
+        }
+
+        return max(0.0, min(1.0, (float)$valor));
     }
 
     public static function getInstance(): APM
@@ -184,7 +202,9 @@ class APM
 
     private function shouldSample(): bool
     {
-        return mt_rand(0, 1000) / 1000 <= $this->config['sample_rate'];
+        // En [0, 1): con tasa 0 nunca da verdadero y con tasa 1 siempre (mt_rand(0, 1000) / 1000 llegaba a 1 y a 0 con la misma
+        // probabilidad que a cualquier otro milésimo, y con el <= muestreaba un poco de más).
+        return mt_rand() / (mt_getrandmax() + 1) < $this->config['sample_rate'];
     }
 
     public function isEnabled(): bool

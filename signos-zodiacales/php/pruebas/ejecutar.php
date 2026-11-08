@@ -127,10 +127,8 @@ foreach ($vectores['espiritu_de_fecha'] as [$mesDia, $numero, $idAngel, $coro, $
     igual([$numero, $idDemonio, $tramo], [$d['demonio']['numero'], $d['demonio']['id'], $d['tramo']], "demonio_de_fecha $mesDia");
 }
 
-foreach ($vectores['tramos_de_espiritus'] as $anio => $porSigno) {
-    foreach ($porSigno as $id => $tramos) {
-        igual($tramos, Zodiaco::tramosDeEspiritus($id, (int) $anio), "tramos_de_espiritus $anio $id");
-    }
+foreach ($vectores['tramos_de_espiritus'] as $id => $tramos) {
+    igual($tramos, Zodiaco::tramosDeEspiritus($id), "tramos_de_espiritus $id");
 }
 
 // Las cualidades: las muestras de cada idioma, las 144 en español y la huella de las 144 de cada idioma.
@@ -207,6 +205,45 @@ foreach ($vectores['rasgos_de_numero'] as $idioma => $filas) {
         igual($texto, Zodiaco::rasgosDeNumero($numero, $idioma), "rasgos_de_numero $numero $idioma");
     }
 }
+
+// Los tramos no dependen del año: el decanato y los 72 son los mismos en un bisiesto (2024) y en un año normal (2025),
+// y el 29/02 cuenta con el 28/02. Antes el 10/03/2024 daba el decanato 3 y el 10/03/2025, el 2.
+$utc = new DateTimeZone('UTC');
+foreach (Zodiaco::SISTEMAS as $sistema) {
+    for ($n = 0; $n < 365; $n++) {
+        $d25 = (new DateTimeImmutable('2025-01-01', $utc))->modify("+$n days");
+        $d24 = new DateTimeImmutable('2024-' . $d25->format('m-d'), $utc);
+        igual(Zodiaco::decanato($d25, $sistema)['numero'], Zodiaco::decanato($d24, $sistema)['numero'], 'decanato igual en bisiesto ' . $sistema . ' ' . $d25->format('m-d'));
+    }
+}
+for ($n = 0; $n < 365; $n++) {
+    $d25 = (new DateTimeImmutable('2025-01-01', $utc))->modify("+$n days");
+    $d24 = new DateTimeImmutable('2024-' . $d25->format('m-d'), $utc);
+    igual(Zodiaco::angelDeFecha($d25)['tramo'], Zodiaco::angelDeFecha($d24)['tramo'], 'ángel igual en bisiesto ' . $d25->format('m-d'));
+}
+igual(
+    Zodiaco::angelDeFecha(new DateTimeImmutable('2025-02-28', $utc))['angel']['numero'],
+    Zodiaco::angelDeFecha(new DateTimeImmutable('2024-02-29', $utc))['angel']['numero'],
+    'el 29/02 cuenta con el 28/02',
+);
+igual(2, Zodiaco::decanato(new DateTimeImmutable('2024-03-10', $utc))['numero'], 'el 10/03/2024 ya no cambia de decanato');
+$piscis = array_values(array_filter(Zodiaco::cargarDatos()['signos'], fn (array $x): bool => $x['id'] === 'piscis'))[0];
+igual(Zodiaco::tramosDeDecanatos($piscis), Zodiaco::tramosDeDecanatos($piscis, 'tropical', 2024), 'tramosDeDecanatos ignora el año obsoleto');
+igual(Zodiaco::tramosDeEspiritus('piscis'), Zodiaco::tramosDeEspiritus('piscis', 2024), 'tramosDeEspiritus ignora el año obsoleto');
+igual([[[2, 19], [2, 28]], [[3, 1], [3, 10]], [[3, 11], [3, 20]]], Zodiaco::tramosDeDecanatos($piscis), 'tramos de Piscis');
+
+// Una clave que no está en ningún glosario lanza una excepción clara (antes se descartaba en silencio).
+$frase = new ReflectionMethod(Zodiaco::class, 'frase');
+lanza(fn () => $frase->invoke(null, ['inventada'], 'es', [[]], ['es' => ', ']), 'frase con una clave sin glosario');
+igual('Uno, dos', $frase->invoke(null, ['x', 'y'], 'es', [['x' => ['es' => 'uno']], ['y' => ['es' => 'dos']]], ['es' => ', ']), 'frase busca en varios glosarios');
+
+// Los arrays de PHP se copian al pasarlos: modificar lo que devuelve una consulta no toca las siguientes.
+$a = Zodiaco::arbolCelta(new DateTimeImmutable('2025-06-10', $utc));
+$a['mes']['rasgos'][] = 'X';
+$a['arbol']['nombres'] = [];
+$b = Zodiaco::arbolCelta(new DateTimeImmutable('2025-06-11', $utc));
+igual(false, in_array('X', $b['mes']['rasgos'], true), 'modificar el resultado no corrompe los datos');
+igual(true, count($b['arbol']['nombres']) === 30, 'los nombres siguen en los 30 idiomas');
 
 // Los casos que tienen que fallar, los mismos que prueba Python.
 $conFecha = ['signo_occidental', 'cuspide', 'animal_chino_de_fecha', 'angel_de_fecha', 'demonio_de_fecha', 'arbol_celta', 'arbol_de_fecha', 'camino_de_vida', 'anio_personal'];

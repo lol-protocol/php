@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Descarga;
+use App\Filtros;
 use App\Paginacion;
 use App\Repositories\CobranzaRepository;
 use App\Repositories\MonedaRepository;
@@ -18,8 +19,14 @@ final class CobranzaController
     public function index(): void
     {
         $avisos = [];
-        $alcance = self::opcion('alcance', CobranzaRepository::ALCANCES, 'El alcance pedido no existe; se muestran los clientes con saldo vencido.', $avisos);
-        $orden = self::opcion('orden', CobranzaRepository::ORDENES, 'El orden pedido no existe; se ordena por mayor monto vencido.', $avisos);
+        $alcance = Filtros::opcion('alcance', CobranzaRepository::ALCANCES);
+        $orden = Filtros::opcion('orden', CobranzaRepository::ORDENES);
+        if (Filtros::opcionInexistente('alcance', CobranzaRepository::ALCANCES)) {
+            $avisos[] = Avisos::atencion('El alcance pedido no existe; se muestran los clientes con saldo vencido.');
+        }
+        if (Filtros::opcionInexistente('orden', CobranzaRepository::ORDENES)) {
+            $avisos[] = Avisos::atencion('El orden pedido no existe; se ordena por mayor monto vencido.');
+        }
 
         $repo = new CobranzaRepository();
         $listado = $repo->listado($alcance, $orden, Paginacion::pagina());
@@ -46,9 +53,8 @@ final class CobranzaController
      */
     public function exportar(): void
     {
-        $avisos = [];
-        $alcance = self::opcion('alcance', CobranzaRepository::ALCANCES, '', $avisos);
-        $orden = self::opcion('orden', CobranzaRepository::ORDENES, '', $avisos);
+        $alcance = Filtros::opcion('alcance', CobranzaRepository::ALCANCES);
+        $orden = Filtros::opcion('orden', CobranzaRepository::ORDENES);
 
         Descarga::csv(
             'cobranza',
@@ -79,23 +85,5 @@ final class CobranzaController
                 (int) $c['dias_mayor_vencimiento'],
             ];
         }
-    }
-
-    /**
-     * El valor pedido por URL para $parametro si es uno de $permitidos; si no lo es (y
-     * no esta vacio), agrega un aviso y usa el primero de la lista, como los demas filtros.
-     *
-     * @param array<string, string> $permitidos clave => etiqueta; la primera clave es la de por defecto
-     * @param list<array{tipo: string, texto: string}> $avisos
-     */
-    private static function opcion(string $parametro, array $permitidos, string $aviso, array &$avisos): string
-    {
-        $pedido = (string) ($_GET[$parametro] ?? '');
-        $valida = CobranzaRepository::opcionPedida($pedido, $permitidos);
-        if ($pedido !== '' && $valida === '') {
-            $avisos[] = Avisos::atencion($aviso);
-        }
-
-        return $valida !== '' ? $valida : (string) array_key_first($permitidos);
     }
 }

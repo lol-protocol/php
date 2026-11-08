@@ -77,6 +77,23 @@ class ActualizadoEnTest extends TestCase
         $this->assertSame($antes, (new SitemapRepository($db, Privacidad::publica()))->claves('10', 1));
     }
 
+    /** A persona page lists her events: an event that changed after her own row did moves the page's day. */
+    #[DataProvider('drivers')]
+    public function testThePersonaPageTakesTheDayOfTheLatestOfItsVisibleEvents(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $suceso = (int)$db->fetchValue('SELECT suceso_id FROM suceso_participantes WHERE persona_id = ? ORDER BY suceso_id LIMIT 1', [self::JOSE]);
+        $this->assertGreaterThan(0, $suceso, 'the seed gives José an event');
+        $db->execute("UPDATE personas SET actualizado_en = '2026-03-04 10:00:00' WHERE id = ?", [self::JOSE]);
+        $db->execute("UPDATE sucesos SET actualizado_en = '2026-06-07 10:00:00' WHERE id = ?", [$suceso]);
+        $repo = new SitemapRepository($db, Privacidad::publica());
+
+        $this->assertSame('2026-06-07', array_column($repo->entradas('10', 1), 'fecha', 'clave')[(string)self::JOSE]);
+
+        $db->execute("UPDATE personas SET actualizado_en = '2026-08-09 10:00:00' WHERE id = ?", [self::JOSE]);
+        $this->assertSame('2026-08-09', array_column($repo->entradas('10', 1), 'fecha', 'clave')[(string)self::JOSE], 'her own row, when later');
+    }
+
     #[DataProvider('drivers')]
     public function testMarkingAPersonaAliveDoesNotMoveTheDate(string $driver): void
     {

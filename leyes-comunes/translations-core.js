@@ -6,6 +6,29 @@ import { readFileSync } from "node:fs";
 
 const lines = (path) => readFileSync(path, "utf-8").split("\n").filter((l) => l.trim()).map((l) => JSON.parse(l));
 
+/**
+ * New rows for `importLang` out of a --done list, skipping any id whose source already has a translation in
+ * `rows` (reimporting a done.jsonl after a partial failure, or two sessions importing the same language, would
+ * otherwise add a second row for the same source — caught later by validateTranslations, but only after it's
+ * already committed).
+ */
+export function importedRows(rows, todo, done, importLang) {
+  const have = new Set(rows.filter((r) => r.lang === importLang).map((r) => r.source));
+  const added = [];
+  let skipped = 0;
+  for (const entry of done) {
+    const source = todo.get(entry.id);
+    if (!source || !entry.t?.trim()) continue;
+    if (have.has(source)) {
+      skipped++;
+      continue;
+    }
+    added.push({ lang: importLang, source, text: entry.t.trim() });
+    have.add(source);
+  }
+  return { added, skipped };
+}
+
 /** coverage(), missing() and main() bound to one project's dataset. */
 export function createTranslations({ dataset }) {
   const { MASTER_CSV, TRANSLATIONS_FILE, TRANSLATION_COLUMNS, TRANSLATION_LANGS, loadMaster, loadSide, translatableValues, writeCsv } = dataset;
@@ -40,18 +63,13 @@ export function createTranslations({ dataset }) {
     }
     if (importLang) {
       const todo = new Map(lines(arg("todo")).map((l) => [l.id, l.text]));
-      const rows = [...side.rows];
-      let added = 0;
-      for (const done of lines(arg("done"))) {
-        const source = todo.get(done.id);
-        if (source && done.t?.trim()) {
-          rows.push({ lang: importLang, source, text: done.t.trim() });
-          added++;
-        }
-      }
-      rows.sort((a, b) => a.lang.localeCompare(b.lang) || a.source.localeCompare(b.source));
+      const { added, skipped } = importedRows(side.rows, todo, lines(arg("done")), importLang);
+      const rows = [...side.rows, ...added].sort((a, b) => a.lang.localeCompare(b.lang) || a.source.localeCompare(b.source));
       writeCsv(side.path, TRANSLATION_COLUMNS, rows);
-      console.log(`✔ ${added} translation(s) into ${importLang} (${todo.size - added} of the todo list left)`);
+      console.log(
+        `✔ ${added.length} translation(s) into ${importLang} (${todo.size - added.length} of the todo list left)` +
+          (skipped ? `, ${skipped} already translated and skipped` : "")
+      );
       return 0;
     }
     const cov = coverage(records, side.rows);

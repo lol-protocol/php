@@ -22,12 +22,12 @@ $paginas = [
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= htmlspecialchars($titulo) ?> · <?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></title>
+    <title><?= e($titulo) ?> · <?= e(Config::NOMBRE_SISTEMA) ?></title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <header class="topbar">
-    <div class="brand"><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></div>
+    <div class="brand"><?= e(Config::NOMBRE_SISTEMA) ?></div>
     <nav class="tabs">
         <?php foreach ($paginas as $clave => $etiqueta): ?>
             <a href="?page=<?= $clave ?>" class="<?= $activePage === $clave ? 'active' : '' ?>"><?= $etiqueta ?></a>
@@ -37,6 +37,6 @@ $paginas = [
 <main>
     <?= $content ?>
 </main>
-<footer><?= Config::esDesarrollo() ? 'Datos de ejemplo generados localmente &middot; ' : '' ?><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></footer>
+<footer><?= Config::esDesarrollo() ? 'Datos de ejemplo generados localmente &middot; ' : '' ?><?= e(Config::NOMBRE_SISTEMA) ?></footer>
 </body>
 </html>

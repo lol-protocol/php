@@ -11,6 +11,32 @@ use PHPUnit\Framework\TestCase;
 
 class UrlHelperTest extends TestCase
 {
+    /** @return array<string, array{mixed, string}> */
+    public static function textosParaEscapar(): array
+    {
+        return [
+            'texto simple' => ['García', 'García'],
+            'etiqueta' => ['<b>hola</b>', '&lt;b&gt;hola&lt;/b&gt;'],
+            'comillas dobles y simples' => ['a"b\'c', 'a&quot;b&#039;c'],
+            'ampersand' => ['a & b', 'a &amp; b'],
+            'entero' => [42, '42'],
+            'null' => [null, ''],
+        ];
+    }
+
+    #[DataProvider('textosParaEscapar')]
+    public function testEscape(mixed $texto, string $esperado): void
+    {
+        $this->assertSame($esperado, UrlHelper::escape($texto));
+    }
+
+    /** @deprecated esc() de instancia se conserva; tiene que dar lo mismo que escape(). */
+    #[DataProvider('textosParaEscapar')]
+    public function testElMetodoDeInstanciaEscDaLoMismo(mixed $texto, string $esperado): void
+    {
+        $this->assertSame($esperado, (new UrlHelper(new Router()))->esc($texto));
+    }
+
     /** @return array<string, array{int, string, int, string}> */
     public static function busquedas(): array
     {

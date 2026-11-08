@@ -242,6 +242,8 @@ sin argumentos muestran el uso y salen con código 2.
 |----------|-------------|----------|
 | `MAX_UPLOAD` | `20M` | Tamaño máximo de una petición/subida en las apps (`06_A`, `06_B`, `06_D`, y `10_A` que los llama; `06_E` usa 6M). En PHP el límite es global y solo sube |
 | `PROXY_TIMEOUT` | `120s` | Cuánto espera Nginx a una app Python/Tomcat (y el `--timeout` de gunicorn) |
+| `GUNICORN_WORKERS` | según CPU y RAM | Workers de gunicorn por app Python (`06_B`). Por defecto 2×CPU+1, acotado a RAM÷512 MB (mínimo 2): 1 GB → 2, 2 GB → 3 |
+| `PHP_MAX_CHILDREN` | `5` | Procesos máximos del pool PHP-FPM de cada app PHP (`06_A`; `ondemand`) |
 | `PHP_VERSION` | `8.3` | Versión de PHP del stack, fijada en un solo lugar (`lib.sh`) |
 
 Ejemplo: `MAX_UPLOAD=100M ./10_A-add-domain.sh fotos.com --type php --name fotos`.

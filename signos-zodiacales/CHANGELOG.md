@@ -4,6 +4,19 @@ Los cambios de `datos/` y de lo que se calcula con ellos, de lo más reciente a 
 
 Versionado semántico: la **mayor** cambia si se rompe el esquema de `datos/signos.json` o lo que devuelven las consultas; la **menor** cuando se agregan datos, campos o funciones; la **parche** cuando se corrige un texto, una fecha o una figura sin cambiar la forma.
 
+## [1.3.1] - 2026-11-06
+
+### Corregido
+- **Los decanatos y los tramos de los 72 ya no dependen del año.** Antes se calculaban con fechas reales: en un año bisiesto un día podía cambiar de decanato o de ángel (el 10/03/2024 daba el decanato 3 y el 10/03/2025, el 2) y las fichas, calculadas para 2025, no coincidían con las funciones. Ahora se reparten en un año de 365 días y el 29/02 cuenta con el 28/02. Medido día por día contra el código anterior: en un año normal no cambia ninguno, y en un bisiesto cambian 4 (el 24/02, el ángel; el 29/02 y el 10/03, el decanato tropical; el 04/03, el decanato sideral). El parámetro `anio` de `tramos_de_decanatos()` y `tramos_de_espiritus()` queda `@deprecated` y no cambia nada.
+- **Las consultas devuelven copias de los datos.** Antes devolvían los diccionarios compartidos: modificar un resultado corrompía todas las respuestas siguientes. (En PHP no pasaba: los arrays se copian.)
+- **Una clave sin glosario da un error claro.** En Python salía `RuntimeError: generator raised StopIteration`; en PHP se descartaba en silencio. Ahora es un `KeyError` / `InvalidArgumentException` que dice cuál.
+- La validación ya no se salta la comprobación de espacios en una ruta que contenga la palabra «separador».
+
+### Cambiado
+- `generar.py`: un solo `_errores_de_traducciones()` (con `permite_espacios` explícito) en lugar de bloques repetidos en cuatro validadores. `zodiaco.py`: `_exigir_fecha()` y `_cargar_json()` en lugar de código repetido.
+- `fechas_anio_nuevo()` devuelve una copia del diccionario.
+- Las pruebas de Python tardan algo más (2,6 s → 3,8 s) por las copias.
+
 ## [1.3.0] - 2026-11-03
 
 ### Agregado

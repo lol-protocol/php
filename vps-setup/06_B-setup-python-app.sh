@@ -14,6 +14,7 @@ require_valid domain "$DOMAIN" "El dominio (argumento 2)"
 require_valid port "$PORT" "El puerto (argumento 3)"
 require_valid size "$MAX_UPLOAD" "MAX_UPLOAD"
 require_valid duration "$PROXY_TIMEOUT" "PROXY_TIMEOUT"
+[ -z "${GUNICORN_WORKERS:-}" ] || require_valid workers "$GUNICORN_WORKERS" "GUNICORN_WORKERS"
 require_valid appuser "$APP_NAME" "El nombre de la app (argumento 1)"
 APP_USER=$(app_user_name "$APP_NAME")
 SYSTEMD_DIR=${SYSTEMD_DIR:-/etc/systemd/system}
@@ -84,10 +85,9 @@ setup_app_database "$APP_NAME" "$APP_PATH/.env" "$APP_USER"
 
 # systemd mantiene la app corriendo en segundo plano y la reinicia sola si se
 # cae (Restart=always) o si el servidor reinicia (systemctl enable)
-# Calcular workers dinamicamente: (CPU cores * 2) + 1 (recomendado por Gunicorn)
-# En lugar de hardcoded a 4, que desperdicia recursos en VPS pequenos o
-# subutiliza los grandes. Ej: 2 cores -> 5 workers, 4 cores -> 9 workers
-WORKERS=$(($(nproc) * 2 + 1))
+# Workers: (CPU cores * 2) + 1 (recomendado por Gunicorn), pero acotados por la RAM de cada app
+# (ver gunicorn_workers en lib.sh): en un VPS de 1-2 GB, 5 workers por app agotarian la memoria.
+WORKERS=$(gunicorn_workers)
 # gunicorn mata un worker que tarda mas de --timeout (30 s por defecto): se alinea con el de Nginx.
 case "$PROXY_TIMEOUT" in *m) GUNICORN_TIMEOUT=$(( ${PROXY_TIMEOUT%m} * 60 )) ;; *) GUNICORN_TIMEOUT=${PROXY_TIMEOUT%s} ;; esac
 

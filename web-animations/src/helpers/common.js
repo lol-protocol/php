@@ -196,6 +196,29 @@ class Physics {
     static applyBounce(velocity) {
         return -velocity * this.bounce;
     }
+
+    // Refleja lo que atravesó la pared en vez de recortarlo: recortar le quita altura en cada rebote y,
+    // con gravedad, los objetos terminan quietos en el piso. Devuelve [posición, velocidad].
+    static reflect(pos, vel, min, max) {
+        if (pos < min) return [2 * min - pos, Math.abs(vel)];
+        if (pos > max) return [2 * max - pos, -Math.abs(vel)];
+        return [pos, vel];
+    }
+
+    // El tamaño de la ventana, en un solo objeto que se mantiene al día con 'resize'. Los objetos que no traen
+    // sus propios bordes lo leen en cada cuadro: guardar window.innerWidth/innerHeight al crearlos los dejaba
+    // rebotando contra los bordes viejos (bajo el piso, o fuera de la pared) al cambiar el tamaño de la ventana.
+    static viewportBounds() {
+        if (!Physics._viewport) {
+            const viewport = { width: window.innerWidth, height: window.innerHeight };
+            window.addEventListener('resize', () => {
+                viewport.width = window.innerWidth;
+                viewport.height = window.innerHeight;
+            });
+            Physics._viewport = viewport;
+        }
+        return Physics._viewport;
+    }
 }
 
 // Helpers para posicionamiento y transformaciones
@@ -262,13 +285,17 @@ const Patterns = {
 class PhysicsObject {
     constructor(element, config = {}) {
         this.element = element;
-        this.x = config.x || 0;
-        this.y = config.y || 0;
-        this.vx = config.vx || 0;
-        this.vy = config.vy || 0;
-        this.radius = config.radius || 10;
-        this.bounceCoeff = config.bounceCoeff || 0.8;
-        this.bounds = config.bounds || { width: window.innerWidth, height: window.innerHeight };
+        // ?? y no ||: un 0 es un valor (bounceCoeff: 0 es «sin rebote»), no un «no me pasaron nada».
+        this.x = config.x ?? 0;
+        this.y = config.y ?? 0;
+        this.vx = config.vx ?? 0;
+        this.vy = config.vy ?? 0;
+        this.radius = config.radius ?? 10;
+        this.bounceCoeff = config.bounceCoeff ?? 0.8;
+        this.bounds = config.bounds ?? Physics.viewportBounds();
+        // 'clamp': el objeto vuelve al borde y rebota con bounceCoeff (el piso) o invierte la velocidad (las paredes).
+        // 'reflect': el objeto sigue el camino que habría hecho si la pared fuera un espejo, sin perder velocidad.
+        this.bounceMode = config.bounceMode ?? 'clamp';
     }
 
     update() {
@@ -280,6 +307,11 @@ class PhysicsObject {
     }
 
     checkBounds() {
+        if (this.bounceMode === 'reflect') {
+            [this.x, this.vx] = Physics.reflect(this.x, this.vx, this.radius, this.bounds.width - this.radius);
+            [this.y, this.vy] = Physics.reflect(this.y, this.vy, this.radius, this.bounds.height - this.radius);
+            return;
+        }
         if (this.y + this.radius > this.bounds.height) {
             this.y = this.bounds.height - this.radius;
             this.vy *= -this.bounceCoeff;

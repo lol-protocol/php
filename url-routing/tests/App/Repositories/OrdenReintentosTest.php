@@ -12,8 +12,9 @@ use PHPUnit\Framework\TestCase;
 use Tests\Support\TestDatabases;
 
 /**
- * OrdenRepository::crear() asks again only when the INSERT of the order broke because another order took its
- * id or its code at the same moment, and refuses what could never be an order before touching the stock.
+ * OrdenRepository::crear() refuses what could never be an order before touching the stock, and asks again only
+ * when a write broke on a unique value (Database::transaccionConReintento(): another order took its id or its
+ * code at the same moment), never on a CHECK, a foreign key or a NOT NULL.
  *
  * The retries are tested on SQLite with a trigger that makes the INSERT of the order fail the way the
  * database words it, and a function that counts the attempts: PostgreSQL would need two processes racing
@@ -121,7 +122,6 @@ class OrdenReintentosTest extends TestCase
     public static function erroresQueNoSonElChoque(): array
     {
         return [
-            'la llave de otra tabla' => ['UNIQUE constraint failed: orden_items.orden_id, orden_items.sku'],
             'un CHECK' => ['CHECK constraint failed: cantidad > 0'],
             'una llave foránea' => ['FOREIGN KEY constraint failed'],
             'un NOT NULL' => ['NOT NULL constraint failed: ordenes.moneda'],

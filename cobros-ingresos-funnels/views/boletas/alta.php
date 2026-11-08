@@ -28,7 +28,7 @@ $vencimientoDefault = date('Y-m-d', strtotime('+30 days'));
             <option value="">Seleccioná un cliente...</option>
             <?php foreach ($clientes as $c): ?>
                 <option value="<?= (int) $c['id'] ?>" <?= (string) ($valores['cliente_id'] ?? '') === (string) $c['id'] ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($c['nombre']) ?> (<?= htmlspecialchars($c['email']) ?>)
+                    <?= e($c['nombre']) ?> (<?= e($c['email']) ?>)
                 </option>
             <?php endforeach; ?>
         </select>
@@ -37,16 +37,16 @@ $vencimientoDefault = date('Y-m-d', strtotime('+30 days'));
         <?php endif; ?>
 
         <label for="concepto">Concepto</label>
-        <input type="text" name="concepto" id="concepto" required maxlength="<?= Validacion::MAX_CONCEPTO ?>" value="<?= htmlspecialchars($valores['concepto'] ?? '') ?>" placeholder="Ej: Suscripción mensual">
+        <input type="text" name="concepto" id="concepto" required maxlength="<?= Validacion::MAX_CONCEPTO ?>" value="<?= e($valores['concepto'] ?? '') ?>" placeholder="Ej: Suscripción mensual">
 
         <label for="monto">Monto (en la moneda del país del cliente)</label>
         <?= campo_monto($valores['monto'] ?? '') ?>
 
         <label for="fecha_emision">Fecha de emisión</label>
-        <input type="date" name="fecha_emision" id="fecha_emision" required value="<?= htmlspecialchars($valores['fecha_emision'] ?? $hoy) ?>">
+        <input type="date" name="fecha_emision" id="fecha_emision" required value="<?= e($valores['fecha_emision'] ?? $hoy) ?>">
 
         <label for="fecha_vencimiento">Fecha de vencimiento</label>
-        <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" required value="<?= htmlspecialchars($valores['fecha_vencimiento'] ?? $vencimientoDefault) ?>">
+        <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" required value="<?= e($valores['fecha_vencimiento'] ?? $vencimientoDefault) ?>">
 
         <button type="submit">Crear boleta</button>
     </form>

@@ -1,0 +1,9 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - bin
+        - pruebas
+    # El cruce carga las clases de ../defamatory-content-review con un cargador propio (src/cargar.php).
+    scanDirectories:
+        - ../defamatory-content-review/src

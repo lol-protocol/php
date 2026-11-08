@@ -7,6 +7,7 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
+use App\Repositories\MonedaRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
 use App\Tasas\ActualizadorDeTasas;
@@ -189,7 +190,9 @@ final class ActualizadorDeTasasTest extends IntegracionTestCase
             ahora: $this->ahora
         );
 
-        self::assertSame(['ARS', 'CLP', 'EUR', 'JPY'], array_keys($informe['rechazadas']));
+        // BGN no estaba en la fuente: se deriva del euro, y este euro no entra en la columna, asi que su derivada tampoco.
+        self::assertSame(['ARS', 'BGN', 'CLP', 'EUR', 'JPY'], array_keys($informe['rechazadas']));
+        self::assertSame('queda fuera de lo que entra en la base', $informe['rechazadas']['BGN']);
         self::assertSame('no es mayor que cero', $informe['rechazadas']['CLP']);
         self::assertSame('queda fuera de lo que entra en la base', $informe['rechazadas']['EUR']);
         self::assertSame($antes, $this->moneda('CLP'));
@@ -472,5 +475,112 @@ final class ActualizadorDeTasasTest extends IntegracionTestCase
         self::assertSame($ejemplo, $this->moneda($moneda)['tasa_a_usd']);
         self::assertSame($ejemplo, $this->tasaDe('boletas', $ids['boleta']));
         self::assertSame($ejemplo, $this->tasaDe('pagos', $ids['pago']));
+    }
+
+    // --- Monedas reemplazadas por otra (migracion 016): el BGN por el euro, el ZWL por el ZWG ---
+
+    public function testUnaMonedaReemplazadaVaLoQueSuReemplazoPorLaEquivalenciaFija(): void
+    {
+        // 1 USD = 0.8 EUR, y 1 EUR = 1.95583 BGN: 1 USD = 1.564664 BGN, o sea 1 BGN = 0.63911600 USD.
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente(['EUR' => 0.8, 'BGN' => null]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        $bgn = $this->moneda('BGN');
+        self::assertEqualsWithDelta(1 / (0.8 * 1.95583), (float) $bgn['tasa_a_usd'], 1e-8);
+        self::assertSame('2026-10-07 12:00:00', $bgn['actualizada']);
+        self::assertSame('fuente-de-prueba', $bgn['tasa_fuente']);
+        self::assertArrayHasKey('BGN', $informe['actualizadas']);
+        self::assertNotContains('BGN', $informe['sinDato'], 'la fuente no la trae, pero no queda sin dato: se deriva del euro');
+    }
+
+    public function testLoQueLaFuenteDiceDeUnaMonedaReemplazadaSeDescarta(): void
+    {
+        // La fuente trae un BGN que no es el del euro (3 por USD) y un ZWL que ni se puede leer (0): manda la equivalencia.
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente(['EUR' => 0.8, 'BGN' => 3, 'ZWG' => 25, 'ZWL' => 0]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        self::assertEqualsWithDelta(1 / (0.8 * 1.95583), (float) $this->moneda('BGN')['tasa_a_usd'], 1e-8);
+        // 1 USD = 25 ZWG = 25 x 2498.7242 = 62468.105 ZWL, o sea 1 ZWL = 0.00001601 USD.
+        self::assertSame('0.00001601', $this->moneda('ZWL')['tasa_a_usd']);
+        self::assertArrayNotHasKey('ZWL', $informe['rechazadas'], 'el 0 de la fuente se descarta junto con lo demas que dijo de ella');
+    }
+
+    public function testSiLaFuenteNoTraeElReemplazoLaReemplazadaQuedaSinDato(): void
+    {
+        $antes = $this->moneda('ZWL');
+
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente(['ZWG' => null, 'ZWL' => null]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        self::assertContains('ZWG', $informe['sinDato']);
+        self::assertContains('ZWL', $informe['sinDato']);
+        self::assertSame($antes, $this->moneda('ZWL'), 'sin el reemplazo no hay con que derivarla: queda como estaba');
+    }
+
+    public function testLaTasaDerivadaPasaPorLaMismaReglaDelSaltoMaximo(): void
+    {
+        // Una BGN que ya tenia una tasa real (5 USD por unidad, muy lejos de la del euro): la derivada salta mas del 50 %.
+        Database::connection()->exec("UPDATE monedas SET tasa_a_usd = 5, tasa_actualizada_en = '2026-10-01 00:00:00+00', tasa_fuente = 'vieja' WHERE codigo = 'BGN'");
+
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente(['EUR' => 0.8, 'BGN' => null]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        self::assertArrayHasKey('BGN', $informe['sospechosas']);
+        self::assertSame('vieja', $this->moneda('BGN')['tasa_fuente'], 'sin --forzar queda como estaba');
+
+        (new ActualizadorDeTasas())->aplicar($this->fuente(['EUR' => 0.8, 'BGN' => null]), 'fuente-de-prueba', forzar: true, ahora: $this->ahora);
+        self::assertSame('fuente-de-prueba', $this->moneda('BGN')['tasa_fuente'], 'con --forzar se acepta');
+    }
+
+    public function testLaPrimeraTasaDerivadaVuelveAExpresarLoGrabadoConLaDeEjemplo(): void
+    {
+        $ids = $this->movimientosEn('BGN');
+
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente(['EUR' => 0.8, 'BGN' => null]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        $derivada = $this->moneda('BGN')['tasa_a_usd'];
+        self::assertSame($derivada, $this->tasaDe('boletas', $ids['boleta']));
+        self::assertSame($derivada, $this->tasaDe('pagos', $ids['pago']));
+        self::assertSame(['boletas' => 1, 'pagos' => 1, 'notas_credito' => 1], $informe['reexpresadas']['BGN']);
+    }
+
+    /** El motivo de la 016: una moneda retirada con boletas se listaba como «pendiente» para siempre. */
+    public function testUnaReemplazadaConBoletasNoQuedaPendienteDespuesDeActualizar(): void
+    {
+        $this->movimientosEn('BGN');
+
+        (new ActualizadorDeTasas())->aplicar($this->fuente(['EUR' => 0.8, 'BGN' => null]), 'fuente-de-prueba', ahora: new DateTimeImmutable('now', new DateTimeZone('UTC')));
+
+        self::assertSame([], MonedaRepository::estadoDeLasTasas()['pendientes']);
+    }
+
+    public function testLaCoberturaMinimaContabilizaLasReemplazadasSoloSiSuReemplazoVino(): void
+    {
+        // Una fuente con solo el euro y el ZWG (y USD): la cobertura no alcanza, pero no por culpa de BGN ni de ZWL.
+        $rates = ['USD' => 1, 'EUR' => 0.8, 'ZWG' => 25];
+
+        $this->expectException(TasasInvalidas::class);
+        $this->expectExceptionMessageMatches('/solo trae 4 de las \d+ monedas/');
+        (new ActualizadorDeTasas())->aplicar(RespuestaDeTasas::desdeJson((string) json_encode(['base_code' => 'USD', 'rates' => $rates])), 'fuente-de-prueba', ahora: $this->ahora);
+    }
+
+    public function testUnaMonedaNoPuedeReemplazarseASiMismaNiQuedarseConLaEquivalenciaAMedias(): void
+    {
+        $db = Database::connection();
+        foreach (["reemplazada_por = 'CLP', unidades_por_reemplazo = 1", "reemplazada_por = 'EUR'", "unidades_por_reemplazo = 2", "reemplazada_por = 'EUR', unidades_por_reemplazo = 0"] as $cambio) {
+            $db->exec('SAVEPOINT intento');
+            try {
+                $db->exec("UPDATE monedas SET {$cambio} WHERE codigo = 'CLP'");
+                self::fail("la base aceptó: {$cambio}");
+            } catch (PDOException $e) {
+                self::assertStringContainsString('monedas_reemplazo_completo', $e->getMessage(), $cambio);
+            }
+            $db->exec('ROLLBACK TO SAVEPOINT intento');
+        }
+    }
+
+    public function testElBgnYElZwlSalenReemplazadosDeLaMigracion(): void
+    {
+        $filas = Database::connection()->query(
+            "SELECT codigo, reemplazada_por, unidades_por_reemplazo::text FROM monedas WHERE reemplazada_por IS NOT NULL ORDER BY codigo"
+        )->fetchAll(PDO::FETCH_NUM);
+
+        self::assertSame([['BGN', 'EUR', '1.95583000'], ['ZWL', 'ZWG', '2498.72420000']], $filas);
     }
 }

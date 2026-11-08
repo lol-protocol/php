@@ -48,3 +48,35 @@ assert_igual(
     $ordenB,
     'datos: el orden entre usuarios empatados no depende del orden físico de inserción (desempate por id)'
 );
+
+/*
+ * La búsqueda es por texto, no por patrón: un «%», un «_» o una «\» que se tipea es un carácter, no un comodín de
+ * ILIKE. Sin escapar, «%» listaba a todos los usuarios y «Gamma_Prueba» encontraba también «Gamma Prueba».
+ */
+$usuariosDeComodin = [
+    ['zT03', 'Cien% Exacto de Prueba'],
+    ['zT04', 'Cienx Exacto de Prueba'],
+    ['zT05', 'Gamma_Prueba'],
+    ['zT06', 'Gamma Prueba'],
+    ['zT07', 'Atras\\Barra de Prueba'],
+];
+$limpiarComodines = fn (PDO $pdo) => $pdo->exec("DELETE FROM usuarios WHERE id IN ('zT03', 'zT04', 'zT05', 'zT06', 'zT07')");
+$limpiarComodines($pdo);
+foreach ($usuariosDeComodin as [$id, $nombre]) {
+    $pdo->prepare('INSERT INTO usuarios (id, nombre, pais_codigo, edad, genero) VALUES (:id, :nombre, :pais, 30, \'O\')')
+        ->execute(['id' => $id, 'nombre' => $nombre, 'pais' => $paisCodigo]);
+}
+$nombresEncontrados = fn (string $busqueda): array => array_values(array_filter(
+    array_map(fn ($it) => $it['name'], $almacen->usersPage(1, 100, $busqueda)['items']),
+    fn ($nombre) => str_contains($nombre, 'Prueba')
+));
+
+assert_igual(['Cien% Exacto de Prueba'], $nombresEncontrados('Cien%'), 'datos: «%» en la búsqueda es un porcentaje, no un comodín');
+assert_igual(['Gamma_Prueba'], $nombresEncontrados('Gamma_Prueba'), 'datos: «_» en la búsqueda es un guion bajo, no «cualquier carácter»');
+assert_igual(['Atras\\Barra de Prueba'], $nombresEncontrados('Atras\\Barra'), 'datos: «\\» en la búsqueda es una barra invertida, no el escape de LIKE');
+assert_igual(['Cien% Exacto de Prueba'], $nombresEncontrados('%'), 'datos: buscar solo «%» devuelve a quien tiene un «%» en el nombre, no a todos');
+$conGuionBajo = $almacen->usersPage(1, 100, '_');
+assert_verdadero($conGuionBajo['total'] < 10, 'datos: buscar solo «_» no devuelve a todos los usuarios (total ' . $conGuionBajo['total'] . ')');
+$todos = $almacen->usersPage(1, 100, '');
+assert_verdadero($todos['total'] >= 60, 'datos: sin búsqueda se listan todos');
+$limpiarComodines($pdo);
