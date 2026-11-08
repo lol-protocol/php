@@ -71,13 +71,19 @@ class SessionManager
             ]);
         }
 
-        // Regenerate session ID on login (done by caller after auth)
-        // For now, just log if session needs regeneration
+        // When this session started. The id is regenerated on login by AccessPolicy::recordar(), not here;
+        // only isValid(), which nothing calls, reads this mark.
         if (!isset($_SESSION['_session_started'])) {
             $_SESSION['_session_started'] = time();
         }
     }
 
+    /**
+     * @deprecated Sin uso desde que se comprobó (2026-11-07): nadie la llama, ni siquiera una prueba. El vencimiento
+     *             de la sesión del propietario lo decide AccessPolicy::sesionValida() (INACTIVIDAD_MAXIMA y
+     *             DURACION_MAXIMA), no este plazo fijo de una hora desde que empezó la sesión. Se conserva
+     *             como referencia, no se borra.
+     */
     public function isValid(): bool
     {
         // Check session timeout (1 hour default)
@@ -97,6 +103,10 @@ class SessionManager
         session_regenerate_id(true);
     }
 
+    /**
+     * @deprecated Sin uso desde que se comprobó (2026-11-07): solo la llama isValid(), que tampoco se usa. Se
+     *             conserva como referencia, no se borra.
+     */
     public function destroy(): void
     {
         $_SESSION = [];

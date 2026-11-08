@@ -10,59 +10,67 @@ declare(strict_types=1);
  *   php citas-pos/bin/comprobar-revisiones.php otro.csv   # valida otro archivo (para probar)
  *
  * Columnas: idioma, alcance, elemento, veredicto, revisor, fecha, nota. Ver REVISIONES.md.
+ * La fecha no puede ser posterior a «hoy»: CITAS_POS_HOY=AAAA-MM-DD lo fija.
  */
+
+require_once __DIR__ . '/lib/comun.php';
 
 const COLUMNAS = ['idioma', 'alcance', 'elemento', 'veredicto', 'revisor', 'fecha', 'nota'];
 const ALCANCES = ['cita', 'traduccion', 'etiquetas'];
 const VEREDICTOS = ['correcto', 'corregir', 'corregido', 'dudoso'];
 
-/** @return list<string> ids de las frases de datos/ejemplos.json y de las citas de datos/citas.json, si existe */
-function idsConocidos(string $base, string $alcance): array
+/**
+ * Los elementos que se pueden revisar con cada alcance: los que existen y ya tienen lo que ese alcance revisa.
+ * «cita» y «traduccion» piden que la cita tenga texto; «etiquetas», que tenga etiquetas (las frases de prueba de
+ * datos/ejemplos.json también se pueden revisar, solo en este alcance).
+ *
+ * @return array{existen: array<string, array<string, true>>, revisables: array<string, array<string, true>>}
+ */
+function elementos(): array
 {
-    $ids = [];
-    // Los ids de las citas (aún no existen) y de las frases de prueba (solo se pueden revisar sus etiquetas).
-    if (is_file($base . 'citas.json')) {
-        $citas = json_decode((string) file_get_contents($base . 'citas.json'), true, 512, JSON_THROW_ON_ERROR);
-        foreach ($citas['citas'] ?? [] as $c) {
-            $ids[] = (string) $c['id'];
+    $citas = is_file(DATOS . '/citas.json') ? (leerJson(DATOS . '/citas.json')['citas'] ?? []) : [];
+    $existenCitas = $conTexto = $conEtiquetas = [];
+    foreach ($citas as $c) {
+        $id = (string) $c['id'];
+        $existenCitas[$id] = true;
+        if (textoNoVacio($c['texto'] ?? null)) {
+            $conTexto[$id] = true;
+        }
+        if (is_array($c['etiquetas'] ?? null)) {
+            $conEtiquetas[$id] = true;
         }
     }
-    if ($alcance === 'etiquetas') {
-        $ej = json_decode((string) file_get_contents($base . 'ejemplos.json'), true, 512, JSON_THROW_ON_ERROR);
-        foreach ($ej['ejemplos'] as $e) {
-            foreach ($e['frases'] as $f) {
-                $ids[] = (string) $f['id'];
-            }
+    $frases = [];
+    foreach (leerJson(DATOS . '/ejemplos.json')['ejemplos'] as $e) {
+        foreach ($e['frases'] as $f) {
+            $frases[(string) $f['id']] = true;
         }
     }
-    return $ids;
+    return [
+        'existen' => ['cita' => $existenCitas, 'traduccion' => $existenCitas, 'etiquetas' => $existenCitas + $frases],
+        'revisables' => ['cita' => $conTexto, 'traduccion' => $conTexto, 'etiquetas' => $conEtiquetas + $frases],
+    ];
 }
 
 function main(array $argv): int
 {
-    $base = __DIR__ . '/../datos/';
-    $ruta = $argv[1] ?? __DIR__ . '/../revisiones.csv';
-    $idiomas = array_column(json_decode((string) file_get_contents($base . 'idiomas.json'), true, 512, JSON_THROW_ON_ERROR)['idiomas'], 'codigo');
-
-    $fh = fopen($ruta, 'rb');
-    if ($fh === false) {
-        fwrite(STDERR, "No se pudo abrir $ruta\n");
+    try {
+        hoy(); // una CITAS_POS_HOY inválida se avisa aunque no haya ninguna fecha que comprobar
+        $idiomas = array_column(leerJson(DATOS . '/idiomas.json')['idiomas'], 'codigo');
+        $elementos = elementos();
+        $registro = leerRevisiones($argv[1] ?? __DIR__ . '/../revisiones.csv');
+    } catch (RuntimeException $error) {
+        fwrite(STDERR, $error->getMessage() . "\n");
         return 1;
     }
-    $cabecera = fgetcsv($fh, 0, ',', '"', '');
-    if ($cabecera !== COLUMNAS) {
+    if ($registro['cabecera'] !== COLUMNAS) {
         fwrite(STDERR, 'Cabecera incorrecta; debe ser: ' . implode(',', COLUMNAS) . "\n");
         return 1;
     }
 
     $errores = [];
     $vistos = [];
-    $n = 1;
-    while (($fila = fgetcsv($fh, 0, ',', '"', '')) !== false) {
-        $n++;
-        if ($fila === [null]) {
-            continue;
-        }
+    foreach ($registro['filas'] as [$n, $fila]) {
         if (count($fila) !== count(COLUMNAS)) {
             $errores[] = "fila $n: tiene " . count($fila) . ' columnas, deben ser ' . count(COLUMNAS) . '.';
             continue;
@@ -73,8 +81,10 @@ function main(array $argv): int
         }
         if (!in_array($alcance, ALCANCES, true)) {
             $errores[] = "fila $n: alcance desconocido «{$alcance}» (debe ser " . implode(', ', ALCANCES) . ').';
-        } elseif (!in_array($elemento, idsConocidos($base, $alcance), true)) {
+        } elseif (!isset($elementos['existen'][$alcance][$elemento])) {
             $errores[] = "fila $n: el elemento «{$elemento}» no existe para el alcance $alcance.";
+        } elseif (!isset($elementos['revisables'][$alcance][$elemento])) {
+            $errores[] = "fila $n: el elemento «{$elemento}» aún no tiene " . ($alcance === 'etiquetas' ? 'etiquetas' : 'texto') . " que revisar con el alcance $alcance.";
         } elseif (!str_starts_with($elemento, $idioma . '-')) {
             $errores[] = "fila $n: el elemento «{$elemento}» no es del idioma $idioma (los ids empiezan por el código del idioma).";
         }
@@ -84,11 +94,12 @@ function main(array $argv): int
         if (trim($revisor) === '') {
             $errores[] = "fila $n: falta el revisor.";
         }
-        $d = DateTimeImmutable::createFromFormat('!Y-m-d', $fecha);
-        if ($d === false || $d->format('Y-m-d') !== $fecha) {
+        if (!fechaValida($fecha)) {
             $errores[] = "fila $n: la fecha «{$fecha}» no es AAAA-MM-DD.";
+        } elseif (!fechaNoFutura($fecha)) {
+            $errores[] = "fila $n: la fecha «{$fecha}» es posterior a hoy.";
         }
-        if (in_array($veredicto, ['corregir', 'dudoso'], true) && trim($nota) === '') {
+        if (in_array($veredicto, VEREDICTOS_QUE_BLOQUEAN, true) && trim($nota) === '') {
             $errores[] = "fila $n: con «{$veredicto}» la nota es obligatoria.";
         }
         $clave = implode('|', [$idioma, $alcance, $elemento, $revisor]);
@@ -97,12 +108,11 @@ function main(array $argv): int
         }
         $vistos[$clave] = $n;
     }
-    fclose($fh);
 
     foreach ($errores as $e) {
         echo "ERROR  $e\n";
     }
-    $filas = $n - 1;
+    $filas = count($registro['filas']);
     echo $errores === [] ? "Registro correcto ($filas fila(s) de revisión).\n" : count($errores) . " error(es).\n";
     return $errores === [] ? 0 : 1;
 }

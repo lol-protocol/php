@@ -256,6 +256,12 @@ Como de estas tasas dependen todos los totales, escribe solo lo que se puede cre
   informa (puede ser una devaluación de verdad o un error de la fuente): `--forzar` la
   acepta. La primera carga, sobre las de ejemplo, acepta cualquier diferencia.
 - Una moneda que la fuente no trae queda como estaba, con la fecha que tenía.
+- Una moneda que otra reemplazó (`monedas.reemplazada_por`, migración `016`: el `ZWL` por el
+  `ZWG`, el `BGN` por el euro) no se toma de la fuente: vale su equivalencia fija con el
+  reemplazo (`unidades_por_reemplazo`: 1,95583 BGN por euro, 2.498,7242 ZWL por ZWG), que se
+  deriva en la misma corrida y pasa por las mismas reglas que las demás (el salto máximo, la
+  primera carga que reexpresa lo grabado con la de ejemplo). Lo que la fuente diga de ella
+  se descarta. Si la fuente no trae el reemplazo, queda sin dato como cualquier otra.
 - Las pantallas avisan cuando una moneda con boletas o pagos tiene una tasa de ejemplo
   o de hace más de 7 días, y nombran cuál.
 
@@ -374,8 +380,10 @@ La `014` corrige lo que la `005` tenía desactualizado o incompleto: Zimbabue pa
 agrega a Liechtenstein, el único miembro de la ONU que faltaba, y los territorios habitados
 con código ISO 3166-1 propio (Puerto Rico, Guam, Aruba, Gibraltar, Polinesia Francesa…), con
 las monedas que usan. `ZWL` y `BGN` se quedan en el catálogo: las boletas y los pagos que ya
-se cobraron en ellas las siguen usando. Un cliente que ya existía conserva su país, y sus
-boletas nuevas salen en la moneda nueva. Los territorios sin población permanente y el Sahara
+se cobraron en ellas las siguen usando, y desde la `016` se cotizan por su equivalencia fija con
+su reemplazo en vez de depender de que la fuente las siga trayendo (si no, quedaban «pendientes»
+para siempre en las pantallas). Un cliente que ya existía conserva su país, y sus boletas nuevas
+salen en la moneda nueva. Los territorios sin población permanente y el Sahara
 Occidental no están. El catálogo sale de ISO 4217 y 3166-1 **tal como los conoce quien lo
 escribió, sin cotejarlos contra la fuente**: antes de usarlo en producción conviene
 compararlo con la lista vigente de ISO 4217 (el cambio de moneda de un país es un `UPDATE
@@ -587,7 +595,7 @@ database/
                         edad de cada país, 011 = la tasa de cambio de cada día,
                         012 = la fecha de devolución de cada nota de crédito,
                         013 = las fechas del funnel en orden, 014 = correcciones
-                        del catálogo de países y monedas)
+                        del catálogo de países y monedas, 016 = monedas reemplazadas)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez

@@ -63,8 +63,27 @@ final class TestDatabases
         $schema = 'test_' . getmypid() . '_' . bin2hex(random_bytes(4));
         $db->execute("CREATE SCHEMA {$schema}");
         $db->execute("SET search_path TO {$schema}");
-        register_shutdown_function(static fn() => $db->execute("DROP SCHEMA {$schema} CASCADE"));
+        self::borrarAlTerminar($schema);
 
         return $db;
+    }
+
+    /**
+     * Drops the schemas at the end of the run, from one connection of its own. The closure must not hold the
+     * test's $db: it would keep every connection open until the end, and the suite (a PostgreSQL data set per
+     * test) runs out of the server's connections.
+     */
+    private static function borrarAlTerminar(string $schema): void
+    {
+        static $pendientes = [];
+        if ($pendientes === []) {
+            register_shutdown_function(static function () use (&$pendientes): void {
+                $db = new Database((string)getenv('TEST_PG_DSN'), (string)getenv('TEST_PG_USER'), (string)getenv('TEST_PG_PASSWORD'));
+                foreach ($pendientes as $esquema) {
+                    $db->execute("DROP SCHEMA {$esquema} CASCADE");
+                }
+            });
+        }
+        $pendientes[] = $schema;
     }
 }

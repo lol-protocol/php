@@ -9,10 +9,11 @@
 // (validate warns about the leftovers) and the value shows up again under --missing.
 import { pathToFileURL } from "node:url";
 import * as dataset from "./lib/dataset.js";
-import { createTranslations } from "../../leyes-comunes/translations-core.js";
+import { createTranslations, importedRows } from "../../leyes-comunes/translations-core.js";
 
 // The coverage, the missing list and the import are shared with the other laws module; see
 // ../../leyes-comunes/translations-core.js. This file supplies only this project's dataset.
+export { importedRows };
 export const { coverage, missing, main } = createTranslations({ dataset });
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {

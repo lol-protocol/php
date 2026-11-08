@@ -178,6 +178,19 @@ class GeneradorDeTablas(unittest.TestCase):
             self.assertEqual(int(f["indice_pos"]), max(niveles[l] for l in lenguas), f["codigo"])
             self.assertEqual(int(f["indice_pos_local"]), niveles[lenguas[0]], f["codigo"])
 
+    def test_la_prioridad_y_exclusion_del_csv_final_coinciden_con_la_regla_vigente(self):
+        """priorizacion.csv sale de ESCENARIOS_GEN[0]/ESCENARIOS_POS[0], no de una fórmula aparte que podría
+        desincronizarse de la etiquetada «Vigente» en escenarios.md."""
+        _, puntaje_gen, excluido_gen = generar_tabla.ESCENARIOS_GEN[0]
+        _, puntaje_pos, excluido_pos = generar_tabla.ESCENARIOS_POS[0]
+        for f in leer_csv(AQUI / "priorizacion.csv"):
+            d = {"ig": int(f["indice_genealogia"]), "io": int(f["indice_operabilidad"]),
+                 "il": int(f["indice_lectura"]), "ipl": int(f["indice_pos_local"])}
+            self.assertEqual(int(f["prioridad_genealogia"]), puntaje_gen(d), f["codigo"])
+            self.assertEqual(f["excluido_genealogia"] == "si", excluido_gen(d), f["codigo"])
+            self.assertEqual(int(f["prioridad_pos"]), puntaje_pos(d), f["codigo"])
+            self.assertEqual(f["excluido_pos"] == "si", excluido_pos(d), f["codigo"])
+
 
 class PreparacionDePuntaAPunta(unittest.TestCase):
     """preparar_datos.main y preparar_lenguas.main sobre fuentes sintéticas mínimas.

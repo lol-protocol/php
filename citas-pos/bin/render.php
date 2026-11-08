@@ -26,58 +26,43 @@ declare(strict_types=1);
  * subrayado, los grupos se distinguen solo por el color.
  */
 
-require_once __DIR__ . '/lib/comun.php';
+require_once __DIR__ . '/lib/paleta.php';
 
 const SALIDA = __DIR__ . '/../salida';
 const JUEGO = __DIR__ . '/../juego';
-const VEREDICTOS_QUE_APRUEBAN = ['correcto', 'corregido'];
-
-/**
- * @return array<string, true> "idioma|alcance|elemento" de lo que un revisor dio por bueno
- */
-function aprobadas(string $ruta): array
-{
-    $fh = fopen($ruta, 'rb');
-    if ($fh === false) {
-        throw new RuntimeException("No se pudo abrir $ruta");
-    }
-    fgetcsv($fh, 0, ',', '"', '');
-    $ok = [];
-    while (($f = fgetcsv($fh, 0, ',', '"', '')) !== false) {
-        if (count($f) === 7 && in_array($f[3], VEREDICTOS_QUE_APRUEBAN, true)) {
-            $ok["{$f[0]}|{$f[1]}|{$f[2]}"] = true;
-        }
-    }
-    fclose($fh);
-    return $ok;
-}
-
 /**
  * @param array<string, mixed> $ejemplos
  * @param array<string, mixed> $citas
  * @param array<string, mixed> $idiomas
  * @param array<string, true> $aprobadas
- * @param list<string> $pendientes ids de citas verificadas a las que aún les falta revisión
+ * @param list<string> $pendientes ids de citas verificadas a las que aún les falta revisión o etiquetas
  * @return list<array{carpeta: string, id: string, lang: string, texto: string, palabras: list<array{string, string}>, pie: array{string, string}|null}>
  */
 function frases(array $ejemplos, array $citas, array $idiomas, array $aprobadas, array &$pendientes): array
 {
     $salida = [];
     foreach ($ejemplos['ejemplos'] as $e) {
+        if (!langValido((string) $e['html'])) {
+            throw new RuntimeException('datos/ejemplos.json: «' . $e['html'] . '» no es un valor válido para lang (por ejemplo es, o zh-Hans).');
+        }
         foreach ($e['frases'] as $f) {
             $salida[] = ['carpeta' => 'ejemplos', 'id' => $f['id'], 'lang' => $e['html'], 'texto' => $f['texto'], 'palabras' => $f['palabras'], 'pie' => null];
         }
     }
     $dosLetras = array_column($idiomas['idiomas'], 'codigo2', 'codigo');
     foreach ($citas['citas'] as $c) {
-        if ($c['estado'] !== 'verificada' || !is_array($c['etiquetas'])) {
+        if ($c['estado'] !== 'verificada') {
             continue;
         }
-        if (!isset($aprobadas["{$c['idioma']}|cita|{$c['id']}"], $aprobadas["{$c['idioma']}|etiquetas|{$c['id']}"])) {
+        // Una verificada sin etiquetas tampoco se puede dibujar: se avisa igual que la que espera revisión.
+        if (!is_array($c['etiquetas']) || !isset($aprobadas["{$c['idioma']}|cita|{$c['id']}"], $aprobadas["{$c['idioma']}|etiquetas|{$c['id']}"])) {
             $pendientes[] = $c['id'];
             continue;
         }
         $lang = $dosLetras[$c['idioma']] . (isset($c['escritura']) ? '-' . $c['escritura'] : '');
+        if (!langValido($lang)) {
+            throw new RuntimeException("{$c['id']}: «{$lang}» no es un valor válido para lang: revisa idioma y escritura.");
+        }
         $salida[] = ['carpeta' => 'citas', 'id' => $c['id'], 'lang' => $lang, 'texto' => $c['texto'], 'palabras' => $c['etiquetas'], 'pie' => [$c['autor'], $c['obra']]];
     }
     return $salida;
@@ -86,18 +71,10 @@ function frases(array $ejemplos, array $citas, array $idiomas, array $aprobadas,
 /** @param array<string, mixed> $paleta */
 function hoja(array $paleta): string
 {
-    $claro = $oscuro = $colores = $marcas = '';
-    foreach ($paleta['categorias'] as $c) {
-        $claro .= "  --cp-{$c['codigo']}: {$c['claro']};\n";
-        $oscuro .= "    --cp-{$c['codigo']}: {$c['oscuro']};\n";
-        $colores .= ".citas-pos .w[data-c=\"{$c['codigo']}\"] { --color: var(--cp-{$c['codigo']}); }\n";
-    }
-    foreach ($paleta['grupos'] as $id => $g) {
-        $estilo = ESTILO_DE_MARCA[$g['marca']];
-        $marcas .= $estilo === 'none'
-            ? ".citas-pos .w[data-g=\"$id\"] { --marca: none; }\n"
-            : ".citas-pos .w[data-g=\"$id\"] { --marca: underline $estilo; }\n";
-    }
+    $claro = variablesCss($paleta, 'claro', 'cp', '  ');
+    $oscuro = variablesCss($paleta, 'oscuro', 'cp', '    ');
+    $colores = reglasDeColor($paleta, '.citas-pos .w', 'cp', '');
+    $marcas = reglasDeMarca($paleta, '.citas-pos .w', '');
     $fc = $paleta['fondo']['claro'];
     $fo = $paleta['fondo']['oscuro'];
     return <<<CSS
@@ -124,27 +101,28 @@ CSS;
 
 /**
  * @param array<string, array<string, mixed>> $cats
- * @param list<array{string, string|null}> $trozos
+ * @param array<string, mixed> $f
+ * @param array<string, array<string, mixed>> $grupos
  */
-function palabras(array $cats, array $trozos, bool $enLinea, array $grupos): string
+function palabras(array $cats, array $f, bool $enLinea, array $grupos): string
 {
     $html = '';
-    foreach ($trozos as [$texto, $cat]) {
-        if ($cat === null) {
-            $html .= nl2br(h($texto), false);
+    foreach (piezas($cats, $f['id'], $f['texto'], $f['palabras']) as $p) {
+        if ($p['c'] === null) {
+            $html .= nl2br(h($p['texto']), false);
             continue;
         }
-        $c = $cats[$cat] ?? throw new RuntimeException("Categoría desconocida $cat.");
-        $titulo = h($cat . ' · ' . $c['nombre']);
+        $c = $p['c'];
+        $titulo = h($p['cat'] . ' · ' . $c['nombre']);
         if ($enLinea) {
             $estilo = ESTILO_DE_MARCA[$grupos[$c['grupo']]['marca']];
             $css = "color:{$c['claro']}";
             if ($estilo !== 'none') {
                 $css .= ";text-decoration:underline;text-decoration-style:$estilo;text-decoration-thickness:2px;text-underline-offset:5px";
             }
-            $html .= "<span style=\"$css\" title=\"$titulo\">" . h($texto) . '</span>';
+            $html .= "<span style=\"$css\" title=\"$titulo\">" . h($p['texto']) . '</span>';
         } else {
-            $html .= '<span class="w" data-c="' . h($cat) . '" data-g="' . h($c['grupo']) . "\" title=\"$titulo\">" . h($texto) . '</span>';
+            $html .= '<span class="w" data-c="' . h($p['cat']) . '" data-g="' . h($c['grupo']) . "\" title=\"$titulo\">" . h($p['texto']) . '</span>';
         }
     }
     return $html;
@@ -163,8 +141,8 @@ function pie(?array $pie): string
 function correo(array $paleta, array $cats, array $f): string
 {
     $fondo = $paleta['fondo']['claro'];
-    $cuerpo = palabras($cats, trozos($f['id'], $f['texto'], $f['palabras']), true, $paleta['grupos']);
-    $html = "<div lang=\"{$f['lang']}\" style=\"background:$fondo;padding:16px 20px;border-radius:8px;\">\n"
+    $cuerpo = palabras($cats, $f, true, $paleta['grupos']);
+    $html = '<div lang="' . h($f['lang']) . "\" style=\"background:$fondo;padding:16px 20px;border-radius:8px;\">\n"
         . "<p style=\"margin:0;font:22px/2 Georgia,'Times New Roman',serif;color:#1d1d22;\">$cuerpo</p>\n"
         . '<p style="margin:8px 0 0;font:13px/1.4 Arial,Helvetica,sans-serif;color:#55555e;">' . pie($f['pie']) . "</p>\n"
         . "</div>\n";
@@ -182,8 +160,8 @@ function correo(array $paleta, array $cats, array $f): string
  */
 function sitio(array $paleta, array $cats, array $f): string
 {
-    $cuerpo = palabras($cats, trozos($f['id'], $f['texto'], $f['palabras']), false, $paleta['grupos']);
-    return "<figure class=\"citas-pos\" lang=\"{$f['lang']}\">\n"
+    $cuerpo = palabras($cats, $f, false, $paleta['grupos']);
+    return '<figure class="citas-pos" lang="' . h($f['lang']) . "\">\n"
         . "<blockquote><p>$cuerpo</p></blockquote>\n"
         . '<figcaption>' . pie($f['pie']) . "</figcaption>\n"
         . "</figure>\n";
@@ -201,25 +179,24 @@ function juego(array $paleta, array $cats, array $f): string
 {
     $cuerpo = '';
     $vistas = [];
-    foreach (trozos($f['id'], $f['texto'], $f['palabras']) as [$texto, $cat]) {
-        if ($cat === null) {
-            $cuerpo .= nl2br(h($texto), false);
+    foreach (piezas($cats, $f['id'], $f['texto'], $f['palabras']) as $p) {
+        if ($p['c'] === null) {
+            $cuerpo .= nl2br(h($p['texto']), false);
             continue;
         }
-        $c = $cats[$cat] ?? throw new RuntimeException("Categoría desconocida $cat.");
-        if ($cat === 'PUNCT') {
-            $cuerpo .= '<span class="jp">' . h($texto) . '</span>';
+        if ($p['cat'] === 'PUNCT') {
+            $cuerpo .= '<span class="jp">' . h($p['texto']) . '</span>';
             continue;
         }
-        $vistas[$cat] = true;
-        $cuerpo .= '<span class="w jw" data-c="' . h($cat) . '" data-g="' . h($c['grupo']) . '" data-nombre="' . h($c['nombre']) . '">' . h($texto) . '</span>';
+        $vistas[$p['cat']] = true;
+        $cuerpo .= '<span class="w jw" data-c="' . h($p['cat']) . '" data-g="' . h($p['c']['grupo']) . '" data-nombre="' . h($p['c']['nombre']) . '">' . h($p['texto']) . '</span>';
     }
     $leyenda = '';
     foreach (array_keys($vistas) as $cat) {
         $c = $cats[$cat];
         $leyenda .= '<li data-c="' . h($cat) . '"><span class="w jm" data-c="' . h($cat) . '" data-g="' . h($c['grupo']) . '">Aa</span> ' . h($c['nombre']) . "</li>\n";
     }
-    return "<figure class=\"citas-pos citas-pos-juego\" lang=\"{$f['lang']}\">\n"
+    return '<figure class="citas-pos citas-pos-juego" lang="' . h($f['lang']) . "\">\n"
         . "<p class=\"jayuda\" lang=\"es\" hidden>Toca cada palabra y descubre de qué color es.</p>\n"
         . "<blockquote><p>$cuerpo</p></blockquote>\n"
         . "<ul class=\"jleyenda\" lang=\"es\">\n$leyenda</ul>\n"
@@ -278,13 +255,9 @@ HTML;
 /** @return array<string, string> ruta relativa a SALIDA => contenido */
 function generar(array &$pendientes): array
 {
-    $base = __DIR__ . '/../datos/';
-    $paleta = leer($base . 'paleta.json');
-    $cats = [];
-    foreach ($paleta['categorias'] as $c) {
-        $cats[$c['codigo']] = $c;
-    }
-    $lista = frases(leer($base . 'ejemplos.json'), leer($base . 'citas.json'), leer($base . 'idiomas.json'), aprobadas(__DIR__ . '/../revisiones.csv'), $pendientes);
+    $paleta = leerJson(DATOS . '/paleta.json');
+    $cats = categoriasPorCodigo($paleta);
+    $lista = frases(leerJson(DATOS . '/ejemplos.json'), leerJson(DATOS . '/citas.json'), leerJson(DATOS . '/idiomas.json'), aprobadas(__DIR__ . '/../revisiones.csv'), $pendientes);
 
     $juegoCss = (string) file_get_contents(JUEGO . '/juego.css');
     $juegoJs = (string) file_get_contents(JUEGO . '/juego.js');

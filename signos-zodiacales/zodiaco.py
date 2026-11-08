@@ -88,19 +88,44 @@ _COMPLEMENTARIOS = {frozenset({"fuego", "aire"}), frozenset({"tierra", "agua"})}
 _ANIO_BASE = 4
 
 
-@lru_cache(maxsize=1)
-def cargar_datos():
-    """Lee datos/signos.json una sola vez."""
-    with DATOS.open(encoding="utf-8") as f:
+def _cargar_json(ruta):
+    with ruta.open(encoding="utf-8") as f:
         return json.load(f)
 
 
+def _exigir_fecha(fecha):
+    if not isinstance(fecha, datetime.date):
+        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+
+
+def _copia(x):
+    """Una copia de un valor de los datos (diccionarios, listas y tuplas de números y textos, como un JSON).
+
+    Las consultas devuelven copias de los datos, no los datos: así quien modifique lo que recibe no corrompe las
+    respuestas siguientes. Las cargar_*() sí devuelven los datos compartidos: no los modifiques. Es unas 3 veces
+    más rápida que copy.deepcopy(), que lleva una tabla de memoria que estos datos (sin ciclos) no necesitan.
+    """
+    if isinstance(x, dict):
+        return {k: _copia(v) for k, v in x.items()}
+    if isinstance(x, (list, tuple)):
+        return type(x)(_copia(v) for v in x)
+    return x
+
+
 @lru_cache(maxsize=1)
+def cargar_datos():
+    """Lee datos/signos.json una sola vez. Lo comparten todas las consultas: no lo modifiques."""
+    return _cargar_json(DATOS)
+
+
+@lru_cache(maxsize=1)
+def _fechas_anio_nuevo():
+    return {int(a): datetime.date.fromisoformat(d) for a, d in _cargar_json(ANIO_NUEVO)["fechas"].items()}
+
+
 def fechas_anio_nuevo():
     """{año: fecha del Año Nuevo lunar} desde datos/anio-nuevo-lunar.json (1900–2099)."""
-    with ANIO_NUEVO.open(encoding="utf-8") as f:
-        crudas = json.load(f)["fechas"]
-    return {int(a): datetime.date.fromisoformat(d) for a, d in crudas.items()}
+    return dict(_fechas_anio_nuevo())
 
 
 def version(datos=None):
@@ -114,28 +139,25 @@ def revision(idioma, datos=None):
     datos = datos or cargar_datos()
     if idioma not in datos["revision"]:
         raise ValueError(f"idioma desconocido: {idioma!r}")
-    return datos["revision"][idioma]
+    return _copia(datos["revision"][idioma])
 
 
 @lru_cache(maxsize=1)
 def cargar_espiritus():
-    """Lee datos/espiritus.json una sola vez: los 72 ángeles y los 72 demonios, con sus cualidades."""
-    with ESPIRITUS.open(encoding="utf-8") as f:
-        return json.load(f)
+    """Lee datos/espiritus.json una sola vez: los 72 ángeles y los 72 demonios, con sus cualidades. No lo modifiques."""
+    return _cargar_json(ESPIRITUS)
 
 
 @lru_cache(maxsize=1)
 def cargar_arboles():
-    """Lee datos/arboles.json una sola vez: el calendario celta, el horóscopo de los árboles y los de los nakshatras."""
-    with ARBOLES.open(encoding="utf-8") as f:
-        return json.load(f)
+    """Lee datos/arboles.json una sola vez: el calendario celta, el horóscopo de los árboles y los de los nakshatras. No lo modifiques."""
+    return _cargar_json(ARBOLES)
 
 
 @lru_cache(maxsize=1)
 def cargar_numerologia():
-    """Lee datos/numerologia.json una sola vez: los 12 números del camino de vida (1–9, 11, 22 y 33) y sus rasgos."""
-    with NUMEROLOGIA.open(encoding="utf-8") as f:
-        return json.load(f)
+    """Lee datos/numerologia.json una sola vez: los 12 números del camino de vida (1–9, 11, 22 y 33) y sus rasgos. No lo modifiques."""
+    return _cargar_json(NUMEROLOGIA)
 
 
 def _en_rango(mes_dia, desde, hasta):
@@ -152,8 +174,12 @@ def signo_occidental(fecha, sistema="tropical", datos=None):
     sistema es "tropical" (el zodiaco occidental habitual) o "sideral" (el de la astrología védica,
     unos 24 días más tarde). Las fechas límite son aproximadas: varían un día según el año y la hora.
     """
-    if not isinstance(fecha, datetime.date):
-        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    return _copia(_signo_occidental(fecha, sistema, datos))
+
+
+def _signo_occidental(fecha, sistema, datos):
+    """Como signo_occidental(), pero devuelve el diccionario de los datos y no una copia (para uso interno)."""
+    _exigir_fecha(fecha)
     if sistema not in SISTEMAS:
         raise ValueError(f"sistema debe ser uno de {SISTEMAS}, no {sistema!r}")
     datos = datos or cargar_datos()
@@ -172,17 +198,16 @@ def cuspide(fecha, sistema="tropical", margen=1, datos=None):
     """
     if isinstance(margen, bool) or not isinstance(margen, int) or margen < 0:
         raise ValueError(f"margen debe ser un entero mayor o igual que 0, no {margen!r}")
-    if not isinstance(fecha, datetime.date):
-        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    _exigir_fecha(fecha)
     dia = datetime.date(fecha.year, fecha.month, fecha.day)
-    propio = signo_occidental(dia, sistema, datos)
+    propio = _signo_occidental(dia, sistema, datos)
     for d in range(1, margen + 1):
-        antes = signo_occidental(dia - datetime.timedelta(days=d), sistema, datos)
+        antes = _signo_occidental(dia - datetime.timedelta(days=d), sistema, datos)
         if antes["id"] != propio["id"]:
-            return (antes, propio)
-        despues = signo_occidental(dia + datetime.timedelta(days=d), sistema, datos)
+            return _copia((antes, propio))
+        despues = _signo_occidental(dia + datetime.timedelta(days=d), sistema, datos)
         if despues["id"] != propio["id"]:
-            return (propio, despues)
+            return _copia((propio, despues))
     return None
 
 
@@ -199,16 +224,15 @@ def animal_chino_de_fecha(fecha, datos=None):
     datetime con huso horario se pasa a esa hora antes de comparar (las 20:00 UTC del 16/02/2026
     ya son el 17/02 en China, Caballo). Una fecha o un datetime sin huso se toma tal cual.
     """
-    if not isinstance(fecha, datetime.date):
-        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    _exigir_fecha(fecha)
     if isinstance(fecha, datetime.datetime) and fecha.tzinfo is not None:
         fecha = fecha.astimezone(HORA_DE_CHINA)
-    tabla = fechas_anio_nuevo()
+    tabla = _fechas_anio_nuevo()
     if fecha.year not in tabla:
         raise ValueError(f"solo hay fechas del Año Nuevo lunar de {min(tabla)} a {max(tabla)}, no de {fecha.year}")
     dia = datetime.date(fecha.year, fecha.month, fecha.day)
     anio_lunar = fecha.year if dia >= tabla[fecha.year] else fecha.year - 1
-    return {**animal_chino(anio_lunar, datos), "anio_lunar": anio_lunar}
+    return _copia({**_animal_chino(anio_lunar, datos), "anio_lunar": anio_lunar})
 
 
 def animal_chino(anio_lunar, datos=None):
@@ -224,6 +248,11 @@ def animal_chino(anio_lunar, datos=None):
       elemento_del_anio  el elemento del año en el ciclo de 60, que no es el elemento fijo del animal
       polaridad          yang o yin del año
     """
+    return _copia(_animal_chino(anio_lunar, datos))
+
+
+def _animal_chino(anio_lunar, datos):
+    """Como animal_chino(), pero devuelve los diccionarios de los datos y no copias (para uso interno)."""
     if isinstance(anio_lunar, bool) or not isinstance(anio_lunar, int):
         raise TypeError(f"anio_lunar debe ser int, no {type(anio_lunar).__name__}")
     datos = datos or cargar_datos()
@@ -248,7 +277,7 @@ def nombre_del_anio(anio_lunar, idioma, datos=None):
     if idioma not in datos["nombres_del_ciclo"]:
         raise ValueError(f"idioma desconocido: {idioma!r}")
     regla = datos["nombres_del_ciclo"][idioma]
-    anio = animal_chino(anio_lunar, datos)
+    anio = _animal_chino(anio_lunar, datos)
     elemento = regla.get("elementos", {}).get(anio["elemento_del_anio"]) or datos["terminos"][anio["elemento_del_anio"]][idioma]
     animal = anio["signo"]["nombres"][idioma]
     nombre = regla["plantilla"].format(elemento=elemento, animal=animal, animal_minusculas=animal.lower())
@@ -314,8 +343,54 @@ def compatibilidad(id_a, id_b, datos=None):
     return {"relaciones": relaciones, "afinidad": afinidad}
 
 
+# Para repartir un signo en tramos (decanatos, los 72) se usa un año de 365 días: el 29/02 cuenta como el 28/02. Así un
+# tramo es el mismo todos los años y su día no se corre en los bisiestos (antes dependía del año y la ficha, calculada
+# para 2025, no coincidía con la función en un año bisiesto).
+_DIAS_POR_MES = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+
+def _dia_del_anio(mes_dia):
+    """El día 1–365 de un [mes, día] en un año sin 29 de febrero (el 29/02 cuenta como el 28/02)."""
+    mes, dia = mes_dia
+    return sum(_DIAS_POR_MES[:mes - 1]) + min(dia, _DIAS_POR_MES[mes - 1])
+
+
+def _mes_dia(dia_del_anio):
+    """Lo inverso de _dia_del_anio(): el [mes, día] de un día 1–365 (pasarse de 365 da la vuelta al año)."""
+    n = (dia_del_anio - 1) % 365 + 1
+    for mes, dias in enumerate(_DIAS_POR_MES, 1):
+        if n <= dias:
+            return [mes, n]
+        n -= dias
+
+
+def _tramos_del_signo(signo, sistema, largos):
+    """Parte un signo en tramos de los largos que dé `largos(días del signo)`: [[mes, día] desde, [mes, día] hasta]."""
+    inicio = _dia_del_anio(signo[sistema]["desde"])
+    dias = (_dia_del_anio(signo[sistema]["hasta"]) - inicio) % 365 + 1
+    tramos, acumulado = [], 0
+    for n in largos(dias):
+        tramos.append([_mes_dia(inicio + acumulado), _mes_dia(inicio + acumulado + n - 1)])
+        acumulado += n
+    return tramos
+
+
+def _tramo_que_contiene(fecha, tramos):
+    """La posición (desde 0) del tramo que contiene el día de `fecha`; el 29/02 cuenta como el 28/02."""
+    clave = tuple(_mes_dia(_dia_del_anio((fecha.month, fecha.day))))
+    return next(k for k, (desde, hasta) in enumerate(tramos) if _en_rango(clave, desde, hasta))
+
+
+def _largos_de_decanatos(dias):
+    """Los días de los tres decanatos de un signo de `dias` días: 10, 10 y los que queden (de 9 a 12)."""
+    return [10, 10, dias - 20]
+
+
 def _inicio_del_signo(fecha, signo, sistema):
-    """La fecha en que empezó el tramo del signo que contiene a `fecha`."""
+    """@deprecated desde 1.3.1: los tramos ya no se calculan con fechas reales (dependían del año bisiesto).
+
+    Se conserva como referencia. La fecha en que empezó el tramo del signo que contiene a `fecha`.
+    """
     mes, dia = signo[sistema]["desde"]
     inicio = datetime.date(fecha.year, mes, dia)
     return inicio if inicio <= fecha else datetime.date(fecha.year - 1, mes, dia)
@@ -330,20 +405,20 @@ def decanato(fecha, sistema="tropical", datos=None):
       regente        el astro del decanato en el orden caldeo (clave de "terminos": "marte", "sol"…)
       signo_regente  el signo del mismo elemento que lo rige en el sistema por triplicidad
                      (Aries: Aries, Leo, Sagitario)
-    Los tramos son aproximados, como las fechas de los signos.
+    Los tramos son aproximados, como las fechas de los signos, y son los mismos todos los años: el 29/02
+    cuenta con el 28/02.
     """
     datos = datos or cargar_datos()
-    signo = signo_occidental(fecha, sistema, datos)
-    dia = datetime.date(fecha.year, fecha.month, fecha.day)
-    numero = min((dia - _inicio_del_signo(dia, signo, sistema)).days // 10, 2) + 1
+    signo = _signo_occidental(fecha, sistema, datos)
+    numero = _tramo_que_contiene(fecha, _tramos_del_signo(signo, sistema, _largos_de_decanatos)) + 1
     occidentales = [s for s in datos["signos"] if s["tipo"] == "occidental"]
     indice = [s["id"] for s in occidentales].index(signo["id"])
-    return {
+    return _copia({
         "signo": signo,
         "numero": numero,
         "regente": regentes_de_decanatos(signo["id"], datos)[numero - 1],
         "signo_regente": occidentales[(indice + 4 * (numero - 1)) % 12],
-    }
+    })
 
 
 def regentes_de_decanatos(id_signo, datos=None):
@@ -356,15 +431,14 @@ def regentes_de_decanatos(id_signo, datos=None):
     return [ORDEN_CALDEO[(indice * 3 + n) % 7] for n in range(3)]
 
 
-def tramos_de_decanatos(signo, sistema="tropical", anio=2025):
-    """Los tres tramos de un signo como ([mes, día] desde, [mes, día] hasta) en un año dado."""
-    desde = datetime.date(anio, *signo[sistema]["desde"])
-    hasta = datetime.date(anio, *signo[sistema]["hasta"])
-    if hasta < desde:  # cruza el fin de año (Capricornio, y Sagitario en el sideral)
-        hasta = hasta.replace(year=anio + 1)
-    cortes = [desde, desde + datetime.timedelta(days=10), desde + datetime.timedelta(days=20), hasta + datetime.timedelta(days=1)]
-    return [([a.month, a.day], [(b - datetime.timedelta(days=1)).month, (b - datetime.timedelta(days=1)).day])
-            for a, b in zip(cortes, cortes[1:])]
+def tramos_de_decanatos(signo, sistema="tropical", anio=None):
+    """Los tres tramos de un signo como ([mes, día] desde, [mes, día] hasta).
+
+    Son los mismos todos los años (el 29/02 cuenta con el 28/02). El parámetro `anio` está @deprecated desde 1.3.1:
+    antes elegía el año con que se calculaban las fechas, y ahora no cambia nada; se conserva para no romper quien
+    lo pasaba.
+    """
+    return [tuple(t) for t in _tramos_del_signo(signo, sistema, _largos_de_decanatos)]
 
 
 def anios_del_animal(id_animal, desde, hasta, datos=None):
@@ -380,7 +454,7 @@ def anios_del_animal(id_animal, desde, hasta, datos=None):
 # --- Los 72 ángeles del Shem ha-Mephorash y los 72 demonios de la Goetia ---
 # Cada uno se atribuye a un tramo de 5° del zodiaco tropical: seis por signo, desde Aries. Aquí cada signo se
 # parte en seis tramos de fechas casi iguales (los primeros se llevan el día que sobre en los signos de 31 o 32
-# días). Un ángel y el demonio del mismo número comparten tramo.
+# días), los mismos todos los años. Un ángel y el demonio del mismo número comparten tramo.
 
 def _signo_occidental_por_id(id_signo, datos):
     for s in datos["signos"]:
@@ -396,13 +470,17 @@ def _largos_de_tramos(dias):
 
 
 def _fin_del_signo(inicio, signo):
+    """@deprecated desde 1.3.1: los tramos ya no se calculan con fechas reales; se conserva como referencia."""
     mes, dia = signo["tropical"]["hasta"]
     fin = datetime.date(inicio.year, mes, dia)
     return fin if fin >= inicio else datetime.date(inicio.year + 1, mes, dia)
 
 
 def _tramos_desde(inicio, signo):
-    """[(desde, hasta)] como fechas: los seis tramos del signo que empieza en `inicio`."""
+    """@deprecated desde 1.3.1: los tramos ya no se calculan con fechas reales; se conserva como referencia.
+
+    [(desde, hasta)] como fechas: los seis tramos del signo que empieza en `inicio`.
+    """
     tramos, desde = [], inicio
     for dias in _largos_de_tramos((_fin_del_signo(inicio, signo) - inicio).days + 1):
         hasta = desde + datetime.timedelta(days=dias - 1)
@@ -411,46 +489,40 @@ def _tramos_desde(inicio, signo):
     return tramos
 
 
-def tramos_de_espiritus(id_signo, anio=2025, datos=None):
-    """Los seis tramos de un signo occidental como [[mes, día] desde, [mes, día] hasta] en un año dado.
+def tramos_de_espiritus(id_signo, anio=None, datos=None):
+    """Los seis tramos de un signo occidental como [[mes, día] desde, [mes, día] hasta].
 
     Los ángeles y demonios del signo son los seis números que empiezan en (posición del signo × 6 + 1):
-    Aries tiene del 1 al 6, Tauro del 7 al 12… El año importa en Piscis (febrero tiene 28 o 29 días) y en
-    Capricornio, que empieza el 22/12 de ese año.
+    Aries tiene del 1 al 6, Tauro del 7 al 12… Son los mismos todos los años: el 29/02 cuenta con el 28/02. El
+    parámetro `anio` está @deprecated desde 1.3.1: antes elegía el año de las fechas y ahora no cambia nada (se
+    sigue comprobando que sea un entero, para no romper quien lo pasaba).
     """
-    if isinstance(anio, bool) or not isinstance(anio, int):
+    if anio is not None and (isinstance(anio, bool) or not isinstance(anio, int)):
         raise TypeError(f"anio debe ser int, no {type(anio).__name__}")
     datos = datos or cargar_datos()
-    signo = _signo_occidental_por_id(id_signo, datos)
-    inicio = datetime.date(anio, *signo["tropical"]["desde"])
-    return [[[d.month, d.day], [h.month, h.day]] for d, h in _tramos_desde(inicio, signo)]
+    return _tramos_del_signo(_signo_occidental_por_id(id_signo, datos), "tropical", _largos_de_tramos)
 
 
 def _espiritu_de_fecha(fecha, datos):
     """(número 1–72, signo, [desde, hasta] del tramo) de una fecha, en el zodiaco tropical."""
-    if not isinstance(fecha, datetime.date):
-        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
-    signo = signo_occidental(fecha, "tropical", datos)
-    dia = datetime.date(fecha.year, fecha.month, fecha.day)
-    inicio = _inicio_del_signo(dia, signo, "tropical")
-    tramos = _tramos_desde(inicio, signo)
-    k = next(n for n, (desde, hasta) in enumerate(tramos) if desde <= dia <= hasta)
+    signo = _signo_occidental(fecha, "tropical", datos)
+    tramos = _tramos_del_signo(signo, "tropical", _largos_de_tramos)
+    k = _tramo_que_contiene(fecha, tramos)
     occidentales = [s["id"] for s in datos["signos"] if s["tipo"] == "occidental"]
-    desde, hasta = tramos[k]
-    return occidentales.index(signo["id"]) * 6 + k + 1, signo, [[desde.month, desde.day], [hasta.month, hasta.day]]
+    return occidentales.index(signo["id"]) * 6 + k + 1, signo, tramos[k]
 
 
 def angel_de_fecha(fecha, datos=None):
     """El ángel del Shem ha-Mephorash que rige una fecha (zodiaco tropical).
 
     Devuelve {"angel": …, "signo": …, "coro": …, "tramo": [[mes, día], [mes, día]]}: el ángel y el signo son
-    los diccionarios de los datos, el coro es una de CHOROS y el tramo, las fechas de ese ángel en el año de
-    `fecha`. Las fechas son aproximadas, como las de los signos.
+    los diccionarios de los datos, el coro es una de CHOROS y el tramo, las fechas de ese ángel (el 29/02 cuenta
+    con el 28/02). Las fechas son aproximadas, como las de los signos.
     """
     datos = datos or cargar_datos()
     numero, signo, tramo = _espiritu_de_fecha(fecha, datos)
-    return {"angel": cargar_espiritus()["angeles"][numero - 1], "signo": signo,
-            "coro": CHOROS[(numero - 1) // 8], "tramo": tramo}
+    return _copia({"angel": cargar_espiritus()["angeles"][numero - 1], "signo": signo,
+                   "coro": CHOROS[(numero - 1) // 8], "tramo": tramo})
 
 
 def demonio_de_fecha(fecha, datos=None):
@@ -461,7 +533,7 @@ def demonio_de_fecha(fecha, datos=None):
     """
     datos = datos or cargar_datos()
     numero, signo, tramo = _espiritu_de_fecha(fecha, datos)
-    return {"demonio": cargar_espiritus()["demonios"][numero - 1], "signo": signo, "tramo": tramo}
+    return _copia({"demonio": cargar_espiritus()["demonios"][numero - 1], "signo": signo, "tramo": tramo})
 
 
 def cualidades_de(tipo, numero, idioma):
@@ -485,7 +557,13 @@ def cualidades_de(tipo, numero, idioma):
 
 def _frase(claves, idioma, glosarios, separador):
     """Las claves de un glosario dichas en un idioma y unidas con su separador, con la primera letra en mayúscula."""
-    return mayuscula_inicial(separador[idioma].join(next(g[c][idioma] for g in glosarios if c in g) for c in claves), idioma)
+    textos = []
+    for c in claves:
+        glosario = next((g for g in glosarios if c in g), None)
+        if glosario is None:
+            raise KeyError(f"la clave {c!r} no está en ningún glosario")
+        textos.append(glosario[c][idioma])
+    return mayuscula_inicial(separador[idioma].join(textos), idioma)
 
 
 def mayuscula_inicial(texto, idioma):
@@ -508,15 +586,14 @@ def arbol_celta(fecha):
     ({"id", "cientifico", "nombres"}). Son 13 meses de 28 días; el 23 de diciembre no pertenece a ninguno
     (es el «día del año») y devuelve None.
     """
-    if not isinstance(fecha, datetime.date):
-        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    _exigir_fecha(fecha)
     clave = (fecha.month, fecha.day)
     celta = cargar_arboles()["calendario_celta"]
     if list(clave) == celta["dia_sin_arbol"]:
         return None
     for mes in celta["meses"]:
         if _en_rango(clave, mes["desde"], mes["hasta"]):
-            return {"mes": mes, "arbol": _arbol(mes["arbol"])}
+            return _copia({"mes": mes, "arbol": _arbol(mes["arbol"])})
     raise LookupError(f"ningún mes celta cubre el {fecha.day:02d}/{fecha.month:02d}")
 
 
@@ -526,13 +603,12 @@ def arbol_de_fecha(fecha):
     Devuelve {"arbol": …, "tramo": [[mes, día], [mes, día]], "rasgos": […]}: el árbol, el tramo de fechas que
     contiene a `fecha` (un árbol tiene uno, dos o tres) y las claves de sus rasgos. Cubre todos los días del año.
     """
-    if not isinstance(fecha, datetime.date):
-        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    _exigir_fecha(fecha)
     clave = (fecha.month, fecha.day)
     for entrada in cargar_arboles()["horoscopo"]:
         for desde, hasta in entrada["tramos"]:
             if _en_rango(clave, desde, hasta):
-                return {"arbol": _arbol(entrada["arbol"]), "tramo": [desde, hasta], "rasgos": entrada["rasgos"]}
+                return _copia({"arbol": _arbol(entrada["arbol"]), "tramo": [desde, hasta], "rasgos": entrada["rasgos"]})
     raise LookupError(f"ningún árbol cubre el {fecha.day:02d}/{fecha.month:02d}")
 
 
@@ -591,7 +667,7 @@ def nakshatra_de_instante(instante):
     """
     jd = _dia_juliano(instante)
     sideral = (longitud_de_la_luna(instante) - (_AYANAMSA_J2000 + (jd - 2451545.0) / 365.25 * _AYANAMSA_POR_ANIO)) % 360.0
-    return {"nakshatra": cargar_arboles()["nakshatras"][int(sideral // (360 / 27))], "longitud_sideral": sideral}
+    return _copia({"nakshatra": cargar_arboles()["nakshatras"][int(sideral // (360 / 27))], "longitud_sideral": sideral})
 
 
 def rasgos_de(sistema, clave, idioma):
@@ -633,8 +709,7 @@ def camino_de_vida(fecha):
     salvo que salga 11, 22 o 33, que se conservan. Existen otras formas de calcularlo (reducir antes cada parte,
     por ejemplo) que a veces dan otro número: esta es la de «sumar todos los dígitos».
     """
-    if not isinstance(fecha, datetime.date):
-        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    _exigir_fecha(fecha)
     return reducir_numero(sum(int(c) for c in f"{fecha.year}{fecha.month}{fecha.day}"))
 
 
@@ -644,8 +719,7 @@ def anio_personal(fecha, anio):
     Se suman los dígitos del día y el mes de nacimiento y los del año que se consulta, y se reducen a uno solo
     (aquí sin números maestros: el año personal va de 1 a 9).
     """
-    if not isinstance(fecha, datetime.date):
-        raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
+    _exigir_fecha(fecha)
     if isinstance(anio, bool) or not isinstance(anio, int) or anio < 1:
         raise ValueError(f"anio debe ser un entero positivo, no {anio!r}")
     return reducir_numero(sum(int(c) for c in f"{fecha.day}{fecha.month}{anio}"), maestros=False)

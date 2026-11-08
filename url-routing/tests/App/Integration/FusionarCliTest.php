@@ -7,10 +7,13 @@ namespace Tests\App\Integration;
 use App\Support\Database;
 use App\Support\Migrator;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\ComandoDePrueba;
 
 /** bin/fusionar.php as the owner runs it: a real subprocess, a real SQLite file, and its exit code. */
 class FusionarCliTest extends TestCase
 {
+    use ComandoDePrueba;
+
     private string $archivo;
     private Database $db;
 
@@ -35,20 +38,7 @@ class FusionarCliTest extends TestCase
     /** @return array{0: int, 1: string, 2: string} exit code, stdout, stderr */
     private function correr(string ...$args): array
     {
-        $proceso = proc_open(
-            [PHP_BINARY, dirname(__DIR__, 3) . '/bin/fusionar.php', ...$args],
-            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-            $pipes,
-            null,
-            ['PATH' => (string)getenv('PATH'), 'DB_DSN_GENEALOGY' => 'sqlite:' . $this->archivo]
-        );
-        $this->assertIsResource($proceso);
-        $salida = stream_get_contents($pipes[1]);
-        $error = stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        return [proc_close($proceso), (string)$salida, (string)$error];
+        return $this->ejecutarComando('fusionar', $args, ['DB_DSN_GENEALOGY' => 'sqlite:' . $this->archivo]);
     }
 
     public function testGrupoWithoutConfirmarOnlyShowsWhatWouldMove(): void

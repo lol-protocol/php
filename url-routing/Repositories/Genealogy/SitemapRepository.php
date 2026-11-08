@@ -22,7 +22,10 @@ final class SitemapRepository extends Base
         $sin = static fn(string $tipo, string $columna): string => ' NOT ' . RetiroRepository::sqlRetirado($tipo, $columna);
 
         return [
-            '10' => 'SELECT q.id AS clave, q.actualizado_en AS fecha FROM personas q WHERE NOT ' . $p->sqlOculta('q') . ' AND' . $sin('persona', 'q.id'),
+            // A persona page also shows her events: when one of the visible ones changes, so did the page.
+            '10' => 'SELECT t.id AS clave, CASE WHEN t.de_sucesos > t.propia OR t.propia IS NULL THEN t.de_sucesos ELSE t.propia END AS fecha FROM ('
+                . "SELECT q.id, q.actualizado_en AS propia, (SELECT MAX(e.actualizado_en) FROM suceso_participantes sp JOIN {$p->sucesos()} e ON e.id = sp.suceso_id WHERE sp.persona_id = q.id) AS de_sucesos"
+                . ' FROM personas q WHERE NOT ' . $p->sqlOculta('q') . ' AND' . $sin('persona', 'q.id') . ') t',
             '9' => "SELECT e.id AS clave, e.actualizado_en AS fecha FROM {$p->sucesos()} e WHERE" . $sin('suceso', 'e.id'),
             '8' => "SELECT g.id AS clave, g.actualizado_en AS fecha FROM {$p->registros()} g WHERE" . $sin('registro', 'g.id'),
             '7' => 'SELECT c.id AS clave, c.actualizado_en AS fecha FROM colecciones c WHERE c.publica AND' . $sin('coleccion', 'c.id'),

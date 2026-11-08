@@ -172,6 +172,49 @@ class RateLimiterTest extends TestCase
         $this->assertGreaterThanOrEqual(1, $limiter->retryAfter());
     }
 
+    public function testAWindowLongerThanTheOneItRemembersIsRefused(): void
+    {
+        $limiter = RateLimiter::getInstance();
+
+        foreach ([RateLimiter::VENTANA_MAXIMA + 1, 86400, -1] as $ventana) {
+            try {
+                $limiter->isAllowed($this->uniqueIp(), 5, $ventana);
+                $this->fail("a window of {$ventana} s must be refused");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString((string)$ventana, $e->getMessage());
+            }
+        }
+        $this->assertTrue($limiter->isAllowed($this->uniqueIp(), 5, RateLimiter::VENTANA_MAXIMA), 'the longest one is fine');
+    }
+
+    /**
+     * The sweep must never delete the file of a client who is still inside the longest window: that would
+     * give them back all their requests. A file nobody has touched for as long as the window is, by
+     * definition, one whose requests have all left it.
+     */
+    public function testTheSweepKeepsTheFileOfAClientStillInsideTheLongestWindow(): void
+    {
+        $limiter = RateLimiter::getInstance();
+        $ip = $this->uniqueIp();
+        $file = sys_get_temp_dir() . '/rate_limit_' . hash('sha256', $ip);
+
+        $this->assertTrue($limiter->isAllowed($ip, 1, RateLimiter::VENTANA_MAXIMA));
+        $this->assertFalse($limiter->isAllowed($ip, 1, RateLimiter::VENTANA_MAXIMA));
+
+        // Their only request was made almost one window ago: still counted, so the file must survive the sweep
+        file_put_contents($file, json_encode([time() - (RateLimiter::VENTANA_MAXIMA - 30)]));
+        touch($file, time() - (RateLimiter::VENTANA_MAXIMA - 30));
+        $limiter->sweep();
+        $this->assertFileExists($file);
+        $this->assertFalse($limiter->isAllowed($ip, 1, RateLimiter::VENTANA_MAXIMA), 'and they are still limited');
+
+        // Once the request is older than the window, the file may go and nothing is lost
+        touch($file, time() - (RateLimiter::VENTANA_MAXIMA + 30));
+        $limiter->sweep();
+        $this->assertFileDoesNotExist($file);
+        $this->assertTrue($limiter->isAllowed($ip, 1, RateLimiter::VENTANA_MAXIMA));
+    }
+
     /** Files of clients that stopped coming are deleted; recent ones and files that are not the limiter's stay. */
     public function testSweepDeletesOnlyStaleLimiterFiles(): void
     {

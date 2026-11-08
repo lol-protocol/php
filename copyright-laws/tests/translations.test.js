@@ -15,7 +15,7 @@ import {
   translationFile,
   validateTranslations,
 } from "../scripts/lib/dataset.js";
-import { coverage, missing } from "../scripts/translations.js";
+import { coverage, missing, importedRows } from "../scripts/translations.js";
 
 const loaded = loadAndValidate();
 const { records } = loaded;
@@ -68,6 +68,16 @@ test("coverage and the list of missing values agree", () => {
   assert.equal(coverage(records, rows).spa.translated, 1);
   assert.equal(missing(records, rows, "spa").length, coverage(records, rows).spa.total - 1);
   assert.ok(!missing(records, rows, "spa").includes(sample));
+});
+
+test("importing a done list skips ids whose source is already translated, instead of duplicating it", () => {
+  const existing = [{ lang: "spa", source: sample, text: "ya traducido" }];
+  const todo = new Map([[1, sample], [2, "otro texto que falta"]]);
+  const done = [{ id: 1, t: "de nuevo" }, { id: 2, t: "traducción nueva" }];
+  const { added, skipped } = importedRows(existing, todo, done, "spa");
+  assert.deepEqual(added, [{ lang: "spa", source: "otro texto que falta", text: "traducción nueva" }]);
+  assert.equal(skipped, 1);
+  assert.deepEqual(validateTranslations([...existing, ...added], records).errors, [], "no duplicate slips into the CSV");
 });
 
 test("the translations command rejects an unknown language", () => {

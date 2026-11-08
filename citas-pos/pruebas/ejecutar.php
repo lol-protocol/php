@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 const RAIZ = __DIR__ . '/..';
 
+require_once RAIZ . '/bin/lib/comun.php';
+
+/** El «hoy» con el que corren los scripts en las pruebas, para que no dependan del reloj (ver CITAS_POS_HOY). */
+const HOY_EN_PRUEBAS = '2026-11-06';
+putenv('CITAS_POS_HOY=' . HOY_EN_PRUEBAS);
+
 /** @var list<string> carpetas temporales por borrar al terminar */
 $GLOBALS['temporales'] = [];
 
@@ -90,9 +96,9 @@ function proyecto(): string
  * @param list<string> $argumentos
  * @return array{int, string} código de salida y lo que escribió (salida y errores juntos)
  */
-function correr(string $script, array $argumentos = []): array
+function correr(string $script, array $argumentos = [], ?string $hoy = null): array
 {
-    $orden = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($script);
+    $orden = 'CITAS_POS_HOY=' . escapeshellarg($hoy ?? HOY_EN_PRUEBAS) . ' ' . escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($script);
     foreach ($argumentos as $a) {
         $orden .= ' ' . escapeshellarg($a);
     }
@@ -121,10 +127,19 @@ function rechaza(array $r, string $trozo): void
     verdadero(str_contains($r[1], $trozo), 'no dice «' . $trozo . '»: ' . $r[1]);
 }
 
-/** @return array<string, mixed> */
-function leerJson(string $ruta): array
+/**
+ * Rompe la primera frase de datos/ejemplos.json de una copia del proyecto con $cambio y comprueba que $script la
+ * rechaza con un mensaje que contenga $trozo.
+ *
+ * @param callable(array<string, mixed>): array<string, mixed> $cambio recibe la primera frase y devuelve la rota
+ */
+function romperFrase(string $script, callable $cambio, string $trozo): void
 {
-    return json_decode((string) file_get_contents($ruta), true, 512, JSON_THROW_ON_ERROR);
+    $dir = proyecto();
+    $e = leerJson($dir . '/datos/ejemplos.json');
+    $e['ejemplos'][0]['frases'][0] = $cambio($e['ejemplos'][0]['frases'][0]);
+    escribirJson($dir . '/datos/ejemplos.json', $e);
+    rechaza(correr($dir . '/bin/' . $script), $trozo);
 }
 
 function escribirJson(string $ruta, mixed $datos): void
@@ -168,20 +183,20 @@ function palabrasDe(int $n): string
 }
 
 /** @param list<array<string, mixed>> $citas */
-function validarCitas(array $citas): array
+function validarCitas(array $citas, ?string $hoy = null): array
 {
     $archivo = temporal() . '/citas.json';
     escribirJson($archivo, ['citas' => $citas]);
-    return correr(RAIZ . '/bin/comprobar-citas.php', [$archivo]);
+    return correr(RAIZ . '/bin/comprobar-citas.php', [$archivo], $hoy);
 }
 
 // --- revisiones --------------------------------------------------------------------------------
 
-function validarRevisiones(string $filas, string $cabecera = 'idioma,alcance,elemento,veredicto,revisor,fecha,nota'): array
+function validarRevisiones(string $filas, string $cabecera = 'idioma,alcance,elemento,veredicto,revisor,fecha,nota', ?string $hoy = null, ?string $proyecto = null): array
 {
     $archivo = temporal() . '/revisiones.csv';
     file_put_contents($archivo, $cabecera . "\n" . $filas);
-    return correr(RAIZ . '/bin/comprobar-revisiones.php', [$archivo]);
+    return correr(($proyecto ?? RAIZ) . '/bin/comprobar-revisiones.php', [$archivo], $hoy);
 }
 
 // --- pruebas -----------------------------------------------------------------------------------
@@ -217,6 +232,13 @@ $pasan = [
     'una cita descartada de un autor reciente, con motivo' => [cita('spa-d1', ['estado' => 'descartada', 'fallecimiento' => 1976, 'motivo_descarte' => 'protegido'])],
     'una cita sin verificar, sin texto y con lo que falta' => [cita('spa-s1')],
 ];
+// Chino: sin espacios, el largo se cuenta con las etiquetas que no son puntuación.
+const ETIQUETAS_ZHO = [['春眠', 'NOUN'], ['不', 'ADV'], ['觉', 'VERB'], ['晓', 'NOUN'], ['，', 'PUNCT'], ['处处', 'ADV'], ['闻', 'VERB'], ['啼鸟', 'NOUN']];
+function verificadaEnChino(array $cambios = []): array
+{
+    return verificada('zho-v1', array_merge(['idioma' => 'zho', 'texto' => '春眠不觉晓，处处闻啼鸟', 'etiquetas' => ETIQUETAS_ZHO], $cambios));
+}
+$pasan['una verificada en chino de 7 palabras (la coma no cuenta)'] = [verificadaEnChino()];
 foreach ($pasan as $nombre => $citas) {
     $pruebas["comprobar-citas acepta $nombre"] = function () use ($citas): void {
         pasa(validarCitas($citas), 'Citas correctas');
@@ -247,16 +269,177 @@ $rechazan = [
     'un id de otro idioma' => [[cita('eng-m1')], 'el id debe ser'],
     'un idioma desconocido' => [[cita('xxx-m1', ['idioma' => 'xxx'])], 'idioma desconocido'],
     'un id repetido' => [[cita('spa-m1'), cita('spa-m1')], 'está repetido'],
+    'un id con un salto de línea al final' => [[cita("spa-m1\n")], 'el id debe ser'],
     'un estado desconocido' => [[cita('spa-m1', ['estado' => 'quizá'])], 'estado desconocido'],
     'un tema vacío' => [[cita('spa-m1', ['tema' => []])], 'tema debe ser una lista'],
     'un dominio público sin explicar' => [[cita('spa-m1', ['dominio_publico' => ''])], 'dominio_publico debe explicar'],
     'un campo que falta' => [[$sinAutor], 'faltan campos: autor'],
 ];
+$rechazan['una verificada en chino con 3 palabras'] = [[verificadaEnChino(['texto' => '春眠不', 'etiquetas' => [['春眠', 'NOUN'], ['不', 'ADV']]])], 'el texto tiene 2 palabras'];
 foreach ($rechazan as $nombre => [$citas, $mensaje]) {
     $pruebas["comprobar-citas rechaza $nombre"] = function () use ($citas, $mensaje): void {
         rechaza(validarCitas($citas), $mensaje);
     };
 }
+
+// aprobadas(): lo que cuenta como revisado para el generador.
+$pruebas['aprobadas: correcto y corregido aprueban'] = function (): void {
+    $archivo = temporal() . '/r.csv';
+    file_put_contents($archivo, "idioma,alcance,elemento,veredicto,revisor,fecha,nota\nspa,cita,spa-1,correcto,Ana,2026-10-26,\nspa,cita,spa-2,corregido,Ana,2026-10-26,\n");
+    igual(['spa|cita|spa-1' => true, 'spa|cita|spa-2' => true], aprobadas($archivo));
+};
+$pruebas['aprobadas: un «corregir» o «dudoso» de otro revisor bloquea aunque haya un «correcto»'] = function (): void {
+    $archivo = temporal() . '/r.csv';
+    file_put_contents($archivo, "idioma,alcance,elemento,veredicto,revisor,fecha,nota\n"
+        . "spa,cita,spa-1,correcto,Ana,2026-10-26,\nspa,cita,spa-1,corregir,Bob,2026-10-26,cambia una coma\n"
+        . "spa,cita,spa-2,dudoso,Bob,2026-10-26,no sé\nspa,cita,spa-2,correcto,Ana,2026-10-26,\n"
+        . "spa,cita,spa-3,correcto,Ana,2026-10-26,\n");
+    igual(['spa|cita|spa-3' => true], aprobadas($archivo));
+};
+
+// El largo del texto: un signo suelto no es una palabra, y en singular se dice «palabra».
+$pruebas['comprobar-citas: un signo suelto («—») no cuenta como palabra'] = function (): void {
+    rechaza(validarCitas([verificada('spa-p1', ['texto' => 'Una — frase — de — prueba — con'])]), 'el texto tiene 5 palabras');
+    pasa(validarCitas([verificada('spa-p2', ['texto' => 'Una — frase — de — prueba con seis'])]), 'Citas correctas');
+};
+$pruebas['comprobar-citas: el mensaje dice «1 palabra» en singular'] = function (): void {
+    rechaza(validarCitas([verificada('spa-p3', ['texto' => 'Hola'])]), 'el texto tiene 1 palabra;');
+};
+$pruebas['datos/idiomas.json: solo el chino, el japonés y el tailandés van sin espacios'] = function (): void {
+    $sin = array_column(array_filter(leerJson(DATOS . '/idiomas.json')['idiomas'], static fn (array $i): bool => !empty($i['sin_espacios'])), 'codigo');
+    sort($sin);
+    igual(['jpn', 'tha', 'zho'], $sin);
+};
+$pruebas['comprobar-citas: un japonés sin etiquetas se cuenta con intl (o avisa de que hacen falta las etiquetas)'] = function (): void {
+    $japones = verificada('jpn-i1', ['idioma' => 'jpn', 'texto' => '今日は天気がいいので散歩に行きます']);
+    if (class_exists('IntlBreakIterator')) {
+        pasa(validarCitas([$japones]), 'Citas correctas');
+    } else {
+        rechaza(validarCitas([$japones]), 'hacen falta las etiquetas');
+    }
+};
+
+// Las fuentes: «sitios distintos» se mide por el dominio principal.
+$pruebas['dominioPrincipal: sin mayúsculas, sin www. ni subdominios, y con los sufijos de dos niveles'] = function (): void {
+    $casos = [
+        'https://es.wikisource.org/wiki/X' => 'wikisource.org',
+        'https://EN.Wikisource.ORG/x' => 'wikisource.org',
+        'https://www.gutenberg.org:443/ebooks/1' => 'gutenberg.org',
+        'https://gutenberg.org./x' => 'gutenberg.org',
+        'https://www.cervantesvirtual.com/obra' => 'cervantesvirtual.com',
+        'https://archivo.example.co.uk/x' => 'example.co.uk',
+        'https://a.b.example.com.mx/x' => 'example.com.mx',
+        'https://localhost/x' => 'localhost',
+    ];
+    $obtenidos = [];
+    foreach (array_keys($casos) as $url) {
+        $obtenidos[$url] = dominioPrincipal($url);
+    }
+    igual($casos, $obtenidos);
+};
+foreach ([
+    'a.org y A.ORG' => ['a.org', 'A.ORG'],
+    'es.wikisource.org y www.es.wikisource.org' => ['es.wikisource.org', 'www.es.wikisource.org'],
+    'es.wikisource.org y en.wikisource.org' => ['es.wikisource.org', 'en.wikisource.org'],
+    'gutenberg.org y www.gutenberg.org' => ['gutenberg.org', 'www.gutenberg.org'],
+] as $nombre => [$a, $b]) {
+    $pruebas["comprobar-citas rechaza dos fuentes que son del mismo sitio: $nombre"] = function () use ($a, $b): void {
+        rechaza(validarCitas([verificada('spa-m1', ['fuentes' => [fuente($a), fuente($b)]])]), 'al menos dos fuentes de sitios distintos');
+    };
+}
+$pruebas['comprobar-citas acepta dos fuentes de sitios distintos'] = function (): void {
+    pasa(validarCitas([verificada('spa-m1', ['fuentes' => [fuente('www.gutenberg.org'), fuente('www.cervantesvirtual.com')]])]), 'Citas correctas');
+};
+$pruebas['comprobar-citas rechaza una fuente cuya url no tiene dominio'] = function (): void {
+    rechaza(validarCitas([verificada('spa-m1', ['fuentes' => [array_merge(fuente('a.org'), ['url' => 'https:///x']), fuente('b.org')]])]), 'necesita una url con dominio');
+};
+
+// Las fechas y el año de corte salen de «hoy», que se fija para que las pruebas no dependan del reloj.
+$pruebas['comprobar-citas: el último año de fallecimiento avanza con el año (vida+100: el de hoy menos 101)'] = function (): void {
+    $de = static fn (int $anio): array => [cita('spa-a1', ['fallecimiento' => $anio])];
+    pasa(validarCitas($de(1925), '2026-11-06'), 'Citas correctas');
+    rechaza(validarCitas($de(1926), '2026-11-06'), 'solo entran fallecidos hasta 1925');
+    rechaza(validarCitas($de(1926), '2026-12-31'), 'solo entran fallecidos hasta 1925');
+    pasa(validarCitas($de(1926), '2027-01-01'), 'Citas correctas');
+    rechaza(validarCitas($de(1927), '2027-01-01'), 'solo entran fallecidos hasta 1926');
+};
+$pruebas['ultimoAnioDeFallecimiento() sale del año de hoy'] = function (): void {
+    foreach (['2026-11-06' => 1925, '2026-12-31' => 1925, '2027-01-01' => 1926, '2030-06-15' => 1929] as $hoy => $esperado) {
+        putenv('CITAS_POS_HOY=' . $hoy);
+        $obtenido = ultimoAnioDeFallecimiento();
+        putenv('CITAS_POS_HOY=' . HOY_EN_PRUEBAS);
+        igual($esperado, $obtenido);
+    }
+};
+$pruebas['comprobar-citas: una fuente consultada después de hoy se rechaza, y la de hoy se acepta'] = function (): void {
+    $con = static fn (string $fecha): array => [verificada('spa-f1', ['fuentes' => [array_merge(fuente('a.org'), ['consultada' => $fecha]), fuente('b.org')]])];
+    pasa(validarCitas($con('2026-11-06')), 'Citas correctas');
+    rechaza(validarCitas($con('2026-11-07')), 'la fuente 1 necesita');
+    rechaza(validarCitas($con('2099-01-01')), 'no posterior a hoy');
+};
+$pruebas['comprobar-revisiones: una revisión fechada después de hoy se rechaza, y la de hoy se acepta'] = function (): void {
+    pasa(validarRevisiones("spa,etiquetas,spa-1,correcto,Ana,2026-11-06,\n"), '1 fila(s)');
+    rechaza(validarRevisiones("spa,etiquetas,spa-1,correcto,Ana,2026-11-07,\n"), 'es posterior a hoy');
+    rechaza(validarRevisiones("spa,etiquetas,spa-1,correcto,Ana,2099-01-01,\n"), 'es posterior a hoy');
+};
+$pruebas['una CITAS_POS_HOY que no es una fecha la avisan los dos validadores'] = function (): void {
+    rechaza(correr(RAIZ . '/bin/comprobar-citas.php', [], 'ayer'), 'CITAS_POS_HOY');
+    rechaza(correr(RAIZ . '/bin/comprobar-revisiones.php', [], 'ayer'), 'CITAS_POS_HOY');
+};
+
+// lang y escritura: lo que acaba en un atributo HTML.
+$pruebas['langValido y escrituraValida'] = function (): void {
+    foreach (['es', 'eng', 'zh-Hans', 'sr-Latn'] as $bien) {
+        verdadero(langValido($bien), "lang $bien debía valer");
+    }
+    foreach (['', 'E', 'español', 'es"', 'es" onfocus="x', 'zh-hans', 'zh-Han', 'es-', ' es', "es\n"] as $mal) {
+        verdadero(!langValido($mal), 'lang «' . $mal . '» no debía valer');
+    }
+    foreach (['Hans', 'Latn', 'Arab'] as $bien) {
+        verdadero(escrituraValida($bien), "escritura $bien debía valer");
+    }
+    foreach (['hans', 'HANS', 'Han', 'Hanss', '<script>', 'Han"', '', null, 5] as $mal) {
+        verdadero(!escrituraValida($mal), 'escritura ' . var_export($mal, true) . ' no debía valer');
+    }
+};
+$pruebas['comprobar-citas rechaza una escritura que no es un código ISO 15924, y acepta Hans'] = function (): void {
+    foreach (['<script>x</script>', 'hans', 'Han', 'x" onfocus="y'] as $mala) {
+        rechaza(validarCitas([cita('spa-e1', ['escritura' => $mala])]), 'escritura debe ser un código ISO 15924');
+    }
+    pasa(validarCitas([cita('spa-e1', ['escritura' => 'Latn'])]), 'Citas correctas');
+    pasa(validarCitas([cita('spa-e1', ['escritura' => null])]), 'Citas correctas');
+};
+$pruebas['render y prototipo rechazan un lang que cerraría el atributo (en las frases de prueba)'] = function (): void {
+    $dir = proyecto();
+    $e = leerJson($dir . '/datos/ejemplos.json');
+    $e['ejemplos'][0]['html'] = 'es" onfocus="alert(1)" x="';
+    escribirJson($dir . '/datos/ejemplos.json', $e);
+    rechaza(correr($dir . '/bin/render.php'), 'no es un valor válido para lang');
+    rechaza(correr($dir . '/bin/prototipo.php'), 'no es un valor válido para lang');
+};
+$pruebas['render rechaza una cita aprobada con una escritura que inyectaría atributos, aunque el validador no la haya visto'] = function (): void {
+    $dir = proyecto();
+    $c = leerJson($dir . '/datos/citas.json');
+    $c['citas'][] = verificadaEnChino(['escritura' => 'x" onfocus="y']);
+    escribirJson($dir . '/datos/citas.json', $c);
+    file_put_contents($dir . '/revisiones.csv', "zho,cita,zho-v1,correcto,Ana,2026-10-26,\nzho,etiquetas,zho-v1,correcto,Ana,2026-10-26,\n", FILE_APPEND);
+    rechaza(correr($dir . '/bin/render.php'), 'no es un valor válido para lang');
+};
+
+// El registro solo admite revisar lo que ya existe.
+$pruebas['comprobar-revisiones rechaza revisar el texto o las etiquetas de una cita que aún no los tiene'] = function (): void {
+    rechaza(validarRevisiones("spa,cita,spa-c1,correcto,Ana,2026-10-26,\n"), 'aún no tiene texto que revisar con el alcance cita');
+    rechaza(validarRevisiones("spa,traduccion,spa-c1,correcto,Ana,2026-10-26,\n"), 'aún no tiene texto que revisar con el alcance traduccion');
+    rechaza(validarRevisiones("spa,etiquetas,spa-c1,correcto,Ana,2026-10-26,\n"), 'aún no tiene etiquetas que revisar con el alcance etiquetas');
+};
+$pruebas['comprobar-revisiones: una cita con texto admite revisar el texto, y sin etiquetas aún no admite revisar las etiquetas'] = function (): void {
+    $dir = proyecto();
+    $c = leerJson($dir . '/datos/citas.json');
+    $c['citas'][] = verificada('spa-v2', ['texto' => 'Una frase de prueba con seis palabras']);
+    escribirJson($dir . '/datos/citas.json', $c);
+    pasa(validarRevisiones("spa,cita,spa-v2,correcto,Ana,2026-10-26,\n", proyecto: $dir), '1 fila(s)');
+    rechaza(validarRevisiones("spa,etiquetas,spa-v2,correcto,Ana,2026-10-26,\n", proyecto: $dir), 'aún no tiene etiquetas que revisar');
+};
 
 // Revisiones.
 $pruebas['comprobar-revisiones acepta filas correctas, con comillas y comas en la nota'] = function (): void {
@@ -264,11 +447,13 @@ $pruebas['comprobar-revisiones acepta filas correctas, con comillas y comas en l
         "spa,etiquetas,spa-1,correcto,Ana,2026-10-26,\n"
         . "spa,etiquetas,spa-2,corregir,Ana,2026-10-26,\"«no» aquí es ADV, no PART\"\n"
         . "eng,etiquetas,eng-1,dudoso,Bob,2026-10-26,\"¿\"\"small\"\" ADJ o NOUN?\"\n"
-        . "spa,cita,spa-c1,dudoso,Ana,2026-10-26,puntuación\n"
-    ), '4 fila(s)');
+        . "spa,cita,spa-v1,dudoso,Ana,2026-10-26,puntuación\n"
+        . "spa,etiquetas,spa-v1,correcto,Ana,2026-10-26,\n",
+        proyecto: proyectoConCita()[0]
+    ), '5 fila(s)');
 };
 $pruebas['comprobar-revisiones acepta una fecha de año bisiesto'] = function (): void {
-    pasa(validarRevisiones("spa,etiquetas,spa-1,correcto,Ana,2028-02-29,\n"), '1 fila(s)');
+    pasa(validarRevisiones("spa,etiquetas,spa-1,correcto,Ana,2024-02-29,\n"), '1 fila(s)');
 };
 
 $filasMalas = [
@@ -298,11 +483,56 @@ $pruebas['comprobar-revisiones rechaza una cabecera incorrecta'] = function (): 
     rechaza(validarRevisiones("spa,etiquetas,spa-1,correcto,Ana,2026-10-26,\n", 'idioma,alcance,elemento'), 'Cabecera incorrecta');
 };
 
+// Los documentos repiten datos y reglas del código: que no se desalineen sin que nada falle.
+$pruebas['CRITERIOS.md: la tabla de idiomas coincide con datos/idiomas.json'] = function (): void {
+    $doc = (string) file_get_contents(RAIZ . '/CRITERIOS.md');
+    preg_match_all('/`([a-z]{3})` · `([a-z]{2})` \| ([^|]+?) \|/u', $doc . ' |', $m, PREG_SET_ORDER);
+    $enDoc = [];
+    foreach ($m as [, $c3, $c2, $nombre]) {
+        $enDoc[$c3] = [$c2, trim($nombre)];
+    }
+    // La última columna de cada fila cierra con « |» y no con « | »: se lee aparte.
+    preg_match_all('/`([a-z]{3})` · `([a-z]{2})` \| ([^|\n]+?)\s*\|?\s*$/mu', $doc, $m2, PREG_SET_ORDER);
+    foreach ($m2 as [, $c3, $c2, $nombre]) {
+        $enDoc[$c3] = [$c2, trim($nombre)];
+    }
+    $enDatos = [];
+    foreach (leerJson(RAIZ . '/datos/idiomas.json')['idiomas'] as $i) {
+        $enDatos[$i['codigo']] = [$i['codigo2'], $i['nombre']];
+    }
+    ksort($enDoc);
+    ksort($enDatos);
+    igual($enDatos, $enDoc, 'la tabla de idiomas de CRITERIOS.md no coincide con datos/idiomas.json');
+};
+$pruebas['CRITERIOS.md: las 17 categorías UPOS figuran en la tabla'] = function (): void {
+    $doc = (string) file_get_contents(RAIZ . '/CRITERIOS.md');
+    $paleta = leerJson(RAIZ . '/datos/paleta.json');
+    foreach (array_column($paleta['categorias'], 'codigo') as $codigo) {
+        verdadero(str_contains($doc, "`$codigo`"), "CRITERIOS.md no menciona la categoría $codigo");
+    }
+};
+$pruebas['CRITERIOS.md: el largo de 6 a 20 palabras es el del validador'] = function (): void {
+    $codigo = (string) file_get_contents(RAIZ . '/bin/comprobar-citas.php');
+    preg_match('/const PALABRAS_MIN = (\d+);/', $codigo, $min);
+    preg_match('/const PALABRAS_MAX = (\d+);/', $codigo, $max);
+    verdadero(isset($min[1], $max[1]), 'no se encuentran PALABRAS_MIN y PALABRAS_MAX');
+    $doc = (string) file_get_contents(RAIZ . '/CRITERIOS.md');
+    verdadero(str_contains($doc, "De {$min[1]} a {$max[1]} palabras"), 'el resumen de CRITERIOS.md no dice «De N a M palabras» con los valores del validador');
+    verdadero(str_contains($doc, "entre {$min[1]} y {$max[1]} palabras"), 'las reglas de CRITERIOS.md no dicen «entre N y M palabras» con los valores del validador');
+};
+$pruebas['CRITERIOS.md: el año de corte de los derechos es el que calcula el validador'] = function (): void {
+    $doc = (string) file_get_contents(RAIZ . '/CRITERIOS.md');
+    $limite = ultimoAnioDeFallecimiento(); // con «hoy» fijado en las pruebas
+    $anio = substr(HOY_EN_PRUEBAS, 0, 4);
+    verdadero(str_contains($doc, "hasta $limite (en $anio"), "CRITERIOS.md no dice «hasta $limite (en {$anio}…»");
+    verdadero(str_contains($doc, 'año de hoy menos 101'), 'CRITERIOS.md no explica que el límite es el año de hoy menos 101');
+};
+
 $pruebas['GUIA-REVISION.md: las filas de ejemplo del CSV pasan el validador del registro'] = function (): void {
     $guia = (string) file_get_contents(RAIZ . '/GUIA-REVISION.md');
     verdadero(preg_match('/```csv\n(.+?)```/s', $guia, $m) === 1, 'no encuentra el bloque csv de la guía');
     $filas = preg_replace('/^[ \t]+/m', '', $m[1]);
-    pasa(validarRevisiones((string) $filas), '3 fila(s)');
+    pasa(validarRevisiones((string) $filas), '2 fila(s)');
 };
 
 // Paleta, sobre una copia.
@@ -354,25 +584,22 @@ foreach ($cambiosDePaleta as $nombre => [$cambio, $mensaje]) {
 
 // Prototipo, sobre una copia.
 $pruebas['prototipo rechaza una palabra etiquetada que no está en el texto'] = function (): void {
-    $dir = proyecto();
-    $e = leerJson($dir . '/datos/ejemplos.json');
-    $e['ejemplos'][0]['frases'][0]['palabras'][1][0] = 'gato';
-    escribirJson($dir . '/datos/ejemplos.json', $e);
-    rechaza(correr($dir . '/bin/prototipo.php'), 'no aparece en el texto');
+    romperFrase('prototipo.php', static function (array $f): array {
+        $f['palabras'][1][0] = 'gato';
+        return $f;
+    }, 'no aparece en el texto');
 };
 $pruebas['prototipo rechaza texto sin etiquetar'] = function (): void {
-    $dir = proyecto();
-    $e = leerJson($dir . '/datos/ejemplos.json');
-    $e['ejemplos'][0]['frases'][0]['texto'] = 'El gran perro pequeño lee despacio un libro rojo.';
-    escribirJson($dir . '/datos/ejemplos.json', $e);
-    rechaza(correr($dir . '/bin/prototipo.php'), 'texto sin etiquetar');
+    romperFrase('prototipo.php', static function (array $f): array {
+        $f['texto'] = 'El gran perro pequeño lee despacio un libro rojo.';
+        return $f;
+    }, 'texto sin etiquetar');
 };
 $pruebas['prototipo rechaza una categoría desconocida'] = function (): void {
-    $dir = proyecto();
-    $e = leerJson($dir . '/datos/ejemplos.json');
-    $e['ejemplos'][0]['frases'][0]['palabras'][1][1] = 'FOO';
-    escribirJson($dir . '/datos/ejemplos.json', $e);
-    rechaza(correr($dir . '/bin/prototipo.php'), 'categoría desconocida');
+    romperFrase('prototipo.php', static function (array $f): array {
+        $f['palabras'][1][1] = 'FOO';
+        return $f;
+    }, 'categoría desconocida');
 };
 $pruebas['prototipo --comprobar falla si el HTML guardado no está al día'] = function (): void {
     $dir = proyecto();
@@ -406,11 +633,10 @@ $pruebas['render: el fragmento del correo no lleva estilos ni clases, enlaces, i
     }
 };
 $pruebas['render rechaza una palabra etiquetada que no está en el texto'] = function (): void {
-    $dir = proyecto();
-    $e = leerJson($dir . '/datos/ejemplos.json');
-    $e['ejemplos'][0]['frases'][0]['palabras'][1][0] = 'gato';
-    escribirJson($dir . '/datos/ejemplos.json', $e);
-    rechaza(correr($dir . '/bin/render.php'), 'no aparece en el texto');
+    romperFrase('render.php', static function (array $f): array {
+        $f['palabras'][1][0] = 'gato';
+        return $f;
+    }, 'no aparece en el texto');
 };
 $pruebas['render: los fragmentos del sitio llevan lang y la categoría de cada palabra'] = function (): void {
     $html = (string) file_get_contents(RAIZ . '/salida/ejemplos/spa-1.sitio.html');
@@ -505,6 +731,8 @@ $casosDePuerta = [
     'con solo la revisión de las etiquetas' => ["spa,etiquetas,spa-v1,correcto,Ana,2026-10-26,\n", false],
     'con una revisión dudosa en el texto' => ["spa,cita,spa-v1,dudoso,Ana,2026-10-26,duda\nspa,etiquetas,spa-v1,correcto,Ana,2026-10-26,\n", false],
     'con una revisión «corregir» en las etiquetas' => ["spa,cita,spa-v1,correcto,Ana,2026-10-26,\nspa,etiquetas,spa-v1,corregir,Ana,2026-10-26,cambiar algo\n", false],
+    'con el «correcto» de un revisor y el «corregir» de otro sobre el mismo texto' => ["spa,cita,spa-v1,correcto,Ana,2026-10-26,\nspa,etiquetas,spa-v1,correcto,Ana,2026-10-26,\nspa,cita,spa-v1,corregir,Bob,2026-10-27,la tilde no coincide con la edición\n", false],
+    'con el «correcto» de un revisor y el «dudoso» de otro sobre las etiquetas' => ["spa,cita,spa-v1,correcto,Ana,2026-10-26,\nspa,etiquetas,spa-v1,correcto,Ana,2026-10-26,\nspa,etiquetas,spa-v1,dudoso,Bob,2026-10-27,¿«se» es PRON?\n", false],
     'con las dos aprobadas como correctas' => ["spa,cita,spa-v1,correcto,Ana,2026-10-26,\nspa,etiquetas,spa-v1,correcto,Ana,2026-10-26,\n", true],
     'con las dos aprobadas, una de ellas ya corregida' => ["spa,cita,spa-v1,correcto,Ana,2026-10-26,\nspa,etiquetas,spa-v1,corregido,Ana,2026-10-26,\n", true],
 ];

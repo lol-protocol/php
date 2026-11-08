@@ -39,25 +39,6 @@ class PersonaController extends BaseController
     }
 
     /**
-     * A merged-away id (persona_alias) leads to the same page of the persona
-     * it was merged into: $accion is that page's action code, null for the
-     * persona's own page.
-     *
-     * @return callable(int): ?string
-     */
-    private static function movida(PersonaRepository $repo, ?int $accion): callable
-    {
-        return static function (int $id) use ($repo, $accion): ?string {
-            $destino = $repo->aliasDe($id);
-            if ($destino === null) {
-                return null;
-            }
-
-            return $accion === null ? enlace('persona', $destino) : accion('persona', $destino, $accion);
-        };
-    }
-
-    /**
      * The code of one of the persona's own actions in config/routes (/{id}/{code}/), asked of the router
      * that dispatched the request: the number is the config's to say, not this class's to repeat.
      */
@@ -91,7 +72,7 @@ class PersonaController extends BaseController
             "genealogy/persona/{$vista}",
             'persona',
             self::salvoOculta(static fn(int $id): array => $datos($repo, $id), $vacio),
-            self::movida($repo, $accion === null ? null : self::codigoDe($accion))
+            self::movida('persona', $repo->aliasDe(...), $accion === null ? null : self::codigoDe($accion))
         );
     }
 
@@ -168,7 +149,7 @@ class PersonaController extends BaseController
         $repo = $this->repo();
         $persona = $repo->find((int)$id);
         if ($persona === null) {
-            $destino = self::movida($repo, self::codigoDe('viva'))((int)$id);
+            $destino = self::movida('persona', $repo->aliasDe(...), self::codigoDe('viva'))((int)$id);
             return $destino === null ? $this->handleNotFound() : $this->redirect($destino, 301);
         }
 

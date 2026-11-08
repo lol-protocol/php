@@ -50,6 +50,9 @@ class Router
     /** @var list<string> */
     protected $segments = [];
 
+    /** @var list<string>|null palabras(), worked out once per loaded config */
+    private ?array $palabras = null;
+
     /** @var list<MatchStrategy> */
     protected $strategies = [];
 
@@ -126,6 +129,7 @@ class Router
     public function loadConfig(string $configFile): void
     {
         $this->config = require $configFile;
+        $this->palabras = null;
         ConfigValidator::validate($this->config);
     }
 
@@ -181,6 +185,9 @@ class Router
      */
     public function palabras(): array
     {
+        if ($this->palabras !== null) {
+            return $this->palabras;
+        }
         $palabras = array_merge(
             array_map('strval', array_keys($this->config['archivos'] ?? [])),
             array_map('strval', array_keys($this->config['reserved'] ?? [])),
@@ -190,7 +197,7 @@ class Router
             $palabras = array_merge($palabras, explode('/', (string)$desde), explode('/', (string)$hacia));
         }
 
-        return array_values(array_unique(array_filter(array_map('strtolower', $palabras), static fn(string $p): bool => $p !== '' && !str_contains($p, '/'))));
+        return $this->palabras = array_values(array_unique(array_filter(array_map('strtolower', $palabras), static fn(string $p): bool => $p !== '' && !str_contains($p, '/'))));
     }
 
     /**
@@ -302,7 +309,7 @@ class Router
         http_response_code(404);
         $pista = $this->pista();
 
-        return '<h1>404 - Página no encontrada</h1>' . ($pista === null ? '' : "\n<p>{$pista}</p>");
+        return ErrorPage::body(404, ErrorPage::NOT_FOUND, $pista ?? '');
     }
 
     /**
@@ -388,6 +395,6 @@ class Router
         http_response_code(500);
 
         $debug = defined('DEBUG_MODE') && DEBUG_MODE;
-        return '<h1>500 - ' . htmlspecialchars($debug ? $detail : 'Error interno del servidor') . '</h1>';
+        return ErrorPage::body(500, $debug ? $detail : 'Error interno del servidor');
     }
 }

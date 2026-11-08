@@ -6,17 +6,18 @@ import { PRENDAS } from '../src/datos/prendas.js';
 import { PRENDAS_MODA } from '../src/datos/prendas-moda.js';
 import { generarPersona, generarSVG, renderizar, TOCADOS, PEINADOS, BARBAS } from '../src/index.js';
 import { distribucionColor } from '../src/datos/colores-prendas.js';
+import { puntosDeRuta } from './ayuda.js';
 
 const K = { principal: '#5f7f9f', secundario: '#e6d8b0', ribete: '#8a3a2a', detalle: '#caa24a' };
 const ctx = { patron: () => '#cccccc' };
 const M = medidas({ sexo: 'f', edad: 30, pose: 'firme', saludo: 'ninguno' });
 const hacer = (plantilla, params) => PLANTILLAS[plantilla](M, params, K, ctx);
-const ancho = (d) => { const xs = [...d.matchAll(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g)].map((m) => Number(m[1])); return Math.max(...xs) - Math.min(...xs); };
-const puntos = (d) => [...d.matchAll(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])]);
+const puntos = puntosDeRuta;
+const ancho = (d) => { const xs = puntos(d).map((q) => q[0]); return Math.max(...xs) - Math.min(...xs); };
 /** Ancho de una pierna cerca del bajo (y del arranque), medido en una franja de 14 px. */
 const anchoBajo = (d) => { const p = puntos(d), yMax = Math.max(...p.map((q) => q[1])); const f = p.filter((q) => q[1] > yMax - 14).map((q) => q[0]); return Math.max(...f) - Math.min(...f); };
 const anchoAlto = (d) => { const p = puntos(d), yMin = Math.min(...p.map((q) => q[1])); const f = p.filter((q) => q[1] < yMin + 14).map((q) => q[0]); return Math.max(...f) - Math.min(...f); };
-const altoMin = (d) => Math.min(...[...d.matchAll(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g)].map((m) => Number(m[2])));
+const altoMin = (d) => Math.min(...puntos(d).map((q) => q[1]));
 
 test('los escotes sin hombro llevan tirantes y el corpiño empieza más abajo del hombro', () => {
   const base = { largo: 'rodilla', manga: 'sin' };

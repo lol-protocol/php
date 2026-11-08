@@ -6,27 +6,17 @@ namespace Tests\App\Integration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Tests\Support\ComandoDePrueba;
 
 /** bin/id.php as whoever creates ids runs it: a subprocess and its exit code. */
 class IdCliTest extends TestCase
 {
+    use ComandoDePrueba;
+
     /** @return array{0: int, 1: string, 2: string} exit code, stdout, stderr */
     private function correr(string ...$args): array
     {
-        $proceso = proc_open(
-            [PHP_BINARY, dirname(__DIR__, 3) . '/bin/id.php', ...$args],
-            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-            $pipes,
-            null,
-            ['PATH' => (string)getenv('PATH')]
-        );
-        $this->assertIsResource($proceso);
-        $salida = stream_get_contents($pipes[1]);
-        $error = stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        return [proc_close($proceso), (string)$salida, (string)$error];
+        return $this->ejecutarComando('id', $args);
     }
 
     public function testCompletarAddsTheCheckDigit(): void

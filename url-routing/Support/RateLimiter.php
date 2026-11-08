@@ -6,8 +6,16 @@ namespace App\Support;
 
 class RateLimiter
 {
-    /** A client's file this old belongs to a window that closed long ago (the longest one in use is a minute). */
-    private const STALE_AFTER = 3600;
+    /**
+     * The longest window isAllowed() accepts. A client's file keeps the requests of its window and is swept
+     * (STALE_AFTER) when nothing has touched it for this long, so a longer window would lose requests the
+     * sweep deleted along with the file and the limit would silently stop holding: asking for one is an error.
+     * The pedidos de retiro use all of it (one hour); the rest of the site, a minute.
+     */
+    public const VENTANA_MAXIMA = 3600;
+
+    /** A client's file this old belongs to a window that closed long ago: not even the longest one reaches back this far. */
+    private const STALE_AFTER = self::VENTANA_MAXIMA;
 
     /** How often a request looks for stale files; the marker file keeps that from being a directory scan per request. */
     private const SWEEP_EVERY = 600;
@@ -32,8 +40,18 @@ class RateLimiter
         return self::$instance;
     }
 
+    /**
+     * @throws \InvalidArgumentException when the window is negative or longer than VENTANA_MAXIMA (a window of
+     *         0 s is allowed: it remembers nothing, so it never limits)
+     */
     public function isAllowed(string $ip, int $maxRequests = 100, int $windowSeconds = 60): bool
     {
+        if ($windowSeconds < 0 || $windowSeconds > self::VENTANA_MAXIMA) {
+            throw new \InvalidArgumentException(
+                "La ventana de {$windowSeconds} s no cabe en lo que RateLimiter recuerda (0 a " . self::VENTANA_MAXIMA . ' s).'
+            );
+        }
+
         $file = $this->storePath . hash('sha256', $ip);
         $now = time();
         $windowStart = $now - $windowSeconds;
