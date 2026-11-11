@@ -19,6 +19,8 @@ use App\Support\SessionManager;
 use App\Support\HttpSecurityHeaders;
 use App\Support\RateLimiter;
 use App\Support\RegistroDeUrls;
+use App\Support\ResumenDeError;
+use App\Support\Vista;
 
 /**
  * Main Application Entry Point
@@ -105,9 +107,28 @@ function registrar_url(Router $router): void
                 $destino = trim(substr($cabecera, 9));
             }
         }
-        RegistroDeUrls::desdeConfig()->registrar($estado, $_SERVER['REQUEST_URI'] ?? '/', $destino, $router->palabras());
+        $motivo = RegistroDeUrls::desdeConfig()->registrar($estado, $_SERVER['REQUEST_URI'] ?? '/', $destino, $router->palabras());
+        if ($motivo !== null) {
+            registrar_url_fallo($motivo);
+        }
+    } catch (\Throwable $e) {
+        // A counter that fails is not worth a failed page, but whoever runs the site should know it stopped.
+        registrar_url_fallo($e::class);
+    }
+}
+
+/** Says in the log that the URL counter is not working: once per PHP process, not once per 404. */
+function registrar_url_fallo(string $motivo): void
+{
+    static $avisado = false;
+    if ($avisado) {
+        return;
+    }
+    $avisado = true;
+    try {
+        ServiceLocator::getInstance()->getLogger()->warning('El registro de URLs (URL_LOG_DIR) no está funcionando', ['motivo' => $motivo]);
     } catch (\Throwable) {
-        // A counter that fails is not worth a failed page.
+        // The log itself is what failed: nothing left to tell.
     }
 }
 
@@ -120,33 +141,25 @@ function view(string $name, array $data = []): string
     $safeName = preg_replace('/\.\./', '', $name);
     $file = APP_ROOT . '/views/' . $safeName . '.php';
 
+    // A page that cannot be drawn is a 500, not a 200 with a line of text: a crawler would index it and the
+    // monitoring would see nothing wrong.
     if (!file_exists($file)) {
-        $logger = ServiceLocator::getInstance()->getLogger();
-        $logger->warning('View not found', ['view' => $name]);
-        return "View not found: " . htmlspecialchars($name);
+        ServiceLocator::getInstance()->getLogger()->warning('View not found', ['view' => $name]);
+        http_response_code(500);
+
+        return ErrorPage::body(500, 'Error interno del servidor');
     }
 
-    ob_start();
     try {
-        (function() use ($file, $data): void {
-            foreach ($data as $key => $value) {
-                // $file and $data are this scope's own variables; letting a
-                // data key overwrite $file would change which file gets included.
-                if ($key === 'file' || $key === 'data') {
-                    continue;
-                }
-                ${$key} = $value;
-            }
-            include $file;
-        })();
-        return (string)ob_get_clean();
+        return Vista::dibujar($file, $data);
     } catch (\Throwable $e) {
-        ob_end_clean();
         ServiceLocator::getInstance()->getLogger()->error('View error', [
             'view' => $name,
-            'error' => $e->getMessage(),
+            'error' => ResumenDeError::de($e),
         ]);
-        return '<h1>Error loading view</h1>';
+        http_response_code(500);
+
+        return ErrorPage::body(500, 'Error interno del servidor');
     }
 }
 

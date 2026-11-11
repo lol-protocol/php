@@ -92,29 +92,33 @@ final class RegistroDeUrls
     }
 
     /**
-     * Notes a request that answered $estado. Only 404 and 301 count; anything else, and any failure to write, is ignored.
+     * Notes a request that answered $estado. Only 404 and 301 count; anything else is ignored. A failure to write
+     * never reaches the visitor, but it is not silent either: the reason comes back, for the caller to log.
      *
      * @param list<string> $conocidas see forma()
      * @param string|null $destino the Location of a 301
+     * @return string|null why the request could not be noted, or null when it was (or there was nothing to note)
      */
-    public function registrar(int $estado, string $uri, ?string $destino = null, array $conocidas = []): void
+    public function registrar(int $estado, string $uri, ?string $destino = null, array $conocidas = []): ?string
     {
         if ($this->dir === null || !in_array($estado, [301, 404], true)) {
-            return;
+            return null;
         }
 
         $archivo = $this->archivo($this->hoy());
         if (!is_file($archivo)) {
             if (!@mkdir($this->dir, 0700, true) && !is_dir($this->dir)) {
-                return;
+                return 'no se puede crear la carpeta del registro';
             }
             $this->depurar();
         } elseif ((int)@filesize($archivo) >= self::MAX_BYTES_POR_DIA) {
-            return;
+            return 'el registro de hoy llegó a su tope de tamaño';
         }
 
         $donde = $estado === 301 && $destino !== null ? self::forma($destino, $conocidas) : '-';
-        @file_put_contents($archivo, $estado . "\t" . self::forma($uri, $conocidas) . "\t" . $donde . "\n", FILE_APPEND | LOCK_EX);
+        $escrito = @file_put_contents($archivo, $estado . "\t" . self::forma($uri, $conocidas) . "\t" . $donde . "\n", FILE_APPEND | LOCK_EX);
+
+        return $escrito === false ? 'no se puede escribir en el registro' : null;
     }
 
     /**

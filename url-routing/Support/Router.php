@@ -298,8 +298,7 @@ class Router
             return (string)call_user_func([$controller, $method], $match['params']);
         } catch (\Throwable $e) {
             return $this->handleError(
-                "Controller error in {$fullClass}::{$match['method']}: " . $e::class . ': ' . $e->getMessage()
-                    . ' at ' . $e->getFile() . ':' . $e->getLine()
+                "Controller error in {$fullClass}::{$match['method']}: " . ResumenDeError::de($e)
             );
         }
     }

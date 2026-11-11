@@ -121,4 +121,46 @@ class SitemapEstadoTest extends TestCase
 
         $this->assertNull($estado->registrar('https://conce.com/sitemap/10/1.xml', '<a/>'));
     }
+
+    public function testTheCountIsWorkedOutOnceAndKeptForTheTimeGiven(): void
+    {
+        $llamadas = 0;
+        $calcular = function () use (&$llamadas): int {
+            return 40_000 + ++$llamadas;
+        };
+
+        $this->assertSame(40_001, $this->estado()->cuenta('https://conce.com/10', 300, $calcular));
+        $this->ahora += 299;
+        $this->assertSame(40_001, $this->estado()->cuenta('https://conce.com/10', 300, $calcular), 'still inside its five minutes');
+        $this->assertSame(1, $llamadas);
+
+        $this->ahora += 2;
+        $this->assertSame(40_002, $this->estado()->cuenta('https://conce.com/10', 300, $calcular), 'past them it is asked again');
+    }
+
+    public function testEachKeyKeepsItsOwnCount(): void
+    {
+        $this->assertSame(5, $this->estado()->cuenta('https://conce.com/10', 300, fn(): int => 5));
+        $this->assertSame(7, $this->estado()->cuenta('https://conce.com/9', 300, fn(): int => 7));
+        $this->assertSame(5, $this->estado()->cuenta('https://conce.com/10', 300, fn(): int => 99));
+    }
+
+    public function testAFolderThatCannotBeWrittenWorksTheCountOutEveryTime(): void
+    {
+        file_put_contents($this->dir, 'un archivo donde iría la carpeta');
+        $estado = new SitemapEstado($this->dir . '/sub', fn(): int => $this->ahora);
+        $llamadas = 0;
+
+        $estado->cuenta('k', 300, function () use (&$llamadas): int { return ++$llamadas; });
+        $this->assertSame(2, $estado->cuenta('k', 300, function () use (&$llamadas): int { return ++$llamadas; }));
+        unlink($this->dir);
+    }
+
+    public function testTheCountDoesNotTouchTheDateOfAFile(): void
+    {
+        $url = 'https://conce.com/sitemap/10/1.xml';
+        $this->estado()->cuenta($url, 300, fn(): int => 3);
+
+        $this->assertNull($this->estado()->desde($url), 'a count is not a served file');
+    }
 }

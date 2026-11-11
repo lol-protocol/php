@@ -27,6 +27,9 @@ use App\Support\SitemapEstado;
  */
 abstract class ArchivosController extends BaseController
 {
+    /** How long the index keeps the number of pages of a type (see SitemapEstado::cuenta()). */
+    private const SEGUNDOS_DE_LA_CUENTA = 300;
+
     abstract protected function repo(): SitemapRepository;
 
     /** The .env key with the site's public address (e.g. https://conce.com). */
@@ -73,7 +76,10 @@ abstract class ArchivosController extends BaseController
         $estado = SitemapEstado::desdeConfig();
         $partes = [];
         foreach ($repo->tipos() as $tipo) {
-            $total = (int)ceil($repo->cuantas($tipo) / SitemapRepository::POR_PARTE);
+            // The count only decides how many files are announced: a few minutes old is fine, and it is the
+            // costly query of the index (every page of the type, behind the privacy filters).
+            $cuantas = $estado->cuenta("{$base}/{$tipo}", self::SEGUNDOS_DE_LA_CUENTA, static fn(): int => $repo->cuantas($tipo));
+            $total = (int)ceil($cuantas / SitemapRepository::POR_PARTE);
             for ($n = 1; $n <= $total; $n++) {
                 $url = "{$base}/sitemap/{$tipo}/{$n}.xml";
                 // Known once the part has been served: until then, no date rather than a made-up one.
