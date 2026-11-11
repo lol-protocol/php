@@ -10,7 +10,8 @@
    "movimiento literario": "Movimiento literario",
    "tipo de texto": "Tipo de texto"
   },
-  "traduccion_rotulo": "Traducción de {traductor}"
+  "traduccion_rotulo": "Traducción de {traductor}",
+  "volumen": "Vol. {n}"
  },
  "en": {
   "obra": "«{nombre}» is a work by {autor}{epoca}{tradicion}.",
@@ -70,7 +71,8 @@
    "diccionarios": "Dictionaries and encyclopedias",
    "discursos": "Speeches"
   },
-  "traduccion_rotulo": "Translated by {traductor}"
+  "traduccion_rotulo": "Translated by {traductor}",
+  "volumen": "Vol. {n}"
  },
  "pt": {
   "obra": "«{nombre}» é uma obra de {autor}{epoca}{tradicion}.",
@@ -130,7 +132,8 @@
    "diccionarios": "Dicionários e enciclopédias",
    "discursos": "Discursos"
   },
-  "traduccion_rotulo": "Tradução de {traductor}"
+  "traduccion_rotulo": "Tradução de {traductor}",
+  "volumen": "Vol. {n}"
  },
  "fr": {
   "obra": "«{nombre}» est une œuvre de {autor}{epoca}{tradicion}.",
@@ -190,6 +193,7 @@
    "diccionarios": "Dictionnaires et encyclopédies",
    "discursos": "Discours"
   },
-  "traduccion_rotulo": "Traduction de {traductor}"
+  "traduccion_rotulo": "Traduction de {traductor}",
+  "volumen": "T. {n}"
  }
 }

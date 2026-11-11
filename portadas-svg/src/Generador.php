@@ -66,7 +66,9 @@ final class Generador
      */
     public static function huella(Libro $libro, bool $textoATrazos): string
     {
-        return md5(serialize($libro) . ($textoATrazos ? 'trazos' : 'fuente') . Fuentes::huellaExtras() . self::versionDelCodigo());
+        $externos = implode(',', array_map(static fn (string $ruta): string => is_file($ruta) ? (string) md5_file($ruta) : 'falta', $libro->archivosExternos()));
+
+        return md5(serialize($libro) . $externos . ($textoATrazos ? 'trazos' : 'fuente') . Fuentes::huellaExtras() . self::versionDelCodigo());
     }
 
     /** Si la carpeta del libro ya tiene todas sus piezas y fueron escritas con esta misma huella. */
@@ -143,6 +145,9 @@ final class Generador
             'La solapa de la contratapa' => $t->solapaContratapa, 'La solapa de la portada' => $t->solapaPortada,
         ];
         $avisos = [];
+        if ($libro->imagen !== null && $libro->plantilla !== 'ilustrada') {
+            $avisos[] = "la imagen no se usa: la plantilla '{$libro->plantilla}' no dibuja ilustración (usa la plantilla 'ilustrada').";
+        }
         foreach ($textos as $nombre => $texto) {
             // Con las letras de las fuentes extra el libro sale a trazos solo: aquí falta lo que ni ellas tienen.
             $sin = $medida->sinContorno($texto);
