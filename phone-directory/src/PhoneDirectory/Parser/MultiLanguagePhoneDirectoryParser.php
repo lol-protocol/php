@@ -40,13 +40,16 @@ class MultiLanguagePhoneDirectoryParser
         'it' => "/^[ \\t]*via\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*(?:\\s+\\p{L}[\\p{L}\\p{M}'’.\\-]*)*,?\\s+\\d{1,5}[a-z]?\\b/imu",
     ];
 
+    // Words that name a kind of business, or a family firm ("Smith & Sons", "Hermanos García", "Hnos."), and
+    // that almost nobody has for a surname. A word many people carry as a surname (Baker, Miller, Bank...)
+    // does not belong in these lists: it would take them out from under Privacy, which only covers persons.
     private const ENTITY_TYPE_MARKERS = [
-        'es' => ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel', 'banco', 'farmacia', 'hospital'],
-        'en' => ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy', 'hospital'],
-        'fr' => ['sarl', 'sas', 'eirl', 'eurl', 'magasin', 'restaurant', 'hôtel', 'banque', 'pharmacie', 'hôpital'],
-        'pt' => ['ltda', 'lda', 'eireli', 'empresa', 'comercial', 'loja', 'padaria', 'restaurante', 'hotel', 'banco', 'farmácia', 'hospital'],
-        'de' => ['gmbh', 'ag', 'kg', 'ohg', 'apotheke', 'bäckerei', 'gasthaus', 'restaurant', 'hotel', 'bank', 'krankenhaus'],
-        'it' => ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel', 'banca', 'farmacia', 'ospedale'],
+        'es' => ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel', 'banco', 'farmacia', 'hospital', 'hnos', 'hermanos', 'hijos', 'sucesores', 'taller', 'ferretería', 'clínica', 'panadería', 'carnicería', 'librería', 'zapatería'],
+        'en' => ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy', 'hospital', 'sons', 'bros', 'associates', 'enterprises', 'industries', 'services', 'plumbing', 'garage', 'bakery', 'hardware', 'clinic', 'pub', 'motel'],
+        'fr' => ['sarl', 'sas', 'eirl', 'eurl', 'magasin', 'restaurant', 'hôtel', 'banque', 'pharmacie', 'hôpital', 'frères', 'boulangerie', 'boucherie', 'garage', 'clinique', 'quincaillerie', 'cabinet'],
+        'pt' => ['ltda', 'lda', 'eireli', 'empresa', 'comercial', 'loja', 'padaria', 'restaurante', 'hotel', 'banco', 'farmácia', 'hospital', 'irmãos', 'filhos', 'oficina', 'clínica', 'mercearia', 'ferragens', 'sapataria'],
+        'de' => ['gmbh', 'ag', 'kg', 'ohg', 'apotheke', 'bäckerei', 'gasthaus', 'restaurant', 'hotel', 'bank', 'krankenhaus', 'gebrüder', 'söhne', 'werkstatt', 'metzgerei', 'tischlerei', 'klinik'],
+        'it' => ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel', 'banca', 'farmacia', 'ospedale', 'fratelli', 'figli', 'officina', 'macelleria', 'ferramenta', 'pasticceria', 'pizzeria', 'clinica'],
     ];
 
     private const SUPPORTED_LANGUAGES = StreetRules::SUPPORTED_LANGUAGES;
