@@ -987,6 +987,7 @@ def vectores_de(datos):
                      for s, k in (_claves_de_arboles() if codigo == "es" else _claves_de_arboles()[::7])]
             for codigo in IDIOMAS
         },
+        "claves_de_arboles": [list(k) for k in _claves_de_arboles()],  # las 61, para que el port no las reconstruya
         "rasgos_de_sha256": {
             codigo: hashlib.sha256("\n".join(zodiaco.rasgos_de(s, k, codigo) for s, k in _claves_de_arboles()).encode("utf-8")).hexdigest()
             for codigo in IDIOMAS

@@ -4,6 +4,13 @@ Los cambios de `datos/` y de lo que se calcula con ellos, de lo más reciente a 
 
 Versionado semántico: la **mayor** cambia si se rompe el esquema de `datos/signos.json` o lo que devuelven las consultas; la **menor** cuando se agregan datos, campos o funciones; la **parche** cuando se corrige un texto, una fecha o una figura sin cambiar la forma.
 
+## [1.3.2] - 2026-11-11
+
+### Cambiado
+- **Los husos horarios quedan documentados y en un solo sitio.** Una tabla del README dice cómo toma el día cada consulta y por qué (el año chino a la hora de China, la Luna en UTC, lo demás el día del calendario de la fecha), y en `zodiaco.py` lo decide una sola función, `_dia_de()`. No cambia ningún resultado. Se evaluó pasar todo a UTC y se descartó: rompía el año chino en las primeras 8 horas de cada Año Nuevo (1 600 de 1 600 instantes probados).
+- `cualidades_de`, `rasgos_de` y `rasgos_de_numero` (y sus equivalentes en PHP) comparten un solo buscador de frases en lugar de repetir el mismo bucle tres veces.
+- `datos/vectores.json` guarda las 61 claves de los árboles (`claves_de_arboles`), así que el ejecutor de PHP ya no las reconstruye; `Zodiaco.php` separa los signos por tipo en una sola función.
+
 ## [1.3.1] - 2026-11-06
 
 ### Corregido
