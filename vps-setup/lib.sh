@@ -13,6 +13,28 @@ print_header() {
 }
 
 # Start and enable a systemd service
+# service_enable_restart <servicio>: lo habilita al arranque y lo REINICIA (no solo "start"): si ya estaba
+# activo, "start" no hace nada y seguiria con la configuracion vieja. Usalo cuando el script acaba de
+# cambiar la configuracion del servicio (unidad systemd, jail.local, zona...).
+service_enable_restart() {
+    local service=$1
+    sudo systemctl enable "$service"
+    sudo systemctl restart "$service"
+}
+
+# set_conf_line <archivo> <clave> <valor>: deja UNA linea "clave=valor" en un archivo de configuracion:
+# reemplaza la existente o, si no hay, la agrega al final. Idempotente. unset_conf_line la quita.
+# La clave y el valor van tal cual (sin regex ni "/" "&" "|" en ellos: son claves simples de .conf).
+set_conf_line() {
+    local file=$1 key=$2 value=$3
+    if sudo grep -q "^${key}=" "$file"; then
+        sudo sed -i "s|^${key}=.*|${key}=${value}|" "$file"
+    else
+        printf '%s=%s\n' "$key" "$value" | sudo tee -a "$file" > /dev/null
+    fi
+}
+unset_conf_line() { sudo sed -i "/^${2}=/d" "$1"; }
+
 service_start_enable() {
     local service=$1
     sudo systemctl start "$service"
@@ -290,6 +312,38 @@ setup_app_database() {
     sudo chown "$owner:$owner" "$env_file"
     sudo chmod 600 "$env_file"
     echo "  Base de datos '$db' creada; la conexion (DATABASE_URL) esta en $env_file (solo la lee $owner)."
+}
+
+# Piezas compartidas de los vhosts (03, 06_A, 06_B, 06_D, 06_E): se insertan con $(...) dentro del heredoc
+# del vhost. Un cambio (otro timeout, un header) se hace aqui una vez y vale para todos.
+# nginx_server_head <dominio>: puerto 80 (IPv4 e IPv6), server_name con www y los logs del dominio.
+nginx_server_head() {
+    local d=$1
+    cat <<EOFHEAD
+    listen 80;
+    listen [::]:80;
+    server_name $d www.$d;
+
+    access_log /var/log/nginx/$d/access.log;
+    error_log /var/log/nginx/$d/error.log;
+EOFHEAD
+}
+
+# nginx_proxy_location <destino>: "location /" que manda todo a una app local (gunicorn, Tomcat).
+nginx_proxy_location() {
+    local target=$1
+    cat <<EOFPROXY
+    location / {
+        proxy_pass $target;
+        proxy_connect_timeout 10s;          # la app es local: si no acepta en 10 s, esta caida
+        proxy_send_timeout $PROXY_TIMEOUT;
+        proxy_read_timeout $PROXY_TIMEOUT;  # cuanto puede tardar la app en responder (PROXY_TIMEOUT)
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+EOFPROXY
 }
 
 # @deprecated desde PR 3 de vps-setup (aislamiento por app): 06_A ya no deja la app a www-data sino a su

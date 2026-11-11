@@ -53,16 +53,11 @@ echo "Configurando Nginx para aplicación PHP..."
 sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOFNGINX
 # vps-setup: 06_A-php $APP_NAME
 server {
-    listen 80;
-    listen [::]:80;
-    server_name $DOMAIN www.$DOMAIN;
+$(nginx_server_head "$DOMAIN")
 
     root $APP_PATH;
     index index.php index.html;
     client_max_body_size $MAX_UPLOAD;   # subidas (MAX_UPLOAD, 20M por defecto); sin esto, 1 MB
-
-    access_log /var/log/nginx/$DOMAIN/access.log;
-    error_log /var/log/nginx/$DOMAIN/error.log;
 
     location / {
         try_files \$uri \$uri/ /index.php?\$query_string;
