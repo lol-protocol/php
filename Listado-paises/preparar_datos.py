@@ -38,8 +38,9 @@ Un país que OWID no tiene usa la población del Banco Mundial desde 1960 (Puert
 Isla de Man) y, si tampoco está ahí, la de Gapminder hasta ANIO_MAXIMO_GAPMINDER (Jersey, Reunión);
 esta última solo entra en la serie larga, no en la población actual.
 
-Natalidad (ver natalidad_pais): la tasa bruta de Gapminder (1800-2015) y, hasta ANIO_FIN, la
-última tasa escalada por la fecundidad de Gapminder. Un país sin tasa usa FACTOR_NATALIDAD x
+Natalidad (ver natalidad_pais): la tasa bruta de Gapminder (1800-2015), la del Banco Mundial
+después (SP.DYN.CBRT.IN, hasta 2024) y, hasta ANIO_FIN, la última tasa escalada por la fecundidad
+de Gapminder. Un país sin tasa usa FACTOR_NATALIDAD x
 fecundidad; uno sin ninguna de las dos no entra en natalidad.csv (historia_poblacion usa la de
 su época).
 
@@ -58,6 +59,7 @@ Emigrantes: los de ANIO_EMIGRANTES (ONU, vía Gapminder), en porcentaje de la po
 Solo biblioteca estándar.
 """
 import argparse
+import json
 from pathlib import Path
 
 from comun import (ANIO_EMIGRANTES, ANIO_IDH, ANIO_PIB_NOMINAL, ANIO_PIB_NOMINAL_MINIMO, ANIO_PIB_PPA,
@@ -78,6 +80,19 @@ SIN_GENTE_ANTES = {"SC"}
 EMPALME_MAXIMO = 1.5  # Clio-Infra se descarta si difiere más que esto (o su inversa) en el empalme
 REGION_HYDE = {"África": "Africa", "Asia": "Asia", "Europa": "Europe", "Oceanía": "Oceania"}
 # Las mismas regiones en co2-data, que llega hasta ANIO_POBLACION (HYDE, hasta 2015).
+# Denevan (1992), The Native Population of the Americas in 1492, 2.ª ed.: millones en 1492 por
+# región. HYDE da un total parecido (unos 60 M en 1500) pero lo reparte mal: México y Brasil
+# muy por encima, los Andes muy por debajo. Ver ajustar_america.
+DENEVAN = {
+    "Norteamérica": (3.79, {"US", "CA", "GL"}),
+    "México": (17.174, {"MX"}),
+    "Centroamérica": (5.625, {"BZ", "GT", "SV", "HN", "NI", "CR", "PA"}),
+    "Caribe": (3.0, {"AG", "BB", "BS", "CU", "CW", "DM", "DO", "GD", "HT", "JM", "KN", "LC", "PR",
+                     "TT", "VC"}),
+    "Andes": (15.696, {"CO", "EC", "PE", "BO", "CL"}),
+    "Sudamérica baja": (8.619, {"BR", "VE", "GY", "SR", "PY", "UY", "AR"}),
+}
+ANIO_CONTACTO = 1500  # el punto de HYDE más cercano a 1492
 REGION_OWID = {"North and Central America": "North America"}
 # Nombres que la fuente usa distinto de co2-data.
 ALIAS = {"Czech Republic": "CZE", "Macedonia": "MKD", "Swaziland": "SWZ", "Timor": "TLS",
@@ -114,6 +129,28 @@ def empieza_poblado(historica):
         return False
     anio0, pob0 = historica[0]
     return -10000 < anio0 < 1800 and pob0 < POBLACION_POBLAMIENTO
+
+
+def ajustar_america(series):
+    """Escala los puntos de América hasta ANIO_CONTACTO para que cada región sume lo de DENEVAN.
+
+    El factor de cada región es Denevan / suma de sus países en ANIO_CONTACTO, y se aplica igual a
+    todos los años anteriores: conserva la forma de cada serie y cambia solo su nivel. Desde el
+    punto siguiente (1600 en HYDE, ya después del derrumbe) la serie queda como estaba, y entre
+    los dos la interpolación une ambos niveles. Devuelve {region: factor}.
+    """
+    factores = {}
+    for region, (millones, codigos) in DENEVAN.items():
+        presentes = [c for c in codigos if c in series]
+        if not presentes:
+            continue
+        suma = sum(dict(series[c]).get(ANIO_CONTACTO, 0) for c in presentes)
+        if not suma:
+            raise SystemExit(f"{region}: sin población en {ANIO_CONTACTO} con la que ajustar a Denevan")
+        factor = factores[region] = millones * 1e6 / suma
+        for c in presentes:
+            series[c] = [(a, p * factor if a <= ANIO_CONTACTO else p) for a, p in series[c]]
+    return factores
 
 
 def retroproyectar(conocidos, region):
@@ -157,16 +194,34 @@ def leer_gapminder(ruta, convertir=float):
     return datos
 
 
-def natalidad_pais(tasas, fecundidad):
+def leer_bm_api(ruta):
+    """JSON de la API del Banco Mundial (una página con todo) -> código ISO alfa-3 -> {anio: valor}."""
+    datos = {}
+    for f in json.loads(Path(ruta).read_text(encoding="utf-8"))[1]:
+        if f["value"] is not None and f["countryiso3code"]:
+            datos.setdefault(f["countryiso3code"], {})[int(f["date"])] = float(f["value"])
+    return datos
+
+
+def natalidad_pais(tasas, fecundidad, bm=None):
     """{anio: nacimientos por mil} de un país, hasta ANIO_FIN.
 
-    Con tasas: esas, y después de la última, la última escalada por la fecundidad
+    tasas son las de Gapminder; bm, las del Banco Mundial, que mandan después de
+    ANIO_MAXIMO_GAPMINDER; los años sin dato entre dos tasas se interpolan. Antes de la primera tasa, FACTOR_NATALIDAD x fecundidad (los países
+    que Gapminder no tiene). Después de la última, la última escalada por la fecundidad
     (tasa(t) = tasa(u) x TFR(t) / TFR(u)), o constante si falta la fecundidad.
     Sin tasas: FACTOR_NATALIDAD x fecundidad. Sin ninguna de las dos: vacío.
     """
+    tasas = {**tasas, **{a: v for a, v in (bm or {}).items() if a > ANIO_MAXIMO_GAPMINDER}}
     if not tasas:
         return {a: FACTOR_NATALIDAD * v for a, v in fecundidad.items() if a <= ANIO_FIN}
-    serie = {a: v for a, v in tasas.items() if a <= ANIO_FIN}
+    primero = min(tasas)
+    serie = {a: FACTOR_NATALIDAD * v for a, v in fecundidad.items() if a < primero}
+    serie.update({a: v for a, v in tasas.items() if a <= ANIO_FIN})
+    conocidos = sorted(tasas.items())
+    for (a0, v0), (a1, v1) in zip(conocidos, conocidos[1:]):  # huecos: interpolación lineal
+        for anio in range(a0 + 1, min(a1, ANIO_FIN + 1)):
+            serie[anio] = v0 + (v1 - v0) * (anio - a0) / (a1 - a0)
     ultimo = max(tasas)
     for anio in range(ultimo + 1, ANIO_FIN + 1):
         if fecundidad.get(ultimo) and fecundidad.get(anio):
@@ -216,8 +271,7 @@ def main(argv=None, carpeta=AQUI):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     for nombre in ("co2", "maddison", "hyde", "clio", "natalidad-gapminder", "fecundidad-gapminder", "idh",
                    "alfabetizacion", "internet", "emigrantes", "poblacion-gapminder", "poblacion-owid", "libertad", "democracia", "corrupcion",
-                   "pib-ppa", "pib-pc-bm",
-                   "poblacion-bm"):
+                   "pib-ppa", "pib-pc-bm", "poblacion-bm", "natalidad-bm"):
         ap.add_argument(f"--{nombre}", required=True)
     args = ap.parse_args(argv)
 
@@ -259,6 +313,7 @@ def main(argv=None, carpeta=AQUI):
         serie.sort()
 
     tasas = leer_gapminder(args.natalidad_gapminder)
+    natalidad_bm = leer_bm_api(args.natalidad_bm)
     fecundidad = leer_gapminder(args.fecundidad_gapminder)
     idh = leer_gapminder(args.idh)
     alfabetizacion = leer_gapminder(args.alfabetizacion)
@@ -291,6 +346,7 @@ def main(argv=None, carpeta=AQUI):
             con_poblacion_gapminder.append(clave)
 
     con_clio, clio_descartada, extendidas, poblados = [], [], [], []
+    series = {}  # codigo -> [(anio, poblacion)]
     filas_larga, filas_natalidad, sin_serie, sin_pob, sin_pib, sin_natalidad = [], [], [], [], [], []
     sin_idh, sin_nominal, nominal_anterior, sin_alfabetizacion, sin_internet = [], [], [], [], []
     sin_emigrantes, sin_gobernanza = [], {columna: [] for columna, _ in gobernanza}
@@ -329,7 +385,7 @@ def main(argv=None, carpeta=AQUI):
                 extendidas.append(f"{codigo} desde {conocidos[-1][0]}")
             antes = [] if poblado else retroproyectar(conocidos, hyde[region])
             serie = antes + conocidos + despues
-            filas_larga += [(codigo, a, round(p)) for a, p in serie]
+            series[codigo] = serie
         else:
             sin_serie.append(codigo)
 
@@ -384,11 +440,14 @@ def main(argv=None, carpeta=AQUI):
             else:
                 anotar(columna, dato[0], fuente)
 
-        natal = natalidad_pais(tasas.get(clave, {}), fecundidad.get(clave, {}))
+        natal = natalidad_pais(tasas.get(clave, {}), fecundidad.get(clave, {}),
+                               natalidad_bm.get(codigo_bm(clave), {}))
         filas_natalidad += [(codigo, a, f"{v:.2f}") for a, v in sorted(natal.items())]
-        if clave not in tasas:
+        if clave not in tasas and codigo_bm(clave) not in natalidad_bm:
             sin_natalidad.append(f"{codigo} ({'fecundidad' if natal else 'la de su época'})")
 
+    factores_america = ajustar_america(series)
+    filas_larga = [(codigo, a, round(p)) for codigo, serie in series.items() for a, p in serie]
     escribir_filas(carpeta / "poblacion_larga.csv", ["codigo", "anio", "poblacion"], filas_larga)
     escribir_filas(carpeta / "natalidad.csv", ["codigo", "anio", "tasa_por_mil"], filas_natalidad)
     escribir_dicts(carpeta / "paises.csv", columnas, paises)
@@ -398,7 +457,8 @@ def main(argv=None, carpeta=AQUI):
           f"con puntos de Clio-Infra: {len(con_clio)}; Clio-Infra descartada en el empalme: "
           f"{', '.join(clio_descartada) or 'ninguno'}; extendidas con su región hasta {ANIO_POBLACION}: "
           f"{', '.join(extendidas) or 'ninguna'}; desde su poblamiento, sin nada antes: "
-          f"{', '.join(poblados) or 'ninguno'}")
+          f"{', '.join(poblados) or 'ninguno'}; América hasta {ANIO_CONTACTO} ajustada a Denevan: "
+          + ", ".join(f"{r} x{f:.2f}" for r, f in factores_america.items()))
     print(f"natalidad.csv: {len(filas_natalidad)} filas; sin tasa de Gapminder (qué usan): "
           f"{', '.join(sin_natalidad) or 'ninguno'}")
     print(f"paises.csv: población {ANIO_POBLACION} sin dato (vacía): {', '.join(sin_pob) or 'ninguno'}")

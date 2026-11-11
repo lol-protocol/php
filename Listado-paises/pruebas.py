@@ -5,6 +5,7 @@ Solo biblioteca estándar. Usan series sintéticas con resultado calculado a man
 CSV del proyecto (las pruebas de main() trabajan en una carpeta temporal).
 """
 import csv
+import json
 import shutil
 import tempfile
 import unittest
@@ -103,6 +104,17 @@ class DatosPreparados(unittest.TestCase):
         self.assertFalse(pd.empieza_poblado([(1800, 5000.0)]))  # micro-estado sin dato anterior
         self.assertFalse(pd.empieza_poblado([(-10000, 10.0)]))
         self.assertFalse(pd.empieza_poblado([]))
+
+    def test_america_se_escala_a_denevan_hasta_1500_y_queda_igual_despues(self):
+        import preparar_datos as pd
+        series = {"MX": [(1000, 10e6), (1500, 34.348e6), (1600, 1e6)], "FR": [(1500, 15e6)]}
+        factores = pd.ajustar_america(series)
+        self.assertEqual(set(factores), {"México"})  # sin países presentes, la región se salta
+        self.assertAlmostEqual(factores["México"], 0.5)
+        self.assertEqual([round(p) for _, p in series["MX"]], [5_000_000, 17_174_000, 1_000_000])
+        self.assertEqual(series["FR"], [(1500, 15e6)])
+        with self.assertRaises(SystemExit):
+            pd.ajustar_america({"MX": [(1600, 1e6)]})
 
     def test_retroproyeccion_usa_la_cuota_del_pais_en_su_region(self):
         import preparar_datos
@@ -253,6 +265,13 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
                                        [("A", "AAA", 2023, 4e6), ("B", "BBB", 1960, 1e5), ("B", "BBB", 2022, 2e5),
                                         ("B", "BBB", 2024, 2.5e5)]),
         }
+        bm = self.d / "cbr-bm.json"
+        bm.write_text(json.dumps([{"page": 1}, [
+            {"countryiso3code": "AAA", "date": "2017", "value": 10.0},
+            {"countryiso3code": "AAA", "date": "2014", "value": 99.0},  # antes de 2016 manda Gapminder
+            {"countryiso3code": "EEE", "date": "2020", "value": 12.0},
+            {"countryiso3code": "", "date": "2020", "value": 5.0}]]), encoding="utf-8")
+        a["--natalidad-bm"] = str(bm)
         pd.main([x for par in a.items() for x in par], self.d)
 
         paises = {f["codigo"]: f for f in leer_csv(self.d / "paises.csv")}
@@ -294,7 +313,9 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         natalidad = {(f["codigo"], int(f["anio"])): float(f["tasa_por_mil"])
                      for f in leer_csv(self.d / "natalidad.csv")}
         self.assertEqual(natalidad[("AA", 2015)], 30.0)
-        self.assertEqual(natalidad[("AA", 2016)], 15.0)  # 30 x 1,5 / 3
+        self.assertEqual(natalidad[("AA", 2016)], 20.0)  # entre Gapminder 2015 (30) y Banco Mundial 2017 (10)
+        self.assertEqual(natalidad[("AA", 2017)], 10.0)  # Banco Mundial
+        self.assertEqual(natalidad[("EE", 2020)], 12.0)
 
     def test_preparar_lenguas(self):
         import preparar_lenguas as pl
