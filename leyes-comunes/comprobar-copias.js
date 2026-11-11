@@ -18,6 +18,7 @@ export const COPIAS = [
   "app/lib/chart.js",
   "app/lib/filters.js",
   "app/lib/util.js",
+  "app/lib/view.js",
   "app/styles/base.css",
   "app/styles/comparison.css",
   "app/styles/search.css",
