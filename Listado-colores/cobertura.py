@@ -72,7 +72,9 @@ def informe(idiomas, anotada, lexico, categorias, conceptos, hex_concepto):
         "Generado por `generar-tabla.py` a partir de los CSV. No editar a mano.",
         "",
         "Este informe no corrige nada ni hace fallar la generación: dice dónde faltan datos y qué ambigüedades tienen, para no "
-        "tomar los datos por más completos o más precisos de lo que son. Nada de esto lo ha revisado un hablante nativo.",
+        "tomar los datos por más completos o más precisos de lo que son. Nada de esto lo ha revisado un hablante nativo. Los nombres "
+        "repetidos y los lemas compartidos de abajo son casos de la lista «Dentro de un idioma» de `ambiguedad.md`, que además "
+        "mide qué tan distintos son los colores; aquí se cuentan junto a lo que falta.",
         "",
         "## Resumen",
         "",

@@ -8,6 +8,8 @@ Para cada caso se da la distancia máxima CIEDE2000 (ΔE) entre sus colores, con
 
 Límites: solo cubre las formas del gazetteer (los colores CSS en 30 idiomas y el léxico básico). No detecta palabras que, además de un color, son otra cosa (una flor, una fruta), ni palabras fuera del listado. Parte de las ambigüedades puede venir de la traducción, que es una propuesta sin revisión de hablantes nativos: una forma que remite a colores muy distintos en un idioma es una candidata a revisar. Las listas 3 y 4 usan la forma normalizada (ver el README).
 
+`cobertura.md` cuenta aparte, junto a lo que falta (conceptos sin lema, idiomas sin categorías), los nombres CSS repetidos y los lemas compartidos: son casos de la lista 1 de este informe (una prueba lo comprueba), no otros distintos.
+
 ## Resumen
 
 | Lista | Casos | casi iguales | parecidos | distintos |

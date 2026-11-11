@@ -41,6 +41,20 @@ jobs:
         working-directory: Listado-colores
         run: python3 generar-tabla.py --comprobar
 
+      # El visor de revision ya no se guarda en el repositorio (pesaba 1,2 MB y repetia los
+      # datos de exportes/colores.jsonl): se construye aqui y se sube como artefacto, para que
+      # quien revisa lo descargue sin instalar nada.
+      - name: Construir el visor de revision
+        working-directory: Listado-colores
+        run: python3 generar-tabla.py --visor "$RUNNER_TEMP/visor-revision.html"
+
+      - name: Subir el visor de revision
+        uses: actions/upload-artifact@v7
+        with:
+          name: visor-revision
+          path: ${{ runner.temp }}/visor-revision.html
+          if-no-files-found: error
+
       # spaCy solo para una prueba: que los patrones de exportes/spacy/ carguen en un
       # EntityRuler. Sin el, esa prueba se omite y nadie la corre en la CI. En un venv
       # porque el Python del runner no deja instalar paquetes (PEP 668). La version es
