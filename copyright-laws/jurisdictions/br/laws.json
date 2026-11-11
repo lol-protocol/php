@@ -15,7 +15,7 @@
     "enforcement_body": "National Library of Brazil",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "WCT/WPPT",
-    "linked_resources": "https://www.gov.br/",
+    "linked_resources": "https://www.planalto.gov.br/ccivil_03/leis/l9610.htm",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -30,6 +30,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-11",
+        "field": "linked_resources",
+        "from": "https://www.gov.br/",
+        "to": "https://www.planalto.gov.br/ccivil_03/leis/l9610.htm"
+      },
       {
         "date": "2026-10-14",
         "field": "digital_protection",
