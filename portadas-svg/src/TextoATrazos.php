@@ -90,6 +90,15 @@ final class TextoATrazos
         return $svg;
     }
 
+    /** Si todas las palabras del texto se leen de derecha a izquierda (árabe, hebreo…): un texto así se alinea a la derecha. */
+    public static function esDerechaAIzquierda(string $texto): bool
+    {
+        $formas = Fuentes::formas();
+        $palabras = array_filter(Fuentes::trozos($texto, $formas), static fn (string $trozo): bool => trim($trozo) !== '');
+
+        return $palabras !== [] && array_filter($palabras, static fn (string $trozo): bool => $formas[$trozo][1] ?? false) === $palabras;
+    }
+
     /** Los contornos que usan las letras de la pieza, una sola vez cada uno, para referirse a ellos con `<use>`. */
     public function defs(): string
     {

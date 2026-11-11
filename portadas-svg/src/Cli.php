@@ -14,7 +14,7 @@ final class Cli
         Uso:
           php bin/generar.php libro.json [más.json ...] [--salida=carpeta]
           php bin/generar.php --lista=libros.csv [--lista=otra.csv ...] [libro.json ...] [--omitir-errores] [--trazos] [--extra=carpeta]
-                              [--incremental] [--manifiesto] [--json] [--salida=carpeta]
+                              [--incremental] [--manifiesto] [--json] [--indice] [--salida=carpeta]
           php bin/generar.php --comprobar
           php bin/generar.php --help
 
@@ -30,6 +30,7 @@ final class Cli
         --incremental no vuelve a escribir los libros que no cambiaron desde la última vez (sus datos, el modo y el
         generador); sirve para editar una lista de cientos de libros por tandas.
         --manifiesto escribe <salida>/manifiesto.json con cada libro, sus archivos, tamaños y avisos.
+        --indice escribe <salida>/indice.svg, una hoja con la portada de cada libro en miniatura (con su título y autor).
         --json imprime ese mismo manifiesto por la salida estándar, en lugar de una línea por libro: para usar el
         generador desde otro programa. Los avisos y los errores siguen saliendo como texto por la salida de errores.
         --comprobar regenera ejemplos/*.json y falla si no coincide con ejemplos/salida/ (y con ejemplos/salida-trazos/).
@@ -52,7 +53,7 @@ final class Cli
         $omitir = false;
         $trazos = false;
         $extra = null;
-        $opciones = ['incremental' => false, 'manifiesto' => false, 'json' => false];
+        $opciones = ['incremental' => false, 'manifiesto' => false, 'json' => false, 'indice' => false];
         foreach ($argumentos as $argumento) {
             if ($argumento === '--help' || $argumento === '-h') {
                 $salida(self::USO . "\n");
@@ -65,7 +66,7 @@ final class Cli
                 $omitir = true;
             } elseif ($argumento === '--trazos') {
                 $trazos = true;
-            } elseif (in_array($argumento, ['--incremental', '--manifiesto', '--json'], true)) {
+            } elseif (in_array($argumento, ['--incremental', '--manifiesto', '--json', '--indice'], true)) {
                 $opciones[substr($argumento, 2)] = true;
             } elseif (str_starts_with($argumento, '--extra=')) {
                 $extra = substr($argumento, strlen('--extra='));
@@ -124,7 +125,7 @@ final class Cli
     /**
      * @param list<string> $rutas
      * @param list<string> $listas
-     * @param array{incremental: bool, manifiesto: bool, json: bool} $opciones
+     * @param array{incremental: bool, manifiesto: bool, json: bool, indice: bool} $opciones
      * @param callable(string): void $salida
      * @param callable(string): void $errores
      */
@@ -180,6 +181,13 @@ final class Cli
             if (!$opciones['json']) {
                 $salida("$directorio: " . ($igual ? 'sin cambios' : implode(', ', $archivos)) . "\n");
             }
+        }
+
+        if ($opciones['indice']) {
+            if (!is_dir($carpeta) && !mkdir($carpeta, 0777, true) && !is_dir($carpeta)) {
+                throw new \RuntimeException("No se pudo crear $carpeta.");
+            }
+            file_put_contents("$carpeta/indice.svg", Indice::svg(array_map(static fn (array $par): Libro => $par[0], array_values($libros))));
         }
 
         $manifiesto = [

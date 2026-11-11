@@ -322,7 +322,7 @@ abstract class Plantilla
         $fin = $y;
         if ($libro->textos->contratapa !== '') {
             $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $alto, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
-            $svg .= $this->parrafo($texto['lineas'], $x, $y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
+            $svg .= $this->parrafo($texto['lineas'], $x, $y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto'], [], $ancho);
             $fin = $y + count($texto['lineas']) * $texto['tamano'] * self::INTERLINEADO;
         }
 
@@ -404,7 +404,7 @@ abstract class Plantilla
         $margen = self::SOLAPA_MARGEN;
         $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, self::SOLAPA_TAMANO_MAX, self::SOLAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
 
-        return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * self::ASCENDENTE, $ajuste['tamano'], 'start', $libro->colores['texto']);
+        return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * self::ASCENDENTE, $ajuste['tamano'], 'start', $libro->colores['texto'], [], $panel->ancho - 2 * $margen);
     }
 
     /** «Vol. 3» en el idioma del libro, o vacío si no es de una serie. */
@@ -451,17 +451,23 @@ abstract class Plantilla
         $espaciado = (float) ($extra['letter-spacing'] ?? 0.0);
         $ajuste = Texto::unaLinea($texto, $ancho, $tamanoMax, $tamanoMin, $this->medidaDe($extra), $espaciado);
 
-        return $this->parrafo([$ajuste['texto']], $x, $y, $ajuste['tamano'], $anclaje, $color, $extra);
+        return $this->parrafo([$ajuste['texto']], $x, $y, $ajuste['tamano'], $anclaje, $color, $extra, $ancho);
     }
 
     /**
-     * Texto de varias líneas con la primera línea base en (x, y). Una línea vacía deja un hueco.
+     * Texto de varias líneas con la primera línea base en (x, y). Una línea vacía deja un hueco. Con `$caja` (el ancho de
+     * la caja donde empieza en `x`), un párrafo de derecha a izquierda se alinea a su borde derecho.
      *
      * @param list<string> $lineas
      * @param array<string, float|int|string> $extra
      */
-    protected function parrafo(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra = []): string
+    protected function parrafo(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra = [], float $caja = 0.0): string
     {
+        // Un párrafo que se lee de derecha a izquierda se alinea al borde derecho de su caja, no al izquierdo.
+        if ($caja > 0.0 && $anclaje === 'start' && TextoATrazos::esDerechaAIzquierda(implode(' ', $lineas))) {
+            $x += $caja;
+            $anclaje = 'end';
+        }
         $this->usar($extra, implode('', $lineas));
         if ($this->textoATrazos) {
             return $this->trazos()->escribir($lineas, $x, $y, $tamano, $anclaje, $color, $this->familia(), self::estiloDe($extra), self::pesoDe($extra), $this->medidaDe($extra), (float) ($extra['letter-spacing'] ?? 0.0), self::INTERLINEADO);

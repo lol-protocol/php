@@ -8,7 +8,9 @@ use PortadasSvg\Color;
 use PortadasSvg\Generador;
 use PortadasSvg\Libro;
 use PortadasSvg\Lista;
+use PortadasSvg\Fuentes;
 use PortadasSvg\Plantilla;
+use PortadasSvg\TextoATrazos;
 
 /** Un PNG de 1×1, para probar la incrustación sin depender de ningún archivo del repositorio. */
 function pngDePrueba(string $ruta): string
@@ -118,6 +120,54 @@ return [
             igual([], array_filter(Generador::avisos($libro), static fn (string $a): bool => str_contains($a, 'la imagen no se usa')));
             $otro = libroDeEjemplo(['plantilla' => 'clasica', 'imagen' => $png]);
             igual(1, count(array_filter(Generador::avisos($otro), static fn (string $a): bool => str_contains($a, 'la imagen no se usa'))));
+        });
+    },
+
+    'Un párrafo que se lee de derecha a izquierda se alinea al borde derecho de su caja' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            mkdir("$dir/extra", 0777, true);
+            file_put_contents("$dir/extra/rtl.formas.json", json_encode([
+                'אב' => [1200, 1, [[0, 0, 'M0 0L100 0L100 -100Z']]],
+                'גד' => [1000, 1, [[0, 0, 'M0 0L300 0L300 -100Z']]],
+            ], JSON_UNESCAPED_UNICODE));
+            try {
+                Fuentes::usarExtras("$dir/extra");
+                verdadero(TextoATrazos::esDerechaAIzquierda('אב גד'), 'dos palabras de derecha a izquierda');
+                verdadero(!TextoATrazos::esDerechaAIzquierda('אב Hola'), 'mezclado no cuenta');
+                verdadero(!TextoATrazos::esDerechaAIzquierda(''), 'vacío no cuenta');
+                Generador::escribir(libroDeEjemplo(['contratapa' => 'אב גד', 'cita' => '']), "$dir/rtl", true);
+                Generador::escribir(libroDeEjemplo(['contratapa' => 'Hola mundo']), "$dir/ltr", true);
+                $traslado = static function (string $ruta): float {
+                    preg_match_all('/translate\(([\d.]+) /', (string) file_get_contents($ruta), $m);
+
+                    return (float) max($m[1]);
+                };
+                // En la contratapa, el párrafo de derecha a izquierda empieza (en x) más a la derecha que el de izquierda a derecha.
+                verdadero($traslado("$dir/rtl/contratapa.svg") > $traslado("$dir/ltr/contratapa.svg"), 'el texto hebreo no se alineó a la derecha');
+            } finally {
+                Fuentes::usarExtras(__DIR__ . '/../../fuentes/extra');
+            }
+        });
+    },
+
+    'El CLI escribe una hoja de contactos con todas las portadas, en SVG puro' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            $filas = "id,titulo,autor,paginas\n";
+            for ($i = 1; $i <= 8; $i++) {
+                $filas .= "libro-$i,Título $i & más,Autor $i,100\n";
+            }
+            file_put_contents("$dir/lista.csv", $filas);
+            [$codigo] = correrCli(["--lista=$dir/lista.csv", "--salida=$dir/salida", '--indice']);
+            igual(0, $codigo);
+            $svg = (string) file_get_contents("$dir/salida/indice.svg");
+            $doc = new DOMDocument();
+            verdadero($doc->loadXML($svg) !== false, 'el índice es XML válido');
+            igual(8, substr_count($svg, '<image '));
+            verdadero(str_contains($svg, 'xlink:href="libro-8/portada.svg"'), 'cada miniatura apunta a su portada');
+            verdadero(str_contains($svg, 'Título 1 &amp; más'), 'los títulos van escapados');
+            verdadero(!str_contains($svg, '<script') && !str_contains($svg, '<foreignObject'), 'sin scripts ni HTML');
+            [, $ayuda] = correrCli(['--help']);
+            verdadero(str_contains($ayuda, '--indice'), 'la ayuda describe --indice');
         });
     },
 ];
