@@ -1,6 +1,6 @@
 <?php
 
-// Borrador sin revisión de hablante nativo.
+// Traducción propia: el proyecto no prevé revisión de hablante nativo de los mensajes.
 return [
     'explanation.where' => '辞書 %s、種類 %s、重大度 %s',
     'explanation.fusion' => '「%1$s」は続けて読むと「%2$s」に聞こえます（%3$s）',

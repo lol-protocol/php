@@ -1,6 +1,6 @@
 <?php
 
-// Borrador sin revisión de hablante nativo.
+// Traducción propia: el proyecto no prevé revisión de hablante nativo de los mensajes.
 return [
     'explanation.where' => 'القاموس %s، النوع %s، الشدة %s',
     'explanation.fusion' => '«%1$s» عند قراءتها متصلة تبدو مثل «%2$s» (%3$s)',

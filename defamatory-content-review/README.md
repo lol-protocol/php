@@ -1002,7 +1002,7 @@ Hay mensajes en 18 idiomas (`eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol`, `ru
 con otro idioma, o con una clave que falte, sale el español. Los textos viven en
 `config/messages/<código>.php` con claves planas, y `spa` es el origen: añadir un idioma es copiar
 ese archivo y traducir; `MessagesTest` exige las mismas claves y los mismos marcadores
-(`%1$s`, `%.2f`…). Son borradores sin revisión de hablante nativo. Los códigos de riesgo
+(`%1$s`, `%.2f`…). Son traducciones propias y el proyecto no prevé que las revise un hablante nativo, así que pueden tener giros poco naturales: si ves un error, corrígelo en el archivo de su idioma. Los códigos de riesgo
 (`fonetico`), las decisiones (`review`) y los nombres de campo no se traducen.
 
 Los métodos que antes vivían directo en `DefamatoryContentReviewer` para
