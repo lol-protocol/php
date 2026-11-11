@@ -177,6 +177,7 @@ Cada petición vuelve a preguntar a la base, así que una página que se oculta 
   - Una persona toma además la fecha del último de sus **sucesos visibles** (la página los lista): si cambia un suceso, su página cambió. Un cambio en otra fila relacionada (el nombre de un pariente) no la mueve sola: la fecha es la de la fila de la página.
   - Los lugares y el POS no tienen la columna y no llevan fecha por página.
 - El estado son archivos chicos en `SITEMAP_ESTADO_DIR` (por omisión, una carpeta en el directorio temporal). Si se pierde, las fechas empiezan de nuevo; si no se puede escribir, no hay fechas y el sitemap se sirve igual.
+- Lo único que se guarda unos minutos es **cuántas páginas tiene cada tipo** (5 minutos), porque contarlas es la consulta cara del índice y solo decide cuántos archivos anuncia. Las páginas de cada archivo siguen saliendo de la base en cada petición: una persona que se oculta o se retira sale del sitemap al instante. Una página nueva que haga falta una parte más puede tardar hasta 5 minutos en anunciarse en el índice.
 
 ### Listados que cargan más al bajar (sin una URL nueva)
 

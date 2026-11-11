@@ -10,8 +10,9 @@ namespace App\Support;
  * served with. The tables keep no modification dates, so this is the only honest date there is: it
  * moves when a page enters or leaves the list, never because the file was generated again.
  *
- * Nothing is cached here: every request still asks the database, so a page that is hidden or
- * withdrawn leaves the sitemap at once. A small JSON file per sitemap file, in SITEMAP_ESTADO_DIR
+ * The pages themselves are never cached here: every request still asks the database, so a page that is
+ * hidden or withdrawn leaves the sitemap at once. The one thing kept for a few minutes is how many pages a
+ * type has (cuenta()), which only decides how many files the index announces. A small JSON file per sitemap file, in SITEMAP_ESTADO_DIR
  * (by default a folder in the system temp dir). If that folder is lost the dates start over, and
  * if it cannot be written there are none: no date is better than a false one. That silence is for the
  * visitor only: the reason it could not be written (a full disk, a folder PHP may not write) goes to the
@@ -55,6 +56,28 @@ final class SitemapEstado
         return $this->escribir($archivo, ['huella' => $huella, 'desde' => $desde]) ? $desde : null;
     }
 
+    /**
+     * A number that is costly to work out and may be a few minutes old (how many rows a sitemap type has, which
+     * only decides how many files the index announces): what $calcular gives, kept for $segundos. When it cannot
+     * be kept (a folder that cannot be written), it is worked out every time, as if there were no cache.
+     *
+     * @param \Closure(): int $calcular
+     */
+    public function cuenta(string $clave, int $segundos, \Closure $calcular): int
+    {
+        $ahora = $this->reloj !== null ? ($this->reloj)() : time();
+        $json = @file_get_contents($this->ruta('cuenta:' . $clave));
+        $guardada = $json === false ? null : json_decode($json, true);
+        if (is_array($guardada) && is_int($guardada['n'] ?? null) && is_int($guardada['hasta'] ?? null) && $guardada['hasta'] > $ahora) {
+            return $guardada['n'];
+        }
+
+        $n = $calcular();
+        $this->escribir('cuenta:' . $clave, ['n' => $n, 'hasta' => $ahora + $segundos]);
+
+        return $n;
+    }
+
     /** @return int|null since when $archivo lists what it lists, or null if it was never served (or its state was lost) */
     public function desde(string $archivo): ?int
     {
@@ -70,7 +93,7 @@ final class SitemapEstado
         return is_array($estado) && is_string($estado['huella'] ?? null) && is_int($estado['desde'] ?? null) ? $estado : null;
     }
 
-    /** @param array{huella: string, desde: int} $estado */
+    /** @param array<string, string|int> $estado */
     private function escribir(string $archivo, array $estado): bool
     {
         if (!is_dir($this->dir) && !@mkdir($this->dir, 0700, true) && !is_dir($this->dir)) {
