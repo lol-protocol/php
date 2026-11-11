@@ -35,31 +35,31 @@
 <polygon points="232.078,195.879 232.029,195.926 231.958,195.958 231.868,195.972 231.76,195.97 231.635,195.951 231.495,195.915 231.344,195.863 231.184,195.796 231.017,195.716 230.846,195.622 230.675,195.518 230.505,195.405 230.341,195.285 230.184,195.159 230.038,195.031 229.905,194.901 229.788,194.773 229.688,194.649 229.606,194.53 229.545,194.419 229.506,194.318 229.489,194.228 229.494,194.152 229.522,194.089 229.571,194.042 229.642,194.01 229.732,193.996 229.84,193.998 229.965,194.017 230.105,194.053 230.256,194.105 230.416,194.172 230.583,194.252 230.754,194.346 230.925,194.45 231.095,194.563 231.259,194.683 231.416,194.809 231.562,194.937 231.695,195.067 231.812,195.195 231.912,195.319 231.994,195.438 232.055,195.549 232.094,195.65 232.111,195.74 232.106,195.816" fill="none" stroke="#2a1f17" stroke-width="0.18" stroke-linejoin="miter" stroke-linecap="square"/>
 <polyline points="230.8,193.203 230.8,196.765" fill="none" stroke="#2a1f17" stroke-width="0.18" stroke-linejoin="miter" stroke-linecap="square"/>
 <circle cx="230.8" cy="194.984" r="0.184" fill="#2a1f17"/>
-<g transform="translate(229.624 108) rotate(90) translate(-23.04 0) scale(0.00336)" fill="#2a1f17">
+<g transform="translate(229.624 108) rotate(90) translate(-22.922 0) scale(0.00336)" fill="#2a1f17">
 <use xlink:href="#ga65" x="0"/>
-<use xlink:href="#ga112" x="712"/>
-<use xlink:href="#ga111" x="1334"/>
-<use xlink:href="#ga108" x="1913"/>
-<use xlink:href="#ga111" x="2242"/>
-<use xlink:href="#ga103" x="2821"/>
-<use xlink:href="#ga237" x="3378"/>
-<use xlink:href="#ga97" x="3707"/>
-<use xlink:href="#ga100" x="4485"/>
-<use xlink:href="#ga101" x="5099"/>
-<use xlink:href="#ga83" x="5869"/>
-<use xlink:href="#ga243" x="6413"/>
-<use xlink:href="#ga99" x="6992"/>
-<use xlink:href="#ga114" x="7512"/>
-<use xlink:href="#ga97" x="7968"/>
-<use xlink:href="#ga116" x="8509"/>
-<use xlink:href="#ga101" x="8868"/>
-<use xlink:href="#ga115" x="9401"/>
-<use xlink:href="#ga183" x="10103"/>
-<use xlink:href="#ga80" x="10642"/>
-<use xlink:href="#ga108" x="11263"/>
-<use xlink:href="#ga97" x="11592"/>
-<use xlink:href="#ga116" x="12133"/>
-<use xlink:href="#ga243" x="12492"/>
-<use xlink:href="#ga110" x="13071"/>
+<use xlink:href="#ga112" x="672"/>
+<use xlink:href="#ga111" x="1294"/>
+<use xlink:href="#ga108" x="1863"/>
+<use xlink:href="#ga111" x="2192"/>
+<use xlink:href="#ga103" x="2771"/>
+<use xlink:href="#ga237" x="3328"/>
+<use xlink:href="#ga97" x="3657"/>
+<use xlink:href="#ga100" x="4435"/>
+<use xlink:href="#ga101" x="5049"/>
+<use xlink:href="#ga83" x="5819"/>
+<use xlink:href="#ga243" x="6363"/>
+<use xlink:href="#ga99" x="6942"/>
+<use xlink:href="#ga114" x="7462"/>
+<use xlink:href="#ga97" x="7908"/>
+<use xlink:href="#ga116" x="8449"/>
+<use xlink:href="#ga101" x="8808"/>
+<use xlink:href="#ga115" x="9341"/>
+<use xlink:href="#ga183" x="10043"/>
+<use xlink:href="#ga80" x="10582"/>
+<use xlink:href="#ga108" x="11203"/>
+<use xlink:href="#ga97" x="11522"/>
+<use xlink:href="#ga116" x="12063"/>
+<use xlink:href="#ga243" x="12422"/>
+<use xlink:href="#ga110" x="13001"/>
 </g>
 </svg>

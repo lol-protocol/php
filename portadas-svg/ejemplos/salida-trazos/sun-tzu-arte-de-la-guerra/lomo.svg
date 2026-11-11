@@ -25,29 +25,29 @@
 </defs>
 <rect x="138" y="0" width="4.8" height="216" fill="url(#fondo-degradado)"/>
 <rect x="138" y="0" width="4.8" height="216" fill="#6969d3"/>
-<g transform="translate(139.392 108) rotate(90) translate(-19.669 0) scale(0.00288)" fill="#171726">
+<g transform="translate(139.392 108) rotate(90) translate(-19.636 0) scale(0.00288)" fill="#171726">
 <use xlink:href="#ga69" x="0"/>
 <use xlink:href="#ga108" x="601"/>
 <use xlink:href="#ga97" x="1124"/>
 <use xlink:href="#ga114" x="1686"/>
-<use xlink:href="#ga116" x="2062"/>
-<use xlink:href="#ga101" x="2389"/>
-<use xlink:href="#ga100" x="3253"/>
-<use xlink:href="#ga101" x="3865"/>
-<use xlink:href="#ga108" x="4729"/>
-<use xlink:href="#ga97" x="4971"/>
-<use xlink:href="#ga103" x="5814"/>
-<use xlink:href="#ga117" x="6427"/>
-<use xlink:href="#ga101" x="7018"/>
-<use xlink:href="#ga114" x="7601"/>
-<use xlink:href="#ga114" x="7977"/>
-<use xlink:href="#ga97" x="8353"/>
-<use xlink:href="#ga183" x="9196"/>
-<use xlink:href="#ga83" x="9765"/>
-<use xlink:href="#ga117" x="10407"/>
-<use xlink:href="#ga110" x="10998"/>
-<use xlink:href="#ga84" x="11870"/>
-<use xlink:href="#ga122" x="12516"/>
-<use xlink:href="#ga117" x="13068"/>
+<use xlink:href="#ga116" x="2078"/>
+<use xlink:href="#ga101" x="2395"/>
+<use xlink:href="#ga100" x="3259"/>
+<use xlink:href="#ga101" x="3871"/>
+<use xlink:href="#ga108" x="4735"/>
+<use xlink:href="#ga97" x="4977"/>
+<use xlink:href="#ga103" x="5820"/>
+<use xlink:href="#ga117" x="6433"/>
+<use xlink:href="#ga101" x="7024"/>
+<use xlink:href="#ga114" x="7607"/>
+<use xlink:href="#ga114" x="7999"/>
+<use xlink:href="#ga97" x="8375"/>
+<use xlink:href="#ga183" x="9218"/>
+<use xlink:href="#ga83" x="9787"/>
+<use xlink:href="#ga117" x="10429"/>
+<use xlink:href="#ga110" x="11020"/>
+<use xlink:href="#ga84" x="11892"/>
+<use xlink:href="#ga122" x="12493"/>
+<use xlink:href="#ga117" x="13045"/>
 </g>
 </svg>

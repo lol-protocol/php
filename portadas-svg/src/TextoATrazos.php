@@ -55,11 +55,16 @@ final class TextoATrazos
                     $avance += $ancho;
                     continue;
                 }
+                $anterior = '';
                 foreach (mb_str_split($trozo) as $letra) {
                     $codigo = mb_ord($letra);
                     if ($codigo < 0x20) {
+                        $anterior = '';
                         continue;
                     }
+                    // El kerning acerca o separa la letra de la anterior, igual que al medir.
+                    $avance += $medida->ajuste($anterior, $letra);
+                    $anterior = $letra;
                     $contorno = Fuentes::contorno($familia, $estilo, $peso, $codigo);
                     if ($contorno === null) {
                         $avance += $medida->em($letra) * 1000 + $entreLetras;
