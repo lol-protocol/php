@@ -56,7 +56,8 @@ Pequeño sistema en PHP (sin framework) para analizar:
   «Exportar CSV» y baja **todas** las filas que la pantalla mostraría con sus filtros
   actuales (período, estado, cliente, alcance, orden), no solo la página que se ve. Es un
   CSV estándar (UTF-8 con marca de orden para que Excel muestre bien las tildes, comas,
-  decimales con punto, fechas `AAAA-MM-DD`). Un texto que empiece con `=`, `+`, `-` o `@`
+  decimales con punto, fechas `AAAA-MM-DD`; los montos de boletas y pagos llevan los decimales
+  de su moneda, como la pantalla: `1500` en yenes, `1500.00` en dólares). Un texto que empiece con `=`, `+`, `-` o `@`
   lleva un apóstrofe delante, para que Excel o LibreOffice no lo ejecuten como fórmula (un
   cliente llamado `=HYPERLINK(...)`); los números no se tocan. Se exporta de a mil filas,
   así que una base grande no agota la memoria de PHP. Llevan datos personales (nombre y

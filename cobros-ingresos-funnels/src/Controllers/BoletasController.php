@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Database;
+use App\CeldaNumerica;
 use App\Descarga;
 use App\Dinero;
 use App\EnvioUnico;
@@ -81,11 +82,11 @@ final class BoletasController
     }
 
     /**
-     * Cada boleta como una fila de CSV. Los montos van como decimales (no como texto):
-     * una planilla los trata como numeros, y el escritor neutraliza como formula solo el texto.
+     * Cada boleta como una fila de CSV. Los montos van como numeros (no como texto), con los decimales
+     * de su moneda (CeldaNumerica): una planilla los trata como numeros, y el escritor neutraliza como formula solo el texto.
      *
      * @param iterable<array<string, mixed>> $boletas
-     * @return Generator<int, list<string|int|float|null>>
+     * @return Generator<int, list<string|int|float|CeldaNumerica|null>>
      */
     private static function filasParaExportar(iterable $boletas): Generator
     {
@@ -96,9 +97,9 @@ final class BoletasController
                 $b['cliente'],
                 $b['concepto'],
                 $b['moneda_codigo'],
-                (float) $b['monto'],
-                (float) $b['pagado'],
-                (float) $b['saldo'],
+                CeldaNumerica::monto((float) $b['monto'], $b['moneda_codigo']),
+                CeldaNumerica::monto((float) $b['pagado'], $b['moneda_codigo']),
+                CeldaNumerica::monto((float) $b['saldo'], $b['moneda_codigo']),
                 $b['fecha_emision'],
                 $b['fecha_vencimiento'],
                 Etiquetas::estadoBoleta($b['estado']),

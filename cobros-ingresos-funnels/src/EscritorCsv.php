@@ -12,8 +12,8 @@ namespace App;
  * interpreta Excel o LibreOffice como una formula: el nombre de un cliente que sea
  * «=HYPERLINK(...)» ejecuta algo al abrir el archivo (inyeccion de formulas, CSV
  * injection). Por eso todo texto lleva delante un apostrofe cuando empieza asi, que
- * la planilla muestra como texto y no se interpreta. Los numeros (int y float) no
- * pasan por ahi: un saldo de -5.00 tiene que seguir siendo un numero.
+ * la planilla muestra como texto y no se interpreta. Los numeros (int, float y
+ * CeldaNumerica) no pasan por ahi: un saldo de -5.00 tiene que seguir siendo un numero.
  */
 final class EscritorCsv
 {
@@ -38,7 +38,7 @@ final class EscritorCsv
         fwrite($this->salida, "\xEF\xBB\xBF");
     }
 
-    /** @param list<string|int|float|null> $celdas */
+    /** @param list<string|int|float|CeldaNumerica|null> $celdas */
     public function fila(array $celdas): void
     {
         // El parametro $escape va vacio a proposito: es el comportamiento del RFC 4180 (una
@@ -46,8 +46,11 @@ final class EscritorCsv
         fputcsv($this->salida, array_map(self::celda(...), $celdas), ',', '"', '', "\r\n");
     }
 
-    /** Una celda como texto de CSV: los enteros tal cual, los decimales con dos cifras, null vacio y el texto sin formulas. */
-    public static function celda(string|int|float|null $valor): string
+    /**
+     * Una celda como texto de CSV: los enteros tal cual, los decimales con dos cifras (o con los de su CeldaNumerica),
+     * null vacio y el texto sin formulas.
+     */
+    public static function celda(string|int|float|CeldaNumerica|null $valor): string
     {
         if ($valor === null) {
             return '';
@@ -55,14 +58,22 @@ final class EscritorCsv
         if (is_int($valor)) {
             return (string) $valor;
         }
+        if ($valor instanceof CeldaNumerica) {
+            return self::decimal($valor->valor, $valor->decimales);
+        }
         if (is_float($valor)) {
-            $redondeado = round($valor, 2);
-
-            // -0.00 (un saldo de -0.001) es un cero: sin esto saldria con el signo.
-            return number_format($redondeado == 0.0 ? 0.0 : $redondeado, 2, '.', '');
+            return self::decimal($valor, 2);
         }
 
         return self::sinFormula($valor);
+    }
+
+    private static function decimal(float $valor, int $decimales): string
+    {
+        $redondeado = round($valor, $decimales);
+
+        // -0.00 (un saldo de -0.001) es un cero: sin esto saldria con el signo.
+        return number_format($redondeado == 0.0 ? 0.0 : $redondeado, $decimales, '.', '');
     }
 
     /** El texto, con un apostrofe delante si una planilla lo tomaria por una formula. */

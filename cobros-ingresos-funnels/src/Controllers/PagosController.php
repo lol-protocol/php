@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Database;
+use App\CeldaNumerica;
 use App\Descarga;
 use App\EnvioUnico;
 use App\Etiquetas;
@@ -73,11 +74,11 @@ final class PagosController
     }
 
     /**
-     * Cada pago como una fila de CSV: el monto va como decimal (no como texto) y la boleta
-     * vacia si es un anticipo.
+     * Cada pago como una fila de CSV: el monto va como numero (no como texto), con los decimales de su
+     * moneda (CeldaNumerica), y la boleta vacia si es un anticipo.
      *
      * @param iterable<array<string, mixed>> $pagos
-     * @return Generator<int, list<string|int|float|null>>
+     * @return Generator<int, list<string|int|float|CeldaNumerica|null>>
      */
     private static function filasParaExportar(iterable $pagos): Generator
     {
@@ -90,7 +91,7 @@ final class PagosController
                 $p['boleta_id'] === null ? null : (int) $p['boleta_id'],
                 Etiquetas::metodoPago($p['metodo']),
                 $p['moneda_codigo'],
-                (float) $p['monto'],
+                CeldaNumerica::monto((float) $p['monto'], $p['moneda_codigo']),
                 $p['anulada'] ? 'Sí' : 'No',
             ];
         }
