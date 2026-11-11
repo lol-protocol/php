@@ -58,10 +58,10 @@ function usage(string $message = ''): never
     exit($message === '' ? 0 : 2);
 }
 
-/** @return array{only: list<string>, dryRun: bool, force: bool, format: string, maxKb: int, delay: float, timeout: int, convert: bool, allowPrivate: bool} */
+/** @return array{only: list<string>, dryRun: bool, force: bool, format: string, maxKb: int, delay: float, timeout: int, convert: bool, allowPrivate: bool, fieldSources: bool} */
 function parseOptions(array $argv): array
 {
-    $options = ['only' => [], 'dryRun' => false, 'force' => false, 'format' => 'md', 'maxKb' => 400, 'delay' => 1.0, 'timeout' => 20, 'convert' => false, 'allowPrivate' => false];
+    $options = ['only' => [], 'dryRun' => false, 'force' => false, 'format' => 'md', 'maxKb' => 400, 'delay' => 1.0, 'timeout' => 20, 'convert' => false, 'allowPrivate' => false, 'fieldSources' => false];
     foreach (array_slice($argv, 1) as $arg) {
         if ($arg === '--help' || $arg === '-h') {
             usage();
@@ -71,6 +71,8 @@ function parseOptions(array $argv): array
             $options['force'] = true;
         } elseif ($arg === '--convert') {
             $options['convert'] = true;
+        } elseif ($arg === '--field-sources') {
+            $options['fieldSources'] = true;
         } elseif ($arg === '--allow-private-hosts') {
             $options['allowPrivate'] = true;
         } elseif (preg_match('/^--only=(.+)$/', $arg, $m)) {
@@ -419,6 +421,70 @@ function robotsPath(string $url): string
     return ($parts['path'] ?? '/') . (isset($parts['query']) ? '?' . $parts['query'] : '');
 }
 
+/**
+ * Per-field source pages of field_sources.csv: the URLs that back a single field (protection term, penalties…),
+ * which are often a different page from the law's reference URL. Grouped by "COUNTRY|law name".
+ *
+ * @return array<string, array<string, list<string>>>  group => url => fields it backs
+ */
+function loadFieldSources(string $dir): array
+{
+    $file = "$dir/field_sources.csv";
+    $handle = is_file($file) ? fopen($file, 'r') : false;
+    if ($handle === false) {
+        return [];
+    }
+    $header = fgetcsv($handle, null, ',', '"', '');
+    $columns = is_array($header) ? array_flip($header) : [];
+    $out = [];
+    foreach (['country_code', 'law_name', 'field', 'url'] as $needed) {
+        if (!isset($columns[$needed])) {
+            fclose($handle);
+            return [];
+        }
+    }
+    while (($row = fgetcsv($handle, null, ',', '"', '')) !== false) {
+        $url = trim($row[$columns['url']] ?? '');
+        if (!preg_match('#^https?://#i', $url)) {
+            continue;
+        }
+        $group = strtoupper($row[$columns['country_code']] ?? '') . '|' . ($row[$columns['law_name']] ?? '');
+        $field = $row[$columns['field']] ?? '';
+        if (!in_array($field, $out[$group][$url] ?? [], true)) {
+            $out[$group][$url][] = $field;
+        }
+    }
+    fclose($handle);
+    return $out;
+}
+
+/**
+ * What to download for one jurisdiction: each law's reference URL and, with --field-sources, the other URLs that
+ * back its fields (one download per distinct URL, named "<law slug>--<8 hex of the URL's sha1>").
+ *
+ * @return list<array{name: string, url: string, base: string}>
+ */
+function plannedDownloads(array $country, array $fieldSources): array
+{
+    $jobs = [];
+    foreach ($country['laws'] as $law) {
+        $name = (string) $law['law_name'];
+        $main = (string) ($law[URL_FIELD] ?? '');
+        $base = slugify($name);
+        if (preg_match('#^https?://#i', $main)) {
+            $jobs[] = ['name' => $name, 'url' => $main, 'base' => $base];
+        }
+        $group = strtoupper((string) ($country['code'] ?? '')) . '|' . $name;
+        foreach ($fieldSources[$group] ?? [] as $url => $fields) {
+            if ($url === $main) {
+                continue;
+            }
+            $jobs[] = ['name' => "$name (" . implode(', ', $fields) . ')', 'url' => (string) $url, 'base' => $base . '--' . substr(sha1((string) $url), 0, 8)];
+        }
+    }
+    return $jobs;
+}
+
 /** Cached text files are only ever named like `some-slug.md`: never trust a path read from index.json. */
 function isCacheFileName(mixed $name): bool
 {
@@ -467,6 +533,7 @@ function main(array $argv): int
     $problems = [];
     $first = true;
     $robots = [];
+    $fieldSources = $options['fieldSources'] ? loadFieldSources(dataDir()) : [];
 
     foreach ($bundle[BUNDLE_KEY] as $country) {
         $tld = $country['tld'];
@@ -478,12 +545,10 @@ function main(array $argv): int
         $entries = [];
         $used = [];
 
-        foreach ($country['laws'] as $law) {
-            $url = (string) ($law[URL_FIELD] ?? '');
-            if (!preg_match('#^https?://#i', $url)) {
-                continue;
-            }
-            $base = slugify($law['law_name']);
+        foreach (plannedDownloads($country, $fieldSources) as $job) {
+            $url = $job['url'];
+            $law = ['law_name' => $job['name']];
+            $base = $job['base'];
             $slug = $base;
             for ($n = 2; isset($used[$slug]); $n++) {
                 $slug = "$base-$n";
