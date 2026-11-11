@@ -92,6 +92,11 @@ final class SupresionRepository extends Repository
                 "SELECT id, motivo, estado, creado_en FROM pedidos_retiro WHERE tipo = 'persona' AND recurso_id = ? ORDER BY id",
                 [$id]
             ),
+            // Which fields were corrected and when, never the values (see rectificar()).
+            'correcciones' => $this->db->fetchAll(
+                'SELECT id, corregida_en, que, pedido_id FROM rectificaciones_persona WHERE persona_id = ? ORDER BY id',
+                [$id]
+            ),
         ];
     }
 
@@ -137,15 +142,7 @@ final class SupresionRepository extends Repository
             if ($this->db->fetchValue('SELECT 1 FROM personas WHERE id = ?', [$id]) === null) {
                 throw new \DomainException("No existe la persona {$id}.");
             }
-            if ($pedido !== null) {
-                $fila = $this->db->fetchOne('SELECT tipo, recurso_id FROM pedidos_retiro WHERE id = ?', [$pedido]);
-                if ($fila === null) {
-                    throw new \DomainException("No existe el pedido de retiro {$pedido}.");
-                }
-                if ($fila['tipo'] !== 'persona' || (int)$fila['recurso_id'] !== $id) {
-                    throw new \DomainException("El pedido de retiro {$pedido} no es sobre la persona {$id}.");
-                }
-            }
+            $this->comprobarPedido($id, $pedido);
 
             $resumen = $this->borrar($id);
             $this->db->insert('supresiones_persona', [
@@ -157,6 +154,55 @@ final class SupresionRepository extends Repository
 
             return $resumen;
         });
+    }
+
+    /**
+     * Records that a field of a persona's ficha was corrected by hand (rectificaciones_persona): which persona,
+     * when, which field ('tabla.columna') and the pedido that asked for it. Never the old or the new value.
+     *
+     * @param string $que 'tabla.columna', lowercase letters and underscores
+     * @param int|null $pedido the pedido de retiro that asked for it, for the record
+     * @return int the number of the record
+     * @throws \DomainException when there is no such persona or pedido, or $que is not 'tabla.columna'
+     */
+    public function rectificar(int $id, string $que, ?int $pedido = null): int
+    {
+        if (preg_match('/^[a-z_]+\.[a-z_]+$/', $que) !== 1) {
+            throw new \DomainException("«{$que}» no es una tabla.columna (por ejemplo personas.apellidos).");
+        }
+
+        return $this->db->transaccionConReintento(function () use ($id, $que, $pedido): int {
+            if ($this->db->fetchValue('SELECT 1 FROM personas WHERE id = ?', [$id]) === null) {
+                throw new \DomainException("No existe la persona {$id}.");
+            }
+            $this->comprobarPedido($id, $pedido);
+
+            $numero = $this->db->siguienteNumero('rectificaciones_persona', 'id');
+            $this->db->insert('rectificaciones_persona', [
+                'id' => $numero,
+                'persona_id' => $id,
+                'corregida_en' => date('Y-m-d H:i:s'),
+                'que' => $que,
+                'pedido_id' => $pedido,
+            ]);
+
+            return $numero;
+        });
+    }
+
+    /** @throws \DomainException when $pedido is not a pedido de retiro about this persona */
+    private function comprobarPedido(int $id, ?int $pedido): void
+    {
+        if ($pedido === null) {
+            return;
+        }
+        $fila = $this->db->fetchOne('SELECT tipo, recurso_id FROM pedidos_retiro WHERE id = ?', [$pedido]);
+        if ($fila === null) {
+            throw new \DomainException("No existe el pedido de retiro {$pedido}.");
+        }
+        if ($fila['tipo'] !== 'persona' || (int)$fila['recurso_id'] !== $id) {
+            throw new \DomainException("El pedido de retiro {$pedido} no es sobre la persona {$id}.");
+        }
     }
 
     /**
