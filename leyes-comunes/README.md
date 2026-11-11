@@ -49,11 +49,11 @@ corriendo contra el script de su propio proyecto.
   privacidad frente a los de derechos de autor, y `website_url` frente a `linked_resources`). Un núcleo
   compartido sería un refactor más grande que el resto junto, con el riesgo de tocar cómo se valida cada CSV.
 - **`tests/`**: las pruebas son las que vigilan los envoltorios, así que cada proyecto conserva las suyas. Algunos
-  archivos auxiliares son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`).
+  archivos son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`).
 
 No se pueden compartir, pero sí vigilar: `comprobar-copias.js` falla en CI si una de esas copias (`app/lib/chart.js`,
 `filters.js`, `util.js`, las hojas `app/styles/base.css`, `comparison.css` y `search.css`,
-`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`) deja de ser igual en los dos módulos.
+`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`) deja de ser igual en los dos módulos.
 
 ## Sitios que rechazan a los runners
 
