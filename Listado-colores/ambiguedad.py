@@ -12,7 +12,7 @@ Cuatro listas:
 En la 3 y la 4 solo entran los casos que no estén ya en la 1 y la 2.
 """
 import colorimetria
-from md import celda
+from md import celda, orden_idiomas
 
 # Distancia CIEDE2000 máxima entre los colores de una forma, en bandas. Son los umbrales de cercanía del proyecto
 # (3 y 8, ver README), no un estándar.
@@ -81,7 +81,7 @@ def calcular(filas, codigos):
     (o `formas` y `clave` en la 3 y la 4) y `colores` [(hex, [conceptos])]; los de las listas entre idiomas, `idiomas`
     [(idioma, formas, colores)].
     """
-    orden = {codigo: n for n, codigo in enumerate(codigos)}
+    orden = orden_idiomas(codigos)
     exactas = _agrupar(filas, _clave_exacta)
     normalizadas = _agrupar(filas, _clave_normalizada)
     # Qué formas exactas (por idioma) tiene cada grupo normalizado: la 3 y la 4 no repiten lo que ya está en la 1 y la 2.
@@ -157,6 +157,9 @@ def informe(filas, idiomas):
         "además de un color, son otra cosa (una flor, una fruta), ni palabras fuera del listado. Parte de las ambigüedades puede "
         "venir de la traducción, que es una propuesta sin revisión de hablantes nativos: una forma que remite a colores muy "
         "distintos en un idioma es una candidata a revisar. Las listas 3 y 4 usan la forma normalizada (ver el README).",
+        "",
+        "`cobertura.md` cuenta aparte, junto a lo que falta (conceptos sin lema, idiomas sin categorías), los nombres CSS repetidos y "
+        "los lemas compartidos: son casos de la lista 1 de este informe (una prueba lo comprueba), no otros distintos.",
         "",
         "## Resumen",
         "",

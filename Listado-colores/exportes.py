@@ -15,7 +15,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from normalizacion import normalizar  # noqa: E402  (módulo de esta carpeta)
+from md import orden_idiomas  # noqa: E402  (módulos de esta carpeta)
+from normalizacion import normalizar  # noqa: E402
 
 # Orden de las fuentes en el gazetteer y significado de cada una.
 FUENTES = ["css", "lexico"]
@@ -101,7 +102,7 @@ def filas_gazetteer(d):
                 filas.append((f[f"nombre_{codigo}"], codigo, "css", "nombre", nombre, color, ""))
     for f in d["lexico"]:
         filas.append((f["forma"], f["idioma"], "lexico", f["tipo"], f["concepto"], d["hex_concepto"][f["concepto"]], f["rasgos"]))
-    orden_idioma = {c: n for n, (c, _) in enumerate(d["idiomas"])}
+    orden_idioma = orden_idiomas(d["idiomas"])
     orden_fuente = {fuente: n for n, fuente in enumerate(FUENTES)}
     # Se descartan las filas idénticas (por ejemplo, un nombre CSS que coincide con la forma natural).
     unicas = sorted(set(filas), key=lambda r: (r[0].casefold(), r[0], orden_idioma[r[1]], orden_fuente[r[2]], r[3], r[4], r[6]))
@@ -174,7 +175,7 @@ def lexico_ud(d):
             filas.add((ocurrencia.lower(), forma, categoria, "_", idioma, concepto))
         if categoria == "ADJ":
             filas.update((flexion, forma, "ADJ", feats, idioma, concepto) for flexion, feats in flexiones.get((idioma, concepto), []))
-    orden_idioma = {c: n for n, (c, _) in enumerate(d["idiomas"])}
+    orden_idioma = orden_idiomas(d["idiomas"])
     orden_upos = {u: n for n, u in enumerate(("ADJ", "NOUN", "PROPN", "VERB"))}
     ordenadas = sorted(filas, key=lambda r: (orden_idioma[r[4]], r[0].casefold(), r[0], r[1], orden_upos[r[2]], r[3], r[5]))
     salida = io.StringIO()

@@ -8,7 +8,8 @@ gramaticales de un concepto) y con qué resultado. El archivo empieza vacío: mi
 import datetime
 import json
 import re
-from md import celda, texto_valido
+from cobertura import ORIGEN_IA
+from md import celda, orden_idiomas, texto_valido
 
 COLUMNAS = ["idioma", "alcance", "elemento", "veredicto", "revisor", "fecha", "huella", "nota"]
 # alcance -> qué se revisa. El elemento es el id del color CSS (nombres, significados) o el concepto (lexico, categorias).
@@ -26,6 +27,7 @@ VEREDICTOS = {
     "dudoso": "el revisor no está seguro y deja constancia en `nota`",
 }
 MARCA_DATOS = "/*DATOS*/null"
+# @deprecated desde la 2.0.0: ningún módulo ni prueba lo usa (situacion() separa validados y con dudas). Se conserva como referencia.
 CONTAN = ("correcto", "corregir", "dudoso", "corregido")  # todos los veredictos dejan constancia de que alguien miró
 
 
@@ -45,7 +47,9 @@ def huellas(d):
     codigos = [c for c, _ in d["idiomas"]]
     lexico, categorias = {}, {}
     for f in d["lexico"]:
-        lexico.setdefault((f["idioma"], f["concepto"]), []).append(f"{f['forma']}\t{f['tipo']}\t{f['rasgos']}")
+        # La marca de propuesta de IA no es parte de lo que se revisa: quitarla al confirmar el lema no debe caducar la revisión.
+        rasgos = "" if f["rasgos"] == ORIGEN_IA else f["rasgos"]
+        lexico.setdefault((f["idioma"], f["concepto"]), []).append(f"{f['forma']}\t{f['tipo']}\t{rasgos}")
     for f in d["categorias"]:
         categorias.setdefault((f["idioma"], f["concepto"]), []).append(
             f"{f['forma']}\t{f['categoria']}\t{f['ocurrencia']}\t{f['ejemplo']}")
@@ -121,7 +125,11 @@ def _lugar(universo_revisable, f):
 
 
 def situacion(filas, huellas_actuales):
-    """Qué dice cada fila ante el dato de hoy: ({atención: [filas]}, {(idioma, alcance): {elementos revisados}}).
+    """Qué dice cada fila ante el dato de hoy: (atención, validados, con_dudas).
+
+    `atención` es {tipo: [filas]}; `validados` y `con_dudas` son {(idioma, alcance): {elementos}}. Un elemento está validado si
+    solo tiene filas `correcto` o `corregido` y tiene dudas si alguna fila es `corregir` o `dudoso`: una duda no es una revisión
+    aprobada y no debe inflar la cobertura.
 
     - `caducada`: un `correcto` cuyo dato cambió después de la revisión; ya no cuenta como revisado.
     - `ya_cambio`: un `corregir` o `dudoso` cuyo dato cambió: quizá se corrigió, falta marcarlo `corregido`.
@@ -130,7 +138,6 @@ def situacion(filas, huellas_actuales):
     - `huerfana`: la fila habla de un elemento que ya no existe (se renombró o se quitó): no cuenta como revisado.
     """
     atencion = {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": [], "huerfana": []}
-    revisados = {}
     vigentes = {}
     for f in filas:
         actual = huellas_actuales.get((f["idioma"], f["alcance"]), {}).get(f["elemento"])
@@ -145,20 +152,32 @@ def situacion(filas, huellas_actuales):
             atencion["ya_cambio"].append(f)
         if f["veredicto"] == "corregido" and igual:
             atencion["sin_cambio"].append(f)
-        revisados.setdefault((f["idioma"], f["alcance"]), set()).add(f["elemento"])
         vigentes.setdefault((f["idioma"], f["alcance"], f["elemento"]), []).append(f)
-    for lista in vigentes.values():
-        if any(f["veredicto"] == "correcto" for f in lista) and any(f["veredicto"] in ("corregir", "dudoso") and f["huella"] == huellas_actuales[(f["idioma"], f["alcance"])][f["elemento"]] for f in lista):
+    validados, con_dudas = {}, {}
+    for (idioma, alcance, elemento), lista in vigentes.items():
+        dudosas = [f for f in lista if f["veredicto"] in ("corregir", "dudoso")]
+        if any(f["veredicto"] == "correcto" for f in lista) and any(f["huella"] == huellas_actuales[(idioma, alcance)][elemento] for f in dudosas):
             atencion["conflicto"].extend(lista)
-    return atencion, revisados
+        (con_dudas if dudosas else validados).setdefault((idioma, alcance), set()).add(elemento)
+    return atencion, validados, con_dudas
+
+
+ETIQUETAS_ATENCION = {"caducada": "caducada(s)", "ya_cambio": "con el dato ya cambiado", "sin_cambio": "corregida(s) sin cambio",
+                      "conflicto": "en desacuerdo", "huerfana": "huérfana(s)"}
+
+
+def aviso(atencion):
+    """Una línea para la salida de generar-tabla.py si hay revisiones que atender; "" si no. No hace fallar nada."""
+    partes = [f"{len(filas)} {ETIQUETAS_ATENCION[tipo]}" for tipo, filas in atencion.items() if filas]
+    return f"Revisiones que atender ({', '.join(partes)}): ver revisiones.md." if partes else ""
 
 
 def informe(filas, universo_revisable, idiomas, huellas_actuales):
     """El texto de revisiones.md. `idiomas` es la lista [(código, nombre)] de generar-tabla.py."""
     nombres = dict(idiomas)
-    atencion, por_celda = situacion(filas, huellas_actuales)
+    atencion, validados, con_dudas = situacion(filas, huellas_actuales)
     total = sum(len(v) for v in universo_revisable.values())
-    revisados = sum(len(v) for v in por_celda.values())
+    n_validados, n_dudas = sum(len(v) for v in validados.values()), sum(len(v) for v in con_dudas.values())
     partes = [
         "# Revisión por hablantes nativos",
         "",
@@ -168,12 +187,13 @@ def informe(filas, universo_revisable, idiomas, huellas_actuales):
         "un asistente de IA y ningún hablante nativo lo ha revisado. `revisiones.csv` es el registro de quién ha revisado qué; este "
         "informe lo resume.",
         "",
-        (f"**Estado: {revisados} de {total} elementos revisados.**" if revisados
-         else f"**Estado: ningún elemento revisado todavía (0 de {total}).**"),
+        (f"**Estado: {n_validados} de {total} elementos validados y {n_dudas} con dudas o correcciones pendientes.**"
+         if n_validados or n_dudas else f"**Estado: ningún elemento revisado todavía (0 de {total}).**"),
         "",
         "## Cómo revisar",
         "",
-        "1. Abre `visor-revision.html` en un navegador (no necesita servidor ni conexión), elige tu idioma y lo que vas a revisar.",
+        "1. Consigue el visor (el artefacto `visor-revision` de la CI en `master`, o `python3 generar-tabla.py --visor visor-revision.html`), "
+        "ábrelo en un navegador (no necesita servidor ni conexión), elige tu idioma y lo que vas a revisar.",
         "2. Marca cada elemento: `correcto`, `corregir` (con la corrección propuesta en la nota) o `dudoso`. Escribe tu nombre o alias y la fecha. Cada fila lleva una huella del dato que viste: si el dato cambia después, la revisión caduca.",
         "3. Copia las filas que genera el visor y añádelas al final de `revisiones.csv` (en un PR o pásalas a quien mantiene el proyecto). "
         "El orden de las filas no importa; el generador las valida.",
@@ -191,7 +211,8 @@ def informe(filas, universo_revisable, idiomas, huellas_actuales):
         "",
         "## Cobertura por idioma",
         "",
-        "Elementos con al menos una fila, sobre el total de cada alcance (`—` si el idioma no tiene datos de ese alcance).",
+        "Elementos validados (solo filas `correcto` o `corregido`) sobre el total de cada alcance, y entre paréntesis los que tienen "
+        "dudas o correcciones pendientes (`—` si el idioma no tiene datos de ese alcance).",
         "",
         "| Idioma | " + " | ".join(f"`{a}`" for a in ALCANCES) + " |",
         "|---|" + "---|" * len(ALCANCES),
@@ -203,8 +224,8 @@ def informe(filas, universo_revisable, idiomas, huellas_actuales):
             if todos is None:
                 celdas.append("—")
             else:
-                hechos = len(por_celda.get((codigo, alcance), set()))
-                celdas.append(f"{hechos} de {len(todos)}")
+                hechos, dudas = len(validados.get((codigo, alcance), ())), len(con_dudas.get((codigo, alcance), ()))
+                celdas.append(f"{hechos} de {len(todos)}" + (f" (+{dudas} con dudas)" if dudas else ""))
         partes.append(f"| {nombre} (`{codigo}`) | " + " | ".join(celdas) + " |")
     partes += ["", "## Filas por veredicto", "", "| Veredicto | Filas |", "|---|---|"]
     for veredicto in VEREDICTOS:
@@ -214,7 +235,7 @@ def informe(filas, universo_revisable, idiomas, huellas_actuales):
     if not pendientes:
         partes.append("No hay correcciones propuestas ni dudas por atender.")
     else:
-        orden_idioma = {c: n for n, (c, _) in enumerate(idiomas)}
+        orden_idioma = orden_idiomas(idiomas)
         orden_alcance = {a: n for n, a in enumerate(ALCANCES)}
         partes += ["| Idioma | Alcance | Elemento | Veredicto | Nota | Revisor | Fecha |", "|---|---|---|---|---|---|---|"]
         for f in sorted(pendientes, key=lambda f: (orden_idioma[f["idioma"]], orden_alcance[f["alcance"]],
@@ -235,7 +256,7 @@ def informe(filas, universo_revisable, idiomas, huellas_actuales):
          "Se renombró o se quitó el elemento (o hay un error de escritura en `elemento`): no cuentan como revisadas. "
          "Corrige la fila o bórrala."),
     ]
-    orden_idioma = {c: n for n, (c, _) in enumerate(idiomas)}
+    orden_idioma = orden_idiomas(idiomas)
     orden_alcance = {a: n for n, a in enumerate(ALCANCES)}
     hay = False
     for clave, titulo, texto in avisos:

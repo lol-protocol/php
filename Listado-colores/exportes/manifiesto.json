@@ -1,5 +1,5 @@
 {
-  "version": "1.2.1",
+  "version": "2.0.0",
   "idiomas": [
     "en",
     "es",
@@ -259,11 +259,6 @@
         "concepto"
       ],
       "sha256": "02259cc1a0c68c53029116845df988ec8df11fc4b0ea3bcd5b8a65c84b950a88"
-    },
-    {
-      "archivo": "exportes/ejemplos.conllu",
-      "filas": 210,
-      "sha256": "83aec49a62b0ac76356f50672a4c1122de8133fd754c19ea933251e8fdac1349"
     }
   ]
 }

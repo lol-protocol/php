@@ -12,7 +12,7 @@
 - categorias.csv: las categorías gramaticales (ADJ, NOUN, PROPN, VERB) de las palabras de color de una sola palabra
   en inglés y español, con una frase de ejemplo; se genera categorias.md (ver categorias.py).
 - revisiones.csv: el registro de qué elementos han revisado hablantes nativos y con qué resultado (empieza vacío); se
-  generan revisiones.md (la cobertura por idioma) y visor-revision.html (el visor para revisar; ver revision.py).
+  genera revisiones.md (la cobertura por idioma); el visor para revisar se construye con --visor (ver revision.py).
 - referencias.csv: las fuentes citadas por evidencia.csv y significados-culturales.csv; se genera referencias.md.
 - nombres-completos.csv: lista completa de nombres con hex. Sus tres primeras columnas son la fuente;
   css_cercano, delta_e y cercania se calculan aquí (color CSS más cercano según CIEDE2000, en colorimetria.py).
@@ -28,6 +28,8 @@ Uso:
   python3 generar-tabla.py                   valida los CSV y regenera los archivos generados
   python3 generar-tabla.py --comprobar       valida y sale con error si los archivos generados no están al día
   python3 generar-tabla.py --sqlite ruta.db  valida los CSV y construye una base SQLite (no regenera nada más)
+  python3 generar-tabla.py --conllu ruta.conllu  valida y escribe las frases de ejemplo en CoNLL-U (no regenera nada más)
+  python3 generar-tabla.py --visor ruta.html     valida y escribe el visor de revisión, un HTML sin dependencias (no regenera nada más)
 """
 import bisect
 import csv
@@ -63,7 +65,6 @@ COBERTURA = CARPETA / "cobertura.md"
 REVISIONES = CARPETA / "revisiones.csv"
 REVISIONES_MD = CARPETA / "revisiones.md"
 VISOR_PLANTILLA = CARPETA / "visor-plantilla.html"
-VISOR = CARPETA / "visor-revision.html"
 REFS_MD = CARPETA / "referencias.md"
 AMBIGUEDAD = CARPETA / "ambiguedad.md"
 AUDITORIA = CARPETA / "auditoria-nombres.md"
@@ -742,6 +743,16 @@ def construir_datos(anotada, completa, traducidos, lexico, referencias, evidenci
     }
 
 
+def ruta_de(bandera, que):
+    """La ruta que sigue a `bandera` en la línea de comandos, o None si no se pasó la bandera."""
+    if bandera not in sys.argv:
+        return None
+    indice = sys.argv.index(bandera)
+    if indice + 1 >= len(sys.argv):
+        sys.exit(f"{bandera} necesita la ruta {que}: python3 generar-tabla.py {bandera} ruta")
+    return sys.argv[indice + 1]
+
+
 def leer_todos():
     """Lee los diez CSV. Si varios están mal (cabecera inesperada, fila con campos de más o de menos), los cuenta todos."""
     fallos, leidos = [], {}
@@ -804,20 +815,26 @@ def main():
     cercanias = calcular_cercanias(completa, anotada)
     datos = construir_datos(anotada, completa, traducidos, lexico, referencias, evidencia_filas, culturales, gramaticales, alias, cercanias)
     significados, evidencia = datos["significados"], datos["evidencia"]
-    if "--sqlite" in sys.argv:
-        indice = sys.argv.index("--sqlite")
-        if indice + 1 >= len(sys.argv):
-            sys.exit("--sqlite necesita la ruta de la base: python3 generar-tabla.py --sqlite ruta.db")
-        ruta = sys.argv[indice + 1]
+    # Lo que se construye a petición no se guarda en el repositorio: se deriva sin pérdida de los CSV.
+    if ruta := ruta_de("--sqlite", "de la base"):
         conexion = exportes.construir_sqlite(ruta, datos)
         tablas = [fila[0] for fila in conexion.execute("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name")]
         conexion.close()
         print(f"Base SQLite en {ruta} con las tablas: {', '.join(tablas)}.")
         return 0
+    if ruta := ruta_de("--conllu", "del archivo CoNLL-U"):
+        Path(ruta).write_text(exportes.ejemplos_conllu(datos), encoding="utf-8")
+        print(f"{len(datos['categorias'])} frases de ejemplo en CoNLL-U en {ruta}.")
+        return 0
+    if ruta := ruta_de("--visor", "del archivo HTML"):
+        Path(ruta).write_text(revision.visor_html(datos, VISOR_PLANTILLA.read_text(encoding="utf-8")), encoding="utf-8")
+        print(f"Visor de revisión en {ruta}: ábrelo en un navegador.")
+        return 0
     completa_texto = texto_completa(completa, cercanias)
+    huellas_actuales = revision.huellas(datos)
     filas_gazetteer = exportes.filas_gazetteer(datos)  # ordenarlas cuesta: una vez para el TSV, los patrones y el informe
     jsonl, tsv = exportes.colores_jsonl(datos), exportes.gazetteer_tsv(datos, filas_gazetteer)
-    patrones, lexico_ud, conllu = exportes.spacy_patrones(datos, filas_gazetteer), exportes.lexico_ud(datos), exportes.ejemplos_conllu(datos)
+    patrones, lexico_ud = exportes.spacy_patrones(datos, filas_gazetteer), exportes.lexico_ud(datos)
     # Las entradas del manifiesto, en el orden del README. nombres-completos.csv va con el texto que genera este programa.
     entradas = [(ruta.name, filas, ruta.read_text(encoding="utf-8"), None) for ruta, filas in (
         (ANOTADA, len(anotada)), (SIGNIFICADOS, len(traducidos)), (LEXICO, len(lexico)), (EVIDENCIA, len(evidencia_filas)),
@@ -826,8 +843,7 @@ def main():
     exportes_manifiesto = [("exportes/colores.jsonl", jsonl.count("\n"), jsonl, None),
                            ("exportes/gazetteer.tsv", tsv.count("\n") - 1, tsv, exportes.COLUMNAS_GAZETTEER)]
     exportes_manifiesto += [(f"exportes/spacy/{codigo}.jsonl", texto.count("\n"), texto, None) for codigo, texto in patrones.items()]
-    exportes_manifiesto += [("exportes/lexico-ud.tsv", lexico_ud.count("\n") - 1, lexico_ud, exportes.COLUMNAS_LEXICO_UD),
-                            ("exportes/ejemplos.conllu", conllu.count("# sent_id"), conllu, None)]
+    exportes_manifiesto += [("exportes/lexico-ud.tsv", lexico_ud.count("\n") - 1, lexico_ud, exportes.COLUMNAS_LEXICO_UD)]
     generados = {
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
@@ -836,13 +852,11 @@ def main():
         AUDITORIA: auditoria.informe(completa),
         CATEGORIAS_MD: categorias.informe(gramaticales, IDIOMAS),
         COBERTURA: cobertura.informe(IDIOMAS, anotada, lexico, gramaticales, CONCEPTOS, datos["hex_concepto"]),
-        REVISIONES_MD: revision.informe(revisiones, revisable, IDIOMAS, revision.huellas(datos)),
-        VISOR: revision.visor_html(datos, VISOR_PLANTILLA.read_text(encoding="utf-8")),
+        REVISIONES_MD: revision.informe(revisiones, revisable, IDIOMAS, huellas_actuales),
         COMPLETA: completa_texto,
         DIR_EXPORTES / "colores.jsonl": jsonl,
         DIR_EXPORTES / "gazetteer.tsv": tsv,
         DIR_EXPORTES / "lexico-ud.tsv": lexico_ud,
-        DIR_EXPORTES / "ejemplos.conllu": conllu,
         DIR_EXPORTES / "manifiesto.json": manifiesto.manifiesto(version, [c for c, _ in IDIOMAS], entradas, exportes_manifiesto),
     }
     for codigo, texto in patrones.items():
@@ -862,6 +876,9 @@ def main():
         if fallos_sqlite:
             print("La base SQLite no coincide con los CSV: " + "; ".join(fallos_sqlite), file=sys.stderr)
             return 1
+    atencion_revisiones, _, _ = revision.situacion(revisiones, huellas_actuales)
+    if revision.aviso(atencion_revisiones):  # solo avisa: una revisión huérfana no rompe la generación, pero tampoco debe pasar callada
+        print(revision.aviso(atencion_revisiones), file=sys.stderr)
     desfasados = comprobar_o_escribir(CARPETA, generados.items(), comprobar, sobrantes)
     if comprobar:
         if desfasados:
