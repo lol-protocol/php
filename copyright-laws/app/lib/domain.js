@@ -159,3 +159,6 @@ export function buildChartBars(rows, allRows = rows) {
     items: grouped.get(bucket).map((row) => ({ primary: row.country_name, secondary: row.law_name })),
   }));
 }
+
+// Labels for any column (the change history can name any of them).
+export const FIELD_LABEL_KEYS = { law_name: "table.law", enforcement_body: "compare.enforcement_body", linked_resources: "table.reference", notes: "card.notes" };

@@ -42,7 +42,7 @@ corriendo contra el script de su propio proyecto.
 
 ## Lo que sigue duplicado, y por qué
 
-- **`app/`** (`lib/chart.js`, `lib/filters.js`, `lib/util.js` y varias hojas de estilo son idénticos): la web se sirve
+- **`app/`** (`lib/chart.js`, `lib/filters.js`, `lib/util.js`, `lib/view.js` (las piezas de la vista que no cambian: filas, tarjetas, historial, noticias…) y varias hojas de estilo son idénticos): la web se sirve
   como archivos estáticos desde la carpeta `app/` de cada proyecto, sin paso de build. Compartir esos archivos
   pediría un paso que los copie, o sacarlos de la carpeta que se sirve. No se hizo en la misma tanda.
 - **`scripts/lib/dataset.js`**: es el corazón de cada módulo y los campos de cada ley son distintos (los de
@@ -52,7 +52,7 @@ corriendo contra el script de su propio proyecto.
   archivos son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`).
 
 No se pueden compartir, pero sí vigilar: `comprobar-copias.js` falla en CI si una de esas copias (`app/lib/chart.js`,
-`filters.js`, `util.js`, las hojas `app/styles/base.css`, `comparison.css` y `search.css`,
+`filters.js`, `util.js`, `view.js`, las hojas `app/styles/base.css`, `comparison.css` y `search.css`,
 `tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`) deja de ser igual en los dos módulos.
 
 ## Sitios que rechazan a los runners

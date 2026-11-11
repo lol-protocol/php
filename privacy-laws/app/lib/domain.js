@@ -168,3 +168,6 @@ export function labelAxis(bars) {
   }
   return bars;
 }
+
+// Labels for any column (the change history can name any of them).
+export const FIELD_LABEL_KEYS = { law_name: "table.law", jurisdiction: "compare.jurisdiction", enforcement_authority: "table.authority", website_url: "table.reference", notes: "card.notes" };

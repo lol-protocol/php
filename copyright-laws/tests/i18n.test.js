@@ -71,7 +71,7 @@ test("plural keys always come in .one/.other pairs", () => {
 
 test("every key used by the page exists, and no key is left unused", () => {
   const html = read("../app/index.html");
-  const js = read("../app/copyright-laws.js");
+  const js = read("../app/copyright-laws.js") + read("../app/lib/view.js") + read("../app/lib/domain.js");
   const used = new Set();
   for (const m of js.matchAll(/\bt\(\s*["'`]([\w.]+)["'`]/g)) used.add(m[1]);
   for (const m of html.matchAll(/data-i18n(?:-[a-z-]+)?="([\w.]+)"/g)) used.add(m[1]);
