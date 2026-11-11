@@ -1,0 +1,13 @@
+id,nombre_spa,nombre_eng,herencia,omim,frecuencia_mayor_en,inicio_tipico,nota,estado,fuente
+tay_sachs,Enfermedad de Tay-Sachs,Tay-Sachs disease,autosómica recesiva,272800,"mayor frecuencia de portadores en poblaciones de ascendencia asquenazí, canadiense francesa del este de Quebec y cajún",infancia,,borrador,
+fibrosis_quistica,Fibrosis quística,Cystic fibrosis,autosómica recesiva,219700,"mayor frecuencia en poblaciones de ascendencia europea, sobre todo del norte",infancia,,borrador,
+anemia_falciforme,Anemia falciforme,Sickle cell disease,autosómica recesiva,603903,"África subsahariana, cuenca del Mediterráneo, Oriente Medio e India: se solapa con zonas históricas de malaria",infancia,El rasgo portador protege en parte de la malaria grave.,borrador,
+beta_talasemia,Beta-talasemia,Beta-thalassemia,autosómica recesiva,613985,"cuenca del Mediterráneo, Oriente Medio y sur y sudeste de Asia",infancia,,borrador,
+hemocromatosis,Hemocromatosis hereditaria,Hereditary hemochromatosis,autosómica recesiva,235200,mayor frecuencia en poblaciones de ascendencia del norte de Europa,adultez,,borrador,
+huntington,Enfermedad de Huntington,Huntington disease,autosómica dominante,143100,todas las poblaciones; algo más frecuente en Europa,adultez,Los hijos de una persona afectada tienen un 50 % de probabilidad de heredarla.,borrador,
+hemofilia_a,Hemofilia A,Hemophilia A,recesiva ligada al X,306700,todas las poblaciones,infancia,Afecta sobre todo a varones; las mujeres suelen ser portadoras.,borrador,
+gaucher_1,Enfermedad de Gaucher tipo 1,Gaucher disease type 1,autosómica recesiva,230800,mayor frecuencia en poblaciones de ascendencia asquenazí,variable,,borrador,
+fiebre_mediterranea_familiar,Fiebre mediterránea familiar,Familial Mediterranean fever,autosómica recesiva,249100,"Mediterráneo oriental, Armenia, Oriente Medio y Turquía",infancia,,borrador,
+marfan,Síndrome de Marfan,Marfan syndrome,autosómica dominante,154700,todas las poblaciones,variable,,borrador,
+fenilcetonuria,Fenilcetonuria,Phenylketonuria,autosómica recesiva,261600,mayor frecuencia en Europa y en Turquía,infancia,,borrador,
+deficit_g6pd,Déficit de glucosa-6-fosfato deshidrogenasa,G6PD deficiency,recesiva ligada al X,305900,"África, cuenca del Mediterráneo, Oriente Medio y sur y sudeste de Asia",variable,,borrador,
