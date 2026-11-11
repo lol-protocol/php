@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database;
+use App\Validacion;
 use DateTimeImmutable;
 use PDO;
 
@@ -64,6 +65,18 @@ final class MonedaRepository
     public static function decimales(string $codigo): int
     {
         return min(self::decimalesPorMoneda()[$codigo] ?? 2, 2);
+    }
+
+    /**
+     * Los decimales con que se muestra o se exporta ESE monto en esa moneda: los de decimales() (0 para el yen), salvo
+     * que el monto traiga centavos (se cargo antes de que se pidieran enteros): redondearlo seria mostrar otra cifra de
+     * la que esta guardada, asi que ahi van 2. Una sola regla para la pantalla (dinero_en_moneda) y el CSV (CeldaNumerica).
+     */
+    public static function decimalesParaMostrar(float $monto, string $codigo): int
+    {
+        $decimales = self::decimales($codigo);
+
+        return Validacion::montoCabeEnLosDecimales(abs($monto), $decimales) ? $decimales : 2;
     }
 
     /**

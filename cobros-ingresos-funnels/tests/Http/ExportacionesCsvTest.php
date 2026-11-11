@@ -25,13 +25,13 @@ final class ExportacionesCsvTest extends HttpTestCase
      *
      * @return array{id: int, marca: string, nombre: string}
      */
-    private function clientePeligroso(): array
+    private function clientePeligroso(string $pais = self::PAIS): array
     {
         $marca = 'MARCA' . strtoupper(uniqid());
         $nombre = '=HYPERLINK("http://evil.example","clic") ' . $marca;
         $id = (new ClienteRepository())->crear([
             'nombre' => $nombre, 'email' => strtolower($marca) . '@example.com', 'segmento' => 'general',
-            'fecha_alta' => '2020-01-01', 'pais_codigo' => self::PAIS, 'ciudad' => 'Miami', 'idioma' => 'Ingles',
+            'fecha_alta' => '2020-01-01', 'pais_codigo' => $pais, 'ciudad' => 'Miami', 'idioma' => 'Ingles',
             'genero' => 'No especifica', 'fecha_nacimiento' => '1990-05-05',
         ]);
         $this->alTerminar(static function () use ($id): void {
@@ -45,9 +45,9 @@ final class ExportacionesCsvTest extends HttpTestCase
         return ['id' => $id, 'marca' => $marca, 'nombre' => $nombre];
     }
 
-    private static function moneda(): string
+    private static function moneda(string $pais = self::PAIS): string
     {
-        return (string) Database::connection()->query("SELECT moneda_codigo FROM paises WHERE codigo = '" . self::PAIS . "'")->fetchColumn();
+        return (string) Database::connection()->query("SELECT moneda_codigo FROM paises WHERE codigo = '" . $pais . "'")->fetchColumn();
     }
 
     /** Una boleta del cliente de 1000, emitida en 2020 y vencida; con $concepto como texto libre. */
@@ -156,6 +156,31 @@ final class ExportacionesCsvTest extends HttpTestCase
         $this->assertStatus(200, $this->get('page=cobros-csv&estado[]=x&desde=basura&hasta=2026-13-45'));
         $this->assertStatus(200, $this->get('page=pagos-csv&meses=7&pagina=9999999999999999999'));
         $this->assertStatus(200, $this->get('page=cobranza-csv&alcance=inventado&orden[]=saldo'));
+    }
+
+    public function testUnaMonedaSinDecimalesSeExportaEntera(): void
+    {
+        $cliente = $this->clientePeligroso('JP');
+        self::assertSame('JPY', self::moneda('JP'));
+        $boleta = (new BoletaRepository())->crear([
+            'cliente_id' => $cliente['id'], 'concepto' => 'Yenes', 'monto' => 1500.0, 'moneda_codigo' => 'JPY',
+            'fecha_emision' => '2020-01-01', 'fecha_vencimiento' => '2020-02-01',
+        ]);
+        (new PagoRepository())->crear([
+            'boleta_id' => $boleta, 'cliente_id' => $cliente['id'], 'monto' => 500.0, 'moneda_codigo' => 'JPY',
+            'fecha_pago' => '2020-01-15', 'metodo' => 'transferencia',
+        ]);
+
+        $cobros = self::leer($this->get('page=cobros-csv&' . self::AMPLIO . '&cliente=' . $cliente['marca'])['cuerpo']);
+        $pagos = self::leer($this->get('page=pagos-csv&' . self::AMPLIO . '&cliente=' . $cliente['marca'])['cuerpo']);
+
+        self::assertCount(2, $cobros);
+        self::assertContains('1500', $cobros[1], 'monto sin decimales');
+        self::assertContains('500', $cobros[1], 'pagado sin decimales');
+        self::assertContains('1000', $cobros[1], 'saldo sin decimales');
+        self::assertNotContains('1500.00', $cobros[1]);
+        self::assertContains('500', $pagos[1]);
+        self::assertNotContains('500.00', $pagos[1]);
     }
 
     public function testLosPagosSeExportanConSuBoletaOComoAnticipo(): void
