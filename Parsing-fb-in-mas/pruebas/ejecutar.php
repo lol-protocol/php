@@ -226,6 +226,21 @@ try {
     igual('exclusiones: una línea mala lanza y dice cuál', true, str_contains($e->getMessage(), 'línea 2'));
 }
 
+// --- Mastodon, Bluesky y Threads ---
+$ma = Detector::analizar(muestra('mastodon'))->aArreglo();
+igual('mastodon: se reconoce por el título, sin dominio fijo', 'mastodon', $ma['red']);
+igual('mastodon: usuario con su instancia', 'ana@mastodon.example', $ma['usuario']);
+igual('mastodon: nombre sin el «(@…)»', 'Ana Ejemplo', $ma['nombre']);
+igual('mastodon: biografía', 'Archivera. Transcribo actas parroquiales.', $ma['descripcion']);
+$bs = Detector::analizar(muestra('bluesky'))->aArreglo();
+igual('bluesky: red, usuario y nombre', ['bluesky', 'ana.bsky.social', 'Ana Ejemplo'], [$bs['red'], $bs['usuario'], $bs['nombre']]);
+igual('bluesky: sin «(@…)» en el título, el usuario sale de la ruta', 'ana.bsky.social', Detector::analizar('<link rel="canonical" href="https://bsky.app/profile/ana.bsky.social"><meta property="og:title" content="Ana Ejemplo">')->usuario);
+$th = Detector::analizar(muestra('threads'))->aArreglo();
+igual('threads: red, usuario y nombre', ['threads', 'ana.ejemplo', 'Ana Ejemplo'], [$th['red'], $th['usuario'], $th['nombre']]);
+igual('mastodon no se queda con una página de Twitter', 'twitter', Detector::analizar(muestra('twitter'))->red);
+igual('mastodon no se queda con una persona genérica', 'generico', Detector::analizar(muestra('generico'))->red);
+igual('un título «(@usuario)» sin instancia no es Mastodon', 'generico', Detector::analizar('<meta property="og:title" content="Ana (@ana)"><script type="application/ld+json">{"@type":"Person","name":"Ana"}</script>')->red);
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
