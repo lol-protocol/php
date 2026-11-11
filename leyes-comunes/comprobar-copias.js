@@ -22,6 +22,7 @@ export const COPIAS = [
   "app/styles/comparison.css",
   "app/styles/search.css",
   "tests/helpers/php-server.js",
+  "tests/translations.test.js",
   "tests/fixtures/law-page.html",
 ];
 
