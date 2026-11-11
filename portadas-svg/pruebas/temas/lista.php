@@ -56,7 +56,7 @@ return [
         igual(2, correrCli(['--comprobar', 'libro.json'])[0]);
 
         [$codigo, , $errores] = correrCli(['/no/existe.json']);
-        igual(1, $codigo);
+        igual(3, $codigo);
         verdadero(str_contains($errores, '/no/existe.json'), 'el error no nombra el archivo');
         verdadero(!str_contains($errores, 'Failed to open'), 'se coló un aviso de PHP');
     },
@@ -79,7 +79,7 @@ return [
                 },
             );
 
-            igual(1, $codigo);
+            igual(3, $codigo);
             verdadero(str_contains($errores, "$dir/a/libro.json") && str_contains($errores, "$dir/b/libro.json"), 'el error no nombra los dos archivos');
             verdadero(!is_dir("$dir/out"), 'se escribió algo antes de detectar el repetido');
         });
@@ -199,14 +199,14 @@ return [
 
             // Una fila mala: ninguna carpeta se escribe, ni la de la fila buena.
             [$codigo, , $errores] = correrCli(["--lista=$dir/mala.csv", "--salida=$dir/otra"]);
-            igual(1, $codigo);
+            igual(3, $codigo);
             verdadero(str_contains($errores, 'fila 3'), $errores);
             verdadero(!is_dir("$dir/otra"), 'escribió algo con errores en la lista');
 
             // Un libro de la lista y otro de un JSON con el mismo nombre de carpeta se rechazan.
             file_put_contents("$dir/ana-lodz.json", '{"titulo":"X","autor":"Y","paginas":10}');
             [$codigo, , $errores] = correrCli(["--lista=$dir/buena.csv", "$dir/ana-lodz.json", "--salida=$dir/tercera"]);
-            igual(1, $codigo);
+            igual(3, $codigo);
             verdadero(str_contains($errores, "se llaman igual ('ana-lodz')"), $errores);
             verdadero(!is_dir("$dir/tercera"), 'escribió algo con un nombre repetido');
 
@@ -250,6 +250,50 @@ return [
         });
     },
 
+    'El CLI puede escribir solo lo que cambió, un manifiesto y un JSON, y da el código de salida que toca' => function (): void {
+        conCarpeta(function (string $dir): void {
+            file_put_contents("$dir/lista.csv", "titulo,autor,paginas\nUno,Ana,100\nDos,Beto,50\n");
+            $opciones = ["--lista=$dir/lista.csv", "--salida=$dir/salida", '--incremental', '--manifiesto'];
+
+            [$codigo, $texto] = correrCli($opciones);
+            igual(0, $codigo);
+            verdadero(str_contains($texto, '2 libros (2 escritos, 0 sin cambios)'), $texto);
+            $manifiesto = json_decode((string) file_get_contents("$dir/salida/manifiesto.json"), true);
+            verdadero(is_array($manifiesto) && $manifiesto['total'] === 2 && $manifiesto['escritos'] === 2, 'manifiesto.json');
+            verdadero(is_array($manifiesto) && isset($manifiesto['libros'][0]['archivos']['portada.svg']) && $manifiesto['libros'][0]['archivos']['portada.svg'] > 1000, 'el manifiesto no trae los tamaños');
+
+            // Segunda vez, sin tocar nada: no se escribe ningún libro.
+            $hora = filemtime("$dir/salida/ana-uno/portada.svg");
+            [, $texto] = correrCli($opciones);
+            verdadero(str_contains($texto, '0 escritos, 2 sin cambios'), $texto);
+            igual($hora, filemtime("$dir/salida/ana-uno/portada.svg"));
+
+            // Cambia un libro: solo ese se vuelve a escribir. Y si falta una pieza, también.
+            file_put_contents("$dir/lista.csv", "titulo,autor,paginas\nUno,Ana,120\nDos,Beto,50\n");
+            [, $texto] = correrCli($opciones);
+            verdadero(str_contains($texto, '1 escritos, 1 sin cambios'), $texto);
+            unlink("$dir/salida/beto-dos/lomo.svg");
+            [, $texto] = correrCli($opciones);
+            verdadero(str_contains($texto, '1 escritos, 1 sin cambios') && is_file("$dir/salida/beto-dos/lomo.svg"), $texto);
+            // Sin --incremental se escribe todo, y no deja marcas de «sin cambios».
+            [, $texto] = correrCli(["--lista=$dir/lista.csv", "--salida=$dir/salida"]);
+            verdadero(!str_contains($texto, ': sin cambios'), $texto);
+
+            // --json imprime el manifiesto y nada más por la salida estándar.
+            [$codigo, $json] = correrCli(["--lista=$dir/lista.csv", "--salida=$dir/otra", '--json']);
+            igual(0, $codigo);
+            $datos = json_decode($json, true);
+            verdadero(is_array($datos) && $datos['total'] === 2 && !str_contains($json, 'otra/ana-uno:'), $json);
+
+            // Códigos de salida: datos que no valen = 3, uso incorrecto = 2.
+            file_put_contents("$dir/mala.csv", "titulo,autor,paginas\nUno,,100\n");
+            [$codigo] = correrCli(["--lista=$dir/mala.csv", "--salida=$dir/x"]);
+            igual(3, $codigo);
+            [$codigo] = correrCli(['--incremental']);
+            igual(2, $codigo);
+        });
+    },
+
     'Con --omitir-errores la lista salta las filas malas y avisa de cada una' => function (): void {
         conCarpeta(function (string $dir): void {
             file_put_contents("$dir/lista.csv", "titulo,autor,paginas,tradicion\nBuena,Ana,100,griega\nMala,Beto,100,marciana\nOtra buena,Cleo,50,\nSin autor,,50,\n");
@@ -269,7 +313,7 @@ return [
             igual(['ana-buena', 'cleo-otra-buena'], array_map('basename', glob("$dir/salida/*") ?: []));
             verdadero(substr_count($errores, 'Aviso: ') === 2, $errores);
             [$codigo] = correrCli(["--lista=$dir/lista.csv", "--salida=$dir/otra"]);
-            igual(1, $codigo);
+            igual(3, $codigo);
             verdadero(!is_dir("$dir/otra"), 'escribió algo sin --omitir-errores');
         });
     },

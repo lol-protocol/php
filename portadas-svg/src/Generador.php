@@ -52,8 +52,58 @@ final class Generador
         foreach ($contenidos as $archivo => $contenido) {
             self::guardar("$directorio/$archivo", $contenido);
         }
+        self::guardar("$directorio/" . self::HUELLA, self::huella($libro, $textoATrazos));
 
         return array_keys($contenidos);
+    }
+
+    /** Archivo oculto de cada libro con la huella de lo que se escribió (ver `huella`). */
+    private const HUELLA = '.huella';
+
+    /**
+     * Una huella de todo lo que decide cómo sale un libro: sus datos, el modo (fuente o trazos), las fuentes extra y
+     * el código y los datos del propio generador. Sirve para no volver a escribir un libro que no cambió.
+     */
+    public static function huella(Libro $libro, bool $textoATrazos): string
+    {
+        return md5(serialize($libro) . ($textoATrazos ? 'trazos' : 'fuente') . Fuentes::huellaExtras() . self::versionDelCodigo());
+    }
+
+    /** Si la carpeta del libro ya tiene todas sus piezas y fueron escritas con esta misma huella. */
+    public static function sinCambios(Libro $libro, string $directorio, bool $textoATrazos): bool
+    {
+        $archivo = "$directorio/" . self::HUELLA;
+        if (!is_file($archivo) || file_get_contents($archivo) !== self::huella($libro, $textoATrazos)) {
+            return false;
+        }
+        foreach ([...array_keys(self::piezas($libro)), 'medidas.txt'] as $archivo) {
+            if (!is_file("$directorio/$archivo")) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /** Una huella del código, los datos y las fuentes del generador: si cambian, los libros hay que volver a escribirlos. */
+    private static function versionDelCodigo(): string
+    {
+        static $version = null;
+        if ($version === null) {
+            $partes = [];
+            foreach (['src', 'datos', 'fuentes'] as $carpeta) {
+                $iterador = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/../' . $carpeta, \FilesystemIterator::SKIP_DOTS));
+                foreach ($iterador as $archivo) {
+                    if ($archivo instanceof \SplFileInfo && $archivo->isFile() && !str_contains($archivo->getPathname(), '/fuentes/extra/')) {
+                        $partes[$archivo->getPathname()] = md5_file($archivo->getPathname());
+                    }
+                }
+            }
+            ksort($partes);
+            $version = md5(implode('|', $partes));
+        }
+
+        return $version;
     }
 
     /**
