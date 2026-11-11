@@ -11,6 +11,7 @@ namespace PortadasSvg;
 final class Anchos
 {
     private const RUTA = __DIR__ . '/../datos/anchos.json';
+    private const KERNING = __DIR__ . '/../datos/kerning.json';
 
     /** @var array<string, MedidaFuente> */
     private static array $caras = [];
@@ -44,6 +45,33 @@ final class Anchos
         return self::$datos = is_array($datos) ? $datos : [];
     }
 
+    /**
+     * El kerning de una cara, de datos/kerning.json. Sin ese archivo, o sin esa cara, no hay ajuste.
+     *
+     * @return array<string, int>
+     */
+    private static function pares(string $familia, string $estilo, int $peso, int $unidades): array
+    {
+        $contenido = is_file(self::KERNING) ? file_get_contents(self::KERNING) : false;
+        $datos = $contenido === false ? null : json_decode($contenido, true, 16);
+        $caras = is_array($datos) && ($datos['unidades'] ?? null) === $unidades && is_array($datos['caras'] ?? null) ? $datos['caras'] : [];
+        $porFamilia = is_array($caras[$familia] ?? null) ? $caras[$familia] : [];
+        $porEstilo = is_array($porFamilia[$estilo] ?? null) ? $porFamilia[$estilo] : [];
+        $pares = $porEstilo[(string) $peso] ?? null;
+        if (!is_array($pares)) {
+            return [];
+        }
+
+        $resultado = [];
+        foreach ($pares as $par => $ajuste) {
+            if (is_int($ajuste)) {
+                $resultado[(string) $par] = $ajuste;
+            }
+        }
+
+        return $resultado;
+    }
+
     private static function cargar(string $familia, string $estilo, int $peso): MedidaFuente
     {
         $datos = self::leer();
@@ -74,6 +102,6 @@ final class Anchos
             $formas[(string) $palabra] = $avance;
         }
 
-        return new MedidaFuente($anchos, $cara['promedio'], $unidades, $extras, $formas);
+        return new MedidaFuente($anchos, $cara['promedio'], $unidades, $extras, $formas, self::pares($familia, $estilo, $peso, $unidades));
     }
 }

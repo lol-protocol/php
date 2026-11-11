@@ -46,5 +46,16 @@ jobs:
       - name: ejemplos/salida al día con el generador
         run: php bin/generar.php --comprobar
 
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Herramientas de Python (fuentes, kerning y regresión visual)
+        run: |
+          pip install fonttools brotli uharfbuzz resvg-py Pillow
+          python3 -m unittest discover -s herramientas/pruebas -v
+          python3 herramientas/kerning.py --comprobar
+          python3 herramientas/pruebas/visual.py
+
       - name: Análisis estático (PHPStan)
         run: phpstan analyse --no-progress

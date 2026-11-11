@@ -224,15 +224,15 @@ return [
         igual('filosofia', $libro->categoria);
         igual('Una frase.', $libro->textos->cita); // la cita no entra en el texto de la ficha: la contratapa la compone aparte
         igual(
-            "«¿Qué es la filosofía?: Una introducción» es una obra de Autor de prueba (siglo II), de la tradición romana.\n\nTipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.",
+            "«¿Qué es la filosofía?: Una introducción» es una obra de Autor de prueba (siglo II), de la tradición romana.\n\nTipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224\u{00A0}páginas.",
             $libro->textos->contratapa,
         );
-        igual("Tipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224 páginas.", $libro->textos->solapaPortada);
+        igual("Tipo de texto: Filosofía y ensayo.\n\nTraducción de Traductora X. 224\u{00A0}páginas.", $libro->textos->solapaPortada);
         igual("Autor de prueba (siglo II).\n\nTradición romana.", $libro->textos->solapaContratapa);
 
         // Sin nada más que la tradición, solo lo que se sabe.
         $minimo = libroDeEjemplo(['tradicion' => 'china']);
-        igual('«Título de prueba» es una obra de Autor de prueba, de la tradición china.' . "\n\n112 páginas.", $minimo->textos->contratapa);
+        igual('«Título de prueba» es una obra de Autor de prueba, de la tradición china.' . "\n\n112\u{00A0}páginas.", $minimo->textos->contratapa);
     },
 
     'Un texto escrito a mano manda sobre la ficha' => function (): void {

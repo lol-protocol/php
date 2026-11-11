@@ -14,9 +14,8 @@
 </style>
 <rect x="0" y="0" width="461.6" height="216" fill="url(#fondo-degradado)"/>
 <text x="13" y="16.2" font-family="&apos;Source Serif 4&apos;, Georgia, &apos;Times New Roman&apos;, serif" font-size="4" text-anchor="start" fill="#2a1f17"><tspan x="13" dy="0">Las preguntas que plantea Sócrates</tspan>
-<tspan x="13" dy="5.4">siguen sin respuesta definitiva, y</tspan>
-<tspan x="13" dy="5.4">por eso este diálogo se sigue</tspan>
-<tspan x="13" dy="5.4">leyendo.</tspan>
+<tspan x="13" dy="5.4">siguen sin respuesta definitiva, y por</tspan>
+<tspan x="13" dy="5.4">eso este diálogo se sigue leyendo.</tspan>
 </text>
 <polyline points="109,25 109,20 114.143,20 114.143,25 110.714,25 110.714,21.667 112.429,21.667 112.429,23.333" fill="none" stroke="#7a2e1f" stroke-width="0.23" stroke-linejoin="miter" stroke-linecap="square"/>
 <polyline points="114.143,25 115,25" fill="none" stroke="#7a2e1f" stroke-width="0.23" stroke-linejoin="miter" stroke-linecap="square"/>
