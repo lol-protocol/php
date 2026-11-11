@@ -217,7 +217,8 @@ php bin/persona.php suprimir 6128473105 --pedido=12 --confirmar   # lo hace
 - **Es definitivo**: sin una copia de seguridad no se deshace. Y una copia vieja trae a la persona de vuelta: después de
   restaurar una, `php bin/persona.php reaplicar` lista a quien volvió y `reaplicar --confirmar` la quita otra vez,
   a partir de ese registro.
-- Los datos se corrigen (**rectificación**) todavía a mano en la base de datos.
+- Los datos se corrigen (**rectificación**) todavía a mano en la base de datos. El recorrido completo de una
+  solicitud (comprobar quién pide, rectificar, qué responder) está en [`SOLICITUDES.md`](SOLICITUDES.md).
 
 ## Lo que esto NO cubre
 
