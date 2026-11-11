@@ -87,11 +87,12 @@ final class Generador
         return true;
     }
 
+    private static ?string $version = null;
+
     /** Una huella del código, los datos y las fuentes del generador: si cambian, los libros hay que volver a escribirlos. */
     private static function versionDelCodigo(): string
     {
-        static $version = null;
-        if ($version === null) {
+        if (self::$version === null) {
             $partes = [];
             foreach (['src', 'datos', 'fuentes'] as $carpeta) {
                 $iterador = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/../' . $carpeta, \FilesystemIterator::SKIP_DOTS));
@@ -102,10 +103,10 @@ final class Generador
                 }
             }
             ksort($partes);
-            $version = md5(implode('|', $partes));
+            self::$version = md5(implode('|', $partes));
         }
 
-        return $version;
+        return self::$version;
     }
 
     /**
@@ -165,7 +166,7 @@ final class Generador
         if ($libro->formato->lomo < Plantilla::LOMO_MINIMO) {
             $avisos[] = 'El lomo mide ' . self::fmt($libro->formato->lomo) . ' mm y con menos de ' . self::fmt(Plantilla::LOMO_MINIMO) . ' mm no se escribe su texto: da más páginas, un papel más grueso o un `lomo_mm` propio.';
         }
-        $fondos = [$libro->colores['fondo'], ...($libro->degradado?->colores ?? [])];
+        $fondos = [$libro->colores['fondo'], ...($libro->degradado === null ? [] : $libro->degradado->colores)];
         foreach ($fondos as $fondo) {
             if (Color::contraste($libro->colores['texto'], $fondo) < 4.5) {
                 $avisos[] = "El texto ({$libro->colores['texto']}) casi no se lee sobre el fondo $fondo (contraste " . number_format(Color::contraste($libro->colores['texto'], $fondo), 1, ',', '') . ':1, mínimo 4,5:1).';

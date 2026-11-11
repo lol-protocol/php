@@ -140,7 +140,7 @@ return [
                 $traslado = static function (string $ruta): float {
                     preg_match_all('/translate\(([\d.]+) /', (string) file_get_contents($ruta), $m);
 
-                    return (float) max($m[1]);
+                    return $m[1] === [] ? 0.0 : (float) max(array_map('floatval', $m[1]));
                 };
                 // En la contratapa, el párrafo de derecha a izquierda empieza (en x) más a la derecha que el de izquierda a derecha.
                 verdadero($traslado("$dir/rtl/contratapa.svg") > $traslado("$dir/ltr/contratapa.svg"), 'el texto hebreo no se alineó a la derecha');

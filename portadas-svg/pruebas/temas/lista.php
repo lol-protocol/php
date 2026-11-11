@@ -260,7 +260,9 @@ return [
             verdadero(str_contains($texto, '2 libros (2 escritos, 0 sin cambios)'), $texto);
             $manifiesto = json_decode((string) file_get_contents("$dir/salida/manifiesto.json"), true);
             verdadero(is_array($manifiesto) && $manifiesto['total'] === 2 && $manifiesto['escritos'] === 2, 'manifiesto.json');
-            verdadero(is_array($manifiesto) && isset($manifiesto['libros'][0]['archivos']['portada.svg']) && $manifiesto['libros'][0]['archivos']['portada.svg'] > 1000, 'el manifiesto no trae los tamaños');
+            $primero = is_array($manifiesto) && is_array($manifiesto['libros'] ?? null) ? ($manifiesto['libros'][0] ?? null) : null;
+            $tamanos = is_array($primero) && is_array($primero['archivos'] ?? null) ? $primero['archivos'] : [];
+            verdadero(is_int($tamanos['portada.svg'] ?? null) && $tamanos['portada.svg'] > 1000, 'el manifiesto no trae los tamaños');
 
             // Segunda vez, sin tocar nada: no se escribe ningún libro.
             $hora = filemtime("$dir/salida/ana-uno/portada.svg");

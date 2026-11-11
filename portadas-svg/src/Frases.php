@@ -16,7 +16,11 @@ final class Frases
     /** @var array<string, array<string, mixed>>|null */
     private static ?array $datos = null;
 
-    /** Los idiomas con frases propias, por su código de dos letras. @return list<string> */
+    /**
+     * Los idiomas con frases propias, por su código de dos letras.
+     *
+     * @return list<string>
+     */
     public static function idiomas(): array
     {
         return array_keys(self::datos());
@@ -65,7 +69,18 @@ final class Frases
         if (!is_array($datos) || !is_array($datos[self::RESPALDO] ?? null)) {
             throw new \RuntimeException('datos/frases.json no se puede leer o no trae el español.');
         }
+        $idiomas = [];
+        foreach ($datos as $idioma => $frases) {
+            if (!is_array($frases)) {
+                throw new \RuntimeException("datos/frases.json: «{$idioma}» debe ser un objeto con las frases del idioma.");
+            }
+            $propias = [];
+            foreach ($frases as $clave => $frase) {
+                $propias[(string) $clave] = $frase;
+            }
+            $idiomas[(string) $idioma] = $propias;
+        }
 
-        return self::$datos = $datos;
+        return self::$datos = $idiomas;
     }
 }

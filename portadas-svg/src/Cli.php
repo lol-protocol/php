@@ -167,7 +167,7 @@ final class Cli
         foreach ($libros as [$libro]) {
             $directorio = "$carpeta/{$libro->id}";
             $igual = $opciones['incremental'] && Generador::sinCambios($libro, $directorio, $trazos);
-            $archivos = $igual ? array_values(array_map('basename', glob("$directorio/*.{svg,txt}", GLOB_BRACE) ?: [])) : Generador::escribir($libro, $directorio, $trazos);
+            $archivos = $igual ? array_map('basename', glob("$directorio/*.{svg,txt}", GLOB_BRACE) ?: []) : Generador::escribir($libro, $directorio, $trazos);
             $escritos += $igual ? 0 : 1;
             $tamanos = [];
             foreach ($archivos as $archivo) {

@@ -11,9 +11,10 @@ return [
         $origen = (string) file_get_contents("$raiz/fuentes/ORIGEN.md");
         $porFamilia = ['serif' => 'source-serif-4', 'sans' => 'inter'];
         verdadero(is_array($datos) && isset($datos['caras']) && is_array($datos['caras']), 'datos/fuentes.json tiene caras');
-        foreach (array_keys($datos['caras']) as $familia) {
-            $paquete = $porFamilia[$familia] ?? null;
-            verdadero($paquete !== null, "la familia «{$familia}» no tiene paquete conocido: añádela a esta prueba y a fuentes/ORIGEN.md");
+        $caras = is_array($datos) && is_array($datos['caras'] ?? null) ? $datos['caras'] : [];
+        foreach (array_keys($caras) as $familia) {
+            $paquete = $porFamilia[$familia] ?? '';
+            verdadero($paquete !== '', "la familia «{$familia}» no tiene paquete conocido: añádela a esta prueba y a fuentes/ORIGEN.md");
             $licencia = "$raiz/fuentes/LICENCIA-$paquete.txt";
             verdadero(is_file($licencia), "falta fuentes/LICENCIA-$paquete.txt");
             verdadero(str_contains((string) file_get_contents($licencia), 'SIL Open Font License'), "$paquete: la licencia no es la OFL");

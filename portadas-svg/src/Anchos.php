@@ -54,12 +54,22 @@ final class Anchos
     {
         $contenido = is_file(self::KERNING) ? file_get_contents(self::KERNING) : false;
         $datos = $contenido === false ? null : json_decode($contenido, true, 16);
-        $pares = is_array($datos) && ($datos['unidades'] ?? null) === $unidades && is_array($datos['caras'] ?? null) ? ($datos['caras'][$familia][$estilo][(string) $peso] ?? null) : null;
+        $caras = is_array($datos) && ($datos['unidades'] ?? null) === $unidades && is_array($datos['caras'] ?? null) ? $datos['caras'] : [];
+        $porFamilia = is_array($caras[$familia] ?? null) ? $caras[$familia] : [];
+        $porEstilo = is_array($porFamilia[$estilo] ?? null) ? $porFamilia[$estilo] : [];
+        $pares = $porEstilo[(string) $peso] ?? null;
         if (!is_array($pares)) {
             return [];
         }
 
-        return array_filter($pares, static fn (mixed $ajuste): bool => is_int($ajuste));
+        $resultado = [];
+        foreach ($pares as $par => $ajuste) {
+            if (is_int($ajuste)) {
+                $resultado[(string) $par] = $ajuste;
+            }
+        }
+
+        return $resultado;
     }
 
     private static function cargar(string $familia, string $estilo, int $peso): MedidaFuente
