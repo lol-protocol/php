@@ -21,6 +21,18 @@ final class Nombres
         'æ' => 'ae', 'œ' => 'oe', 'ß' => 'ss', 'þ' => 'th',
     ];
 
+    /** Griego y cirílico en minúsculas, a letras latinas (transliteración corriente, sin tildes ni signos). */
+    private const LATINO = [
+        'ου' => 'ou', 'ού' => 'ou',
+        'α' => 'a', 'β' => 'b', 'γ' => 'g', 'δ' => 'd', 'ε' => 'e', 'ζ' => 'z', 'η' => 'i', 'θ' => 'th', 'ι' => 'i', 'κ' => 'k', 'λ' => 'l',
+        'μ' => 'm', 'ν' => 'n', 'ξ' => 'x', 'ο' => 'o', 'π' => 'p', 'ρ' => 'r', 'σ' => 's', 'ς' => 's', 'τ' => 't', 'υ' => 'y', 'φ' => 'f',
+        'χ' => 'ch', 'ψ' => 'ps', 'ω' => 'o', 'ά' => 'a', 'έ' => 'e', 'ή' => 'i', 'ί' => 'i', 'ό' => 'o', 'ύ' => 'y', 'ώ' => 'o', 'ϊ' => 'i', 'ϋ' => 'y',
+        'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'e', 'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'й' => 'y',
+        'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 'ф' => 'f',
+        'х' => 'kh', 'ц' => 'ts', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'shch', 'ъ' => '', 'ы' => 'y', 'ь' => '', 'э' => 'e', 'ю' => 'yu', 'я' => 'ya',
+        'і' => 'i', 'ї' => 'yi', 'є' => 'ye', 'ґ' => 'g',
+    ];
+
     /** Minúsculas, sin tildes y con un solo espacio entre palabras: para saber si dos nombres son el mismo. */
     public static function plegar(string $texto): string
     {
@@ -36,7 +48,8 @@ final class Nombres
      */
     public static function slug(string $texto, int $largo = 80): string
     {
-        $slug = trim(preg_replace('/[^a-z0-9]+/', '-', self::plegar($texto)) ?? '', '-');
+        $descompuesto = class_exists(\Normalizer::class) ? (\Normalizer::normalize($texto, \Normalizer::FORM_D) ?: $texto) : $texto;
+        $slug = trim(preg_replace('/[^a-z0-9]+/', '-', strtr(self::plegar($descompuesto), self::LATINO)) ?? '', '-');
         if (strlen($slug) <= $largo) {
             return $slug;
         }

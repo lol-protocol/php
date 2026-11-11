@@ -38,6 +38,9 @@ jobs:
           sudo systemctl stop apache2 nginx 2>/dev/null || true
           # unidades ya caidas en la imagen del runner (ej. mnt.mount): el monitor las reportaria
           sudo systemctl reset-failed || true
+          # firefox (snap) viene en la imagen del runner y su paquete falla al actualizarse con apt (dpkg sale con
+          # error y 01-system-update.sh se detiene): no tiene que ver con lo que se prueba, asi que se retiene.
+          sudo apt-mark hold firefox || true
 
       - name: install-all + apps + comprobaciones
         run: sudo REAL_E2E=1 vps-setup/tests/e2e/run.sh

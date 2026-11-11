@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace PortadasSvg;
 
 /**
- * Medida con la tabla de anchos de una fuente (ver datos/anchos.json). No tiene en cuenta el kerning,
- * que casi siempre acorta una línea, así que la medida sale igual o algo mayor que la real, no menor.
+ * Medida con la tabla de anchos de una fuente (ver datos/anchos.json) y su kerning (ver datos/kerning.json): el
+ * ajuste de los pares de letras ASCII dentro de una palabra, que casi siempre acorta la línea. Los pares con letras
+ * fuera de ASCII no se ajustan, así que ahí la medida sale igual o algo mayor que la real, no menor.
  */
 final class MedidaFuente implements Medida
 {
@@ -22,6 +23,8 @@ final class MedidaFuente implements Medida
         private readonly int $unidades,
         private readonly array $extras = [],
         private readonly array $formas = [],
+        /** @var array<string, int> ajuste de cada par de letras ASCII seguidas («AV»), en milésimas de em */
+        private readonly array $pares = [],
     ) {
     }
 
@@ -43,15 +46,24 @@ final class MedidaFuente implements Medida
     private function sumar(string $texto): int
     {
         $suma = 0;
+        $anterior = '';
         foreach (mb_str_split($texto) as $letra) {
             $codigo = mb_ord($letra);
             if ($codigo < 0x20) {
+                $anterior = '';
                 continue;
             }
-            $suma += $this->anchos[$codigo] ?? $this->extras[$codigo] ?? $this->promedio;
+            $suma += ($this->anchos[$codigo] ?? $this->extras[$codigo] ?? $this->promedio) + $this->ajuste($anterior, $letra);
+            $anterior = $letra;
         }
 
         return $suma;
+    }
+
+    /** Lo que se acerca (negativo) o se separa la letra `$b` de la `$a` que la precede, en milésimas de em. */
+    public function ajuste(string $a, string $b): int
+    {
+        return $a === '' ? 0 : $this->pares[$a . $b] ?? 0;
     }
 
     /**

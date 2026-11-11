@@ -213,13 +213,19 @@ return [
                 igual('道', Anchos::de('serif', 'normal', 400)->noCubiertas('道')); // la fuente incrustada sigue sin tenerla
                 igual('', Anchos::de('serif', 'normal', 400)->sinContorno('道'));
 
-                $conFuente = Generador::avisos($libro);
-                verdadero(str_contains($conFuente[0] ?? '', 'Con --trazos se dibujan (道) con las fuentes extra'), implode(' | ', $conFuente));
+                // Con las letras extra, el libro sale a trazos aunque no se pida, y no hay nada que avisar.
+                igual([], Generador::avisos($libro));
                 igual([], Generador::avisos($libro, true));
 
-                Generador::escribir($libro, "$dir/trazos", true);
-                $svg = (string) file_get_contents("$dir/trazos/lomo.svg");
-                verdadero(str_contains($svg, 'id="ga36947"') && str_contains($svg, 'M100 0L900 0'), 'el lomo no dibuja la letra extra');
+                foreach (['trazos' => true, 'sin-pedirlo' => false] as $carpeta => $pedido) {
+                    Generador::escribir($libro, "$dir/$carpeta", $pedido);
+                    $svg = (string) file_get_contents("$dir/$carpeta/lomo.svg");
+                    verdadero(str_contains($svg, 'id="ga36947"') && str_contains($svg, 'M100 0L900 0'), "el lomo ($carpeta) no dibuja la letra extra");
+                }
+                verdadero(str_contains((string) file_get_contents("$dir/sin-pedirlo/medidas.txt"), 'a trazos'), 'medidas.txt no dice que salió a trazos');
+                // Un libro que no usa esas letras sigue saliendo con la fuente.
+                Generador::escribir(libroDeEjemplo(), "$dir/normal");
+                verdadero(str_contains((string) file_get_contents("$dir/normal/portada.svg"), '@font-face'), 'un libro sin letras extra dejó de llevar fuentes');
 
                 [$codigo] = correrCli(['ejemplos/platon-apologia.json', '--trazos', "--extra=$dir/extra", "--salida=$dir/cli"]);
                 igual(0, $codigo);

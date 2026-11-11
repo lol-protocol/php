@@ -25,6 +25,8 @@ final class Ficha
         private readonly ?array $tradicion,
         private readonly ?array $categoria,
         private readonly ?int $paginas,
+        /** Idioma de las frases que se arman (ver Frases): el del libro. */
+        private readonly string $idioma = 'es',
     ) {
     }
 
@@ -58,7 +60,7 @@ final class Ficha
     {
         return self::parrafos([
             $this->autor . ($this->epoca === '' ? '' : " ({$this->epoca})") . '.',
-            $this->tradicion === null ? '' : "Tradición {$this->tradicion['nombre']}.",
+            $this->tradicion === null ? '' : Frases::texto($this->idioma, 'tradicion', ['nombre' => $this->nombreDeTradicion()]),
         ]);
     }
 
@@ -66,9 +68,14 @@ final class Ficha
     {
         $nombre = $this->subtitulo === '' ? $this->titulo : "{$this->titulo}: {$this->subtitulo}";
         $epoca = $this->epoca === '' ? '' : " ({$this->epoca})";
-        $tradicion = $this->tradicion === null ? '' : ", de la tradición {$this->tradicion['nombre']}";
+        $tradicion = $this->tradicion === null ? '' : Frases::texto($this->idioma, 'tradicion_obra', ['nombre' => $this->nombreDeTradicion()]);
 
-        return "«{$nombre}» es una obra de {$this->autor}{$epoca}{$tradicion}.";
+        return Frases::texto($this->idioma, 'obra', ['nombre' => $nombre, 'autor' => $this->autor, 'epoca' => $epoca, 'tradicion' => $tradicion]);
+    }
+
+    private function nombreDeTradicion(): string
+    {
+        return $this->tradicion === null ? '' : Frases::nombre($this->idioma, 'tradiciones', $this->tradicion['slug'], $this->tradicion['nombre']);
     }
 
     private function clasificacion(): string
@@ -76,18 +83,23 @@ final class Ficha
         if ($this->categoria === null) {
             return '';
         }
+        $familia = Frases::nombre($this->idioma, 'familias', $this->categoria['familia'], $this->categoria['familia']);
 
-        return mb_strtoupper(mb_substr($this->categoria['familia'], 0, 1)) . mb_substr($this->categoria['familia'], 1) . ": {$this->categoria['nombre']}.";
+        return Frases::texto($this->idioma, 'clasificacion', [
+            'familia' => mb_strtoupper(mb_substr($familia, 0, 1)) . mb_substr($familia, 1),
+            'nombre' => Frases::nombre($this->idioma, 'categorias', $this->categoria['slug'], $this->categoria['nombre']),
+        ]);
     }
 
     private function traduccion(): string
     {
-        return $this->traductor === '' ? '' : "Traducción de {$this->traductor}.";
+        return $this->traductor === '' ? '' : Frases::texto($this->idioma, 'traduccion', ['traductor' => $this->traductor]);
     }
 
+    /** «224 páginas», con un espacio de no ruptura para que el número no quede solo al final de una línea. */
     private function extension(): string
     {
-        return $this->paginas === null ? '' : "{$this->paginas} páginas.";
+        return $this->paginas === null ? '' : str_replace(' ', "\u{00A0}", Frases::texto($this->idioma, 'paginas', ['n' => $this->paginas]));
     }
 
     /** @param list<string> $partes */

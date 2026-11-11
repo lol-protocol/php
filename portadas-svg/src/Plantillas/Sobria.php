@@ -6,7 +6,9 @@ namespace PortadasSvg\Plantillas;
 
 use PortadasSvg\Adornos\Motivo;
 use PortadasSvg\Color;
+use PortadasSvg\Frases;
 use PortadasSvg\Libro;
+use PortadasSvg\Mayusculas;
 use PortadasSvg\Plantilla;
 use PortadasSvg\Rectangulo;
 
@@ -92,9 +94,9 @@ final class Sobria extends Plantilla
         // Abajo: una regla de acento, el autor en mayúsculas espaciadas, el traductor y la editorial.
         $autorY = $panel->y + $panel->alto - self::MARGEN - self::AUTOR_ARRIBA_DEL_MARGEN;
         $svg .= $this->rectangulo(new Rectangulo($x, $autorY - self::REGLA_SEPARACION, self::REGLA_ANCHO, self::REGLA_ALTO), ['fill' => $colores['acento']]);
-        $svg .= $this->rotulo(mb_strtoupper($libro->textos->autor), $x, $autorY, $ancho, self::AUTOR_TAMANO_MAX, self::AUTOR_TAMANO_MIN, 'start', $colores['texto'], ['letter-spacing' => self::AUTOR_ESPACIADO]);
+        $svg .= $this->rotulo(Mayusculas::de($libro->textos->autor, $libro->idioma), $x, $autorY, $ancho, self::AUTOR_TAMANO_MAX, self::AUTOR_TAMANO_MIN, 'start', $colores['texto'], ['letter-spacing' => self::AUTOR_ESPACIADO]);
         if ($libro->textos->traductor !== '') {
-            $svg .= $this->rotulo('Traducción de ' . $libro->textos->traductor, $x, $autorY + self::TRADUCTOR_SEPARACION, $ancho, self::TRADUCTOR_TAMANO_MAX, self::TRADUCTOR_TAMANO_MIN, 'start', $colores['texto']);
+            $svg .= $this->rotulo(Frases::texto($libro->idioma, 'traduccion_rotulo', ['traductor' => $libro->textos->traductor]), $x, $autorY + self::TRADUCTOR_SEPARACION, $ancho, self::TRADUCTOR_TAMANO_MAX, self::TRADUCTOR_TAMANO_MIN, 'start', $colores['texto']);
         }
         $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - self::MARGEN + self::PIE_BAJO_EL_MARGEN, 'start', $ancho);
 

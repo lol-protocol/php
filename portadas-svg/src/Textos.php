@@ -20,6 +20,8 @@ final class Textos
         public readonly string $solapaPortada,
         /** Una frase breve de la propia obra, que abre la contratapa. */
         public readonly string $cita = '',
+        /** Número del volumen dentro de la colección (`3`, `III`): va en el lomo y junto a la colección. */
+        public readonly string $volumen = '',
     ) {
     }
 }

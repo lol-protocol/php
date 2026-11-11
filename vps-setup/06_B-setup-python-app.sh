@@ -127,8 +127,7 @@ echo "Iniciando servicio..."
 sudo systemctl daemon-reload   # necesario cada vez que se crea/modifica un archivo .service
 # restart (no solo start): al re-correr con otro puerto, timeout o usuario, el servicio ya esta activo y
 # "start" no haria nada: seguiria con la configuracion vieja mientras Nginx apunta a la nueva (502).
-sudo systemctl enable "$APP_NAME"
-sudo systemctl restart "$APP_NAME"
+service_enable_restart "$APP_NAME"
 
 # Nginx no ejecuta Python: solo reenvia ("proxy_pass") las peticiones del
 # dominio publico hacia el puerto local $PORT donde escucha gunicorn
@@ -137,25 +136,11 @@ echo "Configurando Nginx (proxy)..."
 sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOFNGINX
 # vps-setup: 06_B-python $APP_NAME
 server {
-    listen 80;
-    listen [::]:80;
-    server_name $DOMAIN www.$DOMAIN;
-
-    access_log /var/log/nginx/$DOMAIN/access.log;
-    error_log /var/log/nginx/$DOMAIN/error.log;
+$(nginx_server_head "$DOMAIN")
 
     client_max_body_size $MAX_UPLOAD;   # subidas (MAX_UPLOAD, 20M por defecto); sin esto, 1 MB
 
-    location / {
-        proxy_pass http://127.0.0.1:$PORT;
-        proxy_connect_timeout 10s;          # la app es local: si no acepta en 10 s, esta caida
-        proxy_send_timeout $PROXY_TIMEOUT;
-        proxy_read_timeout $PROXY_TIMEOUT;  # cuanto puede tardar la app en responder (PROXY_TIMEOUT)
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-    }
+$(nginx_proxy_location "http://127.0.0.1:$PORT")
 }
 EOFNGINX
 
