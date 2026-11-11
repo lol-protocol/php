@@ -7,6 +7,7 @@ require __DIR__ . '/../src/cargar.php';
 use ParsingFbInMas\Cruce;
 use ParsingFbInMas\Detector;
 use ParsingFbInMas\Exclusiones;
+use ParsingFbInMas\Json;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Metadatos;
 use ParsingFbInMas\Perfil;
@@ -241,6 +242,44 @@ igual('mastodon no se queda con una página de Twitter', 'twitter', Detector::an
 igual('mastodon no se queda con una persona genérica', 'generico', Detector::analizar(muestra('generico'))->red);
 igual('un título «(@usuario)» sin instancia no es Mastodon', 'generico', Detector::analizar('<meta property="og:title" content="Ana (@ana)"><script type="application/ld+json">{"@type":"Person","name":"Ana"}</script>')->red);
 
+// --- Wikidata: nombres de lugares y parientes ---
+$base = ['red' => 'wikidata', 'url' => 'https://www.wikidata.org/wiki/Q1', 'usuario' => 'Q1', 'nombre' => 'Fulana', 'lugar_nacimiento' => 'Q2887',
+    'lugar_muerte' => 'Q99999', 'avisos' => [], 'parientes' => [
+        ['relacion' => 'padre', 'nombre' => null, 'id' => 'Q2'],
+        ['relacion' => 'hijo', 'nombre' => null, 'id' => 'Q3'],
+        ['relacion' => 'cónyuge', 'nombre' => null, 'id' => 'Q7'],
+        ['relacion' => 'madre', 'nombre' => null, 'id' => 'Q555'],
+    ]];
+$volcadoNombres = __DIR__ . '/muestras/wikidata-nombres-muestra.json';
+$n = Wikidata::resolverNombres($volcadoNombres, [$base]);
+$pn = $n['perfiles'][0];
+/** @param array<mixed> $a */
+$clave = static fn (array $a, string $k): mixed => array_key_exists($k, $a) ? $a[$k] : 'sin clave';
+igual('nombres: el lugar sale en español', 'Santiago de Chile', $clave($pn, 'lugar_nacimiento_nombre'));
+igual('nombres: un lugar que no está en el volcado queda sin nombre', null, $clave($pn, 'lugar_muerte_nombre'));
+igual('nombres: el identificador del lugar se conserva', 'Q2887', $pn['lugar_nacimiento']);
+$porId = [];
+$parientesNombrados = Json::en($pn, 'parientes');
+foreach (is_array($parientesNombrados) ? $parientesNombrados : [] as $par) {
+    $porId[Json::texto($par, 'id') ?? ''] = Json::en($par, 'nombre');
+}
+igual('nombres: un pariente fallecido sí se nombra', 'Pedro Ficticio', $clave($porId, 'Q2'));
+igual('nombres: un pariente que puede estar vivo NO se nombra', null, $clave($porId, 'Q3'));
+igual('nombres: un pariente que no está en el volcado queda sin nombre', null, $clave($porId, 'Q555'));
+$avisosNombres = Json::en($pn, 'avisos');
+igual('nombres: avisa que hay parientes sin nombre', true, is_array($avisosNombres) && in_array('hay parientes sin nombre: pueden estar vivos o no estar en el volcado', $avisosNombres, true));
+igual('nombres: cuenta lo resuelto (lugar, padre, hijo, cónyuge) y lo pendiente', [4, ['Q99999', 'Q555']], [$n['resueltos'], $n['pendientes']]);
+$ex = Wikidata::resolverNombres($volcadoNombres, [$base], Exclusiones::desdeTexto("wikidata:Q7\n"));
+$parientesEx = Json::en($ex['perfiles'][0], 'parientes');
+igual('nombres: un pariente excluido se quita del perfil', ['Q2', 'Q3', 'Q555'], array_column(is_array($parientesEx) ? $parientesEx : [], 'id'));
+igual('nombres: sin identificadores que pedir no se abre el volcado', [], Wikidata::resolverNombres(__DIR__ . '/no-existe.json', [['red' => 'wikidata', 'parientes' => []]])['pendientes']);
+try {
+    Wikidata::resolverNombres(__DIR__ . '/no-existe.json', [$base]);
+    igual('nombres: volcado inexistente lanza', true, false);
+} catch (RuntimeException) {
+    igual('nombres: volcado inexistente lanza', true, true);
+}
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
@@ -399,6 +438,13 @@ file_put_contents("$tmp/excluir-wd.txt", "wikidata:Q1\n");
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata.php') . ' ' . escapeshellarg(__DIR__ . '/muestras/wikidata-muestra.json') . ' --excluir=' . escapeshellarg("$tmp/excluir-wd.txt") . ' 2>/dev/null', $salida, $codigo);
 igual('wikidata.php --excluir: sale Q4 y no Q1', [0, 1, true], [$codigo, count($salida), str_contains($salida[0] ?? '', '"usuario":"Q4"')]);
+
+file_put_contents("$tmp/wd.jsonl", json_encode($base, Lote::JSON) . "\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' ' . escapeshellarg($volcadoNombres) . ' ' . escapeshellarg("$tmp/wd.jsonl") . ' 2>/dev/null', $salida, $codigo);
+igual('wikidata-nombres.php: sale con 0 y un perfil con el lugar nombrado', [0, 1, true], [$codigo, count($salida), str_contains($salida[0] ?? '', '"lugar_nacimiento_nombre":"Santiago de Chile"')]);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' https://dumps.wikimedia.org/x.json ' . escapeshellarg("$tmp/wd.jsonl") . ' 2>&1', $salida, $codigo);
+igual('wikidata-nombres.php: rechaza una URL', 2, $codigo);
 file_put_contents("$tmp/excluir-cruce.txt", "wikitree:Gonzalez-1234\n");
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --excluir=' . escapeshellarg("$tmp/excluir-cruce.txt") . ' 2>/dev/null', $salida, $codigo);
