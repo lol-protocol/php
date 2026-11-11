@@ -2,8 +2,10 @@
 # Verificacion post-instalacion. Solo lee el estado: no cambia nada del servidor.
 # Uso: ./08-healthcheck.sh [dominio] [--sin-ssl]   (sin dominio, omite las pruebas web)
 #   --sin-ssl  el dominio aun no tiene certificado (install-all --skip-ssl): se prueba HTTP y se omiten
-#              HTTPS, redireccion, certificado y headers (los headers de seguridad van sobre HTTPS)
-# Sale con codigo 1 si algo FALLA; los AVISOS (cosas opcionales) no cuentan.
+#              HTTPS, redireccion, certificado y headers (los headers de seguridad van sobre HTTPS).
+#              Sin la opcion, se activa solo si el vhost del dominio no tiene HTTPS configurado.
+# Sale con codigo 1 si algo FALLA; los AVISOS (cosas opcionales) y lo PENDIENTE (falta el certificado, o el DNS
+# aun no apunta aqui) no cuentan.
 
 source "$(dirname "$0")/lib.sh"
 
@@ -11,12 +13,19 @@ DOMAIN=${1:-""}
 NO_SSL=0
 if [ "${2:-}" = "--sin-ssl" ]; then NO_SSL=1; elif [ -n "${2:-}" ]; then echo "Opcion desconocida: $2 (uso: $0 [dominio] [--sin-ssl])" >&2; exit 2; fi
 [ -n "$DOMAIN" ] && require_valid domain "$DOMAIN" "El dominio (argumento 1)"
+# Sin --sin-ssl: si el vhost del dominio existe pero no tiene HTTPS (no se pidio el certificado), lo tratamos
+# igual: HTTPS, certificado y headers no pueden "fallar" por algo que aun no se hizo.
+if [ "$NO_SSL" -eq 0 ] && [ -n "$DOMAIN" ] && [ -f "$NGINX_DIR/sites-enabled/$DOMAIN" ] \
+    && ! grep -qE 'ssl_certificate|listen[[:space:]]+(\[::\]:)?443' "$NGINX_DIR/sites-enabled/$DOMAIN"; then
+    NO_SSL=1
+fi
 FAILS=0
 WARNS=0
 
 ok()   { echo "  [OK]    $1"; }
 fail() { echo "  [FALLA] $1"; FAILS=$((FAILS + 1)); }
 warn() { echo "  [AVISO] $1"; WARNS=$((WARNS + 1)); }
+pend() { echo "  [PENDIENTE] $1"; }   # esperable sin certificado: no es falla ni aviso
 
 print_header "08" "Healthcheck${DOMAIN:+ de $DOMAIN}"
 
@@ -47,7 +56,9 @@ if sudo ufw status | grep -q "^Status: active"; then ok "UFW activo"; else fail 
 
 echo "Puertos escuchando:"
 for port in 22 80 443; do
-    if ss -ltn "( sport = :$port )" | grep -q LISTEN; then ok "puerto $port"; else fail "nada escucha en el puerto $port"; fi
+    if ss -ltn "( sport = :$port )" | grep -q LISTEN; then ok "puerto $port"
+    elif [ "$port" = 443 ] && [ "$NO_SSL" -eq 1 ]; then pend "puerto 443: aun sin certificado (04-setup-ssl.sh)"
+    else fail "nada escucha en el puerto $port"; fi
 done
 
 if [ -z "$DOMAIN" ]; then
@@ -55,17 +66,23 @@ if [ -z "$DOMAIN" ]; then
 else
     echo "DNS:"
     MY_IP=$(get_public_ip)
+    DNS_OK=1
     if verify_dns_resolution "$DOMAIN" "$MY_IP" >/dev/null; then
         ok "$DOMAIN y www.$DOMAIN apuntan a $MY_IP"
+    elif [ "$NO_SSL" -eq 1 ]; then
+        DNS_OK=0
+        pend "DNS de $DOMAIN o www.$DOMAIN aun no apunta a $MY_IP (sin DNS no se puede pedir el certificado; puede estar propagando)"
     else
         fail "DNS de $DOMAIN o www.$DOMAIN no apunta a $MY_IP (puede estar propagando)"
     fi
 
     if [ "$NO_SSL" -eq 1 ]; then
         echo "HTTP:"
-        CODE=$(curl -s -o /dev/null -m 10 -w '%{http_code}' "http://$DOMAIN/" || true)
-        if [ "$CODE" = "200" ]; then ok "http://$DOMAIN responde 200"; else fail "http://$DOMAIN responde '${CODE:-sin respuesta}'"; fi
-        warn "sin SSL (--sin-ssl): se omiten HTTPS, certificado y headers; cuando el DNS apunte aqui corre 04-setup-ssl.sh"
+        # Con el DNS aun sin apuntar aqui, se prueba este Nginx directamente (no el servidor al que apunte hoy).
+        RESOLVE=(); [ "$DNS_OK" -eq 1 ] || RESOLVE=(--resolve "$DOMAIN:80:127.0.0.1")
+        CODE=$(curl -s -o /dev/null -m 10 -w '%{http_code}' "${RESOLVE[@]}" "http://$DOMAIN/" || true)
+        if [ "$CODE" = "200" ]; then ok "http://$DOMAIN responde 200${RESOLVE:+ (probado en este servidor)}"; else fail "http://$DOMAIN responde '${CODE:-sin respuesta}'"; fi
+        pend "HTTPS, certificado y headers: aun sin SSL; cuando el DNS apunte aqui corre ./04-setup-ssl.sh $DOMAIN"
     else
     echo "HTTPS:"
     CODE=$(curl -s -o /dev/null -m 10 -w '%{http_code}' "https://$DOMAIN/" || true)
