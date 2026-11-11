@@ -35,7 +35,7 @@ test("law names with commas stay aligned (regression: columns used to shift)", (
   assert.equal(gb.protection_type, "Copyright");
   assert.equal(gb.term_of_protection, "Author's life + 70 years");
   assert.match(gb.treaties_signatory, /^Berne\/TRIPS\/WCT/); // more memberships may be appended as they are confirmed
-  assert.equal(gb.linked_resources, "https://www.gov.uk/topic/intellectual-property");
+  assert.equal(gb.linked_resources, "https://www.legislation.gov.uk/ukpga/1988/48/contents");
 
   assert.equal(byCode("CA").law_name, "Copyright Act (R.S.C., 1985)");
   assert.equal(byCode("BR").law_name, "Law No. 9,610/1998");

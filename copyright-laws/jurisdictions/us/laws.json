@@ -15,7 +15,7 @@
     "enforcement_body": "U.S. Copyright Office",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.copyright.gov/",
+    "linked_resources": "https://www.copyright.gov/title17/",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -24,6 +24,12 @@
     "last_checked": "",
     "sources": {},
     "changes": [
+      {
+        "date": "2026-11-11",
+        "field": "linked_resources",
+        "from": "https://www.copyright.gov/",
+        "to": "https://www.copyright.gov/title17/"
+      },
       {
         "date": "2026-10-08",
         "field": "treaties_signatory",
