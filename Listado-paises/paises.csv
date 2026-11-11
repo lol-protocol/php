@@ -1,6 +1,6 @@
 codigo,pais,tipo,region,poblacion_millones,poblacion_historica_acumulada,idh,pib_per_capita_usd,pib_per_capita_ppa_usd,alfabetizacion_adultos,usuarios_internet,emigrantes_pct,libertad_fh,democracia_eiu,corrupcion_cpi,indice_genealogia,indice_operabilidad,comentarios
 AF,Afganistán,estado,Asia,42.6,641.54,0.496,417,1984,37.3,16.1,17.7,no libre,28.5,20,1,1,Gobierno talibán desde 2021; sanciones internacionales; sin registros civiles accesibles en línea
-AL,Albania,estado,Europa,2.79,60.72,0.810,11374,17991,97.7,85.9,43.6,parcial,60.8,37,2,4,"Registros parroquiales dispersos; mercado pequeño; diáspora grande en Italia, Grecia y EE. UU."
+AL,Albania,estado,Europa,2.79,60.72,0.810,11374,17991,97.7,85.9,43.6,parcial,60.8,37,2,3,"Registros parroquiales dispersos; mercado pequeño; diáspora grande en Italia, Grecia y EE. UU; corrupción percibida alta (CPI 37)"
 DE,Alemania,estado,Europa,84.6,1059.40,0.959,56104,62687,,93.5,5.1,libre,86.7,78,4,5,Archivos y registros de muy buena calidad; RGPD muy exigente; alemán
 AD,Andorra,estado,Europa,0.082,0.38,0.913,49357,64631,,94.4,2.4,libre,,,2,4,Muy pequeño; catalán y español; mercado reducido
 AO,Angola,estado,África,37.9,175.49,0.616,2721,7250,66.2,40.7,1.6,no libre,36.6,33,2,3,Diáspora portuguesa histórica; registros civiles de acceso irregular; restricciones cambiarias
@@ -41,7 +41,7 @@ CL,Chile,estado,América,19.8,163.90,0.878,16659,29564,96.4,95.6,2.2,libre,82.8,
 CN,China,estado,Asia,1419.3,16062.47,0.797,13293,22687,96.7,91.6,0.8,no libre,22.7,42,5,2,"Gran tradición de jiapu, pero cortafuegos, licencias y localización obligatoria de datos; difícil de operar"
 CY,Chipre,estado,Europa,1.36,43.72,0.913,38674,52191,98.7,89.6,5.9,libre,75.6,53,3,4,Diáspora griega y británica; partición de facto con el norte sin reconocimiento internacional; griego e inglés; zona euro
 CO,Colombia,estado,América,52.9,1015.76,0.788,7951,18383,95.3,79.3,6.9,libre,70.4,40,3,3,Registros parroquiales y civiles de buena calidad; violencia en zonas rurales; habeas data (Ley 1581); español
-KM,Comoras,estado,África,0.87,2.78,0.603,1858,3516,75.8,32.5,42.4,parcial,30.9,20,1,3,Pequeño archipiélago; registros civiles precarios; francés y árabe; infraestructura de pagos y conectividad limitadas
+KM,Comoras,estado,África,0.87,2.78,0.603,1858,3516,75.8,32.5,42.4,parcial,30.9,20,2,3,"Pequeño archipiélago; registros civiles precarios; francés y árabe; infraestructura de pagos y conectividad limitadas; 42 % de la población emigrada, sobre todo a Francia"
 CG,Congo,estado,África,6.33,35.43,0.649,2482,6172,,47.3,3.6,no libre,31.1,22,1,2,Régimen con control político fuerte; registros civiles limitados; francés
 KP,Corea del Norte,estado,Asia,26.5,192.69,,,1485,,,0.2,no libre,10.8,17,1,1,"Sanciones de la ONU, EE. UU. y UE; sin internet abierto ni registros accesibles; sin IDH publicado"
 KR,Corea del Sur,estado,Asia,51.7,318.82,0.937,36239,50414,,97.9,3.9,libre,80.1,63,5,5,Tradición de jokbo muy fuerte; registros familiares parcialmente digitalizados; coreano; ley de datos (PIPA) estricta
@@ -137,7 +137,7 @@ ME,Montenegro,estado,Europa,0.64,8.91,0.862,13270,27043,98.5,88.9,14.2,parcial,5
 MZ,Mozambique,estado,África,34.6,140.59,0.493,657,1512,61.7,20.5,2.0,parcial,35.1,25,1,2,Insurgencia en Cabo Delgado; crisis poselectoral 2024-2025; portugués
 MM,Myanmar,estado,Asia,54.5,472.97,0.609,1359,5364,93.5,45.4,7.9,no libre,30.4,20,1,1,Gobierno militar desde 2021 y guerra civil; sanciones internacionales; registros no accesibles
 NA,Namibia,estado,África,3.03,20.15,0.665,4502,10138,87.6,64.9,1.3,libre,65.2,49,3,4,Inglés y afrikáans; registros civiles con tradición alemana; diáspora alemana y sudafricana
-NR,Nauru,estado,Oceanía,0.012,0.69,0.703,14048,12461,96.6,83.0,20.8,libre,,,1,3,Muy pequeño; dependencia financiera exterior; inglés y nauruano
+NR,Nauru,estado,Oceanía,0.012,0.69,0.703,14048,12461,96.6,83.0,20.8,libre,,,2,3,Muy pequeño; dependencia financiera exterior; inglés y nauruano; 21 % de la población emigrada; clanes matrilineales
 NP,Nepal,estado,Asia,29.7,567.70,0.622,1460,4861,68.7,46.3,8.9,parcial,52.2,35,1,2,Inestabilidad política y bloqueos de redes sociales en episodios recientes; nepalí e inglés
 NI,Nicaragua,estado,América,6.92,129.64,0.706,2848,7497,87.3,61.4,13.1,no libre,36,17,2,2,Represión de medios y ONG; sanciones de EE. UU.; control de internet; español
 NE,Níger,estado,África,27.0,149.44,0.419,730,1690,35.6,15.6,1.6,parcial,32.9,32,1,1,Gobierno militar desde 2023; conflicto con grupos armados; francés
@@ -147,9 +147,9 @@ NZ,Nueva Zelanda,estado,Oceanía,5.21,9.70,0.938,49432,49084,,93.5,13.0,libre,92
 OM,Omán,estado,Asia,5.28,56.96,0.858,20285,37709,97.3,95.3,0.3,no libre,30,43,1,3,Estable; restricciones a contenidos en línea; árabe e inglés; control estatal de internet (no libre según Freedom House)
 NL,Países Bajos,estado,Europa,18.2,118.91,0.955,67465,70674,,97.0,3.5,libre,89.6,79,5,5,Archivos de estado civil y de la Compañía de las Indias muy buenos; neerlandés e inglés; RGPD
 PK,Pakistán,estado,Asia,251.3,1558.46,0.544,1479,5439,58.9,57.3,2.8,parcial,43.1,29,2,2,Restricciones de internet y de medios; crisis de divisas; registros civiles limitados; urdu e inglés
-PW,Palaos,estado,Oceanía,0.018,1.45,0.786,18169,15797,100.0,83.9,15.1,libre,,,1,3,Muy pequeño; dependencia de EE. UU.; inglés; registros sin digitalizar
+PW,Palaos,estado,Oceanía,0.018,1.45,0.786,18169,15797,100.0,83.9,15.1,libre,,,2,3,Muy pequeño; dependencia de EE. UU.; inglés; registros sin digitalizar; 15 % de la población emigrada; clanes matrilineales
 PS,Palestina,entidad disputada,Asia,5.50,20.75,0.674,3028,5361,97.9,86.6,77.0,,38.3,,2,1,Conflicto y ocupación; guerra en Gaza desde 2023; registros otomanos y británicos; árabe
-PA,Panamá,estado,América,4.52,63.32,0.839,19161,35864,96.3,72.8,4.3,libre,71.8,35,3,4,Usa el dólar; registros civiles digitalizados; español; sistema financiero offshore con regulación propia
+PA,Panamá,estado,América,4.52,63.32,0.839,19161,35864,96.3,72.8,4.3,libre,71.8,35,3,3,Usa el dólar; registros civiles digitalizados; español; sistema financiero offshore con regulación propia; corrupción percibida alta (CPI 35)
 PG,Papúa Nueva Guinea,estado,Oceanía,10.6,217.15,0.576,2912,4206,87.1,18.8,0.3,parcial,61,29,1,3,Inglés y tok pisin; conectividad limitada; corrupción y violencia tribal
 PY,Paraguay,estado,América,6.93,21.18,0.756,6457,15826,94.9,81.6,10.8,parcial,61.8,28,3,3,Registros civiles parcialmente digitalizados; guaraní y español; diáspora alemana y brasileña; corrupción alta (índice de Transparencia Internacional por debajo de 35)
 PE,Perú,estado,América,34.2,1313.93,0.794,8526,15328,93.7,82.0,4.9,parcial,65.3,33,3,3,Registros parroquiales coloniales excelentes; inestabilidad política recurrente; español y quechua
@@ -159,7 +159,7 @@ PR,Puerto Rico,territorio,América,3.20,9.82,,39353,,92.4,,,,,,4,4,Territorio de
 GB,Reino Unido,estado,Europa,69.1,515.42,0.946,53341,52503,,95.5,6.9,libre,85.4,71,5,5,Registros civiles y censales muy completos; diáspora mundial; inglés; RGPD del Reino Unido
 CF,República Centroafricana,estado,África,5.33,63.55,0.414,516,1133,42.4,13.8,17.0,no libre,13.2,24,1,1,Conflicto armado y Estado frágil; embargo de armas de la ONU
 CD,República Democrática del Congo,estado,África,109.3,584.56,0.522,693,1456,65.7,19.7,1.9,no libre,11.3,20,1,1,Conflicto armado en el este; infraestructura de registros muy limitada; francés
-DO,República Dominicana,estado,América,11.4,48.17,0.776,10876,23282,94.0,91.0,16.8,parcial,63.2,35,3,4,Diáspora grande en EE. UU.; registros civiles en avance; español
+DO,República Dominicana,estado,América,11.4,48.17,0.776,10876,23282,94.0,91.0,16.8,parcial,63.2,35,3,3,Diáspora grande en EE. UU.; registros civiles en avance; español; corrupción percibida alta (CPI 35)
 RE,Reunión,territorio,África,,2.17,,,,,,,,,,4,4,Departamento francés de ultramar; estado civil francés en línea (Archivos nacionales de ultramar); registros de la esclavitud y de los trabajadores contratados; francés y criollo reunionés; regulación de datos (CNIL) estricta
 RW,Ruanda,estado,África,14.3,64.49,0.578,1060,3063,78.8,31.7,3.8,no libre,31,53,2,3,Estable pero con restricciones a la prensa; registros digitalizados con avance; inglés y francés
 RO,Rumania,estado,Europa,19.0,304.49,0.845,20080,40302,99.2,91.3,24.1,libre,64,46,3,4,Registros parroquiales húngaros y alemanes muy buenos; rumano; RGPD
@@ -190,7 +190,7 @@ TZ,Tanzania,estado,África,68.6,275.20,0.555,1193,3621,78.2,31.2,0.3,parcial,51,
 TJ,Tayikistán,estado,Asia,10.6,89.57,0.691,1362,4472,,55.8,4.9,no libre,19.4,20,1,2,Control estatal de medios e internet; tayiko y ruso; diáspora en Rusia
 TL,Timor Oriental,estado,Asia,1.40,10.17,0.634,1332,4330,72.5,35.0,7.8,libre,70.6,43,1,3,Pequeño y en desarrollo; portugués y tetun; dependencia del petróleo
 TG,Togo,estado,África,8.41,56.79,0.571,1266,2768,72.6,39.5,7.0,parcial,28,31,1,2,Protestas y restricciones de internet en episodios recientes; francés
-TO,Tonga,estado,Oceanía,0.10,0.79,0.769,6215,7076,91.0,67.4,51.1,libre,,,1,3,Monarquía; muy pequeño y aislado; tongano e inglés
+TO,Tonga,estado,Oceanía,0.10,0.79,0.769,6215,7076,91.0,67.4,51.1,libre,,,3,3,"Monarquía; muy pequeño y aislado; tongano e inglés; 51 % de la población emigrada (Nueva Zelanda, Australia, EE. UU.); el linaje ordena el rango social y hay fuerte presencia SUD"
 TT,Trinidad y Tobago,estado,América,1.51,3.00,0.807,18733,31194,,82.2,21.5,libre,71.6,42,3,4,Inglés; diáspora india y africana; registros coloniales británicos y franceses
 TN,Túnez,estado,África,12.3,246.58,0.746,4188,12623,86.2,76.5,5.8,parcial,65.9,40,2,2,Deterioro de libertades desde 2021; restricciones a ONG y prensa; francés y árabe
 TM,Turkmenistán,estado,Asia,7.49,68.93,0.764,5904,17866,99.9,,4.9,no libre,17.2,18,1,1,Régimen autoritario; internet muy restringido; sin registros accesibles; turcomano y ruso

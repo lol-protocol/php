@@ -28,7 +28,7 @@ están al día, así que el resto del README las remite aquí en vez de repetirl
 - **IP de la mejor lengua**, países por nivel: 5: 181, 4: 16, 3: 7, 2: 1, 1: 3.
 - **IP local**, países por nivel: 5: 107, 4: 23, 3: 31, 2: 7, 1: 40.
 - **Lenguas por nivel:** 5: 21, 4: 26, 3: 35, 2: 11, 1: 70.
-- **Corrupción mediana por IO** (100 = sin corrupción): IO 1: 20; IO 2: 26; IO 3: 37.5; IO 4: 54; IO 5: 77.5.
+- **Corrupción mediana por IO** (100 = sin corrupción): IO 1: 20; IO 2: 26; IO 3: 37; IO 4: 55; IO 5: 77.5.
 <!-- fin del resumen -->
 
 ## Archivos
@@ -522,6 +522,8 @@ Léelo antes de usar la tabla para decidir.
 
 ## Pendientes
 
-1. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
+1. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio. Ya
+   se revisaron los que chocaban con los datos (emigrantes, corrupción): Tonga, Comoras, Nauru y
+   Palaos subieron de IG, y Albania, Panamá y República Dominicana bajaron a IO 3. Falta IL.
 2. **Umbral de exclusión de genealogía:** IO ≤ 1 (vigente) o IO ≤ 2; cuántos deja fuera cada uno,
    en «Resumen» y en `escenarios.md`. Camboya y Vietnam siguen dentro, por decisión tomada.

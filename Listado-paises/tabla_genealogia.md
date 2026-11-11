@@ -64,8 +64,6 @@
 | Mauricio | estado | África | 1.27 | 3.20 | 0.806 | 11991 | 26061 | 73.3 | 9.0 | libre | 81.4 | 51 | 3 | 4 | 12 | no | Diáspora francesa, india y británica; registros de la colonia; inglés y francés |
 | México | estado | América | 130.9 | 2846.00 | 0.789 | 13988 | 21905 | 83.1 | 8.9 | parcial | 60.7 | 31 | 4 | 3 | 12 | no | Registros parroquiales coloniales muy valiosos; gran diáspora en EE. UU.; inseguridad; español |
 | Namibia | estado | África | 3.03 | 20.15 | 0.665 | 4502 | 10138 | 64.9 | 1.3 | libre | 65.2 | 49 | 3 | 4 | 12 | no | Inglés y afrikáans; registros civiles con tradición alemana; diáspora alemana y sudafricana |
-| Panamá | estado | América | 4.52 | 63.32 | 0.839 | 19161 | 35864 | 72.8 | 4.3 | libre | 71.8 | 35 | 3 | 4 | 12 | no | Usa el dólar; registros civiles digitalizados; español; sistema financiero offshore con regulación propia |
-| República Dominicana | estado | América | 11.4 | 48.17 | 0.776 | 10876 | 23282 | 91.0 | 16.8 | parcial | 63.2 | 35 | 3 | 4 | 12 | no | Diáspora grande en EE. UU.; registros civiles en avance; español |
 | Rumania | estado | Europa | 19.0 | 304.49 | 0.845 | 20080 | 40302 | 91.3 | 24.1 | libre | 64 | 46 | 3 | 4 | 12 | no | Registros parroquiales húngaros y alemanes muy buenos; rumano; RGPD |
 | Taiwán | entidad disputada | Asia | 23.2 | 86.00 | — | — | 74420 | — | 3.6 | libre | 89.4 | — | 3 | 4 | 12 | no | Registros familiares tradicionales muy estructurados; chino tradicional; reconocimiento internacional limitado |
 | Trinidad y Tobago | estado | América | 1.51 | 3.00 | 0.807 | 18733 | 31194 | 82.2 | 21.5 | libre | 71.6 | 42 | 3 | 4 | 12 | no | Inglés; diáspora india y africana; registros coloniales británicos y franceses |
@@ -84,10 +82,12 @@
 | Hungría | estado | Europa | 9.68 | 185.13 | 0.870 | 23305 | 40369 | 93.8 | 5.6 | parcial | 65.6 | 42 | 3 | 3 | 9 | no | Diáspora grande en EE. UU. y Rumania; registros parroquiales de buena calidad; restricciones a ONG y medios en años recientes |
 | India | estado | Asia | 1450.9 | 24079.50 | 0.685 | 2592 | 9302 | 70.0 | 1.3 | parcial | 66.1 | 39 | 3 | 3 | 9 | no | Gran interés por el linaje y población enorme; registros fragmentados entre estados y lenguas; licencias de inversión y reglas de localización de datos |
 | Moldavia | estado | Europa | 3.03 | 51.54 | 0.785 | 7579 | 15990 | 77.4 | 28.5 | parcial | 57.8 | 42 | 3 | 3 | 9 | no | Registros soviéticos y rumanos; rumano y ruso; tensiones con Rusia |
+| Panamá | estado | América | 4.52 | 63.32 | 0.839 | 19161 | 35864 | 72.8 | 4.3 | libre | 71.8 | 35 | 3 | 3 | 9 | no | Usa el dólar; registros civiles digitalizados; español; sistema financiero offshore con regulación propia; corrupción percibida alta (CPI 35) |
 | Paraguay | estado | América | 6.93 | 21.18 | 0.756 | 6457 | 15826 | 81.6 | 10.8 | parcial | 61.8 | 28 | 3 | 3 | 9 | no | Registros civiles parcialmente digitalizados; guaraní y español; diáspora alemana y brasileña; corrupción alta (índice de Transparencia Internacional por debajo de 35) |
 | Perú | estado | América | 34.2 | 1313.93 | 0.794 | 8526 | 15328 | 82.0 | 4.9 | parcial | 65.3 | 33 | 3 | 3 | 9 | no | Registros parroquiales coloniales excelentes; inestabilidad política recurrente; español y quechua |
+| República Dominicana | estado | América | 11.4 | 48.17 | 0.776 | 10876 | 23282 | 91.0 | 16.8 | parcial | 63.2 | 35 | 3 | 3 | 9 | no | Diáspora grande en EE. UU.; registros civiles en avance; español; corrupción percibida alta (CPI 35) |
 | Serbia | estado | Europa | 6.74 | 132.82 | 0.833 | 13678 | 25740 | 87.7 | 14.3 | parcial | 62.2 | 36 | 3 | 3 | 9 | no | Diáspora en Alemania, Austria y EE. UU.; registros parroquiales y civiles; serbio; protestas recientes |
-| Albania | estado | Europa | 2.79 | 60.72 | 0.810 | 11374 | 17991 | 85.9 | 43.6 | parcial | 60.8 | 37 | 2 | 4 | 8 | no | Registros parroquiales dispersos; mercado pequeño; diáspora grande en Italia, Grecia y EE. UU. |
+| Tonga | estado | Oceanía | 0.10 | 0.79 | 0.769 | 6215 | 7076 | 67.4 | 51.1 | libre | — | — | 3 | 3 | 9 | no | Monarquía; muy pequeño y aislado; tongano e inglés; 51 % de la población emigrada (Nueva Zelanda, Australia, EE. UU.); el linaje ordena el rango social y hay fuerte presencia SUD |
 | Andorra | estado | Europa | 0.082 | 0.38 | 0.913 | 49357 | 64631 | 94.4 | 2.4 | libre | — | — | 2 | 4 | 8 | no | Muy pequeño; catalán y español; mercado reducido |
 | Antigua y Barbuda | estado | América | 0.094 | 2.54 | 0.851 | 23060 | 28474 | 72.7 | 14.0 | libre | — | — | 2 | 4 | 8 | no | Muy pequeño; inglés; sector financiero y de juego offshore con regulación propia |
 | Dominica | estado | América | 0.066 | 0.47 | 0.761 | 10405 | 18278 | 82.0 | 32.3 | libre | — | 56 | 2 | 4 | 8 | no | Muy pequeño; inglés; economía de servicios y agricultura |
@@ -98,10 +98,12 @@
 | San Vicente y las Granadinas | estado | América | 0.10 | 0.87 | 0.798 | 11501 | 17858 | 76.2 | 35.0 | libre | — | 60 | 2 | 4 | 8 | no | Muy pequeño; inglés; economía de servicios y turismo |
 | Santa Lucía | estado | América | 0.18 | 7.16 | 0.748 | 14494 | 23404 | 68.2 | 12.1 | libre | — | 55 | 2 | 4 | 8 | no | Muy pequeño; inglés y criollo; economía de servicios |
 | Seychelles | estado | África | 0.13 | 0.24 | 0.848 | 18365 | 28635 | 87.8 | 17.0 | libre | — | 71 | 2 | 4 | 8 | no | Muy pequeño; inglés y francés; sector financiero con regulación propia |
+| Albania | estado | Europa | 2.79 | 60.72 | 0.810 | 11374 | 17991 | 85.9 | 43.6 | parcial | 60.8 | 37 | 2 | 3 | 6 | no | Registros parroquiales dispersos; mercado pequeño; diáspora grande en Italia, Grecia y EE. UU; corrupción percibida alta (CPI 37) |
 | Angola | estado | África | 37.9 | 175.49 | 0.616 | 2721 | 7250 | 40.7 | 1.6 | no libre | 36.6 | 33 | 2 | 3 | 6 | no | Diáspora portuguesa histórica; registros civiles de acceso irregular; restricciones cambiarias |
 | Arabia Saudita | estado | Asia | 34.0 | 445.83 | 0.900 | 35528 | 64482 | 100.0 | 0.7 | no libre | 20.8 | 52 | 2 | 3 | 6 | no | Sin registros civiles públicos de acceso abierto; control de contenido en línea; árabe; control estatal de internet (no libre según Freedom House) |
 | Bolivia | estado | América | 12.4 | 348.70 | 0.733 | 4421 | 9844 | 79.7 | 6.3 | parcial | 50.8 | 29 | 3 | 2 | 6 | no | Crisis de divisas y control del tipo de cambio; español y quechua |
 | Botsuana | estado | África | 2.52 | 13.99 | 0.731 | 7650 | 18932 | 57.5 | 0.7 | libre | 76.2 | 59 | 2 | 3 | 6 | no | Estable y en inglés; población pequeña; pocos registros digitalizados; conectividad limitada |
+| Comoras | estado | África | 0.87 | 2.78 | 0.603 | 1858 | 3516 | 32.5 | 42.4 | parcial | 30.9 | 20 | 2 | 3 | 6 | no | Pequeño archipiélago; registros civiles precarios; francés y árabe; infraestructura de pagos y conectividad limitadas; 42 % de la población emigrada, sobre todo a Francia |
 | Costa de Marfil | estado | África | 31.9 | 142.50 | 0.582 | 2728 | 6512 | 41.4 | 3.8 | parcial | 41.1 | 40 | 2 | 3 | 6 | no | Economía estable; francés; registros civiles con poca digitalización; infraestructura de pagos limitada (domina el dinero móvil) |
 | Ecuador | estado | América | 18.1 | 240.99 | 0.777 | 6827 | 14343 | 77.2 | 6.9 | libre | 61.3 | 34 | 2 | 3 | 6 | no | Dolarizado desde 2000; inseguridad creciente; registros civiles en digitalización; español |
 | Egipto | estado | África | 116.5 | 1174.60 | 0.754 | 3338 | 16691 | 74.6 | 4.1 | no libre | 29.3 | 35 | 2 | 3 | 6 | no | Mucho patrimonio documental antiguo, pero poco digitalizado y accesible; control de internet y medios; árabe |
@@ -124,7 +126,9 @@
 | Macedonia del Norte | estado | Europa | 1.82 | 41.26 | 0.815 | 9292 | 23344 | 93.1 | 29.3 | parcial | 58.9 | 42 | 2 | 3 | 6 | no | Registros otomanos y civiles en transición; macedonio y albanés; nombre del país resuelto en 2019 |
 | Malaui | estado | África | 21.7 | 72.12 | 0.517 | 522 | 1648 | 19.0 | 2.0 | parcial | 57.4 | 34 | 2 | 3 | 6 | no | Inglés; crisis de divisas; registros civiles limitados |
 | Marruecos | estado | África | 38.1 | 444.62 | 0.710 | 4153 | 8869 | 91.2 | 9.5 | parcial | 50.4 | 38 | 2 | 3 | 6 | no | Francés y árabe; registros civiles en digitalización; restricciones a la prensa; conflicto del Sáhara Occidental |
+| Nauru | estado | Oceanía | 0.012 | 0.69 | 0.703 | 14048 | 12461 | 83.0 | 20.8 | libre | — | — | 2 | 3 | 6 | no | Muy pequeño; dependencia financiera exterior; inglés y nauruano; 21 % de la población emigrada; clanes matrilineales |
 | Nigeria | estado | África | 232.7 | 1243.89 | 0.560 | 1084 | 5593 | 41.2 | 0.9 | parcial | 41 | 25 | 2 | 3 | 6 | no | Gran mercado y diáspora; inseguridad y control cambiario inestable; inglés |
+| Palaos | estado | Oceanía | 0.018 | 1.45 | 0.786 | 18169 | 15797 | 83.9 | 15.1 | libre | — | — | 2 | 3 | 6 | no | Muy pequeño; dependencia de EE. UU.; inglés; registros sin digitalizar; 15 % de la población emigrada; clanes matrilineales |
 | Ruanda | estado | África | 14.3 | 64.49 | 0.578 | 1060 | 3063 | 31.7 | 3.8 | no libre | 31 | 53 | 2 | 3 | 6 | no | Estable pero con restricciones a la prensa; registros digitalizados con avance; inglés y francés |
 | Samoa | estado | Oceanía | 0.22 | 0.94 | 0.708 | 5393 | 6341 | — | 54.7 | libre | — | — | 2 | 3 | 6 | no | Pequeño; samoano e inglés; diáspora en Nueva Zelanda y EE. UU.; conectividad y pagos limitados por su aislamiento |
 | Santo Tomé y Príncipe | estado | África | 0.24 | 0.85 | 0.637 | 3503 | 5541 | 59.1 | 17.6 | libre | — | 45 | 2 | 3 | 6 | no | Pequeño país lusófono; registros limitados; diáspora en Portugal; pagos y conectividad limitados |
@@ -154,7 +158,6 @@
 | Brunéi | estado | Asia | 0.46 | 0.84 | 0.837 | 33153 | 76617 | 96.3 | 10.1 | no libre | — | 60 | 1 | 3 | 3 | no | Monarquía absoluta con código penal islámico desde 2019; mercado muy pequeño |
 | Bután | estado | Asia | 0.79 | 4.38 | 0.698 | 4228 | 14645 | 91.3 | 8.4 | parcial | 57.1 | 68 | 1 | 3 | 3 | no | Controles de turismo y de visados; mercado muy pequeño; dzongkha e inglés |
 | Catar | estado | Asia | 3.05 | 1.13 | 0.886 | 75685 | 116159 | 98.1 | 0.7 | no libre | 32.4 | 58 | 1 | 3 | 3 | no | Muy rico y estable; registros poco públicos; árabe e inglés; control estatal de internet (no libre según Freedom House) |
-| Comoras | estado | África | 0.87 | 2.78 | 0.603 | 1858 | 3516 | 32.5 | 42.4 | parcial | 30.9 | 20 | 1 | 3 | 3 | no | Pequeño archipiélago; registros civiles precarios; francés y árabe; infraestructura de pagos y conectividad limitadas |
 | Gabón | estado | África | 2.54 | 17.24 | 0.733 | 8230 | 18703 | 68.7 | 2.4 | no libre | 35.4 | 28 | 1 | 3 | 3 | no | Petróleo; francés; registros civiles poco digitalizados; golpe militar en 2023 |
 | Islas Marshall | estado | Oceanía | 0.038 | 2.40 | 0.733 | 7590 | 6787 | 65.9 | 1.1 | libre | — | — | 1 | 3 | 3 | no | Estado asociado a EE. UU.; muy pequeño; inglés y marshalés; conectividad y pagos limitados por su aislamiento |
 | Islas Salomón | estado | Oceanía | 0.82 | 1.69 | 0.584 | 1934 | 2524 | 29.0 | 1.0 | libre | — | 43 | 1 | 3 | 3 | no | Pequeño y aislado; inglés; registros civiles escasos |
@@ -163,12 +166,9 @@
 | Mauritania | estado | África | 5.17 | 40.81 | 0.563 | 2105 | 6259 | 45.8 | 1.8 | parcial | 39.2 | 30 | 1 | 3 | 3 | no | Gobierno militar en el pasado; árabe y francés; registros civiles limitados |
 | Micronesia | estado | Oceanía | 0.11 | 6.23 | 0.615 | 4252 | 3814 | 39.5 | 12.0 | libre | — | — | 1 | 3 | 3 | no | Estado asociado a EE. UU.; muy pequeño; inglés; alta dependencia de ayuda |
 | Mongolia | estado | Asia | 3.48 | 135.76 | 0.747 | 6751 | 16223 | 85.1 | 5.1 | libre | 64.8 | 33 | 1 | 3 | 3 | no | Régimen parlamentario; registros civiles en digitalización; mongol y ruso |
-| Nauru | estado | Oceanía | 0.012 | 0.69 | 0.703 | 14048 | 12461 | 83.0 | 20.8 | libre | — | — | 1 | 3 | 3 | no | Muy pequeño; dependencia financiera exterior; inglés y nauruano |
 | Omán | estado | Asia | 5.28 | 56.96 | 0.858 | 20285 | 37709 | 95.3 | 0.3 | no libre | 30 | 43 | 1 | 3 | 3 | no | Estable; restricciones a contenidos en línea; árabe e inglés; control estatal de internet (no libre según Freedom House) |
-| Palaos | estado | Oceanía | 0.018 | 1.45 | 0.786 | 18169 | 15797 | 83.9 | 15.1 | libre | — | — | 1 | 3 | 3 | no | Muy pequeño; dependencia de EE. UU.; inglés; registros sin digitalizar |
 | Papúa Nueva Guinea | estado | Oceanía | 10.6 | 217.15 | 0.576 | 2912 | 4206 | 18.8 | 0.3 | parcial | 61 | 29 | 1 | 3 | 3 | no | Inglés y tok pisin; conectividad limitada; corrupción y violencia tribal |
 | Timor Oriental | estado | Asia | 1.40 | 10.17 | 0.634 | 1332 | 4330 | 35.0 | 7.8 | libre | 70.6 | 43 | 1 | 3 | 3 | no | Pequeño y en desarrollo; portugués y tetun; dependencia del petróleo |
-| Tonga | estado | Oceanía | 0.10 | 0.79 | 0.769 | 6215 | 7076 | 67.4 | 51.1 | libre | — | — | 1 | 3 | 3 | no | Monarquía; muy pequeño y aislado; tongano e inglés |
 | Tuvalu | estado | Oceanía | 0.010 | 0.93 | 0.689 | 6345 | 5812 | — | 12.8 | libre | — | — | 1 | 3 | 3 | no | Muy pequeño; inglés y tuvaluano; conectividad limitada |
 | Uzbekistán | estado | Asia | 36.4 | 356.06 | 0.740 | 3337 | 10008 | 89.5 | 5.8 | no libre | 21.2 | 33 | 1 | 3 | 3 | no | Reformas económicas recientes; control de medios; uzbeko y ruso |
 | Vanuatu | estado | Oceanía | 0.33 | 1.03 | 0.621 | 3960 | 3118 | — | 4.6 | libre | — | 48 | 1 | 3 | 3 | no | Muy pequeño; bislama, inglés y francés; conectividad limitada |
