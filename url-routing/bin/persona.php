@@ -9,10 +9,12 @@ declare(strict_types=1);
  *   php bin/persona.php acceso <id>                              # everything held about her, as JSON
  *   php bin/persona.php suprimir <id> [--pedido=N]               # shows what would be removed
  *   php bin/persona.php suprimir <id> [--pedido=N] --confirmar   # does it (it cannot be undone without a backup)
+ *   php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]  # records a correction made by hand
  *   php bin/persona.php reaplicar                                # lists who came back after restoring a backup
  *   php bin/persona.php reaplicar --confirmar                    # and removes them again
  *
- * --pedido=N is the pedido de retiro that asked for it: it is recorded and left as 'retirado' with a note.
+ * --pedido=N is the pedido de retiro that asked for it: for suprimir it is recorded and left as 'retirado' with a note;
+ * for rectificacion it is only recorded (the field, never the values).
  * Exit code: 0 done, 1 there is no such persona/pedido, 2 usage error or a database that is not ready.
  * The database comes from DB_DSN_GENEALOGY (or .env), as for the web app.
  */
@@ -28,26 +30,34 @@ Config::load();
 
 $uso = "Uso: php bin/persona.php acceso <id>\n"
     . "     php bin/persona.php suprimir <id> [--pedido=N] [--confirmar]\n"
+    . "     php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]\n"
     . "     php bin/persona.php reaplicar [--confirmar]\n";
 
 $orden = $argv[1] ?? '';
 $confirmar = false;
 $pedido = null;
 $id = null;
+$que = null;
+$conId = ['acceso', 'suprimir', 'rectificacion'];
 foreach (array_slice($argv, 2) as $argumento) {
     if ($argumento === '--confirmar') {
         $confirmar = true;
-    } elseif (preg_match('/^--pedido=(\d+)$/', $argumento, $m) === 1 && $orden === 'suprimir') {
+    } elseif (preg_match('/^--pedido=(\d+)$/', $argumento, $m) === 1 && in_array($orden, ['suprimir', 'rectificacion'], true)) {
         $pedido = (int)$m[1];
-    } elseif ($id === null && ctype_digit($argumento) && in_array($orden, ['acceso', 'suprimir'], true)) {
+    } elseif ($id === null && ctype_digit($argumento) && in_array($orden, $conId, true)) {
         $id = (int)$argumento;
+    } elseif ($orden === 'rectificacion' && $id !== null && $que === null) {
+        $que = $argumento;
     } else {
         fwrite(STDERR, $uso);
         exit(2);
     }
 }
-$necesitaId = in_array($orden, ['acceso', 'suprimir'], true);
-if (!in_array($orden, ['acceso', 'suprimir', 'reaplicar'], true) || $necesitaId !== ($id !== null) || ($orden === 'acceso' && $confirmar)) {
+$necesitaId = in_array($orden, $conId, true);
+if (
+    !in_array($orden, [...$conId, 'reaplicar'], true) || $necesitaId !== ($id !== null)
+    || (in_array($orden, ['acceso', 'rectificacion'], true) && $confirmar) || ($orden === 'rectificacion') !== ($que !== null)
+) {
     fwrite(STDERR, $uso);
     exit(2);
 }
@@ -84,6 +94,12 @@ try {
         }
         $repo->reaplicar();
         echo "Quitadas otra vez.\n";
+        exit(0);
+    }
+
+    if ($orden === 'rectificacion') {
+        $numero = $repo->rectificar((int)$id, (string)$que, $pedido);
+        echo "Anotada la corrección {$numero}: {$que} de la persona {$id}. No se guardó ningún valor.\n";
         exit(0);
     }
 

@@ -189,4 +189,34 @@ class PersonaCliTest extends TestCase
             }
         }
     }
+
+    public function testRectificacionRecordsTheFieldAndSaysNoValueWasKept(): void
+    {
+        [$codigo, $salida, $error] = $this->correr('rectificacion', (string)self::ELLA, 'personas.apellidos', '--pedido=7');
+
+        $this->assertSame([0, ''], [$codigo, $error]);
+        $this->assertStringContainsString('Anotada la corrección 1: personas.apellidos de la persona ' . self::ELLA, $salida);
+        $fila = $this->db->fetchOne('SELECT persona_id, que, pedido_id FROM rectificaciones_persona');
+        $this->assertSame([self::ELLA, 'personas.apellidos', 7], [(int)$fila['persona_id'], $fila['que'], (int)$fila['pedido_id']]);
+        $this->assertTrue($this->existe(self::ELLA), 'recording a correction changes nothing else');
+        $this->assertStringContainsString('personas.apellidos', $this->correr('acceso', (string)self::ELLA)[1]);
+    }
+
+    public function testRectificacionNeedsAnIdAndAField(): void
+    {
+        foreach ([['rectificacion'], ['rectificacion', (string)self::ELLA], ['rectificacion', 'personas.apellidos'],
+            ['rectificacion', (string)self::ELLA, 'personas.apellidos', '--confirmar'], ['acceso', (string)self::ELLA, 'personas.apellidos']] as $args) {
+            $this->assertSame(2, $this->correr(...$args)[0], implode(' ', $args));
+        }
+        $this->assertSame(0, (int)$this->db->fetchValue('SELECT COUNT(*) FROM rectificaciones_persona'));
+    }
+
+    public function testRectificacionOfAnUnknownPersonaOrFieldExitsWithOne(): void
+    {
+        foreach ([['6128479777', 'personas.apellidos'], [(string)self::ELLA, 'apellidos']] as $args) {
+            [$codigo, $salida, $error] = $this->correr('rectificacion', ...$args);
+            $this->assertSame([1, ''], [$codigo, $salida], implode(' ', $args));
+            $this->assertNotSame('', $error);
+        }
+    }
 }

@@ -14,11 +14,11 @@ de demostración.
 
 | # | Qué pasa | Dónde |
 |---|---|---|
-| 1 | **Llega la solicitud.** Hoy no hay un formulario para estos tres derechos: [`TERMINOS-DE-USO.md`](../../TERMINOS-DE-USO.md) dice «escribiendo a [CORREO]», y ese dato **falta** ⚖️. (`/r/{id}/` sirve para pedir el retiro o la oposición; si pide además borrar, se atiende aquí.) **Anota la fecha y la hora en que llegó**: de ahí corre el plazo ⚖️ (pregunta 7 de la sección 7 de `CUMPLIMIENTO-LEY-21719.md`). | correo |
+| 1 | **Llega la solicitud.** Hoy no hay un formulario para estos tres derechos: [`TERMINOS-DE-USO.md`](../../TERMINOS-DE-USO.md) dice «escribiendo a [CORREO]», y ese dato **falta**: se decidió que sea un correo propio del sitio, pero la dirección real aún no está. (`/r/{id}/` sirve para pedir el retiro o la oposición; si pide además borrar, se atiende aquí.) **Anota la fecha y la hora en que llegó**: de ahí corre el plazo ⚖️ (pregunta 7 de la sección 7 de `CUMPLIMIENTO-LEY-21719.md`). | correo |
 | 2 | **Comprobar que quien pide es la persona** (o, si ya falleció, un familiar) antes de mandar o cambiar nada. **⚖️ Sin decidir**: ver la sección siguiente. | — |
 | 3 | **Encontrar el id.** Busca por nombre en `/b/10/{texto}/` **entrando como propietario** ([`ACCESO.md`](ACCESO.md), «Entrar como propietario»): un visitante no ve a una persona que puede estar viva, y es justo quien suele pedir. Con homónimos, confirma por fechas y lugares, no solo por el nombre. | `/b/10/…` |
 | 4 | **Acceso.** `php bin/persona.php acceso <id>` (JSON). Mira abajo qué contiene y qué no. | servidor |
-| 5 | **Rectificación.** A mano, en una transacción y con un respaldo antes: sección «Rectificar». | base de datos |
+| 5 | **Rectificación.** A mano, en una transacción y con un respaldo antes, y después `php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]`: sección «Rectificar». | base de datos |
 | 6 | **Supresión.** `php bin/persona.php suprimir <id> [--pedido=N]` (simulación) y luego `--confirmar`. Retirar **no** es borrar. | servidor |
 | 7 | **Responder** a quien pidió, por una persona y no por el sitio (que no escribe solo): sección «Qué responder». | correo |
 | 8 | **Anotar**: cuándo llegó, cuándo se respondió y qué se hizo, **sin copiar los datos de la persona** a la nota. | fuera del repositorio |
@@ -29,7 +29,8 @@ Una persona con el id dado, en JSON: `persona` (la ficha, con `viva` y las fecha
 `familiares` (**solo cantidades**: si tiene padre y madre registrados, cuántos hijos y otros vínculos; los
 nombres de los parientes son datos de ellos), `sucesos` (con descripción y su papel en cada uno), `registros`
 que los documentan, `colecciones` y `organizaciones` en las que está, `ids_que_redirigen_a_ella`,
-`pedidos_de_retiro` (número, motivo y estado: **no** quién los pidió ni qué escribió) y `generado_en`.
+`pedidos_de_retiro` (número, motivo y estado: **no** quién los pidió ni qué escribió), `correcciones` (qué campo se
+corrigió y cuándo: **no** los valores) y `generado_en`.
 
 **No trae los textos libres** que la nombran sin estar ligados a ella (la descripción de otro suceso, el título
 de un registro, la nota de una colección). Para verlos, corre la simulación `php bin/persona.php suprimir <id>`
@@ -39,8 +40,10 @@ leerlos a mano, y la búsqueda que los encuentra es una red con agujeros (un apo
 ## Comprobar quién pide ⚖️
 
 `acceso` imprime también lo que un visitante **no** ve. Una solicitud falsa podría usarse para sacar esos datos,
-sobre todo los de una persona viva, que es justo lo que el sitio oculta. Cómo comprobar la identidad **no está
-decidido**; estas son las salidas que hay, con lo que cuestan, para decidir con la lista delante:
+sobre todo los de una persona viva, que es justo lo que el sitio oculta. **Decidido el 11 de noviembre de 2026:** pedir un dato que solo la persona sabría y que **no esté en lo que se
+muestra** (un dato de la ficha que el sitio no publica), y responder **solo al correo desde el que se escribió**,
+sin recoger documentos nuevos. Falta ponerlo en práctica y ensayarlo con datos reales. Las demás salidas, con lo que
+cuestan, para tenerlas delante:
 
 | Salida | Protege de | Cuesta |
 |---|---|---|
@@ -50,8 +53,9 @@ decidido**; estas son las salidas que hay, con lo que cuestan, para decidir con 
 | Responder con lo que cualquier visitante ya ve, y confirmar si hay algo más | Filtrar lo oculto | La persona no recibe todo lo que pidió |
 | Si ya falleció: pedir el parentesco | Un tercero que se hace pasar por familiar | Qué prueba basta ⚖️ |
 
-**Mientras no se decida, la salida de `acceso` no se manda a nadie**: sirve para que quien administra mire qué
-hay. (Es una regla prudente, no una decisión de la persona a cargo: puede cambiarla.)
+Pedir el dato puede revelarlo: no lo nombres en la pregunta («dime una fecha o un lugar de la ficha que no sea
+pública», no «¿naciste en X?»). Si no responde bien, o la ficha no tiene un dato así, **la salida de `acceso` no se
+manda**: sirve para que quien administra mire qué hay, y se responde con lo que cualquier visitante ya ve.
 
 ## Rectificar
 
@@ -78,9 +82,11 @@ cambiado de la ficha puede cambiar **quién la ve** (una fecha de nacimiento nue
 4. **Si lo que se corrige es «está viva» o «ya falleció»**, no es un `UPDATE`: es la marca de vida, que tiene su
    página para el propietario (`/{id}/5/`, ver [`ACCESO.md`](ACCESO.md), «Personas que podrían estar vivas»).
 5. **Mira la página** como visitante y como propietario.
-6. **Anota** la fecha, el id, la tabla y la columna, y la referencia de la solicitud. **No** el valor viejo ni el
-   nuevo: la nota no debe guardar el dato que se quiso corregir. Hoy esa nota vive fuera de la base; si conviene
-   un registro como `supresiones_persona`, pero de correcciones, es una decisión pendiente ⚖️.
+6. **Anota en la base** qué campo se corrigió: `php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]`
+   (por ejemplo `personas.apellidos`). Queda en `rectificaciones_persona` con la persona, la fecha, el campo y el
+   pedido, y **nunca el valor viejo ni el nuevo**: la nota no debe guardar el dato que se quiso corregir. La fila
+   se conserva aunque la persona se suprima después, igual que `supresiones_persona`, y `acceso` la muestra
+   (`correcciones`). La referencia de la solicitud y la fecha de respuesta siguen anotándose fuera del repositorio.
 
 ## Qué responder
 
@@ -102,8 +108,8 @@ estas solicitudes todavía no hay.
 
 ## Lo que falta
 
-- **Decidir cómo se comprueba quién pide** (sección anterior): es lo que más pesa.
-- **Un lugar para recibir la solicitud**: el `[CORREO]` de los términos, o un formulario como `/r/{id}/`.
+- **Poner en práctica la comprobación de quién pide** (sección anterior) y ensayarla.
+- **La dirección del correo propio del sitio** que reemplaza el `[CORREO]` de los términos (o un formulario como
+  `/r/{id}/`): hay que preguntarla, no se inventa.
 - **Los plazos** de respuesta y de conservación (de las copias de seguridad, de la nota de cada solicitud).
-- Un **registro de correcciones**, si se decide.
 - Ensayar todo con **datos reales**, no con la base de demostración.

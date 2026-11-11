@@ -243,4 +243,60 @@ class SupresionRepositoryTest extends TestCase
         $this->assertSame(1, self::cuantas($db, 'SELECT COUNT(*) FROM supresiones_persona'), 'one record, not two');
         $this->assertSame([], $repo->reaplicar(), 'nothing left to do');
     }
+
+    // --- rectificar -------------------------------------------------------------------
+
+    #[DataProvider('drivers')]
+    public function testACorrectionIsRecordedWithTheFieldAndNeverTheValues(string $driver): void
+    {
+        $db = $this->mundo($driver);
+        $repo = new SupresionRepository($db);
+
+        $primera = $repo->rectificar(self::ELLA, 'personas.apellidos', 1);
+        $segunda = $repo->rectificar(self::ELLA, 'sucesos.fecha');
+
+        $this->assertSame([1, 2], [$primera, $segunda], 'numbered one after another');
+        $filas = $db->fetchAll('SELECT * FROM rectificaciones_persona ORDER BY id');
+        $this->assertSame(['personas.apellidos', 'sucesos.fecha'], array_column($filas, 'que'));
+        $this->assertSame([1, null], array_map(static fn($v) => $v === null ? null : (int)$v, array_column($filas, 'pedido_id')));
+        $this->assertCount(5, $filas[0], 'id, persona, when, field and pedido: no column could hold a value');
+
+        $correcciones = $repo->acceso(self::ELLA)['correcciones'];
+        $this->assertSame(['personas.apellidos', 'sucesos.fecha'], array_column($correcciones, 'que'), 'it is hers to know');
+    }
+
+    #[DataProvider('drivers')]
+    public function testACorrectionOfSomethingThatCannotBeRecordedIsRefused(string $driver): void
+    {
+        $db = $this->mundo($driver);
+        $repo = new SupresionRepository($db);
+
+        foreach ([
+            [6128479777, 'personas.apellidos', null, 'No existe la persona'],
+            [self::ELLA, 'apellidos', null, 'no es una tabla.columna'],
+            [self::ELLA, "personas.apellidos'; DROP TABLE personas", null, 'no es una tabla.columna'],
+            [self::ELLA, 'personas.apellidos', 99, 'No existe el pedido de retiro 99'],
+            [self::ELLA, 'personas.apellidos', 2, 'no es sobre la persona'],
+        ] as [$id, $que, $pedido, $mensaje]) {
+            try {
+                $repo->rectificar($id, $que, $pedido);
+                $this->fail("{$driver}: {$que} must be refused");
+            } catch (\DomainException $e) {
+                $this->assertStringContainsString($mensaje, $e->getMessage());
+            }
+        }
+        $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM rectificaciones_persona'));
+    }
+
+    #[DataProvider('drivers')]
+    public function testTheCorrectionsStayAfterShesErased(string $driver): void
+    {
+        $db = $this->mundo($driver);
+        $repo = new SupresionRepository($db);
+        $repo->rectificar(self::ELLA, 'personas.nombres');
+
+        $repo->suprimir(self::ELLA);
+
+        $this->assertSame(1, self::cuantas($db, 'SELECT COUNT(*) FROM rectificaciones_persona WHERE persona_id = ?', [self::ELLA]));
+    }
 }
