@@ -36,6 +36,8 @@ final class PaisRepositoryTest extends IntegracionTestCase
         self::assertSame(['nombre' => 'Argentina', 'mayoria_de_edad' => 18], $repo->mayoriaDeEdad('AR'));
         self::assertSame(['nombre' => 'Tailandia', 'mayoria_de_edad' => 20], $repo->mayoriaDeEdad('TH'));
         self::assertSame(['nombre' => 'Singapur', 'mayoria_de_edad' => 21], $repo->mayoriaDeEdad('SG'));
+        self::assertSame(['nombre' => 'Puerto Rico', 'mayoria_de_edad' => 21], $repo->mayoriaDeEdad('PR'));
+        self::assertSame(['nombre' => 'Guam', 'mayoria_de_edad' => 18], $repo->mayoriaDeEdad('GU'), 'los demas territorios nuevos siguen en 18');
         foreach (['', 'ZZ', 'ar', "AR'--"] as $invalido) {
             self::assertNull($repo->mayoriaDeEdad($invalido), "'{$invalido}' no es un pais");
         }
@@ -65,6 +67,6 @@ final class PaisRepositoryTest extends IntegracionTestCase
         self::assertSame([19, 20, 21], array_keys($porEdad), 'de menor a mayor, sin la general');
         self::assertSame(['Argelia', 'Canada', 'Corea del Sur'], $porEdad[19], 'alfabetico');
         self::assertSame(['Tailandia'], $porEdad[20]);
-        self::assertSame(['Bahrein', 'Egipto', 'Emiratos Arabes Unidos', 'Honduras', 'Kuwait', 'Singapur'], $porEdad[21]);
+        self::assertSame(['Bahrein', 'Egipto', 'Emiratos Arabes Unidos', 'Honduras', 'Kuwait', 'Puerto Rico', 'Singapur'], $porEdad[21]);
     }
 }
