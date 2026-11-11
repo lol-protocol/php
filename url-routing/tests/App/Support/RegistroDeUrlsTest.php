@@ -139,9 +139,10 @@ class RegistroDeUrlsTest extends TestCase
         mkdir($this->dir, 0700, true);
         file_put_contents($archivo, str_repeat('x', RegistroDeUrls::MAX_BYTES_POR_DIA));
 
-        $this->registro()->registrar(404, '/otra/');
+        $motivo = $this->registro()->registrar(404, '/otra/');
 
         $this->assertSame(RegistroDeUrls::MAX_BYTES_POR_DIA, filesize($archivo), 'the day file stopped growing');
+        $this->assertStringContainsString('tope', (string)$motivo, 'and the caller is told why');
     }
 
     public function testAlEmpezarUnDiaSeBorranLosArchivosViejosYSoloLosSuyos(): void
@@ -174,7 +175,7 @@ class RegistroDeUrlsTest extends TestCase
     public function testApagadoNoHaceNada(): void
     {
         $registro = new RegistroDeUrls(null);
-        $registro->registrar(404, '/x/');
+        $this->assertNull($registro->registrar(404, '/x/'), 'turned off is not a failure');
 
         $this->assertSame([], $registro->resumen(7));
     }
@@ -182,10 +183,24 @@ class RegistroDeUrlsTest extends TestCase
     public function testUnaCarpetaQueNoSePuedeCrearNoRompeNada(): void
     {
         file_put_contents($this->dir, 'un archivo donde iría la carpeta');
-        (new RegistroDeUrls($this->dir . '/sub'))->registrar(404, '/x/');
+        $motivo = (new RegistroDeUrls($this->dir . '/sub'))->registrar(404, '/x/');
         unlink($this->dir);
 
-        $this->addToAssertionCount(1);
+        $this->assertStringContainsString('carpeta', (string)$motivo);
+    }
+
+    public function testUnArchivoDelDiaQueNoSePuedeEscribirDiceElMotivo(): void
+    {
+        // The day's file is a directory: it exists, it is not full, and nothing can be appended to it.
+        mkdir($this->dir . '/urls-2025-10-31.tsv', 0700, true);
+
+        $this->assertStringContainsString('escribir', (string)$this->registro()->registrar(404, '/x/'));
+    }
+
+    public function testRegistrarBienNoDevuelveNada(): void
+    {
+        $this->assertNull($this->registro()->registrar(404, '/x/'));
+        $this->assertNull($this->registro()->registrar(200, '/x/'), 'a 200 is not counted, and it is not an error');
     }
 
     public function testLaConfiguracion(): void

@@ -47,10 +47,7 @@ function dinero_compacto(float $valor): string
 function dinero_en_moneda(float $monto, string $codigoMoneda): string
 {
     $simbolo = \App\Repositories\MonedaRepository::simbolo($codigoMoneda);
-    $decimales = \App\Repositories\MonedaRepository::decimales($codigoMoneda);
-    if (!\App\Validacion::montoCabeEnLosDecimales(abs($monto), $decimales)) {
-        $decimales = 2;
-    }
+    $decimales = \App\Repositories\MonedaRepository::decimalesParaMostrar($monto, $codigoMoneda);
     return ($monto < 0 ? '-' : '') . $simbolo . number_format(abs($monto), $decimales) . ' ' . $codigoMoneda;
 }
 

@@ -23,7 +23,7 @@ final class Descarga
      * No se cachea (no-store): tiene datos personales de clientes.
      *
      * @param list<string> $encabezados
-     * @param iterable<list<string|int|float|null>> $filas
+     * @param iterable<list<string|int|float|CeldaNumerica|null>> $filas
      */
     public static function csv(string $nombreBase, array $encabezados, iterable $filas): void
     {
@@ -49,8 +49,8 @@ final class Descarga
     }
 
     /**
-     * @param iterable<list<string|int|float|null>> $filas
-     * @return Iterator<int, list<string|int|float|null>>
+     * @param iterable<list<string|int|float|CeldaNumerica|null>> $filas
+     * @return Iterator<int, list<string|int|float|CeldaNumerica|null>>
      */
     private static function comoIterador(iterable $filas): Iterator
     {

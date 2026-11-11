@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit;
 
+use App\CeldaNumerica;
 use App\EscritorCsv;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -70,6 +71,22 @@ final class EscritorCsvTest extends TestCase
         self::assertSame('0.00', EscritorCsv::celda(-0.001));
         self::assertSame('0.00', EscritorCsv::celda(-0.0));
         self::assertSame('0.00', EscritorCsv::celda(0.0));
+    }
+
+    public function testUnaCeldaNumericaUsaLosDecimalesDeSuMoneda(): void
+    {
+        self::assertSame('1500', EscritorCsv::celda(new CeldaNumerica(1500.0, 0)));
+        self::assertSame('-1500', EscritorCsv::celda(new CeldaNumerica(-1500.0, 0)));
+        self::assertSame('0', EscritorCsv::celda(new CeldaNumerica(-0.2, 0)));
+        self::assertSame('1500.50', EscritorCsv::celda(new CeldaNumerica(1500.5, 2)));
+        self::assertSame('0.00', EscritorCsv::celda(new CeldaNumerica(-0.001, 2)));
+    }
+
+    public function testCeldaNumericaDeMontoRespetaLaMonedaYLosCentavosViejos(): void
+    {
+        self::assertSame(0, CeldaNumerica::monto(1500.0, 'JPY')->decimales);
+        self::assertSame(2, CeldaNumerica::monto(1500.0, 'USD')->decimales);
+        self::assertSame(2, CeldaNumerica::monto(1500.5, 'JPY')->decimales, 'un monto viejo con centavos no se redondea');
     }
 
     public function testNullEsUnaCeldaVacia(): void

@@ -1,6 +1,6 @@
 <?php
 
-// Borrador sin revisión de hablante nativo.
+// Traducción propia: el proyecto no prevé revisión de hablante nativo de los mensajes.
 return [
     'explanation.where' => 'slovník %s, typ %s, závažnost %s',
     'explanation.fusion' => '„%1$s“ čtené vcelku zní jako „%2$s“ (%3$s)',

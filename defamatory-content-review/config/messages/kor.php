@@ -1,6 +1,6 @@
 <?php
 
-// Borrador sin revisión de hablante nativo.
+// Traducción propia: el proyecto no prevé revisión de hablante nativo de los mensajes.
 return [
     'explanation.where' => '사전 %s, 유형 %s, 심각도 %s',
     'explanation.fusion' => '“%1$s”을(를) 이어서 읽으면 “%2$s”처럼 들립니다(%3$s)',

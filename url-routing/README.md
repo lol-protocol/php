@@ -46,3 +46,4 @@ La base de datos sale de `DB_DSN_<SITIO>` (o de `.env`), igual que en la aplicac
 | [`docs/ACCESO.md`](docs/ACCESO.md) | Qué es privado y quién puede verlo (`OWNER_TOKEN`; no hay cuentas de usuario) |
 | [`docs/DATABASE.md`](docs/DATABASE.md) | Una base de datos por sitio, SQLite o PostgreSQL |
 | [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md) | Cómo ponerlo en un servidor y comprobar que quedó bien |
+| [`docs/MANTENIMIENTO.md`](docs/MANTENIMIENTO.md) | Qué comando de `bin/` usar y en qué orden: cron, duplicados, pedidos de datos, despliegues |

@@ -13,6 +13,10 @@
 
 ### Cambiado
 
+- **Las traducciones de los mensajes** (`config/messages/*.php`) ya no se anuncian como pendientes de revisión
+  nativa: el proyecto decidió no hacerla. Siguen siendo traducciones propias, y así lo dice cada archivo y el README.
+  La revisión nativa de los diccionarios, las severidades y la flexión es otra cosa y no cambia.
+
 - **`config/languages/*.php`: el `meta` ya no repite `iso639_1`, `name`, `nativeName` ni `family`** (viven solo
   en `supported-languages.php`); `LanguageMetaTest` lo comprueba.
 - **`Messages`**: las categorías en español salen de `risk-categories.php` (ya no hay que tratarlas aparte en las

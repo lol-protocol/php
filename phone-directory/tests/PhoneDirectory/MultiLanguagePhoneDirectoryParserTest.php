@@ -124,6 +124,48 @@ class MultiLanguagePhoneDirectoryParserTest extends TestCase
         }
     }
 
+    /** Family firms and trades without a legal form ("Smith & Sons", "Hnos. García") are businesses, not persons. */
+    public function testFamilyFirmsAndTradesWithoutALegalFormAreBusinesses(): void
+    {
+        $cases = [
+            ['en', "Smith & Sons\n12 Main Street\n555-123-4580"],
+            ['en', "Jones Bros\n12 Main Street\n555-123-4581"],
+            ['en', "Allen Plumbing\n12 Main Street\n555-123-4582"],
+            ['es', "Hermanos García\nCalle Mayor 12\n555-123-4583"],
+            ['es', "García Hnos.\nCalle Mayor 13\n555-123-4584"],
+            ['es', "Taller Pérez\nCalle Mayor 14\n555-123-4585"],
+            ['fr', "Dupont Frères\n3 rue Victor Hugo\n555-123-4586"],
+            ['pt', "Silva & Filhos\nRua Nova 12\n555-123-4587"],
+            ['de', "Müller Söhne\nHauptstrasse 12\n555-123-4588"],
+            ['it', "Rossi Fratelli\nVia Roma 12\n555-123-4589"],
+        ];
+
+        foreach ($cases as [$language, $content]) {
+            $entries = $this->parser->parseContent($content, $language);
+
+            $this->assertCount(1, $entries, $content);
+            $this->assertSame('juridical', $entries[0]['type'], $content);
+        }
+    }
+
+    /** The new words do not turn ordinary surnames into businesses. */
+    public function testCommonSurnamesAreStillPersons(): void
+    {
+        $cases = [
+            ['en', "BAKER, John\n12 Main Street\n555-123-4590"],
+            ['en', "Mary Miller\n12 Main Street\n555-123-4591"],
+            ['es', "Sara Herrero\nCalle Luna 3\n555-123-4592"],
+            ['es', "SERVICIO, Luis\nCalle Mayor 12\n555-123-4593"],
+        ];
+
+        foreach ($cases as [$language, $content]) {
+            $entries = $this->parser->parseContent($content, $language);
+
+            $this->assertCount(1, $entries, $content);
+            $this->assertSame('natural', $entries[0]['type'], $content);
+        }
+    }
+
     /** A person who lives on "Bank Street" or "Calle del Banco" is still a person: the street says where, not what. */
     public function testABusinessWordInTheStreetLineDoesNotMakeAPersonABusiness(): void
     {
