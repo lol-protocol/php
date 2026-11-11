@@ -48,25 +48,11 @@ fi
 sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOF
 # vps-setup: 06_D-tomcat ${CONTEXT_PATH:-ROOT}
 server {
-    listen 80;
-    listen [::]:80;
-    server_name $DOMAIN www.$DOMAIN;
-
-    access_log /var/log/nginx/$DOMAIN/access.log;
-    error_log /var/log/nginx/$DOMAIN/error.log;
+$(nginx_server_head "$DOMAIN")
 
     client_max_body_size $MAX_UPLOAD;   # subidas (MAX_UPLOAD, 20M por defecto); sin esto, 1 MB
 $MANAGER_BLOCK
-    location / {
-        proxy_pass $PROXY_TARGET;
-        proxy_connect_timeout 10s;          # Tomcat es local: si no acepta en 10 s, esta caido
-        proxy_send_timeout $PROXY_TIMEOUT;
-        proxy_read_timeout $PROXY_TIMEOUT;  # cuanto puede tardar la app en responder (PROXY_TIMEOUT)
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-    }
+$(nginx_proxy_location "$PROXY_TARGET")
 }
 EOF
 

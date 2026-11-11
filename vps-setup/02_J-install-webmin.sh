@@ -62,7 +62,7 @@ sudo apt-get install -y --install-recommends webmin
 echo "[3/3] Configurando el acceso a Webmin..."
 if [ -n "$WEBMIN_ALLOW_FROM" ] || [ "$WEBMIN_PUBLIC" = 1 ]; then
     # Escucha en todas las interfaces (sin "bind=").
-    sudo sed -i '/^bind=/d' "$WEBMIN_CONF"
+    unset_conf_line "$WEBMIN_CONF" bind
     if [ -n "$WEBMIN_ALLOW_FROM" ]; then
         if sudo ufw status | grep -q "Status: active"; then
             sudo ufw allow from "$WEBMIN_ALLOW_FROM" to any port 10000 proto tcp
@@ -77,11 +77,7 @@ if [ -n "$WEBMIN_ALLOW_FROM" ] || [ "$WEBMIN_PUBLIC" = 1 ]; then
 else
     # Solo localhost: sin regla de UFW (el trafico de loopback no pasa por el firewall) y se
     # quita cualquier regla abierta que una instalacion anterior haya dejado.
-    if sudo grep -q '^bind=' "$WEBMIN_CONF"; then
-        sudo sed -i 's/^bind=.*/bind=127.0.0.1/' "$WEBMIN_CONF"
-    else
-        echo 'bind=127.0.0.1' | sudo tee -a "$WEBMIN_CONF" > /dev/null
-    fi
+    set_conf_line "$WEBMIN_CONF" bind 127.0.0.1
     if sudo ufw status | grep -q "Status: active" && sudo ufw status | grep -qE '^10000/tcp +ALLOW'; then
         sudo ufw delete allow 10000/tcp > /dev/null 2>&1 || true
         echo "  Se quito la regla antigua de UFW que abria el 10000 a todo internet."

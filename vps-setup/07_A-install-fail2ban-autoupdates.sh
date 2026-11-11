@@ -76,8 +76,7 @@ else
     echo "AVISO: $NGINX_LOG_DIR no existe (Nginx no instalado): solo se activan los jails de SSH y reincidentes."
 fi
 
-service_start_enable fail2ban
-sudo systemctl restart fail2ban   # aplica jail.local si el servicio ya estaba corriendo
+service_enable_restart fail2ban   # reinicia: aplica jail.local si el servicio ya estaba corriendo
 
 # 20auto-upgrades: activa la actualizacion diaria de lista de paquetes y la
 # instalacion automatica. El origen "solo seguridad" ya viene configurado por
