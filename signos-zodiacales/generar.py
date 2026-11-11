@@ -5,8 +5,10 @@ Uso:
   python3 generar.py              escribe constelaciones/, constelaciones-sin-fondo/ y por-idioma/
   python3 generar.py --comprobar  falla si lo committeado no está al día
 """
+import csv
 import datetime
 import hashlib
+import io
 import json
 import re
 import sys
@@ -22,6 +24,7 @@ VECTORES = RAIZ / "datos" / "vectores.json"
 SALIDA_SVG = RAIZ / "constelaciones"
 SALIDA_SVG_SIN_FONDO = RAIZ / "constelaciones-sin-fondo"
 SALIDA_MD = RAIZ / "por-idioma"
+SALIDA_REVISION = RAIZ / "revision"
 
 IDIOMAS = {
     "es": "Español", "en": "English", "pt": "Português", "fr": "Français",
@@ -1044,10 +1047,63 @@ def vectores_de(datos):
     return "{\n" + ",\n".join(lineas) + "\n}\n"
 
 
+def textos_de(datos):
+    """(dónde, idioma, texto) de cada texto traducido del proyecto, en todos los archivos de datos.
+
+    Es la lista que recorren las pruebas de alfabetos y los paquetes de revisión: si un archivo de datos nuevo
+    trae textos traducidos, hay que añadirlos aquí para que entren en los dos.
+    """
+    for s in datos["signos"]:
+        for campo in ("nombres", "descripciones", "descripciones_largas"):
+            for codigo, texto in s[campo].items():
+                yield f"{s['id']}/{campo}", codigo, texto
+    for clave, por_idioma in datos["terminos"].items():
+        for codigo, texto in por_idioma.items():
+            yield f"terminos/{clave}", codigo, texto
+    esp = zodiaco.cargar_espiritus()
+    for grupo in ("terminos", "cualidades"):
+        for clave, por_idioma in esp[grupo].items():
+            if clave != "separador":
+                for codigo, texto in por_idioma.items():
+                    yield f"espiritus/{grupo}/{clave}", codigo, texto
+    arb = zodiaco.cargar_arboles()
+    for grupo in ("terminos", "rasgos"):
+        for clave, por_idioma in arb[grupo].items():
+            if clave != "separador":
+                for codigo, texto in por_idioma.items():
+                    yield f"arboles/{grupo}/{clave}", codigo, texto
+    for clave, a in arb["arboles"].items():
+        for codigo, texto in a["nombres"].items():
+            yield f"arboles/arboles/{clave}", codigo, texto
+    for clave, por_idioma in zodiaco.cargar_numerologia()["terminos"].items():
+        if clave != "separador":
+            for codigo, texto in por_idioma.items():
+                yield f"numerologia/terminos/{clave}", codigo, texto
+
+
+def paquete_de_revision(datos, codigo):
+    """revision/<idioma>.csv: todos los textos de un idioma, lado a lado con el español y el inglés, para una persona nativa.
+
+    Columnas: donde (la clave del texto en los datos), es, en, texto (el del idioma), correccion y nota, las dos
+    últimas vacías para que quien revise las rellene. En español e inglés, la columna «texto» repite la suya y
+    se revisa igual. Es un archivo generado: las correcciones se aplican en datos/*.json, no aquí.
+    """
+    por_clave = {}
+    for donde, idioma, texto in textos_de(datos):
+        por_clave.setdefault(donde, {})[idioma] = texto
+    salida = io.StringIO()
+    w = csv.writer(salida, lineterminator="\n")
+    w.writerow(["donde", "es", "en", "texto", "correccion", "nota"])
+    for donde, textos in por_clave.items():
+        w.writerow([donde, textos["es"], textos["en"], textos[codigo], "", ""])
+    return salida.getvalue()
+
+
 def esperados(datos):
     archivos = {SALIDA_MD / "README.md": indice_de(datos), VECTORES: vectores_de(datos), GALERIA: galeria_de(datos)}
     for codigo in IDIOMAS:
         archivos[SALIDA_MD / f"{codigo}.md"] = ficha_de(datos, codigo)
+        archivos[SALIDA_REVISION / f"{codigo}.csv"] = paquete_de_revision(datos, codigo)
     for s in datos["signos"]:
         if "constelacion" not in s:
             continue
@@ -1061,7 +1117,7 @@ def sobrantes(archivos):
     """Archivos de las carpetas generadas que ya nadie genera."""
     return sorted(
         str(p.relative_to(RAIZ))
-        for carpeta in (SALIDA_SVG, SALIDA_SVG_SIN_FONDO, SALIDA_MD)
+        for carpeta in (SALIDA_SVG, SALIDA_SVG_SIN_FONDO, SALIDA_MD, SALIDA_REVISION)
         if carpeta.exists()
         for p in carpeta.iterdir()
         if p.is_file() and p not in archivos
@@ -1092,7 +1148,7 @@ def main():
             return 1
         print("Todo al día.")
         return 0
-    for carpeta in (SALIDA_SVG, SALIDA_SVG_SIN_FONDO, SALIDA_MD):
+    for carpeta in (SALIDA_SVG, SALIDA_SVG_SIN_FONDO, SALIDA_MD, SALIDA_REVISION):
         carpeta.mkdir(exist_ok=True)
     for ruta, texto in archivos.items():
         ruta.write_text(texto, encoding="utf-8")
