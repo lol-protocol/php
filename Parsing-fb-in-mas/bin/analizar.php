@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 // Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] [--excluir=lista.txt] [--sin-revision] pagina.html|carpeta …
-// Lee páginas YA GUARDADAS en disco (una carpeta se recorre entera) y escribe un JSON, o un
+// Lee páginas YA GUARDADAS en disco (una carpeta se recorre entera; los .json, que son respuestas de la API
+// de WikiTree, hay que pasarlos uno a uno) y escribe un JSON, o un
 // objeto por línea con --jsonl. No descarga nada, a propósito. Una misma URL sale una vez.
 
 require __DIR__ . '/../src/cargar.php';
@@ -11,6 +12,7 @@ require __DIR__ . '/../src/cargar.php';
 use ParsingFbInMas\Detector;
 use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Lote;
+use ParsingFbInMas\WikiTreeApi;
 
 $capturado = null;
 $jsonl = false;
@@ -59,6 +61,12 @@ foreach (Lote::archivos($rutas) as $archivo) {
         continue;
     }
     try {
+        if (str_ends_with(strtolower($archivo), '.json')) {
+            foreach (WikiTreeApi::desdeJson($html, $capturado) as $p) {
+                $perfiles[] = ['archivo' => basename($archivo)] + $p->aArreglo();
+            }
+            continue;
+        }
         $perfiles[] = ['archivo' => basename($archivo)] + Detector::analizar($html, $capturado, $revisar)->aArreglo();
     } catch (RuntimeException $e) {
         fwrite(STDERR, "$archivo: {$e->getMessage()}\n");

@@ -14,6 +14,7 @@ use ParsingFbInMas\Perfil;
 use ParsingFbInMas\Revision;
 use ParsingFbInMas\Sensibles;
 use ParsingFbInMas\Wikidata;
+use ParsingFbInMas\WikiTreeApi;
 
 /** Contadores de las comprobaciones (estáticos para que `igual()` no dependa de variables globales). */
 final class Cuenta
@@ -280,6 +281,29 @@ try {
     igual('nombres: volcado inexistente lanza', true, true);
 }
 
+// --- WikiTree por su API (respuesta JSON guardada) ---
+$wt = array_map(static fn (Perfil $p): array => $p->aArreglo(), WikiTreeApi::desdeJson((string) file_get_contents(__DIR__ . '/muestras/wikitree-api.json'), '2026-11-11'));
+igual('wikitree api: tres perfiles', 3, count($wt));
+igual('wikitree api: nombre completo, usuario y url', ['María Rosa Ficticia', 'Ficticia-1', 'https://www.wikitree.com/wiki/Ficticia-1'], [$wt[0]['nombre'], $wt[0]['usuario'], $wt[0]['url']]);
+igual('wikitree api: fecha de nacimiento con mes y sin día', '1850-03', $wt[0]['nacimiento']);
+igual('wikitree api: fecha de muerte solo con año', '1920', $wt[0]['muerte']);
+igual('wikitree api: lugares', ['Valparaíso, Chile', 'Santiago, Chile'], [$wt[0]['lugar_nacimiento'], $wt[0]['lugar_muerte']]);
+igual('wikitree api: solo el padre que existe (la madre es 0)', [['relacion' => 'padre', 'nombre' => null, 'id' => '1002']], $wt[0]['parientes']);
+igual('wikitree api: fallecida', false, $wt[0]['posiblemente_vivo']);
+igual('wikitree api: una persona viva no filtra fecha, lugar ni parientes', [null, null, [], true], [$wt[1]['nacimiento'], $wt[1]['lugar_nacimiento'], $wt[1]['parientes'], $wt[1]['posiblemente_vivo']]);
+igual('wikitree api: muerte desconocida («0000-00-00») no cuenta como fallecida y no filtra el nacimiento', [null, null, true], [$wt[2]['muerte'], $wt[2]['nacimiento'], $wt[2]['posiblemente_vivo']]);
+igual('wikitree api: un perfil privado avisa que no tiene nombre', true, str_starts_with($wt[2]['avisos'][0] ?? '', 'sin nombre'));
+igual('wikitree api: un objeto suelto con «profile» también sirve', 1, count(WikiTreeApi::desdeJson('{"profile":{"Name":"Uno-1","FirstName":"Uno"}}')));
+igual('wikitree api: una lista de perfiles sueltos también sirve', 2, count(WikiTreeApi::desdeJson('[{"Name":"A-1"},{"Name":"B-2"}]')));
+foreach (['no es json', '[]', '[{"status":"Permission denied"}]', '"texto"'] as $malo) {
+    try {
+        WikiTreeApi::desdeJson($malo);
+        igual("wikitree api: «{$malo}» lanza", true, false);
+    } catch (RuntimeException) {
+        igual("wikitree api: «{$malo}» lanza", true, true);
+    }
+}
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
@@ -445,6 +469,18 @@ exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' ' . e
 igual('wikidata-nombres.php: sale con 0 y un perfil con el lugar nombrado', [0, 1, true], [$codigo, count($salida), str_contains($salida[0] ?? '', '"lugar_nacimiento_nombre":"Santiago de Chile"')]);
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata-nombres.php') . ' https://dumps.wikimedia.org/x.json ' . escapeshellarg("$tmp/wd.jsonl") . ' 2>&1', $salida, $codigo);
 igual('wikidata-nombres.php: rechaza una URL', 2, $codigo);
+
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl ' . escapeshellarg(__DIR__ . '/muestras/wikitree-api.json') . ' 2>/dev/null', $salida, $codigo);
+igual('analizar.php: un .json de WikiTree suelta sus tres perfiles', [0, 3], [$codigo, count($salida)]);
+file_put_contents("$tmp/excluir-wt.txt", "wikitree:Vivo-7\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl --excluir=' . escapeshellarg("$tmp/excluir-wt.txt") . ' ' . escapeshellarg(__DIR__ . '/muestras/wikitree-api.json') . ' 2>/dev/null', $salida, $codigo);
+igual('analizar.php: la lista de exclusión también vale para la API de WikiTree', [0, 2, false], [$codigo, count($salida), str_contains(implode('', $salida), 'Vivo-7')]);
+file_put_contents("$tmp/roto.json", 'no es json');
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' ' . escapeshellarg("$tmp/roto.json") . ' 2>/dev/null', $salida, $codigo);
+igual('analizar.php: un .json roto sale con 1', 1, $codigo);
 file_put_contents("$tmp/excluir-cruce.txt", "wikitree:Gonzalez-1234\n");
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --excluir=' . escapeshellarg("$tmp/excluir-cruce.txt") . ' 2>/dev/null', $salida, $codigo);
