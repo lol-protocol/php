@@ -105,9 +105,28 @@ function registrar_url(Router $router): void
                 $destino = trim(substr($cabecera, 9));
             }
         }
-        RegistroDeUrls::desdeConfig()->registrar($estado, $_SERVER['REQUEST_URI'] ?? '/', $destino, $router->palabras());
+        $motivo = RegistroDeUrls::desdeConfig()->registrar($estado, $_SERVER['REQUEST_URI'] ?? '/', $destino, $router->palabras());
+        if ($motivo !== null) {
+            registrar_url_fallo($motivo);
+        }
+    } catch (\Throwable $e) {
+        // A counter that fails is not worth a failed page, but whoever runs the site should know it stopped.
+        registrar_url_fallo($e::class);
+    }
+}
+
+/** Says in the log that the URL counter is not working: once per PHP process, not once per 404. */
+function registrar_url_fallo(string $motivo): void
+{
+    static $avisado = false;
+    if ($avisado) {
+        return;
+    }
+    $avisado = true;
+    try {
+        ServiceLocator::getInstance()->getLogger()->warning('El registro de URLs (URL_LOG_DIR) no está funcionando', ['motivo' => $motivo]);
     } catch (\Throwable) {
-        // A counter that fails is not worth a failed page.
+        // The log itself is what failed: nothing left to tell.
     }
 }
 
