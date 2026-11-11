@@ -46,8 +46,8 @@
 | Jersey | inglés | territorio | — | — | 4 | 5 | 5 | 1 126 448 | 41.8620 | 20 | no |  |
 | Liechtenstein | alemán | estado | — | 98.3 | 4 | 5 | 5 | 3 810 118 | 5.7252 | 20 | no | Mercado editorial pequeño |
 | Luxemburgo | francés; alemán; luxemburgués | estado | — | 99.1 | 4 | 5 | 5 | 708 727 | 4.6769 | 20 | no |  |
-| Moldavia | rumano; ruso | estado | 99.4 | 77.4 | 4 | 5 | 5 | 942 151 | 0.5730 | 20 | no |  |
 | México | español | estado | 95.9 | 83.1 | 4 | 5 | 5 | 1 022 971 | 4.7448 | 20 | no |  |
+| Moldavia | rumano; ruso | estado | 99.4 | 77.4 | 4 | 5 | 5 | 942 151 | 0.5730 | 20 | no |  |
 | Mónaco | francés | estado | — | 99.0 | 4 | 5 | 5 | 708 727 | 4.6769 | 20 | no | Mercado editorial pequeño |
 | Panamá | español | estado | 96.3 | 72.8 | 4 | 5 | 5 | 1 022 971 | 4.7448 | 20 | no |  |
 | Portugal | portugués | estado | 94.5 | 88.5 | 4 | 5 | 5 | 1 545 443 | 2.4899 | 20 | no |  |
@@ -97,8 +97,8 @@
 | Irán | persa | estado | 88.9 | 85.3 | 3 | 5 | 5 | 654 699 | 0.6934 | 15 | no | Mercado editorial grande |
 | Jordania | árabe; inglés | estado | 94.8 | 95.6 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
 | Kuwait | árabe; inglés | estado | 96.5 | 100.0 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
-| Libia | árabe | estado | — | 82.0 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
 | Líbano | árabe; francés; inglés | estado | 92.0 | 80.6 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
+| Libia | árabe | estado | — | 82.0 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
 | Mauricio | inglés; francés; criollo mauriciano | estado | 94.3 | 73.3 | 3 | 5 | 5 | 1 126 448 | 41.8620 | 15 | no |  |
 | Nicaragua | español | estado | 87.3 | 61.4 | 3 | 5 | 5 | 1 022 971 | 4.7448 | 15 | no |  |
 | Omán | árabe; inglés | estado | 97.3 | 95.3 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |

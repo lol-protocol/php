@@ -334,13 +334,13 @@ def main(argv=None, carpeta=AQUI):
             sin_serie.append(codigo)
 
         actual = poblacion.get(clave, {}).get(ANIO_POBLACION)
-        fila["poblacion_millones"] = formato_millones(actual) if actual else ""
-        if not actual:
+        fila["poblacion_millones"] = formato_millones(actual) if actual is not None else ""
+        if actual is None:
             sin_pob.append(codigo)
         anotar("poblacion_millones", ANIO_POBLACION,
                "Banco Mundial" if clave in con_poblacion_bm else "Our World in Data")
         emigrados = emigrantes.get(clave, {}).get(ANIO_EMIGRANTES)
-        fila["emigrantes_pct"] = f"{100 * emigrados / actual:.1f}" if emigrados and actual else ""
+        fila["emigrantes_pct"] = f"{100 * emigrados / actual:.1f}" if emigrados is not None and actual else ""
         if not fila["emigrantes_pct"]:
             sin_emigrantes.append(codigo)
         anotar("emigrantes_pct", ANIO_EMIGRANTES, "ONU vía Gapminder")
@@ -353,8 +353,8 @@ def main(argv=None, carpeta=AQUI):
                 fila[columna] = dato[1] if isinstance(dato[1], str) else f"{dato[1]:g}"
                 anotar(columna, dato[0], fuente_gobernanza[columna])
         ppa = pib_ppa.get(clave, {}).get(ANIO_PIB_PPA)
-        fila["pib_per_capita_ppa_usd"] = str(round(ppa)) if ppa else ""
-        if not ppa:
+        fila["pib_per_capita_ppa_usd"] = str(round(ppa)) if ppa is not None else ""
+        if ppa is None:
             sin_pib.append(codigo)
         anotar("pib_per_capita_ppa_usd", ANIO_PIB_PPA, "Gapminder (Banco Mundial)")
 
@@ -368,8 +368,8 @@ def main(argv=None, carpeta=AQUI):
             anotar("pib_per_capita_usd", nominal[0], "Banco Mundial")
 
         valor_idh = idh.get(clave, {}).get(ANIO_IDH)
-        fila["idh"] = f"{valor_idh:.3f}" if valor_idh else ""
-        if not fila["idh"]:
+        fila["idh"] = f"{valor_idh:.3f}" if valor_idh is not None else ""
+        if valor_idh is None:
             sin_idh.append(codigo)
         anotar("idh", ANIO_IDH, "PNUD vía Gapminder")
 

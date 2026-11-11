@@ -9,6 +9,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import generar_tabla
 import historia_poblacion as hp
@@ -192,6 +193,69 @@ class GeneradorDeTablas(unittest.TestCase):
             self.assertEqual(f["excluido_pos"] == "si", excluido_pos(d), f["codigo"])
 
 
+class ValidacionYOrden(unittest.TestCase):
+    def fila_de_ejemplo(self, **cambios):
+        return {**leer_csv(AQUI / "paises.csv")[0], **cambios}
+
+    def errores(self, fila):
+        return generar_tabla.errores_de("x", 2, fila, generar_tabla.ESCALAS_PAISES, generar_tabla.NUMERICAS_PAISES)
+
+    def test_la_fila_del_proyecto_no_da_errores(self):
+        self.assertEqual(self.errores(self.fila_de_ejemplo()), [])
+
+    def test_un_numero_negativo_o_no_finito_es_un_error(self):
+        for campo, valor, texto in (("poblacion_millones", "nan", "finito"), ("pib_per_capita_usd", "inf", "finito"),
+                                    ("pib_per_capita_usd", "-500", "negativo"), ("idh", "-0.1", "negativo")):
+            errores = self.errores(self.fila_de_ejemplo(**{campo: valor}))
+            self.assertTrue(any(campo in e and texto in e for e in errores), (campo, valor, errores))
+
+    def test_los_emigrantes_no_pasan_del_100_por_ciento(self):
+        self.assertIn("emigrantes_pct", generar_tabla.RANGOS)
+        with mock.patch.multiple(generar_tabla, PAISES=self.copia_con(emigrantes_pct="250")):
+            with self.assertRaises(SystemExit) as error:
+                generar_tabla.main(comprobar=True)
+        self.assertIn("emigrantes_pct fuera de 0–100: 250", str(error.exception))
+
+    def copia_con(self, **cambios):
+        """Una copia de paises.csv con la primera fila cambiada."""
+        carpeta = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, carpeta)
+        filas = leer_csv(AQUI / "paises.csv")
+        filas[0].update(cambios)
+        with (carpeta / "paises.csv").open("w", encoding="utf-8", newline="") as f:
+            escritor = csv.DictWriter(f, fieldnames=generar_tabla.COLUMNAS_PAISES)
+            escritor.writeheader()
+            escritor.writerows(filas)
+        return carpeta / "paises.csv"
+
+    def test_el_tope_de_io_por_internet_sale_de_la_constante(self):
+        # Con el tope en 2, un IO 3 con poco internet es un error; antes solo se miraban IO 4 y 5 a mano.
+        ruta = self.copia_con(usuarios_internet="10", indice_operabilidad="3")
+        with mock.patch.multiple(generar_tabla, PAISES=ruta, TOPE_IO_INTERNET=(60, 2)):
+            with self.assertRaises(SystemExit) as error:
+                generar_tabla.main(comprobar=True)
+        self.assertIn("IO 3 supera el tope 2", str(error.exception))
+
+    def test_el_nombre_se_ordena_sin_acentos_como_en_la_vista(self):
+        nombres = ["Libia", "Liberia", "Líbano", "México", "Moldavia", "Mónaco"]
+        self.assertEqual(sorted(nombres, key=generar_tabla.clave_nombre),
+                         ["Líbano", "Liberia", "Libia", "México", "Moldavia", "Mónaco"])
+
+    def test_una_barra_vertical_no_rompe_la_tabla_markdown(self):
+        tabla = generar_tabla.tabla_md("T", "n", ["A", "B"], [["uno | dos", "tres\ncuatro"]])
+        self.assertIn("| uno \\| dos | tres cuatro |", tabla)
+
+    def test_si_no(self):
+        self.assertEqual([generar_tabla.si_no(True), generar_tabla.si_no(False)], ["sí", "no"])
+        self.assertEqual(generar_tabla.si_no(True, ascii=True), "si")
+
+    def test_la_vista_busca_sin_acentos(self):
+        for archivo in ("vista_plantilla.html", "vista.html"):
+            texto = (AQUI / archivo).read_text(encoding="utf-8")
+            self.assertIn('normalize("NFD")', texto, archivo)
+            self.assertNotIn(".toLowerCase().includes(texto)", texto, archivo)
+
+
 class PreparacionDePuntaAPunta(unittest.TestCase):
     """preparar_datos.main y preparar_lenguas.main sobre fuentes sintéticas mínimas.
 
@@ -213,15 +277,16 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         with (self.d / "paises.csv").open("w", encoding="utf-8", newline="") as f:
             w = csv.DictWriter(f, fieldnames=generar_tabla.COLUMNAS_PAISES)
             w.writeheader()
-            for codigo in ("AA", "BB", "CC", "DD", "EE"):
+            for codigo in ("AA", "BB", "CC", "DD", "EE", "FF"):
                 w.writerow({**vacia, "codigo": codigo, "pais": codigo, "region": "Europa"})
         self.csv("codigos_iso.csv", ("codigo", "codigo_owid", "nombre_iso"),
                  [("AA", "AAA", "A"), ("BB", "BBB", "B"), ("CC", "CCC", "C"),
-                  ("DD", "DDD", "D"), ("EE", "EEE", "E")])
+                  ("DD", "DDD", "D"), ("EE", "EEE", "E"), ("FF", "FFF", "F")])
         hyde = "Global Population by Region (HYDE (2016) and UN (2017))"
         a = {
             "--co2": self.csv("co2.csv", ("iso_code", "country", "year", "population"),
                               [("AAA", "Aland", 1850, 1_000_000), ("AAA", "Aland", 2024, 4_000_000),
+                               ("FFF", "Fland", 2024, 2_000_000),
                                ("", "Europe", 2010, 1e8), ("", "Europe", 2024, 1.2e8)]),
             # DD empieza en 1600 con 500 personas (su poblamiento); EE en 1800, con un hueco antes.
             "--poblacion-owid": self.csv("owid.csv", ("entity", "code", "year", "population_historical"),
@@ -235,17 +300,17 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
             "--natalidad-gapminder": self.csv("cbr.csv", ("geo", "time", "cbr"), [("aaa", 2015, 30.0)]),
             "--fecundidad-gapminder": self.csv("tfr.csv", ("country", "time", "tfr"),
                                                [("aaa", 2015, 3.0), ("aaa", 2016, 1.5)]),
-            "--idh": self.csv("idh.csv", ("geo", "time", "hdi"), [("aaa", pd.ANIO_IDH, 0.8)]),
+            "--idh": self.csv("idh.csv", ("geo", "time", "hdi"), [("aaa", pd.ANIO_IDH, 0.8), ("fff", pd.ANIO_IDH, 0.0)]),
             "--alfabetizacion": self.csv("alf.csv", ("geo", "time", "lit"), [("aaa", 2009, 90.0), ("bbb", 2020, 70.0)]),
             "--internet": self.csv("net.csv", ("geo", "time", "net"), [("aaa", 2024, 80.0)]),
-            "--emigrantes": self.csv("emi.csv", ("country", "time", "emigrant_n"), [("aaa", pd.ANIO_EMIGRANTES, 400_000)]),
+            "--emigrantes": self.csv("emi.csv", ("country", "time", "emigrant_n"), [("aaa", pd.ANIO_EMIGRANTES, 400_000), ("fff", pd.ANIO_EMIGRANTES, 0)]),
             "--poblacion-gapminder": self.csv("popg.csv", ("geo", "time", "pop"),
                                               [("ccc", 1800, 1000), ("ccc", 2010, 5000), ("ccc", 2030, 9000)]),
             "--libertad": self.csv("fh.csv", ("country", "time", "freedstatus_fh"),
                                    [("aaa", 2022, "PF"), ("bbb", 2010, "F")]),
             "--democracia": self.csv("eiu.csv", ("country", "time", "demox_eiu"), [("aaa", 2020, 61.5)]),
             "--corrupcion": self.csv("cpi.csv", ("country", "time", "cpi"), [("aaa", 2023, 45.0)]),
-            "--pib-ppa": self.csv("ppa.csv", ("country", "time", "gdp_pcap"), [("aaa", pd.ANIO_PIB_PPA, 30000.4)]),
+            "--pib-ppa": self.csv("ppa.csv", ("country", "time", "gdp_pcap"), [("aaa", pd.ANIO_PIB_PPA, 30000.4), ("fff", pd.ANIO_PIB_PPA, 0.0)]),
             "--pib-pc-bm": self.csv("gdp.csv", ("Country Name", "Country Code", "Year", "Value"),
                                     [("A", "AAA", pd.ANIO_PIB_NOMINAL, 20000.4),
                                      ("B", "BBB", pd.ANIO_PIB_NOMINAL - 2, 10000)]),
@@ -270,6 +335,9 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(bb["pib_per_capita_usd"], "10000")  # de dos años antes
         self.assertEqual(bb["alfabetizacion_adultos"], "70.0")
         self.assertEqual(cc["poblacion_millones"], "")  # Gapminder no da la población actual
+        # Un 0 de la fuente es un dato, no un dato que falta.
+        ff = paises["FF"]
+        self.assertEqual((ff["idh"], ff["pib_per_capita_ppa_usd"], ff["emigrantes_pct"]), ("0.000", "0", "0.0"))
         detalle = {(f["codigo"], f["columna"]): (f["anio"], f["fuente"]) for f in leer_csv(self.d / "datos_detalle.csv")}
         self.assertEqual(detalle[("BB", "poblacion_millones")], ("2024", "Banco Mundial"))
         self.assertEqual(detalle[("BB", "pib_per_capita_usd")], (str(pd.ANIO_PIB_NOMINAL - 2), "Banco Mundial"))
@@ -327,6 +395,31 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual((pos["BB"]["indice_pos"], pos["BB"]["indice_pos_local"]), ("5", "3"))
         self.assertEqual(pos["BB"]["comentarios_pos"], "IP por alandés (mejor recurso listado). Alfabetización baja")
         self.assertEqual(pos["AA"]["comentarios_pos"], "")
+
+    def test_preparar_lenguas_explica_lo_que_falta_en_vez_de_fallar_con_un_error_interno(self):
+        import preparar_lenguas as pl
+        ud = self.d / "ud"
+        ud.mkdir()
+        (ud / "UD_Aland-Uno.xml").write_text("<treebank></treebank>", encoding="utf-8")
+        with self.assertRaises(SystemExit) as error:
+            pl.palabras_ud(ud, {"Aland": "ala"})
+        self.assertIn("UD_Aland-Uno.xml", str(error.exception))
+        (ud / "UD_Aland-Uno.xml").write_text("<treebank><total><sentences>3</sentences></total></treebank>",
+                                             encoding="utf-8")
+        with self.assertRaises(SystemExit) as error:
+            pl.palabras_ud(ud, {"Aland": "ala"})
+        self.assertIn("<words> ni <tokens>", str(error.exception))
+
+        self.csv("niveles_lenguas.csv", generar_tabla.COLUMNAS_NIVELES, [("alandés", "ala", "", "", "", "")])
+        self.csv("paises_pos.csv", generar_tabla.COLUMNAS_POS, [("AA", "alandés; inventada", "3", "", "", "")])
+        self.csv("cc.csv", ("crawl", "primary_language", "pages", "urls", "%pages/crawl"), [(pl.CRAWL, "ala", 1, 1, "1")])
+        (ud / "UD_Aland-Uno.xml").write_text("<total><words>10</words></total>", encoding="utf-8")
+        (self.d / "codes.yaml").write_text("Aland:\n  iso3: ala\n", encoding="utf-8")
+        (self.d / "masakha").mkdir()
+        with self.assertRaises(SystemExit) as error:
+            pl.main(["--ud-stats", str(ud), "--ud-codigos", str(self.d / "codes.yaml"),
+                     "--masakhapos", str(self.d / "masakha"), "--common-crawl", str(self.d / "cc.csv")], self.d)
+        self.assertIn("inventada", str(error.exception))
 
 
 if __name__ == "__main__":
