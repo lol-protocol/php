@@ -22,12 +22,12 @@ final class Detector
     /**
      * @throws RuntimeException si la página no es de una red conocida ni declara una `Person`
      */
-    public static function analizar(string $html, ?string $capturado = null): Perfil
+    public static function analizar(string $html, ?string $capturado = null, bool $revisar = true): Perfil
     {
         $datos = Metadatos::leer($html);
         foreach (self::analizadores() as $analizador) {
             if ($analizador->reconoce($datos)) {
-                return $analizador->desdeMetadatos($datos, $capturado);
+                return $analizador->desdeMetadatos($datos, $capturado, $revisar);
             }
         }
         throw new RuntimeException('No reconozco la página: ni es de una red conocida ni declara una Person de schema.org.');

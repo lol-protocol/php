@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Uso: php bin/cruzar.php a.jsonl b.jsonl [--idioma=spa]
+// Uso: php bin/cruzar.php a.jsonl b.jsonl [--idioma=spa] [--excluir=lista.txt]
 // Propone parejas de personas FALLECIDAS que podrían ser la misma, de dos archivos JSONL
 // (la salida de analizar.php --jsonl o de wikidata.php). No fusiona nada. Los perfiles que
 // pueden estar vivos se omiten, y se cuenta cuántos.
@@ -10,13 +10,22 @@ declare(strict_types=1);
 require __DIR__ . '/../src/cargar.php';
 
 use ParsingFbInMas\Cruce;
+use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Lote;
 
 $archivos = [];
 $idioma = 'spa';
+$exclusiones = Exclusiones::vacia();
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--idioma=')) {
         $idioma = substr($arg, 9);
+    } elseif (str_starts_with($arg, '--excluir=')) {
+        try {
+            $exclusiones = Exclusiones::desdeArchivo(substr($arg, 10));
+        } catch (RuntimeException $e) {
+            fwrite(STDERR, $e->getMessage() . "\n");
+            exit(2);
+        }
     } else {
         $archivos[] = $arg;
     }
@@ -40,6 +49,10 @@ foreach ($archivos as $archivo) {
             // Un objeto JSON: se descartan las claves numéricas que no son de un perfil.
             $lista[] = array_filter($p, 'is_string', ARRAY_FILTER_USE_KEY);
         }
+    }
+    ['perfiles' => $lista, 'excluidos' => $quitados] = $exclusiones->filtrar($lista);
+    if ($quitados > 0) {
+        fwrite(STDERR, "$archivo: $quitados perfiles omitidos por la lista de exclusión\n");
     }
     $listas[] = $lista;
 }

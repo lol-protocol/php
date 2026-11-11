@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
-// Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] pagina.html|carpeta …
+// Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] [--excluir=lista.txt] [--sin-revision] pagina.html|carpeta …
 // Lee páginas YA GUARDADAS en disco (una carpeta se recorre entera) y escribe un JSON, o un
 // objeto por línea con --jsonl. No descarga nada, a propósito. Una misma URL sale una vez.
 
 require __DIR__ . '/../src/cargar.php';
 
 use ParsingFbInMas\Detector;
+use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Lote;
 
 $capturado = null;
 $jsonl = false;
+$revisar = true;
+$exclusiones = Exclusiones::vacia();
 $rutas = [];
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--capturado=')) {
@@ -23,12 +26,21 @@ foreach (array_slice($argv, 1) as $arg) {
         }
     } elseif ($arg === '--jsonl') {
         $jsonl = true;
+    } elseif ($arg === '--sin-revision') {
+        $revisar = false;
+    } elseif (str_starts_with($arg, '--excluir=')) {
+        try {
+            $exclusiones = Exclusiones::desdeArchivo(substr($arg, 10));
+        } catch (RuntimeException $e) {
+            fwrite(STDERR, $e->getMessage() . "\n");
+            exit(2);
+        }
     } else {
         $rutas[] = $arg;
     }
 }
 if ($rutas === []) {
-    fwrite(STDERR, "Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] pagina.html|carpeta …\n");
+    fwrite(STDERR, "Uso: php bin/analizar.php [--capturado=AAAA-MM-DD] [--jsonl] [--excluir=lista.txt] [--sin-revision] pagina.html|carpeta …\n");
     exit(2);
 }
 
@@ -47,13 +59,17 @@ foreach (Lote::archivos($rutas) as $archivo) {
         continue;
     }
     try {
-        $perfiles[] = ['archivo' => basename($archivo)] + Detector::analizar($html, $capturado)->aArreglo();
+        $perfiles[] = ['archivo' => basename($archivo)] + Detector::analizar($html, $capturado, $revisar)->aArreglo();
     } catch (RuntimeException $e) {
         fwrite(STDERR, "$archivo: {$e->getMessage()}\n");
         $fallos++;
     }
 }
 
+['perfiles' => $perfiles, 'excluidos' => $excluidos] = $exclusiones->filtrar($perfiles);
+if ($excluidos > 0) {
+    fwrite(STDERR, "$excluidos perfiles omitidos por la lista de exclusión\n");
+}
 ['perfiles' => $perfiles, 'repetidos' => $repetidos] = Lote::sinRepetidos($perfiles);
 if ($repetidos > 0) {
     fwrite(STDERR, "$repetidos páginas repetidas (misma URL) omitidas\n");

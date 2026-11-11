@@ -6,9 +6,12 @@ require __DIR__ . '/../src/cargar.php';
 
 use ParsingFbInMas\Cruce;
 use ParsingFbInMas\Detector;
+use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Metadatos;
 use ParsingFbInMas\Perfil;
+use ParsingFbInMas\Revision;
+use ParsingFbInMas\Sensibles;
 use ParsingFbInMas\Wikidata;
 
 /** Contadores de las comprobaciones (estáticos para que `igual()` no dependa de variables globales). */
@@ -188,6 +191,41 @@ $otro = Wikidata::recorrer(__DIR__ . '/muestras/wikidata-muestra.json', static f
 }, 'Q99999');
 igual('wikidata: un país que nadie tiene no devuelve a nadie', [0, 0], [$otro['decodificadas'], $otro['aceptadas']]);
 
+// --- Revisión del texto y datos sensibles ---
+igual('sensibles: una biografía normal no marca nada', [], Sensibles::buscar('Genealogista aficionada y archivera.'));
+igual('sensibles: salud y religión, con tilde y mayúscula', ['salud', 'religión'], Sensibles::buscar('Tengo CÁNCER y soy testigo de Jehová'));
+igual('sensibles: política y origen étnico', ['política o sindical', 'origen étnico'], Sensibles::buscar('Militante del partido comunista, mapuche'));
+igual('sensibles: palabras ambiguas no dan falsas alarmas', [], Sensibles::buscar('Barrio Iglesia Vieja, Roma, Italia'));
+igual('sensibles: una raíz no marca a media palabra', [], Sensibles::buscar('Mi profesión es la tecnología'));
+igual('revision: un RUT sale marcado', true, in_array('dato personal (RUT)', Revision::marcas('Mi RUT es 12.345.678-5'), true));
+igual('revision: una acusación sale marcada', true, in_array('acusación de delito', Revision::marcas('Ese tipo es un ladrón y estuvo preso por robo'), true));
+igual('revision: sin etiquetas repetidas', Revision::marcas('cáncer cáncer cáncer'), array_values(array_unique(Revision::marcas('cáncer cáncer cáncer'))));
+$conRut = '<link rel="canonical" href="https://x.com/uno"><meta property="og:title" content="Uno (@uno) / X"><meta property="og:description" content="Mi RUT es 12.345.678-5 y tengo diabetes">';
+$marcado = Detector::analizar($conRut)->aArreglo();
+igual('perfil: las marcas salen en el perfil', true, in_array('dato personal (RUT)', $marcado['marcas'], true) && in_array('posible dato sensible: salud', $marcado['marcas'], true));
+igual('perfil: avisa que hay que leer con cuidado', true, str_starts_with(implode('|', array_filter($marcado['avisos'], static fn (string $a): bool => str_starts_with($a, 'leer el texto'))), 'leer el texto con cuidado'));
+igual('perfil: el texto no se borra ni se cambia', 'Mi RUT es 12.345.678-5 y tengo diabetes', $marcado['descripcion']);
+igual('perfil: sin revisión, sin marcas', [], Detector::analizar($conRut, null, false)->aArreglo()['marcas']);
+igual('perfil: una biografía limpia no tiene marcas', [], Detector::analizar(muestra('facebook'))->aArreglo()['marcas']);
+
+// --- Lista de exclusión ---
+$lista = Exclusiones::desdeTexto("# retiros decididos\n\nhttps://www.Facebook.com/ana.ejemplo/\ntwitter:DanaEjemplo\n  wikidata:Q1  \n");
+igual('exclusiones: cuenta las entradas, sin comentarios ni líneas vacías', 3, $lista->cantidad());
+igual('exclusiones: la misma página aunque cambie mayúscula, www, http y barra', true, $lista->contiene(['url' => 'http://facebook.com/ana.ejemplo', 'red' => 'facebook', 'usuario' => 'otro']));
+igual('exclusiones: por red y usuario, sin importar mayúsculas', true, $lista->contiene(['url' => 'https://x.com/danaejemplo', 'red' => 'twitter', 'usuario' => 'danaejemplo']));
+igual('exclusiones: por identificador de Wikidata', true, $lista->contiene(['url' => 'https://www.wikidata.org/wiki/Q1', 'red' => 'wikidata', 'usuario' => 'Q1']));
+igual('exclusiones: otra persona no queda excluida', false, $lista->contiene(['url' => 'https://x.com/otra', 'red' => 'twitter', 'usuario' => 'otra']));
+igual('exclusiones: la misma cuenta en otra red no queda excluida', false, $lista->contiene(['url' => 'https://www.instagram.com/danaejemplo', 'red' => 'instagram', 'usuario' => 'danaejemplo']));
+igual('exclusiones: una lista vacía no excluye a nadie', false, Exclusiones::vacia()->contiene(['url' => 'https://x.com/uno', 'red' => 'twitter', 'usuario' => 'uno']));
+$f = $lista->filtrar([['url' => 'https://x.com/danaejemplo', 'red' => 'twitter', 'usuario' => 'danaejemplo'], ['url' => 'https://x.com/otra', 'red' => 'twitter', 'usuario' => 'otra']]);
+igual('exclusiones: filtrar deja a la otra y cuenta uno', [1, 1], [count($f['perfiles']), $f['excluidos']]);
+try {
+    Exclusiones::desdeTexto("https://x.com/a\nesto no es una entrada");
+    igual('exclusiones: una línea mala lanza', true, false);
+} catch (RuntimeException $e) {
+    igual('exclusiones: una línea mala lanza y dice cuál', true, str_contains($e->getMessage(), 'línea 2'));
+}
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
@@ -328,6 +366,28 @@ foreach (['buenas', 'mala'] as $carpeta) {
     array_map('unlink', glob("$tmp/$carpeta/*") ?: []);
     rmdir("$tmp/$carpeta");
 }
+
+// analizar.php, wikidata.php y cruzar.php respetan la lista de exclusión
+file_put_contents("$tmp/excluir.txt", "# retirada\nhttps://www.facebook.com/ana.ejemplo\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --jsonl --excluir=' . escapeshellarg("$tmp/excluir.txt") . ' ' . escapeshellarg(__DIR__ . '/muestras/facebook.html') . ' ' . escapeshellarg(__DIR__ . '/muestras/twitter.html') . ' 2>/dev/null', $salida, $codigo);
+igual('analizar.php --excluir: sale solo la que no está en la lista', [0, 1], [$codigo, count($salida)]);
+igual('analizar.php --excluir: y es la de Twitter', true, str_contains($salida[0] ?? '', '"red":"twitter"'));
+file_put_contents("$tmp/mala.txt", "no es una entrada\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --excluir=' . escapeshellarg("$tmp/mala.txt") . ' ' . escapeshellarg(__DIR__ . '/muestras/twitter.html') . ' 2>&1', $salida, $codigo);
+igual('analizar.php --excluir: una lista mala sale con 2 y no escribe perfiles', [2, false], [$codigo, str_contains(implode('', $salida), '"red"')]);
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' --sin-revision --jsonl ' . escapeshellarg(__DIR__ . '/muestras/facebook.html') . ' 2>/dev/null', $salida, $codigo);
+igual('analizar.php --sin-revision: sale sin marcas', [0, true], [$codigo, str_contains($salida[0] ?? '', '"marcas":[]')]);
+file_put_contents("$tmp/excluir-wd.txt", "wikidata:Q1\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/wikidata.php') . ' ' . escapeshellarg(__DIR__ . '/muestras/wikidata-muestra.json') . ' --excluir=' . escapeshellarg("$tmp/excluir-wd.txt") . ' 2>/dev/null', $salida, $codigo);
+igual('wikidata.php --excluir: sale Q4 y no Q1', [0, 1, true], [$codigo, count($salida), str_contains($salida[0] ?? '', '"usuario":"Q4"')]);
+file_put_contents("$tmp/excluir-cruce.txt", "wikitree:Gonzalez-1234\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --excluir=' . escapeshellarg("$tmp/excluir-cruce.txt") . ' 2>/dev/null', $salida, $codigo);
+igual('cruzar.php --excluir: la persona excluida no genera candidatos', [0, 0], [$codigo, count($salida)]);
 array_map('unlink', glob("$tmp/*") ?: []);
 rmdir($tmp);
 
