@@ -4,7 +4,9 @@ Uso, desde esta carpeta:  python3 -m unittest -v pruebas
 Solo usa la biblioteca estándar.
 """
 import copy
+import csv
 import datetime
+import io
 import json
 import re
 import subprocess
@@ -34,34 +36,7 @@ def cargar_datos():
         return json.load(f)
 
 
-def textos_de(datos):
-    """(dónde, idioma, texto) de cada texto traducido: nombres, descripciones y términos."""
-    for s in datos["signos"]:
-        for campo in ("nombres", "descripciones", "descripciones_largas"):
-            for codigo, texto in s[campo].items():
-                yield f"{s['id']}/{campo}", codigo, texto
-    for clave, por_idioma in datos["terminos"].items():
-        for codigo, texto in por_idioma.items():
-            yield f"terminos/{clave}", codigo, texto
-    esp = zodiaco.cargar_espiritus()
-    for grupo in ("terminos", "cualidades"):
-        for clave, por_idioma in esp[grupo].items():
-            if clave != "separador":
-                for codigo, texto in por_idioma.items():
-                    yield f"espiritus/{grupo}/{clave}", codigo, texto
-    arb = zodiaco.cargar_arboles()
-    for grupo in ("terminos", "rasgos"):
-        for clave, por_idioma in arb[grupo].items():
-            if clave != "separador":
-                for codigo, texto in por_idioma.items():
-                    yield f"arboles/{grupo}/{clave}", codigo, texto
-    for clave, a in arb["arboles"].items():
-        for codigo, texto in a["nombres"].items():
-            yield f"arboles/arboles/{clave}", codigo, texto
-    for clave, por_idioma in zodiaco.cargar_numerologia()["terminos"].items():
-        if clave != "separador":
-            for codigo, texto in por_idioma.items():
-                yield f"numerologia/terminos/{clave}", codigo, texto
+textos_de = generar.textos_de  # la lista de textos traducidos vive en el generador: la usan las pruebas y revision/
 
 
 def dias_del_anio_bisiesto():
@@ -1531,6 +1506,43 @@ class PruebasDelBuscadorDeFrases(unittest.TestCase):
         self.assertEqual(len(v["claves_de_arboles"]), 61)
         self.assertEqual(v["claves_de_arboles"][0], ["celta", "beth"])
         self.assertEqual(v["claves_de_arboles"][-1], ["nakshatra", "revati"])
+
+
+class PruebasDeLosPaquetesDeRevision(unittest.TestCase):
+    """revision/<idioma>.csv: todos los textos de un idioma, con el español y el inglés al lado, para una persona nativa."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.datos = cargar_datos()
+        cls.archivos = generar.esperados(cls.datos)
+
+    def test_hay_un_paquete_por_idioma_con_todos_los_textos(self):
+        esperadas = len(list(generar.textos_de(self.datos))) // len(generar.IDIOMAS)
+        for codigo in generar.IDIOMAS:
+            filas = list(csv.DictReader(io.StringIO(self.archivos[generar.SALIDA_REVISION / f"{codigo}.csv"])))
+            self.assertEqual(len(filas), esperadas, codigo)
+            self.assertEqual(list(filas[0]), ["donde", "es", "en", "texto", "correccion", "nota"], codigo)
+            self.assertTrue(all(f["correccion"] == "" and f["nota"] == "" for f in filas), codigo)
+            self.assertTrue(all(f["texto"].strip() for f in filas), codigo)
+
+    def test_las_claves_no_se_repiten_y_el_texto_es_el_del_idioma(self):
+        filas = list(csv.DictReader(io.StringIO(self.archivos[generar.SALIDA_REVISION / "sw.csv"])))
+        claves = [f["donde"] for f in filas]
+        self.assertEqual(len(claves), len(set(claves)))
+        aries = next(f for f in filas if f["donde"] == "aries/nombres")
+        self.assertEqual((aries["es"], aries["en"], aries["texto"]), ("Aries", "Aries", "Kondoo dume"))
+        self.assertIn("espiritus/cualidades/proteccion", claves)
+        self.assertIn("arboles/arboles/roble", claves)
+        self.assertIn("numerologia/terminos/titulo", claves)
+
+    def test_en_espanol_la_columna_texto_repite_la_suya(self):
+        filas = list(csv.DictReader(io.StringIO(self.archivos[generar.SALIDA_REVISION / "es.csv"])))
+        self.assertTrue(all(f["texto"] == f["es"] for f in filas))
+
+    def test_los_paquetes_committeados_estan_al_dia(self):
+        for codigo in generar.IDIOMAS:
+            ruta = generar.SALIDA_REVISION / f"{codigo}.csv"
+            self.assertEqual(ruta.read_text(encoding="utf-8"), self.archivos[ruta], codigo)
 
 
 if __name__ == "__main__":
