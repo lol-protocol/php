@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace PortadasSvg\Plantillas;
 
 use PortadasSvg\Color;
+use PortadasSvg\Frases;
 use PortadasSvg\Libro;
+use PortadasSvg\Mayusculas;
 use PortadasSvg\Plantilla;
 use PortadasSvg\Rectangulo;
 
@@ -59,7 +61,7 @@ final class Tipografica extends Plantilla
         $ancho = $panel->ancho - 2 * self::MARGEN;
 
         $svg = $this->rectangulo(new Rectangulo($x, $panel->y + self::BARRA_Y, self::BARRA_ANCHO, self::BARRA_ALTO), ['fill' => $colores['acento']]);
-        $svg .= $this->rotulo(mb_strtoupper($libro->textos->autor), $x, $panel->y + self::AUTOR_Y, $ancho, self::AUTOR_TAMANO_MAX, self::AUTOR_TAMANO_MIN, 'start', $colores['acento'], ['letter-spacing' => self::AUTOR_ESPACIADO]);
+        $svg .= $this->rotulo(Mayusculas::de($libro->textos->autor, $libro->idioma), $x, $panel->y + self::AUTOR_Y, $ancho, self::AUTOR_TAMANO_MAX, self::AUTOR_TAMANO_MIN, 'start', $colores['acento'], ['letter-spacing' => self::AUTOR_ESPACIADO]);
 
         $svg .= $this->tituloYSubtitulo(
             $libro, $x, $ancho, 'start', $panel->y + self::TITULO_Y, $panel->alto * self::TITULO_ALTO, false,
@@ -72,7 +74,7 @@ final class Tipografica extends Plantilla
         $svg .= $this->adorno($libro)->emblema($panel->x + $panel->ancho / 2, $panel->y + $panel->alto * self::EMBLEMA_Y, $radio, $colores['acento'], self::EMBLEMA_TRAZO);
 
         if ($libro->textos->traductor !== '') {
-            $svg .= $this->rotulo('Traducción de ' . $libro->textos->traductor, $x, $panel->y + $panel->alto - self::PIE_ABAJO - 6.0, $ancho, self::TRADUCTOR_TAMANO_MAX, self::TRADUCTOR_TAMANO_MIN, 'start', $colores['texto'], ['font-style' => 'italic']);
+            $svg .= $this->rotulo(Frases::texto($libro->idioma, 'traduccion_rotulo', ['traductor' => $libro->textos->traductor]), $x, $panel->y + $panel->alto - self::PIE_ABAJO - 6.0, $ancho, self::TRADUCTOR_TAMANO_MAX, self::TRADUCTOR_TAMANO_MIN, 'start', $colores['texto'], ['font-style' => 'italic']);
         }
         $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - self::PIE_ABAJO, 'start', $ancho);
 

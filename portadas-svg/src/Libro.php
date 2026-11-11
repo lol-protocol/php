@@ -24,6 +24,13 @@ final class Libro
     private const GROSOR_MINIMO = 0.02;
     private const GROSOR_MAXIMO = 0.5;
 
+    /** Largo máximo de cada texto, en caracteres: pasarse casi seguro es un texto pegado en la celda equivocada. */
+    private const MAXIMOS = [
+        'titulo' => 300, 'subtitulo' => 300, 'autor' => 200, 'traductor' => 200, 'editorial' => 200, 'coleccion' => 200,
+        'isbn' => 40, 'epoca' => 100, 'cita' => 1000, 'contratapa' => 5000, 'solapa_contratapa' => 3000, 'solapa_portada' => 3000,
+    ];
+    private const MAXIMO_POR_DEFECTO = 200;
+
     /** @param array{fondo: string, texto: string, acento: string} $colores */
     private function __construct(
         public readonly string $id,
@@ -121,18 +128,18 @@ final class Libro
             throw new \InvalidArgumentException("$id: 'lomo_direccion' debe ser arriba-abajo o abajo-arriba.");
         }
 
-        $subtitulo = self::cadena($datos, 'subtitulo');
-        $traductor = self::cadena($datos, 'traductor');
-        $paginas = isset($datos['paginas']) && (is_int($datos['paginas']) || is_float($datos['paginas'])) ? (int) $datos['paginas'] : null;
-        $ficha = new Ficha($titulo, $subtitulo, $autor, $traductor, self::cadena($datos, 'epoca'), self::cadena($datos, 'cita'), $tradicion, $categoria, $paginas);
-
-        // Lo que se escribe a mano manda; la ficha rellena solo lo que quedó vacío, y solo si hay datos con
-        // los que armarla.
         $idioma = self::cadena($datos, 'idioma', 'es');
         if (preg_match('/^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$/', $idioma) !== 1) {
             throw new \InvalidArgumentException("$id: 'idioma' debe ser un código como es, en o pt-BR.");
         }
 
+        $subtitulo = self::cadena($datos, 'subtitulo');
+        $traductor = self::cadena($datos, 'traductor');
+        $paginas = isset($datos['paginas']) && (is_int($datos['paginas']) || is_float($datos['paginas'])) ? (int) $datos['paginas'] : null;
+        $ficha = new Ficha($titulo, $subtitulo, $autor, $traductor, self::cadena($datos, 'epoca'), self::cadena($datos, 'cita'), $tradicion, $categoria, $paginas, $idioma);
+
+        // Lo que se escribe a mano manda; la ficha rellena solo lo que quedó vacío, y solo si hay datos con
+        // los que armarla.
         $textos = new Textos(
             titulo: $titulo,
             subtitulo: $subtitulo,
@@ -189,8 +196,13 @@ final class Libro
         if (!is_string($valor)) {
             throw new \InvalidArgumentException("'$campo' debe ser texto.");
         }
+        $valor = trim($valor);
+        $maximo = self::MAXIMOS[$campo] ?? self::MAXIMO_POR_DEFECTO;
+        if (mb_strlen($valor) > $maximo) {
+            throw new \InvalidArgumentException("'$campo' tiene " . mb_strlen($valor) . " caracteres y el máximo es $maximo: casi seguro se pegó otro texto en esa celda.");
+        }
 
-        return trim($valor);
+        return $valor;
     }
 
     /**

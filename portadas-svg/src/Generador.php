@@ -33,13 +33,16 @@ final class Generador
         // Todo se calcula antes de tocar el disco: si algo falla al dibujar, la carpeta no cambia.
         $medidas = new Medidas($libro);
         $plantilla = Plantilla::crear($libro->plantilla);
+        // Las letras de las fuentes extra y las palabras compuestas de antemano no se pueden incrustar como fuente:
+        // si el libro las usa, sale a trazos aunque no se haya pedido.
+        $textoATrazos = $textoATrazos || self::necesitaTrazos($libro);
         $plantilla->textoATrazos = $textoATrazos;
         $contenidos = [];
         foreach (self::piezas($libro) as $archivo => [$vista, $nombre]) {
             $cuerpo = $plantilla->dibujar($libro, $medidas, $vista);
             $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->textos->titulo} · $nombre", self::descripcion($libro, $vista, $nombre), $libro->idioma, $cuerpo);
         }
-        $contenidos['medidas.txt'] = self::resumen($libro, $medidas);
+        $contenidos['medidas.txt'] = self::resumen($libro, $medidas, $textoATrazos);
 
         // Se quitan las piezas de una escritura anterior: si el libro cambió de solapas, el sobrelomo viejo
         // no puede quedarse junto a la cubierta nueva.
@@ -85,32 +88,81 @@ final class Generador
         $medida = Plantilla::crear($libro->plantilla)->medidaDe();
         $t = $libro->textos;
         $textos = [
-            'El título' => $t->titulo, 'El subtítulo' => $t->subtitulo, 'El autor' => mb_strtoupper($t->autor), 'El traductor' => $t->traductor,
+            'El título' => $t->titulo, 'El subtítulo' => $t->subtitulo, 'El autor' => Mayusculas::de($t->autor, $libro->idioma), 'El traductor' => $t->traductor,
             'La editorial' => $t->editorial, 'La colección' => $t->coleccion, 'La contratapa' => $t->contratapa,
             'La solapa de la contratapa' => $t->solapaContratapa, 'La solapa de la portada' => $t->solapaPortada,
         ];
         $avisos = [];
         foreach ($textos as $nombre => $texto) {
-            if ($textoATrazos) {
-                $sin = $medida->sinContorno($texto);
-                if ($sin !== '') {
-                    $avisos[] = "$nombre lleva letras que ni las fuentes ni las fuentes extra tienen ($sin); no se dibujan. Ver herramientas/glifos-extra.py.";
-                }
-                continue;
-            }
-            $faltan = $medida->noCubiertas($texto);
-            if ($faltan !== '') {
-                $conExtra = implode('', array_diff(mb_str_split($faltan), mb_str_split($medida->sinContorno($texto))));
-                $aviso = "$nombre lleva letras que la fuente no tiene ($faltan); se verán con otra fuente.";
-                $avisos[] = $conExtra === '' ? $aviso : "$aviso Con --trazos se dibujan ($conExtra) con las fuentes extra.";
+            // Con las letras de las fuentes extra el libro sale a trazos solo: aquí falta lo que ni ellas tienen.
+            $sin = $medida->sinContorno($texto);
+            if ($sin !== '') {
+                $avisos[] = "$nombre lleva letras que ni las fuentes ni las fuentes extra tienen ($sin); " . ($textoATrazos || self::necesitaTrazos($libro) ? 'no se dibujan' : 'se verán con otra fuente') . '. Ver herramientas/glifos-extra.py.';
             }
         }
 
         if ($t->traductor !== '') {
             $avisos[] = "El traductor «{$t->traductor}» figura en la cubierta: una traducción moderna puede no ser de dominio público; comprueba su licencia.";
         }
+        if ($t->isbn !== '' && !Isbn::valido($t->isbn)) {
+            $avisos[] = "El ISBN «{$t->isbn}» no es válido (el dígito de control no cuadra): revísalo antes de imprimirlo.";
+        }
+        if ($libro->formato->lomo < Plantilla::LOMO_MINIMO) {
+            $avisos[] = 'El lomo mide ' . self::fmt($libro->formato->lomo) . ' mm y con menos de ' . self::fmt(Plantilla::LOMO_MINIMO) . ' mm no se escribe su texto: da más páginas, un papel más grueso o un `lomo_mm` propio.';
+        }
+        $fondos = [$libro->colores['fondo'], ...($libro->degradado?->colores ?? [])];
+        foreach ($fondos as $fondo) {
+            if (Color::contraste($libro->colores['texto'], $fondo) < 4.5) {
+                $avisos[] = "El texto ({$libro->colores['texto']}) casi no se lee sobre el fondo $fondo (contraste " . number_format(Color::contraste($libro->colores['texto'], $fondo), 1, ',', '') . ':1, mínimo 4,5:1).';
+                break;
+            }
+        }
+        foreach (self::recortes($libro) as $pieza) {
+            $avisos[] = "La $pieza recorta un texto con «…» porque no cabe: acórtalo.";
+        }
 
         return $avisos;
+    }
+
+    /** Si algún texto del libro usa letras que solo tienen las fuentes extra o las palabras compuestas de antemano. */
+    private static function necesitaTrazos(Libro $libro): bool
+    {
+        $medida = Plantilla::crear($libro->plantilla)->medidaDe();
+        $t = $libro->textos;
+        foreach ([$t->titulo, $t->subtitulo, $t->autor, Mayusculas::de($t->autor, $libro->idioma), $t->traductor, $t->editorial, $t->coleccion, $t->cita, $t->contratapa, $t->solapaContratapa, $t->solapaPortada] as $texto) {
+            if ($medida->noCubiertas($texto) !== $medida->sinContorno($texto)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Las piezas donde un texto se recortó con «…» al dibujarlo y el libro no lo trae: es lo que pasa cuando un texto
+     * no cabe ni con la letra al tamaño mínimo.
+     *
+     * @return list<string>
+     */
+    private static function recortes(Libro $libro): array
+    {
+        $t = $libro->textos;
+        $propios = mb_substr_count(implode(' ', [$t->titulo, $t->subtitulo, $t->autor, $t->traductor, $t->editorial, $t->coleccion, $t->cita, $t->contratapa, $t->solapaContratapa, $t->solapaPortada]), '…');
+        $medidas = new Medidas($libro);
+        $plantilla = Plantilla::crear($libro->plantilla);
+        $recortadas = [];
+        foreach (self::piezas($libro) as [$vista, $nombre]) {
+            // Las piezas que contienen a otras (la cubierta) no se miran dos veces.
+            if (in_array($vista, ['cubierta', 'sobrelomo'], true)) {
+                continue;
+            }
+            $cuerpo = $plantilla->dibujar($libro, $medidas, $vista);
+            if (mb_substr_count(strip_tags($cuerpo), '…') > $propios) {
+                $recortadas[] = mb_strtolower($nombre);
+            }
+        }
+
+        return $recortadas;
     }
 
     /**
@@ -140,10 +192,13 @@ final class Generador
         }
     }
 
-    private static function resumen(Libro $libro, Medidas $medidas): string
+    private static function resumen(Libro $libro, Medidas $medidas, bool $textoATrazos): string
     {
         $lineas = [
             "Libro: {$libro->textos->titulo} — {$libro->textos->autor}",
+            "Plantilla: {$libro->plantilla}; idioma: {$libro->idioma}",
+            ...($libro->tradicion === null && $libro->categoria === null ? [] : ['Clasificación: ' . implode(' · ', array_filter([$libro->tradicion === null ? '' : "tradición $libro->tradicion", $libro->categoria === null ? '' : "categoría $libro->categoria"]))]),
+            'Texto: ' . ($textoATrazos ? 'a trazos (sin fuentes)' : 'con las fuentes incrustadas'),
             'Corte: ' . self::fmt($libro->formato->ancho) . ' × ' . self::fmt($libro->formato->alto) . ' mm',
             'Sangrado: ' . self::fmt($libro->formato->sangrado) . ' mm en cada borde exterior',
             'Lomo: ' . self::fmt($libro->formato->lomo) . ' mm (confírmalo con la imprenta: depende del papel)',

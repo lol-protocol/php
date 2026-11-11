@@ -195,7 +195,7 @@ return [
             igual(0, $codigo);
             igual(['ana-lodz', 'beto-dos'], array_map('basename', glob("$dir/salida/*") ?: []));
             verdadero(is_file("$dir/salida/ana-lodz/portada.svg"), 'falta la portada');
-            verdadero(str_contains($errores, 'Aviso, ana-lodz: El título lleva letras que la fuente no tiene (道'), $errores);
+            verdadero(str_contains($errores, 'Aviso, ana-lodz: El título lleva letras que ni las fuentes ni las fuentes extra tienen (道'), $errores);
 
             // Una fila mala: ninguna carpeta se escribe, ni la de la fila buena.
             [$codigo, , $errores] = correrCli(["--lista=$dir/mala.csv", "--salida=$dir/otra"]);

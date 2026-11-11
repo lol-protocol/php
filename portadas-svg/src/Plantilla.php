@@ -90,7 +90,8 @@ abstract class Plantilla
     protected const SOLAPA_TAMANO_MIN = 2.8;
 
     /** Lomo: ancho a partir del cual lleva texto, tamaño del texto (el máximo es también una fracción del ancho) y centrado. */
-    protected const LOMO_MINIMO = 3.0;
+    /** Lomo: por debajo de este ancho no se escribe el texto. */
+    public const LOMO_MINIMO = 3.0;
     protected const LOMO_TAMANO_MAX = 4.5;
     protected const LOMO_TAMANO_MIN = 2.2;
     protected const LOMO_TAMANO_ANCHO = 0.6;
