@@ -462,6 +462,48 @@ Un cambio de esquema nuevo —o un país o una moneda nuevos— va en un archivo
 con el número siguiente (`NNN_descripcion.sql`). Una migración que ya corrió en
 alguna base no se edita.
 
+### Estado del sistema
+
+Para saber en una mirada si el panel está sano, antes y después de un despliegue o desde cron:
+
+```bash
+php bin/estado.php                         # o: composer estado
+php bin/estado.php --carpeta=/var/backups/cobros
+```
+
+```
+OK        Base de datos    PostgreSQL 16.4, responde
+OK        Migraciones      al día (18 aplicadas)
+ATENCIÓN  Tasas de cambio  todas son de ejemplo, no reales: los totales en USD no valen. Corra php bin/actualizar_tasas.php
+OK        Respaldos        el último: cobros-20261112-031500.dump, hace 9 h, 2.1 MB
+
+Hay algo que atender.
+```
+
+Solo lee: no migra, no actualiza tasas ni respalda. Termina con `0` si todo está en orden, con `1` si algo
+pide atención (o la base no responde) y con `2` si los argumentos están mal, así que sirve de comprobación
+de monitoreo. Qué considera «atención»:
+
+- **Base de datos**: no responde. Es lo único que se muestra entonces: sin base no se puede mirar lo demás.
+- **Migraciones**: hay alguna sin aplicar (dice cuáles: `php bin/migrar.php`).
+- **Tasas de cambio**: todas son de ejemplo; o la cotización más reciente tiene más de 7 días (la
+  actualización diaria dejó de correr); o una moneda con boletas o pagos tiene una tasa de ejemplo o
+  de más de 7 días (las mismas que avisan las pantallas).
+- **Respaldos**: no hay ninguno en la carpeta (`RESPALDOS_CARPETA`, o `respaldos/` del proyecto) o el último es
+  de hace más de 36 horas: con el cron diario, un día entero sin respaldar. Mide por el nombre del archivo
+  (la hora en que se hizo), no por su fecha, que cambia al copiarlo.
+
+No comprueba que el servidor web proteja el panel (eso es `bin/comprobar_acceso.php`, que se corre desde
+afuera con la dirección pública), ni que los respaldos se puedan restaurar, ni que haya una copia en otra
+máquina: ver «Respaldos» y «Antes de exponerlo».
+
+**Dependencias.** En producción la app no usa paquetes de Composer: solo PHP y sus extensiones `pdo` y
+`pdo_pgsql`. Lo que baja Composer es PHPUnit y PHPStan, de desarrollo (`composer install --no-dev` no instala
+nada). `composer auditar` (o `composer audit --locked`) revisa el `composer.lock` contra los avisos de
+seguridad conocidos; al escribir esto (12 de noviembre de 2026) no había ninguno. No está en la CI a propósito:
+un aviso nuevo sobre una herramienta de desarrollo rompería cualquier PR que no tiene nada que ver. Conviene
+correrlo de vez en cuando y antes de un despliegue; Dependabot ya propone las actualizaciones.
+
 ### Otros puntos
 
 Dos cosas que la app ya resuelve por su cuenta pero vale saber:
@@ -473,6 +515,8 @@ Dos cosas que la app ya resuelve por su cuenta pero vale saber:
   configuralo a un archivo real en producción en vez del default.
 - **Backups**: `bin/respaldar.php`, con cron, rotación y comprobación del archivo
   (ver «Respaldos»). Falta, y es cosa del servidor, copiarlos a otra máquina.
+- **Estado**: `bin/estado.php` dice si la base, las migraciones, las tasas y los respaldos están en orden
+  (ver «Estado del sistema»).
 
 ## Tests y análisis estático
 
@@ -535,6 +579,7 @@ src/
   Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
   Respaldo/             RespaldoDeLaBase: el pg_dump con comprobación y rotación
                         (bin/respaldar.php), testeado con pg_dump de verdad
+  Estado/               EstadoDelSistema: las cuatro comprobaciones de bin/estado.php
   Acceso/               ComprobadorDeAcceso: pide el panel sin credenciales y dice si
                         el servidor web lo protege (bin/comprobar_acceso.php),
                         testeado con un php -S que hace de panel
@@ -641,6 +686,8 @@ bin/                    los comandos, todos con `php bin/<comando>.php`:
                         (ver «Antes de exponerlo»)
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
                         vez por día)
+  estado.php             el estado en una pantalla: base, migraciones, tasas y respaldos
+                        (termina con 1 si algo pide atención; ver «Estado del sistema»)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP: una carpeta por sección o entidad (dashboard,
                         boletas, cobranza, flujo, pagos, notas, clientes, funnel, cohortes, tasas, auditoria) y en

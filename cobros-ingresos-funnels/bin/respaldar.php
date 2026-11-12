@@ -58,25 +58,7 @@ if (preg_match('/^[1-9]\d{0,3}$/', $dias) !== 1) {
 }
 
 try {
-    ['DB_NAME' => $nombre, 'DB_USER' => $usuario, 'DB_PASSWORD' => $clave] = Config::variablesObligatorias([
-        'DB_NAME' => 'cobros_ingresos_funnels',
-        'DB_USER' => 'cobros_app',
-        'DB_PASSWORD' => 'cobros_app_dev',
-    ]);
-
-    $resultado = (new RespaldoDeLaBase(
-        [
-            'host' => Config::variable('DB_HOST', '127.0.0.1'),
-            'port' => Config::variable('DB_PORT', '5432'),
-            'nombre' => $nombre,
-            'usuario' => $usuario,
-            'clave' => $clave,
-        ],
-        $carpeta,
-        (int) $dias,
-        Config::variable('PG_DUMP', 'pg_dump'),
-        Config::variable('PG_RESTORE', 'pg_restore'),
-    ))->respaldar();
+    $resultado = RespaldoDeLaBase::desdeElEntorno($carpeta, (int) $dias)->respaldar();
 } catch (RespaldoFallido | InvalidArgumentException | RuntimeException $e) {
     fwrite(STDERR, 'Error: ' . $e->getMessage() . "\n");
     exit(1);

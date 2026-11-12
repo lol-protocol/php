@@ -314,6 +314,41 @@ final class RespaldoDeLaBaseTest extends TestCase
         self::assertCount(1, $this->archivos());
     }
 
+    public function testMasRecienteDevuelveElUltimoRespaldoDeEstaBaseSinTocarLaCarpeta(): void
+    {
+        $base = self::conexion()['nombre'];
+        self::assertNull($this->respaldo()->masReciente(), 'sin carpeta no hay respaldo');
+        self::assertDirectoryDoesNotExist($this->carpeta, 'mirar no crea la carpeta');
+
+        $this->dejar($this->nombre($base, '2026-10-12 03:00:00'));
+        $nuevo = $this->dejar($this->nombre($base, '2026-10-13 03:00:00'), 'abcdef');
+        $this->dejar($this->nombre('otra_base', '2026-10-14 03:00:00'));
+        $this->dejar($this->nombre($base, '2026-10-14 03:00:00') . '.parcial');
+        $this->dejar('notas.txt');
+        // La fecha del archivo no cuenta: el momento sale del nombre, y una copia puede tener una fecha cualquiera.
+        touch($nuevo, strtotime('2020-01-01 00:00:00 UTC'));
+
+        $respaldo = $this->respaldo()->masReciente();
+
+        self::assertNotNull($respaldo);
+        self::assertSame(basename($nuevo), $respaldo['nombre']);
+        self::assertSame(6, $respaldo['bytes']);
+        self::assertSame('2026-10-13 03:00:00', $respaldo['momento']->format('Y-m-d H:i:s'));
+    }
+
+    public function testMasRecienteNoCuentaUnEnlace(): void
+    {
+        $base = self::conexion()['nombre'];
+        $this->dejar($this->nombre($base, '2026-10-12 03:00:00'));
+        $objetivo = $this->dejar('objetivo-externo');
+        symlink($objetivo, $this->carpeta . '/' . $this->nombre($base, '2026-10-13 03:00:00'));
+
+        $respaldo = $this->respaldo()->masReciente();
+
+        self::assertNotNull($respaldo);
+        self::assertSame($this->nombre($base, '2026-10-12 03:00:00'), $respaldo['nombre'], 'un enlace no es un respaldo');
+    }
+
     public function testElComandoAvisaPorLaSalidaDeErroresDeUnRespaldoMuyChico(): void
     {
         $anterior = $this->dejar($this->nombre(self::conexion()['nombre'], '2026-10-13 03:00:00'));

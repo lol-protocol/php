@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Respaldo;
 
+use App\Config;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -60,6 +61,48 @@ final class RespaldoDeLaBase
         if (preg_match('/^[A-Za-z0-9_]+$/', $conexion['nombre']) !== 1) {
             throw new InvalidArgumentException('El nombre de la base solo puede llevar letras, números y guion bajo para usarse en el nombre del archivo.');
         }
+    }
+
+    /**
+     * Un respaldo de la base de la app (las DB_* del entorno, las mismas que usa Database) con los programas de
+     * PG_DUMP y PG_RESTORE. Lo usan los dos comandos que lo miran, bin/respaldar.php y bin/estado.php, para no
+     * repetir cada uno el armado de la conexion.
+     *
+     * @throws InvalidArgumentException si faltan variables de la base (fuera de desarrollo) o los dias no son al menos 1
+     */
+    public static function desdeElEntorno(string $carpeta, int $diasAConservar = self::DIAS_POR_DEFECTO): self
+    {
+        ['DB_NAME' => $nombre, 'DB_USER' => $usuario, 'DB_PASSWORD' => $clave] = Config::variablesObligatorias([
+            'DB_NAME' => 'cobros_ingresos_funnels',
+            'DB_USER' => 'cobros_app',
+            'DB_PASSWORD' => 'cobros_app_dev',
+        ]);
+
+        return new self(
+            [
+                'host' => Config::variable('DB_HOST', '127.0.0.1'),
+                'port' => Config::variable('DB_PORT', '5432'),
+                'nombre' => $nombre,
+                'usuario' => $usuario,
+                'clave' => $clave,
+            ],
+            $carpeta,
+            $diasAConservar,
+            Config::variable('PG_DUMP', 'pg_dump'),
+            Config::variable('PG_RESTORE', 'pg_restore'),
+        );
+    }
+
+    /**
+     * El respaldo mas reciente de esta base que hay en la carpeta, o null si no hay ninguno (o la carpeta no
+     * existe: aqui solo se mira, no se crea). El momento sale del nombre del archivo, que es la hora UTC en que
+     * se hizo, no de la fecha del archivo, que cambia si se lo copia.
+     *
+     * @return array{nombre: string, momento: DateTimeImmutable, bytes: int}|null
+     */
+    public function masReciente(): ?array
+    {
+        return is_dir($this->carpeta) ? ($this->respaldosExistentes()[0] ?? null) : null;
     }
 
     /**
