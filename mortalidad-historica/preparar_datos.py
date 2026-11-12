@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Arma datos/esperanza_vida.csv a partir de las fuentes que baja descargar_fuentes.py.
+"""Arma datos/esperanza_vida.csv, datos/londres_muertes.csv y datos/paises.csv a partir de las fuentes que
+baja descargar_fuentes.py y de Listado-paises/.
 
-  python3 preparar_datos.py --fuentes fuentes [--codigos ../Listado-paises/codigos_iso.csv]
+  python3 preparar_datos.py --fuentes fuentes [--codigos RUTA] [--paises RUTA]
 
 Qué escribe (una fila por país, década, sexo y edad; la década es el promedio de sus 10 años, y se
 descarta si falta alguno):
@@ -12,8 +13,11 @@ descarta si falta alguno):
   esperanza al nacer y de la mortalidad de 0 a 5 años de Gapminder (ver `esperanza_a_los_5`).
 - Edad 0, sexos M y F, 1950 a 2009: esperanza al nacer por sexo de Gapminder (ONU).
 
-Los países salen de `codigos_iso.csv` de Listado-paises (se lee solo aquí, al rehacer los datos; las
-pruebas y la CI no la necesitan). Un nombre o código de las fuentes que no sea un país de esa tabla ni
+También escribe `londres_muertes.csv` (muertes por año en Londres, 1629-1902) y `paises.csv` (código,
+nombre y región de cada país), y comprueba que las cifras de cólera de `epidemias.csv` sean las de la fuente.
+
+Los países salen de `codigos_iso.csv` y `paises.csv` de Listado-paises (se leen solo aquí, al rehacer los
+datos; las pruebas y la CI no las necesitan). Un nombre o código de las fuentes que no sea un país de esa tabla ni
 esté en las listas de omitidos de este archivo hace fallar el script: un país no se pierde en silencio.
 Solo biblioteca estándar.
 """
@@ -181,14 +185,63 @@ def construir(e0_total, q5, e0_mujeres, e0_hombres):
     return filas
 
 
+FUENTE_LONDRES = "londres-owid"
+FUENTE_COLERA = "thomas-2015-owid"
+
+
+def construir_londres(ruta):
+    """Las filas de londres_muertes.csv: [año, muertes totales, muertes por viruela, estado, fuente]."""
+    filas = []
+    for f in _filas(ruta):
+        columnas = [c for c in f if c not in ("Entity", "Year")]
+        viruela = next(c for c in columnas if c.startswith("Deaths from Smallpox"))
+        totales = next(c for c in columnas if c.startswith("Deaths from all causes"))
+        if f[viruela] == "" or f[totales] == "":
+            continue
+        filas.append([int(f["Year"]), int(float(f[totales])), int(float(f[viruela])), "verificado", FUENTE_LONDRES])
+    return sorted(filas)
+
+
+def construir_paises(ruta):
+    """Las filas de paises.csv: [código, nombre, región], de Listado-paises/paises.csv."""
+    return sorted([f["codigo"], f["pais"], f["region"]] for f in _filas(ruta))
+
+
+def comprobar_colera(ruta, epidemias):
+    """Falla si una epidemia `verificada` por la serie de cólera de Gran Bretaña no tiene su cifra.
+
+    `epidemias` son las filas de epidemias.csv; las que traen la fuente `thomas-2015-owid` deben tener como
+    muertes mínimas y máximas el valor de la serie en su último año (el de 1832 suma el brote de 1831-1832).
+    """
+    serie = {int(f["Year"]): int(float(f["Cholera deaths"])) for f in _filas(ruta)}
+    for f in epidemias:
+        if f["fuente"] != FUENTE_COLERA:
+            continue
+        esperado = serie.get(int(f["hasta"]))
+        if esperado is None or f["muertes_min"] != str(esperado) or f["muertes_max"] != str(esperado):
+            raise SystemExit(f"epidemias.csv: {f['id']} dice {f['muertes_min']}-{f['muertes_max']} muertes y la "
+                             f"fuente dice {esperado} en {f['hasta']}")
+
+
+def _escribir(nombre, filas):
+    columnas = leer_csv(DATOS / f"{nombre}.csv")[0]
+    with (DATOS / f"{nombre}.csv").open("w", encoding="utf-8", newline="") as salida:
+        escritor = csv.writer(salida)
+        escritor.writerow(columnas)
+        escritor.writerows(filas)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--fuentes", required=True, type=Path, help="carpeta con lo que bajó descargar_fuentes.py")
     parser.add_argument("--codigos", type=Path, default=AQUI.parent / "Listado-paises" / "codigos_iso.csv",
                         help="codigos_iso.csv de Listado-paises (por omisión, el de la carpeta vecina)")
+    parser.add_argument("--paises", type=Path, default=AQUI.parent / "Listado-paises" / "paises.csv",
+                        help="paises.csv de Listado-paises (por omisión, el de la carpeta vecina)")
     args = parser.parse_args(argv)
-    if not args.codigos.exists():
-        raise SystemExit(f"Falta {args.codigos}: para rehacer los datos hace falta Listado-paises/ al lado.")
+    for ruta in (args.codigos, args.paises):
+        if not ruta.exists():
+            raise SystemExit(f"Falta {ruta}: para rehacer los datos hace falta Listado-paises/ al lado.")
     codigos = _filas(args.codigos)
     f = args.fuentes
     filas = construir(
@@ -198,12 +251,15 @@ def main(argv=None):
         leer_gapminder(f / "esperanza-mujeres-gapminder.csv", "geo", "life_expectancy_female", codigos),
         leer_gapminder(f / "esperanza-hombres-gapminder.csv", "geo", "life_expectancy_male", codigos),
     )
-    columnas = leer_csv(DATOS / "esperanza_vida.csv")[0]
-    with (DATOS / "esperanza_vida.csv").open("w", encoding="utf-8", newline="") as salida:
-        escritor = csv.writer(salida)
-        escritor.writerow(columnas)
-        escritor.writerows(filas)
+    comprobar_colera(f / "colera-gran-bretana-owid.csv", _filas(DATOS / "epidemias.csv"))
+    _escribir("esperanza_vida", filas)
     print(f"esperanza_vida.csv: {len(filas)} filas, {len({fila[0] for fila in filas})} países.")
+    londres = construir_londres(f / "muertes-londres-owid.csv")
+    _escribir("londres_muertes", londres)
+    print(f"londres_muertes.csv: {len(londres)} años.")
+    paises = construir_paises(args.paises)
+    _escribir("paises", paises)
+    print(f"paises.csv: {len(paises)} países.")
     return 0
 
 

@@ -1,0 +1,209 @@
+codigo,nombre,region
+AD,Andorra,Europa
+AE,Emiratos Árabes Unidos,Asia
+AF,Afganistán,Asia
+AG,Antigua y Barbuda,América
+AL,Albania,Europa
+AM,Armenia,Asia
+AO,Angola,África
+AR,Argentina,América
+AT,Austria,Europa
+AU,Australia,Oceanía
+AZ,Azerbaiyán,Asia
+BA,Bosnia y Herzegovina,Europa
+BB,Barbados,América
+BD,Bangladés,Asia
+BE,Bélgica,Europa
+BF,Burkina Faso,África
+BG,Bulgaria,Europa
+BH,Baréin,Asia
+BI,Burundi,África
+BJ,Benín,África
+BM,Bermudas,América
+BN,Brunéi,Asia
+BO,Bolivia,América
+BR,Brasil,América
+BS,Bahamas,América
+BT,Bután,Asia
+BW,Botsuana,África
+BY,Bielorrusia,Europa
+BZ,Belice,América
+CA,Canadá,América
+CD,República Democrática del Congo,África
+CF,República Centroafricana,África
+CG,Congo,África
+CH,Suiza,Europa
+CI,Costa de Marfil,África
+CL,Chile,América
+CM,Camerún,África
+CN,China,Asia
+CO,Colombia,América
+CR,Costa Rica,América
+CU,Cuba,América
+CV,Cabo Verde,África
+CW,Curazao,América
+CY,Chipre,Europa
+CZ,Chequia,Europa
+DE,Alemania,Europa
+DJ,Yibuti,África
+DK,Dinamarca,Europa
+DM,Dominica,América
+DO,República Dominicana,América
+DZ,Argelia,África
+EC,Ecuador,América
+EE,Estonia,Europa
+EG,Egipto,África
+ER,Eritrea,África
+ES,España,Europa
+ET,Etiopía,África
+FI,Finlandia,Europa
+FJ,Fiyi,Oceanía
+FM,Micronesia,Oceanía
+FO,Islas Feroe,Europa
+FR,Francia,Europa
+GA,Gabón,África
+GB,Reino Unido,Europa
+GD,Granada,América
+GE,Georgia,Europa
+GG,Guernsey,Europa
+GH,Ghana,África
+GI,Gibraltar,Europa
+GL,Groenlandia,América
+GM,Gambia,África
+GN,Guinea,África
+GQ,Guinea Ecuatorial,África
+GR,Grecia,Europa
+GT,Guatemala,América
+GW,Guinea-Bisáu,África
+GY,Guyana,América
+HK,Hong Kong,Asia
+HN,Honduras,América
+HR,Croacia,Europa
+HT,Haití,América
+HU,Hungría,Europa
+ID,Indonesia,Asia
+IE,Irlanda,Europa
+IL,Israel,Asia
+IM,Isla de Man,Europa
+IN,India,Asia
+IQ,Irak,Asia
+IR,Irán,Asia
+IS,Islandia,Europa
+IT,Italia,Europa
+JE,Jersey,Europa
+JM,Jamaica,América
+JO,Jordania,Asia
+JP,Japón,Asia
+KE,Kenia,África
+KG,Kirguistán,Asia
+KH,Camboya,Asia
+KI,Kiribati,Oceanía
+KM,Comoras,África
+KN,San Cristóbal y Nieves,América
+KP,Corea del Norte,Asia
+KR,Corea del Sur,Asia
+KW,Kuwait,Asia
+KZ,Kazajistán,Asia
+LA,Laos,Asia
+LB,Líbano,Asia
+LC,Santa Lucía,América
+LI,Liechtenstein,Europa
+LK,Sri Lanka,Asia
+LR,Liberia,África
+LS,Lesoto,África
+LT,Lituania,Europa
+LU,Luxemburgo,Europa
+LV,Letonia,Europa
+LY,Libia,África
+MA,Marruecos,África
+MC,Mónaco,Europa
+MD,Moldavia,Europa
+ME,Montenegro,Europa
+MG,Madagascar,África
+MH,Islas Marshall,Oceanía
+MK,Macedonia del Norte,Europa
+ML,Malí,África
+MM,Myanmar,Asia
+MN,Mongolia,Asia
+MO,Macao,Asia
+MR,Mauritania,África
+MT,Malta,Europa
+MU,Mauricio,África
+MV,Maldivas,Asia
+MW,Malaui,África
+MX,México,América
+MY,Malasia,Asia
+MZ,Mozambique,África
+NA,Namibia,África
+NE,Níger,África
+NG,Nigeria,África
+NI,Nicaragua,América
+NL,Países Bajos,Europa
+NO,Noruega,Europa
+NP,Nepal,Asia
+NR,Nauru,Oceanía
+NZ,Nueva Zelanda,Oceanía
+OM,Omán,Asia
+PA,Panamá,América
+PE,Perú,América
+PG,Papúa Nueva Guinea,Oceanía
+PH,Filipinas,Asia
+PK,Pakistán,Asia
+PL,Polonia,Europa
+PR,Puerto Rico,América
+PS,Palestina,Asia
+PT,Portugal,Europa
+PW,Palaos,Oceanía
+PY,Paraguay,América
+QA,Catar,Asia
+RE,Reunión,África
+RO,Rumania,Europa
+RS,Serbia,Europa
+RU,Rusia,Europa
+RW,Ruanda,África
+SA,Arabia Saudita,Asia
+SB,Islas Salomón,Oceanía
+SC,Seychelles,África
+SD,Sudán,África
+SE,Suecia,Europa
+SG,Singapur,Asia
+SI,Eslovenia,Europa
+SK,Eslovaquia,Europa
+SL,Sierra Leona,África
+SM,San Marino,Europa
+SN,Senegal,África
+SO,Somalia,África
+SR,Surinam,América
+SS,Sudán del Sur,África
+ST,Santo Tomé y Príncipe,África
+SV,El Salvador,América
+SY,Siria,Asia
+SZ,Esuatini,África
+TD,Chad,África
+TG,Togo,África
+TH,Tailandia,Asia
+TJ,Tayikistán,Asia
+TL,Timor Oriental,Asia
+TM,Turkmenistán,Asia
+TN,Túnez,África
+TO,Tonga,Oceanía
+TR,Turquía,Asia
+TT,Trinidad y Tobago,América
+TV,Tuvalu,Oceanía
+TW,Taiwán,Asia
+TZ,Tanzania,África
+UA,Ucrania,Europa
+UG,Uganda,África
+US,Estados Unidos,América
+UY,Uruguay,América
+UZ,Uzbekistán,Asia
+VC,San Vicente y las Granadinas,América
+VE,Venezuela,América
+VN,Vietnam,Asia
+VU,Vanuatu,Oceanía
+WS,Samoa,Oceanía
+XK,Kosovo,Europa
+YE,Yemen,Asia
+ZA,Sudáfrica,África
+ZM,Zambia,África
+ZW,Zimbabue,África
