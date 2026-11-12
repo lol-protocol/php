@@ -33,6 +33,9 @@ Vive acá todo lo que no depende de qué módulo lo llama. Lo que sí depende de
   `URL_FIELD`, `USER_AGENT`, `UNIT`, `DATA_DIR` y `SCRIPT_FILE`; las explica el encabezado de
   `cache-texts-core.php`). La ayuda que imprime el script sale del comentario del envoltorio, así que cada proyecto
   conserva la suya.
+  Con `--field-sources` el núcleo baja además las URL que `field_sources.csv` cita para cada campo (plazo, sanciones…)
+  cuando no son la URL de referencia de la ley: una descarga por URL distinta, guardada como `<ley>--<8 hex del sha1>.md`.
+  Sin la opción, esos archivos se tratan como textos que salieron del dataset y se borran.
 
 Cada envoltorio conserva además el comentario de uso de su script y, en `record-changes.js` y `translations.js`,
 reexporta las funciones que usan las pruebas, para que los `import` de las pruebas no cambien.
