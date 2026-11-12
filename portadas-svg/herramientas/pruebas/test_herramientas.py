@@ -76,6 +76,34 @@ class PrepararFuentes(unittest.TestCase):
         self.assertEqual(300, resultado["65"][0])
 
 
+class Kerning(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.modulo = cargar("kerning")
+
+    def test_comprimir_quita_lo_que_se_deduce_de_la_letra_base(self):
+        # «á» se ajusta igual que «a» antes y después de todo; «é» no (con «V» se ajusta distinto).
+        completo = {"aV": -50, "áV": -50, "Va": -30, "Vá": -30, "eV": -10, "éV": -20, "Ve": -5, "Vé": -5}
+        codigos = [ord(c) for c in "aáeéV"]
+        resultado = self.modulo.comprimir(completo, codigos)
+        self.assertEqual("a", resultado["primero"]["á"])
+        self.assertEqual("a", resultado["segundo"]["á"])
+        self.assertNotIn("é", resultado["primero"])
+        self.assertEqual("e", resultado["segundo"]["é"])
+        # Con las sustituciones, el ajuste de cualquier par se recupera.
+        def ajuste(a, b):
+            return resultado["pares"].get(resultado["primero"].get(a, a) + resultado["segundo"].get(b, b), 0)
+        for par, esperado in completo.items():
+            self.assertEqual(esperado, ajuste(par[0], par[1]), par)
+
+    def test_escritura_separa_latin_griego_y_cirilico(self):
+        self.assertEqual("latina", self.modulo.escritura(ord("a")))
+        self.assertEqual("griega", self.modulo.escritura(ord("α")))
+        self.assertEqual("cirilica", self.modulo.escritura(ord("я")))
+        self.assertEqual("comun", self.modulo.escritura(ord("1")))
+        self.assertEqual("comun", self.modulo.escritura(ord(".")))
+
+
 class GlifosExtra(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

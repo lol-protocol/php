@@ -30,5 +30,11 @@ return [
         igual($medida->em('A V'), $medida->em('A') + $medida->em(' ') + $medida->em('V'));
         igual(0, $medida->ajuste('', 'A'));
         verdadero($medida->ajuste('A', 'V') < 0, 'el ajuste de «AV» es negativo');
+        // Una letra con acento se ajusta como su base, y el griego y el cirílico también tienen kerning.
+        igual($medida->ajuste('A', 'V'), $medida->ajuste('Á', 'V'));
+        verdadero($medida->em('ÁV') < $medida->em('Á') + $medida->em('V') - 0.05, '«ÁV» se acerca');
+        $sans = PortadasSvg\Anchos::de('sans', 'normal', 400);
+        verdadero($sans->ajuste('Т', 'о') < 0 || $sans->ajuste('Λ', 'Υ') < 0 || $sans->ajuste('Д', 'А') !== 0, 'el cirílico o el griego tienen algún par ajustado');
+        igual(0, $sans->ajuste('A', 'Я'));
     },
 ];

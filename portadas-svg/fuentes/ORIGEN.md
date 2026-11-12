@@ -22,6 +22,10 @@ reservado; aquí el nombre «Source Serif 4» del `@font-face` es solo una etiqu
 fuentes no se publican como una familia instalable. Si algún día se redistribuyen los `woff2` como fuente aparte,
 hay que renombrarlos.
 
+## El kerning
+
+`datos/kerning.json.gz` se calcula con las instancias estáticas de Google Fonts de `@expo-google-fonts/inter@0.4.2` y `@expo-google-fonts/source-serif-4@0.4.2` (las mismas fuentes, con la misma licencia OFL): solo se leen sus tablas de ajuste, no se redistribuyen sus contornos.
+
 ## Al añadir una fuente
 
 1. Que su licencia permita incrustarla y redistribuirla (OFL, Apache 2.0…). Una fuente «gratis» no basta.

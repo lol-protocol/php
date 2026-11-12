@@ -6,8 +6,8 @@ namespace PortadasSvg;
 
 /**
  * Medida con la tabla de anchos de una fuente (ver datos/anchos.json) y su kerning (ver datos/kerning.json): el
- * ajuste de los pares de letras ASCII dentro de una palabra, que casi siempre acorta la línea. Los pares con letras
- * fuera de ASCII no se ajustan, así que ahí la medida sale igual o algo mayor que la real, no menor.
+ * ajuste de los pares de letras (latinas, griegas y cirílicas) dentro de una palabra, que casi siempre acorta la línea.
+ * Lo que no está en la tabla (otras escrituras) no se ajusta, así que ahí la medida sale igual o algo mayor que la real.
  */
 final class MedidaFuente implements Medida
 {
@@ -23,7 +23,11 @@ final class MedidaFuente implements Medida
         private readonly int $unidades,
         private readonly array $extras = [],
         private readonly array $formas = [],
-        /** @var array<string, int> ajuste de cada par de letras ASCII seguidas («AV»), en milésimas de em */
+        /** @var array<string, string> letra que va antes en un par => la letra base con la que se ajusta igual («á» => «a») */
+        private readonly array $primero = [],
+        /** @var array<string, string> lo mismo, para la letra que va después */
+        private readonly array $segundo = [],
+        /** @var array<string, int> ajuste de cada par de letras («AV»), en milésimas de em */
         private readonly array $pares = [],
     ) {
     }
@@ -63,7 +67,7 @@ final class MedidaFuente implements Medida
     /** Lo que se acerca (negativo) o se separa la letra `$b` de la `$a` que la precede, en milésimas de em. */
     public function ajuste(string $a, string $b): int
     {
-        return $a === '' ? 0 : $this->pares[$a . $b] ?? 0;
+        return $a === '' || $this->pares === [] ? 0 : $this->pares[($this->primero[$a] ?? $a) . ($this->segundo[$b] ?? $b)] ?? 0;
     }
 
     /**

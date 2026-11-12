@@ -110,7 +110,7 @@ Las medidas fuera de esos límites y los textos demasiado largos (título de má
 ```bash
 php pruebas/ejecutar.php          # pruebas unitarias
 python3 -m unittest discover -s herramientas/pruebas   # herramientas de Python (fuente mínima generada)
-python3 herramientas/kerning.py --comprobar            # datos/kerning.json al día
+python3 herramientas/kerning.py carpeta --comprobar    # datos/kerning.json.gz al día (ver docs/fuentes.md)
 python3 herramientas/pruebas/visual.py                 # regresión visual (resvg-py y Pillow)
 php bin/generar.php --comprobar   # ejemplos/salida/ coincide con lo que genera el código
 phpstan analyse --no-progress     # análisis estático, nivel máximo (phpstan.neon.dist)
@@ -133,7 +133,7 @@ fuentes/trazos/          el contorno de cada letra de esos trozos (comprimido), 
 fuentes/extra/           los contornos de otras letras, de una fuente tuya (ver [Fuentes](docs/fuentes.md))
 datos/fuentes.json       qué letras trae cada trozo (su unicode-range)
 datos/anchos.json        ancho de cada letra de esas fuentes, para ajustar el texto
-datos/kerning.json       ajuste de los pares de letras ASCII
+datos/kerning.json.gz    ajuste de los pares de letras latinas, griegas y cirílicas
 datos/frases.json        las frases de la ficha, por idioma
 datos/categorias.json    las 27 categorías de Marcalibros
 datos/tradiciones.json   las tradiciones culturales
@@ -152,7 +152,7 @@ pruebas/dibujos.json     huellas de los dibujos, para que no cambien sin querer
 
 ## Limitaciones
 
-- El ajuste de texto mide con anchos reales y con kerning de los pares ASCII; el de las demás letras no se ajusta, así que ahí la línea puede quedar algo más corta de lo posible. Las letras que las fuentes no cubren (ver [Fuentes](docs/fuentes.md)) se miden con un ancho medio.
+- El ajuste de texto mide con anchos reales y con kerning de los pares latinos, griegos y cirílicos; en los alfabetos sin fuente no se ajusta, así que ahí la línea puede quedar algo más corta de lo posible. Las letras que las fuentes no cubren (ver [Fuentes](docs/fuentes.md)) se miden con un ancho medio.
 - Cada SVG pesa unos 20–60 KB por las fuentes incrustadas.
 - Solo la plantilla `ilustrada` dibuja una imagen en la portada; las demás son de texto y adornos de línea.
 - Probado en Chromium, CairoSVG, resvg, librsvg (`rsvg-convert`) e Inkscape 1.2. Todos menos Chromium **ignoran las fuentes incrustadas** (Inkscape lo avisa: «font face rule limited support») y usan otras: la maqueta aguanta, pero no se ve igual. Para esos visores, `--trazos`, que se ve igual que en Chromium. No he probado lectores de ebook, que pueden hacer lo mismo. El enlace de Python de resvg (`resvg-py`) no acepta el tamaño en mm del `width`/`height`; hay que pasarlo a píxeles.
