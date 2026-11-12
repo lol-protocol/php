@@ -3,6 +3,8 @@
 # Comprueba: el simulacro no borra; BORRAR=true borra la lista; salta master, la rama por defecto,
 # nombres raros y una rama a la que se empujó después de hacer la lista; MAXIMO no numérico falla;
 # sin rama por defecto conocida no borra; y el archivo RESULTADO trae «rama|sha|estado».
+# Prueba también informe-de-ramas.sh (la lista que usa el workflow): una rama huérfana, sin ancestro común
+# con master, no lo tumba ni sale en la lista.
 set -euo pipefail
 
 script="$(cd "$(dirname "$0")" && pwd)/borrar-ramas.sh"
@@ -51,6 +53,21 @@ if MAXIMO="10; rm -rf /" bash "$script" "$tmp/lista.txt" >/dev/null 2>&1; then m
 printf 'otra2 %s\n' "$(git rev-parse origin/otra2)" >"$tmp/lista2.txt"
 if BORRAR=true RAMA_POR_DEFECTO= bash "$script" "$tmp/lista2.txt" >/dev/null 2>&1; then mal "sin rama por defecto debía negarse"; else ok "sin rama por defecto se niega"; fi
 espera "…y otra2 sigue ahí" test "$(remotas)" = "desarrollo master otra2 "
+
+# 5) informe-de-ramas.sh: la lista incluye vacías y fusionadas, y no la tumba una rama huérfana (sin merge-base)
+informe="$(dirname "$script")/informe-de-ramas.sh"
+mkdir "$tmp/bin" && printf '#!/usr/bin/env bash\n' >"$tmp/bin/gh" && chmod +x "$tmp/bin/gh" # gh de juguete: ningún PR abierto
+git branch -q vacia master && git push -q origin vacia 2>/dev/null
+git checkout -q --orphan datos/huerfana && git rm -rfq . 2>/dev/null || true
+git commit -q --allow-empty -m datos && git push -q origin datos/huerfana 2>/dev/null && git checkout -q -f master
+git fetch -q origin
+if PATH="$tmp/bin:$PATH" BASE_REF=origin/master MIN_DIAS=0 LISTA_RAMAS="$tmp/informe.txt" bash "$informe" >"$tmp/informe.out" 2>&1; then
+  ok "informe-de-ramas.sh no falla con una rama huérfana"
+else
+  mal "informe-de-ramas.sh falla con una rama huérfana: $(tail -n 3 "$tmp/informe.out" | tr '\n' ' ')"
+fi
+espera "informe: la rama vacía sale en la lista" grep -qx "vacia $(git rev-parse origin/vacia)" "$tmp/informe.txt"
+espera "informe: la rama huérfana no sale" bash -c '! grep -q "^datos/huerfana " "$1"' _ "$tmp/informe.txt"
 
 echo
 if [ "$fallos" -gt 0 ]; then echo "$fallos fallo(s)"; exit 1; fi
