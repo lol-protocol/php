@@ -415,6 +415,14 @@ ok "el pedido se recibe" 303 "$(codigo "$H" "$HTTPS/r/$PEDIDA/" -b "$JAR" -c "$J
     --data-urlencode "csrf_token=$CSRF" --data-urlencode 'motivo=me_nombra' \
     --data-urlencode 'detalle=Es falso: vivo en Calle Falsa 123.' --data-urlencode "contacto=$CORREO")"
 ok "recibir un pedido no oculta la página" 200 "$(codigo "$H" "$HTTPS/$PEDIDA/")"
+cron_retiros --solo-nuevos
+ok "--solo-nuevos avisa del pedido que llegó y sale con 0" 0 "$CRON_CODIGO"
+contiene "y dice que llegó" 'Llegó 1 pedido de retiro' "$CRON_SALIDA"
+contiene "y de qué página" "persona $PEDIDA" "$CRON_SALIDA"
+no_contiene "sin el correo de quien lo pidió" "$CORREO" "$CRON_SALIDA"
+no_contiene "ni lo que escribió" 'Calle Falsa' "$CRON_SALIDA"
+cron_retiros --solo-nuevos
+ok "el siguiente aviso no lo repite: silencio" "" "$CRON_SALIDA"
 cron_retiros
 ok "cron avisa del pedido" 0 "$CRON_CODIGO"
 contiene "dice cuántos esperan" '1 pedido de retiro espera respuesta' "$CRON_SALIDA"
