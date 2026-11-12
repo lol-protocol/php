@@ -1,8 +1,8 @@
 name: Pruebas mortalidad-historica
 
 # Misma convencion que los demas proyectos del repo: solo cuando cambia este
-# proyecto (o este archivo), en los pull requests y en master. No depende de ninguna
-# otra carpeta.
+# proyecto (o este archivo), en los pull requests y en master. Las pruebas no dependen de
+# ninguna otra carpeta; solo el job manual `reproducir` lee Listado-paises/codigos_iso.csv.
 
 on:
   push:
@@ -43,3 +43,25 @@ jobs:
       - name: Pruebas
         working-directory: mortalidad-historica
         run: python3 -m unittest -v pruebas
+
+  # Solo al lanzarlo a mano (workflow_dispatch): baja las fuentes de la esperanza de vida fijadas por
+  # commit, comprueba su SHA-256 contra fuentes.sha256, rehace datos/esperanza_vida.csv y falla si
+  # cambia. Baja unos 5 MB y tarda menos de un minuto.
+  reproducir:
+    name: "mortalidad-historica: la esperanza de vida se rehace idéntica desde las fuentes"
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Bajar fuentes y rehacer los datos
+        working-directory: mortalidad-historica
+        run: python3 descargar_fuentes.py --destino "$RUNNER_TEMP/fuentes" --rehacer
+
+      - name: Comprobar que nada cambió
+        run: |
+          git status --porcelain
+          test -z "$(git status --porcelain)"
