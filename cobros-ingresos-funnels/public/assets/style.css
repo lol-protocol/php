@@ -267,6 +267,7 @@ form.filtros button:hover { opacity: 0.9; }
 .hbar-row .hbar-label { width: 130px; flex-shrink: 0; color: var(--text-secondary); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hbar-track { flex: 1; background: var(--gridline); border-radius: 4px; height: 16px; overflow: hidden; display: block; }
 .hbar-fill { display: block; height: 100%; }
+.barra-celda { width: 35%; min-width: 120px; }
 .hbar-value { width: 110px; flex-shrink: 0; text-align: right; font-size: 13px; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 
 .hbar-row.compacto .hbar-label { width: 78px; font-size: 12px; }

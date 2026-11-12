@@ -10,6 +10,7 @@ use App\Controllers\BoletasController;
 use App\Controllers\CobranzaController;
 use App\Controllers\CohortesController;
 use App\Controllers\DashboardController;
+use App\Controllers\FlujoDeCajaController;
 use App\Controllers\FunnelController;
 use App\Controllers\NotasCreditoController;
 use App\Controllers\PagosController;
@@ -50,6 +51,7 @@ $paginas = [
     'boleta-anular' => fn () => (new BoletasController())->anular(),
     'cobranza' => fn () => (new CobranzaController())->index(),
     'cobranza-csv' => fn () => (new CobranzaController())->exportar(),
+    'flujo' => fn () => (new FlujoDeCajaController())->index(),
     'pagos' => fn () => (new PagosController())->index(),
     'pagos-csv' => fn () => (new PagosController())->exportar(),
     'pago-nuevo' => fn () => (new PagosController())->nuevo(),
