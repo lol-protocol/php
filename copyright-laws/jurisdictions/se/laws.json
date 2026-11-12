@@ -8,14 +8,14 @@
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity rights",
-    "orphan_works": "Collective management required",
+    "orphan_works": "Exception for libraries; museums and archives after a diligent search (sections 16 a-16 d; Directive 2012/28/EU)",
     "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exemptions",
     "registration_required": "No",
     "enforcement_body": "Ministry of Justice (Justitiedepartementet)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.prv.se/",
+    "linked_resources": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -27,9 +27,46 @@
         "url": "https://www.wipo.int/wipolex/en/legislation/details/10375",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "moral_rights": {
+        "url": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "digital_protection": {
+        "url": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "orphan_works": {
+        "url": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/",
+        "confidence": "high",
+        "checked": "2026-11-12"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-12",
+        "field": "linked_resources",
+        "from": "https://www.prv.se/",
+        "to": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/"
+      },
+      {
+        "date": "2026-11-12",
+        "field": "orphan_works",
+        "from": "Collective management required",
+        "to": "Exception for libraries; museums and archives after a diligent search (sections 16 a-16 d; Directive 2012/28/EU)"
+      },
       {
         "date": "2026-10-14",
         "field": "enforcement_body",
