@@ -1,8 +1,11 @@
 #!/bin/bash
 # Quita un dominio del servidor SIN borrar nada: archiva (mueve) su vhost, su sitio y sus logs.
-# Uso: ./10_B-remove-domain.sh <dominio> [--app NOMBRE] [--yes] [--dry-run]
+# Uso: ./10_B-remove-domain.sh <dominio> [--app NOMBRE] [--purge-app] [--yes] [--dry-run]
 #   --app      tambien archiva /var/www/NOMBRE y la unidad systemd NOMBRE (apps php/python);
 #              si se omite, se toma de la marca del vhost que dejan 06_A/06_B/06_E
+#   --purge-app  ademas BORRA la base PostgreSQL, su rol y el usuario de sistema de la app (php/python).
+#              Antes guarda un pg_dump en <archivo>/db/ (solo root) y, sin --yes, pide escribir el nombre de la app.
+#              Sin esta opcion no se borra nada: solo se indican los comandos.
 #   --yes      no pide confirmacion
 #   --dry-run  muestra que se archivaria sin tocar nada
 # Todo va a $REMOVED_DIR/<dominio>-<fecha>/ (por defecto /var/backups/vps-setup/removed).
@@ -20,19 +23,20 @@ SYSTEMD_DIR=${SYSTEMD_DIR:-/etc/systemd/system}
 REMOVED_DIR=${REMOVED_DIR:-/var/backups/vps-setup/removed}
 CRON_DIR=${CRON_DIR:-/etc/cron.d}
 
-DOMAIN="" APP="" YES=0 DRY_RUN=0
+DOMAIN="" APP="" YES=0 DRY_RUN=0 PURGE=0
 while [ $# -gt 0 ]; do
     case "$1" in
         --app) [ $# -ge 2 ] || { echo "Falta el valor de --app"; exit 2; }; APP=$2; shift 2 ;;
+        --purge-app) PURGE=1; shift ;;
         --yes|-y) YES=1; shift ;;
         --dry-run) DRY_RUN=1; shift ;;
-        -h|--help) sed -n '2,10p' "$0"; exit 0 ;;
+        -h|--help) sed -n '2,13p' "$0"; exit 0 ;;
         -*) echo "Opcion desconocida: $1 (usa --help)"; exit 2 ;;
         *) [ -z "$DOMAIN" ] || { echo "Solo se admite un dominio (sobra: $1)"; exit 2; }
            DOMAIN=$1; shift ;;
     esac
 done
-[ -n "$DOMAIN" ] || { echo "Uso: $0 <dominio> [--app NOMBRE] [--yes] [--dry-run]"; exit 2; }
+[ -n "$DOMAIN" ] || { echo "Uso: $0 <dominio> [--app NOMBRE] [--purge-app] [--yes] [--dry-run]"; exit 2; }
 require_valid domain "$DOMAIN" "El dominio"
 VHOST="$NGINX_DIR/sites-available/$DOMAIN"
 # Sin --app, la app se toma de la marca que 06_A/06_B dejan en la primera linea del vhost: si no,
@@ -42,6 +46,11 @@ if [ -z "$APP" ] && [ -f "$VHOST" ]; then
     [ -z "$APP" ] || echo "App detectada en el vhost: $APP (como si se hubiera pasado --app $APP)"
 fi
 [ -z "$APP" ] || require_valid name "$APP" "--app"
+if [ "$PURGE" -eq 1 ]; then
+    [ -n "$APP" ] || { echo "--purge-app necesita una app (--app NOMBRE, o un vhost con la marca de 06_A/06_B)." >&2; exit 2; }
+    [ "$APP" != marcalibros ] || { echo "Marcalibros no tiene base ni usuario propios: --purge-app no aplica." >&2; exit 2; }
+fi
+PURGE_DB="app_${APP//-/_}"
 
 DEST="$REMOVED_DIR/$DOMAIN-$(date +%Y%m%d-%H%M%S)"
 LINK="$NGINX_DIR/sites-enabled/$DOMAIN"
@@ -76,11 +85,18 @@ echo "Se archivara en: $DEST"
 [ -z "$APP_LINK" ] || [ ! -L "$APP_LINK" ] || echo "  - desactivar $APP_LINK"
 for it in "${ITEMS[@]}"; do echo "  - ${it%%|*}"; done
 [ -z "$APP" ] || echo "  - detener y deshabilitar el servicio $APP (si existe)"
+if [ "$PURGE" -eq 1 ]; then
+    echo "  - BORRAR la base $PURGE_DB, su rol y el usuario $(app_user_name "$APP") (antes, un pg_dump en $DEST/db/)"
+fi
 
 if [ "$DRY_RUN" -eq 1 ]; then echo "[dry-run] no se toco nada"; exit 0; fi
 if [ "$YES" -ne 1 ]; then
     read -r -p "¿Continuar? [s/N] " ans
     [[ "$ans" =~ ^[sSyY]$ ]] || { echo "Cancelado."; exit 1; }
+    if [ "$PURGE" -eq 1 ]; then
+        read -r -p "Para BORRAR la base, el rol y el usuario de la app escribe su nombre ($APP): " ans
+        [ "$ans" = "$APP" ] || { echo "No coincide: Cancelado, no se toco nada."; exit 1; }
+    fi
 fi
 
 # 1) Desactivar el sitio y comprobar que nginx sigue sano ANTES de mover nada.
@@ -131,15 +147,45 @@ sudo systemctl reload nginx
 # Lo archivado puede incluir el .env de la app (con la contrasena de su base de datos): solo root entra.
 sudo chmod 700 "$REMOVED_DIR" "$DEST"
 
+# --purge-app: respaldo (pg_dump) y SOLO si salio bien, se borran la base, su rol y el usuario de sistema.
+purge_app_data() {
+    local db=$PURGE_DB user dump
+    user=$(app_user_name "$APP"); dump="$DEST/db/$db.dump"
+    echo ""
+    echo "Borrando los datos de la app $APP (--purge-app)..."
+    if command -v psql > /dev/null 2>&1 && [ "$(cd / && sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='$db'")" = 1 ]; then
+        sudo mkdir -p "$DEST/db"
+        if ! ( set -o pipefail; cd / && sudo -u postgres pg_dump -Fc "$db" | sudo tee "$dump" > /dev/null ) || ! sudo test -s "$dump"; then
+            echo "ERROR: no se pudo respaldar la base $db: NO se borro la base, el rol ni el usuario (el dominio ya quedo archivado)." >&2
+            exit 1
+        fi
+        sudo chmod 600 "$dump"
+        (cd / && sudo -u postgres dropdb "$db")
+        echo "  Base $db borrada (respaldo: $dump)"
+    else
+        echo "  La base $db no existe (o no hay PostgreSQL): nada que borrar."
+    fi
+    if command -v psql > /dev/null 2>&1 && [ "$(cd / && sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='$db'")" = 1 ]; then
+        (cd / && sudo -u postgres dropuser "$db")
+        echo "  Rol $db borrado"
+    fi
+    if id "$user" > /dev/null 2>&1; then
+        sudo userdel "$user"
+        echo "  Usuario $user borrado (su carpeta ya esta archivada)"
+    fi
+}
+[ "$PURGE" -ne 1 ] || purge_app_data
+
 echo ""
 echo "✓ $DOMAIN archivado en $DEST (para restaurarlo, mueve las carpetas de vuelta y reactiva el enlace en sites-enabled)."
 echo "Quedan a mano (no se tocaron):"
 [ "$APP" != marcalibros ] || echo "  - Marcalibros:  los marcalibros creados siguen en /var/lib/marcalibros (caducan solos; borralos a mano si quieres)"
-if [ -n "$APP" ]; then
-    # Datos y usuario de la app: NO se borran solos (la base puede tener lo unico que importa de la app).
+if [ -n "$APP" ] && [ "$PURGE" -ne 1 ]; then
+    # Datos y usuario de la app: NO se borran solos (con --purge-app si; ver arriba) (la base puede tener lo unico que importa de la app).
     echo "  - Base de datos de la app (si la tenia): sudo -u postgres dropdb app_${APP//-/_} && sudo -u postgres dropuser app_${APP//-/_}"
     echo "    (antes, un respaldo si lo necesitas: sudo -u postgres pg_dump -Fc app_${APP//-/_} > app_${APP//-/_}.dump)"
     echo "  - Usuario de sistema de la app (si lo tenia): sudo userdel $(app_user_name "$APP")"
+    echo "    (o todo junto, con respaldo: ./10_B-remove-domain.sh $DOMAIN --app $APP --purge-app)"
 fi
 echo "  - Certificado:  sudo certbot delete --cert-name $DOMAIN"
 echo "  - Zona DNS:     si usas BIND (06_C), quita la zona de /etc/bind/named.conf.local; si no, borra los registros en tu registrador"
