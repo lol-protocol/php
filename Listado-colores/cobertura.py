@@ -80,7 +80,7 @@ def informe(idiomas, anotada, lexico, categorias, conceptos, hex_concepto):
         "",
         f"- Léxico básico: {len(conceptos)} conceptos. {len(idiomas) - len(huecos)} idiomas tienen lema para todos; "
         f"{len(huecos)} tienen huecos ({sum(len(v) for v in huecos.values())} lemas en total).",
-        f"- De esos huecos, {len(propuestas)} los llenó una propuesta de IA sin revisar (rasgo `{ORIGEN_IA}` en `lexico-basico.csv`).",
+        f"- De esos huecos, {len(propuestas)} los llenó una propuesta de IA (rasgo `{ORIGEN_IA}` en `lexico-basico.csv`).",
         f"- Categorías gramaticales: {len(con_categorias)} idiomas ({', '.join(nombres[c] for c in con_categorias)}); "
         f"{len(sin_categorias)} sin ninguna.",
         f"- Nombres CSS repetidos con hex distinto: {sum(len(v) for v in colisiones.values())} casos en {len(colisiones)} idiomas.",
@@ -89,7 +89,8 @@ def informe(idiomas, anotada, lexico, categorias, conceptos, hex_concepto):
         "",
         "## Conceptos del léxico sin lema",
         "",
-        "El generador solo exige lema en los 30 idiomas para los 11 conceptos básicos; el resto puede faltar.",
+        "El generador solo exige lema en los 30 idiomas para los 11 conceptos básicos; el resto puede faltar. Los huecos que quedan son "
+        "conceptos sin una palabra de uso corriente en ese idioma, o cuya única candidata repetiría el lema de otro concepto: no se inventan.",
         "",
         "| Idioma | Con lema | Faltan |",
         "|---|---|---|",
@@ -97,9 +98,10 @@ def informe(idiomas, anotada, lexico, categorias, conceptos, hex_concepto):
     for codigo, nombre in idiomas:
         faltan = huecos.get(codigo, [])
         partes.append(f"| {nombre} (`{codigo}`) | {len(conceptos) - len(faltan)} de {len(conceptos)} | {_codigos(faltan) or '—'} |")
-    partes += ["", "## Lemas propuestos por IA sin revisar", "",
-               "Llenan huecos del léxico; los escribió un asistente de IA y ningún hablante nativo los ha visto. Cuando uno los "
-               "confirme (en `revisiones.csv`), se quita el rasgo `origen=ia` del lema; si no, se corrige o se borra la fila.", ""]
+    partes += ["", "## Lemas propuestos por IA", "",
+               "Llenan huecos del léxico; los escribió un asistente de IA (muchos son préstamos o transcripciones de la palabra "
+               "internacional) y no se prevé que un hablante nativo los revise: el rasgo `origen=ia` deja constancia de su procedencia. "
+               "Si alguien los revisa (en `revisiones.csv`), se quita el rasgo; si no, se corrige o se borra la fila.", ""]
     if not propuestas:
         partes.append("Ninguno.")
     else:

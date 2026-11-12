@@ -6,15 +6,15 @@ Este informe no corrige nada ni hace fallar la generación: dice dónde faltan d
 
 ## Resumen
 
-- Léxico básico: 38 conceptos. 17 idiomas tienen lema para todos; 13 tienen huecos (33 lemas en total).
-- De esos huecos, 12 los llenó una propuesta de IA sin revisar (rasgo `origen=ia` en `lexico-basico.csv`).
+- Léxico básico: 38 conceptos. 21 idiomas tienen lema para todos; 9 tienen huecos (21 lemas en total).
+- De esos huecos, 24 los llenó una propuesta de IA (rasgo `origen=ia` en `lexico-basico.csv`).
 - Categorías gramaticales: 2 idiomas (Inglés, Español); 28 sin ninguna.
 - Nombres CSS repetidos con hex distinto: 29 casos en 18 idiomas.
 - Lemas del léxico que sirven a colores de distinto hex: 25 casos en 17 idiomas.
 
 ## Conceptos del léxico sin lema
 
-El generador solo exige lema en los 30 idiomas para los 11 conceptos básicos; el resto puede faltar.
+El generador solo exige lema en los 30 idiomas para los 11 conceptos básicos; el resto puede faltar. Los huecos que quedan son conceptos sin una palabra de uso corriente en ese idioma, o cuya única candidata repetiría el lema de otro concepto: no se inventan.
 
 | Idioma | Con lema | Faltan |
 |---|---|---|
@@ -30,35 +30,47 @@ El generador solo exige lema en los 30 idiomas para los 11 conceptos básicos; e
 | Finés (`fi`) | 38 de 38 | — |
 | Polaco (`pl`) | 38 de 38 | — |
 | Checo (`cs`) | 38 de 38 | — |
-| Rumano (`ro`) | 36 de 38 | `lime`, `scarlet` |
-| Húngaro (`hu`) | 37 de 38 | `lime` |
-| Griego (`el`) | 35 de 38 | `crimson`, `lime`, `scarlet` |
+| Rumano (`ro`) | 37 de 38 | `scarlet` |
+| Húngaro (`hu`) | 38 de 38 | — |
+| Griego (`el`) | 36 de 38 | `crimson`, `scarlet` |
 | Ruso (`ru`) | 38 de 38 | — |
 | Ucraniano (`uk`) | 38 de 38 | — |
 | Turco (`tr`) | 37 de 38 | `crimson` |
 | Árabe (`ar`) | 37 de 38 | `scarlet` |
 | Hebreo (`he`) | 36 de 38 | `maroon`, `navy` |
-| Persa (`fa`) | 36 de 38 | `magenta`, `scarlet` |
-| Hindi (`hi`) | 37 de 38 | `lime` |
-| Bengalí (`bn`) | 33 de 38 | `salmon`, `lime`, `burgundy`, `scarlet`, `amber` |
+| Persa (`fa`) | 37 de 38 | `scarlet` |
+| Hindi (`hi`) | 38 de 38 | — |
+| Bengalí (`bn`) | 38 de 38 | — |
 | Chino simplificado (`zh`) | 38 de 38 | — |
 | Japonés (`ja`) | 38 de 38 | — |
 | Coreano (`ko`) | 38 de 38 | — |
-| Vietnamita (`vi`) | 37 de 38 | `salmon` |
+| Vietnamita (`vi`) | 38 de 38 | — |
 | Tailandés (`th`) | 36 de 38 | `coral`, `crimson` |
 | Indonesio (`id`) | 38 de 38 | — |
-| Suajili (`sw`) | 27 de 38 | `beige`, `maroon`, `navy`, `cyan`, `salmon`, `crimson`, `lime`, `lilac`, `burgundy`, `cream`, `scarlet` |
+| Suajili (`sw`) | 28 de 38 | `maroon`, `navy`, `cyan`, `salmon`, `crimson`, `lime`, `lilac`, `burgundy`, `cream`, `scarlet` |
 
-## Lemas propuestos por IA sin revisar
+## Lemas propuestos por IA
 
-Llenan huecos del léxico; los escribió un asistente de IA y ningún hablante nativo los ha visto. Cuando uno los confirme (en `revisiones.csv`), se quita el rasgo `origen=ia` del lema; si no, se corrige o se borra la fila.
+Llenan huecos del léxico; los escribió un asistente de IA (muchos son préstamos o transcripciones de la palabra internacional) y no se prevé que un hablante nativo los revise: el rasgo `origen=ia` deja constancia de su procedencia. Si alguien los revisa (en `revisiones.csv`), se quita el rasgo; si no, se corrige o se borra la fila.
 
 | Idioma | Concepto | Lema |
 |---|---|---|
+| Rumano (`ro`) | `lime` | lime |
+| Húngaro (`hu`) | `lime` | lime |
+| Griego (`el`) | `lime` | λαχανί |
 | Ruso (`ru`) | `cyan` | циан |
 | Ucraniano (`uk`) | `cyan` | ціан |
+| Persa (`fa`) | `magenta` | ماژنتا |
+| Hindi (`hi`) | `lime` | लाइम |
+| Bengalí (`bn`) | `salmon` | স্যামন |
+| Bengalí (`bn`) | `lime` | লাইম |
+| Bengalí (`bn`) | `burgundy` | বার্গান্ডি |
+| Bengalí (`bn`) | `scarlet` | স্কারলেট |
+| Bengalí (`bn`) | `amber` | অ্যাম্বার |
 | Coreano (`ko`) | `violet` | 바이올렛 |
+| Vietnamita (`vi`) | `salmon` | cá hồi |
 | Suajili (`sw`) | `turquoise` | feruzi |
+| Suajili (`sw`) | `beige` | beige |
 | Suajili (`sw`) | `violet` | urujuani |
 | Suajili (`sw`) | `indigo` | nili |
 | Suajili (`sw`) | `lavender` | lavenda |

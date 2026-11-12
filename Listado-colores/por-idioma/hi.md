@@ -206,6 +206,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `coral` | `#FF7F50` | मूंगिया |  |  |  |
 | `crimson` | `#DC143C` | किरमिजी |  |  |  |
 | `khaki` | `#F0E68C` | खाकी |  |  |  |
+| `lime` | `#00FF00` | लाइम (propuesta de IA sin revisar) |  |  |  |
 | `lilac` | `#CEA2FD` | लाइलैक |  |  |  |
 | `burgundy` | `#900020` | बरगंडी |  | कत्थई |  |
 | `cream` | `#FFFFC2` | क्रीम |  |  |  |

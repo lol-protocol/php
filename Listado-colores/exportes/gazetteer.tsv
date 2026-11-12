@@ -327,6 +327,7 @@ beige	fi	lexico	lema	beige	#F5F5DC		beige		#E6DAA6
 beige	id	css	nombre	beige	#F5F5DC		beige		#E6DAA6
 beige	id	lexico	lema	beige	#F5F5DC		beige		#E6DAA6
 beige	sw	css	nombre	beige	#F5F5DC		beige		#E6DAA6
+beige	sw	lexico	lema	beige	#F5F5DC	origen=ia	beige		#E6DAA6
 beiges	es	lexico	flexion	beige	#F5F5DC	Number=Plur	beiges		#E6DAA6
 beiges	fr	lexico	flexion	beige	#F5F5DC	Number=Plur	beiges		#E6DAA6
 beis	es	css	nombre	beige	#F5F5DC		beis		#E6DAA6
@@ -959,6 +960,7 @@ czerwony	pl	css	nombre	red	#FF0000		czerwony		#FF0000
 czerwony	pl	lexico	lema	red	#FF0000		czerwony		#FF0000
 cà chua	vi	css	nombre	tomato	#FF6347		ca chua		
 cá hồi	vi	css	nombre	salmon	#FA8072		ca hoi		#FF796C
+cá hồi	vi	lexico	lema	salmon	#FA8072	origen=ia	ca hoi		#FF796C
 cá hồi nhạt	vi	css	nombre	lightsalmon	#FFA07A		ca hoi nhat		
 cá hồi đậm	vi	css	nombre	darksalmon	#E9967A		ca hoi dam		
 cáqui	pt	css	nombre	khaki	#F0E68C		caqui		#C3B091
@@ -2232,7 +2234,9 @@ lime	it	css	nombre	lime	#00FF00		lime		#AAFF32
 lime	sv	css	nombre	lime	#00FF00		lime		#AAFF32
 lime	da	css	nombre	lime	#00FF00		lime		#AAFF32
 lime	ro	css	nombre	lime	#00FF00		lime		#AAFF32
+lime	ro	lexico	lema	lime	#00FF00	origen=ia	lime		#AAFF32
 lime	hu	css	nombre	lime	#00FF00		lime		#AAFF32
+lime	hu	lexico	lema	lime	#00FF00	origen=ia	lime		#AAFF32
 lime	tr	css	nombre	lime	#00FF00		lime		#AAFF32
 lime green	en	css	forma_natural	limegreen	#32CD32		lime green		
 lime green	en	lexico	sinonimo	lime	#00FF00		lime green		#AAFF32
@@ -4513,6 +4517,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 κόκκινος	el	lexico	lema	red	#FF0000		κοκκινοσ		#FF0000
 λαδί	el	lexico	lema	olive	#808000		λαδι		#808010
 λαχανί	el	css	nombre	lime	#00FF00		λαχανι		#AAFF32
+λαχανί	el	lexico	lema	lime	#00FF00	origen=ia	λαχανι		#AAFF32
 λεβάντα	el	css	nombre	lavender	#E6E6FA		λεβαντα		#B56EDC
 λεβάντα	el	lexico	lema	lavender	#E6E6FA		λεβαντα		#B56EDC
 λεμονί σιφόν	el	css	nombre	lemonchiffon	#FFFACD		λεμονι σιφον		
@@ -5795,6 +5800,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 لیمویی	fa	lexico	lema	lime	#00FF00		لیمویی		#AAFF32
 ماجنتا	ar	css	nombre	magenta	#FF00FF		ماجنتا		
 ماجنتا	ar	lexico	lema	magenta	#FF00FF		ماجنتا		
+ماژنتا	fa	lexico	lema	magenta	#FF00FF	origen=ia	ماژنتا		
 مرجاني	ar	css	nombre	coral	#FF7F50		مرجاني		#FF7F50
 مرجاني	ar	lexico	lema	coral	#FF7F50		مرجاني		#FF7F50
 مرجاني فاتح	ar	css	nombre	lightcoral	#F08080		مرجاني فاتح		
@@ -5980,6 +5986,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 रेतीला भूरा	hi	css	nombre	sandybrown	#F4A460		रेतीला भूरा		
 रेबेका बैंगनी	hi	css	nombre	rebeccapurple	#663399		रेबेका बैंगनी		
 लकड़ी जैसा	hi	css	nombre	burlywood	#DEB887		लकड़ी जैसा		
+लाइम	hi	lexico	lema	lime	#00FF00	origen=ia	लाइम		#AAFF32
 लाइलैक	hi	lexico	lema	lilac	#CEA2FD		लाइलैक		#CEA2FD
 लाल	hi	css	nombre	red	#FF0000		लाल		#FF0000
 लाल	hi	lexico	lema	red	#FF0000		लाल		#FF0000
@@ -6044,6 +6051,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 অর্কিড	bn	css	nombre	orchid	#DA70D6		অর্কিড		
 অ্যাকোয়া	bn	css	nombre	aqua	#00FFFF		অ্যাকোয়া		
 অ্যাকোয়ামেরিন	bn	css	nombre	aquamarine	#7FFFD4		অ্যাকোয়ামেরিন		
+অ্যাম্বার	bn	lexico	lema	amber	#FFBF00	origen=ia	অ্যাম্বার		#FFBF00
 আকাশি	bn	lexico	lema	skyblue	#87CEEB		আকাশি		
 আকাশি নীল	bn	css	nombre	skyblue	#87CEEB		আকাশি নীল		
 ইটের লাল	bn	css	nombre	firebrick	#B22222		ইটের লাল		
@@ -6138,6 +6146,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 বসন্ত সবুজ	bn	css	nombre	springgreen	#00FF7F		বসন্ত সবুজ		
 বাদামি	bn	css	nombre	brown	#A52A2A		বাদামি		#653700
 বাদামি	bn	lexico	lema	brown	#A52A2A		বাদামি		#653700
+বার্গান্ডি	bn	lexico	lema	burgundy	#900020	origen=ia	বার্গান্ডি		
 বালুকাময় বাদামি	bn	css	nombre	sandybrown	#F4A460		বালুকাময় বাদামি		
 বিস্কুট	bn	css	nombre	bisque	#FFE4C4		বিস্কুট		
 বেইজ	bn	css	nombre	beige	#F5F5DC		বেইজ		#E6DAA6
@@ -6174,6 +6183,7 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 রেবেকা বেগুনি	bn	css	nombre	rebeccapurple	#663399		রেবেকা বেগুনি		
 লন সবুজ	bn	css	nombre	lawngreen	#7CFC00		লন সবুজ		
 লাইম	bn	css	nombre	lime	#00FF00		লাইম		#AAFF32
+লাইম	bn	lexico	lema	lime	#00FF00	origen=ia	লাইম		#AAFF32
 লাইম সবুজ	bn	css	nombre	limegreen	#32CD32		লাইম সবুজ		
 লাল	bn	css	nombre	red	#FF0000		লাল		#FF0000
 লাল	bn	lexico	lema	red	#FF0000		লাল		#FF0000
@@ -6196,9 +6206,11 @@ złoty	pl	lexico	lema	gold	#FFD700		zloty		#FFD700
 সিয়েনা	bn	css	nombre	sienna	#A0522D		সিয়েনা		
 সোনালি	bn	css	nombre	gold	#FFD700		সোনালি		#FFD700
 সোনালি	bn	lexico	lema	gold	#FFD700		সোনালি		#FFD700
+স্কারলেট	bn	lexico	lema	scarlet	#FF2400	origen=ia	স্কারলেট		#FF2400
 স্টিল নীল	bn	css	nombre	steelblue	#4682B4		স্টিল নীল		
 স্যাডল বাদামি	bn	css	nombre	saddlebrown	#8B4513		স্যাডল বাদামি		
 স্যামন	bn	css	nombre	salmon	#FA8072		স্যামন		#FF796C
+স্যামন	bn	lexico	lema	salmon	#FA8072	origen=ia	স্যামন		#FF796C
 স্লেট ধূসর	bn	css	nombre	slategray	#708090		স্লেট ধূসর		
 স্লেট ধূসর	bn	css	nombre	slategrey	#708090		স্লেট ধূসর		
 স্লেট নীল	bn	css	nombre	slateblue	#6A5ACD		স্লেট নীল		
