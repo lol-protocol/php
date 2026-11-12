@@ -109,3 +109,22 @@ test('varias figuras en una misma página no comparten ids de forma (cada una ll
   for (const id of a) assert.ok(!b.has(id), `id compartido: ${id}`);
   assert.deepEqual([...ids(generarSVG({ semilla: 1 }))], [...a], 'el prefijo debe ser determinista');
 });
+
+test('compacto: el SVG pesa menos, solo cambian los decimales de las rutas y sigue bien formado', () => {
+  for (const semilla of [1, 2, 3, 4, 5]) {
+    const normal = generarSVG({ semilla });
+    const liviano = generarSVG({ semilla, compacto: true });
+    assert.ok(liviano.length < normal.length * 0.96, `semilla ${semilla}: ${liviano.length} de ${normal.length}`);
+    bienFormado(liviano);
+    // Lo que no es una ruta queda idéntico.
+    assert.equal(liviano.replace(/ d="[^"]*"/g, ''), normal.replace(/ d="[^"]*"/g, ''));
+    // Cada coordenada difiere a lo más 0,1 de la normal.
+    const a = normal.match(/ d="[^"]*"/g), b = liviano.match(/ d="[^"]*"/g);
+    assert.equal(a.length, b.length);
+    a.forEach((d, i) => {
+      const xs = d.match(/-?\d+(?:\.\d+)?/g).map(Number), ys = b[i].match(/-?\d+(?:\.\d+)?/g).map(Number);
+      assert.equal(xs.length, ys.length);
+      xs.forEach((x, j) => assert.ok(Math.abs(x - ys[j]) <= 0.1, `${x} vs ${ys[j]}`));
+    });
+  }
+});
