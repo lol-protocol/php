@@ -48,7 +48,8 @@ base de datos y rol PostgreSQL `app_<nombre>` (sin `CONNECT` para los demás). U
 código, el `.env` ni la base de otra (en las PHP, `www-data` solo entra a la carpeta para servir lo estático; el `.env` es 600). Para trabajar como ese usuario: `sudo -u app-<nombre> bash` (con `-s` no entra:
 su shell es `nologin`). Si una carpeta ya tiene código de otro dueño (de `www-data`, por ejemplo), `06_A` y `06_B` no la
 toca: se detiene y te dice el `chown -R` para migrarla. `10_B --app` archiva la carpeta (con el `.env`, en una ruta
-solo de root) pero **no borra** la base ni el usuario: te indica los comandos, y un `pg_dump` por si lo necesitas.
+solo de root) pero **no borra** la base ni el usuario: te indica los comandos. Si quieres borrarlos, agrega `--purge-app`
+(ver abajo).
 
 **Todo vhost responde también a `www.<dominio>`, y `04` y `08` lo exigen**: con un subdominio
 (`tienda.nuevo.com`) hace falta además el registro A de `www.tienda.nuevo.com`; si no, `04` aborta por el DNS
@@ -92,6 +93,16 @@ el healthcheck (`08`). Sin `--name`, la app se llama como el dominio con `-` en 
 `/var/www/<app>` y detiene y archiva su servicio; la app la detecta por la marca del vhost (o la
 indicas con `--app`). Antes de mover nada comprueba `nginx -t`: si falla, restaura el sitio y no
 archiva. Para restaurar un dominio, mueve las carpetas de vuelta y reactiva el enlace en `sites-enabled`.
+
+**`--purge-app`** (opcional, apps PHP y Python) borra además la base PostgreSQL, su rol y el usuario de sistema de la app.
+Antes guarda un `pg_dump` en `<archivo>/db/app_<nombre>.dump` (modo 600, solo root; se restaura con `pg_restore`) y, sin
+`--yes`, te pide escribir el nombre de la app. Si el respaldo falla no se borra nada. El dominio ya queda archivado
+antes de purgar, así que un fallo ahí no deja el sitio a medias:
+
+```bash
+./10_B-remove-domain.sh tienda.nuevo.com --app tienda --purge-app --dry-run   # lo que haría
+./10_B-remove-domain.sh tienda.nuevo.com --app tienda --purge-app
+```
 
 `10_B` **no toca** el certificado ni el DNS. Al terminar indica los comandos:
 

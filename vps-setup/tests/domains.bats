@@ -200,3 +200,80 @@ del() { run bash "$FAKE/10_B-remove-domain.sh" "$@"; }
     [[ "$output" == *"pg_dump -Fc app_miapp"* ]]
     ! grep -qE "dropdb|dropuser|userdel" "$SUDO_LOG"          # NO los ejecuta: solo los indica
 }
+
+# ---------------- 10_B --purge-app ----------------
+purge_stubs() {
+    make_stub psql 'exit 0'
+    make_stub id 'if [ "$1" = app-miapp ] && [ "${USER_EXISTS:-1}" = 1 ]; then exit 0; else exec /usr/bin/id "$@"; fi'
+    make_stub sudo 'echo "$*" >> "$SUDO_LOG"
+if [ "$1" = -u ] && [ "$2" = postgres ]; then
+    case "$*" in
+        *pg_database*) echo "${DB_EXISTS:-1}" ;;
+        *pg_roles*) echo "${ROLE_EXISTS:-1}" ;;
+        *pg_dump*) [ "$DUMP_FAIL" = 1 ] && exit 1; echo "DATOS-DEL-DUMP" ;;
+    esac
+    exit 0
+fi
+case "$1" in systemctl|nginx) exit 0 ;; esac
+exec "$@"'
+}
+
+@test "10_B --purge-app: respalda con pg_dump, y despues borra la base, el rol y el usuario" {
+    purge_stubs
+    del ejemplo.com --app miapp --purge-app --yes
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    d=$(ls -d "$REMOVED_DIR"/ejemplo.com-*)
+    [ "$(cat "$d/db/app_miapp.dump")" = DATOS-DEL-DUMP ] && [ "$(stat -c %a "$d/db/app_miapp.dump")" = 600 ]
+    dump=$(grep -n 'pg_dump -Fc app_miapp' "$SUDO_LOG" | cut -d: -f1)
+    drop=$(grep -n 'dropdb app_miapp' "$SUDO_LOG" | cut -d: -f1)
+    [ -n "$dump" ] && [ "$dump" -lt "$drop" ]                       # primero el respaldo
+    grep -q 'dropuser app_miapp' "$SUDO_LOG" && grep -q 'userdel app-miapp' "$SUDO_LOG"
+    [[ "$output" != *"sudo -u postgres dropdb"* ]]                    # ya no manda a hacerlo a mano
+}
+
+@test "10_B --purge-app: si el respaldo falla NO se borra nada (y el dominio ya quedo archivado)" {
+    purge_stubs
+    DUMP_FAIL=1 del ejemplo.com --app miapp --purge-app --yes
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"NO se borro la base"* ]]
+    ! grep -q 'dropdb' "$SUDO_LOG" && ! grep -q 'dropuser' "$SUDO_LOG" && ! grep -q 'userdel' "$SUDO_LOG"
+}
+
+@test "10_B --purge-app sin --yes pide escribir el nombre de la app; otro texto cancela sin tocar nada" {
+    purge_stubs
+    run bash -c "printf 's\notra\n' | bash '$FAKE/10_B-remove-domain.sh' ejemplo.com --app miapp --purge-app"
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"No coincide"* ]]
+    [ -L "$NGINX_DIR/sites-enabled/ejemplo.com" ] && [ -d "$WWW_DIR/miapp" ] && [ ! -d "$REMOVED_DIR" ]
+    ! grep -q 'dropdb' "$SUDO_LOG"
+    run bash -c "printf 's\nmiapp\n' | bash '$FAKE/10_B-remove-domain.sh' ejemplo.com --app miapp --purge-app"
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q 'dropdb app_miapp' "$SUDO_LOG"
+}
+
+@test "10_B --purge-app --dry-run lo anuncia y no toca nada" {
+    purge_stubs
+    del ejemplo.com --app miapp --purge-app --dry-run
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"BORRAR la base app_miapp"* ]]
+    [ -L "$NGINX_DIR/sites-enabled/ejemplo.com" ] && [ ! -d "$REMOVED_DIR" ]
+    ! grep -q 'dropdb\|pg_dump' "$SUDO_LOG"
+}
+
+@test "10_B --purge-app: base o rol inexistentes no fallan; sin app o con marcalibros se rechaza (2)" {
+    purge_stubs
+    DB_EXISTS=0 ROLE_EXISTS=0 USER_EXISTS=0 del ejemplo.com --app miapp --purge-app --yes
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [[ "$output" == *"nada que borrar"* ]]
+    ! grep -q 'dropdb\|dropuser\|pg_dump' "$SUDO_LOG"
+    del ejemplo.com --purge-app --yes;                        [ "$status" -eq 2 ]
+    del ejemplo.com --app marcalibros --purge-app --yes;      [ "$status" -eq 2 ]
+}
+
+@test "10_B sin --purge-app nunca borra la base ni el usuario" {
+    purge_stubs
+    del ejemplo.com --app miapp --yes
+    [ "$status" -eq 0 ]
+    ! grep -q 'dropdb\|dropuser\|userdel\|pg_dump' "$SUDO_LOG"
+    [[ "$output" == *"--purge-app"* ]]                                # sugiere como hacerlo
+}
