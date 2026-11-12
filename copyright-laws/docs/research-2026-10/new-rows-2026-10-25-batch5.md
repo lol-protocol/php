@@ -91,3 +91,7 @@ A law was found (or is suspected) but a required field is still missing. Retry w
 - GQ Equatorial Guinea · Bangui Agreement (OAPI), Annex VII on Copyright and Cultural Heritage, as revised 14 December 2015: missing term_of_protection
 - TM Turkmenistan · Law of Turkmenistan No. 257-IV of January 10, 2012 on Copyright and Related Rights (as amended by Law No. 668-V of 25 Nov 2017): missing already in the dataset
 - MH Marshall Islands · Unauthorized Copies of Recorded Materials Act 1991 (P.L. 1991-132, 20 MIRC Ch. 2): missing term_of_protection
+
+## Added later (2026-11-12): Equatorial Guinea and the Marshall Islands, low confidence
+
+Both were left out for lack of a reliable term. They are now in, every value marked unconfirmed and every source at confidence `low` (the WIPO Lex profile of each country, read through a CI runner): Equatorial Guinea with the 1889 Civil Code, the only text WIPO Lex lists for copyright, and a term whose sources conflict (life + 80 years under the inherited 1879 Spanish law, life + 50 under the Bangui framework); the Marshall Islands with the Unauthorized Copies of Recorded Materials Act, 1991 (P.L. 1991-132), classed as "Related rights", with no author-life term found. Treaty memberships are left unconfirmed for both.

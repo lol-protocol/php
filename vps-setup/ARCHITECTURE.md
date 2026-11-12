@@ -5,10 +5,10 @@
 Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVHCloud. Soporta múltiples sitios web, aplicaciones PHP y Python, con base de datos PostgreSQL centralizada y SSL/HTTPS automático.
 
 **VPS Principal:**
-- **Proveedor:** OVHCloud (Beauharnois, Canadá)
-- **IP:** 158.69.222.245
+- **Proveedor:** OVHCloud
+- **IP:** `<IP_DEL_VPS>` (la que te dé el proveedor al crearlo)
 - **SO:** Ubuntu 24.04 LTS
-- **Estado:** Activo
+- **Estado:** Pendiente de crear (el VPS anterior se dio de baja; se crea uno nuevo y se instala con [DEPLOYMENT.md](DEPLOYMENT.md))
 
 ---
 
@@ -27,7 +27,7 @@ mismo VPS — todavía no están registrados ni configurados. Cómo agregar uno
 
 | Dominio | Tipo | Propósito | Status |
 |---------|------|----------|--------|
-| **initech.fun** | Landing Page | Sitio real (Initech) | ✅ Activo |
+| **initech.fun** | Landing Page | Sitio real (Initech) | ⏳ Pendiente (cuando exista el VPS) |
 | conce.com | Landing Page | Ejemplo de 2do dominio (Conce) | 🔄 Ejemplo, no registrado |
 | initech.cl | Landing Page | Ejemplo de 2do dominio (Initech) | 🔄 Ejemplo, no registrado |
 | contrastocolor.ink | Aplicación | Ejemplo de app (Portal de colores/diseño) | 🔄 Ejemplo, no registrado |
@@ -77,7 +77,7 @@ mismo VPS — todavía no están registrados ni configurados. Cómo agregar uno
 ```
 /var/www/
 ├── landing-page/
-│   ├── initech.fun/          # el dominio real, ya activo
+│   ├── initech.fun/          # el dominio real
 │   │   └── index.html
 │   ├── conce.com/            # ejemplo, no registrado
 │   │   └── index.html
@@ -137,7 +137,7 @@ Usuario (Internet)
         ↓
    [Firewall]
         ↓
-  158.69.222.245:80/443
+  <IP_DEL_VPS>:80/443
         ↓
   [Nginx - Reverse Proxy, un vhost por sitio en /etc/nginx/sites-available/]
         ↓
@@ -201,14 +201,14 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 ┌─────────────────────────────────────────────────┐
 │         Internet / DNS (del registrador)        │
 │                                                   │
-│  initech.fun (real, activo)                      │
+│  initech.fun (real)                              │
 │  conce.com, initech.cl, contrastocolor.ink,      │
 │  wikipedia.cl (ejemplos, no registrados)         │
 └─────────────────────┬───────────────────────────┘
                       │ A Record
          ┌────────────▼─────────────┐
-         │  158.69.222.245 (VPS)    │
-         │   OVHCloud - Canadá      │
+         │  <IP_DEL_VPS> (VPS)      │
+         │   OVHCloud               │
          └────────────┬─────────────┘
                       │
          ┌────────────▼─────────────┐
@@ -268,7 +268,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 | Recurso | Especificación | Uso Estimado |
 |---------|----------------|--------------|
 | **CPU** | 2-4 cores | 20-40% (en reposo) |
-| **RAM** | 4-8 GB | 40-60% (normal) |
+| **RAM** | 2 GB recomendado (1 GB alcanza sin Tomcat ni Whisper; `install-all` avisa con menos de 2 GB) | según apps: los workers de gunicorn y los pools PHP se limitan solos |
 | **Disco** | 50+ GB | 30% (con margen) |
 | **Ancho de banda** | Ilimitado (OVHCloud) | 100 GB/mes (est.) |
 

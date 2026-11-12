@@ -27,15 +27,16 @@ import yaml
 from PIL import Image
 
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
+import muestreo
 import texto as tx
-from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_DUPLICADO, hoja_de_contacto,
-                hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, pixeles_de_motivo, validar_jpg,
+from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_CAMBIO, UMBRAL_DUPLICADO,
+                hoja_de_contacto, hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, validar_jpg,
                 validar_frases, validar_svg, validar_taxonomia)
 from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO, ESCALA_REVISION
 
-VERSION_GENERADOR = "0.8.0"
+VERSION_GENERADOR = "0.9.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
@@ -205,12 +206,9 @@ def imagen_para_revision(entrada, esc, ruta):
     return img, f"svg vía Chromium (dif. {dif:.1f})"
 
 
-def _recorte_franja(esc, margen=10):
-    """Miniatura de la franja de texto, sin las esquinas redondeadas del velo."""
-    f = ESCALA_MINIATURA
-    x0, y0, x1, y1 = esc.franja
-    return a_imagen(esc, ESCALA_MINIATURA).crop(
-        (round((x0 + margen) * f), round((y0 + margen) * f), round((x1 - margen) * f), round((y1 - margen) * f)))
+def _recorte_franja(esc):
+    """Colores de la franja de texto, muestreados sin rasterizar (ver muestreo.py)."""
+    return muestreo.franja_colores(esc)
 
 
 TRANSICION_CALMA = 80  # px que tarda el cielo en volver a su color fuera de la franja
@@ -309,14 +307,14 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
     problema = None
     for intento in range(MAX_INTENTOS + 1):
         entrada, esc = construir(config, mov, autor, v, intento, animos)
-        h = huella_visual(a_imagen(esc)).astype(np.float32).astype(float)  # igual que la que guarda la caché
+        h = muestreo.huella(esc).astype(np.float32).astype(float)  # igual que la que guarda la caché
         parecido = parecido_a(h, previas)
         if parecido is not None:
             problema = f"sigue casi idéntico a {parecido[0]}"
             continue
         if entrada["motivo"] not in SIN_COMPROBAR_VISIBILIDAD:
             _, sin = construir(config, mov, autor, v, intento, animos, ocultar_motivo=True)
-            px = pixeles_de_motivo(a_imagen(esc, ESCALA_MINIATURA), a_imagen(sin, ESCALA_MINIATURA))
+            px = muestreo.pixeles_de_motivo(esc, sin, UMBRAL_CAMBIO)
             if px < MIN_PIXELES_MOTIVO:
                 problema = f"el motivo '{entrada['motivo']}' casi no se ve en miniatura ({px} px)"
                 continue
@@ -362,7 +360,7 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
 # Módulos que dibujan las piezas. Los demás (editor, modelo, marca, revisión, Gutenberg) no cambian el
 # catálogo: tocarlos no debe invalidar la caché de las 1000 piezas. tests/test_incremental.py comprueba
 # que esta lista cubre todo lo que build.py importa.
-MODULOS_DE_RENDER = ("build", "color", "movimientos", "plantillas", "qa", "render_raster", "render_svg", "scene", "texto")
+MODULOS_DE_RENDER = ("build", "color", "movimientos", "muestreo", "plantillas", "qa", "render_raster", "render_svg", "scene", "texto")
 
 
 def hash_generador():

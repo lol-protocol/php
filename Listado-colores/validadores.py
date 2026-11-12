@@ -286,3 +286,7 @@ def validar_alias(anotada, traducidos, errores, alias=None):
             distintos = sorted(i for (i, n), par in significados.items() if n == nombre and par != significados.get((i, otro)))
             if distintos:
                 errores.append(f"significados-idiomas.csv: {nombre} y {otro} tienen el mismo hex y deben tener los mismos significados; difieren en {', '.join(distintos)}")
+
+
+# Lo que reexporta generar-tabla.py con `import *`: lo definido aquí, no lo importado.
+__all__ = [n for n, v in list(globals().items()) if not n.startswith("_") and (n.isupper() or getattr(v, "__module__", None) == __name__)]

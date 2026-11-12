@@ -594,3 +594,5 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-12,PH,Intellectual Property Code,linked_resources,https://www.ipophil.gov.ph/,https://lawphil.net/statutes/repacts/ra1997/ra_8293_1997.html
 2026-11-12,SE,Swedish Copyright Act,orphan_works,Collective management required,Exception for libraries; museums and archives after a diligent search (sections 16 a-16 d; Directive 2012/28/EU)
 2026-11-12,SE,Swedish Copyright Act,linked_resources,https://www.prv.se/,https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/
+2026-11-12,GQ,"Civil Code (approved by Royal Decree of 24 July 1889), the only text WIPO Lex lists for copyright",row,,added
+2026-11-12,MH,"Unauthorized Copies of Recorded Materials Act, 1991 (P.L. 1991-132; 20 MIRC Ch. 2)",row,,added

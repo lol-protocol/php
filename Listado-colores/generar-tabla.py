@@ -46,7 +46,6 @@ import cobertura  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
-from md import texto_valido  # noqa: E402
 import revision  # noqa: E402
 
 ANOTADA = CARPETA / "colores.csv"

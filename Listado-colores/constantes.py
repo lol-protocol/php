@@ -92,3 +92,7 @@ SIN_LETRAS_LATINAS = {"el", "ru", "uk", "ar", "he", "fa", "hi", "bn", "zh", "ja"
 RE_NOMBRE_CSS = re.compile(r"[a-z]+")
 RE_FORMA_NATURAL = re.compile(r"[a-z]+( [a-z]+)*")
 RE_HEX = re.compile(r"#[0-9A-F]{6}")
+
+
+# Lo que reexporta generar-tabla.py con `import *`: lo definido aquí, no lo importado.
+__all__ = [n for n, v in list(globals().items()) if not n.startswith("_") and (n.isupper() or getattr(v, "__module__", None) == __name__)]
