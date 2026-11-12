@@ -98,6 +98,21 @@ def _exigir_fecha(fecha):
         raise TypeError(f"fecha debe ser datetime.date, no {type(fecha).__name__}")
 
 
+def _dia_de(fecha, huso=None):
+    """El día (datetime.date) de una fecha o un instante, según la regla de huso del proyecto.
+
+    Cada tradición usa el huso que le corresponde (ver «Husos horarios» en el README):
+      huso=None   el día del calendario de quien nació: un date tal cual; un datetime, su propio día, con el
+                  huso que traiga o sin él. Signo, decanato, los 72, árboles y numerología van así.
+      huso=X      un datetime CON huso se pasa a X antes de tomar el día (el Año Nuevo chino se cuenta a la
+                  hora de China). Un date o un datetime SIN huso se toma tal cual: no se le inventa un huso.
+    """
+    _exigir_fecha(fecha)
+    if huso is not None and isinstance(fecha, datetime.datetime) and fecha.tzinfo is not None:
+        fecha = fecha.astimezone(huso)
+    return datetime.date(fecha.year, fecha.month, fecha.day)
+
+
 def _copia(x):
     """Una copia de un valor de los datos (diccionarios, listas y tuplas de números y textos, como un JSON).
 
@@ -224,14 +239,11 @@ def animal_chino_de_fecha(fecha, datos=None):
     datetime con huso horario se pasa a esa hora antes de comparar (las 20:00 UTC del 16/02/2026
     ya son el 17/02 en China, Caballo). Una fecha o un datetime sin huso se toma tal cual.
     """
-    _exigir_fecha(fecha)
-    if isinstance(fecha, datetime.datetime) and fecha.tzinfo is not None:
-        fecha = fecha.astimezone(HORA_DE_CHINA)
+    dia = _dia_de(fecha, HORA_DE_CHINA)
     tabla = _fechas_anio_nuevo()
-    if fecha.year not in tabla:
-        raise ValueError(f"solo hay fechas del Año Nuevo lunar de {min(tabla)} a {max(tabla)}, no de {fecha.year}")
-    dia = datetime.date(fecha.year, fecha.month, fecha.day)
-    anio_lunar = fecha.year if dia >= tabla[fecha.year] else fecha.year - 1
+    if dia.year not in tabla:
+        raise ValueError(f"solo hay fechas del Año Nuevo lunar de {min(tabla)} a {max(tabla)}, no de {dia.year}")
+    anio_lunar = dia.year if dia >= tabla[dia.year] else dia.year - 1
     return _copia({**_animal_chino(anio_lunar, datos), "anio_lunar": anio_lunar})
 
 
@@ -536,6 +548,21 @@ def demonio_de_fecha(fecha, datos=None):
     return _copia({"demonio": cargar_espiritus()["demonios"][numero - 1], "signo": signo, "tramo": tramo})
 
 
+def _frase_de(entradas, campo, clave, idioma, glosarios, terminos, que):
+    """La frase de rasgos de la entrada de `entradas` cuyo `campo` vale `clave`, en un idioma; `que` nombra lo buscado en el error."""
+    if idioma not in terminos["separador"]:
+        raise ValueError(f"idioma desconocido: {idioma!r}")
+    for e in entradas:
+        if e[campo] == clave:
+            return _frase(e["rasgos" if "rasgos" in e else "cualidades"], idioma, glosarios, terminos["separador"])
+    raise ValueError(f"{que}: no hay ninguno con la clave {clave!r}")
+
+
+def _glosarios():
+    """Los glosarios donde se buscan los rasgos, en orden: los de los árboles y luego las cualidades de los 72."""
+    return [cargar_arboles()["rasgos"], cargar_espiritus()["cualidades"]]
+
+
 def cualidades_de(tipo, numero, idioma):
     """Las cualidades de un ángel o demonio en un idioma, en una frase: «Construcción, protección, nobleza».
 
@@ -549,10 +576,7 @@ def cualidades_de(tipo, numero, idioma):
     if not 1 <= numero <= 72:
         raise ValueError(f"numero debe estar entre 1 y 72, no {numero}")
     esp = cargar_espiritus()
-    if idioma not in esp["terminos"]["separador"]:
-        raise ValueError(f"idioma desconocido: {idioma!r}")
-    entrada = esp["angeles" if tipo == "angel" else "demonios"][numero - 1]
-    return _frase(entrada["cualidades"], idioma, [esp["cualidades"]], esp["terminos"]["separador"])
+    return _frase_de(esp["angeles" if tipo == "angel" else "demonios"], "numero", numero, idioma, [esp["cualidades"]], esp["terminos"], tipo)
 
 
 def _frase(claves, idioma, glosarios, separador):
@@ -678,16 +702,10 @@ def rasgos_de(sistema, clave, idioma):
     """
     if sistema not in SISTEMAS_DE_ARBOLES:
         raise ValueError(f"sistema debe ser uno de {SISTEMAS_DE_ARBOLES}, no {sistema!r}")
-    arb, esp = cargar_arboles(), cargar_espiritus()
-    if idioma not in arb["terminos"]["separador"]:
-        raise ValueError(f"idioma desconocido: {idioma!r}")
+    arb = cargar_arboles()
     entradas = (arb["calendario_celta"]["meses"] if sistema == "celta" else arb["horoscopo"] if sistema == "horoscopo"
                 else arb["nakshatras"])
-    campo = "arbol" if sistema == "horoscopo" else "id"
-    for e in entradas:
-        if e[campo] == clave:
-            return _frase(e["rasgos"], idioma, [arb["rasgos"], esp["cualidades"]], arb["terminos"]["separador"])
-    raise ValueError(f"{sistema}: no hay ninguno con la clave {clave!r}")
+    return _frase_de(entradas, "arbol" if sistema == "horoscopo" else "id", clave, idioma, _glosarios(), arb["terminos"], sistema)
 
 
 # --- Numerología: el número del camino de vida y el año personal ---
@@ -727,12 +745,7 @@ def anio_personal(fecha, anio):
 
 def rasgos_de_numero(numero, idioma):
     """Los rasgos de un número de la numerología (1–9, 11, 22 o 33) en un idioma, en una frase."""
-    num, arb, esp = cargar_numerologia(), cargar_arboles(), cargar_espiritus()
-    if idioma not in num["terminos"]["separador"]:
-        raise ValueError(f"idioma desconocido: {idioma!r}")
     if isinstance(numero, bool) or not isinstance(numero, int):
         raise TypeError(f"numero debe ser int, no {type(numero).__name__}")
-    for n in num["numeros"]:
-        if n["numero"] == numero:
-            return _frase(n["rasgos"], idioma, [arb["rasgos"], esp["cualidades"]], num["terminos"]["separador"])
-    raise ValueError(f"no hay un número {numero} en la numerología (son 1–9, 11, 22 y 33)")
+    num = cargar_numerologia()
+    return _frase_de(num["numeros"], "numero", numero, idioma, _glosarios(), num["terminos"], "numerología (son 1–9, 11, 22 y 33)")
