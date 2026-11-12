@@ -200,6 +200,20 @@ El listado tiene número, página, motivo y cuánto lleva cada pedido, y marca `
 
 Código de salida: 0 si nada está vencido, 1 si hay un pedido vencido sin ocultar, 2 si falla (base sin migrar, opción desconocida). Se probó con la base de SQLite y como proceso aparte (`tests/App/Integration/PedidosRetiroCliTest.php`); **no se probó con cron ni con un servidor de correo reales**.
 
+### Solicitudes de datos (`/s/{id}/`)
+
+Cada página de una persona enlaza a `/s/{id}/`, un formulario para pedir **ver, corregir o borrar sus datos**. **Recibir una solicitud no entrega, cambia ni borra nada**: espera en la base hasta que la atiendes siguiendo [`SOLICITUDES.md`](SOLICITUDES.md). Como el aviso de los pedidos de retiro, hay un script para cron que manda por correo lo que imprime y no imprime nada si no hay nada esperando:
+
+```
+# /etc/cron.d/solicitudes-datos
+MAILTO=tu@correo.com
+5 9 * * *     www-data  cd /var/www/php/url-routing && php bin/solicitudes.php
+# opcional: borra el correo y el texto de las solicitudes cerradas hace más de 12 meses (SOLICITUD_CONSERVAR_MESES)
+40 3 * * 0    www-data  cd /var/www/php/url-routing && php bin/solicitudes.php --depurar
+```
+
+El listado dice el número, la persona, el derecho pedido y cuánto lleva, **nunca quién pidió ni qué escribió** (el correo de cron viaja sin cifrar). Eso solo lo muestra `php bin/solicitudes.php --ver=N`, en tu terminal. Se cierran con `--atender=N` o `--rechazar=N` (con `--nota=` para tus registros, sin los datos). Los topes contra el abuso son `SOLICITUD_MAX_POR_HORA` (3 por visitante) y `SOLICITUD_MAX_PENDIENTES` (5 esperando por persona), en `.env`. **No hay aviso en el momento de llegar**, como lo hay para los retiros (`--solo-nuevos`): el recordatorio es el de la mañana.
+
 ## 9. Actualizar
 
 ```bash

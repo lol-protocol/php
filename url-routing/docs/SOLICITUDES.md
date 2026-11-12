@@ -14,14 +14,14 @@ de demostración.
 
 | # | Qué pasa | Dónde |
 |---|---|---|
-| 1 | **Llega la solicitud.** Hoy no hay un formulario para estos tres derechos: [`TERMINOS-DE-USO.md`](../../TERMINOS-DE-USO.md) dice «escribiendo a [CORREO]», y ese dato **falta**: se decidió que sea un correo propio del sitio, pero la dirección real aún no está. (`/r/{id}/` sirve para pedir el retiro o la oposición; si pide además borrar, se atiende aquí.) **Anota la fecha y la hora en que llegó**: de ahí corre el plazo ⚖️ (pregunta 7 de la sección 7 de `CUMPLIMIENTO-LEY-21719.md`). | correo |
+| 1 | **Llega la solicitud.** Por el formulario de `/s/{id}/` (enlazado al pie de la página de cada persona) o por correo: [`TERMINOS-DE-USO.md`](../../TERMINOS-DE-USO.md) dice «escribiendo a [CORREO]», y ese dato **falta**: se decidió que sea un correo propio del sitio, pero la dirección real aún no está. El formulario no entrega, cambia ni borra nada: la solicitud espera. Léela con `php bin/solicitudes.php` (lo que espera) y `--ver=N` (quién y qué). (`/r/{id}/` sirve para pedir el retiro o la oposición; si pide además borrar, se atiende aquí.) **Anota la fecha y la hora en que llegó**: de ahí corre el plazo ⚖️ (pregunta 7 de la sección 7 de `CUMPLIMIENTO-LEY-21719.md`). | `/s/{id}/`, correo |
 | 2 | **Comprobar que quien pide es la persona** (o, si ya falleció, un familiar) antes de mandar o cambiar nada. **⚖️ Sin decidir**: ver la sección siguiente. | — |
 | 3 | **Encontrar el id.** Busca por nombre en `/b/10/{texto}/` **entrando como propietario** ([`ACCESO.md`](ACCESO.md), «Entrar como propietario»): un visitante no ve a una persona que puede estar viva, y es justo quien suele pedir. Con homónimos, confirma por fechas y lugares, no solo por el nombre. | `/b/10/…` |
 | 4 | **Acceso.** `php bin/persona.php acceso <id>` (JSON). Mira abajo qué contiene y qué no. | servidor |
 | 5 | **Rectificación.** A mano, en una transacción y con un respaldo antes, y después `php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]`: sección «Rectificar». | base de datos |
 | 6 | **Supresión.** `php bin/persona.php suprimir <id> [--pedido=N]` (simulación) y luego `--confirmar`. Retirar **no** es borrar. | servidor |
 | 7 | **Responder** a quien pidió, por una persona y no por el sitio (que no escribe solo): sección «Qué responder». | correo |
-| 8 | **Anotar**: cuándo llegó, cuándo se respondió y qué se hizo, **sin copiar los datos de la persona** a la nota. | fuera del repositorio |
+| 8 | **Anotar**: cuándo llegó, cuándo se respondió y qué se hizo, **sin copiar los datos de la persona** a la nota. Si llegó por el formulario, ciérrala: `php bin/solicitudes.php --atender=N --nota='…'` (o `--rechazar=N` si no se pudo comprobar quién pedía). | `bin/solicitudes.php`, fuera del repositorio |
 
 ### Qué trae `acceso`
 
