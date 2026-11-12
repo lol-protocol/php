@@ -105,6 +105,10 @@ Fijadas por commit y comprobadas con SHA-256 (`fuentes.sha256`). Identificadores
 | `datos/hereditarias.csv` | Id, nombres, herencia, OMIM, dónde es mayor la frecuencia, inicio típico, nota, `estado` y `fuente`. |
 | `datos/hitos_registro.csv` | País (ISO alfa-2), tipo (`civil` o `parroquial`), año desde el que hay registros, nota, `estado` y `fuente`. |
 | `datos/esperanza_vida.csv` | País (ISO alfa-2) o región (`R:Europa`…), período, sexo (`M`, `F`, `T`), edad, esperanza **restante** (años que le quedan a esa edad), probabilidad de sobrevivir hasta esa edad, banda de incertidumbre (vacía hoy), calidad (`A` registro civil completo, `B` reconstrucción parcial o estimación de un organismo, `C` estimación o modelo), `estado` y `fuente`. Ver «Esperanza de vida». Se genera con `preparar_datos.py`. |
+| `vista.html` | Una vista web de todo (glosario, epidemias, esperanza de vida con gráfico y Londres): un solo archivo que se abre en el navegador, sin servidor ni conexión. Se genera desde `vista_plantilla.html`, con `js/mortalidad.js` y los datos incrustados. |
+| `php/src/Mortalidad.php` | Port a PHP de `consultas.py` (necesita las extensiones `intl` y `mbstring`). Se prueba con `php php/pruebas/ejecutar.php` y PHPStan nivel `max`. |
+| `js/mortalidad.js` | Port a JavaScript de `consultas.py`, sin dependencias: lo usa `vista.html` y sirve en Node (`node --test 'js/*.test.js'`). |
+| `datos/vectores.json` | Las respuestas de `consultas.py` a un conjunto fijo de entradas (generado). Los dos ports tienen que dar exactamente lo mismo. |
 | `por-idioma/<código>.md` | El glosario de cada idioma (generado). `por-idioma/README.md` es el índice. |
 | `consultas.py` | Consultas en Python: `causa_moderna`, `epidemias_en`, `hitos_de`, `region_de`, `esperanza_restante`, `supervivencia`, `muertes_londres` y `exceso_de_muertes_londres`; `epidemias_en` filtra por año, región y país. |
 | `descargar_fuentes.py` | Baja las fuentes de la esperanza de vida (fijadas por commit), comprueba `fuentes.sha256` y, con `--rehacer`, corre `preparar_datos.py`. |
@@ -149,6 +153,26 @@ esperanza_restante("ES", 1985, 0, "F") # por sexo, desde 1950
 
 Solo biblioteca estándar; Python 3.10 o más reciente.
 
+### En PHP y en JavaScript
+
+Las mismas consultas, con los mismos nombres en `camelCase`:
+
+```php
+require 'php/src/Mortalidad.php';
+$m = new MortalidadHistorica\Mortalidad();   // lee datos/*.csv; PHP 8.1+, con intl y mbstring
+$m->causaModerna('Hidropesía', 'spa');
+$m->epidemiasEn(1886, null, 'CL');
+$m->esperanzaRestante('SE', 1805, 5);
+```
+
+```js
+const Mortalidad = require('./js/mortalidad.js');
+const m = Mortalidad.crear(tablas);   // las tablas en columnas, como las incrusta vista.html
+m.causaModerna('Hidropesía', 'spa');
+```
+
+Los dos ports se prueban contra `datos/vectores.json`, que genera `generar_tabla.py` con `consultas.py`: **si cambias una consulta de Python, regenera con `python3 generar_tabla.py` y sigue el cambio en `php/src/Mortalidad.php` y `js/mortalidad.js`**; sus pruebas fallan si difieren en una sola respuesta. El port a JavaScript no tiene el plegado completo de mayúsculas de Unicode: cubre las diferencias que importan a los datos (ß y la sigma final).
+
 ## Qué no hace
 
 - **No diagnostica ni estima la causa de muerte de una persona.** `causa_moderna` devuelve las correspondencias posibles de un **término**, con su confianza.
@@ -162,6 +186,6 @@ Solo biblioteca estándar; Python 3.10 o más reciente.
 2. **Fase 2 (hecha, en parte):** esperanza de vida 1800-2009 por país, a los 0 y 5 años, con las consultas `esperanza_restante` y `supervivencia`. **Falta (fase 2b):** las edades de 15 a 60, que son las que más sirven para juzgar una vida adulta, y los períodos anteriores a 1800. No hay una fuente abierta por país y edad que se pueda redistribuir (la HMD no lo permite); las opciones son pedirle permiso a la HMD, usar tablas modelo (Coale-Demeny o similares) con su incertidumbre explícita, o cargar tablas de un país que sí publique las suyas (INE de Chile, por ejemplo).
 3. **Fase 3 (hecha, en parte):** 28 epidemias, con las de América y Chile, y las muertes por año en Londres. **Falta verificarlas:** solo 3 cifras de cólera y la serie de Londres lo están; el resto es de memoria. Desde el contenedor no llega ninguna fuente de referencia (Wikipedia, OMS, SciELO…), solo GitHub, así que verificarlas y poner cifras para Chile (viruela de 1872, cólera de 1886) hay que hacerlo con acceso a esas fuentes.
 4. **Fase 4:** ampliar y verificar el glosario por idioma, y un registro de revisión por hablantes nativos.
-5. **Fase 5:** vista HTML y un port a PHP probado con los mismos vectores.
+5. **Fase 5 (hecha):** vista HTML (`vista.html`) y los ports a PHP y a JavaScript, probados con los mismos vectores.
 
 Fuentes previstas: Our World in Data, Gapminder, Clio-Infra y UN WPP (licencias abiertas); la Human Mortality Database no se redistribuye y solo se citaría. Para el glosario: las *Bills of Mortality*, la nosología de Farr, las clasificaciones de Bertillon y las revisiones de la CIE.
