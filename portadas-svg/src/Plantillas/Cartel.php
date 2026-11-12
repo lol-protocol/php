@@ -38,6 +38,12 @@ final class Cartel extends Plantilla
     private const TRADUCTOR_TAMANO_MAX = 3.4;
     private const TRADUCTOR_TAMANO_MIN = 2.4;
 
+    /** El cartel es solo letra: no dibuja la imagen del libro. */
+    public function dibujaImagen(): bool
+    {
+        return false;
+    }
+
     public function coloresPorDefecto(): array
     {
         return ['fondo' => '#f4f1ea', 'texto' => '#16161a', 'acento' => '#e8452c'];

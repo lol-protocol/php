@@ -70,7 +70,7 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `plantilla` | `clasica` | `clasica`, `sobria`, `tipografica`, `ilustrada` o `cartel`. Ver [Plantillas](docs/plantillas.md). |
 | `tema` | de la plantilla | `claro` u `oscuro`. |
 | `volumen` | vacío | Número de volumen de una serie: va en el lomo y en el pie. |
-| `imagen`, `logo` | vacío | Ilustración de la portada (plantilla `ilustrada`) y logo de la editorial (contratapa). SVG, PNG, JPG, GIF o WebP de hasta 2 MB. |
+| `imagen`, `logo` | vacío | Ilustración de la portada (en `ilustrada`; marca de agua en las demás, salvo `cartel`) y logo de la editorial (contratapa). SVG, PNG, JPG, GIF o WebP de hasta 2 MB. |
 | `idioma` | `es` | Idioma del texto de la cubierta (`es`, `en`, `pt-BR`…). Va en cada SVG para los lectores de pantalla, y decide el idioma de las frases de la ficha (`es`, `en`, `pt` y `fr`; otros caen al español, editables en `datos/frases.json`) y las mayúsculas del autor (turco, azerí). |
 | `colores.fondo`, `colores.texto`, `colores.acento` | los de la plantilla | Colores en `#rrggbb`. |
 | `degradado` | sin degradado | Degradado del fondo de toda la cubierta. Ver [Medidas y degradados](docs/medidas-y-degradados.md). |
@@ -154,7 +154,7 @@ pruebas/dibujos.json     huellas de los dibujos, para que no cambien sin querer
 
 - El ajuste de texto mide con anchos reales y con kerning de los pares latinos, griegos y cirílicos; en los alfabetos sin fuente no se ajusta, así que ahí la línea puede quedar algo más corta de lo posible. Las letras que las fuentes no cubren (ver [Fuentes](docs/fuentes.md)) se miden con un ancho medio.
 - Cada SVG pesa unos 20–60 KB por las fuentes incrustadas.
-- Solo la plantilla `ilustrada` dibuja una imagen en la portada; las demás son de texto y adornos de línea.
+- La imagen de la portada es una ilustración solo en `ilustrada`; en clásica, sobria y tipográfica es una marca de agua al 25 % cuyo contraste con el texto no se mide, y el cartel no la dibuja.
 - Probado en Chromium, CairoSVG, resvg, librsvg (`rsvg-convert`) e Inkscape 1.2. Todos menos Chromium **ignoran las fuentes incrustadas** (Inkscape lo avisa: «font face rule limited support») y usan otras: la maqueta aguanta, pero no se ve igual. Para esos visores, `--trazos`, que se ve igual que en Chromium. No he probado lectores de ebook, que pueden hacer lo mismo. El enlace de Python de resvg (`resvg-py`) no acepta el tamaño en mm del `width`/`height`; hay que pasarlo a píxeles.
 - No genera el código de barras ni el PDF para imprenta; se obtiene desde los SVG con una herramienta externa.
 - Hay cinco plantillas; para otra, ver [Plantillas](docs/plantillas.md).

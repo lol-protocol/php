@@ -146,8 +146,8 @@ final class Generador
             'La solapa de la contratapa' => $t->solapaContratapa, 'La solapa de la portada' => $t->solapaPortada,
         ];
         $avisos = [];
-        if ($libro->imagen !== null && $libro->plantilla !== 'ilustrada') {
-            $avisos[] = "la imagen no se usa: la plantilla '{$libro->plantilla}' no dibuja ilustración (usa la plantilla 'ilustrada').";
+        if ($libro->imagen !== null && !Plantilla::crear($libro->plantilla)->dibujaImagen()) {
+            $avisos[] = "la imagen no se usa: la plantilla '{$libro->plantilla}' es solo de letra (usa 'ilustrada' para una ilustración, o una plantilla con marca de agua).";
         }
         foreach ($textos as $nombre => $texto) {
             // Con las letras de las fuentes extra el libro sale a trazos solo: aquí falta lo que ni ellas tienen.
