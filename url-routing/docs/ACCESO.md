@@ -203,7 +203,7 @@ php bin/persona.php rectificacion 6128473105 personas.apellidos   # anota que se
   número, el motivo y el estado: **no** quién los pidió ni lo que escribió, que son datos de quien pidió) y las
   correcciones anotadas (qué campo y cuándo, nunca los valores). Los
   parientes aparecen solo como cantidades: sus nombres son sus datos. Es lo que mira quien administra, **no lo que se le manda** a quien lo pide: el JSON
-  no viaja por correo en claro ni incluye solo lo que un visitante ve. A la persona se le manda un resumen legible
+  trae también lo que el sitio oculta y no viaja por correo en claro. A la persona se le manda un resumen legible
   escrito a mano (ver [`SOLICITUDES.md`](SOLICITUDES.md), «Qué responder»).
 - **`rectificacion`** no cambia la ficha (eso se hace a mano, ver [`SOLICITUDES.md`](SOLICITUDES.md)): solo anota en
   `rectificaciones_persona` qué campo se corrigió, para poder probarlo. Esa fila se conserva si la persona se suprime.
