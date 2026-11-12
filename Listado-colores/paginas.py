@@ -2,7 +2,6 @@
 """
 
 from constantes import *  # noqa: F401,F403
-from md import celda, orden_idiomas
 from validadores import alias_de, hex_de_concepto, ids_de
 
 
@@ -174,3 +173,7 @@ def indice_idiomas(anotada):
         partes.append(f"| `{codigo}` | {etiqueta} | [por-idioma/{codigo}.md](por-idioma/{codigo}.md) |")
     partes.append("")
     return "\n".join(partes)
+
+
+# Lo que reexporta generar-tabla.py con `import *`: lo definido aquí, no lo importado.
+__all__ = [n for n, v in list(globals().items()) if not n.startswith("_") and (n.isupper() or getattr(v, "__module__", None) == __name__)]

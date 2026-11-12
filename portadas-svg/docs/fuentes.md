@@ -57,7 +57,7 @@ Es un bidi mínimo: no resuelve números ni paréntesis dentro de un tramo, no a
 
 ## El ancho del texto
 
-El ajuste de títulos, subtítulos, rótulos y párrafos mide el texto con los anchos reales de cada letra, que están en `datos/anchos.json`. Suma además el kerning de los pares ASCII (ver [Kerning](#kerning)); lo que no ajusta (letras con acento, por ejemplo) hace que mida igual o algo más que un navegador, y un texto que cabe en la estimación cabe también al dibujarlo. Los títulos se reparten en líneas parejas, sin dejar una palabra suelta en la última.
+El ajuste de títulos, subtítulos, rótulos y párrafos mide el texto con los anchos reales de cada letra, que están en `datos/anchos.json`. Suma además el kerning de los pares latinos, griegos y cirílicos (ver [Kerning](#kerning)); lo que no ajusta (los alfabetos sin fuente) hace que mida igual o algo más que un navegador, y un texto que cabe en la estimación cabe también al dibujarlo. Los títulos se reparten en líneas parejas, sin dejar una palabra suelta en la última.
 
 ## Volver a preparar las fuentes
 
@@ -74,4 +74,14 @@ Una prueba compara la tabla de anchos con las medidas de un navegador.
 
 ## Kerning
 
-`datos/kerning.json` guarda el ajuste de cada par de letras ASCII seguidas dentro de una palabra («AV» se acerca, por ejemplo), calculado con HarfBuzz. Lo usan la medida del texto y el texto a trazos. Los pares con letras fuera de ASCII no se ajustan (ahí la medida sale igual o algo mayor que la real, no menor). Se regenera con `python3 herramientas/kerning.py` (necesita `fonttools`, `brotli` y `uharfbuzz`), y `--comprobar` falla si no está al día.
+`datos/kerning.json.gz` guarda el ajuste de los pares de letras latinas (con acentos, latín extendido y vietnamita), griegas y cirílicas dentro de una palabra («AV» se acerca, por ejemplo), calculado con HarfBuzz. Lo usan la medida del texto y el texto a trazos. Una letra con acento se ajusta como su base cuando la fuente lo hace así (el archivo no repite «á» y «a»), y los ajustes menores de 0,005 em no se guardan. No hay kerning entre escrituras distintas ni en los alfabetos sin fuente (ahí la medida sale igual o algo mayor que la real).
+
+Se calcula con la fuente completa (no con los trozos de `fuentes/`, que no traen los pares entre trozos), de las instancias estáticas de `@expo-google-fonts/inter@0.4.2` y `@expo-google-fonts/source-serif-4@0.4.2`:
+
+```bash
+pip install fonttools brotli uharfbuzz
+npm pack @expo-google-fonts/inter@0.4.2 @expo-google-fonts/source-serif-4@0.4.2
+for f in *.tgz; do d=${f%.tgz}; mkdir $d; tar xzf $f -C $d; done
+python3 herramientas/kerning.py .                # escribe datos/kerning.json.gz
+python3 herramientas/kerning.py . --comprobar    # falla si no está al día
+```

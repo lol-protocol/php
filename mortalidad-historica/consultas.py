@@ -4,7 +4,9 @@ Ninguna función recibe una persona, una ficha ni un origen: trabajan con térmi
 que hablan de causas devuelven correspondencias posibles de un **término** con su confianza, no
 diagnósticos (ver «Qué no hace» en el README).
 """
-from comun import IDIOMAS, REGIONES, filas_csv, normalizar
+import functools
+
+from comun import IDIOMAS, REGIONES, SEXOS, filas_csv, normalizar
 
 _ORDEN_CONFIANZA = {"alta": 0, "media": 1, "baja": 2}
 
@@ -55,3 +57,45 @@ def epidemias_en(anio, region=None):
 def hitos_de(codigo):
     """Hitos de registro (civil o parroquial) de un país (ISO alfa-2), del más antiguo al más reciente."""
     return sorted((f for f in filas_csv("hitos_registro") if f["codigo"] == codigo), key=lambda f: int(f["desde"]))
+
+
+@functools.cache
+def _periodos_de_esperanza():
+    """{(código, sexo, edad): [(desde, hasta, esperanza, supervivencia o None)]} de esperanza_vida.csv."""
+    indice = {}
+    for f in filas_csv("esperanza_vida"):
+        supervivencia = float(f["supervivencia_hasta_edad"]) if f["supervivencia_hasta_edad"] else None
+        indice.setdefault((f["codigo"], f["sexo"], int(f["edad"])), []).append(
+            (int(f["desde"]), int(f["hasta"]), float(f["esperanza_restante"]), supervivencia))
+    return indice
+
+
+def _periodo_que_cubre(codigo, anio, edad, sexo):
+    if sexo not in SEXOS:
+        raise ValueError(f"sexo «{sexo}»: debe ser uno de {SEXOS}")
+    for desde, hasta, esperanza, supervivencia in _periodos_de_esperanza().get((codigo, sexo, edad), ()):
+        if desde <= anio <= hasta:
+            return esperanza, supervivencia
+    return None
+
+
+def esperanza_restante(codigo, anio, edad=0, sexo="T"):
+    """Años que le quedaban por vivir, en promedio, a quien tenía esa edad en ese país y ese año.
+
+    `codigo` es un ISO alfa-2; `sexo`, `M`, `F` o `T` (ambos). Es una cifra de **período** (la mortalidad de
+    la década que contiene `anio`), no de una generación, y un promedio de toda la población: no dice cuánto
+    iba a vivir una persona. Devuelve None si no hay dato: país sin serie, año fuera de 1800-2009, o una
+    edad que todavía no está (hoy solo 0 y 5; 5 solo para ambos sexos). No interpola entre edades.
+    """
+    encontrado = _periodo_que_cubre(codigo, anio, edad, sexo)
+    return None if encontrado is None else encontrado[0]
+
+
+def supervivencia(codigo, anio, edad=5, sexo="T"):
+    """Probabilidad de llegar con vida a esa edad (de 0 a 1), en la década que contiene `anio`.
+
+    Mismas reglas y límites que `esperanza_restante`; hoy solo se guarda para la edad 5 (una mortalidad de
+    0 a 5 años de 300 por mil es una supervivencia de 0,7). Devuelve None si no hay dato.
+    """
+    encontrado = _periodo_que_cubre(codigo, anio, edad, sexo)
+    return None if encontrado is None else encontrado[1]

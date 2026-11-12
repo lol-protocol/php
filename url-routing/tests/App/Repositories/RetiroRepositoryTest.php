@@ -266,4 +266,56 @@ class RetiroRepositoryTest extends TestCase
         $this->assertSame([$n], array_column($repo->pendientes(strtotime('2026-03-04 07:06:07')), 'id'));
         $this->assertSame(2, $repo->pendientes(strtotime('2026-03-04 07:06:07'))[0]['horas']);
     }
+
+    #[DataProvider('drivers')]
+    public function testAvisarNuevosClaimsEachPendingOrHiddenPedidoOnceAndNoOther(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $primero = $repo->crear('persona', 6128473105, 'me_nombra', 'Uno.', 'a@example.com', null, strtotime('2026-05-01 10:00:00'));
+        $oculto = $repo->crear('grupo', 582317, 'otro', 'Dos.', 'b@example.com', null, strtotime('2026-05-01 11:00:00'));
+        $repo->decidir($oculto, 'ocultar', null);
+        $resuelto = $repo->crear('registro', 81372002, 'otro', 'Tres.', 'c@example.com', null, strtotime('2026-05-01 12:00:00'));
+        $repo->decidir($resuelto, 'rechazar', null);
+
+        $nuevos = $repo->avisarNuevos(strtotime('2026-05-02 08:00:00'));
+
+        $this->assertSame([$primero, $oculto], array_column($nuevos, 'id'), 'oldest first; one already decided needs no alert');
+        $this->assertSame(['pendiente', 'oculto'], array_column($nuevos, 'estado'));
+        $this->assertSame([], $repo->avisarNuevos(), 'each pedido is announced once');
+        $this->assertSame('2026-05-02 08:00:00', (string)$db->fetchValue('SELECT avisado_en FROM pedidos_retiro WHERE id = ?', [$primero]));
+
+        $despues = $repo->crear('persona', 6128473101, 'familiar', 'Cuatro.', 'd@example.com');
+        $this->assertSame([$despues], array_column($repo->avisarNuevos(), 'id'), 'only what arrived since');
+        $this->assertSame(['id', 'tipo', 'recurso_id', 'motivo', 'estado', 'creado_en'], array_keys($nuevos[0]), 'nothing about who asked nor what they wrote');
+    }
+
+    public function testThePedidosThatWereThereBeforeTheMigrationAreNotAnnouncedAsNew(): void
+    {
+        $sitio = sys_get_temp_dir() . '/migraciones-avisados-' . getmypid();
+        $dir = $sitio . '/migrations';
+        @mkdir($dir, 0777, true);
+        $origen = dirname(__DIR__, 3) . '/database/genealogy/migrations';
+        foreach (glob($origen . '/*.sql') ?: [] as $archivo) {
+            if (!str_contains($archivo, '012_')) {
+                copy($archivo, $dir . '/' . basename($archivo));
+            }
+        }
+        $db = new \App\Support\Database('sqlite::memory:');
+        $migrar = fn() => (new \App\Support\Migrator($db, $sitio, 'genealogy'))->migrate();
+        try {
+            $migrar();
+            $db->execute("INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, creado_en) VALUES (1, 'persona', 6128473105, 'otro', 'x', 'a@example.com', '2026-01-02 03:04:05')");
+
+            copy($origen . '/012_pedidos_retiro_avisados.sql', $dir . '/012_pedidos_retiro_avisados.sql');
+            $migrar();
+
+            $this->assertSame('2026-01-02 03:04:05', (string)$db->fetchValue('SELECT avisado_en FROM pedidos_retiro WHERE id = 1'), 'stamped with its arrival');
+            $this->assertSame([], (new RetiroRepository($db))->avisarNuevos(), 'the daily reminder already covers the old ones');
+        } finally {
+            array_map('unlink', glob($dir . '/*') ?: []);
+            @rmdir($dir);
+            @rmdir($sitio);
+        }
+    }
 }

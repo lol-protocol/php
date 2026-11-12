@@ -23,7 +23,7 @@ class CercaniaConCota(unittest.TestCase):
         for décima in range(0, 1001):
             l_media = décima / 10
             s_l = 1 + 0.015 * (l_media - 50) ** 2 / (20 + (l_media - 50) ** 2) ** 0.5
-            self.assertLess(s_l, gt.COTA_SL, l_media)
+            self.assertLess(s_l, cercania.COTA_SL, l_media)
 
     def test_da_lo_mismo_que_calcular_las_148_en_una_muestra_con_extremos(self):
         completa = REAL["completa"][::97]  # unos 330 nombres repartidos

@@ -11,12 +11,10 @@ import io
 import json
 import re
 import sqlite3
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from md import orden_idiomas  # noqa: E402  (módulos de esta carpeta)
-from normalizacion import normalizar  # noqa: E402
+from md import orden_idiomas
+from normalizacion import normalizar
 
 # Orden de las fuentes en el gazetteer y significado de cada una.
 FUENTES = ["css", "lexico"]

@@ -272,4 +272,54 @@ class PedidosRetiroCliTest extends TestCase
         $this->assertSame(0, $codigo, 'on time');
         $this->assertStringContainsString('espera hace 5 h', $salida);
     }
+
+    public function testSoloNuevosIsSilentWhenNothingArrived(): void
+    {
+        [$codigo, $salida, $error] = $this->correr(['--solo-nuevos']);
+
+        $this->assertSame([0, '', ''], [$codigo, $salida, $error], 'cron mails whatever is printed');
+    }
+
+    public function testSoloNuevosAnnouncesEachPedidoOnceWithoutWhoAskedNorWhatTheyWrote(): void
+    {
+        $numero = $this->pedido(1, 'Mi dirección es Calle Falsa 123.', 'secreto@example.com');
+
+        [$codigo, $salida] = $this->correr(['--solo-nuevos']);
+
+        $this->assertSame(0, $codigo);
+        $this->assertStringContainsString('Llegó 1 pedido de retiro:', $salida);
+        $this->assertStringContainsString("n.º {$numero}  persona 6128473105  «Habla de mí»", $salida);
+        $this->assertStringContainsString('/0/3/', $salida);
+        $this->assertStringNotContainsString('secreto@example.com', $salida);
+        $this->assertStringNotContainsString('Calle Falsa', $salida);
+        $this->assertSame([0, ''], array_slice($this->correr(['--solo-nuevos']), 0, 2), 'the next run has nothing new to say');
+
+        $otro = $this->pedido(1);
+        [, $tercera] = $this->correr(['--solo-nuevos']);
+        $this->assertStringContainsString("n.º {$otro}", $tercera);
+        $this->assertStringNotContainsString("n.º {$numero}", $tercera, 'only the one that arrived since');
+    }
+
+    public function testSoloNuevosDoesNotHideOrListOrChangeTheExitCode(): void
+    {
+        $tarde = $this->pedido(30);
+
+        [$codigo, $salida] = $this->correr(['--solo-nuevos']);
+
+        $this->assertSame(0, $codigo, 'late, but this job only announces');
+        $this->assertStringNotContainsString('VENCIDO', $salida);
+        $this->assertStringNotContainsString('espera hace', $salida, 'no listing of what waits: that is the daily one');
+        $this->assertFalse($this->repo->retirado('persona', 6128473105), 'and it hides nothing');
+        $this->assertSame('pendiente', $this->db->fetchValue('SELECT estado FROM pedidos_retiro WHERE id = ?', [$tarde]));
+    }
+
+    public function testSoloNuevosGoesAloneAndSaysSo(): void
+    {
+        foreach ([['--solo-nuevos', '--ocultar'], ['--solo-nuevos', '--depurar'], ['--solo-nuevos', '--horas=48']] as $argumentos) {
+            [$codigo, , $error] = $this->correr($argumentos);
+
+            $this->assertSame(2, $codigo, implode(' ', $argumentos));
+            $this->assertStringContainsString('--solo-nuevos va solo', $error);
+        }
+    }
 }

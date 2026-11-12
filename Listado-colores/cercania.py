@@ -72,3 +72,7 @@ def texto_completa(completa, cercanias):
     for fila, (css, distancia, cercania) in zip(completa, cercanias):
         escritor.writerow([fila["nombre_ingles"], fila["hex"], fila["curada"], css, f"{distancia:.2f}", cercania])
     return salida.getvalue()
+
+
+# Lo que reexporta generar-tabla.py con `import *`: lo definido aquí, no lo importado.
+__all__ = [n for n, v in list(globals().items()) if not n.startswith("_") and (n.isupper() or getattr(v, "__module__", None) == __name__)]

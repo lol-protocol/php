@@ -11,10 +11,12 @@ namespace PortadasSvg;
 final class Anchos
 {
     private const RUTA = __DIR__ . '/../datos/anchos.json';
-    private const KERNING = __DIR__ . '/../datos/kerning.json';
+    private const KERNING = __DIR__ . '/../datos/kerning.json.gz';
 
     /** @var array<string, MedidaFuente> */
     private static array $caras = [];
+    /** @var array<mixed>|null el contenido de datos/kerning.json.gz, leído una sola vez */
+    private static ?array $kerning = null;
     /** @var array<mixed>|null el contenido de datos/anchos.json, leído una sola vez para todas las caras */
     private static ?array $datos = null;
 
@@ -46,30 +48,47 @@ final class Anchos
     }
 
     /**
-     * El kerning de una cara, de datos/kerning.json. Sin ese archivo, o sin esa cara, no hay ajuste.
+     * El kerning de una cara, de datos/kerning.json.gz (ver herramientas/kerning.py). Sin ese archivo, o sin esa cara,
+     * no hay ajuste.
      *
-     * @return array<string, int>
+     * @return array{primero: array<string, string>, segundo: array<string, string>, pares: array<string, int>}
      */
-    private static function pares(string $familia, string $estilo, int $peso, int $unidades): array
+    private static function kerning(string $familia, string $estilo, int $peso, int $unidades): array
     {
-        $contenido = is_file(self::KERNING) ? file_get_contents(self::KERNING) : false;
-        $datos = $contenido === false ? null : json_decode($contenido, true, 16);
-        $caras = is_array($datos) && ($datos['unidades'] ?? null) === $unidades && is_array($datos['caras'] ?? null) ? $datos['caras'] : [];
+        $vacio = ['primero' => [], 'segundo' => [], 'pares' => []];
+        if (self::$kerning === null) {
+            $comprimido = is_file(self::KERNING) ? file_get_contents(self::KERNING) : false;
+            $contenido = $comprimido === false ? false : gzdecode($comprimido);
+            $datos = $contenido === false ? null : json_decode($contenido, true, 16);
+            self::$kerning = is_array($datos) ? $datos : [];
+        }
+        $datos = self::$kerning;
+        $caras = ($datos['unidades'] ?? null) === $unidades && is_array($datos['caras'] ?? null) ? $datos['caras'] : [];
         $porFamilia = is_array($caras[$familia] ?? null) ? $caras[$familia] : [];
         $porEstilo = is_array($porFamilia[$estilo] ?? null) ? $porFamilia[$estilo] : [];
-        $pares = $porEstilo[(string) $peso] ?? null;
-        if (!is_array($pares)) {
-            return [];
+        $cara = $porEstilo[(string) $peso] ?? null;
+        if (!is_array($cara)) {
+            return $vacio;
         }
 
-        $resultado = [];
-        foreach ($pares as $par => $ajuste) {
+        $texto = static function (mixed $tabla): array {
+            $resultado = [];
+            foreach (is_array($tabla) ? $tabla : [] as $clave => $valor) {
+                if (is_string($valor)) {
+                    $resultado[(string) $clave] = $valor;
+                }
+            }
+
+            return $resultado;
+        };
+        $pares = [];
+        foreach (is_array($cara['pares'] ?? null) ? $cara['pares'] : [] as $par => $ajuste) {
             if (is_int($ajuste)) {
-                $resultado[(string) $par] = $ajuste;
+                $pares[(string) $par] = $ajuste;
             }
         }
 
-        return $resultado;
+        return ['primero' => $texto($cara['primero'] ?? null), 'segundo' => $texto($cara['segundo'] ?? null), 'pares' => $pares];
     }
 
     private static function cargar(string $familia, string $estilo, int $peso): MedidaFuente
@@ -102,6 +121,8 @@ final class Anchos
             $formas[(string) $palabra] = $avance;
         }
 
-        return new MedidaFuente($anchos, $cara['promedio'], $unidades, $extras, $formas, self::pares($familia, $estilo, $peso, $unidades));
+        $kerning = self::kerning($familia, $estilo, $peso, $unidades);
+
+        return new MedidaFuente($anchos, $cara['promedio'], $unidades, $extras, $formas, $kerning['primero'], $kerning['segundo'], $kerning['pares']);
     }
 }
