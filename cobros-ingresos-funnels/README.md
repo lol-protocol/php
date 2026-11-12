@@ -389,7 +389,7 @@ Occidental no están. El catálogo sale de ISO 4217 y 3166-1 **tal como los cono
 escribió, sin cotejarlos contra la fuente**: antes de usarlo en producción conviene
 compararlo con la lista vigente de ISO 4217 (el cambio de moneda de un país es un `UPDATE
 paises SET moneda_codigo = ...` en una migración nueva). La mayoría de edad de los países
-nuevos es 18, y hay dudas conocidas (Puerto Rico, 21 según su código civil).
+nuevos es 18, salvo Puerto Rico, que es 21 según su código civil (migración `017`).
 
 **Decimales de cada moneda.** `monedas.decimales` guarda los de ISO 4217: 0 para el yen, el
 won, el peso chileno o los francos CFA; 3 para los dinares y el rial omani; 2 para el resto.
@@ -408,7 +408,7 @@ el país (la app ya lo valida antes y dice cuál es la edad; el trigger de las
 migraciones `007` y `010` cubre cualquier otro camino: un script, una carga directa).
 La edad es `paises.mayoria_de_edad` (migración `010`): 18 en casi todos, 19 en
 Canadá, Corea del Sur y Argelia, 20 en Tailandia, 21 en Singapur, Egipto, Emiratos
-Árabes Unidos, Kuwait, Bahréin y Honduras. **Esa lista no es asesoría legal**: hay
+Árabes Unidos, Kuwait, Bahréin, Honduras y Puerto Rico (migración `017`). **Esa lista no es asesoría legal**: hay
 países donde la edad depende del acto o de la región, y quedaron en 18, con dudas,
 Estados Unidos (19 en Alabama y Nebraska, 21 en Mississippi), Nueva Zelanda,
 Indonesia, Túnez, Camerún, Nicaragua y Bolivia. Antes de atender clientes de esos
@@ -741,10 +741,12 @@ ni por un centavo, y el monto de una boleta no puede quedar un centavo por debaj
 ya cobrado.
 
 El monto que llega de un formulario se lee con `Dinero::deTexto()` (a través de
-`Peticion::monto()`): solo dígitos y punto decimal. `(float) "1.500,50"` da `1.5` sin
-avisar, porque PHP corta en la primera coma, y un script que mandara el formato latino
-creaba una boleta o un pago por una milésima parte. Lo que no es un monto vale 0 y el
-formulario vuelve con «monto válido»; el navegador (`type="number"`) siempre manda punto.
+`Peticion::monto()`): solo dígitos y punto decimal, y a lo sumo dos decimales. `(float) "1.500,50"`
+da `1.5` sin avisar, porque PHP corta en la primera coma, y un script que mandara el formato latino
+creaba una boleta o un pago por una milésima parte. Con tres decimales o más no se redondea, se
+rechaza: `10.005` no se guarda como `10.01`, y `1.500` (el «mil quinientos» de quien usa el punto de
+miles) no se lee como `1.5`. Lo que no es un monto vale 0 y el formulario vuelve con «monto válido»;
+el navegador (`type="number"`, `step="0.01"`) siempre manda punto y a lo sumo dos decimales.
 
 Otra cosa es la regla deliberada de que **un centavo o menos cuenta como cero**, para que
 un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con saldo de

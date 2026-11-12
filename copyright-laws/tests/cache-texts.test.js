@@ -297,3 +297,50 @@ test("robots.txt is honoured: our group wins over *, longest rule wins, every re
     rmSync(isolated, { recursive: true, force: true });
   }
 });
+
+test("--field-sources also downloads the per-field URLs of field_sources.csv, once per distinct URL", { skip }, () => {
+  const isolated = mkdtempSync(join(tmpdir(), "laws-fields-"));
+  try {
+    const main = `${server.url}/law.html`;
+    const other = `${server.url}/plain.txt`;
+    const bundle = { jurisdictions: [{ code: "XF", tld: "xf", name: "F", region: "europe", lawCount: 2, laws: [
+      { law_name: "Ley, con coma", linked_resources: main },
+      { law_name: "Sin enlace", linked_resources: "" },
+    ] }] };
+    writeFileSync(join(isolated, "index.json"), JSON.stringify(bundle));
+    writeFileSync(join(isolated, "field_sources.csv"), [
+      "country_code,law_name,field,url,confidence,checked",
+      `XF,"Ley, con coma",protection_type,${other},high,2026-10-22`,
+      `XF,"Ley, con coma",term,${other},high,2026-10-22`,
+      `XF,"Ley, con coma",title,${main},high,2026-10-22`,
+      `XF,"Ley, con coma",authority,file:///etc/passwd,high,2026-10-22`,
+      `XF,"Sin enlace",term,${other},high,2026-10-22`,
+      `XZ,"Otra ley",term,${other},high,2026-10-22`,
+    ].join("\n") + "\n");
+    const env = { LAWS_DATA_DIR: isolated };
+    const common = ["--delay=0", "--timeout=5", "--allow-private-hosts"];
+
+    const plain = php([...common], { env });
+    assert.match(plain.stdout, /Done: 1 new, 0 updated, 0 unchanged, 0 skipped, 0 failed/); // without the flag: as before
+    assert.equal(index_of(isolated, "xf").length, 1);
+
+    const plan = php([...common, "--field-sources", "--dry-run"], { env }).stdout;
+    const slug = /\[plan\] xf\/(ley-con-coma--[0-9a-f]{8})\.md/.exec(plan)?.[1];
+    assert.ok(slug, plan);
+    assert.equal(plan.match(/\[plan\]/g).length, 3); // reference URL + the plain.txt page of each law; not the repeated, file:// or other-country rows
+    assert.match(plan, /\[plan\] xf\/sin-enlace--[0-9a-f]{8}\.md/);
+
+    const run = php([...common, "--field-sources"], { env });
+    assert.match(run.stdout, /Done: 2 new, 0 updated, 1 unchanged, 0 skipped, 0 failed/);
+    const md = readFileSync(join(isolated, "xf", "texts", `${slug}.md`), "utf-8");
+    assert.match(md, new RegExp(`^---\\nsource: ${JSON.stringify(other).replace(/[/.]/g, "\\$&")}\\nlaw: "Ley, con coma \\(protection_type, term\\)"`));
+    assert.equal(index_of(isolated, "xf").length, 3);
+
+    // Without the flag the extra files are treated as gone, like any text that left the dataset.
+    const back = php([...common], { env });
+    assert.match(back.stdout, new RegExp(`\\[gone\\] xf/${slug}\\.md`));
+    assert.ok(!existsSync(join(isolated, "xf", "texts", `${slug}.md`)));
+  } finally {
+    rmSync(isolated, { recursive: true, force: true });
+  }
+});

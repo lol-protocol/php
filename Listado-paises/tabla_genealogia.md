@@ -120,8 +120,8 @@
 | Kenia | estado | África | 56.4 | 214.59 | 0.628 | 2133 | 5683 | 35.0 | 1.0 | parcial | 50.5 | 31 | 2 | 3 | 6 | no | Inglés y suajili; protestas recientes con restricciones puntuales; mercado digital activo |
 | Kosovo | entidad disputada | Europa | 1.68 | 27.08 | — | 7027 | — | — | — | — | — | — | 2 | 3 | 6 | no | No reconocido por todos los países y fuera de la ONU; albanés y serbio; usa el euro |
 | Lesoto | estado | África | 2.34 | 10.92 | 0.550 | 1023 | 2596 | 51.8 | 10.6 | libre | 63 | 39 | 2 | 3 | 6 | no | Enclave dentro de Sudáfrica; inglés y sesoto; economía dependiente del rand |
-| Liberia | estado | África | 5.61 | 68.55 | 0.510 | 851 | 1617 | 32.2 | 2.6 | parcial | 53.2 | 25 | 2 | 3 | 6 | no | Inglés; diáspora afroamericana con interés en su linaje; registros dispersos; infraestructura de pagos y conectividad limitadas |
 | Líbano | estado | Asia | 5.81 | 205.17 | 0.752 | 4473 | 11330 | 80.6 | 11.7 | parcial | 41.6 | 24 | 3 | 2 | 6 | no | Colapso económico desde 2019; control de capital de facto; diáspora muy grande; árabe, francés e inglés |
+| Liberia | estado | África | 5.61 | 68.55 | 0.510 | 851 | 1617 | 32.2 | 2.6 | parcial | 53.2 | 25 | 2 | 3 | 6 | no | Inglés; diáspora afroamericana con interés en su linaje; registros dispersos; infraestructura de pagos y conectividad limitadas |
 | Macao | territorio | Asia | 0.72 | 1.07 | — | 72005 | — | 89.8 | — | — | — | — | 2 | 3 | 6 | no | Región administrativa especial de China; portugués y chino; regulación de internet alineada con China |
 | Macedonia del Norte | estado | Europa | 1.82 | 41.26 | 0.815 | 9292 | 23344 | 93.1 | 29.3 | parcial | 58.9 | 42 | 2 | 3 | 6 | no | Registros otomanos y civiles en transición; macedonio y albanés; nombre del país resuelto en 2019 |
 | Malaui | estado | África | 21.7 | 72.12 | 0.517 | 522 | 1648 | 19.0 | 2.0 | parcial | 57.4 | 34 | 2 | 3 | 6 | no | Inglés; crisis de divisas; registros civiles limitados |

@@ -10,6 +10,12 @@ namespace PortadasSvg;
  */
 final class Texto
 {
+    /**
+     * Lo que separa palabras: cualquier espacio menos los de no ruptura (U+00A0, U+202F, U+2007, U+2060), que unen
+     * lo que está a sus lados («siglo II», «200 páginas») para que no se parta entre dos líneas.
+     */
+    private const ESPACIOS = '[^\S\x{00A0}\x{202F}\x{2007}\x{2060}]+';
+
     /** Paso al bajar el tamaño de letra buscando el que cabe, en mm. */
     private const PASO = 0.2;
 
@@ -102,7 +108,7 @@ final class Texto
         }
 
         $palabraMasAncha = 0.0;
-        foreach (preg_split('/\s+/u', trim($texto), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $palabra) {
+        foreach (preg_split('/' . self::ESPACIOS . '/u', trim($texto), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $palabra) {
             $palabraMasAncha = max($palabraMasAncha, $medida->em($palabra) * $tamano);
         }
 
@@ -150,7 +156,7 @@ final class Texto
     {
         $lineas = [];
         $actual = '';
-        foreach (preg_split('/\s+/u', trim($parrafo), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $palabra) {
+        foreach (preg_split('/' . self::ESPACIOS . '/u', trim($parrafo), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $palabra) {
             // Una palabra más ancha que la línea se parte por letras.
             while (!$cabe($palabra)) {
                 if ($actual !== '') {

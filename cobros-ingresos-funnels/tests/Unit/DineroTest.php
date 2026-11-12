@@ -34,6 +34,9 @@ final class DineroTest extends TestCase
         self::assertSame(100.0, Dinero::deTexto('100'));
         self::assertSame(602.85, Dinero::deTexto(' 602.85 '), 'los espacios de los bordes no cuentan');
         self::assertSame(0.0, Dinero::deTexto('0'));
+        self::assertSame(1500.5, Dinero::deTexto('1500.5'), 'un decimal');
+        self::assertSame(0.01, Dinero::deTexto('0.01'), 'un centavo');
+        self::assertSame(999_999_999_999.99, Dinero::deTexto('999999999999.99'), 'el tope de la columna');
     }
 
     /**
@@ -54,6 +57,10 @@ final class DineroTest extends TestCase
             'mas' => ['+5'],
             'sin parte entera' => ['.5'],
             'punto suelto' => ['5.'],
+            'tres decimales' => ['10.005'],
+            'tres decimales que parecen miles' => ['1.500'],
+            'tres decimales en cero' => ['1.000'],
+            'muchos decimales' => ['0.0000001'],
             'texto' => ['abc'],
             'vacio' => [''],
             'infinito' => ['INF'],

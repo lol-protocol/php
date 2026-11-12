@@ -131,6 +131,16 @@ datos["terminos"][d["regente"]]["fr"]                 # 'Soleil'
 
 Las funciones devuelven los diccionarios de `datos/signos.json` tal cual y lanzan excepción si la entrada no es válida (`TypeError` si la fecha no es `datetime.date` o el año no es `int`, `ValueError` si el sistema, el idioma o el signo no existen, o si se comparan signos de zodiacos distintos).
 
+**Husos horarios.** Cada tradición cuenta el día como ella lo define, y no hay una regla única para todas:
+
+| Consulta | Cómo toma el día | Por qué |
+|---|---|---|
+| `signo_occidental`, `cuspide`, `decanato`, `angel_de_fecha`, `demonio_de_fecha`, `arbol_celta`, `arbol_de_fecha`, `camino_de_vida`, `anio_personal` | El día del calendario de la fecha, tal cual: un `datetime` con huso usa su propio día, sin convertirlo | Van atadas al día en que nació la persona, en su lugar |
+| `animal_chino_de_fecha` | Un `datetime` **con** huso se pasa a la hora de China (UTC+8) antes de tomar el día | El Año Nuevo chino se define a esa hora: las 20:00 UTC del 16/02/2026 ya son el 17/02 en China, Caballo |
+| `nakshatra_de_instante`, `longitud_de_la_luna` | Es un instante físico: un `datetime` con huso se convierte; uno **sin** huso se toma como UTC; un `date`, a las 12:00 UTC | La Luna está en un sitio concreto en cada instante, sea cual sea el calendario |
+
+En todas, un `date` o un `datetime` **sin** huso se toma tal cual (nadie le inventa un huso), salvo en la Luna, que necesita un instante. Se pensó pasar todo a UTC y se descartó: rompería el año chino en las primeras ocho horas de cada Año Nuevo (medido: los 1 600 instantes probados) y cambiaría el signo de quien nació de noche en América u Oceanía. En PHP un `DateTime` siempre lleva huso, así que `animalChinoDeFecha()` usa el día del huso del objeto y `animalChinoDeInstante()` lo pasa a China.
+
 **Las consultas devuelven copias.** Lo que devuelve `signo_occidental()`, `decanato()`, `angel_de_fecha()`, `arbol_celta()` y las demás es una copia de los datos: puedes modificarla sin que cambien las respuestas siguientes. Las funciones `cargar_*()` (`cargar_datos()`, `cargar_espiritus()`…) sí devuelven los datos compartidos por todas las consultas: no los modifiques. En PHP los arrays se copian al pasarlos, así que no hace falta.
 
 ```sh

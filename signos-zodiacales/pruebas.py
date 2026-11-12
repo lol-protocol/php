@@ -1467,5 +1467,71 @@ class PruebasDeCorrecciones(unittest.TestCase):
         self.assertTrue(generar._errores_de_glosario("g", {"amor": {"es": "x"}}))
 
 
+class PruebasDeHusos(unittest.TestCase):
+    """La regla de huso del README: el año chino a la hora de China, la Luna en UTC, lo demás el día de la fecha."""
+
+    def test_un_datetime_con_huso_usa_su_propio_dia_en_las_consultas_de_calendario(self):
+        # 23:30 del 9/06 en UTC-5 ya es 10/06 en UTC, pero el día de quien nació es el 9.
+        t = datetime.datetime(2025, 6, 9, 23, 30, tzinfo=datetime.timezone(datetime.timedelta(hours=-5)))
+        d = datetime.date(2025, 6, 9)
+        self.assertEqual(zodiaco.signo_occidental(t)["id"], zodiaco.signo_occidental(d)["id"])
+        self.assertEqual(zodiaco.decanato(t)["numero"], zodiaco.decanato(d)["numero"])
+        self.assertEqual(zodiaco.angel_de_fecha(t)["angel"]["numero"], zodiaco.angel_de_fecha(d)["angel"]["numero"])
+        self.assertEqual(zodiaco.arbol_celta(t)["mes"]["id"], "uath")
+        self.assertEqual(zodiaco.arbol_de_fecha(t)["arbol"]["id"], zodiaco.arbol_de_fecha(d)["arbol"]["id"])
+        self.assertEqual(zodiaco.camino_de_vida(t), zodiaco.camino_de_vida(d))
+
+    def test_el_anio_chino_pasa_a_la_hora_de_china_solo_si_el_datetime_lleva_huso(self):
+        con_huso = datetime.datetime(2026, 2, 16, 20, tzinfo=datetime.timezone.utc)   # 17/02 04:00 en China: Caballo
+        sin_huso = datetime.datetime(2026, 2, 16, 20)                                 # se toma tal cual: 16/02, Serpiente
+        self.assertEqual(zodiaco.animal_chino_de_fecha(con_huso)["signo"]["id"], "caballo")
+        self.assertEqual(zodiaco.animal_chino_de_fecha(sin_huso)["signo"]["id"], "serpiente")
+        self.assertEqual(zodiaco.animal_chino_de_fecha(datetime.date(2026, 2, 16))["signo"]["id"], "serpiente")
+
+    def test_las_primeras_horas_del_anio_nuevo_chino_dan_el_animal_nuevo(self):
+        # Contar el día en UTC los daría del año anterior: es lo que descartó «todo en UTC».
+        china = datetime.timezone(datetime.timedelta(hours=8))
+        for anio, dia in list(zodiaco.fechas_anio_nuevo().items())[::10]:
+            for h in (0, 3, 7):
+                t = datetime.datetime(dia.year, dia.month, dia.day, h, tzinfo=china)
+                self.assertEqual(zodiaco.animal_chino_de_fecha(t)["anio_lunar"], anio, t)
+
+    def test_dia_de(self):
+        china = zodiaco.HORA_DE_CHINA
+        t = datetime.datetime(2026, 2, 16, 20, tzinfo=datetime.timezone.utc)
+        self.assertEqual(zodiaco._dia_de(t), datetime.date(2026, 2, 16))
+        self.assertEqual(zodiaco._dia_de(t, china), datetime.date(2026, 2, 17))
+        self.assertEqual(zodiaco._dia_de(datetime.datetime(2026, 2, 16, 20), china), datetime.date(2026, 2, 16))
+        self.assertEqual(zodiaco._dia_de(datetime.date(2026, 2, 16), china), datetime.date(2026, 2, 16))
+        with self.assertRaises(TypeError):
+            zodiaco._dia_de("2026-02-16")
+
+
+class PruebasDelBuscadorDeFrases(unittest.TestCase):
+    """cualidades_de, rasgos_de y rasgos_de_numero comparten _frase_de: mismos errores, mismos resultados."""
+
+    def test_las_tres_rechazan_un_idioma_desconocido_con_el_mismo_error(self):
+        for f, args in ((zodiaco.cualidades_de, ("angel", 1)), (zodiaco.rasgos_de, ("celta", "beth")), (zodiaco.rasgos_de_numero, (11,))):
+            with self.assertRaisesRegex(ValueError, "idioma desconocido: 'xx'"):
+                f(*args, "xx")
+
+    def test_las_claves_que_no_existen_dicen_que_se_buscaba(self):
+        with self.assertRaisesRegex(ValueError, "celta: no hay ninguno con la clave 'no-existe'"):
+            zodiaco.rasgos_de("celta", "no-existe", "es")
+        with self.assertRaisesRegex(ValueError, "numerología"):
+            zodiaco.rasgos_de_numero(10, "es")
+
+    def test_los_resultados_no_cambiaron(self):
+        self.assertEqual(zodiaco.cualidades_de("angel", 3, "es"), "Construcción, protección, nobleza")
+        self.assertEqual(zodiaco.rasgos_de("horoscopo", "olivo", "es"), "Equilibrio, sabiduría, paz")
+        self.assertEqual(zodiaco.rasgos_de_numero(11, "es"), "Intuición, inspiración, idealismo")
+
+    def test_los_vectores_traen_las_61_claves_de_los_arboles(self):
+        v = json.loads(generar.vectores_de(cargar_datos()))
+        self.assertEqual(len(v["claves_de_arboles"]), 61)
+        self.assertEqual(v["claves_de_arboles"][0], ["celta", "beth"])
+        self.assertEqual(v["claves_de_arboles"][-1], ["nakshatra", "revati"])
+
+
 if __name__ == "__main__":
     unittest.main()

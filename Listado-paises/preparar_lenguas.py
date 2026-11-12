@@ -54,8 +54,13 @@ def palabras_ud(carpeta, codigos_ud):
     for archivo in sorted(Path(carpeta).glob("UD_*.xml")):
         lengua = archivo.stem[3:].split("-")[0].replace("_", " ")
         texto = archivo.read_text(encoding="utf-8")
-        total = re.search(r"<total>(.*?)</total>", texto, re.S).group(1)
+        bloque = re.search(r"<total>(.*?)</total>", texto, re.S)
+        if not bloque:
+            raise SystemExit(f"{archivo.name}: no tiene el bloque <total> de los stats.xml de UD")
+        total = bloque.group(1)
         cuenta = re.search(r"<words>(\d+)</words>", total) or re.search(r"<tokens>(\d+)</tokens>", total)
+        if not cuenta:
+            raise SystemExit(f"{archivo.name}: su <total> no tiene <words> ni <tokens>")
         if lengua not in codigos_ud:
             raise SystemExit(f"{archivo.name}: la lengua «{lengua}» no está en el archivo de códigos de UD")
         par = datos.setdefault(codigos_ud[lengua], [0, 0])
@@ -115,6 +120,10 @@ def main(argv=None, carpeta=AQUI):
     columnas, paises = leer_csv(ruta)
     for fila in paises:
         lenguas_pais = [l.strip() for l in fila["idioma_principal"].split(";")]
+        sin_nivel = [l for l in lenguas_pais if l not in niveles]
+        if sin_nivel:
+            raise SystemExit(f"paises_pos.csv ({fila['codigo']}): lenguas que no están en "
+                             f"niveles_lenguas.csv: {sin_nivel}")
         fila["indice_pos"] = str(max(niveles[l] for l in lenguas_pais))
         fila["indice_pos_local"] = str(niveles[lenguas_pais[0]])
         resto = PREFIJO.sub("", fila["comentarios_pos"])

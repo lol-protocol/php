@@ -71,10 +71,25 @@ final class PeticionTest extends TestCase
         self::assertSame(1500.5, Peticion::monto());
     }
 
-    public function testMontoRedondeaAlCentavo(): void
+    /**
+     * Antes (#388) "10.005" se redondeaba a 10.01 y "1.500" se leia como 1.5. Con tres decimales o mas la
+     * persona no escribio un monto: o es un error o es el punto de miles de "1.500" (mil quinientos), y
+     * guardar 1.5 es una boleta mil veces menor. Se rechaza, no se redondea.
+     */
+    public function testMontoConMasDeDosDecimalesNoSeRedondeaNiSeLee(): void
     {
-        $_POST['monto'] = '10.005';
-        self::assertSame(10.01, Peticion::monto());
+        foreach (['10.005', '1.500', '1.000', '0.001', '1500.505'] as $texto) {
+            $_POST['monto'] = $texto;
+            self::assertSame(0.0, Peticion::monto(), "'{$texto}'");
+        }
+    }
+
+    public function testMontoConUnoODosDecimalesSeLeeTalCual(): void
+    {
+        foreach (['10.5' => 10.5, '10.05' => 10.05, '0.01' => 0.01, '1500.00' => 1500.0] as $texto => $esperado) {
+            $_POST['monto'] = (string) $texto;
+            self::assertSame($esperado, Peticion::monto(), "'{$texto}'");
+        }
     }
 
     /** 0 es lo que Validacion::faltanCampos() ya rechaza como "monto valido": el formulario vuelve con su error. */

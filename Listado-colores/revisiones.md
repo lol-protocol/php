@@ -8,7 +8,7 @@ Casi todo el contenido de este proyecto (traducciones de nombres, significados, 
 
 ## Cómo revisar
 
-1. Abre `visor-revision.html` en un navegador (no necesita servidor ni conexión), elige tu idioma y lo que vas a revisar.
+1. Consigue el visor (el artefacto `visor-revision` de la CI en `master`, o `python3 generar-tabla.py --visor visor-revision.html`), ábrelo en un navegador (no necesita servidor ni conexión), elige tu idioma y lo que vas a revisar.
 2. Marca cada elemento: `correcto`, `corregir` (con la corrección propuesta en la nota) o `dudoso`. Escribe tu nombre o alias y la fecha. Cada fila lleva una huella del dato que viste: si el dato cambia después, la revisión caduca.
 3. Copia las filas que genera el visor y añádelas al final de `revisiones.csv` (en un PR o pásalas a quien mantiene el proyecto). El orden de las filas no importa; el generador las valida.
 4. Quien mantiene el proyecto aplica las correcciones a los CSV y cambia esas filas de `corregir` a `corregido` (sin tocar la huella: así se ve que el dato cambió).
@@ -31,7 +31,7 @@ Una fila por revisor y elemento: si vuelves a revisar algo, edita tu fila. El hi
 
 ## Cobertura por idioma
 
-Elementos con al menos una fila, sobre el total de cada alcance (`—` si el idioma no tiene datos de ese alcance).
+Elementos validados (solo filas `correcto` o `corregido`) sobre el total de cada alcance, y entre paréntesis los que tienen dudas o correcciones pendientes (`—` si el idioma no tiene datos de ese alcance).
 
 | Idioma | `nombres` | `significados` | `lexico` | `categorias` |
 |---|---|---|---|---|

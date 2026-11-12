@@ -8,7 +8,8 @@ export const P = (id, nombre, ranura, plantilla, params = {}, col = {}) => ({ id
 
 /**
  * Atuendo: id, nombre, región, [año desde, hasta], sexo, clase, prendas, paleta de tintes por letra y extras
- * (peinados, barbas, tocados, pieles, nota y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación).
+ * (peinados, barbas, tocados, pieles, nota, fuente —la referencia que respalda el traje— y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación;
+ * 'alta' exige `fuente`).
  */
 export const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) => ({
   id, nombre, region, epoca, sexo, clase,
@@ -19,6 +20,7 @@ export const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra
   tocados: L(extra.tocados ?? 'ninguno'),
   pieles: extra.pieles ? L(extra.pieles) : null,
   nota: extra.nota ?? '',
+  fuente: extra.fuente ?? '',
   confianza: extra.conf ?? 'media',
 });
 
@@ -26,7 +28,7 @@ export const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra
 export const E = (id, nombre, d) => ({
   id, nombre, grupo: d.grupo, regiones: L(d.regiones), prefijos: d.prefijos ? L(d.prefijos) : null,
   pieles: L(d.pieles), cabellos: d.cabellos, peinados: L(d.peinados ?? ''), barba: d.barba ?? 0.3,
-  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? '',
+  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? '', fuente: d.fuente ?? '',
   confianza: d.conf ?? 'media',
 });
 

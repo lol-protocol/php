@@ -79,8 +79,14 @@ def tearDownModule():
 
 
 def real(nombre):
-    """Copia de los datos reales para romperla sin tocar los demás."""
-    return copy.deepcopy(REAL[nombre])
+    """Copia de los datos reales para romperla sin tocar los demás.
+
+    Casi todos son listas de filas (diccionarios de texto): copiar cada fila basta y cuesta mucho menos que deepcopy.
+    """
+    datos = REAL[nombre]
+    if isinstance(datos, list) and all(isinstance(fila, dict) for fila in datos[:1]):
+        return [dict(fila) for fila in datos]
+    return copy.deepcopy(datos)
 
 
 def escribir_csv(ruta, columnas, filas):
@@ -108,7 +114,7 @@ def rutas_para(carpeta):
         "CULTURALES": carpeta / "significados-culturales.csv", "CATEGORIAS": carpeta / "categorias.csv",
         "CATEGORIAS_MD": carpeta / "categorias.md", "COBERTURA": carpeta / "cobertura.md", "REVISIONES": carpeta / "revisiones.csv", "COLISIONES_REVISADAS": carpeta / "colisiones-revisadas.csv",
         "REVISIONES_MD": carpeta / "revisiones.md", "VISOR_PLANTILLA": carpeta / "visor-plantilla.html",
-        "VISOR": carpeta / "visor-revision.html", "REFS_MD": carpeta / "referencias.md",
+        "REFS_MD": carpeta / "referencias.md",
         "AMBIGUEDAD": carpeta / "ambiguedad.md", "AUDITORIA": carpeta / "auditoria-nombres.md", "CHANGELOG": carpeta / "CHANGELOG.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
         "INDICE": carpeta / "colores-por-idioma.md", "DIR_IDIOMAS": carpeta / "por-idioma",
     }
@@ -840,6 +846,20 @@ def datos_reales():
                               real("evidencia"), real("culturales"), real("categorias"), gt.alias_de(REAL["anotada"]), cercanias=[])
 
 
+def visor_real():
+    """El HTML del visor con los datos reales: ya no se guarda en el repositorio, se construye con --visor."""
+    if "visor" not in REAL:
+        REAL["visor"] = revision.visor_html(datos_reales(), (AQUI / "visor-plantilla.html").read_text(encoding="utf-8"))
+    return REAL["visor"]
+
+
+def conllu_real():
+    """Las frases de ejemplo en CoNLL-U con los datos reales: se construye con --conllu, ya no se guarda."""
+    if "conllu" not in REAL:
+        REAL["conllu"] = exportes.ejemplos_conllu(datos_reales())
+    return REAL["conllu"]
+
+
 def huellas_reales():
     if "huellas" not in REAL:
         REAL["huellas"] = revision.huellas(datos_reales())
@@ -889,9 +909,9 @@ class Revision(PruebaConErrores):
                      self.fila(alcance="lexico", elemento="aliceblue", huella="0123abcd"),  # un color CSS que no es del léxico
                      self.fila(alcance="categorias", idioma="fr", elemento="white", huella="0123abcd")]  # fr no tiene categorías
         self.assertEqual(self.validar(huerfanas), [])
-        atencion, revisados = revision.situacion(huerfanas, huellas_reales())
+        atencion, validados, con_dudas = revision.situacion(huerfanas, huellas_reales())
         self.assertEqual(atencion["huerfana"], huerfanas)
-        self.assertEqual(revisados, {}, "una revisión huérfana no cuenta como revisada")
+        self.assertEqual((validados, con_dudas), ({}, {}), "una revisión huérfana no cuenta como revisada")
 
     def test_el_informe_lista_las_huerfanas_sin_romperse_por_el_orden(self):
         filas = [self.fila(elemento="zzz", huella="0123abcd"), self.fila(elemento="aaa", huella="0123abcd", revisor="Luis"),
@@ -900,10 +920,11 @@ class Revision(PruebaConErrores):
         seccion = texto.split("### Revisiones de elementos que ya no existen")[1]
         self.assertLess(seccion.index("`aaa`"), seccion.index("`zzz`"), "al final de su lista, por nombre")
         self.assertIn("`fr` | `categorias` | `white`", seccion)
-        self.assertIn("Estado: 1 de ", texto, "solo cuenta la que existe")
+        self.assertIn("Estado: 0 de ", texto, "las huérfanas no cuentan")
+        self.assertIn("y 1 con dudas o correcciones pendientes", texto, "solo cuenta la dudosa de `red`, que existe")
 
     def test_las_huerfanas_no_cuentan_en_conflictos_ni_en_caducadas(self):
-        atencion, _ = revision.situacion([self.fila(elemento="nocolor", huella="0123abcd"),
+        atencion, _, _ = revision.situacion([self.fila(elemento="nocolor", huella="0123abcd"),
                                           self.fila(elemento="nocolor", revisor="Luis", veredicto="corregir", nota="x", huella="0123abcd")],
                                          huellas_reales())
         self.assertEqual((len(atencion["huerfana"]), atencion["conflicto"], atencion["caducada"]), (2, [], []))
@@ -955,9 +976,9 @@ class Revision(PruebaConErrores):
                  self.fila(elemento="aqua", veredicto="corregido", revisor="Ana")]
         texto = revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales())
         total = sum(len(v) for v in universo_revisable().values())
-        self.assertIn(f"**Estado: 4 de {total} elementos revisados.**", texto)
-        self.assertIn("| Español (`es`) | 3 de 148 | 0 de 148 | 0 de 38 | 0 de 32 |", texto)
-        self.assertIn("| Inglés (`en`) | 0 de 148 | 0 de 148 | 0 de 38 | 1 de 61 |", texto)
+        self.assertIn(f"**Estado: 2 de {total} elementos validados y 2 con dudas o correcciones pendientes.**", texto)
+        self.assertIn("| Español (`es`) | 2 de 148 (+1 con dudas) | 0 de 148 | 0 de 38 | 0 de 32 |", texto)
+        self.assertIn("| Inglés (`en`) | 0 de 148 | 0 de 148 | 0 de 38 | 0 de 61 (+1 con dudas) |", texto)
         for veredicto, cuenta in (("correcto", 2), ("corregir", 1), ("corregido", 1), ("dudoso", 1)):
             self.assertIn(f"| `{veredicto}` | {cuenta} |", texto)
         self.assertNotIn("No hay correcciones propuestas", texto)
@@ -966,6 +987,34 @@ class Revision(PruebaConErrores):
         self.assertIn("| `es` | `nombres` | `red` | `corregir` | mejor &#124; «rojo» | Zoe | 2026-10-23 |", pendientes)
         self.assertLess(pendientes.index("`lilac`"), pendientes.index("`red`"), "ordenados por idioma (en antes que es)")
         self.assertNotIn("aqua", pendientes, "lo corregido ya no está pendiente")
+
+    def test_una_duda_no_infla_la_cobertura(self):
+        # Un `dudoso` o un `corregir` dicen que algo puede estar mal: no suman como elemento validado.
+        for veredicto in ("dudoso", "corregir"):
+            _, validados, con_dudas = revision.situacion([self.fila(veredicto=veredicto, nota="x")], huellas_reales())
+            self.assertEqual((validados, con_dudas), ({}, {("es", "nombres"): {"aliceblue"}}), veredicto)
+
+    def test_un_elemento_con_correcto_y_dudoso_vigentes_no_esta_validado(self):
+        _, validados, con_dudas = revision.situacion([self.fila(), self.fila(revisor="Luis", veredicto="dudoso", nota="x")], huellas_reales())
+        self.assertEqual((validados, con_dudas), ({}, {("es", "nombres"): {"aliceblue"}}))
+
+    def test_el_aviso_cuenta_cada_tipo_y_calla_si_no_hay_nada(self):
+        vacio = {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": [], "huerfana": []}
+        self.assertEqual(revision.aviso(vacio), "")
+        self.assertEqual(revision.aviso({**vacio, "huerfana": [1, 2], "caducada": [3]}),
+                         "Revisiones que atender (1 caducada(s), 2 huérfana(s)): ver revisiones.md.")
+
+    def test_quitar_la_marca_de_ia_de_un_lema_no_caduca_su_revision(self):
+        # Flujo documentado: un revisor confirma un lema propuesto por IA y quien mantiene quita `origen=ia`. La revisión debe seguir vigente.
+        con_marca = datos_reales()
+        sin_marca = datos_reales()
+        i = primera(sin_marca["lexico"], idioma="sw", concepto="olive", tipo="lema")
+        self.assertEqual(sin_marca["lexico"][i]["rasgos"], "origen=ia")
+        sin_marca["lexico"][i]["rasgos"] = ""
+        self.assertEqual(revision.huellas(con_marca)[("sw", "lexico")]["olive"], revision.huellas(sin_marca)[("sw", "lexico")]["olive"])
+        # ...pero cambiar la palabra sí la caduca.
+        sin_marca["lexico"][i]["forma"] = "otra"
+        self.assertNotEqual(revision.huellas(con_marca)[("sw", "lexico")]["olive"], revision.huellas(sin_marca)[("sw", "lexico")]["olive"])
 
     def test_la_huella_es_fnv1a_de_32_bits(self):
         # Vectores de prueba publicados de FNV-1a de 32 bits.
@@ -1007,49 +1056,51 @@ class Revision(PruebaConErrores):
 
     def test_un_correcto_cuyo_dato_cambio_caduca_y_no_cuenta(self):
         filas = [self.fila(huella="0123abcd")]
-        atencion, revisados = revision.situacion(filas, huellas_reales())
+        atencion, validados, con_dudas = revision.situacion(filas, huellas_reales())
         self.assertEqual(atencion["caducada"], filas)
-        self.assertEqual(revisados, {})
+        self.assertEqual((validados, con_dudas), ({}, {}))
         texto = revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales())
         self.assertIn("ningún elemento revisado todavía", texto)
         self.assertIn("### Revisiones `correcto` caducadas", texto)
         self.assertIn("| `es` | `nombres` | `aliceblue` | `correcto` | Ana | 2026-10-23 |", texto)
 
     def test_un_correcto_vigente_cuenta_y_no_pide_atencion(self):
-        atencion, revisados = revision.situacion([self.fila()], huellas_reales())
+        atencion, validados, con_dudas = revision.situacion([self.fila()], huellas_reales())
         self.assertEqual(atencion, {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": [], "huerfana": []})
-        self.assertEqual(revisados, {("es", "nombres"): {"aliceblue"}})
+        self.assertEqual((validados, con_dudas), ({("es", "nombres"): {"aliceblue"}}, {}))
 
     def test_un_corregir_cuyo_dato_cambio_pide_marcarlo_corregido(self):
         filas = [self.fila(veredicto="corregir", nota="mejor otro", huella="0123abcd")]
-        atencion, revisados = revision.situacion(filas, huellas_reales())
+        atencion, validados, con_dudas = revision.situacion(filas, huellas_reales())
         self.assertEqual(atencion["ya_cambio"], filas)
-        self.assertEqual(revisados, {("es", "nombres"): {"aliceblue"}}, "una duda o corrección sigue contando: alguien miró")
+        self.assertEqual((validados, con_dudas), ({}, {("es", "nombres"): {"aliceblue"}}), "una corrección pendiente no es una revisión aprobada")
         self.assertIn("### Correcciones o dudas cuyo dato ya cambió", revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales()))
 
     def test_un_dudoso_cuyo_dato_cambio_tambien(self):
-        atencion, _ = revision.situacion([self.fila(veredicto="dudoso", nota="x", huella="0123abcd")], huellas_reales())
+        atencion, _, _ = revision.situacion([self.fila(veredicto="dudoso", nota="x", huella="0123abcd")], huellas_reales())
         self.assertEqual(len(atencion["ya_cambio"]), 1)
 
     def test_un_corregir_vigente_no_pide_atencion_de_cambio(self):
-        atencion, _ = revision.situacion([self.fila(veredicto="corregir", nota="x")], huellas_reales())
+        atencion, _, _ = revision.situacion([self.fila(veredicto="corregir", nota="x")], huellas_reales())
         self.assertEqual(atencion["ya_cambio"], [])
 
     def test_un_corregido_con_el_dato_igual_no_esta_aplicado(self):
         filas = [self.fila(veredicto="corregido")]
-        atencion, revisados = revision.situacion(filas, huellas_reales())
+        atencion, validados, _ = revision.situacion(filas, huellas_reales())
         self.assertEqual(atencion["sin_cambio"], filas)
+        self.assertEqual(validados, {("es", "nombres"): {"aliceblue"}}, "un corregido cuenta como validado, aunque avise")
         self.assertIn("### Filas `corregido` con el dato sin cambios", revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales()))
 
     def test_un_corregido_con_el_dato_distinto_esta_bien(self):
-        atencion, revisados = revision.situacion([self.fila(veredicto="corregido", huella="0123abcd")], huellas_reales())
+        atencion, validados, con_dudas = revision.situacion([self.fila(veredicto="corregido", huella="0123abcd")], huellas_reales())
         self.assertEqual(atencion, {"caducada": [], "ya_cambio": [], "sin_cambio": [], "conflicto": [], "huerfana": []})
-        self.assertEqual(revisados, {("es", "nombres"): {"aliceblue"}})
+        self.assertEqual((validados, con_dudas), ({("es", "nombres"): {"aliceblue"}}, {}))
 
     def test_revisores_en_desacuerdo(self):
         filas = [self.fila(), self.fila(revisor="Luis", veredicto="corregir", nota="mejor otro")]
-        atencion, _ = revision.situacion(filas, huellas_reales())
+        atencion, validados, con_dudas = revision.situacion(filas, huellas_reales())
         self.assertEqual(atencion["conflicto"], filas)
+        self.assertEqual((validados, con_dudas), ({}, {("es", "nombres"): {"aliceblue"}}), "con desacuerdo, el elemento no está validado")
         texto = revision.informe(filas, universo_revisable(), gt.IDIOMAS, huellas_reales())
         self.assertIn("### Revisores en desacuerdo", texto)
         self.assertIn("| `es` | `nombres` | `aliceblue` | `correcto` | Ana | 2026-10-23 |", texto)
@@ -1091,7 +1142,7 @@ class Revision(PruebaConErrores):
         self.assertNotIn("fr", v["categorias"])
 
     def test_el_visor_lleva_los_datos_y_nada_externo(self):
-        html = (BASE["carpeta"] / "visor-revision.html").read_text(encoding="utf-8")
+        html = visor_real()
         plantilla = (AQUI / "visor-plantilla.html").read_text(encoding="utf-8")
         self.assertIn(revision.MARCA_DATOS, plantilla)
         self.assertNotIn(revision.MARCA_DATOS, html)
@@ -1119,7 +1170,7 @@ class Revision(PruebaConErrores):
 
     @unittest.skipUnless(shutil.which("node"), "node no está instalado")
     def test_el_script_del_visor_es_javascript_valido(self):
-        html = (BASE["carpeta"] / "visor-revision.html").read_text(encoding="utf-8")
+        html = visor_real()
         guion = html.split("<script>", 1)[1].split("</script>", 1)[0]
         with tempfile.TemporaryDirectory() as t:
             ruta = Path(t) / "visor.js"
@@ -1215,6 +1266,13 @@ class CeldaMarkdown(unittest.TestCase):
                            "fecha": "2026-10-23", "huella": "0123abcd", "nota": "ok | si"}], ["es"], errores)
         self.assertEqual(errores, [], "la barra vertical es válida en el revisor y en la nota")
 
+    def test_orden_idiomas_acepta_codigos_y_pares(self):
+        import md  # noqa: PLC0415
+        self.assertEqual(md.orden_idiomas(["es", "en"]), {"es": 0, "en": 1})
+        self.assertEqual(md.orden_idiomas([("es", "Español"), ("en", "Inglés")]), {"es": 0, "en": 1})
+        self.assertEqual(md.orden_idiomas(gt.IDIOMAS), {c: n for n, (c, _) in enumerate(gt.IDIOMAS)})
+        self.assertEqual(md.orden_idiomas([]), {})
+
     def test_los_cuatro_informes_usan_la_misma_funcion(self):
         import md  # noqa: PLC0415
         for modulo in (ambiguedad, auditoria, categorias, revision):
@@ -1300,6 +1358,22 @@ class Cobertura(unittest.TestCase):
         gt.validar_colisiones(REAL["colisiones_revisadas"], REAL["anotada"], errores)
         self.assertEqual(errores, [])
         self.assertEqual(len(REAL["colisiones_revisadas"]), 29)
+
+    def test_cada_colision_y_lema_compartido_de_cobertura_esta_en_la_lista_dentro_de_un_idioma_de_ambiguedad(self):
+        # Los dos informes miran lo mismo desde dos sitios: que uno no liste algo que el otro no ve.
+        datos = datos_reales()
+        reales = ambiguedad.calcular(exportes.filas_gazetteer(datos), [c for c, _ in gt.IDIOMAS])
+        dentro = {(e["idioma"], e["forma"].casefold()) for e in reales["dentro"]}
+        for idioma, lista in cobertura.colisiones_nombres(gt.IDIOMAS, REAL["anotada"]).items():
+            for nombre, _ in lista:
+                self.assertIn((idioma, nombre.casefold()), dentro, ("colisión de nombre CSS", idioma, nombre))
+        for idioma, lista in cobertura.lemas_compartidos(gt.IDIOMAS, REAL["lexico"], self.hex_concepto()).items():
+            for lema, _ in lista:
+                self.assertIn((idioma, lema.casefold()), dentro, ("lema compartido", idioma, lema))
+
+    def test_cada_informe_remite_al_otro(self):
+        self.assertIn("ambiguedad.md", cobertura.informe(gt.IDIOMAS, REAL["anotada"], REAL["lexico"], REAL["categorias"], gt.CONCEPTOS, self.hex_concepto()))
+        self.assertIn("cobertura.md", (AQUI / "ambiguedad.md").read_text(encoding="utf-8"))
 
     def test_lemas_compartidos_reales(self):
         compartidos = cobertura.lemas_compartidos(gt.IDIOMAS, REAL["lexico"], self.hex_concepto())
@@ -1816,7 +1890,7 @@ class Manifiesto(unittest.TestCase):
         self.assertEqual([e["archivo"] for e in datos["exportes"]],
                          ["exportes/colores.jsonl", "exportes/gazetteer.tsv"]
                          + [f"exportes/spacy/{c}.jsonl" for c, _ in gt.IDIOMAS]
-                         + ["exportes/lexico-ud.tsv", "exportes/ejemplos.conllu"])
+                         + ["exportes/lexico-ud.tsv"])
         for entrada in datos["entradas"] + datos["exportes"]:
             ruta = carpeta / entrada["archivo"]
             texto = ruta.read_text(encoding="utf-8")
@@ -1909,12 +1983,12 @@ class ArchivosGenerados(unittest.TestCase):
 
     def test_salvo_nombres_completos_salen_identicos_a_los_del_repositorio(self):
         repositorio = [AQUI / "README.md", AQUI / "colores-por-idioma.md", AQUI / "referencias.md", AQUI / "ambiguedad.md",
-                       AQUI / "categorias.md", AQUI / "cobertura.md", AQUI / "revisiones.md", AQUI / "visor-revision.html",
+                       AQUI / "categorias.md", AQUI / "cobertura.md", AQUI / "revisiones.md",
                        *sorted((AQUI / "por-idioma").glob("*")),
                        # El manifiesto de la carpeta reducida es otro (otro nombres-completos.csv): se prueba aparte.
                        *sorted(p for p in (AQUI / "exportes").rglob("*") if p.is_file() and p.name != "manifiesto.json")]
-        self.assertEqual(len(repositorio), 8 + 30 + (4 + 30),
-                         "ocho archivos sueltos, 30 páginas por idioma, 4 exportes y 30 patrones de spaCy")
+        self.assertEqual(len(repositorio), 7 + 30 + (3 + 30),
+                         "siete archivos sueltos, 30 páginas por idioma, 3 exportes y 30 patrones de spaCy")
         for ruta in repositorio:
             relativa = ruta.relative_to(AQUI)
             generado = BASE["carpeta"] / relativa
@@ -2116,7 +2190,7 @@ class ArchivosGenerados(unittest.TestCase):
                                                    "Peru\tPeru\tPROPN\t_\ten\tperu"])
 
     def test_ejemplos_conllu(self):
-        texto = (BASE["carpeta"] / "exportes" / "ejemplos.conllu").read_text(encoding="utf-8")
+        texto = conllu_real()
         self.assertTrue(texto.endswith("\n\n") and not texto.endswith("\n\n\n"), "cada frase termina en una línea vacía")
         bloques = texto.rstrip("\n").split("\n\n")
         self.assertEqual(len(bloques), len(REAL["categorias"]))
@@ -2208,10 +2282,10 @@ class Programa(unittest.TestCase):
             return texto.rstrip("\n") + "x\n"
 
         for nombre, editar in (("README.md", en_la_tabla), ("colores-por-idioma.md", al_final), ("referencias.md", al_final),
-                               ("ambiguedad.md", al_final), ("auditoria-nombres.md", al_final), ("categorias.md", al_final), ("cobertura.md", al_final), ("revisiones.md", al_final), ("visor-revision.html", al_final), ("exportes/manifiesto.json", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
+                               ("ambiguedad.md", al_final), ("auditoria-nombres.md", al_final), ("categorias.md", al_final), ("cobertura.md", al_final), ("revisiones.md", al_final), ("exportes/manifiesto.json", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
                                ("por-idioma/ja.md", al_final), ("exportes/colores.jsonl", al_final),
                                ("exportes/gazetteer.tsv", al_final), ("exportes/spacy/es.jsonl", al_final),
-                               ("exportes/lexico-ud.tsv", al_final), ("exportes/ejemplos.conllu", al_final)):
+                               ("exportes/lexico-ud.tsv", al_final)):
             with self.subTest(nombre):
                 ruta = self.carpeta / nombre
                 original = ruta.read_text(encoding="utf-8")
@@ -2451,6 +2525,52 @@ class Programa(unittest.TestCase):
                 esperadas = len(REAL[tabla])
                 self.assertIn(f"{tabla}: {esperadas - 1} filas, se esperaban {esperadas}", error)
 
+    def test_conllu_y_visor_se_construyen_a_peticion_y_no_tocan_el_proyecto(self):
+        antes = self.estado()
+        conllu, visor = self.carpeta / "c.conllu", self.carpeta / "v.html"
+        antes_con_las_dos = {**antes, Path("c.conllu"): None, Path("v.html"): None}
+        codigo, salida, error = ejecutar(self.carpeta, "--conllu", str(conllu))
+        self.assertEqual((codigo, error), (0, ""))
+        self.assertIn(f"{len(REAL['categorias'])} frases de ejemplo en CoNLL-U", salida)
+        self.assertEqual(conllu.read_text(encoding="utf-8"), conllu_real())
+        codigo, salida, error = ejecutar(self.carpeta, "--visor", str(visor))
+        self.assertEqual((codigo, error), (0, ""))
+        self.assertIn("Visor de revisión en", salida)
+        self.assertEqual(visor.read_text(encoding="utf-8"), visor_real())
+        despues = {k: v for k, v in self.estado().items() if k.name not in ("c.conllu", "v.html")}
+        self.assertEqual(despues, antes, "no regeneran ni cambian nada más")
+        self.assertEqual(set(self.estado()), set(antes_con_las_dos))
+
+    def test_conllu_y_visor_sin_ruta_es_un_error(self):
+        for bandera, que in (("--conllu", "del archivo CoNLL-U"), ("--visor", "del archivo HTML"), ("--sqlite", "de la base")):
+            codigo, _, error = ejecutar(self.carpeta, bandera)
+            self.assertEqual(codigo, 1, bandera)
+            self.assertIn(f"{bandera} necesita la ruta {que}", error)
+
+    def test_ya_no_se_guardan_el_conllu_ni_el_visor_y_uno_viejo_sobra(self):
+        self.assertFalse((self.carpeta / "exportes" / "ejemplos.conllu").exists())
+        self.assertFalse((self.carpeta / "visor-revision.html").exists())
+        (self.carpeta / "exportes" / "ejemplos.conllu").write_text("viejo", encoding="utf-8")
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("exportes/ejemplos.conllu (sobra)", error, "un clon con el archivo viejo se entera de que ya no va")
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertFalse((self.carpeta / "exportes" / "ejemplos.conllu").exists())
+
+    def test_las_revisiones_que_atender_se_avisan_por_stderr_sin_fallar(self):
+        fila = "es,nombres,nocolor,correcto,Ana,2026-10-23,0123abcd,\n"
+        self.reescribir("revisiones.csv", lambda t: t + fila)
+        codigo, salida, error = ejecutar(self.carpeta)
+        self.assertEqual(codigo, 0, "una revisión huérfana no rompe la generación")
+        self.assertIn("Revisiones que atender (1 huérfana(s)): ver revisiones.md.", error)
+        self.assertNotIn("Revisiones que atender", salida)
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 0)
+        self.assertIn("1 huérfana(s)", error, "también al comprobar, que es lo que corre la CI")
+
+    def test_sin_revisiones_que_atender_no_avisa(self):
+        self.assertEqual(ejecutar(self.carpeta, "--comprobar")[2], "")
+
     def test_un_alias_con_otro_significado_sale_con_1(self):
         def cambiar(texto):
             frase = "Frescura, claridad, calma y comunicación; asociado a lo digital y moderno."
@@ -2482,7 +2602,6 @@ class Programa(unittest.TestCase):
 
     def test_una_revision_nueva_cambia_el_informe_y_no_el_manifiesto(self):
         manifiesto_antes = (self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8")
-        visor_antes = (self.carpeta / "visor-revision.html").read_bytes()
         self.reescribir("revisiones.csv", lambda t: t + f"es,nombres,aliceblue,correcto,Ana,2026-10-23,{huellas_reales()[('es', 'nombres')]['aliceblue']},\n")
         codigo, _, error = ejecutar(self.carpeta, "--comprobar")
         self.assertEqual(codigo, 1)
@@ -2491,7 +2610,8 @@ class Programa(unittest.TestCase):
         self.assertEqual(ejecutar(self.carpeta)[0], 0)
         self.assertIn("| Español (`es`) | 1 de 148 |", (self.carpeta / "revisiones.md").read_text(encoding="utf-8"))
         self.assertEqual((self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"), manifiesto_antes)
-        self.assertEqual((self.carpeta / "visor-revision.html").read_bytes(), visor_antes, "el visor no depende de las revisiones")
+        self.assertEqual(ejecutar(self.carpeta, "--visor", str(self.carpeta / "v.html"))[0], 0)  # el visor no depende de las revisiones
+        self.assertEqual((self.carpeta / "v.html").read_text(encoding="utf-8"), visor_real())
         self.assertEqual(ejecutar(self.carpeta, "--comprobar")[0], 0)
 
     def test_editar_categorias_csv_deja_categorias_md_desfasado_hasta_regenerar(self):

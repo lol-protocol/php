@@ -8,7 +8,7 @@ Trae un **catálogo grande de ropa** organizado por región, época, sexo y clas
 
 | | |
 |---|---|
-| Atuendos completos | 492, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
+| Atuendos completos | 493, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
 | Prendas | 485 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 16 plantillas paramétricas con decenas de variantes (escotes, mangas, formas, bolsillos, capuchas, pieles…), cada una con su **catálogo de colores y la probabilidad de cada color** |
 | Tintes con nombre | 110, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, denim, anilinas…) y 70 perfiles de color reutilizables |
 | Etnias y culturas | 116, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
@@ -27,11 +27,14 @@ node bin/generar.js --region andes --anio 1500 --sexo f --edad 30 -o andina.svg
 node bin/generar.js --etnia mapuche --sexo f --edad 34 --anio 1850 --avisos -o mapuche.svg   # estima lo demás
 node bin/generar.js --etnia mapuche,espanol --sexo m --edad 29 --anio 1800 --saludo izquierda -o mestizo.svg
 node bin/generar.js --nueva --estilo festivo --semilla 12 -o nueva.svg     # ropa inventada
-node bin/generar.js --listar etnias          # también: atuendos, regiones, prendas, tintes, resumen
+node bin/generar.js --listar etnias          # también: atuendos, regiones, prendas, tintes, fuentes, resumen
+node bin/generar.js --semilla 7 --compacto -o liviana.svg     # SVG un 8 % más liviano (coordenadas con 1 decimal)
 node bin/generar.js --ayuda
 ```
 
 La **galería** (`galeria.html`) se abre directo desde el disco: elige región y atuendo, edad, complexión, postura, piel, nivel de detalle y fondo, genera ropa nueva y descarga el SVG. Usa `dist/siluetas-ancestrales.js`, el mismo código empaquetado en un solo archivo.
+
+La página **`prendas.html`** (también desde el disco) muestra cada prenda del catálogo sola, sobre un niño, un adulto y un anciano corpulento, con filtros por ranura y plantilla: sirve para ver a ojo si una plantilla se deforma. `pruebas/prendas-sobre-cuerpos.test.js` hace la misma comprobación por las coordenadas.
 
 Ejemplos ya generados en [`ejemplos/`](ejemplos/).
 
@@ -189,6 +192,8 @@ Cada atuendo y cada etnia trae un nivel de **confianza**: `media` es una aproxim
 - `persona.confianza` es la menor de las del atuendo y las etnias; `persona.notas` trae las advertencias propias de cada entrada (por ejemplo que no se reproduce la pintura corporal himba ni el tā moko maorí). La galería las muestra.
 - `node bin/generar.js --listar auditoria` lista todo lo marcado `baja`, para revisarlo con fuentes del propio pueblo o con sus miembros antes de publicar.
 - `node bin/generar.js --listar etnias` y `--listar atuendos` incluyen la confianza.
+- **Fuentes:** cada entrada puede llevar `fuente` (en `extra` de `A(...)` y en los datos de `E(...)`): la referencia que respalda ese traje o ese pueblo. `persona.fuentes` la devuelve y `--listar fuentes` muestra la de cada etnia y atuendo, o «(sin fuente)». Hoy casi ninguna entrada la tiene: no se inventan. Una entrada solo puede subir a confianza `alta` si trae `fuente` (lo comprueba una prueba).
+- **Tintes de otra época:** si el tinte de la paleta de un atuendo no existía en el año pedido (por ejemplo, la granza después de 1870), se usa el más parecido de su familia que sí existía y `persona.avisos` lo dice.
 
 Para un proyecto de genealogía conviene tratar la etnia como una **pista estadística** y no como un dato de la persona: sirve para ilustrar un linaje probable.
 

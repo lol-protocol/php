@@ -181,3 +181,30 @@ meminfo() { printf 'MemTotal:       %s kB\nMemFree: 1 kB\n' "$(( $1 * 1024 ))" >
     run bash install-all.sh ejemplo.com a@ejemplo.com --dry-run
     [[ "$output" != *"menos de 2 GB"* ]]
 }
+
+# ---- helpers compartidos (PR 5) ----
+@test "service_enable_restart habilita y reinicia, en ese orden" {
+    run_lib 'service_enable_restart miapp'
+    [ "$(grep -n 'systemctl enable miapp' "$SUDO_LOG" | cut -d: -f1)" -lt "$(grep -n 'systemctl restart miapp' "$SUDO_LOG" | cut -d: -f1)" ]
+}
+
+@test "set_conf_line reemplaza, agrega y es idempotente; unset_conf_line la quita" {
+    export SUDO_EXEC=1
+    make_stub sudo 'exec "$@"'
+    f="$BATS_TEST_TMPDIR/c.conf"; printf 'port=10000\nbind=0.0.0.0\n' > "$f"
+    run_lib "set_conf_line '$f' bind 127.0.0.1; set_conf_line '$f' bind 127.0.0.1"
+    [ "$(grep -c '^bind=' "$f")" -eq 1 ] && grep -qx 'bind=127.0.0.1' "$f" && grep -qx 'port=10000' "$f"
+    printf 'port=10000\n' > "$f"; run_lib "set_conf_line '$f' bind 127.0.0.1"
+    [ "$(tail -1 "$f")" = 'bind=127.0.0.1' ]
+    run_lib "unset_conf_line '$f' bind"
+    ! grep -q '^bind=' "$f" && grep -qx 'port=10000' "$f"
+}
+
+@test "nginx_server_head y nginx_proxy_location: salida literal con los \$ de Nginx intactos" {
+    run_lib 'nginx_server_head ejemplo.com'
+    [[ "$output" == *"server_name ejemplo.com www.ejemplo.com;"* ]] && [[ "$output" == *"listen [::]:80;"* ]]
+    [[ "$output" == *"access_log /var/log/nginx/ejemplo.com/access.log;"* ]]
+    PROXY_TIMEOUT=90s run_lib 'nginx_proxy_location http://127.0.0.1:8001'
+    [[ "$output" == *"proxy_pass http://127.0.0.1:8001;"* ]] && [[ "$output" == *"proxy_read_timeout 90s;"* ]]
+    [[ "$output" == *'proxy_set_header Host $host;'* ]] && [[ "$output" == *'X-Forwarded-For $proxy_add_x_forwarded_for;'* ]]
+}

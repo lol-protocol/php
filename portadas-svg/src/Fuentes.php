@@ -118,6 +118,15 @@ final class Fuentes
         return self::$extras = $extras;
     }
 
+    /** Una huella del contenido de la carpeta de fuentes extra, para saber si cambió desde la última vez que se escribió un libro. */
+    public static function huellaExtras(): string
+    {
+        $archivos = glob(self::$carpetaExtra . '/*.json') ?: [];
+        sort($archivos);
+
+        return md5(implode('|', array_map(static fn (string $archivo): string => basename($archivo) . ':' . md5_file($archivo), $archivos)));
+    }
+
     /**
      * Palabras compuestas de antemano con HarfBuzz (árabe, devanagari, hebreo…), de los `*.formas.json` de la
      * carpeta de fuentes extra: por palabra, su avance, si es de derecha a izquierda y sus letras ya colocadas

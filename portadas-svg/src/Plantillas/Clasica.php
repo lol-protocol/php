@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PortadasSvg\Plantillas;
 
+use PortadasSvg\Frases;
 use PortadasSvg\Libro;
+use PortadasSvg\Mayusculas;
 use PortadasSvg\Plantilla;
 use PortadasSvg\Color;
 use PortadasSvg\Rectangulo;
@@ -84,9 +86,9 @@ final class Clasica extends Plantilla
         $svg .= $adorno->emblema($cx, $ornamento, self::EMBLEMA_RADIO, $colores['acento']);
 
         if ($libro->textos->traductor !== '') {
-            $svg .= $this->rotulo('Traducción de ' . $libro->textos->traductor, $cx, $ornamento + self::TRADUCTOR_SEPARACION, $ancho, self::TRADUCTOR_TAMANO_MAX, self::TRADUCTOR_TAMANO_MIN, 'middle', $colores['texto'], ['font-style' => 'italic']);
+            $svg .= $this->rotulo(Frases::texto($libro->idioma, 'traduccion_rotulo', ['traductor' => $libro->textos->traductor]), $cx, $ornamento + self::TRADUCTOR_SEPARACION, $ancho, self::TRADUCTOR_TAMANO_MAX, self::TRADUCTOR_TAMANO_MIN, 'middle', $colores['texto'], ['font-style' => 'italic']);
         }
-        $svg .= $this->rotulo(mb_strtoupper($libro->textos->autor), $cx, $panel->y + $panel->alto * self::AUTOR_Y, $ancho, self::AUTOR_TAMANO_MAX, self::AUTOR_TAMANO_MIN, 'middle', $colores['texto'], ['letter-spacing' => self::AUTOR_ESPACIADO]);
+        $svg .= $this->rotulo(Mayusculas::de($libro->textos->autor, $libro->idioma), $cx, $panel->y + $panel->alto * self::AUTOR_Y, $ancho, self::AUTOR_TAMANO_MAX, self::AUTOR_TAMANO_MIN, 'middle', $colores['texto'], ['letter-spacing' => self::AUTOR_ESPACIADO]);
         $svg .= $this->editorial($libro, $cx, $panel->y + $panel->alto - self::PIE_ABAJO, 'middle', $ancho);
 
         return $svg;

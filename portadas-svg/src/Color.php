@@ -54,6 +54,20 @@ final class Color
         return sprintf('#%02x%02x%02x', $mezcla($r1, $r2), $mezcla($g1, $g2), $mezcla($b1, $b2));
     }
 
+    /** Contraste entre dos colores, de 1 a 21 (la fórmula de las pautas de accesibilidad WCAG): 4,5 o más se lee bien. */
+    public static function contraste(string $a, string $b): float
+    {
+        $luz = static function (string $hex): float {
+            [$r, $g, $b] = self::rgb($hex);
+            $canal = static fn (int $c): float => ($c / 255) <= 0.03928 ? ($c / 255) / 12.92 : ((($c / 255) + 0.055) / 1.055) ** 2.4;
+
+            return 0.2126 * $canal($r) + 0.7152 * $canal($g) + 0.0722 * $canal($b);
+        };
+        [$mas, $menos] = $luz($a) >= $luz($b) ? [$luz($a), $luz($b)] : [$luz($b), $luz($a)];
+
+        return ($mas + 0.05) / ($menos + 0.05);
+    }
+
     /** Luma perceptual por encima de la mitad: el color se lee como claro. */
     public static function esClaro(string $hex): bool
     {
