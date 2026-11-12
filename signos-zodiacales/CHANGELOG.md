@@ -4,6 +4,12 @@ Los cambios de `datos/` y de lo que se calcula con ellos, de lo más reciente a 
 
 Versionado semántico: la **mayor** cambia si se rompe el esquema de `datos/signos.json` o lo que devuelven las consultas; la **menor** cuando se agregan datos, campos o funciones; la **parche** cuando se corrige un texto, una fecha o una figura sin cambiar la forma.
 
+## [1.3.3] - 2026-11-11
+
+### Agregado
+- `revision/<idioma>.csv`: un paquete por idioma con sus 389 textos al lado del español y el inglés, y dos columnas vacías (`correccion`, `nota`) para que lo rellene una persona nativa. Los genera `generar.py` y `--comprobar` avisa si quedan viejos. El README explica cómo se devuelve y cómo se aplican las correcciones.
+- La lista de textos traducidos (`textos_de`) pasa de las pruebas al generador, que es quien la necesita; las pruebas la importan de ahí.
+
 ## [1.3.2] - 2026-11-11
 
 ### Cambiado
