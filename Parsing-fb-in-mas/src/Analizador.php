@@ -66,15 +66,15 @@ abstract class Analizador
         return false;
     }
 
-    public function analizar(string $html, ?string $capturado = null): Perfil
+    public function analizar(string $html, ?string $capturado = null, bool $revisar = true): Perfil
     {
-        return $this->desdeMetadatos(Metadatos::leer($html), $capturado);
+        return $this->desdeMetadatos(Metadatos::leer($html), $capturado, $revisar);
     }
 
     /**
      * @param array{meta: array<string, string>, canonica: ?string, titulo: ?string, persona: ?array<string, string>} $d
      */
-    public function desdeMetadatos(array $d, ?string $capturado = null): Perfil
+    public function desdeMetadatos(array $d, ?string $capturado = null, bool $revisar = true): Perfil
     {
         $url = self::urlDe($d);
         $c = $this->extraer($d, $url);
@@ -100,12 +100,24 @@ abstract class Analizador
             $avisos[] = 'la dirección parece una publicación u otra página, no un perfil: sin usuario';
         }
 
+        $titular = self::texto($c['titular'] ?? null);
+        $marcas = [];
+        if ($revisar) {
+            $marcas = Revision::marcas(implode("\n", array_filter([$titular, $descripcion])));
+            if (!Revision::hayFiltro()) {
+                $avisos[] = 'sin filtro de difamación (falta ../defamatory-content-review/): solo se marcan términos sensibles';
+            }
+            if ($marcas !== []) {
+                $avisos[] = 'leer el texto con cuidado: ' . implode(', ', $marcas);
+            }
+        }
+
         return new Perfil(
             $this->red(),
             $url,
             self::texto($c['usuario'] ?? null),
             $nombre,
-            self::texto($c['titular'] ?? null),
+            $titular,
             self::texto($c['lugar'] ?? null),
             $descripcion,
             $capturado,
@@ -114,6 +126,8 @@ abstract class Analizador
             self::texto($c['muerte'] ?? null),
             self::texto($c['lugar_nacimiento'] ?? null),
             self::texto($c['lugar_muerte'] ?? null),
+            [],
+            $marcas,
         );
     }
 

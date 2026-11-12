@@ -21,6 +21,8 @@ final class Perfil
     public readonly ?string $lugarMuerte;
     /** @var list<array{relacion: string, nombre: ?string, id: ?string}> */
     public readonly array $parientes;
+    /** @var list<string> */
+    public readonly array $marcas;
 
     /**
      * La regla «fechas, lugares y parientes solo si consta una muerte» se cumple aquí y en
@@ -28,6 +30,7 @@ final class Perfil
      *
      * @param list<string> $avisos
      * @param list<array{relacion: string, nombre: ?string, id: ?string}> $parientes
+     * @param list<string> $marcas lo que {@see Revision} le encontró al texto (titular y descripción)
      */
     public function __construct(
         public readonly string $red,
@@ -44,6 +47,7 @@ final class Perfil
         ?string $lugarNacimiento = null,
         ?string $lugarMuerte = null,
         array $parientes = [],
+        array $marcas = [],
     ) {
         $consta = $muerte !== null;
         $this->muerte = $muerte;
@@ -51,6 +55,7 @@ final class Perfil
         $this->lugarNacimiento = $consta ? $lugarNacimiento : null;
         $this->lugarMuerte = $consta ? $lugarMuerte : null;
         $this->parientes = $consta ? $parientes : [];
+        $this->marcas = $marcas;
     }
 
     public function fallecido(): bool
@@ -59,7 +64,7 @@ final class Perfil
     }
 
     /**
-     * @return array{red: string, url: ?string, usuario: ?string, nombre: ?string, titular: ?string, lugar: ?string, descripcion: ?string, capturado: ?string, nacimiento: ?string, muerte: ?string, lugar_nacimiento: ?string, lugar_muerte: ?string, parientes: list<array{relacion: string, nombre: ?string, id: ?string}>, posiblemente_vivo: bool, revision_humana: bool, avisos: list<string>}
+     * @return array{red: string, url: ?string, usuario: ?string, nombre: ?string, titular: ?string, lugar: ?string, descripcion: ?string, capturado: ?string, nacimiento: ?string, muerte: ?string, lugar_nacimiento: ?string, lugar_muerte: ?string, parientes: list<array{relacion: string, nombre: ?string, id: ?string}>, marcas: list<string>, posiblemente_vivo: bool, revision_humana: bool, avisos: list<string>}
      */
     public function aArreglo(): array
     {
@@ -77,6 +82,7 @@ final class Perfil
             'lugar_nacimiento' => $this->lugarNacimiento,
             'lugar_muerte' => $this->lugarMuerte,
             'parientes' => $this->parientes,
+            'marcas' => $this->marcas,
             'posiblemente_vivo' => !$this->fallecido(),
             'revision_humana' => true,
             'avisos' => $this->avisos,

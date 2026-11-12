@@ -123,6 +123,44 @@ jobs:
       - name: Static analysis
         run: phpstan analyse --no-progress
 
+  # El formulario de pedir el retiro (/r/{id}/) y la cola del propietario (/0/3/) en Chromium, con una auditoria de
+  # accesibilidad de axe-core (url-routing/tests/navegador/). Levanta el servidor de PHP de verdad sobre SQLite.
+  navegador:
+    name: url-routing / navegador (accesibilidad)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite, mbstring
+          coverage: none
+
+      - name: Install dependencies
+        working-directory: url-routing
+        run: composer install --prefer-dist --no-progress
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Instalar dependencias del navegador
+        working-directory: url-routing/tests/navegador
+        run: npm ci
+
+      - name: Instalar Chromium
+        working-directory: url-routing/tests/navegador
+        run: npx playwright install --with-deps chromium
+
+      - name: Pruebas en el navegador
+        working-directory: url-routing/tests/navegador
+        run: npm test
+
   # El despliegue de la guía (docs/DESPLIEGUE.md), de verdad: nginx con deploy/nginx.conf.example y
   # PHP-FPM, con el sitio de genealogia en PostgreSQL y el POS en SQLite. Lo que comprueba es la
   # instalacion (permisos, migraciones, cabeceras, lo que no debe servirse, HTTPS, /ready, el

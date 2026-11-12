@@ -41,9 +41,12 @@ MASAKHAPOS = f"{RAW}/masakhane-io/masakhane-pos/376f4161f0425584d4bd7664122b56fa
 MASAKHAPOS_LENGUAS = ["bam", "bbj", "ewe", "fon", "hau", "ibo", "kin", "lug", "luo", "mos",
                       "nya", "pcm", "sna", "swa", "tsn", "twi", "wol", "xho", "yor", "zul"]
 COMMON_CRAWL = f"{RAW}/commoncrawl/cc-crawl-statistics/ea9a79ea09b492cd2a0afcafbe93daf8fee45564/plots/languages.csv"
-# El grapher de Our World in Data no tiene versiones fijas: fuentes.sha256 guarda la que se usó.
+# El grapher de Our World in Data y la API del Banco Mundial no tienen versiones fijas: fuentes.sha256 guarda la que se usó.
 POBLACION_OWID = ("https://ourworldindata.org/grapher/population.csv"
                   "?v=1&csvType=full&useColumnShortNames=true")
+# La API del Banco Mundial tampoco tiene versiones fijas.
+NATALIDAD_BM = ("https://api.worldbank.org/v2/country/all/indicator/SP.DYN.CBRT.IN"
+                "?format=json&per_page=20000&date=1960:2025")
 NATURAL_EARTH = (f"{RAW}/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19"
                  "/geojson/ne_50m_admin_0_countries.geojson")
 
@@ -76,6 +79,7 @@ FIJAS = {
     "corrupcion-gapminder.csv": gapminder(FT, "corruption_perception_index_cpi", "country"),
     "pib-pc.csv": f"{WDI}/indicators/ny.gdp.pcap.cd/data.csv",
     "population.csv": POBLACION_BM,
+    "natalidad-bm.json": NATALIDAD_BM,
     "codes_and_flags.yaml": f"{UD_AUTOMATIZACION}/codes_and_flags.yaml",
     "releases.json": f"{UD_AUTOMATIZACION}/valdan/releases.json",
     "languages.csv": COMMON_CRAWL,
@@ -117,7 +121,8 @@ def rehacer(destino):
          "--internet", d("internet-gapminder.csv"), "--emigrantes", d("emigrantes-gapminder.csv"),
          "--poblacion-gapminder", d("poblacion-gapminder.csv"), "--poblacion-owid", d("poblacion-owid.csv"), "--libertad", d("libertad-gapminder.csv"),
          "--democracia", d("democracia-gapminder.csv"), "--corrupcion", d("corrupcion-gapminder.csv"),
-         "--pib-ppa", d("pib-ppa-gapminder.csv"), "--pib-pc-bm", d("pib-pc.csv"), "--poblacion-bm", d("population.csv")],
+         "--pib-ppa", d("pib-ppa-gapminder.csv"), "--pib-pc-bm", d("pib-pc.csv"), "--poblacion-bm", d("population.csv"),
+         "--natalidad-bm", d("natalidad-bm.json")],
         ["historia_poblacion.py"],
         ["preparar_lenguas.py", "--ud-stats", d("ud-stats"), "--ud-codigos", d("codes_and_flags.yaml"),
          "--masakhapos", d("masakhane-pos"), "--common-crawl", d("languages.csv")],

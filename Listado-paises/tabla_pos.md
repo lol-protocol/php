@@ -19,7 +19,9 @@
 | Países Bajos | neerlandés; inglés | estado | — | 97.0 | 5 | 5 | 5 | 505 679 | 1.7381 | 25 | no |  |
 | Reino Unido | inglés | estado | — | 95.5 | 5 | 5 | 5 | 1 126 448 | 41.8620 | 25 | no |  |
 | Suiza | alemán; francés; italiano; romanche | estado | — | 97.3 | 5 | 5 | 5 | 3 810 118 | 5.7252 | 25 | no |  |
+| Andorra | catalán; español | estado | — | 94.4 | 4 | 5 | 5 | 547 262 | 0.1976 | 20 | no | Mercado pequeño; lee en catalán y español, dos mercados editoriales grandes |
 | Antigua y Barbuda | inglés | estado | — | 72.7 | 4 | 5 | 5 | 1 126 448 | 41.8620 | 20 | no | Mercado editorial pequeño |
+| Arabia Saudita | árabe | estado | 97.9 | 100.0 | 4 | 5 | 5 | 1 042 020 | 0.6679 | 20 | no | internet universal e IDH alto |
 | Argentina | español | estado | 99.1 | 89.7 | 4 | 5 | 5 | 1 022 971 | 4.7448 | 20 | no |  |
 | Bahamas | inglés | estado | — | 92.5 | 4 | 5 | 5 | 1 126 448 | 41.8620 | 20 | no |  |
 | Barbados | inglés | estado | — | 70.4 | 4 | 5 | 5 | 1 126 448 | 41.8620 | 20 | no |  |
@@ -33,6 +35,7 @@
 | Cuba | español | estado | 97.7 | 70.5 | 4 | 5 | 5 | 1 022 971 | 4.7448 | 20 | no |  |
 | Dinamarca | danés; inglés | estado | — | 99.8 | 5 | 5 | 4 | 100 733 | 0.5233 | 20 | no | IP por inglés (mejor recurso listado). |
 | Ecuador | español; quechua | estado | 96.3 | 77.2 | 4 | 5 | 5 | 1 022 971 | 4.7448 | 20 | no |  |
+| Emiratos Árabes Unidos | árabe; inglés; urdu | estado | 98.8 | 100.0 | 4 | 5 | 5 | 1 042 020 | 0.6679 | 20 | no | internet universal e IDH alto |
 | España | español; catalán; gallego; euskera | estado | 99.7 | 95.8 | 4 | 5 | 5 | 1 022 971 | 4.7448 | 20 | no |  |
 | Estonia | estonio; inglés | estado | 99.9 | 92.2 | 4 | 5 | 5 | 528 372 | 0.1447 | 20 | no |  |
 | Finlandia | finlandés; sueco | estado | — | 93.7 | 5 | 4 | 4 | 397 014 | 0.3723 | 20 | no |  |
@@ -75,8 +78,6 @@
 | Malasia | malayo; inglés; chino | estado | 95.8 | 98.0 | 4 | 5 | 4 | 169 728 | 1.1800 | 16 | no | IP por inglés (mejor recurso listado). |
 | Serbia | serbio | estado | 99.3 | 87.7 | 4 | 4 | 4 | 297 082 | 0.5279 | 16 | no |  |
 | Ucrania | ucraniano; ruso | estado | — | 82.5 | 4 | 5 | 4 | 231 916 | 0.8138 | 16 | no | IP por ruso (mejor recurso listado). |
-| Andorra | catalán; español | estado | — | 94.4 | 3 | 5 | 5 | 547 262 | 0.1976 | 15 | no | Mercado pequeño |
-| Arabia Saudita | árabe | estado | 97.9 | 100.0 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
 | Argelia | árabe; francés | estado | — | 77.4 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
 | Baréin | árabe; inglés | estado | 97.8 | 100.0 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
 | Belice | inglés; español | estado | 87.9 | 80.0 | 3 | 5 | 5 | 1 126 448 | 41.8620 | 15 | no |  |
@@ -87,7 +88,6 @@
 | Dominica | inglés; criollo dominiqués | estado | — | 82.0 | 3 | 5 | 5 | 1 126 448 | 41.8620 | 15 | no |  |
 | Egipto | árabe; árabe egipcio | estado | 79.5 | 74.6 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
 | El Salvador | español | estado | 89.8 | 66.5 | 3 | 5 | 5 | 1 022 971 | 4.7448 | 15 | no |  |
-| Emiratos Árabes Unidos | árabe; inglés; urdu | estado | 98.8 | 100.0 | 3 | 5 | 5 | 1 042 020 | 0.6679 | 15 | no |  |
 | Esuatini | inglés; suazi | estado | 90.8 | 63.4 | 3 | 5 | 5 | 1 126 448 | 41.8620 | 15 | no |  |
 | Gabón | francés | estado | 88.9 | 68.7 | 3 | 5 | 5 | 708 727 | 4.6769 | 15 | no |  |
 | Guatemala | español; lenguas mayas | estado | 82.1 | 60.2 | 3 | 5 | 5 | 1 022 971 | 4.7448 | 15 | no |  |
@@ -172,7 +172,6 @@
 | Maldivas | dhivehi | estado | 98.2 | 85.2 | 4 | 1 | 1 | 0 | 0.0024 | 4 | no |  |
 | Mongolia | mongol; ruso | estado | 98.6 | 85.1 | 4 | 5 | 1 | 0 | 0.0159 | 4 | no | IP por ruso (mejor recurso listado). |
 | Nepal | nepalí; inglés | estado | 68.7 | 46.3 | 2 | 5 | 2 | 801 | 0.0534 | 4 | no | IP por inglés (mejor recurso listado). |
-| Tayikistán | tayiko; ruso | estado | — | 55.8 | 4 | 5 | 1 | 0 | 0.0065 | 4 | no | IP por ruso (mejor recurso listado). |
 | Burkina Faso | moré; francés | estado | 41.4 | 28.3 | 1 | 5 | 3 | 33 792 | — | 3 | no | IP por francés (mejor recurso listado). Alfabetización muy baja |
 | Congo | lingala; francés | estado | — | 47.3 | 3 | 5 | 1 | 0 | 0.0006 | 3 | no | IP por francés (mejor recurso listado). |
 | Curazao | papiamento; neerlandés; inglés; español | territorio | — | — | 3 | 5 | 1 | 0 | — | 3 | no | IP por neerlandés (mejor recurso listado). |
@@ -190,6 +189,7 @@
 | Níger | hausa; francés; zarma | estado | 35.6 | 15.6 | 1 | 5 | 3 | 94 556 | 0.0030 | 3 | no | IP por francés (mejor recurso listado). Alfabetización muy baja |
 | Palaos | palauano; inglés | estado | 100.0 | 83.9 | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
 | Samoa | samoano; inglés | estado | 98.0 | — | 3 | 5 | 1 | 0 | 0.0007 | 3 | no | IP por inglés (mejor recurso listado). |
+| Tayikistán | tayiko; ruso | estado | — | 55.8 | 3 | 5 | 1 | 0 | 0.0065 | 3 | no | IP por ruso (mejor recurso listado). IDH 0,69 y mercado editorial en tayiko chico |
 | Tonga | tongano; inglés | estado | 91.0 | 67.4 | 3 | 5 | 1 | 0 | 0.0001 | 3 | no | IP por inglés (mejor recurso listado). |
 | Tuvalu | tuvaluano; inglés | estado | 100.0 | — | 3 | 5 | 1 | 0 | — | 3 | no | IP por inglés (mejor recurso listado). |
 | Vanuatu | bislama; inglés; francés | estado | 88.0 | — | 3 | 5 | 1 | 0 | 0.0002 | 3 | no | IP por inglés (mejor recurso listado). |

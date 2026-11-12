@@ -44,6 +44,12 @@ final class Lote
         return $salida;
     }
 
+    /** La URL sin mayúsculas, sin `http(s)://`, sin `www.` y sin la barra final: dos páginas iguales dan la misma clave. */
+    public static function claveUrl(string $url): string
+    {
+        return rtrim(strtolower((string) preg_replace('#^https?://(www\.)?#i', '', trim($url))), '/');
+    }
+
     /**
      * Deja el primer perfil de cada URL (sin contar mayúsculas, `www.` ni la barra final).
      * Los que no tienen URL se conservan todos: no hay con qué compararlos.
@@ -59,7 +65,7 @@ final class Lote
         foreach ($perfiles as $perfil) {
             $url = $perfil['url'] ?? null;
             if (is_string($url)) {
-                $clave = rtrim(strtolower((string) preg_replace('#^https?://(www\.)?#i', '', $url)), '/');
+                $clave = self::claveUrl($url);
                 if (isset($vistos[$clave])) {
                     $repetidos++;
                     continue;

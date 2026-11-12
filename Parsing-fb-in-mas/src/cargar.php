@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 // Sin Composer: el proyecto no tiene dependencias propias.
 foreach ([
-    'Json', 'Perfil', 'Metadatos', 'Analizador',
-    'Facebook', 'LinkedIn', 'Twitter', 'Instagram', 'TikTok', 'YouTube', 'GitHub', 'Pinterest',
-    'WikiTree', 'FindAGrave', 'Generico', 'Detector', 'Lote', 'Wikidata', 'Cruce',
+    'Json', 'Sensibles', 'Revision', 'Perfil', 'Metadatos', 'Analizador',
+    'Facebook', 'LinkedIn', 'Twitter', 'Instagram', 'TikTok', 'YouTube', 'GitHub', 'Pinterest', 'Bluesky', 'Threads',
+    'WikiTree', 'FindAGrave', 'Mastodon', 'Generico', 'Detector', 'WikiTreeApi', 'Lote', 'Exclusiones', 'Wikidata', 'Cruce',
 ] as $clase) {
     require_once __DIR__ . "/$clase.php";
 }

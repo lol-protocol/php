@@ -1,0 +1,3 @@
+[{"page_name":"Ficticia-1","status":0,"profile":{"Id":1001,"Name":"Ficticia-1","FirstName":"María","MiddleName":"Rosa","LastNameAtBirth":"Ficticia","BirthDate":"1850-03-00","DeathDate":"1920-00-00","BirthLocation":"Valparaíso, Chile","DeathLocation":"Santiago, Chile","IsLiving":0,"Father":1002,"Mother":0}},
+ {"page_name":"Vivo-7","status":0,"profile":{"Id":2001,"Name":"Vivo-7","FirstName":"Fabio","LastNameAtBirth":"Vivo","BirthDate":"1985-05-05","BirthLocation":"Temuco, Chile","DeathDate":"0000-00-00","IsLiving":1,"Father":2002,"Mother":2003}},
+ {"page_name":"Privado-3","status":0,"profile":{"Id":3001,"Name":"Privado-3","IsLiving":0,"DeathDate":"0000-00-00","BirthDate":"1900-01-01"}}]

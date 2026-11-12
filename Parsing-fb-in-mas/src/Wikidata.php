@@ -67,6 +67,100 @@ final class Wikidata
     }
 
     /**
+     * Segundo recorrido del volcado: pone nombre a los lugares y parientes que `recorrer()` dejó como
+     * identificadores (`Q2887`). Lee el volcado una vez, solo decodifica las líneas que se pidieron y
+     * se detiene al encontrarlas todas.
+     *
+     * - Los lugares ganan `lugar_nacimiento_nombre` y `lugar_muerte_nombre`.
+     * - **El nombre de un pariente solo se resuelve si el volcado lo da por fallecido** (tiene fecha de
+     *   muerte): un hijo o una hija de alguien que murió puede estar vivo, y de una persona viva no se
+     *   saca el nombre. Los demás quedan con su identificador y `nombre` en null.
+     * - Un pariente que está en la lista de exclusión se quita del perfil.
+     *
+     * @param list<array<string, mixed>> $perfiles perfiles de Wikidata como los escribe `recorrer()`
+     * @return array{perfiles: list<array<string, mixed>>, resueltos: int, pendientes: list<string>}
+     *         pendientes: los identificadores que pidieron los perfiles y no están en el volcado
+     */
+    public static function resolverNombres(string $ruta, array $perfiles, ?Exclusiones $excluidos = null): array
+    {
+        $quiero = [];
+        foreach ($perfiles as $p) {
+            foreach (['lugar_nacimiento', 'lugar_muerte'] as $campo) {
+                $v = $p[$campo] ?? null;
+                if (is_string($v) && preg_match('/^Q\d+$/', $v) === 1) {
+                    $quiero[$v] = true;
+                }
+            }
+            $parientes = $p['parientes'] ?? null;
+            foreach (is_array($parientes) ? $parientes : [] as $pariente) {
+                $id = Json::texto($pariente, 'id');
+                if ($id !== null && preg_match('/^Q\d+$/', $id) === 1) {
+                    $quiero[$id] = true;
+                }
+            }
+        }
+
+        /** @var array<string, array{nombre: ?string, fallecido: bool}> $datos */
+        $datos = [];
+        if ($quiero !== []) {
+            $abrir = str_ends_with($ruta, '.gz') ? 'compress.zlib://' . $ruta : $ruta;
+            $f = is_file($ruta) ? @fopen($abrir, 'rb') : false;
+            if ($f === false) {
+                throw new RuntimeException("No se pudo abrir $ruta");
+            }
+            while (count($datos) < count($quiero) && ($linea = fgets($f)) !== false) {
+                // El identificador de la entidad es el primer «id» de la línea: se mira sin decodificar.
+                if (preg_match('/"id"\s*:\s*"(Q\d+)"/', substr($linea, 0, 200), $m) !== 1
+                    || !isset($quiero[$m[1]]) || isset($datos[$m[1]])) {
+                    continue;
+                }
+                $entidad = json_decode(rtrim($linea, ",\r\n "), true);
+                if (is_array($entidad)) {
+                    $datos[$m[1]] = ['nombre' => self::texto($entidad, 'labels'), 'fallecido' => self::fecha($entidad, 'P570') !== null];
+                }
+            }
+            fclose($f);
+        }
+
+        $resueltos = 0;
+        foreach ($datos as $d) {
+            $resueltos += $d['nombre'] !== null ? 1 : 0;
+        }
+        $salida = [];
+        foreach ($perfiles as $p) {
+            foreach (['lugar_nacimiento' => 'lugar_nacimiento_nombre', 'lugar_muerte' => 'lugar_muerte_nombre'] as $campo => $destino) {
+                $v = $p[$campo] ?? null;
+                if (is_string($v) && preg_match('/^Q\d+$/', $v) === 1) {
+                    $p[$destino] = $datos[$v]['nombre'] ?? null;
+                }
+            }
+            $nuevos = [];
+            $sinNombre = false;
+            $parientes = $p['parientes'] ?? null;
+            foreach (is_array($parientes) ? $parientes : [] as $pariente) {
+                $id = Json::texto($pariente, 'id');
+                if ($id !== null && $excluidos !== null && $excluidos->contiene(['red' => 'wikidata', 'usuario' => $id, 'url' => 'https://www.wikidata.org/wiki/' . $id])) {
+                    continue;
+                }
+                $nombre = $id !== null && ($datos[$id]['fallecido'] ?? false) ? ($datos[$id]['nombre'] ?? null) : null;
+                $sinNombre = $sinNombre || $nombre === null;
+                $nuevos[] = ['relacion' => Json::texto($pariente, 'relacion') ?? '', 'nombre' => $nombre, 'id' => $id];
+            }
+            if (is_array($parientes)) {
+                $p['parientes'] = $nuevos;
+            }
+            if ($sinNombre) {
+                $avisos = Json::en($p, 'avisos');
+                $p['avisos'] = [...(is_array($avisos) ? array_filter($avisos, 'is_string') : []),
+                    'hay parientes sin nombre: pueden estar vivos o no estar en el volcado'];
+            }
+            $salida[] = $p;
+        }
+
+        return ['perfiles' => $salida, 'resueltos' => $resueltos, 'pendientes' => array_values(array_diff(array_keys($quiero), array_keys($datos)))];
+    }
+
+    /**
      * @param array<mixed> $e una entidad del volcado
      */
     public static function persona(array $e, ?string $pais = null, ?string $capturado = null): ?Perfil

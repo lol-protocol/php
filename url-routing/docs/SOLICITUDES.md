@@ -92,15 +92,18 @@ cambiado de la ficha puede cambiar **quién la ve** (una fecha de nacimiento nue
 
 Desde el correo de contacto y por una persona (el sitio no escribe solo). **Sin cifrar no se manda el JSON**:
 el correo viaja en claro, y es la misma razón por la que el aviso de `bin/pedidos-retiro.php` no dice quién pidió
-ni qué escribió. Cómo entregar lo que hay (un resumen legible, un enlace con clave) **⚖️ no está decidido**.
-Estos textos son un punto de partida; no prometas un plazo que no hayas decidido:
+ni qué escribió. **Decidido el 12 de noviembre de 2026:** se manda un **resumen legible**, escrito a mano a partir de
+`acceso`, sin JSON: lo que un visitante ya ve de esa persona, más las **cantidades** de lo demás (sucesos, registros,
+colecciones, parientes) y qué campos se corrigieron. **Lo que el sitio oculta no se manda por correo**: si la persona
+necesita verlo, queda sin decidir (una entrega con clave por otro medio) hasta que pase con una solicitud real.
+Estos textos son un punto de partida; **el plazo de respuesta sigue ⚖️ sin decidir**, no prometas uno:
 
 - **Acceso.** «Recibimos tu solicitud el [FECHA]. Comprobamos [lo decidido en la sección anterior]. Esto es lo que
   tenemos de [NOMBRE]: [resumen]. Si algo no es correcto, dínoslo y lo corregimos.»
 - **Rectificación.** «Recibimos tu solicitud el [FECHA]. Corregimos [qué dato] el [FECHA]. Puedes verlo en [enlace].»
 - **Supresión.** «Recibimos tu solicitud el [FECHA]. Borramos la ficha de [NOMBRE]. Los sucesos que comparte con
   otras personas **se conservan** sin ella, porque también son datos de las otras. Una copia de seguridad puede
-  guardarla hasta [PLAZO ⚖️].»
+  guardarla hasta [PLAZO: 30 días si se aprueba la propuesta de `DESPLIEGUE.md`, sección 11 ⚖️].»
 - **Si no se puede atender** (no se comprobó quién pide, o no hay nada de esa persona): dilo, con la razón.
 
 Los textos tipo en 16 idiomas de [`respuestas-tipo/`](respuestas-tipo/README.md) son solo para **retiros**; para
@@ -111,5 +114,7 @@ estas solicitudes todavía no hay.
 - **Poner en práctica la comprobación de quién pide** (sección anterior) y ensayarla.
 - **La dirección del correo propio del sitio** que reemplaza el `[CORREO]` de los términos (o un formulario como
   `/r/{id}/`): hay que preguntarla, no se inventa.
-- **Los plazos** de respuesta y de conservación (de las copias de seguridad, de la nota de cada solicitud).
-- Ensayar todo con **datos reales**, no con la base de demostración.
+- **Los plazos** de respuesta y de conservación de la nota de cada solicitud. El de las copias de seguridad tiene una
+  propuesta de 30 días en [`DESPLIEGUE.md`](DESPLIEGUE.md) (sección 11), sin aprobar ni puesta en práctica.
+- Ensayar todo con **datos reales**, no con la base de demostración: la guía está en
+  [`ENSAYO-SOLICITUDES.md`](ENSAYO-SOLICITUDES.md).
