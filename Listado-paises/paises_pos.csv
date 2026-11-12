@@ -2,10 +2,10 @@ codigo,idioma_principal,indice_lectura,indice_pos,indice_pos_local,comentarios_p
 AF,dari; pastún,1,5,5,Alfabetización muy baja
 AL,albanés,3,3,3,Alfabetización alta
 DE,alemán,5,5,5,Mercado editorial grande
-AD,catalán; español,3,5,5,Mercado pequeño
+AD,catalán; español,4,5,5,"Mercado pequeño; lee en catalán y español, dos mercados editoriales grandes"
 AO,portugués,2,5,5,Alfabetización baja
 AG,inglés,4,5,5,Mercado editorial pequeño
-SA,árabe,3,5,5,
+SA,árabe,4,5,5,internet universal e IDH alto
 DZ,árabe; francés,3,5,5,
 AR,español,4,5,5,
 AM,armenio; ruso; inglés,3,5,4,IP por ruso (mejor recurso listado).
@@ -55,7 +55,7 @@ DM,inglés; criollo dominiqués,3,5,5,
 EC,español; quechua,4,5,5,
 EG,árabe; árabe egipcio,3,5,5,
 SV,español,3,5,5,
-AE,árabe; inglés; urdu,3,5,5,
+AE,árabe; inglés; urdu,4,5,5,internet universal e IDH alto
 ER,tigriña; árabe; inglés,2,5,1,IP por árabe (mejor recurso listado).
 SK,eslovaco,4,4,4,
 SI,esloveno,4,4,4,
@@ -187,7 +187,7 @@ SR,neerlandés; sranan tongo,3,5,5,
 TH,tailandés; inglés,4,5,3,IP por inglés (mejor recurso listado). La segmentación sin espacios exige herramientas
 TW,chino tradicional,5,4,4,La segmentación exige herramientas
 TZ,suajili; inglés,3,5,3,IP por inglés (mejor recurso listado).
-TJ,tayiko; ruso,4,5,1,IP por ruso (mejor recurso listado).
+TJ,tayiko; ruso,3,5,1,"IP por ruso (mejor recurso listado). IDH 0,69 y mercado editorial en tayiko chico"
 TL,tetun; portugués,2,5,1,IP por portugués (mejor recurso listado).
 TG,ewé; francés; mina,2,5,3,IP por francés (mejor recurso listado).
 TO,tongano; inglés,3,5,1,IP por inglés (mejor recurso listado).

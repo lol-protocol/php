@@ -87,8 +87,8 @@ DENEVAN = {
     "Norteamérica": (3.79, {"US", "CA", "GL"}),
     "México": (17.174, {"MX"}),
     "Centroamérica": (5.625, {"BZ", "GT", "SV", "HN", "NI", "CR", "PA"}),
-    "Caribe": (3.0, {"AG", "BB", "BS", "CU", "CW", "DM", "DO", "GD", "HT", "JM", "KN", "LC", "PR",
-                     "TT", "VC"}),
+    # El Caribe queda como en HYDE: Denevan da 3 M, que es el factor más alto (x3,6) y el más
+    # discutido (otros autores dan entre 0,5 y 1 M).
     "Andes": (15.696, {"CO", "EC", "PE", "BO", "CL"}),
     "Sudamérica baja": (8.619, {"BR", "VE", "GY", "SR", "PY", "UY", "AR"}),
 }

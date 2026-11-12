@@ -14,6 +14,10 @@ on:
       - "Listado-paises/**"
       - ".github/workflows/pruebas-listado-paises.yml"
   workflow_dispatch:
+  # El día 3 de cada mes: el grapher de OWID y la API del Banco Mundial no tienen versiones
+  # fijas, así que el job reproducir avisa (falla) si alguna de las dos cambió.
+  schedule:
+    - cron: "17 5 3 * *"
 
 permissions:
   contents: read
@@ -24,6 +28,7 @@ concurrency:
 
 jobs:
   listado-paises:
+    if: github.event_name != 'schedule'
     name: "Listado-paises: CSV válidos, tablas al día y pruebas"
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -45,12 +50,12 @@ jobs:
         working-directory: Listado-paises
         run: python3 -m unittest -v pruebas
 
-  # Solo al lanzarlo a mano (workflow_dispatch): baja las fuentes fijadas por commit,
+  # Al lanzarlo a mano (workflow_dispatch) y una vez al mes (schedule): baja las fuentes fijadas por commit,
   # comprueba su SHA-256 contra fuentes.sha256, rehace todos los datos y falla si algún
   # archivo del proyecto cambia. Tarda menos de un minuto y baja unos 35 MB.
   reproducir:
     name: "Listado-paises: los datos se rehacen idénticos desde las fuentes"
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
 
