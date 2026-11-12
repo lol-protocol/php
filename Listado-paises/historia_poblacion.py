@@ -11,14 +11,17 @@
           natalidad.csv si tiene el país y el año (desde 1800); si no, la de su época
           (natalidad_por_epoca).
 
-Sensibilidad: N es lineal en b, así que la banda se obtiene multiplicando N por 0,9 y 1,1.
+Banda de incertidumbre: N se calcula también en cada escenario de ESCENARIOS (natalidad x0,9 y
+x1,1, 40 por mil fijo antes de 1800, y América sin el ajuste a Denevan de preparar_datos.py), y la
+banda va del menor al mayor de todos.
 
 Entradas (en esta carpeta; las genera preparar_datos.py, ver README.md):
     poblacion_larga.csv   codigo,anio,poblacion      puntos de una serie larga
     natalidad.csv         codigo,anio,tasa_por_mil   nacimientos por mil habitantes (opcional)
+    ajuste_america.csv    codigo,hasta,factor        factor de Denevan aplicado hasta ese año (opcional)
 
 Salidas: paises.csv (columna poblacion_historica_acumulada, en millones) y
-poblacion_historica_detalle.csv (central y banda de sensibilidad).
+poblacion_historica_detalle.csv (central, cada escenario y la banda).
 Si falta poblacion_larga.csv, no hace nada.
 """
 import bisect
@@ -41,6 +44,36 @@ def natalidad_por_epoca(t):
         if t < fin:
             return tasa
     return B_DESDE_1750
+
+
+def natalidad_fija_antes_de_1800(t):
+    """Escenario bajo: 40 por mil también antes de 1800, en vez de las épocas del PRB."""
+    return B_DESDE_1750
+
+
+def cargar_ajuste(ruta):
+    """codigo -> (hasta, factor) de ajuste_america.csv; vacío si no existe."""
+    if not ruta.exists():
+        return {}
+    return {f["codigo"]: (int(f["hasta"]), float(f["factor"])) for f in filas_csv(ruta)}
+
+
+def sin_ajuste(puntos, ajuste):
+    """Los puntos con el ajuste de América deshecho (divididos por el factor hasta su año)."""
+    if not ajuste:
+        return puntos
+    hasta, factor = ajuste
+    return [(a, p / factor if a <= hasta else p) for a, p in puntos]
+
+
+# (columna de poblacion_historica_detalle.csv, cálculo). Cada cálculo recibe puntos, natalidad del
+# país y ajuste de América, y devuelve N.
+ESCENARIOS = [
+    ("natalidad_baja", lambda pts, nat, aj: 0.9 * nacimientos(pts, nat)),
+    ("natalidad_alta", lambda pts, nat, aj: 1.1 * nacimientos(pts, nat)),
+    ("fija_40_antes_1800", lambda pts, nat, aj: nacimientos(pts, nat, natalidad_fija_antes_de_1800)),
+    ("sin_ajuste_america", lambda pts, nat, aj: nacimientos(sin_ajuste(pts, aj), nat)),
+]
 
 
 def cargar_puntos(ruta):
@@ -80,7 +113,7 @@ def poblacion_en(anios, pobs, t):
     return p0 + (p1 - p0) * w
 
 
-def nacimientos(puntos, natal):
+def nacimientos(puntos, natal, epoca=natalidad_por_epoca):
     """N central: suma de P(t) x b(t) desde el primer punto hasta ANIO_FIN.
 
     Recorre los tramos entre puntos en orden, sin buscar el tramo de cada año: da los mismos P(t)
@@ -94,11 +127,11 @@ def nacimientos(puntos, natal):
             w = (t - a0) / (a1 - a0)
             p = p0 * (p1 / p0) ** w if geometrica else p0 + (p1 - p0) * w
             if p:
-                total += p * (natal[t] if t in natal else natalidad_por_epoca(t))
+                total += p * (natal[t] if t in natal else epoca(t))
     ultimo, p = puntos[-1]
     for t in range(ultimo, ANIO_FIN + 1):
         if p:
-            total += p * (natal[t] if t in natal else natalidad_por_epoca(t))
+            total += p * (natal[t] if t in natal else epoca(t))
     return total
 
 
@@ -109,6 +142,7 @@ def main(carpeta=AQUI):
         return
     puntos = cargar_puntos(ruta_larga)
     natal = cargar_natalidad(carpeta / "natalidad.csv")
+    ajustes = cargar_ajuste(carpeta / "ajuste_america.csv")
 
     columnas, filas = leer_csv(carpeta / "paises.csv")
 
@@ -124,15 +158,18 @@ def main(carpeta=AQUI):
             incompletas.append(codigo)
             fila["poblacion_historica_acumulada"] = ""
             continue
-        central = nacimientos(puntos[codigo], natal.get(codigo, {}))
+        nat = natal.get(codigo, {})
+        central = nacimientos(puntos[codigo], nat)
         fila["poblacion_historica_acumulada"] = f"{central / 1e6:.2f}"
-        detalle.append((codigo, central, central * 0.9, central * 1.1))
+        variantes = [calculo(puntos[codigo], nat, ajustes.get(codigo)) for _, calculo in ESCENARIOS]
+        todos = [central, *variantes]
+        detalle.append([codigo, *(f"{v / 1e6:.2f}" for v in [*todos, min(todos), max(todos)])])
 
     escribir_dicts(carpeta / "paises.csv", columnas, filas)
     escribir_filas(carpeta / "poblacion_historica_detalle.csv",
-                   ["codigo", "central_millones", "bajo_millones", "alto_millones"],
-                   [[codigo, f"{c / 1e6:.2f}", f"{bajo / 1e6:.2f}", f"{alto / 1e6:.2f}"]
-                    for codigo, c, bajo, alto in detalle])
+                   ["codigo", "central_millones", *(f"{nombre}_millones" for nombre, _ in ESCENARIOS),
+                    "minimo_millones", "maximo_millones"],
+                   detalle)
 
     print(f"{len(detalle)} países calculados; sin datos en la serie larga: {', '.join(sin_datos) or 'ninguno'}; "
           f"serie que termina antes de {ANIO_MINIMO_SERIE} (saltados): {', '.join(incompletas) or 'ninguno'}")

@@ -449,6 +449,11 @@ def main(argv=None, carpeta=AQUI):
     factores_america = ajustar_america(series)
     filas_larga = [(codigo, a, round(p)) for codigo, serie in series.items() for a, p in serie]
     escribir_filas(carpeta / "poblacion_larga.csv", ["codigo", "anio", "poblacion"], filas_larga)
+    # Para que historia_poblacion pueda calcular el escenario sin el ajuste (banda de incertidumbre).
+    escribir_filas(carpeta / "ajuste_america.csv", ["codigo", "hasta", "factor"],
+                   sorted([c, ANIO_CONTACTO, f"{factores_america[region]:.6f}"]
+                          for region, (_, codigos) in DENEVAN.items() if region in factores_america
+                          for c in codigos if c in series))
     escribir_filas(carpeta / "natalidad.csv", ["codigo", "anio", "tasa_por_mil"], filas_natalidad)
     escribir_dicts(carpeta / "paises.csv", columnas, paises)
     escribir_filas(carpeta / "datos_detalle.csv", ["codigo", "columna", "anio", "fuente"], detalle)

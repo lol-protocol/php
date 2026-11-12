@@ -167,7 +167,8 @@ const MODOS = {
       ["ig", "IG", true, 0], ["io", "IO", true, 0], ["prio", "Prioridad", true, 0],
       ["excl", "Excluido", false],
     ],
-    tip: (d) => [[`Población ${ANIOS.pob}`, fmt(d.pob, 2) && fmt(d.pob, 2) + " M"], ["Nacidos en la historia", fmt(d.nac, 0) && fmt(d.nac, 0) + " M"],
+    tip: (d) => [[`Población ${ANIOS.pob}`, fmt(d.pob, 2) && fmt(d.pob, 2) + " M"], ["Nacidos en la historia", fmt(d.nac, 0) && fmt(d.nac, 0) + " M"
+        + (d.nmin != null ? ` (${fmt(d.nmin, 0)}–${fmt(d.nmax, 0)})` : "")],
       [`IDH ${ANIOS.idh}`, fmt(d.idh, 3)], ["Internet", fmt(d.net, 1) && fmt(d.net, 1) + " %"], ["Emigrantes", fmt(d.emi, 1) && fmt(d.emi, 1) + " %"],
       ["Libertad (Freedom House)", d.fh], ["Democracia (EIU)", fmt(d.eiu, 1)], ["Corrupción (CPI, 100 = limpio)", fmt(d.cpi, 0)]],
   },
