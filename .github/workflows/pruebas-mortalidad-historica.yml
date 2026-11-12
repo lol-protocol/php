@@ -1,0 +1,45 @@
+name: Pruebas mortalidad-historica
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master. No depende de ninguna
+# otra carpeta.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "mortalidad-historica/**"
+      - ".github/workflows/pruebas-mortalidad-historica.yml"
+  pull_request:
+    paths:
+      - "mortalidad-historica/**"
+      - ".github/workflows/pruebas-mortalidad-historica.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  mortalidad-historica:
+    name: "mortalidad-historica: CSV válidos, glosario al día y pruebas"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Valida los seis CSV de datos/ (columnas, valores permitidos, causas que existen, idiomas ISO 639-3,
+      # que un dato «verificado» traiga su fuente) y falla si por-idioma/ o el «Resumen» del README no
+      # coinciden con lo que genera el script.
+      - name: Comprobar datos y salida generada
+        working-directory: mortalidad-historica
+        run: python3 generar_tabla.py --comprobar
+
+      - name: Pruebas
+        working-directory: mortalidad-historica
+        run: python3 -m unittest -v pruebas

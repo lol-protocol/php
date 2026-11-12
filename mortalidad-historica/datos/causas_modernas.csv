@@ -1,0 +1,14 @@
+id,nombre_spa,nombre_eng,cie10,grupo
+tuberculosis,Tuberculosis,Tuberculosis,A15;A16;A17;A18;A19,infecciosa
+viruela,Viruela,Smallpox,B03,infecciosa
+colera,Cólera,Cholera,A00,infecciosa
+malaria,Paludismo (malaria),Malaria,B50;B51;B52;B53;B54,infecciosa
+peste,Peste,Plague,A20,infecciosa
+difteria,Difteria,Diphtheria,A36,infecciosa
+tifus,Tifus,Typhus,A75,infecciosa
+edema_cardiaco,Edema o insuficiencia cardíaca (la «hidropesía» de los registros),Edema or heart failure (the «dropsy» of the records),I50;R60,cardiovascular
+ictus,Accidente cerebrovascular,Stroke,I60;I61;I62;I63;I64,cardiovascular
+convulsiones_infantiles,Convulsiones de la infancia,Infant convulsions,R56,perinatal_infantil
+fiebre_puerperal,Sepsis puerperal («fiebre del parto»),Puerperal sepsis (childbed fever),O85,materna
+obstruccion_intestinal,Obstrucción intestinal,Intestinal obstruction,K56,digestiva
+vejez,"Vejez, sin causa específica","Old age, no specific cause",R54,mal_definida
