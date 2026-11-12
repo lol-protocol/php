@@ -4,7 +4,7 @@ AL,Albania,estado,Europa,2.79,60.72,0.810,11374,17991,97.7,85.9,43.6,parcial,60.
 DE,Alemania,estado,Europa,84.6,1059.40,0.959,56104,62687,,93.5,5.1,libre,86.7,78,4,5,Archivos y registros de muy buena calidad; RGPD muy exigente; alemán
 AD,Andorra,estado,Europa,0.082,0.38,0.913,49357,64631,,94.4,2.4,libre,,,2,4,Muy pequeño; catalán y español; mercado reducido
 AO,Angola,estado,África,37.9,175.49,0.616,2721,7250,66.2,40.7,1.6,no libre,36.6,33,2,3,Diáspora portuguesa histórica; registros civiles de acceso irregular; restricciones cambiarias
-AG,Antigua y Barbuda,estado,América,0.094,2.54,0.851,23060,28474,,72.7,14.0,libre,,,2,4,Muy pequeño; inglés; sector financiero y de juego offshore con regulación propia
+AG,Antigua y Barbuda,estado,América,0.094,1.02,0.851,23060,28474,,72.7,14.0,libre,,,2,4,Muy pequeño; inglés; sector financiero y de juego offshore con regulación propia
 SA,Arabia Saudita,estado,Asia,34.0,445.83,0.900,35528,64482,97.9,100.0,0.7,no libre,20.8,52,2,3,Sin registros civiles públicos de acceso abierto; control de contenido en línea; árabe; control estatal de internet (no libre según Freedom House)
 DZ,Argelia,estado,África,46.8,593.24,0.763,5753,15159,,77.4,3.8,no libre,40.1,36,2,2,Control estatal fuerte de medios e internet; restricciones a pagos y al cambio de divisas
 AR,Argentina,estado,América,45.7,101.30,0.865,13970,27105,99.1,89.7,2.6,libre,69.5,37,4,3,Diáspora europea muy grande; registros civiles parcialmente digitalizados; controles cambiarios que cambian con frecuencia; español
@@ -12,10 +12,10 @@ AM,Armenia,estado,Asia,2.97,41.67,0.811,8556,19403,99.8,81.3,21.4,parcial,53.5,4
 AU,Australia,estado,Oceanía,26.7,315.07,0.958,64610,60461,,96.1,1.6,libre,89.6,75,5,5,Registros británicos muy buenos; inglés; regulación de privacidad madura
 AT,Austria,estado,Europa,9.12,166.67,0.930,58269,64394,,91.9,4.7,libre,81.6,71,4,5,Archivos eclesiásticos y civiles muy buenos; alemán; RGPD
 AZ,Azerbaiyán,estado,Asia,10.3,92.34,0.789,7295,21311,99.8,90.8,7.8,no libre,26.8,23,2,2,Restricciones a medios y ONG desde 2024; registros soviéticos y civiles de acceso limitado; azerí y ruso
-BS,Bahamas,estado,América,0.40,2.02,0.820,39455,35221,,92.5,0.5,libre,,64,3,4,Inglés; mercado pequeño; sector financiero con regulación estricta
+BS,Bahamas,estado,América,0.40,1.10,0.820,39455,35221,,92.5,0.5,libre,,64,3,4,Inglés; mercado pequeño; sector financiero con regulación estricta
 BH,Baréin,estado,Asia,1.61,3.86,0.899,29717,57820,97.8,100.0,3.6,no libre,24.9,42,1,3,Reino pequeño; árabe e inglés; registros poco públicos; control estatal de internet (no libre según Freedom House)
 BD,Bangladés,estado,Asia,173.6,1689.02,0.685,2593,8242,79.0,53.4,5.0,parcial,59.9,24,1,3,Mercado enorme; registros civiles en papel; control de redes sociales en episodios de crisis; bengalí
-BB,Barbados,estado,América,0.28,1.96,0.811,26897,19224,,70.4,6.9,libre,,69,3,4,Inglés; mercado pequeño; registros coloniales británicos de buena calidad
+BB,Barbados,estado,América,0.28,1.85,0.811,26897,19224,,70.4,6.9,libre,,69,3,4,Inglés; mercado pequeño; registros coloniales británicos de buena calidad
 BM,Bermudas,territorio,América,0.065,0.27,,142250,,,,,,,,3,4,Territorio británico de ultramar; archivos de Bermudas con registros coloniales y parroquiales; diáspora en EE. UU. y Canadá; inglés; mercado pequeño; sector financiero muy regulado
 BY,Bielorrusia,estado,Europa,9.06,110.95,0.824,8606,27782,99.9,94.3,8.7,no libre,25.9,37,2,1,Sanciones de EE. UU. y UE; control político y de medios; ruso y bielorruso
 BE,Bélgica,estado,Europa,11.7,130.26,0.951,56582,62921,,95.8,4.4,libre,75.1,73,4,4,"Registros civiles muy completos; regulación compleja entre regiones; RGPD; francés, neerlandés y alemán"
@@ -48,10 +48,10 @@ KR,Corea del Sur,estado,Asia,51.7,318.82,0.937,36239,50414,,97.9,3.9,libre,80.1,
 CI,Costa de Marfil,estado,África,31.9,142.50,0.582,2728,6512,50.0,41.4,3.8,parcial,41.1,40,2,3,Economía estable; francés; registros civiles con poca digitalización; infraestructura de pagos limitada (domina el dinero móvil)
 CR,Costa Rica,estado,América,5.13,96.08,0.833,18853,25980,97.4,87.2,1.0,libre,81.6,55,3,4,Estable; español; pagos internacionales sin fricción; registros civiles digitalizados
 HR,Croacia,estado,Europa,3.88,115.24,0.889,24050,41135,,83.6,21.3,libre,65,50,3,4,"Diáspora grande en Canadá, Chile, Australia y EE. UU.; registros parroquiales; croata; RGPD"
-CU,Cuba,estado,América,11.0,34.46,0.762,,15313,97.7,70.5,17.1,no libre,28.4,42,4,1,Embargo de EE. UU.; control estatal de internet y de medios; pagos casi imposibles; registros coloniales valiosos pero de acceso restringido
-CW,Curazao,territorio,América,0.19,8.44,,22833,,,,,,,,4,4,País del Reino de los Países Bajos; registros civiles neerlandeses y de la comunidad sefardí más antigua de América; registros de la esclavitud; diáspora en Países Bajos; papiamento y neerlandés; mercado pequeño
+CU,Cuba,estado,América,11.0,27.86,0.762,,15313,97.7,70.5,17.1,no libre,28.4,42,4,1,Embargo de EE. UU.; control estatal de internet y de medios; pagos casi imposibles; registros coloniales valiosos pero de acceso restringido
+CW,Curazao,territorio,América,0.19,2.85,,22833,,,,,,,,4,4,País del Reino de los Países Bajos; registros civiles neerlandeses y de la comunidad sefardí más antigua de América; registros de la esclavitud; diáspora en Países Bajos; papiamento y neerlandés; mercado pequeño
 DK,Dinamarca,estado,Europa,5.98,66.77,0.962,71026,71455,,99.8,2.1,libre,91.5,90,5,5,Registros de la iglesia y censos muy completos; danés e inglés muy extendido; RGPD
-DM,Dominica,estado,América,0.066,0.47,0.761,10405,18278,,82.0,32.3,libre,,56,2,4,Muy pequeño; inglés; economía de servicios y agricultura
+DM,Dominica,estado,América,0.066,0.36,0.761,10405,18278,,82.0,32.3,libre,,56,2,4,Muy pequeño; inglés; economía de servicios y agricultura
 EC,Ecuador,estado,América,18.1,240.99,0.777,6827,14343,96.3,77.2,6.9,libre,61.3,34,2,3,Dolarizado desde 2000; inseguridad creciente; registros civiles en digitalización; español
 EG,Egipto,estado,África,116.5,1174.60,0.754,3338,16691,79.5,74.6,4.1,no libre,29.3,35,2,3,"Mucho patrimonio documental antiguo, pero poco digitalizado y accesible; control de internet y medios; árabe"
 SV,El Salvador,estado,América,6.34,49.49,0.678,5503,11425,89.8,66.5,28.9,parcial,59,31,2,3,Dolarizado; estado de excepción desde 2022; registros civiles con acceso limitado; español
@@ -73,7 +73,7 @@ GM,Gambia,estado,África,2.76,5.08,0.524,871,2932,51.6,49.5,2.6,parcial,44.9,37,
 GE,Georgia,estado,Europa,3.81,101.33,0.844,8968,22591,99.7,83.8,13.0,parcial,53.1,53,3,3,Registros eclesiásticos y soviéticos; diáspora en Rusia y EE. UU.; leyes recientes restrictivas para ONG y medios
 GH,Ghana,estado,África,34.4,206.36,0.628,2419,6809,76.5,72.2,3.1,libre,65,43,2,3,Inglés; deuda reestructurada tras 2022-2023; registros civiles en proceso de digitalización
 GI,Gibraltar,territorio,Europa,0.039,0.67,,,,,,,,,,3,4,"Territorio británico de ultramar; registros civiles y parroquiales en el archivo nacional de Gibraltar; población de origen genovés, maltés, español y británico; inglés y español; mercado muy pequeño"
-GD,Granada,estado,América,0.12,6.29,0.791,11529,17129,,70.2,22.4,libre,,53,2,4,Muy pequeño; inglés; economía de servicios y turismo
+GD,Granada,estado,América,0.12,2.34,0.791,11529,17129,,70.2,22.4,libre,,53,2,4,Muy pequeño; inglés; economía de servicios y turismo
 GR,Grecia,estado,Europa,10.0,352.30,0.908,24626,36855,,86.3,7.8,libre,73.9,49,4,4,Registros civiles y parroquiales de buena calidad; gran diáspora en EE. UU. y Australia; griego
 GL,Groenlandia,territorio,América,0.056,0.24,,58499,,,,,,,,3,3,Territorio autónomo de Dinamarca; registros parroquiales daneses en línea; población inuit; groenlandés y danés; conectividad y logística limitadas fuera de Nuuk
 GT,Guatemala,estado,América,18.4,254.90,0.662,6151,12385,82.1,60.2,7.9,parcial,49.7,23,3,3,Registros parroquiales coloniales muy valiosos; español y lenguas mayas; inseguridad y conflictividad política
@@ -82,7 +82,7 @@ GN,Guinea,estado,África,14.8,121.17,0.500,1695,3905,39.6,33.3,3.4,no libre,30.8
 GQ,Guinea Ecuatorial,estado,África,1.89,14.88,0.674,7004,15688,,63.3,7.2,no libre,19.2,17,1,2,Régimen de larga duración; petróleo; español y francés; registros civiles poco accesibles
 GW,Guinea-Bisáu,estado,África,2.20,12.42,0.514,998,2619,63.9,29.8,4.7,parcial,26.3,22,1,2,Inestabilidad política recurrente; portugués; registros poco digitalizados
 GY,Guyana,estado,América,0.83,5.85,0.776,29675,49312,85.6,83.0,56.5,libre,60.1,40,2,3,Inglés; auge petrolero desde 2020; disputa territorial con Venezuela por el Esequibo
-HT,Haití,estado,América,11.8,39.95,0.554,2060,2956,68.0,47.9,17.1,no libre,42.2,17,1,1,Crisis de seguridad y Estado fallido; sin registros civiles accesibles en línea; criollo y francés
+HT,Haití,estado,América,11.8,31.32,0.554,2060,2956,68.0,47.9,17.1,no libre,42.2,17,1,1,Crisis de seguridad y Estado fallido; sin registros civiles accesibles en línea; criollo y francés
 HN,Honduras,estado,América,10.8,112.93,0.645,3416,6468,88.2,58.6,12.9,parcial,53.6,23,2,2,Violencia y crimen organizado; crisis política y fiscal; registros civiles en digitalización; español
 HK,Hong Kong,territorio,Asia,7.41,65.04,0.955,54275,64429,,95.8,16.7,,55.7,,3,3,Región administrativa especial de China; ley de seguridad nacional desde 2020; chino e inglés; registros civiles británicos y chinos
 HU,Hungría,estado,Europa,9.68,185.13,0.870,23305,40369,,93.8,5.6,parcial,65.6,42,3,3,Diáspora grande en EE. UU. y Rumania; registros parroquiales de buena calidad; restricciones a ONG y medios en años recientes
@@ -98,7 +98,7 @@ MH,Islas Marshall,estado,Oceanía,0.038,2.40,0.733,7590,6787,95.8,65.9,1.1,libre
 SB,Islas Salomón,estado,Oceanía,0.82,1.69,0.584,1934,2524,,29.0,1.0,libre,,43,1,3,Pequeño y aislado; inglés; registros civiles escasos
 IL,Israel,estado,Asia,9.39,159.56,0.919,54217,47527,,88.2,3.5,libre,78.4,62,4,3,Interés muy alto de la diáspora judía; archivos y registros accesibles; conflicto armado recurrente; hebreo e inglés
 IT,Italia,estado,Europa,59.3,1488.42,0.915,40430,52726,99.3,89.2,5.0,libre,77.4,56,5,4,Portal Antenati con registros civiles digitalizados; diáspora gigantesca en América; italiano; burocracia lenta
-JM,Jamaica,estado,América,2.84,20.62,0.720,7754,10332,,90.1,44.0,libre,71.3,44,3,4,"Inglés; diáspora en Reino Unido, EE. UU. y Canadá; registros civiles de la época británica"
+JM,Jamaica,estado,América,2.84,12.71,0.720,7754,10332,,90.1,44.0,libre,71.3,44,3,4,"Inglés; diáspora en Reino Unido, EE. UU. y Canadá; registros civiles de la época británica"
 JP,Japón,estado,Asia,123.8,1100.40,0.925,33797,45859,,85.5,0.8,libre,81.3,73,3,5,Registro familiar koseki muy estructurado; interés cultural alto pero mercado genealógico pequeño; japonés; APPI
 JE,Jersey,territorio,Europa,,1.72,,,,,,,,,,4,4,"Dependencia de la Corona británica; registros parroquiales anglicanos y archivo de Jersey Heritage en línea; diáspora en Canadá y EE. UU.; inglés; ley de protección de datos propia, equivalente al RGPD; mercado muy pequeño"
 JO,Jordania,estado,Asia,11.6,66.59,0.754,5074,9381,94.8,95.6,5.7,no libre,36.2,46,2,3,Registros civiles digitalizados en buena parte; árabe e inglés; población refugiada numerosa; riesgo regional por los conflictos vecinos
@@ -155,20 +155,20 @@ PY,Paraguay,estado,América,6.93,21.18,0.756,6457,15826,94.9,81.6,10.8,parcial,6
 PE,Perú,estado,América,34.2,1313.93,0.794,8526,15328,93.7,82.0,4.9,parcial,65.3,33,3,3,Registros parroquiales coloniales excelentes; inestabilidad política recurrente; español y quechua
 PL,Polonia,estado,Europa,38.5,393.02,0.906,25104,43673,,88.6,11.9,libre,68.5,54,4,4,"Índice de registros parroquiales Geneteka; gran diáspora en EE. UU., Brasil y Argentina; polaco; RGPD"
 PT,Portugal,estado,Europa,10.4,194.96,0.890,29328,41571,94.5,88.5,17.3,libre,79,61,5,5,Torre do Tombo y registros parroquiales muy completos; vínculo con la diáspora de Brasil; portugués; RGPD
-PR,Puerto Rico,territorio,América,3.20,9.82,,39353,,92.4,,,,,,4,4,Territorio de EE. UU.; dólar; registros coloniales españoles y civiles de buena calidad; español e inglés
+PR,Puerto Rico,territorio,América,3.20,9.61,,39353,,92.4,,,,,,4,4,Territorio de EE. UU.; dólar; registros coloniales españoles y civiles de buena calidad; español e inglés
 GB,Reino Unido,estado,Europa,69.1,515.42,0.946,53341,52503,,95.5,6.9,libre,85.4,71,5,5,Registros civiles y censales muy completos; diáspora mundial; inglés; RGPD del Reino Unido
 CF,República Centroafricana,estado,África,5.33,63.55,0.414,516,1133,42.4,13.8,17.0,no libre,13.2,24,1,1,Conflicto armado y Estado frágil; embargo de armas de la ONU
 CD,República Democrática del Congo,estado,África,109.3,584.56,0.522,693,1456,65.7,19.7,1.9,no libre,11.3,20,1,1,Conflicto armado en el este; infraestructura de registros muy limitada; francés
-DO,República Dominicana,estado,América,11.4,48.17,0.776,10876,23282,94.0,91.0,16.8,parcial,63.2,35,3,3,Diáspora grande en EE. UU.; registros civiles en avance; español; corrupción percibida alta (CPI 35)
+DO,República Dominicana,estado,América,11.4,27.81,0.776,10876,23282,94.0,91.0,16.8,parcial,63.2,35,3,3,Diáspora grande en EE. UU.; registros civiles en avance; español; corrupción percibida alta (CPI 35)
 RE,Reunión,territorio,África,,2.17,,,,,,,,,,4,4,Departamento francés de ultramar; estado civil francés en línea (Archivos nacionales de ultramar); registros de la esclavitud y de los trabajadores contratados; francés y criollo reunionés; regulación de datos (CNIL) estricta
 RW,Ruanda,estado,África,14.3,64.49,0.578,1060,3063,78.8,31.7,3.8,no libre,31,53,2,3,Estable pero con restricciones a la prensa; registros digitalizados con avance; inglés y francés
 RO,Rumania,estado,Europa,19.0,304.49,0.845,20080,40302,99.2,91.3,24.1,libre,64,46,3,4,Registros parroquiales húngaros y alemanes muy buenos; rumano; RGPD
 RU,Rusia,estado,Europa,144.8,1484.21,0.832,14962,39887,99.9,94.4,6.3,no libre,33.1,26,4,1,Sanciones amplias de EE. UU. y UE; bloqueo de pagos y de plataformas; registros soviéticos valiosos pero inoperables
 WS,Samoa,estado,Oceanía,0.22,0.94,0.708,5393,6341,98.0,,54.7,libre,,,2,3,Pequeño; samoano e inglés; diáspora en Nueva Zelanda y EE. UU.; conectividad y pagos limitados por su aislamiento
-KN,San Cristóbal y Nieves,estado,América,0.047,0.51,0.840,23961,30966,,76.9,29.6,libre,,,2,4,Muy pequeño; inglés; programas de ciudadanía por inversión con controles reforzados
+KN,San Cristóbal y Nieves,estado,América,0.047,0.45,0.840,23961,30966,,76.9,29.6,libre,,,2,4,Muy pequeño; inglés; programas de ciudadanía por inversión con controles reforzados
 SM,San Marino,estado,Europa,0.034,0.33,0.915,59871,73507,99.9,97.4,5.9,libre,,,2,4,Muy pequeño; italiano; registros italianos; mercado reducido
-VC,San Vicente y las Granadinas,estado,América,0.10,0.87,0.798,11501,17858,,76.2,35.0,libre,,60,2,4,Muy pequeño; inglés; economía de servicios y turismo
-LC,Santa Lucía,estado,América,0.18,7.16,0.748,14494,23404,,68.2,12.1,libre,,55,2,4,Muy pequeño; inglés y criollo; economía de servicios
+VC,San Vicente y las Granadinas,estado,América,0.10,0.74,0.798,11501,17858,,76.2,35.0,libre,,60,2,4,Muy pequeño; inglés; economía de servicios y turismo
+LC,Santa Lucía,estado,América,0.18,2.63,0.748,14494,23404,,68.2,12.1,libre,,55,2,4,Muy pequeño; inglés y criollo; economía de servicios
 ST,Santo Tomé y Príncipe,estado,África,0.24,0.85,0.637,3503,5541,87.4,59.1,17.6,libre,,45,2,3,Pequeño país lusófono; registros limitados; diáspora en Portugal; pagos y conectividad limitados
 SN,Senegal,estado,África,18.5,54.32,0.530,1739,4305,50.4,60.1,4.0,parcial,56.7,43,2,3,Francés; diáspora en Francia y EE. UU.; transición política reciente
 RS,Serbia,estado,Europa,6.74,132.82,0.833,13678,25740,99.3,87.7,14.3,parcial,62.2,36,3,3,"Diáspora en Alemania, Austria y EE. UU.; registros parroquiales y civiles; serbio; protestas recientes"

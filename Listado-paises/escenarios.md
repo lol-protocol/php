@@ -61,7 +61,9 @@
 | Países Bajos | 1 | 1 | 1 | 1 |
 | Reino Unido | 1 | 1 | 1 | 1 |
 | Suiza | 1 | 1 | 1 | 1 |
+| Andorra | 16 | 16 | 18 | 20 |
 | Antigua y Barbuda | 16 | 16 | 18 | 20 |
+| Arabia Saudita | 16 | 16 | 18 | 20 |
 | Argentina | 16 | 16 | 18 | 20 |
 | Bahamas | 16 | 16 | 18 | 20 |
 | Barbados | 16 | 16 | 18 | 20 |
@@ -75,6 +77,7 @@
 | Cuba | 16 | 16 | 18 | 20 |
 | Dinamarca | 16 | 16 | 1 | 16 |
 | Ecuador | 16 | 16 | 18 | 20 |
+| Emiratos Árabes Unidos | 16 | 16 | 18 | 20 |
 | España | 16 | 16 | 18 | 20 |
 | Estonia | 16 | 16 | 18 | 20 |
 | Finlandia | 16 | 16 | 18 | 16 |
@@ -104,21 +107,20 @@
 | Trinidad y Tobago | 16 | 16 | 18 | 20 |
 | Turquía | 16 | 16 | 18 | 20 |
 | Uruguay | 16 | 16 | 18 | 20 |
-| Brunéi | 59 | 59 | 18 | 59 |
-| Chipre | 59 | 59 | 18 | 59 |
-| Israel | 59 | 59 | 18 | 59 |
-| Malasia | 59 | 59 | 18 | 59 |
-| Ucrania | 59 | 59 | 18 | 59 |
-| Hong Kong | 112 | 112 | 18 | 72 |
-| Kazajistán | 112 | 112 | 18 | 72 |
-| Macao | 112 | 112 | 18 | 72 |
-| Malta | 112 | 112 | 18 | 72 |
-| Sudáfrica | 112 | 112 | 18 | 72 |
-| Tailandia | 112 | 112 | 18 | 72 |
-| Uzbekistán | 112 | 112 | 18 | 72 |
+| Brunéi | 62 | 62 | 18 | 62 |
+| Chipre | 62 | 62 | 18 | 62 |
+| Israel | 62 | 62 | 18 | 62 |
+| Malasia | 62 | 62 | 18 | 62 |
+| Ucrania | 62 | 62 | 18 | 62 |
+| Hong Kong | 112 | 112 | 18 | 75 |
+| Kazajistán | 112 | 112 | 18 | 75 |
+| Macao | 112 | 112 | 18 | 75 |
+| Malta | 112 | 112 | 18 | 75 |
+| Sudáfrica | 112 | 112 | 18 | 75 |
+| Tailandia | 112 | 112 | 18 | 75 |
+| Uzbekistán | 112 | 112 | 18 | 75 |
 | Azerbaiyán | 150 | 150 | 18 | 129 |
 | Filipinas | 150 | 150 | 18 | 129 |
 | Sri Lanka | 150 | 150 | 18 | 129 |
 | Fiyi | 165 | excl. | 18 | 156 |
 | Mongolia | 165 | excl. | 18 | 156 |
-| Tayikistán | 165 | excl. | 18 | 156 |

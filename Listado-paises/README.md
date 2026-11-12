@@ -182,7 +182,7 @@ comentario de cada uno nombra el factor.
 
 **Prioridad** = IG × IO (1 a 25). Ordena la tabla; no es un tercer índice.
 
-**Excluido** = IO ≤ 1, con el objetivo de dejar fuera unos 20 países. Cuántos y cuáles, en
+**Excluido** = IO ≤ 1 (decidido; IO ≤ 2 se descartó), con el objetivo de dejar fuera unos 20 países. Cuántos y cuáles, en
 «Resumen».
 
 Nicaragua tenía IO = 1 y ahora tiene IO = 2: sus sanciones son parciales y sus factores (control
@@ -371,7 +371,7 @@ coinciden.
 - Si una serie termina antes del año 2000, el país se salta y queda vacío. No se extiende la
   última población hasta 2025, ni se conserva un valor de un cálculo anterior.
 
-**Resultados y comprobación de cordura.** El total mundial da unos **88 600 millones** de
+**Resultados y comprobación de cordura.** El total mundial da unos **88 590 millones** de
 personas nacidas desde el 10 000 a. C. Los mayores son India (24 100 millones) y China (16 100
 millones). Irán (1 330), Egipto (1 170) y Japón (1 100) suman muchas veces su población actual, y
 Australia (315) casi toda en su población aborigen. El Population Reference Bureau estima unos
@@ -389,11 +389,12 @@ comparar países entre sí, no como conteo exacto.**
   1992), pero los reparte mal: México 24,5 millones y Brasil 18,7, cuando Denevan da 17,2 para
   México y 8,6 para toda la Sudamérica baja; los Andes, en cambio, quedan con la mitad. Por eso,
   hasta 1500, cada país se multiplica por el factor de su región de Denevan, para que la región
-  sume lo que él estima: Norteamérica ×1,81, México ×0,70, Centroamérica ×1,90, Caribe ×3,60,
-  Andes ×1,55 y Sudamérica baja ×0,44. Desde 1600 la serie queda como en HYDE. Con eso México
+  sume lo que él estima: Norteamérica ×1,81, México ×0,70, Centroamérica ×1,90, Andes ×1,55 y
+  Sudamérica baja ×0,44. El Caribe queda como en HYDE (decidido): Denevan da 3 millones, que
+  daría el factor más alto (×3,6) y es la cifra más discutida (otros autores dan entre 0,5 y 1). Desde 1600 la serie queda como en HYDE. Con eso México
   pasa de 3 900 a 2 850 millones de nacidos, Brasil de 3 100 a 1 560 y Perú de 880 a 1 310. Las
-  cifras de Denevan también son discutidas (el Caribe, sobre todo), y el reparto dentro de cada
-  región sigue siendo el de HYDE.
+  cifras de Denevan también son discutidas, y el reparto dentro de cada región sigue siendo el de
+  HYDE.
 - La retroproyección con cuota constante, que ahora solo usan los 20 países que Our World in Data
   empieza tarde sin ser su poblamiento, es gruesa: un país que antes tuvo más peso en su región
   queda subestimado, y uno que lo ganó después, sobreestimado. Pesa poco: son micro-estados,
@@ -478,7 +479,10 @@ Para los recursos de las lenguas y el mapa:
 baja las 436 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
 `fuentes.sha256` y corre todos los scripts. Si las fuentes no cambiaron, el proyecto queda
 idéntico. El job `reproducir` de `pruebas-listado-paises.yml` lo hace en la CI cuando se lanza a
-mano (*Run workflow*) y falla si algún archivo cambia.
+mano (*Run workflow*) y el día 3 de cada mes, y falla si algún archivo cambia. Como el grapher de
+Our World in Data y la API del Banco Mundial no tienen versiones fijas, una falla mensual suele
+querer decir que una de las dos se actualizó: hay que bajarla, revisar el cambio y rehacer el
+manifiesto con `--escribir-manifiesto`.
 
 `descargar_fuentes.py` es la única lista de fuentes: tiene la URL fija de cada archivo y los
 argumentos con que se llama a cada script. Para correr un paso suelto, mira ahí sus argumentos.
@@ -526,6 +530,6 @@ Léelo antes de usar la tabla para decidir.
 
 1. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio. Ya
    se revisaron los que chocaban con los datos (emigrantes, corrupción): Tonga, Comoras, Nauru y
-   Palaos subieron de IG, y Albania, Panamá y República Dominicana bajaron a IO 3. Falta IL.
-2. **Umbral de exclusión de genealogía:** IO ≤ 1 (vigente) o IO ≤ 2; cuántos deja fuera cada uno,
-   en «Resumen» y en `escenarios.md`. Camboya y Vietnam siguen dentro, por decisión tomada.
+   Palaos subieron de IG, y Albania, Panamá y República Dominicana bajaron a IO 3. En IL,
+   cruzado con alfabetización, internet e IDH, Andorra, Arabia Saudita y los Emiratos subieron a 4,
+   y Tayikistán bajó a 3. Lo que queda es repasar los demás casos uno por uno, si se quiere.
