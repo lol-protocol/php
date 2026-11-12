@@ -22,7 +22,13 @@
     "data_status": "curated",
     "confidence": "",
     "last_checked": "",
-    "sources": {},
+    "sources": {
+      "term_of_protection": {
+        "url": "https://www.copyright.gov/title17/92chap3.html",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      }
+    },
     "changes": [
       {
         "date": "2026-11-11",

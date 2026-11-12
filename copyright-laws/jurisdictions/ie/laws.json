@@ -8,22 +8,55 @@
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
-    "orphan_works": "Collective management required",
+    "orphan_works": "Exception for relevant bodies after a diligent search (s. 70A; S.I. 2014/490 Orphan Works Regulations)",
     "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Fair use exceptions",
     "registration_required": "No",
     "enforcement_body": "Intellectual Property Office of Ireland (IPOI)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://ipoi.gov.ie/",
+    "linked_resources": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
     "data_status": "curated",
     "confidence": "",
     "last_checked": "",
-    "sources": {},
+    "sources": {
+      "term_of_protection": {
+        "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "moral_rights": {
+        "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "digital_protection": {
+        "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "orphan_works": {
+        "url": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-11-12",
+        "field": "linked_resources",
+        "from": "https://ipoi.gov.ie/",
+        "to": "https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html"
+      },
+      {
+        "date": "2026-11-12",
+        "field": "orphan_works",
+        "from": "Collective management required",
+        "to": "Exception for relevant bodies after a diligent search (s. 70A; S.I. 2014/490 Orphan Works Regulations)"
+      },
       {
         "date": "2026-10-14",
         "field": "enforcement_body",

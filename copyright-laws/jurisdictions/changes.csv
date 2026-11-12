@@ -586,3 +586,13 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-11,CL,"Law No. 17,336",linked_resources,https://www.dpi.cl/,https://www.leychile.cl/Navegar?idNorma=28933
 2026-11-11,GB,"Copyright, Designs and Patents Act 1988",linked_resources,https://www.gov.uk/topic/intellectual-property,https://www.legislation.gov.uk/ukpga/1988/48/contents
 2026-11-11,US,Copyright Act (17 USC),linked_resources,https://www.copyright.gov/,https://www.copyright.gov/title17/
+2026-11-12,CZ,Czech Copyright Law,linked_resources,https://www.upv.cz/,https://www.zakonyprolidi.cz/cs/2000-121
+2026-11-12,IE,Copyright & Related Rights Act,orphan_works,Collective management required,Exception for relevant bodies after a diligent search (s. 70A; S.I. 2014/490 Orphan Works Regulations)
+2026-11-12,IE,Copyright & Related Rights Act,linked_resources,https://ipoi.gov.ie/,https://revisedacts.lawreform.ie/eli/2000/act/28/revised/en/html
+2026-11-12,NL,Copyright Act (Auteurswet),orphan_works,Orphan works license available,Exception for cultural institutions after a diligent search (Art. 16o ff.; Directive 2012/28/EU)
+2026-11-12,NL,Copyright Act (Auteurswet),linked_resources,https://www.minjust.nl/,https://wetten.overheid.nl/BWBR0001886/
+2026-11-12,PH,Intellectual Property Code,linked_resources,https://www.ipophil.gov.ph/,https://lawphil.net/statutes/repacts/ra1997/ra_8293_1997.html
+2026-11-12,SE,Swedish Copyright Act,orphan_works,Collective management required,Exception for libraries; museums and archives after a diligent search (sections 16 a-16 d; Directive 2012/28/EU)
+2026-11-12,SE,Swedish Copyright Act,linked_resources,https://www.prv.se/,https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1960729-om-upphovsratt-till-litterara-och_sfs-1960-729/
+2026-11-12,GQ,"Civil Code (approved by Royal Decree of 24 July 1889), the only text WIPO Lex lists for copyright",row,,added
+2026-11-12,MH,"Unauthorized Copies of Recorded Materials Act, 1991 (P.L. 1991-132; 20 MIRC Ch. 2)",row,,added

@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "GQ",
+    "country_name": "Equatorial Guinea",
+    "region": "middle_east_africa",
+    "law_name": "Civil Code (approved by Royal Decree of 24 July 1889), the only text WIPO Lex lists for copyright",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 80 years under the inherited 1879 Spanish law, or life + 50 years under the Bangui Agreement framework: sources conflict (unconfirmed)",
+    "author_rights": "Not specified (unconfirmed)",
+    "moral_rights": "",
+    "orphan_works": "",
+    "digital_protection": "",
+    "fair_use_exceptions": "",
+    "registration_required": "Not specified (unconfirmed)",
+    "enforcement_body": "Not specified (no national copyright office found)",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+    "notes": "No national copyright statute found: WIPO Lex lists only the 1889 Civil Code for copyright. The term sources disagree (life + 80 vs life + 50 years); treat every value as unverified. OAPI member (Bangui Agreement).",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-11-12",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "term_of_protection": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "registration_required": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "linked_resources": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "notes": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/GQ",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-11-12",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

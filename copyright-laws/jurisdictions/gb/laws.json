@@ -22,7 +22,28 @@
     "data_status": "curated",
     "confidence": "",
     "last_checked": "",
-    "sources": {},
+    "sources": {
+      "term_of_protection": {
+        "url": "https://www.legislation.gov.uk/ukpga/1988/48/part/I",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "moral_rights": {
+        "url": "https://www.legislation.gov.uk/ukpga/1988/48/part/I",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.legislation.gov.uk/ukpga/1988/48/part/I",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      },
+      "orphan_works": {
+        "url": "https://www.legislation.gov.uk/ukpga/1988/48/part/I",
+        "confidence": "high",
+        "checked": "2026-11-12"
+      }
+    },
     "changes": [
       {
         "date": "2026-11-11",

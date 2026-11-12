@@ -15,7 +15,7 @@
     "enforcement_body": "Intellectual Property Office of the Philippines (IPOPHL) - Bureau of Copyright and Related Rights",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.ipophil.gov.ph/",
+    "linked_resources": "https://lawphil.net/statutes/repacts/ra1997/ra_8293_1997.html",
     "notes": "",
     "pending_change": "",
     "pending_date": "",
@@ -32,9 +32,25 @@
         "url": "https://www.ipophil.gov.ph/?p=16643",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://lawphil.net/statutes/repacts/ra1997/ra_8293_1997.html",
+        "confidence": "medium",
+        "checked": "2026-11-12"
+      },
+      "moral_rights": {
+        "url": "https://lawphil.net/statutes/repacts/ra1997/ra_8293_1997.html",
+        "confidence": "medium",
+        "checked": "2026-11-12"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-12",
+        "field": "linked_resources",
+        "from": "https://www.ipophil.gov.ph/",
+        "to": "https://lawphil.net/statutes/repacts/ra1997/ra_8293_1997.html"
+      },
       {
         "date": "2026-10-14",
         "field": "digital_protection",
