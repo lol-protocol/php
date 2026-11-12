@@ -9,6 +9,7 @@ name: Leyes - textos de las fuentes
 # Para qué: el contenedor de las sesiones en la nube no llega a esos sitios y un runner sí, así que esa rama
 # permite leer las fuentes con `git fetch origin <rama>` y comprobar un dato contra ellas. La rama no tiene
 # historia común con master, nunca se fusiona y se reescribe entera en cada corrida (.github/scripts/publicar-textos.sh).
+# Con «campos» baja además las páginas que field_sources.csv cita para cada campo (cache-texts.php --field-sources).
 # Son páginas de terceros, a veces guías de despachos: sirven para comprobar un dato, no son la fuente oficial.
 #
 # En un PR que toca estos archivos solo corre la prueba del script de publicación (remoto de juguete).
@@ -26,6 +27,10 @@ on:
         required: true
       forzar:
         description: 'Volver a descargar aunque la página no haya cambiado'
+        type: boolean
+        default: false
+      campos:
+        description: 'Bajar también las páginas que field_sources.csv cita para cada campo (plazo, sanciones…), no solo la de referencia de la ley'
         type: boolean
         default: false
   pull_request:
@@ -65,6 +70,7 @@ jobs:
       MODULO: ${{ inputs.modulo }}
       SOLO: ${{ inputs.solo }}
       FORZAR: ${{ inputs.forzar }}
+      CAMPOS: ${{ inputs.campos }}
       GH_TOKEN: ${{ github.token }}
 
     steps:
@@ -91,6 +97,7 @@ jobs:
         run: |
           args="--only=$SOLO"
           if [ "$FORZAR" = true ]; then args="$args --force"; fi
+          if [ "$CAMPOS" = true ]; then args="$args --field-sources"; fi
           php scripts/cache-texts.php $args | tee "$RUNNER_TEMP/cache-texts.log"
           {
             echo "### Textos de $MODULO ($SOLO)"
