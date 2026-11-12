@@ -30,7 +30,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`pruebas-portadas-svg.yml`](workflows/pruebas-portadas-svg.yml) | Pruebas portadas SVG | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |
 | [`pruebas-signos-zodiacales.yml`](workflows/pruebas-signos-zodiacales.yml) | Pruebas signos-zodiacales | `push`, `pull_request`, `workflow_dispatch` | `signos-zodiacales`, `galeria`, `php` |
 | [`pruebas-siluetas-ancestrales.yml`](workflows/pruebas-siluetas-ancestrales.yml) | Pruebas siluetas-ancestrales | `push`, `pull_request`, `workflow_dispatch` | `siluetas-ancestrales` |
-| [`pruebas-url-routing.yml`](workflows/pruebas-url-routing.yml) | Pruebas url-routing | `push`, `pull_request`, `workflow_dispatch` | `url-routing`, `analisis-estatico`, `despliegue` |
+| [`pruebas-url-routing.yml`](workflows/pruebas-url-routing.yml) | Pruebas url-routing | `push`, `pull_request`, `workflow_dispatch` | `url-routing`, `analisis-estatico`, `navegador`, `despliegue` |
 | [`pruebas-web-animations.yml`](workflows/pruebas-web-animations.yml) | Pruebas web-animations | `push`, `pull_request`, `workflow_dispatch` | `web-animations` |
 | [`vps-setup-e2e.yml`](workflows/vps-setup-e2e.yml) | vps-setup e2e | `pull_request`, `schedule`, `workflow_dispatch` | `install-all` |
 | [`vps-setup.yml`](workflows/vps-setup.yml) | vps-setup | `push`, `pull_request` | `scripts`, `real-tools` |
