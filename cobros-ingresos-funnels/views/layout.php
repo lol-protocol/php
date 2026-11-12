@@ -15,6 +15,7 @@ $paginas = [
     'funnel' => 'Funnel',
     'cohortes' => 'Cohortes',
     'clientes' => 'Clientes',
+    'tasas' => 'Tasas de cambio',
     'auditoria' => 'Auditoría',
 ];
 ?>

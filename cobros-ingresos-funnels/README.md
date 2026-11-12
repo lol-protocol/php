@@ -17,6 +17,11 @@ Pequeño sistema en PHP (sin framework) para analizar:
   próximos 3, 6 (por defecto) o 12, y «Más adelante». La suma de las filas es exactamente la cartera
   pendiente del Dashboard (sale de la misma consulta). Supone que cada boleta se cobra el día de su
   vencimiento: no predice cuándo va a pagar cada cliente, y por eso lo vencido no se reparte.
+- **Tasas de cambio** (`?page=tasas`): una fila por moneda con su tasa de hoy (cuántos dólares vale una
+  unidad y cuántas unidades vale un dólar), la fecha de su cotización y cuánto cambió en 30 días; con
+  `?moneda=CLP`, el historial de esa moneda, paginado, con el cambio de cada fila frente a la anterior.
+  Solo lee: las tasas las carga `bin/actualizar_tasas.php` y el historial lo anota la base (ver
+  «Historial de las tasas»).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
   etapa, por canal de adquisición y por país/género/rango de edad.
@@ -271,6 +276,27 @@ Como de estas tasas dependen todos los totales, escribe solo lo que se puede cre
 - Las pantallas avisan cuando una moneda con boletas o pagos tiene una tasa de ejemplo
   o de hace más de 7 días, y nombran cuál.
 
+#### Historial de las tasas
+
+`monedas.tasa_a_usd` guarda solo la tasa de hoy; la tabla `historial_de_tasas` (migración `018`)
+guarda las anteriores: una fila cada vez que cambia la tasa de una moneda, la fecha de su cotización
+o su fuente. La anota un trigger de la base sobre `monedas`, no el código de la aplicación, así que
+también queda anotado lo que escribe `bin/actualizar_tasas.php`, un script o un `UPDATE` hecho a mano
+(el comando con `--simular` no escribe, y por eso tampoco anota). Un `UPDATE` que no cambia ninguna
+de esas tres columnas no agrega filas.
+
+- **Empieza el día de la migración**, con una fila por moneda con lo que tenía entonces (una tasa de
+  ejemplo, si todavía no se cargaron las reales). Las tasas de antes no se pueden recuperar.
+- Una fila de ejemplo (`cotizada_en` vacío) no se compara con una real: el «cambio» entre una cifra
+  inventada y una verdadera no dice nada. Y mientras el historial real no llegue a 30 días atrás, el
+  resumen no muestra cambio en 30 días.
+- **No cambia ninguna cifra**: las boletas, los pagos y las notas de crédito siguen guardando su propia
+  tasa (ver «La tasa de cada día»), y una boleta cargada hoy con fecha de hace tres meses sigue quedando con
+  la tasa de hoy. Cotizarla con la de su fecha, ahora que hay de dónde sacarla, cambiaría los reportes y
+  es una decisión aparte.
+- No se borra ni se limpia solo: es como mucho una fila por moneda por día, y solo se lee el historial de
+  una moneda a la vez.
+
 Con otro servicio, se pone su dirección en `TASAS_URL` (algunos piden una clave en la
 URL; los mensajes de error muestran solo el servidor, nunca la clave, porque cron los
 manda por mail). Sirve cualquiera que conteste `{"base": "USD", "rates": {"EUR": 0.86, ...}}`
@@ -486,14 +512,15 @@ public/            front controller (index.php) + CSS
 src/
   Controllers/       un controlador por sección (dashboard, boletas —la pantalla
                       «Cobros e ingresos», `?page=cobros`—, cobranza, flujo de caja, pagos,
-                      notas de crédito, funnel, cohortes, clientes, auditoria). Todas las páginas son públicas, no hay
+                      notas de crédito, funnel, cohortes, clientes, tasas de cambio, auditoria). Todas las páginas son públicas, no hay
                       login (ver `_Garbage/README.md`).
   Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
                       IngresosYCobrosRepository (kpis, ingresos y cobros por mes,
                       antigüedad de cartera, por método de pago; su
                       `saldosAbiertosSql()` es la única definición de cartera),
                       CobranzaRepository (esa cartera por cliente),
-                      FlujoDeCajaRepository (esa cartera por mes de vencimiento) y
+                      FlujoDeCajaRepository (esa cartera por mes de vencimiento),
+                      HistorialDeTasasRepository (el historial de las tasas de cambio) y
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
                       por separado. AuditoriaRepository también concentra el
@@ -602,7 +629,10 @@ database/
                         edad de cada país, 011 = la tasa de cambio de cada día,
                         012 = la fecha de devolución de cada nota de crédito,
                         013 = las fechas del funnel en orden, 014 = correcciones
-                        del catálogo de países y monedas, 016 = monedas reemplazadas)
+                        del catálogo de países y monedas, 015 = email único sin
+                        importar mayúsculas, 016 = monedas reemplazadas, 017 =
+                        mayoría de edad de Puerto Rico, 018 = el historial de las
+                        tasas de cambio)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
@@ -613,7 +643,7 @@ bin/                    los comandos, todos con `php bin/<comando>.php`:
                         vez por día)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP: una carpeta por sección o entidad (dashboard,
-                        boletas, cobranza, flujo, pagos, notas, clientes, funnel, cohortes, auditoria) y en
+                        boletas, cobranza, flujo, pagos, notas, clientes, funnel, cohortes, tasas, auditoria) y en
                         ella una por pantalla, con el mismo nombre para lo mismo:
                         listado, alta, edicion y anulacion (boletas y pagos; los
                         clientes tienen listado, alta y ficha; las notas, listado
@@ -663,6 +693,8 @@ phpstan.neon            configuracion del analisis estatico
   y deja en `tasa_actualizada_en` y `tasa_fuente` desde cuándo y de dónde (`NULL` es
   una tasa de ejemplo; ver «Tasas de cambio»). Cada país trae también
   `mayoria_de_edad` (migración `010`, ver «Mayoría de edad»).
+- `historial_de_tasas`: una fila cada vez que cambia la tasa, la fecha de cotización o la fuente de
+  una moneda (migración `018`; la anota un trigger de `monedas`, ver «Historial de las tasas»).
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
   segmentación del dashboard y su moneda de facturación. Solo se admiten mayores de

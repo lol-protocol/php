@@ -14,6 +14,26 @@ final class FuncionesDeVistaTest extends TestCase
         self::assertSame('dic 2025', etiqueta_de_mes('2025-12'));
     }
 
+    public function testLaTasaSeMuestraSinLosCerosQueSobran(): void
+    {
+        self::assertSame('0.001', tasa_en_usd('0.00100000'));
+        self::assertSame('1.09', tasa_en_usd('1.09000000'));
+        self::assertSame('100', tasa_en_usd('100.00000000'));
+        self::assertSame('0.00000001', tasa_en_usd('0.00000001'));
+        self::assertSame('100', tasa_en_usd('100'), 'sin punto decimal no se recorta nada: «100» no pasa a «1»');
+        self::assertSame('10', tasa_en_usd('10'));
+    }
+
+    public function testLasUnidadesPorDolarTienenDosDecimalesDesdeCienYCuatroPorDebajo(): void
+    {
+        self::assertSame('1,000.00', unidades_por_usd('0.00100000'), 'CLP: mil pesos por dolar');
+        self::assertSame('100.00', unidades_por_usd('0.01'), 'justo cien: dos decimales');
+        self::assertSame('0.9091', unidades_por_usd('1.10000000'), 'EUR: con dos decimales, un cambio chico no se veria');
+        self::assertSame('1.0000', unidades_por_usd('1'));
+        self::assertSame('', unidades_por_usd('0'));
+        self::assertSame('', unidades_por_usd('-1'));
+    }
+
     public function testPctAlturaEscalaContraElMaximo(): void
     {
         self::assertSame(50.0, altura_en_pct(50.0, 100.0));

@@ -331,6 +331,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 }
 
 .paginacion .inactivo { color: var(--text-muted); opacity: 0.5; }
+.atenuado { color: var(--text-muted); }
 
 footer {
     text-align: center;

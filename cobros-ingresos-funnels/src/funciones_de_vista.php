@@ -73,6 +73,31 @@ function campo_monto(string|int|float|null $valor = null, ?string $codigoMoneda 
     );
 }
 
+/**
+ * La tasa de cambio de una moneda como la guarda la base (cuantos dolares vale una unidad), sin los
+ * ceros que sobran: "0.00100000" -> "0.001", "1.09000000" -> "1.09", "100.00000000" -> "100".
+ */
+function tasa_en_usd(string $tasa): string
+{
+    return str_contains($tasa, '.') ? rtrim(rtrim($tasa, '0'), '.') : $tasa;
+}
+
+/**
+ * Cuantas unidades de la moneda valen un dolar, que es como se dice una cotizacion ("1 USD = 952.38 CLP"):
+ * la inversa de la tasa. Con dos decimales desde 100 unidades (CLP, JPY) y con cuatro por debajo (EUR, KWD),
+ * donde dos decimales esconderian el cambio. '' si la tasa no es positiva.
+ */
+function unidades_por_usd(string $tasa): string
+{
+    $valor = (float) $tasa;
+    if ($valor <= 0.0) {
+        return '';
+    }
+    $unidades = 1 / $valor;
+
+    return number_format($unidades, $unidades >= 100 ? 2 : 4);
+}
+
 /** % de cambio de anterior a actual, o null si no hay base para comparar. */
 function variacion_pct(float $actual, float $anterior): ?float
 {

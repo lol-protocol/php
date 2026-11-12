@@ -12,6 +12,7 @@ use App\Controllers\CohortesController;
 use App\Controllers\DashboardController;
 use App\Controllers\FlujoDeCajaController;
 use App\Controllers\FunnelController;
+use App\Controllers\HistorialDeTasasController;
 use App\Controllers\NotasCreditoController;
 use App\Controllers\PagosController;
 use App\Database;
@@ -64,6 +65,7 @@ $paginas = [
     'clientes' => fn () => (new ClientesController())->index(),
     'cliente-nuevo' => fn () => (new ClientesController())->nuevo(),
     'cliente' => fn () => (new ClientesController())->ficha(),
+    'tasas' => fn () => (new HistorialDeTasasController())->index(),
     'auditoria' => fn () => (new AuditoriaController())->index(),
 ];
 foreach ($paginas as $pagina => $manejador) {

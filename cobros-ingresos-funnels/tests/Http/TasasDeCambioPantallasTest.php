@@ -27,11 +27,15 @@ final class TasasDeCambioPantallasTest extends HttpTestCase
         $db = Database::connection();
         /** @var array<string, array{tasa_actualizada_en: ?string, tasa_fuente: ?string}> $antes */
         $antes = $db->query('SELECT codigo, tasa_actualizada_en, tasa_fuente FROM monedas')->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_UNIQUE);
-        $this->alTerminar(static function () use ($antes): void {
-            $restaurar = Database::connection()->prepare('UPDATE monedas SET tasa_actualizada_en = :cuando, tasa_fuente = :fuente WHERE codigo = :codigo');
+        $ultimaFila = (int) $db->query('SELECT COALESCE(MAX(id), 0) FROM historial_de_tasas')->fetchColumn();
+        $this->alTerminar(static function () use ($antes, $ultimaFila): void {
+            $db = Database::connection();
+            $restaurar = $db->prepare('UPDATE monedas SET tasa_actualizada_en = :cuando, tasa_fuente = :fuente WHERE codigo = :codigo');
             foreach ($antes as $codigo => $fila) {
                 $restaurar->execute([':cuando' => $fila['tasa_actualizada_en'], ':fuente' => $fila['tasa_fuente'], ':codigo' => $codigo]);
             }
+            // Cambiar el origen de las tasas dispara el trigger del historial (migracion 018): lo que anoto este test no es historial real.
+            $db->prepare('DELETE FROM historial_de_tasas WHERE id > :ultima')->execute([':ultima' => $ultimaFila]);
         });
     }
 
