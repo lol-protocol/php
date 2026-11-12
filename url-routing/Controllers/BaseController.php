@@ -179,13 +179,13 @@ class BaseController
     protected function handleNotFound(string $message = ErrorPage::NOT_FOUND): string
     {
         http_response_code(404);
-        return ErrorPage::body(404, $message);
+        return ErrorPage::page(404, $message);
     }
 
     protected function handleBadRequest(string $message = 'Bad Request'): string
     {
         http_response_code(400);
-        return ErrorPage::body(400, $message);
+        return ErrorPage::page(400, $message);
     }
 
     /** A POST field as a string; '' (or $default) when missing or sent as an array ("sku[]=x"). */
@@ -342,7 +342,7 @@ class BaseController
 
         header('Allow: ' . implode(', ', $permitidos));
         http_response_code(405);
-        return ErrorPage::body(405, 'Método no permitido');
+        return ErrorPage::page(405, 'Método no permitido');
     }
 
     /** Null when this request is a POST with a valid CSRF token; otherwise the 405 or 403 that refuses it. */
@@ -354,7 +354,7 @@ class BaseController
     protected function handleForbidden(string $message = 'Forbidden'): string
     {
         http_response_code(403);
-        return ErrorPage::body(403, $message);
+        return ErrorPage::page(403, $message);
     }
 
     /** 303 (the default) so a browser re-fetches the target with GET instead of replaying the POST; 301 for a URL that moved for good. */

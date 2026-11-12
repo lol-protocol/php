@@ -101,4 +101,19 @@ class HostParserTest extends TestCase
         $this->assertSame(HostParser::IDIOMA_BASE, array_key_first(HostParser::idiomas()));
         $this->assertArrayHasKey(HostParser::IDIOMA_BASE, HostParser::IDIOMAS_CONOCIDOS);
     }
+
+    public function testSitioIsPosForThePosDomainsAndTheirSubdomainsAndGenealogyForTheRest(): void
+    {
+        putenv('POS_DOMAINS=tienda.example, otra.test');
+        try {
+            $this->assertSame('pos', HostParser::sitio('tienda.example'));
+            $this->assertSame('pos', HostParser::sitio('eng.tienda.example:8080'), 'a language subdomain and a port');
+            $this->assertSame('pos', HostParser::sitio('otra.test'), 'the list is trimmed');
+            $this->assertSame('genealogy', HostParser::sitio('conce.com'));
+            $this->assertSame('genealogy', HostParser::sitio('notienda.example'), 'a suffix that is not a subdomain');
+        } finally {
+            putenv('POS_DOMAINS');
+        }
+        $this->assertSame('pos', HostParser::sitio('contrastocolor.test'), 'the default list');
+    }
 }

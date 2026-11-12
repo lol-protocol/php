@@ -687,6 +687,35 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString('dígito de verificación', $cuerpo);
     }
 
+    /** @return array<string, array{string, string, int, string}> [host, uri, status, the home link it offers] */
+    public static function paginasDeError(): array
+    {
+        return [
+            'genealogía: no existe' => [self::GENEALOGIA, '/999999999/', 404, 'Buscar personas'],
+            'POS: no existe' => [self::POS, '/9999999999/', 404, 'Ver el catálogo'],
+            'genealogía: la cuenta pide la clave' => [self::GENEALOGIA, '/0/', 401, 'Buscar personas'],
+        ];
+    }
+
+    /**
+     * An error is a page of the site (its header, its search box, a way back) and not a bare title, but it has no
+     * address of its own: out of the search engines and with no canonical or hreflang links.
+     */
+    #[DataProvider('paginasDeError')]
+    public function testAnErrorIsAPageOfTheSiteWithNoAddressOfItsOwn(string $host, string $uri, int $estado, string $enlace): void
+    {
+        [$codigo, $cuerpo] = $this->get($host, $uri, tokenConfigurado: self::TOKEN);
+
+        $this->assertSame($estado, $codigo);
+        $this->assertStringContainsString("<h1>{$estado} - ", $cuerpo);
+        $this->assertStringContainsString('<header>', $cuerpo, 'the layout of the site');
+        $this->assertStringContainsString('Volver al inicio', $cuerpo);
+        $this->assertStringContainsString($enlace, $cuerpo);
+        $this->assertStringContainsString('<meta name="robots" content="noindex">', $cuerpo);
+        $this->assertStringNotContainsString('rel="canonical"', $cuerpo);
+        $this->assertStringNotContainsString('hreflang', $cuerpo);
+    }
+
     public function testACheckDigitDoesNotTouchAnOrdersRandomCode(): void
     {
         $this->assertSame(200, $this->getComoPropietario(self::POS, '/4821937065182734/')[0]);
