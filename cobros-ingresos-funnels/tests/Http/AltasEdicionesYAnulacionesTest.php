@@ -258,6 +258,74 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
     }
 
     /**
+     * Un monto con tres decimales o mas se rechaza en las cuatro pantallas que lo piden, en vez de
+     * redondearse ("10.005" daba 10.01) o leerse como otra cosa ("1.500", el mil quinientos de quien usa el
+     * punto de miles, daba 1.5: una boleta o un pago mil veces menor). No se guarda nada y lo que ya habia
+     * queda como estaba.
+     */
+    public function testUnMontoConTresDecimalesSeRechazaEnLasCuatroPantallasSinGuardarNada(): void
+    {
+        $mensaje = 'Completá todos los campos con un monto válido.';
+        $boletaId = $this->boletaDePrueba(); // 1000.00
+        $pagoId = $this->pagoDePrueba($boletaId); // 100.00
+        $concepto = 'Boleta con tres decimales ' . uniqid();
+        $this->alTerminar(static function () use ($concepto): void {
+            $boletas = Database::connection()->prepare('SELECT id FROM boletas WHERE concepto = :concepto');
+            $boletas->execute([':concepto' => $concepto]);
+            foreach ($boletas->fetchAll(\PDO::FETCH_COLUMN) as $id) {
+                self::borrarBoletaConTodo((int) $id);
+            }
+        });
+
+        // Un formulario por envio, cada uno con su token, como lo haria el navegador.
+        $nuevoToken = function (string $query): array {
+            $formulario = $this->get($query)['cuerpo'];
+            $envio = self::campoOculto($formulario, EnvioUnico::CAMPO);
+            $this->olvidarToken($envio);
+
+            return [self::campoOculto($formulario, 'csrf_token'), $envio];
+        };
+        $csrfBoleta = self::campoOculto($this->get("page=boleta-editar&id={$boletaId}")['cuerpo'], 'csrf_token');
+        $csrfPago = self::campoOculto($this->get("page=pago-editar&id={$pagoId}")['cuerpo'], 'csrf_token');
+
+        foreach (['10.005', '1.500'] as $monto) {
+            [$csrf, $envio] = $nuevoToken('page=boleta-nueva');
+            $altaDeBoleta = $this->post('page=boleta-nueva', [
+                'csrf_token' => $csrf, EnvioUnico::CAMPO => $envio, 'cliente_id' => self::CLIENTE,
+                'concepto' => $concepto, 'monto' => $monto, 'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+            ]);
+            $this->assertStatus(200, $altaDeBoleta, "alta de boleta con «{$monto}»");
+            self::assertStringContainsString($mensaje, $altaDeBoleta['cuerpo'], "alta de boleta con «{$monto}»");
+
+            $edicionDeBoleta = $this->post("page=boleta-editar&id={$boletaId}", [
+                'csrf_token' => $csrfBoleta, 'concepto' => 'Boleta editada', 'monto' => $monto,
+                'fecha_emision' => '2020-01-01', 'fecha_vencimiento' => '2020-02-01',
+            ]);
+            $this->assertStatus(200, $edicionDeBoleta, "edicion de boleta con «{$monto}»");
+            self::assertStringContainsString($mensaje, $edicionDeBoleta['cuerpo'], "edicion de boleta con «{$monto}»");
+
+            [$csrf, $envio] = $nuevoToken('page=pago-nuevo&cliente_id=' . self::CLIENTE);
+            $altaDePago = $this->post('page=pago-nuevo&cliente_id=' . self::CLIENTE, [
+                'csrf_token' => $csrf, EnvioUnico::CAMPO => $envio, 'cliente_id' => self::CLIENTE,
+                'boleta_id' => $boletaId, 'monto' => $monto, 'fecha_pago' => '2020-01-20', 'metodo' => 'tarjeta',
+            ]);
+            $this->assertStatus(200, $altaDePago, "alta de pago con «{$monto}»");
+            self::assertStringContainsString($mensaje, $altaDePago['cuerpo'], "alta de pago con «{$monto}»");
+
+            $edicionDePago = $this->post("page=pago-editar&id={$pagoId}", [
+                'csrf_token' => $csrfPago, 'monto' => $monto, 'fecha_pago' => '2020-01-15', 'metodo' => 'tarjeta',
+            ]);
+            $this->assertStatus(200, $edicionDePago, "edicion de pago con «{$monto}»");
+            self::assertStringContainsString($mensaje, $edicionDePago['cuerpo'], "edicion de pago con «{$monto}»");
+        }
+
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM boletas WHERE concepto = :c', [':c' => $concepto]), 'no se creo ninguna boleta');
+        self::assertSame(1, self::contar('SELECT COUNT(*) FROM pagos WHERE boleta_id = :id', [':id' => $boletaId]), 'no se creo ningun pago');
+        self::assertSame(1000.0, self::montoDeLaBoleta($boletaId), 'la boleta quedo como estaba');
+        self::assertSame(100.0, self::montoDelPago($pagoId), 'el pago quedo como estaba');
+    }
+
+    /**
      * Regresion: tras un error de validacion, "Nuevo pago" devolvia el formulario
      * vacio y la boleta elegida volvia a "Anticipo": quien corregia solo el
      * monto y reenviaba registraba el pago sin boleta, sin ningun aviso.
