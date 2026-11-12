@@ -94,8 +94,9 @@ Desde el correo de contacto y por una persona (el sitio no escribe solo). **Sin 
 el correo viaja en claro, y es la misma razón por la que el aviso de `bin/pedidos-retiro.php` no dice quién pidió
 ni qué escribió. **Decidido el 12 de noviembre de 2026:** se manda un **resumen legible**, escrito a mano a partir de
 `acceso`, sin JSON: lo que un visitante ya ve de esa persona, más las **cantidades** de lo demás (sucesos, registros,
-colecciones, parientes) y qué campos se corrigieron. **Lo que el sitio oculta no se manda por correo**: si la persona
-necesita verlo, queda sin decidir (una entrega con clave por otro medio) hasta que pase con una solicitud real.
+colecciones, parientes) y qué campos se corrigieron. **Lo que el sitio oculta no se manda por correo.** Si la persona
+necesita verlo, hay una **entrega con clave** (sección siguiente), que es una decisión tuya en cada caso, no el camino
+por omisión.
 Estos textos son un punto de partida; **el plazo de respuesta sigue ⚖️ sin decidir**, no prometas uno:
 
 - **Acceso.** «Recibimos tu solicitud el [FECHA]. Comprobamos [lo decidido en la sección anterior]. Esto es lo que
@@ -108,6 +109,29 @@ Estos textos son un punto de partida; **el plazo de respuesta sigue ⚖️ sin d
 
 Los textos tipo en 16 idiomas de [`respuestas-tipo/`](respuestas-tipo/README.md) son solo para **retiros**; para
 estas solicitudes todavía no hay.
+
+### Entrega con clave
+
+Para que una persona vea **todo** lo que el sitio guarda de ella, incluido lo que se oculta a un visitante, sin mandarlo por
+correo en claro. **Solo después de comprobar quién pide** (sección «Comprobar quién pide»): la página muestra los datos de
+una persona que puede estar viva a quien tenga el enlace y la clave.
+
+```
+php bin/persona.php entrega <id> [--dias=7]      # imprime el enlace y la clave, una sola vez
+php bin/persona.php entrega <id> --revocar       # termina las que siguen vigentes (se mandaron al medio equivocado)
+```
+
+- **El enlace** (`/e/{token}/`) y **la clave** (`XXXX-XXXX-XXXX`) se mandan **por dos medios distintos**: el enlace por el
+  correo de la solicitud y la clave, por ejemplo, por teléfono. Quien lea uno solo no ve nada.
+- Del enlace solo se guarda un hash y la clave se guarda con `password_hash`: nada se puede recuperar después.
+- **Vigencia corta:** 7 días por omisión (hasta 90), **3 aperturas** con la clave buena y **5 claves malas** por enlace; pasado
+  cualquiera de los tres, el enlace deja de existir y responde 404, igual que uno inventado. Además, 10 intentos por hora por
+  visitante entre todos los enlaces (`ENTREGA_MAX_POR_HORA`).
+- **Qué muestra:** lo mismo que `acceso`, en una página: la ficha, sucesos, registros, colecciones, organizaciones, correcciones
+  y pedidos de retiro. Los parientes son **cantidades**, nunca nombres; no se muestra quién aportó la ficha ni su grupo.
+- **Qué no queda:** el servidor no registra qué se mostró, solo que se abrió. **Sí quedan** el enlace en los logs de acceso de
+  nginx (por eso la clave va aparte) y el correo donde lo mandaste.
+- Si la persona se suprime después, el enlace deja de mostrar nada.
 
 ## Lo que falta
 

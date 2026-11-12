@@ -198,6 +198,7 @@ php bin/persona.php acceso 6128473105                             # todo lo que 
 php bin/persona.php suprimir 6128473105 --pedido=12               # muestra qué se quitaría y no cambia nada
 php bin/persona.php suprimir 6128473105 --pedido=12 --confirmar   # lo hace
 php bin/persona.php rectificacion 6128473105 personas.apellidos   # anota que se corrigió ese campo (sin valores)
+php bin/persona.php entrega 6128473105                            # un enlace y una clave para que ella lea todo, lo oculto incluido
 ```
 
 - **`acceso`** imprime la ficha, sus sucesos con la descripción, los registros que los documentan, sus
@@ -207,6 +208,10 @@ php bin/persona.php rectificacion 6128473105 personas.apellidos   # anota que se
   parientes aparecen solo como cantidades: sus nombres son sus datos. Es lo que mira quien administra, **no lo que se le manda** a quien lo pide: el JSON
   trae también lo que el sitio oculta y no viaja por correo en claro. A la persona se le manda un resumen legible
   escrito a mano (ver [`SOLICITUDES.md`](SOLICITUDES.md), «Qué responder»).
+- **`entrega`** crea un enlace (`/e/{token}/`) y una clave para que la persona lea, con una página, todo lo que el sitio guarda
+  de ella, **lo que se oculta incluido**: la única forma de dárselo sin mandar el JSON por correo en claro. Solo después de
+  comprobar quién pide. Vigencia corta, 3 aperturas, 5 claves malas; ver [`SOLICITUDES.md`](SOLICITUDES.md), «Entrega con
+  clave». `entrega <id> --revocar` termina las vigentes.
 - **`rectificacion`** no cambia la ficha (eso se hace a mano, ver [`SOLICITUDES.md`](SOLICITUDES.md)): solo anota en
   `rectificaciones_persona` qué campo se corrigió, para poder probarlo. Esa fila se conserva si la persona se suprime.
 - **`suprimir`** quita a la persona y deja el resto del árbol en pie, en una transacción:

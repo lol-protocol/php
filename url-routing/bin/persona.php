@@ -10,15 +10,20 @@ declare(strict_types=1);
  *   php bin/persona.php suprimir <id> [--pedido=N]               # shows what would be removed
  *   php bin/persona.php suprimir <id> [--pedido=N] --confirmar   # does it (it cannot be undone without a backup)
  *   php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]  # records a correction made by hand
+ *   php bin/persona.php entrega <id> [--dias=7]                  # a link and a key to read what is held about her, hidden part included
+ *   php bin/persona.php entrega <id> --revocar                   # ends every delivery of hers that still works
  *   php bin/persona.php reaplicar                                # lists who came back after restoring a backup
  *   php bin/persona.php reaplicar --confirmar                    # and removes them again
  *
  * --pedido=N is the pedido de retiro that asked for it: for suprimir it is recorded and left as 'retirado' with a note;
  * for rectificacion it is only recorded (the field, never the values).
+ * entrega is for AFTER checking who asks (docs/SOLICITUDES.md): the page it makes shows what the site hides from a visitor.
+ * It prints the link and the key once, and they must go by two different means; only their hashes are stored.
  * Exit code: 0 done, 1 there is no such persona/pedido, 2 usage error or a database that is not ready.
  * The database comes from DB_DSN_GENEALOGY (or .env), as for the web app.
  */
 
+use App\Repositories\Genealogy\EntregaRepository;
 use App\Repositories\Genealogy\RetiroRepository;
 use App\Repositories\Genealogy\SupresionRepository;
 use App\Support\Config;
@@ -31,6 +36,7 @@ Config::load();
 $uso = "Uso: php bin/persona.php acceso <id>\n"
     . "     php bin/persona.php suprimir <id> [--pedido=N] [--confirmar]\n"
     . "     php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]\n"
+    . "     php bin/persona.php entrega <id> [--dias=7] | entrega <id> --revocar\n"
     . "     php bin/persona.php reaplicar [--confirmar]\n";
 
 $orden = $argv[1] ?? '';
@@ -38,12 +44,18 @@ $confirmar = false;
 $pedido = null;
 $id = null;
 $que = null;
-$conId = ['acceso', 'suprimir', 'rectificacion'];
+$dias = null;
+$revocar = false;
+$conId = ['acceso', 'suprimir', 'rectificacion', 'entrega'];
 foreach (array_slice($argv, 2) as $argumento) {
     if ($argumento === '--confirmar') {
         $confirmar = true;
     } elseif (preg_match('/^--pedido=(\d+)$/', $argumento, $m) === 1 && in_array($orden, ['suprimir', 'rectificacion'], true)) {
         $pedido = (int)$m[1];
+    } elseif (preg_match('/^--dias=(\d+)$/', $argumento, $m) === 1 && $orden === 'entrega') {
+        $dias = (int)$m[1];
+    } elseif ($argumento === '--revocar' && $orden === 'entrega') {
+        $revocar = true;
     } elseif ($id === null && ctype_digit($argumento) && in_array($orden, $conId, true)) {
         $id = (int)$argumento;
     } elseif ($orden === 'rectificacion' && $id !== null && $que === null) {
@@ -56,7 +68,8 @@ foreach (array_slice($argv, 2) as $argumento) {
 $necesitaId = in_array($orden, $conId, true);
 if (
     !in_array($orden, [...$conId, 'reaplicar'], true) || $necesitaId !== ($id !== null)
-    || (in_array($orden, ['acceso', 'rectificacion'], true) && $confirmar) || ($orden === 'rectificacion') !== ($que !== null)
+    || (in_array($orden, ['acceso', 'rectificacion', 'entrega'], true) && $confirmar) || ($orden === 'rectificacion') !== ($que !== null)
+    || ($revocar && $dias !== null)
 ) {
     fwrite(STDERR, $uso);
     exit(2);
@@ -94,6 +107,24 @@ try {
         }
         $repo->reaplicar();
         echo "Quitadas otra vez.\n";
+        exit(0);
+    }
+
+    if ($orden === 'entrega') {
+        $entregas = new EntregaRepository($db);
+        if ($revocar) {
+            $n = $entregas->revocar((int)$id);
+            echo $n === 0 ? "La persona {$id} no tenía entregas vigentes.\n" : "Se terminaron {$n} entrega" . ($n === 1 ? '' : 's') . " vigente" . ($n === 1 ? '' : 's') . " de la persona {$id}.\n";
+            exit(0);
+        }
+        $e = $entregas->crear((int)$id, $dias ?? EntregaRepository::VIGENCIA_DIAS);
+        $base = rtrim((string)Config::get('SITE_URL_GENEALOGY', ''), '/') ?: 'https://TU-DOMINIO';
+        echo "Entrega {$e['id']} para la persona {$id}: vigente hasta el {$e['vence_en']}, se abre hasta " . EntregaRepository::MAX_VISTAS
+            . ' veces y se bloquea con ' . EntregaRepository::MAX_INTENTOS . " claves malas.\n\n"
+            . "Enlace (mándalo por un medio):\n  {$base}/e/{$e['token']}/\n\n"
+            . "Clave (mándala por OTRO medio; no se vuelve a mostrar):\n  {$e['clave']}\n\n"
+            . "La página muestra lo que el sitio oculta a un visitante. Mándalos solo después de comprobar quién pide (docs/SOLICITUDES.md).\n"
+            . "Si se mandan al medio equivocado: php bin/persona.php entrega {$id} --revocar\n";
         exit(0);
     }
 
