@@ -109,7 +109,10 @@ OPACIDADES_VELO = (0.35, 0.5, 0.65, 0.8)
 
 
 def pixeles_de_motivo(con, sin):
-    """Píxeles que cambia el motivo en una miniatura: compara la misma escena dibujada
+    """@deprecated desde la versión 0.9: el generador usa muestreo.pixeles_de_motivo, que no rasteriza.
+    Se conserva para comparar dos imágenes ya dibujadas.
+
+    Píxeles que cambia el motivo en una miniatura: compara la misma escena dibujada
     con y sin él. Un motivo con pocos píxeles se pierde al reducir el marcalibros."""
     d = np.abs(np.asarray(con.convert("RGB"), dtype=int) - np.asarray(sin.convert("RGB"), dtype=int))
     return int((d.max(axis=2) > UMBRAL_CAMBIO).sum())
@@ -119,7 +122,8 @@ def contraste_texto(img, tono):
     """Contraste que alcanza el 90 % de los píxeles (percentil 10) de `img` con el tono de
     texto dado. Se usa el percentil, no la media: un solo tono medio ya vuelve ilegible
     el texto en esa zona."""
-    lum = luminancia_rgb(np.asarray(img.convert("RGB")))
+    colores = img if isinstance(img, np.ndarray) else np.asarray(img.convert("RGB"))  # imagen o colores (n, 3) muestreados
+    lum = luminancia_rgb(colores)
     lt = luminancia_rgb(np.array(rgb(TONOS_TEXTO[tono])))
     return float(np.percentile(razon(lum, lt), 10))
 
@@ -173,14 +177,18 @@ def validar_frases(datos, soporta):
     return problemas
 
 
-def huella_visual(img: Image.Image):
-    """Miniatura en color 8×56 como vector, para comparar parecido visual.
-    Con gris, las piezas oscuras de paletas distintas se confunden entre sí."""
-    miniatura = img.convert("RGB").resize((8, 56), Image.Resampling.BILINEAR)
-    v = np.asarray(miniatura, dtype=float).ravel()
-    # Se estira el rango a 0–255: en paletas oscuras todas las capas caen en pocos
-    # valores y, sin esto, dos composiciones distintas parecerían iguales.
+def estirar_huella(v):
+    """Estira el rango de una huella a 0–255: en paletas oscuras todas las capas caen en pocos
+    valores y, sin esto, dos composiciones distintas parecerían iguales."""
     return (v - v.min()) * (255.0 / max(v.max() - v.min(), 1.0))
+
+
+def huella_visual(img: Image.Image):
+    """Miniatura en color 8×56 de una imagen, como vector, para comparar parecido visual.
+    Con gris, las piezas oscuras de paletas distintas se confunden entre sí. (El generador usa
+    muestreo.huella, que no depende de Pillow; esta sirve para comparar imágenes ya dibujadas.)"""
+    miniatura = img.convert("RGB").resize((8, 56), Image.Resampling.BILINEAR)
+    return estirar_huella(np.asarray(miniatura, dtype=float).ravel())
 
 
 def parecido_a(huella, otras: dict, umbral: float = UMBRAL_DUPLICADO):
