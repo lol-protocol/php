@@ -9156,7 +9156,7 @@
   // ---------- plantillas del catálogo ----------
   var ARQ_APROX = { colinas: "colinas", montanas: "montanas", llanura: "llanura", marina: "llanura", bosque: "colinas" };
   var MOTIVO_APROX = { luna: 1, cipres: 1, arbol: 1 };
-  var sprites = {}, posiciones = {}, contadores = {};
+  var sprites = {}, escenas = {}, posiciones = {}, contadores = {};
   CAT.piezas.forEach(function (p) { var m = CAT.autores[p[1]].m; posiciones[p[0]] = [m, contadores[m] = (contadores[m] === undefined ? 0 : contadores[m] + 1)]; });
   function sprite(mov) {
     if (!sprites[mov]) {
@@ -9173,13 +9173,32 @@
     }
     return sprites[mov];
   }
+  // Escenas en vectores (plantillas/<movimiento>.json): la vista exacta y nítida del fondo. Se piden la primera vez que hacen falta.
+  function escenasDe(mov) {
+    if (escenas[mov] === undefined) {
+      escenas[mov] = null;
+      fetch("plantillas/" + mov + ".json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (j) { escenas[mov] = j; render(); }, function () { escenas[mov] = false; });
+    }
+    return escenas[mov] || null;
+  }
+  function pintarEscena(c, esc) {
+    esc.forEach(function (p) {
+      var t = p[0];
+      if (t === "g") { var g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, p[1]); p[3].forEach(function (s) { g.addColorStop(s[0], s[1]); }); g.addColorStop(1, p[2]); c.fillStyle = g; c.fillRect(0, 0, W, H); }
+      else if (t === "c") { c.beginPath(); c.arc(p[1], p[2], p[3], 0, 6.2832); c.fillStyle = p[4]; c.fill(); }
+      else if (t === "p") { var v = p[2]; c.beginPath(); c.moveTo(v[0], v[1]); for (var i = 2; i < v.length; i += 2) c.lineTo(v[i], v[i + 1]); c.closePath(); c.fillStyle = p[1]; c.fill("evenodd"); }
+      else if (t === "v") { c.globalAlpha = p[6]; c.fillStyle = p[5]; c.fillRect(p[1], p[2], p[3] - p[1], p[4] - p[2]); c.globalAlpha = 1; }
+    });
+  }
   function hashId(t) { var h = 2166136261; for (var i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) % 100000; }
   function datosPieza(id) { for (var i = 0; i < CAT.piezas.length; i++) if (CAT.piezas[i][0] === id) return CAT.piezas[i]; return null; }
   function pintarPlantilla(c) {
     var d = estado.pieza && datosPieza(estado.pieza);
     if (!d) { c.fillStyle = "#888"; c.fillRect(0, 0, W, H); return; }
-    var pos = posiciones[d[0]], sp = sprite(pos[0]), cw = D.sprites.celda[0], ch = D.sprites.celda[1], k = D.sprites.columnas;
-    if (sp.ok) { c.drawImage(sp.canvas, (pos[1] % k) * cw, Math.floor(pos[1] / k) * ch, cw, ch, 0, 0, W, H); ultimo.aproximada = false; }
+    var pos = posiciones[d[0]], sp = sprite(pos[0]), cw = D.sprites.celda[0], ch = D.sprites.celda[1], k = D.sprites.columnas, ve = escenasDe(pos[0]);
+    if (ve) pintarEscena(c, ve[pos[1]]);
+    else if (sp.ok) { c.drawImage(sp.canvas, (pos[1] % k) * cw, Math.floor(pos[1] / k) * ch, cw, ch, 0, 0, W, H); ultimo.aproximada = false; }
     else { pintarGenerado(c, { paleta: d[3], arq: ARQ_APROX[d[4]] || "colinas", motivo: MOTIVO_APROX[d[5]] ? d[5] : "ninguno", semilla: hashId(d[0]) }); ultimo.aproximada = true; }
   }
   var MOSTRAR = 60, visibles = MOSTRAR;
@@ -9322,7 +9341,7 @@
     $("avisos").innerHTML = ""; (errores.length ? errores : ["La receta cumple el esquema."]).forEach(function (m) { var li = document.createElement("li"); li.textContent = m; if (!errores.length) li.className = "bien"; $("avisos").appendChild(li); });
     var caja = $("estado"), t = doc.receta.texto;
     caja.className = "estado " + (errores.length ? "mal" : "ok");
-    caja.innerHTML = errores.length ? "<b>Receta con errores.</b> Revisa la lista de abajo." : "<b>Receta válida.</b> " + (ultimo.aproximada ? "Vista aproximada: faltan las miniaturas de las plantillas. " : "") + (t && ultimo.contraste ? "Contraste del texto " + ultimo.contraste.toFixed(1).replace(".", ",") + ":1" + (ultimo.velo ? ", con velo del " + Math.round(ultimo.velo * 100) + " %." : ".") : "Sin texto.");
+    caja.innerHTML = errores.length ? "<b>Receta con errores.</b> Revisa la lista de abajo." : "<b>Receta válida.</b> " + (ultimo.aproximada ? "Vista aproximada: faltan las escenas de las plantillas. " : "") + (t && ultimo.contraste ? "Contraste del texto " + ultimo.contraste.toFixed(1).replace(".", ",") + ":1" + (ultimo.velo ? ", con velo del " + Math.round(ultimo.velo * 100) + " %." : ".") : "Sin texto.");
     $("copiar").disabled = errores.length > 0;
     $("cuenta").textContent = $("frase").value.length + " / 200";
   }

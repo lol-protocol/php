@@ -4,10 +4,11 @@ contraste mínimo, velos y límites de subida), para que la vista previa y el se
 
     python generator/editor_datos.py             # reescribe el bloque de datos de la página
     python generator/editor_datos.py --comprobar # sale con error si la página no está al día
-    python generator/editor_datos.py --sprites   # dibuja editor/plantillas/<movimiento>.jpg (vista de cada plantilla)
+    python generator/editor_datos.py --sprites   # escribe editor/plantillas/<movimiento>.jpg y .json
 
-Los sprites son la miniatura (80×560) del fondo que dibuja `editor.renderizar_receta` para cada plantilla,
-sin texto: no se versionan (los genera la CI) y la página funciona sin ellos con una vista aproximada.
+Por cada movimiento: un sprite JPG (miniaturas 80×560 de cada plantilla, para la rejilla) y un JSON con las
+escenas en vectores (la vista exacta y nítida del editor). Son el fondo que dibuja `editor.renderizar_receta`
+para cada plantilla, sin texto. No se versionan (los genera la CI); sin ellos la página usa una vista aproximada.
 """
 import argparse
 import json
@@ -84,6 +85,25 @@ def datos():
     }
 
 
+def escena_compacta(esc):
+    """Primitivas de una escena en forma compacta para la página (sin texto; coordenadas a 0,1 px):
+    ["g", arriba, abajo, [[pos, color]…]], ["c", cx, cy, r, color], ["p", color, [x0, y0, x1, y1…]],
+    ["v", x0, y0, x1, y1, color, opacidad]."""
+    r = lambda v: round(v, 1)
+    salida = []
+    for pr in esc.primitivas:
+        t = pr["tipo"]
+        if t == "degradado":
+            salida.append(["g", pr["arriba"], pr["abajo"], [[q, c] for q, c in pr.get("paradas", ())]])
+        elif t == "circulo":
+            salida.append(["c", r(pr["cx"]), r(pr["cy"]), r(pr["r"]), pr["color"]])
+        elif t == "poligono":
+            salida.append(["p", pr["color"], [r(v) for punto in pr["puntos"] for v in punto]])
+        elif t == "velo":
+            salida.append(["v", r(pr["x0"]), r(pr["y0"]), r(pr["x1"]), r(pr["y1"]), pr["color"], pr["opacidad"]])
+    return salida
+
+
 def sprites(movimientos=None):
     """Escribe un sprite por movimiento con el fondo de cada plantilla, tal como lo dibuja la receta (sin texto)."""
     SPRITES.mkdir(parents=True, exist_ok=True)
@@ -96,12 +116,15 @@ def sprites(movimientos=None):
         if movimientos and mov not in movimientos:
             continue
         ancho, alto = CELDA_REVISION
+        escenas = []
         hoja = Image.new("RGB", (COLUMNAS * ancho, ((len(ids) + COLUMNAS - 1) // COLUMNAS) * alto), (0, 0, 0))
         for k, ident in enumerate(ids):
             esc = editor._fondo_de_pieza(ident, manifiesto)
+            escenas.append(escena_compacta(esc))
             img = a_imagen(esc, ESCALA_REVISION)
             hoja.paste(img, ((k % COLUMNAS) * ancho, (k // COLUMNAS) * alto))
         hoja.save(SPRITES / f"{mov}.jpg", "JPEG", quality=78, optimize=True, progressive=True)
+        (SPRITES / f"{mov}.json").write_text(json.dumps(escenas, separators=(",", ":")), encoding="utf-8")
         hechos.append(mov)
     return hechos
 
