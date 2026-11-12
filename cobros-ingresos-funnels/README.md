@@ -741,12 +741,14 @@ ni por un centavo, y el monto de una boleta no puede quedar un centavo por debaj
 ya cobrado.
 
 El monto que llega de un formulario se lee con `Dinero::deTexto()` (a través de
-`Peticion::monto()`): solo dígitos y punto decimal, y a lo sumo dos decimales. `(float) "1.500,50"`
-da `1.5` sin avisar, porque PHP corta en la primera coma, y un script que mandara el formato latino
-creaba una boleta o un pago por una milésima parte. Con tres decimales o más no se redondea, se
-rechaza: `10.005` no se guarda como `10.01`, y `1.500` (el «mil quinientos» de quien usa el punto de
-miles) no se lee como `1.5`. Lo que no es un monto vale 0 y el formulario vuelve con «monto válido»;
-el navegador (`type="number"`, `step="0.01"`) siempre manda punto y a lo sumo dos decimales.
+`Peticion::monto()`): solo dígitos y punto decimal. `(float) "1.500,50"` da `1.5` sin
+avisar, porque PHP corta en la primera coma, y un script que mandara el formato latino
+creaba una boleta o un pago por una milésima parte. Con **tres decimales justos** tampoco se
+lee: `1.500` tiene la forma de un grupo de miles (el «mil quinientos» de quien usa el punto de
+miles), y leerlo como `1.5` es el mismo error de mil veces; `10.005` se rechaza por lo mismo. Con
+uno o dos decimales, o con cuatro o más, no hay ambigüedad: se lee y se redondea al centavo.
+Lo que no es un monto vale 0 y el formulario vuelve con «monto válido»; el navegador
+(`type="number"`, `step="0.01"`) siempre manda punto y a lo sumo dos decimales.
 
 Otra cosa es la regla deliberada de que **un centavo o menos cuenta como cero**, para que
 un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con saldo de
