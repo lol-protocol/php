@@ -85,8 +85,10 @@ python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer   # baja todo y re
 
 Todos los scripts usan solo la biblioteca estándar de Python 3. `generar_tabla.py` se detiene con
 un mensaje si una fila está mal: encabezado distinto, índice fuera de 1–5, código repetido o que
-no coincida entre los archivos, nivel de una lengua que no sale de sus palabras anotadas, o un IL
-o IO por encima del tope que fijan sus datos (ver las rúbricas).
+no coincida entre los archivos, un número negativo, no finito o fuera de su rango (los emigrantes,
+como el IDH o el internet, no pasan del 100 %), nivel de una lengua que no sale de sus palabras
+anotadas, o un IL o IO por encima del tope que fijan sus datos (ver las rúbricas). Los empates de
+las tablas se ordenan por nombre sin tener en cuenta los acentos, como la búsqueda de `vista.html`.
 
 ## Alcance
 

@@ -265,13 +265,16 @@ function resaltar(codigo) {
   for (const [c, fs] of Object.entries(formas)) for (const f of fs) f.classList.toggle("activo", c === codigo);
 }
 
+// Minúsculas y sin acentos: «peru» encuentra Perú.
+const plano = (s) => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
 function filtrados() {
-  const texto = document.getElementById("buscar").value.trim().toLowerCase();
+  const texto = plano(document.getElementById("buscar").value.trim());
   const region = document.getElementById("region").value;
   const verExcluidos = document.getElementById("ver-excluidos").checked;
   const m = MODOS[modo];
   return DATOS.filter((d) => (!region || d.r === region) && (verExcluidos || !m.excluido(d)) &&
-    (!texto || [d.n, d.lenguas, d.cg, d.cp].join(" ").toLowerCase().includes(texto)));
+    (!texto || plano([d.n, d.lenguas, d.cg, d.cp].join(" ")).includes(texto)));
 }
 
 function celda(d, [clave, , num, dec]) {

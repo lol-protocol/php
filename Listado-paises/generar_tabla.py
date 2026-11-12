@@ -16,8 +16,10 @@ de internet (TOPE_IO_INTERNET).
 import csv
 import io
 import json
+import math
 import statistics
 import sys
+import unicodedata
 from collections import Counter
 from pathlib import Path
 
@@ -74,9 +76,10 @@ TIPOS = {"estado", "territorio", "entidad disputada"}
 NUMERICAS_PAISES = ["poblacion_millones", "poblacion_historica_acumulada", "idh",
                     "pib_per_capita_usd", "pib_per_capita_ppa_usd", "alfabetizacion_adultos",
                     "usuarios_internet", "emigrantes_pct", "democracia_eiu", "corrupcion_cpi"]
+ESCALA = {"1", "2", "3", "4", "5"}  # los valores de los índices IG, IO, IL, IP e IP local
 LIBERTADES = {"", "libre", "parcial", "no libre"}
 RANGOS = {"idh": (0, 1), "alfabetizacion_adultos": (0, 100), "usuarios_internet": (0, 100),
-          "democracia_eiu": (0, 100), "corrupcion_cpi": (0, 100)}
+          "emigrantes_pct": (0, 100), "democracia_eiu": (0, 100), "corrupcion_cpi": (0, 100)}
 ESCALAS_PAISES = ["indice_genealogia", "indice_operabilidad"]
 ESCALAS_POS = ["indice_lectura", "indice_pos", "indice_pos_local"]
 UMBRAL_GENEALOGIA = 1  # IO <= 1: inviable para operar
@@ -134,15 +137,32 @@ def errores_de(nombre, linea, fila, escalas, numericas):
     if len(fila["codigo"]) != 2:
         errs.append("codigo debe tener 2 letras (ISO 3166-1 alfa-2)")
     for campo in escalas:
-        if fila[campo] not in {"1", "2", "3", "4", "5"}:
+        if fila[campo] not in ESCALA:
             errs.append(f"{campo} debe ser un entero de 1 a 5, es '{fila[campo]}'")
     for campo in numericas:
         if fila[campo]:
             try:
-                float(fila[campo])
+                valor = float(fila[campo])
             except ValueError:
                 errs.append(f"{campo} no es numérico: '{fila[campo]}'")
+                continue
+            if not math.isfinite(valor):
+                errs.append(f"{campo} no es un número finito: '{fila[campo]}'")
+            elif valor < 0:
+                errs.append(f"{campo} no puede ser negativo: '{fila[campo]}'")
     return [f"{nombre} línea {linea} ({fila['codigo']}): {e}" for e in errs]
+
+
+def si_no(valor, ascii=False):
+    """«sí» o «no» de las tablas; en priorizacion.csv, que es de datos, «si» sin acento."""
+    return ("si" if ascii else "sí") if valor else "no"
+
+
+def clave_nombre(nombre):
+    """Orden alfabético de un nombre sin tener en cuenta los acentos (Líbano antes que Liberia), el
+    mismo de la vista web (localeCompare «es»). Solo la ñ se trata como una n."""
+    plano = "".join(c for c in unicodedata.normalize("NFD", nombre) if not unicodedata.combining(c))
+    return (plano.casefold(), nombre)
 
 
 def numero(valor):
@@ -206,7 +226,7 @@ def escenarios_md(registros):
         tablas = [puestos(registros, puntaje, excluido) for _, puntaje, excluido in escenarios]
         excluidos = [sum(1 for v in t.values() if v is None) for t in tablas]
         codigos = [c for c in nombres if any(t[c] is not None and t[c] <= PUESTOS_MOSTRADOS for t in tablas)]
-        codigos.sort(key=lambda c: (tablas[0][c] is None, tablas[0][c] or 0, nombres[c]))
+        codigos.sort(key=lambda c: (tablas[0][c] is None, tablas[0][c] or 0, clave_nombre(nombres[c])))
         enc = ["País"] + [f"{nombre} ({n} excl.)" for (nombre, _, _), n in zip(escenarios, excluidos)]
         partes += [f"## {titulo}", "", "| " + " | ".join(enc) + " |", "|" + "|".join(["---"] * len(enc)) + "|"]
         for c in codigos:
@@ -222,7 +242,7 @@ def resumen_md(registros, niveles):
         return ", ".join(f"{n}: {sum(1 for v in valores if v == n)}" for n in range(5, 0, -1))
 
     def nombres(filtro):
-        lista = sorted((d["n"] for d in registros if filtro(d)), key=str.casefold)
+        lista = sorted((d["n"] for d in registros if filtro(d)), key=clave_nombre)
         return ", ".join(lista[:-1]) + " y " + lista[-1] if len(lista) > 1 else "".join(lista)
 
     tipos = Counter(d["t"] for d in registros)
@@ -258,12 +278,17 @@ def readme_con_resumen(resumen):
     return f"{antes}{INICIO_RESUMEN}\n{resumen}\n{FIN_RESUMEN}{despues}"
 
 
+def celda_md(texto):
+    """Un texto dentro de una celda de tabla Markdown: «|» y los saltos de línea la romperían."""
+    return texto.replace("|", "\\|").replace("\r", " ").replace("\n", " ")
+
+
 def tabla_md(titulo, nota, enc, filas):
     lineas = [f"# {titulo}", "", f"> {nota}", "",
               "| " + " | ".join(enc) + " |",
               "|" + "|".join(["---"] * len(enc)) + "|"]
     for celdas in filas:
-        lineas.append("| " + " | ".join(celdas) + " |")
+        lineas.append("| " + " | ".join(celda_md(c) for c in celdas) + " |")
     return "\n".join(lineas) + "\n"
 
 
@@ -322,7 +347,7 @@ def main(comprobar=False):
         if f["nivel"] != str(nivel_por_palabras(palabras)):
             errores.append(f"niveles_lenguas.csv ({lengua}): nivel {f['nivel']} debería ser "
                            f"{nivel_por_palabras(palabras)} ({palabras} palabras anotadas)")
-    niveles = {l: int(f["nivel"]) for l, f in lenguas.items() if f["nivel"] in {"1", "2", "3", "4", "5"}}
+    niveles = {l: int(f["nivel"]) for l, f in lenguas.items() if f["nivel"] in ESCALA}
     for linea, f in pos:
         errores += errores_de("paises_pos.csv", linea, f, ESCALAS_POS, [])
         langs = [l.strip() for l in f["idioma_principal"].split(";")]
@@ -330,13 +355,13 @@ def main(comprobar=False):
         if sin_nivel:
             errores.append(f"paises_pos.csv línea {linea} ({f['codigo']}): "
                            f"lenguas sin nivel en niveles_lenguas.csv: {sin_nivel}")
-        elif f["indice_pos"] in {"1", "2", "3", "4", "5"}:
+        elif f["indice_pos"] in ESCALA:
             esperado = max(niveles[l] for l in langs)
             if int(f["indice_pos"]) != esperado:
                 errores.append(f"paises_pos.csv línea {linea} ({f['codigo']}): "
                                f"IP {f['indice_pos']} debería ser {esperado} (máximo de sus lenguas)")
             local = niveles[langs[0]]
-            if f["indice_pos_local"] in {"1", "2", "3", "4", "5"} and int(f["indice_pos_local"]) != local:
+            if f["indice_pos_local"] in ESCALA and int(f["indice_pos_local"]) != local:
                 errores.append(f"paises_pos.csv línea {linea} ({f['codigo']}): IP local "
                                f"{f['indice_pos_local']} debería ser {local} (nivel de «{langs[0]}»)")
             prefijo, comentario = prefijo_ip(langs, niveles), f["comentarios_pos"]
@@ -356,14 +381,15 @@ def main(comprobar=False):
     alfabetizacion = {f["codigo"]: numero(f.get("alfabetizacion_adultos")) for _, f in paises}
     for linea, f in pos:
         dato = alfabetizacion.get(f["codigo"])
-        if dato is not None and f["indice_lectura"] in {"1", "2", "3", "4", "5"} and \
+        if dato is not None and f["indice_lectura"] in ESCALA and \
                 int(f["indice_lectura"]) > tope_il(dato):
             errores.append(f"paises_pos.csv línea {linea} ({f['codigo']}): IL {f['indice_lectura']} supera "
                            f"el tope {tope_il(dato)} de una alfabetización del {dato} %")
     minimo_internet, tope_io = TOPE_IO_INTERNET
     for linea, f in paises:
         internet = numero(f.get("usuarios_internet"))
-        if internet is not None and internet < minimo_internet and f["indice_operabilidad"] in {"4", "5"}:
+        if internet is not None and internet < minimo_internet and f["indice_operabilidad"] in ESCALA \
+                and int(f["indice_operabilidad"]) > tope_io:
             errores.append(f"paises.csv línea {linea} ({f['codigo']}): IO {f['indice_operabilidad']} supera "
                            f"el tope {tope_io} de un {internet} % de usuarios de internet")
     faltan = set(codigos_paises) ^ set(codigos_pos)
@@ -389,19 +415,19 @@ def main(comprobar=False):
         excl_gen, excl_pos = excluido_gen(d), excluido_pos(d)
         excluidos_gen += excl_gen
         excluidos_pos += excl_pos
-        filas_gen.append((excl_gen, -pg, f["pais"], [
+        filas_gen.append((excl_gen, -pg, clave_nombre(f["pais"]), [
             f["pais"], f["tipo"], f["region"], celda(f["poblacion_millones"]),
             celda(f["poblacion_historica_acumulada"]),
             celda(f["idh"]), celda(f["pib_per_capita_usd"]),
             celda(f["pib_per_capita_ppa_usd"]), celda(f["usuarios_internet"]), celda(f["emigrantes_pct"]),
-            celda(f["libertad_fh"]), celda(f["democracia_eiu"]), celda(f["corrupcion_cpi"]), str(ig), str(io), str(pg), "sí" if excl_gen else "no", f["comentarios"],
+            celda(f["libertad_fh"]), celda(f["democracia_eiu"]), celda(f["corrupcion_cpi"]), str(ig), str(io), str(pg), si_no(excl_gen), f["comentarios"],
         ]))
         local = lenguas[p["idioma_principal"].split(";")[0].strip()]
-        filas_pos.append((excl_pos, -pp, f["pais"], [
+        filas_pos.append((excl_pos, -pp, clave_nombre(f["pais"]), [
             f["pais"], p["idioma_principal"], f["tipo"],
             celda(f["alfabetizacion_adultos"]), celda(f["usuarios_internet"]), str(il), str(ip), str(ipl),
             f"{int(local['palabras_anotadas']):,}".replace(",", " "), celda(local["paginas_web_pct"]),
-            str(pp), "sí" if excl_pos else "no", p["comentarios_pos"],
+            str(pp), si_no(excl_pos), p["comentarios_pos"],
         ]))
         registros.append({
             "c": f["codigo"], "n": f["pais"], "t": f["tipo"], "r": f["region"],
@@ -419,15 +445,15 @@ def main(comprobar=False):
         filas_final.append({
             "codigo": f["codigo"], "pais": f["pais"], "tipo": f["tipo"], "region": f["region"],
             "indice_genealogia": ig, "indice_operabilidad": io, "prioridad_genealogia": pg,
-            "excluido_genealogia": "si" if excl_gen else "no",
+            "excluido_genealogia": si_no(excl_gen, ascii=True),
             "motivo_exclusion_genealogia":
                 f"IO {io} (se excluye con IO <= {UMBRAL_GENEALOGIA}): {f['comentarios']}" if excl_gen else "",
             "indice_lectura": il, "indice_pos_local": ipl, "prioridad_pos": pp,
-            "excluido_pos": "si" if excl_pos else "no",
+            "excluido_pos": si_no(excl_pos, ascii=True),
             "motivo_exclusion_pos":
-                f"IP local {ipl} e IO {io}: la lengua local ({local['lengua']}) no tiene palabras "
-                "anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
-                if excl_pos else "",
+                f"IP local {ipl} (se excluye con IP local <= {UMBRAL_POS}) e IO {io} (<= {UMBRAL_GENEALOGIA}): "
+                f"la lengua local ({local['lengua']}) no tiene palabras anotadas en Universal Dependencies "
+                "ni en MasakhaPOS, y el país es inviable para operar" if excl_pos else "",
         })
 
     gen_ordenado = [c for *_, c in sorted(filas_gen, key=lambda x: (x[0], x[1], x[2]))]

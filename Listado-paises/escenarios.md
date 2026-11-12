@@ -88,8 +88,8 @@
 | Jersey | 16 | 16 | 18 | 20 |
 | Liechtenstein | 16 | 16 | 18 | 20 |
 | Luxemburgo | 16 | 16 | 18 | 20 |
-| Moldavia | 16 | 16 | 18 | 20 |
 | México | 16 | 16 | 18 | 20 |
+| Moldavia | 16 | 16 | 18 | 20 |
 | Mónaco | 16 | 16 | 18 | 20 |
 | Panamá | 16 | 16 | 18 | 20 |
 | Portugal | 16 | 16 | 18 | 20 |
