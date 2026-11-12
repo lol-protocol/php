@@ -914,7 +914,7 @@ palabras no entiende contexto:
   con artículo pospuesto, por terminación: «hundur» → «hundinn»; sin cambios de vocal ni adjetivos).
   El suajili no tiene reglas (UniMorph trae 2 sustantivos y no hay lista de frecuencias para medir
   falsos positivos), y el indonesio, el vietnamita, el japonés, el coreano, el tailandés y el cantonés no flexionan. Las amenazas con forma (`patterns`) sólo están en
-  18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
+  21 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   Los idiomas sin reglas no tienen plurales, géneros ni conjugaciones automáticos —sólo la
   forma base y las que se añadan a mano con `also`—, y se escribieron
   sin revisión nativa. En japonés, cantonés y tailandés hace falta la
@@ -998,11 +998,11 @@ $result->getExplanations('eng')[0];
 // “Elba Gina” read together sounds like “vagina” (dictionary spa, type fonetico, severity medium).
 ```
 
-Hay mensajes en 18 idiomas (`eng`, `por`, `fra`, `deu`, `ita`, `nld`, `pol`, `rus`, `tur`, `ara`, `heb`, `jpn`, `kor`, `hin`, `ukr`, `ces`, `swe` y `ron`; `Messages::locales()`);
-con otro idioma, o con una clave que falte, sale el español. Los textos viven en
+Hay mensajes en 31 de los 33 idiomas, además de `spa` (todos menos el suajili; `Messages::locales()` los lista).
+El código `yue` sirve las etiquetas `zh` de `Accept-Language`, y está escrito en chino tradicional. Con otro idioma, o con una clave que falte, sale el español. Los textos viven en
 `config/messages/<código>.php` con claves planas, y `spa` es el origen: añadir un idioma es copiar
 ese archivo y traducir; `MessagesTest` exige las mismas claves y los mismos marcadores
-(`%1$s`, `%.2f`…). Son traducciones propias y el proyecto no prevé que las revise un hablante nativo, así que pueden tener giros poco naturales: si ves un error, corrígelo en el archivo de su idioma. Los códigos de riesgo
+(`%1$s`, `%.2F`…). Son traducciones propias y el proyecto no prevé que las revise un hablante nativo, así que pueden tener giros poco naturales: si ves un error, corrígelo en el archivo de su idioma. Los códigos de riesgo
 (`fonetico`), las decisiones (`review`) y los nombres de campo no se traducen.
 
 Los métodos que antes vivían directo en `DefamatoryContentReviewer` para
