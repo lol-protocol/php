@@ -44,3 +44,26 @@ def test_el_script_de_la_pagina_tiene_sintaxis_valida(tmp_path):
     (tmp_path / "pagina.js").write_text(js, encoding="utf-8")
     r = subprocess.run(["node", "--check", str(tmp_path / "pagina.js")], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
+
+
+def test_el_catalogo_de_la_pagina_son_las_1000_piezas_del_manifest():
+    import json
+    cat = editor_datos.catalogo()
+    manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))["entradas"]
+    assert [p[0] for p in cat["piezas"]] == [e["id"] for e in manifiesto] and len(cat["piezas"]) == 1000
+    assert len(cat["movs"]) == 10
+    for p in cat["piezas"]:
+        autor = cat["autores"][p[1]]
+        assert p[0].startswith(autor["m"] + "-" + autor["id"] + "-")
+    datos = editor_datos.datos()
+    assert {p[3] for p in cat["piezas"]} <= set(datos["paletas"]) | set(datos["paletasCatalogo"])
+
+
+def test_los_sprites_de_un_movimiento_tienen_el_tamano_de_la_rejilla(tmp_path, monkeypatch):
+    from PIL import Image
+    monkeypatch.setattr(editor_datos, "SPRITES", tmp_path / "plantillas")
+    assert editor_datos.sprites(["romanticismo"]) == ["romanticismo"]
+    ancho, alto = editor_datos.CELDA_REVISION
+    hoja = Image.open(tmp_path / "plantillas" / "romanticismo.jpg")
+    assert hoja.size == (editor_datos.COLUMNAS * ancho, 5 * alto)  # 100 piezas en filas de 20
+    assert not (tmp_path / "plantillas" / "gotico.jpg").exists()

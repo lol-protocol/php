@@ -11,3 +11,6 @@ catalog/revision/
 
 # Caché de la compilación incremental (se restaura en CI con actions/cache)
 catalog/.cache/
+
+# Miniaturas de las plantillas del editor: las genera generator/editor_datos.py --sprites (y la CI)
+editor/plantillas/

@@ -276,3 +276,10 @@ Qué semilla sale en cada pieza (parecido a otra, motivo visible en miniatura, t
 - Los hashes de referencia de los JPG ya no son de píxeles sino de la geometría de la escena (primitivas, semilla y grano): no dependen de Pillow. Con esto, Pillow y numpy solo afectan a los bytes de los JPG; fonttools sigue afectando a los SVG con texto.
 - `qa.pixeles_de_motivo` queda `@deprecated` (comparaba imágenes ya dibujadas).
 - Como cambia la elección, las 1000 piezas se regeneraron: mismas obras, paletas y composiciones asignadas, otras semillas en 46 piezas y las que dependen de ellas dentro de su movimiento.
+
+## Pestaña de plantillas en el editor (hecha)
+`editor/index.html` tiene ahora tres fondos: paisaje generado, **plantilla del catálogo** y tu imagen. La plantilla es el paisaje de una pieza (sin su frase), que el servidor reconstruye con `editor.renderizar_receta` (`fondo: {tipo: "plantilla", pieza: <id>}`):
+- Datos en la página: las 1000 piezas (autor, obra, paleta, composición, motivo) y las paletas del catálogo, escritos por `generator/editor_datos.py` (`--comprobar` los verifica). Filtro por movimiento y autor, búsqueda por obra y «Ver más» de 60 en 60.
+- Vista exacta: `python generator/editor_datos.py --sprites` dibuja `editor/plantillas/<movimiento>.jpg` (miniaturas 80×560, 20 por fila) con el mismo fondo que la receta. No se versionan (`.gitignore`); la CI los genera y los sube en el artefacto. Sin sprites, o si la página se abre como archivo (el lienzo queda «manchado»), usa una vista aproximada con el dibujo del editor (solo luna, cipreses y árbol) y lo avisa.
+- El tono y el velo del texto se calculan sobre la miniatura, como con las demás fondos.
+- Pendiente: la vista aproximada no es fiel con motivos distintos de luna, cipreses y árbol; solo los sprites son exactos.
