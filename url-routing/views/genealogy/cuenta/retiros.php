@@ -33,7 +33,8 @@ if ($resueltos >= RetiroRepository::RESUELTOS_VISIBLES): ?>
 <?php if (!empty($p['marcas'])): ?>
         <dt>El filtro encontró</dt><dd>⚠ <?= esc($p['marcas']) ?></dd>
 <?php endif; ?>
-        <dt>Responder a</dt><dd><?= esc($p['contacto']) ?></dd>
+        <dt>Responder a</dt><dd><?= esc(RetiroRepository::enmascarar($p['contacto'])) ?>
+            <details><summary>Mostrar el correo completo</summary><?= esc($p['contacto']) ?></details></dd>
 <?php endif; ?>
         <dt>Historial</dt><dd><ul class="lista">
 <?php foreach ($p['eventos'] as $e): ?>

@@ -218,6 +218,17 @@ class RetiroRepositoryTest extends TestCase
         $this->assertTrue($repo->retirado('persona', 6128473105), 'the page stays withdrawn');
     }
 
+    public function testAnEmailIsShownAsItsFirstCharacterAndItsDomain(): void
+    {
+        $this->assertSame('a***@example.com', RetiroRepository::enmascarar('ana@example.com'));
+        $this->assertSame('p***@mail.example.org', RetiroRepository::enmascarar('p.q@mail.example.org'));
+        $this->assertSame('á***@example.com', RetiroRepository::enmascarar('ánimo@example.com'), 'a multibyte first character is not cut in half');
+        $this->assertSame('x***@example.com', RetiroRepository::enmascarar('x@example.com'));
+        $this->assertSame('***', RetiroRepository::enmascarar('sin-arroba'), 'not an address: nothing of it is shown');
+        $this->assertSame('***', RetiroRepository::enmascarar('@example.com'));
+        $this->assertSame('***', RetiroRepository::enmascarar(''), 'a purged pedido has no address');
+    }
+
     #[DataProvider('drivers')]
     public function testTodosListsEveryPendingOneAndOnlyTheNewestDecidedOnes(string $driver): void
     {

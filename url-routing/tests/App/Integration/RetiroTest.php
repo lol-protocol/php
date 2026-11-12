@@ -230,6 +230,8 @@ class RetiroTest extends TestCase
         $cola = $this->pedir('/0/3/', propietario: true)[1];
         $this->assertStringContainsString('Copia un acta ajena.', $cola);
         $this->assertStringContainsString('llegó hoy', $cola, 'how long a pending pedido has waited');
+        $this->assertStringContainsString('b***@example.com', $cola, 'the e-mail is masked on the line that is always on screen');
+        $this->assertMatchesRegularExpression('#<details><summary>Mostrar el correo completo</summary>b@example\.com</details>#', $cola, 'and whole one click away');
         $this->assertSame(400, $decidir('borrar'), 'unknown decision');
         $this->assertSame(404, $this->pedir('/0/3/', 'POST', ['csrf_token' => $token, 'pedido' => '999999', 'decision' => 'ocultar'], $sid, true)[0]);
 
