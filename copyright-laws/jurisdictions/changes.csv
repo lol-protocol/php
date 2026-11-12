@@ -586,3 +586,5 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-11,CL,"Law No. 17,336",linked_resources,https://www.dpi.cl/,https://www.leychile.cl/Navegar?idNorma=28933
 2026-11-11,GB,"Copyright, Designs and Patents Act 1988",linked_resources,https://www.gov.uk/topic/intellectual-property,https://www.legislation.gov.uk/ukpga/1988/48/contents
 2026-11-11,US,Copyright Act (17 USC),linked_resources,https://www.copyright.gov/,https://www.copyright.gov/title17/
+2026-11-12,GQ,"Civil Code (approved by Royal Decree of 24 July 1889), the only text WIPO Lex lists for copyright",row,,added
+2026-11-12,MH,"Unauthorized Copies of Recorded Materials Act, 1991 (P.L. 1991-132; 20 MIRC Ch. 2)",row,,added

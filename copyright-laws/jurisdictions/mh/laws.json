@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "MH",
+    "country_name": "Marshall Islands",
+    "region": "asia_pacific",
+    "law_name": "Unauthorized Copies of Recorded Materials Act, 1991 (P.L. 1991-132; 20 MIRC Ch. 2)",
+    "protection_type": "Related rights",
+    "term_of_protection": "Not specified: the 1991 Act (P.L. 1991-132) covers recordings only and no author-life term was found (unconfirmed)",
+    "author_rights": "Not specified (unconfirmed)",
+    "moral_rights": "",
+    "orphan_works": "",
+    "digital_protection": "",
+    "fair_use_exceptions": "",
+    "registration_required": "Not specified (unconfirmed)",
+    "enforcement_body": "Not specified (no national copyright office found)",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/members/profile/MH",
+    "notes": "WIPO Lex lists only the 1991 Act under copyright and related rights; there is no general copyright act, so authors' works are not covered by a term found in any source.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-11-12",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "term_of_protection": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "registration_required": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "linked_resources": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      },
+      "notes": {
+        "url": "https://www.wipo.int/wipolex/en/members/profile/MH",
+        "confidence": "low",
+        "checked": "2026-11-12"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-11-12",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

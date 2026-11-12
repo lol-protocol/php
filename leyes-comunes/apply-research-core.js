@@ -5,7 +5,7 @@
 //     come from a batch file with lines `CODE | name | region`, the same file the research was done from);
 //   - a country that already has a law gets its empty or different cells patched (the law is the one named by a
 //     `law_name` row, else the country's only law).
-// Low-confidence values get the "(unconfirmed)" mark and the source's confidence says the same; the row's own
+// Low-confidence descriptive values get the "(unconfirmed)" mark and the source's confidence says the same; the row's own
 // confidence is the weakest of its facts. A row `CODE,status,NOLAW,conf,url` only reports that no law was found.
 // Nothing is written when the result would not pass the project's own validation.
 import { readFileSync } from "node:fs";
@@ -14,7 +14,6 @@ import { isHttpUrl } from "./dataset-core.js";
 const RANK = { high: 3, medium: 2, low: 1 };
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const isUnknown = (value) => !value || /^unknown\b/i.test(value);
-const mark = (value, confidence) => (confidence === "low" ? `${value} (unconfirmed)` : value);
 const unmark = (value) => value.replace(/\s*\(unconfirmed\)\s*$/i, "");
 
 /** Parses `code,field,value,conf,source` (quoted values allowed) with `parse`, the csv-parse of the calling project. */
@@ -53,7 +52,11 @@ export function groupFacts(rows, { min = "low" } = {}) {
 
 /** applyResearch() bound to one project's dataset. */
 export function createApplyResearch({ dataset, parse }) {
-  const { COLUMNS, MASTER_CSV, REQUIRED_FIELDS, SOURCE_COLUMNS, SOURCES_FILE, loadMaster, loadSide, todayIso, validateRecords, writeCsv } = dataset;
+  const { COLUMNS, MASTER_CSV, REQUIRED_FIELDS, TRANSLATED_FIELDS, SOURCE_COLUMNS, SOURCES_FILE, loadMaster, loadSide, todayIso, validateRecords, writeCsv } = dataset;
+
+  // Only the descriptive values carry the mark in their text; names, dates, URLs and the enumerated columns stay plain
+  // (a mark there would break their format), and the confidence of their source says the same.
+  const mark = (field, value, confidence) => (confidence === "low" && TRANSLATED_FIELDS.includes(field) ? `${value} (unconfirmed)` : value);
 
   function applyResearch({ research, batch = {}, min = "low", today = todayIso(), write = true }) {
     const { records } = loadMaster(MASTER_CSV);
@@ -85,7 +88,7 @@ export function createApplyResearch({ dataset, parse }) {
         const changed = [];
         for (const [field, fact] of place.facts) {
           if (field === "law_name" || !COLUMNS.includes(field) || field === "country_code") continue;
-          const text = mark(fact.value, fact.conf);
+          const text = mark(field, fact.value, fact.conf);
           if (law[field] === text) continue;
           law[field] = text;
           law.last_checked = today;
@@ -101,7 +104,7 @@ export function createApplyResearch({ dataset, parse }) {
       row.country_code = place.code;
       row.country_name = named?.name ?? "";
       row.region = named?.region ?? "";
-      for (const [field, fact] of place.facts) if (COLUMNS.includes(field) && !["country_code", "country_name", "region"].includes(field)) row[field] = mark(fact.value, fact.conf);
+      for (const [field, fact] of place.facts) if (COLUMNS.includes(field) && !["country_code", "country_name", "region"].includes(field)) row[field] = mark(field, fact.value, fact.conf);
       const confs = [...place.facts.values()].map((f) => f.conf);
       row.data_status = "researched";
       row.confidence = confs.sort((a, b) => RANK[a] - RANK[b])[0] ?? "low";
