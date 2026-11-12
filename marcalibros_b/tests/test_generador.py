@@ -46,7 +46,8 @@ def _piezas():
 def _hash_pieza(entrada, esc):
     if entrada["formato"] == "svg":
         return hashlib.sha256(a_svg(esc).encode("utf-8")).hexdigest()
-    return hashlib.sha256(a_imagen(esc).tobytes()).hexdigest()  # píxeles, no el códec JPEG
+    # JPG: la geometría de la escena (primitivas, semilla y grano), no los píxeles ni el códec: no dependen de Pillow
+    return hashlib.sha256(json.dumps([esc.semilla, esc.grano, esc.primitivas], sort_keys=True).encode("utf-8")).hexdigest()
 
 
 @pytest.mark.lento

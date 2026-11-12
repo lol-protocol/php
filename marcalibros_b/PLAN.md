@@ -267,3 +267,12 @@ Nueve mejoras, sin cambiar ni una pieza del catálogo (las 1000 salen byte a byt
 8. **Gutenberg:** `verificar_gutenberg.py` reutiliza `modelo` (descarta resultados de otros autores y marca las obras que coinciden).
 9. **Pruebas rápidas:** `pytest -m "not lento"` (~45 s); la CI corre todo.
 Pendiente de la sugerencia 2: decidir los reintentos de semilla con rasgos vectoriales en vez de píxeles (cambio grande, regenera el catálogo).
+
+## Decisiones de semilla por muestreo (hecho, versión 0.9.0)
+Qué semilla sale en cada pieza (parecido a otra, motivo visible en miniatura, texto legible) se decidía con píxeles de Pillow, y cualquier cambio de Pillow o numpy podía cambiarla. Ahora lo decide `generator/muestreo.py`, que calcula el color de la escena en puntos concretos (degradado con paradas, círculos, polígonos par-impar y velos) sin importar Pillow:
+- `muestreo.huella(esc)` (8×56, 5×5 muestras por celda), `muestreo.pixeles_de_motivo(esc, sin, umbral)` (rejilla 50×350) y `muestreo.franja_colores(esc)` (para el contraste del texto y la calma del cielo).
+- Los colores muestreados coinciden con el raster (test: diferencia media < 4/255 y >97 % de los puntos a menos de 30); los umbrales no se tocaron. Resultado: 121 piezas con reintentos (antes 83), máximo 12 de 30, 0 problemas, 765 piezas con texto tal cual y 235 con cielo calmado (antes 767/233), 0 velos.
+- La selección de las 1000 piezas tarda unos 15 s (antes, minutos): los tests pasan de ~3 min a ~1 min.
+- Los hashes de referencia de los JPG ya no son de píxeles sino de la geometría de la escena (primitivas, semilla y grano): no dependen de Pillow. Con esto, Pillow y numpy solo afectan a los bytes de los JPG; fonttools sigue afectando a los SVG con texto.
+- `qa.pixeles_de_motivo` queda `@deprecated` (comparaba imágenes ya dibujadas).
+- Como cambia la elección, las 1000 piezas se regeneraron: mismas obras, paletas y composiciones asignadas, otras semillas en 46 piezas y las que dependen de ellas dentro de su movimiento.
