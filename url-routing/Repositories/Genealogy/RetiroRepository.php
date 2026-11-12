@@ -142,6 +142,21 @@ final class RetiroRepository extends Repository
         });
     }
 
+    /**
+     * An e-mail as it is shown on screen: its first character and its domain («a***@example.com»), enough for the
+     * owner to tell the pedidos apart without the whole address on view (a screenshot of the queue, someone looking
+     * over the shoulder). The whole address is one click away in /0/3/ (a collapsed <details>).
+     */
+    public static function enmascarar(string $correo): string
+    {
+        $arroba = strrpos($correo, '@');
+        if ($arroba === false || $arroba === 0) {
+            return '***';
+        }
+
+        return mb_substr($correo, 0, 1) . '***' . substr($correo, $arroba);
+    }
+
     /** A unix time ($ahora, else now) as the TIMESTAMP text every column of this repository holds. */
     private static function fecha(?int $ahora = null): string
     {

@@ -120,6 +120,9 @@ que prometen las secciones 5 y 6 del borrador de
 - **Recibir un pedido no oculta nada.** Si bastara con pedirlo, cualquiera podría
   bajar cualquier página. El pedido espera en `/0/3/`, donde el propietario
   decide con una nota: **ocultar mientras revisa**, **retirar** o **rechazar**.
+  En la cola el correo de quien pidió sale enmascarado (`a***@example.com`: su primera
+  letra y el dominio) y el completo queda a un clic, en un `<details>` plegado:
+  así no está entero a la vista en una captura ni a espaldas de quien mira la pantalla.
   Las dos primeras dejan la página en 410 para quien no es el propietario, con
   todas sus acciones (el chequeo está en el router, antes del controlador:
   `Support/Retiros.php`), y la sacan del sitemap y de la búsqueda (`/b/`) de los
