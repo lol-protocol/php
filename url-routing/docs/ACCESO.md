@@ -192,12 +192,16 @@ solo la usa quien administra el servidor.
 php bin/persona.php acceso 6128473105                             # todo lo que hay de ella, en JSON
 php bin/persona.php suprimir 6128473105 --pedido=12               # muestra qué se quitaría y no cambia nada
 php bin/persona.php suprimir 6128473105 --pedido=12 --confirmar   # lo hace
+php bin/persona.php rectificacion 6128473105 personas.apellidos   # anota que se corrigió ese campo (sin valores)
 ```
 
 - **`acceso`** imprime la ficha, sus sucesos con la descripción, los registros que los documentan, sus
-  colecciones y organizaciones, los ids que redirigen a ella y los pedidos de retiro que hay sobre ella (el
-  número, el motivo y el estado: **no** quién los pidió ni lo que escribió, que son datos de quien pidió). Los
+  colecciones y organizaciones, los ids que redirigen a ella, los pedidos de retiro que hay sobre ella (el
+  número, el motivo y el estado: **no** quién los pidió ni lo que escribió, que son datos de quien pidió) y las
+  correcciones anotadas (qué campo y cuándo, nunca los valores). Los
   parientes aparecen solo como cantidades: sus nombres son sus datos. Es lo que se le manda a quien lo pide.
+- **`rectificacion`** no cambia la ficha (eso se hace a mano, ver [`SOLICITUDES.md`](SOLICITUDES.md)): solo anota en
+  `rectificaciones_persona` qué campo se corrigió, para poder probarlo. Esa fila se conserva si la persona se suprime.
 - **`suprimir`** quita a la persona y deja el resto del árbol en pie, en una transacción:
   - se borran sus sucesos en los que **es la única participante**, con sus enlaces a registros;
   - los sucesos que comparte con otras personas **se conservan** (también son datos de las otras) y a ella se la

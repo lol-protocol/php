@@ -119,15 +119,10 @@ FASTCGI_RETENTION=""
 sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOFNGINX
 # vps-setup: $MARK
 server {
-    listen 80;
-    listen [::]:80;
-    server_name $DOMAIN www.$DOMAIN;
+$(nginx_server_head "$DOMAIN")
 
     root $PUBLIC_DIR;
     client_max_body_size $MAX_UPLOAD;   # fotos (MAX_UPLOAD, 6M por defecto); la app rechaza las de mas de 5 MB
-
-    access_log /var/log/nginx/$DOMAIN/access.log;
-    error_log /var/log/nginx/$DOMAIN/error.log;
 
     location /assets/ {
         try_files \$uri =404;

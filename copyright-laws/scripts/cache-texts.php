@@ -11,6 +11,7 @@ declare(strict_types=1);
  *   php scripts/cache-texts.php --dry-run          list what would be fetched, no network
  *   php scripts/cache-texts.php --force            refetch even if the page did not change
  *   php scripts/cache-texts.php --format=txt       plain text instead of Markdown
+ *   php scripts/cache-texts.php --field-sources    also the pages cited in field_sources.csv for single fields (named {law}--{hash}.md)
  *   php scripts/cache-texts.php --allow-private-hosts   also fetch loopback/private addresses (refused by default)
  *   php scripts/cache-texts.php --max-kb=400 --delay=1 --timeout=20
  *   php scripts/cache-texts.php --convert < page.html     HTML on stdin → Markdown on stdout

@@ -34,19 +34,23 @@ final class Dinero
     }
 
     /**
-     * El monto de un texto de formulario: solo digitos con punto decimal opcional ("1500.50", "100").
-     * Un formulario del navegador siempre lo manda asi (type="number"); un script puede mandar "1.500,50",
-     * y (float) lo lee como 1.5 sin avisar, porque corta en la primera coma: una boleta 1.000 veces menor.
-     * Por eso no se acepta nada que no sea exactamente un monto: ni coma decimal, ni separador de miles,
-     * ni signo, ni exponente.
+     * El monto de un texto de formulario: solo digitos con punto decimal opcional y a lo sumo dos decimales
+     * ("1500.50", "100"). Un formulario del navegador siempre lo manda asi (type="number", step 0.01); un
+     * script puede mandar "1.500,50", y (float) lo lee como 1.5 sin avisar, porque corta en la primera coma:
+     * una boleta 1.000 veces menor. Por eso no se acepta nada que no sea exactamente un monto: ni coma
+     * decimal, ni separador de miles, ni signo, ni exponente.
+     *
+     * Tres decimales o mas tampoco: no se redondean, se rechazan. "10.005" no es un monto en ninguna
+     * moneda que tenga centavos, y "1.500" es el «mil quinientos» de quien usa el punto de miles: leido
+     * como 1.5, es el mismo error de mil veces que la coma decimal.
      *
      * @throws InvalidArgumentException si el texto no es un monto
      */
     public static function deTexto(string $texto): float
     {
         $texto = trim($texto);
-        if (preg_match('/^\d+(\.\d+)?$/D', $texto) !== 1) {
-            throw new InvalidArgumentException("«{$texto}» no es un monto: use solo dígitos y punto decimal.");
+        if (preg_match('/^\d+(\.\d{1,2})?$/D', $texto) !== 1) {
+            throw new InvalidArgumentException("«{$texto}» no es un monto: use solo dígitos y punto decimal, con hasta dos decimales.");
         }
 
         return (float) $texto;

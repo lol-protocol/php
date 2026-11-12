@@ -232,7 +232,7 @@ final class Zodiaco
     public static function animalChino(int $anioLunar): array
     {
         $datos = self::cargarDatos();
-        $chinos = array_values(array_filter($datos['signos'], fn (array $s): bool => $s['tipo'] === 'chino'));
+        $chinos = self::signosDeTipo('chino');
         $tronco = $datos['troncos'][self::modulo($anioLunar - self::ANIO_BASE, 10)];
         return [
             'signo' => $chinos[self::modulo($anioLunar - self::ANIO_BASE, 12)],
@@ -383,8 +383,7 @@ final class Zodiaco
     /** @return list<int> Los años lunares entre $desde y $hasta (inclusive) que corresponden a un animal. */
     public static function aniosDelAnimal(string $idAnimal, int $desde, int $hasta): array
     {
-        $ids = array_column(array_filter(self::cargarDatos()['signos'], fn (array $s): bool => $s['tipo'] === 'chino'), 'id');
-        $indice = array_search($idAnimal, array_values($ids), true);
+        $indice = array_search($idAnimal, array_column(self::signosDeTipo('chino'), 'id'), true);
         if ($indice === false) {
             throw new InvalidArgumentException("animal desconocido: '$idAnimal'");
         }
@@ -456,11 +455,7 @@ final class Zodiaco
             throw new InvalidArgumentException("numero debe estar entre 1 y 72, no $numero");
         }
         $esp = self::cargarEspiritus();
-        if (!isset($esp['terminos']['separador'][$idioma])) {
-            throw new InvalidArgumentException("idioma desconocido: '$idioma'");
-        }
-        $entrada = $esp[$tipo === 'angel' ? 'angeles' : 'demonios'][$numero - 1];
-        return self::frase($entrada['cualidades'], $idioma, [$esp['cualidades']], $esp['terminos']['separador']);
+        return self::fraseDe($esp[$tipo === 'angel' ? 'angeles' : 'demonios'], 'numero', $numero, $idioma, [$esp['cualidades']], $esp['terminos'], $tipo);
     }
 
     /** El texto con la primera letra en mayúscula; en turco, la i pasa a İ. */
@@ -563,21 +558,12 @@ final class Zodiaco
             throw new InvalidArgumentException("sistema debe ser uno de celta, horoscopo, nakshatra, no '$sistema'");
         }
         $arb = self::cargarArboles();
-        if (!isset($arb['terminos']['separador'][$idioma])) {
-            throw new InvalidArgumentException("idioma desconocido: '$idioma'");
-        }
         $entradas = match ($sistema) {
             'celta' => $arb['calendario_celta']['meses'],
             'horoscopo' => $arb['horoscopo'],
             default => $arb['nakshatras'],
         };
-        $campo = $sistema === 'horoscopo' ? 'arbol' : 'id';
-        foreach ($entradas as $e) {
-            if ($e[$campo] === $clave) {
-                return self::frase($e['rasgos'], $idioma, [$arb['rasgos'], self::cargarEspiritus()['cualidades']], $arb['terminos']['separador']);
-            }
-        }
-        throw new InvalidArgumentException("$sistema: no hay ninguno con la clave '$clave'");
+        return self::fraseDe($entradas, $sistema === 'horoscopo' ? 'arbol' : 'id', $clave, $idioma, self::glosarios(), $arb['terminos'], $sistema);
     }
 
     // --- Numerología: el número del camino de vida y el año personal ---
@@ -622,15 +608,7 @@ final class Zodiaco
     public static function rasgosDeNumero(int $numero, string $idioma): string
     {
         $num = self::cargarNumerologia();
-        if (!isset($num['terminos']['separador'][$idioma])) {
-            throw new InvalidArgumentException("idioma desconocido: '$idioma'");
-        }
-        foreach ($num['numeros'] as $n) {
-            if ($n['numero'] === $numero) {
-                return self::frase($n['rasgos'], $idioma, [self::cargarArboles()['rasgos'], self::cargarEspiritus()['cualidades']], $num['terminos']['separador']);
-            }
-        }
-        throw new InvalidArgumentException("no hay un número $numero en la numerología (son 1–9, 11, 22 y 33)");
+        return self::fraseDe($num['numeros'], 'numero', $numero, $idioma, self::glosarios(), $num['terminos'], 'numerología (son 1–9, 11, 22 y 33)');
     }
 
     // --- auxiliares ---
@@ -690,7 +668,13 @@ final class Zodiaco
     /** @return list<array<string, mixed>> */
     private static function occidentales(): array
     {
-        return array_values(array_filter(self::cargarDatos()['signos'], fn (array $s): bool => $s['tipo'] === 'occidental'));
+        return self::signosDeTipo('occidental');
+    }
+
+    /** @return list<array<string, mixed>> Los signos de un tipo («occidental» o «chino»), en el orden de los datos. */
+    private static function signosDeTipo(string $tipo): array
+    {
+        return array_values(array_filter(self::cargarDatos()['signos'], fn (array $s): bool => $s['tipo'] === $tipo));
     }
 
     /** Medianoche UTC del año, mes y día dados: sin huso ni horario de verano que cambien el día. */
@@ -867,6 +851,32 @@ final class Zodiaco
     private static function largosDeDecanatos(int $dias): array
     {
         return [10, 10, $dias - 20];
+    }
+
+    /**
+     * La frase de rasgos de la entrada de $entradas cuyo $campo vale $clave, en un idioma; $que nombra lo buscado en el error.
+     *
+     * @param list<array<string, mixed>> $entradas
+     * @param list<array<string, array<string, string>>> $glosarios
+     * @param array<string, array<string, string>> $terminos
+     */
+    private static function fraseDe(array $entradas, string $campo, int|string $clave, string $idioma, array $glosarios, array $terminos, string $que): string
+    {
+        if (!isset($terminos['separador'][$idioma])) {
+            throw new InvalidArgumentException("idioma desconocido: '$idioma'");
+        }
+        foreach ($entradas as $e) {
+            if ($e[$campo] === $clave) {
+                return self::frase($e['rasgos'] ?? $e['cualidades'], $idioma, $glosarios, $terminos['separador']);
+            }
+        }
+        throw new InvalidArgumentException("$que: no hay ninguno con la clave '$clave'");
+    }
+
+    /** @return list<array<string, array<string, string>>> Los glosarios donde se buscan los rasgos: los de los árboles y luego las cualidades de los 72. */
+    private static function glosarios(): array
+    {
+        return [self::cargarArboles()['rasgos'], self::cargarEspiritus()['cualidades']];
     }
 
     /**

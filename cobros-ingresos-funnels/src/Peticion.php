@@ -71,15 +71,15 @@ final class Peticion
     }
 
     /**
-     * El monto del formulario, redondeado al centavo. Si el campo falta o no es un monto
-     * (Dinero::deTexto()) devuelve 0: Validacion::faltanCampos() ya rechaza un monto fuera de rango con
-     * el mismo mensaje de "monto valido", asi que el formulario vuelve con su error en vez de guardar
-     * otra cantidad.
+     * El monto del formulario, tal como se escribio. Si el campo falta o no es un monto
+     * (Dinero::deTexto(): con coma, con letras o con mas de dos decimales, que no se redondean) devuelve 0:
+     * Validacion::faltanCampos() ya rechaza un monto fuera de rango con el mismo mensaje de "monto valido",
+     * asi que el formulario vuelve con su error en vez de guardar otra cantidad.
      */
     public static function monto(string $campo = 'monto'): float
     {
         try {
-            return round(Dinero::deTexto((string) ($_POST[$campo] ?? '')), 2);
+            return Dinero::deTexto((string) ($_POST[$campo] ?? ''));
         } catch (InvalidArgumentException) {
             return 0.0;
         }

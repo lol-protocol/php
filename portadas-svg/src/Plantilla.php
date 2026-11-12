@@ -6,7 +6,9 @@ namespace PortadasSvg;
 
 use PortadasSvg\Adornos\Adorno;
 use PortadasSvg\Adornos\Motivo;
+use PortadasSvg\Plantillas\Cartel;
 use PortadasSvg\Plantillas\Clasica;
+use PortadasSvg\Plantillas\Ilustrada;
 use PortadasSvg\Plantillas\Sobria;
 use PortadasSvg\Plantillas\Tipografica;
 
@@ -74,6 +76,10 @@ abstract class Plantilla
     protected const PIE_Y = 12.0;
     protected const PIE_TAMANO_MAX = 3.2;
     protected const PIE_TAMANO_MIN = 2.4;
+    /** Logo de la editorial en la contratapa: ancho y alto máximos, y distancia de su borde superior al del corte. */
+    protected const LOGO_ANCHO = 26.0;
+    protected const LOGO_ALTO = 12.0;
+    protected const LOGO_Y = 10.0;
     /** Hueco del código de barras: ancho, alto, distancia de su borde superior al borde inferior del corte, y espacio libre hasta el pie. */
     protected const CODIGO_ANCHO = 42.0;
     protected const CODIGO_ALTO = 26.0;
@@ -90,7 +96,8 @@ abstract class Plantilla
     protected const SOLAPA_TAMANO_MIN = 2.8;
 
     /** Lomo: ancho a partir del cual lleva texto, tamaño del texto (el máximo es también una fracción del ancho) y centrado. */
-    protected const LOMO_MINIMO = 3.0;
+    /** Lomo: por debajo de este ancho no se escribe el texto. */
+    public const LOMO_MINIMO = 3.0;
     protected const LOMO_TAMANO_MAX = 4.5;
     protected const LOMO_TAMANO_MIN = 2.2;
     protected const LOMO_TAMANO_ANCHO = 0.6;
@@ -125,7 +132,7 @@ abstract class Plantilla
     /** @return array<string, class-string<Plantilla>> */
     public static function disponibles(): array
     {
-        return ['clasica' => Clasica::class, 'sobria' => Sobria::class, 'tipografica' => Tipografica::class];
+        return ['clasica' => Clasica::class, 'sobria' => Sobria::class, 'tipografica' => Tipografica::class, 'ilustrada' => Ilustrada::class, 'cartel' => Cartel::class];
     }
 
     public static function crear(string $nombre): self
@@ -158,6 +165,21 @@ abstract class Plantilla
     protected function estiloDeCita(): array
     {
         return $this->familia() === 'serif' ? ['font-style' => 'italic'] : [];
+    }
+
+    /**
+     * La paleta de un tono con el tema que pide el libro: `claro` (fondo claro, letra oscura), `oscuro` (al revés) o
+     * null, que deja la de la propia plantilla.
+     *
+     * @return array{fondo: string, texto: string, acento: string}
+     */
+    public function paletaConTema(float $tono, ?string $tema): array
+    {
+        return match ($tema) {
+            'claro' => ['fondo' => Color::hsl($tono, 0.45, 0.91), 'texto' => Color::hsl($tono, 0.35, 0.13), 'acento' => Color::hsl($tono, 0.55, 0.33)],
+            'oscuro' => ['fondo' => Color::hsl($tono, 0.25, 0.12), 'texto' => Color::hsl($tono, 0.30, 0.94), 'acento' => Color::hsl($tono, 0.55, 0.62)],
+            default => $this->paleta($tono),
+        };
     }
 
     /** Adorno de la tradición del libro. */
@@ -300,7 +322,7 @@ abstract class Plantilla
         $fin = $y;
         if ($libro->textos->contratapa !== '') {
             $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $alto, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
-            $svg .= $this->parrafo($texto['lineas'], $x, $y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto']);
+            $svg .= $this->parrafo($texto['lineas'], $x, $y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto'], [], $ancho);
             $fin = $y + count($texto['lineas']) * $texto['tamano'] * self::INTERLINEADO;
         }
 
@@ -313,6 +335,10 @@ abstract class Plantilla
 
         if ($libro->categoria !== null) {
             $svg .= Motivo::dibujar($libro->categoria, $x + self::CONTRATAPA_MOTIVO_RADIO, $panel->y + $panel->alto - self::CONTRATAPA_MOTIVO_Y, self::CONTRATAPA_MOTIVO_RADIO, $colores['acento']);
+        }
+
+        if ($libro->logo !== null) {
+            $svg .= $this->imagen($libro->logo, new Rectangulo($panel->x + $panel->ancho - self::MARGEN - self::LOGO_ANCHO, $panel->y + self::LOGO_Y, self::LOGO_ANCHO, self::LOGO_ALTO), 'xMaxYMid meet');
         }
 
         // Hueco en blanco para el código de barras del ISBN: el código lo pone quien imprime. El pie
@@ -344,7 +370,7 @@ abstract class Plantilla
             $svg .= Motivo::dibujar($libro->categoria ?? '', $panel->x + $panel->ancho / 2, $panel->y + $panel->alto - self::MARGEN - $radio, $radio, $colores['texto']);
         }
         $largo = $panel->alto - 2 * self::MARGEN - ($radio > 0.0 ? 2 * (2 * $radio + self::LOMO_MOTIVO_SEPARACION) : 0.0);
-        $completo = $libro->textos->titulo . ' · ' . $libro->textos->autor;
+        $completo = implode(' · ', array_filter([$libro->textos->titulo, $libro->textos->autor, $this->rotuloDeVolumen($libro)], static fn (string $parte): bool => $parte !== ''));
         $texto = Texto::unaLinea($completo, $largo, min(self::LOMO_TAMANO_MAX, $panel->ancho * self::LOMO_TAMANO_ANCHO), self::LOMO_TAMANO_MIN, $this->medidaDe());
 
         // El texto va girado 90°. Al girarlo, la línea base queda en x y las letras crecen hacia un lado
@@ -378,13 +404,38 @@ abstract class Plantilla
         $margen = self::SOLAPA_MARGEN;
         $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, self::SOLAPA_TAMANO_MAX, self::SOLAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
 
-        return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * self::ASCENDENTE, $ajuste['tamano'], 'start', $libro->colores['texto']);
+        return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * self::ASCENDENTE, $ajuste['tamano'], 'start', $libro->colores['texto'], [], $panel->ancho - 2 * $margen);
+    }
+
+    /** «Vol. 3» en el idioma del libro, o vacío si no es de una serie. */
+    protected function rotuloDeVolumen(Libro $libro): string
+    {
+        return $libro->textos->volumen === '' ? '' : Frases::texto($libro->idioma, 'volumen', ['n' => $libro->textos->volumen]);
+    }
+
+    /**
+     * Una imagen del libro (su ilustración o el logo) incrustada en `zona`, para que el SVG no dependa de ningún archivo.
+     * `$ajuste` es el `preserveAspectRatio`: `slice` rellena la zona recortando lo que sobre, `meet` la deja entera.
+     */
+    protected function imagen(string $ruta, Rectangulo $zona, string $ajuste): string
+    {
+        $tipos = ['svg' => 'image/svg+xml', 'png' => 'image/png', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'gif' => 'image/gif', 'webp' => 'image/webp'];
+        $contenido = is_file($ruta) ? file_get_contents($ruta) : false;
+        if ($contenido === false) {
+            throw new \RuntimeException("No se pudo leer la imagen $ruta.");
+        }
+
+        return Svg::elemento('image', [
+            'x' => $zona->x, 'y' => $zona->y, 'width' => $zona->ancho, 'height' => $zona->alto,
+            'preserveAspectRatio' => $ajuste,
+            'xlink:href' => 'data:' . ($tipos[strtolower(pathinfo($ruta, PATHINFO_EXTENSION))] ?? 'application/octet-stream') . ';base64,' . base64_encode($contenido),
+        ]);
     }
 
     /** Pie con editorial y colección, si hay alguna, en una sola línea que cabe en `ancho`. */
     protected function editorial(Libro $libro, float $x, float $y, string $anclaje, float $ancho): string
     {
-        $pie = implode(' · ', array_filter([$libro->textos->editorial, $libro->textos->coleccion], static fn (string $dato): bool => $dato !== ''));
+        $pie = implode(' · ', array_filter([$libro->textos->editorial, $libro->textos->coleccion, $this->rotuloDeVolumen($libro)], static fn (string $dato): bool => $dato !== ''));
 
         return $pie === '' ? '' : $this->rotulo($pie, $x, $y, $ancho, self::PIE_TAMANO_MAX, self::PIE_TAMANO_MIN, $anclaje, $libro->colores['texto']);
     }
@@ -400,17 +451,23 @@ abstract class Plantilla
         $espaciado = (float) ($extra['letter-spacing'] ?? 0.0);
         $ajuste = Texto::unaLinea($texto, $ancho, $tamanoMax, $tamanoMin, $this->medidaDe($extra), $espaciado);
 
-        return $this->parrafo([$ajuste['texto']], $x, $y, $ajuste['tamano'], $anclaje, $color, $extra);
+        return $this->parrafo([$ajuste['texto']], $x, $y, $ajuste['tamano'], $anclaje, $color, $extra, $ancho);
     }
 
     /**
-     * Texto de varias líneas con la primera línea base en (x, y). Una línea vacía deja un hueco.
+     * Texto de varias líneas con la primera línea base en (x, y). Una línea vacía deja un hueco. Con `$caja` (el ancho de
+     * la caja donde empieza en `x`), un párrafo de derecha a izquierda se alinea a su borde derecho.
      *
      * @param list<string> $lineas
      * @param array<string, float|int|string> $extra
      */
-    protected function parrafo(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra = []): string
+    protected function parrafo(array $lineas, float $x, float $y, float $tamano, string $anclaje, string $color, array $extra = [], float $caja = 0.0): string
     {
+        // Un párrafo que se lee de derecha a izquierda se alinea al borde derecho de su caja, no al izquierdo.
+        if ($caja > 0.0 && $anclaje === 'start' && TextoATrazos::esDerechaAIzquierda(implode(' ', $lineas))) {
+            $x += $caja;
+            $anclaje = 'end';
+        }
         $this->usar($extra, implode('', $lineas));
         if ($this->textoATrazos) {
             return $this->trazos()->escribir($lineas, $x, $y, $tamano, $anclaje, $color, $this->familia(), self::estiloDe($extra), self::pesoDe($extra), $this->medidaDe($extra), (float) ($extra['letter-spacing'] ?? 0.0), self::INTERLINEADO);

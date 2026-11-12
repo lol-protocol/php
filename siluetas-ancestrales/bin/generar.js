@@ -24,13 +24,14 @@ if (flag('ayuda') || flag('help')) {
   --pose casual|firme   casual (por defecto): cabeza inclinada, peso en una pierna, brazo libre en la cintura o el bolsillo… distinto con cada semilla; firme: simétrica
   --contorno suave   por defecto no hay bordes; 'suave' añade un borde fino y tenue
   --postura firme|relajada|abierta  --piel ID|#hex  --cabello ID|#hex
+  --compacto         SVG unos 7 % más liviano (coordenadas con 1 decimal)
   --detalle minimo|medio|alto  --rasgos  --fondo '#efe9dd'
   --vestir ID,ID,…   viste prenda por prenda (--listar prendas); los colores salen del catálogo de cada una
   --peinado ID --barba ID --tocado ID   cabeza a mano (--listar peinados|barbas|tocados)
   --nueva [--estilo sobrio|trabajo|festivo|ceremonial] [--esquema analogo|complementario|triada|monocromo|tierra|festivo]
   --colores ID       catálogo de colores de una prenda, con el % de cada color (usa --anio para quitar tintes que aún no existían)
   --colores-modo atuendo   los colores salen de la paleta del atuendo en vez de los perfiles de cada prenda
-  --listar atuendos|regiones|etnias|prendas|tintes|colores|peinados|barbas|tocados|resumen|auditoria   (auditoria: lo que conviene revisar con fuentes del propio pueblo)
+  --listar atuendos|regiones|etnias|prendas|tintes|colores|peinados|barbas|tocados|resumen|auditoria|fuentes   (auditoria: lo que conviene revisar con fuentes del propio pueblo; fuentes: la referencia de cada etnia y atuendo, o «(sin fuente)»)
   -o archivo.svg`);
   process.exit(0);
 }
@@ -51,6 +52,7 @@ if (listar) {
   const f = { atuendos: () => ATUENDOS.map((a) => `${a.id}\t${a.sexo}\t${a.region}\t${a.epoca.join('..')}\t${a.confianza}\t${a.nombre}`),
     etnias: () => ETNIAS.map((e) => `${e.id}\t${e.confianza}\t${e.grupo}\t${e.nombre}`),
     auditoria: () => [...ETNIAS.filter((e) => e.confianza === 'baja').map((e) => `etnia\t${e.id}\t${e.nombre}\t${e.nota}`), ...ATUENDOS.filter((a) => a.confianza === 'baja').map((a) => `atuendo\t${a.id}\t${a.nombre}\t${a.nota}`)],
+    fuentes: () => [...ETNIAS.map((e) => ['etnia', e]), ...ATUENDOS.map((a) => ['atuendo', a])].map(([t, x]) => `${t}\t${x.id}\t${x.confianza}\t${x.fuente || '(sin fuente)'}`),
     regiones: () => Object.entries(REGIONES).map(([k, v]) => `${k}\t${v}`),
     prendas: () => PRENDAS.map((p) => `${p.id}\t${p.ranura}\t${p.nombre}`),
     tintes: () => TINTES.map((t) => `${t.id}\t${t.hex}\t${t.nombre}`),
@@ -70,14 +72,14 @@ const opc = {
   atuendo: val('atuendo'), region: val('region'), anio: num('anio'), clase: val('clase'), sexo: val('sexo'), edad: num('edad'),
   corpulencia: val('corpulencia') !== undefined && val('corpulencia') !== '' && !Number.isNaN(Number(val('corpulencia'))) ? Number(val('corpulencia')) : val('corpulencia'), altura: num('altura'), postura: val('postura'), piel: val('piel'), cabello: val('cabello'),
   detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'), pose: val('pose') === 'casual' ? undefined : val('pose'), contorno: val('contorno'),
-  ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
+  compacto: flag('compacto') || undefined, ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
   etnia: val('etnia'), saludo: val('saludo'), vestir: val('vestir') ? val('vestir').split(',').map((x) => x.trim()).filter(Boolean) : undefined, peinado: val('peinado'), barba: val('barba'), tocado: val('tocado'),
 };
 for (const k of Object.keys(opc)) if (opc[k] === undefined) delete opc[k];
 let svg, p;
 try {
   p = opc.ropaNueva ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
-  svg = renderizar(p, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno });
+  svg = renderizar(p, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno, compacto: opc.compacto });
 } catch (e) { console.error(`Error: ${e.message}`); process.exit(2); }
 if (flag('avisos')) {
   for (const t of [...(p.estimaciones ?? []), ...(p.avisos ?? []).map((a) => `Aviso: ${a}`), ...(p.coloresPrendas ?? []).map((c) => `Color de ${c.nombre}: ${Object.entries(c.roles).map(([r, x]) => `${r} ${x.nombre}${x.pct == null ? '' : ` (${x.pct} %)`}`).join(', ')}`)]) console.error(t);

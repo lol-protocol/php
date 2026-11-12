@@ -368,7 +368,8 @@ const P = (id, nombre, ranura, plantilla, params = {}, col = {}) => ({ id, nombr
 
 /**
  * Atuendo: id, nombre, región, [año desde, hasta], sexo, clase, prendas, paleta de tintes por letra y extras
- * (peinados, barbas, tocados, pieles, nota y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación).
+ * (peinados, barbas, tocados, pieles, nota, fuente —la referencia que respalda el traje— y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación;
+ * 'alta' exige `fuente`).
  */
 const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) => ({
   id, nombre, region, epoca, sexo, clase,
@@ -379,6 +380,7 @@ const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) 
   tocados: L(extra.tocados ?? 'ninguno'),
   pieles: extra.pieles ? L(extra.pieles) : null,
   nota: extra.nota ?? '',
+  fuente: extra.fuente ?? '',
   confianza: extra.conf ?? 'media',
 });
 
@@ -386,7 +388,7 @@ const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) 
 const E = (id, nombre, d) => ({
   id, nombre, grupo: d.grupo, regiones: L(d.regiones), prefijos: d.prefijos ? L(d.prefijos) : null,
   pieles: L(d.pieles), cabellos: d.cabellos, peinados: L(d.peinados ?? ''), barba: d.barba ?? 0.3,
-  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? '',
+  altura: d.altura, corpulencia: d.corpulencia ?? [['delgada', 1], ['media', 4], ['robusta', 1.5]], nota: d.nota ?? '', fuente: d.fuente ?? '',
   confianza: d.conf ?? 'media',
 });
 
@@ -1598,6 +1600,7 @@ const ATUENDOS = [
   A('maasai', 'Maasái', 'africa-este-sur', [1600, 2000], 'm', 'media', 'shuka collares-zulu brazaletes-altos sandalias-cuero', { A: 'rojo-cartamo escarlata azul-ultramar', B: 'azul-ultramar lana-negra', C: 'rojo-cartamo', D: 'plata' }, { peinados: 'rapado rastas', pieles: 'ebano-claro ebano' }),
   A('maasai-mujer', 'Mujer maasái', 'africa-este-sur', [1600, 2000], 'f', 'media', 'shuka collares-zulu brazaletes-altos sandalias-cuero', { A: 'rojo-cartamo azul-ultramar escarlata', B: 'azul-ultramar lana-negra', C: 'rojo-cartamo', D: 'plata' }, { peinados: 'rapado', pieles: 'ebano-claro ebano' }),
   A('zulu-guerrero', 'Guerrero zulú', 'africa-este-sur', [1700, 1900], 'm', 'media', 'taparrabo-zulu collares-zulu brazaletes-altos descalzo', { A: 'piel-guanaco cuero-claro', B: 'cuero-oscuro', C: 'rojo-ocre', D: 'rojo-cartamo' }, { peinados: 'rapado corto', tocados: 'tocado-plumas ninguno', pieles: 'ebano-claro ebano' }),
+  A('zulu-mujer', 'Mujer zulú (representación genérica)', 'africa-este-sur', [1700, 1950], 'f', 'media', 'falda-cuero collar-ancho-cuentas brazaletes-altos descalzo', { A: 'cuero-claro rojo-ocre piel-guanaco', B: 'cuero', C: 'rojo-ocre', D: 'rojo-cartamo' }, { peinados: 'rapado corto', tocados: 'ninguno', pieles: 'ebano-claro ebano', conf: 'baja', nota: 'Representación genérica: no reproduce el isidwaba, el tocado isicholo ni los códigos de color de las cuentas, que cambian con la edad, el estado civil y la región.' }),
   A('africa-dashiki', 'Dashiki', 'africa-oeste', [1960, 2000], 'm', 'media', 'dashiki pantalon-recto sandalias-cuero', { A: 'naranja-achiote verde-hoja azafran rojo-cartamo', B: 'lana-negra', C: 'lana-negra', D: 'oro' }, { peinados: 'afro rapado', barbas: 'bigote ninguna', tocados: 'kufi ninguno', pieles: 'castana ebano-claro ebano' }),
   A('rafia-ceremonial', 'Danzante con falda de rafia', 'africa-oeste', [1000, 2000], 'm', 'media', 'falda-rafia collares-zulu brazaletes descalzo', { A: 'crudo barro', B: 'rojo-ocre', C: 'rojo-ocre', D: 'rojo-cartamo' }, { peinados: 'rapado', tocados: 'tocado-plumas ninguno', pieles: 'ebano-claro ebano' }),
   // ===== Asia del Sur =====
@@ -3811,7 +3814,7 @@ function trazoDe(s) {
 }
 
 // Campos que solo describen a la persona en texto: no cambian el dibujo, así que no entran en el prefijo de ids.
-const CAMPOS_DESCRIPTIVOS = new Set(['titulo', 'descripcion', 'estimaciones', 'avisos', 'notas', 'coloresPrendas', 'nombresPaleta', 'confianza', 'fondo', 'colorInfo', 'nombre']);
+const CAMPOS_DESCRIPTIVOS = new Set(['titulo', 'descripcion', 'estimaciones', 'avisos', 'notas', 'coloresPrendas', 'nombresPaleta', 'confianza', 'fuentes', 'fondo', 'colorInfo', 'nombre']);
 
 /** Un estilo de peinado, barba o tocado que no existe, o una prenda con parámetros mal escritos, lanza un error en vez de dibujarse distinto. */
 function validarPersona(persona) {
@@ -3822,7 +3825,15 @@ function validarPersona(persona) {
   for (const prenda of persona.prendas ?? []) validarPrenda(prenda);
 }
 
-/** Devuelve el SVG (texto) de la persona descrita. */
+/**
+ * Versión más liviana (unos 7 % menos): las coordenadas de las formas pasan de 2 a 1 decimal (0,1 unidad de un lienzo
+ * de 600 de ancho). Solo toca el atributo `d`; colores, opacidades y degradados quedan igual.
+ */
+function compactar(svg) {
+  return svg.replace(/ d="([^"]*)"/g, (_, d) => ` d="${d.replace(/-?\d+\.\d\d+/g, (m) => String(Math.round(Number(m) * 10) / 10))}"`);
+}
+
+/** Devuelve el SVG (texto) de la persona descrita. `opciones.compacto` da la versión liviana (ver `compactar`). */
 function renderizar(persona, opciones = {}) {
   validarPersona(persona);
   const nivel = opciones.detalle ?? persona.detalle ?? 'medio';
@@ -3994,10 +4005,11 @@ function renderizar(persona, opciones = {}) {
   const titulo = persona.titulo ? `<title>${escapar(persona.titulo)}</title>` : '';
   const desc = persona.descripcion ? `<desc>${escapar(persona.descripcion)}</desc>` : '';
   const figura = Math.abs(inclina) > 0.02 ? `<g transform="rotate(${num(inclina)} ${cx} ${LIENZO.suelo})">${cuerpo}</g>` : cuerpo;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LIENZO.ancho} ${LIENZO.alto}" role="img">${titulo}${desc}<defs>${defs}</defs>${bg}${suelo}${figura}</svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LIENZO.ancho} ${LIENZO.alto}" role="img">${titulo}${desc}<defs>${defs}</defs>${bg}${suelo}${figura}</svg>`;
+  return opciones.compacto ? compactar(svg) : svg;
 }
 
-Object.assign(__e, { renderizar });
+Object.assign(__e, { compactar, renderizar });
 return __e;
 })();
 
@@ -4551,7 +4563,7 @@ const __e = {};
 // Generador de personas: elige un atuendo del catálogo (o inventa uno), le pone colores y devuelve la
 // descripción que `renderizar` dibuja. Con la misma semilla y las mismas opciones sale siempre lo mismo.
 
-const { crearAzar, variar, mezclar, oscurecer, aclarar, luminancia, hexAHsl, hslAHex, limitar, esHex } = __m['util'];
+const { hexARgb, crearAzar, variar, mezclar, oscurecer, aclarar, luminancia, hexAHsl, hslAHex, limitar, esHex } = __m['util'];
 const { PIELES, CABELLOS, TINTES, TINTES_POR_ID } = __m['datos/colores'];
 const { PRENDAS_POR_ID, PRENDAS } = __m['datos/prendas'];
 const { ATUENDOS, ATUENDOS_POR_ID, REGIONES } = __m['datos/atuendos'];
@@ -4584,16 +4596,32 @@ function listarCatalogo() {
 
 // ---------- Paletas ----------
 
+const disponible = (t, anio) => anio === undefined || (anio >= t.desde && anio <= t.hasta);
+const distanciaColor = (a, b) => { const [r1, g1, b1] = hexARgb(a), [r2, g2, b2] = hexARgb(b); return (r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2; };
+
+/**
+ * Los tintes de `ids` que existían en el año dado. Si ninguno (un traje de 1900 con un tinte que dejó de usarse en 1870),
+ * se buscan los más parecidos de la misma familia de color que sí existían, para no dibujar un tinte de otra época.
+ * Devuelve { ok, sustituye }: `sustituye` es el tinte pedido al que reemplazan, o null.
+ */
+function tintesDelAnio(ids, anio) {
+  const ok = ids.filter((id) => { const t = TINTES_POR_ID[id]; return t && disponible(t, anio); });
+  if (ok.length || anio === undefined) return { ok: ok.length ? ok : ids, sustituye: null };
+  const original = TINTES_POR_ID[ids[0]];
+  if (!original) return { ok: ids, sustituye: null };
+  const mismos = (soloFamilia) => TINTES.filter((t) => disponible(t, anio) && (!soloFamilia || t.familia === original.familia));
+  const candidatos = mismos(true).length ? mismos(true) : mismos(false);
+  const cerca = candidatos.sort((x, y) => distanciaColor(x.hex, original.hex) - distanciaColor(y.hex, original.hex)).slice(0, 3).map((t) => t.id);
+  return cerca.length ? { ok: cerca, sustituye: original } : { ok: ids, sustituye: null };
+}
+
 /** Un tinte disponible en el año dado (si hay uno en la lista), con una pequeña variación. */
 function tinteDe(ids, azar, anio) {
-  const ok = ids.filter((id) => {
-    const t = TINTES_POR_ID[id];
-    return t && (anio === undefined || (anio >= t.desde && anio <= t.hasta));
-  });
-  const id = azar.elegir(ok.length ? ok : ids);
+  const { ok, sustituye } = tintesDelAnio(ids, anio);
+  const id = azar.elegir(ok);
   const t = TINTES_POR_ID[id];
   if (!t) throw new Error(`Tinte desconocido: ${id}`);
-  return { id, nombre: t.nombre, hex: variar(t.hex, azar, { tono: 4, sat: 0.04, luz: 0.04 }) };
+  return { id, nombre: t.nombre, hex: variar(t.hex, azar, { tono: 4, sat: 0.04, luz: 0.04 }), sustituye };
 }
 
 /**
@@ -4619,12 +4647,13 @@ function generarPaleta({ esquema = 'analogo', semilla = 1, base } = {}) {
 
 /** Paleta histórica: un tinte por letra, de las listas del atuendo, respetando la época. */
 function paletaDeAtuendo(a, azar, anio) {
-  const p = {}, nombres = {}, ids = {};
+  const p = {}, nombres = {}, ids = {}, avisos = [];
   for (const [letra, lista] of Object.entries(a.paleta)) {
     const t = tinteDe(lista, azar, anio);
     p[letra] = t.hex; nombres[letra] = t.nombre; ids[letra] = t.id;
+    if (t.sustituye) avisos.push(`El tinte «${t.sustituye.nombre}» no existía en el año ${anio}: se usó «${t.nombre}», el más parecido de su época.`);
   }
-  return { colores: p, nombres, ids };
+  return { colores: p, nombres, ids, avisos };
 }
 
 /**
@@ -4852,6 +4881,7 @@ function generarPersona(opc = {}) {
   const pal = opc.paleta ?? paletaAtuendo.colores;
   const nombresPaleta = opc.paleta ? null : paletaAtuendo.nombres;
   const paletaIds = paletaAtuendo.ids;
+  if (!opc.paleta) avisos.push(...paletaAtuendo.avisos);
   const piel = elegirPiel(azar.hijo('piel'), atuendo, opc, etnia);
   const colorPelo = elegirCabello(azar.hijo('cabello'), piel, edad, opc, etnia);
 
@@ -4958,6 +4988,7 @@ function generarPersona(opc = {}) {
     estimaciones, avisos,
     confianza: menorConfianza([atuendo.confianza, ...(etnia ? etnia.map((x) => x.e.confianza) : [])]),
     notas: [atuendo.nota, ...(etnia ? etnia.map((x) => x.e.nota) : [])].filter(Boolean),
+    fuentes: [...new Set([atuendo.fuente, ...(etnia ? etnia.map((x) => x.e.fuente) : [])].filter(Boolean))],
     detalle: opc.detalle ?? 'medio', contorno: opc.contorno ?? 'ninguno', fondo: opc.fondo ?? 'ninguno',
   };
 }
@@ -5062,7 +5093,7 @@ function generarPersonaConRopaNueva(opc = {}) {
 
 function generarSVG(opc = {}) {
   const persona = opc.ropaNueva || opc.estilo ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
-  return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno });
+  return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno, compacto: opc.compacto });
 }
 
 
@@ -5071,7 +5102,7 @@ function generarSVG(opc = {}) {
 
 
 
-Object.assign(__e, { POSE_FIRME, poseAleatoria, muestrearColorLibre, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, buscarAtuendos, listarRegiones, listarCatalogo, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
+Object.assign(__e, { POSE_FIRME, poseAleatoria, muestrearColorLibre, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, buscarAtuendos, listarRegiones, listarCatalogo, tintesDelAnio, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
 __e.PEINADOS = __m['cabeza'].PEINADOS;
 __e.BARBAS = __m['cabeza'].BARBAS;
 __e.TOCADOS = __m['cabeza'].TOCADOS;

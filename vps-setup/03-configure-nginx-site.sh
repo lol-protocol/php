@@ -31,15 +31,10 @@ deploy_files "$SCRIPT_DIR/../landing-page" "$APP_PATH"
 sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOF
 # vps-setup: 03-landing
 server {
-    listen 80;
-    listen [::]:80;
-    server_name $DOMAIN www.$DOMAIN;
+$(nginx_server_head "$DOMAIN")
 
     root $APP_PATH;
     index index.html;
-
-    access_log /var/log/nginx/$DOMAIN/access.log;
-    error_log /var/log/nginx/$DOMAIN/error.log;
 
     location / {
         try_files \$uri \$uri/ =404;

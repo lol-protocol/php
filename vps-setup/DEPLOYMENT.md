@@ -69,7 +69,7 @@ Opciones útiles: `--skip-ssl` (el DNS aún no apunta), `--with-webmin` (panel w
 Cada corrida deja un log en `~/.local/state/vps-setup/install-all-<fecha>.log` del VPS. Si un paso
 falla, el mensaje dice cuál, dónde está el log y cómo retomar con `--resume`. Al final corre el
 healthcheck: si dice **"COMPLETADO CON FALLAS EN EL HEALTHCHECK"**, revisa las líneas `[FALLA]`.
-Con el DNS sin propagar, las de DNS y HTTPS son esperables.
+Sin certificado todavía (`--skip-ssl`, o un dominio agregado sin `--ssl`), el DNS, el puerto 443, HTTPS, el certificado y los headers salen como `[PENDIENTE]`, no como falla, y no cuentan en el resultado.
 
 Si usaste `--skip-ssl`, cuando el DNS apunte al VPS:
 

@@ -56,7 +56,7 @@ EC,Ecuador,estado,América,2,3,6,no,,4,5,20,no,
 EG,Egipto,estado,África,2,3,6,no,,3,5,15,no,
 SV,El Salvador,estado,América,2,3,6,no,,3,5,15,no,
 AE,Emiratos Árabes Unidos,estado,Asia,2,3,6,no,,3,5,15,no,
-ER,Eritrea,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Partido único sin prensa libre ni internet abierto; sin registros accesibles,2,1,2,si,"IP local 1 e IO 1: la lengua local (tigriña) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+ER,Eritrea,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Partido único sin prensa libre ni internet abierto; sin registros accesibles,2,1,2,si,"IP local 1 (se excluye con IP local <= 1) e IO 1 (<= 1): la lengua local (tigriña) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 SK,Eslovaquia,estado,Europa,3,4,12,no,,4,4,16,no,
 SI,Eslovenia,estado,Europa,3,4,12,no,,4,4,16,no,
 ES,España,estado,Europa,4,4,16,no,,4,5,20,no,
@@ -135,7 +135,7 @@ MC,Mónaco,estado,Europa,2,5,10,no,,4,5,20,no,
 MN,Mongolia,estado,Asia,1,3,3,no,,4,1,4,no,
 ME,Montenegro,estado,Europa,2,4,8,no,,3,4,12,no,
 MZ,Mozambique,estado,África,1,2,2,no,,2,5,10,no,
-MM,Myanmar,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Gobierno militar desde 2021 y guerra civil; sanciones internacionales; registros no accesibles,3,1,3,si,"IP local 1 e IO 1: la lengua local (birmano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+MM,Myanmar,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Gobierno militar desde 2021 y guerra civil; sanciones internacionales; registros no accesibles,3,1,3,si,"IP local 1 (se excluye con IP local <= 1) e IO 1 (<= 1): la lengua local (birmano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 NA,Namibia,estado,África,3,4,12,no,,3,1,3,no,
 NR,Nauru,estado,Oceanía,2,3,6,no,,3,1,3,no,
 NP,Nepal,estado,Asia,1,2,2,no,,2,2,4,no,
@@ -157,8 +157,8 @@ PL,Polonia,estado,Europa,4,4,16,no,,3,5,15,no,
 PT,Portugal,estado,Europa,5,5,25,no,,4,5,20,no,
 PR,Puerto Rico,territorio,América,4,4,16,no,,3,5,15,no,
 GB,Reino Unido,estado,Europa,5,5,25,no,,5,5,25,no,
-CF,República Centroafricana,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado y Estado frágil; embargo de armas de la ONU,1,1,1,si,"IP local 1 e IO 1: la lengua local (sango) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
-CD,República Democrática del Congo,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado en el este; infraestructura de registros muy limitada; francés,2,1,2,si,"IP local 1 e IO 1: la lengua local (lingala) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+CF,República Centroafricana,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado y Estado frágil; embargo de armas de la ONU,1,1,1,si,"IP local 1 (se excluye con IP local <= 1) e IO 1 (<= 1): la lengua local (sango) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+CD,República Democrática del Congo,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado en el este; infraestructura de registros muy limitada; francés,2,1,2,si,"IP local 1 (se excluye con IP local <= 1) e IO 1 (<= 1): la lengua local (lingala) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 DO,República Dominicana,estado,América,3,3,9,no,,3,5,15,no,
 RE,Reunión,territorio,África,4,4,16,no,,3,5,15,no,
 RW,Ruanda,estado,África,2,3,6,no,,3,3,9,no,
@@ -176,11 +176,11 @@ SC,Seychelles,estado,África,2,4,8,no,,4,5,20,no,
 SL,Sierra Leona,estado,África,2,3,6,no,,1,5,5,no,
 SG,Singapur,estado,Asia,3,5,15,no,,4,5,20,no,
 SY,Siria,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Caída del régimen en 2024; transición en curso; sanciones y registros destruidos o inaccesibles,3,5,15,no,
-SO,Somalia,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado y Estado fallido; sin registros civiles ni banca estable,2,1,2,si,"IP local 1 e IO 1: la lengua local (somalí) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+SO,Somalia,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Conflicto armado y Estado fallido; sin registros civiles ni banca estable,2,1,2,si,"IP local 1 (se excluye con IP local <= 1) e IO 1 (<= 1): la lengua local (somalí) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 LK,Sri Lanka,estado,Asia,2,3,6,no,,4,2,8,no,
 ZA,Sudáfrica,estado,África,4,4,16,no,,4,3,12,no,
 SD,Sudán,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Guerra civil desde 2023; registros destruidos o inaccesibles; árabe e inglés,2,5,10,no,
-SS,Sudán del Sur,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Guerra civil intermitente; Estado frágil; sanciones de la ONU; inglés,1,1,1,si,"IP local 1 e IO 1: la lengua local (árabe juba) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+SS,Sudán del Sur,estado,África,1,1,1,si,IO 1 (se excluye con IO <= 1): Guerra civil intermitente; Estado frágil; sanciones de la ONU; inglés,1,1,1,si,"IP local 1 (se excluye con IP local <= 1) e IO 1 (<= 1): la lengua local (árabe juba) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 SE,Suecia,estado,Europa,5,5,25,no,,5,4,20,no,
 CH,Suiza,estado,Europa,4,5,20,no,,5,5,25,no,
 SR,Surinam,estado,América,2,3,6,no,,3,5,15,no,
@@ -193,7 +193,7 @@ TG,Togo,estado,África,1,2,2,no,,2,3,6,no,
 TO,Tonga,estado,Oceanía,3,3,9,no,,3,1,3,no,
 TT,Trinidad y Tobago,estado,América,3,4,12,no,,4,5,20,no,
 TN,Túnez,estado,África,2,2,4,no,,3,5,15,no,
-TM,Turkmenistán,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Régimen autoritario; internet muy restringido; sin registros accesibles; turcomano y ruso,3,1,3,si,"IP local 1 e IO 1: la lengua local (turcomano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
+TM,Turkmenistán,estado,Asia,1,1,1,si,IO 1 (se excluye con IO <= 1): Régimen autoritario; internet muy restringido; sin registros accesibles; turcomano y ruso,3,1,3,si,"IP local 1 (se excluye con IP local <= 1) e IO 1 (<= 1): la lengua local (turcomano) no tiene palabras anotadas en Universal Dependencies ni en MasakhaPOS, y el país es inviable para operar"
 TR,Turquía,estado,Asia,2,3,6,no,,4,5,20,no,
 TV,Tuvalu,estado,Oceanía,1,3,3,no,,3,1,3,no,
 UA,Ucrania,estado,Europa,3,2,6,no,,4,4,16,no,

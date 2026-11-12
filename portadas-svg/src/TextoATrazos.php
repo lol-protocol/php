@@ -55,11 +55,16 @@ final class TextoATrazos
                     $avance += $ancho;
                     continue;
                 }
+                $anterior = '';
                 foreach (mb_str_split($trozo) as $letra) {
                     $codigo = mb_ord($letra);
                     if ($codigo < 0x20) {
+                        $anterior = '';
                         continue;
                     }
+                    // El kerning acerca o separa la letra de la anterior, igual que al medir.
+                    $avance += $medida->ajuste($anterior, $letra);
+                    $anterior = $letra;
                     $contorno = Fuentes::contorno($familia, $estilo, $peso, $codigo);
                     if ($contorno === null) {
                         $avance += $medida->em($letra) * 1000 + $entreLetras;
@@ -88,6 +93,15 @@ final class TextoATrazos
         }
 
         return $svg;
+    }
+
+    /** Si todas las palabras del texto se leen de derecha a izquierda (árabe, hebreo…): un texto así se alinea a la derecha. */
+    public static function esDerechaAIzquierda(string $texto): bool
+    {
+        $formas = Fuentes::formas();
+        $palabras = array_filter(Fuentes::trozos($texto, $formas), static fn (string $trozo): bool => trim($trozo) !== '');
+
+        return $palabras !== [] && array_filter($palabras, static fn (string $trozo): bool => $formas[$trozo][1] ?? false) === $palabras;
     }
 
     /** Los contornos que usan las letras de la pieza, una sola vez cada uno, para referirse a ellos con `<use>`. */

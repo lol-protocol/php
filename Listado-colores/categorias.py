@@ -7,10 +7,11 @@ palabra de dos idiomas: inglés (los nombres CSS de una palabra y los términos 
 lemas de una palabra del léxico básico). Lo escribió un asistente de IA y nadie con dominio nativo lo ha revisado.
 """
 import re
-from md import celda, texto_valido
+from md import celda, orden_idiomas, texto_valido
 
 COLUMNAS = ["idioma", "concepto", "forma", "categoria", "ocurrencia", "ejemplo"]
 UPOS = ["ADJ", "NOUN", "PROPN", "VERB"]
+# @deprecated desde la 2.0.0: ningún módulo ni prueba lo usa (el informe escribe los nombres a mano). Se conserva como referencia.
 NOMBRES_UPOS = {"ADJ": "adjetivo", "NOUN": "sustantivo", "PROPN": "nombre propio", "VERB": "verbo"}
 # Cuántas letras más que la forma puede tener la ocurrencia en la frase (plural, «-ed», «-s»).
 MAXIMO_SUFIJO = 4
@@ -48,7 +49,7 @@ def clave_concepto(concepto, anotada, conceptos):
 def validar(filas, anotada, lexico, codigos, conceptos, errores):
     lemas = lemas_de(lexico)
     css = {f["nombre_ingles"] for f in anotada}
-    orden_idioma = {c: n for n, c in enumerate(codigos)}
+    orden_idioma = orden_idiomas(codigos)
     vistos, claves, presentes = set(), [], {}
     for n, fila in enumerate(filas, start=2):
         idioma, concepto, forma, categoria, ocurrencia, ejemplo = (fila[c] for c in COLUMNAS)

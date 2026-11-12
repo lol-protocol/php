@@ -17,7 +17,7 @@ final class Lista
     /** Columnas de texto que pasan tal cual al libro. */
     private const TEXTO = [
         'titulo', 'subtitulo', 'autor', 'traductor', 'epoca', 'tradicion', 'categoria', 'isbn',
-        'editorial', 'coleccion', 'cita', 'contratapa', 'solapa_portada', 'solapa_contratapa', 'plantilla', 'idioma', 'lomo_direccion',
+        'editorial', 'coleccion', 'cita', 'contratapa', 'solapa_portada', 'solapa_contratapa', 'plantilla', 'idioma', 'lomo_direccion', 'tema', 'volumen', 'imagen', 'logo', 'formato',
     ];
     /** Columnas de medidas en mm. */
     private const MEDIDAS = ['solapas_mm', 'lomo_mm', 'sangrado_mm', 'grosor_hoja_mm'];
@@ -69,7 +69,7 @@ final class Lista
                 if (isset($ids[$id])) {
                     throw new \InvalidArgumentException("el id '$id' ya lo usa la fila {$ids[$id]}; da una columna 'id' distinta.");
                 }
-                $libro = Libro::desdeArray($id, $datos);
+                $libro = Libro::desdeArray($id, Libro::rutasDesde(dirname($ruta), $datos));
                 // El id se reserva cuando el libro es bueno: una fila con errores no le quita el nombre a otra.
                 $ids[$id] = $numero;
                 $libros[] = $libro;
@@ -197,6 +197,9 @@ final class Lista
             $datos['colores'] = $colores;
         }
         if ($formato !== []) {
+            if (isset($datos['formato'])) {
+                throw new \InvalidArgumentException("usa 'formato' (un nombre) o 'ancho_mm' y 'alto_mm', no los dos.");
+            }
             $datos['formato'] = $formato;
         }
         if ($degradado !== []) {

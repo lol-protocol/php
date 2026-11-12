@@ -59,8 +59,13 @@ test('si no hay traje de esa época se avisa y se elige el más cercano', () => 
   const p = generarPersona({ semilla: 2, etnia: 'mapuche', sexo: 'm', anio: -500 });
   assert.equal(p.region, 'mapuche');
   assert.ok(p.avisos.some((a) => /el año/.test(a)), p.avisos.join('|'));
+  // Todo pueblo tiene ropa de mujer y de hombre (lo comprueba catalogo-integridad.test.js): la zulú sale sin aviso de «otro pueblo»…
   const z = generarPersona({ semilla: 2, etnia: 'zulu', sexo: 'f' });
-  assert.ok(z.avisos.some((a) => /otro pueblo/.test(a)), 'falta aviso: no hay atuendo femenino zulú');
+  assert.equal(z.atuendo, 'zulu-mujer');
+  assert.ok(!z.avisos.some((a) => /otro pueblo/.test(a)), z.avisos.join('|'));
+  // …y con un año en que ya no hay traje se avisa del año.
+  const z2 = generarPersona({ semilla: 2, etnia: 'zulu', sexo: 'f', anio: 1990 });
+  assert.ok(z2.avisos.some((a) => /el año/.test(a)), z2.avisos.join('|'));
 });
 
 test('la estatura estimada sigue a la etnia, al sexo y a la edad', () => {

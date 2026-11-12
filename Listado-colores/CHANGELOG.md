@@ -10,6 +10,16 @@ Cuándo subir cada número es decisión de quien cambia los datos; el generador 
 
 Cada entrada empieza por `## X.Y.Z - AAAA-MM-DD`, va de la más reciente a la más antigua y dice qué cambió. `generar-tabla.py` comprueba el formato.
 
+## 2.0.0 - 2026-11-11
+
+Quita dos archivos que se guardaban y se derivan sin pérdida de los CSV (mayor: un lector que los usaba deja de encontrarlos). Los CSV de datos no cambian.
+
+- **`exportes/ejemplos.conllu` ya no se guarda.** Se construye con `python3 generar-tabla.py --conllu ejemplos.conllu` (210 frases, el mismo contenido). Sale del manifiesto.
+- **`visor-revision.html` ya no se guarda** (pesaba 1,2 MB y repetía los datos de `exportes/colores.jsonl`). Se construye con `python3 generar-tabla.py --visor visor-revision.html` y la CI lo sube como artefacto `visor-revision`.
+- **Revisión por hablantes nativos.** `revisiones.md` separa los elementos validados de los que tienen dudas o correcciones pendientes (antes una duda sumaba como revisado). La huella de un lema de léxico ya no incluye `origen=ia`: quitar esa marca al confirmar el lema no caduca la revisión. `generar-tabla.py` resume en una línea, por `stderr`, las revisiones que atender.
+- `ambiguedad.md` y `cobertura.md` se remiten el uno al otro: las colisiones de nombres y los lemas compartidos de `cobertura.md` son casos de la lista «Dentro de un idioma» de `ambiguedad.md` (una prueba lo comprueba).
+- Dos constantes sin uso (`NOMBRES_UPOS` y `CONTAN`) quedan marcadas `@deprecated`, no borradas.
+
 ## 1.2.1 - 2026-11-06
 
 Corrige datos y reglas de la 1.2.0; no cambia la estructura de ningún CSV.

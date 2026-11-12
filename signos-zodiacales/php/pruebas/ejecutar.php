@@ -175,16 +175,8 @@ foreach ($vectores['rasgos_de'] as $idioma => $filas) {
         igual($texto, Zodiaco::rasgosDe($sistema, $clave, $idioma), "rasgos_de $sistema $clave $idioma");
     }
 }
-$claves = [];
-foreach (Zodiaco::cargarArboles()['calendario_celta']['meses'] as $m) {
-    $claves[] = ['celta', $m['id']];
-}
-foreach (Zodiaco::cargarArboles()['horoscopo'] as $h) {
-    $claves[] = ['horoscopo', $h['arbol']];
-}
-foreach (Zodiaco::cargarArboles()['nakshatras'] as $n) {
-    $claves[] = ['nakshatra', $n['id']];
-}
+$claves = $vectores['claves_de_arboles']; // las 61, tal como las enumera generar.py: el port no las reconstruye
+igual(13 + 21 + 27, count($claves), 'claves_de_arboles: son 61');
 foreach ($vectores['rasgos_de_sha256'] as $idioma => $huella) {
     $frases = array_map(fn (array $k): string => Zodiaco::rasgosDe($k[0], $k[1], $idioma), $claves);
     igual($huella, hash('sha256', implode("\n", $frases)), "rasgos_de (los 61) $idioma");

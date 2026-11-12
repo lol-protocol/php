@@ -1,3 +1,5 @@
 /salida/
 /vendor/
 /composer.lock
+.huella
+*.nuevo.png

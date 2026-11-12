@@ -15,7 +15,7 @@
     "enforcement_body": "Canadian Intellectual Property Office",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.ic.gc.ca/",
+    "linked_resources": "https://laws-lois.justice.gc.ca/eng/acts/C-42/index.html",
     "notes": "Term extended life+50 to life+70 on 2022-12-30 (CUSMA, Bill C-19); no revival of PD works",
     "pending_change": "",
     "pending_date": "",
@@ -35,6 +35,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-11",
+        "field": "linked_resources",
+        "from": "https://www.ic.gc.ca/",
+        "to": "https://laws-lois.justice.gc.ca/eng/acts/C-42/index.html"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",
