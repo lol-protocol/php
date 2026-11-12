@@ -1,7 +1,7 @@
 // Generador de personas: elige un atuendo del catálogo (o inventa uno), le pone colores y devuelve la
 // descripción que `renderizar` dibuja. Con la misma semilla y las mismas opciones sale siempre lo mismo.
 
-import { crearAzar, variar, mezclar, oscurecer, aclarar, luminancia, hexAHsl, hslAHex, limitar, esHex } from './util.js';
+import { hexARgb, crearAzar, variar, mezclar, oscurecer, aclarar, luminancia, hexAHsl, hslAHex, limitar, esHex } from './util.js';
 import { PIELES, CABELLOS, TINTES, TINTES_POR_ID } from './datos/colores.js';
 import { PRENDAS_POR_ID, PRENDAS } from './datos/prendas.js';
 import { ATUENDOS, ATUENDOS_POR_ID, REGIONES } from './datos/atuendos.js';
@@ -34,16 +34,32 @@ export function listarCatalogo() {
 
 // ---------- Paletas ----------
 
+const disponible = (t, anio) => anio === undefined || (anio >= t.desde && anio <= t.hasta);
+const distanciaColor = (a, b) => { const [r1, g1, b1] = hexARgb(a), [r2, g2, b2] = hexARgb(b); return (r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2; };
+
+/**
+ * Los tintes de `ids` que existían en el año dado. Si ninguno (un traje de 1900 con un tinte que dejó de usarse en 1870),
+ * se buscan los más parecidos de la misma familia de color que sí existían, para no dibujar un tinte de otra época.
+ * Devuelve { ok, sustituye }: `sustituye` es el tinte pedido al que reemplazan, o null.
+ */
+export function tintesDelAnio(ids, anio) {
+  const ok = ids.filter((id) => { const t = TINTES_POR_ID[id]; return t && disponible(t, anio); });
+  if (ok.length || anio === undefined) return { ok: ok.length ? ok : ids, sustituye: null };
+  const original = TINTES_POR_ID[ids[0]];
+  if (!original) return { ok: ids, sustituye: null };
+  const mismos = (soloFamilia) => TINTES.filter((t) => disponible(t, anio) && (!soloFamilia || t.familia === original.familia));
+  const candidatos = mismos(true).length ? mismos(true) : mismos(false);
+  const cerca = candidatos.sort((x, y) => distanciaColor(x.hex, original.hex) - distanciaColor(y.hex, original.hex)).slice(0, 3).map((t) => t.id);
+  return cerca.length ? { ok: cerca, sustituye: original } : { ok: ids, sustituye: null };
+}
+
 /** Un tinte disponible en el año dado (si hay uno en la lista), con una pequeña variación. */
 function tinteDe(ids, azar, anio) {
-  const ok = ids.filter((id) => {
-    const t = TINTES_POR_ID[id];
-    return t && (anio === undefined || (anio >= t.desde && anio <= t.hasta));
-  });
-  const id = azar.elegir(ok.length ? ok : ids);
+  const { ok, sustituye } = tintesDelAnio(ids, anio);
+  const id = azar.elegir(ok);
   const t = TINTES_POR_ID[id];
   if (!t) throw new Error(`Tinte desconocido: ${id}`);
-  return { id, nombre: t.nombre, hex: variar(t.hex, azar, { tono: 4, sat: 0.04, luz: 0.04 }) };
+  return { id, nombre: t.nombre, hex: variar(t.hex, azar, { tono: 4, sat: 0.04, luz: 0.04 }), sustituye };
 }
 
 /**
@@ -69,12 +85,13 @@ export function generarPaleta({ esquema = 'analogo', semilla = 1, base } = {}) {
 
 /** Paleta histórica: un tinte por letra, de las listas del atuendo, respetando la época. */
 function paletaDeAtuendo(a, azar, anio) {
-  const p = {}, nombres = {}, ids = {};
+  const p = {}, nombres = {}, ids = {}, avisos = [];
   for (const [letra, lista] of Object.entries(a.paleta)) {
     const t = tinteDe(lista, azar, anio);
     p[letra] = t.hex; nombres[letra] = t.nombre; ids[letra] = t.id;
+    if (t.sustituye) avisos.push(`El tinte «${t.sustituye.nombre}» no existía en el año ${anio}: se usó «${t.nombre}», el más parecido de su época.`);
   }
-  return { colores: p, nombres, ids };
+  return { colores: p, nombres, ids, avisos };
 }
 
 /**
@@ -302,6 +319,7 @@ export function generarPersona(opc = {}) {
   const pal = opc.paleta ?? paletaAtuendo.colores;
   const nombresPaleta = opc.paleta ? null : paletaAtuendo.nombres;
   const paletaIds = paletaAtuendo.ids;
+  if (!opc.paleta) avisos.push(...paletaAtuendo.avisos);
   const piel = elegirPiel(azar.hijo('piel'), atuendo, opc, etnia);
   const colorPelo = elegirCabello(azar.hijo('cabello'), piel, edad, opc, etnia);
 
@@ -408,6 +426,7 @@ export function generarPersona(opc = {}) {
     estimaciones, avisos,
     confianza: menorConfianza([atuendo.confianza, ...(etnia ? etnia.map((x) => x.e.confianza) : [])]),
     notas: [atuendo.nota, ...(etnia ? etnia.map((x) => x.e.nota) : [])].filter(Boolean),
+    fuentes: [...new Set([atuendo.fuente, ...(etnia ? etnia.map((x) => x.e.fuente) : [])].filter(Boolean))],
     detalle: opc.detalle ?? 'medio', contorno: opc.contorno ?? 'ninguno', fondo: opc.fondo ?? 'ninguno',
   };
 }
@@ -512,7 +531,7 @@ export function generarPersonaConRopaNueva(opc = {}) {
 
 export function generarSVG(opc = {}) {
   const persona = opc.ropaNueva || opc.estilo ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
-  return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno });
+  return renderizar(persona, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno, compacto: opc.compacto });
 }
 
 export { POSE_FIRME, poseAleatoria, muestrearColorLibre };

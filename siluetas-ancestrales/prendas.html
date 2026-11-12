@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prendas sobre cuerpos</title>
+<style>
+  :root { --fondo:#f4f0e6; --panel:#fffdf8; --tinta:#2b2620; --suave:#6e655a; --linea:#d9d1c0; --acento:#8a4b2a; }
+  @media (prefers-color-scheme: dark) { :root { --fondo:#1c1916; --panel:#26221e; --tinta:#efe8da; --suave:#a89f90; --linea:#3d3731; --acento:#e0a070; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--fondo); color:var(--tinta); font:15px/1.45 system-ui, sans-serif; }
+  header, main { max-width:1200px; margin:0 auto; padding:16px; }
+  h1 { margin:0 0 4px; font-size:1.5rem; }
+  header p { margin:0; color:var(--suave); max-width:75ch; }
+  .barra { display:flex; flex-wrap:wrap; gap:10px; align-items:end; margin:12px 0; }
+  .barra label { display:block; font-size:.8rem; color:var(--suave); }
+  select, input[type=search], button { font:inherit; padding:6px 8px; border:1px solid var(--linea); border-radius:6px; background:var(--panel); color:var(--tinta); }
+  button { cursor:pointer; border-color:var(--acento); color:var(--acento); }
+  button:disabled { opacity:.4; cursor:default; }
+  select:focus-visible, input:focus-visible, button:focus-visible { outline:3px solid var(--acento); outline-offset:1px; }
+  .tarjetas { display:grid; grid-template-columns:repeat(auto-fill, minmax(330px, 1fr)); gap:12px; }
+  .tarjeta { background:var(--panel); border:1px solid var(--linea); border-radius:12px; padding:10px; }
+  .tarjeta h2 { margin:0; font-size:1rem; }
+  .tarjeta .meta { margin:0 0 6px; color:var(--suave); font-size:.8rem; }
+  .cuerpos { display:grid; grid-template-columns:repeat(3, 1fr); gap:4px; }
+  .cuerpos figure { margin:0; text-align:center; }
+  .cuerpos svg { width:100%; height:auto; display:block; }
+  .cuerpos figcaption { font-size:.72rem; color:var(--suave); }
+  .pie { display:flex; gap:10px; align-items:center; justify-content:center; margin:16px 0; color:var(--suave); }
+  .error { color:#b3261e; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Prendas sobre cuerpos</h1>
+  <p>Cada prenda del catálogo, sola, sobre un niño, un adulto y un anciano corpulento. Sirve para ver a ojo si una plantilla se deforma con la edad o la complexión; la misma comprobación la hace <code>pruebas/prendas-sobre-cuerpos.test.js</code> por las coordenadas.</p>
+</header>
+<main>
+  <div class="barra">
+    <div><label for="buscar">Buscar</label><input id="buscar" type="search" placeholder="nombre o id"></div>
+    <div><label for="ranura">Ranura</label><select id="ranura"></select></div>
+    <div><label for="plantilla">Plantilla</label><select id="plantilla"></select></div>
+    <div><label for="sexo">Cuerpo</label><select id="sexo"><option value="f">Mujer</option><option value="m">Hombre</option></select></div>
+    <div><label for="detalle">Detalle</label><select id="detalle"><option value="minimo">Mínimo (rápido)</option><option value="medio">Medio</option></select></div>
+  </div>
+  <p id="cuenta" role="status" aria-live="polite"></p>
+  <div id="tarjetas" class="tarjetas"></div>
+  <div class="pie"><button id="anterior" type="button">Anterior</button><span id="pagina"></span><button id="siguiente" type="button">Siguiente</button></div>
+</main>
+<script src="dist/siluetas-ancestrales.js"></script>
+<script>
+(() => {
+  const S = window.SiluetasAncestrales;
+  const $ = (id) => document.getElementById(id);
+  const POR_PAGINA = 12;
+  const CUERPOS = [{ nombre: 'Niño de 8', edad: 8, corpulencia: 'media' }, { nombre: 'Adulto de 30', edad: 30, corpulencia: 'media' }, { nombre: 'Anciano de 78, corpulento', edad: 78, corpulencia: 'corpulenta' }];
+  let pagina = 0;
+
+  const opciones = (sel, primero, valores) => { sel.replaceChildren(new Option(primero, '')); for (const v of valores) sel.append(new Option(v, v)); };
+  opciones($('ranura'), 'Todas', [...new Set(S.PRENDAS.map((p) => p.ranura))].sort());
+  opciones($('plantilla'), 'Todas', [...new Set(S.PRENDAS.map((p) => p.plantilla))].sort());
+
+  const filtradas = () => {
+    const q = $('buscar').value.trim().toLowerCase();
+    return S.PRENDAS.filter((p) => (!q || p.id.includes(q) || p.nombre.toLowerCase().includes(q)) && (!$('ranura').value || p.ranura === $('ranura').value) && (!$('plantilla').value || p.plantilla === $('plantilla').value));
+  };
+
+  function figura(prenda, cuerpo) {
+    const fig = document.createElement('figure');
+    try {
+      const persona = S.generarPersona({ semilla: 5, sexo: $('sexo').value, edad: cuerpo.edad, corpulencia: cuerpo.corpulencia, vestir: [prenda.id], saludo: 'ninguno', pose: 'firme' });
+      fig.innerHTML = S.renderizar(persona, { detalle: $('detalle').value });
+    } catch (e) {
+      const p = document.createElement('p'); p.className = 'error'; p.textContent = `Error: ${e.message}`; fig.append(p);
+    }
+    const cap = document.createElement('figcaption'); cap.textContent = cuerpo.nombre; fig.append(cap);
+    return fig;
+  }
+
+  function pintar() {
+    const lista = filtradas();
+    const paginas = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+    pagina = Math.min(pagina, paginas - 1);
+    $('cuenta').textContent = `${lista.length} prendas`;
+    $('pagina').textContent = `Página ${pagina + 1} de ${paginas}`;
+    $('anterior').disabled = pagina === 0; $('siguiente').disabled = pagina >= paginas - 1;
+    const cont = $('tarjetas'); cont.replaceChildren();
+    for (const pr of lista.slice(pagina * POR_PAGINA, (pagina + 1) * POR_PAGINA)) {
+      const t = document.createElement('article'); t.className = 'tarjeta';
+      const h = document.createElement('h2'); h.textContent = pr.nombre;
+      const m = document.createElement('p'); m.className = 'meta'; m.textContent = `${pr.id} · ${pr.ranura} · ${pr.plantilla}`;
+      const c = document.createElement('div'); c.className = 'cuerpos';
+      for (const cu of CUERPOS) c.append(figura(pr, cu));
+      t.append(h, m, c); cont.append(t);
+    }
+  }
+
+  for (const id of ['buscar', 'ranura', 'plantilla', 'sexo', 'detalle']) $(id).addEventListener(id === 'buscar' ? 'input' : 'change', () => { pagina = 0; pintar(); });
+  $('anterior').addEventListener('click', () => { pagina--; pintar(); });
+  $('siguiente').addEventListener('click', () => { pagina++; pintar(); });
+  pintar();
+})();
+</script>
+</body>
+</html>
