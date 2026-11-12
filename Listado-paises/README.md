@@ -28,7 +28,7 @@ están al día, así que el resto del README las remite aquí en vez de repetirl
 - **IP de la mejor lengua**, países por nivel: 5: 181, 4: 16, 3: 7, 2: 1, 1: 3.
 - **IP local**, países por nivel: 5: 107, 4: 23, 3: 31, 2: 7, 1: 40.
 - **Lenguas por nivel:** 5: 21, 4: 26, 3: 35, 2: 11, 1: 70.
-- **Corrupción mediana por IO** (100 = sin corrupción): IO 1: 20; IO 2: 26; IO 3: 37.5; IO 4: 54; IO 5: 77.5.
+- **Corrupción mediana por IO** (100 = sin corrupción): IO 1: 20; IO 2: 26; IO 3: 37; IO 4: 55; IO 5: 77.5.
 <!-- fin del resumen -->
 
 ## Archivos
@@ -182,7 +182,7 @@ comentario de cada uno nombra el factor.
 
 **Prioridad** = IG × IO (1 a 25). Ordena la tabla; no es un tercer índice.
 
-**Excluido** = IO ≤ 1, con el objetivo de dejar fuera unos 20 países. Cuántos y cuáles, en
+**Excluido** = IO ≤ 1 (decidido; IO ≤ 2 se descartó), con el objetivo de dejar fuera unos 20 países. Cuántos y cuáles, en
 «Resumen».
 
 Nicaragua tenía IO = 1 y ahora tiene IO = 2: sus sanciones son parciales y sus factores (control
@@ -348,12 +348,15 @@ de Our World in Data, y las demás fuentes solo cubren los años anteriores a su
 
 - **1800 a 2015:** la tasa bruta de natalidad de Gapminder, año por año. Desde 1950 se basa en la
   ONU (*World Population Prospects*); antes, en las series históricas que compila Gapminder.
-- **2016 a 2025:** la tasa de 2015 escalada por la fecundidad de Gapminder (basada en la ONU):
-  `tasa(t) = tasa(2015) × fecundidad(t) / fecundidad(2015)`. Macao y Puerto Rico, sin esa
-  fecundidad, mantienen la tasa de 2015.
+- **2016 a 2024:** la tasa bruta del Banco Mundial (`SP.DYN.CBRT.IN`, basada en la ONU). Si
+  falta algún año entre dos tasas, se interpola.
+- **2025:** la última tasa escalada por la fecundidad de Gapminder:
+  `tasa(t) = tasa(u) × fecundidad(t) / fecundidad(u)`, o constante si falta la fecundidad.
 - **Sin tasa de Gapminder** (Andorra, Dominica, Islas Marshall, Liechtenstein, Mónaco, Nauru,
-  Palaos, San Cristóbal y Nieves, San Marino y Tuvalu): 7 × su fecundidad, una aproximación de la
-  tasa bruta. Kosovo, sin ninguna de las dos, usa la de su época.
+  Palaos, San Cristóbal y Nieves, San Marino y Tuvalu): 7 × su fecundidad hasta 2015, una
+  aproximación de la tasa bruta, y después la del Banco Mundial. Kosovo, Bermudas, Curazao, Islas
+  Feroe, Gibraltar e Isla de Man tienen solo la del Banco Mundial: antes de ella, la de su época.
+  Guernsey y Jersey no tienen ninguna y usan la de su época.
 
 **Natalidad antes de 1800, por épocas** (decidido), como el Population Reference Bureau en *How
 Many People Have Ever Lived on Earth?*: 80 por mil antes del año 1, 60 hasta 1650, 50 hasta 1750 y
@@ -368,21 +371,30 @@ coinciden.
 - Si una serie termina antes del año 2000, el país se salta y queda vacío. No se extiende la
   última población hasta 2025, ni se conserva un valor de un cálculo anterior.
 
-**Resultados y comprobación de cordura.** El total mundial da unos **89 700 millones** de
+**Resultados y comprobación de cordura.** El total mundial da unos **88 590 millones** de
 personas nacidas desde el 10 000 a. C. Los mayores son India (24 100 millones) y China (16 100
 millones). Irán (1 330), Egipto (1 170) y Japón (1 100) suman muchas veces su población actual, y
 Australia (315) casi toda en su población aborigen. El Population Reference Bureau estima unos
 117 000 millones desde la aparición del ser humano moderno (190 000 a. C.), y unos 108 000
 millones desde el 8000 a. C., con las mismas natalidades por época; la diferencia viene sobre
 todo de sus propias estimaciones de la población mundial antigua, más altas que las de HYDE. Con
-una natalidad fija de 40 por mil, el total daría 61 400 millones. **Las cifras sirven para
+una natalidad fija de 40 por mil, el total daría 60 800 millones. **Las cifras sirven para
 comparar países entre sí, no como conteo exacto.**
 
 **Limitaciones que hay que conocer:**
 
-- Antes de 1500, casi todo viene de las estimaciones de HYDE por país, que son gruesas. En
-  América son altas para la época precolombina: México tiene 24,5 millones en 1500 y Brasil 18,7,
-  y por eso suman 3 900 y 3 100 millones de nacidos, más que Japón o Irán.
+- Antes de 1500, casi todo viene de las estimaciones de HYDE por país, que son gruesas.
+- **América precolombina, ajustada a Denevan** (`ajustar_america`). HYDE da unos 60 millones para
+  América en 1500, parecido a los 54 de Denevan (*The Native Population of the Americas in 1492*,
+  1992), pero los reparte mal: México 24,5 millones y Brasil 18,7, cuando Denevan da 17,2 para
+  México y 8,6 para toda la Sudamérica baja; los Andes, en cambio, quedan con la mitad. Por eso,
+  hasta 1500, cada país se multiplica por el factor de su región de Denevan, para que la región
+  sume lo que él estima: Norteamérica ×1,81, México ×0,70, Centroamérica ×1,90, Andes ×1,55 y
+  Sudamérica baja ×0,44. El Caribe queda como en HYDE (decidido): Denevan da 3 millones, que
+  daría el factor más alto (×3,6) y es la cifra más discutida (otros autores dan entre 0,5 y 1). Desde 1600 la serie queda como en HYDE. Con eso México
+  pasa de 3 900 a 2 850 millones de nacidos, Brasil de 3 100 a 1 560 y Perú de 880 a 1 310. Las
+  cifras de Denevan también son discutidas, y el reparto dentro de cada región sigue siendo el de
+  HYDE.
 - La retroproyección con cuota constante, que ahora solo usan los 20 países que Our World in Data
   empieza tarde sin ser su poblamiento, es gruesa: un país que antes tuvo más peso en su región
   queda subestimado, y uno que lo ganó después, sobreestimado. Pesa poco: son micro-estados,
@@ -397,11 +409,11 @@ comparar países entre sí, no como conteo exacto.**
 
 ## Fuentes
 
-Los dominios del Banco Mundial y del PNUD (`api.worldbank.org`, `hdr.undp.org`) están bloqueados
-por el proxy del entorno donde se trabajó: responden 403. Por eso se usaron copias publicadas en
-GitHub, que sí son accesibles: los repositorios de Our World in Data, los de Gapminder
-(`open-numbers`) y los de `datasets` (de datahub.io), que copian los indicadores del Banco
-Mundial. `ourworldindata.org` y `www.prb.org` se habilitaron después.
+Al principio, los dominios de las fuentes (`ourworldindata.org`, `api.worldbank.org`,
+`hdr.undp.org`) estaban bloqueados por el proxy del entorno donde se trabajó. Por eso la mayoría de
+los datos vienen de copias publicadas en GitHub: los repositorios de Our World in Data, los de
+Gapminder (`open-numbers`) y los de `datasets` (de datahub.io), que copian los indicadores del
+Banco Mundial. `ourworldindata.org`, `www.prb.org` y `api.worldbank.org` se habilitaron después.
 
 - [Our World in Data, *Population*](https://ourworldindata.org/grapher/population)
   (`population.csv`, columna `population_historical`; datos actualizados el 15 de julio de 2024):
@@ -410,6 +422,13 @@ Mundial. `ourworldindata.org` y `www.prb.org` se habilitaron después.
 - Population Reference Bureau, [*How Many People Have Ever Lived on
   Earth?*](https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/) (noviembre de
   2022): natalidad por época antes de 1800 y total de comparación. No lo lee ningún script.
+- [API del Banco Mundial](https://api.worldbank.org/v2/country/all/indicator/SP.DYN.CBRT.IN?format=json&per_page=20000&date=1960:2025),
+  `SP.DYN.CBRT.IN` (tasa bruta de natalidad), bajada el 11 de noviembre de 2026 con datos hasta
+  2024. Tampoco tiene versiones fijas: si el Banco Mundial la actualiza, la verificación de
+  `fuentes.sha256` falla y hay que rehacer el manifiesto con `--escribir-manifiesto`.
+- William M. Denevan (ed.), *The Native Population of the Americas in 1492*, 2.ª ed., University of
+  Wisconsin Press, 1992: población de América en 1492 por región (`DENEVAN` en
+  `preparar_datos.py`).
 
 - [`owid/co2-data`](https://github.com/owid/co2-data), commit `382ee6c` (2 de junio de 2026),
   archivo `owid-co2-data.csv`: población por país hasta 2024.
@@ -457,16 +476,17 @@ Para los recursos de las lenguas y el mapa:
   Natural Earth (dominio público), escala 1:50 millones.
 
 **Para reproducir todo de una vez:** `python3 descargar_fuentes.py --destino /tmp/fuentes --rehacer`
-baja las 435 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
+baja las 436 fuentes (unos 35 MB) desde sus commits fijos, compara cada una con su SHA-256 en
 `fuentes.sha256` y corre todos los scripts. Si las fuentes no cambiaron, el proyecto queda
 idéntico. El job `reproducir` de `pruebas-listado-paises.yml` lo hace en la CI cuando se lanza a
-mano (*Run workflow*) y falla si algún archivo cambia.
+mano (*Run workflow*) y el día 3 de cada mes, y falla si algún archivo cambia. Como el grapher de
+Our World in Data y la API del Banco Mundial no tienen versiones fijas, una falla mensual suele
+querer decir que una de las dos se actualizó: hay que bajarla, revisar el cambio y rehacer el
+manifiesto con `--escribir-manifiesto`.
 
 `descargar_fuentes.py` es la única lista de fuentes: tiene la URL fija de cada archivo y los
 argumentos con que se llama a cada script. Para correr un paso suelto, mira ahí sus argumentos.
 
-Cuando `api.worldbank.org` esté accesible, conviene extender la natalidad después de 2015 con la
-del Banco Mundial (`SP.DYN.CBRT.IN`) en vez de escalarla.
 
 ## Estado de los datos
 
@@ -508,8 +528,8 @@ Léelo antes de usar la tabla para decidir.
 
 ## Pendientes
 
-1. **Natalidad después de 2015:** usar la de la ONU o el Banco Mundial en vez de escalarla con la
-   fecundidad, cuando haya acceso.
-2. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
-3. **Umbral de exclusión de genealogía:** IO ≤ 1 (vigente) o IO ≤ 2; cuántos deja fuera cada uno,
-   en «Resumen» y en `escenarios.md`. Camboya y Vietnam siguen dentro, por decisión tomada.
+1. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio. Ya
+   se revisaron los que chocaban con los datos (emigrantes, corrupción): Tonga, Comoras, Nauru y
+   Palaos subieron de IG, y Albania, Panamá y República Dominicana bajaron a IO 3. En IL,
+   cruzado con alfabetización, internet e IDH, Andorra, Arabia Saudita y los Emiratos subieron a 4,
+   y Tayikistán bajó a 3. Lo que queda es repasar los demás casos uno por uno, si se quiere.
