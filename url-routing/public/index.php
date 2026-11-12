@@ -55,9 +55,7 @@ HttpSecurityHeaders::setSecurityHeaders();
 $container = Container::getInstance();
 
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$pos_domains = explode(',', getenv('POS_DOMAINS') ?: 'contrastocolor.local,contrastocolor.test,contrastocolor.app');
-$pos_domains = array_map('trim', $pos_domains);
-$site = HostParser::matchesDomain($host, $pos_domains) ? 'pos' : 'genealogy';
+$site = HostParser::sitio($host);
 $locale = HostParser::getLocale($host);
 
 $container->singleton('router', function ($c) use ($site) {
@@ -147,7 +145,7 @@ function view(string $name, array $data = []): string
         ServiceLocator::getInstance()->getLogger()->warning('View not found', ['view' => $name]);
         http_response_code(500);
 
-        return ErrorPage::body(500, 'Error interno del servidor');
+        return ErrorPage::page(500, 'Error interno del servidor');
     }
 
     try {
@@ -159,7 +157,7 @@ function view(string $name, array $data = []): string
         ]);
         http_response_code(500);
 
-        return ErrorPage::body(500, 'Error interno del servidor');
+        return ErrorPage::page(500, 'Error interno del servidor');
     }
 }
 

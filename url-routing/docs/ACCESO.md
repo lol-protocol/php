@@ -19,6 +19,8 @@ La lógica está en [`Support/AccessPolicy.php`](../Support/AccessPolicy.php) y 
 
 **Por qué 404 y no 401 o 403.** Los ids son URLs públicas y casi secuenciales: un 401 o un 403 confirmaría cuáles existen. Es lo que la sección «Recursos privados» de `README_URLS.md` ya prometía y el código no cumplía. Lo único que responde 401 es lo que se sabe que existe: el área de cuenta, la edición de una colección pública y la marca de vida de una persona (las personas son públicas, así que pedir la clave no confirma nada). El área de cuenta es además el punto de entrada del propietario.
 
+**Cómo se ve un error.** Un 404, 401, 403, 405, 429 (el de un pedido de retiro) o 500 es una página del sitio, con su encabezado, su caja de búsqueda y un enlace para volver (`Support/ErrorPage::page()` y `views/{sitio}/error.php`), pero **sin dirección propia**: lleva `noindex` y no lleva ni `canonical` ni `hreflang`. Eso último también protege la regla de arriba: la página oculta y la inexistente salen del mismo código y no se diferencian ni en el cuerpo (`ResponseHeadersTest` lo compara por HTTP). Si la página no se puede dibujar (un layout roto), responde el título sin diseño y el log lo dice: un error que falla taparía el error que reporta. **El 429 del limitador global** (`public/index.php`) sigue siendo el título pelado a propósito: contesta a quien abusa y no debe costar nada.
+
 Las páginas públicas no piden nada: una colección con `publica = true`, las personas, los lugares, los grupos, las organizaciones, los sucesos, los registros y todo el catálogo del POS.
 
 ## Personas que podrían estar vivas

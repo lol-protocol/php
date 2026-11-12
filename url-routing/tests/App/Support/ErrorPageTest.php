@@ -27,7 +27,8 @@ class ErrorPageTest extends TestCase
 
     public function testAHiddenPageIsAMissingPageByteForByte(): void
     {
-        $this->assertSame(AccessPolicy::CUERPO_404, ErrorPage::body(404, ErrorPage::NOT_FOUND));
+        $this->assertSame(AccessPolicy::CUERPO_404, ErrorPage::body(404, ErrorPage::NOT_FOUND), 'the deprecated constant is still the bare body');
+        $this->assertSame(AccessPolicy::ocultar(), ErrorPage::page(404, ErrorPage::NOT_FOUND), 'and the page of a hidden one is the page of a missing one');
     }
 
     public function testNoOtherFileWritesAnErrorTitleByHand(): void
@@ -48,7 +49,18 @@ class ErrorPageTest extends TestCase
         $this->assertSame(
             ['Support/AccessPolicy.php'],
             $a_mano,
-            'build it with ErrorPage::body(): only the CUERPO_404 constant, which needs a constant expression, writes the tag'
+            'build it with ErrorPage::page() (or body()): only the deprecated CUERPO_404 constant writes the tag'
         );
+    }
+
+    public function testAPageThatCannotBeDrawnIsTheBareBodyAndNotAnError(): void
+    {
+        if (function_exists('esc')) {
+            $this->markTestSkipped('the helpers of public/index.php are loaded: the layout can be drawn here');
+        }
+
+        // Outside public/index.php the layout has no esc(): the page must still answer, and with the same text.
+        $this->assertSame(ErrorPage::body(418, 'Soy una tetera', 'con <b>detalle</b>'), ErrorPage::page(418, 'Soy una tetera', 'con <b>detalle</b>'));
+        $this->assertSame(418, http_response_code(), 'and the status is the one it was asked for');
     }
 }

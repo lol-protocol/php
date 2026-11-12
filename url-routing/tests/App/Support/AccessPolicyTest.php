@@ -177,7 +177,7 @@ class AccessPolicyTest extends TestCase
         $cuerpo = AccessPolicy::ocultar();
 
         $this->assertSame(404, http_response_code());
-        $this->assertSame(AccessPolicy::CUERPO_404, $cuerpo);
+        $this->assertSame(\App\Support\ErrorPage::page(404, \App\Support\ErrorPage::NOT_FOUND), $cuerpo);
     }
 
     public function testAskingForCredentialsWithATokenIsA401(): void
@@ -197,7 +197,7 @@ class AccessPolicyTest extends TestCase
         $cuerpo = AccessPolicy::pedirCredenciales();
 
         $this->assertSame(404, http_response_code());
-        $this->assertSame(AccessPolicy::CUERPO_404, $cuerpo);
+        $this->assertSame(\App\Support\ErrorPage::page(404, \App\Support\ErrorPage::NOT_FOUND), $cuerpo);
     }
 
     /** The 404 of a hidden page is the one BaseController sends for a missing one, byte for byte. */
@@ -210,7 +210,7 @@ class AccessPolicyTest extends TestCase
             }
         };
 
-        $this->assertSame($controlador->noEncontrado(), AccessPolicy::CUERPO_404);
+        $this->assertSame($controlador->noEncontrado(), AccessPolicy::ocultar());
     }
 
     /** @return array{marca: string, inicio: int, ultima: int} */

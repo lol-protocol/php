@@ -12,6 +12,7 @@ use App\Support\HostParser;
  * breadcrumbs, and $estructurado, a schema.org object (Person, Product...)
  * for search engines. Both go out as JSON-LD too. A site layout may set
  * $pedirRetiro, the URL to ask for the page to be withdrawn, shown at the foot.
+ * A view may set $sinCanonica to leave out the canonical and hreflang links: an error page has no address of its own.
  * A view may set $scripts, local paths of scripts (public/) to load at the end of the body: the CSP only
  * allows scripts from this origin, so there are no inline ones.
  */
@@ -30,10 +31,12 @@ $tActual = isset($digitos) ? (string)$digitos : (string)array_key_first($tiposBu
     <meta name="robots" content="noindex">
 <?php endif; ?>
 <?php $ruta = (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?'); ?>
+<?php if (empty($sinCanonica)): ?>
     <link rel="canonical" href="<?= esc(HostParser::origen() . $ruta) ?>">
 <?php foreach (HostParser::alternos($ruta) as $hreflang => $url): ?>
     <link rel="alternate" hreflang="<?= esc($hreflang) ?>" href="<?= esc($url) ?>">
 <?php endforeach; ?>
+<?php endif; ?>
 <?php
 $jsonLd = isset($estructurado) && is_array($estructurado) ? [['@context' => 'https://schema.org'] + $estructurado] : [];
 if (!empty($migas)) {

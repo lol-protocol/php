@@ -40,7 +40,10 @@ final class AccessPolicy
 
     private const CLAVE_SESION = 'propietario';
 
-    /** Byte for byte what BaseController::handleNotFound() sends, so a hidden page is indistinguishable from a missing one. */
+    /**
+     * @deprecated since 2026-11-12: the 404 has the design of the site (ErrorPage::page()), and a constant cannot draw it.
+     *             Kept as the bare body, which is still what ErrorPage::body(404, ErrorPage::NOT_FOUND) is.
+     */
     public const CUERPO_404 = '<h1>404 - ' . ErrorPage::NOT_FOUND . '</h1>';
 
     /** Whether $token is a usable OWNER_TOKEN. */
@@ -231,7 +234,7 @@ final class AccessPolicy
     {
         http_response_code(404);
 
-        return self::CUERPO_404;
+        return ErrorPage::page(404, ErrorPage::NOT_FOUND);
     }
 
     /**
@@ -254,6 +257,6 @@ final class AccessPolicy
         }
         http_response_code(401);
 
-        return ErrorPage::body(401, 'Acceso restringido');
+        return ErrorPage::page(401, 'Acceso restringido');
     }
 }

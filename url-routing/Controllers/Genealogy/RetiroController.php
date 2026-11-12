@@ -96,7 +96,7 @@ class RetiroController extends BaseController
         http_response_code(429);
         header('Retry-After: ' . max(1, $segundos));
 
-        return ErrorPage::body(429, 'Demasiados pedidos', htmlspecialchars($mensaje));
+        return ErrorPage::page(429, 'Demasiados pedidos', htmlspecialchars($mensaje));
     }
 
     /**

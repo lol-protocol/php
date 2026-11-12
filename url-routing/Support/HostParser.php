@@ -69,6 +69,17 @@ class HostParser
     }
 
     /**
+     * Which site serves $host: 'pos' when it is one of POS_DOMAINS (or a subdomain of one), 'genealogy' otherwise.
+     * public/index.php picks the router, the database and the layout with it, and ErrorPage the layout of an error.
+     */
+    public static function sitio(string $host): string
+    {
+        $dominios = array_map('trim', explode(',', getenv('POS_DOMAINS') ?: 'contrastocolor.local,contrastocolor.test,contrastocolor.app'));
+
+        return self::matchesDomain($host, $dominios) !== null ? 'pos' : 'genealogy';
+    }
+
+    /**
      * @param list<string> $domains
      */
     public static function matchesDomain(string $host, array $domains): string|null
