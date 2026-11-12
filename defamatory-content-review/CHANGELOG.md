@@ -2,8 +2,15 @@
 
 ## [Sin publicar]
 
+### Añadido
+
+- **Mensajes de salida en 13 idiomas más** (`nor`, `dan`, `fin`, `hun`, `ell`, `bul`, `slk`, `ind`, `vie`,
+  `tha`, `tgl`, `isl` y `yue`): 31 de los 33 idiomas (falta solo el suajili). Traducciones propias, sin revisión
+  nativa. `yue` está en chino tradicional y atiende las etiquetas `zh` de `Accept-Language`.
+
 ### Corregido
 
+- **README**: las amenazas con forma (`patterns`) están en 21 idiomas, no 18.
 - **`FileSizeLimitTest` tomaba `#[Atributo]` por un comentario** y contaba de menos las líneas de código de los
   archivos con atributos de PHP.
 - **Un archivo de mensajes con marcadores que no casan** (un `%s` de más o de menos) ya no lanza una excepción:

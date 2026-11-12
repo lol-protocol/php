@@ -25,6 +25,7 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, en 
 | `constelaciones/*.svg` | Una ilustración por signo (24) sobre fondo de cielo nocturno, más `conejo-vi.svg`. Generadas, no editar a mano. |
 | `constelaciones-sin-fondo/*.svg` | Las mismas 25, transparentes y en `currentColor`. Generadas. |
 | `por-idioma/*.md` | Una ficha por idioma (30) y un índice. Generadas, no editar a mano. |
+| `revision/*.csv` | Un paquete por idioma (30) con todos sus textos, al lado del español y el inglés, para que lo revise una persona nativa. Generados: las correcciones van en `datos/*.json`. |
 | `galeria.html` | Página para ver las ilustraciones con su nombre y descripción en cada idioma. Generada. |
 
 ### Idiomas
@@ -144,7 +145,7 @@ En todas, un `date` o un `datetime` **sin** huso se toma tal cual (nadie le inve
 **Las consultas devuelven copias.** Lo que devuelve `signo_occidental()`, `decanato()`, `angel_de_fecha()`, `arbol_celta()` y las demás es una copia de los datos: puedes modificarla sin que cambien las respuestas siguientes. Las funciones `cargar_*()` (`cargar_datos()`, `cargar_espiritus()`…) sí devuelven los datos compartidos por todas las consultas: no los modifiques. En PHP los arrays se copian al pasarlos, así que no hace falta.
 
 ```sh
-python3 generar.py              # regenera constelaciones/, constelaciones-sin-fondo/, por-idioma/ y galeria.html
+python3 generar.py              # regenera constelaciones/, constelaciones-sin-fondo/, por-idioma/, revision/ y galeria.html
 python3 generar.py --comprobar  # falla si lo committeado no coincide con datos/signos.json
 python3 -m unittest -v pruebas  # pruebas
 php php/pruebas/ejecutar.php    # el port a PHP contra datos/vectores.json
@@ -257,6 +258,8 @@ En PHP: `Zodiaco::caminoDeVida()`, `anioPersonal()`, `rasgosDeNumero()` y `reduc
 ### Versión y revisión
 
 `datos/signos.json` lleva `version` (versionado semántico: mayor si cambia el esquema o lo que devuelven las consultas, menor si se agregan datos o funciones, parche si se corrige un texto) y `CHANGELOG.md` cuenta qué cambió. `generar.py --comprobar` falla si la primera entrada del `CHANGELOG.md` no coincide con `version`: no se puede cambiar una sin la otra.
+
+**Para revisar un idioma** hay un paquete listo: `revision/<código>.csv` (por ejemplo `revision/sw.csv`), con una fila por texto y seis columnas: `donde` (la clave del texto en los datos), `es`, `en`, `texto` (el del idioma), y `correccion` y `nota`, vacías. Quien revise abre el CSV en una hoja de cálculo, deja `correccion` vacía si el texto está bien, escribe el texto corregido si no, y usa `nota` para dudas o explicaciones. Son 389 textos por idioma: los nombres y descripciones de los 24 signos, los términos de la interfaz, el glosario de los 72 ángeles y demonios, el de los árboles con sus nombres, y la numerología. El archivo se regenera con `python3 generar.py`, así que **no se edita en el repositorio**: se devuelve relleno (por correo, por un PR aparte, como se quiera) y las correcciones se aplican a mano en `datos/*.json`, con la clave de `donde` para encontrar cada texto. Después, el idioma se marca como revisado:
 
 **Revisar una traducción.** Cuando una persona nativa revise un idioma, cambia su entrada en `revision` de `datos/signos.json`:
 

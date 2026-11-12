@@ -39,6 +39,14 @@ final class DineroTest extends TestCase
         self::assertSame(999_999_999_999.99, Dinero::deTexto('999999999999.99'), 'el tope de la columna');
     }
 
+    /** Con cuatro decimales o mas no hay forma de grupo de miles: se lee tal cual (Peticion::monto() redondea). */
+    public function testDeTextoLeeCuatroDecimalesOMasSinAdivinar(): void
+    {
+        self::assertSame(10.0051, Dinero::deTexto('10.0051'));
+        self::assertSame(1.5, Dinero::deTexto('1.5000'));
+        self::assertSame(1.0E-7, Dinero::deTexto('0.0000001'), 'es un monto bien escrito; Validacion lo rechaza por ser menor a un centavo');
+    }
+
     /**
      * (float) "1.500,50" da 1.5: PHP lee hasta la primera coma y calla. Un script que mande el formato
      * latino creaba una boleta 1.000 veces menor sin ningun aviso, porque 1.5 es un monto valido.
@@ -60,7 +68,7 @@ final class DineroTest extends TestCase
             'tres decimales' => ['10.005'],
             'tres decimales que parecen miles' => ['1.500'],
             'tres decimales en cero' => ['1.000'],
-            'muchos decimales' => ['0.0000001'],
+            'tres decimales con parte entera larga' => ['1500.505'],
             'texto' => ['abc'],
             'vacio' => [''],
             'infinito' => ['INF'],

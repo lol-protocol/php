@@ -258,17 +258,17 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
     }
 
     /**
-     * Un monto con tres decimales o mas se rechaza en las cuatro pantallas que lo piden, en vez de
+     * Un monto con tres decimales justos se rechaza en las cuatro pantallas que lo piden, en vez de
      * redondearse ("10.005" daba 10.01) o leerse como otra cosa ("1.500", el mil quinientos de quien usa el
      * punto de miles, daba 1.5: una boleta o un pago mil veces menor). No se guarda nada y lo que ya habia
-     * queda como estaba.
+     * queda como estaba. Con cuatro decimales o mas no hay ambiguedad y se redondea (PeticionTest).
      */
     public function testUnMontoConTresDecimalesSeRechazaEnLasCuatroPantallasSinGuardarNada(): void
     {
         $mensaje = 'Completá todos los campos con un monto válido.';
         $boletaId = $this->boletaDePrueba(); // 1000.00
         $pagoId = $this->pagoDePrueba($boletaId); // 100.00
-        $concepto = 'Boleta con tres decimales ' . uniqid();
+        $concepto = 'Boleta con tres decimales justos ' . uniqid();
         $this->alTerminar(static function () use ($concepto): void {
             $boletas = Database::connection()->prepare('SELECT id FROM boletas WHERE concepto = :concepto');
             $boletas->execute([':concepto' => $concepto]);

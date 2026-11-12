@@ -220,11 +220,12 @@ mano. Lo único que no puede probar es emitir el certificado (necesita DNS públ
 ./10_A-add-domain.sh nuevo.com --ssl --email yo@nuevo.com            # landing + HTTPS + healthcheck
 ./10_A-add-domain.sh app.nuevo.com --type php --name tienda          # tambien: python, tomcat (--context RUTA)
 ./10_A-add-domain.sh nuevo.com --dry-run                             # muestra los pasos sin ejecutar
-./10_B-remove-domain.sh nuevo.com [--app tienda] [--yes] [--dry-run]
+./10_B-remove-domain.sh nuevo.com [--app tienda] [--purge-app] [--yes] [--dry-run]
 ```
 
 `10_A` encadena los scripts 03/06_A/06_B/06_D/06_E, opcionalmente 04 (`--ssl`, el DNS ya debe apuntar al VPS) y 08.
-`10_B` **no borra nada**: mueve el vhost, el sitio, los logs (y con `--app` la app y su unidad systemd) a
+`10_B` **no borra nada** (salvo que pidas `--purge-app`, que además de archivar borra la base, el rol y el usuario de la
+app, con un `pg_dump` previo en la carpeta archivada): mueve el vhost, el sitio, los logs (y con `--app` la app y su unidad systemd) a
 `/var/backups/vps-setup/removed/<dominio>-<fecha>/`, comprueba `nginx -t` antes de archivar (si falla, restaura el
 sitio) y al final indica cómo quitar el certificado y la zona DNS, que no toca. En apps php/python también
 archiva la carpeta de la app y su servicio systemd (no llevan el nombre del dominio): la app se toma de la marca

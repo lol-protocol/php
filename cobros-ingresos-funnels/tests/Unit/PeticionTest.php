@@ -72,15 +72,27 @@ final class PeticionTest extends TestCase
     }
 
     /**
-     * Antes (#388) "10.005" se redondeaba a 10.01 y "1.500" se leia como 1.5. Con tres decimales o mas la
-     * persona no escribio un monto: o es un error o es el punto de miles de "1.500" (mil quinientos), y
-     * guardar 1.5 es una boleta mil veces menor. Se rechaza, no se redondea.
+     * Antes (#388) "10.005" se redondeaba a 10.01 y "1.500" se leia como 1.5. Tres decimales justos tienen la
+     * forma de un grupo de miles: "1.500" es el mil quinientos de quien usa el punto de miles, y guardar 1.5
+     * es una boleta mil veces menor. No se adivina: se rechaza.
      */
-    public function testMontoConMasDeDosDecimalesNoSeRedondeaNiSeLee(): void
+    public function testMontoConTresDecimalesJustosNoSeLeeNiSeRedondea(): void
     {
         foreach (['10.005', '1.500', '1.000', '0.001', '1500.505'] as $texto) {
             $_POST['monto'] = $texto;
             self::assertSame(0.0, Peticion::monto(), "'{$texto}'");
+        }
+    }
+
+    /**
+     * Con cuatro decimales o mas no hay ambiguedad de miles: se redondea al centavo, como decidio #388. Sin casos
+     * justo en la mitad (10.0050): round() de PHP 8.4 los resuelve distinto que el de 8.3, y la CI corre las dos.
+     */
+    public function testMontoConCuatroDecimalesOMasSeRedondeaAlCentavo(): void
+    {
+        foreach (['10.0051' => 10.01, '10.0049' => 10.0, '1.5000' => 1.5, '1500.5051' => 1500.51] as $texto => $esperado) {
+            $_POST['monto'] = (string) $texto;
+            self::assertSame($esperado, Peticion::monto(), "'{$texto}'");
         }
     }
 
