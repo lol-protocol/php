@@ -247,6 +247,39 @@ final class RetiroRepository extends Repository
     }
 
     /**
+     * Claims the pedidos nobody has been told about yet (still pending or hidden: one the owner already decided needs
+     * no alert) and stamps each with avisado_en, oldest first. The claim is the stamp: the UPDATE only takes a row
+     * whose avisado_en is still empty and the count of rows it changed decides, so two runs that overlap never
+     * announce the same pedido twice. Nothing about who asked or what they wrote: this is what a cron job mails.
+     *
+     * @return list<array{id: int, tipo: string, recurso_id: int, motivo: string, estado: string, creado_en: string}>
+     */
+    public function avisarNuevos(?int $ahora = null): array
+    {
+        return $this->db->transaction(function () use ($ahora): array {
+            $filas = $this->db->fetchAll(
+                "SELECT id, tipo, recurso_id, motivo, estado, creado_en FROM pedidos_retiro
+                  WHERE avisado_en IS NULL AND estado IN ('pendiente', 'oculto') ORDER BY creado_en, id"
+            );
+            $nuevos = [];
+            foreach ($filas as $fila) {
+                if ($this->db->execute('UPDATE pedidos_retiro SET avisado_en = ? WHERE id = ? AND avisado_en IS NULL', [self::fecha($ahora), $fila['id']]) === 1) {
+                    $nuevos[] = [
+                        'id' => (int)$fila['id'],
+                        'tipo' => (string)$fila['tipo'],
+                        'recurso_id' => (int)$fila['recurso_id'],
+                        'motivo' => (string)$fila['motivo'],
+                        'estado' => (string)$fila['estado'],
+                        'creado_en' => (string)$fila['creado_en'],
+                    ];
+                }
+            }
+
+            return $nuevos;
+        });
+    }
+
+    /**
      * Every pedido still pending, then the $resueltos most recent decided ones (the newest first), each with its
      * 'eventos'. The decided ones are capped because nothing ever removes them: the queue in /0/3/ would get slower
      * with every year. Three queries whatever the number of pedidos.

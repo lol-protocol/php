@@ -182,11 +182,15 @@ Cualquiera puede pedir el retiro de una página (`/r/{id}/`) y el pedido espera 
 MAILTO=tu@correo.com
 0 9 * * *     www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php
 */30 * * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --ocultar --solo-ocultados
+# opcional: avisa en cuanto llega un pedido (sin esperar al recordatorio de las 9)
+*/10 * * * *  www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --solo-nuevos
 # opcional: borra el correo y el texto de los pedidos resueltos hace más de 12 meses (RETIRO_CONSERVAR_MESES)
 30 3 * * 0    www-data  cd /var/www/php/url-routing && php bin/pedidos-retiro.php --depurar
 ```
 
 La primera línea es el recordatorio de cada día: lista lo que sigue esperando. La segunda es el **ocultamiento automático, que está activado** (decisión del propietario, 26 de octubre de 2026): cada media hora oculta los pedidos que pasaron del plazo sin respuesta, y **solo manda correo en la corrida que ocultó algo**. Sin `--solo-ocultados`, esa línea mandaría el mismo listado cada media hora mientras un pedido espere.
+
+**Aviso de pedidos nuevos (opcional).** La cuarta línea manda un correo **en cuanto llega un pedido**, en vez de esperar al recordatorio de las 9: cada 10 minutos mira si llegó alguno que no haya anunciado y, si lo hay, imprime su número, la página y el motivo (nada de quién lo pidió ni qué escribió, igual que el resto) y lo anota en `pedidos_retiro.avisado_en` para no repetirlo; si no llegó ninguno, no imprime nada y no manda correo. Va solo: no se combina con `--ocultar` ni `--depurar`, no lista lo que espera y no cambia el código de salida (siempre 0). Los pedidos que ya había cuando se aplicó la migración 012 quedan como ya avisados, para que no lleguen de golpe. Es un aviso de mejor esfuerzo: se anota antes de imprimir, así que si el correo de cron se pierde ese pedido no se vuelve a anunciar; el recordatorio diario sigue listando todo lo que espera.
 
 Los pedidos de retiro se marcan con el filtro de difamación si el servidor tiene la carpeta `defamatory-content-review/` junto a `url-routing/` (o `FILTRO_DIFAMACION_DIR` apunta a ella); si no, se guardan sin marcas y el log lo dice. Los topes contra el abuso se cambian con `RETIRO_MAX_POR_HORA` y `RETIRO_MAX_PENDIENTES` en `.env`.
 

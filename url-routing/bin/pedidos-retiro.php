@@ -24,6 +24,13 @@ declare(strict_types=1);
  * run that hid something, so the owner learns a page went down and is not told again at the next run. The
  * daily job without it is the reminder of what still waits.
  *
+ *   php bin/pedidos-retiro.php --solo-nuevos    # tell about the pedidos that arrived since the last run, and nothing else
+ *
+ * --solo-nuevos is for a job that runs every few minutes: it prints (number, page and reason, never who asked nor
+ * what they wrote) only when a pedido arrived that it has not announced before, and is silent otherwise. Each pedido
+ * is announced once (pedidos_retiro.avisado_en): it is the notice that something just came in, where the daily
+ * listing is the reminder of what still waits. It goes alone: no listing, no hiding, no purge, exit code 0.
+ *
  *   php bin/pedidos-retiro.php --depurar        # erase the personal data of pedidos resolved long ago
  *   php bin/pedidos-retiro.php --depurar --meses=6   # another retention (default: RETIRO_CONSERVAR_MESES, else 12)
  *
@@ -44,17 +51,20 @@ require __DIR__ . '/../vendor/autoload.php';
 
 Config::load();
 
-$uso = "Uso: php bin/pedidos-retiro.php [--horas=24] [--ocultar [--solo-ocultados]] [--depurar [--meses=12]]\n";
+$uso = "Uso: php bin/pedidos-retiro.php [--horas=24] [--ocultar [--solo-ocultados]] [--depurar [--meses=12]] | --solo-nuevos\n";
 $ocultar = false;
 $soloOcultados = false;
 $horas = Config::getInt('RETIRO_PLAZO_HORAS', RetiroRepository::PLAZO_HORAS);
 $depurar = false;
+$soloNuevos = false;
 $meses = Config::getInt('RETIRO_CONSERVAR_MESES', RetiroRepository::CONSERVAR_MESES);
 foreach (array_slice($argv, 1) as $argumento) {
     if ($argumento === '--ocultar') {
         $ocultar = true;
     } elseif ($argumento === '--solo-ocultados') {
         $soloOcultados = true;
+    } elseif ($argumento === '--solo-nuevos') {
+        $soloNuevos = true;
     } elseif ($argumento === '--depurar') {
         $depurar = true;
     } elseif (preg_match('/^--meses=(\d+)$/', $argumento, $m) === 1) {
@@ -75,6 +85,11 @@ if ($soloOcultados && !$ocultar) {
     exit(2);
 }
 
+if ($soloNuevos && ($ocultar || $depurar || count($argv) > 2)) {
+    fwrite(STDERR, $uso . "--solo-nuevos va solo: es el aviso de lo que llegó, sin listado, ocultamiento ni depuración.\n");
+    exit(2);
+}
+
 if ($meses < 1 || $meses > 240) {
     fwrite(STDERR, $uso . "La conservación es un número de meses de 1 a 240.\n");
     exit(2);
@@ -82,6 +97,17 @@ if ($meses < 1 || $meses > 240) {
 
 try {
     $repo = new RetiroRepository(Database::forSite('genealogy'));
+    if ($soloNuevos) {
+        $nuevos = $repo->avisarNuevos();
+        if ($nuevos !== []) {
+            echo count($nuevos) === 1 ? "Llegó 1 pedido de retiro:\n" : 'Llegaron ' . count($nuevos) . " pedidos de retiro:\n";
+            foreach ($nuevos as $n) {
+                printf("  n.º %d  %s %d  «%s»\n", $n['id'], $n['tipo'], $n['recurso_id'], RetiroRepository::MOTIVOS[$n['motivo']] ?? $n['motivo']);
+            }
+            echo "\nDecide en /0/3/: ocultar mientras revisa, retirar o rechazar.\n";
+        }
+        exit(0);
+    }
     $pendientes = $repo->pendientes();
     $ocultados = $ocultar ? $repo->ocultarVencidos($horas) : [];
     $depurados = $depurar ? $repo->depurar($meses) : [];
