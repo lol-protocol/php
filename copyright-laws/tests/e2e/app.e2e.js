@@ -17,6 +17,10 @@ const { rows } = hydrate(bundle, enrichRow);
 const N = rows.length;
 const J = bundle.jurisdictions.length;
 const YEARS = [...new Set(rows.map((r) => r.termYears).filter((y) => y != null))].sort((a, b) => a - b);
+// A term with no "life + N years" (the Marshall Islands' recordings act) gets an "Other" bar, last on the axis.
+const OTHER = rows.some((r) => r.termYears == null) ? 1 : 0;
+const BARS = YEARS.length + OTHER;
+const PTYPES = new Set(rows.map((r) => r.protection_type)).size;
 const count = (predicate) => rows.filter(predicate).length;
 const url = (query = "") => `${app.base}?lang=eng${query ? `&${query}` : ""}`;
 
@@ -25,10 +29,14 @@ test("initial view: every law, one chart bar per term, data-driven facets", { sk
   await page.goto(url(), { waitUntil: "networkidle" });
   assert.equal(await summary(), `${N} of ${N} laws · ${J} jurisdictions`);
   assert.equal(await page.locator("#lawsTableBody tr").count(), N);
-  assert.equal(await page.locator(".viz-col").count(), YEARS.length);
-  assert.equal((await page.locator(".viz-x").allTextContents()).join(" "), YEARS.map((y) => `+${y}`).join(" "));
-  assert.equal(await page.locator('input[name="ptype"]').count(), 0, "only 'Copyright' exists, so that facet stays hidden");
-  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Region|Treaties|Protection term|Data status|Needs attention");
+  assert.equal(await page.locator(".viz-col").count(), BARS);
+  assert.equal((await page.locator(".viz-x").allTextContents()).join(" "), [...YEARS.map((y) => `+${y}`), ...(OTHER ? ["Other"] : [])].join(" "));
+  // The protection-type facet shows once a second type exists.
+  assert.equal(await page.locator('input[name="ptype"]').count(), PTYPES > 1 ? PTYPES : 0);
+  assert.equal(
+    (await page.locator("#facets legend").allTextContents()).join("|"),
+    `Region|Treaties|Protection term|Data status|Needs attention${PTYPES > 1 ? "|Protection type" : ""}`
+  );
   assert.equal(await page.locator('label.check:has(input[value="WCT"])').getAttribute("title"), "WIPO Copyright Treaty (WCT)");
   assert.deepEqual(problems, []);
   await page.context().close();
@@ -81,7 +89,7 @@ test("treaties combine with AND, terms with OR, and the chart axis stays put", {
     (await summary()).startsWith(`${count((r) => (r.termYears === 50 || r.termYears === 70) && r.region === "europe")} of ${N}`),
     await summary()
   );
-  assert.equal(await page.locator(".viz-col").count(), YEARS.length);
+  assert.equal(await page.locator(".viz-col").count(), BARS);
   await page.locator('.viz-col[aria-label^="Life + 70"]').hover();
   assert.match(await page.locator(".viz-tip-lead").textContent(), /Life \+ 70 years/);
   await page.context().close();
@@ -162,7 +170,7 @@ test("languages: Portuguese plurals and German labels", { skip }, async () => {
   await page.selectOption("#languageSelect", "por");
   await page.waitForTimeout(150);
   assert.equal(await page.locator(".viz-title").textContent(), "Leis por prazo de proteção");
-  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Região|Tratados|Prazo de proteção|Situação dos dados|Requer atenção");
+  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), `Região|Tratados|Prazo de proteção|Situação dos dados|Requer atenção${PTYPES > 1 ? "|Tipo de proteção" : ""}`);
   assert.equal(await page.locator('label.check:has(input[value="Berne"])').getAttribute("title"), "Convenção de Berna");
   assert.equal(await summary(), `${N} de ${N} leis · ${J} jurisdições`);
   await page.selectOption("#languageSelect", "deu");

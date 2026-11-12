@@ -215,11 +215,12 @@ test("facet options are derived from the data, in a meaningful order", () => {
   const years = [...new Set(data.rows.map((r) => r.termYears).filter((y) => y != null))].sort((x, y) => x - y);
   assert.deepEqual(
     facetOptions(data.rows, facet("term")).map((o) => o.value),
-    years.map((y) => `life-${y}`)
+    [...years.map((y) => `life-${y}`), ...(data.rows.some((r) => r.termYears == null) ? ["other"] : [])] // a term with no "life + N years" goes last
   );
   assert.ok(years.includes(50) && years.includes(70), "the common terms must be present");
-  // Only one protection type exists today, so the UI hides that filter until a second one appears.
-  assert.deepEqual(facetOptions(data.rows, facet("ptype")).map((o) => o.value), ["Copyright"]);
+  // The Marshall Islands (a 1991 recordings act, no general copyright law) are the only "Related rights" row, so
+  // from there on the protection-type filter has two options and the UI shows it.
+  assert.deepEqual(facetOptions(data.rows, facet("ptype")).map((o) => o.value), ["Copyright", "Related rights"]);
 });
 
 test("copyright filters give the expected counts on the real data", () => {

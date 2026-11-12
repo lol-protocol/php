@@ -17,6 +17,8 @@ function sandbox() {
   const dataset = { ...real, MASTER_CSV: master };
   return { dataset, master, run: createApplyResearch({ dataset, parse }) };
 }
+// The real data may hold rows checked today, so the tests date their own edits with today too.
+const TODAY = real.todayIso();
 const facts = (code, rows) => rows.map(([field, value, conf, source = "https://example.org/src"]) => ({ code, field, value, conf, source }));
 
 const NEW = [
@@ -27,20 +29,23 @@ const NEW = [
   ["enforcement_authority", "Data Protection Office (unknown acronym)", "low"],
   ["website_url", "https://example.org/law", "medium"],
   ["language", "English", "medium"],
+  ["retention_period", "Five years (art. 9)", "low"],
 ];
 
 test("a country with no law becomes a researched row with a source per fact and the weakest confidence", () => {
   const { dataset, master, run } = sandbox();
-  const report = run.applyResearch({ research: facts("ZZ", NEW), batch: { ZZ: { name: "Zedland", region: "europe" } }, today: "2026-11-01" });
+  const report = run.applyResearch({ research: facts("ZZ", NEW), batch: { ZZ: { name: "Zedland", region: "europe" } }, today: TODAY });
   assert.equal(report.added.length, 1);
   const { records } = real.loadMaster(master);
   const row = records.find((r) => r.country_code === "ZZ");
   assert.equal(row.country_name, "Zedland");
   assert.equal(row.data_status, "researched");
   assert.equal(row.confidence, "low");
-  assert.equal(row.last_checked, "2026-11-01");
+  assert.equal(row.last_checked, TODAY);
   assert.equal(row.enactment_date, "2001-03-04");
-  assert.equal(row.enforcement_authority, "Data Protection Office (unknown acronym) (unconfirmed)");
+  // The mark goes on descriptive values only; a name keeps its plain text and its source says "low".
+  assert.equal(row.retention_period, "Five years (art. 9) (unconfirmed)");
+  assert.equal(row.enforcement_authority, "Data Protection Office (unknown acronym)");
   const sources = real.loadSide(master, dataset.SOURCES_FILE, dataset.SOURCE_COLUMNS).rows.filter((s) => s.country_code === "ZZ");
   assert.equal(sources.length, NEW.length);
   assert.equal(sources.find((s) => s.field === "enforcement_authority").confidence, "low");
@@ -66,8 +71,8 @@ test("an existing law gets only the cells that differ, with the unconfirmed mark
   const { master, run } = sandbox();
   const law = real.loadMaster(master).records.find((r) => r.penalties_range);
   const same = [["penalties_range", law.penalties_range.replace(/\s*\(unconfirmed\)$/, ""), "high"]];
-  const confirmed = run.applyResearch({ research: facts(law.country_code, same), today: "2026-11-01" });
-  const changed = run.applyResearch({ research: facts(law.country_code, [["retention_period", "Five years (art. 9)", "low"]]), today: "2026-11-01" });
+  const confirmed = run.applyResearch({ research: facts(law.country_code, same), today: TODAY });
+  const changed = run.applyResearch({ research: facts(law.country_code, [["retention_period", "Five years (art. 9)", "low"]]), today: TODAY });
   assert.ok(confirmed.patched.length <= 1);
   assert.deepEqual(changed.patched[0].fields, ["retention_period"]);
   assert.equal(real.loadMaster(master).records.find((r) => r.country_code === law.country_code && r.law_name === law.law_name).retention_period, "Five years (art. 9) (unconfirmed)");
