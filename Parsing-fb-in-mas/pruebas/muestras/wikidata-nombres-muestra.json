@@ -1,0 +1,6 @@
+[
+{"type":"item","id":"Q2887","labels":{"en":{"language":"en","value":"Santiago"},"es":{"language":"es","value":"Santiago de Chile"}},"claims":{}},
+{"type":"item","id":"Q2","labels":{"es":{"language":"es","value":"Pedro Ficticio"}},"claims":{"P31":[{"mainsnak":{"datavalue":{"value":{"id":"Q5"}}},"rank":"normal"}],"P570":[{"mainsnak":{"datavalue":{"value":{"time":"+1880-01-01T00:00:00Z","precision":9}}},"rank":"normal"}]}},
+{"type":"item","id":"Q3","labels":{"es":{"language":"es","value":"Hija Viva"}},"claims":{"P31":[{"mainsnak":{"datavalue":{"value":{"id":"Q5"}}},"rank":"normal"}]}},
+{"type":"item","id":"Q7","labels":{"es":{"language":"es","value":"Persona Retirada"}},"claims":{"P570":[{"mainsnak":{"datavalue":{"value":{"time":"+1890-01-01T00:00:00Z","precision":9}}},"rank":"normal"}]}}
+]
