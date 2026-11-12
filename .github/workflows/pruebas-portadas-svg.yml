@@ -54,7 +54,11 @@ jobs:
         run: |
           pip install fonttools brotli uharfbuzz resvg-py Pillow
           python3 -m unittest discover -s herramientas/pruebas -v
-          python3 herramientas/kerning.py --comprobar
+          mkdir /tmp/kerning && cd /tmp/kerning
+          npm pack @expo-google-fonts/inter@0.4.2 @expo-google-fonts/source-serif-4@0.4.2
+          for f in *.tgz; do d=${f%.tgz}; mkdir $d; tar xzf $f -C $d; done
+          cd "$GITHUB_WORKSPACE/portadas-svg"
+          python3 herramientas/kerning.py /tmp/kerning --comprobar
           python3 herramientas/pruebas/visual.py
 
       - name: Análisis estático (PHPStan)

@@ -24,6 +24,7 @@ sys.path.insert(0, str(AQUI))
 import ambiguedad  # noqa: E402
 import auditoria  # noqa: E402
 import categorias  # noqa: E402
+import cercania  # noqa: E402
 import cobertura  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
