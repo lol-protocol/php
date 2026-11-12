@@ -143,9 +143,11 @@ p.subtitulo { color: var(--text-secondary); margin: 0 0 20px; }
     gap: 16px;
 }
 
-.grid-kpis { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
-.grid-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
-.grid-segmentos { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+/* min(ancho, 100%): en una pantalla mas angosta que la columna, la columna se achica a lo que hay en vez
+   de empujar toda la pagina hacia un lado (con 360px fijos, un telefono de 360px ya desbordaba). */
+.grid-kpis { grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); }
+.grid-segmentos { grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); }
 
 /* ---------- Filtros ---------- */
 form.filtros {
@@ -387,7 +389,7 @@ footer {
 /* ---------- Ficha de cliente ---------- */
 .perfil-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
     gap: 14px;
 }
 
