@@ -33,6 +33,11 @@ class PersonName {
 
     private static final Map<String, Integer> LANGUAGE_SURNAME_COUNT = Map.of("es", 2, "pt", 2);
 
+    /** How many leading words of a comma-less name are the surname in this language. */
+    static int surnameCount(String language) {
+        return language == null ? 1 : LANGUAGE_SURNAME_COUNT.getOrDefault(language, 1);
+    }
+
     public PersonName(String fullName) {
         this(fullName, null);
     }
@@ -218,7 +223,7 @@ class MultiLanguagePhoneDirectoryParser {
 
     private static final Map<String, List<String>> STREET_MARKERS =
         Map.ofEntries(
-            Map.entry("es", List.of("calle", "avenida", "av", "plaza", "pasaje", "camino", "ruta", "carrera")),
+            Map.entry("es", List.of("calle", "c/", "avenida", "av", "plaza", "pasaje", "camino", "ruta", "carrera")),
             Map.entry("en", List.of("street", "st", "avenue", "ave", "road", "rd", "drive", "dr",
                                     "lane", "ln", "boulevard", "blvd", "circle", "cir")),
             Map.entry("fr", List.of("rue", "avenue", "allée", "place", "boulevard", "bd", "cours", "square")),
@@ -427,12 +432,24 @@ class MultiLanguagePhoneDirectoryParser {
                     processBuffer(new ArrayList<>(buffer), bufferStart, language);
                     buffer.clear();
                 }
-            } else {
-                if (buffer.isEmpty()) {
-                    bufferStart = i + 1;
-                }
-                buffer.add(line);
+                continue;
             }
+
+            // Most historical directories print one full record per line; try that shape first.
+            String[] single = splitSingleLine(line, language);
+            if (single != null) {
+                if (!buffer.isEmpty()) {
+                    processBuffer(new ArrayList<>(buffer), bufferStart, language);
+                    buffer.clear();
+                }
+                finalizeEntry(single[0], single[1], single[2], businessTypeOfName(single[0], language), i + 1, language);
+                continue;
+            }
+
+            if (buffer.isEmpty()) {
+                bufferStart = i + 1;
+            }
+            buffer.add(line);
         }
 
         if (!buffer.isEmpty()) {
@@ -442,11 +459,77 @@ class MultiLanguagePhoneDirectoryParser {
         return entries;
     }
 
-    private boolean isStreetLine(String line, String language, boolean afterName) {
-        return extractStreet(line, language) != null || (afterName && afterNameStreet(line, language) != null);
+    // ---- Street rules: same as the PHP StreetRules and StreetFallback ----
+
+    private static final int UNICODE_CI = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS;
+    private static final Pattern LETTER = Pattern.compile("\\p{L}");
+    private static final Pattern DIGIT = Pattern.compile("\\d");
+
+    // English street words that also open a name ("Dr. SMITH, John", "St. Mary Lodge"): they only make a
+    // street when the line has a digit or they are not its first word.
+    private static final Map<String, List<String>> NAME_ABBREVIATIONS = Map.of("en", List.of("dr", "st"));
+
+    private static final Map<String, Pattern> STREET_PATTERNS = new HashMap<>();
+
+    // Not \b: "c/" ends in a slash, and \b only sees a word edge after a letter or digit.
+    private static String bounded(List<String> words) {
+        List<String> quoted = new ArrayList<>();
+        words.forEach(w -> quoted.add(Pattern.quote(w)));
+        return "(?<![\\p{L}\\d])(?:" + String.join("|", quoted) + ")(?![\\p{L}\\d])";
     }
 
-    // Same as the PHP afterNameStreet(): a dwelling line in English, a number-last street without a street word elsewhere.
+    /** The street words of the language; the abbreviations of NAME_ABBREVIATIONS are not in it. */
+    private static synchronized Pattern streetPattern(String language) {
+        return STREET_PATTERNS.computeIfAbsent(language, lang -> {
+            List<String> abbreviations = NAME_ABBREVIATIONS.getOrDefault(lang, List.of());
+            List<String> markers = new ArrayList<>(STREET_MARKERS.getOrDefault(lang, STREET_MARKERS.get("en")));
+            markers.removeAll(abbreviations);
+            StringBuilder regex = new StringBuilder(bounded(markers));
+            for (String suffix : STREET_SUFFIXES.getOrDefault(lang, List.of())) {
+                regex.append("|(?:").append(Pattern.quote(suffix)).append(")\\b");
+            }
+            return Pattern.compile(regex.toString(), UNICODE_CI);
+        });
+    }
+
+    private boolean hasStreetWord(String line, String language) {
+        if (streetPattern(language).matcher(line).find()) {
+            return true;
+        }
+        List<String> abbreviations = NAME_ABBREVIATIONS.get(language);
+        if (abbreviations == null) {
+            return false;
+        }
+        Matcher m = Pattern.compile(bounded(abbreviations), UNICODE_CI).matcher(line);
+        boolean hasDigit = DIGIT.matcher(line).find();
+        while (m.find()) {
+            if (hasDigit || !line.substring(0, m.start()).trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isOnlyAPhone(String text, String language) {
+        String trimmed = text.trim();
+        Matcher m = phoneRegex(language).matcher(trimmed);
+        return !trimmed.isEmpty() && m.find() && m.group().equals(trimmed);
+    }
+
+    /** A street by its street word, or a house number followed only by words (StreetRules::strong). */
+    private String extractStreet(String line, String language) {
+        if (hasStreetWord(line, language)) {
+            return line;
+        }
+        // A line that is only a phone number is not also a street, even though it starts with digits.
+        if (isOnlyAPhone(line, language)) {
+            return null;
+        }
+        String trimmed = line.trim();
+        return NUMBER_FIRST_STREET.matcher(trimmed).matches() ? trimmed : null;
+    }
+
+    // Same as the PHP StreetRules::afterName: a dwelling line in English, a number-last street without a street word elsewhere.
     private String afterNameStreet(String line, String language) {
         String trimmed = line.trim();
         if ("en".equals(language)) {
@@ -455,79 +538,342 @@ class MultiLanguagePhoneDirectoryParser {
         return NUMBER_LAST_LANGUAGES.contains(language) && NUMBER_LAST_STREET.matcher(trimmed).matches() ? trimmed : null;
     }
 
-    // Same rule as the PHP splitRecords(): once a record has its name and street, a line that is neither
-    // street nor phone starts the next record if a street follows it right away.
-    private void processBuffer(List<String> lines, int startLine, String language) {
-        int start = 0;
-        boolean hasName = false;
-        boolean hasStreet = false;
-        for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-            boolean isPhone = phoneIn(line, language) != null;
-            boolean isStreet = isStreetLine(line, language, hasName);
-            if (hasName && hasStreet && !isPhone && !isStreet
-                    && i + 1 < lines.size() && isStreetLine(lines.get(i + 1), language, true)) {
-                processRecord(lines.subList(start, i), startLine + start, language);
-                start = i;
-                hasStreet = false;
-                continue;
+    private static final Pattern WORD_START = Pattern.compile("[\\p{L}\\p{M}'’.\\-]*$");
+
+    /**
+     * Where the street starts before a number-last house number ("GARCÍA Juan Calle Mayor" gives the offset of
+     * "Calle"): the first street word after the first two words, which belong to the name. -1 if none.
+     */
+    private static int streetWordOffset(String text, String language) {
+        Matcher m = streetPattern(language).matcher(text);
+        while (m.find()) {
+            Matcher start = WORD_START.matcher(text.substring(0, m.start()));
+            int offset = m.start() - (start.find() ? start.group().length() : 0);
+            String before = text.substring(0, offset).trim();
+            if (!before.isEmpty() && before.split("\\s+").length >= 2) {
+                return offset;
             }
-            hasName = hasName || (!isPhone && !isStreet);
-            hasStreet = hasStreet || isStreet;
         }
-        processRecord(lines.subList(start, lines.size()), startLine + start, language);
+        return -1;
     }
 
-    private void processRecord(List<String> lines, int startLine, String language) {
-        Map<String, String> data = new HashMap<>();
-        data.put("name", null);
-        data.put("phone", null);
-        data.put("street", null);
-        data.put("country", countryCode);
+    // ---- Businesses: same as the PHP ENTITY_TYPE_MARKERS and businessTypeOfName() ----
 
-        for (String line : lines) {
-            String phone = phoneIn(line, language);
-            if (data.get("phone") == null && phone != null) {
-                data.put("phone", phone);
-            }
+    private static final Map<String, List<String>> ENTITY_TYPE_MARKERS = Map.of(
+        "es", List.of("spa", "srl", "sa", "ltda", "inc", "comercial", "empresa", "negocio", "tienda", "restaurante",
+            "hotel", "banco", "farmacia", "hospital", "hnos", "hermanos", "hijos", "sucesores", "taller", "ferretería",
+            "clínica", "panadería", "carnicería", "librería", "zapatería"),
+        "en", List.of("corp", "inc", "ltd", "llc", "company", "store", "shop", "restaurant", "hotel", "bank",
+            "pharmacy", "hospital", "sons", "bros", "associates", "enterprises", "industries", "services", "plumbing",
+            "garage", "bakery", "hardware", "clinic", "pub", "motel"),
+        "fr", List.of("sarl", "sas", "eirl", "eurl", "magasin", "restaurant", "hôtel", "banque", "pharmacie",
+            "hôpital", "frères", "boulangerie", "boucherie", "garage", "clinique", "quincaillerie", "cabinet"),
+        "pt", List.of("ltda", "lda", "eireli", "empresa", "comercial", "loja", "padaria", "restaurante", "hotel",
+            "banco", "farmácia", "hospital", "irmãos", "filhos", "oficina", "clínica", "mercearia", "ferragens",
+            "sapataria"),
+        "de", List.of("gmbh", "ag", "kg", "ohg", "apotheke", "bäckerei", "gasthaus", "restaurant", "hotel", "bank",
+            "krankenhaus", "gebrüder", "söhne", "werkstatt", "metzgerei", "tischlerei", "klinik"),
+        "it", List.of("srl", "spa", "snc", "sas", "negozio", "panificio", "trattoria", "ristorante", "albergo",
+            "hotel", "banca", "farmacia", "ospedale", "fratelli", "figli", "officina", "macelleria", "ferramenta",
+            "pasticceria", "pizzeria", "clinica")
+    );
 
-            String street = extractStreet(line, language);
-            // Same rule as the PHP StreetFallback::numberLast, and only once the name is read:
-            // "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
-            if (street == null && data.get("name") != null) {
-                street = afterNameStreet(line, language);
-            }
-            if (data.get("street") == null && street != null) {
-                data.put("street", street);
-            }
+    private static final Map<String, Pattern> ENTITY_PATTERNS = new HashMap<>();
+    private static final Pattern GIVEN_NAME_PART = Pattern.compile("\\p{L}[\\p{L}'. -]*");
 
-            if (data.get("name") == null && street == null) {
-                // A phone line can also carry the name ("SMITH, John ........ 555-123-4567").
-                String name = phone == null ? line : nameBesidePhone(repairOcrDigits(line), phone);
-                if (name != null) {
-                    data.put("name", name);
-                }
+    private static synchronized String extractBusinessType(String line, String language) {
+        if (!ENTITY_TYPE_MARKERS.containsKey(language)) {
+            return null;
+        }
+        Pattern p = ENTITY_PATTERNS.computeIfAbsent(language, lang -> {
+            List<String> quoted = new ArrayList<>();
+            ENTITY_TYPE_MARKERS.get(lang).forEach(w -> quoted.add(Pattern.quote(w)));
+            return Pattern.compile("\\b(" + String.join("|", quoted) + ")\\b", UNICODE_CI);
+        });
+        Matcher m = p.matcher(line);
+        return m.find() ? m.group(1).toLowerCase() : null;
+    }
+
+    /**
+     * The business word in a name, unless the name is "<that word>, <given name>": "BANK, Henry" is a person
+     * whose surname happens to be a business word.
+     */
+    private static String businessTypeOfName(String name, String language) {
+        String type = extractBusinessType(name, language);
+        if (type == null) {
+            return null;
+        }
+        String[] parts = name.split(",", -1);
+        boolean isSurnameAndGivenName = parts.length == 2
+            && parts[0].trim().toLowerCase().equals(type)
+            && GIVEN_NAME_PART.matcher(parts[1].trim()).matches()
+            && extractBusinessType(parts[1], language) == null;
+        return isSurnameAndGivenName ? null : type;
+    }
+
+    // ---- One record per line: same as the PHP SingleLineEntrySplitter ----
+
+    private static final Pattern FIELD_DELIMITER =
+        Pattern.compile("\\s*,\\s*|(?:\\.\\s?){2,}|\\t+|[ ]{2,}|[-\\u2013\\u2014]{2,}");
+    private static final String LEADERS = "[ \\t\\n\\r\\x00\\x0B.,\\-\\u2013\\u2014]+";
+
+    private static String trimLeaders(String text) {
+        return text.replaceAll("^" + LEADERS + "|" + LEADERS + "$", "");
+    }
+
+    /** {name, street, phone} when the line is a whole record, else null. */
+    private String[] splitSingleLine(String line, String language) {
+        // A phone the scan misread ("555-l23-4567") would otherwise pass for a street starting with a digit.
+        line = repairOcrDigits(line);
+        List<String> fields = new ArrayList<>();
+        for (String field : FIELD_DELIMITER.split(line)) {
+            if (!field.isEmpty()) {
+                fields.add(field.trim());
             }
         }
 
-        if (data.get("name") == null || data.get("street") == null) {
+        if (fields.size() >= 2) {
+            String[] result = splitByFields(fields, language);
+            if (result != null) {
+                return result;
+            }
+        }
+
+        String[] result = splitByDigitBoundary(line, language);
+        if (result == null) {
+            return null;
+        }
+        // "SMITH John" -> "SMITH, John": directories are surname-first even without a comma.
+        String[] words = result[0].trim().split("\\s+");
+        int surnameCount = PersonName.surnameCount(language);
+        if (!result[0].contains(",") && words.length > surnameCount) {
+            result[0] = String.join(" ", Arrays.copyOfRange(words, 0, surnameCount))
+                + ", " + String.join(" ", Arrays.copyOfRange(words, surnameCount, words.length));
+        }
+        return result;
+    }
+
+    private String[] splitByFields(List<String> fields, String language) {
+        String phone = null;
+        for (String field : fields) {
+            if (isOnlyAPhone(field, language)) {
+                phone = field;
+                break;
+            }
+        }
+
+        int streetIndex = -1;
+        for (int i = 0; i < fields.size() && streetIndex < 0; i++) {
+            if (!fields.get(i).equals(phone) && hasStreetWord(fields.get(i), language)) {
+                streetIndex = i;
+            }
+        }
+        // No field reads as a street by its marker word: the first one that at least starts with a digit.
+        for (int i = 0; i < fields.size() && streetIndex < 0; i++) {
+            if (!fields.get(i).equals(phone) && !fields.get(i).isEmpty() && Character.isDigit(fields.get(i).charAt(0))) {
+                streetIndex = i;
+            }
+        }
+
+        // A street field is only meaningful with a name field before it in the same record.
+        if (streetIndex <= 0) {
+            return null;
+        }
+
+        List<String> nameFields = new ArrayList<>();
+        for (int i = 0; i < streetIndex; i++) {
+            if (!fields.get(i).equals(phone)) {
+                nameFields.add(fields.get(i));
+            }
+        }
+        String name = String.join(", ", nameFields);
+        String street = fields.get(streetIndex);
+        // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
+        if (!LETTER.matcher(name).find() || street.isEmpty()) {
+            return null;
+        }
+        return new String[] {name, street, phone};
+    }
+
+    private String[] splitByDigitBoundary(String line, String language) {
+        String rest = line;
+        String phone = null;
+        Matcher m = phoneRegex(language).matcher(line);
+        if (m.find()) {
+            phone = m.group();
+            // A line that opens with the phone ("555-123-4567 ext. 12") is the end of a record, not a whole one.
+            if (!LETTER.matcher(line.substring(0, m.start())).find()) {
+                return null;
+            }
+            rest = line.substring(0, m.start()) + line.substring(m.end());
+        }
+
+        Matcher digit = DIGIT.matcher(rest);
+        if (!digit.find()) {
+            return null;
+        }
+
+        String name = trimLeaders(rest.substring(0, digit.start()));
+        String street = trimLeaders(rest.substring(digit.start()));
+
+        if (NUMBER_LAST_LANGUAGES.contains(language) && !name.isEmpty()) {
+            int cut = streetWordOffset(name, language);
+            if (cut > 0 && cut < name.length()) {
+                street = name.substring(cut) + " " + street;
+                name = trimLeaders(name.substring(0, cut));
+            }
+        }
+
+        if (name.isEmpty() || street.isEmpty()) {
+            return null;
+        }
+        // With no phone and no street word, a bare "word + number" is too ambiguous to split out.
+        if (phone == null && !hasStreetWord(street, language)) {
+            return null;
+        }
+        return new String[] {name, street, phone};
+    }
+
+    // ---- Blocks of lines: same as the PHP BlockReader and LineFacts ----
+
+    /** What one line of a block says, worked out once. */
+    private final class LineFacts {
+        final String line;
+        final String phone;
+        final String strongStreet;
+        final String afterNameStreet;
+        final String nameBesidePhone;
+
+        LineFacts(String line, String language) {
+            this.line = line;
+            this.phone = phoneIn(line, language);
+            this.strongStreet = extractStreet(line, language);
+            this.afterNameStreet = MultiLanguagePhoneDirectoryParser.this.afterNameStreet(line, language);
+            this.nameBesidePhone = phone == null ? null : MultiLanguagePhoneDirectoryParser.nameBesidePhone(repairOcrDigits(line), phone);
+        }
+
+        String street(boolean afterName) {
+            return strongStreet != null ? strongStreet : (afterName ? afterNameStreet : null);
+        }
+
+        String name(boolean afterName) {
+            if (street(afterName) != null) {
+                return null;
+            }
+            return phone == null ? line : nameBesidePhone;
+        }
+    }
+
+    private static final Pattern ENDS_WITH_HYPHENATED_LETTER = Pattern.compile("\\p{L}-$");
+    private static final Pattern STARTS_WITH_LETTER = Pattern.compile("^\\p{L}");
+
+    /**
+     * Reads a block into records, looking at each line once.
+     * - A word the scan broke with a hyphen ("WASHING- / TON, George") is put back together.
+     * - Once a record has its name and street, a line that gives a name (a line of text, or a name beside a
+     *   phone) starts the next record if a street follows it right away.
+     * - A street without a street word gives way to a later one with it.
+     * - Any other line of text after the name is a note, read for a business word.
+     */
+    private void processBuffer(List<String> lines, int startLine, String language) {
+        List<String> joined = new ArrayList<>();
+        List<Integer> origin = new ArrayList<>();
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            int last = joined.size() - 1;
+            if (last >= 0 && ENDS_WITH_HYPHENATED_LETTER.matcher(joined.get(last)).find()
+                    && STARTS_WITH_LETTER.matcher(line).find()) {
+                joined.set(last, joined.get(last).substring(0, joined.get(last).length() - 1) + line);
+                continue;
+            }
+            joined.add(line);
+            origin.add(i);
+        }
+
+        List<LineFacts> facts = new ArrayList<>();
+        for (String line : joined) {
+            facts.add(new LineFacts(line, language));
+        }
+
+        int offset = 0;
+        String name = null;
+        String phone = null;
+        String street = null;
+        String noteType = null;
+        boolean strongStreet = false;
+
+        for (int i = 0; i < facts.size(); i++) {
+            LineFacts fact = facts.get(i);
+            boolean hasName = name != null;
+
+            if (hasName && street != null && fact.name(true) != null
+                    && i + 1 < facts.size() && facts.get(i + 1).street(true) != null) {
+                finalizeBlockRecord(name, street, phone, noteType, startLine + offset, language);
+                offset = origin.get(i);
+                name = null;
+                phone = null;
+                street = null;
+                noteType = null;
+                strongStreet = false;
+                hasName = false;
+            }
+
+            if (phone == null && fact.phone != null) {
+                phone = fact.phone;
+            }
+
+            String lineStreet = fact.street(hasName);
+            if (lineStreet != null && (street == null || (!strongStreet && fact.strongStreet != null))) {
+                street = lineStreet;
+                strongStreet = fact.strongStreet != null;
+            }
+
+            String lineName = fact.name(hasName);
+            if (!hasName && lineName != null) {
+                name = lineName;
+            } else if (hasName && fact.phone == null && lineStreet == null && noteType == null) {
+                noteType = extractBusinessType(fact.line, language);
+            }
+        }
+
+        finalizeBlockRecord(name, street, phone, noteType, startLine + offset, language);
+    }
+
+    // Only the name and the notes can say it is a business, never the street.
+    private void finalizeBlockRecord(String name, String street, String phone, String noteType, int startLine, String language) {
+        String type = name != null ? businessTypeOfName(name, language) : null;
+        finalizeEntry(name, street, phone, type != null ? type : noteType, startLine, language);
+    }
+
+    /** Stores the record as a person or as a business, or as an error when it has no name or street. */
+    private void finalizeEntry(String name, String street, String phone, String businessType, int startLine, String language) {
+        Map<String, String> data = new HashMap<>();
+        data.put("name", name);
+        data.put("phone", phone);
+        data.put("street", street);
+        data.put("country", countryCode);
+
+        if (name == null || name.isEmpty() || street == null || street.isEmpty()) {
             Map<String, Object> error = new HashMap<>();
             error.put("line", startLine);
             error.put("reason", "Missing name or street");
-            error.put("data", new HashMap<>(data));
+            error.put("data", data);
             errors.add(error);
             return;
         }
 
         try {
             Map<String, Object> entry = new HashMap<>();
-            entry.put("type", "natural");
-            entry.put("person_name", new PersonName(data.get("name"), language).toMap());
-            entry.put("location", new GeoLocation(
-                data.get("country"),
-                data.get("street")
-            ).toMap());
-            entry.put("phone", data.get("phone"));
+            if (businessType != null) {
+                entry.put("type", "juridical");
+                entry.put("business_name", name);
+                entry.put("business_type", businessType);
+            } else {
+                entry.put("type", "natural");
+                entry.put("person_name", new PersonName(name, language).toMap());
+            }
+            entry.put("location", new GeoLocation(countryCode, street).toMap());
+            entry.put("phone", phone);
             entry.put("record_date", LocalDateTime.now().toString());
             entry.put("language", language);
             entries.add(entry);
@@ -535,28 +881,9 @@ class MultiLanguagePhoneDirectoryParser {
             Map<String, Object> error = new HashMap<>();
             error.put("line", startLine);
             error.put("reason", e.getMessage());
-            error.put("data", new HashMap<>(data));
+            error.put("data", data);
             errors.add(error);
         }
-    }
-
-    private String extractStreet(String line, String language) {
-        Pattern markers = wordsPattern(
-            STREET_MARKERS.getOrDefault(language, STREET_MARKERS.get("en")),
-            STREET_SUFFIXES.getOrDefault(language, List.of())
-        );
-        if (markers.matcher(line).find()) {
-            return line;
-        }
-
-        // A line that is only a phone number is not also a street, even though it starts with digits.
-        if (line.matches("[\\d\\s().+-]+")) {
-            return null;
-        }
-
-        // Same rule as the PHP StreetFallback: the whole line is a house number followed only by words.
-        String trimmed = line.trim();
-        return NUMBER_FIRST_STREET.matcher(trimmed).matches() ? trimmed : null;
     }
 
     public List<Map<String, Object>> getEntries() {
@@ -660,8 +987,9 @@ public class PhoneDirectoryParser {
 
         // Display entries
         for (Map<String, Object> entry : entries) {
+            // A business has no person_name: it carries business_name and business_type.
             Map<String, Object> person = (Map<String, Object>) entry.get("person_name");
-            System.out.println("\nName: " + person.get("formatted"));
+            System.out.println("\nName: " + (person != null ? person.get("formatted") : entry.get("business_name")));
             System.out.println("Phone: " + entry.get("phone"));
         }
 

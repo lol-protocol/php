@@ -102,6 +102,37 @@ class ParserTest(unittest.TestCase):
         self.assertEqual('it', parser.detect_language("ROSSI, Luigi\nVia Roma 10"))
         self.assertEqual('en', parser.detect_language("SMITH, John\n12 Via Lane"))
 
+    def test_a_business_is_its_own_kind_of_entry(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("ACME Corp\n10 Main Street\n555-123-4567", 'en')
+
+        self.assertEqual('juridical', entries[0]['type'])
+        self.assertEqual('ACME Corp', entries[0]['business_name'])
+        self.assertEqual('corp', entries[0]['business_type'])
+        self.assertNotIn('person_name', entries[0])
+
+    def test_a_surname_that_is_a_business_word_is_still_a_person(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("BANK, Henry\n3 Oak Road", 'en')
+
+        self.assertEqual('natural', entries[0]['type'])
+
+    def test_one_record_per_line_with_and_without_separators(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content(
+            "SMITH John 12 Oak St ........ 555-111-2222\nGARCÍA LÓPEZ Juan Calle Mayor 12 555-123-4567", 'es')
+
+        self.assertEqual(2, len(entries))
+        self.assertEqual('GARCÍA LÓPEZ, Juan', entries[1]['person_name']['full_name'])
+        self.assertEqual('Calle Mayor 12', entries[1]['location']['street'])
+
+    def test_dr_opening_a_name_is_not_a_street(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("Dr. SMITH, John\n12 Oak Street", 'en')
+
+        self.assertEqual('Dr. SMITH, John', entries[0]['person_name']['full_name'])
+
+    def test_a_street_without_a_street_word_gives_way_to_one_with_it(self):
+        entries = MultiLanguagePhoneDirectoryParser().parse_content("Luis Sur\nDivisión 2\nCalle Mayor 5", 'es')
+
+        self.assertEqual('Calle Mayor 5', entries[0]['location']['street'])
+
     def test_separator_lines_split_entries(self):
         entries = MultiLanguagePhoneDirectoryParser().parse_content("Ann Jones\n5 Pine Rd\n- - -\nBob Lee\n7 Oak St")
 

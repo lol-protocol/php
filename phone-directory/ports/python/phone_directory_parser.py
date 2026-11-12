@@ -131,7 +131,7 @@ class MultiLanguagePhoneDirectoryParser:
     """Parse phone directories in multiple languages."""
 
     STREET_MARKERS = {
-        'es': ['calle', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
+        'es': ['calle', 'c/', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
         'en': ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln',
                'boulevard', 'blvd', 'circle', 'cir'],
         'fr': ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
@@ -281,124 +281,324 @@ class MultiLanguagePhoneDirectoryParser:
                 if buffer:
                     self._process_buffer(buffer, buffer_start, language)
                     buffer = []
-            else:
-                if not buffer:
-                    buffer_start = line_number
-                buffer.append(line)
+                continue
+
+            # Most historical directories print one full record per line; try that shape first.
+            single = self._split_single_line(line, language)
+            if single is not None:
+                if buffer:
+                    self._process_buffer(buffer, buffer_start, language)
+                    buffer = []
+                name, street, phone = single
+                self._finalize(name, street, phone, self._business_type_of_name(name, language), line_number, language)
+                continue
+
+            if not buffer:
+                buffer_start = line_number
+            buffer.append(line)
 
         if buffer:
             self._process_buffer(buffer, buffer_start, language)
 
         return self.entries
 
-    def _extract_street(self, line: str, language: str) -> Optional[str]:
-        """Extract street address from line, matching street words only as whole words."""
-        pattern = self._words_pattern(
-            self.STREET_MARKERS.get(language, self.STREET_MARKERS['en']),
-            self.STREET_SUFFIXES.get(language, [])
-        )
-        if pattern.search(line):
-            return line
-
-        # A line that is only a phone number is not also a street, even though it starts with digits.
-        if re.fullmatch(r'[\d\s().+-]+', line):
-            return None
-
-        # Same rule as the PHP StreetFallback: the whole line is a house number followed only by words.
-        word = r"[^\W\d_](?:[^\W\d_]|['’.\-])*"
-        trimmed = line.strip()
-        return trimmed if re.fullmatch(rf"\d{{1,5}}[A-Za-z]?\s+{word}(?:\s+{word})*", trimmed) else None
+    # ---- Street rules: same as the PHP StreetRules and StreetFallback ----
 
     # Languages that write the house number after the street ("Travessa do Carmo 5").
     NUMBER_LAST_LANGUAGES = ('es', 'pt', 'it', 'de')
 
+    # English street words that also open a name ("Dr. SMITH, John", "St. Mary Lodge"): they only make a
+    # street when the line has a digit or they are not its first word.
+    NAME_ABBREVIATIONS = {'en': ['dr', 'st']}
+
+    _WORD = r"[^\W\d_](?:[^\W\d_]|['’.\-])*"
+    _NUMBER_FIRST = re.compile(rf"\d{{1,5}}[A-Za-z]?\s+{_WORD}(?:\s+{_WORD})*")
+    _NUMBER_LAST = re.compile(rf"{_WORD}(?:\s+{_WORD})*\s+\d{{1,5}}[A-Za-z]?")
     DWELLING = re.compile(r"(?:apt|apartment|unit|flat|suite|ste|bldg|building)\.?\s*#?\d{1,5}[a-z]?"
                           r"(?:\s+[^\W_](?:[^\W_]|['’.\-#])*)*", re.IGNORECASE)
 
+    _street_patterns = {}
+
+    @classmethod
+    def _bounded(cls, words: List[str]) -> str:
+        # Not \b: "c/" ends in a slash, and \b only sees a word edge after a letter or digit.
+        return r'(?<![^\W_])(?:' + '|'.join(re.escape(w) for w in words) + r')(?![^\W_])'
+
+    @classmethod
+    def _street_pattern(cls, language: str) -> 're.Pattern':
+        """The street words of `language`; the abbreviations of NAME_ABBREVIATIONS are not in it."""
+        if language not in cls._street_patterns:
+            markers = cls.STREET_MARKERS.get(language, cls.STREET_MARKERS['en'])
+            abbreviations = cls.NAME_ABBREVIATIONS.get(language, [])
+            parts = [cls._bounded([m for m in markers if m not in abbreviations])]
+            parts.extend('(?:' + re.escape(s) + r')\b' for s in cls.STREET_SUFFIXES.get(language, []))
+            cls._street_patterns[language] = re.compile('|'.join(parts), re.IGNORECASE)
+        return cls._street_patterns[language]
+
+    def _has_street_word(self, line: str, language: str) -> bool:
+        if self._street_pattern(language).search(line):
+            return True
+        abbreviations = self.NAME_ABBREVIATIONS.get(language)
+        if not abbreviations:
+            return False
+        matches = list(re.finditer(self._bounded(abbreviations), line, re.IGNORECASE))
+        if not matches:
+            return False
+        return bool(re.search(r'\d', line)) or any(line[:m.start()].strip() for m in matches)
+
+    def _is_only_a_phone(self, text: str, language: str) -> bool:
+        trimmed = text.strip()
+        match = self.phone_regex(language).search(trimmed) if trimmed else None
+        return bool(match) and match.group() == trimmed
+
+    def _extract_street(self, line: str, language: str) -> Optional[str]:
+        """A street by its street word, or a house number followed only by words (StreetRules::strong)."""
+        if self._has_street_word(line, language):
+            return line
+        # A line that is only a phone number is not also a street, even though it starts with digits.
+        if self._is_only_a_phone(line, language):
+            return None
+        trimmed = line.strip()
+        return trimmed if self._NUMBER_FIRST.fullmatch(trimmed) else None
+
     def _after_name_street(self, line: str, language: str) -> Optional[str]:
-        """Same rules as the PHP afterNameStreet(): in English a dwelling line ("Apt 4 Building 7", as
-        StreetFallback::dwelling); in a number-last language only words, then the house number."""
+        """An address that only counts once the name is read (StreetRules::afterName): in English a
+        dwelling line ("Apt 4 Building 7"); in a number-last language only words, then the house number."""
+        trimmed = line.strip()
         if language == 'en':
-            trimmed = line.strip()
             return trimmed if self.DWELLING.fullmatch(trimmed) else None
         if language not in self.NUMBER_LAST_LANGUAGES:
             return None
-        word = r"[^\W\d_](?:[^\W\d_]|['’.\-])*"
-        trimmed = line.strip()
-        return trimmed if re.fullmatch(rf"{word}(?:\s+{word})*\s+\d{{1,5}}[A-Za-z]?", trimmed) else None
+        return trimmed if self._NUMBER_LAST.fullmatch(trimmed) else None
 
-    def _is_street_line(self, line: str, language: str, after_name: bool) -> bool:
-        return bool(self._extract_street(line, language) or (after_name and self._after_name_street(line, language)))
+    def _street_word_offset(self, text: str, language: str) -> Optional[int]:
+        """Where the street starts before a number-last house number ("GARCÍA Juan Calle Mayor" gives the
+        offset of "Calle"): the first street word after the first two words, which belong to the name."""
+        for match in self._street_pattern(language).finditer(text):
+            offset = match.start()
+            offset -= len(re.search(r"(?:[^\W\d_]|['’.\-])*$", text[:offset]).group())
+            if len(text[:offset].split()) >= 2:
+                return offset
+        return None
+
+    # ---- Businesses: same as the PHP ENTITY_TYPE_MARKERS and businessTypeOfName() ----
+
+    ENTITY_TYPE_MARKERS = {
+        'es': ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel',
+               'banco', 'farmacia', 'hospital', 'hnos', 'hermanos', 'hijos', 'sucesores', 'taller', 'ferretería',
+               'clínica', 'panadería', 'carnicería', 'librería', 'zapatería'],
+        'en': ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy',
+               'hospital', 'sons', 'bros', 'associates', 'enterprises', 'industries', 'services', 'plumbing', 'garage',
+               'bakery', 'hardware', 'clinic', 'pub', 'motel'],
+        'fr': ['sarl', 'sas', 'eirl', 'eurl', 'magasin', 'restaurant', 'hôtel', 'banque', 'pharmacie', 'hôpital',
+               'frères', 'boulangerie', 'boucherie', 'garage', 'clinique', 'quincaillerie', 'cabinet'],
+        'pt': ['ltda', 'lda', 'eireli', 'empresa', 'comercial', 'loja', 'padaria', 'restaurante', 'hotel', 'banco',
+               'farmácia', 'hospital', 'irmãos', 'filhos', 'oficina', 'clínica', 'mercearia', 'ferragens', 'sapataria'],
+        'de': ['gmbh', 'ag', 'kg', 'ohg', 'apotheke', 'bäckerei', 'gasthaus', 'restaurant', 'hotel', 'bank',
+               'krankenhaus', 'gebrüder', 'söhne', 'werkstatt', 'metzgerei', 'tischlerei', 'klinik'],
+        'it': ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel',
+               'banca', 'farmacia', 'ospedale', 'fratelli', 'figli', 'officina', 'macelleria', 'ferramenta',
+               'pasticceria', 'pizzeria', 'clinica'],
+    }
+
+    def _extract_business_type(self, line: str, language: str) -> Optional[str]:
+        markers = self.ENTITY_TYPE_MARKERS.get(language)
+        if not markers:
+            return None
+        match = re.search(r'\b(' + '|'.join(re.escape(m) for m in markers) + r')\b', line, re.IGNORECASE)
+        return match.group(1).lower() if match else None
+
+    def _business_type_of_name(self, name: str, language: str) -> Optional[str]:
+        """The business word in a name, unless the name is "<that word>, <given name>": "BANK, Henry" is a
+        person whose surname happens to be a business word."""
+        business_type = self._extract_business_type(name, language)
+        if business_type is None:
+            return None
+        parts = [p.strip() for p in name.split(',')]
+        is_surname_and_given_name = (
+            len(parts) == 2
+            and parts[0].lower() == business_type
+            and re.fullmatch(r"[^\W\d_](?:[^\W\d_]|['. -])*", parts[1]) is not None
+            and self._extract_business_type(parts[1], language) is None
+        )
+        return None if is_surname_and_given_name else business_type
+
+    # ---- One record per line: same as the PHP SingleLineEntrySplitter ----
+
+    _FIELD_DELIMITER = re.compile(r'\s*,\s*|(?:\.\s?){2,}|\t+|[ ]{2,}|[-–—]{2,}')
+    _LEADERS = ' \t\n\r\0\x0b.,-–—'
+
+    def _split_single_line(self, line: str, language: str) -> Optional[Tuple[str, str, Optional[str]]]:
+        """(name, street, phone) when the line is a whole record, else None."""
+        # A phone the scan misread ("555-l23-4567") would otherwise pass for a street starting with a digit.
+        line = self.repair_ocr_digits(line)
+        fields = [f.strip() for f in self._FIELD_DELIMITER.split(line) if f != '']
+
+        if len(fields) >= 2:
+            result = self._split_by_fields(fields, language)
+            if result is not None:
+                return result
+
+        result = self._split_by_digit_boundary(line, language)
+        if result is None:
+            return None
+        name, street, phone = result
+        words = name.split()
+        surname_count = PersonName.LANGUAGE_SURNAME_COUNT.get(language, 1)
+        # "SMITH John" -> "SMITH, John": directories are surname-first even without a comma.
+        if ',' not in name and len(words) > surname_count:
+            name = ' '.join(words[:surname_count]) + ', ' + ' '.join(words[surname_count:])
+        return name, street, phone
+
+    def _split_by_fields(self, fields: List[str], language: str) -> Optional[Tuple[str, str, Optional[str]]]:
+        phone = next((f for f in fields if self._is_only_a_phone(f, language)), None)
+
+        street_index = next((i for i, f in enumerate(fields) if f != phone and self._has_street_word(f, language)), None)
+        # No field reads as a street by its marker word: the first one that at least starts with a digit.
+        if street_index is None:
+            street_index = next((i for i, f in enumerate(fields) if f != phone and re.match(r'\d', f)), None)
+
+        # A street field is only meaningful with a name field before it in the same record.
+        if not street_index:
+            return None
+
+        name = ', '.join(f for f in fields[:street_index] if f != phone)
+        street = fields[street_index]
+        # A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
+        if not re.search(r'[^\W\d_]', name) or street == '':
+            return None
+        return name, street, phone
+
+    def _split_by_digit_boundary(self, line: str, language: str) -> Optional[Tuple[str, str, Optional[str]]]:
+        rest = line
+        phone = None
+        match = self.phone_regex(language).search(line)
+        if match:
+            phone = match.group()
+            # A line that opens with the phone ("555-123-4567 ext. 12") is the end of a record, not a whole one.
+            if not re.search(r'[^\W\d_]', line[:match.start()]):
+                return None
+            rest = line[:match.start()] + line[match.end():]
+
+        tail = re.search(r'\d.*', rest, re.DOTALL)
+        if not tail:
+            return None
+
+        name = rest[:tail.start()].strip(self._LEADERS)
+        street = tail.group().strip(self._LEADERS)
+
+        if language in self.NUMBER_LAST_LANGUAGES and name:
+            cut = self._street_word_offset(name, language)
+            if cut is not None and 0 < cut < len(name):
+                street = name[cut:] + ' ' + street
+                name = name[:cut].strip(self._LEADERS)
+
+        if not name or not street:
+            return None
+        # With no phone and no street word, a bare "word + number" is too ambiguous to split out.
+        if phone is None and not self._has_street_word(street, language):
+            return None
+        return name, street, phone
+
+    # ---- Blocks of lines: same as the PHP BlockReader and LineFacts ----
 
     def _process_buffer(self, lines: List[str], start_line: int, language: str):
-        """Same rule as the PHP splitRecords(): once a record has its name and street, a line that is
-        neither street nor phone starts the next record if a street follows it right away."""
-        start = 0
-        has_name = has_street = False
+        """Reads a block into records, looking at each line once.
+
+        - A word the scan broke with a hyphen ("WASHING- / TON, George") is put back together.
+        - Once a record has its name and street, a line that gives a name (a line of text, or a name beside
+          a phone) starts the next record if a street follows it right away.
+        - A street without a street word gives way to a later one with it.
+        - Any other line of text after the name is a note, read for a business word.
+        """
+        joined, origin = [], []
         for i, line in enumerate(lines):
-            is_phone = self.phone_in(line, language) is not None
-            is_street = self._is_street_line(line, language, has_name)
-            if has_name and has_street and not is_phone and not is_street \
-                    and i + 1 < len(lines) and self._is_street_line(lines[i + 1], language, True):
-                self._process_record(lines[start:i], start_line + start, language)
-                start = i
-                has_street = False
+            if joined and re.search(r'[^\W\d_]-$', joined[-1]) and re.match(r'[^\W\d_]', line):
+                joined[-1] = joined[-1][:-1] + line
                 continue
-            has_name = has_name or (not is_phone and not is_street)
-            has_street = has_street or is_street
-        self._process_record(lines[start:], start_line + start, language)
+            joined.append(line)
+            origin.append(i)
 
-    def _process_record(self, lines: List[str], start_line: int, language: str):
-        """Process one record's lines into an entry."""
-        data = {
-            'name': None,
-            'phone': None,
-            'street': None,
-            'country': self.country_code,
-        }
-
-        for line in lines:
+        facts = []
+        for line in joined:
             phone = self.phone_in(line, language)
-            if not data['phone'] and phone:
-                data['phone'] = phone
-
-            street = self._extract_street(line, language)
-            # Only once the name is read: "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
-            if street is None and data['name']:
-                street = self._after_name_street(line, language)
-            if not data['street'] and street:
-                data['street'] = street
-
-            if not data['name'] and not street:
-                # A phone line can also carry the name ("SMITH, John ........ 555-123-4567").
-                name = line if phone is None else self.name_beside_phone(self.repair_ocr_digits(line), phone)
-                if name is not None:
-                    data['name'] = name
-
-        if not data['name'] or not data['street']:
-            self.errors.append({
-                'line': start_line,
-                'reason': 'Missing name or street',
-                'data': data
+            facts.append({
+                'line': line,
+                'phone': phone,
+                'strong': self._extract_street(line, language),
+                'after_name': self._after_name_street(line, language),
+                'beside': None if phone is None else self.name_beside_phone(self.repair_ocr_digits(line), phone),
             })
+
+        def street_of(fact, after_name):
+            return fact['strong'] or (fact['after_name'] if after_name else None)
+
+        def name_of(fact, after_name):
+            if street_of(fact, after_name) is not None:
+                return None
+            return fact['line'] if fact['phone'] is None else fact['beside']
+
+        def empty(offset):
+            return {'offset': offset, 'name': None, 'phone': None, 'street': None, 'notes': []}
+
+        records = []
+        record = empty(0)
+        strong_street = False
+        for i, fact in enumerate(facts):
+            has_name = record['name'] is not None
+
+            if has_name and record['street'] is not None and name_of(fact, True) is not None \
+                    and i + 1 < len(facts) and street_of(facts[i + 1], True) is not None:
+                records.append(record)
+                record = empty(origin[i])
+                strong_street = False
+                has_name = False
+
+            if record['phone'] is None and fact['phone'] is not None:
+                record['phone'] = fact['phone']
+
+            street = street_of(fact, has_name)
+            if street is not None and (record['street'] is None or (not strong_street and fact['strong'] is not None)):
+                record['street'] = street
+                strong_street = fact['strong'] is not None
+
+            name = name_of(fact, has_name)
+            if not has_name and name is not None:
+                record['name'] = name
+            elif has_name and fact['phone'] is None and street is None:
+                record['notes'].append(fact['line'])
+        records.append(record)
+
+        for record in records:
+            # Only the name and the notes can say it is a business, never the street.
+            business_type = self._business_type_of_name(record['name'], language) if record['name'] else None
+            for note in record['notes']:
+                business_type = business_type or self._extract_business_type(note, language)
+            self._finalize(record['name'], record['street'], record['phone'], business_type,
+                           start_line + record['offset'], language)
+
+    def _finalize(self, name: Optional[str], street: Optional[str], phone: Optional[str],
+                  business_type: Optional[str], start_line: int, language: str):
+        """Stores the record as a person or as a business, or as an error when it has no name or street."""
+        data = {'name': name, 'phone': phone, 'street': street, 'country': self.country_code}
+        if not name or not street:
+            self.errors.append({'line': start_line, 'reason': 'Missing name or street', 'data': data})
             return
 
         try:
             entry = {
-                'type': 'natural',
-                'person_name': PersonName(data['name'], language).to_dict(),
-                'location': GeoLocation(data['country'], data['street']).to_dict(),
-                'phone': data['phone'],
+                'location': GeoLocation(self.country_code, street).to_dict(),
+                'phone': phone,
                 'record_date': datetime.now().isoformat(),
-                'language': language
+                'language': language,
             }
+            if business_type is not None:
+                entry.update({'type': 'juridical', 'business_name': name, 'business_type': business_type})
+            else:
+                entry.update({'type': 'natural', 'person_name': PersonName(name, language).to_dict()})
             self.entries.append(entry)
         except Exception as e:
-            self.errors.append({
-                'line': start_line,
-                'reason': str(e),
-                'data': data
-            })
+            self.errors.append({'line': start_line, 'reason': str(e), 'data': data})
 
 
 class PhoneDirectoryCatalog:
