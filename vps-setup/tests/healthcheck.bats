@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 load helpers
 
-setup() { setup_stubs; setup_system_stubs; }
+setup() { setup_stubs; setup_system_stubs; export NGINX_DIR="$BATS_TEST_TMPDIR/nginx"; mkdir -p "$NGINX_DIR/sites-enabled"; }
 
 hc() { run bash "$VPS_DIR/08-healthcheck.sh" "$@"; }
 
@@ -96,4 +96,38 @@ hc() { run bash "$VPS_DIR/08-healthcheck.sh" "$@"; }
     [[ "$output" == *"[OK]    Webmin solo escucha en localhost"* ]]
     WEBMIN_ADDR="[::]:10000" hc ejemplo.com
     [[ "$output" == *"[AVISO] Webmin escucha en una direccion publica"* ]]
+}
+
+# ---- Sin certificado todavia: PENDIENTE, no FALLA ----
+vhost_http() { printf '# vps-setup: 03-landing\nserver { listen 80; server_name ejemplo.com; }\n' > "$NGINX_DIR/sites-enabled/ejemplo.com"; }
+
+@test "un vhost sin HTTPS se trata como --sin-ssl solo: nada de HTTPS/certificado/headers y el 443 queda PENDIENTE" {
+    vhost_http
+    REDIR=200 NOPORT="443" hc ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [[ "$output" == *"[PENDIENTE] puerto 443"* ]]
+    [[ "$output" == *"[PENDIENTE] HTTPS, certificado y headers"* ]] && [[ "$output" == *"04-setup-ssl.sh ejemplo.com"* ]]
+    [[ "$output" != *"[FALLA]"* ]] && [[ "$output" != *"Certificado:"* ]]
+    [[ "$output" == *"0 falla(s), 0 aviso(s)"* ]]
+}
+
+@test "sin certificado y con el DNS sin apuntar aqui: PENDIENTE, y HTTP se prueba en este servidor" {
+    vhost_http
+    DIGIP=1.2.3.4 REDIR=200 hc ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [[ "$output" == *"[PENDIENTE] DNS de ejemplo.com"* ]]
+    [[ "$output" == *"responde 200 (probado en este servidor)"* ]]
+}
+
+@test "con HTTPS en el vhost, el DNS mal sigue siendo FALLA y el 443 caido tambien" {
+    printf 'server { listen 443 ssl; ssl_certificate /x; }\n' > "$NGINX_DIR/sites-enabled/ejemplo.com"
+    DIGIP=1.2.3.4 NOPORT="443" hc ejemplo.com
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"[FALLA] DNS de ejemplo.com"* ]] && [[ "$output" == *"[FALLA] nada escucha en el puerto 443"* ]]
+}
+
+@test "--sin-ssl explicito: el HTTP caido sigue siendo FALLA aunque lo demas este pendiente" {
+    REDIR=502 DIGIP=1.2.3.4 hc ejemplo.com --sin-ssl
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"[FALLA] http://ejemplo.com responde '502'"* ]]
 }
