@@ -173,15 +173,16 @@ final class Mortalidad
     /**
      * Años que le quedaban por vivir, en promedio, a quien tenía esa edad en ese país y ese año. Es una cifra de
      * período (la mortalidad de la década que contiene `$anio`) de toda la población, no de una generación ni de
-     * una persona. Null si no hay dato: país sin serie, año fuera de 1800-2009, o una edad que no está (hoy solo
-     * 0 y 5; 5 solo para ambos sexos). No interpola entre edades.
+     * una persona. Null si no hay dato: país sin serie, año fuera de 1800-2009, o una edad que no está (hoy 0, 5,
+     * 15, 30, 45 y 60; todas menos la 0 solo para ambos sexos). No interpola entre edades. De los 15 años en adelante
+     * la cifra es modelada, no medida.
      */
     public function esperanzaRestante(string $codigo, int $anio, int $edad = 0, string $sexo = 'T'): ?float
     {
         return $this->periodoQueCubre($codigo, $anio, $edad, $sexo)[0] ?? null;
     }
 
-    /** Probabilidad de llegar con vida a esa edad (de 0 a 1), en la década que contiene `$anio`; hoy solo la edad 5. */
+    /** Probabilidad de llegar con vida a esa edad (de 0 a 1), en la década que contiene `$anio`; se guarda desde la edad 5. */
     public function supervivencia(string $codigo, int $anio, int $edad = 5, string $sexo = 'T'): ?float
     {
         return $this->periodoQueCubre($codigo, $anio, $edad, $sexo)[1] ?? null;

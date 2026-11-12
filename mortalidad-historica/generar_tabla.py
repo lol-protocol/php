@@ -12,6 +12,7 @@ import sys
 from collections import Counter
 
 import consultas
+import modelo
 
 from comun import (
     CALIDADES, CONFIANZAS, DATOS, ESTADOS, GRUPOS_CAUSA, HERENCIAS, IDIOMAS, INICIOS, POR_IDIOMA, RAIZ,
@@ -27,6 +28,7 @@ COLUMNAS = {
     "hereditarias": ["id", "nombre_spa", "nombre_eng", "herencia", "omim", "frecuencia_mayor_en",
                      "inicio_tipico", "nota", "estado", "fuente"],
     "hitos_registro": ["codigo", "tipo", "desde", "nota", "estado", "fuente"],
+    "modelo_logcuadratico": ["edad", "ax", "bx", "cx", "vx"],
     "londres_muertes": ["anio", "muertes_totales", "muertes_viruela", "estado", "fuente"],
     "esperanza_vida": ["codigo", "desde", "hasta", "sexo", "edad", "esperanza_restante",
                        "supervivencia_hasta_edad", "incertidumbre_baja", "incertidumbre_alta", "calidad",
@@ -242,6 +244,20 @@ def validar_hitos(error, paises):
     return filas
 
 
+def validar_modelo(error):
+    filas = _leer("modelo_logcuadratico", error)
+    if filas is None:
+        return []
+    if [f["edad"] for f in filas] != [str(e) for e in modelo.EDADES]:
+        error("modelo_logcuadratico", None, f"las edades deben ser {modelo.EDADES}")
+    for i, f in enumerate(filas, start=2):
+        for columna in ("ax", "bx", "cx", "vx"):
+            valor = _numero(f[columna])
+            if valor is None or valor != valor or abs(valor) > 100:
+                error("modelo_logcuadratico", i, f"{columna} «{f[columna]}» no es un número razonable")
+    return filas
+
+
 def validar_londres(error):
     filas = _leer("londres_muertes", error)
     if filas is None:
@@ -315,6 +331,7 @@ def validar():
         "hereditarias": validar_hereditarias(error),
         "hitos_registro": validar_hitos(error, paises),
         "londres_muertes": validar_londres(error),
+        "modelo_logcuadratico": validar_modelo(error),
         "esperanza_vida": validar_esperanza_vida(error, paises),
     }
     datos["causas_modernas"] = leer_csv(DATOS / "causas_modernas.csv")[1]

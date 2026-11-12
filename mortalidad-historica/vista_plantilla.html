@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mortalidad histórica: causas de defunción, epidemias y esperanza de vida</title>
 <style>
-:root { color-scheme: light dark; --fondo: #fbfaf7; --texto: #1d1b16; --suave: #5f5a4f; --borde: #d9d4c7; --acento: #1f5f8b; --aviso-fondo: #fff4d6; --aviso-borde: #c9a227; --linea1: #1f5f8b; --linea2: #b5541c; --linea3: #5a7d2a; }
-@media (prefers-color-scheme: dark) { :root { --fondo: #17160f; --texto: #ece8dc; --suave: #b0aa9a; --borde: #403d31; --acento: #7fb6dd; --aviso-fondo: #332b0f; --aviso-borde: #a88a22; --linea1: #7fb6dd; --linea2: #e8935a; --linea3: #9cc65a; } }
+:root { color-scheme: light dark; --fondo: #fbfaf7; --texto: #1d1b16; --suave: #5f5a4f; --borde: #d9d4c7; --acento: #1f5f8b; --aviso-fondo: #fff4d6; --aviso-borde: #c9a227; --linea1: #1f5f8b; --linea2: #b5541c; --linea3: #5a7d2a; --linea4: #8a4fa0; --linea5: #7a6a1f; }
+@media (prefers-color-scheme: dark) { :root { --fondo: #17160f; --texto: #ece8dc; --suave: #b0aa9a; --borde: #403d31; --acento: #7fb6dd; --aviso-fondo: #332b0f; --aviso-borde: #a88a22; --linea1: #7fb6dd; --linea2: #e8935a; --linea3: #9cc65a; --linea4: #c79ae0; --linea5: #d6c15a; } }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--fondo); color: var(--texto); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
 main { max-width: 62rem; margin: 0 auto; padding: 1rem; }
@@ -34,6 +34,8 @@ svg { width: 100%; height: auto; max-height: 22rem; }
 svg text { fill: currentColor; font-size: 11px; }
 svg .eje { stroke: var(--borde); }
 section[hidden] { display: none; }
+.leyenda { list-style: none; display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; padding: 0; margin: .3rem 0 1rem; font-size: .85rem; }
+.leyenda li { display: flex; align-items: center; gap: .4rem; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 </style>
 </head>
@@ -79,7 +81,7 @@ section[hidden] { display: none; }
   </div>
   <div id="esp-grafico" role="img" aria-label="Gráfico de la esperanza de vida por década"></div>
   <div id="esp-tabla"></div>
-  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien cumplía 5 años podía esperar vivir bastante más (la línea «A los 5 años» es la edad media a la que llegaba). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. Cifras de período de toda la población, no de una generación ni de una persona.</p>
+  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien sobrevivía a la infancia podía esperar vivir bastante más (las líneas de arriba son la edad media a la que llegaba quien cumplía cada edad). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. <strong>De los 15 años en adelante las cifras son modeladas</strong> (modelo log-cuadrático de Wilmoth et al.), no medidas, con calidad C en todas las épocas. Cifras de período de toda la población, no de una generación ni de una persona.</p>
 </section>
 
 <section id="londres" hidden>
@@ -198,14 +200,23 @@ section[hidden] { display: none; }
     for (var x = Math.ceil(xmin / paso) * paso; x <= xmax; x += paso) {
       svg.appendChild(s('text', { x: X(x), y: H - 8, 'text-anchor': 'middle' }, String(x)));
     }
-    series.forEach(function (serie, k) {
+    series.forEach(function (serie) {
       var trozos = [], actual = [];
       serie.puntos.forEach(function (p) { if (p === null) { if (actual.length) trozos.push(actual); actual = []; } else actual.push(X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)); });
       if (actual.length) trozos.push(actual);
       trozos.forEach(function (t) { svg.appendChild(s('polyline', { points: t.join(' '), fill: 'none', style: 'stroke:' + serie.color, 'stroke-width': 2, 'stroke-dasharray': serie.trazo || 'none' })); });
-      svg.appendChild(s('text', { x: ml + 8 + k * 230, y: mt + 10, style: 'fill:' + serie.color }, '— ' + serie.nombre));
     });
     return svg;
+  }
+
+  function leyenda(series) {
+    var ul = h('ul', { 'class': 'leyenda' });
+    series.forEach(function (serie) {
+      var muestra = s('svg', { viewBox: '0 0 32 10', width: 32, height: 10, 'aria-hidden': 'true', style: 'width:2rem;height:.65rem;flex:none' });
+      muestra.appendChild(s('line', { x1: 1, x2: 31, y1: 5, y2: 5, 'stroke-width': 2, 'stroke-dasharray': serie.trazo || 'none', style: 'stroke:' + serie.color }));
+      ul.appendChild(h('li', {}, muestra, serie.nombre));
+    });
+    return ul;
   }
 
   // ---- Esperanza de vida
@@ -216,24 +227,39 @@ section[hidden] { display: none; }
     var codigo = $('esp-pais').value, sexo = $('esp-sexo').value;
     var tabla = limpiar($('esp-tabla')), graf = limpiar($('esp-grafico'));
     if (!codigo) return;
-    var filas = [], al5 = [], nacer = [];
+    var EDADES = [5, 15, 30, 45, 60];
+    var filas = [], nacer = [], porEdad = {};
+    EDADES.forEach(function (x) { porEdad[x] = []; });
     for (var d = 1800; d <= 2000; d += 10) {
       var e0 = m.esperanzaRestante(codigo, d, 0, sexo);
-      var e5 = sexo === 'T' ? m.esperanzaRestante(codigo, d, 5, 'T') : null;
-      var l5 = sexo === 'T' ? m.supervivencia(codigo, d, 5, 'T') : null;
       nacer.push(e0 === null ? null : [d + 5, e0]);
-      al5.push(e5 === null ? null : [d + 5, 5 + e5]);
-      if (e0 !== null) filas.push([d, e0, e5, l5]);
+      var fila = { decada: d, e0: e0, e: {}, l5: null };
+      EDADES.forEach(function (x) {
+        var e = sexo === 'T' ? m.esperanzaRestante(codigo, d, x, 'T') : null;
+        fila.e[x] = e;
+        porEdad[x].push(e === null ? null : [d + 5, x + e]);
+      });
+      fila.l5 = sexo === 'T' ? m.supervivencia(codigo, d, 5, 'T') : null;
+      if (e0 !== null) filas.push(fila);
     }
     if (!filas.length) { tabla.appendChild(h('p', { 'class': 'vacio' }, 'No hay datos de este país' + (sexo === 'T' ? '.' : ' para ese sexo (hay desde 1950).'))); return; }
     var series = [{ nombre: 'Al nacer', color: 'var(--linea1)', puntos: nacer }];
-    if (sexo === 'T') series.push({ nombre: 'Edad media a la que llegaba quien cumplía 5', color: 'var(--linea2)', trazo: '5 4', puntos: al5 });
+    if (sexo === 'T') {
+      var estilos = [['var(--linea2)', '5 4'], ['var(--linea3)', '2 3'], ['var(--linea4)', '8 3 2 3'], ['var(--linea5)', '1 4']];
+      [[5, 0], [15, 1], [45, 2], [60, 3]].forEach(function (p) {
+        series.push({ nombre: 'Edad media de muerte de quien cumplía ' + p[0], color: estilos[p[1]][0], trazo: estilos[p[1]][1], puntos: porEdad[p[0]] });
+      });
+    }
     graf.appendChild(grafico(series, 1800, 2010, 100));
+    graf.appendChild(leyenda(series));
     var cuerpo = h('tbody');
+    var num = function (v) { return h('td', { 'class': 'num' }, v === null ? '' : v.toFixed(1)); };
     filas.forEach(function (f) {
-      cuerpo.appendChild(h('tr', {}, h('td', {}, f[0] + '–' + (f[0] + 9)), h('td', { 'class': 'num' }, f[1].toFixed(1)), h('td', { 'class': 'num' }, f[2] === null ? '' : f[2].toFixed(1)), h('td', { 'class': 'num' }, f[3] === null ? '' : Math.round(f[3] * 100) + ' %'), h('td', {}, f[0] < 1950 ? 'estimación (C)' : 'ONU (B)')));
+      cuerpo.appendChild(h('tr', {}, h('td', {}, f.decada + '–' + (f.decada + 9)), num(f.e0), num(f.e[5]), num(f.e[15]), num(f.e[30]), num(f.e[45]), num(f.e[60]),
+        h('td', { 'class': 'num' }, f.l5 === null ? '' : Math.round(f.l5 * 100) + ' %'), h('td', {}, f.decada < 1950 ? 'estimación (C)' : (sexo === 'T' ? 'ONU (B); desde los 15, modelo (C)' : 'ONU (B)'))));
     });
-    tabla.appendChild(h('table', {}, h('caption', { 'class': 'sr' }, 'Esperanza de vida por década'), h('thead', {}, h('tr', {}, h('th', {}, 'Década'), h('th', { 'class': 'num' }, 'Al nacer'), h('th', { 'class': 'num' }, 'Restante a los 5'), h('th', { 'class': 'num' }, 'Llega a los 5'), h('th', {}, 'Calidad'))), cuerpo));
+    tabla.appendChild(h('table', {}, h('caption', { 'class': 'sr' }, 'Esperanza de vida restante por década y edad'),
+      h('thead', {}, h('tr', {}, h('th', {}, 'Década'), h('th', { 'class': 'num' }, 'Al nacer'), h('th', { 'class': 'num' }, 'Restante a los 5'), h('th', { 'class': 'num' }, 'a los 15'), h('th', { 'class': 'num' }, 'a los 30'), h('th', { 'class': 'num' }, 'a los 45'), h('th', { 'class': 'num' }, 'a los 60'), h('th', { 'class': 'num' }, 'Llega a los 5'), h('th', {}, 'Calidad'))), cuerpo));
   }
   $('esp-pais').addEventListener('change', esperanza);
   $('esp-sexo').addEventListener('change', esperanza);
