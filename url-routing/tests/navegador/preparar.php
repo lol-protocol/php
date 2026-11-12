@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Deja la base de genealogia lista para ejecutar.mjs: tres pedidos de retiro en los tres estados que muestra la
+ * cola de /0/3/ (uno esperando, con marcas del filtro; uno retirado; uno resuelto y ya depurado).
+ *
+ *   php tests/navegador/preparar.php        (con DB_DSN_GENEALOGY en el entorno, ya migrada)
+ */
+
+use App\Repositories\Genealogy\RetiroRepository;
+use App\Support\Database;
+
+require __DIR__ . '/../../vendor/autoload.php';
+
+$repo = new RetiroRepository(Database::forSite('genealogy'));
+
+$repo->crear('persona', 6128473105, 'me_nombra', "Dice que estafó a mi familia: es falso.\nPido que lo retiren.", 'ana@example.com', 'acusación de delito');
+
+$retirado = $repo->crear('grupo', 582317, 'terminos', 'Copia un texto ajeno.', 'beto@example.com');
+$repo->decidir($retirado, 'retirar', 'Se retira.');
+
+$depurado = $repo->crear('registro', 81372002, 'otro', 'Ya está resuelto.', 'carla@example.com');
+$repo->decidir($depurado, 'rechazar', 'El acta es pública.');
+$repo->depurar(12, strtotime('+13 months'));
+
+echo "pedidos: 3\n";
