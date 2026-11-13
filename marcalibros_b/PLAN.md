@@ -276,3 +276,10 @@ Qué semilla sale en cada pieza (parecido a otra, motivo visible en miniatura, t
 - Los hashes de referencia de los JPG ya no son de píxeles sino de la geometría de la escena (primitivas, semilla y grano): no dependen de Pillow. Con esto, Pillow y numpy solo afectan a los bytes de los JPG; fonttools sigue afectando a los SVG con texto.
 - `qa.pixeles_de_motivo` queda `@deprecated` (comparaba imágenes ya dibujadas).
 - Como cambia la elección, las 1000 piezas se regeneraron: mismas obras, paletas y composiciones asignadas, otras semillas en 46 piezas y las que dependen de ellas dentro de su movimiento.
+
+## Gutenberg: prellenado listo para una sesión con red (hecho)
+`python generator/verificar_gutenberg.py --csv` (necesita gutendex.com) escribe `catalog/revision/gutenberg-prellenado.csv` con lo que Gutendex permite afirmar, listo para `gutenberg_manual.py aplicar`:
+- obra: `verificado` con el id del libro si autor (nombre y años) y título (español u original) coinciden con una sola edición, o con varias del mismo título (se toma la más descargada); con títulos distintos queda en blanco y la nota dice `ambiguo`;
+- tema «de» otra obra: hereda el id de la obra base si esta quedó verificada (`modelo.obra_base`; «Frankenstein» → «Frankenstein o el moderno Prometeo»);
+- autor sin libros y muerto después de 1955: `no_disponible` (Realismo mágico); Gutendex no da ids de autor, así que los demás quedan en blanco.
+La columna `nota` dice de dónde sale cada fila. Probado solo con respuestas simuladas. Pasos en una sesión con red: ejecutar el prellenado, mirar el CSV, aplicarlo y reconstruir (`build.py --all`).
