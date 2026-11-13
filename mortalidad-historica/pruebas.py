@@ -562,6 +562,42 @@ class ConsultasEpidemiasYLondresTest(unittest.TestCase):
             self.assertIsNone(consultas.exceso_de_muertes_londres(99))  # el año no está
 
 
+class VistaTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.errores, cls.datos = g.validar()
+        cls.html = g.vista(cls.datos)
+
+    def test_vista_html_esta_al_dia(self):
+        self.assertEqual((comun.RAIZ / "vista.html").read_text(encoding="utf-8"), self.html)
+
+    def test_no_quedan_marcas_sin_rellenar(self):
+        for marca in ("/*MODULO*/", "/*TABLAS*/", "/*IDIOMAS*/"):
+            self.assertNotIn(marca, self.html)
+
+    def test_incrusta_el_modulo_js_tal_cual(self):
+        self.assertIn((comun.RAIZ / "js" / "mortalidad.js").read_text(encoding="utf-8").rstrip("\n"), self.html)
+
+    def test_los_datos_incrustados_son_los_de_los_csv(self):
+        tablas = g.tablas_para_la_vista(self.datos)
+        self.assertEqual(len(tablas["esperanza_vida"]["filas"]), len(self.datos["esperanza_vida"]))
+        self.assertEqual(len(tablas["epidemias"]["filas"]), len(self.datos["epidemias"]))
+        self.assertEqual(tablas["epidemias"]["columnas"], g.COLUMNAS["epidemias"])
+        for fila in tablas["esperanza_vida"]["filas"]:
+            self.assertEqual(len(fila), len(tablas["esperanza_vida"]["columnas"]))
+
+    def test_un_cierre_de_script_en_los_datos_no_rompe_la_pagina(self):
+        datos = {**self.datos, "causas_historicas": self.datos["causas_historicas"] + [
+            {"termino": "</script><b>", "idioma": "spa", "causa_id": "vejez", "confianza": "alta", "desde": "",
+             "hasta": "", "nota": "", "estado": "borrador", "fuente": ""}]}
+        html = g.vista(datos)
+        self.assertEqual(html.lower().count("</script>"), 2)  # solo los dos de la plantilla
+
+    def test_la_vista_no_carga_nada_de_afuera(self):
+        for prohibido in ("http://", "https://", "src=\"", "<link", "@import"):
+            self.assertNotIn(prohibido, self.html.replace("http://www.w3.org/2000/svg", ""), prohibido)
+
+
 class ConsultasEsperanzaTest(unittest.TestCase):
     def test_cualquier_anio_de_la_decada_da_lo_mismo(self):
         self.assertEqual(consultas.esperanza_restante("SE", 1900), consultas.esperanza_restante("SE", 1909))

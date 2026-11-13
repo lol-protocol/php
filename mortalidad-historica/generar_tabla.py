@@ -7,8 +7,11 @@
 Solo biblioteca estándar. Las reglas de cada CSV están en `validar_*`; el significado de cada columna,
 en el README.
 """
+import json
 import sys
 from collections import Counter
+
+import consultas
 
 from comun import (
     CALIDADES, CONFIANZAS, DATOS, ESTADOS, GRUPOS_CAUSA, HERENCIAS, IDIOMAS, INICIOS, POR_IDIOMA, RAIZ,
@@ -29,6 +32,10 @@ COLUMNAS = {
                        "supervivencia_hasta_edad", "incertidumbre_baja", "incertidumbre_alta", "calidad",
                        "estado", "fuente"],
 }
+VECTORES = DATOS / "vectores.json"
+VISTA = RAIZ / "vista.html"
+VISTA_PLANTILLA = RAIZ / "vista_plantilla.html"
+MODULO_JS = RAIZ / "js" / "mortalidad.js"
 INICIO_RESUMEN = "<!-- resumen: lo escribe generar_tabla.py; no editar a mano -->"
 FIN_RESUMEN = "<!-- fin del resumen -->"
 
@@ -399,6 +406,86 @@ def tabla_epidemias(datos):
     return "\n".join(lineas) + "\n"
 
 
+def vectores(datos):
+    """datos/vectores.json: las respuestas de consultas.py a un conjunto fijo de entradas.
+
+    Los ports (php/ y js/) tienen que dar exactamente lo mismo; sus pruebas lo comprueban. Si cambias una
+    consulta de consultas.py, regenera con `python3 generar_tabla.py` y sigue el cambio en los dos ports.
+    """
+    historicas = datos["causas_historicas"]
+    # Cada término como está, en mayúsculas, y unos casos con tildes, ß y vocales árabes.
+    causa = []
+    entradas = [(f["termino"], f["idioma"]) for f in historicas]
+    entradas += [(f["termino"].upper(), f["idioma"]) for f in historicas]
+    entradas += [("APOPLEJÍA", "spa"), ("apoplejia", "spa"), ("  Cólera   morbo ", "spa"), ("Schlagfluß", "deu"),
+                 ("سُلّ", "ara"), ("mal de ojo", "spa"), ("tisis", "eng"), ("", "spa")]
+    for termino, idioma in dict.fromkeys(entradas):
+        respuesta = [[r["causa_id"], r["confianza"], r["cie10"]] for r in consultas.causa_moderna(termino, idioma)]
+        causa.append([termino, idioma, respuesta])
+    anios = [1, 541, 600, 1000, 1348, 1485, 1520, 1600, 1650, 1665, 1700, 1721, 1750, 1793, 1832, 1849, 1870,
+             1886, 1889, 1900, 1916, 1918, 1950, 1957, 1968, 2000]
+    epidemias = []
+    for anio in anios:
+        for region in (None, "Europa", "América", "Asia"):
+            for pais in (None, "CL", "GB", "IT", "IE"):
+                ids = [e["id"] for e in consultas.epidemias_en(anio, region, pais)]
+                epidemias.append([anio, region, pais, ids])
+    paises = sorted(p["codigo"] for p in datos["paises"])
+    esperanza = []
+    for codigo in ("CL", "SE", "ES", "GB", "JP", "NG", "AD", "XK", "ZZ"):
+        for anio in (1799, 1800, 1855, 1900, 1949, 1950, 1985, 2009, 2010):
+            for edad in (0, 5, 15):
+                for sexo in ("T", "F", "M"):
+                    esperanza.append([codigo, anio, edad, sexo, consultas.esperanza_restante(codigo, anio, edad, sexo),
+                                      consultas.supervivencia(codigo, anio, edad, sexo)])
+    londres = []
+    for anio in range(1620, 1911):
+        m = consultas.muertes_londres(anio)
+        londres.append([anio, None if m is None else m["totales"], None if m is None else m["viruela"],
+                        consultas.exceso_de_muertes_londres(anio)])
+    return {
+        "causa_moderna": causa,
+        "epidemias_en": epidemias,
+        "region_de": [[c, consultas.region_de(c)] for c in paises + ["ZZ", "gb", ""]],
+        "hitos_de": [[c, [[h["tipo"], int(h["desde"])] for h in consultas.hitos_de(c)]] for c in ("CL", "FR", "GB", "ES", "ZZ")],
+        "esperanza": esperanza,
+        "londres": londres,
+    }
+
+
+def tablas_para_la_vista(datos):
+    """Las tablas en columnas que incrusta vista.html: {nombre: {"columnas": [...], "filas": [[...]]}}."""
+    tablas = {}
+    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes"):
+        columnas = COLUMNAS[nombre]
+        tablas[nombre] = {"columnas": columnas, "filas": [[f[c] for c in columnas] for f in datos[nombre]]}
+    # La esperanza de vida es la tabla grande: solo las columnas que usan las consultas, y con números.
+    columnas = ["codigo", "desde", "hasta", "sexo", "edad", "esperanza_restante", "supervivencia_hasta_edad"]
+    tablas["esperanza_vida"] = {"columnas": columnas, "filas": [
+        [f["codigo"], int(f["desde"]), int(f["hasta"]), f["sexo"], int(f["edad"]), float(f["esperanza_restante"]),
+         float(f["supervivencia_hasta_edad"]) if f["supervivencia_hasta_edad"] else None]
+        for f in datos["esperanza_vida"]]}
+    return tablas
+
+
+def vista(datos):
+    """vista.html: la plantilla con el módulo JS y los datos incrustados (un solo archivo, sin servidor)."""
+    def incrustar(valor):
+        # «</» dentro de un <script> cerraría la etiqueta antes de tiempo.
+        return json.dumps(valor, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    idiomas = [[codigo, nombre, propio, rtl] for codigo, (nombre, propio, rtl) in IDIOMAS.items()]
+    html = VISTA_PLANTILLA.read_text(encoding="utf-8")
+    for marca in ("/*MODULO*/", "/*TABLAS*/", "/*IDIOMAS*/"):
+        if html.count(marca) != 1:
+            raise SystemExit(f"vista_plantilla.html debe tener exactamente una marca {marca}")
+    modulo = MODULO_JS.read_text(encoding="utf-8")
+    if "</script" in modulo.lower():
+        raise SystemExit("js/mortalidad.js no puede contener «</script»")
+    return (html.replace("/*MODULO*/", modulo.rstrip("\n"))
+            .replace("/*TABLAS*/", incrustar(tablas_para_la_vista(datos)))
+            .replace("/*IDIOMAS*/", incrustar(idiomas)))
+
+
 def resumen(datos):
     hist = datos["causas_historicas"]
     por_conf = Counter(f["confianza"] for f in hist)
@@ -439,7 +526,9 @@ def con_resumen(readme, datos):
 
 def salida_esperada(datos):
     """{ruta: contenido} de todo lo que genera este script."""
-    esperada = {POR_IDIOMA / "README.md": indice_idiomas(datos), RAIZ / "epidemias.md": tabla_epidemias(datos)}
+    esperada = {POR_IDIOMA / "README.md": indice_idiomas(datos), RAIZ / "epidemias.md": tabla_epidemias(datos),
+                VISTA: vista(datos),
+                VECTORES: json.dumps(vectores(datos), ensure_ascii=False, separators=(",", ":"), sort_keys=True) + "\n"}
     for codigo in IDIOMAS:
         esperada[POR_IDIOMA / f"{codigo}.md"] = pagina_idioma(codigo, datos)
     readme = RAIZ / "README.md"

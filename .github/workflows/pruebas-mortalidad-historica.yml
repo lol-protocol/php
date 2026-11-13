@@ -44,6 +44,55 @@ jobs:
         working-directory: mortalidad-historica
         run: python3 -m unittest -v pruebas
 
+  # El port a PHP (php/src/Mortalidad.php) contra datos/vectores.json, que genera generar_tabla.py con
+  # consultas.py, y PHPStan 2.1 en nivel max sobre php/src. Necesita las extensiones intl y mbstring.
+  php:
+    name: "mortalidad-historica: port a PHP ${{ matrix.php-version }}"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.1", "8.4"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: intl, mbstring
+          coverage: none
+          tools: phpstan:2.1
+
+      - name: Pruebas del port a PHP
+        working-directory: mortalidad-historica/php
+        run: php pruebas/ejecutar.php
+
+      - name: PHPStan
+        working-directory: mortalidad-historica/php
+        run: phpstan analyse --no-progress
+
+  # El port a JavaScript (js/mortalidad.js, que también usa vista.html) contra los mismos vectores.
+  js:
+    name: "mortalidad-historica: port a JavaScript"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Pruebas
+        working-directory: mortalidad-historica
+        run: node --test 'js/*.test.js'
+
   # Solo al lanzarlo a mano (workflow_dispatch): baja las fuentes de la esperanza de vida fijadas por
   # commit, comprueba su SHA-256 contra fuentes.sha256, rehace datos/esperanza_vida.csv y falla si
   # cambia. Baja unos 5 MB y tarda menos de un minuto.
