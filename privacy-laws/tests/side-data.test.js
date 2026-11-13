@@ -10,7 +10,6 @@ import {
   COLUMNS,
   DATA_DIR,
   ROW_CHANGE,
-  SOURCE_COLUMNS,
   diffRecords,
   loadAndValidate,
   loadSide,
@@ -20,6 +19,7 @@ import {
   validateSources,
   withSideData,
   writeCsv,
+  writeSources,
 } from "../scripts/lib/dataset.js";
 import { recordChanges, unrecorded } from "../scripts/record-changes.js";
 
@@ -113,7 +113,7 @@ test("record-changes appends the diff and moves history and sources to a renamed
   writeCsv(join(dir, "changes.csv"), CHANGE_COLUMNS, [
     { date: "2026-01-01", country_code: "AA", law_name: "Old Act", field: "notes", old_value: "", new_value: "x" },
   ]);
-  writeCsv(join(dir, "field_sources.csv"), SOURCE_COLUMNS, [
+  writeSources(master, [
     { country_code: "AA", law_name: "Old Act", field: "notes", url: "https://example.org/", confidence: "low", checked: "2026-01-01" },
   ]);
   const { entries, all, sources: side } = recordChanges({ since: "HEAD", date: "2026-10-15", masterPath: master, gitShow: () => committed });
