@@ -21,12 +21,12 @@ AG,Data Protection Act 2013 (No. 10 of 2013),law_name,f172cc127b,medium,2026-10-
 AG,Data Protection Act 2013 (No. 10 of 2013),jurisdiction,f62cf6e1af,medium,2026-10-25
 AG,Data Protection Act 2013 (No. 10 of 2013),enactment_date,cb771ad605,low,2026-10-25
 AG,Data Protection Act 2013 (No. 10 of 2013),effective_date,cb771ad605,low,2026-10-25
-AG,Data Protection Act 2013 (No. 10 of 2013),scope,f172cc127b,low,2026-10-25
-AG,Data Protection Act 2013 (No. 10 of 2013),applies_to,f172cc127b,low,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),scope,cb771ad605,medium,2026-11-13
+AG,Data Protection Act 2013 (No. 10 of 2013),applies_to,cb771ad605,medium,2026-11-13
 AG,Data Protection Act 2013 (No. 10 of 2013),key_requirements,f172cc127b,medium,2026-10-25
-AG,Data Protection Act 2013 (No. 10 of 2013),retention_period,f172cc127b,low,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),retention_period,cb771ad605,medium,2026-11-13
 AG,Data Protection Act 2013 (No. 10 of 2013),enforcement_authority,f62cf6e1af,medium,2026-10-25
-AG,Data Protection Act 2013 (No. 10 of 2013),penalties_range,bac158bde8,low,2026-10-25
+AG,Data Protection Act 2013 (No. 10 of 2013),penalties_range,cb771ad605,medium,2026-11-13
 AL,,enactment_date,51fe414eb5,high,2026-10-15
 AL,,research_exemption,0b1d18d110,medium,2026-10-21
 AL,,genetic_data,0b1d18d110,medium,2026-10-21
@@ -66,7 +66,7 @@ BB,Data Protection Act 2019 (Act 2019-29),law_name,8e1b1bae8a,medium,2026-10-22
 BB,Data Protection Act 2019 (Act 2019-29),jurisdiction,54534b1c91,medium,2026-10-22
 BB,Data Protection Act 2019 (Act 2019-29),enactment_date,54534b1c91,medium,2026-10-22
 BB,Data Protection Act 2019 (Act 2019-29),effective_date,be0b24a31c,medium,2026-10-22
-BB,Data Protection Act 2019 (Act 2019-29),scope,8e1b1bae8a,low,2026-10-22
+BB,Data Protection Act 2019 (Act 2019-29),scope,8e1b1bae8a,medium,2026-11-13
 BB,Data Protection Act 2019 (Act 2019-29),applies_to,8e1b1bae8a,low,2026-10-22
 BB,Data Protection Act 2019 (Act 2019-29),key_requirements,8e1b1bae8a,medium,2026-10-22
 BB,Data Protection Act 2019 (Act 2019-29),data_categories,7550efc62c,low,2026-10-22
@@ -179,11 +179,11 @@ BY,,genetic_data,84f379a331,medium,2026-10-21
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),law_name,568df4239a,high,2026-10-25
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),jurisdiction,568df4239a,medium,2026-10-25
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),enactment_date,894f511eb1,medium,2026-10-25
-BZ,Data Protection Act 2021 (Act No. 45 of 2021),scope,568df4239a,low,2026-10-25
-BZ,Data Protection Act 2021 (Act No. 45 of 2021),applies_to,568df4239a,low,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),scope,894f511eb1,medium,2026-11-13
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),applies_to,894f511eb1,medium,2026-11-13
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),key_requirements,568df4239a,medium,2026-10-25
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),enforcement_authority,568df4239a,low,2026-10-25
-BZ,Data Protection Act 2021 (Act No. 45 of 2021),penalties_range,568df4239a,low,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),penalties_range,894f511eb1,medium,2026-11-13
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",law_name,53460c442b,high,2026-10-16
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",jurisdiction,d0b5122b50,high,2026-10-16
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",enactment_date,d0b5122b50,high,2026-10-16
@@ -247,8 +247,8 @@ CD,"Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on pers
 CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,law_name,d2ab07cc37,high,2026-10-25
 CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,jurisdiction,acd9dcfb7f,medium,2026-10-25
 CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,enactment_date,d2ab07cc37,high,2026-10-25
-CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,scope,acd9dcfb7f,low,2026-10-25
-CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,applies_to,acd9dcfb7f,low,2026-10-25
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,scope,70740f3902,medium,2026-11-13
+CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,applies_to,70740f3902,medium,2026-11-13
 CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,key_requirements,acd9dcfb7f,medium,2026-10-25
 CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,data_categories,acd9dcfb7f,low,2026-10-25
 CG,Law No. 29-2019 of 10 October 2019 on the Protection of Personal Data,enforcement_authority,70740f3902,medium,2026-10-25
@@ -268,17 +268,17 @@ CL,,key_requirements,7145665d46,high,2026-10-14
 CL,,enforcement_authority,c1713bf2a1,high,2026-10-14
 CL,,penalties_range,b943c1f611,medium,2026-10-14
 CL,,notes,70717a8707,high,2026-10-14
-CM,,genetic_data,0dd0b11adc,low,2026-10-21
+CM,,genetic_data,6d591916a3,medium,2026-11-13
 CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,law_name,6d591916a3,high,2026-10-16
 CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,jurisdiction,71b0912d23,medium,2026-10-16
 CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,enactment_date,dae61add92,high,2026-10-16
 CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,effective_date,4072753211,medium,2026-10-16
-CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,scope,d8bb10fbd8,low,2026-10-16
-CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,applies_to,b9095bf989,low,2026-10-16
-CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,key_requirements,d8bb10fbd8,low,2026-10-16
-CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,data_categories,b9095bf989,low,2026-10-16
+CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,scope,6d591916a3,medium,2026-11-13
+CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,applies_to,6d591916a3,medium,2026-11-13
+CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,key_requirements,d8bb10fbd8,medium,2026-11-13
+CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,data_categories,6d591916a3,medium,2026-11-13
 CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,enforcement_authority,71b0912d23,medium,2026-10-16
-CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,penalties_range,b9095bf989,low,2026-10-16
+CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,penalties_range,6d591916a3,medium,2026-11-13
 CN,,penalties_range,1659a5af91,high,2026-10-14
 CN,,deceased_data,3b08992d0c,high,2026-10-18
 CN,,research_exemption,3f2f51412e,medium,2026-10-18
@@ -393,11 +393,11 @@ GB,,notes,f5d3375750,medium,2026-10-14
 GD,Data Protection Act 2023 (Act No. 1 of 2023),law_name,7b6c1526f1,medium,2026-10-25
 GD,Data Protection Act 2023 (Act No. 1 of 2023),jurisdiction,af2a64d733,low,2026-10-25
 GD,Data Protection Act 2023 (Act No. 1 of 2023),enactment_date,7b6c1526f1,medium,2026-10-25
-GD,Data Protection Act 2023 (Act No. 1 of 2023),scope,a43921c5bf,low,2026-10-25
-GD,Data Protection Act 2023 (Act No. 1 of 2023),applies_to,ee89a4089f,low,2026-10-25
-GD,Data Protection Act 2023 (Act No. 1 of 2023),key_requirements,ee89a4089f,low,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),scope,ee89a4089f,medium,2026-11-13
+GD,Data Protection Act 2023 (Act No. 1 of 2023),applies_to,ee89a4089f,medium,2026-11-13
+GD,Data Protection Act 2023 (Act No. 1 of 2023),key_requirements,ee89a4089f,medium,2026-11-13
 GD,Data Protection Act 2023 (Act No. 1 of 2023),enforcement_authority,af2a64d733,low,2026-10-25
-GD,Data Protection Act 2023 (Act No. 1 of 2023),penalties_range,ee89a4089f,low,2026-10-25
+GD,Data Protection Act 2023 (Act No. 1 of 2023),penalties_range,ee89a4089f,medium,2026-11-13
 GE,,enforcement_authority,908ba5e61f,high,2026-10-15
 GE,,deceased_data,52cd22e6ce,low,2026-10-21
 GE,,research_exemption,09c2d14660,low,2026-10-21
@@ -560,11 +560,11 @@ LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,law_name,56fb
 LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,jurisdiction,553b75564a,low,2026-10-16
 LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,enactment_date,0bbdd22148,medium,2026-10-18
 LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,effective_date,0bbdd22148,medium,2026-10-18
-LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,scope,fb8d88669f,low,2026-10-16
-LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,applies_to,fb8d88669f,low,2026-10-16
-LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,key_requirements,0bbdd22148,low,2026-10-18
+LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,scope,0bbdd22148,medium,2026-11-13
+LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,applies_to,fb8d88669f,high,2026-11-13
+LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,key_requirements,fb8d88669f,medium,2026-11-13
 LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,data_categories,0bbdd22148,low,2026-10-18
-LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,retention_period,fb8d88669f,low,2026-10-16
+LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,retention_period,fb8d88669f,high,2026-11-13
 LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,enforcement_authority,fb8d88669f,low,2026-10-16
 LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,law_name,8f384653b2,high,2026-10-25
 LC,Data Protection Act 2011 (Act No. 11 of 2011) as amended by Act 2 of 2015,jurisdiction,8f384653b2,medium,2026-10-25
@@ -627,26 +627,26 @@ MD,,genetic_data,409a087a03,low,2026-10-21
 ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",law_name,158b6858e7,medium,2026-10-22
 ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",jurisdiction,6f1363a0ce,medium,2026-10-22
 ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",enactment_date,158b6858e7,medium,2026-10-22
-ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",scope,6979105b65,low,2026-10-22
-ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",applies_to,6979105b65,low,2026-10-22
-ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",key_requirements,459f108bc0,low,2026-10-22
+ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",scope,6f1363a0ce,high,2026-11-13
+ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",applies_to,6f1363a0ce,high,2026-11-13
+ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",key_requirements,459f108bc0,medium,2026-11-13
 ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",data_categories,6979105b65,medium,2026-10-22
 ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",enforcement_authority,6f1363a0ce,medium,2026-10-22
-ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",penalties_range,a3161c471b,low,2026-10-22
+ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",penalties_range,6f1363a0ce,high,2026-11-13
 ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",genetic_data,6979105b65,low,2026-10-22
 ME,"Law on Personal Data Protection (Official Gazette of Montenegro 79/08, 70/09, 44/12, 22/17, 77/24)",frameworks,1d20308e7f,medium,2026-10-22
 MG,Law No. 2014-038 on the Protection of Personal Data,law_name,f9553f11da,high,2026-10-22
 MG,Law No. 2014-038 on the Protection of Personal Data,jurisdiction,47bbd8150f,high,2026-10-22
 MG,Law No. 2014-038 on the Protection of Personal Data,enactment_date,47bbd8150f,medium,2026-10-22
 MG,Law No. 2014-038 on the Protection of Personal Data,effective_date,47bbd8150f,low,2026-10-22
-MG,Law No. 2014-038 on the Protection of Personal Data,scope,685d4224ae,low,2026-10-22
-MG,Law No. 2014-038 on the Protection of Personal Data,applies_to,685d4224ae,low,2026-10-22
-MG,Law No. 2014-038 on the Protection of Personal Data,key_requirements,8ba778966c,low,2026-10-22
-MG,Law No. 2014-038 on the Protection of Personal Data,data_categories,8ba778966c,low,2026-10-22
+MG,Law No. 2014-038 on the Protection of Personal Data,scope,685d4224ae,medium,2026-11-13
+MG,Law No. 2014-038 on the Protection of Personal Data,applies_to,685d4224ae,medium,2026-11-13
+MG,Law No. 2014-038 on the Protection of Personal Data,key_requirements,8ba778966c,high,2026-11-13
+MG,Law No. 2014-038 on the Protection of Personal Data,data_categories,685d4224ae,medium,2026-11-13
 MG,Law No. 2014-038 on the Protection of Personal Data,enforcement_authority,afc39f8a86,high,2026-10-22
-MG,Law No. 2014-038 on the Protection of Personal Data,penalties_range,685d4224ae,low,2026-10-22
-MG,Law No. 2014-038 on the Protection of Personal Data,exemptions,8ba778966c,low,2026-10-22
-MG,Law No. 2014-038 on the Protection of Personal Data,genetic_data,8ba778966c,low,2026-10-22
+MG,Law No. 2014-038 on the Protection of Personal Data,penalties_range,8ba778966c,medium,2026-11-13
+MG,Law No. 2014-038 on the Protection of Personal Data,exemptions,685d4224ae,medium,2026-11-13
+MG,Law No. 2014-038 on the Protection of Personal Data,genetic_data,685d4224ae,medium,2026-11-13
 MK,,enactment_date,e19db07a45,high,2026-10-15
 MK,,deceased_data,c9845d7d87,low,2026-10-21
 MK,,genetic_data,23b8f08c8f,medium,2026-10-21
@@ -853,19 +853,19 @@ SO,Data Protection Act 2023 (Law No. 005 of 2023),law_name,203f8ac311,high,2026-
 SO,Data Protection Act 2023 (Law No. 005 of 2023),jurisdiction,3071a89ee3,high,2026-10-16
 SO,Data Protection Act 2023 (Law No. 005 of 2023),enactment_date,203f8ac311,medium,2026-10-16
 SO,Data Protection Act 2023 (Law No. 005 of 2023),effective_date,203f8ac311,high,2026-10-16
-SO,Data Protection Act 2023 (Law No. 005 of 2023),scope,eb1c9fdd70,low,2026-10-16
+SO,Data Protection Act 2023 (Law No. 005 of 2023),scope,3071a89ee3,high,2026-11-13
 SO,Data Protection Act 2023 (Law No. 005 of 2023),applies_to,3071a89ee3,medium,2026-10-16
 SO,Data Protection Act 2023 (Law No. 005 of 2023),key_requirements,752377ec01,medium,2026-10-16
-SO,Data Protection Act 2023 (Law No. 005 of 2023),data_categories,203f8ac311,low,2026-10-16
+SO,Data Protection Act 2023 (Law No. 005 of 2023),data_categories,eb1c9fdd70,medium,2026-11-13
 SO,Data Protection Act 2023 (Law No. 005 of 2023),enforcement_authority,3071a89ee3,high,2026-10-16
-SO,Data Protection Act 2023 (Law No. 005 of 2023),penalties_range,3071a89ee3,low,2026-10-16
-SO,Data Protection Act 2023 (Law No. 005 of 2023),exemptions,eb1c9fdd70,low,2026-10-16
+SO,Data Protection Act 2023 (Law No. 005 of 2023),penalties_range,3071a89ee3,medium,2026-11-13
+SO,Data Protection Act 2023 (Law No. 005 of 2023),exemptions,eb1c9fdd70,medium,2026-11-13
 ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,law_name,c69b1caed5,high,2026-10-25
 ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,jurisdiction,8a270ca589,high,2026-10-25
 ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,enactment_date,c69b1caed5,high,2026-10-25
 ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,effective_date,27b12381e4,low,2026-10-25
-ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,scope,39501e8b9c,low,2026-10-25
-ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,applies_to,39501e8b9c,low,2026-10-25
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,scope,c69b1caed5,medium,2026-11-13
+ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,applies_to,27b12381e4,medium,2026-11-13
 ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,key_requirements,39501e8b9c,medium,2026-10-25
 ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,data_categories,27b12381e4,low,2026-10-25
 ST,Law No. 03/2016 of 10 May 2016 on the Protection of Personal Data,enforcement_authority,8a270ca589,high,2026-10-25
@@ -883,26 +883,26 @@ TD,Law No. 007/PR/2015 on the Protection of Personal Data,law_name,6b9704bff8,hi
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,jurisdiction,f75ddfb866,medium,2026-10-18
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,enactment_date,b63797fa3e,high,2026-10-16
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,effective_date,b63797fa3e,low,2026-10-16
-TD,Law No. 007/PR/2015 on the Protection of Personal Data,scope,5e40b39571,low,2026-10-16
-TD,Law No. 007/PR/2015 on the Protection of Personal Data,applies_to,5e40b39571,low,2026-10-16
+TD,Law No. 007/PR/2015 on the Protection of Personal Data,scope,f75ddfb866,medium,2026-11-13
+TD,Law No. 007/PR/2015 on the Protection of Personal Data,applies_to,b63797fa3e,high,2026-11-13
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,key_requirements,6b9704bff8,medium,2026-10-16
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,data_categories,6b9704bff8,medium,2026-10-16
-TD,Law No. 007/PR/2015 on the Protection of Personal Data,retention_period,5e40b39571,low,2026-10-16
+TD,Law No. 007/PR/2015 on the Protection of Personal Data,retention_period,b63797fa3e,high,2026-11-13
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,enforcement_authority,f75ddfb866,medium,2026-10-18
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,penalties_range,afa3f45bc3,medium,2026-10-16
-TD,Law No. 007/PR/2015 on the Protection of Personal Data,exemptions,dc19e0f967,low,2026-10-16
+TD,Law No. 007/PR/2015 on the Protection of Personal Data,exemptions,f75ddfb866,medium,2026-11-13
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,research_exemption,6b9704bff8,low,2026-10-16
 TD,Law No. 007/PR/2015 on the Protection of Personal Data,genetic_data,6b9704bff8,medium,2026-10-16
 TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,law_name,3f9b0158c1,high,2026-10-16
 TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,jurisdiction,e3f15141d8,high,2026-10-16
 TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,enactment_date,3f9b0158c1,high,2026-10-16
 TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,scope,3f9b0158c1,low,2026-10-16
-TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,applies_to,c4619363be,low,2026-10-16
+TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,applies_to,e3f15141d8,medium,2026-11-13
 TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,key_requirements,c4619363be,medium,2026-10-16
 TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,data_categories,c4619363be,medium,2026-10-16
 TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,enforcement_authority,e3f15141d8,medium,2026-10-16
-TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,penalties_range,491cb6569b,low,2026-10-16
-TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,exemptions,c4619363be,low,2026-10-16
+TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,penalties_range,491cb6569b,medium,2026-11-13
+TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,exemptions,c4619363be,medium,2026-11-13
 TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,genetic_data,c4619363be,medium,2026-10-16
 TH,,enactment_date,def716b046,high,2026-10-14
 TH,,effective_date,2159f865b7,high,2026-10-14
@@ -1009,7 +1009,7 @@ US,Biometric Information Privacy Act (740 ILCS 14; Public Act 95-994),genetic_da
 US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),law_name,6bf4a69dba,high,2026-10-14
 US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),jurisdiction,6bf4a69dba,high,2026-10-14
 US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),enforcement_authority,6bf4a69dba,high,2026-10-14
-US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),penalties_range,6bf4a69dba,low,2026-10-14
+US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),penalties_range,6bf4a69dba,high,2026-11-13
 US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),research_exemption,b2d182a9de,medium,2026-10-17
 US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),genetic_data,ca41788a0a,medium,2026-10-17
 US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),notes,6bf4a69dba,medium,2026-10-14
@@ -1070,7 +1070,7 @@ US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 
 US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",retention_period,1cac98ddf4,medium,2026-10-16
 US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",enforcement_authority,cf1b319069,high,2026-10-16
 US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",penalties_range,55bae28cc7,medium,2026-10-16
-US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",exemptions,cf1b319069,low,2026-10-16
+US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",exemptions,46818d1cc7,medium,2026-11-13
 US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",research_exemption,46818d1cc7,low,2026-10-16
 US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",genetic_data,46818d1cc7,medium,2026-10-16
 US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",law_name,56ce02d494,medium,2026-10-16
@@ -1081,7 +1081,7 @@ US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023),
 US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",applies_to,56ce02d494,high,2026-10-16
 US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",key_requirements,56ce02d494,medium,2026-10-16
 US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",data_categories,56ce02d494,medium,2026-10-16
-US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",retention_period,56ce02d494,low,2026-10-16
+US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",retention_period,56ce02d494,medium,2026-11-13
 US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",enforcement_authority,56ce02d494,high,2026-10-16
 US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",penalties_range,56ce02d494,medium,2026-10-16
 US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",exemptions,56ce02d494,medium,2026-10-16
@@ -1101,7 +1101,7 @@ US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter
 US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",penalties_range,b32e8e0fbc,medium,2026-10-16
 US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",exemptions,b32e8e0fbc,medium,2026-10-16
 US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",deceased_data,b32e8e0fbc,medium,2026-10-16
-US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",research_exemption,b32e8e0fbc,low,2026-10-16
+US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",research_exemption,b32e8e0fbc,high,2026-11-13
 US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",genetic_data,b32e8e0fbc,medium,2026-10-16
 US,"Kentucky Consumer Data Privacy Act (HB 15, 2024 Regular Session)",law_name,cfbeef177c,medium,2026-10-16
 US,"Kentucky Consumer Data Privacy Act (HB 15, 2024 Regular Session)",jurisdiction,cfbeef177c,medium,2026-10-16
@@ -1125,9 +1125,9 @@ US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 5
 US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",key_requirements,58f72523be,medium,2026-10-16
 US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",data_categories,109f8d242a,medium,2026-10-16
 US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",enforcement_authority,58f72523be,high,2026-10-16
-US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",penalties_range,ecadff61df,low,2026-10-16
+US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",penalties_range,ecadff61df,medium,2026-11-13
 US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",exemptions,58f72523be,medium,2026-10-16
-US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",research_exemption,109f8d242a,low,2026-10-16
+US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",research_exemption,109f8d242a,medium,2026-11-13
 US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",genetic_data,109f8d242a,medium,2026-10-16
 US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",law_name,e405f8f529,medium,2026-10-16
 US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",jurisdiction,80d98ec640,medium,2026-10-16
@@ -1228,7 +1228,7 @@ US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws c
 US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",applies_to,109aa8ff9a,high,2026-10-16
 US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",key_requirements,91e0b8a967,medium,2026-10-16
 US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",data_categories,91e0b8a967,medium,2026-10-16
-US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",retention_period,c9c8e1fd0e,low,2026-10-16
+US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",retention_period,04ea7a7c64,medium,2026-11-13
 US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",enforcement_authority,109aa8ff9a,high,2026-10-16
 US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",penalties_range,39daf8b28f,medium,2026-10-16
 US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",exemptions,935750fea3,medium,2026-10-16
@@ -1243,7 +1243,7 @@ US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589"
 US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",applies_to,c08396664d,high,2026-10-16
 US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",key_requirements,c08396664d,medium,2026-10-16
 US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",data_categories,c08396664d,medium,2026-10-16
-US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",retention_period,c08396664d,low,2026-10-16
+US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",retention_period,cb0ee346c2,medium,2026-11-13
 US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",enforcement_authority,c08396664d,high,2026-10-16
 US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",penalties_range,c08396664d,high,2026-10-16
 US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",exemptions,c08396664d,medium,2026-10-16
@@ -1286,7 +1286,7 @@ US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. C
 US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",applies_to,b2d8e102f5,high,2026-10-16
 US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",key_requirements,b2d8e102f5,medium,2026-10-16
 US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",data_categories,b2d8e102f5,medium,2026-10-16
-US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",retention_period,b2d8e102f5,low,2026-10-16
+US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",retention_period,b2d8e102f5,medium,2026-11-13
 US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",enforcement_authority,b2d8e102f5,high,2026-10-16
 US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",penalties_range,b2d8e102f5,high,2026-10-16
 US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",exemptions,b2d8e102f5,medium,2026-10-16
@@ -1319,7 +1319,7 @@ US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V
 US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",enforcement_authority,8c8745940d,high,2026-10-16
 US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",penalties_range,4e2797dcf9,medium,2026-10-16
 US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",exemptions,3fd4837f86,medium,2026-10-16
-US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",research_exemption,8c8745940d,low,2026-10-16
+US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",research_exemption,0064bb7c24,medium,2026-11-13
 US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",genetic_data,78fa7df2bf,medium,2026-10-16
 US,"Virginia Consumer Data Protection Act (VCDPA), Va. Code 59.1-575 et seq. (2021 Acts ch. 35 and 36; HB 2307/SB 1392)",law_name,92e611d733,medium,2026-10-16
 US,"Virginia Consumer Data Protection Act (VCDPA), Va. Code 59.1-575 et seq. (2021 Acts ch. 35 and 36; HB 2307/SB 1392)",jurisdiction,92e611d733,high,2026-10-16
@@ -1412,3 +1412,6 @@ GA,,deceased_data,37b0dc8e21,medium,2026-10-31
 GA,,research_exemption,37b0dc8e21,medium,2026-10-31
 ML,,deceased_data,ea71478e68,low,2026-10-31
 ML,,research_exemption,ea71478e68,medium,2026-10-31
+AG,,data_categories,cb771ad605,medium,2026-11-13
+BZ,,data_categories,894f511eb1,medium,2026-11-13
+GD,,data_categories,ee89a4089f,medium,2026-11-13

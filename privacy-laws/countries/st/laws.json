@@ -7,8 +7,8 @@
     "jurisdiction": "ANPDP (National Data Protection Agency)",
     "enactment_date": "2016-05-10",
     "effective_date": "2016-05-10",
-    "scope": "Data subjects in Sao Tome and Principe (unconfirmed)",
-    "applies_to": "Public and private controllers and processors (unconfirmed)",
+    "scope": "Processing of personal data, including collection, transfer and use for any purpose; cross-border transfers subject to notification and registration with the National Data Protection Agency",
+    "applies_to": "All data controllers and processors operating within Sao Tome and Principe",
     "key_requirements": "Notification/registration of processing and cross-border transfers with the ANPDP; processing principles and processor agreements; data subject rights; no breach notification, DPO or DPIA duty",
     "data_categories": "Personal data; sensitive data (unconfirmed)",
     "retention_period": "Not specified",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.mirandalawfirm.com/en/insights-knowledge/publications/alerts/new-data-protection-law-enacted",
@@ -50,14 +50,14 @@
         "checked": "2026-10-25"
       },
       "scope": {
-        "url": "https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.mirandalawfirm.com/en/insights-knowledge/publications/alerts/new-data-protection-law-enacted",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
-        "url": "https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.consentstack.io/regulations/st-law032016",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://www.DataGuidance.com/jurisdiction/s%C3%A3o-tom%C3%A9-and-pr%C3%ADncipe",
@@ -81,6 +81,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Public and private controllers and processors (unconfirmed)",
+        "to": "All data controllers and processors operating within Sao Tome and Principe"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects in Sao Tome and Principe (unconfirmed)",
+        "to": "Processing of personal data, including collection, transfer and use for any purpose; cross-border transfers subject to notification and registration with the National Data Protection Agency"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

@@ -13,7 +13,7 @@
     "data_categories": "Consumer data",
     "retention_period": "As specified",
     "enforcement_authority": "California Privacy Protection Agency (CalPrivacy) and California Attorney General",
-    "penalties_range": "USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted) (unconfirmed)",
+    "penalties_range": "USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted)",
     "exemptions": "B2B exemptions",
     "deceased_data": "",
     "research_exemption": "Deletion right exception for public-interest peer-reviewed research where deletion would impair it (s. 1798.105(d)(6)); 'research' defined in s. 1798.140, no commercial purpose",
@@ -27,7 +27,7 @@
     "pending_date": "2027-01-01",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-17",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
@@ -46,8 +46,8 @@
       },
       "penalties_range": {
         "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
-        "confidence": "low",
-        "checked": "2026-10-14"
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "research_exemption": {
         "url": "https://www.carltonfields.com/insights/publications/2019/research-exception-ccpa-right-deletion-apply",
@@ -66,6 +66,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted) (unconfirmed)",
+        "to": "USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted)"
+      },
       {
         "date": "2026-11-06",
         "field": "pending_date",
@@ -666,7 +672,7 @@
     "penalties_range": "Up to $7,500 per violation after 90-day cure period; no private right of action (715D.8)",
     "exemptions": "Government, financial institutions/GLBA, HIPAA entities, nonprofits, higher education, employment and B2B data (715D.2)",
     "deceased_data": "Not covered: protects living consumers (residents acting in an individual or household context) only; employee and B2B data excluded",
-    "research_exemption": "Exempts scientific, historical or statistical research in the public interest under ethics/IRB-type oversight (715D.7) (unconfirmed)",
+    "research_exemption": "Exempts public or peer-reviewed scientific or statistical research in the public interest approved, monitored and governed by an IRB or similar independent oversight (715D.7(1)(j)); human-subjects research data also exempt",
     "genetic_data": "Genetic or biometric data processed to identify a person is sensitive data; opt-out of processing after notice (not opt-in)",
     "website_url": "https://www.legis.iowa.gov/docs/publications/LGE/90/attachments/SF262.html",
     "language": "English",
@@ -677,7 +683,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.legis.iowa.gov/docs/publications/LGE/90/attachments/SF262.html",
@@ -746,8 +752,8 @@
       },
       "research_exemption": {
         "url": "https://www.legis.iowa.gov/docs/publications/LGE/90/attachments/SF262.html",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "genetic_data": {
         "url": "https://www.legis.iowa.gov/docs/publications/LGE/90/attachments/SF262.html",
@@ -756,6 +762,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "research_exemption",
+        "from": "Exempts scientific, historical or statistical research in the public interest under ethics/IRB-type oversight (715D.7) (unconfirmed)",
+        "to": "Exempts public or peer-reviewed scientific or statistical research in the public interest approved, monitored and governed by an IRB or similar independent oversight (715D.7(1)(j)); human-subjects research data also exempt"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -776,7 +788,7 @@
     "applies_to": "Persons doing business in Indiana or targeting residents that control/process data of 100,000+ consumers, or 25,000+ consumers with over 50% revenue from sale of personal data",
     "key_requirements": "Opt-in consent for sensitive data; rights to access, correct, delete, port, opt out of targeted ads/sale/profiling; data protection assessments; reasonable security",
     "data_categories": "Personal data; sensitive data; pseudonymous and de-identified data",
-    "retention_period": "Data minimization: collection limited to what is adequate, relevant and reasonably necessary for disclosed purposes (IC 24-15-4) (unconfirmed)",
+    "retention_period": "Data minimization: collect only data adequate, relevant and reasonably necessary for the disclosed purpose; retain only as long as necessary (compliance guidance); no fixed period",
     "enforcement_authority": "Office of the Indiana Attorney General",
     "penalties_range": "Up to $7,500 per violation after 30-day cure period; AG exclusive enforcement, no private right of action",
     "exemptions": "Government, GLBA financial institutions, HIPAA entities, nonprofits, higher education, employment and B2B data",
@@ -792,7 +804,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://privacylawmap.com/states/indiana",
@@ -836,8 +848,8 @@
       },
       "retention_period": {
         "url": "https://privacylawmap.com/states/indiana",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://privacylawmap.com/states/indiana",
@@ -871,6 +883,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "retention_period",
+        "from": "Data minimization: collection limited to what is adequate, relevant and reasonably necessary for disclosed purposes (IC 24-15-4) (unconfirmed)",
+        "to": "Data minimization: collect only data adequate, relevant and reasonably necessary for the disclosed purpose; retain only as long as necessary (compliance guidance); no fixed period"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -1127,7 +1145,7 @@
     "applies_to": "Persons doing business in Texas or offering products/services to Texas residents that process or sell personal data and are not small businesses as defined by the U.S. SBA (no consumer-count threshold)",
     "key_requirements": "Opt-in consent for sensitive data; rights to access, correct, delete, port, opt out; universal opt-out signals from 2025-01-01; data protection assessments; reasonable security",
     "data_categories": "Personal data; sensitive data; pseudonymous and de-identified data",
-    "retention_period": "Data minimization: limit collection to what is adequate, reasonably necessary and proportionate to disclosed purposes (541.101) (unconfirmed)",
+    "retention_period": "Controllers must limit data collection to what is reasonable and appropriate (data minimization, s. 541.101); no fixed retention period stated",
     "enforcement_authority": "Office of the Texas Attorney General",
     "penalties_range": "Civil penalty up to $7,500 per violation after 30-day cure period; injunctive relief; no private right of action",
     "exemptions": "State agencies and political subdivisions, GLBA financial institutions, HIPAA entities, nonprofits, higher education, electric utilities, employment and B2B data, SBA small businesses (except sale of sensitive data needs consent)",
@@ -1143,7 +1161,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.privacyworld.blog/2023/06/dont-mess-with-texas-the-lone-star-state-enacts-comprehensive-consumer-privacy-law/",
@@ -1187,8 +1205,8 @@
       },
       "retention_period": {
         "url": "https://www.privacyworld.blog/2023/06/dont-mess-with-texas-the-lone-star-state-enacts-comprehensive-consumer-privacy-law/",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.privacyworld.blog/2023/06/dont-mess-with-texas-the-lone-star-state-enacts-comprehensive-consumer-privacy-law/",
@@ -1223,6 +1241,12 @@
     },
     "changes": [
       {
+        "date": "2026-11-13",
+        "field": "retention_period",
+        "from": "Data minimization: limit collection to what is adequate, reasonably necessary and proportionate to disclosed purposes (541.101) (unconfirmed)",
+        "to": "Controllers must limit data collection to what is reasonable and appropriate (data minimization, s. 541.101); no fixed retention period stated"
+      },
+      {
         "date": "2026-10-16",
         "field": "row",
         "from": "",
@@ -1242,7 +1266,7 @@
     "applies_to": "Persons doing business in Oregon or serving Oregon residents that control/process data of 100,000+ consumers, or 25,000+ consumers with 25% or more revenue from sale of personal data; nonprofits covered from 2025-07-01",
     "key_requirements": "Opt-in consent for sensitive data; rights to access, correct, delete, port, opt out, and to receive a list of specific third parties receiving data; data protection assessments; global opt-out signals from 2026-01-01",
     "data_categories": "Personal data; sensitive data; derived data; de-identified data",
-    "retention_period": "Data minimization: collection limited to what is adequate, relevant and reasonably necessary for disclosed purposes (ORS 646A.578) (unconfirmed)",
+    "retention_period": "Controllers must limit collection to what is adequate, relevant and reasonably necessary for the specific purposes (data minimization); no fixed retention period stated",
     "enforcement_authority": "Oregon Department of Justice, Attorney General",
     "penalties_range": "Civil penalty up to $7,500 per violation, plus injunction, restitution or disgorgement; cure period lapsed 2026-01-01; no private right of action",
     "exemptions": "Government bodies, GLBA financial institutions (not mere GLBA data), HIPAA data, employment data, certain nonprofits and insurers, ORS 646A.572",
@@ -1258,7 +1282,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.stoel.com/insights/publications/a-new-consumer-personal-data-protection-law-in-oregon",
@@ -1301,9 +1325,9 @@
         "checked": "2026-10-16"
       },
       "retention_period": {
-        "url": "https://www.stoel.com/insights/publications/a-new-consumer-personal-data-protection-law-in-oregon",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://doj.state.or.us/consumer-protection/for-businesses/privacy-law-faqs-for-businesses",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.stoel.com/insights/publications/a-new-consumer-personal-data-protection-law-in-oregon",
@@ -1337,6 +1361,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "retention_period",
+        "from": "Data minimization: collection limited to what is adequate, relevant and reasonably necessary for disclosed purposes (ORS 646A.578) (unconfirmed)",
+        "to": "Controllers must limit collection to what is adequate, relevant and reasonably necessary for the specific purposes (data minimization); no fixed retention period stated"
+      },
       {
         "date": "2026-10-18",
         "field": "website_url",
@@ -2420,7 +2450,7 @@
     "applies_to": "Businesses operating in Oklahoma or targeting Oklahoma residents that process personal data of at least 100,000 consumers per year, or at least 25,000 consumers while deriving over 50% of gross revenue from selling personal data (75A O.S. s. 314(A))",
     "key_requirements": "Consumer rights to access, correct, delete, port, and opt out of targeted advertising, sale and certain profiling (45-day response plus 45-day extension; appeal process); opt-in consent for sensitive data; privacy notices, data minimization and data protection assessments",
     "data_categories": "Personal data; sensitive data (incl. genetic or biometric data used to identify a person, precise geolocation); pseudonymous data",
-    "retention_period": "No fixed period; collection limited to what is reasonably necessary for disclosed purposes (data minimization); no specific retention schedule found (unconfirmed)",
+    "retention_period": "No fixed period; collection limited to what is adequate, relevant and reasonably necessary for disclosed purposes (data minimization)",
     "enforcement_authority": "Oklahoma Attorney General (exclusive enforcement; no private right of action)",
     "penalties_range": "Civil penalty up to $7,500 per violation after a 30-day cure period (non-sunsetting); injunction, attorney fees and investigation costs",
     "exemptions": "State agencies and political subdivisions, nonprofits, institutions of higher education, HIPAA covered entities and data, GLBA financial institutions/data; employment and commercial contexts",
@@ -2436,7 +2466,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://secureprivacy.ai/blog/oklahoma-privacy-law-2027-guide",
@@ -2479,9 +2509,9 @@
         "checked": "2026-10-16"
       },
       "retention_period": {
-        "url": "https://www.wilsonelser.com/publications/oklahoma-enacts-consumer-data-privacy-act",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.mayerbrown.com/ja/insights/publications/2026/03/oklahoma-enacts-comprehensive-consumer-data-privacy-law",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.jdsupra.com/legalnews/oklahoma-enacts-consumer-data-privacy-3094000/",
@@ -2515,6 +2545,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "retention_period",
+        "from": "No fixed period; collection limited to what is reasonably necessary for disclosed purposes (data minimization); no specific retention schedule found (unconfirmed)",
+        "to": "No fixed period; collection limited to what is adequate, relevant and reasonably necessary for disclosed purposes (data minimization)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -2642,10 +2678,10 @@
     "data_categories": "Personal data; sensitive data (incl. genetic or biometric data)",
     "retention_period": "Not specified",
     "enforcement_authority": "Louisiana Attorney General (exclusive; no private right of action)",
-    "penalties_range": "No penalty schedule in the Act itself; violations are unfair trade practices under LUTPA, civil penalties up to $5,000 per violation (R.S. 51:1407) reported, higher where elderly or disabled persons affected; cure period only 2027-01-01 to 2027-07-31 (30-day notice) (unconfirmed)",
+    "penalties_range": "Violation is an unfair/deceptive practice; AG may seek restitution, injunctions and civil penalties up to $5,000 per violation ($10,000 if elderly or disabled persons affected); 30-day cure only in first six months after 1 Jan 2027",
     "exemptions": "State agencies and political subdivisions, GLBA financial institutions and data, HIPAA covered entities and business associates, nonprofits, higher education institutions, public utilities; certain research data",
     "deceased_data": "",
-    "research_exemption": "Certain research data exempt (exact scope and section not found) (unconfirmed)",
+    "research_exemption": "Certain research data exempt (exact scope and section not found)",
     "genetic_data": "Genetic or biometric data included in sensitive data requiring consent",
     "website_url": "https://privacylawmap.com/states/louisiana",
     "language": "English",
@@ -2656,7 +2692,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://digitalpolicyalert.org/event/40408-louisiana-data-privacy-act-act-no-502-including-data-protection-regulation-enters-into-force",
@@ -2705,8 +2741,8 @@
       },
       "penalties_range": {
         "url": "https://www.mondaq.com/the-bayou-twist-louisianas-25-million-question/1803056",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "exemptions": {
         "url": "https://www.didomi.io/blog/louisiana-data-privacy-act-ldpa",
@@ -2715,8 +2751,8 @@
       },
       "research_exemption": {
         "url": "https://www.clym.io/regulations/louisiana-data-privacy-act",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "genetic_data": {
         "url": "https://www.clym.io/regulations/louisiana-data-privacy-act",
@@ -2725,6 +2761,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "research_exemption",
+        "from": "Certain research data exempt (exact scope and section not found) (unconfirmed)",
+        "to": "Certain research data exempt (exact scope and section not found)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "No penalty schedule in the Act itself; violations are unfair trade practices under LUTPA, civil penalties up to $5,000 per violation (R.S. 51:1407) reported, higher where elderly or disabled persons affected; cure period only 2027-01-01 to 2027-07-31 (30-day notice) (unconfirmed)",
+        "to": "Violation is an unfair/deceptive practice; AG may seek restitution, injunctions and civil penalties up to $5,000 per violation ($10,000 if elderly or disabled persons affected); 30-day cure only in first six months after 1 Jan 2027"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -2750,7 +2798,7 @@
     "penalties_range": "Up to $10,000 per violation under the Consumer Protection Act; discretionary 60-day cure period 2028-01-01 to 2029-06-30",
     "exemptions": "Data-level exemptions: various health data, GLBA data, FCRA data, emergency contact information, post-secondary school enrollment/degree verification and related research services",
     "deceased_data": "",
-    "research_exemption": "No general research exemption found; only post-secondary school research services data exempt (unconfirmed)",
+    "research_exemption": "No general research exemption found; human subjects research data and clinical-trial/research-related patient data are exempt",
     "genetic_data": "Genetic and biometric data are sensitive data requiring consent before collection and sale; separate H.639 covers direct-to-consumer genetic testing",
     "website_url": "https://legislature.vermont.gov/bill/print/2026/S.71/witnesses",
     "language": "English",
@@ -2761,7 +2809,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://legislature.vermont.gov/bill/print/2026/S.71/witnesses",
@@ -2819,9 +2867,9 @@
         "checked": "2026-10-16"
       },
       "research_exemption": {
-        "url": "https://www.usercentrics.com/us/knowledge-hub/vermont-data-privacy-online-surveillance-act-vdposa/",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.clym.io/regulations/vermont-data-privacy-and-online-surveillance-act",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "genetic_data": {
         "url": "https://www.insideprivacy.com/data-privacy/vermont-enacts-privacy-legislation-to-regulate-health-related-information/",
@@ -2830,6 +2878,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "research_exemption",
+        "from": "No general research exemption found; only post-secondary school research services data exempt (unconfirmed)",
+        "to": "No general research exemption found; human subjects research data and clinical-trial/research-related patient data are exempt"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -2853,7 +2907,7 @@
     "retention_period": "Controllers and processors must adopt and follow a retention schedule; retention ends at the first of several triggers, including two years after the consumer's last interaction",
     "enforcement_authority": "Florida Department of Legal Affairs (Attorney General); no private right of action",
     "penalties_range": "Civil penalty up to $50,000 per violation, tripled (up to $150,000) for violations involving a child, failure to delete/correct after verified request, or continued sale/sharing after opt-out; discretionary 45-day cure period (not granted for child-related violations)",
-    "exemptions": "Entities below the $1 billion/prong thresholds; HIPAA and GLBA entities/data; research and other listed processing purposes (sections not confirmed) (unconfirmed)",
+    "exemptions": "Entities under the $1 billion revenue threshold; HIPAA/PHI, health records, personal data used to protect human subjects or for research; DPPA, FCRA data; personal/household use; de-identified and public data",
     "deceased_data": "",
     "research_exemption": "Exemption for research purposes reported by one secondary source, section not confirmed (unconfirmed)",
     "genetic_data": "Genetic data is sensitive data only when processed to uniquely identify an individual; sale of sensitive data requires consent",
@@ -2866,7 +2920,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.flsenate.gov/Session/Bill/2023/262",
@@ -2924,9 +2978,9 @@
         "checked": "2026-10-16"
       },
       "exemptions": {
-        "url": "https://www.flsenate.gov/Session/Bill/2023/262",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.cookieyes.com/blog/florida-digital-bill-of-rights-fdbr/",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "research_exemption": {
         "url": "https://www.cookieyes.com/blog/florida-digital-bill-of-rights-fdbr/",
@@ -2940,6 +2994,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "exemptions",
+        "from": "Entities below the $1 billion/prong thresholds; HIPAA and GLBA entities/data; research and other listed processing purposes (sections not confirmed) (unconfirmed)",
+        "to": "Entities under the $1 billion revenue threshold; HIPAA/PHI, health records, personal data used to protect human subjects or for research; DPPA, FCRA data; personal/household use; de-identified and public data"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
