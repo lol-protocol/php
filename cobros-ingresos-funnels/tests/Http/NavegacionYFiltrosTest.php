@@ -9,7 +9,7 @@ final class NavegacionYFiltrosTest extends HttpTestCase
 {
     public function testTodasLasPantallasResponden(): void
     {
-        foreach (['dashboard', 'cobros', 'cobranza', 'pagos', 'notas', 'clientes', 'funnel', 'cohortes', 'auditoria',
+        foreach (['dashboard', 'cobros', 'cobranza', 'flujo', 'pagos', 'notas', 'clientes', 'funnel', 'cohortes', 'auditoria',
                   'boleta-nueva', 'pago-nuevo', 'cliente-nuevo', 'cliente&id=1'] as $pagina) {
             $this->assertStatus(200, $this->get("page={$pagina}"), "page={$pagina}");
         }
@@ -74,6 +74,7 @@ final class NavegacionYFiltrosTest extends HttpTestCase
             'dashboard' => 'Dashboard',
             'cobros' => 'Cobros e ingresos',
             'cobranza' => 'Cobranza',
+            'flujo' => 'Flujo de caja esperado',
             'pagos' => 'Pagos',
             'notas' => 'Notas de crédito',
             'funnel' => 'Funnel de conversión',

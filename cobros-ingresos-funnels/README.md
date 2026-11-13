@@ -12,6 +12,16 @@ Pequeño sistema en PHP (sin framework) para analizar:
   registrar su pago. Se ve por defecto a los que tienen saldo vencido, o todo el saldo abierto, y se
   ordena por monto vencido, antigüedad, saldo o nombre. Sus totales son los del Dashboard: las dos
   pantallas salen de la misma consulta (`IngresosYCobrosRepository::saldosAbiertosSql()`).
+- **Flujo de caja esperado** (`?page=flujo`): lo que falta cobrar, repartido por el mes en que vence
+  cada boleta abierta, en USD a la tasa de hoy: lo ya vencido aparte, un mes por cada uno de los
+  próximos 3, 6 (por defecto) o 12, y «Más adelante». La suma de las filas es exactamente la cartera
+  pendiente del Dashboard (sale de la misma consulta). Supone que cada boleta se cobra el día de su
+  vencimiento: no predice cuándo va a pagar cada cliente, y por eso lo vencido no se reparte.
+- **Tasas de cambio** (`?page=tasas`): una fila por moneda con su tasa de hoy (cuántos dólares vale una
+  unidad y cuántas unidades vale un dólar), la fecha de su cotización y cuánto cambió en 30 días; con
+  `?moneda=CLP`, el historial de esa moneda, paginado, con el cambio de cada fila frente a la anterior.
+  Solo lee: las tasas las carga `bin/actualizar_tasas.php` y el historial lo anota la base (ver
+  «Historial de las tasas»).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
   etapa, por canal de adquisición y por país/género/rango de edad.
@@ -266,6 +276,27 @@ Como de estas tasas dependen todos los totales, escribe solo lo que se puede cre
 - Las pantallas avisan cuando una moneda con boletas o pagos tiene una tasa de ejemplo
   o de hace más de 7 días, y nombran cuál.
 
+#### Historial de las tasas
+
+`monedas.tasa_a_usd` guarda solo la tasa de hoy; la tabla `historial_de_tasas` (migración `018`)
+guarda las anteriores: una fila cada vez que cambia la tasa de una moneda, la fecha de su cotización
+o su fuente. La anota un trigger de la base sobre `monedas`, no el código de la aplicación, así que
+también queda anotado lo que escribe `bin/actualizar_tasas.php`, un script o un `UPDATE` hecho a mano
+(el comando con `--simular` no escribe, y por eso tampoco anota). Un `UPDATE` que no cambia ninguna
+de esas tres columnas no agrega filas.
+
+- **Empieza el día de la migración**, con una fila por moneda con lo que tenía entonces (una tasa de
+  ejemplo, si todavía no se cargaron las reales). Las tasas de antes no se pueden recuperar.
+- Una fila de ejemplo (`cotizada_en` vacío) no se compara con una real: el «cambio» entre una cifra
+  inventada y una verdadera no dice nada. Y mientras el historial real no llegue a 30 días atrás, el
+  resumen no muestra cambio en 30 días.
+- **No cambia ninguna cifra**: las boletas, los pagos y las notas de crédito siguen guardando su propia
+  tasa (ver «La tasa de cada día»), y una boleta cargada hoy con fecha de hace tres meses sigue quedando con
+  la tasa de hoy. Cotizarla con la de su fecha, ahora que hay de dónde sacarla, cambiaría los reportes y
+  es una decisión aparte.
+- No se borra ni se limpia solo: es como mucho una fila por moneda por día, y solo se lee el historial de
+  una moneda a la vez.
+
 Con otro servicio, se pone su dirección en `TASAS_URL` (algunos piden una clave en la
 URL; los mensajes de error muestran solo el servidor, nunca la clave, porque cron los
 manda por mail). Sirve cualquiera que conteste `{"base": "USD", "rates": {"EUR": 0.86, ...}}`
@@ -431,6 +462,48 @@ Un cambio de esquema nuevo —o un país o una moneda nuevos— va en un archivo
 con el número siguiente (`NNN_descripcion.sql`). Una migración que ya corrió en
 alguna base no se edita.
 
+### Estado del sistema
+
+Para saber en una mirada si el panel está sano, antes y después de un despliegue o desde cron:
+
+```bash
+php bin/estado.php                         # o: composer estado
+php bin/estado.php --carpeta=/var/backups/cobros
+```
+
+```
+OK        Base de datos    PostgreSQL 16.4, responde
+OK        Migraciones      al día (18 aplicadas)
+ATENCIÓN  Tasas de cambio  todas son de ejemplo, no reales: los totales en USD no valen. Corra php bin/actualizar_tasas.php
+OK        Respaldos        el último: cobros-20261112-031500.dump, hace 9 h, 2.1 MB
+
+Hay algo que atender.
+```
+
+Solo lee: no migra, no actualiza tasas ni respalda. Termina con `0` si todo está en orden, con `1` si algo
+pide atención (o la base no responde) y con `2` si los argumentos están mal, así que sirve de comprobación
+de monitoreo. Qué considera «atención»:
+
+- **Base de datos**: no responde. Es lo único que se muestra entonces: sin base no se puede mirar lo demás.
+- **Migraciones**: hay alguna sin aplicar (dice cuáles: `php bin/migrar.php`).
+- **Tasas de cambio**: todas son de ejemplo; o la cotización más reciente tiene más de 7 días (la
+  actualización diaria dejó de correr); o una moneda con boletas o pagos tiene una tasa de ejemplo o
+  de más de 7 días (las mismas que avisan las pantallas).
+- **Respaldos**: no hay ninguno en la carpeta (`RESPALDOS_CARPETA`, o `respaldos/` del proyecto) o el último es
+  de hace más de 36 horas: con el cron diario, un día entero sin respaldar. Mide por el nombre del archivo
+  (la hora en que se hizo), no por su fecha, que cambia al copiarlo.
+
+No comprueba que el servidor web proteja el panel (eso es `bin/comprobar_acceso.php`, que se corre desde
+afuera con la dirección pública), ni que los respaldos se puedan restaurar, ni que haya una copia en otra
+máquina: ver «Respaldos» y «Antes de exponerlo».
+
+**Dependencias.** En producción la app no usa paquetes de Composer: solo PHP y sus extensiones `pdo` y
+`pdo_pgsql`. Lo que baja Composer es PHPUnit y PHPStan, de desarrollo (`composer install --no-dev` no instala
+nada). `composer auditar` (o `composer audit --locked`) revisa el `composer.lock` contra los avisos de
+seguridad conocidos; al escribir esto (12 de noviembre de 2026) no había ninguno. No está en la CI a propósito:
+un aviso nuevo sobre una herramienta de desarrollo rompería cualquier PR que no tiene nada que ver. Conviene
+correrlo de vez en cuando y antes de un despliegue; Dependabot ya propone las actualizaciones.
+
 ### Otros puntos
 
 Dos cosas que la app ya resuelve por su cuenta pero vale saber:
@@ -442,6 +515,8 @@ Dos cosas que la app ya resuelve por su cuenta pero vale saber:
   configuralo a un archivo real en producción en vez del default.
 - **Backups**: `bin/respaldar.php`, con cron, rotación y comprobación del archivo
   (ver «Respaldos»). Falta, y es cosa del servidor, copiarlos a otra máquina.
+- **Estado**: `bin/estado.php` dice si la base, las migraciones, las tasas y los respaldos están en orden
+  (ver «Estado del sistema»).
 
 ## Tests y análisis estático
 
@@ -480,14 +555,16 @@ las tres suites, contra un Postgres 16, en PHP 8.3 (el mínimo) y en 8.4.
 public/            front controller (index.php) + CSS
 src/
   Controllers/       un controlador por sección (dashboard, boletas —la pantalla
-                      «Cobros e ingresos», `?page=cobros`—, cobranza, pagos, notas de
-                      crédito, funnel, cohortes, clientes, auditoria). Todas las páginas son públicas, no hay
+                      «Cobros e ingresos», `?page=cobros`—, cobranza, flujo de caja, pagos,
+                      notas de crédito, funnel, cohortes, clientes, tasas de cambio, auditoria). Todas las páginas son públicas, no hay
                       login (ver `_Garbage/README.md`).
   Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
                       IngresosYCobrosRepository (kpis, ingresos y cobros por mes,
                       antigüedad de cartera, por método de pago; su
                       `saldosAbiertosSql()` es la única definición de cartera),
-                      CobranzaRepository (esa cartera por cliente) y
+                      CobranzaRepository (esa cartera por cliente),
+                      FlujoDeCajaRepository (esa cartera por mes de vencimiento),
+                      HistorialDeTasasRepository (el historial de las tasas de cambio) y
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
                       por separado. AuditoriaRepository también concentra el
@@ -502,6 +579,7 @@ src/
   Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
   Respaldo/             RespaldoDeLaBase: el pg_dump con comprobación y rotación
                         (bin/respaldar.php), testeado con pg_dump de verdad
+  Estado/               EstadoDelSistema: las cuatro comprobaciones de bin/estado.php
   Acceso/               ComprobadorDeAcceso: pide el panel sin credenciales y dice si
                         el servidor web lo protege (bin/comprobar_acceso.php),
                         testeado con un php -S que hace de panel
@@ -596,7 +674,10 @@ database/
                         edad de cada país, 011 = la tasa de cambio de cada día,
                         012 = la fecha de devolución de cada nota de crédito,
                         013 = las fechas del funnel en orden, 014 = correcciones
-                        del catálogo de países y monedas, 016 = monedas reemplazadas)
+                        del catálogo de países y monedas, 015 = email único sin
+                        importar mayúsculas, 016 = monedas reemplazadas, 017 =
+                        mayoría de edad de Puerto Rico, 018 = el historial de las
+                        tasas de cambio)
 bin/                    los comandos, todos con `php bin/<comando>.php`:
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
@@ -605,9 +686,11 @@ bin/                    los comandos, todos con `php bin/<comando>.php`:
                         (ver «Antes de exponerlo»)
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
                         vez por día)
+  estado.php             el estado en una pantalla: base, migraciones, tasas y respaldos
+                        (termina con 1 si algo pide atención; ver «Estado del sistema»)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP: una carpeta por sección o entidad (dashboard,
-                        boletas, cobranza, pagos, notas, clientes, funnel, cohortes, auditoria) y en
+                        boletas, cobranza, flujo, pagos, notas, clientes, funnel, cohortes, tasas, auditoria) y en
                         ella una por pantalla, con el mismo nombre para lo mismo:
                         listado, alta, edicion y anulacion (boletas y pagos; los
                         clientes tienen listado, alta y ficha; las notas, listado
@@ -657,6 +740,8 @@ phpstan.neon            configuracion del analisis estatico
   y deja en `tasa_actualizada_en` y `tasa_fuente` desde cuándo y de dónde (`NULL` es
   una tasa de ejemplo; ver «Tasas de cambio»). Cada país trae también
   `mayoria_de_edad` (migración `010`, ver «Mayoría de edad»).
+- `historial_de_tasas`: una fila cada vez que cambia la tasa, la fecha de cotización o la fuente de
+  una moneda (migración `018`; la anota un trigger de `monedas`, ver «Historial de las tasas»).
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
   segmentación del dashboard y su moneda de facturación. Solo se admiten mayores de

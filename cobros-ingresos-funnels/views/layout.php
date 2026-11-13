@@ -9,11 +9,13 @@ $paginas = [
     'dashboard' => 'Dashboard',
     'cobros' => 'Cobros e ingresos',
     'cobranza' => 'Cobranza',
+    'flujo' => 'Flujo de caja',
     'pagos' => 'Pagos',
     'notas' => 'Notas de crédito',
     'funnel' => 'Funnel',
     'cohortes' => 'Cohortes',
     'clientes' => 'Clientes',
+    'tasas' => 'Tasas de cambio',
     'auditoria' => 'Auditoría',
 ];
 ?>

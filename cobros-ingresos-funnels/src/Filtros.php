@@ -25,7 +25,7 @@ final class Filtros
      * El valor de ?$parametro= si es una de las claves de $permitidas; si no lo es, $porDefecto, o la
      * primera clave de la lista si no se da ('' vale: es "todos" en el filtro de estado de Cobros).
      *
-     * @param array<string, string> $permitidas clave => etiqueta
+     * @param array<int|string, string> $permitidas clave => etiqueta (PHP vuelve entera una clave como '3')
      */
     public static function opcion(string $parametro, array $permitidas, ?string $porDefecto = null): string
     {
@@ -38,7 +38,7 @@ final class Filtros
      * true si ?$parametro= trae algo que no es ninguna clave de $permitidas: lo que la pantalla tiene que
      * avisar. Un parametro ausente o vacio no es una opcion inexistente, es "no se pidio nada".
      *
-     * @param array<string, string> $permitidas clave => etiqueta
+     * @param array<int|string, string> $permitidas clave => etiqueta (PHP vuelve entera una clave como '3')
      */
     public static function opcionInexistente(string $parametro, array $permitidas): bool
     {

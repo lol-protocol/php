@@ -37,6 +37,12 @@ final class Ilustrada extends Plantilla
     /** Línea de acento entre la imagen y el título: grosor. */
     private const FILETE_ALTO = 1.2;
 
+    /** La imagen es la ilustración de la portada: no se repite como marca de agua. */
+    protected function marcaDeAgua(Libro $libro, Rectangulo $panel): string
+    {
+        return '';
+    }
+
     public function coloresPorDefecto(): array
     {
         return ['fondo' => '#f6f1e6', 'texto' => '#1d1b17', 'acento' => '#9a3b22'];

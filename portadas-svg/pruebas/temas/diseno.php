@@ -110,7 +110,7 @@ return [
         });
     },
 
-    'Cambiar la imagen de un libro cambia su huella, y una plantilla sin ilustración avisa' => function (): void {
+    'Cambiar la imagen de un libro cambia su huella, y el cartel (solo letra) avisa de que no la usa' => function (): void {
         conCarpeta(static function (string $dir): void {
             $png = pngDePrueba("$dir/foto.png");
             $libro = libroDeEjemplo(['plantilla' => 'ilustrada', 'imagen' => $png]);
@@ -118,7 +118,7 @@ return [
             file_put_contents($png, (string) file_get_contents($png) . 'cambio');
             verdadero($antes !== Generador::huella($libro, false), 'la huella cambia con la imagen');
             igual([], array_filter(Generador::avisos($libro), static fn (string $a): bool => str_contains($a, 'la imagen no se usa')));
-            $otro = libroDeEjemplo(['plantilla' => 'clasica', 'imagen' => $png]);
+            $otro = libroDeEjemplo(['plantilla' => 'cartel', 'imagen' => $png]);
             igual(1, count(array_filter(Generador::avisos($otro), static fn (string $a): bool => str_contains($a, 'la imagen no se usa'))));
         });
     },
@@ -168,6 +168,25 @@ return [
             verdadero(!str_contains($svg, '<script') && !str_contains($svg, '<foreignObject'), 'sin scripts ni HTML');
             [, $ayuda] = correrCli(['--help']);
             verdadero(str_contains($ayuda, '--indice'), 'la ayuda describe --indice');
+        });
+    },
+
+    'La imagen es marca de agua tenue detrás del texto en clásica, sobria y tipográfica, y no en el cartel' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            $png = pngDePrueba("$dir/foto.png");
+            foreach (['clasica', 'sobria', 'tipografica'] as $plantilla) {
+                Generador::escribir(libroDeEjemplo(['plantilla' => $plantilla, 'imagen' => $png]), "$dir/$plantilla");
+                $portada = (string) file_get_contents("$dir/$plantilla/portada.svg");
+                verdadero(str_contains($portada, '<g opacity="0.25">'), "$plantilla: la imagen va con opacidad 0.25");
+                verdadero(strpos($portada, '<image ') < strpos($portada, '<text'), "$plantilla: la imagen va detrás del texto");
+                verdadero(!str_contains((string) file_get_contents("$dir/$plantilla/contratapa.svg"), '<image '), "$plantilla: la contratapa no lleva la imagen");
+                igual([], array_filter(Generador::avisos(libroDeEjemplo(['plantilla' => $plantilla, 'imagen' => $png])), static fn (string $a): bool => str_contains($a, 'la imagen no se usa')));
+            }
+            Generador::escribir(libroDeEjemplo(['plantilla' => 'cartel', 'imagen' => $png]), "$dir/cartel");
+            verdadero(!str_contains((string) file_get_contents("$dir/cartel/portada.svg"), '<image '), 'el cartel no dibuja la imagen');
+            Generador::escribir(libroDeEjemplo(['plantilla' => 'ilustrada', 'imagen' => $png]), "$dir/ilustrada");
+            igual(1, substr_count((string) file_get_contents("$dir/ilustrada/portada.svg"), '<image '));
+            verdadero(!str_contains((string) file_get_contents("$dir/ilustrada/portada.svg"), '<g opacity="0.25">'), 'la ilustrada no la repite como marca de agua');
         });
     },
 ];
