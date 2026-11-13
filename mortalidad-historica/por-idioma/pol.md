@@ -4,10 +4,12 @@
 
 > **Borrador.** Lo escribió un asistente de IA y ninguna persona nativa lo ha revisado. Cada término lleva una **confianza** de su correspondencia con una causa moderna: es una pista para leer un registro antiguo, **no un diagnóstico**. Ver «Cómo leer una causa de defunción» en el [README](../README.md).
 
-4 términos.
+6 términos.
 
 | Término | Causa moderna | CIE-10 | Confianza | Nota | Estado |
 |---|---|---|---|---|---|
+| grypa | Gripe (influenza) | J09, J10, J11 | alta |  | borrador |
+| odra | Sarampión | B05 | alta |  | borrador |
 | ospa | Viruela | B03 | alta |  | borrador |
 | puchlina | Edema o insuficiencia cardíaca (la «hidropesía» de los registros) | I50, R60 | media |  | borrador |
 | starość | Vejez, sin causa específica | R54 | alta |  | borrador |

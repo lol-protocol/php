@@ -1,4 +1,4 @@
-// El formulario de «pedir el retiro» (/r/{id}/) y la cola del propietario (/0/3/) en un navegador real, con una
+// Los formularios de «pedir el retiro» (/r/{id}/) y de pedir los datos de una persona (/s/{id}/), y la cola del propietario (/0/3/) en un navegador real, con una
 // auditoría de accesibilidad de axe-core. Las pruebas de PHP (../App) no abren un navegador y no pueden probar esto.
 //
 //   cd url-routing/tests/navegador && npm ci && npx playwright install chromium && npm test
@@ -11,7 +11,7 @@
 
 import { chromium } from 'playwright';
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import net from 'node:net';
 import os from 'node:os';
@@ -55,6 +55,7 @@ const entorno = {
   LOG_FILE: `${dir}/app.log`,
   URL_LOG_DIR: 'off',
   OWNER_TOKEN: TOKEN,
+  ENTREGA_SALIDA: `${dir}/entrega.json`,
 };
 
 function php(...argumentos) {
@@ -66,6 +67,7 @@ function php(...argumentos) {
 
 php('bin/migrate.php', 'genealogy', '--seed');
 php('tests/navegador/preparar.php');
+const entrega = JSON.parse(readFileSync(`${dir}/entrega.json`, 'utf8'));
 
 const puerto = await puertoLibre();
 const servidor = spawn('php', ['-S', `127.0.0.1:${puerto}`, '-t', 'public', 'public/index.php'], { cwd: raiz, env: entorno, stdio: 'ignore' });
@@ -145,6 +147,72 @@ const pruebas = {
       await p.waitForLoadState();
       verdadero((await p.locator('body').innerText()).includes('Elige un motivo'), 'muestra el error del motivo');
       await auditar(p, '/r/{id}/ con errores');
+    });
+  },
+
+  async 'el formulario de pedir los datos de una persona'() {
+    return con({}, async (p) => {
+      const respuesta = await p.goto(`${base}/s/6128473105/`);
+      igual(200, respuesta.status(), 'el formulario responde');
+      await auditar(p, '/s/{id}/');
+      for (const campo of ['derecho', 'detalle', 'contacto']) {
+        for (const control of await p.locator(`[name="${campo}"]`).all()) {
+          const nombre = await control.evaluate((e) => e.labels?.[0]?.textContent?.trim() ?? '');
+          verdadero(nombre !== '', `cada control de «${campo}» tiene una etiqueta asociada`);
+        }
+      }
+      // El mismo campo trampa que el del retiro: ni el teclado ni un lector de pantalla deben llegar a él.
+      const trampa = p.locator('[name="sitio_web"]');
+      igual(0, await trampa.evaluate((e) => e.tabIndex + 1), 'el campo trampa no recibe el foco del teclado');
+      verdadero((await trampa.boundingBox()).x < 0, 'está fuera de la pantalla');
+      igual('true', await trampa.evaluate((e) => (e.closest('[aria-hidden]')?.getAttribute('aria-hidden') ?? e.getAttribute('aria-hidden'))), 'ni se anuncia');
+    });
+  },
+
+  async 'el formulario de datos con sus errores'() {
+    return con({}, async (p) => {
+      await p.goto(`${base}/s/6128473105/`);
+      const formulario = p.locator('form:has([name="derecho"])');
+      await formulario.evaluate((f) => { f.noValidate = true; });
+      await formulario.locator('button[type="submit"], input[type="submit"]').first().click();
+      await p.waitForLoadState();
+      verdadero((await p.locator('body').innerText()).includes('Elige qué quieres pedir'), 'muestra el error del derecho');
+      await auditar(p, '/s/{id}/ con errores');
+    });
+  },
+
+  async 'la entrega con clave: pedir la clave'() {
+    return con({}, async (p) => {
+      igual(200, (await p.goto(`${base}/e/${entrega.token}/`)).status(), 'el enlace responde');
+      await auditar(p, '/e/{token}/');
+      for (const control of await p.locator('[name="clave"]').all()) {
+        const nombre = await control.evaluate((e) => e.labels?.[0]?.textContent?.trim() ?? '');
+        verdadero(nombre !== '', 'el campo de la clave tiene su etiqueta');
+      }
+    });
+  },
+
+  async 'la entrega con clave: una clave mala'() {
+    return con({}, async (p) => {
+      await p.goto(`${base}/e/${entrega.token}/`);
+      await p.fill('[name="clave"]', 'AAAA-AAAA-AAAA');
+      await p.getByRole('button', { name: 'Ver mis datos' }).click();
+      await p.waitForLoadState();
+      verdadero((await p.locator('body').innerText()).includes('La clave no es correcta'), 'dice que la clave no es correcta');
+      await auditar(p, '/e/{token}/ con una clave mala');
+    });
+  },
+
+  async 'la entrega con clave: lo que se muestra con la clave buena'() {
+    return con({}, async (p) => {
+      await p.goto(`${base}/e/${entrega.token}/`);
+      await p.fill('[name="clave"]', entrega.clave);
+      await p.getByRole('button', { name: 'Ver mis datos' }).click();
+      await p.waitForLoadState();
+      const texto = await p.locator('body').innerText();
+      verdadero(texto.includes('Esto es lo que el sitio guarda de ti hoy'), 'muestra sus datos');
+      verdadero(!texto.includes(entrega.clave), 'no repite la clave');
+      await auditar(p, '/e/{token}/ con la clave buena');
     });
   },
 

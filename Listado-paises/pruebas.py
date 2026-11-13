@@ -194,6 +194,13 @@ class DatosPreparados(unittest.TestCase):
         self.assertEqual(pd.empalmar(viejos, [(1800, 100.0 * pd.EMPALME_MAXIMO * 1.01)]), [])
         self.assertEqual(pd.empalmar(viejos, [(1500, 50.0)]), [])  # nada anterior al primer año
 
+    def test_millones_con_tres_cifras_significativas_como_minimo(self):
+        import preparar_datos as pd
+        self.assertEqual([pd.formato_millones(p) for p in (1_450_900_000, 67_500_000, 4_000_000, 185_482, 33_606, 9_000)],
+                         ["1450.9", "67.5", "4.00", "0.185", "0.034", "0.009"])
+        for personas in range(100_000, 1_000_000, 1_237):  # por debajo de un millón, un error de 0,5 % como mucho
+            self.assertLessEqual(abs(float(pd.formato_millones(personas)) * 1e6 - personas) / personas, 0.005)
+
     def test_ultimo_dato_solo_si_es_desde_el_anio_minimo(self):
         import preparar_datos as pd
         self.assertEqual(pd.ultimo_dato({2015: 50.0, 2022: 60.0}, 2010), (2022, 60.0))
@@ -392,7 +399,7 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(aa["emigrantes_pct"], "10.0")  # 400 000 / 4 000 000
         self.assertEqual((aa["libertad_fh"], aa["democracia_eiu"], aa["corrupcion_cpi"]), ("parcial", "61.5", "45"))
         self.assertEqual(bb["libertad_fh"], "")  # 2010 es anterior al mínimo
-        self.assertEqual(bb["poblacion_millones"], "0.25")  # Banco Mundial, sin OWID
+        self.assertEqual(bb["poblacion_millones"], "0.250")  # Banco Mundial, sin OWID
         self.assertEqual(bb["pib_per_capita_usd"], "10000")  # de dos años antes
         self.assertEqual(bb["alfabetizacion_adultos"], "70.0")
         self.assertEqual(cc["poblacion_millones"], "")  # Gapminder no da la población actual

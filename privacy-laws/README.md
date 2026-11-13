@@ -34,7 +34,8 @@ Any static server works for the web app; PHP is only needed for the API, the imp
 privacy-laws/
 ├── countries/
 │   ├── privacy_laws_master.csv   # source of truth (edit this)
-│   ├── field_sources.csv         # where single values come from (url, confidence, date)
+│   ├── field_sources.csv         # where single values come from (source id, confidence, date)
+│   ├── source_urls.csv           # each reference URL once, with its id (the hash of the URL)
 │   ├── changes.csv               # history of changes per row (npm run changes)
 │   ├── index.json                # generated: whole dataset in one file (what the app loads)
 │   └── {tld}/                    # generated: one folder per country, 2-letter lowercase code
@@ -79,7 +80,8 @@ The full workflow, with the rules for sources and history, is in [CONTRIBUTING.m
 ```bash
 $EDITOR countries/privacy_laws_master.csv
 npm run changes       # records what changed since the last commit in changes.csv
-npm run replace-url -- <old> <new>   # swaps a dead reference URL in the master CSV and field_sources.csv (--dry to count)
+npm run replace-url -- <old> <new>   # swaps a dead reference URL in the master CSV and source_urls.csv (--dry to count)
+npm run sources -- add <CODE> <field> <url>   # sets the source of one value in field_sources.csv / source_urls.csv
 npm run apply-research -- findings.csv --batch=batch.txt   # writes researched facts (code,field,value,conf,source) as new rows / patched cells, each with its source
 npm run validate      # strict checks: columns, dates, URLs, regions, duplicates…
 npm run build         # regenerates {tld}/ folders and index.json (idempotent)
@@ -88,7 +90,7 @@ npm test              # also fails if generated files are out of date
 
 ### Sources per value, change history and upcoming changes
 
-- `countries/field_sources.csv` (`country_code,law_name,field,url,confidence,checked`): where one value comes from. `law_name` may be empty when the country has a single law. The country card links each value to its source; the build adds them to every law as `sources`.
+- `countries/field_sources.csv` (`country_code,law_name,field,source_id,confidence,checked`): where one value comes from, and `countries/source_urls.csv` (`source_id,url`): each reference URL once. The id is the first 10 hex digits of the SHA-1 of the URL, so two people adding sources in parallel never clash and a dead link is fixed in one row; `npm run sources -- add <CODE> <field> <url>` writes both files without computing a hash by hand, and `npm run sources -- fix` recomputes the ids after a URL was edited by hand. `law_name` may be empty when the country has a single law. The country card links each value to its source; the build adds them to every law as `sources`.
 - `countries/changes.csv` (`date,country_code,law_name,field,old_value,new_value`): what changed in each row and when, rebuilt from the git history of the master CSV and kept up to date by `npm run changes` (compares with `HEAD`, or `--since=<rev>`; a renamed law keeps its history and sources). The card shows the latest entries; the build adds them as `changes` (newest first). Bookkeeping columns (`data_status`, `confidence`, `last_checked`) are not recorded.
 - `pending_change` / `pending_date`: the table marks the row ("Change pending") and the card says what is expected and when. `npm run validate` warns once the date has passed, and warns about rows last checked more than a year ago (the card then says "due for review").
 

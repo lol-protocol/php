@@ -42,7 +42,9 @@ while IFS='|' read -r rama fecha; do
     n_vacias=$((n_vacias + 1))
     continue
   fi
-  mb=$(git merge-base "$base" "origin/$rama")
+  # Una rama sin ancestro común con la base (huérfana, como datos/leyes-textos-*) nunca es «fusionada»: sin
+  # este `|| continue`, el error de merge-base tumbaba todo el script por el `set -e`.
+  mb=$(git merge-base "$base" "origin/$rama") || continue
   mapfile -t archivos < <(git diff --name-only "$mb" "origin/$rama")
   if [ "${#archivos[@]}" -gt 0 ] && git diff --quiet "$base" "origin/$rama" -- "${archivos[@]}"; then
     fusionadas+="- \`$rama\` (último commit: $dia, ${#archivos[@]} archivos)"$'\n'

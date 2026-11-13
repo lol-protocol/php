@@ -14,5 +14,9 @@ $primero = explode('/', trim((string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?')
 if (ctype_digit($primero) && (http_response_code() ?: 200) === 200 && !\App\Support\AccessPolicy::esPropietario()
     && \App\Support\ServiceLocator::getInstance()->getRouter()->typeForLength(strlen($primero)) !== null) {
     $pedirRetiro = '/r/' . $primero . '/';
+    // And a persona's page, to ask for her data (SolicitudController): only for a persona, which is a 10-digit id.
+    if (\App\Support\ServiceLocator::getInstance()->getRouter()->typeForLength(strlen($primero)) === 'persona') {
+        $pedirDatos = '/s/' . $primero . '/';
+    }
 }
 include __DIR__ . '/../_layout.php';

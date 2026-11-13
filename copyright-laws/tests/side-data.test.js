@@ -10,19 +10,22 @@ import {
   COLUMNS,
   DATA_DIR,
   ROW_CHANGE,
-  SOURCE_COLUMNS,
   diffRecords,
   loadAndValidate,
   loadSide,
+  todayIso,
   newerSourceWarnings,
   validateChanges,
   validateRecords,
   validateSources,
   withSideData,
   writeCsv,
+  writeSources,
 } from "../scripts/lib/dataset.js";
 import { recordChanges, unrecorded } from "../scripts/record-changes.js";
 
+// "Today" for the row checks: rows researched today must not look like they were checked in the future.
+const TODAY = todayIso();
 const { records, sources, changes } = loadAndValidate();
 const base = records.find((r) => r.data_status === "researched");
 const check = (patch, options) => validateRecords([{ ...base, ...patch }], COLUMNS, options);
@@ -36,10 +39,10 @@ test("researched rows need a confidence level", () => {
 test("a pending change needs a description, and a passed date is a warning", () => {
   assert.match(check({ pending_change: "", pending_date: "2027-01-01" }).errors[0], /pending_change is empty/);
   assert.match(check({ pending_change: "x", pending_date: "2027-02-30" }).errors[0], /pending_date must be empty or a real/);
-  const passed = check({ pending_change: "New law", pending_date: "2026-01-01" }, { today: "2026-11-01" });
+  const passed = check({ pending_change: "New law", pending_date: "2026-01-01" }, { today: TODAY });
   assert.deepEqual(passed.errors, []);
   assert.match(passed.warnings[0], /pending change was due on 2026-01-01/);
-  assert.deepEqual(check({ pending_change: "New law", pending_date: "2027-01-01" }, { today: "2026-11-01" }).warnings, []);
+  assert.deepEqual(check({ pending_change: "New law", pending_date: "2027-01-01" }, { today: TODAY }).warnings, []);
 });
 
 test("a row last checked more than a year ago is flagged for review", () => {
@@ -115,7 +118,7 @@ test("record-changes appends the diff and moves history and sources to a renamed
   writeCsv(join(dir, "changes.csv"), CHANGE_COLUMNS, [
     { date: "2026-01-01", country_code: "AA", law_name: "Old Act", field: "notes", old_value: "", new_value: "x" },
   ]);
-  writeCsv(join(dir, "field_sources.csv"), SOURCE_COLUMNS, [
+  writeSources(master, [
     { country_code: "AA", law_name: "Old Act", field: "notes", url: "https://example.org/", confidence: "low", checked: "2026-01-01" },
   ]);
   const { entries, all, sources: side } = recordChanges({ since: "HEAD", date: "2026-10-15", masterPath: master, gitShow: () => committed });
@@ -145,7 +148,7 @@ test("a curated row with no last_checked is a warning, not an error", () => {
   const curated = check({ data_status: "curated", confidence: "", last_checked: "" });
   assert.deepEqual(curated.errors, []);
   assert.match(curated.warnings[0], /curated and has never been checked/);
-  assert.deepEqual(check({ data_status: "curated", confidence: "", last_checked: "2026-10-01" }, { today: "2026-11-01" }).warnings, []);
+  assert.deepEqual(check({ data_status: "curated", confidence: "", last_checked: "2026-10-01" }, { today: TODAY }).warnings, []);
 });
 
 test("a last_checked in the future is an error (it would hide the row from the review reminder)", () => {

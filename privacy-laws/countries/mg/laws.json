@@ -7,17 +7,17 @@
     "jurisdiction": "Malagasy Commission for Informatics and Liberties (CMIL)",
     "enactment_date": "2015-01-09",
     "effective_date": "2015-06-09",
-    "scope": "Data subjects whose personal data is processed (unconfirmed)",
-    "applies_to": "Public and private controllers processing personal data (unconfirmed)",
-    "key_requirements": "Consent or other legal basis; prior notification to the CMIL before processing; cross-border transfers only to countries with adequate protection or with CMIL approval (unconfirmed)",
-    "data_categories": "Personal data; sensitive data (biometric and health among them) (unconfirmed)",
+    "scope": "Personal data processed in Madagascar by public and private entities, including foreign businesses operating in Madagascar or using local infrastructure; rights granted to individuals",
+    "applies_to": "Public and private controllers processing personal data",
+    "key_requirements": "Consent or other legal basis; prior notification to the CMIL before processing; cross-border transfers only to countries with adequate protection or with CMIL approval",
+    "data_categories": "Personal data; sensitive data: racial origin, political opinions, religious beliefs, union membership, genetic and biometric data, health, sexual life (prohibited unless legal exceptions apply)",
     "retention_period": "Not specified",
     "enforcement_authority": "Malagasy Commission for Informatics and Liberties (CMIL)",
-    "penalties_range": "Vendor source cites up to 5% of pre-tax turnover plus criminal penalties; not verified against the statute (unconfirmed)",
-    "exemptions": "Journalistic; artistic and academic research processing under safeguards (secondary summary; articles not found) (unconfirmed)",
+    "penalties_range": "Fines MGA 200,000-10,000,000 for minor infractions; vendor sources also cite up to 5% of pre-tax turnover and imprisonment for severe breaches (secondary sources, statute not checked)",
+    "exemptions": "Personal or household use; government processing for national security, taxation or law enforcement; journalistic, artistic or academic research processing within legal safeguards",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "No specific rule found (unconfirmed)",
+    "genetic_data": "Genetic data is sensitive: processing prohibited unless specific legal exceptions apply (secondary summary; article not cited)",
     "website_url": "https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°2014-038-sur-la-protection-des-données-à-Kre-personnel.pdf",
     "language": "French",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.assemblee-nationale.mg/wp-content/uploads/2020/11/Loi-n°2014-038-sur-la-protection-des-données-à-Kre-personnel.pdf",
@@ -51,23 +51,23 @@
       },
       "scope": {
         "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
         "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://www.consentstack.io/regulations/mg-law2014038",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "data_categories": {
-        "url": "https://www.consentstack.io/regulations/mg-law2014038",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://fr.allafrica.com/stories/202508050468.html",
@@ -75,22 +75,64 @@
         "checked": "2026-10-22"
       },
       "penalties_range": {
-        "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.consentstack.io/regulations/mg-law2014038",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "exemptions": {
-        "url": "https://www.consentstack.io/regulations/mg-law2014038",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "genetic_data": {
-        "url": "https://www.consentstack.io/regulations/mg-law2014038",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://regulations.clym.io/law-no-2014-038-on-the-protection-of-personal-data-madagascar",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "genetic_data",
+        "from": "No specific rule found (unconfirmed)",
+        "to": "Genetic data is sensitive: processing prohibited unless specific legal exceptions apply (secondary summary; article not cited)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "exemptions",
+        "from": "Journalistic; artistic and academic research processing under safeguards (secondary summary; articles not found) (unconfirmed)",
+        "to": "Personal or household use; government processing for national security, taxation or law enforcement; journalistic, artistic or academic research processing within legal safeguards"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "Vendor source cites up to 5% of pre-tax turnover plus criminal penalties; not verified against the statute (unconfirmed)",
+        "to": "Fines MGA 200,000-10,000,000 for minor infractions; vendor sources also cite up to 5% of pre-tax turnover and imprisonment for severe breaches (secondary sources, statute not checked)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "data_categories",
+        "from": "Personal data; sensitive data (biometric and health among them) (unconfirmed)",
+        "to": "Personal data; sensitive data: racial origin, political opinions, religious beliefs, union membership, genetic and biometric data, health, sexual life (prohibited unless legal exceptions apply)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "key_requirements",
+        "from": "Consent or other legal basis; prior notification to the CMIL before processing; cross-border transfers only to countries with adequate protection or with CMIL approval (unconfirmed)",
+        "to": "Consent or other legal basis; prior notification to the CMIL before processing; cross-border transfers only to countries with adequate protection or with CMIL approval"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Public and private controllers processing personal data (unconfirmed)",
+        "to": "Public and private controllers processing personal data"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects whose personal data is processed (unconfirmed)",
+        "to": "Personal data processed in Madagascar by public and private entities, including foreign businesses operating in Madagascar or using local infrastructure; rights granted to individuals"
+      },
       {
         "date": "2026-10-22",
         "field": "row",
