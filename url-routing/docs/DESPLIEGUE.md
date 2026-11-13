@@ -15,7 +15,7 @@ Para quien instala por primera vez. Cada punto lleva a donde se explica; marca l
 - [ ] **Correo saliente para cron.** Con el ocultamiento automático activado (paso 8), el sitio puede ocultar una página sin que estés mirando; el correo de cron es la forma de enterarte. Sin un servidor de correo (o un relé) configurado, ese aviso no llega y solo te queda mirar `/0/3/`. Pruébalo antes de dar el sitio por listo.
 - [ ] **Dónde guardar el secreto del propietario** (`OWNER_TOKEN`). Si lo pierdes, se cambia (paso 10) y se cierran todas las sesiones; si se filtra, es la llave de todo lo privado.
 - [ ] **Quién responde por el sitio.** El nombre, el domicilio y el correo de contacto que piden los [términos de uso](../../TERMINOS-DE-USO.md) tienen que ser reales antes de publicar.
-- [ ] **Cómo y dónde guardarás las copias de seguridad** (paso 11). No hay copias automáticas: una copia que vive en el mismo servidor no sirve si el servidor se pierde.
+- [ ] **Cómo y dónde guardarás las copias de seguridad** (paso 11). Hay un script de copias (`bin/copias.php`, abajo), pero **no corre solo hasta que programes su cron**: una copia que vive en el mismo servidor no sirve si el servidor se pierde.
 
 ## 0. Antes de empezar
 
@@ -240,11 +240,26 @@ Los dos comandos se probaron: la copia de SQLite abre y pasa `integrity_check`, 
 
 Es una **propuesta técnica para que la revises**, no una decisión ni un plazo legal (⚖️: si la ley pide otro plazo, manda ese). De ella sale el plazo que dice la respuesta de una supresión (`SOLICITUDES.md`): una persona suprimida **sigue en las copias hasta que la última que la trae se borra**.
 
-- **Cada cuánto:** una copia al día, de la base de genealogía (`pg_dump -Fc`, arriba) y, si el POS importa, la de SQLite con `.backup`.
-- **Cuánto se guardan:** **30 días**; las más viejas se borran. Con eso, quien se suprime desaparece también de las copias a más tardar 30 días después. Lo que se borra se prueba así (solo toca volcados de más de 30 días): `find /ruta/copias -maxdepth 1 -name 'genealogia-*.dump' -mtime +30 -delete`.
+- **Cada cuánto:** una copia al día, de la base de genealogía (`pg_dump -Fc`) y de la del POS (SQLite): lo hace `bin/copias.php` (abajo).
+- **Cuánto se guardan:** **30 días**; las más viejas se borran, por la fecha que lleva el nombre del archivo. Con eso, quien se suprime desaparece también de las copias a más tardar 30 días después.
 - **Dónde:** fuera del servidor (si no, no sirven cuando el servidor se pierde) y con acceso solo del propietario: una copia trae también lo que el sitio oculta (personas vivas, pedidos de retiro con el correo de quien pidió). **Cifrarlas queda por decidir**: cifrar la base en reposo ya está en la lista de pendientes de `CUMPLIMIENTO-LEY-21719.md`.
 - **Al restaurar:** `php bin/persona.php reaplicar --confirmar` (arriba), para quitar otra vez a quien se suprimió después de esa copia.
 - **Qué falta:** nada de esto corre solo todavía. Elegir dónde se guardan, programar el cron y **ensayar una restauración en el servidor real**; hasta entonces el «30 días» es una intención, no una garantía.
+
+### `bin/copias.php`
+
+```
+# /etc/cron.d/copias-url-routing   (cron manda por correo lo que el script imprime: si todo salió bien, no imprime nada)
+MAILTO=tu@correo.com
+15 3 * * *  www-data  cd /var/www/php/url-routing && php bin/copias.php --destino=/var/backups/url-routing --enviar='rsync -a {archivo} usuario@host:/copias/url-routing/'
+```
+
+- Lee cada sitio de su `DB_DSN_GENEALOGY` y `DB_DSN_POS` (como la aplicación). `sqlite:` se copia con `VACUUM INTO` (una copia consistente, también con el WAL); `pgsql:` con `pg_dump -Fc`, así que `pg_dump` y `pg_restore` tienen que estar en el `PATH` de quien corre el cron y su rol (`DB_USER_GENEALOGY`, `DB_PASSWORD_GENEALOGY`) tiene que poder leer la base. La clave va por `PGPASSWORD`, no en la línea de comandos.
+- Deja `genealogy-AAAA-MM-DD.dump` y `pos-AAAA-MM-DD.sqlite`, con permiso `600` (la carpeta, `700` si la crea él). **Cada copia se comprueba antes de tomar su nombre** (`pg_restore --list` o `integrity_check`): una copia a medias nunca se confunde con una buena.
+- **Borra** las de más de `--dias` días (30 por omisión) **solo después de que la copia nueva de ese sitio salió bien**: un respaldo que falla no deja sin copias buenas.
+- `--enviar` corre tu comando una vez por copia nueva para sacarla del servidor (`{archivo}` es la ruta, ya entrecomillada). Si falla, sale con 1 y la copia local queda. `--sitios=genealogy` copia solo algunos; también existen `COPIAS_DESTINO`, `COPIAS_DIAS` y `COPIAS_ENVIAR`.
+- Sale con 0 sin imprimir nada, con 1 si algo falló (dice qué en stderr; los demás sitios se copian igual) y con 2 si se usó mal. **No cifra.**
+- Se probó con `pg_dump` y SQLite reales (`tests/App/Support/CopiasTest.php` y `tests/App/Integration/CopiasCliTest.php`). **No se probó con un cron, un `rsync` ni un servidor de correo reales.**
 
 **Después de restaurar una copia, corre `php bin/persona.php reaplicar`.** Una copia anterior a una supresión trae de vuelta a la persona que se borró. `reaplicar` lista a quienes volvieron (la tabla `supresiones_persona` guarda sus ids, no sus nombres) y, con `--confirmar`, los quita otra vez. Ver «Acceso y supresión de una persona» en [`ACCESO.md`](./ACCESO.md).
 

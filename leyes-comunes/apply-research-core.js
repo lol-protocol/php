@@ -52,7 +52,7 @@ export function groupFacts(rows, { min = "low" } = {}) {
 
 /** applyResearch() bound to one project's dataset. */
 export function createApplyResearch({ dataset, parse }) {
-  const { COLUMNS, MASTER_CSV, REQUIRED_FIELDS, TRANSLATED_FIELDS, SOURCE_COLUMNS, SOURCES_FILE, loadMaster, loadSide, todayIso, validateRecords, writeCsv } = dataset;
+  const { COLUMNS, MASTER_CSV, REQUIRED_FIELDS, TRANSLATED_FIELDS, loadMaster, loadSources, todayIso, validateRecords, writeCsv, writeSources } = dataset;
 
   // Only the descriptive values carry the mark in their text; names, dates, URLs and the enumerated columns stay plain
   // (a mark there would break their format), and the confidence of their source says the same.
@@ -60,7 +60,7 @@ export function createApplyResearch({ dataset, parse }) {
 
   function applyResearch({ research, batch = {}, min = "low", today = todayIso(), write = true }) {
     const { records } = loadMaster(MASTER_CSV);
-    const side = loadSide(MASTER_CSV, SOURCES_FILE, SOURCE_COLUMNS);
+    const side = loadSources(MASTER_CSV);
     const report = { added: [], patched: [], skipped: [], nolaw: [] };
 
     const upsertSource = (law, field, fact) => {
@@ -127,7 +127,7 @@ export function createApplyResearch({ dataset, parse }) {
     if (errors.length) throw new Error(`the result would not validate, nothing was written:\n  ${errors.slice(0, 8).join("\n  ")}`);
     if (write && (report.added.length || report.patched.length)) {
       writeCsv(MASTER_CSV, COLUMNS, records);
-      writeCsv(side.path, SOURCE_COLUMNS, side.rows);
+      writeSources(MASTER_CSV, side.rows);
     }
     return report;
   }

@@ -2,6 +2,7 @@
 // niveles de confianza, validación de fechas y URL, avisos de fuentes, y la escritura de CSV. Estaba copiado en los dos
 // módulos; lo que sí cambia entre ellos (columnas, regiones, reglas de cada fila, artefactos) se queda en cada dataset.js.
 // Solo usa módulos de Node: no depende de ningún paquete, así que se puede importar desde esta carpeta.
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
@@ -20,6 +21,15 @@ export const STALE_AFTER_DAYS = 365;
 
 // Archivos al lado del CSV maestro: field_sources.csv (de dónde sale cada valor) y changes.csv (qué cambió y cuándo).
 export const SOURCES_FILE = "field_sources.csv";
+
+// Each reference URL is stored once, in source_urls.csv (`source_id,url`); field_sources.csv points at it with `source_id`.
+// The id is the first 10 hex digits of the SHA-1 of the URL, so two people adding sources in parallel never choose the
+// same id for different URLs, and a dead link is fixed in one row. In memory a source keeps its `url` (SOURCE_COLUMNS):
+// only the two files on disk differ (SOURCE_FILE_COLUMNS), and loadSources()/writeSources() translate between them.
+export const SOURCE_URLS_FILE = "source_urls.csv";
+export const SOURCE_URL_COLUMNS = ["source_id", "url"];
+export const SOURCE_FILE_COLUMNS = ["country_code", "law_name", "field", "source_id", "confidence", "checked"];
+export const sourceId = (url) => createHash("sha1").update(String(url)).digest("hex").slice(0, 10);
 
 export const CHANGES_FILE = "changes.csv";
 
@@ -188,6 +198,49 @@ export function createDataset({ masterCsv, dataDir: defaultDataDir, columns, met
     return { rows: records, header: records.length ? header : columns, path };
   }
 
+  /**
+   * field_sources.csv with its URLs resolved: rows `{country_code, law_name, field, url, confidence, checked}` (the form
+   * everything else uses), plus `problems`, what is wrong in the two files (header, unknown or forged ids, a URL stored
+   * twice, a URL nobody uses). A missing file is an empty table.
+   */
+  function loadSources(masterPath = masterCsv) {
+    const path = join(dirname(masterPath), SOURCES_FILE);
+    const urlsPath = join(dirname(masterPath), SOURCE_URLS_FILE);
+    const problems = [];
+    const urls = new Map(); // id -> url
+    if (existsSync(urlsPath)) {
+      const { records, header } = parseMaster(readFileSync(urlsPath, "utf-8"));
+      if (records.length && header.join(",") !== SOURCE_URL_COLUMNS.join(",")) problems.push(`${SOURCE_URLS_FILE}: header must be exactly: ${SOURCE_URL_COLUMNS.join(",")}`);
+      const seenUrls = new Set();
+      records.forEach((r, i) => {
+        const where = `${SOURCE_URLS_FILE} line ${i + 2}`;
+        if (urls.has(r.source_id)) problems.push(`${where}: source_id ${r.source_id} appears twice`);
+        if (seenUrls.has(r.url)) problems.push(`${where}: the URL is stored twice (${r.url})`);
+        if (r.source_id !== sourceId(r.url)) problems.push(`${where}: source_id ${r.source_id} is not the id of its URL (expected ${sourceId(r.url)})`);
+        urls.set(r.source_id, r.url);
+        seenUrls.add(r.url);
+      });
+    }
+    if (!existsSync(path)) return { rows: [], header: SOURCE_COLUMNS, path, urlsPath, problems };
+    const { records, header } = parseMaster(readFileSync(path, "utf-8"));
+    if (records.length && header.join(",") !== SOURCE_FILE_COLUMNS.join(",")) problems.push(`${SOURCES_FILE}: header must be exactly: ${SOURCE_FILE_COLUMNS.join(",")}`);
+    const used = new Set();
+    const rows = records.map(({ source_id: id, ...rest }, i) => {
+      used.add(id);
+      if (!urls.has(id)) problems.push(`${SOURCES_FILE} line ${i + 2}: source_id ${JSON.stringify(id)} is not in ${SOURCE_URLS_FILE}`);
+      return { country_code: rest.country_code, law_name: rest.law_name, field: rest.field, url: urls.get(id) ?? "", confidence: rest.confidence, checked: rest.checked };
+    });
+    for (const [id, url] of urls) if (!used.has(id)) problems.push(`${SOURCE_URLS_FILE}: ${id} (${url}) is used by no source`);
+    return { rows, header: SOURCE_COLUMNS, path, urlsPath, problems };
+  }
+
+  /** Writes the sources back as the two files: the URLs sorted (one row each) and the sources pointing at them. */
+  function writeSources(masterPath, rows) {
+    const unique = [...new Set(rows.map((r) => r.url))].sort();
+    writeCsv(join(dirname(masterPath), SOURCE_URLS_FILE), SOURCE_URL_COLUMNS, unique.map((url) => ({ source_id: sourceId(url), url })));
+    writeCsv(join(dirname(masterPath), SOURCES_FILE), SOURCE_FILE_COLUMNS, rows.map((r) => ({ ...r, source_id: sourceId(r.url) })));
+  }
+
   /** The English values that can be translated: every non-empty descriptive value of every law. */
   function translatableValues(records) {
     const values = new Set();
@@ -251,14 +304,14 @@ export function createDataset({ masterCsv, dataDir: defaultDataDir, columns, met
   function loadAndValidate(path = masterCsv, options = {}) {
     const { records, header } = loadMaster(path);
     const { errors, warnings } = validateRecords(records, header, options);
-    const sources = loadSide(path, SOURCES_FILE, SOURCE_COLUMNS);
+    const sources = loadSources(path);
     const changes = loadSide(path, CHANGES_FILE, CHANGE_COLUMNS);
     const translations = loadSide(path, TRANSLATIONS_FILE, TRANSLATION_COLUMNS);
     if (!errors.length) {
       const t = validateTranslations(translations.rows, records, translations.header);
       errors.push(...t.errors);
       warnings.push(...t.warnings);
-      errors.push(...validateSources(sources.rows, records, sources.header), ...validateChanges(changes.rows, changes.header));
+      errors.push(...sources.problems, ...validateSources(sources.rows, records, sources.header), ...validateChanges(changes.rows, changes.header));
       if (!errors.length) warnings.push(...staleSourceWarnings(sources.rows, records, changes.rows), ...newerSourceWarnings(sources.rows, records));
     }
     return { records, errors, warnings, sources: sources.rows, changes: changes.rows, translations: translations.rows };
@@ -312,5 +365,5 @@ export function createDataset({ masterCsv, dataDir: defaultDataDir, columns, met
     }
   }
 
-  return { loadMaster, loadSide, translatableValues, validateTranslations, translationDictionaries, validateChanges, loadAndValidate, diffRecords, applyWrites };
+  return { loadMaster, loadSide, loadSources, writeSources, translatableValues, validateTranslations, translationDictionaries, validateChanges, loadAndValidate, diffRecords, applyWrites };
 }
