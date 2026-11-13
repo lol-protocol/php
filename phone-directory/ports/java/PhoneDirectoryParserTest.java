@@ -72,29 +72,29 @@ public class PhoneDirectoryParserTest {
         assertEquals("MX", location(entries.get(0)).get("countryCode"));
 
         // Each language reads its own countries' phone formats, and only its own.
-        assertEquals("01 42 68 53 00", MultiLanguagePhoneDirectoryParser.phoneIn("Tel 01 42 68 53 00", "fr"));
-        assertEquals("+33 1 42 68 53 00", MultiLanguagePhoneDirectoryParser.phoneIn("+33 1 42 68 53 00", "fr"));
-        assertEquals("(089) 654321", MultiLanguagePhoneDirectoryParser.phoneIn("(089) 654321", "de"));
-        assertEquals("0711/12345", MultiLanguagePhoneDirectoryParser.phoneIn("0711/12345", "de"));
-        assertEquals("06 1234567", MultiLanguagePhoneDirectoryParser.phoneIn("06 1234567", "it"));
-        assertEquals("21 342 0000", MultiLanguagePhoneDirectoryParser.phoneIn("21 342 0000", "pt"));
-        assertEquals("91 234 56 78", MultiLanguagePhoneDirectoryParser.phoneIn("91 234 56 78", "es"));
-        assertEquals("2-345-678", MultiLanguagePhoneDirectoryParser.phoneIn("2-345-678", "es"));
-        assertEquals(null, MultiLanguagePhoneDirectoryParser.phoneIn("Tel 01 42 68 53 00", "en"));
-        assertEquals("555-123-4567", MultiLanguagePhoneDirectoryParser.phoneIn("Calle Mayor 12 555-123-4567", "es"));
-        assertEquals("030 123456", MultiLanguagePhoneDirectoryParser.phoneIn("Hauptstraße 5 030 123456", "de"));
-        assertEquals("BUtterfield 8-4521", MultiLanguagePhoneDirectoryParser.phoneIn("BUtterfield 8-4521", "en"));
+        assertEquals("01 42 68 53 00", PhonePattern.find("Tel 01 42 68 53 00", PhonePattern.regexFor("fr")));
+        assertEquals("+33 1 42 68 53 00", PhonePattern.find("+33 1 42 68 53 00", PhonePattern.regexFor("fr")));
+        assertEquals("(089) 654321", PhonePattern.find("(089) 654321", PhonePattern.regexFor("de")));
+        assertEquals("0711/12345", PhonePattern.find("0711/12345", PhonePattern.regexFor("de")));
+        assertEquals("06 1234567", PhonePattern.find("06 1234567", PhonePattern.regexFor("it")));
+        assertEquals("21 342 0000", PhonePattern.find("21 342 0000", PhonePattern.regexFor("pt")));
+        assertEquals("91 234 56 78", PhonePattern.find("91 234 56 78", PhonePattern.regexFor("es")));
+        assertEquals("2-345-678", PhonePattern.find("2-345-678", PhonePattern.regexFor("es")));
+        assertEquals(null, PhonePattern.find("Tel 01 42 68 53 00", PhonePattern.regexFor("en")));
+        assertEquals("555-123-4567", PhonePattern.find("Calle Mayor 12 555-123-4567", PhonePattern.regexFor("es")));
+        assertEquals("030 123456", PhonePattern.find("Hauptstraße 5 030 123456", PhonePattern.regexFor("de")));
+        assertEquals("BUtterfield 8-4521", PhonePattern.find("BUtterfield 8-4521", PhonePattern.regexFor("en")));
 
         // OCR misreadings inside a phone are repaired; words and exchange names are left alone.
-        assertEquals("555-123-4567", MultiLanguagePhoneDirectoryParser.repairOcrDigits("555-l23-4567"));
-        assertEquals("555-123-4567", MultiLanguagePhoneDirectoryParser.phoneIn("555-l23-4567", "en"));
-        assertEquals("Oil BUtterfield 8-4521", MultiLanguagePhoneDirectoryParser.repairOcrDigits("Oil BUtterfield 8-4521"));
+        assertEquals("555-123-4567", PhonePattern.repairOcrDigits("555-l23-4567"));
+        assertEquals("555-123-4567", PhonePattern.find("555-l23-4567", PhonePattern.regexFor("en")));
+        assertEquals("Oil BUtterfield 8-4521", PhonePattern.repairOcrDigits("Oil BUtterfield 8-4521"));
 
         // The phone can share the line with the name.
         entries = new MultiLanguagePhoneDirectoryParser().parseContent("SMITH, John ........ 555-123-4567\n12 Main Street", "en");
         assertEquals("555-123-4567", entries.get(0).get("phone"));
         assertEquals("Smith, John", person(entries.get(0)).get("formatted"));
-        assertEquals(null, MultiLanguagePhoneDirectoryParser.nameBesidePhone("555-123-4567 ext. 12", "555-123-4567"));
+        assertEquals(null, PhonePattern.nameBesidePhone("555-123-4567 ext. 12", "555-123-4567"));
 
         // The PHP parser's evaluation set, with this port's known failures (see EvaluationSetCheck).
         try {

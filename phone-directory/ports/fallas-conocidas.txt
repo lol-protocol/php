@@ -3,32 +3,5 @@
 # arregla uno, hay que sacarlo de aquí; si rompe otro, no pasa. Un caso nuevo del conjunto que los puertos
 # no resuelvan va aquí, bajo su causa.
 
-# Formato de una entrada por línea (los puertos solo leen bloques, un campo por línea)
-en-una-linea-sin-separadores
-en-una-linea-con-comas
-es-una-linea-sin-separadores
-fr-una-linea-con-telefono-local
-de-una-linea-sin-separadores
-es-una-linea-apellido-que-es-palabra-de-calle
-es-una-linea-segundo-apellido-que-es-palabra-de-calle
-it-una-linea-sin-separadores
-
-# Empresas (los puertos guardan todo como persona)
-en-empresa
-es-empresa
-es-empresa-con-numero-en-el-nombre
-fr-empresa
-pt-empresa
-de-empresa
-it-empresa
-es-empresa-con-numero-al-final-del-nombre
-en-telefono-con-extension
-en-empresa-con-telefono-en-la-linea-del-nombre
-
-# Reglas de PHP que los puertos no tienen todavía
-en-apellido-partido-con-guion
-es-calle-abreviada-c-barra
-en-tratamiento-dr-antes-del-nombre
-en-santo-st-en-el-nombre-de-una-empresa
-es-calle-sin-palabra-cede-ante-una-con-palabra
-en-dos-entradas-con-telefono-en-la-linea-del-nombre
+# (vacía: desde que los puertos portaron BlockReader, StreetRules, SingleLineEntrySplitter y la detección de negocios,
+# resuelven los 80 casos del conjunto igual que el parser de PHP.)
