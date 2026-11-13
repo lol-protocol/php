@@ -16,13 +16,17 @@
     "propietario": {"type": "string", "minLength": 1, "maxLength": 64, "description": "solo usuario: id de cuenta"},
     "creado": {"type": "string", "format": "date-time"},
     "visibilidad": {"enum": ["privado", "compartido"], "default": "privado"},
-    "moderacion": {"enum": ["pendiente", "aprobado", "rechazado"], "description": "solo usuario: un diseño compartido exige aprobado"}
+    "moderacion": {"enum": ["pendiente", "aprobado", "rechazado"], "description": "solo usuario: un diseño compartido exige aprobado; pendiente = el dueño pidió compartirlo"},
+    "moderacion_motivo": {"type": "string", "maxLength": 200, "description": "solo usuario: por qué se rechazó (o qué reglas saltaron al aprobar a mano)"},
+    "revisado": {"type": "string", "format": "date-time", "description": "solo usuario: cuándo se resolvió la moderación"}
   },
   "allOf": [
     {"if": {"properties": {"origen": {"const": "catalogo"}}},
-     "then": {"required": ["pieza"], "properties": {"id": {"pattern": "^cat:"}}, "not": {"anyOf": [{"required": ["receta"]}, {"required": ["propietario"]}, {"required": ["moderacion"]}]}}},
+     "then": {"required": ["pieza"], "properties": {"id": {"pattern": "^cat:"}}, "not": {"anyOf": [{"required": ["receta"]}, {"required": ["propietario"]}, {"required": ["moderacion"]}, {"required": ["moderacion_motivo"]}, {"required": ["revisado"]}]}}},
     {"if": {"properties": {"origen": {"const": "usuario"}}},
      "then": {"required": ["receta", "propietario", "creado"], "properties": {"id": {"pattern": "^usr:"}}, "not": {"anyOf": [{"required": ["pieza"]}, {"required": ["sha256"]}]}}},
+    {"if": {"properties": {"moderacion": {"const": "rechazado"}}, "required": ["moderacion"]},
+     "then": {"properties": {"visibilidad": {"const": "privado"}}, "required": ["moderacion_motivo"]}},
     {"if": {"properties": {"visibilidad": {"const": "compartido"}}, "required": ["visibilidad"]},
      "then": {"properties": {"moderacion": {"const": "aprobado"}}, "required": ["moderacion"]}}
   ],
