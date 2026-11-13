@@ -263,8 +263,13 @@ def empalmar(viejos, conocidos):
 
 
 def formato_millones(personas):
+    """Millones con tres cifras significativas como mínimo: 1450.9, 67.50, 4.00, 0.185, 0.034.
+
+    Por debajo de un millón van tres decimales (con dos, 185 482 personas salían como 0,19: un 2 % de
+    error); con un decimal o dos por encima, el error no pasa de un 0,5 %.
+    """
     m = personas / 1e6
-    return f"{m:.1f}" if m >= 10 else f"{m:.2f}" if m >= 0.1 else f"{m:.3f}"
+    return f"{m:.1f}" if m >= 10 else f"{m:.2f}" if m >= 1 else f"{m:.3f}"
 
 
 def main(argv=None, carpeta=AQUI):

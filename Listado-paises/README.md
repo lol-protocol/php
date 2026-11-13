@@ -107,7 +107,7 @@ Vaticano ni otros territorios menores.
 | `pais` | Nombre en español. |
 | `tipo` | `estado`, `territorio` o `entidad disputada`. |
 | `region` | África, América, Asia, Europa u Oceanía. |
-| `poblacion_millones` | Población de 2024, en millones, de Our World in Data (basada en ONU, *World Population Prospects 2024*). Gibraltar, Isla de Man y Puerto Rico, que esa fuente no incluye, usan la del Banco Mundial (`SP.POP.TOTL`). Vacía en Guernsey, Jersey y Reunión. |
+| `poblacion_millones` | Población de 2024, en millones (con tres decimales por debajo de un millón: 0.185), de Our World in Data (basada en ONU, *World Population Prospects 2024*). Gibraltar, Isla de Man y Puerto Rico, que esa fuente no incluye, usan la del Banco Mundial (`SP.POP.TOTL`). Vacía en Guernsey, Jersey y Reunión. |
 | `poblacion_historica_acumulada` | Personas nacidas en el territorio del país desde el 10 000 a. C., en millones. Es una estimación (ver «Población histórica acumulada»). |
 | `idh` | Índice de Desarrollo Humano de **2023**, del PNUD (*Informe sobre Desarrollo Humano 2025*), vía Gapminder. Vacía donde el PNUD no lo publica: 6 países y los 9 territorios nuevos. |
 | `pib_per_capita_usd` | PIB per cápita **nominal** de 2024 en dólares corrientes, del Banco Mundial (`NY.GDP.PCAP.CD`). Si falta 2024, el del último año desde 2021; si no, vacía (ver «Estado de los datos»). |
