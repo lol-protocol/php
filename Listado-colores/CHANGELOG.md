@@ -10,6 +10,13 @@ Cuándo subir cada número es decisión de quien cambia los datos; el generador 
 
 Cada entrada empieza por `## X.Y.Z - AAAA-MM-DD`, va de la más reciente a la más antigua y dice qué cambió. `generar-tabla.py` comprueba el formato.
 
+## 2.1.0 - 2026-11-12
+
+Llena huecos del léxico (menor: filas nuevas en `lexico-basico.csv`); no cambia la estructura de ningún CSV.
+
+- **12 lemas nuevos propuestos por IA** (rasgo `origen=ia`): bengalí `lime`, `salmon`, `burgundy`, `scarlet` y `amber`; hindi, húngaro, rumano y griego `lime`; persa `magenta`; vietnamita `salmon`; suajili `beige`. Los huecos pasan de 33 a 21; los que quedan no tienen una palabra de uso corriente o repetirían el lema de otro concepto (por ejemplo, hebreo `maroon` sería `בורדו`, que ya es `burgundy`), y no se inventan.
+- Decisión de la persona: no habrá revisión por hablantes nativos. `cobertura.md` y el README lo dicen así; la marca `origen=ia` se conserva como constancia de procedencia y el flujo de `revisiones.csv` sigue disponible para quien quiera usarlo.
+
 ## 2.0.0 - 2026-11-11
 
 Quita dos archivos que se guardaban y se derivan sin pérdida de los CSV (mayor: un lector que los usaba deja de encontrarlos). Los CSV de datos no cambian.

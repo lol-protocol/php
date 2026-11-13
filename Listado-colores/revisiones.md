@@ -4,7 +4,7 @@ Generado por `generar-tabla.py` a partir de `revisiones.csv`. No editar a mano.
 
 Casi todo el contenido de este proyecto (traducciones de nombres, significados, léxico y categorías gramaticales) lo escribió un asistente de IA y ningún hablante nativo lo ha revisado. `revisiones.csv` es el registro de quién ha revisado qué; este informe lo resume.
 
-**Estado: ningún elemento revisado todavía (0 de 10080).**
+**Estado: ningún elemento revisado todavía (0 de 10092).**
 
 ## Cómo revisar
 
@@ -47,24 +47,24 @@ Elementos validados (solo filas `correcto` o `corregido`) sobre el total de cada
 | Finés (`fi`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Polaco (`pl`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Checo (`cs`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
-| Rumano (`ro`) | 0 de 148 | 0 de 148 | 0 de 36 | — |
-| Húngaro (`hu`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
-| Griego (`el`) | 0 de 148 | 0 de 148 | 0 de 35 | — |
+| Rumano (`ro`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
+| Húngaro (`hu`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
+| Griego (`el`) | 0 de 148 | 0 de 148 | 0 de 36 | — |
 | Ruso (`ru`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Ucraniano (`uk`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Turco (`tr`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
 | Árabe (`ar`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
 | Hebreo (`he`) | 0 de 148 | 0 de 148 | 0 de 36 | — |
-| Persa (`fa`) | 0 de 148 | 0 de 148 | 0 de 36 | — |
-| Hindi (`hi`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
-| Bengalí (`bn`) | 0 de 148 | 0 de 148 | 0 de 33 | — |
+| Persa (`fa`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
+| Hindi (`hi`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
+| Bengalí (`bn`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Chino simplificado (`zh`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Japonés (`ja`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Coreano (`ko`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
-| Vietnamita (`vi`) | 0 de 148 | 0 de 148 | 0 de 37 | — |
+| Vietnamita (`vi`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
 | Tailandés (`th`) | 0 de 148 | 0 de 148 | 0 de 36 | — |
 | Indonesio (`id`) | 0 de 148 | 0 de 148 | 0 de 38 | — |
-| Suajili (`sw`) | 0 de 148 | 0 de 148 | 0 de 27 | — |
+| Suajili (`sw`) | 0 de 148 | 0 de 148 | 0 de 28 | — |
 
 ## Filas por veredicto
 

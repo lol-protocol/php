@@ -202,8 +202,13 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `navy` | `#000080` | নেভি |  |  |  |
 | `cyan` | `#00FFFF` | সায়ান |  |  |  |
 | `magenta` | `#FF00FF` | ম্যাজেন্টা |  |  |  |
+| `salmon` | `#FA8072` | স্যামন (propuesta de IA sin revisar) |  |  |  |
 | `coral` | `#FF7F50` | প্রবাল |  |  |  |
 | `crimson` | `#DC143C` | রক্তলাল |  |  |  |
 | `khaki` | `#F0E68C` | খাকি |  |  |  |
+| `lime` | `#00FF00` | লাইম (propuesta de IA sin revisar) |  |  |  |
 | `lilac` | `#CEA2FD` | লিলাক |  |  |  |
+| `burgundy` | `#900020` | বার্গান্ডি (propuesta de IA sin revisar) |  |  |  |
 | `cream` | `#FFFFC2` | ক্রিম |  |  |  |
+| `scarlet` | `#FF2400` | স্কারলেট (propuesta de IA sin revisar) |  |  |  |
+| `amber` | `#FFBF00` | অ্যাম্বার (propuesta de IA sin revisar) |  |  |  |

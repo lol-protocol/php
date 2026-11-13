@@ -113,8 +113,8 @@ class Cobertura(unittest.TestCase):
 
     def test_huecos_del_lexico_reales(self):
         huecos = cobertura.huecos_lexico(gt.IDIOMAS, REAL["lexico"], gt.CONCEPTOS)
-        self.assertEqual(sum(len(v) for v in huecos.values()), 33)
-        self.assertEqual(len(huecos["sw"]), 11)
+        self.assertEqual(sum(len(v) for v in huecos.values()), 21)
+        self.assertEqual(len(huecos["sw"]), 10)
         self.assertNotIn("en", huecos)
         # coherencia con el validador: los 11 conceptos básicos nunca faltan
         self.assertTrue(all(c not in gt.BASICOS for lista in huecos.values() for c in lista))
@@ -141,7 +141,7 @@ class Cobertura(unittest.TestCase):
                   {"idioma": "es", "concepto": "blue", "tipo": "sinonimo", "forma": "x", "rasgos": "origen=ia"}]
         self.assertEqual(cobertura.propuestas_ia(lexico), [("sw", "olive", "zeituni")])
         reales = cobertura.propuestas_ia(REAL["lexico"])
-        self.assertEqual(len(reales), 12)
+        self.assertEqual(len(reales), 24)
         self.assertTrue(all(c in gt.CONCEPTOS for _, c, _ in reales))
 
     def test_las_propuestas_de_ia_no_repiten_el_lema_de_otro_concepto(self):
@@ -210,12 +210,12 @@ class Cobertura(unittest.TestCase):
 
     def test_el_informe_resume_lo_mismo_que_calculan_las_funciones(self):
         texto = cobertura.informe(gt.IDIOMAS, REAL["anotada"], REAL["lexico"], REAL["categorias"], gt.CONCEPTOS, self.hex_concepto())
-        self.assertIn("17 idiomas tienen lema para todos; 13 tienen huecos (33 lemas en total).", texto)
+        self.assertIn("21 idiomas tienen lema para todos; 9 tienen huecos (21 lemas en total).", texto)
         self.assertIn("2 idiomas (Inglés, Español); 28 sin ninguna.", texto)
         self.assertIn("29 casos en 18 idiomas.", texto)
         self.assertIn("25 casos en 17 idiomas.", texto)
-        self.assertIn("| Suajili (`sw`) | 27 de 38 |", texto)
-        self.assertIn("12 los llenó una propuesta de IA sin revisar", texto)
+        self.assertIn("| Suajili (`sw`) | 28 de 38 |", texto)
+        self.assertIn("24 los llenó una propuesta de IA", texto)
         self.assertIn("| Suajili (`sw`) | `turquoise` | feruzi |", texto)
         self.assertIn("| Español (`es`) | 38 de 38 | — |", texto)
         self.assertIn("| Hebreo (`he`) | סגול | `purple`, `violet` |", texto)

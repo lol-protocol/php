@@ -185,6 +185,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `darkgreen` | `#006400` | kijani iliyokolea |  |  |  |
 | `skyblue` | `#87CEEB` | samawati |  |  |  |
 | `turquoise` | `#40E0D0` | feruzi (propuesta de IA sin revisar) |  |  |  |
+| `beige` | `#F5F5DC` | beige (propuesta de IA sin revisar) |  |  |  |
 | `gold` | `#FFD700` | dhahabu |  |  |  |
 | `silver` | `#C0C0C0` | fedha |  |  |  |
 | `violet` | `#EE82EE` | urujuani (propuesta de IA sin revisar) |  |  |  |
