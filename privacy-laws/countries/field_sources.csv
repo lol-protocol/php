@@ -747,7 +747,7 @@ NP,,genetic_data,5f2be08d90,low,2026-10-17
 NZ,,key_requirements,f394cd5cbd,high,2026-10-14
 NZ,,deceased_data,12b8e0f176,low,2026-10-17
 NZ,,research_exemption,c9ca0c41ae,medium,2026-10-17
-NZ,,genetic_data,4a773d822f,low,2026-10-18
+NZ,,genetic_data,0b8f937335,low,2026-11-13
 NZ,,notes,2bd867e1a2,high,2026-10-14
 OM,,retention_period,301d9672d7,medium,2026-10-15
 OM,,exemptions,ee121748dd,high,2026-10-15
@@ -793,7 +793,7 @@ RO,,genetic_data,0b4870845e,high,2026-10-18
 RS,,enactment_date,ce17b406f3,high,2026-10-15
 RS,,effective_date,ce17b406f3,medium,2026-10-15
 RS,,deceased_data,56ec680603,low,2026-10-17
-RU,,law_name,4e233a5a67,high,2026-10-14
+RU,,law_name,093fcdbaa3,medium,2026-11-13
 RU,,penalties_range,82ea90e53e,high,2026-10-14
 RU,,deceased_data,9eb18dec85,medium,2026-10-18
 RU,,research_exemption,0fbd5e7546,medium,2026-10-18
