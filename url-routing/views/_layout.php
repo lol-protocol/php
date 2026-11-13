@@ -11,7 +11,8 @@ use App\Support\HostParser;
  * (list of [name, path], the last one null: the page itself) for the
  * breadcrumbs, and $estructurado, a schema.org object (Person, Product...)
  * for search engines. Both go out as JSON-LD too. A site layout may set
- * $pedirRetiro, the URL to ask for the page to be withdrawn, shown at the foot.
+ * $pedirRetiro, the URL to ask for the page to be withdrawn, shown at the foot, and $pedirDatos, the URL to ask for the
+ * data of the persona the page is about.
  * A view may set $sinCanonica to leave out the canonical and hreflang links: an error page has no address of its own.
  * A view may set $scripts, local paths of scripts (public/) to load at the end of the body: the CSP only
  * allows scripts from this origin, so there are no inline ones.
@@ -126,7 +127,7 @@ foreach ($jsonLd as $objeto): ?>
 <script src="<?= esc($script) ?>"></script>
 <?php endforeach; ?>
 <?php if (!empty($pedirRetiro)): ?>
-<footer class="pie meta"><a href="<?= esc($pedirRetiro) ?>" rel="nofollow">Pedir el retiro de esta página</a></footer>
+<footer class="pie meta"><a href="<?= esc($pedirRetiro) ?>" rel="nofollow">Pedir el retiro de esta página</a><?php if (!empty($pedirDatos)): ?> · <a href="<?= esc($pedirDatos) ?>" rel="nofollow">Pedir ver, corregir o borrar mis datos</a><?php endif; ?></footer>
 <?php endif; ?>
 </body>
 </html>
