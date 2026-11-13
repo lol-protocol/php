@@ -7,13 +7,13 @@
     "jurisdiction": "Agency for Personal Data Protection and Free Access to Information (AZLP)",
     "enactment_date": "2008-12-23",
     "effective_date": "2008-12-23",
-    "scope": "Data subjects (natural persons) in Montenegro (unconfirmed)",
-    "applies_to": "Public and private controllers and processors (unconfirmed)",
-    "key_requirements": "Legal basis or consent for processing; special categories need explicit consent or legal justification; data-subject rights; agency can impose administrative fines (unconfirmed)",
+    "scope": "Automated processing and manual filing-system processing of personal data; protects data subjects regardless of nationality or residence",
+    "applies_to": "Controllers processing in Montenegro or where Montenegrin law applies; foreign controllers using Montenegro-located equipment (must appoint a local representative)",
+    "key_requirements": "Information duty, consent unless processing is required by law, notification of filing systems; sensitive data needs legal justification or explicit consent; data-subject rights; sanctions imposed by courts, not the Agency (CMS)",
     "data_categories": "Personal data; special categories (racial/ethnic origin, political and religious beliefs, trade union, health, sex life, biometric data, criminal and misdemeanour records)",
     "retention_period": "Not specified",
     "enforcement_authority": "Agency for Personal Data Protection and Free Access to Information (AZLP)",
-    "penalties_range": "Per a third-party summary: fines of 10x to 300x the minimum wage for legal entities and 1x to 20x for responsible persons (unverified against the statute) (unconfirmed)",
+    "penalties_range": "Art. 74 misdemeanour fines: EUR 500-20,000 legal person; EUR 150-2,000 responsible person/natural person; EUR 150-6,000 entrepreneur",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.cbcg.me/slike_i_fajlovi/fajlovi/fajlovi_brzi_linkovi/propisi/zakoni/ostali_zakoni/zakon_o_zastiti_podataka_o_licnosti_prec_tekst_77-24.pdf",
@@ -45,19 +45,19 @@
         "checked": "2026-10-22"
       },
       "scope": {
-        "url": "https://mofo.com/privacy-library/montenegro",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.offlist.me/what-is-montenegro-law-on-personal-data-protection",
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "applies_to": {
-        "url": "https://mofo.com/privacy-library/montenegro",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.offlist.me/what-is-montenegro-law-on-personal-data-protection",
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/montenegro",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "data_categories": {
         "url": "https://mofo.com/privacy-library/montenegro",
@@ -70,9 +70,9 @@
         "checked": "2026-10-22"
       },
       "penalties_range": {
-        "url": "https://www.clym.io/regulations/personal-data-protection-law-pdpl-montenegro",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.offlist.me/what-is-montenegro-law-on-personal-data-protection",
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "genetic_data": {
         "url": "https://mofo.com/privacy-library/montenegro",
@@ -86,6 +86,30 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "Per a third-party summary: fines of 10x to 300x the minimum wage for legal entities and 1x to 20x for responsible persons (unverified against the statute) (unconfirmed)",
+        "to": "Art. 74 misdemeanour fines: EUR 500-20,000 legal person; EUR 150-2,000 responsible person/natural person; EUR 150-6,000 entrepreneur"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "key_requirements",
+        "from": "Legal basis or consent for processing; special categories need explicit consent or legal justification; data-subject rights; agency can impose administrative fines (unconfirmed)",
+        "to": "Information duty, consent unless processing is required by law, notification of filing systems; sensitive data needs legal justification or explicit consent; data-subject rights; sanctions imposed by courts, not the Agency (CMS)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Public and private controllers and processors (unconfirmed)",
+        "to": "Controllers processing in Montenegro or where Montenegrin law applies; foreign controllers using Montenegro-located equipment (must appoint a local representative)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects (natural persons) in Montenegro (unconfirmed)",
+        "to": "Automated processing and manual filing-system processing of personal data; protects data subjects regardless of nationality or residence"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

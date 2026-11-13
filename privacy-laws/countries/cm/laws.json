@@ -7,17 +7,17 @@
     "jurisdiction": "Personal Data Protection Authority (APDP)",
     "enactment_date": "2024-12-23",
     "effective_date": "2026-06-23",
-    "scope": "Data subjects in Cameroon (unconfirmed)",
-    "applies_to": "All public and private controllers and processors (unconfirmed)",
-    "key_requirements": "Prior authorisation or declaration to the Authority (arts. 19, 27); transfers abroad only to adequate-protection countries (art. 32); consent rules with no legitimate-interest basis (vendor source) (unconfirmed)",
-    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "scope": "Processing of personal data by the State, local authorities and any natural or legal person; persons established, resident or in transit in Cameroon; controllers or processors established in Cameroon",
+    "applies_to": "State, decentralised local authorities and any other natural or legal person acting as controller or processor established in Cameroon",
+    "key_requirements": "Data subject consent (art. 21); controller must keep data accurate and up to date (art. 21); transfers abroad only to countries with adequate protection, with approval and safeguards (art. 32)",
+    "data_categories": "Personal data; sensitive data: religious, philosophical, political and trade-union opinions or activities, racial, ethnic, linguistic or regional origin, genetic and biometric data in health matters (processing prohibited)",
     "retention_period": "Not specified",
     "enforcement_authority": "Autorite de protection des donnees a caractere personnel (APDP) - independent public body (art. 53)",
-    "penalties_range": "Sources conflict: fines up to XAF 1 billion (Afriwise) or XAF 100 million and up to 10 years imprisonment (ConsentStack) (unconfirmed)",
+    "penalties_range": "Companies: fines up to XAF 1 billion; processing despite data-subject objection: 1 to 3 years imprisonment and XAF 50,000 to 1,000,000 fine, or either",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "Genetic identity named in definition of personal data (art. 5); sensitive-data treatment not confirmed (unconfirmed)",
+    "genetic_data": "Processing of genetic and biometric data in health matters is prohibited (reported summary; article number not given)",
     "website_url": "https://www.dlapiperdataprotection.com/?c=CM&t=law",
     "language": "French/English",
     "frameworks": "",
@@ -27,12 +27,12 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-21",
+    "last_checked": "2026-11-13",
     "sources": {
       "genetic_data": {
-        "url": "https://lexafrica.com/2025/10/cameroon-data-protection-law-compliance/",
-        "confidence": "low",
-        "checked": "2026-10-21"
+        "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "law_name": {
         "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/",
@@ -55,24 +55,24 @@
         "checked": "2026-10-16"
       },
       "scope": {
-        "url": "https://www.globalcenter.ai/research/data-privacy-and-responsible-ai-adoption-in-cameroon",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
-        "url": "https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://www.globalcenter.ai/research/data-privacy-and-responsible-ai-adoption-in-cameroon",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "data_categories": {
-        "url": "https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.osiris.sn/la-protection-des-donnees-a-caractere-personnel-au-cameroun-a-la-lecture-de-la.html",
@@ -80,12 +80,48 @@
         "checked": "2026-10-16"
       },
       "penalties_range": {
-        "url": "https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "genetic_data",
+        "from": "Genetic identity named in definition of personal data (art. 5); sensitive-data treatment not confirmed (unconfirmed)",
+        "to": "Processing of genetic and biometric data in health matters is prohibited (reported summary; article number not given)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "Sources conflict: fines up to XAF 1 billion (Afriwise) or XAF 100 million and up to 10 years imprisonment (ConsentStack) (unconfirmed)",
+        "to": "Companies: fines up to XAF 1 billion; processing despite data-subject objection: 1 to 3 years imprisonment and XAF 50,000 to 1,000,000 fine, or either"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "data_categories",
+        "from": "Personal data; sensitive data (unconfirmed)",
+        "to": "Personal data; sensitive data: religious, philosophical, political and trade-union opinions or activities, racial, ethnic, linguistic or regional origin, genetic and biometric data in health matters (processing prohibited)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "key_requirements",
+        "from": "Prior authorisation or declaration to the Authority (arts. 19, 27); transfers abroad only to adequate-protection countries (art. 32); consent rules with no legitimate-interest basis (vendor source) (unconfirmed)",
+        "to": "Data subject consent (art. 21); controller must keep data accurate and up to date (art. 21); transfers abroad only to countries with adequate protection, with approval and safeguards (art. 32)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "All public and private controllers and processors (unconfirmed)",
+        "to": "State, decentralised local authorities and any other natural or legal person acting as controller or processor established in Cameroon"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects in Cameroon (unconfirmed)",
+        "to": "Processing of personal data by the State, local authorities and any natural or legal person; persons established, resident or in transit in Cameroon; controllers or processors established in Cameroon"
+      },
       {
         "date": "2026-10-21",
         "field": "genetic_data",

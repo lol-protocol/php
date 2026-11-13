@@ -7,14 +7,14 @@
     "jurisdiction": "Agence nationale de securite informatique et de certification electronique (ANSICE)",
     "enactment_date": "2015-02-10",
     "effective_date": "2015-02-10",
-    "scope": "Data subjects in Chad (unconfirmed)",
-    "applies_to": "Controllers and processors operating in Chad (unconfirmed)",
+    "scope": "Personal data processed by businesses operating in Chad or about individuals residing in Chad, incl. non-Chadian companies targeting Chadian residents",
+    "applies_to": "All data controllers and processors operating within Chad",
     "key_requirements": "Written declaration to ANSICE for most processing; prior authorisation for genetic/biometric data, health research, offence records, national ID numbers; data subject rights and security obligations",
     "data_categories": "Personal data; genetic and biometric data; health data; offence and conviction records",
-    "retention_period": "Data kept only as long as necessary for the purpose (unconfirmed)",
+    "retention_period": "Data retained only as long as necessary for the purpose",
     "enforcement_authority": "Agence nationale de securite informatique et de certification electronique (ANSICE)",
     "penalties_range": "Administrative: warning, formal notice, processing ban, fines of XAF 1,000,000 to 10,000,000; criminal: imprisonment of 3 months to 1 year",
-    "exemptions": "National defence or public safety processing excluded (one source; disputed) (unconfirmed)",
+    "exemptions": "Processing for national defence or public safety, and strictly private non-commercial personal use, excluded (per Clym summary)",
     "deceased_data": "",
     "research_exemption": "Health research requires prior ANSICE authorisation (no exemption found) (unconfirmed)",
     "genetic_data": "Processing requires prior authorisation of ANSICE",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-18",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
@@ -50,14 +50,14 @@
         "checked": "2026-10-16"
       },
       "scope": {
-        "url": "https://www.dataguidance.com/jurisdiction/chad",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.clym.io/regulations/law-no-007pr2015-chad",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
-        "url": "https://www.dataguidance.com/jurisdiction/chad",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.consentstack.io/regulations/td-law007",
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
@@ -70,9 +70,9 @@
         "checked": "2026-10-16"
       },
       "retention_period": {
-        "url": "https://www.dataguidance.com/jurisdiction/chad",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.consentstack.io/regulations/td-law007",
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.clym.io/regulations/law-no-007pr2015-chad",
@@ -85,9 +85,9 @@
         "checked": "2026-10-16"
       },
       "exemptions": {
-        "url": "https://www.offlist.me/what-is-chad-law-007-pr-2015",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.clym.io/regulations/law-no-007pr2015-chad",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "research_exemption": {
         "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
@@ -101,6 +101,30 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "exemptions",
+        "from": "National defence or public safety processing excluded (one source; disputed) (unconfirmed)",
+        "to": "Processing for national defence or public safety, and strictly private non-commercial personal use, excluded (per Clym summary)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "retention_period",
+        "from": "Data kept only as long as necessary for the purpose (unconfirmed)",
+        "to": "Data retained only as long as necessary for the purpose"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Controllers and processors operating in Chad (unconfirmed)",
+        "to": "All data controllers and processors operating within Chad"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects in Chad (unconfirmed)",
+        "to": "Personal data processed by businesses operating in Chad or about individuals residing in Chad, incl. non-Chadian companies targeting Chadian residents"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

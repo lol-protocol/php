@@ -87,7 +87,7 @@ function parseArgs(argv) {
  * @param {string} config.urlField column of the master CSV that holds each law's reference URL
  * @param {string} config.unit what a row is, for the summary heading ("country", "jurisdiction")
  * @param {string} config.userAgent sent with every request, so a server's logs point back to this project
- * @param {{MASTER_CSV: string, SOURCES_FILE: string, SOURCE_COLUMNS: string[], loadMaster: Function, loadSide: Function, findLaw: Function}} config.dataset
+ * @param {{MASTER_CSV: string, loadMaster: Function, loadSources: Function, findLaw: Function}} config.dataset
  *        the project's own ./lib/dataset.js, imported with `import * as dataset`
  */
 export function createCheckLinks({ urlField, unit, userAgent, dataset }) {
@@ -141,7 +141,7 @@ export function createCheckLinks({ urlField, unit, userAgent, dataset }) {
   async function main(argv = process.argv.slice(2)) {
     const options = parseArgs(argv);
     const { records } = dataset.loadMaster(options.csv);
-    const sources = options.sources ? dataset.loadSide(options.csv ?? dataset.MASTER_CSV, dataset.SOURCES_FILE, dataset.SOURCE_COLUMNS).rows : [];
+    const sources = options.sources ? dataset.loadSources(options.csv ?? dataset.MASTER_CSV).rows : [];
     const byUrl = collectUrls(records, sources, options.only);
 
     const urls = [...byUrl.keys()];
