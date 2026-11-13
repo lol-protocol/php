@@ -208,7 +208,7 @@ Cada página de una persona enlaza a `/s/{id}/`, un formulario para pedir **ver,
 # /etc/cron.d/solicitudes-datos
 MAILTO=tu@correo.com
 5 9 * * *     www-data  cd /var/www/php/url-routing && php bin/solicitudes.php
-# opcional: borra el correo y el texto de las solicitudes cerradas hace más de 12 meses (SOLICITUD_CONSERVAR_MESES)
+# opcional: borra el correo y el texto de las solicitudes cerradas hace más de 12 meses, y las entregas con clave vencidas hace tanto (SOLICITUD_CONSERVAR_MESES)
 40 3 * * 0    www-data  cd /var/www/php/url-routing && php bin/solicitudes.php --depurar
 ```
 

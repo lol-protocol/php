@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Repositories;
 
+use App\Repositories\Genealogy\EntregaRepository;
 use App\Repositories\Genealogy\SupresionRepository;
 use App\Support\Database;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -62,6 +63,11 @@ class SupresionRepositoryTest extends TestCase
         $db->execute("INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en) VALUES (1, 'persona', ?, 'me_nombra', 'Soy yo', 'ella@example.com', 'oculto', ?)", [self::ELLA, $ahora]);
         $db->execute("INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en) VALUES (2, 'persona', ?, 'otro', 'Otra', 'otra@example.com', 'pendiente', ?)", [self::OTRA, $ahora]);
 
+        // a delivery with a key for her and one for someone else
+        $entregas = new EntregaRepository($db);
+        $entregas->crear(self::ELLA);
+        $entregas->crear(self::OTRA);
+
         return $db;
     }
 
@@ -114,7 +120,7 @@ class SupresionRepositoryTest extends TestCase
         $this->assertSame($previsto, $hecho, 'what the dry run said is what was done');
         $this->assertSame(
             ['sucesos_que_se_borran' => 1, 'sucesos_compartidos_que_se_conservan' => 1, 'enlaces_a_registros_que_se_quitan' => 1,
-                'vinculos' => 1, 'hijos_que_pierden_el_enlace' => 1, 'organizacion_miembros' => 1, 'coleccion_personas' => 1, 'persona_alias' => 1],
+                'vinculos' => 1, 'hijos_que_pierden_el_enlace' => 1, 'organizacion_miembros' => 1, 'coleccion_personas' => 1, 'persona_alias' => 1, 'entregas_persona' => 1],
             $hecho
         );
         $this->assertNull($db->fetchOne('SELECT id FROM personas WHERE id = ?', [self::ELLA]), 'her row is gone');
@@ -132,6 +138,8 @@ class SupresionRepositoryTest extends TestCase
         $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM coleccion_personas'));
         $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM organizacion_miembros'));
         $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM persona_alias'));
+        $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM entregas_persona WHERE persona_id = ?', [self::ELLA]), 'her deliveries go with her: the link shows nothing anyway');
+        $this->assertSame(1, self::cuantas($db, 'SELECT COUNT(*) FROM entregas_persona WHERE persona_id = ?', [self::OTRA]), 'and the one of someone else stays'); 
 
         $hijo = $db->fetchOne('SELECT padre_id, madre_id FROM personas WHERE id = ?', [self::HIJO]);
         $this->assertNotNull($hijo, 'her child keeps their row');

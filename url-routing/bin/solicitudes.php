@@ -11,17 +11,19 @@ declare(strict_types=1);
  *   php bin/solicitudes.php --ver=N             # one in full, with the e-mail and the text of whoever asked
  *   php bin/solicitudes.php --atender=N [--nota=TEXTO]    # closes it as answered
  *   php bin/solicitudes.php --rechazar=N [--nota=TEXTO]   # closes it as refused (who asks could not be checked, ...)
- *   php bin/solicitudes.php --depurar [--meses=12]        # erases the e-mail and the text of the ones closed long ago
+ *   php bin/solicitudes.php --depurar [--meses=12]        # erases the e-mail and the text of the ones closed long ago, and the deliveries with a key that expired long ago
  *
  * The listing is for cron (it mails whatever a job prints, and it prints nothing when nothing waits) and, like
  * bin/pedidos-retiro.php, never says who asked nor what they wrote: cron mail travels in the clear. Only --ver does,
  * on the terminal of the owner. The note of a closing is for the owner's records: say what was done, not the data.
- * --depurar prints only a count. The retention is --meses, else SOLICITUD_CONSERVAR_MESES, else 12.
+ * --depurar prints only a count of each. The retention is --meses, else SOLICITUD_CONSERVAR_MESES, else 12. The deliveries
+ * with a key (persona.php entrega) hold only hashes and dates; the ones that expired that long ago are deleted outright.
  *
  * Exit code: 0 done (or nothing to say), 1 there is no such solicitud or it was closed already, 2 usage error or a
  * database that is not ready.
  */
 
+use App\Repositories\Genealogy\EntregaRepository;
 use App\Repositories\Genealogy\SolicitudRepository;
 use App\Support\Config;
 use App\Support\Database;
@@ -59,7 +61,8 @@ if ($accion === null && count($argv) > 1) {
 }
 
 try {
-    $repo = new SolicitudRepository(Database::forSite('genealogy'));
+    $db = Database::forSite('genealogy');
+    $repo = new SolicitudRepository($db);
 
     if ($accion === 'ver') {
         $s = $repo->ver((int)$numero);
@@ -94,6 +97,12 @@ try {
             echo count($borradas) === 1
                 ? "Se borraron el correo y el texto de 1 solicitud cerrada hace más de {$meses} meses.\n"
                 : 'Se borraron el correo y el texto de ' . count($borradas) . " solicitudes cerradas hace más de {$meses} meses.\n";
+        }
+        $entregas = (new EntregaRepository($db))->depurar($meses);
+        if ($entregas > 0) {
+            echo $entregas === 1
+                ? "Se borró 1 entrega con clave vencida hace más de {$meses} meses.\n"
+                : "Se borraron {$entregas} entregas con clave vencidas hace más de {$meses} meses.\n";
         }
         exit(0);
     }
