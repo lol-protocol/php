@@ -7,13 +7,13 @@
     "jurisdiction": "Information Commission (not reported appointed)",
     "enactment_date": "2023-05-09",
     "effective_date": "2023-05-09",
-    "scope": "Data subjects (unconfirmed)",
-    "applies_to": "Public and private bodies (unconfirmed)",
-    "key_requirements": "Seven data protection principles; data subject rights of access and rectification; notice and consent (unconfirmed)",
-    "data_categories": "Personal data (unconfirmed)",
+    "scope": "Personal data processed in the course of commercial transactions within Grenada",
+    "applies_to": "Public and private bodies (Information Commission advises both); processing in commercial transactions within Grenada",
+    "key_requirements": "Rights of access, rectification, notice and choice (consent), disclosure, retention limits, security and data integrity; exemptions for law enforcement and journalistic, literary or artistic purposes. \"Seven principles\" not confirmed",
+    "data_categories": "Personal data",
     "retention_period": "Not specified",
     "enforcement_authority": "Information Commission",
-    "penalties_range": "Individuals: up to EC$50000 or 3 years (summary); up to EC$100000 or 5 years (indictable); bodies corporate: up to EC$250000 (summary) or EC$500000 (indictable); unverified against enacted text (unconfirmed)",
+    "penalties_range": "Individuals: up to EC$50,000 or 3 years (summary), up to EC$100,000 or 5 years (indictable); corporate bodies: up to EC$250,000 (summary), EC$500,000 (indictable)",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://nowgrenada.com/2023/05/deputy-gg-assents-2023-data-protection-bill/",
@@ -45,19 +45,19 @@
         "checked": "2026-10-25"
       },
       "scope": {
-        "url": "https://uwi.edu/data-protection/pg-external_grenada.php",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.lawgratis.com/blog-detail/privacy-law-at-grenada",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
         "url": "https://www.lawgratis.com/blog-detail/privacy-law-at-grenada",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://www.lawgratis.com/blog-detail/privacy-law-at-grenada",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.dataguidance.com/jurisdiction/grenada",
@@ -66,11 +66,46 @@
       },
       "penalties_range": {
         "url": "https://www.lawgratis.com/blog-detail/privacy-law-at-grenada",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-13"
+      },
+      "data_categories": {
+        "url": "https://www.lawgratis.com/blog-detail/privacy-law-at-grenada",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "Individuals: up to EC$50000 or 3 years (summary); up to EC$100000 or 5 years (indictable); bodies corporate: up to EC$250000 (summary) or EC$500000 (indictable); unverified against enacted text (unconfirmed)",
+        "to": "Individuals: up to EC$50,000 or 3 years (summary), up to EC$100,000 or 5 years (indictable); corporate bodies: up to EC$250,000 (summary), EC$500,000 (indictable)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "data_categories",
+        "from": "Personal data (unconfirmed)",
+        "to": "Personal data"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "key_requirements",
+        "from": "Seven data protection principles; data subject rights of access and rectification; notice and consent (unconfirmed)",
+        "to": "Rights of access, rectification, notice and choice (consent), disclosure, retention limits, security and data integrity; exemptions for law enforcement and journalistic, literary or artistic purposes. \"Seven principles\" not confirmed"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Public and private bodies (unconfirmed)",
+        "to": "Public and private bodies (Information Commission advises both); processing in commercial transactions within Grenada"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects (unconfirmed)",
+        "to": "Personal data processed in the course of commercial transactions within Grenada"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

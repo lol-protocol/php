@@ -14,14 +14,14 @@ de demostración.
 
 | # | Qué pasa | Dónde |
 |---|---|---|
-| 1 | **Llega la solicitud.** Hoy no hay un formulario para estos tres derechos: [`TERMINOS-DE-USO.md`](../../TERMINOS-DE-USO.md) dice «escribiendo a [CORREO]», y ese dato **falta**: se decidió que sea un correo propio del sitio, pero la dirección real aún no está. (`/r/{id}/` sirve para pedir el retiro o la oposición; si pide además borrar, se atiende aquí.) **Anota la fecha y la hora en que llegó**: de ahí corre el plazo ⚖️ (pregunta 7 de la sección 7 de `CUMPLIMIENTO-LEY-21719.md`). | correo |
+| 1 | **Llega la solicitud.** Por el formulario de `/s/{id}/` (enlazado al pie de la página de cada persona) o por correo: [`TERMINOS-DE-USO.md`](../../TERMINOS-DE-USO.md) dice «escribiendo a [CORREO]», y ese dato **falta**: se decidió que sea un correo propio del sitio, pero la dirección real aún no está. El formulario no entrega, cambia ni borra nada: la solicitud espera. Léela con `php bin/solicitudes.php` (lo que espera) y `--ver=N` (quién y qué). (`/r/{id}/` sirve para pedir el retiro o la oposición; si pide además borrar, se atiende aquí.) **Anota la fecha y la hora en que llegó**: de ahí corre el plazo ⚖️ (pregunta 7 de la sección 7 de `CUMPLIMIENTO-LEY-21719.md`). | `/s/{id}/`, correo |
 | 2 | **Comprobar que quien pide es la persona** (o, si ya falleció, un familiar) antes de mandar o cambiar nada. **⚖️ Sin decidir**: ver la sección siguiente. | — |
 | 3 | **Encontrar el id.** Busca por nombre en `/b/10/{texto}/` **entrando como propietario** ([`ACCESO.md`](ACCESO.md), «Entrar como propietario»): un visitante no ve a una persona que puede estar viva, y es justo quien suele pedir. Con homónimos, confirma por fechas y lugares, no solo por el nombre. | `/b/10/…` |
 | 4 | **Acceso.** `php bin/persona.php acceso <id>` (JSON). Mira abajo qué contiene y qué no. | servidor |
 | 5 | **Rectificación.** A mano, en una transacción y con un respaldo antes, y después `php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]`: sección «Rectificar». | base de datos |
 | 6 | **Supresión.** `php bin/persona.php suprimir <id> [--pedido=N]` (simulación) y luego `--confirmar`. Retirar **no** es borrar. | servidor |
 | 7 | **Responder** a quien pidió, por una persona y no por el sitio (que no escribe solo): sección «Qué responder». | correo |
-| 8 | **Anotar**: cuándo llegó, cuándo se respondió y qué se hizo, **sin copiar los datos de la persona** a la nota. | fuera del repositorio |
+| 8 | **Anotar**: cuándo llegó, cuándo se respondió y qué se hizo, **sin copiar los datos de la persona** a la nota. Si llegó por el formulario, ciérrala: `php bin/solicitudes.php --atender=N --nota='…'` (o `--rechazar=N` si no se pudo comprobar quién pedía). | `bin/solicitudes.php`, fuera del repositorio |
 
 ### Qué trae `acceso`
 
@@ -59,9 +59,34 @@ manda**: sirve para que quien administra mire qué hay, y se responde con lo que
 
 ## Rectificar
 
-No hay una pantalla ni un comando para corregir un dato: se hace en la base. Con cuidado, porque un dato
-cambiado de la ficha puede cambiar **quién la ve** (una fecha de nacimiento nueva puede dejar a la persona como
-«Persona viva»).
+Un dato cambiado de la ficha puede cambiar **quién la ve** (una fecha de nacimiento nueva puede dejar a la persona
+como «Persona viva»). Hay un comando para los datos que más se piden, y todo lo demás se hace a mano.
+
+**Con el comando** (`bin/persona.php rectificar`). Primero **respaldo** ([`DESPLIEGUE.md`](DESPLIEGUE.md)). Sin
+`--confirmar` solo cuenta lo que haría, y lo cuenta de verdad: hace el cambio dentro de una transacción y la deshace.
+
+```
+php bin/persona.php rectificar <id> personas.apellidos='Quintana Soto' [--pedido=N]                # simulación
+php bin/persona.php rectificar <id> personas.apellidos='Quintana Soto' [--pedido=N] --confirmar    # lo hace
+php bin/persona.php rectificar <id> sucesos.fecha=1950-05-05 --suceso=<N> --confirmar              # un suceso suyo
+```
+
+- **Campos:** `personas.nombres`, `personas.apellidos`, `personas.sexo` (F, M o X), `sucesos.fecha` (AAAA-MM-DD, entre
+  el año 1000 y hoy) y `sucesos.descripcion`. Con otro campo se niega y dice cuáles hay.
+- **Los de `sucesos`** piden `--suceso=N` (los ids salen de `acceso`) y solo se aceptan si la persona es **el sujeto
+  del suceso y el único**: un matrimonio tiene dos, y también son datos de la otra persona; ese se corrige a mano.
+- **Un cambio, una fila:** cambia exactamente una fila, pone `actualizado_en = CURRENT_TIMESTAMP`, se niega si el valor
+  ya es ese y anota la corrección en `rectificaciones_persona` (el campo, nunca los valores). El valor **no** se
+  repite en la salida.
+- **Dice quién la ve:** «CAMBIA lo que ve un visitante: la ve visible y ahora oculta» si, por ejemplo, la fecha nueva la
+  hace pasar por una persona viva; mira eso antes de confirmar.
+- **Apellidos:** no cambia `personas.grupo_id` (el grupo de ese apellido). Si el grupo ya no está en los apellidos
+  nuevos, lo avisa para que lo revises (`bin/fusionar.php grupo` o `personas.grupo_id` a mano).
+- Si lo que se corrige es «está viva» o «ya falleció», no es esto: es la marca de vida (`/{id}/5/`).
+- Miras la página como visitante y como propietario.
+
+**A mano**, para cualquier otro dato (los vínculos, los padres, el lugar de un suceso, un suceso compartido). Con
+cuidado y en este orden:
 
 1. **Respaldo** antes ([`DESPLIEGUE.md`](DESPLIEGUE.md)).
 2. **Comprueba la fila** con el id (`SELECT … WHERE id = …`) antes de cambiarla.

@@ -1,6 +1,7 @@
 import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -308,14 +309,24 @@ test("--field-sources also downloads the per-field URLs of field_sources.csv, on
       { law_name: "Sin enlace", website_url: "" },
     ] }] };
     writeFileSync(join(isolated, "index.json"), JSON.stringify(bundle));
+    // field_sources.csv points at its URLs by source_id; source_urls.csv stores each URL once (id = first 10 hex of its sha1).
+    const sources = [
+      ["XF", "Ley, con coma", "protection_type", other],
+      ["XF", "Ley, con coma", "term", other],
+      ["XF", "Ley, con coma", "title", main],
+      ["XF", "Ley, con coma", "authority", "file:///etc/passwd"],
+      ["XF", "Sin enlace", "term", other],
+      ["XZ", "Otra ley", "term", other],
+    ];
+    const id = (url) => createHash("sha1").update(url).digest("hex").slice(0, 10);
+    const quote = (v) => (/[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
     writeFileSync(join(isolated, "field_sources.csv"), [
-      "country_code,law_name,field,url,confidence,checked",
-      `XF,"Ley, con coma",protection_type,${other},high,2026-10-22`,
-      `XF,"Ley, con coma",term,${other},high,2026-10-22`,
-      `XF,"Ley, con coma",title,${main},high,2026-10-22`,
-      `XF,"Ley, con coma",authority,file:///etc/passwd,high,2026-10-22`,
-      `XF,"Sin enlace",term,${other},high,2026-10-22`,
-      `XZ,"Otra ley",term,${other},high,2026-10-22`,
+      "country_code,law_name,field,source_id,confidence,checked",
+      ...sources.map(([code, law, field, url]) => [code, quote(law), field, id(url), "high", "2026-10-22"].join(",")),
+    ].join("\n") + "\n");
+    writeFileSync(join(isolated, "source_urls.csv"), [
+      "source_id,url",
+      ...[...new Set(sources.map((s) => s[3]))].map((url) => `${id(url)},${url}`),
     ].join("\n") + "\n");
     const env = { LAWS_DATA_DIR: isolated };
     const common = ["--delay=0", "--timeout=5", "--allow-private-hosts"];

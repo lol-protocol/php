@@ -168,7 +168,7 @@ class ImportadorLeyes
     }
 
     /**
-     * field_sources.csv, changes.csv y value_translations.csv, dentro de la transacción de la importación: de
+     * field_sources.csv (con source_urls.csv), changes.csv y value_translations.csv, dentro de la transacción de la importación: de
      * dónde sale cada valor, qué cambió y cuándo, y las traducciones. Un law_name vacío es la única ley del
      * país. Devuelve cuántas filas entraron de cada uno.
      */
@@ -185,10 +185,18 @@ class ImportadorLeyes
             return $leyes[$fila['law_name']];
         };
 
+        // field_sources.csv apunta a su URL con source_id; source_urls.csv guarda cada URL una vez.
+        $urls = [];
+        foreach ($this->leerLateral('source_urls.csv') as $u) {
+            $urls[$u['source_id']] = $u['url'];
+        }
         $insertar = $pdo->prepare('INSERT INTO field_sources (law_id, field, url, confidence, checked) VALUES (?, ?, ?, ?, ?)');
         $fuentes = $this->leerLateral('field_sources.csv');
         foreach ($fuentes as $f) {
-            $insertar->execute([$leyDe($f, 'field_sources.csv'), $f['field'], $f['url'], $f['confidence'], $f['checked'] !== '' ? self::parseFecha($f['checked']) : null]);
+            if (!isset($urls[$f['source_id']])) {
+                throw new Exception("field_sources.csv: source_id {$f['source_id']} is not in source_urls.csv");
+            }
+            $insertar->execute([$leyDe($f, 'field_sources.csv'), $f['field'], $urls[$f['source_id']], $f['confidence'], $f['checked'] !== '' ? self::parseFecha($f['checked']) : null]);
         }
 
         $insertar = $pdo->prepare('INSERT INTO law_changes (changed_on, jurisdiction_code, law_name, field, old_value, new_value) VALUES (?, ?, ?, ?, ?, ?)');

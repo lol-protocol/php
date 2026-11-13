@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mortalidad histórica: causas de defunción, epidemias y esperanza de vida</title>
+<style>
+:root { color-scheme: light dark; --fondo: #fbfaf7; --texto: #1d1b16; --suave: #5f5a4f; --borde: #d9d4c7; --acento: #1f5f8b; --aviso-fondo: #fff4d6; --aviso-borde: #c9a227; --linea1: #1f5f8b; --linea2: #b5541c; --linea3: #5a7d2a; }
+@media (prefers-color-scheme: dark) { :root { --fondo: #17160f; --texto: #ece8dc; --suave: #b0aa9a; --borde: #403d31; --acento: #7fb6dd; --aviso-fondo: #332b0f; --aviso-borde: #a88a22; --linea1: #7fb6dd; --linea2: #e8935a; --linea3: #9cc65a; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fondo); color: var(--texto); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 62rem; margin: 0 auto; padding: 1rem; }
+h1 { font-size: 1.5rem; margin: .5rem 0; }
+h2 { font-size: 1.15rem; margin: 1.25rem 0 .5rem; }
+.aviso { background: var(--aviso-fondo); border: 1px solid var(--aviso-borde); border-radius: .4rem; padding: .6rem .8rem; margin: .8rem 0; font-size: .92rem; }
+nav { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0; }
+nav button, .controles select, .controles input { font: inherit; color: inherit; background: transparent; border: 1px solid var(--borde); border-radius: .4rem; padding: .4rem .7rem; }
+nav button { cursor: pointer; }
+nav button[aria-pressed="true"] { background: var(--acento); color: var(--fondo); border-color: var(--acento); }
+:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+.controles { display: flex; flex-wrap: wrap; gap: .8rem; align-items: end; margin: .5rem 0 1rem; }
+.controles label { display: flex; flex-direction: column; font-size: .85rem; color: var(--suave); gap: .2rem; }
+.controles input[type="search"] { min-width: 16rem; }
+.controles input[type="number"] { width: 7rem; }
+table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+th, td { text-align: left; border-bottom: 1px solid var(--borde); padding: .35rem .5rem; vertical-align: top; }
+th { color: var(--suave); font-weight: 600; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.etiqueta { display: inline-block; border: 1px solid var(--borde); border-radius: 1rem; padding: 0 .5rem; font-size: .8rem; margin-right: .25rem; }
+.vacio, .nota { color: var(--suave); }
+.nota { font-size: .85rem; }
+[dir="rtl"] { text-align: right; }
+svg { width: 100%; height: auto; max-height: 22rem; }
+svg text { fill: currentColor; font-size: 11px; }
+svg .eje { stroke: var(--borde); }
+section[hidden] { display: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<main>
+<h1>Mortalidad histórica</h1>
+<p class="nota">Datos para leer con criterio las edades y causas de muerte de los antepasados. Funciona sin servidor ni conexión: nada sale de tu navegador.</p>
+<div class="aviso" role="note"><strong>Borrador.</strong> Salvo la esperanza de vida, las muertes de Londres y tres cifras de cólera, los datos los escribió un asistente de IA y no están verificados contra una fuente; ninguna persona nativa ha revisado el glosario. Todo son <strong>cifras de población, no de personas</strong>: no dicen de qué murió ni cuánto vivió alguien en concreto. Los datos de salud y de causas de muerte son sensibles: no los uses para inferir nada de una familia.</div>
+
+<nav aria-label="Secciones">
+  <button type="button" data-seccion="causas" aria-pressed="true">Causas de defunción</button>
+  <button type="button" data-seccion="epidemias" aria-pressed="false">Epidemias</button>
+  <button type="button" data-seccion="esperanza" aria-pressed="false">Esperanza de vida</button>
+  <button type="button" data-seccion="londres" aria-pressed="false">Londres 1629-1902</button>
+</nav>
+
+<section id="causas">
+  <h2>¿Qué significa «hidropesía» en un registro?</h2>
+  <div class="controles">
+    <label>Término <input id="causa-termino" type="search" placeholder="hidropesía, Schlagfluss, tisis…" autocomplete="off"></label>
+    <label>Idioma del registro <select id="causa-idioma"></select></label>
+  </div>
+  <div id="causa-resultado" aria-live="polite"></div>
+  <p class="nota">Una pista para leer un documento antiguo, no un diagnóstico. Confianza <em>alta</em>: casi siempre es esa enfermedad; <em>media</em>: suele serlo, pero cubre otras; <em>baja</em>: puede ser varias.</p>
+</section>
+
+<section id="epidemias" hidden>
+  <h2>¿Qué epidemias pudo haber en un año y un lugar?</h2>
+  <div class="controles">
+    <label>Año <input id="epi-anio" type="number" value="1886" min="-500" max="2100"></label>
+    <label>País <select id="epi-pais"></select></label>
+    <label>Región <select id="epi-region"></select></label>
+  </div>
+  <div id="epi-resultado" aria-live="polite"></div>
+  <p class="nota">Una pista, no una prueba. Las fechas son convencionales y casi todas las cifras son órdenes de magnitud sin verificar. Una epidemia sin países cubre toda su región.</p>
+</section>
+
+<section id="esperanza" hidden>
+  <h2>Esperanza de vida por década</h2>
+  <div class="controles">
+    <label>País <select id="esp-pais"></select></label>
+    <label>Sexo <select id="esp-sexo"><option value="T">Ambos</option><option value="F">Mujeres (desde 1950)</option><option value="M">Hombres (desde 1950)</option></select></label>
+  </div>
+  <div id="esp-grafico" role="img" aria-label="Gráfico de la esperanza de vida por década"></div>
+  <div id="esp-tabla"></div>
+  <p class="nota"><strong>Al nacer</strong> está arrastrada por la mortalidad infantil: quien cumplía 5 años podía esperar vivir bastante más (la línea «A los 5 años» es la edad media a la que llegaba). Antes de 1950 son estimaciones que interpolan pocos datos reales; los valores iguales en varias décadas seguidas son supuestos. Cifras de período de toda la población, no de una generación ni de una persona.</p>
+</section>
+
+<section id="londres" hidden>
+  <h2>Muertes por año en Londres</h2>
+  <div class="controles">
+    <label>Año <input id="lon-anio" type="number" value="1665" min="1629" max="1902"></label>
+  </div>
+  <div id="lon-resultado" aria-live="polite"></div>
+  <div id="lon-grafico" role="img" aria-label="Muertes por año en Londres de 1629 a 1902"></div>
+  <p class="nota">Bills of Mortality y los registros que las siguieron (vía Our World in Data). Es la ciudad de cada época, no Inglaterra; la serie tiene huecos. El exceso compara con la mediana de los 5 años anteriores y posteriores.</p>
+</section>
+</main>
+
+<script>
+/*MODULO*/
+</script>
+<script>
+(function () {
+  'use strict';
+  var T = /*TABLAS*/;
+  var IDIOMAS = /*IDIOMAS*/;
+  var m = Mortalidad.crear(T);
+  var $ = function (id) { return document.getElementById(id); };
+
+  function h(tag, atributos) {
+    var e = document.createElement(tag);
+    Object.keys(atributos || {}).forEach(function (k) { e.setAttribute(k, atributos[k]); });
+    for (var i = 2; i < arguments.length; i++) {
+      var c = arguments[i];
+      if (c !== null && c !== undefined && c !== false) e.appendChild(typeof c === 'object' ? c : document.createTextNode(String(c)));
+    }
+    return e;
+  }
+  function limpiar(e) { while (e.firstChild) e.removeChild(e.firstChild); return e; }
+  function miles(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+  function opcion(valor, texto) { var o = h('option', { value: valor }, texto); return o; }
+
+  // ---- Secciones
+  var secciones = ['causas', 'epidemias', 'esperanza', 'londres'];
+  function mostrar(nombre) {
+    secciones.forEach(function (s) { $(s).hidden = s !== nombre; });
+    Array.prototype.forEach.call(document.querySelectorAll('nav button'), function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-seccion') === nombre));
+    });
+    if (location.hash !== '#' + nombre) history.replaceState(null, '', '#' + nombre);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('nav button'), function (b) {
+    b.addEventListener('click', function () { mostrar(b.getAttribute('data-seccion')); });
+  });
+
+  // ---- Causas de defunción
+  IDIOMAS.forEach(function (i) { $('causa-idioma').appendChild(opcion(i[0], i[1] + ' (' + i[2] + ')')); });
+  function causas() {
+    var termino = $('causa-termino').value.trim();
+    var idioma = $('causa-idioma').value;
+    var salida = limpiar($('causa-resultado'));
+    salida.dir = IDIOMAS.filter(function (i) { return i[0] === idioma; })[0][3] ? 'rtl' : 'ltr';
+    if (!termino) { salida.appendChild(h('p', { 'class': 'vacio' }, 'Escribe un término tal como aparece en el registro.')); return; }
+    var r = m.causaModerna(termino, idioma);
+    if (!r.length) {
+      salida.appendChild(h('p', { 'class': 'vacio', dir: 'ltr' }, 'No está en el glosario de ese idioma (eso no quiere decir que no exista: el glosario es un borrador pequeño).'));
+      return;
+    }
+    var cuerpo = h('tbody');
+    r.forEach(function (x) {
+      cuerpo.appendChild(h('tr', {}, h('td', {}, x.nombre), h('td', {}, x.cie10.join(', ')), h('td', {}, h('span', { 'class': 'etiqueta' }, x.confianza)), h('td', {}, x.nota)));
+    });
+    salida.appendChild(h('table', { dir: 'ltr' }, h('thead', {}, h('tr', {}, h('th', {}, 'Causa moderna posible'), h('th', {}, 'CIE-10'), h('th', {}, 'Confianza'), h('th', {}, 'Nota'))), cuerpo));
+  }
+  $('causa-termino').addEventListener('input', causas);
+  $('causa-idioma').addEventListener('change', causas);
+
+  // ---- Epidemias
+  var paises = T.paises.filas.map(function (f) { return [f[0], f[1]]; }).sort(function (a, b) { return a[1].localeCompare(b[1], 'es'); });
+  $('epi-pais').appendChild(opcion('', '(todos)'));
+  paises.forEach(function (p) { $('epi-pais').appendChild(opcion(p[0], p[1])); });
+  $('epi-region').appendChild(opcion('', '(todas)'));
+  Mortalidad.REGIONES.forEach(function (r) { $('epi-region').appendChild(opcion(r, r)); });
+  function epidemias() {
+    var anio = parseInt($('epi-anio').value, 10);
+    var salida = limpiar($('epi-resultado'));
+    if (isNaN(anio)) { salida.appendChild(h('p', { 'class': 'vacio' }, 'Escribe un año.')); return; }
+    var r = m.epidemiasEn(anio, $('epi-region').value || null, $('epi-pais').value || null);
+    if (!r.length) { salida.appendChild(h('p', { 'class': 'vacio' }, 'Ninguna epidemia de la lista cubre ese año y ese lugar.')); return; }
+    var cuerpo = h('tbody');
+    r.forEach(function (e) {
+      var anios = e.hasta === '' ? e.desde + '–…' : (e.desde === e.hasta ? e.desde : e.desde + '–' + e.hasta);
+      var muertes = e.muertes_min ? (e.muertes_min === e.muertes_max ? miles(e.muertes_min) : miles(e.muertes_min) + '–' + miles(e.muertes_max)) : '';
+      var texto = [muertes, e.mortalidad].filter(Boolean).join(': ');
+      cuerpo.appendChild(h('tr', {}, h('td', {}, anios), h('td', {}, e.nombre), h('td', {}, e.paises.length ? e.paises.join(', ') : e.regiones.join(', ')), h('td', {}, texto), h('td', {}, h('span', { 'class': 'etiqueta' }, e.confianza), h('span', { 'class': 'etiqueta' }, e.estado))));
+    });
+    salida.appendChild(h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, 'Años'), h('th', {}, 'Epidemia'), h('th', {}, 'Dónde'), h('th', {}, 'Muertes'), h('th', {}, 'Confianza · estado'))), cuerpo));
+  }
+  ['epi-anio', 'epi-pais', 'epi-region'].forEach(function (id) { $(id).addEventListener('input', epidemias); });
+
+  // ---- Gráficos (SVG a mano)
+  var NS = 'http://www.w3.org/2000/svg';
+  function s(tag, atributos, texto) {
+    var e = document.createElementNS(NS, tag);
+    Object.keys(atributos || {}).forEach(function (k) { e.setAttribute(k, atributos[k]); });
+    if (texto !== undefined) e.textContent = texto;
+    return e;
+  }
+  // series: [{nombre, color, trazo, puntos: [[x, y], ...]}]
+  function grafico(series, xmin, xmax, ymax, etiquetaX) {
+    var W = 640, H = 300, ml = 40, mr = 12, mt = 12, mb = 28;
+    var svg = s('svg', { viewBox: '0 0 ' + W + ' ' + H, focusable: 'false' });
+    var X = function (x) { return ml + (x - xmin) / (xmax - xmin) * (W - ml - mr); };
+    var Y = function (y) { return H - mb - y / ymax * (H - mt - mb); };
+    for (var i = 0; i <= 4; i++) {
+      var v = ymax * i / 4;
+      svg.appendChild(s('line', { 'class': 'eje', x1: ml, x2: W - mr, y1: Y(v), y2: Y(v) }));
+      svg.appendChild(s('text', { x: ml - 4, y: Y(v) + 4, 'text-anchor': 'end' }, miles(v)));
+    }
+    var paso = (xmax - xmin) > 150 ? 50 : 25;
+    for (var x = Math.ceil(xmin / paso) * paso; x <= xmax; x += paso) {
+      svg.appendChild(s('text', { x: X(x), y: H - 8, 'text-anchor': 'middle' }, String(x)));
+    }
+    series.forEach(function (serie, k) {
+      var trozos = [], actual = [];
+      serie.puntos.forEach(function (p) { if (p === null) { if (actual.length) trozos.push(actual); actual = []; } else actual.push(X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)); });
+      if (actual.length) trozos.push(actual);
+      trozos.forEach(function (t) { svg.appendChild(s('polyline', { points: t.join(' '), fill: 'none', style: 'stroke:' + serie.color, 'stroke-width': 2, 'stroke-dasharray': serie.trazo || 'none' })); });
+      svg.appendChild(s('text', { x: ml + 8 + k * 230, y: mt + 10, style: 'fill:' + serie.color }, '— ' + serie.nombre));
+    });
+    return svg;
+  }
+
+  // ---- Esperanza de vida
+  $('esp-pais').appendChild(opcion('', '(elige un país)'));
+  paises.forEach(function (p) { $('esp-pais').appendChild(opcion(p[0], p[1])); });
+  $('esp-pais').value = 'SE';
+  function esperanza() {
+    var codigo = $('esp-pais').value, sexo = $('esp-sexo').value;
+    var tabla = limpiar($('esp-tabla')), graf = limpiar($('esp-grafico'));
+    if (!codigo) return;
+    var filas = [], al5 = [], nacer = [];
+    for (var d = 1800; d <= 2000; d += 10) {
+      var e0 = m.esperanzaRestante(codigo, d, 0, sexo);
+      var e5 = sexo === 'T' ? m.esperanzaRestante(codigo, d, 5, 'T') : null;
+      var l5 = sexo === 'T' ? m.supervivencia(codigo, d, 5, 'T') : null;
+      nacer.push(e0 === null ? null : [d + 5, e0]);
+      al5.push(e5 === null ? null : [d + 5, 5 + e5]);
+      if (e0 !== null) filas.push([d, e0, e5, l5]);
+    }
+    if (!filas.length) { tabla.appendChild(h('p', { 'class': 'vacio' }, 'No hay datos de este país' + (sexo === 'T' ? '.' : ' para ese sexo (hay desde 1950).'))); return; }
+    var series = [{ nombre: 'Al nacer', color: 'var(--linea1)', puntos: nacer }];
+    if (sexo === 'T') series.push({ nombre: 'Edad media a la que llegaba quien cumplía 5', color: 'var(--linea2)', trazo: '5 4', puntos: al5 });
+    graf.appendChild(grafico(series, 1800, 2010, 100));
+    var cuerpo = h('tbody');
+    filas.forEach(function (f) {
+      cuerpo.appendChild(h('tr', {}, h('td', {}, f[0] + '–' + (f[0] + 9)), h('td', { 'class': 'num' }, f[1].toFixed(1)), h('td', { 'class': 'num' }, f[2] === null ? '' : f[2].toFixed(1)), h('td', { 'class': 'num' }, f[3] === null ? '' : Math.round(f[3] * 100) + ' %'), h('td', {}, f[0] < 1950 ? 'estimación (C)' : 'ONU (B)')));
+    });
+    tabla.appendChild(h('table', {}, h('caption', { 'class': 'sr' }, 'Esperanza de vida por década'), h('thead', {}, h('tr', {}, h('th', {}, 'Década'), h('th', { 'class': 'num' }, 'Al nacer'), h('th', { 'class': 'num' }, 'Restante a los 5'), h('th', { 'class': 'num' }, 'Llega a los 5'), h('th', {}, 'Calidad'))), cuerpo));
+  }
+  $('esp-pais').addEventListener('change', esperanza);
+  $('esp-sexo').addEventListener('change', esperanza);
+
+  // ---- Londres
+  var londres = [];
+  for (var a = 1629; a <= 1902; a++) { var mm = m.muertesLondres(a); londres.push(mm === null ? null : [a, mm.totales]); }
+  $('lon-grafico').appendChild(grafico([{ nombre: 'Muertes por año (todas las causas)', color: 'var(--linea1)', puntos: londres }], 1629, 1902, 100000));
+  function londresAnio() {
+    var anio = parseInt($('lon-anio').value, 10);
+    var salida = limpiar($('lon-resultado'));
+    var r = isNaN(anio) ? null : m.muertesLondres(anio);
+    if (!r) { salida.appendChild(h('p', { 'class': 'vacio' }, 'No hay dato de ese año (la serie va de 1629 a 1902 y tiene huecos).')); return; }
+    var x = m.excesoDeMuertesLondres(anio);
+    salida.appendChild(h('p', {}, h('strong', {}, miles(r.totales)), ' muertes en total, ', h('strong', {}, miles(r.viruela)), ' por viruela' + (x === null ? '.' : '; ' + x.toFixed(2).replace('.', ',') + ' veces las de los años vecinos.')));
+  }
+  $('lon-anio').addEventListener('input', londresAnio);
+
+  causas(); epidemias(); esperanza(); londresAnio();
+  var inicial = location.hash.slice(1);
+  if (secciones.indexOf(inicial) >= 0) mostrar(inicial);
+})();
+</script>
+</body>
+</html>

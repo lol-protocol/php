@@ -7,11 +7,11 @@
     "jurisdiction": "Ministry of Economy and Trade",
     "enactment_date": "2018-10-10",
     "effective_date": "2019-03-31",
-    "scope": "Individuals whose personal data is processed (unconfirmed)",
-    "applies_to": "Controllers processing personal data (chiefly electronically) (unconfirmed)",
-    "key_requirements": "Consent or other legal basis, purpose limitation, security; licence or authorization from the Ministry of Economy and Trade for processing certain data categories (unconfirmed)",
+    "scope": "Processing of personal data in Lebanon, incl. by foreign firms operating in Lebanon or using local data infrastructure; also electronic transactions",
+    "applies_to": "All data controllers operating within Lebanon (public and private organisations); foreign companies operating in Lebanon or using local data infrastructure",
+    "key_requirements": "Consent or other lawful basis, purpose limitation, transparency, accuracy, storage limitation, security; data-subject rights of access, correction and objection; breach notification (per Clym). Licence not confirmed in sources",
     "data_categories": "Personal data; sensitive data requiring licence (unconfirmed)",
-    "retention_period": "Storage limitation principle (no article found) (unconfirmed)",
+    "retention_period": "Storage limitation is one of the law's principles; no specific period or article given in the sources",
     "enforcement_authority": "Ministry of Economy and Trade (no dedicated authority; some sources name Ministry of Telecommunications / TRA)",
     "penalties_range": "Not specified",
     "exemptions": "Not specified",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-21",
+    "last_checked": "2026-11-13",
     "sources": {
       "genetic_data": {
         "url": "https://rm.coe.int/3692-1-2-study-pdp-lebanon-coe-108-/1680a1caa2",
@@ -55,19 +55,19 @@
         "checked": "2026-10-18"
       },
       "scope": {
-        "url": "https://www.consentstack.io/regulations/lb-law81",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.clym.io/regulations/law-no-81-on-electronic-transactions-and-personal-data-lebanon",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
         "url": "https://www.consentstack.io/regulations/lb-law81",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
-        "url": "https://www.clym.io/regulations/law-no-81-on-electronic-transactions-and-personal-data-lebanon",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "url": "https://www.consentstack.io/regulations/lb-law81",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "data_categories": {
         "url": "https://www.clym.io/regulations/law-no-81-on-electronic-transactions-and-personal-data-lebanon",
@@ -76,8 +76,8 @@
       },
       "retention_period": {
         "url": "https://www.consentstack.io/regulations/lb-law81",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.consentstack.io/regulations/lb-law81",
@@ -86,6 +86,30 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "retention_period",
+        "from": "Storage limitation principle (no article found) (unconfirmed)",
+        "to": "Storage limitation is one of the law's principles; no specific period or article given in the sources"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "key_requirements",
+        "from": "Consent or other legal basis, purpose limitation, security; licence or authorization from the Ministry of Economy and Trade for processing certain data categories (unconfirmed)",
+        "to": "Consent or other lawful basis, purpose limitation, transparency, accuracy, storage limitation, security; data-subject rights of access, correction and objection; breach notification (per Clym). Licence not confirmed in sources"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Controllers processing personal data (chiefly electronically) (unconfirmed)",
+        "to": "All data controllers operating within Lebanon (public and private organisations); foreign companies operating in Lebanon or using local data infrastructure"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Individuals whose personal data is processed (unconfirmed)",
+        "to": "Processing of personal data in Lebanon, incl. by foreign firms operating in Lebanon or using local data infrastructure; also electronic transactions"
+      },
       {
         "date": "2026-10-21",
         "field": "genetic_data",

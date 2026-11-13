@@ -422,39 +422,52 @@ function robotsPath(string $url): string
 }
 
 /**
- * Per-field source pages of field_sources.csv: the URLs that back a single field (protection term, penalties…),
- * which are often a different page from the law's reference URL. Grouped by "COUNTRY|law name".
+ * Reads a CSV with a header into rows keyed by column name; a missing or unreadable file is no rows.
  *
- * @return array<string, array<string, list<string>>>  group => url => fields it backs
+ * @return list<array<string, string>>
  */
-function loadFieldSources(string $dir): array
+function readCsvRows(string $file): array
 {
-    $file = "$dir/field_sources.csv";
     $handle = is_file($file) ? fopen($file, 'r') : false;
     if ($handle === false) {
         return [];
     }
     $header = fgetcsv($handle, null, ',', '"', '');
-    $columns = is_array($header) ? array_flip($header) : [];
-    $out = [];
-    foreach (['country_code', 'law_name', 'field', 'url'] as $needed) {
-        if (!isset($columns[$needed])) {
-            fclose($handle);
-            return [];
-        }
-    }
-    while (($row = fgetcsv($handle, null, ',', '"', '')) !== false) {
-        $url = trim($row[$columns['url']] ?? '');
-        if (!preg_match('#^https?://#i', $url)) {
-            continue;
-        }
-        $group = strtoupper($row[$columns['country_code']] ?? '') . '|' . ($row[$columns['law_name']] ?? '');
-        $field = $row[$columns['field']] ?? '';
-        if (!in_array($field, $out[$group][$url] ?? [], true)) {
-            $out[$group][$url][] = $field;
+    $rows = [];
+    while (is_array($header) && ($row = fgetcsv($handle, null, ',', '"', '')) !== false) {
+        if ($row !== [null]) {
+            $rows[] = array_combine($header, array_pad($row, count($header), ''));
         }
     }
     fclose($handle);
+    return $rows;
+}
+
+/**
+ * Per-field source pages of field_sources.csv: the URLs that back a single field (protection term, penalties…),
+ * which are often a different page from the law's reference URL. Each source points at its URL by `source_id`
+ * (source_urls.csv stores every URL once). Grouped by "COUNTRY|law name".
+ *
+ * @return array<string, array<string, list<string>>>  group => url => fields it backs
+ */
+function loadFieldSources(string $dir): array
+{
+    $urls = [];
+    foreach (readCsvRows("$dir/source_urls.csv") as $row) {
+        $urls[$row['source_id'] ?? ''] = trim($row['url'] ?? '');
+    }
+    $out = [];
+    foreach (readCsvRows("$dir/field_sources.csv") as $row) {
+        $url = $urls[$row['source_id'] ?? ''] ?? '';
+        if (!preg_match('#^https?://#i', $url)) {
+            continue;
+        }
+        $group = strtoupper($row['country_code'] ?? '') . '|' . ($row['law_name'] ?? '');
+        $field = $row['field'] ?? '';
+        if ($field !== '' && !in_array($field, $out[$group][$url] ?? [], true)) {
+            $out[$group][$url][] = $field;
+        }
+    }
     return $out;
 }
 
