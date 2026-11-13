@@ -8,9 +8,12 @@ setup() {
     make_stub php 'case "$1" in -m) printf "gd\nmbstring\nfileinfo\nexif\nzlib\n";; -r) exit "${NOWEBP:-0}";; esac'
     export NGINX_DIR="$BATS_TEST_TMPDIR/nginx" WWW_DIR="$BATS_TEST_TMPDIR/www" DATA_DIR="$BATS_TEST_TMPDIR/data" \
            CRON_DIR="$BATS_TEST_TMPDIR/cron" PHP_UPLOAD_INI="$BATS_TEST_TMPDIR/php/90-uploads.ini" \
-           NGINX_LOG_DIR="$BATS_TEST_TMPDIR/log" SYSTEMD_DIR="$BATS_TEST_TMPDIR/systemd" REMOVED_DIR="$BATS_TEST_TMPDIR/removed"
+           NGINX_LOG_DIR="$BATS_TEST_TMPDIR/log" SYSTEMD_DIR="$BATS_TEST_TMPDIR/systemd" REMOVED_DIR="$BATS_TEST_TMPDIR/removed" \
+           PHP_POOL_DIR="$BATS_TEST_TMPDIR/pool.d"
+    mkdir -p "$PHP_POOL_DIR"
     mkdir -p "$NGINX_DIR/sites-available" "$NGINX_DIR/sites-enabled" "$WWW_DIR" "$DATA_DIR" "$CRON_DIR" "$BATS_TEST_TMPDIR/php" "$SYSTEMD_DIR"
     # sudo falso: ejecuta de verdad en las carpetas temporales y se salta lo que apunte a /var o /etc reales
+    make_stub stat 'if [ "$1" = -c ] && [ "$2" = %U ]; then echo "${FAKE_OWNER:-root}"; else exec /usr/bin/stat "$@"; fi'
     make_stub sudo 'echo "$*" >> "$SUDO_LOG"; case "$1" in systemctl|nginx|chown|fail2ban-client) exit 0;; esac; for a in "$@"; do case "$a" in /var/*|/etc/*) exit 0;; esac; done; exec "$@"'
     P=marcalibros-plataforma-pos-brand-identity
 }
@@ -47,7 +50,7 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     grep -q 'client_max_body_size 6M;' "$v"
     grep -q "fastcgi_param MARCALIBROS_STORAGE $DATA_DIR/marcalibros;" "$v"
     grep -q 'fastcgi_param MARCALIBROS_PUBLIC_URL https://ejemplo.com;' "$v"
-    grep -q 'fastcgi_pass unix:/run/php/php8.3-fpm.sock;' "$v"
+    grep -q 'fastcgi_pass unix:/run/php/app-marcalibros.sock;' "$v"
     ! grep -q RETENTION "$v"
     [ -L "$NGINX_DIR/sites-enabled/ejemplo.com" ]
     [ -d "$DATA_DIR/marcalibros" ] && [ "$(stat -c %a "$DATA_DIR/marcalibros")" = 750 ]
@@ -60,7 +63,7 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     c="$CRON_DIR/marcalibros"
     grep -qx "MARCALIBROS_STORAGE=$DATA_DIR/marcalibros" "$c"
     grep -qx 'MARCALIBROS_RETENTION_DAYS=7' "$c"
-    grep -q "^17 3 \* \* \* www-data $(command -v php) $WWW_DIR/marcalibros/$P/app/bin/limpiar.php > /dev/null$" "$c"
+    grep -q "^17 3 \* \* \* app-marcalibros $(command -v php) $WWW_DIR/marcalibros/$P/app/bin/limpiar.php > /dev/null$" "$c"
     grep -q 'fastcgi_param MARCALIBROS_RETENTION_DAYS 7;' "$NGINX_DIR/sites-available/ejemplo.com"
 }
 
@@ -76,6 +79,7 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     mkdir -p "$WWW_DIR/marcalibros/$P/catalog/png"; echo png > "$WWW_DIR/marcalibros/$P/catalog/png/mb-leyes-01.png"
     echo viejo > "$WWW_DIR/marcalibros/$P/app/sobrante.txt"
     echo creado > "$DATA_DIR/marcalibros/uno.json"
+    export FAKE_OWNER=app-marcalibros      # tras la 1a corrida los datos ya son del usuario de la app
     instalar ejemplo.com
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     [ "$(cat "$WWW_DIR/marcalibros/$P/catalog/png/mb-leyes-01.png")" = png ]
@@ -134,4 +138,29 @@ instalar() { run bash "$VPS_DIR/06_E-setup-marcalibros-app.sh" "$@"; }
     d=$(ls -d "$REMOVED_DIR"/ejemplo.com-*)
     [ -d "$d/www/marcalibros" ] && [ -f "$d/cron/marcalibros" ] && [ ! -e "$CRON_DIR/marcalibros" ]
     [ -d "$DATA_DIR/marcalibros" ]
+}
+
+@test "06_E: usuario app-marcalibros, datos 750 suyos y pool PHP-FPM propio (ya no www-data)" {
+    instalar ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    grep -q "useradd --system --user-group --home-dir $DATA_DIR/marcalibros .* app-marcalibros" "$SUDO_LOG"
+    grep -q "chown -R app-marcalibros:app-marcalibros $DATA_DIR/marcalibros" "$SUDO_LOG"
+    ! grep -q 'chown.*www-data' "$SUDO_LOG"
+    pool="$PHP_POOL_DIR/app-marcalibros.conf"
+    grep -qx '\[app-marcalibros\]' "$pool" && grep -qx 'user = app-marcalibros' "$pool"
+    grep -qx 'listen = /run/php/app-marcalibros.sock' "$pool" && grep -qx 'listen.owner = www-data' "$pool"
+    grep -q "systemctl reload php8.3-fpm" "$SUDO_LOG"
+}
+
+@test "06_E: datos de una instalacion anterior (de www-data) no se reasignan solos: se detiene ANTES de copiar el codigo y explica el chown" {
+    mkdir -p "$DATA_DIR/marcalibros"; echo viejo > "$DATA_DIR/marcalibros/mb1.json"
+    FAKE_OWNER=www-data instalar ejemplo.com
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"sudo chown -R app-marcalibros:app-marcalibros $DATA_DIR/marcalibros"* ]]
+    [ ! -e "$WWW_DIR/marcalibros" ] && [ ! -e "$NGINX_DIR/sites-available/ejemplo.com.nuevo" ]
+    [ "$(cat "$DATA_DIR/marcalibros/mb1.json")" = viejo ]
+    # ya migrados (dueno = el usuario de la app), re-correr actualiza el codigo y conserva los datos
+    FAKE_OWNER=app-marcalibros instalar ejemplo.com
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [ "$(cat "$DATA_DIR/marcalibros/mb1.json")" = viejo ]
 }
