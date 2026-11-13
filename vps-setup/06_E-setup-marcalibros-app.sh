@@ -47,6 +47,7 @@ for need in "$PROJECT/app/public/index.php" "$PROJECT/php/src" "$PROJECT/catalog
 done
 
 APP_PATH="$WWW_DIR/marcalibros"
+APP_USER=$(app_user_name marcalibros)   # usuario y pool PHP-FPM propios (como las demas apps): ver PR 3 de vps-setup
 STORAGE="$DATA_DIR/marcalibros"
 PUBLIC_DIR="$APP_PATH/$PROJECT/app/public"
 MARK="06_E-marcalibros marcalibros"
@@ -72,6 +73,13 @@ for other in "$NGINX_DIR"/sites-available/*; do
     fi
 done
 claim_nginx_vhost "$DOMAIN" "$MARK"
+
+# --- Usuario y datos: ANTES de copiar el codigo, para que un problema de permisos no deje nada a medias ---
+# Los datos (/var/lib/marcalibros) son solo del usuario de la app (750). Si ya hay marcalibros guardados de una
+# instalacion anterior (de www-data), no se cambia su dueno solo: se detiene y explica el chown.
+create_app_user "$APP_USER" "$STORAGE"
+sudo mkdir -p "$STORAGE"
+own_app_dir "$STORAGE" "$APP_USER"
 
 # --- Codigo: se arma aparte y se cambia con dos renombres seguidos, para que nunca se sirva a medio copiar ---
 # Se conserva la disposicion del monorepo porque app/bootstrap.php busca a sus vecinos con rutas
@@ -106,11 +114,9 @@ if [ "$PNG" = 1 ]; then
     sudo find "$APP_PATH/$PROJECT/catalog/png" -type f -exec chmod 644 {} \;
 fi
 
-# --- Datos: fuera de la carpeta web, solo para www-data ---
-sudo mkdir -p "$STORAGE"
-sudo chown www-data:www-data "$STORAGE"
-sudo chmod 750 "$STORAGE"
 setup_nginx_domain_logs "$DOMAIN"
+# Pool PHP-FPM propio: la app corre como $APP_USER, no como www-data (que comparten Nginx y las demas apps).
+setup_php_pool "$APP_USER"
 
 # --- Nginx: todo lo que no sea /assets/ lo atiende public/index.php ---
 echo "Configurando Nginx..."
@@ -135,7 +141,7 @@ $(nginx_server_head "$DOMAIN")
         fastcgi_param MARCALIBROS_STORAGE $STORAGE;
         fastcgi_param MARCALIBROS_PUBLIC_URL https://$DOMAIN;
         $FASTCGI_RETENTION
-        fastcgi_pass unix:/run/php/${PHP_FPM_SERVICE}.sock;
+        fastcgi_pass unix:/run/php/$APP_USER.sock;
     }
 }
 EOFNGINX
@@ -148,7 +154,7 @@ CRON_ENV="MARCALIBROS_STORAGE=$STORAGE"
 sudo tee "$CRON_DIR/marcalibros" > /dev/null <<EOFCRON
 # vps-setup: $MARK
 $CRON_ENV
-17 3 * * * www-data $PHP_BIN $APP_PATH/$PROJECT/app/bin/limpiar.php > /dev/null
+17 3 * * * $APP_USER $PHP_BIN $APP_PATH/$PROJECT/app/bin/limpiar.php > /dev/null
 EOFCRON
 sudo chmod 644 "$CRON_DIR/marcalibros"
 
@@ -162,4 +168,4 @@ echo "Proximos pasos:"
 echo "1. Configurar SSL: ./04-setup-ssl.sh $DOMAIN admin@$DOMAIN   (las etiquetas Open Graph apuntan a https://$DOMAIN)"
 [ "$PNG" = 1 ] || echo "2. (Opcional) PNG del catalogo: vuelve a correr este script con --png"
 echo "3. Comprobar: ./08-healthcheck.sh $DOMAIN"
-echo "Quitarlo: ./10_B-remove-domain.sh $DOMAIN   (los marcalibros creados quedan en $STORAGE)"
+echo "Quitarlo: ./10_B-remove-domain.sh $DOMAIN   (los marcalibros creados quedan en $STORAGE, del usuario $APP_USER)"

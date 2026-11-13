@@ -102,6 +102,17 @@ check "Tomcat responde por Nginx" test "$(http "$D_JAVA" /)" = 200
 check "/manager/html NO se alcanza (404)" test "$(http "$D_JAVA" /manager/html)" = 404
 check "Tomcat no queda expuesto en 8080 desde fuera (UFW sin regla)" bash -c '! ufw status | grep -q 8080'
 
+step "Marcalibros (06_E): usuario, pool PHP-FPM y datos propios"
+D_MB=mb.$D
+check "06_E termina bien" ./06_E-setup-marcalibros-app.sh "$D_MB"
+wait_http "$D_MB" / 200
+check "Marcalibros responde por Nginx" test "$(http "$D_MB" /)" = 200
+check "los datos son de app-marcalibros, 750" test "$(stat -c '%U:%a' /var/lib/marcalibros)" = "app-marcalibros:750"
+check "el pool propio tiene su socket" test -S /run/php/app-marcalibros.sock
+check "PHP-FPM atiende como app-marcalibros (no www-data)" pgrep -u app-marcalibros -f 'php-fpm: pool app-marcalibros'
+check "la limpieza diaria corre como app-marcalibros" grep -q '^17 3 \* \* \* app-marcalibros ' /etc/cron.d/marcalibros
+check "otra app no lee los datos de Marcalibros" bash -c "! sudo -u app-$APP_PY ls /var/lib/marcalibros"
+
 step "DNS propio (06_C, BIND real; el secundario de OVH se resuelve por internet)"
 check "06_C termina bien" env VPS_IP6=2001:db8::7 ./06_C-setup-dns-server.sh "$D" 203.0.113.7
 check "named habilitado al arranque" systemctl is-enabled --quiet named
