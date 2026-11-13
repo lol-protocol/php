@@ -21,7 +21,7 @@ Pequeño sistema en PHP (sin framework) para analizar:
   unidad y cuántas unidades vale un dólar), la fecha de su cotización y cuánto cambió en 30 días; con
   `?moneda=CLP`, el historial de esa moneda, paginado, con el cambio de cada fila frente a la anterior.
   Solo lee: las tasas las carga `bin/actualizar_tasas.php` y el historial lo anota la base (ver
-  «Historial de las tasas»).
+  «Historial de las tasas»). Se exporta a CSV (ver «Exportar a CSV»).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
   etapa, por canal de adquisición y por país/género/rango de edad.
@@ -76,7 +76,10 @@ Pequeño sistema en PHP (sin framework) para analizar:
   El **Flujo de caja** también se exporta (`?page=flujo-csv`): las filas de la pantalla con el
   horizonte elegido (el vencimiento como «Ya vencido», «Más adelante» o el mes `AAAA-MM`, y el
   saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
-  otra y no se pueden sumar.
+  otra y no se pueden sumar. Las **Tasas de cambio** también (`?page=tasas-csv`): sin moneda, el
+  resumen de todas; con `?moneda=CLP`, **todo** el historial de esa moneda, no solo la página que
+  se ve. Las tasas van como números con sus decimales (ocho el valor en dólares, seis las unidades
+  por dólar) y una tasa de ejemplo como «de ejemplo», igual que en la pantalla.
 
 > El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
 > pantalla de login con sesión, bloqueo por fuerza bruta y gestión de usuarios del

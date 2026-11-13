@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Database;
 use App\Paginacion;
+use Generator;
 use PDO;
 
 /**
@@ -94,19 +95,41 @@ final class HistorialDeTasasRepository
      */
     public function deLaMoneda(string $codigo, int $pagina): array
     {
-        return Paginacion::consultar(
-            $this->db,
-            columnas: 'h.id, h.tasa_a_usd, h.cotizada_en, h.fuente, h.registrada_en, h.tasa_anterior',
-            desde: '(SELECT x.*,
-                            CASE WHEN x.cotizada_en IS NOT NULL AND LAG(x.cotizada_en) OVER w IS NOT NULL
-                                 THEN LAG(x.tasa_a_usd) OVER w END AS tasa_anterior
-                     FROM historial_de_tasas x
-                     WHERE x.moneda_codigo = :moneda
-                     WINDOW w AS (ORDER BY x.id)) h',
-            orden: 'h.id DESC',
-            params: [':moneda' => $codigo],
-            pagina: $pagina,
-            desdeDelConteo: 'historial_de_tasas WHERE moneda_codigo = :moneda',
-        );
+        return Paginacion::consultar($this->db, ...self::consultaDelHistorial($codigo), pagina: $pagina);
+    }
+
+    /**
+     * TODAS las filas del historial de una moneda, las mismas y en el mismo orden que deLaMoneda() reparte en
+     * paginas, de a una y sin juntarlas en memoria: es lo que baja el CSV, que no puede cortar en paginas.
+     *
+     * @return Generator<int, array<string, mixed>>
+     */
+    public function exportarHistorial(string $codigo): Generator
+    {
+        $consulta = self::consultaDelHistorial($codigo);
+        unset($consulta['desdeDelConteo']);
+
+        return Paginacion::recorrer($this->db, ...$consulta);
+    }
+
+    /**
+     * La consulta del historial de una moneda, una sola para la pantalla y el CSV (ver PagoRepository).
+     *
+     * @return array{columnas: string, desde: string, orden: string, params: array<string, string>, desdeDelConteo: string}
+     */
+    private static function consultaDelHistorial(string $codigo): array
+    {
+        return [
+            'columnas' => 'h.id, h.tasa_a_usd, h.cotizada_en, h.fuente, h.registrada_en, h.tasa_anterior',
+            'desde' => '(SELECT x.*,
+                                CASE WHEN x.cotizada_en IS NOT NULL AND LAG(x.cotizada_en) OVER w IS NOT NULL
+                                     THEN LAG(x.tasa_a_usd) OVER w END AS tasa_anterior
+                         FROM historial_de_tasas x
+                         WHERE x.moneda_codigo = :moneda
+                         WINDOW w AS (ORDER BY x.id)) h',
+            'orden' => 'h.id DESC',
+            'params' => [':moneda' => $codigo],
+            'desdeDelConteo' => 'historial_de_tasas WHERE moneda_codigo = :moneda',
+        ];
     }
 }

@@ -67,6 +67,7 @@ $paginas = [
     'cliente-nuevo' => fn () => (new ClientesController())->nuevo(),
     'cliente' => fn () => (new ClientesController())->ficha(),
     'tasas' => fn () => (new HistorialDeTasasController())->index(),
+    'tasas-csv' => fn () => (new HistorialDeTasasController())->exportar(),
     'auditoria' => fn () => (new AuditoriaController())->index(),
 ];
 foreach ($paginas as $pagina => $manejador) {
