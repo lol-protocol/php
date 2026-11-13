@@ -8,6 +8,7 @@ import pytest
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "generator"))
+import almacen  # noqa: E402
 import editor  # noqa: E402
 import modelo  # noqa: E402
 from qa import MIN_CONTRASTE_TEXTO, contraste_texto  # noqa: E402
@@ -200,8 +201,8 @@ def test_subidas_concurrentes_respetan_la_cuota(tmp_path, monkeypatch):
 def test_la_cuota_aguanta_sin_flock_ni_msvcrt(tmp_path, monkeypatch):
     # sistema sin bloqueo de archivos (o import fallido): sigue habiendo exclusión entre hilos
     from concurrent.futures import ThreadPoolExecutor
-    monkeypatch.setattr(editor, "fcntl", None)
-    monkeypatch.setattr(editor, "msvcrt", None)
+    monkeypatch.setattr(almacen, "fcntl", None)
+    monkeypatch.setattr(almacen, "msvcrt", None)
     monkeypatch.setattr(editor, "CUOTA_IMAGENES", 3)
     a = editor.AlmacenSubidas(tmp_path)
     datos = _bytes(_foto(), "JPEG")
