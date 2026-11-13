@@ -7,7 +7,7 @@
     "jurisdiction": "Data Protection Commissioner (Barbados)",
     "enactment_date": "2019-08-12",
     "effective_date": "2021-03-31",
-    "scope": "Individuals (data subjects) whose personal data is processed (unconfirmed)",
+    "scope": "Regulates the collection, keeping, processing, use and dissemination of personal data; protects the privacy of individuals in relation to their personal data",
     "applies_to": "Controllers and processors (unconfirmed)",
     "key_requirements": "Breach notification to Commissioner within 72 hours; informed consent for sensitive data; Commissioner may issue enforcement notices",
     "data_categories": "Personal data; sensitive personal data (unconfirmed)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
@@ -51,8 +51,8 @@
       },
       "scope": {
         "url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
         "url": "https://www.dlapiperdataprotection.com/?c=BB&t=law",
@@ -81,6 +81,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Individuals (data subjects) whose personal data is processed (unconfirmed)",
+        "to": "Regulates the collection, keeping, processing, use and dissemination of personal data; protects the privacy of individuals in relation to their personal data"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

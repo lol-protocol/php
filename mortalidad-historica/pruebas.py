@@ -31,11 +31,13 @@ class Plantilla(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)
         self.datos = Path(self._tmp.name)
+        escribir(self.datos, "paises", [("CL", "Chile", "América"), ("GB", "Reino Unido", "Europa")])
         escribir(self.datos, "causas_modernas", [("tuberculosis", "Tuberculosis", "Tuberculosis", "A15;A16", "infecciosa")])
         escribir(self.datos, "causas_historicas", [("tisis", "spa", "tuberculosis", "alta", "", "", "", "borrador", "")])
-        escribir(self.datos, "epidemias", [("peste", "Peste", "Y. pestis", "", "1346", "1353", "Europa;Asia", "", "", "", "media", "", "borrador", "")])
+        escribir(self.datos, "epidemias", [("peste", "Peste", "Y. pestis", "", "1346", "1353", "Europa;Asia", "", "", "", "", "media", "", "borrador", "")])
         escribir(self.datos, "hereditarias", [("fq", "Fibrosis quística", "Cystic fibrosis", "autosómica recesiva", "219700", "todas las poblaciones", "infancia", "", "borrador", "")])
         escribir(self.datos, "hitos_registro", [("CL", "civil", "1885", "", "borrador", "")])
+        escribir(self.datos, "londres_muertes", [("1665", "97306", "655", "verificado", "londres-owid")])
         escribir(self.datos, "esperanza_vida", [])
         # validar() lee de comun.DATOS a través de leer_csv(DATOS / ...), que generar_tabla importó.
         parche = mock.patch.object(g, "DATOS", self.datos)
@@ -103,6 +105,44 @@ class ValidadorTest(Plantilla):
     def test_hereditaria_exige_donde_es_mas_frecuente(self):
         self.cambiar("hereditarias", 0, "frecuencia_mayor_en", "")
         self.assertTrue(any("frecuencia_mayor_en" in e for e in self.errores()))
+
+
+class ValidadorPaisesYLondresTest(Plantilla):
+    def test_region_de_un_pais(self):
+        self.cambiar("paises", 0, "region", "Atlantida")
+        self.assertTrue(any("region «Atlantida»" in e for e in self.errores()))
+
+    def test_pais_repetido(self):
+        escribir(self.datos, "paises", [("CL", "Chile", "América"), ("CL", "Chile otra vez", "América")])
+        self.assertTrue(any("repetido" in e for e in self.errores()))
+
+    def test_epidemia_con_pais_que_no_existe(self):
+        self.cambiar("epidemias", 0, "paises", "ZZ")
+        self.assertTrue(any("«ZZ» no está en paises.csv" in e for e in self.errores()))
+
+    def test_epidemia_con_pais_de_otra_region(self):
+        self.cambiar("epidemias", 0, "paises", "CL")  # Chile es de América y la epidemia, de Europa y Asia
+        self.assertTrue(any("que no está entre las regiones" in e for e in self.errores()))
+
+    def test_hito_con_pais_que_no_existe(self):
+        self.cambiar("hitos_registro", 0, "codigo", "ZZ")
+        self.assertTrue(any("no está en paises.csv" in e for e in self.errores()))
+
+    def test_esperanza_con_pais_que_no_existe(self):
+        escribir(self.datos, "esperanza_vida", [["ZZ", "1900", "1909", "T", "0", "30.0", "", "", "", "C", "borrador", ""]])
+        self.assertTrue(any("«ZZ»" in e for e in self.errores()))
+
+    def test_londres_viruela_no_supera_el_total(self):
+        self.cambiar("londres_muertes", 0, "muertes_viruela", "99999")
+        self.assertTrue(any("superan" in e for e in self.errores()))
+
+    def test_londres_anio_repetido(self):
+        escribir(self.datos, "londres_muertes", [("1665", "10", "1", "verificado", "x"), ("1665", "11", "1", "verificado", "x")])
+        self.assertTrue(any("repetido" in e for e in self.errores()))
+
+    def test_londres_verificado_exige_fuente(self):
+        self.cambiar("londres_muertes", 0, "fuente", "")
+        self.assertTrue(any("necesita su fuente" in e for e in self.errores()))
 
 
 class EsperanzaDeVidaTest(Plantilla):
@@ -222,8 +262,8 @@ class ConsultasTest(unittest.TestCase):
         self.assertNotIn("gripe_1918", ids)
         self.assertEqual(consultas.epidemias_en(1348, "Oceanía"), [])
 
-    def test_epidemia_abierta_sigue_hasta_hoy(self):
-        self.assertIn("viruela_en_america", [e["id"] for e in consultas.epidemias_en(1700, "América")])
+    def test_epidemia_de_larga_duracion(self):
+        self.assertIn("peste_tercera_pandemia", [e["id"] for e in consultas.epidemias_en(1950, "Asia")])
 
     def test_region_invalida(self):
         with self.assertRaises(ValueError):
@@ -297,7 +337,7 @@ class PrepararDatosTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp, mock.patch.object(g, "DATOS", Path(tmp)):
             escribir(Path(tmp), "esperanza_vida", pd.construir(e0, q5, {}, {}))
             errores = g.Errores()
-            g.validar_esperanza_vida(errores)
+            g.validar_esperanza_vida(errores, {"XX": "América"})
             self.assertEqual(errores.lista, [])
 
     CODIGOS = [{"codigo": "RU", "codigo_owid": "RUS", "nombre_iso": "Russian Federation"},
@@ -328,6 +368,44 @@ class PrepararDatosTest(unittest.TestCase):
         self.assertEqual(len(set(pd.ALIAS_OWID.values())), len(pd.ALIAS_OWID))
         self.assertEqual(set(pd.ALIAS_OWID) & pd.OMITIDOS_OWID, set())
         self.assertEqual(set(pd.ALIAS_GAPMINDER) & pd.OMITIDOS_GAPMINDER, set())
+
+
+class LondresYColeraTest(unittest.TestCase):
+    def escribir(self, carpeta, nombre, cabecera, filas):
+        ruta = Path(carpeta) / nombre
+        with ruta.open("w", encoding="utf-8", newline="") as f:
+            e = csv.writer(f)
+            e.writerow(cabecera)
+            e.writerows(filas)
+        return ruta
+
+    def test_construir_londres_salta_los_vacios_y_ordena(self):
+        cab = ["Entity", "Year", "Deaths from Smallpox in London (X)", "Deaths from all causes in London (X)", "Tasa"]
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = self.escribir(tmp, "l.csv", cab, [
+                ["UK", 1666, 38.0, 12738.0, 0.3], ["UK", 1665, 655, 97306, 0.7], ["UK", 1650, "", 5000, ""]])
+            self.assertEqual(pd.construir_londres(ruta), [
+                [1665, 97306, 655, "verificado", pd.FUENTE_LONDRES],
+                [1666, 12738, 38, "verificado", pd.FUENTE_LONDRES]])
+
+    def test_construir_paises(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = self.escribir(tmp, "p.csv", ["codigo", "pais", "tipo", "region"],
+                                 [["GB", "Reino Unido", "estado", "Europa"], ["CL", "Chile", "estado", "América"]])
+            self.assertEqual(pd.construir_paises(ruta), [["CL", "Chile", "América"], ["GB", "Reino Unido", "Europa"]])
+
+    def fila_colera(self, **cambios):
+        fila = {"id": "c", "fuente": pd.FUENTE_COLERA, "hasta": "1832", "muertes_min": "31000", "muertes_max": "31000"}
+        return fila | cambios
+
+    def test_la_cifra_de_colera_debe_ser_la_de_la_fuente(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = self.escribir(tmp, "c.csv", ["Entity", "Year", "Cholera deaths"], [["GB", 1832, 31000], ["GB", 1849, 62000]])
+            pd.comprobar_colera(ruta, [self.fila_colera(), self.fila_colera(fuente="otra", muertes_min="1", muertes_max="2")])
+            for malo in (self.fila_colera(muertes_min="30000"), self.fila_colera(muertes_max="32000"),
+                         self.fila_colera(hasta="1900")):
+                with self.assertRaises(SystemExit):
+                    pd.comprobar_colera(ruta, [malo])
 
 
 class FuentesTest(unittest.TestCase):
@@ -387,6 +465,137 @@ class EsperanzaDeVidaRealTest(unittest.TestCase):
         f0, f5 = self.indice[("SE", "1900", "T", "0")], self.indice[("SE", "1900", "T", "5")]
         self.assertEqual(f5["fuente"], pd.FUENTE_E5)
         self.assertEqual(f0["fuente"], pd.FUENTE_E0)
+
+
+class EpidemiasYLondresRealesTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.epidemias = {f["id"]: f for f in comun.filas_csv("epidemias")}
+        cls.londres = {int(f["anio"]): f for f in comun.filas_csv("londres_muertes")}
+
+    def test_los_numeros_citados_en_el_texto_de_la_peste_de_londres_son_los_de_la_serie(self):
+        texto = self.epidemias["peste_de_londres_1665"]["mortalidad"]
+        self.assertIn("97 306", texto)
+        self.assertIn("12 738", texto)
+        self.assertEqual(self.londres[1665]["muertes_totales"], "97306")
+        self.assertEqual(self.londres[1666]["muertes_totales"], "12738")
+
+    def test_las_filas_verificadas_traen_una_fuente_conocida(self):
+        verificadas = {i: e for i, e in self.epidemias.items() if e["estado"] == "verificado"}
+        self.assertEqual(set(verificadas), {"colera_gran_bretana_1831_1832", "colera_gran_bretana_1849", "colera_gran_bretana_1866"})
+        for e in verificadas.values():
+            self.assertEqual(e["fuente"], pd.FUENTE_COLERA)
+            self.assertEqual(e["muertes_min"], e["muertes_max"])
+
+    def test_toda_epidemia_con_causa_la_tiene_en_el_glosario(self):
+        causas = {f["causa_id"] for f in comun.filas_csv("causas_historicas")}
+        for e in self.epidemias.values():
+            if e["causa_id"]:
+                self.assertIn(e["causa_id"], causas, e["id"])
+
+    def test_la_serie_de_londres_es_la_de_1629_a_1902(self):
+        self.assertEqual((min(self.londres), max(self.londres)), (1629, 1902))
+        self.assertEqual(len(self.londres), 241)
+
+    def test_epidemias_md_esta_al_dia_y_lista_todas(self):
+        _, datos = g.validar()
+        texto = (comun.RAIZ / "epidemias.md").read_text(encoding="utf-8")
+        self.assertEqual(texto, g.tabla_epidemias(datos))
+        for e in self.epidemias.values():
+            self.assertIn(e["nombre"], texto)
+
+
+class ConsultasEpidemiasYLondresTest(unittest.TestCase):
+    def ids(self, *args, **kwargs):
+        return [e["id"] for e in consultas.epidemias_en(*args, **kwargs)]
+
+    def test_region_de(self):
+        self.assertEqual(consultas.region_de("CL"), "América")
+        self.assertEqual(consultas.region_de("IT"), "Europa")
+        self.assertIsNone(consultas.region_de("ZZ"))
+
+    def test_por_pais_una_epidemia_regional_alcanza_a_los_de_su_region(self):
+        self.assertIn("peste_negra", self.ids(1348, pais="IT"))
+        self.assertNotIn("peste_negra", self.ids(1348, pais="CL"))
+
+    def test_por_pais_una_epidemia_con_paises_solo_alcanza_a_esos(self):
+        self.assertIn("colera_chile_1886", self.ids(1887, pais="CL"))
+        self.assertNotIn("colera_chile_1886", self.ids(1887, pais="AR"))
+        self.assertIn("sudor_ingles", self.ids(1528, pais="GB"))
+        self.assertNotIn("sudor_ingles", self.ids(1528, pais="FR"))
+
+    def test_region_y_pais_a_la_vez(self):
+        # Los dos filtros se cumplen a la vez: la peste negra es de Europa, pero Chile no.
+        self.assertEqual(self.ids(1348, region="Europa", pais="CL"), [])
+        self.assertIn("peste_negra", self.ids(1348, region="Europa", pais="IT"))
+        # La quinta pandemia de cólera cubre Europa y América, así que sale con Chile y con Europa.
+        self.assertIn("colera_quinta_pandemia", self.ids(1887, region="Europa", pais="CL"))
+
+    def test_pais_invalido(self):
+        with self.assertRaises(ValueError):
+            consultas.epidemias_en(1900, pais="ZZ")
+
+    def test_los_resultados_traen_los_paises_como_lista(self):
+        e = next(e for e in consultas.epidemias_en(1847, pais="IE") if e["id"] == "tifus_irlanda_1846")
+        self.assertEqual(e["paises"], ["IE", "GB"])
+
+    def test_muertes_londres(self):
+        self.assertEqual(consultas.muertes_londres(1665), {"totales": 97306, "viruela": 655})
+        self.assertIsNone(consultas.muertes_londres(1640))  # hueco de la serie
+        self.assertIsNone(consultas.muertes_londres(1900 + 3))
+
+    def test_exceso_de_muertes_en_la_peste(self):
+        self.assertGreater(consultas.exceso_de_muertes_londres(1665), 4)
+        self.assertLess(consultas.exceso_de_muertes_londres(1666), 1)
+        self.assertAlmostEqual(consultas.exceso_de_muertes_londres(1800), 1.0, delta=0.4)
+
+    def test_exceso_con_una_serie_conocida(self):
+        # Vecinos 100, 100, 100, 100 y el año a medir con 300: la mediana es 100 y el exceso, 3.
+        serie = {a: (100, 0) for a in range(1, 6)} | {6: (300, 0)}
+        with mock.patch.object(consultas, "_muertes_de_londres", lambda: serie):
+            self.assertEqual(consultas.exceso_de_muertes_londres(6), 3.0)
+
+    def test_exceso_con_menos_de_cuatro_vecinos_o_sin_el_anio_es_none(self):
+        serie = {1: (100, 0), 2: (100, 0), 3: (300, 0), 4: (100, 0)}
+        with mock.patch.object(consultas, "_muertes_de_londres", lambda: serie):
+            self.assertIsNone(consultas.exceso_de_muertes_londres(3))   # solo 3 vecinos
+            self.assertIsNone(consultas.exceso_de_muertes_londres(99))  # el año no está
+
+
+class VistaTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.errores, cls.datos = g.validar()
+        cls.html = g.vista(cls.datos)
+
+    def test_vista_html_esta_al_dia(self):
+        self.assertEqual((comun.RAIZ / "vista.html").read_text(encoding="utf-8"), self.html)
+
+    def test_no_quedan_marcas_sin_rellenar(self):
+        for marca in ("/*MODULO*/", "/*TABLAS*/", "/*IDIOMAS*/"):
+            self.assertNotIn(marca, self.html)
+
+    def test_incrusta_el_modulo_js_tal_cual(self):
+        self.assertIn((comun.RAIZ / "js" / "mortalidad.js").read_text(encoding="utf-8").rstrip("\n"), self.html)
+
+    def test_los_datos_incrustados_son_los_de_los_csv(self):
+        tablas = g.tablas_para_la_vista(self.datos)
+        self.assertEqual(len(tablas["esperanza_vida"]["filas"]), len(self.datos["esperanza_vida"]))
+        self.assertEqual(len(tablas["epidemias"]["filas"]), len(self.datos["epidemias"]))
+        self.assertEqual(tablas["epidemias"]["columnas"], g.COLUMNAS["epidemias"])
+        for fila in tablas["esperanza_vida"]["filas"]:
+            self.assertEqual(len(fila), len(tablas["esperanza_vida"]["columnas"]))
+
+    def test_un_cierre_de_script_en_los_datos_no_rompe_la_pagina(self):
+        datos = {**self.datos, "causas_historicas": self.datos["causas_historicas"] + [
+            {"termino": "</script><b>", "idioma": "spa", "causa_id": "vejez", "confianza": "alta", "desde": "",
+             "hasta": "", "nota": "", "estado": "borrador", "fuente": ""}]}
+        html = g.vista(datos)
+        self.assertEqual(html.lower().count("</script>"), 2)  # solo los dos de la plantilla
+
+    def test_la_vista_no_carga_nada_de_afuera(self):
+        for prohibido in ("http://", "https://", "src=\"", "<link", "@import"):
+            self.assertNotIn(prohibido, self.html.replace("http://www.w3.org/2000/svg", ""), prohibido)
 
 
 class ConsultasEsperanzaTest(unittest.TestCase):

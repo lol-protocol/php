@@ -12,3 +12,7 @@ convulsiones_infantiles,Convulsiones de la infancia,Infant convulsions,R56,perin
 fiebre_puerperal,Sepsis puerperal («fiebre del parto»),Puerperal sepsis (childbed fever),O85,materna
 obstruccion_intestinal,Obstrucción intestinal,Intestinal obstruction,K56,digestiva
 vejez,"Vejez, sin causa específica","Old age, no specific cause",R54,mal_definida
+fiebre_amarilla,Fiebre amarilla,Yellow fever,A95,infecciosa
+sarampion,Sarampión,Measles,B05,infecciosa
+poliomielitis,Poliomielitis («parálisis infantil»),Poliomyelitis (infantile paralysis),A80,infecciosa
+gripe,Gripe (influenza),Influenza,J09;J10;J11,respiratoria

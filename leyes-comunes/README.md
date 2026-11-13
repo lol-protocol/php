@@ -8,8 +8,9 @@ vive aquí una sola vez. Cada script del proyecto queda como un envoltorio que d
 | `check-links-core.js` | `scripts/check-links.js` | Comprueba que los enlaces de referencia siguen respondiendo. |
 | `cache-texts-core.php` y `html_to_text.php` | `scripts/cache-texts.php` | Guarda el texto de la página de cada ley (robots.txt, un pedido por URL, HTML a Markdown). |
 | `record-changes-core.js` | `scripts/record-changes.js` | Anota en `changes.csv` lo que cambió en el CSV maestro, o con `--check` falla si algo cambió sin anotarse. |
-| `replace-url-core.js` | `scripts/replace-url.js` | Cambia una URL de referencia muerta por otra en el CSV maestro y en `field_sources.csv` de una vez (`npm run replace-url -- <vieja> <nueva>`). |
+| `replace-url-core.js` | `scripts/replace-url.js` | Cambia una URL de referencia muerta por otra en el CSV maestro y en `source_urls.csv` (donde cada URL vive una vez) de una vez (`npm run replace-url -- <vieja> <nueva>`). |
 | `apply-research-core.js` | `scripts/apply-research.js` | Convierte un CSV de hallazgos (`code,field,value,conf,source`) en filas nuevas y celdas corregidas, cada una con su fuente en `field_sources.csv`; marca `(unconfirmed)` lo de confianza baja y no escribe nada que la validación del proyecto rechace. |
+| `sources-core.js` | `scripts/sources.js` | Edita los dos archivos de fuentes sin calcular ningún hash a mano: `npm run sources -- add <CÓDIGO> <campo> <url>` y `npm run sources -- fix` (recalcula los ids de las URL editadas a mano, ordena y quita las que nadie usa). |
 | `translations-core.js` | `scripts/translations.js` | Cobertura de las traducciones automáticas, lo que falta por idioma e importación de las hechas. |
 | `dataset-core.js` | `scripts/lib/dataset.js` (los dos re-exportan lo suyo) | Nombres de los archivos de datos, niveles de confianza, `isRealDate`, `isHttpUrl`, `isPrivateHost`, los avisos de fuentes más nuevas o viejas que su fila, `toCsv`/`writeCsv`, `findLaw` y `withSideData`. Solo usa módulos de Node, sin paquetes. Además trae `createDataset({ masterCsv, dataDir, columns, metaFields, translatedFields, parseMaster, validateRecords, validateSources })`, que arma lo que es igual pero necesita algo de cada módulo (`loadMaster`, `loadSide`, `loadAndValidate`, `diffRecords`, `validateTranslations`, `validateChanges`, `translationDictionaries`, `translatableValues`, `applyWrites`); cada `dataset.js` lo llama una vez y re-exporta el resultado. Lo que sí cambia entre módulos (columnas, regiones, reglas de cada fila y de las fuentes, `parseMaster`, que usa `csv-parse`) se queda en cada `dataset.js`. |
 | `validate-csv-core.js` | `scripts/validate-csv.js` | Corre la validación del proyecto, imprime los problemas y escribe el resumen de GitHub Actions. |
@@ -33,7 +34,7 @@ Vive acá todo lo que no depende de qué módulo lo llama. Lo que sí depende de
   `URL_FIELD`, `USER_AGENT`, `UNIT`, `DATA_DIR` y `SCRIPT_FILE`; las explica el encabezado de
   `cache-texts-core.php`). La ayuda que imprime el script sale del comentario del envoltorio, así que cada proyecto
   conserva la suya.
-  Con `--field-sources` el núcleo baja además las URL que `field_sources.csv` cita para cada campo (plazo, sanciones…)
+  Con `--field-sources` el núcleo baja además las URL que `field_sources.csv` cita (por `source_id`, resueltas con `source_urls.csv`) para cada campo (plazo, sanciones…)
   cuando no son la URL de referencia de la ley: una descarga por URL distinta, guardada como `<ley>--<8 hex del sha1>.md`.
   Sin la opción, esos archivos se tratan como textos que salieron del dataset y se borran.
 
@@ -74,3 +75,7 @@ Ninguno de los dos importa del otro: ambos importan de esta carpeta, un tercero
 sin lógica propia de ninguno de los dos módulos. La única dependencia entre
 proyectos documentada en el README raíz (`phone-directory/` → `defamatory-content-review/`)
 no cambia.
+
+## Las fuentes: `source_urls.csv` y `field_sources.csv`
+
+Cada URL de referencia vive una sola vez en `source_urls.csv` (`source_id,url`), y `field_sources.csv` (`country_code,law_name,field,source_id,confidence,checked`) apunta a ella. El `source_id` son los primeros 10 dígitos hexadecimales del SHA-1 de la URL: dos personas que añaden fuentes a la vez no eligen nunca el mismo id para URL distintas (no hay contador que choque al fusionar), y un enlace muerto se arregla en una fila. En memoria una fuente sigue teniendo `url`: `loadSources()` y `writeSources()` de `dataset-core.js` traducen entre los dos archivos, y la validación falla si un id no es el de su URL, si una URL está dos veces o si nadie la usa. Los módulos PHP (`cache-texts-core.php`, `importador-core.php`, `database-check-core.php`) resuelven el id con `source_urls.csv`.

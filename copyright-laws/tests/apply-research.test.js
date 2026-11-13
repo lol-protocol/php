@@ -13,7 +13,7 @@ function sandbox() {
   const dir = mkdtempSync(join(tmpdir(), "apply-research-"));
   const master = join(dir, basename(real.MASTER_CSV));
   copyFileSync(real.MASTER_CSV, master);
-  copyFileSync(join(real.DATA_DIR, real.SOURCES_FILE), join(dir, real.SOURCES_FILE));
+  for (const file of [real.SOURCES_FILE, real.SOURCE_URLS_FILE]) copyFileSync(join(real.DATA_DIR, file), join(dir, file));
   const dataset = { ...real, MASTER_CSV: master };
   return { dataset, master, run: createApplyResearch({ dataset, parse }) };
 }
@@ -45,10 +45,10 @@ test("a country with no law becomes a researched row with a source per fact and 
   // The mark goes on descriptive values only; a name keeps its plain text and its source says "low".
   assert.equal(row.author_rights, "Economic rights (unconfirmed)");
   assert.equal(row.enforcement_body, "Copyright Office (unknown acronym)");
-  const sources = real.loadSide(master, dataset.SOURCES_FILE, dataset.SOURCE_COLUMNS).rows.filter((s) => s.country_code === "ZZ");
+  const sources = real.loadSources(master).rows.filter((s) => s.country_code === "ZZ");
   assert.equal(sources.length, NEW.length);
   assert.equal(sources.find((s) => s.field === "enforcement_body").confidence, "low");
-  assert.deepEqual(real.validateSources(real.loadSide(master, dataset.SOURCES_FILE, dataset.SOURCE_COLUMNS).rows, records), []);
+  assert.deepEqual(real.validateSources(real.loadSources(master).rows, records), []);
 });
 
 test("a new country without a required column is skipped, and NOLAW rows are only reported", () => {

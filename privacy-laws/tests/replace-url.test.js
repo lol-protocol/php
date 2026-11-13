@@ -12,7 +12,7 @@ function sandbox() {
   const dir = mkdtempSync(join(tmpdir(), "replace-url-"));
   const master = join(dir, basename(real.MASTER_CSV));
   copyFileSync(real.MASTER_CSV, master);
-  copyFileSync(join(real.DATA_DIR, real.SOURCES_FILE), join(dir, real.SOURCES_FILE));
+  for (const file of [real.SOURCES_FILE, real.SOURCE_URLS_FILE]) copyFileSync(join(real.DATA_DIR, file), join(dir, file));
   const dataset = { ...real, MASTER_CSV: master };
   return { dir, master, dataset, run: createReplaceUrl({ dataset, urlField: "website_url" }) };
 }
@@ -32,7 +32,7 @@ test("a URL is replaced in the master CSV and in every field source that uses it
   assert.deepEqual(done, counted);
   assert.equal(real.loadMaster(master).records.filter((r) => r.website_url === from).length, 0);
   assert.equal(real.loadMaster(master).records.filter((r) => r.website_url === to).length, done.master);
-  const sources = real.loadSide(master, dataset.SOURCES_FILE, dataset.SOURCE_COLUMNS).rows;
+  const sources = real.loadSources(master).rows;
   assert.equal(sources.filter((s) => s.url === from).length, 0);
   assert.equal(sources.filter((s) => s.url === to).length, done.sources);
   assert.match(readFileSync(master, "utf-8"), /example\.org\/replacement/);
