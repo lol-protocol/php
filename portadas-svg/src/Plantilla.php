@@ -80,6 +80,8 @@ abstract class Plantilla
     protected const LOGO_ANCHO = 26.0;
     protected const LOGO_ALTO = 12.0;
     protected const LOGO_Y = 10.0;
+    /** Marca de agua: la imagen del libro, detrás del texto de la portada, con esta opacidad. */
+    protected const MARCA_DE_AGUA_OPACIDAD = 0.25;
     /** Hueco del código de barras: ancho, alto, distancia de su borde superior al borde inferior del corte, y espacio libre hasta el pie. */
     protected const CODIGO_ANCHO = 42.0;
     protected const CODIGO_ALTO = 26.0;
@@ -200,7 +202,7 @@ abstract class Plantilla
         foreach ($medidas->paneles($vista) as $panel) {
             $zona = $medidas->pieza($panel);
             $paneles .= match ($panel) {
-                'portada' => $this->portada($libro, $zona),
+                'portada' => $this->marcaDeAgua($libro, $zona) . $this->portada($libro, $zona),
                 'contratapa' => $this->contratapa($libro, $zona),
                 'lomo' => $this->lomo($libro, $zona),
                 'solapa-contratapa' => $this->solapa($libro->textos->solapaContratapa, $libro, $zona),
@@ -213,6 +215,30 @@ abstract class Plantilla
             . ($this->textoATrazos ? $this->trazos()->defs() : Fuentes::estilo($this->usadas))
             . $this->rectangulo($medidas->vista($vista), ['fill' => $this->relleno($libro)])
             . $paneles;
+    }
+
+    /**
+     * Si la plantilla dibuja la `imagen` del libro. Por defecto sí: como marca de agua tenue detrás del texto (ver
+     * `marcaDeAgua`) o, en `ilustrada`, como ilustración. Una plantilla solo de letra la ignora.
+     */
+    public function dibujaImagen(): bool
+    {
+        return true;
+    }
+
+    /**
+     * La imagen del libro como marca de agua: cubre toda la portada, sangrado incluido, con poca opacidad para que el
+     * texto se siga leyendo. Una plantilla que dibuja la imagen a su manera (`ilustrada`) devuelve vacío aquí.
+     */
+    protected function marcaDeAgua(Libro $libro, Rectangulo $panel): string
+    {
+        if ($libro->imagen === null || !$this->dibujaImagen()) {
+            return '';
+        }
+        $sangrado = $libro->formato->sangrado;
+        $zona = new Rectangulo($panel->x, $panel->y - $sangrado, $panel->ancho + $sangrado, $panel->alto + 2 * $sangrado);
+
+        return Svg::elemento('g', ['opacity' => self::MARCA_DE_AGUA_OPACIDAD], $this->imagen($libro->imagen, $zona, 'xMidYMid slice'));
     }
 
     /** Dibuja la portada dentro de su panel de corte. */
