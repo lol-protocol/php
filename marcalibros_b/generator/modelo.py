@@ -189,3 +189,29 @@ def sugerencias_por_metadatos(libro, config, titulos_originales=None):
                        for v, coincide in enumerate(obras_del_libro(libro, autor, titulos_originales), 1)]
             salida += sorted(propias, key=lambda x: x["nivel"] != "obra")
     return salida
+
+
+# --- Géneros (catalog/generos.yaml) ------------------------------------------------------------
+
+@lru_cache(maxsize=1)
+def cargar_generos():
+    return yaml.safe_load((RAIZ / "catalog" / "generos.yaml").read_text(encoding="utf-8"))
+
+
+def genero_de_obra(obra, autor, generos=None):
+    """Id del género de una obra del catálogo. Un tema («tipo: tema») hereda el de su obra base; si sale de una
+    colección que no es una obra del catálogo, se usa `temas_de_colecciones`; un tema suelto, `temas_sueltos`. ValueError si el tipo no está listado."""
+    g = generos or cargar_generos()
+    por_tipo = {t: fam["id"] for fam in g["generos"] for t in fam["tipos"]}
+    if obra["tipo"] != "tema":
+        if obra["tipo"] not in por_tipo:
+            raise ValueError(f"el tipo «{obra['tipo']}» de «{obra['titulo']}» no tiene género en catalog/generos.yaml")
+        return por_tipo[obra["tipo"]]
+    if obra["id"] in g.get("temas_sueltos", {}):
+        return g["temas_sueltos"][obra["id"]]
+    base = obra_base(autor, obra.get("de", ""))
+    if base is not None:
+        return genero_de_obra(autor["obras"][base], autor, g)
+    if obra.get("de") in g["temas_de_colecciones"]:
+        return g["temas_de_colecciones"][obra["de"]]
+    raise ValueError(f"el tema «{obra['titulo']}» (de «{obra.get('de')}») no tiene obra base ni colección en catalog/generos.yaml")

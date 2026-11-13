@@ -20,6 +20,7 @@ import yaml
 from PIL import Image
 
 import editor
+import modelo
 import plantillas
 import qa
 from render_raster import a_imagen
@@ -48,18 +49,24 @@ def _manifiesto():
 
 
 def catalogo():
-    """Las 1000 plantillas del catálogo, en forma compacta. Cada pieza: [id, autor, obra, paleta, composición,
-    motivo]; su posición dentro de su movimiento es su lugar en el sprite de ese movimiento."""
+    """Las plantillas del catálogo, en forma compacta. Cada pieza: [id, autor, obra, paleta, composición,
+    motivo, género]; su posición dentro de su movimiento es su lugar en el sprite de ese movimiento."""
     config = yaml.safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
     movs = [{"id": m["id"], "nombre": m["nombre"]} for m in config["movimientos"]]
+    generos = modelo.cargar_generos()
+    lista_generos = [{"id": g["id"], "nombre": g["nombre"]} for g in generos["generos"]]
+    indice_genero = {g["id"]: i for i, g in enumerate(lista_generos)}
+    obras = {(m["id"], a["id"], o["id"]): (a, o) for m in config["movimientos"] for a in m["autores"] for o in a["obras"]}
     autores, piezas = [], []
     for e in _manifiesto():
         clave = (e["movimiento"], e["autor_id"])
         if clave not in [(a["m"], a["id"]) for a in autores]:
             autores.append({"m": e["movimiento"], "id": e["autor_id"], "nombre": e["autor"]})
         autor = next(i for i, a in enumerate(autores) if (a["m"], a["id"]) == clave)
-        piezas.append([e["id"], autor, e["obra"], e["paleta"], e["arquetipo"], e["motivo"]])
-    return {"movs": movs, "autores": autores, "piezas": piezas}
+        a, o = obras[(e["movimiento"], e["autor_id"], e["obra_id"])]
+        piezas.append([e["id"], autor, e["obra"], e["paleta"], e["arquetipo"], e["motivo"],
+                       indice_genero[modelo.genero_de_obra(o, a, generos)]])
+    return {"movs": movs, "autores": autores, "generos": lista_generos, "piezas": piezas}
 
 
 def datos():

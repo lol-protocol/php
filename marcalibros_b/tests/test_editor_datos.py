@@ -114,3 +114,10 @@ def test_los_sprites_traen_tambien_las_escenas_en_json(tmp_path, monkeypatch):
     editor_datos.sprites(["romanticismo"])
     escenas = _json.loads((tmp_path / "plantillas" / "romanticismo.json").read_text(encoding="utf-8"))
     assert len(escenas) == 100 and all(e[0][0] == "g" for e in escenas)
+
+
+def test_cada_plantilla_lleva_su_genero():
+    cat = editor_datos.catalogo()
+    assert [g["id"] for g in cat["generos"]] == ["poesia", "epica", "narrativa", "teatro", "ensayo"]
+    assert all(0 <= p[6] < len(cat["generos"]) for p in cat["piezas"])
+    assert len({p[6] for p in cat["piezas"]}) == len(cat["generos"])  # los cinco géneros aparecen
