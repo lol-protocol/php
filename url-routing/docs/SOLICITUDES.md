@@ -119,7 +119,10 @@ Desde el correo de contacto y por una persona (el sitio no escribe solo). **Sin 
 el correo viaja en claro, y es la misma razón por la que el aviso de `bin/pedidos-retiro.php` no dice quién pidió
 ni qué escribió. **Decidido el 12 de noviembre de 2026:** se manda un **resumen legible**, escrito a mano a partir de
 `acceso`, sin JSON: lo que un visitante ya ve de esa persona, más las **cantidades** de lo demás (sucesos, registros,
-colecciones, parientes) y qué campos se corrigieron. **Lo que el sitio oculta no se manda por correo.** Si la persona
+colecciones, parientes) y qué campos se corrigieron. `php bin/persona.php resumen <id>` imprime un **borrador**: solo
+cuentas, tipos y estados, **nunca una fecha, un lugar, una descripción, un título ni un nombre** (ni el de un pariente), así
+que no puede dar por descuido algo que el sitio oculta. Léelo, ponle el saludo y mándalo; si ves que dice más de lo
+que debe, no lo mandes. **Lo que el sitio oculta no se manda por correo.** Si la persona
 necesita verlo, hay una **entrega con clave** (sección siguiente), que es una decisión tuya en cada caso, no el camino
 por omisión.
 Estos textos son un punto de partida; **el plazo de respuesta sigue ⚖️ sin decidir**, no prometas uno:

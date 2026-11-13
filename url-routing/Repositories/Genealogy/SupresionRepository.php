@@ -101,6 +101,78 @@ final class SupresionRepository extends Repository
     }
 
     /**
+     * Whether a visitor is shown the persona as hidden (alive, private or withdrawn): the same condition every page uses.
+     */
+    public function oculta(int $id): bool
+    {
+        return (bool)$this->db->fetchValue(
+            'SELECT CASE WHEN ' . $this->privacidad->sqlOculta('p') . ' THEN 1 ELSE 0 END FROM personas p WHERE p.id = ?',
+            [$id]
+        );
+    }
+
+    /**
+     * A draft of what to tell a persona who asks what the site holds about her, in the words of an e-mail: what a visitor
+     * sees of her and HOW MANY of everything else. It is built so that it cannot give away what the site hides: only
+     * counts, types and states, never a date, a place, a description, a title or a name (not even her relatives'). Whoever
+     * answers reads it, adds the greeting and the rest, and decides whether she also needs a delivery with a key.
+     *
+     * @return string|null null when there is no such persona
+     */
+    public function resumenLegible(int $id): ?string
+    {
+        $acceso = $this->acceso($id);
+        if ($acceso === null) {
+            return null;
+        }
+        $p = $acceso['persona'];
+        $f = $acceso['familiares'];
+        $cuenta = static fn(int $n, string $uno, string $varios): string => $n . ' ' . ($n === 1 ? $uno : $varios);
+        $porClave = static function (array $filas, string $clave): string {
+            $c = array_count_values(array_map(static fn(array $fila): string => (string)$fila[$clave], $filas));
+            ksort($c);
+
+            return implode(', ', array_map(static fn(string $k, int $n): string => "{$k}: {$n}", array_keys($c), $c));
+        };
+
+        $lineas = ['El sitio guarda una ficha tuya.'];
+        $lineas[] = $this->oculta($id)
+            ? 'Quien visita el sitio no ve tu ficha completa: no se muestran tu nombre, tu sexo ni los sucesos en que apareces.'
+            : 'Quien visita el sitio la ve completa, con tu nombre y tus datos: ' . trim($p['nombres'] . ' ' . $p['apellidos']) . '.';
+
+        $sucesos = $acceso['sucesos'];
+        $lineas[] = $sucesos === []
+            ? 'No apareces en ningún suceso (nacimientos, matrimonios, defunciones…).'
+            : 'Apareces en ' . $cuenta(count($sucesos), 'suceso', 'sucesos') . ' (' . $porClave($sucesos, 'tipo') . ').';
+        $lineas[] = $acceso['registros'] === []
+            ? 'Ningún registro (actas, documentos) los documenta.'
+            : $cuenta(count($acceso['registros']), 'registro (acta o documento) los documenta', 'registros (actas o documentos) los documentan') . '.';
+
+        $lineas[] = 'Familiares registrados: padre ' . ($f['padre'] ? 'sí' : 'no') . ', madre ' . ($f['madre'] ? 'sí' : 'no')
+            . ', ' . $cuenta((int)$f['hijos'], 'hijo o hija', 'hijos o hijas') . ' y ' . $cuenta((int)$f['otros_vinculos'], 'otro vínculo (cónyuge, padrino…)', 'otros vínculos (cónyuge, padrinos…)')
+            . '. No damos sus nombres: son datos de ellos, no tuyos.';
+
+        $colecciones = $acceso['colecciones'];
+        $publicas = count(array_filter($colecciones, static fn(array $c): bool => $c['publica']));
+        $lineas[] = $colecciones === []
+            ? 'No estás en ninguna colección.'
+            : 'Estás en ' . $cuenta(count($colecciones), 'colección', 'colecciones') . ' (' . $cuenta($publicas, 'pública', 'públicas') . ' y ' . $cuenta(count($colecciones) - $publicas, 'privada', 'privadas') . ').';
+        $lineas[] = $acceso['organizaciones'] === []
+            ? 'No estás en ninguna organización.'
+            : 'Estás en ' . $cuenta(count($acceso['organizaciones']), 'organización', 'organizaciones') . '.';
+
+        if ($acceso['pedidos_de_retiro'] !== []) {
+            $lineas[] = 'Hay ' . $cuenta(count($acceso['pedidos_de_retiro']), 'pedido de retiro', 'pedidos de retiro') . ' sobre tu página (' . $porClave($acceso['pedidos_de_retiro'], 'estado') . ').';
+        }
+        if ($acceso['correcciones'] !== []) {
+            $lineas[] = 'Se corrigieron en tu ficha: ' . implode(', ', array_map(static fn(array $c): string => $c['que'] . ' (' . substr((string)$c['corregida_en'], 0, 10) . ')', $acceso['correcciones'])) . '.';
+        }
+        $lineas[] = 'Si algo no es correcto, o quieres que lo corrijamos o lo borremos, responde a este correo.';
+
+        return implode("\n", $lineas) . "\n";
+    }
+
+    /**
      * What suprimir() would remove, without changing anything.
      *
      * @return array<string, int> what => how many rows
