@@ -504,6 +504,17 @@ No comprueba que el servidor web proteja el panel (eso es `bin/comprobar_acceso.
 afuera con la dirección pública), ni que los respaldos se puedan restaurar, ni que haya una copia en otra
 máquina: ver «Respaldos» y «Antes de exponerlo».
 
+Para que avise solo, un cron que deje pasar únicamente lo que pide atención. Cron manda por correo (al
+`MAILTO`) lo que el trabajo imprime, y `estado.php` imprime siempre, así que el `>/dev/null` de los otros
+comandos no sirve aquí: se filtra por el código de salida.
+
+```
+17 7 * * *  cd /ruta/al/proyecto && { out=$(php bin/estado.php) || echo "$out"; }
+```
+
+El informe se imprime solo si el comando terminó con `1` (hay algo que atender); con `0` no sale nada y no
+llega ningún correo. Sin archivo temporal, y si el `cd` falla tampoco imprime una línea en blanco.
+
 **Dependencias.** En producción la app no usa paquetes de Composer: solo PHP y sus extensiones `pdo` y
 `pdo_pgsql`. Lo que baja Composer es PHPUnit y PHPStan, de desarrollo (`composer install --no-dev` no instala
 nada). `composer auditar` (o `composer audit --locked`) revisa el `composer.lock` contra los avisos de
