@@ -101,6 +101,7 @@ tbody tr:hover { background: var(--bg); }
 .excl i { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
 .rayado { background: repeating-linear-gradient(45deg, var(--excluido) 0 3px, var(--rayado) 3px 4.5px); }
 .vacio { color: var(--tenue); }
+.ficha.aviso { border-color: var(--q4); color: var(--tinta); cursor: help; margin-left: 4px; }
 .pie { color: var(--tenue); font-size: 0.82rem; margin: 0; max-width: 90ch; }
 @media (max-width: 560px) { h1 { font-size: 1.6rem; } .filtros .cuenta { margin-left: 0; } }
 @media (prefers-reduced-motion: reduce) { .pais { transition: none; } }
@@ -136,6 +137,8 @@ tbody tr:hover { background: var(--bg); }
     <input type="search" id="buscar" placeholder="Buscar país, lengua o comentario" aria-label="Buscar">
     <select id="region" aria-label="Región"><option value="">Todas las regiones</option></select>
     <label><input type="checkbox" id="ver-excluidos" checked> Mostrar excluidos</label>
+    <label title="Países cuyo índice se aparta de lo que predicen sus datos (sugerencias_indices.md)"><input type="checkbox" id="solo-desvios"> Solo ≠ datos</label>
+    <select id="escenario" aria-label="Escenario de ranking"></select>
     <span class="cuenta" id="cuenta"></span>
   </div>
 
@@ -148,6 +151,9 @@ tbody tr:hover { background: var(--bg); }
 const DATOS = /*DATOS*/null;
 const MAPA = /*MAPA*/null;
 const ANIOS = /*ANIOS*/null;
+// Nombre de cada escenario de ranking por modo; el primero es la regla vigente. El puntaje y la
+// exclusión de cada uno vienen calculados en cada país (d.eg, d.ep), desde generar_tabla.py.
+const ESCENARIOS = /*ESCENARIOS*/null;
 
 const nf = (d) => new Intl.NumberFormat("es-ES", { minimumFractionDigits: d, maximumFractionDigits: d });
 const fmt = (v, d = 0) => (v === null || v === undefined || v === "") ? null : nf(d).format(v);
@@ -155,11 +161,13 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 // Población en millones: 3 decimales por debajo de un millón (0,185), como en paises.csv; si no, 2.
 const decimalesPob = (v) => (v !== null && v < 1 ? 3 : 2);
 const TRAMOS = [[3, "--q1", "1–3"], [6, "--q2", "4–6"], [10, "--q3", "8–10"], [16, "--q4", "12–16"], [25, "--q5", "20–25"]];
-const tramo = (p) => TRAMOS.find(([max]) => p <= max);
+// En otro escenario el puntaje puede pasar de 25 (IG² × IO llega a 125): se lleva a la escala 1–25.
+const tramo = (p) => TRAMOS.find(([max]) => p * 25 / maximo <= max);
 
 const MODOS = {
   gen: {
-    prioridad: (d) => d.pg, excluido: (d) => d.xg, nota: (d) => d.cg,
+    prioridad: (d) => d.eg[escenario][0], excluido: (d) => d.eg[escenario][1], nota: (d) => d.cg,
+    indices: { ig: "IG", io: "IO" },
     motivo: (d) => `IO ${d.io}`, formula: (d) => `IG ${d.ig} × IO ${d.io}`,
     bajada: "Prioridad para operar un servicio de genealogía: interés en la genealogía (IG) por operabilidad (IO). Se excluye con IO ≤ 1.",
     columnas: [
@@ -175,7 +183,8 @@ const MODOS = {
       ["Libertad (Freedom House)", d.fh], ["Democracia (EIU)", fmt(d.eiu, 1)], ["Corrupción (CPI, 100 = limpio)", fmt(d.cpi, 0)]],
   },
   pos: {
-    prioridad: (d) => d.pp, excluido: (d) => d.xp, nota: (d) => d.cp,
+    prioridad: (d) => d.ep[escenario][0], excluido: (d) => d.ep[escenario][1], nota: (d) => d.cp,
+    indices: { il: "IL" },
     motivo: (d) => `IP local ${d.ipl} e IO ${d.io}`, formula: (d) => `IL ${d.il} × IP local ${d.ipl}`,
     bajada: "Prioridad para un etiquetador gramatical (POS): interés en la lectura (IL) por los recursos de la lengua local (IP local). Se excluye si la lengua local no tiene corpus anotado (IP local ≤ 1) y el país es inviable para operar (IO ≤ 1).",
     columnas: [
@@ -191,6 +200,11 @@ const MODOS = {
 let modo = "gen";
 let orden = { clave: "prio", desc: true };
 let fijo = null;
+let escenario = 0;
+let maximo = 25;  // puntaje más alto del escenario elegido, para la escala de colores
+// Índices de un país que se apartan de lo que predicen sus datos (sugerencias_indices.md), en el modo actual.
+const desvios = (d) => Object.entries(MODOS[modo].indices).filter(([k]) => d.sg[k] !== undefined)
+  .map(([k, nombre]) => `${nombre} ${d[k]}, los datos sugieren ${fmt(d.sg[k], 1)}`);
 const porCodigo = Object.fromEntries(DATOS.map((d) => [d.c, d]));
 const svg = document.getElementById("svg");
 const tip = document.getElementById("tip");
@@ -249,7 +263,7 @@ function mostrarTip(codigo, e) {
   if (fijo && fijo !== codigo) return;
   const d = porCodigo[codigo];
   const m = MODOS[modo];
-  const filas = m.tip(d).filter(([, v]) => v).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("");
+  const filas = [...m.tip(d), ["Según los datos", desvios(d).join("; ")]].filter(([, v]) => v).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("");
   const estado = m.excluido(d) ? `Excluido (${m.motivo(d)})` : `Prioridad ${m.prioridad(d)} · ${m.formula(d)}`;
   tip.innerHTML = `<h3>${esc(d.n)}</h3><dl><dt>Índice</dt><dd>${esc(estado)}</dd>${filas}</dl>` +
     (m.nota(d) ? `<p>${esc(m.nota(d))}</p>` : "");
@@ -275,8 +289,10 @@ function filtrados() {
   const texto = plano(document.getElementById("buscar").value.trim());
   const region = document.getElementById("region").value;
   const verExcluidos = document.getElementById("ver-excluidos").checked;
+  const soloDesvios = document.getElementById("solo-desvios").checked;
   const m = MODOS[modo];
   return DATOS.filter((d) => (!region || d.r === region) && (verExcluidos || !m.excluido(d)) &&
+    (!soloDesvios || desvios(d).length > 0) &&
     (!texto || plano([d.n, d.lenguas, d.cg, d.cp].join(" ")).includes(texto)));
 }
 
@@ -284,13 +300,15 @@ function celda(d, [clave, , num, dec]) {
   const m = MODOS[modo];
   if (clave === "pais") {
     const nota = m.nota(d);
+    const aviso = desvios(d);
     return `<td><span class="nombre">${esc(d.n)}</span>${d.t !== "estado" ? `<span class="ficha">${esc(d.t)}</span>` : ""}` +
+      (aviso.length ? `<span class="ficha aviso" title="${esc(aviso.join("; "))}">≠ datos</span>` : "") +
       (nota ? `<span class="nota">${esc(nota)}</span>` : "") + "</td>";
   }
   if (clave === "prio") {
     if (m.excluido(d)) return `<td class="num"><span class="vacio">—</span></td>`;
     const p = m.prioridad(d);
-    return `<td class="num"><span class="prioridad"><i style="width:${p * 1.6}px;background:var(${tramo(p)[1]})"></i>${p}</span></td>`;
+    return `<td class="num"><span class="prioridad"><i style="width:${p * 40 / maximo}px;background:var(${tramo(p)[1]})"></i>${p}</span></td>`;
   }
   if (clave === "excl") {
     return m.excluido(d) ? `<td><span class="excl"><i class="rayado"></i>Sí · ${esc(m.motivo(d))}</span></td>`
@@ -329,27 +347,41 @@ function dibujarTabla() {
 function dibujarResumen() {
   const m = MODOS[modo];
   const excluidos = DATOS.filter(m.excluido).length;
-  const maximos = DATOS.filter((d) => !m.excluido(d) && m.prioridad(d) === 25).length;
+  const maximos = DATOS.filter((d) => !m.excluido(d) && m.prioridad(d) === maximo).length;
   document.getElementById("bajada").textContent = m.bajada;
   document.getElementById("resumen").innerHTML =
     `<span><b>${DATOS.length}</b> países y territorios</span><span><b>${DATOS.length - excluidos}</b> incluidos</span>` +
-    `<span><b>${excluidos}</b> excluidos</span><span><b>${maximos}</b> con prioridad máxima (25)</span>`;
+    `<span><b>${excluidos}</b> excluidos</span><span><b>${maximos}</b> con prioridad máxima (${maximo})</span>`;
   document.getElementById("leyenda").innerHTML = `<span class="titulo">Prioridad</span>` +
     TRAMOS.map(([, v, t]) => `<span class="muestra"><i style="background:var(${v})"></i>${t}</span>`).join("") +
     `<span class="muestra"><i class="rayado"></i>Excluido</span>` +
+    (escenario ? `<span class="muestra">(escala relativa al máximo, ${maximo})</span>` : "") +
     `<span class="muestra"><i style="background:var(--fuera);border:1px solid var(--borde)"></i>Fuera de la tabla</span>`;
 }
 
-function todo() { dibujarResumen(); dibujarTabla(); }
+function todo() {
+  const m = MODOS[modo];
+  maximo = Math.max(...DATOS.filter((d) => !m.excluido(d)).map(m.prioridad));
+  dibujarResumen(); dibujarTabla();
+}
+
+function llenarEscenarios() {
+  document.getElementById("escenario").innerHTML =
+    ESCENARIOS[modo].map((n, i) => `<option value="${i}">${esc(n)}</option>`).join("");
+  escenario = 0;
+}
 
 for (const r of [...new Set(DATOS.map((d) => d.r))].sort((a, b) => a.localeCompare(b, "es"))) {
   document.getElementById("region").insertAdjacentHTML("beforeend", `<option>${esc(r)}</option>`);
 }
 document.querySelectorAll('input[name="modo"]').forEach((el) => el.addEventListener("change", () => {
-  modo = el.value; orden = { clave: "prio", desc: true }; fijo = null; ocultarTip(); todo();
+  modo = el.value; orden = { clave: "prio", desc: true }; fijo = null; ocultarTip(); llenarEscenarios(); todo();
 }));
 // Al filtrar se suelta el país fijado: podría haber quedado fuera de la selección.
-["buscar", "region", "ver-excluidos"].forEach((id) => document.getElementById(id).addEventListener("input", () => {
+document.getElementById("escenario").addEventListener("change", (e) => {
+  escenario = Number(e.target.value); fijo = null; ocultarTip(); todo();
+});
+["buscar", "region", "ver-excluidos", "solo-desvios"].forEach((id) => document.getElementById(id).addEventListener("input", () => {
   fijo = null; ocultarTip(); dibujarTabla();
 }));
 document.querySelector("#tabla thead").addEventListener("click", (e) => {
@@ -366,5 +398,6 @@ document.getElementById("pie").textContent = "Datos: Our World in Data, Gapminde
   "Universal Dependencies, MasakhaPOS, Common Crawl y Natural Earth (mapa). IG, IO e IL son juicio propio. " +
   "Ver el README del proyecto Listado-paises.";
 dibujarMapa();
+llenarEscenarios();
 todo();
 </script>
