@@ -112,7 +112,8 @@ lanza(fn () => $m->epidemiasEn(1900, null, 'ZZ'), 'país inexistente');
 lanza(fn () => $m->esperanzaRestante('CL', 1900, 0, 'X'), 'sexo inválido');
 lanza(fn () => $m->supervivencia('CL', 1900, 5, 'x'), 'sexo inválido (minúscula)');
 igual(null, $m->esperanzaRestante('XX', 1900), 'país sin serie: null, no una excepción');
-igual(null, $m->esperanzaRestante('CL', 1900, 15), 'edad que no está: null');
+igual(null, $m->esperanzaRestante('CL', 1900, 20), 'edad que no está: null');
+igual(true, $m->esperanzaRestante('CL', 1900, 15) !== null, 'edad 15: hay dato (modelado)');
 
 if ($fallos !== []) {
     fwrite(STDERR, count($fallos) . " fallos de $comprobaciones comprobaciones:\n  - " . implode("\n  - ", array_slice($fallos, 0, 40)) . "\n");

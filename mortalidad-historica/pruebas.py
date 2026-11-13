@@ -14,6 +14,8 @@ import comun
 import consultas
 import descargar_fuentes
 import generar_tabla as g
+import leer_rda
+import modelo
 import preparar_datos as pd
 
 
@@ -37,6 +39,7 @@ class Plantilla(unittest.TestCase):
         escribir(self.datos, "epidemias", [("peste", "Peste", "Y. pestis", "", "1346", "1353", "Europa;Asia", "", "", "", "", "media", "", "borrador", "")])
         escribir(self.datos, "hereditarias", [("fq", "Fibrosis quística", "Cystic fibrosis", "autosómica recesiva", "219700", "todas las poblaciones", "infancia", "", "borrador", "")])
         escribir(self.datos, "hitos_registro", [("CL", "civil", "1885", "", "borrador", "")])
+        escribir(self.datos, "modelo_logcuadratico", [(str(e), "-1", "1", "0", "0") for e in modelo.EDADES])
         escribir(self.datos, "londres_muertes", [("1665", "97306", "655", "verificado", "londres-owid")])
         escribir(self.datos, "esperanza_vida", [])
         # validar() lee de comun.DATOS a través de leer_csv(DATOS / ...), que generar_tabla importó.
@@ -432,12 +435,39 @@ class EsperanzaDeVidaRealTest(unittest.TestCase):
         self.assertGreater(len({f["codigo"] for f in self.filas}), 150)
 
     def test_solo_las_edades_que_hay(self):
-        self.assertEqual({f["edad"] for f in self.filas}, {"0", "5"})
+        self.assertEqual({f["edad"] for f in self.filas}, {"0", "5", "15", "30", "45", "60"})
         self.assertEqual({f["edad"] for f in self.filas if f["sexo"] != "T"}, {"0"})
 
-    def test_todo_antes_de_1950_es_calidad_c(self):
+    def test_calidad_c_antes_de_1950_y_siempre_para_lo_modelado(self):
         for f in self.filas:
-            self.assertEqual(f["calidad"], "C" if int(f["desde"]) < 1950 else "B", f)
+            modelada = f["fuente"] == pd.FUENTE_MODELO
+            self.assertEqual(f["calidad"], "C" if modelada or int(f["desde"]) < 1950 else "B", f)
+
+    def test_las_edades_modeladas_son_las_que_se_dicen(self):
+        modeladas = {f["edad"] for f in self.filas if f["fuente"] == pd.FUENTE_MODELO}
+        self.assertEqual(modeladas, {str(e) for e in pd.EDADES_DEL_MODELO})
+        for f in self.filas:
+            if f["fuente"] == pd.FUENTE_MODELO:
+                self.assertEqual(f["sexo"], "T")
+                self.assertTrue(0 < float(f["supervivencia_hasta_edad"]) < 1, f)
+
+    def test_la_edad_esperada_de_muerte_no_baja_con_la_edad(self):
+        # Quien llega a una edad mayor muere, en promedio, a una edad igual o mayor: x + e(x) no decrece. Entre la
+        # edad 5 (derivada) y la 15 (modelada) hay una tolerancia por venir de dos métodos.
+        for (codigo, desde, sexo, edad), f in self.indice.items():
+            if edad == "15":
+                f5 = self.indice[(codigo, desde, sexo, "5")]
+                self.assertGreaterEqual(15 + float(f["esperanza_restante"]), 5 + float(f5["esperanza_restante"]) - 0.25, f)
+                self.assertLess(float(f["supervivencia_hasta_edad"]), float(f5["supervivencia_hasta_edad"]) + 1e-9, f)
+        for codigo, desde in {(c, d) for (c, d, s, e) in self.indice if e == "15"}:
+            previo = None
+            for edad in ("15", "30", "45", "60"):
+                f = self.indice[(codigo, desde, "T", edad)]
+                actual = (int(edad) + float(f["esperanza_restante"]), float(f["supervivencia_hasta_edad"]))
+                if previo is not None:
+                    self.assertGreaterEqual(actual[0], previo[0] - 0.06, (codigo, desde, edad))
+                    self.assertLess(actual[1], previo[1], (codigo, desde, edad))
+                previo = actual
 
     def test_toda_fila_de_edad_5_tiene_su_fila_de_edad_0_y_cuadra(self):
         for (codigo, desde, sexo, edad), f in self.indice.items():
@@ -458,7 +488,7 @@ class EsperanzaDeVidaRealTest(unittest.TestCase):
 
     def test_cada_fila_dice_su_fuente_con_un_identificador_conocido(self):
         self.assertEqual({f["fuente"] for f in self.filas},
-                         {pd.FUENTE_E0, pd.FUENTE_E5, pd.FUENTE_SEXO})
+                         {pd.FUENTE_E0, pd.FUENTE_E5, pd.FUENTE_SEXO, pd.FUENTE_MODELO})
 
     def test_esta_al_dia_con_construir_para_un_pais_conocido(self):
         # Cualquier cambio a mano de una fila de edad 5 la desalinearía de su fila de edad 0.
@@ -598,6 +628,96 @@ class VistaTest(unittest.TestCase):
             self.assertNotIn(prohibido, self.html.replace("http://www.w3.org/2000/svg", ""), prohibido)
 
 
+class ModeloTest(unittest.TestCase):
+    """modelo.py contra el ejemplo publicado de DemoTools: ambos sexos, 5q0 = 0,05 y e0 = 65."""
+
+    REFERENCIA = {  # edad: (esperanza restante, proporción de sobrevivientes), de la documentación de DemoTools
+        5: (63.386425, 0.95), 15: (53.981431, 0.9404629), 30: (40.557943, 0.9092514),
+        45: (27.551048, 0.8562334), 60: (16.093687, 0.7216024), 75: (7.572554, 0.3936466),
+    }
+
+    def test_reproduce_el_ejemplo_de_demotools(self):
+        obtenido = modelo.esperanzas_por_edad(50, 65.0, tuple(self.REFERENCIA))
+        for edad, (e, l) in self.REFERENCIA.items():
+            self.assertAlmostEqual(obtenido[edad][0], e, delta=0.01, msg=f"esperanza a los {edad}")
+            self.assertAlmostEqual(obtenido[edad][1], l, delta=0.0005, msg=f"supervivencia a los {edad}")
+
+    def test_k_hace_que_la_tabla_tenga_la_e0_pedida(self):
+        for q5, e0 in ((0.05, 65.0), (0.4, 28.0), (0.01, 75.0), (0.2, 40.0)):
+            k = modelo.resolver_k(q5, e0)
+            self.assertIsNotNone(k)
+            self.assertAlmostEqual(modelo.tabla(q5, k)[1][0], e0, places=6)
+
+    def test_mas_mortalidad_menos_esperanza(self):
+        self.assertGreater(modelo.tabla(0.05, -1.0)[1][0], modelo.tabla(0.05, 1.0)[1][0])
+
+    def test_la_supervivencia_a_los_5_es_la_que_se_pidio(self):
+        for q5 in (0.01, 0.1, 0.4):
+            k = modelo.resolver_k(q5, 40.0 if q5 > 0.05 else 70.0)
+            l, _ = modelo.tabla(q5, k)
+            self.assertAlmostEqual(l[modelo.EDADES.index(5)], 1 - q5, places=9)
+
+    def test_la_tabla_es_coherente(self):
+        l, e = modelo.tabla(0.1, modelo.resolver_k(0.1, 50.0))
+        self.assertEqual(len(l), 24)
+        self.assertTrue(all(a > b for a, b in zip(l[:18], l[1:18])))   # hasta los 85 años, estrictamente
+        self.assertTrue(all(a >= b for a, b in zip(l, l[1:])))         # y nunca sube
+        vivos = [i for i in range(24) if l[i] > 0]   # a edades extremas la proporción puede llegar a 0
+        self.assertGreaterEqual(len(vivos), 20)
+        self.assertTrue(all(e[i] > 0 for i in vivos))
+        edades = modelo.EDADES
+        self.assertTrue(all(edades[i] + e[i] <= edades[i + 1] + e[i + 1] + 1e-9 for i in vivos[:-1]))
+
+    def test_cuadra_con_la_derivacion_a_los_5_anios(self):
+        # Dos caminos a la esperanza restante a los 5 años: la identidad de preparar_datos y la tabla del modelo.
+        for q5, e0 in ((0.05, 65.0), (0.4, 28.0), (0.2, 40.0), (0.01, 75.0)):
+            del_modelo = modelo.esperanzas_por_edad(q5 * 1000, e0, (5,))[5][0]
+            self.assertAlmostEqual(pd.esperanza_a_los_5(e0, q5 * 1000)[0], del_modelo, delta=0.4, msg=(q5, e0))
+
+    def test_sin_solucion_es_none_no_un_error(self):
+        self.assertIsNone(modelo.resolver_k(0.4, 90.0))              # tanta e0 con tanta mortalidad infantil
+        self.assertIsNone(modelo.esperanzas_por_edad(0, 70.0, (15,)))  # sin mortalidad: no hay h = log(0)
+        with self.assertRaises(ValueError):
+            modelo.tabla(1.5, 0.0)
+
+    def test_los_coeficientes_son_los_24_grupos(self):
+        ax, bx, cx, vx = modelo.coeficientes()
+        self.assertEqual((len(ax), len(bx), len(cx), len(vx)), (24,) * 4)
+        self.assertEqual(vx[0], 0.0)  # a la edad 0 el modelo no depende de k
+
+
+class LeerRdaTest(unittest.TestCase):
+    """leer_rda sobre un archivo armado a mano: una lista con nombre `x` que contiene un vector de dos números."""
+
+    @staticmethod
+    def rda():
+        import gzip
+        import struct
+        i = lambda n: struct.pack(">i", n)
+        cuerpo = (i(0x402)                                  # LISTSXP con etiqueta
+                  + i(1) + i(9) + i(1) + b"x"               # SYMSXP -> CHARSXP «x»
+                  + i(14) + i(2) + struct.pack(">dd", 1.5, -2.0)   # REALSXP de dos números
+                  + i(254))                                 # NULL: fin de la lista
+        cabecera = b"RDX3\nX\n" + i(3) + i(0x040100) + i(0x030500) + i(5) + b"UTF-8"
+        return gzip.compress(cabecera + cuerpo)
+
+    def test_lee_un_vector_con_nombre(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = Path(tmp) / "a.rda"
+            ruta.write_bytes(self.rda())
+            self.assertEqual(leer_rda.aplanar(leer_rda.cargar(ruta)), {"x": [1.5, -2.0]})
+
+    def test_un_tipo_que_no_conoce_falla_en_vez_de_adivinar(self):
+        import gzip
+        import struct
+        malo = gzip.compress(b"RDX3\nX\n" + struct.pack(">iii", 3, 0, 0) + struct.pack(">i", 5) + b"UTF-8" + struct.pack(">i", 3))
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = Path(tmp) / "b.rda"
+            ruta.write_bytes(malo)
+            with self.assertRaises(Exception):
+                leer_rda.cargar(ruta)
+
+
 class ConsultasEsperanzaTest(unittest.TestCase):
     def test_cualquier_anio_de_la_decada_da_lo_mismo(self):
         self.assertEqual(consultas.esperanza_restante("SE", 1900), consultas.esperanza_restante("SE", 1909))
@@ -622,7 +742,7 @@ class ConsultasEsperanzaTest(unittest.TestCase):
         self.assertIsNone(consultas.esperanza_restante("XX", 1900))       # país sin serie
         self.assertIsNone(consultas.esperanza_restante("CL", 1799))       # antes de 1800
         self.assertIsNone(consultas.esperanza_restante("CL", 2010))       # después de 2009
-        self.assertIsNone(consultas.esperanza_restante("CL", 1900, 15))   # edad que no está
+        self.assertIsNone(consultas.esperanza_restante("CL", 1900, 20))   # edad que no está
         self.assertIsNone(consultas.esperanza_restante("CL", 1900, 5, "F"))  # 5 años solo para ambos sexos
         self.assertIsNone(consultas.esperanza_restante("CL", 1900, 0, "F"))  # por sexo desde 1950
 

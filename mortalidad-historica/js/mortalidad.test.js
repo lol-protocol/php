@@ -117,6 +117,7 @@ test('errores y valores por omisión', () => {
   assert.throws(() => m.epidemiasEn(1900, null, 'ZZ'), RangeError);
   assert.throws(() => m.esperanzaRestante('CL', 1900, 0, 'X'), RangeError);
   assert.equal(m.esperanzaRestante('XX', 1900), null);
-  assert.equal(m.esperanzaRestante('CL', 1900, 15), null);
+  assert.equal(m.esperanzaRestante('CL', 1900, 20), null);
+  assert.notEqual(m.esperanzaRestante('CL', 1900, 15), null);  // la edad 15 está (modelada)
   assert.equal(m.supervivencia('CL', 1895), m.supervivencia('CL', 1895, 5, 'T'));
 });
