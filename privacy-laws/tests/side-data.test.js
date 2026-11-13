@@ -13,6 +13,7 @@ import {
   diffRecords,
   loadAndValidate,
   loadSide,
+  todayIso,
   newerSourceWarnings,
   validateChanges,
   validateRecords,
@@ -23,6 +24,8 @@ import {
 } from "../scripts/lib/dataset.js";
 import { recordChanges, unrecorded } from "../scripts/record-changes.js";
 
+// "Today" for the row checks: rows researched today must not look like they were checked in the future.
+const TODAY = todayIso();
 const { records, sources, changes } = loadAndValidate();
 const base = records.find((r) => r.data_status === "researched");
 const check = (patch, options) => validateRecords([{ ...base, ...patch }], COLUMNS, options);
@@ -36,10 +39,10 @@ test("researched rows need a confidence level", () => {
 test("a pending change needs a description, and a passed date is a warning", () => {
   assert.match(check({ pending_change: "", pending_date: "2027-01-01" }).errors[0], /pending_change is empty/);
   assert.match(check({ pending_change: "x", pending_date: "2027-02-30" }).errors[0], /pending_date must be empty or a real/);
-  const passed = check({ pending_change: "New law", pending_date: "2026-01-01" }, { today: "2026-11-01" });
+  const passed = check({ pending_change: "New law", pending_date: "2026-01-01" }, { today: TODAY });
   assert.deepEqual(passed.errors, []);
   assert.match(passed.warnings[0], /pending change was due on 2026-01-01/);
-  assert.deepEqual(check({ pending_change: "New law", pending_date: "2027-01-01" }, { today: "2026-11-01" }).warnings, []);
+  assert.deepEqual(check({ pending_change: "New law", pending_date: "2027-01-01" }, { today: TODAY }).warnings, []);
 });
 
 test("a row last checked more than a year ago is flagged for review", () => {

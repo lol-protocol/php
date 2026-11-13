@@ -7,13 +7,13 @@
     "jurisdiction": "Data Protection Commissioner (s. 68; not yet established per DataGuidance)",
     "enactment_date": "2021-11-29",
     "effective_date": "2021-11-29",
-    "scope": "Data subjects (unconfirmed)",
-    "applies_to": "Data controllers and processors (unconfirmed)",
+    "scope": "Processing connected with a controller or processor established in Belize, and processing of data subjects in Belize by a foreign entity offering goods or services to people in Belize",
+    "applies_to": "Data controllers and processors established in Belize, and foreign entities offering goods/services to people in Belize; small-business exemption excludes trading in personal information",
     "key_requirements": "Data subject rights (access, rectification, erasure, restriction, portability, objection to direct marketing); breach notification to the Commissioner (reported as 72 hours); enforcement and information notices",
-    "data_categories": "Personal data (unconfirmed)",
+    "data_categories": "Personal data (collection, keeping, use, disclosure, protection rules); children under 16 protected, consent by parent/guardian or by the child if over 13",
     "retention_period": "Not specified",
     "enforcement_authority": "Data Protection Commissioner (Office of the Data Protection Commissioner)",
-    "penalties_range": "Offences for non-compliance incl. failure to comply with notice; amounts not found (unconfirmed)",
+    "penalties_range": "Summary conviction: fine of BZD 500,000 and/or 3 years' imprisonment for breach of data-protection principles; fines of 20,000 (unlawful transfer etc.), 10,000 (unlawful obtaining/disclosure), 5,000 (breach of notices)",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.dataguidance.com/jurisdiction/belize",
@@ -45,14 +45,14 @@
         "checked": "2026-10-25"
       },
       "scope": {
-        "url": "https://www.dataguidance.com/jurisdiction/belize",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.offlist.me/what-is-belize-data-protection-act",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
-        "url": "https://www.dataguidance.com/jurisdiction/belize",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.offlist.me/what-is-belize-data-protection-act",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://www.dataguidance.com/jurisdiction/belize",
@@ -65,12 +65,41 @@
         "checked": "2026-10-25"
       },
       "penalties_range": {
-        "url": "https://www.dataguidance.com/jurisdiction/belize",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.offlist.me/what-is-belize-data-protection-act",
+        "confidence": "medium",
+        "checked": "2026-11-13"
+      },
+      "data_categories": {
+        "url": "https://www.offlist.me/what-is-belize-data-protection-act",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "Offences for non-compliance incl. failure to comply with notice; amounts not found (unconfirmed)",
+        "to": "Summary conviction: fine of BZD 500,000 and/or 3 years' imprisonment for breach of data-protection principles; fines of 20,000 (unlawful transfer etc.), 10,000 (unlawful obtaining/disclosure), 5,000 (breach of notices)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "data_categories",
+        "from": "Personal data (unconfirmed)",
+        "to": "Personal data (collection, keeping, use, disclosure, protection rules); children under 16 protected, consent by parent/guardian or by the child if over 13"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Data controllers and processors (unconfirmed)",
+        "to": "Data controllers and processors established in Belize, and foreign entities offering goods/services to people in Belize; small-business exemption excludes trading in personal information"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects (unconfirmed)",
+        "to": "Processing connected with a controller or processor established in Belize, and processing of data subjects in Belize by a foreign entity offering goods or services to people in Belize"
+      },
       {
         "date": "2026-11-13",
         "field": "website_url",
