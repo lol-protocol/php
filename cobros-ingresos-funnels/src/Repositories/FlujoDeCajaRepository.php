@@ -31,6 +31,9 @@ final class FlujoDeCajaRepository
     public const VENCIDO = 'vencido';
     public const DESPUES = 'despues';
 
+    /** El texto de esas dos cubetas, en la pantalla y en el CSV; un mes se escribe cada uno a su manera. */
+    public const ETIQUETAS_FIJAS = [self::VENCIDO => 'Ya vencido', self::DESPUES => 'Más adelante'];
+
     private PDO $db;
 
     public function __construct()

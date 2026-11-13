@@ -84,6 +84,27 @@ abstract class HttpTestCase extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * Las filas de un CSV, ya leidas (la primera es el encabezado). Comprueba de paso la
+     * marca de orden UTF-8 del principio y la saca.
+     *
+     * @return list<list<string|null>>
+     */
+    protected static function leer(string $cuerpo): array
+    {
+        self::assertStringStartsWith("\xEF\xBB\xBF", $cuerpo, 'el archivo empieza con la marca UTF-8');
+        $flujo = fopen('php://memory', 'w+');
+        self::assertNotFalse($flujo);
+        fwrite($flujo, substr($cuerpo, 3));
+        rewind($flujo);
+        $filas = [];
+        while (($fila = fgetcsv($flujo, null, ',', '"', '')) !== false) {
+            $filas[] = $fila;
+        }
+
+        return $filas;
+    }
+
     /** Registra algo para deshacer al final del test (corre aunque el test falle, en orden inverso). */
     protected function alTerminar(callable $limpieza): void
     {

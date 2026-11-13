@@ -9,11 +9,7 @@ use App\Repositories\FlujoDeCajaRepository;
 /** @var array{total_usd: float, vencido_usd: float, este_mes_usd: float, boletas: int} $totales */
 /** @var array{ultima: ?DateTimeImmutable, fuente: ?string, pendientes: list<string>} $tasas */
 
-$etiqueta = static fn (string $clave): string => match ($clave) {
-    FlujoDeCajaRepository::VENCIDO => 'Ya vencido',
-    FlujoDeCajaRepository::DESPUES => 'Más adelante',
-    default => etiqueta_de_mes($clave),
-};
+$etiqueta = static fn (string $clave): string => FlujoDeCajaRepository::ETIQUETAS_FIJAS[$clave] ?? etiqueta_de_mes($clave);
 $color = static fn (string $clave): string => match ($clave) {
     FlujoDeCajaRepository::VENCIDO => 'var(--critical)',
     FlujoDeCajaRepository::DESPUES => 'var(--text-muted)',
@@ -87,4 +83,5 @@ $maximo = max(1.0, ...array_column($cubetas, 'saldo_usd'));
         </table>
     </div>
     <p class="subtitulo" style="margin-top:14px;">Los clientes de cada fila son los distintos de esa fila: uno con boletas en dos meses aparece en las dos.</p>
+    <p class="subtitulo"><a href="<?= e(url_con_parametro('page', 'flujo-csv')) ?>">Exportar CSV</a> · las mismas filas, con el horizonte elegido</p>
 </div>

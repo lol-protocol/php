@@ -73,6 +73,10 @@ Pequeño sistema en PHP (sin framework) para analizar:
   así que una base grande no agota la memoria de PHP. Llevan datos personales (nombre y
   email de los clientes): valen las mismas precauciones de acceso que el resto de la app
   (ver «Antes de exponerlo»), y se mandan con `Cache-Control: no-store`.
+  El **Flujo de caja** también se exporta (`?page=flujo-csv`): las filas de la pantalla con el
+  horizonte elegido (el vencimiento como «Ya vencido», «Más adelante» o el mes `AAAA-MM`, y el
+  saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
+  otra y no se pueden sumar.
 
 > El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
 > pantalla de login con sesión, bloqueo por fuerza bruta y gestión de usuarios del
