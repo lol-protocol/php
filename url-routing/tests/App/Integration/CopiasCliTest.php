@@ -130,4 +130,57 @@ class CopiasCliTest extends TestCase
         }
         $this->assertDirectoryDoesNotExist($this->dir . '/copias');
     }
+
+    /** @return string a public age key, or skips the test without age */
+    private function clavePublicaAge(): string
+    {
+        if (trim((string)shell_exec('command -v age age-keygen 2>/dev/null')) === '') {
+            $this->markTestSkipped('needs age and age-keygen on the PATH');
+        }
+        $archivo = $this->dir . '/origen/k.txt';
+        shell_exec('age-keygen -o ' . escapeshellarg($archivo) . ' 2>/dev/null');
+        preg_match('/age1[a-z0-9]{58}/', (string)file_get_contents($archivo), $m);
+
+        return $m[0];
+    }
+
+    public function testCifrarParaEncryptsEveryCopyAndSaysNothing(): void
+    {
+        $publica = $this->clavePublicaAge();
+
+        [$codigo, $salida, $error] = $this->correr('--destino=' . $this->dir . '/copias', '--cifrar-para=' . $publica);
+
+        $this->assertSame([0, '', ''], [$codigo, $salida, $error]);
+        $hoy = date('Y-m-d');
+        $this->assertSame(["genealogy-{$hoy}.sqlite.age", "pos-{$hoy}.sqlite.age"], $this->copias(), 'only encrypted files');
+    }
+
+    public function testTheKeysCanComeFromTheEnvironmentToo(): void
+    {
+        $publica = $this->clavePublicaAge();
+
+        $r = $this->ejecutarComando('copias', ['--destino=' . $this->dir . '/copias', '--sitios=genealogy'], [
+            'DB_DSN_GENEALOGY' => 'sqlite:' . $this->dir . '/origen/g.sqlite',
+            'COPIAS_CIFRAR_PARA' => $publica . ', ',
+        ]);
+
+        $this->assertSame([0, '', ''], $r);
+        $this->assertSame(['genealogy-' . date('Y-m-d') . '.sqlite.age'], $this->copias());
+    }
+
+    public function testABadKeyIsAUsageErrorAndFailingAgeIsAFailureWithNoCopy(): void
+    {
+        [$codigo, , $error] = $this->correr('--destino=' . $this->dir . '/copias', '--cifrar-para=nope');
+        $this->assertSame(2, $codigo);
+        $this->assertStringContainsString('age1', $error);
+        $this->assertDirectoryDoesNotExist($this->dir . '/copias');
+
+        $r = $this->ejecutarComando('copias', ['--destino=' . $this->dir . '/copias', '--sitios=genealogy', '--cifrar-para=age1' . str_repeat('q', 58)], [
+            'DB_DSN_GENEALOGY' => 'sqlite:' . $this->dir . '/origen/g.sqlite',
+            'PATH' => '/nonexistent',
+        ]);
+        $this->assertSame(1, $r[0], 'age is not there');
+        $this->assertStringContainsString('Copia de genealogy:', $r[2]);
+        $this->assertSame([], $this->copias(), 'and no plain copy was left instead');
+    }
 }

@@ -14,18 +14,34 @@ namespace App\Support;
  * one. The files are made readable by their owner alone: a copy holds what the site hides from visitors (people who
  * may be alive, the e-mail of whoever asked for a retiro).
  *
- * It does not encrypt (that is still undecided) and does not take the copy off the server: send() runs the command
- * the owner gives it for that, one file at a time.
+ * It encrypts only when it is given recipients (age public keys): the copy then ends in «.age», and the server holds
+ * nothing it could decrypt, because the private key lives elsewhere. Without recipients it does not encrypt (that is the
+ * owner's decision). It never falls back to a plain copy when encrypting fails: the run fails and leaves nothing. It does
+ * not take the copy off the server either: send() runs the command the owner gives it for that, one file at a time.
  */
 final class Copias
 {
     /** What a copy is called: site, date and extension. */
-    private const NOMBRE = '/^(?<sitio>[a-z0-9_]+)-(?<fecha>\d{4}-\d{2}-\d{2})\.(?:dump|sqlite)$/';
+    private const NOMBRE = '/^(?<sitio>[a-z0-9_]+)-(?<fecha>\d{4}-\d{2}-\d{2})\.(?:dump|sqlite)(?:\.age)?$/';
 
-    public function __construct(private readonly string $destino, private readonly int $dias = 30)
+    /** An age public key (X25519): «age1» and 58 characters of the bech32 alphabet. */
+    private const DESTINATARIO = '/^age1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{58}$/';
+
+    /** The first line of every file age writes: what is checked on an encrypted copy, which cannot be opened without the private key. */
+    private const CABECERA_AGE = 'age-encryption.org/v1';
+
+    /**
+     * @param list<string> $destinatarios age public keys to encrypt for; empty: the copies are not encrypted
+     */
+    public function __construct(private readonly string $destino, private readonly int $dias = 30, private readonly array $destinatarios = [])
     {
         if ($dias < 1 || $dias > 3650) {
             throw new \InvalidArgumentException('Los días de conservación son un número de 1 a 3650.');
+        }
+        foreach ($destinatarios as $destinatario) {
+            if (preg_match(self::DESTINATARIO, $destinatario) !== 1) {
+                throw new \InvalidArgumentException('Un destinatario de age es una clave pública «age1…» de 62 caracteres (age-keygen la imprime).');
+            }
         }
     }
 
@@ -40,23 +56,40 @@ final class Copias
             throw new \InvalidArgumentException("«{$sitio}» no es un nombre de sitio.");
         }
         $this->prepararDestino();
+        $this->limpiarParciales($sitio);
 
         $viejoUmask = umask(0077);
         try {
             if (str_starts_with($dsn, 'sqlite:')) {
                 $final = $this->destino . '/' . $sitio . '-' . date('Y-m-d') . '.sqlite';
-                $this->copiarSqlite(substr($dsn, strlen('sqlite:')), $final);
+                $copiar = fn(string $a) => $this->copiarSqlite(substr($dsn, strlen('sqlite:')), $a);
             } elseif (str_starts_with($dsn, 'pgsql:')) {
                 $final = $this->destino . '/' . $sitio . '-' . date('Y-m-d') . '.dump';
-                $this->copiarPostgres($dsn, $usuario, $clave, $final);
+                $copiar = fn(string $a) => $this->copiarPostgres($dsn, $usuario, $clave, $a);
             } else {
                 throw new \RuntimeException("No sé copiar una base «{$dsn}»: solo sqlite: y pgsql:.");
             }
+
+            if ($this->destinatarios === []) {
+                $copiar($final);
+
+                return $final;
+            }
+
+            // Encrypting: the plain copy is made under a name that ends in «.parcial» (never taken for a copy, and swept by
+            // limpiarParciales() if the run is killed), encrypted, and only the «.age» takes the name of a copy.
+            $plano = $final . '.sin-cifrar.parcial';
+            try {
+                $copiar($plano);
+                $this->cifrar($plano, $final . '.age');
+            } finally {
+                @unlink($plano);
+            }
+
+            return $final . '.age';
         } finally {
             umask($viejoUmask);
         }
-
-        return $final;
     }
 
     /**
@@ -104,6 +137,47 @@ final class Copias
         fclose($pipes[2]);
         if (proc_close($proceso) !== 0) {
             throw new \RuntimeException('El comando para enviar la copia falló' . ($error !== '' ? ": {$error}" : '.'));
+        }
+    }
+
+    /** Deletes what a run that was killed left half done for this site («…parcial»): a copy that never took its name. */
+    private function limpiarParciales(string $sitio): void
+    {
+        foreach (scandir($this->destino) ?: [] as $nombre) {
+            if (preg_match('/^' . preg_quote($sitio, '/') . '-\d{4}-\d{2}-\d{2}\..*parcial$/', $nombre) === 1) {
+                @unlink($this->destino . '/' . $nombre);
+            }
+        }
+    }
+
+    /**
+     * Encrypts a verified plain copy for the recipients and gives the result its final name, or fails with nothing left.
+     *
+     * @throws \RuntimeException when age is missing or fails, or what it wrote is not an age file
+     */
+    private function cifrar(string $plano, string $final): void
+    {
+        $parcial = $final . '.parcial';
+        @unlink($parcial);
+        $comando = ['age'];
+        foreach ($this->destinatarios as $destinatario) {
+            array_push($comando, '-r', $destinatario);
+        }
+        array_push($comando, '-o', $parcial, $plano);
+
+        try {
+            [$codigo, $error] = $this->correr($comando, ['PATH' => (string)getenv('PATH')]);
+            if ($codigo !== 0) {
+                throw new \RuntimeException('age falló (código ' . $codigo . ')' . ($error !== '' ? ": {$error}" : '.') . ' ¿Está instalado? (apt install age)');
+            }
+            $cabecera = is_file($parcial) ? (string)file_get_contents($parcial, false, null, 0, strlen(self::CABECERA_AGE)) : '';
+            if ($cabecera !== self::CABECERA_AGE) {
+                throw new \RuntimeException('age no dejó un archivo cifrado.');
+            }
+            $this->cerrar($parcial, $final);
+        } catch (\RuntimeException $e) {
+            @unlink($parcial);
+            throw $e;
         }
     }
 
