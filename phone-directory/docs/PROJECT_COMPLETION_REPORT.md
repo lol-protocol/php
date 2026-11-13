@@ -24,8 +24,10 @@ La descripción funcional está en [PHONE_DIRECTORY_SUMMARY.md](PHONE_DIRECTORY_
 ### Ports (`ports/`)
 - `ports/python/phone_directory_parser.py` y `ports/java/PhoneDirectoryParser.java`: parser multi-idioma,
   nombres, ubicación y catálogo con las mismas reglas de nombres y detección de idioma que el PHP.
-- Son versiones simplificadas: no clasifican empresas, no tienen claves fonéticas ni `RecordLinker`, y el de Java
-  no persiste en base de datos (el de Python usa SQLite).
+- El parser de los dos sigue al de PHP: pasan el mismo conjunto de evaluación (`tests/fixtures/parser-evaluation.json`),
+  con el formato de una entrada por línea y las empresas como entradas `juridical`.
+- En lo demás son versiones simplificadas: no tienen claves fonéticas, `RecordLinker` ni la vista de privacidad, el de
+  Java no persiste en base de datos y el de Python (SQLite) solo guarda las personas.
 
 ### Ejemplos y documentación
 - `examples/process_phone_directory.php`, `examples/multilingual_example.php`, `examples/sample_phone_directory.txt`.

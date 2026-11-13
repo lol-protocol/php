@@ -96,6 +96,27 @@ public class PhoneDirectoryParserTest {
         assertEquals("Smith, John", person(entries.get(0)).get("formatted"));
         assertEquals(null, PhonePattern.nameBesidePhone("555-123-4567 ext. 12", "555-123-4567"));
 
+        // A business is its own kind of entry; "BANK, Henry" is a person.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("ACME Corp\n10 Main Street\n555-123-4567", "en");
+        assertEquals("juridical", entries.get(0).get("type"));
+        assertEquals("ACME Corp", entries.get(0).get("business_name"));
+        assertEquals("corp", entries.get(0).get("business_type"));
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("BANK, Henry\n3 Oak Road", "en");
+        assertEquals("natural", entries.get(0).get("type"));
+
+        // One record per line, with and without separators.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent(
+            "SMITH John 12 Oak St ........ 555-111-2222\nGARCÍA LÓPEZ Juan Calle Mayor 12 555-123-4567", "es");
+        assertEquals(2, entries.size());
+        assertEquals("GARCÍA LÓPEZ, Juan", person(entries.get(1)).get("rawName"));
+        assertEquals("Calle Mayor 12", location(entries.get(1)).get("street"));
+
+        // "Dr." opening a name is not a street; a street without a street word gives way to one with it.
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("Dr. SMITH, John\n12 Oak Street", "en");
+        assertEquals("Dr. SMITH, John", person(entries.get(0)).get("rawName"));
+        entries = new MultiLanguagePhoneDirectoryParser().parseContent("Luis Sur\nDivisión 2\nCalle Mayor 5", "es");
+        assertEquals("Calle Mayor 5", location(entries.get(0)).get("street"));
+
         // The PHP parser's evaluation set, with this port's known failures (see EvaluationSetCheck).
         try {
             assertEquals(List.of(), EvaluationSetCheck.wrongCases(
