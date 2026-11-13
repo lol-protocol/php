@@ -12,6 +12,8 @@ declare(strict_types=1);
  *   php bin/persona.php rectificar <id> <tabla.columna>=<valor> [--suceso=N] [--pedido=N]   # shows what a correction would do
  *   php bin/persona.php rectificar <id> <tabla.columna>=<valor> [--suceso=N] [--pedido=N] --confirmar   # does it
  *   php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]  # records a correction made by hand
+ *   php bin/persona.php entrega <id> [--dias=7]                  # a link and a key to read what is held about her, hidden part included
+ *   php bin/persona.php entrega <id> --revocar                   # ends every delivery of hers that still works
  *   php bin/persona.php reaplicar                                # lists who came back after restoring a backup
  *   php bin/persona.php reaplicar --confirmar                    # and removes them again
  *
@@ -19,10 +21,13 @@ declare(strict_types=1);
  * for rectificar and rectificacion it is only recorded (the field, never the values). rectificar changes one field of
  * the ficha (see RectificacionRepository::CAMPOS), says whether it changes what a visitor sees and, without
  * --confirmar, changes nothing; --suceso=N is the event, for the fields of sucesos.
+ * entrega is for AFTER checking who asks (docs/SOLICITUDES.md): the page it makes shows what the site hides from a visitor.
+ * It prints the link and the key once, and they must go by two different means; only their hashes are stored.
  * Exit code: 0 done, 1 there is no such persona/pedido, 2 usage error or a database that is not ready.
  * The database comes from DB_DSN_GENEALOGY (or .env), as for the web app.
  */
 
+use App\Repositories\Genealogy\EntregaRepository;
 use App\Repositories\Genealogy\RectificacionRepository;
 use App\Repositories\Genealogy\RetiroRepository;
 use App\Repositories\Genealogy\SupresionRepository;
@@ -37,6 +42,7 @@ $uso = "Uso: php bin/persona.php acceso <id>\n"
     . "     php bin/persona.php suprimir <id> [--pedido=N] [--confirmar]\n"
     . "     php bin/persona.php rectificar <id> <tabla.columna>=<valor> [--suceso=N] [--pedido=N] [--confirmar]\n"
     . "     php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]\n"
+    . "     php bin/persona.php entrega <id> [--dias=7] | entrega <id> --revocar\n"
     . "     php bin/persona.php reaplicar [--confirmar]\n";
 
 $orden = $argv[1] ?? '';
@@ -44,13 +50,19 @@ $confirmar = false;
 $pedido = null;
 $id = null;
 $que = null;
+$dias = null;
+$revocar = false;
 $suceso = null;
-$conId = ['acceso', 'suprimir', 'rectificar', 'rectificacion'];
+$conId = ['acceso', 'suprimir', 'rectificar', 'rectificacion', 'entrega'];
 foreach (array_slice($argv, 2) as $argumento) {
     if ($argumento === '--confirmar') {
         $confirmar = true;
     } elseif (preg_match('/^--pedido=(\d+)$/', $argumento, $m) === 1 && in_array($orden, ['suprimir', 'rectificar', 'rectificacion'], true)) {
         $pedido = (int)$m[1];
+    } elseif (preg_match('/^--dias=(\d+)$/', $argumento, $m) === 1 && $orden === 'entrega') {
+        $dias = (int)$m[1];
+    } elseif ($argumento === '--revocar' && $orden === 'entrega') {
+        $revocar = true;
     } elseif (preg_match('/^--suceso=(\d+)$/', $argumento, $m) === 1 && $orden === 'rectificar') {
         $suceso = (int)$m[1];
     } elseif ($id === null && ctype_digit($argumento) && in_array($orden, $conId, true)) {
@@ -65,9 +77,10 @@ foreach (array_slice($argv, 2) as $argumento) {
 $necesitaId = in_array($orden, $conId, true);
 if (
     !in_array($orden, [...$conId, 'reaplicar'], true) || $necesitaId !== ($id !== null)
-    || (in_array($orden, ['acceso', 'rectificacion'], true) && $confirmar)
+    || (in_array($orden, ['acceso', 'rectificacion', 'entrega'], true) && $confirmar)
     || in_array($orden, ['rectificar', 'rectificacion'], true) !== ($que !== null)
     || ($orden === 'rectificar' && !str_contains((string)$que, '='))
+    || ($revocar && $dias !== null)
 ) {
     fwrite(STDERR, $uso);
     exit(2);
@@ -122,6 +135,24 @@ try {
             echo $r['aviso_grupo'] . "\n";
         }
         echo $confirmar ? "Mira la página como visitante y como propietario.\n" : "Nada cambió. Para hacerlo, repetir con --confirmar.\n";
+        exit(0);
+    }
+
+    if ($orden === 'entrega') {
+        $entregas = new EntregaRepository($db);
+        if ($revocar) {
+            $n = $entregas->revocar((int)$id);
+            echo $n === 0 ? "La persona {$id} no tenía entregas vigentes.\n" : "Se terminaron {$n} entrega" . ($n === 1 ? '' : 's') . " vigente" . ($n === 1 ? '' : 's') . " de la persona {$id}.\n";
+            exit(0);
+        }
+        $e = $entregas->crear((int)$id, $dias ?? EntregaRepository::VIGENCIA_DIAS);
+        $base = rtrim((string)Config::get('SITE_URL_GENEALOGY', ''), '/') ?: 'https://TU-DOMINIO';
+        echo "Entrega {$e['id']} para la persona {$id}: vigente hasta el {$e['vence_en']}, se abre hasta " . EntregaRepository::MAX_VISTAS
+            . ' veces y se bloquea con ' . EntregaRepository::MAX_INTENTOS . " claves malas.\n\n"
+            . "Enlace (mándalo por un medio):\n  {$base}/e/{$e['token']}/\n\n"
+            . "Clave (mándala por OTRO medio; no se vuelve a mostrar):\n  {$e['clave']}\n\n"
+            . "La página muestra lo que el sitio oculta a un visitante. Mándalos solo después de comprobar quién pide (docs/SOLICITUDES.md).\n"
+            . "Si se mandan al medio equivocado: php bin/persona.php entrega {$id} --revocar\n";
         exit(0);
     }
 

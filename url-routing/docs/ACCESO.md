@@ -200,6 +200,7 @@ php bin/persona.php suprimir 6128473105 --pedido=12 --confirmar   # lo hace
 php bin/persona.php rectificar 6128473105 personas.apellidos='Quintana Soto'    # muestra qué cambiaría y no cambia nada
 php bin/persona.php rectificar 6128473105 personas.apellidos='Quintana Soto' --confirmar   # lo hace y lo anota
 php bin/persona.php rectificacion 6128473105 personas.apellidos   # solo anota que se corrigió a mano ese campo (sin valores)
+php bin/persona.php entrega 6128473105                            # un enlace y una clave para que ella lea todo, lo oculto incluido
 ```
 
 - **`acceso`** imprime la ficha, sus sucesos con la descripción, los registros que los documentan, sus
@@ -221,6 +222,10 @@ php bin/persona.php rectificacion 6128473105 personas.apellidos   # solo anota q
   transacción y la deshace. Ver [`SOLICITUDES.md`](SOLICITUDES.md), «Rectificar».
 - **`rectificacion`** no cambia la ficha: solo anota en `rectificaciones_persona` qué campo se corrigió **a mano**, para
   poder probarlo. Esa fila se conserva si la persona se suprime.
+- **`entrega`** crea un enlace (`/e/{token}/`) y una clave para que la persona lea, con una página, todo lo que el sitio guarda
+  de ella, **lo que se oculta incluido**: la única forma de dárselo sin mandar el JSON por correo en claro. Solo después de
+  comprobar quién pide. Vigencia corta, 3 aperturas, 5 claves malas; ver [`SOLICITUDES.md`](SOLICITUDES.md), «Entrega con
+  clave». `entrega <id> --revocar` termina las vigentes.
 - **`suprimir`** quita a la persona y deja el resto del árbol en pie, en una transacción:
   - se borran sus sucesos en los que **es la única participante**, con sus enlaces a registros;
   - los sucesos que comparte con otras personas **se conservan** (también son datos de las otras) y a ella se la

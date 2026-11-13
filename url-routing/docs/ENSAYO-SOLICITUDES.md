@@ -47,6 +47,14 @@ Imprime JSON. **Mira:**
 El JSON **no se manda**. Escribe a mano el resumen legible que decide `SOLICITUDES.md` (lo que un visitante ya ve más
 cantidades) y compáralo con lo que ve un visitante en el sitio: no debe contener nada que el visitante no vea.
 
+**Entrega con clave** (solo si ella necesita ver lo que se oculta): `php bin/persona.php entrega <id>`, y abre el enlace en una
+ventana privada. **Mira:**
+- [ ] Que sin la clave no se vea **nada** de la ficha, y que una clave mala diga «La clave no es correcta».
+- [ ] Que con la clave buena salgan los datos y **ningún nombre de un pariente**.
+- [ ] Que tras 5 claves malas el enlace dé 404 aunque pongas la buena, y que después de 3 aperturas también.
+- [ ] Que `php bin/persona.php entrega <id> --revocar` lo termine, y que el enlace inventado y el revocado den **la misma** 404.
+- [ ] Que mandar el enlace y la clave por **dos medios** no se te haga pesado: si lo es, no lo vas a hacer, y es la regla.
+
 Para los textos libres que la nombran sin estar ligados a ella, corre la simulación de la supresión (paso 5, sin
 `--confirmar`): lista tabla, columna e ids para que los leas a mano. **Mira** si encuentra su nombre escrito de otra
 forma (un apodo, una falta de ortografía): no debería, y por eso esos textos se leen a mano y no se confía en el listado.
