@@ -156,3 +156,69 @@ def test_informe_de_candidatos_filtra_por_autor_y_marca_las_obras():
     assert "1 del autor, 1 descartados" in bloque
     assert "| 2147 | The Raven | en | Poe, Edgar Allan (1809–1849) | El cuervo |" in bloque
     assert "Poe Studies" not in bloque
+
+
+def _libro(ident, titulo, autor, nac, mue, descargas=0):
+    return {"id": ident, "title": titulo, "languages": ["en"], "download_count": descargas,
+            "authors": [{"name": autor, "birth_year": nac, "death_year": mue}]}
+
+
+def test_prellenado_de_gutenberg_solo_con_lo_que_gutendex_afirma(tmp_path):
+    import csv
+    import verificar_gutenberg
+    config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    poe = ("Poe, Edgar Allan", 1809, 1849)
+    shelley = ("Shelley, Mary Wollstonecraft", 1797, 1851)
+    respuestas = {
+        "Edgar Allan Poe": [_libro(2147, "The Raven", *poe, descargas=500), _libro(17192, "The Raven", *poe, descargas=900),
+                            _libro(1065, "The Black Cat", *poe),
+                            _libro(99, "Poe Studies", "Smith, Jane", 1900, 1990)],  # otro autor: se descarta
+        "Mary Shelley": [_libro(84, "Frankenstein; Or, The Modern Prometheus", *shelley, descargas=100),
+                                        _libro(85, "The Last Man", *shelley), _libro(86, "The Last Man (illustrated)", *shelley)],
+    }
+    filas = {(f["pieza"] or f["autor"]): f for f in verificar_gutenberg.prellenar(config, buscar=lambda n: respuestas.get(n, []),
+                                                                                  movimiento="romanticismo")}
+    cuervo = filas["romanticismo-poe-01"]  # dos ediciones con el mismo título: la más descargada
+    assert (cuervo["estado"], cuervo["id"]) == ("verificado", "17192") and "2 edición" in cuervo["nota"]
+    assert filas["romanticismo-poe-05"]["id"] == "1065"
+    assert filas["romanticismo-poe-02"]["estado"] == ""  # Annabel Lee: sin candidatos, en blanco
+    # el filtro por movimiento deja fuera al resto
+    assert filas["gotico-shelley-mary-01"]["estado"] == ""
+    todas = verificar_gutenberg.prellenar(config, buscar=lambda n: respuestas.get(n, []), movimiento="gotico")
+    f = {(x["pieza"] or x["autor"]): x for x in todas}
+    assert f["gotico-shelley-mary-01"]["id"] == "84"
+    assert f["gotico-shelley-mary-02"]["id"] == "84" and "tema de" in f["gotico-shelley-mary-02"]["nota"]  # tema «de» Frankenstein
+    assert f["gotico-shelley-mary-06"]["estado"] == ""  # «The Last Man» y su ilustrada: títulos distintos → ambiguo
+    assert "ambiguo" in f["gotico-shelley-mary-06"]["nota"]
+    # el CSV resultante lo acepta gutenberg_manual.aplicar
+    import shutil
+    import gutenberg_manual
+    ruta = tmp_path / "pre.csv"
+    verificar_gutenberg.escribir_csv(todas, ruta)
+    tax = tmp_path / "taxonomia.yaml"
+    shutil.copy(RAIZ / "catalog" / "taxonomia.yaml", tax)
+    assert gutenberg_manual.aplicar(ruta, tax) == []
+    nueva = __import__("yaml").safe_load(tax.read_text(encoding="utf-8"))
+    mary = next(a for m in nueva["movimientos"] if m["id"] == "gotico" for a in m["autores"] if a["id"] == "shelley-mary")
+    assert mary["obras"][0]["gutenberg"] == {"id": 84, "estado": "verificado"}
+
+
+def test_un_autor_vivo_o_reciente_sin_libros_queda_no_disponible():
+    import verificar_gutenberg
+    config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    filas = {(f["pieza"] or f["autor"]): f for f in verificar_gutenberg.prellenar(config, buscar=lambda n: [])}
+    assert filas["realismo-magico/rulfo"]["estado"] == "no_disponible" and "1986" in filas["realismo-magico/rulfo"]["nota"]
+    assert filas["romanticismo/poe"]["estado"] == ""  # murió en 1849: que no haya resultados no basta para decir no_disponible
+
+
+def test_un_tema_de_una_obra_encuentra_su_obra_base():
+    config = __import__("yaml").safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
+    mary = next(a for m in config["movimientos"] if m["id"] == "gotico" for a in m["autores"] if a["id"] == "shelley-mary")
+    assert mary["obras"][modelo.obra_base(mary, "Frankenstein")]["id"] == "frankenstein-o-el-moderno-prometeo"
+    stoker = next(a for m in config["movimientos"] if m["id"] == "gotico" for a in m["autores"] if a["id"] == "stoker")
+    assert stoker["obras"][modelo.obra_base(stoker, "Drácula")]["id"] == "dracula"  # título igual: gana la exacta
+    assert modelo.obra_base(stoker, "Una obra inexistente") is None
+    # los temas «de» del catálogo tienen obra base salvo los sacados de una colección que no es una obra del catálogo
+    sin_base = {(a["id"], o["de"]) for m in config["movimientos"] for a in m["autores"] for o in a["obras"]
+                if o.get("de") and modelo.obra_base(a, o["de"]) is None}
+    assert sin_base == {("galdos", "Episodios nacionales"), ("flaubert", "Tres cuentos")}

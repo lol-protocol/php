@@ -87,7 +87,7 @@ def _mismo_token(a, b):
     return a == b or (min(len(a), len(b)) >= 4 and (a.startswith(b) or b.startswith(a)))  # Homer / Homero
 
 
-def _anios(epoca):
+def anios_de_vida(epoca):
     """(nacimiento, muerte) como enteros, con años a. C. negativos; None si no se puede leer."""
     if not epoca or "tradición" in str(epoca):
         return None
@@ -112,7 +112,7 @@ def reconoce_autor(nombre_cat, epoca_cat, nombre_libro, nac=None, mue=None):
     comunes = sum(1 for t in corto if any(_mismo_token(t, u) for u in largo))
     if comunes < len(corto):
         return False
-    anios = _anios(epoca_cat)
+    anios = anios_de_vida(epoca_cat)
     if anios and nac is not None and mue is not None:
         return abs(anios[0] - nac) <= 1 and abs(anios[1] - mue) <= 1
     return comunes >= 2
@@ -145,18 +145,31 @@ def autor_del_libro(libro, autor):
                for a in libro.get("authors", []))
 
 
+def obra_base(autor, de):
+    """Índice (desde 0) de la obra de un autor de la que sale un tema «de»: la de título igual y, si no, la única obra
+    sin `de` cuyo título contiene todas las palabras de `de` («Frankenstein» → «Frankenstein o el moderno Prometeo»).
+    None si no hay una sola."""
+    obras = autor.get("obras", [])
+    exactas = [i for i, o in enumerate(obras) if o["titulo"] == de and not o.get("de")]
+    if exactas:
+        return exactas[0]
+    palabras = set(_tokens(de))
+    contienen = [i for i, o in enumerate(obras) if not o.get("de") and palabras and palabras <= set(_tokens(o["titulo"]))]
+    return contienen[0] if len(contienen) == 1 else None
+
+
 def obras_del_libro(libro, autor, titulos_originales=None):
     """Para cada obra del autor (en orden de variante), True si el título del libro se parece a su título en
     español, al original (catalog/titulos-originales.yaml) o, en un tema «de» otra obra, al de esa obra."""
     originales = cargar_titulos_originales() if titulos_originales is None else titulos_originales
     titulo = _tokens(libro.get("title", ""))
     propios = originales.get(autor["id"], {})
-    por_titulo = {o["titulo"]: propios.get(o["id"], []) for o in autor.get("obras", [])}
     salida = []
     for obra in autor.get("obras", []):
         refs = [obra["titulo"], *propios.get(obra["id"], [])]
-        if obra.get("de"):
-            refs += [obra["de"], *por_titulo.get(obra["de"], [])]
+        if obra.get("de"):  # tema sacado de otra obra: también cuenta el título de esa obra y sus títulos originales
+            base = obra_base(autor, obra["de"])
+            refs += [obra["de"]] + (propios.get(autor["obras"][base]["id"], []) if base is not None else [])
         salida.append(_parecido(refs, titulo))
     return salida
 

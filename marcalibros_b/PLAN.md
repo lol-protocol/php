@@ -291,3 +291,10 @@ Qué semilla sale en cada pieza (parecido a otra, motivo visible en miniatura, t
 - **Cascada:** `usos_de_imagen` lista los diseños que usan una imagen; `borrar_imagen` avisa de cuáles (y cuántos están compartidos) y no borra; con `forzar` los borra también. Las marcas no se tocan: `resolver_diseno` devuelve el diseño, la pieza del catálogo o `None` si se borró.
 - La lista de palabras bloqueadas está vacía a propósito: al haber servidor, integrar `defamatory-content-review/` en vez de mantener otra lista.
 - Corregido al probar: un correo contaba también como enlace, y «Yo» como autoría disimulaba una frase en mayúsculas.
+
+## Gutenberg: prellenado listo para una sesión con red (hecho)
+`python generator/verificar_gutenberg.py --csv` (necesita gutendex.com) escribe `catalog/revision/gutenberg-prellenado.csv` con lo que Gutendex permite afirmar, listo para `gutenberg_manual.py aplicar`:
+- obra: `verificado` con el id del libro si autor (nombre y años) y título (español u original) coinciden con una sola edición, o con varias del mismo título (se toma la más descargada); con títulos distintos queda en blanco y la nota dice `ambiguo`;
+- tema «de» otra obra: hereda el id de la obra base si esta quedó verificada (`modelo.obra_base`; «Frankenstein» → «Frankenstein o el moderno Prometeo»);
+- autor sin libros y muerto después de 1955: `no_disponible` (Realismo mágico); Gutendex no da ids de autor, así que los demás quedan en blanco.
+La columna `nota` dice de dónde sale cada fila. Probado solo con respuestas simuladas. Pasos en una sesión con red: ejecutar el prellenado, mirar el CSV, aplicarlo y reconstruir (`build.py --all`).
