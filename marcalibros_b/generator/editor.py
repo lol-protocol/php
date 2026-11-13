@@ -14,12 +14,9 @@ Cómo servirlo (fuera de este módulo): los archivos de `AlmacenSubidas` se publ
 origen (dominio sin cookies), solo como `<img>`, con `Content-Type: image/jpeg`,
 `X-Content-Type-Options: nosniff` y `Content-Disposition: inline`.
 """
-import contextlib
 import io
-import json
 import os
 import secrets
-import threading
 from functools import lru_cache
 from pathlib import Path
 
@@ -28,23 +25,13 @@ import yaml
 from PIL import Image, ImageOps
 
 import texto as tx
+from almacen import Documentos
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
 from qa import MIN_CONTRASTE_TEXTO, OPACIDADES_VELO, TONOS_TEXTO, contraste_texto, mejor_texto
 from render_raster import ESCALA, _pintar_texto, a_imagen
 from scene import ALTO, ANCHO, FRANJA_CENTRAL, Escena
 
 RAIZ = Path(__file__).resolve().parent.parent
-
-try:  # exclusión entre procesos: flock en Linux y macOS, msvcrt en Windows
-    import fcntl
-    msvcrt = None
-except ImportError:
-    fcntl = None
-    try:
-        import msvcrt
-    except ImportError:
-        msvcrt = None
-_HILOS = threading.Lock()  # sin ninguno de los dos, al menos exclusión entre hilos del mismo proceso
 
 MAX_BYTES = 5 * 1024 * 1024          # tamaño del archivo subido
 MAX_PIXELES = 24_000_000             # ancho × alto, comprobado antes de decodificar
@@ -55,26 +42,6 @@ CUOTA_BYTES = 100 * 1024 * 1024      # por usuario, ya recodificado
 FORMATOS = {"JPEG", "PNG", "WEBP"}
 FRANJA = FRANJA_CENTRAL              # misma franja de texto que el catálogo (168×420)
 
-
-
-@contextlib.contextmanager
-def _exclusion(ruta):
-    """Bloqueo exclusivo sobre un archivo: entre procesos si el sistema lo permite, y siempre entre hilos."""
-    with _HILOS:
-        with open(ruta, "a+b") as f:
-            if fcntl:
-                fcntl.flock(f, fcntl.LOCK_EX)
-            elif msvcrt:
-                f.seek(0)
-                msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
-            try:
-                yield
-            finally:
-                if fcntl:
-                    fcntl.flock(f, fcntl.LOCK_UN)
-                elif msvcrt:
-                    f.seek(0)
-                    msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
 
 
 class ErrorEditor(ValueError):
@@ -140,29 +107,16 @@ class AlmacenSubidas:
     def __init__(self, directorio):
         self.dir = Path(directorio)
         self.dir.mkdir(parents=True, exist_ok=True)
-        self._indice = self.dir / "indice.json"
-
-    def _leer(self):
-        return json.loads(self._indice.read_text(encoding="utf-8")) if self._indice.exists() else {}
-
-    def _escribir(self, indice):
-        tmp = self._indice.with_suffix(".tmp")
-        tmp.write_text(json.dumps(indice), encoding="utf-8")
-        os.replace(tmp, self._indice)  # atómico: nunca queda un JSON a medias
-
-    def _bloqueo(self):
-        """Exclusión para leer-modificar-escribir el índice y la cuota."""
-        return _exclusion(self.dir / ".lock")
+        self._indice = Documentos(self.dir / "indice.json")
 
     def uso(self, usuario):
-        mias = [v for v in self._leer().values() if v["usuario"] == usuario]
+        mias = [v for v in self._indice.leer().values() if v["usuario"] == usuario]
         return len(mias), sum(v["bytes"] for v in mias)
 
     def guardar(self, usuario, datos):
         """Devuelve el id (32 hex) de la imagen guardada."""
         jpeg = recodificar(datos)
-        with self._bloqueo():
-            indice = self._leer()
+        with self._indice.editar() as indice:
             mias = [v for v in indice.values() if v["usuario"] == usuario]
             if len(mias) >= CUOTA_IMAGENES:
                 raise ErrorEditor(f"has llegado al máximo de {CUOTA_IMAGENES} imágenes")
@@ -174,7 +128,6 @@ class AlmacenSubidas:
             tmp.write_bytes(jpeg)
             os.replace(tmp, ruta)
             indice[ident] = {"usuario": usuario, "bytes": len(jpeg)}
-            self._escribir(indice)
         return ident
 
     def ruta(self, ident, usuario):
@@ -182,7 +135,7 @@ class AlmacenSubidas:
         entrada libre) y `usuario` es obligatorio: no existe lectura sin comprobar propietario."""
         if not usuario or len(ident) != 32 or any(c not in "0123456789abcdef" for c in ident):
             raise ErrorEditor("imagen desconocida")
-        info = self._leer().get(ident)
+        info = self._indice.leer().get(ident)
         if not info or info["usuario"] != usuario:
             raise ErrorEditor("imagen desconocida")
         return self.dir / f"{ident}.jpg"
@@ -194,11 +147,9 @@ class AlmacenSubidas:
 
     def borrar(self, ident, usuario):
         ruta = self.ruta(ident, usuario)
-        with self._bloqueo():
+        with self._indice.editar() as indice:
             ruta.unlink(missing_ok=True)
-            indice = self._leer()
             indice.pop(ident, None)
-            self._escribir(indice)
 
 
 # --------------------------------------------------------------------------- recetas

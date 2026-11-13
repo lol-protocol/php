@@ -1,0 +1,13 @@
+# Reglas de la moderación automática de los diseños de usuario (generator/moderacion.py).
+# Una regla «dura» rechaza sola (el dueño puede corregir y volver a pedirlo); una «blanda» manda el diseño a la
+# cola de revisión humana. Un diseño con imagen propia siempre pasa por una persona.
+version: '0.1'
+duras: [enlace, correo, telefono, suplantacion, palabra_bloqueada]
+blandas: [mayusculas, repeticion, imagen_propia, clasificador]
+# Nombres que no se pueden usar como autoría ni como frase (suplantación del proyecto).
+nombres_protegidos: [marcalibros, plataforma pos]
+# Palabras que rechazan solas. Vacía a propósito: cuando haya servidor se integra la librería
+# defamatory-content-review/ (detección de insultos) en vez de mantener una lista aquí.
+palabras_bloqueadas: []
+repeticion_maxima: 6        # el mismo carácter seguido más de estas veces
+mayusculas_minimo: 12       # letras para medir si todo está en mayúsculas
