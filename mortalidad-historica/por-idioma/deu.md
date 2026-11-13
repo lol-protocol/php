@@ -4,7 +4,7 @@
 
 > **Borrador.** Lo escribió un asistente de IA y ninguna persona nativa lo ha revisado. Cada término lleva una **confianza** de su correspondencia con una causa moderna: es una pista para leer un registro antiguo, **no un diagnóstico**. Ver «Cómo leer una causa de defunción» en el [README](../README.md).
 
-8 términos.
+12 términos.
 
 | Término | Causa moderna | CIE-10 | Confianza | Nota | Estado |
 |---|---|---|---|---|---|
@@ -12,7 +12,11 @@
 | Auszehrung | Tuberculosis | A15, A16, A17, A18, A19 | media | también se usó para cualquier enflaquecimiento grave | borrador |
 | Blattern | Viruela | B03 | alta |  | borrador |
 | Fraisen | Convulsiones de la infancia | R56 | media |  | borrador |
+| Gelbfieber | Fiebre amarilla | A95 | alta |  | borrador |
+| Grippe | Gripe (influenza) | J09, J10, J11 | alta |  | borrador |
 | Kindbettfieber | Sepsis puerperal («fiebre del parto») | O85 | alta |  | borrador |
+| Kinderlähmung | Poliomielitis («parálisis infantil») | A80 | alta |  | borrador |
+| Masern | Sarampión | B05 | alta |  | borrador |
 | Schlagfluss | Accidente cerebrovascular | I60, I61, I62, I63, I64 | alta |  | borrador |
 | Schwindsucht | Tuberculosis | A15, A16, A17, A18, A19 | media |  | borrador |
 | Wassersucht | Edema o insuficiencia cardíaca (la «hidropesía» de los registros) | I50, R60 | media |  | borrador |
