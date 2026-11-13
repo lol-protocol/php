@@ -53,19 +53,24 @@ forma (un apodo, una falta de ortografía): no debería, y por eso esos textos s
 
 ## 4. Rectificación
 
-Con la copia de seguridad hecha, sigue «Rectificar» de [`SOLICITUDES.md`](SOLICITUDES.md): un `UPDATE` por fila, en una
-transacción, con `actualizado_en = CURRENT_TIMESTAMP`, y mira que diga **1 fila**. Después anota la corrección:
+Con la copia de seguridad hecha, primero la **simulación**, que no cambia nada:
 
 ```
-php bin/persona.php rectificacion <id> personas.apellidos [--pedido=N]
+php bin/persona.php rectificar <id> personas.apellidos='Quintana Soto' [--pedido=N]
 ```
 
-Dice `Anotada la corrección 1: personas.apellidos de la persona <id>. No se guardó ningún valor.`
+Dice «Se corregiría …», si cambia lo que ve un visitante y termina con «Nada cambió». Después, con `--confirmar`, lo hace
+y dice `Anotada la corrección 1 (sin el valor).` Un dato que el comando no cubre se corrige a mano (sección «Rectificar»
+de [`SOLICITUDES.md`](SOLICITUDES.md)) y se anota con `php bin/persona.php rectificacion <id> <tabla.columna>`.
 
 **Mira:**
+- [ ] Que la simulación **no cambió nada** (mira la ficha y que `correcciones` de `acceso` siga igual).
+- [ ] Con una **fecha de nacimiento reciente** (hace menos de 110 años) en una persona sin defunción, que diga «CAMBIA lo
+  que ve un visitante»: es lo que la hace pasar por una persona viva.
+- [ ] Con un apellido que ya no contiene el del grupo, que avise del grupo.
+- [ ] Que un `sucesos.fecha` de un matrimonio (dos sujetos) se **niegue**.
 - [ ] Que la página de la persona, como visitante y como propietario, muestre el dato nuevo.
-- [ ] Que el campo se escriba como `tabla.columna` en minúsculas: `apellidos` solo falla con «no es una tabla.columna»
-  y código de salida 1.
+- [ ] Que un campo fuera de la lista (`personas.padre_id`) se niegue con código de salida 1 y diga cuáles hay.
 - [ ] Que `acceso` ahora traiga la corrección en `correcciones`, y **que ninguna columna de
   `rectificaciones_persona` guarde un valor**.
 - [ ] Si lo que corriges es «está viva» o «ya falleció», **no es un `UPDATE`**: es la marca de vida (`/{id}/5/`).

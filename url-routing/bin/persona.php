@@ -9,16 +9,21 @@ declare(strict_types=1);
  *   php bin/persona.php acceso <id>                              # everything held about her, as JSON
  *   php bin/persona.php suprimir <id> [--pedido=N]               # shows what would be removed
  *   php bin/persona.php suprimir <id> [--pedido=N] --confirmar   # does it (it cannot be undone without a backup)
+ *   php bin/persona.php rectificar <id> <tabla.columna>=<valor> [--suceso=N] [--pedido=N]   # shows what a correction would do
+ *   php bin/persona.php rectificar <id> <tabla.columna>=<valor> [--suceso=N] [--pedido=N] --confirmar   # does it
  *   php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]  # records a correction made by hand
  *   php bin/persona.php reaplicar                                # lists who came back after restoring a backup
  *   php bin/persona.php reaplicar --confirmar                    # and removes them again
  *
  * --pedido=N is the pedido de retiro that asked for it: for suprimir it is recorded and left as 'retirado' with a note;
- * for rectificacion it is only recorded (the field, never the values).
+ * for rectificar and rectificacion it is only recorded (the field, never the values). rectificar changes one field of
+ * the ficha (see RectificacionRepository::CAMPOS), says whether it changes what a visitor sees and, without
+ * --confirmar, changes nothing; --suceso=N is the event, for the fields of sucesos.
  * Exit code: 0 done, 1 there is no such persona/pedido, 2 usage error or a database that is not ready.
  * The database comes from DB_DSN_GENEALOGY (or .env), as for the web app.
  */
 
+use App\Repositories\Genealogy\RectificacionRepository;
 use App\Repositories\Genealogy\RetiroRepository;
 use App\Repositories\Genealogy\SupresionRepository;
 use App\Support\Config;
@@ -30,6 +35,7 @@ Config::load();
 
 $uso = "Uso: php bin/persona.php acceso <id>\n"
     . "     php bin/persona.php suprimir <id> [--pedido=N] [--confirmar]\n"
+    . "     php bin/persona.php rectificar <id> <tabla.columna>=<valor> [--suceso=N] [--pedido=N] [--confirmar]\n"
     . "     php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]\n"
     . "     php bin/persona.php reaplicar [--confirmar]\n";
 
@@ -38,15 +44,18 @@ $confirmar = false;
 $pedido = null;
 $id = null;
 $que = null;
-$conId = ['acceso', 'suprimir', 'rectificacion'];
+$suceso = null;
+$conId = ['acceso', 'suprimir', 'rectificar', 'rectificacion'];
 foreach (array_slice($argv, 2) as $argumento) {
     if ($argumento === '--confirmar') {
         $confirmar = true;
-    } elseif (preg_match('/^--pedido=(\d+)$/', $argumento, $m) === 1 && in_array($orden, ['suprimir', 'rectificacion'], true)) {
+    } elseif (preg_match('/^--pedido=(\d+)$/', $argumento, $m) === 1 && in_array($orden, ['suprimir', 'rectificar', 'rectificacion'], true)) {
         $pedido = (int)$m[1];
+    } elseif (preg_match('/^--suceso=(\d+)$/', $argumento, $m) === 1 && $orden === 'rectificar') {
+        $suceso = (int)$m[1];
     } elseif ($id === null && ctype_digit($argumento) && in_array($orden, $conId, true)) {
         $id = (int)$argumento;
-    } elseif ($orden === 'rectificacion' && $id !== null && $que === null) {
+    } elseif (in_array($orden, ['rectificar', 'rectificacion'], true) && $id !== null && $que === null) {
         $que = $argumento;
     } else {
         fwrite(STDERR, $uso);
@@ -56,7 +65,9 @@ foreach (array_slice($argv, 2) as $argumento) {
 $necesitaId = in_array($orden, $conId, true);
 if (
     !in_array($orden, [...$conId, 'reaplicar'], true) || $necesitaId !== ($id !== null)
-    || (in_array($orden, ['acceso', 'rectificacion'], true) && $confirmar) || ($orden === 'rectificacion') !== ($que !== null)
+    || (in_array($orden, ['acceso', 'rectificacion'], true) && $confirmar)
+    || in_array($orden, ['rectificar', 'rectificacion'], true) !== ($que !== null)
+    || ($orden === 'rectificar' && !str_contains((string)$que, '='))
 ) {
     fwrite(STDERR, $uso);
     exit(2);
@@ -94,6 +105,23 @@ try {
         }
         $repo->reaplicar();
         echo "Quitadas otra vez.\n";
+        exit(0);
+    }
+
+    if ($orden === 'rectificar') {
+        [$campo, $valor] = explode('=', (string)$que, 2);
+        $r = (new RectificacionRepository($db))->rectificar((int)$id, $campo, $valor, $suceso, $pedido, $confirmar);
+        echo $confirmar
+            ? "Corregido {$campo} de la persona {$id}. Anotada la corrección {$r['correccion']} (sin el valor).\n"
+            : "Se corregiría {$campo} de la persona {$id}.\n";
+        $ve = static fn(bool $oculta): string => $oculta ? 'oculta («Persona viva» o privada)' : 'visible';
+        echo $r['antes_oculta'] === $r['despues_oculta']
+            ? 'No cambia lo que ve un visitante: ' . ($confirmar ? 'sigue ' : 'seguiría ') . $ve($r['despues_oculta']) . ".\n"
+            : 'CAMBIA lo que ve un visitante: la ve ' . $ve($r['antes_oculta']) . ' y ' . ($confirmar ? 'ahora' : 'pasaría a verla') . ' ' . $ve($r['despues_oculta']) . ".\n";
+        if ($r['aviso_grupo'] !== null) {
+            echo $r['aviso_grupo'] . "\n";
+        }
+        echo $confirmar ? "Mira la página como visitante y como propietario.\n" : "Nada cambió. Para hacerlo, repetir con --confirmar.\n";
         exit(0);
     }
 
