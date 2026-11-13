@@ -93,6 +93,10 @@ return [
         'b' => ['controller' => 'Genealogy\HomeController', 'method' => 'buscar', 'ruta' => 3, 'noindex' => true],
         // Asking to withdraw a page: /r/{id}/, open to anyone (see RetiroController).
         'r' => ['controller' => 'Genealogy\RetiroController', 'method' => 'pedir', 'ruta' => 1, 'noindex' => true],
+        // Asking what the site holds about a persona, to correct it or to erase it: /s/{id}/, open to anyone (see SolicitudController).
+        's' => ['controller' => 'Genealogy\SolicitudController', 'method' => 'pedir', 'ruta' => 1, 'noindex' => true],
+        // Reading, with a key, what the site holds about a persona: /e/{token}/ (see EntregaController; the owner makes the link).
+        'e' => ['controller' => 'Genealogy\EntregaController', 'method' => 'ver', 'ruta' => 1, 'noindex' => true],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'Genealogy\CuentaController',
             'method' => 'index',

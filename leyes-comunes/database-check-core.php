@@ -158,9 +158,13 @@ foreach ($expected as $row) {
     $onlyLaw[$row['country_code']][] = $row['law_name'];
 }
 $csvSources = [];
+$urls = [];
+foreach ($side('source_urls.csv') as $row) {
+    $urls[$row['source_id']] = $row['url'];
+}
 foreach ($side('field_sources.csv') as $row) {
     $law = $row['law_name'] !== '' ? $row['law_name'] : ($onlyLaw[$row['country_code']][0] ?? '');
-    $csvSources[] = implode("\t", [$row['country_code'], $law, $row['field'], $row['url'], $row['confidence'], $row['checked']]);
+    $csvSources[] = implode("\t", [$row['country_code'], $law, $row['field'], $urls[$row['source_id']] ?? '(unknown source_id ' . $row['source_id'] . ')', $row['confidence'], $row['checked']]);
 }
 $dbSources = [];
 foreach ($pdo->query("SELECT p.code AS code, l.law_name AS law_name, s.field AS field, s.url AS url, s.confidence AS confidence, s.checked AS checked

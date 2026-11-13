@@ -19,6 +19,8 @@ class PrivacidadSinAtajosTest extends TestCase
     private const PERMITIDAS = [
         'Support/Privacidad.php' => [9, 'builds the masked views and the hidden/visible conditions everything else uses'],
         'Repositories/Genealogy/PersonaRepository.php' => [13, 'walks parent/child ids; every row it returns is joined to personas() (masked) before it is shown, and buscar() asks sqlVisible() of the real table'],
+        'Repositories/Genealogy/RectificacionRepository.php' => [3, 'the owner\'s tool to correct one field of a persona by id (bin/persona.php rectificar): it reads her real row to change it and to say whether the change hides her, and never serves a page'],
+        'Repositories/Genealogy/EntregaRepository.php' => [1, 'asks whether the persona exists before making her a delivery (bin/persona.php entrega, the owner\'s tool); what the page shows comes through SupresionRepository::acceso(), already listed'],
         'Repositories/Genealogy/GrupoRepository.php' => [1, 'delGrupo() only picks which ids to look at; every row the queries return is read from personas() (masked), and each keeps asking the masked grupo_id too, which leaves the hidden ones out'],
         'Repositories/Genealogy/SitemapRepository.php' => [1, 'asks NOT sqlOculta() of the real table'],
         'Repositories/Genealogy/SupresionRepository.php' => [10, 'the owner\'s tool to answer and erase one persona by id (bin/persona.php): it needs the real rows, and it never serves a page'],

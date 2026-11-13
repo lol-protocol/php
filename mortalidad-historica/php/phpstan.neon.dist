@@ -1,0 +1,5 @@
+parameters:
+    level: max
+    paths:
+        - src
+    # pruebas/ejecutar.php queda fuera a propósito: trabaja con el JSON de los vectores, que es `mixed`.

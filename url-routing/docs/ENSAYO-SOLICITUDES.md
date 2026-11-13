@@ -47,25 +47,38 @@ Imprime JSON. **Mira:**
 El JSON **no se manda**. Escribe a mano el resumen legible que decide `SOLICITUDES.md` (lo que un visitante ya ve más
 cantidades) y compáralo con lo que ve un visitante en el sitio: no debe contener nada que el visitante no vea.
 
+**Entrega con clave** (solo si ella necesita ver lo que se oculta): `php bin/persona.php entrega <id>`, y abre el enlace en una
+ventana privada. **Mira:**
+- [ ] Que sin la clave no se vea **nada** de la ficha, y que una clave mala diga «La clave no es correcta».
+- [ ] Que con la clave buena salgan los datos y **ningún nombre de un pariente**.
+- [ ] Que tras 5 claves malas el enlace dé 404 aunque pongas la buena, y que después de 3 aperturas también.
+- [ ] Que `php bin/persona.php entrega <id> --revocar` lo termine, y que el enlace inventado y el revocado den **la misma** 404.
+- [ ] Que mandar el enlace y la clave por **dos medios** no se te haga pesado: si lo es, no lo vas a hacer, y es la regla.
+
 Para los textos libres que la nombran sin estar ligados a ella, corre la simulación de la supresión (paso 5, sin
 `--confirmar`): lista tabla, columna e ids para que los leas a mano. **Mira** si encuentra su nombre escrito de otra
 forma (un apodo, una falta de ortografía): no debería, y por eso esos textos se leen a mano y no se confía en el listado.
 
 ## 4. Rectificación
 
-Con la copia de seguridad hecha, sigue «Rectificar» de [`SOLICITUDES.md`](SOLICITUDES.md): un `UPDATE` por fila, en una
-transacción, con `actualizado_en = CURRENT_TIMESTAMP`, y mira que diga **1 fila**. Después anota la corrección:
+Con la copia de seguridad hecha, primero la **simulación**, que no cambia nada:
 
 ```
-php bin/persona.php rectificacion <id> personas.apellidos [--pedido=N]
+php bin/persona.php rectificar <id> personas.apellidos='Quintana Soto' [--pedido=N]
 ```
 
-Dice `Anotada la corrección 1: personas.apellidos de la persona <id>. No se guardó ningún valor.`
+Dice «Se corregiría …», si cambia lo que ve un visitante y termina con «Nada cambió». Después, con `--confirmar`, lo hace
+y dice `Anotada la corrección 1 (sin el valor).` Un dato que el comando no cubre se corrige a mano (sección «Rectificar»
+de [`SOLICITUDES.md`](SOLICITUDES.md)) y se anota con `php bin/persona.php rectificacion <id> <tabla.columna>`.
 
 **Mira:**
+- [ ] Que la simulación **no cambió nada** (mira la ficha y que `correcciones` de `acceso` siga igual).
+- [ ] Con una **fecha de nacimiento reciente** (hace menos de 110 años) en una persona sin defunción, que diga «CAMBIA lo
+  que ve un visitante»: es lo que la hace pasar por una persona viva.
+- [ ] Con un apellido que ya no contiene el del grupo, que avise del grupo.
+- [ ] Que un `sucesos.fecha` de un matrimonio (dos sujetos) se **niegue**.
 - [ ] Que la página de la persona, como visitante y como propietario, muestre el dato nuevo.
-- [ ] Que el campo se escriba como `tabla.columna` en minúsculas: `apellidos` solo falla con «no es una tabla.columna»
-  y código de salida 1.
+- [ ] Que un campo fuera de la lista (`personas.padre_id`) se niegue con código de salida 1 y diga cuáles hay.
 - [ ] Que `acceso` ahora traiga la corrección en `correcciones`, y **que ninguna columna de
   `rectificaciones_persona` guarde un valor**.
 - [ ] Si lo que corriges es «está viva» o «ya falleció», **no es un `UPDATE`**: es la marca de vida (`/{id}/5/`).

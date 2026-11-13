@@ -7,8 +7,8 @@
     "jurisdiction": "CPDCP (Commission for the Protection of Personal Data; not yet established per secondary sources)",
     "enactment_date": "2019-10-10",
     "effective_date": "2019-10-10",
-    "scope": "Data subjects in Congo (unconfirmed)",
-    "applies_to": "Public and private controllers and processors (unconfirmed)",
+    "scope": "All entities processing personal data within the Republic of Congo",
+    "applies_to": "All entities processing personal data within the Republic of Congo",
     "key_requirements": "Notification to the Commission and prior authorisation for certain sensitive processing; DPO appointment for public entities or large-scale processing",
     "data_categories": "Personal data; sensitive data (unconfirmed)",
     "retention_period": "Not specified",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.sgg.cg/JO/2019/congo-jo-2019-45.pdf",
@@ -45,14 +45,14 @@
         "checked": "2026-10-25"
       },
       "scope": {
-        "url": "https://www.dlapiperdataprotection.com/?c=CG&t=law",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.consentstack.io/regulations/cg-law292019",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
-        "url": "https://www.dlapiperdataprotection.com/?c=CG&t=law",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.consentstack.io/regulations/cg-law292019",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://www.dlapiperdataprotection.com/?c=CG&t=law",
@@ -76,6 +76,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Public and private controllers and processors (unconfirmed)",
+        "to": "All entities processing personal data within the Republic of Congo"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects in Congo (unconfirmed)",
+        "to": "All entities processing personal data within the Republic of Congo"
+      },
       {
         "date": "2026-10-25",
         "field": "row",
