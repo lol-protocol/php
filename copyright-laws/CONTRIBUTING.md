@@ -11,14 +11,14 @@ The data lives in one file, `jurisdictions/copyright_laws_master.csv`. Everythin
 
 ## 2. Record where a value comes from
 
-For each value you changed, add or update a line in `jurisdictions/field_sources.csv`:
+For each value you changed, record its source with `npm run sources -- add <CODE> <field> <url> [--confidence=high|medium|low] [--law="law name"]`. It writes one line in `jurisdictions/field_sources.csv` (which points at its URL by `source_id`) and, if the URL is new, one in `jurisdictions/source_urls.csv` (each URL once; the id is the hash of the URL):
 
 ```
-country_code,law_name,field,url,confidence,checked
+country_code,law_name,field,source_id,confidence,checked
 ```
 
 - `law_name` may be empty when the jurisdiction has a single law; it is required otherwise.
-- `url` is a public page you actually opened. `checked` is the day you looked at it.
+- The URL is a public page you actually opened. `checked` is the day you looked at it.
 - One line per law and field. Replace the old line when you change the value.
 
 ## 3. Record the change
@@ -44,9 +44,9 @@ Commit the generated files together with the CSV: `npm run build:check` must pas
 
 The weekly link check (`.github/workflows/laws-links.yml`) keeps one open issue, "Enlaces de referencia rotos (leyes)", with every broken URL and the laws that rely on it. To fix one:
 
-1. Find the page that replaces it, preferably an official one (the law's text or the authority's own page), and open it. The URL in `field_sources.csv` or `linked_resources` must be a page you actually read.
-2. Replace the URL in every place it appears: `field_sources.csv` (and set `checked` to today) and, if it is a law's own link, `linked_resources` in the master CSV.
-3. (A dead link: `npm run replace-url -- <old URL> <new URL>` swaps it in the master CSV and in `field_sources.csv` at once.) Run `npm run changes` and `npm run build` (an edit of `linked_resources` is a recorded change), then `npm run validate`, `npm run build:check` and `npm test`.
+1. Find the page that replaces it, preferably an official one (the law's text or the authority's own page), and open it. The URL in `source_urls.csv` or `linked_resources` must be a page you actually read.
+2. Replace the URL in every place it appears. Each URL is stored once in `source_urls.csv`, so `npm run replace-url` (step 3) does it all: that file and, if it is a law's own link, `linked_resources` in the master CSV.
+3. (A dead link: `npm run replace-url -- <old URL> <new URL>` swaps it in the master CSV and in `source_urls.csv` at once.) Run `npm run changes` and `npm run build` (an edit of `linked_resources` is a recorded change), then `npm run validate`, `npm run build:check` and `npm test`.
 4. Run the "Leyes - enlaces de referencia" workflow by hand (`workflow_dispatch`) on your branch: from some machines the sites are unreachable, and this is the check that tells you the new URL answers. The issue closes itself on the next run where every link answers.
 
 A 401, 403, 429, a 5xx that persists, a timeout or a redirect loop is only a warning, not a broken link: leave it unless the page is really gone.

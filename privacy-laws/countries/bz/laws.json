@@ -18,7 +18,7 @@
     "deceased_data": "",
     "research_exemption": "",
     "genetic_data": "",
-    "website_url": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+    "website_url": "https://www.dataguidance.com/jurisdiction/belize",
     "language": "English",
     "frameworks": "",
     "frameworks_not": "",
@@ -30,7 +30,7 @@
     "last_checked": "2026-10-25",
     "sources": {
       "law_name": {
-        "url": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+        "url": "https://www.dataguidance.com/jurisdiction/belize",
         "confidence": "high",
         "checked": "2026-10-25"
       },
@@ -55,7 +55,7 @@
         "checked": "2026-10-25"
       },
       "key_requirements": {
-        "url": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+        "url": "https://www.dataguidance.com/jurisdiction/belize",
         "confidence": "medium",
         "checked": "2026-10-25"
       },
@@ -65,12 +65,18 @@
         "checked": "2026-10-25"
       },
       "penalties_range": {
-        "url": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+        "url": "https://www.dataguidance.com/jurisdiction/belize",
         "confidence": "low",
         "checked": "2026-10-25"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "website_url",
+        "from": "https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf",
+        "to": "https://www.dataguidance.com/jurisdiction/belize"
+      },
       {
         "date": "2026-10-25",
         "field": "row",
