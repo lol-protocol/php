@@ -83,6 +83,10 @@ jobs:
       - name: Pruebas
         run: python -m pytest -q tests
 
+      # Miniaturas de las plantillas del editor (no se versionan): la pagina las carga si estan junto a ella.
+      - name: Sprites de las plantillas del editor
+        run: python generator/editor_datos.py --sprites
+
       # El catalogo completo (SVG, JPG, hojas de revision) no se versiona en git:
       # se publica aqui, y el manifest y unas pocas muestras si estan versionados.
       - uses: actions/upload-artifact@v7
@@ -94,5 +98,6 @@ jobs:
             marcalibros_b/catalog/jpg2x
             marcalibros_b/catalog/revision
             marcalibros_b/catalog/manifest.json
+            marcalibros_b/editor/plantillas
           if-no-files-found: error
           retention-days: 30
