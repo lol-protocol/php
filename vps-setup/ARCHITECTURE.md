@@ -183,10 +183,10 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - ✅ Tomcat solo en `127.0.0.1:8080`; con la app en la raíz, Nginx devuelve 404 para `/manager` y `/host-manager` (`06_D`)
 - ✅ BIND (si se usa) es solo autoritativo, sin recursión, y solo transfiere la zona a OVH (`06_C`)
 - ✅ Apps Python bajo systemd con `NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=full`, `ProtectHome` (`06_B`)
-- ✅ Marcalibros (`06_E`): el código es de root (la app no puede reescribirse), los datos van fuera de la carpeta web en `/var/lib/marcalibros` (750, `www-data`) y Nginx solo expone `public/`
+- ✅ Marcalibros (`06_E`): el código es de root (la app no puede reescribirse), los datos van fuera de la carpeta web en `/var/lib/marcalibros` (750, del usuario `app-marcalibros`, que tiene su propio pool de PHP-FPM) y Nginx solo expone `public/`
 - ✅ Webmin (si se instala, `02_J`) escucha solo en `127.0.0.1`: no hay puerto 10000 abierto; se entra por túnel SSH. `WEBMIN_ALLOW_FROM=<IP fija>` o `WEBMIN_PUBLIC=1` lo abren a propósito
 - ✅ Apps Python (`06_B`): usuario de sistema, carpeta 750 y base de datos propios (`app-<nombre>` / `app_<nombre>`): una app comprometida no lee el código, el `.env` ni la base de otra
-- ✅ Apps PHP y Python: usuario propio `app-<nombre>`, carpeta 750 y base propia; las PHP con su pool de PHP-FPM. ⚠️ Marcalibros (`06_E`) sigue como `www-data`; ver "Límites conocidos" en el README
+- ✅ Apps PHP, Python y Marcalibros: usuario propio `app-<nombre>`, carpeta 750 y, las PHP, su pool de PHP-FPM; las PHP y Python, además, su base de datos
 
 ### Base de Datos
 - ✅ PostgreSQL sin acceso externo
