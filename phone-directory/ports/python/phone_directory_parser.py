@@ -127,11 +127,129 @@ class GeoLocation:
         }
 
 
-class MultiLanguagePhoneDirectoryParser:
-    """Parse phone directories in multiple languages."""
+# Letter and combining-mark classes: Python's re has no \p{L} or \p{M}.
+_L = r"[^\W\d_]"
+_M = "[̀-ͯ]"
+_WORD = rf"{_L}(?:{_L}|{_M}|['’.\-])*"
+# Not preceded / not followed by a letter or a digit.
+_NOT_ALNUM_BEFORE = r"(?<![^\W_])"
+_NOT_ALNUM_AFTER = r"(?![^\W_])"
 
-    STREET_MARKERS = {
-        'es': ['calle', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
+
+class PhonePattern:
+    """Phone formats, as in the PHP PhonePattern: digit groups, the named exchange of early directories
+    ("BUtterfield 8-4521") and, per language, the formats of that language's countries."""
+
+    REGEX = r'\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b|\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b'
+
+    # The looser formats are kept per language because they would read a house number as part of a phone
+    # in another language's directory.
+    LANGUAGE_FORMATS = {
+        'fr': [r'(?:\+33[ .]?[1-9]|0[1-9])(?:[ .]?\d{2}){4}'],
+        'de': [r'(?:\+49[ ]?[1-9]\d{1,3}|\(0\d{2,4}\)|0\d{2,4})[ /-]?\d{3,8}(?:-\d{1,4})?'],
+        'it': [r'(?:\+39[ ]?)?0\d{1,3}[ /-]?\d{4,8}'],
+        'pt': [r'(?:\+351[ ]?)?(?:[2-9]\d[ ]\d{3}[ ]\d{4}|[2-9]\d{2}[ ]\d{3}[ ]\d{3})'],
+        'es': [r'(?:\+34[ ]?)?[6-9]\d[ ]\d{3}(?:[ ]\d{2}){2}',
+               r'(?:\(\d{1,3}\)[ ]?|\d{1,3}[ -])\d{3}[ -]\d{3,4}'],
+    }
+    # Not preceded by a digit or a "+", not followed by a separator and a digit.
+    _BEFORE = r'(?<![\d+])'
+    _AFTER = r'(?![ ./-]?\d)'
+    _cache: Dict[str, 're.Pattern'] = {}
+
+    @classmethod
+    def regex_for(cls, language: Optional[str] = None) -> 're.Pattern':
+        """The base formats plus those of `language`'s countries (English and unknown languages: the base)."""
+        key = language if language in cls.LANGUAGE_FORMATS else ''
+        if key not in cls._cache:
+            parts = [cls.REGEX] + [cls._BEFORE + '(?:' + f + ')' + cls._AFTER for f in cls.LANGUAGE_FORMATS.get(key, [])]
+            cls._cache[key] = re.compile('|'.join(parts))
+        return cls._cache[key]
+
+    @classmethod
+    def find(cls, line: str, regex: 're.Pattern') -> Optional[str]:
+        """The phone in `line`, also when the scan misread a digit as a letter ("555-l23-4567"); None if none."""
+        match = regex.search(line)
+        if match:
+            return match.group()
+        repaired = cls.repair_ocr_digits(line)
+        match = regex.search(repaired) if repaired != line else None
+        return match.group() if match else None
+
+    _OCR_CHEAP_TEST = re.compile(r'\d[ .\-]?[OolI]|[OolI][ .\-]?\d')
+    _OCR_RUN = re.compile(r'(?<![^\W_])[\dOolI](?:[ .\-]?[\dOolI])+(?![^\W_])')
+
+    @classmethod
+    def repair_ocr_digits(cls, line: str) -> str:
+        """"l" or "I" for 1 and "O" or "o" for 0 inside what looks like a phone number ("555-l23-4567" gives
+        "555-123-4567"), only in a run with at least 6 real digits and at most 2 such letters, so words ("Oil")
+        and exchange names ("BUtterfield 8-4521") are left alone."""
+        if not cls._OCR_CHEAP_TEST.search(line):
+            return line
+
+        def fix(m):
+            digits = len(re.findall(r'\d', m.group()))
+            letters = len(re.findall(r'[OolI]', m.group()))
+            return m.group().translate(str.maketrans('OolI', '0011')) if 0 < letters <= 2 and digits >= 6 else m.group()
+        return cls._OCR_RUN.sub(fix, line)
+
+    @staticmethod
+    def name_beside_phone(line: str, phone: str) -> Optional[str]:
+        """What a line says besides its phone, when that could be a name: "SMITH, John ........ 555-123-4567"
+        gives "SMITH, John". None when nothing is left or what is left has a digit ("555-123-4567 ext. 12")."""
+        offset = line.find(phone)
+        if offset < 0:
+            return None
+        rest = (line[:offset] + ' ' + line[offset + len(phone):]).strip(' \t.,:;-–—')
+        return rest if re.search(_L, rest) and not re.search(r'\d', rest) else None
+
+    @classmethod
+    def is_only_a_phone(cls, text: str, language: Optional[str] = None) -> bool:
+        """True when `text`, trimmed, is nothing but a single phone match (so it is not also a street)."""
+        trimmed = text.strip()
+        match = cls.regex_for(language).search(trimmed) if trimmed else None
+        return bool(match) and match.group() == trimmed
+
+
+class StreetFallback:
+    """A street with no street-type word ("9 Wexford Close", "8 Clos Saint-Éloi"): the whole line is a house
+    number followed only by words. Same three shapes as the PHP StreetFallback."""
+
+    _NUMBER_FIRST = re.compile(rf"\d{{1,5}}[a-z]?\s+{_WORD}(?:\s+{_WORD})*", re.IGNORECASE)
+    _NUMBER_LAST = re.compile(rf"{_WORD}(?:\s+{_WORD})*\s+\d{{1,5}}[a-z]?", re.IGNORECASE)
+    _DWELLING = re.compile(r"(?:apt|apartment|unit|flat|suite|ste|bldg|building)\.?\s*#?\d{1,5}[a-z]?"
+                           rf"(?:\s+(?:{_L}|\d|#)(?:{_L}|{_M}|\d|['’.\-#])*)*", re.IGNORECASE)
+
+    @classmethod
+    def number_first(cls, line: str) -> Optional[str]:
+        trimmed = line.strip()
+        return trimmed if cls._NUMBER_FIRST.fullmatch(trimmed) else None
+
+    @classmethod
+    def number_last(cls, line: str) -> Optional[str]:
+        """"Los Aromos 123", "Travessa do Carmo 5": only words, then the house number. Also the shape of
+        "Restaurante Siglo 21", so callers only ask once the record's name has been read."""
+        trimmed = line.strip()
+        return trimmed if cls._NUMBER_LAST.fullmatch(trimmed) else None
+
+    @classmethod
+    def dwelling(cls, line: str) -> Optional[str]:
+        """"Apt 4 Building 7", "Unit 3", "Flat 2B Rose Court": an English address that opens with the dwelling."""
+        trimmed = line.strip()
+        return trimmed if cls._DWELLING.fullmatch(trimmed) else None
+
+
+class StreetRules:
+    """What counts as a street, per language (same rules as the PHP StreetRules): strong (a street word, or a
+    house number first and only words after it) or weak (the house number last, or a dwelling line, which
+    only count once the record's name is read)."""
+
+    SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it']
+    # Languages whose addresses put the house number after the street name ("Calle Mayor 12", "Via Roma 10").
+    NUMBER_LAST_LANGUAGES = ('es', 'pt', 'it', 'de')
+
+    MARKERS = {
+        'es': ['calle', 'c/', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
         'en': ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln',
                'boulevard', 'blvd', 'circle', 'cir'],
         'fr': ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
@@ -139,9 +257,274 @@ class MultiLanguagePhoneDirectoryParser:
         'de': ['ring', 'hof'],
         'it': ['via', 'viale', 'corso', 'piazza', 'largo', 'strada'],
     }
-
     # German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
-    STREET_SUFFIXES = {'de': ['straße', 'strasse', 'allee', 'weg', 'platz']}
+    SUFFIXES = {'de': ['straße', 'strasse', 'allee', 'weg', 'platz']}
+    # Street words that are also the usual abbreviation opening a name ("Dr." doctor, "St." saint): they only
+    # make a street when the line has a digit or they are not its first word.
+    NAME_ABBREVIATIONS = {'en': ['dr', 'st']}
+
+    _patterns: Dict[str, 're.Pattern'] = {}
+    _abbreviations: Dict[str, Optional['re.Pattern']] = {}
+
+    @classmethod
+    def pattern(cls, language: str) -> 're.Pattern':
+        """The street words of `language` as a regex; the NAME_ABBREVIATIONS are not in it."""
+        if language not in cls._patterns:
+            if language not in cls.MARKERS:
+                raise ValueError(f"Unsupported language for street pattern: {language}. "
+                                 f"Supported languages: {', '.join(cls.SUPPORTED_LANGUAGES)}")
+            markers = [m for m in cls.MARKERS[language] if m not in cls.NAME_ABBREVIATIONS.get(language, [])]
+            # Not \b: "c/" ends in a slash, and \b only sees a word edge after a letter or digit.
+            body = _NOT_ALNUM_BEFORE + '(?:' + '|'.join(re.escape(m) for m in markers) + ')' + _NOT_ALNUM_AFTER
+            suffixes = [re.escape(s) for s in cls.SUFFIXES.get(language, [])]
+            if suffixes:
+                body += '|(?:' + '|'.join(suffixes) + r')\b'
+            cls._patterns[language] = re.compile(body, re.IGNORECASE)
+        return cls._patterns[language]
+
+    @classmethod
+    def _abbreviation_pattern(cls, language: str) -> Optional['re.Pattern']:
+        if language not in cls._abbreviations:
+            words = cls.NAME_ABBREVIATIONS.get(language, [])
+            cls._abbreviations[language] = re.compile(
+                _NOT_ALNUM_BEFORE + '(?:' + '|'.join(re.escape(w) for w in words) + ')' + _NOT_ALNUM_AFTER,
+                re.IGNORECASE) if words else None
+        return cls._abbreviations[language]
+
+    @classmethod
+    def has_street_word(cls, line: str, language: str) -> bool:
+        """Whether the line has a street word (a strong street)."""
+        if cls.pattern(language).search(line):
+            return True
+        abbreviation = cls._abbreviation_pattern(language)
+        matches = list(abbreviation.finditer(line)) if abbreviation else []
+        if not matches:
+            return False
+        if re.search(r'\d', line):
+            return True
+        return any(line[:m.start()].strip() != '' for m in matches)
+
+    @classmethod
+    def strong(cls, line: str, language: str) -> Optional[str]:
+        """The line, when it is a street with a street word or a house number first; None otherwise."""
+        if cls.has_street_word(line, language):
+            return line
+        if PhonePattern.is_only_a_phone(line, language):
+            return None
+        return StreetFallback.number_first(line)
+
+    @classmethod
+    def after_name(cls, line: str, language: str) -> Optional[str]:
+        """An address that only counts once the record's name is read: a street with no street word in a
+        language that writes the house number last ("Los Aromos 123"); a dwelling line in English."""
+        if language == 'en':
+            return StreetFallback.dwelling(line)
+        return StreetFallback.number_last(line) if language in cls.NUMBER_LAST_LANGUAGES else None
+
+    @classmethod
+    def street_word_offset(cls, text: str, language: str) -> Optional[int]:
+        """Where the street starts in the text before a number-last house number ("GARCÍA Juan Calle Mayor"
+        gives the offset of "Calle"): the first street word after the first two words, which belong to the
+        name. A street word that is a suffix ("Hauptstraße") starts the street at the start of its word."""
+        for match in cls.pattern(language).finditer(text):
+            before = text[:match.start()]
+            word_start = re.search(rf"(?:{_L}|{_M}|['’.\-])*$", before)
+            offset = match.start() - len(word_start.group())
+            if len(re.findall(r'\S+', text[:offset])) >= 2:
+                return offset
+        return None
+
+
+@dataclass(frozen=True)
+class LineFacts:
+    """What one line of a block says, worked out once: its phone, its street (with or without the record's
+    name already read) and, for a phone line, the name beside the phone."""
+
+    line: str
+    phone: Optional[str]
+    strong_street: Optional[str]
+    after_name_street: Optional[str]
+    name_beside_phone: Optional[str]
+
+    @classmethod
+    def of(cls, line: str, language: str, phone_regex: 're.Pattern') -> 'LineFacts':
+        phone = PhonePattern.find(line, phone_regex)
+        return cls(
+            line, phone,
+            StreetRules.strong(line, language),
+            StreetRules.after_name(line, language),
+            None if phone is None else PhonePattern.name_beside_phone(PhonePattern.repair_ocr_digits(line), phone))
+
+    def street(self, after_name: bool) -> Optional[str]:
+        """The street this line gives, depending on whether the record's name has been read."""
+        if self.strong_street is not None:
+            return self.strong_street
+        return self.after_name_street if after_name else None
+
+    def name(self, after_name: bool) -> Optional[str]:
+        """The name this line can give: a line of text, or what a phone line has beside its phone."""
+        if self.street(after_name) is not None:
+            return None
+        return self.line if self.phone is None else self.name_beside_phone
+
+
+class BlockReader:
+    """Reads a block of lines (between two blank lines) into records, looking at each line once (LineFacts).
+    Same rules as the PHP BlockReader: words the scan cut with a hyphen are put back together; a block can hold
+    several records, a new one starting at a name when a street follows it right away; the street is the first
+    one unless it was weak and a strong one comes later; any other text after the name is a note."""
+
+    @classmethod
+    def read(cls, lines: List[str], classify) -> List[Dict]:
+        lines, origin = cls._join_hyphenated_words(lines)
+        facts = [classify(line) for line in lines]
+
+        records: List[Dict] = []
+        record = cls._empty_record(0)
+        strong_street = False
+
+        for i, line in enumerate(facts):
+            has_name = record['name'] is not None
+
+            if (has_name and record['street'] is not None and line.name(True) is not None
+                    and i + 1 < len(facts) and facts[i + 1].street(True) is not None):
+                records.append(record)
+                record = cls._empty_record(origin[i])
+                strong_street = False
+                has_name = False
+
+            if record['phone'] is None and line.phone is not None:
+                record['phone'] = line.phone
+
+            street = line.street(has_name)
+            if street is not None and (record['street'] is None or (not strong_street and line.strong_street is not None)):
+                record['street'] = street
+                strong_street = line.strong_street is not None
+
+            name = line.name(has_name)
+            if not has_name and name is not None:
+                record['name'] = name
+            elif has_name and line.phone is None and street is None:
+                record['notes'].append(line.line)
+
+        records.append(record)
+        return records
+
+    @staticmethod
+    def _empty_record(offset: int) -> Dict:
+        return {'offset': offset, 'name': None, 'phone': None, 'street': None, 'notes': []}
+
+    @staticmethod
+    def _join_hyphenated_words(lines: List[str]):
+        """"WASHING- / TON, George" becomes "WASHINGTON, George" (a name cut at its own hyphen loses it)."""
+        joined: List[str] = []
+        origin: List[int] = []
+        for i, line in enumerate(lines):
+            if joined and re.search(rf'{_L}-$', joined[-1]) and re.match(_L, line):
+                joined[-1] = joined[-1][:-1] + line
+                continue
+            joined.append(line)
+            origin.append(i)
+        return joined, origin
+
+
+class SingleLineEntrySplitter:
+    """Splits a single "NAME ... STREET ... PHONE" line, the layout most historical directories use: by
+    delimited fields (commas, dot leaders, tabs, runs of spaces or dashes) or, with none, at the first digit
+    once the phone is out. Same strategies as the PHP SingleLineEntrySplitter."""
+
+    LEADER_CHARS = " \t\n\r\0\x0b.,-–—"
+    # At least 2 dots for a dot leader (so "Mrs. John" and "St. Louis" do not split) and at least 2 spaces or dashes.
+    FIELD_DELIMITER = re.compile(r'\s*,\s*|(?:\.\s?){2,}|\t+|[ ]{2,}|[-–—]{2,}')
+
+    @classmethod
+    def split(cls, line: str, looks_like_street, surname_word_count: int = 1,
+              language: Optional[str] = None, street_start=None) -> Optional[Dict]:
+        # A phone the scan misread ("555-l23-4567") would otherwise pass for a street starting with a digit.
+        line = PhonePattern.repair_ocr_digits(line)
+        fields = [f.strip(' \n\r\t\x0b\0') for f in cls.FIELD_DELIMITER.split(line) if f]
+
+        if len(fields) >= 2:
+            result = cls._split_by_fields(fields, looks_like_street, language)
+            if result is not None:
+                return result
+
+        result = cls._split_by_digit_boundary(line, looks_like_street, language, street_start)
+        if result is not None:
+            result['name'] = cls._assume_surname_first(result['name'], surname_word_count)
+        return result
+
+    @staticmethod
+    def _assume_surname_first(name: str, surname_word_count: int) -> str:
+        """"SMITH John" -> "SMITH, John"; leaves an already-comma'd or too-short name alone."""
+        if ',' in name:
+            return name
+        words = name.split()
+        if len(words) <= surname_word_count:
+            return name
+        return f"{' '.join(words[:surname_word_count])}, {' '.join(words[surname_word_count:])}"
+
+    @classmethod
+    def _split_by_fields(cls, fields: List[str], looks_like_street, language: Optional[str]) -> Optional[Dict]:
+        phone = next((f for f in fields if PhonePattern.is_only_a_phone(f, language)), None)
+
+        street_index = next((i for i, f in enumerate(fields) if f != phone and looks_like_street(f)), None)
+        # No field alone reads as a street by its marker word: the first that at least starts with a digit.
+        if street_index is None:
+            street_index = next((i for i, f in enumerate(fields) if f != phone and re.match(r'\d', f)), None)
+
+        # A street field is only meaningful with a name field before it in the same record.
+        if street_index is None or street_index == 0:
+            return None
+
+        name = ', '.join(f for i, f in enumerate(fields) if i < street_index and f != phone)
+        street = fields[street_index]
+
+        # A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
+        if not re.search(_L, name) or street == '':
+            return None
+        return {'name': name, 'street': street, 'phone': phone}
+
+    @classmethod
+    def _split_by_digit_boundary(cls, line: str, looks_like_street, language: Optional[str], street_start) -> Optional[Dict]:
+        rest = line
+        phone = None
+
+        match = PhonePattern.regex_for(language).search(line)
+        if match:
+            phone = match.group()
+            # A line that opens with the phone ("555-123-4567 ext. 12") is the end of a record, not a whole one.
+            if not re.search(_L, line[:match.start()]):
+                return None
+            rest = line[:match.start()] + line[match.end():]
+
+        tail = re.search(r'\d.*', rest, re.DOTALL)
+        if not tail:
+            return None
+
+        name = rest[:tail.start()].strip(cls.LEADER_CHARS)
+        street = tail.group().strip(cls.LEADER_CHARS)
+
+        cut = street_start(name) if street_start is not None and name != '' else None
+        if cut is not None and 0 < cut < len(name):
+            street = name[cut:] + ' ' + street
+            name = name[:cut].strip(cls.LEADER_CHARS)
+
+        if name == '' or street == '':
+            return None
+
+        # With no phone and no recognized street word, a bare "word + number" is too ambiguous to split out.
+        if phone is None and not looks_like_street(street):
+            return None
+        return {'name': name, 'street': street, 'phone': phone}
+
+
+class MultiLanguagePhoneDirectoryParser:
+    """Parse phone directories in multiple languages (same parsing as the PHP MultiLanguagePhoneDirectoryParser:
+    one-line entries, blocks of lines, businesses and persons)."""
+
+    STREET_MARKERS = StreetRules.MARKERS
+    STREET_SUFFIXES = StreetRules.SUFFIXES
 
     # Only vocabulary distinctive enough to override English, the baseline language; words that are also
     # English ("plaza", "avenue", "via") would otherwise misdetect an English directory.
@@ -153,73 +536,18 @@ class MultiLanguagePhoneDirectoryParser:
         'it': ['viale', 'corso', 'piazza', 'largo', 'strada'],
     }
 
-    SEPARATOR_PATTERN = re.compile(r'^(?:[-=_*]\s*){2,}$')
-
-    # Same as PhonePattern::REGEX: digit groups (555-123-4567, 5551234567) and the named exchange of early
-    # directories ("BUtterfield 8-4521"), which needs a separator on both sides of the word.
-    PHONE_PATTERN = r'\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b|\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b'
-
-    # Same as PhonePattern::LANGUAGE_FORMATS: the formats of each language's countries, kept per language
-    # because the looser ones would read a house number as part of a phone in another language's directory.
-    LANGUAGE_PHONE_FORMATS = {
-        'fr': [r'(?:\+33[ .]?[1-9]|0[1-9])(?:[ .]?\d{2}){4}'],
-        'de': [r'(?:\+49[ ]?[1-9]\d{1,3}|\(0\d{2,4}\)|0\d{2,4})[ /-]?\d{3,8}(?:-\d{1,4})?'],
-        'it': [r'(?:\+39[ ]?)?0\d{1,3}[ /-]?\d{4,8}'],
-        'pt': [r'(?:\+351[ ]?)?(?:[2-9]\d[ ]\d{3}[ ]\d{4}|[2-9]\d{2}[ ]\d{3}[ ]\d{3})'],
-        'es': [r'(?:\+34[ ]?)?[6-9]\d[ ]\d{3}(?:[ ]\d{2}){2}',
-               r'(?:\(\d{1,3}\)[ ]?|\d{1,3}[ -])\d{3}[ -]\d{3,4}'],
+    # Words that name a kind of business, or a family firm ("Smith & Sons", "Hnos."), and that almost nobody
+    # has for a surname. A word many people carry as a surname (Baker, Miller, Bank...) does not belong here.
+    ENTITY_TYPE_MARKERS = {
+        'es': ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel', 'banco', 'farmacia', 'hospital', 'hnos', 'hermanos', 'hijos', 'sucesores', 'taller', 'ferretería', 'clínica', 'panadería', 'carnicería', 'librería', 'zapatería'],
+        'en': ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy', 'hospital', 'sons', 'bros', 'associates', 'enterprises', 'industries', 'services', 'plumbing', 'garage', 'bakery', 'hardware', 'clinic', 'pub', 'motel'],
+        'fr': ['sarl', 'sas', 'eirl', 'eurl', 'magasin', 'restaurant', 'hôtel', 'banque', 'pharmacie', 'hôpital', 'frères', 'boulangerie', 'boucherie', 'garage', 'clinique', 'quincaillerie', 'cabinet'],
+        'pt': ['ltda', 'lda', 'eireli', 'empresa', 'comercial', 'loja', 'padaria', 'restaurante', 'hotel', 'banco', 'farmácia', 'hospital', 'irmãos', 'filhos', 'oficina', 'clínica', 'mercearia', 'ferragens', 'sapataria'],
+        'de': ['gmbh', 'ag', 'kg', 'ohg', 'apotheke', 'bäckerei', 'gasthaus', 'restaurant', 'hotel', 'bank', 'krankenhaus', 'gebrüder', 'söhne', 'werkstatt', 'metzgerei', 'tischlerei', 'klinik'],
+        'it': ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel', 'banca', 'farmacia', 'ospedale', 'fratelli', 'figli', 'officina', 'macelleria', 'ferramenta', 'pasticceria', 'pizzeria', 'clinica'],
     }
-    # Not preceded by a digit or a "+", not followed by a separator and a digit.
-    _PHONE_BEFORE = r'(?<![\d+])'
-    _PHONE_AFTER = r'(?![ ./-]?\d)'
-    _phone_regexes = {}
 
-    @classmethod
-    def phone_regex(cls, language: Optional[str] = None) -> 're.Pattern':
-        """The base formats plus those of `language`'s countries (English and unknown languages: the base)."""
-        key = language if language in cls.LANGUAGE_PHONE_FORMATS else ''
-        if key not in cls._phone_regexes:
-            parts = [cls.PHONE_PATTERN] + [cls._PHONE_BEFORE + '(?:' + f + ')' + cls._PHONE_AFTER
-                                           for f in cls.LANGUAGE_PHONE_FORMATS.get(key, [])]
-            cls._phone_regexes[key] = re.compile('|'.join(parts))
-        return cls._phone_regexes[key]
-
-    _OCR_CHEAP_TEST = re.compile(r'\d[ .\-]?[OolI]|[OolI][ .\-]?\d')
-    _OCR_RUN = re.compile(r'(?<![^\W_])[\dOolI](?:[ .\-]?[\dOolI])+(?![^\W_])')
-
-    @classmethod
-    def repair_ocr_digits(cls, line: str) -> str:
-        """Same as PhonePattern::repairOcrDigits: "l" or "I" for 1 and "O" or "o" for 0 inside what looks like a
-        phone number ("555-l23-4567" gives "555-123-4567"), only in a run with at least 6 real digits and at
-        most 2 such letters, so words ("Oil") and exchange names ("BUtterfield 8-4521") are left alone."""
-        if not cls._OCR_CHEAP_TEST.search(line):
-            return line
-
-        def fix(m):
-            digits = len(re.findall(r'\d', m.group()))
-            letters = len(re.findall(r'[OolI]', m.group()))
-            return m.group().translate(str.maketrans('OolI', '0011')) if 0 < letters <= 2 and digits >= 6 else m.group()
-        return cls._OCR_RUN.sub(fix, line)
-
-    def phone_in(self, line: str, language: Optional[str] = None) -> Optional[str]:
-        """The line's phone, also when the scan misread a digit as a letter ("555-l23-4567"); None if it has none."""
-        regex = self.phone_regex(language)
-        match = regex.search(line)
-        if match:
-            return match.group()
-        repaired = self.repair_ocr_digits(line)
-        match = regex.search(repaired) if repaired != line else None
-        return match.group() if match else None
-
-    @staticmethod
-    def name_beside_phone(line: str, phone: str) -> Optional[str]:
-        """What a line says besides its phone, when that could be a name: "SMITH, John ........ 555-123-4567"
-        gives "SMITH, John". None when nothing is left or what is left has a digit ("555-123-4567 ext. 12")."""
-        offset = line.find(phone)
-        if offset < 0:
-            return None
-        rest = (line[:offset] + ' ' + line[offset + len(phone):]).strip(' \t.,:;-\u2013\u2014')
-        return rest if re.search(r'[^\W\d_]', rest) and not re.search(r'\d', rest) else None
+    SEPARATOR_PATTERN = re.compile(r'^(?:[-=_*]\s*){2,}$')
 
     def __init__(self, country_code: str = 'US'):
         self.country_code = country_code.upper()
@@ -235,8 +563,8 @@ class MultiLanguagePhoneDirectoryParser:
         parts.extend(re.escape(s) + r'\b' for s in suffixes)
         return re.compile('|'.join(parts), re.IGNORECASE) if parts else None
 
-    # Same as the PHP LANGUAGE_DETECTION_LINES: "Via Roma 10" opens the line and ends with the number,
-    # a shape English doesn't use ("12 Via Lane"), so "via" counts as Italian only there.
+    # "Via Roma 10" opens the line and ends with the number, a shape English doesn't use ("12 Via Lane"),
+    # so "via" counts as Italian only there.
     DETECTION_LINES = {
         'it': re.compile(r"^[ \t]*via\s+[^\W\d_](?:[^\W\d_]|['’.\-])*(?:\s+[^\W\d_](?:[^\W\d_]|['’.\-])*)*,?\s+\d{1,5}[a-z]?\b",
                          re.IGNORECASE | re.MULTILINE),
@@ -246,7 +574,7 @@ class MultiLanguagePhoneDirectoryParser:
         """Auto-detect language from whole-word street vocabulary; defaults to English."""
         scores = {'en': 0}
         for lang, words in self.DETECTION_MARKERS.items():
-            pattern = self._words_pattern(words, self.STREET_SUFFIXES.get(lang, []))
+            pattern = self._words_pattern(words, StreetRules.SUFFIXES.get(lang, []))
             scores[lang] = len(pattern.findall(content)) if pattern else 0
             if lang in self.DETECTION_LINES:
                 scores[lang] += len(self.DETECTION_LINES[lang].findall(content))
@@ -262,143 +590,129 @@ class MultiLanguagePhoneDirectoryParser:
         return self.parse_content(content, language)
 
     def parse_content(self, content: str, language: Optional[str] = None) -> List[Dict]:
-        """Parse phone directory content."""
-        if not language:
-            language = self.detect_language(content)
-
-        self.detected_language = language
         self.entries = []
         self.errors = []
 
-        buffer = []
+        if language is None:
+            language = self.detect_language(content)
+        if language not in StreetRules.SUPPORTED_LANGUAGES:
+            raise ValueError(f"Unsupported language: {language}. "
+                             f"Supported languages: {', '.join(StreetRules.SUPPORTED_LANGUAGES)}")
+        self.detected_language = language
+        phone_regex = PhonePattern.regex_for(language)
+
+        buffer: List[str] = []
         buffer_start = 0
+        surname_count = PersonName.LANGUAGE_SURNAME_COUNT.get(language, 1)
+        street_start = ((lambda before: StreetRules.street_word_offset(before, language))
+                        if language in StreetRules.NUMBER_LAST_LANGUAGES else None)
 
-        # Line numbers are 1-based positions in the original content, so errors point at the real line.
-        for line_number, line in enumerate(content.split('\n'), start=1):
-            line = line.strip()
+        for line_number, line in enumerate(content.split('\n'), 1):
+            trimmed = line.strip()
 
-            if not line or self.SEPARATOR_PATTERN.match(line):
+            if trimmed == '' or self.SEPARATOR_PATTERN.match(trimmed):
                 if buffer:
-                    self._process_buffer(buffer, buffer_start, language)
+                    self._process_buffer(buffer, buffer_start, language, phone_regex)
                     buffer = []
-            else:
-                if not buffer:
-                    buffer_start = line_number
-                buffer.append(line)
+                continue
+
+            # Most historical directories print one full record per line: try that shape first. Only a street
+            # word counts as a street there (the number-first fallback would turn "Apt 4 Building 7" into a record).
+            single = SingleLineEntrySplitter.split(
+                trimmed, lambda street: StreetRules.has_street_word(street, language),
+                surname_count, language, street_start)
+            if single is not None:
+                if buffer:
+                    self._process_buffer(buffer, buffer_start, language, phone_regex)
+                    buffer = []
+                self._finalize_entry({'name': single['name'], 'phone': single['phone'], 'street': single['street'],
+                                      'type': self._business_type_of_name(single['name'], language)},
+                                     line_number, language)
+                continue
+
+            if not buffer:
+                buffer_start = line_number
+            buffer.append(trimmed)
 
         if buffer:
-            self._process_buffer(buffer, buffer_start, language)
+            self._process_buffer(buffer, buffer_start, language, phone_regex)
 
         return self.entries
 
-    def _extract_street(self, line: str, language: str) -> Optional[str]:
-        """Extract street address from line, matching street words only as whole words."""
-        pattern = self._words_pattern(
-            self.STREET_MARKERS.get(language, self.STREET_MARKERS['en']),
-            self.STREET_SUFFIXES.get(language, [])
-        )
-        if pattern.search(line):
-            return line
+    def _process_buffer(self, lines: List[str], start_line: int, language: str, phone_regex):
+        records = BlockReader.read(lines, lambda line: LineFacts.of(line, language, phone_regex))
+        for record in records:
+            # Only the name and the notes can say it is a business: "12 Bank Street" says where someone lives.
+            business = self._business_type_of_name(record['name'], language) if record['name'] is not None else None
+            for note in record['notes']:
+                if business is None:
+                    business = self._extract_business_type(note, language)
+            self._finalize_entry({'name': record['name'], 'phone': record['phone'], 'street': record['street'],
+                                  'type': business}, start_line + record['offset'], language)
 
-        # A line that is only a phone number is not also a street, even though it starts with digits.
-        if re.fullmatch(r'[\d\s().+-]+', line):
-            return None
-
-        # Same rule as the PHP StreetFallback: the whole line is a house number followed only by words.
-        word = r"[^\W\d_](?:[^\W\d_]|['’.\-])*"
-        trimmed = line.strip()
-        return trimmed if re.fullmatch(rf"\d{{1,5}}[A-Za-z]?\s+{word}(?:\s+{word})*", trimmed) else None
-
-    # Languages that write the house number after the street ("Travessa do Carmo 5").
-    NUMBER_LAST_LANGUAGES = ('es', 'pt', 'it', 'de')
-
-    DWELLING = re.compile(r"(?:apt|apartment|unit|flat|suite|ste|bldg|building)\.?\s*#?\d{1,5}[a-z]?"
-                          r"(?:\s+[^\W_](?:[^\W_]|['’.\-#])*)*", re.IGNORECASE)
-
-    def _after_name_street(self, line: str, language: str) -> Optional[str]:
-        """Same rules as the PHP afterNameStreet(): in English a dwelling line ("Apt 4 Building 7", as
-        StreetFallback::dwelling); in a number-last language only words, then the house number."""
-        if language == 'en':
-            trimmed = line.strip()
-            return trimmed if self.DWELLING.fullmatch(trimmed) else None
-        if language not in self.NUMBER_LAST_LANGUAGES:
-            return None
-        word = r"[^\W\d_](?:[^\W\d_]|['’.\-])*"
-        trimmed = line.strip()
-        return trimmed if re.fullmatch(rf"{word}(?:\s+{word})*\s+\d{{1,5}}[A-Za-z]?", trimmed) else None
-
-    def _is_street_line(self, line: str, language: str, after_name: bool) -> bool:
-        return bool(self._extract_street(line, language) or (after_name and self._after_name_street(line, language)))
-
-    def _process_buffer(self, lines: List[str], start_line: int, language: str):
-        """Same rule as the PHP splitRecords(): once a record has its name and street, a line that is
-        neither street nor phone starts the next record if a street follows it right away."""
-        start = 0
-        has_name = has_street = False
-        for i, line in enumerate(lines):
-            is_phone = self.phone_in(line, language) is not None
-            is_street = self._is_street_line(line, language, has_name)
-            if has_name and has_street and not is_phone and not is_street \
-                    and i + 1 < len(lines) and self._is_street_line(lines[i + 1], language, True):
-                self._process_record(lines[start:i], start_line + start, language)
-                start = i
-                has_street = False
-                continue
-            has_name = has_name or (not is_phone and not is_street)
-            has_street = has_street or is_street
-        self._process_record(lines[start:], start_line + start, language)
-
-    def _process_record(self, lines: List[str], start_line: int, language: str):
-        """Process one record's lines into an entry."""
-        data = {
-            'name': None,
-            'phone': None,
-            'street': None,
-            'country': self.country_code,
-        }
-
-        for line in lines:
-            phone = self.phone_in(line, language)
-            if not data['phone'] and phone:
-                data['phone'] = phone
-
-            street = self._extract_street(line, language)
-            # Only once the name is read: "Restaurante Siglo 21" has the same shape as "Los Aromos 123".
-            if street is None and data['name']:
-                street = self._after_name_street(line, language)
-            if not data['street'] and street:
-                data['street'] = street
-
-            if not data['name'] and not street:
-                # A phone line can also carry the name ("SMITH, John ........ 555-123-4567").
-                name = line if phone is None else self.name_beside_phone(self.repair_ocr_digits(line), phone)
-                if name is not None:
-                    data['name'] = name
-
+    def _finalize_entry(self, data: Dict, start_line: int, language: str):
         if not data['name'] or not data['street']:
-            self.errors.append({
-                'line': start_line,
-                'reason': 'Missing name or street',
-                'data': data
-            })
+            self.errors.append({'line': start_line, 'reason': 'Missing name or street', 'data': data})
             return
 
         try:
-            entry = {
-                'type': 'natural',
-                'person_name': PersonName(data['name'], language).to_dict(),
-                'location': GeoLocation(data['country'], data['street']).to_dict(),
-                'phone': data['phone'],
-                'record_date': datetime.now().isoformat(),
-                'language': language
-            }
+            location = GeoLocation(self.country_code, data['street']).to_dict()
+            if self._is_juridical(data, language):
+                entry = {
+                    'type': 'juridical',
+                    'business_name': data['name'],
+                    'business_type': data['type'],
+                    'location': location,
+                    'phone': data['phone'],
+                    'record_date': datetime.now().isoformat(),
+                    'language': language,
+                }
+            else:
+                entry = {
+                    'type': 'natural',
+                    'person_name': PersonName(data['name'], language).to_dict(),
+                    'location': location,
+                    'phone': data['phone'],
+                    'record_date': datetime.now().isoformat(),
+                    'language': language,
+                }
             self.entries.append(entry)
         except Exception as e:
-            self.errors.append({
-                'line': start_line,
-                'reason': str(e),
-                'data': data
-            })
+            self.errors.append({'line': start_line, 'reason': str(e), 'data': data})
+
+    _entity_patterns: Dict[str, Optional['re.Pattern']] = {}
+
+    def _extract_business_type(self, line: str, language: str) -> Optional[str]:
+        markers = self.ENTITY_TYPE_MARKERS.get(language, [])
+        if not markers:
+            return None
+        if language not in self._entity_patterns:
+            self._entity_patterns[language] = re.compile(
+                r'\b(' + '|'.join(re.escape(m) for m in markers) + r')\b', re.IGNORECASE)
+        match = self._entity_patterns[language].search(line)
+        return match.group(1).lower() if match else None
+
+    def _business_type_of_name(self, name: str, language: str) -> Optional[str]:
+        """The business word in a name, unless the name is a surname followed by a given name: "BANK, Henry" is a
+        person whose surname happens to be a business word. Only the exact shape "<one word>, <given name>" is
+        spared, with no business word in the given-name part: "BANK OF AMERICA, N.A." stays a business."""
+        business = self._extract_business_type(name, language)
+        if business is None:
+            return None
+
+        parts = [p.strip() for p in name.split(',')]
+        is_surname_and_given_name = (
+            len(parts) == 2
+            and parts[0].lower() == business
+            and re.fullmatch(rf"{_L}(?:{_L}|['. -])*", parts[1]) is not None
+            and self._extract_business_type(parts[1], language) is None)
+        return None if is_surname_and_given_name else business
+
+    def _is_juridical(self, data: Dict, language: str) -> bool:
+        if data.get('type'):
+            return True
+        return self._business_type_of_name(data.get('name') or '', language) is not None
+
 
 
 class PhoneDirectoryCatalog:

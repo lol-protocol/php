@@ -277,6 +277,13 @@ Qué semilla sale en cada pieza (parecido a otra, motivo visible en miniatura, t
 - `qa.pixeles_de_motivo` queda `@deprecated` (comparaba imágenes ya dibujadas).
 - Como cambia la elección, las 1000 piezas se regeneraron: mismas obras, paletas y composiciones asignadas, otras semillas en 46 piezas y las que dependen de ellas dentro de su movimiento.
 
+## Pestaña de plantillas en el editor (hecha)
+`editor/index.html` tiene ahora tres fondos: paisaje generado, **plantilla del catálogo** y tu imagen. La plantilla es el paisaje de una pieza (sin su frase), que el servidor reconstruye con `editor.renderizar_receta` (`fondo: {tipo: "plantilla", pieza: <id>}`):
+- Datos en la página: las 1000 piezas (autor, obra, paleta, composición, motivo) y las paletas del catálogo, escritos por `generator/editor_datos.py` (`--comprobar` los verifica). Filtro por movimiento y autor, búsqueda por obra y «Ver más» de 60 en 60.
+- Vista exacta: `python generator/editor_datos.py --sprites` escribe por movimiento `editor/plantillas/<movimiento>.jpg` (miniaturas 80×560, 20 por fila, para la rejilla) y `<movimiento>.json` (las escenas en vectores: degradado, círculos, polígonos y velos, ~300 KB por movimiento), con el mismo fondo que la receta. La página dibuja el vector (nítido y exacto, lo pide con `fetch` la primera vez); un test comprueba que el vector dibuja lo mismo que la receta. No se versionan (`.gitignore`); la CI los genera y los sube en el artefacto. Sin sprites, o si la página se abre como archivo (el lienzo queda «manchado»), usa una vista aproximada con el dibujo del editor (solo luna, cipreses y árbol) y lo avisa.
+- El tono y el velo del texto se calculan sobre la miniatura, como con las demás fondos.
+- Orden de vistas: vector (exacto) → sprite (exacto, borroso al ampliar) → aproximada del editor (solo luna, cipreses y árbol), que ahora solo sale si la página se abre como archivo o sin los archivos generados.
+
 ## Moderación y borrado de imágenes en cascada (hecho)
 `generator/moderacion.py` (reglas en `catalog/moderacion.yaml`) y `generator/almacen.py` (JSON atómico con bloqueo por archivo, reentrante, que ahora usa también `AlmacenSubidas`). Tests: `tests/test_moderacion.py`.
 - **Flujo:** un diseño nace `privado`. `pedir_publicacion` aplica las reglas (`evaluar`): *duras* (enlace, correo, teléfono, suplantación de «Marcalibros»/«Plataforma POS», palabras bloqueadas) lo rechazan con los motivos; *blandas* (todo en mayúsculas, caracteres repetidos, imagen propia o lo que devuelva un clasificador opcional) lo mandan a la cola de revisión humana (`cola`, `aprobar`, `rechazar` con motivo); sin banderas y sin imagen propia se aprueba solo. Solo `aprobar` deja un diseño `compartido`; rechazar lo devuelve a `privado`.

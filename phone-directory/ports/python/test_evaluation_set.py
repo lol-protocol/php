@@ -26,7 +26,7 @@ def passes(case):
     entries = parser.parse_content(case['entrada'], case['idioma'])
     actual = [{
         'tipo': e['type'],
-        'nombre': e['person_name']['full_name'],
+        'nombre': e['business_name'] if e['type'] == 'juridical' else e['person_name']['full_name'],
         'calle': e['location']['street'],
         'telefono': e['phone'],
     } for e in entries]

@@ -215,3 +215,16 @@ def test_la_cuota_aguanta_sin_flock_ni_msvcrt(tmp_path, monkeypatch):
     with ThreadPoolExecutor(8) as ex:
         ok = [r for r in ex.map(subir, range(8)) if r]
     assert len(ok) == 3 and a.uso("u1")[0] == 3
+
+
+def test_cada_movimiento_tiene_plantillas_que_se_dibujan():
+    vistos = {}
+    for e in MANIFIESTO["entradas"]:
+        vistos.setdefault(e["movimiento"], e["id"])  # la primera de cada movimiento
+    assert len(vistos) == 10
+    for ident in vistos.values():
+        d = {"id": "usr:" + "cd" * 16, "origen": "usuario", "version": 1, "propietario": "u1", "creado": "2026-10-18T09:30:00Z",
+             "receta": {"fondo": {"tipo": "plantilla", "pieza": ident}}}
+        assert modelo.validar_diseno(d, PIEZAS) == [], ident
+        img, _ = editor.renderizar_receta(d["receta"], MANIFIESTO, usuario="u1")
+        assert img.size == (200, 1400), ident
