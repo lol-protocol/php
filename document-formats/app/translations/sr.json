@@ -157,6 +157,8 @@
     "category": "Категорија",
     "region": "Регион",
     "reset": "Поништи филтере",
+    "copyLink": "Копирај везу",
+    "linkCopied": "Веза је копирана",
     "compareLabel": "Упореди формате",
     "comparePlaceholder": "Унесите називе формата за поређење...",
     "colFormat": "Формат",

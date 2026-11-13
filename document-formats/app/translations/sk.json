@@ -157,6 +157,8 @@
     "category": "Kategória",
     "region": "Oblasť",
     "reset": "Obnoviť filtre",
+    "copyLink": "Kopírovať odkaz",
+    "linkCopied": "Odkaz skopírovaný",
     "compareLabel": "Porovnať formáty",
     "comparePlaceholder": "Zadajte názvy formátov na porovnanie...",
     "colFormat": "Formát",
