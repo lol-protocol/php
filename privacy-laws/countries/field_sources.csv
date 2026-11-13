@@ -176,14 +176,14 @@ BW,,genetic_data,9778c38c01,low,2026-10-21
 BY,,retention_period,e699f1bfaa,medium,2026-10-15
 BY,,penalties_range,d00efb6f38,medium,2026-10-15
 BY,,genetic_data,84f379a331,medium,2026-10-21
-BZ,Data Protection Act 2021 (Act No. 45 of 2021),law_name,a75b39fdaa,high,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),law_name,568df4239a,high,2026-10-25
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),jurisdiction,568df4239a,medium,2026-10-25
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),enactment_date,894f511eb1,medium,2026-10-25
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),scope,568df4239a,low,2026-10-25
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),applies_to,568df4239a,low,2026-10-25
-BZ,Data Protection Act 2021 (Act No. 45 of 2021),key_requirements,a75b39fdaa,medium,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),key_requirements,568df4239a,medium,2026-10-25
 BZ,Data Protection Act 2021 (Act No. 45 of 2021),enforcement_authority,568df4239a,low,2026-10-25
-BZ,Data Protection Act 2021 (Act No. 45 of 2021),penalties_range,a75b39fdaa,low,2026-10-25
+BZ,Data Protection Act 2021 (Act No. 45 of 2021),penalties_range,568df4239a,low,2026-10-25
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",law_name,53460c442b,high,2026-10-16
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",jurisdiction,d0b5122b50,high,2026-10-16
 CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",enactment_date,d0b5122b50,high,2026-10-16

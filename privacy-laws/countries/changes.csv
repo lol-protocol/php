@@ -711,3 +711,5 @@ date,country_code,law_name,field,old_value,new_value
 2026-11-06,US,California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA),pending_date,,2027-01-01
 2026-11-06,US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",pending_change,,The 60-day cure period sunsets
 2026-11-06,US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",pending_date,,2027-04-01
+2026-11-13,BZ,Data Protection Act 2021 (Act No. 45 of 2021),website_url,https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf,https://www.dataguidance.com/jurisdiction/belize
+2026-11-13,SI,Personal Data Protection Act (ZVOP-2),website_url,https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2022-01-4187/zakon-o-varstvu-osebnih-podatkov-zvop-2,https://www.dataguidance.com/jurisdiction/slovenia
