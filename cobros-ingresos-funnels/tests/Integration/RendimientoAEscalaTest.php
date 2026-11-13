@@ -8,6 +8,7 @@ use App\Database;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\CobranzaRepository;
+use App\Repositories\FlujoDeCajaRepository;
 use App\Repositories\IngresosYCobrosRepository;
 
 /**
@@ -142,6 +143,33 @@ final class RendimientoAEscalaTest extends IntegracionTestCase
             3 * 1024 * 1024,
             $pico,
             sprintf('la cobranza gasto %.1f MB: esta leyendo todas las boletas en PHP', $pico / 1048576)
+        );
+    }
+
+    /**
+     * El flujo de caja reparte la cartera por mes en SQL: con 15 mil boletas impagas (todas vencidas hace
+     * anios) responde con sus 8 cubetas y no trae las boletas a PHP para repartirlas.
+     */
+    public function testElFlujoDeCajaSeAgrupaEnSqlYNoTraeLasBoletasAPhp(): void
+    {
+        $repo = new FlujoDeCajaRepository();
+        $antes = $repo->cubetas()[0];
+        $moneda = $this->cargarBoletas();
+        $despues = [];
+
+        $pico = $this->picoDeMemoria(function () use ($repo, &$despues): void {
+            $despues = $repo->cubetas();
+        });
+
+        $tasa = (float) Database::connection()->query("SELECT tasa_a_usd FROM monedas WHERE codigo = '{$moneda}'")->fetchColumn();
+        $impagas = self::BOLETAS / 2;
+        self::assertCount(FlujoDeCajaRepository::MESES_POR_DEFECTO + 2, $despues);
+        self::assertSame($antes['boletas'] + $impagas, $despues[0]['boletas'], 'las impagas de 1902 estan en «ya vencido»');
+        self::assertEqualsWithDelta($antes['saldo_usd'] + $impagas * (float) self::MONTO * $tasa, $despues[0]['saldo_usd'], 0.05);
+        self::assertLessThan(
+            3 * 1024 * 1024,
+            $pico,
+            sprintf('el flujo de caja gasto %.1f MB: esta leyendo todas las boletas en PHP', $pico / 1048576)
         );
     }
 

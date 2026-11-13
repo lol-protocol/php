@@ -31,6 +31,8 @@
         "migrar": "php bin/migrar.php",
         "tasas": "php bin/actualizar_tasas.php",
         "acceso": "php bin/comprobar_acceso.php",
-        "respaldar": "php bin/respaldar.php"
+        "respaldar": "php bin/respaldar.php",
+        "estado": "php bin/estado.php",
+        "auditar": "composer audit --locked"
     }
 }
