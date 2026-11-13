@@ -29,6 +29,9 @@ final class SolicitudRepository extends Repository
     /** How many months a closed solicitud keeps the requester's e-mail and text before depurar() erases them. */
     public const CONSERVAR_MESES = 12;
 
+    /** How many closed solicitudes todas() lists (the pending ones are always all there). */
+    public const CERRADAS_VISIBLES = 100;
+
     /** How many times crear() asks for a number when someone else took the one it read. */
     private const INTENTOS_DE_NUMERO = 5;
 
@@ -80,6 +83,21 @@ final class SolicitudRepository extends Repository
             'creado_en' => (string)$f['creado_en'],
             'horas' => max(0, intdiv($ahora - (int)strtotime((string)$f['creado_en']), 3600)),
         ], $this->db->fetchAll("SELECT id, persona_id, derecho, creado_en FROM solicitudes_persona WHERE estado = 'pendiente' ORDER BY creado_en, id"));
+    }
+
+    /**
+     * Every solicitud still pending, then the $cerradas most recent closed ones (the newest first), in full: for the
+     * owner's panel (/0/4/), who needs the e-mail and the text to answer. The closed ones are capped because nothing
+     * ever removes them but depurar(), which blanks their data and keeps the row.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function todas(int $cerradas = self::CERRADAS_VISIBLES): array
+    {
+        return [
+            ...$this->db->fetchAll("SELECT * FROM solicitudes_persona WHERE estado = 'pendiente' ORDER BY creado_en DESC, id DESC"),
+            ...$this->db->fetchAll("SELECT * FROM solicitudes_persona WHERE estado <> 'pendiente' ORDER BY creado_en DESC, id DESC LIMIT " . max(0, $cerradas)),
+        ];
     }
 
     /**

@@ -122,4 +122,28 @@ class SolicitudRepositoryTest extends TestCase
         $this->assertSame(self::ELLA, (int)$repo->ver($n)['persona_id']);
         $this->assertSame(0, (int)$db->fetchValue('SELECT COUNT(*) FROM personas WHERE id = ?', [self::ELLA]));
     }
+
+    #[DataProvider('drivers')]
+    public function testThePanelListsEveryPendingOneAndOnlyTheNewestClosedOnesInFull(string $driver): void
+    {
+        $repo = new SolicitudRepository(TestDatabases::fresh($driver, 'genealogy'));
+        $ahora = 1_700_000_000;
+        $cerradas = [];
+        for ($i = 1; $i <= 4; $i++) {
+            $cerradas[$i] = $repo->crear(self::ELLA, 'acceso', "texto {$i}", "c{$i}@example.com", $ahora + $i * 100);
+            $repo->cerrar($cerradas[$i], 'atender', "nota {$i}", $ahora + $i * 100 + 5);
+        }
+        $vieja = $repo->crear(self::OTRA, 'supresion', 'Pendiente muy vieja', 'vieja@example.com', $ahora - 900 * 86400);
+        $nueva = $repo->crear(self::OTRA, 'rectificacion', 'Pendiente nueva', 'nueva@example.com', $ahora + 1000);
+
+        $todas = $repo->todas(2);
+
+        $this->assertSame([$nueva, $vieja, $cerradas[4], $cerradas[3]], array_map(static fn(array $s): int => (int)$s['id'], $todas), 'every pending one (newest first), then the 2 newest closed');
+        $this->assertSame(['pendiente', 'pendiente', 'atendida', 'atendida'], array_column($todas, 'estado'));
+        $this->assertSame('nueva@example.com', $todas[0]['contacto'], 'in full: the owner needs them to answer');
+        $this->assertSame('Pendiente nueva', $todas[0]['detalle']);
+        $this->assertSame('nota 4', $todas[2]['nota']);
+        $this->assertCount(2, array_filter($repo->todas(0), static fn(array $s): bool => $s['estado'] === 'pendiente'), 'with none closed, the pending ones are still all there');
+        $this->assertCount(6, $repo->todas());
+    }
 }

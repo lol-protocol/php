@@ -215,7 +215,8 @@ php bin/persona.php entrega 6128473105                            # un enlace y 
   se quiere (ver, corregir o borrar), el texto y un correo. **No entrega, cambia ni borra nada por sí solo**: la
   solicitud espera a quien administra. Tiene el mismo campo trampa, el mismo token CSRF y topes parecidos a los del
   retiro (3 por visitante y por hora, 5 esperando por persona). Se atienden con `php bin/solicitudes.php`
-  (`--ver=N`, `--atender=N`, `--rechazar=N`, `--depurar`), que no dice por cron quién pidió ni qué escribió;
+  (`--ver=N`, `--atender=N`, `--rechazar=N`, `--depurar`), que no dice por cron quién pidió ni qué escribió, o en el panel
+  del propietario, **`/0/4/`** (`Solicitudes de datos` en el menú de la cuenta), con el correo enmascarado y el completo a un clic;
   ver [`DESPLIEGUE.md`](DESPLIEGUE.md), sección 8, y [`SOLICITUDES.md`](SOLICITUDES.md).
 - **`rectificar`** corrige un campo de la ficha (nombres, apellidos, sexo, y la fecha o la descripción de un suceso que es solo de
   ella), dice si el cambio la oculta o la muestra a un visitante y lo anota. Sin `--confirmar` lo prueba en una

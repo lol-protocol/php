@@ -31,4 +31,10 @@ if (($salida = getenv('ENTREGA_SALIDA')) !== false && $salida !== '') {
     file_put_contents($salida, json_encode(['token' => $entrega['token'], 'clave' => $entrega['clave']], JSON_THROW_ON_ERROR));
 }
 
+// Dos solicitudes de datos para el panel del propietario (/0/4/): una esperando y una ya cerrada.
+$solicitudes = new \App\Repositories\Genealogy\SolicitudRepository(Database::forSite('genealogy'));
+$solicitudes->crear(6128473105, 'supresion', "Pido que se borren mis datos.\nGracias.", 'dana@example.com');
+$cerrada = $solicitudes->crear(6128473106, 'acceso', 'Quiero ver qué tienen de mí.', 'eva@example.com');
+$solicitudes->cerrar($cerrada, 'atender', 'Resumen mandado.');
+
 echo "pedidos: 3\n";

@@ -212,7 +212,7 @@ MAILTO=tu@correo.com
 40 3 * * 0    www-data  cd /var/www/php/url-routing && php bin/solicitudes.php --depurar
 ```
 
-El listado dice el número, la persona, el derecho pedido y cuánto lleva, **nunca quién pidió ni qué escribió** (el correo de cron viaja sin cifrar). Eso solo lo muestra `php bin/solicitudes.php --ver=N`, en tu terminal. Se cierran con `--atender=N` o `--rechazar=N` (con `--nota=` para tus registros, sin los datos). Los topes contra el abuso son `SOLICITUD_MAX_POR_HORA` (3 por visitante) y `SOLICITUD_MAX_PENDIENTES` (5 esperando por persona), en `.env`. **No hay aviso en el momento de llegar**, como lo hay para los retiros (`--solo-nuevos`): el recordatorio es el de la mañana.
+El listado dice el número, la persona, el derecho pedido y cuánto lleva, **nunca quién pidió ni qué escribió** (el correo de cron viaja sin cifrar). Eso solo lo muestran `php bin/solicitudes.php --ver=N`, en tu terminal, y el panel **`/0/4/`** (solo para el propietario, con el correo enmascarado y el completo a un clic, como `/0/3/`). Se cierran con los botones del panel o con `--atender=N` / `--rechazar=N` (con una nota, o `--nota=`, para tus registros, sin los datos). Los topes contra el abuso son `SOLICITUD_MAX_POR_HORA` (3 por visitante) y `SOLICITUD_MAX_PENDIENTES` (5 esperando por persona), en `.env`. **No hay aviso en el momento de llegar**, como lo hay para los retiros (`--solo-nuevos`): el recordatorio es el de la mañana.
 
 ## 9. Actualizar
 
