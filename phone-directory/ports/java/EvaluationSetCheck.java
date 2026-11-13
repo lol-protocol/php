@@ -59,7 +59,9 @@ public final class EvaluationSetCheck {
         for (Map<String, Object> e : entries) {
             Map<String, Object> row = new LinkedHashMap<>();
             row.put("tipo", e.get("type"));
-            row.put("nombre", ((Map<String, Object>) e.get("person_name")).get("rawName"));
+            row.put("nombre", "juridical".equals(e.get("type"))
+                ? e.get("business_name")
+                : ((Map<String, Object>) e.get("person_name")).get("rawName"));
             row.put("calle", ((Map<String, Object>) e.get("location")).get("street"));
             row.put("telefono", e.get("phone"));
             actual.add(row);

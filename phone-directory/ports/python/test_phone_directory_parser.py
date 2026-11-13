@@ -6,6 +6,7 @@ from phone_directory_parser import (
     GeoLocation,
     MultiLanguagePhoneDirectoryParser,
     PersonName,
+    PhonePattern,
     PhoneDirectoryManager,
 )
 
@@ -128,23 +129,23 @@ class PhoneFormatsTest(unittest.TestCase):
                  ('it', '06 1234567', '06 1234567'), ('pt', '21 342 0000', '21 342 0000'),
                  ('es', '91 234 56 78', '91 234 56 78'), ('es', '2-345-678', '2-345-678')]
         for language, line, expected in cases:
-            self.assertEqual(expected, self.P().phone_in(line, language), (language, line))
+            self.assertEqual(expected, PhonePattern.find(line, PhonePattern.regex_for(language)), (language, line))
 
     def test_a_looser_format_is_not_read_in_another_languages_directory(self):
-        self.assertIsNone(self.P().phone_in('Tel 01 42 68 53 00', 'en'))
-        self.assertIsNone(self.P().phone_in('Tel 01 42 68 53 00', None))
+        self.assertIsNone(PhonePattern.find('Tel 01 42 68 53 00', PhonePattern.regex_for('en')))
+        self.assertIsNone(PhonePattern.find('Tel 01 42 68 53 00', PhonePattern.regex_for(None)))
 
     def test_a_phone_never_starts_or_ends_next_to_another_digit_group(self):
-        self.assertEqual('555-123-4567', self.P().phone_in('Calle Mayor 12 555-123-4567', 'es'))
-        self.assertEqual('030 123456', self.P().phone_in('Hauptstraße 5 030 123456', 'de'))
+        self.assertEqual('555-123-4567', PhonePattern.find('Calle Mayor 12 555-123-4567', PhonePattern.regex_for('es')))
+        self.assertEqual('030 123456', PhonePattern.find('Hauptstraße 5 030 123456', PhonePattern.regex_for('de')))
 
     def test_the_named_exchange_form(self):
-        self.assertEqual('BUtterfield 8-4521', self.P().phone_in('BUtterfield 8-4521', 'en'))
+        self.assertEqual('BUtterfield 8-4521', PhonePattern.find('BUtterfield 8-4521', PhonePattern.regex_for('en')))
 
     def test_ocr_misreadings_inside_a_phone_are_repaired(self):
-        self.assertEqual('555-123-4567', self.P().repair_ocr_digits('555-l23-4567'))
-        self.assertEqual('555-123-4567', self.P().phone_in('555-l23-4567', 'en'))
-        self.assertEqual('Oil BUtterfield 8-4521', self.P().repair_ocr_digits('Oil BUtterfield 8-4521'))
+        self.assertEqual('555-123-4567', PhonePattern.repair_ocr_digits('555-l23-4567'))
+        self.assertEqual('555-123-4567', PhonePattern.find('555-l23-4567', PhonePattern.regex_for('en')))
+        self.assertEqual('Oil BUtterfield 8-4521', PhonePattern.repair_ocr_digits('Oil BUtterfield 8-4521'))
 
     def test_the_phone_can_share_the_line_with_the_name(self):
         entries = MultiLanguagePhoneDirectoryParser().parse_content("SMITH, John ........ 555-123-4567\n12 Main Street")
@@ -153,7 +154,7 @@ class PhoneFormatsTest(unittest.TestCase):
         self.assertEqual('Smith, John', entries[0]['person_name']['formatted'])
 
     def test_text_left_beside_a_phone_with_a_digit_is_not_a_name(self):
-        self.assertIsNone(self.P.name_beside_phone('555-123-4567 ext. 12', '555-123-4567'))
+        self.assertIsNone(PhonePattern.name_beside_phone('555-123-4567 ext. 12', '555-123-4567'))
 
 
 class ManagerTest(unittest.TestCase):
