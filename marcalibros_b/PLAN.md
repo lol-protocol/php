@@ -298,3 +298,11 @@ Qué semilla sale en cada pieza (parecido a otra, motivo visible en miniatura, t
 - tema «de» otra obra: hereda el id de la obra base si esta quedó verificada (`modelo.obra_base`; «Frankenstein» → «Frankenstein o el moderno Prometeo»);
 - autor sin libros y muerto después de 1955: `no_disponible` (Realismo mágico); Gutendex no da ids de autor, así que los demás quedan en blanco.
 La columna `nota` dice de dónde sale cada fila. Probado solo con respuestas simuladas. Pasos en una sesión con red: ejecutar el prellenado, mirar el CSV, aplicarlo y reconstruir (`build.py --all`).
+
+## Ampliación del catálogo: decisiones y fases (en curso)
+Decidido con el usuario: ampliar movimientos, géneros (como eje), autores por movimiento e idiomas/literaturas, hasta ~2000 piezas; escrituras no latinas con fuentes libres (Noto, OFL); contenido nuevo **solo del canon, obras muy conocidas y seguras** (de memoria, marcado borrador, sin verificar).
+- **Fase 1 (hecha): géneros como eje.** `catalog/generos.yaml` agrupa los ~60 `tipo` en cinco géneros (poesía, épica, narrativa, teatro, ensayo y no ficción); `modelo.genero_de_obra` los deriva (un tema hereda el de su obra base; `temas_de_colecciones` y `temas_sueltos` cubren los que no tienen). Una prueba falla si una obra tiene un `tipo` sin género. El editor filtra las plantillas por género. No cambia el generador ni las piezas.
+- **Fase 2: +5 autores por movimiento** (+500 piezas) de literaturas hoy poco presentes (italiana, rusa, alemana, polaca, portuguesa, nórdica…), con sus obras, motivos y ánimos.
+- **Fase 3: escrituras no latinas.** Fuentes Noto (subconjunto de glifos, OFL) para CJK, árabe/persa y devanagari; el árabe, el persa y el hindi necesitan *shaping* (formas contextuales y ligaduras), así que `texto.py` usaría HarfBuzz solo para esas escrituras y no cambiaría las piezas latinas.
+- **Fase 4: +5 movimientos** (+500 piezas) con paleta, adorno y motivos propios (candidatos: Renacimiento, Ilustración, Expresionismo, Surrealismo, literaturas de Oriente), y regeneración completa, hojas de revisión y CI.
+- Cada fase es un PR aparte; el catálogo solo se regenera en las fases 2 y 4.
