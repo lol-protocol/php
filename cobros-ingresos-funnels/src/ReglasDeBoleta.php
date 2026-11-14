@@ -23,7 +23,7 @@ final class ReglasDeBoleta
      */
     public static function montoCubreLoYaCobrado(float $monto, array $boleta): bool
     {
-        return Dinero::centavos($monto) >= Dinero::centavos($boleta['pagado']);
+        return Dinero::milesimas($monto) >= Dinero::milesimas($boleta['pagado']);
     }
 
     /** Una boleta no puede vencer antes de haber sido emitida. */
@@ -55,7 +55,7 @@ final class ReglasDeBoleta
      */
     public static function errorDeLosCampos(string $concepto, float $monto, string $fechaEmision, string $fechaVencimiento, ?string $moneda = null): ?string
     {
-        if (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
+        if (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto, $moneda !== null ? MonedaRepository::decimales($moneda) : 2)) {
             return 'Completá todos los campos con un monto válido.';
         }
         if ($moneda !== null && !Validacion::montoCabeEnLosDecimales($monto, MonedaRepository::decimales($moneda))) {

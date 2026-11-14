@@ -122,4 +122,20 @@ final class ValidacionTest extends TestCase
         self::assertFalse(Validacion::fechaEsValida('2026-13-40'), 'mes 13 no existe');
         self::assertFalse(Validacion::fechaEsValida('2025-02-29'), '2025 no es bisiesto');
     }
+
+    public function testElMinimoDeUnMontoEsLaUnidadMenorDeLaMoneda(): void
+    {
+        self::assertTrue(Validacion::montoEnRango(0.001, 3), 'una milesima de dinar');
+        self::assertFalse(Validacion::montoEnRango(0.0004, 3));
+        self::assertFalse(Validacion::montoEnRango(0.001, 2), 'en dolares una milesima no existe');
+        self::assertFalse(Validacion::montoEnRango(0.001), 'por defecto, dos decimales');
+        self::assertTrue(Validacion::montoEnRango(0.01, 0), 'la moneda sin decimales deja el rechazo a montoCabeEnLosDecimales()');
+        self::assertTrue(Validacion::montoEnRango(Validacion::MONTO_MAXIMO, 3));
+        self::assertFalse(Validacion::montoEnRango(Validacion::MONTO_MAXIMO + 1, 3));
+    }
+
+    public function testElTopeEsElDeLaColumnaConTresDecimales(): void
+    {
+        self::assertSame(999_999_999_999.999, Validacion::MONTO_MAXIMO);
+    }
 }

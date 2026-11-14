@@ -168,13 +168,13 @@ $mayoriaPorPais = array_map('intval', $pdo->query('SELECT codigo, mayoria_de_eda
 $decimalesPorMoneda = array_map('intval', $pdo->query('SELECT codigo, decimales FROM monedas')->fetchAll(PDO::FETCH_KEY_PAIR));
 
 /**
- * Un monto redondeado a los decimales de su moneda, con tope en 2 (las columnas de monto son NUMERIC(14, 2)).
+ * Un monto redondeado a los decimales de su moneda, con tope en 3 (las columnas de monto son NUMERIC(15, 3), migracion 019).
  *
  * @param array<string, int> $decimalesPorMoneda
  */
 function enLaMoneda(float $monto, string $moneda, array $decimalesPorMoneda): float
 {
-    return round($monto, min($decimalesPorMoneda[$moneda] ?? 2, 2));
+    return round($monto, min($decimalesPorMoneda[$moneda] ?? 2, 3));
 }
 
 /** @return array{pais_codigo:string, ciudad:string, idioma:string, genero:string, fecha_nacimiento:string, moneda:string} */

@@ -122,6 +122,39 @@ final class CatalogoDePaisesYMonedasTest extends IntegracionTestCase
         }
     }
 
+    /**
+     * Lo que se puede comprobar del catalogo sin la lista oficial (ISO 4217 y 3166-1 no se pueden bajar desde
+     * donde corren las pruebas): la forma de cada codigo, que nada se repita y que las monedas retiradas
+     * apunten a la que las reemplaza. La comparacion con la lista vigente sigue siendo manual (ver el README).
+     */
+    public function testElCatalogoTieneLaFormaDeIsoYNadaRepetido(): void
+    {
+        $this->migrarUnaBaseVacia();
+        $db = Database::connection();
+
+        $paises = $db->query('SELECT codigo, nombre, moneda_codigo FROM paises ORDER BY codigo')->fetchAll(\PDO::FETCH_ASSOC);
+        $monedas = $db->query('SELECT codigo, nombre, decimales, reemplazada_por FROM monedas ORDER BY codigo')->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($paises as $pais) {
+            self::assertMatchesRegularExpression('/^[A-Z]{2}$/', $pais['codigo'], 'pais ' . $pais['nombre']);
+            self::assertMatchesRegularExpression('/^[A-Z]{3}$/', $pais['moneda_codigo'], 'moneda de ' . $pais['nombre']);
+        }
+        foreach ($monedas as $moneda) {
+            self::assertMatchesRegularExpression('/^[A-Z]{3}$/', $moneda['codigo'], 'moneda ' . $moneda['nombre']);
+            self::assertContains((int) $moneda['decimales'], [0, 2, 3], $moneda['codigo'] . ': ISO 4217 solo conoce 0, 2 y 3 decimales para estas monedas');
+        }
+        $nombresDePais = array_map('mb_strtolower', array_column($paises, 'nombre'));
+        self::assertSame(array_values(array_unique($nombresDePais)), $nombresDePais, 'un pais no esta dos veces con otro codigo');
+        $nombresDeMoneda = array_map('mb_strtolower', array_column($monedas, 'nombre'));
+        self::assertSame(array_values(array_unique($nombresDeMoneda)), $nombresDeMoneda, 'una moneda no esta dos veces con otro codigo');
+
+        $reemplazadas = array_column(array_filter($monedas, static fn (array $m): bool => $m['reemplazada_por'] !== null), 'reemplazada_por', 'codigo');
+        self::assertSame(['BGN' => 'EUR', 'ZWL' => 'ZWG'], $reemplazadas, 'las monedas retiradas apuntan a su reemplazo');
+        foreach ($reemplazadas as $retirada => $reemplazo) {
+            self::assertNotContains($retirada, array_column($paises, 'moneda_codigo'), "ningun pais usa ya {$retirada}");
+        }
+    }
+
     /** Las monedas ligadas por ley a otra salen del par fijo, no de un numero suelto. */
     public function testLasTasasDeLasMonedasLigadasSalenDelParFijo(): void
     {
