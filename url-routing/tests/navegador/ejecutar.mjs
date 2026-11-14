@@ -227,6 +227,62 @@ const pruebas = {
     });
   },
 
+  async 'las acciones del panel de solicitudes, abiertas'() {
+    return con(comoPropietario, async (p) => {
+      await p.goto(`${base}/0/4/`);
+      // Lo que está dentro de un <details> cerrado no se ve, y axe no lo revisa: se abre antes de auditar.
+      await p.evaluate(() => document.querySelectorAll('details').forEach((d) => { d.open = true; }));
+      for (const nombre of ['dias', 'campo', 'valor', 'suceso']) {
+        for (const control of await p.locator(`[name="${nombre}"]`).all()) {
+          const etiqueta = await control.evaluate((e) => e.labels?.[0]?.textContent?.trim() ?? '');
+          verdadero(etiqueta !== '', `el control «${nombre}» tiene una etiqueta asociada`);
+        }
+      }
+      await auditar(p, '/0/4/ con las acciones abiertas');
+    });
+  },
+
+  async 'crear una entrega con clave desde el panel'() {
+    return con(comoPropietario, async (p) => {
+      await p.goto(`${base}/0/4/`);
+      await p.locator('details:has-text("Crear una entrega con clave") summary').first().click();
+      await p.getByRole('button', { name: 'Crear la entrega' }).first().click();
+      await p.waitForLoadState();
+      const texto = await p.locator('body').innerText();
+      verdadero(texto.includes('única vez que se muestran'), 'avisa de que se muestran una sola vez');
+      verdadero(/\/e\/[0-9a-f]{64}\//.test(texto), 'muestra el enlace completo');
+      verdadero(/[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}/.test(texto), 'muestra la clave');
+      await auditar(p, '/0/4/ → entrega creada');
+    });
+  },
+
+  async 'simular una corrección desde el panel'() {
+    return con(comoPropietario, async (p) => {
+      await p.goto(`${base}/0/4/`);
+      await p.locator('details:has-text("Simular una corrección") summary').first().click();
+      await p.locator('[name="valor"]').first().fill('Apellido Nuevo');
+      await p.getByRole('button', { name: 'Simular' }).first().click();
+      await p.waitForLoadState();
+      const texto = await p.locator('body').innerText();
+      verdadero(texto.includes('Se corregiría'), 'dice qué corregiría');
+      verdadero(texto.includes('Nada cambió'), 'dice que no cambió nada');
+      await auditar(p, '/0/4/ → simulación');
+    });
+  },
+
+  async 'una simulación que no se puede hacer'() {
+    return con(comoPropietario, async (p) => {
+      await p.goto(`${base}/0/4/`);
+      await p.locator('details:has-text("Simular una corrección") summary').first().click();
+      await p.locator('[name="campo"]').first().selectOption('sucesos.fecha');
+      await p.locator('[name="valor"]').first().fill('1990-01-01');
+      await p.getByRole('button', { name: 'Simular' }).first().click();
+      await p.waitForLoadState();
+      verdadero((await p.getByRole('alert').innerText()).includes('No se hizo nada'), 'el error se anuncia como alerta');
+      await auditar(p, '/0/4/ → simulación con error');
+    });
+  },
+
   async 'la cola de pedidos del propietario'() {
     return con(comoPropietario, async (p) => {
       const respuesta = await p.goto(`${base}/0/3/`);

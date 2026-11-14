@@ -77,6 +77,23 @@ final class RectificacionRepository extends Repository
     }
 
     /**
+     * What the change does to what a visitor sees, in a sentence, for the owner who reads the result of rectificar() (the
+     * command and the panel say it the same way): the persona stays as she was, or goes from hidden to visible or the other
+     * way. The tense follows $resultado['aplicada'].
+     *
+     * @param array{aplicada: bool, antes_oculta: bool, despues_oculta: bool} $resultado
+     */
+    public static function loQueVeUnVisitante(array $resultado): string
+    {
+        $ve = static fn(bool $oculta): string => $oculta ? 'oculta («Persona viva» o privada)' : 'visible';
+        $hecho = $resultado['aplicada'];
+
+        return $resultado['antes_oculta'] === $resultado['despues_oculta']
+            ? 'No cambia lo que ve un visitante: ' . ($hecho ? 'sigue ' : 'seguiría ') . $ve($resultado['despues_oculta']) . '.'
+            : 'CAMBIA lo que ve un visitante: la ve ' . $ve($resultado['antes_oculta']) . ' y ' . ($hecho ? 'ahora' : 'pasaría a verla') . ' ' . $ve($resultado['despues_oculta']) . '.';
+    }
+
+    /**
      * @return array{campo: string, aplicada: bool, antes_oculta: bool, despues_oculta: bool, correccion: int|null, aviso_grupo: string|null}
      */
     private function cambiar(int $id, string $campo, string $nuevo, ?int $suceso, ?int $pedido, bool $aplicar): array
