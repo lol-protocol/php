@@ -134,27 +134,31 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
     }
 
     /** @return list<JuridicalEntity> */
-    public function findByBusinessName(string $name): array
+    public function findByBusinessName(string $name, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('business_name_folded', ':name') . ' ORDER BY business_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => $this->dialect->containsValue($this->fold($name))]);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(
+            $this->dialect->containsCondition('business_name_folded', ':name'),
+            [':name' => $this->dialect->containsValue($this->fold($name))],
+            'business_name',
+            $limit,
+            $offset
+        );
     }
 
     /** @return list<JuridicalEntity> */
-    public function findByStreet(string $street): array
+    public function findByStreet(string $street, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('street_folded', ':street') . ' ORDER BY street, business_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => $this->dialect->containsValue($this->fold($street))]);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(
+            $this->dialect->containsCondition('street_folded', ':street'),
+            [':street' => $this->dialect->containsValue($this->fold($street))],
+            'street, business_name',
+            $limit,
+            $offset
+        );
     }
 
     public function findByPhone(string $phone): ?JuridicalEntity
@@ -173,17 +177,23 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
     }
 
     /** @return list<JuridicalEntity> */
-    public function findByBusinessType(string $type): array
+    public function findByBusinessType(string $type, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
-        $sql = $this->dialect->containsCondition('business_type', ':type');
-        return $this->privacy->filterBusinesses($this->findMany($sql, [':type' => $this->dialect->containsValue($type)], 'business_name'));
+
+        return $this->queryShown(
+            $this->dialect->containsCondition('business_type', ':type'),
+            [':type' => $this->dialect->containsValue($type)],
+            'business_name',
+            $limit,
+            $offset
+        );
     }
 
     /** @return list<JuridicalEntity> */
-    public function getAll(): array
+    public function getAll(?int $limit = null, int $offset = 0): array
     {
-        return $this->privacy->filterBusinesses($this->getAllOrdered('business_name'));
+        return $this->queryShown('1 = 1', [], 'business_name', $limit, $offset);
     }
 
     public function update(JuridicalEntity $entity): bool
@@ -224,7 +234,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
      * @param array{businessName?: string, street?: string, phone?: string, businessType?: string} $criteria
      * @return list<JuridicalEntity>
      */
-    public function search(array $criteria): array
+    public function search(array $criteria, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
@@ -236,19 +246,27 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         ]);
 
         if (empty($where)) {
-            return $this->getAll();
+            return $this->getAll($limit, $offset);
         }
 
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . implode(' AND ', $where) . ' ORDER BY business_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->queryShown(implode(' AND ', $where), $params, 'business_name', $limit, $offset);
     }
 
     public function clear(): bool
     {
         return $this->clearTable();
+    }
+
+    /**
+     * The businesses matching $where that this reader may see; with $limit, one page of them, counted over what the
+     * reader may see (a visitor does not see the businesses that carry a living person's name).
+     *
+     * @param SqlParams $params
+     * @return list<JuridicalEntity>
+     */
+    private function queryShown(string $where, array $params, string $orderBy, ?int $limit, int $offset): array
+    {
+        return $this->fetchPage($where, $params, $orderBy, $limit, $offset, $this->privacy->hidesLiving(), fn(array $rows) => $this->shown($rows));
     }
 
     /**

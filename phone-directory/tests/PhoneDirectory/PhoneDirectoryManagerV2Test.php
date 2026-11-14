@@ -141,6 +141,22 @@ class PhoneDirectoryManagerV2Test extends TestCase
         $this->assertSame('en', $result['language']);
     }
 
+    public function testTheFindersPassLimitAndOffsetOn(): void
+    {
+        for ($i = 1; $i <= 6; $i++) {
+            $this->owner->addNaturalPerson(new PhoneDirectoryEntry(sprintf('SMITH, John %d', $i), 'US', $i . ' Main Street'));
+            $this->owner->addJuridicalEntity(new JuridicalEntity(businessName: "Acme {$i}", street: "{$i} Main Street", businessType: 'corp'));
+        }
+
+        $this->assertCount(2, $this->owner->findNaturalPeopleByName('smith', 2));
+        $this->assertCount(2, $this->owner->findNaturalPeopleByName('smith', 4, 4));
+        $this->assertCount(3, $this->owner->getAllNaturalPeople(3));
+        $this->assertCount(2, $this->owner->getAllJuridicalEntities(2, 4));
+        $this->assertCount(2, $this->owner->findJuridicalEntitiesByType('corp', 2, 1));
+        $this->assertCount(3, $this->owner->searchNaturalPeople(['street' => 'main'], 3));
+        $this->assertCount(2, $this->owner->searchJuridicalEntities(['businessName' => 'acme'], 5, 4));
+    }
+
     public function testProcessFileOfAnEmptyFileStoresNothing(): void
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'phone_batches_');

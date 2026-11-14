@@ -129,44 +129,64 @@ class PhoneDirectoryManagerV2
         return $this->juridicalDatabase->findById($id);
     }
 
-    /** @return list<PhoneDirectoryEntry> */
-    public function findNaturalPeopleByName(string $name): array
+    /**
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
+     * @return list<PhoneDirectoryEntry>
+     */
+    public function findNaturalPeopleByName(string $name, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureNaturalReady();
 
-        return $this->naturalDatabase->findByName($name);
+        return $this->naturalDatabase->findByName($name, $limit, $offset);
     }
 
-    /** @return list<PhoneDirectoryEntry> */
-    public function findNaturalPeopleBySurnameSound(string $surname, ?string $language = null): array
+    /**
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
+     * @return list<PhoneDirectoryEntry>
+     */
+    public function findNaturalPeopleBySurnameSound(string $surname, ?string $language = null, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureNaturalReady();
 
-        return $this->naturalDatabase->findBySurnameSound($surname, $language);
+        return $this->naturalDatabase->findBySurnameSound($surname, $language, $limit, $offset);
     }
 
-    /** @return list<JuridicalEntity> */
-    public function findJuridicalEntitiesByName(string $name): array
+    /**
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
+     * @return list<JuridicalEntity>
+     */
+    public function findJuridicalEntitiesByName(string $name, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureJuridicalReady();
 
-        return $this->juridicalDatabase->findByBusinessName($name);
+        return $this->juridicalDatabase->findByBusinessName($name, $limit, $offset);
     }
 
-    /** @return list<PhoneDirectoryEntry> */
-    public function findNaturalPeopleByStreet(string $street): array
+    /**
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
+     * @return list<PhoneDirectoryEntry>
+     */
+    public function findNaturalPeopleByStreet(string $street, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureNaturalReady();
 
-        return $this->naturalDatabase->findByStreet($street);
+        return $this->naturalDatabase->findByStreet($street, $limit, $offset);
     }
 
-    /** @return list<JuridicalEntity> */
-    public function findJuridicalEntitiesByStreet(string $street): array
+    /**
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
+     * @return list<JuridicalEntity>
+     */
+    public function findJuridicalEntitiesByStreet(string $street, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureJuridicalReady();
 
-        return $this->juridicalDatabase->findByStreet($street);
+        return $this->juridicalDatabase->findByStreet($street, $limit, $offset);
     }
 
     /** @return array{natural: list<PhoneDirectoryEntry>, juridical: list<JuridicalEntity>} */
@@ -207,28 +227,40 @@ class PhoneDirectoryManagerV2
         ];
     }
 
-    /** @return list<JuridicalEntity> */
-    public function findJuridicalEntitiesByType(string $type): array
+    /**
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
+     * @return list<JuridicalEntity>
+     */
+    public function findJuridicalEntitiesByType(string $type, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureJuridicalReady();
 
-        return $this->juridicalDatabase->findByBusinessType($type);
+        return $this->juridicalDatabase->findByBusinessType($type, $limit, $offset);
     }
 
-    /** @return list<PhoneDirectoryEntry> */
-    public function getAllNaturalPeople(): array
+    /**
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
+     * @return list<PhoneDirectoryEntry>
+     */
+    public function getAllNaturalPeople(?int $limit = null, int $offset = 0): array
     {
         $this->ensureNaturalReady();
 
-        return $this->naturalDatabase->getAll();
+        return $this->naturalDatabase->getAll($limit, $offset);
     }
 
-    /** @return list<JuridicalEntity> */
-    public function getAllJuridicalEntities(): array
+    /**
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
+     * @return list<JuridicalEntity>
+     */
+    public function getAllJuridicalEntities(?int $limit = null, int $offset = 0): array
     {
         $this->ensureJuridicalReady();
 
-        return $this->juridicalDatabase->getAll();
+        return $this->juridicalDatabase->getAll($limit, $offset);
     }
 
     /** @return array{natural: list<PhoneDirectoryEntry>, juridical: list<JuridicalEntity>} */
@@ -242,24 +274,28 @@ class PhoneDirectoryManagerV2
 
     /**
      * @param array{name?: string, street?: string, phone?: string} $criteria
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
      * @return list<PhoneDirectoryEntry>
      */
-    public function searchNaturalPeople(array $criteria): array
+    public function searchNaturalPeople(array $criteria, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureNaturalReady();
 
-        return $this->naturalDatabase->search($criteria);
+        return $this->naturalDatabase->search($criteria, $limit, $offset);
     }
 
     /**
      * @param array{businessName?: string, street?: string, phone?: string, businessType?: string} $criteria
+     * @param int|null $limit The most to return; null for all
+     * @param int $offset How many of what the reader may see to skip first
      * @return list<JuridicalEntity>
      */
-    public function searchJuridicalEntities(array $criteria): array
+    public function searchJuridicalEntities(array $criteria, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureJuridicalReady();
 
-        return $this->juridicalDatabase->search($criteria);
+        return $this->juridicalDatabase->search($criteria, $limit, $offset);
     }
 
     public function updateNaturalPerson(PhoneDirectoryEntry $entry): bool

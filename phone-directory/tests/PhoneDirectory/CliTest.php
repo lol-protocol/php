@@ -70,6 +70,28 @@ class CliTest extends TestCase
         $this->assertStringContainsString('Uso:', $stdout);
     }
 
+    public function testSearchInPages(): void
+    {
+        $file = $this->writeSampleFile("SMITH, Ann\n1 Oak Avenue\n\nSMITH, Bob\n2 Oak Avenue\n\nSMITH, Cy\n3 Oak Avenue\n\nSMITH, Di\n4 Oak Avenue\n\nSMITH, Ed\n5 Oak Avenue");
+        $this->runCli("import {$file} --country=US --dsn=sqlite:{$this->dbFile}");
+
+        [, $first] = $this->runCli("search --name=smith --limite=2 --dsn=sqlite:{$this->dbFile}");
+        [, $second] = $this->runCli("search --name=smith --limite=2 --desde=2 --dsn=sqlite:{$this->dbFile}");
+        [, $last] = $this->runCli("search --name=smith --limite=2 --desde=4 --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertStringContainsString('2 resultado(s)', $first);
+        $this->assertStringContainsString('Smith, Ann', $first);
+        $this->assertStringContainsString('Smith, Cy', $second);
+        $this->assertStringNotContainsString('Smith, Ann', $second);
+        $this->assertStringContainsString('1 resultado(s)', $last);
+        $this->assertStringContainsString('Smith, Ed', $last);
+
+        [$exit, , $stderr] = $this->runCli("search --name=smith --limite=0 --dsn=sqlite:{$this->dbFile}");
+        $this->assertSame(1, $exit);
+        $this->assertStringContainsString('--limite', $stderr);
+        unlink($file);
+    }
+
     public function testImportInSmallBatchesGivesTheSameResult(): void
     {
         $file = $this->writeSampleFile("SMITH, John\n123 Main Street\n555-123-4567\n\nJONES, Ann\n456 Oak Avenue\n\nLEE, Ken\n7 Elm Road");
