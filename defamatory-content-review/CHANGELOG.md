@@ -2,6 +2,12 @@
 
 ## [Sin publicar]
 
+### Cambiado
+
+- **Cantonés, no chino**: `yue` ya no declara el código `zh` (ISO 639-1 no tiene cantonés), así que
+  `Accept-Language: zh…` ya no recibe mensajes en cantonés: cae al español; solo la etiqueta `yue` los sirve.
+  Los mensajes de `yue` se ajustaron para que sean cantonés escrito y no chino estándar.
+
 ### Añadido
 
 - **Mensajes de salida en 13 idiomas más** (`nor`, `dan`, `fin`, `hun`, `ell`, `bul`, `slk`, `ind`, `vie`,
