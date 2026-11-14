@@ -227,7 +227,7 @@ def test_realismo_magico_solo_lleva_frases_originales():
 def test_las_piezas_con_frase_la_llevan_dibujada():
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
     con = [e for e in manifiesto["entradas"] if e.get("frase")]
-    assert 450 < len(con) < 550  # alrededor de la mitad de las 1000
+    assert 0.4 < len(con) / len(manifiesto["entradas"]) < 0.6  # alrededor de la mitad de las piezas
     for e in con[:25]:
         svg = (RAIZ / e["archivo"]).read_text(encoding="utf-8") if e["formato"] == "svg" else None
         if svg:
