@@ -567,6 +567,18 @@ Hay tres suites:
 - `tests/Http`: levanta la app con `php -S` y la recorre por HTTP como un navegador
   (CSRF, formularios, redirecciones). Cubre lo que los otros no alcanzan: el
   cableado de `public/index.php` y los controllers. Lo que crea se borra al terminar.
+  `ConcurrenciaTest` es la excepción en cómo corre: levanta **dos servidores** (dos procesos
+  de `php -S`, cada uno con su conexión a la base) y les manda dos peticiones a la vez, de
+  dos sesiones distintas: dos pagos que juntos superan el saldo de la boleta (solo uno
+  entra), un pago que llega mientras se anula la boleta (queda dentro de la nota de crédito o
+  se rechaza) y dos anulaciones simultáneas (una sola nota). Prueba el flujo completo: si un
+  controlador deja de tomar el candado de la boleta, o valida antes de tomarlo, falla,
+  cosa que las piezas de `AnulableTest` no ven. Para que el solapamiento no dependa de la
+  suerte, un trigger temporal duerme 0,8 s al insertar en `pagos` o `notas_credito` (lo
+  borra al terminar); con el candado el resultado es el mismo en cualquier orden, así que no
+  falla por lentitud. No usa `PHP_CLI_SERVER_WORKERS`: los trabajadores comparten el socket y
+  uno puede atender las dos peticiones una tras otra. No cubre editar una boleta o un pago
+  mientras se paga.
 
 PHPStan corre en nivel 8, el que revisa los nulos (por ejemplo, el resultado de un
 `porId()` usado sin chequear que la entidad exista). Las excepciones están
