@@ -23,6 +23,21 @@ class FormatTest extends TestCase
         $this->assertSame('circa 1900', Format::fecha('circa 1900'));
     }
 
+    public function testFechaParcialDeGenealogia(): void
+    {
+        $this->assertSame('1925', Format::fecha('1925-00-00'));
+        $this->assertSame('feb 1925', Format::fecha('1925-02-00'));
+        $this->assertSame('Feb 1925', Format::fecha('1925-02-00', 'eng'));
+        $this->assertSame('29 feb 1924', Format::fecha('1924-02-29'), 'a leap year');
+    }
+
+    public function testFechaQueNoEsUnaFechaSeDevuelveTalCual(): void
+    {
+        foreach (['1925-13-05', '1925-00-14', '1925-02-30', '1925-02-29', '0000-01-01', '1925-02-14T25:61'] as $valor) {
+            $this->assertSame($valor, Format::fecha($valor), $valor);
+        }
+    }
+
     public function testVida(): void
     {
         $this->assertSame('1868–1941', Format::vida('1868-05-12', '1941-10-05'));
@@ -35,5 +50,7 @@ class FormatTest extends TestCase
         $this->assertSame('$199.00 MXN', Format::dinero(19900));
         $this->assertSame('$1,234.56 EUR', Format::dinero('123456', 'EUR'));
         $this->assertSame('$0.00 MXN', Format::dinero(null));
+        $this->assertSame('-$1,234.56 MXN', Format::dinero(-123456), 'the sign goes before the currency symbol');
+        $this->assertSame('-$0.05 MXN', Format::dinero(-5));
     }
 }
