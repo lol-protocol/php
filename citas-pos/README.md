@@ -69,7 +69,7 @@ La auditoría encontró y corrigió tres problemas reales, que axe **no** detect
 
 **Un falso positivo conocido.** axe marca como «por revisar» `label-content-name-mismatch` en las palabras de un solo carácter («y», «a»), porque no sabe si es una letra o un símbolo. El nombre accesible de cada palabra revelada empieza por su texto visible («y, conjunción coordinante»), así que cumple el criterio 2.5.3; la prueba lo permite expresamente y falla ante cualquier otro «por revisar».
 
-**Lo que no se hizo ni se probó:** un lector de pantalla real (lo más parecido que hay es el árbol de accesibilidad de Chromium), Firefox y Safari. Una frase de 15 palabras son 15 paradas de tabulador; un `tabindex` itinerante con las flechas lo reduciría, y no se implementó.
+**Lo que no se hizo ni se probó:** un lector de pantalla real (lo más parecido que hay es el árbol de accesibilidad de Chromium), Firefox y Safari. Las palabras del juego son una sola parada de tabulador (`tabindex` itinerante): dentro de la frase se avanza con las flechas, Inicio y Fin.
 
 ## Relación con otros proyectos
 
@@ -98,6 +98,6 @@ El workflow [`pruebas-citas-pos.yml`](../.github/workflows/pruebas-citas-pos.yml
 
 Para ver el prototipo, abre `citas-pos/prototipo/index.html` en un navegador: no necesita servidor ni conexión. Para jugar a «Adivina la categoría», abre `citas-pos/salida/demo-juego.html`.
 
-**Usar el juego en una página.** Carga `citas-pos.css` y `citas-pos-juego.css` en el `<head>`, `citas-pos-juego.js` con `defer`, y pega el contenido de un `*.juego.html`. Sin el script la frase sale coloreada y con su leyenda completa, así que se puede leer aunque falle; con el script, las palabras empiezan en gris y se descubren al tocarlas (con el ratón, el dedo o el teclado: Intro y Espacio), y la leyenda se va llenando.
+**Usar el juego en una página.** Carga `citas-pos.css` y `citas-pos-juego.css` en el `<head>`, `citas-pos-juego.js` con `defer`, y pega el contenido de un `*.juego.html`. Sin el script la frase sale coloreada y con su leyenda completa, así que se puede leer aunque falle; con el script, las palabras empiezan en gris y se descubren al tocarlas (con el ratón, el dedo o el teclado: Tab entra en la frase, las flechas, Inicio y Fin pasan de una palabra a otra, e Intro o Espacio la descubren), y la leyenda se va llenando.
 
 **Lo que estas comprobaciones no cubren:** el juego solo se prueba en Chromium: no se ha probado con un lector de pantalla real, ni en Firefox ni en Safari; que el fragmento del correo se vea bien en clientes de correo reales (no se ha probado en ninguno; lleva su propio fondo claro, pero un cliente que invierta los colores o ignore el estilo del subrayado lo cambiaría), que el texto de una cita coincida con su fuente (lo hace una persona al verificar; el validador solo exige que quede anotado con qué), ni hay pruebas de las traducciones (aún no existen), la paleta no se ha probado con personas con daltonismo ni en un correo real, y la simulación de daltonismo es una aproximación.
