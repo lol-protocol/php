@@ -105,6 +105,7 @@ return [
                 1 => 'colecciones',
                 2 => 'aportes',
                 3 => 'retiros',
+                4 => 'solicitudes',
             ],
         ],
     ],

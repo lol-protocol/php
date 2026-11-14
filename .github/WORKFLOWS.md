@@ -22,7 +22,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`pruebas-defamatory-content-review.yml`](workflows/pruebas-defamatory-content-review.yml) | Pruebas defamatory-content-review | `push`, `pull_request`, `workflow_dispatch` | `phpunit`, `chat-front-guard` |
 | [`pruebas-document-formats.yml`](workflows/pruebas-document-formats.yml) | Pruebas document-formats | `push`, `pull_request`, `workflow_dispatch` | `document-formats`, `document-formats-database` |
 | [`pruebas-listado-colores.yml`](workflows/pruebas-listado-colores.yml) | Pruebas Listado-colores | `push`, `pull_request`, `workflow_dispatch` | `listado-colores`, `listado-colores-matriz` |
-| [`pruebas-listado-paises.yml`](workflows/pruebas-listado-paises.yml) | Pruebas Listado-paises | `push`, `pull_request`, `schedule`, `workflow_dispatch` | `listado-paises`, `reproducir` |
+| [`pruebas-listado-paises.yml`](workflows/pruebas-listado-paises.yml) | Pruebas Listado-paises | `push`, `pull_request`, `schedule`, `workflow_dispatch` | `listado-paises`, `navegador`, `reproducir` |
 | [`pruebas-marcalibros.yml`](workflows/pruebas-marcalibros.yml) | Pruebas marcalibros | `push`, `pull_request`, `workflow_dispatch` | `php`, `catalogo`, `navegador` |
 | [`pruebas-mortalidad-historica.yml`](workflows/pruebas-mortalidad-historica.yml) | Pruebas mortalidad-historica | `push`, `pull_request`, `workflow_dispatch` | `mortalidad-historica`, `php`, `js`, `reproducir` |
 | [`pruebas-parsing-fb-in-mas.yml`](workflows/pruebas-parsing-fb-in-mas.yml) | Pruebas Parsing-fb-in-mas | `push`, `pull_request`, `workflow_dispatch` | `pruebas` |

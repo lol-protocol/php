@@ -157,6 +157,8 @@
     "category": "카테고리",
     "region": "지역",
     "reset": "필터 초기화",
+    "copyLink": "링크 복사",
+    "linkCopied": "링크를 복사했습니다",
     "compareLabel": "규격 비교",
     "comparePlaceholder": "비교할 규격 이름을 입력하세요...",
     "colFormat": "규격",

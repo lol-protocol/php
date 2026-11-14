@@ -157,6 +157,8 @@
     "category": "หมวดหมู่",
     "region": "ภูมิภาค",
     "reset": "รีเซ็ตตัวกรอง",
+    "copyLink": "คัดลอกลิงก์",
+    "linkCopied": "คัดลอกลิงก์แล้ว",
     "compareLabel": "เปรียบเทียบขนาด",
     "comparePlaceholder": "พิมพ์ชื่อขนาดที่ต้องการเปรียบเทียบ...",
     "colFormat": "ขนาด",

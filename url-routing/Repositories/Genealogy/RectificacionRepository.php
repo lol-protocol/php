@@ -105,14 +105,15 @@ final class RectificacionRepository extends Repository
             throw new \DomainException("{$campo} ya tiene ese valor: no hay nada que corregir.");
         }
 
-        $antes = $this->oculta($id);
+        $supresion = new SupresionRepository($this->db, $this->privacidad);
+        $antes = $supresion->oculta($id);
         if ($this->db->execute("UPDATE {$tabla} SET {$columna} = ?, actualizado_en = CURRENT_TIMESTAMP WHERE id = ?", [$nuevo, $donde]) !== 1) {
             throw new \DomainException("El cambio no tocó exactamente una fila: no se hizo nada.");
         }
-        $despues = $this->oculta($id);
+        $despues = $supresion->oculta($id);
 
         // Recording validates the pedido too (it must be about this persona), so a bad --pedido stops the change.
-        $correccion = (new SupresionRepository($this->db))->rectificar($id, $campo, $pedido);
+        $correccion = $supresion->rectificar($id, $campo, $pedido);
 
         return [
             'campo' => $campo,
@@ -122,17 +123,6 @@ final class RectificacionRepository extends Repository
             'correccion' => $aplicar ? $correccion : null,
             'aviso_grupo' => $campo === 'personas.apellidos' ? $this->avisoDelGrupo($fila['grupo_id'], $nuevo) : null,
         ];
-    }
-
-    /**
-     * Whether a visitor is shown the persona as hidden (alive, private or withdrawn): the same condition every page uses.
-     */
-    private function oculta(int $id): bool
-    {
-        return (bool)$this->db->fetchValue(
-            'SELECT CASE WHEN ' . $this->privacidad->sqlOculta('p') . ' THEN 1 ELSE 0 END FROM personas p WHERE p.id = ?',
-            [$id]
-        );
     }
 
     /** @throws \DomainException unless $suceso is an event this persona is the only subject of */

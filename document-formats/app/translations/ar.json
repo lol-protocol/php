@@ -157,6 +157,8 @@
     "category": "الفئة",
     "region": "المنطقة",
     "reset": "إعادة ضبط المرشحات",
+    "copyLink": "نسخ الرابط",
+    "linkCopied": "تم نسخ الرابط",
     "compareLabel": "مقارنة المقاسات",
     "comparePlaceholder": "اكتب أسماء المقاسات للمقارنة...",
     "colFormat": "المقاس",

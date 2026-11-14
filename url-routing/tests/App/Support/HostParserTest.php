@@ -116,4 +116,27 @@ class HostParserTest extends TestCase
         }
         $this->assertSame('pos', HostParser::sitio('contrastocolor.test'), 'the default list');
     }
+
+    public function testElHostNoDistingueMayusculasNiElPuntoFinal(): void
+    {
+        $this->assertSame('pos.example.com', HostParser::parse('POS.Example.COM')['host_without_port']);
+        $this->assertSame('pos.example.com', HostParser::parse('pos.example.com.')['host_without_port'], 'FQDN');
+        $this->assertSame('pos.example.com', HostParser::parse(' pos.example.com:8080 ')['host_without_port']);
+        $this->assertSame(['pos', 'example', 'com'], HostParser::parse('POS.example.com.:443')['parts']);
+    }
+
+    public function testUnaDireccionIPv6SeCortaEnElCorcheteNoEnLosDosPuntos(): void
+    {
+        $this->assertSame('[::1]', HostParser::parse('[::1]:8080')['host_without_port']);
+        $this->assertSame('[2001:db8::1]', HostParser::parse('[2001:DB8::1]')['host_without_port']);
+    }
+
+    public function testElSitioYElIdiomaNoDependenDeComoEscribeElHostElCliente(): void
+    {
+        $this->assertSame('pos', HostParser::sitio('CONTRASTOCOLOR.APP'));
+        $this->assertSame('pos', HostParser::sitio('contrastocolor.app.'), 'a fully qualified host name');
+        $this->assertSame('genealogy', HostParser::sitio('[::1]:8080'));
+        $this->assertSame('eng', HostParser::getLocale('ENG.example.com.', ['spa', 'eng']));
+        $this->assertSame('spa', HostParser::getLocale('example.com.', ['spa', 'eng']), 'the bare domain with a trailing dot');
+    }
 }
