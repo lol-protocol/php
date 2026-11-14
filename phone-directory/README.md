@@ -303,6 +303,7 @@ El `PhoneDirectoryManager` anterior (v1, solo inglés y solo personas naturales)
 ## Uso Básico
 
 ### 1. Instalación
+Requiere PHP 8.1 o superior con `mbstring` y `pdo_sqlite` (o `pdo_mysql` / `pdo_pgsql`).
 ```bash
 composer install   # enlaza también ../defamatory-content-review como dependencia
 ```
@@ -311,6 +312,7 @@ composer install   # enlaza también ../defamatory-content-review como dependenc
 ```php
 use PhoneDirectory\JuridicalEntityPDODatabase;
 use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
+use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 
 $dsn = 'sqlite:genealogy.db';
@@ -320,6 +322,14 @@ $manager = new PhoneDirectoryManagerV2(
 );
 
 $result = $manager->processFile('sample_directory.txt');   // idioma detectado automáticamente
+
+// Para un directorio del catálogo, el parser toma el país y el id de origen de ahí
+// y las entradas quedan asociadas a esa edición:
+$manager = new PhoneDirectoryManagerV2(
+    parser: MultiLanguagePhoneDirectoryParser::forCatalogDirectory('es_1930_madrid'),
+    naturalDatabase: new PhoneDirectoryPDODatabase($dsn),
+    juridicalDatabase: new JuridicalEntityPDODatabase($dsn)
+);
 
 echo "Insertadas: {$result['totalInserted']} entradas\n";
 echo "Errores: {$result['errorCount']}\n";
@@ -532,7 +542,7 @@ Para directorios telefónicos grandes:
 - Con "viuda de" o "widow of", solo se guarda el tratamiento; el nombre del marido que sigue no se vuelve a separar en nombre/apellido
 - Ver «Privacidad: personas que podrían estar vivas» para lo que la base no devuelve por omisión y por qué
 - La detección automática de idioma es una heurística por palabras clave; con muy poco texto, o en un idioma no soportado, puede fallar (siempre se puede indicar el idioma explícitamente). «Via» cuenta como italiano solo con la forma «Via Roma 10» (al principio de la línea y con el número al final), porque también existe en inglés
-- Los dos parsers leen cada bloque con `BlockReader`, que mira cada línea una sola vez (`LineFacts`). Separa dos registros seguidos sin línea en blanco cuando el primero ya tiene nombre y calle y la línea siguiente al nuevo nombre (también un nombre junto a su teléfono) es una calle; una línea de ciudad o una nota después del teléfono se quedan en su registro. Si el segundo registro no trae calle justo después del nombre, los dos se siguen leyendo como uno. Una calle sin palabra de calle cede ante una con palabra que venga después en el mismo registro («Ferretería Sur / División 2 / Calle Mayor 5» da «Calle Mayor 5»)
+- Los dos parsers leen cada bloque con `BlockReader`, que mira cada línea una sola vez (`LineFacts`). Separa dos registros seguidos sin línea en blanco cuando el primero ya tiene nombre y calle y la línea siguiente al nuevo nombre (también un nombre junto a su teléfono) es una calle; una línea de ciudad o una nota después del teléfono se quedan en su registro. Si el segundo registro no trae calle justo después del nombre, los dos se siguen leyendo como uno. Una calle sin palabra de calle cede ante una con palabra que venga después en el mismo registro («Luis Sur / División 2 / Calle Mayor 5» da «Calle Mayor 5»)
 - Los casos de `tests/fixtures/parser-evaluation.json` marcados con `falla_conocida` documentan lo que el parser multilingüe todavía no resuelve (hoy no queda ninguno: para medir algo nuevo, agrega primero los casos que lo muestran)
 - En una sola línea sin separadores, la calle con el número al final necesita una palabra de calle (`Calle`, `Via`, `-straße`...) y al menos dos palabras de nombre antes; si no, se corta en el primer dígito como en inglés
 
@@ -544,8 +554,7 @@ MIT
 
 | Archivo | Qué trae |
 |---|---|
-| `PHONE_DIRECTORY_SUMMARY.md` | Descripción funcional, uso y esquema de base de datos |
-| `ARCHITECTURE.md` | Diagramas de arquitectura y flujo |
-| `PROJECT_COMPLETION_REPORT.md` | Estado del proyecto, tests por archivo y pendientes |
+| `ARCHITECTURE.md` | Diagramas de arquitectura y flujo, y los índices de la base |
+| `PROJECT_COMPLETION_REPORT.md` | Estado del proyecto, CI y pendientes |
 | `ESTIMATES_AND_SCALABILITY.md` | Rendimiento medido y proyecciones de volumen |
-| `ERRORES_ENCONTRADOS.md`, `POTENTIAL_ERRORS_ANALYSIS.md` | Los 14 errores de la revisión estática, su estado y el análisis detallado |
+| `ERRORES_ENCONTRADOS.md` | Los 14 errores de la revisión estática: su estado, dónde se corrigieron y qué prueba los cubre |
