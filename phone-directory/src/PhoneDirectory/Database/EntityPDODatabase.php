@@ -102,6 +102,66 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    /**
+     * One page of the entities that match $where, in $orderBy order (ties broken by id, so pages never overlap or
+     * skip a row), as many as the reader may see.
+     *
+     * $visible turns rows into the entities this reader may see: it can drop rows (Privacy). When $mayDropRows is
+     * false it never does, and the page is one SQL LIMIT/OFFSET; when it is true the visible rows are counted from
+     * the start in chunks until the page is full, so a page is never short because of what was dropped. With no
+     * $limit the result is everything from $offset on.
+     *
+     * @param SqlParams $params
+     * @param callable(list<Row>): list<TEntity> $visible
+     * @return list<TEntity>
+     * @throws \InvalidArgumentException If $limit is below 1 or $offset is below 0
+     */
+    protected function fetchPage(string $where, array $params, string $orderBy, ?int $limit, int $offset, bool $mayDropRows, callable $visible): array
+    {
+        if ($limit !== null && $limit < 1) {
+            throw new \InvalidArgumentException("The limit must be at least 1, not {$limit}");
+        }
+        if ($offset < 0) {
+            throw new \InvalidArgumentException("The offset must not be negative, not {$offset}");
+        }
+
+        $this->ensureConnection();
+        $sql = 'SELECT * FROM ' . $this->getTableName() . " WHERE ({$where}) ORDER BY {$orderBy}, id";
+
+        if ($limit === null) {
+            return array_slice($visible($this->selectRows($sql, $params)), $offset);
+        }
+
+        if (!$mayDropRows) {
+            return $visible($this->selectRows("{$sql} LIMIT {$limit} OFFSET {$offset}", $params));
+        }
+
+        $wanted = $offset + $limit;
+        $chunk = max($limit * 2, 100);
+        $found = [];
+        for ($scanned = 0; count($found) < $wanted; $scanned += $chunk) {
+            $rows = $this->selectRows("{$sql} LIMIT {$chunk} OFFSET {$scanned}", $params);
+            $found = [...$found, ...$visible($rows)];
+            if (count($rows) < $chunk) {
+                break;
+            }
+        }
+
+        return array_slice($found, $offset, $limit);
+    }
+
+    /**
+     * @param SqlParams $params
+     * @return list<Row>
+     */
+    private function selectRows(string $sql, array $params): array
+    {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     /** @return list<TEntity> */
     protected function getAllOrdered(string $orderBy = 'id'): array
     {

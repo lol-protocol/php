@@ -94,9 +94,12 @@ function printHelp(): void
       --source=<id>        Id de directorio de origen (ignorado si se usa --catalog)
       --language=<es|en|fr|pt|de|it>  Fuerza el idioma en vez de detectarlo automáticamente
       --clear              Vacía las tablas antes de importar
+      --lote=<N>           Entradas que se leen y guardan de una vez (por defecto: 5000); la memoria no crece con el archivo
 
     search:
       --type=natural|juridical|all   Qué buscar (por defecto: all)
+      --limite=<N>         Como mucho N resultados, por tipo (por defecto: todos)
+      --desde=<N>          Salta los primeros N resultados, por tipo (por defecto: 0); sirve para pasar de página
 
     deceased:
       Marca que la persona de una entrada murió, para que un visitante pueda verla aunque su guía sea
@@ -219,7 +222,12 @@ function commandImport(array $args, array $options): int
 
     $manager = buildManager($options, $parser);
 
-    $result = $manager->processFile($file, $language, isset($options['clear']));
+    $batchSize = (int) option($options, 'lote', (string) PhoneDirectoryManagerV2::DEFAULT_BATCH_SIZE);
+    if ($batchSize < 1) {
+        fail('--lote tiene que ser un número entero de 1 o más');
+    }
+
+    $result = $manager->processFile($file, $language, isset($options['clear']), $batchSize);
 
     echo "Idioma detectado: {$result['language']}\n";
     echo "Líneas parseadas: {$result['totalParsed']}\n";
@@ -243,18 +251,25 @@ function commandSearch(array $options): int
     $manager = buildManager($options);
     $type = option($options, 'type', 'all');
 
+    // Per type: with --type=all, --limite=10 gives up to 10 people and up to 10 businesses.
+    $limit = option($options, 'limite') === null ? null : (int) option($options, 'limite');
+    $offset = (int) option($options, 'desde', '0');
+    if (($limit !== null && $limit < 1) || $offset < 0) {
+        fail('--limite tiene que ser un entero de 1 o más y --desde uno de 0 o más');
+    }
+
     if (($name = option($options, 'name')) !== null) {
-        $natural = fn() => $manager->findNaturalPeopleByName($name);
-        $juridical = fn() => $manager->findJuridicalEntitiesByName($name);
+        $natural = fn() => $manager->findNaturalPeopleByName($name, $limit, $offset);
+        $juridical = fn() => $manager->findJuridicalEntitiesByName($name, $limit, $offset);
     } elseif (($street = option($options, 'street')) !== null) {
-        $natural = fn() => $manager->findNaturalPeopleByStreet($street);
-        $juridical = fn() => $manager->findJuridicalEntitiesByStreet($street);
+        $natural = fn() => $manager->findNaturalPeopleByStreet($street, $limit, $offset);
+        $juridical = fn() => $manager->findJuridicalEntitiesByStreet($street, $limit, $offset);
     } elseif (($phone = option($options, 'phone')) !== null) {
         $natural = fn() => array_filter([$manager->findNaturalPersonByPhone($phone)]);
         $juridical = fn() => array_filter([$manager->findJuridicalEntityByPhone($phone)]);
     } elseif (($surname = option($options, 'surname-sound')) !== null) {
         $language = option($options, 'language');
-        $natural = fn() => $manager->findNaturalPeopleBySurnameSound($surname, $language);
+        $natural = fn() => $manager->findNaturalPeopleBySurnameSound($surname, $language, $limit, $offset);
         $juridical = fn() => [];
     } else {
         fail('indica un criterio: --name=, --street=, --phone= o --surname-sound=');

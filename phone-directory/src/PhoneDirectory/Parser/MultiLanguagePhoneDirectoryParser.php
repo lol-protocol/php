@@ -25,13 +25,15 @@ class MultiLanguagePhoneDirectoryParser
     // outscore English's own (zero) count and misdetect the whole file. English is this project's
     // baseline language, so detection only overrides it on genuinely distinctive vocabulary. Street
     // *extraction* for an already-known language still uses all of StreetRules' words.
+    // BEGIN generated: palabras/deteccion (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     private const LANGUAGE_DETECTION_MARKERS = [
         'es' => ['calle', 'avenida', 'pasaje', 'camino', 'ruta', 'carrera'],
         'fr' => ['rue', 'allée', 'cours'],
         'pt' => ['rua', 'avenida', 'praça', 'alameda', 'estrada', 'largo'],
-        'de' => [], // detected via StreetRules::SUFFIXES only; its own marker words are too ambiguous
+        'de' => [], // no words of its own: detected via StreetRules::SUFFIXES only; its marker words are too ambiguous
         'it' => ['viale', 'corso', 'piazza', 'largo', 'strada'],
     ];
+    // END generated: palabras/deteccion
 
     // Words left out of LANGUAGE_DETECTION_MARKERS because they are also English, still counted where the
     // line has a shape English doesn't use: "Via Roma 10" or "Via Roma, 10" opens the line and ends with
@@ -43,6 +45,7 @@ class MultiLanguagePhoneDirectoryParser
     // Words that name a kind of business, or a family firm ("Smith & Sons", "Hermanos García", "Hnos."), and
     // that almost nobody has for a surname. A word many people carry as a surname (Baker, Miller, Bank...)
     // does not belong in these lists: it would take them out from under Privacy, which only covers persons.
+    // BEGIN generated: palabras/empresas (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     private const ENTITY_TYPE_MARKERS = [
         'es' => ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel', 'banco', 'farmacia', 'hospital', 'hnos', 'hermanos', 'hijos', 'sucesores', 'taller', 'ferretería', 'clínica', 'panadería', 'carnicería', 'librería', 'zapatería'],
         'en' => ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy', 'hospital', 'sons', 'bros', 'associates', 'enterprises', 'industries', 'services', 'plumbing', 'garage', 'bakery', 'hardware', 'clinic', 'pub', 'motel'],
@@ -51,6 +54,7 @@ class MultiLanguagePhoneDirectoryParser
         'de' => ['gmbh', 'ag', 'kg', 'ohg', 'apotheke', 'bäckerei', 'gasthaus', 'restaurant', 'hotel', 'bank', 'krankenhaus', 'gebrüder', 'söhne', 'werkstatt', 'metzgerei', 'tischlerei', 'klinik'],
         'it' => ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel', 'banca', 'farmacia', 'ospedale', 'fratelli', 'figli', 'officina', 'macelleria', 'ferramenta', 'pasticceria', 'pizzeria', 'clinica'],
     ];
+    // END generated: palabras/empresas
 
     private const SUPPORTED_LANGUAGES = StreetRules::SUPPORTED_LANGUAGES;
 
@@ -115,6 +119,53 @@ class MultiLanguagePhoneDirectoryParser
     }
 
     /**
+     * Parse a file and hand its entries over $batchSize at a time, without ever holding the whole file's
+     * entries: memory stays flat however large the directory is (parseFile() keeps every entry, about 1.8 KB each).
+     *
+     * The file, the batch size and the language are checked when this is called, not when the first batch is read.
+     * While the batches are read, getErrors() grows and getDetectedLanguage() is set; getEntries() stays empty,
+     * because an entry that has been handed over is not kept.
+     *
+     * @return \Generator<int, list<ParsedEntry>> Batches of up to $batchSize entries, in file order
+     * @throws \RuntimeException If the file does not exist
+     * @throws \InvalidArgumentException If $batchSize is below 1 or the language is unsupported
+     */
+    public function parseFileInBatches(string $filePath, int $batchSize = 1000, ?string $language = null): \Generator
+    {
+        if ($batchSize < 1) {
+            throw new \InvalidArgumentException("The batch size must be at least 1, not {$batchSize}");
+        }
+        if (!file_exists($filePath)) {
+            throw new \RuntimeException("File not found: {$filePath}");
+        }
+
+        $language ??= $this->detectLanguage(LineReader::read($filePath));
+        $this->assertSupported($language);
+
+        return $this->batches(LineReader::read($filePath), $language, $batchSize);
+    }
+
+    /**
+     * @param iterable<string> $lines
+     * @return \Generator<int, list<ParsedEntry>>
+     */
+    private function batches(iterable $lines, string $language, int $batchSize): \Generator
+    {
+        $batch = [];
+        foreach ($this->streamLines($lines, $language) as $entry) {
+            $batch[] = $entry;
+            if (count($batch) >= $batchSize) {
+                yield $batch;
+                $batch = [];
+            }
+        }
+
+        if ($batch !== []) {
+            yield $batch;
+        }
+    }
+
+    /**
      * Parse phone directory content and extract entries
      *
      * @param string $content The raw directory content to parse
@@ -135,12 +186,50 @@ class MultiLanguagePhoneDirectoryParser
      */
     private function parseLines(iterable $lines, string $language): array
     {
-        $this->entries = [];
-        $this->parseErrors = [];
+        $this->assertSupported($language);
 
+        $all = [];
+        foreach ($this->streamLines($lines, $language) as $entry) {
+            $all[] = $entry;
+        }
+
+        return $this->entries = $all;
+    }
+
+    private function assertSupported(string $language): void
+    {
         if (!in_array($language, self::SUPPORTED_LANGUAGES, true)) {
             throw new InvalidLanguageException("Unsupported language: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
         }
+    }
+
+    /**
+     * The entries finalizeEntry() has produced since the last call, handed over: this parser no longer keeps them.
+     *
+     * @return \Generator<int, ParsedEntry>
+     */
+    private function entriesSoFar(): \Generator
+    {
+        $taken = $this->entries;
+        $this->entries = [];
+
+        foreach ($taken as $entry) {
+            yield $entry;
+        }
+    }
+
+    /**
+     * Reads the lines and yields each entry as soon as its record is complete.
+     *
+     * @param iterable<string> $lines
+     * @return \Generator<int, ParsedEntry>
+     */
+    private function streamLines(iterable $lines, string $language): \Generator
+    {
+        $this->entries = [];
+        $this->parseErrors = [];
+
+        $this->assertSupported($language);
 
         $this->detectedLanguage = $language;
         $phoneRegex = PhonePattern::regexFor($language);
@@ -157,6 +246,7 @@ class MultiLanguagePhoneDirectoryParser
                 if (!empty($buffer)) {
                     $this->processBuffer($buffer, $bufferStart, $language, $phoneRegex);
                     $buffer = [];
+                    yield from $this->entriesSoFar();
                 }
                 continue;
             }
@@ -184,6 +274,7 @@ class MultiLanguagePhoneDirectoryParser
                     $lineNumber,
                     $language
                 );
+                yield from $this->entriesSoFar();
                 continue;
             }
 
@@ -197,7 +288,7 @@ class MultiLanguagePhoneDirectoryParser
             $this->processBuffer($buffer, $bufferStart, $language, $phoneRegex);
         }
 
-        return $this->entries;
+        yield from $this->entriesSoFar();
     }
 
     /**

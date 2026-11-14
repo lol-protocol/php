@@ -39,6 +39,15 @@ fclose($handle);
 $sizeMb = filesize($file) / 1048576;
 
 try {
+    // First, so the peak memory it prints is the batches' own: parseFile() below keeps every entry.
+    $start = microtime(true);
+    $batched = 0;
+    foreach ((new MultiLanguagePhoneDirectoryParser())->parseFileInBatches($file, 1000, 'en') as $batch) {
+        $batched += count($batch);
+    }
+    $batchSeconds = microtime(true) - $start;
+    $batchPeakMb = memory_get_peak_usage(true) / 1048576;
+
     $start = microtime(true);
     $parser = new MultiLanguagePhoneDirectoryParser();
     $entries = $parser->parseFile($file, 'en');
@@ -47,6 +56,7 @@ try {
     printf("PHP %s, %d entries, %.1f MB\n\n", PHP_VERSION, count($entries), $sizeMb);
     printf("%-28s %8.0f entries/s  (%.2f s, %.1f MB/s)\n", 'parse', count($entries) / $parseSeconds, $parseSeconds, $sizeMb / $parseSeconds);
     printf("%-28s %8.0f MB\n", 'peak memory after parsing', memory_get_peak_usage(true) / 1048576);
+    printf("%-28s %8.0f entries/s  (%.2f s, peak %.0f MB)\n", 'parse in batches of 1000', $batched / $batchSeconds, $batchSeconds, $batchPeakMb);
 
     // Owner's view: the benchmark measures the queries, and its entries have no directory, so a visitor would get none.
     $database = new PhoneDirectoryPDODatabase("sqlite:{$dbFile}", privacy: Privacy::forOwner());
