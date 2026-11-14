@@ -83,6 +83,38 @@ final class SolicitudRepository extends Repository
     }
 
     /**
+     * Claims the solicitudes nobody has been told about yet (still pending: one the owner already closed needs no alert)
+     * and stamps each with avisada_en, oldest first. The claim is the stamp: the UPDATE only takes a row whose avisada_en
+     * is still empty and the count of rows it changed decides, so two runs that overlap never announce the same solicitud
+     * twice (the same guard as RetiroRepository::avisarNuevos()). Nothing about who asked or what they wrote: this is what
+     * a cron job mails.
+     *
+     * @return list<array{id: int, persona_id: int, derecho: string, creado_en: string}>
+     */
+    public function avisarNuevas(?int $ahora = null): array
+    {
+        return $this->db->transaction(function () use ($ahora): array {
+            $filas = $this->db->fetchAll(
+                "SELECT id, persona_id, derecho, creado_en FROM solicitudes_persona
+                  WHERE avisada_en IS NULL AND estado = 'pendiente' ORDER BY creado_en, id"
+            );
+            $nuevas = [];
+            foreach ($filas as $fila) {
+                if ($this->db->execute('UPDATE solicitudes_persona SET avisada_en = ? WHERE id = ? AND avisada_en IS NULL', [date('Y-m-d H:i:s', $ahora ?? time()), $fila['id']]) === 1) {
+                    $nuevas[] = [
+                        'id' => (int)$fila['id'],
+                        'persona_id' => (int)$fila['persona_id'],
+                        'derecho' => (string)$fila['derecho'],
+                        'creado_en' => (string)$fila['creado_en'],
+                    ];
+                }
+            }
+
+            return $nuevas;
+        });
+    }
+
+    /**
      * One solicitud in full, for the owner who has to answer it (the e-mail and the text included).
      *
      * @return array<string, mixed>|null
