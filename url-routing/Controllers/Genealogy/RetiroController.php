@@ -11,6 +11,7 @@ use App\Support\ErrorPage;
 use App\Support\FiltroPedidos;
 use App\Support\RateLimiter;
 use App\Support\ServiceLocator;
+use App\Support\Textos;
 
 /**
  * /r/{id}/ — anyone, with an account or without one, can ask for a page to be withdrawn: the
@@ -58,7 +59,7 @@ class RetiroController extends BaseController
         if ($this->postString(self::CAMPO_TRAMPA) !== '') {
             // A bot: the same answer a person gets, without storing anything or saying why.
             log_info('pedido de retiro descartado: campo trampa', ['tipo' => $tipo, 'id' => (int)$id]);
-            $this->flash('Recibimos tu pedido de retiro. Lo revisa una persona.');
+            $this->flash(Textos::t('retiro.flash.trampa'));
 
             return $this->redirect(enlace($tipo, $id));
         }
@@ -76,16 +77,16 @@ class RetiroController extends BaseController
 
         $limitador = RateLimiter::getInstance();
         if (!$limitador->isAllowed('retiro:' . $limitador->getClientIp(), Config::getInt('RETIRO_MAX_POR_HORA', self::MAX_POR_HORA), RateLimiter::VENTANA_MAXIMA)) {
-            return $this->demasiados('Enviaste varios pedidos seguidos. Vuelve a intentarlo más tarde.', $limitador->retryAfter());
+            return $this->demasiados(Textos::t('retiro.limite.hora'), $limitador->retryAfter());
         }
         if ($repo->pendientesDe($tipo, (int)$id) >= Config::getInt('RETIRO_MAX_PENDIENTES', self::MAX_PENDIENTES)) {
-            return $this->demasiados('Esta página ya tiene varios pedidos de retiro esperando a que una persona los revise.', 3600);
+            return $this->demasiados(Textos::t('retiro.limite.pagina'), 3600);
         }
 
         $numero = $repo->crear($tipo, (int)$id, $valores['motivo'], $valores['detalle'], $valores['contacto'], FiltroPedidos::marcas($valores['detalle']));
         // The number and the page only: never who asked nor what they wrote.
         log_info('pedido de retiro recibido', ['pedido' => $numero, 'tipo' => $tipo, 'id' => (int)$id]);
-        $this->flash("Recibimos tu pedido de retiro n.º {$numero}. Lo revisa una persona y te responde a {$valores['contacto']}.");
+        $this->flash(Textos::t('retiro.flash.ok', ['numero' => $numero, 'correo' => $valores['contacto']]));
 
         return $this->redirect(enlace($tipo, $id));
     }
@@ -96,7 +97,7 @@ class RetiroController extends BaseController
         http_response_code(429);
         header('Retry-After: ' . max(1, $segundos));
 
-        return ErrorPage::page(429, 'Demasiados pedidos', htmlspecialchars($mensaje));
+        return ErrorPage::page(429, Textos::t('error.429_pedidos'), htmlspecialchars($mensaje));
     }
 
     /**
@@ -107,13 +108,13 @@ class RetiroController extends BaseController
     {
         $errores = [];
         if (!isset(RetiroRepository::MOTIVOS[$valores['motivo']])) {
-            $errores['motivo'] = 'Elige un motivo.';
+            $errores['motivo'] = Textos::t('retiro.err.motivo');
         }
         if ($valores['detalle'] === '' || mb_strlen($valores['detalle']) > self::MAX_DETALLE || !mb_check_encoding($valores['detalle'], 'UTF-8')) {
-            $errores['detalle'] = 'Cuenta qué hay que retirar y por qué, en hasta ' . self::MAX_DETALLE . ' caracteres.';
+            $errores['detalle'] = Textos::t('retiro.err.detalle', ['max' => self::MAX_DETALLE]);
         }
         if (strlen($valores['contacto']) > self::MAX_CONTACTO || filter_var($valores['contacto'], FILTER_VALIDATE_EMAIL) === false) {
-            $errores['contacto'] = 'Escribe un correo donde podamos responderte.';
+            $errores['contacto'] = Textos::t('retiro.err.contacto');
         }
 
         return $errores;

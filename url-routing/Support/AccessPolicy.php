@@ -234,7 +234,7 @@ final class AccessPolicy
     {
         http_response_code(404);
 
-        return ErrorPage::page(404, ErrorPage::NOT_FOUND);
+        return ErrorPage::page(404, Textos::t('error.404'));
     }
 
     /**
@@ -257,6 +257,6 @@ final class AccessPolicy
         }
         http_response_code(401);
 
-        return ErrorPage::page(401, 'Acceso restringido');
+        return ErrorPage::page(401, Textos::t('error.401'));
     }
 }
