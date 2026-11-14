@@ -11,7 +11,6 @@ export function chaqueta(M, p, k, ctx) {
   const per = perfilVestido(M, { d, cin: p.cintura ?? 0.6, vuelo: p.vuelo ?? 0.04, yHem, sinMangas: sinM, escote: 'redondo', prof: 0.3, bajo: p.bajo ?? 'recto' });
   const gapA = (p.abertura ?? 0.012) * H, gapB = (p.aberturaBajo ?? 0.03) * H;
   const prof = per.perfil;
-  const yTop = y.hombro + H * 0.01;
   const partes = [], detalles = [];
   for (const s of [1, -1]) {
     const outer = prof.filter(([, yy]) => yy > y.hombro - H * 0.03).map(([x, yy]) => [cx + s * x, yy]);

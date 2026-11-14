@@ -1,6 +1,6 @@
 import { suavizar, espejo, tubo, lerp, aclarar } from '../util.js';
-import { perfilTorso, piernaLado, lineaEnY } from '../cuerpo.js';
-import { yLargo, relleno, parte, linea, sombraDe, pliegues } from './comun.js';
+import { piernaLado, lineaEnY } from '../cuerpo.js';
+import { yLargo, relleno, parte, linea, sombraDe } from './comun.js';
 
 export function pantalon(M, p, k, ctx) {
   const { H, y, cx, w } = M;
@@ -9,7 +9,6 @@ export function pantalon(M, p, k, ctx) {
   const F = relleno(p, k, ctx);
   const factor = { ajustado: 1, recto: 1.28, amplio: 1.7, bombacho: 1.55, campana: 1.3, palazzo: 2.3 }[p.ancho ?? 'recto'] ?? 1.28;
   const partes = [];
-  const T = perfilTorso(M, 0);
   const alto = p.cintura === 'baja' ? y.cintura + H * 0.045 : p.cintura === 'alta' ? y.cintura - H * 0.035 : y.cintura - H * 0.005;
   const half = [[0, alto, true], [w.cintura + d * 1.2, alto, true], [lerp(w.cintura, w.cadera, 0.7) + d, lerp(alto, y.cadera, 0.6)], [w.cadera + d * 1.3, y.cadera], [w.cadera * 0.98 + d, lerp(y.cadera, y.entrepierna, 0.7)], [0, y.entrepierna + H * 0.012, true]];
   partes.push(parte(suavizar(espejo(half, cx)), F, k));
