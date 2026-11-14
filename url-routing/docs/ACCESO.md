@@ -195,6 +195,7 @@ solo la usa quien administra el servidor.
 
 ```
 php bin/persona.php acceso 6128473105                             # todo lo que hay de ella, en JSON
+php bin/persona.php resumen 6128473105                            # un borrador de lo que decirle: cuentas, nunca fechas ni nombres
 php bin/persona.php suprimir 6128473105 --pedido=12               # muestra qué se quitaría y no cambia nada
 php bin/persona.php suprimir 6128473105 --pedido=12 --confirmar   # lo hace
 php bin/persona.php rectificar 6128473105 personas.apellidos='Quintana Soto'    # muestra qué cambiaría y no cambia nada
@@ -209,7 +210,8 @@ php bin/persona.php entrega 6128473105                            # un enlace y 
   correcciones anotadas (qué campo y cuándo, nunca los valores). Los
   parientes aparecen solo como cantidades: sus nombres son sus datos. Es lo que mira quien administra, **no lo que se le manda** a quien lo pide: el JSON
   trae también lo que el sitio oculta y no viaja por correo en claro. A la persona se le manda un resumen legible
-  escrito a mano (ver [`SOLICITUDES.md`](SOLICITUDES.md), «Qué responder»).
+  (ver [`SOLICITUDES.md`](SOLICITUDES.md), «Qué responder»); **`resumen`** imprime el borrador, hecho de modo que no pueda
+  incluir una fecha, un lugar, una descripción ni un nombre.
 - **Las solicitudes llegan por `/s/{id}/`**, un formulario abierto a cualquiera, sin cuenta, que enlaza el pie de la
   página de cada persona (y solo de las personas: un apellido o un suceso no tienen datos que pedir). Pide qué
   se quiere (ver, corregir o borrar), el texto y un correo. **No entrega, cambia ni borra nada por sí solo**: la

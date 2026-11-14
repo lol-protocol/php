@@ -44,8 +44,9 @@ Imprime JSON. **Mira:**
 - [ ] `correcciones`: qué campo se corrigió y cuándo, **sin** valores.
 - [ ] Que **nada** de lo que imprime sea el nombre de otra persona.
 
-El JSON **no se manda**. Escribe a mano el resumen legible que decide `SOLICITUDES.md` (lo que un visitante ya ve más
-cantidades) y compáralo con lo que ve un visitante en el sitio: no debe contener nada que el visitante no vea.
+El JSON **no se manda**. Corre `php bin/persona.php resumen <id>` para el borrador del resumen legible que decide
+`SOLICITUDES.md` (lo que un visitante ya ve más cantidades) y compáralo con lo que ve un visitante en el sitio: no debe
+contener nada que el visitante no vea. **Prueba con una persona viva** y mira que no diga su nombre ni una fecha.
 
 **Entrega con clave** (solo si ella necesita ver lo que se oculta): `php bin/persona.php entrega <id>`, y abre el enlace en una
 ventana privada. **Mira:**
