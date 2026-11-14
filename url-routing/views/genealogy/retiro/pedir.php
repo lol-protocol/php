@@ -5,30 +5,28 @@ $error = static fn(string $campo): string => isset($errores[$campo])
     ? '<p class="meta" id="error-' . esc($campo) . '" role="alert">' . esc($errores[$campo]) . '</p>' : '';
 ?>
 <?php ob_start(); ?>
-<h1>Pedir el retiro de una página</h1>
-<p class="sub">Página: <a href="<?= esc(enlace($tipo, $id)) ?>"><?= esc(enlace($tipo, $id)) ?></a></p>
-<p>Si esta página habla de ti o de un familiar fallecido y te afecta, o crees que infringe los términos de uso, cuéntanos qué
-hay que retirar y por qué. No necesitas una cuenta. Lo revisa una persona: mientras lo revisa puede ocultar la página, y te
-responde al correo que dejes con lo que decidió.</p>
+<h1><?= esc(t('retiro.titulo')) ?></h1>
+<p class="sub"><?= esc(t('retiro.pagina')) ?> <a href="<?= esc(enlace($tipo, $id)) ?>"><?= esc(enlace($tipo, $id)) ?></a></p>
+<p><?= esc(t('retiro.intro')) ?></p>
 <form action="<?= esc('/r/' . $id . '/') ?>" method="post">
     <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">
     <fieldset>
-        <legend>Motivo</legend>
+        <legend><?= esc(t('retiro.motivo')) ?></legend>
 <?php foreach ($motivos as $clave => $etiqueta): ?>
-        <p><label><input type="radio" name="motivo" value="<?= esc($clave) ?>"<?= $valor('motivo') === $clave ? ' checked' : '' ?> required> <?= esc($etiqueta) ?></label></p>
+        <p><label><input type="radio" name="motivo" value="<?= esc($clave) ?>"<?= $valor('motivo') === $clave ? ' checked' : '' ?> required> <?= esc(t('retiro.motivo.' . $clave)) ?></label></p>
 <?php endforeach; ?>
         <?= $error('motivo') ?>
     </fieldset>
     <div style="position:absolute;left:-10000px" aria-hidden="true">
-        <label>No rellenes este campo <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"></label>
+        <label><?= esc(t('retiro.trampa')) ?> <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"></label>
     </div>
-    <p><label for="detalle">Qué hay que retirar y por qué</label><br>
+    <p><label for="detalle"><?= esc(t('retiro.detalle')) ?></label><br>
         <textarea id="detalle" name="detalle" rows="6" cols="60" maxlength="2000" required<?= isset($errores['detalle']) ? ' aria-describedby="error-detalle"' : '' ?>><?= esc($valor('detalle')) ?></textarea></p>
     <?= $error('detalle') ?>
-    <p><label for="contacto">Tu correo, para responderte</label><br>
+    <p><label for="contacto"><?= esc(t('retiro.correo')) ?></label><br>
         <input id="contacto" type="email" name="contacto" maxlength="254" required value="<?= esc($valor('contacto')) ?>"<?= isset($errores['contacto']) ? ' aria-describedby="error-contacto"' : '' ?>></p>
     <?= $error('contacto') ?>
-    <p class="meta">Guardamos tu correo y lo que escribas sólo para responder a este pedido.</p>
-    <button type="submit">Enviar el pedido</button>
+    <p class="meta"><?= esc(t('retiro.guardamos')) ?></p>
+    <button type="submit"><?= esc(t('retiro.enviar')) ?></button>
 </form>
-<?php $content = ob_get_clean(); $title = 'Pedir retiro'; $noindex = true; include __DIR__ . '/../_layout.php';
+<?php $content = ob_get_clean(); $title = t('retiro.title'); $noindex = true; include __DIR__ . '/../_layout.php';

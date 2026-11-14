@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Support\AccessPolicy;
 use App\Support\Database;
 use App\Support\ErrorPage;
+use App\Support\Textos;
 use App\Support\Flash;
 use App\Support\Privacidad;
 use App\Support\ServiceLocator;
@@ -176,16 +177,16 @@ class BaseController
         return view($view, [$key => $row] + ($extra ? $extra((int)$id, $row) : []));
     }
 
-    protected function handleNotFound(string $message = ErrorPage::NOT_FOUND): string
+    protected function handleNotFound(?string $message = null): string
     {
         http_response_code(404);
-        return ErrorPage::page(404, $message);
+        return ErrorPage::page(404, $message ?? Textos::t('error.404'));
     }
 
-    protected function handleBadRequest(string $message = 'Bad Request'): string
+    protected function handleBadRequest(?string $message = null): string
     {
         http_response_code(400);
-        return ErrorPage::page(400, $message);
+        return ErrorPage::page(400, $message ?? Textos::t('error.400'));
     }
 
     /** A POST field as a string; '' (or $default) when missing or sent as an array ("sku[]=x"). */
@@ -342,7 +343,7 @@ class BaseController
 
         header('Allow: ' . implode(', ', $permitidos));
         http_response_code(405);
-        return ErrorPage::page(405, 'Método no permitido');
+        return ErrorPage::page(405, Textos::t('error.405'));
     }
 
     /** Null when this request is a POST with a valid CSRF token; otherwise the 405 or 403 that refuses it. */
@@ -351,10 +352,10 @@ class BaseController
         return $this->exigirMetodo('POST') ?? ($this->validateCsrfToken() ? null : $this->handleForbidden());
     }
 
-    protected function handleForbidden(string $message = 'Forbidden'): string
+    protected function handleForbidden(?string $message = null): string
     {
         http_response_code(403);
-        return ErrorPage::page(403, $message);
+        return ErrorPage::page(403, $message ?? Textos::t('error.403'));
     }
 
     /** 303 (the default) so a browser re-fetches the target with GET instead of replaying the POST; 301 for a URL that moved for good. */

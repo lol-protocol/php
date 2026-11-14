@@ -687,6 +687,74 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString('dígito de verificación', $cuerpo);
     }
 
+    /**
+     * The subdomain is the language: eng. says the header, the errors and the withdrawal form in English, and the
+     * Spanish site says the same things in Spanish. What goes through t() is translated; the rest of the views is not.
+     */
+    public function testAnErrorAndTheHeaderAreInEnglishOnTheEnglishSubdomain(): void
+    {
+        [$codigo, $cuerpo] = $this->get('eng.' . self::GENEALOGIA, '/999999999/');
+
+        $this->assertSame(404, $codigo);
+        $this->assertStringContainsString('<html lang="en">', $cuerpo);
+        $this->assertStringContainsString('<h1>404 - Page not found</h1>', $cuerpo);
+        $this->assertStringContainsString('Back to home', $cuerpo);
+        $this->assertStringContainsString('>People</option>', $cuerpo, 'the search types of the header');
+        $this->assertStringContainsString('>My account</a>', $cuerpo);
+        $this->assertStringNotContainsString('Página no encontrada', $cuerpo);
+
+        [, $espanol] = $this->get(self::GENEALOGIA, '/999999999/');
+        $this->assertStringContainsString('<h1>404 - Página no encontrada</h1>', $espanol, 'and the Spanish site is unchanged');
+        $this->assertStringContainsString('>Personas</option>', $espanol);
+    }
+
+    public function testThePosSaysItsHeaderAndItsErrorsInEnglishToo(): void
+    {
+        [$codigo, $cuerpo] = $this->get('eng.' . self::POS, '/9999999999/');
+
+        $this->assertSame(404, $codigo);
+        $this->assertStringContainsString('<h1>404 - Page not found</h1>', $cuerpo);
+        $this->assertStringContainsString('>Products</option>', $cuerpo);
+        $this->assertStringContainsString('>Cart</a>', $cuerpo);
+        $this->assertStringContainsString('Browse the catalog', $cuerpo);
+    }
+
+    public function testTheWithdrawalFormAndItsErrorsAreInEnglishOnTheEnglishSubdomain(): void
+    {
+        $host = 'eng.' . self::GENEALOGIA;
+        [$codigo, $cuerpo, $sid] = $this->get($host, '/r/6128473105/');
+
+        $this->assertSame(200, $codigo);
+        foreach (['Ask for a page to be withdrawn', 'Reason', 'It is about me', 'It breaks the terms of use', 'Your e-mail, so we can answer you', 'Send the request'] as $texto) {
+            $this->assertStringContainsString($texto, $cuerpo, $texto);
+        }
+        $this->assertStringNotContainsString('Enviar el pedido', $cuerpo);
+
+        [, $persona] = $this->get($host, '/6128473105/');
+        $this->assertStringContainsString('Ask for this page to be withdrawn', $persona, 'the footer of a page of a person');
+        $this->assertStringContainsString('Ask to see, correct or delete my data', $persona);
+
+        preg_match('/name="csrf_token" value="([^"]+)"/', $cuerpo, $m);
+        [$estado, $errores] = $this->post($host, '/r/6128473105/', ['detalle' => '', 'contacto' => 'no-es-un-correo'], $sid, $m[1]);
+        $this->assertSame(422, $estado);
+        $this->assertStringContainsString('Choose a reason.', $errores);
+        $this->assertStringContainsString('Tell us what should be withdrawn and why, in up to 2000 characters.', $errores, 'the mark {max} is filled in');
+        $this->assertStringContainsString('Enter an e-mail where we can answer you.', $errores);
+
+        [, $espanol] = $this->get(self::GENEALOGIA, '/r/6128473105/');
+        $this->assertStringContainsString('Enviar el pedido', $espanol);
+        $this->assertStringContainsString('Habla de mí', $espanol);
+    }
+
+    public function testAnActiveLanguageWithNoTranslationYetSaysItInSpanish(): void
+    {
+        [$codigo, $cuerpo] = $this->get('fra.' . self::GENEALOGIA, '/999999999/', entorno: ['IDIOMAS_ACTIVOS' => 'spa,eng,fra']);
+
+        $this->assertSame(404, $codigo);
+        $this->assertStringContainsString('<html lang="fr">', $cuerpo, 'the language is the one of the subdomain');
+        $this->assertStringContainsString('<h1>404 - Página no encontrada</h1>', $cuerpo, 'but there is no French table yet: Spanish, not a key');
+    }
+
     /** @return array<string, array{string, string, int, string}> [host, uri, status, the home link it offers] */
     public static function paginasDeError(): array
     {

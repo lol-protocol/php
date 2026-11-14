@@ -1,4 +1,4 @@
 <?php ob_start(); ?>
-<h1>Página retirada</h1>
-<p>Esta página se retiró a pedido de una persona, mientras se revisa o de forma definitiva.</p>
-<?php $content = ob_get_clean(); $title = 'Página retirada'; $noindex = true; include __DIR__ . '/_layout.php';
+<h1><?= esc(t('retirado.titulo')) ?></h1>
+<p><?= esc(t('retirado.texto')) ?></p>
+<?php $content = ob_get_clean(); $title = t('retirado.titulo'); $noindex = true; include __DIR__ . '/_layout.php';
