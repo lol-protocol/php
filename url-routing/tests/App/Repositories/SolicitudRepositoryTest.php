@@ -124,6 +124,66 @@ class SolicitudRepositoryTest extends TestCase
     }
 
     #[DataProvider('drivers')]
+    public function testEachNewSolicitudIsAnnouncedOnceInOrderAndWithoutPersonalData(string $driver): void
+    {
+        $repo = new SolicitudRepository(TestDatabases::fresh($driver, 'genealogy'));
+        $segunda = $repo->crear(self::OTRA, 'supresion', 'Texto privado', 'otra@example.com', 1_700_000_100);
+        $primera = $repo->crear(self::ELLA, 'acceso', 'Mi dirección es Calle Falsa 123', 'ella@example.com', 1_700_000_000);
+
+        $nuevas = $repo->avisarNuevas();
+
+        $this->assertSame([$primera, $segunda], array_column($nuevas, 'id'), 'oldest first, by arrival');
+        $this->assertSame(['id' => $primera, 'persona_id' => self::ELLA, 'derecho' => 'acceso', 'creado_en' => date('Y-m-d H:i:s', 1_700_000_000)], $nuevas[0]);
+        $json = json_encode($nuevas, JSON_THROW_ON_ERROR);
+        $this->assertStringNotContainsString('ella@example.com', $json);
+        $this->assertStringNotContainsString('Calle Falsa', $json);
+        $this->assertSame([], $repo->avisarNuevas(), 'once: the second run has nothing to say');
+
+        $tercera = $repo->crear(self::ELLA, 'rectificacion', 'x', 'a@example.com');
+        $this->assertSame([$tercera], array_column($repo->avisarNuevas(), 'id'), 'only what arrived since');
+    }
+
+    #[DataProvider('drivers')]
+    public function testASolicitudAlreadyClosedNeedsNoAnnouncement(string $driver): void
+    {
+        $repo = new SolicitudRepository(TestDatabases::fresh($driver, 'genealogy'));
+        $cerrada = $repo->crear(self::ELLA, 'acceso', 'x', 'a@example.com');
+        $repo->cerrar($cerrada, 'atender', null);
+        $abierta = $repo->crear(self::OTRA, 'acceso', 'x', 'b@example.com');
+
+        $this->assertSame([$abierta], array_column($repo->avisarNuevas(), 'id'));
+    }
+
+    public function testTheSolicitudesThatWereThereBeforeTheMigrationAreNotAnnouncedAsNew(): void
+    {
+        $sitio = sys_get_temp_dir() . '/migraciones-avisadas-' . getmypid();
+        $dir = $sitio . '/migrations';
+        @mkdir($dir, 0777, true);
+        $origen = dirname(__DIR__, 3) . '/database/genealogy/migrations';
+        foreach (glob($origen . '/*.sql') ?: [] as $archivo) {
+            if (!str_contains($archivo, '015_')) {
+                copy($archivo, $dir . '/' . basename($archivo));
+            }
+        }
+        $db = new \App\Support\Database('sqlite::memory:');
+        $migrar = fn() => (new \App\Support\Migrator($db, $sitio, 'genealogy'))->migrate();
+        try {
+            $migrar();
+            $db->execute("INSERT INTO solicitudes_persona (id, persona_id, derecho, detalle, contacto, creado_en) VALUES (1, 6128479601, 'acceso', 'x', 'a@example.com', '2026-01-02 03:04:05')");
+
+            copy($origen . '/015_solicitudes_avisadas.sql', $dir . '/015_solicitudes_avisadas.sql');
+            $migrar();
+
+            $this->assertSame('2026-01-02 03:04:05', (string)$db->fetchValue('SELECT avisada_en FROM solicitudes_persona WHERE id = 1'), 'stamped with its arrival');
+            $this->assertSame([], (new SolicitudRepository($db))->avisarNuevas(), 'the morning reminder already covers the old ones');
+        } finally {
+            array_map('unlink', glob($dir . '/*') ?: []);
+            @rmdir($dir);
+            @rmdir($sitio);
+        }
+    }
+
+    #[DataProvider('drivers')]
     public function testThePanelListsEveryPendingOneAndOnlyTheNewestClosedOnesInFull(string $driver): void
     {
         $repo = new SolicitudRepository(TestDatabases::fresh($driver, 'genealogy'));

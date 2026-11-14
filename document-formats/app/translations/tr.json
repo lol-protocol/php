@@ -157,6 +157,8 @@
     "category": "Kategori",
     "region": "Bölge",
     "reset": "Filtreleri sıfırla",
+    "copyLink": "Bağlantıyı kopyala",
+    "linkCopied": "Bağlantı kopyalandı",
     "compareLabel": "Formatları karşılaştır",
     "comparePlaceholder": "Karşılaştırmak için format adları yazın...",
     "colFormat": "Format",

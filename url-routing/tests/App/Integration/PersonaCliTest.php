@@ -304,4 +304,29 @@ class PersonaCliTest extends TestCase
         }
         $this->assertSame(2, (int)$this->db->fetchValue('SELECT COUNT(*) FROM entregas_persona'), 'only the two of before; the rest changed nothing');
     }
+
+    public function testResumenPrintsTheDraftAloneOnStdoutAndTheAdviceOnStderr(): void
+    {
+        [$codigo, $salida, $error] = $this->correr('resumen', (string)self::ELLA);
+
+        $this->assertSame(0, $codigo);
+        $this->assertStringStartsWith('El sitio guarda una ficha tuya.', $salida, 'stdout is only the text: to paste or pipe');
+        $this->assertStringContainsString('Apareces en 1 suceso (nacimiento: 1).', $salida);
+        $this->assertStringContainsString('responde a este correo.', $salida);
+        $this->assertStringNotContainsString('Borrador para revisar', $salida);
+        $this->assertStringContainsString('Borrador para revisar antes de mandar', $error);
+        $this->assertStringContainsString('comprueba antes quién pide', $error);
+        $this->assertStringNotContainsString('1850', $salida . $error, 'no date');
+        $this->assertStringNotContainsString('Hijo', $salida, 'no relative\'s name');
+    }
+
+    public function testResumenOfAPersonaThatDoesNotExistExitsWithOneAndUsageErrorsWithTwo(): void
+    {
+        [$codigo, $salida, $error] = $this->correr('resumen', '6128479777');
+        $this->assertSame([1, ''], [$codigo, $salida]);
+        $this->assertStringContainsString('No existe la persona', $error);
+        foreach ([['resumen'], ['resumen', (string)self::ELLA, '--confirmar'], ['resumen', (string)self::ELLA, '--dias=2']] as $args) {
+            $this->assertSame(2, $this->correr(...$args)[0], implode(' ', $args));
+        }
+    }
 }

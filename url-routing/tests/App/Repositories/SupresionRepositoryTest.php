@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Repositories;
 
+use App\Repositories\Genealogy\EntregaRepository;
 use App\Repositories\Genealogy\SupresionRepository;
 use App\Support\Database;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -62,6 +63,11 @@ class SupresionRepositoryTest extends TestCase
         $db->execute("INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en) VALUES (1, 'persona', ?, 'me_nombra', 'Soy yo', 'ella@example.com', 'oculto', ?)", [self::ELLA, $ahora]);
         $db->execute("INSERT INTO pedidos_retiro (id, tipo, recurso_id, motivo, detalle, contacto, estado, creado_en) VALUES (2, 'persona', ?, 'otro', 'Otra', 'otra@example.com', 'pendiente', ?)", [self::OTRA, $ahora]);
 
+        // a delivery with a key for her and one for someone else
+        $entregas = new EntregaRepository($db);
+        $entregas->crear(self::ELLA);
+        $entregas->crear(self::OTRA);
+
         return $db;
     }
 
@@ -114,7 +120,7 @@ class SupresionRepositoryTest extends TestCase
         $this->assertSame($previsto, $hecho, 'what the dry run said is what was done');
         $this->assertSame(
             ['sucesos_que_se_borran' => 1, 'sucesos_compartidos_que_se_conservan' => 1, 'enlaces_a_registros_que_se_quitan' => 1,
-                'vinculos' => 1, 'hijos_que_pierden_el_enlace' => 1, 'organizacion_miembros' => 1, 'coleccion_personas' => 1, 'persona_alias' => 1],
+                'vinculos' => 1, 'hijos_que_pierden_el_enlace' => 1, 'organizacion_miembros' => 1, 'coleccion_personas' => 1, 'persona_alias' => 1, 'entregas_persona' => 1],
             $hecho
         );
         $this->assertNull($db->fetchOne('SELECT id FROM personas WHERE id = ?', [self::ELLA]), 'her row is gone');
@@ -132,6 +138,8 @@ class SupresionRepositoryTest extends TestCase
         $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM coleccion_personas'));
         $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM organizacion_miembros'));
         $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM persona_alias'));
+        $this->assertSame(0, self::cuantas($db, 'SELECT COUNT(*) FROM entregas_persona WHERE persona_id = ?', [self::ELLA]), 'her deliveries go with her: the link shows nothing anyway');
+        $this->assertSame(1, self::cuantas($db, 'SELECT COUNT(*) FROM entregas_persona WHERE persona_id = ?', [self::OTRA]), 'and the one of someone else stays'); 
 
         $hijo = $db->fetchOne('SELECT padre_id, madre_id FROM personas WHERE id = ?', [self::HIJO]);
         $this->assertNotNull($hijo, 'her child keeps their row');
@@ -298,5 +306,77 @@ class SupresionRepositoryTest extends TestCase
         $repo->suprimir(self::ELLA);
 
         $this->assertSame(1, self::cuantas($db, 'SELECT COUNT(*) FROM rectificaciones_persona WHERE persona_id = ?', [self::ELLA]));
+    }
+
+    // --- resumenLegible ---------------------------------------------------------------
+
+    #[DataProvider('drivers')]
+    public function testTheDraftOfAVisiblePersonaNamesHerAndCountsTheRest(string $driver): void
+    {
+        $texto = (new SupresionRepository($this->mundo($driver)))->resumenLegible(self::CONYUGE);
+
+        $this->assertStringContainsString('Quien visita el sitio la ve completa, con tu nombre y tus datos: Cónyuge Prueba.', $texto);
+        $this->assertStringContainsString('Apareces en 1 suceso (matrimonio: 1).', $texto);
+        $this->assertStringContainsString('Ningún registro (actas, documentos) los documenta.', $texto);
+        $this->assertStringContainsString('padre no, madre no, 0 hijos o hijas y 1 otro vínculo', $texto);
+        $this->assertStringNotContainsString('Quintana', $texto, 'her spouse\'s name is the spouse\'s data');
+        $this->assertStringNotContainsString('Rosa', $texto);
+    }
+
+    #[DataProvider('drivers')]
+    public function testThePersonaAPedidoDeRetiroHidesIsToldTheSameAndTheStateIsCounted(string $driver): void
+    {
+        $texto = (new SupresionRepository($this->mundo($driver)))->resumenLegible(self::ELLA);
+
+        $this->assertStringContainsString('Quien visita el sitio no ve tu ficha completa', $texto);
+        $this->assertStringNotContainsString('Rosa Elena', $texto);
+        $this->assertStringContainsString('Apareces en 2 sucesos (matrimonio: 1, nacimiento: 1).', $texto);
+        $this->assertStringContainsString('1 registro (acta o documento) los documenta.', $texto);
+        $this->assertStringContainsString('1 hijo o hija y 1 otro vínculo', $texto);
+        $this->assertStringContainsString('Estás en 1 colección (1 pública y 0 privadas).', $texto);
+        $this->assertStringContainsString('Estás en 1 organización.', $texto);
+        $this->assertStringContainsString('Hay 1 pedido de retiro sobre tu página (oculto: 1).', $texto);
+    }
+
+    #[DataProvider('drivers')]
+    public function testTheDraftOfAHiddenPersonaCannotGiveAwayWhatTheSiteHides(string $driver): void
+    {
+        $db = $this->mundo($driver);
+        // a living persona: born 20 years ago, no death, with an event whose text and place would give her away, a record, and a child
+        $viva = 6128479650;
+        $db->execute("INSERT INTO personas (id, nombres, apellidos, sexo) VALUES (?, 'Marina', 'Secretísima', 'F')", [$viva]);
+        $db->execute("INSERT INTO personas (id, nombres, apellidos, madre_id) VALUES (6128479651, 'Hija', 'Reservada', ?)", [$viva]);
+        $nacio = date('Y-m-d', strtotime('-20 years'));
+        $db->execute("INSERT INTO sucesos (id, tipo, fecha, lugar_ruta, descripcion) VALUES (412979650, 'nacimiento', ?, 'mx', 'Nació en la clínica Santa Rita')", [$nacio]);
+        $db->execute("INSERT INTO suceso_participantes (suceso_id, persona_id, rol) VALUES (412979650, ?, 'principal')", [$viva]);
+        $db->execute("INSERT INTO registros (id, titulo, tipo, fecha, fuente) VALUES (97960150, 'Acta de nacimiento de Marina Secretísima', 'acta', ?, 'Registro Civil de Tlajomulco')", [$nacio]);
+        $db->execute('INSERT INTO registro_sucesos (registro_id, suceso_id) VALUES (97960150, 412979650)');
+        $repo = new SupresionRepository($db);
+
+        $texto = $repo->resumenLegible($viva);
+
+        $this->assertStringContainsString('Quien visita el sitio no ve tu ficha completa', $texto);
+        $this->assertStringContainsString('Apareces en 1 suceso (nacimiento: 1).', $texto);
+        $this->assertStringContainsString('1 hijo o hija', $texto);
+        foreach (['Marina', 'Secretísima', 'Reservada', 'Santa Rita', 'Tlajomulco', 'Acta de nacimiento', $nacio, substr($nacio, 0, 4), 'mx'] as $prohibido) {
+            $this->assertStringNotContainsString($prohibido, $texto, "«{$prohibido}» is hidden from a visitor: the draft must not say it");
+        }
+    }
+
+    #[DataProvider('drivers')]
+    public function testTheDraftUsesTheSingularAndSaysWhenThereIsNothing(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy');
+        $db->execute("INSERT INTO personas (id, nombres, apellidos) VALUES (6128479660, 'Sola', 'Sin Nada')");
+
+        $texto = (new SupresionRepository($db))->resumenLegible(6128479660);
+
+        $this->assertStringContainsString('No apareces en ningún suceso', $texto);
+        $this->assertStringContainsString('Ningún registro (actas, documentos) los documenta.', $texto);
+        $this->assertStringContainsString('0 hijos o hijas y 0 otros vínculos', $texto);
+        $this->assertStringContainsString('No estás en ninguna colección.', $texto);
+        $this->assertStringContainsString('No estás en ninguna organización.', $texto);
+        $this->assertStringNotContainsString('pedido de retiro', $texto, 'nothing to say about what does not exist');
+        $this->assertNull((new SupresionRepository($db))->resumenLegible(6128479777));
     }
 }

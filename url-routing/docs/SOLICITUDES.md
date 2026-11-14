@@ -119,7 +119,10 @@ Desde el correo de contacto y por una persona (el sitio no escribe solo). **Sin 
 el correo viaja en claro, y es la misma razón por la que el aviso de `bin/pedidos-retiro.php` no dice quién pidió
 ni qué escribió. **Decidido el 12 de noviembre de 2026:** se manda un **resumen legible**, escrito a mano a partir de
 `acceso`, sin JSON: lo que un visitante ya ve de esa persona, más las **cantidades** de lo demás (sucesos, registros,
-colecciones, parientes) y qué campos se corrigieron. **Lo que el sitio oculta no se manda por correo.** Si la persona
+colecciones, parientes) y qué campos se corrigieron. `php bin/persona.php resumen <id>` imprime un **borrador**: solo
+cuentas, tipos y estados, **nunca una fecha, un lugar, una descripción, un título ni un nombre** (ni el de un pariente), así
+que no puede dar por descuido algo que el sitio oculta. Léelo, ponle el saludo y mándalo; si ves que dice más de lo
+que debe, no lo mandes. **Lo que el sitio oculta no se manda por correo.** Si la persona
 necesita verlo, hay una **entrega con clave** (sección siguiente), que es una decisión tuya en cada caso, no el camino
 por omisión.
 Estos textos son un punto de partida; **el plazo de respuesta sigue ⚖️ sin decidir**, no prometas uno:
@@ -156,7 +159,8 @@ php bin/persona.php entrega <id> --revocar       # termina las que siguen vigent
   y pedidos de retiro. Los parientes son **cantidades**, nunca nombres; no se muestra quién aportó la ficha ni su grupo.
 - **Qué no queda:** el servidor no registra qué se mostró, solo que se abrió. **Sí quedan** el enlace en los logs de acceso de
   nginx (por eso la clave va aparte) y el correo donde lo mandaste.
-- Si la persona se suprime después, el enlace deja de mostrar nada.
+- Si la persona se suprime después, **sus entregas se borran con ella**. Las que vencieron hace más de 12 meses se borran solas con
+  `php bin/solicitudes.php --depurar` (solo guardan hashes y fechas: se conservan un tiempo como prueba de que se entregó).
 
 ## Lo que falta
 

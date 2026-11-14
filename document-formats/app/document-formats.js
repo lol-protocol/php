@@ -252,14 +252,16 @@ const COUNTRIES_FILE = '../countries/countries_200_complete.csv';
 const REGION_COUNTRY_ALIASES = { USA: 'United States', UK: 'United Kingdom', UAE: 'United Arab Emirates' };
 const REGION_OVERRIDES = { International: 'International', Europe: 'Europe' };
 
+// `basePath` is the address of the folder the paths above are relative to (the app/ folder): ''
+// for a page served from app/ itself, '/document-formats/app/' for any other page.
 // Loads every catalog plus the country/region list in parallel, tags each
 // format with its region, and reports the newest Last-Modified header seen
 // (undefined if the server sends none) so a page can show when the data was
 // last changed without hardcoding a date. Throws if any file can't be fetched.
-const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
+const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES, basePath = '') => {
     const [catalogResponses, countriesResponse] = await Promise.all([
-        Promise.all(files.map(file => fetchOk(file))),
-        fetchOk(COUNTRIES_FILE)
+        Promise.all(files.map(file => fetchOk(basePath + file))),
+        fetchOk(basePath + COUNTRIES_FILE)
     ]);
 
     const lastModified = [...catalogResponses, countriesResponse]
@@ -1098,12 +1100,14 @@ class LocalizationManager {
 // ============================================
 // EXAMPLE 9: Book Margin Manager
 // ============================================
+const BOOK_MARGINS_FILE = '../formats/book_margins.csv';
+
 class BookMarginManager {
     constructor(margins) {
         this.margins = margins;
     }
 
-    async load(csvPath = '../formats/book_margins.csv') {
+    async load(csvPath = BOOK_MARGINS_FILE) {
         try {
             this.margins = await fetchCSV(csvPath);
         } catch (error) {
@@ -1151,6 +1155,11 @@ class BookMarginManager {
 // ============================================
 // EXAMPLE 10: Screen Device Manager
 // ============================================
+// monitors, smartphones, tablets, e-readers: the order of loadAllDevices()
+const DEVICE_FILES = [
+    '../devices/monitors.csv', '../devices/smartphones.csv', '../devices/tablets.csv', '../devices/ereaders.csv'
+];
+
 class ScreenDeviceManager {
     static TYPE_CONFIG = [
         {list: 'monitors', idField: 'monitor_type', type: 'monitor'},
@@ -1187,19 +1196,19 @@ class ScreenDeviceManager {
         });
     }
 
-    async loadMonitors(csvPath = '../devices/monitors.csv') {
+    async loadMonitors(csvPath = DEVICE_FILES[0]) {
         await this.loadDeviceType(csvPath, 'monitors');
     }
 
-    async loadSmartphones(csvPath = '../devices/smartphones.csv') {
+    async loadSmartphones(csvPath = DEVICE_FILES[1]) {
         await this.loadDeviceType(csvPath, 'smartphones');
     }
 
-    async loadTablets(csvPath = '../devices/tablets.csv') {
+    async loadTablets(csvPath = DEVICE_FILES[2]) {
         await this.loadDeviceType(csvPath, 'tablets');
     }
 
-    async loadEReaders(csvPath = '../devices/ereaders.csv') {
+    async loadEReaders(csvPath = DEVICE_FILES[3]) {
         await this.loadDeviceType(csvPath, 'ereaders');
     }
 
@@ -1364,13 +1373,17 @@ class SpecificationManager {
 // docs.converter.convert('Letter', 'A4'); docs.specs.getPaperType('Papel bond');
 // Paths are the ones the page in app/ uses; pass `only` to skip what you don't need.
 class DocumentFormats {
-    static async load({only = ['specs', 'margins', 'devices']} = {}) {
-        const {formats, lastModified} = await loadFormatCatalogs();
+    // `basePath`: the address of the app/ folder, when the page is not served from there. Every
+    // file is looked up relative to it ('' keeps the paths as they are: '../specs/...').
+    static async load({only = ['specs', 'margins', 'devices'], basePath = ''} = {}) {
+        const {formats, lastModified} = await loadFormatCatalogs(FORMAT_CATALOG_FILES, basePath);
         const docs = new DocumentFormats(formats, lastModified);
         const loads = [];
-        if (only.includes('specs')) loads.push(docs.specs.loadAllSpecifications());
-        if (only.includes('margins')) loads.push(docs.margins.load());
-        if (only.includes('devices')) loads.push(docs.devices.loadAllDevices());
+        if (only.includes('specs')) loads.push(docs.specs.loadAllSpecifications(basePath || './'));
+        if (only.includes('margins')) loads.push(docs.margins.load(basePath + BOOK_MARGINS_FILE));
+        if (only.includes('devices')) {
+            loads.push(docs.devices.loadAllDevices(...DEVICE_FILES.map(file => basePath + file)));
+        }
         await Promise.all(loads);
         if (only.includes('margins')) docs.generator.setBookMargins(docs.margins.getAllMargins());
         if (only.includes('specs')) docs.validator.setPrintSpecs(docs.specs.specifications.get('technicalSpecifications') ?? []);

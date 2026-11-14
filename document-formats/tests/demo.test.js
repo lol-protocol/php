@@ -276,3 +276,13 @@ test('the page writes no unit or arrow of its own, and counts through the plural
     assert.doesNotMatch(script, /tr\('demo\.results(Formats|PaperTypes)'/, 'counts go through trCount()');
     assert.match(script, /dir === 'rtl' \? '←' : '→'/);
 });
+
+test('the copy-link button has its words in every language, and the page wires it up', () => {
+    assert.match(page, /<button[^>]*id="copy-link"[^>]*data-translate="demo\.copyLink"/);
+    assert.match(script, /copyText\(location\.href\)/);
+    for (const file of fs.readdirSync(path.join(APP, 'translations'))) {
+        const { demo } = JSON.parse(fs.readFileSync(path.join(APP, 'translations', file), 'utf8'));
+        assert.ok(demo.copyLink && demo.linkCopied, `${file} lacks the copy-link texts`);
+        assert.notEqual(demo.copyLink, demo.linkCopied, `${file}: both texts are the same`);
+    }
+});

@@ -131,6 +131,22 @@ final class EntregaRepository extends Repository
     }
 
     /**
+     * Deletes the deliveries that expired more than $meses ago. What a row holds is only hashes, the persona's id and the
+     * dates, so nothing personal goes: it is kept for a while as the record that an access was delivered, and then it has
+     * no use. A delivery that still works is never touched, however old. (A persona's erasure deletes hers too: see
+     * SupresionRepository.) The count is of rows the DELETE removed.
+     *
+     * @return int how many were deleted
+     */
+    public function depurar(int $meses, ?int $ahora = null): int
+    {
+        $ahora ??= time();
+        $limite = date('Y-m-d H:i:s', strtotime("-{$meses} months", $ahora) ?: 0);
+
+        return $this->db->execute('DELETE FROM entregas_persona WHERE vence_en < ?', [$limite]);
+    }
+
+    /**
      * What a persona is shown: the same as bin/persona.php acceso, in the order and the words of a page, and without
      * the internal ids that mean nothing to her (who contributed the persona, her surname group). Relatives are counts,
      * as everywhere: their names are their own data.

@@ -24,7 +24,7 @@ from collections import Counter
 from pathlib import Path
 
 from comun import filas_csv, leer_csv
-from sugerencias import sugerencias_md
+from sugerencias import desvios_por_pais, sugerencias_md
 
 AQUI = Path(__file__).resolve().parent
 PAISES = AQUI / "paises.csv"
@@ -190,7 +190,10 @@ def texto_csv(columnas, filas):
 
 def vista_html(registros, anios, documento=True):
     """La vista web: la plantilla con los datos y el mapa. documento=False da el fragmento sin
-    <!doctype>, <head> ni <body>, para publicarlo donde se agregan solos."""
+    <!doctype>, <head> ni <body>, para publicarlo donde se agregan solos.
+
+    Cada registro trae el puntaje y la exclusión de cada escenario (eg, ep) y los índices que se
+    apartan de los datos (sg): la vista no repite esas reglas en JavaScript."""
     mapa = [[fila["codigo"], fila["trazado"], float(fila["x"]), float(fila["y"])] for fila in filas_csv(MAPA)]
 
     def a_json(valor):  # "</" no puede aparecer dentro de <script>
@@ -198,7 +201,9 @@ def vista_html(registros, anios, documento=True):
 
     texto = PLANTILLA_VISTA.read_text(encoding="utf-8")
     texto = (texto.replace("/*DATOS*/null", a_json(registros)).replace("/*MAPA*/null", a_json(mapa))
-             .replace("/*ANIOS*/null", a_json(anios)))
+             .replace("/*ANIOS*/null", a_json(anios))
+             .replace("/*ESCENARIOS*/null", a_json({"gen": [n for n, _, _ in ESCENARIOS_GEN],
+                                                    "pos": [n for n, _, _ in ESCENARIOS_POS]})))
     if not documento:
         return texto
     cabeza, cuerpo = texto.split('\n<div class="pagina">', 1)
@@ -462,6 +467,10 @@ def main(comprobar=False):
                 "ni en MasakhaPOS, y el país es inviable para operar" if excl_pos else "",
         })
 
+    marcas = desvios_por_pais(registros)
+    vista = [{**d, "eg": [[puntaje(d), excluido(d)] for _, puntaje, excluido in ESCENARIOS_GEN],
+              "ep": [[puntaje(d), excluido(d)] for _, puntaje, excluido in ESCENARIOS_POS],
+              "sg": marcas.get(d["c"], {})} for d in registros]
     gen_ordenado = [c for *_, c in sorted(filas_gen, key=lambda x: (x[0], x[1], x[2]))]
     pos_ordenado = [c for *_, c in sorted(filas_pos, key=lambda x: (x[0], x[1], x[2]))]
 
@@ -495,7 +504,7 @@ def main(comprobar=False):
         pos_ordenado)
 
     salidas = [(SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos),
-               (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(registros, anios_vista)),
+               (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(vista, anios_vista)),
                (SALIDA_ESCENARIOS, escenarios_md(registros)),
                (SALIDA_SUGERENCIAS, sugerencias_md(registros)),
                (README, readme_con_resumen(resumen_md(registros, niveles)))]

@@ -132,6 +132,16 @@ class Sugerencias(unittest.TestCase):
         self.assertEqual([d["c"] for d, _ in sg.desvios(usados, "il", pred)], ["P3"])
 
 
+    def test_las_marcas_de_la_vista_son_los_paises_del_informe(self):
+        import sugerencias as sg
+        base = {"emi": None, "idh": None, "net": 50.0, "alf": None, "fh": "", "cpi": None, "eiu": None,
+                "cg": "", "cp": "", "ig": 3, "io": 3}
+        registros = [{**base, "c": f"P{i}", "n": f"País {i}", "idh": i / 10, "il": 1 + i // 2} for i in range(10)]
+        registros[3]["il"] = 5
+        marcas = sg.desvios_por_pais(registros)
+        self.assertEqual(marcas, {"P3": {"il": marcas["P3"]["il"]}})
+        self.assertIn("| País 3 | 5 |", sg.sugerencias_md(registros))
+
 class DatosPreparados(unittest.TestCase):
     def test_extension_sigue_a_la_region_y_falla_claro_sin_poblacion_regional(self):
         import preparar_datos
