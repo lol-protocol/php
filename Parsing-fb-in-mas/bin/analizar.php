@@ -54,8 +54,8 @@ $vistos = [];
 $fallos = 0;
 $excluidos = 0;
 $repetidos = 0;
-/** @param array<string, mixed> $perfil */
-$emitir = static function (array $perfil) use ($exclusiones, $jsonl, &$salida, &$vistos, &$excluidos, &$repetidos): void {
+$emitir = static function (array $datos) use ($exclusiones, $jsonl, &$salida, &$vistos, &$excluidos, &$repetidos): void {
+    $perfil = array_filter($datos, 'is_string', ARRAY_FILTER_USE_KEY);
     if ($exclusiones->contiene($perfil)) {
         $excluidos++;
         return;
