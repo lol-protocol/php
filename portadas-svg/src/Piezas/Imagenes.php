@@ -24,6 +24,12 @@ trait Imagenes
         return true;
     }
 
+    /** Si la imagen es la ilustración de la portada (y no una marca de agua detrás del texto). */
+    public function imagenEsIlustracion(): bool
+    {
+        return false;
+    }
+
     /**
      * La imagen del libro como marca de agua: cubre toda la portada, sangrado incluido, con poca opacidad para que el
      * texto se siga leyendo. Una plantilla que dibuja la imagen a su manera (`ilustrada`) devuelve vacío aquí.

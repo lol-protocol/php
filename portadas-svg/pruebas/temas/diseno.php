@@ -205,4 +205,28 @@ return [
             aproximado(0.4, $libros[0]->imagenOpacidad);
         });
     },
+
+    'El generador avisa si el texto no se lee sobre la marca de agua, y mide con la opacidad del libro' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            $sinContraste = static fn (Libro $libro): array => array_values(array_filter(Generador::avisos($libro), static fn (string $a): bool => str_contains($a, 'marca de agua')));
+            file_put_contents("$dir/vector.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>');
+            igual(1, count($sinContraste(libroDeEjemplo(['imagen' => "$dir/vector.svg"]))), 'un SVG no se puede medir');
+            igual([], $sinContraste(libroDeEjemplo(['plantilla' => 'ilustrada', 'imagen' => "$dir/vector.svg"])), 'la ilustración no lleva texto encima');
+            if (!function_exists('imagecreatetruecolor')) {
+                return;
+            }
+            $negra = imagecreatetruecolor(20, 20);
+            verdadero($negra !== false, 'gd crea una imagen');
+            imagepng($negra, "$dir/negra.png");
+            $blanca = imagecreatetruecolor(20, 20);
+            imagefill($blanca, 0, 0, 0xFFFFFF);
+            imagepng($blanca, "$dir/blanca.png");
+            // Texto oscuro de la clásica sobre un fondo crema: una imagen negra a plena opacidad lo borra; a 25 % apenas lo toca.
+            $aviso = $sinContraste(libroDeEjemplo(['imagen' => "$dir/negra.png", 'imagen_opacidad' => 1]));
+            igual(1, count($aviso));
+            verdadero(str_contains($aviso[0], '100 %'), 'dice cuánta portada pierde contraste: ' . $aviso[0]);
+            igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/negra.png", 'imagen_opacidad' => 0.1])), 'con poca opacidad se lee');
+            igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/blanca.png", 'imagen_opacidad' => 1])), 'una imagen blanca no estorba');
+        });
+    },
 ];
