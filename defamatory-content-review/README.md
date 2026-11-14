@@ -999,7 +999,7 @@ $result->getExplanations('eng')[0];
 ```
 
 Hay mensajes en 31 de los 33 idiomas, además de `spa` (todos menos el suajili; `Messages::locales()` los lista).
-El código `yue` sirve las etiquetas `zh` de `Accept-Language`, y está escrito en chino tradicional. Con otro idioma, o con una clave que falte, sale el español. Los textos viven en
+Los mensajes de `yue` están en cantonés escrito (no en chino estándar), y solo los sirve la etiqueta `yue` de `Accept-Language`: `zh` es el chino en general y cae al español. Con otro idioma, o con una clave que falte, sale el español. Los textos viven en
 `config/messages/<código>.php` con claves planas, y `spa` es el origen: añadir un idioma es copiar
 ese archivo y traducir; `MessagesTest` exige las mismas claves y los mismos marcadores
 (`%1$s`, `%.2F`…). Son traducciones propias y el proyecto no prevé que las revise un hablante nativo, así que pueden tener giros poco naturales: si ves un error, corrígelo en el archivo de su idioma. Los códigos de riesgo

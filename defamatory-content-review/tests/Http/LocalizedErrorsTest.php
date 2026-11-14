@@ -18,6 +18,9 @@ class LocalizedErrorsTest extends TestCase
         $this->assertSame('eng', $endpoint->negotiateLocale('xx, en-US;q=0.8'));
         $this->assertSame('spa', $endpoint->negotiateLocale('en;q=0, sw'));
         $this->assertSame('deu', $endpoint->negotiateLocale('deu'));
+        $this->assertSame('yue', $endpoint->negotiateLocale('yue, en;q=0.5'));
+        $this->assertSame('eng', $endpoint->negotiateLocale('zh-HK, en;q=0.5'));
+        $this->assertSame('spa', $endpoint->negotiateLocale('zh-TW'));
         $this->assertSame('spa', $endpoint->negotiateLocale(''));
     }
 

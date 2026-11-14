@@ -41,6 +41,8 @@ class LanguageCodeResolutionTest extends TestCase
         $this->assertSame('deu', $this->registry->fromHeaderTag('DE'));
         $this->assertSame('deu', $this->registry->fromHeaderTag('deu'));
         $this->assertNull($this->registry->fromHeaderTag('xx'));
+        $this->assertNull($this->registry->fromHeaderTag('zh'), 'zh es el chino en general: el cantonés es yue');
+        $this->assertSame('yue', $this->registry->fromHeaderTag('yue'));
     }
 
     public function testResolveIsCaseInsensitive(): void
