@@ -18,6 +18,10 @@ namespace App\Support;
  * nothing it could decrypt, because the private key lives elsewhere. Without recipients it does not encrypt (that is the
  * owner's decision). It never falls back to a plain copy when encrypting fails: the run fails and leaves nothing. It does
  * not take the copy off the server either: send() runs the command the owner gives it for that, one file at a time.
+ *
+ * Two checks that do not make a copy: verificar() really restores one (into a scratch database, or by opening it) and
+ * counts the rows of every table, which is what a copy that «passed» when it was made does not prove; and vigilar() says
+ * when the newest copy of a site is too old or there is none, which is what a cron that stopped running never says.
  */
 final class Copias
 {
@@ -113,6 +117,151 @@ final class Copias
         }
 
         return $borrados;
+    }
+
+    /**
+     * Says what is wrong with the copies of $sitios in the destination folder, by the date in the name: none at all, or
+     * the newest older than $maxDias days, or empty. Nothing is read from the databases and nothing is changed, so it can
+     * run anywhere the folder is seen (best of all, where the copies are sent to: a server that is down cannot warn).
+     *
+     * @param list<string> $sitios
+     * @return list<string> one sentence per problem; empty when every site has a recent copy
+     */
+    public function vigilar(array $sitios, int $maxDias, ?\DateTimeImmutable $hoy = null): array
+    {
+        if ($maxDias < 1 || $maxDias > 3650) {
+            throw new \InvalidArgumentException('Los días de antigüedad son un número de 1 a 3650.');
+        }
+        if (!is_dir($this->destino)) {
+            return ["No existe la carpeta de copias {$this->destino}."];
+        }
+        $hoy ??= new \DateTimeImmutable('today');
+        $problemas = [];
+        foreach ($sitios as $sitio) {
+            $ultima = null;
+            foreach (scandir($this->destino) ?: [] as $nombre) {
+                if (preg_match(self::NOMBRE, $nombre, $m) === 1 && $m['sitio'] === $sitio && ($ultima === null || $m['fecha'] > $ultima['fecha'])) {
+                    $ultima = ['fecha' => $m['fecha'], 'nombre' => $nombre];
+                }
+            }
+            if ($ultima === null) {
+                $problemas[] = "Copias de {$sitio}: no hay ninguna en {$this->destino}.";
+                continue;
+            }
+            $fecha = \DateTimeImmutable::createFromFormat('!Y-m-d', $ultima['fecha']);
+            $dias = $fecha === false ? PHP_INT_MAX : max(0, (int)$fecha->diff($hoy)->format('%r%a'));
+            if ($dias > $maxDias) {
+                $problemas[] = "Copias de {$sitio}: la última es del {$ultima['fecha']}, de hace {$dias} días (el límite es {$maxDias}).";
+            } elseif ((int)@filesize($this->destino . '/' . $ultima['nombre']) === 0) {
+                $problemas[] = "Copias de {$sitio}: la última ({$ultima['nombre']}) está vacía.";
+            }
+        }
+
+        return $problemas;
+    }
+
+    /**
+     * Restores a copy for real and counts the rows of every table: a SQLite copy is opened (integrity_check) and a
+     * PostgreSQL dump is restored into a scratch database that is dropped afterwards (createdb, pg_restore, psql and
+     * dropdb on the PATH, and a role that may create databases; the connection comes from $entornoPg, the PG* variables).
+     * An encrypted copy needs $identidad, the file with the age private key, which is never kept on the server: so this is
+     * meant to be run where the key is. The decrypted copy lives in a temporary file that is deleted.
+     *
+     * @param array<string, string> $entornoPg PGHOST, PGPORT, PGUSER, PGPASSWORD... for the scratch database
+     * @return array<string, int> rows per table
+     * @throws \RuntimeException when the copy cannot be restored or has no tables at all
+     */
+    public function verificar(string $archivo, ?string $identidad = null, array $entornoPg = []): array
+    {
+        if (!is_file($archivo) || preg_match(self::NOMBRE, basename($archivo), $m) !== 1) {
+            throw new \RuntimeException("«{$archivo}» no es una copia (se llama sitio-AAAA-MM-DD.dump|sqlite[.age]).");
+        }
+        $plano = $archivo;
+        $temporal = null;
+        $viejoUmask = umask(0077);
+        try {
+            if (str_ends_with($archivo, '.age')) {
+                if ($identidad === null || !is_file($identidad)) {
+                    throw new \RuntimeException('La copia está cifrada: hace falta --identidad con el archivo de la clave privada de age (la que NO está en el servidor).');
+                }
+                $temporal = (string)tempnam(sys_get_temp_dir(), 'copia-verificar-');
+                [$codigo, $error] = $this->correr(['age', '-d', '-i', $identidad, '-o', $temporal, $archivo], ['PATH' => (string)getenv('PATH')]);
+                if ($codigo !== 0) {
+                    throw new \RuntimeException('age no pudo descifrar la copia (¿es la clave correcta?)' . ($error !== '' ? ": {$error}" : '.'));
+                }
+                $plano = $temporal;
+            }
+            $tablas = str_contains(basename($archivo), '.sqlite') ? $this->contarSqlite($plano) : $this->contarPostgres($plano, $entornoPg);
+        } finally {
+            umask($viejoUmask);
+            if ($temporal !== null) {
+                @unlink($temporal);
+            }
+        }
+        if ($tablas === []) {
+            throw new \RuntimeException('La copia se abre pero no tiene ninguna tabla.');
+        }
+
+        return $tablas;
+    }
+
+    /** @return array<string, int> */
+    private function contarSqlite(string $ruta): array
+    {
+        try {
+            $pdo = new \PDO('sqlite:' . $ruta, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+            $integridad = $pdo->query('PRAGMA integrity_check');
+            if ($integridad === false || $integridad->fetchColumn() !== 'ok') {
+                throw new \RuntimeException('La copia de SQLite no pasa integrity_check.');
+            }
+            $nombres = $pdo->query("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name");
+            $tablas = [];
+            foreach ($nombres === false ? [] : $nombres->fetchAll(\PDO::FETCH_COLUMN) as $nombre) {
+                $cuenta = $pdo->query('SELECT COUNT(*) FROM "' . str_replace('"', '""', (string)$nombre) . '"');
+                $tablas[(string)$nombre] = $cuenta === false ? 0 : (int)$cuenta->fetchColumn();
+            }
+
+            return $tablas;
+        } catch (\PDOException $e) {
+            throw new \RuntimeException('No se pudo abrir la copia de SQLite: ' . $e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
+     * @param array<string, string> $entornoPg
+     * @return array<string, int>
+     */
+    private function contarPostgres(string $volcado, array $entornoPg): array
+    {
+        $entorno = ['PATH' => (string)getenv('PATH')] + $entornoPg;
+        $base = 'copias_verificar_' . bin2hex(random_bytes(4));
+        [$codigo, $error] = $this->correr(['createdb', $base], $entorno);
+        if ($codigo !== 0) {
+            throw new \RuntimeException('No se pudo crear la base temporal (createdb' . ($error !== '' ? ": {$error}" : '') . '): hace falta un rol que pueda crear bases.');
+        }
+        try {
+            [$codigo, $error] = $this->correr(['pg_restore', '--no-owner', '--exit-on-error', '-d', $base, $volcado], $entorno);
+            if ($codigo !== 0) {
+                throw new \RuntimeException('pg_restore no pudo restaurar la copia' . ($error !== '' ? ": {$error}" : '.'));
+            }
+            $consulta = "SELECT table_name || '|' || (xpath('/row/c/text()', query_to_xml(format('SELECT count(*) AS c FROM %I.%I', table_schema, table_name), false, true, '')))[1]::text"
+                . " FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE' ORDER BY 1";
+            [$codigo, $error, $salida] = $this->correr(['psql', '-X', '-A', '-t', '-d', $base, '-c', $consulta], $entorno);
+            if ($codigo !== 0) {
+                throw new \RuntimeException('psql no pudo contar las filas' . ($error !== '' ? ": {$error}" : '.'));
+            }
+        } finally {
+            $this->correr(['dropdb', '--if-exists', $base], $entorno);
+        }
+        $tablas = [];
+        foreach (explode("\n", trim($salida)) as $linea) {
+            if (str_contains($linea, '|')) {
+                [$nombre, $cuenta] = explode('|', $linea, 2);
+                $tablas[$nombre] = (int)$cuenta;
+            }
+        }
+
+        return $tablas;
     }
 
     /**
@@ -290,7 +439,7 @@ final class Copias
     /**
      * @param list<string> $comando
      * @param array<string, string> $entorno
-     * @return array{0: int, 1: string} exit code and what the command wrote to stderr
+     * @return array{0: int, 1: string, 2: string} exit code, what the command wrote to stderr and to stdout
      */
     private function correr(array $comando, array $entorno): array
     {
@@ -298,11 +447,11 @@ final class Copias
         if (!is_resource($proceso)) {
             throw new \RuntimeException("No se pudo ejecutar {$comando[0]} (¿está instalado y en el PATH?).");
         }
-        stream_get_contents($pipes[1]);
+        $salida = (string)stream_get_contents($pipes[1]);
         $error = trim((string)stream_get_contents($pipes[2]));
         fclose($pipes[1]);
         fclose($pipes[2]);
 
-        return [proc_close($proceso), $error];
+        return [proc_close($proceso), $error, $salida];
     }
 }
