@@ -34,9 +34,11 @@ empieza_poblado) y no se le agrega nada antes: la cuota de la región inventarí
 la había. Si empieza en 1800 o después (micro-estados y territorios sin dato propio antes), o
 antes con mucha gente (Sudán del Sur, 859 000 en 1600), se completa hacia atrás, salvo los de
 SIN_GENTE_ANTES.
-Un país que OWID no tiene usa la población del Banco Mundial desde 1960 (Puerto Rico, Gibraltar,
-Isla de Man) y, si tampoco está ahí, la de Gapminder hasta ANIO_MAXIMO_GAPMINDER (Jersey, Reunión);
-esta última solo entra en la serie larga, no en la población actual.
+Un país que co2-data (la población actual) no tiene usa la población del Banco Mundial desde 1960
+(Puerto Rico, Gibraltar, Isla de Man) y, si tampoco está ahí, la de Gapminder hasta
+ANIO_MAXIMO_GAPMINDER (Guernsey, Jersey, Reunión); esta última solo entra en la serie larga. Su
+población actual es la del último año de la serie histórica de OWID, el anterior a ANIO_POBLACION
+(103 680 en Jersey, 64 043 en Guernsey y 874 883 en Reunión en 2023).
 
 Natalidad (ver natalidad_pais): la tasa bruta de Gapminder (1800-2015), la del Banco Mundial
 después (SP.DYN.CBRT.IN, hasta 2024) y, hasta ANIO_FIN, la última tasa escalada por la fecundidad
@@ -395,11 +397,18 @@ def main(argv=None, carpeta=AQUI):
             sin_serie.append(codigo)
 
         actual = poblacion.get(clave, {}).get(ANIO_POBLACION)
+        anio_actual = ANIO_POBLACION
+        fuente = "Banco Mundial" if clave in con_poblacion_bm else "Our World in Data"
+        if actual is None:
+            # Sin población de ANIO_POBLACION (Guernsey, Jersey, Reunión): la del último año de la
+            # serie histórica de OWID, si es del año anterior.
+            ultimo = ultimo_dato(historica.get(clave, {}), ANIO_POBLACION - 1)
+            if ultimo:
+                (anio_actual, actual), fuente = ultimo, "Our World in Data (serie histórica)"
         fila["poblacion_millones"] = formato_millones(actual) if actual is not None else ""
         if actual is None:
             sin_pob.append(codigo)
-        anotar("poblacion_millones", ANIO_POBLACION,
-               "Banco Mundial" if clave in con_poblacion_bm else "Our World in Data")
+        anotar("poblacion_millones", anio_actual, fuente)
         emigrados = emigrantes.get(clave, {}).get(ANIO_EMIGRANTES)
         fila["emigrantes_pct"] = f"{100 * emigrados / actual:.1f}" if emigrados is not None and actual else ""
         if not fila["emigrantes_pct"]:

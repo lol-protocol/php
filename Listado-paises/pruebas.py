@@ -413,6 +413,8 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(bb["pib_per_capita_usd"], "10000")  # de dos años antes
         self.assertEqual(bb["alfabetizacion_adultos"], "70.0")
         self.assertEqual(cc["poblacion_millones"], "")  # Gapminder no da la población actual
+        # DD no está en co2-data pero sí en la serie histórica de OWID (2023, 50 000): esa es su población.
+        self.assertEqual(paises["DD"]["poblacion_millones"], "0.050")
         # Un 0 de la fuente es un dato, no un dato que falta.
         ff = paises["FF"]
         self.assertEqual((ff["idh"], ff["pib_per_capita_ppa_usd"], ff["emigrantes_pct"]), ("0.000", "0", "0.0"))
@@ -421,6 +423,7 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(detalle[("BB", "pib_per_capita_usd")], (str(pd.ANIO_PIB_NOMINAL - 2), "Banco Mundial"))
         self.assertEqual(detalle[("BB", "alfabetizacion_adultos")], ("2020", "UNESCO vía Gapminder"))
         self.assertNotIn(("CC", "poblacion_millones"), detalle)
+        self.assertEqual(detalle[("DD", "poblacion_millones")], ("2023", "Our World in Data (serie histórica)"))
 
         larga = {}
         for f in leer_csv(self.d / "poblacion_larga.csv"):
