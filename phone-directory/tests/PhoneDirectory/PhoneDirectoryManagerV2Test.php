@@ -114,6 +114,48 @@ class PhoneDirectoryManagerV2Test extends TestCase
         $this->assertSame($result['naturalInserted'], $this->owner->getTotalNaturalPeopleCount());
     }
 
+    public function testProcessFileStoresALargeFileInBatches(): void
+    {
+        $records = [];
+        for ($i = 1; $i <= 25; $i++) {
+            $records[] = $i % 5 === 0
+                ? "Central Pharmacy {$i}\n{$i} Main Street\n555-123-" . sprintf('%04d', $i)
+                : "PERSON{$i}, John\n{$i} Main Street\n555-123-" . sprintf('%04d', $i);
+        }
+        $tempFile = tempnam(sys_get_temp_dir(), 'phone_batches_');
+        file_put_contents($tempFile, implode("\n\n", $records));
+
+        try {
+            $result = $this->owner->processFile($tempFile, 'en', false, 4);
+        } finally {
+            unlink($tempFile);
+        }
+
+        $this->assertSame(25, $result['totalParsed']);
+        $this->assertSame(20, $result['naturalPeople']);
+        $this->assertSame(5, $result['juridicalEntities']);
+        $this->assertSame(20, $result['naturalInserted']);
+        $this->assertSame(5, $result['juridicalInserted']);
+        $this->assertSame(25, $result['totalInserted']);
+        $this->assertSame(20, $this->owner->getTotalNaturalPeopleCount());
+        $this->assertSame('en', $result['language']);
+    }
+
+    public function testProcessFileOfAnEmptyFileStoresNothing(): void
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'phone_batches_');
+
+        try {
+            $result = $this->owner->processFile($tempFile, 'es');
+        } finally {
+            unlink($tempFile);
+        }
+
+        $this->assertSame(0, $result['totalParsed']);
+        $this->assertSame(0, $result['totalInserted']);
+        $this->assertSame('es', $result['language']);
+    }
+
     public function testGetNaturalPerson(): void
     {
         $id = $this->owner->addNaturalPerson(new PhoneDirectoryEntry('JOHNSON, Mary', 'US', '456 Oak Avenue'));

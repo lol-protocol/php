@@ -52,10 +52,13 @@ correrlas está en la sección «Pruebas» del [README](../README.md). La cobert
 
 ## Pendientes
 
-- `Config/ParserConfig` no está conectado a nada (está marcada `@deprecated`).
-- `parseFile()` acumula todas las entradas en memoria; para archivos enormes haría falta procesarlas por lotes a
-  medida que se leen.
-- Los ports no tienen paridad con el PHP (ver arriba).
+- `Config/ParserConfig` no está conectada a nada: está marcada `@deprecated` y se conserva como referencia (por la
+  regla del repositorio de no borrar código sin uso).
+- Los ports resuelven los mismos casos que el PHP, pero no tienen claves fonéticas, `RecordLinker` ni la vista de
+  privacidad (ver arriba).
+
+Resuelto: los archivos grandes se leen y guardan por lotes (`parseFileInBatches()`, `phonedir import --lote`), sin
+que la memoria crezca con el archivo.
 
 Las estimaciones de volumen, tiempos y hardware están en
 [ESTIMATES_AND_SCALABILITY.md](ESTIMATES_AND_SCALABILITY.md).

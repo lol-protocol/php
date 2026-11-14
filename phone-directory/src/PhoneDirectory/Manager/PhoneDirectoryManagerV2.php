@@ -15,6 +15,9 @@ use PhoneDirectory\Entity\JuridicalEntity;
  */
 class PhoneDirectoryManagerV2
 {
+    /** Entries parsed and stored per batch by processFile(). */
+    public const DEFAULT_BATCH_SIZE = 5000;
+
     private MultiLanguagePhoneDirectoryParser $parser;
     private PhoneDirectoryDatabaseInterface $naturalDatabase;
     private JuridicalEntityDatabaseInterface $juridicalDatabase;
@@ -43,7 +46,7 @@ class PhoneDirectoryManagerV2
      *     errorCount: int
      * }
      */
-    public function processFile(string $filePath, ?string $language = null, bool $clearExisting = false): array
+    public function processFile(string $filePath, ?string $language = null, bool $clearExisting = false, int $batchSize = self::DEFAULT_BATCH_SIZE): array
     {
         $this->ensureNaturalReady();
         $this->ensureJuridicalReady();
@@ -53,36 +56,43 @@ class PhoneDirectoryManagerV2
             $this->juridicalDatabase->clear();
         }
 
-        $entries = $this->parser->parseFile($filePath, $language);
-
-        $naturalPeople = [];
-        $juridicalEntities = [];
-
-        foreach ($entries as $item) {
-            if ($item['type'] === 'natural') {
-                $naturalPeople[] = $item['entity'];
-            } else {
-                $juridicalEntities[] = $item['entity'];
-            }
-        }
-
+        // The file is read and stored $batchSize entries at a time, so memory stays flat however large it is.
+        // Each batch is its own transaction: if the import stops half way (a database error), the batches before
+        // it stay stored, so a failed import of a big file is re-run with $clearExisting.
+        $naturalParsed = 0;
+        $juridicalParsed = 0;
         $naturalInserted = 0;
         $juridicalInserted = 0;
 
-        if (!empty($naturalPeople)) {
-            $naturalInserted = $this->naturalDatabase->insertBatch($naturalPeople);
-        }
+        foreach ($this->parser->parseFileInBatches($filePath, $batchSize, $language) as $batch) {
+            $naturalPeople = [];
+            $juridicalEntities = [];
 
-        if (!empty($juridicalEntities)) {
-            $juridicalInserted = $this->juridicalDatabase->insertBatch($juridicalEntities);
+            foreach ($batch as $item) {
+                if ($item['type'] === 'natural') {
+                    $naturalPeople[] = $item['entity'];
+                } else {
+                    $juridicalEntities[] = $item['entity'];
+                }
+            }
+
+            $naturalParsed += count($naturalPeople);
+            $juridicalParsed += count($juridicalEntities);
+
+            if ($naturalPeople !== []) {
+                $naturalInserted += $this->naturalDatabase->insertBatch($naturalPeople);
+            }
+            if ($juridicalEntities !== []) {
+                $juridicalInserted += $this->juridicalDatabase->insertBatch($juridicalEntities);
+            }
         }
 
         return [
             'file' => $filePath,
             'language' => $this->parser->getDetectedLanguage(),
-            'totalParsed' => count($entries),
-            'naturalPeople' => count($naturalPeople),
-            'juridicalEntities' => count($juridicalEntities),
+            'totalParsed' => $naturalParsed + $juridicalParsed,
+            'naturalPeople' => $naturalParsed,
+            'juridicalEntities' => $juridicalParsed,
             'naturalInserted' => $naturalInserted,
             'juridicalInserted' => $juridicalInserted,
             'totalInserted' => $naturalInserted + $juridicalInserted,

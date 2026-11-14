@@ -94,6 +94,7 @@ function printHelp(): void
       --source=<id>        Id de directorio de origen (ignorado si se usa --catalog)
       --language=<es|en|fr|pt|de|it>  Fuerza el idioma en vez de detectarlo automáticamente
       --clear              Vacía las tablas antes de importar
+      --lote=<N>           Entradas que se leen y guardan de una vez (por defecto: 5000); la memoria no crece con el archivo
 
     search:
       --type=natural|juridical|all   Qué buscar (por defecto: all)
@@ -219,7 +220,12 @@ function commandImport(array $args, array $options): int
 
     $manager = buildManager($options, $parser);
 
-    $result = $manager->processFile($file, $language, isset($options['clear']));
+    $batchSize = (int) option($options, 'lote', (string) PhoneDirectoryManagerV2::DEFAULT_BATCH_SIZE);
+    if ($batchSize < 1) {
+        fail('--lote tiene que ser un número entero de 1 o más');
+    }
+
+    $result = $manager->processFile($file, $language, isset($options['clear']), $batchSize);
 
     echo "Idioma detectado: {$result['language']}\n";
     echo "Líneas parseadas: {$result['totalParsed']}\n";

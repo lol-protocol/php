@@ -70,6 +70,28 @@ class CliTest extends TestCase
         $this->assertStringContainsString('Uso:', $stdout);
     }
 
+    public function testImportInSmallBatchesGivesTheSameResult(): void
+    {
+        $file = $this->writeSampleFile("SMITH, John\n123 Main Street\n555-123-4567\n\nJONES, Ann\n456 Oak Avenue\n\nLEE, Ken\n7 Elm Road");
+
+        [$exit, $out] = $this->runCli("import {$file} --country=US --lote=2 --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertSame(0, $exit);
+        $this->assertStringContainsString('Personas insertadas: 3', $out);
+        unlink($file);
+    }
+
+    public function testImportRefusesAnInvalidBatchSize(): void
+    {
+        $file = $this->writeSampleFile("SMITH, John\n123 Main Street");
+
+        [$exit, , $stderr] = $this->runCli("import {$file} --lote=0 --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertSame(1, $exit);
+        $this->assertStringContainsString('--lote', $stderr);
+        unlink($file);
+    }
+
     public function testImportMissingFileFails(): void
     {
         [$exitCode, , $stderr] = $this->runCli("import /no/such/file.txt --dsn=sqlite:{$this->dbFile}");

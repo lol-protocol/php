@@ -500,6 +500,7 @@ Los casos que el parser todavía resuelve mal están marcados con `falla_conocid
 - `__construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)`
 - `static forCatalogDirectory(string $directoryId): self` — toma el país del catálogo
 - `parseFile(string $filePath): array`
+- `parseFileInBatches(string $filePath, int $batchSize = 1000): \Generator` (`MultiLanguagePhoneDirectoryParser` recibe además `?string $language`): entrega las entradas de a `$batchSize` sin guardarlas, así que la memoria no crece con el archivo; ver «Consideraciones de Rendimiento»
 - `parseContent(string $content): array` (`MultiLanguagePhoneDirectoryParser` recibe además `?string $language`)
 - `getEntries(): array`, `getErrors(): array`
 - `getEntriesCount(): int`, `getErrorsCount(): int` (solo `PhoneDirectoryParser`)
@@ -527,7 +528,7 @@ Los casos que el parser todavía resuelve mal están marcados con `falla_conocid
 `php bin/benchmark.php [entradas]` mide parseo, inserción y búsquedas; los resultados y proyecciones están en `docs/ESTIMATES_AND_SCALABILITY.md`.
 
 Para directorios telefónicos grandes:
-- `parseFile()` lee el archivo línea a línea, pero devuelve todas las entradas juntas (~1,8 KB de memoria por entrada): partir los archivos de millones de entradas antes de importarlos
+- `parseFile()` lee el archivo línea a línea, pero devuelve todas las entradas juntas (~1,8 KB de memoria por entrada). Para archivos grandes, `parseFileInBatches()` las entrega de a lotes y la memoria queda plana (con 400 000 entradas: pico de 6 MB, frente a 716 MB de `parseFile()`, con la misma velocidad). `PhoneDirectoryManagerV2::processFile()` y `phonedir import` ya lo usan: guardan de a `$batchSize` entradas (`--lote=N`, por defecto 5000), cada lote en su propia transacción, así que si la importación se corta a la mitad los lotes anteriores quedan guardados (se repite con `--clear`)
 - Usar base de datos en archivo (o MySQL/PostgreSQL) en lugar de SQLite en memoria
 - Usar `insertBatch()` para inserciones masivas (una transacción y una sentencia preparada para todo el lote)
 - `RecordLinker` agrupa internamente por apellido, país e inicial del nombre antes de comparar pares, para que enlazar apellidos muy comunes siga siendo rápido

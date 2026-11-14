@@ -115,6 +115,53 @@ class MultiLanguagePhoneDirectoryParser
     }
 
     /**
+     * Parse a file and hand its entries over $batchSize at a time, without ever holding the whole file's
+     * entries: memory stays flat however large the directory is (parseFile() keeps every entry, about 1.8 KB each).
+     *
+     * The file, the batch size and the language are checked when this is called, not when the first batch is read.
+     * While the batches are read, getErrors() grows and getDetectedLanguage() is set; getEntries() stays empty,
+     * because an entry that has been handed over is not kept.
+     *
+     * @return \Generator<int, list<ParsedEntry>> Batches of up to $batchSize entries, in file order
+     * @throws \RuntimeException If the file does not exist
+     * @throws \InvalidArgumentException If $batchSize is below 1 or the language is unsupported
+     */
+    public function parseFileInBatches(string $filePath, int $batchSize = 1000, ?string $language = null): \Generator
+    {
+        if ($batchSize < 1) {
+            throw new \InvalidArgumentException("The batch size must be at least 1, not {$batchSize}");
+        }
+        if (!file_exists($filePath)) {
+            throw new \RuntimeException("File not found: {$filePath}");
+        }
+
+        $language ??= $this->detectLanguage(LineReader::read($filePath));
+        $this->assertSupported($language);
+
+        return $this->batches(LineReader::read($filePath), $language, $batchSize);
+    }
+
+    /**
+     * @param iterable<string> $lines
+     * @return \Generator<int, list<ParsedEntry>>
+     */
+    private function batches(iterable $lines, string $language, int $batchSize): \Generator
+    {
+        $batch = [];
+        foreach ($this->streamLines($lines, $language) as $entry) {
+            $batch[] = $entry;
+            if (count($batch) >= $batchSize) {
+                yield $batch;
+                $batch = [];
+            }
+        }
+
+        if ($batch !== []) {
+            yield $batch;
+        }
+    }
+
+    /**
      * Parse phone directory content and extract entries
      *
      * @param string $content The raw directory content to parse
@@ -135,12 +182,50 @@ class MultiLanguagePhoneDirectoryParser
      */
     private function parseLines(iterable $lines, string $language): array
     {
-        $this->entries = [];
-        $this->parseErrors = [];
+        $this->assertSupported($language);
 
+        $all = [];
+        foreach ($this->streamLines($lines, $language) as $entry) {
+            $all[] = $entry;
+        }
+
+        return $this->entries = $all;
+    }
+
+    private function assertSupported(string $language): void
+    {
         if (!in_array($language, self::SUPPORTED_LANGUAGES, true)) {
             throw new InvalidLanguageException("Unsupported language: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
         }
+    }
+
+    /**
+     * The entries finalizeEntry() has produced since the last call, handed over: this parser no longer keeps them.
+     *
+     * @return \Generator<int, ParsedEntry>
+     */
+    private function entriesSoFar(): \Generator
+    {
+        $taken = $this->entries;
+        $this->entries = [];
+
+        foreach ($taken as $entry) {
+            yield $entry;
+        }
+    }
+
+    /**
+     * Reads the lines and yields each entry as soon as its record is complete.
+     *
+     * @param iterable<string> $lines
+     * @return \Generator<int, ParsedEntry>
+     */
+    private function streamLines(iterable $lines, string $language): \Generator
+    {
+        $this->entries = [];
+        $this->parseErrors = [];
+
+        $this->assertSupported($language);
 
         $this->detectedLanguage = $language;
         $phoneRegex = PhonePattern::regexFor($language);
@@ -157,6 +242,7 @@ class MultiLanguagePhoneDirectoryParser
                 if (!empty($buffer)) {
                     $this->processBuffer($buffer, $bufferStart, $language, $phoneRegex);
                     $buffer = [];
+                    yield from $this->entriesSoFar();
                 }
                 continue;
             }
@@ -184,6 +270,7 @@ class MultiLanguagePhoneDirectoryParser
                     $lineNumber,
                     $language
                 );
+                yield from $this->entriesSoFar();
                 continue;
             }
 
@@ -197,7 +284,7 @@ class MultiLanguagePhoneDirectoryParser
             $this->processBuffer($buffer, $bufferStart, $language, $phoneRegex);
         }
 
-        return $this->entries;
+        yield from $this->entriesSoFar();
     }
 
     /**
