@@ -10,12 +10,12 @@
     "scope": "Data subjects whose data is processed in Andorra or by non-domiciled controllers using means there",
     "applies_to": "All public and private controllers and processors; foreign controllers must designate a representative",
     "key_requirements": "GDPR-aligned legal bases and data-subject rights; accountability; independent supervisory agency (art. 46)",
-    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "data_categories": "Personal data; sensitive data (ethnic/racial origin, political opinions, religious/philosophical beliefs, trade union membership, genetic, biometric, health, sex life/orientation)",
     "retention_period": "Not specified",
     "enforcement_authority": "Andorran Data Protection Agency (Agencia Andorrana de Proteccio de Dades - APDA)",
-    "penalties_range": "Administrative fines reportedly up to EUR 100,000 depending on severity (single compliance-site claim; statute not seen) (unconfirmed)",
+    "penalties_range": "Fines by severity: very serious EUR 30,001-100,000; serious EUR 15,001-30,000; minor EUR 500-15,000; APDA can also issue warnings",
     "exemptions": "Not specified",
-    "deceased_data": "Deceased persons listed among excluded data categories by one source, with unspecified exceptions (unconfirmed)",
+    "deceased_data": "Personal data of deceased individuals is excluded from the law, with considerations for certain circumstances (not detailed)",
     "research_exemption": "",
     "genetic_data": "",
     "website_url": "https://www.apda.ad",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-14",
     "sources": {
       "jurisdiction": {
         "url": "https://www.apda.ad/assets/pdf/agency/Decret_368-2022_del_14-9-2022_d_aprovacio_del_Reglament_de_l_Agencia_Andorrana_de_Proteccio_de_Dades.pdf",
@@ -61,8 +61,8 @@
       },
       "data_categories": {
         "url": "https://www.cookieyes.com/blog/andorra-personal-data-protection-law/",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "high",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://www.apda.ad/assets/pdf/agency/Decret_368-2022_del_14-9-2022_d_aprovacio_del_Reglament_de_l_Agencia_Andorrana_de_Proteccio_de_Dades.pdf",
@@ -70,14 +70,14 @@
         "checked": "2026-10-22"
       },
       "penalties_range": {
-        "url": "https://www.clym.io/regulations/qualified-personal-data-protection-law-lqpd-andorra",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.cookieyes.com/blog/andorra-personal-data-protection-law/",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "deceased_data": {
         "url": "https://www.cookieyes.com/blog/andorra-personal-data-protection-law/",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "frameworks": {
         "url": "https://www.coe.int/web/data-protection/-/with-andorra-20-ratifications-for-convention-108-",
@@ -86,6 +86,24 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "deceased_data",
+        "from": "Deceased persons listed among excluded data categories by one source, with unspecified exceptions (unconfirmed)",
+        "to": "Personal data of deceased individuals is excluded from the law, with considerations for certain circumstances (not detailed)"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Administrative fines reportedly up to EUR 100,000 depending on severity (single compliance-site claim; statute not seen) (unconfirmed)",
+        "to": "Fines by severity: very serious EUR 30,001-100,000; serious EUR 15,001-30,000; minor EUR 500-15,000; APDA can also issue warnings"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data; sensitive data (unconfirmed)",
+        "to": "Personal data; sensitive data (ethnic/racial origin, political opinions, religious/philosophical beliefs, trade union membership, genetic, biometric, health, sex life/orientation)"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

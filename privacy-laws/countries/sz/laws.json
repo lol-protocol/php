@@ -7,13 +7,13 @@
     "jurisdiction": "EDPA (Eswatini Data Protection Authority - the Eswatini Communications Commission)",
     "enactment_date": "2022-03-04",
     "effective_date": "2022-03-04",
-    "scope": "Data subjects in Eswatini (unconfirmed)",
+    "scope": "Public and private bodies processing personal data by automated or non-automated means in Eswatini, including controllers domiciled abroad (extraterritorial)",
     "applies_to": "Data controllers and processors (registration/notification required)",
     "key_requirements": "Controllers must notify/register with the Commission before processing (registration window 1 March-30 September 2024); lawful processing and data subject rights; enforcement notices with show-cause periods",
     "data_categories": "Personal information; sensitive information (unconfirmed)",
     "retention_period": "Not specified",
     "enforcement_authority": "Eswatini Data Protection Authority (EDPA) / Eswatini Communications Commission (ESCCOM)",
-    "penalties_range": "Administrative: E5M or 2% of annual turnover; criminal: E100M or 5% of turnover or up to 10 years imprisonment (secondary source, s. 53 unverified) (unconfirmed)",
+    "penalties_range": "Administrative: E5,000,000 or 2% of annual turnover; criminal: E100,000,000 or 5% of annual turnover or 10 years imprisonment (section number not given in source)",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-14",
     "sources": {
       "enactment_date": {
         "url": "https://dataprotection.africa/?p=19758",
@@ -35,9 +35,9 @@
         "checked": "2026-10-25"
       },
       "scope": {
-        "url": "https://www.DataGuidance.com/jurisdiction/eswatini",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.consentstack.io/regulations/sz-dpa",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "applies_to": {
         "url": "https://www.DataGuidance.com/jurisdiction/eswatini",
@@ -51,11 +51,23 @@
       },
       "penalties_range": {
         "url": "https://www.consentstack.io/regulations/sz-dpa",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Administrative: E5M or 2% of annual turnover; criminal: E100M or 5% of turnover or up to 10 years imprisonment (secondary source, s. 53 unverified) (unconfirmed)",
+        "to": "Administrative: E5,000,000 or 2% of annual turnover; criminal: E100,000,000 or 5% of annual turnover or 10 years imprisonment (section number not given in source)"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "scope",
+        "from": "Data subjects in Eswatini (unconfirmed)",
+        "to": "Public and private bodies processing personal data by automated or non-automated means in Eswatini, including controllers domiciled abroad (extraterritorial)"
+      },
       {
         "date": "2026-10-25",
         "field": "website_url",

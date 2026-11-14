@@ -9,11 +9,11 @@
     "effective_date": "2025-11-07",
     "scope": "Data subjects in The Gambia (extraterritorial: foreign controllers processing data of people in The Gambia)",
     "applies_to": "All public and private controllers and processors; excludes purely personal/household activity and anonymous data",
-    "key_requirements": "Lawful processing and accountability without prior registration; breach notification to the Commission within 72 hours; impact assessments for high-risk processing (unconfirmed)",
-    "data_categories": "Personal data; special categories of personal data (unconfirmed)",
+    "key_requirements": "Accountability-based compliance with no prior registration required; breach notification to the Commission within 72 hours (and to data subjects without undue delay if high risk); DPIA required for high-risk processing; DPO mandatory for public authorities and large-scale monitoring/sensitive-data processing",
+    "data_categories": "Personal data; sensitive personal data (genetic and biometric data, racial origin, political opinions, health status), processing generally prohibited unless a specific condition applies",
     "retention_period": "Not specified",
     "enforcement_authority": "Information Commission",
-    "penalties_range": "Reported administrative fines up to 4% of global turnover for serious violations; criminal penalties up to 10 years for selling personal data (sources conflict, unverified) (unconfirmed)",
+    "penalties_range": "Administrative: corrective warnings, enforcement notices, processing bans and fines set by the Commission (reported GMD 1 million or 5% of gross income; 4% of global turnover for serious cases). Criminal: up to 3 years or fine from GMD 500,000 for unlawful processing for gain; up to 5 years for selling data (10 years and fines from GMD 10 million for corporations if aggravated); 2 years for concealing a breach; 7 years for obstructing the Commission",
     "exemptions": "Purely personal or household activity; anonymous data",
     "deceased_data": "",
     "research_exemption": "Specific basis for processing for archiving in the public interest, scientific, historical or statistical purposes, subject to safeguards (section number not confirmed)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-21",
+    "last_checked": "2026-11-14",
     "sources": {
       "research_exemption": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
@@ -71,13 +71,13 @@
       },
       "key_requirements": {
         "url": "https://www.consentstack.io/regulations/gm-pdpp",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "data_categories": {
-        "url": "https://assembly.gm/documents/364",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://law.ungovr.org/ai/gm",
@@ -85,9 +85,9 @@
         "checked": "2026-10-16"
       },
       "penalties_range": {
-        "url": "https://www.consentstack.io/regulations/gm-pdpp",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "exemptions": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025",
@@ -96,6 +96,24 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Reported administrative fines up to 4% of global turnover for serious violations; criminal penalties up to 10 years for selling personal data (sources conflict, unverified) (unconfirmed)",
+        "to": "Administrative: corrective warnings, enforcement notices, processing bans and fines set by the Commission (reported GMD 1 million or 5% of gross income; 4% of global turnover for serious cases). Criminal: up to 3 years or fine from GMD 500,000 for unlawful processing for gain; up to 5 years for selling data (10 years and fines from GMD 10 million for corporations if aggravated); 2 years for concealing a breach; 7 years for obstructing the Commission"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data; special categories of personal data (unconfirmed)",
+        "to": "Personal data; sensitive personal data (genetic and biometric data, racial origin, political opinions, health status), processing generally prohibited unless a specific condition applies"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "key_requirements",
+        "from": "Lawful processing and accountability without prior registration; breach notification to the Commission within 72 hours; impact assessments for high-risk processing (unconfirmed)",
+        "to": "Accountability-based compliance with no prior registration required; breach notification to the Commission within 72 hours (and to data subjects without undue delay if high risk); DPIA required for high-risk processing; DPO mandatory for public authorities and large-scale monitoring/sensitive-data processing"
+      },
       {
         "date": "2026-10-21",
         "field": "genetic_data",

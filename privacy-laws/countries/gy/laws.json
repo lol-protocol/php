@@ -10,7 +10,7 @@
     "scope": "Data subjects (individuals) (unconfirmed)",
     "applies_to": "Data controllers and processors",
     "key_requirements": "Consent must be freely given, informed, specific and unambiguous; data subject rights (access, rectification, erasure, portability); DPIAs, DPO and registration with the Data Protection Office",
-    "data_categories": "Personal data; sensitive personal data (s. 9 of the Bill) (unconfirmed)",
+    "data_categories": "Personal data: any information relating to an identified or identifiable natural person, including data on private life, professional activities and public life",
     "retention_period": "Not specified",
     "enforcement_authority": "Data Protection Commissioner / Data Protection Office",
     "penalties_range": "Government report on the Bill cited fines up to GYD 100 million and up to 5 years imprisonment; final amounts unverified (unconfirmed)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.dataguidance.com/news/guyana-data-protection-act-gets-presidential-assent",
@@ -60,9 +60,9 @@
         "checked": "2026-10-25"
       },
       "data_categories": {
-        "url": "https://mola.gov.gy//bills/DATA%20PROTECTION%20BILL%2020231694715430.pdf",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://dpi.gov.gy/data-protection-bill-passed-in-national-assembly/",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://www.consentstack.io/regulations/gy-dpa",
@@ -76,6 +76,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data; sensitive personal data (s. 9 of the Bill) (unconfirmed)",
+        "to": "Personal data: any information relating to an identified or identifiable natural person, including data on private life, professional activities and public life"
+      },
       {
         "date": "2026-10-25",
         "field": "website_url",

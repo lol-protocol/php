@@ -10,7 +10,7 @@
     "scope": "Natural persons (data subjects) regarding their personal data",
     "applies_to": "Public and private bodies and natural/legal persons that process personal data",
     "key_requirements": "12 data protection principles; consent (express or tacit) with exceptions; data owner rights; security; cross-border transfers authorised by public bodies",
-    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "data_categories": "Personal data; sensitive data (consent exceptions apply to sensitive data processing); minors' data addressed",
     "retention_period": "Default five years where no specific legal rule applies (article not found)",
     "enforcement_authority": "Ministry of Justice (MINJUS); no new dedicated authority created (older DLA Piper entry names the Ministry of Communications)",
     "penalties_range": "Fines reportedly up to CUP 20,000 (single secondary mention; unverified) (unconfirmed)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.mincom.gob.cu/es/print/5823",
@@ -66,8 +66,8 @@
       },
       "data_categories": {
         "url": "https://www.globalcompliancenews.com/2022/09/15/cuba-new-personal-data-protection-law-1509",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "retention_period": {
         "url": "https://www.dataguidance.com/jurisdiction/cuba",
@@ -91,6 +91,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data; sensitive data (unconfirmed)",
+        "to": "Personal data; sensitive data (consent exceptions apply to sensitive data processing); minors' data addressed"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

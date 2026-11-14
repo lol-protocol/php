@@ -8,12 +8,12 @@
     "enactment_date": "2025-11-06",
     "effective_date": "2025-11-06",
     "scope": "Data subjects (individuals) whose personal data is processed",
-    "applies_to": "Controllers and processors of personal data (unconfirmed)",
+    "applies_to": "Government and private entities acting as data custodians or processors of personal data",
     "key_requirements": "Explicit consent before collection, storage, transfer or use of personal data; data-subject ownership/rights; administrative fines, compensation and criminal penalties for violations",
-    "data_categories": "Personal data (unconfirmed)",
+    "data_categories": "Personal data; sensitive data (financial, health, genetic, biometric) with enhanced protection; children's/minors' data with special safeguards",
     "retention_period": "Not specified",
     "enforcement_authority": "National Data Governance Authority",
-    "penalties_range": "Administrative fines, compensation and criminal penalties; amounts not confirmed (unconfirmed)",
+    "penalties_range": "Administrative penalties, compensation, fines and other punishments for data-security violations; amounts not stated in source",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "Exemptions for statistical research (also crime prevention, journalism etc.) subject to proportionate safeguards for data subjects (Chs. V-VI); section numbers unverified",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-21",
+    "last_checked": "2026-11-14",
     "sources": {
       "research_exemption": {
         "url": "https://ppc.land/bangladesh-finalizes-comprehensive-data-protection-ordinance-draft/",
@@ -60,9 +60,9 @@
         "checked": "2026-10-16"
       },
       "applies_to": {
-        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.tbsnews.net/node/1281356",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "key_requirements": {
         "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
@@ -70,9 +70,9 @@
         "checked": "2026-10-16"
       },
       "data_categories": {
-        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.tbsnews.net/node/1281356",
+        "confidence": "high",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
@@ -80,12 +80,30 @@
         "checked": "2026-10-16"
       },
       "penalties_range": {
-        "url": "https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.tbsnews.net/node/1281356",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Administrative fines, compensation and criminal penalties; amounts not confirmed (unconfirmed)",
+        "to": "Administrative penalties, compensation, fines and other punishments for data-security violations; amounts not stated in source"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data (unconfirmed)",
+        "to": "Personal data; sensitive data (financial, health, genetic, biometric) with enhanced protection; children's/minors' data with special safeguards"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "applies_to",
+        "from": "Controllers and processors of personal data (unconfirmed)",
+        "to": "Government and private entities acting as data custodians or processors of personal data"
+      },
       {
         "date": "2026-10-21",
         "field": "genetic_data",
