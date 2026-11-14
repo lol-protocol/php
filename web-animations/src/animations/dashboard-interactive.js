@@ -23,6 +23,14 @@ class InteractiveDashboard {
 
   initializeEventListeners() {
     document.addEventListener('click', (e) => {
+      // El modal cuelga de <body>, fuera de las tarjetas: se cierra con la × o con un clic en el fondo
+      // antes de buscar la tarjeta (con ella por delante, ni la × ni el fondo cerraban nada).
+      if (e.target.closest(InteractiveDashboard.SELECTORS.MODAL_CLOSE) ||
+          e.target.matches(InteractiveDashboard.SELECTORS.MODAL_OVERLAY)) {
+        this.closeModal();
+        return;
+      }
+
       const card = e.target.closest(InteractiveDashboard.SELECTORS.CARD);
       if (!card) return;
 
@@ -31,8 +39,6 @@ class InteractiveDashboard {
         this.copyAnimationCode(animId);
       } else if (e.target.closest(InteractiveDashboard.SELECTORS.DETAILS_BTN)) {
         this.showDetailsModal(animId);
-      } else if (e.target.closest(InteractiveDashboard.SELECTORS.MODAL_CLOSE)) {
-        this.closeModal();
       }
     });
 
