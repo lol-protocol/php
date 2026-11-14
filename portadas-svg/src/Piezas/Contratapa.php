@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PortadasSvg\Piezas;
 
 use PortadasSvg\Adornos\Motivo;
+use PortadasSvg\Ean13;
 use PortadasSvg\Libro;
 use PortadasSvg\Rectangulo;
 use PortadasSvg\Svg;
@@ -59,6 +60,13 @@ trait Contratapa
     protected const CODIGO_ALTO = 26.0;
     protected const CODIGO_Y = 38.0;
     protected const CODIGO_SEPARACION = 4.0;
+    /** Código de barras dentro del hueco: módulos de zona en blanco a la izquierda y a la derecha, distancia de las barras al borde superior, su alto, lo que más bajan las guardas y el tamaño de los dígitos. */
+    protected const CODIGO_BLANCO_IZQUIERDA = 11;
+    protected const CODIGO_BLANCO_DERECHA = 7;
+    protected const CODIGO_BARRAS_Y = 1.5;
+    protected const CODIGO_BARRAS_ALTO = 19.0;
+    protected const CODIGO_GUARDA_EXTRA = 1.6;
+    protected const CODIGO_DIGITOS_TAMANO = 2.8;
     /** ISBN: separación sobre el hueco del código y tamaño. */
     protected const ISBN_SEPARACION = 3.0;
     protected const ISBN_TAMANO_MAX = 2.8;
@@ -115,6 +123,7 @@ trait Contratapa
         $caja = new Rectangulo($panel->x + $panel->ancho - self::MARGEN - self::CODIGO_ANCHO, $panel->y + $panel->alto - self::CODIGO_Y, self::CODIGO_ANCHO, self::CODIGO_ALTO);
         $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - self::PIE_Y, 'start', $ancho - self::CODIGO_ANCHO - self::CODIGO_SEPARACION);
         $svg .= $this->rectangulo($caja, ['fill' => '#ffffff']);
+        $svg .= $this->codigoDeBarras($libro, $caja);
         if ($libro->textos->isbn !== '') {
             $svg .= $this->rotulo('ISBN ' . $libro->textos->isbn, $caja->x + self::CODIGO_ANCHO, $caja->y - self::ISBN_SEPARACION, self::CODIGO_ANCHO, self::ISBN_TAMANO_MAX, self::ISBN_TAMANO_MIN, 'end', $colores['texto']);
         }
@@ -128,5 +137,37 @@ trait Contratapa
         $pie = implode(' · ', array_filter([$libro->textos->editorial, $libro->textos->coleccion, $this->rotuloDeVolumen($libro)], static fn (string $dato): bool => $dato !== ''));
 
         return $pie === '' ? '' : $this->rotulo($pie, $x, $y, $ancho, self::PIE_TAMANO_MAX, self::PIE_TAMANO_MIN, $anclaje, $libro->colores['texto']);
+    }
+
+    /**
+     * El código de barras EAN-13 del ISBN dentro de su hueco blanco, en negro puro. Sin ISBN, o con uno cuyo dígito de
+     * control no cuadra, el hueco se queda en blanco para que lo ponga quien imprime.
+     */
+    protected function codigoDeBarras(Libro $libro, Rectangulo $caja): string
+    {
+        $ean = Ean13::desdeIsbn($libro->textos->isbn);
+        if ($ean === null) {
+            return '';
+        }
+        $modulos = Ean13::modulos($ean);
+        $modulo = $caja->ancho / (self::CODIGO_BLANCO_IZQUIERDA + Ean13::MODULOS + self::CODIGO_BLANCO_DERECHA);
+        $x0 = $caja->x + self::CODIGO_BLANCO_IZQUIERDA * $modulo;
+        $y = $caja->y + self::CODIGO_BARRAS_Y;
+
+        $trazado = '';
+        foreach (Ean13::franjas($modulos) as [$desde, $cuantos]) {
+            $alto = self::CODIGO_BARRAS_ALTO + (Ean13::esGuarda($desde) ? self::CODIGO_GUARDA_EXTRA : 0.0);
+            $trazado .= 'M' . Svg::n($x0 + $desde * $modulo) . ' ' . Svg::n($y) . 'h' . Svg::n($cuantos * $modulo) . 'v' . Svg::n($alto) . 'h' . Svg::n(-$cuantos * $modulo) . 'z';
+        }
+        $svg = Svg::elemento('path', ['d' => $trazado, 'fill' => '#000000']);
+
+        // Los dígitos van debajo: el primero a la izquierda de las barras y los otros dos grupos de seis bajo cada mitad.
+        $linea = $y + self::CODIGO_BARRAS_ALTO + self::CODIGO_GUARDA_EXTRA + self::CODIGO_DIGITOS_TAMANO * 0.85;
+        $negro = '#000000';
+        $svg .= $this->parrafo([$ean[0]], $x0 - 2.5 * $modulo, $linea, self::CODIGO_DIGITOS_TAMANO, 'middle', $negro);
+        $svg .= $this->parrafo([substr($ean, 1, 6)], $x0 + (3 + 21) * $modulo, $linea, self::CODIGO_DIGITOS_TAMANO, 'middle', $negro, ['letter-spacing' => 0.9]);
+        $svg .= $this->parrafo([substr($ean, 7, 6)], $x0 + (50 + 21) * $modulo, $linea, self::CODIGO_DIGITOS_TAMANO, 'middle', $negro, ['letter-spacing' => 0.9]);
+
+        return $svg;
     }
 }
