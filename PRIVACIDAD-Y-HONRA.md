@@ -95,9 +95,16 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    siguen viviendo en esa dirección o con ese teléfono. Las razones sociales
    que llevan un nombre de pila («Panadería Juan Pérez») se ocultan igual que
    una persona (#233): se reconocen por una lista de los nombres más comunes
-   entre 1930 y 1975 en los seis idiomas (`GivenNames`). Se escapa la empresa
-   con solo el apellido («Panadería Pérez») y se oculta de más la que tiene una
-   palabra que también es nombre («Farmacia San José»).
+   entre 1930 y 1975 en los seis idiomas y por una lista corta de los apellidos
+   más comunes de cada uno (`GivenNames`), así que también se oculta la empresa
+   con solo el apellido («Panadería Pérez»). Dejé fuera los apellidos que son
+   también palabras corrientes («Flores», «Torres», «Costa»), para no ocultar
+   «Hotel Torres del Paine»; y un nombre que va justo después de «San», «Santa»,
+   «Saint» o «St.» se salta, porque ese negocio lleva el nombre de un santo
+   («Farmacia San José»). Es una heurística: se sigue escapando el apellido que
+   no está en la lista, y se sigue ocultando de más la palabra que también es
+   un nombre sin santo delante («Florería Rosa»). Lo contrario también pasa:
+   «Ferretería San José», cuyo dueño se llama José, se muestra.
 3. **Textos largos.** Resuelto: el endpoint de moderación acepta hasta 10.000
    caracteres y revisa por párrafos lo que pasa de 2.000 (`LongText`). Un texto
    más largo que eso hay que mandarlo en varias partes.
@@ -119,6 +126,25 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    quien lo pidió (el propietario responde por correo, por su cuenta). Una persona retirada ya no se nombra
    en las demás páginas; un apellido, una organización o una colección retirados
    sí siguen nombrados donde los enlaza una persona.
+
+   **Pedir ver, corregir o borrar los datos de una persona** es otro recorrido
+   (el paso a paso está en
+   [`url-routing/docs/SOLICITUDES.md`](url-routing/docs/SOLICITUDES.md)). Cada
+   página de una persona enlaza a `/s/{id}/`, un formulario sin cuenta cuyo envío
+   **no entrega, cambia ni borra nada**: la solicitud espera en
+   `bin/solicitudes.php` (que, hecho para cron, no dice quién pidió ni qué
+   escribió, y puede avisar en cuanto llega una con `--solo-nuevas`) hasta que
+   quien administra comprueba quién pide. Se contesta con un resumen legible
+   escrito a mano; lo que el sitio oculta a un visitante solo se entrega con
+   una **entrega con clave** (`bin/persona.php entrega`): un enlace y una clave
+   que se mandan por dos medios, con 7 días de vida, 3 aperturas y 5 claves
+   malas, y de las que solo se guardan los hashes. Corregir un dato lo hace
+   `bin/persona.php rectificar`, que avisa si el cambio oculta o muestra a la
+   persona, y lo anota sin guardar los valores. Borrarla, `suprimir`. El correo
+   y el texto de quien pidió se borran 12 meses después de cerrada la solicitud
+   (`--depurar`). Las copias de seguridad traen lo que el sitio oculta: se
+   hacen con `bin/copias.php`, que puede cifrarlas con age para que el propio
+   servidor no pueda descifrarlas.
 5. **Términos de uso** que prohíban imputar hechos a terceros y publicar sus datos
    sensibles, y que digan qué pasa con quien lo haga. Hay un borrador en
    [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md), con lo que falta decidir marcado
