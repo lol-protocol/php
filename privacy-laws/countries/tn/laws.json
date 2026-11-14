@@ -13,7 +13,7 @@
     "data_categories": "Personal data; sensitive data (racial and genetic origin, religious beliefs, political/philosophical/trade-union affiliation, health) (arts. 5 and 14)",
     "retention_period": "Not specified",
     "enforcement_authority": "National Authority for the Protection of Personal Data (INPDP)",
-    "penalties_range": "Criminal sanctions; e.g. failure to meet prior notification duties: 1 year imprisonment and TND 5,000 fine; some offences up to 2 years (sources vary) (unconfirmed)",
+    "penalties_range": "Criminal: art. 90 penalty of 1 year imprisonment and fine of 5,000 dinars for transferring personal data abroad without INPDP authorisation (per law-firm summary)",
     "exemptions": "UNKNOWN (public security and defence processing has special rules; art. 14 exceptions not verified) (unconfirmed)",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/?t=law&c=TN",
@@ -75,9 +75,9 @@
         "checked": "2026-10-16"
       },
       "penalties_range": {
-        "url": "https://www.dlapiperdataprotection.com/?t=law&c=TN",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://bkassocies.tn/en/practical-guide-application-of-tunisian-legislation-on-personal-data-protection/",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "genetic_data": {
         "url": "https://www.DataGuidance.com/notes/tunisia-data-protection-overview",
@@ -86,6 +86,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Criminal sanctions; e.g. failure to meet prior notification duties: 1 year imprisonment and TND 5,000 fine; some offences up to 2 years (sources vary) (unconfirmed)",
+        "to": "Criminal: art. 90 penalty of 1 year imprisonment and fine of 5,000 dinars for transferring personal data abroad without INPDP authorisation (per law-firm summary)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

@@ -124,20 +124,20 @@ BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,law_name,d68
 BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,jurisdiction,842195b458,low,2026-10-16
 BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,enactment_date,754fba8a4f,medium,2026-10-16
 BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,effective_date,d68c612a30,medium,2026-10-16
-BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,scope,453ec708d6,low,2026-10-16
+BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,scope,453ec708d6,medium,2026-11-14
 BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,applies_to,453ec708d6,medium,2026-10-16
 BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,enforcement_authority,842195b458,low,2026-10-16
-BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,penalties_range,842195b458,low,2026-10-16
+BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,penalties_range,453ec708d6,medium,2026-11-14
 BJ,,genetic_data,1876ce8167,medium,2026-10-21
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",law_name,a7cfc07b5f,medium,2026-10-16
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",jurisdiction,a7cfc07b5f,high,2026-10-16
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",enactment_date,a7cfc07b5f,medium,2026-10-16
-BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",scope,a7cfc07b5f,low,2026-10-16
+BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",scope,a7cfc07b5f,medium,2026-11-14
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",applies_to,66b2fe31cf,medium,2026-10-16
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",key_requirements,66b2fe31cf,medium,2026-10-16
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",data_categories,a7cfc07b5f,medium,2026-10-16
 BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",enforcement_authority,a7cfc07b5f,high,2026-10-16
-BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",penalties_range,66b2fe31cf,low,2026-10-16
+BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",penalties_range,66b2fe31cf,medium,2026-11-14
 BN,Personal Data Protection Order 2025 (PDPO),law_name,69005f608f,high,2026-10-25
 BN,Personal Data Protection Order 2025 (PDPO),jurisdiction,69005f608f,high,2026-10-25
 BN,Personal Data Protection Order 2025 (PDPO),enactment_date,1c09b5a337,medium,2026-10-25
@@ -382,9 +382,9 @@ GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as a
 GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,scope,b29c25e6a7,medium,2026-10-18
 GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,applies_to,b29c25e6a7,medium,2026-10-18
 GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,key_requirements,b29c25e6a7,medium,2026-10-18
-GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,data_categories,b29c25e6a7,low,2026-10-18
+GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,data_categories,b29c25e6a7,medium,2026-11-14
 GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,enforcement_authority,d189e097ae,high,2026-10-16
-GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,penalties_range,b29c25e6a7,low,2026-10-18
+GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,penalties_range,b29c25e6a7,medium,2026-11-14
 GB,,enforcement_authority,ac22d94360,medium,2026-10-14
 GB,,deceased_data,039c4c27ab,high,2026-10-17
 GB,,research_exemption,7a5bf6a88b,high,2026-10-17
@@ -509,7 +509,7 @@ KE,,enforcement_authority,b12a5ed8f2,high,2026-10-14
 KE,,research_exemption,abb6f7be00,high,2026-10-18
 KE,,genetic_data,1205e11ce8,high,2026-10-18
 KG,,deceased_data,cea070bd45,medium,2026-10-17
-KG,,genetic_data,c172ff388e,low,2026-10-17
+KG,,genetic_data,da6ba4ad88,high,2026-11-14
 KG,Law No. 58 of 14 April 2008 on Personal Information,law_name,3235a935a5,medium,2026-10-16
 KG,Law No. 58 of 14 April 2008 on Personal Information,jurisdiction,3235a935a5,medium,2026-10-16
 KG,Law No. 58 of 14 April 2008 on Personal Information,enactment_date,3235a935a5,high,2026-10-16
@@ -519,7 +519,7 @@ KG,Law No. 58 of 14 April 2008 on Personal Information,applies_to,3235a935a5,med
 KG,Law No. 58 of 14 April 2008 on Personal Information,key_requirements,3235a935a5,medium,2026-10-16
 KG,Law No. 58 of 14 April 2008 on Personal Information,data_categories,3235a935a5,medium,2026-10-16
 KG,Law No. 58 of 14 April 2008 on Personal Information,enforcement_authority,3235a935a5,medium,2026-10-16
-KG,Law No. 58 of 14 April 2008 on Personal Information,penalties_range,3235a935a5,low,2026-10-16
+KG,Law No. 58 of 14 April 2008 on Personal Information,penalties_range,3235a935a5,medium,2026-11-14
 KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,law_name,180c0b669f,medium,2026-10-25
 KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,jurisdiction,180c0b669f,medium,2026-10-25
 KM,Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data,enactment_date,43417c983f,medium,2026-10-25
@@ -676,7 +676,7 @@ MN,Law on Personal Data Protection (2021),penalties_range,28a1f782e9,low,2026-10
 MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,law_name,d6bb455334,medium,2026-10-16
 MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,jurisdiction,d6bb455334,medium,2026-10-16
 MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,enactment_date,d6bb455334,medium,2026-10-16
-MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,scope,d6bb455334,low,2026-10-16
+MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,scope,21433a5c9a,medium,2026-11-14
 MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,applies_to,21433a5c9a,medium,2026-10-16
 MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,key_requirements,21433a5c9a,medium,2026-10-16
 MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,data_categories,d6bb455334,low,2026-10-16
@@ -734,7 +734,7 @@ NG,,research_exemption,df4d6b9361,medium,2026-10-18
 NG,,genetic_data,820bfc62e0,high,2026-10-18
 NG,,notes,e625a84450,medium,2026-10-14
 NI,,enactment_date,38a4bdad35,high,2026-10-15
-NI,,exemptions,24d29bd13c,low,2026-10-15
+NI,,exemptions,38a4bdad35,high,2026-11-14
 NL,,deceased_data,1a0e9b27bc,medium,2026-10-17
 NL,,research_exemption,adf03789ca,medium,2026-10-17
 NL,,genetic_data,adf03789ca,medium,2026-10-17
@@ -842,9 +842,9 @@ SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with reg
 SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,enactment_date,7ec58dfe25,medium,2026-10-22
 SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,effective_date,7ec58dfe25,medium,2026-10-22
 SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,scope,33084dc6b7,medium,2026-10-22
-SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,key_requirements,2d0cd576f8,low,2026-10-22
+SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,key_requirements,2d0cd576f8,medium,2026-11-14
 SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,enforcement_authority,7ec58dfe25,medium,2026-10-22
-SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,penalties_range,2d0cd576f8,low,2026-10-22
+SM,Law No. 171 of 21 December 2018 on the Protection of Natural Persons with regard to the Processing of Personal Data,penalties_range,2d0cd576f8,medium,2026-11-14
 SN,,enactment_date,ba0bc8ee06,high,2026-10-15
 SN,,retention_period,763d75179b,medium,2026-10-15
 SN,,research_exemption,6335dee235,low,2026-10-21
@@ -939,7 +939,7 @@ TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,ap
 TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,key_requirements,b41375f40a,medium,2026-10-16
 TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,data_categories,50b06e05bc,medium,2026-10-16
 TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,enforcement_authority,b7dff92526,high,2026-10-16
-TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,penalties_range,b7dff92526,low,2026-10-16
+TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,penalties_range,b41375f40a,medium,2026-11-14
 TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,genetic_data,50b06e05bc,medium,2026-10-16
 TR,,law_name,e593b3dff9,high,2026-10-14
 TR,,key_requirements,87eb1acca5,high,2026-10-14
@@ -1373,7 +1373,7 @@ VU,Data Protection and Privacy Act No. 13 of 2024,enactment_date,106b9aec0f,low,
 VU,Data Protection and Privacy Act No. 13 of 2024,effective_date,17d8124964,low,2026-10-25
 VU,Data Protection and Privacy Act No. 13 of 2024,scope,106b9aec0f,medium,2026-10-25
 VU,Data Protection and Privacy Act No. 13 of 2024,applies_to,106b9aec0f,medium,2026-10-25
-VU,Data Protection and Privacy Act No. 13 of 2024,key_requirements,3749a89db8,low,2026-10-25
+VU,Data Protection and Privacy Act No. 13 of 2024,key_requirements,17d8124964,medium,2026-11-14
 VU,Data Protection and Privacy Act No. 13 of 2024,data_categories,106b9aec0f,low,2026-10-25
 VU,Data Protection and Privacy Act No. 13 of 2024,enforcement_authority,106b9aec0f,low,2026-10-25
 VU,Data Protection and Privacy Act No. 13 of 2024,exemptions,106b9aec0f,medium,2026-10-25
@@ -1415,3 +1415,4 @@ ML,,research_exemption,ea71478e68,medium,2026-10-31
 AG,,data_categories,cb771ad605,medium,2026-11-13
 BZ,,data_categories,894f511eb1,medium,2026-11-13
 GD,,data_categories,ee89a4089f,medium,2026-11-13
+NI,,research_exemption,38a4bdad35,high,2026-11-14

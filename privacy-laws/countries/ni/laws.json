@@ -14,9 +14,9 @@
     "retention_period": "Not specified",
     "enforcement_authority": "Dirección de Protección de Datos Personales (DIPRODAP), not yet operational",
     "penalties_range": "Art. 46: sanctions are warning, temporary suspension of operations, temporary/permanent closure or cancellation of files; law sets no fixed fine amounts",
-    "exemptions": "Per secondary summary: personal use for private activities; State security/defence agencies handling data for national security (articles not confirmed) (unconfirmed)",
+    "exemptions": "Art. 24: police/army intelligence may process data without consent for national security, defence, public security or crime investigation; Art. 27: opinion polls and scientific/medical research excluded (express consent)",
     "deceased_data": "",
-    "research_exemption": "Sensitive data may be used for statistical or scientific purposes when the data subject cannot be identified (article not confirmed) (unconfirmed)",
+    "research_exemption": "Sensitive data may be processed for statistical or scientific purposes when data subjects cannot be identified (Art. 8(a)); Art. 27 excludes scientific or medical research done with express consent",
     "genetic_data": "",
     "website_url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
     "language": "Spanish",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-21",
+    "last_checked": "2026-11-14",
     "sources": {
       "enactment_date": {
         "url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
@@ -35,12 +35,29 @@
         "checked": "2026-10-15"
       },
       "exemptions": {
-        "url": "https://www.clym.io/regulations/law-no-787-on-personal-data-protection-nicaragua",
-        "confidence": "low",
-        "checked": "2026-10-15"
+        "url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
+        "confidence": "high",
+        "checked": "2026-11-14"
+      },
+      "research_exemption": {
+        "url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
+        "confidence": "high",
+        "checked": "2026-11-14"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "research_exemption",
+        "from": "Sensitive data may be used for statistical or scientific purposes when the data subject cannot be identified (article not confirmed) (unconfirmed)",
+        "to": "Sensitive data may be processed for statistical or scientific purposes when data subjects cannot be identified (Art. 8(a)); Art. 27 excludes scientific or medical research done with express consent"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "exemptions",
+        "from": "Per secondary summary: personal use for private activities; State security/defence agencies handling data for national security (articles not confirmed) (unconfirmed)",
+        "to": "Art. 24: police/army intelligence may process data without consent for national security, defence, public security or crime investigation; Art. 27: opinion polls and scientific/medical research excluded (express consent)"
+      },
       {
         "date": "2026-10-21",
         "field": "research_exemption",
