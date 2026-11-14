@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Integration;
 
+use App\Repositories\Genealogy\EntregaRepository;
 use App\Support\Database;
 use App\Support\Migrator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -31,6 +32,9 @@ class ResponseHeadersTest extends TestCase
     /** Headers that legitimately differ between two requests to the same page. */
     private const VARIABLES = ['date', 'set-cookie'];
 
+    /** @var array{vigente: string, vencida: string, revocada: string} the token of each delivery made in setUpBeforeClass() */
+    private static array $entregas = ['vigente' => '', 'vencida' => '', 'revocada' => ''];
+
     public static function setUpBeforeClass(): void
     {
         self::servidorIniciar('headers', ['OWNER_TOKEN' => self::TOKEN, 'URL_LOG_DIR' => '{dir}/urls'], static function (string $dir): void {
@@ -44,6 +48,13 @@ class ResponseHeadersTest extends TestCase
                 $grupo->execute([600000 + $i, 'Zeta' . str_pad((string)$i, 3, '0', STR_PAD_LEFT)]);
             }
             $pdo->commit();
+
+            // Three deliveries with a key of the same persona (EntregaRepository): one alive, one that expired and one revoked.
+            $entregas = new EntregaRepository(new Database('sqlite:' . $dir . '/genealogy.sqlite'));
+            self::$entregas['vigente'] = $entregas->crear(6128473105)['token'];
+            self::$entregas['vencida'] = $entregas->crear(6128473105, 1, time() - 5 * 86400)['token'];
+            self::$entregas['revocada'] = $entregas->crear(6128473101)['token'];
+            $entregas->revocar(6128473101);
 
             // One persona whose page changed on a known day (the rest have no date).
             (new Database('sqlite:' . $dir . '/genealogy.sqlite'))->execute("UPDATE personas SET actualizado_en = '2026-03-04 10:11:12' WHERE id = 6128473101");
@@ -118,6 +129,7 @@ class ResponseHeadersTest extends TestCase
             'genealogía: búsqueda' => [self::GENEALOGIA, '/b/10/', true],
             'genealogía: la cuenta, aunque pida la clave' => [self::GENEALOGIA, '/0/', true],
             'genealogía: pedir un retiro' => [self::GENEALOGIA, '/r/582317/', true],
+            'genealogía: pedir los datos de una persona' => [self::GENEALOGIA, '/s/6128473101/', true],
             'genealogía: inicio' => [self::GENEALOGIA, '/', false],
             'genealogía: una persona' => [self::GENEALOGIA, '/6128473101/', false],
             'genealogía: un lugar' => [self::GENEALOGIA, '/mx/jal/', false],
@@ -135,6 +147,44 @@ class ResponseHeadersTest extends TestCase
 
         $this->assertArrayHasKey('x-content-type-options', $respuesta['headers'], 'headers are not being observed');
         $this->assertSame($lleva ? ['noindex'] : null, $respuesta['headers']['x-robots-tag'] ?? null, $uri);
+    }
+
+    /**
+     * The page of a delivery with a key has the token in its URL, so the browser must not hand that URL to any other
+     * site as the Referer, and nothing may store it. It is sent in place of the site's own policy, not next to it.
+     */
+    public function testALiveDeliveryNeverSaysWhereItWasLinkedFrom(): void
+    {
+        $r = $this->pedirAlServidor(self::GENEALOGIA, '/e/' . self::$entregas['vigente'] . '/');
+
+        $this->assertSame(200, $r['status']);
+        $this->assertArrayHasKey('x-content-type-options', $r['headers'], 'headers are not being observed');
+        $this->assertSame(['no-referrer'], $r['headers']['referrer-policy'] ?? null, 'one Referrer-Policy, and it is no-referrer');
+        $this->assertSame(['noindex'], $r['headers']['x-robots-tag'] ?? null);
+        $this->assertStringContainsString('no-store', implode(',', $r['headers']['cache-control'] ?? []));
+        $this->assertStringNotContainsString('<a href="http', $r['body'], 'and no link leaves the page');
+    }
+
+    /**
+     * An expired or revoked delivery must look exactly like a link nobody ever made, headers included: if only the dead
+     * one sent a header of its own, anyone with a token could tell it once existed.
+     *
+     * @return array<string, array{string}>
+     */
+    public static function entregasMuertas(): array
+    {
+        return ['vencida' => ['vencida'], 'revocada' => ['revocada']];
+    }
+
+    #[DataProvider('entregasMuertas')]
+    public function testADeadDeliveryAnswersExactlyLikeALinkMadeUp(string $cual): void
+    {
+        $muerta = $this->pedirAlServidor(self::GENEALOGIA, '/e/' . self::$entregas[$cual] . '/');
+        $inventada = $this->pedirAlServidor(self::GENEALOGIA, '/e/' . str_repeat('c', 64) . '/');
+
+        $this->assertSame(404, $inventada['status']);
+        $this->assertArrayHasKey('x-content-type-options', $inventada['headers'], 'headers are not being observed');
+        $this->assertSame(self::huella($inventada), self::huella($muerta), "a {$cual} delivery must look like one made up");
     }
 
     /** A GEDCOM file is for whoever asked for it; a hidden collection's export must still look like a missing one (above). */

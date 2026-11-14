@@ -157,6 +157,8 @@
     "category": "Danh mục",
     "region": "Khu vực",
     "reset": "Đặt lại bộ lọc",
+    "copyLink": "Sao chép liên kết",
+    "linkCopied": "Đã sao chép liên kết",
     "compareLabel": "So sánh khổ giấy",
     "comparePlaceholder": "Nhập tên các khổ giấy cần so sánh...",
     "colFormat": "Khổ giấy",

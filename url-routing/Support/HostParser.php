@@ -59,7 +59,12 @@ class HostParser
      */
     public static function parse(string $host): array
     {
-        $hostWithoutPort = explode(':', $host)[0];
+        // A host name has no case and may end in the dot of a fully qualified name ("POS.Example.com." is
+        // "pos.example.com"), so the site and the language of a request do not depend on how its client wrote it.
+        $host = strtolower(trim($host));
+        // An IPv6 literal ("[::1]:8080") has colons of its own: the port is what follows its closing bracket.
+        $closing = str_starts_with($host, '[') ? strpos($host, ']') : false;
+        $hostWithoutPort = rtrim($closing !== false ? substr($host, 0, $closing + 1) : explode(':', $host)[0], '.');
         $parts = explode('.', $hostWithoutPort);
 
         return [
@@ -88,7 +93,8 @@ class HostParser
         $hostWithoutPort = $parsed['host_without_port'];
 
         foreach ($domains as $domain) {
-            if ($hostWithoutPort === $domain || str_ends_with($hostWithoutPort, '.' . $domain)) {
+            $lower = strtolower($domain);
+            if ($hostWithoutPort === $lower || str_ends_with($hostWithoutPort, '.' . $lower)) {
                 return $domain;
             }
         }
