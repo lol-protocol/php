@@ -171,6 +171,7 @@ que prometen las secciones 5 y 6 del borrador de
   que el correo salga solo en la corrida que ocultó algo y no cada media hora.
   Tiene el costo que ya dice el primer punto: quien pide el retiro puede bajar
   una página si el propietario no contesta a tiempo.
+- **Los ocultos que nadie decide.** Un pedido deja de salir en el listado de lo que espera en cuanto se oculta, y mientras nadie lo decida su página sigue en 410 y el correo y el texto de quien pidió siguen guardados (`--depurar` solo borra los ya `retirados` o `rechazados`). Por eso el recordatorio diario de `bin/pedidos-retiro.php` también los lista, con los días que llevan ocultos y un aviso cuando pasaron los `RETIRO_CONSERVAR_MESES` meses. Los lista y no los decide: retirar o rechazar es del propietario. El trabajo de cada media hora (`--solo-ocultados`) no los repite.
 - **Depuración (opcional).** Un pedido guarda el correo de quien lo envió y lo que
   escribió, sin límite de tiempo. `php bin/pedidos-retiro.php --depurar` borra
   `contacto`, `detalle` y las marcas del filtro de los pedidos **retirados o

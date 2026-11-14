@@ -214,7 +214,8 @@ class PedidosRetiroCliTest extends TestCase
         }
 
         [, $segunda] = $this->correr(['--depurar']);
-        $this->assertSame('', $segunda, 'nothing left to erase: silence');
+        $this->assertStringNotContainsString('Se borraron', $segunda, 'nothing left to erase');
+        $this->assertStringContainsString("n.º {$oculto}", $segunda, 'but the hidden one that nobody decided is still reminded');
     }
 
     public function testDepurarHonorsMesesAndRejectsBadValues(): void
@@ -241,7 +242,7 @@ class PedidosRetiroCliTest extends TestCase
         $this->assertTrue($this->repo->retirado('persona', 6128473105));
 
         [, $salida] = $this->correr(['--depurar']);
-        $this->assertStringNotContainsString('datos personales', $salida, 'hidden is still under review: nothing is erased');
+        $this->assertStringNotContainsString('Se borraron', $salida, 'hidden is still under review: nothing is erased');
         $this->assertSame('secreto@example.com', $this->db->fetchValue('SELECT contacto FROM pedidos_retiro WHERE id = ?', [$numero]));
 
         $this->assertTrue($this->repo->decidir($numero, 'retirar', 'Se retira.'));
@@ -321,5 +322,66 @@ class PedidosRetiroCliTest extends TestCase
             $this->assertSame(2, $codigo, implode(' ', $argumentos));
             $this->assertStringContainsString('--solo-nuevos va solo', $error);
         }
+    }
+
+    public function testTheDailyRunRemindsOfTheHiddenPedidosNobodyDecided(): void
+    {
+        $numero = $this->pedido(1, 'Mi dirección es Calle Falsa 123.', 'secreto@example.com');
+        $this->repo->decidir($numero, 'ocultar', 'Lo reviso.');
+        $this->db->execute('UPDATE pedido_retiro_eventos SET ocurrido_en = ? WHERE pedido_id = ? AND estado = ?', [date('Y-m-d H:i:s', strtotime('-40 days')), $numero, 'oculto']);
+
+        [$codigo, $salida] = $this->correr();
+
+        $this->assertSame(0, $codigo, 'a reminder is not a failure: the exit code is only about what is late');
+        $this->assertStringContainsString('1 pedido de retiro oculto sigue sin decidirse', $salida);
+        $this->assertStringContainsString("n.º {$numero}  persona 6128473105  «Habla de mí»  oculto hace 40 d", $salida);
+        $this->assertStringNotContainsString('más de 12 meses', $salida, 'not that old yet');
+        $this->assertStringNotContainsString('secreto@example.com', $salida);
+        $this->assertStringNotContainsString('Calle Falsa', $salida);
+    }
+
+    public function testAHiddenPedidoOlderThanTheRetentionSaysItsDataIsStillStored(): void
+    {
+        $numero = $this->pedido(1);
+        $this->repo->decidir($numero, 'ocultar', null);
+        $this->db->execute('UPDATE pedido_retiro_eventos SET ocurrido_en = ? WHERE pedido_id = ?', [date('Y-m-d H:i:s', strtotime('-14 months')), $numero]);
+
+        [, $salida] = $this->correr();
+        $this->assertStringContainsString('más de 12 meses: sus datos personales siguen guardados hasta que lo decidas', $salida);
+
+        [, $conPlazo] = $this->correr(['--meses=24']);
+        $this->assertStringNotContainsString('más de 24 meses', $conPlazo, 'the retention it is compared with is the one asked for');
+    }
+
+    public function testTheRunThatHidesAPedidoDoesNotListItTwice(): void
+    {
+        $this->pedido(30);
+
+        [, $salida] = $this->correr(['--ocultar']);
+
+        $this->assertSame(1, substr_count($salida, 'n.º 1 '), 'listed once, as hidden automatically, not again as undecided');
+        $this->assertStringNotContainsString('sigue sin decidirse', $salida);
+        $this->assertStringContainsString('1 pedido de retiro oculto sigue sin decidirse', $this->correr()[1], 'the next daily run does remind');
+    }
+
+    public function testTheJobThatRunsEveryHalfHourStaysSilentAboutOldHiddenPedidos(): void
+    {
+        $numero = $this->pedido(1);
+        $this->repo->decidir($numero, 'ocultar', null);
+
+        [$codigo, $salida, $error] = $this->correr(['--ocultar', '--solo-ocultados']);
+
+        $this->assertSame([0, '', ''], [$codigo, $salida, $error], 'the reminder is the daily job\'s, not the half-hourly one');
+    }
+
+    public function testADecidedPedidoIsNoLongerReminded(): void
+    {
+        $numero = $this->pedido(1);
+        $this->repo->decidir($numero, 'ocultar', null);
+        $this->repo->decidir($numero, 'retirar', null);
+
+        [$codigo, $salida, $error] = $this->correr();
+
+        $this->assertSame([0, '', ''], [$codigo, $salida, $error]);
     }
 }
