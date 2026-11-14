@@ -1,0 +1,73 @@
+[
+    {
+        "slug": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme",
+        "law": "Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",
+        "source": "https://cpdp.bg",
+        "status": "error",
+        "error": "SSL certificate problem: unable to get local issuer certificate",
+        "checkedAt": "2026-11-14T19:52:36Z"
+    },
+    {
+        "slug": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--64ee07ca",
+        "law": "Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679) (scope, applies_to, data_categories, retention_period, genetic_data)",
+        "source": "https://linklaters.com/insights/data-protected/data-protected---bulgaria",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-14T19:52:43Z"
+    },
+    {
+        "slug": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--7508b6ab",
+        "law": "Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679) (jurisdiction, enactment_date, effective_date, enforcement_authority, frameworks)",
+        "source": "https://www.privacylaws.com/news/bulgaria-s-new-data-protection-law-enters-into-force/",
+        "file": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--7508b6ab.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:52:40Z",
+        "checkedAt": "2026-11-14T19:52:40Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "458896b0267587a610c67f894668c4abd17e774d5ba70215acd93048e87bbff3",
+        "chars": 1725
+    },
+    {
+        "slug": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--7d274947",
+        "law": "Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679) (penalties_range)",
+        "source": "https://www.innovires.com/en/blog/gdpr-saotvetstvie.html",
+        "file": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--7d274947.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:52:44Z",
+        "checkedAt": "2026-11-14T19:52:44Z",
+        "etag": null,
+        "lastModified": "Fri, 02 Oct 2026 09:14:56 GMT",
+        "sha256": "b747a60469c76cded9f8974266f05bdc8ff0767a8c40b054f2dd177ab93d2e3e",
+        "chars": 13633
+    },
+    {
+        "slug": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--b5997efc",
+        "law": "Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679) (deceased_data)",
+        "source": "https://www.DataGuidance.com/notes/bulgaria-data-protection-overview",
+        "status": "skipped",
+        "error": "no readable text (the page probably needs JavaScript)",
+        "checkedAt": "2026-11-14T19:52:56Z"
+    },
+    {
+        "slug": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--bd139acd",
+        "law": "Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679) (law_name, key_requirements)",
+        "source": "https://cms.law/en/bgr/legal-updates/Bulgaria-implements-GDPR-into-Personal-Data-Protection-Act",
+        "status": "error",
+        "error": "HTTP 403",
+        "checkedAt": "2026-11-14T19:52:37Z"
+    },
+    {
+        "slug": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--bd49aaf7",
+        "law": "Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679) (exemptions, research_exemption)",
+        "source": "https://www.cipil.law.cam.ac.uk/node/294472",
+        "file": "personal-data-protection-act-pdpa-as-amended-and-supplemented-in-2019-to-impleme--bd49aaf7.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:52:46Z",
+        "checkedAt": "2026-11-14T19:52:46Z",
+        "etag": "W/\"1794589851\"",
+        "lastModified": "Fri, 13 Nov 2026 17:10:51 GMT",
+        "sha256": "c9c549d80f7487f8bdd8e65688a8bca391e9459eb77aa4b3b09e33070086ae02",
+        "chars": 11462
+    }
+]

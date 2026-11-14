@@ -1,0 +1,75 @@
+[
+    {
+        "slug": "data-protection-act-2023-act-24-of-2023",
+        "law": "Data Protection Act 2023 (Act 24 of 2023)",
+        "source": "https://www.infocom.sc/data-protection/",
+        "file": "data-protection-act-2023-act-24-of-2023.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:55:05Z",
+        "checkedAt": "2026-11-14T19:55:05Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "df1212f75f4793e5e147224e0184ec5effc09efd7e42d69d2ee99a8352be7897",
+        "chars": 3438
+    },
+    {
+        "slug": "data-protection-act-2023-act-24-of-2023--120778ad",
+        "law": "Data Protection Act 2023 (Act 24 of 2023) (scope)",
+        "source": "https://www.consentstack.io/regulations/sc-dpa",
+        "file": "data-protection-act-2023-act-24-of-2023--120778ad.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:55:10Z",
+        "checkedAt": "2026-11-14T19:55:10Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "3d99915c9cb24f00ba8342b4a531e70c31704e4473c202f37acbecc6eea3b102",
+        "chars": 5369
+    },
+    {
+        "slug": "data-protection-act-2023-act-24-of-2023--2ad852c9",
+        "law": "Data Protection Act 2023 (Act 24 of 2023) (key_requirements)",
+        "source": "https://www.techhiveadvisory.africa/insights/review-of-seychelles-dpa",
+        "file": "data-protection-act-2023-act-24-of-2023--2ad852c9.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:55:13Z",
+        "checkedAt": "2026-11-14T19:55:13Z",
+        "etag": null,
+        "lastModified": "Fri, 13 Nov 2026 20:43:18 GMT",
+        "sha256": "10e65ef1f372582ab9cad2854e780feb999b71e86e996b1d8a6853e3152947ec",
+        "chars": 12755
+    },
+    {
+        "slug": "data-protection-act-2023-act-24-of-2023--3ead514d",
+        "law": "Data Protection Act 2023 (Act 24 of 2023) (applies_to, data_categories, exemptions, genetic_data)",
+        "source": "https://www.dlapiperdataprotection.com/?c=SC&t=law",
+        "file": "data-protection-act-2023-act-24-of-2023--3ead514d.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:55:12Z",
+        "checkedAt": "2026-11-14T19:55:12Z",
+        "etag": null,
+        "lastModified": "Sat, 14 Nov 2026 19:55:11 GMT",
+        "sha256": "0c820b7e0e4f0051c4833c9e58f4567ea855465e84e0939260409c559a55a58e",
+        "chars": 906
+    },
+    {
+        "slug": "data-protection-act-2023-act-24-of-2023--623c1072",
+        "law": "Data Protection Act 2023 (Act 24 of 2023) (enactment_date, effective_date)",
+        "source": "https://applebyglobal.com/publications/data-protection-law-now-in-force-in-seychelles",
+        "file": "data-protection-act-2023-act-24-of-2023--623c1072.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:55:08Z",
+        "checkedAt": "2026-11-14T19:55:08Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "6f63e81c02b9349d36401c05c1d23238f2ff24a18a9d774b874aa33bad751d83",
+        "chars": 9159
+    },
+    {
+        "slug": "data-protection-act-2023-act-24-of-2023--d8c49250",
+        "law": "Data Protection Act 2023 (Act 24 of 2023) (law_name, penalties_range)",
+        "source": "https://www.gazette.sc/sites/default/files/2023-12/Act%2024%20-%202023%20-%20Data%20Protection%20Act%202023.pdf",
+        "status": "error",
+        "error": "page larger than 5 MB",
+        "checkedAt": "2026-11-14T19:55:06Z"
+    }
+]

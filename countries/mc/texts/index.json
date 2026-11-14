@@ -1,0 +1,62 @@
+[
+    {
+        "slug": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data",
+        "law": "Law No. 1.565 of 3 December 2024 on the Protection of Personal Data",
+        "source": "https://www.gouv.mc/en/news/monaco-adopts-personal-data-protection-legislation-in-line-with-the-highest-european-standards",
+        "file": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:54:19Z",
+        "checkedAt": "2026-11-14T19:54:19Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "160f78b136fce9035211c62d4d22658ad560b8a5cc3e9ac9499b4b306c36baa3",
+        "chars": 3325
+    },
+    {
+        "slug": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data--01d0d008",
+        "law": "Law No. 1.565 of 3 December 2024 on the Protection of Personal Data (enforcement_authority)",
+        "source": "https://en.gouv.mc/content/download/527829/6060325/file/Monaco%20en%20Chiffres%202025%20-%205.%20vie%20publique%20-%20Organisations%20Institutionnelles.pdf",
+        "status": "error",
+        "error": "Operation timed out after 20002 milliseconds with 0 bytes received",
+        "checkedAt": "2026-11-14T19:54:45Z"
+    },
+    {
+        "slug": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data--3297e614",
+        "law": "Law No. 1.565 of 3 December 2024 on the Protection of Personal Data (law_name, jurisdiction, enactment_date)",
+        "source": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/monaco",
+        "file": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data--3297e614.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:54:21Z",
+        "checkedAt": "2026-11-14T19:54:21Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "122f4b29c4a3dcb5ff7408009e919561dc4e69484dfeb91e2697198729d3a75d",
+        "chars": 26089
+    },
+    {
+        "slug": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data--a7628415",
+        "law": "Law No. 1.565 of 3 December 2024 on the Protection of Personal Data (scope, applies_to, data_categories)",
+        "source": "https://cms.law/fr/mco/publication/nouvelle-loi-monegasque-sur-la-protection-des-donnees-personnelles",
+        "file": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data--a7628415.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:54:24Z",
+        "checkedAt": "2026-11-14T19:54:24Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "fc8070dd804f05187ff7daad1744648c12dffda7e14907840045fa076d1fba43",
+        "chars": 4742
+    },
+    {
+        "slug": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data--b126ec54",
+        "law": "Law No. 1.565 of 3 December 2024 on the Protection of Personal Data (effective_date)",
+        "source": "https://www.clym.io/regulations/law-on-the-protection-of-personal-information-monaco",
+        "file": "law-no-1-565-of-3-december-2024-on-the-protection-of-personal-data--b126ec54.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:54:22Z",
+        "checkedAt": "2026-11-14T19:54:22Z",
+        "etag": "W/\"6vwlxbvwyc5edl\"",
+        "lastModified": null,
+        "sha256": "46e6a6a0aa827c8fb8a3202e33a0f241ac0e51be27dc20f47c12d6d48afacd82",
+        "chars": 4609
+    }
+]

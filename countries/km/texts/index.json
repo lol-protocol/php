@@ -1,0 +1,28 @@
+[
+    {
+        "slug": "law-no-21-012-au-of-29-june-2021-on-the-protection-of-personal-data",
+        "law": "Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data",
+        "source": "https://consentstack.io/regulations/km-dpl",
+        "file": "law-no-21-012-au-of-29-june-2021-on-the-protection-of-personal-data.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:52:58Z",
+        "checkedAt": "2026-11-14T19:52:58Z",
+        "etag": null,
+        "lastModified": null,
+        "sha256": "d53de56a5ff86deb24dc859bd9a93a10532ea411b14f61a9c99cdd799a0fbc95",
+        "chars": 5422
+    },
+    {
+        "slug": "law-no-21-012-au-of-29-june-2021-on-the-protection-of-personal-data--180c0b66",
+        "law": "Law No. 21-012/AU of 29 June 2021 on the Protection of Personal Data (law_name, jurisdiction, scope, applies_to, key_requirements, enforcement_authority)",
+        "source": "https://www.techhiveadvisory.africa/insights/review-of-the-comoros-data-protection-law",
+        "file": "law-no-21-012-au-of-29-june-2021-on-the-protection-of-personal-data--180c0b66.md",
+        "status": "ok",
+        "fetchedAt": "2026-11-14T19:53:00Z",
+        "checkedAt": "2026-11-14T19:53:00Z",
+        "etag": null,
+        "lastModified": "Sat, 14 Nov 2026 03:38:14 GMT",
+        "sha256": "5f8e65adff083454cf880921a3d12f626d6f46c2dcae19563ae954f9af6ecc30",
+        "chars": 6889
+    }
+]
