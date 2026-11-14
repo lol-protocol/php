@@ -159,7 +159,8 @@ php bin/persona.php entrega <id> --revocar       # termina las que siguen vigent
   y pedidos de retiro. Los parientes son **cantidades**, nunca nombres; no se muestra quién aportó la ficha ni su grupo.
 - **Qué no queda:** el servidor no registra qué se mostró, solo que se abrió. **Sí quedan** el enlace en los logs de acceso de
   nginx (por eso la clave va aparte) y el correo donde lo mandaste.
-- Si la persona se suprime después, el enlace deja de mostrar nada.
+- Si la persona se suprime después, **sus entregas se borran con ella**. Las que vencieron hace más de 12 meses se borran solas con
+  `php bin/solicitudes.php --depurar` (solo guardan hashes y fechas: se conservan un tiempo como prueba de que se entregó).
 
 ## Lo que falta
 

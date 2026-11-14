@@ -232,7 +232,7 @@ php bin/persona.php entrega 6128473105                            # un enlace y 
   - se borran sus sucesos en los que **es la única participante**, con sus enlaces a registros;
   - los sucesos que comparte con otras personas **se conservan** (también son datos de las otras) y a ella se la
     quita de la lista; revisa su descripción;
-  - se borran sus vínculos, su lugar en colecciones y organizaciones y los ids que redirigían a ella;
+  - se borran sus vínculos, su lugar en colecciones y organizaciones, los ids que redirigían a ella y sus entregas con clave;
   - sus hijos **conservan su fila** y pierden el enlace a ella como padre o madre;
   - se borra su fila.
 - **Lo que no puede hacer** es leer texto libre: una descripción, el título de un registro o una nota de una

@@ -127,6 +127,23 @@ class SolicitudesCliTest extends TestCase
         $this->assertSame('pendiente', $this->repo->ver($n)['estado']);
     }
 
+    public function testDepurarAlsoErasesTheDeliveriesThatExpiredLongAgoAndSaysSoOnlyWhenThereWere(): void
+    {
+        $entregas = new \App\Repositories\Genealogy\EntregaRepository($this->db);
+        $this->db->execute("INSERT INTO personas (id, nombres, apellidos) VALUES (6128479601, 'Rosa', 'Prueba')");
+        $entregas->crear(6128479601, 2, time() - 800 * 86400);
+        $entregas->crear(6128479601, 2, time() - 800 * 86400);
+        $viva = $entregas->crear(6128479601, 30);
+
+        [$codigo, $salida, $error] = $this->correr('--depurar');
+
+        $this->assertSame([0, ''], [$codigo, $error]);
+        $this->assertSame("Se borraron 2 entregas con clave vencidas hace más de 12 meses.\n", $salida);
+        $this->assertSame(1, (int)$this->db->fetchValue('SELECT COUNT(*) FROM entregas_persona'));
+        $this->assertSame(6128479601, $entregas->abrir($viva['token'], $viva['clave']), 'the one that works still works');
+        $this->assertSame([0, '', ''], $this->correr('--depurar'), 'nothing left to erase: nothing said');
+    }
+
     public function testSoloNuevasIsSilentWhenNothingArrivedAndAnnouncesEachOnceWithoutWhoAsked(): void
     {
         $this->assertSame([0, '', ''], $this->correr('--solo-nuevas'), 'cron mails whatever is printed');

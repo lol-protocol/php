@@ -184,4 +184,25 @@ class EntregaRepositoryTest extends TestCase
         $this->assertStringNotContainsString('grupo_id', $json);
         $this->assertNull($repo->contenido(6128479777), 'a persona that no longer exists has nothing to show');
     }
+
+    #[DataProvider('drivers')]
+    public function testErasingTheDeliveriesThatExpiredLongAgoKeepsTheRest(string $driver): void
+    {
+        $db = $this->mundo($driver);
+        $repo = new EntregaRepository($db);
+        $ahora = 1_700_000_000;
+        $vieja = $repo->crear(self::ELLA, 2, $ahora - 500 * 86400);       // expired about 498 days ago
+        $reciente = $repo->crear(self::ELLA, 2, $ahora - 40 * 86400);     // expired 38 days ago
+        $viva = $repo->crear(self::ELLA, 90, $ahora - 10 * 86400);        // still works
+        $otra = $repo->crear(self::HIJO, 2, $ahora - 800 * 86400);        // another persona's, also old
+
+        $this->assertSame(2, $repo->depurar(12, $ahora), 'the two that expired more than 12 months ago');
+        $this->assertSame(0, $repo->depurar(12, $ahora), 'once');
+
+        $restan = array_map('intval', array_column($db->fetchAll('SELECT id FROM entregas_persona ORDER BY id'), 'id'));
+        $this->assertSame([$reciente['id'], $viva['id']], $restan);
+        $this->assertSame(1, $repo->depurar(1, $ahora), 'a shorter retention reaches the recent one');
+        $this->assertSame([$viva['id']], array_map('intval', array_column($db->fetchAll('SELECT id FROM entregas_persona'), 'id')), 'one that still works is never touched, however old');
+        $this->assertNotSame($vieja['id'], $otra['id']);
+    }
 }
