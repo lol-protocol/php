@@ -37,6 +37,8 @@ Vive acá todo lo que no depende de qué módulo lo llama. Lo que sí depende de
   Con `--field-sources` el núcleo baja además las URL que `field_sources.csv` cita (por `source_id`, resueltas con `source_urls.csv`) para cada campo (plazo, sanciones…)
   cuando no son la URL de referencia de la ley: una descarga por URL distinta, guardada como `<ley>--<8 hex del sha1>.md`.
   Sin la opción, esos archivos se tratan como textos que salieron del dataset y se borran.
+  Los PDF se convierten con `pdftotext` (poppler-utils) si está instalado; si no, se saltan, como las páginas que
+  necesitan JavaScript.
 
 Cada envoltorio conserva además el comentario de uso de su script y, en `record-changes.js` y `translations.js`,
 reexporta las funciones que usan las pruebas, para que los `import` de las pruebas no cambien.
