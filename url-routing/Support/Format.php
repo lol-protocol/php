@@ -26,10 +26,32 @@ final class Format
             return $valor;
         }
 
+        $anio = (int)$m[1];
+        $mes = (int)$m[2];
+        $dia = (int)$m[3];
         $meses = self::MESES[$locale] ?? self::MESES[HostParser::IDIOMA_BASE];
-        $texto = (int)$m[3] . ' ' . $meses[(int)$m[2] - 1] . ' ' . $m[1];
 
-        return isset($m[4]) ? "{$texto}, {$m[4]}:{$m[5]}" : $texto;
+        // A genealogy date is often partial: the unknown part is written 00 ("1925-00-00" is only the year,
+        // "1925-02-00" a month). What is not a date at all ("1925-13-05", "1925-02-30", an hour 25) is returned
+        // as it came, like any other text this does not understand.
+        if ($anio === 0) {
+            return $valor;
+        }
+        if ($mes === 0 && $dia === 0) {
+            $texto = (string)$anio;
+        } elseif ($mes >= 1 && $mes <= 12 && $dia === 0) {
+            $texto = $meses[$mes - 1] . ' ' . $anio;
+        } elseif (checkdate($mes, $dia, $anio)) {
+            $texto = $dia . ' ' . $meses[$mes - 1] . ' ' . $anio;
+        } else {
+            return $valor;
+        }
+
+        if (!isset($m[4])) {
+            return $texto;
+        }
+
+        return (int)$m[4] <= 23 && (int)$m[5] <= 59 ? "{$texto}, {$m[4]}:{$m[5]}" : $valor;
     }
 
     /** "1868-05-12", "1941-10-05" -> "1868–1941"; an open end stays open. */
@@ -45,7 +67,9 @@ final class Format
     /** Integer cents -> "$1,234.50 MXN". */
     public static function dinero(int|string|null $centavos, string $moneda = 'MXN'): string
     {
-        $monto = number_format(((int)$centavos) / 100, 2, '.', ',');
-        return '$' . $monto . ' ' . trim($moneda);
+        $cantidad = (int)$centavos;
+        $monto = number_format(abs($cantidad) / 100, 2, '.', ',');
+
+        return ($cantidad < 0 ? '-' : '') . '$' . $monto . ' ' . trim($moneda);
     }
 }
