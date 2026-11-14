@@ -954,6 +954,60 @@ final class AltasEdicionesYAnulacionesTest extends HttpTestCase
         self::assertSame(1600.0, self::montoDeLaBoleta($boletaId));
     }
 
+    /**
+     * Dinar kuwaiti: tres decimales (el fils). El alta y la edicion de una boleta de un cliente de Kuwait aceptan
+     * milesimas, y una cifra con cuatro decimales se redondea a la milesima.
+     */
+    public function testUnaBoletaEnDinaresKuwaitiesAceptaMilesimas(): void
+    {
+        $formularioCliente = $this->get('page=cliente-nuevo')['cuerpo'];
+        $envioCliente = self::campoOculto($formularioCliente, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioCliente);
+        $cliente = $this->post('page=cliente-nuevo', [
+            'csrf_token' => self::campoOculto($formularioCliente, 'csrf_token'), EnvioUnico::CAMPO => $envioCliente,
+            'nombre' => 'Cliente de Kuwait', 'email' => 'cliente-kuwait-' . uniqid() . '@example.com',
+            'pais_codigo' => 'KW', 'ciudad' => 'Kuwait', 'idioma' => 'Ingles', 'genero' => 'No especifica',
+            'fecha_nacimiento' => '1985-05-05', 'segmento' => 'general',
+            'sin_restricciones' => '1',
+        ]);
+        $this->assertStatus(302, $cliente, 'alta del cliente de Kuwait');
+        $clienteId = self::idDeLaRedireccion($cliente, 'id');
+        $this->alTerminar(static fn () => self::borrarEntidad('clientes', 'cliente', $clienteId));
+        $this->alTerminar(static function () use ($clienteId): void {
+            $boletas = Database::connection()->prepare('SELECT id FROM boletas WHERE cliente_id = :id');
+            $boletas->execute([':id' => $clienteId]);
+            foreach ($boletas->fetchAll(\PDO::FETCH_COLUMN) as $id) {
+                self::borrarBoletaConTodo((int) $id);
+            }
+        });
+        $datosDeLaBoleta = function (string $monto) use ($clienteId): array {
+            $formulario = $this->get('page=boleta-nueva')['cuerpo'];
+            $envio = self::campoOculto($formulario, EnvioUnico::CAMPO);
+            $this->olvidarToken($envio);
+
+            return [
+                'csrf_token' => self::campoOculto($formulario, 'csrf_token'), EnvioUnico::CAMPO => $envio, 'cliente_id' => $clienteId,
+                'concepto' => 'Cuota en dinares', 'monto' => $monto, 'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+            ];
+        };
+
+        $alta = $this->post('page=boleta-nueva', $datosDeLaBoleta('1.505'));
+        $this->assertStatus(302, $alta, 'una boleta en dinares con milesimas');
+        $boletaId = self::idDeLaRedireccion($alta, 'creada');
+        self::assertSame(1.505, self::montoDeLaBoleta($boletaId));
+
+        $conCuatro = $this->post('page=boleta-nueva', $datosDeLaBoleta('2.0004'));
+        $this->assertStatus(302, $conCuatro, 'cuatro decimales se redondean a la milesima');
+        self::assertSame(2.0, self::montoDeLaBoleta(self::idDeLaRedireccion($conCuatro, 'creada')));
+
+        $csrf = self::campoOculto($this->get("page=boleta-editar&id={$boletaId}")['cuerpo'], 'csrf_token');
+        $editada = $this->post("page=boleta-editar&id={$boletaId}", [
+            'csrf_token' => $csrf, 'concepto' => 'Cuota en dinares', 'monto' => '1.250', 'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+        ]);
+        $this->assertStatus(302, $editada, 'editar una boleta en dinares');
+        self::assertSame(1.25, self::montoDeLaBoleta($boletaId));
+    }
+
     public function testUnaPantallaSinRedireccionNoMuestraConfirmaciones(): void
     {
         foreach (['page=cobros', 'page=pagos', 'page=cliente&id=' . self::CLIENTE] as $query) {

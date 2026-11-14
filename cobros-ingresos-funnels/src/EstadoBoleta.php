@@ -20,7 +20,7 @@ final class EstadoBoleta
     public static function calcular(float $monto, float $pagado, string $fechaVencimiento, ?string $hoy = null, bool $anulada = false): array
     {
         $hoy ??= date('Y-m-d');
-        $saldo = round($monto - $pagado, 2);
+        $saldo = round($monto - $pagado, 3);
 
         $estado = match (true) {
             $anulada => 'anulada',

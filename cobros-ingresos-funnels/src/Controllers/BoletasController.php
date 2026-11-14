@@ -123,11 +123,12 @@ final class BoletasController
 
             $clienteId = (int) ($_POST['cliente_id'] ?? 0);
             $concepto = trim((string) ($_POST['concepto'] ?? ''));
-            $monto = Peticion::monto();
+            $cliente = $clienteId > 0 ? $clienteRepo->porId($clienteId) : null;
+            // Los decimales de la moneda de la boleta (la del pais del cliente) deciden como se lee el monto.
+            $monto = Peticion::monto('monto', $cliente !== null ? MonedaRepository::decimales($cliente['moneda_codigo']) : 2);
             $fechaEmision = (string) ($_POST['fecha_emision'] ?? '');
             $fechaVencimiento = (string) ($_POST['fecha_vencimiento'] ?? '');
 
-            $cliente = $clienteId > 0 ? $clienteRepo->porId($clienteId) : null;
             if ($token === null) {
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
             } elseif ($cliente === null) {
@@ -187,7 +188,7 @@ final class BoletasController
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $concepto = trim((string) ($_POST['concepto'] ?? ''));
-            $monto = Peticion::monto();
+            $monto = Peticion::monto('monto', MonedaRepository::decimales($boleta['moneda_codigo']));
             $fechaEmision = (string) ($_POST['fecha_emision'] ?? '');
             $fechaVencimiento = (string) ($_POST['fecha_vencimiento'] ?? '');
 
