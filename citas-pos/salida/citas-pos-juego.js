@@ -3,7 +3,8 @@
  * Se carga con `defer`, junto con citas-pos.css y citas-pos-juego.css.
  *
  * Convierte cada palabra etiquetada (.jw) en un botón que se pulsa para descubrir su categoría y su color, y va
- * llenando la leyenda con las categorías descubiertas.
+ * llenando la leyenda con las categorías descubiertas. Las palabras son una sola parada de tabulador: dentro de la
+ * frase se avanza con las flechas (←/→, ↑/↓), Inicio y Fin (tabindex itinerante).
  * Sin este script, la frase queda completa y explicada: no hace falta nada para leerla.
  */
 (function () {
@@ -66,18 +67,45 @@
       avisar(ahora ? palabra.textContent + ': ' + palabra.getAttribute('data-nombre') + '.' : '');
     }
 
-    palabras.forEach(function (palabra) {
+    // Tabindex itinerante: solo la palabra activa está en el orden de tabulación (una frase de 15 palabras no son 15
+    // paradas) y las flechas mueven el foco entre ellas.
+    function activar(palabra) {
+      palabras.forEach(function (p) { p.setAttribute('tabindex', p === palabra ? '0' : '-1'); });
+    }
+
+    function mover(desde, destino) {
+      var palabra = palabras[Math.max(0, Math.min(total - 1, destino))];
+      activar(palabra);
+      palabra.focus();
+      return desde !== palabra;
+    }
+
+    palabras.forEach(function (palabra, i) {
       palabra.setAttribute('role', 'button');
-      palabra.setAttribute('tabindex', '0');
       poner(palabra, false);
-      palabra.addEventListener('click', function () { alternar(palabra); });
+      palabra.addEventListener('click', function () { activar(palabra); alternar(palabra); });
+      palabra.addEventListener('focus', function () { activar(palabra); });
       palabra.addEventListener('keydown', function (evento) {
-        if (evento.key === 'Enter' || evento.key === ' ') {
+        var k = evento.key;
+        if (k === 'Enter' || k === ' ') {
           evento.preventDefault();
           alternar(palabra);
+        } else if (k === 'ArrowRight' || k === 'ArrowDown') {
+          evento.preventDefault();
+          mover(palabra, i + 1);
+        } else if (k === 'ArrowLeft' || k === 'ArrowUp') {
+          evento.preventDefault();
+          mover(palabra, i - 1);
+        } else if (k === 'Home') {
+          evento.preventDefault();
+          mover(palabra, 0);
+        } else if (k === 'End') {
+          evento.preventDefault();
+          mover(palabra, total - 1);
         }
       });
     });
+    activar(palabras[0]);
 
     barra.addEventListener('click', function (evento) {
       var accion = evento.target && evento.target.getAttribute ? evento.target.getAttribute('data-accion') : null;

@@ -247,6 +247,43 @@ prueba('juego: el foco del teclado se ve (contorno de 2 px)', () => con(URL_JUEG
   igual('2px', contorno[1], 'ancho del contorno:');
 }));
 
+prueba('juego: las palabras de una frase son una sola parada de tabulador', () => con(URL_JUEGO, {}, async (p) => {
+  const r = await primera(p).evaluate((fig) => {
+    const t = [...fig.querySelectorAll('.jw')].map((e) => e.getAttribute('tabindex'));
+    return { n: t.length, en0: t.filter((x) => x === '0').length, enMenos1: t.filter((x) => x === '-1').length };
+  });
+  verdadero(r.n > 3, 'la frase de prueba debería tener varias palabras');
+  igual(1, r.en0, 'palabras con tabindex 0:');
+  igual(r.n - 1, r.enMenos1, 'palabras con tabindex -1:');
+  await p.keyboard.press('Tab');
+  verdadero(await p.evaluate(() => document.activeElement.classList.contains('jw')), 'el primer Tab no llega a una palabra');
+  await p.keyboard.press('Tab');
+  verdadero(!(await p.evaluate(() => document.activeElement.classList.contains('jw'))), 'el segundo Tab sigue dentro de las palabras de la primera frase');
+}));
+
+prueba('juego: las flechas, Inicio y Fin mueven el foco entre las palabras', () => con(URL_JUEGO, {}, async (p) => {
+  const indice = () => p.evaluate(() => { const f = document.activeElement.closest('figure'); return [...f.querySelectorAll('.jw')].indexOf(document.activeElement); });
+  await p.keyboard.press('Tab');
+  igual(0, await indice(), 'primera palabra:');
+  await p.keyboard.press('ArrowRight');
+  igual(1, await indice(), 'tras →:');
+  await p.keyboard.press('ArrowDown');
+  igual(2, await indice(), 'tras ↓:');
+  await p.keyboard.press('ArrowLeft');
+  igual(1, await indice(), 'tras ←:');
+  await p.keyboard.press('End');
+  const ultima = await indice();
+  verdadero(ultima > 2, 'Fin debería ir a la última palabra');
+  await p.keyboard.press('ArrowRight');
+  igual(ultima, await indice(), 'más allá de la última se queda:');
+  await p.keyboard.press('Home');
+  igual(0, await indice(), 'tras Inicio:');
+  // La palabra activa es la que sigue en el orden de tabulación al volver.
+  await p.keyboard.press('ArrowRight');
+  await p.keyboard.press('Space');
+  igual('true', await p.evaluate(() => document.activeElement.getAttribute('aria-pressed')), 'Espacio descubre la palabra con el foco:');
+}));
+
 // --- ejecutar --------------------------------------------------------------------------------------------------------
 
 let fallidas = 0;
