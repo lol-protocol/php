@@ -46,8 +46,36 @@ if ($rutas === []) {
     exit(2);
 }
 
-$perfiles = [];
+// Con --jsonl cada perfil se escribe en cuanto se lee la página, sin acumular: una carpeta de decenas de
+// miles de páginas no llena la memoria. Solo se guardan las claves de URL ya vistas (para no repetir) y, sin
+// --jsonl, los perfiles, porque ahí la salida es un solo arreglo JSON.
+$salida = [];
+$vistos = [];
 $fallos = 0;
+$excluidos = 0;
+$repetidos = 0;
+/** @param array<string, mixed> $perfil */
+$emitir = static function (array $perfil) use ($exclusiones, $jsonl, &$salida, &$vistos, &$excluidos, &$repetidos): void {
+    if ($exclusiones->contiene($perfil)) {
+        $excluidos++;
+        return;
+    }
+    $url = $perfil['url'] ?? null;
+    if (is_string($url)) {
+        $clave = Lote::claveUrl($url);
+        if (isset($vistos[$clave])) {
+            $repetidos++;
+            return;
+        }
+        $vistos[$clave] = true;
+    }
+    if ($jsonl) {
+        echo json_encode($perfil, Lote::JSON), "\n";
+    } else {
+        $salida[] = $perfil;
+    }
+};
+
 foreach (Lote::archivos($rutas) as $archivo) {
     if (Lote::esUrl($archivo)) {
         fwrite(STDERR, "$archivo: esto no descarga páginas; guarda el HTML y pásame el archivo.\n");
@@ -63,30 +91,24 @@ foreach (Lote::archivos($rutas) as $archivo) {
     try {
         if (str_ends_with(strtolower($archivo), '.json')) {
             foreach (WikiTreeApi::desdeJson($html, $capturado) as $p) {
-                $perfiles[] = ['archivo' => basename($archivo)] + $p->aArreglo();
+                $emitir(['archivo' => basename($archivo)] + $p->aArreglo());
             }
             continue;
         }
-        $perfiles[] = ['archivo' => basename($archivo)] + Detector::analizar($html, $capturado, $revisar)->aArreglo();
+        $emitir(['archivo' => basename($archivo)] + Detector::analizar($html, $capturado, $revisar)->aArreglo());
     } catch (RuntimeException $e) {
         fwrite(STDERR, "$archivo: {$e->getMessage()}\n");
         $fallos++;
     }
 }
 
-['perfiles' => $perfiles, 'excluidos' => $excluidos] = $exclusiones->filtrar($perfiles);
 if ($excluidos > 0) {
     fwrite(STDERR, "$excluidos perfiles omitidos por la lista de exclusión\n");
 }
-['perfiles' => $perfiles, 'repetidos' => $repetidos] = Lote::sinRepetidos($perfiles);
 if ($repetidos > 0) {
     fwrite(STDERR, "$repetidos páginas repetidas (misma URL) omitidas\n");
 }
-if ($jsonl) {
-    foreach ($perfiles as $p) {
-        echo json_encode($p, Lote::JSON), "\n";
-    }
-} else {
-    echo json_encode($perfiles, Lote::JSON | JSON_PRETTY_PRINT), "\n";
+if (!$jsonl) {
+    echo json_encode($salida, Lote::JSON | JSON_PRETTY_PRINT), "\n";
 }
 exit($fallos > 0 ? 1 : 0);

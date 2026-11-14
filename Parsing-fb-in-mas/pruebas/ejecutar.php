@@ -11,6 +11,7 @@ use ParsingFbInMas\Json;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Metadatos;
 use ParsingFbInMas\Perfil;
+use ParsingFbInMas\Purga;
 use ParsingFbInMas\Revision;
 use ParsingFbInMas\Sensibles;
 use ParsingFbInMas\Wikidata;
@@ -311,6 +312,59 @@ foreach (['no es json', '[]', '[{"status":"Permission denied"}]', '"texto"'] as 
     }
 }
 
+// --- Purga de lo ya generado (punto 4) ---
+$excluirPurga = Exclusiones::desdeTexto("twitter:danaejemplo\nwikidata:Q2\n");
+$quitar = Purga::linea((string) json_encode(['red' => 'twitter', 'usuario' => 'DanaEjemplo', 'url' => 'https://x.com/danaejemplo'], Lote::JSON), $excluirPurga);
+igual('purga: la persona de la lista se quita', [null, false], [$quitar['linea'], $quitar['ilegible']]);
+$otra = '{"red":"twitter","usuario":"otra","url":"https://x.com/otra"}';
+igual('purga: otra persona se conserva tal cual, byte a byte', [$otra, 0], [Purga::linea($otra, $excluirPurga)['linea'], Purga::linea($otra, $excluirPurga)['parientes']]);
+$conParientes = '{"red":"wikidata","usuario":"Q1","url":"https://www.wikidata.org/wiki/Q1","parientes":[{"relacion":"padre","nombre":null,"id":"Q2"},{"relacion":"madre","nombre":null,"id":"Q8"}]}';
+$rp = Purga::linea($conParientes, $excluirPurga);
+$parientesQueQuedan = Json::en(json_decode((string) $rp['linea'], true), 'parientes');
+igual('purga: de un perfil que se queda se quita el pariente excluido', [1, ['Q8']], [$rp['parientes'], array_column(is_array($parientesQueQuedan) ? $parientesQueQuedan : [], 'id')]);
+igual('purga: una línea que no es JSON se conserva y se marca ilegible', [true, 'esto no es json'], [Purga::linea('esto no es json', $excluirPurga)['ilegible'], Purga::linea('esto no es json', $excluirPurga)['linea']]);
+igual('purga: un arreglo JSON tampoco es un perfil', true, Purga::linea('[1,2,3]', $excluirPurga)['ilegible']);
+
+// --- Wikidata endurecido (punto 8) ---
+$muestraWd = (string) file_get_contents(__DIR__ . '/muestras/wikidata-muestra.json');
+$gz = sys_get_temp_dir() . '/pfm-wd-' . getmypid() . '.json.gz';
+file_put_contents($gz, (string) gzencode($muestraWd));
+$deGz = [];
+$rGz = Wikidata::recorrer($gz, static function (Perfil $p) use (&$deGz): void {
+    $deGz[] = $p->usuario;
+});
+unlink($gz);
+igual('wikidata: un .json.gz da las mismas personas que el texto plano', ['Q1', 'Q4'], $deGz);
+igual('wikidata: cuenta todas las líneas leídas (6: los corchetes y 4 entidades)', 6, $rGz['lineas']);
+$conRota = sys_get_temp_dir() . '/pfm-wd-rota-' . getmypid() . '.json';
+file_put_contents($conRota, str_replace("\n]", "\n,{\"id\":\"Q9\",\"P570\":{\"id\":\"Q5\"\n]", $muestraWd));
+$deRota = [];
+$rRota = Wikidata::recorrer($conRota, static function (Perfil $p) use (&$deRota): void {
+    $deRota[] = $p->usuario;
+});
+unlink($conRota);
+igual('wikidata: una línea corrupta se salta y no detiene la corrida', [['Q1', 'Q4'], 1], [$deRota, $rRota['corruptas']]);
+$avisos = 0;
+Wikidata::recorrer(__DIR__ . '/muestras/wikidata-muestra.json', static function (): void {
+}, null, null, null, static function (int $lineas, int $aceptadas) use (&$avisos): void {
+    $avisos++;
+}, 2);
+igual('wikidata: el progreso se avisa cada N líneas (6 líneas, cada 2: 3 avisos)', 3, $avisos);
+$bz = sys_get_temp_dir() . '/pfm-wd-' . getmypid() . '.json.bz2';
+file_put_contents($bz, 'x');
+if (function_exists('bzopen')) {
+    igual('wikidata: .bz2 con la extensión instalada no falla por falta de extensión', true, true);
+} else {
+    try {
+        Wikidata::recorrer($bz, static function (): void {
+        });
+        igual('wikidata: .bz2 sin la extensión lanza', true, false);
+    } catch (RuntimeException $e) {
+        igual('wikidata: .bz2 sin la extensión lanza y dice qué falta', true, str_contains($e->getMessage(), 'bz2'));
+    }
+}
+unlink($bz);
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
@@ -488,6 +542,30 @@ file_put_contents("$tmp/roto.json", 'no es json');
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' ' . escapeshellarg("$tmp/roto.json") . ' 2>/dev/null', $salida, $codigo);
 igual('analizar.php: un .json roto sale con 1', 1, $codigo);
+
+// bin/purgar.php
+file_put_contents("$tmp/generado.jsonl", implode("\n", [
+    '{"red":"facebook","usuario":"ana.ejemplo","url":"https://www.facebook.com/ana.ejemplo"}',
+    '{"red":"twitter","usuario":"danaejemplo","url":"https://x.com/danaejemplo"}',
+    '{"red":"twitter","usuario":"otra","url":"https://x.com/otra"}',
+]) . "\n");
+file_put_contents("$tmp/purga.txt", "facebook:ana.ejemplo\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/purgar.php') . ' ' . escapeshellarg("$tmp/generado.jsonl") . ' --excluir=' . escapeshellarg("$tmp/purga.txt") . ' 2>/dev/null', $salida, $codigo);
+igual('purgar.php: a la salida estándar quita a una persona y no toca el archivo', [0, 2, 3], [$codigo, count($salida), count(file("$tmp/generado.jsonl") ?: [])]);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/purgar.php') . ' ' . escapeshellarg("$tmp/generado.jsonl") . ' --excluir=' . escapeshellarg("$tmp/purga.txt") . ' --en-sitio 2>/dev/null', $salida, $codigo);
+igual('purgar.php --en-sitio reescribe el archivo sin la persona y sin dejar temporales', [0, 2, []], [$codigo, count(file("$tmp/generado.jsonl") ?: []), glob("$tmp/*.tmp") ?: []]);
+file_put_contents("$tmp/con-basura.jsonl", "no es json\n" . '{"red":"twitter","usuario":"otra","url":"https://x.com/otra"}' . "\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/purgar.php') . ' ' . escapeshellarg("$tmp/con-basura.jsonl") . ' --excluir=' . escapeshellarg("$tmp/purga.txt") . ' 2>/dev/null', $salida, $codigo);
+igual('purgar.php: una línea ilegible se conserva y el programa sale con 1', [1, 2], [$codigo, count($salida)]);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/purgar.php') . ' ' . escapeshellarg("$tmp/generado.jsonl") . ' 2>&1', $salida, $codigo);
+igual('purgar.php: sin --excluir sale con 2', 2, $codigo);
+// analizar.php sin --jsonl sigue dando un solo arreglo JSON
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' ' . escapeshellarg(__DIR__ . '/muestras/twitter.html') . ' ' . escapeshellarg(__DIR__ . '/muestras/facebook.html') . ' 2>/dev/null', $salida, $codigo);
+$arreglo = json_decode(implode("\n", $salida), true);
+igual('analizar.php sin --jsonl: un solo arreglo JSON con las dos páginas', [0, true, 2], [$codigo, is_array($arreglo) && array_is_list($arreglo), is_array($arreglo) ? count($arreglo) : -1]);
 file_put_contents("$tmp/excluir-cruce.txt", "wikitree:Gonzalez-1234\n");
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --excluir=' . escapeshellarg("$tmp/excluir-cruce.txt") . ' 2>/dev/null', $salida, $codigo);

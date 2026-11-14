@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Uso: php bin/wikidata.php volcado.json[.gz] [--pais=Q298] [--max=N] [--capturado=AAAA-MM-DD] [--excluir=lista.txt]
+// Uso: php bin/wikidata.php volcado.json[.gz|.bz2] [--pais=Q298] [--max=N] [--capturado=AAAA-MM-DD] [--excluir=lista.txt] [--progreso]
 // Escribe un perfil JSON por línea (JSONL) de cada persona que consta como fallecida.
 // Lee un volcado local de Wikidata (CC0) en streaming: no descarga nada.
 
@@ -17,6 +17,7 @@ $ruta = null;
 $pais = null;
 $maximo = null;
 $capturado = null;
+$progreso = false;
 $exclusiones = Exclusiones::vacia();
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--pais=')) {
@@ -29,6 +30,8 @@ foreach (array_slice($argv, 1) as $arg) {
         $maximo = (int) substr($arg, 6);
     } elseif (str_starts_with($arg, '--capturado=')) {
         $capturado = substr($arg, 12);
+    } elseif ($arg === '--progreso') {
+        $progreso = true;
     } elseif (str_starts_with($arg, '--excluir=')) {
         try {
             $exclusiones = Exclusiones::desdeArchivo(substr($arg, 10));
@@ -41,7 +44,7 @@ foreach (array_slice($argv, 1) as $arg) {
     }
 }
 if ($ruta === null || Lote::esUrl($ruta)) {
-    fwrite(STDERR, "Uso: php bin/wikidata.php volcado.json[.gz] [--pais=Q298] [--max=N] [--capturado=AAAA-MM-DD]\nEsto no descarga el volcado: bájalo tú.\n");
+    fwrite(STDERR, "Uso: php bin/wikidata.php volcado.json[.gz|.bz2] [--pais=Q298] [--max=N] [--capturado=AAAA-MM-DD] [--excluir=lista.txt] [--progreso]\nEsto no descarga el volcado: bájalo tú.\n");
     exit(2);
 }
 
@@ -54,9 +57,11 @@ try {
             return;
         }
         echo json_encode($perfil, Lote::JSON), "\n";
-    }, $pais, $maximo, $capturado);
+    }, $pais, $maximo, $capturado, $progreso ? static function (int $lineas, int $aceptadas): void {
+        fwrite(STDERR, number_format($lineas) . " líneas leídas, $aceptadas personas\n");
+    } : null);
 } catch (RuntimeException $e) {
     fwrite(STDERR, $e->getMessage() . "\n");
     exit(1);
 }
-fwrite(STDERR, "{$r['leidas']} líneas con fecha de muerte, {$r['decodificadas']} decodificadas, {$r['aceptadas']} personas, " . ($r['aceptadas'] - $excluidos) . " escritas ($excluidos excluidas)\n");
+fwrite(STDERR, "{$r['lineas']} líneas, {$r['leidas']} con fecha de muerte, {$r['decodificadas']} decodificadas" . ($r['corruptas'] > 0 ? " ({$r['corruptas']} corruptas, saltadas)" : '') . ", {$r['aceptadas']} personas, " . ($r['aceptadas'] - $excluidos) . " escritas ($excluidos excluidas)\n");
