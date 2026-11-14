@@ -59,6 +59,8 @@ correrlas está en la sección «Pruebas» del [README](../README.md). La cobert
 
 Resuelto: los archivos grandes se leen y guardan por lotes (`parseFileInBatches()`, `phonedir import --lote`), sin
 que la memoria crezca con el archivo.
+Resuelto: las búsquedas se paginan (`$limit` y `$offset`, `phonedir search --limite --desde`) y las listas de palabras
+de los tres parsers salen de un solo archivo, `data/palabras.json` (`bin/generar-palabras.php`).
 
 Las estimaciones de volumen, tiempos y hardware están en
 [ESTIMATES_AND_SCALABILITY.md](ESTIMATES_AND_SCALABILITY.md).

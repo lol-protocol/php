@@ -484,6 +484,18 @@ PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `comp
 
 Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`. Leen las guías con las mismas reglas que el parser de PHP: las de calle por idioma (incluida `C/`, y «Dr.» y «St.» al abrir un nombre), la lectura de un bloque de líneas (palabras partidas con guion, varios registros sin línea en blanco, la calle sin palabra que cede ante una con palabra), las entradas de una sola línea, los teléfonos (los formatos de cada idioma, la central con nombre, la corrección de dígitos del OCR, el teléfono en la línea del nombre) y la detección de negocios. Corren además el mismo conjunto de evaluación que el parser de PHP (`tests/fixtures/parser-evaluation.json`): todo caso tiene que salir bien, salvo los que lista `ports/fallas-conocidas.txt`, que tienen que seguir fallando (hoy ninguno: la lista está vacía). Si agregas un caso al conjunto y los puertos no lo resuelven, va a esa lista; si un cambio en un puerto arregla uno, sale de ella.
 
+### Listas de palabras
+
+Las palabras de calle, los sufijos alemanes, las abreviaturas que abren un nombre («Dr.», «St.»), las palabras que detectan un idioma y las que nombran un negocio están en **un solo archivo**, `data/palabras.json`, y de ahí se escriben en el parser de PHP (`StreetRules`, `MultiLanguagePhoneDirectoryParser`) y en los puertos a Python y Java, entre líneas `BEGIN generated: palabras/…` y `END generated: palabras/…`. No se editan a mano en esos archivos:
+
+```bash
+# cambia data/palabras.json, y luego:
+php bin/generar-palabras.php              # reescribe las regiones desactualizadas
+php bin/generar-palabras.php --comprobar  # solo dice cuáles lo están (sale con 1); como --comprobar de Listado-colores/
+```
+
+`WordListSyncTest` (que corre la CI con el resto de las pruebas) falla si una región no coincide con el JSON, o si el JSON es incoherente (un idioma que no está en `idiomas`, una palabra repetida o en mayúsculas, una abreviatura que no es palabra de calle). Las reglas que no son listas de palabras (las expresiones regulares, como la de «Via Roma 10» o las de teléfono) siguen escritas a mano en cada lenguaje, y el conjunto de evaluación avisa si se desfasan.
+
 ### Cuánto acierta el parser
 
 `tests/fixtures/parser-evaluation.json` es un conjunto fijo de guías cortas en los seis idiomas, cada una con lo que una persona leería en ella (nombre, calle, teléfono, persona o empresa). `bin/evaluate-parser.php` pasa `MultiLanguagePhoneDirectoryParser` por esos casos y dice cuántos salen bien, cuántas entradas encuentra y cuántas de ellas son correctas, y qué sigue fallando, agrupado por causa:

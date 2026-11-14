@@ -25,13 +25,15 @@ class MultiLanguagePhoneDirectoryParser
     // outscore English's own (zero) count and misdetect the whole file. English is this project's
     // baseline language, so detection only overrides it on genuinely distinctive vocabulary. Street
     // *extraction* for an already-known language still uses all of StreetRules' words.
+    // BEGIN generated: palabras/deteccion (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     private const LANGUAGE_DETECTION_MARKERS = [
         'es' => ['calle', 'avenida', 'pasaje', 'camino', 'ruta', 'carrera'],
         'fr' => ['rue', 'allée', 'cours'],
         'pt' => ['rua', 'avenida', 'praça', 'alameda', 'estrada', 'largo'],
-        'de' => [], // detected via StreetRules::SUFFIXES only; its own marker words are too ambiguous
+        'de' => [], // no words of its own: detected via StreetRules::SUFFIXES only; its marker words are too ambiguous
         'it' => ['viale', 'corso', 'piazza', 'largo', 'strada'],
     ];
+    // END generated: palabras/deteccion
 
     // Words left out of LANGUAGE_DETECTION_MARKERS because they are also English, still counted where the
     // line has a shape English doesn't use: "Via Roma 10" or "Via Roma, 10" opens the line and ends with
@@ -43,6 +45,7 @@ class MultiLanguagePhoneDirectoryParser
     // Words that name a kind of business, or a family firm ("Smith & Sons", "Hermanos García", "Hnos."), and
     // that almost nobody has for a surname. A word many people carry as a surname (Baker, Miller, Bank...)
     // does not belong in these lists: it would take them out from under Privacy, which only covers persons.
+    // BEGIN generated: palabras/empresas (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     private const ENTITY_TYPE_MARKERS = [
         'es' => ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel', 'banco', 'farmacia', 'hospital', 'hnos', 'hermanos', 'hijos', 'sucesores', 'taller', 'ferretería', 'clínica', 'panadería', 'carnicería', 'librería', 'zapatería'],
         'en' => ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy', 'hospital', 'sons', 'bros', 'associates', 'enterprises', 'industries', 'services', 'plumbing', 'garage', 'bakery', 'hardware', 'clinic', 'pub', 'motel'],
@@ -51,6 +54,7 @@ class MultiLanguagePhoneDirectoryParser
         'de' => ['gmbh', 'ag', 'kg', 'ohg', 'apotheke', 'bäckerei', 'gasthaus', 'restaurant', 'hotel', 'bank', 'krankenhaus', 'gebrüder', 'söhne', 'werkstatt', 'metzgerei', 'tischlerei', 'klinik'],
         'it' => ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel', 'banca', 'farmacia', 'ospedale', 'fratelli', 'figli', 'officina', 'macelleria', 'ferramenta', 'pasticceria', 'pizzeria', 'clinica'],
     ];
+    // END generated: palabras/empresas
 
     private const SUPPORTED_LANGUAGES = StreetRules::SUPPORTED_LANGUAGES;
 

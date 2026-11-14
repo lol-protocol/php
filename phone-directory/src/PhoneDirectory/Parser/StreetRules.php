@@ -20,6 +20,7 @@ use PhoneDirectory\Exception\InvalidLanguageException;
  */
 final class StreetRules
 {
+    // BEGIN generated: palabras/calles (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     public const SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it'];
 
     // Languages whose addresses put the house number after the street name ("Calle Mayor 12", "Via Roma 10").
@@ -43,6 +44,7 @@ final class StreetRules
     private const NAME_ABBREVIATIONS = [
         'en' => ['dr', 'st'],
     ];
+    // END generated: palabras/calles
 
     /** @var array<string, string> */
     private static array $patternCache = [];
