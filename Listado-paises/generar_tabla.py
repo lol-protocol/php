@@ -24,6 +24,7 @@ from collections import Counter
 from pathlib import Path
 
 from comun import filas_csv, leer_csv
+from sugerencias import sugerencias_md
 
 AQUI = Path(__file__).resolve().parent
 PAISES = AQUI / "paises.csv"
@@ -34,6 +35,7 @@ SALIDA_POS = AQUI / "tabla_pos.md"
 SALIDA_FINAL = AQUI / "priorizacion.csv"
 SALIDA_VISTA = AQUI / "vista.html"
 SALIDA_ESCENARIOS = AQUI / "escenarios.md"
+SALIDA_SUGERENCIAS = AQUI / "sugerencias_indices.md"
 # Escenarios de ranking: (nombre, puntaje, excluido). El primero de cada grupo es la regla vigente.
 ESCENARIOS_GEN = [
     ("Vigente: IG × IO, excluye IO ≤ 1", lambda d: d["ig"] * d["io"], lambda d: d["io"] <= 1),
@@ -53,6 +55,7 @@ PUESTOS_MOSTRADOS = 25
 PLANTILLA_VISTA = AQUI / "vista_plantilla.html"
 MAPA = AQUI / "mapa_paises.csv"
 DETALLE = AQUI / "datos_detalle.csv"
+BANDA = AQUI / "poblacion_historica_detalle.csv"
 README = AQUI / "README.md"
 INICIO_RESUMEN = "<!-- resumen: lo escribe generar_tabla.py; no editar a mano -->"
 FIN_RESUMEN = "<!-- fin del resumen -->"
@@ -399,6 +402,8 @@ def main(comprobar=False):
         sys.exit("Errores en los CSV:\n  " + "\n  ".join(errores))
 
     pos_por_codigo = {f["codigo"]: f for _, f in pos}
+    banda = {f["codigo"]: (numero(f["minimo_millones"]), numero(f["maximo_millones"]))
+             for f in filas_csv(BANDA)} if BANDA.exists() else {}
 
     filas_gen, filas_pos, filas_final, registros = [], [], [], []
     excluidos_gen = excluidos_pos = 0
@@ -437,6 +442,7 @@ def main(comprobar=False):
                 ("alf", "alfabetizacion_adultos"), ("net", "usuarios_internet"), ("emi", "emigrantes_pct"),
                 ("eiu", "democracia_eiu"), ("cpi", "corrupcion_cpi"))},
             "fh": f["libertad_fh"],
+            "nmin": banda.get(f["codigo"], (None, None))[0], "nmax": banda.get(f["codigo"], (None, None))[1],
             "ig": ig, "io": io, "pg": pg, "xg": excl_gen, "cg": f["comentarios"],
             "lenguas": p["idioma_principal"], "local": local["lengua"], "il": il, "ip": ip, "ipl": ipl,
             "pal": int(local["palabras_anotadas"]), "web": numero(local["paginas_web_pct"]),
@@ -491,6 +497,7 @@ def main(comprobar=False):
     salidas = [(SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos),
                (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(registros, anios_vista)),
                (SALIDA_ESCENARIOS, escenarios_md(registros)),
+               (SALIDA_SUGERENCIAS, sugerencias_md(registros)),
                (README, readme_con_resumen(resumen_md(registros, niveles)))]
     desactualizadas = comprobar_o_escribir(salidas, comprobar)
     if comprobar and desactualizadas:
@@ -500,7 +507,7 @@ def main(comprobar=False):
     accion = "al día" if comprobar else "escritas"
     print(f"{len(paises)} países. Genealogía: {excluidos_gen} excluidos ({SALIDA_GENEALOGIA.name}). "
           f"POS: {excluidos_pos} excluidos ({SALIDA_POS.name}). Tablas, {SALIDA_FINAL.name}, "
-          f"{SALIDA_VISTA.name} y {SALIDA_ESCENARIOS.name} {accion}.")
+          f"{SALIDA_VISTA.name}, {SALIDA_ESCENARIOS.name} y {SALIDA_SUGERENCIAS.name} {accion}.")
 
 
 if __name__ == "__main__":

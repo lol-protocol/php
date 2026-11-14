@@ -200,6 +200,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `coral` | `#FF7F50` | korall |  |  |  |
 | `crimson` | `#DC143C` | karmazsinvörös |  |  |  |
 | `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | lime (propuesta de IA sin revisar) |  |  |  |
 | `lilac` | `#CEA2FD` | orgona |  |  |  |
 | `burgundy` | `#900020` | bordó |  |  |  |
 | `cream` | `#FFFFC2` | krém |  |  |  |

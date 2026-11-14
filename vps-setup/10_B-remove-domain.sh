@@ -48,7 +48,7 @@ fi
 [ -z "$APP" ] || require_valid name "$APP" "--app"
 if [ "$PURGE" -eq 1 ]; then
     [ -n "$APP" ] || { echo "--purge-app necesita una app (--app NOMBRE, o un vhost con la marca de 06_A/06_B)." >&2; exit 2; }
-    [ "$APP" != marcalibros ] || { echo "Marcalibros no tiene base ni usuario propios: --purge-app no aplica." >&2; exit 2; }
+    [ "$APP" != marcalibros ] || { echo "Marcalibros no tiene base de datos: --purge-app no aplica (su usuario: sudo userdel $(app_user_name marcalibros); sus datos: /var/lib/marcalibros)." >&2; exit 2; }
 fi
 PURGE_DB="app_${APP//-/_}"
 
@@ -180,7 +180,9 @@ echo ""
 echo "✓ $DOMAIN archivado en $DEST (para restaurarlo, mueve las carpetas de vuelta y reactiva el enlace en sites-enabled)."
 echo "Quedan a mano (no se tocaron):"
 [ "$APP" != marcalibros ] || echo "  - Marcalibros:  los marcalibros creados siguen en /var/lib/marcalibros (caducan solos; borralos a mano si quieres)"
-if [ -n "$APP" ] && [ "$PURGE" -ne 1 ]; then
+if [ "$APP" = marcalibros ]; then
+    echo "  - Usuario de sistema de la app: sudo userdel $(app_user_name marcalibros)   (sus datos siguen en /var/lib/marcalibros)"
+elif [ -n "$APP" ] && [ "$PURGE" -ne 1 ]; then
     # Datos y usuario de la app: NO se borran solos (con --purge-app si; ver arriba) (la base puede tener lo unico que importa de la app).
     echo "  - Base de datos de la app (si la tenia): sudo -u postgres dropdb app_${APP//-/_} && sudo -u postgres dropuser app_${APP//-/_}"
     echo "    (antes, un respaldo si lo necesitas: sudo -u postgres pg_dump -Fc app_${APP//-/_} > app_${APP//-/_}.dump)"

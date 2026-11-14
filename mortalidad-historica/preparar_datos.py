@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Arma datos/esperanza_vida.csv a partir de las fuentes que baja descargar_fuentes.py.
+"""Arma datos/esperanza_vida.csv, datos/londres_muertes.csv y datos/paises.csv a partir de las fuentes que
+baja descargar_fuentes.py y de Listado-paises/.
 
-  python3 preparar_datos.py --fuentes fuentes [--codigos ../Listado-paises/codigos_iso.csv]
+  python3 preparar_datos.py --fuentes fuentes [--codigos RUTA] [--paises RUTA]
 
-Qué escribe (una fila por país, década, sexo y edad; la década es el promedio de sus 10 años, y se
+Qué escribe en esperanza_vida.csv (una fila por país, década, sexo y edad; la década es el promedio de sus 10 años, y se
 descarta si falta alguno):
 
 - Edad 0, sexo T, 1800 a 2009: esperanza de vida al nacer de Gapminder (hasta 1949) y de la ONU, revisión
@@ -11,9 +12,15 @@ descarta si falta alguno):
 - Edad 5, sexo T, 1800 a 2009: esperanza restante y supervivencia hasta los 5 años, **derivadas** de la
   esperanza al nacer y de la mortalidad de 0 a 5 años de Gapminder (ver `esperanza_a_los_5`).
 - Edad 0, sexos M y F, 1950 a 2009: esperanza al nacer por sexo de Gapminder (ONU).
+- Edades 15, 30, 45 y 60, sexo T, 1800 a 2009: esperanza restante y supervivencia **modeladas** (modelo
+  log-cuadrático de Wilmoth et al., ver modelo.py) desde la esperanza al nacer y la mortalidad de 0 a 5 años.
+  Cuando el modelo no puede cuadrar las dos (no hay un k que dé esa e0 con esa 5q0), la fila no se escribe.
 
-Los países salen de `codigos_iso.csv` de Listado-paises (se lee solo aquí, al rehacer los datos; las
-pruebas y la CI no la necesitan). Un nombre o código de las fuentes que no sea un país de esa tabla ni
+También escribe `londres_muertes.csv` (muertes por año en Londres, 1629-1902) y `paises.csv` (código,
+nombre y región de cada país), y comprueba que las cifras de cólera de `epidemias.csv` sean las de la fuente.
+
+Los países salen de `codigos_iso.csv` y `paises.csv` de Listado-paises (se leen solo aquí, al rehacer los
+datos; las pruebas y la CI no las necesitan). Un nombre o código de las fuentes que no sea un país de esa tabla ni
 esté en las listas de omitidos de este archivo hace fallar el script: un país no se pierde en silencio.
 Solo biblioteca estándar.
 """
@@ -22,6 +29,8 @@ import csv
 import sys
 from pathlib import Path
 
+import leer_rda
+import modelo
 from comun import DATOS, leer_csv
 
 AQUI = Path(__file__).resolve().parent
@@ -32,6 +41,8 @@ PRIMERA_DECADA_POR_SEXO = 1950
 FUENTE_E0 = "owid-larga"
 FUENTE_E5 = "owid-larga+gapminder-0-5"
 FUENTE_SEXO = "gapminder-sexo"
+FUENTE_MODELO = "logquad"
+EDADES_DEL_MODELO = (15, 30, 45, 60)
 
 # Edad media a la que mueren los niños que no llegan a los 5 años. Es un supuesto (en la práctica va de
 # 0,5 a 1,5 años: casi todas esas muertes ocurren en el primer año). Su efecto sobre la esperanza a los
@@ -150,12 +161,38 @@ def leer_gapminder(ruta, columna_entidad, columna_valor, codigos):
     return series
 
 
-def construir(e0_total, q5, e0_mujeres, e0_hombres):
-    """Las filas de esperanza_vida.csv (listas de texto, en el orden de COLUMNAS) a partir de las series."""
+def leer_coeficientes(ruta):
+    """Las filas de modelo_logcuadratico.csv: [edad, ax, bx, cx, vx], del .rda de DemoTools (ambos sexos)."""
+    objeto = leer_rda.aplanar(leer_rda.cargar(ruta))["fitted_logquad_b"]
+    # El objeto es una lista con nombre; `coefficients` es un data.frame con ax, bx, cx y vx por grupo de edad.
+    nombres = next(a for a in _atributos(objeto) if a[0] == "names")[1]
+    coeficientes = objeto[1][nombres.index("coefficients")]
+    columnas = dict(zip(next(a for a in _atributos(coeficientes) if a[0] == "names")[1], coeficientes[1]))
+    filas = [[edad] + [repr(columnas[c][i]) for c in ("ax", "bx", "cx", "vx")] for i, edad in enumerate(modelo.EDADES)]
+    if any(len(columnas[c]) != len(modelo.EDADES) for c in ("ax", "bx", "cx", "vx")):
+        raise SystemExit("el .rda no tiene los 24 grupos de edad esperados")
+    return filas
+
+
+def _atributos(objeto):
+    """[(nombre, valor)] de los atributos de un objeto leído con leer_rda (la pareja ("attr", valor, pairlist))."""
+    resultado, par = [], objeto[2]
+    while par:
+        _, nombre, valor, siguiente, _ = par
+        resultado.append((nombre, valor))
+        par = siguiente
+    return resultado
+
+
+def construir(e0_total, q5, e0_mujeres, e0_hombres, edades_modelo=()):
+    """Las filas de esperanza_vida.csv (listas de texto, en el orden de COLUMNAS) a partir de las series.
+
+    `edades_modelo` son las edades (grupos del modelo) para las que se agregan filas modeladas, sexo T."""
     filas = []
+    sin_modelo = []  # (país, década) en que el modelo no pudo cuadrar e0 con 5q0
 
     def fila(codigo, decada, sexo, edad, esperanza, supervivencia, fuente):
-        calidad = "C" if decada < 1950 else "B"
+        calidad = "C" if fuente == FUENTE_MODELO or decada < 1950 else "B"
         filas.append([
             codigo, decada, decada + 9, sexo, edad, f"{esperanza:.1f}",
             "" if supervivencia is None else f"{supervivencia:.3f}", "", "", calidad, "verificado", fuente,
@@ -171,6 +208,13 @@ def construir(e0_total, q5, e0_mujeres, e0_hombres):
                 # casi lineal en q5, y así la fila de edad 5 cuadra con la de edad 0.
                 e5, l5 = esperanza_a_los_5(e0, q5_dec[decada])
                 fila(codigo, decada, "T", 5, e5, l5, FUENTE_E5)
+                if edades_modelo:
+                    por_edad = modelo.esperanzas_por_edad(q5_dec[decada], e0, edades_modelo)
+                    if por_edad is None:
+                        sin_modelo.append((codigo, decada))
+                    else:
+                        for edad in edades_modelo:
+                            fila(codigo, decada, "T", edad, por_edad[edad][0], por_edad[edad][1], FUENTE_MODELO)
     for sexo, series in (("F", e0_mujeres), ("M", e0_hombres)):
         for codigo in sorted(series):
             for decada, e0 in promedios_por_decada(series[codigo], desde=PRIMERA_DECADA_POR_SEXO).items():
@@ -178,7 +222,54 @@ def construir(e0_total, q5, e0_mujeres, e0_hombres):
     # El orden final es estable: país, sexo (T, F, M), edad, década.
     orden_sexo = {"T": 0, "F": 1, "M": 2}
     filas.sort(key=lambda f: (f[0], orden_sexo[f[3]], f[4], f[1]))
+    construir.sin_modelo = sin_modelo
     return filas
+
+
+FUENTE_LONDRES = "londres-owid"
+FUENTE_COLERA = "thomas-2015-owid"
+
+
+def construir_londres(ruta):
+    """Las filas de londres_muertes.csv: [año, muertes totales, muertes por viruela, estado, fuente]."""
+    filas = []
+    for f in _filas(ruta):
+        columnas = [c for c in f if c not in ("Entity", "Year")]
+        viruela = next(c for c in columnas if c.startswith("Deaths from Smallpox"))
+        totales = next(c for c in columnas if c.startswith("Deaths from all causes"))
+        if f[viruela] == "" or f[totales] == "":
+            continue
+        filas.append([int(f["Year"]), int(float(f[totales])), int(float(f[viruela])), "verificado", FUENTE_LONDRES])
+    return sorted(filas)
+
+
+def construir_paises(ruta):
+    """Las filas de paises.csv: [código, nombre, región], de Listado-paises/paises.csv."""
+    return sorted([f["codigo"], f["pais"], f["region"]] for f in _filas(ruta))
+
+
+def comprobar_colera(ruta, epidemias):
+    """Falla si una epidemia `verificada` por la serie de cólera de Gran Bretaña no tiene su cifra.
+
+    `epidemias` son las filas de epidemias.csv; las que traen la fuente `thomas-2015-owid` deben tener como
+    muertes mínimas y máximas el valor de la serie en su último año (el de 1832 suma el brote de 1831-1832).
+    """
+    serie = {int(f["Year"]): int(float(f["Cholera deaths"])) for f in _filas(ruta)}
+    for f in epidemias:
+        if f["fuente"] != FUENTE_COLERA:
+            continue
+        esperado = serie.get(int(f["hasta"]))
+        if esperado is None or f["muertes_min"] != str(esperado) or f["muertes_max"] != str(esperado):
+            raise SystemExit(f"epidemias.csv: {f['id']} dice {f['muertes_min']}-{f['muertes_max']} muertes y la "
+                             f"fuente dice {esperado} en {f['hasta']}")
+
+
+def _escribir(nombre, filas):
+    columnas = leer_csv(DATOS / f"{nombre}.csv")[0]
+    with (DATOS / f"{nombre}.csv").open("w", encoding="utf-8", newline="") as salida:
+        escritor = csv.writer(salida)
+        escritor.writerow(columnas)
+        escritor.writerows(filas)
 
 
 def main(argv=None):
@@ -186,24 +277,34 @@ def main(argv=None):
     parser.add_argument("--fuentes", required=True, type=Path, help="carpeta con lo que bajó descargar_fuentes.py")
     parser.add_argument("--codigos", type=Path, default=AQUI.parent / "Listado-paises" / "codigos_iso.csv",
                         help="codigos_iso.csv de Listado-paises (por omisión, el de la carpeta vecina)")
+    parser.add_argument("--paises", type=Path, default=AQUI.parent / "Listado-paises" / "paises.csv",
+                        help="paises.csv de Listado-paises (por omisión, el de la carpeta vecina)")
     args = parser.parse_args(argv)
-    if not args.codigos.exists():
-        raise SystemExit(f"Falta {args.codigos}: para rehacer los datos hace falta Listado-paises/ al lado.")
+    for ruta in (args.codigos, args.paises):
+        if not ruta.exists():
+            raise SystemExit(f"Falta {ruta}: para rehacer los datos hace falta Listado-paises/ al lado.")
     codigos = _filas(args.codigos)
     f = args.fuentes
+    _escribir("modelo_logcuadratico", leer_coeficientes(f / "modelo-logcuadratico-demotools.rda"))
+    modelo.coeficientes.cache_clear()
     filas = construir(
         leer_owid(f / "esperanza-larga-owid.csv", codigos),
         leer_gapminder(f / "mortalidad-0-5-gapminder.csv", "country",
                        "child_mortality_0_5_year_olds_dying_per_1000_born", codigos),
         leer_gapminder(f / "esperanza-mujeres-gapminder.csv", "geo", "life_expectancy_female", codigos),
         leer_gapminder(f / "esperanza-hombres-gapminder.csv", "geo", "life_expectancy_male", codigos),
+        edades_modelo=EDADES_DEL_MODELO,
     )
-    columnas = leer_csv(DATOS / "esperanza_vida.csv")[0]
-    with (DATOS / "esperanza_vida.csv").open("w", encoding="utf-8", newline="") as salida:
-        escritor = csv.writer(salida)
-        escritor.writerow(columnas)
-        escritor.writerows(filas)
-    print(f"esperanza_vida.csv: {len(filas)} filas, {len({fila[0] for fila in filas})} países.")
+    comprobar_colera(f / "colera-gran-bretana-owid.csv", _filas(DATOS / "epidemias.csv"))
+    _escribir("esperanza_vida", filas)
+    print(f"esperanza_vida.csv: {len(filas)} filas, {len({fila[0] for fila in filas})} países; "
+          f"sin edades modeladas en {len(construir.sin_modelo)} décadas de país (el modelo no cuadra e0 con 5q0).")
+    londres = construir_londres(f / "muertes-londres-owid.csv")
+    _escribir("londres_muertes", londres)
+    print(f"londres_muertes.csv: {len(londres)} años.")
+    paises = construir_paises(args.paises)
+    _escribir("paises", paises)
+    print(f"paises.csv: {len(paises)} países.")
     return 0
 
 

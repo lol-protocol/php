@@ -25,4 +25,10 @@ $depurado = $repo->crear('registro', 81372002, 'otro', 'Ya está resuelto.', 'ca
 $repo->decidir($depurado, 'rechazar', 'El acta es pública.');
 $repo->depurar(12, strtotime('+13 months'));
 
+// Una entrega con clave (/e/{token}/): su enlace y su clave los lee ejecutar.mjs desde ENTREGA_SALIDA.
+$entrega = (new \App\Repositories\Genealogy\EntregaRepository(Database::forSite('genealogy')))->crear(6128473105);
+if (($salida = getenv('ENTREGA_SALIDA')) !== false && $salida !== '') {
+    file_put_contents($salida, json_encode(['token' => $entrega['token'], 'clave' => $entrega['clave']], JSON_THROW_ON_ERROR));
+}
+
 echo "pedidos: 3\n";

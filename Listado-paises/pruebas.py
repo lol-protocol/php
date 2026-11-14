@@ -90,6 +90,48 @@ class CargaYCalculo(unittest.TestCase):
         self.assertNotEqual(filas["CU"]["poblacion_historica_acumulada"], "")
 
 
+    def test_banda_va_del_menor_al_mayor_escenario_y_deshace_el_ajuste_de_america(self):
+        shutil.copy(AQUI / "paises.csv", self.carpeta / "paises.csv")
+        escribir_serie(self.carpeta / "poblacion_larga.csv", [
+            ("MX", 1000, 2e6), ("MX", 1500, 2e6), ("MX", 2023, 2e6),
+            ("CU", 1900, 1e6), ("CU", 2023, 1e6)])
+        escribir_serie(self.carpeta / "ajuste_america.csv", [("MX", 1500, 2.0)], ("codigo", "hasta", "factor"))
+        hp.main(self.carpeta)
+        detalle = {f["codigo"]: {k: float(v) for k, v in f.items() if k != "codigo"}
+                   for f in leer_csv(self.carpeta / "poblacion_historica_detalle.csv")}
+        mx, cu = detalle["MX"], detalle["CU"]
+        escenarios = [v for k, v in mx.items() if k not in ("minimo_millones", "maximo_millones")]
+        self.assertEqual((mx["minimo_millones"], mx["maximo_millones"]), (min(escenarios), max(escenarios)))
+        # Sin el ajuste, hasta 1500 la población es la mitad: menos nacidos que el central.
+        self.assertLess(mx["sin_ajuste_america_millones"], mx["central_millones"])
+        # Cuba empieza en 1900: sin ajuste ni años antes de 1800, solo la natalidad mueve la banda.
+        self.assertEqual(cu["sin_ajuste_america_millones"], cu["central_millones"])
+        self.assertEqual(cu["fija_40_antes_1800_millones"], cu["central_millones"])
+
+
+class Sugerencias(unittest.TestCase):
+    def test_minimos_cuadrados_recupera_coeficientes_exactos(self):
+        import sugerencias as sg
+        filas = [(a, b) for a in range(4) for b in range(3)]
+        y = [1 + 2 * a - 3 * b for a, b in filas]
+        for c, esperado in zip(sg.minimos_cuadrados(filas, y), (1, 2, -3)):
+            self.assertAlmostEqual(c, esperado, places=4)
+
+    def test_marca_solo_los_que_se_apartan_y_deja_fuera_a_los_sin_datos(self):
+        import sugerencias as sg
+        base = {"emi": None, "idh": None, "net": None, "alf": None, "fh": "", "cpi": None, "eiu": None,
+                "cg": "", "cp": ""}
+        registros = [{**base, "c": f"P{i}", "n": f"País {i}", "idh": i / 10, "net": 50.0, "il": 1 + i // 2}
+                     for i in range(10)]
+        registros[3]["il"] = 5  # se aparta del patrón
+        registros.append({**base, "c": "SD", "n": "Sin datos", "il": 5})
+        variables = [("IDH", sg._escala("idh")), ("internet", sg._escala("net", 100))]
+        usados = sg.con_datos(registros, variables)
+        self.assertNotIn("SD", [d["c"] for d in usados])
+        _, _, pred, _ = sg.ajustar(usados, "il", variables)
+        self.assertEqual([d["c"] for d, _ in sg.desvios(usados, "il", pred)], ["P3"])
+
+
 class DatosPreparados(unittest.TestCase):
     def test_extension_sigue_a_la_region_y_falla_claro_sin_poblacion_regional(self):
         import preparar_datos
@@ -151,6 +193,13 @@ class DatosPreparados(unittest.TestCase):
         viejos = [(1500, 50.0), (1800, 100.0)]
         self.assertEqual(pd.empalmar(viejos, [(1800, 100.0 * pd.EMPALME_MAXIMO * 1.01)]), [])
         self.assertEqual(pd.empalmar(viejos, [(1500, 50.0)]), [])  # nada anterior al primer año
+
+    def test_millones_con_tres_cifras_significativas_como_minimo(self):
+        import preparar_datos as pd
+        self.assertEqual([pd.formato_millones(p) for p in (1_450_900_000, 67_500_000, 4_000_000, 185_482, 33_606, 9_000)],
+                         ["1450.9", "67.5", "4.00", "0.185", "0.034", "0.009"])
+        for personas in range(100_000, 1_000_000, 1_237):  # por debajo de un millón, un error de 0,5 % como mucho
+            self.assertLessEqual(abs(float(pd.formato_millones(personas)) * 1e6 - personas) / personas, 0.005)
 
     def test_ultimo_dato_solo_si_es_desde_el_anio_minimo(self):
         import preparar_datos as pd
@@ -350,7 +399,7 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(aa["emigrantes_pct"], "10.0")  # 400 000 / 4 000 000
         self.assertEqual((aa["libertad_fh"], aa["democracia_eiu"], aa["corrupcion_cpi"]), ("parcial", "61.5", "45"))
         self.assertEqual(bb["libertad_fh"], "")  # 2010 es anterior al mínimo
-        self.assertEqual(bb["poblacion_millones"], "0.25")  # Banco Mundial, sin OWID
+        self.assertEqual(bb["poblacion_millones"], "0.250")  # Banco Mundial, sin OWID
         self.assertEqual(bb["pib_per_capita_usd"], "10000")  # de dos años antes
         self.assertEqual(bb["alfabetizacion_adultos"], "70.0")
         self.assertEqual(cc["poblacion_millones"], "")  # Gapminder no da la población actual

@@ -263,8 +263,13 @@ def empalmar(viejos, conocidos):
 
 
 def formato_millones(personas):
+    """Millones con tres cifras significativas como mínimo: 1450.9, 67.50, 4.00, 0.185, 0.034.
+
+    Por debajo de un millón van tres decimales (con dos, 185 482 personas salían como 0,19: un 2 % de
+    error); con un decimal o dos por encima, el error no pasa de un 0,5 %.
+    """
     m = personas / 1e6
-    return f"{m:.1f}" if m >= 10 else f"{m:.2f}" if m >= 0.1 else f"{m:.3f}"
+    return f"{m:.1f}" if m >= 10 else f"{m:.2f}" if m >= 1 else f"{m:.3f}"
 
 
 def main(argv=None, carpeta=AQUI):
@@ -449,6 +454,11 @@ def main(argv=None, carpeta=AQUI):
     factores_america = ajustar_america(series)
     filas_larga = [(codigo, a, round(p)) for codigo, serie in series.items() for a, p in serie]
     escribir_filas(carpeta / "poblacion_larga.csv", ["codigo", "anio", "poblacion"], filas_larga)
+    # Para que historia_poblacion pueda calcular el escenario sin el ajuste (banda de incertidumbre).
+    escribir_filas(carpeta / "ajuste_america.csv", ["codigo", "hasta", "factor"],
+                   sorted([c, ANIO_CONTACTO, f"{factores_america[region]:.6f}"]
+                          for region, (_, codigos) in DENEVAN.items() if region in factores_america
+                          for c in codigos if c in series))
     escribir_filas(carpeta / "natalidad.csv", ["codigo", "anio", "tasa_por_mil"], filas_natalidad)
     escribir_dicts(carpeta / "paises.csv", columnas, paises)
     escribir_filas(carpeta / "datos_detalle.csv", ["codigo", "columna", "anio", "fuente"], detalle)

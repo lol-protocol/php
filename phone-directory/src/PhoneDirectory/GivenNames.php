@@ -12,10 +12,16 @@ namespace PhoneDirectory;
  * business's country: a directory lists immigrants too, and a name from another list showing up in a business
  * name is still a person's name.
  *
- * What it misses, accepted when issue #233 was decided: a business named only after a surname
- * ("Panadería Pérez") and a given name that is not on the lists. What it hides too much: a business whose
- * name holds a word that is also a given name ("Farmacia San José", "Florería Rosa"). Hiding too much is the
- * side to err on, as everywhere in Privacy.
+ * It also knows the most common surnames of each language (SURNAMES), so a business named only after a surname
+ * ("Panadería Pérez") is hidden too, and it skips a name that follows a saint's title ("Farmacia San José",
+ * "Hotel Santa María"): that business is named after a saint, not after a person. Both are heuristics.
+ *
+ * What it still misses: a surname or a given name that is not on the lists. The surname lists leave out the
+ * ones that are also everyday words ("Flores", "Torres", "Costa", "Miller", "Baker"), because hiding "Hotel
+ * Torres del Paine" for them would hide too much; so "Panadería Torres" is shown. What it still hides too much:
+ * a business whose name holds a word that is also a given name without a saint's title ("Florería Rosa").
+ * Hiding too much is the side to err on, as everywhere in Privacy. The saint's title is the one place where it
+ * hides less: a person's business named "Ferretería San José" because the owner is José is shown (issue #233).
  */
 final class GivenNames
 {
@@ -66,10 +72,54 @@ final class GivenNames
         ],
     ];
 
-    /** @var array<string, true>|null every name of every list, as keys */
+    /**
+     * Common surnames per language, folded like NAMES. Only the ones that are not also everyday words: a list of
+     * surnames that hid every "Flores", "Costa" or "Torres" would hide shops that are named after a flower, a coast
+     * or a tower.
+     */
+    private const SURNAMES = [
+        'es' => [
+            'garcia', 'rodriguez', 'martinez', 'lopez', 'gonzalez', 'hernandez', 'perez', 'sanchez', 'ramirez', 'fernandez',
+            'gomez', 'diaz', 'alvarez', 'jimenez', 'munoz', 'gutierrez', 'ruiz', 'navarro', 'dominguez', 'mendoza',
+            'guerrero', 'vargas', 'aguilar', 'molina', 'rojas',
+        ],
+        'en' => [
+            'smith', 'johnson', 'williams', 'jones', 'davis', 'wilson', 'anderson', 'taylor', 'moore', 'jackson',
+            'thompson', 'harris', 'clark', 'lewis', 'walker', 'robinson', 'edwards', 'campbell', 'mitchell', 'turner',
+        ],
+        'fr' => [
+            'martin', 'bernard', 'dubois', 'durand', 'moreau', 'lefebvre', 'bertrand', 'girard', 'dupont', 'lambert',
+            'rousseau',
+        ],
+        'pt' => [
+            'silva', 'oliveira', 'souza', 'pereira', 'rodrigues', 'ferreira', 'alves', 'ribeiro', 'carvalho', 'gomes',
+            'almeida', 'nascimento', 'barbosa', 'cardoso', 'teixeira',
+        ],
+        'de' => [
+            'muller', 'mueller', 'schmidt', 'schneider', 'fischer', 'weber', 'meyer', 'meier', 'maier', 'wagner',
+            'becker', 'schulz', 'hoffmann', 'hofmann', 'schafer', 'wolf', 'schroder', 'neumann', 'kruger', 'hartmann',
+            'schmitt', 'krause', 'lehmann', 'herrmann',
+        ],
+        'it' => [
+            'rossi', 'russo', 'ferrari', 'esposito', 'bianchi', 'romano', 'colombo', 'ricci', 'marino', 'giordano',
+            'mancini', 'rizzo', 'lombardi', 'moretti', 'barbieri', 'santoro', 'mariani', 'rinaldi', 'caruso', 'ferraro',
+            'martini', 'longo', 'martinelli', 'lombardo', 'coppola',
+        ],
+    ];
+
+    /**
+     * The titles of a saint, folded: the name right after one belongs to the saint ("San José", "Saint Joseph",
+     * "St. Mary"), not to a person who may be alive.
+     */
+    private const SAINT_TITLES = ['san', 'santa', 'santo', 'sao', 'saint', 'sainte', 'st', 'sankt'];
+
+    /** @var array<string, true>|null every given name and surname of every list, as keys */
     private static ?array $all = null;
 
-    /** Whether $text holds one of the given names as a whole word, ignoring case and accents. */
+    /**
+     * Whether $text holds a given name or a common surname as a whole word, ignoring case and accents, unless
+     * that word comes right after a saint's title.
+     */
     public static function appearsIn(string $text): bool
     {
         if (!mb_check_encoding($text, 'UTF-8')) {
@@ -77,10 +127,12 @@ final class GivenNames
         }
 
         $names = self::all();
+        $previous = null;
         foreach (preg_split('/[^\p{L}]+/u', TextFolding::fold($text), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $word) {
-            if (isset($names[$word])) {
+            if (isset($names[$word]) && !in_array($previous, self::SAINT_TITLES, true)) {
                 return true;
             }
+            $previous = $word;
         }
 
         return false;
@@ -91,8 +143,10 @@ final class GivenNames
     {
         if (self::$all === null) {
             self::$all = [];
-            foreach (self::NAMES as $names) {
-                self::$all += array_fill_keys($names, true);
+            foreach ([self::NAMES, self::SURNAMES] as $lists) {
+                foreach ($lists as $names) {
+                    self::$all += array_fill_keys($names, true);
+                }
             }
         }
 

@@ -8,13 +8,13 @@
     "enactment_date": "2019-10-29",
     "effective_date": "2019-10-29",
     "scope": "Data subjects (natural persons) in Togo (unconfirmed)",
-    "applies_to": "Public and private controllers (unconfirmed)",
+    "applies_to": "Institutions, companies, public administrations and private actors that collect, process or store personal data",
     "key_requirements": "Consent, transparency and security (ch. II); prior declaration to IPDCP with receipt within one month; prior authorization for genetic, health, criminal or biometric data; rights to information (art. 35), access (art. 39), objection, erasure, rectification",
     "data_categories": "Personal data; sensitive data incl. genetic, health, criminal, biometric",
     "retention_period": "Not specified",
     "enforcement_authority": "Personal Data Protection Authority (IPDCP, Instance de protection des donnees a caractere personnel); launched activities 28 March 2025",
-    "penalties_range": "Unlawful collection or retention of sensitive data without explicit consent: 1 to 5 years prison and fine of CFA 1 to 10 million, same for retention beyond legal periods and fraudulent CCTV (per IPDCP); a secondary tracker gives CFA 1 to 25 million (unconfirmed)",
-    "exemptions": "Some processing exempt from declaration (articles not found) (unconfirmed)",
+    "penalties_range": "Sensitive data collected/kept without explicit consent, retention beyond legal periods, fraudulent CCTV: 1-5 years prison and CFA 1-10 million fine (IPDCP); IPDCP may fine under CFA 100 million",
+    "exemptions": "Exempt from prior declaration: certain open-data registers; genetic, health, criminal and biometric data need prior authorization instead (article numbers not given)",
     "deceased_data": "",
     "research_exemption": "",
     "genetic_data": "Genetic data requires prior authorization from IPDCP; genetic identity is part of the definition of personal data (art. 4)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf",
@@ -50,9 +50,9 @@
         "checked": "2026-10-16"
       },
       "applies_to": {
-        "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.osiris.sn/protection-des-donnees-personnelles-au-togo-l-ipdcp-entame-sa-mission.html",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
@@ -71,13 +71,13 @@
       },
       "penalties_range": {
         "url": "https://fr.allafrica.com/stories/202512040384.html",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "exemptions": {
         "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "genetic_data": {
         "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
@@ -86,6 +86,24 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "exemptions",
+        "from": "Some processing exempt from declaration (articles not found) (unconfirmed)",
+        "to": "Exempt from prior declaration: certain open-data registers; genetic, health, criminal and biometric data need prior authorization instead (article numbers not given)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "Unlawful collection or retention of sensitive data without explicit consent: 1 to 5 years prison and fine of CFA 1 to 10 million, same for retention beyond legal periods and fraudulent CCTV (per IPDCP); a secondary tracker gives CFA 1 to 25 million (unconfirmed)",
+        "to": "Sensitive data collected/kept without explicit consent, retention beyond legal periods, fraudulent CCTV: 1-5 years prison and CFA 1-10 million fine (IPDCP); IPDCP may fine under CFA 100 million"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Public and private controllers (unconfirmed)",
+        "to": "Institutions, companies, public administrations and private actors that collect, process or store personal data"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

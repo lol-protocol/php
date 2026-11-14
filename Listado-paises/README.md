@@ -54,12 +54,16 @@ están al día, así que el resto del README las remite aquí en vez de repetirl
 - `codigos_iso.csv`: código ISO alfa-2 del repositorio y su alfa-3, con el que se cruzan Our World
   in Data, Gapminder y el Banco Mundial (Kosovo es `OWID_KOS`, y `XKX` en el Banco Mundial). Se
   generó con `pycountry` para que los scripts no dependan de él.
-- `poblacion_larga.csv` y `natalidad.csv`: datos de entrada de la población histórica, generados
-  por `preparar_datos.py`.
+- `poblacion_larga.csv`, `natalidad.csv` y `ajuste_america.csv`: datos de entrada de la población
+  histórica, generados por `preparar_datos.py` (el último, el factor de Denevan de cada país de
+  América, sirve para el escenario sin ajuste de la banda).
 - `comun.py`: lectura y escritura de CSV y años de los datos, compartidos por todos los scripts.
 - `historia_poblacion.py`: calcula los nacidos en la historia de cada país a partir de esos dos
-  archivos, y escribe la columna de `paises.csv` y `poblacion_historica_detalle.csv` (con la banda
-  de sensibilidad).
+  archivos, y escribe la columna de `paises.csv` y `poblacion_historica_detalle.csv` (cada
+  escenario y la banda de incertidumbre).
+- `sugerencias.py` y `sugerencias_indices.md`: IG, IO e IL estimados desde los datos con una
+  regresión lineal, y la lista de los países cuyo puntaje se aparta mucho de lo estimado. Ver
+  «Sugerencias desde los datos».
 - `escenarios.md`: el puesto de cada país con la regla vigente y con alternativas (otro umbral de
   exclusión, más peso a un índice), para ver cuánto depende el ranking de esas decisiones.
 - `datos_detalle.csv`: año y fuente de cada dato de `paises.csv` (lo escribe `preparar_datos.py`).
@@ -107,7 +111,7 @@ Vaticano ni otros territorios menores.
 | `pais` | Nombre en español. |
 | `tipo` | `estado`, `territorio` o `entidad disputada`. |
 | `region` | África, América, Asia, Europa u Oceanía. |
-| `poblacion_millones` | Población de 2024, en millones, de Our World in Data (basada en ONU, *World Population Prospects 2024*). Gibraltar, Isla de Man y Puerto Rico, que esa fuente no incluye, usan la del Banco Mundial (`SP.POP.TOTL`). Vacía en Guernsey, Jersey y Reunión. |
+| `poblacion_millones` | Población de 2024, en millones (con tres decimales por debajo de un millón: 0.185), de Our World in Data (basada en ONU, *World Population Prospects 2024*). Gibraltar, Isla de Man y Puerto Rico, que esa fuente no incluye, usan la del Banco Mundial (`SP.POP.TOTL`). Vacía en Guernsey, Jersey y Reunión. |
 | `poblacion_historica_acumulada` | Personas nacidas en el territorio del país desde el 10 000 a. C., en millones. Es una estimación (ver «Población histórica acumulada»). |
 | `idh` | Índice de Desarrollo Humano de **2023**, del PNUD (*Informe sobre Desarrollo Humano 2025*), vía Gapminder. Vacía donde el PNUD no lo publica: 6 países y los 9 territorios nuevos. |
 | `pib_per_capita_usd` | PIB per cápita **nominal** de 2024 en dólares corrientes, del Banco Mundial (`NY.GDP.PCAP.CD`). Si falta 2024, el del último año desde 2021; si no, vacía (ver «Estado de los datos»). |
@@ -321,8 +325,17 @@ Sudamérica, que tuvieron poblaciones muy pequeñas durante casi toda la histori
   exponencial).
 - `b(t)`: tasa bruta de natalidad, como fracción (40 por mil = 0,040). Desde 1800, la del país
   (`natalidad.csv`); antes, la de su época (ver abajo).
-- Banda de sensibilidad: `N` se recalcula con `b` × 0,9 y `b` × 1,1, y el resultado queda en
-  `poblacion_historica_detalle.csv`.
+- **Banda de incertidumbre:** `N` se recalcula en cuatro escenarios más, y la banda va del menor al
+  mayor de los cinco. Todo queda en `poblacion_historica_detalle.csv`, y la vista muestra la banda
+  junto a los nacidos.
+  - natalidad × 0,9 y × 1,1;
+  - 40 por mil fijo antes de 1800, en vez de las épocas del PRB (lo que más baja el total);
+  - América sin el ajuste a Denevan (lo que más sube a México y Brasil).
+
+  El total mundial va de 60 700 a 99 700 millones (central, 88 600). La banda es ancha a
+  propósito: muestra cuánto dependen las cifras de supuestos que no se pueden verificar. Por
+  ejemplo, México va de 1 700 a 3 930 millones y Brasil de 1 030 a 3 100, mientras que India
+  (16 000 a 26 500) y China (11 400 a 17 700) mantienen su lugar en cualquier escenario.
 
 **Serie larga de cada país** (`preparar_datos.py`, decidido). La base es la población por país
 de Our World in Data, y las demás fuentes solo cubren los años anteriores a su primer dato:
@@ -399,7 +412,8 @@ comparar países entre sí, no como conteo exacto.**
   empieza tarde sin ser su poblamiento, es gruesa: un país que antes tuvo más peso en su región
   queda subestimado, y uno que lo ganó después, sobreestimado. Pesa poco: son micro-estados,
   territorios, Irlanda, Serbia, Kosovo, Montenegro, Palestina, Curazao y Sudán del Sur.
-- La banda de ±10 % solo cubre la natalidad, no las poblaciones de hace miles de años.
+- La banda cubre la natalidad y el ajuste de América, no el error de las poblaciones de HYDE de hace
+  miles de años, que Our World in Data publica sin rango.
 - Antes de 1800 la natalidad es la misma para todos los países en cada época. Es lo que más pesa
   en el total: con 40 por mil fijo, el total mundial baja un tercio.
 - La serie de Our World in Data termina en 2023. El año 2024 sale de la población actual (Our
@@ -525,6 +539,24 @@ Léelo antes de usar la tabla para decidir.
 - **IG, IO e IL:** son juicio propio, con las rúbricas de arriba y los topes por datos. No son
   datos oficiales. Las menciones a la alfabetización en `comentarios_pos` coinciden con la columna
   de alfabetización.
+
+## Sugerencias desde los datos
+
+`sugerencias_indices.md` (lo escribe `generar_tabla.py` y lo comprueba `--comprobar`) ajusta una
+regresión lineal para cada índice, con los puntajes actuales como objetivo:
+
+- **IG** con emigrantes, IDH e internet;
+- **IO** con libertad, corrupción, democracia, internet e IDH;
+- **IL** con alfabetización, internet e IDH.
+
+Lista los países cuyo puntaje se aparta 1,5 puntos o más de lo que predicen sus datos. Los que no
+tienen datos suficientes (más de uno faltante) quedan fuera. Con los datos actuales, IO e IL siguen
+bien el patrón (R² de 0,81 y 0,79) y no marcan ningún país. IG lo sigue poco (R² 0,48): el interés
+en la genealogía depende de la cultura y del mercado más que del desarrollo. Por eso marca países
+con mucha tradición genealógica, como China, Corea del Sur, Italia, Portugal y Estados Unidos, y a
+las monarquías del Golfo, donde se puso IG 1 por los registros poco públicos. Esos desvíos están
+justificados en sus comentarios. La lista sirve para revisar, cada vez que cambian los datos, si
+aparece un caso nuevo.
 
 ## Pendientes
 

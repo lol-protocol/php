@@ -39,6 +39,8 @@
 | `/` | `Genealogy\HomeController::index` | — |
 | `/b/` | `Genealogy\HomeController::buscar` | hasta 3 segmentos más |
 | `/r/` | `Genealogy\RetiroController::pedir` | hasta 1 segmentos más |
+| `/s/` | `Genealogy\SolicitudController::pedir` | hasta 1 segmentos más |
+| `/e/` | `Genealogy\EntregaController::ver` | hasta 1 segmentos más |
 | `/0/` | `Genealogy\CuentaController::index` | 1 colecciones · 2 aportes · 3 retiros |
 
 ### Archivos

@@ -34,7 +34,7 @@ export function unrecorded(entries, recorded) {
 
 /** recordChanges() and main() bound to one project's dataset. */
 export function createRecordChanges({ dataset }) {
-  const { CHANGE_COLUMNS, CHANGES_FILE, MASTER_CSV, ROOT, ROW_CHANGE, SOURCE_COLUMNS, SOURCES_FILE, diffRecords, loadMaster, loadSide, parseMaster, todayIso, writeCsv } = dataset;
+  const { CHANGE_COLUMNS, CHANGES_FILE, MASTER_CSV, ROOT, ROW_CHANGE, diffRecords, loadMaster, loadSide, loadSources, parseMaster, todayIso, writeCsv, writeSources } = dataset;
 
   function parseArgs(argv) {
     const options = { since: "HEAD", date: todayIso(), check: false };
@@ -55,7 +55,7 @@ export function createRecordChanges({ dataset }) {
     // Correrlo dos veces sin commitear entre medias comparaba con el mismo HEAD y anotaba todo otra vez: solo
     // se agrega lo que changes.csv todavia no tiene (y, si hay filas repetidas de antes, se quedan una).
     const entries = diffRecords(before, after, date).filter((e) => !changes.rows.some((r) => sameRow(e, r)));
-    const sources = loadSide(masterPath, SOURCES_FILE, SOURCE_COLUMNS);
+    const sources = loadSources(masterPath);
     followRenames(entries, changes.rows);
     followRenames(entries, sources.rows);
     const all = [...changes.rows, ...entries].filter((row, i, rows) => rows.findIndex((other) => sameRow(row, other)) === i).sort(
@@ -94,7 +94,7 @@ export function createRecordChanges({ dataset }) {
       return 0;
     }
     writeCsv(changes.path, CHANGE_COLUMNS, all);
-    if (entries.some((e) => e.field === "law_name") && sources.rows.length) writeCsv(sources.path, SOURCE_COLUMNS, sources.rows);
+    if (entries.some((e) => e.field === "law_name") && sources.rows.length) writeSources(masterPath, sources.rows);
     const rows = new Set(entries.map((e) => `${e.country_code} ${e.law_name}`));
     const added = entries.filter((e) => e.field === ROW_CHANGE).length;
     console.log(`✔ ${entries.length} change(s) in ${rows.size} row(s) since ${options.since} (${added} added/removed) → ${CHANGES_FILE}`);

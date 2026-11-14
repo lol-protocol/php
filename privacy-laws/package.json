@@ -17,7 +17,8 @@
     "changes": "node scripts/record-changes.js",
     "translations": "node scripts/translations.js",
     "replace-url": "node scripts/replace-url.js",
-    "apply-research": "node scripts/apply-research.js"
+    "apply-research": "node scripts/apply-research.js",
+    "sources": "node scripts/sources.js"
   },
   "keywords": [
     "privacy",

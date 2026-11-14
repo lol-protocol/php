@@ -7,14 +7,14 @@
     "jurisdiction": "Somalia Data Protection Authority (DPA)",
     "enactment_date": "2023-03-21",
     "effective_date": "2023-03-23",
-    "scope": "Data subjects in Somalia (unconfirmed)",
+    "scope": "Controllers based or operating in Somalia: processing in Somalia that involves targeting, monitoring online behaviour or offering goods/services to individuals in Somalia (Arts. 4-5)",
     "applies_to": "Controllers and processors operating in Somalia; extra duties (DPO, impact assessments) for controllers of major importance",
     "key_requirements": "Breach notification within 72 hours; DPO and DPIA for major-importance controllers; cross-border transfers only to adequate countries or with safeguards or consent (arts. 30-31); registration of controllers and processors",
-    "data_categories": "Personal data (unconfirmed)",
+    "data_categories": "Personal data and sensitive personal data, plus an undefined 'public data' category overseen by the Authority (Art. 6)",
     "retention_period": "Not specified",
     "enforcement_authority": "Somalia Data Protection Authority (DPA)",
-    "penalties_range": "Authority may investigate and impose fines; amounts not found (unconfirmed)",
-    "exemptions": "Exemptions in art. 5(1)-(3) including personal or household use (unconfirmed)",
+    "penalties_range": "Authority may investigate and impose fines; amounts not stated in the sources read",
+    "exemptions": "Art. 5: personal/household use; non-major-importance controllers until 23 Mar 2025; crime, public health emergency, national security (5(3)); journalistic, educational, artistic, literary use (5(4))",
     "deceased_data": "Not addressed: the Act does not mention deceased persons' data",
     "research_exemption": "Archiving in the public interest or historical, statistical or scientific research is a lawful basis for processing (art. 14(2)(k))",
     "genetic_data": "Genetic data are not in the sensitive-data list (art. 2(15): biometric, race/clan/ethnic origin, religion, health, marital status/sex life, political opinions; the Authority may add categories)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-31",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://www.consentstack.io/regulations/so-dpa",
@@ -50,9 +50,9 @@
         "checked": "2026-10-16"
       },
       "scope": {
-        "url": "https://cipit.strathmore.edu/ushering-in-a-new-dawn-for-data-protection-unpacking-the-somalia-data-protection-act-of-2023/",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
+        "confidence": "high",
+        "checked": "2026-11-13"
       },
       "applies_to": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
@@ -65,9 +65,9 @@
         "checked": "2026-10-16"
       },
       "data_categories": {
-        "url": "https://www.consentstack.io/regulations/so-dpa",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://cipit.strathmore.edu/ushering-in-a-new-dawn-for-data-protection-unpacking-the-somalia-data-protection-act-of-2023/",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
@@ -76,13 +76,13 @@
       },
       "penalties_range": {
         "url": "https://www.techhiveadvisory.africa/insights/review-of-somalias-data-protection-act-and-implementing-regulations",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "exemptions": {
         "url": "https://cipit.strathmore.edu/ushering-in-a-new-dawn-for-data-protection-unpacking-the-somalia-data-protection-act-of-2023/",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "research_exemption": {
         "url": "https://dataprotection.africa/wp-content/uploads/Somalia_DPA.pdf",
@@ -101,6 +101,30 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "exemptions",
+        "from": "Exemptions in art. 5(1)-(3) including personal or household use (unconfirmed)",
+        "to": "Art. 5: personal/household use; non-major-importance controllers until 23 Mar 2025; crime, public health emergency, national security (5(3)); journalistic, educational, artistic, literary use (5(4))"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "Authority may investigate and impose fines; amounts not found (unconfirmed)",
+        "to": "Authority may investigate and impose fines; amounts not stated in the sources read"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "data_categories",
+        "from": "Personal data (unconfirmed)",
+        "to": "Personal data and sensitive personal data, plus an undefined 'public data' category overseen by the Authority (Art. 6)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects in Somalia (unconfirmed)",
+        "to": "Controllers based or operating in Somalia: processing in Somalia that involves targeting, monitoring online behaviour or offering goods/services to individuals in Somalia (Arts. 4-5)"
+      },
       {
         "date": "2026-10-31",
         "field": "genetic_data",

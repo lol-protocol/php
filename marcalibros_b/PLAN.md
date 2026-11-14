@@ -276,3 +276,33 @@ Qué semilla sale en cada pieza (parecido a otra, motivo visible en miniatura, t
 - Los hashes de referencia de los JPG ya no son de píxeles sino de la geometría de la escena (primitivas, semilla y grano): no dependen de Pillow. Con esto, Pillow y numpy solo afectan a los bytes de los JPG; fonttools sigue afectando a los SVG con texto.
 - `qa.pixeles_de_motivo` queda `@deprecated` (comparaba imágenes ya dibujadas).
 - Como cambia la elección, las 1000 piezas se regeneraron: mismas obras, paletas y composiciones asignadas, otras semillas en 46 piezas y las que dependen de ellas dentro de su movimiento.
+
+## Pestaña de plantillas en el editor (hecha)
+`editor/index.html` tiene ahora tres fondos: paisaje generado, **plantilla del catálogo** y tu imagen. La plantilla es el paisaje de una pieza (sin su frase), que el servidor reconstruye con `editor.renderizar_receta` (`fondo: {tipo: "plantilla", pieza: <id>}`):
+- Datos en la página: las 1000 piezas (autor, obra, paleta, composición, motivo) y las paletas del catálogo, escritos por `generator/editor_datos.py` (`--comprobar` los verifica). Filtro por movimiento y autor, búsqueda por obra y «Ver más» de 60 en 60.
+- Vista exacta: `python generator/editor_datos.py --sprites` escribe por movimiento `editor/plantillas/<movimiento>.jpg` (miniaturas 80×560, 20 por fila, para la rejilla) y `<movimiento>.json` (las escenas en vectores: degradado, círculos, polígonos y velos, ~300 KB por movimiento), con el mismo fondo que la receta. La página dibuja el vector (nítido y exacto, lo pide con `fetch` la primera vez); un test comprueba que el vector dibuja lo mismo que la receta. No se versionan (`.gitignore`); la CI los genera y los sube en el artefacto. Sin sprites, o si la página se abre como archivo (el lienzo queda «manchado»), usa una vista aproximada con el dibujo del editor (solo luna, cipreses y árbol) y lo avisa.
+- El tono y el velo del texto se calculan sobre la miniatura, como con las demás fondos.
+- Orden de vistas: vector (exacto) → sprite (exacto, borroso al ampliar) → aproximada del editor (solo luna, cipreses y árbol), que ahora solo sale si la página se abre como archivo o sin los archivos generados.
+
+## Moderación y borrado de imágenes en cascada (hecho)
+`generator/moderacion.py` (reglas en `catalog/moderacion.yaml`) y `generator/almacen.py` (JSON atómico con bloqueo por archivo, reentrante, que ahora usa también `AlmacenSubidas`). Tests: `tests/test_moderacion.py`.
+- **Flujo:** un diseño nace `privado`. `pedir_publicacion` aplica las reglas (`evaluar`): *duras* (enlace, correo, teléfono, suplantación de «Marcalibros»/«Plataforma POS», palabras bloqueadas) lo rechazan con los motivos; *blandas* (todo en mayúsculas, caracteres repetidos, imagen propia o lo que devuelva un clasificador opcional) lo mandan a la cola de revisión humana (`cola`, `aprobar`, `rechazar` con motivo); sin banderas y sin imagen propia se aprueba solo. Solo `aprobar` deja un diseño `compartido`; rechazar lo devuelve a `privado`.
+- **Esquema:** `moderacion_motivo` y `revisado` (solo diseños de usuario); un diseño rechazado es privado y lleva motivo.
+- **Cascada:** `usos_de_imagen` lista los diseños que usan una imagen; `borrar_imagen` avisa de cuáles (y cuántos están compartidos) y no borra; con `forzar` los borra también. Las marcas no se tocan: `resolver_diseno` devuelve el diseño, la pieza del catálogo o `None` si se borró.
+- La lista de palabras bloqueadas está vacía a propósito: al haber servidor, integrar `defamatory-content-review/` en vez de mantener otra lista.
+- Corregido al probar: un correo contaba también como enlace, y «Yo» como autoría disimulaba una frase en mayúsculas.
+
+## Gutenberg: prellenado listo para una sesión con red (hecho)
+`python generator/verificar_gutenberg.py --csv` (necesita gutendex.com) escribe `catalog/revision/gutenberg-prellenado.csv` con lo que Gutendex permite afirmar, listo para `gutenberg_manual.py aplicar`:
+- obra: `verificado` con el id del libro si autor (nombre y años) y título (español u original) coinciden con una sola edición, o con varias del mismo título (se toma la más descargada); con títulos distintos queda en blanco y la nota dice `ambiguo`;
+- tema «de» otra obra: hereda el id de la obra base si esta quedó verificada (`modelo.obra_base`; «Frankenstein» → «Frankenstein o el moderno Prometeo»);
+- autor sin libros y muerto después de 1955: `no_disponible` (Realismo mágico); Gutendex no da ids de autor, así que los demás quedan en blanco.
+La columna `nota` dice de dónde sale cada fila. Probado solo con respuestas simuladas. Pasos en una sesión con red: ejecutar el prellenado, mirar el CSV, aplicarlo y reconstruir (`build.py --all`).
+
+## Ampliación del catálogo: decisiones y fases (en curso)
+Decidido con el usuario: ampliar movimientos, géneros (como eje), autores por movimiento e idiomas/literaturas, hasta ~2000 piezas; escrituras no latinas con fuentes libres (Noto, OFL); contenido nuevo **solo del canon, obras muy conocidas y seguras** (de memoria, marcado borrador, sin verificar).
+- **Fase 1 (hecha): géneros como eje.** `catalog/generos.yaml` agrupa los ~60 `tipo` en cinco géneros (poesía, épica, narrativa, teatro, ensayo y no ficción); `modelo.genero_de_obra` los deriva (un tema hereda el de su obra base; `temas_de_colecciones` y `temas_sueltos` cubren los que no tienen). Una prueba falla si una obra tiene un `tipo` sin género. El editor filtra las plantillas por género. No cambia el generador ni las piezas.
+- **Fase 2: +5 autores por movimiento** (+500 piezas) de literaturas hoy poco presentes (italiana, rusa, alemana, polaca, portuguesa, nórdica…), con sus obras, motivos y ánimos.
+- **Fase 3: escrituras no latinas.** Fuentes Noto (subconjunto de glifos, OFL) para CJK, árabe/persa y devanagari; el árabe, el persa y el hindi necesitan *shaping* (formas contextuales y ligaduras), así que `texto.py` usaría HarfBuzz solo para esas escrituras y no cambiaría las piezas latinas.
+- **Fase 4: +5 movimientos** (+500 piezas) con paleta, adorno y motivos propios (candidatos: Renacimiento, Ilustración, Expresionismo, Surrealismo, literaturas de Oriente), y regeneración completa, hojas de revisión y CI.
+- Cada fase es un PR aparte; el catálogo solo se regenera en las fases 2 y 4.

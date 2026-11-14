@@ -203,6 +203,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `salmon` | `#FA8072` | σομόν |  |  |  |
 | `coral` | `#FF7F50` | κοραλί |  |  |  |
 | `khaki` | `#F0E68C` | χακί |  |  |  |
+| `lime` | `#00FF00` | λαχανί (propuesta de IA sin revisar) |  |  |  |
 | `lilac` | `#CEA2FD` | λιλά |  |  |  |
 | `burgundy` | `#900020` | μπορντό |  |  |  |
 | `cream` | `#FFFFC2` | κρεμ |  |  |  |

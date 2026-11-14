@@ -1,19 +1,19 @@
 // Shared engine behind privacy-laws/scripts/replace-url.js and copyright-laws/scripts/replace-url.js: swaps one
 // reference URL for another everywhere the project stores it, the master CSV (its URL column) and the per-field
-// sources (field_sources.csv). A dead link used to mean editing the same URL by hand in several rows of two files.
+// sources (source_urls.csv, where each URL is stored once). A dead link used to mean editing the same URL by hand in several rows of two files.
 // What differs between the two projects, their own ./lib/dataset.js and the name of the URL column, is passed in.
 
 import { isHttpUrl, isPrivateHost } from "./dataset-core.js";
 
 /** Replaces `from` by `to` in the URL column of the master and in the url column of the field sources. */
 export function replaceUrl({ dataset, urlField, from, to, write = true }) {
-  const { COLUMNS, MASTER_CSV, SOURCE_COLUMNS, SOURCES_FILE, loadMaster, loadSide, writeCsv } = dataset;
+  const { COLUMNS, MASTER_CSV, loadMaster, loadSources, writeCsv, writeSources } = dataset;
   if (!from || !to) throw new Error("both the old and the new URL are required");
   if (from === to) throw new Error("the old and the new URL are the same");
   if (!isHttpUrl(to) || isPrivateHost(to)) throw new Error(`the new URL must be a public http(s) URL, got ${JSON.stringify(to)}`);
 
   const { records } = loadMaster(MASTER_CSV);
-  const side = loadSide(MASTER_CSV, SOURCES_FILE, SOURCE_COLUMNS);
+  const side = loadSources(MASTER_CSV);
 
   let master = 0;
   for (const record of records) {
@@ -30,7 +30,8 @@ export function replaceUrl({ dataset, urlField, from, to, write = true }) {
     }
   }
   if (write && master) writeCsv(MASTER_CSV, COLUMNS, records);
-  if (write && sources) writeCsv(side.path, SOURCE_COLUMNS, side.rows);
+  // The URL is stored once in source_urls.csv: rewriting the sources rewrites that row (and merges it with `to` if it was there).
+  if (write && sources) writeSources(MASTER_CSV, side.rows);
   return { master, sources };
 }
 

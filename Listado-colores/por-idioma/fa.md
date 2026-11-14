@@ -200,6 +200,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `olive` | `#808000` | زیتونی |  |  |  |
 | `navy` | `#000080` | سرمه‌ای |  |  |  |
 | `cyan` | `#00FFFF` | سیان |  |  |  |
+| `magenta` | `#FF00FF` | ماژنتا (propuesta de IA sin revisar) |  |  |  |
 | `salmon` | `#FA8072` | سالمونی |  |  |  |
 | `coral` | `#FF7F50` | مرجانی |  |  |  |
 | `crimson` | `#DC143C` | زرشکی |  |  |  |

@@ -197,7 +197,10 @@ solo la usa quien administra el servidor.
 php bin/persona.php acceso 6128473105                             # todo lo que hay de ella, en JSON
 php bin/persona.php suprimir 6128473105 --pedido=12               # muestra qué se quitaría y no cambia nada
 php bin/persona.php suprimir 6128473105 --pedido=12 --confirmar   # lo hace
-php bin/persona.php rectificacion 6128473105 personas.apellidos   # anota que se corrigió ese campo (sin valores)
+php bin/persona.php rectificar 6128473105 personas.apellidos='Quintana Soto'    # muestra qué cambiaría y no cambia nada
+php bin/persona.php rectificar 6128473105 personas.apellidos='Quintana Soto' --confirmar   # lo hace y lo anota
+php bin/persona.php rectificacion 6128473105 personas.apellidos   # solo anota que se corrigió a mano ese campo (sin valores)
+php bin/persona.php entrega 6128473105                            # un enlace y una clave para que ella lea todo, lo oculto incluido
 ```
 
 - **`acceso`** imprime la ficha, sus sucesos con la descripción, los registros que los documentan, sus
@@ -207,8 +210,22 @@ php bin/persona.php rectificacion 6128473105 personas.apellidos   # anota que se
   parientes aparecen solo como cantidades: sus nombres son sus datos. Es lo que mira quien administra, **no lo que se le manda** a quien lo pide: el JSON
   trae también lo que el sitio oculta y no viaja por correo en claro. A la persona se le manda un resumen legible
   escrito a mano (ver [`SOLICITUDES.md`](SOLICITUDES.md), «Qué responder»).
-- **`rectificacion`** no cambia la ficha (eso se hace a mano, ver [`SOLICITUDES.md`](SOLICITUDES.md)): solo anota en
-  `rectificaciones_persona` qué campo se corrigió, para poder probarlo. Esa fila se conserva si la persona se suprime.
+- **Las solicitudes llegan por `/s/{id}/`**, un formulario abierto a cualquiera, sin cuenta, que enlaza el pie de la
+  página de cada persona (y solo de las personas: un apellido o un suceso no tienen datos que pedir). Pide qué
+  se quiere (ver, corregir o borrar), el texto y un correo. **No entrega, cambia ni borra nada por sí solo**: la
+  solicitud espera a quien administra. Tiene el mismo campo trampa, el mismo token CSRF y topes parecidos a los del
+  retiro (3 por visitante y por hora, 5 esperando por persona). Se atienden con `php bin/solicitudes.php`
+  (`--ver=N`, `--atender=N`, `--rechazar=N`, `--depurar`), que no dice por cron quién pidió ni qué escribió;
+  ver [`DESPLIEGUE.md`](DESPLIEGUE.md), sección 8, y [`SOLICITUDES.md`](SOLICITUDES.md).
+- **`rectificar`** corrige un campo de la ficha (nombres, apellidos, sexo, y la fecha o la descripción de un suceso que es solo de
+  ella), dice si el cambio la oculta o la muestra a un visitante y lo anota. Sin `--confirmar` lo prueba en una
+  transacción y la deshace. Ver [`SOLICITUDES.md`](SOLICITUDES.md), «Rectificar».
+- **`rectificacion`** no cambia la ficha: solo anota en `rectificaciones_persona` qué campo se corrigió **a mano**, para
+  poder probarlo. Esa fila se conserva si la persona se suprime.
+- **`entrega`** crea un enlace (`/e/{token}/`) y una clave para que la persona lea, con una página, todo lo que el sitio guarda
+  de ella, **lo que se oculta incluido**: la única forma de dárselo sin mandar el JSON por correo en claro. Solo después de
+  comprobar quién pide. Vigencia corta, 3 aperturas, 5 claves malas; ver [`SOLICITUDES.md`](SOLICITUDES.md), «Entrega con
+  clave». `entrega <id> --revocar` termina las vigentes.
 - **`suprimir`** quita a la persona y deja el resto del árbol en pie, en una transacción:
   - se borran sus sucesos en los que **es la única participante**, con sus enlaces a registros;
   - los sucesos que comparte con otras personas **se conservan** (también son datos de las otras) y a ella se la

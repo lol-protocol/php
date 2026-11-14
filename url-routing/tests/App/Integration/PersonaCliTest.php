@@ -219,4 +219,89 @@ class PersonaCliTest extends TestCase
             $this->assertNotSame('', $error);
         }
     }
+
+    public function testRectificarWithoutConfirmarShowsWhatWouldHappenAndChangesNothing(): void
+    {
+        [$codigo, $salida, $error] = $this->correr('rectificar', (string)self::ELLA, 'personas.apellidos=Quintana Pérez');
+
+        $this->assertSame([0, ''], [$codigo, $error]);
+        $this->assertStringContainsString('Se corregiría personas.apellidos de la persona ' . self::ELLA, $salida);
+        $this->assertStringContainsString('No cambia lo que ve un visitante', $salida);
+        $this->assertStringContainsString('Nada cambió', $salida);
+        $this->assertSame('Quintana Soto', $this->db->fetchValue('SELECT apellidos FROM personas WHERE id = ?', [self::ELLA]), 'the setUp surname');
+        $this->assertSame(0, (int)$this->db->fetchValue('SELECT COUNT(*) FROM rectificaciones_persona'));
+    }
+
+    public function testRectificarConfirmarChangesRecordsAndSaysWhoSeesHer(): void
+    {
+        [$codigo, $salida, $error] = $this->correr('rectificar', (string)self::ELLA, 'sucesos.fecha=' . date('Y-m-d', strtotime('-20 years')), '--suceso=412979601', '--pedido=7', '--confirmar');
+
+        $this->assertSame([0, ''], [$codigo, $error]);
+        $this->assertStringContainsString('Corregido sucesos.fecha de la persona ' . self::ELLA . '. Anotada la corrección 1 (sin el valor).', $salida);
+        $this->assertStringContainsString('CAMBIA lo que ve un visitante: la ve visible y ahora oculta', $salida);
+        $this->assertStringContainsString('Mira la página como visitante y como propietario.', $salida);
+        $this->assertStringNotContainsString(date('Y', strtotime('-20 years')), $salida, 'the value is not echoed');
+        $fila = $this->db->fetchOne('SELECT persona_id, que, pedido_id FROM rectificaciones_persona');
+        $this->assertSame([self::ELLA, 'sucesos.fecha', 7], [(int)$fila['persona_id'], $fila['que'], (int)$fila['pedido_id']]);
+    }
+
+    public function testRectificarValueWithEqualsSignsAndSpacesArrivesWhole(): void
+    {
+        $this->assertSame(0, $this->correr('rectificar', (string)self::ELLA, 'personas.nombres=Rosa = Elena', '--confirmar')[0]);
+
+        $this->assertSame('Rosa = Elena', $this->db->fetchValue('SELECT nombres FROM personas WHERE id = ?', [self::ELLA]));
+    }
+
+    public function testRectificarErrorsExitWithOneOrTwo(): void
+    {
+        foreach ([
+            ['6128479777', 'personas.nombres=X'],
+            [(string)self::ELLA, 'personas.padre_id=1'],
+            [(string)self::ELLA, 'sucesos.fecha=1850-01-01'],
+            [(string)self::ELLA, 'personas.sexo=Z'],
+            [(string)self::ELLA, 'personas.nombres=X', '--pedido=99'],
+        ] as $args) {
+            [$codigo, $salida, $error] = $this->correr('rectificar', ...$args, ...['--confirmar']);
+            $this->assertSame([1, ''], [$codigo, $salida], implode(' ', $args));
+            $this->assertNotSame('', $error);
+        }
+        foreach ([['rectificar'], ['rectificar', (string)self::ELLA], ['rectificar', 'personas.nombres=X'], ['rectificar', (string)self::ELLA, 'sin-igual'], ['rectificar', (string)self::ELLA, 'a=b', '--suceso=x']] as $args) {
+            $this->assertSame(2, $this->correr(...$args)[0], implode(' ', $args));
+        }
+        $this->assertSame(0, (int)$this->db->fetchValue('SELECT COUNT(*) FROM rectificaciones_persona'));
+        $this->assertSame('Rosa Elena', $this->db->fetchValue('SELECT nombres FROM personas WHERE id = ?', [self::ELLA]));
+    }
+
+    public function testEntregaPrintsALinkAndAKeyThatOpenWhatTheyPromise(): void
+    {
+        [$codigo, $salida, $error] = $this->correr('entrega', (string)self::ELLA, '--dias=3');
+
+        $this->assertSame([0, ''], [$codigo, $error]);
+        $this->assertMatchesRegularExpression('#https://TU-DOMINIO/e/([0-9a-f]{64})/#', $salida);
+        $this->assertMatchesRegularExpression('/\b[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}\b/', $salida);
+        $this->assertStringContainsString('OTRO medio', $salida);
+        $this->assertStringContainsString('comprobar quién pide', $salida);
+        preg_match('#/e/([0-9a-f]{64})/#', $salida, $token);
+        preg_match('/\b([A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4})\b/', $salida, $clave);
+        $this->assertSame(self::ELLA, (new \App\Repositories\Genealogy\EntregaRepository($this->db))->abrir($token[1], $clave[1]), 'what it printed opens it');
+        $guardado = json_encode($this->db->fetchAll('SELECT * FROM entregas_persona'), JSON_THROW_ON_ERROR);
+        $this->assertStringNotContainsString($token[1], $guardado);
+        $this->assertStringNotContainsString($clave[1], $guardado);
+    }
+
+    public function testEntregaRevocarEndsThemAndEntregaErrorsExitWithOneOrTwo(): void
+    {
+        $this->correr('entrega', (string)self::ELLA);
+        $this->correr('entrega', (string)self::ELLA);
+
+        $this->assertStringContainsString('Se terminaron 2 entregas vigentes', $this->correr('entrega', (string)self::ELLA, '--revocar')[1]);
+        $this->assertStringContainsString('no tenía entregas vigentes', $this->correr('entrega', (string)self::ELLA, '--revocar')[1]);
+        [$codigo, $salida, $error] = $this->correr('entrega', '6128479777');
+        $this->assertSame([1, ''], [$codigo, $salida]);
+        $this->assertStringContainsString('No existe la persona', $error);
+        foreach ([['entrega'], ['entrega', (string)self::ELLA, '--confirmar'], ['entrega', (string)self::ELLA, '--dias=2', '--revocar'], ['acceso', (string)self::ELLA, '--revocar'], ['entrega', (string)self::ELLA, '--dias=x']] as $args) {
+            $this->assertSame(2, $this->correr(...$args)[0], implode(' ', $args));
+        }
+        $this->assertSame(2, (int)$this->db->fetchValue('SELECT COUNT(*) FROM entregas_persona'), 'only the two of before; the rest changed nothing');
+    }
 }

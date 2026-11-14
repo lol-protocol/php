@@ -7,13 +7,13 @@
     "jurisdiction": "Information Commissioner",
     "enactment_date": "2013-10-28",
     "effective_date": "2013-11-07",
-    "scope": "Data subjects whose personal data is handled by public and private bodies (unconfirmed)",
-    "applies_to": "Public and private bodies (unconfirmed)",
+    "scope": "Personal data processed by public and private bodies; 'personal data' is defined narrowly (commercial transactions, automated processing or relevant filing system)",
+    "applies_to": "Public and private bodies (public bodies include Antigua and Barbuda embassies/consulates abroad)",
     "key_requirements": "Data handling principles (notice, disclosure, security, access); data subject access and correction rights",
-    "data_categories": "Personal data (unconfirmed)",
-    "retention_period": "Retained no longer than necessary for the purpose (s. 9 Retention Principle) (unconfirmed)",
+    "data_categories": "Personal data (narrow definition: commercial transactions, automated or filing-system processing); sensitive data needs explicit consent or a listed exception",
+    "retention_period": "Data may not be retained longer than necessary; it must be destroyed or permanently deleted when no longer required",
     "enforcement_authority": "Information Commissioner (established under the Freedom of Information Act 2004)",
-    "penalties_range": "Sources conflict: up to $50000 and/or 3 years (summary) or $100000 and/or 5 years (indictment); another excerpt cites up to $200000 or 3 years (unconfirmed)",
+    "penalties_range": "Sensitive-data offence: up to $200,000 and/or 3 yrs; other offences (individual): up to $50,000 or 3 yrs summary, $100,000 or 5 yrs indictment; body corporate $200,000 / $500,000",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-13",
     "sources": {
       "law_name": {
         "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
@@ -50,14 +50,14 @@
         "checked": "2026-10-25"
       },
       "scope": {
-        "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.offlist.me/what-is-antigua-and-barbuda-data-protection",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "applies_to": {
-        "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.offlist.me/what-is-antigua-and-barbuda-data-protection",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "key_requirements": {
         "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
@@ -65,9 +65,9 @@
         "checked": "2026-10-25"
       },
       "retention_period": {
-        "url": "https://dig.watch/resource/antigua-and-barbudas-data-protection-act-2013",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.offlist.me/what-is-antigua-and-barbuda-data-protection",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       },
       "enforcement_authority": {
         "url": "https://www.dataguidance.com/taxonomy/term/82",
@@ -75,12 +75,47 @@
         "checked": "2026-10-25"
       },
       "penalties_range": {
-        "url": "https://www.consentstack.io/regulations/ag-dpa",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.offlist.me/what-is-antigua-and-barbuda-data-protection",
+        "confidence": "medium",
+        "checked": "2026-11-13"
+      },
+      "data_categories": {
+        "url": "https://www.offlist.me/what-is-antigua-and-barbuda-data-protection",
+        "confidence": "medium",
+        "checked": "2026-11-13"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-13",
+        "field": "penalties_range",
+        "from": "Sources conflict: up to $50000 and/or 3 years (summary) or $100000 and/or 5 years (indictment); another excerpt cites up to $200000 or 3 years (unconfirmed)",
+        "to": "Sensitive-data offence: up to $200,000 and/or 3 yrs; other offences (individual): up to $50,000 or 3 yrs summary, $100,000 or 5 yrs indictment; body corporate $200,000 / $500,000"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "retention_period",
+        "from": "Retained no longer than necessary for the purpose (s. 9 Retention Principle) (unconfirmed)",
+        "to": "Data may not be retained longer than necessary; it must be destroyed or permanently deleted when no longer required"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "data_categories",
+        "from": "Personal data (unconfirmed)",
+        "to": "Personal data (narrow definition: commercial transactions, automated or filing-system processing); sensitive data needs explicit consent or a listed exception"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "applies_to",
+        "from": "Public and private bodies (unconfirmed)",
+        "to": "Public and private bodies (public bodies include Antigua and Barbuda embassies/consulates abroad)"
+      },
+      {
+        "date": "2026-11-13",
+        "field": "scope",
+        "from": "Data subjects whose personal data is handled by public and private bodies (unconfirmed)",
+        "to": "Personal data processed by public and private bodies; 'personal data' is defined narrowly (commercial transactions, automated processing or relevant filing system)"
+      },
       {
         "date": "2026-10-25",
         "field": "website_url",

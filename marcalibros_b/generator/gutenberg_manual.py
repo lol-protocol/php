@@ -22,7 +22,7 @@ import yaml
 RAIZ = Path(__file__).resolve().parent.parent
 TAXONOMIA = RAIZ / "catalog" / "taxonomia.yaml"
 CSV_LISTA = RAIZ / "REVISION-GUTENBERG.csv"
-CAMPOS = ["pieza", "autor", "obra", "buscar", "estado", "id"]
+CAMPOS = ["pieza", "autor", "obra", "buscar", "estado", "id", "nota"]  # `nota`: de dónde sale lo prellenado; `aplicar` la ignora
 ESTADOS = {"verificado", "no_disponible"}
 
 
@@ -36,10 +36,10 @@ def filas(config):
     for mov in config["movimientos"]:
         for autor in mov["autores"]:
             out.append({"pieza": "", "autor": f"{mov['id']}/{autor['id']}", "obra": autor["nombre"],
-                        "buscar": _busqueda(autor["nombre"]), "estado": "", "id": ""})
+                        "buscar": _busqueda(autor["nombre"]), "estado": "", "id": "", "nota": ""})
             for v, obra in enumerate(autor.get("obras", []), 1):
                 out.append({"pieza": f"{mov['id']}-{autor['id']}-{v:02d}", "autor": autor["nombre"], "obra": obra["titulo"],
-                            "buscar": _busqueda(autor["nombre"], obra.get("de") or obra["titulo"]), "estado": "", "id": ""})
+                            "buscar": _busqueda(autor["nombre"], obra.get("de") or obra["titulo"]), "estado": "", "id": "", "nota": ""})
     return out
 
 

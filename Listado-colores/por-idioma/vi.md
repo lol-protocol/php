@@ -196,6 +196,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `navy` | `#000080` | xanh navy |  | xanh hải quân |  |
 | `cyan` | `#00FFFF` | xanh lơ |  | lục lam |  |
 | `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | cá hồi (propuesta de IA sin revisar) |  |  |  |
 | `coral` | `#FF7F50` | san hô |  |  |  |
 | `crimson` | `#DC143C` | đỏ thẫm |  |  |  |
 | `khaki` | `#F0E68C` | kaki |  |  |  |

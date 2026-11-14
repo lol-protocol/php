@@ -1,6 +1,7 @@
 {"label":"COLOR","pattern":"অর্কিড","id":"orchid"}
 {"label":"COLOR","pattern":"অ্যাকোয়া","id":"aqua"}
 {"label":"COLOR","pattern":"অ্যাকোয়ামেরিন","id":"aquamarine"}
+{"label":"COLOR","pattern":"অ্যাম্বার","id":"amber"}
 {"label":"COLOR","pattern":"আকাশি","id":"skyblue"}
 {"label":"COLOR","pattern":"আকাশি নীল","id":"skyblue"}
 {"label":"COLOR","pattern":"ইটের লাল","id":"firebrick"}
@@ -81,6 +82,7 @@
 {"label":"COLOR","pattern":"বরফ","id":"snow"}
 {"label":"COLOR","pattern":"বসন্ত সবুজ","id":"springgreen"}
 {"label":"COLOR","pattern":"বাদামি","id":"brown"}
+{"label":"COLOR","pattern":"বার্গান্ডি","id":"burgundy"}
 {"label":"COLOR","pattern":"বালুকাময় বাদামি","id":"sandybrown"}
 {"label":"COLOR","pattern":"বিস্কুট","id":"bisque"}
 {"label":"COLOR","pattern":"বেইজ","id":"beige"}
@@ -127,6 +129,7 @@
 {"label":"COLOR","pattern":"সায়ান","id":"cyan"}
 {"label":"COLOR","pattern":"সিয়েনা","id":"sienna"}
 {"label":"COLOR","pattern":"সোনালি","id":"gold"}
+{"label":"COLOR","pattern":"স্কারলেট","id":"scarlet"}
 {"label":"COLOR","pattern":"স্টিল নীল","id":"steelblue"}
 {"label":"COLOR","pattern":"স্যাডল বাদামি","id":"saddlebrown"}
 {"label":"COLOR","pattern":"স্যামন","id":"salmon"}

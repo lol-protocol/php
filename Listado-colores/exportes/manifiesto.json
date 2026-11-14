@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "idiomas": [
     "en",
     "es",
@@ -45,8 +45,8 @@
     },
     {
       "archivo": "lexico-basico.csv",
-      "filas": 2412,
-      "sha256": "f4c014c154c750cd5379069235198fdd4a35d0123d78b9e4cdb13ac582d2b96d"
+      "filas": 2424,
+      "sha256": "920a5fc52ae341302a70921b6c6eab2be43f5078af16bc8b80cfdf4a71a40132"
     },
     {
       "archivo": "evidencia.csv",
@@ -78,11 +78,11 @@
     {
       "archivo": "exportes/colores.jsonl",
       "filas": 148,
-      "sha256": "7b1738e0fb3a03d122b313de98049a439c4c718a9ad45595150000638a22aaff"
+      "sha256": "552cfc19ecf3719360bda2fccf2c1f14f2b5cb9953e695589493be3c5f9ad194"
     },
     {
       "archivo": "exportes/gazetteer.tsv",
-      "filas": 7092,
+      "filas": 7104,
       "columnas": [
         "forma",
         "idioma",
@@ -95,7 +95,7 @@
         "categorias",
         "hex_cotidiano"
       ],
-      "sha256": "85b7f97ad627c4a165f234b8ea9bffe64e09bdfafc0e9b787b5283c18b6c75b2"
+      "sha256": "ec28739ffeaa245ac75a51651da6bb41fbc3c03de3be61e14f3b44b9fc80d3d3"
     },
     {
       "archivo": "exportes/spacy/en.jsonl",
@@ -199,18 +199,18 @@
     },
     {
       "archivo": "exportes/spacy/fa.jsonl",
-      "filas": 148,
-      "sha256": "87f600f46fc901bbcbcfffcf43bc211498bbd791f31a6bf74ff032bafac51d38"
+      "filas": 149,
+      "sha256": "ffb370e4dab16b1fd2dc56ab8e2fb0c0fe07175ba0b206b349fa213096b400ea"
     },
     {
       "archivo": "exportes/spacy/hi.jsonl",
-      "filas": 171,
-      "sha256": "5b1200c2a9ae730d5696924caf890dc82c00a69f4f1459750ced3284bca0f8a1"
+      "filas": 172,
+      "sha256": "5d1deb0c436356ba47c9dc71483be32b94c4264a1467bdbeaac3957b40bc71bd"
     },
     {
       "archivo": "exportes/spacy/bn.jsonl",
-      "filas": 150,
-      "sha256": "3702948a83806eb7e6c221f995136e96c71951ed5117009bacb655fc3b431a99"
+      "filas": 153,
+      "sha256": "7da5cf64e2b217cad75725a37e76366258fd3b2d1d17ef7f748128cb586c57db"
     },
     {
       "archivo": "exportes/spacy/zh.jsonl",

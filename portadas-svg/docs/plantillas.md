@@ -22,4 +22,10 @@ Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plant
 
 ## Imagen y logo
 
-`imagen` es la ilustración de la portada y `logo` el de la editorial (arriba a la derecha de la contratapa, hasta 26 × 12 mm). Pueden ser SVG, PNG, JPG, GIF o WebP de hasta 2 MB, con la ruta relativa al JSON o al CSV. Se incrustan en el SVG como `data:`, así que la cubierta no depende de ningún archivo. Un SVG con scripts, manejadores `on…` o enlaces a otros archivos se rechaza. Solo la plantilla `ilustrada` dibuja `imagen`; con otra, el generador avisa de que no se usa.
+`imagen` es la ilustración de la portada y `logo` el de la editorial (arriba a la derecha de la contratapa, hasta 26 × 12 mm). Pueden ser SVG, PNG, JPG, GIF o WebP de hasta 2 MB, con la ruta relativa al JSON o al CSV. Se incrustan en el SVG como `data:`, así que la cubierta no depende de ningún archivo. Un SVG con scripts, manejadores `on…` o enlaces a otros archivos se rechaza.
+
+La `imagen` se dibuja según la plantilla:
+
+- `ilustrada`: es la ilustración, a sangre en la parte de arriba.
+- `clasica`, `sobria` y `tipografica`: es una **marca de agua** al 25 % de opacidad que cubre toda la portada, detrás del texto. El generador no mide el contraste con la imagen: revisa la vista previa, y si el título se pierde, usa una imagen más clara u oscura según el fondo.
+- `cartel`: es solo letra y no la dibuja; el generador avisa.

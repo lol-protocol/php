@@ -200,6 +200,7 @@ Términos de color de uso real, con su forma base y las formas que puede tomar. 
 | `coral` | `#FF7F50` | coral |  |  |  |
 | `crimson` | `#DC143C` | stacojiu | stacojie (f), stacojii (m pl), stacojii (f pl) |  |  |
 | `khaki` | `#F0E68C` | kaki |  |  |  |
+| `lime` | `#00FF00` | lime (propuesta de IA sin revisar) |  |  |  |
 | `lilac` | `#CEA2FD` | lila |  |  |  |
 | `burgundy` | `#900020` | bordo |  |  |  |
 | `cream` | `#FFFFC2` | crem |  |  |  |

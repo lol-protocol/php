@@ -1,0 +1,29 @@
+# Géneros como eje del catálogo. Cada obra tiene un `tipo` libre en taxonomia.yaml («novela», «soneto», «auto
+# sacramental»…); aquí se agrupan en pocas familias para filtrar y combinar. Un `tipo: tema` (una variante sacada
+# de otra obra) hereda el género de su obra base (`de`). Al añadir una obra con un `tipo` nuevo, hay que
+# listarlo aquí: una prueba falla si queda alguno sin género.
+version: '0.1'
+generos:
+  - id: poesia
+    nombre: Poesía
+    tipos: [poema, poemario, soneto, égloga, oda, elegía, balada, himno, epodo, letrilla, rima, poemas, poemas en prosa, poema en prosa, caligrama, canción, arco triunfal]
+  - id: epica
+    nombre: Épica
+    tipos: [poema épico]
+  - id: narrativa
+    nombre: Narrativa
+    tipos: [novela, novela corta, cuento, cuentos, relato, relatos, leyenda, prosa, novela ejemplar, novela pastoril, novela dialogada, novela alegórica, cuento infantil, ciclo]
+  - id: teatro
+    nombre: Teatro
+    tipos: [drama, tragedia, comedia, teatro, auto sacramental, tragicomedia, pantomima, mascarada, entremés, drama satírico]
+  - id: ensayo
+    nombre: Ensayo y no ficción
+    tipos: [ensayo, artículo, manifiesto, manifiestos, aforismos, meditaciones, epístola, carta, diario, memoria, viaje, antología, revista, carta abierta, cartas, crónica]
+# Colecciones de las que salen temas pero que no son una obra del catálogo.
+temas_de_colecciones:
+  Episodios nacionales: narrativa
+  Tres cuentos: narrativa
+# Temas que no salen de una obra concreta (la casa del autor, por ejemplo): id de la obra → género.
+temas_sueltos:
+  strawberry-hill: narrativa
+  fonthill-abbey: narrativa

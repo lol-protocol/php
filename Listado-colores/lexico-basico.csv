@@ -1292,6 +1292,7 @@ beige,ko,베이지,sinonimo,
 beige,vi,be,lema,
 beige,th,เบจ,lema,
 beige,id,beige,lema,
+beige,sw,beige,lema,origen=ia
 gold,en,gold,lema,
 gold,en,golden,sinonimo,
 gold,es,dorado,lema,
@@ -1856,6 +1857,7 @@ magenta,uk,маджента,lema,
 magenta,tr,macenta,lema,
 magenta,ar,ماجنتا,lema,
 magenta,he,מגנטה,lema,
+magenta,fa,ماژنتا,lema,origen=ia
 magenta,hi,मैजेंटा,lema,
 magenta,bn,ম্যাজেন্টা,lema,
 magenta,zh,品红色,lema,
@@ -1915,9 +1917,11 @@ salmon,ar,سلمونية,flexion,Gender=Fem;Number=Sing
 salmon,he,סלמון,lema,
 salmon,fa,سالمونی,lema,
 salmon,hi,सैल्मन,lema,
+salmon,bn,স্যামন,lema,origen=ia
 salmon,zh,三文鱼色,lema,
 salmon,ja,サーモンピンク,lema,
 salmon,ko,연어색,lema,
+salmon,vi,cá hồi,lema,origen=ia
 salmon,th,แซลมอน,lema,
 salmon,id,salmon,lema,
 coral,en,coral,lema,
@@ -2111,6 +2115,9 @@ lime,cs,limetkové,flexion,Gender=Neut;Number=Sing
 lime,cs,limetkoví,flexion,Number=Plur;Animacy=Anim
 lime,cs,limetková,flexion,Gender=Neut;Number=Plur
 lime,cs,limetkové,flexion,Number=Plur
+lime,ro,lime,lema,origen=ia
+lime,hu,lime,lema,origen=ia
+lime,el,λαχανί,lema,origen=ia
 lime,ru,лаймовый,lema,
 lime,ru,лаймовая,flexion,Gender=Fem;Number=Sing
 lime,ru,лаймовое,flexion,Gender=Neut;Number=Sing
@@ -2124,6 +2131,8 @@ lime,ar,ليموني,lema,
 lime,ar,ليمونية,flexion,Gender=Fem;Number=Sing
 lime,he,ליים,lema,
 lime,fa,لیمویی,lema,
+lime,hi,लाइम,lema,origen=ia
+lime,bn,লাইম,lema,origen=ia
 lime,zh,青柠色,lema,
 lime,ja,ライム,lema,
 lime,ja,ライムグリーン,sinonimo,
@@ -2232,6 +2241,7 @@ burgundy,he,בורדו,lema,
 burgundy,fa,شرابی,lema,
 burgundy,hi,बरगंडी,lema,
 burgundy,hi,कत्थई,sinonimo,
+burgundy,bn,বার্গান্ডি,lema,origen=ia
 burgundy,zh,酒红色,lema,
 burgundy,ja,ワインレッド,lema,
 burgundy,ja,バーガンディ,sinonimo,
@@ -2344,6 +2354,7 @@ scarlet,uk,багряні,flexion,Number=Plur
 scarlet,tr,al,lema,
 scarlet,he,שני,lema,
 scarlet,hi,सुर्ख,lema,
+scarlet,bn,স্কারলেট,lema,origen=ia
 scarlet,zh,猩红色,lema,
 scarlet,ja,緋色,lema,
 scarlet,ja,スカーレット,sinonimo,
@@ -2403,6 +2414,7 @@ amber,ar,عنبرية,flexion,Gender=Fem;Number=Sing
 amber,he,ענבר,lema,
 amber,fa,کهربایی,lema,
 amber,hi,एम्बर,lema,
+amber,bn,অ্যাম্বার,lema,origen=ia
 amber,zh,琥珀色,lema,
 amber,ja,琥珀色,lema,
 amber,ja,アンバー,sinonimo,
