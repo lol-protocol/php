@@ -14,7 +14,9 @@ desde la prehistoria.
 
 **Para consultarla:** abre `vista.html` en un navegador (mapa coloreado por prioridad, filtros y
 tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Markdown
-(`tabla_genealogia.md` y `tabla_pos.md`) tienen todas las columnas.
+(`tabla_genealogia.md` y `tabla_pos.md`) tienen todas las columnas. En la vista se puede elegir el
+escenario de ranking (los mismos de `escenarios.md`) y ver solo los países cuyo índice se aparta
+de lo que predicen sus datos («≠ datos», ver «Sugerencias desde los datos»).
 
 ## Resumen
 
@@ -71,6 +73,11 @@ están al día, así que el resto del README las remite aquí en vez de repetirl
   PIB nominal, libertad, democracia y corrupción.
 - `descargar_fuentes.py` y `fuentes.sha256`: bajan todas las fuentes, fijadas por commit, y
   comprueban su SHA-256; con `--rehacer` corren todos los scripts. Ver «Fuentes».
+- `pruebas_navegador.py`: abre `vista.html` en Chromium, en escritorio y en móvil, y prueba el
+  mapa, la tabla, los filtros, el orden, la búsqueda sin acentos, los escenarios, las marcas
+  «≠ datos» y el tooltip. Las cifras esperadas salen de los CSV. Necesita
+  `pip install playwright==1.55.0` y Chromium (variable `CHROMIUM` o `/opt/pw-browsers/chromium`);
+  la CI lo corre en el job `navegador`.
 - `pruebas.py`: pruebas del proyecto. La CI las corre junto con `generar_tabla.py --comprobar`
   (`.github/workflows/pruebas-listado-paises.yml`).
 

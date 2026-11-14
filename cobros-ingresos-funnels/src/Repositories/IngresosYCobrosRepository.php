@@ -88,8 +88,8 @@ final class IngresosYCobrosRepository
 
     /**
      * La consulta de las boletas con saldo abierto, una fila cada una: boleta_id,
-     * cliente_id, dias_vencido (hoy menos el vencimiento: cero o menos es que todavia
-     * no vence) y saldo_usd (lo que falta cobrar, a la tasa de hoy). Excluye las
+     * cliente_id, fecha_vencimiento, dias_vencido (hoy menos el vencimiento: cero o
+     * menos es que todavia no vence) y saldo_usd (lo que falta cobrar, a la tasa de hoy). Excluye las
      * anuladas y las que deben un centavo o menos, medido en la moneda de la boleta
      * (como BoletaRepository::ESTADO_SQL y EstadoBoleta): una boleta «pagada» en el
      * listado no es deuda aqui, y una «vencida» si lo es, valga lo que valga su
@@ -102,9 +102,9 @@ final class IngresosYCobrosRepository
      */
     public static function saldosAbiertosSql(): string
     {
-        return 'SELECT x.boleta_id, x.cliente_id, x.dias_vencido, x.saldo_usd
+        return 'SELECT x.boleta_id, x.cliente_id, x.fecha_vencimiento, x.dias_vencido, x.saldo_usd
                 FROM (
-                    SELECT b.id AS boleta_id, b.cliente_id,
+                    SELECT b.id AS boleta_id, b.cliente_id, b.fecha_vencimiento,
                            (CURRENT_DATE - b.fecha_vencimiento) AS dias_vencido,
                            (b.monto - COALESCE(p.pagado, 0)) AS saldo,
                            (b.monto - COALESCE(p.pagado, 0)) * m.tasa_a_usd AS saldo_usd

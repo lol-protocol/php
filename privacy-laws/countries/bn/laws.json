@@ -11,9 +11,9 @@
     "applies_to": "Private-sector organisations (and private processors acting for government agencies); government agencies excluded",
     "key_requirements": "Purpose limitation and consent with withdrawal; access, correction and accuracy; security arrangements, retention limits, overseas transfer protections; appoint at least one DPO",
     "data_categories": "Personal data (unconfirmed)",
-    "retention_period": "Retention limitation applies (article not confirmed) (unconfirmed)",
+    "retention_period": "Organisations must cease retaining personal data once the purpose is no longer served, subject to legal or operational justification (article not stated)",
     "enforcement_authority": "Authority for Info-communications Technology Industry of Brunei Darussalam (AITI)",
-    "penalties_range": "Administrative penalty up to 10% of annual Brunei turnover (if turnover exceeds BND 10M) or BND 1M otherwise (unconfirmed)",
+    "penalties_range": "Administrative penalty up to 10% of annual Brunei turnover (if turnover exceeds BND 10M) or BND 1M otherwise; criminal fines/imprisonment for some offences",
     "exemptions": "Government agencies excluded",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-25",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://pdp.aiti.gov.bn/overview/legislation/",
@@ -71,8 +71,8 @@
       },
       "retention_period": {
         "url": "https://www.offlist.me/what-is-brunei-data-protection",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://pdp.aiti.gov.bn/overview/legislation/",
@@ -80,9 +80,9 @@
         "checked": "2026-10-25"
       },
       "penalties_range": {
-        "url": "https://law.ungovr.org/ai/bn",
-        "confidence": "low",
-        "checked": "2026-10-25"
+        "url": "https://www.offlist.me/what-is-brunei-data-protection",
+        "confidence": "high",
+        "checked": "2026-11-14"
       },
       "exemptions": {
         "url": "https://www.dlapiperdataprotection.com/index.html?c=BN&t=law",
@@ -91,6 +91,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Administrative penalty up to 10% of annual Brunei turnover (if turnover exceeds BND 10M) or BND 1M otherwise (unconfirmed)",
+        "to": "Administrative penalty up to 10% of annual Brunei turnover (if turnover exceeds BND 10M) or BND 1M otherwise; criminal fines/imprisonment for some offences"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "retention_period",
+        "from": "Retention limitation applies (article not confirmed) (unconfirmed)",
+        "to": "Organisations must cease retaining personal data once the purpose is no longer served, subject to legal or operational justification (article not stated)"
+      },
       {
         "date": "2026-10-25",
         "field": "row",

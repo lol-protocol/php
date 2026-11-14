@@ -1,7 +1,7 @@
 {
   "version": "2.0",
   "title": "Document Formats API Reference",
-  "description": "Complete API reference for document, paper, and book formats database",
+  "description": "Specification of a REST API over the document, paper, and book formats database. It is a specification only: no server is included and no code in this repository reads it (generate_api_examples.js keeps its examples equal to the CSV rows).",
   "base_url": "/api/v1/formats",
   "endpoints": [
     {

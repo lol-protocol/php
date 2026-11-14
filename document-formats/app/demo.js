@@ -35,6 +35,27 @@ const downloadText = (filename, text, type) => {
     setTimeout(() => URL.revokeObjectURL(link.href), 0);
 };
 
+// Copies the address of the page, which holds the tab, the language, the searches and the filters.
+// navigator.clipboard needs a secure page; elsewhere (or when it is refused) a hidden field does it.
+const copyText = async (text) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch (error) {
+        const field = document.createElement('textarea');
+        field.value = text;
+        field.setAttribute('readonly', '');
+        field.style.position = 'fixed';
+        field.style.opacity = '0';
+        document.body.appendChild(field);
+        field.select();
+        let copied = false;
+        try { copied = document.execCommand('copy'); } catch (failure) { /* not copied */ }
+        field.remove();
+        return copied;
+    }
+};
+
 // One <option> per entry: [value, label] pairs, optionally with a placeholder already in the select.
 const addOptions = (select, entries) => {
     for (const [value, label] of entries) {
@@ -705,6 +726,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         languageSelect.appendChild(option);
     }
     languageSelect.addEventListener('change', () => i18n.setLanguage(languageSelect.value));
+    const copyButton = document.getElementById('copy-link');
+    let copiedTimer = null;
+    copyButton.addEventListener('click', async () => {
+        if (!await copyText(location.href)) return;
+        announce(tr('demo.linkCopied'), 'demo.linkCopied');
+        copyButton.textContent = tr('demo.linkCopied');
+        markLang(copyButton, isFallback('demo.linkCopied'));
+        clearTimeout(copiedTimer);
+        copiedTimer = setTimeout(() => {
+            copyButton.textContent = tr('demo.copyLink');
+            markLang(copyButton, isFallback('demo.copyLink'));
+        }, 2000);
+    });
     i18n.subscribe(applyLanguage);
 
     // The language: the one in the URL, else the saved one, else (first visit) the browser's

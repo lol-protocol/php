@@ -242,4 +242,123 @@ class CopiasTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $copias->respaldar('genealogy', 'pgsql:host=127.0.0.1');
     }
+
+    // --- encrypted, with the real age -----------------------------------------------------------
+
+    /** @return array{string, string} [public key, path of the file holding the private one]; skips the test without age */
+    private function clavesAge(): array
+    {
+        if (trim((string)shell_exec('command -v age age-keygen 2>/dev/null')) === '') {
+            $this->markTestSkipped('needs age and age-keygen on the PATH');
+        }
+        @mkdir($this->dir . '/origen', 0777, true);
+        $privada = $this->dir . '/origen/clave.txt';
+        shell_exec('age-keygen -o ' . escapeshellarg($privada) . ' 2>/dev/null');
+        preg_match('/age1[a-z0-9]{58}/', (string)file_get_contents($privada), $m);
+        $this->assertNotEmpty($m);
+
+        return [$m[0], $privada];
+    }
+
+    public function testAnEncryptedCopyOpensWithThePrivateKeyAndLeavesNothingPlain(): void
+    {
+        [$publica, $privada] = $this->clavesAge();
+        [$db, $ruta] = $this->baseSqlite();
+        $copias = new Copias($this->dir . '/copias', 30, [$publica]);
+
+        $archivo = $copias->respaldar('genealogy', 'sqlite:' . $ruta);
+
+        $this->assertSame($this->dir . '/copias/genealogy-' . date('Y-m-d') . '.sqlite.age', $archivo);
+        $this->assertSame('0600', substr(sprintf('%o', fileperms($archivo)), -4));
+        $this->assertSame('age-encryption.org/v1', trim((string)file_get_contents($archivo, false, null, 0, 21)));
+        $this->assertSame([$archivo], glob($this->dir . '/copias/*'), 'only the encrypted file: no plain copy and no partial');
+        $this->assertStringNotContainsString('Rosa Elena', (string)file_get_contents($archivo), 'nothing readable inside');
+
+        $abierta = $this->dir . '/origen/abierta.sqlite';
+        shell_exec('age -d -i ' . escapeshellarg($privada) . ' -o ' . escapeshellarg($abierta) . ' ' . escapeshellarg($archivo) . ' 2>/dev/null');
+        $this->assertSame('Rosa Elena', (new Database('sqlite:' . $abierta))->fetchValue('SELECT nombres FROM personas WHERE id = 1'), 'and the private key gets it back');
+        unset($db);
+    }
+
+    public function testItEncryptsForSeveralRecipients(): void
+    {
+        [$una] = $this->clavesAge();
+        shell_exec('age-keygen -o ' . escapeshellarg($this->dir . '/origen/otra.txt') . ' 2>/dev/null');
+        preg_match('/age1[a-z0-9]{58}/', (string)file_get_contents($this->dir . '/origen/otra.txt'), $m);
+        [$db, $ruta] = $this->baseSqlite();
+
+        $archivo = (new Copias($this->dir . '/copias', 30, [$una, $m[0]]))->respaldar('genealogy', 'sqlite:' . $ruta);
+
+        foreach (['clave.txt', 'otra.txt'] as $clave) {
+            $abierta = $this->dir . '/origen/abierta-' . $clave;
+            shell_exec('age -d -i ' . escapeshellarg($this->dir . '/origen/' . $clave) . ' -o ' . escapeshellarg($abierta) . ' ' . escapeshellarg($archivo) . ' 2>/dev/null');
+            $this->assertSame('Rosa Elena', (new Database('sqlite:' . $abierta))->fetchValue('SELECT nombres FROM personas WHERE id = 1'), $clave);
+            unlink($abierta);
+        }
+        unset($db);
+    }
+
+    public function testWithoutAgeTheRunFailsAndLeavesNoCopyAtAll(): void
+    {
+        [$publica] = $this->clavesAge();
+        [$db, $ruta] = $this->baseSqlite();
+        $copias = new Copias($this->dir . '/copias', 30, [$publica]);
+        $path = (string)getenv('PATH');
+
+        putenv('PATH=/nonexistent');
+        try {
+            $copias->respaldar('genealogy', 'sqlite:' . $ruta);
+            $this->fail('it must not fall back to a plain copy');
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('age', $e->getMessage());
+        } finally {
+            putenv('PATH=' . $path);
+        }
+
+        $this->assertSame([], glob($this->dir . '/copias/*'), 'not even a plain copy, nor a partial one');
+        unset($db);
+    }
+
+    public function testARecipientThatIsNotAnAgeKeyIsRefused(): void
+    {
+        foreach (['', 'nope', 'age1corta', 'age1' . str_repeat('b', 58), 'AGE1' . str_repeat('q', 58), 'age1' . str_repeat('q', 59)] as $malo) {
+            try {
+                new Copias($this->dir, 30, [$malo]);
+                $this->fail("«{$malo}»");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString('age1', $e->getMessage());
+            }
+        }
+        $this->assertInstanceOf(Copias::class, new Copias($this->dir, 30, ['age1' . str_repeat('q', 58)]));
+    }
+
+    public function testRotationAlsoAgesOutTheEncryptedCopiesAndASweepRemovesWhatAKilledRunLeft(): void
+    {
+        mkdir($this->dir . '/copias');
+        $dia = static fn(int $atras): string => date('Y-m-d', strtotime("-{$atras} days"));
+        foreach (["genealogy-{$dia(40)}.dump.age", "genealogy-{$dia(40)}.sqlite.age", "genealogy-{$dia(5)}.dump.age", "pos-{$dia(40)}.sqlite.age"] as $nombre) {
+            file_put_contents($this->dir . '/copias/' . $nombre, 'x');
+        }
+        $this->assertSame(["genealogy-{$dia(40)}.dump.age", "genealogy-{$dia(40)}.sqlite.age"], (function () {
+            $b = (new Copias($this->dir . '/copias', 30))->rotar('genealogy');
+            sort($b);
+
+            return $b;
+        })());
+        $this->assertFileExists($this->dir . '/copias/genealogy-' . $dia(5) . '.dump.age');
+        $this->assertFileExists($this->dir . '/copias/pos-' . $dia(40) . '.sqlite.age', 'another site');
+
+        // what a run killed half way left: it is swept at the start of the next one, and only for that site
+        $sobras = ['genealogy-' . date('Y-m-d') . '.sqlite.sin-cifrar.parcial', 'genealogy-' . date('Y-m-d') . '.sqlite.parcial', 'pos-' . date('Y-m-d') . '.sqlite.parcial'];
+        foreach ($sobras as $s) {
+            file_put_contents($this->dir . '/copias/' . $s, 'a medias');
+        }
+        [$db, $ruta] = $this->baseSqlite();
+        (new Copias($this->dir . '/copias'))->respaldar('genealogy', 'sqlite:' . $ruta);
+        $this->assertFileDoesNotExist($this->dir . '/copias/' . $sobras[0]);
+        $this->assertFileDoesNotExist($this->dir . '/copias/' . $sobras[1]);
+        $this->assertFileExists($this->dir . '/copias/' . $sobras[2], 'the leftovers of another site are not touched');
+        unlink($this->dir . '/copias/' . $sobras[2]);
+        unset($db);
+    }
 }

@@ -2,6 +2,11 @@
 
 namespace PhoneDirectory\Config;
 
+/**
+ * @deprecated Sin uso desde que se comprobó (2026-11): ninguna clase la recibe ni la lee; los límites que
+ *             describe viven como constantes donde se aplican (por ejemplo `SurnameKeys::MAX_SURNAME_LENGTH`).
+ *             Se conserva como referencia, no se borra.
+ */
 class ParserConfig
 {
     private int $maxSurnameLength;

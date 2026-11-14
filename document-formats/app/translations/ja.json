@@ -157,6 +157,8 @@
     "category": "カテゴリ",
     "region": "地域",
     "reset": "フィルターをリセット",
+    "copyLink": "リンクをコピー",
+    "linkCopied": "リンクをコピーしました",
     "compareLabel": "形式を比較",
     "comparePlaceholder": "比較する形式名を入力...",
     "colFormat": "形式",

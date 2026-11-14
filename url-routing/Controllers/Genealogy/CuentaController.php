@@ -9,6 +9,7 @@ use App\Repositories\Genealogy\ColeccionRepository;
 use App\Repositories\Genealogy\PersonaRepository;
 use App\Repositories\Genealogy\RegistroRepository;
 use App\Repositories\Genealogy\RetiroRepository;
+use App\Repositories\Genealogy\SolicitudRepository;
 use App\Repositories\UsuarioRepository;
 
 /**
@@ -92,6 +93,45 @@ class CuentaController extends BaseController
         $this->flash("Pedido n.º {$numero}: " . RetiroRepository::DECISIONES[$decision] . '.');
 
         return $this->redirect(cuenta(3));
+    }
+
+    /**
+     * /0/4/ — the solicitudes of access, correction or erasure of a persona's data that anyone made at /s/{id}/. The owner
+     * reads them here, answers by e-mail (docs/SOLICITUDES.md: check who asks first) and closes each one as answered
+     * or refused. Closing gives, changes and erases nothing: that is done with bin/persona.php. The form posts to this URL.
+     *
+     * @param array<string, mixed> $params
+     */
+    public function solicitudes(array $params = []): string
+    {
+        $denegado = $this->exigirMetodo('GET', 'HEAD', 'POST') ?? $this->exigirPropietario(ocultar: false);
+        if ($denegado !== null) {
+            return $denegado;
+        }
+
+        $repo = new SolicitudRepository($this->db());
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return view('genealogy/cuenta/solicitudes', ['solicitudes' => $repo->todas()]);
+        }
+        if (!$this->validateCsrfToken()) {
+            return $this->handleForbidden();
+        }
+
+        $numero = $this->postString('solicitud');
+        $decision = $this->postString('decision');
+        $nota = trim($this->postString('nota'));
+        if (!ctype_digit($numero) || !isset(SolicitudRepository::CIERRES[$decision]) || mb_strlen($nota) > 2000) {
+            return $this->handleBadRequest('Solicitud o decisión inválidas');
+        }
+        if (!$repo->cerrar((int)$numero, $decision, $nota === '' ? null : $nota)) {
+            return $this->handleNotFound('No hay una solicitud pendiente con ese número');
+        }
+
+        // The number and the decision only: never who asked nor what they wrote.
+        log_info('solicitud de datos cerrada', ['solicitud' => (int)$numero, 'decision' => $decision]);
+        $this->flash("Solicitud n.º {$numero}: " . SolicitudRepository::CIERRES[$decision] . '.');
+
+        return $this->redirect(cuenta(4));
     }
 
     /** A page that shows the account's user, or a 404 when that user doesn't exist. */

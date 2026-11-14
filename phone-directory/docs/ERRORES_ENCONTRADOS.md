@@ -1,7 +1,8 @@
 # Lista de errores encontrados y su estado
 
 Revisión estática original de 14 errores potenciales, verificada de nuevo contra el código actual.
-**Los 14 están corregidos o no aplican.** Cada uno indica dónde se resolvió y qué test lo cubre.
+**Los 14 están corregidos o no aplican.** Cada uno indica dónde se resolvió y qué test lo cubre. En dos casos (#7 y
+#13) el hallazgo original estaba equivocado, y en el #14 la solución que proponía no bastaba; se explica en cada uno.
 
 Rutas relativas a `phone-directory/`. Para correr los tests de esta lista:
 
@@ -70,9 +71,10 @@ cd phone-directory
 - **Cobertura**: `RecordLinkerTest::testUncatalogedDirectoriesWithNoYearFallBackToInputOrder`.
 
 ### 7. `PersonName` con arrays sin inicializar — no aplica
-- **Hallazgo original**: si `parse()` lanza una excepción, `$firstNames` y `$lastNames` quedan sin inicializar.
-- **Por qué no aplica**: si el constructor lanza, el objeto no llega a existir. Además ambos arrays se inicializan
-  antes de llamar a `parse()`.
+- **Hallazgo original** (equivocado): si `parse()` lanza una excepción, un `getFirstName()` posterior fallaría con
+  «Undefined array key» porque `$firstNames` y `$lastNames` quedan sin inicializar.
+- **Por qué no aplica**: si el constructor lanza, `new PersonName(...)` no produce ningún objeto sobre el que llamar
+  nada. Además ambos arrays se inicializan a `[]` antes de llamar a `parse()`.
 - **Cobertura**: `PotentialErrorsTest::testPersonNameRejectsWhitespaceOnlyName`.
 
 ### 8. `PhonePattern::REGEX` sin validar — corregido
@@ -99,13 +101,15 @@ cd phone-directory
 - **Cobertura**: `RecordLinkerTest`.
 
 ### 13. Soundex con apellidos muy largos — corregido
-- **Corrección**: `SurnameKeys::soundex()` recorta el apellido a `MAX_SURNAME_LENGTH` y Soundex siempre produce
-  4 caracteres.
+- **Hallazgo original** (equivocado): un apellido de 10 000 caracteres produciría un `surname_soundex` enorme.
+  Soundex siempre produce 4 caracteres; el único costo real era recorrer la cadena completa.
+- **Corrección**: `SurnameKeys::soundex()` recorta el apellido a `MAX_SURNAME_LENGTH` (1000) antes de calcular la clave.
 - **Cobertura**: `PotentialErrorsTest::testVeryLongSurnameGivesFixedSizeSoundex`.
 
 ### 14. Codificación inválida tras `mb_strtolower` + `AccentFolding` — corregido
-- **Hallazgo original**: la validación ocurría *después* de `mb_strtolower()`, que ya había reemplazado los bytes
-  inválidos por `?`, así que nunca detectaba nada.
+- **Hallazgo original**: proponía comprobar `mb_check_encoding()` *después* de `mb_strtolower()`. No bastaba: esa
+  función ya había reemplazado los bytes inválidos por `?` (un «Muñoz» en Latin-1 pasaba como `mu?oz`), así que la
+  comprobación nunca detectaba nada.
 - **Corrección**: `TextFolding::fold()`, compartido por la capa de base de datos y `RecordLinker`, valida la entrada
   antes de transformarla.
 - **Cobertura**: `TextFoldingTest`.

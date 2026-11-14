@@ -1,7 +1,7 @@
 # Phone Directory Parser — estado del proyecto
 
 Estado del módulo `phone-directory/`: qué incluye, cómo se verifica y qué queda pendiente.
-La descripción funcional está en [PHONE_DIRECTORY_SUMMARY.md](PHONE_DIRECTORY_SUMMARY.md).
+La descripción funcional y el uso están en el [README](../README.md); los diagramas, en [ARCHITECTURE.md](ARCHITECTURE.md).
 
 **Lenguajes**: PHP 8.1+ (implementación principal) · Python 3 y Java 11+ (ports simplificados)
 
@@ -32,73 +32,27 @@ La descripción funcional está en [PHONE_DIRECTORY_SUMMARY.md](PHONE_DIRECTORY_
 ### Ejemplos y documentación
 - `examples/process_phone_directory.php`, `examples/multilingual_example.php`, `examples/sample_phone_directory.txt`.
 - `README.md`: guía de uso y API completa.
-- `docs/`: este reporte, el resumen funcional, la arquitectura (`ARCHITECTURE.md`), las estimaciones de
-  escalabilidad y el análisis de errores.
+- `docs/`: este reporte, la arquitectura (`ARCHITECTURE.md`), las estimaciones de escalabilidad y la lista de errores
+  de la revisión estática (`ERRORES_ENCONTRADOS.md`).
 
 ---
 
-## Métricas
+## Cómo se verifica
 
-| Métrica | Valor |
-|---------|-------|
-| Tests de los ports | 13 (Python) + 12 chequeos (Java) |
-| Idiomas | 6 |
-| Motores de base de datos | SQLite, MySQL/MariaDB, PostgreSQL |
-| Directorios en el catálogo | 16 |
+Una prueba por clase o tema en `tests/PhoneDirectory/` (la lista de archivos se queda al día sola: `ls tests/PhoneDirectory`),
+más el conjunto de evaluación del parser (`tests/fixtures/parser-evaluation.json`) que también corren los ports. Cómo
+correrlas está en la sección «Pruebas» del [README](../README.md). La cobertura de código no se mide en CI.
 
----
-
-## Tests
-
-| Archivo (`tests/PhoneDirectory/`) | Qué cubre |
-|-----------------------------------|-----------|
-| `PersonNameTest` | Nombres, apellidos, partículas, títulos |
-| `PhoneDirectoryParserTest` | Parser original |
-| `PhoneDirectoryDatabaseTest` | CRUD, búsquedas, migración, backfill |
-| `JuridicalEntityDatabaseTest` | CRUD y búsquedas de empresas |
-| `MultiLanguagePhoneDirectoryParserTest` | Idiomas, personas y empresas, lectura de archivos, UTF-8 inválido |
-| `PhoneDirectoryCatalogTest` | Catálogo histórico y año de un directorio |
-| `PotentialErrorsTest` | Los errores de [ERRORES_ENCONTRADOS.md](ERRORES_ENCONTRADOS.md) |
-| `GeoLocationTest` | Validación de ubicación |
-| `CliTest` | Comandos de `bin/phonedir` |
-| `RecordLinkerTest` | Enlace de registros entre directorios |
-| `PrivacyTest`, `PrivacyDatabaseTest` | Quién puede ver qué: años de guía, marca de fallecido, cada método de la base |
-| `CrossDatabaseTest` | Mismo comportamiento en SQLite, PostgreSQL y MySQL |
-| `SurnameKeysTest` | Soundex y claves fonéticas |
-| `PhoneDirectoryManagerV2Test` | Manager actual |
-| `DirectoryDatabaseInterfaceTest` | La interfaz común de las dos bases |
-| `TextFoldingTest` | Plegado de acentos y validación UTF-8 |
-| `ExamplesRunTest` | Los ejemplos de `examples/` corren sin errores ni avisos |
-
-La cobertura de código no se mide en CI.
-
-### Integración continua (`.github/workflows/tests.yml`)
-- `phone-directory / PHP 8.1–8.4`: suite PHPUnit (incluidos los ejemplos) contra SQLite y un PostgreSQL 16 real, y una corrida corta de
-  `bin/benchmark.php`.
+### Integración continua (`.github/workflows/pruebas-phone-directory.yml`)
+- `phone-directory / PHP 8.1–8.4`: suite PHPUnit (incluidos los ejemplos) contra SQLite y un PostgreSQL 16 real,
+  análisis estático con PHPStan, una corrida corta de `bin/benchmark.php` y el conjunto de evaluación del parser.
 - `phone-directory / Python and Java ports`: tests de los dos ports.
-
----
-
-## Uso rápido
-
-```bash
-# PHP
-cd phone-directory && composer install
-php bin/phonedir import examples/sample_phone_directory.txt --dsn=sqlite:demo.sqlite
-php bin/phonedir search --name=garcia --dsn=sqlite:demo.sqlite
-
-# Python
-cd phone-directory/ports/python && python3 phone_directory_parser.py && python3 -m unittest
-
-# Java
-cd phone-directory/ports/java && javac -d build *.java && java -cp build PhoneDirectoryParserTest
-```
 
 ---
 
 ## Pendientes
 
-- `Config/ParserConfig` existe pero no está conectado a nada.
+- `Config/ParserConfig` no está conectado a nada (está marcada `@deprecated`).
 - `parseFile()` acumula todas las entradas en memoria; para archivos enormes haría falta procesarlas por lotes a
   medida que se leen.
 - Los ports no tienen paridad con el PHP (ver arriba).

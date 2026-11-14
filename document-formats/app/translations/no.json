@@ -157,6 +157,8 @@
     "category": "Kategori",
     "region": "Region",
     "reset": "Nullstill filtre",
+    "copyLink": "Kopier lenke",
+    "linkCopied": "Lenke kopiert",
     "compareLabel": "Sammenlign formater",
     "comparePlaceholder": "Skriv inn formatnavn som skal sammenlignes...",
     "colFormat": "Format",

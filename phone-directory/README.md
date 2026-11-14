@@ -217,7 +217,7 @@ $visitante->filter($entries);          // solo las que se pueden mostrar, en su 
 Dónde se aplica:
 
 - **`PhoneDirectoryPDODatabase`**: `findById`, `findByName`, `findByStreet`, `findByPhone`, `findBySurnameSound`, `findBySourceDirectory`, `search` y `getAll`. Un número de teléfono reusado en una edición posterior sigue encontrando la entrada antigua. Las filas que no se pueden mostrar por ningún motivo (una guía del catálogo demasiado reciente, o ninguna guía, sin defunción registrada) se dejan fuera ya en el `WHERE`, sin traerlas; el resto (por ejemplo un id fuera del catálogo, con el año en el id) lo decide `Privacy` en PHP. `count()` cuenta lo que el lector puede ver: todo para el propietario, solo lo que se muestra para el visitante (contar lo oculto le diría cuántas entradas recientes hay; lo mismo en la base de empresas). `update()`, `delete()` y `clear()` no cambian: ocultar es sobre lo que se muestra, no sobre lo que se guarda.
-- **`JuridicalEntityPDODatabase`** (empresas): con la misma vista por omisión y en los mismos métodos (`findById`, `findByBusinessName`, `findByStreet`, `findByPhone`, `findByBusinessType`, `search`, `getAll`), oculta la empresa que **lleva un nombre de pila** en su nombre o razón social («Panadería Juan Pérez», «Chez Marie», «Jürgen Weber GmbH») cuando su guía es reciente o no tiene año: es el nombre, la dirección y el teléfono de una persona igual (issue #233). Las demás se muestran siempre. Los nombres salen de `GivenNames`, una lista de los más comunes entre 1930 y 1975 en los seis idiomas, que se mira toda junta sea cual sea el país.
+- **`JuridicalEntityPDODatabase`** (empresas): con la misma vista por omisión y en los mismos métodos (`findById`, `findByBusinessName`, `findByStreet`, `findByPhone`, `findByBusinessType`, `search`, `getAll`), oculta la empresa que **lleva un nombre de pila** en su nombre o razón social («Panadería Juan Pérez», «Chez Marie», «Jürgen Weber GmbH») cuando su guía es reciente o no tiene año: es el nombre, la dirección y el teléfono de una persona igual (issue #233). Las demás se muestran siempre. Los nombres salen de `GivenNames`: los nombres de pila más comunes entre 1930 y 1975 en los seis idiomas y los apellidos más comunes de cada uno (sin los que también son palabras corrientes, como «Flores», «Torres» o «Costa»), todo mirado junto sea cual sea el país. Un nombre que va justo después de «San», «Santa», «Saint», «St.» o «São» se salta, porque ese negocio lleva el nombre de un santo («Farmacia San José»). Es una heurística: se sigue escapando el apellido que no está en la lista, y se sigue ocultando de más la palabra que también es un nombre sin santo delante («Florería Rosa»).
 - **`PhoneDirectoryManagerV2`**: contesta con lo que sus bases pueden mostrar.
 - **`RecordLinker`**: `new RecordLinker(privacy: …)`. Descarta antes de enlazar toda entrada que pueda ser de una persona viva, porque unir a una persona de dos ediciones arma un perfil (dónde vivía, y cuándo) que ninguna guía tenía por sí sola.
 - **`bin/phonedir`** usa la vista del propietario: quien corre el comando tiene la base. `--publico` muestra lo que vería un visitante (y lo dice al final), y `--hoy=AAAA-MM-DD` fija la fecha de referencia.
@@ -303,6 +303,7 @@ El `PhoneDirectoryManager` anterior (v1, solo inglés y solo personas naturales)
 ## Uso Básico
 
 ### 1. Instalación
+Requiere PHP 8.1 o superior con `mbstring` y `pdo_sqlite` (o `pdo_mysql` / `pdo_pgsql`).
 ```bash
 composer install   # enlaza también ../defamatory-content-review como dependencia
 ```
@@ -311,6 +312,7 @@ composer install   # enlaza también ../defamatory-content-review como dependenc
 ```php
 use PhoneDirectory\JuridicalEntityPDODatabase;
 use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
+use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 
 $dsn = 'sqlite:genealogy.db';
@@ -320,6 +322,14 @@ $manager = new PhoneDirectoryManagerV2(
 );
 
 $result = $manager->processFile('sample_directory.txt');   // idioma detectado automáticamente
+
+// Para un directorio del catálogo, el parser toma el país y el id de origen de ahí
+// y las entradas quedan asociadas a esa edición:
+$manager = new PhoneDirectoryManagerV2(
+    parser: MultiLanguagePhoneDirectoryParser::forCatalogDirectory('es_1930_madrid'),
+    naturalDatabase: new PhoneDirectoryPDODatabase($dsn),
+    juridicalDatabase: new JuridicalEntityPDODatabase($dsn)
+);
 
 echo "Insertadas: {$result['totalInserted']} entradas\n";
 echo "Errores: {$result['errorCount']}\n";
@@ -532,7 +542,7 @@ Para directorios telefónicos grandes:
 - Con "viuda de" o "widow of", solo se guarda el tratamiento; el nombre del marido que sigue no se vuelve a separar en nombre/apellido
 - Ver «Privacidad: personas que podrían estar vivas» para lo que la base no devuelve por omisión y por qué
 - La detección automática de idioma es una heurística por palabras clave; con muy poco texto, o en un idioma no soportado, puede fallar (siempre se puede indicar el idioma explícitamente). «Via» cuenta como italiano solo con la forma «Via Roma 10» (al principio de la línea y con el número al final), porque también existe en inglés
-- Los dos parsers leen cada bloque con `BlockReader`, que mira cada línea una sola vez (`LineFacts`). Separa dos registros seguidos sin línea en blanco cuando el primero ya tiene nombre y calle y la línea siguiente al nuevo nombre (también un nombre junto a su teléfono) es una calle; una línea de ciudad o una nota después del teléfono se quedan en su registro. Si el segundo registro no trae calle justo después del nombre, los dos se siguen leyendo como uno. Una calle sin palabra de calle cede ante una con palabra que venga después en el mismo registro («Ferretería Sur / División 2 / Calle Mayor 5» da «Calle Mayor 5»)
+- Los dos parsers leen cada bloque con `BlockReader`, que mira cada línea una sola vez (`LineFacts`). Separa dos registros seguidos sin línea en blanco cuando el primero ya tiene nombre y calle y la línea siguiente al nuevo nombre (también un nombre junto a su teléfono) es una calle; una línea de ciudad o una nota después del teléfono se quedan en su registro. Si el segundo registro no trae calle justo después del nombre, los dos se siguen leyendo como uno. Una calle sin palabra de calle cede ante una con palabra que venga después en el mismo registro («Luis Sur / División 2 / Calle Mayor 5» da «Calle Mayor 5»)
 - Los casos de `tests/fixtures/parser-evaluation.json` marcados con `falla_conocida` documentan lo que el parser multilingüe todavía no resuelve (hoy no queda ninguno: para medir algo nuevo, agrega primero los casos que lo muestran)
 - En una sola línea sin separadores, la calle con el número al final necesita una palabra de calle (`Calle`, `Via`, `-straße`...) y al menos dos palabras de nombre antes; si no, se corta en el primer dígito como en inglés
 
@@ -544,8 +554,7 @@ MIT
 
 | Archivo | Qué trae |
 |---|---|
-| `PHONE_DIRECTORY_SUMMARY.md` | Descripción funcional, uso y esquema de base de datos |
-| `ARCHITECTURE.md` | Diagramas de arquitectura y flujo |
-| `PROJECT_COMPLETION_REPORT.md` | Estado del proyecto, tests por archivo y pendientes |
+| `ARCHITECTURE.md` | Diagramas de arquitectura y flujo, y los índices de la base |
+| `PROJECT_COMPLETION_REPORT.md` | Estado del proyecto, CI y pendientes |
 | `ESTIMATES_AND_SCALABILITY.md` | Rendimiento medido y proyecciones de volumen |
-| `ERRORES_ENCONTRADOS.md`, `POTENTIAL_ERRORS_ANALYSIS.md` | Los 14 errores de la revisión estática, su estado y el análisis detallado |
+| `ERRORES_ENCONTRADOS.md` | Los 14 errores de la revisión estática: su estado, dónde se corrigieron y qué prueba los cubre |

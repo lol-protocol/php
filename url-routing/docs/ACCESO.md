@@ -195,6 +195,7 @@ solo la usa quien administra el servidor.
 
 ```
 php bin/persona.php acceso 6128473105                             # todo lo que hay de ella, en JSON
+php bin/persona.php resumen 6128473105                            # un borrador de lo que decirle: cuentas, nunca fechas ni nombres
 php bin/persona.php suprimir 6128473105 --pedido=12               # muestra qué se quitaría y no cambia nada
 php bin/persona.php suprimir 6128473105 --pedido=12 --confirmar   # lo hace
 php bin/persona.php rectificar 6128473105 personas.apellidos='Quintana Soto'    # muestra qué cambiaría y no cambia nada
@@ -209,13 +210,15 @@ php bin/persona.php entrega 6128473105                            # un enlace y 
   correcciones anotadas (qué campo y cuándo, nunca los valores). Los
   parientes aparecen solo como cantidades: sus nombres son sus datos. Es lo que mira quien administra, **no lo que se le manda** a quien lo pide: el JSON
   trae también lo que el sitio oculta y no viaja por correo en claro. A la persona se le manda un resumen legible
-  escrito a mano (ver [`SOLICITUDES.md`](SOLICITUDES.md), «Qué responder»).
+  (ver [`SOLICITUDES.md`](SOLICITUDES.md), «Qué responder»); **`resumen`** imprime el borrador, hecho de modo que no pueda
+  incluir una fecha, un lugar, una descripción ni un nombre.
 - **Las solicitudes llegan por `/s/{id}/`**, un formulario abierto a cualquiera, sin cuenta, que enlaza el pie de la
   página de cada persona (y solo de las personas: un apellido o un suceso no tienen datos que pedir). Pide qué
   se quiere (ver, corregir o borrar), el texto y un correo. **No entrega, cambia ni borra nada por sí solo**: la
   solicitud espera a quien administra. Tiene el mismo campo trampa, el mismo token CSRF y topes parecidos a los del
   retiro (3 por visitante y por hora, 5 esperando por persona). Se atienden con `php bin/solicitudes.php`
-  (`--ver=N`, `--atender=N`, `--rechazar=N`, `--depurar`), que no dice por cron quién pidió ni qué escribió;
+  (`--ver=N`, `--atender=N`, `--rechazar=N`, `--depurar`), que no dice por cron quién pidió ni qué escribió, o en el panel
+  del propietario, **`/0/4/`** (`Solicitudes de datos` en el menú de la cuenta), con el correo enmascarado y el completo a un clic;
   ver [`DESPLIEGUE.md`](DESPLIEGUE.md), sección 8, y [`SOLICITUDES.md`](SOLICITUDES.md).
 - **`rectificar`** corrige un campo de la ficha (nombres, apellidos, sexo, y la fecha o la descripción de un suceso que es solo de
   ella), dice si el cambio la oculta o la muestra a un visitante y lo anota. Sin `--confirmar` lo prueba en una
@@ -230,7 +233,7 @@ php bin/persona.php entrega 6128473105                            # un enlace y 
   - se borran sus sucesos en los que **es la única participante**, con sus enlaces a registros;
   - los sucesos que comparte con otras personas **se conservan** (también son datos de las otras) y a ella se la
     quita de la lista; revisa su descripción;
-  - se borran sus vínculos, su lugar en colecciones y organizaciones y los ids que redirigían a ella;
+  - se borran sus vínculos, su lugar en colecciones y organizaciones, los ids que redirigían a ella y sus entregas con clave;
   - sus hijos **conservan su fila** y pierden el enlace a ella como padre o madre;
   - se borra su fila.
 - **Lo que no puede hacer** es leer texto libre: una descripción, el título de un registro o una nota de una

@@ -43,7 +43,7 @@ return [
     'hin' => ['iso639_1' => 'hi', 'name' => 'Hindi',      'nativeName' => 'हिन्दी',              'family' => 'indo_aryan'],
     'jpn' => ['iso639_1' => 'ja', 'name' => 'Japanese',   'nativeName' => '日本語',              'family' => 'japonic'],
     'kor' => ['iso639_1' => 'ko', 'name' => 'Korean',     'nativeName' => '한국어',              'family' => 'koreanic'],
-    'yue' => ['iso639_1' => 'zh', 'name' => 'Cantonese',  'nativeName' => '廣東話',              'family' => 'sinitic'],
+    'yue' => ['name' => 'Cantonese',  'nativeName' => '廣東話',              'family' => 'sinitic'], // sin código ISO 639-1: «zh» es el chino en general
     'tha' => ['iso639_1' => 'th', 'name' => 'Thai',       'nativeName' => 'ไทย',                'family' => 'tai_kadai'],
     'vie' => ['iso639_1' => 'vi', 'name' => 'Vietnamese', 'nativeName' => 'Tiếng Việt',        'family' => 'austroasiatic'],
     'ind' => ['iso639_1' => 'id', 'name' => 'Indonesian', 'nativeName' => 'Bahasa Indonesia',  'family' => 'austronesian'],

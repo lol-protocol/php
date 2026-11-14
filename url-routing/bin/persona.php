@@ -7,6 +7,7 @@ declare(strict_types=1);
  * line; the web app has no page for this.
  *
  *   php bin/persona.php acceso <id>                              # everything held about her, as JSON
+ *   php bin/persona.php resumen <id>                             # a draft of what to tell her: what a visitor sees and counts of the rest
  *   php bin/persona.php suprimir <id> [--pedido=N]               # shows what would be removed
  *   php bin/persona.php suprimir <id> [--pedido=N] --confirmar   # does it (it cannot be undone without a backup)
  *   php bin/persona.php rectificar <id> <tabla.columna>=<valor> [--suceso=N] [--pedido=N]   # shows what a correction would do
@@ -39,6 +40,7 @@ require __DIR__ . '/../vendor/autoload.php';
 Config::load();
 
 $uso = "Uso: php bin/persona.php acceso <id>\n"
+    . "     php bin/persona.php resumen <id>\n"
     . "     php bin/persona.php suprimir <id> [--pedido=N] [--confirmar]\n"
     . "     php bin/persona.php rectificar <id> <tabla.columna>=<valor> [--suceso=N] [--pedido=N] [--confirmar]\n"
     . "     php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]\n"
@@ -53,7 +55,7 @@ $que = null;
 $dias = null;
 $revocar = false;
 $suceso = null;
-$conId = ['acceso', 'suprimir', 'rectificar', 'rectificacion', 'entrega'];
+$conId = ['acceso', 'resumen', 'suprimir', 'rectificar', 'rectificacion', 'entrega'];
 foreach (array_slice($argv, 2) as $argumento) {
     if ($argumento === '--confirmar') {
         $confirmar = true;
@@ -77,7 +79,7 @@ foreach (array_slice($argv, 2) as $argumento) {
 $necesitaId = in_array($orden, $conId, true);
 if (
     !in_array($orden, [...$conId, 'reaplicar'], true) || $necesitaId !== ($id !== null)
-    || (in_array($orden, ['acceso', 'rectificacion', 'entrega'], true) && $confirmar)
+    || (in_array($orden, ['acceso', 'resumen', 'rectificacion', 'entrega'], true) && $confirmar)
     || in_array($orden, ['rectificar', 'rectificacion'], true) !== ($que !== null)
     || ($orden === 'rectificar' && !str_contains((string)$que, '='))
     || ($revocar && $dias !== null)
@@ -135,6 +137,19 @@ try {
             echo $r['aviso_grupo'] . "\n";
         }
         echo $confirmar ? "Mira la página como visitante y como propietario.\n" : "Nada cambió. Para hacerlo, repetir con --confirmar.\n";
+        exit(0);
+    }
+
+    if ($orden === 'resumen') {
+        $texto = $repo->resumenLegible((int)$id);
+        if ($texto === null) {
+            fwrite(STDERR, "No existe la persona {$id}.\n");
+            exit(1);
+        }
+        // The draft goes alone to stdout (to paste or pipe); what to do with it, to stderr.
+        fwrite(STDERR, "Borrador para revisar antes de mandar: solo dice lo que un visitante ya ve y cuántas cosas hay, nunca fechas, lugares ni nombres de parientes.\n"
+            . "Añade el saludo, y comprueba antes quién pide (docs/SOLICITUDES.md).\n\n");
+        echo $texto;
         exit(0);
     }
 

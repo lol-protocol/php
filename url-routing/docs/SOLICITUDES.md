@@ -14,14 +14,14 @@ de demostración.
 
 | # | Qué pasa | Dónde |
 |---|---|---|
-| 1 | **Llega la solicitud.** Por el formulario de `/s/{id}/` (enlazado al pie de la página de cada persona) o por correo: [`TERMINOS-DE-USO.md`](../../TERMINOS-DE-USO.md) dice «escribiendo a [CORREO]», y ese dato **falta**: se decidió que sea un correo propio del sitio, pero la dirección real aún no está. El formulario no entrega, cambia ni borra nada: la solicitud espera. Léela con `php bin/solicitudes.php` (lo que espera) y `--ver=N` (quién y qué). (`/r/{id}/` sirve para pedir el retiro o la oposición; si pide además borrar, se atiende aquí.) **Anota la fecha y la hora en que llegó**: de ahí corre el plazo ⚖️ (pregunta 7 de la sección 7 de `CUMPLIMIENTO-LEY-21719.md`). | `/s/{id}/`, correo |
+| 1 | **Llega la solicitud.** Por el formulario de `/s/{id}/` (enlazado al pie de la página de cada persona) o por correo: [`TERMINOS-DE-USO.md`](../../TERMINOS-DE-USO.md) dice «escribiendo a [CORREO]», y ese dato **falta**: se decidió que sea un correo propio del sitio, pero la dirección real aún no está. El formulario no entrega, cambia ni borra nada: la solicitud espera. Léela en el panel (`/0/4/`, entrando como propietario: el mismo menú que los pedidos de retiro) o con `php bin/solicitudes.php` (lo que espera) y `--ver=N` (quién y qué). (`/r/{id}/` sirve para pedir el retiro o la oposición; si pide además borrar, se atiende aquí.) **Anota la fecha y la hora en que llegó**: de ahí corre el plazo ⚖️ (pregunta 7 de la sección 7 de `CUMPLIMIENTO-LEY-21719.md`). | `/s/{id}/`, correo |
 | 2 | **Comprobar que quien pide es la persona** (o, si ya falleció, un familiar) antes de mandar o cambiar nada. **⚖️ Sin decidir**: ver la sección siguiente. | — |
 | 3 | **Encontrar el id.** Busca por nombre en `/b/10/{texto}/` **entrando como propietario** ([`ACCESO.md`](ACCESO.md), «Entrar como propietario»): un visitante no ve a una persona que puede estar viva, y es justo quien suele pedir. Con homónimos, confirma por fechas y lugares, no solo por el nombre. | `/b/10/…` |
 | 4 | **Acceso.** `php bin/persona.php acceso <id>` (JSON). Mira abajo qué contiene y qué no. | servidor |
 | 5 | **Rectificación.** A mano, en una transacción y con un respaldo antes, y después `php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]`: sección «Rectificar». | base de datos |
 | 6 | **Supresión.** `php bin/persona.php suprimir <id> [--pedido=N]` (simulación) y luego `--confirmar`. Retirar **no** es borrar. | servidor |
 | 7 | **Responder** a quien pidió, por una persona y no por el sitio (que no escribe solo): sección «Qué responder». | correo |
-| 8 | **Anotar**: cuándo llegó, cuándo se respondió y qué se hizo, **sin copiar los datos de la persona** a la nota. Si llegó por el formulario, ciérrala: `php bin/solicitudes.php --atender=N --nota='…'` (o `--rechazar=N` si no se pudo comprobar quién pedía). | `bin/solicitudes.php`, fuera del repositorio |
+| 8 | **Anotar**: cuándo llegó, cuándo se respondió y qué se hizo, **sin copiar los datos de la persona** a la nota. Si llegó por el formulario, ciérrala: con los botones del panel (`/0/4/`) o con `php bin/solicitudes.php --atender=N --nota='…'` (o `--rechazar=N` si no se pudo comprobar quién pedía). Cerrarla solo la marca: no entrega, corrige ni borra nada. | `/0/4/`, `bin/solicitudes.php`, fuera del repositorio |
 
 ### Qué trae `acceso`
 
@@ -119,7 +119,10 @@ Desde el correo de contacto y por una persona (el sitio no escribe solo). **Sin 
 el correo viaja en claro, y es la misma razón por la que el aviso de `bin/pedidos-retiro.php` no dice quién pidió
 ni qué escribió. **Decidido el 12 de noviembre de 2026:** se manda un **resumen legible**, escrito a mano a partir de
 `acceso`, sin JSON: lo que un visitante ya ve de esa persona, más las **cantidades** de lo demás (sucesos, registros,
-colecciones, parientes) y qué campos se corrigieron. **Lo que el sitio oculta no se manda por correo.** Si la persona
+colecciones, parientes) y qué campos se corrigieron. `php bin/persona.php resumen <id>` imprime un **borrador**: solo
+cuentas, tipos y estados, **nunca una fecha, un lugar, una descripción, un título ni un nombre** (ni el de un pariente), así
+que no puede dar por descuido algo que el sitio oculta. Léelo, ponle el saludo y mándalo; si ves que dice más de lo
+que debe, no lo mandes. **Lo que el sitio oculta no se manda por correo.** Si la persona
 necesita verlo, hay una **entrega con clave** (sección siguiente), que es una decisión tuya en cada caso, no el camino
 por omisión.
 Estos textos son un punto de partida; **el plazo de respuesta sigue ⚖️ sin decidir**, no prometas uno:
@@ -156,7 +159,8 @@ php bin/persona.php entrega <id> --revocar       # termina las que siguen vigent
   y pedidos de retiro. Los parientes son **cantidades**, nunca nombres; no se muestra quién aportó la ficha ni su grupo.
 - **Qué no queda:** el servidor no registra qué se mostró, solo que se abrió. **Sí quedan** el enlace en los logs de acceso de
   nginx (por eso la clave va aparte) y el correo donde lo mandaste.
-- Si la persona se suprime después, el enlace deja de mostrar nada.
+- Si la persona se suprime después, **sus entregas se borran con ella**. Las que vencieron hace más de 12 meses se borran solas con
+  `php bin/solicitudes.php --depurar` (solo guardan hashes y fechas: se conservan un tiempo como prueba de que se entregó).
 
 ## Lo que falta
 

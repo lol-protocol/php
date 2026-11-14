@@ -7,13 +7,13 @@
     "jurisdiction": "APDP",
     "enactment_date": "2018-04-20",
     "effective_date": "2018-04-20",
-    "scope": "Data subjects in Benin (unconfirmed)",
+    "scope": "Collection, processing, transmission, storage and use of personal data by persons, the State, local authorities and legal persons; automated and non-automated processing",
     "applies_to": "Public and private bodies processing personal data by automated or non-automated means",
     "key_requirements": "APDP oversight of collection, processing, transmission, storage and use of personal data; regulation of sensitive data and international transfers with specified exceptions",
     "data_categories": "Personal data; sensitive data",
     "retention_period": "Not specified",
     "enforcement_authority": "Personal Data Protection Authority (APDP), independent administrative authority",
-    "penalties_range": "Repeat offences within 5 years: up to CFA 100 million or 5% of pre-tax sales, capped at CFA 100 million (secondary source, no article) (unconfirmed)",
+    "penalties_range": "Repeat offences within 5 years: up to XOF 100 million or 5% of pre-tax sales, capped at XOF 100 million",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-21",
+    "last_checked": "2026-11-14",
     "sources": {
       "genetic_data": {
         "url": "https://www.dlapiperdataprotection.com/?c=BJ&t=law",
@@ -51,8 +51,8 @@
       },
       "scope": {
         "url": "https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "applies_to": {
         "url": "https://www.consentstack.io/regulations/bj-code-numerique",
@@ -76,11 +76,23 @@
       },
       "penalties_range": {
         "url": "https://www.consentstack.io/regulations/bj-code-numerique",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Repeat offences within 5 years: up to CFA 100 million or 5% of pre-tax sales, capped at CFA 100 million (secondary source, no article) (unconfirmed)",
+        "to": "Repeat offences within 5 years: up to XOF 100 million or 5% of pre-tax sales, capped at XOF 100 million"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "scope",
+        "from": "Data subjects in Benin (unconfirmed)",
+        "to": "Collection, processing, transmission, storage and use of personal data by persons, the State, local authorities and legal persons; automated and non-automated processing"
+      },
       {
         "date": "2026-10-21",
         "field": "genetic_data",

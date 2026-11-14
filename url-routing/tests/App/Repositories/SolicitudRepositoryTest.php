@@ -122,4 +122,88 @@ class SolicitudRepositoryTest extends TestCase
         $this->assertSame(self::ELLA, (int)$repo->ver($n)['persona_id']);
         $this->assertSame(0, (int)$db->fetchValue('SELECT COUNT(*) FROM personas WHERE id = ?', [self::ELLA]));
     }
+
+    #[DataProvider('drivers')]
+    public function testEachNewSolicitudIsAnnouncedOnceInOrderAndWithoutPersonalData(string $driver): void
+    {
+        $repo = new SolicitudRepository(TestDatabases::fresh($driver, 'genealogy'));
+        $segunda = $repo->crear(self::OTRA, 'supresion', 'Texto privado', 'otra@example.com', 1_700_000_100);
+        $primera = $repo->crear(self::ELLA, 'acceso', 'Mi dirección es Calle Falsa 123', 'ella@example.com', 1_700_000_000);
+
+        $nuevas = $repo->avisarNuevas();
+
+        $this->assertSame([$primera, $segunda], array_column($nuevas, 'id'), 'oldest first, by arrival');
+        $this->assertSame(['id' => $primera, 'persona_id' => self::ELLA, 'derecho' => 'acceso', 'creado_en' => date('Y-m-d H:i:s', 1_700_000_000)], $nuevas[0]);
+        $json = json_encode($nuevas, JSON_THROW_ON_ERROR);
+        $this->assertStringNotContainsString('ella@example.com', $json);
+        $this->assertStringNotContainsString('Calle Falsa', $json);
+        $this->assertSame([], $repo->avisarNuevas(), 'once: the second run has nothing to say');
+
+        $tercera = $repo->crear(self::ELLA, 'rectificacion', 'x', 'a@example.com');
+        $this->assertSame([$tercera], array_column($repo->avisarNuevas(), 'id'), 'only what arrived since');
+    }
+
+    #[DataProvider('drivers')]
+    public function testASolicitudAlreadyClosedNeedsNoAnnouncement(string $driver): void
+    {
+        $repo = new SolicitudRepository(TestDatabases::fresh($driver, 'genealogy'));
+        $cerrada = $repo->crear(self::ELLA, 'acceso', 'x', 'a@example.com');
+        $repo->cerrar($cerrada, 'atender', null);
+        $abierta = $repo->crear(self::OTRA, 'acceso', 'x', 'b@example.com');
+
+        $this->assertSame([$abierta], array_column($repo->avisarNuevas(), 'id'));
+    }
+
+    public function testTheSolicitudesThatWereThereBeforeTheMigrationAreNotAnnouncedAsNew(): void
+    {
+        $sitio = sys_get_temp_dir() . '/migraciones-avisadas-' . getmypid();
+        $dir = $sitio . '/migrations';
+        @mkdir($dir, 0777, true);
+        $origen = dirname(__DIR__, 3) . '/database/genealogy/migrations';
+        foreach (glob($origen . '/*.sql') ?: [] as $archivo) {
+            if (!str_contains($archivo, '015_')) {
+                copy($archivo, $dir . '/' . basename($archivo));
+            }
+        }
+        $db = new \App\Support\Database('sqlite::memory:');
+        $migrar = fn() => (new \App\Support\Migrator($db, $sitio, 'genealogy'))->migrate();
+        try {
+            $migrar();
+            $db->execute("INSERT INTO solicitudes_persona (id, persona_id, derecho, detalle, contacto, creado_en) VALUES (1, 6128479601, 'acceso', 'x', 'a@example.com', '2026-01-02 03:04:05')");
+
+            copy($origen . '/015_solicitudes_avisadas.sql', $dir . '/015_solicitudes_avisadas.sql');
+            $migrar();
+
+            $this->assertSame('2026-01-02 03:04:05', (string)$db->fetchValue('SELECT avisada_en FROM solicitudes_persona WHERE id = 1'), 'stamped with its arrival');
+            $this->assertSame([], (new SolicitudRepository($db))->avisarNuevas(), 'the morning reminder already covers the old ones');
+        } finally {
+            array_map('unlink', glob($dir . '/*') ?: []);
+            @rmdir($dir);
+            @rmdir($sitio);
+        }
+    }
+
+    #[DataProvider('drivers')]
+    public function testThePanelListsEveryPendingOneAndOnlyTheNewestClosedOnesInFull(string $driver): void
+    {
+        $repo = new SolicitudRepository(TestDatabases::fresh($driver, 'genealogy'));
+        $ahora = 1_700_000_000;
+        $cerradas = [];
+        for ($i = 1; $i <= 4; $i++) {
+            $cerradas[$i] = $repo->crear(self::ELLA, 'acceso', "texto {$i}", "c{$i}@example.com", $ahora + $i * 100);
+            $repo->cerrar($cerradas[$i], 'atender', "nota {$i}", $ahora + $i * 100 + 5);
+        }
+        $vieja = $repo->crear(self::OTRA, 'supresion', 'Pendiente muy vieja', 'vieja@example.com', $ahora - 900 * 86400);
+        $nueva = $repo->crear(self::OTRA, 'rectificacion', 'Pendiente nueva', 'nueva@example.com', $ahora + 1000);
+
+        $todas = $repo->todas(2);
+
+        $this->assertSame([$nueva, $vieja, $cerradas[4], $cerradas[3]], array_map(static fn(array $s): int => (int)$s['id'], $todas), 'every pending one (newest first), then the 2 newest closed');
+        $this->assertSame(['pendiente', 'pendiente', 'atendida', 'atendida'], array_column($todas, 'estado'));
+        $this->assertSame('nueva@example.com', $todas[0]['contacto'], 'in full: the owner needs them to answer');
+        $this->assertSame('Pendiente nueva', $todas[0]['detalle']);
+        $this->assertSame('nota 4', $todas[2]['nota']);
+        $this->assertCount(2, array_filter($repo->todas(0), static fn(array $s): bool => $s['estado'] === 'pendiente'), 'with none closed, the pending ones are still all there');
+        $this->assertCount(6, $repo->todas());
+    }
 }

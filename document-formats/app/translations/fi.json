@@ -157,6 +157,8 @@
     "category": "Luokka",
     "region": "Alue",
     "reset": "Nollaa suodattimet",
+    "copyLink": "Kopioi linkki",
+    "linkCopied": "Linkki kopioitu",
     "compareLabel": "Vertaa formaatteja",
     "comparePlaceholder": "Kirjoita vertailtavien formaattien nimet...",
     "colFormat": "Formaatti",

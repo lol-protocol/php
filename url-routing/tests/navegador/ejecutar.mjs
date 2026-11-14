@@ -216,6 +216,17 @@ const pruebas = {
     });
   },
 
+  async 'las solicitudes de datos del propietario'() {
+    return con(comoPropietario, async (p) => {
+      const respuesta = await p.goto(`${base}/0/4/`);
+      igual(200, respuesta.status(), 'el panel responde al propietario');
+      const texto = await p.locator('body').innerText();
+      verdadero(texto.includes('Solicitud n.º'), 'lista las solicitudes');
+      verdadero(texto.includes('Marcar como atendida'), 'la pendiente tiene sus botones');
+      await auditar(p, '/0/4/');
+    });
+  },
+
   async 'la cola de pedidos del propietario'() {
     return con(comoPropietario, async (p) => {
       const respuesta = await p.goto(`${base}/0/3/`);

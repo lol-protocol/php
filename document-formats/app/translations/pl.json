@@ -157,6 +157,8 @@
     "category": "Kategoria",
     "region": "Region",
     "reset": "Wyczyść filtry",
+    "copyLink": "Kopiuj link",
+    "linkCopied": "Skopiowano link",
     "compareLabel": "Porównaj formaty",
     "comparePlaceholder": "Wpisz nazwy formatów do porównania...",
     "colFormat": "Format",

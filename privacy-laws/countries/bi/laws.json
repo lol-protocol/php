@@ -7,13 +7,13 @@
     "jurisdiction": "Independent oversight authority (not yet confirmed operational)",
     "enactment_date": "2026-03-10",
     "effective_date": "2026-03-10",
-    "scope": "Data subjects in Burundi (unconfirmed)",
+    "scope": "Processing by public and private bodies and natural persons; covers controllers and processors using processing means located in Burundi, except transit-only means",
     "applies_to": "Public and private bodies and natural persons, for automated and non-automated processing, including controllers using processing means located in Burundi",
     "key_requirements": "Not specified",
     "data_categories": "Not specified",
     "retention_period": "Not specified",
     "enforcement_authority": "Independent administrative authority created by the law (press: Agency for the Protection of Personal Data; ARCT mentioned by trackers); no operational body confirmed",
-    "penalties_range": "Criminal penalties for violations, amounts not found; Penal Code and ICT-offences law still apply (unconfirmed)",
+    "penalties_range": "Natural person: 6 months-5 years imprisonment and/or BIF 2,000,000-15,000,000 for unlawful breach-related processing; private legal person: BIF 20,000,000-50,000,000; sensitive or biometric data: BIF 1,000,000-5,000,000",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.mofo.com/privacy-library/burundi",
@@ -51,8 +51,8 @@
       },
       "scope": {
         "url": "https://www.offlist.me/what-is-burundi-law-1-03-2026",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "applies_to": {
         "url": "https://www.offlist.me/what-is-burundi-law-1-03-2026",
@@ -65,12 +65,24 @@
         "checked": "2026-10-16"
       },
       "penalties_range": {
-        "url": "https://www.osiris.sn/burundi-le-parlement-adopte-une-loi-cle-sur-la-protection-des-donnees.html",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.offlist.me/what-is-burundi-law-1-03-2026",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Criminal penalties for violations, amounts not found; Penal Code and ICT-offences law still apply (unconfirmed)",
+        "to": "Natural person: 6 months-5 years imprisonment and/or BIF 2,000,000-15,000,000 for unlawful breach-related processing; private legal person: BIF 20,000,000-50,000,000; sensitive or biometric data: BIF 1,000,000-5,000,000"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "scope",
+        "from": "Data subjects in Burundi (unconfirmed)",
+        "to": "Processing by public and private bodies and natural persons; covers controllers and processors using processing means located in Burundi, except transit-only means"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

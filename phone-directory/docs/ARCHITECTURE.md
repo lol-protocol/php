@@ -306,48 +306,11 @@ graph TD
 
 ## Esquema de Base de Datos
 
-```mermaid
-erDiagram
-    PHONE_DIRECTORY {
-        int id PK
-        string full_name "normalizado, para mostrar"
-        string raw_name "texto original transcrito"
-        string language
-        string country_code "ISO 3166-1 alpha-2"
-        string zone
-        string city
-        string street
-        string phone_number
-        string source_directory_id "id del catálogo o propio"
-        int source_line
-        string surname_soundex "clave fonética"
-        string surname_phonetic "clave fonética por idioma"
-        string full_name_folded "minúsculas, sin acentos"
-        string street_folded "minúsculas, sin acentos"
-        datetime record_date
-        datetime created_at
-        datetime updated_at
-    }
-
-    JURIDICAL_ENTITIES {
-        int id PK
-        string business_name
-        string legal_name
-        string street
-        string phone_number
-        string business_type
-        string country_code
-        string source_directory_id
-        int source_line
-        string business_name_folded
-        string street_folded
-        datetime record_date
-        datetime created_at
-        datetime updated_at
-    }
-```
-
-Las dos tablas son independientes entre sí (no hay relación declarada); cada una se consulta por separado desde `PhoneDirectoryManagerV2`. `createTable()` agrega automáticamente, con sus índices, cualquier columna de esta lista que falte en una tabla creada por una versión anterior del módulo, y recalcula su valor para las filas existentes.
+Las columnas de `phone_directory` y de `juridical_entities` están en la sección «Estructura de Base de Datos» del
+[README](../README.md); los índices, más abajo. Las dos tablas son independientes entre sí (no hay relación
+declarada); cada una se consulta por separado desde `PhoneDirectoryManagerV2`. `createTable()` agrega
+automáticamente, con sus índices, cualquier columna que falte en una tabla creada por una versión anterior del
+módulo, y recalcula su valor para las filas existentes.
 
 ## Ciclo de Vida del Procesamiento
 
@@ -451,44 +414,6 @@ graph LR
     A -->|Obtener Todos| I["getAll"]
 ```
 
-## Características Principales
-
-### 1. **Dos formatos de entrada**
-- Un campo por línea (formato clásico) y una entrada por línea (el más común en guías digitalizadas), detectados automáticamente por `SingleLineEntrySplitter`
-
-### 2. **Detección Automática de Idioma**
-- Marcadores distintivos por idioma, sin ambigüedad con palabras inglesas comunes; por defecto, inglés
-- Soporta: Español, Inglés, Francés, Portugués, Alemán, Italiano
-
-### 3. **Nombres**
-- `PersonName` separa nombre, apellido(s) y tratamiento (Mr., Mrs., Vda. de...)
-- Reconoce partículas (de, van, von...) y el número de apellidos según el idioma
-
-### 4. **Clasificación Automática de Entidades**
-- Distingue entre personas naturales y jurídicas
-- Detecta tipo de negocio cuando corresponde
-
-### 5. **Tres Motores de Base de Datos**
-- SQLite, MySQL/MariaDB y PostgreSQL, con las diferencias de SQL encapsuladas en `SqlDialect`
-- Migración automática de columnas nuevas sobre una tabla ya existente
-
-### 6. **Almacenamiento Separado**
-- Tabla `phone_directory` para personas naturales
-- Tabla `juridical_entities` para entidades comerciales
-
-### 7. **Búsqueda Flexible**
-- Por nombre o dirección (parcial, insensible a mayúsculas y acentos)
-- Por teléfono (exacto)
-- Por sonido del apellido (variantes ortográficas)
-- Combinada, con múltiples criterios
-
-### 8. **Enlace de Registros**
-- `RecordLinker` propone qué entradas de distintas ediciones son la misma persona, con puntuación y evidencia
-
-### 9. **Manejo Robusto de Errores**
-- Registra errores sin detener el procesamiento
-- Proporciona información de línea y contexto
-
 ## Índices de Base de Datos
 
 Los nombres de índice incluyen la tabla (`idx_phone_directory_street`, no `idx_street`), porque SQLite y PostgreSQL comparten el espacio de nombres de índices entre tablas de la misma base de datos.
@@ -514,48 +439,6 @@ CREATE INDEX idx_juridical_entities_country_code ON juridical_entities(country_c
 CREATE INDEX idx_juridical_entities_source_directory_id ON juridical_entities(source_directory_id);
 CREATE INDEX idx_juridical_entities_business_name_folded ON juridical_entities(business_name_folded);
 CREATE INDEX idx_juridical_entities_street_folded ON juridical_entities(street_folded);
-```
-
-## Casos de Uso Genealógicos
-
-### 1. **Búsqueda de Antepasados (incluidas variantes ortográficas)**
-```php
-$results = $manager->findNaturalPeopleByName('Garcia'); // encuentra "García" también
-$results = $manager->findNaturalPeopleBySurnameSound('Valdez', 'es'); // encuentra "Baldez" también
-```
-
-### 2. **Análisis por Localidad**
-```php
-$results = $manager->findByStreet('Main Street');
-// ['natural' => personas que vivían en esa calle, 'juridical' => negocios de esa calle]
-```
-
-### 3. **Búsqueda de Negocios Familiares**
-```php
-$businesses = $manager->getAllJuridicalEntities();
-$results = $manager->searchJuridicalEntities(['businessName' => 'García']);
-```
-
-### 4. **Importación Masiva de Directorios**
-```php
-// Toma país e id de origen del catálogo para que las entradas queden asociadas a esa edición.
-$manager = new PhoneDirectoryManagerV2(
-    parser: MultiLanguagePhoneDirectoryParser::forCatalogDirectory('es_1930_madrid'),
-    naturalDatabase: new PhoneDirectoryPDODatabase($dsn),
-    juridicalDatabase: new JuridicalEntityPDODatabase($dsn)
-);
-$result = $manager->processFile('historical_directory_1930.txt');
-echo "Agregadas: {$result['totalInserted']} entradas";
-```
-
-### 5. **Seguir a una persona entre ediciones**
-```php
-$entries = array_merge(
-    $db->findBySourceDirectory('es_1930_madrid'),
-    $db->findBySourceDirectory('es_1975_national')
-);
-$links = (new RecordLinker())->link($entries);
-// $links[0]->earlier, ->later, ->score, ->evidence
 ```
 
 ## Extensibilidad
