@@ -21,7 +21,7 @@ Pequeño sistema en PHP (sin framework) para analizar:
   unidad y cuántas unidades vale un dólar), la fecha de su cotización y cuánto cambió en 30 días; con
   `?moneda=CLP`, el historial de esa moneda, paginado, con el cambio de cada fila frente a la anterior.
   Solo lee: las tasas las carga `bin/actualizar_tasas.php` y el historial lo anota la base (ver
-  «Historial de las tasas»).
+  «Historial de las tasas»). Se exporta a CSV (ver «Exportar a CSV»).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
   etapa, por canal de adquisición y por país/género/rango de edad.
@@ -73,6 +73,13 @@ Pequeño sistema en PHP (sin framework) para analizar:
   así que una base grande no agota la memoria de PHP. Llevan datos personales (nombre y
   email de los clientes): valen las mismas precauciones de acceso que el resto de la app
   (ver «Antes de exponerlo»), y se mandan con `Cache-Control: no-store`.
+  El **Flujo de caja** también se exporta (`?page=flujo-csv`): las filas de la pantalla con el
+  horizonte elegido (el vencimiento como «Ya vencido», «Más adelante» o el mes `AAAA-MM`, y el
+  saldo como número en dólares). No lleva fila de totales: los clientes de una fila se repiten en
+  otra y no se pueden sumar. Las **Tasas de cambio** también (`?page=tasas-csv`): sin moneda, el
+  resumen de todas; con `?moneda=CLP`, **todo** el historial de esa moneda, no solo la página que
+  se ve. Las tasas van como números con sus decimales (ocho el valor en dólares, seis las unidades
+  por dólar) y una tasa de ejemplo como «de ejemplo», igual que en la pantalla.
 
 > El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
 > pantalla de login con sesión, bloqueo por fuerza bruta y gestión de usuarios del
@@ -496,6 +503,17 @@ de monitoreo. Qué considera «atención»:
 No comprueba que el servidor web proteja el panel (eso es `bin/comprobar_acceso.php`, que se corre desde
 afuera con la dirección pública), ni que los respaldos se puedan restaurar, ni que haya una copia en otra
 máquina: ver «Respaldos» y «Antes de exponerlo».
+
+Para que avise solo, un cron que deje pasar únicamente lo que pide atención. Cron manda por correo (al
+`MAILTO`) lo que el trabajo imprime, y `estado.php` imprime siempre, así que el `>/dev/null` de los otros
+comandos no sirve aquí: se filtra por el código de salida.
+
+```
+17 7 * * *  cd /ruta/al/proyecto && { out=$(php bin/estado.php) || echo "$out"; }
+```
+
+El informe se imprime solo si el comando terminó con `1` (hay algo que atender); con `0` no sale nada y no
+llega ningún correo. Sin archivo temporal, y si el `cd` falla tampoco imprime una línea en blanco.
 
 **Dependencias.** En producción la app no usa paquetes de Composer: solo PHP y sus extensiones `pdo` y
 `pdo_pgsql`. Lo que baja Composer es PHPUnit y PHPStan, de desarrollo (`composer install --no-dev` no instala

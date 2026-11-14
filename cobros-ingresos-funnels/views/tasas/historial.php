@@ -38,4 +38,5 @@
         </table>
     </div>
     <?php include __DIR__ . '/../_paginacion.php'; ?>
+    <p class="subtitulo"><a href="<?= e(url_con_parametros(['page' => 'tasas-csv', 'pagina' => null])) ?>">Exportar CSV</a> · todo el historial de la moneda, no solo esta página</p>
 </div>

@@ -34,4 +34,5 @@
             </tbody>
         </table>
     </div>
+    <p class="subtitulo"><a href="<?= e(url_con_parametros(['page' => 'tasas-csv', 'pagina' => null])) ?>">Exportar CSV</a> · el resumen de todas las monedas</p>
 </div>

@@ -53,6 +53,7 @@ $paginas = [
     'cobranza' => fn () => (new CobranzaController())->index(),
     'cobranza-csv' => fn () => (new CobranzaController())->exportar(),
     'flujo' => fn () => (new FlujoDeCajaController())->index(),
+    'flujo-csv' => fn () => (new FlujoDeCajaController())->exportar(),
     'pagos' => fn () => (new PagosController())->index(),
     'pagos-csv' => fn () => (new PagosController())->exportar(),
     'pago-nuevo' => fn () => (new PagosController())->nuevo(),
@@ -66,6 +67,7 @@ $paginas = [
     'cliente-nuevo' => fn () => (new ClientesController())->nuevo(),
     'cliente' => fn () => (new ClientesController())->ficha(),
     'tasas' => fn () => (new HistorialDeTasasController())->index(),
+    'tasas-csv' => fn () => (new HistorialDeTasasController())->exportar(),
     'auditoria' => fn () => (new AuditoriaController())->index(),
 ];
 foreach ($paginas as $pagina => $manejador) {

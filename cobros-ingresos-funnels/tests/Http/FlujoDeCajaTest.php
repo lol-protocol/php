@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Http;
 
-/** La pantalla del flujo de caja esperado contra la app levantada. Solo lee: no deja nada que borrar. */
+use App\Repositories\FlujoDeCajaRepository;
+use DateTimeImmutable;
+
+/** La pantalla del flujo de caja esperado y su CSV contra la app levantada. Solo lee: no deja nada que borrar. */
 final class FlujoDeCajaTest extends HttpTestCase
 {
     /** El valor del KPI con ese rotulo (el texto ya formateado, como lo ve la persona). */
@@ -68,5 +71,54 @@ final class FlujoDeCajaTest extends HttpTestCase
 
         self::assertStringContainsString('<a href="?page=flujo" class="active">Flujo de caja</a>', $cuerpo);
         self::assertStringContainsString('<a href="?page=flujo" class="">Flujo de caja</a>', $this->get('page=dashboard')['cuerpo']);
+    }
+
+    public function testLaDescargaEsUnCsvAdjuntoSinCacheConUnaFilaPorCubeta(): void
+    {
+        $respuesta = $this->get('page=flujo-csv');
+
+        $this->assertStatus(200, $respuesta);
+        self::assertMatchesRegularExpression('/^Content-Type: text\/csv; charset=utf-8\r?$/mi', $respuesta['cabeceras']);
+        self::assertMatchesRegularExpression('/^Content-Disposition: attachment; filename="flujo-de-caja-' . date('Y-m-d') . '\.csv"\r?$/mi', $respuesta['cabeceras']);
+        self::assertMatchesRegularExpression('/^Cache-Control: no-store\r?$/mi', $respuesta['cabeceras']);
+
+        $filas = self::leer($respuesta['cuerpo']);
+        self::assertSame(['Vencimiento', 'Saldo USD', 'Boletas', 'Clientes'], $filas[0]);
+        $primerMes = new DateTimeImmutable('first day of this month');
+        self::assertSame(
+            ['Ya vencido', ...array_map(static fn (int $i): string => $primerMes->modify("+{$i} months")->format('Y-m'), range(0, 5)), 'Más adelante'],
+            array_column(array_slice($filas, 1), 0),
+            'vencido, los seis meses desde este (en ISO, que una planilla ordena) y mas adelante'
+        );
+        foreach (array_slice($filas, 1) as $fila) {
+            self::assertMatchesRegularExpression('/^-?\d+\.\d{2}$/', (string) $fila[1], 'el saldo es un numero con los dos decimales del dolar');
+            self::assertMatchesRegularExpression('/^\d+$/', (string) $fila[2]);
+            self::assertMatchesRegularExpression('/^\d+$/', (string) $fila[3]);
+        }
+    }
+
+    public function testLaSumaDelCsvEsLaCarteraPendiente(): void
+    {
+        $filas = array_slice(self::leer($this->get('page=flujo-csv')['cuerpo']), 1);
+        $esperado = FlujoDeCajaRepository::totales((new FlujoDeCajaRepository())->cubetas(6))['total_usd'];
+
+        self::assertEqualsWithDelta($esperado, array_sum(array_map(static fn (array $f): float => (float) $f[1], $filas)), 0.05, 'ocho filas redondeadas a centavos');
+    }
+
+    public function testElCsvRespetaElHorizonteYUnoQueNoExisteCaeEnElPorDefecto(): void
+    {
+        $cuantas = fn (string $query): int => count(self::leer($this->get($query)['cuerpo'])) - 1;
+
+        self::assertSame(5, $cuantas('page=flujo-csv&meses=3'), 'vencido + 3 meses + mas adelante');
+        self::assertSame(14, $cuantas('page=flujo-csv&meses=12'));
+        self::assertSame(8, $cuantas('page=flujo-csv&meses=7'), 'un horizonte que no existe usa el de por defecto, sin error');
+        self::assertSame(8, $cuantas('page=flujo-csv&meses[]=3'), 'un parametro repetido se descarta');
+    }
+
+    public function testLaPantallaOfreceElCsvConElHorizonteElegido(): void
+    {
+        $cuerpo = $this->get('page=flujo&meses=12')['cuerpo'];
+
+        self::assertMatchesRegularExpression('~<a href="\?page=flujo-csv&amp;meses=12">Exportar CSV</a>~', $cuerpo);
     }
 }

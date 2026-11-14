@@ -188,6 +188,33 @@ final class HistorialDeTasasTest extends IntegracionTestCase
         self::assertSame('0.00100100', $ultima['filas'][count($ultima['filas']) - 1]['tasa_a_usd'], 'la ultima fila de la ultima pagina es la mas antigua');
     }
 
+    public function testLaExportacionTraeTodasLasFilasEnElMismoOrdenQueLasPaginas(): void
+    {
+        $this->vaciarElHistorialDe('CLP');
+        $this->vaciarElHistorialDe('EUR');
+        Database::connection()->exec(
+            "INSERT INTO historial_de_tasas (moneda_codigo, tasa_a_usd, cotizada_en, fuente)
+             SELECT 'CLP', 0.001 + n * 0.000001, timestamptz '2026-01-01 00:00+00' + n * interval '1 day', 'prueba' FROM generate_series(1, 60) n"
+        );
+        $this->anotar('EUR', '1.10000000', '2026-10-01 12:00');
+        $repo = new HistorialDeTasasRepository();
+
+        $porPaginas = [];
+        for ($pagina = 1; $pagina <= 3; $pagina++) {
+            foreach ($repo->deLaMoneda('CLP', $pagina)['filas'] as $fila) {
+                $porPaginas[] = [$fila['id'], $fila['tasa_a_usd'], $fila['tasa_anterior']];
+            }
+        }
+        $exportadas = [];
+        foreach ($repo->exportarHistorial('CLP') as $fila) {
+            $exportadas[] = [$fila['id'], $fila['tasa_a_usd'], $fila['tasa_anterior']];
+        }
+
+        self::assertCount(60, $exportadas, 'todas las filas de la moneda, mas alla de la primera pagina, y ninguna de otra');
+        self::assertSame($porPaginas, $exportadas, 'las mismas filas, en el mismo orden y con el mismo cambio frente a la anterior');
+        self::assertSame('0.00106000', $exportadas[0][1], 'de la mas reciente a la mas antigua');
+    }
+
     public function testElResumenComparaConLaTasaDeHaceTreintaDiasDeSuUltimaCotizacion(): void
     {
         $db = Database::connection();
