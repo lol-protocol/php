@@ -210,7 +210,7 @@ MAILTO=tu@correo.com
 5 9 * * *     www-data  cd /var/www/php/url-routing && php bin/solicitudes.php
 # opcional: avisa en cuanto llega una solicitud (sin esperar al recordatorio de la mañana)
 */10 * * * *  www-data  cd /var/www/php/url-routing && php bin/solicitudes.php --solo-nuevas
-# opcional: borra el correo y el texto de las solicitudes cerradas hace más de 12 meses (SOLICITUD_CONSERVAR_MESES)
+# opcional: borra el correo y el texto de las solicitudes cerradas hace más de 12 meses, y las entregas con clave vencidas hace tanto (SOLICITUD_CONSERVAR_MESES)
 40 3 * * 0    www-data  cd /var/www/php/url-routing && php bin/solicitudes.php --depurar
 ```
 

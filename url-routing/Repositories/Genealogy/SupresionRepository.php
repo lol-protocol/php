@@ -26,7 +26,7 @@ use App\Repositories\Repository;
 final class SupresionRepository extends Repository
 {
     /** Join tables keyed by persona_id whose rows go with her. */
-    private const RELACIONES = ['organizacion_miembros', 'coleccion_personas', 'persona_alias'];
+    private const RELACIONES = ['organizacion_miembros', 'coleccion_personas', 'persona_alias', 'entregas_persona'];
 
     /** How many ids menciones() lists per place; the count says if there are more. */
     private const MAX_MENCIONES = 25;
