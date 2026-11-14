@@ -70,6 +70,7 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `plantilla` | `clasica` | `clasica`, `sobria`, `tipografica`, `ilustrada` o `cartel`. Ver [Plantillas](docs/plantillas.md). |
 | `tema` | de la plantilla | `claro` u `oscuro`. |
 | `volumen` | vacío | Número de volumen de una serie: va en el lomo y en el pie. |
+| `imagen_opacidad` | `0.25` | Opacidad de la imagen cuando es marca de agua, de 0 a 1. |
 | `imagen`, `logo` | vacío | Ilustración de la portada (en `ilustrada`; marca de agua en las demás, salvo `cartel`) y logo de la editorial (contratapa). SVG, PNG, JPG, GIF o WebP de hasta 2 MB. |
 | `idioma` | `es` | Idioma del texto de la cubierta (`es`, `en`, `pt-BR`…). Va en cada SVG para los lectores de pantalla, y decide el idioma de las frases de la ficha (`es`, `en`, `pt` y `fr`; otros caen al español, editables en `datos/frases.json`) y las mayúsculas del autor (turco, azerí). |
 | `colores.fondo`, `colores.texto`, `colores.acento` | los de la plantilla | Colores en `#rrggbb`. |

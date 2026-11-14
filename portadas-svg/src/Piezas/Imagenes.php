@@ -15,9 +15,6 @@ use PortadasSvg\Svg;
  */
 trait Imagenes
 {
-    /** Marca de agua: la imagen del libro, detrás del texto de la portada, con esta opacidad. */
-    protected const MARCA_DE_AGUA_OPACIDAD = 0.25;
-
     /**
      * Si la plantilla dibuja la `imagen` del libro. Por defecto sí: como marca de agua tenue detrás del texto (ver
      * `marcaDeAgua`) o, en `ilustrada`, como ilustración. Una plantilla solo de letra la ignora.
@@ -39,7 +36,7 @@ trait Imagenes
         $sangrado = $libro->formato->sangrado;
         $zona = new Rectangulo($panel->x, $panel->y - $sangrado, $panel->ancho + $sangrado, $panel->alto + 2 * $sangrado);
 
-        return Svg::elemento('g', ['opacity' => self::MARCA_DE_AGUA_OPACIDAD], $this->imagen($libro->imagen, $zona, 'xMidYMid slice'));
+        return Svg::elemento('g', ['opacity' => $libro->imagenOpacidad], $this->imagen($libro->imagen, $zona, 'xMidYMid slice'));
     }
 
     /**

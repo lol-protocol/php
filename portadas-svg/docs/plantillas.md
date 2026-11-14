@@ -27,5 +27,5 @@ Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plant
 La `imagen` se dibuja según la plantilla:
 
 - `ilustrada`: es la ilustración, a sangre en la parte de arriba.
-- `clasica`, `sobria` y `tipografica`: es una **marca de agua** al 25 % de opacidad que cubre toda la portada, detrás del texto. El generador no mide el contraste con la imagen: revisa la vista previa, y si el título se pierde, usa una imagen más clara u oscura según el fondo.
+- `clasica`, `sobria` y `tipografica`: es una **marca de agua** al 25 % de opacidad (cámbiala con `imagen_opacidad`, de 0 a 1) que cubre toda la portada, detrás del texto. El generador no mide el contraste con la imagen: revisa la vista previa, y si el título se pierde, usa una imagen más clara u oscura según el fondo.
 - `cartel`: es solo letra y no la dibuja; el generador avisa.

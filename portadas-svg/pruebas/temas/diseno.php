@@ -189,4 +189,20 @@ return [
             verdadero(!str_contains((string) file_get_contents("$dir/ilustrada/portada.svg"), '<g opacity="0.25">'), 'la ilustrada no la repite como marca de agua');
         });
     },
+
+    'imagen_opacidad cambia la marca de agua, y fuera de 0 a 1 da error' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            $png = pngDePrueba("$dir/foto.png");
+            aproximado(0.25, libroDeEjemplo(['imagen' => $png])->imagenOpacidad);
+            Generador::escribir(libroDeEjemplo(['imagen' => $png, 'imagen_opacidad' => 0.6]), "$dir/salida");
+            verdadero(str_contains((string) file_get_contents("$dir/salida/portada.svg"), '<g opacity="0.6">'), 'la marca usa la opacidad pedida');
+            foreach ([-0.1, 1.5, 'mucha'] as $malo) {
+                lanza(InvalidArgumentException::class, static fn () => libroDeEjemplo(['imagen' => $png, 'imagen_opacidad' => $malo]));
+            }
+            file_put_contents("$dir/lista.csv", "id,titulo,autor,paginas,imagen,imagen_opacidad\nuno,T,A,100,foto.png,\"0,4\"\n");
+            $libros = Lista::leer("$dir/lista.csv", false, static function (string $mensaje): void {
+            });
+            aproximado(0.4, $libros[0]->imagenOpacidad);
+        });
+    },
 ];
