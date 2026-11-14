@@ -7,7 +7,9 @@ namespace ParsingFbInMas;
 /**
  * Busca en un texto términos de las categorías que la ley chilena de datos (21.719) trata como
  * sensibles: salud, convicciones religiosas, afiliación política o sindical, vida sexual y origen
- * étnico. `defamatory-content-review/` no las cubre (ver su `docs/RIESGOS.md`), por eso esta lista.
+ * étnico. `defamatory-content-review/` las reconoce cuando se habla de OTRA persona («tiene cáncer»,
+ * «era judía»), pero no cuando alguien habla de sí mismo («tengo cáncer», «soy evangélica»), que es lo
+ * que trae una biografía de perfil: esa parte la cubre esta lista.
  *
  * Es una lista CORTA y de palabras sueltas: que no marque nada no quiere decir que no haya un dato
  * sensible, y marcar no quiere decir que lo haya («Iglesia» en el nombre de un barrio). Solo sirve
