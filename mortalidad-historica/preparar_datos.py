@@ -42,7 +42,23 @@ FUENTE_E0 = "owid-larga"
 FUENTE_E5 = "owid-larga+gapminder-0-5"
 FUENTE_SEXO = "gapminder-sexo"
 FUENTE_MODELO = "logquad"
+FUENTE_MODELO_SEXO = "logquad-sexo"
+FUENTE_RILEY = "riley-clio"
 EDADES_DEL_MODELO = (15, 30, 45, 60)
+
+# Bandas de incertidumbre: (década desde la que rige, semiancho de la esperanza al nacer en años, semiancho relativo de
+# la mortalidad de 0 a 5 años, de dónde sale). Desde 1950 son **medidas**: el percentil 80 de lo que discrepan entre
+# sí las revisiones de la ONU (0,59 años) y las dos fuentes de mortalidad infantil, Gapminder y CME (6,6 %), en
+# 1950-2009. Antes de 1950 no hay una segunda fuente independiente (Gapminder y Clio Infra salen de la misma
+# compilación de Riley y casi no discrepan: mediana de 0,03 años, lo que daría una precisión falsa), así que son
+# **supuestos del proyecto**, no mediciones: están ahí para que ninguna cifra parezca más firme de lo que es.
+BANDAS = (
+    (1950, 0.6, 0.07, "medida"),
+    (1900, 3.0, 0.15, "supuesto"),
+    (1800, 5.0, 0.20, "supuesto"),
+    (0, 6.0, 0.25, "supuesto"),
+)
+DECADA_MINIMA_ANTES_DE_1800 = 1500
 
 # Edad media a la que mueren los niños que no llegan a los 5 años. Es un supuesto (en la práctica va de
 # 0,5 a 1,5 años: casi todas esas muertes ocurren en el primer año). Su efecto sobre la esperanza a los
@@ -56,7 +72,7 @@ ALIAS_OWID = {
     "Macedonia": "MK", "Micronesia (country)": "FM", "Moldova": "MD", "North Korea": "KP",
     "Palestine": "PS", "Reunion": "RE", "Russia": "RU", "South Korea": "KR", "Swaziland": "SZ",
     "Syria": "SY", "Taiwan": "TW", "Tanzania": "TZ", "Timor": "TL", "Turkey": "TR", "Venezuela": "VE",
-    "Vietnam": "VN",
+    "Vietnam": "VN", "Faeroe Islands": "FO",
 }
 # Regiones, grupos de ingreso y territorios de esa fuente que no son una fila de codigos_iso.csv.
 OMITIDOS_OWID = frozenset({
@@ -72,6 +88,11 @@ OMITIDOS_OWID = frozenset({
     "South-Eastern Asia", "Southern Africa", "Southern Asia", "Southern Europe", "Sub-Saharan Africa",
     "United States Virgin Islands", "Upper-middle-income countries", "Western Africa", "Western Asia",
     "Western Europe", "Western Sahara", "World",
+    # Territorios y regiones que solo aparecen en el archivo de Riley y Clio Infra.
+    "American Samoa", "Americas", "Anguilla", "Bonaire Sint Eustatius and Saba", "British Virgin Islands",
+    "Cayman Islands", "Cook Islands", "Falkland Islands", "Montserrat", "Niue", "Northern Mariana Islands",
+    "Saint Barthlemy", "Saint Helena", "Saint Martin (French part)", "Saint Pierre and Miquelon",
+    "Sint Maarten (Dutch part)", "Tokelau", "Turks and Caicos Islands", "Vatican", "Wallis and Futuna",
 })
 # Códigos de Gapminder (en minúsculas) que no salen de `codigo_owid`, y los territorios que no son filas.
 ALIAS_GAPMINDER = {"kos": "XK", "nld_curacao": "CW"}
@@ -107,6 +128,42 @@ def promedios_por_decada(serie, desde=DECADAS[0], hasta=DECADAS[-1] + 9):
         if desde <= anio <= hasta:
             por_decada.setdefault(decada_de(anio), {})[anio] = valor
     return {d: sum(v.values()) / 10 for d, v in sorted(por_decada.items()) if len(v) == 10}
+
+
+def banda_de(decada):
+    """(semiancho de e0 en años, semiancho relativo de 5q0, 'medida' o 'supuesto') para una década (año de inicio)."""
+    for desde, e0, q5, origen in BANDAS:
+        if decada >= desde:
+            return e0, q5, origen
+    raise ValueError(decada)
+
+
+def promedios_con_datos(serie, desde, hasta):
+    """{década: promedio de los años con dato} de {año: valor}, para décadas con al menos un año (series dispersas)."""
+    por_decada = {}
+    for anio, valor in serie.items():
+        if desde <= anio <= hasta:
+            por_decada.setdefault(decada_de(anio), []).append(valor)
+    return {d: sum(v) / len(v) for d, v in sorted(por_decada.items())}
+
+
+def leer_riley(ruta, codigos):
+    """{alfa-2: {año: esperanza de vida}} del archivo «Riley (2005), Clio Infra (2015) y ONU (2019)» de OWID."""
+    por_nombre = {**_alfa2_por_nombre(codigos), **ALIAS_OWID}
+    series, desconocidos = {}, set()
+    for f in _filas(ruta):
+        entidad = f["Entity"]
+        if entidad in OMITIDOS_OWID:
+            continue
+        if entidad not in por_nombre:
+            desconocidos.add(entidad)
+            continue
+        if f["Life expectancy"] != "":
+            series.setdefault(por_nombre[entidad], {})[int(f["Year"])] = float(f["Life expectancy"])
+    if desconocidos:
+        raise SystemExit("Entidades de Our World in Data (Riley) sin país ni omisión (añádelas a ALIAS_OWID u "
+                         f"OMITIDOS_OWID): {sorted(desconocidos)}")
+    return series
 
 
 def _filas(ruta):
@@ -161,14 +218,14 @@ def leer_gapminder(ruta, columna_entidad, columna_valor, codigos):
     return series
 
 
-def leer_coeficientes(ruta):
-    """Las filas de modelo_logcuadratico.csv: [edad, ax, bx, cx, vx], del .rda de DemoTools (ambos sexos)."""
-    objeto = leer_rda.aplanar(leer_rda.cargar(ruta))["fitted_logquad_b"]
+def leer_coeficientes(ruta, sexo, nombre_objeto):
+    """Las filas de modelo_logcuadratico.csv de un sexo: [sexo, edad, ax, bx, cx, vx], de un .rda de DemoTools."""
+    objeto = leer_rda.aplanar(leer_rda.cargar(ruta))[nombre_objeto]
     # El objeto es una lista con nombre; `coefficients` es un data.frame con ax, bx, cx y vx por grupo de edad.
     nombres = next(a for a in _atributos(objeto) if a[0] == "names")[1]
     coeficientes = objeto[1][nombres.index("coefficients")]
     columnas = dict(zip(next(a for a in _atributos(coeficientes) if a[0] == "names")[1], coeficientes[1]))
-    filas = [[edad] + [repr(columnas[c][i]) for c in ("ax", "bx", "cx", "vx")] for i, edad in enumerate(modelo.EDADES)]
+    filas = [[sexo, edad] + [repr(columnas[c][i]) for c in ("ax", "bx", "cx", "vx")] for i, edad in enumerate(modelo.EDADES)]
     if any(len(columnas[c]) != len(modelo.EDADES) for c in ("ax", "bx", "cx", "vx")):
         raise SystemExit("el .rda no tiene los 24 grupos de edad esperados")
     return filas
@@ -184,41 +241,105 @@ def _atributos(objeto):
     return resultado
 
 
-def construir(e0_total, q5, e0_mujeres, e0_hombres, edades_modelo=()):
+def _extremos(valores):
+    """(mínimo, máximo) de una lista de valores, o None si falta alguno."""
+    return None if any(v is None for v in valores) else (min(valores), max(valores))
+
+
+def _esquinas(q5_mil, e0, ancho_e0, rel_q5):
+    """Los casos que acotan la banda: el centro, las dos combinaciones coherentes (menos esperanza al nacer con más
+    mortalidad de 0 a 5 años, y al revés) y los dos extremos de la esperanza al nacer con la mortalidad intacta. Se
+    dejan fuera «mucha esperanza con mucha mortalidad infantil» y su inverso, que se contradicen entre sí."""
+    return [(q5_mil, e0),
+            (q5_mil * (1 + rel_q5), e0 - ancho_e0), (q5_mil * (1 - rel_q5), e0 + ancho_e0),
+            (q5_mil, e0 - ancho_e0), (q5_mil, e0 + ancho_e0)]
+
+
+def banda_a_los_5(q5_mil, e0, ancho_e0, rel_q5):
+    """(bajo, alto) de la esperanza restante a los 5 años por la identidad, con e0 y 5q0 en su banda."""
+    return _extremos([esperanza_a_los_5(e, q)[0] for q, e in _esquinas(q5_mil, e0, ancho_e0, rel_q5)
+                      if 0 <= q < 1000])
+
+
+def modelo_con_bandas(q5_mil, e0, edades, sexo, ancho_e0, rel_q5):
+    """({edad: (esperanza, supervivencia)}, {edad: (bajo, alto)}) del modelo para un país y una década, o (None, None)
+    si el modelo no puede cuadrar la esperanza al nacer con la mortalidad de 0 a 5 años en el centro. Las esquinas que
+    el modelo no puede cuadrar se ignoran (la banda queda más estrecha de lo que sería); si no queda ninguna, el
+    valor sale sin banda ({})."""
+    centro = modelo.esperanzas_por_edad(q5_mil, e0, edades, sexo)
+    if centro is None:
+        return None, None
+    resultados = [r for r in (modelo.esperanzas_por_edad(q, e, edades, sexo)
+                              for q, e in _esquinas(q5_mil, e0, ancho_e0, rel_q5)[1:]) if r is not None]
+    if not resultados:
+        return centro, {}
+    bandas = {}
+    for edad in edades:
+        valores = [centro[edad][0]] + [r[edad][0] for r in resultados]
+        bandas[edad] = (min(valores), max(valores))
+    return centro, bandas
+
+
+def construir(e0_total, q5, e0_mujeres, e0_hombres, edades_modelo=(), riley=None):
     """Las filas de esperanza_vida.csv (listas de texto, en el orden de COLUMNAS) a partir de las series.
 
-    `edades_modelo` son las edades (grupos del modelo) para las que se agregan filas modeladas, sexo T."""
+    `edades_modelo` son las edades (grupos del modelo) para las que se agregan filas modeladas: de ambos sexos desde
+    1800 y de mujeres y hombres desde 1950 (con la mortalidad de 0 a 5 años de ambos sexos, que no hay por sexo).
+    `riley` ({país: {año: e0}}) agrega las décadas anteriores a 1800 de los pocos países que las tienen (edad 0)."""
     filas = []
-    sin_modelo = []  # (país, década) en que el modelo no pudo cuadrar e0 con 5q0
+    sin_modelo = []  # (sexo, país, década) en que el modelo no pudo cuadrar e0 con 5q0
+    modeladas = (FUENTE_MODELO, FUENTE_MODELO_SEXO, FUENTE_RILEY)
 
-    def fila(codigo, decada, sexo, edad, esperanza, supervivencia, fuente):
-        calidad = "C" if fuente == FUENTE_MODELO or decada < 1950 else "B"
+    def fila(codigo, decada, sexo, edad, esperanza, supervivencia, fuente, banda=None):
+        calidad = "C" if fuente in modeladas or decada < 1950 else "B"
+        bajo, alto = ("", "") if not banda else (f"{banda[0]:.1f}", f"{banda[1]:.1f}")
         filas.append([
             codigo, decada, decada + 9, sexo, edad, f"{esperanza:.1f}",
-            "" if supervivencia is None else f"{supervivencia:.3f}", "", "", calidad, "verificado", fuente,
+            "" if supervivencia is None else f"{supervivencia:.3f}", bajo, alto, calidad, "verificado", fuente,
         ])
 
     for codigo in sorted(e0_total):
         e0_dec = promedios_por_decada(e0_total[codigo])
         q5_dec = promedios_por_decada(q5.get(codigo, {}))
         for decada, e0 in e0_dec.items():
-            fila(codigo, decada, "T", 0, e0, None, FUENTE_E0)
+            ancho, rel, _ = banda_de(decada)
+            fila(codigo, decada, "T", 0, e0, None, FUENTE_E0, (e0 - ancho, e0 + ancho))
             if decada in q5_dec:
+                por_edad = bandas = None
+                if edades_modelo:
+                    por_edad, bandas = modelo_con_bandas(q5_dec[decada], e0, edades_modelo, "T", ancho, rel)
+                    if por_edad is None:
+                        # El modelo no puede cuadrar las dos cifras de la fuente (en Gapminder, Barbados tiene una
+                        # mortalidad de 0 a 5 años de más de 550 por mil): ninguna edad derivada de ellas es de fiar.
+                        sin_modelo.append(("T", codigo, decada))
+                        continue
                 # e5 y supervivencia salen de los promedios de la década: la identidad es lineal en e0 y
                 # casi lineal en q5, y así la fila de edad 5 cuadra con la de edad 0.
                 e5, l5 = esperanza_a_los_5(e0, q5_dec[decada])
-                fila(codigo, decada, "T", 5, e5, l5, FUENTE_E5)
-                if edades_modelo:
-                    por_edad = modelo.esperanzas_por_edad(q5_dec[decada], e0, edades_modelo)
-                    if por_edad is None:
-                        sin_modelo.append((codigo, decada))
-                    else:
-                        for edad in edades_modelo:
-                            fila(codigo, decada, "T", edad, por_edad[edad][0], por_edad[edad][1], FUENTE_MODELO)
+                fila(codigo, decada, "T", 5, e5, l5, FUENTE_E5, banda_a_los_5(q5_dec[decada], e0, ancho, rel))
+                for edad in edades_modelo:
+                    fila(codigo, decada, "T", edad, por_edad[edad][0], por_edad[edad][1], FUENTE_MODELO,
+                         bandas.get(edad))
     for sexo, series in (("F", e0_mujeres), ("M", e0_hombres)):
         for codigo in sorted(series):
+            q5_dec = promedios_por_decada(q5.get(codigo, {}))
             for decada, e0 in promedios_por_decada(series[codigo], desde=PRIMERA_DECADA_POR_SEXO).items():
-                fila(codigo, decada, sexo, 0, e0, None, FUENTE_SEXO)
+                ancho, rel, _ = banda_de(decada)
+                fila(codigo, decada, sexo, 0, e0, None, FUENTE_SEXO, (e0 - ancho, e0 + ancho))
+                if edades_modelo and decada in q5_dec:
+                    edades = (5,) + tuple(edades_modelo)
+                    por_edad, bandas = modelo_con_bandas(q5_dec[decada], e0, edades, sexo, ancho, rel)
+                    if por_edad is None:
+                        sin_modelo.append((sexo, codigo, decada))
+                        continue
+                    for edad in edades:
+                        # A los 5 años no se guarda la supervivencia: sería la de ambos sexos, no la de este.
+                        fila(codigo, decada, sexo, edad, por_edad[edad][0], None if edad == 5 else por_edad[edad][1],
+                             FUENTE_MODELO_SEXO, bandas.get(edad))
+    for codigo in sorted(riley or {}):
+        for decada, e0 in promedios_con_datos(riley[codigo], DECADA_MINIMA_ANTES_DE_1800, 1799).items():
+            ancho, _, _ = banda_de(decada)
+            fila(codigo, decada, "T", 0, e0, None, FUENTE_RILEY, (e0 - ancho, e0 + ancho))
     # El orden final es estable: país, sexo (T, F, M), edad, década.
     orden_sexo = {"T": 0, "F": 1, "M": 2}
     filas.sort(key=lambda f: (f[0], orden_sexo[f[3]], f[4], f[1]))
@@ -285,7 +406,10 @@ def main(argv=None):
             raise SystemExit(f"Falta {ruta}: para rehacer los datos hace falta Listado-paises/ al lado.")
     codigos = _filas(args.codigos)
     f = args.fuentes
-    _escribir("modelo_logcuadratico", leer_coeficientes(f / "modelo-logcuadratico-demotools.rda"))
+    coeficientes = []
+    for sexo, sufijo, objeto in (("T", "b", "fitted_logquad_b"), ("F", "f", "fitted_logquad_f"), ("M", "m", "fitted_logquad_m")):
+        coeficientes += leer_coeficientes(f / f"modelo-logcuadratico-{sufijo}.rda", sexo, objeto)
+    _escribir("modelo_logcuadratico", coeficientes)
     modelo.coeficientes.cache_clear()
     filas = construir(
         leer_owid(f / "esperanza-larga-owid.csv", codigos),
@@ -294,6 +418,7 @@ def main(argv=None):
         leer_gapminder(f / "esperanza-mujeres-gapminder.csv", "geo", "life_expectancy_female", codigos),
         leer_gapminder(f / "esperanza-hombres-gapminder.csv", "geo", "life_expectancy_male", codigos),
         edades_modelo=EDADES_DEL_MODELO,
+        riley=leer_riley(f / "esperanza-riley-clio-owid.csv", codigos),
     )
     comprobar_colera(f / "colera-gran-bretana-owid.csv", _filas(DATOS / "epidemias.csv"))
     _escribir("esperanza_vida", filas)

@@ -74,14 +74,17 @@ foreach ($vectores['hitos_de'] as [$codigo, $esperado]) {
 }
 
 // Esperanza de vida y supervivencia: cifras y también los «no hay dato».
-igual(true, count($vectores['esperanza']) > 500, 'vectores: esperanza');
+igual(true, count($vectores['esperanza']) > 900, 'vectores: esperanza');
 $conDato = 0;
-foreach ($vectores['esperanza'] as [$codigo, $anio, $edad, $sexo, $esperanza, $supervivencia]) {
+foreach ($vectores['esperanza'] as [$codigo, $anio, $edad, $sexo, $esperanza, $supervivencia, $banda]) {
     casiIgual($esperanza, $m->esperanzaRestante($codigo, $anio, $edad, $sexo), "esperanza $codigo $anio edad $edad $sexo");
     casiIgual($supervivencia, $m->supervivencia($codigo, $anio, $edad, $sexo), "supervivencia $codigo $anio edad $edad $sexo");
+    $obtenida = $m->bandaEsperanza($codigo, $anio, $edad, $sexo);
+    casiIgual($banda[0] ?? null, $obtenida[0] ?? null, "banda baja $codigo $anio edad $edad $sexo");
+    casiIgual($banda[1] ?? null, $obtenida[1] ?? null, "banda alta $codigo $anio edad $edad $sexo");
     $conDato += $esperanza === null ? 0 : 1;
 }
-igual(true, $conDato > 100, 'vectores: hay bastantes casos con dato (no solo null)');
+igual(true, $conDato > 200, 'vectores: hay bastantes casos con dato (no solo null)');
 
 // Muertes en Londres y su exceso.
 foreach ($vectores['londres'] as [$anio, $totales, $viruela, $exceso]) {
@@ -113,6 +116,9 @@ lanza(fn () => $m->esperanzaRestante('CL', 1900, 0, 'X'), 'sexo inválido');
 lanza(fn () => $m->supervivencia('CL', 1900, 5, 'x'), 'sexo inválido (minúscula)');
 igual(null, $m->esperanzaRestante('XX', 1900), 'país sin serie: null, no una excepción');
 igual(null, $m->esperanzaRestante('CL', 1900, 20), 'edad que no está: null');
+igual(null, $m->bandaEsperanza('XX', 1900), 'banda de un país sin serie: null');
+igual(true, $m->bandaEsperanza('SE', 1805, 15) !== null, 'banda a los 15: hay');
+casiIgual(36.4, $m->esperanzaRestante('GB', 1545), 'README: Reino Unido antes de 1800');
 igual(true, $m->esperanzaRestante('CL', 1900, 15) !== null, 'edad 15: hay dato (modelado)');
 
 if ($fallos !== []) {
