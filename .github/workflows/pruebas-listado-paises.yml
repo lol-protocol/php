@@ -50,6 +50,38 @@ jobs:
         working-directory: Listado-paises
         run: python3 -m unittest -v pruebas
 
+  # Abre vista.html en Chromium (escritorio y móvil) y prueba mapa, tabla, filtros, orden,
+  # búsqueda sin acentos, escenarios, marcas «≠ datos» y tooltip. Las cifras esperadas salen de
+  # los CSV del proyecto.
+  navegador:
+    name: "Listado-paises: vista.html en Chromium"
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      # Solo la biblioteca de Python: el navegador lo pone setup-chrome.
+      - name: Instalar Playwright
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: pip install playwright==1.55.0
+
+      - uses: browser-actions/setup-chrome@v2
+        id: chrome
+
+      - name: Vista en Chromium
+        working-directory: Listado-paises
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+        run: python pruebas_navegador.py
+
   # Al lanzarlo a mano (workflow_dispatch) y una vez al mes (schedule): baja las fuentes fijadas por commit,
   # comprueba su SHA-256 contra fuentes.sha256, rehace todos los datos y falla si algún
   # archivo del proyecto cambia. Tarda menos de un minuto y baja unos 35 MB.

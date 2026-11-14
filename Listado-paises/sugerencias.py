@@ -102,6 +102,20 @@ def desvios(registros, clave, prediccion, minimo=DESVIO_MINIMO):
     return sorted(marcados, key=lambda par: (-abs(par[0][clave] - par[1]), par[0]["n"]))
 
 
+def desvios_por_pais(registros):
+    """codigo -> {clave del índice: sugerido, redondeado a un decimal} de los países marcados.
+    Lo usa la vista para señalarlos."""
+    marcas = {}
+    for _, clave, variables in MODELOS:
+        usados = con_datos(registros, variables)
+        if len(usados) <= len(variables) + 1:
+            continue
+        _, _, pred, _ = ajustar(usados, clave, variables)
+        for d, sugerido in desvios(usados, clave, pred):
+            marcas.setdefault(d["c"], {})[clave] = round(sugerido, 1)
+    return marcas
+
+
 def _dato(valor, decimales):
     return "—" if valor is None else f"{valor:.{decimales}f}"
 
@@ -117,6 +131,9 @@ def sugerencias_md(registros):
               f"de {FALTANTES_MAXIMOS} dato del modelo quedan fuera.", ""]
     for nombre, clave, variables in MODELOS:
         usados = con_datos(registros, variables)
+        if len(usados) <= len(variables) + 1:
+            partes += [f"## {nombre}", "", "No hay países con datos suficientes para ajustar el modelo.", ""]
+            continue
         coef, r2, pred, _ = ajustar(usados, clave, variables)
         marcados = desvios(usados, clave, pred)
         partes += [f"## {nombre}", "",
