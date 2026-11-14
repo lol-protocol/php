@@ -3,8 +3,8 @@
 // textos de las cifras) se queda en su archivo principal y en lib/domain.js.
 import { formatDate, getLanguage, plural, t } from "../translations/i18n.js";
 import { loadTranslations } from "./data.js";
-import { CONFIG, DETAIL_FIELDS, FIELD_LABEL_KEYS, isReviewDue, SEARCH_SCOPES } from "./domain.js";
-import { emptyState, stateToParams } from "./filters.js";
+import { COMPARE_CRITERIA, CONFIG, DETAIL_FIELDS, FIELD_LABEL_KEYS, isReviewDue, SEARCH_SCOPES } from "./domain.js";
+import { activeFilters, emptyState, stateToParams } from "./filters.js";
 import { escapeHtml, safeUrl } from "./util.js";
 
 export const $ = (id) => document.getElementById(id);
@@ -247,3 +247,94 @@ export const scrollBehavior = () =>
 
 // Laws can be enacted with an effective date still ahead (ISO dates compare as strings).
 export const TODAY = new Date().toISOString().slice(0, 10);
+
+// Lo que cada módulo registra para que las piezas comunes de arriba lo llamen: la etiqueta de cada filtro activo,
+// el HTML de una fila de la tabla y los criterios de la comparación que son listas de tratados o marcos.
+export const hooks = { chipLabel: null, rowHtml: null, listCriteria: null };
+
+export function renderChips() {
+  app.chips = activeFilters(app.state, CONFIG);
+  const host = $("chips");
+  host.hidden = app.chips.length === 0;
+  host.innerHTML = app.chips.length
+    ? app.chips
+        .map((chip, index) => {
+          const label = hooks.chipLabel(chip);
+          return `<span class="chip">${esc(label)}<button type="button" data-chip="${index}" aria-label="${esc(
+            t("chip.remove", { value: label })
+          )}">×</button></span>`;
+        })
+        .join("") +
+      `<button type="button" class="link-button" data-clear-filters>${esc(t("filters.clearAll"))}</button>`
+    : "";
+
+  const panelFilters = app.chips.filter((chip) => chip.facet !== "country").length;
+  const badge = $("filterCount");
+  badge.hidden = panelFilters === 0;
+  badge.textContent = panelFilters ? plural("filters.active", panelFilters) : "";
+}
+
+export function renderTable() {
+  const empty = app.results.length === 0;
+  $("tableWrap").hidden = empty;
+  $("emptyState").hidden = !empty;
+  $("lawsTableBody").innerHTML = app.results.map((row) => hooks.rowHtml(row)).join("");
+  syncSelectAll();
+}
+
+export function renderComparison() {
+  const section = $("comparisonSection");
+  if (section.hidden) return;
+  const picked = pickedRows();
+  if (new Set(picked.map((row) => row.tld)).size < 2) {
+    section.hidden = true;
+    return;
+  }
+  const head = picked
+    .map((row) => `<th scope="col">${esc(row.country_name)}<br /><small>${esc(row.law_name)}</small></th>`)
+    .join("");
+  const cell = (criterion, row) => {
+    const value = row[criterion] ?? "";
+    if (hooks.listCriteria[criterion]) {
+      const items = value.split("/").filter(Boolean);
+      return items.length
+        ? `<span class="badge-list">${items.map((v) => `<span class="badge${criterion.endsWith("_not") || criterion.endsWith("not_party") ? " badge-outline" : ""}" title="${esc(hooks.listCriteria[criterion](v))}">${esc(v)}</span>`).join("")}</span>`
+        : valueHtml("");
+    }
+    return (/_date$/.test(criterion) && value ? dateHtml(value) : valueHtml(value)) + fieldSourceHtml(row.sources[criterion]);
+  };
+  let differing = 0;
+  const body = COMPARE_CRITERIA.map((criterion) => {
+    const values = picked.map((row) => String(row[criterion] ?? "").trim());
+    if (values.every((v) => NOT_SPECIFIED.test(v))) return ""; // nothing to compare
+    const differs = new Set(values.map((v) => v.toLowerCase())).size > 1;
+    if (differs) differing++;
+    return `
+      <tr class="${differs ? "is-diff" : "is-same"}">
+        <th scope="row">${esc(t(`compare.${criterion}`))}</th>
+        ${picked.map((row) => `<td>${cell(criterion, row)}</td>`).join("")}
+      </tr>`;
+  }).join("");
+  $("comparisonResults").innerHTML = `
+    <p class="comparison-tools">
+      <label class="check"><input type="checkbox" id="onlyDiff"${app.onlyDiff ? " checked" : ""} /> <span>${esc(
+        t("compare.onlyDiff", { count: differing })
+      )}</span></label>
+    </p>
+    <table class="comparison-table${app.onlyDiff ? " only-diff" : ""}">
+      <thead><tr><th scope="col">${esc(t("compare.criterion"))}</th>${head}</tr></thead>
+      <tbody>${body}</tbody>
+    </table>`;
+}
+
+export function handleCompare() {
+  const picked = pickedRows();
+  if (new Set(picked.map((row) => row.tld)).size < 2) {
+    alert(t("compare.needTwo"));
+    return;
+  }
+  const section = $("comparisonSection");
+  section.hidden = false;
+  renderComparison();
+  section.scrollIntoView({ block: "start", behavior: scrollBehavior() });
+}
