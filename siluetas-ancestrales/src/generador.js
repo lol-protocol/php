@@ -433,7 +433,6 @@ export function generarPersona(opc = {}) {
 
 // ---------- Ropa nueva ----------
 
-const L = (a, b) => [a, b];
 // Las variantes salen de tipos-de-ropa.js, la fuente única que también valida las prendas.
 // 'trapelacucha' es un adorno de un pueblo concreto (mapuche): no se mezcla al azar con otros estilos.
 const sinEspecificos = (lista) => lista.filter((x) => x !== 'trapelacucha');

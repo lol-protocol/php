@@ -691,7 +691,6 @@ const __e = {};
 
 const { P } = __m['datos/ayuda'];
 
-const pat = (tipo, escala = 1, rol = 'secundario') => ({ tipo, escala, rol });
 
 const PRENDAS_MODA = [
   // ===== Vestidos =====
@@ -1421,7 +1420,7 @@ const __e = {};
 // Atuendos que usan los tipos de ropa nuevos (tirantes, halter, sirena, trapecio, capuchas, pieles, pantalones y faldas
 // variados, monos…). Misma forma que atuendos.js. Los colores de cada prenda vienen de su perfil (colores-prendas.js).
 
-const { A, CLAROS, MEST, CIUDAD, TRAB, VEST, GALA, F, M } = __m['datos/ayuda'];
+const { CLAROS, MEST, CIUDAD, TRAB, VEST, GALA, F, M } = __m['datos/ayuda'];
 
 
 
@@ -1845,7 +1844,6 @@ const PEINADOS = {
       S(suavizar([G.P(-1.0, 0.2), G.P(-0.6, 0.03), G.P(0, -0.02), G.P(0.6, 0.03), G.P(1.0, 0.2)], false), 'none', { stroke: oscurecer(c, 0.3), sw: 1, dash: '3 5', cap: 'round' })],
   }),
   coletas: (G, c) => {
-    const man = (s) => S(G.E([[0, 0], [0.34, 0.2], [0.3, 0.9], [0, 1.0]]).replace(/^/, ''), c);
     const bolsa = (s) => { const [x, y] = G.P(s * 1.3, 0.55); return S(suavizar([[x, y - G.headH * 0.12], [x + s * G.hw * 0.3, y + G.headH * 0.35], [x + s * G.hw * 0.12, y + G.headH * 1.05], [x - s * G.hw * 0.2, y + G.headH * 0.5]]), c); };
     return { atras: [], frente: [S(casquete(G, { vol: 0.06, frente: 0.19, lat: 0.4 }), c), bolsa(1), bolsa(-1)] };
   },
@@ -2713,7 +2711,6 @@ function perfilVestido(M, o) {
   if (corte[corte.length - 1][1] < yHem) corte.push([corte[corte.length - 1][0], yHem]);
   const fin = corte[corte.length - 1];
   const sinBajo = corte.slice();
-  const perfil = corte.slice(0, -1).concat([[fin[0], fin[1]]]);
   const completo = corte.slice(0, -1).concat(puntosBajo(bajo, fin[0], fin[1], H));
   return { completo, perfil: sinBajo, xBajo: fin[0], yBajo: fin[1], escote: E };
 }
@@ -2955,8 +2952,8 @@ return __e;
 __m['prendas/pantalon'] = (() => {
 const __e = {};
 const { suavizar, espejo, tubo, lerp, aclarar } = __m['util'];
-const { perfilTorso, piernaLado, lineaEnY } = __m['cuerpo'];
-const { yLargo, relleno, parte, linea, sombraDe, pliegues } = __m['prendas/comun'];
+const { piernaLado, lineaEnY } = __m['cuerpo'];
+const { yLargo, relleno, parte, linea, sombraDe } = __m['prendas/comun'];
 
 function pantalon(M, p, k, ctx) {
   const { H, y, cx, w } = M;
@@ -2965,7 +2962,6 @@ function pantalon(M, p, k, ctx) {
   const F = relleno(p, k, ctx);
   const factor = { ajustado: 1, recto: 1.28, amplio: 1.7, bombacho: 1.55, campana: 1.3, palazzo: 2.3 }[p.ancho ?? 'recto'] ?? 1.28;
   const partes = [];
-  const T = perfilTorso(M, 0);
   const alto = p.cintura === 'baja' ? y.cintura + H * 0.045 : p.cintura === 'alta' ? y.cintura - H * 0.035 : y.cintura - H * 0.005;
   const half = [[0, alto, true], [w.cintura + d * 1.2, alto, true], [lerp(w.cintura, w.cadera, 0.7) + d, lerp(alto, y.cadera, 0.6)], [w.cadera + d * 1.3, y.cadera], [w.cadera * 0.98 + d, lerp(y.cadera, y.entrepierna, 0.7)], [0, y.entrepierna + H * 0.012, true]];
   partes.push(parte(suavizar(espejo(half, cx)), F, k));
@@ -3107,11 +3103,9 @@ function capa(M, p, k, ctx) {
   ];
   half[half.length - 1] = [0, yH + H * 0.012, true];
   const atras = [parte(suavizar(espejo(half, cx)), F, k, { volumen: true })];
-  atras.push(...[]);
   const detalles = [];
   const prof = half.slice(1, -1).map(([x, yy]) => [x, yy]);
   const partes = [];
-  const front = [];
   // Piezas delanteras: solapas sobre los hombros y cierre.
   if (p.cierre !== 'abierta') {
     const sh = (s) => parte(suavizar([[cx + s * w.cuello * 1.1, y.hombro - H * 0.014], [cx + s * (w.hombro + H * 0.01), y.hombro + H * 0.008], [cx + s * (w.hombro + H * 0.03), y.axila], [cx + s * w.pecho * 0.75, y.pecho + H * 0.01], [cx + s * w.cuello * 0.9, y.hombro + H * 0.04]]), F, k);
@@ -3174,7 +3168,7 @@ return __e;
 __m['prendas/drapeado'] = (() => {
 const __e = {};
 const { suavizar, lerp } = __m['util'];
-const { yLargo, relleno, parte, linea, sombraDe, pliegues } = __m['prendas/comun'];
+const { yLargo, relleno, parte, linea, sombraDe } = __m['prendas/comun'];
 
 /** Manto diagonal: toga, sari, plaid, arisaid, tilma cruzada. */
 function drapeado(M, p, k, ctx) {
@@ -3229,7 +3223,6 @@ function chaqueta(M, p, k, ctx) {
   const per = perfilVestido(M, { d, cin: p.cintura ?? 0.6, vuelo: p.vuelo ?? 0.04, yHem, sinMangas: sinM, escote: 'redondo', prof: 0.3, bajo: p.bajo ?? 'recto' });
   const gapA = (p.abertura ?? 0.012) * H, gapB = (p.aberturaBajo ?? 0.03) * H;
   const prof = per.perfil;
-  const yTop = y.hombro + H * 0.01;
   const partes = [], detalles = [];
   for (const s of [1, -1]) {
     const outer = prof.filter(([, yy]) => yy > y.hombro - H * 0.03).map(([x, yy]) => [cx + s * x, yy]);
@@ -3296,7 +3289,7 @@ const { perfilTorso } = __m['cuerpo'];
 const { anchoEn, relleno, parte, linea, flecos } = __m['prendas/comun'];
 
 function faja(M, p, k, ctx) {
-  const { H, y, cx, w } = M;
+  const { H, y, cx } = M;
   const yy = p.y === 'cadera' ? y.cadera - H * 0.03 : p.y === 'pecho' ? y.pecho + H * 0.03 : y.cintura - H * 0.002;
   const bh = (p.ancho ?? 0.02) * H;
   const T = perfilTorso(M, 0).map(([x, q]) => [x, q]);
@@ -3481,7 +3474,7 @@ const { piernaLado, lineaEnY } = __m['cuerpo'];
 const { parte, linea, sombraDe } = __m['prendas/comun'];
 
 function calzado(M, p, k, ctx) {
-  const { H, y, cx, w } = M;
+  const { H, y } = M;
   const tipo = p.tipo ?? 'zapatos';
   const partes = [], detalles = [];
   for (const s of [1, -1]) {
@@ -4019,7 +4012,7 @@ const __e = {};
 // poblaciones, no reglas sobre una persona. `conf: 'baja'` marca los pueblos de los que el catálogo solo tiene una
 // imagen genérica o de los que las cifras de estatura son más inciertas.
 
-const { E, OSC, MORENO, CLARO, MED, MESTIZO } = __m['datos/ayuda'];
+const { E, OSC, CLARO, MED, MESTIZO } = __m['datos/ayuda'];
 
 const NEG = [['negro', 9], ['castano-oscuro', 1]];
 const PIEL_OSC = 'canela bronce cobre';
@@ -4125,7 +4118,7 @@ const __e = {};
 // regiones: de dónde salen los atuendos (atuendos.js). prefijos: para separar pueblos que comparten región por el id del atuendo.
 // barba: probabilidad de que un adulto lleve barba o bigote. corpulencia: [nombre, peso].
 
-const { E, OSC, MORENO, CLARO, MED, MESTIZO } = __m['datos/ayuda'];
+const { E, OSC, CLARO, MED, MESTIZO } = __m['datos/ayuda'];
 const { ETNIAS_AMPLIADAS } = __m['datos/etnias-ampliadas'];
 
 const ETNIAS = [
@@ -4995,7 +4988,6 @@ function generarPersona(opc = {}) {
 
 // ---------- Ropa nueva ----------
 
-const L = (a, b) => [a, b];
 // Las variantes salen de tipos-de-ropa.js, la fuente única que también valida las prendas.
 // 'trapelacucha' es un adorno de un pueblo concreto (mapuche): no se mezcla al azar con otros estilos.
 const sinEspecificos = (lista) => lista.filter((x) => x !== 'trapelacucha');

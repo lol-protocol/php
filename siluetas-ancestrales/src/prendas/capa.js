@@ -18,11 +18,9 @@ export function capa(M, p, k, ctx) {
   ];
   half[half.length - 1] = [0, yH + H * 0.012, true];
   const atras = [parte(suavizar(espejo(half, cx)), F, k, { volumen: true })];
-  atras.push(...[]);
   const detalles = [];
   const prof = half.slice(1, -1).map(([x, yy]) => [x, yy]);
   const partes = [];
-  const front = [];
   // Piezas delanteras: solapas sobre los hombros y cierre.
   if (p.cierre !== 'abierta') {
     const sh = (s) => parte(suavizar([[cx + s * w.cuello * 1.1, y.hombro - H * 0.014], [cx + s * (w.hombro + H * 0.01), y.hombro + H * 0.008], [cx + s * (w.hombro + H * 0.03), y.axila], [cx + s * w.pecho * 0.75, y.pecho + H * 0.01], [cx + s * w.cuello * 0.9, y.hombro + H * 0.04]]), F, k);

@@ -3,7 +3,7 @@ import { piernaLado, lineaEnY } from '../cuerpo.js';
 import { parte, linea, sombraDe } from './comun.js';
 
 export function calzado(M, p, k, ctx) {
-  const { H, y, cx, w } = M;
+  const { H, y } = M;
   const tipo = p.tipo ?? 'zapatos';
   const partes = [], detalles = [];
   for (const s of [1, -1]) {

@@ -7,7 +7,7 @@
 // regiones: de dónde salen los atuendos (atuendos.js). prefijos: para separar pueblos que comparten región por el id del atuendo.
 // barba: probabilidad de que un adulto lleve barba o bigote. corpulencia: [nombre, peso].
 
-import { E, OSC, MORENO, CLARO, MED, MESTIZO } from './ayuda.js';
+import { E, OSC, CLARO, MED, MESTIZO } from './ayuda.js';
 import { ETNIAS_AMPLIADAS } from './etnias-ampliadas.js';
 
 export const ETNIAS = [
