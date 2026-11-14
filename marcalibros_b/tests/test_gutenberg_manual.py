@@ -32,7 +32,7 @@ def test_lista_tiene_una_fila_por_autor_y_por_obra():
     f = gm.filas(CONFIG)
     obras = sum(len(a.get("obras", [])) for m in CONFIG["movimientos"] for a in m["autores"])
     autores = sum(len(m["autores"]) for m in CONFIG["movimientos"])
-    assert len(f) == obras + autores and obras == 1000
+    assert len(f) == obras + autores and obras == 1500
     assert all(r["buscar"].startswith("https://www.gutenberg.org/ebooks/search/?query=") for r in f)
 
 
