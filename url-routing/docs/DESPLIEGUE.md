@@ -208,11 +208,15 @@ Cada página de una persona enlaza a `/s/{id}/`, un formulario para pedir **ver,
 # /etc/cron.d/solicitudes-datos
 MAILTO=tu@correo.com
 5 9 * * *     www-data  cd /var/www/php/url-routing && php bin/solicitudes.php
+# opcional: avisa en cuanto llega una solicitud (sin esperar al recordatorio de la mañana)
+*/10 * * * *  www-data  cd /var/www/php/url-routing && php bin/solicitudes.php --solo-nuevas
 # opcional: borra el correo y el texto de las solicitudes cerradas hace más de 12 meses (SOLICITUD_CONSERVAR_MESES)
 40 3 * * 0    www-data  cd /var/www/php/url-routing && php bin/solicitudes.php --depurar
 ```
 
-El listado dice el número, la persona, el derecho pedido y cuánto lleva, **nunca quién pidió ni qué escribió** (el correo de cron viaja sin cifrar). Eso solo lo muestra `php bin/solicitudes.php --ver=N`, en tu terminal. Se cierran con `--atender=N` o `--rechazar=N` (con `--nota=` para tus registros, sin los datos). Los topes contra el abuso son `SOLICITUD_MAX_POR_HORA` (3 por visitante) y `SOLICITUD_MAX_PENDIENTES` (5 esperando por persona), en `.env`. **No hay aviso en el momento de llegar**, como lo hay para los retiros (`--solo-nuevos`): el recordatorio es el de la mañana.
+El listado dice el número, la persona, el derecho pedido y cuánto lleva, **nunca quién pidió ni qué escribió** (el correo de cron viaja sin cifrar). Eso solo lo muestra `php bin/solicitudes.php --ver=N`, en tu terminal. Se cierran con `--atender=N` o `--rechazar=N` (con `--nota=` para tus registros, sin los datos). Los topes contra el abuso son `SOLICITUD_MAX_POR_HORA` (3 por visitante) y `SOLICITUD_MAX_PENDIENTES` (5 esperando por persona), en `.env`.
+
+**Aviso de solicitudes nuevas (opcional).** `--solo-nuevas` manda un correo **en cuanto llega una solicitud**, en vez de esperar al recordatorio de la mañana: cada 10 minutos mira si llegó alguna que no haya anunciado y, si la hay, imprime su número, el derecho pedido y la persona (nada de quién pidió ni qué escribió) y la anota en `solicitudes_persona.avisada_en` para no repetirla; si no llegó ninguna, no imprime nada y no manda correo. Va sola (no se combina con otra opción) y sale siempre con 0. Las que ya había cuando se aplicó la migración 015 quedan como avisadas, para que no lleguen de golpe. Es un aviso de mejor esfuerzo, como el de los retiros: se anota **antes** de imprimir, así que si el correo de cron se pierde esa solicitud no se vuelve a anunciar; el recordatorio de la mañana sigue listando todo lo que espera. **No se probó con un cron ni un servidor de correo reales.**
 
 ## 9. Actualizar
 

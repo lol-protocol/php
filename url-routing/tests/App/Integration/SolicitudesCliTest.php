@@ -126,4 +126,37 @@ class SolicitudesCliTest extends TestCase
         }
         $this->assertSame('pendiente', $this->repo->ver($n)['estado']);
     }
+
+    public function testSoloNuevasIsSilentWhenNothingArrivedAndAnnouncesEachOnceWithoutWhoAsked(): void
+    {
+        $this->assertSame([0, '', ''], $this->correr('--solo-nuevas'), 'cron mails whatever is printed');
+
+        $n = $this->repo->crear(6128479601, 'supresion', 'Mi dirección es Calle Falsa 123', 'secreto@example.com');
+        [$codigo, $salida, $error] = $this->correr('--solo-nuevas');
+
+        $this->assertSame([0, ''], [$codigo, $error]);
+        $this->assertStringContainsString('Llegó 1 solicitud de datos:', $salida);
+        $this->assertStringContainsString("n.º {$n}  supresion  persona 6128479601", $salida);
+        $this->assertStringContainsString('docs/SOLICITUDES.md', $salida);
+        $this->assertStringNotContainsString('secreto@example.com', $salida);
+        $this->assertStringNotContainsString('Calle Falsa', $salida);
+        $this->assertSame([0, '', ''], $this->correr('--solo-nuevas'), 'the next run has nothing new to say');
+
+        $otra = $this->repo->crear(6128479602, 'acceso', 'x', 'b@example.com');
+        $tercera = $this->correr('--solo-nuevas')[1];
+        $this->assertStringContainsString("n.º {$otra}", $tercera);
+        $this->assertStringNotContainsString("n.º {$n}", $tercera, 'only the one that arrived since');
+    }
+
+    public function testSoloNuevasChangesNothingElseAndGoesAlone(): void
+    {
+        $n = $this->repo->crear(6128479601, 'acceso', 'x', 'a@example.com');
+        $this->correr('--solo-nuevas');
+
+        $this->assertSame('pendiente', $this->repo->ver($n)['estado'], 'announcing closes nothing');
+        $this->assertStringContainsString("n.º {$n}", $this->correr()[1], 'and the listing still has it: that is the reminder');
+        foreach ([['--solo-nuevas', '--depurar'], ['--solo-nuevas', "--atender={$n}"], ['--solo-nuevas', '--nota=x'], ['--solo-nuevas', '--meses=3'], ['--solo-nuevas', '--ver=1']] as $args) {
+            $this->assertSame(2, $this->correr(...$args)[0], implode(' ', $args));
+        }
+    }
 }
