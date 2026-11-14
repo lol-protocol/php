@@ -10,14 +10,14 @@
     "scope": "Natural persons whose data is processed by controllers established in Cabo Verde or using equipment there",
     "applies_to": "Public and private controllers (automated and manual files, incl. video surveillance)",
     "key_requirements": "Data-subject rights of information, access, objection, rectification and erasure; CNPD supervision; special security measures for sensitive data",
-    "data_categories": "Personal data; sensitive data (special data incl. health and genetic data accessed through a physician) (unconfirmed)",
+    "data_categories": "Personal data; special/sensitive data, including health and genetic data (access to which is exercised through a doctor)",
     "retention_period": "Not specified",
     "enforcement_authority": "Comissao Nacional de Protecao de Dados Pessoais (CNPD)",
-    "penalties_range": "Per a third-party summary: administrative fines CVE 50,000-500,000 (individuals) and CVE 300,000-3,000,000 (legal entities); other infractions CVE 100,000-1,000,000; daily penalty CVE 5,000/10,000; criminal penalties for specific offences (unconfirmed)",
+    "penalties_range": "Administrative fines: CVE 50,000-500,000 (individuals) and CVE 300,000-3,000,000 (legal entities), doubled for processing subject to prior CNPD control; other administrative offences CVE 100,000-1,000,000; daily sanction CVE 5,000 (individual) / 10,000 (entity); criminal penalties vary by offence (up to 1-2 years' imprisonment or 120-240 days' fine; breach of professional secrecy 6 months-3 years)",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "Health and genetic data accessed via a physician (special data regime) (unconfirmed)",
+    "genetic_data": "Health and genetic data: access by the data subject is exercised through a doctor (special-data regime)",
     "website_url": "https://boe.incv.cv/Bulletins/Download/3672",
     "language": "Portuguese",
     "frameworks": "CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://boe.incv.cv/Bulletins/Download/3672",
@@ -61,8 +61,8 @@
       },
       "data_categories": {
         "url": "https://www.offlist.me/what-is-cabo-verde-law-133-v-2001",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://boe.incv.cv/Bulletins/DownloadAct?id=102251",
@@ -71,13 +71,13 @@
       },
       "penalties_range": {
         "url": "https://www.offlist.me/what-is-cabo-verde-law-133-v-2001",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "genetic_data": {
         "url": "https://www.offlist.me/what-is-cabo-verde-law-133-v-2001",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "frameworks": {
         "url": "https://www.coe.int/fr/web/portal/-/cabo-verde-joins-the-data-protection-and-cybercrime-conventions",
@@ -86,6 +86,24 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "genetic_data",
+        "from": "Health and genetic data accessed via a physician (special data regime) (unconfirmed)",
+        "to": "Health and genetic data: access by the data subject is exercised through a doctor (special-data regime)"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Per a third-party summary: administrative fines CVE 50,000-500,000 (individuals) and CVE 300,000-3,000,000 (legal entities); other infractions CVE 100,000-1,000,000; daily penalty CVE 5,000/10,000; criminal penalties for specific offences (unconfirmed)",
+        "to": "Administrative fines: CVE 50,000-500,000 (individuals) and CVE 300,000-3,000,000 (legal entities), doubled for processing subject to prior CNPD control; other administrative offences CVE 100,000-1,000,000; daily sanction CVE 5,000 (individual) / 10,000 (entity); criminal penalties vary by offence (up to 1-2 years' imprisonment or 120-240 days' fine; breach of professional secrecy 6 months-3 years)"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data; sensitive data (special data incl. health and genetic data accessed through a physician) (unconfirmed)",
+        "to": "Personal data; special/sensitive data, including health and genetic data (access to which is exercised through a doctor)"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

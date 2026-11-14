@@ -9,11 +9,11 @@
     "effective_date": "2019-01-05",
     "scope": "Natural persons with regard to processing of their personal data (including data held abroad)",
     "applies_to": "Not specified",
-    "key_requirements": "GDPR-modelled law; security of processing (art. 33 cited in Garante sanction against Facebook); independent Garante supervises (art. 52) (unconfirmed)",
+    "key_requirements": "Modelled on the GDPR; art. 33 requires controller and processor to apply technical and organisational measures appropriate to the risk (security of processing); Garante authority established",
     "data_categories": "Not specified",
     "retention_period": "Not specified",
     "enforcement_authority": "Data Protection Guarantor of San Marino (Garante per la protezione dei dati personali)",
-    "penalties_range": "Administrative fines; Garante reportedly ordered Facebook to pay EUR 4M (challenged); statutory caps not found (unconfirmed)",
+    "penalties_range": "Administrative fines: Garante decision no. 19 of 6 July 2021 ordered Facebook Ireland Ltd and Facebook Inc. to jointly pay EUR 4,000,000 (reportedly challenged); statutory range not in source",
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.dataguidance.com/jurisdiction/san-marino",
@@ -56,8 +56,8 @@
       },
       "key_requirements": {
         "url": "https://www.editorialedomani.it/giustizia/la-guerra-giudiziaria-di-san-marino-contro-facebook-udy9zhax",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://www.dataguidance.com/jurisdiction/san-marino",
@@ -66,11 +66,23 @@
       },
       "penalties_range": {
         "url": "https://www.editorialedomani.it/giustizia/la-guerra-giudiziaria-di-san-marino-contro-facebook-udy9zhax",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Administrative fines; Garante reportedly ordered Facebook to pay EUR 4M (challenged); statutory caps not found (unconfirmed)",
+        "to": "Administrative fines: Garante decision no. 19 of 6 July 2021 ordered Facebook Ireland Ltd and Facebook Inc. to jointly pay EUR 4,000,000 (reportedly challenged); statutory range not in source"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "key_requirements",
+        "from": "GDPR-modelled law; security of processing (art. 33 cited in Garante sanction against Facebook); independent Garante supervises (art. 52) (unconfirmed)",
+        "to": "Modelled on the GDPR; art. 33 requires controller and processor to apply technical and organisational measures appropriate to the risk (security of processing); Garante authority established"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

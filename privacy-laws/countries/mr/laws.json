@@ -7,7 +7,7 @@
     "jurisdiction": "APD",
     "enactment_date": "2017-07-22",
     "effective_date": "2017-07-22",
-    "scope": "Data subjects in Mauritania (unconfirmed)",
+    "scope": "Processing of personal data, automated or not, by individuals, the State, local authorities and legal persons, where the controller is established or uses processing means in Mauritania (Arts. 1-4)",
     "applies_to": "Natural persons, the State, local authorities and public or private legal persons, including controllers established or using processing means in Mauritania",
     "key_requirements": "Access requests (arts 53-58), objection (art. 59), rectification and deletion (arts 61-63) with a one-month controller response; breach notification duties reported",
     "data_categories": "Personal data (unconfirmed)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://dti.eui.eu/database/page/157",
@@ -45,9 +45,9 @@
         "checked": "2026-10-16"
       },
       "scope": {
-        "url": "https://dti.eui.eu/database/page/157",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.offlist.me/what-is-mauritania-law-2017-020",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "applies_to": {
         "url": "https://www.offlist.me/what-is-mauritania-law-2017-020",
@@ -71,6 +71,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "scope",
+        "from": "Data subjects in Mauritania (unconfirmed)",
+        "to": "Processing of personal data, automated or not, by individuals, the State, local authorities and legal persons, where the controller is established or uses processing means in Mauritania (Arts. 1-4)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

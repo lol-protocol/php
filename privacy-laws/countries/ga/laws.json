@@ -10,10 +10,10 @@
     "scope": "Data subjects whose personal data is processed in Gabon",
     "applies_to": "All public and private entities processing personal data",
     "key_requirements": "Declaration/authorisation to the authority; data subject rights of access, correction, erasure and objection (one month to respond); special measures for children's data",
-    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "data_categories": "Personal data; sensitive data such as biometric, health and financial data",
     "retention_period": "Not specified",
     "enforcement_authority": "Authority for the Protection of Personal Data and Privacy (APDPVP)",
-    "penalties_range": "Reported fines of CFA 1 million to 100 million (rising for repeat violations), suspension of processing and criminal penalties; secondary sources (unconfirmed)",
+    "penalties_range": "Fines of CFA 1 million to 100 million, plus up to CFA 10 million for severe violations; suspension of processing; criminal penalties including imprisonment for responsible individuals",
     "exemptions": "Not specified",
     "deceased_data": "Covered: the data subject definition includes deceased persons (art. 4); data on deceased persons may be processed unless they refused in writing in life (art. 147); spouse, children and heirs may exercise health-data access (art. 46)",
     "research_exemption": "Erasure and objection rights do not apply to archiving and scientific, historical or statistical research (arts. 54, 65); further processing for such purposes is compatible (art. 66); information-duty exemption (art. 103)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-31",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
@@ -66,8 +66,8 @@
       },
       "data_categories": {
         "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
@@ -76,8 +76,8 @@
       },
       "penalties_range": {
         "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
-        "confidence": "low",
-        "checked": "2026-10-18"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "genetic_data": {
         "url": "https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf",
@@ -96,6 +96,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Reported fines of CFA 1 million to 100 million (rising for repeat violations), suspension of processing and criminal penalties; secondary sources (unconfirmed)",
+        "to": "Fines of CFA 1 million to 100 million, plus up to CFA 10 million for severe violations; suspension of processing; criminal penalties including imprisonment for responsible individuals"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data; sensitive data (unconfirmed)",
+        "to": "Personal data; sensitive data such as biometric, health and financial data"
+      },
       {
         "date": "2026-10-31",
         "field": "genetic_data",

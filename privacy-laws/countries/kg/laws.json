@@ -13,11 +13,11 @@
     "data_categories": "Personal data; special categories",
     "retention_period": "Not specified",
     "enforcement_authority": "State Agency for Personal Data Protection (Personal Data Protection Agency)",
-    "penalties_range": "Administrative fines reported from May 2025, unverified (unconfirmed)",
+    "penalties_range": "Administrative fines of KGS 10,000 to KGS 1,000,000 (about USD 110-11,000), introduced May 2025",
     "exemptions": "Not specified",
     "deceased_data": "On state registration of death the subject gets 'deceased' status and data must be archived and stored (2022 amendment, Law No. 61); law replaced by Digital Code No. 178 from 5 Feb 2026",
     "research_exemption": "",
-    "genetic_data": "No specific rule: law has no clear definition of sensitive personal data; genetic data not named (unconfirmed)",
+    "genetic_data": "Not listed: Art. 8 special categories are racial or ethnic origin, nationality, political opinions, religious or philosophical beliefs, health status, sexual inclinations",
     "website_url": "https://reestr.dpa.gov.kg/en/npa/4",
     "language": "Kyrgyz/Russian",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-17",
+    "last_checked": "2026-11-14",
     "sources": {
       "deceased_data": {
         "url": "https://www.dlapiperdataprotection.com/?c=KG&t=law",
@@ -35,9 +35,9 @@
         "checked": "2026-10-17"
       },
       "genetic_data": {
-        "url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=KG",
-        "confidence": "low",
-        "checked": "2026-10-17"
+        "url": "https://reestr.dpa.gov.kg/en/npa/4",
+        "confidence": "high",
+        "checked": "2026-11-14"
       },
       "law_name": {
         "url": "https://www.consentstack.io/regulations/kg-law58",
@@ -86,11 +86,23 @@
       },
       "penalties_range": {
         "url": "https://www.consentstack.io/regulations/kg-law58",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-11-14"
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "genetic_data",
+        "from": "No specific rule: law has no clear definition of sensitive personal data; genetic data not named (unconfirmed)",
+        "to": "Not listed: Art. 8 special categories are racial or ethnic origin, nationality, political opinions, religious or philosophical beliefs, health status, sexual inclinations"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Administrative fines reported from May 2025, unverified (unconfirmed)",
+        "to": "Administrative fines of KGS 10,000 to KGS 1,000,000 (about USD 110-11,000), introduced May 2025"
+      },
       {
         "date": "2026-10-18",
         "field": "website_url",

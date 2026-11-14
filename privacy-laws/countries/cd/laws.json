@@ -7,8 +7,8 @@
     "jurisdiction": "Data Protection Authority (APD) - functions temporarily held by ARPTIC",
     "enactment_date": "2023-03-13",
     "effective_date": "2023-03-13",
-    "scope": "Data subjects in the DRC (unconfirmed)",
-    "applies_to": "Controllers and processors of personal data in the DRC (unconfirmed)",
+    "scope": "Processing of personal data within the DRC, by digital or non-digital means",
+    "applies_to": "All entities processing personal data within the DRC through digital or non-digital means",
     "key_requirements": "Prior declaration or authorisation for processing (authorisation for sensitive/genetic data and third-country transfers); data subject rights incl. erasure; prohibition in principle of processing data on racial or ethnic origin and political opinions",
     "data_categories": "Personal data (art. 183: identification, contact, professional, billing and bank data, family circumstances, court decisions); biometric data; sensitive data",
     "retention_period": "Not specified",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
@@ -50,14 +50,14 @@
         "checked": "2026-10-16"
       },
       "scope": {
-        "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.consentstack.io/regulations/cd-digital-code",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "applies_to": {
-        "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://www.consentstack.io/regulations/cd-digital-code",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "key_requirements": {
         "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
@@ -91,6 +91,18 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "applies_to",
+        "from": "Controllers and processors of personal data in the DRC (unconfirmed)",
+        "to": "All entities processing personal data within the DRC through digital or non-digital means"
+      },
+      {
+        "date": "2026-11-14",
+        "field": "scope",
+        "from": "Data subjects in the DRC (unconfirmed)",
+        "to": "Processing of personal data within the DRC, by digital or non-digital means"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
