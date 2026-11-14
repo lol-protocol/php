@@ -144,7 +144,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 02_F | `02_F-install-certbot.sh` | Instala Certbot (Let's Encrypt) |
 | 02_G | `02_G-install-mariadb.sh` | *(Opcional)* Instala MariaDB |
 | 02_H | `02_H-install-tomcat.sh` | *(Opcional)* Instala Apache Tomcat — requiere que `02_A` (Java) ya haya corrido |
-| 02_I | `02_I-install-python-whisper.sh` | *(Opcional)* Instala Whisper (OpenAI, transcripción de audio) + ffmpeg + librerías Python básicas en un venv en `/opt/venvs/whisper` — requiere que `02_C` (Python) ya haya corrido |
+| 02_I | `02_I-install-python-whisper.sh` | *(Opcional)* Instala Whisper (OpenAI, transcripción de audio) + ffmpeg + librerías Python básicas en un venv en `/opt/venvs/whisper` — requiere que `02_C` (Python) ya haya corrido. Instala una versión **fija** de Whisper (`WHISPER_VERSION`, por defecto `20250625`), se detiene antes de instalar si quedan menos de `WHISPER_MIN_GB` (8) GB libres (`WHISPER_FORCE=1` lo salta) y avisa qué modelos caben según la RAM |
 | 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional: `install-all.sh` solo lo instala con `--with-webmin`). Por defecto escucha **solo en localhost** (`bind=127.0.0.1`, sin regla de UFW) y se entra por túnel SSH; `WEBMIN_ALLOW_FROM=<IP fija>` lo abre solo a esa IP y `WEBMIN_PUBLIC=1` a todo internet. Re-correrlo cierra una regla abierta de una instalación anterior |
 | 03 | `03-configure-nginx-site.sh <dominio>` | Crea el virtual host de Nginx (estático, sin PHP) y copia la landing page |
 | 04 | `04-setup-ssl.sh <dominio> [email] [--force] [--staging]` | Obtiene certificado SSL. Verifica antes que el DNS apunte al VPS; sin terminal y con el DNS mal, **aborta** para no gastar un intento de Let's Encrypt (`--force` lo salta). `--staging` pide un certificado de prueba sin límite semanal |
@@ -243,6 +243,7 @@ sin argumentos muestran el uso y salen con código 2.
 |----------|-------------|----------|
 | `MAX_UPLOAD` | `20M` | Tamaño máximo de una petición/subida en las apps (`06_A`, `06_B`, `06_D`, y `10_A` que los llama; `06_E` usa 6M). En PHP el límite es global y solo sube |
 | `PROXY_TIMEOUT` | `120s` | Cuánto espera Nginx a una app Python/Tomcat (y el `--timeout` de gunicorn) |
+| `WHISPER_VERSION` / `WHISPER_MIN_GB` | `20250625` / `8` | Versión fija de `openai-whisper` y GB libres mínimos para instalar (`02_I`); `WHISPER_FORCE=1` salta la comprobación de disco |
 | `GUNICORN_WORKERS` | según CPU y RAM | Workers de gunicorn por app Python (`06_B`). Por defecto 2×CPU+1, acotado a RAM÷512 MB (mínimo 2): 1 GB → 2, 2 GB → 3 |
 | `PHP_MAX_CHILDREN` | `5` | Procesos máximos del pool PHP-FPM de cada app PHP (`06_A`; `ondemand`) |
 | `PHP_VERSION` | `8.3` | Versión de PHP del stack, fijada en un solo lugar (`lib.sh`) |
