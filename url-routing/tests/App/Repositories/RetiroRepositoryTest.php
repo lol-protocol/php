@@ -318,4 +318,29 @@ class RetiroRepositoryTest extends TestCase
             @rmdir($sitio);
         }
     }
+
+    #[DataProvider('drivers')]
+    public function testOcultosSinDecidirListsOnlyTheHiddenOnesOldestFirstWithTheirDays(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $repo = new RetiroRepository($db);
+        $viejo = $repo->crear('persona', 6128473105, 'otro', 'Uno.', 'a@example.com', null, strtotime('2026-01-01 10:00:00'));
+        $nuevo = $repo->crear('grupo', 582317, 'otro', 'Dos.', 'b@example.com', null, strtotime('2026-01-01 11:00:00'));
+        $pendiente = $repo->crear('registro', 81372002, 'otro', 'Tres.', 'c@example.com', null, strtotime('2026-01-01 12:00:00'));
+        $retirado = $repo->crear('persona', 6128473101, 'otro', 'Cuatro.', 'd@example.com', null, strtotime('2026-01-01 13:00:00'));
+        $repo->decidir($viejo, 'ocultar', null);
+        $repo->decidir($nuevo, 'ocultar', null);
+        $repo->decidir($retirado, 'retirar', null);
+        $db->execute('UPDATE pedido_retiro_eventos SET ocurrido_en = ? WHERE pedido_id = ? AND estado = ?', ['2026-01-05 00:00:00', $viejo, 'oculto']);
+        $db->execute('UPDATE pedido_retiro_eventos SET ocurrido_en = ? WHERE pedido_id = ? AND estado = ?', ['2026-01-20 00:00:00', $nuevo, 'oculto']);
+
+        $ocultos = $repo->ocultosSinDecidir(strtotime('2026-02-04 00:00:00'));
+
+        $this->assertSame([$viejo, $nuevo], array_column($ocultos, 'id'), 'only the hidden ones (not the pending nor the withdrawn), the longest hidden first');
+        $this->assertSame([30, 15], array_column($ocultos, 'dias'));
+        $this->assertSame(['id', 'tipo', 'recurso_id', 'motivo', 'desde', 'dias'], array_keys($ocultos[0]), 'nothing about who asked nor what they wrote');
+        $this->assertNotContains($pendiente, array_column($ocultos, 'id'));
+        $repo->decidir($viejo, 'rechazar', null);
+        $this->assertSame([$nuevo], array_column($repo->ocultosSinDecidir(), 'id'), 'one decided leaves the list');
+    }
 }

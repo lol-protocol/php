@@ -445,7 +445,10 @@ contiene "dice que ocultó" 'oculto automáticamente' "$CRON_SALIDA"
 ok "el visitante ya recibe 410" 410 "$(codigo "$H" "$HTTPS/$PEDIDA/")"
 ok "el propietario sigue viéndola" 200 "$(codigo "$H" "$HTTPS/$PEDIDA/" -u "x:$TOKEN")"
 cron_retiros --ocultar
-ok "ya no queda nada pendiente: silencio" "" "$CRON_SALIDA"
+no_contiene "ya no queda nada esperando respuesta" 'espera respuesta' "$CRON_SALIDA"
+contiene "pero recuerda el pedido oculto que nadie decidió" 'oculto sigue sin decidirse' "$CRON_SALIDA"
+no_contiene "sin el correo de quien lo pidió" "$CORREO" "$CRON_SALIDA"
+ok "y el recordatorio no es un fallo: sale con 0" 0 "$CRON_CODIGO"
 cron_retiros --ocultar --solo-ocultados
 ok "--solo-ocultados sin nada nuevo: silencio" "" "$CRON_SALIDA"
 ok "y sale con 0" 0 "$CRON_CODIGO"

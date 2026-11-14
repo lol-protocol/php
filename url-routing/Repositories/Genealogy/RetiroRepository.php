@@ -187,6 +187,33 @@ final class RetiroRepository extends Repository
     }
 
     /**
+     * The pedidos that are hidden and still wait for the owner's decision, oldest first, with the whole days each has
+     * been hidden (since its last 'oculto' event) at $ahora. A pedido stops being listed by pendientes() the moment it is hidden (by the owner or by
+     * the cron job), and while nobody decides it the page stays gone and the sender's e-mail and text stay stored:
+     * this is what keeps them from being forgotten. Nothing about who asked or what they wrote.
+     *
+     * @return list<array{id: int, tipo: string, recurso_id: int, motivo: string, desde: string, dias: int}>
+     */
+    public function ocultosSinDecidir(?int $ahora = null): array
+    {
+        $ahora ??= time();
+        $filas = $this->db->fetchAll(
+            "SELECT p.id, p.tipo, p.recurso_id, p.motivo,
+                    (SELECT MAX(e.ocurrido_en) FROM pedido_retiro_eventos e WHERE e.pedido_id = p.id AND e.estado = 'oculto') AS desde
+               FROM pedidos_retiro p WHERE p.estado = 'oculto' ORDER BY desde, p.id"
+        );
+
+        return array_map(static fn(array $f): array => [
+            'id' => (int)$f['id'],
+            'tipo' => (string)$f['tipo'],
+            'recurso_id' => (int)$f['recurso_id'],
+            'motivo' => (string)$f['motivo'],
+            'desde' => (string)$f['desde'],
+            'dias' => max(0, intdiv($ahora - (int)strtotime((string)$f['desde']), 86400)),
+        ], $filas);
+    }
+
+    /**
      * Hides ('oculto') every pedido that has waited $horas or more without the owner deciding, and says why in
      * its record. It never overrides a decision: a pedido the owner decides meanwhile is left as they decided.
      *
