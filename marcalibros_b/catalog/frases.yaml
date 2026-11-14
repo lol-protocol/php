@@ -94,6 +94,36 @@ movimientos:
     idioma: gl
     muerte: 1885
     estado: sin_verificar
+  - texto: Я памятник себе воздвиг нерукотворный
+    autor: Aleksandr Pushkin
+    obra: Exegi monumentum
+    idioma: ru
+    muerte: 1837
+    estado: sin_verificar
+  - texto: E il naufragar m'è dolce in questo mare
+    autor: Giacomo Leopardi
+    obra: L'infinito
+    idioma: it
+    muerte: 1837
+    estado: sin_verificar
+  - texto: Ich weiß nicht, was soll es bedeuten
+    autor: Heinrich Heine
+    obra: Die Lorelei
+    idioma: de
+    muerte: 1856
+    estado: sin_verificar
+  - texto: Litwo! Ojczyzno moja! ty jesteś jak zdrowie
+    autor: Adam Mickiewicz
+    obra: Pan Tadeusz
+    idioma: pl
+    muerte: 1855
+    estado: sin_verificar
+  - texto: Ô temps, suspends ton vol
+    autor: Alphonse de Lamartine
+    obra: Le Lac
+    idioma: fr
+    muerte: 1869
+    estado: sin_verificar
   gotico:
   - texto: Beware; for I am fearless, and therefore powerful.
     autor: Mary Shelley
@@ -143,6 +173,24 @@ movimientos:
     idioma: en
     muerte: 1894
     estado: sin_verificar
+  - texto: We are all in the gutter, but some of us are looking at the stars.
+    autor: Oscar Wilde
+    obra: Lady Windermere's Fan
+    idioma: en
+    muerte: 1900
+    estado: sin_verificar
+  - texto: The oldest and strongest emotion of mankind is fear.
+    autor: H. P. Lovecraft
+    obra: Supernatural Horror in Literature
+    idioma: en
+    muerte: 1937
+    estado: sin_verificar
+  - texto: Русь, куда ж несёшься ты? Дай ответ.
+    autor: Nikolái Gógol
+    obra: Almas muertas
+    idioma: ru
+    muerte: 1852
+    estado: sin_verificar
   realismo:
   - texto: It was the best of times, it was the worst of times
     autor: Charles Dickens
@@ -174,6 +222,18 @@ movimientos:
     idioma: fr
     muerte: 1880
     estado: sin_verificar
+  - texto: La beauté n'est que la promesse du bonheur.
+    autor: Stendhal
+    obra: De l'amour
+    idioma: fr
+    muerte: 1842
+    estado: sin_verificar
+  - texto: Das ist ein weites Feld.
+    autor: Theodor Fontane
+    obra: Effi Briest
+    idioma: de
+    muerte: 1898
+    estado: sin_verificar
   naturalismo:
   - texto: J'accuse…!
     autor: Émile Zola
@@ -186,6 +246,12 @@ movimientos:
     obra: Germinal
     idioma: fr
     muerte: 1902
+    estado: sin_verificar
+  - texto: 'A man said to the universe: Sir, I exist!'
+    autor: Stephen Crane
+    obra: War Is Kind
+    idioma: en
+    muerte: 1900
     estado: sin_verificar
   modernismo:
   - texto: La princesa está triste… ¿qué tendrá la princesa?
@@ -236,6 +302,12 @@ movimientos:
     idioma: es
     muerte: 1896
     estado: sin_verificar
+  - texto: Caminante, no hay camino, se hace camino al andar.
+    autor: Antonio Machado
+    obra: Proverbios y cantares
+    idioma: es
+    muerte: 1939
+    estado: sin_verificar
   vanguardias:
   - texto: Sous le pont Mirabeau coule la Seine
     autor: Guillaume Apollinaire
@@ -284,6 +356,18 @@ movimientos:
     obra: Manifesto del Futurismo
     idioma: it
     muerte: 1944
+    estado: sin_verificar
+  - texto: La terre est bleue comme une orange
+    autor: Paul Éluard
+    obra: L'amour la poésie
+    idioma: fr
+    muerte: 1952
+    estado: sin_verificar
+  - texto: A rose is a rose is a rose is a rose.
+    autor: Gertrude Stein
+    obra: Sacred Emily
+    idioma: en
+    muerte: 1946
     estado: sin_verificar
   barroco:
   - texto: Polvo serán, mas polvo enamorado
@@ -370,6 +454,24 @@ movimientos:
     idioma: en
     muerte: 1674
     estado: sin_verificar
+  - texto: La raison du plus fort est toujours la meilleure
+    autor: Jean de La Fontaine
+    obra: Le Loup et l'Agneau
+    idioma: fr
+    muerte: 1695
+    estado: sin_verificar
+  - texto: È del poeta il fin la meraviglia
+    autor: Giambattista Marino
+    obra: La Murtoleide
+    idioma: it
+    muerte: 1625
+    estado: sin_verificar
+  - texto: Du siehst, wohin du siehst, nur Eitelkeit auf Erden.
+    autor: Andreas Gryphius
+    obra: Es ist alles eitel
+    idioma: de
+    muerte: 1664
+    estado: sin_verificar
   clasicismo:
   - texto: Arma virumque cano
     autor: Virgilio
@@ -455,6 +557,24 @@ movimientos:
     idioma: de
     muerte: 1832
     estado: sin_verificar
+  - texto: Πάθει μάθος
+    autor: Esquilo
+    obra: Agamenón
+    idioma: grc
+    muerte: -456
+    estado: sin_verificar
+  - texto: Lupus est homo homini, non homo
+    autor: Plauto
+    obra: Asinaria
+    idioma: la
+    muerte: -184
+    estado: sin_verificar
+  - texto: Alle Menschen werden Brüder
+    autor: Friedrich Schiller
+    obra: Oda a la alegría
+    idioma: de
+    muerte: 1805
+    estado: sin_verificar
   simbolismo:
   - texto: Hypocrite lecteur, — mon semblable, — mon frère !
     autor: Charles Baudelaire
@@ -533,6 +653,30 @@ movimientos:
     obra: Complainte
     idioma: fr
     muerte: 1887
+    estado: sin_verificar
+  - texto: Ночь, улица, фонарь, аптека
+    autor: Aleksandr Blok
+    obra: La noche, la calle, el farol, la farmacia
+    idioma: ru
+    muerte: 1921
+    estado: sin_verificar
+  - texto: Kein ding sei wo das wort gebricht
+    autor: Stefan George
+    obra: Das Wort
+    idioma: de
+    muerte: 1933
+    estado: sin_verificar
+  - texto: Taci. Su le soglie del bosco non odo parole che dici umane
+    autor: Gabriele D'Annunzio
+    obra: La pioggia nel pineto
+    idioma: it
+    muerte: 1938
+    estado: sin_verificar
+  - texto: Den sterkeste mann i verden er den, som står mest alene
+    autor: Henrik Ibsen
+    obra: Un enemigo del pueblo
+    idioma: 'no'
+    muerte: 1906
     estado: sin_verificar
   realismo-magico:
   - texto: En ese pueblo, los relojes olvidaban la hora
