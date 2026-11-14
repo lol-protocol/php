@@ -16,7 +16,7 @@ desde la prehistoria.
 tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Markdown
 (`tabla_genealogia.md` y `tabla_pos.md`) tienen todas las columnas. En la vista se puede elegir el
 escenario de ranking (los mismos de `escenarios.md`) y ver solo los países cuyo índice se aparta
-de lo que predicen sus datos («≠ datos», ver «Sugerencias desde los datos»).
+de lo que predicen sus datos («≠ datos», ver «Sugerencias desde los datos»). Para usarla desde código, `exportes/paises.json` y `exportes/paises.sql`.
 
 ## Resumen
 
@@ -73,6 +73,13 @@ están al día, así que el resto del README las remite aquí en vez de repetirl
   PIB nominal, libertad, democracia y corrupción.
 - `descargar_fuentes.py` y `fuentes.sha256`: bajan todas las fuentes, fijadas por commit, y
   comprueban su SHA-256; con `--rehacer` corren todos los scripts. Ver «Fuentes».
+- `exportes/paises.json` y `exportes/paises.sql` (los escribe `generar_tabla.py` con `exportes.py`,
+  y `--comprobar` los verifica): la tabla completa para usarla desde otros proyectos. Cada país trae
+  sus datos, sus índices, la prioridad y la exclusión de la regla vigente, sus idiomas y la banda de
+  nacidos. El JSON es `{"paises": [...]}`, con números como números, vacíos como `null` y las
+  exclusiones como booleanos. El SQL es para PostgreSQL: recrea la tabla `listado_paises` en una
+  transacción, así que se puede cargar de nuevo (`psql -f exportes/paises.sql`). La CI lo carga dos
+  veces en el job `postgresql`.
 - `pruebas_navegador.py`: abre `vista.html` en Chromium, en escritorio y en móvil, y prueba el
   mapa, la tabla, los filtros, el orden, la búsqueda sin acentos, los escenarios, las marcas
   «≠ datos» y el tooltip. Las cifras esperadas salen de los CSV. Necesita
