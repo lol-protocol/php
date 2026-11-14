@@ -83,7 +83,7 @@ foreach ($jsonLd as $objeto): ?>
         .vacio { color: var(--muted); font-style: italic; }
         dl.ficha { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1.25rem; margin: 0; }
         dl.ficha dt { color: var(--muted); }
-        dl.ficha dd { margin: 0; }
+        dl.ficha dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
         .aviso { padding: .75rem 1rem; border: 1px solid var(--line); border-radius: .5rem; background: var(--soft); }
         .muestra { display: inline-block; width: 1em; height: 1em; border: 1px solid var(--line); border-radius: .2em; vertical-align: -.15em; }
         ul.arbol, ul.arbol ul { list-style: none; margin: 0; padding-left: 1.25rem; border-left: 1px solid var(--line); }

@@ -6,7 +6,9 @@ namespace App\Controllers\Genealogy;
 
 use App\Controllers\BaseController;
 use App\Repositories\Genealogy\ColeccionRepository;
+use App\Repositories\Genealogy\EntregaRepository;
 use App\Repositories\Genealogy\PersonaRepository;
+use App\Repositories\Genealogy\RectificacionRepository;
 use App\Repositories\Genealogy\RegistroRepository;
 use App\Repositories\Genealogy\RetiroRepository;
 use App\Repositories\Genealogy\SolicitudRepository;
@@ -98,7 +100,9 @@ class CuentaController extends BaseController
     /**
      * /0/4/ — the solicitudes of access, correction or erasure of a persona's data that anyone made at /s/{id}/. The owner
      * reads them here, answers by e-mail (docs/SOLICITUDES.md: check who asks first) and closes each one as answered
-     * or refused. Closing gives, changes and erases nothing: that is done with bin/persona.php. The form posts to this URL.
+     * or refused. Closing gives, changes and erases nothing: that is done with bin/persona.php. The forms post to this URL:
+     * `accion` is «cerrar» (the default), «entrega» (makes a delivery with a key for the persona of a pending solicitud) or
+     * «simular» (shows what correcting a field would do, and changes nothing: doing it stays in bin/persona.php).
      *
      * @param array<string, mixed> $params
      */
@@ -117,6 +121,11 @@ class CuentaController extends BaseController
             return $this->handleForbidden();
         }
 
+        $accion = $this->postString('accion', 'cerrar');
+        if ($accion === 'entrega' || $accion === 'simular') {
+            return $this->accionSobreLaPersona($repo, $accion);
+        }
+
         $numero = $this->postString('solicitud');
         $decision = $this->postString('decision');
         $nota = trim($this->postString('nota'));
@@ -132,6 +141,54 @@ class CuentaController extends BaseController
         $this->flash("Solicitud n.º {$numero}: " . SolicitudRepository::CIERRES[$decision] . '.');
 
         return $this->redirect(cuenta(4));
+    }
+
+    /**
+     * The two things the owner can do from the panel about the persona of a pending solicitud, after checking who asks.
+     * The persona is the one the solicitud names, never one typed in the form. The result is the response itself and is
+     * never stored (a delivery's link and key cannot be recovered), and the page is private and no-store like every page
+     * of the owner. Applying a correction stays in bin/persona.php: here it is only shown.
+     */
+    private function accionSobreLaPersona(SolicitudRepository $repo, string $accion): string
+    {
+        $numero = $this->postString('solicitud');
+        $solicitud = ctype_digit($numero) ? $repo->ver((int)$numero) : null;
+        if ($solicitud === null || $solicitud['estado'] !== 'pendiente') {
+            return $this->handleNotFound('No hay una solicitud pendiente con ese número');
+        }
+        $persona = (int)$solicitud['persona_id'];
+        $datos = ['solicitud' => (int)$numero, 'persona' => $persona, 'accion' => $accion, 'error' => null];
+
+        try {
+            if ($accion === 'entrega') {
+                $dias = $this->postString('dias', (string)EntregaRepository::VIGENCIA_DIAS);
+                if (!ctype_digit($dias)) {
+                    throw new \DomainException('La vigencia es un número de días, de 1 a 90.');
+                }
+                $entrega = (new EntregaRepository($this->db()))->crear($persona, (int)$dias);
+                $base = rtrim((string)\App\Support\Config::get('SITE_URL_GENEALOGY', ''), '/');
+                if ($base === '') {
+                    $base = (($_SERVER['HTTPS'] ?? '') !== '' && $_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://') . (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
+                }
+                // The number and the persona only: never the link nor the key.
+                log_info('entrega con clave creada desde el panel', ['solicitud' => (int)$numero, 'entrega' => $entrega['id'], 'persona' => $persona]);
+                $datos['entrega'] = $entrega + ['enlace' => "{$base}/e/{$entrega['token']}/"];
+            } else {
+                $suceso = $this->postString('suceso');
+                if ($suceso !== '' && !ctype_digit($suceso)) {
+                    throw new \DomainException('El suceso es un número.');
+                }
+                $campo = $this->postString('campo');
+                $datos['campo'] = $campo;
+                $datos['simulacion'] = (new RectificacionRepository($this->db()))->rectificar($persona, $campo, $this->postString('valor'), $suceso === '' ? null : (int)$suceso, null, false);
+                $datos['frase'] = RectificacionRepository::loQueVeUnVisitante($datos['simulacion']);
+            }
+        } catch (\DomainException $e) {
+            $datos['error'] = $e->getMessage();
+            http_response_code(422);
+        }
+
+        return view('genealogy/cuenta/solicitud-resultado', $datos);
     }
 
     /** A page that shows the account's user, or a 404 when that user doesn't exist. */
