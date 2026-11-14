@@ -157,6 +157,8 @@
     "category": "Categorie",
     "region": "Regio",
     "reset": "Filters wissen",
+    "copyLink": "Link kopiëren",
+    "linkCopied": "Link gekopieerd",
     "compareLabel": "Formaten vergelijken",
     "comparePlaceholder": "Typ formaatnamen om te vergelijken...",
     "colFormat": "Formaat",

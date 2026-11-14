@@ -518,6 +518,28 @@ body {
     outline-color: #ffffff;
 }
 
+.header-actions {
+    margin-top: 12px;
+}
+
+.copy-link {
+    padding: 6px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.copy-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.copy-link:focus-visible {
+    outline-color: #ffffff;
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation: none !important;
@@ -568,7 +590,7 @@ body {
 
 /* On paper: the results only, in black on white. */
 @media print {
-    .skip-link, .language-picker, .tabs, .controls, .stats, .footer { display: none; }
+    .skip-link, .language-picker, .header-actions, .tabs, .controls, .stats, .footer { display: none; }
     body { background: white; color: black; }
     .header { background: none; color: black; box-shadow: none; padding: 0 0 12px; }
     .format-card, .about-card { box-shadow: none; border: 1px solid #999; break-inside: avoid; }

@@ -677,3 +677,16 @@ test('translateElement applies each element once, however deep it sits', async (
     i18n.translateElement(node('root', [node('a', [node('b', [node('c')])]), node('d')]));
     assert.deepEqual(applied.sort(), ['a', 'b', 'c', 'd', 'root']);
 });
+
+test('DocumentFormats.load takes the address of the app/ folder and looks every file up from there', async () => {
+    // '../app/' resolves to the same folder, so it works only if every path really starts with it.
+    const docs = await DocumentFormats.load({ basePath: '../app/' });
+    assert.ok(docs.formats.length > 100);
+    assert.ok(docs.specs.getAllPaperTypes().length > 0, 'specs');
+    assert.ok(docs.margins.getAllMargins().length > 0, 'margins');
+    assert.ok(docs.devices.monitors.length > 0, 'devices');
+
+    await assert.rejects(DocumentFormats.load({ basePath: 'nowhere/' }), /nowhere\//);
+    const plain = await DocumentFormats.load({ only: [] });
+    assert.equal(plain.formats.length, docs.formats.length, 'no basePath keeps the paths as they were');
+});

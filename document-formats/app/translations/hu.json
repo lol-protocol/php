@@ -157,6 +157,8 @@
     "category": "Kategória",
     "region": "Régió",
     "reset": "Szűrők visszaállítása",
+    "copyLink": "Hivatkozás másolása",
+    "linkCopied": "Hivatkozás átmásolva",
     "compareLabel": "Formátumok összehasonlítása",
     "comparePlaceholder": "Írja be az összehasonlítandó formátumok nevét...",
     "colFormat": "Formátum",

@@ -157,6 +157,8 @@
     "category": "Categoria",
     "region": "Regiunea",
     "reset": "Resetează filtrele",
+    "copyLink": "Copiază linkul",
+    "linkCopied": "Link copiat",
     "compareLabel": "Compară formatele",
     "comparePlaceholder": "Introduceți numele formatelor de comparat...",
     "colFormat": "Format",

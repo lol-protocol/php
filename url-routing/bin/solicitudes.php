@@ -12,12 +12,18 @@ declare(strict_types=1);
  *   php bin/solicitudes.php --atender=N [--nota=TEXTO]    # closes it as answered
  *   php bin/solicitudes.php --rechazar=N [--nota=TEXTO]   # closes it as refused (who asks could not be checked, ...)
  *   php bin/solicitudes.php --depurar [--meses=12]        # erases the e-mail and the text of the ones closed long ago, and the deliveries with a key that expired long ago
+ *   php bin/solicitudes.php --solo-nuevas       # tell about the solicitudes that arrived since the last run, and nothing else
  *
  * The listing is for cron (it mails whatever a job prints, and it prints nothing when nothing waits) and, like
  * bin/pedidos-retiro.php, never says who asked nor what they wrote: cron mail travels in the clear. Only --ver does,
  * on the terminal of the owner. The note of a closing is for the owner's records: say what was done, not the data.
  * --depurar prints only a count of each. The retention is --meses, else SOLICITUD_CONSERVAR_MESES, else 12. The deliveries
  * with a key (persona.php entrega) hold only hashes and dates; the ones that expired that long ago are deleted outright.
+ *
+ * --solo-nuevas is for a job that runs every few minutes: it prints (number, persona and right, never who asked nor what they
+ * wrote) only when a solicitud arrived that it has not announced before, and is silent otherwise. Each one is announced once
+ * (solicitudes_persona.avisada_en): it is the notice that something just came in, where the listing is the reminder of what
+ * still waits. It goes alone: no other option, and exit code 0.
  *
  * Exit code: 0 done (or nothing to say), 1 there is no such solicitud or it was closed already, 2 usage error or a
  * database that is not ready.
@@ -32,7 +38,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 Config::load();
 
-$uso = "Uso: php bin/solicitudes.php [--ver=N | --atender=N [--nota=TEXTO] | --rechazar=N [--nota=TEXTO] | --depurar [--meses=12]]\n";
+$uso = "Uso: php bin/solicitudes.php [--ver=N | --atender=N [--nota=TEXTO] | --rechazar=N [--nota=TEXTO] | --depurar [--meses=12] | --solo-nuevas]\n";
 $accion = null;
 $numero = null;
 $nota = null;
@@ -42,6 +48,8 @@ foreach (array_slice($argv, 1) as $argumento) {
         [$accion, $numero] = [$m[1], (int)$m[2]];
     } elseif ($argumento === '--depurar' && $accion === null) {
         $accion = 'depurar';
+    } elseif ($argumento === '--solo-nuevas' && $accion === null) {
+        $accion = 'nuevas';
     } elseif (preg_match('/^--nota=(.+)$/s', $argumento, $m) === 1) {
         $nota = trim($m[1]);
     } elseif (preg_match('/^--meses=(\d+)$/', $argumento, $m) === 1) {
@@ -53,6 +61,10 @@ foreach (array_slice($argv, 1) as $argumento) {
 }
 if (($nota !== null && !in_array($accion, ['atender', 'rechazar'], true)) || $meses < 1 || $meses > 240) {
     fwrite(STDERR, $uso . "--nota va con --atender o --rechazar; la conservación es un número de meses de 1 a 240.\n");
+    exit(2);
+}
+if ($accion === 'nuevas' && count($argv) > 2) {
+    fwrite(STDERR, $uso . "--solo-nuevas va sola: es el aviso de lo que llegó, sin listado, cierre ni depuración.\n");
     exit(2);
 }
 if ($accion === null && count($argv) > 1) {
@@ -88,6 +100,18 @@ try {
             exit(1);
         }
         echo "La solicitud {$numero} quedó como «" . SolicitudRepository::CIERRES[$accion] . "».\n";
+        exit(0);
+    }
+
+    if ($accion === 'nuevas') {
+        $nuevas = $repo->avisarNuevas();
+        if ($nuevas !== []) {
+            echo count($nuevas) === 1 ? "Llegó 1 solicitud de datos:\n" : 'Llegaron ' . count($nuevas) . " solicitudes de datos:\n";
+            foreach ($nuevas as $n) {
+                printf("  n.º %d  %s  persona %d\n", $n['id'], $n['derecho'], $n['persona_id']);
+            }
+            echo "\nLéela con: php bin/solicitudes.php --ver=N (y recuerda comprobar quién pide: docs/SOLICITUDES.md).\n";
+        }
         exit(0);
     }
 
