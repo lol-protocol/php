@@ -142,7 +142,7 @@
     "data_categories": "Child identifiers",
     "retention_period": "Limited to purpose",
     "enforcement_authority": "FTC & State AGs",
-    "penalties_range": "Up to $43,280 per violation",
+    "penalties_range": "Up to $53,088 per violation (inflation-adjusted FTC maximum, 2025 amount, unchanged for 2026) (unconfirmed)",
     "exemptions": "Educational institutions",
     "deceased_data": "",
     "research_exemption": "No research exception found among the exceptions to verifiable parental consent (16 CFR 312.5(c)) (unconfirmed)",
@@ -175,6 +175,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Up to $43,280 per violation",
+        "to": "Up to $53,088 per violation (inflation-adjusted FTC maximum, 2025 amount, unchanged for 2026) (unconfirmed)"
+      },
       {
         "date": "2026-10-17",
         "field": "genetic_data",

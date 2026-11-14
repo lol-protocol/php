@@ -49,7 +49,7 @@ test("countries are listed from index.json with the dataset version", { skip }, 
 test("per-country data is served as {data: …} with the requested format", { skip }, async () => {
   const laws = await (await get(real, "action=country&tld=us")).json();
   assert.ok(laws.data.length >= 2 && laws.data.every((law) => law.country_code === "US"));
-  assert.equal(laws.data.find((law) => law.law_name.includes("COPPA")).penalties_range, "Up to $43,280 per violation");
+  assert.equal(laws.data.find((law) => law.law_name.includes("COPPA")).penalties_range, "Up to $53,088 per violation (inflation-adjusted FTC maximum, 2025 amount, unchanged for 2026) (unconfirmed)");
 
   const info = await (await get(real, "action=country_info&tld=eu")).json();
   assert.deepEqual(info.data, { code: "EU", name: "European Union", tld: "eu", region: "europe", lawCount: 1 });
