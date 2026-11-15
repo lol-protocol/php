@@ -2,37 +2,18 @@
 
 URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso se infiere de la **forma** del primer segmento de la URL (cantidad de dígitos; 2 letras para un país, 3 para un idioma, 1 para una función del sistema). Ver [`URL_STRUCTURES.md`](./URL_STRUCTURES.md) para la gramática y los ejemplos, y [`RUTAS.md`](./RUTAS.md) para la lista completa, generada desde la configuración.
 
-## 📁 Estructura de Archivos
+## 📁 Dónde está cada cosa
 
-```
-url-routing/
-├── public/                             # ÚNICA carpeta que expone el servidor web
-│   ├── index.php                       # Punto de entrada, detecta sitio + idioma
-│   └── .htaccess                       # Configuración Apache
-├── bin/migrate.php                     # Migraciones (+ datos de demo con --seed)
-├── database/<sitio>/                   # Migraciones SQL y datos de demostración
-├── Repositories/                       # Consultas por tipo (SQLite y PostgreSQL)
-├── deploy/nginx.conf.example           # Server block para el VPS
-├── docs/
-│   ├── URL_STRUCTURES.md               # Gramática de formatos y ejemplos
-│   ├── RUTAS.md                        # Todas las rutas (generado: php bin/rutas.php)
-│   └── README_URLS.md                  # Este archivo
-├── config/routes/
-│   ├── genealogy.php                  # Registro de tipos por largo de dígitos
-│   └── pos.php                         # Registro de tipos + flujo transaccional
-├── Support/
-│   └── Router.php                      # Despacho por forma del segmento
-├── Routing/                            # Estrategias de matching (archivo, dígitos, lugar, reservada)
-├── views/
-│   ├── _layout.php                     # Esqueleto HTML común (cabecera, buscador)
-│   ├── genealogy/<tipo>/<acción>.php   # + _layout.php y _partials/ del sitio
-│   └── pos/<tipo>/<acción>.php
-└── Controllers/
-    ├── Genealogy/                      # Persona (10), Suceso (9), Registro (8), Coleccion (7),
-    │                                   # Grupo (6), Organizacion (5), Lugar, Home, Cuenta, Retiro (r), Archivos
-    └── POS/                            # Order (16), Producto (8), Coleccion (7), Etiqueta (6), Atributo (5),
-                                        # Grupo (4), Home, Cuenta, Cart (c), Checkout (p), Archivos
-```
+| Carpeta | Qué hay |
+|---|---|
+| `public/` | La única carpeta que expone el servidor web: `index.php` (detecta sitio e idioma) y `.htaccess` |
+| `config/routes/` | `genealogy.php` y `pos.php`: el registro de tipos por largo de dígitos y sus acciones |
+| `Support/Router.php`, `Routing/` | El despacho por forma del segmento y sus estrategias de coincidencia |
+| `Controllers/`, `Repositories/`, `views/` | Un controlador, un repositorio y vistas por tipo, separados por sitio (`Genealogy/`, `POS/`) |
+| `database/<sitio>/` | Migraciones SQL y datos de demostración de cada sitio |
+| `bin/` | Los scripts de línea de comandos (ver el [README](../README.md)) |
+| `deploy/` | El server block de nginx y la prueba de despliegue |
+| `docs/` | Esta documentación; `RUTAS.md` se genera con `php bin/rutas.php` |
 
 Todos los tipos registrados en `config/routes/*.php` tienen controlador,
 repositorio y vistas conectados a la base de datos (ver
@@ -57,64 +38,9 @@ identifica con `OWNER_TOKEN`. Ver [`ACCESO.md`](./ACCESO.md). Para ponerlo en un
 4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `config/routes/*.php`). Un código de acción que no existe en ese arreglo es **404**, nunca un `show` silencioso del recurso base.
 5. **Contrato de ids**: todo id numérico se genera relleno con ceros al ancho fijo de su tipo — usa siempre `enlace($tipo, $id)` (nunca concatenes el id a mano), que hace el padding automáticamente vía `Router::typeLength()`.
 
-## 🚀 Inicio Rápido
+## 🚀 Probarlo en local
 
-Desde `url-routing/` (el proyecto es autocontenido: su propio `composer.json`):
-
-```bash
-composer install
-php bin/migrate.php genealogy --seed     # crea var/genealogy.sqlite con datos de demo
-php bin/migrate.php pos --seed           # crea var/pos.sqlite con datos de demo
-php -S spa.tudominio.local:8000 -t public public/index.php
-php -S spa.contrastocolor.local:8001 -t public public/index.php
-```
-
-Sin configurar nada, cada sitio usa un SQLite local en `var/`. Para
-PostgreSQL y el criterio de qué motor usar en cada sitio, ver
-[`DATABASE.md`](./DATABASE.md).
-
-### Despliegue
-
-**La raíz web debe ser `public/`**, nunca la carpeta del proyecto: fuera de
-`public/` están `.env` (contraseñas), `var/` (las bases SQLite), `bin/` y el
-código, que ninguna URL debe alcanzar.
-
-- **Nginx** (el VPS): ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example),
-  con `root /var/www/url-routing/public`. Ojo: la plantilla genérica de
-  `vps-setup/06_A-setup-php-app.sh` usa la carpeta de la app como `root`; para
-  este proyecto hay que apuntarla a `public/`.
-- **Apache**: `DocumentRoot /var/www/url-routing/public` con `mod_rewrite`
-  habilitado; el `.htaccess` incluido en `public/` redirige todo a `index.php`
-  y asume que la app vive en la raíz del dominio (`RewriteBase /`).
-
-### Hosts locales + subdominios de idioma
-
-```
-127.0.0.1 spa.tudominio.local
-127.0.0.1 eng.tudominio.local
-127.0.0.1 spa.contrastocolor.local
-127.0.0.1 eng.contrastocolor.local
-```
-
-El idioma se toma del subdominio de 3 letras; si no hay uno válido, cae a
-`spa` por defecto. La ruta (path) es idéntica entre idiomas.
-
-### Tests
-
-```bash
-./vendor/bin/phpunit
-```
-
-Con `TEST_PG_DSN` definida corren además contra PostgreSQL (ver `DATABASE.md`).
-
-### Análisis estático
-
-```bash
-phpstan analyse --no-progress
-```
-
-La configuración está en `phpstan.neon.dist` (nivel 6, analizando como PHP 8.1, el piso de `composer.json`; pide que cada array diga de qué es en el docblock: `@param array<string, mixed> $params`, `@return list<string>`).
-Lo corre la CI en el job `analisis-estatico`. Si no tienes PHPStan instalado, `composer global require phpstan/phpstan:^2.1`.
+Los comandos para instalar, migrar con datos de demostración y levantar los dos sitios en local están en el [README](../README.md#probarlo-en-local); el despliegue en un servidor, en [`DESPLIEGUE.md`](./DESPLIEGUE.md). El idioma se toma del subdominio de 3 letras (`spa.`, `eng.`…); si no hay uno válido, cae a `spa`. La ruta (path) es idéntica entre idiomas. Los ejemplos de abajo usan los hosts locales de ese README.
 
 ## 🔍 Ejemplos de URLs
 
