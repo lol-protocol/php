@@ -19,6 +19,7 @@ Tao Te King,,Lao Tsé,siglo IV a. C.,china,libros-sagrados,96,,Edición de ejemp
 | `plantilla`, `idioma`, `lomo_direccion`, `solapas_mm`, `lomo_mm`, `sangrado_mm`, `grosor_hoja_mm` | Como en el JSON (los mm admiten punto o coma decimal). |
 | `formato` | Un formato con nombre (`novela`, `bolsillo`, `a5`, `a6`, `ebook`). No se mezcla con `ancho_mm` ni `alto_mm`. |
 | `tema`, `volumen` | `claro` u `oscuro`, y el número de volumen de la serie. Ver [Plantillas](plantillas.md). |
+| `imagen_opacidad` | Opacidad de la marca de agua, de 0 a 1 (admite coma decimal). |
 | `imagen`, `logo` | Ruta de la ilustración y del logo, relativa a la carpeta del CSV. Ver [Plantillas](plantillas.md). |
 | `ancho_mm`, `alto_mm` | El formato de corte (`formato.ancho_mm` y `formato.alto_mm` del JSON). |
 | `degradado`, `degradado_tipo`, `degradado_angulo` | El degradado del fondo: `auto` o de 2 a 6 colores separados por espacios (`#f3ead7 #c9a96e`); `lineal` o `radial`; y los grados. Con solo el tipo o el ángulo, los colores son `auto`. |

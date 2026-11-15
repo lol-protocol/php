@@ -368,7 +368,7 @@ const P = (id, nombre, ranura, plantilla, params = {}, col = {}) => ({ id, nombr
 
 /**
  * Atuendo: id, nombre, región, [año desde, hasta], sexo, clase, prendas, paleta de tintes por letra y extras
- * (peinados, barbas, tocados, pieles, nota, fuente —la referencia que respalda el traje— y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación;
+ * (peinados, barbas, tocados, pieles, edades —[mínima, máxima] si el traje es solo para ciertas edades—, nota, fuente —la referencia que respalda el traje— y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación;
  * 'alta' exige `fuente`).
  */
 const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) => ({
@@ -381,6 +381,7 @@ const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) 
   pieles: extra.pieles ? L(extra.pieles) : null,
   nota: extra.nota ?? '',
   fuente: extra.fuente ?? '',
+  edades: extra.edades ?? null,
   confianza: extra.conf ?? 'media',
 });
 
@@ -1488,6 +1489,77 @@ Object.assign(__e, { ATUENDOS_MODA });
 return __e;
 })();
 
+__m['datos/atuendos-pueblos'] = (() => {
+const __e = {};
+// Atuendos de los pueblos de etnias-pueblos.js (un hombre y una mujer de cada uno). Todos con confianza baja y nota: son
+// representaciones genéricas con las prendas que ya tiene el catálogo, no trajes reconstruidos prenda por prenda.
+
+const { A, BL, CLAROS, OSCURA, EBANO } = __m['datos/ayuda'];
+
+const NOTA = 'Representación genérica con prendas del catálogo; revisar con fuentes del propio pueblo antes de publicar.';
+
+const ATUENDOS_PUEBLOS = [
+  A('sami-hombre', 'Sami con gákti (representación genérica)', 'artico', [1700, 1950], 'm', 'baja', 'tunica-corta-lana pantalon-recto cinturon-cuero botas-piel', { A: 'azul-ultramar azul-marino', B: 'rojo-cartamo', C: 'gualda', D: 'plata' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorro-lana', pieles: CLAROS, conf: 'baja', nota: 'El gákti de verdad lleva bandas de colores y bordados que identifican la familia y la región; aquí solo hay una túnica azul con ribetes.' }),
+  A('sami-mujer', 'Mujer sami con gákti (representación genérica)', 'artico', [1700, 1950], 'f', 'baja', 'vestido-sencillo-corto chal-lana cinturon-cuero botas-piel', { A: 'azul-ultramar azul-marino', B: 'rojo-cartamo', C: 'gualda', D: 'plata' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: 'El gákti de verdad lleva bandas de colores y bordados que identifican la familia y la región; aquí solo hay un vestido azul con ribetes.' }),
+  A('fines-hombre', 'Campesino finés', 'europa-campesina', [1800, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto cinturon-cuero botas-cuero', { A: 'lana-parda umbra azul-plomo', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('fines-mujer', 'Campesina finlandesa', 'europa-campesina', [1800, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana botas-cuero', { A: 'azul-plomo rojo-granza lana-parda', B: BL, C: BL, D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('romani-hombre', 'Hombre romaní (representación genérica)', 'europa-campesina', [1800, 1950], 'm', 'baja', 'camisa-blanca chaleco-largo pantalon-recto panuelo-cuello botas-cuero', { A: 'lana-negra burdeos verde-botella', B: BL, C: 'rojo-granza', D: 'oro' }, { peinados: 'corto largo-ondulado', barbas: 'bigote ninguna', tocados: 'sombrero-ala-ancha', pieles: 'clara-calida oliva-clara oliva canela', conf: 'baja', nota: 'No existe un traje único romaní: son comunidades distintas entre sí y por país. Es una imagen genérica; revisarla con miembros de cada comunidad.' }),
+  A('romani-mujer', 'Mujer romaní (representación genérica)', 'europa-campesina', [1800, 1950], 'f', 'baja', 'blusa-campesina falda-volantes chal-corto collar-cuentas zapatos-cuero', { A: 'rojo-granza azul-ultramar verde-hoja', B: BL, C: 'azafran', D: 'oro' }, { peinados: 'largo-ondulado recogido', tocados: 'panuelo ninguno', pieles: 'clara-calida oliva-clara oliva canela', conf: 'baja', nota: 'No existe un traje único romaní: son comunidades distintas entre sí y por país. Es una imagen genérica; revisarla con miembros de cada comunidad.' }),
+  A('baltico-hombre', 'Campesino báltico', 'europa-campesina', [1800, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto cinturon-cuero botas-cuero', { A: 'lana-parda verde-musgo azul-plomo', B: BL, C: 'rojo-granza', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('baltico-mujer', 'Campesina báltica', 'europa-campesina', [1800, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-bordado chal-lana botas-cuero', { A: 'rojo-granza verde-musgo azul-plomo', B: BL, C: 'rojo-granza', D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'corona-flores panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('afrikaner-hombre', 'Colono afrikáner', 'africa-este-sur', [1830, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-lana pantalon-recto cinturon-cuero botas-cuero', { A: 'kaki lana-parda umbra', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto', barbas: 'barba-corta bigote ninguna', tocados: 'sombrero-ala-ancha', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('afrikaner-mujer', 'Colona afrikáner', 'africa-este-sur', [1830, 1950], 'f', 'baja', 'vestido-sencillo delantal-blanco chal-lana zapatos-cuero', { A: 'azul-plomo lana-parda rojo-granza', B: BL, C: BL, D: 'cobre' }, { peinados: 'recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: 'El tocado típico de la época (el kappie) no está en el catálogo; se usa un pañuelo.' }),
+  A('malayo-cabo-hombre', 'Hombre malayo del Cabo', 'africa-este-sur', [1800, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto zapatos-cuero', { A: 'azul-marino lana-parda verde-botella', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'bigote barba-corta ninguna', tocados: 'fez', pieles: 'clara-calida oliva-clara oliva canela', conf: 'baja', nota: NOTA }),
+  A('malayo-cabo-mujer', 'Mujer malayo del Cabo', 'africa-este-sur', [1800, 1950], 'f', 'baja', 'blusa-campesina falda-larga chal-seda zapatos-cuero', { A: 'verde-esmeralda rojo-granza azul-ultramar', B: BL, C: 'rosa-antiguo', D: 'oro' }, { peinados: 'recogido', tocados: 'panuelo ninguno', pieles: 'clara-calida oliva-clara oliva canela', conf: 'baja', nota: NOTA }),
+  A('francocanadiense-hombre', 'Habitante rural francocanadiense', 'norteamerica-moderna', [1800, 1940], 'm', 'baja', 'camisa-cuadros chaqueta-corta pantalon-trabajo cinturon-cuero botas-trabajo', { A: 'rojo-granza lana-negra azul-plomo', B: 'lana-parda', C: 'lana-negra', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorro-lana', pieles: CLAROS, conf: 'baja', nota: 'No incluye la faja fléchée ni los trajes métis; es ropa rural genérica.' }),
+  A('francocanadiense-mujer', 'Habitante rural francocanadiense', 'norteamerica-moderna', [1800, 1940], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana botas-cuero', { A: 'azul-plomo lana-parda rojo-granza', B: BL, C: BL, D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: 'Ropa rural genérica del Quebec.' }),
+  A('isleno-hombre', 'Hombre criollo de las islas', 'latinoamerica-moderna', [1850, 1980], 'm', 'baja', 'guayabera pantalon-recto cinturon-fino zapatos-cuero', { A: 'blanco-lino crema beige', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto rizos', barbas: 'bigote ninguna', tocados: 'canotier ninguno', pieles: 'oliva canela bronce castana', conf: 'baja', nota: 'Agrupa islas muy distintas; es ropa cotidiana de clima cálido, no un traje de cada isla.' }),
+  A('isleno-mujer', 'Mujer criolla de las islas', 'latinoamerica-moderna', [1850, 1980], 'f', 'baja', 'vestido-sencillo chal-seda sandalias-cuero', { A: 'azul-celeste verde-agua rosa-palido', B: BL, C: BL, D: 'oro' }, { peinados: 'corto recogido rizos', tocados: 'panuelo ninguno', pieles: 'oliva canela bronce castana', conf: 'baja', nota: 'Agrupa islas muy distintas; es ropa cotidiana de clima cálido, no un traje de cada isla.' }),
+];
+
+Object.assign(__e, { ATUENDOS_PUEBLOS });
+return __e;
+})();
+
+__m['datos/atuendos-infantiles'] = (() => {
+const __e = {};
+// Atuendos de niños y niñas (hasta 12 años) de las regiones y épocas más usadas. Sin ellos un niño se vestía como un adulto
+// más pequeño. Para los niños, `buscarAtuendos` prefiere estos si los hay; si no, sale uno de adulto sin prendas solo
+// de adulto (armadura, toga, hábito…). Todos de confianza baja: son trajes infantiles genéricos hechos con prendas del catálogo.
+
+const { A, BL, CLAROS, OSCURA } = __m['datos/ayuda'];
+
+const E = [2, 12];
+const NOTA = 'Traje infantil genérico con prendas del catálogo: la ropa de los niños varió mucho por familia y condición social.';
+const base = { edades: E, conf: 'baja', nota: NOTA, barbas: 'ninguna', tocados: 'ninguno' };
+
+const ATUENDOS_INFANTILES = [
+  A('europa-campesino-nino', 'Niño campesino europeo', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-blanca chaleco-campesino calzones-rodilla botas-cuero', { A: 'lana-parda umbra azul-plomo', B: BL, C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
+  A('europa-campesina-nina', 'Niña campesina europea', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco zapatos-cuero', { A: 'rojo-granza lana-parda azul-plomo', B: BL, C: BL, D: 'cobre' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: CLAROS }),
+  A('europa-medieval-nino', 'Niño medieval', 'europa-medieval', [1000, 1500], 'm', 'baja', 'camisa-medieval calzas botas-cuero', { A: 'lana-parda azul-plomo verde-musgo', B: BL, C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
+  A('europa-medieval-nina', 'Niña medieval', 'europa-medieval', [1000, 1500], 'f', 'baja', 'cota-campesina delantal-campesino botas-cuero', { A: 'azul-plomo rojo-granza lana-parda', B: BL, C: BL, D: 'cobre' }, { ...base, peinados: 'trenza-una recogido', pieles: CLAROS }),
+  A('roma-nino', 'Niño romano', 'roma', [-200, 400], 'm', 'baja', 'tunica-plebeya cinturon-cuerda sandalia-romana', { A: 'crudo lana-clara', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'corto romano', pieles: 'clara-calida oliva-clara oliva' }),
+  A('roma-nina', 'Niña romana', 'roma', [-200, 400], 'f', 'baja', 'tunica-romana cinturon-cuerda sandalia-romana', { A: 'crudo lana-clara rosa-palido', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'trenza-una recogido', pieles: 'clara-calida oliva-clara oliva' }),
+  A('grecia-nino', 'Niño griego', 'grecia', [-600, 300], 'm', 'baja', 'quiton-corto cinturon-cuerda sandalias-cuero', { A: 'blanco-lino crudo', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'corto', pieles: 'clara-calida oliva-clara oliva' }),
+  A('grecia-nina', 'Niña griega', 'grecia', [-600, 300], 'f', 'baja', 'quiton-corto cinturon-cuerda sandalias-cuero', { A: 'blanco-lino crudo rosa-palido', B: BL, C: 'azul-egipcio', D: 'bronce' }, { ...base, peinados: 'trenza-una recogido', pieles: 'clara-calida oliva-clara oliva' }),
+  A('andes-nino', 'Niño andino', 'andes', [1500, 1950], 'm', 'baja', 'unku poncho-andino sandalias-cuero', { A: 'lana-parda alpaca-cafe rojo-cochinilla', B: 'lana-clara', C: 'rojo-cochinilla', D: 'plata' }, { ...base, peinados: 'corto', pieles: OSCURA }),
+  A('andes-nina', 'Niña andina', 'andes', [1500, 1950], 'f', 'baja', 'blusa-campesina pollera lliclla sandalias-cuero', { A: 'rojo-cochinilla azul-andino verde-andino', B: 'lana-clara', C: 'rojo-cochinilla', D: 'plata' }, { ...base, peinados: 'trenzas-dos', pieles: OSCURA }),
+  A('corea-nino', 'Niño coreano', 'asia-este', [1700, 1950], 'm', 'baja', 'hanbok-jeogori hanbok-baji zapatos-tela', { A: 'azul-celeste verde-agua crema', B: BL, C: 'rojo-cartamo', D: 'plata' }, { ...base, peinados: 'corto', pieles: 'clara clara-calida oliva-clara' }),
+  A('corea-nina', 'Niña coreana', 'asia-este', [1700, 1950], 'f', 'baja', 'hanbok-jeogori hanbok-chima zapatos-tela', { A: 'rosa-palido azul-celeste verde-agua', B: BL, C: 'rojo-cartamo', D: 'plata' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: 'clara clara-calida oliva-clara' }),
+  A('japon-nino', 'Niño japonés', 'asia-este', [1700, 1950], 'm', 'baja', 'yukata obi geta', { A: 'indigo azul-celeste', B: BL, C: 'indigo-profundo', D: 'plata' }, { ...base, peinados: 'corto', pieles: 'clara clara-calida oliva-clara' }),
+  A('japon-nina', 'Niña japonesa', 'asia-este', [1700, 1950], 'f', 'baja', 'yukata obi geta', { A: 'rosa-palido rojo-cartamo azul-celeste', B: BL, C: 'rojo-cartamo', D: 'plata' }, { ...base, peinados: 'corto recogido', pieles: 'clara clara-calida oliva-clara' }),
+  A('africa-oeste-nina', 'Niña de África occidental', 'africa-oeste', [1800, 1980], 'f', 'baja', 'kitenge-top kitenge-falda sandalias-cuero', { A: 'azafran rojo-cartamo azul-ultramar', B: BL, C: 'verde-hoja', D: 'oro' }, { ...base, peinados: 'trenzas-pegadas rapado', pieles: 'ebano-claro ebano ebano-profundo' }),
+  A('africa-oeste-nino', 'Niño de África occidental', 'africa-oeste', [1800, 1980], 'm', 'baja', 'dashiki sokoto sandalias-cuero', { A: 'azul-ultramar azafran rojo-cartamo', B: BL, C: 'verde-hoja', D: 'oro' }, { ...base, peinados: 'rapado corto', pieles: 'ebano-claro ebano ebano-profundo' }),
+  A('norteamerica-nino', 'Niño de Estados Unidos o Canadá', 'norteamerica-moderna', [1850, 1980], 'm', 'baja', 'camisa-cuadros pantalon-overol zapatillas-lona', { A: 'rojo-granza azul-denim verde-bosque', B: 'denim-claro', C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
+  A('norteamerica-nina', 'Niña de Estados Unidos o Canadá', 'norteamerica-moderna', [1850, 1980], 'f', 'baja', 'vestido-sencillo-corto delantal-blanco zapatos-hebilla', { A: 'azul-celeste rosa-palido verde-agua', B: BL, C: BL, D: 'plata' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: CLAROS }),
+  A('latinoamerica-nino', 'Niño latinoamericano', 'latinoamerica-moderna', [1850, 1980], 'm', 'baja', 'camisa-blanca short chaleco-lana zapatos-vestir', { A: 'azul-marino gris-oscuro lana-parda', B: BL, C: 'lana-negra', D: 'plata' }, { ...base, peinados: 'corto', pieles: 'clara-calida oliva-clara oliva canela' }),
+  A('latinoamerica-nina', 'Niña latinoamericana', 'latinoamerica-moderna', [1850, 1980], 'f', 'baja', 'vestido-sencillo-corto delantal-blanco zapatos-hebilla', { A: 'azul-celeste rosa-palido verde-agua', B: BL, C: BL, D: 'plata' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: 'clara-calida oliva-clara oliva canela' }),
+];
+
+Object.assign(__e, { ATUENDOS_INFANTILES });
+return __e;
+})();
+
 __m['datos/atuendos'] = (() => {
 const __e = {};
 // Atuendos completos: una combinación de prendas del catálogo (prendas.js) típica de una región, una época,
@@ -1499,6 +1571,8 @@ const { ATUENDOS_AMPLIADOS } = __m['datos/atuendos-ampliados'];
 const { ATUENDOS_SIGLO20 } = __m['datos/atuendos-siglo20'];
 const { ATUENDOS_MAS } = __m['datos/atuendos-mas'];
 const { ATUENDOS_MODA } = __m['datos/atuendos-moda'];
+const { ATUENDOS_PUEBLOS } = __m['datos/atuendos-pueblos'];
+const { ATUENDOS_INFANTILES } = __m['datos/atuendos-infantiles'];
 
 const REGIONES = {
   egipto: 'Egipto antiguo', mesopotamia: 'Mesopotamia', grecia: 'Grecia antigua', roma: 'Roma', bizancio: 'Bizancio',
@@ -1663,6 +1737,8 @@ const ATUENDOS = [
   ...ATUENDOS_SIGLO20,
   ...ATUENDOS_MAS,
   ...ATUENDOS_MODA,
+  ...ATUENDOS_PUEBLOS,
+  ...ATUENDOS_INFANTILES,
 ];
 
 const ATUENDOS_POR_ID = Object.fromEntries(ATUENDOS.map((a) => [a.id, a]));
@@ -2183,9 +2259,10 @@ const redondear = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d + 0; // + 0 ev
  * las muñecas flexionadas y los dedos más o menos abiertos. `intensidad` (0 a 1) escala todas esas variaciones.
  * `carga`: -1 o 1 es el lado (de quien mira) que carga el peso; 0, ambos.
  */
-function poseAleatoria(azar, intensidad = 1) {
+function poseAleatoria(azar, intensidad = 1, perfil) {
   const k = limitar(intensidad, 0, 1.5);
   const v = (a, b, d = 1) => redondear(azar.entre(a, b) * k, d);
+  if (perfil === 'infantil' || perfil === 'mayor') return poseSegunEdad(azar, k, perfil);
   return {
     modo: 'casual',
     cabeza: v(-7, 7),
@@ -2199,6 +2276,33 @@ function poseAleatoria(azar, intensidad = 1) {
     hombros: v(-2.8, 2.8),
     columna: v(-0.008, 0.008, 4),
     codos: { 1: v(-4, 12), '-1': v(-4, 12) },
+    munecas: { 1: v(-14, 14), '-1': v(-14, 14) },
+    cinturaCodo: redondear(1 + (azar.entre(0.85, 1.2) - 1) * k, 2),
+    dedos: redondear(1 + (azar.entre(0.8, 1.25) - 1) * k, 2),
+  };
+}
+
+/**
+ * Poses por edad. 'infantil': de pie sin cargar el peso en una pierna, los pies más abiertos, los brazos separados del
+ * cuerpo y la cabeza más movida. 'mayor': carga el peso en una pierna, pies más juntos, brazos más pegados al cuerpo y
+ * a veces una mano sobre el pecho.
+ */
+function poseSegunEdad(azar, k, perfil) {
+  const v = (a, b, d = 1) => redondear(azar.entre(a, b) * k, d);
+  const nino = perfil === 'infantil';
+  return {
+    modo: 'casual',
+    cabeza: v(nino ? -10 : -4, nino ? 10 : 4),
+    inclinacion: v(-1.4, 1.4, 2),
+    carga: nino ? azar.ponderado([[-1, 1], [1, 1], [0, 6]]) : azar.ponderado([[-1, 3], [1, 3], [0, 1]]),
+    abre: redondear(nino ? azar.entre(1.15, 1.7) : azar.entre(0.9, 1.15), 2),
+    giro: redondear(azar.entre(nino ? 8 : 5, nino ? 24 : 14)),
+    brazoLibre: nino ? azar.ponderado([['abajo', 90], ['cintura', 10]]) : azar.ponderado([['abajo', 50], ['pecho', 20], ['bolsillo', 10], ['cintura', 20]]),
+    angulos: nino ? { 1: redondear(azar.entre(10, 24)), '-1': redondear(azar.entre(10, 24)) } : { 1: redondear(azar.entre(3, 10)), '-1': redondear(azar.entre(3, 10)) },
+    saludo: { codo: redondear(azar.entre(40, 62)), antebrazo: v(2, 24), mano: v(-16, 16) },
+    hombros: v(nino ? -3.5 : -2, nino ? 3.5 : 2),
+    columna: v(-0.008, 0.008, 4),
+    codos: { 1: v(nino ? 0 : 4, nino ? 18 : 16), '-1': v(nino ? 0 : 4, nino ? 18 : 16) },
     munecas: { 1: v(-14, 14), '-1': v(-14, 14) },
     cinturaCodo: redondear(1 + (azar.entre(0.85, 1.2) - 1) * k, 2),
     dedos: redondear(1 + (azar.entre(0.8, 1.25) - 1) * k, 2),
@@ -2296,6 +2400,29 @@ function medidas(opc = {}) {
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
   };
+  // Mano sobre el pecho (como al jurar o saludar con respeto): el codo sale un poco y la muñeca llega al centro del pecho.
+  const brazoPecho = () => {
+    const codo = [S0[0] + H * 0.045, lerp(y.axila, y.cintura, 0.45)];
+    const mun = [w.pecho * 0.3, y.pecho + H * 0.022];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'pecho', linea: [S0, [m1[0] + H * 0.004, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
+  };
+  // Manos juntas al frente (a la altura de la cintura) y brazos cruzados sobre el pecho: afectan a los dos brazos.
+  const brazoJuntas = () => {
+    const codo = [S0[0] + H * 0.024, lerp(y.axila, y.cintura, 0.8)];
+    const mun = [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'juntas', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
+  };
+  const brazoCruzado = (orden) => {
+    const codo = [S0[0] + H * 0.036, lerp(y.pecho, y.cintura, 0.55) + orden * H * 0.006];
+    const mun = [-w.pecho * (0.62 - orden * 0.08), y.pecho + H * (0.03 + orden * 0.012)];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'cruzado', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
+  };
   // Mano en el bolsillo: el antebrazo baja hacia la cadera y la mano no se ve.
   const brazoBolsillo = () => {
     const codo = [S0[0] + H * 0.03, lerp(y.axila, y.cintura, 0.75)];
@@ -2316,8 +2443,13 @@ function medidas(opc = {}) {
   const ladoLibre = saludoLado ? -saludoLado : 1; // el brazo que lleva la pose especial (cintura, bolsillo)
   const anguloDe = (s) => (pose.angulos ? pose.angulos[s] : grados0);
   const brazos = {};
+  // `pose.manos` ('juntas' o 'cruzados') ocupa los dos brazos, así que solo vale sin saludo.
+  const manos = saludoLado === 0 ? pose.manos : undefined;
   for (const s of [1, -1]) {
     if (s === saludoLado) brazos[s] = brazoSaludo();
+    else if (manos === 'juntas') brazos[s] = brazoJuntas();
+    else if (manos === 'cruzados') brazos[s] = brazoCruzado(s > 0 ? 0 : 1);
+    else if (s === ladoLibre && pose.brazoLibre === 'pecho') brazos[s] = brazoPecho();
     else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();
     else if (s === ladoLibre && pose.brazoLibre === 'bolsillo') brazos[s] = brazoBolsillo();
     else brazos[s] = brazoCaido(anguloDe(s), pose.codos[s] ?? 0, pose.munecas[s] ?? 0);
@@ -2435,7 +2567,7 @@ function trazoMano(M, s) {
   const b = M.brazos[s];
   if (b.tipo === 'saludo') return manoSaludo(M, s);
   if (b.tipo === 'bolsillo') return [];
-  if (b.tipo === 'cintura') return [manoCerrada(M, s)];
+  if (['cintura', 'pecho', 'juntas', 'cruzado'].includes(b.tipo)) return [manoCerrada(M, s)];
   return manoCaida(M, s);
 }
 
@@ -3970,6 +4102,19 @@ function renderizar(persona, opciones = {}) {
     cuerpo += `<g data-saludo="${M.saludoLado === -1 ? 'derecha' : 'izquierda'}">${capa(piezas, 'piel')}</g>`;
   }
 
+  // 3c. Brazos al frente (mano en el pecho, manos juntas, brazos cruzados): van encima de la ropa, que si no los taparía.
+  const alFrente = [1, -1].filter((s) => ['pecho', 'juntas', 'cruzado'].includes(M.brazos[s].tipo));
+  if (alFrente.length) {
+    const finMangas = prendas.filter((p) => p.params?.manga && p.params.manga !== 'sin').map((p) => finManga(M, p.params.manga));
+    const piezas = [];
+    for (const s of alFrente) {
+      const desde = finMangas.length ? Math.max(M.y.codo, ...finMangas) : M.brazos[s].u[0];
+      if (desde < M.brazos[s].u[M.brazos[s].u.length - 1] - 2) piezas.push({ d: trazoAntebrazo(M, s, desde), ...sp });
+      for (const d of trazoMano(M, s)) piezas.push({ d, ...sp });
+    }
+    cuerpo += `<g data-brazos-frente>${capa(piezas, 'piel')}</g>`;
+  }
+
   // 4. Cabeza
   const cabezaPieza = { d: trazoCabeza(G), ...sp };
   const orejas = trazoOrejas(G).map((d) => ({ d, ...sp }));
@@ -4107,6 +4252,30 @@ Object.assign(__e, { ETNIAS_AMPLIADAS });
 return __e;
 })();
 
+__m['datos/etnias-pueblos'] = (() => {
+const __e = {};
+// Pueblos que faltaban respecto de los países de mayor prioridad genealógica de Listado-paises/: sami, finés, romaní,
+// bálticos, afrikáner, malayo del Cabo, francocanadiense y criollo de las islas. Todas con confianza baja: son
+// aproximaciones que sirven para ilustrar un linaje probable, no un estudio de cada pueblo (ver la nota de cada una).
+// Sin `fuente`: no se inventan referencias; hay que revisarlas con fuentes de cada pueblo antes de publicar.
+
+const { E, OSC, MED, CLARO } = __m['datos/ayuda'];
+
+const ETNIAS_PUEBLOS = [
+  E('sami', 'Sami', { grupo: 'Pueblos del Ártico', regiones: 'artico', prefijos: 'sami', pieles: 'porcelana clara clara-calida', cabellos: [['castano-oscuro', 4], ['castano', 3], ['rubio-oscuro', 2], ['negro', 1]], peinados: 'corto largo-liso trenza-una', barba: 0.3, altura: [155, 168], conf: 'baja', nota: 'Representación genérica del gákti: los colores, bordados y cintas identifican la familia y la región (Sápmi se extiende por Noruega, Suecia, Finlandia y Rusia) y no se reproducen.' }),
+  E('fines', 'Finés', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'fines', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto recogido trenza-una', barba: 0.35, altura: [164, 177], conf: 'baja', nota: 'Traje campesino genérico del siglo XIX y comienzos del XX; los trajes regionales (karelianos, de Savo, de Åland…) difieren mucho.' }),
+  E('romani', 'Romaní (rom, sinti, calé y otros)', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'romani', pieles: 'clara-calida oliva-clara oliva canela', cabellos: MED, peinados: 'corto recogido largo-ondulado', barba: 0.4, altura: [158, 171], conf: 'baja', nota: 'No hay un traje único: son comunidades muy distintas entre sí (rom, sinti, calé, romanichal…) y por país. Es una imagen genérica; conviene revisarla con miembros de cada comunidad.' }),
+  E('baltico', 'Báltico (estonio, letón, lituano)', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'baltico', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto trenza-una recogido', barba: 0.35, altura: [166, 179], conf: 'baja', nota: 'Traje campesino genérico; los trajes regionales bálticos se distinguen por bordados y colores que aquí no se reproducen.' }),
+  E('afrikaner', 'Afrikáner (colono de origen neerlandés)', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'afrikaner', pieles: 'porcelana clara clara-calida', cabellos: CLARO, peinados: 'corto recogido', barba: 0.4, altura: [165, 178], conf: 'baja', nota: 'Representación genérica de colonos del siglo XIX y comienzos del XX.' }),
+  E('malayo-cabo', 'Malayo del Cabo', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'malayo-cabo', pieles: 'clara-calida oliva-clara oliva canela', cabellos: MED, peinados: 'corto recogido', barba: 0.4, altura: [157, 170], conf: 'baja', nota: 'Comunidad de origen diverso (Indonesia, India, África oriental y otros); traje genérico de los siglos XIX y XX.' }),
+  E('francocanadiense', 'Francocanadiense', { grupo: 'Norteamérica', regiones: 'norteamerica-moderna', prefijos: 'francocanadiense', pieles: 'porcelana clara clara-calida', cabellos: CLARO, peinados: 'corto recogido trenza-una', barba: 0.35, altura: [162, 175], conf: 'baja', nota: 'Traje rural genérico del Quebec de los siglos XIX y XX; no incluye la faja fléchée ni los trajes de los métis.' }),
+  E('criollo-isleno', 'Criollo de las islas (Atlántico e Índico)', { grupo: 'Latinoamérica', regiones: 'latinoamerica-moderna', prefijos: 'isleno', pieles: 'oliva canela bronce castana', cabellos: OSC, peinados: 'corto recogido rizos', barba: 0.3, altura: [158, 171], conf: 'baja', nota: 'Agrupa pueblos criollos de islas muy distintas (Cabo Verde, Mauricio, Reunión, Curazao, Jamaica, Barbados, Bahamas…): es una imagen genérica de ropa cotidiana, no de cada isla.' }),
+];
+
+Object.assign(__e, { ETNIAS_PUEBLOS });
+return __e;
+})();
+
 __m['datos/etnias'] = (() => {
 const __e = {};
 // Pueblos y culturas para estimar, a partir de la etnia, la región del atuendo, la piel, el cabello, los peinados,
@@ -4120,6 +4289,7 @@ const __e = {};
 
 const { E, OSC, CLARO, MED, MESTIZO } = __m['datos/ayuda'];
 const { ETNIAS_AMPLIADAS } = __m['datos/etnias-ampliadas'];
+const { ETNIAS_PUEBLOS } = __m['datos/etnias-pueblos'];
 
 const ETNIAS = [
   // ----- Chile y el cono sur -----
@@ -4171,6 +4341,7 @@ const ETNIAS = [
   E('zulu', 'Zulú y bantú austral', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'zulu-', pieles: 'castana ebano-claro ebano', cabellos: [['negro', 10]], peinados: 'rapado corto', barba: 0.3, altura: [157, 169] }),
   E('maasai', 'Maasái', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'maasai', pieles: 'ebano-claro ebano ebano-profundo', cabellos: [['negro', 10]], peinados: 'rapado rastas', barba: 0.05, altura: [165, 178], corpulencia: [['delgada', 3], ['media', 3]], nota: 'Estatura alta y complexión delgada son típicas de los registros de pastores de África oriental.' }),
   ...ETNIAS_AMPLIADAS,
+  ...ETNIAS_PUEBLOS,
 ];
 
 const ETNIAS_POR_ID = Object.fromEntries(ETNIAS.map((e) => [e.id, e]));
@@ -4502,7 +4673,8 @@ const hexOId = (campo, valor, ids) => { if (!esHex(valor) && !ids.includes(valor
 const ESTILOS_ROPA_NUEVA = ['sobrio', 'trabajo', 'festivo', 'ceremonial'];
 const ESQUEMAS = ['analogo', 'complementario', 'triada', 'monocromo', 'tierra', 'festivo'];
 const SALUDOS = ['derecha', 'izquierda', 'ninguno', 'ninguna'];
-const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo'];
+const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo', 'pecho'];
+const MANOS = ['juntas', 'cruzados'];
 
 /** Comprueba las opciones de `generarPersona` (y de `generarRopaNueva`); no cambia nada, solo lanza si algo no vale. */
 function validarOpciones(opc = {}) {
@@ -4517,9 +4689,10 @@ function validarOpciones(opc = {}) {
   }
   if (opc.postura !== undefined && typeof opc.postura !== 'number') enLista('Postura', opc.postura, Object.keys(POSTURAS));
   if (opc.saludo !== undefined && opc.saludo !== false && opc.saludo !== null) enLista('Saludo', opc.saludo, SALUDOS);
-  if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme']);
+  if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme', 'infantil', 'mayor', 'segun-edad']);
   if (opc.pose && typeof opc.pose === 'object') {
     if (opc.pose.brazoLibre !== undefined) enLista('pose.brazoLibre', opc.pose.brazoLibre, BRAZOS_LIBRES);
+    if (opc.pose.manos !== undefined) enLista('pose.manos', opc.pose.manos, MANOS);
     if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
   }
   if (opc.detalle !== undefined) enLista('Detalle', opc.detalle, ['minimo', 'medio', 'alto']);
@@ -4574,11 +4747,30 @@ const { TIPOS } = __m['tipos-de-ropa'];
 
 const contiene = (epoca, anio) => anio === undefined || anio === null || (anio >= epoca[0] && anio <= epoca[1]);
 
-/** Atuendos que cumplen los filtros: { region, anio, sexo, clase }. */
-function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase } = {}) {
+/** Prendas que solo se usan de adulto (armadura, toga, hábito, sotana, estola…). */
+const SOLO_ADULTO = new Set(['lorica-segmentata', 'lorica-escamas', 'pteruges', 'toga', 'toga-praetexta', 'stola', 'habito-monje', 'sotana', 'sobrepelliz', 'cuerda-franciscana', 'escapulario', 'casaca', 'frac', 'saco-terno', 'saco-cruzado', 'traje-sastre', 'vestido-novia', 'vestido-luto']);
+/** Edades de un atuendo: las que declara, o desde los 16 si lleva una prenda de adulto, o todas. */
+function edadesDe(a) {
+  if (a.edades) return a.edades;
+  return a.prendas.some((id) => SOLO_ADULTO.has(id)) ? [16, 100] : [2, 100];
+}
+const INFANTIL_MAX = 12;
+const esInfantil = (a) => a.edades && a.edades[1] <= INFANTIL_MAX;
+
+/**
+ * Atuendos que cumplen los filtros: { region, anio, sexo, clase, edad }. Con `edad`: no salen los de adulto para un niño
+ * ni los infantiles para un adulto, y hasta los 12 años se prefieren los infantiles si los hay.
+ */
+function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase, edad } = {}) {
   const rs = regiones ?? (region ? [region] : null);
-  return ATUENDOS.filter((a) =>
-    (!rs || rs.includes(a.region)) && (!prefijos || prefijos.some((p) => a.id.startsWith(p))) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase));
+  const r = ATUENDOS.filter((a) =>
+    (!rs || rs.includes(a.region)) && (!prefijos || prefijos.some((p) => a.id.startsWith(p))) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase)
+    && (edad === undefined || edad === null || (edad >= edadesDe(a)[0] && edad <= edadesDe(a)[1])));
+  if (edad !== undefined && edad !== null && edad <= INFANTIL_MAX) {
+    const ninos = r.filter(esInfantil);
+    if (ninos.length) return ninos;
+  }
+  return r;
 }
 
 function listarRegiones() { return { ...REGIONES }; }
@@ -4846,16 +5038,17 @@ function generarPersona(opc = {}) {
   } else {
     const regiones = opc.region ? [opc.region] : (etnia ? etnia[0].e.regiones : null);
     const prefijos = opc.region ? null : (etnia ? etnia[0].e.prefijos : null);
-    const f = (extra) => ({ regiones, prefijos, anio, sexo, clase: opc.clase, ...extra });
+    const f = (extra) => ({ regiones, prefijos, anio, sexo, clase: opc.clase, edad, ...extra });
     const intentos = [
       [f({}), null],
       [f({ clase: undefined }), 'la clase social'],
       [f({ anio: undefined }), 'el año'],
       [f({ clase: undefined, anio: undefined }), 'el año y la clase social'],
       [f({ prefijos: null, clase: undefined, anio: undefined }), 'el año, la clase social ni el pueblo concreto: es un atuendo de otro pueblo de la misma región'],
-      [{ anio, sexo, clase: opc.clase }, 'la región'],
-      [{ anio, sexo }, 'la región y la clase social'],
-      [{ sexo }, 'la región, el año y la clase social'],
+      [{ anio, sexo, clase: opc.clase, edad }, 'la región'],
+      [{ anio, sexo, edad }, 'la región y la clase social'],
+      [{ sexo, edad }, 'la región, el año y la clase social'],
+      [{ sexo }, 'la edad, la región, el año ni la clase social: no hay atuendo para esa edad'],
     ].filter(([filtro], i, todos) => i === 0 || JSON.stringify(filtro) !== JSON.stringify(todos[i - 1][0]));
     for (const [filtro, relajado] of intentos) {
       const r = buscarAtuendos(filtro);
@@ -4939,7 +5132,8 @@ function generarPersona(opc = {}) {
   let pose;
   if (opc.pose === 'firme') pose = POSE_FIRME;
   else {
-    pose = poseAleatoria(azar.hijo('pose'));
+    const perfilPose = opc.pose === 'segun-edad' ? (edad <= 12 ? 'infantil' : edad >= 65 ? 'mayor' : undefined) : (opc.pose === 'infantil' || opc.pose === 'mayor' ? opc.pose : undefined);
+    pose = poseAleatoria(azar.hijo('pose'), 1, perfilPose);
     if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
     if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
       const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
@@ -5094,7 +5288,7 @@ function generarSVG(opc = {}) {
 
 
 
-Object.assign(__e, { POSE_FIRME, poseAleatoria, muestrearColorLibre, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, buscarAtuendos, listarRegiones, listarCatalogo, tintesDelAnio, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
+Object.assign(__e, { POSE_FIRME, poseAleatoria, muestrearColorLibre, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, edadesDe, buscarAtuendos, listarRegiones, listarCatalogo, tintesDelAnio, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
 __e.PEINADOS = __m['cabeza'].PEINADOS;
 __e.BARBAS = __m['cabeza'].BARBAS;
 __e.TOCADOS = __m['cabeza'].TOCADOS;
@@ -5102,9 +5296,146 @@ __e.PATRONES_ID = __m['patrones'].PATRONES_ID;
 return __e;
 })();
 
+__m['familia'] = (() => {
+const __e = {};
+// Árbol de ascendencia en un solo SVG: la persona abajo y, encima, sus padres, abuelos y bisabuelos, cada uno con la ropa
+// y los rasgos de su pueblo y de su época. Los nacimientos son coherentes entre generaciones (el padre unos 30 años mayor
+// que el hijo y la madre unos 26, con variación) y cada ancestro se retrata a los 35 años, en su propio año.
+
+const { generarPersona, renderizar } = __m['generador'];
+const { crearAzar, escapar } = __m['util'];
+
+const GENERACIONES_MIN = 1, GENERACIONES_MAX = 4;
+const EDAD_RETRATO = 35; // edad con la que se dibuja a cada ancestro
+const NACE_PADRE = 30, NACE_MADRE = 26; // años de diferencia con el hijo, en promedio
+
+const NOMBRES = {
+  '': 'Persona', p: 'Padre', m: 'Madre',
+  pp: 'Abuelo paterno', pm: 'Abuela paterna', mp: 'Abuelo materno', mm: 'Abuela materna',
+};
+const GENERACION = ['Persona', 'Padres', 'Abuelos', 'Bisabuelos'];
+
+/** Nombre del lugar de la persona en el árbol. `ruta` es la cadena de p (padre) y m (madre) desde la persona. */
+function nombreDeRuta(ruta) {
+  if (NOMBRES[ruta] !== undefined) return NOMBRES[ruta];
+  const sexo = ruta.endsWith('p') ? 'Bisabuelo' : 'Bisabuela';
+  const lado = ruta.slice(0, -1).split('').map((c) => (c === 'p' ? 'paterno' : 'materno')).join(' ');
+  return `${sexo} ${lado}`.replace(/^(Bisab\w+) (\w+) (\w+)$/, (_, b, x, y) => `${b} ${x}, ${y}`);
+}
+
+const CLAVES_NODO = new Set(['etnia', 'padre', 'madre', 'nombre']);
+
+/** Comprueba la forma del linaje; lanza un error que dice en qué nodo está el problema. */
+function validarLinaje(nodo, ruta = '', profundidad = 0, maxima = GENERACIONES_MAX) {
+  if (nodo === undefined || nodo === null) return;
+  const donde = ruta === '' ? 'linaje' : `linaje (${nombreDeRuta(ruta)})`;
+  if (typeof nodo !== 'object' || Array.isArray(nodo)) throw new Error(`${donde}: debe ser un objeto { etnia, padre, madre }.`);
+  for (const k of Object.keys(nodo)) if (!CLAVES_NODO.has(k)) throw new Error(`${donde}: clave desconocida «${k}». Claves posibles: ${[...CLAVES_NODO].join(', ')}.`);
+  if (nodo.nombre !== undefined && typeof nodo.nombre !== 'string') throw new Error(`${donde}: «nombre» debe ser un texto.`);
+  if (profundidad >= maxima - 1 && (nodo.padre || nodo.madre)) throw new Error(`${donde}: tiene padres, pero el árbol solo llega a ${maxima} generaciones (usa generaciones: ${profundidad + 2}).`);
+  validarLinaje(nodo.padre, `${ruta}p`, profundidad + 1, maxima);
+  validarLinaje(nodo.madre, `${ruta}m`, profundidad + 1, maxima);
+}
+
+/**
+ * Construye el árbol de ascendencia.
+ * opc: { semilla, generaciones (1 a 4, por defecto 3), anio (año en que se retrata a la persona), edad (de la persona, por
+ * defecto 30), sexo ('f'|'m'), etnia (de todos, salvo lo que diga el linaje), linaje ({ etnia, nombre, padre: {...}, madre: {...} }
+ * con la etnia de cada ancestro; el que falta hereda la de su hijo) y las demás opciones de `generarPersona` para la persona
+ * (piel…), `saludo` para todos y `detalle` ('minimo'|'medio'|'alto') }.
+ * Devuelve { svg, personas: [{ ruta, rol, generacion, sexo, edad, anio, nacimiento, etnia, nombre, persona }], titulo }.
+ */
+function generarFamilia(opc = {}) {
+  const { semilla = 1, generaciones = 3, anio = 1950, edad = 30, sexo, etnia, linaje, saludo, detalle = 'medio', ...resto } = opc;
+  if (!['minimo', 'medio', 'alto'].includes(detalle)) throw new Error(`detalle no válido: ${JSON.stringify(detalle)}. Valores posibles: minimo, medio, alto.`);
+  if (!Number.isInteger(generaciones) || generaciones < GENERACIONES_MIN || generaciones > GENERACIONES_MAX) {
+    throw new Error(`generaciones no válido: ${JSON.stringify(generaciones)}. Debe ser un entero de ${GENERACIONES_MIN} a ${GENERACIONES_MAX}.`);
+  }
+  if (typeof anio !== 'number' || !Number.isFinite(anio)) throw new Error(`anio no válido: ${JSON.stringify(anio)}.`);
+  validarLinaje(linaje, '', 0, generaciones);
+  const azar = crearAzar(`familia:${semilla}`);
+  const personas = [];
+
+  const recorrer = (ruta, nodo, etniaHeredada, nacHijo, generacion) => {
+    const g = generacion;
+    const sexoDe = g === 0 ? (sexo ?? azar.hijo('sexo').elegir(['f', 'm'])) : (ruta.endsWith('p') ? 'm' : 'f');
+    const e = nodo?.etnia ?? etniaHeredada;
+    let nacimiento, anioRetrato, edadRetrato;
+    if (g === 0) { edadRetrato = edad; anioRetrato = anio; nacimiento = anio - edad; }
+    else {
+      nacimiento = Math.round(nacHijo - (sexoDe === 'm' ? NACE_PADRE : NACE_MADRE) + azar.hijo(`edad:${ruta}`).entre(-4, 4));
+      edadRetrato = EDAD_RETRATO; anioRetrato = nacimiento + EDAD_RETRATO;
+    }
+    const opciones = { ...(g === 0 ? resto : {}), semilla: `${semilla}:${ruta || 'raiz'}`, sexo: sexoDe, edad: edadRetrato, anio: anioRetrato };
+    if (saludo !== undefined) opciones.saludo = saludo; // el mismo saludo para todos
+    if (e !== undefined) opciones.etnia = e;
+    let persona;
+    try { persona = generarPersona(opciones); } catch (err) { throw new Error(`${nombreDeRuta(ruta)}: ${err.message}`); }
+    personas.push({ ruta, rol: nodo?.nombre ?? nombreDeRuta(ruta), generacion: g, sexo: sexoDe, edad: edadRetrato, anio: anioRetrato, nacimiento, etnia: persona.etnia, nombre: nodo?.nombre ?? null, persona });
+    if (g < generaciones - 1) {
+      recorrer(`${ruta}p`, nodo?.padre, e, nacimiento, g + 1);
+      recorrer(`${ruta}m`, nodo?.madre, e, nacimiento, g + 1);
+    }
+  };
+  recorrer('', linaje, etnia, anio - edad, 0);
+
+  return { svg: dibujarArbol(personas, generaciones, detalle), personas, titulo: `Árbol de ascendencia de ${generaciones} generaciones` };
+}
+
+// ---------- Dibujo ----------
+
+const ANCHO_HUECO = 150; // ancho de cada lugar de la última generación
+const ANCHO_FIGURA = 130, ALTO_FIGURA = Math.round((ANCHO_FIGURA * 1000) / 600);
+const ALTO_PIE = 40, ALTO_ESPACIO = 34, ALTO_TITULO = 44;
+const TINTA = '#2b2620', LINEA = '#8a7f6e';
+
+/** El <svg> de una persona como figura anidada en (x, y). */
+function figuraAnidada(persona, x, y, detalle) {
+  const svg = renderizar(persona, { detalle });
+  return svg.replace(/^<svg [^>]*>/, `<svg x="${x}" y="${y}" width="${ANCHO_FIGURA}" height="${ALTO_FIGURA}" viewBox="0 0 600 1000" role="img">`);
+}
+
+function dibujarArbol(personas, generaciones, detalle) {
+  const W = 2 ** (generaciones - 1) * ANCHO_HUECO;
+  const altoFila = ALTO_FIGURA + ALTO_PIE + ALTO_ESPACIO;
+  const H = ALTO_TITULO + generaciones * altoFila;
+  const yFila = (g) => ALTO_TITULO + (generaciones - 1 - g) * altoFila;
+  const cx = (p) => { const i = parseInt(p.ruta.split('').map((c) => (c === 'p' ? 0 : 1)).join('') || '0', 2); return ((i + 0.5) * W) / 2 ** p.generacion; };
+  const lugar = Object.fromEntries(personas.map((p) => [p.ruta, { x: cx(p), y: yFila(p.generacion) }]));
+  let lineas = '', figuras = '', pies = '';
+
+  for (const p of personas) {
+    const { x, y } = lugar[p.ruta];
+    figuras += figuraAnidada(p.persona, x - ANCHO_FIGURA / 2, y, detalle);
+    const yTexto = y + ALTO_FIGURA + 14;
+    const etnia = p.etnia ? p.etnia.map((e) => e.nombre).join(' y ') : '';
+    const lema = `${etnia}${etnia ? ' · ' : ''}${p.anio < 0 ? `${-Math.round(p.anio)} a. C.` : Math.round(p.anio)}`;
+    pies += `<text x="${x}" y="${yTexto}" text-anchor="middle" font-size="12" font-weight="600" fill="${TINTA}">${escapar(p.rol)}</text>`
+      + `<text x="${x}" y="${yTexto + 14}" text-anchor="middle" font-size="10.5" fill="${LINEA}">${escapar(lema)}</text>`;
+    // Conector con sus padres: una barra entre los dos y un tronco hasta la persona.
+    const padre = lugar[`${p.ruta}p`], madre = lugar[`${p.ruta}m`];
+    if (padre && madre) {
+      const yBarra = y - ALTO_ESPACIO / 2;
+      const yPies = padre.y + ALTO_FIGURA + ALTO_PIE - 8;
+      lineas += `<path d="M${padre.x} ${yPies}V${yBarra}H${madre.x}V${yPies}M${x} ${yBarra}V${y - 2}" fill="none" stroke="${LINEA}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+    }
+  }
+  const nombresGen = Array.from({ length: generaciones }, (_, g) => GENERACION[g]).reverse();
+  const etiquetas = nombresGen.map((n, i) => `<text x="8" y="${ALTO_TITULO + i * altoFila + 14}" font-size="11" fill="${LINEA}" font-weight="600">${escapar(n)}</text>`).join('');
+  const titulo = `Árbol de ascendencia de ${generaciones} generaciones`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" font-family="system-ui, -apple-system, sans-serif"><title>${escapar(titulo)}</title>`
+    + `<text x="${W / 2}" y="26" text-anchor="middle" font-size="16" font-weight="700" fill="${TINTA}">${escapar(titulo)}</text>`
+    + `${lineas}${etiquetas}${figuras}${pies}</svg>`;
+}
+
+Object.assign(__e, { GENERACIONES_MIN, nombreDeRuta, generarFamilia });
+return __e;
+})();
+
 __m['index'] = (() => {
 const __e = {};
 Object.assign(__e, __m['generador']);
+Object.assign(__e, __m['familia']);
 return __e;
 })();
 

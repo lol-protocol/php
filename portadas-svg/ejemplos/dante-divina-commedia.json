@@ -1,0 +1,15 @@
+{
+  "titulo": "La divina commedia",
+  "subtitulo": "Inferno",
+  "autor": "Dante Alighieri",
+  "editorial": "Edizione di esempio",
+  "coleccion": "Classici",
+  "paginas": 512,
+  "epoca": "XIV secolo",
+  "idioma": "it",
+  "tradicion": "medieval",
+  "categoria": "poesia",
+  "plantilla": "clasica",
+  "imagen": "imagenes/rosa.svg",
+  "imagen_opacidad": 0.18
+}

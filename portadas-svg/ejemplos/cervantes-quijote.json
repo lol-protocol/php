@@ -1,0 +1,19 @@
+{
+  "titulo": "Don Quijote de la Mancha",
+  "subtitulo": "Primera parte",
+  "autor": "Miguel de Cervantes",
+  "editorial": "Ed. de ejemplo",
+  "coleccion": "Clásicos",
+  "volumen": "1",
+  "isbn": "978-0-306-40615-7",
+  "paginas": 480,
+  "formato": "bolsillo",
+  "epoca": "siglo XVII",
+  "tradicion": "renacentista",
+  "categoria": "cuentos",
+  "plantilla": "ilustrada",
+  "tema": "claro",
+  "imagen": "imagenes/molino.svg",
+  "logo": "imagenes/logo-editorial.svg",
+  "cita": "La libertad es uno de los más preciosos dones."
+}

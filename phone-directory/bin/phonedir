@@ -75,6 +75,8 @@ function printHelp(): void
       phonedir link --sources=<id1>,<id2>,... [--min-score=0.5] [--dsn=<dsn>]
       phonedir deceased <id> --year=AAAA --evidence=<texto> [--dsn=<dsn>]
       phonedir deceased <id> --clear [--dsn=<dsn>]
+      phonedir publishable <id> --evidence=<texto> [--dsn=<dsn>]
+      phonedir publishable <id> --clear [--dsn=<dsn>]
       phonedir catalog list [--country=XX] [--year-from=YYYY] [--year-to=YYYY]
       phonedir catalog show <id>
       phonedir help
@@ -110,12 +112,22 @@ function printHelp(): void
       --clear              Quita la marca: la entrada vuelve a seguir el año de su guía
       El id sale de 'search' (la línea [persona] lo muestra como #id).
 
+    publishable:
+      Marca que una empresa cuyo nombre lleva un nombre de pila («Farmacia Rosa», «Hotel Azucena») no es
+      el nombre de una persona, para que un visitante pueda verla aunque su guía sea reciente. Una marca
+      equivocada publica el nombre, la dirección y el teléfono de alguien vivo, así que exige el comprobante
+      y no se puede hacer desde la vista pública.
+      --evidence=<texto>   Dónde se comprobó: el registro de la empresa, un letrero, el texto de la guía (máx. 1000)
+      --clear              Quita la marca: la empresa vuelve a juzgarse por su nombre
+      El id sale de 'search' (la línea [empresa] lo muestra como #id).
+
     Ejemplos:
       phonedir import directorio_1930.txt --catalog=es_1930_madrid --dsn=sqlite:madrid.sqlite
       phonedir search --name=garcia --dsn=sqlite:madrid.sqlite
       phonedir search --surname-sound=valdez --language=es --dsn=sqlite:madrid.sqlite
       phonedir link --sources=es_1930_madrid,es_1975_national --dsn=sqlite:madrid.sqlite
       phonedir deceased 42 --year=1988 --evidence="Esquela, La Vanguardia, 12/03/1988" --dsn=sqlite:madrid.sqlite
+      phonedir publishable 7 --evidence="Razón social: Farmacia Rosa, S.L. (Registro Mercantil de Madrid)" --dsn=sqlite:madrid.sqlite
 
     TXT;
 }
@@ -192,8 +204,9 @@ function formatNatural(PhoneDirectoryEntry $entry): string
 function formatJuridical(JuridicalEntity $entity): string
 {
     $phone = $entity->getPhoneNumber() ? " | {$entity->getPhoneNumber()}" : '';
+    $publishable = $entity->isMarkedPublishable() ? ' | publicable' : '';
 
-    return "  [empresa]  {$entity->getBusinessName()} | {$entity->getStreet()}, {$entity->getCountryCode()}{$phone}";
+    return "  [empresa #{$entity->getId()}] {$entity->getBusinessName()} | {$entity->getStreet()}, {$entity->getCountryCode()}{$phone}{$publishable}";
 }
 
 /**
@@ -401,6 +414,50 @@ function commandDeceased(array $args, array $options): int
  * @param list<string> $args
  * @param array<string, string|true> $options
  */
+function commandPublishable(array $args, array $options): int
+{
+    $usage = 'uso: phonedir publishable <id> --evidence=<texto>  |  phonedir publishable <id> --clear';
+
+    if (isset($options['publico'])) {
+        fail('--publico no se usa con publishable: marcar una empresa como publicable es cosa de quien tiene la base');
+    }
+    $rawId = $args[0] ?? fail($usage);
+    if (!ctype_digit($rawId) || (int) $rawId === 0) {
+        fail("el id debe ser un número positivo (míralo con 'search'), no \"{$rawId}\"");
+    }
+    $id = (int) $rawId;
+
+    $database = new JuridicalEntityPDODatabase(
+        option($options, 'dsn', 'sqlite:phonedirectory.sqlite'),
+        option($options, 'user'),
+        option($options, 'password'),
+        Privacy::forOwner()
+    );
+    $business = $database->findById($id) ?? fail("no hay ninguna empresa con id {$id}");
+
+    if (isset($options['clear'])) {
+        if (isset($options['evidence'])) {
+            fail('--clear no se combina con --evidence');
+        }
+        $database->clearPublishable($id);
+        echo "Marca quitada: {$business->getBusinessName()} vuelve a juzgarse por su nombre.\n";
+
+        return 0;
+    }
+
+    $evidence = option($options, 'evidence') ?? fail($usage);
+
+    $database->markPublishable($id, $evidence);
+    echo "Registrado: {$business->getBusinessName()} es publicable.\n";
+    echo "Un visitante ya puede ver esta empresa aunque su guía sea reciente. El comprobante queda en la base.\n";
+
+    return 0;
+}
+
+/**
+ * @param list<string> $args
+ * @param array<string, string|true> $options
+ */
 function commandCatalog(array $args, array $options): int
 {
     $catalog = new PhoneDirectoryCatalog();
@@ -444,6 +501,7 @@ try {
         'stats' => commandStats($parsed['options']),
         'link' => commandLink($parsed['options']),
         'deceased' => commandDeceased($parsed['args'], $parsed['options']),
+        'publishable' => commandPublishable($parsed['args'], $parsed['options']),
         'catalog' => commandCatalog($parsed['args'], $parsed['options']),
         'help', null => (function () {
             printHelp();

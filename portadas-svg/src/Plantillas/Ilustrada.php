@@ -37,6 +37,11 @@ final class Ilustrada extends Plantilla
     /** Línea de acento entre la imagen y el título: grosor. */
     private const FILETE_ALTO = 1.2;
 
+    public function imagenEsIlustracion(): bool
+    {
+        return true;
+    }
+
     /** La imagen es la ilustración de la portada: no se repite como marca de agua. */
     protected function marcaDeAgua(Libro $libro, Rectangulo $panel): string
     {

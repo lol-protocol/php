@@ -140,7 +140,11 @@ class PhonePattern:
     """Phone formats, as in the PHP PhonePattern: digit groups, the named exchange of early directories
     ("BUtterfield 8-4521") and, per language, the formats of that language's countries."""
 
-    REGEX = r'\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b|\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b'
+    # Digit groups may be joined by a spaced hyphen ("555 - 123 - 4567"), and the area code may be in parentheses.
+    REGEX = (r'\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b'
+             r'|\b\d{3}(?:[-.\s]|\s[-.]\s)?\d{3}(?:[-.\s]|\s[-.]\s)?\d{4}\b'
+             r'|(?<![\d+])\(\d{3}\)\s?\d{3}[-.\s]?\d{4}\b'
+             r'|\b\d{10}\b')
 
     # The looser formats are kept per language because they would read a house number as part of a phone
     # in another language's directory.
@@ -250,7 +254,7 @@ class StreetRules:
     NUMBER_LAST_LANGUAGES = ('es', 'pt', 'it', 'de')
 
     MARKERS = {
-        'es': ['calle', 'c/', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
+        'es': ['calle', 'c/', 'avenida', 'av', 'avda', 'plaza', 'pza', 'pasaje', 'camino', 'ruta', 'carrera'],
         'en': ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln', 'boulevard', 'blvd', 'circle', 'cir'],
         'fr': ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
         'pt': ['rua', 'avenida', 'av', 'praça', 'alameda', 'estrada', 'largo'],
@@ -259,7 +263,7 @@ class StreetRules:
     }
     # German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
     SUFFIXES = {
-        'de': ['straße', 'strasse', 'allee', 'weg', 'platz'],
+        'de': ['straße', 'strasse', 'allee', 'weg', 'platz', 'str'],
     }
     # Street words that are also the usual abbreviation opening a name ("Dr." doctor, "St." saint): they only
     # make a street when the line has a digit or they are not its first word.
@@ -307,7 +311,8 @@ class StreetRules:
             return False
         if re.search(r'\d', line):
             return True
-        return any(line[:m.start()].strip() != '' for m in matches)
+        # Not first, and not inside a bracket either: "John (Dr.)" is a title after a name, not a street.
+        return any(line[:m.start()].strip() != '' and not re.search(r'[(\[]$', line[:m.start()]) for m in matches)
 
     @classmethod
     def strong(cls, line: str, language: str) -> Optional[str]:
@@ -488,6 +493,13 @@ class SingleLineEntrySplitter:
         # A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
         if not re.search(_L, name) or street == '':
             return None
+
+        # Where the house number comes first, a "street" field that opens with words before its number
+        # ("John 12 Oak Street 555-123-4567", after "SMITH,") holds the rest of the name too.
+        if language not in StreetRules.NUMBER_LAST_LANGUAGES:
+            before = re.match(r'([^\d]*' + _L + r'[^\d]*)\d', street)
+            if before and not looks_like_street(before.group(1)):
+                return None
         return {'name': name, 'street': street, 'phone': phone}
 
     @classmethod

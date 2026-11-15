@@ -16,6 +16,7 @@ se regenera con `python3 .github/scripts/listar-workflows.py`, y `estructura.yml
 | [`laws-modules.yml`](workflows/laws-modules.yml) | Leyes (privacidad y copyright) | `push`, `pull_request` | `copias`, `test`, `database` |
 | [`laws-textos-oficiales.yml`](workflows/laws-textos-oficiales.yml) | Leyes - textos de las fuentes | `pull_request`, `workflow_dispatch` | `probar`, `textos` |
 | [`marcalibros-b.yml`](workflows/marcalibros-b.yml) | Marcalibros (generar catalogo y pruebas) | `push`, `pull_request`, `workflow_dispatch` | `catalogo` |
+| [`pruebas-astros-3d.yml`](workflows/pruebas-astros-3d.yml) | Pruebas astros-3d | `push`, `pull_request`, `workflow_dispatch` | `astros-3d` |
 | [`pruebas-backoffice.yml`](workflows/pruebas-backoffice.yml) | Pruebas backoffice | `push`, `pull_request`, `workflow_dispatch` | `analisis-estatico`, `pruebas` |
 | [`pruebas-citas-pos.yml`](workflows/pruebas-citas-pos.yml) | Pruebas citas POS | `push`, `pull_request`, `workflow_dispatch` | `pruebas`, `navegador` |
 | [`pruebas-cobros-ingresos-funnels.yml`](workflows/pruebas-cobros-ingresos-funnels.yml) | Pruebas cobros, ingresos y funnels | `push`, `pull_request`, `workflow_dispatch` | `tests` |
