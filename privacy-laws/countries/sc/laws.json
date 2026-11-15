@@ -13,7 +13,7 @@
     "data_categories": "Personal data; sensitive data (includes genetic and health data)",
     "retention_period": "Not specified",
     "enforcement_authority": "Information Commission (Seychelles)",
-    "penalties_range": "Administrative fines and offences under Part VIII (unlawful disclosure, obstruction); amounts not found (unconfirmed)",
+    "penalties_range": "Administrative fines for contraventions, amounts set by the Information Commission; enforcement notices and compliance orders",
     "exemptions": "Criminal investigation and national security by relevant authorities; purely personal processing by a natural person (exemptions provision s. 4)",
     "deceased_data": "",
     "research_exemption": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://www.gazette.sc/sites/default/files/2023-12/Act%2024%20-%202023%20-%20Data%20Protection%20Act%202023.pdf",
@@ -75,9 +75,9 @@
         "checked": "2026-10-22"
       },
       "penalties_range": {
-        "url": "https://www.gazette.sc/sites/default/files/2023-12/Act%2024%20-%202023%20-%20Data%20Protection%20Act%202023.pdf",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://www.consentstack.io/regulations/sc-dpa",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "exemptions": {
         "url": "https://www.dlapiperdataprotection.com/?c=SC&t=law",
@@ -91,6 +91,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "penalties_range",
+        "from": "Administrative fines and offences under Part VIII (unlawful disclosure, obstruction); amounts not found (unconfirmed)",
+        "to": "Administrative fines for contraventions, amounts set by the Information Commission; enforcement notices and compliance orders"
+      },
       {
         "date": "2026-10-22",
         "field": "row",

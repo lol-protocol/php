@@ -129,33 +129,9 @@ const svg = document.getElementById('${svgId}');
 SVGPatterns.createRadialWeb(svg, ${centerX}, ${centerY}, ${layers}, ${pointsPerLayer});
 const toggle = new AnimationToggle('.web-svg');`,
 
-    // Patrón JS para secuencia repetida
+    // Patrón JS para secuencia repetida. SequenceToggle viene de common.js: declararla otra vez aquí
+    // daba «Identifier 'SequenceToggle' has already been declared» junto a ese script.
     jsSequenceAnimation: (buildFunctionName, delayMs = 4000) => `
-class SequenceToggle extends AnimationToggle {
-    constructor(callback, delay = ${delayMs}) {
-        super();
-        this.callback = callback;
-        this.delay = delay;
-        this.timeoutId = null;
-    }
-
-    toggle() {
-        super.toggle();
-        if (this.isAnimating) {
-            this.scheduleNext();
-        } else {
-            clearTimeout(this.timeoutId);
-        }
-    }
-
-    scheduleNext() {
-        this.callback();
-        if (this.isAnimating) {
-            this.timeoutId = setTimeout(() => this.scheduleNext(), this.delay);
-        }
-    }
-}
-
 const toggle = new SequenceToggle(() => ${buildFunctionName}(), ${delayMs});
 toggle.scheduleNext();`
 };

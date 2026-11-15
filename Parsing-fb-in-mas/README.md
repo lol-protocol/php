@@ -26,12 +26,14 @@ como `phone-directory/`).
   vida y parientes se guardan solo si la fuente da una fecha de muerte**; si una página trae
   `birthDate` de alguien sin `deathDate`, esa fecha se descarta (hay pruebas).
 - **El texto que escribió la persona (titular y descripción) se marca, no se borra.** Pasa por el filtro
-  de `../defamatory-content-review/` (datos personales como el RUT o un teléfono, insultos, acusaciones y
-  la orientación sexual, que ese filtro sí reconoce) y por una lista corta propia de categorías sensibles
-  (`src/Sensibles.php`: salud, religión, política o sindical, vida sexual, origen étnico). Las etiquetas salen
-  en `marcas` y un aviso dice «leer el texto con cuidado». **Es una ayuda, no una garantía:** el filtro del
-  repo no reconoce salud ni religión (ver su `docs/RIESGOS.md`), y la lista propia es de palabras sueltas,
-  así que puede marcar de más y, sobre todo, no marcar de menos. Que no salga ninguna marca no quiere
+  de `../defamatory-content-review/` (datos personales como el RUT o un teléfono, insultos y acusaciones, y
+  datos sensibles **de un tercero**: «tiene cáncer», «la familia era judía», «es comunista», «era mapuche») y por
+  una lista corta propia de categorías sensibles (`src/Sensibles.php`: salud, religión, política o sindical,
+  vida sexual, origen étnico). **Las dos se complementan:** el filtro del repo está escrito para frases sobre
+  otra persona y no marca lo que alguien dice de sí mismo («Tengo cáncer», «Soy evangélica»), que es justo lo
+  que suele traer una biografía de perfil; esa parte la cubre `Sensibles`. Las etiquetas salen en `marcas` y un
+  aviso dice «leer el texto con cuidado». **Es una ayuda, no una garantía:** la lista propia es de palabras
+  sueltas, así que puede marcar de más y, sobre todo, no marcar de menos. Que no salga ninguna marca no quiere
   decir que el texto esté limpio. `--sin-revision` la desactiva.
 - **Lista de exclusión (`--excluir=lista.txt`)** en `analizar.php`, `wikidata.php`, `wikidata-nombres.php` y
   `cruzar.php`: una entrada por línea, una URL o `red:usuario` (`twitter:ana`, `wikidata:Q42`, `wikitree:Ejemplo-1`);

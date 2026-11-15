@@ -100,6 +100,8 @@ class ResponseHeadersTest extends TestCase
             'coleccion privada, GEDCOM' => [self::GENEALOGIA, '/1048294/3/', '/1048200/3/'],
             'pedido de otra persona' => [self::POS, '/7305918264731590/', '/4821937065189999/'],
             'pedido, factura' => [self::POS, '/4821937065182734/1/', '/4821937065189999/1/'],
+            'coleccion privada, en inglés' => ['eng.' . self::GENEALOGIA, '/1048294/', '/1048200/'],
+            'pedido de otra persona, en inglés' => ['eng.' . self::POS, '/7305918264731590/', '/4821937065189999/'],
         ];
     }
 
