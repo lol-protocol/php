@@ -10,6 +10,7 @@ use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Json;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Metadatos;
+use ParsingFbInMas\OpcionesCruce;
 use ParsingFbInMas\Perfil;
 use ParsingFbInMas\Purga;
 use ParsingFbInMas\Revision;
@@ -365,6 +366,50 @@ if (function_exists('bzopen')) {
 }
 unlink($bz);
 
+// --- Cruce: opciones, parientes y generadores (puntos 2 y 3) ---
+$ficha = static fn (string $nombre, string $nac, ?string $lugar = null, array $parientes = []): array => [
+    'red' => 'x', 'url' => 'u-' . $nombre, 'nombre' => $nombre, 'nacimiento' => $nac, 'muerte' => '1920',
+    'lugar_nacimiento' => $lugar, 'parientes' => $parientes, 'posiblemente_vivo' => false,
+];
+$pa = $ficha('Ana Pérez Soto', '1850');
+$pb = $ficha('Ana Pérez Soto', '1853');
+igual('opciones: por defecto, 3 años de diferencia sí es candidata', 1, count(Cruce::candidatos([$pa], [$pb])['candidatos']));
+igual('opciones: --anios=2 la descarta', 0, count(Cruce::candidatos([$pa], [$pb], 'spa', new OpcionesCruce(0.6, 2))['candidatos']));
+igual('opciones: tres palabras en común exigidas, con solo dos coincidentes, no hay candidata', 0,
+    count(Cruce::candidatos([$ficha('Ana Pérez', '1850')], [$ficha('Ana Pérez Soto', '1850')], 'spa', new OpcionesCruce(0.6, 5, 3))['candidatos']));
+$parcialA = $ficha('Ana Pérez', '1850');
+$parcialB = $ficha('Ana Pérez Soto', '1853');
+igual('opciones: con 2 de 3 palabras (puntaje 0,67), el mínimo por defecto la acepta', 1, count(Cruce::candidatos([$parcialA], [$parcialB])['candidatos']));
+igual('opciones: un puntaje mínimo de 0,9 la descarta', 0, count(Cruce::candidatos([$parcialA], [$parcialB], 'spa', new OpcionesCruce(0.9))['candidatos']));
+foreach ([[0.0, 5, 2], [1.5, 5, 2], [0.6, -1, 2], [0.6, 5, 0]] as [$u, $an, $pal]) {
+    try {
+        new OpcionesCruce($u, $an, $pal);
+        igual("opciones: ($u, $an, $pal) lanza", true, false);
+    } catch (InvalidArgumentException) {
+        igual("opciones: ($u, $an, $pal) lanza", true, true);
+    }
+}
+$padre = [['relacion' => 'padre', 'nombre' => 'Pedro Pérez', 'id' => 'Q1']];
+$conPadreA = Cruce::candidatos([$ficha('Ana Pérez', '1850', null, $padre)], [$ficha('Ana Pérez Soto', '1851', null, $padre)])['candidatos'];
+$sinPadre = Cruce::candidatos([$ficha('Ana Pérez', '1850')], [$ficha('Ana Pérez Soto', '1851')])['candidatos'];
+igual('parientes: el mismo padre por nombre suma evidencia', true, in_array('comparten un pariente por nombre', $conPadreA[0]['evidencia'] ?? [], true));
+igual('parientes: y sube el puntaje', true, ($conPadreA[0]['puntaje'] ?? 0) > ($sinPadre[0]['puntaje'] ?? 1) || ($conPadreA[0]['puntaje'] ?? 0) === 1.0);
+$otroPadre = Cruce::candidatos([$ficha('Ana Pérez', '1850', null, $padre)], [$ficha('Ana Pérez Soto', '1851', null, [['relacion' => 'padre', 'nombre' => 'Juan Rojas', 'id' => 'Q9']])])['candidatos'];
+igual('parientes: un padre con otro nombre no suma', false, in_array('comparten un pariente por nombre', $otroPadre[0]['evidencia'] ?? [], true));
+$sinNombre = Cruce::candidatos([$ficha('Ana Pérez', '1850', null, [['relacion' => 'padre', 'nombre' => null, 'id' => 'Q1']])], [$ficha('Ana Pérez Soto', '1851', null, [['relacion' => 'padre', 'nombre' => null, 'id' => 'Q1']])])['candidatos'];
+igual('parientes: sin nombre (solo un identificador) no se compara', false, in_array('comparten un pariente por nombre', $sinNombre[0]['evidencia'] ?? [], true));
+$generador = static function () use ($pa) {
+    yield $pa;
+};
+$indiceB = Cruce::indexar([$pb]);
+$omitidosGen = 0;
+igual('cruce: A puede ser un generador y B un índice armado aparte', 1, count(Cruce::cruzar($generador(), $indiceB, 'spa', new OpcionesCruce(), $omitidosGen)));
+$vivoParaIndice = $ficha('Fulano Vivo', '1990');
+$vivoParaIndice['posiblemente_vivo'] = true;
+$indiceConVivo = Cruce::indexar([$pb, $vivoParaIndice]);
+igual('cruce: el índice omite a los que pueden estar vivos y los cuenta', [1, 1], [count($indiceConVivo->fichas), $indiceConVivo->omitidos]);
+igual('cruce: el índice solo guarda una referencia corta, no el perfil entero', ['red', 'url', 'nombre', 'nacimiento', 'muerte'], array_keys($indiceConVivo->fichas[0]['ref']));
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
@@ -570,6 +615,18 @@ file_put_contents("$tmp/excluir-cruce.txt", "wikitree:Gonzalez-1234\n");
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --excluir=' . escapeshellarg("$tmp/excluir-cruce.txt") . ' 2>/dev/null', $salida, $codigo);
 igual('cruzar.php --excluir: la persona excluida no genera candidatos', [0, 0], [$codigo, count($salida)]);
+
+foreach ([['--umbral=0', 'umbral cero'], ['--umbral=2', 'umbral mayor que 1'], ['--anios=-3', 'años negativos'], ['--palabras=0', 'cero palabras']] as [$bandera, $que]) {
+    $salida = [];
+    exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' ' . $bandera . ' 2>&1', $salida, $codigo);
+    igual("cruzar.php: $que sale con 2 y lo explica", [2, true], [$codigo, $salida !== []]);
+}
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/no-existe.jsonl") . ' 2>&1', $salida, $codigo);
+igual('cruzar.php: un archivo que no existe sale con 1', 1, $codigo);
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --anios=0 2>/dev/null', $salida, $codigo);
+igual('cruzar.php --anios=0: la pareja de 1850 y 1851 deja de ser candidata', [0, 0], [$codigo, count($salida)]);
 array_map('unlink', glob("$tmp/*") ?: []);
 rmdir($tmp);
 
