@@ -22,7 +22,8 @@ const hexOId = (campo, valor, ids) => { if (!esHex(valor) && !ids.includes(valor
 export const ESTILOS_ROPA_NUEVA = ['sobrio', 'trabajo', 'festivo', 'ceremonial'];
 export const ESQUEMAS = ['analogo', 'complementario', 'triada', 'monocromo', 'tierra', 'festivo'];
 export const SALUDOS = ['derecha', 'izquierda', 'ninguno', 'ninguna'];
-const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo'];
+const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo', 'pecho'];
+const MANOS = ['juntas', 'cruzados'];
 
 /** Comprueba las opciones de `generarPersona` (y de `generarRopaNueva`); no cambia nada, solo lanza si algo no vale. */
 export function validarOpciones(opc = {}) {
@@ -37,9 +38,10 @@ export function validarOpciones(opc = {}) {
   }
   if (opc.postura !== undefined && typeof opc.postura !== 'number') enLista('Postura', opc.postura, Object.keys(POSTURAS));
   if (opc.saludo !== undefined && opc.saludo !== false && opc.saludo !== null) enLista('Saludo', opc.saludo, SALUDOS);
-  if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme']);
+  if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme', 'infantil', 'mayor', 'segun-edad']);
   if (opc.pose && typeof opc.pose === 'object') {
     if (opc.pose.brazoLibre !== undefined) enLista('pose.brazoLibre', opc.pose.brazoLibre, BRAZOS_LIBRES);
+    if (opc.pose.manos !== undefined) enLista('pose.manos', opc.pose.manos, MANOS);
     if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
   }
   if (opc.detalle !== undefined) enLista('Detalle', opc.detalle, ['minimo', 'medio', 'alto']);

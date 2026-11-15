@@ -368,7 +368,7 @@ const P = (id, nombre, ranura, plantilla, params = {}, col = {}) => ({ id, nombr
 
 /**
  * Atuendo: id, nombre, región, [año desde, hasta], sexo, clase, prendas, paleta de tintes por letra y extras
- * (peinados, barbas, tocados, pieles, nota, fuente —la referencia que respalda el traje— y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación;
+ * (peinados, barbas, tocados, pieles, edades —[mínima, máxima] si el traje es solo para ciertas edades—, nota, fuente —la referencia que respalda el traje— y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación;
  * 'alta' exige `fuente`).
  */
 const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) => ({
@@ -381,6 +381,7 @@ const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) 
   pieles: extra.pieles ? L(extra.pieles) : null,
   nota: extra.nota ?? '',
   fuente: extra.fuente ?? '',
+  edades: extra.edades ?? null,
   confianza: extra.conf ?? 'media',
 });
 
@@ -1489,6 +1490,45 @@ Object.assign(__e, { ATUENDOS_MODA });
 return __e;
 })();
 
+__m['datos/atuendos-infantiles'] = (() => {
+const __e = {};
+// Atuendos de niños y niñas (hasta 12 años) de las regiones y épocas más usadas. Sin ellos un niño se vestía como un adulto
+// más pequeño. Para los niños, `buscarAtuendos` prefiere estos si los hay; si no, sale uno de adulto sin prendas solo
+// de adulto (armadura, toga, hábito…). Todos de confianza baja: son trajes infantiles genéricos hechos con prendas del catálogo.
+
+const { A, BL, CLAROS, OSCURA } = __m['datos/ayuda'];
+
+const E = [2, 12];
+const NOTA = 'Traje infantil genérico con prendas del catálogo: la ropa de los niños varió mucho por familia y condición social.';
+const base = { edades: E, conf: 'baja', nota: NOTA, barbas: 'ninguna', tocados: 'ninguno' };
+
+const ATUENDOS_INFANTILES = [
+  A('europa-campesino-nino', 'Niño campesino europeo', 'europa-campesina', [1750, 1950], 'm', 'baja', 'camisa-blanca chaleco-campesino calzones-rodilla botas-cuero', { A: 'lana-parda umbra azul-plomo', B: BL, C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
+  A('europa-campesina-nina', 'Niña campesina europea', 'europa-campesina', [1750, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco zapatos-cuero', { A: 'rojo-granza lana-parda azul-plomo', B: BL, C: BL, D: 'cobre' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: CLAROS }),
+  A('europa-medieval-nino', 'Niño medieval', 'europa-medieval', [1000, 1500], 'm', 'baja', 'camisa-medieval calzas botas-cuero', { A: 'lana-parda azul-plomo verde-musgo', B: BL, C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
+  A('europa-medieval-nina', 'Niña medieval', 'europa-medieval', [1000, 1500], 'f', 'baja', 'cota-campesina delantal-campesino botas-cuero', { A: 'azul-plomo rojo-granza lana-parda', B: BL, C: BL, D: 'cobre' }, { ...base, peinados: 'trenza-una recogido', pieles: CLAROS }),
+  A('roma-nino', 'Niño romano', 'roma', [-200, 400], 'm', 'baja', 'tunica-plebeya cinturon-cuerda sandalia-romana', { A: 'crudo lana-clara', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'corto romano', pieles: 'clara-calida oliva-clara oliva' }),
+  A('roma-nina', 'Niña romana', 'roma', [-200, 400], 'f', 'baja', 'tunica-romana cinturon-cuerda sandalia-romana', { A: 'crudo lana-clara rosa-palido', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'trenza-una recogido', pieles: 'clara-calida oliva-clara oliva' }),
+  A('grecia-nino', 'Niño griego', 'grecia', [-600, 300], 'm', 'baja', 'quiton-corto cinturon-cuerda sandalias-cuero', { A: 'blanco-lino crudo', B: BL, C: 'rojo-granza', D: 'bronce' }, { ...base, peinados: 'corto', pieles: 'clara-calida oliva-clara oliva' }),
+  A('grecia-nina', 'Niña griega', 'grecia', [-600, 300], 'f', 'baja', 'quiton-corto cinturon-cuerda sandalias-cuero', { A: 'blanco-lino crudo rosa-palido', B: BL, C: 'azul-egipcio', D: 'bronce' }, { ...base, peinados: 'trenza-una recogido', pieles: 'clara-calida oliva-clara oliva' }),
+  A('andes-nino', 'Niño andino', 'andes', [1500, 1950], 'm', 'baja', 'unku poncho-andino sandalias-cuero', { A: 'lana-parda alpaca-cafe rojo-cochinilla', B: 'lana-clara', C: 'rojo-cochinilla', D: 'plata' }, { ...base, peinados: 'corto', pieles: OSCURA }),
+  A('andes-nina', 'Niña andina', 'andes', [1500, 1950], 'f', 'baja', 'blusa-campesina pollera lliclla sandalias-cuero', { A: 'rojo-cochinilla azul-andino verde-andino', B: 'lana-clara', C: 'rojo-cochinilla', D: 'plata' }, { ...base, peinados: 'trenzas-dos', pieles: OSCURA }),
+  A('corea-nino', 'Niño coreano', 'asia-este', [1700, 1950], 'm', 'baja', 'hanbok-jeogori hanbok-baji zapatos-tela', { A: 'azul-celeste verde-agua crema', B: BL, C: 'rojo-cartamo', D: 'plata' }, { ...base, peinados: 'corto', pieles: 'clara clara-calida oliva-clara' }),
+  A('corea-nina', 'Niña coreana', 'asia-este', [1700, 1950], 'f', 'baja', 'hanbok-jeogori hanbok-chima zapatos-tela', { A: 'rosa-palido azul-celeste verde-agua', B: BL, C: 'rojo-cartamo', D: 'plata' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: 'clara clara-calida oliva-clara' }),
+  A('japon-nino', 'Niño japonés', 'asia-este', [1700, 1950], 'm', 'baja', 'yukata obi geta', { A: 'indigo azul-celeste', B: BL, C: 'indigo-profundo', D: 'plata' }, { ...base, peinados: 'corto', pieles: 'clara clara-calida oliva-clara' }),
+  A('japon-nina', 'Niña japonesa', 'asia-este', [1700, 1950], 'f', 'baja', 'yukata obi geta', { A: 'rosa-palido rojo-cartamo azul-celeste', B: BL, C: 'rojo-cartamo', D: 'plata' }, { ...base, peinados: 'corto recogido', pieles: 'clara clara-calida oliva-clara' }),
+  A('africa-oeste-nina', 'Niña de África occidental', 'africa-oeste', [1800, 1980], 'f', 'baja', 'kitenge-top kitenge-falda sandalias-cuero', { A: 'azafran rojo-cartamo azul-ultramar', B: BL, C: 'verde-hoja', D: 'oro' }, { ...base, peinados: 'trenzas-pegadas rapado', pieles: 'ebano-claro ebano ebano-profundo' }),
+  A('africa-oeste-nino', 'Niño de África occidental', 'africa-oeste', [1800, 1980], 'm', 'baja', 'dashiki sokoto sandalias-cuero', { A: 'azul-ultramar azafran rojo-cartamo', B: BL, C: 'verde-hoja', D: 'oro' }, { ...base, peinados: 'rapado corto', pieles: 'ebano-claro ebano ebano-profundo' }),
+  A('norteamerica-nino', 'Niño de Estados Unidos o Canadá', 'norteamerica-moderna', [1850, 1980], 'm', 'baja', 'camisa-cuadros pantalon-overol zapatillas-lona', { A: 'rojo-granza azul-denim verde-bosque', B: 'denim-claro', C: 'lana-negra', D: 'cobre' }, { ...base, peinados: 'corto', pieles: CLAROS }),
+  A('norteamerica-nina', 'Niña de Estados Unidos o Canadá', 'norteamerica-moderna', [1850, 1980], 'f', 'baja', 'vestido-sencillo-corto delantal-blanco zapatos-hebilla', { A: 'azul-celeste rosa-palido verde-agua', B: BL, C: BL, D: 'plata' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: CLAROS }),
+  A('latinoamerica-nino', 'Niño latinoamericano', 'latinoamerica-moderna', [1850, 1980], 'm', 'baja', 'camisa-blanca short chaleco-lana zapatos-vestir', { A: 'azul-marino gris-oscuro lana-parda', B: BL, C: 'lana-negra', D: 'plata' }, { ...base, peinados: 'corto', pieles: 'clara-calida oliva-clara oliva canela' }),
+  A('latinoamerica-nina', 'Niña latinoamericana', 'latinoamerica-moderna', [1850, 1980], 'f', 'baja', 'vestido-sencillo-corto delantal-blanco zapatos-hebilla', { A: 'azul-celeste rosa-palido verde-agua', B: BL, C: BL, D: 'plata' }, { ...base, peinados: 'trenza-una trenzas-dos', pieles: 'clara-calida oliva-clara oliva canela' }),
+];
+
+Object.assign(__e, { ATUENDOS_INFANTILES });
+return __e;
+})();
+
 __m['datos/atuendos'] = (() => {
 const __e = {};
 // Atuendos completos: una combinación de prendas del catálogo (prendas.js) típica de una región, una época,
@@ -1500,6 +1540,7 @@ const { ATUENDOS_AMPLIADOS } = __m['datos/atuendos-ampliados'];
 const { ATUENDOS_SIGLO20 } = __m['datos/atuendos-siglo20'];
 const { ATUENDOS_MAS } = __m['datos/atuendos-mas'];
 const { ATUENDOS_MODA } = __m['datos/atuendos-moda'];
+const { ATUENDOS_INFANTILES } = __m['datos/atuendos-infantiles'];
 
 const REGIONES = {
   egipto: 'Egipto antiguo', mesopotamia: 'Mesopotamia', grecia: 'Grecia antigua', roma: 'Roma', bizancio: 'Bizancio',
@@ -1664,6 +1705,7 @@ const ATUENDOS = [
   ...ATUENDOS_SIGLO20,
   ...ATUENDOS_MAS,
   ...ATUENDOS_MODA,
+  ...ATUENDOS_INFANTILES,
 ];
 
 const ATUENDOS_POR_ID = Object.fromEntries(ATUENDOS.map((a) => [a.id, a]));
@@ -2185,9 +2227,10 @@ const redondear = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d + 0; // + 0 ev
  * las muñecas flexionadas y los dedos más o menos abiertos. `intensidad` (0 a 1) escala todas esas variaciones.
  * `carga`: -1 o 1 es el lado (de quien mira) que carga el peso; 0, ambos.
  */
-function poseAleatoria(azar, intensidad = 1) {
+function poseAleatoria(azar, intensidad = 1, perfil) {
   const k = limitar(intensidad, 0, 1.5);
   const v = (a, b, d = 1) => redondear(azar.entre(a, b) * k, d);
+  if (perfil === 'infantil' || perfil === 'mayor') return poseSegunEdad(azar, k, perfil);
   return {
     modo: 'casual',
     cabeza: v(-7, 7),
@@ -2201,6 +2244,33 @@ function poseAleatoria(azar, intensidad = 1) {
     hombros: v(-2.8, 2.8),
     columna: v(-0.008, 0.008, 4),
     codos: { 1: v(-4, 12), '-1': v(-4, 12) },
+    munecas: { 1: v(-14, 14), '-1': v(-14, 14) },
+    cinturaCodo: redondear(1 + (azar.entre(0.85, 1.2) - 1) * k, 2),
+    dedos: redondear(1 + (azar.entre(0.8, 1.25) - 1) * k, 2),
+  };
+}
+
+/**
+ * Poses por edad. 'infantil': de pie sin cargar el peso en una pierna, los pies más abiertos, los brazos separados del
+ * cuerpo y la cabeza más movida. 'mayor': carga el peso en una pierna, pies más juntos, brazos más pegados al cuerpo y
+ * a veces una mano sobre el pecho.
+ */
+function poseSegunEdad(azar, k, perfil) {
+  const v = (a, b, d = 1) => redondear(azar.entre(a, b) * k, d);
+  const nino = perfil === 'infantil';
+  return {
+    modo: 'casual',
+    cabeza: v(nino ? -10 : -4, nino ? 10 : 4),
+    inclinacion: v(-1.4, 1.4, 2),
+    carga: nino ? azar.ponderado([[-1, 1], [1, 1], [0, 6]]) : azar.ponderado([[-1, 3], [1, 3], [0, 1]]),
+    abre: redondear(nino ? azar.entre(1.15, 1.7) : azar.entre(0.9, 1.15), 2),
+    giro: redondear(azar.entre(nino ? 8 : 5, nino ? 24 : 14)),
+    brazoLibre: nino ? azar.ponderado([['abajo', 90], ['cintura', 10]]) : azar.ponderado([['abajo', 50], ['pecho', 20], ['bolsillo', 10], ['cintura', 20]]),
+    angulos: nino ? { 1: redondear(azar.entre(10, 24)), '-1': redondear(azar.entre(10, 24)) } : { 1: redondear(azar.entre(3, 10)), '-1': redondear(azar.entre(3, 10)) },
+    saludo: { codo: redondear(azar.entre(40, 62)), antebrazo: v(2, 24), mano: v(-16, 16) },
+    hombros: v(nino ? -3.5 : -2, nino ? 3.5 : 2),
+    columna: v(-0.008, 0.008, 4),
+    codos: { 1: v(nino ? 0 : 4, nino ? 18 : 16), '-1': v(nino ? 0 : 4, nino ? 18 : 16) },
     munecas: { 1: v(-14, 14), '-1': v(-14, 14) },
     cinturaCodo: redondear(1 + (azar.entre(0.85, 1.2) - 1) * k, 2),
     dedos: redondear(1 + (azar.entre(0.8, 1.25) - 1) * k, 2),
@@ -2298,6 +2368,29 @@ function medidas(opc = {}) {
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
   };
+  // Mano sobre el pecho (como al jurar o saludar con respeto): el codo sale un poco y la muñeca llega al centro del pecho.
+  const brazoPecho = () => {
+    const codo = [S0[0] + H * 0.045, lerp(y.axila, y.cintura, 0.45)];
+    const mun = [w.pecho * 0.3, y.pecho + H * 0.022];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'pecho', linea: [S0, [m1[0] + H * 0.004, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
+  };
+  // Manos juntas al frente (a la altura de la cintura) y brazos cruzados sobre el pecho: afectan a los dos brazos.
+  const brazoJuntas = () => {
+    const codo = [S0[0] + H * 0.024, lerp(y.axila, y.cintura, 0.8)];
+    const mun = [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'juntas', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
+  };
+  const brazoCruzado = (orden) => {
+    const codo = [S0[0] + H * 0.036, lerp(y.pecho, y.cintura, 0.55) + orden * H * 0.006];
+    const mun = [-w.pecho * (0.62 - orden * 0.08), y.pecho + H * (0.03 + orden * 0.012)];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'cruzado', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
+  };
   // Mano en el bolsillo: el antebrazo baja hacia la cadera y la mano no se ve.
   const brazoBolsillo = () => {
     const codo = [S0[0] + H * 0.03, lerp(y.axila, y.cintura, 0.75)];
@@ -2318,8 +2411,13 @@ function medidas(opc = {}) {
   const ladoLibre = saludoLado ? -saludoLado : 1; // el brazo que lleva la pose especial (cintura, bolsillo)
   const anguloDe = (s) => (pose.angulos ? pose.angulos[s] : grados0);
   const brazos = {};
+  // `pose.manos` ('juntas' o 'cruzados') ocupa los dos brazos, así que solo vale sin saludo.
+  const manos = saludoLado === 0 ? pose.manos : undefined;
   for (const s of [1, -1]) {
     if (s === saludoLado) brazos[s] = brazoSaludo();
+    else if (manos === 'juntas') brazos[s] = brazoJuntas();
+    else if (manos === 'cruzados') brazos[s] = brazoCruzado(s > 0 ? 0 : 1);
+    else if (s === ladoLibre && pose.brazoLibre === 'pecho') brazos[s] = brazoPecho();
     else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();
     else if (s === ladoLibre && pose.brazoLibre === 'bolsillo') brazos[s] = brazoBolsillo();
     else brazos[s] = brazoCaido(anguloDe(s), pose.codos[s] ?? 0, pose.munecas[s] ?? 0);
@@ -2437,7 +2535,7 @@ function trazoMano(M, s) {
   const b = M.brazos[s];
   if (b.tipo === 'saludo') return manoSaludo(M, s);
   if (b.tipo === 'bolsillo') return [];
-  if (b.tipo === 'cintura') return [manoCerrada(M, s)];
+  if (['cintura', 'pecho', 'juntas', 'cruzado'].includes(b.tipo)) return [manoCerrada(M, s)];
   return manoCaida(M, s);
 }
 
@@ -3977,6 +4075,19 @@ function renderizar(persona, opciones = {}) {
     cuerpo += `<g data-saludo="${M.saludoLado === -1 ? 'derecha' : 'izquierda'}">${capa(piezas, 'piel')}</g>`;
   }
 
+  // 3c. Brazos al frente (mano en el pecho, manos juntas, brazos cruzados): van encima de la ropa, que si no los taparía.
+  const alFrente = [1, -1].filter((s) => ['pecho', 'juntas', 'cruzado'].includes(M.brazos[s].tipo));
+  if (alFrente.length) {
+    const finMangas = prendas.filter((p) => p.params?.manga && p.params.manga !== 'sin').map((p) => finManga(M, p.params.manga));
+    const piezas = [];
+    for (const s of alFrente) {
+      const desde = finMangas.length ? Math.max(M.y.codo, ...finMangas) : M.brazos[s].u[0];
+      if (desde < M.brazos[s].u[M.brazos[s].u.length - 1] - 2) piezas.push({ d: trazoAntebrazo(M, s, desde), ...sp });
+      for (const d of trazoMano(M, s)) piezas.push({ d, ...sp });
+    }
+    cuerpo += `<g data-brazos-frente>${capa(piezas, 'piel')}</g>`;
+  }
+
   // 4. Cabeza
   const cabezaPieza = { d: trazoCabeza(G), ...sp };
   const orejas = trazoOrejas(G).map((d) => ({ d, ...sp }));
@@ -4509,7 +4620,8 @@ const hexOId = (campo, valor, ids) => { if (!esHex(valor) && !ids.includes(valor
 const ESTILOS_ROPA_NUEVA = ['sobrio', 'trabajo', 'festivo', 'ceremonial'];
 const ESQUEMAS = ['analogo', 'complementario', 'triada', 'monocromo', 'tierra', 'festivo'];
 const SALUDOS = ['derecha', 'izquierda', 'ninguno', 'ninguna'];
-const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo'];
+const BRAZOS_LIBRES = ['abajo', 'cintura', 'bolsillo', 'pecho'];
+const MANOS = ['juntas', 'cruzados'];
 
 /** Comprueba las opciones de `generarPersona` (y de `generarRopaNueva`); no cambia nada, solo lanza si algo no vale. */
 function validarOpciones(opc = {}) {
@@ -4524,9 +4636,10 @@ function validarOpciones(opc = {}) {
   }
   if (opc.postura !== undefined && typeof opc.postura !== 'number') enLista('Postura', opc.postura, Object.keys(POSTURAS));
   if (opc.saludo !== undefined && opc.saludo !== false && opc.saludo !== null) enLista('Saludo', opc.saludo, SALUDOS);
-  if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme']);
+  if (opc.pose !== undefined && opc.pose !== null && typeof opc.pose !== 'object') enLista('Pose', opc.pose, ['casual', 'firme', 'infantil', 'mayor', 'segun-edad']);
   if (opc.pose && typeof opc.pose === 'object') {
     if (opc.pose.brazoLibre !== undefined) enLista('pose.brazoLibre', opc.pose.brazoLibre, BRAZOS_LIBRES);
+    if (opc.pose.manos !== undefined) enLista('pose.manos', opc.pose.manos, MANOS);
     if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
   }
   if (opc.detalle !== undefined) enLista('Detalle', opc.detalle, ['minimo', 'medio', 'alto']);
@@ -4581,11 +4694,30 @@ const { TIPOS } = __m['tipos-de-ropa'];
 
 const contiene = (epoca, anio) => anio === undefined || anio === null || (anio >= epoca[0] && anio <= epoca[1]);
 
-/** Atuendos que cumplen los filtros: { region, anio, sexo, clase }. */
-function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase } = {}) {
+/** Prendas que solo se usan de adulto (armadura, toga, hábito, sotana, estola…). */
+const SOLO_ADULTO = new Set(['lorica-segmentata', 'lorica-escamas', 'pteruges', 'toga', 'toga-praetexta', 'stola', 'habito-monje', 'sotana', 'sobrepelliz', 'cuerda-franciscana', 'escapulario', 'casaca', 'frac', 'saco-terno', 'saco-cruzado', 'traje-sastre', 'vestido-novia', 'vestido-luto']);
+/** Edades de un atuendo: las que declara, o desde los 16 si lleva una prenda de adulto, o todas. */
+function edadesDe(a) {
+  if (a.edades) return a.edades;
+  return a.prendas.some((id) => SOLO_ADULTO.has(id)) ? [16, 100] : [2, 100];
+}
+const INFANTIL_MAX = 12;
+const esInfantil = (a) => a.edades && a.edades[1] <= INFANTIL_MAX;
+
+/**
+ * Atuendos que cumplen los filtros: { region, anio, sexo, clase, edad }. Con `edad`: no salen los de adulto para un niño
+ * ni los infantiles para un adulto, y hasta los 12 años se prefieren los infantiles si los hay.
+ */
+function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase, edad } = {}) {
   const rs = regiones ?? (region ? [region] : null);
-  return ATUENDOS.filter((a) =>
-    (!rs || rs.includes(a.region)) && (!prefijos || prefijos.some((p) => a.id.startsWith(p))) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase));
+  const r = ATUENDOS.filter((a) =>
+    (!rs || rs.includes(a.region)) && (!prefijos || prefijos.some((p) => a.id.startsWith(p))) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase)
+    && (edad === undefined || edad === null || (edad >= edadesDe(a)[0] && edad <= edadesDe(a)[1])));
+  if (edad !== undefined && edad !== null && edad <= INFANTIL_MAX) {
+    const ninos = r.filter(esInfantil);
+    if (ninos.length) return ninos;
+  }
+  return r;
 }
 
 function listarRegiones() { return { ...REGIONES }; }
@@ -4853,16 +4985,17 @@ function generarPersona(opc = {}) {
   } else {
     const regiones = opc.region ? [opc.region] : (etnia ? etnia[0].e.regiones : null);
     const prefijos = opc.region ? null : (etnia ? etnia[0].e.prefijos : null);
-    const f = (extra) => ({ regiones, prefijos, anio, sexo, clase: opc.clase, ...extra });
+    const f = (extra) => ({ regiones, prefijos, anio, sexo, clase: opc.clase, edad, ...extra });
     const intentos = [
       [f({}), null],
       [f({ clase: undefined }), 'la clase social'],
       [f({ anio: undefined }), 'el año'],
       [f({ clase: undefined, anio: undefined }), 'el año y la clase social'],
       [f({ prefijos: null, clase: undefined, anio: undefined }), 'el año, la clase social ni el pueblo concreto: es un atuendo de otro pueblo de la misma región'],
-      [{ anio, sexo, clase: opc.clase }, 'la región'],
-      [{ anio, sexo }, 'la región y la clase social'],
-      [{ sexo }, 'la región, el año y la clase social'],
+      [{ anio, sexo, clase: opc.clase, edad }, 'la región'],
+      [{ anio, sexo, edad }, 'la región y la clase social'],
+      [{ sexo, edad }, 'la región, el año y la clase social'],
+      [{ sexo }, 'la edad, la región, el año ni la clase social: no hay atuendo para esa edad'],
     ].filter(([filtro], i, todos) => i === 0 || JSON.stringify(filtro) !== JSON.stringify(todos[i - 1][0]));
     for (const [filtro, relajado] of intentos) {
       const r = buscarAtuendos(filtro);
@@ -4946,7 +5079,8 @@ function generarPersona(opc = {}) {
   let pose;
   if (opc.pose === 'firme') pose = POSE_FIRME;
   else {
-    pose = poseAleatoria(azar.hijo('pose'));
+    const perfilPose = opc.pose === 'segun-edad' ? (edad <= 12 ? 'infantil' : edad >= 65 ? 'mayor' : undefined) : (opc.pose === 'infantil' || opc.pose === 'mayor' ? opc.pose : undefined);
+    pose = poseAleatoria(azar.hijo('pose'), 1, perfilPose);
     if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
     if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
       const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
@@ -5102,7 +5236,7 @@ function generarSVG(opc = {}) {
 
 
 
-Object.assign(__e, { POSE_FIRME, poseAleatoria, muestrearColorLibre, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, buscarAtuendos, listarRegiones, listarCatalogo, tintesDelAnio, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
+Object.assign(__e, { POSE_FIRME, poseAleatoria, muestrearColorLibre, renderizar, PIELES, CABELLOS, TINTES, ATUENDOS, PRENDAS, REGIONES, CORPULENCIAS, POSTURAS, ETNIAS, TINTES_POR_ID, distribucionColor, catalogoColores, muestrearColor, perfilDe, PERFILES, edadesDe, buscarAtuendos, listarRegiones, listarCatalogo, tintesDelAnio, generarPaleta, generarPersona, generarRopaNueva, generarPersonaConRopaNueva, generarSVG });
 __e.PEINADOS = __m['cabeza'].PEINADOS;
 __e.BARBAS = __m['cabeza'].BARBAS;
 __e.TOCADOS = __m['cabeza'].TOCADOS;
