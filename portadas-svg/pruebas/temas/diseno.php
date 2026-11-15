@@ -148,7 +148,9 @@ return [
             try {
                 Fuentes::usarExtras("$dir/extra");
                 verdadero(TextoATrazos::esDerechaAIzquierda('אב גד'), 'dos palabras de derecha a izquierda');
-                verdadero(!TextoATrazos::esDerechaAIzquierda('אב Hola'), 'mezclado no cuenta');
+                verdadero(TextoATrazos::esDerechaAIzquierda('אב Hola'), 'manda la primera palabra con dirección');
+                verdadero(!TextoATrazos::esDerechaAIzquierda('Hola אב'), 'empieza en izquierda a derecha');
+                verdadero(!TextoATrazos::esDerechaAIzquierda('12 (3)'), 'sin palabras no hay dirección');
                 verdadero(!TextoATrazos::esDerechaAIzquierda(''), 'vacío no cuenta');
                 Generador::escribir(libroDeEjemplo(['contratapa' => 'אב גד', 'cita' => '']), "$dir/rtl", true);
                 Generador::escribir(libroDeEjemplo(['contratapa' => 'Hola mundo']), "$dir/ltr", true);
@@ -243,5 +245,26 @@ return [
             igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/negra.png", 'imagen_opacidad' => 0.1])), 'con poca opacidad se lee');
             igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/blanca.png", 'imagen_opacidad' => 1])), 'una imagen blanca no estorba');
         });
+    },
+
+    'El bidi ordena números, espacios y paréntesis entre palabras de derecha a izquierda' => function (): void {
+        $formas = ['אב' => [1, true, []], 'גד' => [1, true, []]];
+        $orden = static function (array $trozos) use ($formas): array {
+            $metodo = new ReflectionMethod(TextoATrazos::class, 'enOrdenVisual');
+
+            return $metodo->invoke(new TextoATrazos(), $trozos, $formas);
+        };
+        // Un número entre dos palabras se queda entre ellas, y el orden de lectura es de derecha a izquierda.
+        igual(['גד', ' ', '12', ' ', 'אב'], $orden(['אב', ' ', '12', ' ', 'גד']));
+        // Una palabra de izquierda a derecha en medio de un párrafo de derecha a izquierda ocupa su sitio de lectura.
+        igual(['גד', ' ', 'Hola', ' ', 'אב'], $orden(['אב', ' ', 'Hola', ' ', 'גד']));
+        // Los paréntesis se espejan: el que abre queda a la derecha, con la forma del que cierra.
+        igual(['(', 'אב', ')'], $orden(['(', 'אב', ')']));
+        igual(['(', 'גד', ' ', 'אב', ')'], $orden(['(', 'אב', ' ', 'גד', ')']));
+        // Un párrafo de izquierda a derecha con una palabra hebrea no cambia de sitio sus tramos.
+        igual(['Hola', ' ', 'אב', ' ', 'fin'], $orden(['Hola', ' ', 'אב', ' ', 'fin']));
+        igual(['Hola', ' ', '12'], $orden(['Hola', ' ', '12']));
+        // Sin palabras de derecha a izquierda no se toca nada, ni siquiera los paréntesis.
+        igual(['(', 'a', ')'], $orden(['(', 'a', ')']));
     },
 ];
