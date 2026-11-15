@@ -123,11 +123,12 @@ final class Privacy
     /**
      * Whether this business is named after someone who may still be alive, and so must not be shown: its
      * name (or legal name) holds a given name and its directory is not old enough, or has no known year.
+     * A business the owner has marked publishable (with the evidence that it is not a person's name) is shown.
      */
     public function mayNameALivingPerson(JuridicalEntity $business): bool
     {
         $latest = $this->latestPublishableYear;
-        if ($latest === null) {
+        if ($latest === null || $business->isMarkedPublishable()) {
             return false;
         }
 
