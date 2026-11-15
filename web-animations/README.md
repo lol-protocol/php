@@ -33,6 +33,11 @@ web-animations/
 │   ├── particles-in-bounds.mjs        Test automático: las partículas de G no se hunden en el piso ni en las paredes,
 │   │                                  tampoco al achicar o agrandar la ventana
 │   ├── physics-object.mjs             Test automático: PhysicsObject (ceros, modos clamp y reflect, bordes de la ventana)
+│   ├── toggles-y-red.mjs              Test automático: alternadores (un solo callback al reanudar), red radial con los
+│   │                                  anillos cerrados, la plantilla de secuencias junto a common.js y AnimationManager
+│   │                                  que en pausa no pide cuadros
+│   ├── dashboard-modal.mjs            Test automático: el modal de la galería (cierre con ×, fondo y Escape; diálogo
+│   │                                  accesible con el foco dentro; «Copiar iframe»)
 │   └── index.html                     Tests manuales en navegador: validación,
 │                                      accesibilidad y rendimiento
 ├── docs/
@@ -90,9 +95,15 @@ la que baja Playwright), pásalo con `CHROMIUM=/ruta/al/chromium npm test`. Desp
 `tests/particles-in-bounds.mjs` avanza la lluvia de partículas (G) 1.500 cuadros, con
 números al azar de semilla fija, y falla si alguna partícula queda bajo el piso o fuera
 de una pared; lo repite al achicar y al agrandar la ventana, porque los bordes siguen
-su tamaño. Por último `tests/physics-object.mjs` prueba `PhysicsObject` en una página
+su tamaño. `tests/physics-object.mjs` prueba `PhysicsObject` en una página
 mínima: que un `0` pasado como configuración se respete, los dos modos de rebote y que
-los bordes por defecto sean los de la ventana. Corre en CI en cada push.
+los bordes por defecto sean los de la ventana. `tests/toggles-y-red.mjs` fija que
+`SequenceToggle` y `ParticleEmitterToggle` hagan una sola cosa al reanudar con `toggle()`,
+que `createRadialWeb` cierre cada anillo y que el código de la plantilla `jsSequenceAnimation`
+se cargue junto a `common.js`. Por último `tests/dashboard-modal.mjs` abre el modal de detalles
+de la galería y comprueba que se cierre con la ×, con el fondo y con Escape, que sea un diálogo
+accesible (`role`, `aria-modal`, foco dentro, Tab que da la vuelta y foco de vuelta al cerrar) y
+que «Copiar iframe» avise de que copió. `AnimationManager` en pausa ya no pide cuadros. Corre en CI en cada push.
 
 `tests/index.html` tiene además suites manuales (validación, accesibilidad
 WCAG 2.1 AA, rendimiento) — ver [`tests/README.md`](tests/README.md).

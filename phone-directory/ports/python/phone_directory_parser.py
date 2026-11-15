@@ -140,7 +140,11 @@ class PhonePattern:
     """Phone formats, as in the PHP PhonePattern: digit groups, the named exchange of early directories
     ("BUtterfield 8-4521") and, per language, the formats of that language's countries."""
 
-    REGEX = r'\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b|\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b'
+    # Digit groups may be joined by a spaced hyphen ("555 - 123 - 4567"), and the area code may be in parentheses.
+    REGEX = (r'\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b'
+             r'|\b\d{3}(?:[-.\s]|\s[-.]\s)?\d{3}(?:[-.\s]|\s[-.]\s)?\d{4}\b'
+             r'|(?<![\d+])\(\d{3}\)\s?\d{3}[-.\s]?\d{4}\b'
+             r'|\b\d{10}\b')
 
     # The looser formats are kept per language because they would read a house number as part of a phone
     # in another language's directory.
@@ -244,24 +248,29 @@ class StreetRules:
     house number first and only words after it) or weak (the house number last, or a dwelling line, which
     only count once the record's name is read)."""
 
+    # BEGIN generated: palabras/calles (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it']
     # Languages whose addresses put the house number after the street name ("Calle Mayor 12", "Via Roma 10").
     NUMBER_LAST_LANGUAGES = ('es', 'pt', 'it', 'de')
 
     MARKERS = {
-        'es': ['calle', 'c/', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
-        'en': ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln',
-               'boulevard', 'blvd', 'circle', 'cir'],
+        'es': ['calle', 'c/', 'avenida', 'av', 'avda', 'plaza', 'pza', 'pasaje', 'camino', 'ruta', 'carrera'],
+        'en': ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln', 'boulevard', 'blvd', 'circle', 'cir'],
         'fr': ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
         'pt': ['rua', 'avenida', 'av', 'praça', 'alameda', 'estrada', 'largo'],
         'de': ['ring', 'hof'],
         'it': ['via', 'viale', 'corso', 'piazza', 'largo', 'strada'],
     }
     # German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
-    SUFFIXES = {'de': ['straße', 'strasse', 'allee', 'weg', 'platz']}
+    SUFFIXES = {
+        'de': ['straße', 'strasse', 'allee', 'weg', 'platz', 'str'],
+    }
     # Street words that are also the usual abbreviation opening a name ("Dr." doctor, "St." saint): they only
     # make a street when the line has a digit or they are not its first word.
-    NAME_ABBREVIATIONS = {'en': ['dr', 'st']}
+    NAME_ABBREVIATIONS = {
+        'en': ['dr', 'st'],
+    }
+    # END generated: palabras/calles
 
     _patterns: Dict[str, 're.Pattern'] = {}
     _abbreviations: Dict[str, Optional['re.Pattern']] = {}
@@ -302,7 +311,8 @@ class StreetRules:
             return False
         if re.search(r'\d', line):
             return True
-        return any(line[:m.start()].strip() != '' for m in matches)
+        # Not first, and not inside a bracket either: "John (Dr.)" is a title after a name, not a street.
+        return any(line[:m.start()].strip() != '' and not re.search(r'[(\[]$', line[:m.start()]) for m in matches)
 
     @classmethod
     def strong(cls, line: str, language: str) -> Optional[str]:
@@ -483,6 +493,13 @@ class SingleLineEntrySplitter:
         # A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
         if not re.search(_L, name) or street == '':
             return None
+
+        # Where the house number comes first, a "street" field that opens with words before its number
+        # ("John 12 Oak Street 555-123-4567", after "SMITH,") holds the rest of the name too.
+        if language not in StreetRules.NUMBER_LAST_LANGUAGES:
+            before = re.match(r'([^\d]*' + _L + r'[^\d]*)\d', street)
+            if before and not looks_like_street(before.group(1)):
+                return None
         return {'name': name, 'street': street, 'phone': phone}
 
     @classmethod
@@ -528,16 +545,19 @@ class MultiLanguagePhoneDirectoryParser:
 
     # Only vocabulary distinctive enough to override English, the baseline language; words that are also
     # English ("plaza", "avenue", "via") would otherwise misdetect an English directory.
+    # BEGIN generated: palabras/deteccion (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     DETECTION_MARKERS = {
         'es': ['calle', 'avenida', 'pasaje', 'camino', 'ruta', 'carrera'],
         'fr': ['rue', 'allée', 'cours'],
         'pt': ['rua', 'avenida', 'praça', 'alameda', 'estrada', 'largo'],
-        'de': [],
+        'de': [],  # no words of its own: detected by the street suffixes only
         'it': ['viale', 'corso', 'piazza', 'largo', 'strada'],
     }
+    # END generated: palabras/deteccion
 
     # Words that name a kind of business, or a family firm ("Smith & Sons", "Hnos."), and that almost nobody
     # has for a surname. A word many people carry as a surname (Baker, Miller, Bank...) does not belong here.
+    # BEGIN generated: palabras/empresas (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     ENTITY_TYPE_MARKERS = {
         'es': ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel', 'banco', 'farmacia', 'hospital', 'hnos', 'hermanos', 'hijos', 'sucesores', 'taller', 'ferretería', 'clínica', 'panadería', 'carnicería', 'librería', 'zapatería'],
         'en': ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy', 'hospital', 'sons', 'bros', 'associates', 'enterprises', 'industries', 'services', 'plumbing', 'garage', 'bakery', 'hardware', 'clinic', 'pub', 'motel'],
@@ -546,6 +566,7 @@ class MultiLanguagePhoneDirectoryParser:
         'de': ['gmbh', 'ag', 'kg', 'ohg', 'apotheke', 'bäckerei', 'gasthaus', 'restaurant', 'hotel', 'bank', 'krankenhaus', 'gebrüder', 'söhne', 'werkstatt', 'metzgerei', 'tischlerei', 'klinik'],
         'it': ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel', 'banca', 'farmacia', 'ospedale', 'fratelli', 'figli', 'officina', 'macelleria', 'ferramenta', 'pasticceria', 'pizzeria', 'clinica'],
     }
+    # END generated: palabras/empresas
 
     SEPARATOR_PATTERN = re.compile(r'^(?:[-=_*]\s*){2,}$')
 

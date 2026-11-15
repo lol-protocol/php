@@ -43,8 +43,11 @@ return [
         verdadero(str_contains($ficha('en'), 'is a work by Marcus Aurelius, in the Roman tradition.'), $ficha('en'));
         verdadero(str_contains($ficha('en'), 'Text type: Philosophy and essay.') && str_contains($ficha('en'), 'Translated by T. 200 pages.'), $ficha('en'));
         verdadero(str_contains($ficha('pt-BR'), 'é uma obra de') && str_contains($ficha('fr'), 'est une œuvre de'), 'pt o fr');
-        igual($ficha('es'), $ficha('de')); // sin frases en alemán: español
-        igual(['es', 'en', 'pt', 'fr'], Frases::idiomas());
+        igual($ficha('es'), $ficha('nl')); // sin frases en neerlandés: español
+        igual(['es', 'en', 'pt', 'fr', 'de', 'it', 'ca'], Frases::idiomas());
+        verdadero(str_contains($ficha('de'), 'ist ein Werk von Marcus Aurelius, Tradition: römisch.') && str_contains($ficha('de'), 'Übersetzung von T. 200 Seiten.'), $ficha('de'));
+        verdadero(str_contains($ficha('it'), 'è un\'opera di Marcus Aurelius, di tradizione romana.') && str_contains($ficha('it'), 'Tipo di testo: Filosofia e saggio.'), $ficha('it'));
+        verdadero(str_contains($ficha('ca'), 'és una obra de Marcus Aurelius, de tradició romana.') && str_contains($ficha('ca'), 'Tipus de text: Filosofia i assaig.'), $ficha('ca'));
         // Cada idioma traduce las 16 tradiciones y las 27 categorías.
         foreach (Frases::idiomas() as $idioma) {
             foreach (Catalogo::tradiciones() as $tradicion) {

@@ -6,11 +6,14 @@ require __DIR__ . '/../src/cargar.php';
 
 use ParsingFbInMas\Cruce;
 use ParsingFbInMas\Detector;
+use ParsingFbInMas\Diagnostico;
 use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Json;
 use ParsingFbInMas\Lote;
 use ParsingFbInMas\Metadatos;
+use ParsingFbInMas\OpcionesCruce;
 use ParsingFbInMas\Perfil;
+use ParsingFbInMas\Purga;
 use ParsingFbInMas\Revision;
 use ParsingFbInMas\Sensibles;
 use ParsingFbInMas\Wikidata;
@@ -199,6 +202,13 @@ igual('sensibles: salud y religión, con tilde y mayúscula', ['salud', 'religi�
 igual('sensibles: política y origen étnico', ['política o sindical', 'origen étnico'], Sensibles::buscar('Militante del partido comunista, mapuche'));
 igual('sensibles: palabras ambiguas no dan falsas alarmas', [], Sensibles::buscar('Barrio Iglesia Vieja, Roma, Italia'));
 igual('sensibles: una raíz no marca a media palabra', [], Sensibles::buscar('Mi profesión es la tecnología'));
+// El reparto de trabajo que documenta el README: el filtro del repo cubre lo dicho de un tercero, Sensibles lo dicho de uno mismo.
+$deTercero = Revision::marcas('Fulano tiene cáncer');
+igual('revision: lo dicho de un tercero lo marca el filtro del repo', true, in_array('dato sensible (salud)', $deTercero, true));
+$deUnoMismo = Revision::marcas('Tengo cáncer');
+igual('revision: lo dicho de uno mismo lo marca Sensibles, no el filtro del repo', [false, true], [in_array('dato sensible (salud)', $deUnoMismo, true), in_array('posible dato sensible: salud', $deUnoMismo, true)]);
+igual('revision: religión de un tercero, por el filtro del repo', true, in_array('dato sensible (religión)', Revision::marcas('la familia era judía'), true));
+igual('revision: religión de uno mismo, por Sensibles', true, in_array('posible dato sensible: religión', Revision::marcas('Soy evangélica'), true));
 igual('revision: un RUT sale marcado', true, in_array('dato personal (RUT)', Revision::marcas('Mi RUT es 12.345.678-5'), true));
 igual('revision: una acusación sale marcada', true, in_array('acusación de delito', Revision::marcas('Ese tipo es un ladrón y estuvo preso por robo'), true));
 igual('revision: sin etiquetas repetidas', Revision::marcas('cáncer cáncer cáncer'), array_values(array_unique(Revision::marcas('cáncer cáncer cáncer'))));
@@ -303,6 +313,142 @@ foreach (['no es json', '[]', '[{"status":"Permission denied"}]', '"texto"'] as 
         igual("wikitree api: «{$malo}» lanza", true, true);
     }
 }
+
+// --- Purga de lo ya generado (punto 4) ---
+$excluirPurga = Exclusiones::desdeTexto("twitter:danaejemplo\nwikidata:Q2\n");
+$quitar = Purga::linea((string) json_encode(['red' => 'twitter', 'usuario' => 'DanaEjemplo', 'url' => 'https://x.com/danaejemplo'], Lote::JSON), $excluirPurga);
+igual('purga: la persona de la lista se quita', [null, false], [$quitar['linea'], $quitar['ilegible']]);
+$otra = '{"red":"twitter","usuario":"otra","url":"https://x.com/otra"}';
+igual('purga: otra persona se conserva tal cual, byte a byte', [$otra, 0], [Purga::linea($otra, $excluirPurga)['linea'], Purga::linea($otra, $excluirPurga)['parientes']]);
+$conParientes = '{"red":"wikidata","usuario":"Q1","url":"https://www.wikidata.org/wiki/Q1","parientes":[{"relacion":"padre","nombre":null,"id":"Q2"},{"relacion":"madre","nombre":null,"id":"Q8"}]}';
+$rp = Purga::linea($conParientes, $excluirPurga);
+$parientesQueQuedan = Json::en(json_decode((string) $rp['linea'], true), 'parientes');
+igual('purga: de un perfil que se queda se quita el pariente excluido', [1, ['Q8']], [$rp['parientes'], array_column(is_array($parientesQueQuedan) ? $parientesQueQuedan : [], 'id')]);
+igual('purga: una línea que no es JSON se conserva y se marca ilegible', [true, 'esto no es json'], [Purga::linea('esto no es json', $excluirPurga)['ilegible'], Purga::linea('esto no es json', $excluirPurga)['linea']]);
+igual('purga: un arreglo JSON tampoco es un perfil', true, Purga::linea('[1,2,3]', $excluirPurga)['ilegible']);
+
+// --- Wikidata endurecido (punto 8) ---
+$muestraWd = (string) file_get_contents(__DIR__ . '/muestras/wikidata-muestra.json');
+$gz = sys_get_temp_dir() . '/pfm-wd-' . getmypid() . '.json.gz';
+file_put_contents($gz, (string) gzencode($muestraWd));
+$deGz = [];
+$rGz = Wikidata::recorrer($gz, static function (Perfil $p) use (&$deGz): void {
+    $deGz[] = $p->usuario;
+});
+unlink($gz);
+igual('wikidata: un .json.gz da las mismas personas que el texto plano', ['Q1', 'Q4'], $deGz);
+igual('wikidata: cuenta todas las líneas leídas (6: los corchetes y 4 entidades)', 6, $rGz['lineas']);
+$conRota = sys_get_temp_dir() . '/pfm-wd-rota-' . getmypid() . '.json';
+file_put_contents($conRota, str_replace("\n]", "\n,{\"id\":\"Q9\",\"P570\":{\"id\":\"Q5\"\n]", $muestraWd));
+$deRota = [];
+$rRota = Wikidata::recorrer($conRota, static function (Perfil $p) use (&$deRota): void {
+    $deRota[] = $p->usuario;
+});
+unlink($conRota);
+igual('wikidata: una línea corrupta se salta y no detiene la corrida', [['Q1', 'Q4'], 1], [$deRota, $rRota['corruptas']]);
+$avisos = 0;
+Wikidata::recorrer(__DIR__ . '/muestras/wikidata-muestra.json', static function (): void {
+}, null, null, null, static function (int $lineas, int $aceptadas) use (&$avisos): void {
+    $avisos++;
+}, 2);
+igual('wikidata: el progreso se avisa cada N líneas (6 líneas, cada 2: 3 avisos)', 3, $avisos);
+$bz = sys_get_temp_dir() . '/pfm-wd-' . getmypid() . '.json.bz2';
+file_put_contents($bz, 'x');
+if (function_exists('bzopen')) {
+    igual('wikidata: .bz2 con la extensión instalada no falla por falta de extensión', true, true);
+} else {
+    try {
+        Wikidata::recorrer($bz, static function (): void {
+        });
+        igual('wikidata: .bz2 sin la extensión lanza', true, false);
+    } catch (RuntimeException $e) {
+        igual('wikidata: .bz2 sin la extensión lanza y dice qué falta', true, str_contains($e->getMessage(), 'bz2'));
+    }
+}
+unlink($bz);
+
+// --- Cruce: opciones, parientes y generadores (puntos 2 y 3) ---
+$ficha = static fn (string $nombre, string $nac, ?string $lugar = null, array $parientes = []): array => [
+    'red' => 'x', 'url' => 'u-' . $nombre, 'nombre' => $nombre, 'nacimiento' => $nac, 'muerte' => '1920',
+    'lugar_nacimiento' => $lugar, 'parientes' => $parientes, 'posiblemente_vivo' => false,
+];
+$pa = $ficha('Ana Pérez Soto', '1850');
+$pb = $ficha('Ana Pérez Soto', '1853');
+igual('opciones: por defecto, 3 años de diferencia sí es candidata', 1, count(Cruce::candidatos([$pa], [$pb])['candidatos']));
+igual('opciones: --anios=2 la descarta', 0, count(Cruce::candidatos([$pa], [$pb], 'spa', new OpcionesCruce(0.6, 2))['candidatos']));
+igual('opciones: tres palabras en común exigidas, con solo dos coincidentes, no hay candidata', 0,
+    count(Cruce::candidatos([$ficha('Ana Pérez', '1850')], [$ficha('Ana Pérez Soto', '1850')], 'spa', new OpcionesCruce(0.6, 5, 3))['candidatos']));
+$parcialA = $ficha('Ana Pérez', '1850');
+$parcialB = $ficha('Ana Pérez Soto', '1853');
+igual('opciones: con 2 de 3 palabras (puntaje 0,67), el mínimo por defecto la acepta', 1, count(Cruce::candidatos([$parcialA], [$parcialB])['candidatos']));
+igual('opciones: un puntaje mínimo de 0,9 la descarta', 0, count(Cruce::candidatos([$parcialA], [$parcialB], 'spa', new OpcionesCruce(0.9))['candidatos']));
+foreach ([[0.0, 5, 2], [1.5, 5, 2], [0.6, -1, 2], [0.6, 5, 0]] as [$u, $an, $pal]) {
+    try {
+        new OpcionesCruce($u, $an, $pal);
+        igual("opciones: ($u, $an, $pal) lanza", true, false);
+    } catch (InvalidArgumentException) {
+        igual("opciones: ($u, $an, $pal) lanza", true, true);
+    }
+}
+$padre = [['relacion' => 'padre', 'nombre' => 'Pedro Pérez', 'id' => 'Q1']];
+$conPadreA = Cruce::candidatos([$ficha('Ana Pérez', '1850', null, $padre)], [$ficha('Ana Pérez Soto', '1851', null, $padre)])['candidatos'];
+$sinPadre = Cruce::candidatos([$ficha('Ana Pérez', '1850')], [$ficha('Ana Pérez Soto', '1851')])['candidatos'];
+igual('parientes: el mismo padre por nombre suma evidencia', true, in_array('comparten un pariente por nombre', $conPadreA[0]['evidencia'] ?? [], true));
+igual('parientes: y sube el puntaje', true, ($conPadreA[0]['puntaje'] ?? 0) > ($sinPadre[0]['puntaje'] ?? 1) || ($conPadreA[0]['puntaje'] ?? 0) === 1.0);
+$otroPadre = Cruce::candidatos([$ficha('Ana Pérez', '1850', null, $padre)], [$ficha('Ana Pérez Soto', '1851', null, [['relacion' => 'padre', 'nombre' => 'Juan Rojas', 'id' => 'Q9']])])['candidatos'];
+igual('parientes: un padre con otro nombre no suma', false, in_array('comparten un pariente por nombre', $otroPadre[0]['evidencia'] ?? [], true));
+$sinNombre = Cruce::candidatos([$ficha('Ana Pérez', '1850', null, [['relacion' => 'padre', 'nombre' => null, 'id' => 'Q1']])], [$ficha('Ana Pérez Soto', '1851', null, [['relacion' => 'padre', 'nombre' => null, 'id' => 'Q1']])])['candidatos'];
+igual('parientes: sin nombre (solo un identificador) no se compara', false, in_array('comparten un pariente por nombre', $sinNombre[0]['evidencia'] ?? [], true));
+$generador = static function () use ($pa) {
+    yield $pa;
+};
+$indiceB = Cruce::indexar([$pb]);
+$omitidosGen = 0;
+igual('cruce: A puede ser un generador y B un índice armado aparte', 1, count(Cruce::cruzar($generador(), $indiceB, 'spa', new OpcionesCruce(), $omitidosGen)));
+$vivoParaIndice = $ficha('Fulano Vivo', '1990');
+$vivoParaIndice['posiblemente_vivo'] = true;
+$indiceConVivo = Cruce::indexar([$pb, $vivoParaIndice]);
+igual('cruce: el índice omite a los que pueden estar vivos y los cuenta', [1, 1], [count($indiceConVivo->fichas), $indiceConVivo->omitidos]);
+igual('cruce: el índice solo guarda una referencia corta, no el perfil entero', ['red', 'url', 'nombre', 'nacimiento', 'muerte'], array_keys($indiceConVivo->fichas[0]['ref']));
+
+// --- Sensibles en seis idiomas (punto 7) ---
+foreach ([
+    ['francés', 'Je suis catholique et j\'ai un cancer', ['salud', 'religión']],
+    ['portugués', 'Sou católica e tenho depressão', ['salud', 'religión']],
+    ['italiano', 'Sono ebreo e ho il diabete', ['salud', 'religión']],
+    ['alemán', 'Ich bin jüdisch und habe Krebs', ['salud', 'religión']],
+    ['alemán política', 'Mitglied der Gewerkschaft, Sinti', ['política o sindical', 'origen étnico']],
+    ['francés vida sexual', 'Je suis lesbienne', ['vida sexual']],
+    ['italiano salud', 'Ho una malattia cronica', ['salud']],
+    ['portugués origen', 'Sou de origem cigana e quilombola', ['origen étnico']],
+] as [$idioma, $frase, $esperadas]) {
+    igual("sensibles ($idioma): $frase", $esperadas, Sensibles::buscar($frase));
+}
+foreach (['Historia de Roma y de la Iglesia', 'Histoire de Rome et de son église', 'Genealogista e arquivista', 'Archivar und Familienforscher', 'Storia della famiglia e dei registri'] as $limpia) {
+    igual("sensibles: «{$limpia}» no marca nada", [], Sensibles::buscar($limpia));
+}
+
+// --- BillionGraves y obituarios (punto 9) ---
+$bg = Detector::analizar(muestra('billiongraves'))->aArreglo();
+igual('billiongraves: red, número de registro y nombre', ['billiongraves', '12345678', 'Maria Ficticia'], [$bg['red'], $bg['usuario'], $bg['nombre']]);
+igual('billiongraves: fechas y lugar de una fallecida', ['1851-04-02', '1921-09-30', 'Valparaiso, Chile', false], [$bg['nacimiento'], $bg['muerte'], $bg['lugar_nacimiento'], $bg['posiblemente_vivo']]);
+$ob = Detector::analizar(muestra('obituario'))->aArreglo();
+igual('obituario: lo toma el analizador genérico (JSON-LD con deathDate)', ['generico', 'Ana Ficticia', '2020-03-02', false], [$ob['red'], $ob['nombre'], $ob['muerte'], $ob['posiblemente_vivo']]);
+igual('obituario: el correo y el teléfono no salen', false, str_contains((string) json_encode($ob), 'familia@') || str_contains((string) json_encode($ob), '+56 9'));
+
+// --- Diagnóstico para validar contra páginas reales (punto 1) ---
+$inf = Diagnostico::informe(muestra('facebook'));
+igual('diagnóstico: qué analizador y qué campos', ['facebook', true, true, false], [$inf['analizador'], $inf['campos']['nombre'], $inf['campos']['descripcion'], $inf['campos']['titular']]);
+igual('diagnóstico: lista las etiquetas que encontró', ['og:title', 'og:description'], $inf['etiquetas']);
+igual('diagnóstico: la URL sale con la ruta enmascarada', 'https://www.facebook.com/xxx.xxxxxxx/', $inf['url']);
+igual('diagnóstico: el informe no trae el nombre ni el usuario', false, str_contains((string) json_encode($inf), 'ana.ejemplo') || str_contains((string) json_encode($inf), 'Ana Ejemplo'));
+igual('diagnóstico: una página que ningún analizador reconoce lo dice', [null, true], [Diagnostico::informe(muestra('desconocida'))['analizador'], Diagnostico::informe(muestra('desconocida'))['avisos'] !== []]);
+igual('diagnóstico: detecta JSON-LD y la persona', [true, true], [Diagnostico::informe(muestra('obituario'))['datos_estructurados']['json_ld'], Diagnostico::informe(muestra('obituario'))['datos_estructurados']['persona']]);
+$esq = Diagnostico::esqueleto(muestra('twitter'));
+igual('esqueleto: conserva las etiquetas y la forma, sin letras ni dígitos reales', true, str_contains($esq, 'etiqueta og:title = xxxx xxxxxxx (@xxxxxxxxxxx) / x') && !str_contains($esq, 'Dana') && !str_contains($esq, 'danaejemplo'));
+igual('esqueleto: enmascara dígitos y conserva la puntuación', 'xxx-99 (xx) 9', Diagnostico::enmascarar('Ana-12 (de) 7'));
+igual('esqueleto: enmascara también letras con tilde y eñes', 'xxxxx xxxxx', Diagnostico::enmascarar('María Muñoz'));
+igual('esqueleto: de una persona fallecida enmascara también sus fechas y lugares', true, str_contains(Diagnostico::esqueleto(muestra('billiongraves')), 'persona.muerte = 9999-99-99') && !str_contains(Diagnostico::esqueleto(muestra('billiongraves')), '1921'));
 
 // CLI: no descarga de la red
 $salida = [];
@@ -481,10 +627,58 @@ file_put_contents("$tmp/roto.json", 'no es json');
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' ' . escapeshellarg("$tmp/roto.json") . ' 2>/dev/null', $salida, $codigo);
 igual('analizar.php: un .json roto sale con 1', 1, $codigo);
+
+// bin/purgar.php
+file_put_contents("$tmp/generado.jsonl", implode("\n", [
+    '{"red":"facebook","usuario":"ana.ejemplo","url":"https://www.facebook.com/ana.ejemplo"}',
+    '{"red":"twitter","usuario":"danaejemplo","url":"https://x.com/danaejemplo"}',
+    '{"red":"twitter","usuario":"otra","url":"https://x.com/otra"}',
+]) . "\n");
+file_put_contents("$tmp/purga.txt", "facebook:ana.ejemplo\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/purgar.php') . ' ' . escapeshellarg("$tmp/generado.jsonl") . ' --excluir=' . escapeshellarg("$tmp/purga.txt") . ' 2>/dev/null', $salida, $codigo);
+igual('purgar.php: a la salida estándar quita a una persona y no toca el archivo', [0, 2, 3], [$codigo, count($salida), count(file("$tmp/generado.jsonl") ?: [])]);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/purgar.php') . ' ' . escapeshellarg("$tmp/generado.jsonl") . ' --excluir=' . escapeshellarg("$tmp/purga.txt") . ' --en-sitio 2>/dev/null', $salida, $codigo);
+igual('purgar.php --en-sitio reescribe el archivo sin la persona y sin dejar temporales', [0, 2, []], [$codigo, count(file("$tmp/generado.jsonl") ?: []), glob("$tmp/*.tmp") ?: []]);
+file_put_contents("$tmp/con-basura.jsonl", "no es json\n" . '{"red":"twitter","usuario":"otra","url":"https://x.com/otra"}' . "\n");
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/purgar.php') . ' ' . escapeshellarg("$tmp/con-basura.jsonl") . ' --excluir=' . escapeshellarg("$tmp/purga.txt") . ' 2>/dev/null', $salida, $codigo);
+igual('purgar.php: una línea ilegible se conserva y el programa sale con 1', [1, 2], [$codigo, count($salida)]);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/purgar.php') . ' ' . escapeshellarg("$tmp/generado.jsonl") . ' 2>&1', $salida, $codigo);
+igual('purgar.php: sin --excluir sale con 2', 2, $codigo);
+// analizar.php sin --jsonl sigue dando un solo arreglo JSON
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' ' . escapeshellarg(__DIR__ . '/muestras/twitter.html') . ' ' . escapeshellarg(__DIR__ . '/muestras/facebook.html') . ' 2>/dev/null', $salida, $codigo);
+$arreglo = json_decode(implode("\n", $salida), true);
+igual('analizar.php sin --jsonl: un solo arreglo JSON con las dos páginas', [0, true, 2], [$codigo, is_array($arreglo) && array_is_list($arreglo), is_array($arreglo) ? count($arreglo) : -1]);
 file_put_contents("$tmp/excluir-cruce.txt", "wikitree:Gonzalez-1234\n");
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --excluir=' . escapeshellarg("$tmp/excluir-cruce.txt") . ' 2>/dev/null', $salida, $codigo);
 igual('cruzar.php --excluir: la persona excluida no genera candidatos', [0, 0], [$codigo, count($salida)]);
+
+foreach ([['--umbral=0', 'umbral cero'], ['--umbral=2', 'umbral mayor que 1'], ['--anios=-3', 'años negativos'], ['--palabras=0', 'cero palabras']] as [$bandera, $que]) {
+    $salida = [];
+    exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' ' . $bandera . ' 2>&1', $salida, $codigo);
+    igual("cruzar.php: $que sale con 2 y lo explica", [2, true], [$codigo, $salida !== []]);
+}
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/no-existe.jsonl") . ' 2>&1', $salida, $codigo);
+igual('cruzar.php: un archivo que no existe sale con 1', 1, $codigo);
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --anios=0 2>/dev/null', $salida, $codigo);
+igual('cruzar.php --anios=0: la pareja de 1850 y 1851 deja de ser candidata', [0, 0], [$codigo, count($salida)]);
+
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' ' . escapeshellarg(__DIR__ . '/muestras/facebook.html') . ' 2>/dev/null', $salida, $codigo);
+$informeCli = json_decode(implode("\n", $salida), true);
+igual('diagnostico.php: escribe el informe en JSON', [0, 'facebook'], [$codigo, is_array($informeCli) ? ($informeCli['analizador'] ?? null) : null]);
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' --esqueleto ' . escapeshellarg(__DIR__ . '/muestras/twitter.html') . ' 2>/dev/null', $salida, $codigo);
+igual('diagnostico.php --esqueleto: sin datos reales', [0, false], [$codigo, str_contains(implode("\n", $salida), 'danaejemplo')]);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' https://x.com/alguien 2>&1', $salida, $codigo);
+igual('diagnostico.php: rechaza una URL', 2, $codigo);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' ' . escapeshellarg("$tmp/no-existe.html") . ' 2>&1', $salida, $codigo);
+igual('diagnostico.php: un archivo que no existe sale con 1', 1, $codigo);
 array_map('unlink', glob("$tmp/*") ?: []);
 rmdir($tmp);
 

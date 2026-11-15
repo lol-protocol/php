@@ -114,10 +114,13 @@ final class PagosController
                 Peticion::redirigir($reenvio);
             }
 
-            $monto = Peticion::monto();
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
             $boletaId = (int) ($_POST['boleta_id'] ?? 0);
+            // La moneda del pago es la de su boleta, o la del pais del cliente si es un anticipo: de ella salen los
+            // decimales con que se lee el monto. (Se vuelve a leer la boleta bajo candado, mas abajo.)
+            $monedaDelPago = $boletaId > 0 ? ($boletaRepo->porId($boletaId)['moneda_codigo'] ?? null) : ($clienteElegido['moneda_codigo'] ?? null);
+            $monto = Peticion::monto('monto', $monedaDelPago !== null ? MonedaRepository::decimales($monedaDelPago) : 2);
 
             if ($token === null) {
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
@@ -219,7 +222,7 @@ final class PagosController
 
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $monto = Peticion::monto();
+            $monto = Peticion::monto('monto', MonedaRepository::decimales($pago['moneda_codigo']));
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
 

@@ -53,7 +53,7 @@ final class ReglasDePago
      */
     public static function montoNoSuperaElSaldo(float $monto, array $boleta): bool
     {
-        return Dinero::centavos($monto) <= Dinero::centavos($boleta['saldo']);
+        return Dinero::milesimas($monto) <= Dinero::milesimas($boleta['saldo']);
     }
 
     /**
@@ -69,9 +69,9 @@ final class ReglasDePago
      */
     public static function montoNoSuperaElSaldoAlEditar(float $montoNuevo, array $boleta, float $montoViejo): bool
     {
-        $viejo = Dinero::centavos($montoViejo);
+        $viejo = Dinero::milesimas($montoViejo);
 
-        return Dinero::centavos($montoNuevo) <= max($viejo, Dinero::centavos($boleta['saldo']) + $viejo);
+        return Dinero::milesimas($montoNuevo) <= max($viejo, Dinero::milesimas($boleta['saldo']) + $viejo);
     }
 
     /** El metodo tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
@@ -91,7 +91,7 @@ final class ReglasDePago
      */
     public static function errorDeLosCampos(string $fechaPago, string $metodo, float $monto, ?string $moneda = null, ?string $hoy = null): ?string
     {
-        if (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
+        if (Validacion::faltanCampos([$fechaPago, $metodo], $monto, $moneda !== null ? MonedaRepository::decimales($moneda) : 2)) {
             return 'Completá todos los campos con un monto válido.';
         }
         if ($moneda !== null && !Validacion::montoCabeEnLosDecimales($monto, MonedaRepository::decimales($moneda))) {

@@ -53,3 +53,18 @@ Son textos propios, firmados «Marcalibros»; no citan a ningún autor real. Con
 
 ## 5. Gutenberg
 Todos los ids están `sin_verificar`. Hace falta acceso a `gutenberg.org` y `gutendex.com` para ejecutar `generator/verificar_gutenberg.py`.
+
+## 6. Fase 2 de la ampliación: 50 autores y 500 obras nuevos (de memoria, solo canon)
+Cinco autores más por movimiento, de literaturas poco presentes (rusa, italiana, alemana, polaca, neerlandesa, noruega, japonesa, india, portuguesa, griega y latina). Obras muy conocidas, pero todas escritas de memoria y sin verificar; los títulos de las obras de autores vivos o muertos después de 1955 (Cortázar, Fuentes, Rushdie, Murakami, Eliot, Alberti, Ungaretti, Jiménez, Bulgákov…) se usan solo como metadato, sin frases.
+- **Romanticismo**: Aleksandr Pushkin, Giacomo Leopardi, Heinrich Heine, Adam Mickiewicz, Alphonse de Lamartine
+- **Gótico**: E. T. A. Hoffmann, Oscar Wilde, H. P. Lovecraft, Prosper Mérimée, Nikolái Gógol
+- **Realismo mágico**: Julio Cortázar, Carlos Fuentes, Salman Rushdie, Mijaíl Bulgákov, Haruki Murakami
+- **Realismo**: Stendhal, Iván Turguénev, Antón Chéjov, Theodor Fontane, Mark Twain
+- **Naturalismo**: Giovanni Verga, Gerhart Hauptmann, Jack London, Stephen Crane, Edmond y Jules de Goncourt
+- **Modernismo**: Antonio Machado, Juan Ramón Jiménez, José Enrique Rodó, Enrique González Martínez, José Santos Chocano
+- **Vanguardias**: Paul Éluard, Giuseppe Ungaretti, Gertrude Stein, Rafael Alberti, T. S. Eliot
+- **Barroco**: Jean de La Fontaine, Giambattista Marino, Joost van den Vondel, Andreas Gryphius, António Vieira
+- **Clasicismo**: Eurípides, Esquilo, Aristófanes, Plauto, Friedrich Schiller
+- **Simbolismo**: Aleksandr Blok, Stefan George, Gabriele D'Annunzio, Henrik Ibsen, Georges Rodenbach
+
+Frases nuevas (33, `catalog/frases.yaml`, todas `sin_verificar`): Pushkin, Leopardi, Heine, Mickiewicz, Lamartine, Wilde, Lovecraft, Gógol, Stendhal, Fontane, Crane, Machado, Éluard, Stein, La Fontaine, Marino, Gryphius, Esquilo, Plauto, Schiller, Blok, George, D'Annunzio e Ibsen. La más dudosa de atribución exacta: la de Stein («Sacred Emily») y la de Marino (¿«La Murtoleide»?).

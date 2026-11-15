@@ -14,27 +14,31 @@ final class Validacion
      * se pasa) no es mayor a cero. Mismo chequeo que se repetia a mano en
      * cada controller de alta/edicion.
      */
-    public static function faltanCampos(array $camposTexto, ?float $monto = null): bool
+    public static function faltanCampos(array $camposTexto, ?float $monto = null, int $decimales = 2): bool
     {
         foreach ($camposTexto as $valor) {
             if (trim((string) $valor) === '') {
                 return true;
             }
         }
-        return $monto !== null && !self::montoEnRango($monto);
+        return $monto !== null && !self::montoEnRango($monto, $decimales);
     }
 
-    /** Tope de NUMERIC(14, 2): por encima la base rechaza el INSERT con un 500. */
-    public const MONTO_MAXIMO = 999_999_999_999.99;
+    /** Tope de NUMERIC(15, 3) (migracion 019): por encima la base rechaza el INSERT con un 500. */
+    public const MONTO_MAXIMO = 999_999_999_999.999;
 
     /**
-     * La base guarda montos NUMERIC(14, 2) con CHECK (monto > 0): un 0.004
-     * se redondea a 0.00 y viola el CHECK, y un 1e20 o INF desborda la
+     * La base guarda montos NUMERIC(15, 3) con CHECK (monto > 0): un 0.0004
+     * se redondea a 0.000 y viola el CHECK, y un 1e20 o INF desborda la
      * columna. Ambos terminaban en 500 en vez de en un error de formulario.
      */
-    public static function montoEnRango(float $monto): bool
+    public static function montoEnRango(float $monto, int $decimales = 2): bool
     {
-        return is_finite($monto) && round($monto, 2) >= Dinero::UN_CENTAVO && $monto <= self::MONTO_MAXIMO;
+        // El minimo es la unidad menor de la moneda: un centavo, o una milesima en las de tres decimales. Las de cero
+        // decimales usan el centavo (ahi lo rechaza montoCabeEnLosDecimales(), con un mensaje mas claro).
+        $decimalesDelMinimo = max($decimales, 2);
+
+        return is_finite($monto) && round($monto, $decimalesDelMinimo) >= 1 / (10 ** $decimalesDelMinimo) && $monto <= self::MONTO_MAXIMO;
     }
 
     /**
@@ -46,7 +50,7 @@ final class Validacion
      */
     public static function montoCabeEnLosDecimales(float $monto, int $decimales): bool
     {
-        return $decimales > 0 || Dinero::centavos($monto) % 100 === 0;
+        return $decimales > 0 || Dinero::milesimas($monto) % 1000 === 0;
     }
 
     /**

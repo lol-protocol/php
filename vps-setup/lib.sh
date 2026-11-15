@@ -230,6 +230,13 @@ own_app_dir() {
 # ---------------------------------------------------------------------------
 mem_total_mb() { awk '/^MemTotal:/ {print int($2 / 1024)}' "${MEMINFO_FILE:-/proc/meminfo}" 2> /dev/null || echo 0; }
 
+# disk_free_gb <ruta>: GB libres (enteros) en el disco de esa ruta; si la ruta aun no existe, mira la carpeta que la contiene.
+disk_free_gb() {
+    local p=$1
+    while [ ! -e "$p" ] && [ "$p" != / ]; do p=$(dirname "$p"); done
+    df -Pk "$p" 2> /dev/null | awk 'NR==2 {print int($4 / 1048576)}'
+}
+
 # gunicorn_workers: (2 x CPU + 1), pero no mas de RAM_MB/512 (minimo 2) por app. 1 GB -> 2, 2 GB -> 3 o 4,
 # 4 GB -> 8. GUNICORN_WORKERS=<n> fija el numero a mano (entero positivo).
 gunicorn_workers() {

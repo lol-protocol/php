@@ -61,13 +61,16 @@ function dinero_en_moneda(float $monto, string $codigoMoneda): string
  */
 function campo_monto(string|int|float|null $valor = null, ?string $codigoMoneda = null): string
 {
-    $sinDecimales = $codigoMoneda !== null && \App\Repositories\MonedaRepository::decimales($codigoMoneda) === 0;
-    $minimo = $sinDecimales ? '1' : number_format(\App\Dinero::UN_CENTAVO, 2, '.', '');
+    $decimales = $codigoMoneda !== null ? \App\Repositories\MonedaRepository::decimales($codigoMoneda) : 2;
+    $sinDecimales = $decimales === 0;
+    // El paso es la unidad menor de la moneda: 1 (yen), 0.01 o 0.001 (dinar kuwaiti).
+    $minimo = $sinDecimales ? '1' : number_format(1 / (10 ** $decimales), $decimales, '.', '');
 
     return sprintf(
         '<input type="number" name="monto" id="monto" required min="%s" max="%s" step="%s" value="%s">',
         $minimo,
-        $sinDecimales ? (string) (int) floor(\App\Validacion::MONTO_MAXIMO) : number_format(\App\Validacion::MONTO_MAXIMO, 2, '.', ''),
+        // El tope se corta (no se redondea) a los decimales de la moneda: 999999999999.999 en dos decimales es ...99, no 1e12.
+        substr(number_format(\App\Validacion::MONTO_MAXIMO, 3, '.', ''), 0, 12 + ($decimales > 0 ? 1 + $decimales : 0)),
         $minimo,
         e($valor)
     );

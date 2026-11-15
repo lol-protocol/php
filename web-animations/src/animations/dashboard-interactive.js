@@ -18,11 +18,20 @@ class InteractiveDashboard {
   };
 
   constructor() {
+    this.opener = null; // el botón que abrió el modal: el foco vuelve a él al cerrarlo
     this.initializeEventListeners();
   }
 
   initializeEventListeners() {
     document.addEventListener('click', (e) => {
+      // El modal cuelga de <body>, fuera de las tarjetas: se cierra con la × o con un clic en el fondo
+      // antes de buscar la tarjeta (con ella por delante, ni la × ni el fondo cerraban nada).
+      if (e.target.closest(InteractiveDashboard.SELECTORS.MODAL_CLOSE) ||
+          e.target.matches(InteractiveDashboard.SELECTORS.MODAL_OVERLAY)) {
+        this.closeModal();
+        return;
+      }
+
       const card = e.target.closest(InteractiveDashboard.SELECTORS.CARD);
       if (!card) return;
 
@@ -31,14 +40,64 @@ class InteractiveDashboard {
         this.copyAnimationCode(animId);
       } else if (e.target.closest(InteractiveDashboard.SELECTORS.DETAILS_BTN)) {
         this.showDetailsModal(animId);
-      } else if (e.target.closest(InteractiveDashboard.SELECTORS.MODAL_CLOSE)) {
-        this.closeModal();
       }
+    });
+
+    // El botón «Copiar iframe» está dentro del modal, fuera de las tarjetas.
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.copy-iframe-btn');
+      if (btn) this.copyText(btn.parentElement.querySelector('textarea').value, btn);
     });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') this.closeModal();
+      else if (e.key === 'Tab') this.keepFocusInModal(e);
     });
+  }
+
+  // Con el modal abierto, Tab y Mayús+Tab dan la vuelta dentro de él en vez de salir a la página de atrás.
+  keepFocusInModal(e) {
+    const modal = document.querySelector('.modal-overlay');
+    if (!modal) return;
+    const focusables = [...modal.querySelectorAll('button, a[href], textarea, [tabindex]:not([tabindex="-1"])')];
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (!modal.contains(document.activeElement)) {
+      e.preventDefault();
+      first.focus();
+    } else if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  // Copia al portapapeles con navigator.clipboard y, si la página no es segura o lo rechaza, con un campo
+  // oculto y execCommand. Devuelve si se pudo copiar.
+  async writeClipboard(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (err) {
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      let copied = false;
+      try { copied = document.execCommand('copy'); } catch (failure) { /* no se copió */ }
+      field.remove();
+      return copied;
+    }
+  }
+
+  async copyText(text, btn) {
+    this.showButtonFeedback(btn, await this.writeClipboard(text) ? '✅ Copiado!' : '❌ Error');
   }
 
   getAnimationHtmlSnippet(animId) {
@@ -53,23 +112,17 @@ class InteractiveDashboard {
   }
 
   async copyAnimationCode(animId) {
-    const html = this.getAnimationHtmlSnippet(animId);
     const btn = document.querySelector(`[data-anim-id="${animId}"] ${InteractiveDashboard.SELECTORS.COPY_BTN}`);
-
-    try {
-      await navigator.clipboard.writeText(html);
-      this.showButtonFeedback(btn, '✅ Copiado!');
-    } catch (err) {
-      console.error('Error al copiar:', err);
-      this.showButtonFeedback(btn, '❌ Error');
-    }
+    await this.copyText(this.getAnimationHtmlSnippet(animId), btn);
   }
 
   showButtonFeedback(btn, message) {
-    const originalText = btn.textContent;
+    if (btn.dataset.originalText === undefined) btn.dataset.originalText = btn.textContent;
     btn.textContent = message;
-    setTimeout(() => {
-      btn.textContent = originalText;
+    clearTimeout(btn.feedbackTimer);
+    btn.feedbackTimer = setTimeout(() => {
+      btn.textContent = btn.dataset.originalText;
+      delete btn.dataset.originalText;
     }, InteractiveDashboard.CONFIG.FEEDBACK_DURATION);
   }
 
@@ -83,10 +136,10 @@ class InteractiveDashboard {
     const iframeCode = `&lt;iframe src="${htmlPath}" width="100%" height="600px"&gt;&lt;/iframe&gt;`;
 
     return `
-      <div class="modal-content">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-header">
-          <h2>${data.title}</h2>
-          <button class="modal-close">&times;</button>
+          <h2 id="modal-title">${data.title}</h2>
+          <button type="button" class="modal-close" aria-label="Cerrar">&times;</button>
         </div>
         <div class="modal-body">
           ${this.createSection('📝 Descripción', `<p>${data.description}</p>`)}
@@ -96,7 +149,7 @@ class InteractiveDashboard {
           </div>
           ${this.createSection('⚙️ Técnicas Utilizadas', `<div class="techniques-list">${data.techniques.map(t => `<span class="technique-tag">${t}</span>`).join('')}</div>`)}
           ${this.createSection('📋 Archivo HTML', `<code class="code-block">${htmlPath}</code>`)}
-          ${this.createSection('💻 Código de Inicio Rápido', `<textarea class="code-block code-textarea" readonly>${iframeCode}</textarea><button class="copy-btn" onclick="this.parentElement.querySelector('textarea').select();document.execCommand('copy');">Copiar iframe</button>`)}
+          ${this.createSection('💻 Código de Inicio Rápido', `<textarea class="code-block code-textarea" readonly>${iframeCode}</textarea><button type="button" class="copy-btn copy-iframe-btn">Copiar iframe</button>`)}
           ${this.createSection('🔗 Links', `<div class="links-grid"><a href="animacion-${animId}.html" target="_blank" class="link-btn">Ver Animación ↗</a><a href="animacion-${animId}.css" target="_blank" class="link-btn">Ver CSS ↗</a><a href="animacion-${animId}.js" target="_blank" class="link-btn">Ver JS ↗</a></div>`)}
         </div>
       </div>
@@ -111,8 +164,10 @@ class InteractiveDashboard {
     modal.className = 'modal-overlay';
     modal.innerHTML = this.buildModalHtml(data, animId);
 
+    this.opener = document.activeElement;
     document.body.appendChild(modal);
     setTimeout(() => modal.classList.add('active'), 10);
+    modal.querySelector(InteractiveDashboard.SELECTORS.MODAL_CLOSE).focus();
   }
 
   closeModal() {
@@ -120,6 +175,9 @@ class InteractiveDashboard {
     if (modal) {
       modal.classList.remove('active');
       setTimeout(() => modal.remove(), 300);
+      // El foco vuelve al botón que abrió el modal (si sigue en la página).
+      if (this.opener?.isConnected) this.opener.focus();
+      this.opener = null;
     }
   }
 }

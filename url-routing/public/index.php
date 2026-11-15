@@ -16,6 +16,7 @@ use App\Support\UrlHelper;
 use App\Support\ServiceLocator;
 use App\Support\Logger;
 use App\Support\SessionManager;
+use App\Support\Textos;
 use App\Support\HttpSecurityHeaders;
 use App\Support\RateLimiter;
 use App\Support\RegistroDeUrls;
@@ -145,7 +146,7 @@ function view(string $name, array $data = []): string
         ServiceLocator::getInstance()->getLogger()->warning('View not found', ['view' => $name]);
         http_response_code(500);
 
-        return ErrorPage::page(500, 'Error interno del servidor');
+        return ErrorPage::page(500, Textos::t('error.500'));
     }
 
     try {
@@ -157,7 +158,7 @@ function view(string $name, array $data = []): string
         ]);
         http_response_code(500);
 
-        return ErrorPage::page(500, 'Error interno del servidor');
+        return ErrorPage::page(500, Textos::t('error.500'));
     }
 }
 
@@ -214,6 +215,16 @@ function es_propietario(): bool
 function esc(mixed $text): string
 {
     return UrlHelper::escape($text);
+}
+
+/**
+ * A text in the language of the subdomain (lang/{código}.php; Spanish when it is missing). Plain: esc() it where it is shown.
+ *
+ * @param array<string, string|int> $datos
+ */
+function t(string $clave, array $datos = []): string
+{
+    return Textos::t($clave, $datos);
 }
 
 /**

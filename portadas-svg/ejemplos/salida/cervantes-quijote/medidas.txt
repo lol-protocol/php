@@ -1,0 +1,14 @@
+Libro: Don Quijote de la Mancha — Miguel de Cervantes
+Plantilla: ilustrada; idioma: es
+Clasificación: tradición renacentista · categoría cuentos
+Texto: con las fuentes incrustadas
+Corte: 110 × 178 mm
+Sangrado: 3 mm en cada borde exterior
+Lomo: 24 mm (confírmalo con la imprenta: depende del papel)
+Sin solapas
+
+Tamaño de cada archivo, con sangrado (ancho × alto):
+  portada.svg: 113 × 184 mm
+  contratapa.svg: 113 × 184 mm
+  lomo.svg: 24 × 184 mm
+  cubierta-completa.svg: 250 × 184 mm

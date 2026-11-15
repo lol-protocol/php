@@ -29,9 +29,13 @@ final class ChatLineReviewer
 
     public function __construct(private readonly DefamatoryContentReviewer $reviewer, private readonly string $topicsDir) { }
 
-    public static function create(string $configDir, string $language = 'spa'): self
+    /**
+     * @param string $topics la carpeta de temas dentro de `$configDir`: `chat-topics` (lo normal, frases sobre otra
+     *        persona) o `bio-topics` (lo que alguien dice de sí mismo; ver `config/bio-topics/spa.php`)
+     */
+    public static function create(string $configDir, string $language = 'spa', string $topics = 'chat-topics'): self
     {
-        return new self(DefamatoryContentReviewer::create($configDir, $language), rtrim($configDir, '/') . '/chat-topics');
+        return new self(DefamatoryContentReviewer::create($configDir, $language), rtrim($configDir, '/') . '/' . $topics);
     }
 
     public function review(string $line): ChatLineResult

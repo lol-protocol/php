@@ -29,8 +29,8 @@ def a_svg(esc):
                 f'fill="{prim["color"]}"/>'
             )
         elif tipo == "texto":
-            usados = sorted({c for b in prim["bloques"] for c, _, _ in b["glifos"]})
-            ids = {c: f"g{ord(c):x}" for c in usados}
+            usados = sorted({c for b in prim["bloques"] for c, _, _ in b["glifos"]}, key=lambda c: (0, c) if isinstance(c, str) else (1, c))
+            ids = {c: tx.id_glifo(c) for c in usados}
             lineas.append("<defs>" + "".join(f'<path id="{ids[c]}" d="{tx.trazo(c)}"/>' for c in usados) + "</defs>")
             for b in prim["bloques"]:
                 k = b["tam"] / tx.UNIDADES

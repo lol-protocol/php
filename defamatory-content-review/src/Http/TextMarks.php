@@ -21,13 +21,15 @@ final class TextMarks
 
     /**
      * @param list<string> $languages p. ej. ['spa', 'eng']
+     * @param string $topics `chat-topics` (lo normal: frases sobre otra persona) o `bio-topics` (lo que alguien dice
+     *        de sí mismo, para revisar una biografía; ver `config/bio-topics/spa.php`)
      * @return array{decision: string, marks: list<string>} decision: approve | review | reject; marks, sin repetir
      */
-    public static function of(string $text, string $configDir, array $languages): array
+    public static function of(string $text, string $configDir, array $languages, string $topics = 'chat-topics'): array
     {
         $result = LongText::review($text, static fn(string $part): ChatLineResult => CombinedReview::of(
             $part,
-            array_map(static fn(string $language): ChatLineResult => self::reviewer($configDir, $language)->review($part), $languages)
+            array_map(static fn(string $language): ChatLineResult => self::reviewer($configDir, $language, $topics)->review($part), $languages)
         ));
         $marks = array_map(
             static fn(array $match): string => in_array($match['category'] ?? null, self::DESCRIPTIVE, true) ? (string) $match['original'] : 'insulto',
@@ -37,8 +39,8 @@ final class TextMarks
         return ['decision' => $result->getDecision(), 'marks' => array_values(array_unique($marks))];
     }
 
-    private static function reviewer(string $configDir, string $language): ChatLineReviewer
+    private static function reviewer(string $configDir, string $language, string $topics): ChatLineReviewer
     {
-        return self::$reviewers["{$configDir}|{$language}"] ??= ChatLineReviewer::create($configDir, $language);
+        return self::$reviewers["{$configDir}|{$language}|{$topics}"] ??= ChatLineReviewer::create($configDir, $language, $topics);
     }
 }

@@ -10,7 +10,7 @@ Cada SVG se anuncia como una imagen (`role="img"`) con su `<title>` y su `<desc>
 - **Ajuste del texto.** Mira siempre la vista previa. Si un texto no cabe ni al tamaño mínimo, se recorta con «…»: acórtalo en el JSON en vez de dejar que se recorte.
 - **Degradados al imprimir.** Las impresoras los convierten a CMYK, y eso puede cambiar tonos o mostrar bandas en degradados suaves. Pide prueba de color al impresor.
 - **Vista previa en imagen.** `rsvg-convert -w 2000 portada.svg -o portada.png`, Inkscape o Chromium. Los SVG están en milímetros.
-- **Código de barras.** El rectángulo blanco de la contratapa es un hueco reservado para el EAN-13 del ISBN. Este sistema no genera el código: lo pone quien imprime.
+- **Código de barras.** El rectángulo blanco de la contratapa es el hueco del código. Con un `isbn` válido (ISBN-10 o ISBN-13 con su dígito de control; un ISBN-10 se pasa a 978 + sus nueve primeros dígitos) el sistema dibuja el EAN-13 en negro, con sus dígitos debajo, escalado para que llene el hueco de 42 mm (un 112 % del tamaño nominal, dentro del 80 a 200 % que admite el estándar). Sin ISBN, o con uno que no cuadra, el hueco queda en blanco. Comprueba con tu imprenta que escanee y que el tamaño le sirva.
 - **Tapa dura.** No se modela el grosor de las tapas. Ajusta `lomo_mm` y las medidas con la imprenta.
 - **Imágenes.** La portada no admite todavía una ilustración.
 

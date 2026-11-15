@@ -82,6 +82,44 @@ jobs:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         run: python pruebas_navegador.py
 
+  # Carga exportes/paises.sql en PostgreSQL (dos veces: la segunda comprueba que recarga sin dejar
+  # filas viejas) y compara las cifras con las de exportes/paises.json.
+  postgresql:
+    name: "Listado-paises: exportes/paises.sql en PostgreSQL"
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: prueba
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: prueba
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Cargar dos veces
+        working-directory: Listado-paises
+        run: |
+          psql -v ON_ERROR_STOP=1 -q -f exportes/paises.sql
+          psql -v ON_ERROR_STOP=1 -q -f exportes/paises.sql
+
+      - name: Comparar con el JSON
+        working-directory: Listado-paises
+        run: |
+          esperadas=$(python3 -c "import json; print(len(json.load(open('exportes/paises.json', encoding='utf-8'))['paises']))")
+          cargadas=$(psql -At -c "SELECT count(*) FROM listado_paises")
+          echo "JSON: $esperadas, PostgreSQL: $cargadas"
+          test "$esperadas" = "$cargadas"
+
   # Al lanzarlo a mano (workflow_dispatch) y una vez al mes (schedule): baja las fuentes fijadas por commit,
   # comprueba su SHA-256 contra fuentes.sha256, rehace todos los datos y falla si algún
   # archivo del proyecto cambia. Tarda menos de un minuto y baja unos 35 MB.

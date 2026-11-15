@@ -276,7 +276,7 @@ Como de estas tasas dependen todos los totales, escribe solo lo que se puede cre
 - Una moneda que la fuente no trae queda como estaba, con la fecha que tenía.
 - Una moneda que otra reemplazó (`monedas.reemplazada_por`, migración `016`: el `ZWL` por el
   `ZWG`, el `BGN` por el euro) no se toma de la fuente: vale su equivalencia fija con el
-  reemplazo (`unidades_por_reemplazo`: 1,95583 BGN por euro, 2.498,7242 ZWL por ZWG), que se
+  reemplazo (`unidades_por_reemplazo`: 1,95583 BGN por euro, 2.498,7242 ZWL por ZWG, la cifra del comunicado del banco central de Zimbabue del 6 de abril de 2024, que confirmé en fuentes secundarias, no en el texto original), que se
   deriva en la misma corrida y pasa por las mismas reglas que las demás (el salto máximo, la
   primera carga que reexpresa lo grabado con la de ejemplo). Lo que la fuente diga de ella
   se descarta. Si la fuente no trae el reemplazo, queda sin dato como cualquier otra.
@@ -434,11 +434,12 @@ won, el peso chileno o los francos CFA; 3 para los dinares y el rial omani; 2 pa
 La aplicación hace con ellos lo siguiente: en las monedas **sin decimales** los montos de
 boletas y pagos tienen que ser enteros (`Validacion::montoCabeEnLosDecimales()`, el formulario
 de edición pide `step="1"`) y se muestran sin decimales (`dinero_en_moneda()`); un monto viejo
-que traiga centavos se sigue mostrando con ellos. **Límite conocido:** las monedas de 3
-decimales se guardan y se muestran con 2, porque `boletas.monto`, `pagos.monto` y
-`notas_credito.monto` son `NUMERIC(14, 2)` y la regla del centavo está en PHP y en SQL;
-pasarlas a 3 es un cambio de todo el sistema y no se hizo. `MonedaRepository::decimales()`
-devuelve el dato ISO con tope en 2.
+que traiga centavos se sigue mostrando con ellos. Las monedas de **3 decimales** (dinar kuwaiti,
+bahreiní, jordano, iraquí, libio y tunecino, y el rial omaní) guardan y muestran las milésimas
+completas desde la migración `019`: `boletas.monto`, `pagos.monto` y `notas_credito.monto` son
+`NUMERIC(15, 3)` (el mismo tope de doce dígitos enteros), el campo del formulario pide
+`step="0.001"` y `Peticion::monto()` lee tres decimales **solo** si la moneda de la boleta o del
+pago los tiene. `MonedaRepository::decimales()` devuelve el dato ISO (0, 2 o 3).
 
 **Mayoría de edad.** La base rechaza a un cliente que no haya cumplido la edad de
 mayoría de **su país**, tanto al crearlo como al cambiarle la fecha de nacimiento o
@@ -834,22 +835,24 @@ en USD, con la tasa que cada fila guardó al crearse (la cartera pendiente, con 
 hoy; ver «La tasa de cada día»); las tablas de detalle (boletas, pagos, ficha de
 cliente) muestran el monto en su moneda original.
 
-**Dinero.** La base guarda los montos como `NUMERIC(14, 2)`, exactos. En PHP viajan
+**Dinero.** La base guarda los montos como `NUMERIC(15, 3)`, exactos (tres decimales por las
+monedas que los tienen; las demás llevan ceros a la derecha). En PHP viajan
 como `float`, que arrastra ruido (`0.1 + 0.2` da `0.30000000000000004`), así que las
 validaciones que comparan montos de una boleta o de un pago
 (`ReglasDeBoleta::montoCubreLoYaCobrado` y `ReglasDePago::montoNoSuperaElSaldo`,
-con su versión al editar un pago) los pasan a centavos enteros con
-`App\Dinero::centavos()` y comparan ahí, sin margen: un pago no puede pasarse del saldo
-ni por un centavo, y el monto de una boleta no puede quedar un centavo por debajo de lo
-ya cobrado.
+con su versión al editar un pago) los pasan a milésimas enteras con
+`App\Dinero::milesimas()` (`centavos()` quedó `@deprecated`: pierde el tercer decimal) y
+comparan ahí, sin margen: un pago no puede pasarse del saldo ni por la unidad menor de su
+moneda, y el monto de una boleta no puede quedar por debajo de lo ya cobrado.
 
 El monto que llega de un formulario se lee con `Dinero::deTexto()` (a través de
 `Peticion::monto()`): solo dígitos y punto decimal. `(float) "1.500,50"` da `1.5` sin
 avisar, porque PHP corta en la primera coma, y un script que mandara el formato latino
 creaba una boleta o un pago por una milésima parte. Con **tres decimales justos** tampoco se
-lee: `1.500` tiene la forma de un grupo de miles (el «mil quinientos» de quien usa el punto de
-miles), y leerlo como `1.5` es el mismo error de mil veces; `10.005` se rechaza por lo mismo. Con
-uno o dos decimales, o con cuatro o más, no hay ambigüedad: se lee y se redondea al centavo.
+lee, salvo en una moneda que tiene tres: `1.500` tiene la forma de un grupo de miles (el «mil
+quinientos» de quien usa el punto de miles), y leerlo como `1.5` es el mismo error de mil veces;
+`10.005` se rechaza por lo mismo. Con uno o dos decimales, o con cuatro o más, no hay
+ambigüedad: se lee y se redondea al centavo (a la milésima en las monedas de tres decimales).
 Lo que no es un monto vale 0 y el formulario vuelve con «monto válido»; el navegador
 (`type="number"`, `step="0.01"`) siempre manda punto y a lo sumo dos decimales.
 

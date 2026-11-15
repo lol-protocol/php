@@ -10,7 +10,7 @@
     "scope": "Persons on Monegasque territory",
     "applies_to": "Controllers and processors established in Monaco and those abroad processing data of persons in Monaco",
     "key_requirements": "GDPR-style accountability (controller at the heart of compliance); security measures (art. 31); breach notification (art. 32 ff.); eight data-subject rights",
-    "data_categories": "Personal data (unconfirmed)",
+    "data_categories": "Personal data; sensitive data such as health, biometric, genetic data, criminal convictions and offences, or suspicions of unlawful activity",
     "retention_period": "Not specified",
     "enforcement_authority": "Autorite de Protection des Donnees Personnelles (APDP)",
     "penalties_range": "Administrative fines of up to EUR 10 million (government announcement)",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-22",
+    "last_checked": "2026-11-14",
     "sources": {
       "law_name": {
         "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/monaco",
@@ -60,9 +60,9 @@
         "checked": "2026-10-22"
       },
       "data_categories": {
-        "url": "https://cms.law/fr/mco/publication/nouvelle-loi-monegasque-sur-la-protection-des-donnees-personnelles",
-        "confidence": "low",
-        "checked": "2026-10-22"
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/monaco",
+        "confidence": "medium",
+        "checked": "2026-11-14"
       },
       "enforcement_authority": {
         "url": "https://en.gouv.mc/content/download/527829/6060325/file/Monaco%20en%20Chiffres%202025%20-%205.%20vie%20publique%20-%20Organisations%20Institutionnelles.pdf",
@@ -76,6 +76,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-14",
+        "field": "data_categories",
+        "from": "Personal data (unconfirmed)",
+        "to": "Personal data; sensitive data such as health, biometric, genetic data, criminal convictions and offences, or suspicions of unlawful activity"
+      },
       {
         "date": "2026-10-22",
         "field": "row",
