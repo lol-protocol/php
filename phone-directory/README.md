@@ -199,6 +199,8 @@ Las búsquedas por nombre y calle son insensibles a mayúsculas y a acentos, de 
 
 `search()` acepta `name`, `street` y `phone` en la base de personas, y `businessName`, `street`, `phone` y `businessType` en la de empresas. Una clave que no conoce lanza `InvalidArgumentException` (con la lista de las válidas) en vez de ignorarla y devolver toda la tabla; un valor vacío (`''` o `null`) cuenta como «sin criterio», y `'0'` como un valor más.
 
+**Paginación.** Los buscadores que devuelven listas (`findByName`, `findByStreet`, `findBySurnameSound`, `findBySourceDirectory`, `findByBusinessName`, `findByBusinessType`, `search` y `getAll`, en las dos bases y en `PhoneDirectoryManagerV2`) aceptan `?int $limit = null, int $offset = 0` al final: `$limit` es el máximo de resultados (sin él, todos) y `$offset` cuántos saltar antes. El orden es el de siempre y los empates se desempatan por `id`, así que dos páginas seguidas nunca se pisan ni se saltan una fila. Una página se cuenta sobre **lo que el lector puede ver**: para el visitante, una página nunca sale corta porque la vista de privacidad descartó filas (para el propietario es un solo `LIMIT`/`OFFSET` en SQL; para el visitante se cuenta desde el principio, por trozos, hasta llenar la página). Un `$limit` menor que 1 o un `$offset` negativo lanzan `InvalidArgumentException`. En la línea de comandos, `phonedir search --limite=N --desde=N` (por tipo: con `--type=all` salen hasta N personas y hasta N empresas).
+
 ### Privacidad: personas que podrían estar vivas
 
 Una entrada de guía no trae fecha de nacimiento, pero sí la fecha de la guía, y quien figura en una guía de un año *Y* era adulto entonces: nació, como mucho, en *Y* − 18. Se presume viva a una persona durante 110 años desde su nacimiento (la misma línea que `url-routing/`), así que una entrada solo se puede mostrar cuando *Y* − 18 + 110 ya pasó. En 2026 eso es todo hasta la guía de 1933: **las guías de 1934 a 1975, la mitad reciente del catálogo, quedan ocultas.**
@@ -482,6 +484,18 @@ PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `comp
 
 Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`. Leen las guías con las mismas reglas que el parser de PHP: las de calle por idioma (incluida `C/`, y «Dr.» y «St.» al abrir un nombre), la lectura de un bloque de líneas (palabras partidas con guion, varios registros sin línea en blanco, la calle sin palabra que cede ante una con palabra), las entradas de una sola línea, los teléfonos (los formatos de cada idioma, la central con nombre, la corrección de dígitos del OCR, el teléfono en la línea del nombre) y la detección de negocios. Corren además el mismo conjunto de evaluación que el parser de PHP (`tests/fixtures/parser-evaluation.json`): todo caso tiene que salir bien, salvo los que lista `ports/fallas-conocidas.txt`, que tienen que seguir fallando (hoy ninguno: la lista está vacía). Si agregas un caso al conjunto y los puertos no lo resuelven, va a esa lista; si un cambio en un puerto arregla uno, sale de ella.
 
+### Listas de palabras
+
+Las palabras de calle, los sufijos alemanes, las abreviaturas que abren un nombre («Dr.», «St.»), las palabras que detectan un idioma y las que nombran un negocio están en **un solo archivo**, `data/palabras.json`, y de ahí se escriben en el parser de PHP (`StreetRules`, `MultiLanguagePhoneDirectoryParser`) y en los puertos a Python y Java, entre líneas `BEGIN generated: palabras/…` y `END generated: palabras/…`. No se editan a mano en esos archivos:
+
+```bash
+# cambia data/palabras.json, y luego:
+php bin/generar-palabras.php              # reescribe las regiones desactualizadas
+php bin/generar-palabras.php --comprobar  # solo dice cuáles lo están (sale con 1); como --comprobar de Listado-colores/
+```
+
+`WordListSyncTest` (que corre la CI con el resto de las pruebas) falla si una región no coincide con el JSON, o si el JSON es incoherente (un idioma que no está en `idiomas`, una palabra repetida o en mayúsculas, una abreviatura que no es palabra de calle). Las reglas que no son listas de palabras (las expresiones regulares, como la de «Via Roma 10» o las de teléfono) siguen escritas a mano en cada lenguaje, y el conjunto de evaluación avisa si se desfasan.
+
 ### Cuánto acierta el parser
 
 `tests/fixtures/parser-evaluation.json` es un conjunto fijo de guías cortas en los seis idiomas, cada una con lo que una persona leería en ella (nombre, calle, teléfono, persona o empresa). `bin/evaluate-parser.php` pasa `MultiLanguagePhoneDirectoryParser` por esos casos y dice cuántos salen bien, cuántas entradas encuentra y cuántas de ellas son correctas, y qué sigue fallando, agrupado por causa:
@@ -500,6 +514,7 @@ Los casos que el parser todavía resuelve mal están marcados con `falla_conocid
 - `__construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)`
 - `static forCatalogDirectory(string $directoryId): self` — toma el país del catálogo
 - `parseFile(string $filePath): array`
+- `parseFileInBatches(string $filePath, int $batchSize = 1000): \Generator` (`MultiLanguagePhoneDirectoryParser` recibe además `?string $language`): entrega las entradas de a `$batchSize` sin guardarlas, así que la memoria no crece con el archivo; ver «Consideraciones de Rendimiento»
 - `parseContent(string $content): array` (`MultiLanguagePhoneDirectoryParser` recibe además `?string $language`)
 - `getEntries(): array`, `getErrors(): array`
 - `getEntriesCount(): int`, `getErrorsCount(): int` (solo `PhoneDirectoryParser`)
@@ -527,7 +542,7 @@ Los casos que el parser todavía resuelve mal están marcados con `falla_conocid
 `php bin/benchmark.php [entradas]` mide parseo, inserción y búsquedas; los resultados y proyecciones están en `docs/ESTIMATES_AND_SCALABILITY.md`.
 
 Para directorios telefónicos grandes:
-- `parseFile()` lee el archivo línea a línea, pero devuelve todas las entradas juntas (~1,8 KB de memoria por entrada): partir los archivos de millones de entradas antes de importarlos
+- `parseFile()` lee el archivo línea a línea, pero devuelve todas las entradas juntas (~1,8 KB de memoria por entrada). Para archivos grandes, `parseFileInBatches()` las entrega de a lotes y la memoria queda plana (con 400 000 entradas: pico de 6 MB, frente a 716 MB de `parseFile()`, con la misma velocidad). `PhoneDirectoryManagerV2::processFile()` y `phonedir import` ya lo usan: guardan de a `$batchSize` entradas (`--lote=N`, por defecto 5000), cada lote en su propia transacción, así que si la importación se corta a la mitad los lotes anteriores quedan guardados (se repite con `--clear`)
 - Usar base de datos en archivo (o MySQL/PostgreSQL) en lugar de SQLite en memoria
 - Usar `insertBatch()` para inserciones masivas (una transacción y una sentencia preparada para todo el lote)
 - `RecordLinker` agrupa internamente por apellido, país e inicial del nombre antes de comparar pares, para que enlazar apellidos muy comunes siga siendo rápido

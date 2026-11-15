@@ -19,6 +19,8 @@ class PhoneDirectoryParser
     private array $entries = [];
     /** @var list<ParseError> */
     private array $parseErrors = [];
+    /** @var list<PhoneDirectoryEntry> Entries finalizeEntry() has produced and the reader has not taken yet */
+    private array $pending = [];
     private string $countryCode;
     private ?string $sourceDirectoryId;
     /** @var Patterns|null */
@@ -84,6 +86,52 @@ class PhoneDirectoryParser
         return $this->parseLines(LineReader::read($filePath));
     }
 
+    /**
+     * Parse a file and hand its entries over $batchSize at a time, keeping none: memory stays flat however large the
+     * file is (parseFile() keeps every entry). Unlike parseFile() it does not clear what was parsed before, and
+     * getEntries() does not hold what was handed over; getErrors() grows as the batches are read.
+     *
+     * The file and the batch size are checked when this is called, not when the first batch is read.
+     *
+     * @return \Generator<int, list<PhoneDirectoryEntry>> Batches of up to $batchSize entries, in file order
+     * @throws \RuntimeException If the file does not exist or is not readable
+     * @throws \InvalidArgumentException If $batchSize is below 1
+     */
+    public function parseFileInBatches(string $filePath, int $batchSize = 1000): \Generator
+    {
+        if ($batchSize < 1) {
+            throw new \InvalidArgumentException("The batch size must be at least 1, not {$batchSize}");
+        }
+        if (!file_exists($filePath)) {
+            throw new \RuntimeException("File not found: {$filePath}");
+        }
+        if (!is_readable($filePath)) {
+            throw new \RuntimeException("File is not readable: {$filePath}");
+        }
+
+        return $this->batches(LineReader::read($filePath), $batchSize);
+    }
+
+    /**
+     * @param iterable<string> $lines
+     * @return \Generator<int, list<PhoneDirectoryEntry>>
+     */
+    private function batches(iterable $lines, int $batchSize): \Generator
+    {
+        $batch = [];
+        foreach ($this->streamLines($lines) as $entry) {
+            $batch[] = $entry;
+            if (count($batch) >= $batchSize) {
+                yield $batch;
+                $batch = [];
+            }
+        }
+
+        if ($batch !== []) {
+            yield $batch;
+        }
+    }
+
     /** @return list<PhoneDirectoryEntry> */
     public function parseContent(string $content): array
     {
@@ -95,6 +143,21 @@ class PhoneDirectoryParser
      * @return list<PhoneDirectoryEntry>
      */
     private function parseLines(iterable $lines): array
+    {
+        foreach ($this->streamLines($lines) as $entry) {
+            $this->entries[] = $entry;
+        }
+
+        return $this->entries;
+    }
+
+    /**
+     * Reads the lines and yields each entry as soon as its record is complete.
+     *
+     * @param iterable<string> $lines
+     * @return \Generator<int, PhoneDirectoryEntry>
+     */
+    private function streamLines(iterable $lines): \Generator
     {
         $buffer = [];
         $bufferStart = 0;
@@ -109,6 +172,7 @@ class PhoneDirectoryParser
                 if (!empty($buffer)) {
                     $this->processBuffer($buffer, $bufferStart);
                     $buffer = [];
+                    yield from $this->entriesSoFar();
                 }
                 continue;
             }
@@ -126,6 +190,7 @@ class PhoneDirectoryParser
                     $buffer = [];
                 }
                 $this->finalizeEntry($single, $lineNumber);
+                yield from $this->entriesSoFar();
                 continue;
             }
 
@@ -139,7 +204,22 @@ class PhoneDirectoryParser
             $this->processBuffer($buffer, $bufferStart);
         }
 
-        return $this->entries;
+        yield from $this->entriesSoFar();
+    }
+
+    /**
+     * The entries finalizeEntry() has produced since the last call, handed over.
+     *
+     * @return \Generator<int, PhoneDirectoryEntry>
+     */
+    private function entriesSoFar(): \Generator
+    {
+        $taken = $this->pending;
+        $this->pending = [];
+
+        foreach ($taken as $entry) {
+            yield $entry;
+        }
     }
 
     /** @param list<string> $lines */
@@ -187,7 +267,7 @@ class PhoneDirectoryParser
                 sourceDirectoryId: $this->sourceDirectoryId,
                 sourceLine: $startLine
             );
-            $this->entries[] = $entry;
+            $this->pending[] = $entry;
         } catch (\Throwable $e) {
             $this->parseErrors[] = [
                 'line' => $startLine,
@@ -239,6 +319,7 @@ class PhoneDirectoryParser
 
     public function reset(): void
     {
+        $this->pending = [];
         $this->entries = [];
         $this->parseErrors = [];
     }
