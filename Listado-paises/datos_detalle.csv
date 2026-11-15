@@ -703,6 +703,7 @@ GT,pib_per_capita_usd,2024,Banco Mundial
 GT,idh,2023,PNUD vía Gapminder
 GT,alfabetizacion_adultos,2024,UNESCO vía Gapminder
 GT,usuarios_internet,2024,Banco Mundial vía Gapminder
+GG,poblacion_millones,2023,Our World in Data (serie histórica)
 GN,poblacion_millones,2024,Our World in Data
 GN,emigrantes_pct,2024,ONU vía Gapminder
 GN,libertad_fh,2022,Freedom House vía Gapminder
@@ -893,6 +894,7 @@ JP,pib_per_capita_ppa_usd,2023,Gapminder (Banco Mundial)
 JP,pib_per_capita_usd,2024,Banco Mundial
 JP,idh,2023,PNUD vía Gapminder
 JP,usuarios_internet,2024,Banco Mundial vía Gapminder
+JE,poblacion_millones,2023,Our World in Data (serie histórica)
 JO,poblacion_millones,2024,Our World in Data
 JO,emigrantes_pct,2024,ONU vía Gapminder
 JO,libertad_fh,2022,Freedom House vía Gapminder
@@ -1431,6 +1433,7 @@ DO,pib_per_capita_usd,2024,Banco Mundial
 DO,idh,2023,PNUD vía Gapminder
 DO,alfabetizacion_adultos,2024,UNESCO vía Gapminder
 DO,usuarios_internet,2024,Banco Mundial vía Gapminder
+RE,poblacion_millones,2023,Our World in Data (serie histórica)
 RW,poblacion_millones,2024,Our World in Data
 RW,emigrantes_pct,2024,ONU vía Gapminder
 RW,libertad_fh,2022,Freedom House vía Gapminder
