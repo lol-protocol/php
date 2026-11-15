@@ -1488,6 +1488,38 @@ Object.assign(__e, { ATUENDOS_MODA });
 return __e;
 })();
 
+__m['datos/atuendos-pueblos'] = (() => {
+const __e = {};
+// Atuendos de los pueblos de etnias-pueblos.js (un hombre y una mujer de cada uno). Todos con confianza baja y nota: son
+// representaciones genéricas con las prendas que ya tiene el catálogo, no trajes reconstruidos prenda por prenda.
+
+const { A, BL, CLAROS, OSCURA, EBANO } = __m['datos/ayuda'];
+
+const NOTA = 'Representación genérica con prendas del catálogo; revisar con fuentes del propio pueblo antes de publicar.';
+
+const ATUENDOS_PUEBLOS = [
+  A('sami-hombre', 'Sami con gákti (representación genérica)', 'artico', [1700, 1950], 'm', 'baja', 'tunica-corta-lana pantalon-recto cinturon-cuero botas-piel', { A: 'azul-ultramar azul-marino', B: 'rojo-cartamo', C: 'gualda', D: 'plata' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorro-lana', pieles: CLAROS, conf: 'baja', nota: 'El gákti de verdad lleva bandas de colores y bordados que identifican la familia y la región; aquí solo hay una túnica azul con ribetes.' }),
+  A('sami-mujer', 'Mujer sami con gákti (representación genérica)', 'artico', [1700, 1950], 'f', 'baja', 'vestido-sencillo-corto chal-lana cinturon-cuero botas-piel', { A: 'azul-ultramar azul-marino', B: 'rojo-cartamo', C: 'gualda', D: 'plata' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: 'El gákti de verdad lleva bandas de colores y bordados que identifican la familia y la región; aquí solo hay un vestido azul con ribetes.' }),
+  A('fines-hombre', 'Campesino finés', 'europa-campesina', [1800, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto cinturon-cuero botas-cuero', { A: 'lana-parda umbra azul-plomo', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('fines-mujer', 'Campesina finlandesa', 'europa-campesina', [1800, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana botas-cuero', { A: 'azul-plomo rojo-granza lana-parda', B: BL, C: BL, D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('romani-hombre', 'Hombre romaní (representación genérica)', 'europa-campesina', [1800, 1950], 'm', 'baja', 'camisa-blanca chaleco-largo pantalon-recto panuelo-cuello botas-cuero', { A: 'lana-negra burdeos verde-botella', B: BL, C: 'rojo-granza', D: 'oro' }, { peinados: 'corto largo-ondulado', barbas: 'bigote ninguna', tocados: 'sombrero-ala-ancha', pieles: 'clara-calida oliva-clara oliva canela', conf: 'baja', nota: 'No existe un traje único romaní: son comunidades distintas entre sí y por país. Es una imagen genérica; revisarla con miembros de cada comunidad.' }),
+  A('romani-mujer', 'Mujer romaní (representación genérica)', 'europa-campesina', [1800, 1950], 'f', 'baja', 'blusa-campesina falda-volantes chal-corto collar-cuentas zapatos-cuero', { A: 'rojo-granza azul-ultramar verde-hoja', B: BL, C: 'azafran', D: 'oro' }, { peinados: 'largo-ondulado recogido', tocados: 'panuelo ninguno', pieles: 'clara-calida oliva-clara oliva canela', conf: 'baja', nota: 'No existe un traje único romaní: son comunidades distintas entre sí y por país. Es una imagen genérica; revisarla con miembros de cada comunidad.' }),
+  A('baltico-hombre', 'Campesino báltico', 'europa-campesina', [1800, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto cinturon-cuero botas-cuero', { A: 'lana-parda verde-musgo azul-plomo', B: BL, C: 'rojo-granza', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorra-plana', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('baltico-mujer', 'Campesina báltica', 'europa-campesina', [1800, 1950], 'f', 'baja', 'blusa-campesina falda-larga delantal-bordado chal-lana botas-cuero', { A: 'rojo-granza verde-musgo azul-plomo', B: BL, C: 'rojo-granza', D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'corona-flores panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('afrikaner-hombre', 'Colono afrikáner', 'africa-este-sur', [1830, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-lana pantalon-recto cinturon-cuero botas-cuero', { A: 'kaki lana-parda umbra', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto', barbas: 'barba-corta bigote ninguna', tocados: 'sombrero-ala-ancha', pieles: CLAROS, conf: 'baja', nota: NOTA }),
+  A('afrikaner-mujer', 'Colona afrikáner', 'africa-este-sur', [1830, 1950], 'f', 'baja', 'vestido-sencillo delantal-blanco chal-lana zapatos-cuero', { A: 'azul-plomo lana-parda rojo-granza', B: BL, C: BL, D: 'cobre' }, { peinados: 'recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: 'El tocado típico de la época (el kappie) no está en el catálogo; se usa un pañuelo.' }),
+  A('malayo-cabo-hombre', 'Hombre malayo del Cabo', 'africa-este-sur', [1800, 1950], 'm', 'baja', 'camisa-lino-larga chaleco-campesino pantalon-recto zapatos-cuero', { A: 'azul-marino lana-parda verde-botella', B: BL, C: 'lana-negra', D: 'plata' }, { peinados: 'corto', barbas: 'bigote barba-corta ninguna', tocados: 'fez', pieles: 'clara-calida oliva-clara oliva canela', conf: 'baja', nota: NOTA }),
+  A('malayo-cabo-mujer', 'Mujer malayo del Cabo', 'africa-este-sur', [1800, 1950], 'f', 'baja', 'blusa-campesina falda-larga chal-seda zapatos-cuero', { A: 'verde-esmeralda rojo-granza azul-ultramar', B: BL, C: 'rosa-antiguo', D: 'oro' }, { peinados: 'recogido', tocados: 'panuelo ninguno', pieles: 'clara-calida oliva-clara oliva canela', conf: 'baja', nota: NOTA }),
+  A('francocanadiense-hombre', 'Habitante rural francocanadiense', 'norteamerica-moderna', [1800, 1940], 'm', 'baja', 'camisa-cuadros chaqueta-corta pantalon-trabajo cinturon-cuero botas-trabajo', { A: 'rojo-granza lana-negra azul-plomo', B: 'lana-parda', C: 'lana-negra', D: 'cobre' }, { peinados: 'corto', barbas: 'bigote ninguna', tocados: 'gorro-lana', pieles: CLAROS, conf: 'baja', nota: 'No incluye la faja fléchée ni los trajes métis; es ropa rural genérica.' }),
+  A('francocanadiense-mujer', 'Habitante rural francocanadiense', 'norteamerica-moderna', [1800, 1940], 'f', 'baja', 'blusa-campesina falda-larga delantal-blanco chal-lana botas-cuero', { A: 'azul-plomo lana-parda rojo-granza', B: BL, C: BL, D: 'cobre' }, { peinados: 'trenza-una recogido', tocados: 'panuelo ninguno', pieles: CLAROS, conf: 'baja', nota: 'Ropa rural genérica del Quebec.' }),
+  A('isleno-hombre', 'Hombre criollo de las islas', 'latinoamerica-moderna', [1850, 1980], 'm', 'baja', 'guayabera pantalon-recto cinturon-fino zapatos-cuero', { A: 'blanco-lino crema beige', B: BL, C: 'lana-negra', D: 'cobre' }, { peinados: 'corto rizos', barbas: 'bigote ninguna', tocados: 'canotier ninguno', pieles: 'oliva canela bronce castana', conf: 'baja', nota: 'Agrupa islas muy distintas; es ropa cotidiana de clima cálido, no un traje de cada isla.' }),
+  A('isleno-mujer', 'Mujer criolla de las islas', 'latinoamerica-moderna', [1850, 1980], 'f', 'baja', 'vestido-sencillo chal-seda sandalias-cuero', { A: 'azul-celeste verde-agua rosa-palido', B: BL, C: BL, D: 'oro' }, { peinados: 'corto recogido rizos', tocados: 'panuelo ninguno', pieles: 'oliva canela bronce castana', conf: 'baja', nota: 'Agrupa islas muy distintas; es ropa cotidiana de clima cálido, no un traje de cada isla.' }),
+];
+
+Object.assign(__e, { ATUENDOS_PUEBLOS });
+return __e;
+})();
+
 __m['datos/atuendos'] = (() => {
 const __e = {};
 // Atuendos completos: una combinación de prendas del catálogo (prendas.js) típica de una región, una época,
@@ -1499,6 +1531,7 @@ const { ATUENDOS_AMPLIADOS } = __m['datos/atuendos-ampliados'];
 const { ATUENDOS_SIGLO20 } = __m['datos/atuendos-siglo20'];
 const { ATUENDOS_MAS } = __m['datos/atuendos-mas'];
 const { ATUENDOS_MODA } = __m['datos/atuendos-moda'];
+const { ATUENDOS_PUEBLOS } = __m['datos/atuendos-pueblos'];
 
 const REGIONES = {
   egipto: 'Egipto antiguo', mesopotamia: 'Mesopotamia', grecia: 'Grecia antigua', roma: 'Roma', bizancio: 'Bizancio',
@@ -1663,6 +1696,7 @@ const ATUENDOS = [
   ...ATUENDOS_SIGLO20,
   ...ATUENDOS_MAS,
   ...ATUENDOS_MODA,
+  ...ATUENDOS_PUEBLOS,
 ];
 
 const ATUENDOS_POR_ID = Object.fromEntries(ATUENDOS.map((a) => [a.id, a]));
@@ -4107,6 +4141,30 @@ Object.assign(__e, { ETNIAS_AMPLIADAS });
 return __e;
 })();
 
+__m['datos/etnias-pueblos'] = (() => {
+const __e = {};
+// Pueblos que faltaban respecto de los países de mayor prioridad genealógica de Listado-paises/: sami, finés, romaní,
+// bálticos, afrikáner, malayo del Cabo, francocanadiense y criollo de las islas. Todas con confianza baja: son
+// aproximaciones que sirven para ilustrar un linaje probable, no un estudio de cada pueblo (ver la nota de cada una).
+// Sin `fuente`: no se inventan referencias; hay que revisarlas con fuentes de cada pueblo antes de publicar.
+
+const { E, OSC, MED, CLARO } = __m['datos/ayuda'];
+
+const ETNIAS_PUEBLOS = [
+  E('sami', 'Sami', { grupo: 'Pueblos del Ártico', regiones: 'artico', prefijos: 'sami', pieles: 'porcelana clara clara-calida', cabellos: [['castano-oscuro', 4], ['castano', 3], ['rubio-oscuro', 2], ['negro', 1]], peinados: 'corto largo-liso trenza-una', barba: 0.3, altura: [155, 168], conf: 'baja', nota: 'Representación genérica del gákti: los colores, bordados y cintas identifican la familia y la región (Sápmi se extiende por Noruega, Suecia, Finlandia y Rusia) y no se reproducen.' }),
+  E('fines', 'Finés', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'fines', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto recogido trenza-una', barba: 0.35, altura: [164, 177], conf: 'baja', nota: 'Traje campesino genérico del siglo XIX y comienzos del XX; los trajes regionales (karelianos, de Savo, de Åland…) difieren mucho.' }),
+  E('romani', 'Romaní (rom, sinti, calé y otros)', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'romani', pieles: 'clara-calida oliva-clara oliva canela', cabellos: MED, peinados: 'corto recogido largo-ondulado', barba: 0.4, altura: [158, 171], conf: 'baja', nota: 'No hay un traje único: son comunidades muy distintas entre sí (rom, sinti, calé, romanichal…) y por país. Es una imagen genérica; conviene revisarla con miembros de cada comunidad.' }),
+  E('baltico', 'Báltico (estonio, letón, lituano)', { grupo: 'Europa', regiones: 'europa-campesina', prefijos: 'baltico', pieles: 'porcelana clara', cabellos: CLARO, peinados: 'corto trenza-una recogido', barba: 0.35, altura: [166, 179], conf: 'baja', nota: 'Traje campesino genérico; los trajes regionales bálticos se distinguen por bordados y colores que aquí no se reproducen.' }),
+  E('afrikaner', 'Afrikáner (colono de origen neerlandés)', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'afrikaner', pieles: 'porcelana clara clara-calida', cabellos: CLARO, peinados: 'corto recogido', barba: 0.4, altura: [165, 178], conf: 'baja', nota: 'Representación genérica de colonos del siglo XIX y comienzos del XX.' }),
+  E('malayo-cabo', 'Malayo del Cabo', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'malayo-cabo', pieles: 'clara-calida oliva-clara oliva canela', cabellos: MED, peinados: 'corto recogido', barba: 0.4, altura: [157, 170], conf: 'baja', nota: 'Comunidad de origen diverso (Indonesia, India, África oriental y otros); traje genérico de los siglos XIX y XX.' }),
+  E('francocanadiense', 'Francocanadiense', { grupo: 'Norteamérica', regiones: 'norteamerica-moderna', prefijos: 'francocanadiense', pieles: 'porcelana clara clara-calida', cabellos: CLARO, peinados: 'corto recogido trenza-una', barba: 0.35, altura: [162, 175], conf: 'baja', nota: 'Traje rural genérico del Quebec de los siglos XIX y XX; no incluye la faja fléchée ni los trajes de los métis.' }),
+  E('criollo-isleno', 'Criollo de las islas (Atlántico e Índico)', { grupo: 'Latinoamérica', regiones: 'latinoamerica-moderna', prefijos: 'isleno', pieles: 'oliva canela bronce castana', cabellos: OSC, peinados: 'corto recogido rizos', barba: 0.3, altura: [158, 171], conf: 'baja', nota: 'Agrupa pueblos criollos de islas muy distintas (Cabo Verde, Mauricio, Reunión, Curazao, Jamaica, Barbados, Bahamas…): es una imagen genérica de ropa cotidiana, no de cada isla.' }),
+];
+
+Object.assign(__e, { ETNIAS_PUEBLOS });
+return __e;
+})();
+
 __m['datos/etnias'] = (() => {
 const __e = {};
 // Pueblos y culturas para estimar, a partir de la etnia, la región del atuendo, la piel, el cabello, los peinados,
@@ -4120,6 +4178,7 @@ const __e = {};
 
 const { E, OSC, CLARO, MED, MESTIZO } = __m['datos/ayuda'];
 const { ETNIAS_AMPLIADAS } = __m['datos/etnias-ampliadas'];
+const { ETNIAS_PUEBLOS } = __m['datos/etnias-pueblos'];
 
 const ETNIAS = [
   // ----- Chile y el cono sur -----
@@ -4171,6 +4230,7 @@ const ETNIAS = [
   E('zulu', 'Zulú y bantú austral', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'zulu-', pieles: 'castana ebano-claro ebano', cabellos: [['negro', 10]], peinados: 'rapado corto', barba: 0.3, altura: [157, 169] }),
   E('maasai', 'Maasái', { grupo: 'África subsahariana', regiones: 'africa-este-sur', prefijos: 'maasai', pieles: 'ebano-claro ebano ebano-profundo', cabellos: [['negro', 10]], peinados: 'rapado rastas', barba: 0.05, altura: [165, 178], corpulencia: [['delgada', 3], ['media', 3]], nota: 'Estatura alta y complexión delgada son típicas de los registros de pastores de África oriental.' }),
   ...ETNIAS_AMPLIADAS,
+  ...ETNIAS_PUEBLOS,
 ];
 
 const ETNIAS_POR_ID = Object.fromEntries(ETNIAS.map((e) => [e.id, e]));

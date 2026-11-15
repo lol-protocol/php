@@ -7,6 +7,7 @@ import { ATUENDOS_AMPLIADOS } from './atuendos-ampliados.js';
 import { ATUENDOS_SIGLO20 } from './atuendos-siglo20.js';
 import { ATUENDOS_MAS } from './atuendos-mas.js';
 import { ATUENDOS_MODA } from './atuendos-moda.js';
+import { ATUENDOS_PUEBLOS } from './atuendos-pueblos.js';
 
 export const REGIONES = {
   egipto: 'Egipto antiguo', mesopotamia: 'Mesopotamia', grecia: 'Grecia antigua', roma: 'Roma', bizancio: 'Bizancio',
@@ -171,6 +172,7 @@ export const ATUENDOS = [
   ...ATUENDOS_SIGLO20,
   ...ATUENDOS_MAS,
   ...ATUENDOS_MODA,
+  ...ATUENDOS_PUEBLOS,
 ];
 
 export const ATUENDOS_POR_ID = Object.fromEntries(ATUENDOS.map((a) => [a.id, a]));
