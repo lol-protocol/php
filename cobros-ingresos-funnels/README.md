@@ -276,7 +276,7 @@ Como de estas tasas dependen todos los totales, escribe solo lo que se puede cre
 - Una moneda que la fuente no trae queda como estaba, con la fecha que tenía.
 - Una moneda que otra reemplazó (`monedas.reemplazada_por`, migración `016`: el `ZWL` por el
   `ZWG`, el `BGN` por el euro) no se toma de la fuente: vale su equivalencia fija con el
-  reemplazo (`unidades_por_reemplazo`: 1,95583 BGN por euro, 2.498,7242 ZWL por ZWG, la cifra del comunicado del banco central de Zimbabue del 6 de abril de 2024, que confirmé en fuentes secundarias, no en el texto original), que se
+  reemplazo (`unidades_por_reemplazo`: 1,95583 BGN por euro, 2.498,7242 ZWL por ZWG, la cifra del manual operativo del banco central de Zimbabue de abril de 2024, que citan los avisos de la Bolsa de Valores de Zimbabue y la prensa; no pude abrir el texto original del banco), que se
   deriva en la misma corrida y pasa por las mismas reglas que las demás (el salto máximo, la
   primera carga que reexpresa lo grabado con la de ejemplo). Lo que la fuente diga de ella
   se descarta. Si la fuente no trae el reemplazo, queda sin dato como cualquier otra.
@@ -423,10 +423,19 @@ se cobraron en ellas las siguen usando, y desde la `016` se cotizan por su equiv
 su reemplazo en vez de depender de que la fuente las siga trayendo (si no, quedaban «pendientes»
 para siempre en las pantallas). Un cliente que ya existía conserva su país, y sus boletas nuevas
 salen en la moneda nueva. Los territorios sin población permanente y el Sahara
-Occidental no están. El catálogo sale de ISO 4217 y 3166-1 **tal como los conoce quien lo
-escribió, sin cotejarlos contra la fuente**: antes de usarlo en producción conviene
-compararlo con la lista vigente de ISO 4217 (el cambio de moneda de un país es un `UPDATE
-paises SET moneda_codigo = ...` en una migración nueva). La mayoría de edad de los países
+Occidental no están. **Cotejo con ISO (15 de noviembre de 2026).** Se comparó el catálogo con la
+lista vigente de ISO 4217 que publica SIX (la agencia de mantenimiento,
+`six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml`) y
+con ISO 3166-1 (paquete `pycountry` 26.2.16). Monedas: las 154 del catálogo están en la lista y sus
+decimales coinciden todas; no están `SVC` (El Salvador usa el dólar) ni `VED` (el bolívar digital:
+Venezuela usa `VES`), y `BGN` y `ZWL` ya no figuran en ISO, pero se conservan por lo que ya se cobró en
+ellas (migraciones `014` y `016`). Países: son los 249 de ISO 3166-1 menos los ocho sin población
+permanente que se dejaron fuera a propósito (Antártida, Isla Bouvet, Islas Heard y McDonald, Territorio
+Británico del Océano Índico, Georgias del Sur, Tierras Australes Francesas, Islas Menores Alejadas de
+EE. UU. y Sahara Occidental), más Kosovo (`XK`, un código que ISO no asignó y que se usa por convención,
+con el euro). La moneda de cada país coincide con la de ISO 4217 en todos los que la lista nombra;
+Palestina (`ILS`) no aparece en ella. El cambio de moneda de un país es un `UPDATE paises SET
+moneda_codigo = ...` en una migración nueva. La mayoría de edad de los países
 nuevos es 18, salvo Puerto Rico, que es 21 según su código civil (migración `017`).
 
 **Decimales de cada moneda.** `monedas.decimales` guarda los de ISO 4217: 0 para el yen, el
