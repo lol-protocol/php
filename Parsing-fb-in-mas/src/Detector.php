@@ -17,7 +17,7 @@ final class Detector
         return [new Facebook(), new LinkedIn(), new Twitter(), new Instagram(),
             new TikTok(), new YouTube(), new GitHub(), new Pinterest(),
             new Bluesky(), new Threads(),
-            new WikiTree(), new FindAGrave(), new Mastodon(), new Generico()];
+            new WikiTree(), new FindAGrave(), new BillionGraves(), new Mastodon(), new Generico()];
     }
 
     /**
