@@ -246,6 +246,36 @@ gunicorn_workers() {
     [ "$by_cpu" -le "$cap" ] && echo "$by_cpu" || echo "$cap"
 }
 
+# set_fpm_option <archivo> <clave> <valor>: deja UNA linea "clave = valor" en un pool de PHP-FPM (formato ini con
+# espacios alrededor del "="): reemplaza la primera que haya, esté o no comentada con ";", y si no hay, la agrega.
+# Idempotente. (set_conf_line es para "clave=valor" sin espacios.)
+set_fpm_option() {
+    local file=$1 key=$2 value=$3 re
+    re="^[;[:space:]]*${key//./\\.}[[:space:]]*=.*"
+    if sudo grep -qE "$re" "$file"; then
+        sudo sed -i "0,/$re/s//${key} = ${value}/" "$file"
+    else
+        printf '%s = %s\n' "$key" "$value" | sudo tee -a "$file" > /dev/null
+    fi
+}
+
+# slim_default_php_pool: el pool "www" que trae Ubuntu corre como www-data y lo comparten todas las apps que
+# no tengan pool propio. Con apps en pools propios queda sin uso, pero PHP-FPM necesita al menos un pool para
+# arrancar, asi que no se quita: se pasa a "ondemand" con pocos procesos (sin trafico = sin procesos, menos RAM).
+# PHP_WWW_MAX_CHILDREN (2 por defecto) acota cuantos puede abrir.
+PHP_WWW_MAX_CHILDREN=${PHP_WWW_MAX_CHILDREN:-2}
+slim_default_php_pool() {
+    local conf
+    conf="${PHP_POOL_DIR:-/etc/php/$PHP_VERSION/fpm/pool.d}/www.conf"
+    if [ ! -f "$conf" ]; then
+        echo "  (no hay $conf: no se ajusta el pool por defecto)"
+        return 0
+    fi
+    set_fpm_option "$conf" pm ondemand
+    set_fpm_option "$conf" pm.max_children "$PHP_WWW_MAX_CHILDREN"
+    set_fpm_option "$conf" pm.process_idle_timeout 10s
+}
+
 # setup_php_pool <usuario>: pool PHP-FPM propio de la app. Sus procesos corren como <usuario> (no como
 # www-data), con su propio socket /run/php/<usuario>.sock, que solo Nginx (www-data) puede abrir. Asi una app
 # PHP comprometida no lee las demas. "ondemand": sin procesos mientras nadie visita (poca RAM);

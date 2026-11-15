@@ -137,7 +137,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 |------|--------|----------|
 | 01 | `01-system-update.sh` | Actualiza APT, instala utilidades base (git, curl, build-essential) y **activa UFW** (con SSH permitido —con `limit`: frena a una IP que abre más de 6 conexiones en 30 s— antes de encenderlo). Ajusta apt para que no se cuelgue: espera el lock hasta 5 min, conserva tus configs y `needrestart` reinicia servicios solo |
 | 02_A | `02_A-install-java.sh` | Instala Java 21 (OpenJDK) |
-| 02_B | `02_B-install-php.sh` | Instala PHP 8.3 + FPM + extensiones comunes |
+| 02_B | `02_B-install-php.sh` | Instala PHP 8.3 + FPM + extensiones comunes. Deja el pool `www` por defecto en `ondemand` con pocos procesos (`PHP_WWW_MAX_CHILDREN`): las apps usan su propio pool |
 | 02_C | `02_C-install-python.sh` | Instala Python 3 + pip + venv |
 | 02_D | `02_D-install-postgresql.sh` | Instala y arranca PostgreSQL |
 | 02_E | `02_E-install-nginx.sh` | Instala y arranca Nginx |
@@ -245,6 +245,7 @@ sin argumentos muestran el uso y salen con código 2.
 | `PROXY_TIMEOUT` | `120s` | Cuánto espera Nginx a una app Python/Tomcat (y el `--timeout` de gunicorn) |
 | `WHISPER_VERSION` / `WHISPER_MIN_GB` | `20250625` / `8` | Versión fija de `openai-whisper` y GB libres mínimos para instalar (`02_I`); `WHISPER_FORCE=1` salta la comprobación de disco |
 | `GUNICORN_WORKERS` | según CPU y RAM | Workers de gunicorn por app Python (`06_B`). Por defecto 2×CPU+1, acotado a RAM÷512 MB (mínimo 2): 1 GB → 2, 2 GB → 3 |
+| `PHP_WWW_MAX_CHILDREN` | `2` | Procesos máximos del pool `www` por defecto de PHP-FPM, que `02_B` deja en `ondemand` (las apps llevan su propio pool) |
 | `PHP_MAX_CHILDREN` | `5` | Procesos máximos del pool PHP-FPM de cada app PHP (`06_A`; `ondemand`) |
 | `PHP_VERSION` | `8.3` | Versión de PHP del stack, fijada en un solo lugar (`lib.sh`) |
 
