@@ -45,6 +45,7 @@ export function validarOpciones(opc = {}) {
     if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
   }
   if (opc.detalle !== undefined) enLista('Detalle', opc.detalle, ['minimo', 'medio', 'alto']);
+  if (opc.vista !== undefined) enLista('Vista', opc.vista, ['frente', 'espalda']);
   if (opc.contorno !== undefined) enLista('Contorno', opc.contorno, ['ninguno', 'suave']);
   if (opc.clase !== undefined) enLista('Clase', opc.clase, ['baja', 'media', 'alta']);
   if (opc.anio !== undefined) numero('Año', opc.anio, -100000, 3000);

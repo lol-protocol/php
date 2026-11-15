@@ -449,6 +449,7 @@ export function generarPersona(opc = {}) {
     notas: [atuendo.nota, ...(etnia ? etnia.map((x) => x.e.nota) : [])].filter(Boolean),
     fuentes: [...new Set([atuendo.fuente, ...(etnia ? etnia.map((x) => x.e.fuente) : [])].filter(Boolean))],
     detalle: opc.detalle ?? 'medio', contorno: opc.contorno ?? 'ninguno', fondo: opc.fondo ?? 'ninguno',
+    ...(opc.vista === 'espalda' ? { vista: 'espalda' } : {}),
   };
 }
 

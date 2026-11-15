@@ -3870,6 +3870,43 @@ Object.assign(__e, { LARGOS, TIPOS, PARAMS, problemasDeParams, validarPrenda });
 return __e;
 })();
 
+__m['espalda'] = (() => {
+const __e = {};
+// Vista de espalda. La silueta de un cuerpo visto por detrás es la del frente reflejada, así que la figura se dibuja igual y se
+// refleja (la mano derecha que saluda queda a la derecha de quien mira). Lo que cambia es lo que se ve: el rostro desaparece
+// bajo el pelo y las prendas pierden lo que solo existe por delante (botones, bolsillos del pecho, escotes en V, collares).
+
+/** Parámetros que solo se ven por delante. */
+const SOLO_FRENTE = ['botones', 'bolsillos', 'cordones', 'bordadoPecho', 'cruzada', 'solapa', 'solapaColor', 'hebilla', 'colgante', 'peto'];
+/** Escotes que por detrás se vuelven redondos. */
+const ESCOTE_TRASERO = { v: 'redondo', cuadrado: 'redondo', ojal: 'redondo' };
+/** Adornos de cuello que por detrás no se ven (el resto, como bufandas y gorgueras, sí). */
+const CUELLOS_DE_FRENTE = ['collar', 'gargantilla', 'cuentas-largas', 'pectoral', 'corbata', 'lazo', 'babero', 'triangulo', 'trapelacucha'];
+/** Plantillas que por detrás no se ven. */
+const PLANTILLAS_DE_FRENTE = ['delantal'];
+
+function paramsDeEspalda(plantilla, params = {}) {
+  if (plantilla === 'mono') return { ...params, torso: params.torso && paramsDeEspalda('tunica', params.torso), pantalon: params.pantalon && paramsDeEspalda('pantalon', params.pantalon) };
+  const p = { ...params };
+  for (const k of SOLO_FRENTE) delete p[k];
+  if (p.escote in ESCOTE_TRASERO) p.escote = ESCOTE_TRASERO[p.escote];
+  return p;
+}
+
+/** La prenda como se ve por detrás, o null si por detrás no se ve. */
+function prendaDeEspalda(prenda) {
+  if (PLANTILLAS_DE_FRENTE.includes(prenda.plantilla)) return null;
+  if (prenda.plantilla === 'cuello' && CUELLOS_DE_FRENTE.includes(prenda.params?.tipo)) return null;
+  if (prenda.plantilla === 'accesorio' && prenda.params?.tipo === 'cinta-frente') return null;
+  return { ...prenda, params: paramsDeEspalda(prenda.plantilla, prenda.params) };
+}
+
+const prendasDeEspalda = (prendas) => prendas.map(prendaDeEspalda).filter(Boolean);
+
+Object.assign(__e, { prendaDeEspalda, prendasDeEspalda });
+return __e;
+})();
+
 __m['svg'] = (() => {
 const __e = {};
 // Dibuja una persona descrita por `generarPersona` como SVG.
@@ -3883,6 +3920,7 @@ const { geometriaCabeza, trazoCabeza, trazoOrejas, rasgosRostro, PEINADOS, BARBA
 const { PLANTILLAS, ORDEN_RANURAS, finManga } = __m['prendas'];
 const { PATRONES } = __m['patrones'];
 const { validarPrenda } = __m['tipos-de-ropa'];
+const { prendasDeEspalda } = __m['espalda'];
 const { mezclar, escapar, num } = __m['util'];
 
 function contexto(pref) {
@@ -3969,12 +4007,13 @@ function renderizar(persona, opciones = {}) {
   const G = geometriaCabeza(M, persona.rostro);
   const piel = persona.piel;
   const { cx } = M;
+  const espalda = (opciones.vista ?? persona.vista) === 'espalda';
   const alto = nivel === 'alto';
   const plano = nivel === 'minimo';
 
   // --- Formas, degradados y sombras ---
   // Las formas y el recorte son propios de cada figura: llevan un prefijo derivado de su contenido.
-  const pref = `x${hashCorto(JSON.stringify([persona, nivel, contorno], (k, v) => (CAMPOS_DESCRIPTIVOS.has(k) ? undefined : v)))}`;
+  const pref = `x${hashCorto(JSON.stringify(espalda ? [persona, nivel, contorno, 'espalda'] : [persona, nivel, contorno], (k, v) => (CAMPOS_DESCRIPTIVOS.has(k) ? undefined : v)))}`;
   const ctx = contexto(pref);
   const caminos = [], idsSilueta = [], degradados = new Map();
   let nForma = 0;
@@ -3993,13 +4032,13 @@ function renderizar(persona, opciones = {}) {
     if (!degradados.has(id)) {
       const t = TONOS[tipo] ?? TONOS.tela, e = alto ? 1.2 : 1;
       const st = (o, c) => `<stop offset="${o}" stop-color="${c}"/>`;
-      degradados.set(id, `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0.22">${st(0, mezclar(hex, t.sombra, 0.12 * e))}${st(0.13, mezclar(hex, t.luz, 0.14))}${st(0.33, mezclar(hex, t.luz, 0.28 * e))}${st(0.58, hex)}${st(0.82, mezclar(hex, t.sombra, 0.3 * e))}${st(1, mezclar(hex, t.sombra, 0.52 * e))}</linearGradient>`);
+      degradados.set(id, `<linearGradient id="${id}" x1="${espalda ? 1 : 0}" y1="0" x2="${espalda ? 0 : 1}" y2="0.22">${st(0, mezclar(hex, t.sombra, 0.12 * e))}${st(0.13, mezclar(hex, t.luz, 0.14))}${st(0.33, mezclar(hex, t.luz, 0.28 * e))}${st(0.58, hex)}${st(0.82, mezclar(hex, t.sombra, 0.3 * e))}${st(1, mezclar(hex, t.sombra, 0.52 * e))}</linearGradient>`);
     }
     return `url(#${id})`;
   };
 
   const sombraProyectada = (ids) =>
-    `<g clip-path="url(#${pref}s)" opacity="${alto ? 0.44 : 0.34}"><g filter="url(#${pref}-bl)" transform="translate(3.5 5)" fill="#1c0f0c">${ids.map((id) => `<use href="#${id}"/>`).join('')}</g></g>`;
+    `<g clip-path="url(#${pref}s)" opacity="${alto ? 0.44 : 0.34}"><g filter="url(#${pref}-bl)" transform="translate(${espalda ? -3.5 : 3.5} 5)" fill="#1c0f0c">${ids.map((id) => `<use href="#${id}"/>`).join('')}</g></g>`;
 
   /** Capa de formas: su sombra proyectada sobre lo de abajo y luego los rellenos con degradado. */
   const capa = (piezas, tipo = 'tela') => {
@@ -4047,7 +4086,7 @@ function renderizar(persona, opciones = {}) {
   const giraLista = (l) => (girar ? l.map((s) => ({ ...s, d: girar(s.d) })) : l);
 
   // --- Prendas ---
-  const prendas = persona.prendas.map((pr) => {
+  const prendas = (espalda ? prendasDeEspalda(persona.prendas) : persona.prendas).map((pr) => {
     const f = PLANTILLAS[pr.plantilla];
     if (!f) throw new Error(`Plantilla desconocida: ${pr.plantilla}`);
     return { ...pr, r: f(M, pr.params ?? {}, pr.colores, ctx) };
@@ -4066,7 +4105,7 @@ function renderizar(persona, opciones = {}) {
     cuerpo += detalles(p.r.atras.filter((s) => s.atras));
   }
   cuerpo += figuras(toc.atras, 'tela', girar);
-  cuerpo += figuras(peinado.atras, 'pelo', girar);
+  if (!espalda) cuerpo += figuras(peinado.atras, 'pelo', girar);
 
   // 2. Piel: piernas y pies, torso, brazos, manos y cuello, cada uno proyectando su sombra sobre lo anterior
   const sp = { fill: piel };
@@ -4119,8 +4158,15 @@ function renderizar(persona, opciones = {}) {
   const cabezaPieza = { d: trazoCabeza(G), ...sp };
   const orejas = trazoOrejas(G).map((d) => ({ d, ...sp }));
   cuerpo += capa(giraLista([...orejas, cabezaPieza]), 'piel');
-  if (persona.rostro?.rasgos) cuerpo += detalles(giraLista(rasgosRostro(G, piel)));
-  cuerpo += figuras(barba, 'pelo', girar);
+  if (espalda) {
+    // Por detrás no hay rostro ni barba: el pelo cubre toda la cabeza (la calva deja ver la piel) y el pelo largo cae sobre la ropa.
+    const calvo = persona.cabello?.estilo === 'calvo';
+    cuerpo += capa(giraLista([{ d: trazoCabeza(G), fill: calvo ? piel : colorPelo }]), calvo ? 'piel' : 'pelo');
+    cuerpo += figuras(peinado.atras, 'pelo', girar);
+  } else {
+    if (persona.rostro?.rasgos) cuerpo += detalles(giraLista(rasgosRostro(G, piel)));
+    cuerpo += figuras(barba, 'pelo', girar);
+  }
   cuerpo += figuras(peinado.frente, 'pelo', girar);
   cuerpo += figuras(toc.frente, 'tela', girar);
 
@@ -4129,7 +4175,7 @@ function renderizar(persona, opciones = {}) {
 
   const inclina = M.pose.inclinacion ?? 0;
   const defs = [
-    `<linearGradient id="${pref}-sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0.18"/><stop offset="0.25" stop-color="#fff" stop-opacity="0.16"/><stop offset="0.6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></linearGradient>`,
+    `<linearGradient id="${pref}-sh" x1="${espalda ? 1 : 0}" y1="0" x2="${espalda ? 0 : 1}" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0.18"/><stop offset="0.25" stop-color="#fff" stop-opacity="0.16"/><stop offset="0.6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></linearGradient>`,
     `<linearGradient id="${pref}-sv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.14"/><stop offset="0.5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.22"/></linearGradient>`,
     `<radialGradient id="${pref}-su"><stop offset="0" stop-color="#1c0f0c" stop-opacity="0.34"/><stop offset="0.6" stop-color="#1c0f0c" stop-opacity="0.14"/><stop offset="1" stop-color="#1c0f0c" stop-opacity="0"/></radialGradient>`,
     `<filter id="${pref}-bl" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3.6"/></filter>`,
@@ -4141,9 +4187,11 @@ function renderizar(persona, opciones = {}) {
   ].join('');
   const bg = fondo && fondo !== 'ninguno' ? `<rect width="${LIENZO.ancho}" height="${LIENZO.alto}" fill="${escapar(fondo)}"/>` : '';
   const titulo = persona.titulo ? `<title>${escapar(persona.titulo)}</title>` : '';
-  const desc = persona.descripcion ? `<desc>${escapar(persona.descripcion)}</desc>` : '';
-  const figura = Math.abs(inclina) > 0.02 ? `<g transform="rotate(${num(inclina)} ${cx} ${LIENZO.suelo})">${cuerpo}</g>` : cuerpo;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LIENZO.ancho} ${LIENZO.alto}" role="img">${titulo}${desc}<defs>${defs}</defs>${bg}${suelo}${figura}</svg>`;
+  const desc = persona.descripcion ? `<desc>${escapar(persona.descripcion)}${espalda ? ' Vista de espalda.' : ''}</desc>` : '';
+  const figura0 = Math.abs(inclina) > 0.02 ? `<g transform="rotate(${num(inclina)} ${cx} ${LIENZO.suelo})">${cuerpo}</g>` : cuerpo;
+  // De espalda la figura es la del frente reflejada: su mano derecha queda a la derecha de quien mira.
+  const figura = espalda ? `<g data-vista="espalda" transform="translate(${LIENZO.ancho} 0) scale(-1 1)">${suelo}${figura0}</g>` : figura0;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LIENZO.ancho} ${LIENZO.alto}" role="img">${titulo}${desc}<defs>${defs}</defs>${bg}${espalda ? '' : suelo}${figura}</svg>`;
   return opciones.compacto ? compactar(svg) : svg;
 }
 
@@ -4696,6 +4744,7 @@ function validarOpciones(opc = {}) {
     if (opc.pose.carga !== undefined) enLista('pose.carga', opc.pose.carga, [-1, 0, 1]);
   }
   if (opc.detalle !== undefined) enLista('Detalle', opc.detalle, ['minimo', 'medio', 'alto']);
+  if (opc.vista !== undefined) enLista('Vista', opc.vista, ['frente', 'espalda']);
   if (opc.contorno !== undefined) enLista('Contorno', opc.contorno, ['ninguno', 'suave']);
   if (opc.clase !== undefined) enLista('Clase', opc.clase, ['baja', 'media', 'alta']);
   if (opc.anio !== undefined) numero('Año', opc.anio, -100000, 3000);
@@ -5177,6 +5226,7 @@ function generarPersona(opc = {}) {
     notas: [atuendo.nota, ...(etnia ? etnia.map((x) => x.e.nota) : [])].filter(Boolean),
     fuentes: [...new Set([atuendo.fuente, ...(etnia ? etnia.map((x) => x.e.fuente) : [])].filter(Boolean))],
     detalle: opc.detalle ?? 'medio', contorno: opc.contorno ?? 'ninguno', fondo: opc.fondo ?? 'ninguno',
+    ...(opc.vista === 'espalda' ? { vista: 'espalda' } : {}),
   };
 }
 

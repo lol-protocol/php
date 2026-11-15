@@ -101,6 +101,10 @@ f.personas;  // [{ ruta: '', 'p', 'pm'…, rol, generacion, sexo, edad, anio, na
 
 Es una ilustración de un linaje **probable**: el pueblo, la ropa y los rasgos salen de las estimaciones del catálogo (con su confianza), no de datos de personas reales.
 
+## Vista de espalda
+
+`vista: 'espalda'` (o `--vista espalda`) dibuja a la persona por detrás. La silueta de un cuerpo visto por detrás es la del frente reflejada, así que la figura sale **reflejada** (la mano derecha que saluda queda a la derecha de quien mira) con la luz siempre desde la izquierda. Cambia lo que se ve: el rostro desaparece bajo el pelo (la persona calva deja ver la piel), no hay barba, el pelo largo cae sobre la ropa, y las prendas pierden lo que solo existe por delante: botones, bolsillos del pecho, cordones, cruces, escotes en V o cuadrados (por detrás son redondos), collares y adornos de pecho, delantales y cintas de frente. Es una primera versión: no modela el nudo del obi, los lazos ni los dobleces propios de la espalda, y los tocados con adornos de frente (diademas) los muestran igual. Una persona de frente y la misma de espalda pueden ir en la misma página: no comparten ids.
+
 ## Vestir prenda por prenda
 
 Además de elegir un atuendo completo, se puede **armar el vestuario eligiendo cada prenda**: `vestir` recibe una lista de ids (o `{ ranura: id }`), y los colores salen del catálogo de cada prenda, con su probabilidad.

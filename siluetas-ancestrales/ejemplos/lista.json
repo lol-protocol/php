@@ -597,5 +597,23 @@
         }
       }
     }
+  },
+  {
+    "archivo": "espalda-huaso",
+    "opciones": {
+      "semilla": 3,
+      "atuendo": "huaso",
+      "edad": 45,
+      "vista": "espalda"
+    }
+  },
+  {
+    "archivo": "espalda-mapuche-trenzas",
+    "opciones": {
+      "semilla": 5,
+      "atuendo": "mapuche-mujer",
+      "edad": 30,
+      "vista": "espalda"
+    }
   }
 ]

@@ -88,6 +88,8 @@
       <select id="pose"><option value="casual" selected>Casual (cambia con la semilla)</option><option value="firme">Firme (simétrica)</option></select>
       <label for="postura">Brazos caídos (solo en pose firme)</label>
       <select id="postura"><option value="firme">Firme</option><option value="relajada">Relajada</option><option value="abierta">Abierta (muestra la ropa)</option></select>
+      <label for="vista">Vista</label>
+      <select id="vista"><option value="frente" selected>De frente</option><option value="espalda">De espalda</option></select>
       <label for="saludo">Saludo</label>
       <select id="saludo"><option value="derecha" selected>Mano derecha</option><option value="izquierda">Mano izquierda</option><option value="ninguno">Sin saludo</option></select>
       <label for="piel">Piel</label><select id="piel"><option value="">Según el origen o el atuendo</option></select>
@@ -147,7 +149,7 @@
   }
   function opciones(extra = {}) {
     const o = { semilla, saludo: $('saludo').value, contorno: $('contorno').value, sexo: $('sexo').value, edad: Number($('edad').value) || 30, corpulencia: $('corpulencia').value, postura: $('postura').value,
-      detalle: $('detalle').value, rasgos: $('rasgos').checked, fondo: $('fondo').value, ...extra };
+      detalle: $('detalle').value, rasgos: $('rasgos').checked, fondo: $('fondo').value, vista: $('vista').value, ...extra };
     if ($('pose').value === 'firme') o.pose = 'firme';
     if ($('piel').value) o.piel = $('piel').value;
     if ($('anio').value !== '') o.anio = Number($('anio').value);
@@ -194,7 +196,7 @@
       mos.appendChild(b);
     }
   }
-  for (const id of ['peinado', 'tocado', 'barba', 'etnia', 'etnia2', 'anio', 'saludo', 'pose', 'contorno', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
+  for (const id of ['peinado', 'tocado', 'barba', 'etnia', 'etnia2', 'anio', 'saludo', 'vista', 'pose', 'contorno', 'modo', 'estilo', 'esquema', 'atuendo', 'edad', 'corpulencia', 'postura', 'piel', 'detalle', 'rasgos', 'fondo']) $(id).addEventListener('change', dibujar);
   $('modo').addEventListener('change', () => { $('grupo-catalogo').hidden = $('modo').value !== 'catalogo'; $('grupo-nueva').hidden = $('modo').value !== 'nueva'; $('grupo-medida').hidden = $('modo').value !== 'medida'; });
   $('region').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
   $('sexo').addEventListener('change', () => { llenarAtuendos(); dibujar(); });
