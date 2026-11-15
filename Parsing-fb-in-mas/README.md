@@ -25,16 +25,20 @@ como `phone-directory/`).
   publicaciones ni contadores de seguidores. **Fechas de nacimiento y de muerte, lugares de
   vida y parientes se guardan solo si la fuente da una fecha de muerte**; si una página trae
   `birthDate` de alguien sin `deathDate`, esa fecha se descarta (hay pruebas).
-- **El texto que escribió la persona (titular y descripción) se marca, no se borra.** Pasa por el filtro
-  de `../defamatory-content-review/` (datos personales como el RUT o un teléfono, insultos y acusaciones, y
-  datos sensibles **de un tercero**: «tiene cáncer», «la familia era judía», «es comunista», «era mapuche») y por
-  una lista corta propia de categorías sensibles (`src/Sensibles.php`: salud, religión, política o sindical,
-  vida sexual, origen étnico; en español, inglés, francés, portugués, italiano y alemán). **Las dos se complementan:** el filtro del repo está escrito para frases sobre
-  otra persona y no marca lo que alguien dice de sí mismo («Tengo cáncer», «Soy evangélica»), que es justo lo
-  que suele traer una biografía de perfil; esa parte la cubre `Sensibles`. Las etiquetas salen en `marcas` y un
-  aviso dice «leer el texto con cuidado». **Es una ayuda, no una garantía:** la lista propia es de palabras
-  sueltas, así que puede marcar de más y, sobre todo, no marcar de menos. Que no salga ninguna marca no quiere
-  decir que el texto esté limpio. `--sin-revision` la desactiva.
+- **El texto que escribió la persona (titular y descripción) se marca, no se borra.** Tres revisiones que se
+  complementan (`src/Revision.php`), y las etiquetas salen en `marcas` con un aviso «leer el texto con cuidado»:
+  1. El filtro de `../defamatory-content-review/` en su modo normal: datos personales como el RUT o un teléfono,
+     insultos, acusaciones y datos sensibles dichos de **un tercero** («tiene cáncer», «la familia era judía»).
+  2. El mismo filtro en su **modo biografía** (`bio-topics`): datos sensibles que alguien dice de **sí mismo**
+     («tengo cáncer», «soy evangélica», «soy gay»), solo en español e inglés y con la forma «soy… / tengo…».
+  3. Una lista corta propia (`src/Sensibles.php`: salud, religión, política o sindical, vida sexual, origen étnico) en
+     español, inglés, francés, portugués, italiano y alemán. Cubre lo que lo anterior no ve: los otros cuatro idiomas
+     y las biografías sin verbo («Mapuche. Archivera», «Militante comunista»). Si el filtro ya marcó una categoría, la
+     de esta lista no se repite.
+
+  **Es una ayuda, no una garantía:** las listas son cortas y de palabras sueltas, así que pueden marcar de más y,
+  sobre todo, no marcar de menos. Que no salga ninguna marca no quiere decir que el texto esté limpio.
+  `--sin-revision` la desactiva.
 - **Lista de exclusión (`--excluir=lista.txt`)** en `analizar.php`, `wikidata.php`, `wikidata-nombres.php` y
   `cruzar.php`: una entrada por línea, una URL o `red:usuario` (`twitter:ana`, `wikidata:Q42`, `wikitree:Ejemplo-1`);
   `#` es comentario. Sirve para que alguien que pidió retirarse no vuelva a salir al reprocesar

@@ -202,19 +202,37 @@ igual('sensibles: salud y religión, con tilde y mayúscula', ['salud', 'religi�
 igual('sensibles: política y origen étnico', ['política o sindical', 'origen étnico'], Sensibles::buscar('Militante del partido comunista, mapuche'));
 igual('sensibles: palabras ambiguas no dan falsas alarmas', [], Sensibles::buscar('Barrio Iglesia Vieja, Roma, Italia'));
 igual('sensibles: una raíz no marca a media palabra', [], Sensibles::buscar('Mi profesión es la tecnología'));
-// El reparto de trabajo que documenta el README: el filtro del repo cubre lo dicho de un tercero, Sensibles lo dicho de uno mismo.
+// El reparto que documenta el README: filtro normal (de un tercero), modo biografía (de uno mismo, spa y eng)
+// y Sensibles (lo que lo anterior no ve), sin repetir la misma categoría.
+$tiene = static fn (array $marcas, string $marca): bool => in_array($marca, $marcas, true);
 $deTercero = Revision::marcas('Fulano tiene cáncer');
-igual('revision: lo dicho de un tercero lo marca el filtro del repo', true, in_array('dato sensible (salud)', $deTercero, true));
+igual('revision: lo dicho de un tercero lo marca el filtro en su modo normal', [true, false], [$tiene($deTercero, 'dato sensible (salud)'), $tiene($deTercero, 'posible dato sensible: salud')]);
 $deUnoMismo = Revision::marcas('Tengo cáncer');
-igual('revision: lo dicho de uno mismo lo marca Sensibles, no el filtro del repo', [false, true], [in_array('dato sensible (salud)', $deUnoMismo, true), in_array('posible dato sensible: salud', $deUnoMismo, true)]);
-igual('revision: religión de un tercero, por el filtro del repo', true, in_array('dato sensible (religión)', Revision::marcas('la familia era judía'), true));
-igual('revision: religión de uno mismo, por Sensibles', true, in_array('posible dato sensible: religión', Revision::marcas('Soy evangélica'), true));
+igual('revision: lo dicho de uno mismo lo marca el modo biografía y Sensibles no lo repite', [true, false], [$tiene($deUnoMismo, 'dato sensible (salud)'), $tiene($deUnoMismo, 'posible dato sensible: salud')]);
+igual('revision: religión de un tercero, por el filtro normal', true, $tiene(Revision::marcas('la familia era judía'), 'dato sensible (religión)'));
+// Cada categoría de Sensibles tiene su etiqueta del filtro: si no, saldrían duplicadas.
+foreach ([
+    ['salud', 'Tengo diabetes', 'dato sensible (salud)'],
+    ['religión', 'Soy evangélica', 'dato sensible (religión)'],
+    ['política o sindical', 'Soy comunista', 'dato sensible (opinión política)'],
+    ['vida sexual', 'Soy gay', 'dato sensible (orientación sexual)'],
+    ['origen étnico', 'Soy mapuche', 'dato sensible (origen étnico)'],
+    ['salud (inglés)', 'I have cancer', 'sensitive data (health)'],
+] as [$categoria, $texto, $etiqueta]) {
+    $m = Revision::marcas($texto);
+    igual("revision: $categoria, «{$texto}»: la marca el filtro y Sensibles no la duplica", [true, 1], [$tiene($m, $etiqueta), count($m)]);
+}
+// Lo que el filtro no ve, lo cubre Sensibles: otros idiomas y biografías sin verbo.
+igual('revision: otros idiomas los cubre Sensibles', ['posible dato sensible: salud', 'posible dato sensible: religión'], Revision::marcas('Je suis catholique et j\'ai un cancer'));
+igual('revision: una biografía sin verbo la cubre Sensibles', ['posible dato sensible: origen étnico'], Revision::marcas('Mapuche. Archivera y genealogista'));
+igual('revision: «Militante comunista» sin verbo la cubre Sensibles', ['posible dato sensible: política o sindical'], Revision::marcas('Militante comunista, historiadora'));
+igual('revision: una biografía limpia no marca nada', [], Revision::marcas('Genealogista aficionada y archivera.'));
 igual('revision: un RUT sale marcado', true, in_array('dato personal (RUT)', Revision::marcas('Mi RUT es 12.345.678-5'), true));
 igual('revision: una acusación sale marcada', true, in_array('acusación de delito', Revision::marcas('Ese tipo es un ladrón y estuvo preso por robo'), true));
 igual('revision: sin etiquetas repetidas', Revision::marcas('cáncer cáncer cáncer'), array_values(array_unique(Revision::marcas('cáncer cáncer cáncer'))));
 $conRut = '<link rel="canonical" href="https://x.com/uno"><meta property="og:title" content="Uno (@uno) / X"><meta property="og:description" content="Mi RUT es 12.345.678-5 y tengo diabetes">';
 $marcado = Detector::analizar($conRut)->aArreglo();
-igual('perfil: las marcas salen en el perfil', true, in_array('dato personal (RUT)', $marcado['marcas'], true) && in_array('posible dato sensible: salud', $marcado['marcas'], true));
+igual('perfil: las marcas salen en el perfil', true, in_array('dato personal (RUT)', $marcado['marcas'], true) && in_array('dato sensible (salud)', $marcado['marcas'], true));
 igual('perfil: avisa que hay que leer con cuidado', true, str_starts_with(implode('|', array_filter($marcado['avisos'], static fn (string $a): bool => str_starts_with($a, 'leer el texto'))), 'leer el texto con cuidado'));
 igual('perfil: el texto no se borra ni se cambia', 'Mi RUT es 12.345.678-5 y tengo diabetes', $marcado['descripcion']);
 igual('perfil: sin revisión, sin marcas', [], Detector::analizar($conRut, null, false)->aArreglo()['marcas']);
