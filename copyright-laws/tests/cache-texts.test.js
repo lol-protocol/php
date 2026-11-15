@@ -380,6 +380,11 @@ test("--field-sources: a row without law_name belongs to the only law of its cou
     assert.equal((plan.match(/\[plan\] xs\//g) ?? []).length, 2); // main page + plain.txt once (two fields, one URL)
     assert.match(plan, /\[plan\] xm\/ley-dos--[0-9a-f]{8}\.md/); // the named row is matched by name
     assert.equal((plan.match(/\[plan\] xm\//g) ?? []).length, 2); // main page of "Ley uno" + "Ley dos"; the nameless row is ambiguous, so skipped
+  } finally {
+    rmSync(isolated, { recursive: true, force: true });
+  }
+});
+
 const hasPdftotext = spawnSync("pdftotext", ["-v"]).error === undefined;
 
 test("a PDF is converted to text with pdftotext; a broken one is skipped", { skip: skip || (hasPdftotext ? false : "pdftotext is not installed") }, () => {
