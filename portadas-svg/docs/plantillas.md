@@ -18,14 +18,16 @@ Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plant
 
 ## Serie y volumen
 
-`volumen` (`3`, `III`) se escribe en el lomo después del autor («Título · Autor · Vol. 3») y en el pie, tras la colección. La palabra sale en el idioma del libro (`Vol.`, o `T.` en francés; ver `datos/frases.json`).
+`volumen` (`3`, `III`) se escribe en el lomo después del autor («Título · Autor · Vol. 3») y en el pie, tras la colección. En un lomo de 5 mm o más el número va arriba en grande, sin la palabra, y el texto girado no lo repite; en uno más estrecho va dentro del texto girado. La palabra sale en el idioma del libro (`Vol.`, o `T.` en francés; ver `datos/frases.json`).
 
 ## Imagen y logo
+
+En un lomo de 5 mm o más el `logo` también va abajo, y el motivo de la categoría sube sobre él.
 
 `imagen` es la ilustración de la portada y `logo` el de la editorial (arriba a la derecha de la contratapa, hasta 26 × 12 mm). Pueden ser SVG, PNG, JPG, GIF o WebP de hasta 2 MB, con la ruta relativa al JSON o al CSV. Se incrustan en el SVG como `data:`, así que la cubierta no depende de ningún archivo. Un SVG con scripts, manejadores `on…` o enlaces a otros archivos se rechaza.
 
 La `imagen` se dibuja según la plantilla:
 
 - `ilustrada`: es la ilustración, a sangre en la parte de arriba.
-- `clasica`, `sobria` y `tipografica`: es una **marca de agua** al 25 % de opacidad (cámbiala con `imagen_opacidad`, de 0 a 1) que cubre toda la portada, detrás del texto. El generador no mide el contraste con la imagen: revisa la vista previa, y si el título se pierde, usa una imagen más clara u oscura según el fondo.
+- `clasica`, `sobria` y `tipografica`: es una **marca de agua** al 25 % de opacidad (cámbiala con `imagen_opacidad`, de 0 a 1) que cubre toda la portada, detrás del texto. El generador mide el contraste: mezcla una muestra de la imagen (PNG, JPG, GIF o WebP, con la extensión `gd`) con el fondo y la opacidad, y avisa si más de una décima parte de la portada baja de 4,5:1 con el color del texto. Un SVG no se puede muestrear: avisa de que lo revises a ojo.
 - `cartel`: es solo letra y no la dibuja; el generador avisa.

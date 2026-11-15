@@ -27,6 +27,7 @@ final class MuestraDeImagen
         if ($imagen === false) {
             return null;
         }
+        $lado = max(1, $lado);
         $reducida = imagecreatetruecolor($lado, $lado);
         if ($reducida === false) {
             return null;

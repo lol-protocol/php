@@ -212,10 +212,14 @@ function caraDe(DOMElement $elemento): array
 function cajasDeTexto(string $cuerpo, Plantilla $plantilla): array
 {
     $doc = new DOMDocument();
-    verdadero($doc->loadXML('<svg xmlns="http://www.w3.org/2000/svg">' . $cuerpo . '</svg>'), 'el dibujo no es XML válido');
+    verdadero($doc->loadXML('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . $cuerpo . '</svg>'), 'el dibujo no es XML válido');
 
     $cajas = [];
     foreach ($doc->getElementsByTagName('text') as $elemento) {
+        // Los dígitos bajo las barras del código (en negro puro) van dentro de su hueco: son parte del código.
+        if ($elemento->getAttribute('fill') === '#000000') {
+            continue;
+        }
         $tamano = (float) $elemento->getAttribute('font-size');
         $espaciado = (float) $elemento->getAttribute('letter-spacing');
 
@@ -345,7 +349,7 @@ function librosParaGeometria(): array
 function adornos(string $cuerpo): array
 {
     $doc = new DOMDocument();
-    verdadero($doc->loadXML('<svg xmlns="http://www.w3.org/2000/svg">' . $cuerpo . '</svg>'), 'el dibujo no es XML válido');
+    verdadero($doc->loadXML('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . $cuerpo . '</svg>'), 'el dibujo no es XML válido');
 
     $adornos = [];
     foreach ($doc->getElementsByTagName('line') as $linea) {

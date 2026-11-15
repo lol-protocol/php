@@ -227,8 +227,8 @@ return [
         conCarpeta(static function (string $dir): void {
             $sinContraste = static fn (Libro $libro): array => array_values(array_filter(Generador::avisos($libro), static fn (string $a): bool => str_contains($a, 'marca de agua')));
             file_put_contents("$dir/vector.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>');
-            igual(1, count($sinContraste(libroDeEjemplo(['imagen' => "$dir/vector.svg"]))), 'un SVG no se puede medir');
-            igual([], $sinContraste(libroDeEjemplo(['plantilla' => 'ilustrada', 'imagen' => "$dir/vector.svg"])), 'la ilustración no lleva texto encima');
+            igual(1, count($sinContraste(libroDeEjemplo(['imagen' => "$dir/vector.svg"]))));
+            igual([], $sinContraste(libroDeEjemplo(['plantilla' => 'ilustrada', 'imagen' => "$dir/vector.svg"])));
             if (!function_exists('imagecreatetruecolor')) {
                 return;
             }
@@ -242,8 +242,8 @@ return [
             $aviso = $sinContraste(libroDeEjemplo(['imagen' => "$dir/negra.png", 'imagen_opacidad' => 1]));
             igual(1, count($aviso));
             verdadero(str_contains($aviso[0], '100 %'), 'dice cuánta portada pierde contraste: ' . $aviso[0]);
-            igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/negra.png", 'imagen_opacidad' => 0.1])), 'con poca opacidad se lee');
-            igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/blanca.png", 'imagen_opacidad' => 1])), 'una imagen blanca no estorba');
+            igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/negra.png", 'imagen_opacidad' => 0.1])));
+            igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/blanca.png", 'imagen_opacidad' => 1])));
         });
     },
 
@@ -252,7 +252,9 @@ return [
         $orden = static function (array $trozos) use ($formas): array {
             $metodo = new ReflectionMethod(TextoATrazos::class, 'enOrdenVisual');
 
-            return $metodo->invoke(new TextoATrazos(), $trozos, $formas);
+            $resultado = $metodo->invoke(new TextoATrazos(), $trozos, $formas);
+
+            return is_array($resultado) ? array_values($resultado) : [];
         };
         // Un número entre dos palabras se queda entre ellas, y el orden de lectura es de derecha a izquierda.
         igual(['גד', ' ', '12', ' ', 'אב'], $orden(['אב', ' ', '12', ' ', 'גד']));
