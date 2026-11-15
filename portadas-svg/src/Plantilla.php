@@ -6,6 +6,10 @@ namespace PortadasSvg;
 
 use PortadasSvg\Adornos\Adorno;
 use PortadasSvg\Adornos\Motivo;
+use PortadasSvg\Piezas\Contratapa;
+use PortadasSvg\Piezas\Imagenes;
+use PortadasSvg\Piezas\Lomo;
+use PortadasSvg\Piezas\Solapas;
 use PortadasSvg\Plantillas\Cartel;
 use PortadasSvg\Plantillas\Clasica;
 use PortadasSvg\Plantillas\Ilustrada;
@@ -30,6 +34,11 @@ use PortadasSvg\Plantillas\Tipografica;
  */
 abstract class Plantilla
 {
+    use Contratapa;
+    use Imagenes;
+    use Lomo;
+    use Solapas;
+
     /** Espacio entre el borde del corte y el texto. */
     protected const MARGEN = 16.0;
     /** Distancia entre líneas, en múltiplos del tamaño de letra. */
@@ -42,72 +51,6 @@ abstract class Plantilla
     protected const SUBTITULO_ESPACIO = 0.35;
     /** Subtítulo: tamaño mínimo de letra, el mismo en todas las plantillas. */
     protected const SUBTITULO_TAMANO_MIN = 3.2;
-
-    /** Contratapa: raya de acento (distancia al borde superior del corte, largo y grosor). */
-    protected const CONTRATAPA_RAYA_Y = 22.0;
-    protected const CONTRATAPA_RAYA_LARGO = 12.0;
-    protected const CONTRATAPA_RAYA_GROSOR = 0.8;
-    /** Contratapa: friso del adorno de la tradición, que sustituye a la raya (distancia al borde superior, ancho y alto). */
-    protected const CONTRATAPA_FRISO_Y = 17.0;
-    protected const CONTRATAPA_FRISO_ANCHO = 36.0;
-    protected const CONTRATAPA_FRISO_ALTO = 5.0;
-    /** Contratapa corta: marca de agua con el emblema de la tradición (radio, altura de su centro como fracción del alto, opacidad y grosor de línea). */
-    protected const CONTRATAPA_TEXTO_SEPARACION = 8.0;
-    protected const CONTRATAPA_MARCA_RADIO = 24.0;
-    protected const CONTRATAPA_MARCA_Y = 0.64;
-    protected const CONTRATAPA_MARCA_OPACIDAD = 0.3;
-    protected const CONTRATAPA_MARCA_TRAZO = 0.25;
-    /** Contratapa: motivo de la categoría, abajo a la izquierda sobre el pie (radio y distancia de su centro al borde inferior). */
-    protected const CONTRATAPA_MOTIVO_RADIO = 6.5;
-    protected const CONTRATAPA_MOTIVO_Y = 30.0;
-    /** Contratapa: dónde empieza el texto desde el borde superior, qué fracción del alto puede ocupar y su tamaño. */
-    protected const CONTRATAPA_TEXTO_Y = 34.0;
-    protected const CONTRATAPA_TEXTO_ALTO = 0.5;
-    protected const CONTRATAPA_TAMANO_MAX = 4.2;
-    protected const CONTRATAPA_TAMANO_MIN = 2.8;
-    /** Contratapa: la cita que la abre (alto máximo, tamaño, espacio libre bajo ella) y la línea de su autor (tamaño y separación). */
-    protected const CITA_ALTO = 34.0;
-    protected const CITA_TAMANO_MAX = 5.6;
-    protected const CITA_TAMANO_MIN = 3.4;
-    protected const CITA_SEPARACION = 8.0;
-    protected const CITA_AUTOR_TAMANO = 3.2;
-    protected const CITA_AUTOR_SEPARACION = 3.0;
-    /** Pie con editorial y colección: distancia de su línea base al borde inferior del corte, y tamaño. */
-    protected const PIE_Y = 12.0;
-    protected const PIE_TAMANO_MAX = 3.2;
-    protected const PIE_TAMANO_MIN = 2.4;
-    /** Logo de la editorial en la contratapa: ancho y alto máximos, y distancia de su borde superior al del corte. */
-    protected const LOGO_ANCHO = 26.0;
-    protected const LOGO_ALTO = 12.0;
-    protected const LOGO_Y = 10.0;
-    /** Marca de agua: la imagen del libro, detrás del texto de la portada, con esta opacidad. */
-    protected const MARCA_DE_AGUA_OPACIDAD = 0.25;
-    /** Hueco del código de barras: ancho, alto, distancia de su borde superior al borde inferior del corte, y espacio libre hasta el pie. */
-    protected const CODIGO_ANCHO = 42.0;
-    protected const CODIGO_ALTO = 26.0;
-    protected const CODIGO_Y = 38.0;
-    protected const CODIGO_SEPARACION = 4.0;
-    /** ISBN: separación sobre el hueco del código y tamaño. */
-    protected const ISBN_SEPARACION = 3.0;
-    protected const ISBN_TAMANO_MAX = 2.8;
-    protected const ISBN_TAMANO_MIN = 2.0;
-
-    /** Solapas: margen interior y tamaño del texto. */
-    protected const SOLAPA_MARGEN = 10.0;
-    protected const SOLAPA_TAMANO_MAX = 4.0;
-    protected const SOLAPA_TAMANO_MIN = 2.8;
-
-    /** Lomo: ancho a partir del cual lleva texto, tamaño del texto (el máximo es también una fracción del ancho) y centrado. */
-    /** Lomo: por debajo de este ancho no se escribe el texto. */
-    public const LOMO_MINIMO = 3.0;
-    protected const LOMO_TAMANO_MAX = 4.5;
-    protected const LOMO_TAMANO_MIN = 2.2;
-    protected const LOMO_TAMANO_ANCHO = 0.6;
-    protected const LOMO_CENTRADO = 0.35;
-    /** Lomo: el motivo de la categoría solo cabe si el lomo mide al menos esto; su radio (fracción del ancho del lomo) y el espacio libre hasta el texto. */
-    protected const LOMO_MOTIVO_ANCHO_MINIMO = 5.0;
-    protected const LOMO_MOTIVO_RADIO = 0.36;
-    protected const LOMO_MOTIVO_SEPARACION = 3.0;
 
     /**
      * Caras tipográficas que ha dibujado la pieza en curso, con todo el texto escrito con cada una. Se vacía
@@ -217,30 +160,6 @@ abstract class Plantilla
             . $paneles;
     }
 
-    /**
-     * Si la plantilla dibuja la `imagen` del libro. Por defecto sí: como marca de agua tenue detrás del texto (ver
-     * `marcaDeAgua`) o, en `ilustrada`, como ilustración. Una plantilla solo de letra la ignora.
-     */
-    public function dibujaImagen(): bool
-    {
-        return true;
-    }
-
-    /**
-     * La imagen del libro como marca de agua: cubre toda la portada, sangrado incluido, con poca opacidad para que el
-     * texto se siga leyendo. Una plantilla que dibuja la imagen a su manera (`ilustrada`) devuelve vacío aquí.
-     */
-    protected function marcaDeAgua(Libro $libro, Rectangulo $panel): string
-    {
-        if ($libro->imagen === null || !$this->dibujaImagen()) {
-            return '';
-        }
-        $sangrado = $libro->formato->sangrado;
-        $zona = new Rectangulo($panel->x, $panel->y - $sangrado, $panel->ancho + $sangrado, $panel->alto + 2 * $sangrado);
-
-        return Svg::elemento('g', ['opacity' => self::MARCA_DE_AGUA_OPACIDAD], $this->imagen($libro->imagen, $zona, 'xMidYMid slice'));
-    }
-
     /** Dibuja la portada dentro de su panel de corte. */
     abstract protected function portada(Libro $libro, Rectangulo $panel): string;
 
@@ -321,149 +240,10 @@ abstract class Plantilla
         return ['fondo' => $this->relleno($libro), 'texto' => $libro->colores['texto']];
     }
 
-    protected function contratapa(Libro $libro, Rectangulo $panel): string
-    {
-        $colores = $libro->colores;
-        $x = $panel->x + self::MARGEN;
-        $ancho = $panel->ancho - 2 * self::MARGEN;
-
-        // Arriba, el friso de la tradición; si no tiene, una raya de acento.
-        $svg = $this->adorno($libro)->friso(new Rectangulo($x, $panel->y + self::CONTRATAPA_FRISO_Y, self::CONTRATAPA_FRISO_ANCHO, self::CONTRATAPA_FRISO_ALTO), $colores['acento']);
-        if ($svg === '') {
-            $svg = $this->linea($x, $panel->y + self::CONTRATAPA_RAYA_Y, $x + self::CONTRATAPA_RAYA_LARGO, $panel->y + self::CONTRATAPA_RAYA_Y, $colores['acento'], self::CONTRATAPA_RAYA_GROSOR);
-        }
-        $y = $panel->y + self::CONTRATAPA_TEXTO_Y;
-        $alto = $panel->alto * self::CONTRATAPA_TEXTO_ALTO;
-        if ($libro->textos->cita !== '') {
-            // La cita abre la contratapa, más grande y con la letra propia de la plantilla, y firmada por el autor.
-            $estilo = $this->estiloDeCita();
-            $cita = Texto::ajustar('«' . $libro->textos->cita . '»', $ancho, self::CITA_ALTO, self::CITA_TAMANO_MAX, self::CITA_TAMANO_MIN, $this->medidaDe($estilo), self::INTERLINEADO, true);
-            $svg .= $this->parrafo($cita['lineas'], $x, $y + $cita['tamano'] * self::ASCENDENTE, $cita['tamano'], 'start', $colores['texto'], $estilo);
-            $firma = $y + $cita['tamano'] * self::ASCENDENTE + (count($cita['lineas']) - 1) * $cita['tamano'] * self::INTERLINEADO + $cita['tamano'] * self::DESCENDENTE + self::CITA_AUTOR_SEPARACION + self::CITA_AUTOR_TAMANO * self::ASCENDENTE;
-            $svg .= $this->rotulo('— ' . $libro->textos->autor, $x, $firma, $ancho, self::CITA_AUTOR_TAMANO, self::CONTRATAPA_TAMANO_MIN, 'start', $colores['acento']);
-            $gastado = $firma + self::CITA_AUTOR_TAMANO * self::DESCENDENTE + self::CITA_SEPARACION - $y;
-            $y += $gastado;
-            $alto -= $gastado;
-        }
-        $fin = $y;
-        if ($libro->textos->contratapa !== '') {
-            $texto = Texto::ajustar($libro->textos->contratapa, $ancho, $alto, self::CONTRATAPA_TAMANO_MAX, self::CONTRATAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
-            $svg .= $this->parrafo($texto['lineas'], $x, $y + $texto['tamano'] * self::ASCENDENTE, $texto['tamano'], 'start', $colores['texto'], [], $ancho);
-            $fin = $y + count($texto['lineas']) * $texto['tamano'] * self::INTERLINEADO;
-        }
-
-        // Una contratapa con poco texto queda vacía: el emblema de la tradición, muy tenue, llena el hueco. Solo
-        // se pone si cabe sin tocar el texto.
-        $centro = $panel->y + $panel->alto * self::CONTRATAPA_MARCA_Y;
-        if ($libro->tradicion !== null && $centro - self::CONTRATAPA_MARCA_RADIO > $fin + self::CONTRATAPA_TEXTO_SEPARACION) {
-            $svg .= Svg::elemento('g', ['opacity' => self::CONTRATAPA_MARCA_OPACIDAD], $this->adorno($libro)->emblema($panel->x + $panel->ancho / 2, $centro, self::CONTRATAPA_MARCA_RADIO, $colores['acento'], self::CONTRATAPA_MARCA_TRAZO));
-        }
-
-        if ($libro->categoria !== null) {
-            $svg .= Motivo::dibujar($libro->categoria, $x + self::CONTRATAPA_MOTIVO_RADIO, $panel->y + $panel->alto - self::CONTRATAPA_MOTIVO_Y, self::CONTRATAPA_MOTIVO_RADIO, $colores['acento']);
-        }
-
-        if ($libro->logo !== null) {
-            $svg .= $this->imagen($libro->logo, new Rectangulo($panel->x + $panel->ancho - self::MARGEN - self::LOGO_ANCHO, $panel->y + self::LOGO_Y, self::LOGO_ANCHO, self::LOGO_ALTO), 'xMaxYMid meet');
-        }
-
-        // Hueco en blanco para el código de barras del ISBN: el código lo pone quien imprime. El pie
-        // llega hasta el hueco y deja un espacio libre antes de él.
-        $caja = new Rectangulo($panel->x + $panel->ancho - self::MARGEN - self::CODIGO_ANCHO, $panel->y + $panel->alto - self::CODIGO_Y, self::CODIGO_ANCHO, self::CODIGO_ALTO);
-        $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - self::PIE_Y, 'start', $ancho - self::CODIGO_ANCHO - self::CODIGO_SEPARACION);
-        $svg .= $this->rectangulo($caja, ['fill' => '#ffffff']);
-        if ($libro->textos->isbn !== '') {
-            $svg .= $this->rotulo('ISBN ' . $libro->textos->isbn, $caja->x + self::CODIGO_ANCHO, $caja->y - self::ISBN_SEPARACION, self::CODIGO_ANCHO, self::ISBN_TAMANO_MAX, self::ISBN_TAMANO_MIN, 'end', $colores['texto']);
-        }
-
-        return $svg;
-    }
-
-    protected function lomo(Libro $libro, Rectangulo $panel): string
-    {
-        $colores = $this->coloresLomo($libro);
-        // El lomo no tiene borde exterior, así que su color llega también al sangrado de arriba y de abajo.
-        $fondo = new Rectangulo($panel->x, 0.0, $panel->ancho, $panel->alto + 2 * $libro->formato->sangrado);
-        $svg = $this->rectangulo($fondo, ['fill' => $colores['fondo']]);
-        if ($panel->ancho < self::LOMO_MINIMO) {
-            return $svg;
-        }
-
-        // Con categoría y un lomo ancho, el motivo va abajo. El texto deja el mismo espacio arriba y abajo,
-        // para seguir centrado.
-        $radio = $libro->categoria !== null && $panel->ancho >= self::LOMO_MOTIVO_ANCHO_MINIMO ? $panel->ancho * self::LOMO_MOTIVO_RADIO : 0.0;
-        if ($radio > 0.0) {
-            $svg .= Motivo::dibujar($libro->categoria ?? '', $panel->x + $panel->ancho / 2, $panel->y + $panel->alto - self::MARGEN - $radio, $radio, $colores['texto']);
-        }
-        $largo = $panel->alto - 2 * self::MARGEN - ($radio > 0.0 ? 2 * (2 * $radio + self::LOMO_MOTIVO_SEPARACION) : 0.0);
-        $completo = implode(' · ', array_filter([$libro->textos->titulo, $libro->textos->autor, $this->rotuloDeVolumen($libro)], static fn (string $parte): bool => $parte !== ''));
-        $texto = Texto::unaLinea($completo, $largo, min(self::LOMO_TAMANO_MAX, $panel->ancho * self::LOMO_TAMANO_ANCHO), self::LOMO_TAMANO_MIN, $this->medidaDe());
-
-        // El texto va girado 90°. Al girarlo, la línea base queda en x y las letras crecen hacia un lado
-        // u otro según el sentido; se corre x para que el texto quede centrado en el lomo.
-        $sentido = $libro->lomoDireccion === 'abajo-arriba' ? -1 : 1;
-        $x = $panel->x + $panel->ancho / 2 - $sentido * self::LOMO_CENTRADO * $texto['tamano'];
-        $y = $panel->y + $panel->alto / 2;
-
-        $this->usar([], $texto['texto']);
-
-        if ($this->textoATrazos) {
-            return $svg . $this->trazos()->escribir([$texto['texto']], 0.0, 0.0, $texto['tamano'], 'middle', $colores['texto'], $this->familia(), 'normal', 400, $this->medidaDe(), 0.0, self::INTERLINEADO, 'translate(' . Svg::n($x) . ' ' . Svg::n($y) . ') rotate(' . (90 * $sentido) . ') ');
-        }
-
-        return $svg . Svg::elemento('text', [
-            'transform' => 'translate(' . Svg::n($x) . ' ' . Svg::n($y) . ') rotate(' . (90 * $sentido) . ')',
-            'font-family' => Fuentes::pila($this->familia()),
-            'font-size' => $texto['tamano'],
-            'text-anchor' => 'middle',
-            'fill' => $colores['texto'],
-        ], Svg::e($texto['texto']));
-    }
-
-    /** Solapa interior: texto arriba a la izquierda, con su margen. */
-    protected function solapa(string $texto, Libro $libro, Rectangulo $panel): string
-    {
-        if (trim($texto) === '') {
-            return '';
-        }
-
-        $margen = self::SOLAPA_MARGEN;
-        $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, self::SOLAPA_TAMANO_MAX, self::SOLAPA_TAMANO_MIN, $this->medidaDe(), self::INTERLINEADO);
-
-        return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * self::ASCENDENTE, $ajuste['tamano'], 'start', $libro->colores['texto'], [], $panel->ancho - 2 * $margen);
-    }
-
     /** «Vol. 3» en el idioma del libro, o vacío si no es de una serie. */
     protected function rotuloDeVolumen(Libro $libro): string
     {
         return $libro->textos->volumen === '' ? '' : Frases::texto($libro->idioma, 'volumen', ['n' => $libro->textos->volumen]);
-    }
-
-    /**
-     * Una imagen del libro (su ilustración o el logo) incrustada en `zona`, para que el SVG no dependa de ningún archivo.
-     * `$ajuste` es el `preserveAspectRatio`: `slice` rellena la zona recortando lo que sobre, `meet` la deja entera.
-     */
-    protected function imagen(string $ruta, Rectangulo $zona, string $ajuste): string
-    {
-        $tipos = ['svg' => 'image/svg+xml', 'png' => 'image/png', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'gif' => 'image/gif', 'webp' => 'image/webp'];
-        $contenido = is_file($ruta) ? file_get_contents($ruta) : false;
-        if ($contenido === false) {
-            throw new \RuntimeException("No se pudo leer la imagen $ruta.");
-        }
-
-        return Svg::elemento('image', [
-            'x' => $zona->x, 'y' => $zona->y, 'width' => $zona->ancho, 'height' => $zona->alto,
-            'preserveAspectRatio' => $ajuste,
-            'xlink:href' => 'data:' . ($tipos[strtolower(pathinfo($ruta, PATHINFO_EXTENSION))] ?? 'application/octet-stream') . ';base64,' . base64_encode($contenido),
-        ]);
-    }
-
-    /** Pie con editorial y colección, si hay alguna, en una sola línea que cabe en `ancho`. */
-    protected function editorial(Libro $libro, float $x, float $y, string $anclaje, float $ancho): string
-    {
-        $pie = implode(' · ', array_filter([$libro->textos->editorial, $libro->textos->coleccion, $this->rotuloDeVolumen($libro)], static fn (string $dato): bool => $dato !== ''));
-
-        return $pie === '' ? '' : $this->rotulo($pie, $x, $y, $ancho, self::PIE_TAMANO_MAX, self::PIE_TAMANO_MIN, $anclaje, $libro->colores['texto']);
     }
 
     /**

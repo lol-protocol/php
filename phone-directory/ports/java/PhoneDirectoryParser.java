@@ -227,7 +227,8 @@ final class PhonePattern {
     }
 
     private static final String BASE =
-        "\\b[A-Za-z]{3,}[ .-]\\d[ -]\\d{4}\\b|\\b\\d{3}[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b";
+        "\\b[A-Za-z]{3,}[ .-]\\d[ -]\\d{4}\\b|\\b\\d{3}(?:[-.\\s]|\\s[-.]\\s)?\\d{3}(?:[-.\\s]|\\s[-.]\\s)?\\d{4}\\b"
+        + "|(?<![\\d+])\\(\\d{3}\\)\\s?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b";
 
     // The looser formats are kept per language because they would read a house number as part of a phone
     // in another language's directory.
@@ -373,7 +374,7 @@ final class StreetRules {
     static final Set<String> NUMBER_LAST_LANGUAGES = Set.of("es", "pt", "it", "de");
 
     private static final Map<String, List<String>> MARKERS = Map.of(
-        "es", List.of("calle", "c/", "avenida", "av", "plaza", "pasaje", "camino", "ruta", "carrera"),
+        "es", List.of("calle", "c/", "avenida", "av", "avda", "plaza", "pza", "pasaje", "camino", "ruta", "carrera"),
         "en", List.of("street", "st", "avenue", "ave", "road", "rd", "drive", "dr", "lane", "ln", "boulevard", "blvd", "circle", "cir"),
         "fr", List.of("rue", "avenue", "allée", "place", "boulevard", "bd", "cours", "square"),
         "pt", List.of("rua", "avenida", "av", "praça", "alameda", "estrada", "largo"),
@@ -382,7 +383,7 @@ final class StreetRules {
     );
     // German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
     static final Map<String, List<String>> SUFFIXES = Map.of(
-        "de", List.of("straße", "strasse", "allee", "weg", "platz")
+        "de", List.of("straße", "strasse", "allee", "weg", "platz", "str")
     );
     // Street words that are also the usual abbreviation opening a name ("Dr." doctor, "St." saint): they only
     // make a street when the line has a digit or they are not its first word.
@@ -460,7 +461,9 @@ final class StreetRules {
             return true;
         }
         for (int start : starts) {
-            if (!line.substring(0, start).trim().isEmpty()) {
+            String before = line.substring(0, start);
+            // Not first, and not inside a bracket either: "John (Dr.)" is a title after a name, not a street.
+            if (!before.trim().isEmpty() && !before.endsWith("(") && !before.endsWith("[")) {
                 return true;
             }
         }
@@ -746,6 +749,15 @@ final class SingleLineEntrySplitter {
         // A name with no letters is a house number cut off by its comma ("12, rue de la Paix"), not a name.
         if (!PhonePattern.LETTER.matcher(name).find() || street.isEmpty()) {
             return null;
+        }
+
+        // Where the house number comes first, a "street" field that opens with words before its number
+        // ("John 12 Oak Street 555-123-4567", after "SMITH,") holds the rest of the name too.
+        if (language == null || !StreetRules.NUMBER_LAST_LANGUAGES.contains(language)) {
+            Matcher before = Pattern.compile("^([^\\d]*\\p{L}[^\\d]*)\\d").matcher(street);
+            if (before.find() && !looksLikeStreet.test(before.group(1))) {
+                return null;
+            }
         }
         return new Split(name, street, phone);
     }

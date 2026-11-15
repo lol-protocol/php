@@ -22,7 +22,8 @@ if (flag('ayuda') || flag('help')) {
   --saludo derecha|izquierda|ninguno   mano en saludo (por defecto derecha: la de la persona, a la izquierda de quien mira)
   --avisos           imprime en la salida de error lo que se estimó y los filtros que hubo que aflojar
   --sexo f|m  --edad N  --corpulencia delgada|media|robusta|corpulenta  --altura CM
-  --pose casual|firme   casual (por defecto): cabeza inclinada, peso en una pierna, brazo libre en la cintura o el bolsillo… distinto con cada semilla; firme: simétrica
+  --pose casual|firme|infantil|mayor|segun-edad   casual (por defecto): cabeza inclinada, peso en una pierna, brazo libre en la cintura o el bolsillo… distinto con cada semilla; firme: simétrica; infantil, mayor o segun-edad: poses propias de cada edad; con --saludo ninguno se puede usar pose.manos (juntas o cruzados) y pose.brazoLibre pecho desde la biblioteca
+  --manos juntas|cruzados   ambas manos al frente o brazos cruzados (con --saludo ninguno); --brazo-libre abajo|cintura|bolsillo|pecho
   --contorno suave   por defecto no hay bordes; 'suave' añade un borde fino y tenue
   --postura firme|relajada|abierta  --piel ID|#hex  --cabello ID|#hex
   --familia          árbol de ascendencia en un SVG: --generaciones 1 a 4, --linaje archivo.json ({ etnia, padre: {...}, madre: {...} }), y --etnia --anio --edad --sexo --semilla de la persona
@@ -73,7 +74,7 @@ const opc = {
   semilla: val('semilla') === undefined ? 1 : (Number.isNaN(Number(val('semilla'))) ? val('semilla') : Number(val('semilla'))),
   atuendo: val('atuendo'), region: val('region'), anio: num('anio'), clase: val('clase'), sexo: val('sexo'), edad: num('edad'),
   corpulencia: val('corpulencia') !== undefined && val('corpulencia') !== '' && !Number.isNaN(Number(val('corpulencia'))) ? Number(val('corpulencia')) : val('corpulencia'), altura: num('altura'), postura: val('postura'), piel: val('piel'), cabello: val('cabello'),
-  detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'), pose: val('pose') === 'casual' ? undefined : val('pose'), contorno: val('contorno'),
+  detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'), pose: (val('manos') || val('brazo-libre')) ? { ...(val('manos') ? { manos: val('manos') } : {}), ...(val('brazo-libre') ? { brazoLibre: val('brazo-libre') } : {}) } : (val('pose') === 'casual' ? undefined : val('pose')), contorno: val('contorno'),
   compacto: flag('compacto') || undefined, ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
   etnia: val('etnia'), saludo: val('saludo'), vestir: val('vestir') ? val('vestir').split(',').map((x) => x.trim()).filter(Boolean) : undefined, peinado: val('peinado'), barba: val('barba'), tocado: val('tocado'),
 };

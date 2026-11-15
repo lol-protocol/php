@@ -70,6 +70,45 @@ class CliTest extends TestCase
         $this->assertStringContainsString('Uso:', $stdout);
     }
 
+    public function testPublishableMakesARecentBusinessWithAGivenNameVisible(): void
+    {
+        $file = $this->writeSampleFile("Farmacia Rosa\nCalle Sol 5\n555-123-4567");
+        $dsn = "--dsn=sqlite:{$this->dbFile}";
+        $this->runCli("import {$file} --country=ES --language=es --source=es_1975_national {$dsn}");
+
+        [, $hidden] = $this->runCli("search --name=farmacia --publico {$dsn}");
+        $this->assertStringContainsString('0 resultado(s)', $hidden);
+
+        [, $owner] = $this->runCli("search --name=farmacia {$dsn}");
+        $this->assertMatchesRegularExpression('/\[empresa #(\d+)\] Farmacia Rosa/', $owner);
+        preg_match('/\[empresa #(\d+)\]/', $owner, $m);
+
+        [$exit, $out] = $this->runCliArgs(['publishable', $m[1], '--evidence=Registro Mercantil de Madrid', "--dsn=sqlite:{$this->dbFile}"]);
+        $this->assertSame(0, $exit);
+        $this->assertStringContainsString('es publicable', $out);
+
+        [, $shown] = $this->runCli("search --name=farmacia --publico {$dsn}");
+        $this->assertStringContainsString('1 resultado(s)', $shown);
+        $this->assertStringContainsString('publicable', $shown);
+
+        [$exit] = $this->runCli("publishable {$m[1]} --clear {$dsn}");
+        $this->assertSame(0, $exit);
+        [, $again] = $this->runCli("search --name=farmacia --publico {$dsn}");
+        $this->assertStringContainsString('0 resultado(s)', $again);
+
+        foreach ([
+            "publishable {$m[1]} {$dsn}",
+            "publishable {$m[1]} --evidence=x --publico {$dsn}",
+            "publishable 999 --evidence=x {$dsn}",
+            "publishable abc --evidence=x {$dsn}",
+            "publishable {$m[1]} --clear --evidence=x {$dsn}",
+        ] as $command) {
+            [$code] = $this->runCli($command);
+            $this->assertSame(1, $code, $command);
+        }
+        unlink($file);
+    }
+
     public function testSearchInPages(): void
     {
         $file = $this->writeSampleFile("SMITH, Ann\n1 Oak Avenue\n\nSMITH, Bob\n2 Oak Avenue\n\nSMITH, Cy\n3 Oak Avenue\n\nSMITH, Di\n4 Oak Avenue\n\nSMITH, Ed\n5 Oak Avenue");
@@ -230,7 +269,7 @@ class CliTest extends TestCase
         [$exitCode, $stdout] = $this->runCli("search --name=farmacia --type=juridical --dsn=sqlite:{$this->dbFile}");
 
         $this->assertSame(0, $exitCode);
-        $this->assertStringContainsString('[empresa]', $stdout);
+        $this->assertStringContainsString('[empresa #', $stdout);
         $this->assertStringContainsString('Farmacia Central', $stdout);
 
         unlink($file);

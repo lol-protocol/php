@@ -1,0 +1,49 @@
+name: Pruebas astros-3d
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "astros-3d/**"
+      - ".github/workflows/pruebas-astros-3d.yml"
+  pull_request:
+    paths:
+      - "astros-3d/**"
+      - ".github/workflows/pruebas-astros-3d.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  astros-3d:
+    name: Astros en 3D (Node)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: astros-3d
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Pruebas (datos, texturas y generador)
+        run: node --test 'pruebas/*.test.js'
+
+      # js/datos.js y caracteristicas.md se generan desde datos/astros.json: si alguien
+      # cambia el JSON y no regenera, falla aqui.
+      - name: js/datos.js y caracteristicas.md al dia con datos/astros.json
+        run: node generar.js --comprobar

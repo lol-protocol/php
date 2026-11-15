@@ -1,0 +1,17 @@
+{
+  "titulo": "Faust",
+  "subtitulo": "Der Tragödie erster Teil",
+  "autor": "Johann Wolfgang von Goethe",
+  "editorial": "Beispielausgabe",
+  "coleccion": "Klassiker",
+  "volumen": "I",
+  "isbn": "978-3-16-148410-0",
+  "paginas": 320,
+  "epoca": "1808",
+  "idioma": "de",
+  "tradicion": "moderna",
+  "categoria": "teatro",
+  "plantilla": "cartel",
+  "tema": "oscuro",
+  "logo": "imagenes/logo-editorial.svg"
+}

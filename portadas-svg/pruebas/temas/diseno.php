@@ -48,16 +48,31 @@ return [
         lanza(InvalidArgumentException::class, static fn () => libroDeEjemplo(['tema' => 'sepia']));
     },
 
-    'El volumen va en el lomo y en el pie, en el idioma del libro' => function (): void {
+    'El volumen va en el pie y en el lomo: en grande si es ancho, y en el texto girado si es estrecho' => function (): void {
         conCarpeta(static function (string $dir): void {
-            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'coleccion' => 'Clásicos', 'editorial' => 'Ed']), "$dir/es");
-            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'idioma' => 'fr']), "$dir/fr");
-            Generador::escribir(libroDeEjemplo(['coleccion' => 'Clásicos']), "$dir/sin");
             $leer = static fn (string $ruta): string => (string) file_get_contents($ruta);
-            verdadero(str_contains($leer("$dir/es/lomo.svg"), 'Vol. 3'), 'el lomo lleva el volumen');
-            verdadero(str_contains($leer("$dir/es/contratapa.svg"), 'Clásicos · Vol. 3'), 'el pie lleva colección y volumen');
+            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'coleccion' => 'Clásicos', 'editorial' => 'Ed']), "$dir/ancho");
+            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'lomo_mm' => 4]), "$dir/estrecho");
+            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'lomo_mm' => 4, 'idioma' => 'fr']), "$dir/fr");
+            Generador::escribir(libroDeEjemplo(['coleccion' => 'Clásicos']), "$dir/sin");
+            verdadero(str_contains($leer("$dir/ancho/contratapa.svg"), 'Clásicos · Vol. 3'), 'el pie lleva colección y volumen');
+            verdadero(str_contains($leer("$dir/ancho/lomo.svg"), '>3</tspan>') && !str_contains($leer("$dir/ancho/lomo.svg"), 'Vol.'), 'el lomo ancho lleva el número en grande');
+            verdadero(str_contains($leer("$dir/estrecho/lomo.svg"), 'Vol. 3'), 'el lomo estrecho lo lleva en el texto');
             verdadero(str_contains($leer("$dir/fr/lomo.svg"), 'T. 3'), 'en francés es «T. 3»');
-            verdadero(!str_contains($leer("$dir/sin/lomo.svg"), 'Vol.'), 'sin volumen no se escribe nada');
+            verdadero(!str_contains($leer("$dir/sin/lomo.svg"), 'Vol.') && !str_contains($leer("$dir/sin/lomo.svg"), '<tspan'), 'sin volumen no se escribe nada');
+        });
+    },
+
+    'El logo va abajo del lomo ancho, y el motivo sube sobre él' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            file_put_contents("$dir/logo.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>');
+            Generador::escribir(libroDeEjemplo(['logo' => "$dir/logo.svg", 'categoria' => 'filosofia']), "$dir/ancho");
+            Generador::escribir(libroDeEjemplo(['logo' => "$dir/logo.svg", 'lomo_mm' => 4]), "$dir/estrecho");
+            Generador::escribir(libroDeEjemplo(['categoria' => 'filosofia']), "$dir/sin");
+            $ancho = (string) file_get_contents("$dir/ancho/lomo.svg");
+            verdadero(str_contains($ancho, '<image '), 'el lomo ancho lleva el logo');
+            verdadero(!str_contains((string) file_get_contents("$dir/estrecho/lomo.svg"), '<image '), 'el estrecho no');
+            verdadero(strlen($ancho) > strlen((string) file_get_contents("$dir/sin/lomo.svg")), 'el logo y el motivo conviven');
         });
     },
 
@@ -133,7 +148,9 @@ return [
             try {
                 Fuentes::usarExtras("$dir/extra");
                 verdadero(TextoATrazos::esDerechaAIzquierda('אב גד'), 'dos palabras de derecha a izquierda');
-                verdadero(!TextoATrazos::esDerechaAIzquierda('אב Hola'), 'mezclado no cuenta');
+                verdadero(TextoATrazos::esDerechaAIzquierda('אב Hola'), 'manda la primera palabra con dirección');
+                verdadero(!TextoATrazos::esDerechaAIzquierda('Hola אב'), 'empieza en izquierda a derecha');
+                verdadero(!TextoATrazos::esDerechaAIzquierda('12 (3)'), 'sin palabras no hay dirección');
                 verdadero(!TextoATrazos::esDerechaAIzquierda(''), 'vacío no cuenta');
                 Generador::escribir(libroDeEjemplo(['contratapa' => 'אב גד', 'cita' => '']), "$dir/rtl", true);
                 Generador::escribir(libroDeEjemplo(['contratapa' => 'Hola mundo']), "$dir/ltr", true);
@@ -188,5 +205,68 @@ return [
             igual(1, substr_count((string) file_get_contents("$dir/ilustrada/portada.svg"), '<image '));
             verdadero(!str_contains((string) file_get_contents("$dir/ilustrada/portada.svg"), '<g opacity="0.25">'), 'la ilustrada no la repite como marca de agua');
         });
+    },
+
+    'imagen_opacidad cambia la marca de agua, y fuera de 0 a 1 da error' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            $png = pngDePrueba("$dir/foto.png");
+            aproximado(0.25, libroDeEjemplo(['imagen' => $png])->imagenOpacidad);
+            Generador::escribir(libroDeEjemplo(['imagen' => $png, 'imagen_opacidad' => 0.6]), "$dir/salida");
+            verdadero(str_contains((string) file_get_contents("$dir/salida/portada.svg"), '<g opacity="0.6">'), 'la marca usa la opacidad pedida');
+            foreach ([-0.1, 1.5, 'mucha'] as $malo) {
+                lanza(InvalidArgumentException::class, static fn () => libroDeEjemplo(['imagen' => $png, 'imagen_opacidad' => $malo]));
+            }
+            file_put_contents("$dir/lista.csv", "id,titulo,autor,paginas,imagen,imagen_opacidad\nuno,T,A,100,foto.png,\"0,4\"\n");
+            $libros = Lista::leer("$dir/lista.csv", false, static function (string $mensaje): void {
+            });
+            aproximado(0.4, $libros[0]->imagenOpacidad);
+        });
+    },
+
+    'El generador avisa si el texto no se lee sobre la marca de agua, y mide con la opacidad del libro' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            $sinContraste = static fn (Libro $libro): array => array_values(array_filter(Generador::avisos($libro), static fn (string $a): bool => str_contains($a, 'marca de agua')));
+            file_put_contents("$dir/vector.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>');
+            igual(1, count($sinContraste(libroDeEjemplo(['imagen' => "$dir/vector.svg"]))));
+            igual([], $sinContraste(libroDeEjemplo(['plantilla' => 'ilustrada', 'imagen' => "$dir/vector.svg"])));
+            if (!function_exists('imagecreatetruecolor')) {
+                return;
+            }
+            $negra = imagecreatetruecolor(20, 20);
+            verdadero($negra !== false, 'gd crea una imagen');
+            imagepng($negra, "$dir/negra.png");
+            $blanca = imagecreatetruecolor(20, 20);
+            imagefill($blanca, 0, 0, 0xFFFFFF);
+            imagepng($blanca, "$dir/blanca.png");
+            // Texto oscuro de la clásica sobre un fondo crema: una imagen negra a plena opacidad lo borra; a 25 % apenas lo toca.
+            $aviso = $sinContraste(libroDeEjemplo(['imagen' => "$dir/negra.png", 'imagen_opacidad' => 1]));
+            igual(1, count($aviso));
+            verdadero(str_contains($aviso[0], '100 %'), 'dice cuánta portada pierde contraste: ' . $aviso[0]);
+            igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/negra.png", 'imagen_opacidad' => 0.1])));
+            igual([], $sinContraste(libroDeEjemplo(['imagen' => "$dir/blanca.png", 'imagen_opacidad' => 1])));
+        });
+    },
+
+    'El bidi ordena números, espacios y paréntesis entre palabras de derecha a izquierda' => function (): void {
+        $formas = ['אב' => [1, true, []], 'גד' => [1, true, []]];
+        $orden = static function (array $trozos) use ($formas): array {
+            $metodo = new ReflectionMethod(TextoATrazos::class, 'enOrdenVisual');
+
+            $resultado = $metodo->invoke(new TextoATrazos(), $trozos, $formas);
+
+            return is_array($resultado) ? array_values($resultado) : [];
+        };
+        // Un número entre dos palabras se queda entre ellas, y el orden de lectura es de derecha a izquierda.
+        igual(['גד', ' ', '12', ' ', 'אב'], $orden(['אב', ' ', '12', ' ', 'גד']));
+        // Una palabra de izquierda a derecha en medio de un párrafo de derecha a izquierda ocupa su sitio de lectura.
+        igual(['גד', ' ', 'Hola', ' ', 'אב'], $orden(['אב', ' ', 'Hola', ' ', 'גד']));
+        // Los paréntesis se espejan: el que abre queda a la derecha, con la forma del que cierra.
+        igual(['(', 'אב', ')'], $orden(['(', 'אב', ')']));
+        igual(['(', 'גד', ' ', 'אב', ')'], $orden(['(', 'אב', ' ', 'גד', ')']));
+        // Un párrafo de izquierda a derecha con una palabra hebrea no cambia de sitio sus tramos.
+        igual(['Hola', ' ', 'אב', ' ', 'fin'], $orden(['Hola', ' ', 'אב', ' ', 'fin']));
+        igual(['Hola', ' ', '12'], $orden(['Hola', ' ', '12']));
+        // Sin palabras de derecha a izquierda no se toca nada, ni siquiera los paréntesis.
+        igual(['(', 'a', ')'], $orden(['(', 'a', ')']));
     },
 ];

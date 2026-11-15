@@ -8,6 +8,7 @@ Cada libro es un JSON con sus datos. El generador escribe un SVG por pieza, con 
 
 - PHP 8.3 o más, con las extensiones `mbstring` y `zlib` (las pruebas usan además `dom`). `composer.json` declara esos requisitos y dos atajos (`composer test` y `composer comprobar`).
 - Sin dependencias: no hace falta `composer install`.
+- Opcional: la extensión `gd` de PHP, para medir el contraste del texto sobre la imagen de marca de agua (sin ella, avisa de que no pudo medirlo).
 - Para ver o convertir los SVG: cualquier navegador, Inkscape o `rsvg-convert`. Las fuentes van dentro del SVG, así que se ven igual en todos.
 - Solo para volver a medir las fuentes o el kerning (casi nunca) y para las pruebas de las herramientas: Python 3 con `fonttools`, `brotli` y `uharfbuzz` (y `resvg-py` y `Pillow` para la regresión visual). Ver [Fuentes](docs/fuentes.md).
 - El proyecto es solo PHP y SVG: no tiene HTML ni JavaScript, y una prueba lo comprueba.
@@ -59,7 +60,7 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `subtitulo` | vacío | Se escribe bajo el título. |
 | `traductor` | vacío | «Traducción de …» en la portada. |
 | `editorial`, `coleccion` | vacío | Pie de la portada y de la contratapa. |
-| `isbn` | vacío | Se escribe sobre el hueco del código de barras. |
+| `isbn` | vacío | Se escribe sobre el hueco del código de barras, y con un ISBN-10 o ISBN-13 válido se dibuja el EAN-13 dentro. |
 | `paginas` | — | Para calcular el lomo. Obligatorio si no das `lomo_mm`. |
 | `lomo_mm` | calculado | Lomo fijo, en mm. Hasta 150. |
 | `grosor_hoja_mm` | `0.1` | Grosor de una hoja (dos páginas), entre 0,02 y 0,5 mm. |
@@ -70,8 +71,9 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `plantilla` | `clasica` | `clasica`, `sobria`, `tipografica`, `ilustrada` o `cartel`. Ver [Plantillas](docs/plantillas.md). |
 | `tema` | de la plantilla | `claro` u `oscuro`. |
 | `volumen` | vacío | Número de volumen de una serie: va en el lomo y en el pie. |
+| `imagen_opacidad` | `0.25` | Opacidad de la imagen cuando es marca de agua, de 0 a 1. |
 | `imagen`, `logo` | vacío | Ilustración de la portada (en `ilustrada`; marca de agua en las demás, salvo `cartel`) y logo de la editorial (contratapa). SVG, PNG, JPG, GIF o WebP de hasta 2 MB. |
-| `idioma` | `es` | Idioma del texto de la cubierta (`es`, `en`, `pt-BR`…). Va en cada SVG para los lectores de pantalla, y decide el idioma de las frases de la ficha (`es`, `en`, `pt` y `fr`; otros caen al español, editables en `datos/frases.json`) y las mayúsculas del autor (turco, azerí). |
+| `idioma` | `es` | Idioma del texto de la cubierta (`es`, `en`, `pt-BR`…). Va en cada SVG para los lectores de pantalla, y decide el idioma de las frases de la ficha (`es`, `en`, `pt`, `fr`, `de`, `it` y `ca`; otros caen al español, editables en `datos/frases.json`) y las mayúsculas del autor (turco, azerí). |
 | `colores.fondo`, `colores.texto`, `colores.acento` | los de la plantilla | Colores en `#rrggbb`. |
 | `degradado` | sin degradado | Degradado del fondo de toda la cubierta. Ver [Medidas y degradados](docs/medidas-y-degradados.md). |
 | `lomo_direccion` | `arriba-abajo` | Sentido del texto del lomo: `arriba-abajo` o `abajo-arriba`. |
@@ -83,7 +85,7 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `solapa_contratapa` | la ficha | Texto de la solapa interior de la contratapa (solo con solapas). |
 | `solapa_portada` | la ficha | Texto de la solapa interior de la portada (solo con solapas). |
 
-El de `ejemplos/platon-apologia.json` usa casi todos los campos; el de Sun Tzu, solo los básicos y la clasificación.
+El de `ejemplos/platon-apologia.json` usa casi todos los campos; el de Sun Tzu, solo los básicos y la clasificación. Los otros tres enseñan lo más nuevo: `cervantes-quijote.json` (plantilla `ilustrada` con `imagen`, `logo`, `volumen`, `tema`, formato con nombre e ISBN con código de barras), `goethe-faust.json` (plantilla `cartel`, ficha en alemán, tema oscuro) y `dante-divina-commedia.json` (marca de agua con `imagen_opacidad`, ficha en italiano).
 
 Las medidas fuera de esos límites se rechazan con un error que nombra el campo: casi siempre es un error de unidades (centímetros o pulgadas en vez de milímetros).
 
@@ -143,6 +145,7 @@ ejemplos/*.json          libros de ejemplo
 ejemplos/lista.csv       lista de ejemplo, con la ficha armada a partir de los datos
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
 ejemplos/salida-trazos/  los mismos, con el texto a trazos
+ejemplos/imagenes/      las imágenes y el logo de los ejemplos (ilustración, marca de agua y logo)
 docs/                    la documentación por temas
 pruebas/ejecutar.php     corre las pruebas, sin dependencias
 pruebas/temas/           las pruebas, por temas (libro, lista, fuentes, dibujos, color, texto)
@@ -156,6 +159,6 @@ pruebas/dibujos.json     huellas de los dibujos, para que no cambien sin querer
 - Cada SVG pesa unos 20–60 KB por las fuentes incrustadas.
 - La imagen de la portada es una ilustración solo en `ilustrada`; en clásica, sobria y tipográfica es una marca de agua al 25 % cuyo contraste con el texto no se mide, y el cartel no la dibuja.
 - Probado en Chromium, CairoSVG, resvg, librsvg (`rsvg-convert`) e Inkscape 1.2. Todos menos Chromium **ignoran las fuentes incrustadas** (Inkscape lo avisa: «font face rule limited support») y usan otras: la maqueta aguanta, pero no se ve igual. Para esos visores, `--trazos`, que se ve igual que en Chromium. No he probado lectores de ebook, que pueden hacer lo mismo. El enlace de Python de resvg (`resvg-py`) no acepta el tamaño en mm del `width`/`height`; hay que pasarlo a píxeles.
-- No genera el código de barras ni el PDF para imprenta; se obtiene desde los SVG con una herramienta externa.
+- No genera el PDF para imprenta; se obtiene desde los SVG con una herramienta externa. El código de barras es solo el EAN-13 del ISBN (sin complemento de precio).
 - Hay cinco plantillas; para otra, ver [Plantillas](docs/plantillas.md).
-- El texto de derecha a izquierda se alinea a la derecha solo si el párrafo entero lo es; no hay bidi completo.
+- El bidi es reducido (ver [Fuentes](docs/fuentes.md)): números y paréntesis entre palabras de derecha a izquierda se resuelven, pero no hay niveles de incrustación ni números con signos pegados.

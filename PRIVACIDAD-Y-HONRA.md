@@ -105,6 +105,11 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    no está en la lista, y se sigue ocultando de más la palabra que también es
    un nombre sin santo delante («Florería Rosa»). Lo contrario también pasa:
    «Ferretería San José», cuyo dueño se llama José, se muestra.
+   Cuando el filtro oculta una empresa por error («Farmacia Rosa»: la flor), quien
+   tiene la base puede marcarla como publicable (`markPublishable`, o
+   `bin/phonedir publishable`): pide el comprobante, solo la hace el propietario
+   y el comprobante no sale con la empresa; una marca equivocada publica el
+   nombre, la dirección y el teléfono de alguien vivo.
 3. **Textos largos.** Resuelto: el endpoint de moderación acepta hasta 10.000
    caracteres y revisa por párrafos lo que pasa de 2.000 (`LongText`). Un texto
    más largo que eso hay que mandarlo en varias partes.

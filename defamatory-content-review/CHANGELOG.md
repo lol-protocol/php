@@ -10,6 +10,11 @@
 
 ### Añadido
 
+- **Temas de biografía** (`config/bio-topics/`, `spa` y `eng`): un modo opcional que marca lo que alguien dice de
+  **sí mismo** («tengo cáncer», «soy evangélica», «soy gay») como dato sensible, para revisar la biografía de un
+  perfil. Se pide con el nuevo parámetro `$topics` de `ChatLineReviewer::create()` y de `TextMarks::of()`
+  (`'bio-topics'`); el valor por defecto es `chat-topics`, así que **el comportamiento de siempre no cambia**
+  (que «tengo cáncer» siga aprobándose en un chat es a propósito). Nunca bloquea: va a revisión.
 - **Mensajes de salida en 13 idiomas más** (`nor`, `dan`, `fin`, `hun`, `ell`, `bul`, `slk`, `ind`, `vie`,
   `tha`, `tgl`, `isl` y `yue`): 31 de los 33 idiomas (falta solo el suajili). Traducciones propias, sin revisión
   nativa. `yue` está en chino tradicional y atiende las etiquetas `zh` de `Accept-Language`.
