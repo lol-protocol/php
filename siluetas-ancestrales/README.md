@@ -32,7 +32,7 @@ node bin/generar.js --semilla 7 --compacto -o liviana.svg     # SVG un 8 % más 
 node bin/generar.js --ayuda
 ```
 
-La **galería** (`galeria.html`) se abre directo desde el disco: elige región y atuendo, edad, complexión, postura, piel, nivel de detalle y fondo, genera ropa nueva y descarga el SVG. Usa `dist/siluetas-ancestrales.js`, el mismo código empaquetado en un solo archivo.
+La **galería** (`galeria.html`) se abre directo desde el disco: elige región y atuendo, edad, complexión, postura, piel, nivel de detalle y fondo, genera ropa nueva y descarga el SVG. Usa `dist/siluetas-ancestrales.js`, el mismo código empaquetado en un solo archivo. Tiene enlace para saltar a la figura, etiquetas en todos los campos, tema claro y oscuro con contraste de al menos 4,5 a 1 (una prueba lo comprueba) y anuncia la descripción de cada persona.
 
 La página **`prendas.html`** (también desde el disco) muestra cada prenda del catálogo sola, sobre un niño, un adulto y un anciano corpulento, con filtros por ranura y plantilla: sirve para ver a ojo si una plantilla se deforma. `pruebas/prendas-sobre-cuerpos.test.js` hace la misma comprobación por las coordenadas.
 
@@ -172,7 +172,13 @@ Son **promedios aproximados de poblaciones, no reglas sobre una persona**, y «e
 2. Un atuendo nuevo: una entrada en `src/datos/atuendos.js` con región, años, sexo, clase, prendas y los tintes posibles de cada letra de la paleta.
 3. Una plantilla nueva (otra forma de prenda): un archivo en `src/prendas/` con una función que devuelva `{ atras, partes, detalles }`, agregada a `PLANTILLAS` en `src/prendas.js`.
 
-Después corre las pruebas y `node bin/construir.js`.
+Después corre las pruebas y `node bin/construir.js`. La guía paso a paso, con ejemplos de cada tipo de dato y la lista de errores frecuentes, está en [`docs/agregar-datos.md`](docs/agregar-datos.md).
+
+## Cobertura por país
+
+`node bin/cobertura.js` cruza la prioridad genealógica de cada país (`../Listado-paises/priorizacion.csv`) con lo que el catálogo trae para él y dice dónde faltan pueblos: ordena los países por prioridad y los marca 🟢 (ropa **propia** de mujer y de hombre en casi todas las décadas de 1700 a 1950), 🟡 (solo ropa **genérica** de su región, o propia incompleta) o 🔴 (ni siquiera genérica). «Propia» es la ropa hecha para el pueblo (su nombre está en el atuendo); «genérica», la de la región, que sirve a muchos pueblos (por ejemplo, Noruega y Finlandia usan «Europa rural»). Opciones: `--estado amarillo`, `--todos` (incluye los excluidos), `--desde` y `--hasta`, `--csv ruta` y `-o archivo.md`.
+
+El mapeo de cada país a sus regiones y etnias está en [`datos/paises-regiones.json`](datos/paises-regiones.json): es **aproximado y editable**, una guía para decidir qué agregar y no un dato demográfico. Una prueba exige que todo país del CSV esté ahí.
 
 ## Pruebas
 
