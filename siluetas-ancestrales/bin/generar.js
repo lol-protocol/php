@@ -24,6 +24,7 @@ if (flag('ayuda') || flag('help')) {
   --pose casual|firme   casual (por defecto): cabeza inclinada, peso en una pierna, brazo libre en la cintura o el bolsillo… distinto con cada semilla; firme: simétrica
   --contorno suave   por defecto no hay bordes; 'suave' añade un borde fino y tenue
   --postura firme|relajada|abierta  --piel ID|#hex  --cabello ID|#hex
+  --vista frente|espalda   de espalda la figura sale reflejada, sin rostro ni barba y sin lo que solo se ve por delante (botones, collares, delantales…)
   --compacto         SVG unos 7 % más liviano (coordenadas con 1 decimal)
   --detalle minimo|medio|alto  --rasgos  --fondo '#efe9dd'
   --vestir ID,ID,…   viste prenda por prenda (--listar prendas); los colores salen del catálogo de cada una
@@ -72,7 +73,7 @@ const opc = {
   atuendo: val('atuendo'), region: val('region'), anio: num('anio'), clase: val('clase'), sexo: val('sexo'), edad: num('edad'),
   corpulencia: val('corpulencia') !== undefined && val('corpulencia') !== '' && !Number.isNaN(Number(val('corpulencia'))) ? Number(val('corpulencia')) : val('corpulencia'), altura: num('altura'), postura: val('postura'), piel: val('piel'), cabello: val('cabello'),
   detalle: val('detalle'), rasgos: flag('rasgos'), fondo: val('fondo'), pose: val('pose') === 'casual' ? undefined : val('pose'), contorno: val('contorno'),
-  compacto: flag('compacto') || undefined, ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
+  compacto: flag('compacto') || undefined, vista: val('vista'), ropaNueva: flag('nueva'), estilo: val('estilo'), esquema: val('esquema'), colores: val('colores-modo'),
   etnia: val('etnia'), saludo: val('saludo'), vestir: val('vestir') ? val('vestir').split(',').map((x) => x.trim()).filter(Boolean) : undefined, peinado: val('peinado'), barba: val('barba'), tocado: val('tocado'),
 };
 for (const k of Object.keys(opc)) if (opc[k] === undefined) delete opc[k];
