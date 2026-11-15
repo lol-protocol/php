@@ -572,5 +572,30 @@
       "edad": 8,
       "pose": "infantil"
     }
+  },
+  {
+    "archivo": "familia-mapuche-espanol-vasco",
+    "tipo": "familia",
+    "opciones": {
+      "semilla": 4,
+      "generaciones": 3,
+      "anio": 1985,
+      "edad": 30,
+      "sexo": "f",
+      "saludo": "ninguno",
+      "detalle": "minimo",
+      "linaje": {
+        "etnia": "mapuche,espanol",
+        "padre": {
+          "etnia": "espanol",
+          "padre": {
+            "etnia": "vasco"
+          }
+        },
+        "madre": {
+          "etnia": "mapuche"
+        }
+      }
+    }
   }
 ]
