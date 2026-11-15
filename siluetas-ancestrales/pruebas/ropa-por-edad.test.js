@@ -59,3 +59,22 @@ test('un niño con etnia sigue usando los trajes de su pueblo (no se le sale de 
 test('sin edad los resultados de buscarAtuendos no cambian', () => {
   assert.equal(buscarAtuendos({ region: 'roma' }).length, ATUENDOS.filter((a) => a.region === 'roma').length);
 });
+
+test('la ropa escolar (colegiales, estudiantes y adolescentes) solo sale de los 6 a los 18 años', () => {
+  const escolares = ATUENDOS.filter((a) => /colegi|estudiante|adolescente/.test(a.id));
+  assert.ok(escolares.length >= 7, `escolares: ${escolares.length}`);
+  for (const a of escolares) assert.deepEqual(a.edades, [6, 18], a.id);
+  const ids = new Set(escolares.map((a) => a.id));
+  // Una persona de 35 años, de cualquier región y época, no se viste de colegial.
+  for (const region of ['chile-rural', 'europa-xix', 'asia-este', 'norteamerica-moderna']) {
+    for (let semilla = 1; semilla <= 60; semilla++) {
+      for (const sexo of ['f', 'm']) {
+        const p = generarPersona({ semilla, sexo, edad: 35, region, anio: 1955 });
+        assert.ok(!ids.has(p.atuendo), `${region}/${sexo}/${semilla}: ${p.atuendo}`);
+      }
+    }
+  }
+  // Una adolescente sí puede.
+  assert.ok(buscarAtuendos({ region: 'europa-xix', sexo: 'f', anio: 1955, edad: 14 }).some((a) => ids.has(a.id)));
+  assert.ok(!buscarAtuendos({ region: 'europa-xix', sexo: 'f', anio: 1955, edad: 4 }).some((a) => ids.has(a.id)));
+});
