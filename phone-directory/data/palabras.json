@@ -3,7 +3,7 @@
     "idiomas": ["es", "en", "fr", "pt", "de", "it"],
     "numero_al_final": ["es", "pt", "it", "de"],
     "calle": {
-        "es": ["calle", "c/", "avenida", "av", "plaza", "pasaje", "camino", "ruta", "carrera"],
+        "es": ["calle", "c/", "avenida", "av", "avda", "plaza", "pza", "pasaje", "camino", "ruta", "carrera"],
         "en": ["street", "st", "avenue", "ave", "road", "rd", "drive", "dr", "lane", "ln", "boulevard", "blvd", "circle", "cir"],
         "fr": ["rue", "avenue", "allée", "place", "boulevard", "bd", "cours", "square"],
         "pt": ["rua", "avenida", "av", "praça", "alameda", "estrada", "largo"],
@@ -11,7 +11,7 @@
         "it": ["via", "viale", "corso", "piazza", "largo", "strada"]
     },
     "sufijos_de_calle": {
-        "de": ["straße", "strasse", "allee", "weg", "platz"]
+        "de": ["straße", "strasse", "allee", "weg", "platz", "str"]
     },
     "abreviaturas_de_nombre": {
         "en": ["dr", "st"]
