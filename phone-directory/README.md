@@ -271,7 +271,7 @@ php bin/phonedir deceased 42 --year=1988 --evidence="Esquela, La Vanguardia, 12/
 php bin/phonedir deceased 42 --clear --dsn=sqlite:madrid.sqlite
 ```
 
-Qué ve entonces un visitante: nombre, dirección y teléfono de esa persona, con `† 1988`. **Lo que esta marca no resuelve:** los parientes que siguen viviendo en esa dirección o con ese teléfono. La guía de una persona recién fallecida puede ser, hoy, la de una familia viva; el criterio de cuándo mostrarla es de quien publica.
+Qué ve entonces un visitante: nombre, dirección y teléfono de esa persona, con `† 1988`. **Lo que la marca no hace:** no muestra la entrada mientras otra que pueda estar viva (un pariente) tenga el mismo teléfono o la misma dirección, porque la guía de una persona recién fallecida puede ser la de una familia viva. Se muestra cuando esa otra también está marcada o cuando su guía es lo bastante antigua. Cuenta como «puede estar viva» cualquier entrada sin marca que no esté en una guía del catálogo lo bastante antigua (incluidas las de un id fuera del catálogo): se oculta de más, nunca de menos. No mira si comparten apellido, solo teléfono o dirección exacta; una entrada de una guía antigua nunca depende de esto. El propietario lo ve todo.
 
 Límites, a propósito:
 

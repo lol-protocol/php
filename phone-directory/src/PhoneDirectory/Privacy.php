@@ -19,6 +19,8 @@ use PhoneDirectory\Entity\PhoneDirectoryEntry;
  * One thing lifts that: a person recorded as dead (PhoneDirectoryEntry::getDeceasedYear()) is no longer
  * someone who "may be alive", whatever year the directory came out. Only the owner of the database can
  * record a death, and has to say where it is documented (PhoneDirectoryPDODatabase::markDeceased()).
+ * A recorded death does not show its entry to a visitor while another entry that may be alive (a relative)
+ * has the same phone number or the same address: the entry would give that person's contact details.
  *
  * An entry whose directory has no known year (no source, an id outside the catalog that embeds no
  * year) is hidden too. `url-routing` goes the other way for people with no dates, because hiding every
@@ -105,6 +107,47 @@ final class Privacy
         }
 
         return $hidden;
+    }
+
+    /**
+     * The catalog's directories old enough to show: the entries in them are not someone who may be alive.
+     * Empty for the owner. Anything else (a too-recent directory, none, an id outside the catalog) counts as
+     * possibly alive when a database looks for relatives of a person recorded as dead.
+     *
+     * @return list<string>
+     */
+    public function shownCatalogDirectories(): array
+    {
+        $latest = $this->latestPublishableYear;
+        if ($latest === null) {
+            return [];
+        }
+
+        $shown = [];
+        foreach ($this->catalog->getAll() as $id => $directory) {
+            if ($directory['year'] <= $latest) {
+                $shown[] = $id;
+            }
+        }
+
+        return $shown;
+    }
+
+    /**
+     * Whether the entry is shown only because a death was recorded: its directory is too recent (or has no
+     * year), so without the mark it would be hidden. An entry from an old directory is shown anyway, and a
+     * relative with the same phone number in a later edition changes nothing about it.
+     */
+    public function showsOnlyBecauseOfDeath(PhoneDirectoryEntry $entry): bool
+    {
+        $latest = $this->latestPublishableYear;
+        if ($latest === null || $entry->getDeceasedYear() === null) {
+            return false;
+        }
+
+        $year = $this->catalog->yearOfDirectory($entry->getSourceDirectoryId());
+
+        return $year === null || $year > $latest;
     }
 
     /** Whether the person in this entry may still be alive, and so must not be shown. */
