@@ -224,6 +224,28 @@ Dónde se aplica:
 - **`RecordLinker`**: `new RecordLinker(privacy: …)`. Descarta antes de enlazar toda entrada que pueda ser de una persona viva, porque unir a una persona de dos ediciones arma un perfil (dónde vivía, y cuándo) que ninguna guía tenía por sí sola.
 - **`bin/phonedir`** usa la vista del propietario: quien corre el comando tiene la base. `--publico` muestra lo que vería un visitante (y lo dice al final), y `--hoy=AAAA-MM-DD` fija la fecha de referencia.
 
+#### Una empresa que no es el nombre de una persona
+
+Cuando el filtro oculta una empresa por error («Farmacia Rosa»: la flor, no una persona), el propietario puede marcarla como publicable, con el mismo criterio que la defunción: **una marca equivocada publica el nombre, la dirección y el teléfono de alguien vivo**, así que pide el comprobante.
+
+```php
+$propietario = new JuridicalEntityPDODatabase($dsn, privacy: Privacy::forOwner());
+
+$propietario->markPublishable($id, 'Razón social: Farmacia Rosa, S.L. (Registro Mercantil de Madrid)');
+$propietario->getPublishableEvidence($id);   // solo el propietario lo lee
+$propietario->clearPublishable($id);         // la empresa vuelve a juzgarse por su nombre
+```
+
+- **Solo con la vista del propietario**; una base abierta para visitantes lanza `LogicException`. El comprobante es obligatorio (hasta 1000 caracteres: dónde se comprobó, no el documento) y no sale con la empresa.
+- **`insert()` y `update()` no tocan la marca**, y `withPublishable()` solo sirve para razonar en memoria: la única forma de registrarla es `markPublishable()`.
+- Las bases creadas antes reciben la columna (`publishable_evidence`) la próxima vez que se llama a `createTable()`.
+
+```bash
+php bin/phonedir search --name=farmacia --dsn=sqlite:madrid.sqlite        # [empresa #7] Farmacia Rosa | …
+php bin/phonedir publishable 7 --evidence="Registro Mercantil de Madrid" --dsn=sqlite:madrid.sqlite
+php bin/phonedir publishable 7 --clear --dsn=sqlite:madrid.sqlite
+```
+
 #### Una persona que murió
 
 Si se sabe que la persona de una entrada murió, ya no es alguien que «podría estar viva» y un visitante puede ver su entrada aunque la guía sea reciente. Se marca entrada por entrada, y **una marca equivocada publica la dirección y el teléfono de alguien que vive**, así que la base pide lo que otra persona necesita para comprobarla:
@@ -255,7 +277,7 @@ Límites, a propósito:
 
 - **Una guía sin año conocido se oculta.** Sin fuente, o con un id fuera del catálogo que no trae un año de cuatro cifras (como `custom_1990_x`): no se sabe cuántos años tiene esa gente, y un error publica el teléfono de alguien que vive. Si el id trae dos años (`scan_1925_reimpresion_1985`), vale el más reciente. `url-routing/` hace lo contrario con las personas sin fechas, porque ahí los datos son de antepasados.
 - **La edad mínima de 18 años es un supuesto.** Un abonado más joven (raro) quedaría fuera de lo que esta regla cubre.
-- **Una empresa con solo el apellido no se oculta** («Panadería Pérez»), ni una con un nombre de pila que no está en la lista. Y se oculta de más la que tiene una palabra que también es nombre («Farmacia San José», «Florería Rosa»). No hay marca para publicar una de esas: el propietario las ve todas.
+- **Una empresa con un nombre de pila no se oculta si el nombre no está en la lista** («Panadería Torres»), y se oculta de más la que tiene una palabra que también es nombre sin título de santo («Farmacia Rosa», «Hotel Azucena»). Para esas, el propietario puede marcar la empresa como publicable (más abajo).
 - **Qué es una empresa lo decide una lista corta de palabras** (`hotel`, `banco`, `Ltd`, `GmbH`…, por idioma) que solo se busca en el nombre, no en la calle ni en el teléfono. Un apellido que es una de esas palabras, escrito «APELLIDO, Nombre» (`BANK, Henry`), es una persona. La lista incluye también palabras de negocios de familia y de oficios que casi nadie tiene de apellido (`Smith & Sons`, `Hermanos García`, `Hnos.`, `Plumbing`, `Taller`, `Frères`, `Söhne`, `Fratelli`…). Lo que la lista no conoce se guarda como persona, con un apellido que no lo es: es el lado seguro para la privacidad (se oculta de más), pero ensucia la búsqueda fonética y el enlace de registros. Una palabra que muchos llevan de apellido (`Baker`, `Miller`) no entra en la lista, por el mismo motivo. Lo ya importado conserva su clasificación hasta que se vuelva a importar.
 
 ### PersonName / SurnameKeys — búsqueda fonética
