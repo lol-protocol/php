@@ -6,7 +6,7 @@ declare(strict_types=1);
 foreach ([
     'Json', 'Sensibles', 'Revision', 'Perfil', 'Metadatos', 'Analizador',
     'Facebook', 'LinkedIn', 'Twitter', 'Instagram', 'TikTok', 'YouTube', 'GitHub', 'Pinterest', 'Bluesky', 'Threads',
-    'WikiTree', 'FindAGrave', 'Mastodon', 'Generico', 'Detector', 'WikiTreeApi', 'Lote', 'Exclusiones', 'Purga', 'Wikidata', 'OpcionesCruce', 'IndiceCruce', 'Cruce',
+    'WikiTree', 'FindAGrave', 'BillionGraves', 'Mastodon', 'Generico', 'Detector', 'Diagnostico', 'WikiTreeApi', 'Lote', 'Exclusiones', 'Purga', 'Wikidata', 'OpcionesCruce', 'IndiceCruce', 'Cruce',
 ] as $clase) {
     require_once __DIR__ . "/$clase.php";
 }

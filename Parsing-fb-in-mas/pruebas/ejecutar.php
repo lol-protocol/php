@@ -6,6 +6,7 @@ require __DIR__ . '/../src/cargar.php';
 
 use ParsingFbInMas\Cruce;
 use ParsingFbInMas\Detector;
+use ParsingFbInMas\Diagnostico;
 use ParsingFbInMas\Exclusiones;
 use ParsingFbInMas\Json;
 use ParsingFbInMas\Lote;
@@ -410,6 +411,45 @@ $indiceConVivo = Cruce::indexar([$pb, $vivoParaIndice]);
 igual('cruce: el índice omite a los que pueden estar vivos y los cuenta', [1, 1], [count($indiceConVivo->fichas), $indiceConVivo->omitidos]);
 igual('cruce: el índice solo guarda una referencia corta, no el perfil entero', ['red', 'url', 'nombre', 'nacimiento', 'muerte'], array_keys($indiceConVivo->fichas[0]['ref']));
 
+// --- Sensibles en seis idiomas (punto 7) ---
+foreach ([
+    ['francés', 'Je suis catholique et j\'ai un cancer', ['salud', 'religión']],
+    ['portugués', 'Sou católica e tenho depressão', ['salud', 'religión']],
+    ['italiano', 'Sono ebreo e ho il diabete', ['salud', 'religión']],
+    ['alemán', 'Ich bin jüdisch und habe Krebs', ['salud', 'religión']],
+    ['alemán política', 'Mitglied der Gewerkschaft, Sinti', ['política o sindical', 'origen étnico']],
+    ['francés vida sexual', 'Je suis lesbienne', ['vida sexual']],
+    ['italiano salud', 'Ho una malattia cronica', ['salud']],
+    ['portugués origen', 'Sou de origem cigana e quilombola', ['origen étnico']],
+] as [$idioma, $frase, $esperadas]) {
+    igual("sensibles ($idioma): $frase", $esperadas, Sensibles::buscar($frase));
+}
+foreach (['Historia de Roma y de la Iglesia', 'Histoire de Rome et de son église', 'Genealogista e arquivista', 'Archivar und Familienforscher', 'Storia della famiglia e dei registri'] as $limpia) {
+    igual("sensibles: «{$limpia}» no marca nada", [], Sensibles::buscar($limpia));
+}
+
+// --- BillionGraves y obituarios (punto 9) ---
+$bg = Detector::analizar(muestra('billiongraves'))->aArreglo();
+igual('billiongraves: red, número de registro y nombre', ['billiongraves', '12345678', 'Maria Ficticia'], [$bg['red'], $bg['usuario'], $bg['nombre']]);
+igual('billiongraves: fechas y lugar de una fallecida', ['1851-04-02', '1921-09-30', 'Valparaiso, Chile', false], [$bg['nacimiento'], $bg['muerte'], $bg['lugar_nacimiento'], $bg['posiblemente_vivo']]);
+$ob = Detector::analizar(muestra('obituario'))->aArreglo();
+igual('obituario: lo toma el analizador genérico (JSON-LD con deathDate)', ['generico', 'Ana Ficticia', '2020-03-02', false], [$ob['red'], $ob['nombre'], $ob['muerte'], $ob['posiblemente_vivo']]);
+igual('obituario: el correo y el teléfono no salen', false, str_contains((string) json_encode($ob), 'familia@') || str_contains((string) json_encode($ob), '+56 9'));
+
+// --- Diagnóstico para validar contra páginas reales (punto 1) ---
+$inf = Diagnostico::informe(muestra('facebook'));
+igual('diagnóstico: qué analizador y qué campos', ['facebook', true, true, false], [$inf['analizador'], $inf['campos']['nombre'], $inf['campos']['descripcion'], $inf['campos']['titular']]);
+igual('diagnóstico: lista las etiquetas que encontró', ['og:title', 'og:description'], $inf['etiquetas']);
+igual('diagnóstico: la URL sale con la ruta enmascarada', 'https://www.facebook.com/xxx.xxxxxxx/', $inf['url']);
+igual('diagnóstico: el informe no trae el nombre ni el usuario', false, str_contains((string) json_encode($inf), 'ana.ejemplo') || str_contains((string) json_encode($inf), 'Ana Ejemplo'));
+igual('diagnóstico: una página que ningún analizador reconoce lo dice', [null, true], [Diagnostico::informe(muestra('desconocida'))['analizador'], Diagnostico::informe(muestra('desconocida'))['avisos'] !== []]);
+igual('diagnóstico: detecta JSON-LD y la persona', [true, true], [Diagnostico::informe(muestra('obituario'))['datos_estructurados']['json_ld'], Diagnostico::informe(muestra('obituario'))['datos_estructurados']['persona']]);
+$esq = Diagnostico::esqueleto(muestra('twitter'));
+igual('esqueleto: conserva las etiquetas y la forma, sin letras ni dígitos reales', true, str_contains($esq, 'etiqueta og:title = xxxx xxxxxxx (@xxxxxxxxxxx) / x') && !str_contains($esq, 'Dana') && !str_contains($esq, 'danaejemplo'));
+igual('esqueleto: enmascara dígitos y conserva la puntuación', 'xxx-99 (xx) 9', Diagnostico::enmascarar('Ana-12 (de) 7'));
+igual('esqueleto: enmascara también letras con tilde y eñes', 'xxxxx xxxxx', Diagnostico::enmascarar('María Muñoz'));
+igual('esqueleto: de una persona fallecida enmascara también sus fechas y lugares', true, str_contains(Diagnostico::esqueleto(muestra('billiongraves')), 'persona.muerte = 9999-99-99') && !str_contains(Diagnostico::esqueleto(muestra('billiongraves')), '1921'));
+
 // CLI: no descarga de la red
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/analizar.php') . ' https://www.facebook.com/alguien 2>&1', $salida, $codigo);
@@ -627,6 +667,18 @@ igual('cruzar.php: un archivo que no existe sale con 1', 1, $codigo);
 $salida = [];
 exec('php ' . escapeshellarg(__DIR__ . '/../bin/cruzar.php') . ' ' . escapeshellarg("$tmp/a.jsonl") . ' ' . escapeshellarg("$tmp/b.jsonl") . ' --anios=0 2>/dev/null', $salida, $codigo);
 igual('cruzar.php --anios=0: la pareja de 1850 y 1851 deja de ser candidata', [0, 0], [$codigo, count($salida)]);
+
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' ' . escapeshellarg(__DIR__ . '/muestras/facebook.html') . ' 2>/dev/null', $salida, $codigo);
+$informeCli = json_decode(implode("\n", $salida), true);
+igual('diagnostico.php: escribe el informe en JSON', [0, 'facebook'], [$codigo, is_array($informeCli) ? ($informeCli['analizador'] ?? null) : null]);
+$salida = [];
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' --esqueleto ' . escapeshellarg(__DIR__ . '/muestras/twitter.html') . ' 2>/dev/null', $salida, $codigo);
+igual('diagnostico.php --esqueleto: sin datos reales', [0, false], [$codigo, str_contains(implode("\n", $salida), 'danaejemplo')]);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' https://x.com/alguien 2>&1', $salida, $codigo);
+igual('diagnostico.php: rechaza una URL', 2, $codigo);
+exec('php ' . escapeshellarg(__DIR__ . '/../bin/diagnostico.php') . ' ' . escapeshellarg("$tmp/no-existe.html") . ' 2>&1', $salida, $codigo);
+igual('diagnostico.php: un archivo que no existe sale con 1', 1, $codigo);
 array_map('unlink', glob("$tmp/*") ?: []);
 rmdir($tmp);
 
