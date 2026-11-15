@@ -30,6 +30,11 @@ trait Lomo
     protected const LOMO_MOTIVO_ANCHO_MINIMO = 5.0;
     protected const LOMO_MOTIVO_RADIO = 0.36;
     protected const LOMO_MOTIVO_SEPARACION = 3.0;
+    /** Lomo ancho (desde LOMO_MOTIVO_ANCHO_MINIMO): el número del volumen arriba, en grande (tamaño como fracción del ancho y máximo en mm), y el logo de la editorial abajo (lado como fracción del ancho y máximo en mm). */
+    protected const LOMO_VOLUMEN_TAMANO = 0.55;
+    protected const LOMO_VOLUMEN_TAMANO_MAX = 6.0;
+    protected const LOMO_LOGO_LADO = 0.7;
+    protected const LOMO_LOGO_LADO_MAX = 12.0;
 
     protected function lomo(Libro $libro, Rectangulo $panel): string
     {
@@ -43,12 +48,30 @@ trait Lomo
 
         // Con categoría y un lomo ancho, el motivo va abajo. El texto deja el mismo espacio arriba y abajo,
         // para seguir centrado.
-        $radio = $libro->categoria !== null && $panel->ancho >= self::LOMO_MOTIVO_ANCHO_MINIMO ? $panel->ancho * self::LOMO_MOTIVO_RADIO : 0.0;
-        if ($radio > 0.0) {
-            $svg .= Motivo::dibujar($libro->categoria ?? '', $panel->x + $panel->ancho / 2, $panel->y + $panel->alto - self::MARGEN - $radio, $radio, $colores['texto']);
+        // Con un lomo ancho, el número del volumen va arriba en grande y el logo de la editorial abajo; el motivo sube
+        // sobre el logo. El texto deja el mismo espacio arriba que abajo (el mayor de los dos), para seguir centrado.
+        $ancho = $panel->ancho >= self::LOMO_MOTIVO_ANCHO_MINIMO;
+        $centro = $panel->x + $panel->ancho / 2;
+        $radio = $libro->categoria !== null && $ancho ? $panel->ancho * self::LOMO_MOTIVO_RADIO : 0.0;
+        $insignia = $libro->textos->volumen !== '' && $ancho ? min($panel->ancho * self::LOMO_VOLUMEN_TAMANO, self::LOMO_VOLUMEN_TAMANO_MAX) : 0.0;
+        $logo = $libro->logo !== null && $ancho ? min($panel->ancho * self::LOMO_LOGO_LADO, self::LOMO_LOGO_LADO_MAX) : 0.0;
+        $fondoDelLomo = $panel->y + $panel->alto - self::MARGEN;
+        if ($logo > 0.0 && $libro->logo !== null) {
+            $svg .= $this->imagen($libro->logo, new Rectangulo($centro - $logo / 2, $fondoDelLomo - $logo, $logo, $logo), 'xMidYMid meet');
+            $fondoDelLomo -= $logo + self::LOMO_MOTIVO_SEPARACION;
         }
-        $largo = $panel->alto - 2 * self::MARGEN - ($radio > 0.0 ? 2 * (2 * $radio + self::LOMO_MOTIVO_SEPARACION) : 0.0);
-        $completo = implode(' · ', array_filter([$libro->textos->titulo, $libro->textos->autor, $this->rotuloDeVolumen($libro)], static fn (string $parte): bool => $parte !== ''));
+        if ($radio > 0.0) {
+            $svg .= Motivo::dibujar($libro->categoria ?? '', $centro, $fondoDelLomo - $radio, $radio, $colores['texto']);
+        }
+        if ($insignia > 0.0) {
+            $svg .= $this->parrafo([$libro->textos->volumen], $centro, $panel->y + self::MARGEN + $insignia * self::ASCENDENTE, $insignia, 'middle', $colores['texto'], $this->familia() === 'sans' ? ['font-weight' => 'bold'] : []);
+        }
+        $abajo = ($radio > 0.0 ? 2 * $radio + self::LOMO_MOTIVO_SEPARACION : 0.0) + ($logo > 0.0 ? $logo + self::LOMO_MOTIVO_SEPARACION : 0.0);
+        $arriba = $insignia > 0.0 ? $insignia + self::LOMO_MOTIVO_SEPARACION : 0.0;
+        $largo = $panel->alto - 2 * self::MARGEN - 2 * max($abajo, $arriba);
+        // Si el volumen va en la insignia, no se repite en el texto girado.
+        $volumen = $insignia > 0.0 ? '' : $this->rotuloDeVolumen($libro);
+        $completo = implode(' · ', array_filter([$libro->textos->titulo, $libro->textos->autor, $volumen], static fn (string $parte): bool => $parte !== ''));
         $texto = Texto::unaLinea($completo, $largo, min(self::LOMO_TAMANO_MAX, $panel->ancho * self::LOMO_TAMANO_ANCHO), self::LOMO_TAMANO_MIN, $this->medidaDe());
 
         // El texto va girado 90°. Al girarlo, la línea base queda en x y las letras crecen hacia un lado

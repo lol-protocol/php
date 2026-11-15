@@ -48,16 +48,31 @@ return [
         lanza(InvalidArgumentException::class, static fn () => libroDeEjemplo(['tema' => 'sepia']));
     },
 
-    'El volumen va en el lomo y en el pie, en el idioma del libro' => function (): void {
+    'El volumen va en el pie y en el lomo: en grande si es ancho, y en el texto girado si es estrecho' => function (): void {
         conCarpeta(static function (string $dir): void {
-            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'coleccion' => 'Clásicos', 'editorial' => 'Ed']), "$dir/es");
-            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'idioma' => 'fr']), "$dir/fr");
-            Generador::escribir(libroDeEjemplo(['coleccion' => 'Clásicos']), "$dir/sin");
             $leer = static fn (string $ruta): string => (string) file_get_contents($ruta);
-            verdadero(str_contains($leer("$dir/es/lomo.svg"), 'Vol. 3'), 'el lomo lleva el volumen');
-            verdadero(str_contains($leer("$dir/es/contratapa.svg"), 'Clásicos · Vol. 3'), 'el pie lleva colección y volumen');
+            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'coleccion' => 'Clásicos', 'editorial' => 'Ed']), "$dir/ancho");
+            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'lomo_mm' => 4]), "$dir/estrecho");
+            Generador::escribir(libroDeEjemplo(['volumen' => '3', 'lomo_mm' => 4, 'idioma' => 'fr']), "$dir/fr");
+            Generador::escribir(libroDeEjemplo(['coleccion' => 'Clásicos']), "$dir/sin");
+            verdadero(str_contains($leer("$dir/ancho/contratapa.svg"), 'Clásicos · Vol. 3'), 'el pie lleva colección y volumen');
+            verdadero(str_contains($leer("$dir/ancho/lomo.svg"), '>3</tspan>') && !str_contains($leer("$dir/ancho/lomo.svg"), 'Vol.'), 'el lomo ancho lleva el número en grande');
+            verdadero(str_contains($leer("$dir/estrecho/lomo.svg"), 'Vol. 3'), 'el lomo estrecho lo lleva en el texto');
             verdadero(str_contains($leer("$dir/fr/lomo.svg"), 'T. 3'), 'en francés es «T. 3»');
-            verdadero(!str_contains($leer("$dir/sin/lomo.svg"), 'Vol.'), 'sin volumen no se escribe nada');
+            verdadero(!str_contains($leer("$dir/sin/lomo.svg"), 'Vol.') && !str_contains($leer("$dir/sin/lomo.svg"), '<tspan'), 'sin volumen no se escribe nada');
+        });
+    },
+
+    'El logo va abajo del lomo ancho, y el motivo sube sobre él' => function (): void {
+        conCarpeta(static function (string $dir): void {
+            file_put_contents("$dir/logo.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>');
+            Generador::escribir(libroDeEjemplo(['logo' => "$dir/logo.svg", 'categoria' => 'filosofia']), "$dir/ancho");
+            Generador::escribir(libroDeEjemplo(['logo' => "$dir/logo.svg", 'lomo_mm' => 4]), "$dir/estrecho");
+            Generador::escribir(libroDeEjemplo(['categoria' => 'filosofia']), "$dir/sin");
+            $ancho = (string) file_get_contents("$dir/ancho/lomo.svg");
+            verdadero(str_contains($ancho, '<image '), 'el lomo ancho lleva el logo');
+            verdadero(!str_contains((string) file_get_contents("$dir/estrecho/lomo.svg"), '<image '), 'el estrecho no');
+            verdadero(strlen($ancho) > strlen((string) file_get_contents("$dir/sin/lomo.svg")), 'el logo y el motivo conviven');
         });
     },
 
