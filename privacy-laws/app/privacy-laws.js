@@ -1,15 +1,16 @@
 import { bindLanguageSelect, formatDate, initLanguage, onLanguageChange, plural, t } from "./translations/i18n.js";
 import { countryFileUrl, loadBundle } from "./lib/data.js";
-import { buildChartBars, COMPARE_CRITERIA, CONFIG, enrichRow, FACETS, FIELD_LABEL_KEYS, FRAMEWORK_ORDER } from "./lib/domain.js";
+import { buildChartBars, CONFIG, enrichRow, FACETS, FRAMEWORK_ORDER } from "./lib/domain.js";
 import { activeFilters, buildIndex, clearFilters, emptyState, facetOptions, filterRows, pruneState, removeFilter, stateFromParams } from "./lib/filters.js";
 import { renderBarChart } from "./lib/chart.js";
 import { debounce, safeUrl, toCsv } from "./lib/util.js";
-import { $, app, checkboxFacet, completenessText, dateHtml, esc, exportExtras, fieldSourceHtml, flagLabel, lawDetailsHtml, NOT_SPECIFIED, pendingHtml, pickedRows, regionLabel, renderCompareButton, renderNews, renderScopeSelect, scrollBehavior, sourceDetail, sourceLabel, sourceLink, syncSelectAll, syncTranslations, TODAY, valueHtml, writeUrl } from "./lib/view.js";
+import { $, app, checkboxFacet, completenessText, dateHtml, esc, exportExtras, flagLabel, handleCompare, hooks, lawDetailsHtml, pendingHtml, regionLabel, renderChips, renderCompareButton, renderComparison, renderNews, renderScopeSelect, renderTable, scrollBehavior, sourceDetail, sourceLabel, sourceLink, syncSelectAll, syncTranslations, TODAY, valueHtml, writeUrl } from "./lib/view.js";
 
 const frameworkName = (framework) => t(`framework.${framework}`);
 
 // Comparison rows whose values are lists of treaties/frameworks, shown as badges with full names.
 const LIST_CRITERIA = { frameworks: frameworkName, frameworks_not: frameworkName };
+Object.assign(hooks, { chipLabel, rowHtml, listCriteria: LIST_CRITERIA });
 
 const countryName = (tld) => app.data.countries.find((c) => c.tld === tld)?.name ?? tld.toUpperCase();
 
@@ -122,28 +123,6 @@ function chipLabel(chip) {
   }
 }
 
-function renderChips() {
-  app.chips = activeFilters(app.state, CONFIG);
-  const host = $("chips");
-  host.hidden = app.chips.length === 0;
-  host.innerHTML = app.chips.length
-    ? app.chips
-        .map((chip, index) => {
-          const label = chipLabel(chip);
-          return `<span class="chip">${esc(label)}<button type="button" data-chip="${index}" aria-label="${esc(
-            t("chip.remove", { value: label })
-          )}">×</button></span>`;
-        })
-        .join("") +
-      `<button type="button" class="link-button" data-clear-filters>${esc(t("filters.clearAll"))}</button>`
-    : "";
-
-  const panelFilters = app.chips.filter((chip) => chip.facet !== "country").length;
-  const badge = $("filterCount");
-  badge.hidden = panelFilters === 0;
-  badge.textContent = panelFilters ? plural("filters.active", panelFilters) : "";
-}
-
 function renderSummary() {
   const countries = new Set(app.results.map((row) => row.tld)).size;
   $("resultsSummary").textContent = t("results.summary", {
@@ -208,14 +187,6 @@ function rowHtml(row) {
     </tr>`;
 }
 
-function renderTable() {
-  const empty = app.results.length === 0;
-  $("tableWrap").hidden = empty;
-  $("emptyState").hidden = !empty;
-  $("lawsTableBody").innerHTML = app.results.map(rowHtml).join("");
-  syncSelectAll();
-}
-
 function renderCountryCard() {
   const host = $("countryCard");
   const tlds = [...new Set(app.results.map((row) => row.tld))];
@@ -258,51 +229,6 @@ function renderCountryCard() {
       <a href="${esc(countryFileUrl(country.tld, "laws.json"))}" download>${esc(t("card.json"))}</a>
       <a href="${esc(countryFileUrl(country.tld, "laws.csv"))}" download>${esc(t("card.csv"))}</a>
     </p>`;
-}
-
-function renderComparison() {
-  const section = $("comparisonSection");
-  if (section.hidden) return;
-  const picked = pickedRows();
-  if (new Set(picked.map((row) => row.tld)).size < 2) {
-    section.hidden = true;
-    return;
-  }
-  const head = picked
-    .map((row) => `<th scope="col">${esc(row.country_name)}<br /><small>${esc(row.law_name)}</small></th>`)
-    .join("");
-  const cell = (criterion, row) => {
-    const value = row[criterion] ?? "";
-    if (LIST_CRITERIA[criterion]) {
-      const items = value.split("/").filter(Boolean);
-      return items.length
-        ? `<span class="badge-list">${items.map((v) => `<span class="badge${criterion.endsWith("_not") || criterion.endsWith("not_party") ? " badge-outline" : ""}" title="${esc(LIST_CRITERIA[criterion](v))}">${esc(v)}</span>`).join("")}</span>`
-        : valueHtml("");
-    }
-    return (/_date$/.test(criterion) && value ? dateHtml(value) : valueHtml(value)) + fieldSourceHtml(row.sources[criterion]);
-  };
-  let differing = 0;
-  const body = COMPARE_CRITERIA.map((criterion) => {
-    const values = picked.map((row) => String(row[criterion] ?? "").trim());
-    if (values.every((v) => NOT_SPECIFIED.test(v))) return ""; // nothing to compare
-    const differs = new Set(values.map((v) => v.toLowerCase())).size > 1;
-    if (differs) differing++;
-    return `
-      <tr class="${differs ? "is-diff" : "is-same"}">
-        <th scope="row">${esc(t(`compare.${criterion}`))}</th>
-        ${picked.map((row) => `<td>${cell(criterion, row)}</td>`).join("")}
-      </tr>`;
-  }).join("");
-  $("comparisonResults").innerHTML = `
-    <p class="comparison-tools">
-      <label class="check"><input type="checkbox" id="onlyDiff"${app.onlyDiff ? " checked" : ""} /> <span>${esc(
-        t("compare.onlyDiff", { count: differing })
-      )}</span></label>
-    </p>
-    <table class="comparison-table${app.onlyDiff ? " only-diff" : ""}">
-      <thead><tr><th scope="col">${esc(t("compare.criterion"))}</th>${head}</tr></thead>
-      <tbody>${body}</tbody>
-    </table>`;
 }
 
 function update() {
@@ -490,15 +416,3 @@ async function init() {
 }
 
 init();
-
-function handleCompare() {
-  const picked = pickedRows();
-  if (new Set(picked.map((row) => row.tld)).size < 2) {
-    alert(t("compare.needTwo"));
-    return;
-  }
-  const section = $("comparisonSection");
-  section.hidden = false;
-  renderComparison();
-  section.scrollIntoView({ block: "start", behavior: scrollBehavior() });
-}
