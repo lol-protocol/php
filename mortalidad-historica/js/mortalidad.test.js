@@ -34,7 +34,7 @@ function leerCsv(nombre) {
 }
 
 const tablas = {};
-for (const n of ['paises', 'causas_modernas', 'causas_historicas', 'epidemias', 'hitos_registro', 'londres_muertes', 'esperanza_vida']) {
+for (const n of ['paises', 'causas_modernas', 'causas_historicas', 'epidemias', 'hitos_registro', 'londres_muertes', 'esperanza_vida', 'modelo_logcuadratico', 'revisiones']) {
   tablas[n] = leerCsv(n);
 }
 const m = Mortalidad.crear(tablas);
@@ -120,4 +120,17 @@ test('errores y valores por omisión', () => {
   assert.equal(m.esperanzaRestante('CL', 1900, 20), null);
   assert.notEqual(m.esperanzaRestante('CL', 1900, 15), null);  // la edad 15 está (modelada)
   assert.equal(m.supervivencia('CL', 1895), m.supervivencia('CL', 1895, 5, 'T'));
+});
+
+test('huella: la misma que la de Python para todos los casos de los vectores', () => {
+  assert.ok(vectores.huellas.length > 20);
+  for (const [termino, idioma, causa, confianza, esperada] of vectores.huellas) {
+    assert.equal(Mortalidad.huella(termino, idioma, causa, confianza), esperada, `${termino} (${idioma})`);
+  }
+  // Cambia con cualquiera de los cuatro datos.
+  const base = Mortalidad.huella('tisis', 'spa', 'tuberculosis', 'alta');
+  for (const otra of [['Tisis', 'spa', 'tuberculosis', 'alta'], ['tisis', 'por', 'tuberculosis', 'alta'],
+                      ['tisis', 'spa', 'viruela', 'alta'], ['tisis', 'spa', 'tuberculosis', 'media']]) {
+    assert.notEqual(Mortalidad.huella(...otra), base);
+  }
 });

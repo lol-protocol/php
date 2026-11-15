@@ -29,6 +29,7 @@ FT = f"{RAW}/open-numbers/ddf--gapminder--fasttrack/dee8978535ee563526704d279349
 
 _LARGA = "Long run life expectancy - Gapminder, UN"
 DEMOTOOLS = f"{RAW}/timriffe/DemoTools/806cdc3afe5b3fe2bfd7e63232eb2222f719e230"
+MONDO = f"{RAW}/monarch-initiative/mondo/bf25273f921b165ca2b49a85be4b1eb6b2bca278"
 _LONDRES = "Deaths from Smalllpox and all causes in London 1629-1902"  # sí: «Smalllpox», con tres eles
 _COLERA = "UK Cholera Death over the long-term - ONS"
 
@@ -45,6 +46,7 @@ FUENTES = {
     "mortalidad-0-5-gapminder.csv": f"{FT}/ddf--datapoints--child_mortality_0_5_year_olds_dying_per_1000_born--by--country--time.csv",
     "esperanza-mujeres-gapminder.csv": f"{SG}/ddf--datapoints--life_expectancy_female--by--geo--time.csv",
     "modelo-logcuadratico-demotools.rda": f"{DEMOTOOLS}/data/fitted_logquad_b.rda",
+    "mondo-edit.obo": f"{MONDO}/src/ontology/mondo-edit.obo",
     "esperanza-hombres-gapminder.csv": f"{SG}/ddf--datapoints--life_expectancy_male--by--geo--time.csv",
 }
 

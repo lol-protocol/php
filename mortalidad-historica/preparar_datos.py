@@ -264,6 +264,38 @@ def comprobar_colera(ruta, epidemias):
                              f"fuente dice {esperado} en {f['hasta']}")
 
 
+def omim_de_mondo(ruta):
+    """{id MONDO: ([códigos OMIM de sus xref], obsoleto)} del archivo OBO de MONDO (se lee como texto)."""
+    resultado, actual = {}, None
+    for linea in Path(ruta).read_text(encoding="utf-8").splitlines():
+        if linea == "[Term]":
+            actual = {"id": None, "omim": [], "obsoleta": False}
+        elif linea == "" and actual is not None:
+            if actual["id"]:
+                resultado[actual["id"]] = (actual["omim"], actual["obsoleta"])
+            actual = None
+        elif actual is not None:
+            if linea.startswith("id: "):
+                actual["id"] = linea[4:]
+            elif linea.startswith("is_obsolete: true"):
+                actual["obsoleta"] = True
+            elif linea.startswith("xref: OMIM:"):
+                actual["omim"].append(linea[len("xref: OMIM:"):].split()[0])
+    return resultado
+
+
+def comprobar_omim(ruta, hereditarias):
+    """Falla si el código OMIM de una enfermedad hereditaria no es un xref de su término MONDO (o este es obsoleto)."""
+    mondo = omim_de_mondo(ruta)
+    for f in hereditarias:
+        if not f["omim"]:
+            continue
+        omim, obsoleto = mondo.get(f["mondo"], ([], False))
+        if f["omim"] not in omim or obsoleto:
+            raise SystemExit(f"hereditarias.csv: {f['id']}: OMIM {f['omim']} no es un xref de {f['mondo']} en MONDO"
+                             + (" (término obsoleto)" if obsoleto else ""))
+
+
 def _escribir(nombre, filas):
     columnas = leer_csv(DATOS / f"{nombre}.csv")[0]
     with (DATOS / f"{nombre}.csv").open("w", encoding="utf-8", newline="") as salida:
@@ -296,6 +328,7 @@ def main(argv=None):
         edades_modelo=EDADES_DEL_MODELO,
     )
     comprobar_colera(f / "colera-gran-bretana-owid.csv", _filas(DATOS / "epidemias.csv"))
+    comprobar_omim(f / "mondo-edit.obo", _filas(DATOS / "hereditarias.csv"))
     _escribir("esperanza_vida", filas)
     print(f"esperanza_vida.csv: {len(filas)} filas, {len({fila[0] for fila in filas})} países; "
           f"sin edades modeladas en {len(construir.sin_modelo)} décadas de país (el modelo no cuadra e0 con 5q0).")

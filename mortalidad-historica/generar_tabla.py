@@ -8,6 +8,7 @@ Solo biblioteca estándar. Las reglas de cada CSV están en `validar_*`; el sign
 en el README.
 """
 import json
+import re
 import sys
 from collections import Counter
 
@@ -16,7 +17,8 @@ import modelo
 
 from comun import (
     CALIDADES, CONFIANZAS, DATOS, ESTADOS, GRUPOS_CAUSA, HERENCIAS, IDIOMAS, INICIOS, POR_IDIOMA, RAIZ,
-    RE_CIE10, RE_ID, RE_PAIS, REGIONES, SEXOS, leer_csv,
+    RE_FECHA, RESULTADOS_REVISION, huella,
+    RE_CIE10, RE_ID, RE_MONDO, RE_PAIS, REGIONES, SEXOS, leer_csv,
 )
 
 COLUMNAS = {
@@ -25,7 +27,8 @@ COLUMNAS = {
     "causas_historicas": ["termino", "idioma", "causa_id", "confianza", "desde", "hasta", "nota", "estado", "fuente"],
     "epidemias": ["id", "nombre", "agente", "causa_id", "desde", "hasta", "regiones", "paises", "mortalidad",
                   "muertes_min", "muertes_max", "confianza", "nota", "estado", "fuente"],
-    "hereditarias": ["id", "nombre_spa", "nombre_eng", "herencia", "omim", "frecuencia_mayor_en",
+    "revisiones": ["idioma", "termino", "causa_id", "huella", "resultado", "revisor", "fecha", "nota"],
+    "hereditarias": ["id", "nombre_spa", "nombre_eng", "herencia", "omim", "mondo", "frecuencia_mayor_en",
                      "inicio_tipico", "nota", "estado", "fuente"],
     "hitos_registro": ["codigo", "tipo", "desde", "nota", "estado", "fuente"],
     "modelo_logcuadratico": ["edad", "ax", "bx", "cx", "vx"],
@@ -216,6 +219,10 @@ def validar_hereditarias(error):
             error("hereditarias", i, f"herencia «{f['herencia']}»: debe ser una de {HERENCIAS}")
         if f["omim"] and not (f["omim"].isdigit() and len(f["omim"]) == 6):
             error("hereditarias", i, f"omim «{f['omim']}» debe tener 6 dígitos")
+        if f["mondo"] and not RE_MONDO.match(f["mondo"]):
+            error("hereditarias", i, f"mondo «{f['mondo']}» debe ser MONDO: y 7 dígitos")
+        if f["omim"] and not f["mondo"]:
+            error("hereditarias", i, "un código OMIM sin su término MONDO no está verificado (ver «Enfermedades hereditarias»)")
         if not f["frecuencia_mayor_en"].strip():
             error("hereditarias", i, "falta frecuencia_mayor_en (di «todas las poblaciones» si es el caso)")
         if f["inicio_tipico"] not in INICIOS:
@@ -240,6 +247,34 @@ def validar_hitos(error, paises):
         clave = (f["codigo"], f["tipo"])
         if clave in vistos:
             error("hitos_registro", i, f"{clave} repetido (ya está en la fila {vistos[clave]})")
+        vistos.setdefault(clave, i)
+    return filas
+
+
+def validar_revisiones(error):
+    """Valida revisiones.csv. Una revisión de un término que ya no existe («huérfana») no es un error: sale en el informe."""
+    filas = _leer("revisiones", error)
+    if filas is None:
+        return []
+    vistos = {}
+    for i, f in enumerate(filas, start=2):
+        if f["idioma"] not in IDIOMAS:
+            error("revisiones", i, f"idioma «{f['idioma']}»: no es uno de los {len(IDIOMAS)} (ISO 639-3)")
+        if not f["termino"].strip() or not f["causa_id"].strip():
+            error("revisiones", i, "faltan el término o la causa")
+        if not re.match(r"^[0-9a-f]{8}$", f["huella"]):
+            error("revisiones", i, f"huella «{f['huella']}»: debe ser 8 dígitos hexadecimales")
+        if f["resultado"] not in RESULTADOS_REVISION:
+            error("revisiones", i, f"resultado «{f['resultado']}»: debe ser uno de {RESULTADOS_REVISION}")
+        if not f["revisor"].strip():
+            error("revisiones", i, "falta el revisor")
+        if not RE_FECHA.match(f["fecha"]):
+            error("revisiones", i, f"fecha «{f['fecha']}»: debe ser AAAA-MM-DD")
+        if f["resultado"] != "correcto" and not f["nota"].strip():
+            error("revisiones", i, f"un resultado «{f['resultado']}» necesita su nota")
+        clave = (f["revisor"].strip().casefold(), f["idioma"], f["termino"].casefold(), f["causa_id"])
+        if clave in vistos:
+            error("revisiones", i, f"el revisor ya revisó este término en la fila {vistos[clave]}: edita esa fila")
         vistos.setdefault(clave, i)
     return filas
 
@@ -332,6 +367,7 @@ def validar():
         "hitos_registro": validar_hitos(error, paises),
         "londres_muertes": validar_londres(error),
         "modelo_logcuadratico": validar_modelo(error),
+        "revisiones": validar_revisiones(error),
         "esperanza_vida": validar_esperanza_vida(error, paises),
     }
     datos["causas_modernas"] = leer_csv(DATOS / "causas_modernas.csv")[1]
@@ -423,6 +459,81 @@ def tabla_epidemias(datos):
     return "\n".join(lineas) + "\n"
 
 
+def estado_de_revision(datos):
+    """{idioma: contadores} y las listas de «atención» de la revisión por hablantes nativos.
+
+    Un término está *revisado* si alguien dijo «correcto» o «corregido» con la huella actual del término; *abierto* si
+    alguien dijo «corregir» o «dudoso» con la huella actual; *caducado* si su revisión es de un dato que cambió, y *en
+    desacuerdo* si una persona dijo «correcto» y otra «corregir» o «dudoso». Una revisión de un término que ya no
+    existe es *huérfana*."""
+    actuales = {(f["idioma"], f["termino"].casefold(), f["causa_id"]): huella(f["termino"], f["idioma"], f["causa_id"], f["confianza"])
+                for f in datos["causas_historicas"]}
+    por_termino = {}
+    huerfanas = []
+    for r in datos["revisiones"]:
+        clave = (r["idioma"], r["termino"].casefold(), r["causa_id"])
+        if clave not in actuales:
+            huerfanas.append(r)
+        else:
+            por_termino.setdefault(clave, []).append(r)
+    contadores = {idioma: Counter() for idioma in IDIOMAS}
+    caducadas, desacuerdos, abiertas = [], [], []
+    for clave, actual in actuales.items():
+        c = contadores[clave[0]]
+        c["total"] += 1
+        vigentes = [r for r in por_termino.get(clave, []) if r["huella"] == actual]
+        vencidas = [r for r in por_termino.get(clave, []) if r["huella"] != actual]
+        buenas = [r for r in vigentes if r["resultado"] in ("correcto", "corregido")]
+        dudas = [r for r in vigentes if r["resultado"] in ("corregir", "dudoso")]
+        if buenas and dudas:
+            desacuerdos.append(clave)
+        if buenas and not dudas:
+            c["revisado"] += 1
+        elif dudas:
+            c["abierto"] += 1
+            abiertas.extend(dudas)
+        elif vencidas:
+            c["caducado"] += 1
+            caducadas.extend(vencidas)
+    return contadores, abiertas, caducadas, desacuerdos, huerfanas
+
+
+def informe_revisiones(datos):
+    """revisiones.md: cuánto del glosario ha revisado una persona nativa, por idioma, y qué requiere atención."""
+    contadores, abiertas, caducadas, desacuerdos, huerfanas = estado_de_revision(datos)
+    total = sum(c["total"] for c in contadores.values())
+    revisados = sum(c["revisado"] for c in contadores.values())
+    lineas = [
+        "# Revisión del glosario por hablantes nativos",
+        "",
+        "<!-- Generado por generar_tabla.py: no lo edites a mano. -->",
+        "",
+        "Los términos del glosario los escribió un asistente de IA y **ninguna persona nativa los ha revisado** salvo lo que"
+        " diga este informe. `datos/revisiones.csv` es el registro de quién ha revisado qué; cómo revisar está en el"
+        " [README](README.md) («Revisión por hablantes nativos»).",
+        "",
+        f"**{revisados} de {total} términos revisados** ({100 * revisados // total if total else 0} %).",
+        "",
+        "| Idioma | Términos | Revisados | Con dudas abiertas | Caducados | Sin revisar |",
+        "|---|---|---|---|---|---|",
+    ]
+    for codigo, (nombre, _, _) in IDIOMAS.items():
+        c = contadores[codigo]
+        sin = c["total"] - c["revisado"] - c["abierto"] - c["caducado"]
+        lineas.append(f"| {nombre} (`{codigo}`) | {c['total']} | {c['revisado']} | {c['abierto']} | {c['caducado']} | {sin} |")
+    atencion = []
+    for r in abiertas[:40]:
+        atencion.append(f"- **{r['resultado']}**: «{r['termino']}» ({r['idioma']}, {r['causa_id']}), {r['revisor']}, {r['fecha']}: {r['nota']}")
+    for r in caducadas[:40]:
+        atencion.append(f"- **caducada**: «{r['termino']}» ({r['idioma']}, {r['causa_id']}) cambió después de la revisión de {r['revisor']} ({r['fecha']}).")
+    for idioma, termino, causa in desacuerdos[:40]:
+        atencion.append(f"- **desacuerdo**: «{termino}» ({idioma}, {causa}): una persona dijo «correcto» y otra «corregir» o «dudoso».")
+    for r in huerfanas[:40]:
+        atencion.append(f"- **huérfana**: «{r['termino']}» ({r['idioma']}, {r['causa_id']}) ya no está en el glosario; quita la fila o corrígela.")
+    lineas += ["", "## Atención", ""] + (atencion or ["Nada por ahora."])
+    return "\n".join(lineas) + "\n"
+
+
 def vectores(datos):
     """datos/vectores.json: las respuestas de consultas.py a un conjunto fijo de entradas.
 
@@ -460,7 +571,10 @@ def vectores(datos):
         m = consultas.muertes_londres(anio)
         londres.append([anio, None if m is None else m["totales"], None if m is None else m["viruela"],
                         consultas.exceso_de_muertes_londres(anio)])
+    huellas = [[f["termino"], f["idioma"], f["causa_id"], f["confianza"], huella(f["termino"], f["idioma"], f["causa_id"], f["confianza"])]
+               for f in historicas[::25]] + [["", "", "", "", huella("", "", "", "")], ["Schlagfluß", "deu", "ictus", "alta", huella("Schlagfluß", "deu", "ictus", "alta")]]
     return {
+        "huellas": huellas,
         "causa_moderna": causa,
         "epidemias_en": epidemias,
         "region_de": [[c, consultas.region_de(c)] for c in paises + ["ZZ", "gb", ""]],
@@ -473,7 +587,7 @@ def vectores(datos):
 def tablas_para_la_vista(datos):
     """Las tablas en columnas que incrusta vista.html: {nombre: {"columnas": [...], "filas": [[...]]}}."""
     tablas = {}
-    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes"):
+    for nombre in ("paises", "causas_modernas", "causas_historicas", "epidemias", "hitos_registro", "londres_muertes", "revisiones"):
         columnas = COLUMNAS[nombre]
         tablas[nombre] = {"columnas": columnas, "filas": [[f[c] for c in columnas] for f in datos[nombre]]}
     # La esperanza de vida es la tabla grande: solo las columnas que usan las consultas, y con números.
@@ -517,6 +631,7 @@ def resumen(datos):
         f"- **Causas modernas:** {len(datos['causas_modernas'])}; **términos históricos:** {len(hist)} en "
         f"{len({f['idioma'] for f in hist})} de {len(IDIOMAS)} idiomas "
         f"(confianza alta: {por_conf['alta']}, media: {por_conf['media']}, baja: {por_conf['baja']}).",
+        f"- **Términos revisados por una persona nativa:** {sum(c['revisado'] for c in estado_de_revision(datos)[0].values())} de {len(hist)}.",
         f"- **Idiomas sin términos:** {', '.join(sin_terminos) if sin_terminos else 'ninguno'}.",
         f"- **Causas modernas sin ningún término histórico:** {', '.join(sin_uso) if sin_uso else 'ninguna'}.",
         f"- **Epidemias:** {len(datos['epidemias'])} ({sum(f['estado'] == 'verificado' for f in datos['epidemias'])} verificadas). "
@@ -544,6 +659,7 @@ def con_resumen(readme, datos):
 def salida_esperada(datos):
     """{ruta: contenido} de todo lo que genera este script."""
     esperada = {POR_IDIOMA / "README.md": indice_idiomas(datos), RAIZ / "epidemias.md": tabla_epidemias(datos),
+                RAIZ / "revisiones.md": informe_revisiones(datos),
                 VISTA: vista(datos),
                 VECTORES: json.dumps(vectores(datos), ensure_ascii=False, separators=(",", ":"), sort_keys=True) + "\n"}
     for codigo in IDIOMAS:

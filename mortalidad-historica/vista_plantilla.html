@@ -50,6 +50,7 @@ section[hidden] { display: none; }
   <button type="button" data-seccion="epidemias" aria-pressed="false">Epidemias</button>
   <button type="button" data-seccion="esperanza" aria-pressed="false">Esperanza de vida</button>
   <button type="button" data-seccion="londres" aria-pressed="false">Londres 1629-1902</button>
+  <button type="button" data-seccion="revision" aria-pressed="false">Revisar el glosario</button>
 </nav>
 
 <section id="causas">
@@ -93,6 +94,22 @@ section[hidden] { display: none; }
   <div id="lon-grafico" role="img" aria-label="Muertes por año en Londres de 1629 a 1902"></div>
   <p class="nota">Bills of Mortality y los registros que las siguieron (vía Our World in Data). Es la ciudad de cada época, no Inglaterra; la serie tiene huecos. El exceso compara con la mediana de los 5 años anteriores y posteriores.</p>
 </section>
+<section id="revision" hidden>
+  <h2>Revisar el glosario (para hablantes nativos)</h2>
+  <p>Si el idioma es el tuyo, marca cada término: <strong>correcto</strong>, <strong>corregir</strong> o <strong>dudoso</strong> (con una nota que diga qué cambiar o por qué dudas). Escribe tu nombre y la fecha, copia las filas que salen abajo y añádelas al final de <code>datos/revisiones.csv</code> en un PR, o pásaselas a quien mantiene el proyecto. Nada sale de tu navegador.</p>
+  <div class="controles">
+    <label>Idioma <select id="rev-idioma"></select></label>
+    <label>Tu nombre <input id="rev-revisor" type="text" autocomplete="name"></label>
+    <label>Fecha <input id="rev-fecha" type="date"></label>
+    <label class="casilla"><span><input id="rev-ocultar" type="checkbox" checked> Ocultar los ya revisados</span></label>
+  </div>
+  <div id="rev-tabla"></div>
+  <h3>Filas para <code>revisiones.csv</code></h3>
+  <p id="rev-avisos" class="nota" aria-live="polite"></p>
+  <textarea id="rev-salida" rows="6" readonly style="width:100%;font:inherit;font-family:ui-monospace,monospace;font-size:.85rem" aria-label="Filas para revisiones.csv"></textarea>
+  <p><button type="button" id="rev-copiar">Copiar las filas</button></p>
+  <p class="nota">Las revisiones de este navegador no se guardan: copia las filas antes de cerrar la página. Una revisión caduca si el término, su causa o su confianza cambian después.</p>
+</section>
 </main>
 
 <script>
@@ -109,10 +126,11 @@ section[hidden] { display: none; }
   function h(tag, atributos) {
     var e = document.createElement(tag);
     Object.keys(atributos || {}).forEach(function (k) { e.setAttribute(k, atributos[k]); });
-    for (var i = 2; i < arguments.length; i++) {
-      var c = arguments[i];
-      if (c !== null && c !== undefined && c !== false) e.appendChild(typeof c === 'object' ? c : document.createTextNode(String(c)));
-    }
+    var agregar = function (c) {
+      if (Array.isArray(c)) c.forEach(agregar);
+      else if (c !== null && c !== undefined && c !== false) e.appendChild(typeof c === 'object' ? c : document.createTextNode(String(c)));
+    };
+    for (var i = 2; i < arguments.length; i++) agregar(arguments[i]);
     return e;
   }
   function limpiar(e) { while (e.firstChild) e.removeChild(e.firstChild); return e; }
@@ -120,7 +138,7 @@ section[hidden] { display: none; }
   function opcion(valor, texto) { var o = h('option', { value: valor }, texto); return o; }
 
   // ---- Secciones
-  var secciones = ['causas', 'epidemias', 'esperanza', 'londres'];
+  var secciones = ['causas', 'epidemias', 'esperanza', 'londres', 'revision'];
   function mostrar(nombre) {
     secciones.forEach(function (s) { $(s).hidden = s !== nombre; });
     Array.prototype.forEach.call(document.querySelectorAll('nav button'), function (b) {
@@ -278,7 +296,72 @@ section[hidden] { display: none; }
   }
   $('lon-anio').addEventListener('input', londresAnio);
 
-  causas(); epidemias(); esperanza(); londresAnio();
+  // ---- Revisión del glosario
+  function objetos(nombre) {
+    var t = T[nombre];
+    return t.filas.map(function (f) { var o = {}; t.columnas.forEach(function (c, i) { o[c] = f[i]; }); return o; });
+  }
+  var terminos = objetos('causas_historicas');
+  var revisiones = objetos('revisiones');
+  var modernas = {};
+  objetos('causas_modernas').forEach(function (c) { modernas[c.id] = c.nombre_spa; });
+  IDIOMAS.forEach(function (i) { $('rev-idioma').appendChild(opcion(i[0], i[1] + ' (' + i[2] + ')')); });
+  $('rev-fecha').value = new Date().toISOString().slice(0, 10);
+  var marcas = {};   // clave -> { resultado, nota }
+  function clave(t) { return t.idioma + '|' + t.termino + '|' + t.causa_id; }
+  function yaRevisado(t) {
+    var h = Mortalidad.huella(t.termino, t.idioma, t.causa_id, t.confianza);
+    return revisiones.some(function (r) {
+      return r.idioma === t.idioma && r.termino.toLowerCase() === t.termino.toLowerCase() && r.causa_id === t.causa_id &&
+        r.huella === h && (r.resultado === 'correcto' || r.resultado === 'corregido');
+    });
+  }
+  function campoCsv(v) { return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function salidaRevision() {
+    var revisor = $('rev-revisor').value.trim(), fecha = $('rev-fecha').value, avisos = [], filas = [];
+    terminos.forEach(function (t) {
+      var m = marcas[clave(t)];
+      if (!m || !m.resultado) return;
+      if (m.resultado !== 'correcto' && !(m.nota || '').trim()) avisos.push('«' + t.termino + '» (' + m.resultado + ') necesita una nota.');
+      filas.push([t.idioma, t.termino, t.causa_id, Mortalidad.huella(t.termino, t.idioma, t.causa_id, t.confianza), m.resultado, revisor, fecha, (m.nota || '').trim()].map(campoCsv).join(','));
+    });
+    if (filas.length && !revisor) avisos.push('Escribe tu nombre.');
+    if (filas.length && !fecha) avisos.push('Elige la fecha.');
+    $('rev-avisos').textContent = avisos.length ? avisos.join(' ') : (filas.length ? filas.length + ' filas listas para copiar.' : 'Marca algún término.');
+    $('rev-salida').value = filas.join('\n');
+  }
+  function revision() {
+    var idioma = $('rev-idioma').value, ocultar = $('rev-ocultar').checked;
+    var tabla = limpiar($('rev-tabla'));
+    var lista = terminos.filter(function (t) { return t.idioma === idioma && !(ocultar && yaRevisado(t)); });
+    var info = IDIOMAS.filter(function (i) { return i[0] === idioma; })[0];
+    if (!lista.length) { tabla.appendChild(h('p', { 'class': 'vacio' }, 'No hay términos por revisar en este idioma.')); salidaRevision(); return; }
+    var cuerpo = h('tbody');
+    lista.forEach(function (t) {
+      var k = clave(t), nombre = 'r-' + k;
+      var radios = [['', '—'], ['correcto', 'correcto'], ['corregir', 'corregir'], ['dudoso', 'dudoso']].map(function (o) {
+        var r = h('input', { type: 'radio', name: nombre, value: o[0] });
+        if ((marcas[k] ? marcas[k].resultado : '') === o[0]) r.checked = true;
+        r.addEventListener('change', function () { marcas[k] = { resultado: o[0], nota: marcas[k] ? marcas[k].nota : '' }; salidaRevision(); });
+        return h('label', { style: 'margin-right:.6rem;white-space:nowrap' }, r, ' ' + o[1]);
+      });
+      var nota = h('input', { type: 'text', 'aria-label': 'Nota sobre ' + t.termino, style: 'width:100%', value: marcas[k] ? marcas[k].nota || '' : '' });
+      nota.addEventListener('input', function () { marcas[k] = { resultado: marcas[k] ? marcas[k].resultado : '', nota: nota.value }; salidaRevision(); });
+      cuerpo.appendChild(h('tr', {}, h('td', { dir: info[3] ? 'rtl' : 'ltr', lang: idioma }, h('strong', {}, t.termino)), h('td', {}, modernas[t.causa_id] || t.causa_id), h('td', {}, h('span', { 'class': 'etiqueta' }, t.confianza)), h('td', {}, radios), h('td', {}, nota)));
+    });
+    tabla.appendChild(h('table', {}, h('thead', {}, h('tr', {}, h('th', {}, 'Término'), h('th', {}, 'Causa moderna que se le asigna'), h('th', {}, 'Confianza'), h('th', {}, '¿Es correcto?'), h('th', {}, 'Nota'))), cuerpo));
+    salidaRevision();
+  }
+  ['rev-idioma', 'rev-ocultar'].forEach(function (id) { $(id).addEventListener('change', revision); });
+  ['rev-revisor', 'rev-fecha'].forEach(function (id) { $(id).addEventListener('input', salidaRevision); });
+  $('rev-copiar').addEventListener('click', function () {
+    var texto = $('rev-salida').value;
+    if (!texto) return;
+    if (navigator.clipboard) navigator.clipboard.writeText(texto).catch(function () { $('rev-salida').select(); });
+    else { $('rev-salida').select(); document.execCommand('copy'); }
+  });
+
+  causas(); epidemias(); esperanza(); londresAnio(); revision();
   var inicial = location.hash.slice(1);
   if (secciones.indexOf(inicial) >= 0) mostrar(inicial);
 })();

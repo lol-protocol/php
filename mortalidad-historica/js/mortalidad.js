@@ -34,6 +34,17 @@
     return s.split(/\s+/u).filter(Boolean).join(' ');
   }
 
+  /*
+   * Huella de un término del glosario (FNV-1a de 32 bits, en hexadecimal): la misma que `huella` de comun.py. Cambia si
+   * cambia el término, su idioma, su causa o su confianza, y hace caducar una revisión cuando el dato cambia.
+   */
+  function huella(termino, idioma, causaId, confianza) {
+    var bytes = new TextEncoder().encode(termino + '|' + idioma + '|' + causaId + '|' + confianza);
+    var h = 0x811c9dc5;
+    for (var i = 0; i < bytes.length; i++) h = Math.imul(h ^ bytes[i], 0x01000193) >>> 0;
+    return ('00000000' + h.toString(16)).slice(-8);
+  }
+
   function objetos(tabla) {
     return tabla.filas.map(function (fila) {
       var o = {};
@@ -193,5 +204,5 @@
     };
   }
 
-  return { IDIOMAS: IDIOMAS, REGIONES: REGIONES, SEXOS: SEXOS, normalizar: normalizar, crear: crear };
+  return { IDIOMAS: IDIOMAS, REGIONES: REGIONES, SEXOS: SEXOS, normalizar: normalizar, huella: huella, crear: crear };
 });

@@ -6,17 +6,17 @@ Una página por idioma, con el código ISO 639-3. Los términos son un **borrado
 
 | Idioma | Código | Términos |
 |---|---|---|
-| [español (español)](spa.md) | `spa` | 16 |
-| [inglés (English)](eng.md) | `eng` | 13 |
-| [portugués (português)](por.md) | `por` | 11 |
-| [francés (français)](fra.md) | `fra` | 11 |
-| [italiano (italiano)](ita.md) | `ita` | 10 |
-| [alemán (Deutsch)](deu.md) | `deu` | 12 |
-| [latín (lingua latina)](lat.md) | `lat` | 7 |
-| [neerlandés (Nederlands)](nld.md) | `nld` | 8 |
-| [sueco (svenska)](swe.md) | `swe` | 8 |
+| [español (español)](spa.md) | `spa` | 101 |
+| [inglés (English)](eng.md) | `eng` | 100 |
+| [portugués (português)](por.md) | `por` | 46 |
+| [francés (français)](fra.md) | `fra` | 66 |
+| [italiano (italiano)](ita.md) | `ita` | 53 |
+| [alemán (Deutsch)](deu.md) | `deu` | 71 |
+| [latín (lingua latina)](lat.md) | `lat` | 52 |
+| [neerlandés (Nederlands)](nld.md) | `nld` | 19 |
+| [sueco (svenska)](swe.md) | `swe` | 9 |
 | [danés (dansk)](dan.md) | `dan` | 6 |
-| [polaco (polski)](pol.md) | `pol` | 6 |
+| [polaco (polski)](pol.md) | `pol` | 7 |
 | [ruso (русский)](rus.md) | `rus` | 9 |
 | [ucraniano (українська)](ukr.md) | `ukr` | 7 |
 | [checo (čeština)](ces.md) | `ces` | 7 |
