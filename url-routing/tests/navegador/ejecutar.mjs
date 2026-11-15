@@ -75,6 +75,8 @@ const servidor = spawn('php', ['-S', `127.0.0.1:${puerto}`, '-t', 'public', 'pub
 const base = `http://127.0.0.1:${puerto}`;
 // El POS es el mismo servidor con otro nombre de host (POS_DOMAINS trae contrastocolor.test): Chromium lo resuelve a 127.0.0.1.
 const basePos = `http://contrastocolor.test:${puerto}`;
+// El inglés es un subdominio de idioma del mismo sitio (IDIOMAS_ACTIVOS trae eng): lo mismo, con otro nombre de host.
+const baseEng = `http://eng.genealogia.test:${puerto}`;
 for (let intento = 0; ; intento++) {
   try {
     await fetch(`${base}/`);
@@ -86,7 +88,7 @@ for (let intento = 0; ; intento++) {
 }
 
 const ejecutable = process.env.CHROMIUM || (existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
-const navegador = await chromium.launch({ ...(ejecutable ? { executablePath: ejecutable } : {}), args: ['--host-resolver-rules=MAP contrastocolor.test 127.0.0.1'] });
+const navegador = await chromium.launch({ ...(ejecutable ? { executablePath: ejecutable } : {}), args: ['--host-resolver-rules=MAP contrastocolor.test 127.0.0.1, MAP eng.genealogia.test 127.0.0.1'] });
 const errores = [];
 const reporte = [];
 
@@ -142,6 +144,33 @@ const pruebas = {
       igual(0, await trampa.evaluate((e) => e.tabIndex + 1), 'el campo trampa no recibe el foco del teclado');
       verdadero((await trampa.boundingBox()).x < 0, 'está fuera de la pantalla: nadie la ve ni la alcanza con el ratón');
       igual('true', await trampa.evaluate((e) => (e.closest('[aria-hidden]')?.getAttribute('aria-hidden') ?? e.getAttribute('aria-hidden'))), 'ni se anuncia');
+    });
+  },
+
+  // El texto en inglés lo escribí yo y lo revisa una persona: aquí solo se comprueba que la página sirve, declara su idioma
+  // y no pierde etiquetas ni contraste por el cambio.
+  async 'el formulario de pedir el retiro, en inglés'() {
+    return con({}, async (p) => {
+      const respuesta = await p.goto(`${baseEng}/r/6128473105/`);
+      igual(200, respuesta.status(), 'el formulario responde en inglés');
+      igual('en', await p.locator('html').getAttribute('lang'), 'declara el idioma de la página');
+      verdadero((await p.locator('body').innerText()).includes('Ask for a page to be withdrawn'), 'el texto está en inglés');
+      for (const campo of ['motivo', 'detalle', 'contacto']) {
+        for (const control of await p.locator(`[name="${campo}"]`).all()) {
+          const nombre = await control.evaluate((e) => e.labels?.[0]?.textContent?.trim() ?? '');
+          verdadero(nombre !== '', `cada control de «${campo}» tiene una etiqueta asociada, en inglés`);
+        }
+      }
+      await auditar(p, '/r/{id}/ (en)');
+    });
+  },
+
+  async 'un 404, en inglés'() {
+    return con({ esperados: [404] }, async (p) => {
+      const respuesta = await p.goto(`${baseEng}/999999999/`);
+      igual(404, respuesta.status(), 'un id que no existe');
+      igual('en', await p.locator('html').getAttribute('lang'), 'declara el idioma de la página');
+      await auditar(p, '404 (en)');
     });
   },
 
