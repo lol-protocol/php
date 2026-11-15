@@ -228,6 +228,19 @@ export function renderizar(persona, opciones = {}) {
     cuerpo += `<g data-saludo="${M.saludoLado === -1 ? 'derecha' : 'izquierda'}">${capa(piezas, 'piel')}</g>`;
   }
 
+  // 3c. Brazos al frente (mano en el pecho, manos juntas, brazos cruzados): van encima de la ropa, que si no los taparía.
+  const alFrente = [1, -1].filter((s) => ['pecho', 'juntas', 'cruzado'].includes(M.brazos[s].tipo));
+  if (alFrente.length) {
+    const finMangas = prendas.filter((p) => p.params?.manga && p.params.manga !== 'sin').map((p) => finManga(M, p.params.manga));
+    const piezas = [];
+    for (const s of alFrente) {
+      const desde = finMangas.length ? Math.max(M.y.codo, ...finMangas) : M.brazos[s].u[0];
+      if (desde < M.brazos[s].u[M.brazos[s].u.length - 1] - 2) piezas.push({ d: trazoAntebrazo(M, s, desde), ...sp });
+      for (const d of trazoMano(M, s)) piezas.push({ d, ...sp });
+    }
+    cuerpo += `<g data-brazos-frente>${capa(piezas, 'piel')}</g>`;
+  }
+
   // 4. Cabeza
   const cabezaPieza = { d: trazoCabeza(G), ...sp };
   const orejas = trazoOrejas(G).map((d) => ({ d, ...sp }));

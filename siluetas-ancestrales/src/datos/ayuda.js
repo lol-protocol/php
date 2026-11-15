@@ -8,7 +8,7 @@ export const P = (id, nombre, ranura, plantilla, params = {}, col = {}) => ({ id
 
 /**
  * Atuendo: id, nombre, región, [año desde, hasta], sexo, clase, prendas, paleta de tintes por letra y extras
- * (peinados, barbas, tocados, pieles, nota, fuente —la referencia que respalda el traje— y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación;
+ * (peinados, barbas, tocados, pieles, edades —[mínima, máxima] si el traje es solo para ciertas edades—, nota, fuente —la referencia que respalda el traje— y conf: 'alta' | 'media' | 'baja', cuán respaldada y específica es la representación;
  * 'alta' exige `fuente`).
  */
 export const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra = {}) => ({
@@ -21,6 +21,7 @@ export const A = (id, nombre, region, epoca, sexo, clase, prendas, paleta, extra
   pieles: extra.pieles ? L(extra.pieles) : null,
   nota: extra.nota ?? '',
   fuente: extra.fuente ?? '',
+  edades: extra.edades ?? null,
   confianza: extra.conf ?? 'media',
 });
 
