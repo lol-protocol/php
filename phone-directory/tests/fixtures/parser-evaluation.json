@@ -510,6 +510,36 @@
                 {"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"},
                 {"tipo": "natural", "nombre": "LEE, Ken", "calle": "8 Oak Lane", "telefono": "555-987-6543"}
             ]
+        },
+        {
+            "id": "en-telefono-con-codigo-entre-parentesis",
+            "idioma": "en",
+            "entrada": "SMITH, John\n12 Oak Street\n(555) 123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "(555) 123-4567"}]
+        },
+        {
+            "id": "en-telefono-con-guiones-separados-del-escaner",
+            "idioma": "en",
+            "entrada": "SMITH, John\n12 Oak Street\n555 - 123 - 4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555 - 123 - 4567"}]
+        },
+        {
+            "id": "en-una-linea-con-coma-tras-el-apellido",
+            "idioma": "en",
+            "entrada": "SMITH, John 12 Oak Street 555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "en-titulo-entre-parentesis-tras-el-nombre",
+            "idioma": "en",
+            "entrada": "SMITH, John (Dr.)\n12 Oak Street\n555-123-4567",
+            "esperado": [{"tipo": "natural", "nombre": "SMITH, John (Dr.)", "calle": "12 Oak Street", "telefono": "555-123-4567"}]
+        },
+        {
+            "id": "de-calle-con-coma-y-codigo-postal",
+            "idioma": "de",
+            "entrada": "MÜLLER, Hans\nHauptstr. 5, 10115 Berlin\n030 123456",
+            "esperado": [{"tipo": "natural", "nombre": "MÜLLER, Hans", "calle": "Hauptstr. 5, 10115 Berlin", "telefono": "030 123456"}]
         }
     ]
 }

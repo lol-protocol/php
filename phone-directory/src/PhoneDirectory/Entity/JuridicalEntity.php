@@ -18,6 +18,7 @@ class JuridicalEntity
     private string $countryCode;
     private ?string $sourceDirectoryId;
     private ?int $sourceLine;
+    private bool $markedPublishable = false;
 
     public function __construct(
         string $businessName,
@@ -102,6 +103,29 @@ class JuridicalEntity
     }
 
     /**
+     * Whether the owner has said this business may be shown although its name holds a given name (see
+     * JuridicalEntityPDODatabase::markPublishable()). Without the mark a visitor does not see a recent business
+     * that is named after a person (Privacy::mayNameALivingPerson()).
+     */
+    public function isMarkedPublishable(): bool
+    {
+        return $this->markedPublishable;
+    }
+
+    /**
+     * A copy of this business that says it is publishable. It is not stored by itself: the only way to record
+     * the mark is JuridicalEntityPDODatabase::markPublishable(), which asks for the evidence, so insert() and
+     * update() leave the mark alone.
+     */
+    public function withPublishable(bool $publishable): static
+    {
+        $copy = clone $this;
+        $copy->markedPublishable = $publishable;
+
+        return $copy;
+    }
+
+    /**
      * @return array{
      *     id: int,
      *     businessName: string,
@@ -112,7 +136,8 @@ class JuridicalEntity
      *     recordDate: string,
      *     countryCode: string,
      *     sourceDirectoryId: string|null,
-     *     sourceLine: int|null
+     *     sourceLine: int|null,
+     *     publishable: bool
      * }
      */
     public function toArray(): array
@@ -128,6 +153,7 @@ class JuridicalEntity
             'countryCode' => $this->countryCode,
             'sourceDirectoryId' => $this->sourceDirectoryId,
             'sourceLine' => $this->sourceLine,
+            'publishable' => $this->markedPublishable,
         ];
     }
 }

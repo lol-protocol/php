@@ -17,7 +17,9 @@ namespace PhoneDirectory\Parser;
  */
 final class PhonePattern
 {
-    public const REGEX = '/\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b|\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b/u';
+    // Digit groups may be joined by a spaced hyphen ("555 - 123 - 4567", as a scan spreads them), and the area code
+    // may be in parentheses ("(555) 123-4567").
+    public const REGEX = '/\b[A-Za-z]{3,}[ .-]\d[ -]\d{4}\b|\b\d{3}(?:[-.\s]|\s[-.]\s)?\d{3}(?:[-.\s]|\s[-.]\s)?\d{4}\b|(?<![\d+])\(\d{3}\)\s?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b/u';
 
     // Not preceded by a digit or a "+", not followed by a separator and a digit. A house number just before
     // the phone ("Hauptstraße 5 030 123456") is fine: the phone starts at its own first digit, and a format

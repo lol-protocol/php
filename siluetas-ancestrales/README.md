@@ -8,10 +8,10 @@ Trae un **catálogo grande de ropa** organizado por región, época, sexo y clas
 
 | | |
 |---|---|
-| Atuendos completos | 493, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
+| Atuendos completos | 509, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
 | Prendas | 485 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 16 plantillas paramétricas con decenas de variantes (escotes, mangas, formas, bolsillos, capuchas, pieles…), cada una con su **catálogo de colores y la probabilidad de cada color** |
 | Tintes con nombre | 110, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, denim, anilinas…) y 70 perfiles de color reutilizables |
-| Etnias y culturas | 116, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
+| Etnias y culturas | 124, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
 | Pieles, cabellos | 12 tonos de piel y 13 de cabello |
 | Peinados, barbas, tocados | 26, 8 y 44 |
 | Patrones de tela | 19 (rayas, tartán, grecas, escalonado, rombos, escamas, diseños geométricos amazónicos…) |
@@ -32,7 +32,7 @@ node bin/generar.js --semilla 7 --compacto -o liviana.svg     # SVG un 8 % más 
 node bin/generar.js --ayuda
 ```
 
-La **galería** (`galeria.html`) se abre directo desde el disco: elige región y atuendo, edad, complexión, postura, piel, nivel de detalle y fondo, genera ropa nueva y descarga el SVG. Usa `dist/siluetas-ancestrales.js`, el mismo código empaquetado en un solo archivo.
+La **galería** (`galeria.html`) se abre directo desde el disco: elige región y atuendo, edad, complexión, postura, piel, nivel de detalle y fondo, genera ropa nueva y descarga el SVG. Usa `dist/siluetas-ancestrales.js`, el mismo código empaquetado en un solo archivo. Tiene enlace para saltar a la figura, etiquetas en todos los campos, tema claro y oscuro con contraste de al menos 4,5 a 1 (una prueba lo comprueba) y anuncia la descripción de cada persona.
 
 La página **`prendas.html`** (también desde el disco) muestra cada prenda del catálogo sola, sobre un niño, un adulto y un anciano corpulento, con filtros por ranura y plantilla: sirve para ver a ojo si una plantilla se deforma. `pruebas/prendas-sobre-cuerpos.test.js` hace la misma comprobación por las coordenadas.
 
@@ -70,7 +70,7 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 | `atuendo` | id de `src/datos/atuendos.js`; si falta se elige uno con `region`, `anio`, `sexo` y `clase` (si no hay coincidencia exacta se afloja un filtro a la vez) |
 | `etnia` | id, lista (`['mapuche','espanol']`), texto con comas o `{id: peso}`; `--listar etnias`. **Estima** todo lo que no des a mano: región y atuendo, piel, cabello, peinado, barba, complexión y estatura (ver abajo) |
 | `anio` | año (negativo = antes de nuestra era): filtra atuendos por época y tintes por disponibilidad, y ajusta un poco la estatura |
-| `pose` | `casual` (por defecto, distinta con cada semilla), `'firme'` (simétrica, como las primeras versiones) o un objeto parcial para fijar partes: `{ brazoLibre: 'abajo'\|'cintura'\|'bolsillo', carga: -1\|0\|1 (la pierna que carga el peso, vista de frente), cabeza: grados, inclinacion: grados, abre: 0,85 a 1,5 (apertura de los pies), giro: grados de los pies, saludo: { codo, antebrazo, mano } }`; la pose casual sale en `persona.cuerpo.pose` |
+| `pose` | `casual` (por defecto, distinta con cada semilla), `'firme'` (simétrica, como las primeras versiones), `'infantil'` (pies abiertos, sin cargar el peso, brazos separados), `'mayor'` (carga el peso en una pierna, brazos pegados, a veces una mano en el pecho), `'segun-edad'` (la infantil hasta los 12 años, la de mayor desde los 65 y la casual en medio) o un objeto parcial para fijar partes: `{ brazoLibre: 'abajo'\|'cintura'\|'bolsillo'\|'pecho', manos: 'juntas'\|'cruzados' (los dos brazos al frente; solo sin saludo), carga: -1\|0\|1 (la pierna que carga el peso, vista de frente), cabeza: grados, inclinacion: grados, abre: 0,85 a 1,5 (apertura de los pies), giro: grados de los pies, saludo: { codo, antebrazo, mano } }`; la pose casual sale en `persona.cuerpo.pose` |
 | `vestir` | lista de ids de prenda o `{ ranura: id }`: viste prenda por prenda (ver «Vestir prenda por prenda») |
 | `contorno` | `'ninguno'` (por defecto: sin bordes) o `'suave'` (un borde fino y tenue, por si se prefiere) |
 | `saludo` | `derecha` (por defecto), `izquierda` o `ninguno`: la mano levantada es la de la persona; de frente, la derecha queda a la izquierda de quien mira |
@@ -82,6 +82,24 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 | `detalle` | `minimo` (plano, sin degradados ni sombras), `medio` (degradados y sombras proyectadas), `alto` (más contraste y luz) |
 | `rasgos` | `true` insinúa ojos, cejas, nariz y boca |
 | `ropaNueva`, `estilo`, `esquema` | ropa inventada (`sobrio`, `trabajo`, `festivo`, `ceremonial`) con un esquema de color (`analogo`, `complementario`, `triada`, `monocromo`, `tierra`, `festivo`) |
+
+## Árbol de ascendencia
+
+`generarFamilia` dibuja en un solo SVG a una persona y a sus padres, abuelos y bisabuelos (1 a 4 generaciones, hasta 15 figuras), cada uno con la ropa y los rasgos de su pueblo y de su época. Los nacimientos son coherentes: el padre nace unos 30 años antes que su hijo y la madre unos 26 (con variación), y cada ancestro se retrata a los 35 años, en su propio año.
+
+```js
+import { generarFamilia } from './src/index.js';
+const f = generarFamilia({
+  semilla: 4, generaciones: 3, anio: 1985, edad: 30, sexo: 'f',
+  linaje: { etnia: 'mapuche,espanol', padre: { etnia: 'espanol', padre: { etnia: 'vasco' } }, madre: { etnia: 'mapuche' } },
+});
+f.svg;       // el árbol
+f.personas;  // [{ ruta: '', 'p', 'pm'…, rol, generacion, sexo, edad, anio, nacimiento, etnia, persona }]
+```
+
+`ruta` es la cadena de `p` (padre) y `m` (madre) desde la persona: `pm` es la abuela paterna. En `linaje` cada nodo admite `etnia`, `nombre`, `padre` y `madre`; el ancestro que falta hereda la etnia de su hijo. `saludo` y `detalle` valen para todos. Desde la línea de comandos: `node bin/generar.js --familia --generaciones 3 --anio 1985 --linaje linaje.json -o familia.svg`. Ejemplo: [`ejemplos/familia-mapuche-espanol-vasco.svg`](ejemplos/familia-mapuche-espanol-vasco.svg).
+
+Es una ilustración de un linaje **probable**: el pueblo, la ropa y los rasgos salen de las estimaciones del catálogo (con su confianza), no de datos de personas reales.
 
 ## Vista de espalda
 
@@ -176,7 +194,13 @@ Son **promedios aproximados de poblaciones, no reglas sobre una persona**, y «e
 2. Un atuendo nuevo: una entrada en `src/datos/atuendos.js` con región, años, sexo, clase, prendas y los tintes posibles de cada letra de la paleta.
 3. Una plantilla nueva (otra forma de prenda): un archivo en `src/prendas/` con una función que devuelva `{ atras, partes, detalles }`, agregada a `PLANTILLAS` en `src/prendas.js`.
 
-Después corre las pruebas y `node bin/construir.js`.
+Después corre las pruebas y `node bin/construir.js`. La guía paso a paso, con ejemplos de cada tipo de dato y la lista de errores frecuentes, está en [`docs/agregar-datos.md`](docs/agregar-datos.md).
+
+## Cobertura por país
+
+`node bin/cobertura.js` cruza la prioridad genealógica de cada país (`../Listado-paises/priorizacion.csv`) con lo que el catálogo trae para él y dice dónde faltan pueblos: ordena los países por prioridad y los marca 🟢 (ropa **propia** de mujer y de hombre en casi todas las décadas de 1700 a 1950), 🟡 (solo ropa **genérica** de su región, o propia incompleta) o 🔴 (ni siquiera genérica). «Propia» es la ropa hecha para el pueblo (su nombre está en el atuendo); «genérica», la de la región, que sirve a muchos pueblos (por ejemplo, Noruega y Finlandia usan «Europa rural»). Opciones: `--estado amarillo`, `--todos` (incluye los excluidos), `--desde` y `--hasta`, `--csv ruta` y `-o archivo.md`.
+
+El mapeo de cada país a sus regiones y etnias está en [`datos/paises-regiones.json`](datos/paises-regiones.json): es **aproximado y editable**, una guía para decidir qué agregar y no un dato demográfico. Una prueba exige que todo país del CSV esté ahí.
 
 ## Pruebas
 
@@ -188,6 +212,10 @@ node bin/construir.js               # regenera dist/ y ejemplos/ tras cambiar sr
 ```
 
 Las pruebas revisan que cada tipo de ropa nuevo (escotes, mangas, formas, bolsillos, capuchas, pantalones, calzado) haga lo que dice, que `vestir` use los colores de cada prenda, que la deformación de la pose (hombros y columna) deje quietos los pies y las caderas y que todas las rutas usen solo comandos absolutos; que no haya bordes por defecto, que los degradados y las sombras estén en cada nivel de detalle, que los `id` no choquen entre figuras, que la pose varíe con la semilla y se mantenga en rangos naturales (mano en la cintura sobre la cadera, pierna libre más abierta, pose firme simétrica); que todo el catálogo de colores sume 100 % por prenda, que los jeans solo salgan en azules y grises, que el filtro por año quite los tintes que no existían, que el muestreo siga los porcentajes (4000 muestras) y que ninguna prenda quede sin usar; que cada etnia tenga datos válidos y que las estimaciones sigan a la etnia (estatura, piel, cabello), a la edad y al año, y avisen cuando el atuendo sea de otra región; que la mano en saludo quede del lado y a la altura correctos para todos los atuendos; que cada atuendo apunte a prendas, tintes y peinados que existen; que **todo atuendo** se dibuje bien a seis edades y complexiones (SVG bien formado, sin `NaN`, sin scripts ni referencias externas, rellenos definidos); que la misma semilla dé el mismo SVG; que los filtros se respeten; que la ropa nueva sea válida y variada; y que `dist/` dé exactamente lo mismo que `src/`.
+
+## Ropa por edad
+
+Un atuendo puede declarar `edades: [mínima, máxima]`. Hay 20 atuendos infantiles (2 a 12 años: europeo campesino y medieval, Roma, Grecia, Andes, Corea, Japón, África occidental, Norteamérica y Latinoamérica). Hasta los 12 años `buscarAtuendos({ edad })` y `generarPersona` prefieren el traje infantil de la región si existe; si no, sale uno de adulto **sin** prendas solo de adulto (armadura, toga, hábito, sotana, frac, traje de novia…), que valen desde los 16 años. Con una etnia el niño sigue vistiendo el traje de su pueblo. Son trajes genéricos de confianza baja.
 
 ## Confianza y revisión (para uso antropológico)
 

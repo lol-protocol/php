@@ -1,0 +1,20 @@
+# Escrituras no latinas: qué fuente libre (Noto, SIL OFL) dibuja cada idioma y cómo se parte el texto.
+# `muestra` es un verso conocido de dominio público: se usa en las pruebas y siempre entra en el
+# subconjunto de la fuente (generator/subconjuntos.py añade además las frases de ese idioma).
+# `corte`: «palabra» parte por espacios; «caracter» parte entre cualquier par de caracteres (CJK).
+fuentes:
+  ja: {archivo: NotoSerifJP-subset.otf, origen: NotoSerifJP-Regular.otf, sentido: ltr, corte: caracter}
+  zh: {archivo: NotoSerifSC-subset.otf, origen: NotoSerifSC-Regular.otf, sentido: ltr, corte: caracter}
+  ar: {archivo: NotoNaskhArabic-subset.ttf, origen: NotoNaskhArabic-Regular.ttf, sentido: rtl, corte: palabra}
+  hi: {archivo: NotoSerifDevanagari-subset.ttf, origen: NotoSerifDevanagari-Regular.ttf, sentido: ltr, corte: palabra}
+idiomas:  # idioma de la frase -> clave de `fuentes` (el persa comparte la fuente del árabe)
+  ja: ja
+  zh: zh
+  ar: ar
+  fa: ar
+  hi: hi
+muestras:
+  ja: 古池や蛙飛びこむ水の音
+  zh: 床前明月光，疑是地上霜。
+  ar: الخيل والليل والبيداء تعرفني
+  hi: ढाई आखर प्रेम का पढ़े सो पंडित होय

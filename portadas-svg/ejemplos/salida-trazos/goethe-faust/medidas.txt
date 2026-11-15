@@ -1,0 +1,14 @@
+Libro: Faust — Johann Wolfgang von Goethe
+Plantilla: cartel; idioma: de
+Clasificación: tradición moderna · categoría teatro
+Texto: a trazos (sin fuentes)
+Corte: 135 × 210 mm
+Sangrado: 3 mm en cada borde exterior
+Lomo: 16 mm (confírmalo con la imprenta: depende del papel)
+Sin solapas
+
+Tamaño de cada archivo, con sangrado (ancho × alto):
+  portada.svg: 138 × 216 mm
+  contratapa.svg: 138 × 216 mm
+  lomo.svg: 16 × 216 mm
+  cubierta-completa.svg: 292 × 216 mm
