@@ -15,7 +15,7 @@
     "enforcement_body": "Canadian Intellectual Property Office",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://laws-lois.justice.gc.ca/eng/acts/C-42/index.html",
+    "linked_resources": "https://laws-lois.justice.gc.ca/eng/acts/C-42/FullText.html",
     "notes": "Term extended life+50 to life+70 on 2022-12-30 (CUSMA, Bill C-19); no revival of PD works",
     "pending_change": "",
     "pending_date": "",
@@ -24,9 +24,9 @@
     "last_checked": "2026-10-14",
     "sources": {
       "term_of_protection": {
-        "url": "https://www.lavery.ca/en/publications/our-publications/4317-the-duration-of-copyright-protection-in-canada-is-extended-to-70-years-as-of-december-30-2022.html",
+        "url": "https://laws-lois.justice.gc.ca/eng/acts/C-42/FullText.html",
         "confidence": "high",
-        "checked": "2026-10-14"
+        "checked": "2026-11-15"
       },
       "notes": {
         "url": "https://www.smartbiggar.ca/insights/publication/70-is-the-new-50--term-of-copyright-protection-in-canada-to-become--life-plus-70--on-december-30--2022",
@@ -35,6 +35,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-11-15",
+        "field": "linked_resources",
+        "from": "https://laws-lois.justice.gc.ca/eng/acts/C-42/index.html",
+        "to": "https://laws-lois.justice.gc.ca/eng/acts/C-42/FullText.html"
+      },
       {
         "date": "2026-11-11",
         "field": "linked_resources",
