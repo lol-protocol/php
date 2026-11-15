@@ -39,7 +39,7 @@ class Plantilla(unittest.TestCase):
         escribir(self.datos, "epidemias", [("peste", "Peste", "Y. pestis", "", "1346", "1353", "Europa;Asia", "", "", "", "", "media", "", "borrador", "")])
         escribir(self.datos, "hereditarias", [("fq", "Fibrosis quística", "Cystic fibrosis", "autosómica recesiva", "219700", "todas las poblaciones", "infancia", "", "borrador", "")])
         escribir(self.datos, "hitos_registro", [("CL", "civil", "1885", "", "borrador", "")])
-        escribir(self.datos, "modelo_logcuadratico", [(str(e), "-1", "1", "0", "0") for e in modelo.EDADES])
+        escribir(self.datos, "modelo_logcuadratico", [(sexo, str(e), "-1", "1", "0", "0") for sexo in modelo.SEXOS for e in modelo.EDADES])
         escribir(self.datos, "londres_muertes", [("1665", "97306", "655", "verificado", "londres-owid")])
         escribir(self.datos, "esperanza_vida", [])
         # validar() lee de comun.DATOS a través de leer_csv(DATOS / ...), que generar_tabla importó.
@@ -373,6 +373,83 @@ class PrepararDatosTest(unittest.TestCase):
         self.assertEqual(set(pd.ALIAS_GAPMINDER) & pd.OMITIDOS_GAPMINDER, set())
 
 
+class BandasYRileyTest(unittest.TestCase):
+    def test_banda_de_cada_epoca(self):
+        self.assertEqual(pd.banda_de(1950), (0.6, 0.07, "medida"))
+        self.assertEqual(pd.banda_de(2000), (0.6, 0.07, "medida"))
+        self.assertEqual(pd.banda_de(1949 - 9), (3.0, 0.15, "supuesto"))
+        self.assertEqual(pd.banda_de(1800), (5.0, 0.20, "supuesto"))
+        self.assertEqual(pd.banda_de(1540), (6.0, 0.25, "supuesto"))
+
+    def test_las_esquinas_no_juntan_mucha_esperanza_con_mucha_mortalidad_infantil(self):
+        esquinas = pd._esquinas(100.0, 50.0, 3.0, 0.2)
+        self.assertEqual(esquinas[0], (100.0, 50.0))
+        for q, e in esquinas:
+            self.assertFalse(q > 100.0 and e > 50.0, (q, e))
+            self.assertFalse(q < 100.0 and e < 50.0, (q, e))
+
+    def test_banda_a_los_5_contiene_al_valor_central(self):
+        central = pd.esperanza_a_los_5(40.0, 300.0)[0]
+        bajo, alto = pd.banda_a_los_5(300.0, 40.0, 5.0, 0.2)
+        self.assertLess(bajo, central)
+        self.assertGreater(alto, central)
+        self.assertLess(alto - bajo, 15)  # con las esquinas incoherentes pasaba de 24 años
+
+    def test_la_banda_se_estrecha_con_una_fuente_mas_firme(self):
+        ancha = pd.banda_a_los_5(300.0, 40.0, 5.0, 0.2)
+        estrecha = pd.banda_a_los_5(300.0, 40.0, 0.6, 0.07)
+        self.assertLess(estrecha[1] - estrecha[0], ancha[1] - ancha[0])
+
+    def test_promedios_con_datos_usa_los_anios_que_hay(self):
+        self.assertEqual(pd.promedios_con_datos({1541: 30.0, 1546: 40.0, 1553: 50.0}, 1500, 1799), {1540: 35.0, 1550: 50.0})
+        self.assertEqual(pd.promedios_con_datos({1850: 30.0}, 1500, 1799), {})
+
+    def test_riley_resuelve_alias_omite_territorios_y_falla_con_un_nombre_nuevo(self):
+        cabecera = ["Entity", "Year", "Life expectancy"]
+        codigos = [{"codigo": "GB", "codigo_owid": "GBR", "nombre_iso": "United Kingdom"},
+                   {"codigo": "FO", "codigo_owid": "FRO", "nombre_iso": "Faroe Islands"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = Path(tmp) / "r.csv"
+            for entidades, falla in ((["United Kingdom", "Faeroe Islands", "Niue", "World"], False), (["Atlantis"], True)):
+                with ruta.open("w", encoding="utf-8", newline="") as f:
+                    e = csv.writer(f)
+                    e.writerow(cabecera)
+                    for entidad in entidades:
+                        e.writerow([entidad, 1750, 36.5])
+                if falla:
+                    with self.assertRaises(SystemExit):
+                        pd.leer_riley(ruta, codigos)
+                else:
+                    self.assertEqual(sorted(pd.leer_riley(ruta, codigos)), ["FO", "GB"])
+
+    def test_construir_agrega_las_decadas_anteriores_a_1800_solo_para_la_edad_0(self):
+        filas = pd.construir({}, {}, {}, {}, riley={"GB": {1541: 30.0, 1546: 40.0, 1795: 38.0, 1850: 99.0}})
+        self.assertEqual([(f[0], f[1], f[3], f[4], f[5], f[9], f[11]) for f in filas], [
+            ("GB", 1540, "T", 0, "35.0", "C", pd.FUENTE_RILEY),
+            ("GB", 1790, "T", 0, "38.0", "C", pd.FUENTE_RILEY)])
+        self.assertEqual((filas[0][7], filas[0][8]), ("29.0", "41.0"))   # ± 6 años: banda supuesta antes de 1800
+
+    def test_si_el_modelo_no_cuadra_las_cifras_de_la_fuente_no_se_deriva_nada_de_ellas(self):
+        # Gapminder da a Barbados más de 550 por mil de mortalidad de 0 a 5 años con una esperanza de 32 años.
+        e0 = {"BB": {a: 32.1 for a in range(1890, 1900)}}
+        q5 = {"BB": {a: 655.0 for a in range(1890, 1900)}}
+        filas = pd.construir(e0, q5, {}, {}, edades_modelo=pd.EDADES_DEL_MODELO)
+        self.assertEqual([(f[3], f[4]) for f in filas], [("T", 0)])      # solo la esperanza al nacer
+        self.assertEqual(pd.construir.sin_modelo, [("T", "BB", 1890)])
+        # Sin pedir el modelo, la identidad sí da una cifra (que sería absurda: 86 años a los 5).
+        self.assertEqual(len(pd.construir(e0, q5, {}, {})), 2)
+
+    def test_mujeres_y_hombres_usan_la_mortalidad_infantil_de_ambos_sexos(self):
+        e0 = {"XX": {a: 70.0 for a in range(1950, 1960)}}
+        q5 = {"XX": {a: 50.0 for a in range(1950, 1960)}}
+        mujeres = {"XX": {a: 73.0 for a in range(1950, 1960)}}
+        filas = pd.construir(e0, q5, mujeres, {}, edades_modelo=(15, 60))
+        de_ellas = [(f[4], f[11]) for f in filas if f[3] == "F"]
+        self.assertEqual(de_ellas, [(0, pd.FUENTE_SEXO), (5, pd.FUENTE_MODELO_SEXO), (15, pd.FUENTE_MODELO_SEXO), (60, pd.FUENTE_MODELO_SEXO)])
+        f5 = next(f for f in filas if f[3] == "F" and f[4] == 5)
+        self.assertEqual(f5[6], "")   # sin supervivencia: sería la de ambos sexos
+
+
 class LondresYColeraTest(unittest.TestCase):
     def escribir(self, carpeta, nombre, cabecera, filas):
         ruta = Path(carpeta) / nombre
@@ -436,11 +513,12 @@ class EsperanzaDeVidaRealTest(unittest.TestCase):
 
     def test_solo_las_edades_que_hay(self):
         self.assertEqual({f["edad"] for f in self.filas}, {"0", "5", "15", "30", "45", "60"})
-        self.assertEqual({f["edad"] for f in self.filas if f["sexo"] != "T"}, {"0"})
+        # Antes de 1800 solo hay la esperanza al nacer, de los pocos países con datos (ver test_antes_de_1800).
+        self.assertEqual({f["edad"] for f in self.filas if int(f["desde"]) < 1800}, {"0"})
 
     def test_calidad_c_antes_de_1950_y_siempre_para_lo_modelado(self):
         for f in self.filas:
-            modelada = f["fuente"] == pd.FUENTE_MODELO
+            modelada = f["fuente"] in (pd.FUENTE_MODELO, pd.FUENTE_MODELO_SEXO, pd.FUENTE_RILEY)
             self.assertEqual(f["calidad"], "C" if modelada or int(f["desde"]) < 1950 else "B", f)
 
     def test_las_edades_modeladas_son_las_que_se_dicen(self):
@@ -450,6 +528,11 @@ class EsperanzaDeVidaRealTest(unittest.TestCase):
             if f["fuente"] == pd.FUENTE_MODELO:
                 self.assertEqual(f["sexo"], "T")
                 self.assertTrue(0 < float(f["supervivencia_hasta_edad"]) < 1, f)
+            if f["fuente"] == pd.FUENTE_MODELO_SEXO:
+                self.assertIn(f["sexo"], ("F", "M"))
+                self.assertGreaterEqual(int(f["desde"]), 1950)
+                # A los 5 años no se guarda la supervivencia: sería la de ambos sexos, no la de este.
+                self.assertEqual(f["supervivencia_hasta_edad"] == "", f["edad"] == "5", f)
 
     def test_la_edad_esperada_de_muerte_no_baja_con_la_edad(self):
         # Quien llega a una edad mayor muere, en promedio, a una edad igual o mayor: x + e(x) no decrece. Entre la
@@ -458,20 +541,22 @@ class EsperanzaDeVidaRealTest(unittest.TestCase):
             if edad == "15":
                 f5 = self.indice[(codigo, desde, sexo, "5")]
                 self.assertGreaterEqual(15 + float(f["esperanza_restante"]), 5 + float(f5["esperanza_restante"]) - 0.25, f)
-                self.assertLess(float(f["supervivencia_hasta_edad"]), float(f5["supervivencia_hasta_edad"]) + 1e-9, f)
-        for codigo, desde in {(c, d) for (c, d, s, e) in self.indice if e == "15"}:
+                if f5["supervivencia_hasta_edad"]:
+                    self.assertLess(float(f["supervivencia_hasta_edad"]), float(f5["supervivencia_hasta_edad"]) + 1e-9, f)
+        for codigo, desde, sexo in {(c, d, s) for (c, d, s, e) in self.indice if e == "15"}:
             previo = None
             for edad in ("15", "30", "45", "60"):
-                f = self.indice[(codigo, desde, "T", edad)]
+                f = self.indice[(codigo, desde, sexo, edad)]
                 actual = (int(edad) + float(f["esperanza_restante"]), float(f["supervivencia_hasta_edad"]))
                 if previo is not None:
                     self.assertGreaterEqual(actual[0], previo[0] - 0.06, (codigo, desde, edad))
-                    self.assertLess(actual[1], previo[1], (codigo, desde, edad))
+                    # Con tres decimales, dos edades seguidas con mortalidad casi nula pueden quedar iguales.
+                    self.assertLessEqual(actual[1], previo[1], (codigo, desde, edad))
                 previo = actual
 
     def test_toda_fila_de_edad_5_tiene_su_fila_de_edad_0_y_cuadra(self):
         for (codigo, desde, sexo, edad), f in self.indice.items():
-            if edad == "5":
+            if edad == "5" and sexo == "T":
                 e0 = float(self.indice[(codigo, desde, "T", "0")]["esperanza_restante"])
                 self.assertGreaterEqual(float(f["esperanza_restante"]) + 5, e0 - 0.06, f)
                 self.assertTrue(0 < float(f["supervivencia_hasta_edad"]) < 1, f)
@@ -488,7 +573,45 @@ class EsperanzaDeVidaRealTest(unittest.TestCase):
 
     def test_cada_fila_dice_su_fuente_con_un_identificador_conocido(self):
         self.assertEqual({f["fuente"] for f in self.filas},
-                         {pd.FUENTE_E0, pd.FUENTE_E5, pd.FUENTE_SEXO, pd.FUENTE_MODELO})
+                         {pd.FUENTE_E0, pd.FUENTE_E5, pd.FUENTE_SEXO, pd.FUENTE_MODELO, pd.FUENTE_MODELO_SEXO, pd.FUENTE_RILEY})
+
+    def test_toda_fila_trae_su_banda_y_contiene_a_la_cifra(self):
+        for f in self.filas:
+            self.assertTrue(f["incertidumbre_baja"] != "" and f["incertidumbre_alta"] != "", f)
+            self.assertLessEqual(float(f["incertidumbre_baja"]), float(f["esperanza_restante"]), f)
+            self.assertGreaterEqual(float(f["incertidumbre_alta"]), float(f["esperanza_restante"]), f)
+
+    def test_las_bandas_son_mas_anchas_cuanto_mas_atras(self):
+        def ancho(codigo, desde):
+            f = self.indice[(codigo, str(desde), "T", "0")]
+            return float(f["incertidumbre_alta"]) - float(f["incertidumbre_baja"])
+        self.assertGreater(ancho("SE", 1800), ancho("SE", 1900))
+        self.assertGreater(ancho("SE", 1900), ancho("SE", 1950))
+        self.assertAlmostEqual(ancho("SE", 1950), 2 * 0.6, places=1)
+        self.assertAlmostEqual(ancho("SE", 1800), 2 * 5.0, places=1)
+
+    def test_antes_de_1800_solo_cuatro_paises_y_solo_la_esperanza_al_nacer(self):
+        previas = [f for f in self.filas if int(f["desde"]) < 1800]
+        self.assertEqual({f["codigo"] for f in previas}, {"GB", "SE", "FI", "DK"})
+        for f in previas:
+            self.assertEqual((f["sexo"], f["edad"], f["fuente"], f["calidad"]), ("T", "0", pd.FUENTE_RILEY, "C"), f)
+            self.assertEqual(int(f["desde"]) % 10, 0, f)
+        self.assertEqual(min(int(f["desde"]) for f in previas), 1540)
+
+    def test_mujeres_y_hombres_desde_1950_con_todas_las_edades_modeladas(self):
+        for sexo in ("F", "M"):
+            edades = {f["edad"] for f in self.filas if f["sexo"] == sexo}
+            self.assertEqual(edades, {"0", "5", "15", "30", "45", "60"}, sexo)
+            self.assertGreaterEqual(min(int(f["desde"]) for f in self.filas if f["sexo"] == sexo), 1950)
+
+    def test_las_mujeres_viven_mas_que_los_hombres_a_los_15_y_los_60_casi_siempre(self):
+        mas, total = 0, 0
+        for (codigo, desde, sexo, edad), f in self.indice.items():
+            if sexo == "F" and edad in ("15", "60") and (codigo, desde, "M", edad) in self.indice:
+                total += 1
+                mas += float(f["esperanza_restante"]) >= float(self.indice[(codigo, desde, "M", edad)]["esperanza_restante"])
+        self.assertGreater(total, 1000)
+        self.assertGreater(mas / total, 0.95)
 
     def test_esta_al_dia_con_construir_para_un_pais_conocido(self):
         # Cualquier cambio a mano de una fila de edad 5 la desalinearía de su fila de edad 0.
@@ -680,10 +803,23 @@ class ModeloTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             modelo.tabla(1.5, 0.0)
 
-    def test_los_coeficientes_son_los_24_grupos(self):
-        ax, bx, cx, vx = modelo.coeficientes()
-        self.assertEqual((len(ax), len(bx), len(cx), len(vx)), (24,) * 4)
-        self.assertEqual(vx[0], 0.0)  # a la edad 0 el modelo no depende de k
+    def test_los_coeficientes_son_los_24_grupos_de_cada_sexo(self):
+        for sexo in modelo.SEXOS:
+            ax, bx, cx, vx = modelo.coeficientes(sexo)
+            self.assertEqual((len(ax), len(bx), len(cx), len(vx)), (24,) * 4, sexo)
+            self.assertEqual(vx[0], 0.0, sexo)  # a la edad 0 el modelo no depende de k
+
+    def test_cada_sexo_tiene_su_modelo(self):
+        m, f, t = (modelo.esperanzas_por_edad(50, 65.0, (15, 60), s) for s in ("M", "F", "T"))
+        self.assertNotEqual(m, f)
+        # Con la misma mortalidad infantil y la misma esperanza al nacer, el promedio de los dos sexos queda entre ellos.
+        for edad in (15, 60):
+            self.assertLess(min(m[edad][0], f[edad][0]) - 1.0, t[edad][0])
+            self.assertGreater(max(m[edad][0], f[edad][0]) + 1.0, t[edad][0])
+
+    def test_sexo_invalido(self):
+        with self.assertRaises(ValueError):
+            modelo.coeficientes("X")
 
 
 class LeerRdaTest(unittest.TestCase):
@@ -749,6 +885,34 @@ class ConsultasEsperanzaTest(unittest.TestCase):
     def test_sexo_invalido(self):
         with self.assertRaises(ValueError):
             consultas.esperanza_restante("CL", 1900, 0, "X")
+        with self.assertRaises(ValueError):
+            consultas.banda_esperanza("CL", 1900, 0, "X")
+
+    def test_banda_contiene_a_la_cifra(self):
+        for codigo, anio, edad, sexo in (("SE", 1805, 0, "T"), ("SE", 1805, 15, "T"), ("SE", 1955, 60, "F"),
+                                         ("GB", 1545, 0, "T"), ("JP", 1985, 5, "M")):
+            bajo, alto = consultas.banda_esperanza(codigo, anio, edad, sexo)
+            self.assertLessEqual(bajo, consultas.esperanza_restante(codigo, anio, edad, sexo))
+            self.assertGreaterEqual(alto, consultas.esperanza_restante(codigo, anio, edad, sexo))
+
+    def test_la_banda_es_mas_ancha_antes_de_1950(self):
+        ancho = lambda anio: -(lambda b: b[0] - b[1])(consultas.banda_esperanza("SE", anio))
+        self.assertGreater(ancho(1805), ancho(1905))
+        self.assertGreater(ancho(1905), ancho(1955))
+
+    def test_banda_sin_dato_es_none(self):
+        self.assertIsNone(consultas.banda_esperanza("XX", 1900))
+        self.assertIsNone(consultas.banda_esperanza("SE", 1805, 20))
+
+    def test_reino_unido_antes_de_1800(self):
+        self.assertAlmostEqual(consultas.esperanza_restante("GB", 1545), 36.4, places=1)
+        self.assertIsNone(consultas.esperanza_restante("GB", 1545, 5))   # antes de 1800 solo al nacer
+        self.assertIsNone(consultas.esperanza_restante("ES", 1545))      # España no tiene serie tan atrás
+
+    def test_mujeres_y_hombres_a_los_15_desde_1950(self):
+        self.assertIsNotNone(consultas.esperanza_restante("SE", 1955, 15, "F"))
+        self.assertGreater(consultas.esperanza_restante("SE", 1955, 15, "F"), consultas.esperanza_restante("SE", 1955, 15, "M"))
+        self.assertIsNone(consultas.esperanza_restante("SE", 1905, 15, "F"))
 
 
 class NormalizarTest(unittest.TestCase):
