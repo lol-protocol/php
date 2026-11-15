@@ -341,6 +341,21 @@ class ValidacionYOrden(unittest.TestCase):
         tabla = generar_tabla.tabla_md("T", "n", ["A", "B"], [["uno | dos", "tres\ncuatro"]])
         self.assertIn("| uno \\| dos | tres cuatro |", tabla)
 
+    def test_una_plantilla_sin_marcas_falla_con_un_mensaje_en_vez_de_dejar_la_vista_sin_datos(self):
+        carpeta = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, carpeta)
+        plantilla = carpeta / "vista_plantilla.html"
+        plantilla.write_text('<script>const D = /*DATOS*/null; const M = /*MAPA*/null;</script>\n<div class="pagina"></div>',
+                             encoding="utf-8")
+        with mock.patch.multiple(generar_tabla, PLANTILLA_VISTA=plantilla):
+            with self.assertRaises(SystemExit) as error:
+                generar_tabla.vista_html([], {})
+        mensaje = str(error.exception)
+        self.assertIn("vista_plantilla.html no tiene las marcas", mensaje)
+        self.assertIn("/*ANIOS*/null", mensaje)
+        self.assertIn("/*ESCENARIOS*/null", mensaje)
+        self.assertNotIn("/*DATOS*/null", mensaje)
+
     def test_si_no(self):
         self.assertEqual([generar_tabla.si_no(True), generar_tabla.si_no(False)], ["sí", "no"])
         self.assertEqual(generar_tabla.si_no(True, ascii=True), "si")
