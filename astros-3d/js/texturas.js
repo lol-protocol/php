@@ -299,7 +299,8 @@
             break;
           }
           case 'estrella': {
-            const base = temperaturaARgb(astro.temperatura_superficial_k);
+            // Color propio de la estrella si lo trae (ilustrativo, para distinguirlas); si no, el de su temperatura.
+            const base = tx.color ? hexARgb(tx.color) : temperaturaARgb(astro.temperatura_superficial_k);
             c = pixelEstrella(u, v, base, tx, semilla);
             break;
           }

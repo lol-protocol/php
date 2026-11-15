@@ -38,13 +38,26 @@ Las lunas de Marte son pequeñas e irregulares; sus temperaturas son aproximadas
 
 ## Soles
 
-| Estrella | Tipo espectral | Radio (R☉) | Radio (km) | Masa (M☉) | Temperatura superficial (K) | Distancia | Edad aprox. (mil millones de años) | Incertidumbre del radio |
-|---|---|---:|---:|---:|---:|---:|---:|---|
-| Sol | G2V | 1,00 | 695.700 | 1,00 | 5.772 | 1 UA | 4,600 | baja |
-| Sirio A | A1V | 1,71 | 1.190.343 | 2,02 | 9.940 | 8,6 años luz | 0,240 | baja |
-| Vega | A0V | 2,36 | 1.641.852 | 2,14 | 9.602 | 25,0 años luz | 0,455 | media |
-| Polaris | F7Ib | 38 | 26.088.750 | 5,40 | 6.015 | 430 años luz | 0,070 | alta |
-| Betelgeuse | M1-2 Ia-Iab | 764 | 531.514.800 | 16,5 | 3.590 | 548 años luz | 0,009 | alta |
-| Antares | M1.5 Iab-Ib | 680 | 473.076.000 | 12,0 | 3.570 | 550 años luz | 0,012 | alta |
+| Estrella | Constelación | Signo zodiacal | Tipo espectral | Radio (R☉) | Radio (km) | Masa (M☉) | Temperatura superficial (K) | Distancia | Edad aprox. (mil millones de años) | Incertidumbre del radio |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|---|
+| Sol | — | — | G2V | 1,00 | 695.700 | 1,00 | 5.772 | 1 UA | 4,600 | baja |
+| Sirio A | Can Mayor | — | A1V | 1,71 | 1.190.343 | 2,02 | 9.940 | 8,6 años luz | 0,240 | baja |
+| Vega | Lira | — | A0V | 2,36 | 1.641.852 | 2,14 | 9.602 | 25 años luz | 0,455 | media |
+| Polaris | Osa Menor | — | F7Ib | 37,5 | 26.088.750 | 5,40 | 6.015 | 430 años luz | 0,070 | alta |
+| Betelgeuse | Orión | — | M1-2 Ia-Iab | 764 | 531.514.800 | 16,5 | 3.590 | 548 años luz | 0,009 | alta |
+| Antares | Escorpio | Escorpio | M1.5 Iab-Ib | 680 | 473.076.000 | 12,0 | 3.570 | 550 años luz | 0,012 | alta |
+| Aldebarán | Tauro | Tauro | K5III | 44,1 | 30.680.370 | 1,16 | 3.910 | 65 años luz | — | media |
+| Hamal | Aries | Aries | K2III | 14,9 | 10.365.930 | 1,50 | 4.480 | 66 años luz | — | media |
+| Pólux | Géminis | Géminis | K0III | 9,06 | 6.303.042 | 1,91 | 4.586 | 34 años luz | 0,724 | baja |
+| Regulus | Leo | Leo | B8IVn | 3,09 | 2.149.713 | 3,80 | 12.460 | 79 años luz | — | media |
+| Spica | Virgo | Virgo | B1III-IV | 7,47 | 5.196.879 | 11,4 | 25.300 | 250 años luz | 0,013 | media |
+| Rigel | Orión | — | B8Ia | 78,9 | 54.890.730 | 21,0 | 12.100 | 860 años luz | 0,008 | media |
+| Capella Aa | Auriga | — | G8III | 12,0 | 8.334.486 | 2,57 | 4.970 | 43 años luz | 0,600 | media |
+| Arcturus | Boyero | — | K1.5III | 25,4 | 17.670.780 | 1,08 | 4.286 | 36,7 años luz | 7,100 | baja |
+| Procyon A | Can Menor | — | F5IV-V | 2,05 | 1.426.185 | 1,50 | 6.530 | 11,5 años luz | 2,700 | baja |
+| Altair | Águila | — | A7V | 1,79 | 1.245.303 | 1,79 | 7.550 | 16,7 años luz | — | media |
+| Deneb | Cisne | — | A2Ia | 203 | 141.227.100 | 19,0 | 8.525 | 2.600 años luz | — | alta |
+| Fomalhaut A | Pez Austral | — | A3V | 1,84 | 1.280.088 | 1,92 | 8.590 | 25 años luz | 0,440 | baja |
+| Próxima Centauri | Centauro | — | M5.5Ve | 0,15 | 107.138 | 0,12 | 3.042 | 4,2 años luz | 4,850 | media |
 
-R☉ y M☉ son el radio y la masa del Sol. El radio de Betelgeuse, Antares y Polaris es poco preciso: cambia según el método de medida.
+R☉ y M☉ son el radio y la masa del Sol. Signo zodiacal: el de la constelación zodiacal a la que pertenece la estrella. La edad queda en «—» cuando no hay un dato fiable. El radio de Betelgeuse, Antares, Polaris y Deneb es poco preciso: cambia según el método de medida. El color de cada estrella en el visor es ilustrativo: la temperatura fija su familia (azul, blanca, amarilla, naranja o roja) y se exagera la saturación para distinguirlas.

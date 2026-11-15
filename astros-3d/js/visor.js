@@ -295,7 +295,7 @@ void main() {
 
     const tx = a.textura;
     if (a.categoria === 'sol') {
-      entrada.halo = T.temperaturaARgb(a.temperatura_superficial_k).map(c => c / 255);
+      entrada.halo = (tx.color ? T.hexARgb(tx.color) : T.temperaturaARgb(a.temperatura_superficial_k)).map(c => c / 255);
       entrada.intensidadHalo = 0.55;
       entrada.potHalo = 3.0;
       entrada.radioHalo = RADIO_CORONA;
@@ -470,12 +470,14 @@ void main() {
     if (a.categoria === 'sol') {
       return [
         ['Tipo', a.tipo],
+        ['Constelación', a.constelacion || '—'],
+        ['Signo zodiacal', a.signo || '—'],
         ['Tipo espectral', a.tipo_espectral],
-        ['Radio', numeroEs(a.radio_solar, a.radio_solar < 10 ? 2 : 0) + ' R☉ (' + numeroEs(a.radio_km, 0) + ' km)'],
+        ['Radio', numeroEs(a.radio_solar, a.radio_solar < 10 ? 2 : a.radio_solar < 100 ? 1 : 0) + ' R☉ (' + numeroEs(a.radio_km, 0) + ' km)'],
         ['Masa', numeroEs(a.masa_solar, a.masa_solar < 10 ? 2 : 1) + ' M☉'],
         ['Temperatura superficial', numeroEs(a.temperatura_superficial_k, 0) + ' K'],
-        ['Distancia', a.distancia.unidad === 'UA' ? '1 UA' : numeroEs(a.distancia.valor, 1) + ' años luz'],
-        ['Edad aproximada', numeroEs(a.edad_aprox_mil_millones_anios, 3) + ' mil millones de años'],
+        ['Distancia', a.distancia.unidad === 'UA' ? '1 UA' : numeroEs(a.distancia.valor, Number.isInteger(a.distancia.valor) ? 0 : 1) + ' años luz'],
+        ['Edad aproximada', a.edad_aprox_mil_millones_anios == null ? 'Sin dato fiable' : numeroEs(a.edad_aprox_mil_millones_anios, 3) + ' mil millones de años'],
         ['Incertidumbre del radio', a.incertidumbre_radio]
       ];
     }
@@ -555,7 +557,14 @@ void main() {
         const b = document.createElement('button');
         b.type = 'button';
         b.dataset.id = a.id;
-        b.textContent = a.nombre;
+        if (a.categoria === 'sol') {
+          const punto = document.createElement('span');
+          punto.className = 'punto';
+          punto.setAttribute('aria-hidden', 'true');
+          punto.style.background = a.textura.color || '#ffffff';
+          b.appendChild(punto);
+        }
+        b.appendChild(document.createTextNode(a.nombre));
         b.setAttribute('aria-pressed', 'false');
         b.addEventListener('click', () => seleccionar(a.id));
         sec.appendChild(b);

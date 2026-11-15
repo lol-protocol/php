@@ -13,13 +13,13 @@ const ASTROS = DATOS.astros;
 const HEX = /^#[0-9a-f]{6}$/;
 const TIPOS_TEXTURA = new Set(['rocoso', 'bandas', 'nubes', 'tierra', 'volcanico', 'hielo', 'estrella']);
 
-test('hay 9 planetas, 10 lunas y 6 soles, con id único', () => {
+test('hay 9 planetas, 10 lunas y 19 soles, con id único', () => {
   const ids = ASTROS.map(a => a.id);
   assert.equal(new Set(ids).size, ids.length, 'ids repetidos');
   const cuenta = c => ASTROS.filter(a => a.categoria === c).length;
   assert.equal(cuenta('planeta'), 9);
   assert.equal(cuenta('luna'), 10);
-  assert.equal(cuenta('sol'), 6);
+  assert.equal(cuenta('sol'), 19);
 });
 
 test('cada categoría del catálogo existe en categorias', () => {
@@ -110,6 +110,36 @@ test('los anillos aparecen solo en los planetas que los tienen', () => {
   assert.deepEqual(con, ['jupiter', 'neptuno', 'saturno', 'urano']);
   for (const a of ASTROS.filter(x => x.categoria === 'planeta')) {
     assert.equal(!!a.textura.anillos, a.anillos, `${a.id}: anillos en datos y textura`);
+  }
+});
+
+test('cada estrella trae constelación; el signo zodiacal solo las seis de constelaciones zodiacales', () => {
+  const soles = ASTROS.filter(a => a.categoria === 'sol' && a.id !== 'sol');
+  for (const a of soles) assert.ok(a.constelacion, `${a.id}: constelación`);
+  const conSigno = soles.filter(a => a.signo).map(a => `${a.id}:${a.signo}`).sort();
+  assert.deepEqual(conSigno, [
+    'aldebaran:Tauro', 'antares:Escorpio', 'hamal:Aries', 'polux:Géminis', 'regulus:Leo', 'spica:Virgo'
+  ]);
+});
+
+test('cada estrella tiene un color propio y distinto de las demás', () => {
+  const colores = ASTROS.filter(a => a.categoria === 'sol').map(a => a.textura.color);
+  for (const c of colores) assert.match(c, HEX);
+  assert.equal(new Set(colores).size, colores.length, 'hay colores repetidos entre estrellas');
+});
+
+test('el color de cada estrella respeta su familia: las calientes son azuladas y las frías, rojizas', () => {
+  for (const a of ASTROS.filter(x => x.categoria === 'sol')) {
+    const [r, , b] = [1, 3, 5].map(i => parseInt(a.textura.color.slice(i, i + 2), 16));
+    if (a.temperatura_superficial_k >= 10000) assert.ok(b >= r, `${a.id}: debería ser azulada`);
+    if (a.temperatura_superficial_k <= 4600) assert.ok(r - b >= 50, `${a.id}: debería ser rojiza o anaranjada`);
+  }
+});
+
+test('la edad de una estrella es positiva o no consta (null)', () => {
+  for (const a of ASTROS.filter(x => x.categoria === 'sol')) {
+    const e = a.edad_aprox_mil_millones_anios;
+    assert.ok(e === null || e > 0, `${a.id}: edad`);
   }
 });
 

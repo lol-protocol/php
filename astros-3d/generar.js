@@ -70,8 +70,9 @@ function filaLuna(a, padres) {
 function filaSol(a) {
   const distancia = a.distancia.unidad === 'UA'
     ? `${numero(a.distancia.valor, 0)} UA`
-    : `${numero(a.distancia.valor, a.distancia.valor < 100 ? 1 : 0)} años luz`;
-  return `| ${a.nombre} | ${a.tipo_espectral} | ${numero(a.radio_solar, a.radio_solar < 10 ? 2 : 0)} | ${numero(a.radio_km, 0)} | ${numero(a.masa_solar, a.masa_solar < 10 ? 2 : 1)} | ${numero(a.temperatura_superficial_k, 0)} | ${distancia} | ${numero(a.edad_aprox_mil_millones_anios, 3)} | ${a.incertidumbre_radio} |`;
+    : `${numero(a.distancia.valor, Number.isInteger(a.distancia.valor) ? 0 : 1)} años luz`;
+  const edad = a.edad_aprox_mil_millones_anios == null ? '—' : numero(a.edad_aprox_mil_millones_anios, 3);
+  return `| ${a.nombre} | ${a.constelacion || '—'} | ${a.signo || '—'} | ${a.tipo_espectral} | ${numero(a.radio_solar, a.radio_solar < 10 ? 2 : a.radio_solar < 100 ? 1 : 0)} | ${numero(a.radio_km, 0)} | ${numero(a.masa_solar, a.masa_solar < 10 ? 2 : 1)} | ${numero(a.temperatura_superficial_k, 0)} | ${distancia} | ${edad} | ${a.incertidumbre_radio} |`;
 }
 
 function generarMarkdown(datos) {
@@ -104,11 +105,11 @@ function generarMarkdown(datos) {
   lineas.push('');
   lineas.push('## Soles');
   lineas.push('');
-  lineas.push('| Estrella | Tipo espectral | Radio (R☉) | Radio (km) | Masa (M☉) | Temperatura superficial (K) | Distancia | Edad aprox. (mil millones de años) | Incertidumbre del radio |');
-  lineas.push('|---|---|---:|---:|---:|---:|---:|---:|---|');
+  lineas.push('| Estrella | Constelación | Signo zodiacal | Tipo espectral | Radio (R☉) | Radio (km) | Masa (M☉) | Temperatura superficial (K) | Distancia | Edad aprox. (mil millones de años) | Incertidumbre del radio |');
+  lineas.push('|---|---|---|---|---:|---:|---:|---:|---:|---:|---|');
   for (const a of por('sol')) lineas.push(filaSol(a));
   lineas.push('');
-  lineas.push('R☉ y M☉ son el radio y la masa del Sol. El radio de Betelgeuse, Antares y Polaris es poco preciso: cambia según el método de medida.');
+  lineas.push('R☉ y M☉ son el radio y la masa del Sol. Signo zodiacal: el de la constelación zodiacal a la que pertenece la estrella. La edad queda en «—» cuando no hay un dato fiable. El radio de Betelgeuse, Antares, Polaris y Deneb es poco preciso: cambia según el método de medida. El color de cada estrella en el visor es ilustrativo: la temperatura fija su familia (azul, blanca, amarilla, naranja o roja) y se exagera la saturación para distinguirlas.');
   lineas.push('');
   return lineas.join('\n');
 }
