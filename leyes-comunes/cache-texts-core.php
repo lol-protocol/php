@@ -271,6 +271,57 @@ function fetchUrl(string $url, array $conditional, int $timeout, bool $allowPriv
     return ['status' => 0, 'headers' => [], 'body' => '', 'error' => 'too many redirects', 'finalUrl' => $url];
 }
 
+/**
+ * Text of a PDF through `pdftotext` (poppler-utils), run without a shell and with a time limit.
+ * Null when pdftotext is not installed, fails, times out, or finds no text (a scanned PDF).
+ */
+function pdfToText(string $pdf): ?string
+{
+    $file = tempnam(sys_get_temp_dir(), 'laws-pdf-');
+    if ($file === false) {
+        return null;
+    }
+    try {
+        if (file_put_contents($file, $pdf) === false) {
+            return null;
+        }
+        $process = @proc_open(['pdftotext', '-enc', 'UTF-8', '-nopgbrk', $file, '-'], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+        if (!is_resource($process)) {
+            return null;
+        }
+        stream_set_blocking($pipes[1], false);
+        stream_set_blocking($pipes[2], false);
+        $out = '';
+        $deadline = microtime(true) + 30;
+        while (true) {
+            $out .= (string) stream_get_contents($pipes[1]);
+            stream_get_contents($pipes[2]);
+            $status = proc_get_status($process);
+            if (!$status['running']) {
+                $out .= (string) stream_get_contents($pipes[1]);
+                break;
+            }
+            if (microtime(true) > $deadline || strlen($out) > 4 * MAX_DOWNLOAD_BYTES) {
+                proc_terminate($process, 9);
+                proc_close($process);
+                return null;
+            }
+            usleep(20_000);
+        }
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        $exit = $status['exitcode'] ?? -1;
+        $closed = proc_close($process);
+        if (($exit >= 0 ? $exit : $closed) !== 0) {
+            return null;
+        }
+        $text = trim((string) preg_replace("/\n{3,}/", "\n\n", str_replace(["\r\n", "\f"], ["\n", "\n\n"], $out)));
+        return $text === '' ? null : $text;
+    } finally {
+        @unlink($file);
+    }
+}
+
 /** @return array{text: string, title: string}|string  the text, or the reason it was skipped */
 function extractText(string $body, array $headers): array|string
 {
@@ -278,7 +329,9 @@ function extractText(string $body, array $headers): array|string
     $charset = preg_match('/charset\s*=\s*["\']?([\w\-:.]+)/i', $contentType, $m) ? $m[1] : null;
 
     if (str_contains($contentType, 'pdf')) {
-        return 'PDF documents are not converted';
+        $text = pdfToText($body);
+        // Without pdftotext (poppler-utils), or when it cannot read the file, the PDF is skipped as before.
+        return $text === null ? 'PDF documents are not converted' : ['text' => $text, 'title' => ''];
     }
     $looksHtml = str_contains($contentType, 'html') || ($contentType === '' && preg_match('/^\s*</', $body));
     if ($looksHtml) {
