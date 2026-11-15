@@ -183,4 +183,72 @@ class CopiasCliTest extends TestCase
         $this->assertStringContainsString('Copia de genealogy:', $r[2]);
         $this->assertSame([], $this->copias(), 'and no plain copy was left instead');
     }
+
+    public function testVigilarIsSilentWithAFreshCopyAndSaysWhatIsWrongOtherwise(): void
+    {
+        $this->assertSame(1, $this->correr('--destino=' . $this->dir . '/copias', '--vigilar')[0], 'no folder yet');
+
+        $this->assertSame(0, $this->correr('--destino=' . $this->dir . '/copias')[0]);
+        $this->assertSame([0, '', ''], $this->correr('--destino=' . $this->dir . '/copias', '--vigilar'), 'cron mails whatever is printed');
+
+        $vieja = $this->dir . '/copias/genealogy-' . date('Y-m-d', strtotime('-5 days')) . '.sqlite';
+        unlink($this->dir . '/copias/genealogy-' . date('Y-m-d') . '.sqlite');
+        file_put_contents($vieja, 'x');
+        [$codigo, $salida, $error] = $this->correr('--destino=' . $this->dir . '/copias', '--vigilar=3');
+
+        $this->assertSame([1, ''], [$codigo, $salida]);
+        $this->assertStringContainsString('Copias de genealogy: la última es del', $error);
+        $this->assertStringContainsString('(el límite es 3)', $error);
+        $this->assertStringNotContainsString('Copias de pos', $error, 'pos has today\'s copy');
+        $this->assertSame(0, $this->correr('--destino=' . $this->dir . '/copias', '--vigilar=7')[0], 'a looser limit');
+        $this->assertSame(0, $this->correr('--destino=' . $this->dir . '/copias', '--vigilar', '--sitios=pos')[0], 'only the sites asked for');
+    }
+
+    public function testVigilarTouchesNothingAndOptionsThatMakeACopyDoNotGoWithIt(): void
+    {
+        foreach ([
+            ['--destino=' . $this->dir . '/copias', '--vigilar', '--dias=3'],
+            ['--destino=' . $this->dir . '/copias', '--vigilar', '--enviar=true {archivo}'],
+            ['--destino=' . $this->dir . '/copias', '--vigilar', '--cifrar-para=age1' . str_repeat('q', 58)],
+            ['--destino=' . $this->dir . '/copias', '--vigilar', '--verificar=x'],
+            ['--destino=' . $this->dir . '/copias', '--vigilar', '--identidad=x'],
+            ['--vigilar'],
+            ['--destino=' . $this->dir . '/copias', '--vigilar=0'],
+            ['--verificar=x', '--dias=3'],
+        ] as $args) {
+            $this->assertSame(2, $this->correr(...$args)[0], implode(' ', $args));
+        }
+        $this->assertDirectoryDoesNotExist($this->dir . '/copias', 'nothing was created');
+    }
+
+    public function testVerificarPrintsTheRowsAndAnEncryptedCopyNeedsTheKey(): void
+    {
+        $publica = $this->clavePublicaAge();
+        $this->assertSame(0, $this->correr('--destino=' . $this->dir . '/copias', '--sitios=genealogy')[0]);
+        $plana = $this->dir . '/copias/genealogy-' . date('Y-m-d') . '.sqlite';
+
+        [$codigo, $salida, $error] = $this->correr('--verificar=' . $plana);
+        $this->assertSame([0, ''], [$codigo, $error]);
+        $this->assertSame("La copia se restauró y tiene 1 tablas (0 filas):\n  t: 0\n", $salida);
+
+        unlink($plana);
+        $this->assertSame(0, $this->correr('--destino=' . $this->dir . '/copias', '--sitios=genealogy', '--cifrar-para=' . $publica)[0]);
+        $cifrada = $plana . '.age';
+        [$codigo, $salida, $error] = $this->correr('--verificar=' . $cifrada);
+        $this->assertSame([1, ''], [$codigo, $salida]);
+        $this->assertStringContainsString('--identidad', $error);
+
+        [$codigo, $salida] = $this->correr('--verificar=' . $cifrada, '--identidad=' . $this->dir . '/origen/k.txt');
+        $this->assertSame(0, $codigo);
+        $this->assertStringContainsString('  t: 0', $salida);
+        $this->assertSame([basename($cifrada)], $this->copias(), 'verifying leaves no plain file in the folder');
+    }
+
+    public function testVerificarOfSomethingThatIsNotACopyFailsWithOne(): void
+    {
+        [$codigo, $salida, $error] = $this->correr('--verificar=' . $this->dir . '/no-existe.sqlite');
+
+        $this->assertSame([1, ''], [$codigo, $salida]);
+        $this->assertStringContainsString('No se pudo verificar:', $error);
+    }
 }
