@@ -22,7 +22,10 @@ sudo apt-get install -y \
     "php$V-curl" "php$V-zip" \
     "php$V-mbstring" "php$V-xml" "php$V-bcmath"
 
-service_start_enable "$PHP_FPM_SERVICE"
+# El pool "www" por defecto pasa a ondemand con pocos procesos (las apps llevan su propio pool: ver 06_A).
+require_valid workers "$PHP_WWW_MAX_CHILDREN" "PHP_WWW_MAX_CHILDREN"
+slim_default_php_pool
+service_enable_restart "$PHP_FPM_SERVICE"   # reinicia: aplica el ajuste si PHP ya estaba instalado y corriendo
 
 echo ""
 echo "✓ PHP instalado"
