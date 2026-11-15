@@ -56,6 +56,9 @@ ESCENARIOS_POS = [
 ]
 PUESTOS_MOSTRADOS = 25
 PLANTILLA_VISTA = AQUI / "vista_plantilla.html"
+# Donde vista_html() pone los datos, y donde empieza el cuerpo de la página en la plantilla.
+MARCAS_PLANTILLA = ("/*DATOS*/null", "/*MAPA*/null", "/*ANIOS*/null", "/*ESCENARIOS*/null")
+MARCA_PAGINA = '\n<div class="pagina">'
 MAPA = AQUI / "mapa_paises.csv"
 DETALLE = AQUI / "datos_detalle.csv"
 BANDA = AQUI / "poblacion_historica_detalle.csv"
@@ -203,13 +206,17 @@ def vista_html(registros, anios, documento=True):
         return json.dumps(valor, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
     texto = PLANTILLA_VISTA.read_text(encoding="utf-8")
+    # Una marca que falta no daría error al reemplazar: la vista saldría con «null» donde van los datos.
+    faltan = [marca for marca in (*MARCAS_PLANTILLA, MARCA_PAGINA) if marca not in texto]
+    if faltan:
+        sys.exit(f"{PLANTILLA_VISTA.name} no tiene las marcas {faltan}: vista.html saldría sin datos")
     texto = (texto.replace("/*DATOS*/null", a_json(registros)).replace("/*MAPA*/null", a_json(mapa))
              .replace("/*ANIOS*/null", a_json(anios))
              .replace("/*ESCENARIOS*/null", a_json({"gen": [n for n, _, _ in ESCENARIOS_GEN],
                                                     "pos": [n for n, _, _ in ESCENARIOS_POS]})))
     if not documento:
         return texto
-    cabeza, cuerpo = texto.split('\n<div class="pagina">', 1)
+    cabeza, cuerpo = texto.split(MARCA_PAGINA, 1)
     return ('<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
             + cabeza + "\n</head>\n<body>\n<div class=\"pagina\">" + cuerpo + "</body>\n</html>\n")
