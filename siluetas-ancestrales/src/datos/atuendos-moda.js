@@ -1,7 +1,7 @@
 // Atuendos que usan los tipos de ropa nuevos (tirantes, halter, sirena, trapecio, capuchas, pieles, pantalones y faldas
 // variados, monos…). Misma forma que atuendos.js. Los colores de cada prenda vienen de su perfil (colores-prendas.js).
 
-import { A, CLAROS, MEST, CIUDAD, TRAB, VEST, GALA, F, M } from './ayuda.js';
+import { CLAROS, MEST, CIUDAD, TRAB, VEST, GALA, F, M } from './ayuda.js';
 
 
 
