@@ -7,9 +7,14 @@ namespace ParsingFbInMas;
 /**
  * Busca en un texto términos de las categorías que la ley chilena de datos (21.719) trata como
  * sensibles: salud, convicciones religiosas, afiliación política o sindical, vida sexual y origen
- * étnico, en español, inglés, francés, portugués, italiano y alemán. `defamatory-content-review/` las reconoce cuando se habla de OTRA persona («tiene cáncer»,
- * «era judía»), pero no cuando alguien habla de sí mismo («tengo cáncer», «soy evangélica»), que es lo
- * que trae una biografía de perfil: esa parte la cubre esta lista.
+ * étnico, en español, inglés, francés, portugués, italiano y alemán.
+ *
+ * Es una de las tres fuentes de {@see Revision}, y la que cubre lo que las otras no ven.
+ * `defamatory-content-review/` reconoce estas categorías cuando se habla de OTRA persona («tiene cáncer»,
+ * «era judía») en su modo normal, y lo que alguien dice de SÍ MISMO («tengo cáncer», «soy evangélica») en su
+ * modo biografía, pero solo en español e inglés y con la forma «soy… / tengo…». Esta lista agrega los otros
+ * cuatro idiomas y las biografías sin verbo («Mapuche. Archivera»). `Revision` no repite aquí una categoría
+ * que el filtro ya marcó.
  *
  * Es una lista CORTA y de palabras sueltas: que no marque nada no quiere decir que no haya un dato
  * sensible, y marcar no quiere decir que lo haya («Iglesia» en el nombre de un barrio). Solo sirve
