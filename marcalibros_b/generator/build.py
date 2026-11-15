@@ -36,7 +36,7 @@ from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO, ESCALA_REVISION
 
-VERSION_GENERADOR = "0.9.0"
+VERSION_GENERADOR = "0.10.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
@@ -360,7 +360,7 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
 # Módulos que dibujan las piezas. Los demás (editor, modelo, marca, revisión, Gutenberg) no cambian el
 # catálogo: tocarlos no debe invalidar la caché de las 1000 piezas. tests/test_incremental.py comprueba
 # que esta lista cubre todo lo que build.py importa.
-MODULOS_DE_RENDER = ("build", "color", "movimientos", "muestreo", "plantillas", "qa", "render_raster", "render_svg", "scene", "texto")
+MODULOS_DE_RENDER = ("build", "color", "movimientos", "movimientos4", "muestreo", "plantillas", "qa", "render_raster", "render_svg", "scene", "texto")
 
 
 def hash_generador():

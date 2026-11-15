@@ -763,3 +763,278 @@ movimientos:
     idioma: es
     original: true
     estado: original
+  renacimiento:
+  - texto: Pace non trovo, et non ho da far guerra
+    autor: Francesco Petrarca
+    obra: Cancionero
+    idioma: it
+    muerte: 1374
+    estado: sin_verificar
+  - texto: Le donne, i cavallier, l'arme, gli amori
+    autor: Ludovico Ariosto
+    obra: Orlando furioso
+    idioma: it
+    muerte: 1533
+    estado: sin_verificar
+  - texto: Canto l'arme pietose e 'l capitano
+    autor: Torquato Tasso
+    obra: Jerusalén liberada
+    idioma: it
+    muerte: 1595
+    estado: sin_verificar
+  - texto: Amor é fogo que arde sem se ver
+    autor: Luís de Camões
+    obra: Rimas
+    idioma: pt
+    muerte: 1580
+    estado: sin_verificar
+  - texto: Que sais-je ?
+    autor: Michel de Montaigne
+    obra: Ensayos
+    idioma: fr
+    muerte: 1592
+    estado: sin_verificar
+  - texto: Science sans conscience n'est que ruine de l'âme
+    autor: François Rabelais
+    obra: Pantagruel
+    idioma: fr
+    muerte: 1553
+    estado: sin_verificar
+  - texto: Dulce bellum inexpertis
+    autor: Erasmo de Róterdam
+    obra: Adagios
+    idioma: la
+    muerte: 1536
+    estado: sin_verificar
+  - texto: To be, or not to be, that is the question
+    autor: William Shakespeare
+    obra: Hamlet
+    idioma: en
+    muerte: 1616
+    estado: sin_verificar
+  - texto: All the world's a stage
+    autor: William Shakespeare
+    obra: Como gustéis
+    idioma: en
+    muerte: 1616
+    estado: sin_verificar
+  - texto: Qué descansada vida la del que huye el mundanal ruido
+    autor: Fray Luis de León
+    obra: Vida retirada
+    idioma: es
+    muerte: 1591
+    estado: sin_verificar
+  ilustracion:
+  - texto: Il faut cultiver notre jardin
+    autor: Voltaire
+    obra: Cándido o el optimismo
+    idioma: fr
+    muerte: 1778
+    estado: sin_verificar
+  - texto: Si Dieu n'existait pas, il faudrait l'inventer
+    autor: Voltaire
+    obra: Epístola al autor del libro de los tres impostores
+    idioma: fr
+    muerte: 1778
+    estado: sin_verificar
+  - texto: Le mieux est l'ennemi du bien
+    autor: Voltaire
+    obra: La Bégueule
+    idioma: fr
+    muerte: 1778
+    estado: sin_verificar
+  - texto: L'homme est né libre, et partout il est dans les fers
+    autor: Jean-Jacques Rousseau
+    obra: El contrato social
+    idioma: fr
+    muerte: 1778
+    estado: sin_verificar
+  - texto: Le pouvoir arrête le pouvoir
+    autor: Montesquieu
+    obra: El espíritu de las leyes
+    idioma: fr
+    muerte: 1755
+    estado: sin_verificar
+  - texto: Je me presse de rire de tout, de peur d'être obligé d'en pleurer
+    autor: Pierre-Augustin de Beaumarchais
+    obra: El barbero de Sevilla
+    idioma: fr
+    muerte: 1799
+    estado: sin_verificar
+  - texto: Satire is a sort of glass, wherein beholders do generally discover everybody's face but their own
+    autor: Jonathan Swift
+    obra: La batalla de los libros
+    idioma: en
+    muerte: 1745
+    estado: sin_verificar
+  expresionismo:
+  - texto: Es ist die Seele ein Fremdes auf Erden
+    autor: Georg Trakl
+    obra: Frühling der Seele
+    idioma: de
+    muerte: 1914
+    estado: sin_verificar
+  - texto: Am Abend tönen die herbstlichen Wälder
+    autor: Georg Trakl
+    obra: Grodek
+    idioma: de
+    muerte: 1914
+    estado: sin_verificar
+  - texto: Auf einem Häuserblocke sitzt er breit
+    autor: Georg Heym
+    obra: Der Gott der Stadt
+    idioma: de
+    muerte: 1912
+    estado: sin_verificar
+  - texto: Jemand musste Josef K. verleumdet haben
+    autor: Franz Kafka
+    obra: El proceso
+    idioma: de
+    muerte: 1924
+    estado: sin_verificar
+  - texto: Es gibt ein Ziel, aber keinen Weg
+    autor: Franz Kafka
+    obra: Aforismos
+    idioma: de
+    muerte: 1924
+    estado: sin_verificar
+  - texto: Ein Käfig ging einen Vogel suchen
+    autor: Franz Kafka
+    obra: Aforismos
+    idioma: de
+    muerte: 1924
+    estado: sin_verificar
+  - texto: Ich suche allerlanden eine Stadt
+    autor: Else Lasker-Schüler
+    obra: Poemas
+    idioma: de
+    muerte: 1945
+    estado: sin_verificar
+  surrealismo:
+  - texto: El reloj olvidó la hora y se fue a dormir al río
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: Una puerta se abrió en el cielo y nadie entró
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: Soñé con un sombrero que pensaba en mí
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: La escalera subía solo hasta el lunes
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: Mi sombra se quedó a vivir en el espejo
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: Los peces aprendieron a volar de noche
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: Había un ojo mirando desde el fondo del vaso
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: La luna llevaba un bombín y no decía nada
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: Cada mañana el mar se vestía de cielo
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  - texto: La lluvia pedía permiso antes de caer
+    autor: Marcalibros
+    obra: texto original
+    idioma: es
+    original: true
+    estado: original
+  oriente:
+  - texto: 古池や蛙飛びこむ水の音
+    autor: Matsuo Bashō
+    obra: El viejo estanque
+    idioma: ja
+    muerte: 1694
+    estado: sin_verificar
+  - texto: いづれの御時にか、女御、更衣あまたさぶらひたまひけるなかに
+    autor: Murasaki Shikibu
+    obra: La historia de Genji
+    idioma: ja
+    muerte: 1031
+    estado: sin_verificar
+  - texto: 床前明月光，疑是地上霜。
+    autor: Li Bai
+    obra: Pensamientos en una noche tranquila
+    idioma: zh
+    muerte: 762
+    estado: sin_verificar
+  - texto: 国破山河在，城春草木深。
+    autor: Du Fu
+    obra: Primavera en la ciudad arruinada
+    idioma: zh
+    muerte: 770
+    estado: sin_verificar
+  - texto: 希望本是无所谓有，无所谓无的。
+    autor: Lu Xun
+    obra: Mi tierra natal
+    idioma: zh
+    muerte: 1936
+    estado: sin_verificar
+  - texto: الخيل والليل والبيداء تعرفني
+    autor: Al-Mutanabbi
+    obra: Diván
+    idioma: ar
+    muerte: 965
+    estado: sin_verificar
+  - texto: على قدر أهل العزم تأتي العزائم
+    autor: Al-Mutanabbi
+    obra: Diván
+    idioma: ar
+    muerte: 965
+    estado: sin_verificar
+  - texto: بشنو از نی چون حکایت میکند
+    autor: Rumi
+    obra: Masnavi
+    idioma: fa
+    muerte: 1273
+    estado: sin_verificar
+  - texto: ढाई आखर प्रेम का पढ़े सो पंडित होय
+    autor: Kabir
+    obra: Sakhi
+    idioma: hi
+    muerte: 1518
+    estado: sin_verificar
+  - texto: बुरा जो देखन मैं चला बुरा न मिलिया कोय
+    autor: Kabir
+    obra: Sakhi
+    idioma: hi
+    muerte: 1518
+    estado: sin_verificar
+  - texto: Where the mind is without fear and the head is held high
+    autor: Rabindranath Tagore
+    obra: Gitanjali
+    idioma: en
+    muerte: 1941
+    estado: sin_verificar
