@@ -158,32 +158,33 @@
       "textura": {
         "tipo": "bandas",
         "colores": [
-          "#a0603c",
-          "#b89a72",
-          "#d8ca9d",
-          "#f2e6c9",
-          "#8b4b2b"
+          "#b59f88",
+          "#c4b19b",
+          "#d6c7b0",
+          "#e4d8c4",
+          "#b09884"
         ],
-        "bandas": 9,
-        "contraste": 0.9,
+        "bandas": 6,
+        "contraste": 0.3,
         "mancha": {
           "lat": -22,
           "lon": 20,
           "rx": 0.07,
           "ry": 0.035,
-          "color": "#b5402a"
+          "color": "#c4a595"
         },
-        "halo": "#f2e6c9",
         "anillos": {
           "interior": 1.29,
           "exterior": 1.81,
-          "opacidad": 0.3,
+          "opacidad": 0.04,
           "colores": [
-            "#3a2f2a",
-            "#6a5a4e",
-            "#2e2622"
+            "#5a4a40",
+            "#7a6a5e",
+            "#4a3e36"
           ]
-        }
+        },
+        "deformacion": 0.2,
+        "grano": 0
       }
     },
     {
