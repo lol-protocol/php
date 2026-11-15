@@ -30,7 +30,7 @@ final class Dinero
      */
     public static function cuentaComoCero(float $monto): bool
     {
-        return self::centavos($monto) <= self::centavos(self::UN_CENTAVO);
+        return self::milesimas($monto) <= self::milesimas(self::UN_CENTAVO);
     }
 
     /**
@@ -47,18 +47,44 @@ final class Dinero
      *
      * @throws InvalidArgumentException si el texto no es un monto
      */
-    public static function deTexto(string $texto): float
+    public static function deTexto(string $texto, int $decimales = 2): float
     {
         $texto = trim($texto);
-        if (preg_match('/^\d+(\.\d{1,2}|\.\d{4,})?$/D', $texto) !== 1) {
-            throw new InvalidArgumentException("«{$texto}» no es un monto: use solo dígitos y punto decimal, con uno o dos decimales.");
+        // En una moneda de tres decimales (dinar kuwaiti, rial omani...) tres decimales son lo normal y no se
+        // confunden con un punto de miles; en las demas, tres justos se rechazan (ver arriba).
+        $patron = $decimales >= 3 ? '/^\d+(\.\d+)?$/D' : '/^\d+(\.\d{1,2}|\.\d{4,})?$/D';
+        if (preg_match($patron, $texto) !== 1) {
+            $permitidos = $decimales >= 3 ? 'con hasta tres decimales' : 'con uno o dos decimales';
+            throw new InvalidArgumentException("«{$texto}» no es un monto: use solo dígitos y punto decimal, {$permitidos}.");
         }
 
         return (float) $texto;
     }
 
     /**
-     * El monto en centavos enteros: 602.85 -> 60285. Redondea al centavo mas
+     * El monto en milesimas enteras: 602.85 -> 602850, 1.505 -> 1505. Es lo que usan las reglas de dinero desde la
+     * migracion 019 (montos de hasta tres decimales): una moneda de dos decimales solo tiene ceros en la tercera, asi
+     * que comparar en milesimas da lo mismo que comparar en centavos para ella, y para el dinar kuwaiti no pierde el
+     * fils. Redondea a la milesima mas cercana, como centavos() al centavo.
+     *
+     * @throws InvalidArgumentException si el monto es INF o NAN
+     */
+    public static function milesimas(float|int|string $monto): int
+    {
+        $valor = (float) $monto;
+        if (!is_finite($valor)) {
+            throw new InvalidArgumentException('El monto no es un número finito.');
+        }
+
+        return (int) round($valor * 1000);
+    }
+
+    /**
+     * El monto en centavos enteros: 602.85 -> 60285.
+     *
+     * @deprecated Desde la migracion 019 los montos llevan hasta tres decimales y centavos() pierde el tercero:
+     *             usar milesimas(). Se deja aqui, sin usos en src/, porque sus pruebas documentan la regla vieja.
+     * Redondea al centavo mas
      * cercano (no trunca: 0.57 * 100 da 56.99999999999999), asi que tambien
      * absorbe el ruido de una suma o resta de floats. Acepta el texto que
      * devuelve la base ('602.85').
