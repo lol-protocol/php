@@ -118,6 +118,23 @@ test('las estrellas toman el color de su temperatura: Sirio azulado, Betelgeuse 
   assert.ok(mediaCanal(bb, 0) > mediaCanal(bb, 2) + 40, 'Betelgeuse debe tener mucho más rojo que azul');
 });
 
+test('una estrella con color propio lo usa; sin él, usa el de su temperatura', () => {
+  const base = { id: 'prueba', temperatura_superficial_k: 5800, textura: { tipo: 'estrella', granulos: 6, escala: 4 } };
+  const conColor = { id: 'prueba', temperatura_superficial_k: 5800, textura: { tipo: 'estrella', granulos: 6, escala: 4, color: '#6f9bff' } };
+  const a = T.generarTextura(base, ANCHO, ALTO);
+  const b = T.generarTextura(conColor, ANCHO, ALTO);
+  assert.ok(mediaCanal(a, 0) > mediaCanal(a, 2), 'sin color propio debe verse cálida (5800 K)');
+  assert.ok(mediaCanal(b, 2) > mediaCanal(b, 0), 'con #6f9bff debe verse azul');
+});
+
+test('las texturas de las estrellas son distintas entre sí por su color', () => {
+  const medias = ASTROS.filter(a => a.categoria === 'sol').map(a => {
+    const buf = T.generarTextura(a, ANCHO, ALTO);
+    return [0, 1, 2].map(c => Math.round(mediaCanal(buf, c) / 4)).join(',');
+  });
+  assert.ok(new Set(medias).size >= medias.length - 3, 'demasiadas estrellas con el mismo color medio');
+});
+
 test('generarAnillo: alfa entre 0 y 255, con los bordes más transparentes que el centro', () => {
   const anillo = ASTROS.find(a => a.id === 'saturno').textura.anillos;
   const buf = T.generarAnillo(anillo, 256, 1);

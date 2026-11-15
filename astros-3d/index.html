@@ -83,6 +83,14 @@
       border-color: var(--acento);
       color: #ffffff;
     }
+    nav .punto {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      border: 1px solid rgba(0, 0, 0, .25);
+    }
     nav button:focus-visible, .controles button:focus-visible {
       outline: 3px solid var(--acento);
       outline-offset: 2px;
@@ -115,7 +123,7 @@
       margin: 0;
     }
     #ficha dt { color: var(--texto-suave); }
-    #ficha dd { margin: 0; overflow-wrap: anywhere; }
+    #ficha dd { margin: 0; overflow-wrap: break-word; }
     @media (min-width: 900px) {
       main { grid-template-columns: 220px 1fr 300px; align-items: start; }
       nav { position: sticky; top: 16px; }

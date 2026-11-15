@@ -4,7 +4,7 @@
   "categorias": {
     "planeta": "Planetas y el planeta enano Plutón",
     "luna": "Lunas del Sistema Solar (con su cuerpo padre)",
-    "sol": "Soles: el Sol y cinco estrellas de referencia"
+    "sol": "Soles: el Sol y estrellas de las constelaciones, con un color propio"
   },
   "astros": [
     {
@@ -158,32 +158,33 @@
       "textura": {
         "tipo": "bandas",
         "colores": [
-          "#a0603c",
-          "#b89a72",
-          "#d8ca9d",
-          "#f2e6c9",
-          "#8b4b2b"
+          "#a8765a",
+          "#c49a76",
+          "#e0c9a3",
+          "#f1e4c9",
+          "#9c6a50"
         ],
-        "bandas": 9,
-        "contraste": 0.9,
+        "bandas": 8,
+        "contraste": 0.42,
         "mancha": {
           "lat": -22,
           "lon": 20,
-          "rx": 0.07,
-          "ry": 0.035,
-          "color": "#b5402a"
+          "rx": 0.09,
+          "ry": 0.045,
+          "color": "#c5755a"
         },
-        "halo": "#f2e6c9",
         "anillos": {
           "interior": 1.29,
           "exterior": 1.81,
-          "opacidad": 0.3,
+          "opacidad": 0.04,
           "colores": [
-            "#3a2f2a",
-            "#6a5a4e",
-            "#2e2622"
+            "#5a4a40",
+            "#7a6a5e",
+            "#4a3e36"
           ]
-        }
+        },
+        "deformacion": 0.3,
+        "grano": 0.03
       }
     },
     {
@@ -673,7 +674,8 @@
       "textura": {
         "tipo": "estrella",
         "granulos": 10,
-        "escala": 5
+        "escala": 5,
+        "color": "#ffdf6e"
       }
     },
     {
@@ -695,8 +697,10 @@
       "textura": {
         "tipo": "estrella",
         "granulos": 6,
-        "escala": 4
-      }
+        "escala": 4,
+        "color": "#e9f0ff"
+      },
+      "constelacion": "Can Mayor"
     },
     {
       "id": "vega",
@@ -717,8 +721,10 @@
       "textura": {
         "tipo": "estrella",
         "granulos": 6,
-        "escala": 4
-      }
+        "escala": 4,
+        "color": "#c9d6ff"
+      },
+      "constelacion": "Lira"
     },
     {
       "id": "polaris",
@@ -739,8 +745,10 @@
       "textura": {
         "tipo": "estrella",
         "granulos": 8,
-        "escala": 4
-      }
+        "escala": 4,
+        "color": "#fff3b8"
+      },
+      "constelacion": "Osa Menor"
     },
     {
       "id": "betelgeuse",
@@ -761,8 +769,10 @@
       "textura": {
         "tipo": "estrella",
         "granulos": 3,
-        "escala": 2.5
-      }
+        "escala": 2.5,
+        "color": "#ff5a36"
+      },
+      "constelacion": "Orión"
     },
     {
       "id": "antares",
@@ -783,7 +793,327 @@
       "textura": {
         "tipo": "estrella",
         "granulos": 3,
-        "escala": 2.5
+        "escala": 2.5,
+        "color": "#ff3a28"
+      },
+      "constelacion": "Escorpio",
+      "signo": "Escorpio"
+    },
+    {
+      "id": "aldebaran",
+      "nombre": "Aldebarán",
+      "categoria": "sol",
+      "constelacion": "Tauro",
+      "signo": "Tauro",
+      "tipo": "Gigante naranja",
+      "radio_solar": 44.1,
+      "masa_solar": 1.16,
+      "temperatura_superficial_k": 3910,
+      "tipo_espectral": "K5III",
+      "distancia": {
+        "valor": 65,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": null,
+      "incertidumbre_radio": "media",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#ff8c3a",
+        "granulos": 3,
+        "escala": 2.8
+      }
+    },
+    {
+      "id": "hamal",
+      "nombre": "Hamal",
+      "categoria": "sol",
+      "constelacion": "Aries",
+      "signo": "Aries",
+      "tipo": "Gigante naranja",
+      "radio_solar": 14.9,
+      "masa_solar": 1.5,
+      "temperatura_superficial_k": 4480,
+      "tipo_espectral": "K2III",
+      "distancia": {
+        "valor": 66,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": null,
+      "incertidumbre_radio": "media",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#ffa955",
+        "granulos": 4,
+        "escala": 3.2
+      }
+    },
+    {
+      "id": "polux",
+      "nombre": "Pólux",
+      "categoria": "sol",
+      "constelacion": "Géminis",
+      "signo": "Géminis",
+      "tipo": "Gigante naranja",
+      "radio_solar": 9.06,
+      "masa_solar": 1.91,
+      "temperatura_superficial_k": 4586,
+      "tipo_espectral": "K0III",
+      "distancia": {
+        "valor": 34,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": 0.724,
+      "incertidumbre_radio": "baja",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#ffc46e",
+        "granulos": 4,
+        "escala": 3.4
+      }
+    },
+    {
+      "id": "regulus",
+      "nombre": "Regulus",
+      "categoria": "sol",
+      "constelacion": "Leo",
+      "signo": "Leo",
+      "tipo": "Estrella azul-blanca de secuencia principal",
+      "radio_solar": 3.09,
+      "masa_solar": 3.8,
+      "temperatura_superficial_k": 12460,
+      "tipo_espectral": "B8IVn",
+      "distancia": {
+        "valor": 79,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": null,
+      "incertidumbre_radio": "media",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#bfe0ff",
+        "granulos": 6,
+        "escala": 4
+      }
+    },
+    {
+      "id": "spica",
+      "nombre": "Spica",
+      "categoria": "sol",
+      "constelacion": "Virgo",
+      "signo": "Virgo",
+      "tipo": "Gigante azul (sistema binario)",
+      "radio_solar": 7.47,
+      "masa_solar": 11.4,
+      "temperatura_superficial_k": 25300,
+      "tipo_espectral": "B1III-IV",
+      "distancia": {
+        "valor": 250,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": 0.0125,
+      "incertidumbre_radio": "media",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#6f9bff",
+        "granulos": 5,
+        "escala": 3.6
+      }
+    },
+    {
+      "id": "rigel",
+      "nombre": "Rigel",
+      "categoria": "sol",
+      "constelacion": "Orión",
+      "tipo": "Supergigante azul",
+      "radio_solar": 78.9,
+      "masa_solar": 21,
+      "temperatura_superficial_k": 12100,
+      "tipo_espectral": "B8Ia",
+      "distancia": {
+        "valor": 860,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": 0.008,
+      "incertidumbre_radio": "media",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#93b2ff",
+        "granulos": 4,
+        "escala": 3
+      }
+    },
+    {
+      "id": "capella",
+      "nombre": "Capella Aa",
+      "categoria": "sol",
+      "constelacion": "Auriga",
+      "tipo": "Gigante amarilla (sistema múltiple)",
+      "radio_solar": 11.98,
+      "masa_solar": 2.57,
+      "temperatura_superficial_k": 4970,
+      "tipo_espectral": "G8III",
+      "distancia": {
+        "valor": 43,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": 0.6,
+      "incertidumbre_radio": "media",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#ffd23f",
+        "granulos": 4,
+        "escala": 3.4
+      }
+    },
+    {
+      "id": "arcturus",
+      "nombre": "Arcturus",
+      "categoria": "sol",
+      "constelacion": "Boyero",
+      "tipo": "Gigante naranja",
+      "radio_solar": 25.4,
+      "masa_solar": 1.08,
+      "temperatura_superficial_k": 4286,
+      "tipo_espectral": "K1.5III",
+      "distancia": {
+        "valor": 36.7,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": 7.1,
+      "incertidumbre_radio": "baja",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#ff9a2e",
+        "granulos": 3,
+        "escala": 3
+      }
+    },
+    {
+      "id": "procyon",
+      "nombre": "Procyon A",
+      "categoria": "sol",
+      "constelacion": "Can Menor",
+      "tipo": "Estrella blanco-amarilla de secuencia principal",
+      "radio_solar": 2.05,
+      "masa_solar": 1.5,
+      "temperatura_superficial_k": 6530,
+      "tipo_espectral": "F5IV-V",
+      "distancia": {
+        "valor": 11.5,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": 2.7,
+      "incertidumbre_radio": "baja",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#fff7d6",
+        "granulos": 6,
+        "escala": 4
+      }
+    },
+    {
+      "id": "altair",
+      "nombre": "Altair",
+      "categoria": "sol",
+      "constelacion": "Águila",
+      "tipo": "Estrella blanca de secuencia principal",
+      "radio_solar": 1.79,
+      "masa_solar": 1.79,
+      "temperatura_superficial_k": 7550,
+      "tipo_espectral": "A7V",
+      "distancia": {
+        "valor": 16.7,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": null,
+      "incertidumbre_radio": "media",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#fffaf0",
+        "granulos": 6,
+        "escala": 4
+      }
+    },
+    {
+      "id": "deneb",
+      "nombre": "Deneb",
+      "categoria": "sol",
+      "constelacion": "Cisne",
+      "tipo": "Supergigante blanca",
+      "radio_solar": 203,
+      "masa_solar": 19,
+      "temperatura_superficial_k": 8525,
+      "tipo_espectral": "A2Ia",
+      "distancia": {
+        "valor": 2600,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": null,
+      "incertidumbre_radio": "alta",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#d4e4ff",
+        "granulos": 3,
+        "escala": 2.6
+      }
+    },
+    {
+      "id": "fomalhaut",
+      "nombre": "Fomalhaut A",
+      "categoria": "sol",
+      "constelacion": "Pez Austral",
+      "tipo": "Estrella blanca de secuencia principal",
+      "radio_solar": 1.84,
+      "masa_solar": 1.92,
+      "temperatura_superficial_k": 8590,
+      "tipo_espectral": "A3V",
+      "distancia": {
+        "valor": 25,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": 0.44,
+      "incertidumbre_radio": "baja",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#e4ecff",
+        "granulos": 6,
+        "escala": 4
+      }
+    },
+    {
+      "id": "proxima",
+      "nombre": "Próxima Centauri",
+      "categoria": "sol",
+      "constelacion": "Centauro",
+      "tipo": "Enana roja",
+      "radio_solar": 0.154,
+      "masa_solar": 0.122,
+      "temperatura_superficial_k": 3042,
+      "tipo_espectral": "M5.5Ve",
+      "distancia": {
+        "valor": 4.2,
+        "unidad": "años luz",
+        "referencia": "Sol"
+      },
+      "edad_aprox_mil_millones_anios": 4.85,
+      "incertidumbre_radio": "media",
+      "textura": {
+        "tipo": "estrella",
+        "color": "#e8422f",
+        "granulos": 8,
+        "escala": 4.5
       }
     }
   ]

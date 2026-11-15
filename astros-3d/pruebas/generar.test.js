@@ -56,14 +56,15 @@ test('los soles reciben radio y masa en km y kg, sin gravedad', () => {
 
 test('la tabla de planetas trae una fila por planeta, y la de soles por sol', () => {
   const md = G.generarMarkdown(DATOS);
-  const encabezados = ['| Planeta | Tipo', '| Luna | Cuerpo padre', '| Estrella | Tipo espectral'];
+  const encabezados = ['| Planeta | Tipo', '| Luna | Cuerpo padre', '| Estrella | Constelación'];
   const filas = md.split('\n').filter(l => l.startsWith('| ') && !encabezados.some(h => l.startsWith(h)));
   const cuentaPlanetas = DATOS.astros.filter(a => a.categoria === 'planeta').length;
   const cuentaSoles = DATOS.astros.filter(a => a.categoria === 'sol').length;
   const cuentaLunas = DATOS.astros.filter(a => a.categoria === 'luna').length;
   assert.equal(filas.length, cuentaPlanetas + cuentaLunas + cuentaSoles);
   assert.match(md, /\| Tierra \| Planeta rocoso/);
-  assert.match(md, /\| Sirio A \| A1V/);
+  assert.match(md, /\| Sirio A \| Can Mayor \| — \| A1V/);
+  assert.match(md, /\| Aldebarán \| Tauro \| Tauro \| K5III/);
 });
 
 test('lo committeado (js/datos.js y caracteristicas.md) está al día con el JSON', () => {

@@ -242,9 +242,10 @@
             break;
           }
           case 'bandas': {
-            const deformacion = (muestraEsfera(u, v, 2, semilla, 3) - 0.5) * 0.8;
+            // deformacion y grano son opcionales: cuánto se ondulan las bandas y cuánto ruido fino llevan.
+            const deformacion = (muestraEsfera(u, v, 2, semilla, 3) - 0.5) * (tx.deformacion == null ? 0.8 : tx.deformacion);
             const onda = Math.sin((v * tx.bandas + deformacion) * 2 * Math.PI);
-            const grano = (muestraEsfera(u, v, 8, semilla + 3, 3) - 0.5) * 0.12;
+            const grano = (muestraEsfera(u, v, 8, semilla + 3, 3) - 0.5) * (tx.grano == null ? 0.12 : tx.grano);
             c = rampa(paleta, clamp(0.5 + 0.5 * tx.contraste * onda + grano, 0, 1));
             if (tx.mancha) {
               c = mezclar(c, hexARgb(tx.mancha.color), mezclaMancha(u, v, tx.mancha));
@@ -298,7 +299,8 @@
             break;
           }
           case 'estrella': {
-            const base = temperaturaARgb(astro.temperatura_superficial_k);
+            // Color propio de la estrella si lo trae (ilustrativo, para distinguirlas); si no, el de su temperatura.
+            const base = tx.color ? hexARgb(tx.color) : temperaturaARgb(astro.temperatura_superficial_k);
             c = pixelEstrella(u, v, base, tx, semilla);
             break;
           }
