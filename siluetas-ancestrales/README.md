@@ -8,10 +8,10 @@ Trae un **catálogo grande de ropa** organizado por región, época, sexo y clas
 
 | | |
 |---|---|
-| Atuendos completos | 493, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
+| Atuendos completos | 509, por región, época, sexo y clase social, **de la Antigüedad a 1985**: mundo antiguo, Europa medieval, moderna y del siglo XX, pueblos de todos los continentes y, para genealogía, la ropa de abuelos y bisabuelos (Chile, Latinoamérica, Estados Unidos y Europa de 1850 a 1980: jeans, overoles, ternos, vestidos de cada década, uniformes, oficios, novias y luto) |
 | Prendas | 485 (túnicas, mantos, faldas, pantalones, chaquetas, calzado, joyas…) sobre 16 plantillas paramétricas con decenas de variantes (escotes, mangas, formas, bolsillos, capuchas, pieles…), cada una con su **catálogo de colores y la probabilidad de cada color** |
 | Tintes con nombre | 110, con época y costo aproximados (índigo, cochinilla, púrpura de Tiro, denim, anilinas…) y 70 perfiles de color reutilizables |
-| Etnias y culturas | 116, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
+| Etnias y culturas | 124, con los que se estiman región, atuendo, piel, cabello, peinado, barba, complexión y estatura |
 | Pieles, cabellos | 12 tonos de piel y 13 de cabello |
 | Peinados, barbas, tocados | 26, 8 y 44 |
 | Patrones de tela | 19 (rayas, tartán, grecas, escalonado, rombos, escamas, diseños geométricos amazónicos…) |

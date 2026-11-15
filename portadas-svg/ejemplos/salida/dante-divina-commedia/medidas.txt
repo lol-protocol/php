@@ -1,0 +1,14 @@
+Libro: La divina commedia — Dante Alighieri
+Plantilla: clasica; idioma: it
+Clasificación: tradición medieval · categoría poesia
+Texto: con las fuentes incrustadas
+Corte: 135 × 210 mm
+Sangrado: 3 mm en cada borde exterior
+Lomo: 25,6 mm (confírmalo con la imprenta: depende del papel)
+Sin solapas
+
+Tamaño de cada archivo, con sangrado (ancho × alto):
+  portada.svg: 138 × 216 mm
+  contratapa.svg: 138 × 216 mm
+  lomo.svg: 25,6 × 216 mm
+  cubierta-completa.svg: 301,6 × 216 mm

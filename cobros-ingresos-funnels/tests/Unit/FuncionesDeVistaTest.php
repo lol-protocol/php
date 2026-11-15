@@ -203,7 +203,7 @@ final class FuncionesDeVistaTest extends TestCase
             '<input type="number" name="monto" id="monto" required min="0.01" max="999999999999.99" step="0.01" value="">',
             campo_monto()
         );
-        self::assertSame(\App\Validacion::MONTO_MAXIMO, 999_999_999_999.99, 'el max del HTML sale de esta constante');
+        self::assertSame(\App\Validacion::MONTO_MAXIMO, 999_999_999_999.999, 'el max del HTML sale de esta constante, cortada a los decimales de la moneda');
     }
 
     public function testCampoMontoMuestraElValorYLoEscapa(): void

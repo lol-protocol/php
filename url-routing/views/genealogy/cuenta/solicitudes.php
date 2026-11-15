@@ -1,5 +1,7 @@
 <?php
 /* Expects $solicitudes (SolicitudRepository::todas()). */
+use App\Repositories\Genealogy\EntregaRepository;
+use App\Repositories\Genealogy\RectificacionRepository;
 use App\Repositories\Genealogy\RetiroRepository;
 use App\Repositories\Genealogy\SolicitudRepository;
 
@@ -43,6 +45,33 @@ if ($cerradas >= SolicitudRepository::CERRADAS_VISIBLES): ?>
 <?php endif; ?>
     </dl>
 <?php if ($s['estado'] === 'pendiente'): ?>
+    <details>
+        <summary>Crear una entrega con clave (después de comprobar quién pide)</summary>
+        <form action="<?= esc(cuenta(4)) ?>" method="post">
+            <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">
+            <input type="hidden" name="accion" value="entrega">
+            <input type="hidden" name="solicitud" value="<?= esc($s['id']) ?>">
+            <p><label>Vigencia en días (1 a 90)<br><input type="number" name="dias" value="<?= esc(EntregaRepository::VIGENCIA_DIAS) ?>" min="1" max="90" required></label></p>
+            <p>El enlace y la clave se muestran <strong>una sola vez</strong>.</p>
+            <p><button type="submit">Crear la entrega</button></p>
+        </form>
+    </details>
+    <details>
+        <summary>Simular una corrección (no cambia nada)</summary>
+        <form action="<?= esc(cuenta(4)) ?>" method="post">
+            <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">
+            <input type="hidden" name="accion" value="simular">
+            <input type="hidden" name="solicitud" value="<?= esc($s['id']) ?>">
+            <p><label>Campo<br><select name="campo">
+<?php foreach (array_keys(RectificacionRepository::CAMPOS) as $campo): ?>
+                <option value="<?= esc($campo) ?>"><?= esc($campo) ?></option>
+<?php endforeach; ?>
+            </select></label></p>
+            <p><label>Valor nuevo<br><input type="text" name="valor" size="40" maxlength="2000" required></label></p>
+            <p><label>Número del suceso (solo para los campos de <code>sucesos</code>)<br><input type="text" name="suceso" size="12" inputmode="numeric" pattern="[0-9]*"></label></p>
+            <p><button type="submit">Simular</button> Hacerla de verdad es <code>bin/persona.php rectificar … --confirmar</code>.</p>
+        </form>
+    </details>
     <form action="<?= esc(cuenta(4)) ?>" method="post">
         <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">
         <input type="hidden" name="solicitud" value="<?= esc($s['id']) ?>">

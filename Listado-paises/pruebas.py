@@ -142,6 +142,31 @@ class Sugerencias(unittest.TestCase):
         self.assertEqual(marcas, {"P3": {"il": marcas["P3"]["il"]}})
         self.assertIn("| País 3 | 5 |", sg.sugerencias_md(registros))
 
+class Exportes(unittest.TestCase):
+    def test_literales_de_postgresql(self):
+        import exportes as ex
+        self.assertEqual(ex.literal(None), "NULL")
+        self.assertEqual(ex.literal(True), "TRUE")
+        self.assertEqual(ex.literal(0.5), "0.5")
+        self.assertEqual(ex.literal("Côte d'Ivoire"), "'Côte d''Ivoire'")
+        self.assertEqual(ex.literal(["a", "b'c"]), "ARRAY['a', 'b''c']::TEXT[]")
+
+    def test_filas_traen_tipos_y_los_exportes_cuadran_con_los_csv(self):
+        import json
+        import exportes as ex
+        lista = json.loads((AQUI / "exportes" / "paises.json").read_text(encoding="utf-8"))["paises"]
+        paises = leer_csv(AQUI / "paises.csv")
+        self.assertEqual([f["codigo"] for f in lista], [f["codigo"] for f in paises])
+        for fila, f in zip(lista, paises):
+            self.assertEqual(list(fila), [k for k, _ in ex.COLUMNAS])
+            self.assertEqual(fila["poblacion_millones"], float(f["poblacion_millones"]) if f["poblacion_millones"] else None)
+            self.assertIsInstance(fila["excluido_genealogia"], bool)
+            self.assertIsInstance(fila["idiomas"], list)
+            self.assertLessEqual(fila["nacidos_minimo_millones"], fila["poblacion_historica_acumulada"] + 0.01)
+        sql = (AQUI / "exportes" / "paises.sql").read_text(encoding="utf-8")
+        self.assertEqual(sql.count("\n  ('"), len(lista))
+        self.assertTrue(sql.startswith("-- Generado por") and sql.rstrip().endswith("COMMIT;"))
+
 class DatosPreparados(unittest.TestCase):
     def test_extension_sigue_a_la_region_y_falla_claro_sin_poblacion_regional(self):
         import preparar_datos
@@ -413,6 +438,8 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(bb["pib_per_capita_usd"], "10000")  # de dos años antes
         self.assertEqual(bb["alfabetizacion_adultos"], "70.0")
         self.assertEqual(cc["poblacion_millones"], "")  # Gapminder no da la población actual
+        # DD no está en co2-data pero sí en la serie histórica de OWID (2023, 50 000): esa es su población.
+        self.assertEqual(paises["DD"]["poblacion_millones"], "0.050")
         # Un 0 de la fuente es un dato, no un dato que falta.
         ff = paises["FF"]
         self.assertEqual((ff["idh"], ff["pib_per_capita_ppa_usd"], ff["emigrantes_pct"]), ("0.000", "0", "0.0"))
@@ -421,6 +448,7 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         self.assertEqual(detalle[("BB", "pib_per_capita_usd")], (str(pd.ANIO_PIB_NOMINAL - 2), "Banco Mundial"))
         self.assertEqual(detalle[("BB", "alfabetizacion_adultos")], ("2020", "UNESCO vía Gapminder"))
         self.assertNotIn(("CC", "poblacion_millones"), detalle)
+        self.assertEqual(detalle[("DD", "poblacion_millones")], ("2023", "Our World in Data (serie histórica)"))
 
         larga = {}
         for f in leer_csv(self.d / "poblacion_larga.csv"):

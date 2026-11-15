@@ -10,8 +10,8 @@ use App\Repositories\MonedaRepository;
 
 /**
  * Los decimales de cada moneda (monedas.decimales, migracion 014): el yen, el won y el peso chileno no
- * tienen fraccion; las monedas de 3 decimales (dinar kuwaiti) se guardan con 2 porque las columnas de
- * monto son NUMERIC(14, 2).
+ * tienen fraccion; el dinar kuwaiti y las demas de 3 decimales los guardan completos desde la migracion
+ * 019 (las columnas de monto son NUMERIC(15, 3)).
  */
 final class MontosSinDecimalesTest extends IntegracionTestCase
 {
@@ -25,12 +25,57 @@ final class MontosSinDecimalesTest extends IntegracionTestCase
         self::assertSame(2, MonedaRepository::decimales('EUR'));
     }
 
-    /** ISO dice 3 para el dinar kuwaiti, pero el sistema guarda 2: el dato ISO se conserva y el tope se aplica al usarlo. */
-    public function testUnaMonedaDeTresDecimalesSeGuardaYSeMuestraConDos(): void
+    /** El dinar kuwaiti tiene tres decimales en ISO 4217 y la aplicacion los usa completos. */
+    public function testUnaMonedaDeTresDecimalesSeGuardaYSeMuestraConTres(): void
     {
         self::assertSame(3, MonedaRepository::decimalesPorMoneda()['KWD']);
-        self::assertSame(2, MonedaRepository::decimales('KWD'));
-        self::assertSame(MonedaRepository::simbolo('KWD') . '1,234.50 KWD', dinero_en_moneda(1234.5, 'KWD'));
+        foreach (['KWD', 'BHD', 'OMR', 'TND', 'JOD', 'IQD', 'LYD'] as $moneda) {
+            self::assertSame(3, MonedaRepository::decimales($moneda), $moneda);
+        }
+        self::assertSame(MonedaRepository::simbolo('KWD') . '1,234.500 KWD', dinero_en_moneda(1234.5, 'KWD'));
+        self::assertSame(MonedaRepository::simbolo('KWD') . '1.505 KWD', dinero_en_moneda(1.505, 'KWD'));
+    }
+
+    public function testElFormularioDeUnaMonedaDeTresDecimalesPideMilesimas(): void
+    {
+        $html = campo_monto('1.505', 'KWD');
+        self::assertStringContainsString('min="0.001"', $html);
+        self::assertStringContainsString('step="0.001"', $html);
+        self::assertStringContainsString('max="999999999999.999"', $html);
+        self::assertStringContainsString('value="1.505"', $html);
+    }
+
+    /** Las reglas de dinero no pierden la milesima: la boleta de 1.505 con 1.005 cobrados deja 0.500, y se paga justo. */
+    public function testLasReglasDeDineroComparanMilesimas(): void
+    {
+        $boleta = ['monto' => 1.505, 'pagado' => 1.005, 'saldo' => 0.5];
+        self::assertTrue(ReglasDePago::montoNoSuperaElSaldo(0.5, $boleta));
+        self::assertFalse(ReglasDePago::montoNoSuperaElSaldo(0.501, $boleta), 'una milesima de mas ya es sobrecobrar');
+        self::assertTrue(\App\ReglasDeBoleta::montoCubreLoYaCobrado(1.005, $boleta));
+        self::assertFalse(\App\ReglasDeBoleta::montoCubreLoYaCobrado(1.004, $boleta), 'una milesima por debajo de lo cobrado');
+        self::assertNull(ReglasDeBoleta::errorDeLosCampos('Cuota', 1.505, '2026-01-01', '2026-02-01', 'KWD'));
+        self::assertNull(ReglasDeBoleta::errorDeLosCampos('Cuota', 0.001, '2026-01-01', '2026-02-01', 'KWD'), 'la unidad menor del dinar es la milesima');
+        self::assertSame(
+            'Completá todos los campos con un monto válido.',
+            ReglasDeBoleta::errorDeLosCampos('Cuota', 0.001, '2026-01-01', '2026-02-01', 'USD'),
+            'en dolares una milesima no es un monto'
+        );
+    }
+
+    /** Un saldo de un centavo o menos cuenta como cero; el borde se mide en milesimas. */
+    public function testElBordeDelCentavoEnUnaMonedaDeTresDecimales(): void
+    {
+        self::assertSame('pagada', \App\EstadoBoleta::calcular(1.505, 1.495, '2099-01-01')['estado'], 'saldo 0.010');
+        self::assertSame('parcial', \App\EstadoBoleta::calcular(1.505, 1.494, '2099-01-01')['estado'], 'saldo 0.011');
+        self::assertSame(0.011, \App\EstadoBoleta::calcular(1.505, 1.494, '2099-01-01')['saldo']);
+    }
+
+    public function testUnMontoDeTresDecimalesSoloSeLeeEnUnaMonedaDeTres(): void
+    {
+        self::assertSame(1.505, \App\Dinero::deTexto('1.505', 3));
+        self::assertSame(1.5, \App\Dinero::deTexto('1.500', 3), 'en dinares, 1.500 son uno y medio: no hay punto de miles que confundir');
+        $this->expectException(\InvalidArgumentException::class);
+        \App\Dinero::deTexto('1.500', 2);
     }
 
     public function testUnaMonedaFueraDelCatalogoTieneDosDecimales(): void

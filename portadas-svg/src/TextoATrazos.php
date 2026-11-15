@@ -95,13 +95,20 @@ final class TextoATrazos
         return $svg;
     }
 
-    /** Si todas las palabras del texto se leen de derecha a izquierda (árabe, hebreo…): un texto así se alinea a la derecha. */
+    /** Si el párrafo se lee de derecha a izquierda: su primera palabra con dirección es de derecha a izquierda (árabe, hebreo…). */
     public static function esDerechaAIzquierda(string $texto): bool
     {
         $formas = Fuentes::formas();
-        $palabras = array_filter(Fuentes::trozos($texto, $formas), static fn (string $trozo): bool => trim($trozo) !== '');
+        foreach (Fuentes::trozos($texto, $formas) as $trozo) {
+            if ($formas[$trozo][1] ?? false) {
+                return true;
+            }
+            if (preg_match('/\p{L}/u', $trozo) === 1) {
+                return false;
+            }
+        }
 
-        return $palabras !== [] && array_filter($palabras, static fn (string $trozo): bool => $formas[$trozo][1] ?? false) === $palabras;
+        return false;
     }
 
     /** Los contornos que usan las letras de la pieza, una sola vez cada uno, para referirse a ellos con `<use>`. */
@@ -127,11 +134,21 @@ final class TextoATrazos
         return Svg::elemento('use', ['xlink:href' => "#$id", 'x' => $x] + ($y === 0.0 ? [] : ['y' => $y]));
     }
 
+    /** Signos que se espejan cuando caen dentro de un tramo de derecha a izquierda. */
+    private const ESPEJOS = ['(' => ')', ')' => '(', '[' => ']', ']' => '[', '{' => '}', '}' => '{', '<' => '>', '>' => '<', '«' => '»', '»' => '«', '‹' => '›', '›' => '‹'];
+
     /**
-     * Pone en orden visual los trozos de una línea: las palabras de derecha a izquierda compuestas de antemano
-     * (árabe, hebreo…) se leen de derecha a izquierda, así que una línea hecha solo de ellas se invierte entera, y
-     * en una frase mezclada se invierte cada tramo seguido de ellas, con los espacios de en medio. Es un bidi
-     * mínimo: no resuelve números ni paréntesis dentro de un tramo, ni más de un nivel de mezcla.
+     * Pone en orden visual los trozos de una línea con un bidi reducido (UAX nº 9, sin niveles de incrustación):
+     *
+     * - Las palabras de derecha a izquierda compuestas de antemano (árabe, hebreo…) son fuertes «R»; el resto de palabras
+     *   con letras, «L». La dirección del párrafo es la de la primera palabra fuerte.
+     * - Un número toma la dirección de la palabra fuerte que lo precede (dentro de un tramo R sigue escribiéndose de
+     *   izquierda a derecha, pero ocupa su lugar en el orden de lectura).
+     * - Un espacio o un signo entre dos tramos de la misma dirección es de esa dirección; entre dos distintas, de la del
+     *   párrafo. Un paréntesis, corchete o comilla angular en un tramo R se espeja.
+     * - Un párrafo de derecha a izquierda invierte el orden de sus tramos; dentro de un tramo R, los trozos se invierten.
+     *
+     * No resuelve números con signos pegados ni más de un nivel de mezcla.
      *
      * @param list<string> $trozos palabras, signos y espacios, en el orden en que se escribieron
      * @param array<string, array{int, bool, list<array{int, int, string}>}> $formas
@@ -139,42 +156,81 @@ final class TextoATrazos
      */
     private function enOrdenVisual(array $trozos, array $formas): array
     {
-        $derechaAIzquierda = static fn (string $trozo): bool => $formas[$trozo][1] ?? false;
-        $palabras = array_filter($trozos, static fn (string $trozo): bool => trim($trozo) !== '');
-        if ($palabras !== [] && array_filter($palabras, $derechaAIzquierda) === $palabras) {
-            return array_reverse($trozos);
+        if ($trozos === []) {
+            return [];
+        }
+        // 1. Clase de cada trozo: R, L (fuertes), N (número) o neutro (espacio o signo).
+        $clases = [];
+        foreach ($trozos as $i => $trozo) {
+            $clases[$i] = match (true) {
+                ($formas[$trozo][1] ?? false) === true => 'R',
+                preg_match('/\p{L}/u', $trozo) === 1 => 'L',
+                preg_match('/^\p{Nd}[\p{Nd}.,:%\/-]*$/u', $trozo) === 1 => 'N',
+                default => '-',
+            };
+        }
+        $base = 'L';
+        foreach ($clases as $clase) {
+            if ($clase === 'R' || $clase === 'L') {
+                $base = $clase;
+                break;
+            }
+        }
+        if (!in_array('R', $clases, true)) {
+            return $trozos;
         }
 
-        $resultado = [];
-        $tramo = [];
-        foreach ($trozos as $trozo) {
-            if ($derechaAIzquierda($trozo) || ($tramo !== [] && trim($trozo) === '')) {
-                $tramo[] = $trozo;
+        // 2. Dirección de cada trozo: los números siguen a la palabra fuerte anterior (o al párrafo, si no hay).
+        $direcciones = [];
+        $anterior = $base;
+        foreach ($clases as $i => $clase) {
+            if ($clase === 'R' || $clase === 'L') {
+                $anterior = $clase;
+                $direcciones[$i] = $clase;
+            } elseif ($clase === 'N') {
+                $direcciones[$i] = $anterior;
+            } else {
+                $direcciones[$i] = null;
+            }
+        }
+        // 3. Los neutros entre dos trozos de la misma dirección la toman; si no, la del párrafo.
+        $total = count($trozos);
+        foreach ($direcciones as $i => $direccion) {
+            if ($direccion !== null) {
                 continue;
             }
-            array_push($resultado, ...self::invertirTramo($tramo));
-            $tramo = [];
-            $resultado[] = $trozo;
-        }
-        array_push($resultado, ...self::invertirTramo($tramo));
-
-        return $resultado;
-    }
-
-    /**
-     * Invierte un tramo de palabras de derecha a izquierda. Un tramo termina en palabra: los espacios del final
-     * no son parte de él y se quedan donde estaban.
-     *
-     * @param list<string> $tramo
-     * @return list<string>
-     */
-    private static function invertirTramo(array $tramo): array
-    {
-        $cola = [];
-        while ($tramo !== [] && trim(end($tramo)) === '') {
-            array_unshift($cola, (string) array_pop($tramo));
+            $antes = null;
+            for ($k = $i - 1; $k >= 0 && $antes === null; $k--) {
+                $antes = $direcciones[$k];
+            }
+            $despues = null;
+            for ($k = $i + 1; $k < $total && $despues === null; $k++) {
+                $despues = $clases[$k] === '-' ? null : ($direcciones[$k] ?? $clases[$k]);
+            }
+            $direcciones[$i] = $antes !== null && $antes === $despues ? $antes : $base;
         }
 
-        return [...array_reverse($tramo), ...$cola];
+        // 4. Tramos seguidos de la misma dirección; el espejo de los signos de un tramo R.
+        $tramos = [];
+        foreach ($trozos as $i => $trozo) {
+            $direccion = (string) $direcciones[$i];
+            $ultimo = array_key_last($tramos);
+            if ($ultimo === null || $tramos[$ultimo]['dir'] !== $direccion) {
+                $tramos[] = ['dir' => $direccion, 'trozos' => []];
+                $ultimo = array_key_last($tramos);
+            }
+            $tramos[$ultimo]['trozos'][] = $direccion === 'R' && $clases[$i] === '-' ? (self::ESPEJOS[$trozo] ?? $trozo) : $trozo;
+        }
+        foreach ($tramos as &$tramo) {
+            if ($tramo['dir'] === 'R') {
+                $tramo['trozos'] = array_reverse($tramo['trozos']);
+            }
+        }
+        unset($tramo);
+        if ($base === 'R') {
+            $tramos = array_reverse($tramos);
+        }
+
+        return array_merge(...array_map(static fn (array $tramo): array => $tramo['trozos'], $tramos));
     }
 }

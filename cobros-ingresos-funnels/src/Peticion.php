@@ -77,10 +77,10 @@ final class Peticion
      * con el mismo mensaje de "monto valido", asi que el formulario vuelve con su error en vez de guardar
      * otra cantidad.
      */
-    public static function monto(string $campo = 'monto'): float
+    public static function monto(string $campo = 'monto', int $decimales = 2): float
     {
         try {
-            return round(Dinero::deTexto((string) ($_POST[$campo] ?? '')), 2);
+            return round(Dinero::deTexto((string) ($_POST[$campo] ?? ''), $decimales), max($decimales, 2));
         } catch (InvalidArgumentException) {
             return 0.0;
         }

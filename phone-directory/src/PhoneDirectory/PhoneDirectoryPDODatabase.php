@@ -150,26 +150,30 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
     }
 
     /** @return list<PhoneDirectoryEntry> */
-    public function findByName(string $name): array
+    public function findByName(string $name, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
         return $this->queryShown(
             $this->dialect->containsCondition('full_name_folded', ':name'),
             [':name' => $this->dialect->containsValue($this->fold($name))],
-            'full_name'
+            'full_name',
+            $limit,
+            $offset
         );
     }
 
     /** @return list<PhoneDirectoryEntry> */
-    public function findByStreet(string $street): array
+    public function findByStreet(string $street, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
         return $this->queryShown(
             $this->dialect->containsCondition('street_folded', ':street'),
             [':street' => $this->dialect->containsValue($this->fold($street))],
-            'street, full_name'
+            'street, full_name',
+            $limit,
+            $offset
         );
     }
 
@@ -186,10 +190,8 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
     }
 
     /** @return list<PhoneDirectoryEntry> */
-    public function findBySurnameSound(string $surname, ?string $language = null): array
+    public function findBySurnameSound(string $surname, ?string $language = null, ?int $limit = null, int $offset = 0): array
     {
-        $this->ensureConnection();
-
         $root = SurnameKeys::root($surname);
         $soundex = SurnameKeys::soundex($root);
         if ($soundex === null) {
@@ -207,21 +209,19 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
             $params[':phonetic'] = $phonetic;
         }
 
-        return $this->queryShown($where, $params, 'full_name');
+        return $this->queryShown($where, $params, 'full_name', $limit, $offset);
     }
 
     /** @return list<PhoneDirectoryEntry> */
-    public function findBySourceDirectory(string $sourceDirectoryId): array
+    public function findBySourceDirectory(string $sourceDirectoryId, ?int $limit = null, int $offset = 0): array
     {
-        $this->ensureConnection();
-
-        return $this->queryShown('source_directory_id = :source', [':source' => $sourceDirectoryId], 'source_line, id');
+        return $this->queryShown('source_directory_id = :source', [':source' => $sourceDirectoryId], 'source_line', $limit, $offset);
     }
 
     /** @return list<PhoneDirectoryEntry> */
-    public function getAll(): array
+    public function getAll(?int $limit = null, int $offset = 0): array
     {
-        return $this->queryShown('1 = 1', [], 'full_name');
+        return $this->queryShown('1 = 1', [], 'full_name', $limit, $offset);
     }
 
     /**
@@ -364,7 +364,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
      * @param array{name?: string, street?: string, phone?: string} $criteria
      * @return list<PhoneDirectoryEntry>
      */
-    public function search(array $criteria): array
+    public function search(array $criteria, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
@@ -375,10 +375,10 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         ]);
 
         if (empty($where)) {
-            return $this->getAll();
+            return $this->getAll($limit, $offset);
         }
 
-        return $this->queryShown(implode(' AND ', $where), $params, 'full_name');
+        return $this->queryShown(implode(' AND ', $where), $params, 'full_name', $limit, $offset);
     }
 
     public function clear(): bool
@@ -390,15 +390,15 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
      * The entries matching $where that this reader may see. For a visitor, the rows that cannot be shown
      * whatever their content (a catalog directory that is too recent, or no directory at all, and no death
      * recorded) are left out in SQL; Privacy::filter() then decides the rest, such as an id outside the catalog.
+     * With $limit it is one page of that, counted over what the reader may see.
      *
      * @param SqlParams $params
      * @return list<PhoneDirectoryEntry>
      */
-    private function queryShown(string $where, array $params, string $orderBy): array
+    private function queryShown(string $where, array $params, string $orderBy, ?int $limit = null, int $offset = 0): array
     {
         $this->ensureConnection();
 
-        $sql = "SELECT * FROM phone_directory WHERE ({$where})";
         if ($this->privacy->hidesLiving()) {
             $hidden = [];
             foreach ($this->privacy->hiddenCatalogDirectories() as $i => $id) {
@@ -406,13 +406,10 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
                 $params[":hidden{$i}"] = $id;
             }
             $notHidden = $hidden === [] ? '' : ' AND source_directory_id NOT IN (' . implode(', ', $hidden) . ')';
-            $sql .= " AND (deceased_year IS NOT NULL OR (source_directory_id IS NOT NULL{$notHidden}))";
+            $where = "({$where}) AND (deceased_year IS NOT NULL OR (source_directory_id IS NOT NULL{$notHidden}))";
         }
 
-        $stmt = $this->pdo->prepare("{$sql} ORDER BY {$orderBy}");
-        $stmt->execute($params);
-
-        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->fetchPage($where, $params, $orderBy, $limit, $offset, $this->privacy->hidesLiving(), fn(array $rows) => $this->shown($rows));
     }
 
     /**

@@ -24,6 +24,7 @@ from collections import Counter
 from pathlib import Path
 
 from comun import filas_csv, leer_csv
+import exportes
 from sugerencias import desvios_por_pais, sugerencias_md
 
 AQUI = Path(__file__).resolve().parent
@@ -36,6 +37,8 @@ SALIDA_FINAL = AQUI / "priorizacion.csv"
 SALIDA_VISTA = AQUI / "vista.html"
 SALIDA_ESCENARIOS = AQUI / "escenarios.md"
 SALIDA_SUGERENCIAS = AQUI / "sugerencias_indices.md"
+SALIDA_JSON = AQUI / "exportes" / "paises.json"
+SALIDA_SQL = AQUI / "exportes" / "paises.sql"
 # Escenarios de ranking: (nombre, puntaje, excluido). El primero de cada grupo es la regla vigente.
 ESCENARIOS_GEN = [
     ("Vigente: IG × IO, excluye IO ≤ 1", lambda d: d["ig"] * d["io"], lambda d: d["io"] <= 1),
@@ -318,6 +321,7 @@ def comprobar_o_escribir(archivos, comprobar):
                     desactualizadas.append(ruta.name)
         return desactualizadas
     for ruta, texto in archivos:
+        ruta.parent.mkdir(exist_ok=True)
         with ruta.open("w", encoding="utf-8", newline="") as f:
             f.write(texto)
     return []
@@ -503,10 +507,13 @@ def main(comprobar=False):
          "Texto web (% páginas, lengua local)", "Prioridad (IL × IP local)", "Excluido", "Comentarios"],
         pos_ordenado)
 
+    exportadas = exportes.filas([f for _, f in paises], pos_por_codigo,
+                                {f["codigo"]: f for f in filas_final}, banda)
     salidas = [(SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos),
                (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(vista, anios_vista)),
                (SALIDA_ESCENARIOS, escenarios_md(registros)),
                (SALIDA_SUGERENCIAS, sugerencias_md(registros)),
+               (SALIDA_JSON, exportes.json_texto(exportadas)), (SALIDA_SQL, exportes.sql_texto(exportadas)),
                (README, readme_con_resumen(resumen_md(registros, niveles)))]
     desactualizadas = comprobar_o_escribir(salidas, comprobar)
     if comprobar and desactualizadas:
@@ -516,7 +523,7 @@ def main(comprobar=False):
     accion = "al día" if comprobar else "escritas"
     print(f"{len(paises)} países. Genealogía: {excluidos_gen} excluidos ({SALIDA_GENEALOGIA.name}). "
           f"POS: {excluidos_pos} excluidos ({SALIDA_POS.name}). Tablas, {SALIDA_FINAL.name}, "
-          f"{SALIDA_VISTA.name}, {SALIDA_ESCENARIOS.name} y {SALIDA_SUGERENCIAS.name} {accion}.")
+          f"{SALIDA_VISTA.name}, {SALIDA_ESCENARIOS.name}, {SALIDA_SUGERENCIAS.name} y exportes/ {accion}.")
 
 
 if __name__ == "__main__":

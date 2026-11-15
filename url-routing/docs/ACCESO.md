@@ -171,6 +171,7 @@ que prometen las secciones 5 y 6 del borrador de
   que el correo salga solo en la corrida que ocultó algo y no cada media hora.
   Tiene el costo que ya dice el primer punto: quien pide el retiro puede bajar
   una página si el propietario no contesta a tiempo.
+- **Los ocultos que nadie decide.** Un pedido deja de salir en el listado de lo que espera en cuanto se oculta, y mientras nadie lo decida su página sigue en 410 y el correo y el texto de quien pidió siguen guardados (`--depurar` solo borra los ya `retirados` o `rechazados`). Por eso el recordatorio diario de `bin/pedidos-retiro.php` también los lista, con los días que llevan ocultos y un aviso cuando pasaron los `RETIRO_CONSERVAR_MESES` meses. Los lista y no los decide: retirar o rechazar es del propietario. El trabajo de cada media hora (`--solo-ocultados`) no los repite.
 - **Depuración (opcional).** Un pedido guarda el correo de quien lo envió y lo que
   escribió, sin límite de tiempo. `php bin/pedidos-retiro.php --depurar` borra
   `contacto`, `detalle` y las marcas del filtro de los pedidos **retirados o
@@ -218,7 +219,7 @@ php bin/persona.php entrega 6128473105                            # un enlace y 
   solicitud espera a quien administra. Tiene el mismo campo trampa, el mismo token CSRF y topes parecidos a los del
   retiro (3 por visitante y por hora, 5 esperando por persona). Se atienden con `php bin/solicitudes.php`
   (`--ver=N`, `--atender=N`, `--rechazar=N`, `--depurar`), que no dice por cron quién pidió ni qué escribió, o en el panel
-  del propietario, **`/0/4/`** (`Solicitudes de datos` en el menú de la cuenta), con el correo enmascarado y el completo a un clic;
+  del propietario, **`/0/4/`** (`Solicitudes de datos` en el menú de la cuenta), con el correo enmascarado y el completo a un clic. En cada solicitud pendiente tiene dos acciones más: **crear una entrega con clave** para la persona de esa solicitud (el enlace y la clave se muestran una sola vez) y **simular una corrección** (dice qué haría `rectificar` y no cambia nada: hacerla sigue siendo `php bin/persona.php rectificar … --confirmar`);
   ver [`DESPLIEGUE.md`](DESPLIEGUE.md), sección 8, y [`SOLICITUDES.md`](SOLICITUDES.md).
 - **`rectificar`** corrige un campo de la ficha (nombres, apellidos, sexo, y la fecha o la descripción de un suceso que es solo de
   ella), dice si el cambio la oculta o la muestra a un visitante y lo anota. Sin `--confirmar` lo prueba en una

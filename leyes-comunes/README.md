@@ -17,7 +17,7 @@ vive aquí una sola vez. Cada script del proyecto queda como un envoltorio que d
 | `importador-core.php` | `import_database.php` | Importa el CSV a MySQL / MariaDB: conexión por `DB_*`, esquema, transacción (`--import` reemplaza y se puede repetir), fechas estrictas y los comandos. `--create-schema` y `--all` piden `--yes`, porque borran la base. |
 | `database-check-core.php` | `tests/database_check.php` | Compara la base con el CSV maestro, columna por columna. Lo corre el job `database` de `laws-modules.yml`. |
 | `importer-tests-core.js` | `tests/importer.test.js` | Pruebas del importador que no necesitan servidor: columnas, anchos de `VARCHAR`, `--yes` y fechas. |
-| `comprobar-copias.js` | el job `copias` de `laws-modules.yml` | Comprueba que las copias que se mantienen idénticas a propósito (ver abajo) lo siguen siendo. |
+| `comprobar-copias.js` | el job `copias` de `laws-modules.yml` | Comprueba que las copias que se mantienen idénticas a propósito (ver abajo) lo siguen siendo. Sus pruebas son `comprobar-copias.test.js` (`node --test 'leyes-comunes/*.test.js'`). |
 
 ## Qué vive aquí y qué no
 
@@ -46,18 +46,18 @@ corriendo contra el script de su propio proyecto.
 
 ## Lo que sigue duplicado, y por qué
 
-- **`app/`** (`lib/chart.js`, `lib/filters.js`, `lib/util.js`, `lib/view.js` (las piezas de la vista que no cambian: filas, tarjetas, historial, noticias…) y varias hojas de estilo son idénticos): la web se sirve
+- **`app/`** (`lib/chart.js`, `lib/filters.js`, `lib/util.js`, `lib/view.js` (las piezas de la vista que no cambian: filas, tarjetas, historial, noticias, la tabla, los chips de filtros y la comparación; cada módulo les registra lo suyo en `hooks`) y varias hojas de estilo son idénticos): la web se sirve
   como archivos estáticos desde la carpeta `app/` de cada proyecto, sin paso de build. Compartir esos archivos
   pediría un paso que los copie, o sacarlos de la carpeta que se sirve. No se hizo en la misma tanda.
 - **`scripts/lib/dataset.js`**: es el corazón de cada módulo y los campos de cada ley son distintos (los de
   privacidad frente a los de derechos de autor, y `website_url` frente a `linked_resources`). Un núcleo
   compartido sería un refactor más grande que el resto junto, con el riesgo de tocar cómo se valida cada CSV.
 - **`tests/`**: las pruebas son las que vigilan los envoltorios, así que cada proyecto conserva las suyas. Algunos
-  archivos son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`).
+  archivos son idénticos (`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`, `tests/app-names.test.js`).
 
 No se pueden compartir, pero sí vigilar: `comprobar-copias.js` falla en CI si una de esas copias (`app/lib/chart.js`,
 `filters.js`, `util.js`, `view.js`, las hojas `app/styles/base.css`, `comparison.css` y `search.css`,
-`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`) deja de ser igual en los dos módulos.
+`tests/helpers/php-server.js`, `tests/fixtures/law-page.html`, `tests/translations.test.js`, `tests/app-names.test.js`).deja de ser igual en los dos módulos.
 
 ## Sitios que rechazan a los runners
 

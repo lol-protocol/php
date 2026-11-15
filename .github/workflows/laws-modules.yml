@@ -42,6 +42,8 @@ jobs:
           node-version: '22'
       - name: Comprobar que no se separaron
         run: node leyes-comunes/comprobar-copias.js
+      - name: Pruebas de la guarda
+        run: node --test 'leyes-comunes/*.test.js'
 
   test:
     name: ${{ matrix.module }} / PHP ${{ matrix.php-version }}

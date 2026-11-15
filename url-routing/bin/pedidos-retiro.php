@@ -16,6 +16,11 @@ declare(strict_types=1);
  * is hidden (state 'oculto', as if the owner had pressed "ocultar mientras revisa") and its record says
  * it was automatic and why. One the owner decides meanwhile is never touched.
  *
+ * The daily run (the one without --solo-ocultados) also lists the pedidos that are hidden and still undecided,
+ * with the days they have been: once hidden a pedido leaves the list above, and without this one nobody would
+ * be reminded that its page is still down and that the sender's e-mail and text are still stored. It lists them,
+ * never decides them, and it does not change the exit code.
+ *
  * The listing has the number, the page and the reason of each pedido, and how long it has waited: never
  * who asked nor what they wrote, because cron mail travels in the clear.
  *
@@ -109,6 +114,8 @@ try {
         exit(0);
     }
     $pendientes = $repo->pendientes();
+    // Read before hiding: the ones this very run hides are already in the list above.
+    $ocultos = $soloOcultados ? [] : $repo->ocultosSinDecidir();
     $ocultados = $ocultar ? $repo->ocultarVencidos($horas) : [];
     $depurados = $depurar ? $repo->depurar($meses) : [];
 } catch (\PDOException $e) {
@@ -121,7 +128,7 @@ if ($depurados !== []) {
         ? "Se borraron los datos personales de 1 pedido resuelto hace más de {$meses} meses.\n"
         : 'Se borraron los datos personales de ' . count($depurados) . " pedidos resueltos hace más de {$meses} meses.\n";
 }
-if ($pendientes === [] || ($soloOcultados && $ocultados === [])) {
+if (($pendientes === [] && $ocultos === []) || ($soloOcultados && $ocultados === [])) {
     exit(0);
 }
 
@@ -129,9 +136,11 @@ $espera = static fn(int $h): string => $h < 24 ? "{$h} h" : intdiv($h, 24) . ' d
 $tarde = static fn(array $p): bool => $p['horas'] >= $horas;
 
 $vencidos = 0;
-echo count($pendientes) === 1
-    ? "1 pedido de retiro espera respuesta (plazo: {$horas} h):\n"
-    : count($pendientes) . " pedidos de retiro esperan respuesta (plazo: {$horas} h):\n";
+if ($pendientes !== []) {
+    echo count($pendientes) === 1
+        ? "1 pedido de retiro espera respuesta (plazo: {$horas} h):\n"
+        : count($pendientes) . " pedidos de retiro esperan respuesta (plazo: {$horas} h):\n";
+}
 foreach ($pendientes as $p) {
     $queda = in_array($p['id'], $ocultados, true) ? 'VENCIDO: oculto automáticamente' : ($tarde($p) ? 'VENCIDO' : '');
     if ($tarde($p) && !in_array($p['id'], $ocultados, true)) {
@@ -147,6 +156,26 @@ foreach ($pendientes as $p) {
         $queda === '' ? '' : "  {$queda}"
     );
 }
-echo "\nDecide en /0/3/: ocultar mientras revisa, retirar o rechazar.\n";
+if ($pendientes !== []) {
+    echo "\nDecide en /0/3/: ocultar mientras revisa, retirar o rechazar.\n";
+}
+
+if ($ocultos !== []) {
+    echo ($pendientes === [] ? '' : "\n") . (count($ocultos) === 1
+        ? "1 pedido de retiro oculto sigue sin decidirse (su página sigue en 410):\n"
+        : count($ocultos) . " pedidos de retiro ocultos siguen sin decidirse (sus páginas siguen en 410):\n");
+    foreach ($ocultos as $o) {
+        printf(
+            "  n.º %d  %s %d  «%s»  oculto hace %d d%s\n",
+            $o['id'],
+            $o['tipo'],
+            $o['recurso_id'],
+            RetiroRepository::MOTIVOS[$o['motivo']] ?? $o['motivo'],
+            $o['dias'],
+            $o['dias'] >= $meses * 30 ? "  (más de {$meses} meses: sus datos personales siguen guardados hasta que lo decidas)" : ''
+        );
+    }
+    echo "\nDecide en /0/3/: retirar o rechazar (con --depurar se borran sus datos personales a los {$meses} meses de resuelto).\n";
+}
 
 exit($vencidos > 0 ? 1 : 0);

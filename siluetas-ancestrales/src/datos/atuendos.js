@@ -7,6 +7,7 @@ import { ATUENDOS_AMPLIADOS } from './atuendos-ampliados.js';
 import { ATUENDOS_SIGLO20 } from './atuendos-siglo20.js';
 import { ATUENDOS_MAS } from './atuendos-mas.js';
 import { ATUENDOS_MODA } from './atuendos-moda.js';
+import { ATUENDOS_PUEBLOS } from './atuendos-pueblos.js';
 import { ATUENDOS_INFANTILES } from './atuendos-infantiles.js';
 
 export const REGIONES = {
@@ -172,6 +173,7 @@ export const ATUENDOS = [
   ...ATUENDOS_SIGLO20,
   ...ATUENDOS_MAS,
   ...ATUENDOS_MODA,
+  ...ATUENDOS_PUEBLOS,
   ...ATUENDOS_INFANTILES,
 ];
 
