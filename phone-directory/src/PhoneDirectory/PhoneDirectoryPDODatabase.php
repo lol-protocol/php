@@ -146,7 +146,47 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         $row = $this->findOneById($id);
         $entry = $row ? $this->rowToEntry($row) : null;
 
-        return $entry !== null && $this->privacy->allows($entry) ? $entry : null;
+        if ($entry === null || !$this->privacy->allows($entry)) {
+            return null;
+        }
+
+        return $this->privacy->showsOnlyBecauseOfDeath($entry) && $this->sharesWithSomeoneAlive($id) ? null : $entry;
+    }
+
+    /**
+     * Whether another entry that may be alive has the same phone number or address as this one: a relative,
+     * whose contact details a recorded death must not show. Only asked of an entry that is shown because
+     * of its death mark (Privacy::showsOnlyBecauseOfDeath()).
+     */
+    private function sharesWithSomeoneAlive(int $id): bool
+    {
+        $this->ensureConnection();
+        $params = [':self' => $id];
+        $stmt = $this->pdo->prepare('SELECT 1 FROM phone_directory WHERE id = :self AND ' . $this->livingRelativeExists($params) . ' LIMIT 1');
+        $stmt->execute($params);
+
+        return $stmt->fetchColumn() !== false;
+    }
+
+    /**
+     * SQL that says whether a row other than the outer one (phone_directory) may be alive and shares its phone
+     * number or street. "May be alive" is conservative: anything not recorded as dead and not in a directory
+     * old enough to show.
+     *
+     * @param SqlParams $params
+     */
+    private function livingRelativeExists(array &$params): string
+    {
+        $old = [];
+        foreach ($this->privacy->shownCatalogDirectories() as $i => $directory) {
+            $old[] = ":old{$i}";
+            $params[":old{$i}"] = $directory;
+        }
+        $notOld = $old === [] ? '' : ' AND (relative.source_directory_id IS NULL OR relative.source_directory_id NOT IN (' . implode(', ', $old) . '))';
+
+        return 'EXISTS (SELECT 1 FROM phone_directory relative WHERE relative.id <> phone_directory.id AND relative.deceased_year IS NULL' . $notOld
+            . ' AND ((phone_directory.phone_number IS NOT NULL AND relative.phone_number = phone_directory.phone_number)'
+            . ' OR relative.street = phone_directory.street))';
     }
 
     /** @return list<PhoneDirectoryEntry> */
@@ -406,7 +446,8 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
                 $params[":hidden{$i}"] = $id;
             }
             $notHidden = $hidden === [] ? '' : ' AND source_directory_id NOT IN (' . implode(', ', $hidden) . ')';
-            $where = "({$where}) AND (deceased_year IS NOT NULL OR (source_directory_id IS NOT NULL{$notHidden}))";
+            $living = $this->livingRelativeExists($params);
+            $where = "({$where}) AND ((deceased_year IS NOT NULL AND NOT {$living}) OR (source_directory_id IS NOT NULL{$notHidden}))";
         }
 
         return $this->fetchPage($where, $params, $orderBy, $limit, $offset, $this->privacy->hidesLiving(), fn(array $rows) => $this->shown($rows));
@@ -420,7 +461,16 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
      */
     private function shown(array $rows): array
     {
-        return $this->privacy->filter(array_map([$this, 'rowToEntry'], $rows));
+        $shown = [];
+        foreach ($this->privacy->filter(array_map([$this, 'rowToEntry'], $rows)) as $entry) {
+            // The SQL already left out the recorded deaths that share a phone or address with someone who may be
+            // alive; this catches the ones it could not tell apart (an id outside the catalog).
+            if (!$this->privacy->showsOnlyBecauseOfDeath($entry) || !$this->sharesWithSomeoneAlive($entry->getId())) {
+                $shown[] = $entry;
+            }
+        }
+
+        return $shown;
     }
 
     /** @param Row $row */
