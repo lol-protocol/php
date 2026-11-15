@@ -116,7 +116,7 @@ Ese usuario es también el autor de las colecciones y de los aportes que veas en
 
 ## 5. El servidor web
 
-La raíz del sitio es **`public/`**. Si apuntara a la carpeta del proyecto, cualquiera podría bajar `.env` y las bases SQLite, y ejecutar `bin/migrate.php`.
+La raíz del sitio es **`public/`**. Si apuntara a la carpeta del proyecto, cualquiera podría bajar `.env` y las bases SQLite, y ejecutar `bin/migrate.php`. Ojo: la plantilla genérica de `vps-setup/06_A-setup-php-app.sh` usa la carpeta de la app como `root`; para este proyecto hay que apuntarla a `public/`.
 
 **Nginx** (probado con nginx 1.24 y PHP-FPM 8.3): copia [`deploy/nginx.conf.example`](../deploy/nginx.conf.example) a `sites-available`, ajusta `server_name`, la raíz y el socket de PHP-FPM, y **crea la carpeta de logs**: nginx crea los archivos de log, no la carpeta, y sin ella `nginx -t` falla.
 
@@ -126,7 +126,7 @@ sudo mkdir -p /var/log/nginx/url-routing
 
 Después activa HTTPS (con certbot: `sudo certbot --nginx -d tudominio.com`). **Certbot no se probó**; sí HTTPS con un certificado autofirmado puesto en el mismo bloque `server`, que es donde certbot lo agrega. Nginx pasa la cabecera `Authorization` a PHP-FPM por sí solo; no agregues un `fastcgi_param` que la borre.
 
-**Apache** (no probado aquí): `AllowOverride All`, y los módulos `rewrite` y `headers`. El `.htaccess` de `public/` trae la regla que entrega `Authorization` a PHP; si el paso 6 da 401 con la clave correcta, empieza por ahí.
+**Apache** (no probado aquí): `DocumentRoot` en `public/`, `AllowOverride All`, y los módulos `rewrite` y `headers`; el `.htaccess` incluido asume que la app vive en la raíz del dominio (`RewriteBase /`). El `.htaccess` de `public/` trae la regla que entrega `Authorization` a PHP; si el paso 6 da 401 con la clave correcta, empieza por ahí.
 
 **La hora de la sesión del propietario** (ver [`ACCESO.md`](./ACCESO.md)): en Debian y Ubuntu un cron borra las sesiones inactivas según el `php.ini`, que trae 24 minutos. Sube `session.gc_maxlifetime = 3600` en `/etc/php/8.3/fpm/php.ini`; sin eso la sesión se pierde antes de la hora que dice el paso 7.
 

@@ -12,14 +12,29 @@ Este archivo solo orienta. La documentación vive en [`docs/`](docs/); el esquem
 
 PHP 8.1 o más, con `pdo`, `pdo_pgsql` (y `pdo_sqlite` si algún sitio usa SQLite), `mbstring` y `ctype`. Composer, solo para instalar las dependencias.
 
+## Probarlo en local
+
+Sin configurar nada, cada sitio usa un SQLite local en `var/`. Para PostgreSQL y el criterio de qué motor usar en cada sitio, ver [`docs/DATABASE.md`](docs/DATABASE.md).
+
+```bash
+composer install
+php bin/migrate.php genealogy --seed     # crea var/genealogy.sqlite con datos de demo
+php bin/migrate.php pos --seed           # crea var/pos.sqlite con datos de demo
+php -S spa.tudominio.local:8000 -t public public/index.php
+php -S spa.contrastocolor.local:8001 -t public public/index.php
+```
+
+Los hosts van a `/etc/hosts` apuntando a `127.0.0.1` (`spa.tudominio.local`, `eng.tudominio.local`, `spa.contrastocolor.local`, `eng.contrastocolor.local`). Para ponerlo en un servidor, ver [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md).
+
 ## Pruebas
 
 ```bash
 composer install
 ./vendor/bin/phpunit
+phpstan analyse --no-progress    # la CI lo corre en el job `analisis-estatico`
 ```
 
-La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de nuevo contra PostgreSQL (así lo hace la CI). Detalle en [`docs/DATABASE.md`](docs/DATABASE.md).
+La suite corre siempre contra SQLite en memoria y, si defines `TEST_PG_DSN`, de nuevo contra PostgreSQL (así lo hace la CI). Detalle en [`docs/DATABASE.md`](docs/DATABASE.md). PHPStan va a nivel 6 sobre PHP 8.1, el piso de `composer.json` (`phpstan.neon.dist`): pide que cada array diga de qué es en el docblock (`@param array<string, mixed> $params`, `@return list<string>`). Si no lo tienes, `composer global require phpstan/phpstan:^2.1`.
 
 ## Scripts de `bin/`
 
@@ -42,7 +57,7 @@ La base de datos sale de `DB_DSN_<SITIO>` (o de `.env`), igual que en la aplicac
 
 | Documento | Contenido |
 |---|---|
-| [`docs/README_URLS.md`](docs/README_URLS.md) | El esquema de URLs y la estructura de archivos |
+| [`docs/README_URLS.md`](docs/README_URLS.md) | Los principios del esquema de URLs, cómo agregar un tipo de recurso, seguridad y convenciones |
 | [`docs/URL_STRUCTURES.md`](docs/URL_STRUCTURES.md) | La gramática de formatos, con ejemplos |
 | [`docs/RUTAS.md`](docs/RUTAS.md) | Todas las rutas (generado) |
 | [`docs/ACCESO.md`](docs/ACCESO.md) | Qué es privado y quién puede verlo (`OWNER_TOKEN`; no hay cuentas de usuario) |
