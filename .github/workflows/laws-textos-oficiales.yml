@@ -92,6 +92,10 @@ jobs:
           extensions: curl, dom, mbstring, intl
           coverage: none
 
+      # cache-texts.php convierte los PDF con pdftotext (poppler-utils); sin él los salta.
+      - name: Instalar pdftotext
+        run: sudo apt-get install -y --no-install-recommends poppler-utils
+
       - name: Descargar los textos
         working-directory: ${{ inputs.modulo }}
         run: |
