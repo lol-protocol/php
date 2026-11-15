@@ -43,7 +43,7 @@ test('el semáforo distingue ropa propia del pueblo de ropa genérica de la regi
   const corea = coberturaDePais('KR', mapa);
   assert.ok(corea.propios.mujeres > 0 && corea.propios.hombres > 0);
   assert.equal(corea.estado, 'verde');
-  const noruega = coberturaDePais('NO', mapa);
+  const noruega = coberturaDePais('NL', mapa); // Países Bajos: solo «Europa» genérica
   assert.deepEqual(noruega.propios, { mujeres: 0, hombres: 0 });
   assert.ok(noruega.genericos.mujeres > 0 && noruega.genericos.hombres > 0);
   assert.equal(noruega.estado, 'amarillo');
@@ -63,7 +63,7 @@ test('las décadas cubiertas se miden con la ropa propia, de mujer y de hombre a
 
 test('el informe ordena por prioridad, excluye los países excluidos y filtra por estado', () => {
   const paises = [
-    { codigo: 'NO', pais: 'Noruega', prioridad: 25, excluido: false },
+    { codigo: 'NL', pais: 'Países Bajos', prioridad: 25, excluido: false },
     { codigo: 'KR', pais: 'Corea del Sur', prioridad: 25, excluido: false },
     { codigo: 'FI', pais: 'Finlandia', prioridad: 20, excluido: false },
     { codigo: 'AF', pais: 'Afganistán', prioridad: 99, excluido: true },
@@ -71,10 +71,10 @@ test('el informe ordena por prioridad, excluye los países excluidos y filtra po
   const md = informeDeCobertura(paises, mapa);
   assert.match(md, /3 países no excluidos/);
   assert.ok(!md.includes('Afganistán'));
-  assert.ok(md.indexOf('Corea del Sur') < md.indexOf('Noruega') && md.indexOf('Noruega') < md.indexOf('Finlandia'));
+  assert.ok(md.indexOf('Corea del Sur') < md.indexOf('Países Bajos') && md.indexOf('Países Bajos') < md.indexOf('Finlandia'));
   assert.match(informeDeCobertura(paises, mapa, { todos: true }), /Afganistán \(excluido\)/);
   const rojos = informeDeCobertura(paises, mapa, { estado: 'amarillo' });
-  assert.ok(rojos.includes('Noruega') && !rojos.includes('Corea del Sur'));
+  assert.ok(rojos.includes('Países Bajos') && !rojos.includes('Corea del Sur'));
 });
 
 test('bin/cobertura.js imprime el informe y falla con un mensaje claro si algo está mal', { skip: !hayCsv && 'no está Listado-paises/' }, () => {
