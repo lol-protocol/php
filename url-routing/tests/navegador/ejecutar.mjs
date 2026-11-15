@@ -66,12 +66,15 @@ function php(...argumentos) {
 }
 
 php('bin/migrate.php', 'genealogy', '--seed');
+php('bin/migrate.php', 'pos', '--seed');
 php('tests/navegador/preparar.php');
 const entrega = JSON.parse(readFileSync(`${dir}/entrega.json`, 'utf8'));
 
 const puerto = await puertoLibre();
 const servidor = spawn('php', ['-S', `127.0.0.1:${puerto}`, '-t', 'public', 'public/index.php'], { cwd: raiz, env: entorno, stdio: 'ignore' });
 const base = `http://127.0.0.1:${puerto}`;
+// El POS es el mismo servidor con otro nombre de host (POS_DOMAINS trae contrastocolor.test): Chromium lo resuelve a 127.0.0.1.
+const basePos = `http://contrastocolor.test:${puerto}`;
 for (let intento = 0; ; intento++) {
   try {
     await fetch(`${base}/`);
@@ -83,22 +86,26 @@ for (let intento = 0; ; intento++) {
 }
 
 const ejecutable = process.env.CHROMIUM || (existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
-const navegador = await chromium.launch(ejecutable ? { executablePath: ejecutable } : {});
+const navegador = await chromium.launch({ ...(ejecutable ? { executablePath: ejecutable } : {}), args: ['--host-resolver-rules=MAP contrastocolor.test 127.0.0.1'] });
 const errores = [];
 const reporte = [];
 
-async function con(opciones, cuerpo) {
+/**
+ * Abre una página con su propio contexto. En `opciones`, además de las de Playwright, `esperados` son los estados
+ * HTTP de error que ESA prueba provoca a propósito (un 404 que audita, el 422 de un formulario con errores): no cuentan
+ * como fallo. Cualquier otro error de consola o respuesta >= 400 sí.
+ */
+async function con({ esperados = [422], ...opciones }, cuerpo) {
   // La CSP del sitio (script-src 'self') impide inyectar axe, que es un script en línea: se la salta solo la prueba,
   // el sitio no cambia. Lo que se audita es el HTML y la hoja de estilos que sirve, no la CSP.
   const contexto = await navegador.newContext({ viewport: { width: 900, height: 900 }, bypassCSP: true, ...opciones });
   const pagina = await contexto.newPage();
   // Chromium pide /favicon.ico por su cuenta y el sitio no tiene uno: se contesta aquí para que su 404 no ensucie la consola.
   await contexto.route('**/favicon.ico', (ruta) => ruta.fulfill({ status: 204 }));
-  // Un 422 es la respuesta correcta a un formulario con errores (la prueba lo envía vacío a propósito).
-  pagina.on('response', (r) => { if (r.status() >= 400 && r.status() !== 422) { errores.push(`HTTP ${r.status()} ${r.url()}`); } });
+  pagina.on('response', (r) => { if (r.status() >= 400 && !esperados.includes(r.status())) { errores.push(`HTTP ${r.status()} ${r.url()}`); } });
   pagina.on('pageerror', (e) => errores.push(String(e)));
-  // El «Failed to load resource … 422» de Chromium es la respuesta esperada del formulario con errores (arriba).
-  pagina.on('console', (m) => { if (m.type() === 'error' && !/status of 422/.test(m.text())) { errores.push(m.text()); } });
+  // Chromium además dice en la consola «Failed to load resource … status of N» por cada respuesta de error.
+  pagina.on('console', (m) => { if (m.type() === 'error' && !esperados.some((e) => m.text().includes(`status of ${e}`))) { errores.push(m.text()); } });
   try {
     return await cuerpo(pagina);
   } finally {
@@ -224,6 +231,49 @@ const pruebas = {
       verdadero(texto.includes('Solicitud n.º'), 'lista las solicitudes');
       verdadero(texto.includes('Marcar como atendida'), 'la pendiente tiene sus botones');
       await auditar(p, '/0/4/');
+    });
+  },
+
+  // Los errores son páginas del sitio (ErrorPage::page): cada sitio tiene su vista, y una sin etiqueta o sin contraste
+  // no la vería nadie hasta que alguien tropezara con ella.
+  async 'un 404 de genealogía'() {
+    return con({ esperados: [404] }, async (p) => {
+      const respuesta = await p.goto(`${base}/999999999/`);
+      igual(404, respuesta.status(), 'un id que no existe');
+      verdadero((await p.locator('body').innerText()).includes('Volver al inicio'), 'ofrece volver');
+      await auditar(p, '404 (genealogía)');
+    });
+  },
+
+  async 'un 401: la cuenta sin la clave'() {
+    return con({ esperados: [401] }, async (p) => {
+      // Chromium no abre un 401 con desafío de clave sin credenciales (net::ERR_INVALID_AUTH_CREDENTIALS): se pide
+      // aparte y se dibuja su respuesta, como la del 403.
+      const respuesta = await p.context().request.get(`${base}/0/`);
+      igual(401, respuesta.status(), 'pide la clave');
+      await p.setContent(await respuesta.text());
+      verdadero((await p.locator('h1').innerText()).startsWith('401 - '), 'dice qué es');
+      await auditar(p, '401 (la cuenta)');
+    });
+  },
+
+  async 'un 403: un formulario sin su token'() {
+    return con({ esperados: [403] }, async (p) => {
+      // Un POST no se puede abrir con goto: se pide aparte y se dibuja su respuesta (el layout no tiene scripts ni hojas externas).
+      const respuesta = await p.context().request.post(`${base}/r/6128473105/`, { form: { motivo: 'otro' } });
+      igual(403, respuesta.status(), 'sin token se rechaza');
+      await p.setContent(await respuesta.text());
+      verdadero((await p.locator('h1').innerText()).startsWith('403 - '), 'dice qué es');
+      await auditar(p, '403 (sin token)');
+    });
+  },
+
+  async 'un 404 del POS'() {
+    return con({ esperados: [404] }, async (p) => {
+      const respuesta = await p.goto(`${basePos}/9999999999/`);
+      igual(404, respuesta.status(), 'un id que no existe en el POS');
+      verdadero((await p.locator('body').innerText()).includes('Contrastocolor'), 'es el layout del POS, no el de genealogía');
+      await auditar(p, '404 (POS)');
     });
   },
 
