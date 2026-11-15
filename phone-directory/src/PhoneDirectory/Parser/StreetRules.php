@@ -20,13 +20,14 @@ use PhoneDirectory\Exception\InvalidLanguageException;
  */
 final class StreetRules
 {
+    // BEGIN generated: palabras/calles (de data/palabras.json: no se edita aquí, ver bin/generar-palabras.php)
     public const SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it'];
 
     // Languages whose addresses put the house number after the street name ("Calle Mayor 12", "Via Roma 10").
     public const NUMBER_LAST_LANGUAGES = ['es', 'pt', 'it', 'de'];
 
     private const MARKERS = [
-        'es' => ['calle', 'c/', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
+        'es' => ['calle', 'c/', 'avenida', 'av', 'avda', 'plaza', 'pza', 'pasaje', 'camino', 'ruta', 'carrera'],
         'en' => ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln', 'boulevard', 'blvd', 'circle', 'cir'],
         'fr' => ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
         'pt' => ['rua', 'avenida', 'av', 'praça', 'alameda', 'estrada', 'largo'],
@@ -36,13 +37,14 @@ final class StreetRules
 
     // German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
     public const SUFFIXES = [
-        'de' => ['straße', 'strasse', 'allee', 'weg', 'platz'],
+        'de' => ['straße', 'strasse', 'allee', 'weg', 'platz', 'str'],
     ];
 
     // Street words that are also the usual abbreviation opening a name (see the class comment).
     private const NAME_ABBREVIATIONS = [
         'en' => ['dr', 'st'],
     ];
+    // END generated: palabras/calles
 
     /** @var array<string, string> */
     private static array $patternCache = [];
@@ -71,7 +73,9 @@ final class StreetRules
         }
 
         foreach ($matches[0] as [, $offset]) {
-            if (trim(substr($line, 0, $offset)) !== '') {
+            $before = substr($line, 0, $offset);
+            // Not first, and not inside a bracket either: "John (Dr.)" is a title after a name, not a street.
+            if (trim($before) !== '' && preg_match('/[(\[]$/', $before) !== 1) {
                 return true;
             }
         }

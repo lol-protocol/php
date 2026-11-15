@@ -36,6 +36,8 @@ final class Libro
     public const FORMATOS = ['novela' => [135.0, 210.0], 'bolsillo' => [110.0, 178.0], 'a5' => [148.0, 210.0], 'a6' => [105.0, 148.0], 'ebook' => [100.0, 160.0]];
     /** Tamaño máximo de una imagen, en bytes. */
     private const IMAGEN_MAXIMA = 2_000_000;
+    /** Opacidad por defecto de la imagen cuando es marca de agua. */
+    public const IMAGEN_OPACIDAD = 0.25;
     private const IMAGEN_TIPOS = ['svg' => 'image/svg+xml', 'png' => 'image/png', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'gif' => 'image/gif', 'webp' => 'image/webp'];
 
     /** @param array{fondo: string, texto: string, acento: string} $colores */
@@ -58,6 +60,8 @@ final class Libro
         public readonly ?string $imagen = null,
         /** Logo de la editorial (ruta absoluta), o null. */
         public readonly ?string $logo = null,
+        /** Opacidad de la imagen cuando es marca de agua (0 a 1). */
+        public readonly float $imagenOpacidad = self::IMAGEN_OPACIDAD,
     ) {
     }
 
@@ -225,6 +229,7 @@ final class Libro
             categoria: $categoria['slug'] ?? null,
             imagen: self::imagen($id, $datos, 'imagen'),
             logo: self::imagen($id, $datos, 'logo'),
+            imagenOpacidad: self::numero($datos, 'imagen_opacidad', self::IMAGEN_OPACIDAD, 0.0, 1.0),
         );
     }
 

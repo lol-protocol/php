@@ -21,7 +21,8 @@ declare(strict_types=1);
  *   jurisdictions/{tld}/texts/index.json   what is cached + validators for incremental refresh
  *
  * One GET per reference URL, with a pause between requests. robots.txt is honoured
- * (RFC 9309, including Crawl-delay up to 30 s). Pages that need JavaScript, PDFs and
+ * (RFC 9309, including Crawl-delay up to 30 s). PDFs are converted with pdftotext (poppler-utils) when it is
+ * installed, and skipped otherwise. Pages that need JavaScript and
  * other non-text content are skipped and reported.
  */
 

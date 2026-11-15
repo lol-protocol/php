@@ -35,7 +35,7 @@ final class Mortalidad
     /** @var array<string, list<array<string, string>>> */
     private array $csv = [];
 
-    /** @var array<string, list<array{int, int, float, float|null}>>|null [desde, hasta, esperanza, supervivencia] por «país|sexo|edad» */
+    /** @var array<string, list<array{int, int, float, float|null, array{float, float}|null}>>|null [desde, hasta, esperanza, supervivencia, banda] por «país|sexo|edad» */
     private ?array $periodosDeEsperanza = null;
 
     /** @var array<int, array{int, int}>|null [totales, viruela] por año */
@@ -182,6 +182,18 @@ final class Mortalidad
         return $this->periodoQueCubre($codigo, $anio, $edad, $sexo)[0] ?? null;
     }
 
+    /**
+     * (bajo, alto) de la esperanza restante de esperanzaRestante(), o null si no hay dato o no tiene banda. Desde 1950
+     * la banda es la discrepancia entre fuentes (el percentil 80); antes de 1950 es un supuesto del proyecto, no una
+     * medición. Mismas reglas y límites que esperanzaRestante().
+     *
+     * @return array{float, float}|null
+     */
+    public function bandaEsperanza(string $codigo, int $anio, int $edad = 0, string $sexo = 'T'): ?array
+    {
+        return $this->periodoQueCubre($codigo, $anio, $edad, $sexo)[2] ?? null;
+    }
+
     /** Probabilidad de llegar con vida a esa edad (de 0 a 1), en la década que contiene `$anio`; se guarda desde la edad 5. */
     public function supervivencia(string $codigo, int $anio, int $edad = 5, string $sexo = 'T'): ?float
     {
@@ -227,7 +239,7 @@ final class Mortalidad
         return $serie[$anio][0] / $mediana;
     }
 
-    /** @return array{float, float|null}|null */
+    /** @return array{float, float|null, array{float, float}|null}|null */
     private function periodoQueCubre(string $codigo, int $anio, int $edad, string $sexo): ?array
     {
         if (!in_array($sexo, self::SEXOS, true)) {
@@ -240,12 +252,13 @@ final class Mortalidad
                 $this->periodosDeEsperanza[$clave][] = [
                     (int) $f['desde'], (int) $f['hasta'], (float) $f['esperanza_restante'],
                     $f['supervivencia_hasta_edad'] === '' ? null : (float) $f['supervivencia_hasta_edad'],
+                    $f['incertidumbre_baja'] === '' ? null : [(float) $f['incertidumbre_baja'], (float) $f['incertidumbre_alta']],
                 ];
             }
         }
-        foreach ($this->periodosDeEsperanza["$codigo|$sexo|$edad"] ?? [] as [$desde, $hasta, $esperanza, $supervivencia]) {
+        foreach ($this->periodosDeEsperanza["$codigo|$sexo|$edad"] ?? [] as [$desde, $hasta, $esperanza, $supervivencia, $banda]) {
             if ($desde <= $anio && $anio <= $hasta) {
-                return [$esperanza, $supervivencia];
+                return [$esperanza, $supervivencia, $banda];
             }
         }
 

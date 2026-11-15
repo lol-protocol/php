@@ -89,6 +89,37 @@ final class Generador
 
     private static ?string $version = null;
 
+    /**
+     * Avisos de la imagen de la portada cuando es marca de agua (ver `Plantilla::dibujaImagen`): si el texto se lee sobre
+     * ella. Se mezcla cada celda de una muestra de la imagen con el fondo, con la opacidad del libro, y se mide el
+     * contraste del texto con el resultado; avisa si más de una décima parte de la portada baja de 4,5:1. La ilustración
+     * de `ilustrada` no lleva texto encima, y un SVG no se puede muestrear.
+     *
+     * @return list<string>
+     */
+    private static function avisosDeImagen(Libro $libro): array
+    {
+        $plantilla = Plantilla::crear($libro->plantilla);
+        if ($libro->imagen === null || !$plantilla->dibujaImagen() || $plantilla->imagenEsIlustracion()) {
+            return [];
+        }
+        $muestra = MuestraDeImagen::colores($libro->imagen);
+        if ($muestra === null) {
+            return ['No se pudo medir el contraste del texto sobre la marca de agua (un SVG, o falta la extensión gd de PHP): revisa a ojo que el título se lea.'];
+        }
+        $mal = 0;
+        foreach ($muestra as $color) {
+            if (Color::contraste($libro->colores['texto'], Color::mezclar($libro->colores['fondo'], $color, $libro->imagenOpacidad)) < 4.5) {
+                $mal++;
+            }
+        }
+        if ($mal / count($muestra) <= 0.1) {
+            return [];
+        }
+
+        return [sprintf('El texto casi no se lee sobre la marca de agua en el %d %% de la portada (contraste menor de 4,5:1): baja la imagen_opacidad (hoy %s) o usa una imagen más clara u oscura según el fondo.', (int) round(100 * $mal / count($muestra)), self::fmt($libro->imagenOpacidad))];
+    }
+
     /** Una huella del código, los datos y las fuentes del generador: si cambian, los libros hay que volver a escribirlos. */
     private static function versionDelCodigo(): string
     {
@@ -149,6 +180,7 @@ final class Generador
         if ($libro->imagen !== null && !Plantilla::crear($libro->plantilla)->dibujaImagen()) {
             $avisos[] = "la imagen no se usa: la plantilla '{$libro->plantilla}' es solo de letra (usa 'ilustrada' para una ilustración, o una plantilla con marca de agua).";
         }
+        $avisos = [...$avisos, ...self::avisosDeImagen($libro)];
         foreach ($textos as $nombre => $texto) {
             // Con las letras de las fuentes extra el libro sale a trazos solo: aquí falta lo que ni ellas tienen.
             $sin = $medida->sinContorno($texto);

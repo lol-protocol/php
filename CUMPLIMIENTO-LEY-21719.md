@@ -6,8 +6,8 @@
 > **no consultar a un abogado** (26 de octubre de 2026), así que este documento
 > existe para que decida con la lista delante y sepa qué comprobar ella misma.
 >
-> Preparado el **31 de octubre de 2026** y puesto al día el **13 de noviembre de 2026**. La
-> ley rige desde el **1 de diciembre de 2026**: faltan **18 días**.
+> Preparado el **31 de octubre de 2026** y puesto al día el **14 de noviembre de 2026**. La
+> ley rige desde el **1 de diciembre de 2026**: faltan **17 días**.
 
 ## Cómo leerlo
 
@@ -43,17 +43,20 @@
   ([`url-routing/docs/ACCESO.md`](url-routing/docs/ACCESO.md) y
   [`SOLICITUDES.md`](url-routing/docs/SOLICITUDES.md), con el recorrido completo):
   - **Llega** por el formulario `/s/{id}/` (enlazado al pie de la página de cada persona) y
-    espera en `php bin/solicitudes.php`, que no dice por cron quién pidió ni qué escribió. Recibirla no
-    entrega, cambia ni borra nada.
-  - **Acceso:** `php bin/persona.php acceso <id>` imprime todo lo que hay de la persona. A ella se le manda un
-    resumen legible escrito a mano; si necesita ver lo que el sitio oculta, `persona.php entrega <id>` crea un
+    espera en `php bin/solicitudes.php`, que no dice por cron quién pidió ni qué escribió
+    (`--solo-nuevas` avisa en cuanto llega una, si se programa su cron). Recibirla no entrega, cambia ni
+    borra nada. Quien administra las ve y las cierra en el panel `/0/4/` (solo el propietario) o por línea
+    de comandos.
+  - **Acceso:** `php bin/persona.php acceso <id>` imprime todo lo que hay de la persona y `persona.php resumen <id>`
+    deja un borrador legible que se **revisa a mano** antes de mandarlo; si necesita ver lo que el sitio oculta, `persona.php entrega <id>` crea un
     enlace y una clave que se mandan por **dos medios** (7 días, 3 aperturas, 5 claves malas).
   - **Rectificación:** `persona.php rectificar` corrige un campo de la ficha, dice si cambia lo que ve un visitante
     y lo anota sin los valores.
   - **Supresión:** `persona.php suprimir` la borra, deja un registro sin su nombre y se puede repetir si algún día
     se restaura una copia de seguridad vieja.
-  - **Copias:** `php bin/copias.php` hace la copia diaria y borra las viejas, pero **no corre solo** hasta que
-    se programe su cron.
+  - **Copias:** `php bin/copias.php` hace la copia diaria y borra las viejas; con `--cifrar-para` las cifra con
+    age (solo la clave pública va al servidor: **sin la clave privada no hay restauración**). **No corre solo**
+    hasta que se programe su cron.
 
 **Lo que falta para poder abrir el sitio** (detalle en §5):
 
@@ -116,12 +119,12 @@ privacidad. Cada fila se comprobó en el código.
 | **Registro de supresiones**: el id que se borró, cuándo, el pedido y cuántas filas se quitaron. **Nunca el nombre** | `supresiones_persona` | Probar que se hizo y repetirlo tras restaurar una copia | Solo el propietario | Sin plazo |
 | **Registro de correcciones**: la persona, cuándo y qué campo se corrigió. **Nunca el valor viejo ni el nuevo** | `rectificaciones_persona` | Probar que se hizo | Solo el propietario | Sin plazo |
 | **Solicitudes de datos** (ver, corregir, borrar): el derecho pedido, el texto libre y el **correo de contacto** | `solicitudes_persona` | Atender la solicitud | Solo el propietario | El correo y el texto se borran 12 meses después de cerrarla (`bin/solicitudes.php --depurar`), una vez puesto en el cron; el número, la persona, el derecho y las fechas quedan |
-| **Entregas con clave**: el hash del enlace y el de la clave, la persona, la vigencia y cuántas veces se abrió. Nunca el enlace ni la clave | `entregas_persona` | Que una persona lea lo que hay de ella | Solo el propietario | 7 días por omisión (hasta 90); los hashes quedan, sin limpieza automática |
+| **Entregas con clave**: el hash del enlace y el de la clave, la persona, la vigencia y cuántas veces se abrió. Nunca el enlace ni la clave | `entregas_persona` | Que una persona lea lo que hay de ella | Solo el propietario | 7 días por omisión (hasta 90); los vencidos hace más de 12 meses se borran con `bin/solicitudes.php --depurar` (falta instalarlo en el cron) |
 | Cookie de sesión (`PHPSESSID`) con el token CSRF, el carrito o mensajes | Archivo de sesión en el servidor | Que un formulario funcione | Nadie | Caduca a la hora sin actividad, o a las 12 horas |
 | IP de quien visita, como hash SHA-256 | Archivo del limitador, en el directorio temporal | Frenar el abuso (100 peticiones por minuto) | Nadie | Se borra a la hora |
 | Log de la aplicación: errores, y el número y la página de un pedido de retiro, **nunca quién lo pidió** | `LOG_FILE` | Operar el sitio | Quien administra el servidor | Lo que dure el archivo: no hay rotación definida para este |
 | **Log de acceso de nginx**: IP, navegador y dirección pedida | `/var/log/nginx/url-routing/access.log` | Operar el sitio | Quien administra el servidor | 14 días, si el servidor se armó con `vps-setup/` (`07_D-setup-logrotate.sh`); si no, lo que tenga el sistema |
-| Copias de seguridad | Donde las guarde quien administra (`bin/copias.php --destino=…`) | Recuperarse de un desastre | Quien las guarde: traen **lo que el sitio oculta** | **Propuesta sin aprobar: 30 días**, por la fecha del nombre. El script existe pero **no corre solo** hasta programar su cron; no cifra |
+| Copias de seguridad | Donde las guarde quien administra (`bin/copias.php --destino=…`) | Recuperarse de un desastre | Quien las guarde: traen **lo que el sitio oculta** | **Propuesta sin aprobar: 30 días**, por la fecha del nombre. El script existe pero **no corre solo** hasta programar su cron; **puede cifrarlas** con age (`--cifrar-para`), pero cifrar es opcional y no está decidido |
 
 ### Tienda (POS, mismo código)
 
@@ -148,15 +151,15 @@ solo el apellido y se oculta de más la que tiene una palabra que también es no
 |---|---|---|---|---|
 | 1 | **Informar** quién trata los datos, para qué y con qué base | Hay un borrador de términos con huecos y **no hay política de privacidad** | ❌ | Escribirla (puedo redactar el borrador a partir de §3) y completar `[NOMBRE]`, `[CORREO]`, `[PLAZO]` |
 | 2 | **Base para tratar** los datos de cada persona | Solo se muestra a quien no puede estar vivo; no hay una base escrita (interés legítimo, fuente pública, investigación) | ◐ | Elegir y escribir la base **por tipo de dato**. Depende de las preguntas 2 y 3 de §7 |
-| 3 | **Acceso**: la persona pide ver qué se tiene de ella | Se pide en `/s/{id}/` y espera en `php bin/solicitudes.php`. `php bin/persona.php acceso <id>` imprime en JSON la ficha, sus sucesos, registros, colecciones y organizaciones. Los parientes salen como cantidades y de los pedidos de retiro no se dice quién los pidió ni qué escribió | ◐ | **Cómo se comprueba que quien pide es la persona** (o su familiar) antes de mandarle el resultado: imprime también lo que un visitante no ve. Las salidas posibles están en [`SOLICITUDES.md`](url-routing/docs/SOLICITUDES.md); **decidido el 11 de noviembre de 2026**: pedir un dato que está en la ficha pero no se muestra y responder solo al mismo correo; falta ponerlo en práctica. A la persona se le manda un resumen legible escrito a mano; lo oculto solo por una **entrega con clave** (enlace y clave por dos medios), decisión de quien administra en cada caso. Y ensayarlo con datos reales ([`ENSAYO-SOLICITUDES.md`](url-routing/docs/ENSAYO-SOLICITUDES.md)) |
-| 4 | **Rectificación** | Se pide en `/s/{id}/`. `php bin/persona.php rectificar <id> tabla.columna=valor` corrige un campo (nombres, apellidos, sexo, la fecha o la descripción de un suceso que es solo de la persona), dice si el cambio la oculta o la muestra a un visitante y lo anota (`rectificaciones_persona`: persona, fecha, campo y pedido, **nunca los valores**). Lo demás sigue a mano ([`SOLICITUDES.md`](url-routing/docs/SOLICITUDES.md), «Rectificar»). No hay pantalla del propietario | ◐ | Falta ensayarlo con datos reales |
+| 3 | **Acceso**: la persona pide ver qué se tiene de ella | Se pide en `/s/{id}/` y espera en `php bin/solicitudes.php`. `php bin/persona.php acceso <id>` imprime en JSON la ficha, sus sucesos, registros, colecciones y organizaciones. Los parientes salen como cantidades y de los pedidos de retiro no se dice quién los pidió ni qué escribió | ◐ | **Cómo se comprueba que quien pide es la persona** (o su familiar) antes de mandarle el resultado: imprime también lo que un visitante no ve. Las salidas posibles están en [`SOLICITUDES.md`](url-routing/docs/SOLICITUDES.md); **decidido el 11 de noviembre de 2026**: pedir un dato que está en la ficha pero no se muestra y responder solo al mismo correo; falta ponerlo en práctica. A la persona se le manda un resumen legible (`persona.php resumen` da el borrador, se revisa a mano); lo oculto solo por una **entrega con clave** (enlace y clave por dos medios), decisión de quien administra en cada caso. Y ensayarlo con datos reales ([`ENSAYO-SOLICITUDES.md`](url-routing/docs/ENSAYO-SOLICITUDES.md)) |
+| 4 | **Rectificación** | Se pide en `/s/{id}/`. `php bin/persona.php rectificar <id> tabla.columna=valor` corrige un campo (nombres, apellidos, sexo, la fecha o la descripción de un suceso que es solo de la persona), dice si el cambio la oculta o la muestra a un visitante y lo anota (`rectificaciones_persona`: persona, fecha, campo y pedido, **nunca los valores**). Lo demás sigue a mano ([`SOLICITUDES.md`](url-routing/docs/SOLICITUDES.md), «Rectificar»). El panel `/0/4/` lista y cierra las solicitudes; corregir sigue siendo por línea de comandos | ◐ | Falta ensayarlo con datos reales |
 | 5 | **Supresión** | «Retirar» **oculta**. Borrar de verdad: `php bin/persona.php suprimir <id> [--pedido=N] --confirmar`, en una transacción, con un registro sin el nombre y `reaplicar` si se restaura una copia vieja. Lista los textos libres que nombran a la persona **para leerlos a mano** (no los toca) | ◐ | Ensayarla con datos reales (sobre una copia restaurada, no sobre producción). Leer esos textos. Confirmar tres decisiones que tomé yo: se **borra** (no se anonimiza), los **registros** se conservan, los **sucesos compartidos** se conservan con ella fuera |
 | 6 | **Oposición** | El formulario `/r/{id}/` con el motivo «habla de mí» o «de un familiar fallecido» | ✅ | Solo atender dentro del plazo |
 | 7 | **Portabilidad** | Exporta a GEDCOM una colección (`/{id}/3/`) | ◐ | No hay salida para una persona suelta. Comprobar si aplica a estos datos (§7, pregunta 5) |
 | 8 | **Bloqueo temporal** mientras se revisa | El estado «oculto» hace justo eso. A las 24 horas se aplica solo, **cuando el cron del servidor lleve `--ocultar`** (decidido; falta instalarlo) | ✅ | Comprobar que la ley lo pide con ese nombre, e instalar el cron |
 | 9 | **Plazo de respuesta** | El borrador de términos promete 10 días hábiles para responder | ◐ | Si el plazo legal son 30 días corridos, lo prometido es más estricto; no firmar un plazo que no se puede cumplir |
 | 10 | **Decisiones automatizadas** sobre personas | Ninguna. El filtro de difamación solo marca para quien revisa; decide una persona | ✅ | — |
-| 11 | **Seguridad** | HTTPS obligatorio, un solo secreto que se rota, cabeceras, limitador, sin contraseñas de visitantes, sin pagos. **Sin cifrado de la base en reposo** (depende del servidor). Las entregas con clave guardan solo hashes y limitan intentos, aperturas y vigencia | ◐ | Aprobar la política de copias (paso 11 de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md): propuesta de 30 días, fuera del servidor) y programar `bin/copias.php`. Decidir si se cifran |
+| 11 | **Seguridad** | HTTPS obligatorio, un solo secreto que se rota, cabeceras, limitador, sin contraseñas de visitantes, sin pagos. **Sin cifrado de la base en reposo** (depende del servidor); las copias sí pueden cifrarse con age. Las entregas con clave guardan solo hashes y limitan intentos, aperturas y vigencia | ◐ | Aprobar la política de copias (paso 11 de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md): propuesta de 30 días, fuera del servidor) y programar `bin/copias.php`. Decidir si se cifran (ya se puede) y dónde se guarda la clave privada |
 | 12 | **Avisar de una vulneración** a la Agencia y a las personas | [`SECURITY.md`](SECURITY.md) dice cómo **reportarle** una falla al mantenedor. No hay un procedimiento para cuando **ya pasó** | ❌ | Una hoja de «si pasa»: detectar, contener (rotar el token cierra todas las sesiones), evaluar, avisar, anotar. Puedo redactarla |
 | 13 | **Registro de lo que se trata** | §3 de este documento | ◐ | Pasarlo a un lugar estable y mantenerlo al día |
 | 14 | **Conservación limitada** | Los pedidos de retiro tienen `--depurar` (12 meses; ya está en el cron de [`DESPLIEGUE.md`](url-routing/docs/DESPLIEGUE.md), falta instalarlo en el servidor; igual las solicitudes de datos con `bin/solicitudes.php --depurar`). Caducan las sesiones, el hash de IP y el log de nginx. **No tienen plazo**: la ficha y sus sucesos, las direcciones de la tienda, el log de la aplicación y las copias | ◐ | Decidir un plazo para esos cuatro y poner `--depurar` en el cron (§5, punto 2) |
@@ -190,9 +193,8 @@ solo el apellido y se oculta de más la que tiene una palabra que también es no
 
 **Puede esperar a después de abrir:**
 
-- Una pantalla **del propietario** para las solicitudes (el formulario para pedirlas ya existe; atenderlas es por
-  línea de comandos, y sirve mientras haya pocas solicitudes si el procedimiento está escrito).
-- Cifrado de la base en reposo y de las copias, y poner `bin/copias.php` en el cron (el script ya existe).
+- Cifrado de la base en reposo (las copias ya pueden cifrarse con age), y poner `bin/copias.php` en el cron (el
+  script ya existe).
 - Un registro de actividades más fino que el de §3.
 
 ---

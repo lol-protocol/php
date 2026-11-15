@@ -53,7 +53,7 @@ El archivo se llama `*.formas.json`. Cada script toma de la lista las palabras q
 - encuentra la palabra aunque lleve signos pegados (`«كليلة»`, `الكتاب.`);
 - coloca de derecha a izquierda una línea escrita solo con palabras así, y en una frase mezclada («…es una obra de ابن المقفع»), cada tramo seguido de ellas.
 
-Es un bidi mínimo: no resuelve números ni paréntesis dentro de un tramo, no alinea a la derecha un párrafo entero de derecha a izquierda, y una palabra que no esté en el archivo no se dibuja (hay que volver a correr el script cuando cambian los textos). Probado con Noto Sans Arabic, Hebrew y Devanagari en Chromium.
+El orden sigue un bidi reducido (UAX nº 9 sin niveles de incrustación): la dirección del párrafo es la de su primera palabra con dirección, y un párrafo de derecha a izquierda invierte el orden de sus tramos y se alinea al borde derecho de su caja; un número toma la dirección de la palabra anterior y se escribe de izquierda a derecha en su sitio; un espacio o signo entre dos tramos iguales es de ese tramo, y los paréntesis, corchetes y comillas angulares se espejan dentro de un tramo de derecha a izquierda. No resuelve números con signos pegados (`-12`, `3,5%`) dentro de un tramo ni más de un nivel de mezcla, y una palabra que no esté en el archivo no se dibuja (hay que volver a correr el script cuando cambian los textos). Probado con Noto Sans Arabic, Hebrew y Devanagari en Chromium.
 
 ## El ancho del texto
 

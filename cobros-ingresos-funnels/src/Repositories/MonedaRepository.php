@@ -57,14 +57,12 @@ final class MonedaRepository
     }
 
     /**
-     * Cuantos decimales tiene un monto en esa moneda dentro de esta aplicacion: los de ISO, con tope en 2.
-     * boletas.monto, pagos.monto y notas_credito.monto son NUMERIC(14, 2), y la regla del centavo
-     * (Dinero::UN_CENTAVO) esta escrita en PHP y en SQL: las monedas de 3 decimales se guardan con 2.
-     * Una moneda que no esta en el catalogo: 2.
+     * Cuantos decimales tiene un monto en esa moneda: los de ISO 4217 (0, 2 o 3; boletas.monto, pagos.monto y
+     * notas_credito.monto son NUMERIC(15, 3) desde la migracion 019). Una moneda que no esta en el catalogo: 2.
      */
     public static function decimales(string $codigo): int
     {
-        return min(self::decimalesPorMoneda()[$codigo] ?? 2, 2);
+        return min(self::decimalesPorMoneda()[$codigo] ?? 2, 3);
     }
 
     /**

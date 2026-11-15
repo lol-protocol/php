@@ -21,18 +21,19 @@ final class Wikidata
     /**
      * @param callable(Perfil): void $cada
      * @param ?string $pais identificador del país de ciudadanía (`Q298` es Chile), o null para todos
-     * `leidas` son las líneas con fecha de muerte; `decodificadas`, las que pasaron el prefiltro de
-     * texto (humano y, si se pidió, país) y costaron un `json_decode`; `aceptadas`, las personas entregadas.
+     * `lineas` son todas las líneas del archivo que se leyeron; `leidas`, las que tienen fecha de muerte;
+     * `decodificadas`, las que pasaron el prefiltro de texto (humano y, si se pidió, país) y costaron un
+     * `json_decode`; `corruptas`, las decodificadas que no eran JSON (se saltan, no detienen la corrida);
+     * `aceptadas`, las personas entregadas.
      *
-     * @return array{leidas: int, decodificadas: int, aceptadas: int}
+     * @param ?callable(int, int): void $progreso se llama cada `$cadaLineas` líneas con (líneas leídas, personas aceptadas)
+     * @return array{lineas: int, leidas: int, decodificadas: int, corruptas: int, aceptadas: int}
      */
-    public static function recorrer(string $ruta, callable $cada, ?string $pais = null, ?int $maximo = null, ?string $capturado = null): array
+    public static function recorrer(string $ruta, callable $cada, ?string $pais = null, ?int $maximo = null, ?string $capturado = null, ?callable $progreso = null, int $cadaLineas = 1_000_000): array
     {
-        $abrir = str_ends_with($ruta, '.gz') ? 'compress.zlib://' . $ruta : $ruta;
-        $f = is_file($ruta) ? @fopen($abrir, 'rb') : false;
-        if ($f === false) {
-            throw new RuntimeException("No se pudo abrir $ruta");
-        }
+        $f = self::abrir($ruta);
+        $lineas = 0;
+        $corruptas = 0;
         $leidas = 0;
         $decodificadas = 0;
         $aceptadas = 0;
@@ -41,6 +42,10 @@ final class Wikidata
         $humano = '/"id"\s*:\s*"Q5"/';
         $delPais = $pais === null ? null : '/"id"\s*:\s*"' . preg_quote($pais, '/') . '"/';
         while (($linea = fgets($f)) !== false) {
+            $lineas++;
+            if ($progreso !== null && $lineas % $cadaLineas === 0) {
+                $progreso($lineas, $aceptadas);
+            }
             $linea = rtrim($linea, ",\r\n ");
             // Casi ninguna línea es de una persona fallecida: se descarta antes de decodificar.
             if ($linea === '' || $linea === '[' || $linea === ']' || !str_contains($linea, '"P570"')) {
@@ -52,7 +57,11 @@ final class Wikidata
             }
             $decodificadas++;
             $entidad = json_decode($linea, true);
-            $perfil = is_array($entidad) ? self::persona($entidad, $pais, $capturado) : null;
+            if (!is_array($entidad)) {
+                $corruptas++;
+                continue;
+            }
+            $perfil = self::persona($entidad, $pais, $capturado);
             if ($perfil === null) {
                 continue;
             }
@@ -63,7 +72,35 @@ final class Wikidata
             }
         }
         fclose($f);
-        return ['leidas' => $leidas, 'decodificadas' => $decodificadas, 'aceptadas' => $aceptadas];
+        return ['lineas' => $lineas, 'leidas' => $leidas, 'decodificadas' => $decodificadas, 'corruptas' => $corruptas, 'aceptadas' => $aceptadas];
+    }
+
+    /**
+     * Abre un volcado: texto plano, `.gz` (siempre disponible) o `.bz2` (pide la extensión bz2 de PHP, que no
+     * viene en todas las instalaciones).
+     *
+     * @return resource
+     * @throws RuntimeException si no existe, no se puede abrir o es `.bz2` y falta la extensión
+     */
+    private static function abrir(string $ruta)
+    {
+        if (!is_file($ruta)) {
+            throw new RuntimeException("No se pudo abrir $ruta");
+        }
+        $url = $ruta;
+        if (str_ends_with($ruta, '.gz')) {
+            $url = 'compress.zlib://' . $ruta;
+        } elseif (str_ends_with($ruta, '.bz2')) {
+            if (!function_exists('bzopen')) {
+                throw new RuntimeException("$ruta es .bz2 y a PHP le falta la extensión bz2: descomprímelo o usa el .gz");
+            }
+            $url = 'compress.bzip2://' . $ruta;
+        }
+        $f = @fopen($url, 'rb');
+        if ($f === false) {
+            throw new RuntimeException("No se pudo abrir $ruta");
+        }
+        return $f;
     }
 
     /**
@@ -103,11 +140,7 @@ final class Wikidata
         /** @var array<string, array{nombre: ?string, fallecido: bool}> $datos */
         $datos = [];
         if ($quiero !== []) {
-            $abrir = str_ends_with($ruta, '.gz') ? 'compress.zlib://' . $ruta : $ruta;
-            $f = is_file($ruta) ? @fopen($abrir, 'rb') : false;
-            if ($f === false) {
-                throw new RuntimeException("No se pudo abrir $ruta");
-            }
+            $f = self::abrir($ruta);
             while (count($datos) < count($quiero) && ($linea = fgets($f)) !== false) {
                 // El identificador de la entidad es el primer «id» de la línea: se mira sin decodificar.
                 if (preg_match('/"id"\s*:\s*"(Q\d+)"/', substr($linea, 0, 200), $m) !== 1

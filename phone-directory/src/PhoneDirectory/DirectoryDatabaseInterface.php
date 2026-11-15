@@ -34,14 +34,24 @@ interface DirectoryDatabaseInterface
     /** @return TEntity|null */
     public function findById(int $id): ?object;
 
-    /** @return list<TEntity> */
-    public function findByStreet(string $street): array;
+    /**
+     * @param int|null $limit The most entities to return; null for all
+     * @param int $offset How many of the entities the reader may see to skip first
+     * @return list<TEntity>
+     * @throws \InvalidArgumentException If $limit is below 1 or $offset is below 0
+     */
+    public function findByStreet(string $street, ?int $limit = null, int $offset = 0): array;
 
     /** @return TEntity|null */
     public function findByPhone(string $phone): ?object;
 
-    /** @return list<TEntity> */
-    public function getAll(): array;
+    /**
+     * @param int|null $limit The most entities to return; null for all
+     * @param int $offset How many of the entities the reader may see to skip first
+     * @return list<TEntity>
+     * @throws \InvalidArgumentException If $limit is below 1 or $offset is below 0
+     */
+    public function getAll(?int $limit = null, int $offset = 0): array;
 
     public function delete(int $id): bool;
 

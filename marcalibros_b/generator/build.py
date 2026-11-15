@@ -329,7 +329,7 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
         frase = elegir_frase(entrada["id"], mov["id"], cargar_frases())
         if frase:
             # las frases originales del proyecto no llevan firma: solo se dibuja la frase
-            bloques, _ = tx.componer(frase["texto"], "" if frase.get("original") else frase["autor"], esc.franja)
+            bloques, _ = tx.componer(frase["texto"], "" if frase.get("original") else frase["autor"], esc.franja, idioma=frase.get("idioma"))
             esc.texto(bloques, TONOS_TEXTO[texto])
         entrada["frase"] = ({**{k: frase[k] for k in ("texto", "autor", "obra", "idioma")}, "firmada": not frase.get("original")}
                             if frase else None)
@@ -367,8 +367,9 @@ def hash_generador():
     """Hash del código que dibuja las piezas, su fuente y los catálogos que lo parametrizan."""
     h = hashlib.sha256()
     for ruta in ([RAIZ / "generator" / f"{m}.py" for m in MODULOS_DE_RENDER]
-                 + sorted((RAIZ / "generator" / "fuentes").glob("*.ttf"))
-                 + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml", CATALOGO / "frases.yaml"]):
+                 + sorted((RAIZ / "generator" / "fuentes").glob("*.[to]tf"))
+                 + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml", CATALOGO / "frases.yaml",
+                    CATALOGO / "escrituras.yaml"]):
         h.update(ruta.name.encode() + b"\0" + ruta.read_bytes() + b"\0")
     return h.hexdigest()
 

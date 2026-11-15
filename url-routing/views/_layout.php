@@ -42,7 +42,7 @@ $tActual = isset($digitos) ? (string)$digitos : (string)array_key_first($tiposBu
 $jsonLd = isset($estructurado) && is_array($estructurado) ? [['@context' => 'https://schema.org'] + $estructurado] : [];
 if (!empty($migas)) {
     $elementos = [];
-    foreach (array_merge([['Inicio', '/']], $migas) as $i => [$nombre, $url]) {
+    foreach (array_merge([[t('layout.inicio'), '/']], $migas) as $i => [$nombre, $url]) {
         $elementos[] = ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $nombre, 'item' => HostParser::origen() . ($url ?? $ruta)];
     }
     $jsonLd[] = ['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => $elementos];
@@ -83,7 +83,7 @@ foreach ($jsonLd as $objeto): ?>
         .vacio { color: var(--muted); font-style: italic; }
         dl.ficha { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1.25rem; margin: 0; }
         dl.ficha dt { color: var(--muted); }
-        dl.ficha dd { margin: 0; }
+        dl.ficha dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
         .aviso { padding: .75rem 1rem; border: 1px solid var(--line); border-radius: .5rem; background: var(--soft); }
         .muestra { display: inline-block; width: 1em; height: 1em; border: 1px solid var(--line); border-radius: .2em; vertical-align: -.15em; }
         ul.arbol, ul.arbol ul { list-style: none; margin: 0; padding-left: 1.25rem; border-left: 1px solid var(--line); }
@@ -97,24 +97,24 @@ foreach ($jsonLd as $objeto): ?>
     <div class="barra">
         <a class="marca" href="/"><?= esc($sitio) ?></a>
         <form action="/" method="get" role="search">
-            <select name="t" aria-label="Tipo">
+            <select name="t" aria-label="<?= esc(t('layout.tipo')) ?>">
 <?php foreach ($tiposBusqueda as $digitos => $etiqueta): ?>
                 <option value="<?= esc($digitos) ?>"<?= (string)$digitos === $tActual ? ' selected' : '' ?>><?= esc($etiqueta) ?></option>
 <?php endforeach; ?>
             </select>
-            <input type="search" name="q" value="<?= esc($qActual) ?>" placeholder="Buscar…" aria-label="Buscar">
-            <button type="submit">Buscar</button>
+            <input type="search" name="q" value="<?= esc($qActual) ?>" placeholder="<?= esc(t('layout.buscar_ph')) ?>" aria-label="<?= esc(t('layout.buscar')) ?>">
+            <button type="submit"><?= esc(t('layout.buscar')) ?></button>
         </form>
 <?php foreach ($navExtra ?? [] as $enlace): ?>
         <a href="<?= esc($enlace['href']) ?>"><?= esc($enlace['label']) ?></a>
 <?php endforeach; ?>
-        <a href="<?= esc(cuenta()) ?>">Mi cuenta</a>
+        <a href="<?= esc(cuenta()) ?>"><?= esc(t('layout.mi_cuenta')) ?></a>
     </div>
 </header>
 <main>
 <?php if (!empty($migas)): ?>
-<nav class="meta" aria-label="Migas de pan">
-    <a href="/">Inicio</a><?php foreach ($migas as [$nombre, $url]): ?> › <?php if ($url === null): ?><span aria-current="page"><?= esc($nombre) ?></span><?php else: ?><a href="<?= esc($url) ?>"><?= esc($nombre) ?></a><?php endif; ?><?php endforeach; ?>
+<nav class="meta" aria-label="<?= esc(t('layout.migas')) ?>">
+    <a href="/"><?= esc(t('layout.inicio')) ?></a><?php foreach ($migas as [$nombre, $url]): ?> › <?php if ($url === null): ?><span aria-current="page"><?= esc($nombre) ?></span><?php else: ?><a href="<?= esc($url) ?>"><?= esc($nombre) ?></a><?php endif; ?><?php endforeach; ?>
 
 </nav>
 <?php endif; ?>
@@ -127,7 +127,7 @@ foreach ($jsonLd as $objeto): ?>
 <script src="<?= esc($script) ?>"></script>
 <?php endforeach; ?>
 <?php if (!empty($pedirRetiro)): ?>
-<footer class="pie meta"><a href="<?= esc($pedirRetiro) ?>" rel="nofollow">Pedir el retiro de esta página</a><?php if (!empty($pedirDatos)): ?> · <a href="<?= esc($pedirDatos) ?>" rel="nofollow">Pedir ver, corregir o borrar mis datos</a><?php endif; ?></footer>
+<footer class="pie meta"><a href="<?= esc($pedirRetiro) ?>" rel="nofollow"><?= esc(t('layout.pedir_retiro')) ?></a><?php if (!empty($pedirDatos)): ?> · <a href="<?= esc($pedirDatos) ?>" rel="nofollow"><?= esc(t('layout.pedir_datos')) ?></a><?php endif; ?></footer>
 <?php endif; ?>
 </body>
 </html>

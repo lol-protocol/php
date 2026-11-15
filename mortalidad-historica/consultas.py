@@ -82,21 +82,22 @@ def hitos_de(codigo):
 
 @functools.cache
 def _periodos_de_esperanza():
-    """{(código, sexo, edad): [(desde, hasta, esperanza, supervivencia o None)]} de esperanza_vida.csv."""
+    """{(código, sexo, edad): [(desde, hasta, esperanza, supervivencia o None, banda o None)]} de esperanza_vida.csv."""
     indice = {}
     for f in filas_csv("esperanza_vida"):
         supervivencia = float(f["supervivencia_hasta_edad"]) if f["supervivencia_hasta_edad"] else None
+        banda = (float(f["incertidumbre_baja"]), float(f["incertidumbre_alta"])) if f["incertidumbre_baja"] else None
         indice.setdefault((f["codigo"], f["sexo"], int(f["edad"])), []).append(
-            (int(f["desde"]), int(f["hasta"]), float(f["esperanza_restante"]), supervivencia))
+            (int(f["desde"]), int(f["hasta"]), float(f["esperanza_restante"]), supervivencia, banda))
     return indice
 
 
 def _periodo_que_cubre(codigo, anio, edad, sexo):
     if sexo not in SEXOS:
         raise ValueError(f"sexo «{sexo}»: debe ser uno de {SEXOS}")
-    for desde, hasta, esperanza, supervivencia in _periodos_de_esperanza().get((codigo, sexo, edad), ()):
+    for desde, hasta, esperanza, supervivencia, banda in _periodos_de_esperanza().get((codigo, sexo, edad), ()):
         if desde <= anio <= hasta:
-            return esperanza, supervivencia
+            return esperanza, supervivencia, banda
     return None
 
 
@@ -105,9 +106,10 @@ def esperanza_restante(codigo, anio, edad=0, sexo="T"):
 
     `codigo` es un ISO alfa-2; `sexo`, `M`, `F` o `T` (ambos). Es una cifra de **período** (la mortalidad de
     la década que contiene `anio`), no de una generación, y un promedio de toda la población: no dice cuánto
-    iba a vivir una persona. Devuelve None si no hay dato: país sin serie, año fuera de 1800-2009, o una
-    edad que todavía no está (hoy 0, 5, 15, 30, 45 y 60; todas menos la 0 solo para ambos sexos). No interpola entre
-    edades. De los 15 años en adelante la cifra es **modelada** (ver modelo.py), no medida.
+    iba a vivir una persona. Devuelve None si no hay dato: país sin serie, año sin cobertura (de 1800 a 2009, y
+    desde 1540 solo la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca), o una edad que todavía
+    no está (hoy 0, 5, 15, 30, 45 y 60). Mujeres y hombres, solo desde 1950. No interpola entre edades. De los 15 años
+    en adelante la cifra es **modelada** (ver modelo.py), no medida.
     """
     encontrado = _periodo_que_cubre(codigo, anio, edad, sexo)
     return None if encontrado is None else encontrado[0]
@@ -156,3 +158,12 @@ def exceso_de_muertes_londres(anio, ventana=5):
     return serie[anio][0] / mediana
 
 
+def banda_esperanza(codigo, anio, edad=0, sexo="T"):
+    """(bajo, alto) de la esperanza restante de `esperanza_restante`, o None si no hay dato o no tiene banda.
+
+    Desde 1950 la banda es la discrepancia entre fuentes (el percentil 80); **antes de 1950 es un supuesto del
+    proyecto**, no una medición: está para que ninguna cifra parezca más firme de lo que es. Mismas reglas y límites
+    que `esperanza_restante`.
+    """
+    encontrado = _periodo_que_cubre(codigo, anio, edad, sexo)
+    return None if encontrado is None else encontrado[2]

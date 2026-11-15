@@ -18,7 +18,7 @@ de demostración.
 | 2 | **Comprobar que quien pide es la persona** (o, si ya falleció, un familiar) antes de mandar o cambiar nada. **⚖️ Sin decidir**: ver la sección siguiente. | — |
 | 3 | **Encontrar el id.** Busca por nombre en `/b/10/{texto}/` **entrando como propietario** ([`ACCESO.md`](ACCESO.md), «Entrar como propietario»): un visitante no ve a una persona que puede estar viva, y es justo quien suele pedir. Con homónimos, confirma por fechas y lugares, no solo por el nombre. | `/b/10/…` |
 | 4 | **Acceso.** `php bin/persona.php acceso <id>` (JSON). Mira abajo qué contiene y qué no. | servidor |
-| 5 | **Rectificación.** A mano, en una transacción y con un respaldo antes, y después `php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]`: sección «Rectificar». | base de datos |
+| 5 | **Rectificación.** En el panel (`/0/4/`), «Simular una corrección» dice qué haría `php bin/persona.php rectificar` (y si cambia lo que ve un visitante) sin cambiar nada; hacerla es el comando con `--confirmar`. A mano, en una transacción y con un respaldo antes, y después `php bin/persona.php rectificacion <id> <tabla.columna> [--pedido=N]`: sección «Rectificar». | base de datos |
 | 6 | **Supresión.** `php bin/persona.php suprimir <id> [--pedido=N]` (simulación) y luego `--confirmar`. Retirar **no** es borrar. | servidor |
 | 7 | **Responder** a quien pidió, por una persona y no por el sitio (que no escribe solo): sección «Qué responder». | correo |
 | 8 | **Anotar**: cuándo llegó, cuándo se respondió y qué se hizo, **sin copiar los datos de la persona** a la nota. Si llegó por el formulario, ciérrala: con los botones del panel (`/0/4/`) o con `php bin/solicitudes.php --atender=N --nota='…'` (o `--rechazar=N` si no se pudo comprobar quién pedía). Cerrarla solo la marca: no entrega, corrige ni borra nada. | `/0/4/`, `bin/solicitudes.php`, fuera del repositorio |
@@ -145,7 +145,7 @@ correo en claro. **Solo después de comprobar quién pide** (sección «Comproba
 una persona que puede estar viva a quien tenga el enlace y la clave.
 
 ```
-php bin/persona.php entrega <id> [--dias=7]      # imprime el enlace y la clave, una sola vez
+php bin/persona.php entrega <id> [--dias=7]      # imprime el enlace y la clave, una sola vez (o, en /0/4/, «Crear una entrega con clave»)
 php bin/persona.php entrega <id> --revocar       # termina las que siguen vigentes (se mandaron al medio equivocado)
 ```
 

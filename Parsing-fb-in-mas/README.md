@@ -8,10 +8,10 @@ como `phone-directory/`).
 | Qué lee | Archivo | Personas |
 |---|---|---|
 | Facebook, LinkedIn, Twitter/X, Instagram, TikTok, YouTube (canales), GitHub, Pinterest, Bluesky, Threads, Mastodon (cualquier instancia) | una página HTML guardada | casi siempre vivas |
-| WikiTree, Find a Grave | una página HTML guardada (microdatos de schema.org) | fallecidas |
+| WikiTree, Find a Grave, BillionGraves | una página HTML guardada (schema.org) | fallecidas |
 | WikiTree | una respuesta JSON de su API, guardada (`.json`, un archivo por vez) | fallecidas, o vivas con lo mínimo |
 | Cualquier sitio con una `Person` de schema.org (JSON-LD o microdatos) | una página HTML guardada | las que declare |
-| Wikidata | un volcado local `.json` o `.json.gz` (CC0) | fallecidas |
+| Wikidata | un volcado local `.json`, `.json.gz` o `.json.bz2` (CC0; `.bz2` pide la extensión bz2 de PHP) | fallecidas |
 
 ## Lo que hace y lo que no
 
@@ -25,22 +25,28 @@ como `phone-directory/`).
   publicaciones ni contadores de seguidores. **Fechas de nacimiento y de muerte, lugares de
   vida y parientes se guardan solo si la fuente da una fecha de muerte**; si una página trae
   `birthDate` de alguien sin `deathDate`, esa fecha se descarta (hay pruebas).
-- **El texto que escribió la persona (titular y descripción) se marca, no se borra.** Pasa por el filtro
-  de `../defamatory-content-review/` (datos personales como el RUT o un teléfono, insultos y acusaciones, y
-  datos sensibles **de un tercero**: «tiene cáncer», «la familia era judía», «es comunista», «era mapuche») y por
-  una lista corta propia de categorías sensibles (`src/Sensibles.php`: salud, religión, política o sindical,
-  vida sexual, origen étnico). **Las dos se complementan:** el filtro del repo está escrito para frases sobre
-  otra persona y no marca lo que alguien dice de sí mismo («Tengo cáncer», «Soy evangélica»), que es justo lo
-  que suele traer una biografía de perfil; esa parte la cubre `Sensibles`. Las etiquetas salen en `marcas` y un
-  aviso dice «leer el texto con cuidado». **Es una ayuda, no una garantía:** la lista propia es de palabras
-  sueltas, así que puede marcar de más y, sobre todo, no marcar de menos. Que no salga ninguna marca no quiere
-  decir que el texto esté limpio. `--sin-revision` la desactiva.
+- **El texto que escribió la persona (titular y descripción) se marca, no se borra.** Tres revisiones que se
+  complementan (`src/Revision.php`), y las etiquetas salen en `marcas` con un aviso «leer el texto con cuidado»:
+  1. El filtro de `../defamatory-content-review/` en su modo normal: datos personales como el RUT o un teléfono,
+     insultos, acusaciones y datos sensibles dichos de **un tercero** («tiene cáncer», «la familia era judía»).
+  2. El mismo filtro en su **modo biografía** (`bio-topics`): datos sensibles que alguien dice de **sí mismo**
+     («tengo cáncer», «soy evangélica», «soy gay»), solo en español e inglés y con la forma «soy… / tengo…».
+  3. Una lista corta propia (`src/Sensibles.php`: salud, religión, política o sindical, vida sexual, origen étnico) en
+     español, inglés, francés, portugués, italiano y alemán. Cubre lo que lo anterior no ve: los otros cuatro idiomas
+     y las biografías sin verbo («Mapuche. Archivera», «Militante comunista»). Si el filtro ya marcó una categoría, la
+     de esta lista no se repite.
+
+  **Es una ayuda, no una garantía:** las listas son cortas y de palabras sueltas, así que pueden marcar de más y,
+  sobre todo, no marcar de menos. Que no salga ninguna marca no quiere decir que el texto esté limpio.
+  `--sin-revision` la desactiva.
 - **Lista de exclusión (`--excluir=lista.txt`)** en `analizar.php`, `wikidata.php`, `wikidata-nombres.php` y
   `cruzar.php`: una entrada por línea, una URL o `red:usuario` (`twitter:ana`, `wikidata:Q42`, `wikitree:Ejemplo-1`);
   `#` es comentario. Sirve para que alguien que pidió retirarse no vuelva a salir al reprocesar
   (ver `RECLAMOS.md`). **No está conectada a la cola de pedidos de retiro del sitio** (`url-routing/`): se
-  mantiene a mano, y quien decide un retiro tiene que agregar la entrada. No quita a nadie de lo que ya se
-  generó. Una línea mal escrita hace fallar el programa en vez de ignorarse.
+  mantiene a mano, y quien decide un retiro tiene que agregar la entrada. `--excluir` solo evita que alguien
+  vuelva a salir al reprocesar; para quitarlo de un JSONL ya generado está `bin/purgar.php` (línea por línea; las
+  líneas que no son JSON se conservan sin revisar y el programa lo avisa). Una línea mal escrita hace fallar el
+  programa en vez de ignorarse.
 - **`revision_humana` sale siempre en verdadero; `posiblemente_vivo` también, salvo que conste
   una muerte.** Nada se publica ni se mezcla con un árbol sin que una persona lo revise y sin
   base legal escrita (preguntas 2 y 3 de `PREGUNTAS-PARA-ABOGADO.md`, y
@@ -74,8 +80,15 @@ php bin/analizar.php --capturado=2026-11-04 --jsonl respuesta-wikitree.json >> p
 # segundo recorrido del volcado: nombres de lugares y parientes de los perfiles de Wikidata
 php bin/wikidata-nombres.php latest-all.json.gz wikidata.jsonl > wikidata-con-nombres.jsonl
 
-# parejas de FALLECIDOS que podrían ser la misma persona, entre dos fuentes
-php bin/cruzar.php wikidata.jsonl perfiles.jsonl --idioma=spa
+# parejas de FALLECIDOS que podrían ser la misma persona, entre dos fuentes (pon como segundo el archivo más chico)
+php bin/cruzar.php perfiles.jsonl wikidata.jsonl --idioma=spa --umbral=0.6 --anios=5 --palabras=2
+
+# quitar a una persona de un archivo ya generado (--excluir solo la evita al reprocesar)
+php bin/purgar.php perfiles.jsonl --excluir=retiros.txt --en-sitio
+
+# validar un analizador contra una página real, sin mirar el HTML a mano
+php bin/diagnostico.php pagina-guardada.html              # qué analizador la reconoció y qué campos le sacó
+php bin/diagnostico.php --esqueleto pagina-guardada.html  # su estructura, con letras y dígitos enmascarados
 ```
 
 Pruebas: `php pruebas/ejecutar.php`; análisis estático: `phpstan analyse` (nivel `max`, ver `phpstan.neon.dist`; la CI usa PHPStan 2.1).
@@ -97,12 +110,29 @@ API. Es más estable que el HTML, pero los campos que usa (`Name`, `FirstName`, 
 real**. Con `IsLiving` en verdadero, o con una `DeathDate` desconocida (`0000-00-00`), no sale ninguna fecha,
 lugar ni pariente. Antes de usarla, revisa los términos de uso de la API de WikiTree: no lo hice.
 
+## Validar con páginas reales
+
+Es lo que más falta: los formatos están escritos de memoria. `bin/diagnostico.php` ayuda sin pedirte que copies
+HTML a mano. Sin opciones dice qué analizador reconoció la página y qué campos le sacó (sí o no, con la ruta de la
+URL enmascarada). Con `--esqueleto` escribe la estructura que ve el analizador (etiquetas, forma de sus valores) con
+las letras cambiadas por `x` y los dígitos por `9`, conservando el largo y la puntuación: se puede compartir en un
+PR o un mensaje sin compartir el nombre, el usuario ni la biografía de nadie. Con eso se ajusta el analizador y se
+agrega una muestra **inventada** con esa misma forma a `pruebas/muestras/`. Las páginas reales no se suben al repo.
+
 ## El cruce
 
 `bin/cruzar.php` pliega los nombres con `PhoneticFolderRegistry` (así «González» y «Gonsales»
-coinciden), pide al menos dos palabras en común, descarta nacimientos a más de 5 años, suma
-puntos por año y lugar parecidos, y escribe cada pareja como **candidata que requiere revisión
-humana**: nunca fusiona. **Omite todo perfil que pueda estar vivo** y cuenta cuántos omitió: un
+coinciden), pide el nombre de pila de cada uno en el nombre del otro y, por defecto, al menos dos palabras en
+común; descarta nacimientos a más de 5 años; suma puntos por año, lugar y pariente (por nombre) parecidos; y
+escribe cada pareja como **candidata que requiere revisión humana**: nunca fusiona. Los umbrales son opciones
+(`--umbral`, `--anios`, `--palabras`) y **los valores por defecto son una primera aproximación, no medida con datos
+reales**: conviene mirar el puntaje y la evidencia de lo que sale y ajustarlos.
+
+**Escala.** El archivo `b` se guarda como un índice compacto (por persona, solo lo necesario para comparar) y el `a` se
+lee línea por línea. Con 20.000 contra 100.000 personas inventadas, los mismos candidatos que antes con 174 MB de pico
+en vez de 688 MB; en tiempo la mejora fue modesta (17 s a 15 s), porque lo que más cuesta es leer el JSON y plegar los
+nombres. Son unos 1,7 KB por persona de `b`: un millón ocupa del orden de 1,7 GB, y no hay un mecanismo para partir
+el trabajo en bloques. **Omite todo perfil que pueda estar vivo** y cuenta cuántos omitió: un
 perfil de red social no se empareja con registros de fallecidos ni con nada.
 
 ## Cómo agregar una red

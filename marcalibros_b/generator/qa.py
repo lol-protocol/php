@@ -171,7 +171,9 @@ def validar_frases(datos, soporta):
                 problemas.append(f"{donde}: {q['autor']} murió en {q['muerte']}; sigue con derechos")
             if q["estado"] not in ("sin_verificar", "verificada", "original"):
                 problemas.append(f"{donde}: estado inválido {q['estado']!r}")
-            falta = sorted({c for c in q["texto"] + q["autor"] + "—" if not soporta(c)})
+            # la frase va en la fuente de su idioma; la autoría («— Autor») siempre en la latina
+            falta = sorted({c for c in q["texto"] if not soporta(c, q.get("idioma"))}
+                           | {c for c in q["autor"] + "—" if not soporta(c)})
             if falta:
                 problemas.append(f"{donde}: la fuente no tiene {falta}")
     return problemas

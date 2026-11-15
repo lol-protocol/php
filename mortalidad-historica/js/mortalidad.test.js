@@ -75,14 +75,17 @@ test('region_de y hitos_de', () => {
 });
 
 test('esperanza de vida y supervivencia, con los «no hay dato»', () => {
-  assert.ok(vectores.esperanza.length > 500);
+  assert.ok(vectores.esperanza.length > 900);
   let conDato = 0;
-  for (const [codigo, anio, edad, sexo, esperanza, supervivencia] of vectores.esperanza) {
+  for (const [codigo, anio, edad, sexo, esperanza, supervivencia, banda] of vectores.esperanza) {
     casi(esperanza, m.esperanzaRestante(codigo, anio, edad, sexo), `esperanza ${codigo} ${anio} ${edad} ${sexo}`);
     casi(supervivencia, m.supervivencia(codigo, anio, edad, sexo), `supervivencia ${codigo} ${anio} ${edad} ${sexo}`);
+    const obtenida = m.bandaEsperanza(codigo, anio, edad, sexo);
+    casi(banda === null ? null : banda[0], obtenida === null ? null : obtenida[0], `banda baja ${codigo} ${anio} ${edad} ${sexo}`);
+    casi(banda === null ? null : banda[1], obtenida === null ? null : obtenida[1], `banda alta ${codigo} ${anio} ${edad} ${sexo}`);
     if (esperanza !== null) conDato++;
   }
-  assert.ok(conDato > 100);
+  assert.ok(conDato > 200);
 });
 
 test('muertes en Londres y su exceso', () => {
@@ -117,6 +120,9 @@ test('errores y valores por omisión', () => {
   assert.throws(() => m.epidemiasEn(1900, null, 'ZZ'), RangeError);
   assert.throws(() => m.esperanzaRestante('CL', 1900, 0, 'X'), RangeError);
   assert.equal(m.esperanzaRestante('XX', 1900), null);
+  assert.equal(m.bandaEsperanza('XX', 1900), null);
+  assert.notEqual(m.bandaEsperanza('SE', 1805, 15), null);
+  casi(36.4, m.esperanzaRestante('GB', 1545), 'Reino Unido antes de 1800');
   assert.equal(m.esperanzaRestante('CL', 1900, 20), null);
   assert.notEqual(m.esperanzaRestante('CL', 1900, 15), null);  // la edad 15 está (modelada)
   assert.equal(m.supervivencia('CL', 1895), m.supervivencia('CL', 1895, 5, 'T'));

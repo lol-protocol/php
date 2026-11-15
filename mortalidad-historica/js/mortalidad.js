@@ -137,9 +137,11 @@
         t.filas.forEach(function (f) {
           var clave = f[c.codigo] + '|' + f[c.sexo] + '|' + Number(f[c.edad]);
           var s = f[c.supervivencia_hasta_edad];
+          var bajo = f[c.incertidumbre_baja];
           (periodos[clave] = periodos[clave] || []).push([
             Number(f[c.desde]), Number(f[c.hasta]), Number(f[c.esperanza_restante]),
-            s === '' || s === null ? null : Number(s)]);
+            s === '' || s === null || s === undefined ? null : Number(s),
+            bajo === '' || bajo === null || bajo === undefined ? null : [Number(bajo), Number(f[c.incertidumbre_alta])]]);
         });
       }
       var lista = periodos[codigo + '|' + sexo + '|' + edad] || [];
@@ -152,6 +154,12 @@
     function esperanzaRestante(codigo, anio, edad, sexo) {
       var p = periodoQueCubre(codigo, anio, edad === undefined ? 0 : edad, sexo === undefined ? 'T' : sexo);
       return p === null ? null : p[2];
+    }
+
+    // (bajo, alto) de esperanzaRestante, o null: desde 1950 es la discrepancia entre fuentes; antes, un supuesto.
+    function bandaEsperanza(codigo, anio, edad, sexo) {
+      var p = periodoQueCubre(codigo, anio, edad === undefined ? 0 : edad, sexo === undefined ? 'T' : sexo);
+      return p === null ? null : p[4];
     }
 
     function supervivencia(codigo, anio, edad, sexo) {
@@ -198,6 +206,7 @@
       epidemiasEn: epidemiasEn,
       hitosDe: hitosDe,
       esperanzaRestante: esperanzaRestante,
+      bandaEsperanza: bandaEsperanza,
       supervivencia: supervivencia,
       muertesLondres: muertesLondres,
       excesoDeMuertesLondres: excesoDeMuertesLondres,

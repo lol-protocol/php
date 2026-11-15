@@ -2,7 +2,8 @@
 //  - toggle() corre el callback de SequenceToggle una vez al reanudar, no dos (pause() y resume() ya hacen su parte), y
 //    ParticleEmitterToggle arranca un solo emisor;
 //  - createRadialWeb cierra cada anillo: tantas líneas como puntos, más las radiales entre capas;
-//  - el código que genera jsSequenceAnimation se carga junto a common.js (no vuelve a declarar SequenceToggle).
+//  - el código que genera jsSequenceAnimation se carga junto a common.js (no vuelve a declarar SequenceToggle);
+//  - AnimationManager en pausa no actualiza ni pide cuadros, y al reanudar retoma; stop() permite volver a arrancar.
 import { chromium } from 'playwright';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -61,7 +62,35 @@ const medido = await page.evaluate(async () => {
     script.textContent = codigo;
     document.body.appendChild(script);
     r.plantilla.construyo = window.construido;
-    if (typeof toggle !== 'undefined') toggle.pause();  // `const toggle` del script generado no es propiedad de window
+    if (typeof toggle !== 'undefined') toggle.pause();
+
+    // AnimationManager: se cuentan las actualizaciones y los pedidos de cuadro.
+    const cuadro = () => new Promise(listo => setTimeout(listo, 60));
+    let pedidos = 0;
+    const requestOriginal = window.requestAnimationFrame.bind(window);
+    window.requestAnimationFrame = (fn) => { pedidos++; return requestOriginal(fn); };
+    let cuenta = 0;
+    const manager = new AnimationManager([{ update() { cuenta++; } }]);
+    manager.start();
+    await cuadro(); await cuadro();
+    r.corriendo = cuenta > 0;
+    manager.pause();
+    const alPausar = { cuenta, pedidos };
+    await cuadro(); await cuadro(); await cuadro();
+    r.enPausa = { actualizaciones: cuenta - alPausar.cuenta, pedidos: pedidos - alPausar.pedidos };
+    manager.resume();
+    const alReanudar = cuenta;
+    await cuadro(); await cuadro();
+    r.reanuda = cuenta > alReanudar;
+    manager.stop();
+    const alParar = cuenta;
+    await cuadro(); await cuadro();
+    r.stopPara = cuenta === alParar;
+    manager.start();                                   // tras stop() se puede volver a arrancar
+    await cuadro(); await cuadro();
+    r.arrancaDeNuevo = cuenta > alParar;
+    manager.pause();
+    window.requestAnimationFrame = requestOriginal;  // `const toggle` del script generado no es propiedad de window
     return r;
 });
 
@@ -80,6 +109,11 @@ igual('líneas de 3 capas de 6 puntos', medido.lineas, 18 + 2 * 6);
 igual('el anillo se cierra', medido.cierraElAnillo, true);
 igual('la plantilla no declara SequenceToggle', medido.plantilla.declaraLaClase, false);
 igual('la plantilla corre su función una vez al cargarse', medido.plantilla.construyo, 1);
+igual('AnimationManager corre', medido.corriendo, true);
+igual('AnimationManager en pausa no actualiza ni pide cuadros', medido.enPausa, { actualizaciones: 0, pedidos: 0 });
+igual('AnimationManager reanuda', medido.reanuda, true);
+igual('stop() detiene', medido.stopPara, true);
+igual('start() tras stop() arranca de nuevo', medido.arrancaDeNuevo, true);
 
 console.log(problemas.length ? '✗ alternadores y red radial' : '✓ alternadores, red radial y plantilla de secuencias');
 problemas.forEach(p => console.log(`    ${p}`));

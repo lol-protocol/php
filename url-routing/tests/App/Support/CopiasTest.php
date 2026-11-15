@@ -361,4 +361,158 @@ class CopiasTest extends TestCase
         unlink($this->dir . '/copias/' . $sobras[2]);
         unset($db);
     }
+
+    // --- vigilar: what a cron that stopped running never says -----------------------------------
+
+    private function copiaDeHace(string $sitio, int $dias, string $extension = 'sqlite', string $contenido = 'x'): string
+    {
+        @mkdir($this->dir . '/copias', 0777, true);
+        $ruta = $this->dir . '/copias/' . $sitio . '-' . date('Y-m-d', strtotime("-{$dias} days")) . '.' . $extension;
+        file_put_contents($ruta, $contenido);
+
+        return $ruta;
+    }
+
+    public function testVigilarIsQuietWhenEverySiteHasARecentCopy(): void
+    {
+        $this->copiaDeHace('genealogy', 1);
+        $this->copiaDeHace('pos', 0, 'sqlite.age');
+
+        $this->assertSame([], (new Copias($this->dir . '/copias'))->vigilar(['genealogy', 'pos'], 2), 'an encrypted copy counts too');
+    }
+
+    public function testVigilarTakesTheNewestCopyAndSaysWhenItIsTooOld(): void
+    {
+        $this->copiaDeHace('genealogy', 9);
+        $this->copiaDeHace('genealogy', 4, 'dump');
+        $copias = new Copias($this->dir . '/copias');
+
+        $problemas = $copias->vigilar(['genealogy'], 2);
+
+        $this->assertCount(1, $problemas);
+        $this->assertStringContainsString('la última es del ' . date('Y-m-d', strtotime('-4 days')) . ', de hace 4 días (el límite es 2)', $problemas[0]);
+        $this->assertSame([], $copias->vigilar(['genealogy'], 4), 'the limit itself is still fine');
+    }
+
+    public function testVigilarSaysWhichSiteHasNoneAndIgnoresTheCopiesOfOthers(): void
+    {
+        $this->copiaDeHace('genealogy', 0);
+        file_put_contents($this->dir . '/copias/notas.txt', 'no es una copia');
+        file_put_contents($this->dir . '/copias/pos-' . date('Y-m-d') . '.sqlite.parcial', 'a medias');
+
+        $problemas = (new Copias($this->dir . '/copias'))->vigilar(['genealogy', 'pos'], 2);
+
+        $this->assertCount(1, $problemas);
+        $this->assertStringContainsString('Copias de pos: no hay ninguna', $problemas[0], 'a partial file is not a copy');
+        unlink($this->dir . '/copias/notas.txt');
+        unlink($this->dir . '/copias/pos-' . date('Y-m-d') . '.sqlite.parcial');
+    }
+
+    public function testVigilarSaysWhenTheNewestCopyIsEmptyOrTheFolderIsMissing(): void
+    {
+        $this->copiaDeHace('genealogy', 0, 'sqlite', '');
+
+        $this->assertStringContainsString('está vacía', (new Copias($this->dir . '/copias'))->vigilar(['genealogy'], 2)[0]);
+        $this->assertStringContainsString('No existe la carpeta de copias', (new Copias($this->dir . '/no-existe'))->vigilar(['genealogy'], 2)[0]);
+        $this->expectException(\InvalidArgumentException::class);
+        (new Copias($this->dir . '/copias'))->vigilar(['genealogy'], 0);
+    }
+
+    // --- verificar: restoring a copy for real ---------------------------------------------------
+
+    public function testVerificarOpensASqliteCopyAndCountsTheRowsOfEveryTable(): void
+    {
+        [$db, $ruta] = $this->baseSqlite();
+        $db->execute('CREATE TABLE vacia (id INTEGER)');
+        $archivo = (new Copias($this->dir . '/copias'))->respaldar('genealogy', 'sqlite:' . $ruta);
+
+        $this->assertSame(['personas' => 1, 'vacia' => 0], (new Copias(''))->verificar($archivo));
+        unset($db);
+    }
+
+    public function testVerificarRefusesWhatIsNotACopyOrIsBrokenOrHasNoTables(): void
+    {
+        $copias = new Copias('');
+        @mkdir($this->dir . '/copias', 0777, true);
+        $suelto = $this->dir . '/copias/notas.txt';
+        file_put_contents($suelto, 'x');
+        $rota = $this->dir . '/copias/genealogy-2026-01-01.sqlite';
+        file_put_contents($rota, str_repeat('esto no es una base de datos', 50));
+        $sinTablas = $this->dir . '/copias/pos-2026-01-01.sqlite';
+        file_put_contents($sinTablas, ''); // an empty file is a valid SQLite database with no tables
+
+        foreach ([[$suelto, 'no es una copia'], [$this->dir . '/falta-2026-01-01.sqlite', 'no es una copia'], [$rota, 'SQLite'], [$sinTablas, 'ninguna tabla']] as [$archivo, $dice]) {
+            try {
+                $copias->verificar($archivo);
+                $this->fail("{$archivo} should not verify");
+            } catch (\RuntimeException $e) {
+                $this->assertStringContainsString($dice, $e->getMessage(), $archivo);
+            }
+        }
+        unlink($suelto);
+        unlink($rota);
+        @unlink($sinTablas);
+    }
+
+    public function testVerificarDecryptsWithThePrivateKeyAndLeavesNothingPlainBehind(): void
+    {
+        [$publica, $privada] = $this->clavesAge();
+        [$db, $ruta] = $this->baseSqlite();
+        $archivo = (new Copias($this->dir . '/copias', 30, [$publica]))->respaldar('genealogy', 'sqlite:' . $ruta);
+        $antes = glob(sys_get_temp_dir() . '/copia-verificar-*') ?: [];
+
+        $this->assertSame(['personas' => 1], (new Copias(''))->verificar($archivo, $privada));
+        $this->assertSame($antes, glob(sys_get_temp_dir() . '/copia-verificar-*') ?: [], 'the decrypted copy was deleted');
+
+        try {
+            (new Copias(''))->verificar($archivo);
+            $this->fail('an encrypted copy needs the key');
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('--identidad', $e->getMessage());
+        }
+
+        shell_exec('age-keygen -o ' . escapeshellarg($this->dir . '/origen/otra.txt') . ' 2>/dev/null');
+        try {
+            (new Copias(''))->verificar($archivo, $this->dir . '/origen/otra.txt');
+            $this->fail('another key cannot open it');
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('no pudo descifrar', $e->getMessage());
+        }
+        $this->assertSame($antes, glob(sys_get_temp_dir() . '/copia-verificar-*') ?: [], 'not even after a failure');
+        unset($db);
+    }
+
+    public function testVerificarRestoresAPostgresDumpIntoAScratchDatabaseAndDropsIt(): void
+    {
+        [$dsn, $usuario, $clave] = $this->postgres();
+        if (trim((string)shell_exec('command -v createdb dropdb psql 2>/dev/null')) === '') {
+            $this->markTestSkipped('needs createdb, dropdb and psql on the PATH');
+        }
+        $pg = [];
+        foreach (explode(';', substr($dsn, strlen('pgsql:'))) as $par) {
+            [$k, $v] = array_pad(explode('=', $par, 2), 2, '');
+            $pg += match ($k) {
+                'host' => ['PGHOST' => $v],
+                'port' => ['PGPORT' => $v],
+                default => [],
+            };
+        }
+        $pg += ['PGUSER' => $usuario, 'PGPASSWORD' => $clave];
+        // the test database may be empty: give the dump a table with two rows to find again
+        $origen = new \PDO($dsn, $usuario, $clave, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        $origen->exec('DROP TABLE IF EXISTS copias_verificar_prueba');
+        $origen->exec('CREATE TABLE copias_verificar_prueba (id INTEGER PRIMARY KEY)');
+        $origen->exec('INSERT INTO copias_verificar_prueba (id) VALUES (1), (2)');
+        try {
+            $archivo = (new Copias($this->dir . '/copias'))->respaldar('genealogy', $dsn, $usuario, $clave);
+            $tablas = (new Copias(''))->verificar($archivo, null, $pg);
+        } finally {
+            $origen->exec('DROP TABLE IF EXISTS copias_verificar_prueba');
+        }
+
+        $this->assertSame(2, $tablas['copias_verificar_prueba'], 'the rows came back from the restored copy');
+        $quedan = shell_exec('PGPASSWORD=' . escapeshellarg($clave) . ' psql -X -A -t -h ' . escapeshellarg($pg['PGHOST'] ?? 'localhost') . ' -p ' . escapeshellarg($pg['PGPORT'] ?? '5432') . ' -U ' . escapeshellarg($usuario) . " -d postgres -c \"SELECT count(*) FROM pg_database WHERE datname LIKE 'copias_verificar_%'\" 2>&1");
+        $this->assertSame('0', trim((string)$quedan), 'the scratch database is gone');
+        unlink($archivo);
+    }
 }

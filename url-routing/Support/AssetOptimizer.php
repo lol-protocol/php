@@ -175,7 +175,11 @@ class AssetOptimizer
         $shortHash = substr($hash, 0, 8);
         $pathInfo = pathinfo($assetPath);
 
-        return $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.' . $shortHash . '.' . $pathInfo['extension'];
+        // Un recurso sin extensión (`/favicon`) no trae la clave `extension`: sin esto salía «favicon.hash.».
+        $extension = isset($pathInfo['extension']) ? '.' . $pathInfo['extension'] : '';
+
+        // `dirname` de un archivo en la raíz es «/»: sin el rtrim la ruta salía con «//» al principio.
+        return rtrim($pathInfo['dirname'], '/') . '/' . $pathInfo['filename'] . '.' . $shortHash . $extension;
     }
 
     public function getCriticalCss(string $viewName): string

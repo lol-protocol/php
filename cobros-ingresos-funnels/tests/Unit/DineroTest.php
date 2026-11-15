@@ -13,6 +13,22 @@ use Random\Randomizer;
 
 final class DineroTest extends TestCase
 {
+    public function testPasaUnMontoAMilesimasEnteras(): void
+    {
+        self::assertSame(602850, Dinero::milesimas(602.85));
+        self::assertSame(1505, Dinero::milesimas(1.505));
+        self::assertSame(1005, Dinero::milesimas('1.005'), 'el texto que devuelve la base');
+        self::assertSame(570, Dinero::milesimas(0.57), '0.57 * 1000 da 569.9999999999999: redondea, no trunca');
+        self::assertSame(500, Dinero::milesimas(1.505 - 1.005), 'la resta de floats no deja ruido');
+        self::assertSame(-1, Dinero::milesimas(-0.001));
+    }
+
+    public function testMilesimasRechazaLoQueNoEsFinito(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Dinero::milesimas(INF);
+    }
+
     public function testPasaUnMontoACentavosEnteros(): void
     {
         self::assertSame(60285, Dinero::centavos(602.85));
@@ -24,7 +40,7 @@ final class DineroTest extends TestCase
 
     public function testElTopeDeLaColumnaCabeSinPerderPrecision(): void
     {
-        // NUMERIC(14, 2): Validacion::MONTO_MAXIMO es el mayor monto que acepta la base.
+        // NUMERIC(15, 3): Validacion::MONTO_MAXIMO es el mayor monto que acepta la base (aqui, el de dos decimales).
         self::assertSame(99_999_999_999_999, Dinero::centavos(999_999_999_999.99));
     }
 

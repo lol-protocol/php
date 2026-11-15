@@ -32,6 +32,7 @@ DEMOTOOLS = f"{RAW}/timriffe/DemoTools/806cdc3afe5b3fe2bfd7e63232eb2222f719e230"
 MONDO = f"{RAW}/monarch-initiative/mondo/bf25273f921b165ca2b49a85be4b1eb6b2bca278"
 _LONDRES = "Deaths from Smalllpox and all causes in London 1629-1902"  # sí: «Smalllpox», con tres eles
 _COLERA = "UK Cholera Death over the long-term - ONS"
+_RILEY = "Life expectancy - Riley (2005), Clio Infra (2015), and UN (2019)"
 
 
 def _owid(nombre):
@@ -45,7 +46,10 @@ FUENTES = {
     "colera-gran-bretana-owid.csv": _owid(_COLERA),
     "mortalidad-0-5-gapminder.csv": f"{FT}/ddf--datapoints--child_mortality_0_5_year_olds_dying_per_1000_born--by--country--time.csv",
     "esperanza-mujeres-gapminder.csv": f"{SG}/ddf--datapoints--life_expectancy_female--by--geo--time.csv",
-    "modelo-logcuadratico-demotools.rda": f"{DEMOTOOLS}/data/fitted_logquad_b.rda",
+    "modelo-logcuadratico-b.rda": f"{DEMOTOOLS}/data/fitted_logquad_b.rda",
+    "modelo-logcuadratico-f.rda": f"{DEMOTOOLS}/data/fitted_logquad_f.rda",
+    "modelo-logcuadratico-m.rda": f"{DEMOTOOLS}/data/fitted_logquad_m.rda",
+    "esperanza-riley-clio-owid.csv": _owid(_RILEY),
     "mondo-edit.obo": f"{MONDO}/src/ontology/mondo-edit.obo",
     "esperanza-hombres-gapminder.csv": f"{SG}/ddf--datapoints--life_expectancy_male--by--geo--time.csv",
 }

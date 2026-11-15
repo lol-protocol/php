@@ -19,8 +19,8 @@ final class Lista
         'titulo', 'subtitulo', 'autor', 'traductor', 'epoca', 'tradicion', 'categoria', 'isbn',
         'editorial', 'coleccion', 'cita', 'contratapa', 'solapa_portada', 'solapa_contratapa', 'plantilla', 'idioma', 'lomo_direccion', 'tema', 'volumen', 'imagen', 'logo', 'formato',
     ];
-    /** Columnas de medidas en mm. */
-    private const MEDIDAS = ['solapas_mm', 'lomo_mm', 'sangrado_mm', 'grosor_hoja_mm'];
+    /** Columnas numéricas: medidas en mm y la opacidad de la imagen (0 a 1). */
+    private const MEDIDAS = ['solapas_mm', 'lomo_mm', 'sangrado_mm', 'grosor_hoja_mm', 'imagen_opacidad'];
     /** Columnas de medidas en mm que van dentro de `formato`. */
     private const FORMATO = ['ancho_mm', 'alto_mm'];
     /** Columnas del degradado del fondo: la lista de colores (o «auto»), el tipo y el ángulo. */

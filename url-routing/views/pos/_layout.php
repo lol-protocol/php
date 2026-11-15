@@ -2,7 +2,7 @@
 use App\Support\Cart;
 
 $sitio = 'Contrastocolor';
-$tiposBusqueda = [8 => 'Productos', 4 => 'Categorías', 7 => 'Colecciones', 6 => 'Etiquetas', 5 => 'Atributos'];
+$tiposBusqueda = [8 => t('tipo.productos'), 4 => t('tipo.categorias'), 7 => t('tipo.colecciones'), 6 => t('tipo.etiquetas'), 5 => t('tipo.atributos')];
 $carritoTotal = (new Cart())->totalArticulos();
-$navExtra = [['href' => '/c/', 'label' => 'Carrito' . ($carritoTotal > 0 ? " ({$carritoTotal})" : '')]];
+$navExtra = [['href' => '/c/', 'label' => t('layout.carrito') . ($carritoTotal > 0 ? " ({$carritoTotal})" : '')]];
 include __DIR__ . '/../_layout.php';

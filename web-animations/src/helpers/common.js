@@ -328,29 +328,40 @@ class AnimationManager {
             return;
         }
         this.isStarted = true;
-        const loop = () => {
-            if (this.isRunning) {
-                this.objects.forEach(obj => obj.update());
-            }
-            this.animationId = requestAnimationFrame(loop);
-        };
-        loop();
+        this._loop();
+    }
+
+    // Un cuadro y el pedido del siguiente. En pausa no se pide ninguno: antes el ciclo seguía corriendo
+    // (y despertando a la página 60 veces por segundo) solo para no actualizar nada.
+    _loop = () => {
+        if (!this.isRunning) {
+            this.animationId = null;
+            return;
+        }
+        this.objects.forEach(obj => obj.update());
+        this.animationId = requestAnimationFrame(this._loop);
+    };
+
+    _cancelFrame() {
+        if (this.animationId) cancelAnimationFrame(this.animationId);
+        this.animationId = null;
     }
 
     stop() {
-        if (this.animationId) {
-            cancelAnimationFrame(this.animationId);
-            this.animationId = null;
-            this.isStarted = false;
-        }
+        this._cancelFrame();
+        this.isStarted = false;
     }
 
     pause() {
         this.isRunning = false;
+        this._cancelFrame();
     }
 
     resume() {
+        if (this.isRunning) return;
         this.isRunning = true;
+        // Si ya arrancó, retoma el ciclo; si no, start() lo hará.
+        if (this.isStarted) this._loop();
     }
 }
 

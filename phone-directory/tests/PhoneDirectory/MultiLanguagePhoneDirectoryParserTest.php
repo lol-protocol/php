@@ -3,6 +3,7 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
+use PhoneDirectory\Exception\InvalidLanguageException;
 use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
 
 class MultiLanguagePhoneDirectoryParserTest extends TestCase
@@ -326,6 +327,111 @@ class MultiLanguagePhoneDirectoryParserTest extends TestCase
             $this->assertCount(2, $fromFile);
             $this->assertEquals($summary($fromContent), $summary($fromFile));
             $this->assertEquals('es', $fileParser->getDetectedLanguage());
+        } finally {
+            unlink($file);
+        }
+    }
+
+    /** A directory of $count records: a person, then a business, alternating */
+    private static function directoryOf(int $count): string
+    {
+        $records = [];
+        for ($i = 1; $i <= $count; $i++) {
+            $records[] = $i % 2 === 0
+                ? "Farmacia Central {$i}\nCalle Sol {$i}\n555-" . sprintf('%03d-%04d', $i % 1000, $i)
+                : "GARCÍA LÓPEZ, Juan {$i}\nCalle Mayor {$i}\n555-" . sprintf('%03d-%04d', $i % 1000, $i);
+        }
+
+        return implode("\n\n", $records) . "\n";
+    }
+
+    private static function summary(array $entries): array
+    {
+        return array_map(fn($e) => [
+            $e['type'],
+            $e['type'] === 'juridical' ? $e['entity']->getBusinessName() : $e['entity']->getRawName(),
+            $e['entity']->getStreet(),
+            $e['entity']->getPhoneNumber(),
+            $e['entity']->getSourceLine(),
+        ], $entries);
+    }
+
+    public function testParseFileInBatchesGivesTheSameEntriesAsParseFile(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+        file_put_contents($file, self::directoryOf(25) . "\nSIN CALLE\n");
+
+        try {
+            $whole = (new MultiLanguagePhoneDirectoryParser())->parseFile($file);
+
+            $parser = new MultiLanguagePhoneDirectoryParser();
+            $batches = iterator_to_array($parser->parseFileInBatches($file, 10), false);
+
+            $this->assertSame([10, 10, 5], array_map('count', $batches));
+            $this->assertEquals(self::summary($whole), self::summary(array_merge(...$batches)));
+            $this->assertSame('es', $parser->getDetectedLanguage());
+            $this->assertCount(1, $parser->getErrors(), 'the record with no street is still an error');
+            $this->assertSame([], $parser->getEntries(), 'what was handed over is not kept');
+        } finally {
+            unlink($file);
+        }
+    }
+
+    public function testParseFileInBatchesWithAnExactMultipleHasNoEmptyBatch(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+        file_put_contents($file, self::directoryOf(20));
+
+        try {
+            $batches = iterator_to_array((new MultiLanguagePhoneDirectoryParser())->parseFileInBatches($file, 10, 'es'), false);
+
+            $this->assertSame([10, 10], array_map('count', $batches));
+        } finally {
+            unlink($file);
+        }
+    }
+
+    public function testParseFileInBatchesChecksItsArgumentsWhenCalled(): void
+    {
+        $parser = new MultiLanguagePhoneDirectoryParser();
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+
+        try {
+            foreach ([
+                [fn() => $parser->parseFileInBatches('/no/such/file.txt'), \RuntimeException::class],
+                [fn() => $parser->parseFileInBatches($file, 0), \InvalidArgumentException::class],
+                [fn() => $parser->parseFileInBatches($file, 10, 'nl'), InvalidLanguageException::class],
+            ] as [$call, $exception]) {
+                try {
+                    $call();
+                    $this->fail("{$exception} expected before the first batch is read");
+                } catch (\Throwable $e) {
+                    $this->assertInstanceOf($exception, $e);
+                }
+            }
+        } finally {
+            unlink($file);
+        }
+    }
+
+    public function testParseFileInBatchesKeepsMemoryFlatWhateverTheFileSize(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+        file_put_contents($file, self::directoryOf(30000));
+
+        try {
+            $parser = new MultiLanguagePhoneDirectoryParser();
+            $before = memory_get_usage();
+            $peak = 0;
+            $count = 0;
+            foreach ($parser->parseFileInBatches($file, 500, 'es') as $batch) {
+                $count += count($batch);
+                $peak = max($peak, memory_get_usage() - $before);
+            }
+
+            $this->assertSame(30000, $count);
+            // parseFile() would keep all 30 000 entries (tens of MB); a batch is a few hundred.
+            $this->assertLessThan(8 * 1024 * 1024, $peak);
         } finally {
             unlink($file);
         }

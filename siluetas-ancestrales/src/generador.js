@@ -19,11 +19,30 @@ import { TIPOS } from './tipos-de-ropa.js';
 
 const contiene = (epoca, anio) => anio === undefined || anio === null || (anio >= epoca[0] && anio <= epoca[1]);
 
-/** Atuendos que cumplen los filtros: { region, anio, sexo, clase }. */
-export function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase } = {}) {
+/** Prendas que solo se usan de adulto (armadura, toga, hábito, sotana, estola…). */
+const SOLO_ADULTO = new Set(['lorica-segmentata', 'lorica-escamas', 'pteruges', 'toga', 'toga-praetexta', 'stola', 'habito-monje', 'sotana', 'sobrepelliz', 'cuerda-franciscana', 'escapulario', 'casaca', 'frac', 'saco-terno', 'saco-cruzado', 'traje-sastre', 'vestido-novia', 'vestido-luto']);
+/** Edades de un atuendo: las que declara, o desde los 16 si lleva una prenda de adulto, o todas. */
+export function edadesDe(a) {
+  if (a.edades) return a.edades;
+  return a.prendas.some((id) => SOLO_ADULTO.has(id)) ? [16, 100] : [2, 100];
+}
+const INFANTIL_MAX = 12;
+const esInfantil = (a) => a.edades && a.edades[1] <= INFANTIL_MAX;
+
+/**
+ * Atuendos que cumplen los filtros: { region, anio, sexo, clase, edad }. Con `edad`: no salen los de adulto para un niño
+ * ni los infantiles para un adulto, y hasta los 12 años se prefieren los infantiles si los hay.
+ */
+export function buscarAtuendos({ region, regiones, prefijos, anio, sexo, clase, edad } = {}) {
   const rs = regiones ?? (region ? [region] : null);
-  return ATUENDOS.filter((a) =>
-    (!rs || rs.includes(a.region)) && (!prefijos || prefijos.some((p) => a.id.startsWith(p))) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase));
+  const r = ATUENDOS.filter((a) =>
+    (!rs || rs.includes(a.region)) && (!prefijos || prefijos.some((p) => a.id.startsWith(p))) && contiene(a.epoca, anio) && (!sexo || a.sexo === sexo) && (!clase || a.clase === clase)
+    && (edad === undefined || edad === null || (edad >= edadesDe(a)[0] && edad <= edadesDe(a)[1])));
+  if (edad !== undefined && edad !== null && edad <= INFANTIL_MAX) {
+    const ninos = r.filter(esInfantil);
+    if (ninos.length) return ninos;
+  }
+  return r;
 }
 
 export function listarRegiones() { return { ...REGIONES }; }
@@ -291,16 +310,17 @@ export function generarPersona(opc = {}) {
   } else {
     const regiones = opc.region ? [opc.region] : (etnia ? etnia[0].e.regiones : null);
     const prefijos = opc.region ? null : (etnia ? etnia[0].e.prefijos : null);
-    const f = (extra) => ({ regiones, prefijos, anio, sexo, clase: opc.clase, ...extra });
+    const f = (extra) => ({ regiones, prefijos, anio, sexo, clase: opc.clase, edad, ...extra });
     const intentos = [
       [f({}), null],
       [f({ clase: undefined }), 'la clase social'],
       [f({ anio: undefined }), 'el año'],
       [f({ clase: undefined, anio: undefined }), 'el año y la clase social'],
       [f({ prefijos: null, clase: undefined, anio: undefined }), 'el año, la clase social ni el pueblo concreto: es un atuendo de otro pueblo de la misma región'],
-      [{ anio, sexo, clase: opc.clase }, 'la región'],
-      [{ anio, sexo }, 'la región y la clase social'],
-      [{ sexo }, 'la región, el año y la clase social'],
+      [{ anio, sexo, clase: opc.clase, edad }, 'la región'],
+      [{ anio, sexo, edad }, 'la región y la clase social'],
+      [{ sexo, edad }, 'la región, el año y la clase social'],
+      [{ sexo }, 'la edad, la región, el año ni la clase social: no hay atuendo para esa edad'],
     ].filter(([filtro], i, todos) => i === 0 || JSON.stringify(filtro) !== JSON.stringify(todos[i - 1][0]));
     for (const [filtro, relajado] of intentos) {
       const r = buscarAtuendos(filtro);
@@ -384,7 +404,8 @@ export function generarPersona(opc = {}) {
   let pose;
   if (opc.pose === 'firme') pose = POSE_FIRME;
   else {
-    pose = poseAleatoria(azar.hijo('pose'));
+    const perfilPose = opc.pose === 'segun-edad' ? (edad <= 12 ? 'infantil' : edad >= 65 ? 'mayor' : undefined) : (opc.pose === 'infantil' || opc.pose === 'mayor' ? opc.pose : undefined);
+    pose = poseAleatoria(azar.hijo('pose'), 1, perfilPose);
     if (opc.pose && typeof opc.pose === 'object') pose = { ...pose, ...opc.pose, saludo: { ...pose.saludo, ...(opc.pose.saludo ?? {}) } };
     if (opc.postura !== undefined && !(opc.pose && opc.pose.angulos)) {
       const base = typeof opc.postura === 'number' ? opc.postura : (POSTURAS[opc.postura] ?? POSTURAS.relajada);
@@ -428,12 +449,12 @@ export function generarPersona(opc = {}) {
     notas: [atuendo.nota, ...(etnia ? etnia.map((x) => x.e.nota) : [])].filter(Boolean),
     fuentes: [...new Set([atuendo.fuente, ...(etnia ? etnia.map((x) => x.e.fuente) : [])].filter(Boolean))],
     detalle: opc.detalle ?? 'medio', contorno: opc.contorno ?? 'ninguno', fondo: opc.fondo ?? 'ninguno',
+    ...(opc.vista === 'espalda' ? { vista: 'espalda' } : {}),
   };
 }
 
 // ---------- Ropa nueva ----------
 
-const L = (a, b) => [a, b];
 // Las variantes salen de tipos-de-ropa.js, la fuente única que también valida las prendas.
 // 'trapelacucha' es un adorno de un pueblo concreto (mapuche): no se mezcla al azar con otros estilos.
 const sinEspecificos = (lista) => lista.filter((x) => x !== 'trapelacucha');

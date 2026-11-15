@@ -16,7 +16,7 @@ desde la prehistoria.
 tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Markdown
 (`tabla_genealogia.md` y `tabla_pos.md`) tienen todas las columnas. En la vista se puede elegir el
 escenario de ranking (los mismos de `escenarios.md`) y ver solo los países cuyo índice se aparta
-de lo que predicen sus datos («≠ datos», ver «Sugerencias desde los datos»).
+de lo que predicen sus datos («≠ datos», ver «Sugerencias desde los datos»). Para usarla desde código, `exportes/paises.json` y `exportes/paises.sql`.
 
 ## Resumen
 
@@ -73,6 +73,13 @@ están al día, así que el resto del README las remite aquí en vez de repetirl
   PIB nominal, libertad, democracia y corrupción.
 - `descargar_fuentes.py` y `fuentes.sha256`: bajan todas las fuentes, fijadas por commit, y
   comprueban su SHA-256; con `--rehacer` corren todos los scripts. Ver «Fuentes».
+- `exportes/paises.json` y `exportes/paises.sql` (los escribe `generar_tabla.py` con `exportes.py`,
+  y `--comprobar` los verifica): la tabla completa para usarla desde otros proyectos. Cada país trae
+  sus datos, sus índices, la prioridad y la exclusión de la regla vigente, sus idiomas y la banda de
+  nacidos. El JSON es `{"paises": [...]}`, con números como números, vacíos como `null` y las
+  exclusiones como booleanos. El SQL es para PostgreSQL: recrea la tabla `listado_paises` en una
+  transacción, así que se puede cargar de nuevo (`psql -f exportes/paises.sql`). La CI lo carga dos
+  veces en el job `postgresql`.
 - `pruebas_navegador.py`: abre `vista.html` en Chromium, en escritorio y en móvil, y prueba el
   mapa, la tabla, los filtros, el orden, la búsqueda sin acentos, los escenarios, las marcas
   «≠ datos» y el tooltip. Las cifras esperadas salen de los CSV. Necesita
@@ -107,7 +114,7 @@ las tablas se ordenan por nombre sin tener en cuenta los acentos, como la búsqu
 (marcados como `territorio` o `entidad disputada`), y nueve territorios con valor genealógico:
 Bermudas, Curazao, Gibraltar, Groenlandia, Guernsey, Isla de Man, Islas Feroe, Jersey y Reunión.
 Varios tienen registros excelentes y diáspora, pero pocas fuentes publican sus datos: no tienen
-IDH ni PIB PPA, y Guernsey, Jersey y Reunión tampoco población actual. No incluye la Ciudad del
+IDH ni PIB PPA. No incluye la Ciudad del
 Vaticano ni otros territorios menores.
 
 ## Columnas de `paises.csv`
@@ -118,7 +125,7 @@ Vaticano ni otros territorios menores.
 | `pais` | Nombre en español. |
 | `tipo` | `estado`, `territorio` o `entidad disputada`. |
 | `region` | África, América, Asia, Europa u Oceanía. |
-| `poblacion_millones` | Población de 2024, en millones (con tres decimales por debajo de un millón: 0.185), de Our World in Data (basada en ONU, *World Population Prospects 2024*). Gibraltar, Isla de Man y Puerto Rico, que esa fuente no incluye, usan la del Banco Mundial (`SP.POP.TOTL`). Vacía en Guernsey, Jersey y Reunión. |
+| `poblacion_millones` | Población de 2024, en millones (con tres decimales por debajo de un millón: 0.185), de Our World in Data (basada en ONU, *World Population Prospects 2024*). Gibraltar, Isla de Man y Puerto Rico, que esa fuente no incluye, usan la del Banco Mundial (`SP.POP.TOTL`). Guernsey, Jersey y Reunión usan la de 2023, la última de la serie histórica de Our World in Data (el año de cada dato está en `datos_detalle.csv`). |
 | `poblacion_historica_acumulada` | Personas nacidas en el territorio del país desde el 10 000 a. C., en millones. Es una estimación (ver «Población histórica acumulada»). |
 | `idh` | Índice de Desarrollo Humano de **2023**, del PNUD (*Informe sobre Desarrollo Humano 2025*), vía Gapminder. Vacía donde el PNUD no lo publica: 6 países y los 9 territorios nuevos. |
 | `pib_per_capita_usd` | PIB per cápita **nominal** de 2024 en dólares corrientes, del Banco Mundial (`NY.GDP.PCAP.CD`). Si falta 2024, el del último año desde 2021; si no, vacía (ver «Estado de los datos»). |
@@ -425,8 +432,8 @@ comparar países entre sí, no como conteo exacto.**
   en el total: con 40 por mil fijo, el total mundial baja un tercio.
 - La serie de Our World in Data termina en 2023. El año 2024 sale de la población actual (Our
   World in Data, o el Banco Mundial en Gibraltar, Isla de Man y Puerto Rico). Guernsey, Jersey y
-  Reunión, sin población actual, siguen la evolución de su continente (Our World in Data) de 2023
-  a 2024.
+  Reunión, cuya población actual es la de 2023, siguen la evolución de su continente (Our World in
+  Data) de 2023 a 2024 en la serie larga.
 
 ## Fuentes
 
@@ -514,7 +521,7 @@ argumentos con que se llama a cada script. Para correr un paso suelto, mira ahí
 Léelo antes de usar la tabla para decidir.
 
 - **Población 2024: de fuente.** Our World in Data (ONU, WPP 2024) en 202; Gibraltar, Isla de Man
-  y Puerto Rico, del Banco Mundial. Vacía en Guernsey, Jersey y Reunión.
+  y Puerto Rico, del Banco Mundial. Guernsey, Jersey y Reunión, de la serie histórica de Our World in Data, de 2023.
 - **IDH: de fuente**, de 2023 (PNUD, *Informe 2025*, vía Gapminder). Coincide con valores
   conocidos de ese informe (Islandia 0,972; Noruega y Suiza 0,970; Sudán del Sur 0,388). Vacío
   donde el PNUD no publica IDH: Corea del Norte, Kosovo, Macao, Mónaco, Puerto Rico, Taiwán y los

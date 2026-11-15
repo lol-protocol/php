@@ -61,9 +61,10 @@ const redondear = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d + 0; // + 0 ev
  * las muñecas flexionadas y los dedos más o menos abiertos. `intensidad` (0 a 1) escala todas esas variaciones.
  * `carga`: -1 o 1 es el lado (de quien mira) que carga el peso; 0, ambos.
  */
-export function poseAleatoria(azar, intensidad = 1) {
+export function poseAleatoria(azar, intensidad = 1, perfil) {
   const k = limitar(intensidad, 0, 1.5);
   const v = (a, b, d = 1) => redondear(azar.entre(a, b) * k, d);
+  if (perfil === 'infantil' || perfil === 'mayor') return poseSegunEdad(azar, k, perfil);
   return {
     modo: 'casual',
     cabeza: v(-7, 7),
@@ -77,6 +78,33 @@ export function poseAleatoria(azar, intensidad = 1) {
     hombros: v(-2.8, 2.8),
     columna: v(-0.008, 0.008, 4),
     codos: { 1: v(-4, 12), '-1': v(-4, 12) },
+    munecas: { 1: v(-14, 14), '-1': v(-14, 14) },
+    cinturaCodo: redondear(1 + (azar.entre(0.85, 1.2) - 1) * k, 2),
+    dedos: redondear(1 + (azar.entre(0.8, 1.25) - 1) * k, 2),
+  };
+}
+
+/**
+ * Poses por edad. 'infantil': de pie sin cargar el peso en una pierna, los pies más abiertos, los brazos separados del
+ * cuerpo y la cabeza más movida. 'mayor': carga el peso en una pierna, pies más juntos, brazos más pegados al cuerpo y
+ * a veces una mano sobre el pecho.
+ */
+function poseSegunEdad(azar, k, perfil) {
+  const v = (a, b, d = 1) => redondear(azar.entre(a, b) * k, d);
+  const nino = perfil === 'infantil';
+  return {
+    modo: 'casual',
+    cabeza: v(nino ? -10 : -4, nino ? 10 : 4),
+    inclinacion: v(-1.4, 1.4, 2),
+    carga: nino ? azar.ponderado([[-1, 1], [1, 1], [0, 6]]) : azar.ponderado([[-1, 3], [1, 3], [0, 1]]),
+    abre: redondear(nino ? azar.entre(1.15, 1.7) : azar.entre(0.9, 1.15), 2),
+    giro: redondear(azar.entre(nino ? 8 : 5, nino ? 24 : 14)),
+    brazoLibre: nino ? azar.ponderado([['abajo', 90], ['cintura', 10]]) : azar.ponderado([['abajo', 50], ['pecho', 20], ['bolsillo', 10], ['cintura', 20]]),
+    angulos: nino ? { 1: redondear(azar.entre(10, 24)), '-1': redondear(azar.entre(10, 24)) } : { 1: redondear(azar.entre(3, 10)), '-1': redondear(azar.entre(3, 10)) },
+    saludo: { codo: redondear(azar.entre(40, 62)), antebrazo: v(2, 24), mano: v(-16, 16) },
+    hombros: v(nino ? -3.5 : -2, nino ? 3.5 : 2),
+    columna: v(-0.008, 0.008, 4),
+    codos: { 1: v(nino ? 0 : 4, nino ? 18 : 16), '-1': v(nino ? 0 : 4, nino ? 18 : 16) },
     munecas: { 1: v(-14, 14), '-1': v(-14, 14) },
     cinturaCodo: redondear(1 + (azar.entre(0.85, 1.2) - 1) * k, 2),
     dedos: redondear(1 + (azar.entre(0.8, 1.25) - 1) * k, 2),
@@ -174,6 +202,29 @@ export function medidas(opc = {}) {
     const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
     return { tipo: 'cintura', linea: [S0, [m1[0] + H * 0.006, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
   };
+  // Mano sobre el pecho (como al jurar o saludar con respeto): el codo sale un poco y la muñeca llega al centro del pecho.
+  const brazoPecho = () => {
+    const codo = [S0[0] + H * 0.045, lerp(y.axila, y.cintura, 0.45)];
+    const mun = [w.pecho * 0.3, y.pecho + H * 0.022];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'pecho', linea: [S0, [m1[0] + H * 0.004, m1[1]], codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: pose.munecas[ladoLibre] ?? 0 };
+  };
+  // Manos juntas al frente (a la altura de la cintura) y brazos cruzados sobre el pecho: afectan a los dos brazos.
+  const brazoJuntas = () => {
+    const codo = [S0[0] + H * 0.024, lerp(y.axila, y.cintura, 0.8)];
+    const mun = [w.cintura * 0.12, y.cintura + (y.cadera - y.cintura) * 0.45];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'juntas', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
+  };
+  const brazoCruzado = (orden) => {
+    const codo = [S0[0] + H * 0.036, lerp(y.pecho, y.cintura, 0.55) + orden * H * 0.006];
+    const mun = [-w.pecho * (0.62 - orden * 0.08), y.pecho + H * (0.03 + orden * 0.012)];
+    const m1 = mitad(S0, codo), m2 = mitad(codo, mun);
+    const dir = unit([mun[0] - m2[0], mun[1] - m2[1]]);
+    return { tipo: 'cruzado', linea: [S0, m1, codo, m2, mun], anchos: anchosBrazo, u: uBrazo, manoDir: dir, manoFlex: 0 };
+  };
   // Mano en el bolsillo: el antebrazo baja hacia la cadera y la mano no se ve.
   const brazoBolsillo = () => {
     const codo = [S0[0] + H * 0.03, lerp(y.axila, y.cintura, 0.75)];
@@ -194,8 +245,13 @@ export function medidas(opc = {}) {
   const ladoLibre = saludoLado ? -saludoLado : 1; // el brazo que lleva la pose especial (cintura, bolsillo)
   const anguloDe = (s) => (pose.angulos ? pose.angulos[s] : grados0);
   const brazos = {};
+  // `pose.manos` ('juntas' o 'cruzados') ocupa los dos brazos, así que solo vale sin saludo.
+  const manos = saludoLado === 0 ? pose.manos : undefined;
   for (const s of [1, -1]) {
     if (s === saludoLado) brazos[s] = brazoSaludo();
+    else if (manos === 'juntas') brazos[s] = brazoJuntas();
+    else if (manos === 'cruzados') brazos[s] = brazoCruzado(s > 0 ? 0 : 1);
+    else if (s === ladoLibre && pose.brazoLibre === 'pecho') brazos[s] = brazoPecho();
     else if (s === ladoLibre && pose.brazoLibre === 'cintura') brazos[s] = brazoCintura();
     else if (s === ladoLibre && pose.brazoLibre === 'bolsillo') brazos[s] = brazoBolsillo();
     else brazos[s] = brazoCaido(anguloDe(s), pose.codos[s] ?? 0, pose.munecas[s] ?? 0);
@@ -313,7 +369,7 @@ export function trazoMano(M, s) {
   const b = M.brazos[s];
   if (b.tipo === 'saludo') return manoSaludo(M, s);
   if (b.tipo === 'bolsillo') return [];
-  if (b.tipo === 'cintura') return [manoCerrada(M, s)];
+  if (['cintura', 'pecho', 'juntas', 'cruzado'].includes(b.tipo)) return [manoCerrada(M, s)];
   return manoCaida(M, s);
 }
 

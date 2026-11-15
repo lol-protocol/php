@@ -235,6 +235,47 @@ class PrivacyDatabaseTest extends TestCase
         $owner->disconnect();
     }
 
+    /** A recorded death must not hand out the address or phone of a relative who may be alive. */
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testARecordedDeathStaysHiddenWhileARelativeWhoMayBeAliveSharesItsAddressOrPhone(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $sameStreet = $owner->insert(new PhoneDirectoryEntry(fullName: 'MARTÍN SOTO, Luis', countryCode: 'ES', street: 'Calle Luna 3', phoneNumber: '555-0099', sourceDirectoryId: self::RECENT, language: 'es'));
+        $samePhone = $owner->insert(new PhoneDirectoryEntry(fullName: 'SOTO PRIETO, Rosa', countryCode: 'ES', street: 'Calle Mar 8', phoneNumber: '555-0002', sourceDirectoryId: self::RECENT, language: 'es'));
+
+        $owner->markDeceased($ids['recentOnly'], 1990, 'Acta de defunción n.º 5');
+
+        $this->assertNull($visitor->findById($ids['recentOnly']), 'relatives live at the same address and phone');
+        $this->assertSame([], $visitor->findByName('martin soto'));
+        $this->assertNull($visitor->findByPhone('555-0002'));
+        $this->assertSame([], self::names($visitor->findByStreet('calle luna')));
+        $this->assertSame([], self::names($visitor->findBySourceDirectory(self::RECENT)));
+        $this->assertSame(['GARCÍA LÓPEZ, José'], self::names($visitor->getAll()));
+        $this->assertSame('MARTÍN SOTO, Ana', $owner->findById($ids['recentOnly'])?->getRawName(), 'the owner sees it all');
+
+        // Once the relatives are recorded as dead too, nobody who may be alive is left at that address or phone.
+        $owner->markDeceased($sameStreet, 1992, 'Esquela');
+        $this->assertNull($visitor->findById($ids['recentOnly']), 'the phone is still shared with Rosa');
+        $owner->markDeceased($samePhone, 1995, 'Esquela');
+        $this->assertSame('MARTÍN SOTO, Ana', $visitor->findById($ids['recentOnly'])?->getRawName());
+        $this->assertCount(4, $visitor->getAll());
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
+    /** The same phone number in an old directory is not a living relative, and an old entry never depended on the mark. */
+    #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
+    public function testAnOldDirectoryEntryIsNotHiddenByARelativeInARecentOne(string $dsn, ?string $user, ?string $password): void
+    {
+        [$visitor, $owner, $ids] = $this->loaded($dsn, $user, $password);
+        $owner->markDeceased($ids['old'], 1935, 'Esquela');
+
+        $this->assertSame('GARCÍA LÓPEZ, José', $visitor->findById($ids['old'])?->getRawName(), 'its directory is old enough: the recent García with the same phone changes nothing');
+        $this->assertSame('GARCÍA LÓPEZ, José', $visitor->findByPhone('555-0001')?->getRawName());
+        $visitor->disconnect();
+        $owner->disconnect();
+    }
+
     #[DataProviderExternal(CrossDatabaseTest::class, 'databases')]
     public function testTakingTheMarkBackHidesTheEntryAgain(string $dsn, ?string $user, ?string $password): void
     {
