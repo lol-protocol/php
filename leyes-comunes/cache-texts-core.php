@@ -487,8 +487,16 @@ function plannedDownloads(array $country, array $fieldSources): array
         if (preg_match('#^https?://#i', $main)) {
             $jobs[] = ['name' => $name, 'url' => $main, 'base' => $base];
         }
-        $group = strtoupper((string) ($country['code'] ?? '')) . '|' . $name;
-        foreach ($fieldSources[$group] ?? [] as $url => $fields) {
+        $code = strtoupper((string) ($country['code'] ?? ''));
+        // A row with an empty law_name belongs to the only law of its country (the convention of field_sources.csv).
+        $byUrl = $fieldSources["$code|$name"] ?? [];
+        if (count($country['laws']) === 1) {
+            foreach ($fieldSources["$code|"] ?? [] as $url => $fields) {
+                $byUrl[$url] = array_values(array_unique(array_merge($byUrl[$url] ?? [], $fields)));
+            }
+        }
+        foreach ($byUrl as $url => $fields) {
+            $url = (string) $url;
             if ($url === $main) {
                 continue;
             }
