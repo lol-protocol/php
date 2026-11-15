@@ -83,6 +83,24 @@ En el navegador, sin módulos: `<script src="dist/siluetas-ancestrales.js">` exp
 | `rasgos` | `true` insinúa ojos, cejas, nariz y boca |
 | `ropaNueva`, `estilo`, `esquema` | ropa inventada (`sobrio`, `trabajo`, `festivo`, `ceremonial`) con un esquema de color (`analogo`, `complementario`, `triada`, `monocromo`, `tierra`, `festivo`) |
 
+## Árbol de ascendencia
+
+`generarFamilia` dibuja en un solo SVG a una persona y a sus padres, abuelos y bisabuelos (1 a 4 generaciones, hasta 15 figuras), cada uno con la ropa y los rasgos de su pueblo y de su época. Los nacimientos son coherentes: el padre nace unos 30 años antes que su hijo y la madre unos 26 (con variación), y cada ancestro se retrata a los 35 años, en su propio año.
+
+```js
+import { generarFamilia } from './src/index.js';
+const f = generarFamilia({
+  semilla: 4, generaciones: 3, anio: 1985, edad: 30, sexo: 'f',
+  linaje: { etnia: 'mapuche,espanol', padre: { etnia: 'espanol', padre: { etnia: 'vasco' } }, madre: { etnia: 'mapuche' } },
+});
+f.svg;       // el árbol
+f.personas;  // [{ ruta: '', 'p', 'pm'…, rol, generacion, sexo, edad, anio, nacimiento, etnia, persona }]
+```
+
+`ruta` es la cadena de `p` (padre) y `m` (madre) desde la persona: `pm` es la abuela paterna. En `linaje` cada nodo admite `etnia`, `nombre`, `padre` y `madre`; el ancestro que falta hereda la etnia de su hijo. `saludo` y `detalle` valen para todos. Desde la línea de comandos: `node bin/generar.js --familia --generaciones 3 --anio 1985 --linaje linaje.json -o familia.svg`. Ejemplo: [`ejemplos/familia-mapuche-espanol-vasco.svg`](ejemplos/familia-mapuche-espanol-vasco.svg).
+
+Es una ilustración de un linaje **probable**: el pueblo, la ropa y los rasgos salen de las estimaciones del catálogo (con su confianza), no de datos de personas reales.
+
 ## Vestir prenda por prenda
 
 Además de elegir un atuendo completo, se puede **armar el vestuario eligiendo cada prenda**: `vestir` recibe una lista de ids (o `{ ranura: id }`), y los colores salen del catálogo de cada prenda, con su probabilidad.

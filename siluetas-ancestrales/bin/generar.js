@@ -6,7 +6,8 @@
 //   node bin/generar.js --listar atuendos|regiones|prendas|tintes
 
 import { writeFileSync } from 'node:fs';
-import { renderizar, generarPersona, generarPersonaConRopaNueva, PEINADOS, BARBAS, TOCADOS, ATUENDOS, PRENDAS, TINTES, REGIONES, ETNIAS, listarCatalogo, distribucionColor, catalogoColores } from '../src/index.js';
+import { readFileSync } from 'node:fs';
+import { generarFamilia, renderizar, generarPersona, generarPersonaConRopaNueva, PEINADOS, BARBAS, TOCADOS, ATUENDOS, PRENDAS, TINTES, REGIONES, ETNIAS, listarCatalogo, distribucionColor, catalogoColores } from '../src/index.js';
 
 const args = process.argv.slice(2);
 const val = (n) => { const i = args.findIndex((a) => a === `--${n}` || (n === 'o' && a === '-o')); return i >= 0 ? args[i + 1] : undefined; };
@@ -24,6 +25,7 @@ if (flag('ayuda') || flag('help')) {
   --pose casual|firme   casual (por defecto): cabeza inclinada, peso en una pierna, brazo libre en la cintura o el bolsillo… distinto con cada semilla; firme: simétrica
   --contorno suave   por defecto no hay bordes; 'suave' añade un borde fino y tenue
   --postura firme|relajada|abierta  --piel ID|#hex  --cabello ID|#hex
+  --familia          árbol de ascendencia en un SVG: --generaciones 1 a 4, --linaje archivo.json ({ etnia, padre: {...}, madre: {...} }), y --etnia --anio --edad --sexo --semilla de la persona
   --compacto         SVG unos 7 % más liviano (coordenadas con 1 decimal)
   --detalle minimo|medio|alto  --rasgos  --fondo '#efe9dd'
   --vestir ID,ID,…   viste prenda por prenda (--listar prendas); los colores salen del catálogo de cada una
@@ -78,6 +80,13 @@ const opc = {
 for (const k of Object.keys(opc)) if (opc[k] === undefined) delete opc[k];
 let svg, p;
 try {
+  if (flag('familia')) {
+    const linaje = val('linaje') ? JSON.parse(readFileSync(val('linaje'), 'utf8')) : undefined;
+    const f = generarFamilia({ semilla: opc.semilla, generaciones: val('generaciones') === undefined ? 3 : Number(val('generaciones')), anio: opc.anio ?? 1950, edad: opc.edad ?? 30, sexo: opc.sexo, etnia: opc.etnia, linaje, saludo: opc.saludo, detalle: opc.detalle });
+    const salidaF = val('o');
+    if (salidaF) { writeFileSync(salidaF, f.svg + '\n'); console.error(`Escrito ${salidaF} (${f.svg.length} bytes, ${f.personas.length} personas)`); } else console.log(f.svg);
+    process.exit(0);
+  }
   p = opc.ropaNueva ? generarPersonaConRopaNueva(opc) : generarPersona(opc);
   svg = renderizar(p, { detalle: opc.detalle, fondo: opc.fondo, contorno: opc.contorno, compacto: opc.compacto });
 } catch (e) { console.error(`Error: ${e.message}`); process.exit(2); }
