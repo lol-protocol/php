@@ -239,7 +239,7 @@ def test_frases_originales_van_sin_firma_y_las_demas_firmadas():
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
     for e in manifiesto["entradas"]:
         if e.get("frase"):
-            assert e["frase"]["firmada"] == (e["movimiento"] != "realismo-magico"), e["id"]
+            assert e["frase"]["firmada"] == (e["movimiento"] not in ("realismo-magico", "surrealismo")), e["id"]  # solo estos llevan frases originales
     solo, _ = texto.componer("Lee despacio", "", (16, 440, 184, 860))
     con, _ = texto.componer("Lee despacio", "Yo", (16, 440, 184, 860))
     assert len(solo) == 1 and len(con) == 2  # sin autoría no hay segundo bloque
