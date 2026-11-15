@@ -40,6 +40,10 @@ switch ($path) {
         header('Content-Type: text/plain; charset=utf-8');
         echo str_repeat("Linea de texto plano con contenido suficiente.\n", 12);
         break;
+    case '/law.pdf':
+        header('Content-Type: application/pdf');
+        readfile(__DIR__ . '/law.pdf');
+        break;
     case '/doc.pdf':
         header('Content-Type: application/pdf');
         echo '%PDF-1.4 binary';
