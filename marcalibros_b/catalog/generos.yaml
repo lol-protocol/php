@@ -6,13 +6,13 @@ version: '0.1'
 generos:
   - id: poesia
     nombre: Poesía
-    tipos: [poema, poemario, soneto, égloga, oda, elegía, balada, himno, epodo, letrilla, rima, poemas, poemas en prosa, poema en prosa, caligrama, canción, arco triunfal]
+    tipos: [poema, poemario, soneto, égloga, oda, elegía, balada, himno, epodo, letrilla, rima, poemas, poemas en prosa, poema en prosa, caligrama, canción, arco triunfal, cuartetas]
   - id: epica
     nombre: Épica
     tipos: [poema épico]
   - id: narrativa
     nombre: Narrativa
-    tipos: [novela, novela corta, cuento, cuentos, relato, relatos, leyenda, prosa, novela ejemplar, novela pastoril, novela dialogada, novela alegórica, cuento infantil, ciclo, fábula]
+    tipos: [novela, novela corta, cuento, cuentos, relato, relatos, leyenda, prosa, novela ejemplar, novela pastoril, novela dialogada, novela alegórica, cuento infantil, ciclo, fábula, capítulo]
   - id: teatro
     nombre: Teatro
     tipos: [drama, tragedia, comedia, teatro, auto sacramental, tragicomedia, pantomima, mascarada, entremés, drama satírico]

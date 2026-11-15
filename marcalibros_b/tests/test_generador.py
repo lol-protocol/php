@@ -193,7 +193,7 @@ def test_frases_en_dominio_publico_y_dibujables():
     assert validar_frases(datos, texto.soporta) == []
     for lista in datos["movimientos"].values():
         for q in lista:
-            _, alto = texto.componer(q["texto"], q["autor"], (16, 440, 184, 860))
+            _, alto = texto.componer(q["texto"], "" if q.get("original") else q["autor"], (16, 440, 184, 860), idioma=q.get("idioma"))
             assert alto <= 380, f"«{q['texto']}» no cabe en la franja"
 
 

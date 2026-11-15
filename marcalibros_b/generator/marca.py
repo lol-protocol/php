@@ -35,6 +35,7 @@ PALETA_DE = {
     "romanticismo": "atardecer", "gotico": "cripta", "realismo-magico": "tropico", "realismo": "ceniza",
     "naturalismo": "barro", "modernismo": "jade", "vanguardias": "primarios", "barroco": "carmesi",
     "clasicismo": "marmol", "simbolismo": "mistico",
+    "renacimiento": "toscana", "ilustracion": "razon", "expresionismo": "grito", "surrealismo": "delirio", "oriente": "bermellon",
 }
 MIN_ACENTO = 4.5  # contraste mínimo del acento sobre papel (texto de interfaz)
 

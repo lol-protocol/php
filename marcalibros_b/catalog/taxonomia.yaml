@@ -13664,3 +13664,4556 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
+- id: renacimiento
+  nombre: Renacimiento
+  paletas:
+  - toscana
+  - lapislazuli
+  - fresco
+  - amanecer
+  - dorada
+  - laurel
+  autores:
+  - id: petrarca
+    nombre: Francesco Petrarca
+    epoca: 1304–1374
+    region: Italia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: cancionero
+      titulo: Cancionero
+      tipo: poemario
+      motivo: laurel
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-triunfos
+      titulo: Los triunfos
+      tipo: poema
+      motivo: arco
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: secretum
+      titulo: Secretum
+      tipo: ensayo
+      motivo: espejo
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sobre-la-vida-solitaria
+      titulo: Sobre la vida solitaria
+      tipo: ensayo
+      motivo: cipres
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: epistola-a-la-posteridad
+      titulo: Epístola a la posteridad
+      tipo: epístola
+      motivo: vela
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: africa
+      titulo: África
+      tipo: poema épico
+      motivo: espada
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-ascenso-al-monte-ventoso
+      titulo: El ascenso al monte Ventoso
+      tipo: epístola
+      motivo: nube
+      animo: auroral
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cancion-a-la-virgen
+      titulo: Canción a la Virgen
+      tipo: canción
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: remedios-contra-la-buena-y-la-mala-fortu
+      titulo: Remedios contra la buena y la mala fortuna
+      tipo: ensayo
+      motivo: reloj_arena
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sobre-los-hombres-ilustres
+      titulo: Sobre los hombres ilustres
+      tipo: ensayo
+      motivo: estatua
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: ariosto
+    nombre: Ludovico Ariosto
+    epoca: 1474–1533
+    region: Italia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: orlando-furioso
+      titulo: Orlando furioso
+      tipo: poema épico
+      motivo: caballo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-satiras
+      titulo: Las sátiras
+      tipo: poemario
+      motivo: cortina
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-cassaria
+      titulo: La cassaria
+      tipo: comedia
+      motivo: cortina
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-supuestos
+      titulo: Los supuestos
+      tipo: comedia
+      motivo: puerta
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-nigromante
+      titulo: El nigromante
+      tipo: comedia
+      motivo: calavera
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: angelica-y-medoro
+      titulo: Angélica y Medoro
+      tipo: tema
+      de: Orlando furioso
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-locura-de-orlando
+      titulo: La locura de Orlando
+      tipo: tema
+      de: Orlando furioso
+      motivo: rayo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-hipogrifo
+      titulo: El hipogrifo
+      tipo: tema
+      de: Orlando furioso
+      motivo: alas
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-viaje-de-astolfo-a-la-luna
+      titulo: El viaje de Astolfo a la luna
+      tipo: tema
+      de: Orlando furioso
+      motivo: creciente
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: alcina-y-su-isla
+      titulo: Alcina y su isla
+      tipo: tema
+      de: Orlando furioso
+      motivo: concha
+      animo: exotico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: tasso
+    nombre: Torquato Tasso
+    epoca: 1544–1595
+    region: Italia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: jerusalen-liberada
+      titulo: Jerusalén liberada
+      tipo: poema épico
+      motivo: castillo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: aminta
+      titulo: Aminta
+      tipo: drama
+      motivo: arbol
+      animo: pastoral
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: rinaldo
+      titulo: Rinaldo
+      tipo: poema épico
+      motivo: caballo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: rimas
+      titulo: Rimas
+      tipo: poemario
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-rey-torrismondo
+      titulo: El rey Torrismondo
+      tipo: tragedia
+      motivo: corona
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-siete-dias-de-la-creacion-del-mundo
+      titulo: Los siete días de la creación del mundo
+      tipo: poema
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: dialogos
+      titulo: Diálogos
+      tipo: ensayo
+      motivo: espejo
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: clorinda-y-tancredo
+      titulo: Clorinda y Tancredo
+      tipo: tema
+      de: Jerusalén liberada
+      motivo: espada
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: armida-y-su-jardin
+      titulo: Armida y su jardín
+      tipo: tema
+      de: Jerusalén liberada
+      motivo: fuente
+      animo: exotico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-bosque-encantado
+      titulo: El bosque encantado
+      tipo: tema
+      de: Jerusalén liberada
+      motivo: arbol
+      animo: onirico
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: maquiavelo
+    nombre: Nicolás Maquiavelo
+    epoca: 1469–1527
+    region: Italia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-principe
+      titulo: El príncipe
+      tipo: ensayo
+      motivo: corona
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: discursos-sobre-la-primera-decada-de-tit
+      titulo: Discursos sobre la primera década de Tito Livio
+      tipo: ensayo
+      motivo: columna
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-mandragora
+      titulo: La mandrágora
+      tipo: comedia
+      motivo: cortina
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-arte-de-la-guerra
+      titulo: El arte de la guerra
+      tipo: ensayo
+      motivo: espada
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: historias-florentinas
+      titulo: Historias florentinas
+      tipo: ensayo
+      motivo: cupula
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-vida-de-castruccio-castracani
+      titulo: La vida de Castruccio Castracani
+      tipo: relato
+      motivo: escudo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: belfagor-el-arcidiablo
+      titulo: Belfagor, el arcidiablo
+      tipo: cuento
+      motivo: serpiente
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: clizia
+      titulo: Clizia
+      tipo: comedia
+      motivo: puerta
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-asno-de-oro
+      titulo: El asno de oro
+      tipo: poema
+      motivo: caballo
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cartas-a-francesco-vettori
+      titulo: Cartas a Francesco Vettori
+      tipo: cartas
+      motivo: vela
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: erasmo
+    nombre: Erasmo de Róterdam
+    epoca: 1466–1536
+    region: Países Bajos
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: elogio-de-la-locura
+      titulo: Elogio de la locura
+      tipo: ensayo
+      motivo: espejo
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: adagios
+      titulo: Adagios
+      tipo: ensayo
+      motivo: columna
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: coloquios
+      titulo: Coloquios
+      tipo: ensayo
+      motivo: cortina
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: enquiridion-del-caballero-cristiano
+      titulo: Enquiridión del caballero cristiano
+      tipo: ensayo
+      motivo: cruz
+      animo: mistico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-educacion-del-principe-cristiano
+      titulo: La educación del príncipe cristiano
+      tipo: ensayo
+      motivo: corona
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sobre-el-libre-albedrio
+      titulo: Sobre el libre albedrío
+      tipo: ensayo
+      motivo: escalera
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-queja-de-la-paz
+      titulo: La queja de la paz
+      tipo: ensayo
+      motivo: rosa
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: lamentacion-de-la-paz
+      titulo: Lamentación de la paz
+      tipo: ensayo
+      motivo: barricada
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cartas
+      titulo: Cartas
+      tipo: cartas
+      motivo: vela
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-ciceroniano
+      titulo: El ciceroniano
+      tipo: ensayo
+      motivo: estatua
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: rabelais
+    nombre: François Rabelais
+    epoca: c. 1494–1553
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: gargantua
+      titulo: Gargantúa
+      tipo: novela
+      motivo: molino
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: pantagruel
+      titulo: Pantagruel
+      tipo: novela
+      motivo: caballo
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: tercer-libro
+      titulo: Tercer libro
+      tipo: novela
+      motivo: pozo
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cuarto-libro
+      titulo: Cuarto libro
+      tipo: novela
+      motivo: velero
+      animo: exotico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: quinto-libro
+      titulo: Quinto libro
+      tipo: novela
+      motivo: concha
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-abadia-de-theleme
+      titulo: La abadía de Thélème
+      tipo: tema
+      de: Gargantúa
+      motivo: castillo
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: panurgo-y-los-corderos
+      titulo: Panurgo y los corderos
+      tipo: tema
+      de: Tercer libro
+      motivo: gallo
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-isla-sonante
+      titulo: La isla sonante
+      tipo: tema
+      de: Quinto libro
+      motivo: torre
+      animo: onirico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-botella-sagrada
+      titulo: La botella sagrada
+      tipo: tema
+      de: Quinto libro
+      motivo: urna
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-infancia-de-gargantua
+      titulo: La infancia de Gargantúa
+      tipo: tema
+      de: Gargantúa
+      motivo: corazon
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: montaigne
+    nombre: Michel de Montaigne
+    epoca: 1533–1592
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: ensayos
+      titulo: Ensayos
+      tipo: ensayo
+      motivo: cipres
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: de-la-amistad
+      titulo: De la amistad
+      tipo: tema
+      de: Ensayos
+      motivo: corazon
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: de-los-canibales
+      titulo: De los caníbales
+      tipo: tema
+      de: Ensayos
+      motivo: velero
+      animo: exotico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: de-la-experiencia
+      titulo: De la experiencia
+      tipo: tema
+      de: Ensayos
+      motivo: espejo
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: que-filosofar-es-aprender-a-morir
+      titulo: Que filosofar es aprender a morir
+      tipo: tema
+      de: Ensayos
+      motivo: calavera
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: de-la-educacion-de-los-ninos
+      titulo: De la educación de los niños
+      tipo: tema
+      de: Ensayos
+      motivo: arbol
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: apologia-de-raimundo-sabunde
+      titulo: Apología de Raimundo Sabunde
+      tipo: tema
+      de: Ensayos
+      motivo: balanza
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: del-arrepentimiento
+      titulo: Del arrepentimiento
+      tipo: tema
+      de: Ensayos
+      motivo: vela
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: de-los-libros
+      titulo: De los libros
+      tipo: tema
+      de: Ensayos
+      motivo: lira
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diario-de-viaje-a-italia
+      titulo: Diario de viaje a Italia
+      tipo: viaje
+      motivo: carruaje
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: camoes
+    nombre: Luís de Camões
+    epoca: c. 1524–1580
+    region: Portugal
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: los-lusiadas
+      titulo: Los lusiadas
+      tipo: poema épico
+      motivo: velero
+      animo: heroico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: rimas
+      titulo: Rimas
+      tipo: poemario
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sonetos
+      titulo: Sonetos
+      tipo: soneto
+      motivo: laurel
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-lusiadas-el-gigante-adamastor
+      titulo: 'Los Lusiadas: el gigante Adamastor'
+      tipo: tema
+      de: Los lusiadas
+      motivo: rayo
+      animo: tormentoso
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-lusiadas-la-isla-de-los-amores
+      titulo: 'Los Lusiadas: la isla de los Amores'
+      tipo: tema
+      de: Los lusiadas
+      motivo: fuente
+      animo: exotico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-lusiadas-ines-de-castro
+      titulo: 'Los Lusiadas: Inés de Castro'
+      tipo: tema
+      de: Los lusiadas
+      motivo: corona
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-lusiadas-el-viejo-del-restelo
+      titulo: 'Los Lusiadas: el viejo del Restelo'
+      tipo: tema
+      de: Los lusiadas
+      motivo: faro
+      animo: melancolico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: amor-es-fuego-que-arde-sin-que-se-vea
+      titulo: Amor es fuego que arde sin que se vea
+      tipo: soneto
+      motivo: vela
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: lirica-de-las-odas
+      titulo: Lírica de las odas
+      tipo: oda
+      motivo: lira
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-seleuco
+      titulo: El Seleuco
+      tipo: comedia
+      motivo: cortina
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: shakespeare
+    nombre: William Shakespeare
+    epoca: 1564–1616
+    region: Inglaterra
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: hamlet
+      titulo: Hamlet
+      tipo: tragedia
+      motivo: calavera
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: romeo-y-julieta
+      titulo: Romeo y Julieta
+      tipo: tragedia
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: macbeth
+      titulo: Macbeth
+      tipo: tragedia
+      motivo: espada
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-rey-lear
+      titulo: El rey Lear
+      tipo: tragedia
+      motivo: rayo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: otelo
+      titulo: Otelo
+      tipo: tragedia
+      motivo: mano
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sueno-de-una-noche-de-verano
+      titulo: Sueño de una noche de verano
+      tipo: comedia
+      motivo: luna
+      animo: nocturno
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-tempestad
+      titulo: La tempestad
+      tipo: comedia
+      motivo: velero
+      animo: tormentoso
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sonetos
+      titulo: Sonetos
+      tipo: soneto
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ricardo-iii
+      titulo: Ricardo III
+      tipo: drama
+      motivo: corona
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-mercader-de-venecia
+      titulo: El mercader de Venecia
+      tipo: comedia
+      motivo: balanza
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: fray-luis
+    nombre: Fray Luis de León
+    epoca: 1527–1591
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: noche-serena
+      titulo: Noche serena
+      tipo: oda
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: vida-retirada
+      titulo: Vida retirada
+      tipo: oda
+      motivo: arbol
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: a-francisco-salinas
+      titulo: A Francisco Salinas
+      tipo: oda
+      motivo: organo
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-nombres-de-cristo
+      titulo: Los nombres de Cristo
+      tipo: ensayo
+      motivo: cruz
+      animo: mistico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-perfecta-casada
+      titulo: La perfecta casada
+      tipo: ensayo
+      motivo: rosa
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: exposicion-del-libro-de-job
+      titulo: Exposición del Libro de Job
+      tipo: ensayo
+      motivo: calavera
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: profecia-del-tajo
+      titulo: Profecía del Tajo
+      tipo: oda
+      motivo: rio
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: al-salir-de-la-carcel
+      titulo: Al salir de la cárcel
+      tipo: poema
+      motivo: puerta
+      animo: auroral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: en-la-ascension
+      titulo: En la Ascensión
+      tipo: oda
+      motivo: nube
+      animo: mistico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cantar-de-los-cantares
+      titulo: Cantar de los Cantares
+      tipo: poema
+      motivo: lirio
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+- id: ilustracion
+  nombre: Ilustración
+  paletas:
+  - razon
+  - peluca
+  - salon
+  - niebla
+  - rosa
+  autores:
+  - id: voltaire
+    nombre: Voltaire
+    epoca: 1694–1778
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: candido-o-el-optimismo
+      titulo: Cándido o el optimismo
+      tipo: novela corta
+      motivo: velero
+      animo: satirico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: zadig
+      titulo: Zadig
+      tipo: novela corta
+      motivo: caballo
+      animo: exotico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: micromegas
+      titulo: Micromegas
+      tipo: novela corta
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: tratado-sobre-la-tolerancia
+      titulo: Tratado sobre la tolerancia
+      tipo: ensayo
+      motivo: balanza
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diccionario-filosofico
+      titulo: Diccionario filosófico
+      tipo: ensayo
+      motivo: telescopio
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cartas-filosoficas
+      titulo: Cartas filosóficas
+      tipo: cartas
+      motivo: carruaje
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-ingenuo
+      titulo: El ingenuo
+      tipo: novela corta
+      motivo: arbol
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: zaire
+      titulo: Zaïre
+      tipo: tragedia
+      motivo: corona
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: edipo
+      titulo: Edipo
+      tipo: tragedia
+      motivo: columna
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-henriada
+      titulo: La Henriada
+      tipo: poema épico
+      motivo: espada
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: rousseau
+    nombre: Jean-Jacques Rousseau
+    epoca: 1712–1778
+    region: Suiza
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-contrato-social
+      titulo: El contrato social
+      tipo: ensayo
+      motivo: balanza
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: emilio-o-de-la-educacion
+      titulo: Emilio o De la educación
+      tipo: ensayo
+      motivo: arbol
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: julia-o-la-nueva-eloisa
+      titulo: Julia o la nueva Eloísa
+      tipo: novela
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-confesiones
+      titulo: Las confesiones
+      tipo: memoria
+      motivo: espejo
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: discurso-sobre-el-origen-de-la-desiguald
+      titulo: Discurso sobre el origen de la desigualdad
+      tipo: ensayo
+      motivo: pozo
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: discurso-sobre-las-ciencias-y-las-artes
+      titulo: Discurso sobre las ciencias y las artes
+      tipo: ensayo
+      motivo: reloj
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-ensonaciones-del-paseante-solitario
+      titulo: Las ensoñaciones del paseante solitario
+      tipo: memoria
+      motivo: cisne
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: carta-a-d-alembert-sobre-los-espectaculo
+      titulo: Carta a d'Alembert sobre los espectáculos
+      tipo: carta
+      motivo: cortina
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: pigmalion
+      titulo: Pigmalión
+      tipo: drama
+      motivo: estatua
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-adivino-de-la-aldea
+      titulo: El adivino de la aldea
+      tipo: drama
+      motivo: molino
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: diderot
+    nombre: Denis Diderot
+    epoca: 1713–1784
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: la-enciclopedia
+      titulo: La enciclopedia
+      tipo: ensayo
+      motivo: engranaje
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: jacques-el-fatalista
+      titulo: Jacques el fatalista
+      tipo: novela
+      motivo: caballo
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-religiosa
+      titulo: La religiosa
+      tipo: novela
+      motivo: puerta
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-sobrino-de-rameau
+      titulo: El sobrino de Rameau
+      tipo: novela dialogada
+      motivo: guitarra
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: carta-sobre-los-ciegos
+      titulo: Carta sobre los ciegos
+      tipo: carta
+      motivo: ojo
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: paradoja-sobre-el-comediante
+      titulo: Paradoja sobre el comediante
+      tipo: ensayo
+      motivo: cortina
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-sueno-de-d-alembert
+      titulo: El sueño de d'Alembert
+      tipo: novela dialogada
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-joyas-indiscretas
+      titulo: Las joyas indiscretas
+      tipo: novela
+      motivo: rosa
+      animo: galante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-salones
+      titulo: Los salones
+      tipo: ensayo
+      motivo: espejo
+      animo: galante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: suplemento-al-viaje-de-bougainville
+      titulo: Suplemento al viaje de Bougainville
+      tipo: ensayo
+      motivo: velero
+      animo: exotico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: montesquieu
+    nombre: Montesquieu
+    epoca: 1689–1755
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: cartas-persas
+      titulo: Cartas persas
+      tipo: novela
+      motivo: puerta
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-espiritu-de-las-leyes
+      titulo: El espíritu de las leyes
+      tipo: ensayo
+      motivo: balanza
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: consideraciones-sobre-las-causas-de-la-g
+      titulo: Consideraciones sobre las causas de la grandeza de los romanos
+      tipo: ensayo
+      motivo: columna
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-templo-de-gnido
+      titulo: El templo de Gnido
+      tipo: novela corta
+      motivo: templo
+      animo: galante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cartas-persas-el-serrallo
+      titulo: 'Cartas persas: el serrallo'
+      tipo: tema
+      de: Cartas persas
+      motivo: ventana_gotica
+      animo: exotico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cartas-persas-los-trogloditas
+      titulo: 'Cartas persas: los trogloditas'
+      tipo: tema
+      de: Cartas persas
+      motivo: pozo
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: dialogo-de-sila-y-eucrates
+      titulo: Diálogo de Sila y Eucrates
+      tipo: ensayo
+      motivo: espada
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mis-pensamientos
+      titulo: Mis pensamientos
+      tipo: aforismos
+      motivo: vela
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: viaje-a-gnido
+      titulo: Viaje a Gnido
+      tipo: relato
+      motivo: barca
+      animo: galante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+      escena: marina
+    - id: ensayo-sobre-el-gusto
+      titulo: Ensayo sobre el gusto
+      tipo: ensayo
+      motivo: rosa
+      animo: galante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: swift
+    nombre: Jonathan Swift
+    epoca: 1667–1745
+    region: Irlanda
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: los-viajes-de-gulliver
+      titulo: Los viajes de Gulliver
+      tipo: novela
+      motivo: velero
+      animo: satirico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: una-modesta-proposicion
+      titulo: Una modesta proposición
+      tipo: ensayo
+      motivo: pozo
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cuento-de-una-barrica
+      titulo: Cuento de una barrica
+      tipo: novela
+      motivo: molino
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-batalla-de-los-libros
+      titulo: La batalla de los libros
+      tipo: ensayo
+      motivo: espada
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-cartas-del-panero
+      titulo: Las cartas del pañero
+      tipo: cartas
+      motivo: carruaje
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: lilliput
+      titulo: Lilliput
+      tipo: tema
+      de: Los viajes de Gulliver
+      motivo: espada
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: brobdingnag
+      titulo: Brobdingnag
+      tipo: tema
+      de: Los viajes de Gulliver
+      motivo: arbol
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: laputa-la-isla-voladora
+      titulo: Laputa, la isla voladora
+      tipo: tema
+      de: Los viajes de Gulliver
+      motivo: nube
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-pais-de-los-houyhnhnms
+      titulo: El país de los houyhnhnms
+      tipo: tema
+      de: Los viajes de Gulliver
+      motivo: caballo
+      animo: sereno
+      escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diario-para-stella
+      titulo: Diario para Stella
+      tipo: diario
+      motivo: vela
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: defoe
+    nombre: Daniel Defoe
+    epoca: 1660–1731
+    region: Inglaterra
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: robinson-crusoe
+      titulo: Robinson Crusoe
+      tipo: novela
+      motivo: velero
+      animo: pastoral
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: moll-flanders
+      titulo: Moll Flanders
+      tipo: novela
+      motivo: carruaje
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diario-del-ano-de-la-peste
+      titulo: Diario del año de la peste
+      tipo: novela
+      motivo: calavera
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: capitan-singleton
+      titulo: Capitán Singleton
+      tipo: novela
+      motivo: barca
+      animo: exotico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: roxana
+      titulo: Roxana
+      tipo: novela
+      motivo: espejo
+      animo: decadente
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: coronel-jack
+      titulo: Coronel Jack
+      tipo: novela
+      motivo: caballo
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-viaje-a-traves-de-toda-la-isla-de-gra
+      titulo: Un viaje a través de toda la isla de Gran Bretaña
+      tipo: viaje
+      motivo: carruaje
+      animo: provinciano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-isla-de-robinson
+      titulo: La isla de Robinson
+      tipo: tema
+      de: Robinson Crusoe
+      motivo: arbol
+      animo: exotico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: viernes
+      titulo: Viernes
+      tipo: tema
+      de: Robinson Crusoe
+      motivo: mano
+      animo: exotico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: nuevas-aventuras-de-robinson-crusoe
+      titulo: Nuevas aventuras de Robinson Crusoe
+      tipo: novela
+      motivo: faro
+      animo: exotico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: lessing
+    nombre: Gotthold Ephraim Lessing
+    epoca: 1729–1781
+    region: Alemania
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: nathan-el-sabio
+      titulo: Nathan el sabio
+      tipo: drama
+      motivo: rosa
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: minna-von-barnhelm
+      titulo: Minna von Barnhelm
+      tipo: comedia
+      motivo: cortina
+      animo: galante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: emilia-galotti
+      titulo: Emilia Galotti
+      tipo: tragedia
+      motivo: rosa
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: laocoonte
+      titulo: Laocoonte
+      tipo: ensayo
+      motivo: estatua
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-educacion-del-genero-humano
+      titulo: La educación del género humano
+      tipo: ensayo
+      motivo: escalera
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: miss-sara-sampson
+      titulo: Miss Sara Sampson
+      tipo: tragedia
+      motivo: vela
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: fabulas
+      titulo: Fábulas
+      tipo: fábula
+      motivo: cuervo
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: dramaturgia-de-hamburgo
+      titulo: Dramaturgia de Hamburgo
+      tipo: ensayo
+      motivo: cortina
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ernesto-y-falk
+      titulo: Ernesto y Falk
+      tipo: ensayo
+      motivo: espejo
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-joven-sabio
+      titulo: El joven sabio
+      tipo: comedia
+      motivo: vela
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: jovellanos
+    nombre: Gaspar Melchor de Jovellanos
+    epoca: 1744–1811
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: informe-sobre-la-ley-agraria
+      titulo: Informe sobre la ley agraria
+      tipo: ensayo
+      motivo: trigal
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-delincuente-honrado
+      titulo: El delincuente honrado
+      tipo: drama
+      motivo: balanza
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: memoria-sobre-los-espectaculos-y-diversi
+      titulo: Memoria sobre los espectáculos y diversiones públicas
+      tipo: ensayo
+      motivo: cortina
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: elogio-de-las-bellas-artes
+      titulo: Elogio de las bellas artes
+      tipo: ensayo
+      motivo: estatua
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diarios
+      titulo: Diarios
+      tipo: diario
+      motivo: vela
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: epistola-a-anfriso
+      titulo: Epístola a Anfriso
+      tipo: epístola
+      motivo: fuente
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: satira-a-arnesto
+      titulo: Sátira a Arnesto
+      tipo: poema
+      motivo: pozo
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: memoria-en-defensa-de-la-junta-central
+      titulo: Memoria en defensa de la Junta Central
+      tipo: ensayo
+      motivo: escudo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: tratado-teorico-practico-de-ensenanza
+      titulo: Tratado teórico-práctico de enseñanza
+      tipo: ensayo
+      motivo: vela
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: elegia-a-filis
+      titulo: Elegía a Filis
+      tipo: elegía
+      motivo: rosa
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: moratin
+    nombre: Leandro Fernández de Moratín
+    epoca: 1760–1828
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-si-de-las-ninas
+      titulo: El sí de las niñas
+      tipo: comedia
+      motivo: puerta
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-comedia-nueva-o-el-cafe
+      titulo: La comedia nueva o el café
+      tipo: comedia
+      motivo: cortina
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-viejo-y-la-nina
+      titulo: El viejo y la niña
+      tipo: comedia
+      motivo: rosa
+      animo: galante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-baron
+      titulo: El barón
+      tipo: comedia
+      motivo: carruaje
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-mojigata
+      titulo: La mojigata
+      tipo: comedia
+      motivo: cruz
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: origenes-del-teatro-espanol
+      titulo: Orígenes del teatro español
+      tipo: ensayo
+      motivo: cortina
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-derrota-de-los-pedantes
+      titulo: La derrota de los pedantes
+      tipo: ensayo
+      motivo: espada
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diario-de-un-viaje-a-italia
+      titulo: Diario de un viaje a Italia
+      tipo: diario
+      motivo: carruaje
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: elegia-a-las-musas
+      titulo: Elegía a las musas
+      tipo: elegía
+      motivo: lira
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: epistola-a-jovellanos
+      titulo: Epístola a Jovellanos
+      tipo: epístola
+      motivo: vela
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: beaumarchais
+    nombre: Pierre-Augustin de Beaumarchais
+    epoca: 1732–1799
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-barbero-de-sevilla
+      titulo: El barbero de Sevilla
+      tipo: comedia
+      motivo: guitarra
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-bodas-de-figaro
+      titulo: Las bodas de Fígaro
+      tipo: comedia
+      motivo: cortina
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-madre-culpable
+      titulo: La madre culpable
+      tipo: drama
+      motivo: espejo
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: eugenia
+      titulo: Eugenia
+      tipo: drama
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-dos-amigos
+      titulo: Los dos amigos
+      tipo: drama
+      motivo: corazon
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: tarare
+      titulo: Tarare
+      tipo: drama
+      motivo: corona
+      animo: fastuoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: memorias-contra-goezman
+      titulo: Memorias contra Goëzman
+      tipo: ensayo
+      motivo: balanza
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: memorias
+      titulo: Memorias
+      tipo: memoria
+      motivo: reloj
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: figaro
+      titulo: Fígaro
+      tipo: tema
+      de: Las bodas de Fígaro
+      motivo: guitarra
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: rosina
+      titulo: Rosina
+      tipo: tema
+      de: El barbero de Sevilla
+      motivo: rosa
+      animo: galante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+- id: expresionismo
+  nombre: Expresionismo
+  paletas:
+  - grito
+  - bilis
+  - brasa
+  - sangre
+  - tormenta
+  autores:
+  - id: trakl
+    nombre: Georg Trakl
+    epoca: 1887–1914
+    region: Austria
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: poemas
+      titulo: Poemas
+      tipo: poemario
+      motivo: cuervo
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sebastian-en-suenos
+      titulo: Sebastián en sueños
+      tipo: poemario
+      motivo: arbol
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: otono-transfigurado
+      titulo: Otoño transfigurado
+      tipo: poema
+      motivo: hojas
+      animo: otonal
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: grodek
+      titulo: Grodek
+      tipo: poema
+      motivo: calavera
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: de-profundis
+      titulo: De profundis
+      tipo: poema
+      motivo: lluvia
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: helian
+      titulo: Helian
+      tipo: poema
+      motivo: rio
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cancion-del-occidente
+      titulo: Canción del Occidente
+      tipo: poema
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-alma-de-la-primavera
+      titulo: El alma de la primavera
+      tipo: poema
+      motivo: narcisos
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: siete-cantos-de-la-muerte
+      titulo: Siete cantos de la muerte
+      tipo: poemario
+      motivo: ataud
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: rosario
+      titulo: Rosario
+      tipo: poemario
+      motivo: rosa
+      animo: mistico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: heym
+    nombre: Georg Heym
+    epoca: 1887–1912
+    region: Alemania
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-dia-eterno
+      titulo: El día eterno
+      tipo: poemario
+      motivo: rayo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: umbra-vitae
+      titulo: Umbra vitae
+      tipo: poemario
+      motivo: calavera
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-guerra
+      titulo: La guerra
+      tipo: poema
+      motivo: espada
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-demonios-de-las-ciudades
+      titulo: Los demonios de las ciudades
+      tipo: poema
+      motivo: skyline
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-ahogados
+      titulo: Los ahogados
+      tipo: poema
+      motivo: olas
+      animo: lugubre
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-dios-de-la-ciudad
+      titulo: El dios de la ciudad
+      tipo: poema
+      motivo: rascacielos
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: berlin
+      titulo: Berlín
+      tipo: poema
+      motivo: tren
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-cadaver
+      titulo: El cadáver
+      tipo: poema
+      motivo: ataud
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-ultimos-de-la-ciudad
+      titulo: Los últimos de la ciudad
+      tipo: poema
+      motivo: chimeneas
+      animo: sordido
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: marathon
+      titulo: Marathon
+      tipo: poemario
+      motivo: caballo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: benn
+    nombre: Gottfried Benn
+    epoca: 1886–1956
+    region: Alemania
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: morgue
+      titulo: Morgue
+      tipo: poemario
+      motivo: ataud
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hijos
+      titulo: Hijos
+      tipo: poemario
+      motivo: calavera
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: carne
+      titulo: Carne
+      tipo: poemario
+      motivo: corazon
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cerebros
+      titulo: Cerebros
+      tipo: cuentos
+      motivo: ojo
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: poemas-estaticos
+      titulo: Poemas estáticos
+      tipo: poemario
+      motivo: columna
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-poeta-ya-nunca-esta-solo
+      titulo: Un poeta ya nunca está solo
+      tipo: ensayo
+      motivo: espejo
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: doble-vida
+      titulo: Doble vida
+      tipo: memoria
+      motivo: puerta
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: canto-de-las-ruinas
+      titulo: Canto de las ruinas
+      tipo: poema
+      motivo: ruinas
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ptolemeo
+      titulo: Ptolemeo
+      tipo: ensayo
+      motivo: reloj_arena
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: poemas-ultimos
+      titulo: Poemas últimos
+      tipo: poemario
+      motivo: cipres
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: kafka
+    nombre: Franz Kafka
+    epoca: 1883–1924
+    region: Bohemia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: la-metamorfosis
+      titulo: La metamorfosis
+      tipo: novela corta
+      motivo: puerta
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-proceso
+      titulo: El proceso
+      tipo: novela
+      motivo: puerta
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-castillo
+      titulo: El castillo
+      tipo: novela
+      motivo: castillo
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: america
+      titulo: América
+      tipo: novela
+      motivo: velero
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+      escena: marina
+    - id: la-condena
+      titulo: La condena
+      tipo: cuento
+      motivo: puente
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: en-la-colonia-penitenciaria
+      titulo: En la colonia penitenciaria
+      tipo: cuento
+      motivo: engranaje
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-artista-del-hambre
+      titulo: Un artista del hambre
+      tipo: cuento
+      motivo: calavera
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ante-la-ley
+      titulo: Ante la ley
+      tipo: cuento
+      motivo: puerta
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: carta-al-padre
+      titulo: Carta al padre
+      tipo: carta
+      motivo: espejo
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: josefina-la-cantora-o-el-pueblo-de-los-r
+      titulo: Josefina la cantora o el pueblo de los ratones
+      tipo: cuento
+      motivo: gato
+      animo: sordido
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: doblin
+    nombre: Alfred Döblin
+    epoca: 1878–1957
+    region: Alemania
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: berlin-alexanderplatz
+      titulo: Berlin Alexanderplatz
+      tipo: novela
+      motivo: tren
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-tres-saltos-de-wang-lun
+      titulo: Los tres saltos de Wang-Lun
+      tipo: novela
+      motivo: pagoda
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: wallenstein
+      titulo: Wallenstein
+      tipo: novela
+      motivo: espada
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: montanas-mares-y-gigantes
+      titulo: Montañas, mares y gigantes
+      tipo: novela
+      motivo: volcan
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hamlet-o-la-larga-noche-llega-a-su-fin
+      titulo: Hamlet o la larga noche llega a su fin
+      tipo: novela
+      motivo: calavera
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: noviembre-de-1918
+      titulo: Noviembre de 1918
+      tipo: novela
+      motivo: tren
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: babylonische-wandrung
+      titulo: Babylonische Wandrung
+      tipo: novela
+      motivo: torre
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: manas
+      titulo: Manas
+      tipo: poema épico
+      motivo: alas
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: berge-meere-und-giganten
+      titulo: Berge, Meere und Giganten
+      tipo: novela
+      motivo: olas
+      animo: alucinado
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-asesinato-de-una-mantequera
+      titulo: El asesinato de una mantequera
+      tipo: cuento
+      motivo: cuervo
+      animo: sordido
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: lasker
+    nombre: Else Lasker-Schüler
+    epoca: 1869–1945
+    region: Alemania
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: mi-milagro
+      titulo: Mi milagro
+      tipo: poemario
+      motivo: rosa
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hebraische-balladen
+      titulo: Hebräische Balladen
+      tipo: poemario
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: der-siebente-tag
+      titulo: Der siebente Tag
+      tipo: poemario
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mi-corazon-azul
+      titulo: Mi corazón azul
+      tipo: poemario
+      motivo: corazon
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-principe-de-tebas
+      titulo: El príncipe de Tebas
+      tipo: relato
+      motivo: esfinge
+      animo: exotico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: der-wunderrabbiner-von-barcelona
+      titulo: Der Wunderrabbiner von Barcelona
+      tipo: relato
+      motivo: cortina
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: konzert
+      titulo: Konzert
+      tipo: poemario
+      motivo: lira
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hebreos
+      titulo: Hebreos
+      tipo: poemario
+      motivo: creciente
+      animo: mistico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: arthur-aronymus
+      titulo: Arthur Aronymus
+      tipo: drama
+      motivo: casa_colonial
+      animo: provinciano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: jussuf-de-tebas
+      titulo: Jussuf de Tebas
+      tipo: relato
+      motivo: caballo
+      animo: exotico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: werfel
+    nombre: Franz Werfel
+    epoca: 1890–1945
+    region: Bohemia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: los-cuarenta-dias-de-musa-dagh
+      titulo: Los cuarenta días de Musa Dagh
+      tipo: novela
+      motivo: nube
+      animo: tragico
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-cancion-de-bernadette
+      titulo: La canción de Bernadette
+      tipo: novela
+      motivo: cruz
+      animo: mistico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-amigo-del-mundo
+      titulo: El amigo del mundo
+      tipo: poemario
+      motivo: corazon
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: verdi
+      titulo: Verdi
+      tipo: novela
+      motivo: organo
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: barbara-o-la-piedad
+      titulo: Barbara o la piedad
+      tipo: novela
+      motivo: lapidas
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-dia-de-mi-muerte
+      titulo: El día de mi muerte
+      tipo: cuento
+      motivo: ataud
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: juarez-y-maximiliano
+      titulo: Juárez y Maximiliano
+      tipo: drama
+      motivo: corona
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-ciudad-mas-alla-del-libano
+      titulo: La ciudad más allá del Líbano
+      tipo: drama
+      motivo: torre
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: paulus-unter-den-juden
+      titulo: Paulus unter den Juden
+      tipo: drama
+      motivo: cruz
+      animo: mistico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-asesino-no-es-culpable-es-la-victima
+      titulo: El asesino no es culpable, es la víctima
+      tipo: cuento
+      motivo: calavera
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: stramm
+    nombre: August Stramm
+    epoca: 1874–1915
+    region: Alemania
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: poemas-de-guerra
+      titulo: Poemas de guerra
+      tipo: poemario
+      motivo: barricada
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: tropfblut
+      titulo: Tropfblut
+      tipo: poemario
+      motivo: calavera
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: du
+      titulo: Du
+      tipo: poemario
+      motivo: corazon
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sancta-susanna
+      titulo: Sancta Susanna
+      tipo: drama
+      motivo: cruz
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: rudimentar
+      titulo: Rudimentär
+      tipo: poemario
+      motivo: espada
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: erwachen
+      titulo: Erwachen
+      tipo: drama
+      motivo: puerta
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: die-haidebraut
+      titulo: Die Haidebraut
+      tipo: drama
+      motivo: arbol
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: krafte
+      titulo: Kräfte
+      tipo: drama
+      motivo: rayo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: wunde
+      titulo: Wunde
+      tipo: poema
+      motivo: lluvia
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: weltwehe
+      titulo: Weltwehe
+      tipo: poemario
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: toller
+    nombre: Ernst Toller
+    epoca: 1893–1939
+    region: Alemania
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: hombre-masa
+      titulo: Hombre-masa
+      tipo: drama
+      motivo: engranaje
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-destructores-de-maquinas
+      titulo: Los destructores de máquinas
+      tipo: drama
+      motivo: engranaje
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hinkemann
+      titulo: Hinkemann
+      tipo: drama
+      motivo: calavera
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: die-wandlung
+      titulo: Die Wandlung
+      tipo: drama
+      motivo: puerta
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: transformacion
+      titulo: Transformación
+      tipo: drama
+      motivo: cortina
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hoppla-wir-leben
+      titulo: Hoppla, wir leben
+      tipo: drama
+      motivo: rascacielos
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: una-juventud-en-alemania
+      titulo: Una juventud en Alemania
+      tipo: memoria
+      motivo: puente
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: das-schwalbenbuch
+      titulo: Das Schwalbenbuch
+      tipo: poemario
+      motivo: golondrinas
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: der-entfesselte-wotan
+      titulo: Der entfesselte Wotan
+      tipo: drama
+      motivo: rayo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: pastor-hall
+      titulo: Pastor Hall
+      tipo: drama
+      motivo: cruz
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: kaiser
+    nombre: Georg Kaiser
+    epoca: 1878–1945
+    region: Alemania
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: gas
+      titulo: Gas
+      tipo: drama
+      motivo: chimeneas
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: desde-la-manana-hasta-la-medianoche
+      titulo: Desde la mañana hasta la medianoche
+      tipo: drama
+      motivo: reloj
+      animo: frenetico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-burgueses-de-calais
+      titulo: Los burgueses de Calais
+      tipo: drama
+      motivo: puerta
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: coral
+      titulo: Coral
+      tipo: drama
+      motivo: engranaje
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: gas-ii
+      titulo: Gas II
+      tipo: drama
+      motivo: rascacielos
+      animo: visceral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: die-koralle
+      titulo: Die Koralle
+      tipo: drama
+      motivo: concha
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: der-brand-im-opernhaus
+      titulo: Der Brand im Opernhaus
+      tipo: drama
+      motivo: cortina
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: der-soldat-tanaka
+      titulo: Der Soldat Tanaka
+      tipo: drama
+      motivo: espada
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: zweimal-oliver
+      titulo: Zweimal Oliver
+      tipo: drama
+      motivo: espejo
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: der-protagonist
+      titulo: Der Protagonist
+      tipo: drama
+      motivo: cortina
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+- id: surrealismo
+  nombre: Surrealismo
+  paletas:
+  - delirio
+  - vigilia
+  - metamorfosis
+  - tropico
+  - aguamarina
+  autores:
+  - id: aragon
+    nombre: Louis Aragon
+    epoca: 1897–1982
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-campesino-de-paris
+      titulo: El campesino de París
+      tipo: novela
+      motivo: farola
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-movimiento-perpetuo
+      titulo: El movimiento perpetuo
+      tipo: poemario
+      motivo: engranaje
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: anicet-o-el-panorama
+      titulo: Anicet o el panorama
+      tipo: novela
+      motivo: ojo
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-campanas-de-basilea
+      titulo: Las campanas de Basilea
+      tipo: novela
+      motivo: tren
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: aurelien
+      titulo: Aurélien
+      tipo: novela
+      motivo: reloj
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-ojos-de-elsa
+      titulo: Los ojos de Elsa
+      tipo: poemario
+      motivo: ojo
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-corazon-roto
+      titulo: El corazón roto
+      tipo: poemario
+      motivo: corazon
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-semana-santa
+      titulo: La semana santa
+      tipo: novela
+      motivo: caballo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-loco-de-elsa
+      titulo: El loco de Elsa
+      tipo: poema
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-viajeros-del-imperial
+      titulo: Los viajeros del imperial
+      tipo: novela
+      motivo: carruaje
+      animo: urbano
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: desnos
+    nombre: Robert Desnos
+    epoca: 1900–1945
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: cuerpo-y-bienes
+      titulo: Cuerpo y bienes
+      tipo: poemario
+      motivo: reloj_blando
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-libertad-o-el-amor
+      titulo: La libertad o el amor
+      tipo: novela
+      motivo: puerta
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: duelo-por-duelo
+      titulo: Duelo por duelo
+      tipo: poemario
+      motivo: calavera
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-tinieblas
+      titulo: Las tinieblas
+      tipo: poemario
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: fortunas
+      titulo: Fortunas
+      tipo: poemario
+      motivo: pez_dorado
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: destino-arbitrario
+      titulo: Destino arbitrario
+      tipo: poemario
+      motivo: espejo
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: chantefables
+      titulo: Chantefables
+      tipo: poemario
+      motivo: gallo
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: estado-de-vigilia
+      titulo: Estado de vigilia
+      tipo: poemario
+      motivo: ojo
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: contree
+      titulo: Contrée
+      tipo: poemario
+      motivo: cipres
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-penas-del-infierno
+      titulo: Las penas del infierno
+      tipo: novela
+      motivo: escalera
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: artaud
+    nombre: Antonin Artaud
+    epoca: 1896–1948
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-teatro-y-su-doble
+      titulo: El teatro y su doble
+      tipo: ensayo
+      motivo: cortina
+      animo: alucinado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-ombligo-de-los-limbos
+      titulo: El ombligo de los limbos
+      tipo: poemario
+      motivo: ojo
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-pesanervios
+      titulo: El pesanervios
+      tipo: poemario
+      motivo: engranaje
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: heliogabalo-o-el-anarquista-coronado
+      titulo: Heliogábalo o el anarquista coronado
+      tipo: novela
+      motivo: corona
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-cenci
+      titulo: Los Cenci
+      tipo: tragedia
+      motivo: calavera
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: van-gogh-el-suicidado-de-la-sociedad
+      titulo: Van Gogh, el suicidado de la sociedad
+      tipo: ensayo
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: para-acabar-con-el-juicio-de-dios
+      titulo: Para acabar con el juicio de Dios
+      tipo: poema
+      motivo: rayo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-tarahumaras
+      titulo: Los tarahumaras
+      tipo: ensayo
+      motivo: volcan
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cartas-desde-rodez
+      titulo: Cartas desde Rodez
+      tipo: cartas
+      motivo: puerta
+      animo: angustia
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-chorro-de-sangre
+      titulo: El chorro de sangre
+      tipo: drama
+      motivo: rosa
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: cocteau
+    nombre: Jean Cocteau
+    epoca: 1889–1963
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: orfeo
+      titulo: Orfeo
+      tipo: drama
+      motivo: espejo
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-ninos-terribles
+      titulo: Los niños terribles
+      tipo: novela
+      motivo: cortina
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-voz-humana
+      titulo: La voz humana
+      tipo: drama
+      motivo: mano
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: opio
+      titulo: Opio
+      tipo: memoria
+      motivo: vela
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: thomas-el-impostor
+      titulo: Thomas el impostor
+      tipo: novela
+      motivo: caballo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-gallo-y-el-arlequin
+      titulo: El gallo y el arlequín
+      tipo: ensayo
+      motivo: gallo
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-novios-de-la-torre-eiffel
+      titulo: Los novios de la Torre Eiffel
+      tipo: drama
+      motivo: torre_eiffel
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-maquina-infernal
+      titulo: La máquina infernal
+      tipo: tragedia
+      motivo: esfinge
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-bella-y-la-bestia
+      titulo: La bella y la bestia
+      tipo: relato
+      motivo: rosa
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-testamento-de-orfeo
+      titulo: El testamento de Orfeo
+      tipo: drama
+      motivo: puerta
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: cernuda
+    nombre: Luis Cernuda
+    epoca: 1902–1963
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: perfil-del-aire
+      titulo: Perfil del aire
+      tipo: poemario
+      motivo: nube
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: egloga-elegia-oda
+      titulo: Égloga, elegía, oda
+      tipo: poemario
+      motivo: rio
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-rio-un-amor
+      titulo: Un río, un amor
+      tipo: poemario
+      motivo: rio
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-placeres-prohibidos
+      titulo: Los placeres prohibidos
+      tipo: poemario
+      motivo: rosa
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: donde-habite-el-olvido
+      titulo: Donde habite el olvido
+      tipo: poemario
+      motivo: puerta
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: invocaciones
+      titulo: Invocaciones
+      tipo: poemario
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-nubes
+      titulo: Las nubes
+      tipo: poemario
+      motivo: nube
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: como-quien-espera-el-alba
+      titulo: Como quien espera el alba
+      tipo: poemario
+      motivo: nube
+      animo: auroral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ocnos
+      titulo: Ocnos
+      tipo: poemas en prosa
+      motivo: cipres
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: desolacion-de-la-quimera
+      titulo: Desolación de la Quimera
+      tipo: poemario
+      motivo: ruinas
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: aleixandre
+    nombre: Vicente Aleixandre
+    epoca: 1898–1984
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: ambito
+      titulo: Ámbito
+      tipo: poemario
+      motivo: olas
+      animo: onirico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: espadas-como-labios
+      titulo: Espadas como labios
+      tipo: poemario
+      motivo: espada
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-destruccion-o-el-amor
+      titulo: La destrucción o el amor
+      tipo: poemario
+      motivo: volcan
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: pasion-de-la-tierra
+      titulo: Pasión de la tierra
+      tipo: poemas en prosa
+      motivo: ojo
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sombra-del-paraiso
+      titulo: Sombra del paraíso
+      tipo: poemario
+      motivo: arbol
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: historia-del-corazon
+      titulo: Historia del corazón
+      tipo: poemario
+      motivo: corazon
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mundo-a-solas
+      titulo: Mundo a solas
+      tipo: poemario
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: nacimiento-ultimo
+      titulo: Nacimiento último
+      tipo: poemario
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: en-un-vasto-dominio
+      titulo: En un vasto dominio
+      tipo: poemario
+      motivo: olas
+      animo: onirico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: poemas-de-la-consumacion
+      titulo: Poemas de la consumación
+      tipo: poemario
+      motivo: reloj_arena
+      animo: elegiaco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: neruda
+    nombre: Pablo Neruda
+    epoca: 1904–1973
+    region: Chile
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: veinte-poemas-de-amor-y-una-cancion-dese
+      titulo: Veinte poemas de amor y una canción desesperada
+      tipo: poemario
+      motivo: olas
+      animo: sentimental
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: residencia-en-la-tierra
+      titulo: Residencia en la tierra
+      tipo: poemario
+      motivo: reloj_blando
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: canto-general
+      titulo: Canto general
+      tipo: poema épico
+      motivo: volcan
+      animo: heroico
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: odas-elementales
+      titulo: Odas elementales
+      tipo: oda
+      motivo: rosa
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cien-sonetos-de-amor
+      titulo: Cien sonetos de amor
+      tipo: soneto
+      motivo: corazon
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: crepusculario
+      titulo: Crepusculario
+      tipo: poemario
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: espana-en-el-corazon
+      titulo: España en el corazón
+      tipo: poemario
+      motivo: barricada
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: estravagario
+      titulo: Estravagario
+      tipo: poemario
+      motivo: gato
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: memorial-de-isla-negra
+      titulo: Memorial de Isla Negra
+      tipo: poemario
+      motivo: concha
+      animo: onirico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: confieso-que-he-vivido
+      titulo: Confieso que he vivido
+      tipo: memoria
+      motivo: velero
+      animo: sereno
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: paz
+    nombre: Octavio Paz
+    epoca: 1914–1998
+    region: México
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-laberinto-de-la-soledad
+      titulo: El laberinto de la soledad
+      tipo: ensayo
+      motivo: puerta
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: piedra-de-sol
+      titulo: Piedra de sol
+      tipo: poema
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: libertad-bajo-palabra
+      titulo: Libertad bajo palabra
+      tipo: poemario
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: aguila-o-sol
+      titulo: ¿Águila o sol?
+      tipo: poemas en prosa
+      motivo: alas
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ladera-este
+      titulo: Ladera este
+      tipo: poemario
+      motivo: pagoda
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: blanco
+      titulo: Blanco
+      tipo: poema
+      motivo: nube
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-arco-y-la-lira
+      titulo: El arco y la lira
+      tipo: ensayo
+      motivo: lira
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-hijos-del-limo
+      titulo: Los hijos del limo
+      tipo: ensayo
+      motivo: rio
+      animo: ilustrado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: pasado-en-claro
+      titulo: Pasado en claro
+      tipo: poema
+      motivo: espejo
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-mono-gramatico
+      titulo: El mono gramático
+      tipo: poema en prosa
+      motivo: bambu
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: roussel
+    nombre: Raymond Roussel
+    epoca: 1877–1933
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: impresiones-de-africa
+      titulo: Impresiones de África
+      tipo: novela
+      motivo: engranaje
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: locus-solus
+      titulo: Locus Solus
+      tipo: novela
+      motivo: reloj_blando
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-doublure
+      titulo: La doublure
+      tipo: poema
+      motivo: cortina
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-vista
+      titulo: La vista
+      tipo: poema
+      motivo: ojo
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: nuevas-impresiones-de-africa
+      titulo: Nuevas impresiones de África
+      tipo: poema
+      motivo: pavo_real
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: como-escribi-algunos-de-mis-libros
+      titulo: Cómo escribí algunos de mis libros
+      tipo: ensayo
+      motivo: espejo
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-estrella-en-la-frente
+      titulo: La estrella en la frente
+      tipo: drama
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-polvo-de-soles
+      titulo: El polvo de soles
+      tipo: drama
+      motivo: volcan
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: chiquenaude
+      titulo: Chiquenaude
+      tipo: drama
+      motivo: mano
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-fuente
+      titulo: La fuente
+      tipo: poema
+      motivo: fuente
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: jacob
+    nombre: Max Jacob
+    epoca: 1876–1944
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-cubilete-de-dados
+      titulo: El cubilete de dados
+      tipo: poemas en prosa
+      motivo: bombin
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: saint-matorel
+      titulo: Saint Matorel
+      tipo: novela
+      motivo: cruz
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-gabinete-negro
+      titulo: El gabinete negro
+      tipo: cartas
+      motivo: puerta
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-laboratorio-central
+      titulo: El laboratorio central
+      tipo: poemario
+      motivo: engranaje
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-sitio-de-jerusalen
+      titulo: El sitio de Jerusalén
+      tipo: drama
+      motivo: torre
+      animo: absurdo
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: visiones-infernales
+      titulo: Visiones infernales
+      tipo: poemario
+      motivo: calavera
+      animo: delirante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: baladas
+      titulo: Baladas
+      tipo: poemario
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: fondo-de-agua
+      titulo: Fondo de agua
+      tipo: poemario
+      motivo: olas
+      animo: onirico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: rivage
+      titulo: Rivage
+      tipo: poemario
+      motivo: concha
+      animo: onirico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: obras-burlescas-y-misticas-del-hermano-m
+      titulo: Obras burlescas y místicas del hermano Matorel
+      tipo: cuento
+      motivo: gato
+      animo: ludico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+- id: oriente
+  nombre: Literaturas de Oriente
+  paletas:
+  - sumi
+  - bermellon
+  - celadon
+  - indigo
+  - jade
+  - niebla
+  autores:
+  - id: basho
+    nombre: Matsuo Bashō
+    epoca: 1644–1694
+    region: Japón
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: sendas-de-oku
+      titulo: Sendas de Oku
+      tipo: viaje
+      motivo: nube
+      animo: zen
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diario-de-un-viaje-a-la-intemperie
+      titulo: Diario de un viaje a la intemperie
+      tipo: viaje
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: visita-a-kashima
+      titulo: Visita a Kashima
+      tipo: viaje
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cuaderno-de-la-mochila
+      titulo: Cuaderno de la mochila
+      tipo: viaje
+      motivo: bambu
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: visita-a-sarashina
+      titulo: Visita a Sarashina
+      tipo: viaje
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diario-de-saga
+      titulo: Diario de Saga
+      tipo: diario
+      motivo: bambu
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: capa-de-paja-del-mono
+      titulo: Capa de paja del mono
+      tipo: poemario
+      motivo: lluvia
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-viejo-estanque
+      titulo: El viejo estanque
+      tipo: poema
+      motivo: nenufar
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-dias-de-invierno
+      titulo: Los días de invierno
+      tipo: poemario
+      motivo: hojas
+      animo: otonal
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-dias-de-primavera
+      titulo: Los días de primavera
+      tipo: poemario
+      motivo: petalos
+      animo: auroral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: murasaki
+    nombre: Murasaki Shikibu
+    epoca: c. 973–c. 1014
+    region: Japón
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: la-historia-de-genji
+      titulo: La historia de Genji
+      tipo: novela
+      motivo: farolillo
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: genji-el-paulonia
+      titulo: 'Genji: El paulonia'
+      tipo: capítulo
+      motivo: corona
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: genji-el-arbol-escoba
+      titulo: 'Genji: El árbol escoba'
+      tipo: capítulo
+      motivo: bambu
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: genji-la-cigarra
+      titulo: 'Genji: La cigarra'
+      tipo: capítulo
+      motivo: libelula
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: genji-la-dama-del-atardecer
+      titulo: 'Genji: La dama del atardecer'
+      tipo: capítulo
+      motivo: rosa
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: genji-la-joven-murasaki
+      titulo: 'Genji: La joven Murasaki'
+      tipo: capítulo
+      motivo: petalos
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: genji-suma
+      titulo: 'Genji: Suma'
+      tipo: capítulo
+      motivo: olas
+      animo: melancolico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: genji-akashi
+      titulo: 'Genji: Akashi'
+      tipo: capítulo
+      motivo: barca
+      animo: melancolico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diario-de-murasaki-shikibu
+      titulo: Diario de Murasaki Shikibu
+      tipo: diario
+      motivo: vela
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: genji-el-puente-flotante-de-los-suenos
+      titulo: 'Genji: El puente flotante de los sueños'
+      tipo: capítulo
+      motivo: puente
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: li-bai
+    nombre: Li Bai
+    epoca: 701–762
+    region: China
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: pensamientos-en-una-noche-tranquila
+      titulo: Pensamientos en una noche tranquila
+      tipo: poema
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: beber-solo-bajo-la-luna
+      titulo: Beber solo bajo la luna
+      tipo: poema
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: invitacion-al-vino
+      titulo: Invitación al vino
+      tipo: poema
+      motivo: pavo_real
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-camino-de-shu-es-dificil
+      titulo: El camino de Shu es difícil
+      tipo: poema
+      motivo: nube
+      animo: sublime
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: contemplando-la-cascada-del-monte-lu
+      titulo: Contemplando la cascada del monte Lu
+      tipo: poema
+      motivo: nube
+      animo: sublime
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: despedida-de-meng-haoran-en-la-torre-de
+      titulo: Despedida de Meng Haoran en la torre de la Grulla Amarilla
+      tipo: poema
+      motivo: grulla
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: salida-de-baidi-por-la-manana
+      titulo: Salida de Baidi por la mañana
+      tipo: poema
+      motivo: barca
+      animo: auroral
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cancion-de-qingping
+      titulo: Canción de Qingping
+      tipo: poema
+      motivo: rosa
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sueno-de-un-viaje-al-monte-tianmu
+      titulo: Sueño de un viaje al monte Tianmu
+      tipo: poema
+      motivo: nube
+      animo: onirico
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cantares-de-changgan
+      titulo: Cantares de Changgan
+      tipo: poema
+      motivo: puente
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: du-fu
+    nombre: Du Fu
+    epoca: 712–770
+    region: China
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: primavera-en-la-ciudad-arruinada
+      titulo: Primavera en la ciudad arruinada
+      tipo: poema
+      motivo: ruinas
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-techo-de-paja-arrancado-por-el-viento
+      titulo: El techo de paja arrancado por el viento de otoño
+      tipo: poema
+      motivo: casa_colonial
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-carros-de-guerra
+      titulo: Los carros de guerra
+      tipo: poema
+      motivo: carruaje
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mirando-el-monte-tai
+      titulo: Mirando el monte Tai
+      tipo: poema
+      motivo: nube
+      animo: sublime
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: subiendo-a-la-torre
+      titulo: Subiendo a la torre
+      tipo: poema
+      motivo: pagoda
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: una-noche-de-viaje
+      titulo: Una noche de viaje
+      tipo: poema
+      motivo: barca
+      animo: zen
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-ocho-cantos-de-otono
+      titulo: Los ocho cantos de otoño
+      tipo: poemario
+      motivo: hojas
+      animo: otonal
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: subiendo-a-la-torre-de-yueyang
+      titulo: Subiendo a la torre de Yueyang
+      tipo: poema
+      motivo: pagoda
+      animo: monsonico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-funcionario-de-shihao
+      titulo: El funcionario de Shihao
+      tipo: poema
+      motivo: torii
+      animo: tragico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: visita-a-la-casa-del-senor-zheng
+      titulo: Visita a la casa del señor Zheng
+      tipo: poema
+      motivo: bambu
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: lu-xun
+    nombre: Lu Xun
+    epoca: 1881–1936
+    region: China
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: diario-de-un-loco
+      titulo: Diario de un loco
+      tipo: cuento
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: kong-yiji
+      titulo: Kong Yiji
+      tipo: cuento
+      motivo: pozo
+      animo: sordido
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-medicina
+      titulo: La medicina
+      tipo: cuento
+      motivo: cruz
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mi-tierra-natal
+      titulo: Mi tierra natal
+      tipo: cuento
+      motivo: casa_colonial
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-verdadera-historia-de-ah-q
+      titulo: La verdadera historia de Ah Q
+      tipo: novela corta
+      motivo: pagoda
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: bendicion
+      titulo: Bendición
+      tipo: cuento
+      motivo: lluvia
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: gritos
+      titulo: Gritos
+      tipo: cuentos
+      motivo: gallo
+      animo: sordido
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: titubeos
+      titulo: Titubeos
+      tipo: cuentos
+      motivo: puerta
+      animo: sordido
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hierbas-silvestres
+      titulo: Hierbas silvestres
+      tipo: poemas en prosa
+      motivo: hojas
+      animo: otonal
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: flores-matinales-recogidas-al-anochecer
+      titulo: Flores matinales recogidas al anochecer
+      tipo: ensayo
+      motivo: rosa
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: khayyam
+    nombre: Omar Khayyam
+    epoca: 1048–1131
+    region: Persia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: rubaiyat
+      titulo: Rubaiyat
+      tipo: cuartetas
+      motivo: creciente
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-vino-y-la-copa
+      titulo: El vino y la copa
+      tipo: tema
+      de: Rubaiyat
+      motivo: urna
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-rosa-de-la-manana
+      titulo: La rosa de la mañana
+      tipo: tema
+      de: Rubaiyat
+      motivo: rosa
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-alfarero-y-el-barro
+      titulo: El alfarero y el barro
+      tipo: tema
+      de: Rubaiyat
+      motivo: urna
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-posada-del-mundo
+      titulo: La posada del mundo
+      tipo: tema
+      de: Rubaiyat
+      motivo: minarete
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-luna-que-nos-busca
+      titulo: La luna que nos busca
+      tipo: tema
+      de: Rubaiyat
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-tablero-de-ajedrez
+      titulo: El tablero de ajedrez
+      tipo: tema
+      de: Rubaiyat
+      motivo: escudo
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-taberna
+      titulo: La taberna
+      tipo: tema
+      de: Rubaiyat
+      motivo: farolillo
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-libro-de-versos-una-jarra-de-vino
+      titulo: Un libro de versos, una jarra de vino
+      tipo: tema
+      de: Rubaiyat
+      motivo: arbol
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: nishapur
+      titulo: Nishapur
+      tipo: tema
+      de: Rubaiyat
+      motivo: minarete
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: rumi
+    nombre: Yalal ad-Din Rumi
+    epoca: 1207–1273
+    region: Persia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: masnavi
+      titulo: Masnavi
+      tipo: poema
+      motivo: minarete
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: divan-de-shams-de-tabriz
+      titulo: Diván de Shams de Tabriz
+      tipo: poemario
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: fihi-ma-fihi
+      titulo: Fihi ma fihi
+      tipo: ensayo
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-siete-sermones
+      titulo: Los siete sermones
+      tipo: ensayo
+      motivo: nube
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cartas
+      titulo: Cartas
+      tipo: cartas
+      motivo: vela
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-canto-de-la-flauta-de-cana
+      titulo: El canto de la flauta de caña
+      tipo: tema
+      de: Masnavi
+      motivo: bambu
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-elefante-en-la-oscuridad
+      titulo: El elefante en la oscuridad
+      tipo: tema
+      de: Masnavi
+      motivo: ojo
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-loro-y-el-mercader
+      titulo: El loro y el mercader
+      tipo: tema
+      de: Masnavi
+      motivo: pavo_real
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: moises-y-el-pastor
+      titulo: Moisés y el pastor
+      tipo: tema
+      de: Masnavi
+      motivo: arbol
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-rey-y-la-esclava
+      titulo: El rey y la esclava
+      tipo: tema
+      de: Masnavi
+      motivo: corona
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: mutanabbi
+    nombre: Al-Mutanabbi
+    epoca: 915–965
+    region: Siria
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: divan
+      titulo: Diván
+      tipo: poemario
+      motivo: caballo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-caballos-la-noche-y-el-desierto
+      titulo: Los caballos, la noche y el desierto
+      tipo: poema
+      motivo: caballo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: segun-la-medida-de-los-resueltos
+      titulo: Según la medida de los resueltos
+      tipo: poema
+      motivo: espada
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-sayfiyyat
+      titulo: Las sayfiyyat
+      tipo: tema
+      de: Diván
+      motivo: escudo
+      animo: heroico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-satiras-a-kafur
+      titulo: Las sátiras a Kafur
+      tipo: tema
+      de: Diván
+      motivo: serpiente
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: elegia-por-la-abuela
+      titulo: Elegía por la abuela
+      tipo: tema
+      de: Diván
+      motivo: cipres
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-kafuriyyat
+      titulo: Las kafuriyyat
+      tipo: tema
+      de: Diván
+      motivo: corona
+      animo: satirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-poemas-del-desierto
+      titulo: Los poemas del desierto
+      tipo: tema
+      de: Diván
+      motivo: creciente
+      animo: seco
+      escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-poemas-de-la-prision
+      titulo: Los poemas de la prisión
+      tipo: tema
+      de: Diván
+      motivo: puerta
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: despedida-de-alepo
+      titulo: Despedida de Alepo
+      tipo: tema
+      de: Diván
+      motivo: minarete
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: kabir
+    nombre: Kabir
+    epoca: c. 1440–c. 1518
+    region: India
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: bijak
+      titulo: Bijak
+      tipo: poemario
+      motivo: nube
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sakhi
+      titulo: Sakhi
+      tipo: poemario
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sabad
+      titulo: Sabad
+      tipo: poemario
+      motivo: lira
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ramaini
+      titulo: Ramaini
+      tipo: poemario
+      motivo: nube
+      animo: sufi
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: kabir-granthavali
+      titulo: Kabir Granthavali
+      tipo: poemario
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-tejedor-y-su-telar
+      titulo: El tejedor y su telar
+      tipo: tema
+      de: Bijak
+      motivo: mano
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-gota-en-el-oceano
+      titulo: La gota en el océano
+      tipo: tema
+      de: Bijak
+      motivo: olas
+      animo: zen
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-ciervo-y-el-almizcle
+      titulo: El ciervo y el almizcle
+      tipo: tema
+      de: Sakhi
+      motivo: creciente
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-piedra-y-la-montana
+      titulo: La piedra y la montaña
+      tipo: tema
+      de: Sakhi
+      motivo: nube
+      animo: zen
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: dos-letras-y-media-de-amor
+      titulo: Dos letras y media de amor
+      tipo: tema
+      de: Sakhi
+      motivo: corazon
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: tagore
+    nombre: Rabindranath Tagore
+    epoca: 1861–1941
+    region: India
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: gitanjali
+      titulo: Gitanjali
+      tipo: poemario
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-jardinero
+      titulo: El jardinero
+      tipo: poemario
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-luna-nueva
+      titulo: La luna nueva
+      tipo: poemario
+      motivo: creciente
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: pajaros-perdidos
+      titulo: Pájaros perdidos
+      tipo: aforismos
+      motivo: grulla
+      animo: zen
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cosecha-de-frutos
+      titulo: Cosecha de frutos
+      tipo: poemario
+      motivo: arbol
+      animo: pastoral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-cartero-del-rey
+      titulo: El cartero del rey
+      tipo: drama
+      motivo: puerta
+      animo: sereno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: chitra
+      titulo: Chitra
+      tipo: drama
+      motivo: rosa
+      animo: lacado
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-hogar-y-el-mundo
+      titulo: El hogar y el mundo
+      tipo: novela
+      motivo: casa_colonial
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: gora
+      titulo: Gora
+      tipo: novela
+      motivo: pagoda
+      animo: humanista
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sadhana
+      titulo: Sadhana
+      tipo: ensayo
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar

@@ -50,8 +50,8 @@ def test_el_catalogo_de_la_pagina_son_las_piezas_del_manifest():
     import json
     cat = editor_datos.catalogo()
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))["entradas"]
-    assert [p[0] for p in cat["piezas"]] == [e["id"] for e in manifiesto] and len(cat["piezas"]) == 1500
-    assert len(cat["movs"]) == 10
+    assert [p[0] for p in cat["piezas"]] == [e["id"] for e in manifiesto] and len(cat["piezas"]) == 2000
+    assert len(cat["movs"]) == 15
     for p in cat["piezas"]:
         autor = cat["autores"][p[1]]
         assert p[0].startswith(autor["m"] + "-" + autor["id"] + "-")
@@ -105,7 +105,7 @@ def test_las_escenas_compactas_dibujan_lo_mismo_que_la_receta():
         b = muestreo.colores(_escena_desde_compacta(compacta), x.ravel(), y.ravel())
         d = np.abs(a - b).max(axis=1)
         assert d.mean() < 1 and (d < 30).mean() > 0.995, (e["id"], d.mean())
-    assert len(vistos) == 10
+    assert len(vistos) == 15
 
 
 def test_los_sprites_traen_tambien_las_escenas_en_json(tmp_path, monkeypatch):
