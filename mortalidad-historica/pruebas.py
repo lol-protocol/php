@@ -516,6 +516,17 @@ class GlosarioAmpliadoTest(unittest.TestCase):
         for idioma in ("spa", "lat", "eng", "deu", "fra", "ita", "por"):
             self.assertGreater(por_idioma[idioma], 40, idioma)
 
+    def test_ningun_idioma_queda_con_unos_pocos_terminos(self):
+        por_idioma = collections.Counter(f["idioma"] for f in self.filas)
+        self.assertEqual(set(por_idioma), set(comun.IDIOMAS))
+        self.assertGreaterEqual(min(por_idioma.values()), 15, por_idioma)
+
+    def test_los_idiomas_pequenos_cubren_las_causas_mas_comunes(self):
+        comunes = {"disenteria", "tos_ferina", "neumonia", "cancer", "sifilis", "lepra", "epilepsia"}
+        for idioma in ("swe", "dan", "pol", "rus", "ukr", "ces", "ell", "tur", "ara", "heb", "zho", "jpn"):
+            cubiertas = {f["causa_id"] for f in self.filas if f["idioma"] == idioma}
+            self.assertGreaterEqual(len(cubiertas & comunes), 5, idioma)
+
     def test_un_termino_ambiguo_sale_con_todas_sus_causas(self):
         causas = {r["causa_id"] for r in consultas.causa_moderna("dolor de costado", "spa")}
         self.assertEqual(causas, {"neumonia", "pleuresia"})

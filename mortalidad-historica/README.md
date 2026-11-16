@@ -5,7 +5,7 @@ Datos para leer con criterio las edades, las enfermedades y las causas de muerte
 - **Esperanza de vida a lo largo de los siglos**, por país o región, sexo y **edad** (no solo al nacer; ver «Por qué no basta la esperanza de vida al nacer»).
 - **Epidemias y pandemias** (28, de la peste de Justiniano a la gripe de 1968), con sus años, regiones y, cuando hace falta, países, para notar cuándo una serie de muertes en una familia tiene una explicación. Se leen de corrido en [`epidemias.md`](epidemias.md).
 - **Las muertes por año en Londres, 1629-1902** (Bills of Mortality y los registros que las siguieron): la única serie anual de muertes de esta carpeta, con la que se ve cuánto se disparó un año como 1665.
-- **Un glosario de causas de defunción históricas** («hidropesía», «alferecía», «Schwindsucht», «bexigas»…) en 20 idiomas (casi 600 términos, sobre todo en español, latín, inglés, alemán, francés, italiano y portugués), con la causa moderna a la que suelen corresponder y qué tan segura es esa correspondencia, y un registro para que hablantes nativos lo revisen.
+- **Un glosario de causas de defunción históricas** («hidropesía», «alferecía», «Schwindsucht», «bexigas»…) en 20 idiomas (más de 800 términos: entre 46 y 101 en español, inglés, alemán, francés, italiano, latín y portugués, y entre 19 y 32 en los otros 13 idiomas), con la causa moderna a la que suelen corresponder y qué tan segura es esa correspondencia, y un registro para que hablantes nativos lo revisen.
 - **Enfermedades hereditarias**, como contexto médico y poblacional.
 - **Cuándo empezó el registro civil** en cada país, para saber qué fiabilidad esperar de una edad o una causa.
 
@@ -18,14 +18,14 @@ Datos para leer con criterio las edades, las enfermedades y las causas de muerte
 Cifras que cambian con los datos. Las escribe `generar_tabla.py` y `--comprobar` falla si no están al día.
 
 <!-- resumen: lo escribe generar_tabla.py; no editar a mano -->
-- **Causas modernas:** 54; **términos históricos:** 598 en 20 de 20 idiomas (confianza alta: 451, media: 128, baja: 19).
-- **Términos revisados por una persona nativa:** 0 de 598.
+- **Causas modernas:** 54; **términos históricos:** 813 en 20 de 20 idiomas (confianza alta: 647, media: 141, baja: 25).
+- **Términos revisados por una persona nativa:** 0 de 813.
 - **Idiomas sin términos:** ninguno.
 - **Causas modernas sin ningún término histórico:** ninguna.
 - **Epidemias:** 28 (3 verificadas). **Enfermedades hereditarias:** 12. **Hitos de registro civil:** 6. **Países:** 208.
 - **Muertes en Londres:** 241 años (1629-1902).
 - **Esperanza de vida:** 37488 filas (206 países o regiones).
-- **Filas verificadas contra su fuente:** 37732 de 38373.
+- **Filas verificadas contra su fuente:** 37732 de 38588.
 <!-- fin del resumen -->
 
 ## Por qué no basta la esperanza de vida al nacer
@@ -228,7 +228,7 @@ Los dos ports se prueban contra `datos/vectores.json`, que genera `generar_tabla
 1. **Fase 1 (hecha):** esqueleto, esquemas, validador, glosario semilla (20 idiomas), epidemias, hereditarias e hitos de registro civil de partida, y CI.
 2. **Fase 2 (hecha):** esperanza de vida 1800-2009 por país, a los 0 y 5 años (medidas o derivadas) y a los 15, 30, 45 y 60 (modeladas), con las consultas `esperanza_restante` y `supervivencia`. **2b (hecha):** bandas de incertidumbre, mujeres y hombres a todas las edades (con la mortalidad infantil de ambos sexos) y, antes de 1800, la esperanza al nacer de Reino Unido, Suecia, Finlandia y Dinamarca. **Queda fuera:** edades mayores antes de 1800, y la mortalidad infantil por sexo (hace falta la ONU o el Banco Mundial por sexo). Reemplazar el modelo por tablas medidas de un país que las publique (el INE de Chile, por ejemplo) mejoraría las cifras donde las haya.
 3. **Fase 3 (hecha, en parte):** 28 epidemias, con las de América y Chile, y las muertes por año en Londres. **Falta verificarlas:** solo 3 cifras de cólera y la serie de Londres lo están; el resto es de memoria. Desde el contenedor no llega ninguna fuente de referencia (Wikipedia, OMS, SciELO…), solo GitHub, así que verificarlas y poner cifras para Chile (viruela de 1872, cólera de 1886) hay que hacerlo con acceso a esas fuentes.
-4. **Fase 4 (hecha, en parte):** el glosario creció a casi 600 términos y 54 causas, los códigos OMIM están verificados y hay un registro de revisión por hablantes nativos. **Falta lo que no puedo hacer yo:** que personas nativas revisen los términos (el glosario sigue en `borrador`), y ampliar los idiomas pequeños (sueco, danés, polaco, ruso, ucraniano, checo, griego, turco, árabe, hebreo, chino y japonés tienen entre 2 y 9 términos).
+4. **Fase 4 (hecha, en parte):** el glosario creció a más de 800 términos y 54 causas, los códigos OMIM están verificados y hay un registro de revisión por hablantes nativos. **Falta lo que no puedo hacer yo:** que personas nativas revisen los términos (el glosario sigue en `borrador`), y ampliar los idiomas menos cubiertos (neerlandés, turco, griego, checo, ucraniano y árabe tienen entre 19 y 24 términos, sobre todo de las causas más comunes; las causas raras y los términos regionales o antiguos casi no están).
 5. **Fase 5 (hecha):** vista HTML (`vista.html`) y los ports a PHP y a JavaScript, probados con los mismos vectores.
 
 Fuentes previstas: Our World in Data, Gapminder, Clio-Infra y UN WPP (licencias abiertas); la Human Mortality Database no se redistribuye (solo se usa, a través del modelo de Wilmoth, su efecto en unos coeficientes). Para el glosario: las *Bills of Mortality*, la nosología de Farr, las clasificaciones de Bertillon y las revisiones de la CIE.
