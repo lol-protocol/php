@@ -380,10 +380,11 @@ de Our World in Data, y las demás fuentes solo cubren los años anteriores a su
 - **2025:** la última tasa escalada por la fecundidad de Gapminder:
   `tasa(t) = tasa(u) × fecundidad(t) / fecundidad(u)`, o constante si falta la fecundidad.
 - **Sin tasa de Gapminder** (Andorra, Dominica, Islas Marshall, Liechtenstein, Mónaco, Nauru,
-  Palaos, San Cristóbal y Nieves, San Marino y Tuvalu): 7 × su fecundidad hasta 2015, una
-  aproximación de la tasa bruta, y después la del Banco Mundial. Kosovo, Bermudas, Curazao, Islas
-  Feroe, Gibraltar e Isla de Man tienen solo la del Banco Mundial: antes de ella, la de su época.
-  Guernsey y Jersey no tienen ninguna y usan la de su época.
+  Palaos, San Cristóbal y Nieves, San Marino y Tuvalu): 7 × su fecundidad hasta 1959, una
+  aproximación de la tasa bruta, y desde 1960 la del Banco Mundial. Kosovo, Bermudas, Curazao,
+  Islas Feroe, Gibraltar e Isla de Man tienen solo la del Banco Mundial, desde 1960: antes, la de
+  su época. Guernsey y Jersey no tienen ninguna y usan la de su época. Sin tasa de Gapminder, la del
+  Banco Mundial entra completa; con ella, solo desde 2016.
 
 **Natalidad antes de 1800, por épocas** (decidido), como el Population Reference Bureau en *How
 Many People Have Ever Lived on Earth?*: 80 por mil antes del año 1, 60 hasta 1650, 50 hasta 1750 y
